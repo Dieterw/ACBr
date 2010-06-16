@@ -225,22 +225,22 @@ ACBrDiversos.dpk - Contém os mais variados componentes ACBr que em geral não se 
    Componentes e Units: 
       * ACBrBarCode -  ??? Descrição ???
       * ACBrCalculadora - Mais uma calculadora... mas com algumas frescuras a mais, como
-          por exemplo, um Memo simulando a fita (permitindo salvar)
+		  por exemplo, um Memo simulando a fita (permitindo salvar)
       * ACBrLeCMC7 - Leitor de código CMC7 de Cheques. (Nenhuma experiência do autor).
-	  * ACBrCMC7 -  ??? Descrição ???
+      * ACBrCMC7 -  ??? Descrição ???
       * ACBrExtenso -  ??? Descrição ???
       * ACBrFala -  ??? Descrição ???
       * ACBrTroco -  ??? Descrição ???
       * ACBrValidador - ACBrValidador - Componente com várias funções para validar dados 
           como CPF, CNPJ, Inscrição Estadual, etc...
-	  * ACBrUtil - Unit contendo diversos procedimentos e funções úteis para aplicações
+      * ACBrUtil - Unit contendo diversos procedimentos e funções úteis para aplicações
 		  comerciais: ValidaCNPJ, ValidaCPF, ValidaINSCEST, Extenso, etc
  
   
 ACBrSerial.dpk - Contém os componentes ACBr que fazem comunicação Serial. 
   Requer pacotes: ACBrDiversos, Synapse.
    Componentes:
-	  * ACBrBal -  ??? Descrição ???
+      * ACBrBal -  ??? Descrição ???
 	  
       * ACBrECF - Para se comunicar com Impressoras Fiscais (ECF). A idéia é substituir
 		  os comandos da DLL por chamadas aos métodos do componente ACBrECF, com a
@@ -249,10 +249,10 @@ ACBrSerial.dpk - Contém os componentes ACBr que fazem comunicação Serial.
 		  Inicialmente suportando os seguintes modelos:
 		  Bematech, Daruma, Schalter, Sweda, Mecaf (e compatíveis), FiscNet (Urano, Elgin, TermoPrinter,...)
 
-	  * ACBrETQ - Para se comunicar com impressoras de Etiquetas. Essas impressoras são 
+      * ACBrETQ - Para se comunicar com impressoras de Etiquetas. Essas impressoras são 
 		  normalmente usadas para impressão de códigos de barras e preços para os produtos.
       
-	  * ACBrGAV - Para acionamento de Gavetas de dinheiro. Com suporte a gavetas
+      * ACBrGAV - Para acionamento de Gavetas de dinheiro. Com suporte a gavetas
 		  ligadas a Porta Serial, ou diretamente ao ECF ou ainda ligadas a Impressoras
 		  não Fiscais (paralela ou serial). Inicialmente suportando os seguintes
 		  modelos: Menno, Gerbô.
@@ -266,14 +266,14 @@ ACBrSerial.dpk - Contém os componentes ACBr que fazem comunicação Serial.
 		  2 linhas acoplado a teclados reduzidos, comunicando pela porta AT. 
 		  Modelos: Gertec, Keytec
 
-	  * ACBrLCB - Componente que permite acesso a informação lida por Leitores de código de
+      * ACBrLCB - Componente que permite acesso a informação lida por Leitores de código de
 		  Barra ligados a porta serial.
 
 ACBr_TEFD.dpk - Contém o componente ACBrTEFD e as Units necessárias para seu uso. 
    Componente:
       * ACBrTEFD - Componente para facilitar a comunicação de TEF Discado e Dedicado (SITEF),
 		  suportando o pagamento com múltiplos cartões. Este compoentes faz a criação dos 
-		  arquivos de troca entre a Aplicação Comercial e os programas das Operadoras.
+ 		  arquivos de troca entre a Aplicação Comercial e os programas das Operadoras.
 
 
 ACBr_SPED.dpk - Contém os compoentes para geração do arquivo SPED (fiscal e contábil)
@@ -310,7 +310,9 @@ ACBr_BoletoFC_Fortes.dpk - ??? Descrição ???.
   exigem um cuidado especial.
 
 Na pasta \pacotes\ :
-ACBr_D5.dpk - ??? Descrição ???. 
+ACBr_D5.dpk - Esse pacote é utilizado para instalar os componentes no Delphi 5. Se você 
+ainda utiliza o Delphi 5, esse é o pacote que deve instalar. No entanto, entenda que
+a maior parte dos testes estão sendo feitos em versões mais novas do Delhpi e/ou do Lazarous.
 
 
 Também existem os componentes para NFe. Para a NFe2 estão localizados na pasta 
@@ -319,13 +321,13 @@ Também existem os componentes para NFe. Para a NFe2 estão localizados na pasta
 
 Os mesmos são:
 ACBr_CTe.dpk - Conhecimento de Transporte de Carga Eletrônico.
-    * ACBrCTe - Componente que gera, assina, valida e envia para o SEFAZ o
-                arquivo xml contendo dados pertinentes ao conhecimento de
-                transporte de carga eletrônico.
+      * ACBrCTe - Componente que gera, assina, valida e envia para o SEFAZ o
+                  arquivo xml contendo dados pertinentes ao conhecimento de
+                  transporte de carga eletrônico.
 
 ACBrCTeDacteQRpkg.dpk - DACTe em Quick Reporter
-    * ACBrCTeDACTeQR - Componente para emissão do DACTe, Documento Auxiliar do
-                       Conhecimento de Transporte Eletrônico.
+      * ACBrCTeDACTeQR - Componente para emissão do DACTe, Documento Auxiliar do
+                         Conhecimento de Transporte Eletrônico.
 
 ACBr_NFe.dpk - ??? Descrição ???
 ACBrCTeDacteQRpkg.dpk - ??? Descrição ???
@@ -339,8 +341,9 @@ ACBrNFePCN.dpk -  ??? Descrição ???
 6.2 COMPONENTES EM DESENVOLVIMENTO OU DESCONTINUADOS
 ====================================================
 
- Os seguintes componentes estão em desenvolvimento ou ainda não foram totalmente 
-implementados e/ou testados. Precisamos sua ajuda nesse sentido.
+ Os seguintes pacores e componentes, embora ainda estejam ainda no ACBr, já não estão sendo atualizados mais
+ou ainda, são componentes que estão em desenvolvimento e precisam ser testados.
+Talvez você queira ajudar no desenvolvimento e a testar.
 
 ACBrBombas - Para trabalhar como monitor de bombas de Combustível, se comunicando com 
   concentradores, lendo os abastecimentos gerados, alterando os preços das Bombas, etc...
@@ -439,4 +442,4 @@ precisam comer.... ;-)
 11. HISTÓRICO DO DESENVOLVIMENTO
 ================================
 
-  Por favor leia o arquivo:  " ACBr-change-log.TXT "
+  Por favor leia o arquivo:  " ACBr-change-log.TXT "

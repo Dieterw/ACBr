@@ -2628,7 +2628,7 @@ begin
     begin
        Comando := 'EE10' ;
        AddParam( LeftStr(Banco,2) ) ;
-       AddParam( IntToStrZero(Round(Valor * Power(10,fpDecimaisQtd) ) ,13)  ) ;
+       AddParam( IntToStrZero(Round(Valor * Power(10,fpDecimaisPreco) ) ,13)  ) ;
        AddParam( LeftStr(Favorecido,40) ) ;
        AddParam( LeftStr(Cidade,30) ) ;
        AddParam( Observacao ) ;
@@ -2812,7 +2812,7 @@ Var
 begin
   LoadDLLFunctions ;
 
-  ArqTmp := ExtractFilePath( NomeArquivo ) + 'ACBr' ;
+  ArqTmp := ExtractFilePath( NomeArquivo ) + 'D' ;
   DeleteFile( ArqTmp + '_ESP.txt' ) ;
 
   OldAtivo := Ativo ;
@@ -2859,7 +2859,7 @@ Var
 begin
   LoadDLLFunctions ;
 
-  ArqTmp := ExtractFilePath( NomeArquivo ) + 'ACBr' ;
+  ArqTmp := ExtractFilePath( NomeArquivo ) + 'D' ;
   DeleteFile( ArqTmp + '_ESP.txt' ) ;
 
   OldAtivo := Ativo ;

@@ -208,7 +208,7 @@ begin
       FCasasDecimaisqCom := ACasasDecimaisqCom;
       FCasasDecimaisvUnCom := ACasasDecimaisvUncCom;
 
-      for iCopias := 1 to FNumCopias do
+ //     for iCopias := 1 to FNumCopias do
         if FMostrarPreview = True then
           RLNFe.PreviewModal
         else

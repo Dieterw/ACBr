@@ -51,10 +51,11 @@ type
     Constructor create(AOwner: TACBrBanco);
     function CalcularDigitoVerificador(const ACBrTitulo: TACBrTitulo ): String; override;
     function MontarCodigoBarras(const ACBrTitulo : TACBrTitulo): String; override;
+    function MontarCampoCodigoCedente(const ACBrTitulo: TACBrTitulo): String; override;
     function MontarCampoNossoNumero(const ACBrTitulo :TACBrTitulo): String; override;
-    function GerarRegistroHeader(NumeroRemessa : Integer): String; override;
-    function GerarRegistroTransacao(ACBrTitulo : TACBrTitulo): String; override;
-    function GerarRegistroTrailler(ARemessa : TStringList): String;  override;
+    function GerarRegistroHeader240(NumeroRemessa : Integer): String; override;
+    function GerarRegistroTransacao240(ACBrTitulo : TACBrTitulo): String; override;
+    function GerarRegistroTrailler240(ARemessa : TStringList): String;  override;
    end;
 
 implementation
@@ -138,6 +139,15 @@ begin
     Result:= copy( CodigoBarras, 1, 4) + DigitoCodBarras + copy( CodigoBarras, 5, 44) ;
 end;
 
+function TACBrBancoBrasil.MontarCampoCodigoCedente (
+   const ACBrTitulo: TACBrTitulo ) : String;
+begin
+   Result := ACBrTitulo.ACBrBoleto.Cedente.Agencia+'-'+
+             ACBrTitulo.ACBrBoleto.Cedente.AgenciaDigito+'/'+
+             ACBrTitulo.ACBrBoleto.Cedente.Conta+'-'+
+             ACBrTitulo.ACBrBoleto.Cedente.ContaDigito;
+end;
+
 function TACBrBancoBrasil.MontarCampoNossoNumero (const ACBrTitulo: TACBrTitulo ) : String;
 var ANossoNumero : string;
 begin
@@ -146,7 +156,7 @@ begin
     Result := ANossoNumero + '-' + CalcularDigitoCodigoBarras(ANossoNumero);
 end;
 
-function TACBrBancoBrasil.GerarRegistroHeader(NumeroRemessa : Integer): String;
+function TACBrBancoBrasil.GerarRegistroHeader240(NumeroRemessa : Integer): String;
 var
   ATipoInscricao: string;
 begin
@@ -219,7 +229,7 @@ begin
    end;
 end;
 
-function TACBrBancoBrasil.GerarRegistroTransacao(ACBrTitulo : TACBrTitulo): String;
+function TACBrBancoBrasil.GerarRegistroTransacao240(ACBrTitulo : TACBrTitulo): String;
 var ATipoInscricao, ATipoOcorrencia, ATipoBoleto,
     ADataMoraJuros, ADataDesconto, ANossoNumero  : string;
 begin
@@ -351,7 +361,7 @@ begin
       end; 
 end;
 
-function TACBrBancoBrasil.GerarRegistroTrailler( ARemessa : TStringList ): String;
+function TACBrBancoBrasil.GerarRegistroTrailler240( ARemessa : TStringList ): String;
 begin
           {REGISTRO TRAILER DO LOTE}
       Result:= IntToStrZero(ACBrBanco.Numero, 3)                          + //Código do banco

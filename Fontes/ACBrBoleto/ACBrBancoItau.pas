@@ -50,40 +50,59 @@ type
     function CalcularDigitoVerificador(const ACBrTitulo: TACBrTitulo ): String; override ;
     function MontarCodigoBarras(const ACBrTitulo : TACBrTitulo): String; override;
     function MontarCampoNossoNumero ( const ACBrTitulo: TACBrTitulo) : String; override;
-    function GerarRegistroHeader(NumeroRemessa : Integer): String; override;
-    function GerarRegistroTransacao(ACBrTitulo : TACBrTitulo): String; override;
-    function GerarRegistroTrailler(ARemessa : TStringList): String;  override;
+    function MontarCampoCodigoCedente(const ACBrTitulo: TACBrTitulo): String; override;
+    function GerarRegistroHeader240(NumeroRemessa : Integer): String; override;
+    function GerarRegistroTransacao240(ACBrTitulo : TACBrTitulo): String; override;
+    function GerarRegistroTrailler240(ARemessa : TStringList): String;  override;
    end;
 
 implementation
 
-uses ACBrUtil, StrUtils, Variants;
+uses ACBrUtil, StrUtils, Variants,ACBrValidador;
 
 constructor TACBrBancoItau.create(AOwner: TACBrBanco);
 begin
    inherited create(AOwner);
-   fpDigito := 9;
+   fpDigito := 7;
    fpNome   := 'Banco Itau';
    fpTamanhoMaximoNossoNum := 8
 end;
 
 function TACBrBancoItau.CalcularDigitoVerificador(const ACBrTitulo: TACBrTitulo ): String;
+var
+  Docto: String;
 begin
    Result := '0';
+   Docto := '';
 
-   Modulo.CalculoPadrao;
-   Modulo.MultiplicadorFinal := 10;
-   Modulo.Documento :=  padL(ACBrTitulo.ACBrBoleto.Cedente.Agencia,4,'0')
-    + padL(ACBrTitulo.ACBrBoleto.Cedente.Conta,5,'0') +
-    padL(ACBrTitulo.Carteira,3,'0') + ACBrTitulo.NossoNumero;
+   with ACBrTitulo do
+   begin
+      Docto := padR(Carteira,3,'0') + padR(NossoNumero,TamanhoMaximoNossoNum,'0');
+      if not ((Carteira = '126') or (Carteira = '131') or (Carteira = '146') or
+             (Carteira = '150') or (Carteira = '168')) then
+         Docto := padr(ACBrBoleto.Cedente.Agencia,4,'0') + padr(ACBrBoleto.Cedente.Conta,5,'0') + docto
+      else
+         Docto := padR(ACBrTitulo.ACBrBoleto.Cedente.Agencia,4,'0') +
+                  padR(ACBrTitulo.ACBrBoleto.Cedente.Conta,5,'0') +
+                  padR(ACBrTitulo.Carteira,3,'0') +
+                  padR(ACBrTitulo.NossoNumero,TamanhoMaximoNossoNum,'0')
+   end;
+
+   Modulo.MultiplicadorInicial := 1;
+   Modulo.MultiplicadorFinal   := 2;
+   Modulo.MultiplicadorAtual   := 2;
+   Modulo.FormulaDigito := frModulo10;
+   Modulo.Documento:= Docto;
    Modulo.Calcular;
-   Result:= IntToStr(Modulo.DigitoFinal);
+   Result := IntToStr(Modulo.DigitoFinal);
+ 
 end;
 
 function TACBrBancoItau.MontarCodigoBarras(const ACBrTitulo : TACBrTitulo): String;
 var
   CodigoBarras, FatorVencimento, DigitoCodBarras :String;
-  ANossoNumero, AConvenio : string;
+  ANossoNumero, aAgenciaCC : string;
+  AConvenio: String;
 begin
     AConvenio := ACBrTitulo.ACBrBoleto.Cedente.Convenio;
 
@@ -92,29 +111,49 @@ begin
     begin
       FatorVencimento := CalcularFatorVencimento(ACBrTitulo.Vencimento);
 
+      ANossoNumero := padR(ACBrTitulo.Carteira,3,'0') +
+                      padR(ACBrTitulo.NossoNumero,8,'0') +
+                      CalcularDigitoVerificador(ACBrTitulo);
+
+      aAgenciaCC   := padR(Cedente.Agencia, 4, '0') +
+                      padR(Cedente.Conta, 5, '0') +
+                      Cedente.ContaDigito;
+
       CodigoBarras := IntToStr( Numero ) +
                       '9' +
                       FatorVencimento +
                       IntToStrZero(Round(ACBrTitulo.ValorDocumento * 100), 10) +
                       ANossoNumero +
-                      padL(Cedente.Agencia, 4, '0') +
-                      padL(Cedente.Conta, 8, '0') +
-                      copy(ACBrTitulo.Carteira, 1, 2);
+                      aAgenciaCC +
+                      '000';
 
      DigitoCodBarras := CalcularDigitoCodigoBarras(CodigoBarras);
     end;
-
-
-    Result:= copy( CodigoBarras, 1, 4) + DigitoCodBarras + copy( CodigoBarras, 6, 44) ;
+    Result:= copy( CodigoBarras, 1, 4) + DigitoCodBarras + copy( CodigoBarras, 5, 39) ;
 end;
 
 function TACBrBancoItau.MontarCampoNossoNumero ( const ACBrTitulo: TACBrTitulo
    ) : String;
+var
+  NossoNr: String;
 begin
-   Result := inherited MontarCampoNossoNumero ( ACBrTitulo ) ;
+  with ACBrTitulo do
+  begin
+    NossoNr := padR(Carteira,3,'0') + padR(NossoNumero,TamanhoMaximoNossoNum,'0');
+  end;
+  Insert('/',NossoNr,4);  Insert('-',NossoNr,13);
+  Result := NossoNr + CalcularDigitoVerificador(ACBrTitulo);
 end;
 
-function TACBrBancoItau.GerarRegistroHeader(NumeroRemessa : Integer): String;
+function TACBrBancoItau.MontarCampoCodigoCedente (
+   const ACBrTitulo: TACBrTitulo ) : String;
+begin
+   Result := ACBrTitulo.ACBrBoleto.Cedente.Agencia+'/'+
+            ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente+'-'+
+            ACBrTitulo.ACBrBoleto.Cedente.ContaDigito;
+end;
+
+function TACBrBancoItau.GerarRegistroHeader240(NumeroRemessa : Integer): String;
 var
   ATipoInscricao: string;
 begin
@@ -187,7 +226,7 @@ begin
    end;
 end;
 
-function TACBrBancoItau.GerarRegistroTransacao(ACBrTitulo : TACBrTitulo): String;
+function TACBrBancoItau.GerarRegistroTransacao240(ACBrTitulo : TACBrTitulo): String;
 var ATipoInscricao, ATipoOcorrencia, ATipoBoleto, ADataMoraJuros, 
     ADataDesconto : string;
 begin
@@ -319,7 +358,7 @@ begin
       end;
 end;
 
-function TACBrBancoItau.GerarRegistroTrailler( ARemessa : TStringList ): String;
+function TACBrBancoItau.GerarRegistroTrailler240( ARemessa : TStringList ): String;
 begin
           {REGISTRO TRAILER DO LOTE}
       Result:= IntToStrZero(ACBrBanco.Numero, 3)                          + //Código do banco

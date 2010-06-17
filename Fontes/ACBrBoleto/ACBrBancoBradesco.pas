@@ -52,9 +52,10 @@ type
     function CalcularDigitoVerificador(const ACBrTitulo:TACBrTitulo): String; override;
     function MontarCodigoBarras(const ACBrTitulo : TACBrTitulo): String; override;
     function MontarCampoNossoNumero(const ACBrTitulo :TACBrTitulo): String; override;
-    function GerarRegistroHeader(NumeroRemessa : Integer): String; override;
-    function GerarRegistroTransacao(ACBrTitulo : TACBrTitulo): String; override;
-    function GerarRegistroTrailler(ARemessa:TStringList): String;  override;
+    function MontarCampoCodigoCedente(const ACBrTitulo: TACBrTitulo): String; override;
+    function GerarRegistroHeader400(NumeroRemessa : Integer): String; override;
+    function GerarRegistroTransacao400(ACBrTitulo : TACBrTitulo): String; override;
+    function GerarRegistroTrailler400(ARemessa:TStringList): String;  override;
   end;
 
 implementation
@@ -116,7 +117,16 @@ begin
    Result:= ACBrTitulo.Carteira+'/'+ACBrTitulo.NossoNumero+'-'+CalcularDigitoVerificador(ACBrTitulo);
 end;
 
-function TACBrBancoBradesco.GerarRegistroHeader(NumeroRemessa : Integer): String;
+function TACBrBancoBradesco.MontarCampoCodigoCedente (
+   const ACBrTitulo: TACBrTitulo ) : String;
+begin
+   Result := ACBrTitulo.ACBrBoleto.Cedente.Agencia+'-'+
+             ACBrTitulo.ACBrBoleto.Cedente.AgenciaDigito+'/'+
+             ACBrTitulo.ACBrBoleto.Cedente.Conta+'-'+
+             ACBrTitulo.ACBrBoleto.Cedente.ContaDigito;
+end;
+
+function TACBrBancoBradesco.GerarRegistroHeader400(NumeroRemessa : Integer): String;
 begin
    with ACBrBanco.ACBrBoleto.Cedente do
    begin
@@ -136,7 +146,7 @@ begin
    end;
 end;
 
-function TACBrBancoBradesco.GerarRegistroTransacao(ACBrTitulo :TACBrTitulo): String;
+function TACBrBancoBradesco.GerarRegistroTransacao400(ACBrTitulo :TACBrTitulo): String;
 var
   DigitoNossoNumero, Ocorrencia, Protesto: String;
   TipoSacado: String;
@@ -224,7 +234,7 @@ begin
    end;
 end;
 
-function TACBrBancoBradesco.GerarRegistroTrailler( ARemessa:TStringList ): String;
+function TACBrBancoBradesco.GerarRegistroTrailler400( ARemessa:TStringList ): String;
 begin
    Result:= '9' + Space(393)                     + // ID Registro
             IntToStrZero( ARemessa.Count + 1, 6);  // Contador de Registros

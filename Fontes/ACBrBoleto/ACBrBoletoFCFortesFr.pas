@@ -59,7 +59,7 @@ uses
   ;
 
 const
-  CACBrBoletoFCFortes_Versao = '0.0.6a' ;
+  CACBrBoletoFCFortes_Versao = '0.0.7a' ;
 
 type
 
@@ -75,10 +75,45 @@ type
   end;
 
   TACBrBoletoFCFortesFr = class(TForm)
+     BoletoCarne: TRLReport;
+     imgBarrasCarne: TRLImage;
     imgCodigoBarra: TRLBarcode;
+    ImgLoja: TRLImage;
     LayoutBoleto: TRLReport;
+    LCont: TRLLabel;
+    mIntrucoes: TRLMemo;
     RLBand1: TRLBand;
+    RLBand3: TRLBand;
+    RLDBResult1: TRLDBResult;
+    RLDBText1: TRLDBText;
+    txtCodCedenteCarne2: TRLLabel;
+    txtCPFCarne2: TRLLabel;
+    txtNomeSacadoCarne: TRLLabel;
+    txtValorCar: TRLLabel;
+    txtNossoNumCan: TRLLabel;
+    txtVencCanhoto: TRLLabel;
+    txtAceite: TRLLabel;
+    txtCarteira: TRLLabel;
+    txtCidadeSacado: TRLLabel;
+    txtCodCedenteCarne: TRLLabel;
+    txtCPF: TRLLabel;
+    txtDataDocto: TRLLabel;
+    txtDataProces: TRLLabel;
+    txtEndSacado: TRLLabel;
+    txtEspecieDoc: TRLLabel;
+    txtLinhaDigitavelCarne: TRLLabel;
+    RLDBText17: TRLDBText;
+    RLDBText18: TRLDBText;
+    txtLocal: TRLLabel;
+    txtNomeCedente: TRLLabel;
+    txtNomeSacado: TRLLabel;
+    txtNossoNumeroCarne: TRLLabel;
+    txtNumeroDocto: TRLLabel;
+    txtValorCarne: TRLLabel;
     RLDraw29: TRLDraw;
+    RLDraw30: TRLDraw;
+    RLDraw31: TRLDraw;
+    RLDraw32: TRLDraw;
     RLDraw39: TRLDraw;
     RLDraw38: TRLDraw;
     RLDraw37: TRLDraw;
@@ -97,7 +132,72 @@ type
     RLDraw17: TRLDraw;
     RLDraw16: TRLDraw;
     imgBanco2: TRLImage;
+    RLDraw51: TRLDraw;
+    RLDraw52: TRLDraw;
+    RLDraw53: TRLDraw;
+    RLDraw54: TRLDraw;
+    RLDraw55: TRLDraw;
+    RLDraw56: TRLDraw;
+    RLDraw57: TRLDraw;
+    RLDraw58: TRLDraw;
+    RLDraw59: TRLDraw;
+    RLDraw60: TRLDraw;
+    RLDraw61: TRLDraw;
+    RLDraw62: TRLDraw;
+    RLDraw63: TRLDraw;
+    RLDraw64: TRLDraw;
+    RLDraw65: TRLDraw;
+    RLDraw66: TRLDraw;
+    RLDraw67: TRLDraw;
+    RLDraw68: TRLDraw;
+    RLDraw69: TRLDraw;
+    RLDraw70: TRLDraw;
+    RLDraw71: TRLDraw;
     RLHTMLFilter1: TRLHTMLFilter;
+    RLImage1: TRLImage;
+    RLLabel1: TRLLabel;
+    RLLabel10: TRLLabel;
+    RLLabel101: TRLLabel;
+    RLLabel103: TRLLabel;
+    RLLabel105: TRLLabel;
+    RLLabel107: TRLLabel;
+    RLLabel109: TRLLabel;
+    RLLabel111: TRLLabel;
+    RLLabel113: TRLLabel;
+    RLLabel115: TRLLabel;
+    RLLabel117: TRLLabel;
+    RLLabel119: TRLLabel;
+    RLLabel121: TRLLabel;
+    RLLabel123: TRLLabel;
+    RLLabel124: TRLLabel;
+    RLLabel126: TRLLabel;
+    RLLabel128: TRLLabel;
+    RLLabel13: TRLLabel;
+    RLLabel130: TRLLabel;
+    RLLabel132: TRLLabel;
+    RLLabel135: TRLLabel;
+    RLLabel138: TRLLabel;
+    RLLabel15: TRLLabel;
+    RLLabel16: TRLLabel;
+    RLLabel19: TRLLabel;
+    RLLabel36: TRLLabel;
+    RLLabel38: TRLLabel;
+    RLLabel39: TRLLabel;
+    RLLabel40: TRLLabel;
+    RLLabel41: TRLLabel;
+    RLLabel42: TRLLabel;
+    RLLabel43: TRLLabel;
+    RLLabel44: TRLLabel;
+    RLLabel45: TRLLabel;
+    RLLabel46: TRLLabel;
+    RLLabel47: TRLLabel;
+    RLLabel48: TRLLabel;
+    RLLabel49: TRLLabel;
+    RLLabel5: TRLLabel;
+    RLLabel94: TRLLabel;
+    RLLabel95: TRLLabel;
+    RLLabel97: TRLLabel;
+    RLLabel99: TRLLabel;
     RLPDFFilter1: TRLPDFFilter;
     RLPrintDialogSetup1: TRLPrintDialogSetup;
     txtNumeroBanco2: TRLLabel;
@@ -232,6 +332,11 @@ type
     txtSacadorAvalista3: TRLLabel;
     txtReferencia3: TRLLabel;
     txtSwHouse: TRLAngleLabel;
+    txtVencCarne2: TRLLabel;
+    procedure BoletoCarneBeforePrint ( Sender: TObject; var PrintIt: boolean ) ;
+    procedure BoletoCarneDataCount ( Sender: TObject; var DataCount: integer ) ;
+    procedure BoletoCarneDataRecord ( Sender: TObject; RecNo: integer;
+       CopyNo: integer; var Eof: boolean; var RecordAction: TRLRecordAction ) ;
     procedure FormCreate(Sender: TObject);
     procedure LayoutBoletoBeforePrint(Sender: TObject; var PrintIt: boolean);
     procedure LayoutBoletoDataCount(Sender: TObject; var DataCount: integer);
@@ -239,6 +344,7 @@ type
        CopyNo: integer; var Eof: boolean; var RecordAction: TRLRecordAction);
     procedure RLBand1BeforePrint(Sender: TObject; var PrintIt: boolean);
     procedure RLBand2BeforePrint(Sender: TObject; var PrintIt: boolean);
+    procedure RLBand3BeforePrint ( Sender: TObject; var PrintIt: boolean ) ;
   private
      fBoletoFC: TACBrBoletoFCFortes;
      fIndice: Integer;
@@ -286,6 +392,7 @@ procedure TACBrBoletoFCFortes.Imprimir;
 var
   frACBrBoletoFortes : TACBRBoletoFCFortesFr;
   RLFiltro : TRLCustomSaveFilter;
+  RLLayout: TRLReport;
 begin
   inherited Imprimir;    // Executa verificações padroes
 
@@ -293,20 +400,27 @@ begin
   try
      with frACBrBoletoFortes do
      begin
+        case LayOut of
+           lPadrao : RLLayout:= LayoutBoleto;
+           lCarne  : RLLayout:= BoletoCarne;
+        else
+           RLLayout:= LayoutBoleto;
+        end;
+
         LoadPortugueseStrings;
         RLPrintDialogSetup1.Copies := NumCopias ;
-        LayoutBoleto.PrintDialog   := MostrarSetup;
+        RLLayout.PrintDialog       := MostrarSetup;
 
         if Filtro = fiNenhum then
          begin
            if MostrarPreview then
-              LayoutBoleto.PreviewModal
+              RLLayout.PreviewModal
            else
-              LayoutBoleto.Print;
+              RLLayout.Print;
          end
         else
          begin
-            if LayoutBoleto.Prepare then
+            if RLLayout.Prepare then
             begin
                case Filtro of
                  fiPDF  : RLFiltro := RLPDFFilter1;
@@ -320,12 +434,15 @@ begin
               {$ENDIF}
               RLFiltro.FileName := NomeArquivo ;
 
-              {$IFDEF FPC}
-                RLFiltro.Pages := LayoutBoleto.Pages ;
-                RLFiltro.Run;
-              {$ELSE}
-                RLFiltro.FilterPages( LayoutBoleto.Pages );
-              {$ENDIF}
+                {$IFDEF FPC}
+                  RLFiltro.Pages := RLLayout.Pages ;
+                  RLFiltro.Run;
+                {$ELSE}
+                  RLFiltro.FilterPages( RLLayout.Pages );
+                {$ENDIF}
+             
+
+              
             end;
          end;
      end;
@@ -342,6 +459,32 @@ begin
    fIndice   := 0 ;
    fBoletoFC := TACBrBoletoFCFortes(Owner) ;  // Link para o Pai
 end;
+
+procedure TACBRBoletoFCFortesFr.BoletoCarneBeforePrint ( Sender: TObject;
+   var PrintIt: boolean ) ;
+begin
+
+   fIndice := 0 ;
+   txtSwHouse.Caption := BoletoFC.SoftwareHouse ;
+
+end;
+
+procedure TACBRBoletoFCFortesFr.BoletoCarneDataCount ( Sender: TObject;
+   var DataCount: integer ) ;
+begin
+   DataCount := fBoletoFC.ACBrBoleto.ListadeBoletos.Count ;
+end;
+
+procedure TACBRBoletoFCFortesFr.BoletoCarneDataRecord ( Sender: TObject;
+   RecNo: integer; CopyNo: integer; var Eof: boolean;
+   var RecordAction: TRLRecordAction ) ;
+begin
+   fIndice := RecNo - 1 ;
+
+   Eof := (RecNo > fBoletoFC.ACBrBoleto.ListadeBoletos.Count) ;
+   RecordAction := raUseIt ;
+end;
+
 
 function TACBrBoletoFCFortesFr.GetACBrTitulo: TACBrTitulo;
 begin
@@ -374,11 +517,12 @@ end;
 procedure TACBrBoletoFCFortesFr.RLBand1BeforePrint(Sender: TObject;
    var PrintIt: boolean);
 Var
-   NossoNum : String;
+   NossoNum,CodCedente : String;
 begin
    with fBoletoFC.ACBrBoleto do
    begin
       NossoNum    := Banco.MontarCampoNossoNumero( Titulo );
+      CodCedente  := Banco.MontarCampoCodigoCedente(titulo);
 
       fBoletoFC.CarregaLogo( imgBanco2.Picture, Banco.Numero );
       txtNumeroBanco2.Caption         := IntToStrZero(Banco.Numero, 3)+ '-' +
@@ -444,10 +588,67 @@ begin
    end;
 end;
 
+procedure TACBRBoletoFCFortesFr.RLBand3BeforePrint ( Sender: TObject;
+   var PrintIt: boolean ) ;
+Var
+   NossoNum,LinhaDigitavel,CodBarras,CodCedente: String;
+begin
+   with fBoletoFC.ACBrBoleto do
+   begin
+      NossoNum       := Banco.MontarCampoNossoNumero( Titulo );
+      CodBarras      := Banco.MontarCodigoBarras( Titulo );
+      LinhaDigitavel := Banco.MontarLinhaDigitavel( CodBarras );
+      CodCedente     := Banco.MontarCampoCodigoCedente(Titulo);
+
+
+      fBoletoFC.CarregaLogo( imgBanco2.Picture, Banco.Numero );
+      txtNumeroBanco2.Caption         := IntToStrZero(Banco.Numero, 3)+ '-' +
+                                         IntToStrZero(Banco.Digito, 1);
+      txtVencCanhoto.Caption          := FormatDateTime('dd/mm/yyyy',Titulo.Vencimento);
+      txtVencCarne2.Caption           := txtVencCanhoto.Caption;
+      txtCodCedenteCarne.Caption      := CodCedente;
+      txtCodCedenteCarne2.Caption     := txtCodCedenteCarne.Caption;
+      txtValorCarne.Caption           := FormatFloat('###,###,##0.00',Titulo.ValorDocumento);
+      txtValorCar.Caption             := txtValorCarne.Caption;
+      txtNossoNumeroCarne.Caption     := NossoNum;
+      txtNossoNumCan.Caption          := NossoNum;
+      txtNomeSacado.Caption           := Titulo.Sacado.NomeSacado;
+      txtNomeSacadoCarne.Caption      := txtNomeSacado.Caption;
+
+      txtLocal.Caption                := Titulo.LocalPagamento;
+      txtNomeCedente.Caption          := Cedente.Nome;
+
+      txtDataDocto.Caption            := FormatDateTime('dd/mm/yyyy', Titulo.DataDocumento);
+      txtNumeroDocto.Caption          := Titulo.NumeroDocumento;
+      txtEspecieDoc.Caption           := Titulo.EspecieDoc;
+      txtAceite.Caption               := Titulo.Aceite;
+      txtDataProces.Caption           := FormatDateTime('dd/mm/yyyy',Now);
+
+      txtUsoBanco2.Caption            := Titulo.UsoBanco;
+      txtCarteira.Caption             := Titulo.Carteira;
+      txtEspecie2.Caption             := 'R$';
+
+
+      txtEndSacado.Caption            := Titulo.Sacado.Logradouro + ' '+
+                                         Titulo.Sacado.Numero + Titulo.Sacado.Complemento;
+      txtCidadeSacado.Caption         := Titulo.Sacado.CEP + ' '+Titulo.Sacado.Cidade +
+                                         ' '+Titulo.Sacado.UF;
+      txtCPF.Caption                  := Titulo.Sacado.CNPJCPF;
+      txtCPFCarne2.Caption            := txtCPF.Caption;
+      mIntrucoes.Lines.Text           := Titulo.Mensagem.Text;
+
+      txtLinhaDigitavelCarne.Caption := LinhaDigitavel;
+      imgCodigoBarra.Caption := CodBarras;
+   end;
+
+
+
+end;
+
 {$ifdef FPC}
 initialization
    {$I ACBrBoletoFCFortes.lrs}
 {$endif}
 
 end.
-
+

@@ -95,10 +95,14 @@ type
     function MontarCodigoBarras(const ACBrTitulo : TACBrTitulo): String; virtual;
     function MontarCampoNossoNumero(const ACBrTitulo : TACBrTitulo): String; virtual;
     function MontarLinhaDigitavel(const CodigoBarras: String): String; virtual;
+    function MontarCampoCodigoCedente(const ACBrTitulo: TACBrTitulo): String; virtual;
 
-    function GerarRegistroHeader(NumeroRemessa : Integer): String;    Virtual;
-    function GerarRegistroTransacao(ACBrTitulo : TACBrTitulo): String; Virtual;
-    function GerarRegistroTrailler(ARemessa:TStringList): String;  Virtual; 
+    function GerarRegistroHeader400(NumeroRemessa : Integer): String;    Virtual;
+    function GerarRegistroHeader240(NumeroRemessa : Integer): String;    Virtual;
+    function GerarRegistroTransacao400(ACBrTitulo : TACBrTitulo): String; Virtual;
+    function GerarRegistroTransacao240(ACBrTitulo : TACBrTitulo): String; Virtual;
+    function GerarRegistroTrailler400(ARemessa:TStringList): String;  Virtual;
+    function GerarRegistroTrailler240(ARemessa:TStringList): String;  Virtual;
 
     function CalcularNomeArquivoRemessa(const DirArquivo: String): String; Virtual;
   end;
@@ -126,13 +130,17 @@ type
 
     function CalcularDigitoVerificador(const ACBrTitulo : TACBrTitulo): String;
 
+    function MontarCampoCodigoCedente(const ACBrTitulo: TACBrTitulo): String;
     function MontarCampoNossoNumero(const ACBrTitulo :TACBrTitulo): String;
     function MontarCodigoBarras(const ACBrTitulo : TACBrTitulo): String;
     function MontarLinhaDigitavel(const CodigoBarras: String): String;
 
-    function GerarRegistroHeader(NumeroRemessa : Integer): String;
-    function GerarRegistroTransacao(ACBrTitulo : TACBrTitulo): String;
-    function GerarRegistroTrailler(ARemessa:TStringList): String;
+    function GerarRegistroHeader400(NumeroRemessa : Integer): String;
+    function GerarRegistroHeader240(NumeroRemessa : Integer): String;
+    function GerarRegistroTransacao400(ACBrTitulo : TACBrTitulo): String;
+    function GerarRegistroTransacao240(ACBrTitulo : TACBrTitulo): String;
+    function GerarRegistroTrailler400(ARemessa:TStringList): String;
+    function GerarRegistroTrailler240(ARemessa:TStringList): String;
 
     function CalcularNomeArquivoRemessa(const DirArquivo: String): String;
   published
@@ -405,12 +413,15 @@ type
 
 TACBrBolLayOut = (lPadrao, lCarne, lFatura) ;
 
+TACBrLayoutRemessa = (c400, c240);
+
 { TACBrBoleto }
 TACBrBoleto = class( TACBrComponent )
   private
     fBanco: TACBrBanco;
     fACBrBoletoFC: TACBrBoletoFCClass;
     fDirArqRemessa: String;
+    fLayoutRemessa: TACBrLayoutRemessa;
     fImprimirMensagemPadrao: boolean;
     fListadeBoletos : TListadeBoletos;
     fCedente        : TACBrCedente;
@@ -440,12 +451,13 @@ TACBrBoleto = class( TACBrComponent )
   published
     property About : String read GetAbout write SetAbout stored False ;
 
-    property Cedente        : TACBrCedente     read fCedente                write fCedente ;
-    property Banco          : TACBrBanco       read fBanco                  write fBanco;
-    property NomeArqRemessa : String           read fNomeArqRemessa         write SetNomeArqRemessa;
-    property DirArqRemessa  : String           read fDirArqRemessa          write SetDirArqRemessa;
-    property ImprimirMensagemPadrao : Boolean  read fImprimirMensagemPadrao write fImprimirMensagemPadrao default True;
-    property ACBrBoletoFC : TACBrBoletoFCClass read fACBrBoletoFC           write SetACBrBoletoFC;
+    property Cedente        : TACBrCedente       read fCedente                write fCedente ;
+    property Banco          : TACBrBanco         read fBanco                  write fBanco;
+    property NomeArqRemessa : String             read fNomeArqRemessa         write SetNomeArqRemessa;
+    property DirArqRemessa  : String             read fDirArqRemessa          write SetDirArqRemessa;
+    property LayoutRemessa  : TACBrLayoutRemessa read fLayoutRemessa          write fLayoutRemessa default c400;
+    property ImprimirMensagemPadrao : Boolean    read fImprimirMensagemPadrao write fImprimirMensagemPadrao default True;
+    property ACBrBoletoFC : TACBrBoletoFCClass   read fACBrBoletoFC           write SetACBrBoletoFC;
     procedure ChecarDadosObrigatorios;
   end;
 
@@ -925,24 +937,45 @@ begin
    Result:= BancoClass.MontarLinhaDigitavel(CodigoBarras);
 end;
 
-function TACBrBanco.GerarRegistroHeader(NumeroRemessa: Integer): String;
+function TACBrBanco.GerarRegistroHeader400(NumeroRemessa: Integer): String;
 begin
-  Result :=  BancoClass.GerarRegistroHeader( NumeroRemessa );
+  Result :=  BancoClass.GerarRegistroHeader400( NumeroRemessa );
 end;
 
-function TACBrBanco.GerarRegistroTransacao(ACBrTitulo: TACBrTitulo): String;
+function TACBrBanco.GerarRegistroHeader240(NumeroRemessa: Integer): String;
 begin
-  Result := BancoClass.GerarRegistroTransacao( ACBrTitulo );
+  Result :=  BancoClass.GerarRegistroHeader240( NumeroRemessa );
 end;
 
-function TACBrBanco.GerarRegistroTrailler(ARemessa: TStringList): String;
+function TACBrBanco.GerarRegistroTransacao400(ACBrTitulo: TACBrTitulo): String;
 begin
-  Result := BancoClass.GerarRegistroTrailler( ARemessa );
+  Result := BancoClass.GerarRegistroTransacao400( ACBrTitulo );
+end;
+
+function TACBrBanco.GerarRegistroTransacao240(ACBrTitulo: TACBrTitulo): String;
+begin
+  Result := BancoClass.GerarRegistroTransacao240( ACBrTitulo );
+end;
+
+function TACBrBanco.GerarRegistroTrailler400(ARemessa: TStringList): String;
+begin
+  Result := BancoClass.GerarRegistroTrailler400( ARemessa );
+end;
+
+function TACBrBanco.GerarRegistroTrailler240(ARemessa: TStringList): String;
+begin
+  Result := BancoClass.GerarRegistroTrailler240( ARemessa );
 end;
 
 function TACBrBanco.CalcularNomeArquivoRemessa(const DirArquivo: String ): String;
 begin
   BancoClass.CalcularNomeArquivoRemessa( DirArquivo );
+end;
+
+function TACBrBanco.MontarCampoCodigoCedente(
+  const ACBrTitulo: TACBrTitulo): String;
+begin
+  Result:= BancoClass.MontarCampoCodigoCedente(ACBrTitulo);
 end;
 
 
@@ -1085,13 +1118,24 @@ begin
 
    SLRemessa := TStringList.Create;
    try
-      SLRemessa.Add( Banco.GerarRegistroHeader( NumeroRemessa ) );
+      if LayoutRemessa =c400 then
+      begin
+         SLRemessa.Add( Banco.GerarRegistroHeader400( NumeroRemessa ) );
 
-      for ContTitulos:= 0 to ListadeBoletos.Count-1 do
-          SLRemessa.Add( Banco.GerarRegistroTransacao( ListadeBoletos[ContTitulos] ) );
+         for ContTitulos:= 0 to ListadeBoletos.Count-1 do
+             SLRemessa.Add( Banco.GerarRegistroTransacao400( ListadeBoletos[ContTitulos] ) );
 
-      SLRemessa.Add( Banco.GerarRegistroTrailler( SLRemessa ) );
+         SLRemessa.Add( Banco.GerarRegistroTrailler400( SLRemessa ) );
+      end
+      else
+      begin
+        SLRemessa.Add( Banco.GerarRegistroHeader240( NumeroRemessa ) );
 
+         for ContTitulos:= 0 to ListadeBoletos.Count-1 do
+             SLRemessa.Add( Banco.GerarRegistroTransacao240( ListadeBoletos[ContTitulos] ) );
+
+         SLRemessa.Add( Banco.GerarRegistroTrailler240( SLRemessa ) );
+      end;
       SLRemessa.SaveToFile( NomeArq );
 
    finally
@@ -1125,25 +1169,51 @@ begin
    Inherited Destroy;
 end;
 
-function TACBrBancoClass.GerarRegistroHeader( NumeroRemessa: Integer): String;
+function TACBrBancoClass.GerarRegistroHeader400( NumeroRemessa: Integer): String;
+begin
+  { Método implementado apenas para evitar Warnings de compilação (poderia ser abstrato)
+    Você de fazer "override" desse método em todas as classes filhas de TACBrBancoClass }
+  //Result := '' ;
+  raise Exception.Create( ACBrStr('Geracao do arquivo Remessa em 400 colunas não implementada o banco '+ Nome+'.')) ;
+end;
+
+function TACBrBancoClass.GerarRegistroHeader240 ( NumeroRemessa: Integer
+   ) : String;
+begin
+   raise Exception.Create( ACBrStr('Geracao do arquivo Remessa em 240 colunas não implementada para o banco '+ Nome+'.')) ;
+end;
+
+function TACBrBancoClass.GerarRegistroTrailler400( ARemessa: TStringList): String;
 begin
   { Método implementado apenas para evitar Warnings de compilação (poderia ser abstrato)
     Você de fazer "override" desse método em todas as classes filhas de TACBrBancoClass }
   Result := '' ;
 end;
 
-function TACBrBancoClass.GerarRegistroTrailler( ARemessa: TStringList): String;
+function TACBrBancoClass.MontarCampoCodigoCedente(
+  const ACBrTitulo: TACBrTitulo): String;
 begin
-  { Método implementado apenas para evitar Warnings de compilação (poderia ser abstrato)
-    Você de fazer "override" desse método em todas as classes filhas de TACBrBancoClass }
-  Result := '' ;
+  Result := '';
 end;
 
-function TACBrBancoClass.GerarRegistroTransacao(  ACBrTitulo: TACBrTitulo): String;
+
+function TACBrBancoClass.GerarRegistroTrailler240 ( ARemessa: TStringList
+   ) : String;
+begin
+   Result:= '';
+end;
+
+function TACBrBancoClass.GerarRegistroTransacao400(  ACBrTitulo: TACBrTitulo): String;
 begin
   { Método implementado apenas para evitar Warnings de compilação (poderia ser abstrato)
     Você de fazer "override" desse método em todas as classes filhas de TACBrBancoClass }
-  Result := '' ;
+   Result:= '';
+end;
+
+function TACBrBancoClass.GerarRegistroTransacao240 ( ACBrTitulo: TACBrTitulo
+   ) : String;
+begin
+   Result:= '';
 end;
 
 { TACBrBoletoFCClass }

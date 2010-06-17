@@ -48,6 +48,10 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Versão 0;0.11a 05/06/2010
+[*] Efetuado correcoes para a classe do Banco Itaú.(por RodrigoSD)
+[+] Adicionado possibilidade de gerar os arquivos remessa noslayouts de 240 e 400 colunas.(por Juliana Tamizou) 
+[+] Adicionado impressao de carnes, para tanto basta informar a propriedade layout como layoutCarne 
 
 Versão 0.0.10a 05/06/2010
 [*] Corrigido montagem do Código de Barras da unit do Banco do Brasil, e por consequencia

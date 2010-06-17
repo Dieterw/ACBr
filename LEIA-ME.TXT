@@ -90,10 +90,11 @@ foi testado...
 do Lazarus que permite que os códigos sejam utilizados no Linux.
 
   Durante o desenvolvimento em geral é usada a seguinte Plataforma:
-- Windows 98 SE       	Delphi 7 Professional
-- Windows XP Home SP2 	Delphi 7 Professional
-- Linux					Lazarus (FreePascal) (versões mais recentes)
-- Conectiva 10        	Kylix 3 (Patchs não oficiais para CLX DEVEM SER APLICADOS ( http://unvclx.sf.net )
+- Windows 98 SE         Delphi 7 Professional
+- Windows XP Home SP2   Delphi 7 Professional
+- Linux	Mandriva        Lazarus 0.9.29 (FreePascal 2.4.1) (snapshots)
+- Conectiva 10          Kylix 3 (Patchs não oficiais para CLX DEVEM SER APLICADOS
+                        ( http://unvclx.sf.net )
 
 --------------------------------------------------------------------------------
 
@@ -123,22 +124,32 @@ os componentes do ACBr e TODAS as pastas do ACBr do Library Path, pois a partir 
 de 2010 a estrutura de pastas do componente mudou e os pacotes ACBr_CLX e ACBr_VCL deixaram 
 de existir sendo dividos em pacotes com os nomes ACBrDiversos, ACBrSerial, ACBrTCP, etc.
 
-  1. Descompacte o arquivo .ZIP na pasta de sua preferência ou faça o checkout via SVN - http://acbr.sourceforge.net/drupal/?q=node/37
+  1. Descompacte o arquivo .ZIP na pasta de sua preferência ou faça o checkout
+     via SVN - http://acbr.sourceforge.net/drupal/?q=node/37
 
-  2. Adcione os diretórios " Fontes\ACBrComum ", " Fontes\ACBrSerial " e os demais subdiretorios 
-   da pasta Fontes dos componentes que deseja utilizar no  "Library Path".
-   Na IDE do Delphi acione  "Tools, Enviroment Options" selecione a guia "Library",
-   clique no botão elíptico (...) de "Library Path", clique no botão elíptico (...) 
-   à frente da caixa de texto, localize a pasta " Fontes\ACBrComum " no diretório 
-   de instalação da Biblioteca, clique em "OK", e em "Add". Repita o mesmo processo 
-   com as demais pastas.
-   Click em "OK" para finalizar.
+  2. Adicionando os diretórios no LibPath  (não é necessário no Lazarus)
+       Adcione os diretórios " Fontes\ACBrComum ", " Fontes\ACBrSerial " e os
+     demais subdiretorios da pasta Fontes dos componentes que deseja utilizar no
+     "Library Path".
+       Na IDE do Delphi acione  "Tools, Enviroment Options" selecione a guia
+     "Library", clique no botão elíptico (...) de "Library Path", clique no botão
+     elíptico (...) à frente da caixa de texto, localize a pasta " Fontes\ACBrComum"
+     no diretório de instalação da Biblioteca, clique em "OK", e em "Add".
+     Repita o mesmo processo com as demais pastas. Click em "OK" para finalizar.
 
 
-  3.1 Procure pela pasta Pacotes\Delphi e abra o arquivo synapse.dpk e clique em Compile.
-  3.2 Procure pela pasta Pacotes\Delphi e abra o arquivo ACBrComum.dpk e clique em Compile e depois em Install.
-  3.3 Procure pela pasta Pacotes\Delphi e abra o arquivo ACBrSerial.dpk e clique em Compile e depois em Install.
-  3.4 Repita o passo 3.3 para os demais componentes que deseja instalar.
+  3.1 Procure pela pasta Pacotes\Delphi e abra o arquivo synapse.dpk e clique em
+      Compile.
+  3.2 Procure pela pasta Pacotes\Delphi e abra o arquivo ACBrComum.dpk e clique
+      em Compile e depois em Install.
+  3.3 Procure pela pasta Pacotes\Delphi e abra o arquivo ACBrSerial.dpk e clique
+      em Compile e depois em Install.
+  3.4 Procure pela pasta Pacotes\Delphi e abra o arquivo ACBrDiversos.dpk e
+      clique em Compile e depois em Install.
+  3.4 Repita esses passos para os demais componentes que deseja instalar,
+      lembrando que alguns pacotes são apenas de Run-time, e por isso não devem
+      ser Instalados na IDE, mas apenas Compilados a fim de gerar o arquivo BPL.
+      São eles: synapse.dpk, PCN.dpk, ACBrOpenSSL.dpk, ACBrCapicom.dpk
 
   4. Na IDE do Delphi, clique em "File - Close All"
 
@@ -215,6 +226,8 @@ Synapse.dpk - Contém os componentes e units do Synapse que é usado para comunica
 ACBrComum.dpk - Contém Units com comandos básicos usados por praticamente todos os 
   componentes ACBr. Units ACBrUtil, ACBrBase, ACBrConsts, ACBrReg, etc... estão 
   presentes nesse pacote.  Esse pacote não é instalado, apenas Compilado (Build).
+  * ACBrUtil - Unit contendo diversos procedimentos e funções úteis para aplicações
+    	  comerciais: ValidaCNPJ, ValidaCPF, ValidaINSCEST, Extenso, etc
 
 ACBrCapicom.dpk - ??? Descrição ???. Esse pacote não é instalado, apenas Compilado (Build).
 
@@ -223,24 +236,38 @@ ACBrOpenSSL.dpk - ??? Descrição ???. Esse pacote não é instalado, apenas Compila
 ACBrDiversos.dpk - Contém os mais variados componentes ACBr que em geral não se encaixaram
   em outros pacotes. 
    Componentes e Units: 
-      * ACBrBarCode -  ??? Descrição ???
-      * ACBrCalculadora - Mais uma calculadora... mas com algumas frescuras a mais, como
-		  por exemplo, um Memo simulando a fita (permitindo salvar)
-      * ACBrLeCMC7 - Leitor de código CMC7 de Cheques. (Nenhuma experiência do autor).
-      * ACBrCMC7 -  ??? Descrição ???
-      * ACBrExtenso -  ??? Descrição ???
-      * ACBrFala -  ??? Descrição ???
-      * ACBrTroco -  ??? Descrição ???
+      * ACBrBarCode -  Compomenente Visual (TImage) Gerador de códigos de Barra
+                       criado usando os fontes do AJBarcode
+      * ACBrCalculadora - Mais uma calculadora... mas com algumas frescuras a
+                          mais, como por exemplo, um Memo simulando a fita
+                          (permitindo salvar)
+      * ACBrCMC7 -  Componente que permite processar a Banda Magnética dos Cheques,
+          Validando e convertendo de CMC7 para Banco, Agencia, Conta e vice-versa.
+      * ACBrExtenso - Componente gerador de Valores por Extenso
+      * ACBrFala - Processa todas as palavras de uma String, procurando por
+         arquivos de Som correspondente a cada palavra. Permite informar Valores
+         (Double) que são traduzidos para Extenso. Os arquivos de som podem estar
+          em um Recurso (.RES / .LRS) ou em um diretório
+      * ACBrTroco -  Componente para calculo detalhado de Troco, informando as
+         Cédulas e moedas necessárias. Permite editar a lista de Cédulas/Moedas.
       * ACBrValidador - ACBrValidador - Componente com várias funções para validar dados 
           como CPF, CNPJ, Inscrição Estadual, etc...
-      * ACBrUtil - Unit contendo diversos procedimentos e funções úteis para aplicações
-		  comerciais: ValidaCNPJ, ValidaCPF, ValidaINSCEST, Extenso, etc
- 
+      * ACBrEnterTab Componente somente para CLX. Tem como finalidade traduzir a
+          tecla ENTER como se fosse a tecla TAB, para poder mudar de campos com a
+          tecla ENTER. É necessário um ACBrEnterTab para cada Form a ser manipulado.
+      * ACBrGIF - Permite adicionar GIFs animados a sua aplicação. Componente
+          criado a partir dos fontes de TGif.pas de R. Collins
+
   
 ACBrSerial.dpk - Contém os componentes ACBr que fazem comunicação Serial. 
   Requer pacotes: ACBrDiversos, Synapse.
    Componentes:
-      * ACBrBal -  ??? Descrição ???
+      * ACBrBal -  Componente para interação com Balanças Eletrônicas. Através do
+                   método "LePeso : Double" é possível obter o peso aferido pela
+                   Balança. Também há a possibilidade de monitorar o envio automático
+                   de peso em balanças que possuem essa característica, ligando
+                   a propriedade boleana "MonitorarBalanca". A cada peso lido o
+                   evento "OnLePeso" será disparado.
 	  
       * ACBrECF - Para se comunicar com Impressoras Fiscais (ECF). A idéia é substituir
 		  os comandos da DLL por chamadas aos métodos do componente ACBrECF, com a
@@ -341,9 +368,9 @@ ACBrNFePCN.dpk -  ??? Descrição ???
 6.2 COMPONENTES EM DESENVOLVIMENTO OU DESCONTINUADOS
 ====================================================
 
- Os seguintes pacores e componentes, embora ainda estejam ainda no ACBr, já não estão sendo atualizados mais
-ou ainda, são componentes que estão em desenvolvimento e precisam ser testados.
-Talvez você queira ajudar no desenvolvimento e a testar.
+ Os seguintes pacores e componentes, embora ainda estejam ainda no ACBr, já não
+estão sendo atualizados mais ou ainda, são componentes que estão em desenvolvimento
+e precisam ser testados. Talvez você queira ajudar no desenvolvimento e a testar.
 
 ACBrBombas - Para trabalhar como monitor de bombas de Combustível, se comunicando com 
   concentradores, lendo os abastecimentos gerados, alterando os preços das Bombas, etc...

@@ -3038,8 +3038,6 @@ Var
   cArqTemp, cArqTempTXT : TextFile;
   cLinha : string;
   Texto : TStringList;
-  TestaData : TDateTime ;
-
   {$IFDEF LINUX} Cmd : String ; {$ENDIF}
 begin
   ArqTmp := ExtractFilePath( NomeArquivo ) + 'ACBr';
@@ -3147,7 +3145,7 @@ begin
 
        Try
           DiaIni := copy( Texto.Strings[ 6 ], 1, 10 );
-          TestaData := StrtoDate(DiaIni);
+          StrtoDate(DiaIni);
        Except
           DiaIni := copy( Texto.Strings[ 7 ], 1, 10 );
        end;

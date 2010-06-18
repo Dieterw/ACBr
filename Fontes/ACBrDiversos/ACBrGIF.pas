@@ -52,7 +52,7 @@ interface
 {$ENDIF}
 
 uses
- ACBrBase, Classes, Types, SysUtils,
+  Classes, SysUtils,
  {$IFDEF VisualCLX}
   QGraphics, QControls, QExtCtrls, QDialogs,
  {$ELSE}
@@ -86,12 +86,12 @@ type
     function GetCurrentFrame: Integer;
     procedure SetFilename(const Value: TFilename);
     function GetIsAnimated: Boolean;
-    procedure SetAutoSize(const Value: Boolean); 
     procedure SetTransparent(const Value: Boolean);
     procedure SetCurrentFrame(const Value: Integer);
     procedure SetPaused(const Value: Boolean);
-    
+
   protected
+    procedure SetAutoSize(Value: Boolean); override ;
     procedure Paint; override;
     procedure Resize; override;
 
@@ -299,6 +299,7 @@ begin
   if fsFilename <> '' then
    begin
      try
+        NonAnimated := False ;
         fsGIF := CreateAGif( fsFilename, NonAnimated) ;
 
         fsGIF.ShowIt := True ;
@@ -319,7 +320,7 @@ begin
   Repaint ;
 end;
 
-procedure TACBrGIF.SetAutoSize(const Value: Boolean);
+procedure TACBrGIF.SetAutoSize(Value: Boolean);
 begin
   fsAutoSize := Value;
 
@@ -461,6 +462,7 @@ begin
   Filename := '' ;
 
   try
+     NonAnimated := False ;
      fsGIF := CreateAGifFromStream( NonAnimated, Stream) ;
 
      fsGIF.ShowIt := True ;

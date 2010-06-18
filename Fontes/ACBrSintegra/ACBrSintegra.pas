@@ -316,7 +316,7 @@ type
     procedure SetObject (Index: Integer; Item: TRegistro75);
     function GetObject (Index: Integer): TRegistro75;
     procedure Insert (Index: Integer; Obj: TRegistro75);
-    function GetRegistroExiste(FCodigo: string): Boolean;
+    function GetRegistroExiste(FCodigo: string): Integer;
   public
     function Add (Obj: TRegistro75): Integer;
     property Objects [Index: Integer]: TRegistro75
@@ -1024,7 +1024,7 @@ type
 
   TRegistros88Ean = class(TObjectList)
   private
-    function GetRegistroExiste(FCodigo: Integer): Boolean;
+    function GetRegistroExiste(FCodigo: Integer): Integer;
   protected
     procedure SetObject (Index: Integer; Item: TRegistro88Ean);
     function GetObject (Index: Integer): TRegistro88Ean;
@@ -2200,9 +2200,9 @@ end;
 
 function TRegistros75.Add(Obj: TRegistro75): Integer;
 begin
-Result:=-1;
-if not GetRegistroExiste(Obj.Codigo) then
-  Result := inherited Add(Obj) ;
+  Result := GetRegistroExiste(Obj.Codigo) ;
+  if Result < 0 then
+     Result := inherited Add(Obj) ;
 end;
 
 function TRegistros75.GetObject(Index: Integer): TRegistro75;
@@ -2210,23 +2210,25 @@ begin
   Result := inherited GetItem(Index) as TRegistro75 ;
 end;
 
-function TRegistros75.GetRegistroExiste(FCodigo: string): Boolean;
+function TRegistros75.GetRegistroExiste(FCodigo: string): Integer;
 var
   i: Integer;
 begin
-Result:=False;
-for i:=0 to Self.Count-1 do
-begin
-  Result:=(Self[i].Codigo=FCodigo);
-  if Result then
-    Break;
-end;
+  Result := -1 ;
+  for i:=0 to Self.Count-1 do
+  begin
+    if (Self[i].Codigo=FCodigo) then
+    begin
+      Result := i ;
+      break ;
+    end ;
+  end;
 end;
 
 procedure TRegistros75.Insert(Index: Integer; Obj: TRegistro75);
 begin
-if not GetRegistroExiste(Obj.Codigo) then
-  inherited Insert(Index, Obj);
+  if GetRegistroExiste(Obj.Codigo) < 0 then
+    inherited Insert(Index, Obj);
 end;
 
 procedure TRegistros75.SetObject(Index: Integer; Item: TRegistro75);
@@ -2840,8 +2842,9 @@ end;
 
 function TRegistros88Ean.Add(Obj: TRegistro88Ean): Integer;
 begin
-if not GetRegistroExiste(Obj.Codigo) then
-  Result := inherited Add(Obj);
+  Result := GetRegistroExiste(Obj.Codigo) ;
+  if Result < 0 then
+     Result := inherited Add(Obj) ;
 end;
 
 function TRegistros88Ean.GetObject(Index: Integer): TRegistro88Ean;
@@ -2851,21 +2854,23 @@ end;
 
 procedure TRegistros88Ean.Insert(Index: Integer; Obj: TRegistro88Ean);
 begin
-if not GetRegistroExiste(Obj.Codigo) then
-  inherited Insert(Index, Obj);
+ if GetRegistroExiste(Obj.Codigo) < 0 then
+    inherited Insert(Index, Obj);
 end;
 
-function TRegistros88Ean.GetRegistroExiste(FCodigo: Integer): Boolean;
+function TRegistros88Ean.GetRegistroExiste(FCodigo: Integer): Integer;
 var
   i: Integer;
 begin
-Result:=False;
-for i:=0 to Self.Count-1 do
-begin
-  Result:=(Self[i].Codigo=FCodigo);
-  if Result then
-    Break;
-end;
+  Result := -1 ;
+  for i:=0 to Self.Count-1 do
+  begin
+    if (Self[i].Codigo=FCodigo) then
+    begin
+      Result := i ;
+      break ;
+    end ;
+  end;
 end;
 
 procedure TRegistros88Ean.SetObject(Index: Integer; Item: TRegistro88Ean);

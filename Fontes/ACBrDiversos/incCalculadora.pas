@@ -86,7 +86,9 @@ begin
      '%' : Botao := bporc ;
      #8  : Botao := bapaga ;
      '=' : Botao := bigual ;
-     { #13 : Botao := bigual ; (nao funciona em CLX, usei Default no Botao =) }
+{$IFDEF FPC}
+     #13 : Botao := bigual ;
+{$ENDIF}
   end;
 
   if Botao is TButton then

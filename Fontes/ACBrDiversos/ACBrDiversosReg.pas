@@ -44,7 +44,14 @@ unit ACBrDiversosReg;
 
 interface
 Uses Classes ,
-    {$IFDEF VisualCLX} QDialogs {$ELSE} Dialogs, FileCtrl {$ENDIF},
+    {$IFDEF VisualCLX}
+      QDialogs
+    {$ELSE}
+      Dialogs
+      {$IFNDEF FPC}
+        {$WARN UNIT_PLATFORM OFF}, FileCtrl {$WARN UNIT_PLATFORM ON}
+      {$ENDIF}
+    {$ENDIF},
     {$IFDEF FPC}
        LResources, LazarusPackageIntf, PropEdits, componenteditors
     {$ELSE}
@@ -79,7 +86,7 @@ type
 procedure Register;
 
 implementation
-Uses ACBrEnterTab, ACBrBase, ACBrUtil, ACBrGIF,
+Uses ACBrEnterTab, ACBrUtil, ACBrGIF,
      ACBrCalculadora, ACBrExtenso, ACBrTroco, ACBrValidador,
      ACBrCMC7, ACBrFala, ACBrBarCode, SysUtils;
 

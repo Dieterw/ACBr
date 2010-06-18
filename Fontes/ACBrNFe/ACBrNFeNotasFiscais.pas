@@ -50,12 +50,7 @@ interface
 
 uses
   Classes, Sysutils, Dialogs, Forms,
-  ACBrNFeUtil, ACBrNFeConfiguracoes,
-  {$IFDEF FPC}
-     ACBrNFeDMLaz,
-  {$ELSE}
-     ACBrNFeDANFEClass,
-  {$ENDIF}
+  ACBrNFeUtil, ACBrNFeConfiguracoes, ACBrNFeDANFEClass,
   smtpsend, ssl_openssl, mimemess, mimepart, // units para enviar email
   pcnNFe, pcnNFeR, pcnNFeW, pcnConversao, pcnAuxiliar, pcnLeitor;
 

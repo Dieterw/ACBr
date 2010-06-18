@@ -744,8 +744,9 @@ begin
         raise EACBrTEFDECF.Create( ACBrStr('ECF não está LIVRE') ) ;
   end;
 
-  ImpressaoOk     := False ;
-  Gerencial       := False ;
+  ImpressaoOk := False ;
+  Gerencial   := False ;
+  RemoverMsg  := False ;
   MsgAutenticacaoAExibir := '' ;
 
   GrupoVinc := nil ;

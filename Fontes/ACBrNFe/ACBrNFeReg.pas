@@ -50,7 +50,14 @@ interface
 
 uses
   SysUtils, Classes, ACBrNFe, pcnConversao,
-  {$IFDEF VisualCLX} QDialogs {$ELSE} Dialogs, FileCtrl {$ENDIF},
+  {$IFDEF VisualCLX}
+    QDialogs
+  {$ELSE}
+    Dialogs
+    {$IFNDEF FPC}
+      {$WARN UNIT_PLATFORM OFF}, FileCtrl {$WARN UNIT_PLATFORM ON}
+    {$ENDIF}
+  {$ENDIF},
   {$IFDEF FPC}
      LResources, LazarusPackageIntf, PropEdits, componenteditors
   {$ELSE}

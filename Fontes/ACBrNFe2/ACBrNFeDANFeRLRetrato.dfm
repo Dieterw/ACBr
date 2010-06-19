@@ -1,6 +1,5 @@
 inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
   Left = 200
-  Top = 107
   Width = 820
   Height = 655
   VertScrollBar.Position = 0

@@ -88,6 +88,9 @@
 |*  - Alteração no layout do quadro "IDENTIFICAÇÃO DO EMITENTE"
 |* 26/04/2010: Peterson de Cerqueira Matos
 |*  - Adaptação dos comandos que utilizavam CSOSN string para CSOSN tipificado
+|* 19/06/2010: Peterson de Cerqueira Matos
+|*  - Admissão de quebra de linha nos dados adicionais do produto (infAdProd).
+|*    O Caractere ponto-e-vírgula ';' será considerado quebra de linha
 ******************************************************************************}
 {$I ACBr.inc}
 unit ACBrNFeDANFeRLRetrato;
@@ -1419,9 +1422,9 @@ begin
                         sCST := OrigToStr(orig) + CSTICMSToStr(CST)
                       else
                         sCST := '';
-                      sBCICMS    := '0.00';
-                      sALIQICMS  := '0.00';
-                      sVALORICMS := '0.00';
+                      sBCICMS    := '0,00';
+                      sALIQICMS  := '0,00';
+                      sVALORICMS := '0,00';
 
                       if (CST = cst00) then
                         begin
@@ -1572,13 +1575,16 @@ end;
 
 procedure TfrlDANFeRLRetrato.rlbItensAfterPrint(Sender: TObject);
 var h: Integer;
+str: WideString;
 begin
   q := q + 1;
   if FNFe.Det.Items[q - 1].infAdProd > '' then
     begin
       rlmObsItem.Lines.BeginUpdate;
       rlmObsItem.Lines.Clear;
-      rlmObsItem.Lines.Add(FNFe.Det.Items[q - 1].infAdProd);
+      str := StringReplace((FNFe.Det.Items[q - 1].infAdProd), ';',
+                                          #13#10, [rfReplaceAll, rfIgnoreCase]);
+      rlmObsItem.Lines.Add(str);
       rlmObsItem.Lines.EndUpdate;
       rlbObsItem.Visible := True;
 

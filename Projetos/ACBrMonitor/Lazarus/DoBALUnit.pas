@@ -40,7 +40,7 @@ Uses Classes, TypInfo, SysUtils, CmdUnit ;
 Procedure DoBAL( Cmd : TACBrCmd ) ;
 
 implementation
-uses ACBrBAL, ACBrUtil, StrUtils,
+uses  ACBrUtil,
   {$IFNDEF CONSOLE}ACBrMonitor1 {$ELSE}ACBrMonitorConsoleDM {$ENDIF} ;
 
 Procedure DoBAL( Cmd : TACBrCmd ) ;

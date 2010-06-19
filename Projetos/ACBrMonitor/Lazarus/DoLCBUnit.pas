@@ -40,7 +40,7 @@ Uses Classes, TypInfo, SysUtils, CmdUnit ;
 Procedure DoLCB( Cmd : TACBrCmd ) ;
 
 implementation
-uses ACBrLCB, ACBrUtil, StrUtils,
+uses  ACBrUtil,
   {$IFNDEF CONSOLE}ACBrMonitor1 {$ELSE}ACBrMonitorConsoleDM {$ENDIF} ;
 
 Procedure DoLCB( Cmd : TACBrCmd ) ;

@@ -40,7 +40,7 @@ Uses Classes, TypInfo, SysUtils, CmdUnit ;
 Procedure DoCHQ( Cmd : TACBrCmd ) ;
 
 implementation
-uses ACBrCHQ, ACBrUtil, StrUtils, DoECFUnit,
+uses ACBrCHQ, ACBrUtil,  DoECFUnit,
   {$IFNDEF CONSOLE}ACBrMonitor1 {$ELSE}ACBrMonitorConsoleDM {$ENDIF} ;
 
 Procedure DoCHQ( Cmd : TACBrCmd ) ;

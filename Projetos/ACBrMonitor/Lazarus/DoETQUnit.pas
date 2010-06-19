@@ -42,7 +42,7 @@ Uses Classes, TypInfo, SysUtils, CmdUnit,
 Procedure DoETQ( Cmd : TACBrCmd ) ;
 
 implementation
-uses ACBrDevice, ACBrETQ, ACBrUtil, StrUtils;
+uses ACBrDevice, ACBrETQ, ACBrUtil;
 
 function StrToChr(AStr: string; Pos: Integer): Char;
 begin

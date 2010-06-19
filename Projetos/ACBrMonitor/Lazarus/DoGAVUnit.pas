@@ -40,7 +40,7 @@ Uses Classes, TypInfo, SysUtils, CmdUnit ;
 Procedure DoGAV( Cmd : TACBrCmd ) ;
 
 implementation
-uses ACBrGAV, ACBrUtil, StrUtils,
+uses ACBrGAV, ACBrUtil,
   {$IFNDEF CONSOLE}ACBrMonitor1 {$ELSE}ACBrMonitorConsoleDM {$ENDIF} ;
 
 Procedure DoGAV( Cmd : TACBrCmd ) ;

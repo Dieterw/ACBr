@@ -45,7 +45,7 @@ Procedure VerificaPermiteComandosRemoto ;
 Function ConvertStrRecived( AStr: String ) : String ;
 
 implementation
-Uses ACBrUtil, StrUtils, DateUtils,
+Uses ACBrUtil, DateUtils,
   {$IFDEF MSWINDOWS}sndkey32, Windows,{$ENDIF}
   {$IFNDEF CONSOLE}Forms, ACBrMonitor1 {$ELSE}ACBrMonitorConsoleDM {$ENDIF} ;
 
@@ -193,8 +193,8 @@ begin
            {$ENDIF}
 
            if Assigned( Conexao ) then
-              if Assigned( Conexao.Connection ) then
-                 Conexao.Connection.Disconnect ;
+              if Assigned( Conexao.TCPBlockSocket ) then
+                 Conexao.TCPBlockSocket.CloseSocket ;
          end
 
         ELSE

@@ -74,7 +74,7 @@ var
   frmSobre: TfrmSobre;
 
 implementation
-Uses ACBrUtil ;
+Uses LCLType, ACBrUtil ;
 
 {$R *.lfm}
 
@@ -138,7 +138,7 @@ end;
 procedure TfrmSobre.FormShortCut(Key: Integer; Shift: TShiftState;
   var Handled: Boolean);
 begin
-  if (Key = Key_Help) or (Key = Key_F1) then
+  if (Key = VK_HELP) or (Key = VK_F1) then
      bAjuda.Click ;
 end;
 

@@ -66,12 +66,10 @@ interface
 
 uses
   SysUtils, Classes, Forms, 
-  TrayIcon,
   CmdUnit,
-  ACBrECF, ACBrECFClass, ACBrDIS, ACBrGAV, ACBrGAVClass, ACBrBase, ACBrDevice, 
-  ACBrCHQ, ACBrLCB, ACBrRFD,                                    { Unit do ACBr }
-  Dialogs, ExtCtrls, Menus, Types, ImgList, Buttons, StdCtrls, ComCtrls, Controls,
-  Graphics, Spin, MaskEdit, Mask, ACBrBAL, ACBrETQ, ACBrSocket, ACBrSoket;
+  ACBrECF, ACBrDIS, ACBrGAV, ACBrDevice, ACBrCHQ, ACBrLCB, ACBrRFD, { Unit do ACBr }
+  Dialogs, ExtCtrls, Menus, Buttons, StdCtrls, ComCtrls, Controls,
+  Graphics, Spin, MaskEdit, ACBrBAL, ACBrETQ, ACBrSocket;
 
 const
    Estados : array[TACBrECFEstado] of string =
@@ -88,7 +86,9 @@ type
 
   TFrmACBrMonitor = class(TForm)
     ACBrECF1: TACBrECF;
+    ApplicationProperties1 : TApplicationProperties ;
     Image1 : TImage ;
+    lLCBCodigoLido : TPanel ;
     StatusBar1: TStatusBar;
     ImageList1: TImageList;
     ACBrCHQ1: TACBrCHQ;
@@ -113,6 +113,7 @@ type
     Splitter1: TSplitter;
     pConfig: TPanel;
     PageControl1: TPageControl;
+    TrayIcon1 : TTrayIcon ;
     tsMonitor: TTabSheet;
     cbLog: TCheckBox;
     gbTCP: TGroupBox;
@@ -167,7 +168,6 @@ type
     bLCBAtivar: TBitBtn;
     Label23: TLabel;
     edLCBPreExcluir: TEdit;
-    lLCBCodigoLido: TLabel;
     bCancelar: TBitBtn;
     Timer1: TTimer;
     TcpServer: TACBrTCPServer;
@@ -339,13 +339,15 @@ type
     edTCNaoEncontrado: TEdit;
     TimerTC: TTimer;
     sbCHQSerial: TSpeedButton;
+    procedure ApplicationProperties1Exception(Sender : TObject ; E : Exception
+      ) ;
+    procedure FormClose(Sender : TObject ; var CloseAction : TCloseAction) ;{%h-}
     procedure FormCreate(Sender: TObject);
     procedure ACBrECF1MsgAguarde(Mensagem: String);
     procedure ACBrECF1MsgPoucoPapel(Sender: TObject);
     procedure bConfigClick(Sender: TObject);
     procedure cbLogClick(Sender: TObject);
     procedure edOnlyNumbers(Sender: TObject; var Key: Char);
-    procedure FormShow(Sender: TObject);
     procedure bECFTestarClick(Sender: TObject);
     procedure bECFLeituraXClick(Sender: TObject);
     procedure bECFAtivarClick(Sender: TObject);
@@ -353,7 +355,6 @@ type
     procedure Ocultar1Click(Sender: TObject);
     procedure Restaurar1Click(Sender: TObject);
     procedure Encerrar1Click(Sender: TObject);
-    procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure cbGAVModeloChange(Sender: TObject);
     procedure cbGAVPortaChange(Sender: TObject);
     procedure bGAVEstadoClick(Sender: TObject);
@@ -373,9 +374,6 @@ type
     procedure bCancelarClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure DoACBrTimer(Sender: TObject);
-    procedure TcpServerExecute(AThread: TIdPeerThread);
-    procedure TcpServerConnect(AThread: TIdPeerThread);
-    procedure TcpServerDisconnect(AThread: TIdPeerThread);
     procedure chECFDescrGrandeClick(Sender: TObject);
     procedure bCHQTestarClick(Sender: TObject);
     procedure cbLCBPortaChange(Sender: TObject);
@@ -388,8 +386,8 @@ type
     procedure DiminuiTempoHint(Sender: TObject);
     procedure cbLCBSufixoLeitorChange(Sender: TObject);
     procedure pBotoesClick(Sender: TObject);
-    procedure FormShortCut(Key: Integer; Shift: TShiftState;
-      var Handled: Boolean);
+    procedure FormShortCut(Key: Integer; Shift: TShiftState;{%h-}
+      var Handled: Boolean);{%h-}
     procedure cbGAVStrAbreChange(Sender: TObject);
     procedure bExecECFTesteClick(Sender: TObject);
     procedure chECFSinalGavetaInvertidoClick(Sender: TObject);
@@ -465,14 +463,11 @@ type
     procedure cbETQModeloChange(Sender: TObject);
     procedure cbETQPortaChange(Sender: TObject);
     procedure bTCAtivarClick(Sender: TObject);
-    procedure TCPServerTCDisconnect(AThread: TIdPeerThread);
-    procedure TCPServerTCExecute(AThread: TIdPeerThread);
     procedure tsTCShow(Sender: TObject);
     procedure cbxTCModeloChange(Sender: TObject);
     procedure sbTCArqPrecosEditClick(Sender: TObject);
     procedure sbTCArqPrecosFindClick(Sender: TObject);
     procedure TimerTCTimer(Sender: TObject);
-    procedure TCPServerTCConnect(AThread: TIdPeerThread);
     procedure sbCHQSerialClick(Sender: TObject);
 (*    procedure TCPServerTCConecta(const TCPBlockSocket: TTCPBlockSocket;
       var Enviar: String);
@@ -483,7 +478,6 @@ type
       const TCPBlockSocket: TTCPBlockSocket; const Recebido: String;
       var Enviar: String);*)
   private
-    TrayIcon  : TTrayIcon ;
     ACBrMonitorINI : string;
     Inicio  : Boolean ;
     ArqSaiTXT, ArqSaiTMP, ArqEntTXT, ArqLogTXT : String ;
@@ -519,11 +513,9 @@ type
 
     Procedure AddLinesLog ;
 
-    procedure TrataErros(Sender: TObject; E: Exception);
-
     procedure SetDisWorking(const Value: Boolean);
   public
-    Conexao : TIdPeerThread ;
+    Conexao : TACBrTCPServerThread ;
 
     property DISWorking : Boolean read fsDisWorking write SetDisWorking ;
 
@@ -540,7 +532,7 @@ var
 
 implementation
 
-uses IniFiles, StrUtils, TypInfo,
+uses IniFiles, TypInfo, LCLType,
      UtilUnit,
      DoECFUnit, DoGAVUnit, DoCHQUnit, DoDISUnit, DoLCBUnit, DoACBrUnit, DoBALUnit,
      {$IFDEF MSWINDOWS} sndkey32, {$ENDIF}
@@ -553,11 +545,11 @@ uses IniFiles, StrUtils, TypInfo,
 
 {-------------------------------- TFrmACBrMonitor -----------------------------}
 procedure TFrmACBrMonitor.FormCreate(Sender: TObject);
-Var MemStream : TMemoryStream ;
-    iECF : TACBrECFModelo ;
-    iCHQ : TACBrCHQModelo ;
-    iDIS : TACBrDISModelo ;
-    iBAL : TACBrBALModelo ;
+Var
+   iECF : TACBrECFModelo ;
+   iCHQ : TACBrCHQModelo ;
+   iDIS : TACBrDISModelo ;
+   iBAL : TACBrBALModelo ;
 begin
   {$IFDEF LINUX}
    umask( 0 ) ;
@@ -584,7 +576,7 @@ begin
 
   { Definindo constantes de Verdadeiro para TrueBoolsStrs }
   SetLength( TrueBoolStrs, 5 ) ;
-  TrueBoolStrs[0] := DefaultTrueBoolStr;
+  TrueBoolStrs[0] := 'True';
   TrueBoolStrs[1] := 'T' ;
   TrueBoolStrs[2] := 'Verdadeiro' ;
   TrueBoolStrs[3] := 'V' ;
@@ -592,7 +584,7 @@ begin
 
   { Definindo constantes de Falso para FalseBoolStrs }
   SetLength(FalseBoolStrs, 3);
-  FalseBoolStrs[0] := DefaultFalseBoolStr;
+  FalseBoolStrs[0] := 'False';
   FalseBoolStrs[1] := 'F' ;
   FalseBoolStrs[2] := 'Falso' ;
 
@@ -643,28 +635,9 @@ begin
      Inc(iBAL) ;
   end ;
 
-  { Criando TrayIcon, e copiando Icone do Form }
-  MemStream := TMemoryStream.Create;
-  try
-     Icon.SaveToStream(MemStream);
-     TrayIcon := TTrayIcon.Create(self);
-     with TrayIcon do
-     begin
-        Icon.LoadFromStream(MemStream);
-        PopupMenu   := pmTray ;
-        ToolTip     := 'ACBrMonitor '+ Versao +
-                        {$IFDEF LINUX}#10{$ELSE}#13{$ENDIF}+
-                       'ACBr: '+ACBR_VERSAO ;
-        OnDblClick  := Restaurar1Click ;
-        OnClick     := Restaurar1Click ;
-        ShowToolTip := true ;
-        Masked      := true ;
-        AutoShow    := true ;
-        Visible     := true ;
-     end ;
-  finally
-     MemStream.Free ;
-  end ;
+   TrayIcon1.BalloonTitle := 'ACBrMonitor '+ Versao ;
+   TrayIcon1.BalloonHint  := 'Projeto ACBr'+ sLineBreak +
+                             'http://acbr.sf.net' ;
 
   Caption := 'ACBrMonitor '+ Versao + ' - ACBr: '+ACBR_VERSAO ;
   PageControl1.ActivePageIndex := 0 ;
@@ -690,14 +663,41 @@ begin
   chRFD.Font.Style := chRFD.Font.Style + [fsBold] ;
   chRFD.Font.Color := clRed ;
    
-  Application.Style.DefaultStyle := dsPlatinum ;
-  Application.OnException        := TrataErros ;
-  Application.OnMinimize         := Ocultar1Click ;
-  Application.OnRestore          := Restaurar1Click ;
-  Application.Title              := Caption ;
-  Application.HintHidePause      := 5000 ;
+  Application.Title := Caption ;
 
   Timer1.Enabled := True ;
+end;
+
+procedure TFrmACBrMonitor.FormClose(Sender : TObject ;
+  var CloseAction : TCloseAction) ;
+begin
+  ACBrECF1.Desativar ;
+  ACBrCHQ1.Desativar ;
+  ACBrGAV1.Desativar ;
+  ACBrDIS1.Desativar ;
+  ACBrLCB1.Desativar ;
+  ACBrBAL1.Desativar ;
+  ACBrETQ1.Desativar ;
+
+  Timer1.Enabled := False ;
+
+  TcpServer.OnDesConecta := nil ;
+  TCPServer.Ativo        := False ;    { Desliga TCP }
+
+  TCPServerTC.OnDesConecta := nil ;
+  TimerTC.Enabled          := False ;
+  TCPServerTC.Ativo        := False ;    { Desliga TCP }
+end;
+
+procedure TFrmACBrMonitor.ApplicationProperties1Exception(Sender : TObject ;
+  E : Exception) ;
+begin
+  mResp.Lines.Add( E.Message );
+  if cbLog.Checked then
+     WriteToTXT(ArqLogTXT, 'Exception: ' + E.Message);
+
+  StatusBar1.Panels[0].Text := 'Exception' ;
+//  MessageDlg( E.Message,mtError,[mbOk],0) ;
 end;
 
 {------------------------------------------------------------------------------}
@@ -706,12 +706,6 @@ begin
   Timer1.Enabled := false ;
   Cmd.Free ;
   fsSLPrecos.Free ;
-end;
-
-{------------------------------------------------------------------------------}
-procedure TFrmACBrMonitor.FormShow(Sender: TObject);
-begin
-  TrayIcon.Show ;
 end;
 
 {------------------------------------------------------------------------------}
@@ -735,73 +729,6 @@ begin
      Application.Minimize ;
 end;
 
-{------------------------------------------------------------------------------}
-procedure TFrmACBrMonitor.FormClose(Sender: TObject; var Action: TCloseAction);
-begin
-  ACBrECF1.Desativar ;
-  ACBrCHQ1.Desativar ;
-  ACBrGAV1.Desativar ;
-  ACBrDIS1.Desativar ;
-  ACBrLCB1.Desativar ;
-  ACBrBAL1.Desativar ;
-  ACBrETQ1.Desativar ;
-
-  Timer1.Enabled := False ;
-
-  TcpServer.OnDisconnect := nil ;
-  TCPServer.Active       := False ;    { Desliga TCP }
-
-  TCPServerTC.OnDisconnect := nil ;
-  TimerTC.Enabled          := False ;
-  TCPServerTC.Active       := False ;    { Desliga TCP }
-end;
-
-{-----------------------------------------------------------------------------}
-Procedure TFrmACBrMonitor.TrataErros(Sender: TObject; E: Exception);
-begin
-  mResp.Lines.Add( E.Message );
-  if cbLog.Checked then
-     WriteToTXT(ArqLogTXT, 'Exception: ' + E.Message);
-
-  StatusBar1.Panels[0].Text := 'Exception' ;
-//  MessageDlg( E.Message,mtError,[mbOk],0) ;
-end ;
-
-{------------------------------------------------------------------------------}
-procedure TFrmACBrMonitor.TcpServerConnect(AThread: TIdPeerThread);
-begin
-  sleep(100);
-  Conexao := AThread;
-  mCmd.Lines.Clear ;
-  Resposta('','ACBrMonitor Ver. '+ Versao + ' - ACBr: '+ACBR_VERSAO +sLineBreak +
-              'Conectado em: '+FormatDateTime('dd/mm/yy hh:nn:ss', now )+sLineBreak+
-              'Máquina: '+AThread.Connection.Socket.Binding.PeerIP+sLineBreak+
-              'Esperando por comandos.');
-end;
-
-{------------------------------------------------------------------------------}
-procedure TFrmACBrMonitor.TcpServerExecute(AThread: TIdPeerThread);
-Var Cmd : AnsiString ;
-begin
-  { Le o que foi enviado atravez da conexao TCP }
-  Cmd := trim(AThread.Connection.ReadLn()) ;
-  if Cmd <> '' then
-  begin
-     Conexao := AThread ;
-     NewLines:= Cmd  ;
-     { precisa do Synchronize, pois "Processar" atualiza controles visuais }
-     AThread.Synchronize( Processar );
-//     Processar ;
-  end ;
-end;
-
-{------------------------------------------------------------------------------}
-procedure TFrmACBrMonitor.TcpServerDisconnect(AThread: TIdPeerThread);
-begin
-  mResp.Lines.Add('ALERTA: Fim da Conexão com: '+
-                   AThread.Connection.Socket.Binding.PeerIP+
-                  ' em: '+FormatDateTime('dd/mm/yy hh:nn:ss', now ) )
-end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.Restaurar1Click(Sender: TObject);
@@ -819,14 +746,9 @@ end;
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.Ocultar1Click(Sender: TObject);
 begin
-  TrayIcon.Visible := false ;
-
-//  if WindowState <> wsMinimized then
-//     WindowState := wsMinimized ;
   Visible := false ;
   Application.ShowMainForm := false ;
 
-  TrayIcon.Visible := true ;
   Application.ProcessMessages ;
 end;
 
@@ -843,7 +765,6 @@ Var Ini    : TIniFile ;
     ArqIni : String ;
     Txt    : String ;
     Erro   : String ;
-    A : Integer ;
 begin
   Timer1.Enabled := false ;
   Inicio         := false ;
@@ -892,7 +813,7 @@ begin
      bConfig.Enabled  := true ;
      Timer1.Interval  := sedIntervalo.Value ;
      Timer1.Enabled   := rbTXT.Checked ;
-     TcpServer.Active := rbTCP.Checked ;
+     TcpServer.Ativo  := rbTCP.Checked ;
 
      mResp.Lines.Add('ACBr Monitor Ver.'+Versao);
      mResp.Lines.Add('Aguardando comandos ACBr');
@@ -904,16 +825,16 @@ begin
   try
      if rbTCP.Checked then
       begin
-        if TcpServer.Active then
+        if TcpServer.Ativo then
         begin
            try
-              Txt := 'Endereço: '+TcpServer.LocalName ;
-              For A := 0 to IdStack.GStack.LocalAddresses.Count-1 do
-                 Txt := Txt + '   ' + IdStack.GStack.LocalAddresses[A] ;
+              Txt := 'Endereço: '+TcpServer.TCPBlockSocket.LocalName ;
+// TODO:              For A := 0 to IdStack.GStack.LocalAddresses.Count-1 do
+//                 Txt := Txt + '   ' + IdStack.GStack.LocalAddresses[A] ;
            except
            end ;
            mResp.Lines.Add(Txt) ;
-           mResp.Lines.Add( 'Porta: ['+IntToStr(TcpServer.DefaultPort)+']') ;
+           mResp.Lines.Add( 'Porta: ['+TcpServer.Port+']') ;
         end ;
       end
      else
@@ -1060,11 +981,11 @@ begin
      ArqSaiTMP := ChangeFileExt( ArqSaiTXT, '.tmp' ) ;
      ArqLogTXT := AcertaPath( edLogArq.Text ) ;
 
-     TcpServer.DefaultPort    := StrToInt( edPortaTCP.Text ) ;
-     TcpServer.MaxConnections := sedConexoesTCP.Value ;
-     TcpServer.MaxConnectionReply.Text.Add( 'Pedido de conexão negado.') ;
-     TcpServer.MaxConnectionReply.Text.Add(
-        'Número máximo de conexões ('+sedConexoesTCP.Text+') já atingido' ) ;
+     TcpServer.Port           := edPortaTCP.Text ;
+// TODO     TcpServer.MaxConnections := sedConexoesTCP.Value ;
+//     TcpServer.MaxConnectionReply.Text.Add( 'Pedido de conexão negado.') ;
+//     TcpServer.MaxConnectionReply.Text.Add(
+//        'Número máximo de conexões ('+sedConexoesTCP.Text+') já atingido' ) ;
 
      { Parametros do ECF }
      cbECFPorta.Text       := Ini.ReadString('ECF','Porta','Procurar');
@@ -1593,10 +1514,10 @@ begin
   begin
      if Assigned( Conexao ) then
      begin
-        if Assigned( Conexao.Connection ) then
+        if Assigned( Conexao.TCPBlockSocket ) then
         begin
-           Conexao.Connection.WriteLn(Resposta) ;
-           Conexao.Connection.Write(#3) ;
+           Conexao.TCPBlockSocket.SendString(Resposta) ;
+           Conexao.TCPBlockSocket.SendByte(3) ;
         end;
      end ;
   end ;
@@ -2459,7 +2380,7 @@ begin
      except
         chRFD.OnClick := nil ;
         chRFD.Checked := Assigned( ACBrECF1.RFD )  ;
-        chRFD.OnClick := chRFDClick ;
+        chRFD.OnClick := @chRFDClick ;
 
         raise ;
      end ;
@@ -2867,7 +2788,7 @@ end;
 procedure TFrmACBrMonitor.FormShortCut(Key: Integer; Shift: TShiftState;
   var Handled: Boolean);
 begin
-  if (Key = Key_Help) or (Key = Key_F1) then
+  if (Key = VK_HELP) or (Key = VK_F1) then
      pBotoesClick(self) ;
 end;
 
@@ -3074,7 +2995,7 @@ end;
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.cbxTCModeloChange(Sender: TObject);
 begin
-  TCPServerTC.Active  := False ;
+  TCPServerTC.Ativo  := False ;
   TimerTC.Enabled    := False ;
   AvaliaEstadoTsTC ;
 end;
@@ -3082,18 +3003,18 @@ end;
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.bTCAtivarClick(Sender: TObject);
 begin
-  TCPServerTC.DefaultPort := StrToIntDef( edTCPort.Text, 6500) ;
+  TCPServerTC.Port := edTCPort.Text ;
 
   if not FileExists(edTCArqPrecos.Text) then
      raise Exception.Create('Arquivo de Preços não encontrado em: ['+edTCArqPrecos.Text+']');
      
-  TCPServerTC.Active := (bTCAtivar.Caption = '&Ativar') ;
-  TimerTC.Enabled   := TCPServerTC.Active ;
+  TCPServerTC.Ativo := (bTCAtivar.Caption = '&Ativar') ;
+  TimerTC.Enabled   := TCPServerTC.Ativo ;
 
   AvaliaEstadoTsTC ;
 
   mResp.Lines.Add( 'Servidor de Terminal de Consulta: '+
-          IfThen( TCPServerTC.Active, 'ATIVADO', 'DESATIVADO' ) );
+          IfThen( TCPServerTC.Ativo, 'ATIVADO', 'DESATIVADO' ) );
 end;
 
 {------------------------------------------------------------------------------}
@@ -3113,7 +3034,7 @@ begin
   bTCAtivar.Enabled := edTCPort.Enabled and (StrToIntDef(edTCPort.Text,0) > 0) ;
 
   bTCAtivar.Glyph := nil ;
-  if TCPServerTC.Active then
+  if TCPServerTC.Ativo then
    begin
      bTCAtivar.Caption := '&Desativar' ;
      shpTC.Color       := clLime ;
@@ -3126,102 +3047,6 @@ begin
      ImageList1.GetBitmap(5,bTCAtivar.Glyph);
      mTCConexoes.Lines.Clear ;
    end ;
-end;
-
-{------------------------------------------------------------------------------}
-
-procedure TFrmACBrMonitor.TCPServerTCConnect(AThread: TIdPeerThread);
- Var IP, Resp, Id : AnsiString ;
-     Indice : Integer ;
-begin
-  AThread.Connection.Write('#ok') ;
-  Id := trim(AThread.Connection.ReadLn(#0,1000)) ;
-{
-  AThread.Connection.Write('#alwayslive');
-  Resp := trim(AThread.Connection.ReadLn(#0,1000)) ;
-  if Resp <> '#alwayslive_ok' then
-  begin
-     fsLinesLog := 'Resposta Inválida do T.C.' ;
-     AThread.Synchronize( AddLinesLog );
-     AThread.Connection.Disconnect ;
-  end ;
-}
-
-  IP := AThread.Connection.Socket.Binding.PeerIP ;
-
-  Indice := mTCConexoes.Lines.IndexOf( IP ) ;
-  if Indice < 0 then
-  begin
-     mTCConexoes.Lines.Add( IP ) ;
-     fsLinesLog := 'T.C. Inicio Conexão IP: ['+ IP + '] ID: ['+Id+']'+
-                   ' em: '+FormatDateTime('dd/mm/yy hh:nn:ss', now ) ;
-     AThread.Synchronize( AddLinesLog );
-  end ;
-end;
-
-{------------------------------------------------------------------------------}
-procedure TFrmACBrMonitor.TCPServerTCDisconnect(AThread: TIdPeerThread);
- Var IP : String ;
-     Indice : Integer ;
-begin
-  IP  := AThread.Connection.Socket.Binding.PeerIP ;
-  fsLinesLog := 'T.C. Fim Conexão IP: ['+ IP + '] em: '+
-                FormatDateTime('dd/mm/yy hh:nn:ss', now ) ;
-  AThread.Synchronize( AddLinesLog );
-
-  Indice := mTCConexoes.Lines.IndexOf( IP ) ;
-  if Indice >= 0 then
-     mTCConexoes.Lines.Delete( Indice );
-end;
-
-{------------------------------------------------------------------------------}
-procedure TFrmACBrMonitor.TCPServerTCExecute(AThread: TIdPeerThread);
- Var Comando, Resposta, Linha : AnsiString ;
-     Indice, P1, P2 : Integer ;
-begin
-  { Le o que foi enviado atravez da conexao TCP }
-  Comando := Trim(AThread.Connection.ReadLn(#0)) ;
-  Comando := StringReplace(Comando,#0,'',[rfReplaceAll]) ;  // Remove nulos
-  
-  if pos( '#live', Comando ) > 0 then
-  begin
-     Comando := StringReplace(Comando,'#live','',[rfReplaceAll]) ; // Remove #live
-     AThread.Connection.Tag := 0 ;                      // Zera falhas de #live?
-  end ;
-
-  if Comando = '' then
-     exit ;
-
-  fsLinesLog := 'TC: ['+AThread.Connection.Socket.Binding.PeerIP+
-                '] RX: <- ['+Comando+']' ;
-  AThread.Synchronize( AddLinesLog );
-
-  if copy(Comando,1,1) = '#' then
-  begin
-     Comando  := copy( Comando, 2, Length(Comando)) ;
-     P1       := 0 ;
-     P2       := 0 ;
-     Indice   := fsSLPrecos.IndexOfName( Comando ) ;
-     if Indice > 0 then
-      begin
-        Linha := fsSLPrecos[ Indice ] ;
-        P1    := Pos('|',Linha) ;
-        P2    := PosAt('|',Linha,3) ;
-      end
-     else
-        Linha := edTCNaoEncontrado.Text ;
-
-     if P2 = 0 then
-        P2 := Length( Linha )+1 ;
-
-     Resposta := '#' + copy( Linha, P1+1, P2-P1-1 ) ;
-     Resposta := LeftStr(Resposta,45) ;  
-
-     AThread.Connection.Write( Resposta ) ;
-     AThread.Connection.Tag := 0 ;  // Zera falhas de #live?
-     fsLinesLog := '     TX: -> ['+Resposta+']' ;
-     AThread.Synchronize( AddLinesLog );
-  end ;
 end;
 
 
@@ -3241,7 +3066,7 @@ end ;
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.TimerTCTimer(Sender: TObject);
  Var I : Integer ;
-     AConnection : TIdTCPServerConnection ;
+// TODO     AConnection : TIdTCPServerConnection ;
      Resp : AnsiString ;
      ATime : TDateTime ;
 begin
@@ -3253,6 +3078,8 @@ begin
      fsDTPrecos := FileAge(edTCArqPrecos.Text) ;
   end ;
 
+
+(*  TODO
   with TCPServerTC.Threads.LockList do
   try
      for I := 0 to Count-1 do
@@ -3270,6 +3097,8 @@ begin
   finally
      TCPServerTC.Threads.UnlockList;
   end;
+
+*)
 
 (*  TCPServerTC.OnRecebeDados := nil ;
   try
@@ -3410,4 +3239,148 @@ begin
 end;
 
 end.
+
+
+procedure TcpServerExecute(AThread: TIdPeerThread);
+procedure TcpServerConnect(AThread: TIdPeerThread);
+procedure TcpServerDisconnect(AThread: TIdPeerThread);
+
+
+{------------------------------------------------------------------------------}
+procedure TFrmACBrMonitor.TcpServerConnect(AThread: TIdPeerThread);
+begin
+  sleep(100);
+  Conexao := AThread;
+  mCmd.Lines.Clear ;
+  Resposta('','ACBrMonitor Ver. '+ Versao + ' - ACBr: '+ACBR_VERSAO +sLineBreak +
+              'Conectado em: '+FormatDateTime('dd/mm/yy hh:nn:ss', now )+sLineBreak+
+              'Máquina: '+AThread.Connection.Socket.Binding.PeerIP+sLineBreak+
+              'Esperando por comandos.');
+end;
+
+{------------------------------------------------------------------------------}
+procedure TFrmACBrMonitor.TcpServerExecute(AThread: TIdPeerThread);
+Var Cmd : AnsiString ;
+begin
+  { Le o que foi enviado atravez da conexao TCP }
+  Cmd := trim(AThread.Connection.ReadLn()) ;
+  if Cmd <> '' then
+  begin
+     Conexao := AThread ;
+     NewLines:= Cmd  ;
+     { precisa do Synchronize, pois "Processar" atualiza controles visuais }
+     AThread.Synchronize( Processar );
+//     Processar ;
+  end ;
+end;
+
+{------------------------------------------------------------------------------}
+procedure TFrmACBrMonitor.TcpServerDisconnect(AThread: TIdPeerThread);
+begin
+  mResp.Lines.Add('ALERTA: Fim da Conexão com: '+
+                   AThread.Connection.Socket.Binding.PeerIP+
+                  ' em: '+FormatDateTime('dd/mm/yy hh:nn:ss', now ) )
+end;
+
+
+    procedure TCPServerTCDisconnect(AThread: TIdPeerThread);
+    procedure TCPServerTCExecute(AThread: TIdPeerThread);
+    procedure TCPServerTCConnect(AThread: TIdPeerThread);
+
+
+    procedure TFrmACBrMonitor.TCPServerTCConnect(AThread: TIdPeerThread);
+     Var IP, Resp, Id : AnsiString ;
+         Indice : Integer ;
+    begin
+      AThread.Connection.Write('#ok') ;
+      Id := trim(AThread.Connection.ReadLn(#0,1000)) ;
+    {
+      AThread.Connection.Write('#alwayslive');
+      Resp := trim(AThread.Connection.ReadLn(#0,1000)) ;
+      if Resp <> '#alwayslive_ok' then
+      begin
+         fsLinesLog := 'Resposta Inválida do T.C.' ;
+         AThread.Synchronize( AddLinesLog );
+         AThread.Connection.Disconnect ;
+      end ;
+    }
+
+      IP := AThread.Connection.Socket.Binding.PeerIP ;
+
+      Indice := mTCConexoes.Lines.IndexOf( IP ) ;
+      if Indice < 0 then
+      begin
+         mTCConexoes.Lines.Add( IP ) ;
+         fsLinesLog := 'T.C. Inicio Conexão IP: ['+ IP + '] ID: ['+Id+']'+
+                       ' em: '+FormatDateTime('dd/mm/yy hh:nn:ss', now ) ;
+         AThread.Synchronize( AddLinesLog );
+      end ;
+    end;
+
+    {------------------------------------------------------------------------------}
+    procedure TFrmACBrMonitor.TCPServerTCDisconnect(AThread: TIdPeerThread);
+     Var IP : String ;
+         Indice : Integer ;
+    begin
+      IP  := AThread.Connection.Socket.Binding.PeerIP ;
+      fsLinesLog := 'T.C. Fim Conexão IP: ['+ IP + '] em: '+
+                    FormatDateTime('dd/mm/yy hh:nn:ss', now ) ;
+      AThread.Synchronize( AddLinesLog );
+
+      Indice := mTCConexoes.Lines.IndexOf( IP ) ;
+      if Indice >= 0 then
+         mTCConexoes.Lines.Delete( Indice );
+    end;
+
+    {------------------------------------------------------------------------------}
+    procedure TFrmACBrMonitor.TCPServerTCExecute(AThread: TIdPeerThread);
+     Var Comando, Resposta, Linha : AnsiString ;
+         Indice, P1, P2 : Integer ;
+    begin
+      { Le o que foi enviado atravez da conexao TCP }
+      Comando := Trim(AThread.Connection.ReadLn(#0)) ;
+      Comando := StringReplace(Comando,#0,'',[rfReplaceAll]) ;  // Remove nulos
+
+      if pos( '#live', Comando ) > 0 then
+      begin
+         Comando := StringReplace(Comando,'#live','',[rfReplaceAll]) ; // Remove #live
+         AThread.Connection.Tag := 0 ;                      // Zera falhas de #live?
+      end ;
+
+      if Comando = '' then
+         exit ;
+
+      fsLinesLog := 'TC: ['+AThread.Connection.Socket.Binding.PeerIP+
+                    '] RX: <- ['+Comando+']' ;
+      AThread.Synchronize( AddLinesLog );
+
+      if copy(Comando,1,1) = '#' then
+      begin
+         Comando  := copy( Comando, 2, Length(Comando)) ;
+         P1       := 0 ;
+         P2       := 0 ;
+         Indice   := fsSLPrecos.IndexOfName( Comando ) ;
+         if Indice > 0 then
+          begin
+            Linha := fsSLPrecos[ Indice ] ;
+            P1    := Pos('|',Linha) ;
+            P2    := PosAt('|',Linha,3) ;
+          end
+         else
+            Linha := edTCNaoEncontrado.Text ;
+
+         if P2 = 0 then
+            P2 := Length( Linha )+1 ;
+
+         Resposta := '#' + copy( Linha, P1+1, P2-P1-1 ) ;
+         Resposta := LeftStr(Resposta,45) ;
+
+         AThread.Connection.Write( Resposta ) ;
+         AThread.Connection.Tag := 0 ;  // Zera falhas de #live?
+         fsLinesLog := '     TX: -> ['+Resposta+']' ;
+         AThread.Synchronize( AddLinesLog );
+      end ;
+    end;
+
+
 

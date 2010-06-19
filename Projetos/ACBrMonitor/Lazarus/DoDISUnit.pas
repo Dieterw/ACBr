@@ -42,7 +42,7 @@ Uses Classes, TypInfo, SysUtils, CmdUnit,
 Procedure DoDIS( Cmd : TACBrCmd ) ;
 
 implementation
-uses ACBrDIS, ACBrUtil, StrUtils;
+uses ACBrDIS, ACBrUtil;
 
 Procedure DoDIS( Cmd : TACBrCmd ) ;
 begin

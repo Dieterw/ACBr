@@ -45,7 +45,7 @@ Function MudaBemaACBr( Comando : String ) : String ;
 implementation
 
 Uses ACBrECFClass,
-     {$IFNDEF CONSOLE}ACBrMonitor1 {$ELSE}ACBrMonitorConsoleDM {$ENDIF}, ACBrECF  ;
+     {$IFNDEF CONSOLE}ACBrMonitor1 {$ELSE}ACBrMonitorConsoleDM {$ENDIF}  ;
 
 Function Parametro(Texto : String; Posicao : Integer ) : String;
 Var P, i : Integer ;

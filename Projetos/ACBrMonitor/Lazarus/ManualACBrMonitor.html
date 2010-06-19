@@ -1,0 +1,2098 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+	<TITLE></TITLE>
+	<META NAME="GENERATOR" CONTENT="BrOffice.org 2.1  (Win32)">
+	<META NAME="CREATED" CONTENT="20060314;16050120">
+	<META NAME="CHANGEDBY" CONTENT="Daniel Sim&otilde;es de Almeida">
+	<META NAME="CHANGED" CONTENT="20070126;12531771">
+	<STYLE>
+	<!--
+		TD P { text-indent: 0.4cm; margin-bottom: 0cm; line-height: 100%; text-align: left }
+		H1 { margin-top: 0.32cm; margin-bottom: 0.3cm; text-align: center }
+		P { text-indent: 0.4cm; margin-bottom: 0cm; line-height: 100%; text-align: left }
+		H2 { margin-left: 0.6cm; margin-top: 0.4cm; margin-bottom: 0.2cm; text-align: left }
+		H2.western { font-family: "Albany", sans-serif; font-size: 14pt; font-style: italic }
+		H2.cjk { font-family: "HG Mincho Light J"; font-size: 14pt; font-style: italic }
+		H2.ctl { font-family: "Arial Unicode MS"; font-size: 14pt; font-style: italic }
+		H3 { margin-left: 0.5cm; margin-top: 0.3cm; margin-bottom: 0.2cm; text-align: left }
+		H3.western { font-family: "Albany", sans-serif; font-size: 12pt }
+		H3.cjk { font-family: "HG Mincho Light J" }
+		H3.ctl { font-family: "Arial Unicode MS" }
+		TH P { text-indent: 0.4cm; margin-bottom: 0cm; font-style: italic; line-height: 100% }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="pt-BR" DIR="LTR">
+<H1>Manual resumido do ACBrMonitor</H1>
+<P STYLE="margin-bottom: 0.5cm"><BR><BR>
+</P>
+<P ALIGN=CENTER STYLE="margin-bottom: 0.5cm">ACBrMonitor Vers&atilde;o
+0.7b - Direitos Autorais Reservados &copy; 2006 Daniel Sim&otilde;es
+de Almeida - <A HREF="http://acbr.sourceforge.net/">http://acbr.sourceforge.net</A></P>
+<P ALIGN=LEFT STYLE="margin-bottom: 0.5cm">Em breve esperamos
+concluir um manual completo com todos os comandos, descrevendo a
+sintaxe de cada comando e o seu retorno... Por enquanto espero que
+essas regras b&aacute;sicas possam ajuda-lo a iniciar o uso do
+ACBrMonitor.</P>
+<H2 CLASS="western">Como usar o ACBrMonitor ?</H2>
+<H3 CLASS="western">Modo TXT:</H3>
+<UL>
+	<LI><P STYLE="margin-bottom: 0.5cm">Verifique no ACBrMonitor qual &eacute;
+	o arquivo de Entrada (geralmente ENT.TXT) e de Sa&iacute;da
+	(geralmente SAI.TXT)</P>
+</UL>
+<UL>
+	<LI><P STYLE="margin-bottom: 0.5cm">Voc&ecirc; deve criar um arquivo
+	com os comandos desejados, na sintaxe do ACBr (veja abaixo), no
+	arquivo de entrada. Um comando por linha.</P>
+	<UL>
+		<UL>
+			<LI><P STYLE="margin-bottom: 0.5cm">Nota: Para facilitar a
+			programa&ccedil;&atilde;o &eacute; recomendado inserir apenas um
+			comando por vez no arquivo de Entrada</P>
+		</UL>
+	</UL>
+	<LI><P STYLE="margin-bottom: 0.5cm">O ACBrMonitor ir&aacute; ler
+	esse arquivo, inserir os comandos na Fila de comandos a processar...
+	e apaga-lo... Portanto se o arquivo de Entrada n&atilde;o for
+	apagado ap&oacute;s alguns segundos, provavelmente o ACBrMonitor n&atilde;o
+	est&aacute; sendo executado, ou o arquivo de Entrada n&atilde;o est&aacute;
+	configurado corretamente no ACBrMonitor (verifique o Path).</P>
+	<LI><P STYLE="margin-bottom: 0.5cm">Para cada comando executado o
+	ACBrMonitor responde com:</P>
+	<UL>
+		<UL>
+			<LI><P STYLE="margin-bottom: 0.5cm">OK: [ Retorno do ECF ] ou</P>
+			<LI><P STYLE="margin-bottom: 0.5cm">ERRO: [ Mensagem de erro do
+			ACBr ou do ECF ]</P>
+		</UL>
+	</UL>
+	<LI><P STYLE="margin-bottom: 0.5cm">Todas as respostas do
+	ACBrMonitor s&atilde;o gravadas no arquivo de Sa&iacute;da.</P>
+	<LI><P STYLE="margin-bottom: 0.5cm">A aplica&ccedil;&atilde;o
+	comercial, deve abrir o arquivo de Sa&iacute;da, ler o seu conte&uacute;do
+	e apaga-lo. Ap&oacute;s isso, verificar o sucesso do comando e se
+	for o caso, processar as informa&ccedil;&otilde;es retornadas pelo
+	ECF...</P>
+	<LI><P STYLE="margin-bottom: 0.5cm">Se o arquivo de sa&iacute;da n&atilde;o
+	for apagado, o ACBrMonitor ir&aacute; adicionar as respostas dos
+	novos comandos no final do arquivo</P>
+</UL>
+<P STYLE="margin-bottom: 0.5cm"><B>Exemplo</B>: Abra / execute o
+arquivo de Lote (MS-DOS) <B>TesteTXT.BAT</B></P>
+<H3 CLASS="western">Modo TCP/IP:</H3>
+<UL>
+	<LI><P STYLE="margin-bottom: 0.5cm">Abra uma conex&atilde;o Socket
+	com a m&aacute;quina onde o ACBrMonitor est&aacute; instalado, na
+	porta configurada no ACBrMonitor. (Voc&ecirc; deve conhecer o IP da
+	m&aacute;quina)</P>
+	<LI><P STYLE="margin-bottom: 0.5cm">Verifique se o FireWall de ambas
+	as m&aacute;quinas permite o trafego de dados nessa porta.</P>
+	<LI><P STYLE="margin-bottom: 0.5cm">Envie e Receba os comandos
+	usando a sintaxe do ACBr (veja abaixo)</P>
+	<LI><P STYLE="margin-bottom: 0.5cm">Toda resposta do ACBrMonitor
+	para a aplica&ccedil;&atilde;o comercial ser&aacute; encerrada com o
+	caracter ETX, #3 ou chr(3)</P>
+</UL>
+<P STYLE="margin-bottom: 0.5cm"><B>Exemplo</B>:</P>
+<UL>
+	<LI><P STYLE="margin-bottom: 0.5cm">Configure o ACBrMonitor para
+	trabalhar com TCP/IP porta 3434 (pode ser qualquer porta)...
+	Re-inicie o ACBrMonitor</P>
+	<LI><P STYLE="margin-bottom: 0.5cm">No Prompt do DOS do Windows, na
+	mesma m&aacute;quina onde o ACBrMonitor est&aacute; sendo executado,
+	digite:</P>
+</UL>
+<P STYLE="margin-left: 2cm; margin-bottom: 0.5cm"><I><B>TELNET
+localhost 3434</B></I></P>
+<UL>
+	<LI><P ALIGN=LEFT STYLE="text-indent: 0cm; margin-bottom: 0.5cm">Na
+	janela do TELNET digite:<BR><B><I>ECF.ATIVAR &lt;enter&gt;<BR>ECF.LeituraX
+	&lt;enter&gt;<BR>ECF.DataHora &lt;enter&gt;<BR>ECF.Aliquotas
+	&lt;enter&gt;<BR>bye &lt;enter&gt;</I></B></P>
+</UL>
+<H2 CLASS="western">Sintaxe dos Comandos ACBr 
+</H2>
+<P STYLE="margin-left: 2cm; text-indent: 0.6cm; margin-bottom: 0.5cm">
+<B>OBJETO.Comando [( param1 [,param2, param3, paramN...])]</B></P>
+<P STYLE="text-indent: 0.6cm; margin-bottom: 0.5cm">Todos os comandos
+enviados para o ACBrMonitor podem ser mai&uacute;sculas ou
+min&uacute;sculas.</P>
+<UL>
+	<LI><P STYLE="text-indent: 0cm; margin-bottom: 0.5cm"><B>OBJETO</B>
+	pode ser: <B>ECF, CHQ, GAV, DIS, ACBR</B></P>
+	<LI><P STYLE="text-indent: 0cm; margin-bottom: 0.5cm"><B>Comando</B>:
+	Comandos reconhecido pelo Objeto</P>
+	<LI><P STYLE="text-indent: 0cm; margin-bottom: 0.5cm"><B>param1,
+	param2, paramN:</B> Par&acirc;metros necess&aacute;rios para a
+	execu&ccedil;&atilde;o de Comando. Os par&acirc;metros podem ser do
+	tipo:</P>
+	<UL>
+		<LI><P STYLE="text-indent: 0cm; margin-bottom: 0.5cm"><B>Texto ou
+		&ldquo;String&rdquo;</B>: Para especificar &quot;Strings&quot; nos
+		par&acirc;metros use sempre aspas duplas (&quot;).<BR><I>Nota</I>:
+		Para quebra de linha em &quot;Strings&quot; grandes, como a
+		Observa&ccedil;&atilde;o no rodap&eacute; dos cupons, use o sinal
+		Pipe (|)<BR><I>Exemplos v&aacute;lidos:</I> &ldquo;Projeto ACBr&rdquo;,
+		&ldquo;DESCRICAO DO PRODUTO&rdquo;, &ldquo;LINHA1|LINHA2&rdquo;</P>
+		<LI><P STYLE="text-indent: 0cm; margin-bottom: 0.5cm"><B>Num&eacute;ricos:
+		</B>Para especificar &quot;Num&eacute;ricos&quot; nos par&acirc;metros,
+		n&atilde;o use aspas.<BR>Para separar as casas decimais use o ponto
+		(.)<BR>N&atilde;o use separador de Milhar ou s&iacute;mbolo de
+		moeda (R$).<BR><I>Exemplos v&aacute;lidos:</I> 10 , 10.23 , 0.123 ,
+		1234.50</P>
+		<LI><P STYLE="text-indent: 0cm; margin-bottom: 0.5cm"><B>DataHora</B>:
+		Use o formato atual do Sistema Operacional ( Geralmente DD/MM/AA
+		HH:MM:SS)<BR><FONT SIZE=2 STYLE="font-size: 11pt">Alguns comandos
+		do ACBrMonitor precisam apenas da Data, portanto a Hora pode ser
+		omitida</FONT><BR><I>Exemplos V&aacute;lidos:</I> &ldquo;<FONT SIZE=2 STYLE="font-size: 11pt">14/08/06
+		18:05:20&rdquo;, &ldquo;14/08/2006 18:05&rdquo;, &ldquo;14/08/06&rdquo;</FONT></P>
+		<LI><P STYLE="text-indent: 0cm; margin-bottom: 0.5cm"><FONT SIZE=2 STYLE="font-size: 11pt"><B>Booleano:
+		</B>Utilize <B>True</B> para verdadeiro e <B>False</B> para falso</FONT></P>
+	</UL>
+</UL>
+<H3 CLASS="western"><FONT SIZE=4>Comandos gen&eacute;ricos aceitos
+pelo ACBrMonitor (Objeto ACBr)</FONT></H3>
+<DIV ALIGN=RIGHT>
+	<TABLE WIDTH=931 BORDER=1 CELLPADDING=4 CELLSPACING=3 STYLE="page-break-before: always">
+		<COL WIDTH=216>
+		<COL WIDTH=688>
+		<THEAD>
+			<TR>
+				<TH WIDTH=216 VALIGN=BOTTOM>
+					<P ALIGN=CENTER STYLE="font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>Comando</B></FONT></P>
+				</TH>
+				<TH WIDTH=688 VALIGN=TOP>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Finalidade</FONT></P>
+				</TH>
+			</TR>
+		</THEAD>
+		<TBODY>
+			<TR>
+				<TD WIDTH=216 VALIGN=BOTTOM>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>Bye,
+					Exit, Sair ou Fim</B></FONT></P>
+				</TD>
+				<TD WIDTH=688 VALIGN=TOP>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Qualquer um desses
+					comandos <B>Encerra</B> a comunica&ccedil;&atilde;o TCP/IP com o
+					ACBrMonitor, ou seja, desconecta-se do ACBrMonitor</FONT></P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=216>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ACBr.Run</B></FONT></P>
+				</TD>
+				<TD WIDTH=688>
+					<P STYLE="margin-bottom: 0.5cm; font-style: normal"><FONT SIZE=3>Executa
+					comandos na m&aacute;quina em que o ACBrMonitor est&aacute;
+					rodando, &uacute;til para executar comandos no terminal Remoto,
+					quando usando modo TCP/IP</FONT></P>
+					<P STYLE="margin-bottom: 0.5cm"><FONT SIZE=3 STYLE="font-size: 13pt"><I>ACBr.Run(
+					cComando, [ cParams, bAguarda, nWindowState, bAltTab ] );</I></FONT></P>
+					<P STYLE="text-indent: 0cm; margin-bottom: 0.5cm"><FONT SIZE=2 STYLE="font-size: 11pt"><B>Par&acirc;metros:</B><BR><B><I>cComando</I></B>
+					&ndash; Linha de comando a ser executada pelo
+					ACBrMonitor<BR><I><B>cParams</B> &ndash;</I> (opcional)
+					Par&acirc;metros complementares informados a Linha de Comando
+					<BR><B><I>bAguarda</I></B> &ndash; Opcional, se for omitido
+					assume &ldquo;False&rdquo;. Quando informado &ldquo;True&rdquo;,
+					aguarda o termino da execu&ccedil;&atilde;o do programa
+					informado em <I>cComando</I>, antes de continuar com o
+					ACBrMonitor (cuidado, esse par&acirc;metro em &ldquo;True&rdquo;
+					pode fazer o ACBrMonitor para de responder enquanto o Programa
+					executado n&atilde;o seja finalizado)<BR><B><I>nWindowState</I></B>
+					&ndash; (Opcional) Num&eacute;rico informando o Estado da
+					Janela: Utilize: 0 = Escondido; 1 = Normal (default); 2 =
+					Minimizado; 3 = Maximizado (Dispon&iacute;vel apenas no
+					Windows)<BR><B><I>bAltTab </I></B>&ndash; Opcional, se for
+					omitido assume &ldquo;False&rdquo;. Quando informado &ldquo;True&rdquo;,
+					envia ALT+TAB para o teclado do Windows assim que a execu&ccedil;&atilde;o
+					do programa terminar. &Uacute;til para restaurar o foco da
+					aplica&ccedil;&atilde;o controladora do ACBrMonitor (Dispon&iacute;vel
+					apenas no Windows)</FONT></P>
+					<P STYLE="text-indent: 0cm"><FONT SIZE=2 STYLE="font-size: 11pt"><B>Exemplos:</B><BR>ACBr.Run(&ldquo;NOTEPAD.EXE&rdquo;,&rdquo;Novo.TXT&rdquo;
+					) &ndash; <FONT SIZE=2>Roda o Bloco de Notas do Windows, criando
+					o arquivo Novo.TXT </FONT><BR>ACBr.Run(&ldquo;CALC.EXE&rdquo;,
+					,&rdquo;True&rdquo;) &ndash; Executa a calculadora do Windows e
+					aguarda o termino </FONT>
+					</P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=216>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ACBr.Restaurar</B></FONT></P>
+				</TD>
+				<TD WIDTH=688>
+					<P STYLE="font-style: normal"><FONT SIZE=3>Exibe a tela do
+					ACBrMonitor</FONT></P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=216>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ACBr.Ocultar</B></FONT></P>
+				</TD>
+				<TD WIDTH=688>
+					<P STYLE="font-style: normal"><FONT SIZE=3>Esconde o ACBrMonitor
+					no Systray</FONT></P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=216>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ACBr.EncerrarMonitor</B></FONT></P>
+				</TD>
+				<TD WIDTH=688>
+					<P STYLE="font-style: normal"><FONT SIZE=3>Encerra, finaliza o
+					ACBrMonitor</FONT></P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=216>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ACBr.SaveTofile</B></FONT></P>
+				</TD>
+				<TD WIDTH=688>
+					<P><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=216>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ACBr.LoadFromFile</B></FONT></P>
+				</TD>
+				<TD WIDTH=688>
+					<P><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=216>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ACBr.DeleteFiles</B></FONT></P>
+				</TD>
+				<TD WIDTH=688>
+					<P><BR>
+					</P>
+				</TD>
+			</TR>
+		</TBODY>
+	</TABLE>
+</DIV>
+<P ALIGN=CENTER STYLE="text-indent: 0cm; margin-bottom: 0.5cm"><BR><BR>
+</P>
+<H3 CLASS="western"><FONT SIZE=4>Comandos aceitos pelo Objeto ECF</FONT>
+</H3>
+<DIV ALIGN=RIGHT>
+	<TABLE WIDTH=931 BORDER=1 CELLPADDING=4 CELLSPACING=3 STYLE="page-break-before: always">
+		<COL WIDTH=290>
+		<COL WIDTH=614>
+		<THEAD>
+			<TR>
+				<TH WIDTH=290 VALIGN=BOTTOM>
+					<P ALIGN=CENTER STYLE="font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>Comando</B></FONT></P>
+				</TH>
+				<TH WIDTH=614 VALIGN=TOP>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Finalidade</FONT></P>
+				</TH>
+			</TR>
+		</THEAD>
+		<TBODY>
+			<TR>
+				<TD WIDTH=290 VALIGN=BOTTOM>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.Ativar</B></FONT></P>
+				</TD>
+				<TD WIDTH=614 VALIGN=TOP>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Ativa a comunica&ccedil;&atilde;o
+					com o ECF. <B>Nota</B>: <B>Deve ser executado antes de qualquer
+					outro comando</B></FONT></P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=290 VALIGN=BOTTOM>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.Desativar</B></FONT></P>
+				</TD>
+				<TD WIDTH=614 VALIGN=TOP>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Desativa a comunica&ccedil;&atilde;o
+					com a Serial. <B>Nota</B>: Utilize-o apenas para modificar o
+					Modelo do ECF</FONT></P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=290 VALIGN=BOTTOM>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.Ativo</B></FONT></P>
+				</TD>
+				<TD WIDTH=614 VALIGN=TOP>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Retorna &ldquo;True&rdquo;
+					se o ECF est&aacute; ativo</FONT></P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=290 VALIGN=BOTTOM>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.Colunas</B></FONT></P>
+				</TD>
+				<TD WIDTH=614 VALIGN=TOP>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Numero m&aacute;ximo de
+					colunas suportado pelo ECF </FONT>
+					</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=290 VALIGN=BOTTOM>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.ComandoEnviado</B></FONT></P>
+				</TD>
+				<TD WIDTH=614 VALIGN=TOP>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Retorna o &uacute;ltimo
+					comando enviado para o ECF, no formato da sintaxe suportada pelo
+					ECF </FONT>
+					</P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.RespostaComando</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Retorna a resposta exata
+					do ECF, sem tratamento, na sintaxe de retorno do ECF </FONT>
+					</P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.ModeloStr</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Retorna Texto descritivo
+					do Modelo do ECF de acordo com o Modelo do ECF. Exemplo:
+					&ldquo;Bematech&rdquo;</FONT></P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.Modelo</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Retorna Texto com o
+					valor da propriedade &ldquo;Modelo&rdquo; de ACBrECF. Exemplo:
+					&ldquo;ecfBematech&rdquo;</FONT></P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.Porta</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Retorna Texto com a
+					Porta utilizada para a comunica&ccedil;&atilde;o serial</FONT></P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.DataHora</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Retorna Texto contendo a
+					Data e Hora do ECF, no formato: DD/MM/AA HH:MM:SS</FONT></P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.NumCupom</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Retorna N&uacute;mero do
+					Cupom atual (em aberto) ou do &uacute;ltimo Documento impresso
+					pelo ECF (COO)</FONT></P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.SubTotal</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Retorna o Sub-total do
+					cupom atual (em aberto). Considerando a soma dos Itens Vendidos,
+					o Desconto / Acr&eacute;scimo concedido em <I>ECF.SubtotalizaCupom</I>
+					e os pagamentos j&aacute; efetuados com <I>ECF.EfetuaPagamento</I></FONT></P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.TotalPago</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Retorna o Total de
+					pagamentos j&aacute; efetuados quando o ECF est&aacute; no
+					estado <I>estPagamento</I></FONT></P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.NumLoja</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Retorna o N&uacute;mero
+					da Loja ou estabelecimento cadastrado no ECF </FONT>
+					</P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.NumCRO</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Retorna o N&uacute;mero
+					do Contador de Rein&iacute;cio de Opera&ccedil;&otilde;es atual
+					do ECF </FONT>
+					</P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.NumECF</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Retorna o N&uacute;mero
+					do equipamento ou de caixa programado no ECF </FONT>
+					</P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.NumSerie</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Retorna o N&uacute;mero
+					de s&eacute;rie do equipamento</FONT></P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.NumVersao</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Retorna Texto com a
+					vers&atilde;o do Software B&aacute;sico do ECF </FONT>
+					</P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.PoucoPapel</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Retorna &ldquo;True&rdquo;
+					se o ECF est&aacute; com Pouco Papel</FONT></P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.HorarioVerao</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Retorna &ldquo;True&rdquo;
+					se o est&aacute; em Hor&aacute;rio de ver&atilde;o. <B>Nota:
+					</B>Isso tamb&eacute;m pode ser constatado observando a letra
+					&ldquo;V&rdquo; ao lado da Hora no rodap&eacute; do Cupom Fiscal</FONT></P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.Arredonda</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P STYLE="margin-bottom: 0.5cm"><FONT SIZE=2 STYLE="font-size: 11pt">Retorna
+					&ldquo;True&rdquo; se o ECF arredonda os valores do Total por
+					Item durante a Venda</FONT></P>
+					<P STYLE="text-indent: 0cm; margin-bottom: 0.5cm"><FONT SIZE=2 STYLE="font-size: 11pt"><B>Exemplo:</B>
+					Qtd 1 x Pre&ccedil;o Unit. 1,207 = 1,21 com Arredondamento no
+					ECF ou 1,20 se o ECF n&atilde;o est&aacute; com o arredondamento
+					habilitado.</FONT></P>
+					<P STYLE="text-indent: 0cm"><FONT SIZE=2 STYLE="font-size: 11pt"><B>Nota:
+					</B>Na maioria dos ECFs o Arredondamento deve ser programado, o
+					que pode ser feito com o comando <I>ECF.MudaArredondamento</I>
+					<BR>Em alguns ECFs o arredondamento &eacute; definido de acordo
+					com o comando enviado para a Venda de Item, nesse caso, o ACBr
+					procura usar o Arredondamento sempre que poss&iacute;vel.<BR>Ap&oacute;s
+					o conv&ecirc;nio do ICMS </FONT>56/94 o arredondamento n&atilde;o
+					&eacute; mais permitido, portanto todos os novos ECFs apenas
+					Truncam o Total por Item.</P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.Estado</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P STYLE="margin-bottom: 0.5cm">Retorna o estado atual do ECF,
+					podendo ser:</P>
+					<UL>
+						<LI><P STYLE="text-indent: 0cm; margin-bottom: 0.5cm"><B>estNaoInicializada</B>,
+						Porta Serial ainda n&atilde;o foi aberta;</P>
+						<LI><P STYLE="text-indent: 0cm; margin-bottom: 0.5cm"><B>estDesconhecido</B>,
+						Porta aberta, mas estado ainda n&atilde;o definido;</P>
+						<LI><P STYLE="text-indent: 0cm; margin-bottom: 0.5cm"><B>estLivre</B>,
+						Impressora Livre, sem nenhum cupom aberto pronta para nova
+						venda, Redu&ccedil;&atilde;o Z e Leitura X ok, pode ou n&atilde;o
+						j&aacute; ter ocorrido 1&ordf; venda no dia...;</P>
+						<LI><P STYLE="text-indent: 0cm; margin-bottom: 0.5cm"><B>estVenda</B>,
+						Cupom de Venda Aberto com ou sem venda do 1&ordm; Item;</P>
+						<LI><P STYLE="text-indent: 0cm; margin-bottom: 0.5cm"><B>estPagamento</B>,
+						Iniciado Fechamento de Cupom com Formas Pagamento pode ou n&atilde;o
+						ter efetuado o 1&ordm; pagamento. N&atilde;o pode mais vender
+						itens, ou alterar Sub-total;</P>
+						<LI><P STYLE="text-indent: 0cm; margin-bottom: 0.5cm"><B>estRelatorio</B>,
+						Imprimindo Cupom Fiscal Vinculado ou Relat&oacute;rio
+						Gerencial;</P>
+						<LI><P STYLE="text-indent: 0cm; margin-bottom: 0.5cm"><B>estBloqueada</B>,
+						Redu&ccedil;&atilde;o Z j&aacute; emitida, bloqueada at&eacute;
+						as 00:00;</P>
+						<LI><P STYLE="text-indent: 0cm; margin-bottom: 0.5cm"><B>estRequerZ</B>,
+						Redu&ccedil;&atilde;o Z do dia anterior ainda n&atilde;o foi
+						emitida. Emitir agora;</P>
+						<LI><P STYLE="text-indent: 0cm"><B>estRequerX, </B>Esta
+						impressora requer Leitura X todo inicio de dia. &Eacute;
+						necess&aacute;rio imprimir uma Leitura X para poder vender</P>
+					</UL>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.Abregaveta</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P>Aciona a abertura da gaveta de dinheiro ligada ao ECF 
+					</P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.GavetaAberta</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Retorna &ldquo;True&rdquo;
+					se a gaveta de dinheiro est&aacute; aberta</FONT></P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.LeituraX</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Emite o relat&oacute;rio
+					de Leitura X. <BR><B>Nota</B>: em alguns estados, &eacute;
+					necess&aacute;rio imprimir uma Leitura X todo inicio de dia e
+					cada inicio de Bobina</FONT></P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.ReducaoZ</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P STYLE="margin-bottom: 0.5cm"><FONT SIZE=3 STYLE="font-size: 13pt"><I>ECF.ReducaoZ
+					[ ( dDataHora ) ]</I></FONT></P>
+					<P STYLE="text-indent: 0cm; margin-bottom: 0.5cm"><FONT SIZE=2 STYLE="font-size: 11pt"><B>Par&acirc;metros:<BR><I>dDataHora</I></B>
+					- Data / Hora atual do micro. Par&acirc;metro pode ser omitido.
+					Se dDataHora for informado, o ACBrECF tentar&aacute; acertar o
+					rel&oacute;gio do ECF (dispon&iacute;vel apenas em alguns ECFs),
+					aumentando ou diminuindo o hor&aacute;rio no m&aacute;ximo de 5
+					minutos por dia.</FONT></P>
+					<P STYLE="text-indent: 0cm; margin-bottom: 0.5cm"><FONT SIZE=2 STYLE="font-size: 11pt"><B>Exemplos:</B><BR>ECF.ReducaoZ
+					-&gt; <FONT SIZE=2>Par&acirc;metro dDataHora foi omitido</FONT>
+					<BR>ECF.ReducaoZ(&ldquo;14/08/06 18:05:20&rdquo;) -&gt;
+					<FONT SIZE=2>Informando o Par&acirc;metro dDataHora
+					<BR></FONT>ECF.ReducaoZ(&ldquo;14/08/2006 18:05&rdquo;) -&gt;
+					<FONT SIZE=2>Informando o Par&acirc;metro dDataHora</FONT></FONT></P>
+					<P STYLE="text-indent: 0cm; margin-bottom: 0.5cm"><FONT SIZE=2 STYLE="font-size: 11pt"><B>Nota</B>:
+					Se emitido no mesmo dia fiscal, bloqueia o ECF at&eacute; as
+					24:00hs. <BR>Se n&atilde;o for emitida no mesmo dia fiscal o ECF
+					ficar&aacute; bloqueado, e o ACBr retornar&aacute; o Estado como
+					estRequerZ. Nesse caso ser&aacute; necess&aacute;rio emitir a
+					Redu&ccedil;&atilde;o Z pendente (do dia anterior) para liberar
+					o ECF</FONT></P>
+					<P STYLE="text-indent: 0cm"><FONT SIZE=2 STYLE="font-size: 11pt"><B>Cuidado:</B>
+					Apenas comande a Redu&ccedil;&atilde;o Z se o estado do ECF for
+					estRequerZ ou se voc&ecirc; deseja realmente bloquear o ECF at&eacute;
+					a meia-noite (fim de dia)</FONT></P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.TestaPodeAbrirCupom</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P STYLE="font-style: normal"><FONT SIZE=3>Se n&atilde;o puder
+					abrir um Cupom Fiscal, retorna um erro com o motivo, caso
+					contr&aacute;rio retorna OK</FONT></P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.AbreCupom</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P STYLE="margin-bottom: 0.5cm"><FONT SIZE=3 STYLE="font-size: 13pt"><I>ECF.AbreCupom
+					[ ( cCPF_CNPJ ) ]</I></FONT></P>
+					<P STYLE="text-indent: 0cm; margin-bottom: 0.5cm"><FONT SIZE=2 STYLE="font-size: 11pt"><B>Par&acirc;metros:<BR><I>cCPF_CNPJ</I>
+					</B>- Par&acirc;metro opcional. Se necess&aacute;rio, informe o
+					CPF/CNPJ do Consumidor</FONT></P>
+					<P STYLE="text-indent: 0cm; margin-bottom: 0.5cm"><FONT SIZE=2 STYLE="font-size: 11pt"><B>Exemplos:</B><BR>ECF.AbreCupom
+					<FONT SIZE=2><BR>E</FONT>CF.AbreCupom(&ldquo;1234567890&rdquo;)</FONT></P>
+					<P STYLE="text-indent: 0cm"><FONT SIZE=2 STYLE="font-size: 11pt"><B>Nota:
+					</B>Nem todos os modelos de ECF fazem uso do par&acirc;metro
+					cCPF_CNPJ, nesse caso o Cupom ser&aacute; aberto, por&eacute;m o
+					n&uacute;mero de identifica&ccedil;&atilde;o do cliente n&atilde;o
+					ser&aacute; impresso. Dica: Para identificar o cliente prefira
+					usar o Rodap&eacute; do Cupom, que permite at&eacute; 8 linhas
+					de texto livre</FONT></P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.VendeItem</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P STYLE="margin-bottom: 0.5cm"><FONT SIZE=3 STYLE="font-size: 13pt"><I>ECF.VendeItem(cCodigo,
+					cDescricao, cAliquotaICMS, nQtd, nValorUnitario [,nDescontoPorc,
+					cUnidade] )</I></FONT></P>
+					<P STYLE="text-indent: 0cm; margin-bottom: 0.5cm"><FONT SIZE=2 STYLE="font-size: 11pt"><B>Par&acirc;metros:<BR><I>cCodigo</I></B>
+					- Texto com o c&oacute;digo do produto, geralmente &aacute;
+					aceito at&eacute; 13 caracteres, alguns ECFs apenas aceitam
+					num&eacute;ricos no c&oacute;digo.<BR><B><I>cDescricao</I></B> -
+					Texto com a descri&ccedil;&atilde;o do Produto vendido. Procure
+					n&atilde;o usar acentos, pois alguns ECFs n&atilde;o aceitam
+					caracteres acentuados. Para imprimir Descri&ccedil;&otilde;es
+					&ldquo;grandes&rdquo; habilite a op&ccedil;&atilde;o &ldquo;Descri&ccedil;&atilde;o
+					Grande&rdquo; no ACBrMonitor.<BR><B><I>cAliquotaICMS</I></B> -
+					Texto com a representa&ccedil;&atilde;o da Al&iacute;quota do
+					ICMS.<BR>- As al&iacute;quotas podem ser informadas em Valor
+					(mesmo sendo texto). Exemplos: &ldquo;18&rdquo;, &ldquo;2.46&rdquo;.
+					<BR>- Se no ECF existem al&iacute;quotas iguais para ICMS e ISS,
+					use o sufixo &ldquo;T&rdquo; para informar que a al&iacute;quota
+					&eacute; do ICMS ou &ldquo;S&rdquo; para al&iacute;quotas do
+					ISS. Exemplo: &ldquo;18T&rdquo; = al&iacute;quota de 18% do
+					ICMS; &ldquo;2.5S&rdquo; al&iacute;quota de 2,5% do ISS <BR>- As
+					al&iacute;quotas podem ser informadas em &iacute;ndice, de
+					acordo com a Tabela de al&iacute;quotas do ECF, nesse caso use a
+					letra &ldquo;T&rdquo;, seguida da posi&ccedil;&atilde;o da
+					Al&iacute;quota: Exemplo: &ldquo;T01&rdquo;, &ldquo;T10&rdquo;<BR>-
+					Existem al&iacute;quotas internas do ECF para tratar produtos
+					Isentos, nesse caso use: &ldquo;FF&rdquo; para <I>Substitui&ccedil;&atilde;o
+					Tribut&aacute;ria</I>, &ldquo;NN&rdquo; = <I>N&atilde;o
+					incid&ecirc;ncia </I>ou &ldquo;II&rdquo; = <I>Isento <BR><B>nQtd</B>
+					-</I> Quantidade de Produtos a Vender. Permite valores com at&eacute;
+					3 casas decimais. O ACBr verifica quantas casas decimais existem
+					no valor informado e utiliza o comando apropriado para o ECF,
+					otimizando a impress&atilde;o para Inteiros o 2 casas decimais,
+					sempre que poss&iacute;vel<BR><B>nValorUnitario</B> &ndash;
+					Pre&ccedil;o Unit&aacute;rio do produto vendido. Permite valores
+					com at&eacute; 3 casas decimais. O ACBr verifica quantas casas
+					decimais existem no valor informado e utiliza o comando
+					apropriado para o ECF, otimizando a impress&atilde;o para 2
+					casas decimais, sempre que poss&iacute;vel.<BR><B>nD<I>escontoPorc</I></B>
+					- Par&acirc;metro opcional, Se necess&aacute;rio, informe a
+					Porcentagem de Desconto a aplicar no item Vendido. Dependendo do
+					ECF o valor e porcentagem do Desconto ser&aacute; impresso no
+					Cupom.<BR><B>cUnidade</B> - Par&acirc;metro opcional, Se
+					necess&aacute;rio, informe o Texto com a unidade de medida do
+					Item. Exemplo: &ldquo;UN&rdquo;, &ldquo;LT&rdquo;, &ldquo;MT&rdquo;,
+					&ldquo;KG&rdquo;, etc</FONT></P>
+					<P STYLE="text-indent: 0cm; margin-bottom: 0.5cm"><FONT SIZE=2 STYLE="font-size: 11pt"><B>Exemplos:<BR></B>ECF.VendeItem(&quot;789012223233&quot;,&quot;PRODUTO
+					TESTE, TRIBUTADO&quot;,&quot;18&quot;,1, 100.34, 10,&quot;LT&quot;)<BR><FONT SIZE=2>-
+					cCodigo = &quot;789012223233&quot;<BR>- cDescricao = &quot;PRODUTO
+					TESTE, TRIBUTADO&quot;<BR>- cAliquotaICMS = 18<BR>- nQtd, = 1<BR>-
+					nValorUnitario = 100.34 (Cem Reais e Trinta e Quatro Centavos)<BR>-
+					nDescontoPorc = 10 (Dez Por cento)<BR>- cUnidade = &quot;LT&quot;</FONT></FONT></P>
+					<P STYLE="text-indent: 0cm; margin-bottom: 0.5cm; font-weight: medium">
+					ECF.VendeItem(&quot;789012456789&quot;,&quot;PRODUTO TESTE,
+					ISENTO&quot;,&quot;II&quot;, 1.5, 2.5 )<BR><FONT SIZE=2>N&atilde;o
+					especificou os par&acirc;metros opcionais (Desconto e
+					Unidade)...</FONT></P>
+					<P STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=2 STYLE="font-size: 11pt"><B>Notas:<BR>-
+					</B>O ACBr tentar&aacute; otimizar a impress&atilde;o ocupando o
+					menor numero de linhas poss&iacute;veis, de acordo com o tamanho
+					dos par&acirc;metros cCodigo e cDescricao. Espa&ccedil;os a
+					direita de cDescricao s&atilde;o ignorados.<BR>- Para evitar
+					&ldquo;diferen&ccedil;as&rdquo; entre o seu programa e o
+					impresso no ECF, procure informar os campos <I>nQtd</I> e
+					<I>nValorUnitario</I> j&aacute; arredondados para o n&uacute;mero
+					m&aacute;ximo de casas decimais que voc&ecirc; deseja utilizar.</FONT></P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.CancelaItemVendido</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P STYLE="text-indent: 0cm; margin-bottom: 0.5cm; font-weight: medium">
+					<FONT SIZE=3 STYLE="font-size: 13pt"><I>ECF.CancelaItemVendido(
+					nNumItem )</I></FONT></P>
+					<P STYLE="text-indent: 0cm; margin-bottom: 0.5cm"><FONT SIZE=2 STYLE="font-size: 11pt"><B>Par&acirc;metros:<BR><I>nNumItem</I></B>
+					- Numero do Item, de acordo com a ordem de impress&atilde;o no
+					Cupom fiscal, a cancelar</FONT></P>
+					<P STYLE="text-indent: 0cm"><FONT SIZE=2 STYLE="font-size: 11pt"><B>Exemplo:<BR></B>ECF.CancelaItemVendido(
+					5 ) -&gt; Cancela o quinto item impresso no Cupom.</FONT></P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.SubtotalizaCupom</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P STYLE="text-indent: 0cm; margin-bottom: 0.5cm; font-weight: medium">
+					<I><FONT SIZE=3 STYLE="font-size: 13pt">ECF.SubtotalizaCupom [ (
+					nDescontoAcrescimo, cMensagemRodape ) ]</FONT></I> 
+					</P>
+					<P STYLE="text-indent: 0cm; margin-bottom: 0.5cm"><FONT SIZE=2 STYLE="font-size: 11pt"><B>Par&acirc;metros:<BR><I>nDescontoAcrescimo</I></B>
+					- Par&acirc;metro opcional. Para Descontos, informe valores
+					negativos, para acr&eacute;scimos valores
+					positivos<BR><B><I>cMensagemRodape</I></B> &ndash; Par&acirc;metro
+					opcional. Informe at&eacute; 8 linhas de mensagem a serem
+					impressas no rodap&eacute; do cupom. Usado apenas para o ECF
+					DataRegis que n&atilde;o possui o m&eacute;todo <I>FechaCupom,</I>
+					nos demais ECFs, se a mensagem for informada nesse momento, ela
+					ser&aacute; armazenada pelo ACBr e utilizada em <I>FechaCupom</I></FONT></P>
+					<P STYLE="text-indent: 0cm; font-weight: medium"><FONT SIZE=2 STYLE="font-size: 11pt"><B>Exemplos:<BR></B>ECF.SubtotalizaCupom<BR>ECF.SubtotalizaCupom(
+					-1.45 ) -&gt; Desconto de R$ 1,45<BR>ECF.SubtotalizaCupom( 5 )
+					-&gt; Acr&eacute;scimo de R$ 5,00<BR>ECF.SubtotalizaCupom( 0,
+					'Mensagem Linha 1|Mensagem Linha 2') -&gt; Sem desconto /
+					acr&eacute;scimo mas informando 2 linhas de mensagem para serem
+					impressas no rodap&eacute;.</FONT></P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.EfetuaPagamento</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P STYLE="text-indent: 0cm; margin-bottom: 0.5cm; font-weight: medium">
+					<FONT SIZE=3 STYLE="font-size: 13pt"><I>ECF.EfetuaPagamento(
+					cCodFormaPagto, nValor [, cObservacao, bImprimeVinculado ] ) ;</I></FONT></P>
+					<P STYLE="text-indent: 0cm; margin-bottom: 0.5cm"><FONT SIZE=2 STYLE="font-size: 11pt"><B>Par&acirc;metros:<BR><I><FONT SIZE=3>cCodFormaPagto</FONT></I></B>
+					<I>-</I> &Iacute;ndice da Forma de pagamento cadastrada no ECF.
+					Para conhecer todas as Formas de pagamento cadastradas e seus
+					respectivos &iacute;ndices, utilize o comando
+					<I>ECF.FormasPagamento</I> <BR><B><I>nValor</I></B> - Valor pago
+					para essa forma de pagamento.<BR><B><I>cObservacao</I></B> -
+					Pode ser omitido. Alguns ECFs permitem a impress&atilde;o de at&eacute;
+					2 linhas de observa&ccedil;&atilde;o para cada forma de
+					pagamento<BR><B><I>bImprimeVinculado</I></B> - Pode ser omitido,
+					nesse caso assume &ldquo;False&rdquo;. Se for informado &ldquo;True&rdquo;
+					para este par&acirc;metro, o ACBr apenas verifica se &eacute;
+					permitido imprimir Cupom N&atilde;o Fiscal Vinculado para essa
+					forma de Pagamento.</FONT></P>
+					<P STYLE="text-indent: 0cm; font-weight: medium"><FONT SIZE=2 STYLE="font-size: 11pt"><B>Exemplos:<BR>-
+					</B>EfetuaPagamento( &ldquo;01&rdquo;, 10 ) -&gt; Pagando R$
+					10,00 para a Forma de Pagamento 01<BR>- EfetuaPagamento( &ldquo;02&rdquo;,
+					5.43, &ldquo;Pagamento A PRAZO&rdquo; ) -&gt; Pagando R$ 5,43
+					para a Forma de Pagamento 02, imprimindo uma observa&ccedil;&atilde;o
+					sobre o Pagamento<BR>- EfetuaPagamento( &ldquo;03&rdquo;, 30,
+					&ldquo;TEF&rdquo;, True ) -&gt; Pagando R$ 30,00 para a Forma de
+					Pagamento 03, imprimindo a Observa&ccedil;&atilde;o &ldquo;TEF&rdquo;
+					e verificando se a Forma de pagamento 03 permite ou n&atilde;o a
+					emiss&atilde;o de Cupom Vinculado</FONT></P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.FechaCupom</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P STYLE="text-indent: 0cm; margin-bottom: 0.5cm; font-weight: medium">
+					<FONT SIZE=3 STYLE="font-size: 13pt"><I>ECF.FechaCupom [ (
+					cMensagemRodape ) ]<BR><BR></I><FONT SIZE=2 STYLE="font-size: 11pt"><B>Par&acirc;metros:<I><BR>cMensagemRodape</I></B>
+					<I>-</I> Par&acirc;metro opcional. Informe at&eacute; 8 linhas
+					de mensagem a serem impressas no rodap&eacute; do cupom. Se esse
+					par&acirc;metro for omitido aqui, por&eacute;m foi informado em
+					<I>ECF.SubtotalizaCupom</I> , o texto informado anteriormente
+					ser&aacute; utilizado.</FONT></FONT></P>
+					<P STYLE="text-indent: 0cm; margin-bottom: 0.5cm; font-weight: medium">
+					<FONT SIZE=2 STYLE="font-size: 11pt"><B><I>Exemplos:<BR></I></B>ECF.FechaCupom
+					;<BR>ECF.FechaCupom( 'Mensagem Linha 1|Mensagem Linha 2') -&gt;
+					Informando 2 linhas de mensagem para serem impressas no rodap&eacute;.</FONT></P>
+					<P STYLE="text-indent: 0cm; font-weight: medium"><FONT SIZE=2 STYLE="font-size: 11pt"><B>Notas</B>:
+					Utilize a mensagem no rodap&eacute; para identificar o Cliente,
+					(Nome, Documento, Endere&ccedil;o, etc)<BR>Este comando s&oacute;
+					pode ser executado ap&oacute;s o Total de Pagamentos
+					(<I>ECF.TotalPago</I>) efetuados com <I>ECF.EfetuaPagamento</I>
+					atingir ou ultrapassar o valor de <I>ECF.SubTotal</I></FONT></P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.CancelaCupom</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P STYLE="text-indent: 0cm; font-style: normal; font-weight: medium">
+					<FONT SIZE=3>Cancela o Cupom Fiscal atual (se estiver aberto) em
+					qualquer est&aacute;gio do Cupom. <BR>Se n&atilde;o houver cupom
+					aberto, cancela o &Uacute;ltimo Cupom emitido, caso o &uacute;ltimo
+					documento seja realmente um Cupom Fiscal.</FONT></P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.Aliquotas</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P STYLE="margin-bottom: 0.5cm"><FONT SIZE=2 STYLE="font-size: 11pt">Retorna
+					todas as al&iacute;quotas cadastradas no ECF, no formato:</FONT></P>
+					<P STYLE="text-indent: 0cm; margin-bottom: 0.5cm"><FONT SIZE=2 STYLE="font-size: 11pt">IIIIT999.99|IIIIT999.99|IIIIT999.99|....</FONT></P>
+					<P STYLE="text-indent: 0cm; margin-bottom: 0.5cm"><FONT SIZE=2 STYLE="font-size: 11pt"><B>Onde</B>:<BR><B>IIII</B>
+					= &iacute;ndice da Al&iacute;quota usado pelo ACBrECF<BR><B>T</B>
+					= Tipo da Al&iacute;quota, ( &ldquo;T&rdquo; = ICMS, &ldquo;S&rdquo;
+					= ISS)<BR><B>999.99</B> = Valor da </FONT>Al&iacute;quota</P>
+					<P STYLE="text-indent: 0cm"><B>Nota</B>: Esse comando quando
+					executado a primeira vez, se comunica com o ECF a fim de
+					carregar a tabela de al&iacute;quotas. Ap&oacute;s a carga, elas
+					s&atilde;o transferidas para a mem&oacute;ria do ACBrECF</P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.CarregaAliquotas</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Semelhante ao comando
+					ECF.Aliquotas, por&eacute;m esse comando sempre se comunica com
+					o ECF a fim de ler novamente todas as al&iacute;quotas
+					cadastradas</FONT></P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.ProgramaAliquota</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P STYLE="margin-bottom: 0.5cm"><FONT SIZE=3 STYLE="font-size: 13pt"><I>ECF.ProgramaAliquota(
+					nValorAliquota[, cTipoAliquota , cPosicaoAliquota] )</I></FONT></P>
+					<P STYLE="text-indent: 0cm; margin-bottom: 0.5cm"><FONT SIZE=2 STYLE="font-size: 11pt"><B>Par&acirc;metros:</B><BR><B><I>nValorAliquota</I></B>
+					- Valor da Al&iacute;quota a programar. Exemplos: 18 , 12 ,
+					2.46<BR><B><I>cTipoAliquota</I></B> - Tipo da Al&iacute;quota ,
+					Use &ldquo;T&rdquo; para ICMS ou &ldquo;S&rdquo; para ISS. Pode
+					ser omitido, nesse caso assume &ldquo;T&rdquo;<BR><B><I>cPosicaoAliquota</I></B>
+					- Posi&ccedil;&atilde;o de cadastro da Al&iacute;quota. N&atilde;o
+					&eacute; aceito em todos os modelos de ECFs, e em alguns outros
+					apenas &eacute; aceito em modo de Interven&ccedil;&atilde;o.
+					<B>Normalmente esse par&acirc;metro deve ser omitido</B></FONT></P>
+					<P STYLE="text-indent: 0cm; margin-bottom: 0.5cm"><FONT SIZE=2 STYLE="font-size: 11pt"><B>Exemplos:</B><BR>ECF.ProgramaAliquota(
+					18 ) &ndash; <FONT SIZE=2>Programa a Al&iacute;quota de 18% do
+					ICMS</FONT><BR>ECF.ProgramaAliquota( 2.46 , &rdquo;T&rdquo; ) &ndash;
+					<FONT SIZE=2>Programa a Al&iacute;quota de 2,46% do
+					ICMS<BR></FONT>ECF.ProgramaAliquota( 2.5, &ldquo;S&rdquo; ) &ndash;
+					<FONT SIZE=2>Programa a Al&iacute;quota de 5% do ISS</FONT></FONT></P>
+					<P STYLE="text-indent: 0cm; font-weight: medium"><FONT SIZE=2 STYLE="font-size: 11pt"><B>Notas:</B><BR>Na
+					maioria dos ECFs este comando somente &eacute; aceito quando o
+					Movimento n&atilde;o foi iniciado, ou seja, <B>ap&oacute;s</B>
+					uma Redu&ccedil;&atilde;o Z e <B>antes</B> de uma Venda ou
+					Leitura X<BR>N&atilde;o &eacute; poss&iacute;vel apagar as
+					al&iacute;quotas programadas, portanto <B>CUIDADO ao programar
+					novas Al&iacute;quotas</B>. Apenas uma interven&ccedil;&atilde;o
+					t&eacute;cnica pode remover as Al&iacute;quotas j&aacute;
+					programadas</FONT></P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.FormasPagamento</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3><B>ECF.CarregaFormasPagamento</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3><B>ECF.ProgramaFormaPagamento</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P STYLE="text-indent: 0cm; font-weight: medium"><FONT SIZE=3 STYLE="font-size: 13pt"><I>ECF.ProgramaFormaPagamento(
+					cDescricao [, bPermitevinculado, cPosicao] )</I></FONT></P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3><B>ECF.ComprovantesNaoFiscais</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=2><B>ECF.CarregaComprovantesNaoFiscais</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=2><B>ECF.ProgramaComprovanteNaoFiscal</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P STYLE="text-indent: 0cm; font-weight: medium"><FONT SIZE=3 STYLE="font-size: 13pt"><I>ECF.ProgramaComprovanteNaoFiscal(
+					cDescricao [, cTipo, cPosicao] )</I></FONT></P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.UnidadesMedida</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3><B>ECF.CarregaUnidadesMedida</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3><B>ECF.ProgramaUnidadeMedida</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P STYLE="text-indent: 0cm; font-weight: medium"><FONT SIZE=3 STYLE="font-size: 13pt"><I>ECF.ProgramaUnidadeMedida(
+					cDescricao ) </I></FONT>
+					</P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.ImprimeCheque</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P><FONT SIZE=3 STYLE="font-size: 13pt"><I>ECF.ImprimeCheque(
+					cBanco, nValor, cFavorecido, cCidade, dData [, cObserva&ccedil;&atilde;o
+					] )</I></FONT></P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3><B>ECF.CancelaImpressaoCheque</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.ChequePronto</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.MudaHorarioVerao</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P STYLE="text-indent: 0cm; font-weight: medium"><FONT SIZE=3 STYLE="font-size: 13pt"><I>ECF.MudaHorarioVerao
+					[ ( bHorarioVerao ) ]</I></FONT></P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.MudaArredondamento</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P STYLE="text-indent: 0cm; font-weight: medium"><FONT SIZE=3 STYLE="font-size: 13pt"><I>ECF.MudaArredondamento(
+					bArredonda )</I></FONT></P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.PreparaTEF</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3>-
+					Verifica se existe algum relat&oacute;rio Gerencial ou Vinculado
+					aberto, se for o caso, fecha-o.<BR>- Carrega as tabelas de
+					Formas de Pagamento e Comprovantes n&atilde;o Fiscais na
+					mem&oacute;ria.<BR>- Deve ser chamado apenas no inicio da
+					aplica&ccedil;&atilde;o</FONT></P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.CorrigeEstadoErro</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3>Verifica
+					o estado atual do ECF e efetua as opera&ccedil;&otilde;es
+					necess&aacute;rias para deixar o ECF no estado livre. Portanto
+					esse m&eacute;todo tenta fechar ou cancelar qualquer documento
+					que esteja aberto. Em alguns ECFs comandos adicionais s&atilde;o
+					enviados para tentar &ldquo;desbloquear&rdquo; o ECF de alguma
+					condi&ccedil;&atilde;o de erro que impe&ccedil;a a impress&atilde;o
+					de novos documentos.</FONT></P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3><B>ECF.AbreRelatorioGerencial</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.RelatorioGerencial</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P><FONT SIZE=3 STYLE="font-size: 13pt"><I>ECF.RelatorioGerencial(
+					cLinhas, nVias )</I></FONT></P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3><B>ECF.LinhaRelatorioGerencial</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P><FONT SIZE=3 STYLE="font-size: 13pt"><I>ECF.LinhaRelatorioGerencial(
+					cLinha )</I></FONT></P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.AbreCupomVinculado</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P STYLE="text-indent: 0cm"><FONT SIZE=3 STYLE="font-size: 13pt"><I>ECF.AbreCupomVinculado(
+					cCOO , cCodFormaPagto , nValor )<BR>ECF.AbreCupomVinculado( cCOO
+					, cCodFormaPagto , cCodComprovanteNaoFiscal , nValor )</I></FONT></P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.CupomVinculado</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P STYLE="text-indent: 0cm; font-weight: medium"><FONT SIZE=3 STYLE="font-size: 13pt"><I>ECF.CupomVinculado(
+					cCOO , cCodFormaPagto , nValor )<BR>ECF.CupomVinculado( cCOO ,
+					cCodFormaPagto , cCodComprovanteNaoFiscal , nValor )</I></FONT></P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.LinhaCupomVinculado</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P><FONT SIZE=3 STYLE="font-size: 13pt"><I>ECF.LinhaCupomVinculado(
+					cLinha )</I></FONT></P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.PulaLinhas</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P><FONT SIZE=3 STYLE="font-size: 13pt"><I>ECF.PulaLinhas(
+					nNumLinhas )</I></FONT></P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.FechaRelatorio</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.LeituraMemoriaFiscal</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P STYLE="text-indent: 0cm"><FONT SIZE=3 STYLE="font-size: 13pt"><I>ECF.LeituraMemoriaFiscal(
+					dDt.Inicial, dDt.Final )<BR>ECF.LeituraMemoriaFiscal(
+					nReducaoInicial , nReducaoFinal )</I></FONT></P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=2><B>ECF.LEIturaMemoriaFiscalSerial</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P><FONT SIZE=3 STYLE="font-size: 13pt"><I>ECF.LeituraMemoriaFiscalSerial(
+					dDt.Inicial , dDt.Final )<BR>ECF.LeituraMemoriaFiscalSerial(
+					nReducaoInicial , nReducaoFinal )</I></FONT></P>
+				</TD>
+			</TR>
+			<TR VALIGN=TOP>
+				<TD WIDTH=290>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>ECF.EnviaComando</B></FONT></P>
+				</TD>
+				<TD WIDTH=614>
+					<P><FONT SIZE=3 STYLE="font-size: 13pt"><I>ECF.EnviaComando(
+					cComando )<BR>ECF.EnviaComando( cComando , nTimeOut )</I></FONT></P>
+				</TD>
+			</TR>
+		</TBODY>
+	</TABLE>
+</DIV>
+<H3 CLASS="western"><BR><BR>
+</H3>
+<H3 CLASS="western"><FONT SIZE=4>Comandos aceitos pelo Objeto CHQ</FONT></H3>
+<DIV ALIGN=RIGHT>
+	<TABLE WIDTH=931 BORDER=1 CELLPADDING=4 CELLSPACING=3 STYLE="page-break-before: always">
+		<COL WIDTH=216>
+		<COL WIDTH=688>
+		<THEAD>
+			<TR>
+				<TH WIDTH=216 VALIGN=BOTTOM>
+					<P ALIGN=CENTER STYLE="font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>Comando</B></FONT></P>
+				</TH>
+				<TH WIDTH=688 VALIGN=TOP>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Finalidade</FONT></P>
+				</TH>
+			</TR>
+		</THEAD>
+		<TBODY>
+			<TR>
+				<TD WIDTH=216 VALIGN=BOTTOM>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>CHQ.Ativar</B></FONT></P>
+				</TD>
+				<TD WIDTH=688 VALIGN=TOP>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Ativa a comunica&ccedil;&atilde;o
+					com a Impressora de Cheques. N&atilde;o precisa ser usado... o
+					ACBrMonitor ativar&aacute; o componente se for necess&aacute;rio.</FONT></P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=216 VALIGN=BOTTOM>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>CHQ.Desativar</B></FONT></P>
+				</TD>
+				<TD WIDTH=688 VALIGN=TOP>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Desativa a comunica&ccedil;&atilde;o
+					com a impressora de Cheques</FONT></P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=216 VALIGN=BOTTOM>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>CHQ.Ativo</B></FONT></P>
+				</TD>
+				<TD WIDTH=688 VALIGN=TOP>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Retorna &ldquo;True&rdquo;
+					se a comunica&ccedil;&atilde;o com a Impressora de Cheques est&aacute;
+					ativa </FONT>
+					</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=216 VALIGN=BOTTOM>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>CHQ.ModeloStr</B></FONT></P>
+				</TD>
+				<TD WIDTH=688 VALIGN=TOP>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Retorna Texto descritivo
+					do Modelo da Impressora de Cheque selecionada no ACBrMonitor.
+					Exemplo: &ldquo;Bematech&rdquo;</FONT></P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=216 VALIGN=BOTTOM>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>CHQ.Modelo</B></FONT></P>
+				</TD>
+				<TD WIDTH=688 VALIGN=TOP>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Retorna Texto com o
+					valor da propriedade &ldquo;Modelo&rdquo; de ACBrCHQ. Exemplo:
+					&ldquo;chqBematech&rdquo;</FONT></P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=216 VALIGN=BOTTOM>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>CHQ.Porta</B></FONT></P>
+				</TD>
+				<TD WIDTH=688 VALIGN=TOP>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Retorna Texto com a
+					Porta utilizada para a comunica&ccedil;&atilde;o serial /
+					paralela</FONT></P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=216 VALIGN=BOTTOM>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>CHQ.Banco</B></FONT></P>
+				</TD>
+				<TD WIDTH=688 VALIGN=TOP>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Retorna Texto com o
+					Banco atual</FONT></P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=216 VALIGN=BOTTOM>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>CHQ.SetBanco</B></FONT></P>
+				</TD>
+				<TD WIDTH=688 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm; margin-bottom: 0.5cm; font-weight: medium">
+					<FONT SIZE=3 STYLE="font-size: 13pt"><I>CHQ.SetBanco ( cCodBanco
+					)</I></FONT></P>
+					<P STYLE="text-indent: 0cm; font-style: normal; font-weight: medium">
+					<FONT SIZE=2 STYLE="font-size: 11pt">Informa para a Impressora
+					de Cheques o lay-out de Banco que ser&aacute; utilizado</FONT></P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=216 VALIGN=BOTTOM>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>CHQ.Cidade</B></FONT></P>
+				</TD>
+				<TD WIDTH=688 VALIGN=TOP>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Retorna Texto com a
+					Cidade atual</FONT></P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=216 VALIGN=BOTTOM>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>CHQ.SetCidade</B></FONT></P>
+				</TD>
+				<TD WIDTH=688 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm; margin-bottom: 0.5cm; font-weight: medium">
+					<FONT SIZE=3 STYLE="font-size: 13pt"><I>CHQ.SetCidade ( cCidade
+					)</I></FONT></P>
+					<P STYLE="text-indent: 0cm; font-style: normal; font-weight: medium">
+					<FONT SIZE=2 STYLE="font-size: 11pt">Informa para a Impressora
+					de Cheques a Cidade</FONT></P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=216 VALIGN=BOTTOM>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>CHQ.Favorecido</B></FONT></P>
+				</TD>
+				<TD WIDTH=688 VALIGN=TOP>
+					<P><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=216 VALIGN=BOTTOM>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>CHQ.SetFavorecido</B></FONT></P>
+				</TD>
+				<TD WIDTH=688 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm; font-weight: medium"><FONT SIZE=3 STYLE="font-size: 13pt"><I>CHQ.SetFavorecido
+					( cFavorecido )</I></FONT></P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=216 VALIGN=BOTTOM>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>CHQ.Observacao</B></FONT></P>
+				</TD>
+				<TD WIDTH=688 VALIGN=TOP>
+					<P><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=216 VALIGN=BOTTOM>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>CHQ.SetObservcao</B></FONT></P>
+				</TD>
+				<TD WIDTH=688 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm; font-weight: medium"><FONT SIZE=3 STYLE="font-size: 13pt"><I>CHQ.SetObservcao(
+					cObservacao )</I></FONT></P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=216 VALIGN=BOTTOM>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>CHQ.Valor</B></FONT></P>
+				</TD>
+				<TD WIDTH=688 VALIGN=TOP>
+					<P><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=216 VALIGN=BOTTOM>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>CHQ.SetValor</B></FONT></P>
+				</TD>
+				<TD WIDTH=688 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm; font-weight: medium"><FONT SIZE=3 STYLE="font-size: 13pt"><I>CHQ.SetValor(
+					nValor )</I></FONT></P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=216 VALIGN=BOTTOM>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>CHQ.Data</B></FONT></P>
+				</TD>
+				<TD WIDTH=688 VALIGN=TOP>
+					<P><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=216 VALIGN=BOTTOM>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>CHQ.SetData</B></FONT></P>
+				</TD>
+				<TD WIDTH=688 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm; font-weight: medium"><FONT SIZE=3 STYLE="font-size: 13pt"><I>CHQ.SetData(
+					dData )</I></FONT></P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=216 VALIGN=BOTTOM>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>CHQ.ChequePronto</B></FONT></P>
+				</TD>
+				<TD WIDTH=688 VALIGN=TOP>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Retorna &ldquo;True&rdquo;
+					se o papel estiver posicionado corretamente. Nota: Nem todas as
+					impressoras de Cheque possuem este sensor, ou retornam essa
+					informa&ccedil;&atilde;o.</FONT></P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=216 VALIGN=BOTTOM>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>CHQ.ImprimirCheque</B></FONT></P>
+				</TD>
+				<TD WIDTH=688 VALIGN=TOP>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Efetua a impress&atilde;o
+					do Cheque com os par&acirc;metros informados anteriormente.</FONT></P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=216 VALIGN=BOTTOM>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>CHQ.TravarCheque</B></FONT></P>
+				</TD>
+				<TD WIDTH=688 VALIGN=TOP>
+					<P>Aciona o mecanismo de travamento do documento. Dispon&iacute;vel
+					apenas em algumas impressoras de Cheque. Em alguns modelos &eacute;
+					necess&aacute;rio enviar este comando antes de imprimir linhas
+					avulsas</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=216 VALIGN=BOTTOM>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>CHQ.DestravarCheque</B></FONT></P>
+				</TD>
+				<TD WIDTH=688 VALIGN=TOP>
+					<P>Libera o documento preso com o comando TravarCheque</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=216 VALIGN=BOTTOM>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>CHQ.ImprimirLinha</B></FONT></P>
+				</TD>
+				<TD WIDTH=688 VALIGN=TOP>
+					<P STYLE="margin-bottom: 0.5cm; font-weight: medium"><FONT SIZE=3 STYLE="font-size: 13pt"><I>CHQ.ImprimirLinha
+					( cTexto )</I></FONT></P>
+					<P>Impress&atilde;o de linha de texto livre. Em alguns
+					equipamentos &eacute; necess&aacute;rio executar TravarCheque
+					antes, e DestravarCheque ap&oacute;s o termino da impress&atilde;o.</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=216 VALIGN=BOTTOM>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>CHQ.ImprimirVerso</B></FONT></P>
+				</TD>
+				<TD WIDTH=688 VALIGN=TOP>
+					<P STYLE="margin-bottom: 0.5cm; font-weight: medium"><FONT SIZE=3 STYLE="font-size: 13pt"><I>CHQ.ImprimirLinha
+					( cLinhas )</I></FONT></P>
+					<P>Impress&atilde;o de v&aacute;rias linhas de texto livre.
+					Geralmente usadas para impress&atilde;o de endere&ccedil;o e
+					telefone no verso do cheque. Em alguns equipamentos &eacute;
+					necess&aacute;rio executar TravarCheque antes, e DestravarCheque
+					ap&oacute;s o termino da impress&atilde;o.</P>
+				</TD>
+			</TR>
+		</TBODY>
+	</TABLE>
+</DIV>
+<H3 CLASS="western" STYLE="margin-left: 0cm; margin-top: 0cm; margin-bottom: 0.5cm">
+<BR><BR>
+</H3>
+<H3 CLASS="western"><FONT SIZE=4>Comandos aceitos pelo Objeto GAV</FONT></H3>
+<DIV ALIGN=RIGHT>
+	<TABLE WIDTH=931 BORDER=1 CELLPADDING=4 CELLSPACING=3 STYLE="page-break-before: always">
+		<COL WIDTH=216>
+		<COL WIDTH=688>
+		<THEAD>
+			<TR>
+				<TH WIDTH=216 VALIGN=BOTTOM>
+					<P ALIGN=CENTER STYLE="font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>Comando</B></FONT></P>
+				</TH>
+				<TH WIDTH=688 VALIGN=TOP>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Finalidade</FONT></P>
+				</TH>
+			</TR>
+		</THEAD>
+		<TBODY>
+			<TR>
+				<TD WIDTH=216>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>GAV.Ativar</B></FONT></P>
+				</TD>
+				<TD WIDTH=688 VALIGN=TOP>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Ativa a comunica&ccedil;&atilde;o
+					com a Gaveta de Dinheiro. N&atilde;o precisa ser usado... o
+					ACBrMonitor ativar&aacute; o componente se for necess&aacute;rio.
+					(usado apenas em Gavetas Seriais)</FONT></P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=216>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>GAV.Desativar</B></FONT></P>
+				</TD>
+				<TD WIDTH=688 VALIGN=TOP>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Desativa a comunica&ccedil;&atilde;o
+					com a Gaveta de Dinheiro (usado apenas em Gavetas Seriais)</FONT></P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=216>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>GAV.Ativo</B></FONT></P>
+				</TD>
+				<TD WIDTH=688 VALIGN=TOP>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Retorna &ldquo;True&rdquo;
+					se a comunica&ccedil;&atilde;o com a Gaveta de Dinheiro est&aacute;
+					ativa </FONT>
+					</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=216>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>GAV.ModeloStr</B></FONT></P>
+				</TD>
+				<TD WIDTH=688 VALIGN=TOP>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Retorna Texto descritivo
+					do Modelo da Gaveta de Dinheiro selecionada no ACBrMonitor.
+					Exemplo: &ldquo;Gerbo Serial&rdquo;</FONT></P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=216>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>GAV.Modelo</B></FONT></P>
+				</TD>
+				<TD WIDTH=688 VALIGN=TOP>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Retorna Texto com o
+					valor da propriedade &ldquo;Modelo&rdquo; de ACBrGAV. Exemplo:
+					&ldquo;gavSerialGerbo&rdquo;</FONT></P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=216>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>GAV.Porta</B></FONT></P>
+				</TD>
+				<TD WIDTH=688 VALIGN=TOP>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Retorna Texto com a
+					Porta utilizada para a comunica&ccedil;&atilde;o serial /
+					paralela</FONT></P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=216>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>GAV.AbreGaveta</B></FONT></P>
+				</TD>
+				<TD WIDTH=688 VALIGN=TOP>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Comanda a Abertura da
+					Gaveta de Dinheiro.</FONT></P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=216>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>GAV.GavetaAberta</B></FONT></P>
+				</TD>
+				<TD WIDTH=688 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm; font-style: normal; font-weight: medium">
+					<FONT SIZE=2 STYLE="font-size: 11pt">Retorna &ldquo;True&rdquo;
+					se a Gaveta de Dinheiro estiver aberta. <BR>Nota: N&atilde;o &eacute;
+					poss&iacute;vel ler o estado da Gaveta em Impressoras Comuns
+					(n&atilde;o-fiscal) de bobina.</FONT></P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=216>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>GAV.StrComando</B></FONT></P>
+				</TD>
+				<TD WIDTH=688 VALIGN=TOP>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Retorna a &ldquo;String&rdquo;
+					descrevendo o comando que ser&aacute; enviado para a Impressora
+					para causar a abertura da gaveta. Veja <B>GAV.SetStrComando</B>
+					abaixo.</FONT></P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=216>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>GAV.SetStrComando</B></FONT></P>
+				</TD>
+				<TD WIDTH=688 VALIGN=TOP>
+					<P STYLE="margin-bottom: 0.5cm"><FONT SIZE=2 STYLE="font-size: 11pt">&Uacute;til
+					apenas quando a Gaveta de Dinheiro est&aacute; ligada a uma
+					Impressora Comum de Bobina. Consulte o manual de sua impressora
+					para saber a sequencia de caracteres de comando a enviar para a
+					impressora para acionar a abertura da Gaveta. Separe todos os
+					caracteres por virgula (,). Para definir caracteres de comando,
+					utilize o sinal # seguido de 3 digitos com o c&oacute;digo ASC
+					II do caracter. </FONT>
+					</P>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Exemplo: para abrir a
+					Gaveta em impressoras de bobina Bematech use o comando:
+					<FONT SIZE=1 STYLE="font-size: 8pt"><FONT FACE="MS Sans Serif, sans-serif"><B>#027,v,#140</B>
+					ou seja, ESC+'v'+chr(140)</FONT></FONT></FONT></P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=216>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>GAV.
+					AberturaIntervalo </B></FONT>
+					</P>
+				</TD>
+				<TD WIDTH=688 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm">Retorna o m&iacute;nimo intervalo de
+					tempo de espera (em milisegundos) entre uma abertura da Gaveta e
+					outra. Veja <B>GAV.SetAberturaIntervalo </B>abaixo</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=216>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>GAV.SetAberturaIntervalo</B></FONT></P>
+				</TD>
+				<TD WIDTH=688 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm; margin-bottom: 0.5cm; font-style: normal; font-weight: medium">
+					<FONT SIZE=3>Define o intervalo de tempo de espera (em
+					milisegundos) entre uma abertura da Gaveta e outra. Este tempo
+					pode variar muito de um modelo de Gaveta e outro. </FONT>
+					</P>
+					<P STYLE="text-indent: 0cm; font-style: normal; font-weight: medium">
+					<FONT SIZE=3>Gavetas ligadas diretamente a porta Serial demoram
+					mais para carregar seu capacitor interno a fim de permitir uma
+					nova abertura. (de 5 a 7 segundos)<BR>Gavetas ligadas a
+					Impressoras Fiscais ou Impressoras de Bobina podem ser
+					re-abertas rapidamente (em m&eacute;dia 300 a 500 milisegundos)</FONT></P>
+				</TD>
+			</TR>
+		</TBODY>
+	</TABLE>
+</DIV>
+<H3 CLASS="western" STYLE="margin-left: 0cm; margin-top: 0cm; margin-bottom: 0.5cm">
+<BR><BR>
+</H3>
+<H3 CLASS="western"><FONT SIZE=4>Comandos aceitos pelo Objeto DIS</FONT>
+</H3>
+<DIV ALIGN=RIGHT>
+	<TABLE WIDTH=931 BORDER=1 CELLPADDING=4 CELLSPACING=3 STYLE="page-break-before: always">
+		<COL WIDTH=242>
+		<COL WIDTH=662>
+		<THEAD>
+			<TR>
+				<TH WIDTH=242 VALIGN=BOTTOM>
+					<P ALIGN=CENTER STYLE="font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>Comando</B></FONT></P>
+				</TH>
+				<TH WIDTH=662 VALIGN=TOP>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Finalidade</FONT></P>
+				</TH>
+			</TR>
+		</THEAD>
+		<TBODY>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>DIS.Ativar</B></FONT></P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Ativa a comunica&ccedil;&atilde;o
+					com o Display de Mensagem</FONT></P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>DIS.Desativar</B></FONT></P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Desativa a comunica&ccedil;&atilde;o
+					com o Display de Mensagem</FONT></P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>DIS.Ativo</B></FONT></P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Retorna &ldquo;True&rdquo;
+					se a comunica&ccedil;&atilde;o com o Display est&aacute; ativa </FONT>
+					</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>DIS.ModeloStr</B></FONT></P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Retorna Texto descritivo
+					do Modelo do Display selecionada no ACBrMonitor. </FONT>
+					</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>DIS.Modelo</B></FONT></P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Retorna Texto com o
+					valor da propriedade &ldquo;Modelo&rdquo; de ACBrDIS. Exemplo:
+					&ldquo;disKeytecTeclado&rdquo;</FONT></P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>DIS.Porta</B></FONT></P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Retorna Texto com a
+					Porta utilizada para a comunica&ccedil;&atilde;o serial /
+					paralela</FONT></P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>DIS.Trabalhando</B></FONT></P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm"><FONT SIZE=2 STYLE="font-size: 11pt">Retorna
+					&ldquo;True&rdquo; se a Thread do componente est&aacute;
+					executando alguma opera&ccedil;&atilde;o de exibi&ccedil;&atilde;o
+					no Display (efeitos como Rolar, Vai e Vem, etc)</FONT></P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>DIS.LinhasCount</B></FONT></P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm"><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>DIS.SetLinhasCount</B></FONT></P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm"><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>DIS.Colunas</B></FONT></P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm"><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>DIS.SetColunas</B></FONT></P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm"><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>DIS.Alinhamento</B></FONT></P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm"><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>DIS.SetAlinhamento</B></FONT></P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm"><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>DIS.Intervalo</B></FONT></P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm"><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>DIS.SetIntervalo</B></FONT></P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm"><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>DIS.Passos</B></FONT></P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm"><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>DIS.SetPassos</B></FONT></P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm"><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>DIS.LimparDisplay</B></FONT></P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm"><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>DIS.Escrever</B></FONT></P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm"><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>DIS.PosicionarCursor</B></FONT></P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm"><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>DIS.Parar</B></FONT></P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm"><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>DIS.Continuar</B></FONT></P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm"><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>DIS.PararLinha</B></FONT></P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm"><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>DIS.ContinuarLinha</B></FONT></P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm"><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>DIS.ExibirLinha</B></FONT></P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm"><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>DIS.RolarLinha</B></FONT></P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm"><BR>
+					</P>
+				</TD>
+			</TR>
+		</TBODY>
+	</TABLE>
+</DIV>
+<H3 CLASS="western" STYLE="margin-left: 0cm; margin-top: 0cm; margin-bottom: 0.5cm">
+<BR><BR>
+</H3>
+<H3 CLASS="western"><FONT SIZE=4>Comandos aceitos pelo Objeto LCB</FONT></H3>
+<DIV ALIGN=RIGHT>
+	<TABLE WIDTH=931 BORDER=1 CELLPADDING=4 CELLSPACING=3 STYLE="page-break-before: always">
+		<COL WIDTH=242>
+		<COL WIDTH=662>
+		<THEAD>
+			<TR>
+				<TH WIDTH=242 VALIGN=BOTTOM>
+					<P ALIGN=CENTER STYLE="font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>Comando</B></FONT></P>
+				</TH>
+				<TH WIDTH=662 VALIGN=TOP>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Finalidade</FONT></P>
+				</TH>
+			</TR>
+		</THEAD>
+		<TBODY>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>LCB.Ativar</B></FONT></P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Ativa a comunica&ccedil;&atilde;o
+					com o dispositivo Serial</FONT></P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>LCB.Desativar</B></FONT></P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Desativa a comunica&ccedil;&atilde;o
+					com o dispositivo Serial</FONT></P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>LCB.Ativo</B></FONT></P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Retorna &ldquo;True&rdquo;
+					se a comunica&ccedil;&atilde;o com o dispositivo est&aacute;
+					ativa </FONT>
+					</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>LCB.Porta</B></FONT></P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P><FONT SIZE=2 STYLE="font-size: 11pt">Retorna Texto com a
+					Porta utilizada para a comunica&ccedil;&atilde;o serial /
+					paralela</FONT></P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>LCB.Intervalo</B></FONT></P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm"><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>LCB.SetIntervalo</B></FONT></P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm"><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>LCB.
+					UltimaLeitura</B></FONT></P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm"><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>LCB.
+					UltimoCodigo </B></FONT>
+					</P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm"><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>LCB.
+					EnviarString </B></FONT>
+					</P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm"><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>LCB.LerString</B></FONT></P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm"><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>LCB.UsarFila</B></FONT></P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm"><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>LCB.SetUsarFila</B></FONT></P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm"><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>LCB.FilaMaxItens
+					</B></FONT>
+					</P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm"><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>LCB.SetFilaMaxItens
+					</B></FONT>
+					</P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm"><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>LCB.LerFila</B></FONT></P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm"><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>LCB.ApagarFila</B></FONT></P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm"><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>LCB.FilaCount</B></FONT></P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm"><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>LCB.PrefixoAExcluir</B></FONT></P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm"><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>LCB.
+					SetPrefixoAExcluir </B></FONT>
+					</P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm"><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>LCB.Sufixo</B></FONT></P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm"><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>LCB.SetSufixo</B></FONT></P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm"><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>LCB.
+					ExcluirSufixo </B></FONT>
+					</P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm"><BR>
+					</P>
+				</TD>
+			</TR>
+			<TR>
+				<TD WIDTH=242>
+					<P ALIGN=CENTER STYLE="text-indent: 0cm; font-style: normal"><FONT SIZE=3 STYLE="font-size: 13pt"><B>LCB.
+					SetExcluirSufixo </B></FONT>
+					</P>
+				</TD>
+				<TD WIDTH=662 VALIGN=TOP>
+					<P STYLE="text-indent: 0cm"><BR>
+					</P>
+				</TD>
+			</TR>
+		</TBODY>
+	</TABLE>
+</DIV>
+<H3 CLASS="western" STYLE="margin-left: 0cm; margin-top: 0cm; margin-bottom: 0.5cm">
+<BR><BR>
+</H3>
+</BODY>
+</HTML>

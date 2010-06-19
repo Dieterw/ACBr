@@ -383,10 +383,10 @@ TACBrECFBematech = class( TACBrECFClass )
  end ;
 
 implementation
-Uses ACBrECF,
-     SysUtils, IniFiles,
+Uses
+   SysUtils, IniFiles,
    {$IFDEF COMPILER6_UP} DateUtils, StrUtils, {$ELSE} ACBrD5, Windows,{$ENDIF}
-     Math , synaser;
+   Math ;
 
 { ----------------------------- TACBrECFBematech ------------------------------ }
 

@@ -130,7 +130,6 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
     function RemoveNulos(Str:AnsiString):AnsiString;
     Function PreparaCmd( cmd : AnsiString ) : AnsiString ;
     function CalcCheckSum(cmd: AnsiString): AnsiChar;
-    procedure ChangeHandShake(Value: Boolean);
     function DescompactaRetorno(const Dados: AnsiString): AnsiString;
     function DescreveErro(Erro: Integer): String;
     function AjustaRetorno(Retorno: AnsiString): AnsiString;
@@ -391,16 +390,6 @@ begin
   end ;
 end;
 
-Procedure TACBrECFSwedaSTX.ChangeHandShake( Value : Boolean )  ;
-begin
-  if fpDevice.HandShake = hsDTR_DSR then
-     fpDevice.Serial.DTR := Value ;
-
-  if fpDevice.HandShake = hsRTS_CTS then
-     fpDevice.Serial.RTS := Value ;
-end ;
-
-
 Function TACBrECFSwedaSTX.EnviaComando_ECF( cmd : AnsiString ) : AnsiString ;
 Var ErroMsg, Mensagem : String ;
     FalhasTX : Integer;
@@ -425,9 +414,6 @@ begin
    begin
       fpDevice.Serial.DeadlockTimeout := 2000 ; { Timeout p/ Envio }
       fpDevice.Serial.Purge ;                   { Limpa a Porta }
-      {Se desligar o HandShake, não consigo pegar a resposta}
-      //ChangeHandShake(False);            { Desliga o DTR ou RTS para enviar }
-
 
       if not TransmiteComando( cmd ) then
          continue;
@@ -472,8 +458,6 @@ begin
    end ;
 
    fpComandoEnviado := cmd ;
-
-//   ChangeHandShake(True);     { Liga o DTR ou RTS para ler a Resposta }
 
    { Chama Rotina da Classe mãe TACBrClass para ler Resposta. Se houver
      falha na leitura LeResposta dispara Exceçao.
@@ -776,7 +760,6 @@ begin
        Result := False ;
      end ;
 
-//     ChangeHandShake(False);            { Desliga o DTR ou RTS para enviar }
      fpDevice.Serial.SendByte(ACK_PC);
 
      if Result then
@@ -829,10 +812,8 @@ begin
         GravaLog('SwedaSTX VerificaFimImpressao: Pedindo o Status. Seq:'+IntToStr(fsSEQ)) ;
 
         fpDevice.Serial.Purge ;          // Limpa buffer de Entrada e Saida //
-//        ChangeHandShake(False);          // DesLiga o DTR para enviar //
         fpDevice.EnviaString( Cmd );     // Envia comando //
 
-//        ChangeHandShake(True);           // Liga o DTR para receber //
         wACK := fpDevice.Serial.RecvByte( TimeOut * 1000 ) ; // espera ACK chegar na Porta  //
 
         if wACK = 6 then   // ECF Respondeu corretamente, portanto está trabalhando //

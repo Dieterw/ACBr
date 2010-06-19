@@ -414,7 +414,7 @@ Uses ACBrECF,
     {$ELSE}
       StrUtils, DateUtils,
     {$ENDIF}
-      Math, IniFiles, ACBrUtil , ACBrECFClass ;
+      Math, IniFiles, ACBrUtil;
 
 
 {----------------------------- TACBrRFDItemCupom ------------------------------}
@@ -1113,8 +1113,8 @@ begin
 end ;
 
 procedure TACBrRFD.VerificaParametros;
- Var Erro, ErroECF, ErroCO, ErroCA, MM : String ;
-//   ArqV, ArqB : String ;
+Var
+  Erro, ErroECF, ErroCO, ErroCA, MM : String ;
 begin
   if not fsAtivo then
      raise Exception.Create(ACBrStr('ACBrRFD não está Ativo'));
@@ -1163,6 +1163,7 @@ begin
 *)
 
   { Verificando se Acha Marca e Modelo baseado em RFDID }
+  Erro    := '' ;
   ErroECF := '' ;
   MM      := AchaRFDID(fsECF_RFDID) ;
   if MM = '' then
@@ -1205,7 +1206,7 @@ begin
      ErroCA := ErroCA + 'do Usuário atual do ECF, não definido(s).'+sLineBreak+
                         '(Obtenha esses dados a partir de uma Leitura da Memória Fiscal)' ;
 
-  Erro := Trim(Erro + ErroECF + ErroCO + ErroCA) ;
+  Erro := Trim(ErroECF + ErroCO + ErroCA) ;
   if Erro <> '' then
   begin
      Erro := 'Arquivo "'+cRFDArqINI +'" não configurado corretamente' +sLineBreak+

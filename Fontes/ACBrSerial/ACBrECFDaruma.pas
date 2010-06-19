@@ -153,7 +153,7 @@
 unit ACBrECFDaruma ;
 
 interface
-uses ACBrECFClass, ACBrDevice, ACBrUtil, ACBrCHQClass,
+uses ACBrECFClass, ACBrDevice, ACBrUtil,
      Classes ;
 
 const  NUL = #00 ;
@@ -1695,8 +1695,8 @@ end;
 
 procedure TACBrECFDaruma.SubtotalizaCupom(DescontoAcrescimo: Double;
        MensagemRodape : AnsiString );
-Var A_D : AnsiChar ;
-    RetCmd : AnsiString ;
+Var
+  A_D : AnsiChar ;
 begin
   if DescontoAcrescimo > 0 then
      A_D := '3'
@@ -1707,16 +1707,13 @@ begin
 
   { Inicia fechamento com formas de Pagamento }
   if fpMFD then
-     RetCmd := EnviaComando(FS + 'F' + #206 + A_D + IntToStrZero(Round(DescontoAcrescimo * 100), 12), 5)
+     EnviaComando(FS + 'F' + #206 + A_D + IntToStrZero(Round(DescontoAcrescimo * 100), 12), 5)
   else if fsNumVersao = '2000' then
-     RetCmd := EnviaComando(ESC + #206 + A_D + IntToStrZero(
-                            Round( DescontoAcrescimo * 100 ), 12), 5)
+     EnviaComando(ESC + #206 + A_D + IntToStrZero(Round( DescontoAcrescimo * 100 ), 12), 5)
   else
-     RetCmd := EnviaComando(ESC + #241 + A_D + IntToStrZero(
-                            Round( DescontoAcrescimo * 100 ), 12), 5) ;
+     EnviaComando(ESC + #241 + A_D + IntToStrZero(Round( DescontoAcrescimo * 100 ), 12), 5) ;
 
   fsEmPagamento := true ;
-  // fsTotalAPagar := RoundTo( StrToFloatDef( copy(RetCmd,2,12),0 ) / 100, -2) ;
   fsTotalAPagar := Subtotal ;
   fsRet244      := '' ;
 end;

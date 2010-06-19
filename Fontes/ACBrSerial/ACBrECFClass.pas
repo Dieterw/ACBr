@@ -3064,8 +3064,9 @@ end;
 
 procedure TACBrECFClass.ListaCupomVinculado( Relatorio: TStrings;
   Vias: Integer);
-Var Lin, Imp : Integer ;
-    Texto : String ;
+Var
+  Imp   : Integer ;
+  Texto : String ;
 begin
   Imp := 0 ;
 
@@ -3235,8 +3236,9 @@ end;
 
 procedure TACBrECFClass.ListaRelatorioGerencial(Relatorio: TStrings;
   Vias: Integer; Indice: Integer);
-Var Imp, Lin : Integer ;
-    Texto : String ;
+Var
+  Imp   : Integer ;
+  Texto : String ;
 begin
   Imp := 0 ;
 

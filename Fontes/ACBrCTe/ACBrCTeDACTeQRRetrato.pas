@@ -539,7 +539,7 @@ begin
     with EnderEmit do
     begin
       qrmDadosEmitente.Lines.Add(XLgr + IfThen(Nro = '0', '', ', ' + Nro) + ' ' + XCpl + ' ' + XBairro);
-      qrmDadosEmitente.Lines.Add('CEP: ' + CTeUtil.FormatarCEP(IntToStr(CEP)) + ' - ' + XMun + ' - ' + UF);
+      qrmDadosEmitente.Lines.Add('CEP: ' + CTeUtil.FormatarCEP(FormatFloat( '00000000', CEP )) + ' - ' + XMun + ' - ' + UF);
     end;
     qrmDadosEmitente.Lines.Add('CNPJ: ' + CTeUtil.FormatarCNPJ(CNPJ) + ' INSCRIÇÃO ESTADUAL: ' + IE);
     qrmDadosEmitente.Lines.Add('TELEFONE: ' + CTeUtil.FormatarFone(EnderEmit.Fone));
@@ -604,7 +604,7 @@ begin
   qrlRazaoRemet.Caption := FCTe.Rem.xNome;
   qrlEnderecoRemet1.Caption := FCTe.Rem.EnderReme.xLgr + ', ' + FCTe.Rem.EnderReme.nro;
   qrlEnderecoRemet2.Caption := FCTe.Rem.EnderReme.xCpl;
-  qrlCEPRemet.Caption := CTeUtil.FormatarCEP(IntToStr(FCTe.Rem.EnderReme.CEP));
+  qrlCEPRemet.Caption := CTeUtil.FormatarCEP(FormatFloat( '00000000', FCTe.Rem.EnderReme.CEP ));
   qrlMunRemet.Caption := FCTe.Rem.EnderReme.xMun+' - '+FCTe.Rem.EnderReme.UF;
   qrlCnpjRemet.Caption := CTeUtil.FormatarCNPJ(FCTe.Rem.CNPJCPF);
   qrlPaisRemet.Caption := FCTe.Rem.EnderReme.xPais;
@@ -615,7 +615,7 @@ begin
   qrlRazaoDest.Caption := FCTe.Dest.xNome;
   qrlEnderecoDest1.Caption := FCTe.Dest.EnderDest.xLgr + ', ' + FCTe.Dest.EnderDest.nro;
   qrlEnderecoDest2.Caption := FCTe.Dest.EnderDest.xCpl;
-  qrlCEPDest.Caption := CTeUtil.FormatarCEP(IntToStr(FCTe.Dest.EnderDest.CEP));
+  qrlCEPDest.Caption := CTeUtil.FormatarCEP(FormatFloat( '00000000', FCTe.Dest.EnderDest.CEP));
   qrlMunDest.Caption := FCTe.Dest.EnderDest.xMun+' - '+FCTe.Dest.EnderDest.UF;
   qrlCnpjDest.Caption := CTeUtil.FormatarCNPJ(FCTe.Dest.CNPJCPF);
   qrlPaisDest.Caption := FCTe.Dest.EnderDest.xPais;
@@ -626,7 +626,7 @@ begin
   qrlRazaoExped.Caption := FCTe.Exped.xNome;
   qrlEnderecoExped1.Caption := FCTe.Exped.EnderExped.xLgr + ', ' + FCTe.Exped.EnderExped.nro;
   qrlEnderecoExped2.Caption := FCTe.Exped.EnderExped.xCpl;
-  qrlCEPExped.Caption := CTeUtil.FormatarCEP(IntToStr(FCTe.Exped.EnderExped.CEP));
+  qrlCEPExped.Caption := CTeUtil.FormatarCEP(FormatFloat( '00000000', FCTe.Exped.EnderExped.CEP));
   qrlMunExped.Caption := FCTe.Exped.EnderExped.xMun+' - '+FCTe.Exped.EnderExped.UF;
   qrlCnpjExped.Caption := CTeUtil.FormatarCNPJ(FCTe.Exped.CNPJCPF);
   qrlPaisExped.Caption := FCTe.Exped.EnderExped.xPais;
@@ -637,7 +637,7 @@ begin
   qrlRazaoReceb.Caption := FCTe.Receb.xNome;
   qrlEnderecoReceb1.Caption := FCTe.Receb.EnderReceb.xLgr + ', ' + FCTe.Receb.EnderReceb.nro;
   qrlEnderecoReceb2.Caption := FCTe.Receb.EnderReceb.xCpl;
-  qrlCEPReceb.Caption := CTeUtil.FormatarCEP(IntToStr(FCTe.Receb.EnderReceb.CEP));
+  qrlCEPReceb.Caption := CTeUtil.FormatarCEP(FormatFloat( '00000000', FCTe.Receb.EnderReceb.CEP));
   qrlMunReceb.Caption := FCTe.Receb.EnderReceb.xMun+' - '+FCTe.Receb.EnderReceb.UF;
   qrlCnpjReceb.Caption := CTeUtil.FormatarCNPJ(FCTe.Receb.CNPJCPF);
   qrlPaisReceb.Caption := FCTe.Receb.EnderReceb.xPais;
@@ -649,7 +649,7 @@ begin
       begin
         qrlRazaoToma.Caption := FCTe.Rem.xNome;
         qrlEnderecoToma.Caption := FCTe.Rem.EnderReme.xLgr + ', ' + FCTe.Rem.EnderReme.nro + ' - ' + FCTe.Rem.EnderReme.xCpl;
-        qrlCEPToma.Caption := CTeUtil.FormatarCEP(IntToStr(FCTe.Rem.EnderReme.CEP));
+        qrlCEPToma.Caption := CTeUtil.FormatarCEP(FormatFloat( '00000000', FCTe.Rem.EnderReme.CEP));
         qrlMunToma.Caption := FCTe.Rem.EnderReme.xMun+' - '+FCTe.Rem.EnderReme.UF;
         qrlCnpjToma.Caption := CTeUtil.FormatarCNPJ(FCTe.Rem.CNPJCPF);
         qrlPaisToma.Caption := FCTe.Rem.EnderReme.xPais;
@@ -660,7 +660,7 @@ begin
       begin
         qrlRazaoToma.Caption := FCTe.Exped.xNome;
         qrlEnderecoToma.Caption := FCTe.Exped.EnderExped.xLgr + ', ' + FCTe.Exped.EnderExped.nro + ' - ' + FCTe.Exped.EnderExped.xCpl;
-        qrlCEPToma.Caption := CTeUtil.FormatarCEP(IntToStr(FCTe.Exped.EnderExped.CEP));
+        qrlCEPToma.Caption := CTeUtil.FormatarCEP(FormatFloat( '00000000', FCTe.Exped.EnderExped.CEP));
         qrlMunToma.Caption := FCTe.Exped.EnderExped.xMun+' - '+FCTe.Exped.EnderExped.UF;
         qrlCnpjToma.Caption := CTeUtil.FormatarCNPJ(FCTe.Exped.CNPJCPF);
         qrlPaisToma.Caption := FCTe.Exped.EnderExped.xPais;
@@ -671,7 +671,7 @@ begin
       begin
         qrlRazaoToma.Caption := FCTe.Receb.xNome;
         qrlEnderecoToma.Caption := FCTe.Receb.EnderReceb.xLgr + ', ' + FCTe.Receb.EnderReceb.nro + ' - ' + FCTe.Receb.EnderReceb.xCpl;
-        qrlCEPToma.Caption := CTeUtil.FormatarCEP(IntToStr(FCTe.Receb.EnderReceb.CEP));
+        qrlCEPToma.Caption := CTeUtil.FormatarCEP(FormatFloat( '00000000', FCTe.Receb.EnderReceb.CEP));
         qrlMunToma.Caption := FCTe.Receb.EnderReceb.xMun+' - '+FCTe.Receb.EnderReceb.UF;
         qrlCnpjToma.Caption := CTeUtil.FormatarCNPJ(FCTe.Receb.CNPJCPF);
         qrlPaisToma.Caption := FCTe.Receb.EnderReceb.xPais;
@@ -682,7 +682,7 @@ begin
       begin
         qrlRazaoToma.Caption := FCTe.Dest.xNome;
         qrlEnderecoToma.Caption := FCTe.Dest.EnderDest.xLgr + ', ' + FCTe.Dest.EnderDest.nro + ' - ' + FCTe.Dest.EnderDest.xCpl;
-        qrlCEPToma.Caption := CTeUtil.FormatarCEP(IntToStr(FCTe.Dest.EnderDest.CEP));
+        qrlCEPToma.Caption := CTeUtil.FormatarCEP(FormatFloat( '00000000', FCTe.Dest.EnderDest.CEP));
         qrlMunToma.Caption := FCTe.Dest.EnderDest.xMun+' - '+FCTe.Dest.EnderDest.UF;
         qrlCnpjToma.Caption := CTeUtil.FormatarCNPJ(FCTe.Dest.CNPJCPF);
         qrlPaisToma.Caption := FCTe.Dest.EnderDest.xPais;
@@ -693,7 +693,7 @@ begin
       begin
         qrlRazaoToma.Caption := FCTe.Ide.Toma4.xNome;
         qrlEnderecoToma.Caption := FCTe.Ide.Toma4.EnderToma.xLgr + ', ' + FCTe.Ide.Toma4.EnderToma.xNum + ' - ' + FCTe.Ide.Toma4.EnderToma.xCpl;
-        qrlCEPToma.Caption := CTeUtil.FormatarCEP(IntToStr(FCTe.Ide.Toma4.EnderToma.CEP));
+        qrlCEPToma.Caption := CTeUtil.FormatarCEP(FormatFloat( '00000000', FCTe.Ide.Toma4.EnderToma.CEP));
         qrlMunToma.Caption := FCTe.Ide.Toma4.EnderToma.xMun+' - '+FCTe.Ide.Toma4.EnderToma.UF;
         qrlCnpjToma.Caption := CTeUtil.FormatarCNPJ(FCTe.Ide.Toma4.CNPJCPF);
         qrlPaisToma.Caption := FCTe.Ide.Toma4.EnderToma.xPais;

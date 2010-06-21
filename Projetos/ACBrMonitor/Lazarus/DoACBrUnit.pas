@@ -193,8 +193,7 @@ begin
            {$ENDIF}
 
            if Assigned( Conexao ) then
-              if Assigned( Conexao.TCPBlockSocket ) then
-                 Conexao.TCPBlockSocket.CloseSocket ;
+              Conexao.CloseSocket ;
          end
 
         ELSE

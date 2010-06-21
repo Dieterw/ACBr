@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,12 +10,16 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ACBr.Net</RootNamespace>
     <AssemblyName>ACBr.Net</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -56,22 +60,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ACBrBal.cs" />
+    <Compile Include="ACBrDevice.cs" />
     <Compile Include="ACBrECF.cs" />
     <Compile Include="ACBrECFComprovanteNaoFiscal.cs" />
-    <Compile Include="ACBrECFDLL.cs" />
+    <Compile Include="ACBrDll.cs" />
     <Compile Include="ACBrECFException.cs" />
     <Compile Include="ACBrException.cs" />
     <Compile Include="ACBrECFAliquota.cs" />
     <Compile Include="ACBrECFFormaPagamento.cs" />
     <Compile Include="EstadoECF.cs" />
+    <Compile Include="ModeloBal.cs" />
     <Compile Include="ModeloECF.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TipoAliquota.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="ACBrECFDLL.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

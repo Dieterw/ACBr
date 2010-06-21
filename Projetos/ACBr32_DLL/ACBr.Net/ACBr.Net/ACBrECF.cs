@@ -5,16 +5,8 @@ using System.Runtime.InteropServices;
 
 namespace ACBr.Net
 {
-    public class ACBrECF : IDisposable
+    public class ACBrECF : ACBrDevice, IDisposable
     {
-        #region Inner Types
-
-        private delegate int StringEntryPointDelegate(ref StringBuilder buffer, int bufferLen);
-        private delegate int DoubleEntryPointDelegate(ref double value);
-        private delegate int VoidEntryPointDelegate();
-
-        #endregion Inner Types
-
         #region Fields
 
         private IList<ACBrECFAliquota> aliquotas;
@@ -27,13 +19,8 @@ namespace ACBr.Net
 
         public ACBrECF()
         {
-            int ret = ACBrECFDLL.Inicializar();
+            int ret = ACBrDll.ECF_Create(ref this.handle);
             CheckResult(ret);
-        }
-
-        ~ACBrECF()
-        {
-            Dispose();
         }
 
         #endregion Constructor
@@ -44,12 +31,11 @@ namespace ACBr.Net
         {
             get
             {
-                return (ModeloECF)GetInt32(ACBrECFDLL.GetModelo);
+                return (ModeloECF)GetInt32(ACBrDll.ECF_GetModelo);
             }
             set
             {
-                int ret = ACBrECFDLL.SetModelo((int)value);
-                CheckResult(ret);
+                SetInt32(ACBrDll.ECF_SetModelo, (int)value);
             }
         }
 
@@ -57,12 +43,11 @@ namespace ACBr.Net
         {
             get
             {
-                return GetString(ACBrECFDLL.GetPorta);
+                return GetString(ACBrDll.ECF_GetPorta);
             }
             set
             {
-                int ret = ACBrECFDLL.SetPorta(value);
-                CheckResult(ret);
+                SetString(ACBrDll.ECF_SetPorta, value);
             }
         }
 
@@ -70,12 +55,11 @@ namespace ACBr.Net
         {
             get
             {
-                return GetInt32(ACBrECFDLL.GetTimeOut);
+                return GetInt32(ACBrDll.ECF_GetTimeOut);
             }
             set
             {
-                int ret = ACBrECFDLL.SetTimeOut(value);
-                CheckResult(ret);
+                SetInt32(ACBrDll.ECF_SetTimeOut, value);
             }
         }
 
@@ -83,7 +67,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetBool(ACBrECFDLL.GetAtivo);
+                return GetBool(ACBrDll.ECF_GetAtivo);
             }
         }
 
@@ -91,7 +75,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetInt32(ACBrECFDLL.GetColunas);
+                return GetInt32(ACBrDll.ECF_GetColunas);
             }
         }
 
@@ -99,7 +83,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetBool(ACBrECFDLL.GetAguardandoResposta);
+                return GetBool(ACBrDll.ECF_GetAguardandoResposta);
             }
         }
 
@@ -107,12 +91,11 @@ namespace ACBr.Net
         {
             get
             {
-                return GetString(ACBrECFDLL.GetComandoLOG);
+                return GetString(ACBrDll.ECF_GetComandoLOG);
             }
             set
             {
-                int ret = ACBrECFDLL.SetComandoLOG(value);
-                CheckResult(ret);
+                SetString(ACBrDll.ECF_SetComandoLOG, value);
             }
         }
 
@@ -120,12 +103,11 @@ namespace ACBr.Net
         {
             get
             {
-                return GetBool(ACBrECFDLL.GetAguardaImpressao);
+                return GetBool(ACBrDll.ECF_GetAguardaImpressao);
             }
             set
             {
-                int ret = ACBrECFDLL.SetAguardaImpressao(value);
-                CheckResult(ret);
+                SetBool(ACBrDll.ECF_SetAguardaImpressao, value);
             }
         }
 
@@ -133,7 +115,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetString(ACBrECFDLL.GetModeloStr);
+                return GetString(ACBrDll.ECF_GetModeloStr);
             }
         }
 
@@ -141,7 +123,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetString(ACBrECFDLL.GetRFDID);
+                return GetString(ACBrDll.ECF_GetRFDID);
             }
         }
 
@@ -149,7 +131,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetDateTime(ACBrECFDLL.GetDataHora);
+                return GetDateTime(ACBrDll.ECF_GetDataHora);
             }
         }
 
@@ -157,7 +139,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetString(ACBrECFDLL.GetNumCupom);
+                return GetString(ACBrDll.ECF_GetNumCupom);
             }
         }
 
@@ -165,7 +147,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetString(ACBrECFDLL.GetNumCOO);
+                return GetString(ACBrDll.ECF_GetNumCOO);
             }
         }
 
@@ -173,7 +155,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetString(ACBrECFDLL.GetNumLoja);
+                return GetString(ACBrDll.ECF_GetNumLoja);
             }
         }
 
@@ -181,7 +163,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetString(ACBrECFDLL.GetNumECF);
+                return GetString(ACBrDll.ECF_GetNumECF);
             }
         }
 
@@ -189,7 +171,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetString(ACBrECFDLL.GetNumSerie);
+                return GetString(ACBrDll.ECF_GetNumSerie);
             }
         }
 
@@ -197,7 +179,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetString(ACBrECFDLL.GetNumVersao);
+                return GetString(ACBrDll.ECF_GetNumVersao);
             }
         }
 
@@ -205,7 +187,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetDateTime(ACBrECFDLL.GetDataMovimento);
+                return GetDateTime(ACBrDll.ECF_GetDataMovimento);
             }
         }
 
@@ -213,7 +195,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetDateTime(ACBrECFDLL.GetDataHoraSB);
+                return GetDateTime(ACBrDll.ECF_GetDataHoraSB);
             }
         }
 
@@ -221,7 +203,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetString(ACBrECFDLL.GetCNPJ);
+                return GetString(ACBrDll.ECF_GetCNPJ);
             }
         }
 
@@ -229,7 +211,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetString(ACBrECFDLL.GetIE);
+                return GetString(ACBrDll.ECF_GetIE);
             }
         }
 
@@ -237,7 +219,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetString(ACBrECFDLL.GetIM);
+                return GetString(ACBrDll.ECF_GetIM);
             }
         }
 
@@ -245,7 +227,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetString(ACBrECFDLL.GetCliche);
+                return GetString(ACBrDll.ECF_GetCliche);
             }
         }
 
@@ -253,7 +235,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetString(ACBrECFDLL.GetUsuarioAtual);
+                return GetString(ACBrDll.ECF_GetUsuarioAtual);
             }
         }
 
@@ -261,7 +243,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetString(ACBrECFDLL.GetSubModeloECF);
+                return GetString(ACBrDll.ECF_GetSubModeloECF);
             }
         }
 
@@ -269,7 +251,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetString(ACBrECFDLL.GetPAF);
+                return GetString(ACBrDll.ECF_GetPAF);
             }
         }
 
@@ -277,7 +259,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetString(ACBrECFDLL.GetNumCRZ);
+                return GetString(ACBrDll.ECF_GetNumCRZ);
             }
         }
 
@@ -285,7 +267,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetString(ACBrECFDLL.GetNumCRO);
+                return GetString(ACBrDll.ECF_GetNumCRO);
             }
         }
 
@@ -293,7 +275,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetString(ACBrECFDLL.GetNumCCF);
+                return GetString(ACBrDll.ECF_GetNumCCF);
             }
         }
 
@@ -301,7 +283,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetString(ACBrECFDLL.GetNumGNF);
+                return GetString(ACBrDll.ECF_GetNumGNF);
             }
         }
 
@@ -309,7 +291,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetString(ACBrECFDLL.GetNumGRG);
+                return GetString(ACBrDll.ECF_GetNumGRG);
             }
         }
 
@@ -317,7 +299,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetString(ACBrECFDLL.GetNumCDC);
+                return GetString(ACBrDll.ECF_GetNumCDC);
             }
         }
 
@@ -325,7 +307,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetString(ACBrECFDLL.GetNumCOOInicial);
+                return GetString(ACBrDll.ECF_GetNumCOOInicial);
             }
         }
 
@@ -333,7 +315,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetDecimal(ACBrECFDLL.GetVendaBruta);
+                return GetDecimal(ACBrDll.ECF_GetVendaBruta);
             }
         }
 
@@ -341,7 +323,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetDecimal(ACBrECFDLL.GetGrandeTotal);
+                return GetDecimal(ACBrDll.ECF_GetGrandeTotal);
             }
         }
 
@@ -349,7 +331,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetDecimal(ACBrECFDLL.GetTotalCancelamentos);
+                return GetDecimal(ACBrDll.ECF_GetTotalCancelamentos);
             }
         }
 
@@ -357,7 +339,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetDecimal(ACBrECFDLL.GetTotalDescontos);
+                return GetDecimal(ACBrDll.ECF_GetTotalDescontos);
             }
         }
 
@@ -365,7 +347,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetDecimal(ACBrECFDLL.GetTotalAcrescimos);
+                return GetDecimal(ACBrDll.ECF_GetTotalAcrescimos);
             }
         }
 
@@ -373,7 +355,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetDecimal(ACBrECFDLL.GetTotalTroco);
+                return GetDecimal(ACBrDll.ECF_GetTotalTroco);
             }
         }
 
@@ -381,7 +363,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetDecimal(ACBrECFDLL.GetTotalSubstituicaoTributaria);
+                return GetDecimal(ACBrDll.ECF_GetTotalSubstituicaoTributaria);
             }
         }
 
@@ -389,7 +371,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetDecimal(ACBrECFDLL.GetTotalNaoTributado);
+                return GetDecimal(ACBrDll.ECF_GetTotalNaoTributado);
             }
         }
 
@@ -397,7 +379,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetDecimal(ACBrECFDLL.GetTotalIsencao);
+                return GetDecimal(ACBrDll.ECF_GetTotalIsencao);
             }
         }
 
@@ -405,7 +387,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetDecimal(ACBrECFDLL.GetTotalCancelamentosISSQN);
+                return GetDecimal(ACBrDll.ECF_GetTotalCancelamentosISSQN);
             }
         }
 
@@ -413,7 +395,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetDecimal(ACBrECFDLL.GetTotalDescontosISSQN);
+                return GetDecimal(ACBrDll.ECF_GetTotalDescontosISSQN);
             }
         }
 
@@ -421,7 +403,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetDecimal(ACBrECFDLL.GetTotalAcrescimosISSQN);
+                return GetDecimal(ACBrDll.ECF_GetTotalAcrescimosISSQN);
             }
         }
 
@@ -429,7 +411,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetDecimal(ACBrECFDLL.GetTotalSubstituicaoTributariaISSQN);
+                return GetDecimal(ACBrDll.ECF_GetTotalSubstituicaoTributariaISSQN);
             }
         }
 
@@ -437,7 +419,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetDecimal(ACBrECFDLL.GetTotalNaoTributadoISSQN);
+                return GetDecimal(ACBrDll.ECF_GetTotalNaoTributadoISSQN);
             }
         }
 
@@ -445,7 +427,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetDecimal(ACBrECFDLL.GetTotalIsencaoISSQN);
+                return GetDecimal(ACBrDll.ECF_GetTotalIsencaoISSQN);
             }
         }
 
@@ -453,7 +435,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetDecimal(ACBrECFDLL.GetTotalNaoFiscal);
+                return GetDecimal(ACBrDll.ECF_GetTotalNaoFiscal);
             }
         }
 
@@ -461,7 +443,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetInt32(ACBrECFDLL.GetNumUltItem);
+                return GetInt32(ACBrDll.ECF_GetNumUltItem);
             }
         }
 
@@ -470,7 +452,7 @@ namespace ACBr.Net
             get
             {
                 const int DEFAULT_TIMEOUT = 1;
-                int ret = ACBrECFDLL.GetEmLinha(DEFAULT_TIMEOUT);
+                int ret = ACBrDll.ECF_GetEmLinha(this.handle, DEFAULT_TIMEOUT);
                 CheckResult(ret);
 
                 return Convert.ToBoolean(ret);
@@ -481,7 +463,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetBool(ACBrECFDLL.GetPoucoPapel);
+                return GetBool(ACBrDll.ECF_GetPoucoPapel);
             }
         }
 
@@ -489,7 +471,7 @@ namespace ACBr.Net
         {
             get
             {
-                return (EstadoECF)GetInt32(ACBrECFDLL.GetEstado);
+                return (EstadoECF)GetInt32(ACBrDll.ECF_GetEstado);
             }
         }
 
@@ -497,7 +479,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetBool(ACBrECFDLL.GetHorarioVerao);
+                return GetBool(ACBrDll.ECF_GetHorarioVerao);
             }
         }
 
@@ -505,7 +487,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetBool(ACBrECFDLL.GetArredonda);
+                return GetBool(ACBrDll.ECF_GetArredonda);
             }
         }
 
@@ -513,7 +495,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetBool(ACBrECFDLL.GetTermica);
+                return GetBool(ACBrDll.ECF_GetTermica);
             }
         }
 
@@ -521,7 +503,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetBool(ACBrECFDLL.GetMFD);
+                return GetBool(ACBrDll.ECF_GetMFD);
             }
         }
 
@@ -529,7 +511,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetBool(ACBrECFDLL.GetIdentificaConsumidorRodape);
+                return GetBool(ACBrDll.ECF_GetIdentificaConsumidorRodape);
             }
         }
 
@@ -537,7 +519,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetDecimal(ACBrECFDLL.GetSubTotal);
+                return GetDecimal(ACBrDll.ECF_GetSubTotal);
             }
         }
 
@@ -545,7 +527,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetDecimal(ACBrECFDLL.GetTotalPago);
+                return GetDecimal(ACBrDll.ECF_GetTotalPago);
             }
         }
 
@@ -553,7 +535,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetBool(ACBrECFDLL.GetGavetaAberta);
+                return GetBool(ACBrDll.ECF_GetGavetaAberta);
             }
         }
 
@@ -561,7 +543,7 @@ namespace ACBr.Net
         {
             get
             {
-                return GetBool(ACBrECFDLL.GetChequePronto);
+                return GetBool(ACBrDll.ECF_GetChequePronto);
             }
         }
 
@@ -569,12 +551,11 @@ namespace ACBr.Net
         {
             get
             {
-                return GetInt32(ACBrECFDLL.GetIntervaloAposComando);
+                return GetInt32(ACBrDll.ECF_GetIntervaloAposComando);
             }
             set
             {
-                int ret = ACBrECFDLL.SetIntervaloAposComando(value);
-                CheckResult(ret);
+                SetInt32(ACBrDll.ECF_SetIntervaloAposComando, value);
             }
         }
 
@@ -582,12 +563,11 @@ namespace ACBr.Net
         {
             get
             {
-                return GetBool(ACBrECFDLL.GetDescricaoGrande);
+                return GetBool(ACBrDll.ECF_GetDescricaoGrande);
             }
             set
             {
-                int ret = ACBrECFDLL.SetDescricaoGrande(value);
-                CheckResult(ret);
+                SetBool(ACBrDll.ECF_SetDescricaoGrande, value);
             }
         }
 
@@ -595,12 +575,11 @@ namespace ACBr.Net
         {
             get
             {
-                return GetBool(ACBrECFDLL.GetGavetaSinalInvertido);
+                return GetBool(ACBrDll.ECF_GetGavetaSinalInvertido);
             }
             set
             {
-                int ret = ACBrECFDLL.SetGavetaSinalInvertido(value);
-                CheckResult(ret);
+                SetBool(ACBrDll.ECF_SetGavetaSinalInvertido, value);
             }
         }
 
@@ -608,13 +587,11 @@ namespace ACBr.Net
         {
             get
             {
-                return GetString(ACBrECFDLL.GetOperador);
+                return GetString(ACBrDll.ECF_GetOperador);
             }
             set
             {
-                int ret = ACBrECFDLL.SetOperador(value);
-                CheckResult(ret);
-
+                SetString(ACBrDll.ECF_SetOperador, value);
             }
         }
 
@@ -622,12 +599,11 @@ namespace ACBr.Net
         {
             get
             {
-                return GetInt32(ACBrECFDLL.GetLinhasEntreCupons);
+                return GetInt32(ACBrDll.ECF_GetLinhasEntreCupons);
             }
             set
             {
-                int ret = ACBrECFDLL.SetLinhasEntreCupons(value);
-                CheckResult(ret);
+                SetInt32(ACBrDll.ECF_SetLinhasEntreCupons, value);
             }
         }
 
@@ -635,12 +611,11 @@ namespace ACBr.Net
         {
             get
             {
-                return GetInt32(ACBrECFDLL.GetDecimaisPreco);
+                return GetInt32(ACBrDll.ECF_GetDecimaisPreco);
             }
             set
             {
-                int ret = ACBrECFDLL.SetDecimaisPreco(value);
-                CheckResult(ret);
+                SetInt32(ACBrDll.ECF_SetDecimaisPreco, value);
             }
         }
 
@@ -648,12 +623,11 @@ namespace ACBr.Net
         {
             get
             {
-                return GetInt32(ACBrECFDLL.GetDecimaisQtd);
+                return GetInt32(ACBrDll.ECF_GetDecimaisQtd);
             }
             set
             {
-                int ret = ACBrECFDLL.SetDecimaisQtd(value);
-                CheckResult(ret);
+                SetInt32(ACBrDll.ECF_SetDecimaisQtd, value);
             }
         }
 
@@ -692,13 +666,13 @@ namespace ACBr.Net
 
         public void Ativar()
         {
-            int ret = ACBrECFDLL.Ativar();
+            int ret = ACBrDll.ECF_Ativar(this.handle);
             CheckResult(ret);
         }
 
         public void Desativar()
         {
-            int ret = ACBrECFDLL.Desativar();
+            int ret = ACBrDll.ECF_Desativar(this.handle);
             CheckResult(ret);
         }
 
@@ -708,83 +682,83 @@ namespace ACBr.Net
 
         public void IdentificaConsumidor(string cpfCnpj, string nome, string endereco)
         {
-            int ret = ACBrECFDLL.IdentificaConsumidor(cpfCnpj, nome, endereco);
+            int ret = ACBrDll.ECF_IdentificaConsumidor(this.handle, cpfCnpj, nome, endereco);
             CheckResult(ret);
         }
 
         public void AbreCupom(string cpfCnpj, string nome, string endereco)
         {
-            int ret = ACBrECFDLL.AbreCupom(cpfCnpj, nome, endereco);
+            int ret = ACBrDll.ECF_AbreCupom(this.handle, cpfCnpj, nome, endereco);
             CheckResult(ret);
         }
 
         public void LegendaInmetroProximoItem()
         {
-            int ret = ACBrECFDLL.LegendaInmetroProximoItem();
+            int ret = ACBrDll.ECF_LegendaInmetroProximoItem(this.handle);
             CheckResult(ret);
         }
 
         public void VendeItem(string codigo, string descricao, string aliquotaICMS, decimal qtd, decimal valorUnitario, decimal descontoPorc, string unidade, string tipoDescontoAcrescimo, string descontoAcrescimo)
         {
-            int ret = ACBrECFDLL.VendeItem(codigo, descricao, aliquotaICMS, (double)qtd, (double)valorUnitario, (double)descontoPorc, unidade, tipoDescontoAcrescimo, descontoAcrescimo);
+            int ret = ACBrDll.ECF_VendeItem(this.handle, codigo, descricao, aliquotaICMS, (double)qtd, (double)valorUnitario, (double)descontoPorc, unidade, tipoDescontoAcrescimo, descontoAcrescimo);
             CheckResult(ret);
         }
 
         public void DescontoAcrescimoItemAnterior(decimal valorDesconto, string descontoAcrescimo)
         {
-            int ret = ACBrECFDLL.DescontoAcrescimoItemAnterior((double)valorDesconto, descontoAcrescimo);
+            int ret = ACBrDll.ECF_DescontoAcrescimoItemAnterior(this.handle, (double)valorDesconto, descontoAcrescimo);
             CheckResult(ret);
         }
 
         public void SubtotalizaCupom(decimal descontoAcrescimo, string mensagemRodape)
         {
-            int ret = ACBrECFDLL.SubtotalizaCupom((double)descontoAcrescimo, mensagemRodape);
+            int ret = ACBrDll.ECF_SubtotalizaCupom(this.handle, (double)descontoAcrescimo, mensagemRodape);
             CheckResult(ret);
         }
 
         public void EfetuaPagamento(string codFormaPagto, decimal valor, string observacao, bool imprimeVinculado)
         {
-            int ret = ACBrECFDLL.EfetuaPagamento(codFormaPagto, (double)valor, observacao, imprimeVinculado);
+            int ret = ACBrDll.ECF_EfetuaPagamento(this.handle, codFormaPagto, (double)valor, observacao, imprimeVinculado);
             CheckResult(ret);
         }
 
         public void EstornaPagamento(string codFormaPagtoEstornar, string codFormaPagtoEfetivar, double valor, string observacao)
         {
-            int ret = ACBrECFDLL.EstornaPagamento(codFormaPagtoEstornar, codFormaPagtoEfetivar, valor, observacao);
+            int ret = ACBrDll.ECF_EstornaPagamento(this.handle, codFormaPagtoEstornar, codFormaPagtoEfetivar, valor, observacao);
         }
 
         public void FechaCupom(string observacao)
         {
-            int ret = ACBrECFDLL.FechaCupom(observacao);
+            int ret = ACBrDll.ECF_FechaCupom(this.handle, observacao);
             CheckResult(ret);
         }
 
         public void CancelaCupom()
         {
-            int ret = ACBrECFDLL.CancelaCupom();
+            int ret = ACBrDll.ECF_CancelaCupom(this.handle);
             CheckResult(ret);
         }
 
-        public void CancelaItemVendido(int mumItem)
+        public void CancelaItemVendido(int numItem)
         {
-            int ret = ACBrECFDLL.CancelaItemVendido(mumItem);
+            int ret = ACBrDll.ECF_CancelaItemVendido(this.handle, numItem);
             CheckResult(ret);
         }
 
         public void CancelaItemVendidoParcial(int numItem, decimal quantidade)
         {
-            int ret = ACBrECFDLL.CancelaItemVendidoParcial(numItem, (double)quantidade);
+            int ret = ACBrDll.ECF_CancelaItemVendidoParcial(this.handle, numItem, (double)quantidade);
             CheckResult(ret);
         }
 
         public void CancelaDescontoAcrescimoItem(int numItem)
         {
-            int ret = ACBrECFDLL.CancelaDescontoAcrescimoItem(numItem);
+            int ret = ACBrDll.ECF_CancelaDescontoAcrescimoItem(this.handle, numItem);
         }
 
         public void CancelaDescontoAcrescimoSubTotal(string tipoAcrescimoDesconto)
         {
-            int ret = ACBrECFDLL.CancelaDescontoAcrescimoSubTotal(tipoAcrescimoDesconto[0]);
+            int ret = ACBrDll.ECF_CancelaDescontoAcrescimoSubTotal(this.handle, tipoAcrescimoDesconto[0]);
             CheckResult(ret);
         }
 
@@ -794,61 +768,61 @@ namespace ACBr.Net
 
         public void LeituraX()
         {
-            int ret = ACBrECFDLL.LeituraX();
+            int ret = ACBrDll.ECF_LeituraX(this.handle);
             CheckResult(ret);
         }
 
         public void ReducaoZ()
         {
-            int ret = ACBrECFDLL.ReducaoZ();
+            int ret = ACBrDll.ECF_ReducaoZ(this.handle);
             CheckResult(ret);
         }
 
         public void AbreRelatorioGerencial(int indice)
         {
-            int ret = ACBrECFDLL.AbreRelatorioGerencial(indice);
+            int ret = ACBrDll.ECF_AbreRelatorioGerencial(this.handle, indice);
             CheckResult(ret);
         }
 
         public void LinhaRelatorioGerencial(string linha, int indiceBMP)
         {
-            int ret = ACBrECFDLL.LinhaRelatorioGerencial(linha, indiceBMP);
+            int ret = ACBrDll.ECF_LinhaRelatorioGerencial(this.handle, linha, indiceBMP);
             CheckResult(ret);
         }
 
         public void AbreCupomVinculado(string coo, string codFormaPagto, decimal valor)
         {
-            int ret = ACBrECFDLL.AbreCupomVinculado(coo, codFormaPagto, (double)valor);
+            int ret = ACBrDll.ECF_AbreCupomVinculado(this.handle, coo, codFormaPagto, (double)valor);
             CheckResult(ret);
         }
 
         public void AbreCupomVinculado(string coo, string codFormaPagto, string codComprovanteNaoFiscal, decimal valor)
         {
-            int ret = ACBrECFDLL.AbreCupomVinculado(coo, codFormaPagto, codComprovanteNaoFiscal, (double)valor);
+            int ret = ACBrDll.ECF_AbreCupomVinculadoCNF(this.handle, coo, codFormaPagto, codComprovanteNaoFiscal, (double)valor);
             CheckResult(ret);
         }
 
         public void LinhaCupomVinculado(string linha)
         {
-            int ret = ACBrECFDLL.LinhaCupomVinculado(linha);
+            int ret = ACBrDll.ECF_LinhaCupomVinculado(this.handle, linha);
             CheckResult(ret);
         }
 
         public void FechaRelatorio()
         {
-            int ret = ACBrECFDLL.FechaRelatorio();
+            int ret = ACBrDll.ECF_FechaRelatorio(this.handle);
             CheckResult(ret);
         }
 
         public void PulaLinhas(int numLinhas)
         {
-            int ret = ACBrECFDLL.PulaLinhas(numLinhas);
+            int ret = ACBrDll.ECF_PulaLinhas(this.handle, numLinhas);
             CheckResult(ret);
         }
 
         public void CortaPapel(bool corteParcial)
         {
-            int ret = ACBrECFDLL.CortaPapel(corteParcial);
+            int ret = ACBrDll.ECF_CortaPapel(this.handle, corteParcial);
             CheckResult(ret);
         }
 
@@ -858,7 +832,7 @@ namespace ACBr.Net
 
         public void CarregaAliquotas()
         {
-            int count = ACBrECFDLL.CarregaAliquotas();
+            int count = ACBrDll.ECF_CarregaAliquotas(this.handle);
             CheckResult(count);
 
             CarregaAliquotas(count);
@@ -869,8 +843,8 @@ namespace ACBr.Net
             aliquotas = new List<ACBrECFAliquota>(count);
             for (int i = 0; i < count; i++)
             {
-                var record = new ACBrECFDLL.AliquotaRec();
-                int ret = ACBrECFDLL.GetAliquota(ref record, i);
+                var record = new ACBrDll.AliquotaRec();
+                int ret = ACBrDll.ECF_GetAliquota(this.handle, ref record, i);
                 CheckResult(ret);
 
                 ACBrECFAliquota aliquota = new ACBrECFAliquota();
@@ -886,7 +860,7 @@ namespace ACBr.Net
 
         public void LerTotaisAliquota()
         {
-            int count = ACBrECFDLL.LerTotaisAliquota();
+            int count = ACBrDll.ECF_LerTotaisAliquota(this.handle);
             CheckResult(count);
 
             CarregaAliquotas(count);
@@ -894,9 +868,14 @@ namespace ACBr.Net
 
         public void ProgramaAliquota(decimal aliquota, string tipo)
         {
+            ProgramaAliquota(aliquota, tipo, string.Empty);
+        }
+
+        public void ProgramaAliquota(decimal aliquota, string tipo, string posicao)
+        {
             if (string.IsNullOrEmpty(tipo)) throw new ArgumentException();
 
-            int ret = ACBrECFDLL.ProgramaAliquota((double)aliquota, tipo[0]);
+            int ret = ACBrDll.ECF_ProgramaAliquota(this.handle, (double)aliquota, tipo[0], posicao);
             CheckResult(ret);
         }
 
@@ -906,7 +885,7 @@ namespace ACBr.Net
 
         public void CarregaFormasPagamento()
         {
-            int count = ACBrECFDLL.CarregaFormasPagamento();
+            int count = ACBrDll.ECF_CarregaFormasPagamento(this.handle);
             CheckResult(count);
 
             CarregaFormasPagamento(count);
@@ -917,8 +896,8 @@ namespace ACBr.Net
             formasPagamento = new List<ACBrECFFormaPagamento>(count);
             for (int i = 0; i < count; i++)
             {
-                var record = new ACBrECFDLL.FormaPagamentoRec();
-                int ret = ACBrECFDLL.GetFormaPagamento(ref record, i);
+                var record = new ACBrDll.FormaPagamentoRec();
+                int ret = ACBrDll.ECF_GetFormaPagamento(this.handle, ref record, i);
                 CheckResult(ret);
 
                 ACBrECFFormaPagamento formaPagamento = new ACBrECFFormaPagamento();
@@ -933,15 +912,20 @@ namespace ACBr.Net
 
         public void LerTotaisFormaPagamento()
         {
-            int count = ACBrECFDLL.LerTotaisFormaPagamento();
+            int count = ACBrDll.ECF_LerTotaisFormaPagamento(this.handle);
             CheckResult(count);
 
             CarregaFormasPagamento(count);
         }
-        
+
         public void ProgramaFormaPagamento(string descricao, bool permiteVinculado)
         {
-            int ret = ACBrECFDLL.ProgramaFormaPagamento(descricao, permiteVinculado);
+            ProgramaFormaPagamento(descricao, permiteVinculado, string.Empty);
+        }
+
+        public void ProgramaFormaPagamento(string descricao, bool permiteVinculado, string posicao)
+        {
+            int ret = ACBrDll.ECF_ProgramaFormaPagamento(this.handle, descricao, permiteVinculado, posicao);
             CheckResult(ret);
         }
 
@@ -951,7 +935,7 @@ namespace ACBr.Net
 
         public void CarregaComprovantesNaoFiscais()
         {
-            int count = ACBrECFDLL.CarregaComprovantesNaoFiscais();
+            int count = ACBrDll.ECF_CarregaComprovantesNaoFiscais(this.handle);
             CheckResult(count);
 
             CarregaComprovantesNaoFiscais(count);
@@ -962,8 +946,8 @@ namespace ACBr.Net
             comprovantesNaoFiscais = new List<ACBrECFComprovanteNaoFiscal>(count);
             for (int i = 0; i < count; i++)
             {
-                var record = new ACBrECFDLL.ComprovanteNaoFiscalRec();
-                int ret = ACBrECFDLL.GetComprovanteNaoFiscal(ref record, i);
+                var record = new ACBrDll.ComprovanteNaoFiscalRec();
+                int ret = ACBrDll.ECF_GetComprovanteNaoFiscal(this.handle, ref record, i);
                 CheckResult(ret);
 
                 ACBrECFComprovanteNaoFiscal comprovanteNaoFiscal = new ACBrECFComprovanteNaoFiscal();
@@ -980,7 +964,7 @@ namespace ACBr.Net
 
         public void LerTotaisComprovanteNaoFiscal()
         {
-            int count = ACBrECFDLL.LerTotaisComprovanteNaoFiscal();
+            int count = ACBrDll.ECF_LerTotaisComprovanteNaoFiscal(this.handle);
             CheckResult(count);
 
             CarregaComprovantesNaoFiscais(count);
@@ -988,9 +972,14 @@ namespace ACBr.Net
 
         public void ProgramaComprovanteNaoFiscal(string descricao, string tipo)
         {
+            ProgramaComprovanteNaoFiscal(descricao, tipo, string.Empty);
+        }
+
+        public void ProgramaComprovanteNaoFiscal(string descricao, string tipo, string posicao)
+        {
             if (string.IsNullOrEmpty(tipo)) throw new ArgumentException();
 
-            int ret = ACBrECFDLL.ProgramaComprovanteNaoFiscal(descricao, tipo);
+            int ret = ACBrDll.ECF_ProgramaComprovanteNaoFiscal(this.handle, descricao, tipo, posicao);
             CheckResult(ret);
         }
 
@@ -998,102 +987,56 @@ namespace ACBr.Net
 
         public void Suprimento(decimal valor, string obs)
         {
-            int ret = ACBrECFDLL.Suprimento((double)valor, obs);
+            int ret = ACBrDll.ECF_Suprimento(this.handle, (double)valor, obs);
             CheckResult(ret);
         }
 
         public void Sangria(decimal valor, string obs)
         {
-            int ret = ACBrECFDLL.Sangria((double)valor, obs);
+            int ret = ACBrDll.ECF_Sangria(this.handle, (double)valor, obs);
             CheckResult(ret);
         }
 
         public void AbreGaveta()
         {
-            int ret = ACBrECFDLL.AbreGaveta();
+            int ret = ACBrDll.ECF_AbreGaveta(this.handle);
             CheckResult(ret);
         }
 
-        #region P/Invoke Helper Methods
+        #region Override Methods
 
-        private string GetString(StringEntryPointDelegate entryPoint)
-        {
-            const int BUFFER_LEN = 1024;
-            StringBuilder buffer = new StringBuilder(BUFFER_LEN);
-
-            int ret = entryPoint(ref buffer, BUFFER_LEN);
-            CheckResult(ret);
-
-            return buffer.ToString();
-        }
-
-        private DateTime GetDateTime(DoubleEntryPointDelegate entryPoint)
-        {
-            double ticks = 0d;
-            int ret = entryPoint(ref ticks);
-            CheckResult(ret);
-
-            return DateTime.FromOADate(ticks);
-        }
-
-        private decimal GetDecimal(DoubleEntryPointDelegate entryPoint)
-        {
-            double value = 0d;
-            int ret = entryPoint(ref value);
-            CheckResult(ret);
-
-            return Convert.ToDecimal(value);
-        }
-
-        private int GetInt32(VoidEntryPointDelegate entryPoint)
-        {
-            int ret = entryPoint();
-            CheckResult(ret);
-
-            return ret;
-        }
-
-        private bool GetBool(VoidEntryPointDelegate entryPoint)
-        {
-            int ret = entryPoint();
-            CheckResult(ret);
-
-            return ret == 1 ? true : false;
-        }
-
-        private void CheckResult(int ret)
+        protected override void CheckResult(int ret)
         {
             switch (ret)
             {
                 case -1:
 
-                    string error = GetString(ACBrECFDLL.UltimoErro);
+                    string error = GetString(ACBrDll.ECF_GetUltimoErro);
                     throw new ACBrECFException(error);
 
                 case -2:
 
-                    throw new ACBrECFException("ACBr não inicializado.");
+                    throw new ACBrECFException("ACBr ECF não inicializado.");
 
             }
         }
 
-        #endregion P/Invoke Helper Methods
+        protected override void Dispose(bool disposing)
+        {
+            if (this.handle != IntPtr.Zero)
+            {
+                ACBrDll.ECF_Destroy(ref this.handle);
+                this.handle = IntPtr.Zero;
+            }
+
+            if (disposing)
+            {
+                GC.SuppressFinalize(this);
+            }
+        }
+
+        #endregion Override Methods
 
         #endregion Methods
-
-        #region IDisposable Members
-
-        public void Dispose()
-        {
-            try
-            {
-                this.Desativar();
-            }
-            catch { }
-
-            GC.SuppressFinalize(this);
-        }
-
-        #endregion IDisposable Members
     }
 }

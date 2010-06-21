@@ -92,4 +92,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup>
+    <PreBuildEvent>copy $(SolutionDir)\..\ACBr32\ACBr32.dll $(TargetDir)</PreBuildEvent>
+  </PropertyGroup>
 </Project>

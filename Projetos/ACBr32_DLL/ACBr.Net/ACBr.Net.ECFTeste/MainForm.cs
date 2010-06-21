@@ -392,7 +392,7 @@ namespace ACBr.Net.ECFTeste
                 for (int i = 0; i < 10; i++)
                 {
                     respListBox.Items.Add("Vende Item #" + i + " ...");
-                    acbrECF.VendeItem(i.ToString(), "PRODUTO " + i, "I", 1, 1.99M, 0M, "UN", "%", "D");
+                    acbrECF.VendeItem(string.Format("{0:0000000000000}", i + 1), "PRODUTO " + i, "II", 1, 1.99M, 0M, "UN", "%", "D");
                     Application.DoEvents();
                 }
 

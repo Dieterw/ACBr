@@ -635,9 +635,10 @@ begin
      Inc(iBAL) ;
   end ;
 
-   TrayIcon1.BalloonTitle := 'ACBrMonitor '+ Versao ;
-   TrayIcon1.BalloonHint  := 'Projeto ACBr'+ sLineBreak +
-                             'http://acbr.sf.net' ;
+  TrayIcon1.Icon.Assign(Self.Icon);
+  TrayIcon1.BalloonTitle := 'ACBrMonitor '+ Versao ;
+  TrayIcon1.BalloonHint  := 'Projeto ACBr'+ sLineBreak +
+                            'http://acbr.sf.net' ;
 
   Caption := 'ACBrMonitor '+ Versao + ' - ACBr: '+ACBR_VERSAO ;
   PageControl1.ActivePageIndex := 0 ;

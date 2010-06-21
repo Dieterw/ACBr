@@ -481,6 +481,36 @@ begin
   result := StrToEnumerado(ok, s, ['0', '1', '2'], [oeNacional, oeEstrangeiraImportacaoDireta, oeEstrangeiraAdquiridaBrasil]);
 end;
 
+//CST CSON ICMS ***********************************************************
+
+function CSOSNIcmsToStr(const t: TpcnCSOSNIcms): string;
+begin
+  result := EnumeradoToStr(t, ['0','101', '102', '103', '201', '202', '203', '300', '400', '500','900'],
+    [csosnVazio,csosn101, csosn102, csosn103, csosn201, csosn202, csosn203, csosn300, csosn400, csosn500,csosn900]);
+end;
+
+function StrToCSOSNIcms(var ok: boolean; const s: string): TpcnCSOSNIcms;
+begin
+  result := StrToEnumerado(ok, s, [ '','101', '102', '103', '201', '202', '203', '300', '400', '500','900'],
+    [csosnVazio, csosn101, csosn102, csosn103, csosn201, csosn202, csosn203, csosn300, csosn400, csosn500,csosn900]);
+end;
+
+function CSOSNToStrTagPos(const t: TpcnCSOSNIcms): string;
+begin
+  case  t of
+    csosn101                               : result := '101';
+    csosn102, csosn103, csosn300, csosn400 : result := '102';
+    csosn201                               : result := '201';
+    csosn202,csosn203                      : result := '202';
+    csosn500                               : result := '500';
+    csosn900                               : result := '900';
+  else
+    raise Exception.Create(' Conversão de CSOSN não implementado');
+  end;
+end;
+
+//***************************************************************************
+
 // CST ICMS ********************************************************************
 
 function CSTICMSToStr(const t: TpcnCSTIcms): string;
@@ -504,34 +534,26 @@ begin
                               [cst00, cst10, cst20, cst30, cst40, cst41, cst50, cst51, cst60, cst70, cst80, cst81, cst90,cstPart10 , cstPart90 , cstRep41]);
 end;
 
+// A função abaixo foi alterada em 21/06/2010 por: Italo Jurisato Junior
+// Foi incluido '80', '81', e cst80, cst81,
+// Para ficar compativel com a função: CSTICMSToStr, logo acima
 function StrToCSTICMS(var ok: boolean; const s: string): TpcnCSTIcms;
 begin
-  result := StrToEnumerado(ok, s, ['00', '10', '20', '30', '40', '41', '50', '51', '60', '70', '90'],
-    [cst00, cst10, cst20, cst30, cst40, cst41, cst50, cst51, cst60, cst70, cst90]);
+  result := StrToEnumerado(ok, s, ['00', '10', '20', '30', '40', '41', '50', '51', '60', '70', '80', '81', '90'],
+    [cst00, cst10, cst20, cst30, cst40, cst41, cst50, cst51, cst60, cst70, cst80, cst81, cst90]);
 end;
 
-//CST CSON ICMS ***********************************************************
-
-function CSOSNIcmsToStr(const t: TpcnCSOSNIcms): string;
-begin
-  result := EnumeradoToStr(t, ['0','101', '102', '103', '201', '202', '203', '300', '400', '500','900'],
-    [csosnVazio,csosn101, csosn102, csosn103, csosn201, csosn202, csosn203, csosn300, csosn400, csosn500,csosn900]);
-end;
-
-function StrToCSOSNIcms(var ok: boolean; const s: string): TpcnCSOSNIcms;
-begin
-  result := StrToEnumerado(ok, s, [ '','101', '102', '103', '201', '202', '203', '300', '400', '500','900'],
-    [csosnVazio, csosn101, csosn102, csosn103, csosn201, csosn202, csosn203, csosn300, csosn400, csosn500,csosn900]);
-end;
-
-//***************************************************************************
-
+// A função abaixo foi alterada em 21/06/2010 por: Italo Jurisato Junior
+// Foi incluido '11', '12', e cst80, cst81,
+// Para ficar compativel com a função: CSTICMSToStr, logo acima
 function CSTICMSToStrTagPos(const t: TpcnCSTIcms): string;
 begin
-  result := EnumeradoToStr(t, ['02', '03', '04', '05', '06', '06', '06', '07', '08', '09', '10'],
-    [cst00, cst10, cst20, cst30, cst40, cst41, cst50, cst51, cst60, cst70, cst90]);
+  result := EnumeradoToStr(t, ['02', '03', '04', '05', '06', '06', '06', '07', '08', '09', '10', '11', '12'],
+    [cst00, cst10, cst20, cst30, cst40, cst41, cst50, cst51, cst60, cst70, cst80, cst81, cst90]);
 end;
 
+// A função abaixo foi alterada em 21/06/2010 por: Italo Jurisato Junior
+// As linhas alteradas estão comentadas
 function CSTICMSToStrTagPosText(const t: TpcnCSTIcms): string;
 begin
   result := EnumeradoToStr(t, ['PRESTAÇÃO SUJEITO À TRIBUTAÇÃO NORMAL ICMS',
@@ -541,25 +563,14 @@ begin
     'ICMS ISENTO, NÃO TRIBUTADO OU DEFERIDO',
     'ICMS ISENTO, NÃO TRIBUTADO OU DEFERIDO',
     'ICMS ISENTO, NÃO TRIBUTADO OU DEFERIDO',
-    '50', '51', '70',
+    '50',
+    'ICMS ISENTO, NÃO TRIBUTADO OU DEFERIDO', // '51' alterado para o CT-e
+    '60',                                     // foi incluido pois esta faltando
+    '70',
     'RESPONSABILIDADE DO RECOLHIMENTO DO ICMS ATRIBUÍDO AO TOMADOR OU 3° POR ST',
     'ICMS DEVICO À OUTRA UF',
     'ICMS OUTROS'],
     [cst00, cst10, cst20, cst30, cst40, cst41, cst45, cst50, cst51, cst60, cst70, cst80, cst81, cst90]);
-end;
-
-function CSOSNToStrTagPos(const t: TpcnCSOSNIcms): string;
-begin
-  case  t of
-    csosn101                               : result := '101';
-    csosn102, csosn103, csosn300, csosn400 : result := '102';
-    csosn201                               : result := '201';
-    csosn202,csosn203                      : result := '202';
-    csosn500                               : result := '500';
-    csosn900                               : result := '900';
-  else
-    raise Exception.Create(' Conversão de CSOSN não implementado');
-  end;
 end;
 
 // N13 - Modalidade de determinação da BC do ICMS ******************************

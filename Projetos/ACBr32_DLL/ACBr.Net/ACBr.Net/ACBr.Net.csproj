@@ -69,6 +69,7 @@
     <Compile Include="ACBrException.cs" />
     <Compile Include="ACBrECFAliquota.cs" />
     <Compile Include="ACBrECFFormaPagamento.cs" />
+    <Compile Include="ACBrLCB.cs" />
     <Compile Include="EstadoECF.cs" />
     <Compile Include="ModeloBal.cs" />
     <Compile Include="ModeloECF.cs" />

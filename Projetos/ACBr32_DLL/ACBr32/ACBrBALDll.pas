@@ -5,10 +5,7 @@ interface
 uses
   SysUtils,
   Classes,
-  Contnrs,
-  ACBrBal,
-  ACBrBalClass,
-  ACBrUtil;
+  ACBrBal;
 
 {Handle para o componente TACBrBAL }
 type TBALHandle = record
@@ -52,7 +49,7 @@ CRIA um novo componente TACBrBAL retornando o ponteiro para o objeto criado.
 Este ponteiro deve ser armazenado pela aplicação que utiliza a DLL e informado
 em todas as chamadas de função relativas ao TACBrBAL
 }
-Function BAL_Create(var balHandle: PBALHandle): Integer; StdCall; export;
+Function BAL_Create(var balHandle: PBALHandle): Integer; cdecl; export;
 begin
 
   try
@@ -60,6 +57,7 @@ begin
      New(balHandle);
 
      balHandle^.BAL := TACBrBAL.Create(nil);
+     balHandle^.BAL.MonitorarBalanca := False;
      balHandle^.UltimoErro := '';
 
      Result := 0;
@@ -79,7 +77,7 @@ DESTRÓI o objeto TACBrBAL e libera a memória utilizada.
 Esta função deve SEMPRE ser chamada pela aplicação que utiliza a DLL
 quando o componente não mais for utilizado.
 }
-Function BAL_Destroy(var balHandle: PBALHandle): Integer; StdCall; export;
+Function BAL_Destroy(var balHandle: PBALHandle): Integer; cdecl; export;
 begin
 
   try
@@ -101,7 +99,7 @@ begin
 
 end;
 
-Function BAL_GetUltimoErro(const balHandle: PBALHandle; var Buffer : pChar; const BufferLen : Integer) : Integer ; StdCall ; export;
+Function BAL_GetUltimoErro(const balHandle: PBALHandle; var Buffer : pChar; const BufferLen : Integer) : Integer ; cdecl ; export;
 begin
 
   if (balHandle = nil) then
@@ -123,7 +121,7 @@ begin
 end;
 
 
-Function BAL_Ativar(const balHandle: PBALHandle) : Integer; StdCall; export;
+Function BAL_Ativar(const balHandle: PBALHandle) : Integer; cdecl; export;
 begin
 
   if (balHandle = nil) then
@@ -145,7 +143,7 @@ begin
 
 end;
 
-Function BAL_Desativar(const balHandle: PBALHandle) : Integer; StdCall; export;
+Function BAL_Desativar(const balHandle: PBALHandle) : Integer; cdecl; export;
 begin
 
   if (balHandle = nil) then
@@ -167,7 +165,7 @@ begin
 
 end;
 
-Function BAL_GetModelo(const balHandle: PBALHandle) : Integer; StdCall; export;
+Function BAL_GetModelo(const balHandle: PBALHandle) : Integer; cdecl; export;
 begin
 
   if (balHandle = nil) then
@@ -188,7 +186,7 @@ begin
 
 end;
 
-Function BAL_SetModelo(const balHandle: PBALHandle; const Modelo : Integer) : Integer; StdCall; export;
+Function BAL_SetModelo(const balHandle: PBALHandle; const Modelo : Integer) : Integer; cdecl; export;
 begin
 
   if (balHandle = nil) then
@@ -210,7 +208,32 @@ begin
 
 end;
 
-Function BAL_GetPorta(const balHandle: PBALHandle; var Buffer : pChar; const BufferLen : Integer) : Integer ; StdCall ; export;
+Function BAL_GetModeloStr(const balHandle: PBALHandle; var Buffer : pChar; const BufferLen : Integer) : Integer ; cdecl ; export;
+var
+  StrTmp : String;
+begin
+
+  if (balHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+ try
+     StrTmp := balHandle^.BAL.ModeloStr;
+     StrPLCopy(Buffer, StrTmp, BufferLen);
+     Result := length(StrTmp);
+  except
+     on exception : Exception do
+     begin
+        balHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end;
+
+end;
+
+Function BAL_GetPorta(const balHandle: PBALHandle; var Buffer : pChar; const BufferLen : Integer) : Integer ; cdecl ; export;
 var
   StrTmp : String;
 begin
@@ -235,7 +258,7 @@ begin
 
 end;
 
-Function BAL_SetPorta(const balHandle: PBALHandle; const Porta : pChar) : Integer; StdCall; export;
+Function BAL_SetPorta(const balHandle: PBALHandle; const Porta : pChar) : Integer; cdecl; export;
 begin
 
   if (balHandle = nil) then
@@ -257,7 +280,7 @@ begin
 
 end;
 
-Function BAL_GetAtivo(const balHandle: PBALHandle) : Integer; StdCall; export;
+Function BAL_GetAtivo(const balHandle: PBALHandle) : Integer; cdecl; export;
 begin
 
   if (balHandle = nil) then
@@ -281,6 +304,76 @@ begin
 
 end;
 
+Function BAL_GetUltimoPesoLido(const balHandle: PBALHandle; var peso : Double) : Integer; cdecl; export;
+begin
+
+  if (balHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+  try
+     peso := balHandle^.BAL.UltimoPesoLido;
+     Result := 0;
+  except
+     on exception : Exception do
+     begin
+        balHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end;
+
+end;
+
+
+Function BAL_GetUltimaResposta(const balHandle: PBALHandle; var Buffer : pChar; const BufferLen : Integer) : Integer ; cdecl ; export;
+var
+  StrTmp : String;
+begin
+
+  if (balHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+ try
+     StrTmp := balHandle^.BAL.UltimaResposta;
+     StrPLCopy(Buffer, StrTmp, BufferLen);
+     Result := length(StrTmp);
+  except
+     on exception : Exception do
+     begin
+        balHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end;
+
+end;
+
+Function BAL_LePeso(const balHandle: PBALHandle; const timeout : Integer; var peso : Double) : Integer; cdecl; export;
+begin
+
+  if (balHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+  try
+     peso := balHandle^.BAL.LePeso(timeout);
+     Result := 0;
+  except
+     on exception : Exception do
+     begin
+        balHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end;
+
+end;
+
 exports
 
 { Funções }
@@ -291,7 +384,11 @@ BAL_Ativar, BAL_Desativar,
 
 { Propriedades do Componente }
 
-BAL_GetModelo, BAL_SetModelo, BAL_GetPorta, BAL_SetPorta, BAL_GetAtivo ;
+BAL_GetModelo, BAL_SetModelo, BAL_GetModeloStr,
+BAL_GetPorta, BAL_SetPorta,
+BAL_GetAtivo,
+BAL_GetUltimoPesoLido, BAL_GetUltimaResposta,
+BAL_LePeso;
 
 
 end.

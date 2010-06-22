@@ -38,6 +38,14 @@ namespace ACBr.Net
             }
         }
 
+        public string ModeloStr
+        {
+            get
+            {
+                return GetString(ACBrDll.BAL_GetModeloStr);
+            }
+        }
+
         public string Porta
         {
             get
@@ -47,6 +55,22 @@ namespace ACBr.Net
             set
             {
                 SetString(ACBrDll.BAL_SetPorta, value);
+            }
+        }
+
+        public decimal UltimoPesoLido
+        {
+            get
+            {
+                return GetDecimal(ACBrDll.BAL_GetUltimoPesoLido);
+            }
+        }
+
+        public string UltimaResposta
+        {
+            get
+            {
+                return GetString(ACBrDll.BAL_GetUltimaResposta);
             }
         }
 
@@ -64,6 +88,21 @@ namespace ACBr.Net
         {
             int ret = ACBrDll.BAL_Desativar(this.handle);
             CheckResult(ret);
+        }
+
+        public decimal LePeso()
+        {
+            const int DEFAULT_TIMEOUT = 3000;
+            return LePeso(DEFAULT_TIMEOUT);
+        }
+
+        public decimal LePeso(int timeout)
+        {
+            double peso = 0;
+            int ret = ACBrDll.BAL_LePeso(this.handle, timeout, ref peso);
+            CheckResult(ret);
+
+            return Convert.ToDecimal(peso);
         }
 
         #region Override Methods

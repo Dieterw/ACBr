@@ -352,14 +352,14 @@ type
     procedure bECFLeituraXClick(Sender: TObject);
     procedure bECFAtivarClick(Sender: TObject);
     procedure TcpServerConecta(const TCPBlockSocket : TTCPBlockSocket ;
-      var Enviar : AnsiString) ;
+      var Enviar : AnsiString) ;{%h-}
     procedure TcpServerDesConecta(const TCPBlockSocket : TTCPBlockSocket ;
-      Erro : Integer ; ErroDesc : String) ;
+      Erro : Integer ; ErroDesc : String) ;{%h-}
     procedure TcpServerRecebeDados(const TCPBlockSocket : TTCPBlockSocket ;
-      const Recebido : AnsiString ; var Enviar : AnsiString) ;
+      const Recebido : AnsiString ; var Enviar : AnsiString) ;{%h-}
     procedure TrayIcon1Click(Sender : TObject) ;
-    procedure TrayIcon1MouseUp(Sender : TObject ; Button : TMouseButton ;
-      Shift : TShiftState ; X, Y : Integer) ;
+    procedure TrayIcon1MouseUp(Sender : TObject ; Button : TMouseButton ;{%h-}
+      Shift : TShiftState ; X, Y : Integer) ;{%h-}
     procedure tsECFShow(Sender: TObject);
     procedure Ocultar1Click(Sender: TObject);
     procedure Restaurar1Click(Sender: TObject);

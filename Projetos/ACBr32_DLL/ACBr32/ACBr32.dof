@@ -20,7 +20,7 @@ P=1
 Q=0
 R=0
 S=0
-T=0
+T=1
 U=0
 V=1
 W=0
@@ -82,7 +82,7 @@ ProductName=
 ProductVersion=1.0.0.0
 Comments=
 [Excluded Packages]
-C:\Program Files\Borland\Delphi6\Projects\Bpl\ACBrSerial.bpl=ACBr Automação Comercial Brasil - ACBrSerial (http://acbr.sf.net/)
+c:\program files\borland\delphi6\Projects\Bpl\ACBrSerial.bpl=ACBr Automação Comercial Brasil - ACBrSerial (http://acbr.sf.net/)
 [HistoryLists\hlConditionals]
 Count=3
 Item0=CONSOLE

@@ -1,6 +1,6 @@
 object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
-  Left = 88
-  Top = -19
+  Left = 77
+  Top = 19
   Width = 970
   Height = 780
   VertScrollBar.Position = 538
@@ -16,8 +16,8 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
   PixelsPerInch = 96
   TextHeight = 13
   object LayoutBoleto: TRLReport
-    Left = 32
-    Top = -152
+    Left = 24
+    Top = 8
     Width = 794
     Height = 1123
     Margins.LeftMargin = 3.000000000000000000
@@ -292,9 +292,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       object RLLabel71: TRLLabel
         Left = 127
         Top = 110
-        Width = 83
+        Width = 79
         Height = 10
-        Caption = 'N'#195#186'mero do Documento'
+        Caption = 'N'#250'mero do Documento'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -8
@@ -309,7 +309,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Height = 16
         Alignment = taCenter
         AutoSize = False
-        Caption = 'N'#195#186'mero do Documento'
+        Caption = 'N'#250'mero do Documento'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -12
@@ -320,9 +320,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       object RLLabel72: TRLLabel
         Left = 252
         Top = 110
-        Width = 54
+        Width = 47
         Height = 10
-        Caption = 'Esp'#195#169'cie Doc.'
+        Caption = 'Esp'#233'cie Doc.'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -8
@@ -337,7 +337,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Height = 14
         Alignment = taCenter
         AutoSize = False
-        Caption = 'Esp'#195#169'cie Doc.'
+        Caption = 'Esp'#233'cie Doc.'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -12
@@ -461,9 +461,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       object RLLabel77: TRLLabel
         Left = 190
         Top = 142
-        Width = 36
+        Width = 29
         Height = 10
-        Caption = 'Esp'#195#169'cie'
+        Caption = 'Esp'#233'cie'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -8
@@ -478,7 +478,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Height = 16
         Alignment = taCenter
         AutoSize = False
-        Caption = 'Esp'#195#169'cie'
+        Caption = 'Esp'#233'cie'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -12
@@ -543,11 +543,11 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       object RLLabel80: TRLLabel
         Left = 0
         Top = 173
-        Width = 352
+        Width = 325
         Height = 10
         Caption = 
-          'Instru'#195#167#195#181'es (Todas as informa'#195#167#195#181'es deste bloqueto s'#195#163'o de excl' +
-          'usiva responsabilidade do cedente.)'
+          'Instru'#231#245'es (Todas as informa'#231#245'es deste bloqueto s'#227'o de exclusiva' +
+          ' responsabilidade do cedente.)'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -8
@@ -606,9 +606,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       object RLLabel82: TRLLabel
         Left = 574
         Top = 78
-        Width = 99
+        Width = 91
         Height = 10
-        Caption = 'Ag'#195#170'ncia / C'#195#179'digo Cedente'
+        Caption = 'Ag'#234'ncia / C'#243'digo Cedente'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -8
@@ -623,7 +623,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Height = 16
         Alignment = taRightJustify
         AutoSize = False
-        Caption = 'Ag'#195#170'ncia / C'#195#179'digo Cedente'
+        Caption = 'Ag'#234'ncia / C'#243'digo Cedente'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -12
@@ -634,9 +634,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       object RLLabel83: TRLLabel
         Left = 574
         Top = 110
-        Width = 57
+        Width = 53
         Height = 10
-        Caption = 'Nosso N'#195#186'mero'
+        Caption = 'Nosso N'#250'mero'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -8
@@ -651,7 +651,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Height = 16
         Alignment = taRightJustify
         AutoSize = False
-        Caption = 'Nosso N'#195#186'mero'
+        Caption = 'Nosso N'#250'mero'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -12
@@ -853,9 +853,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       object RLLabel90: TRLLabel
         Left = 574
         Top = 299
-        Width = 61
+        Width = 57
         Height = 10
-        Caption = 'C'#195#179'digo de Baixa'
+        Caption = 'C'#243'digo de Baixa'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -8
@@ -890,20 +890,18 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Font.Style = []
         Lines.Strings = (
           
-            'Recebimento atrav'#195#169's do cheque n'#195#186'mero                         d' +
-            'o banco'
-          
-            'Esta quita'#195#167#195#163'o s'#195#179' ter'#195#161' validade ap'#195#179's o pagamento do cheque p' +
-            'elo'
+            'Recebimento atrav'#233's do cheque n'#250'mero                         do ' +
+            'banco'
+          'Esta quita'#231#227'o s'#243' ter'#225' validade ap'#243's o pagamento do cheque pelo'
           'banco sacado.')
         ParentFont = False
       end
       object RLLabel91: TRLLabel
         Left = 499
         Top = 334
-        Width = 95
+        Width = 80
         Height = 10
-        Caption = 'Autentica'#195#167#195#163'o Mec'#195#162'nica'
+        Caption = 'Autentica'#231#227'o Mec'#226'nica'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -8
@@ -1233,9 +1231,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       object RLLabel148: TRLLabel
         Left = 552
         Top = 92
-        Width = 99
+        Width = 91
         Height = 10
-        Caption = 'Ag'#195#170'ncia / C'#195#179'digo Cedente'
+        Caption = 'Ag'#234'ncia / C'#243'digo Cedente'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -8
@@ -1250,7 +1248,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Height = 16
         Alignment = taRightJustify
         AutoSize = False
-        Caption = 'Ag'#195#170'ncia / C'#195#179'digo Cedente'
+        Caption = 'Ag'#234'ncia / C'#243'digo Cedente'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -12
@@ -1289,9 +1287,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       object RLLabel150: TRLLabel
         Left = 131
         Top = 124
-        Width = 83
+        Width = 79
         Height = 10
-        Caption = 'N'#195#186'mero do Documento'
+        Caption = 'N'#250'mero do Documento'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -8
@@ -1306,7 +1304,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Height = 16
         Alignment = taCenter
         AutoSize = False
-        Caption = 'N'#195#186'mero do Documento'
+        Caption = 'N'#250'mero do Documento'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -12
@@ -1317,9 +1315,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       object RLLabel151: TRLLabel
         Left = 256
         Top = 124
-        Width = 54
+        Width = 47
         Height = 10
-        Caption = 'Esp'#195#169'cie Doc.'
+        Caption = 'Esp'#233'cie Doc.'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -8
@@ -1334,7 +1332,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Height = 14
         Alignment = taCenter
         AutoSize = False
-        Caption = 'Esp'#195#169'cie Doc.'
+        Caption = 'Esp'#233'cie Doc.'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -12
@@ -1401,9 +1399,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       object RLLabel154: TRLLabel
         Left = 552
         Top = 124
-        Width = 57
+        Width = 53
         Height = 10
-        Caption = 'Nosso N'#195#186'mero'
+        Caption = 'Nosso N'#250'mero'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -8
@@ -1418,7 +1416,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Height = 16
         Alignment = taRightJustify
         AutoSize = False
-        Caption = 'Nosso N'#195#186'mero'
+        Caption = 'Nosso N'#250'mero'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -12
@@ -1486,9 +1484,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       object RLLabel157: TRLLabel
         Left = 194
         Top = 156
-        Width = 36
+        Width = 29
         Height = 10
-        Caption = 'Esp'#195#169'cie'
+        Caption = 'Esp'#233'cie'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -8
@@ -1503,7 +1501,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Height = 16
         Alignment = taCenter
         AutoSize = False
-        Caption = 'Esp'#195#169'cie'
+        Caption = 'Esp'#233'cie'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -12
@@ -1596,11 +1594,11 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       object RLLabel161: TRLLabel
         Left = 4
         Top = 187
-        Width = 352
+        Width = 325
         Height = 10
         Caption = 
-          'Instru'#195#167#195#181'es (Todas as informa'#195#167#195#181'es deste bloqueto s'#195#163'o de excl' +
-          'usiva responsabilidade do cedente.)'
+          'Instru'#231#245'es (Todas as informa'#231#245'es deste bloqueto s'#227'o de exclusiva' +
+          ' responsabilidade do cedente.)'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -8
@@ -1780,9 +1778,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       object RLLabel167: TRLLabel
         Left = 551
         Top = 315
-        Width = 61
+        Width = 57
         Height = 10
-        Caption = 'C'#195#179'digo de Baixa'
+        Caption = 'C'#243'digo de Baixa'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -8
@@ -1820,9 +1818,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       object RLLabel168: TRLLabel
         Left = 503
         Top = 349
-        Width = 191
+        Width = 166
         Height = 10
-        Caption = 'Autentica'#195#167#195#163'o Mec'#195#162'nica - Ficha de Compensa'#195#167#195#163'o'
+        Caption = 'Autentica'#231#227'o Mec'#226'nica - Ficha de Compensa'#231#227'o'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -8
@@ -1917,8 +1915,8 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
     end
   end
   object BoletoCarne: TRLReport
-    Left = 208
-    Top = 288
+    Left = 136
+    Top = 240
     Width = 794
     Height = 1123
     Font.Charset = DEFAULT_CHARSET
@@ -2125,9 +2123,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       object RLLabel97: TRLLabel
         Left = 572
         Top = 71
-        Width = 99
+        Width = 91
         Height = 10
-        Caption = 'Ag'#195#170'ncia / C'#195#179'digo Cedente'
+        Caption = 'Ag'#234'ncia / C'#243'digo Cedente'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -8
@@ -2151,9 +2149,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       object RLLabel101: TRLLabel
         Left = 247
         Top = 96
-        Width = 83
+        Width = 79
         Height = 10
-        Caption = 'N'#195#186'mero do Documento'
+        Caption = 'N'#250'mero do Documento'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -8
@@ -2164,9 +2162,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       object RLLabel103: TRLLabel
         Left = 347
         Top = 96
-        Width = 54
+        Width = 47
         Height = 10
-        Caption = 'Esp'#195#169'cie Doc.'
+        Caption = 'Esp'#233'cie Doc.'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -8
@@ -2203,9 +2201,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       object RLLabel109: TRLLabel
         Left = 572
         Top = 96
-        Width = 57
+        Width = 53
         Height = 10
-        Caption = 'Nosso N'#195#186'mero'
+        Caption = 'Nosso N'#250'mero'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -8
@@ -2242,9 +2240,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       object RLLabel115: TRLLabel
         Left = 298
         Top = 121
-        Width = 36
+        Width = 29
         Height = 10
-        Caption = 'Esp'#195#169'cie'
+        Caption = 'Esp'#233'cie'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -8
@@ -2309,11 +2307,11 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       object RLLabel123: TRLLabel
         Left = 152
         Top = 146
-        Width = 352
+        Width = 325
         Height = 10
         Caption = 
-          'Instru'#195#167#195#181'es (Todas as informa'#195#167#195#181'es deste bloqueto s'#195#163'o de excl' +
-          'usiva responsabilidade do cedente.)'
+          'Instru'#231#245'es (Todas as informa'#231#245'es deste bloqueto s'#227'o de exclusiva' +
+          ' responsabilidade do cedente.)'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -8
@@ -2389,9 +2387,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       object RLLabel135: TRLLabel
         Left = 571
         Top = 255
-        Width = 61
+        Width = 57
         Height = 10
-        Caption = 'C'#195#179'digo de Baixa'
+        Caption = 'C'#243'digo de Baixa'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -8
@@ -2402,9 +2400,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       object RLLabel138: TRLLabel
         Left = 643
         Top = 284
-        Width = 95
+        Width = 80
         Height = 10
-        Caption = 'Autentica'#195#167#195#163'o Mec'#195#162'nica'
+        Caption = 'Autentica'#231#227'o Mec'#226'nica'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -8
@@ -2483,9 +2481,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       object RLLabel16: TRLLabel
         Left = 644
         Top = 310
-        Width = 91
+        Width = 81
         Height = 10
-        Caption = 'Ficha de Compensa'#195#167#195#163'o'
+        Caption = 'Ficha de Compensa'#231#227'o'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -8
@@ -2530,9 +2528,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       object RLLabel38: TRLLabel
         Left = 0
         Top = 71
-        Width = 99
+        Width = 91
         Height = 10
-        Caption = 'Ag'#195#170'ncia / C'#195#179'digo Cedente'
+        Caption = 'Ag'#234'ncia / C'#243'digo Cedente'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -8
@@ -2543,9 +2541,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       object RLLabel39: TRLLabel
         Left = 0
         Top = 95
-        Width = 36
+        Width = 29
         Height = 10
-        Caption = 'Esp'#195#169'cie'
+        Caption = 'Esp'#233'cie'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -8
@@ -2658,9 +2656,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       object RLLabel46: TRLLabel
         Left = 0
         Top = 229
-        Width = 57
+        Width = 53
         Height = 10
-        Caption = 'Nosso N'#195#186'mero'
+        Caption = 'Nosso N'#250'mero'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -8
@@ -3127,8 +3125,8 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
   end
   object RLPDFFilter1: TRLPDFFilter
     DocumentInfo.Creator = 
-      'FortesReport (Open Source) v3.24(B14)  \251 Copyright '#194#169' 1999-20' +
-      '08 Fortes Inform'#195#161'tica'
+      'FortesReport (Open Source) v3.24(B14)  \251 Copyright '#169' 1999-200' +
+      '8 Fortes Inform'#225'tica'
     ViewerOptions = []
     FontEncoding = feNoEncoding
     DisplayName = 'ACBrBoleto - http://acbr.sf.net'

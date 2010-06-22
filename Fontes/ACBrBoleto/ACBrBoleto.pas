@@ -56,7 +56,7 @@ uses ACBrBase,  {Units da ACBr}
      Graphics, Contnrs, Classes;
 
 const
-  CACBrBoleto_Versao = '0.0.10a' ;
+  CACBrBoleto_Versao = '0.0.11a' ;
 
 type
   TACBrTitulo = class;
@@ -307,8 +307,10 @@ type
     fInstrucao1        : String;
     fInstrucao2        : String;
     fLocalPagamento    : String;
+    fParcela           : Integer;
     fPercentualMulta   : Double;
     fSeuNumero         : String;
+    fTotalParcelas: Integer;
     fVencimento        : TDateTime;
     fDataDocumento     : TDateTime;
     fNumeroDocumento   : String;
@@ -350,6 +352,7 @@ type
     fACBrBoleto           : TACBrBoleto;
 
     procedure SetNossoNumero ( const AValue: String ) ;
+    procedure SetParcela ( const AValue: Integer ) ;
    public
      constructor Create(ACBrBoleto:TACBrBoleto);
      destructor Destroy; override;
@@ -371,6 +374,8 @@ type
      property Instrucao1        : String      read fInstrucao1        write fInstrucao1;
      property Instrucao2        : String      read fInstrucao2        write fInstrucao2;
      property Sacado            : TACBrSacado read fSacado            write fSacado;
+     property Parcela           :Integer      read fParcela           write SetParcela default 1;
+     property TotalParcelas     :Integer      read fTotalParcelas     write fTotalParcelas default 1;
 
      property TipoOcorrencia                 : TACBrTipoOcorrencia read fTipoOcorrencia  write fTipoOcorrencia default toRemessaRegistrar ;
      property OcorrenciaOriginal             : String    read fOcorrenciaOriginal  write fOcorrenciaOriginal;
@@ -590,6 +595,14 @@ begin
 
       fNossoNumero := padR(trim(AValue),TamanhoMaximoNossoNum,'0');
    end;
+end;
+
+procedure TACBrTitulo.SetParcela ( const AValue: Integer ) ;
+begin
+   if (AValue > TotalParcelas) and (ACBrBoleto.ACBrBoletoFC.LayOut = lCarne) then
+      raise Exception.Create('Numero da Parcela Atual deve ser menor ' +
+                             'que o Total de Parcelas do Carne');
+   fParcela := AValue;
 end;
 
 { TACBrTitulo }

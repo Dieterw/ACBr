@@ -1,8 +1,9 @@
 object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
-  Left = 83
-  Top = 30
+  Left = 88
+  Top = -19
   Width = 970
   Height = 780
+  VertScrollBar.Position = 538
   Caption = 'ACBRBoletoFCFortesFr'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -15,8 +16,8 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
   PixelsPerInch = 96
   TextHeight = 13
   object LayoutBoleto: TRLReport
-    Left = 0
-    Top = 8
+    Left = 32
+    Top = -152
     Width = 794
     Height = 1123
     Margins.LeftMargin = 3.000000000000000000
@@ -1916,8 +1917,8 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
     end
   end
   object BoletoCarne: TRLReport
-    Left = 520
-    Top = 120
+    Left = 208
+    Top = 288
     Width = 794
     Height = 1123
     Font.Charset = DEFAULT_CHARSET
@@ -2044,13 +2045,13 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       end
       object RLDraw62: TRLDraw
         Left = 0
-        Top = 345
+        Top = 349
         Width = 756
         Height = 16
         DrawKind = dkLine
         Pen.Style = psDot
       end
-      object RLImage1: TRLImage
+      object imgBancoCarne: TRLImage
         Left = 152
         Top = 0
         Width = 101
@@ -2451,21 +2452,6 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Font.Style = []
         ParentFont = False
       end
-      object RLDBText1: TRLDBText
-        Left = 254
-        Top = 14
-        Width = 72
-        Height = 27
-        Alignment = taCenter
-        AutoSize = False
-        DataField = 'NumeroBanco'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -24
-        Font.Name = 'Arial'
-        Font.Style = [fsBold]
-        ParentFont = False
-      end
       object RLDBText17: TRLDBText
         Left = 239
         Top = 268
@@ -2746,21 +2732,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Center = True
         Scaled = True
       end
-      object RLDBResult1: TRLDBResult
-        Left = -10
-        Top = 55
-        Width = 39
-        Height = 14
-        Alignment = taRightJustify
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -11
-        Font.Name = 'Arial'
-        Font.Style = []
-        Info = riCount
-        ParentFont = False
-      end
-      object LCont: TRLLabel
+      object txtTotPar: TRLLabel
         Left = 29
         Top = 55
         Width = 13
@@ -3017,12 +2989,6 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Font.Style = []
         ParentFont = False
       end
-      object imgBarrasCarne: TRLImage
-        Left = 152
-        Top = 284
-        Width = 467
-        Height = 54
-      end
       object txtVencCarne2: TRLLabel
         Left = 572
         Top = 55
@@ -3103,6 +3069,52 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Font.Height = -11
         Font.Name = 'Arial'
         Font.Style = []
+        ParentFont = False
+      end
+      object txtParcela: TRLLabel
+        Left = -26
+        Top = 55
+        Width = 51
+        Height = 14
+        Alignment = taRightJustify
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object imgBarrasCarne: TRLBarcode
+        Left = 154
+        Top = 287
+        Width = 465
+        Height = 66
+        AutoSize = False
+        Caption = '23790-3571000000100120'
+        CheckSumMethod = cmNone
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = []
+        InvalidCode = icDrawAnyway
+        Margins.LeftMargin = 1.000000000000000000
+        Margins.RightMargin = 1.000000000000000000
+        ParentFont = False
+        Ratio = 3.000000000000000000
+      end
+      object txtNumeroBanco: TRLLabel
+        Left = 254
+        Top = 12
+        Width = 72
+        Height = 27
+        Alignment = taCenter
+        AutoSize = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -24
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
         ParentFont = False
       end
     end

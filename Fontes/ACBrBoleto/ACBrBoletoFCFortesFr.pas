@@ -76,16 +76,16 @@ type
 
   TACBrBoletoFCFortesFr = class(TForm)
      BoletoCarne: TRLReport;
-     imgBarrasCarne: TRLImage;
+     imgBarrasCarne: TRLBarcode;
     imgCodigoBarra: TRLBarcode;
     ImgLoja: TRLImage;
     LayoutBoleto: TRLReport;
-    LCont: TRLLabel;
+    txtNumeroBanco: TRLLabel;
+    txtTotPar: TRLLabel;
     mIntrucoes: TRLMemo;
     RLBand1: TRLBand;
     RLBand3: TRLBand;
-    RLDBResult1: TRLDBResult;
-    RLDBText1: TRLDBText;
+    txtParcela: TRLLabel;
     txtCodCedenteCarne2: TRLLabel;
     txtCPFCarne2: TRLLabel;
     txtNomeSacadoCarne: TRLLabel;
@@ -154,7 +154,7 @@ type
     RLDraw70: TRLDraw;
     RLDraw71: TRLDraw;
     RLHTMLFilter1: TRLHTMLFilter;
-    RLImage1: TRLImage;
+    imgBancoCarne: TRLImage;
     RLLabel1: TRLLabel;
     RLLabel10: TRLLabel;
     RLLabel101: TRLLabel;
@@ -601,8 +601,8 @@ begin
       CodCedente     := Banco.MontarCampoCodigoCedente(Titulo);
 
 
-      fBoletoFC.CarregaLogo( imgBanco2.Picture, Banco.Numero );
-      txtNumeroBanco2.Caption         := IntToStrZero(Banco.Numero, 3)+ '-' +
+      fBoletoFC.CarregaLogo( imgBancoCarne.Picture, Banco.Numero );
+      txtNumeroBanco.Caption         := IntToStrZero(Banco.Numero, 3)+ '-' +
                                          IntToStrZero(Banco.Digito, 1);
       txtVencCanhoto.Caption          := FormatDateTime('dd/mm/yyyy',Titulo.Vencimento);
       txtVencCarne2.Caption           := txtVencCanhoto.Caption;
@@ -627,7 +627,8 @@ begin
       txtUsoBanco2.Caption            := Titulo.UsoBanco;
       txtCarteira.Caption             := Titulo.Carteira;
       txtEspecie2.Caption             := 'R$';
-
+      txtParcela.Caption              := IntToStrZero(Titulo.Parcela,2)+' /';
+      txtTotPar.Caption               := IntToStrZero(Titulo.TotalParcelas,2);
 
       txtEndSacado.Caption            := Titulo.Sacado.Logradouro + ' '+
                                          Titulo.Sacado.Numero + Titulo.Sacado.Complemento;
@@ -638,7 +639,7 @@ begin
       mIntrucoes.Lines.Text           := Titulo.Mensagem.Text;
 
       txtLinhaDigitavelCarne.Caption := LinhaDigitavel;
-      imgCodigoBarra.Caption := CodBarras;
+      imgBarrasCarne.Caption := CodBarras;
    end;
 
 

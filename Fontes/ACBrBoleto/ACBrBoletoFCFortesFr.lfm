@@ -12,9 +12,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
   OnCreate = FormCreate
   LCLVersion = '0.9.29'
   object LayoutBoleto: TRLReport
-    Left = 0
+    Left = 32
     Height = 1123
-    Top = 8
+    Top = 224
     Width = 794
     Margins.LeftMargin = 3
     Margins.TopMargin = 5
@@ -2331,9 +2331,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
     end
   end
   object BoletoCarne: TRLReport
-    Left = 8
+    Left = 272
     Height = 1123
-    Top = 560
+    Top = 664
     Width = 794
     Font.Color = clBlack
     Font.Height = -13
@@ -2531,7 +2531,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       object RLDraw62: TRLDraw
         Left = 0
         Height = 16
-        Top = 345
+        Top = 349
         Width = 756
         Angle = 0
         DrawKind = dkLine
@@ -2541,7 +2541,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         RealBounds.Width = 0
         RealBounds.Height = 0
       end
-      object RLImage1: TRLImage
+      object imgBancoCarne: TRLImage
         Left = 152
         Height = 41
         Top = 0
@@ -3014,24 +3014,6 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         RealBounds.Width = 0
         RealBounds.Height = 0
       end
-      object RLDBText1: TRLDBText
-        Left = 254
-        Height = 27
-        Top = 14
-        Width = 72
-        Alignment = taCenter
-        AutoSize = False
-        DataField = 'NumeroBanco'
-        Font.Color = clBlack
-        Font.Height = -24
-        Font.Name = 'Arial'
-        Font.Style = [fsBold]
-        ParentFont = False
-        RealBounds.Left = 0
-        RealBounds.Top = 0
-        RealBounds.Width = 0
-        RealBounds.Height = 0
-      end
       object RLDBText17: TRLDBText
         Left = 239
         Height = 13
@@ -3377,23 +3359,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         RealBounds.Height = 0
         Scaled = True
       end
-      object RLDBResult1: TRLDBResult
-        Left = -10
-        Height = 14
-        Top = 55
-        Width = 39
-        Alignment = taRightJustify
-        Font.Color = clBlack
-        Font.Height = -11
-        Font.Name = 'Arial'
-        Info = riCount
-        ParentFont = False
-        RealBounds.Left = 0
-        RealBounds.Top = 0
-        RealBounds.Width = 0
-        RealBounds.Height = 0
-      end
-      object LCont: TRLLabel
+      object txtTotPar: TRLLabel
         Left = 29
         Height = 14
         Top = 55
@@ -3690,16 +3656,6 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         RealBounds.Width = 0
         RealBounds.Height = 0
       end
-      object imgBarrasCarne: TRLImage
-        Left = 152
-        Height = 54
-        Top = 284
-        Width = 467
-        RealBounds.Left = 0
-        RealBounds.Top = 0
-        RealBounds.Width = 0
-        RealBounds.Height = 0
-      end
       object txtVencCarne2: TRLLabel
         Left = 572
         Height = 13
@@ -3790,6 +3746,59 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Font.Color = clBlack
         Font.Height = -11
         Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtParcela: TRLLabel
+        Left = -26
+        Height = 14
+        Top = 55
+        Width = 51
+        Alignment = taRightJustify
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object imgBarrasCarne: TRLBarcode
+        Left = 154
+        Height = 66
+        Top = 287
+        Width = 465
+        AutoSize = False
+        Caption = '23790-3571000000100120'
+        CheckSumMethod = cmNone
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Arial'
+        InvalidCode = icDrawAnyway
+        Margins.LeftMargin = 1
+        Margins.RightMargin = 1
+        ParentFont = False
+        Ratio = 3
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtNumeroBanco: TRLLabel
+        Left = 254
+        Height = 27
+        Top = 12
+        Width = 72
+        Alignment = taCenter
+        AutoSize = False
+        Font.Color = clBlack
+        Font.Height = -24
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
         ParentFont = False
         RealBounds.Left = 0
         RealBounds.Top = 0

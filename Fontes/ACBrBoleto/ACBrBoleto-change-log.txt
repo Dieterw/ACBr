@@ -48,7 +48,12 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
-Versão 0;0.11a 05/06/2010
+Versão 0.0.12a 22/06/2010
+[*] Adicionado a classe ACBrTitulo as propriedades Parcela e TotalParcelas, que indicam o número da parcela
+    atual e o total de parcelas da fatura, respectivamente.
+[*] Alterado layout do carnê para imprimir essas informações e também o Codigo de Barras e o numero do banco.
+
+Versão 0.0.11a 05/06/2010
 [*] Efetuado correcoes para a classe do Banco Itaú.(por RodrigoSD)
 [+] Adicionado possibilidade de gerar os arquivos remessa noslayouts de 240 e 400 colunas.(por Juliana Tamizou) 
 [+] Adicionado impressao de carnes, para tanto basta informar a propriedade layout como layoutCarne 

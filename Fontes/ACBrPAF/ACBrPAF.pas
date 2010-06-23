@@ -151,8 +151,6 @@ type
     function WriteRegistroT1: String;
     function WriteRegistroT2: String;
     function WriteRegistroT9: String;
-    /// EAD
-    procedure WriteRegistroEAD(Arquivo: String);
   public
     constructor Create(AOwner: TComponent); override; /// Create
     destructor Destroy; override; /// Destroy
@@ -163,6 +161,9 @@ type
     function SaveFileTXT_R(Arquivo: String): Boolean; /// Método que escreve o arquivo texto no caminho passado como parâmetro
     function SaveFileTXT_T(Arquivo: String): Boolean; /// Método que escreve o arquivo texto no caminho passado como parâmetro
 
+    /// EAD
+    procedure WriteRegistroEAD(Arquivo: String);
+    
     property PAF_D: TPAF_D read FPAF_D write FPAF_D;
     property PAF_E: TPAF_E read FPAF_E write FPAF_E;
     property PAF_P: TPAF_P read FPAF_P write FPAF_P;

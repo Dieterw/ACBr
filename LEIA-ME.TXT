@@ -368,8 +368,8 @@ ACBrNFePCN.dpk -  ??? Descrição ???
 6.2 COMPONENTES EM DESENVOLVIMENTO OU DESCONTINUADOS
 ====================================================
 
- Os seguintes pacores e componentes, embora ainda estejam ainda no ACBr, já não
-estão sendo atualizados mais ou ainda, são componentes que estão em desenvolvimento
+ Os seguintes pacotes e componentes, embora ainda estejam no ACBr, já não estão
+sendo atualizados mais ou ainda, são componentes que estão em desenvolvimento
 e precisam ser testados. Talvez você queira ajudar no desenvolvimento e a testar.
 
 ACBrBombas - Para trabalhar como monitor de bombas de Combustível, se comunicando com 
@@ -381,7 +381,8 @@ ACBrBombas - Para trabalhar como monitor de bombas de Combustível, se comunicand
 
 ACBrTEF - Componente para facilitar a criação dos arquivos de troca entre a
   Aplicação Comercial e os programas das Operadoras. (Experiência apenas com
-  TEF Discado) **** DESCONTINUADO!!! USE O COMPONENTE ACBrTEFD *****
+  TEF Discado e não funciona com múltiplos cartões)
+  **** o ACBrTEF foi DESCONTINUADO!!! Use o componente ACBrTEFD *****
 
   
 --------------------------------------------------------------------------------

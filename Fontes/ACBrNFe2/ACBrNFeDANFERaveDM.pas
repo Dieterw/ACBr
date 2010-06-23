@@ -782,7 +782,7 @@ begin
                end;
         mfContaDestinatario:
                begin
-                  wFrete:='1-DESTINATÁRIO';
+                  wFrete:='1-DEST/REM';
                end;
         mfContaTerceiros:
                begin

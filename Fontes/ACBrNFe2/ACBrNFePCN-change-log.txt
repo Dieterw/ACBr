@@ -47,6 +47,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Alterações   23/06/10
+---------------
+[-] Danfe em Rave Arquivo e Code Base
+    - Correção da exibição do frete "1-DEST/REM" conforme NT 2010.004
+
 
 Alterações   17/02/10
 ---------------

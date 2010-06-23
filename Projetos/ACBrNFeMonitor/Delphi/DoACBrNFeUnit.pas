@@ -36,7 +36,7 @@ unit DoACBrNFeUnit ;
 interface
 Uses Classes, TypInfo, SysUtils, CmdUnitNFe, Types,
      smtpsend, ssl_openssl, mimemess, mimepart,
-     ACBrNFeUtil, RpDevice ;
+     ACBrNFeUtil, RpDevice;
 
 Procedure DoACBrNFe( Cmd : TACBrNFeCmd ) ;
 Function ConvertStrRecived( AStr: String ) : String ;
@@ -775,6 +775,13 @@ begin
            if not FileExists( Cmd.Params(0) ) then
               raise Exception.Create('Arquivo '+Cmd.Params(0)+' não encontrado')
          end
+
+        else if Cmd.Metodo = 'fileexists' then
+         begin
+           if not FileExists( Cmd.Params(0) ) then
+              raise Exception.Create('Arquivo '+Cmd.Params(0)+' não encontrado')
+         end
+
 
         else if Cmd.Metodo = 'certificadodatavencimento' then
          begin

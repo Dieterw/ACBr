@@ -48,6 +48,11 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   23/06/10 (Italo Jurisato Junior)
+---------------
+[+] Foi incluido a chamada para os links de homologação para o estado de
+    MS-Mato Grosso do Sul.
+
 Alterações   15/06/10 (Italo Jurisato Junior)
 ---------------
 [+] Foi incluido uma nova função (GerarXMLCTe) na classe TSignature e alterado a

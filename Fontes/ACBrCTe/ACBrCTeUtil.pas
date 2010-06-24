@@ -88,12 +88,14 @@ var
 type
   CTeUtil = class
   private
-    //Estados Emissores pela Sefaz Virtual RS (Rio Grande do Sul): RJ.
+    //Estados Emissores pela Sefaz Virtual RS (Rio Grande do Sul): RJ, SC.
     class function GetURLSVRS(AAmbiente: Integer; ALayOut: TLayOut): WideString;
     class function GetURLMG(AAmbiente: Integer; ALayOut: TLayOut): WideString;
     class function GetURLRS(AAmbiente: Integer; ALayOut: TLayOut): WideString;
     class function GetURLSP(AAmbiente: Integer; ALayOut: TLayOut): WideString;
     class function GetURLMT(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+    class function GetURLMS(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+
   protected
 
   public
@@ -236,11 +238,13 @@ begin
              end;
              }
              case AUF of
-              31: Result := CTeUtil.GetURLMG(AAmbiente, ALayOut);               //MG
-              33: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //RJ
-              43: Result := CTeUtil.GetURLRS(AAmbiente, ALayOut);               //RS
-              35: Result := CTeUtil.GetURLSP(AAmbiente, ALayOut);               //SP
-              51: Result := CTeUtil.GetURLMT(AAmbiente, ALayOut);               //MT
+              31: Result := CTeUtil.GetURLMG(AAmbiente, ALayOut);               //MG - Minas Gerais
+              33: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //RJ - Rio de Janeiro
+                                                                                //SC - Santa Catarina 
+              43: Result := CTeUtil.GetURLRS(AAmbiente, ALayOut);               //RS - Rio Grande do Sul
+              35: Result := CTeUtil.GetURLSP(AAmbiente, ALayOut);               //SP - São Paulo
+              50: Result := CTeUtil.GetURLMS(AAmbiente, ALayOut);               //MT - Mato Grosso do Sul
+              51: Result := CTeUtil.GetURLMT(AAmbiente, ALayOut);               //MT - Mato Grosso
              end;
             end;
         3 : begin
@@ -314,6 +318,21 @@ begin
     LayCTeInutilizacao: Result  := CTeUtil.SeSenao(AAmbiente = 1, 'https://nfe.fazenda.sp.gov.br/cteWEB/services/cteInutilizacao.asmx'    , 'https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteinutilizacao.asmx');
     LayCTeRecepcao: Result      := CTeUtil.SeSenao(AAmbiente = 1, 'https://nfe.fazenda.sp.gov.br/cteWEB/services/cteRecepcao.asmx'        , 'https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteRecepcao.asmx');
     LayCTeRetRecepcao: Result   := CTeUtil.SeSenao(AAmbiente = 1, 'https://nfe.fazenda.sp.gov.br/cteWEB/services/cteRetRecepcao.asmx'     , 'https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteRetRecepcao.asmx');
+  end;
+end;
+
+class function CTeUtil.GetURLMS(AAmbiente: Integer;
+  ALayOut: TLayOut): WideString;
+begin
+  // Os links para o Ambiente de Produção devem ser checados
+  case ALayOut of
+    LayCTeStatusServico: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.ms.gov.br/cteWEB/CteStatusServico.asmx'   , 'https://homologacao.cte.ms.gov.br/cteWEB/CteStatusServico.asmx');
+    LayCTeCadastro: Result      := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.ms.gov.br/cteWEB/CadConsultaCadastro.asmx', 'https://homologacao.cte.ms.gov.br/cteWEB/CadConsultaCadastro.asmx');
+    LayCTeConsultaCT: Result    := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.ms.gov.br/cteWEB/CteConsulta.asmx'        , 'https://homologacao.cte.ms.gov.br/cteWEB/CteConsulta.asmx');
+    LayCTeCancelamento: Result  := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.ms.gov.br/cteWEB/CteCancelamento.asmx'    , 'https://homologacao.cte.ms.gov.br/cteWEB/CteCancelamento.asmx');
+    LayCTeInutilizacao: Result  := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.ms.gov.br/cteWEB/CteInutilizacao.asmx'    , 'https://homologacao.cte.ms.gov.br/cteWEB/CteInutilizacao.asmx');
+    LayCTeRecepcao: Result      := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.ms.gov.br/cteWEB/CteRecepcao.asmx'        , 'https://homologacao.cte.ms.gov.br/cteWEB/CteRecepcao.asmx');
+    LayCTeRetRecepcao: Result   := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.ms.gov.br/cteWEB/CteRetRecepcao.asmx'     , 'https://homologacao.cte.ms.gov.br/cteWEB/CteRetRecepcao.asmx');
   end;
 end;
 

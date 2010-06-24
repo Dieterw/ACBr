@@ -352,17 +352,28 @@ ACBr_CTe.dpk - Conhecimento de Transporte de Carga Eletrônico.
                   arquivo xml contendo dados pertinentes ao conhecimento de
                   transporte de carga eletrônico.
 
-ACBrCTeDacteQRpkg.dpk - DACTe em Quick Reporter
+ACBrCTeDacteQRpkg.dpk - DACTe em Quick Report
       * ACBrCTeDACTeQR - Componente para emissão do DACTe, Documento Auxiliar do
                          Conhecimento de Transporte Eletrônico.
 
-ACBr_NFe.dpk - ??? Descrição ???
-ACBrCTeDacteQRpkg.dpk - ??? Descrição ???
-ACBrNFeDanfeQRpkg.dpk - ??? Descrição ???
+ACBr_NFe.dpk - Nota Fiscal Eletrônica.
+      * ACBrNFe - Componente que gera, assina, valida e envia para o SEFAZ o
+                  arquivo xml contendo dados pertinentes a nota fiscal eletrônica.
+
+ACBrNFeDanfeQRpkg.dpk - DANFe em Quick Report
+      * ACBrNFeDANFeQR - Componente para emissão do DANFe, Documento Auxiliar da
+                         Nota Fiscal Eletrônica.
+
 ACBrNFeDanfeRLpkg.dpk - ??? Descrição ???
+
 ACBrNFeDanfeRV.dpk - ??? Descrição ???
+
 ACBrNFeDanfeRVCodeBase.dpk - ??? Descrição ???
-ACBrNFePCN.dpk -  ??? Descrição ???
+
+PCN.dpk -  ??? Descrição ???
+
+Observação: Na pasta \pacotes\ACBrNFe2 os pacotes: ACBr_NFe.dpk e PCN.dpk foram 
+            renomeados para: ACBr_NFe2.dpk e PCN2.dpk.
 
 -------------------
 6.2 COMPONENTES EM DESENVOLVIMENTO OU DESCONTINUADOS

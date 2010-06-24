@@ -780,6 +780,7 @@ begin
 
    qrlEmissao.Caption   := NotaUtil.FormatDate(DateToStr(FNFe.Ide.dEmi)) ;
    qrlSaida.Caption     := IfThen( FNFe.Ide.DSaiEnt <> 0, NotaUtil.FormatDate(DateToStr(FNFe.Ide.dSaiEnt))) ;
+   qrlHoraSaida.Caption := '';
 
     if FImprimeHoraSaida then
     begin
@@ -790,9 +791,9 @@ begin
         begin
             qrlHoraSaida.Caption := FHoraSaida;
         end;
-    end else
-    begin
-        qrlHoraSaida.Caption := '';
+//    end else
+//    begin
+//        qrlHoraSaida.Caption := '';
     end;
     
    // Faturas
@@ -1058,7 +1059,7 @@ begin
          begin
             qrmEndereco.Lines.Clear ;
             qrmEndereco.Lines.add ( XLgr + IfThen ( Nro = '0', '', ', ' + Nro ) + ' ' + XCpl + ' ' + XBairro ) ;
-            qrmEndereco.Lines.add ( NotaUtil.FormatarCEP( IntToStr(CEP) ) + ' - ' + XMun + ' - ' + UF ) ;
+            qrmEndereco.Lines.add ( NotaUtil.FormatarCEP( FormatFloat( '00000000', CEP ) ) + ' - ' + XMun + ' - ' + UF ) ;
             if Trim(FSite) <> '' then
             begin
                qrmEndereco.Lines.Add (FSite);

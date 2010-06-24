@@ -240,7 +240,7 @@ begin
              case AUF of
               31: Result := CTeUtil.GetURLMG(AAmbiente, ALayOut);               //MG - Minas Gerais
               33: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //RJ - Rio de Janeiro
-                                                                                //SC - Santa Catarina 
+              42: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //SC - Santa Catarina
               43: Result := CTeUtil.GetURLRS(AAmbiente, ALayOut);               //RS - Rio Grande do Sul
               35: Result := CTeUtil.GetURLSP(AAmbiente, ALayOut);               //SP - São Paulo
               50: Result := CTeUtil.GetURLMS(AAmbiente, ALayOut);               //MT - Mato Grosso do Sul

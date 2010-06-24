@@ -2859,7 +2859,7 @@ Var
 begin
   LoadDLLFunctions ;
 
-  ArqTmp := ExtractFilePath( NomeArquivo ) + 'D' ;
+  ArqTmp := ExtractFilePath( NomeArquivo ) + 'C' ;
   DeleteFile( ArqTmp + '_ESP.txt' ) ;
 
   OldAtivo := Ativo ;

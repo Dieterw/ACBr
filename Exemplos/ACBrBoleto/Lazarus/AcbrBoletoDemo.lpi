@@ -52,7 +52,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="90" Y="16"/>
-        <UsageCount Value="69"/>
+        <UsageCount Value="70"/>
       </Unit0>
       <Unit1>
         <Filename Value="uDemo.pas"/>
@@ -64,7 +64,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="18"/>
         <CursorPos X="41" Y="19"/>
-        <UsageCount Value="69"/>
+        <UsageCount Value="70"/>
         <Loaded Value="True"/>
       </Unit1>
       <Unit2>
@@ -73,7 +73,6 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ACBrBoletoFCFortesFr"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
         <TopLine Value="599"/>
@@ -84,10 +83,11 @@
       <Unit3>
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
         <UnitName Value="ACBrBoleto"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="52"/>
-        <CursorPos X="31" Y="59"/>
+        <TopLine Value="148"/>
+        <CursorPos X="10" Y="155"/>
         <UsageCount Value="26"/>
         <Loaded Value="True"/>
       </Unit3>
@@ -488,7 +488,7 @@
         <UsageCount Value="10"/>
       </Unit52>
     </Units>
-    <JumpHistory Count="29" HistoryIndex="28">
+    <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoletoFCFortesFr.pas"/>
         <Caret Line="67" Column="3" TopLine="210"/>
@@ -605,6 +605,10 @@
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoletoFCFortesFr.pas"/>
         <Caret Line="529" Column="101" TopLine="522"/>
       </Position29>
+      <Position30>
+        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
+        <Caret Line="59" Column="31" TopLine="52"/>
+      </Position30>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

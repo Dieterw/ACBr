@@ -148,7 +148,9 @@ end;
 
 function TACBrBancoBradesco.GerarRegistroTransacao400(ACBrTitulo :TACBrTitulo): String;
 var
-  DigitoNossoNumero, Ocorrencia, Protesto: String;
+  DigitoNossoNumero,
+  Ocorrencia,
+  Protesto,
   TipoSacado: String;
   TipoBoleto: Char;
 begin
@@ -179,6 +181,7 @@ begin
          TipoBoleto := '1';
       end;
 
+      
       {Pegando campo Intruções}
       if (DataProtesto > 0) and (DataProtesto > Vencimento) then
           Protesto := '06' + IntToStrZero(DaysBetween(DataProtesto,Vencimento),2)
@@ -213,7 +216,7 @@ begin
                   padL( NumeroDocumento,  10)                             +
                   FormatDateTime( 'ddmmyy', Vencimento)                   +
                   IntToStrZero( Round( ValorDocumento * 100 ), 13)        +
-                  StringOfChar('0',8) + EspecieDoc + 'N'                  +  // Zeros + Especie do documento + Idntificação(valor fixo N)
+                  StringOfChar('0',8) + padl(EspecieDoc,2) + 'N'                  +  // Zeros + Especie do documento + Idntificação(valor fixo N)
                   FormatDateTime( 'ddmmyy', DataDocumento )               +  // Data de Emissão
                   Protesto                                                +
                   IntToStrZero( round(ValorMoraJuros * 100 ), 13)         +

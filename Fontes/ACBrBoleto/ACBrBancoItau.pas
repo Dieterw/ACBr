@@ -228,7 +228,7 @@ end;
 
 function TACBrBancoItau.GerarRegistroTransacao240(ACBrTitulo : TACBrTitulo): String;
 var ATipoInscricao, ATipoOcorrencia, ATipoBoleto, ADataMoraJuros, 
-    ADataDesconto : string;
+    ADataDesconto,ATipoAceite : string;
 begin
    with ACBrTitulo do
    begin
@@ -258,6 +258,11 @@ begin
             ATipoOcorrencia := '01';
          end;
 
+         { Pegando o Aceite do Titulo }
+         case Aceite of
+            atSim :  ATipoAceite := 'A';
+            atNao :  ATipoAceite := 'N';
+         end;
          {Pegando Tipo de Boleto} //Quem emite e quem distribui o boleto?
          case ACBrBoleto.Cedente.TipoBoleto of
               tbCliEmite        : ATipoBoleto := '1' + '1';
@@ -307,8 +312,8 @@ begin
                IntToStrZero( round( ValorDocumento * 100), 13)            + // 86 a 100 - Valor nominal do título
                '00000'                                                    + // 101 a 105 - Agência cobradora. // Ficando com Zeros o Itaú definirá a agência cobradora pelo CEP do sacado
                ' '                                                        + // 106 - Dígito da agência cobradora
-               EspecieDoc                                                 + // 107 a 108 - Espécie do documento
-               IfThen(Aceite = 'S', 'A', 'N')                             + // 109 - Identificação de título Aceito / Não aceito
+               padL(EspecieDoc,2)                                                 + // 107 a 108 - Espécie do documento
+               ATipoAceite                             + // 109 - Identificação de título Aceito / Não aceito
                FormatDateTime('ddmmyyyy', DataDocumento)                  + // 110 a 117 - Data da emissão do documento
                '0'                                                        + // 118 - Zeros
                ADataMoraJuros                                             + //119 a 126 - Data a partir da qual serão cobrados juros

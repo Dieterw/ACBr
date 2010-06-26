@@ -56,7 +56,7 @@ uses ACBrBase,  {Units da ACBr}
      Graphics, Contnrs, Classes;
 
 const
-  CACBrBoleto_Versao = '0.0.11a' ;
+  CACBrBoleto_Versao = '0.0.12a' ;
 
 type
   TACBrTitulo = class;
@@ -151,6 +151,9 @@ type
 
   TACBrTipoBoleto = (tbCliEmite,tbBancoEmite,tbBancoReemite,tbBancoNaoReemite);
   TACBrTipoInscricao = (tiPessoaFisica, tiPessoaJuridica, tiOutro);
+
+  {Aceite do titulo}
+  TACBrAceiteTitulo = (atSim, atNao);   
 
   { TACBrCedente }
 
@@ -315,7 +318,7 @@ type
     fDataDocumento     : TDateTime;
     fNumeroDocumento   : String;
     fEspecieDoc        : String;
-    fAceite            : String;
+    fAceite            : TACBrAceiteTitulo;
     fDataProcessamento : TDateTime;
     fNossoNumero       : String;
     fUsoBanco          : String;
@@ -363,7 +366,7 @@ type
      property DataDocumento     : TDateTime   read fDataDocumento     write fDataDocumento;
      property NumeroDocumento   : String      read fNumeroDocumento   write fNumeroDocumento ;
      property EspecieDoc        : String      read fEspecieDoc        write fEspecieDoc;
-     property Aceite            : String      read fAceite            write fAceite;
+     property Aceite            : TACBrAceiteTitulo   read fAceite           write fAceite      default atNao;
      property DataProcessamento : TDateTime   read fDataProcessamento write fDataProcessamento;
      property NossoNumero       : String      read fNossoNumero       write SetNossoNumero;
      property UsoBanco          : String      read fUsoBanco          write fUsoBanco;
@@ -426,15 +429,18 @@ TACBrBoleto = class( TACBrComponent )
     fBanco: TACBrBanco;
     fACBrBoletoFC: TACBrBoletoFCClass;
     fDirArqRemessa: String;
+    fDirArqRetorno: String;
     fLayoutRemessa: TACBrLayoutRemessa;
     fImprimirMensagemPadrao: boolean;
     fListadeBoletos : TListadeBoletos;
     fCedente        : TACBrCedente;
     fNomeArqRemessa: String;
+    fNomeArqRetorno: String;
     function GetAbout: String;
     procedure SetAbout(const AValue: String);
     procedure SetACBrBoletoFC(const Value: TACBrBoletoFCClass);
     procedure SetDirArqRemessa(const AValue: String);
+    procedure SetDirArqRetorno ( const AValue: String ) ;
     procedure SetNomeArqRemessa(const AValue: String);
   protected
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
@@ -453,6 +459,7 @@ TACBrBoleto = class( TACBrComponent )
     procedure AdicionarMensagensPadroes(Titulo : TACBrTitulo; AStringList: TStrings);
 
     procedure GerarRemessa(NumeroRemessa : Integer);
+    procedure LerRetorno();
   published
     property About : String read GetAbout write SetAbout stored False ;
 
@@ -460,6 +467,8 @@ TACBrBoleto = class( TACBrComponent )
     property Banco          : TACBrBanco         read fBanco                  write fBanco;
     property NomeArqRemessa : String             read fNomeArqRemessa         write SetNomeArqRemessa;
     property DirArqRemessa  : String             read fDirArqRemessa          write SetDirArqRemessa;
+    property NomeArqRetorno : String             read fNomeArqRetorno         write fNomeArqRetorno;
+    property DirArqRetorno  : String             read fDirArqRetorno          write SetDirArqRetorno;
     property LayoutRemessa  : TACBrLayoutRemessa read fLayoutRemessa          write fLayoutRemessa default c400;
     property ImprimirMensagemPadrao : Boolean    read fImprimirMensagemPadrao write fImprimirMensagemPadrao default True;
     property ACBrBoletoFC : TACBrBoletoFCClass   read fACBrBoletoFC           write SetACBrBoletoFC;
@@ -617,7 +626,7 @@ begin
   fDataDocumento     := 0;
   fNumeroDocumento   := '';
   fEspecieDoc        := 'DM';
-  fAceite            := 'N';
+  fAceite            := atNao;
   fDataProcessamento := now;
   fNossoNumero       := '';
   fUsoBanco          := '';
@@ -697,6 +706,11 @@ end;
 procedure TACBrBoleto.SetDirArqRemessa(const AValue: String);
 begin
   fDirArqRemessa := PathWithDelim( AValue );
+end;
+
+procedure TACBrBoleto.SetDirArqRetorno ( const AValue: String ) ;
+begin
+   fDirArqRetorno := PathWithDelim(AValue);
 end;
 
 procedure TACBrBoleto.SetNomeArqRemessa(const AValue: String);
@@ -1153,6 +1167,43 @@ begin
 
    finally
       SLRemessa.Free;
+   end;
+end;
+
+procedure TACBrBoleto.LerRetorno( ) ;
+var
+  SlRetorno: TStringList;
+begin
+   SlRetorno:= TStringList.Create;
+   Self.ListadeBoletos.Clear;
+
+   if not DirectoryExists(fDirArqRetorno) then
+      raise Exception.Create(ACBrStr('Diretório Inválido '+fDirArqRetorno));
+
+   if trim(NomeArqRetorno) = '' then
+      raise Exception.Create(ACBrStr('Nome do arquivo deve ser informado.'));
+
+   SlRetorno.LoadFromFile(fDirArqRetorno+NomeArqRetorno);
+
+   if SlRetorno.Count < 1 then
+      raise exception.Create(ACBrStr('Arquivo está vazio'));
+
+   case Length(SlRetorno.Strings[0]) of
+      240:begin
+          if Copy(SlRetorno.Strings[0],143,1) <> '2' then
+             Raise Exception.Create(NomeArqRetorno +' não é um arquivo de '+
+                                    'retorno de cobrança com layout CNAB240');
+          end;
+
+      400: begin
+           if Copy(SlRetorno.Strings[0],1,19) <> '02RETORNO01COBRANCA' then
+              Raise Exception.Create(NomeArqRetorno +' não é um arquivo de '+
+                                     'retorno de cobrança com layout CNAB400');
+           end;
+       else
+          raise Exception.Create(NomeArqRetorno+' não é um arquivo de  ' +
+                                 'retorno de cobrança CNAB240 ou CNAB400');
+
    end;
 end;
 

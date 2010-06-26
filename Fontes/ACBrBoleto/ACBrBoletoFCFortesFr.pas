@@ -526,7 +526,7 @@ begin
 
       fBoletoFC.CarregaLogo( imgBanco2.Picture, Banco.Numero );
       txtNumeroBanco2.Caption         := IntToStrZero(Banco.Numero, 3)+ '-' +
-                                         IntToStrZero(Banco.Digito, 1);
+                                         IfThen(Banco.Digito = 10,'X',IntToStrZero(Banco.Digito, 1));
       lblLocalPagto.Caption           := Titulo.LocalPagamento;
       txtDataVencimento2.Caption      := FormatDateTime('dd/mm/yyyy', Titulo.Vencimento);
       txtNomeCedente2.Caption         := Cedente.Nome;
@@ -534,7 +534,7 @@ begin
       txtDataDocumento2.Caption       := FormatDateTime('dd/mm/yyyy', Titulo.DataDocumento);
       txtNumeroDocumento2.Caption     := Titulo.NumeroDocumento;
       txtEspecieDoc2.Caption          := Titulo.EspecieDoc;
-      txtAceite2.Caption              := Titulo.Aceite;
+      txtAceite2.Caption              := ifThen(Titulo.Aceite = atSim,'S','N');
       txtDataProcessamento2.Caption   := FormatDateTime('dd/mm/yyyy',Now);
       txtNossoNumero2.Caption         := NossoNum;
       txtUsoBanco2.Caption            := Titulo.UsoBanco;
@@ -603,7 +603,7 @@ begin
 
       fBoletoFC.CarregaLogo( imgBancoCarne.Picture, Banco.Numero );
       txtNumeroBanco.Caption         := IntToStrZero(Banco.Numero, 3)+ '-' +
-                                         IntToStrZero(Banco.Digito, 1);
+                                        ifthen(Banco.Digito = 10,'X',IntToStrZero(Banco.Digito, 1));
       txtVencCanhoto.Caption          := FormatDateTime('dd/mm/yyyy',Titulo.Vencimento);
       txtVencCarne2.Caption           := txtVencCanhoto.Caption;
       txtCodCedenteCarne.Caption      := CodCedente;
@@ -621,7 +621,7 @@ begin
       txtDataDocto.Caption            := FormatDateTime('dd/mm/yyyy', Titulo.DataDocumento);
       txtNumeroDocto.Caption          := Titulo.NumeroDocumento;
       txtEspecieDoc.Caption           := Titulo.EspecieDoc;
-      txtAceite.Caption               := Titulo.Aceite;
+      txtAceite.Caption               := IfThen((atSim = Titulo.Aceite), 'S', 'N');
       txtDataProces.Caption           := FormatDateTime('dd/mm/yyyy',Now);
 
       txtUsoBanco2.Caption            := Titulo.UsoBanco;

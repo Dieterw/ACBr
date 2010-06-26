@@ -149,10 +149,10 @@ begin
         ValorMoraJuros    := StrToCurrDef(edtMoraJuros.Text,0);
         ValorDesconto     := StrToCurrDef(edtValorDesconto.Text,0);
         ValorAbatimento   := StrToCurrDef(edtValorAbatimento.Text,0);
-        DataMoraJuros     := StrToDate(edtDataMora.Text);
-        DataDesconto      := StrToDate(edtDataDesconto.Text);
-        DataAbatimento    := StrToDate(edtDataAbatimento.Text);
-        DataProtesto      := StrToDate(edtDataProtesto.Text);
+        DataMoraJuros     := StrToDateDef(edtDataMora.Text, 0);
+        DataDesconto      := StrToDateDef(edtDataDesconto.Text, 0);
+        DataAbatimento    := StrToDateDef(edtDataAbatimento.Text, 0);
+        DataProtesto      := StrToDateDef(edtDataProtesto.Text, 0);
         PercentualMulta   := StrToCurrDef(edtMulta.Text,0);
         Mensagem.Text     := memMensagem.Text;
         TipoOcorrencia    := toRemessaBaixar;

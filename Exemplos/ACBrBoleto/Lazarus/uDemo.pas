@@ -147,7 +147,7 @@ begin
         DataDocumento     := EncodeDate(2010,04,10);
         NumeroDocumento   := padL(IntToStr(I),6,'0');
         EspecieDoc        := 'DM';
-        Aceite            := 'S';
+        Aceite            := atSim;
         DataProcessamento := Now;
         NossoNumero       := IntToStrZero(I,ACBrBoleto1.Banco.TamanhoMaximoNossoNum);
         Carteira          := '09';
@@ -201,7 +201,7 @@ begin
         DataDocumento     := edtDataDoc.Date;
         NumeroDocumento   := edtNumeroDoc.Text;
         EspecieDoc        := edtEspecieDoc.Text;
-        Aceite            := 'S';
+        Aceite            := atSim;
         DataProcessamento := Now;
         NossoNumero       := padR(edtNossoNro.Text,ACBrBoleto.Banco.TamanhoMaximoNossoNum);
         Carteira          := edtCarteira.Text;

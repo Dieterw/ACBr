@@ -1,0 +1,13 @@
+Atualizei todos os binários (EXE e DLL) para a versão 0.9.8h..
+
+Nessa versão, a DLL "ssleay32.dll" foi substituida por: "libssl32.dll"
+
+Encontrei essa nota sobre isso:
+http://www.mail-archive.com/gnuwin32-users@lists.sourceforge.net/msg01426.html
+
+Notei que os fontes da Synapse, classe usada pelo ACBr para conexão segura com 
+NFe e e-mail, já faz a busca pelos 2 nomes de DLL...  mas se ela encontrar 
+primeiro uma versão antiga de ssleay32.dll, pode haver problemas :(
+
+Portanto se você for atualizar essas DLLs no usuário final, lembre-se de apagar
+ssleay32.dll

@@ -1149,9 +1149,18 @@ begin
 
      fsSomaDigitos := fsSomaDigitos + ValorCalc ;
 
-     Inc( Base ) ;
-     if Base > fsMultFim then
-        Base := fsMultIni ;
+     if fsMultIni > fsMultFim then
+      begin
+        Dec( Base ) ;
+        if Base < fsMultFim then
+           Base := fsMultIni;
+      end
+     else
+      begin
+        Inc( Base ) ;
+        if Base > fsMultFim then
+           Base := fsMultIni ;
+      end ;
   end ;
 
   case fsFormulaDigito of

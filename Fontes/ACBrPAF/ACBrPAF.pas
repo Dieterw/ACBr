@@ -47,7 +47,8 @@ uses
    {$IFDEF FPC}
       LResources,
    {$ENDIF}
-   ACBrTXTClass, ACBrUtil, Forms,
+   {$IFDEF CLX}QForms, {$ELSE} Forms, {$ENDIF}
+   ACBrTXTClass, ACBrUtil, 
    ACBrPAF_D, ACBrPAF_D_Class,
    ACBrPAF_E, ACBrPAF_E_Class,
    ACBrPAF_P, ACBrPAF_P_Class,

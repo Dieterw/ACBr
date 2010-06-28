@@ -1,7 +1,7 @@
 object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
-  Left = 184
+  Left = 570
   Height = 744
-  Top = 193
+  Top = 86
   Width = 937
   VertScrollBar.Position = 538
   Caption = 'ACBRBoletoFCFortesFr'

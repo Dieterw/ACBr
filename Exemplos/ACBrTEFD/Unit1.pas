@@ -178,10 +178,10 @@ type
     procedure ACBrTEFD1CliSiTefExibeMenu(Titulo: String;
       Opcoes: TStringList; var ItemSelecionado: Integer;
       var VoltarMenu: Boolean);
-    procedure ACBrTEFD1VeSPagueObtemCampo(Titulo, Mascara: String;
-      Tipo: Char; var Resposta: String; var Digitado: Boolean);
     procedure ACBrTEFD1VeSPagueExibeMenu(Titulo: String;
       Opcoes: TStringList; var ItemSelecionado: Integer);
+    procedure ACBrTEFD1VeSPagueObtemCampo(Titulo, Mascara: String;
+      Tipo: Char; var Resposta: String; var Digitado: Boolean);
   private
      fCancelado : Boolean ;
 
@@ -884,12 +884,32 @@ end;
 
 procedure TForm1.ACBrTEFD1AguardaResp(Arquivo : String;
    SegundosTimeOut : Integer; var Interromper : Boolean);
+var
+  Msg : String ;
 begin
-   StatusBar1.Panels[2].Text := 'Aguardando: '+Arquivo+' '+IntToStr(SegundosTimeOut) ;
-   Application.ProcessMessages;
+  Msg := 'Aguardando: '+Arquivo+' '+IntToStr(SegundosTimeOut) ;
 
-   if fCancelado then
-      Interromper := True ;
+  if (ACBrTEFD1.GPAtual in [gpCliSiTef, gpVeSPague]) then   // É TEF dedicado ?
+  begin
+     if (Arquivo = '23') and (not bCancelarResp.Visible) then  // Está aguardando Pin-Pad ?
+     begin
+        if ACBrTEFD1.TecladoBloqueado then
+        begin
+           ACBrTEFD1.BloquearMouseTeclado(False);  // Desbloqueia o Teclado
+           // TODO: nesse ponto é necessário desbloquear o Teclado, mas permitir
+           //       um clique apenas no botão cancelar.... FALTA CORRIGIR NO DEMO
+        end ;
+
+        Msg := 'Tecle "ESC" para cancelar.';
+        bCancelarResp.Visible := True ;
+     end;
+  end;
+
+  StatusBar1.Panels[2].Text := Msg;
+  Application.ProcessMessages;
+
+  if fCancelado then
+     Interromper := True ;
 end;
 
 procedure TForm1.ACBrTEFD1AntesCancelarTransacao(RespostaPendente: TACBrTEFDResp
@@ -1091,6 +1111,27 @@ begin
   end;
 end;
 
+procedure TForm1.ACBrTEFD1VeSPagueExibeMenu(Titulo: String;
+  Opcoes: TStringList; var ItemSelecionado: Integer);
+Var
+  AForm : TForm4 ;
+  MR    : TModalResult ;
+begin
+  AForm := TForm4.Create(self);
+  try
+    AForm.Panel1.Caption := Titulo;
+    AForm.ListBox1.Items.AddStrings(Opcoes);
+    AForm.BitBtn3.Visible := False ;
+
+    MR := AForm.ShowModal ;
+
+    if (MR = mrOK) then
+      ItemSelecionado := AForm.ListBox1.ItemIndex;
+  finally
+    AForm.Free;
+  end;
+end;
+
 procedure TForm1.ACBrTEFD1VeSPagueObtemCampo(Titulo, Mascara: String;
   Tipo: Char; var Resposta: String; var Digitado: Boolean);
 Var
@@ -1110,27 +1151,6 @@ begin
 
     if Digitado then
        Resposta := AForm.Edit1.Text;
-  finally
-    AForm.Free;
-  end;
-end;
-
-procedure TForm1.ACBrTEFD1VeSPagueExibeMenu(Titulo: String;
-  Opcoes: TStringList; var ItemSelecionado: Integer);
-Var
-  AForm : TForm4 ;
-  MR    : TModalResult ;
-begin
-  AForm := TForm4.Create(self);
-  try
-    AForm.Panel1.Caption := Titulo;
-    AForm.ListBox1.Items.AddStrings(Opcoes);
-    AForm.BitBtn3.Visible := False ;
-
-    MR := AForm.ShowModal ;
-
-    if (MR = mrOK) then
-      ItemSelecionado := AForm.ListBox1.ItemIndex;
   finally
     AForm.Free;
   end;

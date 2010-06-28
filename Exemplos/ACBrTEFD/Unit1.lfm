@@ -60,25 +60,12 @@ object Form1: TForm1
           Top = 17
           Width = 161
           ItemHeight = 15
-          ItemIndex = 0
           Items.Strings = (
-            'Procurar'
-            'ecfNaoFiscal'
-            'ecfBematech'
-            'ecfSweda'
-            'ecfDaruma'
-            'ecfSchalter'
-            'ecfMecaf'
-            'ecfYanco'
-            'ecfDataRegis'
-            'ecfUrano'
-            'ecfICash'
-            'ecfQuattro'
+            ''
           )
           OnChange = cbxModeloChange
           Style = csDropDownList
           TabOrder = 0
-          Text = 'Procurar'
         end
         object Label4: TLabel
           Left = 10
@@ -915,6 +902,7 @@ object Form1: TForm1
     TEFVeSPague.AplicacaoVersao = '1.0'
     TEFVeSPague.EnderecoIP = 'localhost'
     TEFVeSPague.Porta = '60906'
+    TEFVeSPague.TimeOut = 2000
     TEFVeSPague.TransacaoADM = 'Administracao Consultar'
     TEFVeSPague.TransacaoCRT = 'Cartao Vender'
     TEFVeSPague.TransacaoCHQ = 'Cheque Consultar'

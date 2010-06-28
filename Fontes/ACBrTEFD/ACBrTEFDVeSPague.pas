@@ -101,7 +101,7 @@ type
     Procedure AddParamInteger(const ParamName : String; const AInteger : Integer) ;
     Procedure AddParamDouble(const ParamName : String; const ADouble  : Double) ;
     Procedure AddParamDateTime(const ParamName : String;
-       const ADateTime: TDateTime; const Tipo : Char = 'D'  ) ;
+       const ADateTime: TDateTime; const Tipo : AnsiChar = 'D'  ) ;
     Procedure AddParamStrings(const ParamName : String; const AStringList : TStrings) ;
   end ;
 
@@ -119,7 +119,7 @@ type
     var ItemSelecionado : Integer) of object ;
 
   TACBrTEFDVeSPagueObtemCampo = procedure( Titulo : String;
-    Mascara : String; Tipo : Char; var Resposta : AnsiString;
+    Mascara : String; Tipo : AnsiChar; var Resposta : AnsiString;
     var Digitado : Boolean ) of object ;
 
   { TACBrTEFDVeSPague }
@@ -133,7 +133,6 @@ type
       fEnderecoIP : AnsiString;
       fPorta      : AnsiString;
       fTimeOut    : Integer ;
-      fAguardandoPinPad : Boolean ;
 
       fSocket : TTCPBlockSocket ;
       fReqVS  : TACBrTEFDVeSPagueCmd ;
@@ -148,6 +147,7 @@ type
       fTransacaoReImpressao: String;
 
      Function ExecutarTransacao( Transacao : String ) : Boolean ;
+     procedure SeTimeOut(const AValue : Integer) ;
      procedure TransmiteCmd ;
      procedure AvaliaErro ;
      procedure ServicoIniciar ;
@@ -195,7 +195,7 @@ type
 
      property EnderecoIP : AnsiString read fEnderecoIP  write fEnderecoIP ;
      property Porta      : AnsiString read fPorta       write fPorta ;
-     property TimeOut    : Integer    read fTimeOut     write fTimeOut default 3000 ;
+     property TimeOut    : Integer    read fTimeOut     write SeTimeOut default 1000 ;
 
      property TransacaoADM : String read fTransacaoADM write fTransacaoADM ;
      property TransacaoCRT : String read fTransacaoCRT write fTransacaoCRT ;
@@ -418,7 +418,7 @@ begin
 end ;
 
 procedure TACBrTEFDVeSPagueCmd.AddParamDateTime(const ParamName : String ;
-  const ADateTime : TDateTime ; const Tipo : Char) ;
+  const ADateTime : TDateTime ; const Tipo : AnsiChar) ;
 var
   Formato,ValStr : String ;
 begin
@@ -564,9 +564,8 @@ begin
 
   fEnderecoIP := 'localhost' ;
   fPorta      := '60906' ;
-  fTimeOut    := 3000 ;
+  fTimeOut    := 1000 ;
   fTerminador := CACBrTEFD_VeSPague_Terminador ;
-  fAguardandoPinPad := False ;
 
   fAplicacao       := '' ;
   fAplicacaoVersao := '' ;
@@ -732,9 +731,19 @@ begin
   end ;
 end ;
 
+procedure TACBrTEFDVeSPague.SeTimeOut(const AValue : Integer) ;
+begin
+  if AValue = fTimeOut then exit ;
+
+  if AValue < 1000 then
+     raise Exception.Create( ACBrStr('Valor mínimo deve ser 1000') ) ;
+
+  fTimeOut := AValue;
+end;
+
 procedure TACBrTEFDVeSPague.ProcessarResposta ;
 var
-  Retorno : LongInt ;
+  Retorno : Integer ;
   Mensagem : AnsiString ;
 begin
   repeat
@@ -747,7 +756,7 @@ begin
         Continue;
      end ;
 
-     AvaliaErro ;       // Dispara Exception se houver erro
+     AvaliaErro ;    // Dispara Exception se houver erro
 
      if RespVS.IsColeta then
      begin
@@ -755,6 +764,8 @@ begin
         Retorno := RespVS.Retorno;
      end ;
 
+     // TODO: Tratar o recebimento das tags "transacao_*"
+     //       e Imprimir comprovantes
   until Retorno in [1,9] ;
 
   if Retorno = 9 then
@@ -841,8 +852,6 @@ begin
               DoExibeMsg( opmExibirMsgOperador, Mensagem ) ;
             end ;
 
-           fAguardandoPinPad := (pos('INSIRA OU PASSE', Mensagem) > 0) ;
-
            // Respondendo a Coleta //
            ReqVS.Clear;
            ReqVS.IsColeta   := True ;
@@ -860,7 +869,6 @@ begin
         ReqVS.Clear;
         ReqVS.IsColeta    := False ;
         ReqVS.Sequencial  := OldSeq ;
-        fAguardandoPinPad := False ;
 
         OpcoesMenu.Free;
      end ;
@@ -869,43 +877,77 @@ end ;
 
 Procedure TACBrTEFDVeSPague.TransmiteCmd ;
 Var
-  TX, RX : AnsiString ;
+  RX : AnsiString ;
+  Erro, Seq : Integer ;
+  Interromper : Boolean ;
+
+  procedure EnviarCmd ;
+  var
+    TX : AnsiString ;
+  begin
+    // Enviado comando //
+    TX := ReqVS.FrameEnvio;
+    GravaLog( 'TRANSMITINDO ->'+sLineBreak+TX );
+    fSocket.SendString(TX);
+    Erro := fSocket.LastError ;
+    GravaLog( '  TRANSMITIDO, ('+IntToStr(Erro)+')'+sLineBreak );
+    if Erro <> 0 then
+       raise EACBrTEFDErro.Create( ACBrStr('Erro ao Transmitir Comando para V&SPague'+sLineBreak+
+                               'Endereço: '+fEnderecoIP+sLineBreak+
+                               'Porta: '+fPorta+sLineBreak+
+                               'Erro: '+IntToStr(Erro)+'-'+fSocket.GetErrorDesc(Erro) ) ) ;
+  end;
+
 begin
   if not Assigned(fSocket) then
      raise EACBrTEFDErro.Create( ACBrStr('TEF '+Name+' não inicializado') );
 
   RespVS.Clear;    // Limpa a resposta
 
-  // Enviado comando //
-  TX := ReqVS.FrameEnvio;
-  GravaLog( 'TRANSMITINDO ->'+sLineBreak+TX );
-  fSocket.SendString(TX);
-  GravaLog( '  TRANSMITIDO, ('+IntToStr(fSocket.LastError)+')'+sLineBreak );
-  if fSocket.LastError <> 0 then
-     raise EACBrTEFDErro.Create( ACBrStr('Erro ao Transmitir Comando para V&SPague'+sLineBreak+
-                             'Endereço: '+fEnderecoIP+sLineBreak+
-                             'Porta: '+fPorta+sLineBreak+
-                             'Erro: '+IntToStr(fSocket.LastError)+'-'+fSocket.LastErrorDesc ) ) ;
+  EnviarCmd ;      // Transmite CMD
 
-  if fAguardandoPinPad then
-   begin
-    // Aguardando a Resposta //
-    RX := fSocket.RecvTerminated( 1000, fTerminador );
-    GravaLog( '<- RECEBIDO, ('+IntToStr(fSocket.LastError)+')'+sLineBreak+RX );
-
-   end
-  else
-   begin
+  // Faz Loop por Espera de Resposta //
+  // em operações que dependem do PinPad, pode haver vários TimeOuts //
+  Erro := -1 ;
+  while (Erro <> 0) do
+  begin
      // Aguardando a Resposta //
+     GravaLog( 'Aguardando Resposta do V&SPague' );
      RX := fSocket.RecvTerminated(fTimeOut,fTerminador);
-     GravaLog( '<- RECEBIDO, ('+IntToStr(fSocket.LastError)+')'+sLineBreak+RX );
-   end ;
+     Erro := fSocket.LastError ;
 
-  if fSocket.LastError <> 0 then
-     raise EACBrTEFDErro.Create( ACBrStr('Erro ao Receber resposta do V&SPague'+sLineBreak+
-                             'Endereço: '+fEnderecoIP+sLineBreak+
-                             'Porta: '+fPorta+sLineBreak+
-                             'Erro: '+IntToStr(fSocket.LastError)+'-'+fSocket.LastErrorDesc ) ) ;
+     if Erro = 0 then
+        GravaLog( '<- RECEBIDO' + sLineBreak + RX )
+     else
+      begin
+        GravaLog( '<- ERRO, ('+IntToStr(Erro)+') '+fSocket.GetErrorDesc(Erro) );
+
+        if Erro <> 10060 then   // Não Ocorreu TimeOut (10060) ?
+           raise EACBrTEFDErro.Create( ACBrStr('Erro ao Receber resposta do V&SPague'+sLineBreak+
+                        'Endereço: '+fEnderecoIP+sLineBreak+
+                        'Porta: '+fPorta+sLineBreak+
+                        'Erro: '+IntToStr(Erro)+'-'+fSocket.GetErrorDesc(Erro) ) )
+        else
+         begin
+           // Chama Evento para dar chance do usuário cancelar //
+           Interromper := False ;
+           TACBrTEFD(Owner).OnAguardaResp( '23', 0, Interromper ) ;   // 23 = Compatibilidade com CliSiTEF
+
+           if Interromper then          // Usuário Cancelou ?
+           begin
+              Seq := ReqVS.Sequencial;  // Salva o ultimo sequencial
+
+              // Envia novo comando com Retorno=9 para cancelar //
+              ReqVS.Clear;
+              ReqVS.IsColeta   := True ;
+              ReqVS.Sequencial := Seq + 1;
+              ReqVS.Retorno    := 9 ;
+
+              EnviarCmd;
+           end ;
+         end ;
+      end ;
+  end ;
 
   // Trata a Resposta //
   RespVS.FrameEnvio := RX ;

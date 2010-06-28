@@ -133,6 +133,7 @@ type
       fEnderecoIP : AnsiString;
       fPorta      : AnsiString;
       fTimeOut    : Integer ;
+      fAguardandoPinPad : Boolean ;
 
       fSocket : TTCPBlockSocket ;
       fReqVS  : TACBrTEFDVeSPagueCmd ;
@@ -565,6 +566,7 @@ begin
   fPorta      := '60906' ;
   fTimeOut    := 3000 ;
   fTerminador := CACBrTEFD_VeSPague_Terminador ;
+  fAguardandoPinPad := False ;
 
   fAplicacao       := '' ;
   fAplicacaoVersao := '' ;
@@ -770,15 +772,17 @@ end ;
 procedure TACBrTEFDVeSPague.ProcessarColeta ;
 var
   Mensagem, Mascara, Resposta : AnsiString ;
-  Tipo : Char ;
+  Tipo : AnsiChar ;
   OpcoesMenu : TStringList ;
-  ItemSelecionado : Integer ;
+  ItemSelecionado, OldSeq : Integer ;
   Cancelar, Digitado : Boolean ;
   MR : TModalResult ;
 begin
   with TACBrTEFD(Owner) do
   begin
+     OldSeq     := ReqVS.Sequencial;
      OpcoesMenu := TStringList.Create;
+
      try
         while RespVS.IsColeta and (RespVS.Retorno = 0) do
         begin
@@ -791,7 +795,11 @@ begin
 
            if OpcoesMenu.Count > 0 then            // Tem Menu ?
             begin
-              if (OpcoesMenu.Count = 2) and
+              if OpcoesMenu.Count = 1 then
+               begin
+                 Resposta := OpcoesMenu[0]
+               end
+              else if (OpcoesMenu.Count = 2) and
                  (OpcoesMenu[0] = 'Sim') and (OpcoesMenu[1] = ACBrStr('Não') ) then
                begin
                  MR := DoExibeMsg( opmYesNo, Mensagem ) ;
@@ -833,6 +841,8 @@ begin
               DoExibeMsg( opmExibirMsgOperador, Mensagem ) ;
             end ;
 
+           fAguardandoPinPad := (pos('INSIRA OU PASSE', Mensagem) > 0) ;
+
            // Respondendo a Coleta //
            ReqVS.Clear;
            ReqVS.IsColeta   := True ;
@@ -847,6 +857,11 @@ begin
            AvaliaErro;
         end ;
      finally
+        ReqVS.Clear;
+        ReqVS.IsColeta    := False ;
+        ReqVS.Sequencial  := OldSeq ;
+        fAguardandoPinPad := False ;
+
         OpcoesMenu.Free;
      end ;
   end ;
@@ -872,9 +887,20 @@ begin
                              'Porta: '+fPorta+sLineBreak+
                              'Erro: '+IntToStr(fSocket.LastError)+'-'+fSocket.LastErrorDesc ) ) ;
 
-  // Aguardando a Resposta //
-  RX := fSocket.RecvTerminated(fTimeOut,fTerminador);
-  GravaLog( '<- RECEBIDO, ('+IntToStr(fSocket.LastError)+')'+sLineBreak+RX );
+  if fAguardandoPinPad then
+   begin
+    // Aguardando a Resposta //
+    RX := fSocket.RecvTerminated( 1000, fTerminador );
+    GravaLog( '<- RECEBIDO, ('+IntToStr(fSocket.LastError)+')'+sLineBreak+RX );
+
+   end
+  else
+   begin
+     // Aguardando a Resposta //
+     RX := fSocket.RecvTerminated(fTimeOut,fTerminador);
+     GravaLog( '<- RECEBIDO, ('+IntToStr(fSocket.LastError)+')'+sLineBreak+RX );
+   end ;
+
   if fSocket.LastError <> 0 then
      raise EACBrTEFDErro.Create( ACBrStr('Erro ao Receber resposta do V&SPague'+sLineBreak+
                              'Endereço: '+fEnderecoIP+sLineBreak+

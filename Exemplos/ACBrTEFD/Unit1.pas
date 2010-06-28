@@ -10,7 +10,7 @@ uses
   Classes, SysUtils,
   Forms, Controls, Graphics, Dialogs,
   StdCtrls, ExtCtrls, Buttons, ComCtrls, ACBrECF, ACBrDevice, ACBrTEFD,
-  ACBrTEFDClass, ACBrUtil , ACBrTEFDCliSiTef, ACBrBase;
+  ACBrTEFDClass, ACBrUtil , ACBrTEFDCliSiTef, ACBrTEFDVeSPague, ACBrBase;
 
 type
 
@@ -54,6 +54,7 @@ type
      ckAutoAtivar : TCheckBox;
      ckAutoEfetuarPagamento : TCheckBox;
      ckAutoFinalizarCupom : TCheckBox;
+     ckVSPague : TCheckBox ;
      ckHIPERTEF : TCheckBox;
      ckMultiplosCartoes : TCheckBox;
      ckMultiplosCartoes1 : TCheckBox;
@@ -88,6 +89,7 @@ type
      pMensagemOperador : TPanel;
      pMensagemCliente : TPanel;
      pMensagem : TPanel;
+     sVSPague : TShape ;
      sECF : TShape;
      sHiperTEF : TShape;
      StatusBar1 : TStatusBar;
@@ -95,8 +97,8 @@ type
      sTEFDisc : TShape;
      tsConfig : TTabSheet;
      tsOperacao : TTabSheet;
-    sCliSiTef: TShape;
-    ckCliSiTef: TCheckBox;
+     sCliSiTef: TShape;
+     ckCliSiTef: TCheckBox;
      procedure ACBrTEFD1AguardaResp(Arquivo : String;
         SegundosTimeOut : Integer; var Interromper : Boolean);
      procedure ACBrTEFD1AntesCancelarTransacao(RespostaPendente: TACBrTEFDResp);{%h-}
@@ -128,6 +130,7 @@ type
      procedure bCancelarRespClick(Sender : TObject);
      procedure cbxGPChange(Sender : TObject);
      procedure ckCliSiTefChange(Sender : TObject);
+     procedure ckVSPagueChange(Sender : TObject) ;
      procedure edEsperaSleepChange(Sender : TObject);
      procedure edEsperaSTSChange(Sender : TObject);
      procedure pMensagemOperadorClick(Sender: TObject);
@@ -175,6 +178,10 @@ type
     procedure ACBrTEFD1CliSiTefExibeMenu(Titulo: String;
       Opcoes: TStringList; var ItemSelecionado: Integer;
       var VoltarMenu: Boolean);
+    procedure ACBrTEFD1VeSPagueObtemCampo(Titulo, Mascara: String;
+      Tipo: Char; var Resposta: String; var Digitado: Boolean);
+    procedure ACBrTEFD1VeSPagueExibeMenu(Titulo: String;
+      Opcoes: TStringList; var ItemSelecionado: Integer);
   private
      fCancelado : Boolean ;
 
@@ -268,6 +275,12 @@ begin
   else
      sCliSiTef.Brush.Color := clRed ;
   ckCliSiTef.Checked := ACBrTEFD1.TEFCliSiTef.Habilitado;
+
+  if ACBrTEFD1.TEFVeSPague.Inicializado then
+     sVSPague.Brush.Color := clLime
+  else
+     sVSPague.Brush.Color := clRed ;
+  ckVSPague.Checked := ACBrTEFD1.TEFVeSPague.Habilitado;
 
   cbxGP.ItemIndex  := Integer( ACBrTEFD1.GPAtual ) ;
   cbxGP1.ItemIndex := cbxGP.ItemIndex ;
@@ -737,6 +750,11 @@ begin
   ACBrTEFD1.TEFCliSiTef.Habilitado := ckCliSiTef.Checked;
 end;
 
+procedure TForm1.ckVSPagueChange(Sender : TObject) ;
+begin
+  ACBrTEFD1.TEFVeSPague.Habilitado := ckVSPague.Checked;
+end;
+
 procedure TForm1.edEsperaSleepChange(Sender : TObject);
 begin
    ACBrTEFD1.EsperaSleep := StrToInt(edEsperaSleep.Text);
@@ -1065,6 +1083,51 @@ begin
     MR := AForm.ShowModal ;
 
     VoltarMenu := (MR = mrRetry) ;
+
+    if (MR = mrOK) then
+      ItemSelecionado := AForm.ListBox1.ItemIndex;
+  finally
+    AForm.Free;
+  end;
+end;
+
+procedure TForm1.ACBrTEFD1VeSPagueObtemCampo(Titulo, Mascara: String;
+  Tipo: Char; var Resposta: String; var Digitado: Boolean);
+Var
+  AForm : TForm5 ;
+  MR    : TModalResult ;
+begin
+  AForm := TForm5.Create(self);
+  try
+    AForm.Panel1.Caption  := Titulo;
+    AForm.BitBtn3.Visible := False ;
+
+    AForm.Edit1.Text     := Resposta; { Para usar Valores Previamente informados }
+
+    MR := AForm.ShowModal ;
+
+    Digitado   := (MR = mrOK) ;
+
+    if Digitado then
+       Resposta := AForm.Edit1.Text;
+  finally
+    AForm.Free;
+  end;
+end;
+
+procedure TForm1.ACBrTEFD1VeSPagueExibeMenu(Titulo: String;
+  Opcoes: TStringList; var ItemSelecionado: Integer);
+Var
+  AForm : TForm4 ;
+  MR    : TModalResult ;
+begin
+  AForm := TForm4.Create(self);
+  try
+    AForm.Panel1.Caption := Titulo;
+    AForm.ListBox1.Items.AddStrings(Opcoes);
+    AForm.BitBtn3.Visible := False ;
+
+    MR := AForm.ShowModal ;
 
     if (MR = mrOK) then
       ItemSelecionado := AForm.ListBox1.ItemIndex;

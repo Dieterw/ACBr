@@ -45,11 +45,11 @@ unit ACBrTEFDCliSiTef;
 interface
 
 uses
-  Classes, SysUtils, ACBrTEFDClass, contnrs
+  Classes, SysUtils, ACBrTEFDClass,
   {$IFDEF VisualCLX}
-     ,QControls
+     QControls
   {$ELSE}
-     ,Controls
+     Controls
   {$ENDIF}  ;
 
 
@@ -789,6 +789,7 @@ begin
    ImpressaoOk      := True ;
    HouveImpressao   := False ;
    ArqBackUp        := '' ;
+   Resposta         := '' ;
 
    fpAguardandoResposta := True ;
    FechaGerencialAberto := True ;
@@ -944,7 +945,7 @@ begin
                      DoExibeMsg( opmExibirMsgCliente, MensagemCliente ) ;
                    end ;
 
-                 4 : CaptionMenu := Mensagem ;
+                 4 : CaptionMenu := ACBrStr( Mensagem ) ;
 
                  11 :
                    begin
@@ -1020,7 +1021,7 @@ begin
                  30 :
                    begin
                      BloquearMouseTeclado(False);
-                     OnObtemCampo( Mensagem, TamanhoMinimo, TamanhoMaximo,
+                     OnObtemCampo( ACBrStr(Mensagem), TamanhoMinimo, TamanhoMaximo,
                                    TipoCampo, tcString, Resposta, Digitado, Voltar) ;
                      BloquearMouseTeclado(True);
                    end;
@@ -1028,7 +1029,7 @@ begin
                  31 :
                    begin
                      BloquearMouseTeclado(False);
-                     OnObtemCampo( Mensagem, TamanhoMinimo, TamanhoMaximo,
+                     OnObtemCampo( ACBrStr(Mensagem), TamanhoMinimo, TamanhoMaximo,
                                    TipoCampo, tcCMC7, Resposta, Digitado, Voltar ) ;
                      BloquearMouseTeclado(True);
                    end;
@@ -1036,7 +1037,7 @@ begin
                  34 :
                    begin
                      BloquearMouseTeclado(False);
-                     OnObtemCampo( Mensagem, TamanhoMinimo, TamanhoMaximo,
+                     OnObtemCampo( ACBrStr(Mensagem), TamanhoMinimo, TamanhoMaximo,
                                    TipoCampo, tcDouble, Resposta, Digitado, Voltar ) ;
                      BloquearMouseTeclado(True);
 
@@ -1050,7 +1051,7 @@ begin
                  35 :
                    begin
                      BloquearMouseTeclado(False);
-                     OnObtemCampo( Mensagem, TamanhoMinimo, TamanhoMaximo,
+                     OnObtemCampo( ACBrStr(Mensagem), TamanhoMinimo, TamanhoMaximo,
                                    TipoCampo, tcBarCode, Resposta, Digitado, Voltar ) ;
                      BloquearMouseTeclado(True);
                    end;
@@ -1123,8 +1124,8 @@ begin
 end;
 
 procedure TACBrTEFDCliSiTef.AvaliaErro( Sts : Integer );
-var
-   Erro : String;
+//var
+//   Erro : String;
 begin
 (*
    Erro := '' ;

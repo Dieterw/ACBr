@@ -55,7 +55,7 @@ uses
   {$ENDIF} ;
 
 const
-   CACBrTEFD_Versao      = '1.17b' ;
+   CACBrTEFD_Versao      = '1.20b' ;
    CACBrTEFD_EsperaSTS   = 7 ;
    CACBrTEFD_EsperaSleep = 250 ;
    CACBrTEFD_NumVias     = 2 ;
@@ -65,7 +65,7 @@ type
   { Tipos de TEF Existente. Cado novo Tipo de Tef precisa de uma NOVA Classe,
     filha de  TACBrTEFDClass }
   TACBrTEFDTipo = ( gpNenhum, gpTefDial, gpTefDisc, gpHiperTef, gpCliSiTef,
-                    gpTefGpu {, gpGoodCard, gpFoxWin} ) ;
+                    gpTefGpu, gpVeSPague {, gpGoodCard, gpFoxWin} ) ;
 
   TACBrTEFDReqEstado = ( reqNenhum,             // Nennhuma Requisição em andamento
                          reqIniciando,          // Iniciando uma nova Requisicao
@@ -186,6 +186,7 @@ type
      fACBrTEFDLinhaInformacao : TACBrTEFDLinhaInformacao;
      fLinha : AnsiString;
      fSequencia : SmallInt;
+     function GetChave : AnsiString ;
    protected
      function GetLinha : AnsiString; virtual;
      procedure SetLinha(const AValue : AnsiString); virtual;
@@ -195,8 +196,9 @@ type
 
      property Linha : AnsiString read GetLinha write SetLinha ;
 
-     property Identificacao : SmallInt read fIdentificacao  ;
-     property Sequencia     : SmallInt read fSequencia      ;
+     property Identificacao : SmallInt   read fIdentificacao  ;
+     property Sequencia     : SmallInt   read fSequencia      ;
+     property Chave         : AnsiString read GetChave ;
      property Informacao    : TACBrTEFDLinhaInformacao read fACBrTEFDLinhaInformacao ;
    end ;
 
@@ -226,6 +228,9 @@ type
         DoFlushToDisk : Boolean = False ) ;
      procedure LeArquivo( const NomeArquivo : String ) ;
 
+     procedure GravaInformacao( const Chave, Informacao : AnsiString ) ; overload;
+     procedure GravaInformacao( const Chave : AnsiString;
+        const Informacao : TACBrTEFDLinhaInformacao ) ; overload;
      procedure GravaInformacao( const Identificacao : Integer;
         const Sequencia : Integer; const Informacao : AnsiString ) ; overload;
      procedure GravaInformacao( const Identificacao : Integer;
@@ -841,6 +846,10 @@ end;
 
 constructor TACBrTEFDLinha.Create;
 begin
+  fLinha         := '' ;
+  fIdentificacao := 0 ;
+  fSequencia     := 0 ;
+
   inherited ;
 
   fACBrTEFDLinhaInformacao := TACBrTEFDLinhaInformacao.Create;
@@ -854,11 +863,28 @@ begin
   inherited Destroy;
 end;
 
+function TACBrTEFDLinha.GetChave : AnsiString ;
+var
+  P : Integer ;
+begin
+   Result := '' ;
+
+   if fLinha <> '' then
+    begin
+      P := pos(' = ',fLinha) ;
+      Result := copy(fLinha, P+3, Length(fLinha) ) ;
+    end
+   else if fIdentificacao <> 0 then
+      Result := IntToStrZero(fIdentificacao,3)+'-'+IntToStrZero(fSequencia,3) ;
+end;
+
 function TACBrTEFDLinha.GetLinha : AnsiString;
 begin
+   Result := '' ;
+
    if fLinha <> '' then
       Result := fLinha
-   else
+   else if fIdentificacao <> 0 then
       Result := IntToStrZero(fIdentificacao,3)+'-'+IntToStrZero(fSequencia,3)+
                 ' = '+Informacao.AsString ;
 end;
@@ -926,6 +952,17 @@ begin
   fStringList.LoadFromFile( NomeArquivo );
 end;
 
+procedure TACBrTEFDArquivo.GravaInformacao(const Chave, Informacao : AnsiString) ;
+begin
+  fStringList.Add( Chave + ' = '+ Informacao ) ;
+end ;
+
+procedure TACBrTEFDArquivo.GravaInformacao(const Chave : AnsiString ;
+  const Informacao : TACBrTEFDLinhaInformacao) ;
+begin
+   GravaInformacao(Chave, Informacao.AsString);
+end ;
+
 procedure TACBrTEFDArquivo.GravaInformacao(const Identificacao : Integer;
    const Sequencia : Integer; const Informacao : AnsiString);
 Var
@@ -943,7 +980,7 @@ end;
 procedure TACBrTEFDArquivo.GravaInformacao( const Identificacao : Integer;
    const Sequencia : Integer; const Informacao : TACBrTEFDLinhaInformacao ) ;
 begin
-  GravaInformacao(Identificacao,Sequencia,Informacao.AsString);
+  GravaInformacao(Identificacao, Sequencia, Informacao.AsString);
 end;
 
 function TACBrTEFDArquivo.AchaLinha(const Identificacao : Integer;
@@ -1537,7 +1574,7 @@ begin
        if AutoAtivarGP then
        begin
          TACBrTEFD(Owner).DoExibeMsg( opmOK,
-               'O Gerenciador Padrão não ativo e será ativado automaticamente!');
+               'O Gerenciador Padrão não está ativo e será ativado automaticamente!');
          AtivarGP;
          ATV;
        end;
@@ -2070,7 +2107,7 @@ begin
 
         if not JaCancelado then
          begin
-           { Ciando cópia da Resposta Atual }
+           { Criando cópia da Resposta Atual }
            if Tipo = gpCliSiTef then
               RespostaCancela := TACBrTEFDRespCliSiTef.Create
            else

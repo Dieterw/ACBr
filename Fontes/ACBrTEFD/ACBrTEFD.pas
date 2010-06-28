@@ -46,7 +46,8 @@ interface
 
 uses
   Classes, SysUtils, ACBrTEFDClass,
-  ACBrTEFDDial, ACBrTEFDDisc, ACBrTEFDHiper, ACBrTEFDCliSiTef, ACBrTEFDGpu
+  ACBrTEFDDial, ACBrTEFDDisc, ACBrTEFDHiper, ACBrTEFDCliSiTef, ACBrTEFDGpu,
+  ACBrTEFDVeSPague
   {, ACBrTEFDGoodCard, ACBrTEFDFoxWin}
   {$IFDEF FPC}
     ,LResources
@@ -101,6 +102,7 @@ type
      fTefDial      : TACBrTEFDDial ;
      fTefGPU       : TACBrTEFDGpu ;
      fTefCliSiTef  : TACBrTEFDCliSiTef;
+     fTefVeSPague  : TACBrTEFDVeSPague;
      fTefDisc      : TACBrTEFDDisc ;
      fTefHiper     : TACBrTEFDHiper ;
 //   fTefGood      : TACBrTEFDGoodCard ;
@@ -234,6 +236,7 @@ type
      property TEFDisc    : TACBrTEFDDisc     read fTefDisc ;
      property TEFHiper   : TACBrTEFDHiper    read fTefHiper ;
      property TEFCliSiTef: TACBrTEFDCliSiTef read fTefCliSiTef ;
+     property TEFVeSPague: TACBrTEFDVeSPague read fTefVeSPague ;
      property TEFGPU     : TACBrTEFDGpu      read fTefGPU ;
 //   property TEFGood    : TACBrTEFDGoodCard read fTefGood ;
 //   property TEFFoxWin  : TACBrTEFDFoxWin   read fTefFW ;
@@ -396,11 +399,18 @@ begin
    fTefHiper.SetSubComponent(True);   // Ajustando como SubComponente para aparecer no ObjectInspector
   {$ENDIF}
 
-  { Criando Classe TEF_DIAL }
+  { Criando Classe TEF CliSiTEF }
   fTefCliSiTef := TACBrTEFDCliSiTef.Create(self);
   fTEFList.Add(fTefCliSiTef);     // Adicionando "fTefCliSiTef" na Lista Objetos de Classes de TEF
   {$IFDEF COMPILER6_UP}
    fTefCliSiTef.SetSubComponent(True);   // Ajustando como SubComponente para aparecer no ObjectInspector
+  {$ENDIF}
+
+  { Criando Classe TEF VeSPague }
+  fTefVeSPague := TACBrTEFDVeSPague.Create(self);
+  fTEFList.Add(fTefVeSPague);     // Adicionando "fTefVeSPague" na Lista Objetos de Classes de TEF
+  {$IFDEF COMPILER6_UP}
+   fTefVeSPague.SetSubComponent(True);   // Ajustando como SubComponente para aparecer no ObjectInspector
   {$ENDIF}
 
   { Criando Classe TEF_GPU }
@@ -530,6 +540,7 @@ begin
     gpTefDisc  : fTefClass := fTefDisc ;
     gpHiperTef : fTefClass := fTefHiper ;
     gpCliSiTef : fTefClass := fTefCliSiTef;
+    gpVeSPague : fTefClass := fTefVeSPague;
     gpTefGpu   : fTefClass := fTefGPU;
 //  gpGoodCard : fTefClass := fTefGood ;
 //  gpFoxWin   : fTefClass := fTefFW ;
@@ -568,6 +579,7 @@ var
    SubTotal    : String ;
 begin
    try
+      SubTotal := '' ;
       OnInfoECF( ineSubTotal, SubTotal ) ;
    except
       on E : Exception do

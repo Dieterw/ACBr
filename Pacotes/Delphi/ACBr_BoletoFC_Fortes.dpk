@@ -22,7 +22,7 @@ package ACBr_BoletoFC_Fortes;
 {$WRITEABLECONST OFF}
 {$MINENUMSIZE 1}
 {$IMAGEBASE $400000}
-{$DESCRIPTION 'ACBr AutomaÃ§Ã£o Comercial Brasil - ACBrBoletoFC Fortes'}
+{$DESCRIPTION 'ACBr Automação Comercial Brasil - ACBrBoletoFC Fortes'}
 {$IMPLICITBUILD ON}
 
 requires

@@ -2,10 +2,10 @@ object Form1: TForm1
   Left = 371
   Height = 452
   Top = 104
-  Width = 725
+  Width = 758
   Caption = 'TEFDDemo'
   ClientHeight = 452
-  ClientWidth = 725
+  ClientWidth = 758
   KeyPreview = True
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
@@ -14,7 +14,7 @@ object Form1: TForm1
     Left = 0
     Height = 194
     Top = 208
-    Width = 725
+    Width = 758
     Align = alClient
     Lines.Strings = (
       'Memo1'
@@ -27,15 +27,15 @@ object Form1: TForm1
     Left = 0
     Height = 208
     Top = 0
-    Width = 725
-    ActivePage = tsOperacao
+    Width = 758
+    ActivePage = tsConfig
     Align = alTop
-    TabIndex = 1
+    TabIndex = 0
     TabOrder = 2
     object tsConfig: TTabSheet
       Caption = 'Configuração'
       ClientHeight = 180
-      ClientWidth = 717
+      ClientWidth = 750
       object gbConfigECF: TGroupBox
         Left = 0
         Height = 180
@@ -218,20 +218,20 @@ object Form1: TForm1
         Left = 308
         Height = 180
         Top = 0
-        Width = 409
+        Width = 442
         Align = alClient
         ClientHeight = 180
-        ClientWidth = 409
+        ClientWidth = 442
         TabOrder = 1
         object gbConfigTEF: TGroupBox
           Left = 1
           Height = 178
           Top = 1
-          Width = 407
+          Width = 440
           Align = alClient
           Caption = 'TEF'
           ClientHeight = 160
-          ClientWidth = 403
+          ClientWidth = 436
           TabOrder = 0
           object bInicializar: TButton
             Left = 37
@@ -351,7 +351,7 @@ object Form1: TForm1
     object tsOperacao: TTabSheet
       Caption = 'Operação'
       ClientHeight = 180
-      ClientWidth = 717
+      ClientWidth = 750
       object gbCupomECF: TGroupBox
         Left = 0
         Height = 180
@@ -489,11 +489,11 @@ object Form1: TForm1
         Left = 292
         Height = 180
         Top = 0
-        Width = 425
+        Width = 458
         Align = alClient
         Caption = 'TEF'
         ClientHeight = 162
-        ClientWidth = 421
+        ClientWidth = 454
         TabOrder = 1
         object bADM: TButton
           Left = 6
@@ -639,7 +639,7 @@ object Form1: TForm1
     Left = 0
     Height = 23
     Top = 429
-    Width = 725
+    Width = 758
     Panels = <    
       item
         Width = 100
@@ -656,11 +656,11 @@ object Form1: TForm1
     Left = 0
     Height = 27
     Top = 402
-    Width = 725
+    Width = 758
     Align = alBottom
     BevelInner = bvLowered
     ClientHeight = 27
-    ClientWidth = 725
+    ClientWidth = 758
     TabOrder = 4
     object sECF: TShape
       Left = 8
@@ -732,7 +732,7 @@ object Form1: TForm1
       TabOrder = 2
     end
     object sCliSiTef: TShape
-      Left = 472
+      Left = 464
       Height = 16
       Top = 6
       Width = 17
@@ -740,7 +740,7 @@ object Form1: TForm1
       Shape = stCircle
     end
     object ckCliSiTef: TCheckBox
-      Left = 504
+      Left = 488
       Height = 19
       Top = 5
       Width = 60
@@ -749,7 +749,7 @@ object Form1: TForm1
       TabOrder = 3
     end
     object bCancelarResp: TButton
-      Left = 635
+      Left = 668
       Height = 23
       Top = 2
       Width = 88
@@ -759,9 +759,26 @@ object Form1: TForm1
       TabOrder = 4
       Visible = False
     end
+    object sVSPague: TShape
+      Left = 560
+      Height = 16
+      Top = 6
+      Width = 17
+      Brush.Color = clRed
+      Shape = stCircle
+    end
+    object ckVSPague: TCheckBox
+      Left = 584
+      Height = 19
+      Top = 5
+      Width = 72
+      Caption = 'VeSPague'
+      OnChange = ckCliSiTefChange
+      TabOrder = 5
+    end
   end
   object pMensagem: TPanel
-    Left = 152
+    Left = 169
     Height = 136
     Top = 240
     Width = 440
@@ -778,12 +795,12 @@ object Form1: TForm1
     OnResize = pMensagemResize
     object pMensagemOperador: TPanel
       Left = 4
-      Height = 66
+      Height = 62
       Top = 4
-      Width = 432
+      Width = 428
       Align = alClient
-      ClientHeight = 66
-      ClientWidth = 432
+      ClientHeight = 62
+      ClientWidth = 428
       TabOrder = 0
       Visible = False
       OnClick = pMensagemOperadorClick
@@ -801,11 +818,11 @@ object Form1: TForm1
     object pMensagemCliente: TPanel
       Left = 4
       Height = 62
-      Top = 70
-      Width = 432
+      Top = 66
+      Width = 428
       Align = alBottom
       ClientHeight = 62
-      ClientWidth = 432
+      ClientWidth = 428
       TabOrder = 1
       Visible = False
       OnClick = pMensagemOperadorClick
@@ -893,6 +910,18 @@ object Form1: TForm1
     TEFCliSiTef.NumeroTerminal = 'SE000001'
     TEFCliSiTef.OnExibeMenu = ACBrTEFD1CliSiTefExibeMenu
     TEFCliSiTef.OnObtemCampo = ACBrTEFD1CliSiTefObtemCampo
+    TEFVeSPague.ArqLOG = 'VeSPague.log'
+    TEFVeSPague.Aplicacao = 'ACBr_TEFDDemo'
+    TEFVeSPague.AplicacaoVersao = '1.0'
+    TEFVeSPague.EnderecoIP = 'localhost'
+    TEFVeSPague.Porta = '60906'
+    TEFVeSPague.TransacaoADM = 'Administracao Consultar'
+    TEFVeSPague.TransacaoCRT = 'Cartao Vender'
+    TEFVeSPague.TransacaoCHQ = 'Cheque Consultar'
+    TEFVeSPague.TransacaoCNC = 'Administracao Cancelar'
+    TEFVeSPague.TransacaoReImpressao = 'Administracao Reimprimir'
+    TEFVeSPague.OnExibeMenu = ACBrTEFD1VeSPagueExibeMenu
+    TEFVeSPague.OnObtemCampo = ACBrTEFD1VeSPagueObtemCampo
     TEFGPU.ArqTemp = 'C:\TEF_GPU\req\intpos.tmp'
     TEFGPU.ArqReq = 'C:\TEF_GPU\req\intpos.001'
     TEFGPU.ArqSTS = 'C:\TEF_GPU\resp\intpos.sts'

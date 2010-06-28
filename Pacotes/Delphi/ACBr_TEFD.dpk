@@ -29,6 +29,7 @@ requires
   rtl,
   vcl,
   ACBrComum,
+  synapse,
   designide;
 
 contains
@@ -38,6 +39,7 @@ contains
   ACBrTEFDDial in '..\..\Fontes\ACBrTEFD\ACBrTEFDDial.pas',
   ACBrTEFDDisc in '..\..\Fontes\ACBrTEFD\ACBrTEFDDisc.pas',
   ACBrTEFDGpu in '..\..\Fontes\ACBrTEFD\ACBrTEFDGpu.pas',
-  ACBrTEFDHiper in '..\..\Fontes\ACBrTEFD\ACBrTEFDHiper.pas';
+  ACBrTEFDHiper in '..\..\Fontes\ACBrTEFD\ACBrTEFDHiper.pas',
+  ACBrTEFDVeSPague in '..\..\Fontes\ACBrTEFD\ACBrTEFDVeSPague.pas';
 
 end.

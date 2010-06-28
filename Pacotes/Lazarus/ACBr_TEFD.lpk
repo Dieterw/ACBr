@@ -5,7 +5,7 @@
     <Name Value="ACBr_TEFD"/>
     <Author Value="Daniel Simões de Almeida"/>
     <CompilerOptions>
-      <Version Value="8"/>
+      <Version Value="9"/>
       <PathDelim Value="\"/>
       <SearchPaths>
         <IncludeFiles Value="..\..\Fontes\ACBrTEFD\;..\..\Fontes\ACBrComum\"/>
@@ -13,14 +13,19 @@
         <UnitOutputDirectory Value="..\..\lib\$(TargetCPU)-$(TargetOS)"/>
         <SrcPath Value="..\..\Fontes\ACBrTEFD\;..\..\Fontes\ACBrComum\"/>
       </SearchPaths>
+      <Parsing>
+        <SyntaxOptions>
+          <UseAnsiStrings Value="False"/>
+        </SyntaxOptions>
+      </Parsing>
       <Other>
         <CompilerPath Value="$(CompPath)"/>
       </Other>
     </CompilerOptions>
     <Description Value="Componente para TEF Discado e Dedicado com suporte a Multiplos Cartões"/>
     <License Value="LGPL"/>
-    <Version Major="1" Minor="17"/>
-    <Files Count="6">
+    <Version Major="1" Minor="20"/>
+    <Files Count="7">
       <Item1>
         <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFDClass.pas"/>
         <UnitName Value="ACBrTEFDClass"/>
@@ -46,16 +51,23 @@
         <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFDDisc.pas"/>
         <UnitName Value="ACBrTEFDDisc"/>
       </Item6>
+      <Item7>
+        <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFDVeSPague.pas"/>
+        <UnitName Value="ACBrTEFDVeSPague"/>
+      </Item7>
     </Files>
     <Type Value="RunAndDesignTime"/>
-    <RequiredPkgs Count="2">
+    <RequiredPkgs Count="3">
       <Item1>
-        <PackageName Value="ACBrComum"/>
+        <PackageName Value="synapse"/>
       </Item1>
       <Item2>
+        <PackageName Value="ACBrComum"/>
+      </Item2>
+      <Item3>
         <PackageName Value="FCL"/>
         <MinVersion Major="1" Valid="True"/>
-      </Item2>
+      </Item3>
     </RequiredPkgs>
     <UsageOptions>
       <UnitPath Value="$(PkgOutDir)\"/>

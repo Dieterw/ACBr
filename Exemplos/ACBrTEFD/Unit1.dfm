@@ -664,7 +664,7 @@ object Form1: TForm1
       Shape = stCircle
     end
     object sTEFDisc: TShape
-      Left = 248
+      Left = 237
       Top = 6
       Width = 17
       Height = 16
@@ -672,7 +672,7 @@ object Form1: TForm1
       Shape = stCircle
     end
     object sHiperTEF: TShape
-      Left = 352
+      Left = 337
       Top = 6
       Width = 17
       Height = 16
@@ -680,7 +680,15 @@ object Form1: TForm1
       Shape = stCircle
     end
     object sCliSiTef: TShape
-      Left = 472
+      Left = 443
+      Top = 6
+      Width = 17
+      Height = 16
+      Brush.Color = clRed
+      Shape = stCircle
+    end
+    object sVSPague: TShape
+      Left = 532
       Top = 6
       Width = 17
       Height = 16
@@ -699,7 +707,7 @@ object Form1: TForm1
       OnClick = ckTEFDIALChange
     end
     object ckTEFDISC: TCheckBox
-      Left = 272
+      Left = 257
       Top = 5
       Width = 69
       Height = 19
@@ -708,7 +716,7 @@ object Form1: TForm1
       OnClick = ckTEFDISCChange
     end
     object ckHIPERTEF: TCheckBox
-      Left = 376
+      Left = 357
       Top = 6
       Width = 76
       Height = 19
@@ -717,7 +725,7 @@ object Form1: TForm1
       OnClick = ckHIPERTEFChange
     end
     object ckCliSiTef: TCheckBox
-      Left = 504
+      Left = 466
       Top = 5
       Width = 60
       Height = 19
@@ -734,6 +742,15 @@ object Form1: TForm1
       TabOrder = 4
       Visible = False
       OnClick = bCancelarRespClick
+    end
+    object ckVSPague: TCheckBox
+      Left = 556
+      Top = 5
+      Width = 72
+      Height = 19
+      Caption = 'VeSPague'
+      TabOrder = 5
+      OnClick = ckVSPagueChange
     end
   end
   object pMensagem: TPanel
@@ -892,6 +909,18 @@ object Form1: TForm1
     TEFCliSiTef.NumeroTerminal = 'SE000001'
     TEFCliSiTef.OnExibeMenu = ACBrTEFD1CliSiTefExibeMenu
     TEFCliSiTef.OnObtemCampo = ACBrTEFD1CliSiTefObtemCampo
+    TEFVeSPague.ArqLOG = 'VeSPague.log'
+    TEFVeSPague.Aplicacao = 'ACBr_TEFDDemo'
+    TEFVeSPague.AplicacaoVersao = '1.0'
+    TEFVeSPague.EnderecoIP = 'localhost'
+    TEFVeSPague.Porta = '60906'
+    TEFVeSPague.TransacaoADM = 'Administracao Consultar'
+    TEFVeSPague.TransacaoCRT = 'Cartao Vender'
+    TEFVeSPague.TransacaoCHQ = 'Cheque Consultar'
+    TEFVeSPague.TransacaoCNC = 'Administracao Cancelar'
+    TEFVeSPague.TransacaoReImpressao = 'Administracao Reimprimir'
+    TEFVeSPague.OnExibeMenu = ACBrTEFD1VeSPagueExibeMenu
+    TEFVeSPague.OnObtemCampo = ACBrTEFD1VeSPagueObtemCampo
     TEFGPU.ArqTemp = 'C:\TEF_GPU\req\intpos.tmp'
     TEFGPU.ArqReq = 'C:\TEF_GPU\req\intpos.001'
     TEFGPU.ArqSTS = 'C:\TEF_GPU\resp\intpos.sts'

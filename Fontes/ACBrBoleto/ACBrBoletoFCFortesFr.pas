@@ -526,7 +526,7 @@ begin
 
       fBoletoFC.CarregaLogo( imgBanco2.Picture, Banco.Numero );
       txtNumeroBanco2.Caption         := IntToStrZero(Banco.Numero, 3)+ '-' +
-                                         IfThen(Banco.Digito = 10,'X',IntToStrZero(Banco.Digito, 1));
+                                         IfThen(Banco.Digito >= 10,'X',IntToStrZero(Banco.Digito, 1));
       lblLocalPagto.Caption           := Titulo.LocalPagamento;
       txtDataVencimento2.Caption      := FormatDateTime('dd/mm/yyyy', Titulo.Vencimento);
       txtNomeCedente2.Caption         := Cedente.Nome;
@@ -603,7 +603,7 @@ begin
 
       fBoletoFC.CarregaLogo( imgBancoCarne.Picture, Banco.Numero );
       txtNumeroBanco.Caption         := IntToStrZero(Banco.Numero, 3)+ '-' +
-                                        ifthen(Banco.Digito = 10,'X',IntToStrZero(Banco.Digito, 1));
+                                        ifthen(Banco.Digito >= 10,'X',IntToStrZero(Banco.Digito, 1));
       txtVencCanhoto.Caption          := FormatDateTime('dd/mm/yyyy',Titulo.Vencimento);
       txtVencCarne2.Caption           := txtVencCanhoto.Caption;
       txtCodCedenteCarne.Caption      := CodCedente;

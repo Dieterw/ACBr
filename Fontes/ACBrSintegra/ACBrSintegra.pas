@@ -64,7 +64,7 @@
 |* 03/11/2009: Douglas Uesato
 |   - Adição dos registros 88EC e 88SF
 |* 24/05/2010: Ederson Selvati
-|   - Adição dos registros 76 e 77  
+|   - Adição dos registros 76 e 77
 *******************************************************************************}
 
 {$I ACBr.inc}
@@ -1020,6 +1020,7 @@ type
     property Descricao: string read FDescricao write FDescricao;
     property Unidade: string read FUnidade write FUnidade;
     property CodigoBarras: string read FCodigoBarras write FCodigoBarras;
+    constructor Create;
   end;
 
   TRegistros88Ean = class(TObjectList)
@@ -1070,6 +1071,7 @@ type
     FInforma88SME: Boolean;
     FRegistros76: TRegistros76;
     FRegistros77: TRegistros77;
+    FInforma88EAN: Boolean;
 
     procedure GeraRegistro10;
     procedure GeraRegistro11;
@@ -1151,6 +1153,7 @@ type
     property Versao: string read GetVersao;
     property Informa88SME: Boolean read FInforma88SME write FInforma88SME;
     property Informa88SMS: Boolean read FInforma88SMS write FInforma88SMS;
+    property Informa88EAN: Boolean read FInforma88EAN write FInforma88EAN;
   end;
 
   function Sort50(Item1: Pointer;Item2: Pointer): Integer;
@@ -1275,7 +1278,9 @@ try
   GerarRegistros77;
   GerarRegistros85;
   GerarRegistros86;
-  GerarRegistros88Ean;
+  //registros 88EAN
+  if FInforma88EAN then
+    GerarRegistros88Ean;
 
   if Trim(Registro88EC.NomeContabilista) <> '' then
     GerarRegistro88EC;
@@ -1815,7 +1820,8 @@ if Registros86.Count>0 then
 
 //totalizador para registros 88
 wtotal88:=0;
-wtotal88:=wtotal88+Registros88Ean.Count;
+if FInforma88EAN then
+  wtotal88:=wtotal88+Registros88Ean.Count;
 
 if Trim(Registro88EC.CRCContabilista) <> '' then
   Inc(wtotal88);
@@ -2123,8 +2129,34 @@ end;
 end;
 
 procedure TACBrSintegra.GerarRegistros77;
+var
+  wregistro: string;
+  i: Integer;
 begin
-
+for i:=0 to Registros77.Count-1 do
+begin
+  with Registros77[i] do
+  begin
+    wregistro:='77';
+    wregistro:=wregistro+TBStrZero(TiraPontos(CPFCNPJ),14);
+    wregistro:=wregistro+IntToStrZero(Modelo,2);
+    wregistro:=wregistro+Padl(Serie,2);
+    wregistro:=wregistro+Padl(SubSerie,2);
+    wregistro:=wregistro+IntToStrZero(Numero,10);
+    wregistro:=wregistro+Padl(TiraPontos(Cfop),4);
+    wregistro:=wregistro+IntToStr(Ord(TTipoReceita(TipoReceita))+1);
+    wregistro:=wregistro+IntToStrZero(NumeroItem,3);
+    wregistro:=wregistro+Padl(Codigo,11);
+    wregistro:=wregistro+TBStrZero(TiraPontos(FormatFloat('#,###0.000',Quantidade)),13);
+    wregistro:=wregistro+TBStrZero(TiraPontos(FormatFloat('#,##0.00',ValorServico)),12);
+    wregistro:=wregistro+TBStrZero(TiraPontos(FormatFloat('#,##0.00',ValorDesconto)),12);
+    wregistro:=wregistro+TBStrZero(TiraPontos(FormatFloat('#,##0.00',BasedeCalculo)),12);
+    wregistro:=wregistro+IntToStrZero(Aliquota,2);
+    wregistro:=wregistro+TBStrZero(TiraPontos(CNPJMF),14);
+    wregistro:=wregistro+IntToStrZero(NumeroTerminal,10);
+    WriteRecord(wregistro);
+  end;
+end;
 end;
 
 { TRegistros50 }
@@ -2920,6 +2952,14 @@ end;
 procedure TRegistros77.SetObject(Index: Integer; Item: TRegistro77);
 begin
   inherited SetItem(Index, Item);
+end;
+
+{ TRegistro88Ean }
+
+constructor TRegistro88Ean.Create;
+begin
+  inherited;
+VersaoEan:=eanIndefinido;
 end;
 
 end.

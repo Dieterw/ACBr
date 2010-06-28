@@ -56,7 +56,7 @@ uses ACBrBase,  {Units da ACBr}
      Graphics, Contnrs, Classes;
 
 const
-  CACBrBoleto_Versao = '0.0.12a' ;
+  CACBrBoleto_Versao = '0.0.13a' ;
 
 type
   TACBrTitulo = class;
@@ -531,9 +531,8 @@ procedure Register;
 
 implementation
 
-Uses ACBrUtil, ACBrBancoBradesco, ACBrBancoBrasil, ACBrBancoItau, Forms,
-     {$IFDEF COMPILER6_UP} StrUtils {$ELSE} ACBrD5{$ENDIF},
-     Math;
+Uses ACBrUtil, ACBrBancoBradesco, ACBrBancoBrasil, ACBrBancoItau, ACBrBancoSicredi,
+     Forms, {$IFDEF COMPILER6_UP} StrUtils {$ELSE} ACBrD5{$ENDIF}, Math;
 
 {$IFNDEF FPC}
    {$R ACBrBoleto.dcr}
@@ -920,6 +919,7 @@ begin
       001 : fBancoClass := TACBrBancoBrasil.create(Self);
       237 : fBancoClass := TACBrBancoBradesco.create(Self);
       341 : fBancoClass := TACBrBancoItau.Create(self);
+      748 : fBancoClass := TACBrBancoSicredi.Create(self);
    else
       fBancoClass := TACBrBancoClass.create(Self);
    end;

@@ -47,15 +47,17 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.0.13a 28/06/2010
+[+] Adicionado classe do Banco Sicredi.(Ronaldo Lazarin)
+
 
 Versão 0.0.12a 26/06/2010
 [+] Iniciado implementacao da funcao de leitura do Arquivo Retorno, criadas as propriedades
     NomeArqRetorno e DirArqRetorno no componente ACBrBoleto.(Juliana Tamizou)
 [*] Alterado impressao do Digito do Banco no Boleto, caso o digito seja "10", será impresso "X",
     alteração efetuada devido a alguns bancos utilizarem "X" para o digito.(Juliana Tamizou) 	
-[*] Alterado função FormataNossoNumero da classe do Banco do Brasil para converter Nosso Numero
-    para inteiro e em seguida para string novamente, alteração efetuada para resolver problema
-    para utilizar essa função devido ao NossoNumero ser preenchido com zeros até o tamanho maximo
+[-] Corrigida função FormataNossoNumero da classe do Banco do Brasil, devido ao NossoNumero 
+    ser preenchido com zeros até o tamanho maximo
     do nosso número.(Juliana Tamizou)
 [*] Adicionado tipo enumerado TACBrAceiteTitulo para o Aceite e alterado as classes de todos os bancos
     para gerar a Remessa utilizando o tipo enumerado.(Maiconsi)

@@ -38,6 +38,7 @@ descomente esta linha e salve o arquivo.
 
 -Procure pela pasta Pacotes\Delphi e abra o arquivo synapse.dpk e clique em compile.
  Procure pela pasta Pacotes\Delphi e abra o arquivo ACBrComum.dpk e clique em compile. 
+ Procure pela pasta Pacotes\Delphi e abra o arquivo ACBrDiversos.dpk e clique em compile e depois clique em Install. 
  Procure pela pasta Pacotes\Delphi e abra o arquivo ACBrOpenSSL.dpk e clique em compile.
  Procure pela pasta Pacotes\Delphi\ACBrNFe e abra o arquivo PCN.dpk e clique em compile.
  Procure pela pasta Pacotes\Delphi\ACBrNFe e abra o arquivo ACBr_NFe.dpk e clique em compile e depois clique em Install.
@@ -64,6 +65,7 @@ Versão CAPICOM
 
 -Procure pela pasta Pacotes\Delphi e abra o arquivo synapse.dpk e clique em compile.
  Procure pela pasta Pacotes\Delphi e abra o arquivo ACBrComum.dpk e clique em compile. 
+ Procure pela pasta Pacotes\Delphi e abra o arquivo ACBrDiversos.dpk e clique em compile e depois clique em Install. 
  Procure pela pasta Pacotes\Delphi e abra o arquivo ACBrCapicom.dpk e clique em compile.
  Procure pela pasta Pacotes\Delphi\ACBrNFe e abra o arquivo PCN.dpk e clique em compile.
  Procure pela pasta Pacotes\Delphi\ACBrNFe e abra o arquivo ACBr_NFe.dpk e clique em compile e depois clique em Install.

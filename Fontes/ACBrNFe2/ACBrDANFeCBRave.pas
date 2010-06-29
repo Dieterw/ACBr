@@ -317,7 +317,7 @@ begin
     DANFeRave.SystemPrinter.StatusFormat:='Imprimindo página %p';
     DANFeRave.SystemPrinter.Title:='NFe - Impressão do DANFE';
     DANFeRave.SystemPrinter.Units:=unMM;
-    DANFeRave.SystemPrinter.Collate := True;
+    //DANFeRave.SystemPrinter.Collate := True;
     DANFeRave.SystemPrinter.UnitsFactor:=25.4;
     DANFeRave.SystemPrinter.Orientation:=aOrientacaoPapel;
     DANFeRave.SystemSetups:=[ssAllowCopies,ssAllowCollate,ssAllowDuplex,ssAllowDestPreview,ssAllowDestPrinter,ssAllowDestFile,ssAllowPrinterSetup,ssAllowPreviewSetup];

@@ -799,7 +799,7 @@ begin
   dmDanfe.RvSystem1.SystemPrinter.StatusFormat:='Imprimindo página %p';
   dmDanfe.RvSystem1.SystemPrinter.Title:= 'NFe - Impressão do DANFE';
   dmDanfe.RvSystem1.SystemPrinter.Units:=unMM;
-  dmDanfe.RvSystem1.SystemPrinter.Collate:=true;
+  //dmDanfe.RvSystem1.SystemPrinter.Collate:=true;
   dmDanfe.RvSystem1.SystemPrinter.UnitsFactor:=25.4;
 
   if Length(Impressora) > 0 then

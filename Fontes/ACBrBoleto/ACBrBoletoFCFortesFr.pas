@@ -364,7 +364,7 @@ procedure Register;
 
 implementation
 
-Uses RLFilters, RLConsts, ACBrUtil ;
+Uses RLFilters, RLConsts, ACBrUtil,strutils ;
 
 {$ifdef FPC}
   {$R *.lfm}

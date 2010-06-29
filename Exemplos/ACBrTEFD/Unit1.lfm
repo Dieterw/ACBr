@@ -760,7 +760,7 @@ object Form1: TForm1
       Top = 5
       Width = 72
       Caption = 'VeSPague'
-      OnChange = ckCliSiTefChange
+      OnChange = ckVSPagueChange
       TabOrder = 5
     end
   end
@@ -902,7 +902,7 @@ object Form1: TForm1
     TEFVeSPague.AplicacaoVersao = '1.0'
     TEFVeSPague.EnderecoIP = 'localhost'
     TEFVeSPague.Porta = '60906'
-    TEFVeSPague.TimeOut = 2000
+    TEFVeSPague.TimeOut = 500
     TEFVeSPague.TransacaoADM = 'Administracao Consultar'
     TEFVeSPague.TransacaoCRT = 'Cartao Vender'
     TEFVeSPague.TransacaoCHQ = 'Cheque Consultar'

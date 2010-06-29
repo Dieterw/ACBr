@@ -3761,17 +3761,24 @@ begin
 end;
 
 procedure TACBrECFDaruma.CortaPapel(const CorteParcial: Boolean);
-  Var RetCmd : AnsiString ;
+Var
+   RetCmd, FlagCorte : AnsiString ;
 begin
   if not fpMFD then
      inherited CortaPapel
   else
    begin
      // Daruma TRAVA se enviarmos o comando de guilhotina e ela não existir //
-     RetCmd := RetornaInfoECF('113');
+     RetCmd    := RetornaInfoECF('113');
+     FlagCorte := '' ;
    
      if (RetCmd = '1') and (fsModeloDaruma <> fs700L) then    // Tem Guilhotina ? // verifico se o modelo permite o acionamento da guilhotina
-       EnviaComando( FS + 'N' + #202 )
+      begin
+        if fsModeloDaruma > fs700L then
+           FlagCorte := ifthen(CorteParcial, #0, #1);
+
+        EnviaComando( FS + 'N' + #202 + FlagCorte ) ;
+      end
      else
        inherited CortaPapel ;
    end ;

@@ -887,10 +887,9 @@ procedure TForm1.ACBrTEFD1AguardaResp(Arquivo : String;
 var
   Msg : String ;
 begin
-  Msg := 'Aguardando: '+Arquivo+' '+IntToStr(SegundosTimeOut) ;
-
+  Msg := '' ;
   if (ACBrTEFD1.GPAtual in [gpCliSiTef, gpVeSPague]) then   // É TEF dedicado ?
-  begin
+   begin
      if (Arquivo = '23') and (not bCancelarResp.Visible) then  // Está aguardando Pin-Pad ?
      begin
         if ACBrTEFD1.TecladoBloqueado then
@@ -903,9 +902,12 @@ begin
         Msg := 'Tecle "ESC" para cancelar.';
         bCancelarResp.Visible := True ;
      end;
-  end;
+   end
+  else
+     Msg := 'Aguardando: '+Arquivo+' '+IntToStr(SegundosTimeOut) ;
 
-  StatusBar1.Panels[2].Text := Msg;
+  if Msg <> '' then
+     StatusBar1.Panels[2].Text := Msg;
   Application.ProcessMessages;
 
   if fCancelado then

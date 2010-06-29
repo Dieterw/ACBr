@@ -146,17 +146,25 @@ type
       fTransacaoCRT : String;
       fTransacaoReImpressao: String;
 
-     Function ExecutarTransacao( Transacao : String ) : Boolean ;
      procedure SeTimeOut(const AValue : Integer) ;
      procedure TransmiteCmd ;
-     procedure AvaliaErro ;
+
+     procedure ProcessarColeta ;
+
      procedure ServicoIniciar ;
      procedure ServicoFinalizar ;
-     procedure ProcessarColeta ;
+
+     procedure AvaliaErro( Retorno : Integer) ;
    protected
      procedure SetNumVias(const AValue : Integer); override;
 
-     procedure ProcessarResposta ; override;
+     function FazerRequisicao(Transacao : String; AHeader : AnsiString = '' ;
+       Valor : Double = 0 ; Documento : AnsiString = '') : Integer ;
+     Function ContinuarRequisicao( ImprimirComprovantes : Boolean = True) : Integer ;
+
+     Function ProcessarRespostaPagamento( const IndiceFPG_ECF : String;
+        const Valor : Double) : Boolean; override;
+
    public
      constructor Create( AOwner : TComponent ) ; override;
      destructor Destroy ; override;
@@ -167,6 +175,7 @@ type
      property Terminador : AnsiString read fTerminador write fTerminador ;
 
      procedure Inicializar ; override;
+     procedure DesInicializar ; override;
 
      procedure AtivarGP ; override;
      procedure VerificaAtivo ; override;
@@ -620,21 +629,28 @@ begin
      raise Exception.Create( ACBrStr('Evento "OnObtemCampo" não programado' ) ) ;
 
   if not Assigned(fSocket) then
-  begin
      fSocket := TTCPBlockSocket.Create;
-     fSocket.Connect( fEnderecoIP, fPorta );
-     if fSocket.LastError <> 0 then
-        raise EACBrTEFDErro.Create( ACBrStr('Erro ao conectar no V&SPague'+sLineBreak+
-                                'Endereço: '+fEnderecoIP+sLineBreak+
-                                'Porta: '+fPorta+sLineBreak+
-                                'Erro: '+IntToStr(fSocket.LastError)+'-'+fSocket.LastErrorDesc ) ) ;
-  end ;
+
+  fSocket.CloseSocket;
+  fSocket.Connect( fEnderecoIP, fPorta );
+  if fSocket.LastError <> 0 then
+     raise EACBrTEFDErro.Create( ACBrStr('Erro ao conectar no V&SPague'+sLineBreak+
+                             'Endereço: '+fEnderecoIP+sLineBreak+
+                             'Porta: '+fPorta+sLineBreak+
+                             'Erro: '+IntToStr(fSocket.LastError)+'-'+fSocket.LastErrorDesc ) ) ;
 
   fpInicializado := True ;
   GravaLog( Name +' Inicializado VeSPague' );
 
   CancelarTransacoesPendentesClass           // Cancele tudo... //
 end;
+
+procedure TACBrTEFDVeSPague.DesInicializar ;
+begin
+  fSocket.CloseSocket;
+
+  inherited DesInicializar ;
+end ;
 
 procedure TACBrTEFDVeSPague.AtivarGP;
 begin
@@ -653,15 +669,41 @@ begin
 end;
 
 Function TACBrTEFDVeSPague.ADM : Boolean;
+var
+  Retorno : Integer ;
 begin
-  Result := ExecutarTransacao( fTransacaoADM ) ;
+  Retorno := FazerRequisicao( fTransacaoADM, 'ADM' ) ;
+
+  if Retorno = 0 then
+     Retorno := ContinuarRequisicao( True ) ;  { True = Imprimir Comprovantes agora }
+
+  Result := ( Retorno = 1 ) ;
+
+  if not Result then
+     AvaliaErro( Retorno ) ;
+
+  if Retorno in [0,1,9] then
+     ServicoFinalizar;
 end;
 
 Function TACBrTEFDVeSPague.CRT( Valor : Double; IndiceFPG_ECF : String;
    DocumentoVinculado : String = ''; Moeda : Integer = 0 ) : Boolean;
+var
+  Retorno : Integer ;
 begin
   VerificarTransacaoPagamento( Valor );
-  Result := ExecutarTransacao( fTransacaoCRT );
+
+  Retorno := FazerRequisicao( fTransacaoCRT, 'CRT', Valor, DocumentoVinculado) ;
+
+  if Retorno = 0 then
+     Retorno := ContinuarRequisicao( False ) ;  { False = NAO Imprimir Comprovantes agora }
+
+  Result := ( Retorno in [0,1] ) ;
+
+  if Result then
+     ProcessarRespostaPagamento( IndiceFPG_ECF, Valor )
+  else if Retorno = 9 then
+     ServicoFinalizar ;
 end;
 
 Function TACBrTEFDVeSPague.CHQ(Valor : Double; IndiceFPG_ECF : String;
@@ -669,20 +711,75 @@ Function TACBrTEFDVeSPague.CHQ(Valor : Double; IndiceFPG_ECF : String;
    DocumentoPessoa : String; DataCheque : TDateTime; Banco : String;
    Agencia : String; AgenciaDC : String; Conta : String; ContaDC : String;
    Cheque : String; ChequeDC : String; Compensacao: String) : Boolean ;
+var
+  Retorno : Integer;
 begin
   VerificarTransacaoPagamento( Valor );
-  Result := ExecutarTransacao( fTransacaoCHQ );
+
+(* TODO: Passar dados do Cheque para Lista de Respostas
+  Respostas.Values['501'] := ifthen(TipoPessoa = 'J','1','0');
+
+  if DocumentoPessoa <> '' then
+     Respostas.Values['502'] := OnlyNumber(Trim(DocumentoPessoa));
+
+  if DataCheque <> 0  then
+     Respostas.Values['506'] := FormatDateTime('DDMMYYYY',DataCheque) ;
+
+  if CMC7 <> '' then
+     Respostas.Values['517'] := '1:'+CMC7
+  else
+     Respostas.Values['517'] := '0:'+FormataCampo(Compensacao,3)+
+                                     FormataCampo(Banco,3)+
+                                     FormataCampo(Agencia,4)+
+                                     FormataCampo(AgenciaDC,1)+
+                                     FormataCampo(Conta,10)+
+                                     FormataCampo(ContaDC,1)+
+                                     FormataCampo(Cheque,6)+
+                                     FormataCampo(ChequeDC,1) ;
+*)
+  Retorno := FazerRequisicao( fTransacaoCHQ, 'CHQ', Valor, DocumentoVinculado ) ;
+
+  if Retorno = 0 then
+     Retorno := ContinuarRequisicao( False ) ;  { False = NAO Imprimir Comprovantes agora }
+
+  Result := ( Retorno in [0,1] ) ;
+
+  if Result then
+     ProcessarRespostaPagamento( IndiceFPG_ECF, Valor )
+  else if Retorno = 9 then
+     ServicoFinalizar ;
 end;
 
 Procedure TACBrTEFDVeSPague.CNF(Rede, NSU, Finalizacao : String;
    DocumentoVinculado : String) ;
 begin
+//  FinalizarTransacao( True, DocumentoVinculado );
 end;
 
 Function TACBrTEFDVeSPague.CNC(Rede, NSU : String;
    DataHoraTransacao : TDateTime; Valor : Double) : Boolean;
+var
+   Retorno : Integer;
 begin
-  Result := ExecutarTransacao( fTransacaoCNC );
+  (* TODO: Transferiri Dados da transação para Respostas
+  Respostas.Values['146'] := FormatFloat('0.00',Valor);
+  Respostas.Values['147'] := FormatFloat('0.00',Valor);
+  Respostas.Values['515'] := FormatDateTime('DDMMYYYY',DataHoraTransacao) ;
+  Respostas.Values['516'] := NSU ;
+  *)
+
+  Retorno := FazerRequisicao( fTransacaoCNC, 'CNC' ) ;
+
+  if Retorno = 0 then
+     Retorno := ContinuarRequisicao( True ) ;  { True = Imprimir Comprovantes agora }
+
+  Result := ( Retorno = 1 ) ;
+
+  if not Result then
+     AvaliaErro( Retorno );
+
+  if Retorno in [0,1,9] then
+     ServicoFinalizar;
 end;
 
 Procedure TACBrTEFDVeSPague.NCN(Rede, NSU, Finalizacao : String;
@@ -697,7 +794,6 @@ begin
   ReqVS.AddParamString('versao',fAplicacaoVersao);
 
   TransmiteCmd;
-  ProcessarResposta;
 end ;
 
 procedure TACBrTEFDVeSPague.ServicoFinalizar ;
@@ -705,70 +801,131 @@ begin
   ReqVS.Servico := 'finalizar' ;
 
   TransmiteCmd;
-  ProcessarResposta ;
 end ;
 
-Function TACBrTEFDVeSPague.ExecutarTransacao( Transacao : String ) : Boolean ;
+Function TACBrTEFDVeSPague.FazerRequisicao( Transacao : String;
+   AHeader : AnsiString = ''; Valor : Double = 0; Documento : AnsiString = '') : Integer ;
 begin
-  with TACBrTEFD(Owner) do
-  begin
-    BloquearMouseTeclado(True);
-    try
-      ServicoIniciar ;
+   if fpAguardandoResposta then
+      raise Exception.Create( ACBrStr( 'Requisição anterior não concluida' ) ) ;
 
-      ReqVS.Servico := 'executar' ;
-      ReqVS.AddParamString( 'transacao', Transacao ) ;
-      TransmiteCmd ;
-      ProcessarResposta ;
+   Result := 0 ;
 
-      Result := ( RespVS.Retorno = 1 ) ;
+   ServicoIniciar ;
 
-      if (RespVS.Retorno in [0,1,9]) then
-         ServicoFinalizar ;
-    finally
-      BloquearMouseTeclado(False);
-    end ;
-  end ;
-end ;
+   ReqVS.Servico := 'executar' ;
+   ReqVS.AddParamString( 'transacao', Transacao ) ;
+
+   TransmiteCmd ;
+
+   Result := RespVS.Retorno;
+
+   { Adiciona Campos já conhecidos em Resp, para processa-los em
+     métodos que manipulam "RespostasPendentes" (usa códigos do G.P.)  }
+   Resp.Clear;
+
+   with TACBrTEFDRespVeSPague( Resp ) do
+   begin
+     fpIDSeq := fpIDSeq + 1 ;
+     if Documento = '' then
+        Documento := IntToStr(fpIDSeq) ;
+
+     Conteudo.GravaInformacao(899,100, AHeader ) ;
+     Conteudo.GravaInformacao(899,101, IntToStr(fpIDSeq) ) ;
+     Conteudo.GravaInformacao(899,102, Documento ) ;
+     Conteudo.GravaInformacao(899,103, IntToStr(Trunc(SimpleRoundTo( Valor * 100 ,0))) );
+
+     Resp.TipoGP := fpTipo;
+   end;
+end;
 
 procedure TACBrTEFDVeSPague.SeTimeOut(const AValue : Integer) ;
 begin
   if AValue = fTimeOut then exit ;
 
-  if AValue < 1000 then
-     raise Exception.Create( ACBrStr('Valor mínimo deve ser 1000') ) ;
+  if AValue < 100 then
+     raise Exception.Create( ACBrStr('Valor mínimo deve ser 100') ) ;
 
   fTimeOut := AValue;
 end;
 
-procedure TACBrTEFDVeSPague.ProcessarResposta ;
+Function TACBrTEFDVeSPague.ContinuarRequisicao(ImprimirComprovantes: Boolean): Integer ;
 var
-  Retorno : Integer ;
-  Mensagem : AnsiString ;
+  Mensagem, Chave, Valor : AnsiString ;
+  I : Integer ;
+  GerencialAberto, HouveImpressao, ImpressaoOk : Boolean ;
+  ArqBackUp : String ;
 begin
-  repeat
-     Retorno := RespVS.Retorno ;
+  GerencialAberto  := False ;
+  ImpressaoOk      := True ;
+  HouveImpressao   := False ;
+  ArqBackUp        := '' ;
 
-     if Retorno = 2 then                        // Erro := 'Sequencial Inválido' ;
-     begin
-        ReqVS.Sequencial := RespVS.Sequencial;  // Ajusta o Sequencial correto
-        TransmiteCmd;                           // Tenta novamente
-        Continue;
+  fpAguardandoResposta := True ;
+
+  with TACBrTEFD(Owner) do
+  begin
+     try
+        BloquearMouseTeclado( True );
+
+        repeat
+           Result := RespVS.Retorno;
+
+           if RespVS.IsColeta then
+           begin
+              ProcessarColeta ;  // Faz Loop da coleta de Dados
+
+              Result := RespVS.Retorno;
+
+              // Se Retorno = 0, o V&SPague retornou os dados do Comprovante //
+              if Result = 0 then
+              begin
+                 // Salvando dados do comprovante em ACBrTEFD.Resp //
+                 For I := 0 to RespVS.Params.Count-1 do
+                 begin
+                    Chave := RespVS.Params.Names[I] ;
+                    if (Chave <> '') and (pos(Chave,'sequencial,retorno,servico') = 0) then
+                    begin
+                       Valor := ReqVS.Params.ValueFromIndex[I];
+                       TACBrTEFDRespVeSPague( Self.Resp ).GravaInformacao( Chave, Valor ) ;
+                    end ;
+                 end ;
+
+                 if ImprimirComprovantes then
+                  begin
+                    // TODO: Fazer Impressao de Comprovante como no CliSiTEF
+                  end
+                 else
+                    Break;
+              end;
+           end ;
+        until Result in [1,9] ;
+     finally
+        if GerencialAberto then
+        try
+           ComandarECF( opeFechaGerencial );
+        except
+           ImpressaoOk := False ;
+        end;
+
+        if (ArqBackUp <> '') and FileExists( ArqBackUp ) then
+           SysUtils.DeleteFile( ArqBackUp );
+
+        if HouveImpressao then
+        begin
+           // FinalizarTransacao( ImpressaoOk, Resp.DocumentoVinculado );
+        end ;
+
+        BloquearMouseTeclado( False );
+
+        { Transfere valore de "Conteudo" para as propriedades }
+        TACBrTEFDRespVeSPague( Self.Resp ).ConteudoToProperty ;
+
+        fpAguardandoResposta := False ;
      end ;
+  end ;
 
-     AvaliaErro ;    // Dispara Exception se houver erro
-
-     if RespVS.IsColeta then
-     begin
-        ProcessarColeta ;
-        Retorno := RespVS.Retorno;
-     end ;
-
-     // TODO: Tratar o recebimento das tags "transacao_*"
-     //       e Imprimir comprovantes
-  until Retorno in [1,9] ;
-
-  if Retorno = 9 then
+  if Result = 9 then
   begin
      if RespVS.IsColeta then
         Mensagem := RespVS.GetParamString('automacao_coleta_mensagem')
@@ -863,7 +1020,8 @@ begin
            ReqVS.Retorno := ifthen( Cancelar, 9, 0) ;
 
            TransmiteCmd;
-           AvaliaErro;
+
+           AvaliaErro( RespVS.Retorno ) ;
         end ;
      finally
         ReqVS.Clear;
@@ -878,7 +1036,7 @@ end ;
 Procedure TACBrTEFDVeSPague.TransmiteCmd ;
 Var
   RX : AnsiString ;
-  Erro, Seq : Integer ;
+  Erro, Seq, Retorno : Integer ;
   Interromper : Boolean ;
 
   procedure EnviarCmd ;
@@ -890,7 +1048,7 @@ Var
     GravaLog( 'TRANSMITINDO ->'+sLineBreak+TX );
     fSocket.SendString(TX);
     Erro := fSocket.LastError ;
-    GravaLog( '  TRANSMITIDO, ('+IntToStr(Erro)+')'+sLineBreak );
+    GravaLog( '  TRANSMITIDO, ('+IntToStr(Erro)+') '+fSocket.GetErrorDesc(Erro)+sLineBreak );
     if Erro <> 0 then
        raise EACBrTEFDErro.Create( ACBrStr('Erro ao Transmitir Comando para V&SPague'+sLineBreak+
                                'Endereço: '+fEnderecoIP+sLineBreak+
@@ -917,7 +1075,23 @@ begin
      Erro := fSocket.LastError ;
 
      if Erro = 0 then
-        GravaLog( '<- RECEBIDO' + sLineBreak + RX )
+      begin
+        GravaLog( '<- RECEBIDO' + sLineBreak + RX ) ;
+
+        // Trata a Resposta //
+        RespVS.FrameEnvio := RX ;
+
+        Retorno := RespVS.Retorno ;
+        if Retorno = 2 then                // Erro := 'Sequencial Inválido' ;
+        begin
+           ReqVS.Sequencial := RespVS.Sequencial;  // Ajusta o Sequencial correto
+           EnviarCmd;
+           Erro := 2 ;                             // Tenta novamente
+           Continue;
+        end ;
+
+        AvaliaErro(Retorno) ;              // Dispara Exception se houver erro
+      end
      else
       begin
         GravaLog( '<- ERRO, ('+IntToStr(Erro)+') '+fSocket.GetErrorDesc(Erro) );
@@ -949,26 +1123,22 @@ begin
       end ;
   end ;
 
-  // Trata a Resposta //
-  RespVS.FrameEnvio := RX ;
 end ;
 
-procedure TACBrTEFDVeSPague.AvaliaErro;
+procedure TACBrTEFDVeSPague.AvaliaErro( Retorno : Integer) ;
 var
    Erro    : String;
-   Retorno : Integer ;
 begin
   Erro    := '' ;
-  Retorno := RespVS.Retorno ;
+
   Case Retorno of
-    0,1,9 : Erro := '' ;
+    // 0, 1 : Tudo Ok
     2 : Erro := 'Sequencial Inválido' ;
-    3 : Erro := 'Transação cancelada pelo operador' ;
-    4 : Erro := 'Transação cancelada pelo cliente' ;
+    // 3, 4 : Não são utilizados
     5 : Erro := 'Parâmetros insuficientes ou inválidos' ;
-    6 : Erro := 'Problemas entre o V&SPagueClient e V&SPagueServer' ;
-    7 : Erro := 'Problemas entre o V&SPagueServer e a Rede' ;
+    // 6, 7 : Não são utilizados
     8 : Erro := 'Tempo limite de espera excedido' ;
+    // 9    : Cancelar... deverá tratado pela função
   end ;
 
   if Erro <> '' then
@@ -978,5 +1148,93 @@ begin
      raise EACBrTEFDSTSInvalido.Create( ACBrStr('Sequencia da Resposta inválida') );}
 end ;
 
+
+Function TACBrTEFDVeSPague.ProcessarRespostaPagamento(
+   const IndiceFPG_ECF : String; const Valor : Double) : Boolean;
+var
+  ImpressaoOk : Boolean;
+  RespostaPendente : TACBrTEFDResp ;
+begin
+  Result := True ;
+
+  with TACBrTEFD(Owner) do
+  begin
+     Self.Resp.IndiceFPG_ECF := IndiceFPG_ECF;
+
+     { Cria Arquivo de Backup, contendo Todas as Respostas }
+     CopiarResposta ;
+
+     { Cria cópia do Objeto Resp, e salva no ObjectList "RespostasPendentes" }
+     RespostaPendente := TACBrTEFDRespVeSPague.Create ;
+     RespostaPendente.Assign( Resp );
+     RespostasPendentes.Add( RespostaPendente );
+
+     if AutoEfetuarPagamento then
+     begin
+        ImpressaoOk := False ;
+
+        try
+           while not ImpressaoOk do
+           begin
+              try
+                 ECFPagamento( IndiceFPG_ECF, Valor );
+                 RespostasPendentes.SaldoAPagar  := RoundTo( RespostasPendentes.SaldoAPagar - Valor, -2 ) ;
+                 RespostaPendente.OrdemPagamento := RespostasPendentes.Count + 1 ;
+                 ImpressaoOk := True ;
+              except
+                 on EACBrTEFDECF do ImpressaoOk := False ;
+                 else
+                    raise ;
+              end;
+
+              if not ImpressaoOk then
+              begin
+                 if DoExibeMsg( opmYesNo, 'Impressora não responde'+sLineBreak+
+                                          'Deseja imprimir novamente ?') <> mrYes then
+                 begin
+                    try ComandarECF(opeCancelaCupom); except {Exceção Muda} end ;
+                    break ;
+                 end;
+              end;
+           end;
+        finally
+           if not ImpressaoOk then
+              CancelarTransacoesPendentes;
+        end;
+     end;
+
+     if RespostasPendentes.SaldoRestante <= 0 then
+     begin
+        if AutoFinalizarCupom then
+        begin
+           FinalizarCupom;
+           ImprimirTransacoesPendentes;
+
+           ServicoFinalizar;
+        end;
+     end ;
+  end;
+end;
+
+
 end.
+
+Function TACBrTEFDVeSPague.ContinuarRequisicao( Finaliza : Boolean ) : Boolean ;
+begin
+  with TACBrTEFD(Owner) do
+  begin
+    BloquearMouseTeclado(True);
+    try
+      ProcessarTransacao( Finaliza ) ;  // Se True = Imprime os comprovantes agora
+
+      Result := ( RespVS.Retorno in [0,1] ) ;
+
+      if Finaliza and (RespVS.Retorno in [0,1,9]) then
+         ServicoFinalizar ;
+    finally
+      BloquearMouseTeclado(False);
+    end ;
+  end ;
+end ;
+
 

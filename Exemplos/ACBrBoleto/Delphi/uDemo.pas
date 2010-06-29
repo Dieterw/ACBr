@@ -93,6 +93,7 @@ type
     procedure Button6Click(Sender: TObject);
     procedure Button7Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
   private
     { Private declarations }
      AString: Array[0..5] of AnsiString;  
@@ -131,7 +132,7 @@ begin
         DataDocumento     := StrToDate(edtDataDoc.Text);
         NumeroDocumento   := edtNumeroDoc.Text;
         EspecieDoc        := edtEspecieDoc.Text;
-        Aceite            := 'S';
+        Aceite            := atSim;
         DataProcessamento := Now;
         NossoNumero       := edtNossoNro.Text;
         Carteira          := edtCarteira.Text;
@@ -195,7 +196,7 @@ begin
         DataDocumento     := EncodeDate(2010,04,10);
         NumeroDocumento   := padL(IntToStr(I),6,'0');
         EspecieDoc        := 'DM';
-        Aceite            := 'S';
+        Aceite            := atSim;
         DataProcessamento := Now;
         NossoNumero       := IntToStrZero(I,11);
         Carteira          := '09';
@@ -241,6 +242,11 @@ begin
    AString[4] := ')';
    AString[5] := ' ';
 
+end;
+
+procedure TfrmDemo.Button3Click(Sender: TObject);
+begin
+   ACBrBoleto1.ListadeBoletos.Clear;
 end;
 
 end.

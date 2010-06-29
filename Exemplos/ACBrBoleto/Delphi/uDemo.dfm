@@ -1,6 +1,6 @@
 object frmDemo: TfrmDemo
-  Left = 243
-  Top = 125
+  Left = 205
+  Top = 112
   Width = 817
   Height = 560
   Caption = 'Demo ACBrBoleto'
@@ -543,7 +543,7 @@ object frmDemo: TfrmDemo
   end
   object Panel1: TPanel
     Left = 0
-    Top = 472
+    Top = 474
     Width = 801
     Height = 50
     Align = alBottom

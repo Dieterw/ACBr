@@ -961,15 +961,13 @@ end;
 class function NotaUtil.GetURLMG(AAmbiente: Integer;
   ALayOut: TLayOut): WideString;
 begin
-  if AAmbiente = 1 then
-     raise Exception.Create('WebServices 2.0 apenas do ambiente de homologação já foram liberados pelo estado');
   case ALayOut of
-    LayNfeRecepcao      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.mg.gov.br/nfe/services/NfeRecepcao', 'https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeRecepcao2');
-    LayNfeRetRecepcao   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.mg.gov.br/nfe/services/NfeRetRecepcao', 'https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeRetRecepcao2');
-    LayNfeCancelamento  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.mg.gov.br/nfe/services/NfeCancelamento', 'https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeCancelamento2');
-    LayNfeInutilizacao  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.mg.gov.br/nfe/services/NfeInutilizacao', 'https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeInutilizacao2');
-    LayNfeConsulta      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.mg.gov.br/nfe/services/NfeConsulta', 'https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeConsulta2');
-    LayNfeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.mg.gov.br/nfe/services/NfeStatusServico', 'https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeStatus2');
+    LayNfeRecepcao      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.mg.gov.br/nfe2/services/NfeRecepcao2', 'https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeRecepcao2');
+    LayNfeRetRecepcao   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.mg.gov.br/nfe2/services/NfeRetRecepcao2', 'https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeRetRecepcao2');
+    LayNfeCancelamento  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.mg.gov.br/nfe2/services/NfeCancelamento2', 'https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeCancelamento2');
+    LayNfeInutilizacao  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.mg.gov.br/nfe2/services/NfeInutilizacao2', 'https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeInutilizacao2');
+    LayNfeConsulta      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.mg.gov.br/nfe2/services/NfeConsulta2', 'https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeConsulta2');
+    LayNfeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.mg.gov.br/nfe2/services/NfeStatus2', 'https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeStatus2');
     LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.mg.gov.br/nfe/services/CadConsultaCadastro', 'https://hnfe.fazenda.mg.gov.br/nfe/services/CadConsultaCadastro');
   end;
 end;

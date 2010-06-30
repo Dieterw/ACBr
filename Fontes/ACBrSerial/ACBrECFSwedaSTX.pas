@@ -1675,11 +1675,10 @@ begin
    Cidade     := padL(Cidade,30) ;
    Moeda      := padL('Real',20) ;
    Moedas     := padL('Reais',20) ;
-   sValor     := FormatFloat('#.00',Valor);
+   sValor     := FormatFloat('#0.00',Valor);
    sData      := FormatDateTime('MM-DD-yyyy',Data);
    EnviaComando('14|'+Banco+'|'+sValor+'|'+Moeda+'|'+Moedas+'|'+Favorecido+
                 '|'+Cidade+'|'+sData);
-
 end;
 
 procedure TACBrECFSwedaSTX.CancelaImpressaoCheque;
@@ -1748,7 +1747,7 @@ procedure TACBrECFSwedaSTX.AbreCupomVinculado(COO, CodFormaPagto,
 var
    sValor:String;
 begin
-   sValor := FormatFloat('#.00',Valor);
+   sValor := FormatFloat('#0.00',Valor);
    EnviaComando('50|'+CodFormaPagto+'|'+sValor);
 end;
 
@@ -2061,9 +2060,8 @@ begin
    sDescricao :=CNF.Descricao;
 //   {Remove o sinal da descrição}
 //   sDescricao[1]:= ' ';
-   EnviaComando('21|'+Trim(sDescricao)+'|'+FormatFloat('#.00',Valor));
+   EnviaComando('21|'+Trim(sDescricao)+'|'+FormatFloat('#0.00',Valor));
 end;
-
 
 function TACBrECFSwedaSTX.RemoveNulos(Str: AnsiString): AnsiString;
 var

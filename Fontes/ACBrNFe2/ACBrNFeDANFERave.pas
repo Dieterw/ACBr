@@ -856,7 +856,7 @@ begin
 
   dmDanfe.RvSystem1.DefaultDest := rdFile;
   dmDanfe.RvSystem1.DoNativeOutput:=false;
-  dmDanfe.RvSystem1.SystemPrinter.Collate:=true;
+  //dmDanfe.RvSystem1.SystemPrinter.Collate:=true;
   dmDanfe.RvSystem1.RenderObject:= dmDanfe.RvRenderPDF1;
   if not MostrarStatus then
      dmDanfe.RvSystem1.SystemOptions:=dmDanfe.RvSystem1.SystemOptions - [soShowStatus];

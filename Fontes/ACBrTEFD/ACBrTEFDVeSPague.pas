@@ -144,6 +144,7 @@ type
       fTransacaoCHQ : String;
       fTransacaoCNC : String;
       fTransacaoCRT : String;
+      fTransacaoOpcao : String ;
       fTransacaoReImpressao: String;
 
      procedure SeTimeOut(const AValue : Integer) ;
@@ -206,10 +207,11 @@ type
      property Porta      : AnsiString read fPorta       write fPorta ;
      property TimeOut    : Integer    read fTimeOut     write SeTimeOut default 1000 ;
 
-     property TransacaoADM : String read fTransacaoADM write fTransacaoADM ;
-     property TransacaoCRT : String read fTransacaoCRT write fTransacaoCRT ;
-     property TransacaoCHQ : String read fTransacaoCHQ write fTransacaoCHQ ;
-     property TransacaoCNC : String read fTransacaoCNC write fTransacaoCNC ;
+     property TransacaoADM   : String read fTransacaoADM   write fTransacaoADM ;
+     property TransacaoCRT   : String read fTransacaoCRT   write fTransacaoCRT ;
+     property TransacaoCHQ   : String read fTransacaoCHQ   write fTransacaoCHQ ;
+     property TransacaoCNC   : String read fTransacaoCNC   write fTransacaoCNC ;
+     property TransacaoOpcao : String read fTransacaoOpcao write fTransacaoOpcao ;
      property TransacaoReImpressao : String read fTransacaoReImpressao
         write fTransacaoReImpressao ;
 
@@ -219,11 +221,76 @@ type
         write fOnObtemCampo ;
    end;
 
+function DateTimeToVSDateTime( ADateTime : TDateTime; Tipo : Char = 'D') : String ;
+function VSDateTimeToDateTime(const AVSDateTime : String) : TDateTime ;
+
 implementation
 
 Uses ACBrUtil, dateutils, StrUtils, ACBrTEFD, Dialogs, Math;
 
 { TACBrTEFDVeSPagueCmd }
+
+function DateTimeToVSDateTime( ADateTime : TDateTime; Tipo : Char) : String ;
+var
+  Formato : String ;
+begin
+  Formato := '' ;
+
+  case upcase(Tipo) of
+    'T','H' : Formato := 'hh:nn:ss.zzz';
+    'D'     : Formato := 'yyyy-mm-dd';
+  else
+    Formato := 'yyyy-mm-dd hh:nn:ss.zzz' ;
+  end ;
+
+  Result := FormatDateTime( Formato, ADateTime ) ;
+end;
+
+function VSDateTimeToDateTime(const AVSDateTime : String) : TDateTime ;
+Var
+  P, Ano, Mes, Dia, Hora, Min, Seg, Mili : Integer ;
+begin
+  Ano    := 0 ;
+  Mes    := 0 ;
+  Dia    := 0 ;
+  Hora   := 0 ;
+  Min    := 0 ;
+  Seg    := 0 ;
+  Mili   := 0 ;
+
+  try
+     P := pos('-',AVSDateTime) ;
+     if (P > 0) then   // Tem Data com seprador - ?
+      begin
+        Ano := StrToInt(Copy(AVSDateTime,1,4));
+        Mes := StrToInt(Copy(AVSDateTime,6,2));
+        Dia := StrToInt(Copy(AVSDateTime,9,2));
+      end
+     else
+      begin
+        P := pos('/',AVSDateTime) ;
+        if (P > 0) then   // Tem Data com seprador / ?
+        begin
+           Dia := StrToInt(Copy(AVSDateTime,1,2));
+           Mes := StrToInt(Copy(AVSDateTime,4,2));
+           Ano := StrToInt(Copy(AVSDateTime,7,4));
+        end ;
+      end ;
+
+     P := pos(':',AVSDateTime) ;
+     if (P > 0) then   // Tem Hora ?
+     begin
+        Hora := StrToInt(Copy(AVSDateTime,P-2,2));
+        Min  := StrToInt(Copy(AVSDateTime,P+1,2));
+        Seg  := StrToInt(Copy(AVSDateTime,P+4,2));
+        Mili := StrToInt(Copy(AVSDateTime,P+7,3));
+     end ;
+
+     Result := EncodeDateTime(Ano,Mes,Dia,Hora,Min,Seg,Mili);
+  except
+     Result := 0 ;
+  end ;
+end ;
 
 constructor TACBrTEFDVeSPagueCmd.Create ;
 begin
@@ -345,41 +412,8 @@ begin
 end ;
 
 function TACBrTEFDVeSPagueCmd.GetParamDateTime(const ParamName : String) : TDateTime ;
-Var
-  ValStr : AnsiString ;
-  P, Ano, Mes, Dia, Hora, Min, Seg, Mili : Integer ;
 begin
-  ValStr := GetParamString(ParamName) ;
-  Ano    := 0 ;
-  Mes    := 0 ;
-  Dia    := 0 ;
-  Hora   := 0 ;
-  Min    := 0 ;
-  Seg    := 0 ;
-  Mili   := 0 ;
-
-  try
-     P := pos('-',ValStr) ;
-     if (P > 0) then   // Tem Data ?
-     begin
-        Ano := StrToInt(Copy(ValStr,1,4));
-        Mes := StrToInt(Copy(ValStr,6,2));
-        Dia := StrToInt(Copy(ValStr,9,2));
-     end ;
-
-     P := pos(':',ValStr) ;
-     if (P > 0) then   // Tem Hora ?
-     begin
-        Hora := StrToInt(Copy(ValStr,P-2,2));
-        Min  := StrToInt(Copy(ValStr,P+1,2));
-        Seg  := StrToInt(Copy(ValStr,P+4,2));
-        Mili := StrToInt(Copy(ValStr,P+7,3));
-     end ;
-
-     Result := EncodeDateTime(Ano,Mes,Dia,Hora,Min,Seg,Mili);
-  except
-     Result := 0 ;
-  end ;
+  Result := VSDateTimeToDateTime( GetParamString(ParamName) ) ;
 end ;
 
 procedure TACBrTEFDVeSPagueCmd.SetRetorno(const AValue : Integer) ;
@@ -428,21 +462,8 @@ end ;
 
 procedure TACBrTEFDVeSPagueCmd.AddParamDateTime(const ParamName : String ;
   const ADateTime : TDateTime ; const Tipo : AnsiChar) ;
-var
-  Formato,ValStr : String ;
 begin
-   Formato := '' ;
-
-   case upcase(Tipo) of
-     'T','H' : Formato := 'hh:nn:ss.zzz';
-     'D'     : Formato := 'yyyy-mm-dd';
-   else
-     Formato := 'yyyy-mm-dd hh:nn:ss.zzz' ;
-   end ;
-
-   ValStr := FormatDateTime( Formato, ADateTime ) ;
-
-   AddParamString(ParamName, ValStr);
+   AddParamString(ParamName, DateTimeToVSDateTime( ADateTime, Tipo) );
 end ;
 
 procedure TACBrTEFDVeSPagueCmd.AddParamStrings(const ParamName : String ;
@@ -469,9 +490,12 @@ begin
 end;
 
 procedure TACBrTEFDRespVeSPague.ConteudoToProperty;
+var
+  Linha : TACBrTEFDLinha ;
+  Chave : AnsiString;
+  Valor : String ;
+  I : Integer ;
 begin
-// Conteudo.Conteudo.SaveToFile('c:\temp\conteudo.txt') ;
-(*
    fpValorTotal := 0 ;
    fpImagemComprovante1aVia.Clear;
    fpImagemComprovante2aVia.Clear;
@@ -480,9 +504,35 @@ begin
    begin
      Linha := Conteudo.Linha[I];
 
-     LinStr := StringToBinaryString( Linha.Informacao.AsString );
+     Chave := LowerCase( Linha.Chave );
+     Valor := StringToBinaryString( Linha.Informacao.AsString );
 
-     case Linha.Identificacao of
+     if Chave = 'transacao_administradora' then
+        fpNomeAdministradora := Valor
+     else if Chave = 'transacao_autorizacao' then
+        fpCodigoAutorizacaoTransacao := Linha.Informacao.AsInteger
+     else if Chave = 'transacao_codigo_vespague' then
+        fpNumeroLoteTransacao := Linha.Informacao.AsInteger
+     else if Chave = 'transacao_comprovante_1via' then
+        fpImagemComprovante1aVia.Text := StringToBinaryString( Linha.Informacao.AsAnsiString )
+     else if Chave = 'transacao_comprovante_2via' then
+        fpImagemComprovante2aVia.Text := StringToBinaryString( Linha.Informacao.AsAnsiString )
+     else if Chave = 'transacao_comprovante_resumido' then
+//      Ainda Não mepeado
+     else if Chave = 'transacao_data' then
+        fpDataHoraTransacaoComprovante := VSDateTimeToDateTime( Valor )
+     else if Chave = 'transacao_financiado' then
+        fpTipoParcelamento := ifthen(LowerCase(Valor)='estabelecimento', 0, 1 )
+     else if Chave = 'transacao_nsu' then
+        fpNSU := Valor
+     else if Chave = 'transacao_pagamento' then
+// TODO:        fpTipoTransacao := Valor
+     else if Chave = 'transacao_parcela' then
+        fpQtdParcelas := Linha.Informacao.AsInteger
+     else if Chave = 'transacao_rede' then
+        fpRede := Valor ;
+   end ;
+(*
        // TODO: Mapear mais propriedades do VeSPague //
        100 :fpModalidadePagto              := LinStr;
        101 :fpModalidadePagtoExtenso       := LinStr;
@@ -536,7 +586,6 @@ begin
           end;
         end;
      end;
-   end ;
 
    fpParcelas.Clear;
    for I := 1 to fpQtdParcelas do
@@ -546,14 +595,14 @@ begin
       Parc.Valor      := LeInformacao( 142, I).AsFloat ;
 
       fpParcelas.Add(Parc);
-   end;   *)
+   end; *)
 end;
 
 procedure TACBrTEFDRespVeSPague.GravaInformacao( const PalavraChave,
    Informacao : AnsiString );
 begin
-//  fpConteudo.GravaInformacao( Identificacao, Sequencia,
-//                               BinaryStringToString(Informacao) ); // Converte #10 para "\x0A"
+  fpConteudo.GravaInformacao( PalavraChave,
+                              BinaryStringToString(Informacao) ); // Converte #10 para "\x0A"
 end;
 
 
@@ -588,6 +637,7 @@ begin
   fTransacaoADM         := 'Administracao Consultar' ;
   fTransacaoCHQ         := 'Cheque Consultar' ;
   fTransacaoCNC         := 'Administracao Cancelar' ;
+  fTransacaoOpcao       := '' ;
 
   fOnExibeMenu  := nil ;
   fOnObtemCampo := nil ;
@@ -816,6 +866,9 @@ begin
    ReqVS.Servico := 'executar' ;
    ReqVS.AddParamString( 'transacao', Transacao ) ;
 
+   if TransacaoOpcao <> '' then
+      ReqVS.AddParamString( 'transacao_opcao', TransacaoOpcao ) ;
+
    TransmiteCmd ;
 
    Result := RespVS.Retorno;
@@ -886,7 +939,7 @@ begin
                     Chave := RespVS.Params.Names[I] ;
                     if (Chave <> '') and (pos(Chave,'sequencial,retorno,servico') = 0) then
                     begin
-                       Valor := ReqVS.Params.ValueFromIndex[I];
+                       Valor := RespVS.Params.ValueFromIndex[I];
                        TACBrTEFDRespVeSPague( Self.Resp ).GravaInformacao( Chave, Valor ) ;
                     end ;
                  end ;

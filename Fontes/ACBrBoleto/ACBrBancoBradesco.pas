@@ -250,6 +250,7 @@ Procedure TACBrBancoBradesco.LerRetorno400 ( ARetorno: TStringList );
 var
   ContLinha: Integer;
   Titulo   : TACBrTitulo;
+  Linha    : String ;
 begin
    ContLinha := 0;
 
@@ -259,19 +260,21 @@ begin
 
    for ContLinha := 1 to ARetorno.Count - 2 do
    begin
-      Titulo := ACBrBanco.ACBrBoleto.CriarTituloNaLista;
+      Linha := ARetorno[ContLinha] ;
 
-      if Copy(ARetorno[ContLinha],1,1)<> '1' then
+      if Copy(Linha,1,1)<> '1' then
          Continue;
+
+      Titulo := ACBrBanco.ACBrBoleto.CriarTituloNaLista;
 
       with Titulo do
       begin
-         SeuNumero                   := copy(ARetorno[ContLinha],38,25);
-         NumeroDocumento             := copy(ARetorno[ContLinha],117,10);
-         OcorrenciaOriginal          := copy(ARetorno[ContLinha],109,2);
+         SeuNumero                   := copy(Linha,38,25);
+         NumeroDocumento             := copy(Linha,117,10);
+         OcorrenciaOriginal          := copy(Linha,109,2);
          DescricaoOcorrenciaOriginal := CodOcorrenciatoDescricaoOcorrenciaOriginal(OcorrenciaOriginal);
          TipoOcorrencia              := CodOcorrenciatoTipoOcorrenciaOriginal(StrToIntDef(OcorrenciaOriginal,0));
-         MotivoRejeicaoComando       := copy(ARetorno[ContLinha],319,2);
+         MotivoRejeicaoComando       := copy(Linha,319,2);
          MotivoRejeicaoComando       := IfThen(MotivoRejeicaoComando = '00',
                                            '',MotivoRejeicaoComando );
 
@@ -279,30 +282,30 @@ begin
                                            '',CodMotivotoDescricaoMotivoRejeicao(
                                            StrToIntDef(MotivoRejeicaoComando,0)));
 
-         DataOcorrencia := EncodeDate(StrToIntDef('20'+copy(ARetorno[ContLinha],115,2),0),
-                                      StrToIntDef(Copy(ARetorno[ContLinha],113,2),0),
-                                      StrToIntDef(Copy(ARetorno[ContLinha],111,2),0));
+         DataOcorrencia := StringToDateTimeDef( Copy(Linha,111,2)+'/'+
+                                                Copy(Linha,113,2)+'/'+
+                                                Copy(Linha,115,2),0, 'DD/MM/YY' );
 
-         Vencimento := EncodeDate(StrToIntDef('20'+copy(ARetorno[ContLinha],151,2),0),
-                                  StrToIntDef(Copy(ARetorno[ContLinha],149,2),0),
-                                  StrToIntDef(Copy(ARetorno[ContLinha],147,2),0));
+         Vencimento := StringToDateTimeDef( Copy(Linha,147,2)+'/'+
+                                            Copy(Linha,149,2)+'/'+
+                                            Copy(Linha,151,2),0, 'DD/MM/YY' );
 
-         ValorDocumento       := StrToFloatDef(Copy(ARetorno[ContLinha],153,13),0)/100;
-         ValorIOF             := StrToFloatDef(Copy(ARetorno[ContLinha],215,13),0)/100;
-         ValorAbatimento      := StrToFloatDef(Copy(ARetorno[ContLinha],228,13),0)/100;
-         ValorDesconto        := StrToFloatDef(Copy(ARetorno[ContLinha],241,13),0)/100;
-         ValorMoraJuros       := StrToFloatDef(Copy(ARetorno[ContLinha],267,13),0)/100;
-         ValorOutrosCreditos  := StrToFloatDef(Copy(ARetorno[ContLinha],280,13),0)/100;
-         ValorRecebido        := StrToFloatDef(Copy(ARetorno[ContLinha],254,13),0)/100;
-         NossoNumero          := Copy(ARetorno[ContLinha],71,11);
-         Carteira             := Copy(ARetorno[ContLinha],22,3);
-         ValorDespesaCobranca := StrToFloatDef(Copy(ARetorno[ContLinha],176,13),0)/100;
-         ValorOutrasDespesas  := StrToFloatDef(Copy(ARetorno[ContLinha],189,13),0)/100;
+         ValorDocumento       := StrToFloatDef(Copy(Linha,153,13),0)/100;
+         ValorIOF             := StrToFloatDef(Copy(Linha,215,13),0)/100;
+         ValorAbatimento      := StrToFloatDef(Copy(Linha,228,13),0)/100;
+         ValorDesconto        := StrToFloatDef(Copy(Linha,241,13),0)/100;
+         ValorMoraJuros       := StrToFloatDef(Copy(Linha,267,13),0)/100;
+         ValorOutrosCreditos  := StrToFloatDef(Copy(Linha,280,13),0)/100;
+         ValorRecebido        := StrToFloatDef(Copy(Linha,254,13),0)/100;
+         NossoNumero          := Copy(Linha,71,11);
+         Carteira             := Copy(Linha,22,3);
+         ValorDespesaCobranca := StrToFloatDef(Copy(Linha,176,13),0)/100;
+         ValorOutrasDespesas  := StrToFloatDef(Copy(Linha,189,13),0)/100;
 
-         if StrToIntDef(Copy(ARetorno[ContLinha],296,6),0) <> 0 then
-            DataCredito:= EncodeDate(StrToIntDef('20'+Copy(ARetorno.Strings[ContLinha],300,2),0),
-                                     StrToIntDef(copy(ARetorno.Strings[ContLinha],298,2),0),
-                                     StrToIntDef(Copy(ARetorno.Strings[ContLinha],296,2),0));
+         if StrToIntDef(Copy(Linha,296,6),0) <> 0 then
+            DataCredito:= StringToDateTimeDef( Copy(Linha,296,2)+'/'+
+                                               Copy(Linha,298,2)+'/'+
+                                               Copy(Linha,300,2),0, 'DD/MM/YY' );
       end;
    end;
 end;

@@ -1069,19 +1069,15 @@ end;
 
 function TACBrBancoClass.CalcularDigitoCodigoBarras (
    const CodigoBarras: String ) : String;
-var
-   DigitoNum: Integer;
 begin
    Modulo.CalculoPadrao;
    Modulo.Documento := CodigoBarras;
    Modulo.Calcular;
 
-   Result:= IntToStr(Modulo.DigitoFinal);
-
-   DigitoNum := StrToIntDef(Result,0);
-
-   if (DigitoNum = 0) or (DigitoNum > 9) then
-      Result:= '1';;
+   if (Modulo.DigitoFinal = 0) or (Modulo.DigitoFinal > 9) then
+      Result := '1'
+   else
+      Result := IntToStr(Modulo.DigitoFinal);
 end;
 
 function TACBrBancoClass.CalcularNomeArquivoRemessa ( const DirArquivo: String) : String;
@@ -1243,18 +1239,22 @@ begin
                              'processar'));
 
    case Length(SlRetorno.Strings[0]) of
-      240:begin
+      240 :
+        begin
           if Copy(SlRetorno.Strings[0],143,1) <> '2' then
              Raise Exception.Create(NomeArqRetorno +' não é um arquivo de '+
                                     'retorno de cobrança com layout CNAB240');
-          end;
+          LayoutRemessa := c240 ;
+        end;
 
-      400: begin
-           if Copy(SlRetorno.Strings[0],1,19) <> '02RETORNO01COBRANCA' then
-              Raise Exception.Create(NomeArqRetorno +' não é um arquivo de '+
+      400 :
+        begin
+          if Copy(SlRetorno.Strings[0],1,19) <> '02RETORNO01COBRANCA' then
+             Raise Exception.Create(NomeArqRetorno +' não é um arquivo de '+
                                      'retorno de cobrança com layout CNAB400');
-           end;
-       else
+          LayoutRemessa := c400 ;
+        end;
+      else
           raise Exception.Create(NomeArqRetorno+' não é um arquivo de  ' +
                                  'retorno de cobrança CNAB240 ou CNAB400');
 

@@ -221,7 +221,7 @@ type
         write fOnObtemCampo ;
    end;
 
-function DateTimeToVSDateTime( ADateTime : TDateTime; Tipo : Char = 'D') : String ;
+function DateTimeToVSDateTime( ADateTime : TDateTime; Tipo : AnsiChar = 'D') : String ;
 function VSDateTimeToDateTime(const AVSDateTime : String) : TDateTime ;
 
 implementation
@@ -230,7 +230,7 @@ Uses ACBrUtil, dateutils, StrUtils, ACBrTEFD, Dialogs, Math;
 
 { TACBrTEFDVeSPagueCmd }
 
-function DateTimeToVSDateTime( ADateTime : TDateTime; Tipo : Char) : String ;
+function DateTimeToVSDateTime( ADateTime : TDateTime; Tipo : AnsiChar) : String ;
 var
   Formato : String ;
 begin

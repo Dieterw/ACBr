@@ -314,7 +314,7 @@ begin
     Result:='';
     Exit;
   end;
-  case StrToInt(CodOcorrencia) of
+  case StrToIntDef(CodOcorrencia,0) of
     02: Result:='02-Entrada Confirmada' ;
     03: Result:='03-Entrada Rejeitada' ;
     06: Result:='06-Liquidação normal' ;

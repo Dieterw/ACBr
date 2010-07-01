@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "ACBrNFeMonitor"
-#define MyAppVerName "ACBrNFeMonitor-OpenSSL-0.5.6b"
+#define MyAppVerName "ACBrNFeMonitor-OpenSSL-0.5.7a"
 #define MyAppPublisher "Projeto ACBr"
 #define MyAppURL "http://acbr.sourceforge.net/drupal/"
 #define MyAppUrlName "ACBrNFeMonitor.url"
@@ -49,7 +49,7 @@ Source: ACBrNFeMonitor.chm; DestDir: {app}; Flags: ignoreversion; Components: he
 Source: ACBrNFeMonitor-change-log.txt; DestDir: {app}; Flags: ignoreversion; Components: help
 ;Source: {#QTDLL}; DestDir: {sys}; Flags: ; Components: programa
 Source: ..\..\..\DLLs\OpenSSL\libeay32.dll; DestDir: {app}; Flags: ; Components: programa
-Source: ..\..\..\DLLs\OpenSSL\ssleay32.dll; DestDir: {app}; Flags: ; Components: programa
+Source: ..\..\..\DLLs\OpenSSL\libssl32.dll; DestDir: {app}; Flags: ; Components: programa
 Source: ..\..\..\DLLs\XMLSec\libxml2.dll; DestDir: {app}; Flags: ; Components: programa
 Source: ..\..\..\DLLs\XMLSec\libxmlsec.dll; DestDir: {app}; Flags: ; Components: programa
 Source: ..\..\..\DLLs\XMLSec\libxmlsec-openssl.dll; DestDir: {app}; Flags: ; Components: programa

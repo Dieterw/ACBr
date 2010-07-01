@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "ACBrNFeMonitor"
-#define MyAppVerName "ACBrNFeMonitor-CAPICOM-0.5.6b"
+#define MyAppVerName "ACBrNFeMonitor-CAPICOM-0.5.7a"
 #define MyAppPublisher "Projeto ACBr"
 #define MyAppURL "http://acbr.sourceforge.net/drupal/"
 #define MyAppUrlName "ACBrNFeMonitor.url"
@@ -53,7 +53,7 @@ Source: ..\..\..\DLLs\Capicom\msxml5.dll; DestDir: {sys}; Flags: ; Components: p
 Source: ..\..\..\DLLs\Capicom\msxml5r.dll; DestDir: {sys}; Flags: ; Components: programa
 Source: ..\..\..\DLLs\Capicom\instala.bat; DestDir: {app}; Flags: ; Components: programa
 Source: ..\..\..\DLLs\OpenSSL\libeay32.dll; DestDir: {app}; Flags: ; Components: programa
-Source: ..\..\..\DLLs\OpenSSL\ssleay32.dll; DestDir: {app}; Flags: ; Components: programa
+Source: ..\..\..\DLLs\OpenSSL\libssl32.dll; DestDir: {app}; Flags: ; Components: programa
 Source: Report\DANFE_Rave513.rav; DestDir: {app}\Report; Flags: ; Components: programa
 Source: Schemas\*.*; DestDir: {app}\Schemas; Flags: ; Components: programa
 Source: MunIBGE\*.*; DestDir: {app}\MunIBGE; Flags: ; Components: programa

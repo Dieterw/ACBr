@@ -174,9 +174,9 @@ type
 
     function CalcularDigitoVerificador(const ACBrTitulo : TACBrTitulo): String; virtual;
 
-    function VerificaOcorrenciaOriginal(const CodOcorrencia:String): String; virtual; abstract;
-    function VerificaTipoOcorrenciaOriginal(const CodOcorrencia:Integer): TACBrTipoOcorrencia; virtual; abstract;
-    function VerificaMotivoRejeicao(const CodMotivo:Integer): String; virtual; abstract;
+    function CodOcorrenciatoDescricaoOcorrenciaOriginal(const CodOcorrencia:String): String; virtual; abstract;
+    function CodOcorrenciatoTipoOcorrenciaOriginal(const CodOcorrencia:Integer): TACBrTipoOcorrencia; virtual; abstract;
+    function CodMotivotoDescricaoMotivoRejeicao(const CodMotivo:Integer): String; virtual; abstract;
 
     function MontarCodigoBarras(const ACBrTitulo : TACBrTitulo): String; virtual;
     function MontarCampoNossoNumero(const ACBrTitulo : TACBrTitulo): String; virtual;
@@ -189,8 +189,8 @@ type
     function GerarRegistroTransacao240(ACBrTitulo : TACBrTitulo): String; Virtual;
     function GerarRegistroTrailler400(ARemessa:TStringList): String;  Virtual;
     function GerarRegistroTrailler240(ARemessa:TStringList): String;  Virtual;
-    function LerRetorno400(ARetorno:TStringList): boolean;  Virtual;
-    function LerRetorno240(ARetorno:TStringList): boolean;  Virtual;
+    Procedure LerRetorno400(ARetorno:TStringList); Virtual;
+    Procedure LerRetorno240(ARetorno:TStringList); Virtual;
 
     function CalcularNomeArquivoRemessa(const DirArquivo: String): String; Virtual;
   end;
@@ -216,9 +216,9 @@ type
     property BancoClass : TACBrBancoClass read fBancoClass ;
     property TamanhoMaximoNossoNum :Integer read GetTamanhoMaximoNossoNum;
 
-    function VerificaOcorrenciaOriginal(const CodOcorrencia:String): String;
-    function VerificaTipoOcorrenciaOriginal(const CodOcorrencia:Integer): TACBrTipoOcorrencia;
-    function VerificaMotivoRejeicao(const CodMotivo:Integer): String;
+    function CodOcorrenciatoDescricaoOcorrenciaOriginal(const CodOcorrencia:String): String;
+    function CodOcorrenciatoTipoOcorrenciaOriginal(const CodOcorrencia:Integer): TACBrTipoOcorrencia;
+    function CodMotivotoDescricaoMotivoRejeicao(const CodMotivo:Integer): String;
 
     function CalcularDigitoVerificador(const ACBrTitulo : TACBrTitulo): String;
 
@@ -233,8 +233,8 @@ type
     function GerarRegistroTransacao240(ACBrTitulo : TACBrTitulo): String;
     function GerarRegistroTrailler400(ARemessa:TStringList): String;
     function GerarRegistroTrailler240(ARemessa:TStringList): String;
-    function LerRetorno400(ARetorno:TStringList): boolean;
-    function LerRetorno240(ARetorno:TStringList): boolean;
+    procedure LerRetorno400(ARetorno:TStringList);
+    procedure LerRetorno240(ARetorno:TStringList);
 
     function CalcularNomeArquivoRemessa(const DirArquivo: String): String;
   published
@@ -958,22 +958,22 @@ begin
    fBancoClass := TACBrBancoClass.create(Self);
 end;
 
-function TACBrBanco.VerificaOcorrenciaOriginal ( const CodOcorrencia: String
+function TACBrBanco.CodOcorrenciatoDescricaoOcorrenciaOriginal( const CodOcorrencia: String
    ) : String;
 begin
-   Result:= BancoClass.VerificaOcorrenciaOriginal(CodOcorrencia);
+   Result:= BancoClass.CodOcorrenciatoDescricaoOcorrenciaOriginal(CodOcorrencia);
 end;
 
-function TACBrBanco.VerificaTipoOcorrenciaOriginal (
+function TACBrBanco.CodOcorrenciatoTipoOcorrenciaOriginal(
    const CodOcorrencia: Integer ) : TACBrTipoOcorrencia;
 begin
-   Result:= BancoClass.VerificaTipoOcorrenciaOriginal(CodOcorrencia);
+   Result:= BancoClass.CodOcorrenciatoTipoOcorrenciaOriginal(CodOcorrencia);
 end;
 
-function TACBrBanco.VerificaMotivoRejeicao ( const CodMotivo: Integer
+function TACBrBanco.CodMotivotoDescricaoMotivoRejeicao ( const CodMotivo: Integer
    ) : String;
 begin
-  Result:= BancoClass.VerificaMotivoRejeicao(CodMotivo);
+  Result:= BancoClass.CodMotivotoDescricaoMotivoRejeicao(CodMotivo);
 end;
 
 function TACBrBanco.CalcularDigitoVerificador ( const ACBrTitulo: TACBrTitulo

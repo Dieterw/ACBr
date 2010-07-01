@@ -448,6 +448,7 @@ var
   ATipoSacado,
   ATipoCendente,
   ATipoAceite,
+  ATipoEspecieDoc,
   AMensagem       : String;
   ATipoBoleto     :  Char;
 begin
@@ -477,6 +478,12 @@ begin
          atSim :  ATipoAceite := 'A';
          atNao :  ATipoAceite := 'N';
       end;
+
+      { Pegando o tipo de EspecieDoc }
+      if EspecieDoc = 'DM' then
+         ATipoEspecieDoc   := '01'
+      else if EspecieDoc = 'RC' then
+         ATipoEspecieDoc   := '05';
 
       {Pegando Tipo de Boleto}
       case ACBrBoleto.Cedente.TipoBoleto of
@@ -533,7 +540,7 @@ begin
                   FormatDateTime( 'ddmmyy', Vencimento )                  + // Data de vencimento
                   IntToStrZero( Round( ValorDocumento * 100 ), 13)        + // Valor do titulo
                   '001' + '0000' + ' '                                    + // Numero do Banco - 001 + Prefixo da agencia cobradora + DV-pref. agencia cobradora
-                  padR(EspecieDoc, 2, '0') + ATipoAceite            + // Especie de titulo + Aceite
+                  padR(ATipoEspecieDoc, 2, '0') + ATipoAceite             + // Especie de titulo + Aceite
                   FormatDateTime( 'ddmmyy', DataDocumento )               + // Data de Emissão
                   padR(Instrucao1, 2, '0')                                + // 1ª instrução codificada
                   padR(Instrucao2, 2, '0')                                + // 2ª instrução codificada

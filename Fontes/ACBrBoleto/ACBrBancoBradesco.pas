@@ -57,11 +57,11 @@ type
     function GerarRegistroHeader400(NumeroRemessa : Integer): String; override;
     function GerarRegistroTransacao400(ACBrTitulo : TACBrTitulo): String; override;
     function GerarRegistroTrailler400(ARemessa:TStringList): String;  override;
-    function LerRetorno400(ARetorno:TStringList): Boolean;  override;
+    Procedure LerRetorno400(ARetorno:TStringList); override;
 
-    function VerificaOcorrenciaOriginal(const CodOcorrencia: String) : String; override;
-    function VerificaTipoOcorrenciaOriginal(const CodOcorrencia:Integer): TACBrTipoOcorrencia; override;
-    function VerificaMotivoRejeicao(const CodMotivo:Integer): String; override;
+    function CodOcorrenciatoDescricaoOcorrenciaOriginal(const CodOcorrencia: String) : String; override;
+    function CodOcorrenciatoTipoOcorrenciaOriginal(const CodOcorrencia:Integer): TACBrTipoOcorrencia; override;
+    function CodMotivotoDescricaoMotivoRejeicao(const CodMotivo:Integer): String; override;
   end;
 
 implementation
@@ -246,68 +246,65 @@ begin
    Result:= UpperCase(Result);
 end;
 
-function TACBrBancoBradesco.LerRetorno400 ( ARetorno: TStringList ) : Boolean;
+Procedure TACBrBancoBradesco.LerRetorno400 ( ARetorno: TStringList );
 var
   ContLinha: Integer;
   Titulo   : TACBrTitulo;
 begin
-   Result:= False;
    ContLinha := 0;
 
    if StrToInt(copy(ARetorno.Strings[0],77,3)) <> Numero then
       raise Exception.Create(ACBrStr(ACBrBanco.ACBrBoleto.NomeArqRetorno + 'nao' +
                              'é um arquivo de retorno do '+ Nome));
 
-   Titulo:=   ACBrBanco.ACBrBoleto.CriarTituloNaLista;
+   for ContLinha := 1 to ARetorno.Count - 2 do
+   begin
+      Titulo := ACBrBanco.ACBrBoleto.CriarTituloNaLista;
 
-   try
-     for ContLinha := 1 to ARetorno.Count - 2 do
-     begin
-         if Copy(ARetorno[ContLinha],1,1)<> '1' then
-            Continue;
+      if Copy(ARetorno[ContLinha],1,1)<> '1' then
+         Continue;
 
-         with Titulo do
-         begin
-            SeuNumero                      := copy(ARetorno.Strings[ContLinha],38,25);
-            NumeroDocumento                := copy(ARetorno.Strings[ContLinha],117,10);
-            OcorrenciaOriginal             := copy(ARetorno.Strings[ContLinha],109,2);
-            DescricaoOcorrenciaOriginal    := VerificaOcorrenciaOriginal(OcorrenciaOriginal);
-            TipoOcorrencia                 := VerificaTipoOcorrenciaOriginal(StrToIntDef(OcorrenciaOriginal,0));
-            MotivoRejeicaoComando          := copy(ARetorno.Strings[ContLinha],319,2);
-            MotivoRejeicaoComando          := IfThen(MotivoRejeicaoComando = '00',
-                                              '',MotivoRejeicaoComando );
-            DescricaoMotivoRejeicaoComando := IfThen(MotivoRejeicaoComando = '00',
-                                              '',VerificaMotivoRejeicao(StrToIntDef(MotivoRejeicaoComando,0)));
-            DataOcorrencia := EncodeDate(strtoint('20'+copy(ARetorno.Strings[ContLinha],115,2)),
-                                         strtoint(Copy(ARetorno.Strings[ContLinha],113,2)),
-                                         strtoint(Copy(ARetorno.Strings[ContLinha],111,2)));
+      with Titulo do
+      begin
+         SeuNumero                   := copy(ARetorno[ContLinha],38,25);
+         NumeroDocumento             := copy(ARetorno[ContLinha],117,10);
+         OcorrenciaOriginal          := copy(ARetorno[ContLinha],109,2);
+         DescricaoOcorrenciaOriginal := CodOcorrenciatoDescricaoOcorrenciaOriginal(OcorrenciaOriginal);
+         TipoOcorrencia              := CodOcorrenciatoTipoOcorrenciaOriginal(StrToIntDef(OcorrenciaOriginal,0));
+         MotivoRejeicaoComando       := copy(ARetorno[ContLinha],319,2);
+         MotivoRejeicaoComando       := IfThen(MotivoRejeicaoComando = '00',
+                                           '',MotivoRejeicaoComando );
 
-            Vencimento := EncodeDate(strtoint('20'+copy(ARetorno[ContLinha],151,2)),
-                                     strtoint(Copy(ARetorno.Strings[ContLinha],149,2)),
-                                     strtoint(Copy(ARetorno.Strings[ContLinha],147,2)));
+         DescricaoMotivoRejeicaoComando := IfThen(MotivoRejeicaoComando = '00',
+                                           '',CodMotivotoDescricaoMotivoRejeicao(
+                                           StrToIntDef(MotivoRejeicaoComando,0)));
 
-            ValorDocumento       := StrToFloatDef(Copy(ARetorno.Strings[ContLinha],153,13),0)/100;
-            ValorIOF             := StrToFloatDef(Copy(ARetorno.Strings[ContLinha],215,13),0)/100;
-            ValorAbatimento      := StrToFloatDef(Copy(ARetorno.Strings[ContLinha],228,13),0)/100;
-            ValorDesconto        := StrToFloatDef(Copy(ARetorno.Strings[ContLinha],241,13),0)/100;
-            ValorMoraJuros       := StrToFloatDef(Copy(ARetorno.Strings[ContLinha],267,13),0)/100;
-            ValorOutrosCreditos  := StrToFloatDef(Copy(ARetorno.Strings[ContLinha],280,13),0)/100;
-            ValorRecebido        := StrToFloatDef(Copy(ARetorno.Strings[ContLinha],254,13),0)/100;
-            NossoNumero          := Copy(ARetorno.Strings[ContLinha],71,11);
-            Carteira             := Copy(ARetorno.Strings[ContLinha],22,3);
-            ValorDespesaCobranca := StrToFloatDef(Copy(ARetorno.Strings[ContLinha],176,13),0)/100;
-            ValorOutrasDespesas  := StrToFloatDef(Copy(ARetorno.Strings[ContLinha],189,13),0)/100;
+         DataOcorrencia := EncodeDate(StrToIntDef('20'+copy(ARetorno[ContLinha],115,2),0),
+                                      StrToIntDef(Copy(ARetorno[ContLinha],113,2),0),
+                                      StrToIntDef(Copy(ARetorno[ContLinha],111,2)),0);
 
-            if padR(Copy(ARetorno.Strings[ContLinha],296,6),6,'0') <> '000000' then
-               DataCredito:= EncodeDate(strtoint('20'+Copy(ARetorno.Strings[ContLinha],300,2)),
-                                        strtoint(copy(ARetorno.Strings[ContLinha],298,2)),
-                                        strtoint(Copy(ARetorno.Strings[ContLinha],296,2)));
+         Vencimento := EncodeDate(StrToIntDef('20'+copy(ARetorno[ContLinha],151,2),0),
+                                  StrToIntDef(Copy(ARetorno[ContLinha],149,2),0),
+                                  StrToIntDef(Copy(ARetorno[ContLinha],147,2)),0);
+
+         ValorDocumento       := StrToFloatDef(Copy(ARetorno[ContLinha],153,13),0)/100;
+         ValorIOF             := StrToFloatDef(Copy(ARetorno[ContLinha],215,13),0)/100;
+         ValorAbatimento      := StrToFloatDef(Copy(ARetorno[ContLinha],228,13),0)/100;
+         ValorDesconto        := StrToFloatDef(Copy(ARetorno[ContLinha],241,13),0)/100;
+         ValorMoraJuros       := StrToFloatDef(Copy(ARetorno[ContLinha],267,13),0)/100;
+         ValorOutrosCreditos  := StrToFloatDef(Copy(ARetorno[ContLinha],280,13),0)/100;
+         ValorRecebido        := StrToFloatDef(Copy(ARetorno[ContLinha],254,13),0)/100;
+         NossoNumero          := Copy(ARetorno[ContLinha],71,11);
+         Carteira             := Copy(ARetorno[ContLinha],22,3);
+         ValorDespesaCobranca := StrToFloatDef(Copy(ARetorno[ContLinha],176,13),0)/100;
+         ValorOutrasDespesas  := StrToFloatDef(Copy(ARetorno[ContLinha],189,13),0)/100;
+
+         if padR(Copy(ARetorno[ContLinha],296,6),6,'0') <> '000000' then
+            DataCredito:= EncodeDate(StrToIntDef('20'+Copy(ARetorno.Strings[ContLinha],300,2),0),
+                                     StrToIntDef(copy(ARetorno.Strings[ContLinha],298,2),0),
+                                     StrToIntDef(Copy(ARetorno.Strings[ContLinha],296,2)),0);
          end;
      end;
-     Result:= True;
-   finally
-      Titulo.Free;
-   end;
 end;
 
 function TACBrBancoBradesco.VerificaOcorrenciaOriginal(const CodOcorrencia: String): String;

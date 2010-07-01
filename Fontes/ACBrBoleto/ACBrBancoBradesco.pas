@@ -299,7 +299,7 @@ begin
          ValorDespesaCobranca := StrToFloatDef(Copy(ARetorno[ContLinha],176,13),0)/100;
          ValorOutrasDespesas  := StrToFloatDef(Copy(ARetorno[ContLinha],189,13),0)/100;
 
-         if padR(Copy(ARetorno[ContLinha],296,6),6,'0') <> '000000' then
+         if StrToIntDef(Copy(ARetorno[ContLinha],296,6),0) <> 0 then
             DataCredito:= EncodeDate(StrToIntDef('20'+Copy(ARetorno.Strings[ContLinha],300,2),0),
                                      StrToIntDef(copy(ARetorno.Strings[ContLinha],298,2),0),
                                      StrToIntDef(Copy(ARetorno.Strings[ContLinha],296,2)),0);

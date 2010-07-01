@@ -281,11 +281,11 @@ begin
 
          DataOcorrencia := EncodeDate(StrToIntDef('20'+copy(ARetorno[ContLinha],115,2),0),
                                       StrToIntDef(Copy(ARetorno[ContLinha],113,2),0),
-                                      StrToIntDef(Copy(ARetorno[ContLinha],111,2)),0);
+                                      StrToIntDef(Copy(ARetorno[ContLinha],111,2),0));
 
          Vencimento := EncodeDate(StrToIntDef('20'+copy(ARetorno[ContLinha],151,2),0),
                                   StrToIntDef(Copy(ARetorno[ContLinha],149,2),0),
-                                  StrToIntDef(Copy(ARetorno[ContLinha],147,2)),0);
+                                  StrToIntDef(Copy(ARetorno[ContLinha],147,2),0));
 
          ValorDocumento       := StrToFloatDef(Copy(ARetorno[ContLinha],153,13),0)/100;
          ValorIOF             := StrToFloatDef(Copy(ARetorno[ContLinha],215,13),0)/100;
@@ -302,12 +302,12 @@ begin
          if StrToIntDef(Copy(ARetorno[ContLinha],296,6),0) <> 0 then
             DataCredito:= EncodeDate(StrToIntDef('20'+Copy(ARetorno.Strings[ContLinha],300,2),0),
                                      StrToIntDef(copy(ARetorno.Strings[ContLinha],298,2),0),
-                                     StrToIntDef(Copy(ARetorno.Strings[ContLinha],296,2)),0);
+                                     StrToIntDef(Copy(ARetorno.Strings[ContLinha],296,2),0));
       end;
    end;
 end;
 
-function TACBrBancoBradesco.VerificaOcorrenciaOriginal(const CodOcorrencia: String): String;
+function TACBrBancoBradesco.CodOcorrenciatoDescricaoOcorrenciaOriginal(const CodOcorrencia: String): String;
 begin
   if trim(CodOcorrencia) = '' then
   begin
@@ -330,21 +330,24 @@ begin
     19: Result:='19-Confirmação Recebimento Instrução de Protesto' ;
     20: Result:='20-Confirmação Recebimento Instrução Sustação de Protesto' ;
     21: Result:='21-Acerto do Controle do Participante' ;
+    22: Result:='22-Titulo com Pagamento Cancelado';
     23: Result:='22-Entrada do Título em Cartório' ;
     24: Result:='23-Entrada rejeitada por CEP Irregular' ;
     27: Result:='27-Baixa Rejeitada' ;
     28: Result:='28-Débito de tarifas/custas' ;
+    29: Result:= '29-Ocorrências do Sacado';
     30: Result:='30-Alteração de Outros Dados Rejeitados' ;
     32: Result:='32-Instrução Rejeitada' ;
     33: Result:='33-Confirmação Pedido Alteração Outros Dados' ;
     34: Result:='34-Retirado de Cartório e Manutenção Carteira' ;
     35: Result:='35-Desagendamento do débito automático' ;
+    55: Result:='55-Sustado Judicial';
     68: Result:='68-Acerto dos dados do rateio de Crédito' ;
     69: Result:='69-Cancelamento dos dados do rateio' ;
   end;
 end;
 
-function TACBrBancoBradesco.VerificaTipoOcorrenciaOriginal (
+function TACBrBancoBradesco.CodOcorrenciatoTipoOcorrenciaOriginal (
    const CodOcorrencia: Integer ) : TACBrTipoOcorrencia;
 begin
    case CodOcorrencia of
@@ -369,6 +372,7 @@ begin
       24: Result := toRetornoRegistroRecusado;
       27: Result := toRetornoComandoRecusado;
       28: Result := toRetornoDebitoTarifas;
+      29: Result := toRetornoOcorrenciasdoSacado;
       30: Result := toRetornoComandoRecusado;
       32: Result := toRetornoComandoRecusado;
       33: Result := toRetornoRecebimentoInstrucaoAlterarDados;
@@ -379,7 +383,7 @@ begin
    end;
 end;
 
-function TACBrBancoBradesco.VerificaMotivoRejeicao ( const CodMotivo: Integer
+function TACBrBancoBradesco.COdMotivotoDescricaoMotivoRejeicao ( const CodMotivo: Integer
    ) : String;
 begin
    case CodMotivo of

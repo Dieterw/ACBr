@@ -144,7 +144,8 @@ type
     toRetornoProtestoOuSustacaoEstornado,
     toRetornoDebitoTarifas,
     toRetornoAcertoDepositaria,
-    toRetornoOutrasOcorrencias
+    toRetornoOutrasOcorrencias,
+    toRetornoOcorrenciasdoSacado
   );
 
   { TACBrBancoClass }
@@ -1025,17 +1026,17 @@ end;
 
 function TACBrBanco.GerarRegistroTrailler240(ARemessa: TStringList): String;
 begin
-  Result := BancoClass.GerarRegistroTrailler240( ARemessa );
+   BancoClass.GerarRegistroTrailler240( ARemessa );
 end;
 
-function TACBrBanco.LerRetorno400 ( ARetorno: TStringList ) : boolean;
+Procedure TACBrBanco.LerRetorno400 ( ARetorno: TStringList );
 begin
-   Result :=  BancoClass.LerRetorno400(ARetorno);
+   BancoClass.LerRetorno400(ARetorno);
 end;
 
-function TACBrBanco.LerRetorno240 ( ARetorno: TStringList ) : boolean;
+Procedure TACBrBanco.LerRetorno240 ( ARetorno: TStringList );
 begin
-   Result :=  BancoClass.LerRetorno240(ARetorno);
+   BancoClass.LerRetorno240(ARetorno);
 end;
 
 function TACBrBanco.CalcularNomeArquivoRemessa(const DirArquivo: String ): String;
@@ -1325,13 +1326,13 @@ begin
    Result:= '';
 end;
 
-function TACBrBancoClass.LerRetorno400 ( ARetorno: TStringList ) : boolean;
+Procedure TACBrBancoClass.LerRetorno400 ( ARetorno: TStringList );
 begin
    raise Exception.Create( ACBrStr('Leitura do arquivo Retorno em 400 '+
                            'colunas não implementada no banco '+ Nome+'.')) ;
 end;
 
-function TACBrBancoClass.LerRetorno240 ( ARetorno: TStringList ) : boolean;
+Procedure TACBrBancoClass.LerRetorno240 ( ARetorno: TStringList );
 begin
    raise Exception.Create( ACBrStr('Leitura do arquivo Retorno em 240 '+
                            'colunas não implementada no banco '+ Nome+'.')) ;

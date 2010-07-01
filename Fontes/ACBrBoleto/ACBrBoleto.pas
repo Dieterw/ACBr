@@ -56,7 +56,7 @@ uses ACBrBase,  {Units da ACBr}
      Graphics, Contnrs, Classes;
 
 const
-  CACBrBoleto_Versao = '0.0.13a' ;
+  CACBrBoleto_Versao = '0.0.14a' ;
 
 type
   TACBrTitulo = class;
@@ -64,6 +64,88 @@ type
   TACBrCedente = class;
   TACBrBanco  = class;
   TACBrBoleto = class;
+
+
+  {Tipos de ocorrências permitidas no arquivos remessa / retorno}
+  TACBrTipoOcorrencia =
+  (
+    {Ocorrências para arquivo remessa}
+    toRemessaRegistrar,
+    toRemessaBaixar,
+    toRemessaDebitarEmConta,
+    toRemessaConcederAbatimento,
+    toRemessaCancelarAbatimento,
+    toRemessaConcederDesconto,
+    toRemessaCancelarDesconto,
+    toRemessaAlterarVencimento,
+    toRemessaProtestar,
+    toRemessaSustarProtesto,
+    toRemessaCancelarIntrucaoProtestoBaixa,
+    toRemessaCancelarInstrucaoProtesto,
+    toRemessaDispensarJuros,
+    toRemessaAlterarNomeEnderecoSacado,
+    toRemessaAlterarNumeroControle,
+    toRemessaOutrasOcorrencias,
+
+    {Ocorrências para arquivo retorno}
+    toRetornoRegistroConfirmado,
+    toRetornoRegistroRecusado,
+    toRetornoComandoRecusado,
+    toRetornoLiquidado,
+    toRetornoLiquidadoEmCartorio,
+    toRetornoLiquidadoParcialmente,
+    toRetornoLiquidadoSaldoRestante,
+    toRetornoLiquidadoSemRegistro,
+    toRetornoLiquidadoPorConta,
+    toRetornoBaixaSolicitada,
+    toRetornoBaixado,
+    toRetornoBaixadoPorDevolucao,
+    toRetornoBaixadoFrancoPagamento,
+    toRetornoBaixaPorProtesto,
+    toRetornoRecebimentoInstrucaoBaixar,
+    toRetornoBaixaOuLiquidacaoEstornada,
+    toRetornoTituloEmSer,
+    toRetornoRecebimentoInstrucaoConcederAbatimento,
+    toRetornoAbatimentoConcedido,
+    toRetornoRecebimentoInstrucaoCancelarAbatimento,
+    toRetornoAbatimentoCancelado,
+    toRetornoRecebimentoInstrucaoConcederDesconto,
+    toRetornoDescontoConcedido,
+    toRetornoRecebimentoInstrucaoCancelarDesconto,
+    toRetornoDescontoCancelado,
+    toRetornoRecebimentoInstrucaoAlterarDados,
+    toRetornoDadosAlterados,
+    toRetornoRecebimentoInstrucaoAlterarVencimento,
+    toRetornoVencimentoAlterado,
+    toRetornoAlteracaoDadosNovaEntrada,
+    toRetornoAlteracaoDadosBaixa,
+    toRetornoRecebimentoInstrucaoProtestar,
+    toRetornoProtestado,
+    toRetornoRecebimentoInstrucaoSustarProtesto,
+    toRetornoProtestoSustado,
+    toRetornoInstrucaoProtestoRejeitadaSustadaOuPendente,
+    toRetornoDebitoEmConta,
+    toRetornoRecebimentoInstrucaoAlterarNomeSacado,
+    toRetornoNomeSacadoAlterado,
+    toRetornoRecebimentoInstrucaoAlterarEnderecoSacado,
+    toRetornoEnderecoSacadoAlterado,
+    toRetornoEncaminhadoACartorio,
+    toRetornoRetiradoDeCartorio,
+    toRetornoRecebimentoInstrucaoDispensarJuros,
+    toRetornoJurosDispensados,
+    toRetornoManutencaoTituloVencido,
+    toRetornoRecebimentoInstrucaoAlterarTipoCobranca,
+    toRetornoTipoCobrancaAlterado,
+    toRetornoDespesasProtesto,
+    toRetornoDespesasSustacaoProtesto,
+    toRetornoDebitoCustasAntecipadas,
+    toRetornoCustasCartorioDistribuidor,
+    toRetornoCustasEdital,
+    toRetornoProtestoOuSustacaoEstornado,
+    toRetornoDebitoTarifas,
+    toRetornoAcertoDepositaria,
+    toRetornoOutrasOcorrencias
+  );
 
   { TACBrBancoClass }
 
@@ -92,6 +174,10 @@ type
 
     function CalcularDigitoVerificador(const ACBrTitulo : TACBrTitulo): String; virtual;
 
+    function VerificaOcorrenciaOriginal(const CodOcorrencia:String): String; virtual; abstract;
+    function VerificaTipoOcorrenciaOriginal(const CodOcorrencia:Integer): TACBrTipoOcorrencia; virtual; abstract;
+    function VerificaMotivoRejeicao(const CodMotivo:Integer): String; virtual; abstract;
+
     function MontarCodigoBarras(const ACBrTitulo : TACBrTitulo): String; virtual;
     function MontarCampoNossoNumero(const ACBrTitulo : TACBrTitulo): String; virtual;
     function MontarLinhaDigitavel(const CodigoBarras: String): String; virtual;
@@ -103,6 +189,8 @@ type
     function GerarRegistroTransacao240(ACBrTitulo : TACBrTitulo): String; Virtual;
     function GerarRegistroTrailler400(ARemessa:TStringList): String;  Virtual;
     function GerarRegistroTrailler240(ARemessa:TStringList): String;  Virtual;
+    function LerRetorno400(ARetorno:TStringList): boolean;  Virtual;
+    function LerRetorno240(ARetorno:TStringList): boolean;  Virtual;
 
     function CalcularNomeArquivoRemessa(const DirArquivo: String): String; Virtual;
   end;
@@ -128,6 +216,10 @@ type
     property BancoClass : TACBrBancoClass read fBancoClass ;
     property TamanhoMaximoNossoNum :Integer read GetTamanhoMaximoNossoNum;
 
+    function VerificaOcorrenciaOriginal(const CodOcorrencia:String): String;
+    function VerificaTipoOcorrenciaOriginal(const CodOcorrencia:Integer): TACBrTipoOcorrencia;
+    function VerificaMotivoRejeicao(const CodMotivo:Integer): String;
+
     function CalcularDigitoVerificador(const ACBrTitulo : TACBrTitulo): String;
 
     function MontarCampoCodigoCedente(const ACBrTitulo: TACBrTitulo): String;
@@ -141,6 +233,8 @@ type
     function GerarRegistroTransacao240(ACBrTitulo : TACBrTitulo): String;
     function GerarRegistroTrailler400(ARemessa:TStringList): String;
     function GerarRegistroTrailler240(ARemessa:TStringList): String;
+    function LerRetorno400(ARetorno:TStringList): boolean;
+    function LerRetorno240(ARetorno:TStringList): boolean;
 
     function CalcularNomeArquivoRemessa(const DirArquivo: String): String;
   published
@@ -223,85 +317,7 @@ type
   end;
 
   {Tipos de ocorrências permitidas no arquivos remessa / retorno}
-  TACBrTipoOcorrencia =
-  (
-    {Ocorrências para arquivo remessa}
-    toRemessaRegistrar,
-    toRemessaBaixar,
-    toRemessaDebitarEmConta,
-    toRemessaConcederAbatimento,
-    toRemessaCancelarAbatimento,
-    toRemessaConcederDesconto,
-    toRemessaCancelarDesconto,
-    toRemessaAlterarVencimento,
-    toRemessaProtestar,
-    toRemessaSustarProtesto,
-    toRemessaCancelarIntrucaoProtestoBaixa,
-    toRemessaCancelarInstrucaoProtesto,
-    toRemessaDispensarJuros,
-    toRemessaAlterarNomeEnderecoSacado,
-    toRemessaAlterarNumeroControle,
-    toRemessaOutrasOcorrencias,
-
-    {Ocorrências para arquivo retorno}
-    toRetornoRegistroConfirmado,
-    toRetornoRegistroRecusado,
-    toRetornoComandoRecusado,
-    toRetornoLiquidado,
-    toRetornoLiquidadoEmCartorio,
-    toRetornoLiquidadoParcialmente,
-    toRetornoLiquidadoSaldoRestante,
-    toRetornoLiquidadoSemRegistro,
-    toRetornoLiquidadoPorConta,
-    toRetornoBaixaSolicitada,
-    toRetornoBaixado,
-    toRetornoBaixadoPorDevolucao,
-    toRetornoBaixadoFrancoPagamento,
-    toRetornoBaixaPorProtesto,
-    toRetornoRecebimentoInstrucaoBaixar,
-    toRetornoBaixaOuLiquidacaoEstornada,
-    toRetornoTituloEmSer,
-    toRetornoRecebimentoInstrucaoConcederAbatimento,
-    toRetornoAbatimentoConcedido,
-    toRetornoRecebimentoInstrucaoCancelarAbatimento,
-    toRetornoAbatimentoCancelado,
-    toRetornoRecebimentoInstrucaoConcederDesconto,
-    toRetornoDescontoConcedido,
-    toRetornoRecebimentoInstrucaoCancelarDesconto,
-    toRetornoDescontoCancelado,
-    toRetornoRecebimentoInstrucaoAlterarDados,
-    toRetornoDadosAlterados,
-    toRetornoRecebimentoInstrucaoAlterarVencimento,
-    toRetornoVencimentoAlterado,
-    toRetornoAlteracaoDadosNovaEntrada,
-    toRetornoAlteracaoDadosBaixa,
-    toRetornoRecebimentoInstrucaoProtestar,
-    toRetornoProtestado,
-    toRetornoRecebimentoInstrucaoSustarProtesto,
-    toRetornoProtestoSustado,
-    toRetornoInstrucaoProtestoRejeitadaSustadaOuPendente,
-    toRetornoDebitoEmConta,
-    toRetornoRecebimentoInstrucaoAlterarNomeSacado,
-    toRetornoNomeSacadoAlterado,
-    toRetornoRecebimentoInstrucaoAlterarEnderecoSacado,
-    toRetornoEnderecoSacadoAlterado,
-    toRetornoEncaminhadoACartorio,
-    toRetornoRetiradoDeCartorio,
-    toRetornoRecebimentoInstrucaoDispensarJuros,
-    toRetornoJurosDispensados,
-    toRetornoManutencaoTituloVencido,
-    toRetornoRecebimentoInstrucaoAlterarTipoCobranca,
-    toRetornoTipoCobrancaAlterado,
-    toRetornoDespesasProtesto,
-    toRetornoDespesasSustacaoProtesto,
-    toRetornoDebitoCustasAntecipadas,
-    toRetornoCustasCartorioDistribuidor,
-    toRetornoCustasEdital,
-    toRetornoProtestoOuSustacaoEstornado,
-    toRetornoDebitoTarifas,
-    toRetornoAcertoDepositaria,
-    toRetornoOutrasOcorrencias
-  );
+  {TACBrTipoOcorrencia = }
 
   { TACBrTitulo }
 
@@ -942,6 +958,24 @@ begin
    fBancoClass := TACBrBancoClass.create(Self);
 end;
 
+function TACBrBanco.VerificaOcorrenciaOriginal ( const CodOcorrencia: String
+   ) : String;
+begin
+   Result:= BancoClass.VerificaOcorrenciaOriginal(CodOcorrencia);
+end;
+
+function TACBrBanco.VerificaTipoOcorrenciaOriginal (
+   const CodOcorrencia: Integer ) : TACBrTipoOcorrencia;
+begin
+   Result:= BancoClass.VerificaTipoOcorrenciaOriginal(CodOcorrencia);
+end;
+
+function TACBrBanco.VerificaMotivoRejeicao ( const CodMotivo: Integer
+   ) : String;
+begin
+  Result:= BancoClass.VerificaMotivoRejeicao(CodMotivo);
+end;
+
 function TACBrBanco.CalcularDigitoVerificador ( const ACBrTitulo: TACBrTitulo
    ) : String;
 begin
@@ -994,6 +1028,16 @@ begin
   Result := BancoClass.GerarRegistroTrailler240( ARemessa );
 end;
 
+function TACBrBanco.LerRetorno400 ( ARetorno: TStringList ) : boolean;
+begin
+   Result :=  BancoClass.LerRetorno400(ARetorno);
+end;
+
+function TACBrBanco.LerRetorno240 ( ARetorno: TStringList ) : boolean;
+begin
+   Result :=  BancoClass.LerRetorno240(ARetorno);
+end;
+
 function TACBrBanco.CalcularNomeArquivoRemessa(const DirArquivo: String ): String;
 begin
   BancoClass.CalcularNomeArquivoRemessa( DirArquivo );
@@ -1024,12 +1068,19 @@ end;
 
 function TACBrBancoClass.CalcularDigitoCodigoBarras (
    const CodigoBarras: String ) : String;
+var
+   DigitoNum: Integer;
 begin
    Modulo.CalculoPadrao;
    Modulo.Documento := CodigoBarras;
    Modulo.Calcular;
 
    Result:= IntToStr(Modulo.DigitoFinal);
+
+   DigitoNum := StrToIntDef(Result,0);
+
+   if (DigitoNum = 0) or (DigitoNum > 9) then
+      Result:= '1';;
 end;
 
 function TACBrBancoClass.CalcularNomeArquivoRemessa ( const DirArquivo: String) : String;
@@ -1177,8 +1228,9 @@ begin
    SlRetorno:= TStringList.Create;
    Self.ListadeBoletos.Clear;
 
-   if not DirectoryExists(fDirArqRetorno) then
-      raise Exception.Create(ACBrStr('Diretório Inválido '+fDirArqRetorno));
+   if not FilesExists(fDirArqRetorno+fNomeArqRetorno) then
+      raise Exception.Create(ACBrStr('Arquivo ou Diretório Inválido '+
+                             fDirArqRetorno+NomeArqRetorno));
 
    if trim(NomeArqRetorno) = '' then
       raise Exception.Create(ACBrStr('Nome do arquivo deve ser informado.'));
@@ -1186,7 +1238,8 @@ begin
    SlRetorno.LoadFromFile(fDirArqRetorno+NomeArqRetorno);
 
    if SlRetorno.Count < 1 then
-      raise exception.Create(ACBrStr('Arquivo está vazio'));
+      raise exception.Create(ACBrStr('O retorno está vazio. Não há dados para '+
+                             'processar'));
 
    case Length(SlRetorno.Strings[0]) of
       240:begin
@@ -1205,6 +1258,11 @@ begin
                                  'retorno de cobrança CNAB240 ou CNAB400');
 
    end;
+
+   if LayoutRemessa = c240 then
+      Banco.LerRetorno240(SlRetorno)
+   else
+      Banco.LerRetorno400(SlRetorno);
 end;
 
 procedure TACBrBoleto.ChecarDadosObrigatorios;
@@ -1265,6 +1323,18 @@ function TACBrBancoClass.GerarRegistroTrailler240 ( ARemessa: TStringList
    ) : String;
 begin
    Result:= '';
+end;
+
+function TACBrBancoClass.LerRetorno400 ( ARetorno: TStringList ) : boolean;
+begin
+   raise Exception.Create( ACBrStr('Leitura do arquivo Retorno em 400 '+
+                           'colunas não implementada no banco '+ Nome+'.')) ;
+end;
+
+function TACBrBancoClass.LerRetorno240 ( ARetorno: TStringList ) : boolean;
+begin
+   raise Exception.Create( ACBrStr('Leitura do arquivo Retorno em 240 '+
+                           'colunas não implementada no banco '+ Nome+'.')) ;
 end;
 
 function TACBrBancoClass.GerarRegistroTransacao400(  ACBrTitulo: TACBrTitulo): String;

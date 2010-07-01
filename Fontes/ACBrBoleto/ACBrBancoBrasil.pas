@@ -101,14 +101,14 @@ begin
       if (Carteira = '16') or (Carteira = '17') or (Carteira = '18') then
        begin
          if Length(AConvenio) <= 4 then
-            ANossoNumero := padL(AConvenio, 4, '0') + padL(NossoNumero, 7, '0')
+            ANossoNumero := padR(AConvenio, 4, '0') + padR(ANossoNumero, 7, '0')
          else if (Length(AConvenio) > 4) and (Length(AConvenio) <= 6) then
-            ANossoNumero := padL(AConvenio, 6, '0') + padL(NossoNumero, 5, '0')
+            ANossoNumero := padR(AConvenio, 6, '0') + padR(ANossoNumero, 5, '0')
          else if Length(AConvenio) = 7 then
-            ANossoNumero := padL(AConvenio, 7, '0') + padL(NossoNumero, 10, '0');
+            ANossoNumero := padR(AConvenio, 7, '0') + padR(ANossoNumero, 10, '0');
        end
       else 
-         ANossoNumero := padL(NossoNumero, 11, '0');
+         ANossoNumero := padL(ANossoNumero, 11, '0');
    end;
    Result := ANossoNumero;
 end;
@@ -133,8 +133,8 @@ begin
                       IntToStrZero(Round(ACBrTitulo.ValorDocumento * 100), 10) +
                       IfThen((Length(AConvenio) = 7), '000000', '') +
                       ANossoNumero +
-                      IfThen((Length(AConvenio) < 7), padL(Cedente.Agencia, 4, '0'), '') +
-                      IfThen((Length(AConvenio) < 7), padL(Cedente.Conta, 8, '0'), '') +
+                      IfThen((Length(AConvenio) < 7), padR(Cedente.Agencia, 4, '0'), '') +
+                      IfThen((Length(AConvenio) < 7), padR(Cedente.Conta, 8, '0'), '') +
                       copy(ACBrTitulo.Carteira, 1, 2);
 
       DigitoCodBarras := CalcularDigitoCodigoBarras(CodigoBarras);
@@ -158,7 +158,7 @@ var ANossoNumero : string;
 begin
     ANossoNumero := FormataNossoNumero(ACBrTitulo);
 
-    Result := ANossoNumero + '-' + CalcularDigitoCodigoBarras(ANossoNumero);
+    Result := ANossoNumero + '-' + CalcularDigitoVerificador(ACBrTitulo);
 end;
 
 function TACBrBancoBrasil.GerarRegistroHeader240(NumeroRemessa : Integer): String;
@@ -428,7 +428,7 @@ begin
                padL( ContaDigito, 1, ' ')                 + // DV-código do cedente
                padL( Convenio, 6, ' ')                    + // Número do convenente lider
                padL( Nome, 30)                            + // Nome da Empresa
-               padL(IntToStr( Numero ), 3, '0')           + // Código do Banco
+               padR(IntToStr( Numero ), 3, '0')           + // Código do Banco
                padL('BANCO DO BRASIL', 15)                + // Nome do Banco(BANCO DO BRASIL)
                FormatDateTime('ddmmyy',Now)               + // Data de geração do arquivo
                IntToStrZero(NumeroRemessa,7) + Space(287) + // Nr. Sequencial de Remessa + brancos
@@ -516,27 +516,27 @@ begin
       begin
          Result:= '1'                                                     + // ID Registro
                   ATipoCendente + padR(Cedente.CNPJCPF,14,'0')            + // Tipo de inscrição da empresa 01-CPF / 02-CNPJ  + Inscrição da empresa
-                  padL( Cedente.Agencia, 4, '0')                          + // Prefixo da agencia
+                  padR( Cedente.Agencia, 4, '0')                          + // Prefixo da agencia
                   padL( Cedente.AgenciaDigito, 1)                         + // DV-prefixo da agencia
-                  padL( Cedente.Conta, 8, '0')                            + // Código do cendete/nr. conta corrente da empresa
+                  padR( Cedente.Conta, 8, '0')                            + // Código do cendete/nr. conta corrente da empresa
                   padL( Cedente.ContaDigito, 1)                           + // DV-código do cedente
                   padL( Cedente.Convenio, 6)                              + // Número do convenio
                   padL( SeuNumero, 25 )                                   + // Numero de Controle do Participante
-                  padL( ANossoNumero, 11, '0')                            + // Nosso numero
+                  padR( ANossoNumero, 11, '0')                            + // Nosso numero
                   padL( ADigitoNossoNumero, 1)                            + // DV-nosso numero
                   '0000' + '    ' + 'AI ' + '019'                         + // Zeros + Brancos + Prefixo do titulo + Variação da carteira
                   '0' + '00000' + '0' + '000000'                          + // Zero + Zeros + Zero + Zeros
                   '     '                                                 + // Tipo de cobrança
-                  padL( Carteira, 2, '0')                                 + // Carteira
+                  padR( Carteira, 2, '0')                                 + // Carteira
                   ATipoOcorrencia                                         + // Ocorrência "Comando"
                   padL( NumeroDocumento, 10, ' ')                         + // Seu Numero - Nr. titulo dado pelo cedente
                   FormatDateTime( 'ddmmyy', Vencimento )                  + // Data de vencimento
                   IntToStrZero( Round( ValorDocumento * 100 ), 13)        + // Valor do titulo
                   '001' + '0000' + ' '                                    + // Numero do Banco - 001 + Prefixo da agencia cobradora + DV-pref. agencia cobradora
-                  padL(EspecieDoc, 2, '0') + ATipoAceite            + // Especie de titulo + Aceite
+                  padR(EspecieDoc, 2, '0') + ATipoAceite            + // Especie de titulo + Aceite
                   FormatDateTime( 'ddmmyy', DataDocumento )               + // Data de Emissão
-                  padL(Instrucao1, 2, '0')                                + // 1ª instrução codificada
-                  padL(Instrucao2, 2, '0')                                + // 2ª instrução codificada
+                  padR(Instrucao1, 2, '0')                                + // 1ª instrução codificada
+                  padR(Instrucao2, 2, '0')                                + // 2ª instrução codificada
                   IntToStrZero( round(ValorMoraJuros * 100 ), 13)         + // Juros de mora por dia
                   IfThen(DataDesconto < EncodeDate(2000,01,01),
                      '000000',

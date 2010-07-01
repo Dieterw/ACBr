@@ -64,6 +64,7 @@ uses ACBrUtil, StrUtils;
 
 { TACBrBancoSicredi }
 
+
 constructor TACBrBancoSicredi.create(AOwner: TACBrBanco);
 begin
    inherited create(AOwner);

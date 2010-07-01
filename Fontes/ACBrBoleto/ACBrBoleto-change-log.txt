@@ -47,6 +47,26 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+
+Versão 0.0.14a 30/06/2010
+[-] Corrigido função CalculaDigitoCodigoBarras quando o digito calculado é 0 ou
+    maior que 9.(Juliana Tamizou)
+[+] Adicionado funções VerificaOcorrenciaOriginal,VerificaTipoOcorrenciaOriginal
+    e VerificaMotivoRejeicao, para serem utilizadas na leitura do arquivo 
+    retorno.(Juliana Tamizou)
+[+] Iniciado implementação da leitura do arquivo Retorno na classe do 
+    Bradesco.(Juliana Tamizou)
+[+] Implementado geração do arquivo remessa 400 colunas para a classe do Banco
+    do Brasil.(Maicon da Silva Evangelista)
+[-] Corrigido o problema nas funções "FormataNossoNumero" e "MontarCodigoBarras"
+    alterado o padL por padR.(Maicon da Silva Evangelista) 
+|-] Corrigido a função MontarCampoNossoNumero, ela estava utilizando a função
+    CalcularDigitoCodigoBarras ao inves de CalcularDigitoVerificador.(Maicon da 
+    Silva Evangelista)
+
+
+
+
 Versão 0.0.13a 28/06/2010
 [+] Adicionado classe do Banco Sicredi.(Ronaldo Lazarin)
 

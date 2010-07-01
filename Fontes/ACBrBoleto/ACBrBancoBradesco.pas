@@ -46,6 +46,7 @@ type
   { TACBrBancoBradesco }
 
   TACBrBancoBradesco = class(TACBrBancoClass)
+  private
   protected
   public
     Constructor create(AOwner: TACBrBanco);
@@ -56,6 +57,11 @@ type
     function GerarRegistroHeader400(NumeroRemessa : Integer): String; override;
     function GerarRegistroTransacao400(ACBrTitulo : TACBrTitulo): String; override;
     function GerarRegistroTrailler400(ARemessa:TStringList): String;  override;
+    function LerRetorno400(ARetorno:TStringList): Boolean;  override;
+
+    function VerificaOcorrenciaOriginal(const CodOcorrencia: String) : String; override;
+    function VerificaTipoOcorrenciaOriginal(const CodOcorrencia:Integer): TACBrTipoOcorrencia; override;
+    function VerificaMotivoRejeicao(const CodMotivo:Integer): String; override;
   end;
 
 implementation
@@ -102,10 +108,6 @@ begin
                       padR(Cedente.Conta,7,'0') + '0';
 
       DigitoCodBarras := CalcularDigitoCodigoBarras(CodigoBarras);
-      DigitoNum := StrToIntDef(DigitoCodBarras,0);
-
-      if (DigitoNum = 0) or (DigitoNum > 9) then
-          DigitoCodBarras:= '1';
    end;
 
    Result:= IntToStr(Numero) + '9'+ DigitoCodBarras + Copy(CodigoBarras,5,39);
@@ -244,6 +246,180 @@ begin
    Result:= UpperCase(Result);
 end;
 
+function TACBrBancoBradesco.LerRetorno400 ( ARetorno: TStringList ) : Boolean;
+var
+  ContLinha: Integer;
+  Titulo   : TACBrTitulo;
+begin
+   Result:= False;
+   ContLinha := 0;
+
+   if StrToInt(copy(ARetorno.Strings[0],77,3)) <> Numero then
+      raise Exception.Create(ACBrStr(ACBrBanco.ACBrBoleto.NomeArqRetorno + 'nao' +
+                             'é um arquivo de retorno do '+ Nome));
+
+   Titulo:=   ACBrBanco.ACBrBoleto.CriarTituloNaLista;
+
+   try
+     for ContLinha := 1 to ARetorno.Count - 2 do
+     begin
+         if Copy(ARetorno[ContLinha],1,1)<> '1' then
+            Continue;
+
+         with Titulo do
+         begin
+            SeuNumero                      := copy(ARetorno.Strings[ContLinha],38,25);
+            NumeroDocumento                := copy(ARetorno.Strings[ContLinha],117,10);
+            OcorrenciaOriginal             := copy(ARetorno.Strings[ContLinha],109,2);
+            DescricaoOcorrenciaOriginal    := VerificaOcorrenciaOriginal(OcorrenciaOriginal);
+            TipoOcorrencia                 := VerificaTipoOcorrenciaOriginal(StrToIntDef(OcorrenciaOriginal,0));
+            MotivoRejeicaoComando          := copy(ARetorno.Strings[ContLinha],319,2);
+            MotivoRejeicaoComando          := IfThen(MotivoRejeicaoComando = '00',
+                                              '',MotivoRejeicaoComando );
+            DescricaoMotivoRejeicaoComando := IfThen(MotivoRejeicaoComando = '00',
+                                              '',VerificaMotivoRejeicao(StrToIntDef(MotivoRejeicaoComando,0)));
+            DataOcorrencia := EncodeDate(strtoint('20'+copy(ARetorno.Strings[ContLinha],115,2)),
+                                         strtoint(Copy(ARetorno.Strings[ContLinha],113,2)),
+                                         strtoint(Copy(ARetorno.Strings[ContLinha],111,2)));
+
+            Vencimento := EncodeDate(strtoint('20'+copy(ARetorno[ContLinha],151,2)),
+                                     strtoint(Copy(ARetorno.Strings[ContLinha],149,2)),
+                                     strtoint(Copy(ARetorno.Strings[ContLinha],147,2)));
+
+            ValorDocumento       := StrToFloatDef(Copy(ARetorno.Strings[ContLinha],153,13),0)/100;
+            ValorIOF             := StrToFloatDef(Copy(ARetorno.Strings[ContLinha],215,13),0)/100;
+            ValorAbatimento      := StrToFloatDef(Copy(ARetorno.Strings[ContLinha],228,13),0)/100;
+            ValorDesconto        := StrToFloatDef(Copy(ARetorno.Strings[ContLinha],241,13),0)/100;
+            ValorMoraJuros       := StrToFloatDef(Copy(ARetorno.Strings[ContLinha],267,13),0)/100;
+            ValorOutrosCreditos  := StrToFloatDef(Copy(ARetorno.Strings[ContLinha],280,13),0)/100;
+            ValorRecebido        := StrToFloatDef(Copy(ARetorno.Strings[ContLinha],254,13),0)/100;
+            NossoNumero          := Copy(ARetorno.Strings[ContLinha],71,11);
+            Carteira             := Copy(ARetorno.Strings[ContLinha],22,3);
+            ValorDespesaCobranca := StrToFloatDef(Copy(ARetorno.Strings[ContLinha],176,13),0)/100;
+            ValorOutrasDespesas  := StrToFloatDef(Copy(ARetorno.Strings[ContLinha],189,13),0)/100;
+
+            if padR(Copy(ARetorno.Strings[ContLinha],296,6),6,'0') <> '000000' then
+               DataCredito:= EncodeDate(strtoint('20'+Copy(ARetorno.Strings[ContLinha],300,2)),
+                                        strtoint(copy(ARetorno.Strings[ContLinha],298,2)),
+                                        strtoint(Copy(ARetorno.Strings[ContLinha],296,2)));
+         end;
+     end;
+     Result:= True;
+   finally
+      Titulo.Free;
+   end;
+end;
+
+function TACBrBancoBradesco.VerificaOcorrenciaOriginal(const CodOcorrencia: String): String;
+begin
+  if trim(CodOcorrencia) = '' then
+  begin
+    Result:='';
+    Exit;
+  end;
+  case StrToInt(CodOcorrencia) of
+    02: Result:='02-Entrada Confirmada' ;
+    03: Result:='03-Entrada Rejeitada' ;
+    06: Result:='06-Liquidação normal' ;
+    09: Result:='09-Baixado Automaticamente via Arquivo' ;
+    10: Result:='10-Baixado conforme instruções da Agência' ;
+    11: Result:='11-Em Ser - Arquivo de Títulos pendentes' ;
+    12: Result:='12-Abatimento Concedido' ;
+    13: Result:='13-Abatimento Cancelado' ;
+    14: Result:='14-Vencimento Alterado' ;
+    15: Result:='15-Liquidação em Cartório' ;
+    17: Result:='17-Liquidação após baixa ou Título não registrado' ;
+    18: Result:='18-Acerto de Depositária' ;
+    19: Result:='19-Confirmação Recebimento Instrução de Protesto' ;
+    20: Result:='20-Confirmação Recebimento Instrução Sustação de Protesto' ;
+    21: Result:='21-Acerto do Controle do Participante' ;
+    23: Result:='22-Entrada do Título em Cartório' ;
+    24: Result:='23-Entrada rejeitada por CEP Irregular' ;
+    27: Result:='27-Baixa Rejeitada' ;
+    28: Result:='28-Débito de tarifas/custas' ;
+    30: Result:='30-Alteração de Outros Dados Rejeitados' ;
+    32: Result:='32-Instrução Rejeitada' ;
+    33: Result:='33-Confirmação Pedido Alteração Outros Dados' ;
+    34: Result:='34-Retirado de Cartório e Manutenção Carteira' ;
+    35: Result:='35-Desagendamento do débito automático' ;
+    68: Result:='68-Acerto dos dados do rateio de Crédito' ;
+    69: Result:='69-Cancelamento dos dados do rateio' ;
+  end;
+end;
+
+function TACBrBancoBradesco.VerificaTipoOcorrenciaOriginal (
+   const CodOcorrencia: Integer ) : TACBrTipoOcorrencia;
+begin
+   case CodOcorrencia of
+      02: Result := toRetornoRegistroConfirmado;
+      03: Result := toRetornoRegistroRecusado;
+      06: Result := toRetornoLiquidado;
+      09: Result := toRetornoBaixado;
+      10: Result := toRetornoBaixado;
+      11: Result := toRetornoTituloEmSer;
+      12: Result := toRetornoAbatimentoConcedido;
+      13: Result := toRetornoAbatimentoCancelado;
+      14: Result := toRetornoVencimentoAlterado;
+      15: Result := toRetornoLiquidadoEmCartorio;
+      16: Result := toRetornoLiquidado;
+      17: Result := toRetornoLiquidadoSemRegistro;
+      18: Result := toRetornoAcertoDepositaria;
+      19: Result := toRetornoRecebimentoInstrucaoProtestar;
+      20: Result := toRetornoRecebimentoInstrucaoSustarProtesto;
+      21: Result := toRetornoDadosAlterados;
+      22: Result := toRetornoRecebimentoInstrucaoAlterarDados;
+      23: Result := toRetornoEncaminhadoACartorio;
+      24: Result := toRetornoRegistroRecusado;
+      27: Result := toRetornoComandoRecusado;
+      28: Result := toRetornoDebitoTarifas;
+      30: Result := toRetornoComandoRecusado;
+      32: Result := toRetornoComandoRecusado;
+      33: Result := toRetornoRecebimentoInstrucaoAlterarDados;
+      34: Result := toRetornoRetiradoDeCartorio;
+      99: Result := toRetornoRegistroRecusado;
+   else
+      Result := toRetornoOutrasOcorrencias;
+   end;
+end;
+
+function TACBrBancoBradesco.VerificaMotivoRejeicao ( const CodMotivo: Integer
+   ) : String;
+begin
+   case CodMotivo of
+      00 : Result := '00-Ocorrencia aceita';
+      04 : Result := '04-Tarifa de protesto';
+      08 : Result := '08-Tarifa de protesto';
+      14 : Result := '14-Título protestado';
+      15 : Result := '15-Título pago com cheque';
+      16 : Result := '16-Título baixado pelo Banco por decurso Prazo';
+      17 : Result := '17-Data de vencimento anterior a data de emissão';
+      20 : Result := '20-Título baixado e transferido para desconto';
+      21 : Result := '21-Espécie do Título inválido';
+      24 : Result := '24-Data da emissão inválida';
+      38 : Result := '38-Prazo para protesto inválido';
+      39 : Result := '39-Pedido para protesto não permitido para título';
+      43 : Result := '43-Prazo para baixa e devolução inválido';
+      45 : Result := '45-Nome do Sacado inválido';
+      46 : Result := '46-Tipo/num. de inscrição do Sacado inválidos';
+      47 : Result := '47-Endereço do Sacado não informado';
+      48 : Result := '48-CEP irregular';
+      50 : Result := '50-CEP referente a Banco correspondente';
+      53 : Result := '53-Nº de inscrição do Sacador/avalista inválidos (CPF/CNPJ)';
+      54 : Result := '54-Sacador/avalista não informado';
+      63 : Result := '63-Titulo já cadastrado';
+      67 : Result := '67-Débito automático agendado';
+      68 : Result := '68-Débito não agendado - erro nos dados de remessa';
+      69 : Result := '69-Débito não agendado - Sacado não consta no cadastro de autorizante';
+      70 : Result := '70-Débito não agendado - Cedente não autorizado pelo Sacado';
+      71 : Result := '71-Débito não agendado - Cedente não participa da modalidade de débito automático';
+      72 : Result := '72-Débito não agendado - Código de moeda diferente de R$';
+      73 : Result := '73-Débito não agendado - Data de vencimento inválida';
+      75 : Result := '75-Débito não agendado - Tipo do número de inscrição do sacado debitado inválido';
+      86 : Result := '86-Seu número do documento inválido'
+   else
+      Result:= IntToStr(CodMotivo)+'-Outros motivos';
+   end;
+end;
 
 end.
 

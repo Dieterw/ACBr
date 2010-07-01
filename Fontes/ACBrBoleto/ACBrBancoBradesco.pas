@@ -303,8 +303,8 @@ begin
             DataCredito:= EncodeDate(StrToIntDef('20'+Copy(ARetorno.Strings[ContLinha],300,2),0),
                                      StrToIntDef(copy(ARetorno.Strings[ContLinha],298,2),0),
                                      StrToIntDef(Copy(ARetorno.Strings[ContLinha],296,2)),0);
-         end;
-     end;
+      end;
+   end;
 end;
 
 function TACBrBancoBradesco.VerificaOcorrenciaOriginal(const CodOcorrencia: String): String;

@@ -949,7 +949,11 @@ begin
                     Chave := RespVS.Params.Names[I] ;
                     if (Chave <> '') then
                     begin
-                       Valor := RespVS.Params.ValueFromIndex[I];
+                       {$IFDEF COMPILER7_UP}
+                        Valor := RespVS.Params.ValueFromIndex[I];
+                       {$ELSE}
+                        Valor := RespVS.Params.Values[Chave];
+                       {$ENDIF}
                        TACBrTEFDRespVeSPague( Self.Resp ).GravaInformacao( Chave, Valor ) ;
                     end ;
                  end ;

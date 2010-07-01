@@ -688,7 +688,8 @@ type
 
 implementation
 
-Uses ACBrUtil, ACBrTEFD, dateutils, StrUtils, Math, ACBrTEFDCliSiTef;
+Uses ACBrUtil, ACBrTEFD, dateutils, StrUtils, Math, ACBrTEFDCliSiTef,
+     ACBrTEFDVeSPague ;
 
 { TACBrTEFDLinhaInformacao }
 
@@ -801,7 +802,11 @@ begin
   if AValue = 0 then
      fInformacao := ''
   else
+   begin
      fInformacao := IntToStr(Trunc(SimpleRoundTo( AValue * 100 ,0)));
+     if Length(fInformacao) < 3 then
+        fInformacao := PadR(fInformacao,3,'0') ;
+   end ;
 end;
 
 procedure TACBrTEFDLinhaInformacao.SetAsInteger(const AValue : Integer);
@@ -872,7 +877,7 @@ begin
    if fLinha <> '' then
     begin
       P := pos(' = ',fLinha) ;
-      Result := copy(fLinha, P+3, Length(fLinha) ) ;
+      Result := copy(fLinha, 1, P-1 ) ;
     end
    else if fIdentificacao <> 0 then
       Result := IntToStrZero(fIdentificacao,3)+'-'+IntToStrZero(fSequencia,3) ;
@@ -1553,6 +1558,18 @@ begin
   fpInicializado := True ;
   GravaLog( Name +' Inicializado' );
 
+  { Verificando se o arquivo de Resposta é invalido ou seja, gerado quando
+    clica-se em 9 - CANCELAR sem selecionar nenhuma Bandeira }
+  if FileExists( ArqResp ) then
+  begin
+     Resp.LeArquivo( ArqResp );
+
+     if UpperCase(Resp.Conteudo.LeInformacao(9,0).AsString) = 'FF' then
+        ApagaEVerifica( ArqResp );
+
+     Resp.Clear;
+  end ;
+
   CancelarTransacoesPendentesClass ;
 
   VerificaAtivo;
@@ -2094,9 +2111,9 @@ begin
                                 (Resp.ValorTotal  = ValorTotal) ;
               end;
             end
-           else if RespostasCanceladas[I] is TACBrTEFDRespCliSiTef then
+           else
             begin
-              with TACBrTEFDRespCliSiTef( RespostasCanceladas[I] ) do
+              with TACBrTEFDResp( RespostasCanceladas[I] ) do
               begin
                  JaCancelado := (Resp.DocumentoVinculado = DocumentoVinculado) ;
               end;
@@ -2108,10 +2125,13 @@ begin
         if not JaCancelado then
          begin
            { Criando cópia da Resposta Atual }
-           if Tipo = gpCliSiTef then
-              RespostaCancela := TACBrTEFDRespCliSiTef.Create
+           Case Tipo of
+             gpCliSiTef : RespostaCancela := TACBrTEFDRespCliSiTef.Create;
+             gpVeSPague : RespostaCancela := TACBrTEFDRespVeSPague.Create;
            else
-              RespostaCancela := TACBrTEFDRespTXT.Create;
+             RespostaCancela := TACBrTEFDRespTXT.Create;
+           end ;
+
            RespostaCancela.Assign( Resp );
 
            { Enviando NCN ou CNC }

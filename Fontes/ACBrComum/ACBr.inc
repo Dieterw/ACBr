@@ -347,8 +347,8 @@
   {$MODE DELPHI}
   {$DEFINE VCL}
   {$DEFINE UNICODE}     // Lazarus 0.9.26 usa UnicodeString como default para String
-  {$DEFINE DELPHI6_UP}
-  {$DEFINE COMPILER6_UP}
+  {$DEFINE DELPHI7}
+  {$DEFINE COMPILER7}
   {$ASMMODE Intel}
   {$UNDEF BORLAND}
 {$ENDIF}

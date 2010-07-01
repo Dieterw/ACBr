@@ -159,7 +159,8 @@ type
      procedure SetNumVias(const AValue : Integer); override;
 
      function FazerRequisicao(Transacao : String; AHeader : AnsiString = '' ;
-       Valor : Double = 0 ; Documento : AnsiString = '') : Integer ;
+       Valor : Double = 0 ; Documento : AnsiString = '';
+        ListaParams : AnsiString = '') : Integer ;
      Function ContinuarRequisicao( ImprimirComprovantes : Boolean = True) : Integer ;
 
      Function ProcessarRespostaPagamento( const IndiceFPG_ECF : String;
@@ -563,6 +564,8 @@ begin
      else if Chave = 'transacao_vencimento' then
         fpDataVencimento := VSDateTimeToDateTime( Valor )
 
+     else if Linha.Identificacao = 27 then
+       fpFinalizacao := Valor
      else if Linha.Identificacao = 899 then  // Tipos de Uso Interno do ACBrTEFD
       begin
         case Linha.Sequencia of
@@ -576,6 +579,8 @@ begin
         end;
      end;
    end ;
+
+   fpDocumentoVinculado := IntToStr(fpID);   // CNF, NCN recebem o DocumentoVinculado como parametro
 
    if (ParcVenctoStr <> '') and (ParcValorStr <> '') then
    begin
@@ -773,27 +778,8 @@ var
 begin
   VerificarTransacaoPagamento( Valor );
 
-(* TODO: Passar dados do Cheque para Lista de Respostas
-  Respostas.Values['501'] := ifthen(TipoPessoa = 'J','1','0');
+ // Até o momento não existe TAGs de transacao_ para informar os dados do CHEQUE
 
-  if DocumentoPessoa <> '' then
-     Respostas.Values['502'] := OnlyNumber(Trim(DocumentoPessoa));
-
-  if DataCheque <> 0  then
-     Respostas.Values['506'] := FormatDateTime('DDMMYYYY',DataCheque) ;
-
-  if CMC7 <> '' then
-     Respostas.Values['517'] := '1:'+CMC7
-  else
-     Respostas.Values['517'] := '0:'+FormataCampo(Compensacao,3)+
-                                     FormataCampo(Banco,3)+
-                                     FormataCampo(Agencia,4)+
-                                     FormataCampo(AgenciaDC,1)+
-                                     FormataCampo(Conta,10)+
-                                     FormataCampo(ContaDC,1)+
-                                     FormataCampo(Cheque,6)+
-                                     FormataCampo(ChequeDC,1) ;
-*)
   Retorno := FazerRequisicao( fTransacaoCHQ, 'CHQ', Valor, DocumentoVinculado ) ;
 
   if Retorno = 0 then
@@ -810,22 +796,25 @@ end;
 Procedure TACBrTEFDVeSPague.CNF(Rede, NSU, Finalizacao : String;
    DocumentoVinculado : String) ;
 begin
-//  FinalizarTransacao( True, DocumentoVinculado );
+  ReqVS.Servico := 'executar' ;
+  ReqVS.AddParamString( 'transacao', Finalizacao ) ;
+  ReqVS.Retorno    := 0 ;
+  ReqVS.Sequencial := StrToInt(DocumentoVinculado);
+
+  TransmiteCmd;
 end;
 
 Function TACBrTEFDVeSPague.CNC(Rede, NSU : String;
    DataHoraTransacao : TDateTime; Valor : Double) : Boolean;
 var
    Retorno : Integer;
+   ListaParams : AnsiString ;
 begin
-  (* TODO: Transferiri Dados da transação para Respostas
-  Respostas.Values['146'] := FormatFloat('0.00',Valor);
-  Respostas.Values['147'] := FormatFloat('0.00',Valor);
-  Respostas.Values['515'] := FormatDateTime('DDMMYYYY',DataHoraTransacao) ;
-  Respostas.Values['516'] := NSU ;
-  *)
+  ListaParams := '' ;
+  if NSU <> '' then
+     ListaParams := 'transacao_nsu="'+Trim(NSU)+'"';
 
-  Retorno := FazerRequisicao( fTransacaoCNC, 'CNC' ) ;
+  Retorno := FazerRequisicao( fTransacaoCNC, 'CNC', Valor, '', ListaParams  ) ;
 
   if Retorno = 0 then
      Retorno := ContinuarRequisicao( True ) ;  { True = Imprimir Comprovantes agora }
@@ -833,7 +822,7 @@ begin
   Result := ( Retorno = 1 ) ;
 
   if not Result then
-     AvaliaErro( Retorno );
+     AvaliaErro( Retorno ) ;
 
   if Retorno in [0,1,9] then
      ServicoFinalizar;
@@ -842,6 +831,12 @@ end;
 Procedure TACBrTEFDVeSPague.NCN(Rede, NSU, Finalizacao : String;
    Valor : Double; DocumentoVinculado : String) ;
 begin
+  ReqVS.Servico := 'executar' ;
+  ReqVS.AddParamString( 'transacao', Finalizacao ) ;
+  ReqVS.Retorno    := 9 ;
+  ReqVS.Sequencial := StrToInt(DocumentoVinculado);
+
+  TransmiteCmd;
 end;
 
 procedure TACBrTEFDVeSPague.ServicoIniciar ;
@@ -861,7 +856,8 @@ begin
 end ;
 
 Function TACBrTEFDVeSPague.FazerRequisicao( Transacao : String;
-   AHeader : AnsiString = ''; Valor : Double = 0; Documento : AnsiString = '') : Integer ;
+   AHeader : AnsiString = ''; Valor : Double = 0; Documento : AnsiString = '';
+   ListaParams : AnsiString = '') : Integer ;
 begin
    if fpAguardandoResposta then
       raise Exception.Create( ACBrStr( 'Requisição anterior não concluida' ) ) ;
@@ -873,8 +869,16 @@ begin
    ReqVS.Servico := 'executar' ;
    ReqVS.AddParamString( 'transacao', Transacao ) ;
 
+   if Valor > 0 then
+      ReqVS.AddParamDouble('transacao_valor', Valor);
+
+   // V&SPague não coleta o Documento
+
    if TransacaoOpcao <> '' then
       ReqVS.AddParamString( 'transacao_opcao', TransacaoOpcao ) ;
+
+   if ListaParams <> '' then
+      ReqVS.Params.Add(ListaParams);
 
    TransmiteCmd ;
 
@@ -886,15 +890,16 @@ begin
 
    with TACBrTEFDRespVeSPague( Resp ) do
    begin
-     fpIDSeq := fpIDSeq + 1 ;
      if Documento = '' then
         Documento := IntToStr(fpIDSeq) ;
 
      Conteudo.GravaInformacao(899,100, AHeader ) ;
-     Conteudo.GravaInformacao(899,101, IntToStr(fpIDSeq) ) ;
+     Conteudo.GravaInformacao(899,101, IntToStr(ReqVS.Sequencial) ) ;
      Conteudo.GravaInformacao(899,102, Documento ) ;
      Conteudo.GravaInformacao(899,103, IntToStr(Trunc(SimpleRoundTo( Valor * 100 ,0))) );
 
+     // Grava valor de "Transacao" em 27(Finalizacao) para usar no CNF, NCN
+     Conteudo.GravaInformacao(27,0, Transacao);
      Resp.TipoGP := fpTipo;
    end;
 end;
@@ -940,14 +945,14 @@ begin
               // Se Retorno = 0, o V&SPague retornou os dados do Comprovante //
               if Result = 0 then
               begin
-                 // modifica o numero da IDSeq para o Valor retornado
+                 // modifica o numero da Resp.ID para o Valor retornado
                  Self.Resp.Conteudo.GravaInformacao(899,101, IntToStr(RespVS.Sequencial) ) ;
 
                  // Salvando dados do comprovante em ACBrTEFD.Resp //
                  For I := 0 to RespVS.Params.Count-1 do
                  begin
                     Chave := RespVS.Params.Names[I] ;
-                    if (Chave <> '') then
+                    if (Chave <> '') and (pos(Chave, 'retorno,sequencial,servico') = 0) then
                     begin
                        {$IFDEF COMPILER7_UP}
                         Valor := RespVS.Params.ValueFromIndex[I];
@@ -968,6 +973,7 @@ begin
            end ;
         until Result in [1,9] ;
      finally
+
         if GerencialAberto then
         try
            ComandarECF( opeFechaGerencial );
@@ -978,15 +984,15 @@ begin
         if (ArqBackUp <> '') and FileExists( ArqBackUp ) then
            SysUtils.DeleteFile( ArqBackUp );
 
+        { Transfere valore de "Conteudo" para as propriedades }
+        TACBrTEFDRespVeSPague( Self.Resp ).ConteudoToProperty ;
+
         if HouveImpressao then
         begin
-           // FinalizarTransacao( ImpressaoOk, Resp.DocumentoVinculado );
+           // CNF ;
         end ;
 
         BloquearMouseTeclado( False );
-
-        { Transfere valore de "Conteudo" para as propriedades }
-        TACBrTEFDRespVeSPague( Self.Resp ).ConteudoToProperty ;
 
         fpAguardandoResposta := False ;
      end ;
@@ -1283,25 +1289,5 @@ begin
   end;
 end;
 
-
 end.
-
-Function TACBrTEFDVeSPague.ContinuarRequisicao( Finaliza : Boolean ) : Boolean ;
-begin
-  with TACBrTEFD(Owner) do
-  begin
-    BloquearMouseTeclado(True);
-    try
-      ProcessarTransacao( Finaliza ) ;  // Se True = Imprime os comprovantes agora
-
-      Result := ( RespVS.Retorno in [0,1] ) ;
-
-      if Finaliza and (RespVS.Retorno in [0,1,9]) then
-         ServicoFinalizar ;
-    finally
-      BloquearMouseTeclado(False);
-    end ;
-  end ;
-end ;
-
 

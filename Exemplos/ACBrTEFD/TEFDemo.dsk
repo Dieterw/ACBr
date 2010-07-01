@@ -11,20 +11,20 @@ File_8=SourceModule,'C:\Pascal\Comp\ACBr\branches\ACBrNovo\Fontes\ACBrTEFD\ACBrT
 File_9=SourceModule,'C:\Pascal\Comp\ACBr\branches\ACBrNovo\Fontes\ACBrTEFD\ACBrTEFDFoxWin.pas',0,1,25,24,81,0,0
 
 [Modules]
-Module0=C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit1.pas
-Module1=C:\Pascal\Comp\ACBr\trunk\Fontes\ACBrTEFD\ACBrTEFDVeSPague.pas
+Module0=C:\Pascal\Comp\ACBr\trunk\Fontes\ACBrTEFD\ACBrTEFDVeSPague.pas
+Module1=C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit1.pas
 Module2=C:\Pascal\Comp\ACBr\trunk\Fontes\ACBrTEFD\ACBrTEFDCliSiTef.pas
 Count=3
 EditWindowCount=1
 
-[C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit1.pas]
-ModuleType=SourceModule
-FormState=1
-FormOnTop=0
-
 [C:\Pascal\Comp\ACBr\trunk\Fontes\ACBrTEFD\ACBrTEFDVeSPague.pas]
 ModuleType=SourceModule
 FormState=0
+FormOnTop=0
+
+[C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit1.pas]
+ModuleType=SourceModule
+FormState=1
 FormOnTop=0
 
 [C:\Pascal\Comp\ACBr\trunk\Fontes\ACBrTEFD\ACBrTEFDCliSiTef.pas]
@@ -42,7 +42,7 @@ FormOnTop=0
 
 [EditWindow0]
 ViewCount=3
-CurrentView=0
+CurrentView=2
 View0=0
 View1=1
 View2=2
@@ -70,8 +70,8 @@ BottomPanelData=0000040000000000630400000000000002550000000000000001000000000000
 [View0]
 Module=C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit1.pas
 CursorX=1
-CursorY=1100
-TopLine=1073
+CursorY=1157
+TopLine=1135
 LeftCol=1
 
 [View1]
@@ -83,9 +83,9 @@ LeftCol=1
 
 [View2]
 Module=C:\Pascal\Comp\ACBr\trunk\Fontes\ACBrTEFD\ACBrTEFDVeSPague.pas
-CursorX=55
-CursorY=122
-TopLine=106
+CursorX=86
+CursorY=185
+TopLine=169
 LeftCol=1
 
 [Watches]

@@ -933,11 +933,14 @@ begin
               // Se Retorno = 0, o V&SPague retornou os dados do Comprovante //
               if Result = 0 then
               begin
+                 // modifica o numero da IDSeq para o Valor retornado
+                 Self.Resp.Conteudo.GravaInformacao(899,101, IntToStr(RespVS.Sequencial) ) ;
+
                  // Salvando dados do comprovante em ACBrTEFD.Resp //
                  For I := 0 to RespVS.Params.Count-1 do
                  begin
                     Chave := RespVS.Params.Names[I] ;
-                    if (Chave <> '') and (pos(Chave,'sequencial,retorno,servico') = 0) then
+                    if (Chave <> '') then
                     begin
                        Valor := RespVS.Params.ValueFromIndex[I];
                        TACBrTEFDRespVeSPague( Self.Resp ).GravaInformacao( Chave, Valor ) ;

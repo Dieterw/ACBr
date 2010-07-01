@@ -71,7 +71,6 @@ type
     function GetRetorno : Integer ;
     function GetSequencial : Integer ;
     function GetServico : AnsiString ;
-    function DecodificaString(const AString : AnsiString) : AnsiString ;
     procedure SetFrameEnvio(const AValue : AnsiString) ;
     procedure SetIsColeta(const AValue : Boolean) ;
     procedure SetRetorno(const AValue : Integer) ;
@@ -221,8 +220,10 @@ type
         write fOnObtemCampo ;
    end;
 
+function DecodificaString(const AString : AnsiString) : AnsiString ;
 function DateTimeToVSDateTime( ADateTime : TDateTime; Tipo : AnsiChar = 'D') : String ;
 function VSDateTimeToDateTime(const AVSDateTime : String) : TDateTime ;
+procedure VSStringToList( const AString : AnsiString; const AList : TStrings) ;
 
 implementation
 
@@ -292,6 +293,44 @@ begin
   end ;
 end ;
 
+procedure VSStringToList( const AString : AnsiString; const AList : TStrings) ;
+var
+  I : Integer ;
+  Buffer : AnsiString ;
+begin
+  Buffer := AString;
+  Buffer := StringReplace( Buffer, '";"', '"' + sLineBreak + '"', [rfReplaceAll]) ;
+
+  AList.Clear ;
+  AList.Text := Buffer ;
+
+  for I := 0 to AList.Count - 1 do
+     AList[I] := ACBrStr( DecodificaString(AList[I]) ) ;
+end ;
+
+
+function DecodificaString(const AString : AnsiString) : AnsiString ;
+var
+  Inicio, Tamanho : Integer ;
+begin
+  Result  := Trim(AString) ;
+  Inicio  := 1 ;
+  Tamanho := Length(Result) ;
+  if LeftStr(Result,1) = '"' then
+  begin
+     Inicio := 2;
+     Dec( Tamanho ) ;
+  end ;
+
+  if RightStr(Result,1) = '"' then
+     Dec( Tamanho )  ;
+
+  Result := Copy(Result, Inicio, Tamanho);
+  Result := StringToBinaryString(Result);
+end ;
+
+{ TACBrTEFDVeSPagueCmd }
+
 constructor TACBrTEFDVeSPagueCmd.Create ;
 begin
   inherited ;
@@ -315,18 +354,8 @@ end ;
 
 procedure TACBrTEFDVeSPagueCmd.GetParamStrings(const ParamName : String ;
   const AStringList : TStrings) ;
-Var
-  Buffer : AnsiString ;
-  I      : Integer ;
 begin
-  Buffer := fsParams.Values[ParamName] ;
-  Buffer := StringReplace( Buffer, '";"', '"'+sLineBreak+'"', [rfReplaceAll]);
-
-  AStringList.Clear;
-  AStringList.Text := Buffer ;
-
-  For I := 0 to AStringList.Count-1 do
-     AStringList[I] := ACBrStr( DecodificaString(AStringList[I]) );
+  VSStringToList( fsParams.Values[ParamName], AStringList) ;
 end ;
 
 function TACBrTEFDVeSPagueCmd.GetFrameEnvio : AnsiString ;
@@ -375,26 +404,6 @@ function TACBrTEFDVeSPagueCmd.GetServico : AnsiString ;
 begin
   Result := GetParamString('servico')
 end;
-
-function TACBrTEFDVeSPagueCmd.DecodificaString(const AString : AnsiString) : AnsiString ;
-var
-  Inicio, Tamanho : Integer ;
-begin
-  Result  := Trim(AString) ;
-  Inicio  := 1 ;
-  Tamanho := Length(Result) ;
-  if LeftStr(Result,1) = '"' then
-  begin
-     Inicio := 2;
-     Dec( Tamanho ) ;
-  end ;
-
-  if RightStr(Result,1) = '"' then
-     Dec( Tamanho )  ;
-
-  Result := Copy(Result, Inicio, Tamanho);
-  Result := StringToBinaryString(Result);
-end ;
 
 function TACBrTEFDVeSPagueCmd.GetParamString(const ParamName : String) : AnsiString ;
 begin
@@ -492,11 +501,15 @@ end;
 procedure TACBrTEFDRespVeSPague.ConteudoToProperty;
 var
   Linha : TACBrTEFDLinha ;
-  Chave : AnsiString;
+  Chave, ParcValorStr, ParcVenctoStr : AnsiString;
   Valor : String ;
   I : Integer ;
+  ParcValorList, ParcVenctoList : TStringList ;
+  Parc : TACBrTEFDRespParcela ;
 begin
    fpValorTotal := 0 ;
+   ParcVenctoStr:= '';
+   ParcValorStr := '';
    fpImagemComprovante1aVia.Clear;
    fpImagemComprovante2aVia.Clear;
 
@@ -518,7 +531,7 @@ begin
      else if Chave = 'transacao_comprovante_2via' then
         fpImagemComprovante2aVia.Text := StringToBinaryString( Linha.Informacao.AsAnsiString )
      else if Chave = 'transacao_comprovante_resumido' then
-//      Ainda Não mepeado
+        // Ainda Não mepeado
      else if Chave = 'transacao_data' then
         fpDataHoraTransacaoComprovante := VSDateTimeToDateTime( Valor )
      else if Chave = 'transacao_financiado' then
@@ -526,76 +539,70 @@ begin
      else if Chave = 'transacao_nsu' then
         fpNSU := Valor
      else if Chave = 'transacao_pagamento' then
-// TODO:        fpTipoTransacao := Valor
+        fpModalidadePagto := Valor
      else if Chave = 'transacao_parcela' then
         fpQtdParcelas := Linha.Informacao.AsInteger
+     else if Chave = 'transacao_parcela_valor' then
+        ParcValorStr := Valor
+     else if Chave = 'transacao_parcela_vencimento' then
+        ParcVenctoStr := Valor
+     else if Chave = 'transacao_produto' then
+        fpModalidadePagtoDescrita := Valor
      else if Chave = 'transacao_rede' then
-        fpRede := Valor ;
-   end ;
-(*
-       // TODO: Mapear mais propriedades do VeSPague //
-       100 :fpModalidadePagto              := LinStr;
-       101 :fpModalidadePagtoExtenso       := LinStr;
-       102 :fpModalidadePagtoDescrita      := LinStr;
-       105 :
-         begin
-           fpDataHoraTransacaoComprovante  := Linha.Informacao.AsTimeStampSQL;
-           fpDataHoraTransacaoHost         := fpDataHoraTransacaoComprovante ;
-         end;
-       121 : fpImagemComprovante1aVia.Text := StringReplace( StringToBinaryString( Linha.Informacao.AsAnsiString ), #10, sLineBreak, [rfReplaceAll] );
-       122 : fpImagemComprovante2aVia.Text := StringReplace( StringToBinaryString( Linha.Informacao.AsAnsiString ), #10, sLineBreak, [rfReplaceAll] );
-       130 :
-         begin
-           fpSaque      := Linha.Informacao.AsFloat ;
-           fpValorTotal := fpValorTotal + fpSaque ;
-         end;
-       131 : fpInstituicao                 := LinStr;
-       133 : fpCodigoAutorizacaoTransacao  := Linha.Informacao.AsInteger;
-       134 : fpNSU                         := LinStr;
-       156 : fpRede                        := LinStr;
-       501 : fpTipoPessoa                  := AnsiChar(IfThen(Linha.Informacao.AsInteger = 0,'J','F')[1]);
-       502 : fpDocumentoPessoa             := LinStr ;
-       505 : fpQtdParcelas                 := Linha.Informacao.AsInteger ;
-       506 : fpDataPreDatado               := Linha.Informacao.AsDate;
-       
-       //incluido por Evandro
-       627 : fpAgencia                     := LinStr;
-       628 : fpAgenciaDC                   := LinStr;
-       120 : fpAutenticacao                := LinStr;
-       626 : fpBanco                       := LinStr;
-       613 :
-        begin
-          fpCheque                         := copy(LinStr, 21, 6);
-          fpCMC7                           := LinStr;
-        end;
-       629 : fpConta                       := LinStr;
-       630 : fpContaDC                     := LinStr;
-       527 : fpDataVencimento              := Linha.Informacao.AsDate ; {Data Vencimento}
-       //
+        fpRede := Valor
+     else if Chave = 'transacao_tipo_cartao' then
+        fpTipoTransacao := ifthen(LowerCase(Valor)='debito', 20, 10 )
+     else if Chave = 'transacao_valor' then
+        fpValorTotal := Linha.Informacao.AsFloat
+     else if Chave = 'transacao_valor_saque' then
+        fpSaque := Linha.Informacao.AsFloat
+     else if Chave = 'transacao_valor_taxa_embarque' then
+        // Ainda Não mepeado
+     else if Chave = 'transacao_valor_taxa_servico' then
+        // Ainda Não mepeado
+     else if Chave = 'transacao_vencimento' then
+        fpDataVencimento := VSDateTimeToDateTime( Valor )
 
-       899 :  // Tipos de Uso Interno do ACBrTEFD
-        begin
-          case Linha.Sequencia of
-              1 : fpCNFEnviado         := (UpperCase( Linha.Informacao.AsString ) = 'S' );
-              2 : fpIndiceFPG_ECF      := Linha.Informacao.AsString ;
-              3 : fpOrdemPagamento     := Linha.Informacao.AsInteger ;
-            100 : fpHeader             := LinStr;
-            101 : fpID                 := Linha.Informacao.AsInteger;
-            102 : fpDocumentoVinculado := LinStr;
-            103 : fpValorTotal         := fpValorTotal + Linha.Informacao.AsFloat;
-          end;
+     else if Linha.Identificacao = 899 then  // Tipos de Uso Interno do ACBrTEFD
+      begin
+        case Linha.Sequencia of
+            1 : fpCNFEnviado         := (UpperCase( Linha.Informacao.AsString ) = 'S' );
+            2 : fpIndiceFPG_ECF      := Linha.Informacao.AsString ;
+            3 : fpOrdemPagamento     := Linha.Informacao.AsInteger ;
+          100 : fpHeader             := Linha.Informacao.AsString ;
+          101 : fpID                 := Linha.Informacao.AsInteger;
+          102 : fpDocumentoVinculado := Linha.Informacao.AsString ;
+          103 : fpValorTotal         := fpValorTotal + Linha.Informacao.AsFloat;
         end;
      end;
+   end ;
 
-   fpParcelas.Clear;
-   for I := 1 to fpQtdParcelas do
+   if (ParcVenctoStr <> '') and (ParcValorStr <> '') then
    begin
-      Parc := TACBrTEFDRespParcela.create;
-      Parc.Vencimento := LeInformacao( 141, I).AsDate ;
-      Parc.Valor      := LeInformacao( 142, I).AsFloat ;
+     ParcValorList  := TStringList.Create;
+     ParcVenctoList := TStringList.Create;
+     try
+       fpParcelas.Clear;
 
-      fpParcelas.Add(Parc);
-   end; *)
+       VSStringToList( ParcValorStr, ParcValorList ) ;
+       VSStringToList( ParcVenctoStr,ParcVenctoList ) ;
+
+       if ParcValorList.Count = ParcVenctoList.Count then
+       begin
+         for I := 1 to ParcValorList.Count-1 do
+         begin
+            Parc := TACBrTEFDRespParcela.create;
+            Parc.Vencimento := VSDateTimeToDateTime( ParcVenctoList[I] );
+            Parc.Valor      := StringToFloatDef( ParcValorList[I], 0) ;
+
+            fpParcelas.Add(Parc);
+         end;
+       end ;
+     finally
+        ParcValorList.Free ;
+        ParcVenctoList.Free ;
+     end ;
+   end ;
 end;
 
 procedure TACBrTEFDRespVeSPague.GravaInformacao( const PalavraChave,

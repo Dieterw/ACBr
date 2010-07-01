@@ -717,7 +717,7 @@ Var
   Info : String ;
 begin
   Info := StringReplace( Trim(fInformacao), ',','',[rfReplaceAll] );
-  Info := StringReplace( Info       , '.','',[rfReplaceAll] );
+  Info := StringReplace( Info             , '.','',[rfReplaceAll] );
 
   Result := StrToIntDef( Info ,0) / 100 ;
 end;

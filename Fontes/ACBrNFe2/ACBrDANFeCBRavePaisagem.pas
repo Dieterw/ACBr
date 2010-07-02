@@ -598,7 +598,7 @@ begin
      with Dest.EnderDest do
       begin
        vEnd:=XLgr;
-       if (Trim(Nro)>'') and (Nro<>'SN') and (Pos(Nro,vEnd)=0) then
+       if (Trim(Nro)>'') and (Nro<>'SN') then
           vEnd:=vEnd+' '+Nro;
        if Trim(XCpl)>'' then
           vEnd:=vEnd+', '+XCpl;
@@ -643,7 +643,7 @@ begin
          Box([fstop],PosX,PosY,50,aHeigthPadrao+1,'CNPJ/CPF',NotaUtil.FormatarCPF(CNPJCPF),taCenter);
 
        vEnd:=XLgr;
-       if (Trim(Nro)>'') and (Nro<>'SN') and (Pos(Nro,vEnd)=0) then
+       if (Trim(Nro)>'') and (Nro<>'SN') then
           vEnd:=vEnd+' '+Nro;
        if Trim(XCpl)>'' then
           vEnd:=vEnd+', '+XCpl;
@@ -678,7 +678,7 @@ begin
          Box([fstop],PosX,PosY,50,aHeigthPadrao+1,'CNPJ/CPF',NotaUtil.FormatarCPF(CNPJCPF),taCenter);
 
        vEnd:=XLgr;
-       if (Trim(Nro)>'') and (Nro<>'SN') and (Pos(Nro,vEnd)=0) then
+       if (Trim(Nro)>'') and (Nro<>'SN') then
           vEnd:=vEnd+' '+Nro;
        if Trim(XCpl)>'' then
           vEnd:=vEnd+', '+XCpl;

@@ -170,9 +170,6 @@ type
     class function CollateBr(Str: String): String;
     class function UpperCase2(Str: String): String;
     class function UFtoCUF(UF : String): Integer;
-
-  published
-
   end;
 
 implementation
@@ -524,7 +521,11 @@ begin
   Result := '' ;
   For A := 1 to length(AValue) do
   begin
-     if (AValue[A] in ['0'..'9']) then
+    {$IFDEF CompilerVersion >= 20}
+    if CharInSet(AValue[A], ['0'..'9']) then
+    {$ELSE}
+    if (AValue[A] in ['0'..'9']) then
+    {$ENDIF}
        Result := Result + AValue[A];
   end ;
 end;

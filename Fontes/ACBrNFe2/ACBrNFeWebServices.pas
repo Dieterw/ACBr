@@ -167,7 +167,7 @@ type
   public
     function Executar: Boolean; override;
     constructor Create(AOwner : TComponent; ANotasFiscais : TNotasFiscais);reintroduce;
-    destructor destroy; override;
+    destructor Destroy; override;
     property TpAmb: TpcnTipoAmbiente read FTpAmb;
     property verAplic: String read FverAplic;
     property cStat: Integer read FcStat;
@@ -195,7 +195,7 @@ type
   public
     function Executar: Boolean; override;
     constructor Create(AOwner : TComponent);reintroduce;
-    destructor destroy; override;
+    destructor Destroy; override;
     property TpAmb: TpcnTipoAmbiente read FTpAmb;
     property verAplic: String read FverAplic;
     property cStat: Integer read FcStat;
@@ -316,7 +316,7 @@ type
     procedure SetIE(const Value: String);
   public
     function Executar: Boolean;override;
-    destructor destroy; override;
+    destructor Destroy; override;
     property verAplic: String read FverAplic;
     property cStat: Integer read FcStat;
     property xMotivo: String read FxMotivo;
@@ -396,7 +396,7 @@ type
     function Envia(ALote: Integer): Boolean;
     procedure Cancela(AJustificativa: String);
     procedure Inutiliza(CNPJ, AJustificativa: String; Ano, Modelo, Serie, NumeroInicial, NumeroFinal : Integer);
-  published
+  //published
     property ACBrNFe: TComponent read FACBrNFe write FACBrNFe;
     property StatusServico: TNFeStatusServico read FStatusServico write FStatusServico;
     property Enviar: TNFeRecepcao read FEnviar write FEnviar;
@@ -1844,8 +1844,11 @@ begin
      ReqResp.UseUTF8InHeader := True;
      ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/nfe/wsdl/NfeCancelamento2';
   {$ENDIF}
+
+  NFeRetorno := TRetCancNFe.Create;
   try
     TACBrNFe( FACBrNFe ).SetStatus( stNfeCancelamento );
+
     if FConfiguracoes.Geral.Salvar then
       FConfiguracoes.Geral.Save(FNFeChave+'-ped-can.xml', FDadosMsg);
 
@@ -1866,12 +1869,11 @@ begin
        ReqResp.Execute(Acao.Text, Stream);
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(Stream, 0);
-       FRetornoWS := NotaUtil.ParseText(StrStream.DataString, True);       
+       FRetornoWS := NotaUtil.ParseText(StrStream.DataString, True);
        FRetWS := NotaUtil.SeparaDados( FRetornoWS,'nfeCancelamentoNF2Result');
        StrStream.Free;
     {$ENDIF}
 
-    NFeRetorno := TRetCancNFe.Create;
     NFeRetorno.Leitor.Arquivo := FRetWS;
     NFeRetorno.LerXml;
 

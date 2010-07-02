@@ -582,7 +582,7 @@ begin
      with Dest.EnderDest do
       begin
        vEnd:=XLgr;
-       if (Trim(Nro)>'') and (Nro<>'SN') and (Pos(Nro,vEnd)=0) then
+       if (Trim(Nro)>'') and (Nro<>'SN') then
           vEnd:=vEnd+' '+Nro;
        if Trim(XCpl)>'' then
           vEnd:=vEnd+', '+XCpl;
@@ -631,7 +631,7 @@ begin
        FontSizeText:=wtemp_FontSizeText;
 
        vEnd:=XLgr;
-       if (Trim(Nro)>'') and (Nro<>'SN') and (Pos(Nro,vEnd)=0) then
+       if (Trim(Nro)>'') and (Nro<>'SN') then
           vEnd:=vEnd+' '+Nro;
        if Trim(XCpl)>'' then
           vEnd:=vEnd+', '+XCpl;
@@ -670,7 +670,7 @@ begin
        FontSizeText:=wtemp_FontSizeText;
 
        vEnd:=XLgr;
-       if (Trim(Nro)>'') and (Nro<>'SN') and (Pos(Nro,vEnd)=0) then
+       if (Trim(Nro)>'') and (Nro<>'SN') then
           vEnd:=vEnd+' '+Nro;
        if Trim(XCpl)>'' then
           vEnd:=vEnd+', '+XCpl;

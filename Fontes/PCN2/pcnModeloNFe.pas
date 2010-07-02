@@ -432,12 +432,12 @@ begin
     end;
     if NFe.Det[i].Imposto.ICMS.CST = cst30 then
     begin
-      NFe.Det[i].Imposto.ICMS.vICMS := 0;                          // N17 - Valor do ICMS
-      NFe.Det[i].Imposto.ICMS.pMVAST := 0;                         // N19 - Percentual da margem de valor Adicionado do ICMS ST
-      NFe.Det[i].Imposto.ICMS.pRedBCST := 0;                       // N20 - Percentual da Redução de BC do ICMS ST
-      NFe.Det[i].Imposto.ICMS.vBCST := 0;                          // N21 - Valor da BC do ICMS ST
-      NFe.Det[i].Imposto.ICMS.pICMSST := 0;                        // N22 - Alíquota do imposto do ICMS ST
-      NFe.Det[i].Imposto.ICMS.vICMSST := 0;                        // N23 - Valor do ICMS ST
+      NFe.Det[i].Imposto.ICMS.modBCST := dbisMargemValorAgregado; // N18 - Modalidade de determinação da BC do ICMS ST
+      NFe.Det[i].Imposto.ICMS.pMVAST := 0;                        // N19 - Percentual da margem de valor Adicionado do ICMS ST
+      NFe.Det[i].Imposto.ICMS.pRedBCST := 0;                      // N20 - Percentual da Redução de BC do ICMS ST
+      NFe.Det[i].Imposto.ICMS.vBCST := 0;                         // N21 - Valor da BC do ICMS ST
+      NFe.Det[i].Imposto.ICMS.pICMSST := 0;                       // N22 - Alíquota do imposto do ICMS ST
+      NFe.Det[i].Imposto.ICMS.vICMSST := 0;                       // N23 - Valor do ICMS ST
     end;
     if NFe.Det[i].Imposto.ICMS.CST = cst51 then
     begin

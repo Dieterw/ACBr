@@ -879,7 +879,7 @@ begin
       with rliLogo do
         begin
           Height := 101;
-          Width := 286;
+          Width := 268;
           Top := 14;
           Left := 2;
           Scaled := False;
@@ -1015,6 +1015,7 @@ begin
         rllDadosVariaveis1a.Visible := False;
         rllDadosVariaveis1b.Visible := False;
         rllDadosVariaveis1c.Visible := False;
+        rlbCodigoBarras.Visible := True;
         rlbCodigoBarrasFS.Caption := sChaveContingencia;
         rlbCodigoBarrasFS.Visible := True;
         rllDadosVariaveis3_Descricao.Caption := 'DADOS DA NF-E';
@@ -1035,6 +1036,7 @@ begin
         rllDadosVariaveis1a.Visible := True;
         rllDadosVariaveis1b.Visible := True;
         rllDadosVariaveis1c.Visible := False;
+        rlbCodigoBarras.Visible := True;
         rlbCodigoBarrasFS.Visible := False;
         rllDadosVariaveis3_Descricao.Caption := 'NÚMERO DE REGISTRO DPEC';
         rllDadosVariaveis3.Caption := FNFe.procNFe.nProt + ' ' +
@@ -1270,7 +1272,7 @@ end;
 procedure TfrlDANFeRLRetrato.DadosAdicionais;
 var sInfCompl, sInfAdFisco, sInfInteira, sProtocolo, sSuframa : WideString;
     sLinhaProvisoria, sLinha: String;
-iTotalCaracteres, iTotalLinhas, iUltimoEspacoLinha, iPosAtual, i: Integer;
+iTotalCaracteres, iTotalLinhas, iUltimoEspacoLinha, i: Integer;
 begin
   rlmDadosAdicionaisAuxiliar.Lines.BeginUpdate;
   rlmDadosAdicionaisAuxiliar.Lines.Clear;

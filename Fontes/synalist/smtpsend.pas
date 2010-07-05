@@ -372,10 +372,13 @@ function TSMTPSend.AuthPlain: Boolean;
 var
   s: ansistring;
 begin
-  Result := False;
-  s := ansichar(0) + FUsername + ansichar(0) + FPassword;
-  FSock.SendString('AUTH PLAIN ' + EncodeBase64(s) + CRLF);
-  Result := ReadResult = 235;
+  try
+    s := ansichar(0) + FUsername + ansichar(0) + FPassword;
+    FSock.SendString('AUTH PLAIN ' + EncodeBase64(s) + CRLF);
+    Result := ReadResult = 235;
+  except
+    Result := False;
+  end;
 end;
 
 function TSMTPSend.Connect: Boolean;

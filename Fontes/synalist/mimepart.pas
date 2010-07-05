@@ -216,7 +216,7 @@ type
     {:Return @true when is possible create next subpart. (@link(maxSublevel)
      is still not reached)}
     function CanSubPart: boolean;
-  published
+  //published
     {:Primary Mime type of part. (i.e. 'application') Writing to this property
      automaticly generate value of @link(PrimaryCode).}
     property Primary: string read FPrimary write SetPrimary;

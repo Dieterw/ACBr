@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--  PL_006g versao com inclusão de novos CFOP e CST do PIS/COFINS 24/06/2010-->
 <!--  PL_006f versao com alteração do NCM para aceitar zeros, CST do ICMSST, vTodDed do grupo da cana 09/05/2010 -->
 <!--  PL_006f correção da definição e da lista de valores válidos para alguns campos - vide NT 2010/003 para maiores detalhes - 31/05/2010 -->
 <!--  PL_006f correção do tipo básico utilizado para os campos de quantidade, elimição dos CFOP de transportes do TCFOP e criação de TCFOPTransp com CFOP de transportes 31/05/2010 -->
@@ -3177,6 +3178,29 @@ I – ISENTA. (v.2.0)
 																			<xs:simpleType>
 																				<xs:restriction base="xs:string">
 																					<xs:whiteSpace value="preserve"/>
+																					<xs:enumeration value="49"/>
+																					<xs:enumeration value="50"/>
+																					<xs:enumeration value="51"/>
+																					<xs:enumeration value="52"/>
+																					<xs:enumeration value="53"/>
+																					<xs:enumeration value="54"/>
+																					<xs:enumeration value="55"/>
+																					<xs:enumeration value="56"/>
+																					<xs:enumeration value="60"/>
+																					<xs:enumeration value="61"/>
+																					<xs:enumeration value="62"/>
+																					<xs:enumeration value="63"/>
+																					<xs:enumeration value="64"/>
+																					<xs:enumeration value="65"/>
+																					<xs:enumeration value="66"/>
+																					<xs:enumeration value="67"/>
+																					<xs:enumeration value="70"/>
+																					<xs:enumeration value="71"/>
+																					<xs:enumeration value="72"/>
+																					<xs:enumeration value="73"/>
+																					<xs:enumeration value="74"/>
+																					<xs:enumeration value="75"/>
+																					<xs:enumeration value="98"/>
 																					<xs:enumeration value="99"/>
 																				</xs:restriction>
 																			</xs:simpleType>
@@ -3377,6 +3401,29 @@ I – ISENTA. (v.2.0)
 															<xs:element name="COFINSOutr">
 																<xs:annotation>
 																	<xs:documentation>Código de Situação Tributária do COFINS:
+49 - Outras Operações de Saída
+50 - Operação com Direito a Crédito - Vinculada Exclusivamente a Receita Tributada no Mercado Interno
+51 - Operação com Direito a Crédito – Vinculada Exclusivamente a Receita Não Tributada no Mercado Interno
+52 - Operação com Direito a Crédito - Vinculada Exclusivamente a Receita de Exportação
+53 - Operação com Direito a Crédito - Vinculada a Receitas Tributadas e Não-Tributadas no Mercado Interno
+54 - Operação com Direito a Crédito - Vinculada a Receitas Tributadas no Mercado Interno e de Exportação
+55 - Operação com Direito a Crédito - Vinculada a Receitas Não-Tributadas no Mercado Interno e de Exportação
+56 - Operação com Direito a Crédito - Vinculada a Receitas Tributadas e Não-Tributadas no Mercado Interno, e de Exportação
+60 - Crédito Presumido - Operação de Aquisição Vinculada Exclusivamente a Receita Tributada no Mercado Interno
+61 - Crédito Presumido - Operação de Aquisição Vinculada Exclusivamente a Receita Não-Tributada no Mercado Interno
+62 - Crédito Presumido - Operação de Aquisição Vinculada Exclusivamente a Receita de Exportação
+63 - Crédito Presumido - Operação de Aquisição Vinculada a Receitas Tributadas e Não-Tributadas no Mercado Interno
+64 - Crédito Presumido - Operação de Aquisição Vinculada a Receitas Tributadas no Mercado Interno e de Exportação
+65 - Crédito Presumido - Operação de Aquisição Vinculada a Receitas Não-Tributadas no Mercado Interno e de Exportação
+66 - Crédito Presumido - Operação de Aquisição Vinculada a Receitas Tributadas e Não-Tributadas no Mercado Interno, e de Exportação
+67 - Crédito Presumido - Outras Operações
+70 - Operação de Aquisição sem Direito a Crédito
+71 - Operação de Aquisição com Isenção
+72 - Operação de Aquisição com Suspensão
+73 - Operação de Aquisição a Alíquota Zero
+74 - Operação de Aquisição sem Incidência da Contribuição
+75 - Operação de Aquisição por Substituição Tributária
+98 - Outras Operações de Entrada
 99 - Outras Operações.</xs:documentation>
 																</xs:annotation>
 																<xs:complexType>
@@ -3384,11 +3431,57 @@ I – ISENTA. (v.2.0)
 																		<xs:element name="CST">
 																			<xs:annotation>
 																				<xs:documentation>Código de Situação Tributária do COFINS:
+49 - Outras Operações de Saída
+50 - Operação com Direito a Crédito - Vinculada Exclusivamente a Receita Tributada no Mercado Interno
+51 - Operação com Direito a Crédito – Vinculada Exclusivamente a Receita Não Tributada no Mercado Interno
+52 - Operação com Direito a Crédito - Vinculada Exclusivamente a Receita de Exportação
+53 - Operação com Direito a Crédito - Vinculada a Receitas Tributadas e Não-Tributadas no Mercado Interno
+54 - Operação com Direito a Crédito - Vinculada a Receitas Tributadas no Mercado Interno e de Exportação
+55 - Operação com Direito a Crédito - Vinculada a Receitas Não-Tributadas no Mercado Interno e de Exportação
+56 - Operação com Direito a Crédito - Vinculada a Receitas Tributadas e Não-Tributadas no Mercado Interno, e de Exportação
+60 - Crédito Presumido - Operação de Aquisição Vinculada Exclusivamente a Receita Tributada no Mercado Interno
+61 - Crédito Presumido - Operação de Aquisição Vinculada Exclusivamente a Receita Não-Tributada no Mercado Interno
+62 - Crédito Presumido - Operação de Aquisição Vinculada Exclusivamente a Receita de Exportação
+63 - Crédito Presumido - Operação de Aquisição Vinculada a Receitas Tributadas e Não-Tributadas no Mercado Interno
+64 - Crédito Presumido - Operação de Aquisição Vinculada a Receitas Tributadas no Mercado Interno e de Exportação
+65 - Crédito Presumido - Operação de Aquisição Vinculada a Receitas Não-Tributadas no Mercado Interno e de Exportação
+66 - Crédito Presumido - Operação de Aquisição Vinculada a Receitas Tributadas e Não-Tributadas no Mercado Interno, e de Exportação
+67 - Crédito Presumido - Outras Operações
+70 - Operação de Aquisição sem Direito a Crédito
+71 - Operação de Aquisição com Isenção
+72 - Operação de Aquisição com Suspensão
+73 - Operação de Aquisição a Alíquota Zero
+74 - Operação de Aquisição sem Incidência da Contribuição
+75 - Operação de Aquisição por Substituição Tributária
+98 - Outras Operações de Entrada
 99 - Outras Operações.</xs:documentation>
 																			</xs:annotation>
 																			<xs:simpleType>
 																				<xs:restriction base="xs:string">
 																					<xs:whiteSpace value="preserve"/>
+																					<xs:enumeration value="49"/>
+																					<xs:enumeration value="50"/>
+																					<xs:enumeration value="51"/>
+																					<xs:enumeration value="52"/>
+																					<xs:enumeration value="53"/>
+																					<xs:enumeration value="54"/>
+																					<xs:enumeration value="55"/>
+																					<xs:enumeration value="56"/>
+																					<xs:enumeration value="60"/>
+																					<xs:enumeration value="61"/>
+																					<xs:enumeration value="62"/>
+																					<xs:enumeration value="63"/>
+																					<xs:enumeration value="64"/>
+																					<xs:enumeration value="65"/>
+																					<xs:enumeration value="66"/>
+																					<xs:enumeration value="67"/>
+																					<xs:enumeration value="70"/>
+																					<xs:enumeration value="71"/>
+																					<xs:enumeration value="72"/>
+																					<xs:enumeration value="73"/>
+																					<xs:enumeration value="74"/>
+																					<xs:enumeration value="75"/>
+																					<xs:enumeration value="98"/>
 																					<xs:enumeration value="99"/>
 																				</xs:restriction>
 																			</xs:simpleType>
@@ -4895,6 +4988,7 @@ Campo de uso da SEFAZ para enviar mensagem de interesse da SEFAZ para o emissor.
 	</xs:complexType>
 	<xs:simpleType name="TCfop">
 		<xs:annotation>
+			<xs:documentation>Tipo CFOP // maio/2009 - Atualização do Ajuste SINIEF 14/2009</xs:documentation>
 			<xs:documentation>Tipo CFOP - PL_005d - 11/08/09 - atualizaçãp do Ajuste SINIEF 05/2009</xs:documentation>
 			<xs:documentation>Tipo CFOP // 24/10/08 acrescentada a lista de CFOP validos // PL_06 eliminado os CFOP de prestação de serviços de comunicação // PL_006f eliminado os CFOP de prestação de serviços de transporte</xs:documentation>
 		</xs:annotation>
@@ -5014,6 +5108,7 @@ Campo de uso da SEFAZ para enviar mensagem de interesse da SEFAZ para o emissor.
 			<xs:enumeration value="1931"/>
 			<xs:enumeration value="1932"/>
 			<xs:enumeration value="1933"/>
+			<xs:enumeration value="1934"/>
 			<xs:enumeration value="1949"/>
 			<xs:enumeration value="2101"/>
 			<xs:enumeration value="2102"/>
@@ -5121,6 +5216,7 @@ Campo de uso da SEFAZ para enviar mensagem de interesse da SEFAZ para o emissor.
 			<xs:enumeration value="2931"/>
 			<xs:enumeration value="2932"/>
 			<xs:enumeration value="2933"/>
+			<xs:enumeration value="2934"/>
 			<xs:enumeration value="2949"/>
 			<xs:enumeration value="3101"/>
 			<xs:enumeration value="3102"/>
@@ -5271,6 +5367,7 @@ Campo de uso da SEFAZ para enviar mensagem de interesse da SEFAZ para o emissor.
 			<xs:enumeration value="5931"/>
 			<xs:enumeration value="5932"/>
 			<xs:enumeration value="5933"/>
+			<xs:enumeration value="5934"/>
 			<xs:enumeration value="5949"/>
 			<xs:enumeration value="6101"/>
 			<xs:enumeration value="6102"/>
@@ -5388,6 +5485,7 @@ Campo de uso da SEFAZ para enviar mensagem de interesse da SEFAZ para o emissor.
 			<xs:enumeration value="6931"/>
 			<xs:enumeration value="6932"/>
 			<xs:enumeration value="6933"/>
+			<xs:enumeration value="6934"/>
 			<xs:enumeration value="6949"/>
 			<xs:enumeration value="7101"/>
 			<xs:enumeration value="7102"/>

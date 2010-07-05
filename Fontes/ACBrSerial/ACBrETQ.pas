@@ -42,6 +42,8 @@
 |*  - Primeira Versao ACBrETQ
 |* 17/04/2009: Alexsander da Rosa
 |*  - Parametro "SubFonte" na procedure ImprimirTexto
+|* 29/05/2010: Alexsander da Rosa
+|*  - Propriedade "Unidade" para indicar milimetros/polegadas
 ******************************************************************************}
 
 {$I ACBr.inc}
@@ -60,6 +62,8 @@ uses ACBrBase, ACBrDevice, ACBrETQClass,  {Units da ACBr}
 type
 
 TACBrETQModelo = (etqNenhum, etqPpla, etqPplb);
+
+TACBrETQUnidade = (etqMilimetros, etqPolegadas);
 
 { Componente ACBrETQ }
 
@@ -85,6 +89,8 @@ TACBrETQ = class( TACBrComponent )
     function GetTemperatura: Integer;
     function GetAvanco: Integer;
     procedure SetAvanco(const Value: Integer);
+    procedure SetUnidade(const Value: TACBrETQUnidade);
+    function GetUnidade: TACBrETQUnidade;
   protected
 
   public
@@ -115,6 +121,8 @@ TACBrETQ = class( TACBrComponent )
   published
     property Modelo : TACBrETQModelo read fsModelo write SetModelo
       default etqNenhum ;
+    property Unidade : TACBrETQUnidade read GetUnidade write SetUnidade
+      default etqMilimetros;
     property Porta : String read GetPorta write SetPorta ;
     property Temperatura: Integer read GetTemperatura write SetTemperatura
       default 10 ;
@@ -169,11 +177,13 @@ end;
 procedure TACBrETQ.SetModelo(const Value: TACBrETQModelo);
   Var wTemperatura: Integer ;
       wAvanco: Integer ;
+      wUnidade: TACBrETQUnidade;
 begin
   if fsModelo = Value then exit ;
 
   wTemperatura := Temperatura ;
   wAvanco      := Avanco ;
+  wUnidade     := Unidade;
   
   if fsAtivo then
      raise Exception.Create(ACBrStr('Não é possível mudar o Modelo com ACBrETQ Ativo'));
@@ -190,6 +200,7 @@ begin
 
   Temperatura := wTemperatura ;
   Avanco      := wAvanco ;
+  Unidade     := wUnidade;
 
   fsModelo := Value;
 end;
@@ -334,6 +345,22 @@ begin
     Ativar;
 
   fsETQ.CarregarImagem( MonoBMP, NomeImagem, Flipped );
+end;
+
+procedure TACBrETQ.SetUnidade(const Value: TACBrETQUnidade);
+begin
+  if Value = etqPolegadas then
+    fsETQ.Unidade := 'n'
+  else
+    fsETQ.Unidade := 'm';
+end;
+
+function TACBrETQ.GetUnidade: TACBrETQUnidade;
+begin
+  if fsETQ.Unidade = 'n' then
+    Result := etqPolegadas
+  else
+    Result := etqMilimetros;
 end;
 
 end.

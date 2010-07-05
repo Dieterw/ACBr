@@ -39,6 +39,8 @@
 |*  - Primeira Versao ACBrETQClass
 |* 17/04/2009: Alexsander da Rosa
 |*  - Parametro "SubFonte" na procedure ImprimirTexto
+|* 29/05/2010: Alexsander da Rosa
+|*  - Propriedade "Unidade" para indicar milimetros/polegadas
 ******************************************************************************}
 
 {$I ACBr.inc}
@@ -66,9 +68,11 @@ TACBrETQClass = class
   private
     FTemperatura: Integer;
     FAvanco: Integer;
+    FUnidade: Char;
     procedure SetAtivo(const Value: Boolean);
     procedure SetTemperatura(const Value: Integer);
     procedure SetAvanco(const Value: Integer);
+    procedure SetUnidade(const Value: Char);
   protected
     fpDevice  : TACBrDevice ;
     fpAtivo   : Boolean ;
@@ -83,6 +87,7 @@ TACBrETQClass = class
     property Cmd: AnsiString read fpCmd write fpCmd;
     property Temperatura: Integer read FTemperatura write SetTemperatura;
     property Avanco: Integer read FAvanco write SetAvanco;
+    property Unidade: Char read FUnidade write SetUnidade;
     property LimparMemoria: Boolean read fpLimparMemoria write fpLimparMemoria ;
 
     constructor Create(AOwner: TComponent);
@@ -211,6 +216,11 @@ end;
 procedure TACBrETQClass.SetAvanco(const Value: Integer);
 begin
   FAvanco := Value;
+end;
+
+procedure TACBrETQClass.SetUnidade(const Value: Char);
+begin
+  FUnidade := Value;
 end;
 
 procedure TACBrETQClass.Imprimir(Copias, AvancoEtq: Integer);

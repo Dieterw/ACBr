@@ -115,7 +115,7 @@ type
   end;
 
   TACBrTEFDVeSPagueExibeMenu = procedure( Titulo : String; Opcoes : TStringList;
-    var ItemSelecionado : Integer) of object ;
+     Memo: TStringList; var ItemSelecionado : Integer) of object ;
 
   TACBrTEFDVeSPagueObtemCampo = procedure( Titulo : String;
     Mascara : String; Tipo : AnsiChar; var Resposta : AnsiString;
@@ -127,6 +127,7 @@ type
    private
       fAplicacao       : String;
       fAplicacaoVersao : String;
+      fGPExeParams : String ;
 
       fTerminador : AnsiString ;
       fEnderecoIP : AnsiString;
@@ -144,8 +145,10 @@ type
       fTransacaoCNC : String;
       fTransacaoCRT : String;
       fTransacaoOpcao : String ;
+      fTransacaoPendente : String ;
       fTransacaoReImpressao: String;
 
+     procedure ExecutarTranscaoPendente(NSU : String ; Valor : Double) ;
      procedure SeTimeOut(const AValue : Integer) ;
      procedure TransmiteCmd ;
 
@@ -162,6 +165,7 @@ type
        Valor : Double = 0 ; Documento : AnsiString = '';
         ListaParams : AnsiString = '') : Integer ;
      Function ContinuarRequisicao( ImprimirComprovantes : Boolean = True) : Integer ;
+     procedure FinalizarRequisicao ;
 
      Function ProcessarRespostaPagamento( const IndiceFPG_ECF : String;
         const Valor : Double) : Boolean; override;
@@ -203,6 +207,9 @@ type
      property Aplicacao       : String read fAplicacao       write fAplicacao ;
      property AplicacaoVersao : String read fAplicacaoVersao write fAplicacaoVersao ;
 
+     property GPExeName;
+     property GPExeParams : String read fGPExeParams write fGPExeParams ;
+
      property EnderecoIP : AnsiString read fEnderecoIP  write fEnderecoIP ;
      property Porta      : AnsiString read fPorta       write fPorta ;
      property TimeOut    : Integer    read fTimeOut     write SeTimeOut default 1000 ;
@@ -214,6 +221,8 @@ type
      property TransacaoOpcao : String read fTransacaoOpcao write fTransacaoOpcao ;
      property TransacaoReImpressao : String read fTransacaoReImpressao
         write fTransacaoReImpressao ;
+     property TransacaoPendente : String read fTransacaoPendente
+        write fTransacaoPendente ;
 
      property OnExibeMenu : TACBrTEFDVeSPagueExibeMenu read fOnExibeMenu
         write fOnExibeMenu ;
@@ -528,9 +537,9 @@ begin
      else if Chave = 'transacao_codigo_vespague' then
         fpNumeroLoteTransacao := Linha.Informacao.AsInteger
      else if Chave = 'transacao_comprovante_1via' then
-        fpImagemComprovante1aVia.Text := StringToBinaryString( Linha.Informacao.AsAnsiString )
+        fpImagemComprovante1aVia.Text := StringToBinaryString( Linha.Informacao.AsString )
      else if Chave = 'transacao_comprovante_2via' then
-        fpImagemComprovante2aVia.Text := StringToBinaryString( Linha.Informacao.AsAnsiString )
+        fpImagemComprovante2aVia.Text := StringToBinaryString( Linha.Informacao.AsString )
      else if Chave = 'transacao_comprovante_resumido' then
         // Ainda Não mepeado
      else if Chave = 'transacao_data' then
@@ -554,9 +563,9 @@ begin
      else if Chave = 'transacao_tipo_cartao' then
         fpTipoTransacao := ifthen(LowerCase(Valor)='debito', 20, 10 )
      else if Chave = 'transacao_valor' then
-        fpValorTotal := Linha.Informacao.AsFloat
+        fpValorTotal := StringToFloatDef( Valor, 0 )
      else if Chave = 'transacao_valor_saque' then
-        fpSaque := Linha.Informacao.AsFloat
+        fpSaque := StringToFloatDef( Valor, 0 )
      else if Chave = 'transacao_valor_taxa_embarque' then
         // Ainda Não mepeado
      else if Chave = 'transacao_valor_taxa_servico' then
@@ -614,7 +623,7 @@ procedure TACBrTEFDRespVeSPague.GravaInformacao( const PalavraChave,
    Informacao : AnsiString );
 begin
   fpConteudo.GravaInformacao( PalavraChave,
-                              BinaryStringToString(Informacao) ); // Converte #10 para "\x0A"
+     BinaryStringToString( DecodificaString(Informacao) ) ); // Converte #10 para "\x0A"
 end;
 
 
@@ -646,7 +655,8 @@ begin
 
   fTransacaoCRT         := 'Cartao Vender' ;
   fTransacaoReImpressao := 'Administracao Reimprimir' ;
-  fTransacaoADM         := 'Administracao Consultar' ;
+  fTransacaoPendente    := 'Administracao Pendente' ;
+  fTransacaoADM         := '' ;
   fTransacaoCHQ         := 'Cheque Consultar' ;
   fTransacaoCNC         := 'Administracao Cancelar' ;
   fTransacaoOpcao       := '' ;
@@ -680,7 +690,19 @@ begin
    fpNumVias := 2;
 end;
 
+procedure TACBrTEFDVeSPague.SeTimeOut(const AValue : Integer) ;
+begin
+  if AValue = fTimeOut then exit ;
+
+  if AValue < 100 then
+     raise Exception.Create( ACBrStr('Valor mínimo deve ser 100') ) ;
+
+  fTimeOut := AValue;
+end;
+
 procedure TACBrTEFDVeSPague.Inicializar;
+var
+  Erro, Tentativas : Integer ;
 begin
   if Inicializado then exit ;
 
@@ -695,7 +717,26 @@ begin
 
   fSocket.CloseSocket;
   fSocket.Connect( fEnderecoIP, fPorta );
-  if fSocket.LastError <> 0 then
+  Erro := fSocket.LastError ;
+
+  if (Erro = 10061) and AutoAtivarGP and (GPExeName <> '') and (GPExeParams <> '') then
+  begin
+     AtivarGP;
+
+     Tentativas := 0 ;
+     while (Erro = 10061) and (Tentativas < 10) do // 10061 = Connection Refused
+     begin
+        Sleep(1000) ;
+        GravaLog( 'Tentativa de conexão '+IntToStr(Tentativas) );
+
+        fSocket.CloseSocket;
+        fSocket.Connect( fEnderecoIP, fPorta );
+        Erro := fSocket.LastError ;
+        Inc( Tentativas ) ;
+     end ;
+  end ;
+
+  if Erro <> 0 then
      raise EACBrTEFDErro.Create( ACBrStr('Erro ao conectar no V&SPague'+sLineBreak+
                              'Endereço: '+fEnderecoIP+sLineBreak+
                              'Porta: '+fPorta+sLineBreak+
@@ -714,15 +755,30 @@ begin
   inherited DesInicializar ;
 end ;
 
-procedure TACBrTEFDVeSPague.AtivarGP;
+procedure TACBrTEFDVeSPague.AtivarGP ;
 begin
-   raise Exception.Create( ACBrStr( 'VeSPague não pode ser ativado localmente' )) ;
-end;
+  if (GPExeName = '') then
+     raise EACBrTEFDErro.Create(ACBrStr('Linha de comando de execuçao do V&SPague Cliente não definida'));
 
-procedure TACBrTEFDVeSPague.VerificaAtivo;
+  if (GPExeParams = '') then
+     raise EACBrTEFDErro.Create(ACBrStr('Parametros de Execução para o V&SPague Cliente não informados'+sLineBreak+
+                                        'Especifique: IPSerividor Porta  Exemplo:'+sLineBreak+
+                                        '200.111.222.333 65432'));
+
+  GravaLog( 'Ativando V&SPague Client: ' +GPExeName+' '+GPExeParams );
+
+  RunCommand( GPExeName, GPExeParams );
+  Sleep(2000);
+  TACBrTEFD(Owner).RestaurarFocoAplicacao;
+end ;
+
+procedure TACBrTEFDVeSPague.VerificaAtivo ;
 begin
-   {Nada a Fazer}
-end;
+  if Inicializado then
+     Inherited VerificaAtivo
+  else
+     Inicializar;
+end ;
 
 Procedure TACBrTEFDVeSPague.ATV ;
 begin
@@ -733,19 +789,61 @@ end;
 Function TACBrTEFDVeSPague.ADM : Boolean;
 var
   Retorno : Integer ;
+  SL1, SL2 : TStringList ;
+  I : Integer ;
+  Transacao : String ;
 begin
-  Retorno := FazerRequisicao( fTransacaoADM, 'ADM' ) ;
+  Transacao := Trim(fTransacaoADM) ;
 
-  if Retorno = 0 then
-     Retorno := ContinuarRequisicao( True ) ;  { True = Imprimir Comprovantes agora }
+  { No modo BackGround não há um comando que retorne todas as Opçoes
+    Administrativas (sic) ... então vamos cria-lo ;) }
+  if Transacao = '' then
+  begin
+    ServicoIniciar;
+    ReqVS.Servico := 'consultar' ;
+    TransmiteCmd;
 
-  Result := ( Retorno = 1 ) ;
+    if RespVS.Retorno = 1 then
+    begin
+       SL1 := TStringList.Create;
+       SL2 := TStringList.Create;
+       try
+          SL2.Clear;
+          RespVS.GetParamStrings('mensagem',SL1);
+          For I := 0 to SL1.Count-1 do
+          begin
+             if pos(copy(SL1[I],1,6), 'Cartao|Cheque') = 0 then
+                SL2.Add(SL1[I]);
+          end ;
+          SL1.Clear;
 
-  if not Result then
-     AvaliaErro( Retorno ) ;
+          if SL2.Count > 0 then
+          begin
+             SL2.Sort;
+             TACBrTEFD(Owner).BloquearMouseTeclado(False);
+             OnExibeMenu( ACBrStr('Escolha a Transação'), SL2, SL1, I ) ;
 
-  if Retorno in [0,1,9] then
-     ServicoFinalizar;
+             if (I >= 0) and (I < SL2.Count) then
+                Transacao := SL2[ I ] ;
+          end ;
+       finally
+          SL1.Free;
+          SL2.Free;
+       end ;
+    end ;
+  end ;
+
+  if Transacao <> '' then
+  begin
+     Retorno := FazerRequisicao( Transacao, 'ADM' ) ;
+
+     if Retorno = 0 then
+        Retorno := ContinuarRequisicao( True ) ;  { True = Imprimir Comprovantes agora }
+
+     Result := ( Retorno = 1 ) ;
+
+     FinalizarRequisicao;
+  end ;
 end;
 
 Function TACBrTEFDVeSPague.CRT( Valor : Double; IndiceFPG_ECF : String;
@@ -764,8 +862,8 @@ begin
 
   if Result then
      ProcessarRespostaPagamento( IndiceFPG_ECF, Valor )
-  else if Retorno = 9 then
-     ServicoFinalizar ;
+  else
+     FinalizarRequisicao;
 end;
 
 Function TACBrTEFDVeSPague.CHQ(Valor : Double; IndiceFPG_ECF : String;
@@ -789,8 +887,8 @@ begin
 
   if Result then
      ProcessarRespostaPagamento( IndiceFPG_ECF, Valor )
-  else if Retorno = 9 then
-     ServicoFinalizar ;
+  else
+     FinalizarRequisicao;
 end;
 
 Procedure TACBrTEFDVeSPague.CNF(Rede, NSU, Finalizacao : String;
@@ -799,9 +897,10 @@ begin
   ReqVS.Servico := 'executar' ;
   ReqVS.AddParamString( 'transacao', Finalizacao ) ;
   ReqVS.Retorno    := 0 ;
-  ReqVS.Sequencial := StrToInt(DocumentoVinculado);
+  ReqVS.Sequencial := StrToIntDef(DocumentoVinculado,0);
 
   TransmiteCmd;
+  FinalizarRequisicao;
 end;
 
 Function TACBrTEFDVeSPague.CNC(Rede, NSU : String;
@@ -821,11 +920,7 @@ begin
 
   Result := ( Retorno = 1 ) ;
 
-  if not Result then
-     AvaliaErro( Retorno ) ;
-
-  if Retorno in [0,1,9] then
-     ServicoFinalizar;
+  FinalizarRequisicao;
 end;
 
 Procedure TACBrTEFDVeSPague.NCN(Rede, NSU, Finalizacao : String;
@@ -834,9 +929,34 @@ begin
   ReqVS.Servico := 'executar' ;
   ReqVS.AddParamString( 'transacao', Finalizacao ) ;
   ReqVS.Retorno    := 9 ;
-  ReqVS.Sequencial := StrToInt(DocumentoVinculado);
+  ReqVS.Sequencial := StrToIntDef(DocumentoVinculado,0);
 
-  TransmiteCmd;
+  try
+     TransmiteCmd;
+     FinalizarRequisicao;
+  except
+     if (RespVS.Retorno = 5) then
+        ExecutarTranscaoPendente( NSU, Valor )
+     else
+        raise ;
+  end ;
+end;
+
+Procedure TACBrTEFDVeSPague.ExecutarTranscaoPendente( NSU : String; Valor : Double ) ;
+var
+   Retorno : Integer ;
+   ListaParams : AnsiString ;
+begin
+  ListaParams := '' ;
+  if NSU <> '' then
+     ListaParams := 'transacao_nsu="'+Trim(NSU)+'"';
+
+  Retorno := FazerRequisicao( fTransacaoPendente, 'ADM', Valor, '', ListaParams  ) ;
+
+  if Retorno = 0 then
+     Retorno := ContinuarRequisicao( True ) ;  { True = Imprimir Comprovantes agora }
+
+  FinalizarRequisicao;
 end;
 
 procedure TACBrTEFDVeSPague.ServicoIniciar ;
@@ -884,15 +1004,18 @@ begin
 
    Result := RespVS.Retorno;
 
-   { Adiciona Campos já conhecidos em Resp, para processa-los em
-     métodos que manipulam "RespostasPendentes" (usa códigos do G.P.)  }
    Resp.Clear;
+
+   if not (Result in [0,1]) then
+      exit ;
 
    with TACBrTEFDRespVeSPague( Resp ) do
    begin
      if Documento = '' then
         Documento := IntToStr(fpIDSeq) ;
 
+     { Adiciona Campos já conhecidos em Resp, para processa-los em
+       métodos que manipulam "RespostasPendentes" (usa códigos do G.P.)  }
      Conteudo.GravaInformacao(899,100, AHeader ) ;
      Conteudo.GravaInformacao(899,101, IntToStr(ReqVS.Sequencial) ) ;
      Conteudo.GravaInformacao(899,102, Documento ) ;
@@ -904,19 +1027,9 @@ begin
    end;
 end;
 
-procedure TACBrTEFDVeSPague.SeTimeOut(const AValue : Integer) ;
-begin
-  if AValue = fTimeOut then exit ;
-
-  if AValue < 100 then
-     raise Exception.Create( ACBrStr('Valor mínimo deve ser 100') ) ;
-
-  fTimeOut := AValue;
-end;
-
 Function TACBrTEFDVeSPague.ContinuarRequisicao(ImprimirComprovantes: Boolean): Integer ;
 var
-  Mensagem, Chave, Valor : AnsiString ;
+  Chave, Valor : AnsiString ;
   I : Integer ;
   GerencialAberto, HouveImpressao, ImpressaoOk : Boolean ;
   ArqBackUp : String ;
@@ -997,32 +1110,38 @@ begin
         fpAguardandoResposta := False ;
      end ;
   end ;
+end ;
 
-  if Result = 9 then
-  begin
-     if RespVS.IsColeta then
-        Mensagem := RespVS.GetParamString('automacao_coleta_mensagem')
-     else
-        Mensagem := RespVS.GetParamString('mensagem');
+procedure TACBrTEFDVeSPague.FinalizarRequisicao ;
+var
+  Mensagem : String ;
+begin
+  if RespVS.IsColeta then
+     Mensagem := RespVS.GetParamString('automacao_coleta_mensagem')
+  else
+     Mensagem := RespVS.GetParamString('mensagem');
 
-     if Mensagem <> '' then
-        TACBrTEFD(Owner).DoExibeMsg( opmOK, Mensagem ) ;
-  end ;
+  if RespVS.Retorno <> 1 then
+     ServicoFinalizar;
+
+  if Mensagem <> '' then
+     TACBrTEFD(Owner).DoExibeMsg( opmOK, Mensagem ) ;
 end ;
 
 procedure TACBrTEFDVeSPague.ProcessarColeta ;
 var
   Mensagem, Mascara, Resposta : AnsiString ;
   Tipo : AnsiChar ;
-  OpcoesMenu : TStringList ;
+  OpcoesMenu, Video_Mensagem : TStringList ;
   ItemSelecionado, OldSeq : Integer ;
   Cancelar, Digitado : Boolean ;
   MR : TModalResult ;
 begin
   with TACBrTEFD(Owner) do
   begin
-     OldSeq     := ReqVS.Sequencial;
-     OpcoesMenu := TStringList.Create;
+     OldSeq         := ReqVS.Sequencial;
+     OpcoesMenu     := TStringList.Create;
+     Video_Mensagem := TStringList.Create;
 
      try
         while RespVS.IsColeta and (RespVS.Retorno = 0) do
@@ -1033,6 +1152,7 @@ begin
            Mascara  := RespVS.GetParamString('automacao_coleta_mascara');
            Tipo     := padL(RespVS.GetParamString('automacao_coleta_tipo'),1)[1] ;
            RespVS.GetParamStrings('automacao_coleta_opcao', OpcoesMenu);
+           Video_Mensagem.Text := RespVS.GetParamString('automacao_coleta_video_mensagem');
 
            if OpcoesMenu.Count > 0 then            // Tem Menu ?
             begin
@@ -1056,7 +1176,7 @@ begin
                begin
                  ItemSelecionado := -1 ;
                  BloquearMouseTeclado(False);
-                 OnExibeMenu( ACBrStr(Mensagem), OpcoesMenu, ItemSelecionado ) ;
+                 OnExibeMenu( ACBrStr(Mensagem), OpcoesMenu, Video_Mensagem, ItemSelecionado ) ;
                  BloquearMouseTeclado(True);
 
                  if (ItemSelecionado >= 0) and
@@ -1093,8 +1213,6 @@ begin
            ReqVS.Retorno := ifthen( Cancelar, 9, 0) ;
 
            TransmiteCmd;
-
-           AvaliaErro( RespVS.Retorno ) ;
         end ;
      finally
         ReqVS.Clear;
@@ -1102,6 +1220,7 @@ begin
         ReqVS.Sequencial  := OldSeq ;
 
         OpcoesMenu.Free;
+        Video_Mensagem.Free;
      end ;
   end ;
 end ;
@@ -1182,6 +1301,8 @@ begin
 
            if Interromper then          // Usuário Cancelou ?
            begin
+              GravaLog('** Interrompido pelo usuário **');
+
               Seq := ReqVS.Sequencial;  // Salva o ultimo sequencial
 
               // Envia novo comando com Retorno=9 para cancelar //
@@ -1200,18 +1321,27 @@ end ;
 
 procedure TACBrTEFDVeSPague.AvaliaErro( Retorno : Integer) ;
 var
-   Erro    : String;
+   Erro : String;
 begin
-  Erro    := '' ;
+  // 0, 1 : Tudo Ok
+  // 9   : Interrompido, deve ser tratado pela função chamadora, (chame ExibirMensagens)
+  if Retorno in [0,1,9] then
+     exit ;
 
-  Case Retorno of
-    // 0, 1 : Tudo Ok
-    2 : Erro := 'Sequencial Inválido' ;
-    // 3, 4 : Não são utilizados
-    5 : Erro := 'Parâmetros insuficientes ou inválidos' ;
-    // 6, 7 : Não são utilizados
-    8 : Erro := 'Tempo limite de espera excedido' ;
-    // 9    : Cancelar... deverá tratado pela função
+  if RespVS.IsColeta then
+     Erro := RespVS.GetParamString('automacao_coleta_mensagem')
+  else
+     Erro := RespVS.GetParamString('mensagem');
+
+  if Erro = '' then
+  begin
+    Case Retorno of
+      2 : Erro := 'Sequencial Inválido' ;
+      // 3, 4 : Não são utilizados
+      5 : Erro := 'Parâmetros insuficientes ou inválidos' ;
+      // 6, 7 : Não são utilizados
+      8 : Erro := 'Tempo limite de espera excedido' ;
+    end ;
   end ;
 
   if Erro <> '' then

@@ -73,6 +73,7 @@ type
      Label1 : TLabel;
      Label10 : TLabel;
      Label11 : TLabel;
+     lMensagemCliente : TLabel ;
      Label2 : TLabel;
      Label3 : TLabel;
      Label4 : TLabel;
@@ -82,6 +83,7 @@ type
      Label8 : TLabel;
      Label9 : TLabel;
      lECFName : TLabel;
+     lMensagemOperador : TLabel ;
      Memo1 : TMemo;
      PageControl1 : TPageControl;
      Panel1 : TPanel;
@@ -179,7 +181,7 @@ type
       Opcoes: TStringList; var ItemSelecionado: Integer;
       var VoltarMenu: Boolean);
     procedure ACBrTEFD1VeSPagueExibeMenu(Titulo: String;
-      Opcoes: TStringList; var ItemSelecionado: Integer);
+      Opcoes: TStringList; Memo: TStringList; var ItemSelecionado: Integer);
     procedure ACBrTEFD1VeSPagueObtemCampo(Titulo, Mascara: String;
       Tipo: Char; var Resposta: String; var Digitado: Boolean);
   private
@@ -610,8 +612,10 @@ begin
   VerificaECFAtivo;
 
   Memo1.Lines.Add('Inicio de ADM');
-  ACBrTEFD1.ADM( TACBrTEFDTipo( cbxGP1.ItemIndex ) );
-  Memo1.Lines.Add('ADM executado com sucesso');
+  if ACBrTEFD1.ADM( TACBrTEFDTipo( cbxGP1.ItemIndex ) ) then
+     Memo1.Lines.Add('ADM executado com sucesso')
+  else
+     Memo1.Lines.Add('Falha ao executar ADM') ;
 end;
 
 procedure TForm1.ACBrTEFD1ExibeMsg(Operacao : TACBrTEFDOperacaoMensagem;
@@ -632,16 +636,16 @@ begin
        AModalResult := MessageDlg( Mensagem, mtConfirmation, [mbYes,mbNo], 0);
 
     opmExibirMsgOperador, opmRemoverMsgOperador :
-         pMensagemOperador.Caption := Mensagem ;
+         lMensagemOperador.Caption := Mensagem ;
 
     opmExibirMsgCliente, opmRemoverMsgCliente :
-         pMensagemCliente.Caption := Mensagem ;
+         lMensagemCliente.Caption := Mensagem ;
 
     opmDestaqueVia :
        begin
-         OldMensagem := pMensagemOperador.Caption ;
+         OldMensagem := lMensagemOperador.Caption ;
          try
-            pMensagemOperador.Caption := Mensagem ;
+            lMensagemOperador.Caption := Mensagem ;
             pMensagemOperador.Visible := True ;
             pMensagem.Visible         := True ;
 
@@ -649,18 +653,18 @@ begin
             Fim := IncSecond( now, 3)  ;
             repeat
                sleep(200) ;
-               pMensagemOperador.Caption := Mensagem + ' ' + IntToStr(SecondsBetween(Fim,now));
+               lMensagemOperador.Caption := Mensagem + ' ' + IntToStr(SecondsBetween(Fim,now));
                Application.ProcessMessages;
             until (now > Fim) ;
 
          finally
-            pMensagemOperador.Caption := OldMensagem ;
+            lMensagemOperador.Caption := OldMensagem ;
          end;
        end;
   end;
 
-  pMensagemOperador.Visible := (pMensagemOperador.Caption <> '') ;
-  pMensagemCliente.Visible  := (pMensagemCliente.Caption <> '') ;
+  pMensagemOperador.Visible := (lMensagemOperador.Caption <> '') ;
+  pMensagemCliente.Visible  := (lMensagemCliente.Caption <> '') ;
 
   pMensagem.Visible := pMensagemOperador.Visible or pMensagemCliente.Visible;
   Application.ProcessMessages;
@@ -767,7 +771,7 @@ end;
 
 procedure TForm1.pMensagemOperadorClick(Sender: TObject);
 begin
-   pMensagem.Visible:= False ;
+   pMensagem.Visible := False ;
 end;
 
 procedure TForm1.pMensagemResize(Sender : TObject);
@@ -1114,16 +1118,20 @@ begin
 end;
 
 procedure TForm1.ACBrTEFD1VeSPagueExibeMenu(Titulo: String;
-  Opcoes: TStringList; var ItemSelecionado: Integer);
+  Opcoes: TStringList; Memo: TStringList; var ItemSelecionado: Integer);
 Var
   AForm : TForm4 ;
   MR    : TModalResult ;
 begin
   AForm := TForm4.Create(self);
   try
+    if Trim(Titulo) = '' then
+       Titulo := 'Escolha uma opção' ;
+
     AForm.Panel1.Caption := Titulo;
     AForm.ListBox1.Items.AddStrings(Opcoes);
     AForm.BitBtn3.Visible := False ;
+    AForm.Memo1.Lines.Assign(Memo) ;
 
     MR := AForm.ShowModal ;
 

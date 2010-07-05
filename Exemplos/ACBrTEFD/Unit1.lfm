@@ -775,7 +775,8 @@ object Form1: TForm1
     BorderStyle = bsSingle
     ClientHeight = 132
     ClientWidth = 436
-    Font.Height = -24
+    Font.Height = -16
+    Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 1
     Visible = False
@@ -801,6 +802,19 @@ object Form1: TForm1
         ParentColor = False
         ParentFont = False
       end
+      object lMensagemOperador: TLabel
+        Left = 1
+        Height = 60
+        Top = 1
+        Width = 426
+        Align = alClient
+        Alignment = taCenter
+        Caption = 'lMensagemOperador'
+        Layout = tlCenter
+        ParentColor = False
+        WordWrap = True
+        OnClick = pMensagemOperadorClick
+      end
     end
     object pMensagemCliente: TPanel
       Left = 4
@@ -822,6 +836,19 @@ object Form1: TForm1
         Font.Height = -11
         ParentColor = False
         ParentFont = False
+      end
+      object lMensagemCliente: TLabel
+        Left = 1
+        Height = 60
+        Top = 1
+        Width = 426
+        Align = alClient
+        Alignment = taCenter
+        Caption = 'lMensagemCliente'
+        Layout = tlCenter
+        ParentColor = False
+        WordWrap = True
+        OnClick = pMensagemOperadorClick
       end
     end
   end
@@ -900,14 +927,16 @@ object Form1: TForm1
     TEFVeSPague.ArqLOG = 'VeSPague.log'
     TEFVeSPague.Aplicacao = 'ACBr_TEFDDemo'
     TEFVeSPague.AplicacaoVersao = '1.0'
+    TEFVeSPague.GPExeName = 'C:\VeSPague\Client\VeSPagueClient.bat'
+    TEFVeSPague.GPExeParams = '189.115.24.32 65432'
     TEFVeSPague.EnderecoIP = 'localhost'
     TEFVeSPague.Porta = '60906'
     TEFVeSPague.TimeOut = 500
-    TEFVeSPague.TransacaoADM = 'Administracao Consultar'
     TEFVeSPague.TransacaoCRT = 'Cartao Vender'
     TEFVeSPague.TransacaoCHQ = 'Cheque Consultar'
     TEFVeSPague.TransacaoCNC = 'Administracao Cancelar'
     TEFVeSPague.TransacaoReImpressao = 'Administracao Reimprimir'
+    TEFVeSPague.TransacaoPendente = 'Administracao Pendente'
     TEFVeSPague.OnExibeMenu = ACBrTEFD1VeSPagueExibeMenu
     TEFVeSPague.OnObtemCampo = ACBrTEFD1VeSPagueObtemCampo
     TEFGPU.ArqTemp = 'C:\TEF_GPU\req\intpos.tmp'

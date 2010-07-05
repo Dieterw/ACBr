@@ -104,7 +104,7 @@ TACBrComponent = class( TComponent )
   end ;
 
 { Essa classe emula um TTimer, porem em uma Thread, evitando sobrecarregar
-  o Application. Usada por ACBrLCB e ACBrDIS }
+  o Application. Usada por ACBrLCB e ACBrDIS quando em modo CONSOLE }
 TACBrThreadTimer = class(TThread)
   private
     fsOnTimer : TNotifyEvent;
@@ -117,7 +117,7 @@ TACBrThreadTimer = class(TThread)
     procedure Execute; override;
   public
     constructor Create ;
-  //published
+
     property OnTimer  : TNotifyEvent read fsOnTimer write fsOnTimer ;
     property Interval : Integer read fsInterval write SetInterval ;
     property Enabled : Boolean read fsEnabled write SetEnabled ;

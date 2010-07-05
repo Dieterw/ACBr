@@ -106,7 +106,7 @@ type
      headers like 'received' header, etc. Search is case insensitive.
      This is good for reading ano non-parsed header.}
     procedure FindHeaderList(Value: string; const HeaderList: TStrings);
-  //published
+  published
     {:Sender of message.}
     property From: string read FFrom Write FFrom;
 
@@ -269,7 +269,7 @@ type
     {:Decode message from @link(Lines) to @link(MessagePart). Massage headers
      are parsed into @link(Header) object.}
     procedure DecodeMessage;
-  //published
+  published
     {:@link(TMimePart) object with decoded MIME message. This object can handle
      any number of nested @link(TMimePart) objects itself. It is used for handle
      any tree of MIME subparts.}

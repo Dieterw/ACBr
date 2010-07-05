@@ -97,6 +97,25 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.9.6  05/07/2010
+-- ACBrETQ --
+[+] Adicionada a Propriedade "Unidade" para indicar milimetros/polegadas
+    (por: Alexsander da Rosa)
+
+-- Synapse --
+[*] Aplicadas correçoes da revisão 129 do SVN do Projeto Synapse
+    (Melhorada Compatibilidade com MacOS)
+
+-- ACBrUtil --
+[*] Revisto dependencias e compatibilidade com Lazarus/FPC
+[*] Método WriteToTXT modificado para usar TFileStream ao invez de AssignFile.
+
+-- ACBrDevice --
+[*] Metodo EnviaString modificado para usar TFileStream ao invez de AssignFile,
+    quando a diretiva  {$DEFINE Use_Stream} estiver declarada (por enquando
+    apenas no Lazarus/FPC, uma vez que o AssigneFile não funciona corretamente
+    no Lazarus/FPC em algumas ocasiões)
+
 Versão 0.9.6  10/06/2010
 -- ACBrECF --
 [*] Modificado parâmetros dos métodos EspelhoMFD_DLL e ArquivoMFD_DLL de String

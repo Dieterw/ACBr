@@ -112,9 +112,7 @@ end ;
 
 implementation
 
-{$IFNDEF FPC}
 uses Math;
-{$ENDIF}
 
 { TACBrExtenso }
 

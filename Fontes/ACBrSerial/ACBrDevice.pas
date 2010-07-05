@@ -52,12 +52,16 @@
   {$UNDEF ThreadEnviaLPT}
 {$ENDIF}
 
+{$IFDEF FPC}
+ {$DEFINE Use_Stream}
+{$ENDIF}
+
 unit ACBrDevice ;
 
 interface
 
 uses synaser, {Unit da SynaSer (comunicação serial) }
-     SysUtils,
+     SysUtils, math,
      ACBrConsts, 
      {$IFDEF COMPILER6_UP}
         DateUtils, Types, StrUtils,
@@ -117,6 +121,9 @@ TACBrHandShake    = (hsNenhum, hsXON_XOFF, hsRTS_CTS, hsDTR_DSR) ;
 
 { ACBrDevice é um componente apenas para usarmos o recurso de AutoExpand do
   ObjectInspector para SubComponentes, poderia ser uma Classe }
+
+{ TACBrDevice }
+
 TACBrDevice = class( TComponent )
   private
     fsHardFlow: Boolean;
@@ -135,6 +142,8 @@ TACBrDevice = class( TComponent )
     fProcessMessages: Boolean;
 
     procedure ConfiguraSerial ;
+    procedure EnviaStringSerial(const AString : AnsiString) ;
+    procedure EnviaStringArquivo(const AString : AnsiString) ;
     {$IFDEF ThreadEnviaLPT}
     procedure EnviaStrThread( AString : AnsiString ) ;
     {$ENDIF}
@@ -216,13 +225,13 @@ TACBrThreadEnviaLPT = class(TThread)
   private
     { Private declarations }
     fsTextoAEnviar : String ;
-    fsLinhaAtual: Integer;
-    fsOwner : TObject ;
+    fsBytesSent    : Integer;
+    fsOwner        : TObject ;
   protected
     procedure Execute ; override;
   public
     constructor Create(AOwner : TObject; AString : String) ;
-    property LinhaAtual : Integer read fsLinhaAtual ;
+    property BytesSent : Integer read fsBytesSent ;
   end;
 
 
@@ -309,27 +318,12 @@ begin
      end ;
    end
   else
-   begin{ Tenta Abrir Arquivo/Porta para ver se xiste e está disponivel}
-      try
-         try
-            try    { Tenta 2x pois as vezes o handle nao fica livre }
-               AssignFile( ArqPrn, Porta );
-               Rewrite( ArqPrn ) ;
-            except
-               {$I-} {$IFNDEF FPC}System.{$ENDIF}CloseFile( ArqPrn ) ; {$I+}
-               AssignFile( ArqPrn, Porta );
-               Rewrite( ArqPrn ) ;
-            end ;
-         finally
-            {$I-} {$IFNDEF FPC}System.{$ENDIF}CloseFile( ArqPrn ) ; {$I+}
-         end ;
-      except
-         on E : Exception do
-         begin
-            raise Exception.Create( Format(ACBrStr(cACBrDeviceAtivarException),
-                                           [ Porta , E.Message]) );
-         end ;
-      end ;
+   begin
+      { Tenta Abrir Arquivo/Porta para ver se xiste e está disponivel}
+      if IsTXTFilePort and FileExists(Porta) then
+         DeleteFile(Porta);
+
+      EnviaStringArquivo( '' );
    end ;
 
   fsAtivo := true ;
@@ -686,10 +680,20 @@ end;
 
 
 procedure TACBrDevice.EnviaString( const AString: AnsiString);
-Var I, Max, NBytes : Integer ;
-{$IFNDEF ThreadEnviaLPT}
-   ArqPrn : TextFile ;
-{$ENDIF}
+begin
+  if IsSerialPort then
+     EnviaStringSerial( AString )
+  else
+     {$IFNDEF ThreadEnviaLPT}
+       EnviaStringArquivo( AString )
+     {$ELSE}
+       EnviaStrThread( AString )
+     {$ENDIF} ;
+end;
+
+procedure TACBrDevice.EnviaStringSerial(const AString : AnsiString) ;
+Var
+  I, Max, NBytes : Integer ;
 begin
   I   := 1 ;
   Max := Length(AString) ;
@@ -697,45 +701,76 @@ begin
   if NBytes = 0 then
      NBytes := Max ;
 
-  if IsSerialPort then
-   begin
-     while I <= Max do
-     begin
-        Serial.SendString( copy(AString, I, NBytes ) ) ;    { Envia para Porta Serial }
-        if fsSendBytesInterval > 0 then
-           Sleep( fsSendBytesInterval ) ;
-        I := I + NBytes ;
-     end ;
-   end
-  else
-   begin
-     {$IFNDEF ThreadEnviaLPT}
-        AssignFile( ArqPrn, Porta );
-        try
-           if IsTXTFilePort and FileExists(Porta) then
-              Append( ArqPrn )
-           else
-              Rewrite( ArqPrn ) ;
+  while I <= Max do
+  begin
+     Serial.SendString( copy(AString, I, NBytes ) ) ;    { Envia para Porta Serial }
+     if fsSendBytesInterval > 0 then
+        Sleep( fsSendBytesInterval ) ;
+     I := I + NBytes ;
+  end ;
+end ;
 
-           while I <= Max do
-           begin
-              Write( ArqPrn, copy(AString, I, NBytes ) ) ;
-              if fsSendBytesInterval > 0 then
-                 Sleep( fsSendBytesInterval ) ;
-              I := I + NBytes ;
-           end ;
+procedure TACBrDevice.EnviaStringArquivo( const AString: AnsiString);
+Var
+  I, Max, NBytes : Integer ;
+  {$IFDEF Use_Stream}
+    FS     : TFileStream ;
+    Buffer : AnsiString ;
+  {$ELSE}
+    ArqPrn : TextFile ;
+  {$ENDIF}
+begin
+  if IsSerialPort then exit;
 
-           Flush( ArqPrn ) ;
-        finally
-           {$I+}
-           {$IFNDEF FPC}System.{$ENDIF}CloseFile( ArqPrn ) ;
-           {$I+}
-        end ;
-     {$ELSE}
-        EnviaStrThread( AString );
-     {$ENDIF}
-   end ;
-end;
+  I   := 1 ;
+  Max := Length(AString) ;
+  NBytes := fsSendBytesCount ;
+  if NBytes = 0 then
+     NBytes := Max ;
+
+  {$IFDEF Use_Stream}
+    FS := TFileStream.Create( Porta, IfThen( IsTXTFilePort and FileExists(Porta),
+       fmOpenReadWrite, fmCreate) or fmShareDenyWrite );
+    try
+       FS.Seek(0, soFromEnd);  // vai para EOF
+
+       while I <= Max do
+       begin
+          Buffer := copy(AString, I, NBytes ) ;
+
+          FS.Write(Pointer(Buffer)^,Length(Buffer));
+
+          if fsSendBytesInterval > 0 then
+             Sleep( fsSendBytesInterval ) ;
+          I := I + NBytes ;
+       end ;
+    finally
+       FS.Free ;
+    end;
+  {$ELSE}
+    AssignFile( ArqPrn, Porta );
+    try
+       if IsTXTFilePort and FileExists(Porta) then
+          Append( ArqPrn )
+       else
+          Rewrite( ArqPrn ) ;
+
+       while I <= Max do
+       begin
+          Write( ArqPrn, copy(AString, I, NBytes ) ) ;
+          if fsSendBytesInterval > 0 then
+             Sleep( fsSendBytesInterval ) ;
+          I := I + NBytes ;
+       end ;
+
+       Flush( ArqPrn ) ;
+    finally
+       {$I+}
+       {$IFNDEF FPC}System.{$ENDIF}CloseFile( ArqPrn ) ;
+       {$I+}
+    end ;
+  {$ENDIF}
+end ;
 
 {$IFDEF ThreadEnviaLPT}
 { A ideia dessa Thread é testar se os dados estão sendo gravados com sucesso na
@@ -748,21 +783,21 @@ end;
 procedure TACBrDevice.EnviaStrThread(AString: AnsiString);
 Var IsTimeOut  : Boolean ;
     TempoFinal : TDateTime ;
-    UltimaLinhaImpressa : Integer ;
-    ThreadEnviaLPT : TACBrThreadEnviaLPT ;
+    UltimoBytesSent : Integer ;
+    ThreadEnviaLPT  : TACBrThreadEnviaLPT ;
 begin
   { Criando Thread para monitorar o envio de dados a Porta Paralela }
-  IsTimeOut           := false ;
-  UltimaLinhaImpressa := -1 ;
-  TempoFinal          := -1 ;
-  ThreadEnviaLPT      := TACBrThreadEnviaLPT.Create( Self, AString ) ;
+  IsTimeOut       := false ;
+  UltimoBytesSent := -1 ;
+  TempoFinal      := -1 ;
+  ThreadEnviaLPT  := TACBrThreadEnviaLPT.Create( Self, AString ) ;
   try
      while not ThreadEnviaLPT.Terminated do
      begin
-        if UltimaLinhaImpressa <> ThreadEnviaLPT.LinhaAtual then
+        if UltimoBytesSent <> ThreadEnviaLPT.BytesSent then
         begin
            TempoFinal := IncSecond(now,TimeOut) ;
-           UltimaLinhaImpressa := ThreadEnviaLPT.LinhaAtual ;
+           UltimoBytesSent := ThreadEnviaLPT.BytesSent ;
         end ;
 
         {$IFNDEF CONSOLE}
@@ -841,39 +876,23 @@ begin
 end;
 
 procedure TACBrThreadEnviaLPT.Execute;
-Var ArqPrn : TextFile;
-    Linha  : String ;
-    P      : Integer ;
+var
+  I, MaxLen, BufferLen : Integer ;
 begin
   if fsTextoAEnviar <> '' then
   begin
-     fsLinhaAtual := 0 ;
+     fsBytesSent := 0 ;
+     I           := 1 ;
+     MaxLen      := Length( fsTextoAEnviar ) ;
+     BufferLen   := 256 ;
+
      with TACBrDevice(fsOwner) do
      begin
-        AssignFile( ArqPrn, Porta);
-        try
-           if IsTXTFilePort and FileExists(Porta) then
-              Append( ArqPrn )
-           else
-              Rewrite( ArqPrn ) ;
-
-           while (fsTextoAEnviar <> '') and (not Terminated) do
-           begin
-              P := pos(CRLF,fsTextoAEnviar) ;
-              if P = 0 then
-                 P := Length( fsTextoAEnviar ) ;
-
-              Linha          := copy(fsTextoAEnviar,1,P+1) ; { +1 = CRLF }
-              fsTextoAEnviar := copy(fsTextoAEnviar,P+2,Length(fsTextoAEnviar)) ;
-              fsLinhaAtual   := fsLinhaAtual + 1 ;
-
-              Write( ArqPrn, Linha ) ;
-           end ;
-           Flush( ArqPrn ) ;
-        finally
-           {$I-}
-           {$IFNDEF FPC}System.{$ENDIF}CloseFile( ArqPrn ) ;
-           {$I+}
+        while (I <= MaxLen) and (not Terminated) do
+        begin
+           EnviaStringArquivo( copy( fsTextoAEnviar, I, BufferLen ) );
+           fsBytesSent := fsBytesSent + BufferLen ;
+           I := I + BufferLen ;
         end ;
      end ;
   end ;

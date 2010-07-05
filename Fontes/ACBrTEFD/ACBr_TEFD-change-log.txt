@@ -47,6 +47,17 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 1.20b   05/07/10
+[+] Adicionada nova classe de TEF dedicado compatível com V&SPague (por: DSA)
+    (http://www.vespague.com.br/)
+[*] Projeto Demo modificado para compatibilizar com V&SPague
+[+] Adicionada chamada de gravação no LOG com os Erros dos métodos que comandam
+    o ECF
+[-] Corrigido BUG no método TACBrTEFDLinha.SetLinha, que retornava a Informaçao
+    com um Espaço no Inicio do texto
+[*] Metodo TACBrTEFDLinha.SetLinha, compatibilizado com formato de Chaves do
+    TEF V&SPague
+
 Versão 1.17b   19/04/10
 [+] Adicionada a propriedade em TACBrTEFD.NumeroMaximoCartoes : Integer
     Que permite limitar o número máximo de Cartões em transações com múltiplos-

@@ -84,12 +84,6 @@
 ******************************************************************************}
 
 {$I ACBr.inc}
-{$ifdef FPC}
-  {$DEFINE INC_FPC_D5}
-{$ENDIF}
-{$IFNDEF COMPILER6_UP}
-  {$DEFINE INC_FPC_D5}
-{$ENDIF}
 
 unit ACBrUtil;
 
@@ -137,24 +131,25 @@ function RandomName(const LenName : Integer = 8) : String ;
 
 { PosEx, retirada de StrUtils.pas do D7, para compatibilizar com o Delphi 6
   (que nao possui essa funçao) }
+{$IFNDEF COMPILER7_UP}
 function PosEx(const SubStr, S: AnsiString; Offset: Cardinal = 1): Integer;
+{$ENDIF}
 
-{$ifdef INC_FPC_D5}
+{$IFNDEF COMPILER6_UP}
   type TRoundToRange = -37..37;
   function RoundTo(const AValue: Double; const ADigit: TRoundToRange): Double;
   function SimpleRoundTo(const AValue: Double; const ADigit: TRoundToRange = -2): Double;
 
-  { IfThens retirada de Math.pas do D7, para compatibilizar com o Delphi 5 e FPC
-  (que nao possuem essas funçao) }
+  { IfThens retirada de Math.pas do D7, para compatibilizar com o Delphi 5
+  (que nao possue essas funçao) }
   function IfThen(AValue: Boolean; const ATrue: Integer; const AFalse: Integer = 0): Integer; overload;
   function IfThen(AValue: Boolean; const ATrue: Int64; const AFalse: Int64 = 0): Int64; overload;
   function IfThen(AValue: Boolean; const ATrue: Double; const AFalse: Double = 0.0): Double; overload;
 
-  { IfThens retirada de StrUtils.pas do D7, para compatibilizar com o Delphi 5 e FPC
-  (que nao possuem essas funçao) }
+  { IfThens retirada de StrUtils.pas do D7, para compatibilizar com o Delphi 5
+  (que nao possue essas funçao) }
   function IfThen(AValue: Boolean; const ATrue: string;
     AFalse: string = ''): string; overload;
-
 {$endif}
 
 function PosAt(const SubStr, S: AnsiString; Ocorrencia : Cardinal = 1): Integer;
@@ -214,7 +209,8 @@ procedure RunCommand(Command: String; Params: String = ''; Wait : Boolean = fals
 procedure OpenURL( const URL : String ) ;
 function FunctionDetect (LibName, FuncName: String; var LibPointer: Pointer): boolean;
 Procedure DesligarMaquina(Reboot: Boolean = False; Forcar: Boolean = False) ;
-Procedure WriteToTXT( const ArqTXT, AString : AnsiString; const AppendIfExists : Boolean = True);
+Procedure WriteToTXT( const ArqTXT, AString : AnsiString;
+   const AppendIfExists : Boolean = True; AddLineBreak : Boolean = True );
 
 //funcoes para uso com o modulo ACBrSintegra
 function TiraPontos(Str: string): string;
@@ -232,7 +228,7 @@ var Randomized : Boolean ;
 
 {-----------------------------------------------------------------------------
   Todos os Fontes do ACBr usam Encoding CP1252, para manter compatibilidade com
-  D5 a D2007, Porém D2009 e superiores e Lazarus0.9.27 e acima usam UTF8.
+  D5 a D2007, Porém D2009 e superiores e Lazarus 0.9.27 e acima usam UTF8.
   A função abaixo converte a AString para de ANSI, para UTF8, apenas se o
   sistema usar UNICODE
  -----------------------------------------------------------------------------}
@@ -562,7 +558,7 @@ begin
   end ;
 end ;
 
-{$ifdef INC_FPC_D5}
+{$IFNDEF COMPILER6_UP}
 function RoundTo(const AValue: Double; const ADigit: TRoundToRange): Double;
 var
   LFactor: Double;
@@ -614,6 +610,7 @@ end;
 
 {$endif}
 
+{$IFNDEF COMPILER7_UP}
 {-----------------------------------------------------------------------------
  *** PosEx, retirada de StrUtils.pas do Borland Delphi ***
   para compatibilizar com o Delphi 6  (que nao possui essa funçao)
@@ -648,6 +645,7 @@ begin
     Result := 0;
   end;
 end;
+{$endif}
 
 {-----------------------------------------------------------------------------
   Acha a e-nesima "Ocorrencia" de "SubStr" em "S"
@@ -1677,35 +1675,23 @@ Procedure DesligarMaquina(Reboot: Boolean = False; Forcar: Boolean = False) ;
    "Append" for verdadeiro adiciona "AString" no final do arquivo
  ---------------------------------------------------------------------------- }
 Procedure WriteToTXT( const ArqTXT, AString : AnsiString;
-   const AppendIfExists : Boolean = True);
+   const AppendIfExists : Boolean = True; AddLineBreak : Boolean = True );
 var
-  Arq : textfile;
-  Existe : Boolean ;
-  Tentativas : Integer ;
+  FS : TFileStream ;
+  Buffer : AnsiString ;
 begin
-  Existe     := AppendIfExists and FileExists(ArqTXT) ;
-  Tentativas := 0 ;
+  FS := TFileStream.Create( ArqTXT, IfThen( AppendIfExists and FileExists(ArqTXT),
+     fmOpenReadWrite, fmCreate) or fmShareDenyWrite );
+  try
+     Buffer := AString ;
+     if AddLineBreak then
+        Buffer := Buffer + sLineBreak ;
 
-  repeat
-     try
-        {$I-}
-        try
-           Inc(Tentativas) ;
-           AssignFile( Arq, ArqTXT) ;
-           if not Existe then
-              Rewrite( Arq )
-           else
-              Append( Arq ) ;
-
-           Writeln( Arq, AString ) ;
-           Tentativas := 2 ;  { Tudo OK, saia do loop }
-        finally
-           CloseFile( Arq ) ;
-        end ;
-        {$I+}
-     except
-     end ;
-   until Tentativas > 1
+     FS.Seek(0, soFromEnd);  // vai para EOF
+     FS.Write(Pointer(Buffer)^,Length(Buffer));
+  finally
+     FS.Free ;
+  end;
 end;
 
 {-----------------------------------------------------------------------------

@@ -25,6 +25,7 @@ type
      BitBtn2 : TBitBtn;
      BitBtn3: TBitBtn;
      ListBox1 : TListBox;
+     Memo1 : TMemo ;
      Panel1 : TPanel;
      Panel2 : TPanel;
      procedure FormShow(Sender: TObject);
@@ -43,9 +44,17 @@ implementation
 
 procedure TForm4.FormShow(Sender: TObject);
 begin
+   if Memo1.Lines.Count > 0 then
+   begin
+     Memo1.Width   := Trunc(Width/2)-10;
+     Memo1.Visible := True ;
+   end ;
+
    ListBox1.SetFocus;
    if ListBox1.Items.Count > 0 then
       ListBox1.ItemIndex := 0 ;
+
+
 end;
 
 end.

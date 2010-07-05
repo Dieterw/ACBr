@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 355
-  Top = 106
+  Left = 368
+  Top = 116
   Width = 741
   Height = 488
   Caption = 'TEFDDemo'
@@ -572,7 +572,7 @@ object Form1: TForm1
           Width = 142
           Height = 21
           Style = csDropDownList
-          ItemHeight = 13
+          ItemHeight = 0
           TabOrder = 0
         end
         object bAbreVendeSubTotaliza1: TButton
@@ -795,6 +795,20 @@ object Form1: TForm1
         ParentColor = False
         ParentFont = False
       end
+      object lMensagemOperador: TLabel
+        Left = 1
+        Top = 1
+        Width = 426
+        Height = 60
+        Align = alClient
+        Alignment = taCenter
+        Caption = 'lMensagemOperador'
+        Color = clBtnFace
+        ParentColor = False
+        Layout = tlCenter
+        WordWrap = True
+        OnClick = pMensagemOperadorClick
+      end
     end
     object pMensagemCliente: TPanel
       Left = 4
@@ -819,6 +833,20 @@ object Form1: TForm1
         Font.Style = []
         ParentColor = False
         ParentFont = False
+      end
+      object lMensagemCliente: TLabel
+        Left = 1
+        Top = 1
+        Width = 426
+        Height = 60
+        Align = alClient
+        Alignment = taCenter
+        Caption = 'lMensagemCliente'
+        Color = clBtnFace
+        ParentColor = False
+        Layout = tlCenter
+        WordWrap = True
+        OnClick = pMensagemOperadorClick
       end
     end
   end
@@ -919,6 +947,7 @@ object Form1: TForm1
     TEFVeSPague.TransacaoCHQ = 'Cheque Consultar'
     TEFVeSPague.TransacaoCNC = 'Administracao Cancelar'
     TEFVeSPague.TransacaoReImpressao = 'Administracao Reimprimir'
+    TEFVeSPague.TransacaoPendente = 'Administracao Pendente'
     TEFVeSPague.OnExibeMenu = ACBrTEFD1VeSPagueExibeMenu
     TEFVeSPague.OnObtemCampo = ACBrTEFD1VeSPagueObtemCampo
     TEFGPU.ArqTemp = 'C:\TEF_GPU\req\intpos.tmp'

@@ -39,6 +39,8 @@
 |*  - Primeira versao ACBrETQPpla
 |* 17/04/2009: Alexsander da Rosa
 |*  - Parametro "SubFonte" na procedure ImprimirTexto
+|* 29/05/2010: Alexsander da Rosa
+|*  - Propriedade "Unidade" para indicar milimetros/polegadas
 ******************************************************************************}
 
 {$I ACBr.inc}
@@ -86,6 +88,7 @@ begin
 
   fpModeloStr := 'PPLA';
   Temperatura := 10;
+  Unidade := 'm';
 end;
 
 procedure TACBrETQPpla.Imprimir(Copias: Integer = 1; AvancoEtq: Integer = 0);
@@ -102,7 +105,7 @@ begin
      Raise Exception.Create(ACBrStr('Tamanho máximo para o Número de Cópias 4 caracteres'));
   NCop := IntToStrZero(Copias,4);
 
-  Cmd := STX + 'L' + CRLF + STX + 'm' + CRLF + 'H' + Temp + CRLF + 'D11' + CRLF +
+  Cmd := STX + 'L' + CRLF + STX + Unidade + CRLF + 'H' + Temp + CRLF + 'D11' + CRLF +
          'Q' + NCop;
 
   {Inserindo comando iniciais na posicao Zero}
@@ -166,32 +169,31 @@ var
 begin
   Cmd := '';
 
-  if (Vertical < 0) or (Vertical > 999) then
+  if (Vertical < 0) or (Vertical > 9999) then
      Raise Exception.Create(ACBrStr('Tamanho máximo para Vertical 4 caracteres'));
   eixoY := padR(IntToStr(Vertical),4,'0');
 
-  if (Horizontal < 0) or (Horizontal > 999) then
+  if (Horizontal < 0) or (Horizontal > 9999) then
      Raise Exception.Create(ACBrStr('Tamanho máximo para Horizontal 4 caracteres'));
   eixoX := padR(IntToStr(Horizontal),4,'0');
 
-  if (Largura < 0) or (Largura > 9999) then
-     Raise Exception.Create(ACBrStr('Tamanho máximo para a Largura da Linha 4 caracteres'));
+  if (Largura < 0) or (Largura > 999) then
+     Raise Exception.Create(ACBrStr('Tamanho máximo para a Largura da Linha 3 caracteres'));
   Larg := padR(IntToStr(Largura),3,'0');
 
-  if (Altura < 0) or (Altura > 9999) then
-     Raise Exception.Create(ACBrStr('Tamanho máximo para a Largura da Linha 4 caracteres'));
+  if (Altura < 0) or (Altura > 999) then
+     Raise Exception.Create(ACBrStr('Tamanho máximo para a Altura da Linha 3 caracteres'));
   Alt := padR(IntToStr(Altura),3,'0');
 
-  if (EspessuraHorizontal < 0) or (EspessuraHorizontal > 9999) then
-     Raise Exception.Create(ACBrStr('Tamanho máximo para a Espessura das Linhas Horizontais 4 caracteres'));
+  if (EspessuraHorizontal < 0) or (EspessuraHorizontal > 999) then
+     Raise Exception.Create(ACBrStr('Tamanho máximo para a Espessura das Linhas Horizontais 3 caracteres'));
   EspH := padR(IntToStr(EspessuraHorizontal),3,'0');
 
-  if (EspessuraVertical < 0) or (EspessuraVertical > 9999) then
-     Raise Exception.Create(ACBrStr('Tamanho máximo para a Espessura das Linhas Verticais 4 caracteres'));
+  if (EspessuraVertical < 0) or (EspessuraVertical > 999) then
+     Raise Exception.Create(ACBrStr('Tamanho máximo para a Espessura das Linhas Verticais 3 caracteres'));
   EspV := padR(IntToStr(EspessuraVertical),3,'0');
 
-  Cmd := STX + 'n' + CRLF + '1X11000' + eixoY + eixoX + 'B' + Larg + Alt +
-         EspH + EspV + CRLF + STX + 'm';
+  Cmd := '1X11000' + eixoY + eixoX + 'B' + Larg + Alt + EspH + EspV;
 
   ListaCmd.Add(Cmd);
 end;
@@ -219,8 +221,7 @@ begin
      Raise Exception.Create(ACBrStr('Tamanho máximo para a Altura da Linha 3 caracteres'));
   Alt := padR(IntToStr(Altura), 3, '0');
 
-  Cmd := STX + 'n' + CRLF + '1X11000' + eixoY + eixoX + 'L' + Larg + Alt + CRLF +
-         STX + 'm';
+  Cmd := '1X11000' + eixoY + eixoX + 'L' + Larg + Alt;
 
   ListaCmd.Add(Cmd);
 end;
@@ -236,8 +237,8 @@ begin
   if ((Integer(Orientacao) + 1) < 1) or ((Integer(Orientacao) + 1) > 4) then
      Raise Exception.Create(ACBrStr('Informe um valor entre 1 e 4 para Orientação'));
 
-  if (Fonte < 0) or (Fonte > 9) then
-     Raise Exception.Create(ACBrStr('Informe um valor entre 0 e 9 para Fonte'));
+  if (Fonte < 0) or (Fonte > 10) then
+     Raise Exception.Create(ACBrStr('Informe um valor entre 0 e 10 para Fonte'));
 
   if (SubFonte < 0) or (SubFonte > 7) then
      Raise Exception.Create(ACBrStr('Informe um valor entre 0 e 7 para SubFonte'));
@@ -261,7 +262,7 @@ begin
   else
     Smooth := padR(IntToStr(SubFonte), 3, '0');
 
-  Cmd := IntToStr(Integer(Orientacao) + 1) + IntToStr(Fonte) + MultiplicadorH +
+  Cmd := IntToStr(Integer(Orientacao) + 1) + Chr(48+Fonte) + MultiplicadorH +
          MultiplicadorV + Smooth + eixoY + eixoX + Texto;
 
   ListaCmd.Add(Cmd);

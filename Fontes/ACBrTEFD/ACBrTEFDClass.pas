@@ -151,7 +151,6 @@ type
   private
     fInformacao : AnsiString;
 
-    function GetAsAnsiString: AnsiString;
     function GetAsDate : TDateTime;
     function GetAsFloat : Double;
     function GetAsInteger : Integer;
@@ -168,7 +167,6 @@ type
     procedure SetAsTimeStamp(const AValue : TDateTime);
     procedure SetAsTimeStampSQL(const AValue : TDateTime);
   public
-    property AsAnsiString : AnsiString read GetAsAnsiString write SetAsAnsiString ;
     property AsString   : AnsiString read GetAsString    write SetAsString ;
     property AsDate     : TDateTime  read GetAsDate      write SetAsDate ;
     property AsTime     : TDateTime  read GetAsTime      write SetAsTime ;
@@ -708,11 +706,6 @@ begin
   end;
 end;
 
-function TACBrTEFDLinhaInformacao.GetAsAnsiString: AnsiString;
-begin
-  Result := fInformacao;
-end;
-
 function TACBrTEFDLinhaInformacao.GetAsFloat : Double;
 Var
   Info : String ;
@@ -730,7 +723,7 @@ end;
 
 function TACBrTEFDLinhaInformacao.GetAsString: AnsiString;
 begin
-   Result := Trim(fInformacao);
+   Result := fInformacao ;
 end;
 
 function TACBrTEFDLinhaInformacao.GetAsTime : TDateTime;
@@ -895,23 +888,29 @@ begin
 end;
 
 procedure TACBrTEFDLinha.SetLinha(const AValue : AnsiString);
+Var
+  P : Integer ;
+  Chave, Valor : AnsiString ;
 begin
    if fLinha = AValue then exit;
 
    fLinha := TrimRight(AValue);
 
-   try
-     fIdentificacao := StrToInt(copy(fLinha,1,3));
-     fSequencia     := StrToInt(copy(fLinha,5,3));
-     Informacao.AsString := TrimRight(copy( fLinha, pos('=',fLinha) + 1, Length(fLinha) )) ;
-   except
-     fIdentificacao := 0 ;
-     fSequencia     := 0 ;
-     fLinha         := '' ;
-     Informacao.AsString := '' ;
+   P := pos(' = ',fLinha) ;
+   if P = 0 then
+   begin
+      Informacao.AsString := '';
+      fIdentificacao := 0 ;
+      fSequencia     := 0 ;
+      exit ;
+   end ;
 
-     raise ;
-   end;
+   Chave := copy( fLinha, 1, P - 1 ) ;
+   Valor := copy( fLinha, P + 3, Length(fLinha) ) ;
+
+   Informacao.AsString := Valor ;
+   fIdentificacao := StrToIntDef( copy(Chave,1,3), 0);
+   fSequencia     := StrToIntDef( copy(Chave,5,3), 0);
 end;
 
 

@@ -1,6 +1,6 @@
 object Form4: TForm4
-  Left = 511
-  Top = 168
+  Left = 489
+  Top = 175
   Width = 525
   Height = 399
   Caption = 'OnExibeMenu'
@@ -17,7 +17,7 @@ object Form4: TForm4
   object ListBox1: TListBox
     Left = 0
     Top = 50
-    Width = 509
+    Width = 242
     Height = 261
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
@@ -76,5 +76,20 @@ object Form4: TForm4
       TabOrder = 1
       Kind = bkRetry
     end
+  end
+  object Memo1: TMemo
+    Left = 242
+    Top = 50
+    Width = 267
+    Height = 261
+    Align = alRight
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Courier'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 3
+    Visible = False
   end
 end

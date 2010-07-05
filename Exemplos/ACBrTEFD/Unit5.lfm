@@ -3,7 +3,6 @@ object Form5: TForm5
   Height = 172
   Top = 162
   Width = 579
-  ActiveControl = Panel1
   Caption = 'OnObtemCampo'
   ClientHeight = 172
   ClientWidth = 579
@@ -31,6 +30,7 @@ object Form5: TForm5
     Anchors = [akTop]
     AutoSize = True
     Caption = '&OK'
+    Default = True
     Kind = bkOK
     ModalResult = 1
     TabOrder = 1

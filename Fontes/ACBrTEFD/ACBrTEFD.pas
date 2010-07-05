@@ -1028,7 +1028,7 @@ end;
 
 Function TACBrTEFD.ComandarECF( Operacao : TACBrTEFDOperacaoECF ) : Integer ;
 var
-   OpName : String;
+   OpName, Erro : String;
 begin
   fTefClass.GravaLog( fTefClass.Name +' ComandarECF: Oper: '+
     GetEnumName( TypeInfo(TACBrTEFDOperacaoECF), Integer(Operacao) ) ) ;
@@ -1041,13 +1041,19 @@ begin
      OpName := GetEnumName( TypeInfo(TACBrTEFDOperacaoECF), Integer(Operacao) ) ;
 
      if Result = 0 then
-        raise EACBrTEFDECF.Create( ACBrStr( 'Erro ao executar Operação: ['+OpName+']' ) )
+        Erro := 'Erro ao executar Operação: ['+OpName+']'
      else
-        raise EACBrTEFDECF.Create( ACBrStr( 'Operação ['+OpName+'] não tratada em "OnComandaECF"' ) ) ;
+        Erro := 'Operação ['+OpName+'] não tratada em "OnComandaECF"' ;
+
+     fTefClass.GravaLog(Erro);
+
+     raise EACBrTEFDECF.Create( ACBrStr( Erro ) )
   end;
 end;
 
 Function TACBrTEFD.ECFPagamento( Indice: String; Valor: Double ) : Integer ;
+Var
+   Erro : String ;
 begin
   fTefClass.GravaLog( fTefClass.Name +' ECFPagamento: Indice: '+
     Indice + ' Valor: '+FormatFloat('0.00',Valor) ) ;
@@ -1058,14 +1064,20 @@ begin
   if Result < 1 then
   begin
      if Result = 0 then
-        raise EACBrTEFDECF.Create( ACBrStr( 'Erro ao executar "OnComandaECFPagamento"' ) )
+        Erro := 'Erro ao executar "OnComandaECFPagamento"'
      else
-        raise EACBrTEFDECF.Create( ACBrStr( '"OnComandaECFPagamento" não tratada' ) ) ;
+        Erro := '"OnComandaECFPagamento" não tratada' ;
+
+     fTefClass.GravaLog(Erro);
+
+     raise EACBrTEFDECF.Create( ACBrStr( Erro ) )
   end;
 end;
 
 function TACBrTEFD.ECFAbreVinculado(COO, Indice : String; Valor : Double
    ) : Integer;
+Var
+   Erro : String ;
 begin
   fTefClass.GravaLog( fTefClass.Name +' ECFAbreVinculado: COO: '+COO+' Indice: '+
     Indice + ' Valor: '+FormatFloat('0.00',Valor) ) ;
@@ -1076,14 +1088,20 @@ begin
   if Result < 1 then
   begin
      if Result = 0 then
-        raise EACBrTEFDECF.Create( ACBrStr( 'Erro ao executar "OnComandaECFAbreVinculado"' ) )
+        Erro := 'Erro ao executar "OnComandaECFAbreVinculado"'
      else
-        raise EACBrTEFDECF.Create( ACBrStr( '"OnComandaECFAbreVinculado" não tratado' ) ) ;
+        Erro := '"OnComandaECFAbreVinculado" não tratado'  ;
+
+     fTefClass.GravaLog(Erro);
+
+     raise EACBrTEFDECF.Create( ACBrStr( Erro ) )
   end;
 end;
 
 function TACBrTEFD.ECFImprimeVia( TipoRelatorio : TACBrTEFDTipoRelatorio;
    Via : Integer; ImagemComprovante : TStringList) : Integer;
+Var
+   Erro : String ;
 begin
   fTefClass.GravaLog( fTefClass.Name +' ECFImprimeVia: '+
     GetEnumName( TypeInfo(TACBrTEFDTipoRelatorio), Integer(TipoRelatorio) ) +
@@ -1095,9 +1113,13 @@ begin
   if Result < 1 then
   begin
      if Result = 0 then
-        raise EACBrTEFDECF.Create( ACBrStr( 'Erro ao executar "OnComandaECFImprimeVia"' ) )
+        Erro := 'Erro ao executar "OnComandaECFImprimeVia"'
      else
-        raise EACBrTEFDECF.Create( ACBrStr( '"OnComandaECFImprimeVia" não tratado' ) ) ;
+        Erro := '"OnComandaECFImprimeVia" não tratado' ;
+
+     fTefClass.GravaLog(Erro);
+
+     raise EACBrTEFDECF.Create( ACBrStr( Erro ) )
   end;
 end;
 

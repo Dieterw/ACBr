@@ -1,0 +1,65 @@
+#------------------------------------------------------------------------------
+VERSION = BWS.01
+#------------------------------------------------------------------------------
+!ifndef ROOT
+ROOT = $(MAKEDIR)\..
+!endif
+#------------------------------------------------------------------------------
+MAKE = $(ROOT)\bin\make.exe -$(MAKEFLAGS) -f$**
+DCC = $(ROOT)\bin\dcc32.exe $**
+BRCC = $(ROOT)\bin\brcc32.exe $**
+#------------------------------------------------------------------------------
+PROJECTS = ACBrComum.bpl ACBrDiversos.bpl ACBrSerial.bpl ACBr_SPED.bpl \
+  ACBr_PAF.bpl ACBr_Sintegra.bpl ACBr_TEFD.bpl ACBrTCP.bpl ACBr_Boleto.bpl \
+  ACBr_NFe.bpl ACBrNFeDanfeRVCodeBase.bpl ACBrNFeDanfeRV.bpl \
+  ACBrNFeDanfeQRpkg.bpl ACBr_CTe.bpl ACBrCTeDacteQRpkg.bpl
+#------------------------------------------------------------------------------
+default: $(PROJECTS)
+#------------------------------------------------------------------------------
+
+ACBrDiversos.bpl: ACBrDiversos.dpk
+  $(DCC)
+
+ACBrComum.bpl: ACBrComum.dpk
+  $(DCC)
+
+ACBrSerial.bpl: ACBrSerial.dpk
+  $(DCC)
+
+ACBr_PAF.bpl: ACBr_PAF.dpk
+  $(DCC)
+
+ACBr_Sintegra.bpl: ACBr_Sintegra.dpk
+  $(DCC)
+
+ACBr_SPED.bpl: ACBr_SPED.dpk
+  $(DCC)
+
+ACBr_TEFD.bpl: ACBr_TEFD.dpk
+  $(DCC)
+
+ACBrTCP.bpl: ACBrTCP.dpk
+  $(DCC)
+
+ACBr_Boleto.bpl: ACBr_Boleto.dpk
+  $(DCC)
+
+ACBr_NFe.bpl: ACBrNFe\ACBr_NFe.dpk
+  $(DCC)
+
+ACBrNFeDanfeRV.bpl: ACBrNFe\ACBrNFeDanfeRV.dpk
+  $(DCC)
+
+ACBrNFeDanfeRVCodeBase.bpl: ACBrNFe\ACBrNFeDanfeRVCodeBase.dpk
+  $(DCC)
+
+ACBrNFeDanfeQRpkg.bpl: ACBrNFe\ACBrNFeDanfeQRpkg.dpk
+  $(DCC)
+
+ACBr_CTe.bpl: ACBrNFe\ACBr_CTe.dpk
+  $(DCC)
+
+ACBrCTeDacteQRpkg.bpl: ACBrNFe\ACBrCTeDacteQRpkg.dpk
+  $(DCC)
+
+

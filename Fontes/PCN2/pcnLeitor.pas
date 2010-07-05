@@ -122,7 +122,6 @@ begin
     FArquivo := Stream.DataString;
     Result := True;
   except
-    Result := False;
     raise;
   end;
 end;

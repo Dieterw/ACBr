@@ -79,7 +79,7 @@ type
     CustomLocalRetiradaCXN: TRvCustomConnection;
     CustomLocalEntregaCXN: TRvCustomConnection;
 
-    constructor create( AOwner : TComponent ); override ;
+    constructor Create( AOwner : TComponent ); override ;
     procedure RvSystem1BeforePrint(Sender: TObject);
     procedure CustomDestinatarioCXNGetCols(Connection: TRvCustomConnection);
     procedure CustomDestinatarioCXNGetRow(Connection: TRvCustomConnection);
@@ -194,7 +194,11 @@ begin
       else
          if vChar > #127 then
            Resultado := #32
+         {$IF CompilerVersion >= 20}
+         else if CharInset(vChar, ['a'..'z','A'..'Z','0'..'9','-',' ']) then
+         {$ELSE}
          else if vChar in ['a'..'z','A'..'Z','0'..'9','-',' '] then
+         {$ENDIF}
            resultado:=uppercase(vCHAR);
       end;
       result:=result+resultado;
@@ -490,7 +494,12 @@ var
    IndexCampo,IndexCampo2:Integer;
    Campos,Campos2:ArrOfStr;
 
-   BufferXProd, BufferXInfProd : PAnsiChar;
+   {$IF CompilerVersion >= 20}
+   BufferXProd, BufferXInfProd: PWideChar;
+   {$ELSE}
+   BufferXProd, BufferXInfProd: PAnsiChar;
+   {$ENDIF}
+
    size:integer;
    TmpStr : String;
 
@@ -512,10 +521,12 @@ begin
             TmpStr := vTemp.Text;
             {$IF CompilerVersion >= 20} //Igual ou Superior ao Delphi2009
                Size := Length(TmpStr) * 2;
+               BufferXProd := PWideChar(TmPStr);
             {$ELSE}
                Size := Length(TmpStr);
-            {$IFEND}
-            BufferXProd := PAnsiChar(TmPStr);
+               BufferXProd := PAnsiChar(TmPStr);
+            {$ENDIF}
+            //BufferXProd := PAnsiChar(TmPStr);
             Connection.WriteBlobData(BufferXProd^, Size);
          finally
             vTemp.Free;
@@ -572,10 +583,12 @@ begin
                TmpStr := vTemp2.Text;
                {$IF CompilerVersion >= 20} //Igual ou Superior ao Delphi2009
                   Size := Length(TmpStr) * 2;
+                  BufferXInfProd := PWideChar(TmPStr);
                {$ELSE}
                   Size := Length(TmpStr);
-               {$IFEND}
-               BufferXInfProd := PAnsiChar(TmPStr);
+                  BufferXInfProd := PAnsiChar(TmPStr);
+               {$ENDIF}
+               //BufferXInfProd := PAnsiChar(TmPStr);
             end
             else
             begin
@@ -1176,7 +1189,11 @@ var
   vTemp: TStringList;
   IndexCampo:Integer;
   Campos: ArrOfStr;
+  {$IF CompilerVersion >= 20}
+  BufferInfCpl: PWideChar;
+  {$ELSE}
   BufferInfCpl: PAnsiChar;
+  {$ENDIF}
   size: integer;
   TmpStr: String;
   wContingencia: string;
@@ -1241,10 +1258,12 @@ begin
          TmpStr := vTemp.Text;
          {$IF CompilerVersion >= 20} //Igual ou Superior ao Delphi2009
             Size := Length(TmpStr) * 2;
+            BufferInfCpl := PWideChar(TmpStr);
          {$ELSE}
             Size := Length(TmpStr);
-         {$IFEND}
-         BufferInfCpl:=PAnsiChar(TmpStr);
+            BufferInfCpl := PAnsiChar(TmpStr);
+         {$ENDIF}
+         //BufferInfCpl:=PAnsiChar(TmpStr);
       end
       else
       begin

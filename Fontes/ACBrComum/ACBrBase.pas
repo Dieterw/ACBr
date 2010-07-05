@@ -117,7 +117,7 @@ TACBrThreadTimer = class(TThread)
     procedure Execute; override;
   public
     constructor Create ;
-  published
+  //published
     property OnTimer  : TNotifyEvent read fsOnTimer write fsOnTimer ;
     property Interval : Integer read fsInterval write SetInterval ;
     property Enabled : Boolean read fsEnabled write SetEnabled ;

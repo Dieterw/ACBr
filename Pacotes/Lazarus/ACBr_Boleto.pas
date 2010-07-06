@@ -8,7 +8,7 @@ interface
 
 uses
     ACBrBoleto, ACBrBancoBradesco, ACBrBancoBrasil, ACBrBancoItau, 
-  ACBrBancoSicredi, LazarusPackageIntf;
+  ACBrBancoSicredi, ACBrBancoMercantil, LazarusPackageIntf;
 
 implementation
 

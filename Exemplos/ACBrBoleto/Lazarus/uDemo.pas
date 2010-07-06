@@ -96,6 +96,7 @@ type
      procedure btnIncluiBoletoClick ( Sender: TObject ) ;
      procedure btnIncluir10BoletosClick ( Sender: TObject ) ;
      procedure btnImprimirClick ( Sender: TObject ) ;
+     procedure btnZerarClick ( Sender: TObject ) ;
      procedure Button1Click ( Sender: TObject ) ;
      procedure Button2Click ( Sender: TObject ) ;
      procedure FormCreate ( Sender: TObject ) ;
@@ -175,6 +176,11 @@ begin
    ACBrBoleto1.Imprimir;
 end;
 
+procedure TfrmDemo.btnZerarClick ( Sender: TObject ) ;
+begin
+   ACBrBoleto1.ListadeBoletos.Clear;
+end;
+
 procedure TfrmDemo.FormCreate ( Sender: TObject ) ;
 begin
    edtDataDoc.Date    := Now;
@@ -225,7 +231,7 @@ begin
         DataProtesto      := edtDataProtesto.Date;
         PercentualMulta   := StrToCurrDef(edtMulta.Text,0);
         Mensagem.Text     := memMensagem.Text;
-        TipoOcorrencia    := toRemessaBaixar;
+        OcorrenciaOriginal.Tipo  := toRemessaBaixar;
         Instrucao1        := padL(trim(edtInstrucoes1.Text),2,'0');
         Instrucao2        := padL(trim(edtInstrucoes2.Text),2,'0');
 

@@ -1,11 +1,11 @@
 object frmDemo: TfrmDemo
-  Left = 127
-  Height = 559
-  Top = 108
-  Width = 816
+  Left = 144
+  Height = 595
+  Top = 28
+  Width = 832
   Caption = 'Demo ACBrBoleto'
-  ClientHeight = 559
-  ClientWidth = 816
+  ClientHeight = 595
+  ClientWidth = 832
   OnCreate = FormCreate
   Position = poScreenCenter
   LCLVersion = '0.9.29'
@@ -14,7 +14,7 @@ object frmDemo: TfrmDemo
     Height = 72
     Top = 8
     Width = 794
-    Caption = 'InformaÃ§Ãµes Sobre a CobranÃ§a'
+    Caption = 'Informações Sobre a Cobrança'
     ClientHeight = 54
     ClientWidth = 790
     TabOrder = 0
@@ -32,7 +32,7 @@ object frmDemo: TfrmDemo
       Top = 24
       Width = 260
       TabOrder = 0
-      Text = 'Pagar preferÃªncialmente nas agÃªncias do '
+      Text = 'Pagar preferêncialmente nas agências do '
     end
     object edtEspecieDoc: TEdit
       Left = 280
@@ -47,7 +47,7 @@ object frmDemo: TfrmDemo
       Height = 16
       Top = 8
       Width = 75
-      Caption = 'EspÃ©cie Docto'
+      Caption = 'Espécie Docto'
       ParentColor = False
     end
     object Label9: TLabel
@@ -63,7 +63,7 @@ object frmDemo: TfrmDemo
       Height = 16
       Top = 8
       Width = 80
-      Caption = 'EspÃ©cie Moeda'
+      Caption = 'Espécie Moeda'
       ParentColor = False
     end
     object edtEspecieMod: TEdit
@@ -99,7 +99,7 @@ object frmDemo: TfrmDemo
       ItemIndex = 0
       Items.Strings = (
         'Sim'
-        'NÃ£o'
+        'Não'
       )
       TabOrder = 3
       Text = 'Sim'
@@ -126,12 +126,12 @@ object frmDemo: TfrmDemo
     Height = 122
     Top = 215
     Width = 578
-    Caption = 'Mensagens \ InstruÃ§Ãµes'
+    Caption = 'Mensagens \ Instruções'
     ClientHeight = 104
     ClientWidth = 574
     TabOrder = 3
     object memMensagem: TMemo
-      Left = 6
+      Left = 0
       Height = 84
       Top = 7
       Width = 312
@@ -142,7 +142,7 @@ object frmDemo: TfrmDemo
       Height = 16
       Top = 7
       Width = 59
-      Caption = 'InstruÃ§Ã£o 2'
+      Caption = 'Instrução 2'
       ParentColor = False
     end
     object edtInstrucoes2: TEdit
@@ -153,7 +153,7 @@ object frmDemo: TfrmDemo
       TabOrder = 1
     end
     object edtInstrucoes1: TEdit
-      Left = 334
+      Left = 336
       Height = 23
       Top = 24
       Width = 107
@@ -164,7 +164,7 @@ object frmDemo: TfrmDemo
       Height = 16
       Top = 7
       Width = 59
-      Caption = 'InstruÃ§Ã£o 1'
+      Caption = 'Instrução 1'
       ParentColor = False
     end
     object Panel1: TPanel
@@ -172,7 +172,7 @@ object frmDemo: TfrmDemo
       Height = 26
       Top = 65
       Width = 230
-      Caption = '* Informar o CÃ³digo do InstruÃ§Ã£o'
+      Caption = '* Informar o Código do Instrução'
       Font.Color = clHighlight
       Font.Style = [fsBold]
       ParentFont = False
@@ -182,11 +182,11 @@ object frmDemo: TfrmDemo
   object Panel2: TPanel
     Left = 0
     Height = 50
-    Top = 509
-    Width = 816
+    Top = 545
+    Width = 832
     Align = alBottom
     ClientHeight = 50
-    ClientWidth = 816
+    ClientWidth = 832
     TabOrder = 5
     object btnIncluiBoleto: TButton
       Left = 360
@@ -202,7 +202,7 @@ object frmDemo: TfrmDemo
       Height = 33
       Top = 7
       Width = 128
-      Caption = 'Incluir VÃ¡rios Boletos'
+      Caption = 'Incluir Vários Boletos'
       OnClick = btnIncluir10BoletosClick
       TabOrder = 1
     end
@@ -230,10 +230,11 @@ object frmDemo: TfrmDemo
       Top = 7
       Width = 123
       Caption = 'Zerar Lista de Boletos'
+      OnClick = btnZerarClick
       TabOrder = 4
     end
     object Button1: TButton
-      Left = 111
+      Left = 112
       Height = 33
       Top = 7
       Width = 75
@@ -256,7 +257,7 @@ object frmDemo: TfrmDemo
     Height = 249
     Top = 88
     Width = 208
-    Caption = 'InformaÃ§Ãµes Sobre a Duplicata '
+    Caption = 'Informações Sobre a Duplicata '
     ClientHeight = 231
     ClientWidth = 204
     TabOrder = 2
@@ -273,7 +274,7 @@ object frmDemo: TfrmDemo
       Height = 16
       Top = 6
       Width = 48
-      Caption = 'NÃºmero '
+      Caption = 'Número '
       ParentColor = False
     end
     object Label3: TLabel
@@ -281,7 +282,7 @@ object frmDemo: TfrmDemo
       Height = 16
       Top = 120
       Width = 71
-      Caption = 'Data EmissÃ£o'
+      Caption = 'Data Emissão'
       ParentColor = False
     end
     object Label2: TLabel
@@ -416,7 +417,7 @@ object frmDemo: TfrmDemo
     Height = 160
     Top = 344
     Width = 794
-    Caption = 'InformaÃ§Ãµes do Sacado'
+    Caption = 'Informações do Sacado'
     ClientHeight = 142
     ClientWidth = 790
     TabOrder = 4
@@ -449,7 +450,7 @@ object frmDemo: TfrmDemo
       Height = 16
       Top = 56
       Width = 50
-      Caption = 'EndereÃ§o'
+      Caption = 'Endereço'
       ParentColor = False
     end
     object edtEndereco: TEdit
@@ -465,7 +466,7 @@ object frmDemo: TfrmDemo
       Height = 16
       Top = 56
       Width = 45
-      Caption = 'NÃºmero'
+      Caption = 'Número'
       ParentColor = False
     end
     object edtNumero: TEdit
@@ -589,7 +590,7 @@ object frmDemo: TfrmDemo
     Height = 118
     Top = 88
     Width = 578
-    Caption = 'AcrÃ©scimos\Descontos'
+    Caption = 'Acréscimos\Descontos'
     ClientHeight = 100
     ClientWidth = 574
     TabOrder = 1
@@ -901,8 +902,14 @@ object frmDemo: TfrmDemo
     Cedente.AgenciaDigito = '4'
     Cedente.Conta = '079489'
     Cedente.ContaDigito = '9'
-    Cedente.TipoInscricao = tiPessoaFisica
-    Banco.Numero = 237
+    Cedente.TipoInscricao = pOutras
+    Cedente.Logradouro = 'Rua  XI de Agosto'
+    Cedente.NumeroRes = '100'
+    Cedente.Bairro = 'Centro'
+    Cedente.Cidade = 'Tatui'
+    Cedente.UF = 'SP'
+    Cedente.CEP = '18270000'
+    Banco.Numero = 389
     NomeArqRemessa = 'cb00001.rem'
     DirArqRemessa = '.\remessa\'
     LayoutRemessa = c240

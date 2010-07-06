@@ -156,7 +156,7 @@ begin
         DataProtesto      := StrToDateDef(edtDataProtesto.Text, 0);
         PercentualMulta   := StrToCurrDef(edtMulta.Text,0);
         Mensagem.Text     := memMensagem.Text;
-        TipoOcorrencia    := toRemessaBaixar;
+        OcorrenciaOriginal.Tipo := toRemessaBaixar;
         Instrucao1        := padL(trim(edtInstrucoes1.Text),2,'0');
         Instrucao2        := padL(trim(edtInstrucoes2.Text),2,'0');
 

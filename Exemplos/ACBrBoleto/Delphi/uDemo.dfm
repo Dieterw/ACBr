@@ -1,9 +1,9 @@
 object frmDemo: TfrmDemo
-  Left = 205
-  Top = 112
+  Left = 113
+  Top = 182
   Width = 817
   Height = 560
-  Caption = 'Demo ACBrBoleto'
+  Caption = 'Demo ACBrBoleto '
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -618,7 +618,7 @@ object frmDemo: TfrmDemo
     Cedente.AgenciaDigito = '5'
     Cedente.Conta = '079489'
     Cedente.ContaDigito = '9'
-    Cedente.TipoInscricao = tiPessoaFisica
+    Cedente.TipoInscricao = pOutras
     Banco.Numero = 237
     NomeArqRemessa = 'cb00001.rem'
     DirArqRemessa = '.\remessa\'

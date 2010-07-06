@@ -56,7 +56,7 @@ uses ACBrBase,  {Units da ACBr}
      Graphics, Contnrs, Classes;
 
 const
-  CACBrBoleto_Versao = '0.0.14a' ;
+  CACBrBoleto_Versao = '0.0.15a' ;
 
 type
   TACBrTitulo = class;
@@ -86,6 +86,24 @@ type
     toRemessaAlterarNomeEnderecoSacado,
     toRemessaAlterarNumeroControle,
     toRemessaOutrasOcorrencias,
+    toRemessaAlterarControleParticipante,
+    toRemessaAlterarSeuNumero,
+    toRemessaTransfCessaoCreditoIDProd10,
+    toRemessaTransferenciaCarteira,
+    toRemessaDevTransferenciaCarteira,
+    toRemessaDesagendarDebitoAutomatico,
+    toRemessaAcertarRateioCredito,
+    toRemessaCancelarRateioCredito,
+    toRemessaAlterarUsoEmpresa,
+    toRemessaNaoProtestar,
+    toRemessaProtestoFinsFalimentares,
+    toRemessaBaixaporPagtoDiretoCedente,
+    toRemessaCancelarInstrucao,
+    toRemessaAlterarVencSustarProtesto,
+    toRemessaCedenteDiscordaSacado,
+    toRemessaCedenteSolicitaDispensaJuros,
+    toRemessaOutrasAlteracoes,
+    toRemessaAlterarModalidade,
 
     {Ocorrências para arquivo retorno}
     toRetornoRegistroConfirmado,
@@ -97,8 +115,11 @@ type
     toRetornoLiquidadoSaldoRestante,
     toRetornoLiquidadoSemRegistro,
     toRetornoLiquidadoPorConta,
+    toRetornoLiquidadoAposBaixaouNaoRegistro,
     toRetornoBaixaSolicitada,
     toRetornoBaixado,
+    toRetornoBaixadoViaArquivo,
+    toRetornoBaixadoInstAgencia,
     toRetornoBaixadoPorDevolucao,
     toRetornoBaixadoFrancoPagamento,
     toRetornoBaixaPorProtesto,
@@ -145,8 +166,33 @@ type
     toRetornoDebitoTarifas,
     toRetornoAcertoDepositaria,
     toRetornoOutrasOcorrencias,
-    toRetornoOcorrenciasdoSacado
+    toRetornoOcorrenciasdoSacado,
+    toRetornoTituloPagoemCheque,
+    toRetornoAcertoControleParticipante,
+    toRetornoTituloPagamentoCancelado,
+    toRetornoEntradaRejeitaCEPIrregular,
+    toRetornoBaixaRejeitada,
+    toRetornoALteracaoOutrosDadosRejeitada,
+    toRetornoDesagendamentoDebitoAutomatico,
+    toRetornoEstornoPagamento,
+    toRetornoSustadoJudicial,
+    toRetornoAcertoDadosRateioCredito,
+    toRetornoCancelamentoDadosRateio
   );
+
+  {TACBrOcorrencia}
+  TACBrOcorrencia = class
+  private
+     fTipo: TACBrTipoOcorrencia;
+     fpAOwner: TACBrTitulo;
+     function GetCodigoBanco: String;
+     function GetDescricao: String;
+  public
+     constructor Create(AOwner: TACBrTitulo);
+     property Tipo: TACBrTipoOcorrencia read fTipo write fTipo;
+     property Descricao  : String  read GetDescricao;
+     property CodigoBanco: String  read GetCodigoBanco;
+  end;
 
   { TACBrBancoClass }
 
@@ -175,9 +221,10 @@ type
 
     function CalcularDigitoVerificador(const ACBrTitulo : TACBrTitulo): String; virtual;
 
-    function CodOcorrenciatoDescricaoOcorrenciaOriginal(const CodOcorrencia:String): String; virtual; abstract;
-    function CodOcorrenciatoTipoOcorrenciaOriginal(const CodOcorrencia:Integer): TACBrTipoOcorrencia; virtual; abstract;
-    function CodMotivotoDescricaoMotivoRejeicao(const CodMotivo:Integer): String; virtual; abstract;
+    function TipoOcorrenciaToDescricao(const TipoOcorrencia: TACBrTipoOcorrencia): String; virtual; abstract;
+    function CodOcorrenciaToTipo(const CodOcorrencia:Integer): TACBrTipoOcorrencia; virtual; abstract;
+    function TipoOCorrenciaToCod(const TipoOcorrencia: TACBrTipoOcorrencia): String; virtual; abstract;
+    function CodMotivoRejeicaoToDescricao(const TipoOcorrencia: TACBrTipoOcorrencia;CodMotivo:Integer): String; virtual; abstract;
 
     function MontarCodigoBarras(const ACBrTitulo : TACBrTitulo): String; virtual;
     function MontarCampoNossoNumero(const ACBrTitulo : TACBrTitulo): String; virtual;
@@ -217,9 +264,10 @@ type
     property BancoClass : TACBrBancoClass read fBancoClass ;
     property TamanhoMaximoNossoNum :Integer read GetTamanhoMaximoNossoNum;
 
-    function CodOcorrenciatoDescricaoOcorrenciaOriginal(const CodOcorrencia:String): String;
-    function CodOcorrenciatoTipoOcorrenciaOriginal(const CodOcorrencia:Integer): TACBrTipoOcorrencia;
-    function CodMotivotoDescricaoMotivoRejeicao(const CodMotivo:Integer): String;
+    function TipoOcorrenciaToDescricao(const TipoOcorrencia: TACBrTipoOcorrencia): String;
+    function CodOcorrenciaToTipo(const CodOcorrencia:Integer): TACBrTipoOcorrencia;
+    function TipoOCorrenciaToCod(const TipoOcorrencia: TACBrTipoOcorrencia): String;
+    function CodMotivoRejeicaoToDescricao(const TipoOcorrencia: TACBrTipoOcorrencia;CodMotivo:Integer): String;
 
     function CalcularDigitoVerificador(const ACBrTitulo : TACBrTitulo): String;
 
@@ -244,8 +292,9 @@ type
     property Nome      : String         read GetNome    write SetNome   stored false;
   end;
 
-  TACBrTipoBoleto = (tbCliEmite,tbBancoEmite,tbBancoReemite,tbBancoNaoReemite);
-  TACBrTipoInscricao = (tiPessoaFisica, tiPessoaJuridica, tiOutro);
+  TACBrResponEmissao = (tbCliEmite,tbBancoEmite,tbBancoReemite,tbBancoNaoReemite);
+  TACBrPessoa = (pFisica,pJuridica,pOutras);
+//  TACBrTipoInscricao = (tiPessoaFisica, tiPessoaJuridica, tiOutro);
 
   {Aceite do titulo}
   TACBrAceiteTitulo = (atSim, atNao);   
@@ -254,7 +303,13 @@ type
 
   TACBrCedente = class(TComponent)
   private
+    fLogradouro: String;
+    fBairro: String;
+    fNumeroRes: String;
+    fCEP: String;
+    fCidade: String;
     fCodigoCedente: String;
+    fComplemento: String;
     fNomeCedente   : String;
     fAgencia       : String;
     fAgenciaDigito : String;
@@ -262,10 +317,13 @@ type
     fContaDigito   : String;
     fModalidade    : String;
     fConvenio      : String;
-    fTipoBoleto    : TACBrTipoBoleto;
+    fNumero: String;
+    fResponEmissao : TACBrResponEmissao;
     fCNPJCPF       : String;
-    fTipoInscricao : TACBrTipoInscricao;
+    fTipoInscricao : TACBrPessoa;
+    fUF: String;
     procedure SetCNPJCPF ( const AValue: String ) ;
+    procedure SetTipoInscricao ( const AValue: TACBrPessoa ) ;
   public
     constructor Create( AOwner : TComponent ) ; override ;
     destructor Destroy; override;
@@ -278,13 +336,17 @@ type
     property ContaDigito  : String read fContaDigito   write fContaDigito;
     property Modalidade   : String read fModalidade    write fModalidade;
     property Convenio     : String read fConvenio      write fConvenio;
-    property TipoBoleto   : TACBrTipoBoleto read fTipoBoleto    write fTipoBoleto default tbCliEmite ;
-    {Todo: Validar CNPJCPF - SetCNPJCPF}
+    property ResponEmissao: TACBrResponEmissao read fResponEmissao  write fResponEmissao default tbCliEmite ;
     property CNPJCPF      : String  read fCNPJCPF  write SetCNPJCPF;
-    property TipoInscricao: TACBrTipoInscricao  read fTipoInscricao write fTipoInscricao default tiPessoaJuridica;
+    property TipoInscricao: TACBrPessoa  read fTipoInscricao write  SetTipoInscricao;
+    property Logradouro  : String  read fLogradouro  write fLogradouro;
+    property NumeroRes   : String  read fNumeroRes      write fNumeroRes;
+    property Complemento : String  read fComplemento write fComplemento;
+    property Bairro      : String  read fBairro      write fBairro;
+    property Cidade      : String  read fCidade      write fCidade;
+    property UF          : String  read fUF          write fUF;
+    property CEP         : String  read fCEP         write fCEP;
   end;
-
-  TACBrPessoa = (pFisica,pJuridica,pOutras);
 
   TACBrSacado = class
   private
@@ -327,6 +389,7 @@ type
     fInstrucao1        : String;
     fInstrucao2        : String;
     fLocalPagamento    : String;
+    fOcorrenciaOriginal: TACBrOcorrencia;
     fParcela           : Integer;
     fPercentualMulta   : Double;
     fSeuNumero         : String;
@@ -346,9 +409,9 @@ type
     fInstrucoes        : TStrings;
     fSacado            : TACBrSacado;
 
-    fTipoOcorrencia                 : TACBrTipoOcorrencia;
-    fOcorrenciaOriginal             : String;
-    fDescricaoOcorrenciaOriginal    : String;
+    //fTipoOcorrencia                 : TACBrTipoOcorrencia;
+    //fOcorrenciaOriginal             : String;
+    //fDescricaoOcorrenciaOriginal    : String;
     fMotivoRejeicaoComando          : String;
     fDescricaoMotivoRejeicaoComando : String;
 
@@ -373,6 +436,7 @@ type
 
     procedure SetNossoNumero ( const AValue: String ) ;
     procedure SetParcela ( const AValue: Integer ) ;
+    procedure SetTipoOcorrencia ( const AValue: TACBrTipoOcorrencia ) ;
    public
      constructor Create(ACBrBoleto:TACBrBoleto);
      destructor Destroy; override;
@@ -397,9 +461,10 @@ type
      property Parcela           :Integer      read fParcela           write SetParcela default 1;
      property TotalParcelas     :Integer      read fTotalParcelas     write fTotalParcelas default 1;
 
-     property TipoOcorrencia                 : TACBrTipoOcorrencia read fTipoOcorrencia  write fTipoOcorrencia default toRemessaRegistrar ;
-     property OcorrenciaOriginal             : String    read fOcorrenciaOriginal  write fOcorrenciaOriginal;
-     property DescricaoOcorrenciaOriginal    : String    read fDescricaoOcorrenciaOriginal  write fDescricaoOcorrenciaOriginal;
+     //property TipoOcorrencia                 : TACBrTipoOcorrencia read fTipoOcorrencia  write SetTipoOcorrencia default toRemessaRegistrar ;
+     property OcorrenciaOriginal : TACBrOcorrencia read  fOcorrenciaOriginal write fOcorrenciaOriginal;
+     //property OcorrenciaOriginal             : String    read fOcorrenciaOriginal  write fOcorrenciaOriginal;
+     //property DescricaoOcorrenciaOriginal    : String    read fDescricaoOcorrenciaOriginal  write fDescricaoOcorrenciaOriginal;
      property MotivoRejeicaoComando          : String    read fMotivoRejeicaoComando  write fMotivoRejeicaoComando;
      property DescricaoMotivoRejeicaoComando : String    read fDescricaoMotivoRejeicaoComando  write fDescricaoMotivoRejeicaoComando;
      property DataOcorrencia                 : TDateTime read fDataOcorrencia  write fDataOcorrencia;
@@ -453,6 +518,7 @@ TACBrBoleto = class( TACBrComponent )
     fCedente        : TACBrCedente;
     fNomeArqRemessa: String;
     fNomeArqRetorno: String;
+    fLeCedenteRetorno: boolean;
     function GetAbout: String;
     procedure SetAbout(const AValue: String);
     procedure SetACBrBoletoFC(const Value: TACBrBoletoFCClass);
@@ -486,6 +552,7 @@ TACBrBoleto = class( TACBrComponent )
     property DirArqRemessa  : String             read fDirArqRemessa          write SetDirArqRemessa;
     property NomeArqRetorno : String             read fNomeArqRetorno         write fNomeArqRetorno;
     property DirArqRetorno  : String             read fDirArqRetorno          write SetDirArqRetorno;
+    property LeCedenteRetorno :boolean           read fLeCedenteRetorno       write fLeCedenteRetorno default false;
     property LayoutRemessa  : TACBrLayoutRemessa read fLayoutRemessa          write fLayoutRemessa default c400;
     property ImprimirMensagemPadrao : Boolean    read fImprimirMensagemPadrao write fImprimirMensagemPadrao default True;
     property ACBrBoletoFC : TACBrBoletoFCClass   read fACBrBoletoFC           write SetACBrBoletoFC;
@@ -549,7 +616,7 @@ procedure Register;
 implementation
 
 Uses ACBrUtil, ACBrBancoBradesco, ACBrBancoBrasil, ACBrBancoItau, ACBrBancoSicredi,
-     Forms, {$IFDEF COMPILER6_UP} StrUtils {$ELSE} ACBrD5{$ENDIF}, Math;
+     ACBrBancoMercantil, Forms, {$IFDEF COMPILER6_UP} StrUtils {$ELSE} ACBrD5{$ENDIF}, Math;
 
 {$IFNDEF FPC}
    {$R ACBrBoleto.dcr}
@@ -565,31 +632,42 @@ procedure TACBrCedente.SetCNPJCPF ( const AValue: String ) ;
 var
    ACbrValidador: TACBrValidador;
 begin
-   if CNPJCPF = AValue then
+   if fCNPJCPF = AValue then
       exit;
 
-   if TipoInscricao <> tiOutro then
+   if TipoInscricao = pOutras then
    begin
-      ACbrValidador := TACBrValidador.Create(Self);
-      try
-        with ACbrValidador do
-        begin
-          if TipoInscricao = tiPessoaFisica then
-             TipoDocto := docCPF
-          else
-             TipoDocto := docCNPJ;
-
-          IgnorarChar := './-';
-          RaiseExcept := True;
-          Documento   := AValue;
-          Validar;    // Dispara Exception se Documento estiver errado
-		  
-          fCNPJCPF := AValue;
-        end;
-      finally
-         ACbrValidador.Free;
-      end;
+      fCNPJCPF := AValue;
+      exit;
    end;
+
+   ACbrValidador := TACBrValidador.Create(Self);
+   try
+     with ACbrValidador do
+     begin
+        if TipoInscricao = pFisica then
+           TipoDocto := docCPF
+        else
+           TipoDocto := docCNPJ;
+
+        IgnorarChar := './-';
+        RaiseExcept := True;
+        Documento   := AValue;
+        Validar;    // Dispara Exception se Documento estiver errado
+
+        fCNPJCPF := Formatar;
+     end;
+   finally
+      ACbrValidador.Free;
+   end;
+end;
+
+procedure TACBrCedente.SetTipoInscricao ( const AValue: TACBrPessoa ) ;
+begin
+   if fTipoInscricao = AValue then
+      exit;
+
+   fTipoInscricao := AValue;
 end;
 
 constructor TACBrCedente.Create( AOwner : TComponent );
@@ -603,7 +681,9 @@ begin
   fContaDigito   := '';
   fModalidade    := '';
   fConvenio      := '';
-  fTipoBoleto    := tbCliEmite;
+  fCNPJCPF       := '';
+  fResponEmissao := tbCliEmite;
+  fTipoInscricao := pOutras;
 end;
 
 destructor TACBrCedente.Destroy;
@@ -630,6 +710,17 @@ begin
    fParcela := AValue;
 end;
 
+procedure TACBrTitulo.SetTipoOcorrencia ( const AValue: TACBrTipoOcorrencia ) ;
+begin
+   {with ACBrBoleto.Banco do
+   begin
+      if AValue in OcorrenciasValidas then}
+         fOcorrenciaOriginal.Tipo := AValue
+    {  else
+         raise Exception.Create(ACBrStr('Ocorrência inválida para o banco '+ Nome));
+   end;}
+end;
+
 { TACBrTitulo }
 
 constructor TACBrTitulo.Create(ACBrBoleto:TACBrBoleto);
@@ -652,9 +743,10 @@ begin
   fMensagem          := TStringList.Create;
   fInstrucoes        := TStringList.Create;
   fSacado            := TACBrSacado.Create;
-  fTipoOcorrencia                 := toRemessaRegistrar;
-  fOcorrenciaOriginal             := '';
-  fDescricaoOcorrenciaOriginal    := '';
+  fOcorrenciaOriginal:= TACBrOcorrencia.Create(Self);
+  //fTipoOcorrencia                 := toRemessaRegistrar;
+  //fOcorrenciaOriginal             := '';
+  //fDescricaoOcorrenciaOriginal    := '';
   fMotivoRejeicaoComando          := '';
   fDescricaoMotivoRejeicaoComando := '';
 
@@ -682,6 +774,7 @@ begin
   fMensagem.Free;
   fSacado.Free;
   fInstrucoes.Free;
+  fOcorrenciaOriginal.Free;
   inherited;
 end;
 
@@ -937,6 +1030,7 @@ begin
       237 : fBancoClass := TACBrBancoBradesco.create(Self);
       341 : fBancoClass := TACBrBancoItau.Create(self);
       748 : fBancoClass := TACBrBancoSicredi.Create(self);
+      389 : fBancoClass := TACBrBancoMercantil.create(Self);
    else
       fBancoClass := TACBrBancoClass.create(Self);
    end;
@@ -959,22 +1053,27 @@ begin
    fBancoClass := TACBrBancoClass.create(Self);
 end;
 
-function TACBrBanco.CodOcorrenciatoDescricaoOcorrenciaOriginal( const CodOcorrencia: String
+function TACBrBanco.TipoOcorrenciaToDescricao( const TipoOcorrencia: TACBrTipoOcorrencia
    ) : String;
 begin
-   Result:= BancoClass.CodOcorrenciatoDescricaoOcorrenciaOriginal(CodOcorrencia);
+   Result:= BancoClass.TipoOcorrenciaToDescricao(TipoOCorrencia);
 end;
 
-function TACBrBanco.CodOcorrenciatoTipoOcorrenciaOriginal(
-   const CodOcorrencia: Integer ) : TACBrTipoOcorrencia;
+function TACBrBanco.CodOcorrenciaToTipo(const CodOcorrencia: Integer ) : TACBrTipoOcorrencia;
 begin
-   Result:= BancoClass.CodOcorrenciatoTipoOcorrenciaOriginal(CodOcorrencia);
+   Result:= BancoClass.CodOcorrenciaToTipo(CodOcorrencia);
 end;
 
-function TACBrBanco.CodMotivotoDescricaoMotivoRejeicao ( const CodMotivo: Integer
-   ) : String;
+function TACBrBanco.TipoOCorrenciaToCod (
+   const TipoOcorrencia: TACBrTipoOcorrencia ) : String;
 begin
-  Result:= BancoClass.CodMotivotoDescricaoMotivoRejeicao(CodMotivo);
+   Result:= BancoClass.TipoOCorrenciaToCod(TipoOcorrencia);
+end;
+
+function TACBrBanco.CodMotivoRejeicaoToDescricao( const TipoOcorrencia:
+   TACBrTipoOcorrencia;CodMotivo: Integer) : String;
+begin
+  Result:= BancoClass.CodMotivoRejeicaoToDescricao(TipoOcorrencia,CodMotivo);
 end;
 
 function TACBrBanco.CalcularDigitoVerificador ( const ACBrTitulo: TACBrTitulo
@@ -1026,7 +1125,7 @@ end;
 
 function TACBrBanco.GerarRegistroTrailler240(ARemessa: TStringList): String;
 begin
-   BancoClass.GerarRegistroTrailler240( ARemessa );
+ Result :=  BancoClass.GerarRegistroTrailler240( ARemessa );
 end;
 
 Procedure TACBrBanco.LerRetorno400 ( ARetorno: TStringList );
@@ -1041,7 +1140,7 @@ end;
 
 function TACBrBanco.CalcularNomeArquivoRemessa(const DirArquivo: String ): String;
 begin
-  BancoClass.CalcularNomeArquivoRemessa( DirArquivo );
+  Result:= BancoClass.CalcularNomeArquivoRemessa( DirArquivo );
 end;
 
 function TACBrBanco.MontarCampoCodigoCedente(
@@ -1502,6 +1601,29 @@ begin
      MostrarPreview := MostrarPreviewAntigo;
      MostrarSetup   := MostrarSetupAntigo;
    end;
+end;
+
+//{$ifdef FPC}
+
+{ TACBrOcorrencia }
+
+function TACBrOcorrencia.GetCodigoBanco: String;
+begin
+   Result:= fpAowner.AcbrBoleto.Banco.TipoOCorrenciaToCod(Tipo);
+end;
+
+function TACBrOcorrencia.GetDescricao: String;
+begin
+   //if Tipo <> 0 then
+      Result:= fpAowner.ACBrBoleto.Banco.TipoOcorrenciaToDescricao(Tipo)
+   //else
+   //   Result:= '';
+end;
+
+constructor TACBrOcorrencia.Create(AOwner: TACBrTitulo);
+begin
+   fTipo := toRemessaRegistrar;
+   fpAOwner:= AOwner;
 end;
 
 {$ifdef FPC}

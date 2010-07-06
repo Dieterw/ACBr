@@ -80,6 +80,7 @@ type
     imgCodigoBarra: TRLBarcode;
     ImgLoja: TRLImage;
     LayoutBoleto: TRLReport;
+    txtEndCedente: TRLLabel;
     txtNumeroBanco: TRLLabel;
     txtTotPar: TRLLabel;
     mIntrucoes: TRLMemo;
@@ -517,19 +518,26 @@ end;
 procedure TACBrBoletoFCFortesFr.RLBand1BeforePrint(Sender: TObject;
    var PrintIt: boolean);
 Var
-   NossoNum,CodCedente : String;
+   NossoNum,CodCedente,TipoDoc : String;
 begin
    with fBoletoFC.ACBrBoleto do
    begin
       NossoNum    := Banco.MontarCampoNossoNumero( Titulo );
       CodCedente  := Banco.MontarCampoCodigoCedente(titulo);
 
+      case Cedente.TipoInscricao of
+         pFisica   : TipoDoc:= 'CPF: ';
+         pJuridica : TipoDoc:= 'CNPJ: ';
+      else
+         TipoDoc := 'DOC.: ';
+      end;
       fBoletoFC.CarregaLogo( imgBanco2.Picture, Banco.Numero );
       txtNumeroBanco2.Caption         := IntToStrZero(Banco.Numero, 3)+ '-' +
-                                         IfThen(Banco.Digito >= 10,'X',IntToStrZero(Banco.Digito, 1));
+                                         IfThen(Banco.Digito >= 10,'X',
+                                         IntToStrZero(Banco.Digito, 1));
       lblLocalPagto.Caption           := Titulo.LocalPagamento;
       txtDataVencimento2.Caption      := FormatDateTime('dd/mm/yyyy', Titulo.Vencimento);
-      txtNomeCedente2.Caption         := Cedente.Nome;
+      txtNomeCedente2.Caption         := Cedente.Nome+ ' - '+TipoDoc + Cedente.CNPJCPF;
       txtCodigoCedente2.Caption       := Cedente.Agencia+'-'+Cedente.AgenciaDigito+'/'+ Cedente.Conta+'-'+Cedente.ContaDigito;
       txtDataDocumento2.Caption       := FormatDateTime('dd/mm/yyyy', Titulo.DataDocumento);
       txtNumeroDocumento2.Caption     := Titulo.NumeroDocumento;
@@ -548,6 +556,11 @@ begin
                                          ' '+Titulo.Sacado.UF;
       txtCpfCnpjSacado2.Caption       := Titulo.Sacado.CNPJCPF;
       txtInstrucoes2.Lines.Text       := Titulo.Mensagem.Text;
+      with Titulo.ACBrBoleto.Cedente do
+      begin
+         txtEndCedente.Caption := Logradouro+' '+NumeroRes+' '+Complemento+' '+
+                                  Bairro+' '+Cidade+' '+ UF+' '+CEP;
+      end;
    end;
 end;
 
@@ -565,7 +578,7 @@ begin
      txtNumeroBanco3.Caption         := txtNumeroBanco2.Caption;
      txtLocalPagamento3.Caption      := lblLocalPagto.Caption;
      txtDataVencimento3.Caption      := txtDataVencimento2.Caption;
-     txtNomeCedente3.Caption         := txtNomeCedente2.Caption;
+     txtNomeCedente3.Caption         := Cedente.Nome;
      txtCodigoCedente3.Caption       := txtCodigoCedente2.Caption;
      txtDataDocumento3.Caption       := txtDataDocumento2.Caption;
      txtNumeroDocumento3.Caption     := txtNumeroDocumento2.Caption;

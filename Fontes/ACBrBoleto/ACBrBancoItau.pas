@@ -158,9 +158,9 @@ begin
    with ACBrBanco.ACBrBoleto.Cedente do
    begin
       case TipoInscricao of
-         tiPessoaFisica  : ATipoInscricao := '1';
-         tiPessoaJuridica: ATipoInscricao := '2';
-         tiOutro         : ATipoInscricao := '3';
+         pFisica  : ATipoInscricao := '1';
+         pJuridica: ATipoInscricao := '2';
+         pOutras  : ATipoInscricao := '3';
       end;
 
           { GERAR REGISTRO-HEADER DO ARQUIVO }
@@ -231,7 +231,7 @@ begin
          {SEGMENTO P}
 
          {Pegando o Tipo de Ocorrencia}
-         case TipoOcorrencia of
+         case OcorrenciaOriginal.Tipo of
             toRemessaBaixar                    : ATipoOcorrencia := '02';
             toRemessaConcederAbatimento        : ATipoOcorrencia := '04';
             toRemessaCancelarAbatimento        : ATipoOcorrencia := '05';
@@ -253,7 +253,7 @@ begin
             atNao :  ATipoAceite := 'N';
          end;
          {Pegando Tipo de Boleto} //Quem emite e quem distribui o boleto?
-         case ACBrBoleto.Cedente.TipoBoleto of
+         case ACBrBoleto.Cedente.ResponEmissao of
               tbCliEmite        : ATipoBoleto := '1' + '1';
               tbBancoEmite      : ATipoBoleto := '2' + '2';
               tbBancoReemite    : ATipoBoleto := '4' + '1';

@@ -169,9 +169,9 @@ begin
    with ACBrBanco.ACBrBoleto.Cedente do
    begin
       case TipoInscricao of
-         tiPessoaFisica  : ATipoInscricao := '1';
-         tiPessoaJuridica: ATipoInscricao := '2';
-         tiOutro         : ATipoInscricao := '3';
+         pFisica  : ATipoInscricao := '1';
+         pJuridica: ATipoInscricao := '2';
+         pOutras  : ATipoInscricao := '3';
       end;
 
           { GERAR REGISTRO-HEADER DO ARQUIVO }
@@ -252,13 +252,13 @@ begin
 
       {Pegando tipo de pessoa do Cendente}
       case ACBrBoleto.Cedente.TipoInscricao of
-         tiPessoaFisica  : ATipoInscricao := '1';
-         tiPessoaJuridica: ATipoInscricao := '2';
-         tiOutro         : ATipoInscricao := '9';
+         pFisica  : ATipoInscricao := '1';
+         pJuridica: ATipoInscricao := '2';
+         pOutras  : ATipoInscricao := '9';
       end;
 
       {Pegando o Tipo de Ocorrencia}
-      case TipoOcorrencia of
+      case OcorrenciaOriginal.Tipo of
          toRemessaBaixar                    : ATipoOcorrencia := '02';
          toRemessaConcederAbatimento        : ATipoOcorrencia := '04';
          toRemessaCancelarAbatimento        : ATipoOcorrencia := '05';
@@ -280,7 +280,7 @@ begin
       end;
 
       {Pegando Tipo de Boleto} //Quem emite e quem distribui o boleto?
-      case ACBrBoleto.Cedente.TipoBoleto of
+      case ACBrBoleto.Cedente.ResponEmissao of
          tbCliEmite        : ATipoBoleto := '1' + '1';
          tbBancoEmite      : ATipoBoleto := '2' + '2';
          tbBancoReemite    : ATipoBoleto := '4' + '1';
@@ -459,7 +459,7 @@ begin
       ADigitoNossoNumero := CalcularDigitoVerificador(ACBrTitulo);
 
       {Pegando Código da Ocorrencia}
-      case TipoOcorrencia of
+      case OcorrenciaOriginal.Tipo of
          toRemessaBaixar                        : ATipoOcorrencia := '02'; {Pedido de Baixa}
          toRemessaConcederAbatimento            : ATipoOcorrencia := '04'; {Concessão de Abatimento}
          toRemessaCancelarAbatimento            : ATipoOcorrencia := '05'; {Cancelamento de Abatimento concedido}
@@ -486,7 +486,7 @@ begin
          ATipoEspecieDoc   := '05';
 
       {Pegando Tipo de Boleto}
-      case ACBrBoleto.Cedente.TipoBoleto of
+      case ACBrBoleto.Cedente.ResponEmissao of
          tbCliEmite : ATipoBoleto := '2';
       else
          ATipoBoleto := '1';
@@ -510,8 +510,8 @@ begin
 
       {Pegando Tipo de Cedente}
       case ACBrBoleto.Cedente.TipoInscricao of
-         tiPessoaFisica   : ATipoCendente := '01';
-         tiPessoaJuridica : ATipoCendente := '02';
+         pFisica   : ATipoCendente := '01';
+         pJuridica : ATipoCendente := '02';
       end;
 
       AMensagem   := '';

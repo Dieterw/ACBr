@@ -187,7 +187,7 @@ begin
       DigitoNossoNumero := CalcularDigitoVerificador(ACBrTitulo);
 
       {Pegando Código da Ocorrencia}
-      case TipoOcorrencia of
+      case OcorrenciaOriginal.Tipo of
          toRemessaBaixar                        : Ocorrencia := '02'; {Pedido de Baixa}
          toRemessaConcederAbatimento            : Ocorrencia := '04'; {Concessão de Abatimento}
          toRemessaCancelarAbatimento            : Ocorrencia := '05'; {Cancelamento de Abatimento concedido}
@@ -202,7 +202,7 @@ begin
       end;
 
       {Pegando Tipo de Boleto}
-      case ACBrBoleto.Cedente.TipoBoleto of
+      case ACBrBoleto.Cedente.ResponEmissao of
          tbCliEmite : TipoBoleto := '2';
       else
          TipoBoleto := '1';

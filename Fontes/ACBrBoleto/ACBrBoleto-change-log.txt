@@ -48,6 +48,51 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Versão 0.0.15a 06/07/2010
+[+] Adicionado classe do Banco Mercantil.(Agnaldo Pedroni)
+
+[+] Adicionado função LerRetorno ao ACBrBoleto, esta função irá verificar chamar a função LerRetorno240
+    LerRetorno400 de cada banco.(Juliana Tamizou)
+[+] Adicionado a classe bancoClass as funções TipoOcorrenciaToDescricao, TipoOcorrenciaToCod,
+    CodOcorrenciaToTipo e CodMotivoRejeicaoToDescricao para auxiliar a leitura do arquivo retorno.(Juliana Tamizou)
+
+[+] Iniciado na classe do Bradesco a implementacao da leitura do arquivo retorno 400 colunas.(Juliana Tamizou)
+
+[*] Alterado nome do tipo enumerado TipoBoleto para ResponEmissao, pois esta
+    propriedade do ACBrBoleto indica quem fará a emissão dos boletos.(Juliana Tamizou)
+
+[*] Adicionado a classe Cendente as informações do Endereço,para serem impressas no boleto,
+    conforme a lei http://www.planalto.gov.br/ccivil_03/_ato2007-2010/2009/lei/l12039.htm.
+    (Juliana Tamizou)
+
+[*] Alterado relatorio no Fortes para imprimir o CNPJ e Endereço do cedente, conforme manda
+    a legislação.(Juliana Tamizou)
+
+[*] Alterado SETCPFCNPJ para formatar a propriedade CPFCNPJ caso sem um desses documentos.
+
+[*] Adicionado a função GerarTransacao400 da classe do Bradesco, para verificar a sigla da
+    Especie do Documento informada e gravar no arquivo o código.Ex. 'DM' grava '01'.(Juliana Tamizou)
+
+[*] Criado classe OcorrenciaOriginal, com as propriedades Descrição, Tipo e Codigo e os metodos
+    GetCodigoBanco e GetDescricao para leitura desses valores, alterado a propriedade 
+    OcorrenciaOriginal do Titulo para ser do tipo desta classe, removido então as 
+    propriedades TipoOcorrenciaOriginal e DescricaoOcorrenciaOriginal. Alterado todos os bancos
+    para utilizar essa propriedade.(Juliana Tamizou)
+     
+
+[-] Removido tipo enumerado TACBrTipoInscricao, pois já havia o tipo enumerado TACBrPessoa,
+    com a mesma finalidade, alterado todos os lugares que utilizam o TACBrTipoInscricao
+    para usar o TACBrTipoPessoa.(Juliana Tamizou)   
+
+[-] Alterado create do ACBrCedente para inicializar a propriedade TipoInscricao com 
+    Outras.(Juliana Tamizou)
+
+[-] Corrigido função SetCPFCNPJ que não estava gravando o fCNPJ se o tipo de Inscricao fosse
+    Outras.(Juliana Tamizou) 
+ 
+
+
+
 Versão 0.0.14a 30/06/2010
 [-] Corrigido função CalculaDigitoCodigoBarras quando o digito calculado é 0 ou
     maior que 9.(Juliana Tamizou)

@@ -957,8 +957,23 @@ begin
 end;
 
 procedure TACBrTEFDArquivo.GravaInformacao(const Chave, Informacao : AnsiString) ;
+var
+  I, IndChave : Integer ;
 begin
-  fStringList.Add( Chave + ' = '+ Informacao ) ;
+  IndChave := -1 ;
+  I        := 0 ;
+  while (IndChave < 0) and (I < fStringList.Count) do
+  begin
+     if copy(fStringList[I],1,Length(Chave)) = Chave then
+        IndChave := I;
+     Inc( I ) ;
+  end;
+
+  if IndChave >= 0 then
+     fStringList.Delete(I);  // Remove o Antigo
+
+  if Informacao <> '' then
+     fStringList.Add( Chave + ' = '+ Informacao )
 end ;
 
 procedure TACBrTEFDArquivo.GravaInformacao(const Chave : AnsiString ;
@@ -972,13 +987,12 @@ procedure TACBrTEFDArquivo.GravaInformacao(const Identificacao : Integer;
 Var
   I : Integer ;
 begin
-  if Informacao = '' then exit ;
-
   I := AchaLinha(Identificacao, Sequencia) ;
-  if I > 0 then
+  if I >= 0 then
      fStringList.Delete(I);  // Remove o Antigo
 
-  fStringList.Add( NomeCampo(Identificacao,Sequencia) + ' = '+ Informacao ) ;
+  if Informacao <> '' then
+     fStringList.Add( NomeCampo(Identificacao,Sequencia) + ' = '+ Informacao ) ;
 end;
 
 procedure TACBrTEFDArquivo.GravaInformacao( const Identificacao : Integer;
@@ -2177,9 +2191,10 @@ procedure TACBrTEFDClass.ImprimirRelatorio;
 Var
   I : Integer;
   TempoInicio : TDateTime ;
-  ImpressaoOk, RemoverMsg : Boolean ;
+  ImpressaoOk, RemoverMsg, GerencialAberto : Boolean ;
   Est : AnsiChar ;
   ArqBackup : String ;
+  ImagemComprovante : TStringList ;
 begin
   VerificarIniciouRequisicao;
 
@@ -2190,9 +2205,10 @@ begin
 
   CopiarResposta ;
 
-  ImpressaoOk := False ;
-  RemoverMsg  := False ;
-  TempoInicio := now ;
+  ImpressaoOk     := False ;
+  RemoverMsg      := False ;
+  GerencialAberto := False ;
+  TempoInicio     := now ;
 
   with TACBrTEFD( Owner ) do
   begin
@@ -2231,26 +2247,36 @@ begin
                     DoExibeMsg( opmExibirMsgCliente, Self.Resp.TextoEspecialCliente ) ;
                  end;
 
-                 ComandarECF( opeAbreGerencial ) ;
-
                  I := 1 ;
                  while I <= self.NumVias do
                  begin
                    if I = 1 then
-                      ECFImprimeVia( trGerencial, I, Self.Resp.ImagemComprovante1aVia  )
+                      ImagemComprovante := Self.Resp.ImagemComprovante1aVia
                    else
-                      ECFImprimeVia( trGerencial, I, Self.Resp.ImagemComprovante2aVia  ) ;
+                      ImagemComprovante := Self.Resp.ImagemComprovante2aVia ;
 
-                    if I < self.NumVias  then
-                    begin
-                       ComandarECF( opePulaLinhas ) ;
-                       DoExibeMsg( opmDestaqueVia, 'Destaque a '+IntToStr(I)+'ª Via') ;
-                    end;
+                   if ImagemComprovante.Count > 0 then
+                   begin
+                     if not GerencialAberto then
+                      begin
+                        ComandarECF( opeAbreGerencial ) ;
+                        GerencialAberto := True;
+                      end
+                     else
+                      begin
+                        ComandarECF( opePulaLinhas ) ;
+                        DoExibeMsg( opmDestaqueVia, 'Destaque a '+IntToStr(I)+'ª Via') ;
+                      end ;
 
-                    Inc( I ) ;
+                     ECFImprimeVia( trGerencial, I, ImagemComprovante  )
+                   end ;
+
+                   Inc( I ) ;
                  end;
 
-                 ComandarECF( opeFechaGerencial );
+                 if GerencialAberto then
+                    ComandarECF( opeFechaGerencial );
+
                  ImpressaoOk := True ;
 
               finally

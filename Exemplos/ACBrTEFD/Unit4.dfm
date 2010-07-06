@@ -1,6 +1,6 @@
 object Form4: TForm4
-  Left = 489
-  Top = 175
+  Left = 506
+  Top = 178
   Width = 525
   Height = 399
   Caption = 'OnExibeMenu'
@@ -14,10 +14,18 @@ object Form4: TForm4
   Position = poOwnerFormCenter
   PixelsPerInch = 96
   TextHeight = 24
+  object Splitter1: TSplitter
+    Left = 237
+    Top = 50
+    Width = 5
+    Height = 261
+    Align = alRight
+    Visible = False
+  end
   object ListBox1: TListBox
     Left = 0
     Top = 50
-    Width = 242
+    Width = 237
     Height = 261
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
@@ -89,7 +97,9 @@ object Form4: TForm4
     Font.Name = 'Courier'
     Font.Style = []
     ParentFont = False
+    ScrollBars = ssBoth
     TabOrder = 3
     Visible = False
+    WordWrap = False
   end
 end

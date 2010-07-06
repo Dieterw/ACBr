@@ -222,7 +222,7 @@ LRDockWidth=190
 Dockable=1
 SplitPos=126
 ArrangeBy=Name
-SelectedItem=Caption
+SelectedItem=ScrollBars
 ExpandedItems=TEFCliSiTef,TEFDial,TEFDisc,TEFGPU,TEFHiper,TEFVeSPague
 HiddenCategories=
 

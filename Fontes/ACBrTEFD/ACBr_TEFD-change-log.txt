@@ -47,6 +47,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 1.20b   06/07/10
+[-] Corrigido Bug em: TACBrTEFDArquivo.GravaInformacao, que não apagava
+    corretamente o valor anterior da Informaçao, em algumas ocasiões
+[*] Método TACBrTEFDClass.ImprimirRelatorio modificado para permitir a Impressão
+    de comprovantes com apenas a 1a ou 2a Via.
+
 Versão 1.20b   05/07/10
 [+] Adicionada nova classe de TEF dedicado compatível com V&SPague (por: DSA)
     (http://www.vespague.com.br/)

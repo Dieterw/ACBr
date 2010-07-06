@@ -1126,7 +1126,7 @@ begin
   AForm := TForm4.Create(self);
   try
     if Trim(Titulo) = '' then
-       Titulo := 'Escolha uma opção' ;
+       Titulo := ACBrStr('Escolha uma opção') ;
 
     AForm.Panel1.Caption := Titulo;
     AForm.ListBox1.Items.AddStrings(Opcoes);

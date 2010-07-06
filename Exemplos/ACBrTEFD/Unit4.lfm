@@ -2,10 +2,10 @@ object Form4: TForm4
   Left = 573
   Height = 361
   Top = 222
-  Width = 533
+  Width = 608
   Caption = 'OnExibeMenu'
   ClientHeight = 361
-  ClientWidth = 533
+  ClientWidth = 608
   Font.Height = -19
   OnShow = FormShow
   Position = poOwnerFormCenter
@@ -14,7 +14,7 @@ object Form4: TForm4
     Left = 0
     Height = 261
     Top = 50
-    Width = 266
+    Width = 283
     Align = alClient
     Font.Height = -19
     Font.Style = [fsBold]
@@ -26,7 +26,7 @@ object Form4: TForm4
     Left = 0
     Height = 50
     Top = 0
-    Width = 533
+    Width = 608
     Align = alTop
     Caption = 'Panel1'
     TabOrder = 1
@@ -35,13 +35,13 @@ object Form4: TForm4
     Left = 0
     Height = 50
     Top = 311
-    Width = 533
+    Width = 608
     Align = alBottom
     ClientHeight = 50
-    ClientWidth = 533
+    ClientWidth = 608
     TabOrder = 2
     object BitBtn1: TBitBtn
-      Left = 87
+      Left = 104
       Height = 35
       Top = 9
       Width = 70
@@ -54,7 +54,7 @@ object Form4: TForm4
       TabOrder = 0
     end
     object BitBtn2: TBitBtn
-      Left = 202
+      Left = 238
       Height = 35
       Top = 9
       Width = 102
@@ -67,7 +67,7 @@ object Form4: TForm4
       TabOrder = 1
     end
     object BitBtn3: TBitBtn
-      Left = 352
+      Left = 408
       Height = 35
       Top = 9
       Width = 88
@@ -80,16 +80,26 @@ object Form4: TForm4
     end
   end
   object Memo1: TMemo
-    Left = 266
+    Left = 288
     Height = 261
     Top = 50
-    Width = 267
+    Width = 320
     Align = alRight
     Font.Height = -13
     Font.Name = 'Courier'
     ParentFont = False
     ScrollBars = ssAutoBoth
     TabOrder = 3
+    Visible = False
+    WordWrap = False
+  end
+  object Splitter1: TSplitter
+    Left = 283
+    Height = 261
+    Top = 50
+    Width = 5
+    Align = alRight
+    ResizeAnchor = akRight
     Visible = False
   end
 end

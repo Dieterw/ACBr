@@ -28,6 +28,7 @@ type
      Memo1 : TMemo ;
      Panel1 : TPanel;
      Panel2 : TPanel;
+     Splitter1 : TSplitter ;
      procedure FormShow(Sender: TObject);
   private
     { private declarations }
@@ -48,6 +49,7 @@ begin
    begin
      Memo1.Width   := Trunc(Width/2)-10;
      Memo1.Visible := True ;
+     Splitter1.Visible := True ;
    end ;
 
    ListBox1.SetFocus;

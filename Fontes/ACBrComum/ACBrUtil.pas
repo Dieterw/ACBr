@@ -830,14 +830,17 @@ end ;
 
 {-----------------------------------------------------------------------------
  *** Extraido de JclStrings.pas  - Project JEDI Code Library (JCL) ***
-  Retorna <True> se <S> contem apenas caracteres Numericos
+  Retorna <True> se <S> contem apenas caracteres Numericos.
+  Retorna <False> se <S> for vazio
  ---------------------------------------------------------------------------- }
 function StrIsNumber(const S: AnsiString): Boolean;
-Var A : Integer ;
+Var
+  A, LenStr : Integer ;
 begin
-  Result := true ;
+  LenStr := Length( S ) ;
+  Result := (LenStr > 0) ;
   A      := 1 ;
-  while Result and ( A <= Length( S ) )  do
+  while Result and ( A <= LenStr )  do
   begin
      Result := CharIsNum( S[A] ) ;
      Inc(A) ;
@@ -850,7 +853,8 @@ end ;
   ou Numericos
  ---------------------------------------------------------------------------- }
 function StrIsAlphaNum(const S: AnsiString): Boolean;
-Var A : Integer ;
+Var
+  A : Integer ;
 begin
   Result := true ;
   A      := 1 ;

@@ -136,7 +136,11 @@ implementation
 
 uses
   {$ifdef Linux}
-  Libc,
+    {$IFNDEF FPC}
+      Libc
+    {$else}
+      unix
+    {$endif},
   {$endif}
   {$ifdef MSWindows}
   mmSystem,

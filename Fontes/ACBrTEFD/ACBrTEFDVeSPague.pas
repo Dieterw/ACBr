@@ -592,9 +592,6 @@ begin
      end;
    end ;
 
-   // CNF, NCN esperam receber o DocumentoVinculado como parametro, Vamos salvar
-   // nele, o Sequencial da Transacao Original
-   fpDocumentoVinculado := IntToStr(fpID);
    fpQtdLinhasComprovante := fpImagemComprovante1aVia.Count;
    if fpQtdLinhasComprovante = 0 then
       fpQtdLinhasComprovante := fpImagemComprovante2aVia.Count;
@@ -763,7 +760,8 @@ begin
   fpInicializado := True ;
   GravaLog( Name +' Inicializado VeSPague' );
 
-  CancelarTransacoesPendentesClass           // Cancele tudo... //
+  ServicoIniciar;
+  CancelarTransacoesPendentesClass  ;
 end;
 
 procedure TACBrTEFDVeSPague.DesInicializar ;
@@ -911,13 +909,20 @@ end;
 
 Procedure TACBrTEFDVeSPague.CNF(Rede, NSU, Finalizacao : String;
    DocumentoVinculado : String) ;
+var
+  P, Seq : Integer ;
+  Transacao : String ;
 begin
   if Finalizacao <> '' then
   begin
+    P := pos('|', Finalizacao) ;
+    Transacao := copy(Finalizacao,1,P-1) ;
+    Seq       := StrToIntDef( copy(Finalizacao, P+1, Length(Finalizacao)), 0 );
+
     ReqVS.Servico := 'executar' ;
-    ReqVS.AddParamString( 'transacao', Finalizacao ) ;
+    ReqVS.AddParamString( 'transacao', Transacao ) ;
     ReqVS.Retorno    := 0 ;
-    ReqVS.Sequencial := StrToIntDef(DocumentoVinculado,0);
+    ReqVS.Sequencial := Seq;
 
     TransmiteCmd;
   end ;
@@ -947,23 +952,30 @@ end;
 
 Procedure TACBrTEFDVeSPague.NCN(Rede, NSU, Finalizacao : String;
    Valor : Double; DocumentoVinculado : String) ;
+var
+  P, Seq : Integer ;
+  Transacao : String ;
 begin
   if Finalizacao <> '' then
    begin
-    ReqVS.Servico := 'executar' ;
-    ReqVS.AddParamString( 'transacao', Finalizacao ) ;
-    ReqVS.Retorno    := 9 ;
-    ReqVS.Sequencial := StrToIntDef(DocumentoVinculado,0);
+     P := pos('|', Finalizacao) ;
+     Transacao := copy(Finalizacao,1,P-1) ;
+     Seq       := StrToIntDef( copy(Finalizacao, P+1, Length(Finalizacao)), 0 );
 
-    try
-       TransmiteCmd;
-       FinalizarRequisicao;
-    except
-       if (RespVS.Retorno = 5) then   // Não achou a ultima
-          ExecutarTranscaoPendente( NSU, Valor )
-       else
-          raise ;
-    end ;
+     ReqVS.Servico := 'executar' ;
+     ReqVS.AddParamString( 'transacao', Transacao ) ;
+     ReqVS.Retorno    := 9 ;
+     ReqVS.Sequencial := Seq ;
+
+     try
+        TransmiteCmd;
+        FinalizarRequisicao;
+     except
+        if (RespVS.Retorno = 5) then   // Não achou a ultima
+           ExecutarTranscaoPendente( NSU, Valor )
+        else
+           raise ;
+     end ;
    end
   else
      FinalizarRequisicao;
@@ -1057,8 +1069,8 @@ begin
      Conteudo.GravaInformacao(899,102, Documento ) ;
      Conteudo.GravaInformacao(899,103, IntToStr(Trunc(SimpleRoundTo( Valor * 100 ,0))) );
 
-     // Grava valor de "Transacao" em 27(Finalizacao) para usar no CNF, NCN
-     Conteudo.GravaInformacao(27,0, Transacao);
+     // Grava valor de "Transacao|Sequencia" em 27(Finalizacao) para usar no CNF, NCN
+     Conteudo.GravaInformacao(27,0, Transacao+'|'+IntToStr(ReqVS.Sequencial) );
      Resp.TipoGP := fpTipo;
    end;
 
@@ -1280,7 +1292,9 @@ begin
   try
      EnviarCmd ;   // Transmite CMD
   except
-     if fSocket.LastError = 10054 then  // Connection reset by peer
+     // 10054-Connection reset by peer; 10057-Socket is not connected
+     Erro := fSocket.LastError ;
+     if (Erro = 10054) or (Erro = 10057) then
       begin
         GravaLog( '** Tentando Re-conexao' );
 

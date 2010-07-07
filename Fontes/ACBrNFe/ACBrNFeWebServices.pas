@@ -51,7 +51,7 @@ uses Classes, SysUtils,
   {$IFDEF ACBrNFeOpenSSL}
     HTTPSend,
   {$ELSE}
-     SoapHTTPClient, SOAPHTTPTrans, JwaWinCrypt, JwaWinType, WinInet, ACBrCAPICOM_TLB, ACBrMSXML2_TLB,
+     SoapHTTPClient, SoapHTTPTrans, JwaWinCrypt, JwaWinType, WinInet, ACBrCAPICOM_TLB, ACBrMSXML2_TLB,
   {$ENDIF}
   pcnNFe, pcnNFeW,
   pcnRetConsReciNFe, pcnRetConsCad, pcnAuxiliar, pcnConversao, pcnRetDPEC,
@@ -123,7 +123,7 @@ type
 
   TNFeRecepcao = Class(TWebServicesBase)
   private
-    FLote: Integer;
+    FLote: String;
     FRecibo : String;
     FNotasFiscais : TNotasFiscais;
     FTpAmb: TpcnTipoAmbiente;
@@ -133,6 +133,7 @@ type
     FxMotivo: String;
     FdhRecbto: TDateTime;
     FTMed: Integer;
+    function GetLote: String;
   public
     function Executar: Boolean; override;
     constructor Create(AOwner : TComponent; ANotasFiscais : TNotasFiscais);reintroduce;
@@ -144,7 +145,7 @@ type
     property xMotivo: String read FxMotivo;
     property dhRecbto: TDateTime read FdhRecbto;
     property TMed: Integer read FTMed;
-    property Lote: Integer read FLote write FLote;
+    property Lote: String read GetLote write FLote;
   end;
 
   TNFeRetRecepcao = Class(TWebServicesBase)
@@ -374,7 +375,8 @@ type
   public
     constructor Create(AFNotaFiscalEletronica: TComponent);reintroduce;
     destructor Destroy; override;
-    function Envia(ALote: Integer): Boolean;
+    function Envia(ALote: Integer): Boolean; overload;
+    function Envia(ALote: String): Boolean; overload;
     procedure Cancela(AJustificativa: String);
     procedure Inutiliza(CNPJ, AJustificativa: String; Ano, Modelo, Serie, NumeroInicial, NumeroFinal : Integer);
   published
@@ -724,7 +726,7 @@ begin
 
   FDadosMsg := '<?xml version="1.0" encoding="UTF-8" standalone="no"?>'+
                '<enviNFe xmlns="http://www.portalfiscal.inf.br/nfe" versao="'+NFenviNFe+'">'+
-               '<idLote>'+IntToStr(TNFeRecepcao(Self).Lote)+'</idLote>'+vNotas+'</enviNFe>';
+               '<idLote>'+TNFeRecepcao(Self).Lote+'</idLote>'+vNotas+'</enviNFe>';
 
 end;
 
@@ -944,6 +946,11 @@ end;
 
 function TWebServices.Envia(ALote: Integer): Boolean;
 begin
+  Envia(IntToStr(ALote));
+end;
+
+function TWebServices.Envia(ALote: String): Boolean;
+begin
   if not(Self.StatusServico.Executar) then
      begin
        if Assigned(TACBrNFe( FACBrNFe ).OnGerarLog) then
@@ -1157,7 +1164,7 @@ begin
   try
     TACBrNFe( FACBrNFe ).SetStatus( stNFeRecepcao );
     if FConfiguracoes.Geral.Salvar then
-      FConfiguracoes.Geral.Save(IntToStr(Lote)+'-env-lot.xml', FDadosMsg);
+      FConfiguracoes.Geral.Save(Lote+'-env-lot.xml', FDadosMsg);
     {$IFDEF ACBrNFeOpenSSL}
        HTTP.Document.LoadFromStream(Stream);
        ConfiguraHTTP(HTTP,'SOAPAction: "http://www.portalfiscal.inf.br/nfe/wsdl/NfeRecepcao/nfeRecepcaoLote"');
@@ -1206,7 +1213,7 @@ begin
     NFeRetorno.Free;
 
     if FConfiguracoes.Geral.Salvar then
-      FConfiguracoes.Geral.Save(IntToStr(Lote)+'-rec.xml', FRetWS);
+      FConfiguracoes.Geral.Save(Lote+'-rec.xml', FRetWS);
 
   finally
     {$IFDEF ACBrNFeOpenSSL}
@@ -1219,6 +1226,11 @@ begin
     NotaUtil.ConfAmbiente;
     TACBrNFe( FACBrNFe ).SetStatus( stIdle );
   end;
+end;
+
+function TNFeRecepcao.GetLote: String;
+begin
+  Result := Trim(FLote);
 end;
 
 { TNFeRetRecepcao }

@@ -155,6 +155,8 @@ begin
   inherited Create(Collection2);
   FNFe := TNFe.Create;
 
+  FNFe.infNFe.Versao := 2;
+
   FNFe.Ide.tpNF   := tnSaida;
   FNFe.Ide.modelo := 55;
 
@@ -162,7 +164,7 @@ begin
   FNFe.Ide.indPag    := ipVista;
   FNFe.Ide.verProc   := '1.0.0.0';
   FNFe.Ide.tpAmb     := TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).Configuracoes.WebServices.Ambiente  ;
-  FNFe.Ide.tpEmis    := TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).Configuracoes.Geral.FormaEmissao ;  
+  FNFe.Ide.tpEmis    := TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).Configuracoes.Geral.FormaEmissao ;
 
   FNFe.Emit.EnderEmit.xPais := 'BRASIL';
   FNFe.Emit.EnderEmit.cPais := 1058;
@@ -357,8 +359,6 @@ end;
 function TNotasFiscais.Add: NotaFiscal;
 begin
   Result := NotaFiscal(inherited Add);
-
-  Result.NFe.Ide.tpAmb := Configuracoes.WebServices.Ambiente ;
 end;
 
 procedure TNotasFiscais.Assinar;

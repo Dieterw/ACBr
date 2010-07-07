@@ -80,7 +80,8 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-    function Enviar(ALote: Integer; Imprimir:Boolean = True): Boolean;
+    function Enviar(ALote: Integer; Imprimir:Boolean = True): Boolean; overload;
+    function Enviar(ALote: String; Imprimir:Boolean = True): Boolean; overload;
     function Cancelamento(AJustificativa:WideString): Boolean;
     function Consultar: Boolean;
     property WebServices: TWebServices read FWebServices write FWebServices;
@@ -231,6 +232,11 @@ begin
 end;
 
 function TACBrNFe.Enviar(ALote: Integer; Imprimir:Boolean = True): Boolean;
+begin
+  Enviar(IntToStr(ALote),Imprimir);
+end;
+
+function TACBrNFe.Enviar(ALote: String; Imprimir: Boolean): Boolean;
 var
   i: Integer;
 begin
@@ -252,5 +258,4 @@ begin
      end;
   end;
 end;
-
 end.

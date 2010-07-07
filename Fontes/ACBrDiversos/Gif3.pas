@@ -337,7 +337,11 @@ function timeGetTime: Int64;
 var
   tv: timeval;
 begin
-GetTimeOfDay(tv, Nil);
+{$ifdef FPC}
+  fpgettimeofday(@tv, Nil);
+{$else}
+  GetTimeOfDay(tv, Nil);
+{$endif}
 Result := Int64(tv.tv_sec) * 1000 + Int64(tv.tv_usec) div 1000;
 end;
 {$endif}
@@ -448,4 +452,4 @@ end;
 
 end.
 
-
+

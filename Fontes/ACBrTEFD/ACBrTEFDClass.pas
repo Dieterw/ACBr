@@ -869,7 +869,7 @@ begin
 
    if fLinha <> '' then
     begin
-      P := pos(' = ',fLinha) ;
+      P := pos(' = ',fLinha+' ') ;  // +' ' serve para que o POS funcione em Strings que nao tenham o ultimo espaço " ="
       Result := copy(fLinha, 1, P-1 ) ;
     end
    else if fIdentificacao <> 0 then
@@ -894,9 +894,9 @@ Var
 begin
    if fLinha = AValue then exit;
 
-   fLinha := TrimRight(AValue);
+   fLinha := AValue;
 
-   P := pos(' = ',fLinha) ;
+   P := pos(' = ',fLinha+' ') ;   // +' ' serve para que o POS funcione em Strings que nao tenham o ultimo espaço " ="
    if P = 0 then
    begin
       Informacao.AsString := '';

@@ -51,7 +51,7 @@ interface uses
 {$IFNDEF VER130}
   Variants,
 {$ENDIF}
-  pcnConversao, pcnSignature, pcnProcNFe;
+  pcnConversao, pcnSignature, pcnProcNFe, pcnGerador;
 
 type
 
@@ -178,8 +178,13 @@ type
   TinfNFe = class(TPersistent)
   private
     FID: string;
+    FVersao : Real;
+    function GetVersaoStr: string;
+    function GetVersao: Real;
   published
     property ID: string read FID write FID;
+    property Versao: Real read GetVersao write FVersao;
+    property VersaoStr : string read GetVersaoStr;
   end;
 
   TIde = class(TPersistent)
@@ -256,7 +261,7 @@ type
     FRefNFP: TRefNFP;
   public
     constructor Create; reintroduce;
-    destructor destroy; override;
+    destructor Destroy; override;
   published
     property refNFe: string read FrefNFe write FrefNFe;
     property refCTe: string read FrefCTe write FrefCTe;
@@ -1392,8 +1397,8 @@ type
     procedure SetForDia(const Value: TForDiaCollection);
   private
     constructor Create(AOwner: TNFe);
-    destructor Destroy; override;
   published
+    destructor Destroy; override;
     property safra: string read Fsafra write Fsafra;
     property ref: string read Fref write Fref;
     property fordia: TForDiaCollection read Ffordia write SetForDia;
@@ -1479,6 +1484,8 @@ begin
   FCana    := TCana.Create(Self);
   Fsignature := Tsignature.create;
   FProcNFe := TProcNFe.create;
+
+  FinfNFe.Versao := 0;
 
   FEmit.EnderEmit.xPais := 'BRASIL';
   FEmit.EnderEmit.cPais := 1058;
@@ -2204,6 +2211,28 @@ procedure TDeducCollection.SetItem(Index: Integer;
   Value: TDeducCollectionItem);
 begin
   inherited SetItem(Index, Value);
+end;
+
+{ TinfNFe }
+
+function TinfNFe.GetVersao: Real;
+begin
+  if FVersao <= 0 then
+     Result := 2
+  else
+     Result := FVersao;
+end;
+
+function TinfNFe.GetVersaoStr: string;
+var
+  FormatoVersao : TFormatSettings;
+begin
+  FormatoVersao.DecimalSeparator  := '.';
+
+  if FVersao <= 0 then
+     Result := V2_00
+  else
+     Result := 'versao="'+FormatFloat('#0.00',FVersao,FormatoVersao)+'"';
 end;
 
 end.

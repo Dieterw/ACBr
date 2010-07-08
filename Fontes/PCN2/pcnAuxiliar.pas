@@ -68,7 +68,7 @@ function GerarChave(var chave: AnsiString; const codigoUF: integer; codigoNumeri
 function GerarChaveCTe(var chave: AnsiString; const codigoUF: integer; codigoNumerico: integer; const modelo, serie, numero: integer; const emissao: TDateTime; const CNPJ: string): boolean;
 function GerarDigito(var Digito: integer; chave: string): boolean;
 function SomenteNumeros(const s: string): string;
-function RetornarCodigoNumerico(Chave: string): integer;
+function RetornarCodigoNumerico(Chave: string; Versao : real): integer;
 function RetornarConteudoEntre(const Frase, Inicio, Fim: string): string;
 function RetornarDigito(const chave: string): integer;
 function RetornarVersaoLayout(const schema: TpcnSchema; const Layout: TpcnTipoLayout): string;
@@ -301,10 +301,14 @@ begin
       result := result + s[i];
 end;
 
-function RetornarCodigoNumerico(chave: string): integer;
+function RetornarCodigoNumerico(chave: string; versao : real): integer;
 begin
   chave := SomenteNumeros(chave);
-  result := StrToInt(copy(chave, 36, 8));
+
+  if versao < 2 then
+     result := StrToInt(copy(chave, 35, 9))
+  else
+     result := StrToInt(copy(chave, 36, 8)); 
 end;
 
 function RetornarDigito(const chave: string): integer;

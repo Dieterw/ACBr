@@ -96,7 +96,8 @@ function TNFeR.LerXml: boolean;
 var
   ok: boolean;
   i, j, k, nItem: integer;
-  Arquivo, Itens, ItensTemp : AnsiString;
+  Arquivo, Itens, ItensTemp, VersaoInfNFe : AnsiString;
+  FormatoVersao : TFormatSettings; 
   Function VerificaParSt(const t: TpcnCSTIcms): TpcnCSTIcms;
   // 	Verifica se existe Partilha ou St
   begin
@@ -126,8 +127,16 @@ begin
   if J = 0 then
     raise Exception.Create('Não encontrei inicio do URI: aspas final');
 
+  VersaoInfNFe := copy(Leitor.Arquivo, pos('<infNFe',Leitor.Arquivo), J - (I+1));
+  VersaoInfNFe := copy(VersaoInfNFe,Pos('versao=',VersaoInfNFe)+8,Pos('Id="',VersaoInfNFe)-(Pos('versao=',VersaoInfNFe)+10));
+  VersaoInfNFe := StringReplace(Trim(VersaoInfNFe),'"','',[rfReplaceAll] ) ;
+
+  FormatoVersao.DecimalSeparator  := '.';
+
+  NFe.infNFe.Versao := StrToFloatDef(VersaoInfNFe,0,FormatoVersao);
+
   NFe.infNFe.ID := copy(Leitor.Arquivo, I+1, J - (I+1));
-  NFe.infNFe.ID := StringReplace( UpperCase(NFe.infNFe.ID), 'NFE', '', [rfReplaceAll] ) ;;
+  NFe.infNFe.ID := StringReplace( UpperCase(NFe.infNFe.ID), 'NFE', '', [rfReplaceAll] ) ;
 
   (* Grupo da TAG <ide> *******************************************************)
   if Leitor.rExtrai(1, 'ide') <> '' then

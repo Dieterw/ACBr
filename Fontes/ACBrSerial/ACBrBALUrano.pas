@@ -132,6 +132,7 @@ begin
     end;
   except
      { Peso não foi recebido (TimeOut) }
+     fpUltimoPesoLido := -9;
   end ;
 end;
 

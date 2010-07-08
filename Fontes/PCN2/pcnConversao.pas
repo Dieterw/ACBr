@@ -504,8 +504,6 @@ begin
     csosn202,csosn203                      : result := '202';
     csosn500                               : result := '500';
     csosn900                               : result := '900';
-  else
-    raise Exception.Create(' Conversão de CSOSN não implementado');
   end;
 end;
 

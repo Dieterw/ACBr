@@ -48,7 +48,7 @@ unit pcnNFeW;
 interface uses
 
   SysUtils, Classes,
-  pcnAuxiliar, pcnConversao, pcnGerador, pcnNfe, pcnLayoutTXT;
+  pcnAuxiliar, pcnConversao, pcnGerador, pcnNFe, pcnLayoutTXT;
 
 type
 
@@ -198,9 +198,18 @@ var
   xProtNFe : String;
 begin
   chave := '';
-  if not GerarChave(Chave, nfe.ide.cUF, nfe.ide.cNF, nfe.ide.modelo, nfe.ide.serie,
-    nfe.ide.nNF, StrToInt(TpEmisToStr(nfe.ide.tpEmis)), nfe.ide.dEmi, nfe.emit.CNPJCPF) then
-    Gerador.wAlerta('A01', 'infNFe', DSC_CHAVE, ERR_MSG_GERAR_CHAVE);
+  if NFe.infNFe.Versao >= 2 then
+   begin
+     if not GerarChave(Chave, nfe.ide.cUF, nfe.ide.cNF, nfe.ide.modelo, nfe.ide.serie,
+       nfe.ide.nNF, StrToInt(TpEmisToStr(nfe.ide.tpEmis)), nfe.ide.dEmi, nfe.emit.CNPJCPF) then
+       Gerador.wAlerta('A01', 'infNFe', DSC_CHAVE, ERR_MSG_GERAR_CHAVE);
+   end
+  else
+   begin
+     if not GerarChaveCTe(chave, nfe.ide.cUF, nfe.ide.cNF, nfe.ide.modelo, nfe.ide.serie,
+       nfe.ide.nNF, nfe.ide.dEmi, nfe.emit.CNPJCPF) then
+       Gerador.wAlerta('A01', 'infNFe', DSC_CHAVE, ERR_MSG_GERAR_CHAVE);
+   end;
 
   if (Trim(nfe.infNFe.ID) = '') or (not ValidarChave(nfe.infNFe.ID)) then
      nfe.infNFe.ID := chave
@@ -211,7 +220,7 @@ begin
    end;
    
   nfe.ide.cDV := RetornarDigito(nfe.infNFe.ID);
-  nfe.Ide.cNF := RetornarCodigoNumerico(nfe.infNFe.ID);
+  nfe.Ide.cNF := RetornarCodigoNumerico(nfe.infNFe.ID,NFe.infNFe.Versao);
   // Carrega Layout que sera utilizado para gera o txt
   Gerador.LayoutArquivoTXT.Clear;
   if FOpcoes.GerarTXTSimultaneamente then
@@ -226,7 +235,7 @@ begin
       Gerador.wGrupo('nfeProc ' + V2_00 + ' ' + NAME_SPACE, '');
    end;
   Gerador.wGrupo('NFe ' + NAME_SPACE);
-  Gerador.wGrupo('infNFe ' + V2_00 + ' Id="' + nfe.infNFe.ID + '"');
+  Gerador.wGrupo('infNFe ' + NFe.infNFe.VersaoStr + ' Id="' + nfe.infNFe.ID + '"');
   (**)GerarInfNFe;
   Gerador.wGrupo('/infNFe');
   //
@@ -293,7 +302,10 @@ begin
   Gerador.wGrupo('ide', 'B01');
   Gerador.wCampo(tcInt, 'B02', 'cUF    ', 02, 02, 1, nfe.ide.cUF, DSC_CUF);
   if not ValidarCodigoUF(nfe.ide.cUF) then Gerador.wAlerta('B02', 'cUF', DSC_CUF, ERR_MSG_INVALIDO);
-  Gerador.wCampo(tcStr, 'B03', 'cNF    ', 08, 08, 1, IntToStrZero(RetornarCodigoNumerico(nfe.infNFe.ID), 8), DSC_CNF);
+  if nfe.infNFe.Versao < 2 then
+     Gerador.wCampo(tcStr, 'B03', 'cNF    ', 09, 09, 1, IntToStrZero(RetornarCodigoNumerico(nfe.infNFe.ID,nfe.infNFe.Versao), 9), DSC_CNF)          
+  else
+     Gerador.wCampo(tcStr, 'B03', 'cNF    ', 08, 08, 1, IntToStrZero(RetornarCodigoNumerico(nfe.infNFe.ID,nfe.infNFe.Versao), 8), DSC_CNF);     
   Gerador.wCampo(tcStr, 'B04', 'natOp  ', 01, 60, 1, nfe.ide.natOp, DSC_NATOP);
   Gerador.wCampo(tcStr, 'B05', 'indPag ', 01, 01, 1, IndpagToStr(nfe.ide.indPag), DSC_INDPAG);
   Gerador.wCampo(tcInt, 'B06', 'mod    ', 02, 02, 1, nfe.ide.modelo, DSC_MOD);
@@ -846,28 +858,26 @@ procedure TNFeW.GerarDetImpostoICMS(const i: integer);
     sTagTemp : string;
 
     function BuscaTag(const t: TpcnCSTIcms): string;
-    begin
-      case t of
-      cst00		: result := '00';
-      cst10		: result := '10';
-      cst20		: result := '20';
-      cst30		: result := '30';
-      cst40	,
-      cst41	,
-      cst50		: result := '40';
-      cst51		: result := '51';
-      cst60		: result := '60';
-      cst70		: result := '70';
-      cst80		: result := '80';
-      cst81		: result := '81';
-      cst90		: result := '90';
-      cstPart10 ,
-      cstPart90 : result:= 'Part';
-      cstRep41	: result:= 'ST';
-      else
-        raise Exception.Create(' Conversão de CST não implementado');
-      end;
-    end;
+     begin
+       case t of
+          cst00		: result := '00';
+          cst10		: result := '10';
+          cst20		: result := '20';
+          cst30		: result := '30';
+          cst40	,
+          cst41	,
+          cst50		: result := '40';
+          cst51		: result := '51';
+          cst60		: result := '60';
+          cst70		: result := '70';
+          cst80		: result := '80';
+          cst81		: result := '81';
+          cst90		: result := '90';
+          cstPart10 ,
+          cstPart90 : result:= 'Part';
+          cstRep41	: result:= 'ST';
+       end;
+     end;
 begin
    Gerador.wGrupo('ICMS', 'N01');
    case nfe.Emit.CRT of
@@ -1000,8 +1010,6 @@ begin
                       Gerador.wCampo(tcDe2, 'N31', 'vBCSTDest  ', 01, 15, 1, nfe.Det[i].Imposto.ICMS.vBCSTDest, DSC_VBCICMSSTDEST);
                       Gerador.wCampo(tcDe2, 'N32', 'vICMSSTDest', 01, 15, 1, nfe.Det[i].Imposto.ICMS.vICMSSTDest, DSC_VBCICMSSTDEST);
 		               end;
-                else
-                  raise Exception.Create(' Conversão de CST não implementado em TNFeW.GerarDetImpostoICMS');
             end;
             Gerador.wGrupo('/ICMS' + sTagTemp );
          end;
@@ -1067,14 +1075,10 @@ begin
                    Gerador.wCampo(tcDe2, 'N29', 'pCredSN    ', 01, 05, 1, nfe.Det[i].Imposto.ICMS.pCredSN, DSC_PCREDSN);
                    Gerador.wCampo(tcDe2, 'N30', 'vCredICMSSN', 01, 15, 1, nfe.Det[i].Imposto.ICMS.vCredICMSSN, DSC_VCREDICMSSN);
                  end;
-			      else
-					   raise Exception.Create(' CSOSN não implementado em TNFeW.GerarDetImpostoICMS');
             end;
 
             Gerador.wGrupo('/ICMSSN' + sTagTemp );
          end;
-	else
-      raise Exception.Create(' CRT não implementado.');
 	end;
    //N10a
    //N10b

@@ -530,10 +530,10 @@ implementation
 
 uses ACBrNFeUtil, pcnNFe;
 
-var iLimiteLinhas: Integer = 8;
+var iLimiteLinhas: Integer = 12;
 iLinhasUtilizadas: Integer = 0;
-iLimiteCaracteresLinha: Integer = 122;
-iLimiteCaracteresContinuacao: Integer = 185;
+iLimiteCaracteresLinha: Integer = 140;
+iLimiteCaracteresContinuacao: Integer = 198;
 q, iQuantItens: Integer;
 sRetirada, sEntrega: WideString;
 
@@ -805,12 +805,12 @@ begin
   // ajusta a posição do 'código do produto'
   if rlmCodProd.Width > 90 then
     begin
-      rlmCodProd.Top := 18;
+      rlmCodProd.Top := 13;
       rlmCodProd.Height := 7;
     end
   else
     begin
-      rlmCodProd.Top := 14;
+      rlmCodProd.Top := 9;
       rlmCodProd.Height := 14;
     end;
 
@@ -824,12 +824,12 @@ begin
   // Ajusta a posição da coluna 'Descrição do produto'
   if rlmDescricaoProduto.Width > 128 then
     begin
-      rlmDescricaoProduto.Top := 18;
+      rlmDescricaoProduto.Top := 13;
       rlmDescricaoProduto.Height := 7;
     end
   else
     begin
-      rlmDescricaoProduto.Top := 14;
+      rlmDescricaoProduto.Top := 9;
       rlmDescricaoProduto.Height := 14;
     end;
 
@@ -935,8 +935,6 @@ begin
 
         rllNumNF1.Font.Size := rllNumNF1.Font.Size -2;
         rllNumNF1.Top := rllNumNF1.Top + 1;
-        rllChave.Font.Size := rllChave.Font.Size - 1;
-        rllFone.Font.Size := rllFone.Font.Size - 1;
       end;
 
     fdTimesNewRoman:
@@ -1096,15 +1094,15 @@ begin
           rlmSiteEmail.Lines.Add(FEmail);
         rlmSiteEmail.Lines.EndUpdate;
         rlmSiteEmail.Visible := True;
-        rlmEndereco.Top := 50;
-        rllFone.Top := 76;
-        rlmSiteEmail.Top := 90;
+        rlmEndereco.Top := 38;
+        rllFone.Top := 64;
+        rlmSiteEmail.Top := 78;
       end
     else
       begin
         rlmSiteEmail.Visible := False;
-        rlmEndereco.Top := 58;
-        rllFone.Top := 92;
+        rlmEndereco.Top := 48;
+        rllFone.Top := 82;
       end;
 end;
 
@@ -1483,7 +1481,7 @@ begin
                       cdsItens.FieldByName('VALORICMS').AsString := sVALORICMS;
                       lblCST.Caption := 'CST';
                       lblCST.Font.Size := 5;
-                      lblCST.Top := 18;
+                      lblCST.Top := 13;
                       txtCST.DataField := 'CST';
                     end; //FNFe.Emit.CRT = crtRegimeNormal
 
@@ -1499,7 +1497,7 @@ begin
                       cdsItens.FieldByName('VALORICMS').AsString := '0,00';
                       lblCST.Caption := 'CSOSN';
                       lblCST.Font.Size := 4;
-                      lblCST.Top := 19;
+                      lblCST.Top := 14;
                       txtCST.DataField := 'CSOSN';
                     end; //FNFe.Emit.CRT = crtSimplesNacional
                 end; // with Imposto.ICMS do

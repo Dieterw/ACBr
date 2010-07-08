@@ -53,7 +53,7 @@ interface
 uses ACBrCHQClass,  
      Classes ;
 
-Const cCmdImpCheque = ';D' ;
+Const cCmdImpCheque = ';9' ;
 
 type TACBrCHQPerto = class( TACBrCHQClass )
   private

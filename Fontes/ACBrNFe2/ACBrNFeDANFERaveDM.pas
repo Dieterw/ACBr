@@ -198,7 +198,7 @@ begin
          else if CharInset(vChar, ['a'..'z','A'..'Z','0'..'9','-',' ']) then
          {$ELSE}
          else if vChar in ['a'..'z','A'..'Z','0'..'9','-',' '] then
-         {$IFEND}
+         {$ENDIF}
            resultado:=uppercase(vCHAR);
       end;
       result:=result+resultado;
@@ -498,7 +498,7 @@ var
    BufferXProd, BufferXInfProd: PWideChar;
    {$ELSE}
    BufferXProd, BufferXInfProd: PAnsiChar;
-   {$IFEND}
+   {$ENDIF}
 
    size:integer;
    TmpStr : String;
@@ -525,7 +525,7 @@ begin
             {$ELSE}
                Size := Length(TmpStr);
                BufferXProd := PAnsiChar(TmPStr);
-            {$IFEND}
+            {$ENDIF}
             //BufferXProd := PAnsiChar(TmPStr);
             Connection.WriteBlobData(BufferXProd^, Size);
          finally
@@ -587,7 +587,7 @@ begin
                {$ELSE}
                   Size := Length(TmpStr);
                   BufferXInfProd := PAnsiChar(TmPStr);
-               {$IFEND}
+               {$ENDIF}
                //BufferXInfProd := PAnsiChar(TmPStr);
             end
             else
@@ -1193,7 +1193,7 @@ var
   BufferInfCpl: PWideChar;
   {$ELSE}
   BufferInfCpl: PAnsiChar;
-  {$IFEND}
+  {$ENDIF}
   size: integer;
   TmpStr: String;
   wContingencia: string;
@@ -1262,7 +1262,7 @@ begin
          {$ELSE}
             Size := Length(TmpStr);
             BufferInfCpl := PAnsiChar(TmpStr);
-         {$IFEND}
+         {$ENDIF}
          //BufferInfCpl:=PAnsiChar(TmpStr);
       end
       else

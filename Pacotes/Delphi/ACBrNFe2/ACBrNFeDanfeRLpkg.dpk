@@ -72,12 +72,29 @@ package ACBrNFeDanfeRLpkg;
 requires
   rtl,
   designide,
-  ACBr_NFe2;
+  ACBr_NFe2,
+  vcljpg,
+  vcl,
+  dbrtl,
+  xmlrtl,
+  inet,
+  dsnap,
+  visualclx,
+  RLibWinD7vcl,
+  vcldb,
+  vclactnband,
+  vclx,
+  PCN2,
+  ACBrComum,
+  synapse,
+  ACBrCapicom,
+  soaprtl;
 
 contains
   ACBrNFeDANFeRL in '..\..\..\Fontes\ACBrNFe2\ACBrNFeDANFeRL.pas' {frlDANFeRL},
   ACBrNFeDANFeRLClass in '..\..\..\Fontes\ACBrNFe2\ACBrNFeDANFeRLClass.pas',
   ACBrNFeDANFeRLReg in '..\..\..\Fontes\ACBrNFe2\ACBrNFeDANFeRLReg.pas',
-  ACBrNFeDANFeRLRetrato in '..\..\..\Fontes\ACBrNFe2\ACBrNFeDANFeRLRetrato.pas' {frlDANFeRLRetrato};
+  ACBrNFeDANFeRLRetrato in '..\..\..\Fontes\ACBrNFe2\ACBrNFeDANFeRLRetrato.pas' {frlDANFeRLRetrato},
+  ACBrNFeDANFeRLPaisagem in '..\..\..\Fontes\ACBrNFe2\ACBrNFeDANFeRLPaisagem.pas' {frlDANFeRLPaisagem};
 
 end.

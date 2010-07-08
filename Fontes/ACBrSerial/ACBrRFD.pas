@@ -51,7 +51,11 @@ interface
 uses ACBrBase,
      SysUtils , Classes, Contnrs
      {$IFDEF LINUX}
-      ,Libc
+       {$IFNDEF FPC}
+         ,Libc
+       {$else}
+         ,BaseUnix
+       {$endif}
      {$ENDIF}
      {$IFNDEF COMPILER6_UP} ,ACBrD5, Windows {$ENDIF} 
      {$IFNDEF CONSOLE}
@@ -569,7 +573,11 @@ Var Ini : TMemIniFile ;
 begin
 
   {$IFDEF LINUX}
-   umask( 0 ) ;
+    {$IFDEF FPC}
+      FpUmask( 0 ) ;
+    {$ELSE}
+      umask( 0 ) ;
+    {$ENDIF}
   {$ENDIF}
   
   Ini := TMemIniFile.Create( fsNomeArq ) ;
@@ -837,7 +845,11 @@ begin
      Linhas := LeftStr(Linhas, Length(Linhas) - Length(sLineBreak) ) ;  // Remove ultimo CRLF
 
      {$IFDEF LINUX}
-      umask( 0 ) ;
+       {$IFDEF FPC}
+         FpUmask( 0 ) ;
+       {$ELSE}
+         umask( 0 ) ;
+       {$ENDIF}
      {$ENDIF}
 
      with TACBrRFD(fsOwner) do
@@ -981,7 +993,11 @@ begin
   Desativar ;
 
   {$IFDEF LINUX}
-   umask( 0 ) ;
+    {$IFDEF FPC}
+      FpUmask( 0 ) ;
+    {$ELSE}
+      umask( 0 ) ;
+    {$ENDIF}
   {$ENDIF}
 
   if not DirectoryExists( DirRFD ) then
@@ -1504,7 +1520,11 @@ procedure TACBrRFD.GerarRFD ;
      Ini : TMemIniFile ;
 begin
   {$IFDEF LINUX}
-   umask( 0 ) ;
+    {$IFDEF FPC}
+      FpUmask( 0 ) ;
+    {$ELSE}
+      umask( 0 ) ;
+    {$ENDIF}
   {$ENDIF}
 
   fsCupom.Descarrega ;
@@ -1873,7 +1893,11 @@ begin
      Linha := Linha + '|$|' + Hash ;
 
   {$IFDEF LINUX}
-   umask( 0 ) ;
+    {$IFDEF FPC}
+      FpUmask( 0 ) ;
+    {$ELSE}
+      umask( 0 ) ;
+    {$ENDIF}
   {$ENDIF}
   WriteToTXT( fsDirECFLog + PathDelim + Arq , Linha ,
               True );  { True para adicionar no final do arquivo }
@@ -2390,4 +2414,4 @@ begin
 end;
 
 end.
-
+

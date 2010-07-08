@@ -1,7 +1,7 @@
 {******************************************************************************}
 { Projeto: Componente ACBrNFe                                                  }
 {  Biblioteca multiplataforma de componentes Delphi para emissão de Nota Fiscal}
-{ eletrônica - NFe - http://www.nfe.fazenda.gov.br                          }
+{ eletrônica - NFe - http://www.nfe.fazenda.gov.br                             }
 {                                                                              }
 { Direitos Autorais Reservados (c) 2008 Wemerson Souto                         }
 {                                       Daniel Simoes de Almeida               }
@@ -62,6 +62,9 @@
 |* 13/04/2010: Peterson de Cerqueira Matos
 |*  - Adequação à NF-e 2.0, Manual de Integração do Contribuinte 4.0.1NT2009.006
 |*  - Tratamento das casas decimais em "ACBrNFeDANFeClass"
+|* 06/07/2010: Peterson de Cerqueira Matos
+|*  - Tratamento da quantidade de produtos por página em "ACBrNFeDANFeClass"
+|*  - Exibição do DANFe em modo paisagem
 ******************************************************************************}
 {$I ACBr.inc}
 unit ACBrNFeDANFeRLClass;
@@ -74,8 +77,8 @@ uses SysUtils, Classes,
   {$ELSE}
   Forms, Dialogs,
   {$ENDIF}
-  ACBrNFeDANFEClass, ACBrNFeDANFeRL, ACBrNFeDANFeRLRetrato, pcnNFe,
-  pcnConversao, StrUtils;
+  ACBrNFeDANFEClass, ACBrNFeDANFeRL, ACBrNFeDANFeRLRetrato,
+  ACBrNFeDANFeRLPaisagem, pcnNFe, pcnConversao, StrUtils;
 
 type
   TACBrNFeDANFeRL = class( TACBrNFeDANFEClass )
@@ -106,7 +109,9 @@ uses ACBrNFe, ACBrNFeUtil, ACBrUtil;
 
 var
   i : Integer;
-  frlDANFeRLRetrato : TfrlDANFeRLRetrato;
+//  frlDANFeRLRetrato: TfrlDANFeRLRetrato;
+//  frlDANFeRLPaisagem: TfrlDANFeRLPaisagem;
+  frlDANFeRL: TfrlDANFeRL;
 
 constructor TACBrNFeDANFeRL.Create(AOwner: TComponent);
 begin
@@ -116,7 +121,7 @@ begin
   FMargemInferior := 0.70;
   FMargemEsquerda := 0.70;
   FMargemDireita := 0.70;
-  
+
 end;
 
 destructor TACBrNFeDANFeRL.Destroy;
@@ -127,40 +132,46 @@ end;
 
 procedure TACBrNFeDANFeRL.ImprimirDANFE(NFE : TNFe = nil);
 begin
-  frlDANFeRLRetrato := TfrlDANFeRLRetrato.Create(Self);
+  case TipoDANFE of
+    tiRetrato:   frlDANFeRL := TfrlDANFeRLRetrato.Create(Self);
+    tiPaisagem:  frlDANFeRL := TfrlDANFeRLPaisagem.Create(Self);
+  end;
 
   if NFE = nil then
    begin
      for i:= 0 to TACBrNFe(ACBrNFe).NotasFiscais.Count-1 do
       begin
-        frlDANFeRLRetrato.Imprimir(TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe,
+        frlDANFeRL.Imprimir(TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe,
         Logo, MarcaDagua, LarguraCodProd, Email, ExibirResumoCanhoto, Fax,
         NumCopias, Sistema, Site, Usuario, PosCanhoto, FormularioContinuo,
         ExpandirLogoMarca, MostrarPreview, FonteDANFE, MargemSuperior,
         MargemInferior, MargemEsquerda, MargemDireita, CasasDecimais._qCom,
-        CasasDecimais._vUnCom);
+        CasasDecimais._vUnCom, ProdutosPorPagina, TipoDANFE);
       end;
    end
   else
    begin
      for i:= 0 to TACBrNFe(ACBrNFe).NotasFiscais.Count-1 do
       begin
-        frlDANFeRLRetrato.Imprimir(TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe,
+        frlDANFeRL.Imprimir(TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe,
         Logo, MarcaDagua, LarguraCodProd, Email, ExibirResumoCanhoto, Fax,
         NumCopias, Sistema, Site, Usuario, PosCanhoto, FormularioContinuo,
         ExpandirLogoMarca, MostrarPreview, FonteDANFE, MargemSuperior,
         MargemInferior, MargemEsquerda, MargemDireita, CasasDecimais._qCom,
-        CasasDecimais._vUnCom);
+        CasasDecimais._vUnCom, ProdutosPorPagina, TipoDANFE);
       end;
    end;
 
-  frlDANFeRLRetrato.Free;
+  frlDANFeRL.Free;
 end;
 
 procedure TACBrNFeDANFeRL.ImprimirDANFEPDF(NFE : TNFe = nil);
 var sFile: String;
 begin
-  frlDANFeRLRetrato := TfrlDANFeRLRetrato.Create(Self);
+  case TipoDANFE of
+    tiRetrato:   frlDANFeRL := TfrlDANFeRLRetrato.Create(Self);
+    tiPaisagem:  frlDANFeRL := TfrlDANFeRLPaisagem.Create(Self);
+  end;
 
   if NFE = nil then
    begin
@@ -169,16 +180,16 @@ begin
         sFile := TACBrNFe(ACBrNFe).DANFE.PathPDF +
                  Copy(TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe.infNFe.ID,
                  4, 44) + '-nfe.pdf';
-        frlDANFeRLRetrato.SavePDF(TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe,
-        Logo, MarcaDagua, LarguraCodProd, Email,
-        ExibirResumoCanhoto, Fax, NumCopias, Sistema, Site, Usuario, sFile,
-        PosCanhoto, FormularioContinuo, ExpandirLogoMarca, FonteDANFE,
-        MargemSuperior, MargemInferior, MargemEsquerda, MargemDireita,
-        CasasDecimais._qCom, CasasDecimais._vUnCom);
+        frlDANFeRL.SavePDF(TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe,
+        Logo, MarcaDagua, LarguraCodProd, Email, ExibirResumoCanhoto, Fax,
+        NumCopias, Sistema, Site, Usuario, sFile, PosCanhoto, FormularioContinuo,
+        ExpandirLogoMarca, FonteDANFE, MargemSuperior,
+        MargemInferior, MargemEsquerda, MargemDireita, CasasDecimais._qCom,
+        CasasDecimais._vUnCom, ProdutosPorPagina, TipoDANFE);
       end;
    end;
 
-  frlDANFeRLRetrato.Free;
+  frlDANFeRL.Free;
 end;
 
 procedure TACBrNFeDANFeRL.SetPosCanhoto(Value: TPosCanhoto);

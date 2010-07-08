@@ -1,7 +1,7 @@
 {******************************************************************************}
 { Projeto: Componente ACBrNFe                                                  }
 {  Biblioteca multiplataforma de componentes Delphi para emissão de Nota Fiscal}
-{ eletrônica - NFe - http://www.nfe.fazenda.gov.br                          }
+{ eletrônica - NFe - http://www.nfe.fazenda.gov.br                             }
 {                                                                              }
 { Direitos Autorais Reservados (c) 2008 Wemerson Souto                         }
 {                                       Daniel Simoes de Almeida               }
@@ -66,12 +66,16 @@
 |*    "Imprimir" e "SavePDF" (esta última sem o "AMostrarPreview")
 |* 22/03/2010: Peterson de Cerqueira Matos
 |*  - Tratamento das margens em "ACBrNFeDANFeClass"
-|*  - Acréscimo dos parâmetros "AMargemSuperior, AMargemInferior,
-|*    AMargemEsqurda, AMargemDireita" e "AFonteDANFE"
+|*  - Acréscimo dos parâmetros "AMargemSuperior", "AMargemInferior",
+|*    "AMargemEsqurda", "AMargemDireita" e "AFonteDANFE"
 |* 13/04/2010: Peterson de Cerqueira Matos
 |*  - Adequação à NF-e 2.0, Manual de Integração do Contribuinte 4.0.1NT2009.006
 |*  - Tratamento das casas decimais em "ACBrNFeDANFeClass"
-|*  - Acréscimo dos parâmetros "FCasasDecimaisqCom" e "FCasasDecimaisvUnCom"
+|*  - Acréscimo dos parâmetros "ACasasDecimaisqCom" e "ACasasDecimaisvUnCom"
+|* 06/07/2010: Peterson de Cerqueira Matos
+|*  - Tratamento do formato de impressão e da quantidade de produtos por
+|*  - página em "ACBrNFeDANFeClass"
+|*  - Acréscimo dos parâmetros "ATipoDANFE" e "AProdutosPorPagina"
 ******************************************************************************}
 {$I ACBr.inc}
 unit ACBrNFeDANFeRL;
@@ -85,7 +89,7 @@ uses
   {$ELSE}
   Windows, Messages, Graphics, Controls, Forms, Dialogs, ExtCtrls,
   {$ENDIF}
-  RLReport, pcnNFe, ACBrNFe, RLFilters, MaskUtils;
+  RLReport, pcnNFe, pcnConversao, ACBrNFe, RLFilters, MaskUtils;
 
 type
   TPosCanhoto = (pcCabecalho, pcRodape);
@@ -120,6 +124,8 @@ type
     FMargemDireita: Double;
     FCasasDecimaisqCom: Integer;
     FCasasDecimaisvUnCom: Integer;
+    FProdutosPorPagina: Integer;
+    FTipoDANFE: TpcnTipoImpressao;
 
   public
     { Public declarations }
@@ -139,7 +145,9 @@ type
                     AMargemEsquerda: Double = 0.7;
                     AMargemDireita: Double = 0.7;
                     ACasasDecimaisqCom: Integer = 4;
-                    ACasasDecimaisvUncCom: Integer = 4);
+                    ACasasDecimaisvUncCom: Integer = 4;
+                    AProdutosPorPagina: Integer = 20;
+                    ATipoDANFE: TpcnTipoImpressao = tiRetrato);
 
     class procedure SavePDF(ANFe: TNFe; ALogo: String = '';
                     AMarcaDagua: String = ''; ALarguraCodProd: Integer = 54;
@@ -156,7 +164,9 @@ type
                     AMargemEsquerda: Double = 0.7;
                     AMargemDireita: Double = 0.7;
                     ACasasDecimaisqCom: Integer = 4;
-                    ACasasDecimaisvUncCom: Integer = 4);
+                    ACasasDecimaisvUncCom: Integer = 4;
+                    AProdutosPorPagina: Integer = 20;
+                    ATipoDANFE: TpcnTipoImpressao = tiRetrato);
   end;
 
 implementation
@@ -181,7 +191,9 @@ class procedure TfrlDANFeRL.Imprimir(ANFe: TNFe; ALogo: String = '';
                 AMargemEsquerda: Double = 0.7;
                 AMargemDireita: Double = 0.7;
                 ACasasDecimaisqCom: Integer = 4;
-                ACasasDecimaisvUncCom: Integer = 4);
+                ACasasDecimaisvUncCom: Integer = 4;
+                AProdutosPorPagina: Integer = 20;
+                ATipoDANFE: TpcnTipoImpressao = tiRetrato);
 begin
   with Create ( nil ) do
     try
@@ -207,6 +219,8 @@ begin
       FMargemDireita := AMargemDireita;
       FCasasDecimaisqCom := ACasasDecimaisqCom;
       FCasasDecimaisvUnCom := ACasasDecimaisvUncCom;
+      FProdutosPorPagina := AProdutosPorPagina;
+      FTipoDANFE := ATipoDANFE;
 
  //     for iCopias := 1 to FNumCopias do
         if FMostrarPreview = True then
@@ -234,8 +248,9 @@ class procedure TfrlDANFeRL.SavePDF(ANFe: TNFe; ALogo: String = '';
                     AMargemEsquerda: Double = 0.7;
                     AMargemDireita: Double = 0.7;
                     ACasasDecimaisqCom: Integer = 4;
-                    ACasasDecimaisvUncCom: Integer = 4);
-
+                    ACasasDecimaisvUncCom: Integer = 4;
+                    AProdutosPorPagina: Integer = 20;
+                    ATipoDANFE: TpcnTipoImpressao = tiRetrato);
 begin
   with Create ( nil ) do
     try
@@ -260,6 +275,8 @@ begin
       FMargemDireita := AMargemDireita;
       FCasasDecimaisqCom := ACasasDecimaisqCom;
       FCasasDecimaisvUnCom := ACasasDecimaisvUncCom;
+      FProdutosPorPagina := AProdutosPorPagina;
+      FTipoDANFE := ATipoDANFE;
       RLNFe.SaveToFile(AFile);
     finally
       Free ;

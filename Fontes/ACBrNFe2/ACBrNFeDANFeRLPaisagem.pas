@@ -91,9 +91,11 @@
 |* 19/06/2010: Peterson de Cerqueira Matos
 |*  - Admissão de quebra de linha nos dados adicionais do produto (infAdProd).
 |*    O Caractere ponto-e-vírgula ';' será considerado quebra de linha
+|* 07/07/2010: Peteron de Cerqueira Matos
+|*  - Início do DANFe em formato Paisagem
 ******************************************************************************}
 {$I ACBr.inc}
-unit ACBrNFeDANFeRLRetrato;
+unit ACBrNFeDANFeRLPaisagem;
 
 interface
 
@@ -108,7 +110,7 @@ uses
   ACBrNFeDANFeRL, pcnConversao, RLBarcode, jpeg, DB, DBClient, StrUtils;
 
 type
-  TfrlDANFeRLRetrato = class(TfrlDANFeRL)
+  TfrlDANFeRLPaisagem = class(TfrlDANFeRL)
     rlbEmitente: TRLBand;
     rliEmitente: TRLDraw;
     RLDraw6: TRLDraw;
@@ -134,7 +136,6 @@ type
     rlsRectProdutos: TRLDraw;
     lblDadosDoProduto: TRLLabel;
     RLDraw50: TRLDraw;
-    RLLabel23: TRLLabel;
     RLDraw51: TRLDraw;
     rlsDivProd1: TRLDraw;
     rlsDivProd2: TRLDraw;
@@ -191,10 +192,8 @@ type
     rllEmitente: TRLLabel;
     rlbCodigoBarrasFS: TRLBarcode;
     rllXmotivo: TRLLabel;
-    rllDadosVariaveis1c: TRLLabel;
     RLPDFFilter1: TRLPDFFilter;
     rlbDestinatario: TRLBand;
-    RLLabel18: TRLLabel;
     RLLabel32: TRLLabel;
     rllDestNome: TRLLabel;
     RLLabel35: TRLLabel;
@@ -230,7 +229,6 @@ type
     RLDraw18: TRLDraw;
     RLDraw15: TRLDraw;
     rlbFatura: TRLBand;
-    RLLabel19: TRLLabel;
     rllFatNum1: TRLLabel;
     rllFatNum2: TRLLabel;
     rllFatNum3: TRLLabel;
@@ -272,7 +270,6 @@ type
     RLDraw28: TRLDraw;
     RLDraw25: TRLDraw;
     rlbImposto: TRLBand;
-    RLLabel20: TRLLabel;
     RLLabel44: TRLLabel;
     rllBaseICMS: TRLLabel;
     RLLabel49: TRLLabel;
@@ -305,7 +302,6 @@ type
     RLDraw29: TRLDraw;
     RLDraw37: TRLDraw;
     rlbTransportadora: TRLBand;
-    RLLabel21: TRLLabel;
     RLLabel55: TRLLabel;
     rllTransNome: TRLLabel;
     RLLabel63: TRLLabel;
@@ -368,7 +364,6 @@ type
     cdsItensVALORIPI: TStringField;
     rlbItens: TRLBand;
     rlbISSQN: TRLBand;
-    RLLabel24: TRLLabel;
     RLLabel73: TRLLabel;
     RLLabel74: TRLLabel;
     RLLabel75: TRLLabel;
@@ -415,7 +410,6 @@ type
     RLLabel16: TRLLabel;
     rlmContinuacaoDadosAdicionais: TRLMemo;
     rllHomologacao: TRLLabel;
-    rlmDadosAdicionaisAuxiliar: TRLMemo;
     rlmDescricao: TRLDBMemo;
     LinhaDCSuperior: TRLDraw;
     LinhaDCInferior: TRLDraw;
@@ -442,20 +436,6 @@ type
     rlmDescricaoProduto: TRLMemo;
     rlmCodProd: TRLMemo;
     rlmSiteEmail: TRLMemo;
-    rlbReciboHeader: TRLBand;
-    rlCanhoto: TRLDraw;
-    rliCanhoto1: TRLDraw;
-    rliCanhoto2: TRLDraw;
-    rllRecebemosDe: TRLLabel;
-    rllDataRecebimento: TRLLabel;
-    rllIdentificacao: TRLLabel;
-    rliCanhoto3: TRLDraw;
-    rllNFe: TRLLabel;
-    rllNumNF0: TRLLabel;
-    rllSERIE0: TRLLabel;
-    rllResumo: TRLLabel;
-    rlbDivisaoRecibo: TRLBand;
-    rliDivisao: TRLDraw;
     rllUsuario: TRLLabel;
     rllSistema: TRLLabel;
     RLLabel1: TRLLabel;
@@ -475,6 +455,48 @@ type
     RLDraw2: TRLDraw;
     cdsItensCST2: TStringField;
     rllContingencia: TRLLabel;
+    RLAngleLabel1: TRLAngleLabel;
+    RLAngleLabel2: TRLAngleLabel;
+    RLDraw13: TRLDraw;
+    RLDraw14: TRLDraw;
+    RLAngleLabel3: TRLAngleLabel;
+    RLDraw43: TRLDraw;
+    rllFatNum13: TRLLabel;
+    rllFatNum14: TRLLabel;
+    rllFatNum15: TRLLabel;
+    rllFatData15: TRLLabel;
+    rllFatData14: TRLLabel;
+    rllFatData13: TRLLabel;
+    rllFatValor13: TRLLabel;
+    rllFatValor14: TRLLabel;
+    rllFatValor15: TRLLabel;
+    RLLabel57: TRLLabel;
+    RLLabel58: TRLLabel;
+    RLLabel79: TRLLabel;
+    RLDraw53: TRLDraw;
+    RLAngleLabel4: TRLAngleLabel;
+    RLAngleLabel5: TRLAngleLabel;
+    RLDraw55: TRLDraw;
+    RLAngleLabel6: TRLAngleLabel;
+    RLAngleLabel7: TRLAngleLabel;
+    RLDraw3: TRLDraw;
+    RLAngleLabel8: TRLAngleLabel;
+    RLDraw5: TRLDraw;
+    RLAngleLabel9: TRLAngleLabel;
+    rlmDadosAdicionaisAuxiliar: TRLMemo;
+    pnlCanhoto: TRLPanel;
+    rliDivisao: TRLDraw;
+    rliCanhoto: TRLDraw;
+    rliCanhoto3: TRLDraw;
+    rliCanhoto1: TRLDraw;
+    rliCanhoto2: TRLDraw;
+    rllNFe: TRLAngleLabel;
+    rllNumNF0: TRLAngleLabel;
+    rllSERIE0: TRLAngleLabel;
+    rllIdentificacao: TRLAngleLabel;
+    rllDataRecebimento: TRLAngleLabel;
+    rllRecebemosDe: TRLAngleLabel;
+    rllResumo: TRLAngleLabel;
     procedure RLNFeBeforePrint(Sender: TObject; var PrintIt: Boolean);
     procedure rlbEmitenteBeforePrint(Sender: TObject;
       var PrintIt: Boolean);
@@ -508,16 +530,16 @@ implementation
 
 uses ACBrNFeUtil, pcnNFe;
 
-var iLimiteLinhas: Integer = 10;
+var iLimiteLinhas: Integer = 8;
 iLinhasUtilizadas: Integer = 0;
-iLimiteCaracteresLinha: Integer = 80;
-iLimiteCaracteresContinuacao: Integer = 129;
+iLimiteCaracteresLinha: Integer = 122;
+iLimiteCaracteresContinuacao: Integer = 185;
 q, iQuantItens: Integer;
 sRetirada, sEntrega: WideString;
 
 {$R *.dfm}
 
-function TfrlDANFeRLRetrato.BuscaDireita(Busca, Text: String): Integer;
+function TfrlDANFeRLPaisagem.BuscaDireita(Busca, Text: String): Integer;
 {Pesquisa um caractere à direita da string, retornando sua posição}
 var n, retorno: integer;
 begin
@@ -534,7 +556,7 @@ begin
 end;
 
 {Função original de ACBrNFeUtil modificada para exibir em outro formato}
-function TfrlDANFeRLRetrato.FormatarCEP(AValue: String): String;
+function TfrlDANFeRLPaisagem.FormatarCEP(AValue: String): String;
 var i, iZeros: Integer;
 sCep: String;
 begin
@@ -553,7 +575,7 @@ begin
 end;
 
 {Função original de ACBrNFeUtil modificada para exibir em outro formato}
-function TfrlDANFeRLRetrato.FormatarFone(AValue: String): String;
+function TfrlDANFeRLPaisagem.FormatarFone(AValue: String): String;
 begin
   Result := AValue;
   if NotaUtil.NaoEstaVazio(AValue) then
@@ -563,7 +585,7 @@ begin
   end;
 end;
 
-procedure TfrlDANFeRLRetrato.InsereLinhas(sTexto: String; iLimCaracteres: Integer;
+procedure TfrlDANFeRLPaisagem.InsereLinhas(sTexto: String; iLimCaracteres: Integer;
                                                                  rMemo: TRLMemo);
 var iTotalLinhas, iUltimoEspacoLinha, iPosAtual, iQuantCaracteres, i: Integer;
     sLinhaProvisoria, sLinha: String;
@@ -604,7 +626,7 @@ begin
     end;
 end;
 
-procedure TfrlDANFeRLRetrato.RLNFeBeforePrint(Sender: TObject;
+procedure TfrlDANFeRLPaisagem.RLNFeBeforePrint(Sender: TObject;
   var PrintIt: Boolean);
 begin
   q := 0;
@@ -615,6 +637,7 @@ begin
       LeftMargin := FMargemEsquerda * 10;
       RightMargin := FMargemDireita * 10;
     end;
+
   InitDados;
 
   if FNFe.Cobr.Dup.Count > 0 then
@@ -623,9 +646,10 @@ begin
     rlbFatura.Visible := False;
 
   RLNFe.Title := Copy (FNFe.InfNFe.Id, 4, 44);
+
 end;
 
-procedure TfrlDANFeRLRetrato.rlbEmitenteBeforePrint(Sender: TObject;
+procedure TfrlDANFeRLPaisagem.rlbEmitenteBeforePrint(Sender: TObject;
   var PrintIt: Boolean);
 begin
   rlbCodigoBarras.BringToFront;
@@ -633,8 +657,7 @@ begin
     begin
       rlbISSQN.Visible := False;
       rlbDadosAdicionais.Visible := False;
-      rlbReciboHeader.Visible := False;
-      rlbDivisaoRecibo.Visible := False;
+      
       if iQuantItens > q then
         begin
           rlbCabecalhoItens.Visible := True;
@@ -648,7 +671,7 @@ begin
     end;
 end;
 
-procedure TfrlDANFeRLRetrato.InitDados;
+procedure TfrlDANFeRLPaisagem.InitDados;
 var i, b, h, iAlturaCanhoto: Integer;
 begin
   // Carrega logomarca
@@ -671,19 +694,19 @@ begin
                            NotaUtil.FormatFloat(FNFe.Total.ICMSTot.vNF,
                            '###,###,###,##0.00');
       rllResumo.Visible := True;
-      iAlturaCanhoto := 25;
+      iAlturaCanhoto := 39;
     end
   else
     begin
       rllResumo.Visible := False;
-      iAlturaCanhoto := 17;
+      iAlturaCanhoto := 30;
     end;
 
-  rliCanhoto1.Top := iAlturaCanhoto;
-  rliCanhoto2.Top := iAlturaCanhoto;
-  rliCanhoto2.Height := 57 - iAlturaCanhoto;
-  rllDataRecebimento.Top := iAlturaCanhoto + 3;
-  rllIdentificacao.Top := iAlturaCanhoto + 3;
+  rliCanhoto1.Left := iAlturaCanhoto;
+  rliCanhoto2.Left := rliCanhoto1.Left;
+  rliCanhoto2.Width := (rliCanhoto.Left + rliCanhoto.Width) - rliCanhoto2.Left;
+  rllDataRecebimento.Left := rliCanhoto1.Left + 3;
+  rllIdentificacao.Left := rliCanhoto1.Left + 3;
 
   // Exibe o desenvolvedor do sistema
   if FSsitema <> '' then
@@ -820,24 +843,6 @@ begin
   rlmCodProd.Lines.EndUpdate;
   rlmDescricaoProduto.Lines.EndUpdate;
 
-  // Posiciona o canhoto do DANFE no cabeçalho ou rodapé
-  case FPosCanhoto of
-    pcCabecalho:
-      begin
-        rlbReciboHeader.BandType := btHeader;
-        rlbDivisaoRecibo.BandType := btHeader;
-        rlbReciboHeader.Top := 19;
-        rlbDivisaoRecibo.Top := 76;
-      end;
-    pcRodape:
-      begin
-        rlbReciboHeader.BandType := btFooter;
-        rlbDivisaoRecibo.BandType := btFooter;
-        rlbReciboHeader.Top := 942;
-        rlbDivisaoRecibo.Top := 925;
-      end;
-  end;
-
   // Oculta alguns itens do DANFE
   if FFormularioContinuo = True then
     begin
@@ -846,7 +851,7 @@ begin
       rllDataRecebimento.Visible := False;
       rllIdentificacao.Visible := False;
       rllNFe.Visible := False;
-      rlCanhoto.Visible := False;
+      rliCanhoto.Visible := False;
       rliCanhoto1.Visible := False;
       rliCanhoto2.Visible := False;
       rliCanhoto3.Visible := False;
@@ -879,10 +884,7 @@ begin
       rlmSiteEmail.Visible := False;
       with rliLogo do
         begin
-          Height := 101;
-          Width := 268;
-          Top := 14;
-          Left := 2;
+          Width := 450;
           Scaled := False;
           Stretch := True;
         end;
@@ -968,7 +970,7 @@ begin
   iQuantItens := FNFe.Det.Count;
 end;
 
-procedure TfrlDANFeRLRetrato.Header;
+procedure TfrlDANFeRLPaisagem.Header;
 var sChaveContingencia: String;
 begin
   with FNFe.InfNFe, FNFe.Ide do
@@ -996,13 +998,11 @@ begin
           begin
             rllDadosVariaveis1a.Visible := True;
             rllDadosVariaveis1b.Visible := True;
-            rllDadosVariaveis1c.Visible := True;
           end
         else
           begin
             rllDadosVariaveis1a.Visible := False;
             rllDadosVariaveis1b.Visible := False;
-            rllDadosVariaveis1c.Visible := False;
           end;
         rlbCodigoBarrasFS.Visible := False;
         rllDadosVariaveis3.Caption := FNFe.procNFe.nProt + ' ' +
@@ -1015,7 +1015,6 @@ begin
         sChaveContingencia := NotaUtil.GerarChaveContingencia(FNFe);
         rllDadosVariaveis1a.Visible := False;
         rllDadosVariaveis1b.Visible := False;
-        rllDadosVariaveis1c.Visible := False;
         rlbCodigoBarras.Visible := True;
         rlbCodigoBarrasFS.Caption := sChaveContingencia;
         rlbCodigoBarrasFS.Visible := True;
@@ -1036,7 +1035,6 @@ begin
       begin
         rllDadosVariaveis1a.Visible := True;
         rllDadosVariaveis1b.Visible := True;
-        rllDadosVariaveis1c.Visible := False;
         rlbCodigoBarras.Visible := True;
         rlbCodigoBarrasFS.Visible := False;
         rllDadosVariaveis3_Descricao.Caption := 'NÚMERO DE REGISTRO DPEC';
@@ -1050,7 +1048,7 @@ begin
   end;
 end;
 
-procedure TfrlDANFeRLRetrato.Emitente;
+procedure TfrlDANFeRLPaisagem.Emitente;
 begin
   //emit
   with FNFe.Emit do
@@ -1080,12 +1078,10 @@ begin
           begin
             rllFone.Caption := 'TEL: ' + FormatarFone(Fone) +
                                       ' - FAX: ' + FormatarFone(FFax);
-            rllFone.Font.Size := 7;
           end
         else
           begin
             rllFone.Caption := 'TEL: ' + FormatarFone(Fone);
-            rllFone.Font.Size := 8;
           end;
       end;
     end;
@@ -1100,19 +1096,19 @@ begin
           rlmSiteEmail.Lines.Add(FEmail);
         rlmSiteEmail.Lines.EndUpdate;
         rlmSiteEmail.Visible := True;
-        rlmEndereco.Top := 48;
-        rllFone.Top := 82;
-        rlmSiteEmail.Top := 92;
+        rlmEndereco.Top := 50;
+        rllFone.Top := 76;
+        rlmSiteEmail.Top := 90;
       end
     else
       begin
         rlmSiteEmail.Visible := False;
         rlmEndereco.Top := 58;
-        rllFone.Top := 96;
+        rllFone.Top := 92;
       end;
 end;
 
-procedure TfrlDANFeRLRetrato.Destinatario;
+procedure TfrlDANFeRLPaisagem.Destinatario;
 begin
   // destinatario
   with FNFe.Dest do
@@ -1143,7 +1139,7 @@ begin
     end;
 end;
 
-procedure TfrlDANFeRLRetrato.EnderecoEntrega;
+procedure TfrlDANFeRLPaisagem.EnderecoEntrega;
 var sEndereco: WideString;
 sCNPJ: String;
 begin
@@ -1167,7 +1163,7 @@ begin
     end;
 end;
 
-procedure TfrlDANFeRLRetrato.EnderecoRetirada;
+procedure TfrlDANFeRLPaisagem.EnderecoRetirada;
 var sEndereco: WideString;
 sCNPJ: String;
 begin
@@ -1191,7 +1187,7 @@ begin
     end;
 end;
 
-procedure TfrlDANFeRLRetrato.Imposto;
+procedure TfrlDANFeRLPaisagem.Imposto;
 begin
   with FNFe.Total.ICMSTot do
   begin
@@ -1209,7 +1205,7 @@ begin
   end;
 end;
 
-procedure TfrlDANFeRLRetrato.Transporte;
+procedure TfrlDANFeRLPaisagem.Transporte;
 begin
   with FNFe.Transp do
   begin
@@ -1270,7 +1266,7 @@ begin
    end;
 end;
 
-procedure TfrlDANFeRLRetrato.DadosAdicionais;
+procedure TfrlDANFeRLPaisagem.DadosAdicionais;
 var sInfCompl, sInfAdFisco, sInfInteira, sProtocolo, sSuframa : WideString;
     sLinhaProvisoria, sLinha: String;
 iTotalCaracteres, iTotalLinhas, iUltimoEspacoLinha, i: Integer;
@@ -1328,7 +1324,7 @@ begin
   rlmDadosAdicionaisAuxiliar.Lines.EndUpdate;
 end;
 
-procedure TfrlDANFeRLRetrato.Observacoes;
+procedure TfrlDANFeRLPaisagem.Observacoes;
 var i, iMaximoLinhas, iRestanteLinhas: Integer;
 sTexto: WideString;
 begin
@@ -1362,7 +1358,7 @@ begin
   rlmDadosAdicionais.Lines.EndUpdate;
 end;
 
-procedure TfrlDANFeRLRetrato.Itens;
+procedure TfrlDANFeRLPaisagem.Itens;
 var nItem : Integer ;
 sCST, sBCICMS, sALIQICMS, sVALORICMS, sALIQIPI, sVALORIPI : String ;
 begin
@@ -1528,7 +1524,7 @@ begin
    cdsItens.First ;
 end;
 
-procedure TfrlDANFeRLRetrato.ISSQN;
+procedure TfrlDANFeRLPaisagem.ISSQN;
 begin
   if FNFe.Det.Items[0].Imposto.ISSQN.vISSQN = 0 then
     rlbISSQN.Visible := False
@@ -1548,12 +1544,12 @@ begin
     end;
 end;
 
-procedure TfrlDANFeRLRetrato.AddFatura;
+procedure TfrlDANFeRLPaisagem.AddFatura;
 var x : integer;
 begin
 
   //zera
-  for x := 1 to 12 do
+  for x := 1 to 15 do
     begin
       TRLLabel (FindComponent ('rllFatNum'   + intToStr (x))).Caption := '';
       TRLLabel (FindComponent ('rllFatData'  + intToStr (x))).Caption := '';
@@ -1576,7 +1572,7 @@ begin
     end;
 end;
 
-procedure TfrlDANFeRLRetrato.rlbItensAfterPrint(Sender: TObject);
+procedure TfrlDANFeRLPaisagem.rlbItensAfterPrint(Sender: TObject);
 var h: Integer;
 str: WideString;
 begin
@@ -1605,14 +1601,10 @@ begin
     rlbObsItem.Visible := False;
 end;
 
-procedure TfrlDANFeRLRetrato.rlbDadosAdicionaisBeforePrint(Sender: TObject;
+procedure TfrlDANFeRLPaisagem.rlbDadosAdicionaisBeforePrint(Sender: TObject;
   var PrintIt: Boolean);
 begin
-  if FPosCanhoto = pcCabecalho then
-    begin
-      rlbReciboHeader.Visible := False;
-      rlbDivisaoRecibo.Visible := False;
-    end;
+  pnlCanhoto.Visible := False;
 end;
 
 end.

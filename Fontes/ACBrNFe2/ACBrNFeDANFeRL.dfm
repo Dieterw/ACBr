@@ -4,7 +4,7 @@ object frlDANFeRL: TfrlDANFeRL
   Width = 810
   Height = 634
   VertScrollBar.Position = 540
-  Caption = 'fqrDANFeLR'
+  Caption = 'frlDANFeLR'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText

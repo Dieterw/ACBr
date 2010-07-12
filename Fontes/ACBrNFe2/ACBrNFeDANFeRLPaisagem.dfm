@@ -3,13 +3,13 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
   Top = 106
   Width = 1149
   Height = 732
-  VertScrollBar.Position = 0
+  VertScrollBar.Position = 96
   Caption = 'frlDANFeRLPaisagem'
   OldCreateOrder = True
   PixelsPerInch = 96
   TextHeight = 13
   inherited RLNFe: TRLReport
-    Top = 0
+    Top = -96
     Width = 1123
     Height = 794
     Background.Arrange = baDistributed
@@ -4520,6 +4520,7 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
         HoldStyle = hsVertically
       end
       object rllNFe: TRLAngleLabel
+        Tag = 1
         Left = 4
         Top = 53
         Width = 16
@@ -4535,6 +4536,7 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
         ParentFont = False
       end
       object rllNumNF0: TRLAngleLabel
+        Tag = 1
         Left = 22
         Top = 22
         Width = 16
@@ -4550,6 +4552,7 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
         ParentFont = False
       end
       object rllSERIE0: TRLAngleLabel
+        Tag = 1
         Left = 38
         Top = 35
         Width = 16
@@ -4565,6 +4568,7 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
         ParentFont = False
       end
       object rllIdentificacao: TRLAngleLabel
+        Tag = 1
         Left = 28
         Top = 440
         Width = 7
@@ -4580,6 +4584,7 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
         ParentFont = False
       end
       object rllDataRecebimento: TRLAngleLabel
+        Tag = 1
         Left = 28
         Top = 646
         Width = 7
@@ -4595,6 +4600,7 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
         ParentFont = False
       end
       object rllRecebemosDe: TRLAngleLabel
+        Tag = 1
         Left = 4
         Top = 428
         Width = 7
@@ -4612,6 +4618,7 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
         ParentFont = False
       end
       object rllResumo: TRLAngleLabel
+        Tag = 1
         Left = 14
         Top = 195
         Width = 10

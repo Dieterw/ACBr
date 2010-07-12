@@ -217,11 +217,16 @@ begin
       FCasasDecimaisvUnCom := ACasasDecimaisvUncCom;
       FProdutosPorPagina := AProdutosPorPagina;
 
- //     for iCopias := 1 to FNumCopias do
-        if FMostrarPreview = True then
-          RLNFe.PreviewModal
-        else
-          RLNFe.Print;
+      if FMostrarPreview = True then
+        RLNFe.PreviewModal
+      else
+        begin
+          if FNumCopias > 0 then
+            for iCopias := 1 to FNumCopias do
+              RLNFe.Print
+          else
+            RLNFe.Print;
+        end;
 
     finally
       Free ;

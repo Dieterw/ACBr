@@ -118,7 +118,7 @@ begin
       (*EP07a*)FchNFe := leitor.rCampo(tcStr, 'chNFe');
       if FcStat in  [100,101] then
        begin
-         if (Leitor.rExtrai(1, 'protNFe') <> '') or (Leitor.rExtrai(1, 'infProt')) then
+         if ((Leitor.rExtrai(1, 'protNFe') <> '') or (Leitor.rExtrai(1, 'infProt')) then
           begin
             protNFe.tpAmb    := StrToTpAmb(ok, Leitor.rCampo(tcStr, 'tpAmb'));
             protNFe.verAplic := Leitor.rCampo(tcStr, 'verAplic');

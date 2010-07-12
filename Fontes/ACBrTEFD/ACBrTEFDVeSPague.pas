@@ -47,9 +47,9 @@ interface
 uses
   Classes, SysUtils, ACBrTEFDClass,
   {$IFDEF VisualCLX}
-     QControls, QForms
+     QControls, QForms, QDialogs,
   {$ELSE}
-     Controls, Forms
+     Controls, Forms, Dialogs,
   {$ENDIF},
   blcksock ;
 
@@ -241,7 +241,7 @@ procedure VSStringToList( const AString : AnsiString; const AList : TStrings) ;
 
 implementation
 
-Uses ACBrUtil, dateutils, StrUtils, ACBrTEFD, Dialogs, Math;
+Uses ACBrUtil, dateutils, StrUtils, ACBrTEFD, Math;
 
 { TACBrTEFDVeSPagueCmd }
 
@@ -1577,8 +1577,6 @@ DUVIDAS:
   para digitar a Senha no Pin-Pad
 
 - VSCliente não envia mensagem para limpeza da Mensagem do Operador
-
-- <WCT>89639CF55110D91441E0220609AD7C67</WCT>-12/10  na Imagem do Comprovante ??
 
 *)
 end.

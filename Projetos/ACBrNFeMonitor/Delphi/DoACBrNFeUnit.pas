@@ -278,7 +278,11 @@ begin
            if not(ACBrNFe1.WebServices.StatusServico.Executar) then
             raise Exception.Create(ACBrNFe1.WebServices.StatusServico.Msg);
 
-           ACBrNFe1.WebServices.Enviar.Lote := StrToIntDef(Cmd.Params(1),1);
+           if Trim(OnlyNumber(Cmd.Params(1))) = '' then
+              ACBrNFe1.WebServices.Enviar.Lote := '1'
+           else
+              ACBrNFe1.WebServices.Enviar.Lote := OnlyNumber(Cmd.Params(1));
+
            ACBrNFe1.WebServices.Enviar.Executar;
 
            Cmd.Resposta :=  ACBrNFe1.WebServices.Enviar.Msg+sLineBreak+
@@ -556,9 +560,19 @@ begin
                   raise Exception.Create(ACBrNFe1.WebServices.StatusServico.Msg);
 
                  if (Cmd.Metodo = 'criarenviarnfe') or (Cmd.Metodo = 'criarenviarnfesefaz') then
-                    ACBrNFe1.WebServices.Enviar.Lote := StrToIntDef(Cmd.Params(1),1)
+                  begin
+                    if Trim(OnlyNumber(Cmd.Params(1))) = '' then
+                       ACBrNFe1.WebServices.Enviar.Lote := '1'
+                    else
+                       ACBrNFe1.WebServices.Enviar.Lote := OnlyNumber(Cmd.Params(1));
+                  end
                  else
-                    ACBrNFe1.WebServices.Enviar.Lote := StrToIntDef(Cmd.Params(0),1);
+                  begin
+                    if Trim(OnlyNumber(Cmd.Params(0))) = '' then
+                       ACBrNFe1.WebServices.Enviar.Lote := '1'
+                    else
+                       ACBrNFe1.WebServices.Enviar.Lote := OnlyNumber(Cmd.Params(0));
+                  end;
                  ACBrNFe1.WebServices.Enviar.Executar ;
 
                  Cmd.Resposta :=  ACBrNFe1.WebServices.Enviar.Msg+sLineBreak+

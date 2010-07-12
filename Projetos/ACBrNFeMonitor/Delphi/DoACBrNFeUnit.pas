@@ -57,7 +57,7 @@ Uses IniFiles, StrUtils, DateUtils,
   pcnCancNFe, pcnRetCancNFe,
   pcnConsSitNFe, pcnRetConsSitNFe,
   pcnInutNFe, pcnRetInutNFe,
-  pcnRetEnvNFe, pcnConsReciNFe,
+  pcnRetEnvNFe, pcnConsReciNFe, pcnAuxiliar,
   pcnNFeRTXT, ACBrNFeNotasFiscais, pcnRetConsCad, StdCtrls, pcnProcNFe;
 
 Procedure DoACBrNFe( Cmd : TACBrNFeCmd ) ;
@@ -143,7 +143,12 @@ begin
               ACBrNFe1.WebServices.Consulta.NFeChave := StringReplace(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID,'NFe','',[rfIgnoreCase]);
             end
            else
-              ACBrNFe1.WebServices.Consulta.NFeChave := Cmd.Params(0);
+            begin
+              if not ValidarChave(Cmd.Params(0)) then
+                 raise Exception.Create('Chave '+Cmd.Params(0)+' inválida.')
+              else
+                 ACBrNFe1.WebServices.Consulta.NFeChave := Cmd.Params(0);
+            end;
            try
               ACBrNFe1.WebServices.Consulta.Executar;
 
@@ -167,7 +172,11 @@ begin
 
         else if Cmd.Metodo = 'cancelarnfe' then
          begin
-           ACBrNFe1.WebServices.Consulta.NFeChave := Cmd.Params(0);
+           if not ValidarChave(Cmd.Params(0)) then
+              raise Exception.Create('Chave '+Cmd.Params(0)+' inválida.')
+           else
+              ACBrNFe1.WebServices.Consulta.NFeChave := Cmd.Params(0);
+
            if not ACBrNFe1.WebServices.Consulta.Executar then
               raise Exception.Create(ACBrNFe1.WebServices.Consulta.Msg);
 

@@ -50,7 +50,7 @@ uses
      QControls, QForms, QDialogs,
   {$ELSE}
      Controls, Forms, Dialogs,
-  {$ENDIF},
+  {$ENDIF}
   blcksock ;
 
 

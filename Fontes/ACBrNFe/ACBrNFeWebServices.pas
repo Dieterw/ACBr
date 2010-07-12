@@ -890,12 +890,15 @@ end;
 
 procedure TWebServices.Inutiliza(CNPJ, AJustificativa: String; Ano, Modelo, Serie, NumeroInicial, NumeroFinal : Integer);
 begin
-  if not(Self.StatusServico.Executar) then
-     begin
-       if Assigned(TACBrNFe( FACBrNFe ).OnGerarLog) then
-          TACBrNFe( FACBrNFe ).OnGerarLog(Self.StatusServico.Msg);
-       raise Exception.Create(Self.StatusServico.Msg);
-     end;
+  if TACBrNFe( FACBrNFe ).Configuracoes.Geral.FormaEmissao = teNormal then
+   begin
+     if not(Self.StatusServico.Executar) then
+      begin
+        if Assigned(TACBrNFe( FACBrNFe ).OnGerarLog) then
+           TACBrNFe( FACBrNFe ).OnGerarLog(Self.StatusServico.Msg);
+          raise Exception.Create(Self.StatusServico.Msg);
+      end;
+   end;
 
   Self.Inutilizacao.CNPJ   := CNPJ;
   Self.Inutilizacao.Modelo := Modelo;

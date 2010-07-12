@@ -3,13 +3,13 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
   Top = 109
   Width = 820
   Height = 655
-  VertScrollBar.Position = 303
+  VertScrollBar.Position = 259
   Caption = 'frlDANFeRLRetrato'
   OldCreateOrder = True
   PixelsPerInch = 96
   TextHeight = 13
   inherited RLNFe: TRLReport
-    Top = -303
+    Top = -259
     Background.Arrange = baDistributed
     Background.Height = 96
     Background.Width = 175
@@ -42,7 +42,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Tag = 20
         Left = 8
         Top = 24
-        Width = 657
+        Width = 673
         Height = 12
         Borders.Style = bsClear
         Font.Charset = DEFAULT_CHARSET
@@ -712,52 +712,52 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       end
       object rllDANFE: TRLLabel
         Left = 276
-        Top = 0
+        Top = 6
         Width = 150
-        Height = 23
+        Height = 20
         Alignment = taCenter
         AutoSize = False
         Caption = 'DANFE'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
-        Font.Height = -20
+        Font.Height = -19
         Font.Name = 'Arial'
         Font.Style = [fsBold]
         ParentFont = False
       end
       object rllDocumento1: TRLLabel
         Left = 276
-        Top = 23
+        Top = 28
         Width = 150
-        Height = 16
+        Height = 12
         Alignment = taCenter
         AutoSize = False
         Caption = 'DOCUMENTO AUXILIAR DA'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
-        Font.Height = -11
+        Font.Height = -9
         Font.Name = 'Arial'
         Font.Style = [fsBold]
         ParentFont = False
       end
       object rllDocumento2: TRLLabel
         Left = 276
-        Top = 35
+        Top = 40
         Width = 150
-        Height = 16
+        Height = 12
         Alignment = taCenter
         AutoSize = False
         Caption = 'NOTA FISCAL ELETR'#212'NICA'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
-        Font.Height = -11
+        Font.Height = -9
         Font.Name = 'Arial'
         Font.Style = [fsBold]
         ParentFont = False
       end
       object rllTipoEntrada: TRLLabel
         Left = 292
-        Top = 51
+        Top = 55
         Width = 68
         Height = 14
         Caption = '0 - ENTRADA'
@@ -770,7 +770,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       end
       object rllTipoSaida: TRLLabel
         Left = 292
-        Top = 63
+        Top = 67
         Width = 51
         Height = 14
         Caption = '1 - SA'#205'DA'
@@ -783,13 +783,13 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       end
       object rliTipoEntrada: TRLDraw
         Left = 378
-        Top = 51
+        Top = 54
         Width = 25
         Height = 25
       end
       object rllEntradaSaida: TRLLabel
         Left = 381
-        Top = 54
+        Top = 57
         Width = 20
         Height = 20
         Alignment = taCenter
@@ -803,7 +803,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       end
       object rllNumNF1: TRLLabel
         Left = 280
-        Top = 81
+        Top = 82
         Width = 93
         Height = 16
         Caption = 'N'#186' 000.000.000'
@@ -976,7 +976,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Tag = 3
         Left = 8
         Top = 18
-        Width = 257
+        Width = 258
         Height = 32
         Alignment = taCenter
         AutoSize = False
@@ -1157,7 +1157,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       end
       object rllPageNumber: TRLSystemInfo
         Left = 368
-        Top = 81
+        Top = 82
         Width = 41
         Height = 16
         Alignment = taRightJustify
@@ -1167,12 +1167,20 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       end
       object rllLastPage: TRLSystemInfo
         Left = 404
-        Top = 81
+        Top = 82
         Width = 24
         Height = 16
         AutoSize = False
         Info = itLastPageNumber
         Text = '/'
+      end
+      object RLDraw4: TRLDraw
+        Left = 272
+        Top = 0
+        Width = 158
+        Height = 1
+        DrawKind = dkLine
+        HoldStyle = hsHorizontally
       end
     end
     object rlbDadosAdicionais: TRLBand
@@ -1250,7 +1258,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Tag = 20
         Left = 8
         Top = 34
-        Width = 402
+        Width = 417
         Height = 119
         AutoSize = False
         Font.Charset = DEFAULT_CHARSET
@@ -4250,7 +4258,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       Height = 57
       AutoSize = True
       BandType = btHeader
-      object rlCanhoto: TRLDraw
+      object rliCanhoto: TRLDraw
         Left = 0
         Top = 0
         Width = 740
@@ -4275,8 +4283,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       end
       object rllRecebemosDe: TRLLabel
         Tag = 1
-        Left = 6
-        Top = 5
+        Left = 4
+        Top = 4
         Width = 307
         Height = 7
         Caption = 

@@ -109,8 +109,6 @@ uses ACBrNFe, ACBrNFeUtil, ACBrUtil;
 
 var
   i : Integer;
-//  frlDANFeRLRetrato: TfrlDANFeRLRetrato;
-//  frlDANFeRLPaisagem: TfrlDANFeRLPaisagem;
   frlDANFeRL: TfrlDANFeRL;
 
 constructor TACBrNFeDANFeRL.Create(AOwner: TComponent);
@@ -138,29 +136,26 @@ begin
   end;
 
   if NFE = nil then
-   begin
-     for i:= 0 to TACBrNFe(ACBrNFe).NotasFiscais.Count-1 do
-      begin
-        frlDANFeRL.Imprimir(TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe,
-        Logo, MarcaDagua, LarguraCodProd, Email, ExibirResumoCanhoto, Fax,
-        NumCopias, Sistema, Site, Usuario, PosCanhoto, FormularioContinuo,
-        ExpandirLogoMarca, MostrarPreview, FonteDANFE, MargemSuperior,
-        MargemInferior, MargemEsquerda, MargemDireita, CasasDecimais._qCom,
-        CasasDecimais._vUnCom, ProdutosPorPagina, TipoDANFE);
-      end;
-   end
+    begin
+      for i:= 0 to TACBrNFe(ACBrNFe).NotasFiscais.Count - 1 do
+        begin
+          frlDANFeRL.Imprimir(TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe,
+          Logo, MarcaDagua, LarguraCodProd, Email, ExibirResumoCanhoto, Fax,
+          NumCopias, Sistema, Site, Usuario, PosCanhoto, FormularioContinuo,
+          ExpandirLogoMarca, MostrarPreview, FonteDANFE, MargemSuperior,
+          MargemInferior, MargemEsquerda, MargemDireita, CasasDecimais._qCom,
+          CasasDecimais._vUnCom, ProdutosPorPagina);
+        end;
+    end
   else
-   begin
-     for i:= 0 to TACBrNFe(ACBrNFe).NotasFiscais.Count-1 do
-      begin
-        frlDANFeRL.Imprimir(TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe,
+    begin
+        frlDANFeRL.Imprimir(NFE,
         Logo, MarcaDagua, LarguraCodProd, Email, ExibirResumoCanhoto, Fax,
         NumCopias, Sistema, Site, Usuario, PosCanhoto, FormularioContinuo,
         ExpandirLogoMarca, MostrarPreview, FonteDANFE, MargemSuperior,
         MargemInferior, MargemEsquerda, MargemDireita, CasasDecimais._qCom,
-        CasasDecimais._vUnCom, ProdutosPorPagina, TipoDANFE);
-      end;
-   end;
+        CasasDecimais._vUnCom, ProdutosPorPagina);
+    end;
 
   frlDANFeRL.Free;
 end;
@@ -185,7 +180,7 @@ begin
         NumCopias, Sistema, Site, Usuario, sFile, PosCanhoto, FormularioContinuo,
         ExpandirLogoMarca, FonteDANFE, MargemSuperior,
         MargemInferior, MargemEsquerda, MargemDireita, CasasDecimais._qCom,
-        CasasDecimais._vUnCom, ProdutosPorPagina, TipoDANFE);
+        CasasDecimais._vUnCom, ProdutosPorPagina);
       end;
    end;
 

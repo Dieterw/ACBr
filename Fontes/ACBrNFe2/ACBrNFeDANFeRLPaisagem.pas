@@ -113,9 +113,9 @@ type
   TfrlDANFeRLPaisagem = class(TfrlDANFeRL)
     rlbEmitente: TRLBand;
     rliEmitente: TRLDraw;
-    RLDraw6: TRLDraw;
+    rliNatOpe: TRLDraw;
     rliChave: TRLDraw;
-    RLDraw8: TRLDraw;
+    rliNatOpe1: TRLDraw;
     RLDraw9: TRLDraw;
     RLDraw10: TRLDraw;
     RLDraw11: TRLDraw;
@@ -133,24 +133,8 @@ type
     rlbCodigoBarras: TRLBarcode;
     rlbCabecalhoItens: TRLBand;
     rlbDadosAdicionais: TRLBand;
-    rlsRectProdutos: TRLDraw;
-    lblDadosDoProduto: TRLLabel;
     RLDraw50: TRLDraw;
     RLDraw51: TRLDraw;
-    rlsDivProd1: TRLDraw;
-    rlsDivProd2: TRLDraw;
-    rlsDivProd3: TRLDraw;
-    rlsDivProd4: TRLDraw;
-    rlsDivProd5: TRLDraw;
-    rlsDivProd6: TRLDraw;
-    rlsDivProd7: TRLDraw;
-    rlsDivProd8: TRLDraw;
-    rlsDivProd9: TRLDraw;
-    rlsDivProd10: TRLDraw;
-    rlsDivProd11: TRLDraw;
-    rlsDivProd12: TRLDraw;
-    rlsDivProd13: TRLDraw;
-    RLDraw54: TRLDraw;
     rllChaveAcesso: TRLLabel;
     rllDadosVariaveis1a: TRLLabel;
     rllDadosVariaveis1b: TRLLabel;
@@ -161,23 +145,6 @@ type
     RLLabel31: TRLLabel;
     RLLabel77: TRLLabel;
     RLLabel78: TRLLabel;
-    RLLabel82: TRLLabel;
-    lblCST: TRLLabel;
-    RLLabel84: TRLLabel;
-    RLLabel85: TRLLabel;
-    RLLabel86: TRLLabel;
-    RLLabel87: TRLLabel;
-    RLLabel88: TRLLabel;
-    RLLabel89: TRLLabel;
-    RLLabel90: TRLLabel;
-    RLLabel91: TRLLabel;
-    RLLabel92: TRLLabel;
-    RLLabel93: TRLLabel;
-    RLLabel94: TRLLabel;
-    RLLabel95: TRLLabel;
-    RLLabel96: TRLLabel;
-    RLLabel97: TRLLabel;
-    RLLabel98: TRLLabel;
     rlmEmitente: TRLMemo;
     rlmEndereco: TRLMemo;
     rllFone: TRLLabel;
@@ -346,7 +313,6 @@ type
     RLDraw42: TRLDraw;
     RLDraw40: TRLDraw;
     RLLabel25: TRLLabel;
-    RLLabel26: TRLLabel;
     cdsItens: TClientDataSet;
     cdsItensCODIGO: TStringField;
     cdsItensDESCRICAO: TStringField;
@@ -373,35 +339,7 @@ type
     RLDraw58: TRLDraw;
     RLDraw52: TRLDraw;
     DataSource1: TDataSource;
-    LinhaDescricao: TRLDraw;
-    LinhaNCM: TRLDraw;
-    LinhaCST: TRLDraw;
-    LinhaCFOP: TRLDraw;
-    LinhaUnidade: TRLDraw;
-    LinhaQuantidade: TRLDraw;
-    LinhaValorUnitario: TRLDraw;
-    LinhaValorTotal: TRLDraw;
-    LinhaBaseICMS: TRLDraw;
-    LinhaValorICMS: TRLDraw;
-    LinhaValorIPI: TRLDraw;
-    LinhaAliqICMS: TRLDraw;
-    LinhaAliqIPI: TRLDraw;
-    LinhaCodigo: TRLDraw;
-    LinhaFinal: TRLDraw;
     rliMarcaDagua1: TRLImage;
-    txtCodigo: TRLDBText;
-    txtNCM: TRLDBText;
-    txtCST: TRLDBText;
-    txtCFOP: TRLDBText;
-    txtUnidade: TRLDBText;
-    txtQuantidade: TRLDBText;
-    txtValorUnitario: TRLDBText;
-    txtValorTotal: TRLDBText;
-    txtBaseICMS: TRLDBText;
-    txtValorICMS: TRLDBText;
-    txtValorIPI: TRLDBText;
-    txtAliqICMS: TRLDBText;
-    txtAliqIPI: TRLDBText;
     rllPageNumber: TRLSystemInfo;
     rllLastPage: TRLSystemInfo;
     rlbAvisoContingencia: TRLBand;
@@ -410,7 +348,6 @@ type
     RLLabel16: TRLLabel;
     rlmContinuacaoDadosAdicionais: TRLMemo;
     rllHomologacao: TRLLabel;
-    rlmDescricao: TRLDBMemo;
     LinhaDCSuperior: TRLDraw;
     LinhaDCInferior: TRLDraw;
     LinhaDCEsquerda: TRLDraw;
@@ -424,17 +361,9 @@ type
     rllISSQNBaseCalculo: TRLLabel;
     rllISSQNValorISSQN: TRLLabel;
     rllISSQNInscricao: TRLLabel;
-    rlbObsItem: TRLBand;
     LinhaFimItens: TRLDraw;
-    LinhaFimObsItem: TRLDraw;
-    LinhaInicioItem: TRLDraw;
-    rlmObsItem: TRLMemo;
-    LinhaObsItemEsquerda: TRLDraw;
-    LinhaObsItemDireita: TRLDraw;
     RLDraw70: TRLDraw;
     RLDraw71: TRLDraw;
-    rlmDescricaoProduto: TRLMemo;
-    rlmCodProd: TRLMemo;
     rlmSiteEmail: TRLMemo;
     rllUsuario: TRLLabel;
     rllSistema: TRLLabel;
@@ -448,11 +377,6 @@ type
     RLLabel8: TRLLabel;
     RLLabel9: TRLLabel;
     cdsItensVALORDESC: TStringField;
-    RLLabel10: TRLLabel;
-    RLLabel11: TRLLabel;
-    RLDraw1: TRLDraw;
-    txtValorDesconto: TRLDBText;
-    RLDraw2: TRLDraw;
     cdsItensCST2: TStringField;
     rllContingencia: TRLLabel;
     RLAngleLabel1: TRLAngleLabel;
@@ -485,7 +409,6 @@ type
     RLAngleLabel9: TRLAngleLabel;
     rlmDadosAdicionaisAuxiliar: TRLMemo;
     pnlCanhoto: TRLPanel;
-    rliDivisao: TRLDraw;
     rliCanhoto: TRLDraw;
     rliCanhoto3: TRLDraw;
     rliCanhoto1: TRLDraw;
@@ -497,12 +420,98 @@ type
     rllDataRecebimento: TRLAngleLabel;
     rllRecebemosDe: TRLAngleLabel;
     rllResumo: TRLAngleLabel;
+    pnlDivisao: TRLPanel;
+    rliDivisao: TRLDraw;
+    pnlCabecalho1: TRLPanel;
+    lblDadosDoProduto: TRLLabel;
+    rlmCodProd: TRLMemo;
+    rlsDivProd1: TRLDraw;
+    rlmDescricaoProduto: TRLMemo;
+    rllCinza1: TRLLabel;
+    rlsRectProdutos1: TRLDraw;
+    RLDraw4: TRLDraw;
+    pnlDescricao1: TRLPanel;
+    txtCodigo: TRLDBText;
+    LinhaProd2: TRLDraw;
+    LinhaProd1: TRLDraw;
+    pnlCabecalho2: TRLPanel;
+    rlsRectProdutos2: TRLDraw;
+    rllCinza2: TRLLabel;
+    rlsDivProd3: TRLDraw;
+    rlsDivProd4: TRLDraw;
+    rlsDivProd5: TRLDraw;
+    rlsDivProd6: TRLDraw;
+    rlsDivProd7: TRLDraw;
+    rlsDivProd8: TRLDraw;
+    RLDraw1: TRLDraw;
+    rlsDivProd9: TRLDraw;
+    rlsDivProd10: TRLDraw;
+    rlsDivProd11: TRLDraw;
+    rlsDivProd12: TRLDraw;
+    RLLabel82: TRLLabel;
+    lblCST: TRLLabel;
+    RLLabel84: TRLLabel;
+    RLLabel85: TRLLabel;
+    RLLabel91: TRLLabel;
+    RLLabel87: TRLLabel;
+    RLLabel88: TRLLabel;
+    RLLabel86: TRLLabel;
+    RLLabel10: TRLLabel;
+    RLLabel11: TRLLabel;
+    RLLabel89: TRLLabel;
+    RLLabel90: TRLLabel;
+    RLLabel92: TRLLabel;
+    RLLabel93: TRLLabel;
+    RLLabel94: TRLLabel;
+    RLLabel95: TRLLabel;
+    RLLabel96: TRLLabel;
+    RLLabel97: TRLLabel;
+    RLLabel98: TRLLabel;
+    RLDraw54: TRLDraw;
+    rlsDivProd13: TRLDraw;
+    pnlDescricao2: TRLPanel;
+    txtNCM: TRLDBText;
+    txtCST: TRLDBText;
+    txtCFOP: TRLDBText;
+    txtUnidade: TRLDBText;
+    txtQuantidade: TRLDBText;
+    txtValorUnitario: TRLDBText;
+    txtValorTotal: TRLDBText;
+    txtValorDesconto: TRLDBText;
+    txtBaseICMS: TRLDBText;
+    txtValorICMS: TRLDBText;
+    txtValorIPI: TRLDBText;
+    txtAliqICMS: TRLDBText;
+    txtAliqIPI: TRLDBText;
+    LinhaProd4: TRLDraw;
+    LinhaProd5: TRLDraw;
+    LinhaProd6: TRLDraw;
+    LinhaProd7: TRLDraw;
+    LinhaProd8: TRLDraw;
+    LinhaProd9: TRLDraw;
+    LinhaProd10: TRLDraw;
+    LinhaProd11: TRLDraw;
+    LinhaProd12: TRLDraw;
+    LinhaProd13: TRLDraw;
+    LinhaProd14: TRLDraw;
+    LinhaProd15: TRLDraw;
+    LinhaProd16: TRLDraw;
+    LinhaProd3: TRLDraw;
+    rlmDescricao: TRLDBMemo;
+    rlbObsItem: TRLBand;
+    LinhaFimObsItem: TRLDraw;
+    LinhaInicioItem: TRLDraw;
+    LinhaObsItemEsquerda: TRLDraw;
+    LinhaObsItemDireita: TRLDraw;
+    rlmObsItem: TRLMemo;
     procedure RLNFeBeforePrint(Sender: TObject; var PrintIt: Boolean);
     procedure rlbEmitenteBeforePrint(Sender: TObject;
       var PrintIt: Boolean);
     procedure rlbItensAfterPrint(Sender: TObject);
     procedure rlbDadosAdicionaisBeforePrint(Sender: TObject;
       var PrintIt: Boolean);
+    procedure rlbItensBeforePrint(Sender: TObject; var PrintIt: Boolean);
+    procedure rlbDadosAdicionaisAfterPrint(Sender: TObject);
   private
     FRecebemoDe : string;
     procedure InitDados;
@@ -532,8 +541,8 @@ uses ACBrNFeUtil, pcnNFe;
 
 var iLimiteLinhas: Integer = 12;
 iLinhasUtilizadas: Integer = 0;
-iLimiteCaracteresLinha: Integer = 140;
-iLimiteCaracteresContinuacao: Integer = 198;
+iLimiteCaracteresLinha: Integer = 142;
+iLimiteCaracteresContinuacao: Integer = 204;
 q, iQuantItens: Integer;
 sRetirada, sEntrega: WideString;
 
@@ -672,7 +681,7 @@ begin
 end;
 
 procedure TfrlDANFeRLPaisagem.InitDados;
-var i, b, h, iAlturaCanhoto: Integer;
+var i, j, b, h, iAlturaCanhoto: Integer;
 begin
   // Carrega logomarca
   if (FLogo <> '') and FileExists (FLogo) then
@@ -694,12 +703,12 @@ begin
                            NotaUtil.FormatFloat(FNFe.Total.ICMSTot.vNF,
                            '###,###,###,##0.00');
       rllResumo.Visible := True;
-      iAlturaCanhoto := 39;
+      iAlturaCanhoto := 25;
     end
   else
     begin
       rllResumo.Visible := False;
-      iAlturaCanhoto := 30;
+      iAlturaCanhoto := 15;
     end;
 
   rliCanhoto1.Left := iAlturaCanhoto;
@@ -792,11 +801,11 @@ begin
   txtCodigo.Width := FLarguraCodProd;
   rlmCodProd.Width := FLarguraCodProd;
   rlsDivProd1.Left := FLarguraCodProd + 2;
-  LinhaDescricao.Left :=  FLarguraCodProd + 2;
+  LinhaProd2.Left :=  FLarguraCodProd + 2;
   rlmDescricaoProduto.Left := rlsDivProd1.Left + 2;
-  rlmDescricaoProduto.Width := (rlsDivProd2.Left - rlsDivProd1.Left) - 3;
-  rlmDescricao.Left := LinhaDescricao.Left + 2;
-  rlmDescricao.Width := (LinhaNCM.Left - LinhaDescricao.Left) - 24;
+  rlmDescricaoProduto.Width := ((rlsRectProdutos1.Left + rlsRectProdutos1.Width) - rlsDivProd1.Left) - 3;
+  rlmDescricao.Left := LinhaProd2.Left + 2;
+  rlmDescricao.Width := (pnlDescricao1.Width - LinhaProd2.Left) - 24;
   rlmDescricaoProduto.Lines.BeginUpdate;
   rlmDescricaoProduto.Lines.Clear;
   rlmCodProd.Lines.BeginUpdate;
@@ -842,6 +851,29 @@ begin
 
   rlmCodProd.Lines.EndUpdate;
   rlmDescricaoProduto.Lines.EndUpdate;
+
+  // Posiciona o canhoto do DANFE no cabeçalho ou rodapé
+  case FPosCanhoto of
+    pcCabecalho:
+      begin
+        pnlCanhoto.Align := faLeftMost;
+        pnlDivisao.Align := faLeftMost;
+        pnlCanhoto.Left := 26;
+        pnlDivisao.Left := pnlCanhoto.Left + pnlCanhoto.Width;
+      end;
+    pcRodape:
+      begin
+        pnlCanhoto.Align := faRightMost;
+        pnlDivisao.Align := faRightMost;
+        pnlDivisao.Left := 1024;
+        pnlCanhoto.Left := pnlDivisao.Left + pnlDivisao.Width;
+      end;
+  end;
+
+  // Posiciona a Marca D'água
+  rliMarcaDagua1.Left := rlbItens.Left + (rlbItens.Width div 2) -
+                                                  (rliMarcaDagua1.Width div 2);
+
 
   // Oculta alguns itens do DANFE
   if FFormularioContinuo = True then
@@ -907,13 +939,18 @@ begin
       for b := 0 to (RLNFe.ControlCount - 1) do
         for i := 0 to ((TRLBand(RLNFe.Controls[b]).ControlCount) - 1) do
           begin
+            for j := 0 to ((TRLPanel(TRLBand(RLNFe.Controls[b]).Controls[i]).ControlCount) - 1) do
+              TRLLabel(TRLPanel(TRLBand(RLNFe.Controls[b]).Controls[i]).Controls[j]).Font.Name :=
+                                                                                          'Arial';
+
             if TRLLabel((TRLBand(RLNFe.Controls[b])).Controls[i]).Tag
                                                                      <> 20 then
               TRLLabel((TRLBand(RLNFe.Controls[b])).Controls[i]).Font.Name :=
                                                                       'Arial';
-              if TRLLabel((TRLBand(RLNFe.Controls[b])).Controls[i]).Tag = 3 then
-                TRLLabel((TRLBand(RLNFe.Controls[b])).Controls[i]).Font.Size :=
-               (TRLLabel((TRLBand(RLNFe.Controls[b])).Controls[i]).Font.Size) - 1;
+
+            if TRLLabel((TRLBand(RLNFe.Controls[b])).Controls[i]).Tag = 3 then
+              TRLLabel((TRLBand(RLNFe.Controls[b])).Controls[i]).Font.Size :=
+              (TRLLabel((TRLBand(RLNFe.Controls[b])).Controls[i]).Font.Size) - 1;
           end;
 
     fdCourierNew:
@@ -921,8 +958,19 @@ begin
         for b := 0 to (RLNFe.ControlCount - 1) do
           for i := 0 to ((TRLBand(RLNFe.Controls[b]).ControlCount) - 1) do
             begin
+              for j := 0 to ((TRLPanel(TRLBand(RLNFe.Controls[b]).Controls[i]).ControlCount) - 1) do
+                begin
+                  TRLLabel(TRLPanel(TRLBand(RLNFe.Controls[b]).Controls[i]).Controls[j]).Font.Name :=
+                                                                                     'Courier New';
+
+                  TRLLabel(TRLPanel(TRLBand(RLNFe.Controls[b]).Controls[i]).Controls[j]).Font.Size :=
+                  (TRLLabel(TRLPanel(TRLBand(RLNFe.Controls[b]).Controls[i]).Controls[j]).Font.Size - 1);
+
+                end;
+
               TRLLabel((TRLBand(RLNFe.Controls[b])).Controls[i]).Font.Name :=
                                                                 'Courier New';
+
               if (TRLLabel((TRLBand(RLNFe.Controls[b])).Controls[i]).Tag = 0) or
                 (TRLLabel((TRLBand(RLNFe.Controls[b])).Controls[i]).Tag = 3) then
                 TRLLabel((TRLBand(RLNFe.Controls[b])).Controls[i]).Font.Size :=
@@ -941,13 +989,18 @@ begin
       for b := 0 to (RLNFe.ControlCount - 1) do
         for i := 0 to ((TRLBand(RLNFe.Controls[b]).ControlCount) - 1) do
           begin
+            for j := 0 to ((TRLPanel(TRLBand(RLNFe.Controls[b]).Controls[i]).ControlCount) - 1) do
+              TRLLabel(TRLPanel(TRLBand(RLNFe.Controls[b]).Controls[i]).Controls[j]).Font.Name :=
+                                                                                'Times New Roman';
+
             if TRLLabel((TRLBand(RLNFe.Controls[b])).Controls[i]).Tag
                                                                      <> 20 then
               TRLLabel((TRLBand(RLNFe.Controls[b])).Controls[i]).Font.Name :=
                                                              'Times New Roman';
-              if TRLLabel((TRLBand(RLNFe.Controls[b])).Controls[i]).Tag = 3 then
-                TRLLabel((TRLBand(RLNFe.Controls[b])).Controls[i]).Font.Size :=
-               (TRLLabel((TRLBand(RLNFe.Controls[b])).Controls[i]).Font.Size) - 1;
+
+            if TRLLabel((TRLBand(RLNFe.Controls[b])).Controls[i]).Tag = 3 then
+              TRLLabel((TRLBand(RLNFe.Controls[b])).Controls[i]).Font.Size :=
+              (TRLLabel((TRLBand(RLNFe.Controls[b])).Controls[i]).Font.Size) - 1;
           end;
   end;
 
@@ -1601,8 +1654,64 @@ end;
 
 procedure TfrlDANFeRLPaisagem.rlbDadosAdicionaisBeforePrint(Sender: TObject;
   var PrintIt: Boolean);
+var iAumento: Integer;
 begin
+  iAumento := pnlCanhoto.Width + pnlDivisao.Width;
   pnlCanhoto.Visible := False;
+  pnlDivisao.Visible := False;
+  rliChave.Width := rliChave.Width + iAumento;
+  rliChave2.Width := rliChave2.Width + iAumento;
+  rliChave3.Width := rliChave3.Width + iAumento;
+  rliNatOpe.Width := rliNatOpe.Width + iAumento;
+  rliNatOpe1.Width := rliNatOpe1.Width + iAumento;
+  rllDadosVariaveis1a.Left := rllDadosVariaveis1a.Left + (iAumento div 2);
+  rllDadosVariaveis1b.Left := rllDadosVariaveis1b.Left + (iAumento div 2);
+  rlbCodigoBarras.Left := rlbCodigoBarras.Left + (iAumento div 2);
+  rllXmotivo.Left := rllXmotivo.Left + (iAumento div 2);
+  rlmContinuacaoDadosAdicionais.Width := rlmContinuacaoDadosAdicionais.Width +
+                                                                       iAumento;
+  LinhaDCDireita.Left := LinhaDCDireita.Left + iAumento;
+  LinhaDCSuperior.Width := LinhaDCSuperior.Width + iAumento;
+  LinhaDCInferior.Width := LinhaDCInferior.Width + iAumento;
+  pnlCabecalho1.Width := pnlCabecalho1.Width + iAumento;
+  rllCinza1.Width := rllCinza1.Width + iAumento;
+  rlmDescricaoProduto.Width := rlmDescricaoProduto.Width + iAumento;
+  pnlCabecalho2.Left := pnlCabecalho2.Left + iAumento;
+
+end;
+
+procedure TfrlDANFeRLPaisagem.rlbItensBeforePrint(Sender: TObject;
+  var PrintIt: Boolean);
+var i, iAumento: Integer;
+begin
+  for i := 1 to 16 do
+    TRLDraw(FindComponent ('LinhaProd' + intToStr(i))).Height :=
+                                                        (LinhaFimItens.Top + 1);
+
+  if RLNFe.PageNumber > 1 then
+    begin
+      iAumento := pnlCanhoto.Width + pnlDivisao.Width;
+      pnlDescricao1.Width := pnlDescricao1.Width + iAumento;
+      rlmDescricao.Width := rlmDescricao.Width + iAumento;
+      LinhaFimItens.Width := LinhaFimItens.Width + iAumento;
+      pnlDescricao2.Left := pnlDescricao2.Left + iAumento;
+    end;
+end;
+
+procedure TfrlDANFeRLPaisagem.rlbDadosAdicionaisAfterPrint(
+  Sender: TObject);
+var iAumento: Integer;
+begin
+  iAumento := pnlCanhoto.Width + pnlDivisao.Width;
+  case FPosCanhoto of
+    pcCabecalho: rlbObsItem.Left := rlbObsItem.Left - iAumento;
+    pcRodape: rlbObsItem.Left := rlbObsItem.Left;
+  end;
+  rlbObsItem.Width := rlbObsItem.Width + iAumento;
+  LinhaObsItemDireita.Left := LinhaObsItemDireita.Left + iAumento;
+  LinhaFimObsItem.Width := LinhaFimObsItem.Width + iAumento;
+  LinhaInicioItem.Width := LinhaInicioItem.Width + iAumento;  
+  rlmObsItem.Width := rlmObsItem.Width + iAumento;
 end;
 
 end.

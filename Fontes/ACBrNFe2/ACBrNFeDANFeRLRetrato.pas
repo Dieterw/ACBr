@@ -443,7 +443,7 @@ type
     rlmCodProd: TRLMemo;
     rlmSiteEmail: TRLMemo;
     rlbReciboHeader: TRLBand;
-    rlCanhoto: TRLDraw;
+    rliCanhoto: TRLDraw;
     rliCanhoto1: TRLDraw;
     rliCanhoto2: TRLDraw;
     rllRecebemosDe: TRLLabel;
@@ -475,6 +475,7 @@ type
     RLDraw2: TRLDraw;
     cdsItensCST2: TStringField;
     rllContingencia: TRLLabel;
+    RLDraw4: TRLDraw;
     procedure RLNFeBeforePrint(Sender: TObject; var PrintIt: Boolean);
     procedure rlbEmitenteBeforePrint(Sender: TObject;
       var PrintIt: Boolean);
@@ -510,7 +511,7 @@ uses ACBrNFeUtil, pcnNFe;
 
 var iLimiteLinhas: Integer = 10;
 iLinhasUtilizadas: Integer = 0;
-iLimiteCaracteresLinha: Integer = 80;
+iLimiteCaracteresLinha: Integer = 81;
 iLimiteCaracteresContinuacao: Integer = 129;
 q, iQuantItens: Integer;
 sRetirada, sEntrega: WideString;
@@ -676,14 +677,14 @@ begin
   else
     begin
       rllResumo.Visible := False;
-      iAlturaCanhoto := 17;
+      iAlturaCanhoto := 15;
     end;
 
   rliCanhoto1.Top := iAlturaCanhoto;
-  rliCanhoto2.Top := iAlturaCanhoto;
-  rliCanhoto2.Height := 57 - iAlturaCanhoto;
-  rllDataRecebimento.Top := iAlturaCanhoto + 3;
-  rllIdentificacao.Top := iAlturaCanhoto + 3;
+  rliCanhoto2.Top := rliCanhoto1.Top;
+  rliCanhoto2.Height := (rliCanhoto.Top + rliCanhoto.Height) - rliCanhoto2.Top;
+  rllDataRecebimento.Top := rliCanhoto1.Top + 3;
+  rllIdentificacao.Top := rliCanhoto1.Top + 3;
 
   // Exibe o desenvolvedor do sistema
   if FSsitema <> '' then
@@ -826,17 +827,22 @@ begin
       begin
         rlbReciboHeader.BandType := btHeader;
         rlbDivisaoRecibo.BandType := btHeader;
-        rlbReciboHeader.Top := 19;
-        rlbDivisaoRecibo.Top := 76;
+        rlbReciboHeader.Top := 26;
+        rlbDivisaoRecibo.Top := rlbReciboHeader.Top + rlbReciboHeader.Height;
       end;
     pcRodape:
       begin
         rlbReciboHeader.BandType := btFooter;
         rlbDivisaoRecibo.BandType := btFooter;
-        rlbReciboHeader.Top := 942;
         rlbDivisaoRecibo.Top := 925;
+        rlbReciboHeader.Top := rlbDivisaoRecibo.Top + rlbDivisaoRecibo.Height;
       end;
   end;
+
+  // Posiciona a Marca D'água
+  rliMarcaDagua1.Top := rlbCabecalhoItens.Top +
+                     ((rlbDadosAdicionais.Top - rlbCabecalhoItens.Top) div 2) -
+                     (rliMarcaDagua1.Height div 2);
 
   // Oculta alguns itens do DANFE
   if FFormularioContinuo = True then
@@ -846,7 +852,7 @@ begin
       rllDataRecebimento.Visible := False;
       rllIdentificacao.Visible := False;
       rllNFe.Visible := False;
-      rlCanhoto.Visible := False;
+      rliCanhoto.Visible := False;
       rliCanhoto1.Visible := False;
       rliCanhoto2.Visible := False;
       rliCanhoto3.Visible := False;

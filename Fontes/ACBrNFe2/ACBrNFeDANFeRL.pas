@@ -125,7 +125,6 @@ type
     FCasasDecimaisqCom: Integer;
     FCasasDecimaisvUnCom: Integer;
     FProdutosPorPagina: Integer;
-    FTipoDANFE: TpcnTipoImpressao;
 
   public
     { Public declarations }
@@ -146,8 +145,7 @@ type
                     AMargemDireita: Double = 0.7;
                     ACasasDecimaisqCom: Integer = 4;
                     ACasasDecimaisvUncCom: Integer = 4;
-                    AProdutosPorPagina: Integer = 20;
-                    ATipoDANFE: TpcnTipoImpressao = tiRetrato);
+                    AProdutosPorPagina: Integer = 20);
 
     class procedure SavePDF(ANFe: TNFe; ALogo: String = '';
                     AMarcaDagua: String = ''; ALarguraCodProd: Integer = 54;
@@ -165,8 +163,7 @@ type
                     AMargemDireita: Double = 0.7;
                     ACasasDecimaisqCom: Integer = 4;
                     ACasasDecimaisvUncCom: Integer = 4;
-                    AProdutosPorPagina: Integer = 20;
-                    ATipoDANFE: TpcnTipoImpressao = tiRetrato);
+                    AProdutosPorPagina: Integer = 20);
   end;
 
 implementation
@@ -192,8 +189,7 @@ class procedure TfrlDANFeRL.Imprimir(ANFe: TNFe; ALogo: String = '';
                 AMargemDireita: Double = 0.7;
                 ACasasDecimaisqCom: Integer = 4;
                 ACasasDecimaisvUncCom: Integer = 4;
-                AProdutosPorPagina: Integer = 20;
-                ATipoDANFE: TpcnTipoImpressao = tiRetrato);
+                AProdutosPorPagina: Integer = 20);
 begin
   with Create ( nil ) do
     try
@@ -220,7 +216,6 @@ begin
       FCasasDecimaisqCom := ACasasDecimaisqCom;
       FCasasDecimaisvUnCom := ACasasDecimaisvUncCom;
       FProdutosPorPagina := AProdutosPorPagina;
-      FTipoDANFE := ATipoDANFE;
 
  //     for iCopias := 1 to FNumCopias do
         if FMostrarPreview = True then
@@ -249,8 +244,7 @@ class procedure TfrlDANFeRL.SavePDF(ANFe: TNFe; ALogo: String = '';
                     AMargemDireita: Double = 0.7;
                     ACasasDecimaisqCom: Integer = 4;
                     ACasasDecimaisvUncCom: Integer = 4;
-                    AProdutosPorPagina: Integer = 20;
-                    ATipoDANFE: TpcnTipoImpressao = tiRetrato);
+                    AProdutosPorPagina: Integer = 20);
 begin
   with Create ( nil ) do
     try
@@ -276,7 +270,6 @@ begin
       FCasasDecimaisqCom := ACasasDecimaisqCom;
       FCasasDecimaisvUnCom := ACasasDecimaisvUncCom;
       FProdutosPorPagina := AProdutosPorPagina;
-      FTipoDANFE := ATipoDANFE;
       RLNFe.SaveToFile(AFile);
     finally
       Free ;

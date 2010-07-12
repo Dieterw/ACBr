@@ -3860,6 +3860,7 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
         Width = 497
         Height = 13
         Align = faLeftMost
+        AutoExpand = True
         object txtCodigo: TRLDBText
           Left = 2
           Top = 1
@@ -4697,9 +4698,8 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
         Tag = 20
         Left = 1
         Top = 1
-        Width = 968
+        Width = 952
         Height = 8
-        AutoSize = False
         Borders.Style = bsClear
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack

@@ -70,9 +70,10 @@ package ACBr_CTe;
 {$IMAGEBASE $400000}
 {$DESCRIPTION 'ACBrCTePCN - (http://acbr.sourceforge.net/)'}
 {$IMPLICITBUILD ON}
+{$DEFINE VisualCLX}
 
 requires
-  ACBrComum,
+  ACBrSerial,
   synapse,
   ACBrCapicom,
   ACBrOpenSSL,  

@@ -1,0 +1,46 @@
+package ACBr_TEFD;
+
+{$R *.res}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO OFF}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DESCRIPTION 'ACBr Automação Comercial Brasil - TEFD (http://acbr.sourceforge.net/)'}
+{$IMPLICITBUILD ON}
+{$DEFINE VisualCLX}
+
+requires
+  rtl,
+  visualclx,
+  ACBrComum,
+  synapse,
+  designide;
+
+contains
+  ACBrTEFD in '..\..\Fontes\ACBrTEFD\ACBrTEFD.pas',
+  ACBrTEFDClass in '..\..\Fontes\ACBrTEFD\ACBrTEFDClass.pas',
+  ACBrTEFDCliSiTef in '..\..\Fontes\ACBrTEFD\ACBrTEFDCliSiTef.pas',
+  ACBrTEFDDial in '..\..\Fontes\ACBrTEFD\ACBrTEFDDial.pas',
+  ACBrTEFDDisc in '..\..\Fontes\ACBrTEFD\ACBrTEFDDisc.pas',
+  ACBrTEFDGpu in '..\..\Fontes\ACBrTEFD\ACBrTEFDGpu.pas',
+  ACBrTEFDHiper in '..\..\Fontes\ACBrTEFD\ACBrTEFDHiper.pas',
+  ACBrTEFDVeSPague in '..\..\Fontes\ACBrTEFD\ACBrTEFDVeSPague.pas';
+
+end.

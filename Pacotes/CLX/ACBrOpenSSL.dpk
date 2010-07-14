@@ -1,4 +1,4 @@
-package ACBr_Sintegra;
+package ACBrOpenSSL;
 
 {$R *.res}
 {$ALIGN 8}
@@ -22,17 +22,17 @@ package ACBr_Sintegra;
 {$WRITEABLECONST OFF}
 {$MINENUMSIZE 1}
 {$IMAGEBASE $400000}
-{$DESCRIPTION 'ACBr Automação Comercial Brasil - ACBrSintegra (http://acbr.sf.net/)'}
+{$DESCRIPTION 'ACBr Automação Comercial Brasil  ACBrComum   (http://acbr.sf.ne)'}
+{$RUNONLY}
 {$IMPLICITBUILD ON}
 {$DEFINE VisualCLX}
 
 requires
-  rtl,
-  visualclx,
-  ACBrComum;
+  rtl;
 
 contains
-  ACBrSintegra in '..\..\Fontes\ACBrSintegra\ACBrSintegra.pas',
-  ACBrSintegraReg in '..\..\Fontes\ACBrSintegra\ACBrSintegraReg.pas';
+  libxmlsec in '..\..\Fontes\ACBrNFe2\libxmlsec.pas',
+  libxslt in '..\..\Fontes\ACBrNFe2\libxslt.pas',
+  libxml2 in '..\..\Fontes\ACBrNFe2\libxml2.pas';  
 
 end.

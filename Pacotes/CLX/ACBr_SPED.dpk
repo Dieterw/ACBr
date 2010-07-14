@@ -28,7 +28,8 @@ package ACBr_SPED;
 
 requires
   rtl,
-  ACBrSerial;
+  designide,
+  ACBrComum;
 
 contains
   ACBrSped in '..\..\Fontes\ACBrSPED\ACBrSped.pas',

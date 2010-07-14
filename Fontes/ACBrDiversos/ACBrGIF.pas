@@ -44,13 +44,6 @@ unit ACBrGIF;
 
 interface
 
-{$IFDEF VisualCLX}
-  {$DEFINE FPC_CLX}
-{$ENDIF}
-{$IFDEF FPC}
-  {$DEFINE FPC_CLX}
-{$ENDIF}
-
 uses
   Classes, SysUtils,
  {$IFDEF VisualCLX}
@@ -91,7 +84,7 @@ type
     procedure SetPaused(const Value: Boolean);
 
   protected
-    procedure SetAutoSize(Value: Boolean); override ;
+    procedure SetAutoSize(Value: Boolean); {$IFNDEF VisualCLX}override ;{$ENDIF}
     procedure Paint; override;
     procedure Resize; override;
 
@@ -131,7 +124,7 @@ type
     property OnDragOver;
     property OnEndDrag;
     property OnMouseDown;
-    {$IFDEF FPC_CLX}
+    {$IFNDEF VisualCLX}
      property OnMouseEnter;
      property OnMouseLeave;
     {$ENDIF} 

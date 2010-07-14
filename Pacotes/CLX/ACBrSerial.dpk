@@ -30,6 +30,7 @@ requires
   rtl,
   designide,
   visualclx,
+  ACBrDiversos,
   synapse;
 
 contains

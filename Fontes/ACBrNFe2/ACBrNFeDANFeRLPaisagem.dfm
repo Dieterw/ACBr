@@ -1,6 +1,6 @@
 inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
-  Left = 191
-  Top = 106
+  Left = 206
+  Top = 108
   Width = 1149
   Height = 732
   VertScrollBar.Position = 96
@@ -4659,6 +4659,7 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
       Top = 523
       Width = 998
       Height = 16
+      BeforePrint = rlbObsItemBeforePrint
       object LinhaFimObsItem: TRLDraw
         Left = 0
         Top = 10

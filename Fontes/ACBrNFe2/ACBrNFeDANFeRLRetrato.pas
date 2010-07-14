@@ -586,6 +586,9 @@ begin
       sLinhaProvisoria := Copy(sTexto, iPosAtual, iLimCaracteres);
       iUltimoEspacoLinha := BuscaDireita(' ', sLinhaProvisoria);
 
+      if iUltimoEspacoLinha = 0 then
+        iUltimoEspacoLinha := iQuantCaracteres;
+
       if (BuscaDireita(' ', sLinhaProvisoria) = iLimCaracteres)  or
          (BuscaDireita(' ', sLinhaProvisoria) = (iLimCaracteres + 1)) then
         sLinha := sLinhaProvisoria

@@ -512,6 +512,7 @@ type
       var PrintIt: Boolean);
     procedure rlbItensBeforePrint(Sender: TObject; var PrintIt: Boolean);
     procedure rlbDadosAdicionaisAfterPrint(Sender: TObject);
+    procedure rlbObsItemBeforePrint(Sender: TObject; var PrintIt: Boolean);
   private
     FRecebemoDe : string;
     procedure InitDados;
@@ -615,6 +616,9 @@ begin
     begin
       sLinhaProvisoria := Copy(sTexto, iPosAtual, iLimCaracteres);
       iUltimoEspacoLinha := BuscaDireita(' ', sLinhaProvisoria);
+
+      if iUltimoEspacoLinha = 0 then
+        iUltimoEspacoLinha := iQuantCaracteres;
 
       if (BuscaDireita(' ', sLinhaProvisoria) = iLimCaracteres)  or
          (BuscaDireita(' ', sLinhaProvisoria) = (iLimCaracteres + 1)) then
@@ -1708,11 +1712,21 @@ begin
     pcCabecalho: rlbObsItem.Left := rlbObsItem.Left - iAumento;
     pcRodape: rlbObsItem.Left := rlbObsItem.Left;
   end;
-  rlbObsItem.Width := rlbObsItem.Width + iAumento;
-  LinhaObsItemDireita.Left := LinhaObsItemDireita.Left + iAumento;
-  LinhaFimObsItem.Width := LinhaFimObsItem.Width + iAumento;
-  LinhaInicioItem.Width := LinhaInicioItem.Width + iAumento;  
-  rlmObsItem.Width := rlmObsItem.Width + iAumento;
+end;
+
+procedure TfrlDANFeRLPaisagem.rlbObsItemBeforePrint(Sender: TObject;
+  var PrintIt: Boolean);
+var iAumento: Integer;
+begin
+  if RLNFe.PageNumber > 1 then
+    begin
+      iAumento := pnlCanhoto.Width + pnlDivisao.Width;
+      rlbObsItem.Width := rlbObsItem.Width + iAumento;
+      LinhaObsItemDireita.Left := LinhaObsItemDireita.Left + iAumento;
+      LinhaFimObsItem.Width := LinhaFimObsItem.Width + iAumento;
+      LinhaInicioItem.Width := LinhaInicioItem.Width + iAumento;
+      rlmObsItem.Width := rlmObsItem.Width + iAumento;
+    end;
 end;
 
 end.

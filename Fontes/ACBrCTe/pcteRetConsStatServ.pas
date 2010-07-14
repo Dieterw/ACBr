@@ -107,7 +107,7 @@ begin
   Result := False;
   try
     Leitor.Grupo := Leitor.Arquivo;
-    if leitor.rExtrai(1, 'retConsStatServ') <> '' then
+    if leitor.rExtrai(1, 'retConsStatServCte') <> '' then
     begin
       (*FR03*)FtpAmb := StrToTpAmb(ok, Leitor.rCampo(tcStr, 'tpAmb'));
       (*FR04*)FverAplic := Leitor.rCampo(tcStr, 'verAplic');

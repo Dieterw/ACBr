@@ -284,13 +284,13 @@ class function CTeUtil.GetURLMG(AAmbiente: Integer;
   ALayOut: TLayOut): WideString;
 begin
   case ALayOut of
-    LayCTeStatusServico: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.mg.gov.br/cte/services/CteStatusServico'   , 'https://homologacao.fazenda.mg.gov.br/cte/services/CteStatusServico?WSDL');
-    LayCTeCadastro: Result      := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.mg.gov.br/cte/services/cadConsultaCadastro', 'https://homologacao.fazenda.mg.gov.br/cte/services/cadConsultaCadastro');
-    LayCTeConsultaCT: Result    := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.mg.gov.br/cte/services/CteConsulta'        , 'https://homologacao.fazenda.mg.gov.br/cte/services/CteConsulta');
-    LayCTeCancelamento: Result  := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.mg.gov.br/cte/services/CteCancelamento'    , 'https://homologacao.fazenda.mg.gov.br/cte/services/CteCancelamento');
-    LayCTeInutilizacao: Result  := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.mg.gov.br/cte/services/CteInutilizacao'    , 'https://homologacao.fazenda.mg.gov.br/cte/services/CteInutilizacao');
-    LayCTeRecepcao: Result      := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.mg.gov.br/cte/services/CteRecepcao'        , 'https://homologacao.fazenda.mg.gov.br/cte/services/CteRecepcao?WSDL');
-    LayCTeRetRecepcao: Result   := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.mg.gov.br/cte/services/CteRetRecepcao'     , 'https://homologacao.fazenda.mg.gov.br/cte/services/CteRetRecepcao?WSDL');
+    LayCTeStatusServico: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.mg.gov.br/cte/services/CteStatusServico'   , 'https://hcte.fazenda.mg.gov.br/cte/services/CteStatusServico');
+    LayCTeCadastro: Result      := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.mg.gov.br/cte/services/cadConsultaCadastro', 'https://hcte.fazenda.mg.gov.br/cte/services/cadConsultaCadastro');
+    LayCTeConsultaCT: Result    := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.mg.gov.br/cte/services/CteConsulta'        , 'https://hcte.fazenda.mg.gov.br/cte/services/CteConsulta');
+    LayCTeCancelamento: Result  := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.mg.gov.br/cte/services/CteCancelamento'    , 'https://hcte.fazenda.mg.gov.br/cte/services/CteCancelamento');
+    LayCTeInutilizacao: Result  := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.mg.gov.br/cte/services/CteInutilizacao'    , 'https://hcte.fazenda.mg.gov.br/cte/services/CteInutilizacao');
+    LayCTeRecepcao: Result      := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.mg.gov.br/cte/services/CteRecepcao'        , 'https://hcte.fazenda.mg.gov.br/cte/services/CteRecepcao'); //?WSDL
+    LayCTeRetRecepcao: Result   := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.mg.gov.br/cte/services/CteRetRecepcao'     , 'https://hcte.fazenda.mg.gov.br/cte/services/CteRetRecepcao'); //?WSDL
   end;
 end;
 

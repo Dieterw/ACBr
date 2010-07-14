@@ -303,7 +303,7 @@ begin
   Gerador.wCampo(tcInt, 'B02', 'cUF     ', 02, 02, 1, CTe.ide.cUF, DSC_CUF);
   if not ValidarCodigoUF(CTe.ide.cUF) then
     Gerador.wAlerta('B02', 'cUF', DSC_CUF, ERR_MSG_INVALIDO);
-  Gerador.wCampo(tcStr, 'B03', 'cCT     ', 09, 09, 1, IntToStrZero(RetornarCodigoNumerico(CTe.infCTe.ID, 1), 9), DSC_CNF);
+  Gerador.wCampo(tcStr, 'B03', 'cCT     ', 09, 09, 1, IntToStrZero(RetornarCodigoNumericoCTe(CTe.infCTe.ID), 9), DSC_CNF);
   Gerador.wCampo(tcInt, 'B04', 'CFOP    ', 04, 04, 1, CTe.ide.CFOP, DSC_CFOP);
   Gerador.wCampo(tcStr, 'B05', 'natOp   ', 01, 60, 1, CTe.ide.natOp, DSC_NATOP);
   Gerador.wCampo(tcStr, 'B06', 'forPag  ', 01, 01, 1, tpforPagToStr(CTe.ide.forPag), DSC_INDPAG);

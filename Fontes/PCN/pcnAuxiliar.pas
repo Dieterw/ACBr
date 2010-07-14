@@ -69,6 +69,7 @@ function GerarChaveCTe(var chave: AnsiString; const codigoUF: integer; codigoNum
 function GerarDigito(var Digito: integer; chave: string): boolean;
 function SomenteNumeros(const s: string): string;
 function RetornarCodigoNumerico(Chave: string): integer;
+function RetornarCodigoNumericoCTe(Chave: string): integer;
 function RetornarConteudoEntre(const Frase, Inicio, Fim: string): string;
 function RetornarDigito(const chave: string): integer;
 function RetornarVersaoLayout(const schema: TpcnSchema; const Layout: TpcnTipoLayout): string;
@@ -303,6 +304,11 @@ function RetornarCodigoNumerico(chave: string): integer;
 begin
   chave := SomenteNumeros(chave);
   result := StrToInt(copy(chave, 35, 9));
+end;
+
+function RetornarCodigoNumericoCTe(chave: string): integer;
+begin
+  result := RetornarCodigoNumerico(chave);
 end;
 
 function RetornarDigito(const chave: string): integer;

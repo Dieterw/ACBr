@@ -140,6 +140,7 @@ const
   V1_03 = 'versao="1.03"';
   V1_07 = 'versao="1.07"';
   V1_10 = 'versao="1.10"';
+  V2_00 = 'versao="2.00"';
 
   // NFE //
 

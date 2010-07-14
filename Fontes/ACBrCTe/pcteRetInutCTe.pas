@@ -62,8 +62,8 @@ type
     FCNPJ: string;
     FModelo: integer;
     FSerie: integer;
-    FnNFIni: integer;
-    FnNFFin: integer;
+    FnCTIni: integer;
+    FnCTFin: integer;
     FdhRecbto: TDateTime;
     FnProt: string;
   public
@@ -81,8 +81,8 @@ type
     property CNPJ: string read FCNPJ write FCNPJ;
     property Modelo: integer read FModelo write FModelo;
     property Serie: integer read FSerie write FSerie;
-    property nNFIni: integer read FnNFIni write FnNFIni;
-    property nNFFin: integer read FnNFFin write FnNFFin;
+    property nCTIni: integer read FnCTIni write FnCTIni;
+    property nCTFin: integer read FnCTFin write FnCTFin;
     property dhRecbto: TDateTime read FdhRecbto write FdhRecbto;
     property nProt: string read FnProt write FnProt;
   end;
@@ -119,8 +119,8 @@ begin
       (*DR11 *)FCNPJ := Leitor.rCampo(tcStr, 'CNPJ');
       (*DR12 *)FModelo := Leitor.rCampo(tcInt, 'mod');
       (*DR13 *)FSerie := Leitor.rCampo(tcInt, 'serie');
-      (*DR14 *)FnNFIni := Leitor.rCampo(tcInt, 'nNFIni');
-      (*DR15 *)FnNFFin := Leitor.rCampo(tcInt, 'nNFFin');
+      (*DR14 *)FnCTIni := Leitor.rCampo(tcInt, 'nCTIni');
+      (*DR15 *)FnCTFin := Leitor.rCampo(tcInt, 'nCTFin');
       (*DR16 *)FdhRecbto := Leitor.rCampo(tcDatHor, 'dhRecbto');
       (*DR17 *)FnProt := Leitor.rCampo(tcStr, 'nProt');
       Result := True;

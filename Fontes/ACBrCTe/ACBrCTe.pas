@@ -64,7 +64,7 @@ uses
   ACBrCTeDACTeClass;
 
 const
-  ACBRCTE_VERSAO = '0.3.9a';
+  ACBRCTE_VERSAO = '0.4.0a';
 
 type
  TACBrCTeAboutInfo = (ACBrCTeAbout);
@@ -207,9 +207,6 @@ begin
          Self.OnGerarLog('ERRO: Nenhum Conhecimento de Transporte Eletrônico Informado!');
       raise Exception.Create('Nenhum Conhecimento de Transporte Eletrônico Informado!');
    end;
-
-//  for i:= 0 to self.Conhecimentos.Count-1 do
-//    self.Conhecimentos.Items[i].XML.CTeChave := self.Conhecimentos.Items[i].CTe.infCTe.ID;
 
   for i:= 0 to self.Conhecimentos.Count-1 do
   begin

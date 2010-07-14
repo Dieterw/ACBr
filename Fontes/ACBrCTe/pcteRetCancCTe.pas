@@ -71,6 +71,7 @@ type
     constructor Create;
     destructor Destroy; override;
     function LerXml: boolean;
+  published
     property Leitor: TLeitor read FLeitor write FLeitor;
     property tpAmb: TpcnTipoAmbiente read FtpAmb write FtpAmb;
     property verAplic: string read FverAplic write FverAplic;

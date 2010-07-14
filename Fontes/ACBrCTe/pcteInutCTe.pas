@@ -65,8 +65,8 @@ type
     FCNPJ: string;
     Fmodelo: integer;
     Fserie: integer;
-    FnNFIni: integer;
-    FnNFFin: integer;
+    FnCTIni: integer;
+    FnCTFin: integer;
     FxJust: string;
     FIDInutilizacao: string;
   public
@@ -83,9 +83,10 @@ type
     property CNPJ: string read FCNPJ write FCNPJ;
     property modelo: integer read Fmodelo write Fmodelo;
     property serie: integer read Fserie write Fserie;
-    property nNFIni: integer read FnNFIni write FnNFIni;
-    property nNFFin: integer read FnNFFin write FnNFFin;
+    property nCTIni: integer read FnCTIni write FnCTIni;
+    property nCTFin: integer read FnCTFin write FnCTFin;
     property xJust: string read FxJust write FxJust;
+    property ID: string read FIDInutilizacao;
   end;
 
 implementation
@@ -115,8 +116,8 @@ begin
   begin
 
     FIDInutilizacao := 'ID' + IntToStrZero(FcUF, 2) +
-      FCNPJ + IntToStrZero(Fmodelo, 2) + IntToStrZero(Fserie, 3) +
-      IntToStrZero(FnNFIni, 9) + IntToStrZero(FnNFFin, 9);
+      SomenteNumeros(FCNPJ) + IntToStrZero(Fmodelo, 2) + IntToStrZero(Fserie, 3) +
+      IntToStrZero(FnCTIni, 9) + IntToStrZero(FnCTFin, 9);
 
     Gerador.ArquivoFormatoXML := '';
 //    Gerador.wGrupo(ENCODING_UTF8, '', False);
@@ -130,14 +131,14 @@ begin
     if not ValidarCodigoUF(FcUF) then
       Gerador.wAlerta('DP07', 'cUF', DSC_CUF, ERR_MSG_INVALIDO);
     Gerador.wCampo(tcInt, 'DP08', 'ano   ', 002, 002, 1, Fano, DSC_ANO);
-    Gerador.wCampo(tcStr, 'DP09', 'CNPJ  ', 014, 014, 1, FCNPJ, DSC_CNPJ);
+    Gerador.wCampo(tcStr, 'DP09', 'CNPJ  ', 014, 014, 1, SomenteNumeros(FCNPJ), DSC_CNPJ);
     if not ValidarCNPJ(FCNPJ) then
       Gerador.wAlerta('DP09', 'CNPJ', DSC_CNPJ, ERR_MSG_INVALIDO);
     Gerador.wCampo(tcInt, 'DP10', 'mod   ', 002, 002, 1, Fmodelo, DSC_MOD);
     Gerador.wCampo(tcInt, 'DP11', 'serie ', 001, 003, 1, Fserie, DSC_SERIE);
-    Gerador.wCampo(tcInt, 'DP12', 'nCTIni', 001, 009, 1, FnNFIni, DSC_NNFINI);
-    Gerador.wCampo(tcInt, 'DP13', 'nCTFin', 001, 009, 1, FnNFFin, DSC_NNFFIN);
-    if FnNFIni > FnNFFin then
+    Gerador.wCampo(tcInt, 'DP12', 'nCTIni', 001, 009, 1, FnCTIni, DSC_NNFINI);
+    Gerador.wCampo(tcInt, 'DP13', 'nCTFin', 001, 009, 1, FnCTFin, DSC_NNFFIN);
+    if FnCTIni > FnCTFin then
       Gerador.wAlerta('DP13', 'nCTFin', DSC_NNFFIN, ERR_MSG_FINAL_MENOR_INICIAL);
     Gerador.wCampo(tcStr, 'CP14', 'xJust ', 015, 255, 1, FiltrarTextoXML(true, FxJust), DSC_XJUST);
     Gerador.wGrupo('/infInut');

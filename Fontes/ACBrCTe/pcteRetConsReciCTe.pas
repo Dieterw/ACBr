@@ -176,36 +176,56 @@ begin
     if Leitor.rExtrai(1, 'retConsReciCTe') <> '' then
     begin
       Leitor.Grupo := Leitor.Arquivo;
-      (*BR02 *)Fversao := Leitor.rCampo(tcStr, 'versao');
+//      (*BR02 *)Fversao := Leitor.rCampo(tcStr, 'versao');
       (*BR03 *)FtpAmb := StrToTpAmb(ok, Leitor.rCampo(tcStr, 'tpAmb'));
       (*BR04 *)FverAplic := Leitor.rCampo(tcStr, 'verAplic');
       (*BR05 *)FnRec := Leitor.rCampo(tcStr, 'nRec');
       (*BR06 *)FcStat := Leitor.rCampo(tcInt, 'cStat');
       (*BR07 *)FxMotivo := Leitor.rCampo(tcStr, 'xMotivo');
       (*BR08 *)FcUF := Leitor.rCampo(tcInt, 'cUF');
+
       i := 0;
-      if FcStat = 104 then
-       begin
-        if Leitor.rExtrai(1, 'infProt', '', i + 1) = '' then
-           ProtCTe.Add;
-        while Leitor.rExtrai(1, 'infProt', '', i + 1) <> '' do
-        begin
-          ProtCTe.Add;
-          (*PR05*)ProtCTe[i].FtpAmb := StrToTpAmb(ok, Leitor.rCampo(tcStr, 'tpAmb'));
-          (*PR06*)ProtCTe[i].FverAplic := Leitor.rCampo(tcStr, 'verAplic');
-          (*PR07*)ProtCTe[i].FchCTe := Leitor.rCampo(tcStr, 'chCTe');
-          (*PR08*)ProtCTe[i].FdhRecbto := Leitor.rCampo(tcDatHor, 'dhRecbto');
-          (*PR09*)ProtCTe[i].FnProt := Leitor.rCampo(tcStr, 'nProt');
-          (*PR10*)ProtCTe[i].FdigVal := Leitor.rCampo(tcStr, 'digVal');
-          (*PR11*)ProtCTe[i].FcStat := Leitor.rCampo(tcInt, 'cStat');
-          (*PR12*)ProtCTe[i].FxMotivo := Leitor.rCampo(tcStr, 'xMotivo');
-          inc(i);
-        end;
-       end
-      else
+      while (FcStat = 104) and (Leitor.rExtrai(1, 'infProt', '', i + 1) <> '') do
+      begin
+        ProtCTe.Add;
+        (*PR05*)ProtCTe[i].FtpAmb := StrToTpAmb(ok, Leitor.rCampo(tcStr, 'tpAmb'));
+        (*PR06*)ProtCTe[i].FverAplic := Leitor.rCampo(tcStr, 'verAplic');
+        (*PR07*)ProtCTe[i].FchCTe := Leitor.rCampo(tcStr, 'chCTe');
+        (*PR08*)ProtCTe[i].FdhRecbto := Leitor.rCampo(tcDatHor, 'dhRecbto');
+        (*PR09*)ProtCTe[i].FnProt := Leitor.rCampo(tcStr, 'nProt');
+        (*PR10*)ProtCTe[i].FdigVal := Leitor.rCampo(tcStr, 'digVal');
+        (*PR11*)ProtCTe[i].FcStat := Leitor.rCampo(tcInt, 'cStat');
+        (*PR12*)ProtCTe[i].FxMotivo := Leitor.rCampo(tcStr, 'xMotivo');
+        inc(i);
+      end;
+      if i = 0 then
         ProtCTe.Add;
       Result := True;
     end;
+
+//      i := 0;
+//      if FcStat = 104 then
+//       begin
+//        if Leitor.rExtrai(1, 'infProt', '', i + 1) = '' then
+//           ProtCTe.Add;
+//        while Leitor.rExtrai(1, 'infProt', '', i + 1) <> '' do
+//        begin
+//          ProtCTe.Add;
+//          (*PR05*)ProtCTe[i].FtpAmb := StrToTpAmb(ok, Leitor.rCampo(tcStr, 'tpAmb'));
+//          (*PR06*)ProtCTe[i].FverAplic := Leitor.rCampo(tcStr, 'verAplic');
+//          (*PR07*)ProtCTe[i].FchCTe := Leitor.rCampo(tcStr, 'chCTe');
+//          (*PR08*)ProtCTe[i].FdhRecbto := Leitor.rCampo(tcDatHor, 'dhRecbto');
+//          (*PR09*)ProtCTe[i].FnProt := Leitor.rCampo(tcStr, 'nProt');
+//          (*PR10*)ProtCTe[i].FdigVal := Leitor.rCampo(tcStr, 'digVal');
+//          (*PR11*)ProtCTe[i].FcStat := Leitor.rCampo(tcInt, 'cStat');
+//          (*PR12*)ProtCTe[i].FxMotivo := Leitor.rCampo(tcStr, 'xMotivo');
+//          inc(i);
+//        end;
+//       end
+//      else
+//        ProtCTe.Add;
+//      Result := True;
+//    end;
   except
     result := False;
   end;

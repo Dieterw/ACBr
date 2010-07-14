@@ -170,12 +170,18 @@ end;
 
 procedure Conhecimento.Imprimir;
 begin
-  TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).DACTE.ImprimirDACTE(CTe);
+  if not Assigned( TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).DACTE ) then
+     raise Exception.Create('Componente DACTE não associado.')
+  else
+     TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).DACTE.ImprimirDACTE(CTe);
 end;
 
 procedure Conhecimento.ImprimirPDF;
 begin
-  TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).DACTE.ImprimirDACTEPDF(CTe);
+  if not Assigned( TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).DACTE ) then
+     raise Exception.Create('Componente DACTE não associado.')
+  else
+     TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).DACTE.ImprimirDACTEPDF(CTe);
 end;
 
 function Conhecimento.SaveToFile(CaminhoArquivo: string = ''): boolean;
@@ -190,11 +196,15 @@ begin
         LocCTeW.GerarXml;
         if CTeUtil.EstaVazio(CaminhoArquivo) then
            CaminhoArquivo := PathWithDelim(TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).Configuracoes.Geral.PathSalvar)+copy(CTe.inFCTe.ID, (length(CTe.inFCTe.ID)-44)+1, 44)+'-cte.xml';
+        if CTeUtil.EstaVazio(CaminhoArquivo) or not DirectoryExists(ExtractFilePath(CaminhoArquivo)) then
+           raise Exception.Create('Caminho Inválido: ' + CaminhoArquivo);
         LocCTeW.Gerador.SalvarArquivo(CaminhoArquivo);
+        NomeArq := CaminhoArquivo;
      finally
         LocCTeW.Free;
      end;
   except
+     raise;
      Result := False;
   end;
 end;
@@ -413,12 +423,18 @@ end;
 
 procedure TConhecimentos.Imprimir;
 begin
-  TACBrCTe( FACBrCTe ).DACTe.ImprimirDACTe(nil);
+  if not Assigned( TACBrCTe( FACBrCTe ).DACTE ) then
+     raise Exception.Create('Componente DACTE não associado.')
+  else
+     TACBrCTe( FACBrCTe ).DACTe.ImprimirDACTe(nil);
 end;
 
 procedure TConhecimentos.ImprimirPDF;
 begin
-  TACBrCTe( FACBrCTe ).DACTe.ImprimirDACTePDF(nil);
+  if not Assigned( TACBrCTe( FACBrCTe ).DACTE ) then
+     raise Exception.Create('Componente DACTE não associado.')
+  else
+     TACBrCTe( FACBrCTe ).DACTe.ImprimirDACTePDF(nil);
 end;
 
 function TConhecimentos.Insert(Index: Integer): Conhecimento;
@@ -440,11 +456,6 @@ begin
    begin
      if pos('<Signature',Self.Items[i].XML) = 0 then
         Assinar;
-     {
-     if not(CTeUtil.Valida(Self.Items[i].XML, FMsg)) then
-       raise Exception.Create('Falha na validação dos dados do conhecimento '+
-                               IntToStr(Self.Items[i].CTe.Ide.cCT)+sLineBreak+Self.Items[i].Alertas+FMsg);
-     }
      if not(CTeUtil.Valida(('<CTe xmlns' +
         RetornarConteudoEntre(Self.Items[i].XML, '<CTe xmlns', '</CTe>')+ '</CTe>'),
          FMsg, Self.FConfiguracoes.Geral.PathSchemas)) then
@@ -492,20 +503,6 @@ begin
     raise;
     Result := False;
  end;
-{
- try
-    Result := True;
-    LocCTeR := TCTeR.Create(Self.Add.CTe);
-    try
-       LocCTeR.Leitor.CarregarArquivo(CaminhoArquivo);
-       LocCTeR.LerXml;
-    finally
-       LocCTeR.Free;
-    end;
- except
-    Result := False;
- end;
- }
 end;
 
 function TConhecimentos.LoadFromStream(Stream: TStringStream): boolean;

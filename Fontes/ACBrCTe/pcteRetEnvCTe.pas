@@ -82,7 +82,7 @@ type
     function LerXml: boolean;
   published
     property Leitor: TLeitor read FLeitor write FLeitor;
-    property tpAmb: TpcnTipoAmbiente read FtpAmb write FtpAmb default taHomologacao;
+    property tpAmb: TpcnTipoAmbiente read FtpAmb write FtpAmb; //default taHomologacao;
     property verAplic: string read FverAplic write FverAplic;
     property cStat: integer read FcStat write FcStat;
     property xMotivo: string read FxMotivo write FxMotivo;
@@ -117,10 +117,10 @@ begin
     if leitor.rExtrai(1, 'retEnviCte') <> '' then
     begin
       (*AR03 *)FtpAmb := StrToTpAmb(ok, Leitor.rCampo(tcStr, 'tpAmb'));
+      (*AR03a*)FcUF := Leitor.rCampo(tcInt, 'cUF');
       (*AR04 *)FverAplic := Leitor.rCampo(tcStr, 'verAplic');
       (*AR05 *)FcStat := Leitor.rCampo(tcInt, 'cStat');
       (*AR06 *)FxMotivo := Leitor.rCampo(tcStr, 'xMotivo');
-      (*AR06a*)FcUF := Leitor.rCampo(tcInt, 'cUF');
       //       Grupo infRec - Dados do Recibo do Lote (Só é gerado se o Lote for aceito)
       (*AR08 *)infRec.nRec := Leitor.rCampo(tcStr, 'nRec');
       (*AR09 *)infRec.FdhRecbto := Leitor.rCampo(tcDatHor, 'dhRecbto');

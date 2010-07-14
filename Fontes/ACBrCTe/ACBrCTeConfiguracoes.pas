@@ -127,6 +127,7 @@ type
     FFormaEmissao: TpcnTipoEmissao;
     FFormaEmissaoCodigo: Integer;
     FSalvar: Boolean;
+    FAtualizarXMLCancelado: Boolean;
     FPathSalvar: String;
     FPathSchemas: String;
     procedure SetFormaEmissao(AValue: TpcnTipoEmissao);
@@ -139,6 +140,7 @@ type
       write SetFormaEmissao default teNormal ;
     property FormaEmissaoCodigo: Integer read FFormaEmissaoCodigo;
     property Salvar: Boolean read FSalvar write FSalvar default False;
+    property AtualizarXMLCancelado: Boolean read FAtualizarXMLCancelado write FAtualizarXMLCancelado default True ;
     property PathSalvar: String read GetPathSalvar write FPathSalvar;
     property PathSchemas: String read FPathSchemas write FPathSchemas;
   end;
@@ -239,6 +241,7 @@ begin
   FFormaEmissao       := teNormal;
   FFormaEmissaoCodigo := StrToInt(TpEmisToStr(FFormaEmissao));
   FSalvar             := False;
+  FAtualizarXMLCancelado := True;
   FPathSalvar         := '' ;
   FPathSchemas        := '' ;
 end;
@@ -356,6 +359,14 @@ var
   Certs        : ICertificates2;
   Cert         : ICertificate2;
   i            : Integer;
+
+  xmldoc  : IXMLDOMDocument3;
+  xmldsig : IXMLDigitalSignature;
+  dsigKey   : IXMLDSigKey;
+  SigKey    : IXMLDSigKeyEx;
+  PrivateKey : IPrivateKey;
+  hCryptProvider : HCRYPTPROV;
+  XML : String;
 begin
   CoInitialize(nil); // PERMITE O USO DE THREAD
   if CTeUtil.EstaVazio( FNumeroSerie ) then
@@ -371,6 +382,56 @@ begin
     Cert := IInterface(Certs.Item[i]) as ICertificate2;
     if Cert.SerialNumber = FNumeroSerie then
     begin
+      if CTeUtil.EstaVazio(NumCertCarregado) then
+         NumCertCarregado := Cert.SerialNumber;
+      if  CertStoreMem = nil then
+       begin
+         CertStoreMem := CoStore.Create;
+         CertStoreMem.Open(CAPICOM_MEMORY_STORE, 'Memoria', CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED);
+         CertStoreMem.Add(Cert);
+       end;
+
+      PrivateKey := Cert.PrivateKey;   
+
+      if (FSenhaCert <> '') and PrivateKey.IsHardwareDevice then
+       begin
+         PrivateKey := Cert.PrivateKey;
+
+         XML := XML + '<Signature xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />';
+         XML := XML + '<Reference URI="#">';
+         XML := XML + '<Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />';
+         XML := XML + '<DigestValue></DigestValue></Reference></SignedInfo><SignatureValue></SignatureValue><KeyInfo></KeyInfo></Signature>';
+
+         xmldoc := CoDOMDocument50.Create;
+         xmldoc.async              := False;
+         xmldoc.validateOnParse    := False;
+         xmldoc.preserveWhiteSpace := True;
+         xmldoc.loadXML(XML);
+         xmldoc.setProperty('SelectionNamespaces', DSIGNS);
+
+         xmldsig := CoMXDigitalSignature50.Create;
+         xmldsig.signature := xmldoc.selectSingleNode('.//ds:Signature');
+         xmldsig.store := CertStoreMem;
+
+         dsigKey := xmldsig.createKeyFromCSP(PrivateKey.ProviderType, PrivateKey.ProviderName, PrivateKey.ContainerName, 0);
+         if (dsigKey = nil) then
+            raise Exception.Create('Erro ao criar a chave do CSP.');
+
+         SigKey := dsigKey as IXMLDSigKeyEx;
+         SigKey.getCSPHandle( hCryptProvider );
+
+         try
+           CryptSetProvParam( hCryptProvider , PP_SIGNATURE_PIN, LPBYTE(FSenhaCert), 0 );
+         finally
+           CryptReleaseContext(hCryptProvider, 0);
+         end;
+
+         SigKey    := nil;
+         dsigKey   := nil;
+         xmldsig   := nil;
+         xmldoc    := nil;
+      end;
+
       Result := Cert;
       FDataVenc := Cert.ValidToDate;
       break;

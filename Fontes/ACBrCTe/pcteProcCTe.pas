@@ -59,14 +59,14 @@ type
     FPathCTe: string;
     FPathRetConsReciCTe: string;
     FPathRetConsSitCTe: string;
-    FnProt: string;
-    FchCTe: string;
-    FcStat: integer;
-    FverAplic: string;
-    FxMotivo: string;
-    FdigVal: string;
-    FdhRecbto: TDateTime;
     FtpAmb: TpcnTipoAmbiente;
+    FverAplic: string;
+    FchCTe: string;
+    FdhRecbto: TDateTime;
+    FnProt: string;
+    FdigVal: string;
+    FcStat: integer;
+    FxMotivo: string;
   public
     constructor Create;
     destructor Destroy; override;
@@ -125,6 +125,8 @@ end;
 var
   XMLCTe: TstringList;
   XMLinfProt: TstringList;
+  XMLinfProt2: TstringList;
+  wCstat: string;
   xProtCTe: string;
   LocLeitor: TLeitor;
   i : Integer;
@@ -137,6 +139,7 @@ begin
    then begin
     XMLCTe := TStringList.Create;
     XMLinfProt := TStringList.Create;
+    XMLinfProt2 := TStringList.Create;
     xProtCTe := '';
     FnProt := '';
 
@@ -190,14 +193,21 @@ begin
        then Gerador.wAlerta('XR06', 'SITUAÇÃO', 'SITUAÇÃO', ERR_MSG_ARQUIVO_NAO_ENCONTRADO)
        else begin
         XMLinfProt.LoadFromFile(FPathRetConsSitCTe);
+
+        wCstat:=RetornarConteudoEntre(XMLinfProt.text, '<cStat>', '</cStat>');
+        if trim(wCstat) = '101' then //esta cancelada
+           XMLinfProt2.Text:=RetornarConteudoEntre(XMLinfProt.text, '<infCanc>', '</infCanc>')
+        else
+           XMLinfProt2.Text:=RetornarConteudoEntre(XMLinfProt.text, '<infProt>', '</infProt>');
+
         xProtCTe :=
         (****)'<protCTe versao="1.10">' +
-        (******)'<infProt' + // RetornarConteudoEntre(XMLinfProt.text, '<infProt', '<tpAmb>') +
+        (******)'<infProt>' + // RetornarConteudoEntre(XMLinfProt.text, '<infProt', '<tpAmb>') +
         (*********)PreencherTAG('tpAmb', XMLinfProt.text) +
         (*********)PreencherTAG('verAplic', XMLinfProt.text) +
         (*********)PreencherTAG('chCTe', XMLinfProt.text) +
-        (*********)PreencherTAG('dhRecbto', XMLinfProt.text) +
-        (*********)PreencherTAG('nProt', XMLinfProt.text) +
+        (*********)PreencherTAG('dhRecbto', XMLinfProt2.text) +
+        (*********)PreencherTAG('nProt', XMLinfProt2.text) +
         (*********)PreencherTAG('digVal', XMLinfProt.text) +
         (*********)PreencherTAG('cStat', XMLinfProt.text) +
         (*********)PreencherTAG('xMotivo', XMLinfProt.text) +
@@ -213,7 +223,7 @@ begin
       (******)'<infProt' +
       (*********)'<tpAmb>'+TpAmbToStr(FtpAmb)+'</tpAmb>'+
       (*********)'<verAplic>'+FverAplic+'</verAplic>'+
-      (*********)'<chCTe>'+FchCTe+'</chNFe>'+
+      (*********)'<chCTe>'+FchCTe+'</chCTe>'+
       (*********)'<dhRecbto>'+FormatDateTime('yyyy-mm-dd"T"hh:nn:ss',FdhRecbto)+'</dhRecbto>'+
       (*********)'<nProt>'+FnProt+'</nProt>'+
       (*********)'<digVal>'+FdigVal+'</digVal>'+
@@ -236,6 +246,7 @@ begin
 
     XMLCTe.Free;
     XMLinfProt.Free;
+    XMLinfProt2.Free;
     Result := (Gerador.ListaDeAlertas.Count = 0);
 
   end;

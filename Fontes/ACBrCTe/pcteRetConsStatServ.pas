@@ -107,7 +107,7 @@ begin
   Result := False;
   try
     Leitor.Grupo := Leitor.Arquivo;
-    if leitor.rExtrai(1, 'retConsStatServCte') <> '' then
+    if leitor.rExtrai(1, 'retConsStatServ') <> '' then
     begin
       (*FR03*)FtpAmb := StrToTpAmb(ok, Leitor.rCampo(tcStr, 'tpAmb'));
       (*FR04*)FverAplic := Leitor.rCampo(tcStr, 'verAplic');
@@ -116,7 +116,7 @@ begin
       (*FR07*)FcUF := Leitor.rCampo(tcInt, 'cUF');
       (*FR08*)FdhRecbto := Leitor.rCampo(tcDatHor, 'dhRecbto');
       (*FR09*)FtMed := Leitor.rCampo(tcInt, 'tMed');
-      (*FR08*)FdhRetorno := Leitor.rCampo(tcDatHor, 'dhRetorno');      
+      (*FR08*)FdhRetorno := Leitor.rCampo(tcDatHor, 'dhRetorno');
       (*FR11*)FxObs := Leitor.rCampo(tcStr, 'xObs');
       Result := True;
     end;

@@ -48,6 +48,18 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   14/07/10 (Italo Jurisato Junior)
+---------------
+[+] Foi incluido na classe TGeralConf a propriedade AtualizarXMLCancelado.
+[*] Alterado a Function GerarXML dos fontes: pcteConsStatServ, pcteProcCTe,
+    pcteConsCad.
+[*] Alterado a Function LerXML dos fontes: pcteRetConsReciCTe, pcteConsStatServ.
+[*] Alterado as Classes: TInutCTe, TRetCancCTe, TInfCadCollectionItem,
+    TRetConsSitCTe, TRetInutCTe.
+[*] Alterações diversas no fonte ACBrCTeWevServices para poder gerar o arquivo de log.
+[*] Alterações diversas no fonte ACBrCTeConhecimentos.
+[*] Alterado a Function GetCertificado do fonte: ACBrCTeConfiguracoes.
+
 Alterações   23/06/10 (Italo Jurisato Junior)
 ---------------
 [+] Foi incluido a chamada para os links de homologação para o estado de

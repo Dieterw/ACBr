@@ -56,7 +56,6 @@ type
   //                                                                          //
   //////////////////////////////////////////////////////////////////////////////
 
-
   TConsReciCTe = class(TPersistent)
   private
     FGerador: TGerador;
@@ -102,7 +101,6 @@ begin
   begin
     Gerador.ArquivoFormatoXML := '';
     //Gerador.wGrupo(ENCODING_UTF8, '', False);
-    //Gerador.wGrupo('consReciCTe ' + NAME_SPACE_CTE + ' ' + V1_01);
     Gerador.wGrupo('consReciCTe ' + NAME_SPACE_CTE + ' ' + V1_03);
     Gerador.wCampo(tcStr, 'BP03', 'tpAmb  ', 001, 001, 1, tpAmbToStr(FtpAmb), DSC_TPAMB);
     Gerador.wCampo(tcEsp, 'BP04', 'nRec   ', 015, 015, 1, FnRec, DSC_NREC);

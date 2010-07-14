@@ -97,31 +97,38 @@ var
   i: integer;
 begin
   Result := False;
+  Gerador.ArquivoFormatoXML := '';
+
   if retornarVersaoLayout(Fschema, tlConsCad) = '1.01' then
-  begin
-    Gerador.ArquivoFormatoXML := '';
+   begin
     Gerador.wGrupo(ENCODING_UTF8, '', False);
     Gerador.wGrupo('ConsCad ' + NAME_SPACE + ' ' + V1_01);
-    Gerador.wGrupo('infCons');
-    Gerador.wCampo(tcStr, 'GP04', 'xServ ', 008, 008, 1, 'CONS-CAD', DSC_XSERV);
-    Gerador.wCampo(tcStr, 'GP05', 'UF    ', 002, 002, 1, FUF, DSC_UF);
-    i := 0;
-    if FIE <> EmptyStr then
-    begin
-      i := 1;
-      Gerador.wCampo(tcStr, 'GP06', 'IE  ', 002, 014, 1, FIE, DSC_IE);
-    end;
-    if (FCNPJ <> EmptyStr) and (i = 0) then
-    begin
-      i := 1;
-      Gerador.wCampoCNPJCPF('GP07', 'CNPJ', FCNPJ, CODIGO_BRASIL);
-    end;
-    if (FCPF <> EmptyStr) and (i = 0) then
-      Gerador.wCampoCNPJCPF('GP08', 'CPF ', FCPF, CODIGO_BRASIL);
-    Gerador.wGrupo('/infCons');
-    Gerador.wGrupo('/ConsCad');
-    Result := (Gerador.ListaDeAlertas.Count = 0);
-  end;
+   end;
+  if retornarVersaoLayout(Fschema, tlConsCad) = '2.00' then
+   begin
+    Gerador.wGrupo('ConsCad ' + NAME_SPACE + ' ' + V2_00);
+   end;
+
+  Gerador.wGrupo('infCons');
+  Gerador.wCampo(tcStr, 'GP04', 'xServ ', 008, 008, 1, 'CONS-CAD', DSC_XSERV);
+  Gerador.wCampo(tcStr, 'GP05', 'UF    ', 002, 002, 1, FUF, DSC_UF);
+  i := 0;
+  if FIE <> EmptyStr then
+   begin
+    i := 1;
+    Gerador.wCampo(tcStr, 'GP06', 'IE  ', 002, 014, 1, FIE, DSC_IE);
+   end;
+  if (FCNPJ <> EmptyStr) and (i = 0) then
+   begin
+    i := 1;
+    Gerador.wCampoCNPJCPF('GP07', 'CNPJ', FCNPJ, CODIGO_BRASIL);
+   end;
+  if (FCPF <> EmptyStr) and (i = 0) then
+    Gerador.wCampoCNPJCPF('GP08', 'CPF ', FCPF, CODIGO_BRASIL);
+  Gerador.wGrupo('/infCons');
+  Gerador.wGrupo('/ConsCad');
+
+  Result := (Gerador.ListaDeAlertas.Count = 0);
 end;
 
 end.

@@ -74,7 +74,7 @@ const
   cDTDInut     = '<!DOCTYPE test [<!ATTLIST infInut Id ID #IMPLIED>]>';
 {$ELSE}
 const
-  DSIGNS       = 'xmlns:ds="http://www.w3.org/2000/09/xmldsig#"';
+  DSIGNS = 'xmlns:ds="http://www.w3.org/2000/09/xmldsig#"';
 {$ENDIF}
 {$IFNDEF ACBrCTeOpenSSL}
 var
@@ -83,6 +83,7 @@ var
   PrivateKey   : IPrivateKey;
   Certs        : ICertificates2;
   Cert         : ICertificate2;
+  NumCertCarregado : String;
 {$ENDIF}
 
 type
@@ -1245,6 +1246,9 @@ begin
   if (xmldsig.signature = nil) then
     raise Exception.Create('É preciso carregar o template antes de assinar.');
 
+   if NumCertCarregado <> Certificado.SerialNumber then
+      CertStoreMem := nil;
+
   if CertStoreMem = nil then
   begin
     CertStore := CoStore.Create;
@@ -1258,7 +1262,10 @@ begin
     begin
       Cert := IInterface(Certs.Item[i]) as ICertificate2;
       if Cert.SerialNumber = Certificado.SerialNumber then
-        CertStoreMem.Add(Cert);
+       begin
+         CertStoreMem.Add(Cert);
+         NumCertCarregado := Certificado.SerialNumber;
+       end;
     end;
   end;
 

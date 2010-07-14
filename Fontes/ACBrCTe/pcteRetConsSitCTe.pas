@@ -46,7 +46,7 @@
 unit pcteRetConsSitCTe;
 
 interface uses
-  SysUtils, Classes, pcnAuxiliar, pcnConversao, pcnLeitor;
+  SysUtils, Classes, pcnAuxiliar, pcnConversao, pcnLeitor, pcteProcCTe, pcteRetCancCTe;
 
 type
 
@@ -64,8 +64,11 @@ type
     FcStat: Integer;
     FxMotivo: string;
     FcUF: integer;
-    FprotCTe: string;
-    FretCancCTe : string;
+    FchCTe: string;
+//    FprotCTe: string;
+//    FretCancCTe : string;
+    FprotCTe: TProcCTe;
+    FretCancCTe: TRetCancCTe;
   public
     constructor Create;
     destructor Destroy; override;
@@ -77,8 +80,11 @@ type
     property cStat: Integer read FcStat write FcStat;
     property xMotivo: string read FxMotivo write FxMotivo;
     property cUF: integer read FcUF write FcUF;
-    property protCTe: string read FprotCTe write FprotCTe;
-    property retCancCTe: string read FretCancCTe write FprotCTe;
+    property chCTe: string read FchCTe write FchCTe;
+//    property protCTe: string read FprotCTe write FprotCTe;
+//    property retCancCTe: string read FretCancCTe write FprotCTe;
+    property protCTe: TProcCTe read FprotCTe write FprotCTe;
+    property retCancCTe: TRetCancCTe read FretCancCTe write FretCancCTe;
   end;
 
 implementation
@@ -88,11 +94,15 @@ implementation
 constructor TRetConsSitCTe.Create;
 begin
   FLeitor := TLeitor.Create;
+  FprotCTe := TProcCTe.create;
+  FretCancCTe := TRetCancCTe.create;
 end;
 
 destructor TRetConsSitCTe.Destroy;
 begin
   FLeitor.Free;
+  FprotCTe.Free;
+  FretCancCTe.Free;
   inherited;
 end;
 
@@ -102,21 +112,64 @@ var
 begin
   Result := False;
   try
-    if leitor.rExtrai(1, 'cteConsultaCTResult') <> '' then
-      (*ER07*)FcUF := leitor.rCampo(tcInt, 'cUF');
-    if leitor.rExtrai(1, 'infProt') <> '' then
+    if leitor.rExtrai(1, 'retConsSitCTe') <> '' then
     begin
       (*ER03 *)FtpAmb := StrToTpAmb(ok, leitor.rCampo(tcStr, 'tpAmb'));
       (*ER04 *)FverAplic := leitor.rCampo(tcStr, 'verAplic');
-      (*ER05 *)FcStat := leitor.rCampo(tcStr, 'cStat');
+      (*ER05 *)FcStat := leitor.rCampo(tcInt, 'cStat');
       (*ER06 *)FxMotivo := leitor.rCampo(tcStr, 'xMotivo');
-      (*ER08 *)FprotCTe := leitor.rCampo(tcStr, 'nProt');
-      (*ER09 *)FretCancCTe := leitor.rCampo(tcStr, 'retCancCTe');
+      (*ER07 *)FcUF := leitor.rCampo(tcInt, 'cUF');
+      (*ER07a*)FchCTe := leitor.rCampo(tcStr, 'chCTe');
+      if FcStat in  [100,101] then
+       begin
+         if (Leitor.rExtrai(1, 'protCTe') <> '') or (Leitor.rExtrai(1, 'infProt') <> '') then
+          begin
+            protCTe.tpAmb    := StrToTpAmb(ok, Leitor.rCampo(tcStr, 'tpAmb'));
+            protCTe.verAplic := Leitor.rCampo(tcStr, 'verAplic');
+            protCTe.chCTe    := Leitor.rCampo(tcStr, 'chCTe');
+            protCTe.dhRecbto := Leitor.rCampo(tcDatHor, 'dhRecbto');
+            protCTe.nProt    := Leitor.rCampo(tcStr, 'nProt');
+            protCTe.digVal   := Leitor.rCampo(tcStr, 'digVal');
+            protCTe.cStat    := Leitor.rCampo(tcInt, 'cStat');
+            protCTe.xMotivo  := Leitor.rCampo(tcStr, 'xMotivo');
+         end;
+       end;
+      if FcStat = 101 then
+       begin
+         if Leitor.rExtrai(1, 'infCanc') <> '' then
+          begin
+            retCancCTe.tpAmb    := StrToTpAmb(ok, Leitor.rCampo(tcStr, 'tpAmb'));
+            retCancCTe.verAplic := Leitor.rCampo(tcStr, 'verAplic');
+            retCancCTe.cStat := Leitor.rCampo(tcInt, 'cStat');
+            retCancCTe.xMotivo := Leitor.rCampo(tcStr, 'xMotivo');
+            retCancCTe.cUF := Leitor.rCampo(tcInt, 'cUF');
+            retCancCTe.chCTe := Leitor.rCampo(tcStr, 'chCTe');
+            retCancCTe.dhRecbto := Leitor.rCampo(tcDatHor, 'dhRecbto');
+            retCancCTe.nProt := Leitor.rCampo(tcStr, 'nProt');
+         end;
+       end;
       Result := True;
     end;
   except
     Result := False;
   end;
+
+//  try
+//    if leitor.rExtrai(1, 'cteConsultaCTResult') <> '' then
+//      (*ER07*)FcUF := leitor.rCampo(tcInt, 'cUF');
+//    if leitor.rExtrai(1, 'infProt') <> '' then
+//    begin
+//      (*ER03 *)FtpAmb := StrToTpAmb(ok, leitor.rCampo(tcStr, 'tpAmb'));
+//      (*ER04 *)FverAplic := leitor.rCampo(tcStr, 'verAplic');
+//      (*ER05 *)FcStat := leitor.rCampo(tcStr, 'cStat');
+//      (*ER06 *)FxMotivo := leitor.rCampo(tcStr, 'xMotivo');
+//      (*ER08 *)FprotCTe := leitor.rCampo(tcStr, 'nProt');
+//      (*ER09 *)FretCancCTe := leitor.rCampo(tcStr, 'retCancCTe');
+//      Result := True;
+//    end;
+//  except
+//    Result := False;
+//  end;
 end;
 
 end.

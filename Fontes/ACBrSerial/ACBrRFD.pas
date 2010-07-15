@@ -49,7 +49,7 @@ unit ACBrRFD;
 
 interface
 uses ACBrBase,
-     SysUtils , Classes, Contnrs
+     SysUtils , Classes, Contnrs, ACBrEAD
      {$IFDEF LINUX}
        {$IFNDEF FPC}
          ,Libc
@@ -74,39 +74,6 @@ const
    cRFDArqE21     = 'e21.txt' ;
    cRFDArqIDINI   = 'rfdid.ini' ;
 
-   { Usa utilitário de linha de comando, "openssl.exe", para calcular a
-       assinatura digital...       http://www.openssl.org/
-       Binários para windows:      http://www.openssl.org/related/binaries.html
-     NOTA: openssl.exe e suas DLLs (libssl32.dll, ssleay32.dll) precisam
-           estar no PATH da máquina ou no mesmo diretório do programa
-     Como usar o openssl.exe   ->   http://www.madboa.com/geek/openssl/
-     
-     - Para gerar a sua chave Privada usando o "openssl.exe" digite:
-          openssl genrsa -out mykey.pem 1024
-       ( o arquivo "mykey.pem" conterá a sua chave )
-
-     - Para gerar Publica baseado em uma chave Privada, digite:
-          openssl rsa -in mykey.pem -pubout -out pubkey.pem
-       ( assume que a sua chave privada está em "mykey.pem", gera chave pública
-         no arquivo "pubkey.pem" )                                             }
-
-   { Chave padrão... por motivos de segurança, GERE A SUA PROPRIA CHAVE e
-     informe-a em: "OnGetKeyRSA" }
-   cRFDRSAKey = '-----BEGIN RSA PRIVATE KEY-----' + sLineBreak +
-                'MIICXQIBAAKBgQCtpPqcoOX4rwgdoKi6zJwPX9PA2iX2KxgvyxjE+daI5ZmYxcg0'+ sLineBreak +
-                'NScjX59nXRaLmtltVRfsRc1n4+mLSXiWMh3jIbw+TWn+GXKQhS2GitpLVhO3A6Ns'+ sLineBreak +
-                'vO1+RuP77s+uGYhqVvbD0Pziq+I2r4oktsjTbpnC7Mof3BjJdIUFsTHKYwIDAQAB'+ sLineBreak +
-                'AoGAXXqwU7umsi8ADnsb+pwF85zh8TM/NnvSpIAQkJHzNXVtL7ph4gEvVbK3rLyH'+ sLineBreak +
-                'U5aEMICbxV16i9A9PPfLjAfk4CuPpZlTibgfBRIG3MXirum0tjcyzbPyiDrk0qwM'+ sLineBreak +
-                'e83MyRkrnGlss6cRT3mZk67txEamqTVmDwz/Sfo1fVlCQAkCQQDW3N/EKyT+8tPW'+ sLineBreak +
-                '1EuPXafRONMel4xB1RiBmHYJP1bo/sDebLpocL6oiVlUX/k/zPRo1wMvlXJxPyiz'+ sLineBreak +
-                'mnf37cZ9AkEAzuPcDvGxwawr7EPGmPQ0f7aWv87tS/rt9L3nKiz8HfrT6WT0R1Bh'+ sLineBreak +
-                'I7lLGq4VFWE29I6hQ2lPNGX9IGFjiflKXwJBALgsO+J62QtwOgU7lEkfjmnYu57N'+ sLineBreak +
-                'aHxFnOv5M7RZhrXRKKF/sYk0mzj8AoZAffYiSJ5VL3XqNF6+NLU/AvaR6kECQQCV'+ sLineBreak +
-                'nY6sd/kWmA4DhFgAkMnOehq2h0xwH/0pepPLmlCQ1a2eIVXOpMA692rq1m2E0pLN'+ sLineBreak +
-                'dMAGYgfXWtIdMpCrXM59AkB5npcELeGBv1K8B41fmrlA6rEq4aqmfwAFRKcQTj8a'+ sLineBreak +
-                'n09FVtccLVPJ42AM1/QXK6a8DGCtB9R+j5j3UO/iL0+3'+ sLineBreak +
-                '-----END RSA PRIVATE KEY-----' ;
 type
 
 EACBrRFDDirInvalido   = class(Exception) ;
@@ -120,14 +87,6 @@ TACBrRFDGetKeyHashLog = procedure(var Chave : String) of object ;
   a rotina de calculo Interno }
 TACBrRFDCalcHashLog = procedure(const Linha : String;
    var Hash : String) of object ;
-
-{ Evento para retornar a chave RSA para calculo interno do EAD. Se não
-  programado usará a constante cRFDRSAKey (acima) }
-TACBrRFDGetKeyRSA = procedure(var PrivateKey_RSA : String) of object ;
-{ Evento para calculo Externo do EAD. Se não programado, usará a rotina de
-  calculo interno, que usa o "openssl.exe" (veja acima) }
-TACBrRFDCalcEAD = procedure(const ArqRFD : String;
-   var EAD : String) of object ;
 
 TACBrRFDItemCupom = class
  private
@@ -201,7 +160,7 @@ TACBrRFDCupom = class
 
   public
     constructor create( AOwner : TObject ) ;
-    destructor destroy ; override ;
+    destructor Destroy ; override ;
 
     property NomeArq : String read fsNomeArq write SetNomeArq ;
 
@@ -241,6 +200,8 @@ TACBrRFD = class( TACBrComponent )     { Componente ACBrRFD }
 
     fsCupom : TACBrRFDCupom ;
 
+    FACBrEAD: TACBrEAD;       /// Classe usada para AssinarArquivo com assinatura EAD.
+
     fsSH_Linha1: String;
     fsSH_CNPJ: String;
     fsSH_IE: String;
@@ -268,10 +229,8 @@ TACBrRFD = class( TACBrComponent )     { Componente ACBrRFD }
     fsCONT_CROCadastro: Integer;
     fsCONT_Endereco: String;
     fsCONT_DataHoraCadastro: TDateTime;
-    fsOnCalcEAD: TACBrRFDCalcEAD;
     fsOnCalcHashLog: TACBrRFDCalcHashLog;
     fsOnGetKeyHashLog: TACBrRFDGetKeyHashLog;
-    fsOnGetKeyRSA: TACBrRFDGetKeyRSA;
     fsDirECFMes: String;
     fsArqReducaoZ: String;
     fsArqRFD: String;
@@ -311,6 +270,13 @@ TACBrRFD = class( TACBrComponent )     { Componente ACBrRFD }
     property pDiaMov : TDateTime read fsDiaMov write SetDiaMov ;
     procedure LeUltimaReducaoZ;
     procedure VerificaNovoDia;
+
+
+    function GetOnRFDCalcEAD: TACBrCalcEAD;
+    procedure SetOnRFDCalcEAD (const Value: TACBrCalcEAD);
+
+    function GetOnRFDGetKeyRSA: TACBrEADGetKeyRSA;
+    procedure SetOnRFDGetKeyRSA (const Value: TACBrEADGetKeyRSA);
 
   protected
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
@@ -406,9 +372,8 @@ TACBrRFD = class( TACBrComponent )     { Componente ACBrRFD }
        read fsOnGetKeyHashLog write fsOnGetKeyHashLog ;
     property OnCalcHashLog : TACBrRFDCalcHashLog
         read  fsOnCalcHashLog write fsOnCalcHashLog ;
-    property OnGetKeyRSA : TACBrRFDGetKeyRSA
-       read fsOnGetKeyRSA write fsOnGetKeyRSA ;
-    property OnCalcEAD : TACBrRFDCalcEAD read  fsOnCalcEAD write fsOnCalcEAD ;
+    property OnCalcEAD: TACBrCalcEAD read GetOnRFDCalcEAD write SetOnRFDCalcEAD;
+    property OnGetKeyRSA: TACBrEADGetKeyRSA read GetOnRFDGetKeyRSA write SetOnRFDGetKeyRSA;
 end;
 
 implementation
@@ -457,7 +422,7 @@ begin
   ZeraCupom ;
 end;
 
-destructor TACBrRFDCupom.destroy;
+destructor TACBrRFDCupom.Destroy;
 begin
   fsItens.Free ;
   fsPagamentos.Free ;
@@ -937,11 +902,16 @@ begin
   fsSH_Linha1           := '' ;
   fsSH_Linha2           := '' ;
   fsSH_COO              := '' ;
+
+  FACBrEAD := TACBrEAD.Create; //Classe para fazer assinatura EAD
+
 end;
 
 destructor TACBrRFD.Destroy;
 begin
   fsCupom.Free ;
+
+  FACBrEAD.Free;
 
   inherited Destroy ;
 end;
@@ -1266,6 +1236,16 @@ begin
   Result := fsDirRFD ;
 end;
 
+function TACBrRFD.GetOnRFDCalcEAD: TACBrCalcEAD;
+begin
+  Result := FACBrEAD.OnCalcEAD;
+end;
+
+function TACBrRFD.GetOnRFDGetKeyRSA: TACBrEADGetKeyRSA;
+begin
+  Result := FACBrEAD.OnGetKeyRSA;
+end;
+
 procedure TACBrRFD.SetDirRFD(const Value: String);
 begin
   if fsDirRFD = Value then exit ;
@@ -1515,8 +1495,7 @@ procedure TACBrRFD.GerarRFD ;
      P, I : Integer ;
      SL, SEC : TStringList ;
      HashOk : Boolean ;
-     Dir, ArqTmp, Arq : String ;
-     EAD, cmd, ChaveRSA : String ;
+     {Dir,} ArqTmp, Arq : String ;
      Ini : TMemIniFile ;
 begin
   {$IFDEF LINUX}
@@ -1771,82 +1750,10 @@ begin
      Ini.Free ;
   end ;
 
-  { Gerando registro EAD }
-  EAD := '' ;
-  { Se tiver rotina própria para o calculo do EAD, execute-a }
-  if Assigned( fsOnCalcEAD ) then
-     fsOnCalcEAD( ArqTmp, EAD ) ;
 
-  if EAD = '' then
-  begin
-     SL  := TStringList.Create ;
-     Dir := GetCurrentDir ;
-     try
-        { Gravando a chave no arquivo id_rsa para usa-la com o "openssl" }
-        ChaveRSA := '' ;
-        if Assigned( fsOnGetKeyRSA ) then
-           fsOnGetKeyRSA( ChaveRSA ) ;   { Se usuário tem Chave própria, use-a }
+  { Assinando arquivo com registro EAD }
+  FACBrEAD.AssinaArquivoComEAD(ArqTmp);
 
-        if ChaveRSA = '' then
-           ChaveRSA := cRFDRSAKey ;
-
-        { Mudando para o diretório de Log }
-        ChDir( fsDirECFLog ) ;
-        {$IFDEF CONSOLE}
-          writeln( 'Diretorio atual: ',GetCurrentDir ) ;
-        {$ENDIF}
-
-        { Gravando a chave RSA temporariamente no DirLog }
-        SL.Clear ;
-        SL.Text := ChaveRSA ;
-        SL.SaveToFile( 'id.rsa' );
-
-        { Executando o "openssl.exe" }
-        cmd := 'dgst -md5 -sign id.rsa -out ead.txt -hex rfd.tmp' ;
-        {$IFDEF CONSOLE}
-          WriteLn('Executando: openssl '+cmd) ;
-        {$ENDIF}
-        RunCommand('openssl', cmd, True, 0);
-
-        {$IFDEF CONSOLE}
-          WriteLn('Aguardando ead.txt') ;
-        {$ENDIF}
-        I := 0 ;
-        while (not FileExists('ead.txt')) and (I < 30) do
-        begin
-           sleep(100) ;
-           {$IFNDEF CONSOLE}
-             Application.ProcessMessages ;
-           {$ELSE}
-             Write('.') ;
-           {$ENDIF}
-           Inc( I ) ;
-        end ;
-
-        { Lendo a resposta }
-        try
-           SL.Clear ;
-           SL.LoadFromFile('ead.txt');
-           EAD := SL.Text ;
-           EAD := UpperCase( Trim( copy(EAD, pos('=',EAD)+1, Length(EAD) ))) ;
-        except
-           raise Exception.Create( ACBrStr('Erro ao calcular registro EAD usando o "openssl"' )) ;
-        end ;
-     finally
-        SL.Free ;
-
-        SysUtils.DeleteFile( 'id.rsa' ) ;  // Removendo a chave privada do disco ;
-        SysUtils.DeleteFile( 'ead.txt' ) ;
-
-        ChDir( Dir );  { Voltando para o diretório anterior }
-        {$IFDEF CONSOLE}
-          writeln( 'Diretorio atual: ',GetCurrentDir ) ;
-        {$ENDIF}
-     end;
-  end ;
-
-  Linha := 'EAD'+EAD ;
-  WriteToTXT( ArqTmp, Linha, True );
 
   if not DirectoryExists( DirECFMes ) then
      if not CreateDir( DirECFMes ) then
@@ -2079,6 +1986,16 @@ end;
 procedure TACBrRFD.SetECF_RFDID(const Value: String);
 begin
   fsECF_RFDID := LeftStr( UpperCase(Value), 3);
+end;
+
+procedure TACBrRFD.SetOnRFDCalcEAD(const Value: TACBrCalcEAD);
+begin
+  FACBrEAD.OnCalcEAD := Value;
+end;
+
+procedure TACBrRFD.SetOnRFDGetKeyRSA(const Value: TACBrEADGetKeyRSA);
+begin
+  FACBrEAD.OnGetKeyRSA := Value;
 end;
 
 procedure TACBrRFD.SetCONT_Endereco(const Value: String);

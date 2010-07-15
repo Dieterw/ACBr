@@ -47,6 +47,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.04   15/07/10
+---------------
+[*] Modificado para utilizar classe TACBrEAD ao assinar arquivos com EAD.
+[+] Adicionado método AssinaArquivoComEAD. (EMBarbosa)
+
 Versão 0.03b   11/06/10
 ---------------
 [*] Definido as propriedades "CurMascara" e "Delimitador" para vazio, para 

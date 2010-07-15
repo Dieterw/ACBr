@@ -97,6 +97,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.9.6  15/07/2010
+-- ACBrRFD --
+[*] Modificado para utilizar classe TACBrEAD ao assinar arquivos com EAD
+    (por: Elton da Motta Barbosa)
+
+
 Versão 0.9.6  05/07/2010
 -- ACBrETQ --
 [+] Adicionada a Propriedade "Unidade" para indicar milimetros/polegadas

@@ -124,10 +124,10 @@ type
     property OnDragOver;
     property OnEndDrag;
     property OnMouseDown;
-    {$IFNDEF VisualCLX}
+    {$IFDEF FPC_CLX}
      property OnMouseEnter;
      property OnMouseLeave;
-    {$ENDIF} 
+    {$ENDIF}
     property OnMouseMove;
     property OnMouseUp;
     property OnStartDrag;

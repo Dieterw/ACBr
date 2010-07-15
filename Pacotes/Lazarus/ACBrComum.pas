@@ -2,20 +2,21 @@
   This source is only used to compile and install the package.
  }
 
-unit ACBrComum; 
+unit ACBrComum ; 
 
 interface
 
 uses
-    ACBrBase, ACBrConsts, ACBrTXTClass, ACBrUtil, ACBrReg, LazarusPackageIntf;
+    ACBrBase, ACBrConsts, ACBrTXTClass, ACBrUtil, ACBrReg, ACBrEAD, 
+  LazarusPackageIntf;
 
 implementation
 
-procedure Register; 
+procedure Register ; 
 begin
-  RegisterUnit('ACBrReg', @ACBrReg.Register); 
-end; 
+  RegisterUnit('ACBrReg', @ACBrReg.Register) ; 
+end ; 
 
 initialization
-  RegisterPackage('ACBrComum', @Register); 
+  RegisterPackage('ACBrComum', @Register) ; 
 end.

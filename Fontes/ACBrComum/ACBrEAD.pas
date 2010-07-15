@@ -236,9 +236,4 @@ begin
   end;
 end;
 
-{$ifdef FPC}
-initialization
-   {$I ACBrEAD.lrs}
-{$endif}
-
 end.

@@ -158,6 +158,7 @@ type
     class function TrataString(const AValue: String; const ATamanho: Integer): String;overload;
     class function CortaD(const AString: string; const ATamanho: Integer): String;
     class function CortaE(const AString: string; const ATamanho: Integer): String;
+    class function UFtoCUF(UF : String): Integer;
   end;
 
 implementation
@@ -1451,6 +1452,23 @@ class function CteUtil.TrataString(const AValue: String;
   const ATamanho: Integer): String;
 begin
   Result := CteUtil.TrataString(CteUtil.CortaD(AValue, ATamanho));
+end;
+
+class function CTeUtil.UFtoCUF(UF : String): Integer;
+var
+  Codigo, i: Integer;
+begin
+  Codigo := -1 ;
+  for i:= 0 to High(NFeUF) do
+  begin
+    if NFeUF[I] = UF then
+      Codigo := NFeUFCodigo[I];
+  end;
+
+  if Codigo < 0 then
+     Result := -1
+  else
+     Result := Codigo;
 end;
 
 end.

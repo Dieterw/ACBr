@@ -1243,7 +1243,12 @@ begin
            ReqVS.Sequencial := RespVS.Sequencial;
 
            if Resposta <> '' then
-              ReqVS.AddParamString( 'automacao_coleta_informacao', Resposta ) ;
+           begin
+             if Tipo = 'N' then
+               ReqVS.AddParamDouble( 'automacao_coleta_informacao', StrToFloatDef(Resposta, 0) )
+             else
+               ReqVS.AddParamString( 'automacao_coleta_informacao', Resposta ) ;
+           end;
 
            ReqVS.Retorno := ifthen( Cancelar, 9, 0) ;
 
@@ -1344,7 +1349,8 @@ begin
          begin
            // Chama Evento para dar chance do usuário cancelar //
            Interromper := False ;
-           TACBrTEFD(Owner).OnAguardaResp( '23', 0, Interromper ) ;   // 23 = Compatibilidade com CliSiTEF
+           TACBrTEFD(Owner).OnAguardaResp( '23', 0, Interromper ) ;
+                                           // 23 = Compatibilidade com CliSiTEF
 
            if Interromper then          // Usuário Cancelou ?
            begin
@@ -1359,7 +1365,7 @@ begin
               ReqVS.Retorno    := 9 ;
 
               EnviarCmd;
-
+              Erro := -1;
               Continue;
            end ;
          end

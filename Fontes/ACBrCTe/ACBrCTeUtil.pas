@@ -89,8 +89,11 @@ var
 type
   CTeUtil = class
   private
-    //Estados Emissores pela Sefaz Virtual RS (Rio Grande do Sul): RJ, SC.
+    // Estados Emissores pela Sefaz Virtual RS (Rio Grande do Sul):
+    // AC, AL, AP, AM, BA, CE, DF, ES, GO, MA, PA, PB, PR, PE, PI, RJ, RN,
+    // RO, RR, SC, SE, TO.
     class function GetURLSVRS(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+
     class function GetURLMG(AAmbiente: Integer; ALayOut: TLayOut): WideString;
     class function GetURLRS(AAmbiente: Integer; ALayOut: TLayOut): WideString;
     class function GetURLSP(AAmbiente: Integer; ALayOut: TLayOut): WideString;
@@ -240,13 +243,40 @@ begin
              end;
              }
              case AUF of
-              31: Result := CTeUtil.GetURLMG(AAmbiente, ALayOut);               //MG - Minas Gerais
-              33: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //RJ - Rio de Janeiro
-              42: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //SC - Santa Catarina
-              43: Result := CTeUtil.GetURLRS(AAmbiente, ALayOut);               //RS - Rio Grande do Sul
-              35: Result := CTeUtil.GetURLSP(AAmbiente, ALayOut);               //SP - São Paulo
-              50: Result := CTeUtil.GetURLMS(AAmbiente, ALayOut);               //MS - Mato Grosso do Sul
+              12: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //AC - Acre
+              27: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //AL - Alagoas
+              16: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //AP - Amapá
+              13: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //AM - Amazonas
+              29: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //BA - Bahia
+              23: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //CE - Ceará
+              53: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //DF - Distrito Federal
+              32: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //ES - Espirito Santo
+              52: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //GO - Goiás
+              21: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //MA - Maranhão
+
               51: Result := CTeUtil.GetURLMT(AAmbiente, ALayOut);               //MT - Mato Grosso
+                  // Só Homologacao
+              50: Result := CTeUtil.GetURLMS(AAmbiente, ALayOut);               //MS - Mato Grosso do Sul
+              31: Result := CTeUtil.GetURLMG(AAmbiente, ALayOut);               //MG - Minas Gerais
+
+              15: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //PA - Pará
+              25: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //PB - Paraibá
+              41: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //PR - Paraná
+              26: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //PE - Pernambuco
+              22: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //PI - Piauí
+              33: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //RJ - Rio de Janeiro
+              24: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //RN - Rio Grande do Norte
+
+              43: Result := CTeUtil.GetURLRS(AAmbiente, ALayOut);               //RS - Rio Grande do Sul
+
+              11: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //RO - Rondônia
+              14: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //RR - Roraima
+              42: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //SC - Santa Catarina
+
+              35: Result := CTeUtil.GetURLSP(AAmbiente, ALayOut);               //SP - São Paulo
+
+              28: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //SE - Sergipe
+              17: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //TO - Tocantins
              end;
             end;
         3 : begin

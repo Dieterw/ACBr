@@ -4122,7 +4122,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
       Top = 0
       Width = 527
       Height = 256
-      ActivePage = DANFE
+      ActivePage = Monitor
       Align = alBottom
       TabOrder = 0
       object Monitor: TTabSheet

@@ -553,7 +553,7 @@ var
   Form: TForm;
   Prompt: TLabel;
   Edit: TEdit;
-  DialogUnits: TPointArray;
+  DialogUnits: TPoint;
   ButtonTop, ButtonWidth, ButtonHeight: Integer;
   Value: string;
   I: Integer;
@@ -566,10 +566,11 @@ begin
     Canvas.Font := Font;
     for I := 0 to 25 do Buffer[I] := Chr(I + Ord('A'));
     for I := 0 to 25 do Buffer[I + 26] := Chr(I + Ord('a'));
-    poi
-    GetTextExtentPoint(Canvas.Handle, Buffer, 52, TSize(DialogUnits));
+//    GetTextExtentPoint(Canvas.Handle, Buffer, 52, TSize(DialogUnits));
+    DialogUnits.X := 260;
+    DialogUnits.Y := 16;
     DialogUnits.X := DialogUnits.X div 52;
-    BorderStyle := bsDialog;
+    BorderStyle := fbsDialog;
     Caption := ACaption;
     ClientWidth := MulDiv(180, DialogUnits.X, 4);
     ClientHeight := MulDiv(63, DialogUnits.Y, 8);
@@ -591,7 +592,7 @@ begin
       Top := MulDiv(19, DialogUnits.Y, 8);
       Width := MulDiv(164, DialogUnits.X, 4);
       MaxLength := 255;
-      PasswordChar := '*';
+      EchoMode := emPassword;
       SelectAll;
     end;
     ButtonTop := MulDiv(41, DialogUnits.Y, 8);

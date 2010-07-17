@@ -3,7 +3,6 @@ object Form1: TForm1
   Height = 400
   Top = 374
   Width = 499
-  ActiveControl = PageControl1
   Caption = 'Teste de Impressora Fiscal'
   ClientHeight = 380
   ClientWidth = 499
@@ -154,13 +153,7 @@ object Form1: TForm1
   Menu = MainMenu1
   OnCreate = FormCreate
   Position = poScreenCenter
-  LCLVersion = '0.9.27'
-  object ACBrGIF1: TACBrGIF
-    Left = 32
-    Height = 5
-    Top = 156
-    Width = 5
-  end
+  LCLVersion = '0.9.29'
   object StatusBar1: TStatusBar
     Left = 0
     Height = 23
@@ -180,9 +173,9 @@ object Form1: TForm1
     Height = 317
     Top = 0
     Width = 499
-    ActivePage = TabSheet4
+    ActivePage = TabSheet3
     Align = alClient
-    TabIndex = 0
+    TabIndex = 3
     TabOrder = 0
     object TabSheet4: TTabSheet
       Caption = 'ECF'
@@ -254,7 +247,6 @@ object Form1: TForm1
         Height = 21
         Top = 24
         Width = 105
-        AutoComplete = False
         ItemHeight = 13
         Items.Strings = (
           'Procurar'
@@ -270,7 +262,6 @@ object Form1: TForm1
           'ecfICash'
           'ecfQuattro'
         )
-        ItemWidth = 0
         OnChange = cbxModeloChange
         Style = csDropDownList
         TabOrder = 0
@@ -280,7 +271,6 @@ object Form1: TForm1
         Height = 21
         Top = 24
         Width = 105
-        AutoComplete = False
         ItemHeight = 13
         ItemIndex = 0
         Items.Strings = (
@@ -301,25 +291,24 @@ object Form1: TForm1
           'c:\temp\ecf.txt'
           '/tmp/ecf.txt'
         )
-        ItemWidth = 0
         OnChange = cbxPortaChange
         TabOrder = 1
         Text = 'Procurar'
       end
       object chTentar: TCheckBox
         Left = 11
-        Height = 17
+        Height = 19
         Top = 68
-        Width = 107
+        Width = 109
         Caption = 'Tentar Novamente'
         OnClick = chTentarClick
         TabOrder = 5
       end
       object chBloqueia: TCheckBox
         Left = 11
-        Height = 17
+        Height = 19
         Top = 90
-        Width = 136
+        Width = 138
         Caption = 'Bloqueia Mouse Teclado'
         Checked = True
         OnClick = chBloqueiaClick
@@ -328,9 +317,9 @@ object Form1: TForm1
       end
       object chExibeMsg: TCheckBox
         Left = 11
-        Height = 17
+        Height = 19
         Top = 113
-        Width = 119
+        Width = 121
         Caption = 'Exibe Msg Aguarde...'
         Checked = True
         OnClick = chExibeMsgClick
@@ -339,18 +328,18 @@ object Form1: TForm1
       end
       object chArredondaPorQtd: TCheckBox
         Left = 195
-        Height = 17
+        Height = 19
         Top = 68
-        Width = 172
+        Width = 174
         Caption = 'Arredondamento por Quantidade'
         OnClick = chArredondaPorQtdClick
         TabOrder = 10
       end
       object chGavetaSinalInvertido: TCheckBox
         Left = 195
-        Height = 17
+        Height = 19
         Top = 90
-        Width = 123
+        Width = 125
         Caption = 'Gaveta Sinal Invertido'
         OnClick = chGavetaSinalInvertidoClick
         TabOrder = 4
@@ -378,7 +367,7 @@ object Form1: TForm1
       end
       object seTimeOut: TSpinEdit
         Left = 267
-        Height = 27
+        Height = 21
         Top = 24
         Width = 46
         MinValue = 1
@@ -388,7 +377,7 @@ object Form1: TForm1
       end
       object seIntervaloAposComando: TSpinEdit
         Left = 331
-        Height = 27
+        Height = 21
         Top = 24
         Width = 54
         Increment = 10
@@ -536,6 +525,7 @@ object Form1: TForm1
           PrintSettings.MarginTop = 0.5
           PrintSettings.MarginRight = 0.5
           PrintSettings.MarginBottom = 0.5
+          TabOrder = 1
         end
       end
       object Panel2: TPanel
@@ -550,9 +540,9 @@ object Form1: TForm1
         TabOrder = 1
         object cbMemoHTML: TCheckBox
           Left = 272
-          Height = 23
+          Height = 19
           Top = 9
-          Width = 55
+          Width = 50
           Caption = 'HTML'
           Checked = True
           OnClick = cbMemoHTMLClick
@@ -602,7 +592,7 @@ object Form1: TForm1
             Left = 12
             Height = 14
             Top = 10
-            Width = 69
+            Width = 64
             Caption = 'Razao Social'
             ParentColor = False
           end
@@ -610,7 +600,7 @@ object Form1: TForm1
             Left = 276
             Height = 14
             Top = 10
-            Width = 27
+            Width = 24
             Caption = 'COO'
             ParentColor = False
           end
@@ -618,7 +608,7 @@ object Form1: TForm1
             Left = 12
             Height = 14
             Top = 51
-            Width = 26
+            Width = 28
             Caption = 'CNPJ'
             ParentColor = False
           end
@@ -626,7 +616,7 @@ object Form1: TForm1
             Left = 143
             Height = 14
             Top = 51
-            Width = 72
+            Width = 65
             Caption = 'Insc.Estadual'
             ParentColor = False
           end
@@ -634,7 +624,7 @@ object Form1: TForm1
             Left = 276
             Height = 14
             Top = 51
-            Width = 77
+            Width = 69
             Caption = 'Insc.Municipal'
             ParentColor = False
           end
@@ -642,7 +632,7 @@ object Form1: TForm1
             Left = 12
             Height = 14
             Top = 91
-            Width = 53
+            Width = 47
             Caption = 'Aplicativo'
             ParentColor = False
           end
@@ -650,7 +640,7 @@ object Form1: TForm1
             Left = 192
             Height = 14
             Top = 91
-            Width = 43
+            Width = 38
             Caption = 'Numero'
             ParentColor = False
           end
@@ -658,7 +648,7 @@ object Form1: TForm1
             Left = 276
             Height = 14
             Top = 91
-            Width = 35
+            Width = 34
             Caption = 'Versão'
             ParentColor = False
           end
@@ -666,7 +656,7 @@ object Form1: TForm1
             Left = 12
             Height = 14
             Top = 132
-            Width = 41
+            Width = 36
             Caption = 'Linha 1'
             ParentColor = False
           end
@@ -674,7 +664,7 @@ object Form1: TForm1
             Left = 204
             Height = 14
             Top = 132
-            Width = 41
+            Width = 36
             Caption = 'Linha 2'
             ParentColor = False
           end
@@ -848,15 +838,15 @@ object Form1: TForm1
           Left = 134
           Height = 14
           Top = 7
-          Width = 117
+          Width = 108
           Caption = 'Diretório arquivos RFD'
           ParentColor = False
         end
         object chRFD: TCheckBox
           Left = 24
-          Height = 23
+          Height = 19
           Top = 13
-          Width = 79
+          Width = 71
           Caption = 'Gerar RFD'
           OnClick = chRFDClick
           TabOrder = 0

@@ -7,7 +7,7 @@ interface
 uses
   ACBrECF,
   Classes, SysUtils, LResources, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  Buttons;
+  Buttons, strutils;
 
 type
 

@@ -318,6 +318,7 @@ TACBrECFSweda = class( TACBrECFClass )
     Procedure ImprimeCheque(Banco : String; Valor : Double ; Favorecido,
        Cidade : String; Data : TDateTime ;Observacao : String = '') ; override ;
     Procedure CancelaImpressaoCheque ; override ;
+    Function LeituraCMC7 : AnsiString ; override ;
 
     Procedure MudaHorarioVerao  ; overload ; override ;
     Procedure MudaHorarioVerao( EHorarioVerao : Boolean ) ; overload ; override ;
@@ -2448,6 +2449,21 @@ fazer Pausa entre as vias a Mensagem enviada ao usuário também foi modificada *)
   else
      inherited ListaCupomVinculado(Relatorio, Vias);
 
+end;
+
+function TACBrECFSweda.LeituraCMC7: AnsiString;
+Var
+  RetCmd : AnsiString ;
+begin
+  Result := '' ;
+  if (fpMFD) and (fsVersaoSweda >= swdST) then
+  begin
+     RetCmd := EnviaComando( '49'+'2', 13) ;
+
+     if LeftStr(RetCmd, 2) = '.{' then
+        Result := Copy( RetCmd, 3, Length(RetCmd)-3 );
+  end;
+  Sleep(100) ;
 end;
 
 procedure TACBrECFSweda.LeituraMemoriaFiscal(ReducaoInicial,

@@ -8,10 +8,8 @@ uses
   {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
   Forms
-  { you can add units after this }, ECFTeste1, ACBr_LCL, ConfiguraSerial,
-EfetuaPagamento, Relatorio, Sobre, VendeItem, TurboPowerIPro;
-
-{$IFDEF WINDOWS}{$R ecfteste.rc}{$ENDIF}
+  { you can add units after this }, ECFTeste1, ConfiguraSerial,
+EfetuaPagamento, Relatorio, Sobre, VendeItem, TurboPowerIPro, ACBrSerial;
 
 begin
   Application.Initialize;

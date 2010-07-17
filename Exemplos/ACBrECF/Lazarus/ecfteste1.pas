@@ -8,7 +8,7 @@ uses
   ACBrECF, ACBrBase, ACBrRFD, ACBrDevice, ACBrECFClass, ACBrConsts, LCLIntf,
   Classes, SysUtils, LResources, Forms, Controls, Graphics, LCLType, LMessages,
   Dialogs, DateUtils, IpHtml, Menus, Buttons, StdCtrls, ExtCtrls, ComCtrls, Spin,
-  ACBrGIF;
+  strutils;
 
 type
   TSimpleIpHtml = class(TIpHtml)
@@ -25,7 +25,6 @@ type
     AbreRelatorioGerencial1: TMenuItem;
     AbrirCupom1: TMenuItem;
     ACBrECF1: TACBrECF;
-    ACBrGIF1: TACBrGIF;
     ACBrRFD1: TACBrRFD;
     Aliquotas1: TMenuItem;
     AliquotasICMS1: TMenuItem;

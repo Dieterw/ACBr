@@ -481,10 +481,28 @@ end;
 
 procedure TfrmDACTeQRRetrato.qrbObsBeforePrint(Sender: TQRCustomBand;
   var PrintBand: Boolean);
+var
+ i: integer;
 begin
   inherited;
   qrmObs.Lines.Clear;
-  qrmObs.Lines.Text := FCTe.Compl.xObs;
+  //qrmObs.Lines.Text := FCTe.Compl.xObs;
+
+  qrmObs.Lines.Add(FCTe.Compl.xObs);
+  for i := 0 to FCTe.Compl.ObsCont.Count-1 do
+   with FCTe.Compl.ObsCont.Items[i] do
+    begin
+     qrmObs.Lines.Add( StringReplace( xCampo, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] )+': '+
+                       StringReplace( xTexto, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
+    end;
+  if FCTe.Compl.ObsFisco.Count>0
+   then qrmObs.Lines.Add('INFORMAÇÕES ADICIONAIS DE INTERESSE DO FISCO:');
+  for i := 0 to FCTe.Compl.ObsFisco.Count-1 do
+   with FCTe.Compl.ObsFisco.Items[i] do
+    begin
+     qrmObs.Lines.Add( StringReplace( xCampo, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] )+': '+
+                       StringReplace( xTexto, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
+    end;
 end;
 
 procedure TfrmDACTeQRRetrato.QRCTeBeforePrint(Sender: TCustomQuickRep; var PrintReport: Boolean);

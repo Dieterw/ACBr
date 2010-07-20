@@ -79,8 +79,6 @@
 |* 20/07/2010: Peterson de Cerqueira Matos
 |*  - Permite enviar o DANFe para a impressora informada em "Impressora"
 |*  - Acréscimo do parâmetro "AImpressora"
-|*  - Acréscimo da função "RetornaImpressoraAtual" e da procedure
-|*  - "SetarImpressoraPadrao" que auxiliarão a definição da impressora
 ******************************************************************************}
 {$I ACBr.inc}
 unit ACBrNFeDANFeRL;
@@ -94,7 +92,7 @@ uses
   {$ELSE}
   Windows, Messages, Graphics, Controls, Forms, Dialogs, ExtCtrls,
   {$ENDIF}
-  RLReport, pcnNFe, pcnConversao, ACBrNFe, RLFilters, MaskUtils, Printers;
+  RLReport, pcnNFe, pcnConversao, ACBrNFe, RLFilters, MaskUtils, RLPrinters;
 
 type
   TPosCanhoto = (pcCabecalho, pcRodape);
@@ -105,8 +103,6 @@ type
 
   private
     { Private declarations }
-    function RetornaImpressoraAtual: string;
-    procedure SetarImpressoraPadrao(Impressora: String);
   protected
     FACBrNFe: TACBrNFe;
     FNFe: TNFe;
@@ -181,52 +177,6 @@ var iCopias: Integer;
 
 {$R *.dfm}
 
-// Retorna o nome da impressora padrão do Windows
-function TfrlDANFeRL.RetornaImpressoraAtual: String;
-begin
-  if(Printer.PrinterIndex >= 0)then
-    begin
-      Result := Printer.Printers[Printer.PrinterIndex];
-    end
-  else
-    begin
-      Result := '';
-    end;
-end;
-
-// Mudar a impressora padrão pelo nome
-procedure TfrlDANFeRL.SetarImpressoraPadrao(Impressora: String);
-var i: Integer;
-    Device, Driver, Porta : PChar;
-    HdeviceMode: Thandle;
-    aPrinter : TPrinter;
-begin
-  Printer.PrinterIndex := -1;
-  getmem(Device, 255);
-  getmem(Driver, 255);
-  getmem(Porta, 255);
-  aPrinter := TPrinter.Create;
-  for i := 0 to (Printer.Printers.Count - 1) do
-    begin
-      if Printer.Printers[i] = Impressora then
-        begin
-          aprinter.PrinterIndex := i;
-          aPrinter.GetPrinter
-          (Device, Driver, Porta, HdeviceMode);
-          StrCat(Device, ',');
-          StrCat(Device, Driver );
-          StrCat(Device, Porta );
-          WriteProfileString('windows', 'device', Device);
-          StrCopy(Device, 'windows' );
-          SendMessage(HWND_BROADCAST, WM_WININICHANGE, 0, Longint(@Device));
-        end; // if Printer.printers[i] = PrinterName
-    end; // for i := 0 to (Printer.printers.Count - 1)
-  Freemem(Device, 255);
-  Freemem(Driver, 255);
-  Freemem(Porta, 255);
-  aPrinter.Free;
-end;
-
 class procedure TfrlDANFeRL.Imprimir(ANFe: TNFe; ALogo: String = '';
                 AMarcaDagua: String = ''; ALarguraCodProd: Integer = 54;
                 AEmail: String = ''; AResumoCanhoto: Boolean = False;
@@ -275,31 +225,21 @@ begin
       FProdutosPorPagina := AProdutosPorPagina;
       FImpressora := AImpressora;
 
+      if FImpressora > '' then
+        RLPrinter.PrinterName := FImpressora;
+
       if FMostrarPreview = True then
         RLNFe.PreviewModal
       else
-        begin
-          if FImpressora > '' then
-            begin
-              sImpressoraAtual := RetornaImpressoraAtual;
-              SetarImpressoraPadrao(FImpressora);
-            end;
-
-          if FNumCopias > 0 then
-            begin
-              for iCopias := 1 to FNumCopias do
-                begin
-                  RLNFe.Print;
-                end;
-            end // if FNumCopias > 0
-          else
-            begin
-              RLNFe.Print;
-            end;
-
-          if FImpressora > '' then
-            SetarImpressoraPadrao(sImpressoraAtual);
-        end; // else - if FMostrarPreview = True
+        if FNumCopias > 0 then
+          begin
+            for iCopias := 1 to FNumCopias do
+              begin
+                RLNFe.Print;
+              end;
+          end
+        else
+          RLNFe.Print;
 
     finally
       Free ;

@@ -44,6 +44,13 @@ unit ACBrGIF;
 
 interface
 
+{$IFDEF VisualCLX}
+  {$DEFINE FPC_CLX}
+{$ENDIF}
+{$IFDEF FPC}
+  {$DEFINE FPC_CLX}
+{$ENDIF}
+
 uses
   Classes, SysUtils,
  {$IFDEF VisualCLX}

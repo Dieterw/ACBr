@@ -1150,6 +1150,7 @@ end;
 function TACBrECFSweda.GetPoucoPapel: Boolean;
 Var RetCmd : AnsiString ;
 begin
+  fsOldSeq := ''; // tem que limpar a variavel de controle (por: Waldir Paim)
   RetCmd := EnviaComando( '23' ) ;
   Result := (copy( RetCmd, 6,1) = '5') ;
 end;

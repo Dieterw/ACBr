@@ -949,7 +949,7 @@ end;
 
 function TWebServices.Envia(ALote: Integer): Boolean;
 begin
-  Envia(IntToStr(ALote));
+  Result :=  Envia(IntToStr(ALote));
 end;
 
 function TWebServices.Envia(ALote: String): Boolean;

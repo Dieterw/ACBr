@@ -233,7 +233,7 @@ end;
 
 function TACBrNFe.Enviar(ALote: Integer; Imprimir:Boolean = True): Boolean;
 begin
-  Enviar(IntToStr(ALote),Imprimir);
+  Result := Enviar(IntToStr(ALote),Imprimir);
 end;
 
 function TACBrNFe.Enviar(ALote: String; Imprimir: Boolean): Boolean;

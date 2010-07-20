@@ -165,7 +165,7 @@ end;
 procedure TCasasDecimais.Set_qCom(AValue: integer);
 begin
   if ((AValue >= 0) and
-      (AValue <= 10))  then
+      (AValue <= 4))  then
     FqCom := AValue
   else
     FqCom := 2;
@@ -174,7 +174,7 @@ end;
 procedure TCasasDecimais.Set_vUnCom(AValue: integer);
 begin
   if ((AValue >= 0) and
-      (AValue <= 4))  then
+      (AValue <= 10))  then
     FvUnCom := AValue
   else
     FvUnCom := 2;

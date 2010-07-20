@@ -65,6 +65,9 @@
 |* 06/07/2010: Peterson de Cerqueira Matos
 |*  - Tratamento da quantidade de produtos por página em "ACBrNFeDANFeClass"
 |*  - Exibição do DANFe em modo paisagem
+|* 20/07/2010: Peterson de Cerqueira Matos
+|*  - Envia o DANFe para a impressora informada em "Impressora" de
+|*  - "ACBrNFeDANFeClass"
 ******************************************************************************}
 {$I ACBr.inc}
 unit ACBrNFeDANFeRLClass;
@@ -119,6 +122,8 @@ begin
   FMargemInferior := 0.70;
   FMargemEsquerda := 0.70;
   FMargemDireita := 0.70;
+  FCasasDecimais._qCom := 4;
+  FCasasDecimais._vUnCom := 4;
 
 end;
 
@@ -144,7 +149,7 @@ begin
           NumCopias, Sistema, Site, Usuario, PosCanhoto, FormularioContinuo,
           ExpandirLogoMarca, MostrarPreview, FonteDANFE, MargemSuperior,
           MargemInferior, MargemEsquerda, MargemDireita, CasasDecimais._qCom,
-          CasasDecimais._vUnCom, ProdutosPorPagina);
+          CasasDecimais._vUnCom, ProdutosPorPagina, Impressora);
         end;
     end
   else
@@ -154,7 +159,7 @@ begin
         NumCopias, Sistema, Site, Usuario, PosCanhoto, FormularioContinuo,
         ExpandirLogoMarca, MostrarPreview, FonteDANFE, MargemSuperior,
         MargemInferior, MargemEsquerda, MargemDireita, CasasDecimais._qCom,
-        CasasDecimais._vUnCom, ProdutosPorPagina);
+        CasasDecimais._vUnCom, ProdutosPorPagina, Impressora);
     end;
 
   frlDANFeRL.Free;

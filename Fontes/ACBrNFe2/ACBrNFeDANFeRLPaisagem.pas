@@ -93,6 +93,9 @@
 |*    O Caractere ponto-e-vírgula ';' será considerado quebra de linha
 |* 07/07/2010: Peteron de Cerqueira Matos
 |*  - Início do DANFe em formato Paisagem
+|* 20/07/2010: Peteron de Cerqueira Matos
+|*  - Acréscimo do case 0 na configuração das casas decimais da quantidade
+|*    e do valor unitário
 ******************************************************************************}
 {$I ACBr.inc}
 unit ACBrNFeDANFeRLPaisagem;
@@ -1440,6 +1443,7 @@ begin
                   cdsItens.FieldByName('CFOP').AsString := CFOP;
 
                   case FCasasDecimaisqCom of
+                    0: cdsItens.FieldByName('QTDE').AsString := FormatFloat('###,###,###,##0', QCom);
                     1: cdsItens.FieldByName('QTDE').AsString := FormatFloat('###,###,###,##0.0', QCom);
                     2: cdsItens.FieldByName('QTDE').AsString := FormatFloat('###,###,###,##0.00', QCom);
                     3: cdsItens.FieldByName('QTDE').AsString := FormatFloat('###,###,###,##0.000', QCom);
@@ -1453,6 +1457,7 @@ begin
                   end;
 
                   case FCasasDecimaisvUnCom of
+                    0: cdsItens.FieldByName('VALOR').AsString := FormatFloat('###,###,###,##0', vUnCom);
                     1: cdsItens.FieldByName('VALOR').AsString := FormatFloat('###,###,###,##0.0', vUnCom);
                     2: cdsItens.FieldByName('VALOR').AsString := FormatFloat('###,###,###,##0.00', vUnCom);
                     3: cdsItens.FieldByName('VALOR').AsString := FormatFloat('###,###,###,##0.000', vUnCom);

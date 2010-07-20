@@ -76,6 +76,11 @@
 |*  - Tratamento do formato de impressão e da quantidade de produtos por
 |*  - página em "ACBrNFeDANFeClass"
 |*  - Acréscimo dos parâmetros "ATipoDANFE" e "AProdutosPorPagina"
+|* 20/07/2010: Peterson de Cerqueira Matos
+|*  - Permite enviar o DANFe para a impressora informada em "Impressora"
+|*  - Acréscimo do parâmetro "AImpressora"
+|*  - Acréscimo da função "RetornaImpressoraAtual" e da procedure
+|*  - "SetarImpressoraPadrao" que auxiliarão a definição da impressora
 ******************************************************************************}
 {$I ACBr.inc}
 unit ACBrNFeDANFeRL;
@@ -89,7 +94,7 @@ uses
   {$ELSE}
   Windows, Messages, Graphics, Controls, Forms, Dialogs, ExtCtrls,
   {$ENDIF}
-  RLReport, pcnNFe, pcnConversao, ACBrNFe, RLFilters, MaskUtils;
+  RLReport, pcnNFe, pcnConversao, ACBrNFe, RLFilters, MaskUtils, Printers;
 
 type
   TPosCanhoto = (pcCabecalho, pcRodape);
@@ -100,6 +105,8 @@ type
 
   private
     { Private declarations }
+    function RetornaImpressoraAtual: string;
+    procedure SetarImpressoraPadrao(Impressora: String);
   protected
     FACBrNFe: TACBrNFe;
     FNFe: TNFe;
@@ -125,6 +132,7 @@ type
     FCasasDecimaisqCom: Integer;
     FCasasDecimaisvUnCom: Integer;
     FProdutosPorPagina: Integer;
+    FImpressora: String;
 
   public
     { Public declarations }
@@ -145,7 +153,8 @@ type
                     AMargemDireita: Double = 0.7;
                     ACasasDecimaisqCom: Integer = 4;
                     ACasasDecimaisvUncCom: Integer = 4;
-                    AProdutosPorPagina: Integer = 20);
+                    AProdutosPorPagina: Integer = 20;
+                    AImpressora: String = '');
 
     class procedure SavePDF(ANFe: TNFe; ALogo: String = '';
                     AMarcaDagua: String = ''; ALarguraCodProd: Integer = 54;
@@ -172,6 +181,52 @@ var iCopias: Integer;
 
 {$R *.dfm}
 
+// Retorna o nome da impressora padrão do Windows
+function TfrlDANFeRL.RetornaImpressoraAtual: String;
+begin
+  if(Printer.PrinterIndex >= 0)then
+    begin
+      Result := Printer.Printers[Printer.PrinterIndex];
+    end
+  else
+    begin
+      Result := '';
+    end;
+end;
+
+// Mudar a impressora padrão pelo nome
+procedure TfrlDANFeRL.SetarImpressoraPadrao(Impressora: String);
+var i: Integer;
+    Device, Driver, Porta : PChar;
+    HdeviceMode: Thandle;
+    aPrinter : TPrinter;
+begin
+  Printer.PrinterIndex := -1;
+  getmem(Device, 255);
+  getmem(Driver, 255);
+  getmem(Porta, 255);
+  aPrinter := TPrinter.Create;
+  for i := 0 to (Printer.Printers.Count - 1) do
+    begin
+      if Printer.Printers[i] = Impressora then
+        begin
+          aprinter.PrinterIndex := i;
+          aPrinter.GetPrinter
+          (Device, Driver, Porta, HdeviceMode);
+          StrCat(Device, ',');
+          StrCat(Device, Driver );
+          StrCat(Device, Porta );
+          WriteProfileString('windows', 'device', Device);
+          StrCopy(Device, 'windows' );
+          SendMessage(HWND_BROADCAST, WM_WININICHANGE, 0, Longint(@Device));
+        end; // if Printer.printers[i] = PrinterName
+    end; // for i := 0 to (Printer.printers.Count - 1)
+  Freemem(Device, 255);
+  Freemem(Driver, 255);
+  Freemem(Porta, 255);
+  aPrinter.Free;
+end;
+
 class procedure TfrlDANFeRL.Imprimir(ANFe: TNFe; ALogo: String = '';
                 AMarcaDagua: String = ''; ALarguraCodProd: Integer = 54;
                 AEmail: String = ''; AResumoCanhoto: Boolean = False;
@@ -189,7 +244,9 @@ class procedure TfrlDANFeRL.Imprimir(ANFe: TNFe; ALogo: String = '';
                 AMargemDireita: Double = 0.7;
                 ACasasDecimaisqCom: Integer = 4;
                 ACasasDecimaisvUncCom: Integer = 4;
-                AProdutosPorPagina: Integer = 20);
+                AProdutosPorPagina: Integer = 20;
+                AImpressora: String = '');
+var sImpressoraAtual: String;
 begin
   with Create ( nil ) do
     try
@@ -216,17 +273,33 @@ begin
       FCasasDecimaisqCom := ACasasDecimaisqCom;
       FCasasDecimaisvUnCom := ACasasDecimaisvUncCom;
       FProdutosPorPagina := AProdutosPorPagina;
+      FImpressora := AImpressora;
 
       if FMostrarPreview = True then
         RLNFe.PreviewModal
       else
         begin
+          if FImpressora > '' then
+            begin
+              sImpressoraAtual := RetornaImpressoraAtual;
+              SetarImpressoraPadrao(FImpressora);
+            end;
+
           if FNumCopias > 0 then
-            for iCopias := 1 to FNumCopias do
-              RLNFe.Print
+            begin
+              for iCopias := 1 to FNumCopias do
+                begin
+                  RLNFe.Print;
+                end;
+            end // if FNumCopias > 0
           else
-            RLNFe.Print;
-        end;
+            begin
+              RLNFe.Print;
+            end;
+
+          if FImpressora > '' then
+            SetarImpressoraPadrao(sImpressoraAtual);
+        end; // else - if FMostrarPreview = True
 
     finally
       Free ;

@@ -96,8 +96,8 @@ function TNFeR.LerXml: boolean;
 var
   ok: boolean;
   i, j, k, nItem: integer;
-  Arquivo, Itens, ItensTemp, VersaoInfNFe : AnsiString;
-  FormatoVersao : TFormatSettings; 
+  Arquivo, Itens, ItensTemp, VersaoInfNFe, Temp_VersaoInfNFe : AnsiString;
+  //FormatoVersao : TFormatSettings;
   Function VerificaParSt(const t: TpcnCSTIcms): TpcnCSTIcms;
   // 	Verifica se existe Partilha ou St
   begin
@@ -131,9 +131,10 @@ begin
   VersaoInfNFe := copy(VersaoInfNFe,Pos('versao=',VersaoInfNFe)+8,Pos('Id="',VersaoInfNFe)-(Pos('versao=',VersaoInfNFe)+10));
   VersaoInfNFe := StringReplace(Trim(VersaoInfNFe),'"','',[rfReplaceAll] ) ;
 
-  FormatoVersao.DecimalSeparator  := '.';
-
-  NFe.infNFe.Versao := StrToFloatDef(VersaoInfNFe,0,FormatoVersao);
+  //FormatoVersao.DecimalSeparator  := '.';
+  //NFe.infNFe.Versao := StrToFloatDef(VersaoInfNFe,0,FormatoVersao);
+  Temp_VersaoInfNFe := StringReplace(Trim(VersaoInfNFe),'.',',',[rfReplaceAll] ) ;
+  NFe.infNFe.Versao := StrToFloat(Temp_VersaoInfNFe);
 
   NFe.infNFe.ID := copy(Leitor.Arquivo, I+1, J - (I+1));
   NFe.infNFe.ID := StringReplace( UpperCase(NFe.infNFe.ID), 'NFE', '', [rfReplaceAll] ) ;

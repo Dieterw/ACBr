@@ -1463,6 +1463,8 @@ const
 
 implementation
 
+uses ACBrNFeUtil;
+
 { TNFe }
 
 constructor TNFe.Create;
@@ -2224,15 +2226,16 @@ begin
 end;
 
 function TinfNFe.GetVersaoStr: string;
-var
-  FormatoVersao : TFormatSettings;
+//var
+//  FormatoVersao : TFormatSettings;
 begin
-  FormatoVersao.DecimalSeparator  := '.';
+//  FormatoVersao.DecimalSeparator  := '.';
 
   if FVersao <= 0 then
      Result := V2_00
   else
-     Result := 'versao="'+FormatFloat('#0.00',FVersao,FormatoVersao)+'"';
+     //Result := 'versao="'+FormatFloat('#0.00',FVersao,FormatoVersao)+'"';
+     Result := 'versao="'+NotaUtil.FormatFloat(FVersao,'#0.00',true)+'"';
 end;
 
 end.

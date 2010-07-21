@@ -2236,6 +2236,8 @@ function TinfNFe.GetVersaoStr: string;
          DecimalSeparator  := '.';
          ThousandSeparator := ',';
          Result := SysUtils.FormatFloat(AFormat, AValue);
+         DecimalSeparator  := ',';
+         ThousandSeparator := '.';
       {$ELSE}
          vFormato.DecimalSeparator  := '.';
          vFormato.ThousandSeparator := ',';

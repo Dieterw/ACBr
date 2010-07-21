@@ -1441,34 +1441,37 @@ end;
 
 function TACBrECFClass.EnviaComando(cmd: AnsiString = ''): AnsiString;
 begin
-  if (not fpDevice.Ativo) then
-     raise EACBrECFNaoInicializado.create( ACBrStr(cACBrECFNaoInicializadoException) );
-
-  if AguardandoResposta then
-     raise EACBrECFOcupado.create( ACBrStr(cACBrECFOcupadoException) ) ;
-     
-  VerificaEmLinha ;
-
   try
-     fsBytesRec         := 0 ;
-     AguardandoResposta := True ;
-     try
-        GravaLog('-- '+FormatDateTime('hh:nn:ss',now)+' '+fpComandoLOG,True );
-        Result := EnviaComando_ECF( Cmd ) ;
-     finally
-        AguardandoResposta := False ;
-        fpComandoLOG       := '' ;
-        GravaLog('            TX -> '+fpComandoEnviado, True);
-        GravaLog('   '+FormatDateTime('hh:nn:ss',now)+' RX <- '+fpRespostaComando, True);
-     end ;
-  except
-     On E: Exception do
-     begin
-        GravaLog('----------------- ERRO -----------------' + sLineBreak + 
-                 E.Message + sLineBreak +
-                 '----------------------------------------' + sLineBreak );
-        raise ;
-     end ;
+    try
+       if (not fpDevice.Ativo) then
+          raise EACBrECFNaoInicializado.create( ACBrStr(cACBrECFNaoInicializadoException) );
+
+       if AguardandoResposta then
+          raise EACBrECFOcupado.create( ACBrStr(cACBrECFOcupadoException) ) ;
+
+       VerificaEmLinha ;
+
+       fsBytesRec         := 0 ;
+       AguardandoResposta := True ;
+       try
+          GravaLog('-- '+FormatDateTime('hh:nn:ss',now)+' '+fpComandoLOG,True );
+          Result := EnviaComando_ECF( Cmd ) ;
+       finally
+          GravaLog('            TX -> '+fpComandoEnviado, True);
+          GravaLog('   '+FormatDateTime('hh:nn:ss',now)+' RX <- '+fpRespostaComando, True);
+       end ;
+    except
+       On E: Exception do
+       begin
+          GravaLog('----------------- ERRO -----------------' + sLineBreak +
+                   E.Message + sLineBreak +
+                   '----------------------------------------' + sLineBreak );
+          raise ;
+       end ;
+    end ;
+  finally
+     fpComandoLOG       := '' ;
+     AguardandoResposta := False ;
   end ;
 end;
 

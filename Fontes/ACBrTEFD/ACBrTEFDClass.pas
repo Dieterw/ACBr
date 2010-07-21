@@ -965,8 +965,9 @@ begin
   while (IndChave < 0) and (I < fStringList.Count) do
   begin
      if copy(fStringList[I],1,Length(Chave)) = Chave then
-        IndChave := I;
-     Inc( I ) ;
+        IndChave := I
+     else
+        Inc( I ) ;
   end;
 
   if IndChave >= 0 then

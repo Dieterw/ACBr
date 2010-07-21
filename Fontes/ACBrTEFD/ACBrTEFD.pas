@@ -57,7 +57,7 @@ uses
       ,Windows, Messages
     {$ENDIF}
     {$IFDEF VisualCLX}
-      ,QForms, QControls
+      ,QForms, QControls, Qt
     {$ELSE}
       ,Forms, Controls
     {$ENDIF}

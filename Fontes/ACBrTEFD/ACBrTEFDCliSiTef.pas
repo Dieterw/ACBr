@@ -47,10 +47,10 @@ interface
 uses
   Classes, SysUtils, ACBrTEFDClass,
   {$IFDEF VisualCLX}
-     QControls
+     QControls, QDialogs
   {$ELSE}
-     Controls
-  {$ENDIF}  ;
+     Controls, Dialogs
+  {$ENDIF};
 
 
 Const
@@ -198,7 +198,7 @@ type
      Function CNC(Rede, NSU : String; DataHoraTransacao : TDateTime;
         Valor : Double) : Boolean; overload; override;
      Function DefineMensagemPermanentePinPad(Mensagem:AnsiString):Integer;
-     Function ObtemQuantidadeTransacoesPendentes(Data:TDate;
+     Function ObtemQuantidadeTransacoesPendentes(Data:TDateTime;
         CupomFiscal:AnsiString):Integer;
    published
      property EnderecoIP     : AnsiString read fEnderecoIP     write fEnderecoIP ;
@@ -228,7 +228,7 @@ type
 
 implementation
 
-Uses ACBrUtil, dateutils, StrUtils, ACBrTEFD, Dialogs, Math;
+Uses ACBrUtil, dateutils, StrUtils, ACBrTEFD, Math;
 
 { TACBrTEFDRespCliSiTef }
 
@@ -697,7 +697,7 @@ begin
   FinalizarTransacao( False, DocumentoVinculado );
 end;
 
-function TACBrTEFDCliSiTef.ObtemQuantidadeTransacoesPendentes(Data:TDate;
+function TACBrTEFDCliSiTef.ObtemQuantidadeTransacoesPendentes(Data:TDateTime;
   CupomFiscal: AnsiString): Integer;
 var
   sDate:AnsiString;

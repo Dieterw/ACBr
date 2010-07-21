@@ -81,7 +81,8 @@ requires
   ACBrComum,
   ACBrCapicom,
   ACBrOpenSSL,
-  synapse;
+  synapse,
+  PCN2;
 
 contains
   ACBrNFeNotasFiscais in '..\..\..\Fontes\ACBrNFe2\ACBrNFeNotasFiscais.pas',

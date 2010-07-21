@@ -1463,8 +1463,6 @@ const
 
 implementation
 
-uses ACBrNFeUtil;
-
 { TNFe }
 
 constructor TNFe.Create;
@@ -2226,16 +2224,29 @@ begin
 end;
 
 function TinfNFe.GetVersaoStr: string;
-//var
-//  FormatoVersao : TFormatSettings;
+   function FormatFloat_Aux(AValue: Extended;
+                            AFormat: string): string;
+   {$IFDEF VER140} //delphi6
+   {$ELSE}
+   var
+      vFormato: TFormatSettings;
+   {$ENDIF}
+   begin
+      {$IFDEF VER140} //delphi6
+         DecimalSeparator  := '.';
+         ThousandSeparator := ',';
+         Result := SysUtils.FormatFloat(AFormat, AValue);
+      {$ELSE}
+         vFormato.DecimalSeparator  := '.';
+         vFormato.ThousandSeparator := ',';
+         Result := SysUtils.FormatFloat(AFormat, AValue, vFormato);
+      {$ENDIF}
+   end;
 begin
-//  FormatoVersao.DecimalSeparator  := '.';
-
   if FVersao <= 0 then
      Result := V2_00
   else
-     //Result := 'versao="'+FormatFloat('#0.00',FVersao,FormatoVersao)+'"';
-     Result := 'versao="'+NotaUtil.FormatFloat(FVersao,'#0.00',true)+'"';
+     Result := 'versao="'+FormatFloat_Aux(FVersao,'#0.00')+'"';
 end;
 
 end.

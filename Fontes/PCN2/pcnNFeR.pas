@@ -95,7 +95,7 @@ end;
 function TNFeR.LerXml: boolean;
 var
   ok: boolean;
-  i, j, k, nItem: integer;
+  i, j, k, z, nItem: integer;
   Arquivo, Itens, ItensTemp, VersaoInfNFe, Temp_VersaoInfNFe : AnsiString;
   //FormatoVersao : TFormatSettings;
   Function VerificaParSt(const t: TpcnCSTIcms): TpcnCSTIcms;
@@ -127,8 +127,14 @@ begin
   if J = 0 then
     raise Exception.Create('Não encontrei inicio do URI: aspas final');
 
-  VersaoInfNFe := copy(Leitor.Arquivo, pos('<infNFe',Leitor.Arquivo), J - (I+1));
-  VersaoInfNFe := copy(VersaoInfNFe,Pos('versao=',VersaoInfNFe)+8,Pos('Id="',VersaoInfNFe)-(Pos('versao=',VersaoInfNFe)+10));
+  {VersaoInfNFe := copy(Leitor.Arquivo, pos('<infNFe',Leitor.Arquivo), J - (I+1));
+  VersaoInfNFe := copy(VersaoInfNFe,Pos('versao=',VersaoInfNFe)+8,Pos('Id="',VersaoInfNFe)-(Pos('versao=',VersaoInfNFe)+10));}
+  z:=pos('infnfe versao="', LowerCase(Leitor.Arquivo));
+  if z=0 then
+    z:=pos('infnfe id="', LowerCase(Leitor.Arquivo))+68
+  else
+    z:=z+15;
+  VersaoInfNFe := Copy(Leitor.Arquivo, z, 4);
   VersaoInfNFe := StringReplace(Trim(VersaoInfNFe),'"','',[rfReplaceAll] ) ;
 
   //FormatoVersao.DecimalSeparator  := '.';

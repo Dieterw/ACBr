@@ -35,7 +35,7 @@ object Form1: TForm1
     Top = 0
     Width = 725
     Height = 208
-    ActivePage = tsConfig
+    ActivePage = tsOperacao
     Align = alTop
     TabOrder = 2
     object tsConfig: TTabSheet
@@ -277,6 +277,7 @@ object Form1: TForm1
             Style = csDropDownList
             ItemHeight = 13
             TabOrder = 0
+            OnChange = cbxGPChange
           end
           object bAtivarGP: TButton
             Left = 45
@@ -572,8 +573,9 @@ object Form1: TForm1
           Width = 142
           Height = 21
           Style = csDropDownList
-          ItemHeight = 0
+          ItemHeight = 13
           TabOrder = 0
+          OnChange = cbxGPChange
         end
         object bAbreVendeSubTotaliza1: TButton
           Left = 230

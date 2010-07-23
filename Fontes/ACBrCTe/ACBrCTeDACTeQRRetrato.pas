@@ -547,7 +547,8 @@ begin
   SetBarCodeImage(Copy(FCTe.InfCTe.Id, 4, 44), qriBarCode);
   qrlChave.Caption := CTeUtil.FormatarChaveAcesso(Copy(FCTe.InfCTe.Id, 4, 44));
 
-
+  QRCTe.ReportTitle:='CT-e: '+qrlNumCte.Caption;
+  
   // Emitente
   with FCTe.Emit do
   begin

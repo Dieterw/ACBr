@@ -47,6 +47,13 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+
+Versão 0.05   23/07/10
+---------------
+[+] Adicionado método RegistroValido, em todos os Registros, para atender a
+    exigencia, dos testes do roteiro 1.05 do PAF-ECF, desenvolvido por 
+    (Anderson Kovalski) e otimização por (Isaque Pinheiro)
+
 Versão 0.04   15/07/10
 ---------------
 [*] Modificado para utilizar classe TACBrEAD ao assinar arquivos com EAD.

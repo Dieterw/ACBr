@@ -42,7 +42,8 @@ unit ACBrPAF_R_Class;
 
 interface
 
-uses SysUtils, Classes, DateUtils, ACBrTXTClass, ACBrPAFRegistros, ACBrPAF_R;
+uses SysUtils, StrUtils, Classes, DateUtils, ACBrTXTClass, ACBrPAFRegistros,
+     ACBrPAF_R;
 
 type
   /// TPAF_R -
@@ -145,7 +146,7 @@ begin
                   RFill(MF_ADICIONAL, 1) +
                   RFill(TIPO_ECF, 7) +
                   RFill(MARCA_ECF, 20) +
-                  RFill(MODELO_ECF, 20) +
+                  RFill(MODELO_ECF, 20, ifThen(RegistroValido, ' ', '?')) +
                   RFill(VERSAO_SB, 10) +
                   LFill(DT_INST_SB, 'yyyymmdd') +
                   LFill(HR_INST_SB, 'hhmmss') +
@@ -183,7 +184,7 @@ begin
           strRegistroR02 := strRegistroR02 + LFill('R02') +
                                              RFill(FRegistroR01.NUM_FAB, 20) +
                                              RFill(FRegistroR01.MF_ADICIONAL, 1) +
-                                             RFill(FRegistroR01.MODELO_ECF, 20) +
+                                             RFill(FRegistroR01.MODELO_ECF, 20, ifThen(RegistroValido, ' ', '?')) +
                                              LFill(NUM_USU, 2) +
                                              LFill(CRZ, 6) +
                                              LFill(COO, 6) +
@@ -219,7 +220,7 @@ begin
           strRegistroR03 := strRegistroR03 + LFill('R03') +
                                              RFill(FRegistroR01.NUM_FAB, 20) +
                                              RFill(FRegistroR01.MF_ADICIONAL, 1) +
-                                             RFill(FRegistroR01.MODELO_ECF, 20) +
+                                             RFill(FRegistroR01.MODELO_ECF, 20, ifThen(RegistroValido, ' ', '?')) +
                                              LFill(RegR02.NUM_USU, 2) +
                                              LFill(RegR02.CRZ, 6) +
                                              RFill(TOT_PARCIAL, 7) +
@@ -249,7 +250,7 @@ begin
           strRegistroR04 := strRegistroR04 + LFill('R04') +
                                              RFill(FRegistroR01.NUM_FAB, 20) +
                                              RFill(FRegistroR01.MF_ADICIONAL, 1) +
-                                             RFill(FRegistroR01.MODELO_ECF, 20) +
+                                             RFill(FRegistroR01.MODELO_ECF, 20, ifThen(RegistroValido, ' ', '?')) +
                                              LFill(NUM_USU, 2) +
                                              LFill(NUM_CONT, 6) +
                                              LFill(COO, 6) +
@@ -292,7 +293,7 @@ begin
           strRegistroR05 := strRegistroR05 + LFill('R05') +
                                              RFill(FRegistroR01.NUM_FAB, 20) +
                                              RFill(FRegistroR01.MF_ADICIONAL, 1) +
-                                             RFill(FRegistroR01.MODELO_ECF, 20) +
+                                             RFill(FRegistroR01.MODELO_ECF, 20, ifThen(RegistroValido, ' ', '?')) +
                                              LFill(RegR04.NUM_USU, 2) +
                                              LFill(RegR04.COO, 6) +
                                              LFill(RegR04.NUM_CONT, 6) +
@@ -339,7 +340,7 @@ begin
           strRegistroR06 := strRegistroR06 + LFill('R06') +
                                              RFill(FRegistroR01.NUM_FAB, 20) +
                                              RFill(FRegistroR01.MF_ADICIONAL, 1) +
-                                             RFill(FRegistroR01.MODELO_ECF, 20) +
+                                             RFill(FRegistroR01.MODELO_ECF, 20, ifThen(RegistroValido, ' ', '?')) +
                                              LFill(NUM_USU, 2) +
                                              LFill(COO, 6) +
                                              LFill(GNF, 6) +
@@ -374,7 +375,7 @@ begin
           strRegistroR07 := strRegistroR07 + LFill('R07') +
                                              RFill(FRegistroR01.NUM_FAB, 20) +
                                              RFill(FRegistroR01.MF_ADICIONAL, 1) +
-                                             RFill(FRegistroR01.MODELO_ECF, 20) +
+                                             RFill(FRegistroR01.MODELO_ECF, 20, ifThen(RegistroValido, ' ', '?')) +
                                              LFill(RegR04.NUM_USU, 2) +
                                              LFill(RegR04.COO, 6) +
                                              LFill(CCF, 6) +
@@ -408,7 +409,7 @@ begin
           strRegistroR07 := strRegistroR07 + LFill('R07') +
                                              RFill(FRegistroR01.NUM_FAB, 20) +
                                              RFill(FRegistroR01.MF_ADICIONAL, 1) +
-                                             RFill(FRegistroR01.MODELO_ECF, 20) +
+                                             RFill(FRegistroR01.MODELO_ECF, 20, ifThen(RegistroValido, ' ', '?')) +
                                              LFill(RegR06.NUM_USU, 2) +
                                              LFill(RegR06.COO, 6) +
                                              LFill(CCF, 6) +

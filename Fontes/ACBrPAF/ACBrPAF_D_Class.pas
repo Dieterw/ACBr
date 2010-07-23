@@ -42,7 +42,8 @@ unit ACBrPAF_D_Class;
 
 interface
 
-uses SysUtils, Classes, DateUtils, ACBrTXTClass, ACBrPAFRegistros, ACBrPAF_D;
+uses SysUtils, Classes, DateUtils, ACBrTXTClass, ACBrPAFRegistros,
+     ACBrPAF_D;
 
 type
   /// TACBrPAF_D -
@@ -128,7 +129,7 @@ begin
                                            RFill(MF_ADICIONAL, 1) +
                                            RFill(TIPO_ECF, 7) +
                                            RFill(MARCA_ECF, 20) +
-                                           RFill(MODELO_ECF, 20) +
+                                           RFill(MODELO_ECF, 20, ifThen(RegistroValido, ' ', '?')) +
                                            RFill(COO, 6) +
                                            RFill(NUM_DAV, 13) +
                                            LFill(DT_DAV, 'yyyymmdd') +
@@ -150,7 +151,7 @@ begin
    begin
       with FRegistroD9 do
       begin
-        Check(funChecaCNPJ(FRegistroD1.CNPJ),            '(D9) TOTALIZAÇÃO: O CNPJ "%s" digitado é inválido!', [FRegistroD1.CNPJ]);
+        Check(funChecaCNPJ(FRegistroD1.CNPJ),             '(D9) TOTALIZAÇÃO: O CNPJ "%s" digitado é inválido!', [FRegistroD1.CNPJ]);
         Check(funChecaIE(FRegistroD1.IE, FRegistroD1.UF), '(D9) TOTALIZAÇÃO: A Inscrição Estadual "%s" digitada é inválida!', [FRegistroD1.IE]);
         ///
         Result := LFill('D9') +

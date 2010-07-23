@@ -55,6 +55,7 @@ type
 
   TRegistroT2 = class
   private
+    fRegistroValido: boolean;
     fDT_MOV: TDateTime;       /// Data a que se refere o movimento informado
     fTP_DOCTO: string;        /// Tipo do documento a que se refere o movimento informado, conforme item 7.2.1.3
     fSERIE: string;           /// Série do bilhete de passagem, no caso deste tipo de documento
@@ -70,6 +71,9 @@ type
     fVL_ISENTAS: currency;    /// Valor das prestações isentas do ICMS relativas ao movimento informado, com duas casas decimais
     fVL_OUTRAS: currency;     /// Valor de outras situações tributárias relativas ao movimento informado, com duas casas decimais
   public
+    constructor Create; virtual; /// Create
+
+    property RegistroValido: Boolean read fRegistroValido write fRegistroValido default True;
     property DT_MOV: TDateTime read FDT_MOV write FDT_MOV;
     property TP_DOCTO: string read FTP_DOCTO write FTP_DOCTO;
     property SERIE: string read FSERIE write FSERIE;
@@ -120,6 +124,13 @@ end;
 procedure TRegistroT2List.SetItem(Index: Integer; const Value: TRegistroT2);
 begin
   Put(Index, Value);
+end;
+
+{ TRegistroT2 }
+
+constructor TRegistroT2.Create;
+begin
+   fRegistroValido := True;
 end;
 
 end.

@@ -42,7 +42,8 @@ unit ACBrPAF_E_Class;
 
 interface
 
-uses SysUtils, Classes, DateUtils, ACBrTXTClass, ACBrPAFRegistros, ACBrPAF_E;
+uses SysUtils, StrUtils, Classes, DateUtils, ACBrTXTClass, ACBrPAFRegistros,
+     ACBrPAF_E;
 
 type
   /// TPAF_E -
@@ -126,7 +127,7 @@ begin
                                            LFill(FRegistroE1.CNPJ, 14) +
                                            RFill(COD_MERC, 14) +
                                            RFill(DESC_MERC, 50) +
-                                           RFill(UN_MED, 6) +
+                                           RFill(UN_MED, 6, ifThen(RegistroValido, ' ', '?')) +
                                            LFill(QTDE_EST, 9, 2) +
                                            LFill(DT_EST, 'yyyymmdd') +
                                            #13#10;

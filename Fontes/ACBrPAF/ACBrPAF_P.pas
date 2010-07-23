@@ -55,6 +55,7 @@ type
 
   TRegistroP2 = class
   private
+    fRegistroValido: boolean;
     fCOD_MERC_SERV: string;     /// Código da mercadoria ou serviço
     fDESC_MERC_SERV: string;    /// Descrição da mercadoria ou serviço
     fUN_MED: string;            /// Unidade de medida
@@ -64,6 +65,9 @@ type
     fALIQ: currency;            /// Alíquota, conforme item 7.2.1.6
     fVL_UNIT: currency;         /// Valor unitário com duas casas decimais
   public
+    constructor Create; virtual; /// Create
+
+    property RegistroValido: Boolean read fRegistroValido write fRegistroValido default True;
     property COD_MERC_SERV: string read FCOD_MERC_SERV write FCOD_MERC_SERV;
     property DESC_MERC_SERV: string read FDESC_MERC_SERV write FDESC_MERC_SERV;
     property UN_MED: string read FUN_MED write FUN_MED;
@@ -108,6 +112,13 @@ end;
 procedure TRegistroP2List.SetItem(Index: Integer; const Value: TRegistroP2);
 begin
   Put(Index, Value);
+end;
+
+{ TRegistroP2 }
+
+constructor TRegistroP2.Create;
+begin
+   fRegistroValido := True;
 end;
 
 end.

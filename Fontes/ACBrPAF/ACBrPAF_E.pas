@@ -55,12 +55,16 @@ type
 
   TRegistroE2 = class
   private
+    fRegistroValido: boolean;
     fCOD_MERC: string;     /// Código da mercadoria ou produto cadastrado na tabela a que se refere o requisito XI
     fDESC_MERC: string;    /// Descrição da mercadoria ou produto cadastrada na tabela a que se refere o requisito XI
     fUN_MED: string;       /// Unidade de medida cadastrada na tabela a que se refere o requisito XI
     fQTDE_EST: currency;   /// Quantidade da mercadoria ou produto constante no estoque, com duas casas decimais.
     fDT_EST: TDateTime;    /// Data de emissão do DAV
   public
+    constructor Create; virtual; /// Create
+
+    property RegistroValido: Boolean read fRegistroValido write fRegistroValido default True;
     property COD_MERC: string read FCOD_MERC write FCOD_MERC;
     property DESC_MERC: string read FDESC_MERC write FDESC_MERC;
     property UN_MED: string read FUN_MED write FUN_MED;
@@ -102,6 +106,13 @@ end;
 procedure TRegistroE2List.SetItem(Index: Integer; const Value: TRegistroE2);
 begin
   Put(Index, Value);
+end;
+
+{ TRegistroE2 }
+
+constructor TRegistroE2.Create;
+begin
+   fRegistroValido := True;
 end;
 
 end.

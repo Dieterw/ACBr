@@ -55,6 +55,7 @@ type
 
   TRegistroD2 = class
   private
+    fRegistroValido: boolean;
     fNUM_FAB: string;      /// Nº de fabricação do ECF
     fMF_ADICIONAL: string; /// Letra indicativa de MF adicional
     fTIPO_ECF: string;     /// Tipo do ECF
@@ -67,6 +68,9 @@ type
     fVLT_DAV: currency;    /// Valor total do DAV emitido, com duas casas decimais
     fCCF: string;          /// Contador de Cupom Fiscal do documento fiscal vinculado
   public
+    constructor Create; virtual; /// Create
+
+    property RegistroValido: Boolean read fRegistroValido write fRegistroValido default True;
     property NUM_FAB: string read FNUM_FAB write FNUM_FAB;
     property MF_ADICIONAL: string read FMF_ADICIONAL write FMF_ADICIONAL;
     property TIPO_ECF: string read FTIPO_ECF write FTIPO_ECF;
@@ -114,6 +118,13 @@ end;
 procedure TRegistroD2List.SetItem(Index: Integer; const Value: TRegistroD2);
 begin
   Put(Index, Value);
+end;
+
+{ TRegistroD2 }
+
+constructor TRegistroD2.Create;
+begin
+   fRegistroValido := True;
 end;
 
 end.

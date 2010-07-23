@@ -42,7 +42,8 @@ unit ACBrPAF_T_Class;
 
 interface
 
-uses SysUtils, Classes, DateUtils, ACBrTXTClass, ACBrPAFRegistros, ACBrPAF_T;
+uses SysUtils, Classes, DateUtils, ACBrTXTClass, ACBrPAFRegistros,
+     ACBrPAF_T;
 
 type
   /// TPAF_T -
@@ -123,7 +124,7 @@ begin
           strRegistroT2 := strRegistroT2 + LFill('T2') +
                                            LFill(FRegistroT1.CNPJ, 14) +
                                            LFill(DT_MOV, 'yyyymmdd') +
-                                           RFill(TP_DOCTO, 10) +
+                                           RFill(TP_DOCTO, 10, ifThen(RegistroValido, ' ', '?')) +
                                            RFill(SERIE, 2) +
                                            LFill(NUM_BILH_I, 6) +
                                            LFill(NUM_BILH_F, 6) +

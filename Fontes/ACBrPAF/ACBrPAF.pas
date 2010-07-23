@@ -56,7 +56,7 @@ uses
    ACBrPAF_T, ACBrPAF_T_Class;
 
 const
-   CACBrPAF_Versao = '0.04' ;
+   CACBrPAF_Versao = '0.05' ;
 
 type
 

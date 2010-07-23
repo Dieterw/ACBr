@@ -42,7 +42,8 @@ unit ACBrPAF_P_Class;
 
 interface
 
-uses SysUtils, Classes, DateUtils, ACBrTXTClass, ACBrPAFRegistros, ACBrPAF_P;
+uses SysUtils, StrUtils, Classes, DateUtils, ACBrTXTClass, ACBrPAFRegistros,
+     ACBrPAF_P;
 
 type
   /// TPAF_P -
@@ -126,7 +127,7 @@ begin
                                            LFill(FRegistroP1.CNPJ, 14) +
                                            RFill(COD_MERC_SERV, 14) +
                                            RFill(DESC_MERC_SERV, 50) +
-                                           RFill(UN_MED, 6) +
+                                           RFill(UN_MED, 6, ifThen(RegistroValido, ' ', '?')) +
                                            RFill(IAT, 1) +
                                            RFill(IPPT, 1) +
                                            RFill(ST, 1) +

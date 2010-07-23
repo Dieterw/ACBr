@@ -60,7 +60,7 @@ function funChecaSITDOCTO(const COD: String): Boolean;
 function funChecaCSTCOFINS(const CST: String): Boolean;
 function funChecaCSTPIS(const CST: String): Boolean;
 function funStrZero(Zeros: String; Quant: Integer): String;
-function IfThen(AValue: Boolean; const ATrue: Char; AFalse: Char): Char; overload; inline;
+function IfThen(AValue: Boolean; const ATrue: Char; AFalse: Char): Char; overload;
 
 implementation
 

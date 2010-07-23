@@ -144,7 +144,7 @@ begin
             end
            else
             begin
-              if not ValidarChave(Cmd.Params(0)) then
+              if not ValidarChave('NFe'+Cmd.Params(0)) then
                  raise Exception.Create('Chave '+Cmd.Params(0)+' inválida.')
               else
                  ACBrNFe1.WebServices.Consulta.NFeChave := Cmd.Params(0);
@@ -172,7 +172,7 @@ begin
 
         else if Cmd.Metodo = 'cancelarnfe' then
          begin
-           if not ValidarChave(Cmd.Params(0)) then
+           if not ValidarChave('NFe'+Cmd.Params(0)) then
               raise Exception.Create('Chave '+Cmd.Params(0)+' inválida.')
            else
               ACBrNFe1.WebServices.Consulta.NFeChave := Cmd.Params(0);

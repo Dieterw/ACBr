@@ -484,7 +484,7 @@ begin
         if Leitor.rCampo(tcStr,'CST')='00'
         then begin
           CTe.Imp.ICMS.SituTrib    := cst00;
-          CTe.Imp.ICMS.CST00.CST   := Leitor.rCampo(tcStr,'CST');
+          CTe.Imp.ICMS.CST00.CST   := StrToCSTICMS(ok, Leitor.rCampo(tcStr,'CST'));
           CTe.Imp.ICMS.CST00.vBC   := Leitor.rCampo(tcDe2,'vBC');
           CTe.Imp.ICMS.CST00.pICMS := Leitor.rCampo(tcDe2,'pICMS');
           CTe.Imp.ICMS.CST00.vICMS := Leitor.rCampo(tcDe2,'vICMS');
@@ -496,7 +496,7 @@ begin
         if Leitor.rCampo(tcStr,'CST')='20'
         then begin
           CTe.Imp.ICMS.SituTrib     := cst20;
-          CTe.Imp.ICMS.CST20.CST    := Leitor.rCampo(tcStr,'CST');
+          CTe.Imp.ICMS.CST20.CST    := StrToCSTICMS(ok, Leitor.rCampo(tcStr,'CST'));
           CTe.Imp.ICMS.CST20.pRedBC := Leitor.rCampo(tcDe2,'pRedBC');
           CTe.Imp.ICMS.CST20.vBC    := Leitor.rCampo(tcDe2,'vBC');
           CTe.Imp.ICMS.CST20.pICMS  := Leitor.rCampo(tcDe2,'pICMS');
@@ -511,7 +511,7 @@ begin
            (Leitor.rCampo(tcStr,'CST')='51')
         then begin
           CTe.Imp.ICMS.SituTrib  := Leitor.rCampo(tcStr,'CST');
-          CTe.Imp.ICMS.CST45.CST := Leitor.rCampo(tcStr,'CST');
+          CTe.Imp.ICMS.CST45.CST := StrToCSTICMS(ok, Leitor.rCampo(tcStr,'CST'));
         end;
       end;
 
@@ -521,7 +521,7 @@ begin
         then begin
           // Responsabilidade do recolhimento do ICMS atribuído ao tomador ou 3o por ST
           CTe.Imp.ICMS.SituTrib    := cst80;
-          CTe.Imp.ICMS.CST80.CST   := Leitor.rCampo(tcStr,'CST');
+          CTe.Imp.ICMS.CST80.CST   := StrToCSTICMS(ok, Leitor.rCampo(tcStr,'CST'));
           CTe.Imp.ICMS.CST80.vBC   := Leitor.rCampo(tcDe2,'vBC');
           CTe.Imp.ICMS.CST80.pICMS := Leitor.rCampo(tcDe2,'pICMS');
           CTe.Imp.ICMS.CST80.vICMS := Leitor.rCampo(tcDe2,'vICMS');
@@ -535,7 +535,7 @@ begin
         then begin
           // ICMS devido à Outra UF
           CTe.Imp.ICMS.SituTrib     := cst81;
-          CTe.Imp.ICMS.CST81.CST    := Leitor.rCampo(tcStr,'CST');
+          CTe.Imp.ICMS.CST81.CST    := StrToCSTICMS(ok, Leitor.rCampo(tcStr,'CST'));
           CTe.Imp.ICMS.CST81.pRedBC := Leitor.rCampo(tcDe2,'pRedBC');
           CTe.Imp.ICMS.CST81.vBC    := Leitor.rCampo(tcDe2,'vBC');
           CTe.Imp.ICMS.CST81.pICMS  := Leitor.rCampo(tcDe2,'pICMS');
@@ -548,7 +548,7 @@ begin
         if Leitor.rCampo(tcStr,'CST')='90'
         then begin
           CTe.Imp.ICMS.SituTrib     := cst90;
-          CTe.Imp.ICMS.CST90.CST    := Leitor.rCampo(tcStr,'CST');
+          CTe.Imp.ICMS.CST90.CST    := StrToCSTICMS(ok, Leitor.rCampo(tcStr,'CST'));
           CTe.Imp.ICMS.CST90.pRedBC := Leitor.rCampo(tcDe2,'pRedBC');
           CTe.Imp.ICMS.CST90.vBC    := Leitor.rCampo(tcDe2,'vBC');
           CTe.Imp.ICMS.CST90.pICMS  := Leitor.rCampo(tcDe2,'pICMS');

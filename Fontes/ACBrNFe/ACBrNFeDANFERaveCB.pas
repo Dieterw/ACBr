@@ -136,7 +136,8 @@ begin
                        ImprimirTotalLiquido,
                        ImprimirDetalhamentoEspecifico,
                        FormularioContinuo,
-                       ExpandirLogoMarca);
+                       ExpandirLogoMarca,
+                       NFE);
     finally
       LogoMarcaEmpresa.Free;
     end;

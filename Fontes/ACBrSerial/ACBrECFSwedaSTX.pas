@@ -1712,7 +1712,7 @@ end;
 
 procedure TACBrECFSwedaSTX.LinhaRelatorioGerencial(Linha: AnsiString; IndiceBMP: Integer);
 begin
-  EnviaComando('25|'+Linha + sLineBreak);
+  EnviaComando( '25|' + Linha );
 end;
 
 procedure TACBrECFSwedaSTX.LoadDLLFunctions;

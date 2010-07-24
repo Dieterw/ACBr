@@ -1100,8 +1100,14 @@ Var
 begin
   fRespostas.Clear;
 
-  if pos(DocumentoVinculado, fDocumentosProcessados) > 0 then
-     exit ;
+//  if pos(DocumentoVinculado, fDocumentosProcessados) > 0 then
+//     exit ;
+
+   if ( ObtemQuantidadeTransacoesPendentes(Now,'0') = 0 ) then
+   begin
+      exit;
+   end;
+
 
   fDocumentosProcessados := fDocumentosProcessados + DocumentoVinculado + '|' ;
 

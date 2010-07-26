@@ -635,14 +635,10 @@ begin
         with RegD100.RegistroD110.Items[intFor] do
         begin
           Add( LFill('D110') +
-               LFill( UF_ORIG ) +
-               LFill( COD_MUN_ORIG ) +
-               LFill( UF_DEST ) +
-               LFill( COD_MUN_DEST ) +
-               LFill( COD_LINHA ) +
-               LFill( LINHA ) +
-               LFill( POLT_CAB ) +
-               LFill( AGENTE ) ) ;
+               LFill(NUN_ITEM) +
+               LFill(COD_ITEM ) +
+               LFill(VL_SERV ) +
+               LFill(VL_OUT ) );
         end;
         /// Registros FILHOS
         WriteRegistroD120( RegD100.RegistroD110.Items[intFor] );
@@ -705,7 +701,6 @@ begin
                LFill( VEIC_ID ) +
                LFill( VL_LIQ_FRT,0,2 ) +
                LFill( VL_SEC_CAT,0,2 ) +
-               LFill( VL_DESP,0,2 ) +
                LFill( VL_DESP,0,2 ) +
                LFill( VL_PEDG,0,2 ) +
                LFill( VL_OUT,0,2 ) +

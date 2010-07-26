@@ -193,28 +193,20 @@ type
 
   TRegistroD110 = class
   private
-    fUF_ORIG: String;          /// Sigla da unidade da federação:
-    fCOD_MUN_ORIG: String;     /// Código do município de origem do serviço:
-    fUF_DEST: String;          /// Sigla da unidade da federação de destino do passageiro:
-    fCOD_MUN_DEST: String;     /// Código do município de destino do passageiro:
-    fCOD_LINHA: String;        /// Código do prefixo da linha de transporte:
-    fLINHA: String;            /// Descrição da linha de transporte:
-    fPOLT_CAB: String;         /// Número da poltrona ou cabine:
-    fAGENTE: String;           /// Identificação do agente:
+    fCOD_ITEM: string;
+    fMUN_ITEM: integer;
+    fVL_SERV: currency;
+    fVL_OUT: currency;
 
     FRegistroD120: TRegistroD120List;
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
 
-    property UF_ORIG: String read FUF_ORIG write FUF_ORIG;
-    property COD_MUN_ORIG: String read FCOD_MUN_ORIG write FCOD_MUN_ORIG;
-    property UF_DEST: String read FUF_DEST write FUF_DEST;
-    property COD_MUN_DEST: String read FCOD_MUN_DEST write FCOD_MUN_DEST;
-    property COD_LINHA: String read FCOD_LINHA write FCOD_LINHA;
-    property LINHA: String read FLINHA write FLINHA;
-    property POLT_CAB: String read FPOLT_CAB write FPOLT_CAB;
-    property AGENTE: String read FAGENTE write FAGENTE;
+    property NUN_ITEM: integer read fMUN_ITEM write fMUN_ITEM;
+    property COD_ITEM: string read fCOD_ITEM write fCOD_ITEM;
+    property VL_SERV: currency read fVL_SERV write fVL_SERV;
+    property VL_OUT: currency read fVL_OUT write fVL_OUT;
 
     property RegistroD120: TRegistroD120List read FRegistroD120 write FRegistroD120;
   end;

@@ -98,7 +98,7 @@ type
     fNIVEL_AGL: String;      /// Nível do Código de aglutinação (mesmo conceito do plano de contas - Registro I050).
     fIND_GRP_BAL: String;    /// Indicador de grupo do balanço: 1 - Ativo; 2 - Passivo e Patrimônio Líquido;
     fDESCR_COD_AGL: String;  /// Descrição do Código de aglutinação.
-    fVL_CTA: Currency;           /// Valor total do Código de aglutinação no Balanço Patrimonial no exercício informado, ou de período definido em norma específica.
+    fVL_CTA: Currency;       /// Valor total do Código de aglutinação no Balanço Patrimonial no exercício informado, ou de período definido em norma específica.
     fIND_DC_BAL: String;     /// Indicador da situação do saldo informado no campo anterior: D - Devedor; C - Credor.
   public
     property COD_AGL: String read fCOD_AGL write fCOD_AGL;

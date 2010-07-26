@@ -277,6 +277,7 @@ type
     fIND_PROC: TACBrOrigemProcesso; /// Indicador da origem do processo: 0- Sefaz; 1- Justiça Federal; 2- Justiça Estadual; 9- Outros
     fPROC: String;                  /// Descrição resumida do processo que embasou o lançamento
     fTXT_COMPL: String;             /// Descrição complementar das obrigações a recolher.
+//    fMES_REF: string;               /// Informe o mês de referência no formato “mmaaaa”  // Julho 2010
   public
     property COD_OR: String read fCOD_OR write fCOD_OR;
     property VL_OR: currency read fVL_OR write fVL_OR;
@@ -286,6 +287,7 @@ type
     property IND_PROC: TACBrOrigemProcesso read fIND_PROC write fIND_PROC;
     property PROC: String read fPROC write fPROC;
     property TXT_COMPL: String read fTXT_COMPL write fTXT_COMPL;
+//    property MES_REF: String read fMES_REF write fMES_REF;  // Julho 2010
   end;
 
   /// Registro E116 - Lista
@@ -492,6 +494,7 @@ type
     fIND_PROC: TACBrOrigemProcesso; /// Indicador da origem do processo: 0- Sefaz; 1- Justiça Federal; 2- Justiça Estadual; 9- Outros
     fPROC: String;                  /// Descrição resumida do processo que embasou o lançamento
     fTXT_COMPL: String;             /// Descrição complementar das obrigações a recolher
+//    fMES_REF: string;               /// Informe o mês de referência no formato “mmaaaa”  // Julho 2010
   public
     property COD_OR: String read fCOD_OR write fCOD_OR;
     property VL_OR: currency read fVL_OR write fVL_OR;
@@ -501,6 +504,7 @@ type
     property IND_PROC: TACBrOrigemProcesso read fIND_PROC write fIND_PROC;
     property PROC: String read fPROC write fPROC;
     property TXT_COMPL: String read fTXT_COMPL write fTXT_COMPL;
+//    property MES_REF: String read fMES_REF write fMES_REF;  // Julho 2010
   end;
 
   /// Registro E250 - Lista

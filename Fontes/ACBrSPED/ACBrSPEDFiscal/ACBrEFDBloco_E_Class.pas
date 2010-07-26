@@ -528,6 +528,7 @@ begin
                LFill( strIND_PROC ) +
                LFill( PROC ) +
                LFill( TXT_COMPL ) ) ;
+//               LFill( MES_REF ) ) ; // Julho 2010
         end;
         RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
      end;
@@ -714,6 +715,7 @@ begin
                LFill( strIND_PROC ) +
                LFill( PROC ) +
                LFill( TXT_COMPL ) ) ;
+//               LFill( MES_REF ) ) ; // Julho 2010
         end;
         RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
      end;

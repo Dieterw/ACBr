@@ -105,7 +105,7 @@ type
                              );
   /// Código da finalidade do arquivo - TRegistro0000
   TACBrCodFinalidade      = (raOriginal,     // 0 - Remessa do arquivo original
-                             raSubistituto   // 1 - Remessa do arquivo substituto
+                             raSubstituto    // 1 - Remessa do arquivo substituto
                              );
   /// Tipo do item – Atividades Industriais, Comerciais e Serviços:
   TACBrTipoItem = (tiMercadoriaRevenda,    // 00 – Mercadoria para Revenda

@@ -519,7 +519,10 @@ procedure TACBrBoletoFCFortesFr.RLBand1BeforePrint(Sender: TObject;
    var PrintIt: boolean);
 Var
    NossoNum,CodCedente,TipoDoc : String;
+   MensagemPadrao: TStringList;
 begin
+   MensagemPadrao := TStringList.Create;
+
    with fBoletoFC.ACBrBoleto do
    begin
       NossoNum    := Banco.MontarCampoNossoNumero( Titulo );
@@ -531,6 +534,10 @@ begin
       else
          TipoDoc := 'DOC.: ';
       end;
+
+      MensagemPadrao.Text := Titulo.Mensagem.Text;
+      ACBrBoletoFC.ACBrBoleto.AdicionarMensagensPadroes(Titulo,MensagemPadrao);
+
       fBoletoFC.CarregaLogo( imgBanco2.Picture, Banco.Numero );
       txtNumeroBanco2.Caption         := IntToStrZero(Banco.Numero, 3)+ '-' +
                                          IfThen(Banco.Digito >= 10,'X',
@@ -555,7 +562,7 @@ begin
       txtCidadeSacado2.Caption        := Titulo.Sacado.CEP + ' '+Titulo.Sacado.Cidade +
                                          ' '+Titulo.Sacado.UF;
       txtCpfCnpjSacado2.Caption       := Titulo.Sacado.CNPJCPF;
-      txtInstrucoes2.Lines.Text       := Titulo.Mensagem.Text;
+      txtInstrucoes2.Lines.Text       := MensagemPadrao.Text;  //Titulo.Mensagem.Text;
       with Titulo.ACBrBoleto.Cedente do
       begin
          txtEndCedente.Caption := Logradouro+' '+NumeroRes+' '+Complemento+' '+

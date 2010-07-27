@@ -56,7 +56,7 @@ uses ACBrBase,  {Units da ACBr}
      Graphics, Contnrs, Classes;
 
 const
-  CACBrBoleto_Versao = '0.0.15a' ;
+  CACBrBoleto_Versao = '0.0.16a' ;
 
 type
   TACBrTitulo = class;

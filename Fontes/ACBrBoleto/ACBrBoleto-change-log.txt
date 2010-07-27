@@ -48,6 +48,15 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Versão 0.0.16a 27/07/2010
+[*] Finalizado rotina de Leitura do Arquivo de Retorno em 400 colunas para o
+    Brradesco.(Juliana Tamizou)
+[-] Corrigido problema ao adicionar as mensagens do cliente na propriedade(problema
+    estava ocorrendo apenas no Delphi). (Juliana Tamizou)
+[*] Alterado componente de impressão dos boletos para apenas imprimir as mensagens 
+    padrão (não são necessárias no arquivo Remessa). (JUliana Tamizou)
+
+
 Versão 0.0.15a 06/07/2010
 [+] Adicionado classe do Banco Mercantil.(Agnaldo Pedroni)
 

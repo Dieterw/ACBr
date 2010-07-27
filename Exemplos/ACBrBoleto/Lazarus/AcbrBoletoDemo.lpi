@@ -12,7 +12,6 @@
       <ResourceType Value="res"/>
       <UseXPManifest Value="True"/>
       <Icon Value="0"/>
-      <ActiveWindowIndexAtStart Value="0"/>
     </General>
     <VersionInfo>
       <Language Value=""/>
@@ -44,7 +43,7 @@
         <PackageName Value="LCL"/>
       </Item3>
     </RequiredPackages>
-    <Units Count="66">
+    <Units Count="67">
       <Unit0>
         <Filename Value="AcbrBoletoDemo.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -52,7 +51,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="90" Y="16"/>
-        <UsageCount Value="98"/>
+        <UsageCount Value="105"/>
       </Unit0>
       <Unit1>
         <Filename Value="uDemo.pas"/>
@@ -61,10 +60,9 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uDemo"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="243"/>
-        <CursorPos X="37" Y="248"/>
-        <ComponentState Value="1"/>
-        <UsageCount Value="98"/>
+        <TopLine Value="228"/>
+        <CursorPos X="31" Y="237"/>
+        <UsageCount Value="105"/>
       </Unit1>
       <Unit2>
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoletoFCFortesFr.pas"/>
@@ -73,25 +71,25 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ACBrBoletoFCFortesFr"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="526"/>
-        <CursorPos X="24" Y="532"/>
-        <UsageCount Value="19"/>
+        <TopLine Value="556"/>
+        <CursorPos X="61" Y="565"/>
+        <UsageCount Value="21"/>
       </Unit2>
       <Unit3>
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
         <UnitName Value="ACBrBoleto"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="50"/>
-        <CursorPos X="31" Y="59"/>
-        <UsageCount Value="37"/>
+        <TopLine Value="918"/>
+        <CursorPos X="8" Y="918"/>
+        <UsageCount Value="40"/>
       </Unit3>
       <Unit4>
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBancoBradesco.pas"/>
         <UnitName Value="ACBrBancoBradesco"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="366"/>
-        <CursorPos X="42" Y="409"/>
-        <UsageCount Value="35"/>
+        <TopLine Value="295"/>
+        <CursorPos X="14" Y="300"/>
+        <UsageCount Value="38"/>
       </Unit4>
       <Unit5>
         <Filename Value="C:\lazarus\fpc\2.4.0\source\rtl\objpas\classes\classesh.inc"/>
@@ -244,10 +242,11 @@
       <Unit23>
         <Filename Value="C:\lazarus\lcl\lclproc.pas"/>
         <UnitName Value="LCLProc"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1522"/>
-        <CursorPos X="35" Y="1522"/>
-        <UsageCount Value="10"/>
+        <TopLine Value="1505"/>
+        <CursorPos X="1" Y="1514"/>
+        <UsageCount Value="12"/>
       </Unit23>
       <Unit24>
         <Filename Value="C:\lazarus\lcl\include\control.inc"/>
@@ -467,13 +466,10 @@
       </Unit50>
       <Unit51>
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoletoFCFortesFr.dfm"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
         <TopLine Value="444"/>
         <CursorPos X="37" Y="451"/>
         <UsageCount Value="10"/>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit51>
       <Unit52>
@@ -582,19 +578,26 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="22" Y="10"/>
-        <SyntaxHighlighter Value="LFM"/>
         <UsageCount Value="10"/>
-        <DefaultSyntaxHighlighter Value="Text"/>
+        <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit64>
       <Unit65>
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoletoFCFortesFr.lfm"/>
         <WindowIndex Value="0"/>
         <TopLine Value="428"/>
         <CursorPos X="45" Y="431"/>
-        <SyntaxHighlighter Value="LFM"/>
         <UsageCount Value="10"/>
-        <DefaultSyntaxHighlighter Value="Text"/>
+        <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit65>
+      <Unit66>
+        <Filename Value="C:\lazarus\fpc\2.4.1\source\rtl\objpas\classes\classesh.inc"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="540"/>
+        <CursorPos X="3" Y="549"/>
+        <SyntaxHighlighter Value="FreePascal"/>
+        <UsageCount Value="11"/>
+        <DefaultSyntaxHighlighter Value="Text"/>
+      </Unit66>
     </Units>
     <JumpHistory Count="0" HistoryIndex="-1"/>
   </ProjectOptions>

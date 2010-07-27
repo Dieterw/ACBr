@@ -160,7 +160,7 @@ begin
         Instrucao1        := padL(trim(edtInstrucoes1.Text),2,'0');
         Instrucao2        := padL(trim(edtInstrucoes2.Text),2,'0');
 
-        ACBrBoleto1.AdicionarMensagensPadroes(Titulo,Mensagem);
+       // ACBrBoleto1.AdicionarMensagensPadroes(Titulo,Mensagem);
      end;
 end;       
 

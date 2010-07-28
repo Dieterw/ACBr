@@ -68,6 +68,8 @@
 |* 20/07/2010: Peterson de Cerqueira Matos
 |*  - Envia o DANFe para a impressora informada em "Impressora" de
 |*  - "ACBrNFeDANFeClass"
+|* 28/07/2010: Peterson de Cerqueira Matos
+|*  - Alteração do sulfixo do arquivo PDF de '-nfe.pdf' para '.pdf'
 ******************************************************************************}
 {$I ACBr.inc}
 unit ACBrNFeDANFeRLClass;

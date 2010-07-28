@@ -96,6 +96,10 @@
 |* 20/07/2010: Peteron de Cerqueira Matos
 |*  - Acréscimo do case 0 na configuração das casas decimais da quantidade
 |*    e do valor unitário
+|* 28/07/2010: Peterson de Cerqueira Matos
+|*  - Implementação da quantidade de itens por página
+|*  - Admissão de quebra de linha nas informações complementares.
+|*    O Caractere ponto-e-vírgula ';' será considerado quebra de linha
 ******************************************************************************}
 {$I ACBr.inc}
 unit ACBrNFeDANFeRLPaisagem;

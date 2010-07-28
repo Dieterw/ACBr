@@ -181,8 +181,36 @@ TACBrValidador = class( TACBrComponent )
 
 end ;
 
+function ACBrValidadorValidarDocumento( const TipoDocto : TACBrValTipoDocto;
+  const Documento : AnsiString; const Complemento : AnsiString = '') : String ;
+
 implementation
-{$IFDEF COMPILER6_UP} uses Variants , Math, StrUtils; {$ENDIF}
+{$IFDEF COMPILER6_UP} uses Variants , Math, StrUtils;
+
+function ACBrValidadorValidarDocumento(const TipoDocto : TACBrValTipoDocto ;
+  const Documento: AnsiString; const Complemento : AnsiString = '') : String ;
+Var
+  ACBrValidador : TACBrValidador ;
+begin
+  ACBrValidador := TACBrValidador.Create(nil);
+  try
+    ACBrValidador.RaiseExcept := False;
+    ACBrValidador.PermiteVazio:= False ;
+    ACBrValidador.TipoDocto   := TipoDocto;
+    ACBrValidador.Documento   := Documento;
+    ACBrValidador.Complemento := Complemento;
+
+    if ACBrValidador.Validar then
+       Result := ''
+    else
+       Result := ACBrValidador.MsgErro;
+  finally
+    ACBrValidador.Free;
+  end;
+
+end;
+
+{$ENDIF}
 
 { TACBrValidador }
 

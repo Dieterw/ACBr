@@ -124,6 +124,7 @@ begin
   FMargemDireita := 0.70;
   FCasasDecimais._qCom := 4;
   FCasasDecimais._vUnCom := 4;
+  FProdutosPorPagina := 10;
 
 end;
 
@@ -179,7 +180,7 @@ begin
       begin
         sFile := TACBrNFe(ACBrNFe).DANFE.PathPDF +
                  Copy(TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe.infNFe.ID,
-                 4, 44) + '-nfe.pdf';
+                 4, 44) + '.pdf';
         frlDANFeRL.SavePDF(TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe,
         Logo, MarcaDagua, LarguraCodProd, Email, ExibirResumoCanhoto, Fax,
         NumCopias, Sistema, Site, Usuario, sFile, PosCanhoto, FormularioContinuo,

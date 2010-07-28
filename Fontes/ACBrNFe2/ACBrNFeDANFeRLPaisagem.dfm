@@ -1,6 +1,6 @@
 inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
-  Left = 206
-  Top = 108
+  Left = 191
+  Top = 107
   Width = 1149
   Height = 732
   VertScrollBar.Position = 96

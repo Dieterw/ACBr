@@ -615,7 +615,7 @@ begin
         iTotalLinhas := iQuantCaracteres div iLimCaracteres;
     end;
 
-  for i := 1 to (iTotalLinhas + 3) do
+  for i := 1 to (iTotalLinhas + 10) do
     begin
       sLinhaProvisoria := Copy(sTexto, iPosAtual, iLimCaracteres);
       iUltimoEspacoLinha := BuscaDireita(' ', sLinhaProvisoria);
@@ -623,22 +623,38 @@ begin
       if iUltimoEspacoLinha = 0 then
         iUltimoEspacoLinha := iQuantCaracteres;
 
-      if (BuscaDireita(' ', sLinhaProvisoria) = iLimCaracteres)  or
-         (BuscaDireita(' ', sLinhaProvisoria) = (iLimCaracteres + 1)) then
-        sLinha := sLinhaProvisoria
-      else
+      if Pos(';', sLinhaProvisoria) = 0 then
         begin
-          if (iQuantCaracteres - iPosAtual) > iLimCaracteres then
-            sLinha := Copy(sLinhaProvisoria, 1, iUltimoEspacoLinha)
+          if (BuscaDireita(' ', sLinhaProvisoria) = iLimCaracteres)  or
+             (BuscaDireita(' ', sLinhaProvisoria) = (iLimCaracteres + 1)) then
+            sLinha := sLinhaProvisoria
           else
             begin
-              sLinha := sLinhaProvisoria;
+              if (iQuantCaracteres - iPosAtual) > iLimCaracteres then
+                sLinha := Copy(sLinhaProvisoria, 1, iUltimoEspacoLinha)
+              else
+                begin
+                  sLinha := sLinhaProvisoria;
+                end;
             end;
+          iPosAtual := iPosAtual + Length(sLinha);
+        end // if Pos(';', sLinhaProvisoria) = 0
+      else
+        begin
+          sLinha := Copy(sLinhaProvisoria, 1, Pos(';', sLinhaProvisoria));
+          iPosAtual := iPosAtual + (Length(sLinha));
         end;
 
-      iPosAtual := iPosAtual + Length(sLinha);
       if sLinha > '' then
-        rMemo.Lines.Add(sLinha);
+        begin
+          if LeftStr(sLinha, 1) = ' ' then
+            sLinha := Copy(sLinha, 2, (Length(sLinha) - 1))
+          else
+            sLinha := sLinha;
+
+          rMemo.Lines.Add(sLinha);
+        end;
+
     end;
 end;
 
@@ -673,12 +689,11 @@ begin
     begin
       rlbISSQN.Visible := False;
       rlbDadosAdicionais.Visible := False;
-      
+
       if iQuantItens > q then
         begin
           rlbCabecalhoItens.Visible := True;
-          lblDadosDoProduto.Caption := 'CONTINUAÇÃO DOS ' +
-                                                      lblDadosDoProduto.Caption;
+          lblDadosDoProduto.Caption := 'CONTINUAÇÃO DOS DADOS DO PRODUTO / SERVIÇOS';
           rliMarcaDagua1.Top := 300;
         end
       else
@@ -1376,9 +1391,7 @@ begin
   else
     sInfCompl := '';
 
-  sInfInteira := StringReplace((sInfAdFisco + sInfCompl), #13#10, ' ',
-                                                [rfReplaceAll, rfIgnoreCase]);
-
+  sInfInteira := sInfAdFisco + sInfCompl;
   InsereLinhas(sInfInteira, iLimiteCaracteresLinha, rlmDadosAdicionaisAuxiliar);
   rlmDadosAdicionaisAuxiliar.Lines.EndUpdate;
 end;
@@ -1399,11 +1412,13 @@ begin
       for i := 0 to (iRestanteLinhas - 1) do
         begin
           sTexto := sTexto +
-          StringReplace(rlmDadosAdicionaisAuxiliar.Lines.Strings[(iMaximoLinhas + i)],
-                        #13#10, '', [rfReplaceAll, rfIgnoreCase]);
+                  rlmDadosAdicionaisAuxiliar.Lines.Strings[(iMaximoLinhas + i)];
         end;
 
       InsereLinhas(sTexto, iLimiteCaracteresContinuacao, rlmContinuacaoDadosAdicionais);
+      rlmContinuacaoDadosAdicionais.Lines.Text :=
+                        StringReplace(rlmContinuacaoDadosAdicionais.Lines.Text,
+                        ';', '', [rfReplaceAll, rfIgnoreCase]);
       rlmContinuacaoDadosAdicionais.Lines.EndUpdate;
     end
   else
@@ -1413,6 +1428,9 @@ begin
     begin
       rlmDadosAdicionais.Lines.Add(rlmDadosAdicionaisAuxiliar.Lines.Strings[i]);
     end;
+
+  rlmDadosAdicionais.Lines.Text := StringReplace(rlmDadosAdicionais.Lines.Text,
+                                   ';', '', [rfReplaceAll, rfIgnoreCase]);
 
   rlmDadosAdicionais.Lines.EndUpdate;
 end;
@@ -1660,6 +1678,7 @@ begin
     end
   else
     rlbObsItem.Visible := False;
+
 end;
 
 procedure TfrlDANFeRLPaisagem.rlbDadosAdicionaisBeforePrint(Sender: TObject;
@@ -1694,6 +1713,15 @@ procedure TfrlDANFeRLPaisagem.rlbItensBeforePrint(Sender: TObject;
   var PrintIt: Boolean);
 var i, iAumento: Integer;
 begin
+  // Controla os itens por página
+  if FProdutosPorPagina = 0 then
+    FProdutosPorPagina := 200;
+
+  if (q + 1) mod FProdutosPorPagina = 0 then
+    rlbItens.PageBreaking := pbAfterPrint
+  else
+    rlbItens.PageBreaking := pbNone;
+
   for i := 1 to 16 do
     TRLDraw(FindComponent ('LinhaProd' + intToStr(i))).Height :=
                                                         (LinhaFimItens.Top + 1);

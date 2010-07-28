@@ -3574,6 +3574,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       Background.Height = 487
       Background.Width = 865
       AfterPrint = rlbItensAfterPrint
+      BeforePrint = rlbItensBeforePrint
       object txtCodigo: TRLDBText
         Left = 2
         Top = 1

@@ -75,7 +75,7 @@ unit ACBrSintegra;
 
 interface
 
-uses Classes, SysUtils, Contnrs, ACBrBase, ACBrConsts, ACBrUtil;
+uses Classes, SysUtils, Contnrs, ACBrBase, ACBrConsts, StrUtils;
 
 type
   TVersaoValidador = (vv523,vv524);

@@ -1244,32 +1244,37 @@ end;
 procedure TfrlDANFeRLRetrato.Transporte;
 begin
   with FNFe.Transp do
-  begin
-    case modFrete of
-      mfContaEmitente: rllTransModFrete.Caption := '0 - EMITENTE';
-      mfContaDestinatario: rllTransModFrete.Caption := '1 - DESTINATÁRIO';
-      mfContaTerceiros: rllTransModFrete.Caption := '2 - TERCEIROS';
-      mfSemFrete: rllTransModFrete.Caption := '9 - SEM FRETE';
-    end;
-
-    rllTransCodigoANTT.Caption := '';
-    rllTransPlaca.Caption := '';
-    rllTransUFPlaca.Caption := '';
-
-    with Transporta do
     begin
-      if CNPJCPF > '' then
-        rllTransCNPJ.Caption := NotaUtil.FormatarCNPJ(CNPJCPF)
-      else
-        rllTransCNPJ.Caption := '';
+      case modFrete of
+        mfContaEmitente: rllTransModFrete.Caption := '0 - EMITENTE';
+        mfContaDestinatario: rllTransModFrete.Caption := '1 - DESTINATÁRIO';
+        mfContaTerceiros: rllTransModFrete.Caption := '2 - TERCEIROS';
+        mfSemFrete: rllTransModFrete.Caption := '9 - SEM FRETE';
+      end;
 
-    rllTransNome.Caption     := XNome;
-    rllTransIE.Caption       := IE;
-    rllTransEndereco.Caption := XEnder;
-    rllTransCidade.Caption   := XMun;
-    rllTransUF.Caption       := UF;
+      rllTransCodigoANTT.Caption := '';
+      rllTransPlaca.Caption := '';
+      rllTransUFPlaca.Caption := '';
+
+      with Transporta do
+        begin
+          if Trim (CNPJCPF) <> '' then
+            begin
+              if length(Trim (CNPJCPF)) <= 11 then
+                rllTransCNPJ.Caption := NotaUtil.FormatarCPF(CNPJCPF)
+              else
+                rllTransCNPJ.Caption := NotaUtil.FormatarCNPJ(CNPJCPF);
+            end
+          else
+            rllTransCNPJ.Caption := '';
+
+          rllTransNome.Caption := XNome;
+          rllTransIE.Caption := IE;
+          rllTransEndereco.Caption := XEnder;
+          rllTransCidade.Caption := XMun;
+          rllTransUF.Caption := UF;
+        end;
     end;
-  end;
 
   with FNFe.Transp.VeicTransp do
   begin

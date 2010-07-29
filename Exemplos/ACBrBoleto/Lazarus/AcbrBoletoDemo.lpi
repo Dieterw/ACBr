@@ -2,7 +2,7 @@
 <CONFIG>
   <ProjectOptions>
     <PathDelim Value="\"/>
-    <Version Value="7"/>
+    <Version Value="8"/>
     <General>
       <Flags>
         <UseDefaultCompilerOptions Value="True"/>
@@ -12,6 +12,7 @@
       <ResourceType Value="res"/>
       <UseXPManifest Value="True"/>
       <Icon Value="0"/>
+      <ActiveWindowIndexAtStart Value="0"/>
     </General>
     <VersionInfo>
       <Language Value=""/>
@@ -48,6 +49,7 @@
         <Filename Value="AcbrBoletoDemo.lpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="AcbrBoletoDemo"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="90" Y="16"/>
@@ -59,6 +61,7 @@
         <ComponentName Value="frmDemo"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uDemo"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="228"/>
         <CursorPos X="31" Y="237"/>
@@ -70,6 +73,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ACBrBoletoFCFortesFr"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="556"/>
         <CursorPos X="61" Y="565"/>
@@ -78,6 +82,7 @@
       <Unit3>
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
         <UnitName Value="ACBrBoleto"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="918"/>
         <CursorPos X="8" Y="918"/>
@@ -86,6 +91,7 @@
       <Unit4>
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBancoBradesco.pas"/>
         <UnitName Value="ACBrBancoBradesco"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="295"/>
         <CursorPos X="14" Y="300"/>
@@ -93,6 +99,7 @@
       </Unit4>
       <Unit5>
         <Filename Value="C:\lazarus\fpc\2.4.0\source\rtl\objpas\classes\classesh.inc"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="770"/>
         <CursorPos X="3" Y="784"/>
@@ -100,6 +107,7 @@
       </Unit5>
       <Unit6>
         <Filename Value="C:\lazarus\fpc\2.4.0\source\rtl\objpas\classes\stringl.inc"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1099"/>
         <CursorPos X="3" Y="1103"/>
@@ -108,6 +116,7 @@
       <Unit7>
         <Filename Value="..\..\Fontes\ACBrBoleto\ACBrBancoBradesco.pas"/>
         <UnitName Value="ACBrBancoBradesco"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="113"/>
         <CursorPos X="56" Y="133"/>
@@ -116,6 +125,7 @@
       <Unit8>
         <Filename Value="..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
         <UnitName Value="ACBrUtil"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="54"/>
         <CursorPos X="126" Y="69"/>
@@ -124,6 +134,7 @@
       <Unit9>
         <Filename Value="..\..\Fontes\ACBrSerial\ACBrECFSweda.pas"/>
         <UnitName Value="ACBrECFSweda"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1339"/>
         <CursorPos X="57" Y="1353"/>
@@ -132,6 +143,7 @@
       <Unit10>
         <Filename Value="..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
         <UnitName Value="ACBrBoleto"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="968"/>
         <CursorPos X="36" Y="981"/>
@@ -143,6 +155,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ACBRBoletoFCFortesFr"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="339"/>
         <CursorPos X="49" Y="343"/>
@@ -151,6 +164,7 @@
       <Unit12>
         <Filename Value="D:\Lazarus\Comp\fortes4lazarus\trunk\rlreport.pas"/>
         <UnitName Value="RLReport"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="23" Y="12"/>
@@ -159,6 +173,7 @@
       <Unit13>
         <Filename Value="D:\Lazarus\Comp\fortes4lazarus\trunk\rlpdffilter.pas"/>
         <UnitName Value="RLPDFFilter"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1027"/>
         <CursorPos X="37" Y="1044"/>
@@ -170,6 +185,7 @@
       <Unit14>
         <Filename Value="D:\Lazarus\Comp\fortes4lazarus\trunk\rlfilters.pas"/>
         <UnitName Value="RLFilters"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="195"/>
         <CursorPos X="32" Y="217"/>
@@ -178,6 +194,7 @@
       <Unit15>
         <Filename Value="D:\Lazarus\Comp\fortes4lazarus\trunk\rlprinters.pas"/>
         <UnitName Value="RLPrinters"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="144"/>
         <CursorPos X="1" Y="161"/>
@@ -186,6 +203,7 @@
       <Unit16>
         <Filename Value="D:\Lazarus\Comp\fortes4lazarus\trunk\rlconsts.pas"/>
         <UnitName Value="RLConsts"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="262"/>
         <CursorPos X="55" Y="263"/>
@@ -193,6 +211,7 @@
       </Unit16>
       <Unit17>
         <Filename Value="..\..\Fontes\ACBrBoleto\ACBrBoletoFCFortesFr.lfm"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="2275"/>
         <CursorPos X="28" Y="2289"/>
@@ -201,6 +220,7 @@
       </Unit17>
       <Unit18>
         <Filename Value="C:\lazarus\lcl\include\wincontrol.inc"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="8168"/>
         <CursorPos X="31" Y="8181"/>
@@ -208,6 +228,7 @@
       </Unit18>
       <Unit19>
         <Filename Value="C:\lazarus\lcl\include\canvas.inc"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1553"/>
         <CursorPos X="52" Y="1574"/>
@@ -219,6 +240,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="RLSaveDialog"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="369"/>
         <CursorPos X="1" Y="390"/>
@@ -227,6 +249,7 @@
       <Unit21>
         <Filename Value="C:\Lazarus\Comp\fortes4lazarus\trunk\rlpdffilter.pas"/>
         <UnitName Value="RLPDFFilter"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1027"/>
         <CursorPos X="3" Y="1031"/>
@@ -250,6 +273,7 @@
       </Unit23>
       <Unit24>
         <Filename Value="C:\lazarus\lcl\include\control.inc"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="2360"/>
         <CursorPos X="40" Y="2365"/>
@@ -264,6 +288,7 @@
       </Unit25>
       <Unit26>
         <Filename Value="C:\lazarus\lcl\include\customform.inc"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="2679"/>
         <CursorPos X="12" Y="2682"/>
@@ -272,6 +297,7 @@
       <Unit27>
         <Filename Value="C:\lazarus\components\fortes4lazarus\rlrichfilter.pas"/>
         <UnitName Value="RLRichFilter"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
@@ -280,6 +306,7 @@
       <Unit28>
         <Filename Value="C:\lazarus\components\fortes4lazarus\rlpdffilter.pas"/>
         <UnitName Value="RLPDFFilter"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
@@ -288,6 +315,7 @@
       <Unit29>
         <Filename Value="C:\lazarus\lcl\dialogs.pp"/>
         <UnitName Value="Dialogs"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
@@ -295,6 +323,7 @@
       </Unit29>
       <Unit30>
         <Filename Value="C:\lazarus\lcl\include\messagedialogs.inc"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="305"/>
         <CursorPos X="33" Y="312"/>
@@ -310,6 +339,7 @@
       <Unit32>
         <Filename Value="C:\lazarus\lcl\forms.pp"/>
         <UnitName Value="Forms"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="38"/>
         <CursorPos X="3" Y="45"/>
@@ -319,6 +349,7 @@
         <Filename Value="D:\lazarus\TOOLS\DJ_Perfil.pas"/>
         <HasResources Value="True"/>
         <UnitName Value="DJ_Perfil"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="2"/>
         <CursorPos X="51" Y="9"/>
@@ -327,6 +358,7 @@
       <Unit34>
         <Filename Value="D:\lazarus\TOOLS\DJ_Registro.pas"/>
         <UnitName Value="DJ_Registro"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="3"/>
         <CursorPos X="50" Y="10"/>
@@ -342,6 +374,7 @@
       <Unit36>
         <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
         <UnitName Value="ACBrUtil"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="565"/>
         <CursorPos X="3" Y="570"/>
@@ -353,6 +386,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Rfd"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1373"/>
         <CursorPos X="1" Y="1380"/>
@@ -367,6 +401,7 @@
       </Unit38>
       <Unit39>
         <Filename Value="C:\lazarus\fpc\2.4.1\source\rtl\objpas\sysutils\sysstrh.inc"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="196"/>
         <CursorPos X="10" Y="203"/>
@@ -374,6 +409,7 @@
       </Unit39>
       <Unit40>
         <Filename Value="C:\lazarus\fpc\2.4.1\source\rtl\objpas\sysutils\sysstr.inc"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1727"/>
         <CursorPos X="3" Y="1730"/>
@@ -382,6 +418,7 @@
       <Unit41>
         <Filename Value="D:\lazarus\Comp\Fortes\rlpdffilter.pas"/>
         <UnitName Value="RLPDFFilter"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="186"/>
         <CursorPos X="4" Y="186"/>
@@ -390,6 +427,7 @@
       <Unit42>
         <Filename Value="..\..\..\Fontes\ACBrSintegra\ACBrSintegraReg.pas"/>
         <UnitName Value="ACBrSintegraReg"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="33"/>
         <CursorPos X="1" Y="1"/>
@@ -398,6 +436,7 @@
       <Unit43>
         <Filename Value="..\..\..\Fontes\ACBrSintegra\ACBrSintegra.pas"/>
         <UnitName Value="ACBrSintegra"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="46"/>
         <CursorPos X="56" Y="55"/>
@@ -405,6 +444,7 @@
       </Unit43>
       <Unit44>
         <Filename Value="C:\lazarus\fpc\2.4.1\source\rtl\inc\mathh.inc"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="65"/>
         <CursorPos X="14" Y="78"/>
@@ -416,6 +456,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
         <UnitName Value="datamoduleExportar"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
@@ -427,6 +468,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Rfd"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="542"/>
         <CursorPos X="27" Y="549"/>
@@ -436,6 +478,7 @@
       <Unit47>
         <Filename Value="..\..\..\Fontes\ACBrDiversos\ACBrValidador.pas"/>
         <UnitName Value="ACBrValidador"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="305"/>
         <CursorPos X="3" Y="307"/>
@@ -444,6 +487,7 @@
       <Unit48>
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBancoBrasil.pas"/>
         <UnitName Value="ACBrBancoBrasil"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="142"/>
         <CursorPos X="56" Y="148"/>
@@ -452,6 +496,7 @@
       <Unit49>
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBancoItau.pas"/>
         <UnitName Value="ACBrBancoItau"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="148"/>
         <CursorPos X="39" Y="152"/>
@@ -466,6 +511,7 @@
       </Unit50>
       <Unit51>
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoletoFCFortesFr.dfm"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="444"/>
         <CursorPos X="37" Y="451"/>
@@ -475,6 +521,7 @@
       <Unit52>
         <Filename Value="C:\temp\Boletos\RLBoleto\RLBoleto_115\RLBoleto\Comp\RLCob237.pas"/>
         <UnitName Value="RLCob237"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="473"/>
         <CursorPos X="1" Y="482"/>
@@ -483,6 +530,7 @@
       <Unit53>
         <Filename Value="C:\temp\Boletos\Delphi_Boleto_2_1\2.1\gbCob237.pas"/>
         <UnitName Value="gbCob237"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="27"/>
         <CursorPos X="26" Y="33"/>
@@ -491,6 +539,7 @@
       <Unit54>
         <Filename Value="C:\temp\Boletos\Delphi_Boleto_2_1\2.1\gbCob341.pas"/>
         <UnitName Value="gbCob341"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="543"/>
         <CursorPos X="12" Y="519"/>
@@ -502,6 +551,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uDemo"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="223"/>
         <CursorPos X="11" Y="8"/>
@@ -510,6 +560,7 @@
       <Unit56>
         <Filename Value="C:\temp\Boletos\Delphi_Boleto_2_1\2.1\gbCobranca.pas"/>
         <UnitName Value="gbCobranca"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="256"/>
         <CursorPos X="19" Y="265"/>
@@ -518,6 +569,7 @@
       <Unit57>
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBancoMercantil.pas"/>
         <UnitName Value="ACBrBancoMercantil"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="240"/>
         <CursorPos X="4" Y="183"/>
@@ -526,6 +578,7 @@
       <Unit58>
         <Filename Value="C:\temp\Boletos\freeboleto\uFreeBoleto.pas"/>
         <UnitName Value="uFreeBoleto"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
@@ -533,6 +586,7 @@
       </Unit58>
       <Unit59>
         <Filename Value="uDemo.lfm"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="905"/>
         <CursorPos X="25" Y="905"/>
@@ -542,6 +596,7 @@
       <Unit60>
         <Filename Value="..\..\..\..\..\lazarus\TOOLS\DJ_Sistema.pas"/>
         <UnitName Value="DJ_Sistema"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="354"/>
         <CursorPos X="8" Y="370"/>
@@ -549,6 +604,7 @@
       </Unit60>
       <Unit61>
         <Filename Value="C:\lazarus\fpc\2.4.1\source\rtl\inc\wstringh.inc"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="15"/>
         <CursorPos X="10" Y="24"/>
@@ -560,6 +616,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="DJ_Registro"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="939"/>
         <CursorPos X="6" Y="949"/>
@@ -568,6 +625,7 @@
       <Unit63>
         <Filename Value="..\..\..\..\..\lazarus\TOOLS\dj_tools.pas"/>
         <UnitName Value="dj_tools"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
@@ -575,6 +633,7 @@
       </Unit63>
       <Unit64>
         <Filename Value="..\Delphi\uDemo.dfm"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="22" Y="10"/>
@@ -583,6 +642,7 @@
       </Unit64>
       <Unit65>
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoletoFCFortesFr.lfm"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="428"/>
         <CursorPos X="45" Y="431"/>
@@ -591,6 +651,7 @@
       </Unit65>
       <Unit66>
         <Filename Value="C:\lazarus\fpc\2.4.1\source\rtl\objpas\classes\classesh.inc"/>
+        <IsVisibleTab Value="True"/>
         <WindowIndex Value="0"/>
         <TopLine Value="540"/>
         <CursorPos X="3" Y="549"/>
@@ -602,7 +663,7 @@
     <JumpHistory Count="0" HistoryIndex="-1"/>
   </ProjectOptions>
   <CompilerOptions>
-    <Version Value="8"/>
+    <Version Value="9"/>
     <PathDelim Value="\"/>
     <Target>
       <Filename Value="AcbrBoletoDemo"/>
@@ -611,11 +672,6 @@
       <IncludeFiles Value="$(ProjOutDir)\"/>
       <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
-    <Parsing>
-      <SyntaxOptions>
-        <UseAnsiStrings Value="True"/>
-      </SyntaxOptions>
-    </Parsing>
     <Linking>
       <Options>
         <Win32>

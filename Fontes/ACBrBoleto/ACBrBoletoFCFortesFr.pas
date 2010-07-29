@@ -339,6 +339,7 @@ type
     procedure BoletoCarneDataRecord ( Sender: TObject; RecNo: integer;
        CopyNo: integer; var Eof: boolean; var RecordAction: TRLRecordAction ) ;
     procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
     procedure LayoutBoletoBeforePrint(Sender: TObject; var PrintIt: boolean);
     procedure LayoutBoletoDataCount(Sender: TObject; var DataCount: integer);
     procedure LayoutBoletoDataRecord(Sender: TObject; RecNo: integer;
@@ -347,6 +348,7 @@ type
     procedure RLBand2BeforePrint(Sender: TObject; var PrintIt: boolean);
     procedure RLBand3BeforePrint ( Sender: TObject; var PrintIt: boolean ) ;
   private
+     MensagemPadrao: TStringList;
      fBoletoFC: TACBrBoletoFCFortes;
      fIndice: Integer;
      function GetACBrTitulo: TACBrTitulo;
@@ -459,6 +461,12 @@ procedure TACBrBoletoFCFortesFr.FormCreate(Sender: TObject);
 begin
    fIndice   := 0 ;
    fBoletoFC := TACBrBoletoFCFortes(Owner) ;  // Link para o Pai
+   MensagemPadrao := TStringList.Create;
+end;
+
+procedure TACBrBoletoFCFortesFr.FormDestroy ( Sender: TObject ) ;
+begin
+   MensagemPadrao.Free;
 end;
 
 procedure TACBRBoletoFCFortesFr.BoletoCarneBeforePrint ( Sender: TObject;
@@ -519,10 +527,7 @@ procedure TACBrBoletoFCFortesFr.RLBand1BeforePrint(Sender: TObject;
    var PrintIt: boolean);
 Var
    NossoNum,CodCedente,TipoDoc : String;
-   MensagemPadrao: TStringList;
 begin
-   MensagemPadrao := TStringList.Create;
-
    with fBoletoFC.ACBrBoleto do
    begin
       NossoNum    := Banco.MontarCampoNossoNumero( Titulo );
@@ -535,6 +540,7 @@ begin
          TipoDoc := 'DOC.: ';
       end;
 
+      MensagemPadrao.Clear;
       MensagemPadrao.Text := Titulo.Mensagem.Text;
       ACBrBoletoFC.ACBrBoleto.AdicionarMensagensPadroes(Titulo,MensagemPadrao);
 
@@ -620,6 +626,9 @@ begin
       LinhaDigitavel := Banco.MontarLinhaDigitavel( CodBarras );
       CodCedente     := Banco.MontarCampoCodigoCedente(Titulo);
 
+      MensagemPadrao.Clear;
+      MensagemPadrao.Text := Titulo.Mensagem.Text;
+      ACBrBoletoFC.ACBrBoleto.AdicionarMensagensPadroes(Titulo,MensagemPadrao);
 
       fBoletoFC.CarregaLogo( imgBancoCarne.Picture, Banco.Numero );
       txtNumeroBanco.Caption         := IntToStrZero(Banco.Numero, 3)+ '-' +

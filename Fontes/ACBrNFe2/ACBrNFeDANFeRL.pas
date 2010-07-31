@@ -231,15 +231,14 @@ begin
       if FMostrarPreview = True then
         RLNFe.PreviewModal
       else
-        if FNumCopias > 0 then
-          begin
-            for iCopias := 1 to FNumCopias do
-              begin
-                RLNFe.Print;
-              end;
-          end
-        else
+        begin
+          if FNumCopias > 0 then
+            RLPrinter.Copies := FNumCopias
+          else
+            RLPrinter.Copies := 1;
+
           RLNFe.Print;
+        end;
 
     finally
       Free ;

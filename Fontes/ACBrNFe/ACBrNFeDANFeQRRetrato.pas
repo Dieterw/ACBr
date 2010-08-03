@@ -731,6 +731,12 @@ begin
       end ;
    end ;
 
+   // A linha abaixo foi incluida por: Italo Jurisato Junior
+   // 03/08/2010
+   // Algumas impressoras não imprimem se a propriedade Report Title estive em
+   // branco.
+   QRNFe.ReportTitle:='NF-e: ' + FormatFloat( '000,000,000', FNFe.Ide.nNF );
+
    QRNFe.Page.TopMargin    := FMargemSuperior * 100;
    QRNFe.Page.BottomMargin := FMargemInferior * 100;
    QRNFe.Page.LeftMargin   := FMargemEsquerda * 100;

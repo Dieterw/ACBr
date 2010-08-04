@@ -86,7 +86,7 @@ const
 
 type
   TACBrCalcEAD = procedure(Arquivo: String) of object ;
-  TACBrEADGetKeyRSA = procedure(var PrivateKey_RSA: String) of object ;
+  TACBrEADGetKeyRSA = procedure(var PrivateKey_RSA: AnsiString) of object ;
 
   /// DECLARANDO A CLASSE:
   TACBrEAD = class(TObject)
@@ -142,7 +142,7 @@ end;
 { Gerando registro EAD }
 procedure TACBrEAD.WriteRegistroEAD(Arquivo: String);
 var
-  EAD, cmd, ChaveRSA: String ;
+  EAD, cmd, ChaveRSA: AnsiString ;
   SL: TStringList;
   I: Integer;
   Dir,Linha:String;
@@ -155,7 +155,8 @@ begin
   ChaveRSA := '' ;
   if Assigned( FOnEADGetKeyRSA ) then
     FOnEADGetKeyRSA( ChaveRSA )    { Se usuário tem Chave própria, use-a }
-  else ChaveRSA := cRFDRSAKey;      { caso contrário, use a padrão...}
+  else
+    ChaveRSA := cRFDRSAKey;      { caso contrário, use a padrão...}
 
 
   if ChaveRSA = '' then  { Se o método do usuário não definiu uma Chave }
@@ -210,7 +211,7 @@ begin
      {$ENDIF}
   end;
   Linha := 'EAD' + EAD ;
-  WriteToTXT( Arquivo, Linha, True );
+  WriteToTXT( Arquivo, Linha, True, False ); // modifação linux
 end;
 
 function TACBrEAD.AssinaArquivoComEAD(Arquivo: String): Boolean;

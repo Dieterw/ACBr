@@ -1100,14 +1100,22 @@ Var
 begin
   fRespostas.Clear;
 
-//  if pos(DocumentoVinculado, fDocumentosProcessados) > 0 then
-//     exit ;
+  if ( pos(DocumentoVinculado, fDocumentosProcessados) > 0 ) or
+     ( DocumentoVinculado = '' ) and (fDocumentosProcessados = '') then
+  begin
+     {Se não tem documento vinculado/processado significa que não é um cupom
+     fiscal, pode ser reimpressão ou cdc, nesse caso tem que verificar se
+     existe transação pendente}
 
-   if ( ObtemQuantidadeTransacoesPendentes(Now,'0') = 0 ) then
-   begin
-      exit;
-   end;
+     {Só fazer a verificação quando não tiver vinculado/processados}
+     if ( ObtemQuantidadeTransacoesPendentes(now,'0') = 0 ) then
+     begin
+        {Se existe transação pendente, tem que confirmar ou cancelar, senão
+        não é necessário, apenas saia da rotina }
+        exit;
+     end;
 
+  end;
 
   fDocumentosProcessados := fDocumentosProcessados + DocumentoVinculado + '|' ;
 

@@ -57,7 +57,7 @@ const
    ESC  = #27 ;
    CFALHAS = 3 ;
   {$IFDEF LINUX}
-   cLIB_Sweda = 'CONVECF.SO';
+   cLIB_Sweda = 'libconvecf.so';
   {$ELSE}
    cLIB_Sweda = 'CONVECF.DLL';
   {$ENDIF}
@@ -525,6 +525,8 @@ Var
   Resp : Integer ;
   DiaIni, DiaFim : AnsiString ;
   OldAtivo : Boolean ;
+  oldDateSeparator: Char;
+  OldShortDateFormat : String;
 begin
   // Por: Magno System
   LoadDLLFunctions ;
@@ -534,6 +536,11 @@ begin
 
     AbrePortaSerialDLL ;
 
+    OldShortDateFormat := ShortDateFormat ;
+    OldDateSeparator   := DateSeparator;
+    DateSeparator      :='/';
+    ShortDateFormat    := 'dd/mm/yy' ;
+
     DiaIni := FormatDateTime('DD/MM/YY',DataInicial) ;
     DiaFim := FormatDateTime('DD/MM/YY',DataFinal) ;
 
@@ -542,6 +549,8 @@ begin
       raise Exception.Create( ACBrStr( 'Erro ao executar ECF_DownloadMFD.'+sLineBreak+
                                        'Cod.: '+IntToStr(Resp) ))
   finally
+    DateSeparator   := OldDateSeparator;
+    ShortDateFormat := OldShortDateFormat;
     xECF_FechaPortaSerial ;
     Ativo := OldAtivo ;
   end ;
@@ -1010,6 +1019,8 @@ Var
   Resp : Integer ;
   DiaIni, DiaFim : AnsiString ;
   OldAtivo : Boolean ;
+  OldDateSeparator: Char;
+  OldShortDateFormat : String;
 begin
   // Por: Magno System
   LoadDLLFunctions ;
@@ -1020,6 +1031,11 @@ begin
 
     AbrePortaSerialDLL ;
 
+    OldShortDateFormat := ShortDateFormat ;
+    OldDateSeparator   := DateSeparator;
+    DateSeparator      :='/';
+    ShortDateFormat    := 'dd/mm/yy' ;
+
     DiaIni := FormatDateTime('DD/MM/YY',DataInicial) ;
     DiaFim := FormatDateTime('DD/MM/YY',DataFinal) ;
 
@@ -1028,6 +1044,8 @@ begin
       raise Exception.Create( ACBrStr( 'Erro ao executar ECF_DownloadMFD.'+sLineBreak+
                                        'Cod.: '+IntToStr(Resp) ))
   finally
+    DateSeparator   := OldDateSeparator;
+    ShortDateFormat := OldShortDateFormat;
     xECF_FechaPortaSerial ;
     Ativo := OldAtivo ;
   end ;

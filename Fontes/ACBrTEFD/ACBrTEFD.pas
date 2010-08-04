@@ -1536,14 +1536,16 @@ end;
    begin
       Application.BringToFront ;
 
-      if Assigned( Screen.ActiveForm ) then
-      begin
+      {$IFDEF MSWINDOWS}
+       if Assigned( Screen.ActiveForm ) then
+       begin
          {$IFDEF VisualCLX}
           QWidget_setActiveWindow( Screen.ActiveForm.Handle );
          {$ELSE}
           SetForeGroundWindow( Screen.ActiveForm.Handle );
          {$ENDIF}
-      end;
+       end;
+      {$ENDIF}
    end;
  end;
 

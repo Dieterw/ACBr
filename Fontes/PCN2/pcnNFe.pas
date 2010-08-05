@@ -47,7 +47,7 @@ unit pcnNFe;
 
 interface uses
 
-  SysUtils, Classes,
+  SysUtils, Classes, Dialogs,
 {$IFNDEF VER130}
   Variants,
 {$ENDIF}
@@ -2233,15 +2233,15 @@ function TinfNFe.GetVersaoStr: string;
    {$ENDIF}
    begin
       {$IFDEF VER140} //delphi6
-         DecimalSeparator  := '.';
-         ThousandSeparator := ',';
-         Result := SysUtils.FormatFloat(AFormat, AValue);
-         DecimalSeparator  := ',';
-         ThousandSeparator := '.';
+      DecimalSeparator  := '.';
+      ThousandSeparator := ',';
+      Result := SysUtils.FormatFloat(AFormat, AValue);
+      DecimalSeparator  := ',';
+      ThousandSeparator := '.';
       {$ELSE}
-         vFormato.DecimalSeparator  := '.';
-         vFormato.ThousandSeparator := ',';
-         Result := SysUtils.FormatFloat(AFormat, AValue, vFormato);
+      vFormato.DecimalSeparator  := '.';
+      vFormato.ThousandSeparator := ',';
+      Result := SysUtils.FormatFloat(AFormat, AValue, vFormato);
       {$ENDIF}
    end;
 begin

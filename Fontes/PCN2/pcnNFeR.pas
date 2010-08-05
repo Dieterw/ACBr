@@ -132,7 +132,10 @@ begin
   VersaoInfNFe := copy(VersaoInfNFe,z,4);
   VersaoInfNFe := StringReplace(Trim(VersaoInfNFe),'"','',[rfReplaceAll] ) ;
 
-  Temp_VersaoInfNFe := StringReplace(Trim(VersaoInfNFe),'.',',',[rfReplaceAll] ) ;
+  if (DecimalSeparator = ',') then
+      Temp_VersaoInfNFe := StringReplace(Trim(VersaoInfNFe),'.',',',[rfReplaceAll] )
+  else
+      Temp_VersaoInfNFe := Trim(VersaoInfNFe);
   NFe.infNFe.Versao := StrToFloat(Temp_VersaoInfNFe);
 
   NFe.infNFe.ID := copy(Leitor.Arquivo, I+1, J - (I+1));

@@ -1092,7 +1092,7 @@ object frm_danfe: Tfrm_danfe
     Width = 282
     Height = 34
     Align = alBottom
-    Caption = 'REVIS'#195'O: 1502'
+    Caption = 'REVIS'#195'O: 1509'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11

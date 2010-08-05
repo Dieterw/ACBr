@@ -213,7 +213,6 @@ begin
    else
    begin
       wArquivo:=ParamStr(1);
-      wArquivo:='a.xml';
       if not FileExists(wArquivo) then
          MessageDlg('Arquivo '+wArquivo+' não Encontrado',mtError,[mbOk],0)
       else

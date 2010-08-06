@@ -1286,13 +1286,16 @@ begin
    begin
      with FNFe.Transp.Vol[0] do
       begin
-        rllTransQTDE.Caption       :=  IntToStr(QVol);
+        if qVol > 0 then
+          rllTransQTDE.Caption       :=  IntToStr(QVol);
         rllTransEspecie.Caption    :=  Esp  ;
         rllTransMarca.Caption      :=  Marca;
         rllTransNumeracao.Caption  :=  NVol ;
-        rllTransPesoLiq.Caption    :=  NotaUtil.FormatFloat(PesoL,
+        if pesoL > 0 then
+          rllTransPesoLiq.Caption    :=  NotaUtil.FormatFloat(PesoL,
                                                         '###,###,###,##0.000');
-        rllTransPesoBruto.Caption  :=  NotaUtil.FormatFloat(PesoB,
+        if pesoB > 0 then
+          rllTransPesoBruto.Caption  :=  NotaUtil.FormatFloat(PesoB,
                                                         '###,###,###,##0.000');
       end;
    end

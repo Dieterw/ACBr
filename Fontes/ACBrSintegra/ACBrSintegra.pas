@@ -1297,7 +1297,8 @@ if Length(Rec)<>126 then
     'Deve conter 126 posições. '+#13+
     'Registro: '+Rec+#13+
     'possui '+IntToStr(Length(Rec))+' posições.'));
-writeln(Arquivo, Rec);
+// mudança compatibilidade linux
+write(Arquivo, Rec + #13+#10 );
 end;
 
 procedure TACBrSintegra.GeraArquivo;

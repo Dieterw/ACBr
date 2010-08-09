@@ -588,7 +588,7 @@ begin
    ///
    /// Prorrogado para 01/01/2011 conforme Guia Prático da EFD 2.01
    /// *Bloco G incluído para vigorar a partir do período de apuração de janeiro de 2011.
-   if DT_INI >= StrToDate('01/01/2011') then
+   if DT_INI >= EncodeDate(2011,01,01) then
    begin
      /// BLOCO G
      WriteRegistroG001;
@@ -754,7 +754,7 @@ begin
          ///
          /// Prorrogado para 01/01/2011 conforme Guia Prático da EFD 2.01
          /// *Bloco G incluído para vigorar a partir do período de apuração de janeiro de 2011.
-         if DT_INI >= StrToDate('01/01/2011') then
+         if DT_INI >= EncodeDate(2011,01,01) then
          begin
             if Bloco_0.Registro0300Count > 0 then
             begin
@@ -801,7 +801,7 @@ begin
          ///
          /// Prorrogado para 01/01/2011 conforme Guia Prático da EFD 2.01
          /// *Bloco G incluído para vigorar a partir do período de apuração de janeiro de 2011.
-         if DT_INI >= StrToDate('01/01/2011') then
+         if DT_INI >= EncodeDate(2011,01,01) then
          begin
             if Bloco_0.Registro0500Count > 0 then
             begin
@@ -2083,7 +2083,7 @@ begin
                                                                  Bloco_C.RegistroC990.QTD_LIN_C +
                                                                  Bloco_D.RegistroD990.QTD_LIN_D +
                                                                  Bloco_E.RegistroE990.QTD_LIN_E +
-                                                                 ifThen(Bloco_G.DT_INI >= StrToDate('01/01/2011'), Bloco_G.RegistroG990.QTD_LIN_G, 0) +
+                                                                 ifThen(Bloco_G.DT_INI >= EncodeDate(2011,01,01), Bloco_G.RegistroG990.QTD_LIN_G, 0) +
                                                                  Bloco_H.RegistroH990.QTD_LIN_H +
                                                                  Bloco_9.Registro9990.QTD_LIN_9;
   Bloco_9.WriteRegistro9999;

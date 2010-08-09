@@ -156,7 +156,9 @@ begin
                   LFill(CNPJ_SH, 14) +
                   LFill(IE_SH, 14) +
                   LFill(IM_SH, 14) +
-                  RFill(NOME_SH, 40) +
+                  RFill(NOME_SH, 40) ;
+
+        Result := Result +   /// mudança compatibilidade FPC/Linux
                   RFill(NOME_PAF, 40) +  // emsoft
                   RFill(VER_PAF, 10) +
                   RFill(COD_MD5, 32) +

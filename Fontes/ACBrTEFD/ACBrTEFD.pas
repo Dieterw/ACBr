@@ -796,7 +796,7 @@ begin
                        GPAtual := TipoGP;  // Seleciona a Classe do GP
 
                        TempoInicio := now ;
-                       if TextoEspecialCliente <> '' then
+                       if TextoEspecialOperador <> '' then
                        begin
                           RemoverMsg := True ;
                           DoExibeMsg( opmExibirMsgOperador, TextoEspecialOperador ) ;

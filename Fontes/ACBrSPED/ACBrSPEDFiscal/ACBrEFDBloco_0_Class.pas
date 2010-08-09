@@ -671,7 +671,7 @@ var
   intFor: integer;
 begin
   /// Exigência do Art. 3º do AC 09/08
-  if DT_INI >= StrToDate('01/07/2010') then
+  if DT_INI >= EncodeDate(2010,07,01) then
   begin
      if Assigned(Reg0001.Registro0300) then
      begin
@@ -702,7 +702,7 @@ end;
 procedure TBloco_0.WriteRegistro0305(Reg0300: TRegistro0300) ;
 begin
   /// Exigência do Art. 3º do AC 09/08
-  if DT_INI >= StrToDate('01/07/2010') then
+  if DT_INI >= EncodeDate(2010,07,01) then
   begin
      if Assigned(Reg0300.Registro0305) then
      begin
@@ -791,7 +791,7 @@ var
   intFor: integer;
 begin
   /// Exigência do Art. 3º do AC 09/08
-  if DT_INI >= StrToDate('01/07/2010') then
+  if DT_INI >= EncodeDate(2010,07,01) then
   begin
      if Assigned( Reg0001.Registro0500 ) then
      begin

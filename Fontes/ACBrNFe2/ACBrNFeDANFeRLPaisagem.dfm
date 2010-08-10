@@ -1,15 +1,15 @@
 inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
-  Left = 191
-  Top = 107
+  Left = 197
+  Top = 108
   Width = 1149
   Height = 732
-  VertScrollBar.Position = 96
+  VertScrollBar.Position = 0
   Caption = 'frlDANFeRLPaisagem'
   OldCreateOrder = True
   PixelsPerInch = 96
   TextHeight = 13
   inherited RLNFe: TRLReport
-    Top = -96
+    Top = 0
     Width = 1123
     Height = 794
     Background.Arrange = baDistributed
@@ -998,7 +998,7 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
         ParentFont = False
       end
       object rlmEmitente: TRLMemo
-        Tag = 3
+        Tag = 4
         Left = 116
         Top = 12
         Width = 342

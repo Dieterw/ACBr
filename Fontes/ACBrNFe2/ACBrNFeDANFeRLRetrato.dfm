@@ -973,7 +973,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rlmEmitente: TRLMemo
-        Tag = 3
+        Tag = 4
         Left = 8
         Top = 18
         Width = 258

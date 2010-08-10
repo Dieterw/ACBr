@@ -79,6 +79,8 @@
 |* 20/07/2010: Peterson de Cerqueira Matos
 |*  - Permite enviar o DANFe para a impressora informada em "Impressora"
 |*  - Acréscimo do parâmetro "AImpressora"
+|* 10/08/2010: Peterson de Cerqueira Matos
+|*  - Acréscimo do parâmetro "ATamanhoFonte_RazaoSocial"
 ******************************************************************************}
 {$I ACBr.inc}
 unit ACBrNFeDANFeRL;
@@ -129,6 +131,7 @@ type
     FCasasDecimaisvUnCom: Integer;
     FProdutosPorPagina: Integer;
     FImpressora: String;
+    FTamanhoFonte_RazaoSocial: Integer;
 
   public
     { Public declarations }
@@ -150,7 +153,8 @@ type
                     ACasasDecimaisqCom: Integer = 4;
                     ACasasDecimaisvUncCom: Integer = 4;
                     AProdutosPorPagina: Integer = 20;
-                    AImpressora: String = '');
+                    AImpressora: String = '';
+                    ATamanhoFonte_RazaoSocial: Integer = 8);
 
     class procedure SavePDF(ANFe: TNFe; ALogo: String = '';
                     AMarcaDagua: String = ''; ALarguraCodProd: Integer = 54;
@@ -168,7 +172,8 @@ type
                     AMargemDireita: Double = 0.7;
                     ACasasDecimaisqCom: Integer = 4;
                     ACasasDecimaisvUncCom: Integer = 4;
-                    AProdutosPorPagina: Integer = 20);
+                    AProdutosPorPagina: Integer = 20;
+                    ATamanhoFonte_RazaoSocial: Integer = 8);
   end;
 
 implementation
@@ -195,7 +200,8 @@ class procedure TfrlDANFeRL.Imprimir(ANFe: TNFe; ALogo: String = '';
                 ACasasDecimaisqCom: Integer = 4;
                 ACasasDecimaisvUncCom: Integer = 4;
                 AProdutosPorPagina: Integer = 20;
-                AImpressora: String = '');
+                AImpressora: String = '';
+                ATamanhoFonte_RazaoSocial: Integer = 8);
 var sImpressoraAtual: String;
 begin
   with Create ( nil ) do
@@ -224,6 +230,7 @@ begin
       FCasasDecimaisvUnCom := ACasasDecimaisvUncCom;
       FProdutosPorPagina := AProdutosPorPagina;
       FImpressora := AImpressora;
+      FTamanhoFonte_RazaoSocial := ATamanhoFonte_RazaoSocial;
 
       if FImpressora > '' then
         RLPrinter.PrinterName := FImpressora;
@@ -261,7 +268,8 @@ class procedure TfrlDANFeRL.SavePDF(ANFe: TNFe; ALogo: String = '';
                     AMargemDireita: Double = 0.7;
                     ACasasDecimaisqCom: Integer = 4;
                     ACasasDecimaisvUncCom: Integer = 4;
-                    AProdutosPorPagina: Integer = 20);
+                    AProdutosPorPagina: Integer = 20;
+                    ATamanhoFonte_RazaoSocial: Integer = 8);
 begin
   with Create ( nil ) do
     try
@@ -287,6 +295,7 @@ begin
       FCasasDecimaisqCom := ACasasDecimaisqCom;
       FCasasDecimaisvUnCom := ACasasDecimaisvUncCom;
       FProdutosPorPagina := AProdutosPorPagina;
+      FTamanhoFonte_RazaoSocial := ATamanhoFonte_RazaoSocial;
       RLNFe.SaveToFile(AFile);
     finally
       Free ;

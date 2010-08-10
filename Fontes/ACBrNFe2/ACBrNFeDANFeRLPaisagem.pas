@@ -100,6 +100,8 @@
 |*  - Implementação da quantidade de itens por página
 |*  - Admissão de quebra de linha nas informações complementares.
 |*    O Caractere ponto-e-vírgula ';' será considerado quebra de linha
+|* 10/08/2010: Peterson de Cerqueira Matos
+|*  - Tratamento do tamanho da fonte da razão social do emitente
 ******************************************************************************}
 {$I ACBr.inc}
 unit ACBrNFeDANFeRLPaisagem;
@@ -1031,6 +1033,9 @@ begin
           end;
   end;
 
+  // Altera a fonte da Razão Social do Emitente
+  rlmEmitente.Font.Size := FTamanhoFonte_RazaoSocial;
+
   // Verifica se será exibida a 'continuação das informações complementares'
   if rlmDadosAdicionaisAuxiliar.Lines.Count > iLimiteLinhas then
     begin
@@ -1391,7 +1396,7 @@ begin
   if FNFe.InfAdic.infAdFisco > '' then
     begin
       if FNFe.InfAdic.infCpl > '' then
-        sInfAdFisco := FNFe.InfAdic.infAdFisco + ' - '
+        sInfAdFisco := FNFe.InfAdic.infAdFisco + '; '
       else
         sInfAdFisco := FNFe.InfAdic.infAdFisco;
     end

@@ -70,6 +70,8 @@
 |*  - "ACBrNFeDANFeClass"
 |* 28/07/2010: Peterson de Cerqueira Matos
 |*  - Alteração do sulfixo do arquivo PDF de '-nfe.pdf' para '.pdf'
+|* 10/08/2010: Peterson de Cerqueira Matos
+|*  - Tratamento do tamanho da fonte da razão social do emitente
 ******************************************************************************}
 {$I ACBr.inc}
 unit ACBrNFeDANFeRLClass;
@@ -92,6 +94,7 @@ type
     FLarguraCodProd: Integer;
     FPosCanhoto: TPosCanhoto;
     FFonteDANFE: TFonteDANFE;
+    FTamanhoFonte_RazaoSocial: Integer;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -106,6 +109,8 @@ type
                                                           default pcCabecalho;
     property FonteDANFE: TFonteDANFE read FFonteDANFE write SetFonteDANFE
                                                       default fdTimesNewRoman;
+    property TamanhoFonte_RazaoSocial: Integer read FTamanhoFonte_RazaoSocial
+                                              write FTamanhoFonte_RazaoSocial;
   end;
 
 implementation
@@ -127,7 +132,7 @@ begin
   FCasasDecimais._qCom := 4;
   FCasasDecimais._vUnCom := 4;
   FProdutosPorPagina := 10;
-
+  FTamanhoFonte_RazaoSocial := 8;
 end;
 
 destructor TACBrNFeDANFeRL.Destroy;
@@ -152,17 +157,19 @@ begin
           NumCopias, Sistema, Site, Usuario, PosCanhoto, FormularioContinuo,
           ExpandirLogoMarca, MostrarPreview, FonteDANFE, MargemSuperior,
           MargemInferior, MargemEsquerda, MargemDireita, CasasDecimais._qCom,
-          CasasDecimais._vUnCom, ProdutosPorPagina, Impressora);
+          CasasDecimais._vUnCom, ProdutosPorPagina, Impressora,
+          TamanhoFonte_RazaoSocial);
         end;
     end
   else
     begin
-        frlDANFeRL.Imprimir(NFE,
-        Logo, MarcaDagua, LarguraCodProd, Email, ExibirResumoCanhoto, Fax,
-        NumCopias, Sistema, Site, Usuario, PosCanhoto, FormularioContinuo,
-        ExpandirLogoMarca, MostrarPreview, FonteDANFE, MargemSuperior,
-        MargemInferior, MargemEsquerda, MargemDireita, CasasDecimais._qCom,
-        CasasDecimais._vUnCom, ProdutosPorPagina, Impressora);
+      frlDANFeRL.Imprimir(NFE,
+      Logo, MarcaDagua, LarguraCodProd, Email, ExibirResumoCanhoto, Fax,
+      NumCopias, Sistema, Site, Usuario, PosCanhoto, FormularioContinuo,
+      ExpandirLogoMarca, MostrarPreview, FonteDANFE, MargemSuperior,
+      MargemInferior, MargemEsquerda, MargemDireita, CasasDecimais._qCom,
+      CasasDecimais._vUnCom, ProdutosPorPagina, Impressora,
+      TamanhoFonte_RazaoSocial);
     end;
 
   frlDANFeRL.Free;
@@ -188,7 +195,7 @@ begin
         NumCopias, Sistema, Site, Usuario, sFile, PosCanhoto, FormularioContinuo,
         ExpandirLogoMarca, FonteDANFE, MargemSuperior,
         MargemInferior, MargemEsquerda, MargemDireita, CasasDecimais._qCom,
-        CasasDecimais._vUnCom, ProdutosPorPagina);
+        CasasDecimais._vUnCom, ProdutosPorPagina, TamanhoFonte_RazaoSocial);
       end;
    end;
 

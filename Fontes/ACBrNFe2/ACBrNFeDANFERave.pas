@@ -66,6 +66,7 @@ type
     FdmDanfe : TdmACBrNFeRave;
     FRaveFile: String;
     FEspessuraBorda: Integer;
+    FTamanhoFonte_RazaoSocial: Integer;
     procedure ExecutaReport;
    public
     constructor Create(AOwner: TComponent); override;
@@ -77,6 +78,7 @@ type
     property RavFile : String read FRaveFile write FRaveFile ;
     property dmDanfe : TdmACBrNFeRave read FdmDanfe write FdmDanfe;
     property EspessuraBorda : Integer read FEspessuraBorda write FEspessuraBorda ;
+    property TamanhoFonte_RazaoSocial: Integer read FTamanhoFonte_RazaoSocial write FTamanhoFonte_RazaoSocial ;
   end;
 
 implementation
@@ -89,6 +91,7 @@ begin
   FdmDanfe := TdmACBrNFeRave.Create(Self);
   FRaveFile := '' ;
   FEspessuraBorda := 1;
+  FTamanhoFonte_RazaoSocial := 12;
 end;
 
 destructor TACBrNFeDANFERave.Destroy;
@@ -156,6 +159,15 @@ begin
                wText[1].Top:=wText[1].Top+0.02;
                wText[1].Text:='CSOSN';
             end;
+         end;
+
+         //Tamanho Fonte Razao Social
+         if (FTamanhoFonte_RazaoSocial <> 12) then //12=tamanho padrao que esta nos .RAV
+         begin
+            wPage[1] := FindRaveComponent('GlobalDANFE',nil) as TRavePage;
+            wDataText[4] := FindRaveComponent('DataText'+inttostr(4),wPage[1]) as TRaveDataText;
+            if (wDataText[4] <> nil) then
+               wDataText[4].Font.Height:=FTamanhoFonte_RazaoSocial;
          end;
 
          //Tamanho Fonte Demais Campos

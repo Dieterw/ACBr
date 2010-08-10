@@ -826,8 +826,8 @@ begin
         begin
           Add( LFill('1600') +
                LFill( COD_PART ) +
-               LFill( TOT_CREDITO, 0, 2, True ) +
-               LFill( TOT_DEBITO, 0, 2, True ) ) ;
+               LFill( TOT_CREDITO, 0, 2) +
+               LFill( TOT_DEBITO, 0, 2) );
         end;
         Registro1990.QTD_LIN_1 := Registro1990.QTD_LIN_1 + 1;
      end;

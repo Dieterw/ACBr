@@ -201,7 +201,7 @@ begin
            XMLinfProt2.Text:=RetornarConteudoEntre(XMLinfProt.text, '<infProt>', '</infProt>');
 
         xProtCTe :=
-        (****)'<protCTe versao="1.10">' +
+        (****)'<protCTe ' + V1_03 +'>' +
         (******)'<infProt>' + // RetornarConteudoEntre(XMLinfProt.text, '<infProt', '<tpAmb>') +
         (*********)PreencherTAG('tpAmb', XMLinfProt.text) +
         (*********)PreencherTAG('verAplic', XMLinfProt.text) +
@@ -219,7 +219,7 @@ begin
     if ProtLido
      then begin
       xProtCTe :=
-      (****)'<protCTe versao="1.10">' +
+      (****)'<protCTe ' + V1_03 + '>' +
       (******)'<infProt' +
       (*********)'<tpAmb>'+TpAmbToStr(FtpAmb)+'</tpAmb>'+
       (*********)'<verAplic>'+FverAplic+'</verAplic>'+
@@ -238,7 +238,7 @@ begin
     begin
       Gerador.ArquivoFormatoXML := '';
       Gerador.wGrupo(ENCODING_UTF8, '', False);
-      Gerador.wGrupo('cteProc ' + V1_10 + ' ' + NAME_SPACE_CTE, '');
+      Gerador.wGrupo('cteProc ' + V1_03 + ' ' + NAME_SPACE_CTE, '');
       Gerador.wTexto('<CTe xmlns' + RetornarConteudoEntre(XMLCTe.Text, '<CTe xmlns', '</CTe>') + '</CTe>');
       (**)Gerador.wTexto(xProtCTe);
       Gerador.wGrupo('/cteProc');

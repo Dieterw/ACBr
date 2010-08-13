@@ -28,11 +28,12 @@ package ACBrTCP;
 requires
   rtl,
   designide,
-  vcl,
   ACBrComum,
   synapse;
 
 contains
-  ACBrSocket in '..\..\Fontes\ACBrTCP\ACBrSocket.pas';
+  ACBrSocket in '..\..\Fontes\ACBrTCP\ACBrSocket.pas',
+  ACBrCEP in '..\..\Fontes\ACBrTCP\ACBrCEP.pas',
+  ACBrTCPReg in '..\..\Fontes\ACBrTCP\ACBrTCPReg.pas';
 
 end.

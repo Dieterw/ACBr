@@ -46,11 +46,9 @@
 unit ACBrSocket;
 
 interface
+
 uses SysUtils, Classes, Contnrs,
-    {$IFDEF FPC}
-      LResources,
-    {$ENDIF}
-     blcksock, synsock, synamisc,  {Units da Synapse}
+     blcksock, synsock, synamisc, httpsend,  {Units da Synapse}
      ACBrBase ;
 
 type
@@ -173,21 +171,34 @@ TACBrTCPServer = class( TACBrComponent )
                                                       write fsOnRecebeDados ;
 end ;
 
-procedure Register;
+{ TACBrHTTP }
+
+TACBrHTTP = class( TACBrComponent )
+  private
+    fHTTPSend : THTTPSend ;
+    function GetProxyHost : string ;
+    function GetProxyPass : string ;
+    function GetProxyPort : string ;
+    function GetProxyUser : string ;
+    procedure SetProxyHost(const AValue : string) ;
+    procedure SetProxyPass(const AValue : string) ;
+    procedure SetProxyPort(const AValue : string) ;
+    procedure SetProxyUser(const AValue : string) ;
+  public
+    constructor Create( AOwner : TComponent ) ; override ;
+    destructor Destroy ; override ;
+
+    property HTTPSend  : THTTPSend read fHTTPSend ;
+  published
+    property ProxyHost : string read GetProxyHost write SetProxyHost ;
+    property ProxyPort : string read GetProxyPort write SetProxyPort ;
+    property ProxyUser : string read GetProxyUser write SetProxyUser ;
+    property ProxyPass : string read GetProxyPass write SetProxyPass ;
+end ;
 
 implementation
 
 Uses ACBrUtil ;
-
-{$IFNDEF FPC}
-   {$R ACBrTCP.dcr}
-{$ENDIF}
-
-procedure Register;
-begin
-  RegisterComponents('ACBr', [TACBrTCPServer]);
-end;
-
 
 { TACBrTCPServerDaemon }
 
@@ -508,9 +519,58 @@ begin
      ThreadList[NumConexao].TCPBlockSocket.SendString( AString );
 end;
 
-{$ifdef FPC}
-initialization
-   {$I ACBrTCP.lrs}
-{$endif}
+{ TACBrHTTP }
+
+constructor TACBrHTTP.Create(AOwner : TComponent) ;
+begin
+  inherited Create( AOwner ) ;
+
+  fHTTPSend := THTTPSend.Create;
+end ;
+
+destructor TACBrHTTP.Destroy ;
+begin
+  fHTTPSend.Free;
+end ;
+
+function TACBrHTTP.GetProxyHost : string ;
+begin
+  Result := fHTTPSend.ProxyHost;
+end;
+
+function TACBrHTTP.GetProxyPass : string ;
+begin
+  Result := fHTTPSend.ProxyPass;
+end;
+
+function TACBrHTTP.GetProxyPort : string ;
+begin
+  Result := fHTTPSend.ProxyPort;
+end;
+
+function TACBrHTTP.GetProxyUser : string ;
+begin
+  Result := fHTTPSend.ProxyUser;
+end;
+
+procedure TACBrHTTP.SetProxyHost(const AValue : string) ;
+begin
+  fHTTPSend.ProxyHost := AValue;
+end;
+
+procedure TACBrHTTP.SetProxyPass(const AValue : string) ;
+begin
+  fHTTPSend.ProxyPass := AValue;
+end;
+
+procedure TACBrHTTP.SetProxyPort(const AValue : string) ;
+begin
+  fHTTPSend.ProxyPort := AValue;
+end;
+
+procedure TACBrHTTP.SetProxyUser(const AValue : string) ;
+begin
+  fHTTPSend.ProxyUser := AValue;
+end;
 
 end.

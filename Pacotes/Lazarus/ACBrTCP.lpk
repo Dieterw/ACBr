@@ -5,7 +5,7 @@
     <Name Value="ACBrTCP"/>
     <Author Value="Daniel Simoes de Almeida"/>
     <CompilerOptions>
-      <Version Value="8"/>
+      <Version Value="9"/>
       <PathDelim Value="\"/>
       <SearchPaths>
         <IncludeFiles Value="..\..\Fontes\ACBrTCP\;..\..\Fontes\ACBrComum\"/>
@@ -16,6 +16,7 @@
       <Parsing>
         <SyntaxOptions>
           <CStyleOperator Value="False"/>
+          <UseAnsiStrings Value="False"/>
         </SyntaxOptions>
       </Parsing>
       <Other>
@@ -26,12 +27,20 @@
     <License Value="LGPL
 "/>
     <Version Minor="9"/>
-    <Files Count="1">
+    <Files Count="3">
       <Item1>
         <Filename Value="..\..\Fontes\ACBrTCP\ACBrSocket.pas"/>
-        <HasRegisterProc Value="True"/>
         <UnitName Value="ACBrSocket"/>
       </Item1>
+      <Item2>
+        <Filename Value="..\..\Fontes\ACBrTCP\ACBrCEP.pas"/>
+        <UnitName Value="ACBrCEP"/>
+      </Item2>
+      <Item3>
+        <Filename Value="..\..\Fontes\ACBrTCP\ACBrTCPReg.pas"/>
+        <HasRegisterProc Value="True"/>
+        <UnitName Value="ACBrTCPReg"/>
+      </Item3>
     </Files>
     <Type Value="RunAndDesignTime"/>
     <RequiredPkgs Count="5">

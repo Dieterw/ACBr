@@ -863,7 +863,7 @@ var
      ReqResp: THTTPReqResp;
   {$ENDIF}
 begin
-  Result := inherited Executar;
+  {Result :=} inherited Executar;
 
   Acao   := TStringList.Create;
   Stream := TMemoryStream.Create;
@@ -995,7 +995,8 @@ function TCTeRecepcao.Executar: Boolean;
 var
   CTeRetorno: TretEnvCTe;
   aMsg  : string;
-  Texto : WideString;
+  Texto : String;
+//  Texto : WideString;
   Acao  : TStringList ;
   Stream: TMemoryStream;
   StrStream: TStringStream;
@@ -1006,7 +1007,7 @@ var
      ReqResp: THTTPReqResp;
   {$ENDIF}
 begin
-  Result := inherited Executar;
+  {Result :=} inherited Executar;
 
   Acao   := TStringList.Create;
   Stream := TMemoryStream.Create;
@@ -1348,7 +1349,7 @@ function TCteRetRecepcao.Executar: Boolean;
 var
   vCont: Integer;
 begin
-  Result := inherited Executar;
+  {Result :=} inherited Executar;
   Result := False;
 
   TACBrCTe( FACBrCTe ).SetStatus( stCTeRetRecepcao );
@@ -1405,7 +1406,7 @@ var
     ReqResp: THTTPReqResp;
  {$ENDIF}
 begin
-  Result := inherited Executar;
+  {Result :=} inherited Executar;
 
   Acao   := TStringList.Create;
   Stream := TMemoryStream.Create;
@@ -1478,10 +1479,10 @@ begin
    if FConfiguracoes.WebServices.Visualizar then
      ShowMessage(aMsg);
 
-   if FCTeRetorno.ProtCTe.Count > 0 then
-     MotivoAux := FCTeRetorno.ProtCTe.Items[0].xMotivo
-   else
-     MotivoAux := '';
+//   if FCTeRetorno.ProtCTe.Count > 0 then
+//     MotivoAux := FCTeRetorno.ProtCTe.Items[0].xMotivo
+//   else
+//     MotivoAux := '';
 
    if Assigned(TACBrCTe( FACBrCTe ).OnGerarLog) then
       TACBrCTe( FACBrCTe ).OnGerarLog(aMsg);
@@ -1489,11 +1490,14 @@ begin
    FTpAmb    := FCTeRetorno.TpAmb;
    FverAplic := FCTeRetorno.verAplic;
    FcStat    := FCTeRetorno.cStat;
-   FxMotivo  := MotivoAux;
+//   FxMotivo  := MotivoAux;
+   FxMotivo  := FCTeRetorno.xMotivo;
    FcUF      := FCTeRetorno.cUF;
 
-   Result := FCTeRetorno.CStat = 105; // Lote em Processamento
-   FMsg   := MotivoAux;
+//   Result := FCTeRetorno.CStat = 105; // Lote em Processamento
+//   FMsg   := MotivoAux;
+   Result := FCTeRetorno.CStat = 104;
+   FMsg   := FCTeRetorno.xMotivo;
 
  finally
    {$IFDEF ACBrCTeOpenSSL}
@@ -1525,7 +1529,7 @@ var
      ReqResp: THTTPReqResp;
   {$ENDIF}
 begin
-  Result := inherited Executar;
+  {Result :=} inherited Executar;
 
   Acao   := TStringList.Create;
   Stream := TMemoryStream.Create;
@@ -1721,7 +1725,7 @@ var
      ReqResp: THTTPReqResp;
   {$ENDIF}
 begin
-  Result := inherited Executar;
+  {Result :=} inherited Executar;
 
   Acao   := TStringList.Create;
   Stream := TMemoryStream.Create;
@@ -1927,7 +1931,7 @@ var
      ReqResp: THTTPReqResp;
   {$ENDIF}
 begin
-  Result := inherited Executar;
+  {Result :=} inherited Executar;
 
   Acao   := TStringList.Create;
   Stream := TMemoryStream.Create;
@@ -2091,7 +2095,7 @@ var
      ReqResp: THTTPReqResp;
   {$ENDIF}
 begin
-  Result := inherited Executar;
+  {Result :=} inherited Executar;
 
   Acao   := TStringList.Create;
   Stream := TMemoryStream.Create;

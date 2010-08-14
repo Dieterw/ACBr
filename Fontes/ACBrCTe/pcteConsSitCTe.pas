@@ -100,6 +100,7 @@ begin
   if retornarVersaoLayout(Fschema, tlConsSitCTe) = '1.03' then
   begin
     Gerador.ArquivoFormatoXML := '';
+
 //    Gerador.wGrupo(ENCODING_UTF8, '', False);
     Gerador.wGrupo('consSitCTe ' + NAME_SPACE_CTE + ' ' + V1_03);
 //    Gerador.wCampo(tcStr, 'EP02', 'versao', 001, 001, 1, CTeconsSitCTe, DSC_VERAPLIC);
@@ -107,6 +108,7 @@ begin
     Gerador.wCampo(tcStr, 'EP04', 'xServ', 009, 009, 1, 'CONSULTAR', DSC_XSERV);
     Gerador.wCampo(tcEsp, 'EP05', 'chCTe', 044, 044, 1, FchCTe, DSC_CHCTE);
     Gerador.wGrupo('/consSitCTe');
+
     Result := (Gerador.ListaDeAlertas.Count = 0);
   end;
 end;

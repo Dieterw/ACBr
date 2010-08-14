@@ -115,12 +115,6 @@ begin
     Gerador.wCampo(tcStr, 'FP04', 'xServ', 006, 006, 1, 'STATUS', DSC_XSERV);
     Gerador.wGrupo('/consStatServCte');
 
-    // Gerador.wGrupo(ENCODING_UTF8, '', False); // Descomentado
-    // Gerador.wGrupo('consStatServCte ' + NAME_SPACE_CTE + ' ' + V1_03);
-    // Gerador.wCampo(tcStr, 'FP03', 'tpAmb', 001, 001, 1, tpAmbToStr(FtpAmb), DSC_TPAMB);
-    // Gerador.wCampo(tcStr, 'FP04', 'xServ', 006, 006, 1, 'STATUS', DSC_XSERV);
-    // Gerador.wGrupo('/consStatServCte');
-
     Result := (Gerador.ListaDeAlertas.Count = 0);
   end;
 end;

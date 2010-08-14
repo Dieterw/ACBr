@@ -220,7 +220,7 @@ begin
      then begin
       xProtCTe :=
       (****)'<protCTe ' + V1_03 + '>' +
-      (******)'<infProt' +
+      (******)'<infProt>' +
       (*********)'<tpAmb>'+TpAmbToStr(FtpAmb)+'</tpAmb>'+
       (*********)'<verAplic>'+FverAplic+'</verAplic>'+
       (*********)'<chCTe>'+FchCTe+'</chCTe>'+
@@ -240,7 +240,7 @@ begin
       Gerador.wGrupo(ENCODING_UTF8, '', False);
       Gerador.wGrupo('cteProc ' + NAME_SPACE_CTE+ ' '+ V1_03, '');
       Gerador.wTexto('<CTe xmlns' + RetornarConteudoEntre(XMLCTe.Text, '<CTe xmlns', '</CTe>') + '</CTe>');
-      (**)Gerador.wTexto(xProtCTe);
+      Gerador.wTexto(xProtCTe);
       Gerador.wGrupo('/cteProc');
     end;
 

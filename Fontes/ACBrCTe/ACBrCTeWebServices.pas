@@ -2102,20 +2102,16 @@ begin
 
   Texto := '<?xml version="1.0" encoding="utf-8"?>';
   Texto := Texto + '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">';
-  Texto := Texto + '  <soap:Body>';
-  Texto := Texto + '    <consultaCadastro xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro">';
-  Texto := Texto + '      <nfeCabecMsg>';
-
+  Texto := Texto +   '<soap:Body>';
+  Texto := Texto +     '<consultaCadastro xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro">';
+  Texto := Texto +       '<nfeCabecMsg>';
   Texto := Texto + CTeUtil.ParseText(FCabMsg,False);
-
-  Texto := Texto + '      </nfeCabecMsg>';
-  Texto := Texto + '      <nfeDadosMsg>';
-
+  Texto := Texto +       '</nfeCabecMsg>';
+  Texto := Texto +       '<nfeDadosMsg>';
   Texto := Texto + CTeUtil.ParseText(FDadosMsg,False);
-
-  Texto := Texto + '      </nfeDadosMsg>';
-  Texto := Texto + '    </consultaCadastro>';
-  Texto := Texto + '  </soap:Body>';
+  Texto := Texto +       '</nfeDadosMsg>';
+  Texto := Texto +     '</consultaCadastro>';
+  Texto := Texto +   '</soap:Body>';
   Texto := Texto + '</soap:Envelope>';
 
   Acao.Text := Texto;

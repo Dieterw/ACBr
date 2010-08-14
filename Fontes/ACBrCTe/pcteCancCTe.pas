@@ -101,6 +101,7 @@ begin
   if RetornarVersaoLayout(FSchema, tlCancCTe) = '1.03' then
   begin
     Gerador.ArquivoFormatoXML := '';
+
 //    Gerador.wGrupo(ENCODING_UTF8, '', False);
     Gerador.wGrupo('cancCTe ' + NAME_SPACE_CTE + ' ' + V1_03);
     Gerador.wGrupo('infCanc Id="ID' + SomenteNumeros(FchCTe) + '"');
@@ -113,6 +114,7 @@ begin
     Gerador.wCampo(tcStr, 'CP09', 'xJust', 015, 255, 1, FiltrarTextoXML(true, FxJust), DSC_XJUST);
     Gerador.wGrupo('/infCanc');
     Gerador.wGrupo('/cancCTe');
+    
     Result := (Gerador.ListaDeAlertas.Count = 0);
   end;
 end;

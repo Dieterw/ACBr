@@ -260,7 +260,7 @@ begin
   if CTe.procCTe.nProt <> '' then
    begin
      xProtCTe :=
-       (**)'<protCTe versao="1.03">' +
+     (****)'<protCTe ' + V1_03 + '>' +
      (******)'<infProt>'+
      (*********)'<tpAmb>'+TpAmbToStr(CTe.procCTe.tpAmb)+'</tpAmb>'+
      (*********)'<verAplic>'+CTe.procCTe.verAplic+'</verAplic>'+
@@ -273,7 +273,7 @@ begin
      (******)'</infProt>'+
      {****}'</protCTe>';
 
-     (**)Gerador.wTexto(xProtCTe);
+     Gerador.wTexto(xProtCTe);
      Gerador.wGrupo('/cteProc');
    end;
 

@@ -1,9 +1,9 @@
 object Form1: TForm1
-  Left = 451
-  Top = 163
+  Left = 441
+  Top = 170
+  Width = 604
+  Height = 358
   Caption = 'Form1'
-  ClientHeight = 320
-  ClientWidth = 588
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -21,6 +21,7 @@ object Form1: TForm1
     Align = alClient
     Lines.Strings = (
       'Memo1')
+    ScrollBars = ssBoth
     TabOrder = 0
     WordWrap = False
   end
@@ -43,8 +44,8 @@ object Form1: TForm1
         Caption = 'WebService'
         TabOrder = 0
         object Label9: TLabel
-          Left = 18
-          Top = 66
+          Left = 12
+          Top = 55
           Width = 35
           Height = 13
           Caption = 'Chave:'
@@ -52,11 +53,12 @@ object Form1: TForm1
           ParentColor = False
         end
         object cbxWS: TComboBox
-          Left = 18
-          Top = 33
+          Left = 12
+          Top = 22
           Width = 156
           Height = 21
           Style = csDropDownList
+          ItemHeight = 13
           ItemIndex = 1
           TabOrder = 0
           Text = 'BuscarCEP'
@@ -67,8 +69,8 @@ object Form1: TForm1
             'CEPLivre')
         end
         object edChaveBuscarCEP: TEdit
-          Left = 18
-          Top = 81
+          Left = 12
+          Top = 70
           Width = 156
           Height = 21
           TabOrder = 1
@@ -124,7 +126,6 @@ object Form1: TForm1
           Width = 154
           Height = 21
           TabOrder = 0
-          Text = '192.168.0.1'
         end
         object edProxyPort: TEdit
           Left = 191
@@ -132,7 +133,6 @@ object Form1: TForm1
           Width = 56
           Height = 21
           TabOrder = 1
-          Text = '3128'
         end
         object edProxyUser: TEdit
           Left = 22

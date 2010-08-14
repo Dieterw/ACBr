@@ -1,4 +1,4 @@
-ï»¿unit CEPTeste1 ;
+unit CEPTeste1 ;
 
 interface
 
@@ -85,10 +85,10 @@ begin
   Memo1.Lines.Clear;
 
   if ACBrCEP1.Enderecos.Count < 1 then
-     Memo1.Lines.Add( 'Nenhum EndereÃ§o encontrado' )
+     Memo1.Lines.Add( 'Nenhum Endereço encontrado' )
   else
    begin
-     Memo1.Lines.Add( IntToStr(ACBrCEP1.Enderecos.Count) + ' EndereÃ§o(s) encontrado(s)');
+     Memo1.Lines.Add( IntToStr(ACBrCEP1.Enderecos.Count) + ' Endereço(s) encontrado(s)');
      Memo1.Lines.Add('');
 
      For I := 0 to ACBrCEP1.Enderecos.Count-1 do

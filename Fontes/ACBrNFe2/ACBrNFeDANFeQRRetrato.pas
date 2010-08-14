@@ -1034,6 +1034,10 @@ var
 begin
   inherited;
 
+   //hrsoft 4/8/2010
+   FTotalPages := HrTotalPages;
+   //fim hrsoft 4/8/2010
+
    qrlPageNumber.Caption := format ( '%2.2d', [ QRNFe.PageNumber ] )
                     + '/' + format ( '%2.2d', [ FTotalPages ] ) ;
 

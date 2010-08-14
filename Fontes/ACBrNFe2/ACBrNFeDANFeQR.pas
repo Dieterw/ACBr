@@ -86,6 +86,7 @@ type
     procedure SetBarCodeImage ( ACode : String ; QRImage : TQRImage ) ;
   public
     { Public declarations }
+    HrTotalPages : integer; //hrsoft 4/8/2010
     class procedure Imprimir(ANFe                : TNFe;
                              ALogo               : String    = '';
                              AEmail              : String    = '';
@@ -156,13 +157,19 @@ begin
         FMargemEsquerda     := AMargemEsquerda;
         FMargemDireita      := AMargemDireita;
 
-        if APreview then
-           QRNFe.Preview
-        else
-           begin
-              AfterPreview := True ;
-              QRNFe.Print ;
-           end ;
+        if APreview
+         then begin
+           QRNFe.Prepare;
+           HrTotalPages := QRNFe.QRPrinter.PageCount; //hrsoft 4/8/2010
+           QRNFe.Preview;
+         end
+         else begin
+           AfterPreview := True ;
+           QRNFe.Prepare;
+           HrTotalPages := QRNFe.QRPrinter.PageCount; //hrsoft 4/8/2010
+           QRNFe.Print ;
+         end;
+         
      finally
         Free ;
      end ;

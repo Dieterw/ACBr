@@ -531,6 +531,8 @@ end ;
 destructor TACBrHTTP.Destroy ;
 begin
   fHTTPSend.Free;
+
+  inherited Destroy;
 end ;
 
 function TACBrHTTP.GetProxyHost : string ;

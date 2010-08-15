@@ -796,23 +796,39 @@ begin
                        GPAtual := TipoGP;  // Seleciona a Classe do GP
 
                        TempoInicio := now ;
-                       if TextoEspecialOperador <> '' then
-                       begin
-                          RemoverMsg := True ;
-                          DoExibeMsg( opmExibirMsgOperador, TextoEspecialOperador ) ;
-                       end;
 
-                       if TextoEspecialCliente <> '' then
-                       begin
-                          RemoverMsg := True ;
-                          DoExibeMsg( opmExibirMsgCliente, TextoEspecialCliente ) ;
-                       end;
-
+                       // Calcula numero de vias //
                        NVias := fTefClass.NumVias ;
                        if ImagemComprovante2aVia.Text = '' then   // Tem 2a via ?
                           NVias := 1 ;
                        if ImagemComprovante1aVia.Text = '' then   // Tem alguma via ?
                           NVias := 0 ;
+
+                       if NVias > 0 then   // Com Impressao, deixe a MSG na Tela
+                        begin
+                          if TextoEspecialOperador <> '' then
+                          begin
+                             RemoverMsg := True ;
+                             DoExibeMsg( opmExibirMsgOperador, TextoEspecialOperador ) ;
+                          end;
+
+                          if TextoEspecialCliente <> '' then
+                          begin
+                             RemoverMsg := True ;
+                             DoExibeMsg( opmExibirMsgCliente, TextoEspecialCliente ) ;
+                          end;
+                        end
+                       else  // Sem Impressao, Exiba a Msg com OK
+                        begin
+                          if (TextoEspecialOperador + TextoEspecialCliente) <> '' then
+                          begin
+                            DoExibeMsg( opmOK,
+                                        TextoEspecialOperador +
+                                        ifthen( TextoEspecialOperador <> '',
+                                                sLineBreak+sLineBreak, '') +
+                                        TextoEspecialCliente ) ;
+                          end ;
+                        end ;
 
                        if (not GerencialAberto) and (NVias > 0) then
                        begin

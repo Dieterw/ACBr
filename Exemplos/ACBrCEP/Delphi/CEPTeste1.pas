@@ -44,6 +44,7 @@ type
     PageControl1 : TPageControl ;
     TabSheet1 : TTabSheet ;
     TabSheet2 : TTabSheet ;
+    procedure ACBrCEP1AntesEfetuarBusca(var AURL : String) ;
     procedure ACBrCEP1BuscaEfetuada(Sender : TObject) ;
     procedure bBuscarCEPClick(Sender : TObject) ;
     procedure bBuscarLogradouroClick(Sender : TObject) ;
@@ -82,8 +83,6 @@ procedure TForm1.ACBrCEP1BuscaEfetuada(Sender : TObject) ;
 var
   I : Integer ;
 begin
-  Memo1.Lines.Clear;
-
   if ACBrCEP1.Enderecos.Count < 1 then
      Memo1.Lines.Add( 'Nenhum Endereço encontrado' )
   else
@@ -111,6 +110,20 @@ begin
   Memo1.Lines.AddStrings( ACBrCEP1.RespHTTP );
 end;
 
+procedure TForm1.ACBrCEP1AntesEfetuarBusca(var AURL : String) ;
+begin
+  Memo1.Lines.Clear;
+  Memo1.Lines.Add('Efetuando consulta HTTP em:' ) ;
+
+  if (ACBrCEP1.WebService = wsBuscarCep) and (edChaveBuscarCEP.Text <> '') then
+  begin
+    AURL := AURL + '&chave='+edChaveBuscarCEP.Text;
+  end ;
+
+  Memo1.Lines.Add( AURL );
+  Memo1.Lines.Add( '' );
+end;
+
 procedure TForm1.bBuscarCEPClick(Sender : TObject) ;
 begin
   AjustaProxy ;
@@ -120,7 +133,6 @@ begin
   except
      On E : Exception do
      begin
-        Memo1.Lines.Clear;
         Memo1.Lines.Add(E.Message);
      end ;
   end ;
@@ -136,7 +148,6 @@ begin
   except
      On E : Exception do
      begin
-        Memo1.Lines.Clear;
         Memo1.Lines.Add(E.Message);
      end ;
   end ;

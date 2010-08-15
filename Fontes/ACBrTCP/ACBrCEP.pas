@@ -107,8 +107,11 @@ type
 
   { TACBrCEP }
 
+  TACBrCEPOnAntesEfetuarBusca = procedure( var AURL : String ) of object ;
+
   TACBrCEP = class( TACBrHTTP )
     private
+      fOnAntesEfetuarBusca : TACBrCEPOnAntesEfetuarBusca ;
       fWebService : TACBrCEPWebService ;
       fACBrCEPWS  : TACBrCEPWSClass ;
       fRespHTTP   : TStringList ;
@@ -135,6 +138,8 @@ type
 
       property OnBuscaEfetuada : TNotifyEvent read fOnBuscaEfetuada
          write fOnBuscaEfetuada ;
+      property OnAntesEfetuarBusca : TACBrCEPOnAntesEfetuarBusca
+         read fOnAntesEfetuarBusca write fOnAntesEfetuarBusca ;
   end ;
 
 
@@ -241,7 +246,8 @@ constructor TACBrCEP.Create(AOwner : TComponent) ;
 begin
   inherited Create(AOwner) ;
 
-  fOnBuscaEfetuada := nil ;
+  fOnBuscaEfetuada     := nil ;
+  fOnAntesEfetuarBusca := nil ;
 
   fRespHTTP   := TStringList.Create;
   fEnderecos  := TACBrCEPEnderecos.create( True );
@@ -336,13 +342,16 @@ begin
        HTTPSend.Clear;
 
        // DEBUG //
-       WriteToTXT( 'C:\TEMP\CEP.txt', 'URL: '+AURL );
+       // WriteToTXT( 'C:\TEMP\CEP.txt', 'URL: '+AURL );
+
+       if Assigned( OnAntesEfetuarBusca ) then
+          OnAntesEfetuarBusca( AURL ) ;
 
        OK := HTTPSend.HTTPMethod('GET', AURL) and (HTTPSend.ResultCode = 200);
        RespHTTP.LoadFromStream( HTTPSend.Document ) ;
 
        // DEBUG //
-       WriteToTXT( 'C:\TEMP\CEP.txt', RespHTTP.Text );
+       // WriteToTXT( 'C:\TEMP\CEP.txt', RespHTTP.Text );
 
        if not OK then
           raise EACBrCEPHTTPError.Create( 'Erro HTTP: '+IntToStr(HTTPSend.ResultCode)+' '+

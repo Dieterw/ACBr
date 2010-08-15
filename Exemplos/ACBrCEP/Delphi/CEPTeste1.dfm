@@ -286,6 +286,7 @@ object Form1: TForm1
     ProxyPort = '8080'
     WebService = wsBuscarCep
     OnBuscaEfetuada = ACBrCEP1BuscaEfetuada
+    OnAntesEfetuarBusca = ACBrCEP1AntesEfetuarBusca
     Left = 248
     Top = 160
   end

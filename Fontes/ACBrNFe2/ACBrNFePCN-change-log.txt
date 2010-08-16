@@ -47,6 +47,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Alterações   16/08/10
+---------------
+[+] Danfe em FastReport por (Itamar Luiz Bermond)
+
+
 Alterações   23/06/10
 ---------------
 [-] Danfe em Rave Arquivo e Code Base

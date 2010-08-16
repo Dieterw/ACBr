@@ -460,9 +460,6 @@ begin
 
   ContentHeader := Format(ContentTypeTemplate, ['application/soap+xml; charset=utf-8']);
   HttpAddRequestHeaders(Data, PChar(ContentHeader), Length(ContentHeader), HTTP_ADDREQ_FLAG_REPLACE);
-
-//  if not InternetSetOption(Data, INTERNET_OPTION_CLIENT_CERT_CONTEXT, PCertContext,sizeof(CertContext)*5) then
-//    raise Exception.Create( 'Erro OnBeforePost: ' + IntToStr(GetLastError) );
 end;
 {$ENDIF}
 
@@ -611,8 +608,8 @@ begin
   for i := 0 to TCTeRecepcao(Self).FCTes.Count-1 do
     vCtes := vCtes + TCTeRecepcao(Self).FCTes.Items[I].XML;
 
-//  vCtes := StringReplace( vCtes, '<?xml version="1.0" encoding="UTF-8" ?>', '', [rfReplaceAll] );
-//  vCtes := StringReplace( vCtes, '<?xml version="1.0" encoding="UTF-8"?>' , '', [rfReplaceAll] );
+  vCtes := StringReplace( vCtes, '<?xml version="1.0" encoding="UTF-8" ?>', '', [rfReplaceAll] );
+  vCtes := StringReplace( vCtes, '<?xml version="1.0" encoding="UTF-8"?>' , '', [rfReplaceAll] );
 
   FDadosMsg := '<enviCTe xmlns="http://www.portalfiscal.inf.br/cte" versao="'+CTenviCTe+'">'+
                '<idLote>'+IntToStr(TCTeRecepcao(Self).Lote)+'</idLote>'+vCtes+'</enviCTe>';
@@ -638,8 +635,20 @@ end;
 
 procedure TWebServicesBase.DoCTeRecibo;
 var
+  Cabecalho: TCabecalho;
   ConsReciCTe: TConsReciCTe;
 begin
+  // Janis
+  // Inicio
+  Cabecalho             := TCabecalho.Create;
+  Cabecalho.Versao      := CTecabMsg;
+  Cabecalho.VersaoDados := CTeconsReciCTe;
+  Cabecalho.GerarXML;
+
+  FCabMsg := Cabecalho.Gerador.ArquivoFormatoXML;
+  Cabecalho.Free;
+  // Fim
+
   ConsReciCTe        := TConsReciCTe.Create;
   ConsReciCTe.schema := TsPL005c;
   ConsReciCTe.tpAmb  := TpcnTipoAmbiente(FConfiguracoes.WebServices.AmbienteCodigo-1);
@@ -648,10 +657,6 @@ begin
 
   FDadosMsg := ConsReciCTe.Gerador.ArquivoFormatoXML;
   ConsReciCTe.Free;
-
-//  FDadosMsg := StringReplace( FDadosMsg, '<'+ENCODING_UTF8_STD+'>', '', [rfReplaceAll] ) ;
-//  FDadosMsg := StringReplace( FDadosMsg, '<'+ENCODING_UTF8+'>', '', [rfReplaceAll] ) ;
-//  FDadosMsg := StringReplace( FDadosMsg, '<?xml version="1.0"?>', '', [rfReplaceAll] ) ;
 end;
 
 procedure TWebServicesBase.DoCTeStatusServico;
@@ -765,7 +770,6 @@ begin
       begin
         if Assigned(TACBrCTe( FACBrCTe ).OnGerarLog) then
            TACBrCTe( FACBrCTe ).OnGerarLog(Self.StatusServico.Msg);
-//          raise Exception.Create(Self.StatusServico.Msg);
          raise Exception.Create('WebService Consulta Status serviço:'+LineBreak+
                                '- Inativo ou Inoperante tente novamente.'+LineBreak+
                                Self.StatusServico.Msg);
@@ -995,8 +999,7 @@ function TCTeRecepcao.Executar: Boolean;
 var
   CTeRetorno: TretEnvCTe;
   aMsg  : string;
-  Texto : String;
-//  Texto : WideString;
+  Texto : String; //  Texto : WideString;
   Acao  : TStringList ;
   Stream: TMemoryStream;
   StrStream: TStringStream;
@@ -1267,8 +1270,8 @@ function TCteRetRecepcao.Executar: Boolean;
        ReqResp.URL := Trim(FURL);  //LIMPA ESPAÇOS EM BRANCO
        ReqResp.UseUTF8InHeader := True;
        //
-       // O endereço abaixo não deve estar correto, pois não gera ocorre o
-       // retorno da SEFAZ o arquivo XML fica vazio
+       // O endereço abaixo não deve estar correto, pois não gera o
+       // retorno da SEFAZ o arquivo (-pro-rec.xml) fica vazio
        //
        ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/cte/wsdl/CteRetRecepcao/cteRetRecepcao';
     {$ENDIF}
@@ -1474,7 +1477,7 @@ begin
            'Versão Aplicativo : '+FCTeRetorno.verAplic+LineBreak+
            'Recibo : '+FCTeRetorno.nRec+LineBreak+
            'Status Código : '+IntToStr(FCTeRetorno.cStat)+LineBreak+
-           'Status Descrição : '+MotivoAux+LineBreak+
+           'Status Descrição : '+FCTeRetorno.xMotivo+LineBreak+
            'UF : '+CodigoParaUF(FCTeRetorno.cUF)+LineBreak;
    if FConfiguracoes.WebServices.Visualizar then
      ShowMessage(aMsg);
@@ -1640,7 +1643,7 @@ begin
             TACBrCTe( FACBrCTe ).Conhecimentos.Items[i].Confirmada := (CTeRetorno.cStat = 100); // 100 = Autorizado o Uso
             if wAtualiza then
             begin
-              TACBrCTe( FACBrCTe ).Conhecimentos.Items[i].Msg        := CTeRetorno.xMotivo;
+              TACBrCTe( FACBrCTe ).Conhecimentos.Items[i].Msg                  := CTeRetorno.xMotivo;
               TACBrCTe( FACBrCTe ).Conhecimentos.Items[i].CTe.procCTe.tpAmb    := CTeRetorno.tpAmb;
               TACBrCTe( FACBrCTe ).Conhecimentos.Items[i].CTe.procCTe.verAplic := CTeRetorno.verAplic;
               TACBrCTe( FACBrCTe ).Conhecimentos.Items[i].CTe.procCTe.chCTe    := CTeRetorno.chCTe;
@@ -1919,7 +1922,7 @@ end;
 function TCTeInutilizacao.Executar: Boolean;
 var
   CTeRetorno: TRetInutCTe;
-  aMsg: string;
+  aMsg  : string;
   Texto : String;
   Acao  : TStringList ;
   Stream: TMemoryStream;

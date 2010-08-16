@@ -156,6 +156,7 @@ type
 
     protected
       procedure HTTPGet( AURL : String) ; virtual ;
+      function AjustaParam(AParam : String) : String ;
 
     public
       constructor Create( AOwner : TACBrCEP ) ; virtual ;
@@ -184,7 +185,7 @@ type
 
   TACBrWSCEPLivre = class(TACBrCEPWSClass)
     private
-
+      procedure ProcessaResposta ;
     public
       constructor Create( AOwner : TACBrCEP ) ; override ;
 
@@ -288,6 +289,11 @@ end;
 function TACBrCEP.BuscarPorCEP(ACEP : String) : Integer ;
 begin
   fEnderecos.Clear;
+
+  ACEP := Trim( OnlyNumber( ACEP ) ) ;
+  if ACEP = '' then
+     raise Exception.Create('CEP deve ser informado');
+
   fACBrCEPWS.BuscarPorCEP(ACEP);
 
   Result := fEnderecos.Count;
@@ -327,6 +333,19 @@ Procedure TACBrCEPWSClass.BuscarPorLogradouro(AMunicipio, ATipo_Logradouro,
    ALogradouro, AUF, ABairro : String ) ;
 begin
   ErrorAbstract ;
+end ;
+
+Function TACBrCEPWSClass.AjustaParam( AParam : String ) : String ;
+begin
+  Result := Trim( AParam ) ;
+
+  if (Result <> '') then
+  begin
+    {$IFDEF UNICODE}
+     Result := Utf8ToAnsi( Result ) ;
+    {$ENDIF}
+    Result := EncodeURLElement( Result ) ;
+  end ;
 end ;
 
 Procedure TACBrCEPWSClass.HTTPGet( AURL : String ) ;
@@ -377,30 +396,12 @@ end ;
 
 Procedure TACBrWSBuscarCEP.BuscarPorCEP( ACEP : String ) ;
 begin
-  ACEP := Trim( OnlyNumber( ACEP ) ) ;
-  if ACEP = '' then
-     raise Exception.Create('CEP deve ser informado');
-
   HTTPGet( fpURL + '?cep='+ACEP+'&formato=string' ) ;
   ProcessaResposta ;
 end ;
 
 Procedure  TACBrWSBuscarCEP.BuscarPorLogradouro(AMunicipio,  ATipo_Logradouro,
   ALogradouro, AUF, ABairro : String) ;
-
-  Function AjustaParam( AParam : String ) : String ;
-  begin
-    Result := Trim( AParam ) ;
-
-    if (Result <> '') then
-    begin
-      {$IFDEF UNICODE}
-       Result := Utf8ToAnsi( Result ) ;
-      {$ENDIF}
-      Result := EncodeURLElement( Result ) ;
-    end ;
-  end ;
-
 Var
    Params : String ;
 begin
@@ -420,7 +421,7 @@ begin
     Params := Params + '&tipo_logradouro=' + ATipo_Logradouro ;
 
   if ABairro <> '' then
-    Params := Params + '&Bairro=' + ABairro ;
+    Params := Params + '&bairro=' + ABairro ;
 
   Params := Params + '&formato=string' ;
 
@@ -482,23 +483,100 @@ begin
      fOwner.OnBuscaEfetuada( Self );
 end ;
 
+
 { TACBrWSCEPLivre - http://ceplivre.pc2consultoria.com }
 
 constructor TACBrWSCEPLivre.Create(AOwner : TACBrCEP) ;
 begin
   inherited Create(AOwner) ;
-  fpURL := 'http://ceplivre.pc2consultoria.com' ;
+  fpURL := 'http://ceplivre.pc2consultoria.com/' ;
 end ;
 
 Procedure TACBrWSCEPLivre.BuscarPorCEP(ACEP : String) ;
 begin
-  //
+  // CEPLivre exige CEP formatado //
+  ACEP := Copy(ACEP,1,5)+'-'+Copy(ACEP,6,3);
+
+  HTTPGet( fpURL + 'index.php?module=cep&cep='+ACEP+'&formato=csv' ) ;
+  ProcessaResposta ;
 end ;
 
 Procedure TACBrWSCEPLivre.BuscarPorLogradouro(AMunicipio, ATipo_Logradouro,
   ALogradouro, AUF, ABairro : String) ;
+Var
+   Params : String ;
 begin
-  //
+  AMunicipio       := AjustaParam( AMunicipio ) ;
+  ATipo_Logradouro := AjustaParam( ATipo_Logradouro );
+  ALogradouro      := AjustaParam( ALogradouro ) ;
+  AUF              := AjustaParam( AUF );
+
+  if (AMunicipio = '') or (ALogradouro = '') or (AUF = '') then
+     raise Exception.Create('UF, Cidade e Logradouro devem ser informados');
+
+//  &logradouro=paulista&cidade=sao%20paulo&formato=csv
+  Params := 'index.php?module=cep' +
+            '&logradouro=' + ALogradouro+
+            '&cidade='     + AMunicipio+
+            '&sigla='      + AUF;
+
+  if ATipo_Logradouro <> '' then
+    Params := Params + '&tipo_logradouro=' + ATipo_Logradouro ;
+
+  if ABairro <> '' then
+    Params := Params + '&bairro=' + ABairro ;
+
+  Params := Params + '&formato=csv' ;
+
+  HTTPGet( fpURL + Params ) ;
+  ProcessaResposta ;
+end ;
+
+Procedure TACBrWSCEPLivre.ProcessaResposta ;
+Var
+   SL1, SL2 : TStringList ;
+   Buffer : String ;
+   PosIni, I : Integer ;
+   Endereco : TACBrCEPEndereco ;
+begin
+  fOwner.fEnderecos.Clear;
+
+  SL1 := TStringList.Create;
+  SL2 := TStringList.Create;
+  try
+    SL1.Text := fOwner.RespHTTP.Text ;
+
+    For I := 0 to SL1.Count-1 do
+    begin
+      Buffer := SL1[I] ;
+      Buffer := ACBrStr( Buffer );
+
+      SL2.Clear;
+      SL2.Text := StringReplace( Buffer, ',', sLineBreak, [rfReplaceAll] );
+
+      if (SL2.Count >= 9) and (Length( OnlyNumber(SL2[8]) ) = 8) then
+      begin
+        Endereco := TACBrCEPEndereco.Create;
+
+        Endereco.CEP             := SL2[8] ;
+        Endereco.Tipo_Logradouro := SL2[0] ;
+        Endereco.Logradouro      := SL2[2] ;
+        Endereco.Bairro          := SL2[3] ;
+        Endereco.Municipio       := SL2[4] ;
+        Endereco.UF              := SL2[5] ;
+        if SL2.Count >= 10 then
+          Endereco.IBGE_Municio  := SL2[9] ;
+
+        fOwner.Enderecos.Add( Endereco );
+      end ;
+    end ;
+  finally
+    SL1.free ;
+    SL2.free ;
+  end ;
+
+  if Assigned( fOwner.OnBuscaEfetuada ) then
+     fOwner.OnBuscaEfetuada( Self );
 end ;
 
 end.

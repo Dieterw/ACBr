@@ -268,6 +268,8 @@ procedure TACBrCEP.SetWebService(const AValue : TACBrCEPWebService) ;
 begin
   if fWebService = AValue then exit ;
 
+  fACBrCEPWS.Free;
+
   case AValue of
     wsBuscarCep : fACBrCEPWS := TACBrWSBuscarCEP.Create( Self );
     wsCepLivre  : fACBrCEPWS := TACBrWSCEPLivre.Create( Self );

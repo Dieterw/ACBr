@@ -73,7 +73,6 @@ requires
   ACBr_CTe,
   PCN,
   ACBrComum,
-  vcljpg,
   bdertl;
 
 contains

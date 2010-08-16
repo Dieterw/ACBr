@@ -71,7 +71,6 @@ package ACBrNFeDanfeQRpkg;
 
 requires
   ACBr_NFe,
-  vcljpg,
   bdertl;
 
 contains

@@ -237,7 +237,7 @@ object Form1: TForm1
           Width = 264
           Height = 21
           TabOrder = 1
-          Text = 'Coronel Aureliano'
+          Text = 'Coronel Aureliano de Camargo'
         end
         object bBuscarLogradouro: TButton
           Left = 347

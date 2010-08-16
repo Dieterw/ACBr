@@ -72,7 +72,6 @@ package ACBrCTeDacteQRpkg;
 requires
   ACBr_CTe,
   ACBrComum,
-  vcljpg,
   bdertl;
 
 contains

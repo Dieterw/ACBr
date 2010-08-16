@@ -55,15 +55,18 @@ type
     FdmDanfe: TdmACBrNFeFR;
     FFastFile: String;
     FEspessuraBorda: Integer;
+    function GetPreparedReport: TfrxReport;
    public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure ImprimirDANFE(NFE: TNFe = nil); override;
     procedure ImprimirDANFEPDF(NFE: TNFe = nil); override;
+    procedure PrepareReport(NFE: TNFe = nil);
   published
     property FastFile: String read FFastFile write FFastFile ;
     property dmDanfe: TdmACBrNFeFR read FdmDanfe write FdmDanfe;
     property EspessuraBorda: Integer read FEspessuraBorda write FEspessuraBorda;
+    property PreparedReport: TfrxReport read GetPreparedReport;
   end;
 
 implementation
@@ -84,39 +87,24 @@ begin
   inherited Destroy ;
 end;
 
-procedure TACBrNFeDANFEFR.ImprimirDANFE(NFE: TNFe = nil);
-var
-  i: Integer;
-  Report: TfrxReport;
+function TACBrNFeDANFEFR.GetPreparedReport: TfrxReport;
 begin
-  if FFastFile <> '' then
-    dmDanfe.frxReport.LoadFromFile(FFastFile);
-
-  if NFE = nil then
-  begin
-    for i := 0 to TACBrNFe(ACBrNFe).NotasFiscais.Count - 1 do
-    begin
-      dmDanfe.NFe := TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe;
-      dmDanfe.CarregaDados;
-
-      if (i > 0) then
-        dmDanfe.frxReport.PrepareReport(False)
-      else
-        dmDanfe.frxReport.PrepareReport;
-
-      dmDanfe.frxReport.ShowPreparedReport;
-    end;
-  end else
-  begin
-    dmDanfe.NFe := NFE;
-    dmDanfe.CarregaDados;
-
-    if dmDanfe.frxReport.PrepareReport then
-      dmDanfe.frxReport.ShowPreparedReport;
-  end;
+  Result := dmDanfe.frxReport;
 end;
 
-procedure TACBrNFeDANFEFR.ImprimirDANFEPDF(NFE: TNFe = nil);
+procedure TACBrNFeDANFEFR.ImprimirDANFE(NFE: TNFe);
+begin
+  PrepareReport(NFE);
+  dmDanfe.frxReport.ShowPreparedReport;
+end;
+
+procedure TACBrNFeDANFEFR.ImprimirDANFEPDF(NFE: TNFe);
+begin
+  PrepareReport(NFE);
+  dmDanfe.frxReport.Export(dmDanfe.frxPDFExport);
+end;
+
+procedure TACBrNFeDANFEFR.PrepareReport(NFE: TNFe);
 var
   i: Integer;
 begin
@@ -135,15 +123,13 @@ begin
       else
         dmDanfe.frxReport.PrepareReport;
 
-      dmDanfe.frxReport.Export(dmDanfe.frxPDFExport);
     end;
   end else
   begin
     dmDanfe.NFe := NFE;
     dmDanfe.CarregaDados;
 
-    if dmDanfe.frxReport.PrepareReport then
-      dmDanfe.frxReport.Export(dmDanfe.frxPDFExport);
+    dmDanfe.frxReport.PrepareReport;
   end;
 end;
 

@@ -109,7 +109,7 @@ type
     class procedure ShutDownXmlSec;
 {$ENDIF}
     class function GetURL(const AUF, AAmbiente, FormaEmissao: Integer; ALayOut: TLayOut): WideString;
-    class function SeparaDados(Texto: AnsiString; Chave: string): AnsiString;
+    class function SeparaDados( Texto : AnsiString; Chave : String; MantemChave : Boolean = False ) : AnsiString;
     class function Valida(const AXML: AnsiString; var AMsg: AnsiString; const APathSchemas: string = ''): Boolean;
 
     class function LimpaNumero(AValue: string): string;
@@ -770,10 +770,35 @@ begin
   end;
 end;
 
-class function CTeUtil.SeparaDados(Texto: AnsiString; Chave: string): AnsiString;
+class function CTeUtil.SeparaDados( Texto : AnsiString; Chave : String; MantemChave : Boolean = False ) : AnsiString;
 var
   PosIni, PosFim : Integer;
 begin
+  if MantemChave then
+   begin
+     PosIni := Pos(Chave, Texto) - 1;
+     PosFim := Pos('/' + Chave, Texto) + length(Chave) + 3;
+
+     if (PosIni = 0) or (PosFim = 0) then
+      begin
+        PosIni := Pos('ns2:' + Chave, Texto) - 1;
+        PosFim := Pos('/ns2:' + Chave, Texto) + length(Chave) + 3;
+      end;
+   end
+  else
+   begin
+     PosIni := Pos(Chave, Texto) + Pos('>', copy(Texto, Pos(Chave, Texto), length(Texto)));
+     PosFim := Pos('/' + Chave, Texto);
+
+     if (PosIni = 0) or (PosFim = 0) then
+      begin
+        PosIni := Pos('ns2:' + Chave, Texto) + Pos('>', copy(Texto, Pos('ns2:' + Chave, Texto), length(Texto)));
+        PosFim := Pos('/ns2:' + Chave, Texto);
+      end;
+   end;
+
+  Result := copy(Texto, PosIni, PosFim - (PosIni + 1));
+{
   PosIni := Pos(Chave, Texto) - 1;
   PosFim := Pos('/' + Chave, Texto) + length(Chave) + 3;
 
@@ -784,6 +809,7 @@ begin
   end;
 
   Result := copy(Texto, PosIni, PosFim - (PosIni + 1));
+ }
 end;
 
 {$IFDEF ACBrCTeOpenSSL}

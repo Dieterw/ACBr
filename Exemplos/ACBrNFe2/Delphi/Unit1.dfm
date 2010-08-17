@@ -953,6 +953,7 @@ object Form1: TForm1
         Height = 25
         Caption = 'Consultar pela Chave'
         TabOrder = 15
+        OnClick = btnConsultarChaveClick
       end
       object btnCancelarChave: TButton
         Left = 9
@@ -969,7 +970,7 @@ object Form1: TForm1
       Top = 193
       Width = 564
       Height = 362
-      ActivePage = Dados
+      ActivePage = TabSheet5
       Align = alClient
       TabOrder = 1
       object TabSheet5: TTabSheet
@@ -980,6 +981,7 @@ object Form1: TForm1
           Width = 556
           Height = 334
           Align = alClient
+          ScrollBars = ssVertical
           TabOrder = 0
         end
       end
@@ -1036,6 +1038,7 @@ object Form1: TForm1
           Width = 556
           Height = 334
           Align = alClient
+          ScrollBars = ssVertical
           TabOrder = 0
         end
       end
@@ -1048,6 +1051,7 @@ object Form1: TForm1
           Width = 556
           Height = 334
           Align = alClient
+          ScrollBars = ssVertical
           TabOrder = 0
         end
       end
@@ -1069,14 +1073,6 @@ object Form1: TForm1
     Configuracoes.WebServices.AguardarConsultaRet = 15000
     Configuracoes.WebServices.IntervaloTentativas = 1000
     Configuracoes.WebServices.AjustaAguardaConsultaRet = True
-    Configuracoes.Arquivos.Salvar = True
-    Configuracoes.Arquivos.PastaMensal = True
-    Configuracoes.Arquivos.AdicionarLiteral = True
-    Configuracoes.Arquivos.EmissaoPathNFe = True
-    Configuracoes.Arquivos.PathNFe = 'D:\delphi\ACBr\trunk\ACBrNFePCN\ACBrNFeMonitor\Arqs'
-    Configuracoes.Arquivos.PathCan = 'D:\delphi\ACBr\trunk\ACBrNFePCN\ACBrNFeMonitor\Arqs'
-    Configuracoes.Arquivos.PathInu = 'D:\delphi\ACBr\trunk\ACBrNFePCN\ACBrNFeMonitor\Arqs'
-    Configuracoes.Arquivos.PathDPEC = 'D:\delphi\ACBr\trunk\ACBrNFePCN\ACBrNFeMonitor\Arqs'
     OnStatusChange = ACBrNFe1StatusChange
     DANFE = ACBrNFeDANFERave1
     OnGerarLog = ACBrNFe1GerarLog
@@ -1105,8 +1101,8 @@ object Form1: TForm1
     ImprimirDetalhamentoEspecifico = True
     NFeCancelada = False
     RavFile = 
-      'D:\delphi\ACBr\trunk\Exemplos\ACBrNFe2\Delphi\Report\NotaFiscalE' +
-      'letronica.rav'
+      'D:\delphi\ACBr\trunk\Exemplos\ACBrNFe2\Delphi\Report\DANFE_Rave5' +
+      '13.rav'
     EspessuraBorda = 1
     Left = 758
     Top = 377

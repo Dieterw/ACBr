@@ -68,4 +68,13 @@ object Form1: TForm1
     TabOrder = 5
     OnClick = Button5Click
   end
+  object ACBrCTe1: TACBrCTe
+    Configuracoes.Geral.PathSalvar = 'C:\Program Files\Borland\Delphi7\Bin\'
+    Configuracoes.WebServices.UF = 'MT'
+    Configuracoes.WebServices.AguardarConsultaRet = 0
+    Configuracoes.WebServices.IntervaloTentativas = 0
+    Configuracoes.WebServices.AjustaAguardaConsultaRet = False
+    Left = 312
+    Top = 104
+  end
 end

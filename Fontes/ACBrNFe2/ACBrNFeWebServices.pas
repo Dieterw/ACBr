@@ -1009,9 +1009,9 @@ begin
   Texto := Texto +'</soap12:Envelope>';
 
   Acao.Text := Texto;
-  Acao.SaveToStream(Stream);
 
   {$IFDEF ACBrNFeOpenSSL}
+     Acao.SaveToStream(Stream);
      HTTP := THTTPSend.Create;
   {$ELSE}
      ReqResp := THTTPReqResp.Create(nil);
@@ -1156,9 +1156,9 @@ begin
   Texto := Texto +'</soap12:Envelope>';
 
   Acao.Text := Texto;
-  Acao.SaveToStream(Stream);
 
   {$IFDEF ACBrNFeOpenSSL}
+     Acao.SaveToStream(Stream);  
      HTTP := THTTPSend.Create;
   {$ELSE}
      ReqResp := THTTPReqResp.Create(nil);
@@ -1372,9 +1372,9 @@ function TNFeRetRecepcao.Executar: Boolean;
     Texto := Texto +'</soap12:Envelope>';
 
     Acao.Text := Texto;
-    Acao.SaveToStream(Stream);
 
     {$IFDEF ACBrNFeOpenSSL}
+       Acao.SaveToStream(Stream);    
        HTTP := THTTPSend.Create;
     {$ELSE}
        ReqResp := THTTPReqResp.Create(nil);
@@ -1538,9 +1538,9 @@ begin
   Texto := Texto +'</soap12:Envelope>';
 
   Acao.Text := Texto;
-  Acao.SaveToStream(Stream);
 
   {$IFDEF ACBrNFeOpenSSL}
+     Acao.SaveToStream(Stream);  
      HTTP := THTTPSend.Create;
   {$ELSE}
      ReqResp := THTTPReqResp.Create(nil);
@@ -1655,9 +1655,9 @@ begin
   Texto := Texto +'</soap12:Envelope>';
 
   Acao.Text := Texto;
-  Acao.SaveToStream(Stream);
 
   {$IFDEF ACBrNFeOpenSSL}
+     Acao.SaveToStream(Stream);  
      HTTP := THTTPSend.Create;
   {$ELSE}
      ReqResp := THTTPReqResp.Create(nil);
@@ -1848,9 +1848,9 @@ begin
   Texto := Texto +'</soap12:Envelope>';
 
   Acao.Text := Texto;
-  Acao.SaveToStream(Stream);
 
   {$IFDEF ACBrNFeOpenSSL}
+     Acao.SaveToStream(Stream);  
      HTTP := THTTPSend.Create;
   {$ELSE}
      ReqResp := THTTPReqResp.Create(nil);
@@ -2054,9 +2054,9 @@ begin
   Texto := Texto +'</soap12:Envelope>';
 
   Acao.Text := Texto;
-  Acao.SaveToStream(Stream);
 
   {$IFDEF ACBrNFeOpenSSL}
+     Acao.SaveToStream(Stream);  
      HTTP := THTTPSend.Create;
   {$ELSE}
      ReqResp := THTTPReqResp.Create(nil);
@@ -2221,9 +2221,8 @@ begin
 
   Acao.Text := Texto;
 
-  Acao.SaveToStream(Stream);
-
   {$IFDEF ACBrNFeOpenSSL}
+     Acao.SaveToStream(Stream);  
      HTTP := THTTPSend.Create;
   {$ELSE}
      ReqResp := THTTPReqResp.Create(nil);
@@ -2366,9 +2365,8 @@ begin
 
   Acao.Text := Texto;
 
-  Acao.SaveToStream(Stream);
-
   {$IFDEF ACBrNFeOpenSSL}
+     Acao.SaveToStream(Stream);  
      HTTP := THTTPSend.Create;
   {$ELSE}
      ReqResp := THTTPReqResp.Create(nil);
@@ -2506,9 +2504,8 @@ begin
 
   Acao.Text := Texto;
 
-  Acao.SaveToStream(Stream);
-
   {$IFDEF ACBrNFeOpenSSL}
+     Acao.SaveToStream(Stream);  
      HTTP := THTTPSend.Create;
   {$ELSE}
      ReqResp := THTTPReqResp.Create(nil);

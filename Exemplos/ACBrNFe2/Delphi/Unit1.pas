@@ -159,6 +159,7 @@ type
     procedure lblColaboradorClick(Sender: TObject);
     procedure lblPatrocinadorClick(Sender: TObject);
     procedure lblDoar1Click(Sender: TObject);
+    procedure btnConsultarChaveClick(Sender: TObject);
     
   private
     { Private declarations }
@@ -393,10 +394,13 @@ end;
 procedure TForm1.btnStatusServClick(Sender: TObject);
 begin
  ACBrNFe1.WebServices.StatusServico.Executar;
+
  MemoResp.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.StatusServico.RetWS);
  memoRespWS.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.StatusServico.RetornoWS);
  LoadXML(MemoResp, WBResposta);
+
  PageControl2.ActivePageIndex := 1;
+
  MemoDados.Lines.Add('');
  MemoDados.Lines.Add('Status Serviço');
  MemoDados.Lines.Add('tpAmb: '    +TpAmbToStr(ACBrNFe1.WebServices.StatusServico.tpAmb));
@@ -496,11 +500,19 @@ begin
   if not(InputQuery('WebServices Enviar', 'Numero do Lote', vNumLote)) then
     exit;
 
+  vNumLote := OnlyNumber(vNumLote);
+
+  if Trim(vNumLote) = '' then
+   begin
+     MessageDlg('Número do Lote inválido.',mtError,[mbok],0);
+     exit;
+   end;
+
   ACBrNFe1.NotasFiscais.Clear;
 
   GerarNFe(vAux);
 
-  ACBrNFe1.Enviar(StrToInt(vNumLote));
+  ACBrNFe1.Enviar(vNumLote);
 
   MemoResp.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.Retorno.RetWS);
   memoRespWS.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.Retorno.RetornoWS);
@@ -801,7 +813,7 @@ begin
   ACBrNFe1.WebServices.ConsultaDPEC.Executar;
 
   MemoResp.Lines.Text :=  UTF8Encode(ACBrNFe1.WebServices.ConsultaDPEC.RetWS);
-  memoRespWS.Lines.Text :=  UTF8Encode(ACBrNFe1.WebServices.ConsultaDPEC.RetornoWS);  
+  memoRespWS.Lines.Text :=  UTF8Encode(ACBrNFe1.WebServices.ConsultaDPEC.RetornoWS);
   LoadXML(MemoResp, WBResposta);
     
 end;
@@ -1503,8 +1515,6 @@ begin
   end;
 end;
 
-
-
 procedure TForm1.lblMouseEnter(Sender: TObject);
 begin
  TLabel(Sender).Font.Style := [fsBold,fsUnderline];
@@ -1916,26 +1926,26 @@ begin
       with Transp.Vol.Add do
        begin
          qVol  := 1;
-         esp   := '';
-         marca := '';
-         nVol  := '';
-         pesoL := 0;
-         pesoB := 0;
+         esp   := 'Especie';
+         marca := 'Marca';
+         nVol  := 'Numero';
+         pesoL := 100;
+         pesoB := 110;
 
          //Lacres do volume. Pode ser adicionado vários
          //Lacres.Add.nLacre := '';
        end;
 
-      Cobr.Fat.nFat  := '';
-      Cobr.Fat.vOrig := 0 ;
+      Cobr.Fat.nFat  := 'Numero da Fatura';
+      Cobr.Fat.vOrig := 100 ;
       Cobr.Fat.vDesc := 0 ;
-      Cobr.Fat.vLiq  := 0 ;
+      Cobr.Fat.vLiq  := 100 ;
 
       with Cobr.Dup.Add do
        begin
-         nDup  := '';
-         dVenc := now;
-         vDup  := 0;
+         nDup  := '1234';
+         dVenc := now+10;
+         vDup  := 100;
        end;
 
       InfAdic.infCpl     :=  '';
@@ -1967,6 +1977,21 @@ begin
       compra.xCont := '';
    end;
 
+end;
+
+procedure TForm1.btnConsultarChaveClick(Sender: TObject);
+var
+ vChave : String;
+begin
+  if not(InputQuery('WebServices Consultar', 'Chave da NF-e:', vChave)) then
+    exit;
+
+  ACBrNFe1.WebServices.Consulta.NFeChave := vChave;
+  ACBrNFe1.WebServices.Consulta.Executar;
+
+  MemoResp.Lines.Text :=  UTF8Encode(ACBrNFe1.WebServices.Consulta.RetWS);
+  memoRespWS.Lines.Text :=  UTF8Encode(ACBrNFe1.WebServices.Consulta.RetornoWS);
+  LoadXML(MemoResp, WBResposta);
 end;
 
 end.

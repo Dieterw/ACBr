@@ -4939,7 +4939,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
               Top = 56
               Width = 211
               Height = 21
-              ItemHeight = 13
+              ItemHeight = 0
               TabOrder = 2
             end
             object cbxImpDescPorc: TCheckBox

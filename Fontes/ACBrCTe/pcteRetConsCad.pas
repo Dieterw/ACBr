@@ -253,22 +253,6 @@ begin
       Result := True;
     end;
 
-//      if Leitor.rExtrai(2, 'infCad', '', i + 1) = ''  then
-//         InfCad.Add;
-//      i := 0;
-//      while Leitor.rExtrai(2, 'infCad', '', i + 1) <> '' do
-//      begin
-//        InfCad.Add;
-//        (*GR08*)InfCad[i].FIE := Leitor.rCampo(tcStr, 'IE');
-//        (*GR09*)InfCad[i].FCNPJ := Leitor.rCampo(tcStr, 'CNPJ');
-//        (*GR10*)InfCad[i].FCPF := Leitor.rCampo(tcStr, 'CPF');
-//        (*GR11*)InfCad[i].FUF := Leitor.rCampo(tcStr, 'UF');
-//        (*GR12*)InfCad[i].FcSit := Leitor.rCampo(tcInt, 'cSit');
-//        (*GR13*)InfCad[i].FxNome := Leitor.rCampo(tcStr, 'xNome');
-//        inc(i);
-//      end;
-//      Result := True;
-//    end;
   except
     Result := False;
   end;

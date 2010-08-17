@@ -153,23 +153,6 @@ begin
   except
     Result := False;
   end;
-
-//  try
-//    if leitor.rExtrai(1, 'cteConsultaCTResult') <> '' then
-//      (*ER07*)FcUF := leitor.rCampo(tcInt, 'cUF');
-//    if leitor.rExtrai(1, 'infProt') <> '' then
-//    begin
-//      (*ER03 *)FtpAmb := StrToTpAmb(ok, leitor.rCampo(tcStr, 'tpAmb'));
-//      (*ER04 *)FverAplic := leitor.rCampo(tcStr, 'verAplic');
-//      (*ER05 *)FcStat := leitor.rCampo(tcStr, 'cStat');
-//      (*ER06 *)FxMotivo := leitor.rCampo(tcStr, 'xMotivo');
-//      (*ER08 *)FprotCTe := leitor.rCampo(tcStr, 'nProt');
-//      (*ER09 *)FretCancCTe := leitor.rCampo(tcStr, 'retCancCTe');
-//      Result := True;
-//    end;
-//  except
-//    Result := False;
-//  end;
 end;
 
 end.

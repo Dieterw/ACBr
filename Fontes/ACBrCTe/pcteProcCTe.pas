@@ -202,7 +202,7 @@ begin
 
         xProtCTe :=
         (****)'<protCTe ' + V1_03 +'>' +
-        (******)'<infProt>' + // RetornarConteudoEntre(XMLinfProt.text, '<infProt', '<tpAmb>') +
+        (******)'<infProt>' +
         (*********)PreencherTAG('tpAmb', XMLinfProt.text) +
         (*********)PreencherTAG('verAplic', XMLinfProt.text) +
         (*********)PreencherTAG('chCTe', XMLinfProt.text) +

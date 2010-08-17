@@ -106,19 +106,22 @@ begin
   try
     if Leitor.rExtrai(1, 'infCanc') <> '' then
     begin
-      (*CR05 *)FtpAmb := StrToTpAmb(ok, Leitor.rCampo(tcStr, 'tpAmb'));
+      (*CR05 *)FtpAmb    := StrToTpAmb(ok, Leitor.rCampo(tcStr, 'tpAmb'));
       (*CR06 *)FverAplic := Leitor.rCampo(tcStr, 'verAplic');
-      (*CR07 *)FcStat := Leitor.rCampo(tcInt, 'cStat');
-      (*CR08 *)FxMotivo := Leitor.rCampo(tcStr, 'xMotivo');
-      (*CR08a*)FcUF := Leitor.rCampo(tcInt, 'cUF');
+      (*CR07 *)FcStat    := Leitor.rCampo(tcInt, 'cStat');
+      (*CR08 *)FxMotivo  := Leitor.rCampo(tcStr, 'xMotivo');
+      (*CR08a*)FcUF      := Leitor.rCampo(tcInt, 'cUF');
+
       if cStat = 101 then
       begin
-        (*CR09 *)FchCTe := Leitor.rCampo(tcStr, 'chCTe');
+        (*CR09 *)FchCTe    := Leitor.rCampo(tcStr, 'chCTe');
         (*CR10 *)FdhRecbto := Leitor.rCampo(tcDatHor, 'dhRecbto');
-        (*CR11 *)FnProt := Leitor.rCampo(tcStr, 'nProt');
+        (*CR11 *)FnProt    := Leitor.rCampo(tcStr, 'nProt');
       end;
+      
       Result := True;
     end;
+
   except
     Result := False;
   end;

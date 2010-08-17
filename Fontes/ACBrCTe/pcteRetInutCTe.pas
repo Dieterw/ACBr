@@ -110,21 +110,27 @@ begin
   try
     if leitor.rExtrai(1, 'infInut') <> '' then
     begin
-      (*DR05 *)FtpAmb := StrToTpAmb(ok, Leitor.rCampo(tcStr, 'tpAmb'));
+      (*DR05 *)FtpAmb    := StrToTpAmb(ok, Leitor.rCampo(tcStr, 'tpAmb'));
       (*DR06 *)FverAplic := Leitor.rCampo(tcStr, 'verAplic');
-      (*DR07 *)FcStat := Leitor.rCampo(tcInt, 'cStat');
-      (*DR08 *)FxMotivo := Leitor.rCampo(tcStr, 'xMotivo');
-      (*DR09 *)FcUF := Leitor.rCampo(tcInt, 'cUF');
-      (*DR10 *)Fano := Leitor.rCampo(tcInt, 'ano');
-      (*DR11 *)FCNPJ := Leitor.rCampo(tcStr, 'CNPJ');
-      (*DR12 *)FModelo := Leitor.rCampo(tcInt, 'mod');
-      (*DR13 *)FSerie := Leitor.rCampo(tcInt, 'serie');
-      (*DR14 *)FnCTIni := Leitor.rCampo(tcInt, 'nCTIni');
-      (*DR15 *)FnCTFin := Leitor.rCampo(tcInt, 'nCTFin');
-      (*DR16 *)FdhRecbto := Leitor.rCampo(tcDatHor, 'dhRecbto');
-      (*DR17 *)FnProt := Leitor.rCampo(tcStr, 'nProt');
+      (*DR07 *)FcStat    := Leitor.rCampo(tcInt, 'cStat');
+      (*DR08 *)FxMotivo  := Leitor.rCampo(tcStr, 'xMotivo');
+      (*DR09 *)FcUF      := Leitor.rCampo(tcInt, 'cUF');
+
+      if cStat = 102 then
+      begin
+        (*DR10 *)Fano      := Leitor.rCampo(tcInt, 'ano');
+        (*DR11 *)FCNPJ     := Leitor.rCampo(tcStr, 'CNPJ');
+        (*DR12 *)FModelo   := Leitor.rCampo(tcInt, 'mod');
+        (*DR13 *)FSerie    := Leitor.rCampo(tcInt, 'serie');
+        (*DR14 *)FnCTIni   := Leitor.rCampo(tcInt, 'nCTIni');
+        (*DR15 *)FnCTFin   := Leitor.rCampo(tcInt, 'nCTFin');
+        (*DR16 *)FdhRecbto := Leitor.rCampo(tcDatHor, 'dhRecbto');
+        (*DR17 *)FnProt    := Leitor.rCampo(tcStr, 'nProt');
+      end;
+      
       Result := True;
     end;
+
   except
     result := False;
   end;

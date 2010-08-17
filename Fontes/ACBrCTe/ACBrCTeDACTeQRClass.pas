@@ -135,10 +135,10 @@ var
   frmDACTeQRRetrato : TfrmDACTeQRRetrato;
   sProt     : String ;
 begin
-    frmDACTeQRRetrato := TfrmDACTeQRRetrato.Create(Self);
+  frmDACTeQRRetrato := TfrmDACTeQRRetrato.Create(Self);
+  sProt := TACBrCTe(ACBrCTe).DACTe.ProtocoloCTe ;
+  frmDACTeQRRetrato.ProtocoloCTe( sProt ) ;
 
-    sProt := TACBrCTe(ACBrCTe).DACTe.ProtocoloCTe ;
-    frmDACTeQRRetrato.ProtocoloCTe( sProt ) ;
   if CTe = nil then
    begin
      for i:= 0 to TACBrCTe(ACBrCTe).Conhecimentos.Count-1 do

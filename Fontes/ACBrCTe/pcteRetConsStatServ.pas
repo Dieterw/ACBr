@@ -107,19 +107,22 @@ begin
   Result := False;
   try
     Leitor.Grupo := Leitor.Arquivo;
+
     if leitor.rExtrai(1, 'retConsStatServCte') <> '' then
     begin
-      (*FR03*)FtpAmb := StrToTpAmb(ok, Leitor.rCampo(tcStr, 'tpAmb'));
-      (*FR04*)FverAplic := Leitor.rCampo(tcStr, 'verAplic');
-      (*FR05*)FcStat := Leitor.rCampo(tcInt, 'cStat');
-      (*FR06*)FxMotivo := Leitor.rCampo(tcStr, 'xMotivo');
-      (*FR07*)FcUF := Leitor.rCampo(tcInt, 'cUF');
-      (*FR08*)FdhRecbto := Leitor.rCampo(tcDatHor, 'dhRecbto');
-      (*FR09*)FtMed := Leitor.rCampo(tcInt, 'tMed');
+      (*FR03*)FtpAmb     := StrToTpAmb(ok, Leitor.rCampo(tcStr, 'tpAmb'));
+      (*FR04*)FverAplic  := Leitor.rCampo(tcStr, 'verAplic');
+      (*FR05*)FcStat     := Leitor.rCampo(tcInt, 'cStat');
+      (*FR06*)FxMotivo   := Leitor.rCampo(tcStr, 'xMotivo');
+      (*FR07*)FcUF       := Leitor.rCampo(tcInt, 'cUF');
+      (*FR08*)FdhRecbto  := Leitor.rCampo(tcDatHor, 'dhRecbto');
+      (*FR09*)FtMed      := Leitor.rCampo(tcInt, 'tMed');
       (*FR08*)FdhRetorno := Leitor.rCampo(tcDatHor, 'dhRetorno');
-      (*FR11*)FxObs := Leitor.rCampo(tcStr, 'xObs');
+      (*FR11*)FxObs      := Leitor.rCampo(tcStr, 'xObs');
+
       Result := True;
     end;
+
   except
     Result := False;
   end;

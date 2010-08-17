@@ -116,17 +116,20 @@ begin
     Leitor.Grupo := Leitor.Arquivo;
     if leitor.rExtrai(1, 'retEnviCte') <> '' then
     begin
-      (*AR03 *)FtpAmb := StrToTpAmb(ok, Leitor.rCampo(tcStr, 'tpAmb'));
-      (*AR03a*)FcUF := Leitor.rCampo(tcInt, 'cUF');
+      (*AR03 *)FtpAmb    := StrToTpAmb(ok, Leitor.rCampo(tcStr, 'tpAmb'));
+      (*AR03a*)FcUF      := Leitor.rCampo(tcInt, 'cUF');
       (*AR04 *)FverAplic := Leitor.rCampo(tcStr, 'verAplic');
-      (*AR05 *)FcStat := Leitor.rCampo(tcInt, 'cStat');
-      (*AR06 *)FxMotivo := Leitor.rCampo(tcStr, 'xMotivo');
+      (*AR05 *)FcStat    := Leitor.rCampo(tcInt, 'cStat');
+      (*AR06 *)FxMotivo  := Leitor.rCampo(tcStr, 'xMotivo');
+
       //       Grupo infRec - Dados do Recibo do Lote (Só é gerado se o Lote for aceito)
-      (*AR08 *)infRec.nRec := Leitor.rCampo(tcStr, 'nRec');
+      (*AR08 *)infRec.nRec      := Leitor.rCampo(tcStr, 'nRec');
       (*AR09 *)infRec.FdhRecbto := Leitor.rCampo(tcDatHor, 'dhRecbto');
-      (*AR10 *)infRec.FtMed := Leitor.rCampo(tcInt, 'tMed');
+      (*AR10 *)infRec.FtMed     := Leitor.rCampo(tcInt, 'tMed');
+
       Result := True;
     end;
+
   except
     result := false;
   end;

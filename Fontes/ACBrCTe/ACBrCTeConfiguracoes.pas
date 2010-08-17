@@ -198,26 +198,26 @@ constructor TConfiguracoes.Create(AOwner: TComponent);
 begin
   inherited Create( AOwner ) ;
   
-  FGeral       := TGeralConf.Create(Self);
-  FGeral.Name  := 'GeralConf' ;
+  FGeral      := TGeralConf.Create(Self);
+  FGeral.Name := 'GeralConf' ;
   {$IFDEF COMPILER6_UP}
    FGeral.SetSubComponent( true );{ para gravar no DFM/XFM }
   {$ENDIF}
 
-  FWebServices  := TWebServicesConf.Create(self);
-  FWebServices.Name  := 'WebServicesConf' ;
+  FWebServices      := TWebServicesConf.Create(self);
+  FWebServices.Name := 'WebServicesConf' ;
   {$IFDEF COMPILER6_UP}
    FWebServices.SetSubComponent( true );{ para gravar no DFM/XFM }
   {$ENDIF}
 
-  FCertificados := TCertificadosConf.Create(self);
-  FCertificados.Name  := 'CertificadosConf' ;
+  FCertificados      := TCertificadosConf.Create(self);
+  FCertificados.Name := 'CertificadosConf' ;
   {$IFDEF COMPILER6_UP}
    FCertificados.SetSubComponent( true );{ para gravar no DFM/XFM }
   {$ENDIF}
 
-  FArquivos := TArquivosConf.Create(self);
-  FArquivos.Name  := 'ArquivosConf' ;
+  FArquivos      := TArquivosConf.Create(self);
+  FArquivos.Name := 'ArquivosConf' ;
   {$IFDEF COMPILER6_UP}
    FArquivos.SetSubComponent( true );{ para gravar no DFM/XFM }
   {$ENDIF}
@@ -238,12 +238,12 @@ constructor TGeralConf.Create(AOwner: TComponent);
 begin
   Inherited Create( AOwner );
 
-  FFormaEmissao       := teNormal;
-  FFormaEmissaoCodigo := StrToInt(TpEmisToStr(FFormaEmissao));
-  FSalvar             := False;
+  FFormaEmissao          := teNormal;
+  FFormaEmissaoCodigo    := StrToInt(TpEmisToStr(FFormaEmissao));
+  FSalvar                := False;
   FAtualizarXMLCancelado := True;
-  FPathSalvar         := '' ;
-  FPathSchemas        := '' ;
+  FPathSalvar            := '' ;
+  FPathSchemas           := '' ;
 end;
 
 function TGeralConf.GetPathSalvar: String;
@@ -260,13 +260,13 @@ function TGeralConf.Save(AXMLName: String; AXMLFile: WideString; aPath: String =
 var
   vSalvar: TStrings;
 begin
-  Result := False;
+  Result  := False;
   vSalvar := TStringList.Create;
   try
     try
       if CTeUtil.NaoEstaVazio(ExtractFilePath(AXMLName)) then
        begin
-         aPath := ExtractFilePath(AXMLName);
+         aPath    := ExtractFilePath(AXMLName);
          AXMLName := StringReplace(AXMLName,aPath,'',[rfIgnoreCase]);
        end
       else
@@ -293,7 +293,7 @@ end;
 
 procedure TGeralConf.SetFormaEmissao(AValue: TpcnTipoEmissao);
 begin
-  FFormaEmissao := AValue;
+  FFormaEmissao       := AValue;
   FFormaEmissaoCodigo := StrToInt(TpEmisToStr(FFormaEmissao));
 end;
 
@@ -303,16 +303,16 @@ constructor TWebServicesConf.Create(AOwner: TComponent);
 begin
   Inherited Create( AOwner );
 
-  FUF               := NFeUF[24];
-  FUFCodigo         := NFeUFCodigo[24];
-  FAmbiente         := taHomologacao;
-  FVisualizar       := False ;
-  FAmbienteCodigo   := StrToInt(TpAmbToStr(FAmbiente));
+  FUF             := NFeUF[24];
+  FUFCodigo       := NFeUFCodigo[24];
+  FAmbiente       := taHomologacao;
+  FVisualizar     := False ;
+  FAmbienteCodigo := StrToInt(TpAmbToStr(FAmbiente));
 end;
 
 procedure TWebServicesConf.SetAmbiente(AValue: TpcnTipoAmbiente);
 begin
-  FAmbiente := AValue;
+  FAmbiente       := AValue;
   FAmbienteCodigo := StrToInt(TpAmbToStr(AValue));
 end;
 
@@ -355,17 +355,19 @@ end;
 {$IFNDEF ACBrCTeOpenSSL}
 function TCertificadosConf.GetCertificado: ICertificate2;
 var
-  Store        : IStore3;
-  Certs        : ICertificates2;
-  Cert         : ICertificate2;
-  i            : Integer;
+  Store : IStore3;
+  Certs : ICertificates2;
+  Cert  : ICertificate2;
+  i     : Integer;
 
   xmldoc  : IXMLDOMDocument3;
   xmldsig : IXMLDigitalSignature;
-  dsigKey   : IXMLDSigKey;
-  SigKey    : IXMLDSigKeyEx;
-  PrivateKey : IPrivateKey;
+  dsigKey : IXMLDSigKey;
+  SigKey  : IXMLDSigKeyEx;
+
+  PrivateKey     : IPrivateKey;
   hCryptProvider : HCRYPTPROV;
+
   XML : String;
 begin
   CoInitialize(nil); // PERMITE O USO DE THREAD
@@ -373,7 +375,7 @@ begin
     raise Exception.Create('Número de Série do Certificado Digital não especificado !');
 
   Result := nil;
-  Store := CoStore.Create;
+  Store  := CoStore.Create;
   Store.Open(CAPICOM_CURRENT_USER_STORE, CAPICOM_STORE_NAME, CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED);
 
   Certs := Store.Certificates as ICertificates2;
@@ -402,16 +404,16 @@ begin
          XML := XML + '<Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />';
          XML := XML + '<DigestValue></DigestValue></Reference></SignedInfo><SignatureValue></SignatureValue><KeyInfo></KeyInfo></Signature>';
 
-         xmldoc := CoDOMDocument50.Create;
+         xmldoc                    := CoDOMDocument50.Create;
          xmldoc.async              := False;
          xmldoc.validateOnParse    := False;
          xmldoc.preserveWhiteSpace := True;
          xmldoc.loadXML(XML);
          xmldoc.setProperty('SelectionNamespaces', DSIGNS);
 
-         xmldsig := CoMXDigitalSignature50.Create;
+         xmldsig           := CoMXDigitalSignature50.Create;
          xmldsig.signature := xmldoc.selectSingleNode('.//ds:Signature');
-         xmldsig.store := CertStoreMem;
+         xmldsig.store     := CertStoreMem;
 
          dsigKey := xmldsig.createKeyFromCSP(PrivateKey.ProviderType, PrivateKey.ProviderName, PrivateKey.ContainerName, 0);
          if (dsigKey = nil) then
@@ -426,13 +428,13 @@ begin
            CryptReleaseContext(hCryptProvider, 0);
          end;
 
-         SigKey    := nil;
-         dsigKey   := nil;
-         xmldsig   := nil;
-         xmldoc    := nil;
+         SigKey  := nil;
+         dsigKey := nil;
+         xmldsig := nil;
+         xmldoc  := nil;
       end;
 
-      Result := Cert;
+      Result    := Cert;
       FDataVenc := Cert.ValidToDate;
       break;
     end;
@@ -455,21 +457,21 @@ end;
 
 function TCertificadosConf.SelecionarCertificado: AnsiString;
 var
-  Store        : IStore3;
-  Certs        : ICertificates2;
-  Certs2       : ICertificates2;
-  Cert         : ICertificate2;
+  Store  : IStore3;
+  Certs  : ICertificates2;
+  Certs2 : ICertificates2;
+  Cert   : ICertificate2;
 begin
   CoInitialize(nil); // PERMITE O USO DE THREAD
   Store := CoStore.Create;
   Store.Open(CAPICOM_CURRENT_USER_STORE, CAPICOM_STORE_NAME, CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED);
 
-  Certs := Store.Certificates as ICertificates2;
+  Certs  := Store.Certificates as ICertificates2;
   Certs2 := Certs.Select('Certificado(s) Digital(is) disponível(is)', 'Selecione o Certificado Digital para uso no aplicativo', false);
 
   if not(Certs2.Count = 0) then
   begin
-    Cert := IInterface(Certs2.Item[1]) as ICertificate2;
+    Cert         := IInterface(Certs2.Item[1]) as ICertificate2;
     FNumeroSerie := Cert.SerialNumber;
     FDataVenc    := Cert.ValidToDate;
   end;
@@ -553,7 +555,7 @@ begin
   if not DirectoryExists(Dir) then
      ForceDirectories(Dir);
 
-  Result  := Dir;
+  Result := Dir;
 end;
 
 function TArquivosConf.GetPathInu: String;
@@ -582,7 +584,7 @@ begin
   if not DirectoryExists(Dir) then
      ForceDirectories(Dir);
 
-  Result  := Dir;
+  Result := Dir;
 end;
 
 function TArquivosConf.GetPathCTe(Data : TDateTime = 0): String;
@@ -613,7 +615,7 @@ begin
   if not DirectoryExists(Dir) then
      ForceDirectories(Dir);
 
-  Result  := Dir;
+  Result := Dir;
 end;
 
 end.

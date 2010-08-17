@@ -128,21 +128,26 @@ begin
   FUsuario      := '' ;
   FPathArquivos := '' ;
   FImpressora   := '' ;
-  FImprimirHoraSaida := False;
+
+  FImprimirHoraSaida      := False;
   FImprimirHoraSaida_Hora := '';
+
   FMostrarPreview := True;
-  FMostrarStatus := True;
-  FNumCopias := 1;
+  FMostrarStatus  := True;
+  FNumCopias      := 1;
+
   FFax   := '' ;
   FSite  := '' ;
   FEmail := '' ;
+
   FImprimeDescPorc := False;
-  FProtocoloCTE := '';
+  FProtocoloCTE    := '';
+
   FMargemInferior := 0.8;
   FMargemSuperior := 0.8;
   FMargemEsquerda := 0.6;
   FMargemDireita  := 0.51;
-  FCTeCancelada := False;
+  FCTeCancelada   := False;
 end;
 
 destructor TACBrCteDACTEClass.Destroy;

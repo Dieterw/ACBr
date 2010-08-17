@@ -157,9 +157,9 @@ begin
   FCTe.Ide.tpCTe  := tcNormal;
   FCTe.Ide.modelo := '57';
 
-  FCTe.Ide.verProc   := '1.0.0.0';
-  FCTe.Ide.tpAmb     := TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).Configuracoes.WebServices.Ambiente  ;
-  FCTe.Ide.tpEmis    := TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).Configuracoes.Geral.FormaEmissao ;
+  FCTe.Ide.verProc := '1.0.0.0';
+  FCTe.Ide.tpAmb   := TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).Configuracoes.WebServices.Ambiente  ;
+  FCTe.Ide.tpEmis  := TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).Configuracoes.Geral.FormaEmissao ;
 end;
 
 destructor Conhecimento.Destroy;
@@ -189,7 +189,7 @@ var
   LocCTeW : TCTeW;
 begin
   try
-     Result := True;
+     Result  := True;
      LocCTeW := TCTeW.Create(CTe);
      try
         LocCTeW.schema := TsPL005c;
@@ -214,7 +214,7 @@ var
   LocCTeW : TCTeW;
 begin
   try
-     Result := True;
+     Result  := True;
      LocCTeW := TCTeW.Create(CTe);
      try
         LocCTeW.schema := TsPL005c;
@@ -243,7 +243,7 @@ procedure Conhecimento.EnviarEmail(const sSmtpHost,
                                       PedeConfirma: Boolean = False);
 var
  ThreadSMTP : TSendMailThread;
- m:TMimemess;
+ m: TMimemess;
  p: TMimepart;
  StreamCTe : TStringStream;
  NomeArq : String;
@@ -403,7 +403,7 @@ begin
     try
        LocCTeW.schema := TsPL005c;
        LocCTeW.GerarXml;
-       Self.Items[i].XML := LocCTeW.Gerador.ArquivoFormatoXML;
+       Self.Items[i].XML     := LocCTeW.Gerador.ArquivoFormatoXML;
        Self.Items[i].Alertas := LocCTeW.Gerador.ListaDeAlertas.Text;
     finally
        LocCTeW.Free;
@@ -510,7 +510,7 @@ var
  LocCTeR : TCTeR;
 begin
   try
-    Result := True;
+    Result  := True;
     LocCTeR := TCTeR.Create(Self.Add.CTe);
     try
        LocCTeR.Leitor.CarregarArquivo(Stream);

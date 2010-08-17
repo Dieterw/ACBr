@@ -65,8 +65,6 @@ type
     FxMotivo: string;
     FcUF: integer;
     FchCTe: string;
-//    FprotCTe: string;
-//    FretCancCTe : string;
     FprotCTe: TProcCTe;
     FretCancCTe: TRetCancCTe;
   public
@@ -81,8 +79,6 @@ type
     property xMotivo: string read FxMotivo write FxMotivo;
     property cUF: integer read FcUF write FcUF;
     property chCTe: string read FchCTe write FchCTe;
-//    property protCTe: string read FprotCTe write FprotCTe;
-//    property retCancCTe: string read FretCancCTe write FprotCTe;
     property protCTe: TProcCTe read FprotCTe write FprotCTe;
     property retCancCTe: TRetCancCTe read FretCancCTe write FretCancCTe;
   end;
@@ -114,12 +110,13 @@ begin
   try
     if leitor.rExtrai(1, 'retConsSitCTe') <> '' then
     begin
-      (*ER03 *)FtpAmb := StrToTpAmb(ok, leitor.rCampo(tcStr, 'tpAmb'));
+      (*ER03 *)FtpAmb    := StrToTpAmb(ok, leitor.rCampo(tcStr, 'tpAmb'));
       (*ER04 *)FverAplic := leitor.rCampo(tcStr, 'verAplic');
-      (*ER05 *)FcStat := leitor.rCampo(tcInt, 'cStat');
-      (*ER06 *)FxMotivo := leitor.rCampo(tcStr, 'xMotivo');
-      (*ER07 *)FcUF := leitor.rCampo(tcInt, 'cUF');
-      (*ER07a*)FchCTe := leitor.rCampo(tcStr, 'chCTe');
+      (*ER05 *)FcStat    := leitor.rCampo(tcInt, 'cStat');
+      (*ER06 *)FxMotivo  := leitor.rCampo(tcStr, 'xMotivo');
+      (*ER07 *)FcUF      := leitor.rCampo(tcInt, 'cUF');
+      (*ER07a*)FchCTe    := leitor.rCampo(tcStr, 'chCTe'); // ?????
+      
       if FcStat in  [100,101] then
        begin
          if (Leitor.rExtrai(1, 'protCTe') <> '') or (Leitor.rExtrai(1, 'infProt') <> '') then
@@ -134,22 +131,25 @@ begin
             protCTe.xMotivo  := Leitor.rCampo(tcStr, 'xMotivo');
          end;
        end;
+
       if FcStat = 101 then
        begin
          if Leitor.rExtrai(1, 'infCanc') <> '' then
           begin
             retCancCTe.tpAmb    := StrToTpAmb(ok, Leitor.rCampo(tcStr, 'tpAmb'));
             retCancCTe.verAplic := Leitor.rCampo(tcStr, 'verAplic');
-            retCancCTe.cStat := Leitor.rCampo(tcInt, 'cStat');
-            retCancCTe.xMotivo := Leitor.rCampo(tcStr, 'xMotivo');
-            retCancCTe.cUF := Leitor.rCampo(tcInt, 'cUF');
-            retCancCTe.chCTe := Leitor.rCampo(tcStr, 'chCTe');
+            retCancCTe.cStat    := Leitor.rCampo(tcInt, 'cStat');
+            retCancCTe.xMotivo  := Leitor.rCampo(tcStr, 'xMotivo');
+            retCancCTe.cUF      := Leitor.rCampo(tcInt, 'cUF');
+            retCancCTe.chCTe    := Leitor.rCampo(tcStr, 'chCTe');
             retCancCTe.dhRecbto := Leitor.rCampo(tcDatHor, 'dhRecbto');
-            retCancCTe.nProt := Leitor.rCampo(tcStr, 'nProt');
+            retCancCTe.nProt    := Leitor.rCampo(tcStr, 'nProt');
          end;
        end;
+
       Result := True;
     end;
+    
   except
     Result := False;
   end;

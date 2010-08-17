@@ -210,44 +210,46 @@ begin
     if Leitor.rExtrai(1, 'infCons') <> '' then
     begin
       (*GR04 *)FverAplic := Leitor.rCampo(tcStr, 'verAplic');
-      (*GR05 *)FcStat := Leitor.rCampo(tcInt, 'cStat');
-      (*GR06 *)FxMotivo := Leitor.rCampo(tcStr, 'xMotivo');
-      (*GR06a*)FUF := Leitor.rCampo(tcStr, 'UF');
-      (*GR06b*)FIE := Leitor.rCampo(tcStr, 'IE');
-      (*GR06c*)FCNPJ := Leitor.rCampo(tcStr, 'CNPJ');
-      (*GR06d*)FCPF := Leitor.rCampo(tcStr, 'CPF');
-      (*GR06e*)FdhCons := Leitor.rCampo(tcDatHor, 'dhCons');
-      (*GR06f*)FcUF := Leitor.rCampo(tcInt, 'cUF');
+      (*GR05 *)FcStat    := Leitor.rCampo(tcInt, 'cStat');
+      (*GR06 *)FxMotivo  := Leitor.rCampo(tcStr, 'xMotivo');
+      (*GR06a*)FUF       := Leitor.rCampo(tcStr, 'UF');
+      (*GR06b*)FIE       := Leitor.rCampo(tcStr, 'IE');
+      (*GR06c*)FCNPJ     := Leitor.rCampo(tcStr, 'CNPJ');
+      (*GR06d*)FCPF      := Leitor.rCampo(tcStr, 'CPF');
+      (*GR06e*)FdhCons   := Leitor.rCampo(tcDatHor, 'dhCons');
+      (*GR06f*)FcUF      := Leitor.rCampo(tcInt, 'cUF');
+
       while Leitor.rExtrai(2, 'infCad', '', i + 1) <> '' do
       begin
         InfCad.Add;
 
-        (*GR08 *)InfCad[i].FIE := Leitor.rCampo(tcStr, 'IE');
-        (*GR09 *)InfCad[i].FCNPJ := Leitor.rCampo(tcStr, 'CNPJ');
-        (*GR10 *)InfCad[i].FCPF := Leitor.rCampo(tcStr, 'CPF');
-        (*GR11 *)InfCad[i].FUF := Leitor.rCampo(tcStr, 'UF');
-        (*GR12 *)InfCad[i].FcSit := Leitor.rCampo(tcInt, 'cSit');
+        (*GR08 *)InfCad[i].FIE         := Leitor.rCampo(tcStr, 'IE');
+        (*GR09 *)InfCad[i].FCNPJ       := Leitor.rCampo(tcStr, 'CNPJ');
+        (*GR10 *)InfCad[i].FCPF        := Leitor.rCampo(tcStr, 'CPF');
+        (*GR11 *)InfCad[i].FUF         := Leitor.rCampo(tcStr, 'UF');
+        (*GR12 *)InfCad[i].FcSit       := Leitor.rCampo(tcInt, 'cSit');
         (*GR12a*)InfCad[i].FindCredNFe := Leitor.rCampo(tcInt, 'indCredNFe');
         (*GR12b*)InfCad[i].FindCredCTe := Leitor.rCampo(tcInt, 'indCredCTe');
-        (*GR13 *)InfCad[i].FxNome := Leitor.rCampo(tcStr, 'xNome');
-        (*GR13a*)InfCad[i].FxFant := Leitor.rCampo(tcStr, 'xFant');
-        (*GR14 *)InfCad[i].FxRegApur := Leitor.rCampo(tcStr, 'xRegApur');
-        (*GR15 *)InfCad[i].FCNAE := Leitor.rCampo(tcInt, 'CNAE');
-        (*GR16 *)InfCad[i].FdIniAtiv := Leitor.rCampo(tcDat, 'dIniAtiv');
-        (*GR17 *)InfCad[i].FdUltSit := Leitor.rCampo(tcDat, 'dUltSit');
-        (*GR18 *)InfCad[i].FdBaixa := Leitor.rCampo(tcDat, 'dBaixa');
-        (*GR20 *)InfCad[i].FIEUnica := Leitor.rCampo(tcStr, 'IEUnica');
-        (*GR21 *)InfCad[i].FIEAtual := Leitor.rCampo(tcDat, 'IEAtual');
-        (*GR23 *)InfCad[i].FxLgr := Leitor.rCampo(tcStr, 'xLgr');
-        (*GR24 *)InfCad[i].Fnro := Leitor.rCampo(tcStr, 'nro');
-        (*GR25 *)InfCad[i].FxCpl := Leitor.rCampo(tcStr, 'xCpl');
-        (*GR26 *)InfCad[i].FxBairro := Leitor.rCampo(tcStr, 'xBairro');
-        (*GR27 *)InfCad[i].FcMun := Leitor.rCampo(tcInt, 'cMun');
-        (*GR28 *)InfCad[i].FxMun := Leitor.rCampo(tcStr, 'xMun');
-        (*GR29 *)InfCad[i].FCep := Leitor.rCampo(tcInt, 'CEP');
+        (*GR13 *)InfCad[i].FxNome      := Leitor.rCampo(tcStr, 'xNome');
+        (*GR13a*)InfCad[i].FxFant      := Leitor.rCampo(tcStr, 'xFant');
+        (*GR14 *)InfCad[i].FxRegApur   := Leitor.rCampo(tcStr, 'xRegApur');
+        (*GR15 *)InfCad[i].FCNAE       := Leitor.rCampo(tcInt, 'CNAE');
+        (*GR16 *)InfCad[i].FdIniAtiv   := Leitor.rCampo(tcDat, 'dIniAtiv');
+        (*GR17 *)InfCad[i].FdUltSit    := Leitor.rCampo(tcDat, 'dUltSit');
+        (*GR18 *)InfCad[i].FdBaixa     := Leitor.rCampo(tcDat, 'dBaixa');
+        (*GR20 *)InfCad[i].FIEUnica    := Leitor.rCampo(tcStr, 'IEUnica');
+        (*GR21 *)InfCad[i].FIEAtual    := Leitor.rCampo(tcDat, 'IEAtual');
+        (*GR23 *)InfCad[i].FxLgr       := Leitor.rCampo(tcStr, 'xLgr');
+        (*GR24 *)InfCad[i].Fnro        := Leitor.rCampo(tcStr, 'nro');
+        (*GR25 *)InfCad[i].FxCpl       := Leitor.rCampo(tcStr, 'xCpl');
+        (*GR26 *)InfCad[i].FxBairro    := Leitor.rCampo(tcStr, 'xBairro');
+        (*GR27 *)InfCad[i].FcMun       := Leitor.rCampo(tcInt, 'cMun');
+        (*GR28 *)InfCad[i].FxMun       := Leitor.rCampo(tcStr, 'xMun');
+        (*GR29 *)InfCad[i].FCep        := Leitor.rCampo(tcInt, 'CEP');
 
         inc(i);
       end;
+      
       if i = 0 then
         InfCad.Add;
       Result := True;

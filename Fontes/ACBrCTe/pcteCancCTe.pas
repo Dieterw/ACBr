@@ -109,7 +109,7 @@ begin
     Gerador.wCampo(tcStr, 'CP06', 'xServ', 008, 008, 1, 'CANCELAR', DSC_XSERV);
     Gerador.wCampo(tcEsp, 'CP07', 'chCTe', 044, 044, 1, SomenteNumeros(FchCTe), DSC_CHCTe);
     if not ValidarChave('CTe' + SomenteNumeros(FchCTe)) then
-      Gerador.wAlerta('CP07', 'chCTe', '', 'Chave de CTe inválida');
+      Gerador.wAlerta('CP07', 'chCTe', '', 'Chave do CTe inválida');
     Gerador.wCampo(tcEsp, 'CP08', 'nProt', 015, 015, 1, SomenteNumeros(FnProt), DSC_NPROT);
     Gerador.wCampo(tcStr, 'CP09', 'xJust', 015, 255, 1, FiltrarTextoXML(true, FxJust), DSC_XJUST);
     Gerador.wGrupo('/infCanc');

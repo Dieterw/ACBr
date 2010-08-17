@@ -120,7 +120,8 @@ begin
       IntToStrZero(FnCTIni, 9) + IntToStrZero(FnCTFin, 9);
 
     Gerador.ArquivoFormatoXML := '';
-//    Gerador.wGrupo(ENCODING_UTF8, '', False);
+
+    //    Gerador.wGrupo(ENCODING_UTF8, '', False);
     Gerador.wGrupo('inutCTe ' + NAME_SPACE_CTE + ' ' + V1_03);
     Gerador.wGrupo('infInut Id="' + FIDInutilizacao + '"');
     if length(FIDInutilizacao) < 39 then
@@ -143,6 +144,7 @@ begin
     Gerador.wCampo(tcStr, 'CP14', 'xJust ', 015, 255, 1, FiltrarTextoXML(true, FxJust), DSC_XJUST);
     Gerador.wGrupo('/infInut');
     Gerador.wGrupo('/inutCTe');
+
     Result := (Gerador.ListaDeAlertas.Count = 0);
   end;
 end;

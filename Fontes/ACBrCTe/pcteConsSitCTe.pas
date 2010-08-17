@@ -103,10 +103,11 @@ begin
 
 //    Gerador.wGrupo(ENCODING_UTF8, '', False);
     Gerador.wGrupo('consSitCTe ' + NAME_SPACE_CTE + ' ' + V1_03);
-//    Gerador.wCampo(tcStr, 'EP02', 'versao', 001, 001, 1, CTeconsSitCTe, DSC_VERAPLIC);
     Gerador.wCampo(tcStr, 'EP03', 'tpAmb', 001, 001, 1, tpAmbToStr(FtpAmb), DSC_TPAMB);
     Gerador.wCampo(tcStr, 'EP04', 'xServ', 009, 009, 1, 'CONSULTAR', DSC_XSERV);
-    Gerador.wCampo(tcEsp, 'EP05', 'chCTe', 044, 044, 1, FchCTe, DSC_CHCTE);
+    Gerador.wCampo(tcEsp, 'EP05', 'chCTe', 044, 044, 1, SomenteNumeros(FchCTe), DSC_CHCTe);
+    if not ValidarChave('CTe' + SomenteNumeros(FchCTe)) then
+      Gerador.wAlerta('EP05', 'chCTe', '', 'Chave do CTe inválida');
     Gerador.wGrupo('/consSitCTe');
 
     Result := (Gerador.ListaDeAlertas.Count = 0);

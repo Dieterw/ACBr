@@ -64,6 +64,7 @@ type
 '[PROPRIEDADEs_DANFe_RAVE]'+#13+
 'EspessuraBorda                 = 1'+#13+
 'ImprimirDetalhamentoEspecifico = 1'+#13+
+'TamanhoFonte_RazaoSocial       = 12'+#13+
 #13+
 '[PROPRIEDADEs_DANFe_RAVECB]'+#13+
 'EspessuraBorda                 = 2'+#13+
@@ -79,7 +80,8 @@ type
 'LarguraCodProd                 = 0'+#13+
 'MarcadAgua                     ='+#13+
 '# PosCanhoto                     = pcRodape'+#13+
-'PosCanhoto                     = pcCabecalho';
+'PosCanhoto                     = pcCabecalho'+#13+
+'TamanhoFonte_RazaoSocial       = 12';
 
   public
     { Public declarations }
@@ -167,9 +169,10 @@ begin
 
          with ACBrNFeDANFeRave1 do
          begin
-            EspessuraBorda                 := Ini.ReadInteger('PROPRIEDADEs_DANFe_RAVE','EspessuraBorda' ,2);
-            ImprimirDetalhamentoEspecifico := Ini.ReadBool('PROPRIEDADEs_DANFe_RAVE','ImprimirDetalhamentoEspecifico' ,true);
+            EspessuraBorda                 := Ini.ReadInteger('PROPRIEDADES_DANFe_RAVE','EspessuraBorda' ,2);
+            ImprimirDetalhamentoEspecifico := Ini.ReadBool('PROPRIEDADES_DANFe_RAVE','ImprimirDetalhamentoEspecifico' ,true);
             RavFile                        := ExtractFilePath(Application.ExeName)+'DANFE_Rave513.rav';
+            TamanhoFonte_RazaoSocial       := Ini.ReadInteger('PROPRIEDADES_DANFe_RAVE','TamanhoFonte_RazaoSocial' ,12);
          end;
 
          with ACBrNFeDANFeRaveCB1 do
@@ -188,6 +191,7 @@ begin
             LarguraCodProd                 := Ini.ReadInteger('PROPRIEDADEs_DANFe_FORTES','LarguraCodProd' ,0);
             MarcadAgua                     := Trim(Ini.ReadString('PROPRIEDADES_DANFe_FORTES','MarcadAgua' ,''));
             PosCanhoto                     := NotaUtil.SeSenao(Trim(Ini.ReadString('PROPRIEDADEs_DANFe_FORTES','PosCanhoto' ,'pcCabecalho'))='pcCabecalho',pcCabecalho,pcRodape);
+            TamanhoFonte_RazaoSocial       := Ini.ReadInteger('PROPRIEDADES_DANFe_FORTES','TamanhoFonte_RazaoSocial' ,12);
          end;
 
          Result:=True;

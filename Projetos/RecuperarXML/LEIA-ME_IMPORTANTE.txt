@@ -1,0 +1,7 @@
+Este programa recupera o XML do site https://www.nfe.fazenda.gov.br/portal/FormularioDePesquisa.aspx?tipoconsulta=completa
+
+Use com atenção, pois qualquer alteração no Layout deste site pode causar problemas na recuperação do XML.
+
+Também alguns campos não são retornados por este site, então nem todos os XMLs serão retornados de forma completa.
+
+Não há nenhuma garantia de que o XML será retornado de forma idêntica ao enviado ao SEFAZ.

@@ -83,8 +83,8 @@ begin
  NFe.Ide.dEmi := StrToDateDef(LerCampo(Grupo,'Data de emissão'),0);
  NFe.Total.ICMSTot.vNF := ConverteStrToNumero(LerCampo(Grupo,'Valor Total da Nota Fiscal'));
 
- NFe.Ide.modelo := 55;
- NFe.Ide.serie := 1;
+ NFe.Ide.modelo := StrToInt(copy(SomenteNumeros(NFe.infNFe.ID), 21, 2));
+ NFe.Ide.serie := StrToInt(copy(SomenteNumeros(NFe.infNFe.ID), 23, 3));
 
  Grupo :=  SeparaAte('DESTINATÁRIO',ArquivoRestante,ArquivoRestante);
 

@@ -895,8 +895,7 @@ begin
   {$ELSE}
      ReqResp := THTTPReqResp.Create(nil);
      ConfiguraReqResp( ReqResp );
-     // ReqResp.OnBeforePost := OnBeforePost;
-     ReqResp.URL := Trim(FURL); //LIMPA ESPAÇOS EM BRANCO
+     ReqResp.URL := Trim(FURL);
      ReqResp.UseUTF8InHeader := True;
      ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/cte/wsdl/CteStatusServico/cteStatusServicoCT';
   {$ENDIF}
@@ -1038,7 +1037,6 @@ begin
   {$ELSE}
      ReqResp := THTTPReqResp.Create(nil);
      ConfiguraReqResp( ReqResp );
-     // ReqResp.OnBeforePost := OnBeforePost;
      ReqResp.URL := Trim(FURL);
      ReqResp.UseUTF8InHeader := True;
      ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcao/cteRecepcaoLote';
@@ -1266,13 +1264,8 @@ function TCteRetRecepcao.Executar: Boolean;
     {$ELSE}
        ReqResp := THTTPReqResp.Create(nil);
        ConfiguraReqResp( ReqResp );
-//       ReqResp.OnBeforePost := OnBeforePost;
-       ReqResp.URL := Trim(FURL);  //LIMPA ESPAÇOS EM BRANCO
+       ReqResp.URL := Trim(FURL);
        ReqResp.UseUTF8InHeader := True;
-       //
-       // O endereço abaixo não deve estar correto, pois não gera o
-       // retorno da SEFAZ o arquivo (-pro-rec.xml) fica vazio
-       //
        ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/cte/wsdl/CteRetRecepcao/cteRetRecepcao';
     {$ENDIF}
 
@@ -1437,8 +1430,7 @@ begin
   {$ELSE}
      ReqResp := THTTPReqResp.Create(nil);
      ConfiguraReqResp( ReqResp );
-     // ReqResp.OnBeforePost := OnBeforePost;
-     ReqResp.URL := Trim(FURL); //LIMPA ESPAÇOS EM BRANCO
+     ReqResp.URL := Trim(FURL);
      ReqResp.UseUTF8InHeader := True;
      ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/cte/wsdl/CteRetRecepcao/cteRetRecepcao';
   {$ENDIF}
@@ -1560,8 +1552,7 @@ begin
   {$ELSE}
      ReqResp := THTTPReqResp.Create(nil);
      ConfiguraReqResp( ReqResp );
-     // ReqResp.OnBeforePost := OnBeforePost;
-     ReqResp.URL := Trim(FURL); //LIMPA ESPAÇOS EM BRANCO
+     ReqResp.URL := Trim(FURL);
      ReqResp.UseUTF8InHeader := True;
      ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/cte/wsdl/CteConsulta/cteConsultaCT';
   {$ENDIF}
@@ -1756,8 +1747,7 @@ begin
   {$ELSE}
      ReqResp := THTTPReqResp.Create(nil);
      ConfiguraReqResp( ReqResp );
-     // ReqResp.OnBeforePost := OnBeforePost;
-     ReqResp.URL := Trim(FURL); //LIMPA ESPAÇOS EM BRANCO
+     ReqResp.URL := Trim(FURL);
      ReqResp.UseUTF8InHeader := True;
      ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/cte/wsdl/CteCancelamento/cteCancelamentoCT';
   {$ENDIF}
@@ -1962,8 +1952,7 @@ begin
   {$ELSE}
      ReqResp := THTTPReqResp.Create(nil);
      ConfiguraReqResp( ReqResp );
-     // ReqResp.OnBeforePost := OnBeforePost;
-     ReqResp.URL := Trim(FURL); //LIMPA ESPAÇOS EM BRANCO
+     ReqResp.URL := Trim(FURL);
      ReqResp.UseUTF8InHeader := True;
      ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/cte/wsdl/CteInutilizacao/cteInutilizacaoCT';
   {$ENDIF}
@@ -2125,8 +2114,7 @@ begin
   {$ELSE}
      ReqResp := THTTPReqResp.Create(nil);
      ConfiguraReqResp( ReqResp );
-     // ReqResp.OnBeforePost := OnBeforePost;
-     ReqResp.URL := Trim(FURL); //LIMPA ESPAÇOS EM BRANCO
+     ReqResp.URL := Trim(FURL);
      ReqResp.UseUTF8InHeader := True;
      ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro/consultaCadastro';
   {$ENDIF}

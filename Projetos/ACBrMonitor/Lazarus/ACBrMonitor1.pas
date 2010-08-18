@@ -2,32 +2,32 @@
 { Projeto: ACBr Monitor                                                        }
 {  Executavel multiplataforma que faz usocdo conjunto de componentes ACBr para }
 { criar uma interface de comunicação com equipamentos de automacao comercial.  }
-{                                                                              }
+
 { Direitos Autorais Reservados (c) 2006 Daniel Simoes de Almeida               }
-{                                                                              }
+
 { Colaboradores nesse arquivo:     2005 Fábio Rogério Baía                     }
-{                                                                              }
+
 {  Você pode obter a última versão desse arquivo na página do Projeto ACBr     }
 { Componentes localizado em      http://www.sourceforge.net/projects/acbr      }
-{                                                                              }
+
 {  Este programa é software livre; você pode redistribuí-lo e/ou modificá-lo   }
 { sob os termos da Licença Pública Geral GNU, conforme publicada pela Free     }
 { Software Foundation; tanto a versão 2 da Licença como (a seu critério)       }
 { qualquer versão mais nova.                                                   }
-{                                                                              }
+
 {  Este programa é distribuído na expectativa de ser útil, mas SEM NENHUMA     }
 { GARANTIA; nem mesmo a garantia implícita de COMERCIALIZAÇÃO OU DE ADEQUAÇÃO A}
 { QUALQUER PROPÓSITO EM PARTICULAR. Consulte a Licença Pública Geral GNU para  }
 { obter mais detalhes. (Arquivo LICENCA.TXT ou LICENSE.TXT)                    }
-{                                                                              }
+
 {  Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este}
 { programa; se não, escreva para a Free Software Foundation, Inc., 59 Temple   }
 { Place, Suite 330, Boston, MA 02111-1307, USA. Você também pode obter uma     }
 { copia da licença em:  http://www.opensource.org/licenses/gpl-license.php     }
-{                                                                              }
+
 { Daniel Simões de Almeida  -  daniel@djsystem.com.br  -  www.djsystem.com.br  }
 {              Praça Anita Costa, 34 - Tatuí - SP - 18270-410                  }
-{                                                                              }
+
 {******************************************************************************}
 
 {******************************************************************************
@@ -62,33 +62,81 @@
 {$mode objfpc}{$H+}
 
 unit ACBrMonitor1;
+
 interface
 
 uses
-  SysUtils, Classes, Forms, 
+  SysUtils, Classes, Forms,
   CmdUnit,
   ACBrECF, ACBrDIS, ACBrGAV, ACBrDevice, ACBrCHQ, ACBrLCB, ACBrRFD, { Unit do ACBr }
-  Dialogs, ExtCtrls, Menus, Buttons, StdCtrls, ComCtrls, Controls,
-  Graphics, Spin, MaskEdit, ACBrBAL, ACBrETQ, ACBrSocket, blcksock;
+  Dialogs, ExtCtrls, Menus, Buttons, StdCtrls, ComCtrls, Controls, Graphics,
+  Spin, MaskEdit, EditBtn, ACBrBAL, ACBrETQ, ACBrSocket, blcksock,
+  ACBrValidador, ACBrBoleto, ACBrBoletoFCFortesFr;
 
 const
-   Estados : array[TACBrECFEstado] of string =
-             ('Não Inicializada', 'Desconhecido', 'Livre', 'Venda',
-              'Pagamento', 'Relatório', 'Bloqueada', 'Requer Z', 'Requer X',
-              'Não Fiscal' );
-   BufferMemoResposta = 1000 ;              { Maximo de Linhas no MemoResposta }
+  Estados: array[TACBrECFEstado] of string =
+    ('Não Inicializada', 'Desconhecido', 'Livre', 'Venda',
+    'Pagamento', 'Relatório', 'Bloqueada', 'Requer Z', 'Requer X',
+    'Não Fiscal');
+  BufferMemoResposta = 1000;              { Maximo de Linhas no MemoResposta }
 {$I versao.txt}
-   _C = 'tYk*5W@' ;
+  _C = 'tYk*5W@';
 
 type
 
   { TFrmACBrMonitor }
 
   TFrmACBrMonitor = class(TForm)
+    ACBrBoleto1: TACBrBoleto;
+    ACBrBoletoFCFortes1: TACBrBoletoFCFortes;
     ACBrECF1: TACBrECF;
-    ApplicationProperties1 : TApplicationProperties ;
-    Image1 : TImage ;
-    lLCBCodigoLido : TPanel ;
+    ApplicationProperties1: TApplicationProperties;
+    cbxUF: TComboBox;
+    cbxBanco: TComboBox;
+    cbxEmissao: TComboBox;
+    ckgMostrar: TCheckGroup;
+    cbxLayout: TComboBox;
+    cbxFiltro: TComboBox;
+    deBOLDirLogo: TDirectoryEdit;
+    edtBOLSofwareHouse: TEdit;
+    edtComplemento: TEdit;
+    edtDigitoConta: TEdit;
+    edtConta: TEdit;
+    edtDigitoAgencia: TEdit;
+    edtAgencia: TEdit;
+    edtBairro: TEdit;
+    edtCEP: TMaskEdit;
+    edtCidade: TEdit;
+    edtCNPJ: TMaskEdit;
+    edtLogradouro: TEdit;
+    edtNumero: TEdit;
+    edtRazaoSocial: TEdit;
+    Image1: TImage;
+    Label11: TLabel;
+    Label68: TLabel;
+    Label69: TLabel;
+    Label70: TLabel;
+    lblDirLogo: TLabel;
+    lblComplemento: TLabel;
+    lblBanco: TLabel;
+    Label67: TLabel;
+    lblAgencia: TLabel;
+    lblDigAgencia: TLabel;
+    Label76: TLabel;
+    lblConta: TLabel;
+    lblDigConta: TLabel;
+    lblEmissao: TLabel;
+    lblNomeRazao: TLabel;
+    lblCPFCNPJ: TLabel;
+    lblLogradouro: TLabel;
+    lblNumero: TLabel;
+    lblBairro: TLabel;
+    lblCidade: TLabel;
+    lblCep: TLabel;
+    lLCBCodigoLido: TPanel;
+    pgBoleto: TPageControl;
+    rgFJ: TRadioGroup;
+    spCopias: TSpinEdit;
     StatusBar1: TStatusBar;
     ImageList1: TImageList;
     ACBrCHQ1: TACBrCHQ;
@@ -113,7 +161,11 @@ type
     Splitter1: TSplitter;
     pConfig: TPanel;
     PageControl1: TPageControl;
-    TrayIcon1 : TTrayIcon ;
+    tsACBrBoleto: TTabSheet;
+    TabSheet2: TTabSheet;
+    tsBoleto: TTabSheet;
+    tsCedente: TTabSheet;
+    TrayIcon1: TTrayIcon;
     tsMonitor: TTabSheet;
     cbLog: TCheckBox;
     gbTCP: TGroupBox;
@@ -337,29 +389,29 @@ type
     edTCNaoEncontrado: TEdit;
     TimerTC: TTimer;
     sbCHQSerial: TSpeedButton;
-    procedure ApplicationProperties1Exception(Sender : TObject ; E : Exception
-      ) ;
-    procedure ApplicationProperties1Minimize(Sender : TObject) ;
-    procedure ApplicationProperties1Restore(Sender : TObject) ;
-    procedure FormClose(Sender : TObject ; var CloseAction : TCloseAction) ;{%h-}
+    procedure ApplicationProperties1Exception(Sender: TObject; E: Exception);
+    procedure ApplicationProperties1Minimize(Sender: TObject);
+    procedure ApplicationProperties1Restore(Sender: TObject);
+    procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);{%h-}
     procedure FormCreate(Sender: TObject);
-    procedure ACBrECF1MsgAguarde(Mensagem: String);
+    procedure ACBrECF1MsgAguarde(Mensagem: string);
     procedure ACBrECF1MsgPoucoPapel(Sender: TObject);
     procedure bConfigClick(Sender: TObject);
     procedure cbLogClick(Sender: TObject);
-    procedure edOnlyNumbers(Sender: TObject; var Key: Char);
+    procedure edOnlyNumbers(Sender: TObject; var Key: char);
     procedure bECFTestarClick(Sender: TObject);
     procedure bECFLeituraXClick(Sender: TObject);
     procedure bECFAtivarClick(Sender: TObject);
-    procedure TcpServerConecta(const TCPBlockSocket : TTCPBlockSocket ;
-      var Enviar : AnsiString) ;{%h-}
-    procedure TcpServerDesConecta(const TCPBlockSocket : TTCPBlockSocket ;
-      Erro : Integer ; ErroDesc : String) ;{%h-}
-    procedure TcpServerRecebeDados(const TCPBlockSocket : TTCPBlockSocket ;
-      const Recebido : AnsiString ; var Enviar : AnsiString) ;{%h-}
-    procedure TrayIcon1Click(Sender : TObject) ;
-    procedure TrayIcon1MouseUp(Sender : TObject ; Button : TMouseButton ;{%h-}
-      Shift : TShiftState ; X, Y : Integer) ;{%h-}
+    procedure rgFJClick(Sender: TObject);
+    procedure TcpServerConecta(const TCPBlockSocket: TTCPBlockSocket;
+      var Enviar: ansistring);{%h-}
+    procedure TcpServerDesConecta(const TCPBlockSocket: TTCPBlockSocket;
+      Erro: integer; ErroDesc: string);{%h-}
+    procedure TcpServerRecebeDados(const TCPBlockSocket: TTCPBlockSocket;
+      const Recebido: ansistring; var Enviar: ansistring);{%h-}
+    procedure TrayIcon1Click(Sender: TObject);
+    procedure TrayIcon1MouseUp(Sender: TObject; Button: TMouseButton;{%h-}
+      Shift: TShiftState; X, Y: integer);{%h-}
     procedure tsECFShow(Sender: TObject);
     procedure Ocultar1Click(Sender: TObject);
     procedure Restaurar1Click(Sender: TObject);
@@ -381,13 +433,13 @@ type
     procedure chECFArredondaPorQtdClick(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure bCancelarClick(Sender: TObject);
-    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
     procedure DoACBrTimer(Sender: TObject);
     procedure chECFDescrGrandeClick(Sender: TObject);
     procedure bCHQTestarClick(Sender: TObject);
     procedure cbLCBPortaChange(Sender: TObject);
     procedure bLCBAtivarClick(Sender: TObject);
-    procedure edLCBSufLeituraKeyPress(Sender: TObject; var Key: Char);
+    procedure edLCBSufLeituraKeyPress(Sender: TObject; var Key: char);
     procedure chLCBExcluirSufixoClick(Sender: TObject);
     procedure edLCBPreExcluirChange(Sender: TObject);
     procedure ACBrLCB1LeCodigo(Sender: TObject);
@@ -395,8 +447,8 @@ type
     procedure DiminuiTempoHint(Sender: TObject);
     procedure cbLCBSufixoLeitorChange(Sender: TObject);
     procedure pBotoesClick(Sender: TObject);
-    procedure FormShortCut(Key: Integer; Shift: TShiftState;{%h-}
-      var Handled: Boolean);{%h-}
+    procedure FormShortCut(Key: integer; Shift: TShiftState;{%h-}
+      var Handled: boolean);{%h-}
     procedure cbGAVStrAbreChange(Sender: TObject);
     procedure bExecECFTesteClick(Sender: TObject);
     procedure chECFSinalGavetaInvertidoClick(Sender: TObject);
@@ -437,7 +489,7 @@ type
     procedure edSH_Linha2Change(Sender: TObject);
     procedure tsRFDShow(Sender: TObject);
     procedure bRFDKeyImportarClick(Sender: TObject);
-    procedure ACBrRFD1GetKeyRSA(var PrivateKey_RSA: String);
+    procedure ACBrRFD1GetKeyRSA(var PrivateKey_RSA: string);
     procedure cbRFDModeloChange(Sender: TObject);
     procedure bRFDIDClick(Sender: TObject);
     procedure tsRFDINIShow(Sender: TObject);
@@ -448,7 +500,7 @@ type
     procedure seRFDNumeroCadastroChanged(Sender: TObject);
     procedure meRFDDataCadastroExit(Sender: TObject);
     procedure seRFDCROCadastroChanged(Sender: TObject);
-    procedure edRFDGTCadastroKeyPress(Sender: TObject; var Key: Char);
+    procedure edRFDGTCadastroKeyPress(Sender: TObject; var Key: char);
     procedure edRFDGTCadastroExit(Sender: TObject);
     procedure tsRFDUsuarioShow(Sender: TObject);
     procedure tsRFDRSAShow(Sender: TObject);
@@ -456,7 +508,7 @@ type
     procedure bRFDRSAPrivadaClick(Sender: TObject);
     procedure bRFDRSAPublicaClick(Sender: TObject);
     procedure pgConRFDPageChanging(Sender: TObject; NewPage: TTabSheet;
-      var AllowChange: Boolean);
+      var AllowChange: boolean);
     procedure chRFDIgnoraMFDClick(Sender: TObject);
     procedure edECFLogChange(Sender: TObject);
     procedure sbLogClick(Sender: TObject);
@@ -487,46 +539,46 @@ type
       const TCPBlockSocket: TTCPBlockSocket; const Recebido: String;
       var Enviar: String);*)
   private
-    ACBrMonitorINI : string;
-    Inicio  : Boolean ;
-    ArqSaiTXT, ArqSaiTMP, ArqEntTXT, ArqLogTXT : String ;
-    Cmd : TACBrCmd ;
-    NewLines : AnsiString ;
-    fsDisWorking: Boolean;
-    fsRFDIni: String ;
-    fsRFDLeuParams: Boolean ;
-    fsHashSenha:Integer;
-    fsCNPJSWOK: Boolean ;
-    TipoCMD : String ;
-    pCanClose : Boolean ;
+    ACBrMonitorINI: string;
+    Inicio: boolean;
+    ArqSaiTXT, ArqSaiTMP, ArqEntTXT, ArqLogTXT: string;
+    Cmd: TACBrCmd;
+    NewLines: ansistring;
+    fsDisWorking: boolean;
+    fsRFDIni: string;
+    fsRFDLeuParams: boolean;
+    fsHashSenha: integer;
+    fsCNPJSWOK: boolean;
+    TipoCMD: string;
+    pCanClose: boolean;
 
-    fsSLPrecos : TStringList ;
-    fsDTPrecos : Integer ;
-    
-    fsLinesLog : AnsiString ;
+    fsSLPrecos: TStringList;
+    fsDTPrecos: integer;
+
+    fsLinesLog: ansistring;
 
 
-    procedure Inicializar ;
-    procedure EscondeConfig ;
-    procedure ExibeConfig ;
-    procedure LerIni ;
-    procedure SalvarIni ;
-    procedure AjustaLinhasLog ;
+    procedure Inicializar;
+    procedure EscondeConfig;
+    procedure ExibeConfig;
+    procedure LerIni;
+    procedure SalvarIni;
+    procedure AjustaLinhasLog;
 
-    procedure LerSW ;
-    function LerChaveSWH: AnsiString;
-    procedure SalvarSW ;
+    procedure LerSW;
+    function LerChaveSWH: ansistring;
+    procedure SalvarSW;
 
-    Procedure Processar ;
-    Procedure Resposta(Comando, Resposta : Ansistring);
+    procedure Processar;
+    procedure Resposta(Comando, Resposta: ansistring);
 
-    Procedure AddLinesLog ;
+    procedure AddLinesLog;
 
-    procedure SetDisWorking(const Value: Boolean);
+    procedure SetDisWorking(const Value: boolean);
   public
-    Conexao : TTCPBlockSocket ;
+    Conexao: TTCPBlockSocket;
 
-    property DISWorking : Boolean read fsDisWorking write SetDisWorking ;
+    property DISWorking: boolean read fsDisWorking write SetDisWorking;
 
     procedure AvaliaEstadoTsECF;
     procedure AvaliaEstadoTsGAV;
@@ -542,185 +594,189 @@ var
 implementation
 
 uses IniFiles, TypInfo, LCLType,
-     UtilUnit,
-     DoECFUnit, DoGAVUnit, DoCHQUnit, DoDISUnit, DoLCBUnit, DoACBrUnit, DoBALUnit,
-     {$IFDEF MSWINDOWS} sndkey32, {$ENDIF}
-     {$IFDEF LINUX} unix, baseunix, {$ENDIF}
-     ACBrECFNaoFiscal, ACBrUtil, ACBrConsts, Math, Sobre, DateUtils,
-     ConfiguraSerial,
-     DoECFBemafi32, DoECFObserver , DoETQUnit;
-	 
+  UtilUnit,
+  DoECFUnit, DoGAVUnit, DoCHQUnit, DoDISUnit, DoLCBUnit, DoACBrUnit, DoBALUnit,
+  DoBolUnit,
+  {$IFDEF MSWINDOWS} sndkey32, {$ENDIF}
+  {$IFDEF LINUX} unix, baseunix, {$ENDIF}
+  ACBrECFNaoFiscal, ACBrUtil, ACBrConsts, Math, Sobre, DateUtils,
+  ConfiguraSerial,
+  DoECFBemafi32, DoECFObserver, DoETQUnit;
+
 {$R *.lfm}
 
 {-------------------------------- TFrmACBrMonitor -----------------------------}
 procedure TFrmACBrMonitor.FormCreate(Sender: TObject);
-Var
-   iECF : TACBrECFModelo ;
-   iCHQ : TACBrCHQModelo ;
-   iDIS : TACBrDISModelo ;
-   iBAL : TACBrBALModelo ;
+var
+  iECF: TACBrECFModelo;
+  iCHQ: TACBrCHQModelo;
+  iDIS: TACBrDISModelo;
+  iBAL: TACBrBALModelo;
 begin
   {$IFDEF LINUX}
-   umask( 0 ) ;
+  umask(0);
   {$ENDIF}
-  
-  mResp.Clear ;
-  mCmd.Clear ;
-  Cmd       := TACBrCmd.Create ;
-  Inicio    := true ;
-  ArqSaiTXT := '' ;
-  ArqSaiTMP := '' ;
-  ArqEntTXT := '' ;
-  ArqLogTXT := '' ;
-  Conexao   := nil ;
-  NewLines  := '' ;
-  DISWorking:= false ;
 
-  pCanClose      := False ;
-  fsRFDIni       := '' ;
-  fsRFDLeuParams := False ;
-  fsCNPJSWOK     := False ;
+  mResp.Clear;
+  mCmd.Clear;
+  Cmd := TACBrCmd.Create;
+  Inicio := True;
+  ArqSaiTXT := '';
+  ArqSaiTMP := '';
+  ArqEntTXT := '';
+  ArqLogTXT := '';
+  Conexao := nil;
+  NewLines := '';
+  DISWorking := False;
 
-  TipoCMD   := 'A' ; {Tipo de Comando A - ACBr, B - Bematech, D - Daruma}
+  pCanClose := False;
+  fsRFDIni := '';
+  fsRFDLeuParams := False;
+  fsCNPJSWOK := False;
+
+  TipoCMD := 'A'; {Tipo de Comando A - ACBr, B - Bematech, D - Daruma}
 
   { Definindo constantes de Verdadeiro para TrueBoolsStrs }
-  SetLength( TrueBoolStrs, 5 ) ;
+  SetLength(TrueBoolStrs, 5);
   TrueBoolStrs[0] := 'True';
-  TrueBoolStrs[1] := 'T' ;
-  TrueBoolStrs[2] := 'Verdadeiro' ;
-  TrueBoolStrs[3] := 'V' ;
-  TrueBoolStrs[4] := 'Ok' ;
+  TrueBoolStrs[1] := 'T';
+  TrueBoolStrs[2] := 'Verdadeiro';
+  TrueBoolStrs[3] := 'V';
+  TrueBoolStrs[4] := 'Ok';
 
   { Definindo constantes de Falso para FalseBoolStrs }
   SetLength(FalseBoolStrs, 3);
   FalseBoolStrs[0] := 'False';
-  FalseBoolStrs[1] := 'F' ;
-  FalseBoolStrs[2] := 'Falso' ;
+  FalseBoolStrs[1] := 'F';
+  FalseBoolStrs[2] := 'Falso';
 
   { Criando lista modelos de ECFs disponiveis }
-  cbECFModelo.Items.Clear ;
-  cbECFModelo.Items.Add('Procurar') ;
-  iECF := Low( TACBrECFModelo ) ;
-  while iECF <= High( TACBrECFModelo ) do
+  cbECFModelo.Items.Clear;
+  cbECFModelo.Items.Add('Procurar');
+  iECF := Low(TACBrECFModelo);
+  while iECF <= High(TACBrECFModelo) do
   begin
-     cbECFModelo.Items.Add(GetEnumName(TypeInfo(TACBrECFModelo),Integer(iECF))) ;
-     Inc(iECF) ;
-  end ;
-  AvaliaEstadoTsECF ;
+    cbECFModelo.Items.Add(GetEnumName(TypeInfo(TACBrECFModelo), integer(iECF)));
+    Inc(iECF);
+  end;
+  AvaliaEstadoTsECF;
 
-  AvaliaEstadoTsGAV ;
+  AvaliaEstadoTsGAV;
 
-  AvaliaEstadoTsLCB ;
+  AvaliaEstadoTsLCB;
 
-  AvaliaEstadoTsTC ;
-  fsSLPrecos := TStringList.Create ;
-  fsSLPrecos.NameValueSeparator := '|' ;
-  fsDTPrecos := 0 ;
+  AvaliaEstadoTsTC;
+  fsSLPrecos := TStringList.Create;
+  fsSLPrecos.NameValueSeparator := '|';
+  fsDTPrecos := 0;
 
   { Criando lista modelos de Impres.Cheque disponiveis }
-  cbCHQModelo.Items.Clear ;
-  iCHQ := Low( TACBrCHQModelo ) ;
-  while iCHQ <= High( TACBrCHQModelo ) do
+  cbCHQModelo.Items.Clear;
+  iCHQ := Low(TACBrCHQModelo);
+  while iCHQ <= High(TACBrCHQModelo) do
   begin
-     cbCHQModelo.Items.Add(GetEnumName(TypeInfo(TACBrCHQModelo),Integer(iCHQ))) ;
-     Inc(iCHQ) ;
-  end ;
+    cbCHQModelo.Items.Add(GetEnumName(TypeInfo(TACBrCHQModelo), integer(iCHQ)));
+    Inc(iCHQ);
+  end;
 
   { Criando lista Displays disponiveis }
-  cbDISModelo.Items.Clear ;
-  iDIS := Low( TACBrDISModelo ) ;
-  while iDIS <= High( TACBrDISModelo ) do
+  cbDISModelo.Items.Clear;
+  iDIS := Low(TACBrDISModelo);
+  while iDIS <= High(TACBrDISModelo) do
   begin
-     cbDISModelo.Items.Add(GetEnumName(TypeInfo(TACBrDISModelo),Integer(iDIS))) ;
-     Inc(iDIS) ;
-  end ;
+    cbDISModelo.Items.Add(GetEnumName(TypeInfo(TACBrDISModelo), integer(iDIS)));
+    Inc(iDIS);
+  end;
 
   { Criando lista Balanças disponiveis }
-  cbBALModelo.Items.Clear ;
-  iBAL := Low( TACBrBALModelo ) ;
-  while iBAL <= High( TACBrBALModelo ) do
+  cbBALModelo.Items.Clear;
+  iBAL := Low(TACBrBALModelo);
+  while iBAL <= High(TACBrBALModelo) do
   begin
-     cbBALModelo.Items.Add(GetEnumName(TypeInfo(TACBrBALModelo),Integer(iBAL))) ;
-     Inc(iBAL) ;
-  end ;
+    cbBALModelo.Items.Add(GetEnumName(TypeInfo(TACBrBALModelo), integer(iBAL)));
+    Inc(iBAL);
+  end;
 
   TrayIcon1.Icon.Assign(Self.Icon);
-  TrayIcon1.Hint         := 'ACBrMonitor '+ Versao ;
+  TrayIcon1.Hint := 'ACBrMonitor ' + Versao;
   TrayIcon1.BalloonTitle := TrayIcon1.Hint;
-  TrayIcon1.BalloonHint  := 'Projeto ACBr'+ sLineBreak +
-                            'http://acbr.sf.net' ;
+  TrayIcon1.BalloonHint := 'Projeto ACBr' + sLineBreak +
+    'http://acbr.sf.net';
 
-  Caption := 'ACBrMonitor '+ Versao + ' - ACBr: '+ACBR_VERSAO ;
-  PageControl1.ActivePageIndex := 0 ;
+  Caption := 'ACBrMonitor ' + Versao + ' - ACBr: ' + ACBR_VERSAO;
+  PageControl1.ActivePageIndex := 0;
 
   {$IFDEF LINUX}
-   rbLCBTeclado.Caption := 'Dispositivo' ;
-   cbLCBSufixo.Hint := 'Use a Sinaxe:  #NNN'+sLineBreak+
-                       'Onde: NNN = Numero do caracter ASC em Decimal'+sLineBreak+
-                       '      a adicionar no final do código lido.'+sLineBreak+sLineBreak+
-                       'Para vários caracteres use a , (virgula) como separador'  ;
-   cbLCBSufixo.Items.Clear ;
-   cbLCBSufixo.Items.Add('#13 | Enter') ;
-   cbLCBSufixo.Items.Add('#10 | LF') ;
-   cbLCBSufixo.Items.Add('#13,#13 | 2 x Enter') ;
-   cbLCBSufixo.Items.Add('#18 | PgUp') ;
-   cbLCBSufixo.Items.Add('#09 | Tab') ;
-   cbLCBSufixo.Items.Add('#24 | Down') ;
+  rbLCBTeclado.Caption := 'Dispositivo';
+  cbLCBSufixo.Hint := 'Use a Sinaxe:  #NNN' + sLineBreak +
+    'Onde: NNN = Numero do caracter ASC em Decimal' + sLineBreak +
+    '      a adicionar no final do código lido.' +
+    sLineBreak + sLineBreak +
+    'Para vários caracteres use a , (virgula) como separador';
+  cbLCBSufixo.Items.Clear;
+  cbLCBSufixo.Items.Add('#13 | Enter');
+  cbLCBSufixo.Items.Add('#10 | LF');
+  cbLCBSufixo.Items.Add('#13,#13 | 2 x Enter');
+  cbLCBSufixo.Items.Add('#18 | PgUp');
+  cbLCBSufixo.Items.Add('#09 | Tab');
+  cbLCBSufixo.Items.Add('#24 | Down');
   {$ELSE}
-   lAdSufixo.Caption := 'Adicionar Sufixo "SndKey32"' ;
+  lAdSufixo.Caption := 'Adicionar Sufixo "SndKey32"';
   {$ENDIF}
-  lAdSufixo.Hint := cbLCBSufixo.Hint ;
+  lAdSufixo.Hint := cbLCBSufixo.Hint;
 
-  chRFD.Font.Style := chRFD.Font.Style + [fsBold] ;
-  chRFD.Font.Color := clRed ;
-   
-  Application.Title := Caption ;
+  chRFD.Font.Style := chRFD.Font.Style + [fsBold];
+  chRFD.Font.Color := clRed;
 
-  Timer1.Enabled := True ;
+  pgBoleto.ActivePageIndex := 0;
+  rgFJClick(Self);
+
+  Application.Title := Caption;
+
+  Timer1.Enabled := True;
 end;
 
-procedure TFrmACBrMonitor.FormClose(Sender : TObject ;
-  var CloseAction : TCloseAction) ;
+procedure TFrmACBrMonitor.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
-  ACBrECF1.Desativar ;
-  ACBrCHQ1.Desativar ;
-  ACBrGAV1.Desativar ;
-  ACBrDIS1.Desativar ;
-  ACBrLCB1.Desativar ;
-  ACBrBAL1.Desativar ;
-  ACBrETQ1.Desativar ;
+  ACBrECF1.Desativar;
+  ACBrCHQ1.Desativar;
+  ACBrGAV1.Desativar;
+  ACBrDIS1.Desativar;
+  ACBrLCB1.Desativar;
+  ACBrBAL1.Desativar;
+  ACBrETQ1.Desativar;
 
-  Timer1.Enabled := False ;
+  Timer1.Enabled := False;
 
-  TcpServer.OnDesConecta := nil ;
-  TCPServer.Ativo        := False ;    { Desliga TCP }
+  TcpServer.OnDesConecta := nil;
+  TCPServer.Ativo := False;    { Desliga TCP }
 
-  TCPServerTC.OnDesConecta := nil ;
-  TimerTC.Enabled          := False ;
-  TCPServerTC.Ativo        := False ;    { Desliga TCP }
+  TCPServerTC.OnDesConecta := nil;
+  TimerTC.Enabled := False;
+  TCPServerTC.Ativo := False;    { Desliga TCP }
 end;
 
-procedure TFrmACBrMonitor.ApplicationProperties1Exception(Sender : TObject ;
-  E : Exception) ;
+procedure TFrmACBrMonitor.ApplicationProperties1Exception(Sender: TObject;
+  E: Exception);
 begin
-  mResp.Lines.Add( E.Message );
+  mResp.Lines.Add(E.Message);
   if cbLog.Checked then
-     WriteToTXT(ArqLogTXT, 'Exception: ' + E.Message);
+    WriteToTXT(ArqLogTXT, 'Exception: ' + E.Message);
 
-  StatusBar1.Panels[0].Text := 'Exception' ;
-//  MessageDlg( E.Message,mtError,[mbOk],0) ;
+  StatusBar1.Panels[0].Text := 'Exception';
+  //  MessageDlg( E.Message,mtError,[mbOk],0) ;
 end;
 
-procedure TFrmACBrMonitor.ApplicationProperties1Minimize(Sender : TObject) ;
+procedure TFrmACBrMonitor.ApplicationProperties1Minimize(Sender: TObject);
 begin
   if WindowState <> wsMinimized then
-     Application.Minimize ;
+    Application.Minimize;
 
   Visible := False;
-  Application.ShowMainForm := false ;
+  Application.ShowMainForm := False;
 end;
 
-procedure TFrmACBrMonitor.ApplicationProperties1Restore(Sender : TObject) ;
+procedure TFrmACBrMonitor.ApplicationProperties1Restore(Sender: TObject);
 begin
   Application.BringToFront;
 end;
@@ -728,31 +784,30 @@ end;
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.FormDestroy(Sender: TObject);
 begin
-  Timer1.Enabled := false ;
-  Cmd.Free ;
+  Timer1.Enabled := False;
+  Cmd.Free;
 
-  fsSLPrecos.Free ;
+  fsSLPrecos.Free;
 end;
 
 {------------------------------------------------------------------------------}
-procedure TFrmACBrMonitor.FormCloseQuery(Sender: TObject;
-  var CanClose: Boolean);
+procedure TFrmACBrMonitor.FormCloseQuery(Sender: TObject; var CanClose: boolean);
 begin
-  CanClose := True ;
+  CanClose := True;
 
   if pConfig.Visible then
   begin
-     MessageDlg('Por favor "Salve" ou "Cancele" as configurações '+
-                'efetuadas antes de fechar o programa',
-                 mtWarning,[mbOk],0 ) ;
-     CanClose := false ;
-     exit ;
-  end ;
+    MessageDlg('Por favor "Salve" ou "Cancele" as configurações ' +
+      'efetuadas antes de fechar o programa',
+      mtWarning, [mbOK], 0);
+    CanClose := False;
+    exit;
+  end;
 
-  CanClose := pCanClose ;
+  CanClose := pCanClose;
 
   if not CanClose then
-     Application.Minimize ;
+    Application.Minimize;
 end;
 
 
@@ -761,10 +816,10 @@ procedure TFrmACBrMonitor.Restaurar1Click(Sender: TObject);
 begin
   pmTray.Close;
   if WindowState <> wsMaximized then
-     WindowState := wsNormal ;
-  Visible := true ;
-  Application.ShowMainForm := true ;
-  Application.Restore ;
+    WindowState := wsNormal;
+  Visible := True;
+  Application.ShowMainForm := True;
+  Application.Restore;
 end;
 
 {------------------------------------------------------------------------------}
@@ -776,1031 +831,1186 @@ end;
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.Encerrar1Click(Sender: TObject);
 begin
-  pCanClose := True ;
-  close ;
+  pCanClose := True;
+  Close;
 end;
 
 {------------------------- Procedures de Uso Interno --------------------------}
 procedure TFrmACBrMonitor.Inicializar;
-Var Ini    : TIniFile ;
-    ArqIni : String ;
-    Txt    : String ;
-    Erro   : String ;
+var
+  Ini: TIniFile;
+  ArqIni: string;
+  Txt: string;
+  Erro: string;
 begin
-  Timer1.Enabled := false ;
-  Inicio         := false ;
-  Erro           := '' ;
-  ACBrMonitorINI := ExtractFilePath(Application.ExeName)+ 'ACBrMonitor.ini';
+  Timer1.Enabled := False;
+  Inicio := False;
+  Erro := '';
+  ACBrMonitorINI := ExtractFilePath(Application.ExeName) + 'ACBrMonitor.ini';
 
-  if not FileExists( ACBrMonitorINI ) then //verifica se o arq. de config existe
+  if not FileExists(ACBrMonitorINI) then //verifica se o arq. de config existe
   begin                                    //se nao existir vai para as configs
     MessageDlg('Bem vindo ao ACBrMonitor',
-               'Bem vindo ao ACBrMonitor,'+sLineBreak+sLineBreak+
-               'Por favor configure o ACBrMonitor, '+sLineBreak+
-               'informando o Método de Monitoramento, e a configuração '+sLineBreak+
-               'dos Equipamentos de Automação ligados a essa máquina.'+sLineBreak+sLineBreak+
-               'IMPORTANTE: Após configurar o Método de Monitoramento'+sLineBreak+
-               ' o ACBrMonitor deve ser reiniciado',mtInformation,[mbok],0) ;
-    bConfig.Click ;
-    exit ;
+      'Bem vindo ao ACBrMonitor,' + sLineBreak + sLineBreak +
+      'Por favor configure o ACBrMonitor, ' + sLineBreak +
+      'informando o Método de Monitoramento, e a configuração ' + sLineBreak +
+      'dos Equipamentos de Automação ligados a essa máquina.' +
+      sLineBreak + sLineBreak +
+      'IMPORTANTE: Após configurar o Método de Monitoramento' + sLineBreak +
+      ' o ACBrMonitor deve ser reiniciado', mtInformation, [mbOK], 0);
+    bConfig.Click;
+    exit;
   end;
 
   while not Visible do
   begin
-     Application.ProcessMessages ;
-     sleep(200) ;
-  end ;
+    Application.ProcessMessages;
+    sleep(200);
+  end;
 
   try
-     LerIni;
+    LerIni;
 
-     Application.Minimize ;
+    Application.Minimize;
   except
-     on E : Exception do
-        Erro := Erro + sLineBreak + E.Message ;
-  end ;
+    on E: Exception do
+      Erro := Erro + sLineBreak + E.Message;
+  end;
 
-  EscondeConfig ;
+  EscondeConfig;
 
   try
-     AjustaLinhasLog ;  { Diminui / Ajusta o numero de linhas do Log }
+    AjustaLinhasLog;  { Diminui / Ajusta o numero de linhas do Log }
   except
-     on E : Exception do
-        Erro := Erro + sLineBreak +E.Message ;
-  end ;
+    on E: Exception do
+      Erro := Erro + sLineBreak + E.Message;
+  end;
 
   try
-     bConfig.Enabled  := true ;
-     Timer1.Interval  := sedIntervalo.Value ;
-     Timer1.Enabled   := rbTXT.Checked ;
-     TcpServer.Ativo  := rbTCP.Checked ;
+    bConfig.Enabled := True;
+    Timer1.Interval := sedIntervalo.Value;
+    Timer1.Enabled := rbTXT.Checked;
+    TcpServer.Ativo := rbTCP.Checked;
 
-     mResp.Lines.Add('ACBr Monitor Ver.'+Versao);
-     mResp.Lines.Add('Aguardando comandos ACBr');
+    mResp.Lines.Add('ACBr Monitor Ver.' + Versao);
+    mResp.Lines.Add('Aguardando comandos ACBr');
   except
-     on E : Exception do
-        Erro := Erro + sLineBreak + E.Message ;
-  end ;
+    on E: Exception do
+      Erro := Erro + sLineBreak + E.Message;
+  end;
 
   try
-     if rbTCP.Checked then
+    if rbTCP.Checked then
+    begin
+      if TcpServer.Ativo then
       begin
-        if TcpServer.Ativo then
-        begin
-           try
-              Txt := 'Endereço: '+TcpServer.TCPBlockSocket.LocalName ;
-// TODO:              For A := 0 to IdStack.GStack.LocalAddresses.Count-1 do
-//                 Txt := Txt + '   ' + IdStack.GStack.LocalAddresses[A] ;
-           except
-           end ;
-           mResp.Lines.Add(Txt) ;
-           mResp.Lines.Add( 'Porta: ['+TcpServer.Port+']') ;
-        end ;
-      end
-     else
+        try
+          Txt := 'Endereço: ' + TcpServer.TCPBlockSocket.LocalName;
+          // TODO:              For A := 0 to IdStack.GStack.LocalAddresses.Count-1 do
+          //                 Txt := Txt + '   ' + IdStack.GStack.LocalAddresses[A] ;
+        except
+        end;
+        mResp.Lines.Add(Txt);
+        mResp.Lines.Add('Porta: [' + TcpServer.Port + ']');
+      end;
+    end
+    else
+    begin
+      mResp.Lines.Add('Monitorando Comandos TXT em: ' + ArqEntTXT);
+      mResp.Lines.Add('Respostas gravadas em: ' + ArqSaiTXT);
+    end;
+
+    if cbLog.Checked then
+      mResp.Lines.Add('Log de comandos será gravado em: ' + ArqLogTXT);
+
+    { Se for NAO fiscal, desliga o AVISO antes de ativar }
+    if ACBrECF1.Modelo = ecfNaoFiscal then
+    begin
+      ArqIni := (ACBrECF1.ECF as TACBrECFNaoFiscal).NomeArqINI;
+      if FileExists(ArqIni) then
       begin
-        mResp.Lines.Add('Monitorando Comandos TXT em: '+ArqEntTXT);
-        mResp.Lines.Add('Respostas gravadas em: '+ArqSaiTXT);
-      end ;
-
-     if cbLog.Checked then
-        mResp.Lines.Add('Log de comandos será gravado em: '+ArqLogTXT) ;
-
-     { Se for NAO fiscal, desliga o AVISO antes de ativar }
-     if ACBrECF1.Modelo = ecfNaoFiscal then
-     begin
-        ArqIni := (ACBrECF1.ECF as TACBrECFNaoFiscal).NomeArqINI ;
-        if FileExists( ArqIni ) then
-        begin
-           Ini := TIniFile.Create( ArqIni ) ;
-           try
-             Ini.WriteString('Variaveis','Aviso_Legal','NAO');
-          finally
-             Ini.Free ;
-          end ;
-        end ;
-     end ;
+        Ini := TIniFile.Create(ArqIni);
+        try
+          Ini.WriteString('Variaveis', 'Aviso_Legal', 'NAO');
+        finally
+          Ini.Free;
+        end;
+      end;
+    end;
   except
-     on E : Exception do
-        Erro := Erro + sLineBreak + E.Message ;
-  end ;
+    on E: Exception do
+      Erro := Erro + sLineBreak + E.Message;
+  end;
 
   if Erro <> '' then
-     Raise Exception.Create( Erro );
+    raise Exception.Create(Erro);
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.AjustaLinhasLog;
-  Procedure AjustaLogFile( AFile : String; LinhasMax : Integer ) ;
-    Var LogNew, LogOld : TStringList ;
-     I : Integer ;
+
+  procedure AjustaLogFile(AFile: string; LinhasMax: integer);
+  var
+    LogNew, LogOld: TStringList;
+    I: integer;
   begin
-     if not FileExists( AFile ) then
-        exit ;
+    if not FileExists(AFile) then
+      exit;
 
-     LogOld := TStringList.Create ;
-     try
-        LogOld.LoadFromFile( AFile );
-        if LogOld.Count > LinhasMax then
+    LogOld := TStringList.Create;
+    try
+      LogOld.LoadFromFile(AFile);
+      if LogOld.Count > LinhasMax then
+      begin
+        mResp.Lines.Add('Ajustando o tamanho do arquivo: ' + AFile);
+        mResp.Lines.Add('Numero de Linhas atual: ' + IntToStr(LogOld.Count));
+        mResp.Lines.Add('Reduzindo para: ' + IntToStr(LinhasMax) + ' linhas');
+
+        { Se for muito grande é mais rápido copiar para outra lista do que Deletar }
+        if (LogOld.Count - LinhasMax) > LinhasMax then
         begin
-           mResp.Lines.Add('Ajustando o tamanho do arquivo: '+AFile) ;
-           mResp.Lines.Add('Numero de Linhas atual: '+IntToStr(LogOld.Count) ) ;
-           mResp.Lines.Add('Reduzindo para: '+IntToStr(LinhasMax)+ ' linhas' );
+          LogNew := TStringList.Create;
+          try
+            LogNew.Clear;
 
-           { Se for muito grande é mais rápido copiar para outra lista do que Deletar }
-           if (LogOld.Count - LinhasMax) > LinhasMax then
-            begin
-              LogNew := TStringList.Create ;
-              try
-                 LogNew.Clear ;
+            for I := LinhasMax downto 1 do
+              LogNew.Add(LogOld[LogOld.Count - I]);
 
-                 For I := LinhasMax downto 1 do
-                    LogNew.Add(LogOld[ LogOld.Count - I ] ) ;
-
-                 LogNew.SaveToFile( AFile );
-              finally
-                 LogNew.Free ;
-              end ;
-            end
-           else
-            begin
-              { Existe alguma maneira mais rápida de fazer isso ??? }
-              LogOld.BeginUpdate ;
-              while LogOld.Count > LinhasMax do
-                 LogOld.Delete(0) ;
-              LogOld.EndUpdate ;
-              LogOld.SaveToFile( AFile );
-            end ;
-        end ;
-     finally
-        LogOld.Free ;
-     end ;
-  end ;
+            LogNew.SaveToFile(AFile);
+          finally
+            LogNew.Free;
+          end;
+        end
+        else
+        begin
+          { Existe alguma maneira mais rápida de fazer isso ??? }
+          LogOld.BeginUpdate;
+          while LogOld.Count > LinhasMax do
+            LogOld.Delete(0);
+          LogOld.EndUpdate;
+          LogOld.SaveToFile(AFile);
+        end;
+      end;
+    finally
+      LogOld.Free;
+    end;
+  end;
 begin
   if (sedLogLinhas.Value <= 0) then
-     exit ;
+    exit;
 
   // Ajustado LOG do ACBrMonitor //
   if (cbLog.Checked) then
-     AjustaLogFile( ArqLogTXT, sedLogLinhas.Value );
+    AjustaLogFile(ArqLogTXT, sedLogLinhas.Value);
 
   // Ajustado LOG do ECF //
-  if (edECFLog.Text <> '')  then
-     AjustaLogFile( edECFLog.Text, sedLogLinhas.Value );
+  if (edECFLog.Text <> '') then
+    AjustaLogFile(edECFLog.Text, sedLogLinhas.Value);
 end;
 
 {------------------------------------------------------------------------------}
-procedure TFrmACBrMonitor.LerIni ;
-var Ini : TIniFile;
-    ECFAtivado, CHQAtivado, GAVAtivado, DISAtivado, BALAtivado, ETQAtivado  : Boolean ;
-    Senha, ECFDeviceParams, CHQDeviceParams :String ;
+procedure TFrmACBrMonitor.LerIni;
+var
+  Ini: TIniFile;
+  ECFAtivado, CHQAtivado, GAVAtivado, DISAtivado, BALAtivado, ETQAtivado: boolean;
+  Senha, ECFDeviceParams, CHQDeviceParams: string;
 begin
-  Ini := TIniFile.Create( ACBrMonitorINI ) ;
+  Ini := TIniFile.Create(ACBrMonitorINI);
 
-  ECFAtivado := ACBrECF1.Ativo ;
-  CHQAtivado := ACBrCHQ1.Ativo ;
-  GAVAtivado := ACBrGAV1.Ativo ;
-  DISAtivado := ACBrDIS1.Ativo ;
-  BALAtivado := ACBrBAL1.Ativo ;
-  ETQAtivado := ACBrETQ1.Ativo ;
+  ECFAtivado := ACBrECF1.Ativo;
+  CHQAtivado := ACBrCHQ1.Ativo;
+  GAVAtivado := ACBrGAV1.Ativo;
+  DISAtivado := ACBrDIS1.Ativo;
+  BALAtivado := ACBrBAL1.Ativo;
+  ETQAtivado := ACBrETQ1.Ativo;
 
   try
-     { Lendo Senha }
-//     Ini.ReadString('ACBrMonitor','TXT_Saida','SAI.TXT');
-     fsHashSenha := StrToIntDef( LeINICrypt(INI,'ACBrMonitor','HashSenha', _C), -1) ;
+    { Lendo Senha }
+    //     Ini.ReadString('ACBrMonitor','TXT_Saida','SAI.TXT');
+    fsHashSenha := StrToIntDef(LeINICrypt(INI, 'ACBrMonitor', 'HashSenha', _C), -1);
 
-     if fsHashSenha < 1 then  { INI antigo não tinha essa chave }
-     begin
-        Senha := Ini.ReadString('ACBrMonitor','Senha','');
-        if Senha <> '' then
-           fsHashSenha := StringCrc16(Senha) ;
-     end ;
+    if fsHashSenha < 1 then  { INI antigo não tinha essa chave }
+    begin
+      Senha := Ini.ReadString('ACBrMonitor', 'Senha', '');
+      if Senha <> '' then
+        fsHashSenha := StringCrc16(Senha);
+    end;
 
-     if fsHashSenha > 0 then
-     begin
-        cbSenha.Checked := True ;
-        edSenha.Text    := 'NADAAQUI' ;
-     end ;
+    if fsHashSenha > 0 then
+    begin
+      cbSenha.Checked := True;
+      edSenha.Text := 'NADAAQUI';
+    end;
 
-     { Parametros do Monitor }
-     rbTCP.Checked        := Ini.ReadBool('ACBrMonitor','Modo_TCP',false);
-     rbTXT.Checked        := Ini.ReadBool('ACBrMonitor','Modo_TXT',false);
-     edPortaTCP.Text      := IntToStr(Ini.ReadInteger('ACBrMonitor','TCP_Porta',3434));
-     edEntTXT.Text        := Ini.ReadString('ACBrMonitor','TXT_Entrada','ENT.TXT');
-     edSaiTXT.Text        := Ini.ReadString('ACBrMonitor','TXT_Saida','SAI.TXT');
-     sedIntervalo.Value   := Ini.ReadInteger('ACBrMonitor','Intervalo',50);
-     edLogArq.Text        := Ini.ReadString('ACBrMonitor','Arquivo_Log','LOG.TXT');
-     cbLog.Checked        := Ini.ReadBool('ACBrMonitor','Gravar_Log',false) and
-                           ( edLogArq.Text <> '' ) ;
-     sedLogLinhas.Value   := Ini.ReadInteger('ACBrMonitor','Linhas_Log',0);
-     cbComandos.Checked   := Ini.ReadBool('ACBrMonitor','Comandos_Remotos',false);
+    { Parametros do Monitor }
+    rbTCP.Checked := Ini.ReadBool('ACBrMonitor', 'Modo_TCP', False);
+    rbTXT.Checked := Ini.ReadBool('ACBrMonitor', 'Modo_TXT', False);
+    edPortaTCP.Text := IntToStr(Ini.ReadInteger('ACBrMonitor', 'TCP_Porta', 3434));
+    edEntTXT.Text := Ini.ReadString('ACBrMonitor', 'TXT_Entrada', 'ENT.TXT');
+    edSaiTXT.Text := Ini.ReadString('ACBrMonitor', 'TXT_Saida', 'SAI.TXT');
+    sedIntervalo.Value := Ini.ReadInteger('ACBrMonitor', 'Intervalo', 50);
+    edLogArq.Text := Ini.ReadString('ACBrMonitor', 'Arquivo_Log', 'LOG.TXT');
+    cbLog.Checked := Ini.ReadBool('ACBrMonitor', 'Gravar_Log', False) and
+      (edLogArq.Text <> '');
+    sedLogLinhas.Value := Ini.ReadInteger('ACBrMonitor', 'Linhas_Log', 0);
+    cbComandos.Checked := Ini.ReadBool('ACBrMonitor', 'Comandos_Remotos', False);
 
-     ArqEntTXT := AcertaPath( edEntTXT.Text ) ;
-     ArqSaiTXT := AcertaPath( edSaiTXT.Text ) ;
-     ArqSaiTMP := ChangeFileExt( ArqSaiTXT, '.tmp' ) ;
-     ArqLogTXT := AcertaPath( edLogArq.Text ) ;
+    ArqEntTXT := AcertaPath(edEntTXT.Text);
+    ArqSaiTXT := AcertaPath(edSaiTXT.Text);
+    ArqSaiTMP := ChangeFileExt(ArqSaiTXT, '.tmp');
+    ArqLogTXT := AcertaPath(edLogArq.Text);
 
-     TcpServer.Port           := edPortaTCP.Text ;
+    TcpServer.Port := edPortaTCP.Text;
 
-     { Parametros do ECF }
-     cbECFPorta.Text       := Ini.ReadString('ECF','Porta','Procurar');
-     ECFDeviceParams       := Ini.ReadString('ECF','SerialParams','');
-     cbECFModelo.ItemIndex := Ini.ReadInteger('ECF','Modelo',0)+1;
-     cbECFModeloChange(Self);
-     sedECFTimeout.Value   := Ini.ReadInteger('ECF','Timeout',3);
-     sedECFIntervalo.Value := Ini.ReadInteger('ECF','IntervaloAposComando',100);
-     chECFArredondaPorQtd.Checked := Ini.ReadBool('ECF','ArredondamentoPorQtd',false);
-     chECFDescrGrande.Checked     := Ini.ReadBool('ECF','DescricaoGrande',True);
-     chECFSinalGavetaInvertido.Checked := Ini.ReadBool('ECF','GavetaSinalInvertido',false);
-     edECFLog.Text         := Ini.ReadString('ECF','ArqLog','');
+    { Parametros do ECF }
+    cbECFPorta.Text := Ini.ReadString('ECF', 'Porta', 'Procurar');
+    ECFDeviceParams := Ini.ReadString('ECF', 'SerialParams', '');
+    cbECFModelo.ItemIndex := Ini.ReadInteger('ECF', 'Modelo', 0) + 1;
+    cbECFModeloChange(Self);
+    sedECFTimeout.Value := Ini.ReadInteger('ECF', 'Timeout', 3);
+    sedECFIntervalo.Value := Ini.ReadInteger('ECF', 'IntervaloAposComando', 100);
+    chECFArredondaPorQtd.Checked := Ini.ReadBool('ECF', 'ArredondamentoPorQtd', False);
+    chECFDescrGrande.Checked := Ini.ReadBool('ECF', 'DescricaoGrande', True);
+    chECFSinalGavetaInvertido.Checked :=
+      Ini.ReadBool('ECF', 'GavetaSinalInvertido', False);
+    edECFLog.Text := Ini.ReadString('ECF', 'ArqLog', '');
 
-     { Parametros do CHQ }
-     cbCHQPorta.Text       := Ini.ReadString('CHQ','Porta','');
-     cbCHQModelo.ItemIndex := Ini.ReadInteger('CHQ','Modelo',0);
-     cbCHQModeloChange(Self);
-     chCHQVerForm.Checked  := Ini.ReadBool('CHQ','VerificaFormulario',false);
-     edCHQFavorecido.Text  := Ini.ReadString('CHQ','Favorecido','');
-     edCHQCidade.Text      := Ini.ReadString('CHQ','Cidade','');
-     edCHQBemafiINI.Text   := Ini.ReadString('CHQ','PathBemafiINI','');
-     CHQDeviceParams       := Ini.ReadString('CHQ', 'SerialParams', '');
+    { Parametros do CHQ }
+    cbCHQPorta.Text := Ini.ReadString('CHQ', 'Porta', '');
+    cbCHQModelo.ItemIndex := Ini.ReadInteger('CHQ', 'Modelo', 0);
+    cbCHQModeloChange(Self);
+    chCHQVerForm.Checked := Ini.ReadBool('CHQ', 'VerificaFormulario', False);
+    edCHQFavorecido.Text := Ini.ReadString('CHQ', 'Favorecido', '');
+    edCHQCidade.Text := Ini.ReadString('CHQ', 'Cidade', '');
+    edCHQBemafiINI.Text := Ini.ReadString('CHQ', 'PathBemafiINI', '');
+    CHQDeviceParams := Ini.ReadString('CHQ', 'SerialParams', '');
 
-     { Parametros do GAV }
-     cbGAVPorta.Text       := Ini.ReadString('GAV','Porta','');
-     cbGAVModelo.ItemIndex := Ini.ReadInteger('GAV','Modelo',0);
-     cbGAVModeloChange(Self);
-     cbGAVStrAbre.Text     := Ini.ReadString('GAV','StringAbertura','');
-     sedGAVIntervaloAbertura.Value := Ini.ReadInteger('GAV','AberturaIntervalo',
-        ACBrGAV1.AberturaIntervalo);
-     cbGAVAcaoAberturaAntecipada.ItemIndex :=
-        Ini.ReadInteger('GAV','AcaoAberturaAntecipada',1);
+    { Parametros do GAV }
+    cbGAVPorta.Text := Ini.ReadString('GAV', 'Porta', '');
+    cbGAVModelo.ItemIndex := Ini.ReadInteger('GAV', 'Modelo', 0);
+    cbGAVModeloChange(Self);
+    cbGAVStrAbre.Text := Ini.ReadString('GAV', 'StringAbertura', '');
+    sedGAVIntervaloAbertura.Value :=
+      Ini.ReadInteger('GAV', 'AberturaIntervalo', ACBrGAV1.AberturaIntervalo);
+    cbGAVAcaoAberturaAntecipada.ItemIndex :=
+      Ini.ReadInteger('GAV', 'AcaoAberturaAntecipada', 1);
 
-     { Parametros do DIS }
-     cbDISPorta.Text       := Ini.ReadString('DIS','Porta','');
-     cbDISModelo.ItemIndex := Ini.ReadInteger('DIS','Modelo',0);
-     cbDISModeloChange(Self);
-     seDISIntervalo.Value  := Ini.ReadInteger('DIS','Intervalo',300);
-     seDISPassos.Value     := Ini.ReadInteger('DIS','Passos',1);
-     seDISIntByte.Value    := Ini.ReadInteger('DIS','IntervaloEnvioBytes',3);
+    { Parametros do DIS }
+    cbDISPorta.Text := Ini.ReadString('DIS', 'Porta', '');
+    cbDISModelo.ItemIndex := Ini.ReadInteger('DIS', 'Modelo', 0);
+    cbDISModeloChange(Self);
+    seDISIntervalo.Value := Ini.ReadInteger('DIS', 'Intervalo', 300);
+    seDISPassos.Value := Ini.ReadInteger('DIS', 'Passos', 1);
+    seDISIntByte.Value := Ini.ReadInteger('DIS', 'IntervaloEnvioBytes', 3);
 
-     { Parametros do LCB }
-     cbLCBPorta.Text             := Ini.ReadString('LCB','Porta','Sem Leitor');
-     cbLCBPortaChange(Self);
-     sedLCBIntervalo.Value       := Ini.ReadInteger('LCB','Intervalo',100);
-     cbLCBSufixoLeitor.Text      := Ini.ReadString('LCB','SufixoLeitor','#13');
-     chLCBExcluirSufixo.Checked  := Ini.ReadBool('LCB','ExcluirSufixo',false) ;
-     edLCBPreExcluir.Text        := Ini.ReadString('LCB','PrefixoAExcluir','');
-     cbLCBSufixo.Text            := Ini.ReadString('LCB','SufixoIncluir','') ;
-     cbLCBDispositivo.Text       := Ini.ReadString('LCB','Dispositivo','') ;
-     rbLCBTeclado.Checked        := Ini.ReadBool('LCB','Teclado',True) ;
-     rbLCBFila.Checked           := not rbLCBTeclado.Checked ;
-     ACBrLCB1.Device.ParamsString:= Ini.ReadString('LCB','Device','') ;
+    { Parametros do LCB }
+    cbLCBPorta.Text := Ini.ReadString('LCB', 'Porta', 'Sem Leitor');
+    cbLCBPortaChange(Self);
+    sedLCBIntervalo.Value := Ini.ReadInteger('LCB', 'Intervalo', 100);
+    cbLCBSufixoLeitor.Text := Ini.ReadString('LCB', 'SufixoLeitor', '#13');
+    chLCBExcluirSufixo.Checked := Ini.ReadBool('LCB', 'ExcluirSufixo', False);
+    edLCBPreExcluir.Text := Ini.ReadString('LCB', 'PrefixoAExcluir', '');
+    cbLCBSufixo.Text := Ini.ReadString('LCB', 'SufixoIncluir', '');
+    cbLCBDispositivo.Text := Ini.ReadString('LCB', 'Dispositivo', '');
+    rbLCBTeclado.Checked := Ini.ReadBool('LCB', 'Teclado', True);
+    rbLCBFila.Checked := not rbLCBTeclado.Checked;
+    ACBrLCB1.Device.ParamsString := Ini.ReadString('LCB', 'Device', '');
 
-     { Parametros do RFD }
-     chRFD.Checked          := INI.ReadBool('RFD','GerarRFD',False);
-     chRFDIgnoraMFD.Checked := INI.ReadBool('RFD','IgnoraECF_MFD',True);
-     edRFDDir.Text          := INI.ReadString('RFD','DirRFD',edRFDDir.Text);
+    { Parametros do RFD }
+    chRFD.Checked := INI.ReadBool('RFD', 'GerarRFD', False);
+    chRFDIgnoraMFD.Checked := INI.ReadBool('RFD', 'IgnoraECF_MFD', True);
+    edRFDDir.Text := INI.ReadString('RFD', 'DirRFD', edRFDDir.Text);
 
-     { Parametros do BAL }
-     cbBALPorta.Text       := Ini.ReadString('BAL','Porta','');
-     cbBALModelo.ItemIndex := Ini.ReadInteger('BAL','Modelo',0);
-     cbBALModeloChange(Self);
-     sedBALIntervalo.Value  := Ini.ReadInteger('BAL','Intervalo',200);
+    { Parametros do BAL }
+    cbBALPorta.Text := Ini.ReadString('BAL', 'Porta', '');
+    cbBALModelo.ItemIndex := Ini.ReadInteger('BAL', 'Modelo', 0);
+    cbBALModeloChange(Self);
+    sedBALIntervalo.Value := Ini.ReadInteger('BAL', 'Intervalo', 200);
 
-     { Parametros do ETQ }
-     cbETQPorta.Text       := Ini.ReadString('ETQ','Porta','');
-     cbETQModelo.ItemIndex := Ini.ReadInteger('ETQ','Modelo',0);
-     cbETQModeloChange(Self);
+    { Parametros do ETQ }
+    cbETQPorta.Text := Ini.ReadString('ETQ', 'Porta', '');
+    cbETQModelo.ItemIndex := Ini.ReadInteger('ETQ', 'Modelo', 0);
+    cbETQModeloChange(Self);
 
-     { Parametros do TC }
-     cbxTCModelo.ItemIndex := Ini.ReadInteger('TC','Modelo',0);
-     cbxTCModeloChange(Self) ;
-     edTCArqPrecos.Text    := IntToStr(Ini.ReadInteger('TC','TCP_Porta',6500));
-     edTCArqPrecos.Text    := Ini.ReadString('TC','Arq_Precos','PRICETAB.TXT');
-     edTCNaoEncontrado.Text:= Ini.ReadString('TC','Nao_Econtrado','PRODUTO|NAO ENCONTRADO');
+    { Parametros do TC }
+    cbxTCModelo.ItemIndex := Ini.ReadInteger('TC', 'Modelo', 0);
+    cbxTCModeloChange(Self);
+    edTCArqPrecos.Text := IntToStr(Ini.ReadInteger('TC', 'TCP_Porta', 6500));
+    edTCArqPrecos.Text := Ini.ReadString('TC', 'Arq_Precos', 'PRICETAB.TXT');
+    edTCNaoEncontrado.Text :=
+      Ini.ReadString('TC', 'Nao_Econtrado', 'PRODUTO|NAO ENCONTRADO');
+
+
+    {Parametros do Boleto - Cliente}
+    edtRazaoSocial.Text := ini.ReadString('BOL', 'Cedente.Nome', '');
+    edtCNPJ.Text := ini.ReadString('BOL', 'Cedente.CNPJCPF', '');
+    edtLogradouro.Text := ini.ReadString('BOL', 'Cedente.Logradouro', '');
+    edtNumero.Text := ini.ReadString('BOL', 'Cedente.Numero', '');
+    edtBairro.Text := ini.ReadString('BOL', 'Cedente.Bairro', '');
+    edtCidade.Text := ini.ReadString('BOL', 'Cedente.Cidade', '');
+    edtCEP.Text := ini.ReadString('BOL', 'Cedente.CEP', '');
+    edtComplemento.Text := ini.ReadString('BOL', 'Cedente.Complemento', '');
+    cbxUF.Text := ini.ReadString('BOL', 'Cedente.UF', '');
+    cbxEmissao.ItemIndex := ini.ReadInteger('BOL', 'Cedente.RespEmis', -1);
+
+    {Parametros do Boleto - Banco}
+    cbxBanco.Text := IntToStrZero(ini.ReadInteger('BOL', 'Banco', 1), 3);
+    edtConta.Text := ini.ReadString('BOL', 'Conta', '');
+    edtDigitoConta.Text := ini.ReadString('BOL', 'DigitoConta', '');
+    edtAgencia.Text := ini.ReadString('BOL', 'Agencia', '');
+    edtDigitoAgencia.Text := ini.ReadString('BOL', 'DigitoAgencia', '');
+
+    {Parametros do Boleto - Boleto}
+    deBOLDirLogo.Text := ini.ReadString('BOL', 'DirLogos', '');
+    edtBOLSofwareHouse.Text := ini.ReadString('BOL', 'SoftwareHouse', '');
+    spCopias.Value := ini.ReadInteger('BOL', 'Copias', 1);
+    ckgMostrar.Checked[0] := Ini.ReadBool('BOL', 'Preview', True);
+    ckgMostrar.Checked[1] := ini.ReadBool('BOL', 'Setup', True);
+    cbxLayout.ItemIndex := ini.ReadInteger('BOL', 'Layout', 0);
+    cbxFiltro.ItemIndex := ini.ReadInteger('BOL', 'Filtro', 0);
 
   finally
-     Ini.Free ;
-  end ;
+    Ini.Free;
+  end;
 
   with ACBrECF1 do
   begin
-     Desativar ;
-     Modelo               := TACBrECFModelo( Max(cbECFModelo.ItemIndex-1,0) ) ;
-     Porta                := cbECFPorta.Text ;
-     if ECFDeviceParams <> '' then
-        Device.ParamsString  := ECFDeviceParams ;
-     TimeOut              := sedECFTimeout.Value ;
-     IntervaloAposComando := sedECFIntervalo.Value ;
-     ArredondaPorQtd      := chECFArredondaPorQtd.Checked ;
-     DescricaoGrande      := chECFDescrGrande.Checked ;
-     GavetaSinalInvertido := chECFSinalGavetaInvertido.Checked ;
-     BloqueiaMouseTeclado := False ;
-     ExibeMensagem        := False ;
-     ArqLOG               := edECFLog.Text ;
-     Ativo                := ECFAtivado ;
-  end ;
+    Desativar;
+    Modelo := TACBrECFModelo(Max(cbECFModelo.ItemIndex - 1, 0));
+    Porta := cbECFPorta.Text;
+    if ECFDeviceParams <> '' then
+      Device.ParamsString := ECFDeviceParams;
+    TimeOut := sedECFTimeout.Value;
+    IntervaloAposComando := sedECFIntervalo.Value;
+    ArredondaPorQtd := chECFArredondaPorQtd.Checked;
+    DescricaoGrande := chECFDescrGrande.Checked;
+    GavetaSinalInvertido := chECFSinalGavetaInvertido.Checked;
+    BloqueiaMouseTeclado := False;
+    ExibeMensagem := False;
+    ArqLOG := edECFLog.Text;
+    Ativo := ECFAtivado;
+  end;
 
   with ACBrCHQ1 do
   begin
-     Desativar ;
-     Modelo  := TACBrCHQModelo( cbCHQModelo.ItemIndex ) ;
-     Porta   := cbCHQPorta.Text ;
-     if CHQDeviceParams <> '' then
-        Device.ParamsString  := CHQDeviceParams ;
-     Favorecido := edCHQFavorecido.Text ;
-     Cidade     := edCHQCidade.Text ;
+    Desativar;
+    Modelo := TACBrCHQModelo(cbCHQModelo.ItemIndex);
+    Porta := cbCHQPorta.Text;
+    if CHQDeviceParams <> '' then
+      Device.ParamsString := CHQDeviceParams;
+    Favorecido := edCHQFavorecido.Text;
+    Cidade := edCHQCidade.Text;
 
-     if edCHQBemafiINI.Text <> '' then
-     begin
-        try
-           ArquivoBemaFiINI := edCHQBemafiINI.Text ;
-           mResp.Lines.Add('Arquivo de Cheques: '+ArquivoBemaFiINI + sLineBreak +
-                           ' lido com sucesso.') ;
-        except
-           on E : Exception do
-              mResp.Lines.Add( E.Message );
-        end ;
-     end ;
-     Ativo := CHQAtivado ;
-  end ;
+    if edCHQBemafiINI.Text <> '' then
+    begin
+      try
+        ArquivoBemaFiINI := edCHQBemafiINI.Text;
+        mResp.Lines.Add('Arquivo de Cheques: ' + ArquivoBemaFiINI +
+          sLineBreak + ' lido com sucesso.');
+      except
+        on E: Exception do
+          mResp.Lines.Add(E.Message);
+      end;
+    end;
+    Ativo := CHQAtivado;
+  end;
 
   with ACBrGAV1 do
   begin
-     Desativar ;
-     StrComando := cbGAVStrAbre.Text ;
-     AberturaIntervalo  := sedGAVIntervaloAbertura.Value ;
-     AberturaAntecipada := TACBrGAVAberturaAntecipada(
-                                       cbGAVAcaoAberturaAntecipada.ItemIndex ) ;
-     Modelo     := TACBrGAVModelo( cbGAVModelo.ItemIndex ) ;
-     Porta      := cbGAVPorta.Text ;
-     Ativo      := (GAVAtivado or (pos('serial',LowerCase(ModeloStr)) > 0) );
-  end ;
+    Desativar;
+    StrComando := cbGAVStrAbre.Text;
+    AberturaIntervalo := sedGAVIntervaloAbertura.Value;
+    AberturaAntecipada := TACBrGAVAberturaAntecipada(
+      cbGAVAcaoAberturaAntecipada.ItemIndex);
+    Modelo := TACBrGAVModelo(cbGAVModelo.ItemIndex);
+    Porta := cbGAVPorta.Text;
+    Ativo := (GAVAtivado or (pos('serial', LowerCase(ModeloStr)) > 0));
+  end;
 
   with ACBrDIS1 do
   begin
-     Desativar ;
-     Intervalo := seDISIntervalo.Value ;
-     Passos    := seDISPassos.Value ;
-     IntervaloEnvioBytes := seDISIntByte.Value ;
-     Modelo    := TACBrDISModelo( cbDISModelo.ItemIndex ) ;
-     Porta     := cbDISPorta.Text ;
-     Ativo     := DISAtivado ;
-  end ;
+    Desativar;
+    Intervalo := seDISIntervalo.Value;
+    Passos := seDISPassos.Value;
+    IntervaloEnvioBytes := seDISIntByte.Value;
+    Modelo := TACBrDISModelo(cbDISModelo.ItemIndex);
+    Porta := cbDISPorta.Text;
+    Ativo := DISAtivado;
+  end;
 
   with ACBrLCB1 do
   begin
-     Desativar ;
-     Porta           := cbLCBPorta.Text ;
-     Intervalo       := sedLCBIntervalo.Value ;
-     Sufixo          := cbLCBSufixoLeitor.Text ;
-     ExcluirSufixo   := chLCBExcluirSufixo.Checked ;
-     PrefixoAExcluir := edLCBPreExcluir.Text ;
-     UsarFila        := rbLCBFila.Checked ;
+    Desativar;
+    Porta := cbLCBPorta.Text;
+    Intervalo := sedLCBIntervalo.Value;
+    Sufixo := cbLCBSufixoLeitor.Text;
+    ExcluirSufixo := chLCBExcluirSufixo.Checked;
+    PrefixoAExcluir := edLCBPreExcluir.Text;
+    UsarFila := rbLCBFila.Checked;
 
-     { SndKey32.pas só funciona no Windows pois usa a API  "keybd_event" }
-     if (ACBrLCB1.Porta <> 'Sem Leitor') and (ACBrLCB1.Porta <> '') then
-        ACBrLCB1.Ativar ;
-  end ;
+    { SndKey32.pas só funciona no Windows pois usa a API  "keybd_event" }
+    if (ACBrLCB1.Porta <> 'Sem Leitor') and (ACBrLCB1.Porta <> '') then
+      ACBrLCB1.Ativar;
+  end;
 
   with ACBrRFD1 do
   begin
-     DirRFD := edRFDDir.Text ;
+    DirRFD := edRFDDir.Text;
 
-     if chRFD.Checked then
-        LerSW ;
-  end ;
+    if chRFD.Checked then
+      LerSW;
+  end;
 
   with ACBrBAL1 do
   begin
-     Desativar ;
-     Intervalo := sedBALIntervalo.Value ;
-     Modelo    := TACBrBALModelo( cbBALModelo.ItemIndex ) ;
-     Porta     := cbBALPorta.Text ;
-     Ativo     := BALAtivado ;
-  end ;
+    Desativar;
+    Intervalo := sedBALIntervalo.Value;
+    Modelo := TACBrBALModelo(cbBALModelo.ItemIndex);
+    Porta := cbBALPorta.Text;
+    Ativo := BALAtivado;
+  end;
 
   with ACBrETQ1 do
   begin
-     Desativar ;
-     Modelo    := TACBrETQModelo( cbETQModelo.ItemIndex ) ;
-     Porta     := cbETQPorta.Text ;
-     Ativo     := ETQAtivado ;
-  end ;
+    Desativar;
+    Modelo := TACBrETQModelo(cbETQModelo.ItemIndex);
+    Porta := cbETQPorta.Text;
+    Ativo := ETQAtivado;
+  end;
+
+  with ACBrBoleto1 do
+  begin
+    Cedente.Nome := edtRazaoSocial.Text;
+    Cedente.CNPJCPF := edtCNPJ.Text;
+
+    if rgFJ.ItemIndex = 0 then
+      Cedente.TipoInscricao := pFisica
+    else
+      Cedente.TipoInscricao := pJuridica;
+
+    Cedente.Logradouro := edtLogradouro.Text;
+    Cedente.NumeroRes := edtNumero.Text;
+    Cedente.Bairro := edtBairro.Text;
+    Cedente.Cidade := edtCidade.Text;
+    Cedente.CEP := edtCEP.Text;
+    Cedente.Complemento := edtComplemento.Text;
+    Cedente.UF := cbxUF.Text;
+
+    Cedente.Agencia := edtAgencia.Text;
+    Cedente.AgenciaDigito := edtDigitoAgencia.Text;
+    Cedente.Conta := edtConta.Text;
+    Cedente.ContaDigito := edtDigitoConta.Text;
+
+    case cbxEmissao.ItemIndex of
+      0: Cedente.ResponEmissao := tbCliEmite;
+      1: Cedente.ResponEmissao := tbBancoEmite;
+      2: Cedente.ResponEmissao := tbBancoReemite;
+      3: Cedente.ResponEmissao := tbBancoNaoReemite;
+    end;
+
+    Banco.Numero := StrToIntDef(Copy(cbxBanco.Text, 1, 3), 0);
+  end;
+
+  with ACBrBoletoFCFortes1 do
+  begin
+    case cbxFiltro.ItemIndex of
+      0: Filtro := fiNenhum;
+      1: Filtro := fiPDF;
+      2: Filtro := fiHTML;
+    end;
+
+    case cbxLayout.ItemIndex of
+      0: LayOut := lPadrao;
+      1: LayOut := lCarne;
+      2: LayOut := lFatura;
+    end;
+
+    NumCopias := spCopias.Value;
+    SoftwareHouse := edtBOLSofwareHouse.Text;
+    DirLogo := deBOLDirLogo.Text;
+    MostrarPreview := ckgMostrar.Checked[0];
+    MostrarSetup := ckgMostrar.Checked[1];
+  end;
 
   if cbxTCModelo.ItemIndex > 0 then
-     bTCAtivar.Click ;
+    bTCAtivar.Click;
 
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.LerSW;
-  Var INI : TIniFile ;
-      ArqSWH, Pass: AnsiString ;
-      JaExiste : Boolean ;
+var
+  INI: TIniFile;
+  ArqSWH, Pass: ansistring;
+  JaExiste: boolean;
 begin
-  ArqSWH   := ExtractFilePath(Application.ExeName)+'swh.ini' ;
-  JaExiste := FileExists( ArqSWH ) ;
+  ArqSWH := ExtractFilePath(Application.ExeName) + 'swh.ini';
+  JaExiste := FileExists(ArqSWH);
 
-  Ini := TIniFile.Create( ArqSWH ) ;
+  Ini := TIniFile.Create(ArqSWH);
   try
-     edSH_CNPJ.Text := LeINICrypt(INI,'SWH','CNPJ', IntToStrZero(fsHashSenha,8));
-     Pass := IntToStrZero( StringCrc16(edSH_CNPJ.Text + IntToStrZero(fsHashSenha,8)),8) ;
+    edSH_CNPJ.Text := LeINICrypt(INI, 'SWH', 'CNPJ', IntToStrZero(fsHashSenha, 8));
+    Pass := IntToStrZero(StringCrc16(edSH_CNPJ.Text + IntToStrZero(fsHashSenha, 8)), 8);
 
-     if LeINICrypt(INI,'SWH','Verifica', Pass) <> 'ARQUIVO SWH.INI ESTA OK' then
-        if JaExiste then
-           raise Exception.Create('Arquivo "swh.ini" inválido.')
-        else
-           raise Exception.Create('Arquivo "swh.ini" não encontrado.') ;
+    if LeINICrypt(INI, 'SWH', 'Verifica', Pass) <> 'ARQUIVO SWH.INI ESTA OK' then
+      if JaExiste then
+        raise Exception.Create('Arquivo "swh.ini" inválido.')
+      else
+        raise Exception.Create('Arquivo "swh.ini" não encontrado.');
 
-     edSH_RazaoSocial.Text := LeINICrypt(INI,'SWH','RazaoSocial', Pass);
-     edSH_COO.Text         := LeINICrypt(INI,'SWH','COO', Pass);
-     edSH_IE.Text          := LeINICrypt(INI,'SWH','IE', Pass);
-     edSH_IM.Text          := LeINICrypt(INI,'SWH','IM', Pass);
-     edSH_Aplicativo.Text  := LeINICrypt(INI,'SWH','Aplicativo', Pass);
-     edSH_NumeroAP.Text    := LeINICrypt(INI,'SWH','NumeroAplicativo', Pass);
-     edSH_VersaoAP.Text    := LeINICrypt(INI,'SWH','VersaoAplicativo', Pass);
-     edSH_Linha1.Text      := LeINICrypt(INI,'SWH','Linha1', Pass);
-     edSH_Linha2.Text      := LeINICrypt(INI,'SWH','Linha2', Pass);
+    edSH_RazaoSocial.Text := LeINICrypt(INI, 'SWH', 'RazaoSocial', Pass);
+    edSH_COO.Text := LeINICrypt(INI, 'SWH', 'COO', Pass);
+    edSH_IE.Text := LeINICrypt(INI, 'SWH', 'IE', Pass);
+    edSH_IM.Text := LeINICrypt(INI, 'SWH', 'IM', Pass);
+    edSH_Aplicativo.Text := LeINICrypt(INI, 'SWH', 'Aplicativo', Pass);
+    edSH_NumeroAP.Text := LeINICrypt(INI, 'SWH', 'NumeroAplicativo', Pass);
+    edSH_VersaoAP.Text := LeINICrypt(INI, 'SWH', 'VersaoAplicativo', Pass);
+    edSH_Linha1.Text := LeINICrypt(INI, 'SWH', 'Linha1', Pass);
+    edSH_Linha2.Text := LeINICrypt(INI, 'SWH', 'Linha2', Pass);
 
-     ACBrRFD1.SH_RazaoSocial     := edSH_RazaoSocial.Text ;
-     ACBrRFD1.SH_COO             := edSH_COO.Text ;
-     ACBrRFD1.SH_CNPJ            := edSH_CNPJ.Text ;
-     ACBrRFD1.SH_IE              := edSH_IE.Text ;
-     ACBrRFD1.SH_IM              := edSH_IM.Text ;
-     ACBrRFD1.SH_NomeAplicativo  := edSH_Aplicativo.Text ;
-     ACBrRFD1.SH_NumeroAplicativo:= edSH_NumeroAP.Text ;
-     ACBrRFD1.SH_VersaoAplicativo:= edSH_VersaoAP.Text ;
-     ACBrRFD1.SH_Linha1          := edSH_Linha1.Text ;
-     ACBrRFD1.SH_Linha2          := edSH_Linha2.Text ;
+    ACBrRFD1.SH_RazaoSocial := edSH_RazaoSocial.Text;
+    ACBrRFD1.SH_COO := edSH_COO.Text;
+    ACBrRFD1.SH_CNPJ := edSH_CNPJ.Text;
+    ACBrRFD1.SH_IE := edSH_IE.Text;
+    ACBrRFD1.SH_IM := edSH_IM.Text;
+    ACBrRFD1.SH_NomeAplicativo := edSH_Aplicativo.Text;
+    ACBrRFD1.SH_NumeroAplicativo := edSH_NumeroAP.Text;
+    ACBrRFD1.SH_VersaoAplicativo := edSH_VersaoAP.Text;
+    ACBrRFD1.SH_Linha1 := edSH_Linha1.Text;
+    ACBrRFD1.SH_Linha2 := edSH_Linha2.Text;
   finally
-     Ini.Free ;
-  end ;
+    Ini.Free;
+  end;
 end;
 
 {------------------------------------------------------------------------------}
-Function TFrmACBrMonitor.LerChaveSWH : AnsiString;
-  Var INI : TIniFile ;
-      Pass: String ;
+function TFrmACBrMonitor.LerChaveSWH: ansistring;
+var
+  INI: TIniFile;
+  Pass: string;
 begin
-  Result := '' ;
-  Ini := TIniFile.Create( ExtractFilePath(Application.ExeName)+'swh.ini' ) ;
+  Result := '';
+  Ini := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'swh.ini');
   try
-     Pass := LeINICrypt(INI,'SWH','CNPJ', IntToStrZero(fsHashSenha,8));
-     Pass := IntToStrZero( StringCrc16(Pass + IntToStrZero(fsHashSenha,8)),8) ;
+    Pass := LeINICrypt(INI, 'SWH', 'CNPJ', IntToStrZero(fsHashSenha, 8));
+    Pass := IntToStrZero(StringCrc16(Pass + IntToStrZero(fsHashSenha, 8)), 8);
 
-     if LeINICrypt(INI,'SWH','Verifica', Pass) = 'ARQUIVO SWH.INI ESTA OK' then
-        Result := Trim( LeINICrypt(INI,'SWH','RSA', Pass) );
+    if LeINICrypt(INI, 'SWH', 'Verifica', Pass) = 'ARQUIVO SWH.INI ESTA OK' then
+      Result := Trim(LeINICrypt(INI, 'SWH', 'RSA', Pass));
   finally
-     Ini.Free ;
-  end ;
-end ;
+    Ini.Free;
+  end;
+end;
 
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.SalvarIni;
-var Ini : TIniFile;
-    OldMonitoraTXT, OldMonitoraTCP : Boolean ;
+var
+  Ini: TIniFile;
+  OldMonitoraTXT, OldMonitoraTCP: boolean;
+  ACBrValidador: TACBrValidador;
+  CNPJEMP: string;
 begin
   if cbSenha.Checked and (edSenha.Text <> 'NADAAQUI') and (edSenha.Text <> '') then
-     fsHashSenha := StringCrc16(edSenha.Text) ;
+    fsHashSenha := StringCrc16(edSenha.Text);
 
-  if pConfig.Visible and chRFD.Checked and (fsHashSenha < 1)  then
+  if pConfig.Visible and chRFD.Checked and (fsHashSenha < 1) then
   begin
-     PageControl1.ActivePageIndex := 0 ;
-     cbSenha.Checked := True ;
-     edSenha.SetFocus ;
-     raise Exception.Create('Para trabalhar com RFD é necessário definir uma Senha '+
-                            'para proteger sua Chave Privada') ;
-  end ;
+    PageControl1.ActivePageIndex := 0;
+    cbSenha.Checked := True;
+    edSenha.SetFocus;
+    raise Exception.Create('Para trabalhar com RFD é necessário definir uma Senha ' +
+      'para proteger sua Chave Privada');
+  end;
 
-  Ini := TIniFile.Create( ACBrMonitorINI ) ;
+  CNPJEMP := StringReplace(edtCNPJ.Text, '-', '', [rfReplaceAll]);
+  CNPJEMP := StringReplace(CNPJEMP, '/', '', [rfReplaceAll]);
+  CNPJEMP := StringReplace(CNPJEMP, '.', '', [rfReplaceAll]);
+
+
+  if trim(CNPJEMP) <> '' then
+  begin
+    ACbrValidador := TACBrValidador.Create(Self);
+    try
+      with ACbrValidador do
+      begin
+        if rgFJ.ItemIndex = 0 then
+          TipoDocto := docCPF
+        else
+          TipoDocto := docCNPJ;
+
+        IgnorarChar := './-';
+        RaiseExcept := True;
+        Documento := edtCNPJ.Text;
+        Validar;    // Dispara Exception se Documento estiver errado
+
+        edtCNPJ.Text := Formatar;
+      end;
+    finally
+      ACbrValidador.Free;
+    end;
+  end;
+
+  Ini := TIniFile.Create(ACBrMonitorINI);
   try
-     // Verificando se modificou o Modo de Monitoramento //
-     OldMonitoraTCP := Ini.ReadBool('ACBrMonitor','Modo_TCP',false) ;
-     OldMonitoraTXT := Ini.ReadBool('ACBrMonitor','Modo_TXT',false) ;
+    // Verificando se modificou o Modo de Monitoramento //
+    OldMonitoraTCP := Ini.ReadBool('ACBrMonitor', 'Modo_TCP', False);
+    OldMonitoraTXT := Ini.ReadBool('ACBrMonitor', 'Modo_TXT', False);
 
-     // Parametros do Monitor //
-     Ini.WriteBool('ACBrMonitor','Modo_TCP',rbTCP.Checked);
-     Ini.WriteBool('ACBrMonitor','Modo_TXT',rbTXT.Checked);
-     Ini.WriteInteger('ACBrMonitor','TCP_Porta',StrToIntDef(edPortaTCP.Text,3434));
-     Ini.WriteString('ACBrMonitor','TXT_Entrada',edEntTXT.Text);
-     Ini.WriteString('ACBrMonitor','TXT_Saida',edSaiTXT.Text);
-     Ini.WriteInteger('ACBrMonitor','Intervalo',sedIntervalo.Value);
-     GravaINICrypt(INI,'ACBrMonitor','HashSenha', IntToStrZero(fsHashSenha,8), _C) ;
+    // Parametros do Monitor //
+    Ini.WriteBool('ACBrMonitor', 'Modo_TCP', rbTCP.Checked);
+    Ini.WriteBool('ACBrMonitor', 'Modo_TXT', rbTXT.Checked);
+    Ini.WriteInteger('ACBrMonitor', 'TCP_Porta', StrToIntDef(edPortaTCP.Text, 3434));
+    Ini.WriteString('ACBrMonitor', 'TXT_Entrada', edEntTXT.Text);
+    Ini.WriteString('ACBrMonitor', 'TXT_Saida', edSaiTXT.Text);
+    Ini.WriteInteger('ACBrMonitor', 'Intervalo', sedIntervalo.Value);
+    GravaINICrypt(INI, 'ACBrMonitor', 'HashSenha', IntToStrZero(fsHashSenha, 8), _C);
 
-     Ini.WriteBool('ACBrMonitor','Gravar_Log',cbLog.Checked);
-     Ini.WriteString('ACBrMonitor','Arquivo_Log',edLogArq.Text);
-     Ini.WriteInteger('ACBrMonitor','Linhas_Log',sedLogLinhas.Value);
-     Ini.WriteBool('ACBrMonitor','Comandos_Remotos',cbComandos.Checked);
+    Ini.WriteBool('ACBrMonitor', 'Gravar_Log', cbLog.Checked);
+    Ini.WriteString('ACBrMonitor', 'Arquivo_Log', edLogArq.Text);
+    Ini.WriteInteger('ACBrMonitor', 'Linhas_Log', sedLogLinhas.Value);
+    Ini.WriteBool('ACBrMonitor', 'Comandos_Remotos', cbComandos.Checked);
 
-     { Parametros do ECF }
-     Ini.WriteInteger('ECF','Modelo',max(cbECFModelo.ItemIndex-1,0));
-     Ini.WriteString('ECF','Porta',cbECFPorta.Text);
-     Ini.WriteString('ECF','SerialParams',ACBrECF1.Device.ParamsString);
-     Ini.WriteInteger('ECF','Timeout',sedECFTimeout.Value);
-     Ini.WriteInteger('ECF','IntervaloAposComando',sedECFIntervalo.Value);
-     Ini.WriteBool('ECF','ArredondamentoPorQtd',chECFArredondaPorQtd.Checked);
-     Ini.WriteBool('ECF','DescricaoGrande',chECFDescrGrande.Checked);
-     Ini.WriteBool('ECF','GavetaSinalInvertido',chECFSinalGavetaInvertido.Checked);
-     Ini.WriteString('ECF','ArqLog',edECFLog.Text);
+    { Parametros do ECF }
+    Ini.WriteInteger('ECF', 'Modelo', max(cbECFModelo.ItemIndex - 1, 0));
+    Ini.WriteString('ECF', 'Porta', cbECFPorta.Text);
+    Ini.WriteString('ECF', 'SerialParams', ACBrECF1.Device.ParamsString);
+    Ini.WriteInteger('ECF', 'Timeout', sedECFTimeout.Value);
+    Ini.WriteInteger('ECF', 'IntervaloAposComando', sedECFIntervalo.Value);
+    Ini.WriteBool('ECF', 'ArredondamentoPorQtd', chECFArredondaPorQtd.Checked);
+    Ini.WriteBool('ECF', 'DescricaoGrande', chECFDescrGrande.Checked);
+    Ini.WriteBool('ECF', 'GavetaSinalInvertido', chECFSinalGavetaInvertido.Checked);
+    Ini.WriteString('ECF', 'ArqLog', edECFLog.Text);
 
-     { Parametros do CHQ }
-     Ini.WriteInteger('CHQ','Modelo',cbCHQModelo.ItemIndex);
-     Ini.WriteString('CHQ','Porta',cbCHQPorta.Text);
-     Ini.WriteString('CHQ','SerialParams',ACBrCHQ1.Device.ParamsString);
-     Ini.WriteBool('CHQ','VerificaFormulario',chCHQVerForm.Checked);
-     Ini.WriteString('CHQ','Favorecido',edCHQFavorecido.Text);
-     Ini.WriteString('CHQ','Cidade',edCHQCidade.Text);
-     Ini.WriteString('CHQ','PathBemafiINI',edCHQBemafiINI.Text);
+    { Parametros do CHQ }
+    Ini.WriteInteger('CHQ', 'Modelo', cbCHQModelo.ItemIndex);
+    Ini.WriteString('CHQ', 'Porta', cbCHQPorta.Text);
+    Ini.WriteString('CHQ', 'SerialParams', ACBrCHQ1.Device.ParamsString);
+    Ini.WriteBool('CHQ', 'VerificaFormulario', chCHQVerForm.Checked);
+    Ini.WriteString('CHQ', 'Favorecido', edCHQFavorecido.Text);
+    Ini.WriteString('CHQ', 'Cidade', edCHQCidade.Text);
+    Ini.WriteString('CHQ', 'PathBemafiINI', edCHQBemafiINI.Text);
 
-     { Parametros do GAV }
-     Ini.WriteInteger('GAV','Modelo',cbGAVModelo.ItemIndex);
-     Ini.WriteString('GAV','Porta',cbGAVPorta.Text);
-     Ini.WriteString('GAV','StringAbertura',cbGAVStrAbre.Text);
-     Ini.WriteInteger('GAV','AberturaIntervalo',sedGAVIntervaloAbertura.Value);
-     Ini.WriteInteger('GAV','AcaoAberturaAntecipada',
-        cbGAVAcaoAberturaAntecipada.ItemIndex);
+    { Parametros do GAV }
+    Ini.WriteInteger('GAV', 'Modelo', cbGAVModelo.ItemIndex);
+    Ini.WriteString('GAV', 'Porta', cbGAVPorta.Text);
+    Ini.WriteString('GAV', 'StringAbertura', cbGAVStrAbre.Text);
+    Ini.WriteInteger('GAV', 'AberturaIntervalo', sedGAVIntervaloAbertura.Value);
+    Ini.WriteInteger('GAV', 'AcaoAberturaAntecipada',
+      cbGAVAcaoAberturaAntecipada.ItemIndex);
 
-     { Parametros do DIS }
-     Ini.WriteInteger('DIS','Modelo',cbDISModelo.ItemIndex);
-     Ini.WriteString('DIS','Porta',cbDISPorta.Text);
-     Ini.WriteInteger('DIS','Intervalo',seDISIntervalo.Value);
-     Ini.WriteInteger('DIS','Passos',seDISPassos.Value);
-     Ini.WriteInteger('DIS','IntervaloEnvioBytes',seDISIntByte.Value);
+    { Parametros do DIS }
+    Ini.WriteInteger('DIS', 'Modelo', cbDISModelo.ItemIndex);
+    Ini.WriteString('DIS', 'Porta', cbDISPorta.Text);
+    Ini.WriteInteger('DIS', 'Intervalo', seDISIntervalo.Value);
+    Ini.WriteInteger('DIS', 'Passos', seDISPassos.Value);
+    Ini.WriteInteger('DIS', 'IntervaloEnvioBytes', seDISIntByte.Value);
 
-     { Parametros do LCB }
-     Ini.WriteString('LCB','Porta',cbLCBPorta.Text);
-     Ini.WriteInteger('LCB','Intervalo',sedLCBIntervalo.Value);
-     Ini.WriteString('LCB','SufixoLeitor',cbLCBSufixoLeitor.Text);
-     Ini.WriteBool('LCB','ExcluirSufixo',chLCBExcluirSufixo.Checked ) ;
-     Ini.WriteString('LCB','PrefixoAExcluir',edLCBPreExcluir.Text);
-     Ini.WriteString('LCB','SufixoIncluir',cbLCBSufixo.Text) ;
-     Ini.WriteString('LCB','Dispositivo',cbLCBDispositivo.Text) ;
-     Ini.WriteBool('LCB','Teclado',rbLCBTeclado.Checked) ;
-     Ini.WriteString('LCB','Device',ACBrLCB1.Device.ParamsString) ;
+    { Parametros do LCB }
+    Ini.WriteString('LCB', 'Porta', cbLCBPorta.Text);
+    Ini.WriteInteger('LCB', 'Intervalo', sedLCBIntervalo.Value);
+    Ini.WriteString('LCB', 'SufixoLeitor', cbLCBSufixoLeitor.Text);
+    Ini.WriteBool('LCB', 'ExcluirSufixo', chLCBExcluirSufixo.Checked);
+    Ini.WriteString('LCB', 'PrefixoAExcluir', edLCBPreExcluir.Text);
+    Ini.WriteString('LCB', 'SufixoIncluir', cbLCBSufixo.Text);
+    Ini.WriteString('LCB', 'Dispositivo', cbLCBDispositivo.Text);
+    Ini.WriteBool('LCB', 'Teclado', rbLCBTeclado.Checked);
+    Ini.WriteString('LCB', 'Device', ACBrLCB1.Device.ParamsString);
 
-     { Parametros do RFD }
-     INI.WriteBool('RFD','GerarRFD',chRFD.Checked);
-     INI.WriteString('RFD','DirRFD',edRFDDir.Text);
-     INI.WriteBool('RFD','IgnoraECF_MFD',chRFDIgnoraMFD.Checked);
+    { Parametros do RFD }
+    INI.WriteBool('RFD', 'GerarRFD', chRFD.Checked);
+    INI.WriteString('RFD', 'DirRFD', edRFDDir.Text);
+    INI.WriteBool('RFD', 'IgnoraECF_MFD', chRFDIgnoraMFD.Checked);
 
-     { Parametros do BAL }
-     Ini.WriteInteger('BAL','Modelo',cbBALModelo.ItemIndex);
-     Ini.WriteString('BAL','Porta',cbBALPorta.Text);
-     Ini.WriteInteger('BAL','Intervalo',sedBALIntervalo.Value);
+    { Parametros do BAL }
+    Ini.WriteInteger('BAL', 'Modelo', cbBALModelo.ItemIndex);
+    Ini.WriteString('BAL', 'Porta', cbBALPorta.Text);
+    Ini.WriteInteger('BAL', 'Intervalo', sedBALIntervalo.Value);
 
-     { Parametros do ETQ }
-     Ini.WriteInteger('ETQ','Modelo',cbETQModelo.ItemIndex);
-     Ini.WriteString('ETQ','Porta',cbETQPorta.Text);
+    { Parametros do ETQ }
+    Ini.WriteInteger('ETQ', 'Modelo', cbETQModelo.ItemIndex);
+    Ini.WriteString('ETQ', 'Porta', cbETQPorta.Text);
 
-     { Parametros do TC }
-     Ini.WriteInteger('TC','Modelo',cbxTCModelo.ItemIndex);
-     Ini.WriteInteger('TC','TCP_Porta',StrToIntDef(edTCArqPrecos.Text, 6500) );
-     Ini.WriteString('TC','Arq_Precos',edTCArqPrecos.Text);
-     Ini.WriteString('TC','Nao_Econtrado',edTCNaoEncontrado.Text);
+    { Parametros do TC }
+    Ini.WriteInteger('TC', 'Modelo', cbxTCModelo.ItemIndex);
+    Ini.WriteInteger('TC', 'TCP_Porta', StrToIntDef(edTCArqPrecos.Text, 6500));
+    Ini.WriteString('TC', 'Arq_Precos', edTCArqPrecos.Text);
+    Ini.WriteString('TC', 'Nao_Econtrado', edTCNaoEncontrado.Text);
 
+    {Parametros do Boleto - Cliente}
+    ini.WriteString('BOL', 'Cedente.Nome', edtRazaoSocial.Text);
+    ini.WriteString('BOL', 'Cedente.CNPJCPF', edtCNPJ.Text);
+    ini.WriteString('BOL', 'Cedente.Logradouro', edtLogradouro.Text);
+    ini.WriteString('BOL', 'Cedente.Numero', edtNumero.Text);
+    ini.WriteString('BOL', 'Cedente.Bairro', edtBairro.Text);
+    ini.WriteString('BOL', 'Cedente.Cidade', edtCidade.Text);
+    ini.WriteString('BOL', 'Cedente.CEP', edtCEP.Text);
+    ini.WriteString('BOL', 'Cedente.Complemento', edtComplemento.Text);
+    ini.WriteString('BOL', 'Cedente.UF', cbxUF.Text);
+    ini.WriteInteger('BOL', 'Cedente.RespEmis', cbxEmissao.ItemIndex);
+
+    {Parametros do Boleto - Banco}
+    ini.WriteInteger('BOL', 'Banco', StrToIntDef(Copy(cbxBanco.Text, 1, 3), 0));
+    ini.WriteString('BOL', 'Conta', edtConta.Text);
+    ini.WriteString('BOL', 'DigitoConta', edtDigitoConta.Text);
+    ini.WriteString('BOL', 'Agencia', edtAgencia.Text);
+    ini.WriteString('BOL', 'DigitoAgencia', edtDigitoAgencia.Text);
+
+    {Parametros do Boleto - Boleto}
+    ini.WriteString('BOL', 'DirLogos', deBOLDirLogo.Text);
+    ini.WriteString('BOL', 'SoftwareHouse', edtBOLSofwareHouse.Text);
+    ini.WriteInteger('BOL', 'Copias', spCopias.Value);
+    Ini.WriteBool('BOL', 'Preview', ckgMostrar.Checked[0]);
+    ini.WriteBool('BOL', 'Setup', ckgMostrar.Checked[1]);
+    ini.WriteInteger('BOL', 'Layout', cbxLayout.ItemIndex);
+    ini.WriteInteger('BOL', 'Filtro', cbxFiltro.ItemIndex);
   finally
-     Ini.Free ;
-  end ;
+    Ini.Free;
+  end;
 
   if chRFD.Checked then
   begin
-     SalvarSW ;
+    SalvarSW;
 
-     if ACBrRFD1.Ativo then
-        ACBrRFD1.GravarINI ;
-  end ;
-  
+    if ACBrRFD1.Ativo then
+      ACBrRFD1.GravarINI;
+  end;
+
   if (OldMonitoraTXT <> rbTXT.Checked) or (OldMonitoraTCP <> rbTCP.Checked) then
   begin
-     MessageDlg('ACBrMonitor',
-                'O Método de Monitoramento do ACBrMonitor foi modificado'+sLineBreak+sLineBreak+
-                'Será necessário reinicar o ACBrMonitor',
-                mtInformation, [mbOk],0) ;
-     Application.Terminate ;
-  end ;
+    MessageDlg('ACBrMonitor',
+      'O Método de Monitoramento do ACBrMonitor foi modificado' +
+      sLineBreak + sLineBreak + 'Será necessário reinicar o ACBrMonitor',
+      mtInformation, [mbOK], 0);
+    Application.Terminate;
+  end;
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.SalvarSW;
-  Var INI : TIniFile ;
-      Pass: AnsiString ;
+var
+  INI: TIniFile;
+  Pass: ansistring;
 begin
-  Ini := TIniFile.Create( ExtractFilePath(Application.ExeName)+'swh.ini' ) ;
+  Ini := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'swh.ini');
   try
-     INI.WriteString('SWH','CNPJ',ACBrRFD1.SH_CNPJ);
-     GravaINICrypt(INI,'SWH','CNPJ',ACBrRFD1.SH_CNPJ, IntToStrZero(fsHashSenha,8)) ;
-     Pass := IntToStrZero( StringCrc16(ACBrRFD1.SH_CNPJ + IntToStrZero(fsHashSenha,8)),8) ;
+    INI.WriteString('SWH', 'CNPJ', ACBrRFD1.SH_CNPJ);
+    GravaINICrypt(INI, 'SWH', 'CNPJ', ACBrRFD1.SH_CNPJ, IntToStrZero(fsHashSenha, 8));
+    Pass := IntToStrZero(StringCrc16(ACBrRFD1.SH_CNPJ +
+      IntToStrZero(fsHashSenha, 8)), 8);
 
-     GravaINICrypt(INI,'SWH','Verifica','ARQUIVO SWH.INI ESTA OK', Pass) ;
-     GravaINICrypt(INI,'SWH','RazaoSocial',ACBrRFD1.SH_RazaoSocial, Pass);
-     GravaINICrypt(INI,'SWH','COO',ACBrRFD1.SH_COO, Pass);
-     GravaINICrypt(INI,'SWH','IE',ACBrRFD1.SH_IE, Pass);
-     GravaINICrypt(INI,'SWH','IM',ACBrRFD1.SH_IM, Pass);
-     GravaINICrypt(INI,'SWH','Aplicativo',ACBrRFD1.SH_NomeAplicativo, Pass);
-     GravaINICrypt(INI,'SWH','NumeroAplicativo',ACBrRFD1.SH_NumeroAplicativo, Pass);
-     GravaINICrypt(INI,'SWH','VersaoAplicativo',ACBrRFD1.SH_VersaoAplicativo, Pass);
-     GravaINICrypt(INI,'SWH','Linha1',ACBrRFD1.SH_Linha1, Pass);
-     GravaINICrypt(INI,'SWH','Linha2',ACBrRFD1.SH_Linha2, Pass);
+    GravaINICrypt(INI, 'SWH', 'Verifica', 'ARQUIVO SWH.INI ESTA OK', Pass);
+    GravaINICrypt(INI, 'SWH', 'RazaoSocial', ACBrRFD1.SH_RazaoSocial, Pass);
+    GravaINICrypt(INI, 'SWH', 'COO', ACBrRFD1.SH_COO, Pass);
+    GravaINICrypt(INI, 'SWH', 'IE', ACBrRFD1.SH_IE, Pass);
+    GravaINICrypt(INI, 'SWH', 'IM', ACBrRFD1.SH_IM, Pass);
+    GravaINICrypt(INI, 'SWH', 'Aplicativo', ACBrRFD1.SH_NomeAplicativo, Pass);
+    GravaINICrypt(INI, 'SWH', 'NumeroAplicativo', ACBrRFD1.SH_NumeroAplicativo, Pass);
+    GravaINICrypt(INI, 'SWH', 'VersaoAplicativo', ACBrRFD1.SH_VersaoAplicativo, Pass);
+    GravaINICrypt(INI, 'SWH', 'Linha1', ACBrRFD1.SH_Linha1, Pass);
+    GravaINICrypt(INI, 'SWH', 'Linha2', ACBrRFD1.SH_Linha2, Pass);
 
-     if mRFDKey.Text <> '' then
-        GravaINICrypt(INI,'SWH','RSA',Trim(mRFDKey.Text), Pass)
-     else
-        if LerChaveSWH = '' then
-        begin
-           PageControl1.ActivePage := tsRFD ;
-           pgConRFD.ActivePage     := tsRFDRSA ;
+    if mRFDKey.Text <> '' then
+      GravaINICrypt(INI, 'SWH', 'RSA', Trim(mRFDKey.Text), Pass)
+    else
+    if LerChaveSWH = '' then
+    begin
+      PageControl1.ActivePage := tsRFD;
+      pgConRFD.ActivePage := tsRFDRSA;
 
-           raise Exception.Create('Para trabalhar com RFD é necessário '+
-                                  'definir uma Chave Privada');
-        end ;
+      raise Exception.Create('Para trabalhar com RFD é necessário ' +
+        'definir uma Chave Privada');
+    end;
 
   finally
-     Ini.Free ;
-  end ;
-end ;
+    Ini.Free;
+  end;
+end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.EscondeConfig;
 begin
-  pConfig.Visible := False ;
+  pConfig.Visible := False;
 
-  bConfig.Caption     := '&Configurar' ;
-  bConfig.Glyph       := nil ;
-  ImageList1.GetBitmap(11,bConfig.Glyph);
-  bCancelar.Visible   := false ;
-  btMinimizar.Visible := true ;
-  Application.ProcessMessages ;
+  bConfig.Caption := '&Configurar';
+  bConfig.Glyph := nil;
+  ImageList1.GetBitmap(11, bConfig.Glyph);
+  bCancelar.Visible := False;
+  btMinimizar.Visible := True;
+  Application.ProcessMessages;
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.ExibeConfig;
-Var Senha     : AnsiString ;
-    SenhaOk   : Boolean ;
-    HashSenha : Integer ;
+var
+  Senha: ansistring;
+  SenhaOk: boolean;
+  HashSenha: integer;
 begin
-  SenhaOk := (fsHashSenha < 1)  ;
+  SenhaOk := (fsHashSenha < 1);
   if not SenhaOk then
   begin
-     Senha := '' ;
-     if InputQuery('Configuração','Digite a Senha de Configuração',Senha) then
-     begin
-        Senha     := Trim(Senha) ;
-        HashSenha := StringCrc16( Senha ) ;
-        SenhaOk   := (HashSenha = fsHashSenha) ;
-     end ;
-  end ;
+    Senha := '';
+    if InputQuery('Configuração', 'Digite a Senha de Configuração', Senha) then
+    begin
+      Senha := Trim(Senha);
+      HashSenha := StringCrc16(Senha);
+      SenhaOk := (HashSenha = fsHashSenha);
+    end;
+  end;
 
   if not SenhaOk then
-     raise Exception.Create('Senha ['+Senha+'] inválida');
+    raise Exception.Create('Senha [' + Senha + '] inválida');
 
-  fsCNPJSWOK      := False ;
-  pConfig.Visible := true ;
+  fsCNPJSWOK := False;
+  pConfig.Visible := True;
 
-  bConfig.Caption     := '&Salvar' ;
-  bConfig.Glyph       := nil ;
-  ImageList1.GetBitmap(12,bConfig.Glyph);
-  bCancelar.Visible   := true ;
-  btMinimizar.Visible := false ;
-  Application.ProcessMessages ;
+  bConfig.Caption := '&Salvar';
+  bConfig.Glyph := nil;
+  ImageList1.GetBitmap(12, bConfig.Glyph);
+  bCancelar.Visible := True;
+  btMinimizar.Visible := False;
+  Application.ProcessMessages;
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.Processar;
 var
-  Linha : AnsiString;
+  Linha: ansistring;
 begin
   if NewLines <> '' then
-     mCmd.Lines.Add( NewLines ) ;
+    mCmd.Lines.Add(NewLines);
 
-  NewLines := '' ;
+  NewLines := '';
 
   while mCmd.Lines.Count > 0 do
   begin
-     Application.ProcessMessages ;
+    Application.ProcessMessages;
 
-     Linha := Trim( mCmd.Lines[0] );
-     mCmd.Lines.Delete(0);
+    Linha := Trim(mCmd.Lines[0]);
+    mCmd.Lines.Delete(0);
 
-     if Linha <> '' then
-     begin
-        sbProcessando.Panels[1].Text := Linha ;
+    if Linha <> '' then
+    begin
+      sbProcessando.Panels[1].Text := Linha;
 
-        try
-           if pos('.',Linha) = 0 then              { Comandos do ACBrMonitor }
-              Linha := 'ACBR.'+Linha ;
+      try
+        if pos('.', Linha) = 0 then              { Comandos do ACBrMonitor }
+          Linha := 'ACBR.' + Linha;
 
-           Cmd.Comando := Linha ;
+        Cmd.Comando := Linha;
 
-           if Cmd.Objeto = 'ACBR' then
-              DoACBr( Cmd )
-           else if Cmd.Objeto = 'ECF' then
-              DoECF( Cmd )
-           else if Cmd.Objeto = 'GAV' then
-              DoGAV( Cmd )
-           else if Cmd.Objeto = 'CHQ' then
-              DoCHQ( Cmd )
-           else if Cmd.Objeto = 'DIS' then
-              DoDIS( Cmd )
-           else if Cmd.Objeto = 'LCB' then
-              DoLCB( Cmd )
-           else if Cmd.Objeto = 'BAL' then
-              DoBAL( Cmd )
-           else if Cmd.Objeto = 'ETQ' then
-              DoETQ( Cmd );
+        if Cmd.Objeto = 'ACBR' then
+          DoACBr(Cmd)
+        else if Cmd.Objeto = 'ECF' then
+          DoECF(Cmd)
+        else if Cmd.Objeto = 'GAV' then
+          DoGAV(Cmd)
+        else if Cmd.Objeto = 'CHQ' then
+          DoCHQ(Cmd)
+        else if Cmd.Objeto = 'DIS' then
+          DoDIS(Cmd)
+        else if Cmd.Objeto = 'LCB' then
+          DoLCB(Cmd)
+        else if Cmd.Objeto = 'BAL' then
+          DoBAL(Cmd)
+        else if Cmd.Objeto = 'ETQ' then
+          DoETQ(Cmd)
+        else if Cmd.Objeto = 'BOLETO' then
+          DoBoleto(Cmd);
 
-           Resposta(Linha, 'OK: '+Cmd.Resposta );
-           
-        except
-           on E : Exception do
-              Resposta(Linha, 'ERRO: '+E.Message );
-        end ;
+        Resposta(Linha, 'OK: ' + Cmd.Resposta);
 
-        sbProcessando.Panels[1].Text := '' ;
-     end ;
-  end ;
+      except
+        on E: Exception do
+          Resposta(Linha, 'ERRO: ' + E.Message);
+      end;
+
+      sbProcessando.Panels[1].Text := '';
+    end;
+  end;
 end;
 
 {------------------------------------------------------------------------------}
-Procedure TFrmACBrMonitor.Resposta(Comando, Resposta : AnsiString );
+procedure TFrmACBrMonitor.Resposta(Comando, Resposta: ansistring);
 begin
   if rbTCP.Checked then
   begin
-     if Assigned( Conexao ) then
-     begin
-        Conexao.SendString(Resposta) ;
-        Conexao.SendByte(3) ;
-     end ;
-  end ;
+    if Assigned(Conexao) then
+    begin
+      Conexao.SendString(Resposta);
+      Conexao.SendByte(3);
+    end;
+  end;
 
   if rbTXT.Checked then
   begin
      { Primeiro salva em Temporário para que a gravação de todos os Bytes ocorra
        antes que a aplicação controladora do ACBrMonitor tente ler o arquivo de
        Resposta incompleto }
-       TryDeleteFile( ArqSaiTMP, 1000 ) ; // Tenta apagar por até 1 segundo
+    TryDeleteFile(ArqSaiTMP, 1000); // Tenta apagar por até 1 segundo
 
-     if FileExists(ArqSaiTXT) then
-        RenameFile(ArqSaiTXT, ArqSaiTMP) ; { GravaArqResp faz append se arq. existir }
-     if TipoCMD = 'A' then
-     begin
+    if FileExists(ArqSaiTXT) then
+      RenameFile(ArqSaiTXT, ArqSaiTMP); { GravaArqResp faz append se arq. existir }
+    if TipoCMD = 'A' then
+    begin
+      WriteToTXT(ArqSaiTMP, Resposta);
+      RenameFile(ArqSaiTMP, ArqSaiTXT);
+    end
+    else if TipoCMD = 'B' then
+    begin
+      if copy(Resposta, 1, 3) <> 'OK:' then
+      begin
+        WriteToTXT(ExtractFilePath(ArqSaiTMP) + 'STATUS.TXT', '0,0,0');
+      end
+      else
+      begin
+        WriteToTXT(ExtractFilePath(ArqSaiTMP) + 'STATUS.TXT', '6,0,0');
+        Resposta := StringReplace(Resposta, 'OK: ', '', [rfReplaceAll]);
+        Resposta := StringReplace(Resposta, '/', '', [rfReplaceAll]);
+        Resposta := StringReplace(Resposta, ':', '', [rfReplaceAll]);
         WriteToTXT(ArqSaiTMP, Resposta);
-        RenameFile(ArqSaiTMP, ArqSaiTXT) ;
-     end
-     else if TipoCMD = 'B' then
-     begin
-        if copy(Resposta,1,3) <> 'OK:' then
-        begin
-           WriteToTXT(ExtractFilePath(ArqSaiTMP)+'STATUS.TXT','0,0,0') ;
-        end
-        else
-        begin
-           WriteToTXT(ExtractFilePath(ArqSaiTMP)+'STATUS.TXT','6,0,0') ;
-           Resposta := StringReplace( Resposta, 'OK: ', '',[rfReplaceAll]) ;
-           Resposta := StringReplace( Resposta, '/', '',[rfReplaceAll]) ;
-           Resposta := StringReplace( Resposta, ':', '',[rfReplaceAll]) ;
-           WriteToTXT(ArqSaiTMP,Resposta) ;
-           RenameFile(ArqSaiTMP, ArqSaiTXT) ;
-        end
-     end
-     else if TipoCMD = 'D' then
-     begin
-        if copy(Resposta,1,3) <> 'OK:' then
-        begin
-           WriteToTXT(ExtractFilePath(ArqSaiTMP)+'DARUMA.RET','-27;006;000;000') ;
-        end
-        else
-        begin
-           Resposta := StringReplace( Resposta, 'OK: ', '',[rfReplaceAll]) ;
-           Resposta := StringReplace( Resposta, '/', '',[rfReplaceAll]) ;
-           Resposta := StringReplace( Resposta, ':', '',[rfReplaceAll]) ;
-           Resposta := '001;006;000;000;'+Resposta ;
-           WriteToTXT(ArqSaiTMP,Resposta) ;
-           RenameFile(ArqSaiTMP, ExtractFilePath(ArqSaiTMP)+'DARUMA.RET') ;
-        end
-     end
+        RenameFile(ArqSaiTMP, ArqSaiTXT);
+      end;
+    end
+    else if TipoCMD = 'D' then
+    begin
+      if copy(Resposta, 1, 3) <> 'OK:' then
+      begin
+        WriteToTXT(ExtractFilePath(ArqSaiTMP) + 'DARUMA.RET', '-27;006;000;000');
+      end
+      else
+      begin
+        Resposta := StringReplace(Resposta, 'OK: ', '', [rfReplaceAll]);
+        Resposta := StringReplace(Resposta, '/', '', [rfReplaceAll]);
+        Resposta := StringReplace(Resposta, ':', '', [rfReplaceAll]);
+        Resposta := '001;006;000;000;' + Resposta;
+        WriteToTXT(ArqSaiTMP, Resposta);
+        RenameFile(ArqSaiTMP, ExtractFilePath(ArqSaiTMP) + 'DARUMA.RET');
+      end;
+    end;
 
-  end ;
+  end;
 
-  mResp.Lines.BeginUpdate ;
-  mResp.Lines.Add( Comando + sLineBreak + Resposta ) ;
+  mResp.Lines.BeginUpdate;
+  mResp.Lines.Add(Comando + sLineBreak + Resposta);
   while mResp.Lines.Count > BufferMemoResposta do
-     mResp.Lines.Delete(0) ;
-  mResp.Lines.EndUpdate ;
+    mResp.Lines.Delete(0);
+  mResp.Lines.EndUpdate;
 
   if cbLog.Checked then
-     WriteToTXT(ArqLogTXT, Comando + sLineBreak + Resposta);
+    WriteToTXT(ArqLogTXT, Comando + sLineBreak + Resposta);
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.btMinimizarClick(Sender: TObject);
 begin
-  Ocultar1Click( Sender );
+  Ocultar1Click(Sender);
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.bCancelarClick(Sender: TObject);
 begin
-  EscondeConfig ;
-  LerIni ;
+  EscondeConfig;
+  LerIni;
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.bConfigClick(Sender: TObject);
 begin
   if pConfig.Visible then
-   begin
-     SalvarIni ;
-     EscondeConfig ;
-     LerIni ; { Para as alteraçoes fazerem efeito }
-   end
+  begin
+    SalvarIni;
+    EscondeConfig;
+    LerIni; { Para as alteraçoes fazerem efeito }
+  end
   else
-     ExibeConfig ;
+    ExibeConfig;
 
-  fsRFDLeuParams := False ;
+  fsRFDLeuParams := False;
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.rbTCPTXTClick(Sender: TObject);
 begin
-  gbTCP.Enabled := rbTCP.Checked ;
-  gbTXT.Enabled := rbTXT.Checked ;
+  gbTCP.Enabled := rbTCP.Checked;
+  gbTXT.Enabled := rbTXT.Checked;
 
   if rbTXT.Checked then
-   begin
-     if edENTTXT.Text = '' then
-        edENTTXT.Text := 'ENT.TXT' ;
+  begin
+    if edENTTXT.Text = '' then
+      edENTTXT.Text := 'ENT.TXT';
 
-     if edSAITXT.Text = '' then
-        edSAITXT.Text := 'SAI.TXT' ;
-   end
+    if edSAITXT.Text = '' then
+      edSAITXT.Text := 'SAI.TXT';
+  end
   else
-   begin
-     if edPortaTCP.Text = '' then
-        edPortaTCP.Text := '3434' ;
-   end ;
+  begin
+    if edPortaTCP.Text = '' then
+      edPortaTCP.Text := '3434';
+  end;
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.cbSenhaClick(Sender: TObject);
 begin
-  gbSenha.Enabled := cbSenha.Checked ;
+  gbSenha.Enabled := cbSenha.Checked;
   if not cbSenha.Checked then
   begin
-     fsHashSenha  := -1 ;
-     edSenha.Text :=  '' ;
-  end ;
+    fsHashSenha := -1;
+    edSenha.Text := '';
+  end;
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.cbLogClick(Sender: TObject);
 begin
-  gbLog.Enabled := cbLog.Checked ;
+  gbLog.Enabled := cbLog.Checked;
 
   if cbLog.Checked and (edLogArq.Text = '') then
-     edLogArq.Text := 'LOG.TXT' ;
+    edLogArq.Text := 'LOG.TXT';
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.sbLogClick(Sender: TObject);
 begin
-  OpenURL( ExtractFilePath( Application.ExeName ) + edLogArq.Text);
+  OpenURL(ExtractFilePath(Application.ExeName) + edLogArq.Text);
 end;
 
 {------------------------------------------------------------------------------}
-procedure TFrmACBrMonitor.edOnlyNumbers(Sender: TObject;
-  var Key: Char);
+procedure TFrmACBrMonitor.edOnlyNumbers(Sender: TObject; var Key: char);
 begin
-  if not ( Key in ['0'..'9',#13,#8] ) then
-     Key := #0 ;
+  if not (Key in ['0'..'9', #13, #8]) then
+    Key := #0;
 end;
 
 {------------------------------------------------------------------------------}
-procedure TFrmACBrMonitor.ACBrECF1MsgAguarde(Mensagem: String);
+procedure TFrmACBrMonitor.ACBrECF1MsgAguarde(Mensagem: string);
 begin
   StatusBar1.Panels[1].Text :=
-     StringReplace( Mensagem, sLineBreak, ' ',[rfReplaceAll]) ;
+    StringReplace(Mensagem, sLineBreak, ' ', [rfReplaceAll]);
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.ACBrECF1MsgPoucoPapel(Sender: TObject);
 begin
-  StatusBar1.Panels[1].Text := 'ATENÇAO. Pouco papel'
+  StatusBar1.Panels[1].Text := 'ATENÇAO. Pouco papel';
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.DoACBrTimer(Sender: TObject);
-Var
-  MS : TMemoryStream ;
-  Linhas, S : AnsiString ;
+var
+  MS: TMemoryStream;
+  Linhas, S: ansistring;
 begin
-  Timer1.Enabled := false;
+  Timer1.Enabled := False;
 
   if Inicio then
   begin
-     Inicializar ;
-     exit;
-  end ;
+    Inicializar;
+    exit;
+  end;
 
   try
-     if FileExists( ArqEntTXT ) then  { Existe arquivo para ler ? }
-     begin
-        TipoCMD := 'A' ;
-        if ( UpperCase(ExtractFileName( ArqEntTXT )) = 'BEMAFI32.CMD' ) then
-           TipoCMD := 'B'
-        else if ( UpperCase(ExtractFileName( ArqEntTXT )) = 'DARUMA.CMD' ) then
-           TipoCMD := 'D' ;
+    if FileExists(ArqEntTXT) then  { Existe arquivo para ler ? }
+    begin
+      TipoCMD := 'A';
+      if (UpperCase(ExtractFileName(ArqEntTXT)) = 'BEMAFI32.CMD') then
+        TipoCMD := 'B'
+      else if (UpperCase(ExtractFileName(ArqEntTXT)) = 'DARUMA.CMD') then
+        TipoCMD := 'D';
 
-        { Lendo em MemoryStream temporário para nao apagar comandos nao processados }
-        MS := TMemoryStream.Create;
-        try
-           MS.LoadFromFile( ArqEntTXT );
-           MS.Position := 0 ;
-           SetLength(S,MS.Size);
-           MS.ReadBuffer(pchar(S)^,MS.Size);
-           Linhas := S ;
-        finally
-           MS.Free ;
-        end ;
+      { Lendo em MemoryStream temporário para nao apagar comandos nao processados }
+      MS := TMemoryStream.Create;
+      try
+        MS.LoadFromFile(ArqEntTXT);
+        MS.Position := 0;
+        SetLength(S, MS.Size);
+        MS.ReadBuffer(PChar(S)^, MS.Size);
+        Linhas := S;
+      finally
+        MS.Free;
+      end;
 
-        TryDeleteFile( ArqEntTXT, 1000 ) ; // Tenta apagar por até 1 segundo
+      TryDeleteFile(ArqEntTXT, 1000); // Tenta apagar por até 1 segundo
 
-        if TipoCMD = 'B' then
-           Linhas := TraduzBemafi( Linhas )
-        else if TipoCMD = 'D' then
-           Linhas := TraduzObserver( Linhas ) ;
+      if TipoCMD = 'B' then
+        Linhas := TraduzBemafi(Linhas)
+      else if TipoCMD = 'D' then
+        Linhas := TraduzObserver(Linhas);
 
-        mCmd.Lines.Add( Linhas );
-     end;
+      mCmd.Lines.Add(Linhas);
+    end;
 
-     Processar ;
+    Processar;
   finally
-     Timer1.Enabled := True;
-  end ;
+    Timer1.Enabled := True;
+  end;
 end;
 
 {---------------------------------- ACBrECF -----------------------------------}
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.tsECFShow(Sender: TObject);
 begin
-   AvaliaEstadoTsECF ;
+  AvaliaEstadoTsECF;
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.cbECFModeloChange(Sender: TObject);
 begin
   try
-     if ACBrECF1.Ativo then
-        bECFAtivar.Click ;
+    if ACBrECF1.Ativo then
+      bECFAtivar.Click;
 
-      ACBrECF1.Modelo := TACBrECFModelo( Max(cbECFModelo.ItemIndex -1,0) )
+    ACBrECF1.Modelo := TACBrECFModelo(Max(cbECFModelo.ItemIndex - 1, 0))
   finally
-     if cbECFModelo.Text <> 'Procurar' then
-        cbECFModelo.ItemIndex := Integer( ACBrECF1.Modelo )+1 ;
-     cbECFPorta.Text := ACBrECF1.Porta ;
-  end ;
+    if cbECFModelo.Text <> 'Procurar' then
+      cbECFModelo.ItemIndex := integer(ACBrECF1.Modelo) + 1;
+    cbECFPorta.Text := ACBrECF1.Porta;
+  end;
 
-  AvaliaEstadoTsECF ;
+  AvaliaEstadoTsECF;
 end;
 
-procedure TFrmACBrMonitor.AvaliaEstadoTsECF ;
+procedure TFrmACBrMonitor.AvaliaEstadoTsECF;
 begin
-  bECFAtivar.Enabled           := ((ACBrECF1.Modelo <> ecfNenhum) or
-                                   (cbECFModelo.Text = 'Procurar')   );
-  chECFArredondaPorQtd.Enabled := bECFAtivar.Enabled ;
-  chECFDescrGrande.Enabled     := bECFAtivar.Enabled ;
-  cbECFPorta.Enabled           := bECFAtivar.Enabled ;
-  sedECFTimeout.Enabled        := bECFAtivar.Enabled ;
-  sedECFIntervalo.Enabled      := bECFAtivar.Enabled ;
-  chECFSinalGavetaInvertido.Enabled := bECFAtivar.Enabled ;
+  bECFAtivar.Enabled :=
+    ((ACBrECF1.Modelo <> ecfNenhum) or
+    (cbECFModelo.Text = 'Procurar'));
+  chECFArredondaPorQtd.Enabled := bECFAtivar.Enabled;
+  chECFDescrGrande.Enabled := bECFAtivar.Enabled;
+  cbECFPorta.Enabled := bECFAtivar.Enabled;
+  sedECFTimeout.Enabled := bECFAtivar.Enabled;
+  sedECFIntervalo.Enabled := bECFAtivar.Enabled;
+  chECFSinalGavetaInvertido.Enabled := bECFAtivar.Enabled;
 
-  bECFTestar.Enabled   := ACBrECF1.Ativo ;
-  bECFLeituraX.Enabled := ACBrECF1.Ativo ;
+  bECFTestar.Enabled := ACBrECF1.Ativo;
+  bECFLeituraX.Enabled := ACBrECF1.Ativo;
 
-  bECFAtivar.Glyph := nil ;
+  bECFAtivar.Glyph := nil;
   if ACBrECF1.Ativo then
-   begin
-     bECFAtivar.Caption := '&Desativar' ;
-     ImageList1.GetBitmap(6,bECFAtivar.Glyph);
-   end
+  begin
+    bECFAtivar.Caption := '&Desativar';
+    ImageList1.GetBitmap(6, bECFAtivar.Glyph);
+  end
   else
-   begin
-     bECFAtivar.Caption := '&Ativar' ;
-     ImageList1.GetBitmap(5,bECFAtivar.Glyph);
-   end ;
-end ;
+  begin
+    bECFAtivar.Caption := '&Ativar';
+    ImageList1.GetBitmap(5, bECFAtivar.Glyph);
+  end;
+end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.cbECFPortaChange(Sender: TObject);
 begin
   try
-     if ACBrECF1.Ativo then
-        bECFAtivar.Click ;
+    if ACBrECF1.Ativo then
+      bECFAtivar.Click;
 
-    ACBrECF1.Porta := cbECFPorta.Text ;
+    ACBrECF1.Porta := cbECFPorta.Text;
   finally
-     cbECFPorta.Text := ACBrECF1.Porta ;
-  end ;
+    cbECFPorta.Text := ACBrECF1.Porta;
+  end;
 end;
 
 
@@ -1810,137 +2020,152 @@ begin
   frConfiguraSerial := TfrConfiguraSerial.Create(self);
 
   try
-     if ACBrECF1.Ativo then
-        bECFAtivar.Click ;
+    if ACBrECF1.Ativo then
+      bECFAtivar.Click;
 
-    frConfiguraSerial.Device.Porta        := ACBrECF1.Device.Porta ;
-    frConfiguraSerial.cmbPortaSerial.Text := cbECFPorta.Text ;
-    frConfiguraSerial.Device.ParamsString := ACBrECF1.Device.ParamsString ;
+    frConfiguraSerial.Device.Porta := ACBrECF1.Device.Porta;
+    frConfiguraSerial.cmbPortaSerial.Text := cbECFPorta.Text;
+    frConfiguraSerial.Device.ParamsString := ACBrECF1.Device.ParamsString;
 
     if frConfiguraSerial.ShowModal = mrOk then
     begin
-       cbECFPorta.Text              := frConfiguraSerial.Device.Porta ;
-       ACBrECF1.Device.ParamsString := frConfiguraSerial.Device.ParamsString ;
-    end ;
+      cbECFPorta.Text := frConfiguraSerial.Device.Porta;
+      ACBrECF1.Device.ParamsString := frConfiguraSerial.Device.ParamsString;
+    end;
   finally
-     FreeAndNil( frConfiguraSerial ) ;
-     AvaliaEstadoTsECF ;
-  end ;
+    FreeAndNil(frConfiguraSerial);
+    AvaliaEstadoTsECF;
+  end;
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.sedECFTimeoutChanged(Sender: TObject);
 begin
-  ACBrECF1.TimeOut := sedECFTimeout.Value ;
+  ACBrECF1.TimeOut := sedECFTimeout.Value;
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.sedECFIntervaloChanged(Sender: TObject);
 begin
-  ACBrECF1.IntervaloAposComando := sedECFIntervalo.Value ;
+  ACBrECF1.IntervaloAposComando := sedECFIntervalo.Value;
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.chECFArredondaPorQtdClick(Sender: TObject);
 begin
-  ACBrECF1.ArredondaPorQtd := chECFArredondaPorQtd.Checked ;
+  ACBrECF1.ArredondaPorQtd := chECFArredondaPorQtd.Checked;
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.chECFDescrGrandeClick(Sender: TObject);
 begin
-  ACBrECF1.DescricaoGrande := chECFDescrGrande.Checked ;
+  ACBrECF1.DescricaoGrande := chECFDescrGrande.Checked;
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.chECFSinalGavetaInvertidoClick(Sender: TObject);
 begin
-  ACBrECF1.GavetaSinalInvertido := chECFSinalGavetaInvertido.Checked ;
+  ACBrECF1.GavetaSinalInvertido := chECFSinalGavetaInvertido.Checked;
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.edECFLogChange(Sender: TObject);
 begin
-  ACBrECF1.ArqLOG := edECFLog.Text ;
+  ACBrECF1.ArqLOG := edECFLog.Text;
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.sbECFLogClick(Sender: TObject);
 begin
-  OpenURL( ExtractFilePath( Application.ExeName ) + edECFLog.Text);
+  OpenURL(ExtractFilePath(Application.ExeName) + edECFLog.Text);
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.bECFAtivarClick(Sender: TObject);
 begin
   if bECFAtivar.Caption = '&Ativar' then
-   begin
-     try
-        if cbECFModelo.ItemIndex = 0 then
-           if not ACBrECF1.AcharECF(true,False) then
-           begin
-              MessageDlg('Nenhum ECF encontrado.',mtInformation,[mbOk],0) ;
-              exit ;
-           end ;
+  begin
+    try
+      if cbECFModelo.ItemIndex = 0 then
+        if not ACBrECF1.AcharECF(True, False) then
+        begin
+          MessageDlg('Nenhum ECF encontrado.', mtInformation, [mbOK], 0);
+          exit;
+        end;
 
-        ACBrECF1.Ativar ;
-     finally
-        cbECFModelo.ItemIndex := Integer(ACBrECF1.Modelo)+1 ;
-        cbECFPorta.Text       := ACBrECF1.Porta ;
-     end ;
-   end
+      ACBrECF1.Ativar;
+    finally
+      cbECFModelo.ItemIndex := integer(ACBrECF1.Modelo) + 1;
+      cbECFPorta.Text := ACBrECF1.Porta;
+    end;
+  end
   else
-     ACBrECF1.Desativar ;
+    ACBrECF1.Desativar;
 
-  AvaliaEstadoTsECF ;
+  AvaliaEstadoTsECF;
 end;
 
-procedure TFrmACBrMonitor.TcpServerConecta(
-  const TCPBlockSocket : TTCPBlockSocket ; var Enviar : AnsiString) ;
+procedure TFrmACBrMonitor.rgFJClick(Sender: TObject);
+begin
+  if rgFJ.ItemIndex = 0 then
+  begin
+    lblCPFCNPJ.Caption := 'C.P.F';
+    lblNomeRazao.Caption := 'Nome';
+    edtCNPJ.EditMask := '999.999.999-99;1';
+  end
+  else
+  begin
+    lblCPFCNPJ.Caption := 'C.N.P.J';
+    lblNomeRazao.Caption := 'Razão Social';
+    edtCNPJ.EditMask := '99.999.999/9999-99;1';
+  end;
+end;
+
+procedure TFrmACBrMonitor.TcpServerConecta(const TCPBlockSocket: TTCPBlockSocket;
+  var Enviar: ansistring);
 begin
   sleep(100);
   Conexao := TCPBlockSocket;
-  mCmd.Lines.Clear ;
-  Resposta('','ACBrMonitor Ver. '+ Versao + sLineBreak +
-              'Conectado em: '+FormatDateTime('dd/mm/yy hh:nn:ss', now )+sLineBreak+
-              'Máquina: '+Conexao.GetRemoteSinIP+sLineBreak+
-              'Esperando por comandos.');
+  mCmd.Lines.Clear;
+  Resposta('', 'ACBrMonitor Ver. ' + Versao + sLineBreak +
+    'Conectado em: ' + FormatDateTime('dd/mm/yy hh:nn:ss', now) + sLineBreak +
+    'Máquina: ' + Conexao.GetRemoteSinIP + sLineBreak +
+    'Esperando por comandos.');
 
 end;
 
-procedure TFrmACBrMonitor.TcpServerDesConecta(
-  const TCPBlockSocket : TTCPBlockSocket ; Erro : Integer ; ErroDesc : String) ;
+procedure TFrmACBrMonitor.TcpServerDesConecta(const TCPBlockSocket: TTCPBlockSocket;
+  Erro: integer; ErroDesc: string);
 begin
   Conexao := TCPBlockSocket;
-  mResp.Lines.Add('ALERTA: Fim da Conexão com: '+
-                   Conexao.GetRemoteSinIP+
-                  ' em: '+FormatDateTime('dd/mm/yy hh:nn:ss', now ) )
+  mResp.Lines.Add('ALERTA: Fim da Conexão com: ' +
+    Conexao.GetRemoteSinIP + ' em: ' +
+    FormatDateTime('dd/mm/yy hh:nn:ss', now));
 
 end;
 
-procedure TFrmACBrMonitor.TcpServerRecebeDados(
-  const TCPBlockSocket : TTCPBlockSocket ; const Recebido : AnsiString ;
-  var Enviar : AnsiString) ;
-Var
-  CmdEnviado : AnsiString ;
+procedure TFrmACBrMonitor.TcpServerRecebeDados(const TCPBlockSocket: TTCPBlockSocket;
+  const Recebido: ansistring; var Enviar: ansistring);
+var
+  CmdEnviado: ansistring;
 begin
   Conexao := TCPBlockSocket;
   { Le o que foi enviado atravez da conexao TCP }
-  CmdEnviado := trim(Conexao.RecvTerminated(5000,sLineBreak)) ;
+  CmdEnviado := trim(Conexao.RecvTerminated(5000, sLineBreak));
   if CmdEnviado <> '' then
   begin
-     NewLines := CmdEnviado  ;
-     Processar ;
-  end ;
+    NewLines := CmdEnviado;
+    Processar;
+  end;
 end;
 
-procedure TFrmACBrMonitor.TrayIcon1Click(Sender : TObject) ;
+procedure TFrmACBrMonitor.TrayIcon1Click(Sender: TObject);
 begin
   TrayIcon1.ShowBalloonHint;
 end;
 
-procedure TFrmACBrMonitor.TrayIcon1MouseUp(Sender : TObject ;
-  Button : TMouseButton ; Shift : TShiftState ; X, Y : Integer) ;
+procedure TFrmACBrMonitor.TrayIcon1MouseUp(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: integer);
 begin
   TrayIcon1.ShowBalloonHint;
 end;
@@ -1948,21 +2173,22 @@ end;
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.bECFTestarClick(Sender: TObject);
 begin
-  ACBrECF1.TestarDialog ;
+  ACBrECF1.TestarDialog;
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.bECFLeituraXClick(Sender: TObject);
-var wAtivo : Boolean ;
+var
+  wAtivo: boolean;
 begin
-  wAtivo := ACBrECF1.Ativo ;
+  wAtivo := ACBrECF1.Ativo;
 
   try
-     ACBrECF1.Ativar ;
-     ACBrECF1.LeituraX ;
+    ACBrECF1.Ativar;
+    ACBrECF1.LeituraX;
   finally
-     ACBrECF1.Ativo := wAtivo ;
-  end ;
+    ACBrECF1.Ativo := wAtivo;
+  end;
 end;
 
 {------------------------------------ ACBrCHQ ---------------------------------}
@@ -1970,35 +2196,36 @@ procedure TFrmACBrMonitor.cbCHQPortaChange(Sender: TObject);
 begin
   if ACBrCHQ1.Modelo <> chqImpressoraECF then
   begin
-     Try
-        ACBrCHQ1.Desativar ;
-        ACBrCHQ1.Porta := cbCHQPorta.Text ;
-     finally
-        cbCHQPorta.Text := ACBrCHQ1.Porta ;
-     end ;
-  end ;
+    try
+      ACBrCHQ1.Desativar;
+      ACBrCHQ1.Porta := cbCHQPorta.Text;
+    finally
+      cbCHQPorta.Text := ACBrCHQ1.Porta;
+    end;
+  end;
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.edCHQFavorecidoChange(Sender: TObject);
 begin
-  ACBrCHQ1.Favorecido := edCHQFavorecido.Text ;
+  ACBrCHQ1.Favorecido := edCHQFavorecido.Text;
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.edCHQCidadeChange(Sender: TObject);
 begin
-  ACBrCHQ1.Cidade := edCHQCidade.Text ;
+  ACBrCHQ1.Cidade := edCHQCidade.Text;
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.bCHQTestarClick(Sender: TObject);
-var wAtivo : Boolean ;
+var
+  wAtivo: boolean;
 begin
-  wAtivo := ACBrCHQ1.Ativo ;
+  wAtivo := ACBrCHQ1.Ativo;
 
   try
-     ACBrCHQ1.Ativar ;
+   {  ACBrCHQ1.Ativar ;
      ACBrCHQ1.Banco     := '001' ;
      ACBrCHQ1.Cidade    := IfThen(edCHQCidade.Text='',
                                     'Nome da sua Cidade',edCHQCidade.Text) ;
@@ -2006,321 +2233,321 @@ begin
                                      'Nome do Favorecido', edCHQFavorecido.Text) ;
      ACBrCHQ1.Observacao:= 'Texto de Observacao' ;
      ACBrCHQ1.Valor     := 123456.12 ;
-     ACBrCHQ1.ImprimirCheque ;
+     ACBrCHQ1.ImprimirCheque ;}
   finally
-     ACBrCHQ1.Ativo := wAtivo ;
-  end ;
+    ACBrCHQ1.Ativo := wAtivo;
+  end;
 end;
 
 {------------------------------------ ACBrGAV ---------------------------------}
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.tsGAVShow(Sender: TObject);
 begin
-  AvaliaEstadoTsGAV ;
+  AvaliaEstadoTsGAV;
 end;
 
 procedure TFrmACBrMonitor.bGAVAtivarClick(Sender: TObject);
 begin
   if bGAVAtivar.Caption = '&Ativar' then
-     ACBrGAV1.Ativar
+    ACBrGAV1.Ativar
   else
-     ACBrGAV1.Desativar ;
+    ACBrGAV1.Desativar;
 
-  AvaliaEstadoTsGAV ;
+  AvaliaEstadoTsGAV;
 end;
 
 procedure TFrmACBrMonitor.cbGAVPortaChange(Sender: TObject);
 begin
   if ACBrGAV1.Modelo <> gavImpressoraECF then
   begin
-     Try
-        ACBrGAV1.Desativar ;
-        ACBrGAV1.Porta := cbGAVPorta.Text ;
-     finally
-        cbGAVPorta.Text := ACBrGAV1.Porta ;
-     end ;
-  end ;
+    try
+      ACBrGAV1.Desativar;
+      ACBrGAV1.Porta := cbGAVPorta.Text;
+    finally
+      cbGAVPorta.Text := ACBrGAV1.Porta;
+    end;
+  end;
 
-  AvaliaEstadoTsGAV ;
+  AvaliaEstadoTsGAV;
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.cbGAVStrAbreChange(Sender: TObject);
 begin
-  ACBrGAV1.StrComando := cbGAVStrAbre.Text ;
+  ACBrGAV1.StrComando := cbGAVStrAbre.Text;
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.sedGAVIntervaloAberturaChanged(Sender: TObject);
 begin
-  ACBrGAV1.AberturaIntervalo := sedGAVIntervaloAbertura.Value ;
+  ACBrGAV1.AberturaIntervalo := sedGAVIntervaloAbertura.Value;
 end;
 
 {------------------------------------------------------------------------------}
-procedure TFrmACBrMonitor.cbGAVAcaoAberturaAntecipadaChange(
-  Sender: TObject);
+procedure TFrmACBrMonitor.cbGAVAcaoAberturaAntecipadaChange(Sender: TObject);
 begin
-  ACBrGAV1.AberturaAntecipada := TACBrGAVAberturaAntecipada(
-                                       cbGAVAcaoAberturaAntecipada.ItemIndex ) ;
+  ACBrGAV1.AberturaAntecipada :=
+    TACBrGAVAberturaAntecipada(
+    cbGAVAcaoAberturaAntecipada.ItemIndex);
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.bGAVEstadoClick(Sender: TObject);
 begin
   if not ACBrGAV1.Ativo then
-     ACBrGAV1.Ativar ;
+    ACBrGAV1.Ativar;
 
   if ACBrGAV1.GavetaAberta then
-     lGAVEstado.Caption := 'Aberta'
+    lGAVEstado.Caption := 'Aberta'
   else
-     lGAVEstado.Caption := 'Fechada' ;
+    lGAVEstado.Caption := 'Fechada';
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.bGAVAbrirClick(Sender: TObject);
 begin
   try
-     tsGAV.Enabled := False ;
-     lGAVEstado.Caption := 'AGUARDE' ;
+    tsGAV.Enabled := False;
+    lGAVEstado.Caption := 'AGUARDE';
 
-     ACBrGAV1.AbreGaveta ;
+    ACBrGAV1.AbreGaveta;
   finally
-     tsGAV.Enabled := True ;
-     bGAVEstado.Click ;
-  end ;
+    tsGAV.Enabled := True;
+    bGAVEstado.Click;
+  end;
 end;
 
 {------------------------------------ ACBrDIS ---------------------------------}
 procedure TFrmACBrMonitor.cbDISPortaChange(Sender: TObject);
 begin
-  Try
-     ACBrDIS1.Desativar ;
-     ACBrDIS1.Porta := cbDISPorta.Text ;
+  try
+    ACBrDIS1.Desativar;
+    ACBrDIS1.Porta := cbDISPorta.Text;
   finally
-     cbDISPorta.Text := ACBrDIS1.Porta ;
-  end ;
+    cbDISPorta.Text := ACBrDIS1.Porta;
+  end;
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.seDISIntervaloChanged(Sender: TObject);
 begin
-  ACBrDIS1.Intervalo := seDISIntervalo.Value ;
+  ACBrDIS1.Intervalo := seDISIntervalo.Value;
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.seDISPassosChanged(Sender: TObject);
 begin
-  ACBrDIS1.Passos := seDISPassos.Value ;
+  ACBrDIS1.Passos := seDISPassos.Value;
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.seDISIntByteChanged(Sender: TObject);
 begin
-  ACBrDIS1.IntervaloEnvioBytes := seDISIntByte.Value ;
+  ACBrDIS1.IntervaloEnvioBytes := seDISIntByte.Value;
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.bDISLimparClick(Sender: TObject);
 begin
-  ACBrDIS1.LimparDisplay ;
+  ACBrDIS1.LimparDisplay;
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.bDISTestarClick(Sender: TObject);
 begin
-  ACBrDIS1.Ativar ;
-  ACBrDIS1.ExibirLinha(1,'Projeto ACBr') ;
-  ACBrDIS1.ExibirLinha(2,'http://acbr.sf.net') ;
+  ACBrDIS1.Ativar;
+  ACBrDIS1.ExibirLinha(1, 'Projeto ACBr');
+  ACBrDIS1.ExibirLinha(2, 'http://acbr.sf.net');
 end;
 
 procedure TFrmACBrMonitor.bDISAnimarClick(Sender: TObject);
 begin
-  ACBrDIS1.Ativar ;
-  ACBrDIS1.LimparDisplay ;
-  ACBrDIS1.ExibirLinha( 1, padC('Projeto ACBr',ACBrDIS1.Colunas)
-                         , efeDireita_Esquerda) ;
-  ACBrDIS1.ExibirLinha( 2, padC('http://acbr.sf.net',ACBrDIS1.Colunas)
-                         , efeEsquerda_Direita) ;
+  ACBrDIS1.Ativar;
+  ACBrDIS1.LimparDisplay;
+  ACBrDIS1.ExibirLinha(1, padC('Projeto ACBr', ACBrDIS1.Colunas)
+    , efeDireita_Esquerda);
+  ACBrDIS1.ExibirLinha(2, padC('http://acbr.sf.net', ACBrDIS1.Colunas)
+    , efeEsquerda_Direita);
 end;
 
 {------------------------------------ ACBrLCB ---------------------------------}
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.tsLCBShow(Sender: TObject);
 begin
-  AvaliaEstadoTsLCB ;
+  AvaliaEstadoTsLCB;
 end;
 
 procedure TFrmACBrMonitor.cbLCBPortaChange(Sender: TObject);
 begin
-  Try
-     ACBrLCB1.Desativar ;
-     ACBrLCB1.Porta := cbLCBPorta.Text ;
+  try
+    ACBrLCB1.Desativar;
+    ACBrLCB1.Porta := cbLCBPorta.Text;
   finally
-     cbLCBPorta.Text := ACBrLCB1.Porta ;
-  end ;
+    cbLCBPorta.Text := ACBrLCB1.Porta;
+  end;
 
-  AvaliaEstadoTsLCB ;
+  AvaliaEstadoTsLCB;
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.bLCBSerialClick(Sender: TObject);
 begin
-  ACBrLCB1.Desativar ;
+  ACBrLCB1.Desativar;
   frConfiguraSerial := TfrConfiguraSerial.Create(self);
 
   try
-    frConfiguraSerial.Device.Porta        := ACBrLCB1.Device.Porta ;
-    frConfiguraSerial.cmbPortaSerial.Text := cbLCBPorta.Text ;
-    frConfiguraSerial.Device.ParamsString := ACBrLCB1.Device.ParamsString ;
+    frConfiguraSerial.Device.Porta := ACBrLCB1.Device.Porta;
+    frConfiguraSerial.cmbPortaSerial.Text := cbLCBPorta.Text;
+    frConfiguraSerial.Device.ParamsString := ACBrLCB1.Device.ParamsString;
 
     if frConfiguraSerial.ShowModal = mrOk then
     begin
-       cbLCBPorta.Text              := frConfiguraSerial.Device.Porta ;
-       ACBrLCB1.Device.ParamsString := frConfiguraSerial.Device.ParamsString ;
-    end ;
+      cbLCBPorta.Text := frConfiguraSerial.Device.Porta;
+      ACBrLCB1.Device.ParamsString := frConfiguraSerial.Device.ParamsString;
+    end;
   finally
-     FreeAndNil( frConfiguraSerial ) ;
-     AvaliaEstadoTsLCB ;
-  end ;
+    FreeAndNil(frConfiguraSerial);
+    AvaliaEstadoTsLCB;
+  end;
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.sedLCBIntervaloChanged(Sender: TObject);
 begin
-  ACBrLCB1.Intervalo := sedLCBIntervalo.Value ;
+  ACBrLCB1.Intervalo := sedLCBIntervalo.Value;
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.rbLCBTecladoClick(Sender: TObject);
 begin
-  cbLCBSufixo.Enabled := rbLCBTeclado.Checked ;
-  cbLCBDispositivo.Enabled := rbLCBTeclado.Checked ;
+  cbLCBSufixo.Enabled := rbLCBTeclado.Checked;
+  cbLCBDispositivo.Enabled := rbLCBTeclado.Checked;
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.bLCBAtivarClick(Sender: TObject);
 begin
-  sedLCBIntervalo.Value := ACBrLCB1.Intervalo ;
+  sedLCBIntervalo.Value := ACBrLCB1.Intervalo;
   if bLCBAtivar.Caption = '&Ativar' then
-     ACBrLCB1.Ativar
+    ACBrLCB1.Ativar
   else
-     ACBrLCB1.Desativar ;
+    ACBrLCB1.Desativar;
 
-  AvaliaEstadoTsLCB ;
+  AvaliaEstadoTsLCB;
 end;
 
 procedure TFrmACBrMonitor.AvaliaEstadoTsLCB;
 begin
   bLCBAtivar.Enabled := ((cbLCBPorta.Text <> 'Sem Leitor') and
-                         (cbLCBPorta.ItemIndex > 0)            ) ;
-  cbLCBSufixo.Enabled         := bLCBAtivar.Enabled ;
-  cbLCBSufixoLeitor.Enabled   := bLCBAtivar.Enabled ;
-  cbLCBDispositivo.Enabled    := bLCBAtivar.Enabled ;
-  edLCBPreExcluir.Enabled     := bLCBAtivar.Enabled ;
-  chLCBExcluirSufixo.Enabled  := bLCBAtivar.Enabled ;
-  sedLCBIntervalo.Enabled     := bLCBAtivar.Enabled ;
-  bLCBSerial.Enabled          := bLCBAtivar.Enabled ;
-  rbLCBTeclado.Enabled        := bLCBAtivar.Enabled ;
-  rbLCBFila.Enabled           := bLCBAtivar.Enabled ;
+    (cbLCBPorta.ItemIndex > 0));
+  cbLCBSufixo.Enabled := bLCBAtivar.Enabled;
+  cbLCBSufixoLeitor.Enabled := bLCBAtivar.Enabled;
+  cbLCBDispositivo.Enabled := bLCBAtivar.Enabled;
+  edLCBPreExcluir.Enabled := bLCBAtivar.Enabled;
+  chLCBExcluirSufixo.Enabled := bLCBAtivar.Enabled;
+  sedLCBIntervalo.Enabled := bLCBAtivar.Enabled;
+  bLCBSerial.Enabled := bLCBAtivar.Enabled;
+  rbLCBTeclado.Enabled := bLCBAtivar.Enabled;
+  rbLCBFila.Enabled := bLCBAtivar.Enabled;
 
   rbLCBTecladoClick(Self);
 
-  bLCBAtivar.Glyph := nil ;
+  bLCBAtivar.Glyph := nil;
   if ACBrLCB1.Ativo then
-   begin
-     bLCBAtivar.Caption := '&Desativar' ;
-     shpLCB.Color       := clLime ;
-     ImageList1.GetBitmap(6,bLCBAtivar.Glyph);
-   end
+  begin
+    bLCBAtivar.Caption := '&Desativar';
+    shpLCB.Color := clLime;
+    ImageList1.GetBitmap(6, bLCBAtivar.Glyph);
+  end
   else
-   begin
-     bLCBAtivar.Caption := '&Ativar' ;
-     shpLCB.Color       := clRed ;
-     ImageList1.GetBitmap(5,bLCBAtivar.Glyph);
-   end ;
+  begin
+    bLCBAtivar.Caption := '&Ativar';
+    shpLCB.Color := clRed;
+    ImageList1.GetBitmap(5, bLCBAtivar.Glyph);
+  end;
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.cbLCBSufixoLeitorChange(Sender: TObject);
 begin
-  ACBrLCB1.Sufixo := cbLCBSufixoLeitor.Text ;
+  ACBrLCB1.Sufixo := cbLCBSufixoLeitor.Text;
 end;
 
 {------------------------------------------------------------------------------}
-procedure TFrmACBrMonitor.edLCBSufLeituraKeyPress(Sender: TObject;
-  var Key: Char);
+procedure TFrmACBrMonitor.edLCBSufLeituraKeyPress(Sender: TObject; var Key: char);
 begin
-  if not ( Key in ['0'..'9','#',',',#13,#8] ) then
-     Key := #0 ;
+  if not (Key in ['0'..'9', '#', ',', #13, #8]) then
+    Key := #0;
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.chLCBExcluirSufixoClick(Sender: TObject);
 begin
-  ACBrLCB1.ExcluirSufixo := chLCBExcluirSufixo.Checked ;
+  ACBrLCB1.ExcluirSufixo := chLCBExcluirSufixo.Checked;
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.edLCBPreExcluirChange(Sender: TObject);
 begin
-  ACBrLCB1.PrefixoAExcluir := edLCBPreExcluir.Text ;
+  ACBrLCB1.PrefixoAExcluir := edLCBPreExcluir.Text;
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.AumentaTempoHint(Sender: TObject);
 begin
-  Application.HintHidePause := 15000 ;
+  Application.HintHidePause := 15000;
 end;
 
 procedure TFrmACBrMonitor.DiminuiTempoHint(Sender: TObject);
 begin
-  Application.HintHidePause := 5000 ;
+  Application.HintHidePause := 5000;
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.ACBrLCB1LeCodigo(Sender: TObject);
-Var Codigo : AnsiString ;
+var
+  Codigo: ansistring;
     {$IFDEF LINUX}
-    fd, I : Integer ;
-    C : Char ;
+  fd, I: integer;
+  C: char;
     {$ENDIF}
 begin
-  lLCBCodigoLido.Caption := Converte( ACBrLCB1.UltimaLeitura ) ;
+  lLCBCodigoLido.Caption := Converte(ACBrLCB1.UltimaLeitura);
 
-  mResp.Lines.Add('LCB -> '+ACBrLCB1.UltimoCodigo) ;
+  mResp.Lines.Add('LCB -> ' + ACBrLCB1.UltimoCodigo);
 
   if rbLCBTeclado.Checked then
   begin
-     Codigo := ACBrLCB1.UltimoCodigo ;
-     if Codigo = '' then
-        exit ;
+    Codigo := ACBrLCB1.UltimoCodigo;
+    if Codigo = '' then
+      exit;
 
      {$IFDEF MSWINDOWS}
-     Codigo := Codigo + Trim(cbLCBSufixo.Text) ;
-     SendKeys( pchar(Codigo) , True ) ;
+    Codigo := Codigo + Trim(cbLCBSufixo.Text);
+    SendKeys(PChar(Codigo), True);
      {$ENDIF}
 
-     { Alguem sabe como enviar as teclas para o Buffer do KDE ??? }
+    { Alguem sabe como enviar as teclas para o Buffer do KDE ??? }
      {$IFDEF LINUX}
-     Codigo := Codigo + TraduzComando( cbLCBSufixo.Text ) ;
-     fd := FileOpen(Trim(cbLCBDispositivo.Text),O_WRONLY + O_NONBLOCK) ;
-     if fd < 0 then
-        Writeln('Erro ao abrir o dispositivo: '+Trim(cbLCBDispositivo.Text))
-     else
-        try
-           for I := 1 to length(Codigo) do
-           begin
-              C := Codigo[I] ;
-              Libc.ioctl(fd, TIOCSTI, @C );
-           end ;
-        finally
-           FileClose(fd);
+    Codigo := Codigo + TraduzComando(cbLCBSufixo.Text);
+    fd := FileOpen(Trim(cbLCBDispositivo.Text), O_WRONLY + O_NONBLOCK);
+    if fd < 0 then
+      Writeln('Erro ao abrir o dispositivo: ' + Trim(cbLCBDispositivo.Text))
+    else
+      try
+        for I := 1 to length(Codigo) do
+        begin
+          C := Codigo[I];
+          Libc.ioctl(fd, TIOCSTI, @C);
         end;
+      finally
+        FileClose(fd);
+      end;
 
-//   WriteToTXT('/dev/stdin',Codigo,False);
-//   RunCommand('echo','"TESTE'+Codigo+'" > /dev/tty1',true) ;
+    //   WriteToTXT('/dev/stdin',Codigo,False);
+    //   RunCommand('echo','"TESTE'+Codigo+'" > /dev/tty1',true) ;
      {$ENDIF}
-  end ;
+  end;
 end;
 
 
@@ -2328,431 +2555,441 @@ end;
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.tsRFDShow(Sender: TObject);
 begin
-  pgConRFD.ActivePageIndex := 0 ;
+  pgConRFD.ActivePageIndex := 0;
 
-  AvaliaEstadoTsRFD ;
+  AvaliaEstadoTsRFD;
 
-  mRFDINI.Lines.Clear ;
-  fsRFDIni := '' ;
+  mRFDINI.Lines.Clear;
+  fsRFDIni := '';
 end;
 
 procedure TFrmACBrMonitor.AvaliaEstadoTsRFD;
- Var MM : String ;
-     I  : Integer ;
-     SL : TStringList ;
-     Ini: TIniFile ;
+var
+  MM: string;
+  I: integer;
+  SL: TStringList;
+  Ini: TIniFile;
 begin
-  bRFDMF.Enabled   := ACBrECF1.Ativo ;
-  edRFDDir.Enabled := not bRFDMF.Enabled ;
-  cbRFDModelo.Enabled  := bRFDMF.Enabled ;
+  bRFDMF.Enabled := ACBrECF1.Ativo;
+  edRFDDir.Enabled := not bRFDMF.Enabled;
+  cbRFDModelo.Enabled := bRFDMF.Enabled;
 
-  tsRFDUsuario.Enabled := ACBrECF1.Ativo and ACBrRFD1.Ativo ;
-  tsRFDSwH.Enabled     := tsRFDUsuario.Enabled ;
-  tsRFDRSA.Enabled     := tsRFDUsuario.Enabled ;
-  tsRFDINI.Enabled     := tsRFDUsuario.Enabled ;
+  tsRFDUsuario.Enabled := ACBrECF1.Ativo and ACBrRFD1.Ativo;
+  tsRFDSwH.Enabled := tsRFDUsuario.Enabled;
+  tsRFDRSA.Enabled := tsRFDUsuario.Enabled;
+  tsRFDINI.Enabled := tsRFDUsuario.Enabled;
 
-  lRFDID.Caption := ACBrRFD1.ECF_RFDID ;
-  
+  lRFDID.Caption := ACBrRFD1.ECF_RFDID;
+
   if ACBrECF1.Ativo then
-     gbRFDECF.Hint := 'Selecione o Modelo do ECF'
+    gbRFDECF.Hint := 'Selecione o Modelo do ECF'
   else
-     pgConRFD.Hint := 'Para Configurar o RFD é necessário ativar o ECF e'+sLineBreak+
-                      'Selecionar a opção para Geração de RFD' ;
+    pgConRFD.Hint := 'Para Configurar o RFD é necessário ativar o ECF e' + sLineBreak +
+      'Selecionar a opção para Geração de RFD';
 
   if ACBrECF1.Ativo and ACBrRFD1.Ativo then
   begin
-     if (copy(lRFDID.Caption,1,Length(ACBrECF1.RFDID)) <> ACBrECF1.RFDID) or
-        (cbRFDModelo.Items.Count = 0) then
-     begin
-        if copy(lRFDID.Caption,1,Length(ACBrECF1.RFDID)) <> ACBrECF1.RFDID then
-           lRFDID.Caption := ACBrECF1.RFDID ;
+    if (copy(lRFDID.Caption, 1, Length(ACBrECF1.RFDID)) <> ACBrECF1.RFDID) or
+      (cbRFDModelo.Items.Count = 0) then
+    begin
+      if copy(lRFDID.Caption, 1, Length(ACBrECF1.RFDID)) <> ACBrECF1.RFDID then
+        lRFDID.Caption := ACBrECF1.RFDID;
 
-        MM := ACBrRFD1.AchaRFDID( lRFDID.Caption ) ;
-        lRFDMarca.Caption := Trim( copy(MM,1, pos('|',MM+'|')-1 ) ) ;
+      MM := ACBrRFD1.AchaRFDID(lRFDID.Caption);
+      lRFDMarca.Caption := Trim(copy(MM, 1, pos('|', MM + '|') - 1));
 
-        SL  := TStringList.Create ;
-        Ini := TIniFile.Create( ACBrRFD1.ArqRFDID );
-        try
-            Ini.ReadSectionValues('Modelos',SL);
+      SL := TStringList.Create;
+      Ini := TIniFile.Create(ACBrRFD1.ArqRFDID);
+      try
+        Ini.ReadSectionValues('Modelos', SL);
 
-            cbRFDModelo.Items.Clear ;
-            For I := 0 to SL.Count-1 do
-            begin
-               if copy(SL[I],1,2) = copy(lRFDID.Caption,1,2) then
-                  cbRFDModelo.Items.Add( SL[I] );
+        cbRFDModelo.Items.Clear;
+        for I := 0 to SL.Count - 1 do
+        begin
+          if copy(SL[I], 1, 2) = copy(lRFDID.Caption, 1, 2) then
+            cbRFDModelo.Items.Add(SL[I]);
 
-               if copy(SL[I],1,3) = lRFDID.Caption then
-                  cbRFDModelo.Text := SL[I] ;
-            end ;
-        finally
-           SL.Free ;
-           Ini.Free ;
-        end ;
+          if copy(SL[I], 1, 3) = lRFDID.Caption then
+            cbRFDModelo.Text := SL[I];
+        end;
+      finally
+        SL.Free;
+        Ini.Free;
+      end;
 
-        ACBrRFD1.ECF_RFDID := lRFDID.Caption ;
-     end ;
-  end ;
+      ACBrRFD1.ECF_RFDID := lRFDID.Caption;
+    end;
+  end;
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.pgConRFDPageChanging(Sender: TObject;
-  NewPage: TTabSheet; var AllowChange: Boolean);
- Var CNPJ : String ;
+  NewPage: TTabSheet; var AllowChange: boolean);
+var
+  CNPJ: string;
 begin
   if NewPage.PageIndex > 1 then
   begin
-     if not fsCNPJSWOK then
-        fsCNPJSWOK := (LerChaveSWH = '') or (edSH_CNPJ.Text = '')  ;
+    if not fsCNPJSWOK then
+      fsCNPJSWOK := (LerChaveSWH = '') or (edSH_CNPJ.Text = '');
 
-     if not fsCNPJSWOK then
-     begin
-        CNPJ := '' ;
-        if InputQuery('Configuração','Digite o CNPJ da Sw.House',CNPJ) then
-           fsCNPJSWOK := (CNPJ = edSH_CNPJ.Text) ;
-     end ;
+    if not fsCNPJSWOK then
+    begin
+      CNPJ := '';
+      if InputQuery('Configuração', 'Digite o CNPJ da Sw.House', CNPJ) then
+        fsCNPJSWOK := (CNPJ = edSH_CNPJ.Text);
+    end;
 
-     AllowChange := fsCNPJSWOK ;
-     pgConRFD.ActivePageIndex := 0 ;
-  end ;
+    AllowChange := fsCNPJSWOK;
+    pgConRFD.ActivePageIndex := 0;
+  end;
 end;
 
 {-------------------------------- Aba Config ----------------------------------}
 procedure TFrmACBrMonitor.tsRFDConfigShow(Sender: TObject);
 begin
-  meRFDDataSwBasico.Text := FormatDateTime('dd/mm/yy',ACBrRFD1.ECF_DataHoraSwBasico) ;
-  meRFDHoraSwBasico.Text := FormatDateTime('hh:nn',ACBrRFD1.ECF_DataHoraSwBasico) ;
+  meRFDDataSwBasico.Text := FormatDateTime('dd/mm/yy', ACBrRFD1.ECF_DataHoraSwBasico);
+  meRFDHoraSwBasico.Text := FormatDateTime('hh:nn', ACBrRFD1.ECF_DataHoraSwBasico);
 end;
 
 procedure TFrmACBrMonitor.chRFDClick(Sender: TObject);
- Var OldAtivo : Boolean ;
+var
+  OldAtivo: boolean;
 begin
-  OldAtivo := ACBrECF1.Ativo ;
+  OldAtivo := ACBrECF1.Ativo;
   try
-     try
-        ACBrECF1.Desativar ;
+    try
+      ACBrECF1.Desativar;
 
-        if chRFD.Checked then
-           ACBrECF1.RFD := ACBrRFD1
-        else
-           ACBrECF1.RFD := nil ;
-     except
-        chRFD.OnClick := nil ;
-        chRFD.Checked := Assigned( ACBrECF1.RFD )  ;
-        chRFD.OnClick := @chRFDClick ;
+      if chRFD.Checked then
+        ACBrECF1.RFD := ACBrRFD1
+      else
+        ACBrECF1.RFD := nil;
+    except
+      chRFD.OnClick := nil;
+      chRFD.Checked := Assigned(ACBrECF1.RFD);
+      chRFD.OnClick := @chRFDClick;
 
-        raise ;
-     end ;
+      raise;
+    end;
   finally
-     ACBrECF1.Ativo := OldAtivo ;
-  end ;
+    ACBrECF1.Ativo := OldAtivo;
+  end;
 
-  AvaliaEstadoTsRFD ;
+  AvaliaEstadoTsRFD;
 end;
 
 procedure TFrmACBrMonitor.chRFDIgnoraMFDClick(Sender: TObject);
 begin
-  ACBrRFD1.IgnoraEcfMfd := chRFDIgnoraMFD.Checked ;
+  ACBrRFD1.IgnoraEcfMfd := chRFDIgnoraMFD.Checked;
 end;
 
 procedure TFrmACBrMonitor.edRFDDirChange(Sender: TObject);
 begin
-  ACBrRFD1.DirRFD := edRFDDir.Text ;
+  ACBrRFD1.DirRFD := edRFDDir.Text;
 end;
 
 procedure TFrmACBrMonitor.sbDirRFDClick(Sender: TObject);
 begin
-  OpenURL( ACBrRFD1.DirRFD );
+  OpenURL(ACBrRFD1.DirRFD);
 end;
 
 procedure TFrmACBrMonitor.bRFDMFClick(Sender: TObject);
-  Var SL : TStringList ;
+var
+  SL: TStringList;
 begin
   if not ACBrECF1.Ativo then
-     raise Exception.Create('ECF não está ativo');
+    raise Exception.Create('ECF não está ativo');
 
-  SL := TStringList.Create ;
+  SL := TStringList.Create;
   try
-     SL.Clear ;
-     ACBrECF1.LeituraMemoriaFiscalSerial(now,now,SL);
+    SL.Clear;
+    ACBrECF1.LeituraMemoriaFiscalSerial(now, now, SL);
 
-     mResp.Lines.AddStrings( SL );
+    mResp.Lines.AddStrings(SL);
   finally
-     SL.Free ;
-  end ;
+    SL.Free;
+  end;
 end;
 
 procedure TFrmACBrMonitor.cbRFDModeloChange(Sender: TObject);
 begin
-  lRFDID.Caption     := copy(cbRFDModelo.Text,1,3) ;
-  ACBrRFD1.ECF_RFDID := lRFDID.Caption ; 
+  lRFDID.Caption := copy(cbRFDModelo.Text, 1, 3);
+  ACBrRFD1.ECF_RFDID := lRFDID.Caption;
 end;
 
 
 procedure TFrmACBrMonitor.meRFDDataSwBasicoExit(Sender: TObject);
-  Var OldShortDateFormat : String ;
-      DT : TDateTime ;
+var
+  OldShortDateFormat: string;
+  DT: TDateTime;
 begin
-  DT := ACBrRFD1.ECF_DataHoraSwBasico ;
-  OldShortDateFormat := ShortDateFormat ;
+  DT := ACBrRFD1.ECF_DataHoraSwBasico;
+  OldShortDateFormat := ShortDateFormat;
   try
-     ShortDateFormat := 'dd/mm/yyyy hh:nn:ss' ;
-     DT := StrToDateTimeDef( meRFDDataSwBasico.Text+' '+meRFDHoraSwBasico.Text, DT ) ;
+    ShortDateFormat := 'dd/mm/yyyy hh:nn:ss';
+    DT := StrToDateTimeDef(meRFDDataSwBasico.Text + ' ' + meRFDHoraSwBasico.Text, DT);
   finally
-     ShortDateFormat := OldShortDateFormat ;
-  end ;
+    ShortDateFormat := OldShortDateFormat;
+  end;
 
-  ACBrRFD1.ECF_DataHoraSwBasico := DT ;
+  ACBrRFD1.ECF_DataHoraSwBasico := DT;
 end;
 
 
 {-------------------------------- Aba Usuario ---------------------------------}
 procedure TFrmACBrMonitor.tsRFDUsuarioShow(Sender: TObject);
 begin
-  if not tsRFDUsuario.Enabled then exit ;
-  
+  if not tsRFDUsuario.Enabled then
+    exit;
+
   if not fsRFDLeuParams then
   begin
-     edRFDRazaoSocial.Text     := ACBrRFD1.CONT_RazaoSocial ;
-     edRFDEndereco.Text        := ACBrRFD1.CONT_Endereco ;
-     edRFDCNPJ.Text            := ACBrRFD1.CONT_CNPJ ;
-     edRFDIE.Text              := ACBrRFD1.CONT_IE ;
-     seRFDNumeroCadastro.Value := ACBrRFD1.CONT_NumUsuario ;
-     meRFDDataCadastro.Text    := FormatDateTime('dd/mm/yy',ACBrRFD1.CONT_DataHoraCadastro) ;
-     meRFDHoraCadastro.Text    := FormatDateTime('hh:nn',ACBrRFD1.CONT_DataHoraCadastro) ;
-     seRFDCROCadastro.Value    := ACBrRFD1.CONT_CROCadastro ;
-     edRFDGTCadastro.Text      := FormatFloat('0.00',ACBrRFD1.CONT_GTCadastro) ;
+    edRFDRazaoSocial.Text := ACBrRFD1.CONT_RazaoSocial;
+    edRFDEndereco.Text := ACBrRFD1.CONT_Endereco;
+    edRFDCNPJ.Text := ACBrRFD1.CONT_CNPJ;
+    edRFDIE.Text := ACBrRFD1.CONT_IE;
+    seRFDNumeroCadastro.Value := ACBrRFD1.CONT_NumUsuario;
+    meRFDDataCadastro.Text :=
+      FormatDateTime('dd/mm/yy', ACBrRFD1.CONT_DataHoraCadastro);
+    meRFDHoraCadastro.Text :=
+      FormatDateTime('hh:nn', ACBrRFD1.CONT_DataHoraCadastro);
+    seRFDCROCadastro.Value := ACBrRFD1.CONT_CROCadastro;
+    edRFDGTCadastro.Text := FormatFloat('0.00', ACBrRFD1.CONT_GTCadastro);
 
-     fsRFDLeuParams := True ;
-  end ;
+    fsRFDLeuParams := True;
+  end;
 end;
 
 procedure TFrmACBrMonitor.edRFDRazaoSocialChange(Sender: TObject);
 begin
-  ACBrRFD1.CONT_RazaoSocial := edRFDRazaoSocial.Text ;
+  ACBrRFD1.CONT_RazaoSocial := edRFDRazaoSocial.Text;
 end;
 
 procedure TFrmACBrMonitor.edRFDCNPJChange(Sender: TObject);
 begin
-  ACBrRFD1.CONT_CNPJ := edRFDCNPJ.Text ;
+  ACBrRFD1.CONT_CNPJ := edRFDCNPJ.Text;
 end;
 
 procedure TFrmACBrMonitor.edRFDEnderecoChange(Sender: TObject);
 begin
-  ACBrRFD1.CONT_Endereco := edRFDEndereco.Text ;
+  ACBrRFD1.CONT_Endereco := edRFDEndereco.Text;
 end;
 
 procedure TFrmACBrMonitor.edRFDIEChange(Sender: TObject);
 begin
-  ACBrRFD1.CONT_IE := edRFDIE.Text ;
+  ACBrRFD1.CONT_IE := edRFDIE.Text;
 end;
 
 procedure TFrmACBrMonitor.seRFDNumeroCadastroChanged(Sender: TObject);
 begin
-  ACBrRFD1.CONT_NumUsuario := seRFDNumeroCadastro.Value ;
+  ACBrRFD1.CONT_NumUsuario := seRFDNumeroCadastro.Value;
 end;
 
 procedure TFrmACBrMonitor.meRFDDataCadastroExit(Sender: TObject);
-  Var OldShortDateFormat : String ;
-      DT : TDateTime ;
+var
+  OldShortDateFormat: string;
+  DT: TDateTime;
 begin
-  DT := ACBrRFD1.CONT_DataHoraCadastro ;
-  OldShortDateFormat := ShortDateFormat ;
+  DT := ACBrRFD1.CONT_DataHoraCadastro;
+  OldShortDateFormat := ShortDateFormat;
   try
-     ShortDateFormat := 'dd/mm/yyyy hh:nn:ss' ;
-     DT := StrToDateTimeDef( meRFDDataCadastro.Text+' '+meRFDHoraCadastro.Text, DT ) ;
+    ShortDateFormat := 'dd/mm/yyyy hh:nn:ss';
+    DT := StrToDateTimeDef(meRFDDataCadastro.Text + ' ' + meRFDHoraCadastro.Text, DT);
   finally
-     ShortDateFormat := OldShortDateFormat ;
-  end ;
+    ShortDateFormat := OldShortDateFormat;
+  end;
 
-  ACBrRFD1.CONT_DataHoraCadastro := DT ;
+  ACBrRFD1.CONT_DataHoraCadastro := DT;
 end;
 
 procedure TFrmACBrMonitor.seRFDCROCadastroChanged(Sender: TObject);
 begin
-  ACBrRFD1.CONT_CROCadastro := seRFDCROCadastro.Value ;
+  ACBrRFD1.CONT_CROCadastro := seRFDCROCadastro.Value;
 end;
 
-procedure TFrmACBrMonitor.edRFDGTCadastroKeyPress(Sender: TObject;
-  var Key: Char);
+procedure TFrmACBrMonitor.edRFDGTCadastroKeyPress(Sender: TObject; var Key: char);
 begin
-  if Key in [',','.'] then
-     Key := DecimalSeparator ;
+  if Key in [',', '.'] then
+    Key := DecimalSeparator;
 
-  if not ( Key in ['0'..'9',#13,#8, DecimalSeparator] ) then
-     Key := #0 ;
+  if not (Key in ['0'..'9', #13, #8, DecimalSeparator]) then
+    Key := #0;
 end;
 
 procedure TFrmACBrMonitor.edRFDGTCadastroExit(Sender: TObject);
 begin
-  ACBrRFD1.CONT_GTCadastro := StrToFloatDef(edRFDGTCadastro.Text,ACBrRFD1.CONT_GTCadastro) ;
-  edRFDGTCadastro.Text := FormatFloat('0.00',ACBrRFD1.CONT_GTCadastro) ;
+  ACBrRFD1.CONT_GTCadastro :=
+    StrToFloatDef(edRFDGTCadastro.Text, ACBrRFD1.CONT_GTCadastro);
+  edRFDGTCadastro.Text := FormatFloat('0.00', ACBrRFD1.CONT_GTCadastro);
 end;
 
 {------------------------------ Aba Chave RSA --------------------------------}
 procedure TFrmACBrMonitor.tsRFDRSAShow(Sender: TObject);
 begin
   if mRFDKey.Text = '' then
-     mRFDKey.Text := LerChaveSWH ;
+    mRFDKey.Text := LerChaveSWH;
 end;
 
 procedure TFrmACBrMonitor.bRFDKeyImportarClick(Sender: TObject);
 begin
-  OpenDialog1.Filter   := 'Arquivos KEY|*.key|Todos Arquivos|*.*' ;
+  OpenDialog1.Filter := 'Arquivos KEY|*.key|Todos Arquivos|*.*';
 
   if OpenDialog1.Execute then
-     mRFDKey.Lines.LoadFromFile( OpenDialog1.FileName );
+    mRFDKey.Lines.LoadFromFile(OpenDialog1.FileName);
 end;
 
-procedure TFrmACBrMonitor.ACBrRFD1GetKeyRSA(var PrivateKey_RSA: String);
+procedure TFrmACBrMonitor.ACBrRFD1GetKeyRSA(var PrivateKey_RSA: string);
 begin
-  PrivateKey_RSA := LerChaveSWH ;
+  PrivateKey_RSA := LerChaveSWH;
 end;
 
 procedure TFrmACBrMonitor.bRFDRSAPrivadaClick(Sender: TObject);
 begin
   if mRFDKey.Text <> '' then
-     raise Exception.Create('Você já possui uma chave RSA.') ;
+    raise Exception.Create('Você já possui uma chave RSA.');
 
   try
      { Executando o "openssl.exe"
        Sintaxe de comandos extraidas de:  http://www.madboa.com/geek/openssl/ }
 
-     RunCommand('openssl', 'genrsa -out id.rsa 1024', True, 0);
+    RunCommand('openssl', 'genrsa -out id.rsa 1024', True, 0);
 
-     { Lendo a resposta }
-     try
-        mRFDKey.Clear ;
-        mRFDKey.Lines.LoadFromFile('id.rsa');
-     except
-        raise Exception.Create( 'Erro ao gerar Chave Privada, usando o "openssl"' ) ;
-     end ;
+    { Lendo a resposta }
+    try
+      mRFDKey.Clear;
+      mRFDKey.Lines.LoadFromFile('id.rsa');
+    except
+      raise Exception.Create('Erro ao gerar Chave Privada, usando o "openssl"');
+    end;
   finally
-     DeleteFile( 'id.rsa' ) ;  // Removendo a chave privada do disco ;
+    DeleteFile('id.rsa');  // Removendo a chave privada do disco ;
   end;
 end;
 
 procedure TFrmACBrMonitor.bRFDRSAPublicaClick(Sender: TObject);
-  Var SL : TStringList ;
+var
+  SL: TStringList;
 begin
   if mRFDKey.Text = '' then
-     raise Exception.Create('Chave RSA não definida.') ;
+    raise Exception.Create('Chave RSA não definida.');
 
-  ChDir( ExtractFilePath(Application.ExeName) ) ;
-  SL := TStringList.Create ;
+  ChDir(ExtractFilePath(Application.ExeName));
+  SL := TStringList.Create;
   try
-     { Gravando a chave RSA temporariamente no DirLog }
-     mRFDKey.Lines.SaveToFile( 'id.rsa' );
+    { Gravando a chave RSA temporariamente no DirLog }
+    mRFDKey.Lines.SaveToFile('id.rsa');
 
      { Executando o "openssl.exe"
        Sintaxe de comandos extraidas de:  http://www.madboa.com/geek/openssl/ }
 
-     RunCommand('openssl', 'rsa -in id.rsa -pubout -out rsakey.pub', True, 0);
+    RunCommand('openssl', 'rsa -in id.rsa -pubout -out rsakey.pub', True, 0);
 
-     { Lendo a resposta }
-     try
-        SL.Clear ;
-        SL.LoadFromFile('rsakey.pub');
+    { Lendo a resposta }
+    try
+      SL.Clear;
+      SL.LoadFromFile('rsakey.pub');
 
-        mResp.Lines.AddStrings( SL ) ;
-        mResp.Lines.Add('') ;
-        mResp.Lines.Add('Chave pública gravada no arquivo: "rsakey.pub"') ;
-     except
-        raise Exception.Create( 'Erro ao gerar Chave Publica, usando o "openssl"' ) ;
-     end ;
+      mResp.Lines.AddStrings(SL);
+      mResp.Lines.Add('');
+      mResp.Lines.Add('Chave pública gravada no arquivo: "rsakey.pub"');
+    except
+      raise Exception.Create('Erro ao gerar Chave Publica, usando o "openssl"');
+    end;
   finally
-     DeleteFile( 'id.rsa' ) ;  // Removendo a chave privada do disco ;
+    DeleteFile('id.rsa');  // Removendo a chave privada do disco ;
   end;
 end;
 
 {-------------------------------- Aba Sw.House -------------------------------}
 procedure TFrmACBrMonitor.edSH_RazaoSocialChange(Sender: TObject);
 begin
-  ACBrRFD1.SH_RazaoSocial := edSH_RazaoSocial.Text ;
+  ACBrRFD1.SH_RazaoSocial := edSH_RazaoSocial.Text;
 end;
 
 procedure TFrmACBrMonitor.edSH_COOChange(Sender: TObject);
 begin
-  ACBrRFD1.SH_COO := edSH_COO.Text ;
+  ACBrRFD1.SH_COO := edSH_COO.Text;
 end;
 
 procedure TFrmACBrMonitor.edSH_CNPJChange(Sender: TObject);
 begin
-  ACBrRFD1.SH_CNPJ := edSH_CNPJ.Text ;
+  ACBrRFD1.SH_CNPJ := edSH_CNPJ.Text;
 end;
 
 procedure TFrmACBrMonitor.edSH_IEChange(Sender: TObject);
 begin
-  ACBrRFD1.SH_IE := edSH_IE.Text ;
+  ACBrRFD1.SH_IE := edSH_IE.Text;
 end;
 
 procedure TFrmACBrMonitor.edSH_IMChange(Sender: TObject);
 begin
-  ACBrRFD1.SH_IM := edSH_IM.Text ;
+  ACBrRFD1.SH_IM := edSH_IM.Text;
 end;
 
 procedure TFrmACBrMonitor.edSH_AplicativoChange(Sender: TObject);
 begin
-  ACBrRFD1.SH_NomeAplicativo := edSH_Aplicativo.Text ;
+  ACBrRFD1.SH_NomeAplicativo := edSH_Aplicativo.Text;
 end;
 
 procedure TFrmACBrMonitor.edSH_NumeroAPChange(Sender: TObject);
 begin
-  ACBrRFD1.SH_NumeroAplicativo := edSH_NumeroAP.Text ;
+  ACBrRFD1.SH_NumeroAplicativo := edSH_NumeroAP.Text;
 end;
 
 procedure TFrmACBrMonitor.edSH_VersaoAPChange(Sender: TObject);
 begin
-  ACBrRFD1.SH_VersaoAplicativo := edSH_VersaoAP.Text ;
+  ACBrRFD1.SH_VersaoAplicativo := edSH_VersaoAP.Text;
 end;
 
 procedure TFrmACBrMonitor.edSH_Linha1Change(Sender: TObject);
 begin
-  ACBrRFD1.SH_Linha1 := edSH_Linha1.Text ;
+  ACBrRFD1.SH_Linha1 := edSH_Linha1.Text;
 end;
 
 procedure TFrmACBrMonitor.edSH_Linha2Change(Sender: TObject);
 begin
-  ACBrRFD1.SH_Linha2 := edSH_Linha2.Text ;
+  ACBrRFD1.SH_Linha2 := edSH_Linha2.Text;
 end;
 
 {------------------------------ Aba Arquivos  --------------------------------}
 procedure TFrmACBrMonitor.tsRFDINIShow(Sender: TObject);
 begin
   if fsRFDIni = '' then
-     mRFDINI.Clear ;
+    mRFDINI.Clear;
 end;
 
 procedure TFrmACBrMonitor.bRFDINILerClick(Sender: TObject);
 begin
   if fsRFDLeuParams then   { Pode ter modificações pendentes da Aba Usuário }
-     ACBrRFD1.GravarINI ;
-     
+    ACBrRFD1.GravarINI;
+
   mRFDINI.Lines.LoadFromFile(ACBrRFD1.ArqINI);
-  fsRFDIni := 'acbrrfd' ;
+  fsRFDIni := 'acbrrfd';
 end;
 
 procedure TFrmACBrMonitor.bRFDIDClick(Sender: TObject);
 begin
   mRFDINI.Lines.LoadFromFile(ACBrRFD1.ArqRFDID);
-  fsRFDIni := 'rfdid' ;
+  fsRFDIni := 'rfdid';
 end;
 
 procedure TFrmACBrMonitor.bRFDINISalvarClick(Sender: TObject);
 begin
   if fsRFDIni = '' then
-     exit ;
+    exit;
 
   if fsRFDIni = 'acbrrfd' then
-   begin
-     try
-        mRFDINI.Lines.SaveToFile(ACBrRFD1.ArqINI);
-        ACBrRFD1.Desativar ;        { Desativa e Ativa para re-ler ACBrRFD.ini }
-     finally
-        ACBrRFD1.Ativar ;
-     end ;
-   end
+  begin
+    try
+      mRFDINI.Lines.SaveToFile(ACBrRFD1.ArqINI);
+      ACBrRFD1.Desativar;        { Desativa e Ativa para re-ler ACBrRFD.ini }
+    finally
+      ACBrRFD1.Ativar;
+    end;
+  end
   else
-     mRFDINI.Lines.SaveToFile(ACBrRFD1.ArqRFDID);
+    mRFDINI.Lines.SaveToFile(ACBrRFD1.ArqRFDID);
 end;
 
 
@@ -2761,63 +2998,64 @@ end;
 procedure TFrmACBrMonitor.cbCHQModeloChange(Sender: TObject);
 begin
   try
-     ACBrCHQ1.Desativar ;
-     ACBrCHQ1.Modelo := TACBrCHQModelo( cbCHQModelo.ItemIndex ) ;
+    ACBrCHQ1.Desativar;
+    ACBrCHQ1.Modelo := TACBrCHQModelo(cbCHQModelo.ItemIndex);
 
-     if ACBrCHQ1.Modelo = chqImpressoraECF then
-        ACBrCHQ1.ECF       := ACBrECF1 ;
+    if ACBrCHQ1.Modelo = chqImpressoraECF then
+      ACBrCHQ1.ECF := ACBrECF1;
   finally
-     cbCHQModelo.ItemIndex := Integer( ACBrCHQ1.Modelo ) ;
-     cbCHQPorta.Text       := ACBrCHQ1.Porta ;
-  end ;
+    cbCHQModelo.ItemIndex := integer(ACBrCHQ1.Modelo);
+    cbCHQPorta.Text := ACBrCHQ1.Porta;
+  end;
 
-  bCHQTestar.Enabled     := (ACBrCHQ1.Modelo <> chqNenhuma) ;
-  cbCHQPorta.Enabled     := bCHQTestar.Enabled and (ACBrCHQ1.Modelo <> chqImpressoraECF) ;
-  chCHQVerForm.Enabled   := bCHQTestar.Enabled ;
-  gbCHQDados.Enabled     := bCHQTestar.Enabled ;
-  edCHQBemafiINI.Enabled := bCHQTestar.Enabled ;
-  sbCHQBemafiINI.Enabled := bCHQTestar.Enabled ;
-end ;
+  bCHQTestar.Enabled := (ACBrCHQ1.Modelo <> chqNenhuma);
+  cbCHQPorta.Enabled := bCHQTestar.Enabled and
+    (ACBrCHQ1.Modelo <> chqImpressoraECF);
+  chCHQVerForm.Enabled := bCHQTestar.Enabled;
+  gbCHQDados.Enabled := bCHQTestar.Enabled;
+  edCHQBemafiINI.Enabled := bCHQTestar.Enabled;
+  sbCHQBemafiINI.Enabled := bCHQTestar.Enabled;
+end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.cbGAVModeloChange(Sender: TObject);
 begin
   try
-     ACBrGAV1.Desativar ;
-     ACBrGAV1.Modelo := TACBrGAVModelo( cbGAVModelo.ItemIndex ) ;
+    ACBrGAV1.Desativar;
+    ACBrGAV1.Modelo := TACBrGAVModelo(cbGAVModelo.ItemIndex);
 
-     if ACBrGAV1.Modelo = gavImpressoraECF then
-        ACBrGAV1.ECF := ACBrECF1 ;
+    if ACBrGAV1.Modelo = gavImpressoraECF then
+      ACBrGAV1.ECF := ACBrECF1;
   finally
-     cbGAVModelo.ItemIndex := Integer( ACBrGAV1.Modelo ) ;
-     cbGAVPorta.Text       := ACBrGAV1.Porta ;
-     sedGAVIntervaloAbertura.Value := ACBrGAV1.AberturaIntervalo ;
-  end ;
+    cbGAVModelo.ItemIndex := integer(ACBrGAV1.Modelo);
+    cbGAVPorta.Text := ACBrGAV1.Porta;
+    sedGAVIntervaloAbertura.Value := ACBrGAV1.AberturaIntervalo;
+  end;
 
-  AvaliaEstadoTsGAV ;
+  AvaliaEstadoTsGAV;
 end;
 
 procedure TFrmACBrMonitor.AvaliaEstadoTsGAV;
 begin
-  bGAVAtivar.Enabled   := (ACBrGAV1.Modelo <> gavNenhuma) ;
-  bGAVEstado.Enabled   := ACBrGAV1.Ativo ;
-  bGAVAbrir.Enabled    := bGAVEstado.Enabled ;
-  cbGAVPorta.Enabled   := not (ACBrGAV1.Modelo in [gavImpressoraECF, gavNenhuma] ) ;
-  cbGAVStrAbre.Enabled := (ACBrGAV1.Modelo = gavImpressoraComum) ;
-  sedGAVIntervaloAbertura.Enabled     := bGAVAtivar.Enabled ;
-  cbGAVAcaoAberturaAntecipada.Enabled := bGAVAtivar.Enabled ;
+  bGAVAtivar.Enabled := (ACBrGAV1.Modelo <> gavNenhuma);
+  bGAVEstado.Enabled := ACBrGAV1.Ativo;
+  bGAVAbrir.Enabled := bGAVEstado.Enabled;
+  cbGAVPorta.Enabled := not (ACBrGAV1.Modelo in [gavImpressoraECF, gavNenhuma]);
+  cbGAVStrAbre.Enabled := (ACBrGAV1.Modelo = gavImpressoraComum);
+  sedGAVIntervaloAbertura.Enabled := bGAVAtivar.Enabled;
+  cbGAVAcaoAberturaAntecipada.Enabled := bGAVAtivar.Enabled;
 
-  bGAVAtivar.Glyph := nil ;
+  bGAVAtivar.Glyph := nil;
   if ACBrGAV1.Ativo then
-   begin
-     bGAVAtivar.Caption := '&Desativar' ;
-     ImageList1.GetBitmap(6,bGAVAtivar.Glyph);
-   end
+  begin
+    bGAVAtivar.Caption := '&Desativar';
+    ImageList1.GetBitmap(6, bGAVAtivar.Glyph);
+  end
   else
-   begin
-     bGAVAtivar.Caption := '&Ativar' ;
-     ImageList1.GetBitmap(5,bGAVAtivar.Glyph);
-   end ;
+  begin
+    bGAVAtivar.Caption := '&Ativar';
+    ImageList1.GetBitmap(5, bGAVAtivar.Glyph);
+  end;
 end;
 
 
@@ -2825,111 +3063,111 @@ end;
 procedure TFrmACBrMonitor.cbDISModeloChange(Sender: TObject);
 begin
   try
-     ACBrDIS1.Desativar ;
-     ACBrDIS1.Modelo := TACBrDISModelo( cbDISModelo.ItemIndex ) ;
+    ACBrDIS1.Desativar;
+    ACBrDIS1.Modelo := TACBrDISModelo(cbDISModelo.ItemIndex);
   finally
-     cbDISModelo.ItemIndex := Integer( ACBrDIS1.Modelo ) ;
-     cbDISPorta.Text       := ACBrDIS1.Porta ;
-  end ;
+    cbDISModelo.ItemIndex := integer(ACBrDIS1.Modelo);
+    cbDISPorta.Text := ACBrDIS1.Porta;
+  end;
 
-  bDISTestar.Enabled     := (ACBrDIS1.Modelo <> disNenhum) ;
-  bDISLimpar.Enabled     := bDISTestar.Enabled ;
-  bDISAnimar.Enabled     := bDISTestar.Enabled ;
-  seDISPassos.Enabled    := bDISTestar.Enabled ;
-  seDISIntervalo.Enabled := bDISTestar.Enabled ;
-  cbDISPorta.Enabled     := bDISTestar.Enabled and
-                 (not (ACBrDIS1.Modelo in [disGertecTeclado, disKeytecTeclado])) ;
-  seDISIntByte.Enabled   := bDISTestar.Enabled and (not cbDISPorta.Enabled) ;
+  bDISTestar.Enabled := (ACBrDIS1.Modelo <> disNenhum);
+  bDISLimpar.Enabled := bDISTestar.Enabled;
+  bDISAnimar.Enabled := bDISTestar.Enabled;
+  seDISPassos.Enabled := bDISTestar.Enabled;
+  seDISIntervalo.Enabled := bDISTestar.Enabled;
+  cbDISPorta.Enabled := bDISTestar.Enabled and
+    (not (ACBrDIS1.Modelo in [disGertecTeclado, disKeytecTeclado]));
+  seDISIntByte.Enabled := bDISTestar.Enabled and (not cbDISPorta.Enabled);
 end;
 
 {------------------------------------------------------------------------------}
-procedure TFrmACBrMonitor.FormShortCut(Key: Integer; Shift: TShiftState;
-  var Handled: Boolean);
+procedure TFrmACBrMonitor.FormShortCut(Key: integer; Shift: TShiftState;
+  var Handled: boolean);
 begin
   if (Key = VK_HELP) or (Key = VK_F1) then
-     pBotoesClick(self) ;
+    pBotoesClick(self);
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.pBotoesClick(Sender: TObject);
 begin
-  frmSobre := TfrmSobre.Create( self );
+  frmSobre := TfrmSobre.Create(self);
   try
-     frmSobre.lVersao.Caption := 'Ver: '+Versao ;
-     frmSobre.ShowModal ;
+    frmSobre.lVersao.Caption := 'Ver: ' + Versao;
+    frmSobre.ShowModal;
   finally
-     FreeAndNil(frmSobre) ;
-  end ;
+    FreeAndNil(frmSobre);
+  end;
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.bExecECFTesteClick(Sender: TObject);
-Var Arquivo : String ;
-    OldAtivo: Boolean ;
+var
+  Arquivo: string;
+  OldAtivo: boolean;
 begin
-  OldAtivo := ACBrECF1.Ativo ;
+  OldAtivo := ACBrECF1.Ativo;
   try
-     ACBrECF1.Desativar ;
+    ACBrECF1.Desativar;
     {$IFDEF LINUX}
-       Arquivo := 'QECFTeste' ;
+    Arquivo := 'QECFTeste';
     {$ELSE}
-       Arquivo := 'QECFTeste.exe' ;
+    Arquivo := 'QECFTeste.exe';
     {$ENDIF}
 
-    Arquivo := ExtractFilePath( Application.ExeName ) + Arquivo ;
+    Arquivo := ExtractFilePath(Application.ExeName) + Arquivo;
 
-    if not FileExists( Arquivo ) then
-       MessageDlg('Programa: "'+Arquivo+ '" não encontrado.',mtError,[mbOk],0)
+    if not FileExists(Arquivo) then
+      MessageDlg('Programa: "' + Arquivo + '" não encontrado.', mtError, [mbOK], 0)
     else
-       RunCommand(Arquivo,'',true) ;
+      RunCommand(Arquivo, '', True);
   finally
-     ACBrECF1.Ativo := OldAtivo ;
-  end ;
+    ACBrECF1.Ativo := OldAtivo;
+  end;
 
-  AvaliaEstadoTsECF ;
+  AvaliaEstadoTsECF;
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.sbCHQBemafiINIClick(Sender: TObject);
 begin
-  OpenDialog1.Filter   := 'Arquivos ini|*.ini|Arquivos INI|*.INI' ;
-  OpenDialog1.FileName := edCHQBemafiINI.Text ;
+  OpenDialog1.Filter := 'Arquivos ini|*.ini|Arquivos INI|*.INI';
+  OpenDialog1.FileName := edCHQBemafiINI.Text;
 
   if OpenDialog1.Execute then
   begin
-     edCHQBemafiINI.Text := OpenDialog1.FileName ;
-     ACBrCHQ1.ArquivoBemaFiINI := edCHQBemafiINI.Text ;
-  end ;
+    edCHQBemafiINI.Text := OpenDialog1.FileName;
+    ACBrCHQ1.ArquivoBemaFiINI := edCHQBemafiINI.Text;
+  end;
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.edCHQBemafiINIExit(Sender: TObject);
 begin
-  ACBrCHQ1.ArquivoBemaFiINI := edCHQBemafiINI.Text ;
+  ACBrCHQ1.ArquivoBemaFiINI := edCHQBemafiINI.Text;
 end;
 
 {------------------------------------------------------------------------------}
-procedure TFrmACBrMonitor.ACBrECF1AguardandoRespostaChange(
-  Sender: TObject);
+procedure TFrmACBrMonitor.ACBrECF1AguardandoRespostaChange(Sender: TObject);
 begin
   { ECF sendo usado junto LCB, deve desabilitar o LCB enquando o ECF estiver
     ocupado imprimindo, para evitar de enviar códigos na hora indevida, como
     por exemplo, quando o EDIT / GET do Campos código não está com o FOCO }
   if ACBrLCB1.Ativo then
-     if ACBrECF1.AguardandoResposta then
-        ACBrLCB1.Intervalo := 0
-     else
-        ACBrLCB1.Intervalo := sedLCBIntervalo.Value ;
+    if ACBrECF1.AguardandoResposta then
+      ACBrLCB1.Intervalo := 0
+    else
+      ACBrLCB1.Intervalo := sedLCBIntervalo.Value;
 end;
 
 {------------------------------------------------------------------------------}
-procedure TFrmACBrMonitor.SetDisWorking(const Value: Boolean);
+procedure TFrmACBrMonitor.SetDisWorking(const Value: boolean);
 begin
   if ACBrLCB1.Ativo then
-     if Value then
-        ACBrLCB1.Intervalo := 0
-     else
-        ACBrLCB1.Intervalo := sedLCBIntervalo.Value ;
+    if Value then
+      ACBrLCB1.Intervalo := 0
+    else
+      ACBrLCB1.Intervalo := sedLCBIntervalo.Value;
 
   fsDisWorking := Value;
 end;
@@ -2938,81 +3176,83 @@ end;
 procedure TFrmACBrMonitor.cbBALModeloChange(Sender: TObject);
 begin
   try
-     ACBrBAL1.Desativar ;
-     if cbBALModelo.ItemIndex >= 0 then
-       ACBrBAL1.Modelo := TACBrBALModelo( cbBALModelo.ItemIndex )
-     else
-     ACBrBAL1.Modelo := balNenhum;
+    ACBrBAL1.Desativar;
+    if cbBALModelo.ItemIndex >= 0 then
+      ACBrBAL1.Modelo := TACBrBALModelo(cbBALModelo.ItemIndex)
+    else
+      ACBrBAL1.Modelo := balNenhum;
   finally
-     cbBALModelo.ItemIndex := Integer( ACBrBAL1.Modelo ) ;
-     cbBALPorta.Text       := ACBrBAL1.Porta ;
-  end ;
+    cbBALModelo.ItemIndex := integer(ACBrBAL1.Modelo);
+    cbBALPorta.Text := ACBrBAL1.Porta;
+  end;
 
-  AvaliaEstadoTsBAL ;
+  AvaliaEstadoTsBAL;
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.AvaliaEstadoTsBAL;
 begin
-  bBALAtivar.Enabled   := (ACBrBAL1.Modelo <> balNenhum) ;
-  bBALTestar.Enabled   := ACBrBAL1.Ativo ;
-  cbBALPorta.Enabled   := bBALAtivar.Enabled ;
-  sedBALIntervalo.Enabled    := bBALAtivar.Enabled ;
+  bBALAtivar.Enabled := (ACBrBAL1.Modelo <> balNenhum);
+  bBALTestar.Enabled := ACBrBAL1.Ativo;
+  cbBALPorta.Enabled := bBALAtivar.Enabled;
+  sedBALIntervalo.Enabled := bBALAtivar.Enabled;
 
-  bBALAtivar.Glyph := nil ;
+  bBALAtivar.Glyph := nil;
   if ACBrBAL1.Ativo then
-   begin
-     bBALAtivar.Caption := '&Desativar' ;
-     ImageList1.GetBitmap(6,bBALAtivar.Glyph);
-   end
+  begin
+    bBALAtivar.Caption := '&Desativar';
+    ImageList1.GetBitmap(6, bBALAtivar.Glyph);
+  end
   else
-   begin
-     bBALAtivar.Caption := '&Ativar' ;
-     ImageList1.GetBitmap(5,bBALAtivar.Glyph);
-   end ;
+  begin
+    bBALAtivar.Caption := '&Ativar';
+    ImageList1.GetBitmap(5, bBALAtivar.Glyph);
+  end;
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.cbBALPortaChange(Sender: TObject);
 begin
   try
-     if ACBrBAL1.Ativo then
-        bBALAtivar.Click ;
+    if ACBrBAL1.Ativo then
+      bBALAtivar.Click;
 
-    ACBrBAL1.Porta := cbBALPorta.Text ;
+    ACBrBAL1.Porta := cbBALPorta.Text;
   finally
-     cbBALPorta.Text := ACBrBAL1.Porta ;
-  end ;
+    cbBALPorta.Text := ACBrBAL1.Porta;
+  end;
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.sedBALIntervaloChanged(Sender: TObject);
 begin
-  ACBrBal1.Intervalo := sedIntervalo.Value ;
+  ACBrBal1.Intervalo := sedIntervalo.Value;
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.bBALAtivarClick(Sender: TObject);
 begin
-  if bBALAtivar.Caption = '&Ativar' then begin
-     ACBrBAL1.Ativar ;
+  if bBALAtivar.Caption = '&Ativar' then
+  begin
+    ACBrBAL1.Ativar;
 
-     ACBrBAL1.LePeso ;
-     if ACBrBAL1.UltimaResposta = '' then begin
-        ACBrBAL1.Desativar ;
-        mResp.Lines.Add('BAL -> Balança não responde!');
-     end;
+    ACBrBAL1.LePeso;
+    if ACBrBAL1.UltimaResposta = '' then
+    begin
+      ACBrBAL1.Desativar;
+      mResp.Lines.Add('BAL -> Balança não responde!');
+    end;
   end
   else
-     ACBrBAL1.Desativar ;
+    ACBrBAL1.Desativar;
 
-  AvaliaEstadoTsBAL ;
+  AvaliaEstadoTsBAL;
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.bBALTestarClick(Sender: TObject);
 begin
-  ACBrBAL1.LePeso ;
+  ACBrBAL1.LePeso;
   if ACBrBAL1.UltimaResposta <> '' then
     mResp.Lines.Add(Format('BAL -> Peso Lido: %f', [ACBrBAL1.UltimoPesoLido]))
   else
@@ -3022,119 +3262,121 @@ end;
 procedure TFrmACBrMonitor.cbETQModeloChange(Sender: TObject);
 begin
   try
-     ACBrETQ1.Desativar ;
-     if cbETQModelo.ItemIndex >= 0 then
-       ACBrETQ1.Modelo := TACBrETQModelo( cbETQModelo.ItemIndex )
-     else
-     ACBrETQ1.Modelo := etqNenhum;
+    ACBrETQ1.Desativar;
+    if cbETQModelo.ItemIndex >= 0 then
+      ACBrETQ1.Modelo := TACBrETQModelo(cbETQModelo.ItemIndex)
+    else
+      ACBrETQ1.Modelo := etqNenhum;
   finally
-     cbETQModelo.ItemIndex := Integer( ACBrETQ1.Modelo ) ;
-     cbETQPorta.Text       := ACBrETQ1.Porta ;
-  end ;
+    cbETQModelo.ItemIndex := integer(ACBrETQ1.Modelo);
+    cbETQPorta.Text := ACBrETQ1.Porta;
+  end;
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.cbETQPortaChange(Sender: TObject);
 begin
   try
-    ACBrETQ1.Porta := cbETQPorta.Text ;
+    ACBrETQ1.Porta := cbETQPorta.Text;
   finally
-     cbETQPorta.Text := ACBrETQ1.Porta ;
-  end ;
+    cbETQPorta.Text := ACBrETQ1.Porta;
+  end;
 end;
 
 
 {-------------------------- Terminal de Consulta ------------------------------}
 procedure TFrmACBrMonitor.tsTCShow(Sender: TObject);
 begin
-  AvaliaEstadoTsTC ;
+  AvaliaEstadoTsTC;
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.cbxTCModeloChange(Sender: TObject);
 begin
-  TCPServerTC.Ativo  := False ;
-  TimerTC.Enabled    := False ;
-  AvaliaEstadoTsTC ;
+  TCPServerTC.Ativo := False;
+  TimerTC.Enabled := False;
+  AvaliaEstadoTsTC;
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.bTCAtivarClick(Sender: TObject);
 begin
-  TCPServerTC.Port := edTCPort.Text ;
+  TCPServerTC.Port := edTCPort.Text;
 
   if not FileExists(edTCArqPrecos.Text) then
-     raise Exception.Create('Arquivo de Preços não encontrado em: ['+edTCArqPrecos.Text+']');
-     
-  TCPServerTC.Ativo := (bTCAtivar.Caption = '&Ativar') ;
-  TimerTC.Enabled   := TCPServerTC.Ativo ;
+    raise Exception.Create('Arquivo de Preços não encontrado em: [' +
+      edTCArqPrecos.Text + ']');
 
-  AvaliaEstadoTsTC ;
+  TCPServerTC.Ativo := (bTCAtivar.Caption = '&Ativar');
+  TimerTC.Enabled := TCPServerTC.Ativo;
 
-  mResp.Lines.Add( 'Servidor de Terminal de Consulta: '+
-          IfThen( TCPServerTC.Ativo, 'ATIVADO', 'DESATIVADO' ) );
+  AvaliaEstadoTsTC;
+
+ { mResp.Lines.Add( 'Servidor de Terminal de Consulta: '+
+          IfThen( TCPServerTC.Ativo, 'ATIVADO', 'DESATIVADO' ) );}
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.sbTCArqPrecosEditClick(Sender: TObject);
 begin
-  OpenURL( edTCArqPrecos.Text );
+  OpenURL(edTCArqPrecos.Text);
 end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.AvaliaEstadoTsTC;
 begin
-  edTCPort.Enabled         := (cbxTCModelo.ItemIndex > 0) ;
-  edTCArqPrecos.Enabled    := edTCPort.Enabled ;
-  sbTCArqPrecosEdit.Enabled:= edTCPort.Enabled ;
-  sbTCArqPrecosFind.Enabled:= edTCPort.Enabled ;
+  edTCPort.Enabled := (cbxTCModelo.ItemIndex > 0);
+  edTCArqPrecos.Enabled := edTCPort.Enabled;
+  sbTCArqPrecosEdit.Enabled := edTCPort.Enabled;
+  sbTCArqPrecosFind.Enabled := edTCPort.Enabled;
 
-  bTCAtivar.Enabled := edTCPort.Enabled and (StrToIntDef(edTCPort.Text,0) > 0) ;
+  bTCAtivar.Enabled := edTCPort.Enabled and (StrToIntDef(edTCPort.Text, 0) > 0);
 
-  bTCAtivar.Glyph := nil ;
+  bTCAtivar.Glyph := nil;
   if TCPServerTC.Ativo then
-   begin
-     bTCAtivar.Caption := '&Desativar' ;
-     shpTC.Color       := clLime ;
-     ImageList1.GetBitmap(6,bTCAtivar.Glyph);
-   end
+  begin
+    bTCAtivar.Caption := '&Desativar';
+    shpTC.Color := clLime;
+    ImageList1.GetBitmap(6, bTCAtivar.Glyph);
+  end
   else
-   begin
-     bTCAtivar.Caption := '&Ativar' ;
-     shpTC.Color       := clRed ;
-     ImageList1.GetBitmap(5,bTCAtivar.Glyph);
-     mTCConexoes.Lines.Clear ;
-   end ;
+  begin
+    bTCAtivar.Caption := '&Ativar';
+    shpTC.Color := clRed;
+    ImageList1.GetBitmap(5, bTCAtivar.Glyph);
+    mTCConexoes.Lines.Clear;
+  end;
 end;
 
 
 {------------------------------------------------------------------------------}
-procedure TFrmACBrMonitor.AddLinesLog ;
+procedure TFrmACBrMonitor.AddLinesLog;
 begin
   if fsLinesLog <> '' then
   begin
-     mResp.Lines.Add( fsLinesLog );
-     if cbLog.Checked then
-        WriteToTXT(ArqLogTXT, fsLinesLog );
-     fsLinesLog := '' ;
-  end ;
-end ;
+    mResp.Lines.Add(fsLinesLog);
+    if cbLog.Checked then
+      WriteToTXT(ArqLogTXT, fsLinesLog);
+    fsLinesLog := '';
+  end;
+end;
 
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.TimerTCTimer(Sender: TObject);
- Var I : Integer ;
-// TODO:     AConnection : TIdTCPServerConnection ;
-     Resp : AnsiString ;
-     ATime : TDateTime ;
+var
+  I: integer;
+  // TODO:     AConnection : TIdTCPServerConnection ;
+  Resp: ansistring;
+  ATime: TDateTime;
 begin
   // Verificando se o arquivo de Preços foi atualizado //
   if FileAge(edTCArqPrecos.Text) > fsDTPrecos then
   begin
-     fsSLPrecos.Clear ;
-     fsSLPrecos.LoadFromFile(edTCArqPrecos.Text);
-     fsDTPrecos := FileAge(edTCArqPrecos.Text) ;
-  end ;
+    fsSLPrecos.Clear;
+    fsSLPrecos.LoadFromFile(edTCArqPrecos.Text);
+    fsDTPrecos := FileAge(edTCArqPrecos.Text);
+  end;
 
 
 (*  TODO:
@@ -3185,13 +3427,13 @@ end;
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.sbTCArqPrecosFindClick(Sender: TObject);
 begin
-  OpenDialog1.Filter   := 'Arquivos txt|*.txt|Arquivos TXT|*.TXT' ;
+  OpenDialog1.Filter := 'Arquivos txt|*.txt|Arquivos TXT|*.TXT';
 
   if OpenDialog1.Execute then
   begin
-     edTCArqPrecos.Text := OpenDialog1.FileName ;
-     fsDTPrecos         := 0 ; // Força re-leitura
-  end ;
+    edTCArqPrecos.Text := OpenDialog1.FileName;
+    fsDTPrecos := 0; // Força re-leitura
+  end;
 end;
 
 (*
@@ -3278,39 +3520,34 @@ begin
   frConfiguraSerial := TfrConfiguraSerial.Create(self);
 
   try
-     if ACBrCHQ1.Ativo then
-        ACBrCHQ1.Desativar ;
+    if ACBrCHQ1.Ativo then
+      ACBrCHQ1.Desativar;
 
-    frConfiguraSerial.Device.Porta        := ACBrCHQ1.Device.Porta ;
-    frConfiguraSerial.cmbPortaSerial.Text := cbCHQPorta.Text ;
-    frConfiguraSerial.Device.ParamsString := ACBrCHQ1.Device.ParamsString ;
+    frConfiguraSerial.Device.Porta := ACBrCHQ1.Device.Porta;
+    frConfiguraSerial.cmbPortaSerial.Text := cbCHQPorta.Text;
+    frConfiguraSerial.Device.ParamsString := ACBrCHQ1.Device.ParamsString;
 
     if frConfiguraSerial.ShowModal = mrOk then
     begin
-       cbCHQPorta.Text              := frConfiguraSerial.Device.Porta ;
-       ACBrCHQ1.Device.ParamsString := frConfiguraSerial.Device.ParamsString ;
-    end ;
+      cbCHQPorta.Text := frConfiguraSerial.Device.Porta;
+      ACBrCHQ1.Device.ParamsString := frConfiguraSerial.Device.ParamsString;
+    end;
   finally
-     FreeAndNil( frConfiguraSerial ) ;
-  end ;
+    FreeAndNil(frConfiguraSerial);
+  end;
 
 end;
 
 end.
-
-
-
-    procedure TCPServerTCDisconnect(AThread: TIdPeerThread);
-    procedure TCPServerTCExecute(AThread: TIdPeerThread);
-    procedure TCPServerTCConnect(AThread: TIdPeerThread);
-
-
-    procedure TFrmACBrMonitor.TCPServerTCConnect(AThread: TIdPeerThread);
-     Var IP, Resp, Id : AnsiString ;
-         Indice : Integer ;
-    begin
-      AThread.Connection.Write('#ok') ;
-      Id := trim(AThread.Connection.ReadLn(#0,1000)) ;
+procedure TCPServerTCDisconnect(AThread: TIdPeerThread);
+procedure TCPServerTCExecute(AThread: TIdPeerThread);
+procedure TCPServerTCConnect(AThread: TIdPeerThread);
+procedure TFrmACBrMonitor.TCPServerTCConnect(AThread: TIdPeerThread);
+var IP, Resp, Id: ansistring;
+Indice: integer;
+begin
+AThread.Connection.write('#ok');
+Id := trim(AThread.Connection.ReadLn(#0, 1000));
     {
       AThread.Connection.Write('#alwayslive');
       Resp := trim(AThread.Connection.ReadLn(#0,1000)) ;
@@ -3320,84 +3557,69 @@ end.
          AThread.Synchronize( AddLinesLog );
          AThread.Connection.Disconnect ;
       end ;
-    }
-
-      IP := AThread.Connection.Socket.Binding.PeerIP ;
-
-      Indice := mTCConexoes.Lines.IndexOf( IP ) ;
-      if Indice < 0 then
-      begin
-         mTCConexoes.Lines.Add( IP ) ;
-         fsLinesLog := 'T.C. Inicio Conexão IP: ['+ IP + '] ID: ['+Id+']'+
-                       ' em: '+FormatDateTime('dd/mm/yy hh:nn:ss', now ) ;
-         AThread.Synchronize( AddLinesLog );
-      end ;
-    end;
-
-    {------------------------------------------------------------------------------}
-    procedure TFrmACBrMonitor.TCPServerTCDisconnect(AThread: TIdPeerThread);
-     Var IP : String ;
-         Indice : Integer ;
-    begin
-      IP  := AThread.Connection.Socket.Binding.PeerIP ;
-      fsLinesLog := 'T.C. Fim Conexão IP: ['+ IP + '] em: '+
-                    FormatDateTime('dd/mm/yy hh:nn:ss', now ) ;
-      AThread.Synchronize( AddLinesLog );
-
-      Indice := mTCConexoes.Lines.IndexOf( IP ) ;
-      if Indice >= 0 then
-         mTCConexoes.Lines.Delete( Indice );
-    end;
-
-    {------------------------------------------------------------------------------}
-    procedure TFrmACBrMonitor.TCPServerTCExecute(AThread: TIdPeerThread);
-     Var Comando, Resposta, Linha : AnsiString ;
-         Indice, P1, P2 : Integer ;
-    begin
-      { Le o que foi enviado atravez da conexao TCP }
-      Comando := Trim(AThread.Connection.ReadLn(#0)) ;
-      Comando := StringReplace(Comando,#0,'',[rfReplaceAll]) ;  // Remove nulos
-
-      if pos( '#live', Comando ) > 0 then
-      begin
-         Comando := StringReplace(Comando,'#live','',[rfReplaceAll]) ; // Remove #live
-         AThread.Connection.Tag := 0 ;                      // Zera falhas de #live?
-      end ;
-
-      if Comando = '' then
-         exit ;
-
-      fsLinesLog := 'TC: ['+AThread.Connection.Socket.Binding.PeerIP+
-                    '] RX: <- ['+Comando+']' ;
-      AThread.Synchronize( AddLinesLog );
-
-      if copy(Comando,1,1) = '#' then
-      begin
-         Comando  := copy( Comando, 2, Length(Comando)) ;
-         P1       := 0 ;
-         P2       := 0 ;
-         Indice   := fsSLPrecos.IndexOfName( Comando ) ;
-         if Indice > 0 then
-          begin
-            Linha := fsSLPrecos[ Indice ] ;
-            P1    := Pos('|',Linha) ;
-            P2    := PosAt('|',Linha,3) ;
-          end
-         else
-            Linha := edTCNaoEncontrado.Text ;
-
-         if P2 = 0 then
-            P2 := Length( Linha )+1 ;
-
-         Resposta := '#' + copy( Linha, P1+1, P2-P1-1 ) ;
-         Resposta := LeftStr(Resposta,45) ;
-
-         AThread.Connection.Write( Resposta ) ;
-         AThread.Connection.Tag := 0 ;  // Zera falhas de #live?
-         fsLinesLog := '     TX: -> ['+Resposta+']' ;
-         AThread.Synchronize( AddLinesLog );
-      end ;
-    end;
-
-
+    }      IP := AThread.Connection.Socket.Binding.PeerIP;
+Indice := mTCConexoes.Lines.IndexOf(IP);
+if Indice < 0 then
+begin
+mTCConexoes.Lines.Add(IP);
+fsLinesLog := 'T.C. Inicio Conexão IP: [' + IP + '] ID: [' +Id +']' +
+' em: ' +FormatDateTime('dd/mm/yy hh:nn:ss', now);
+AThread.Synchronize(AddLinesLog);
+end;
+end;
+{------------------------------------------------------------------------------}
+procedure TFrmACBrMonitor.TCPServerTCDisconnect(AThread: TIdPeerThread);
+var IP: string;
+Indice: integer;
+begin
+IP := AThread.Connection.Socket.Binding.PeerIP;
+fsLinesLog := 'T.C. Fim Conexão IP: [' + IP + '] em: ' +
+FormatDateTime('dd/mm/yy hh:nn:ss', now);
+AThread.Synchronize(AddLinesLog);
+Indice := mTCConexoes.Lines.IndexOf(IP);
+if Indice >= 0 then
+mTCConexoes.Lines.Delete(Indice);
+end;
+{------------------------------------------------------------------------------}
+procedure TFrmACBrMonitor.TCPServerTCExecute(AThread: TIdPeerThread);
+var Comando, Resposta, Linha: ansistring;
+Indice, P1, P2: integer;
+begin
+{ Le o que foi enviado atravez da conexao TCP }      Comando :=
+Trim(AThread.Connection.ReadLn(#0));
+Comando := StringReplace(Comando, #0, '', [rfReplaceAll]);
+// Remove nulos  if pos('#live', Comando) > 0 then
+begin
+Comando := StringReplace(Comando, '#live', '', [rfReplaceAll]);
+// Remove #live  AThread.Connection.Tag := 0;
+// Zera falhas de #live?  end;
+if Comando = '' then
+exit;
+fsLinesLog := 'TC: [' +AThread.Connection.Socket.Binding.PeerIP +
+'] RX: <- [' +Comando +']';
+AThread.Synchronize(AddLinesLog);
+if copy(Comando, 1, 1) = '#' then
+begin
+Comando := copy(Comando, 2, Length(Comando));
+P1 := 0;
+P2 := 0;
+Indice := fsSLPrecos.IndexOfName(Comando);
+if Indice > 0 then
+begin
+Linha := fsSLPrecos[Indice];
+P1 := Pos('|', Linha);
+P2 := PosAt('|', Linha, 3);
+end
+else
+Linha := edTCNaoEncontrado.Text;
+if P2 = 0 then
+P2 := Length(Linha) +1;
+Resposta := '#' + copy(Linha, P1 +1, P2 -P1 -1);
+Resposta := LeftStr(Resposta, 45);
+AThread.Connection.write(Resposta);
+AThread.Connection.Tag := 0;
+// Zera falhas de #live?  fsLinesLog := '     TX: -> [' +Resposta +']';
+AThread.Synchronize(AddLinesLog);
+end;
+end;
 

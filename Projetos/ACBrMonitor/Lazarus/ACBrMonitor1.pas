@@ -67,8 +67,7 @@ interface
 
 uses
   SysUtils, Classes, Forms,
-  CmdUnit,
-  ACBrECF, ACBrDIS, ACBrGAV, ACBrDevice, ACBrCHQ, ACBrLCB, ACBrRFD, { Unit do ACBr }
+  CmdUnit, ACBrECF, ACBrDIS, ACBrGAV, ACBrDevice, ACBrCHQ, ACBrLCB, ACBrRFD, { Unit do ACBr }
   Dialogs, ExtCtrls, Menus, Buttons, StdCtrls, ComCtrls, Controls, Graphics,
   Spin, MaskEdit, EditBtn, ACBrBAL, ACBrETQ, ACBrSocket, blcksock,
   ACBrValidador, ACBrBoleto, ACBrBoletoFCFortesFr;
@@ -91,52 +90,56 @@ type
     ACBrBoletoFCFortes1: TACBrBoletoFCFortes;
     ACBrECF1: TACBrECF;
     ApplicationProperties1: TApplicationProperties;
-    cbxUF: TComboBox;
-    cbxBanco: TComboBox;
-    cbxEmissao: TComboBox;
-    ckgMostrar: TCheckGroup;
-    cbxLayout: TComboBox;
-    cbxFiltro: TComboBox;
+    cbxBOLUF: TComboBox;
+    cbxBOLBanco: TComboBox;
+    cbxBOLEmissao: TComboBox;
+    ckgBOLMostrar: TCheckGroup;
+    cbxBOLLayout: TComboBox;
+    cbxBOLFiltro: TComboBox;
+    cbxBOLF_J: TComboBox;
     deBOLDirLogo: TDirectoryEdit;
-    edtBOLSofwareHouse: TEdit;
-    edtComplemento: TEdit;
-    edtDigitoConta: TEdit;
-    edtConta: TEdit;
-    edtDigitoAgencia: TEdit;
-    edtAgencia: TEdit;
-    edtBairro: TEdit;
-    edtCEP: TMaskEdit;
-    edtCidade: TEdit;
-    edtCNPJ: TMaskEdit;
-    edtLogradouro: TEdit;
-    edtNumero: TEdit;
-    edtRazaoSocial: TEdit;
+    deBOLDirArquivo: TDirectoryEdit;
+    edtBOLSH: TEdit;
+    edtBOLComplemento: TEdit;
+    edtBOLDigitoConta: TEdit;
+    edtBOLConta: TEdit;
+    edtBOLDigitoAgencia: TEdit;
+    edtBOLAgencia: TEdit;
+    edtBOLBairro: TEdit;
+    edtBOLCEP: TMaskEdit;
+    edtBOLCidade: TEdit;
+    edtBOLCNPJ: TMaskEdit;
+    edtBOLLogradouro: TEdit;
+    edtBOLNumero: TEdit;
+    edtBOLRazaoSocial: TEdit;
     Image1: TImage;
     Label11: TLabel;
     Label68: TLabel;
     Label69: TLabel;
     Label70: TLabel;
-    lblDirLogo: TLabel;
-    lblComplemento: TLabel;
-    lblBanco: TLabel;
+    Label71: TLabel;
+    lblBOLCep: TLabel;
+    lblBOLPessoa: TLabel;
+    lblBOLDirLogo: TLabel;
+    lblBOLComplemento: TLabel;
+    lblBOLBanco: TLabel;
     Label67: TLabel;
-    lblAgencia: TLabel;
-    lblDigAgencia: TLabel;
+    lblBOLAgencia: TLabel;
+    lblBOLDigAgencia: TLabel;
     Label76: TLabel;
-    lblConta: TLabel;
-    lblDigConta: TLabel;
-    lblEmissao: TLabel;
-    lblNomeRazao: TLabel;
-    lblCPFCNPJ: TLabel;
-    lblLogradouro: TLabel;
-    lblNumero: TLabel;
-    lblBairro: TLabel;
-    lblCidade: TLabel;
+    lblBOLConta: TLabel;
+    lblBOLDigConta: TLabel;
+    lblBOLEmissao: TLabel;
+    lblBOLNomeRazao: TLabel;
+    lblBOLCPFCNPJ: TLabel;
+    lblBOLLogradouro: TLabel;
+    lblBOLNumero: TLabel;
+    lblBOLBairro: TLabel;
+    lblBOLCidade: TLabel;
     lblCep: TLabel;
     lLCBCodigoLido: TPanel;
     pgBoleto: TPageControl;
-    rgFJ: TRadioGroup;
-    spCopias: TSpinEdit;
+    spBOLCopias: TSpinEdit;
     StatusBar1: TStatusBar;
     ImageList1: TImageList;
     ACBrCHQ1: TACBrCHQ;
@@ -392,6 +395,10 @@ type
     procedure ApplicationProperties1Exception(Sender: TObject; E: Exception);
     procedure ApplicationProperties1Minimize(Sender: TObject);
     procedure ApplicationProperties1Restore(Sender: TObject);
+    procedure cbxBOLFiltroChange ( Sender: TObject ) ;
+    procedure cbxBOLF_JChange ( Sender: TObject ) ;
+    procedure deBOLDirArquivoExit ( Sender: TObject ) ;
+    procedure deBOLDirLogoExit ( Sender: TObject ) ;
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);{%h-}
     procedure FormCreate(Sender: TObject);
     procedure ACBrECF1MsgAguarde(Mensagem: string);
@@ -402,7 +409,6 @@ type
     procedure bECFTestarClick(Sender: TObject);
     procedure bECFLeituraXClick(Sender: TObject);
     procedure bECFAtivarClick(Sender: TObject);
-    procedure rgFJClick(Sender: TObject);
     procedure TcpServerConecta(const TCPBlockSocket: TTCPBlockSocket;
       var Enviar: ansistring);{%h-}
     procedure TcpServerDesConecta(const TCPBlockSocket: TTCPBlockSocket;
@@ -586,6 +592,7 @@ type
     procedure AvaliaEstadoTsRFD;
     procedure AvaliaEstadoTsBAL;
     procedure AvaliaEstadoTsTC;
+    procedure SalvarConfBoletos;
   end;
 
 var
@@ -596,7 +603,7 @@ implementation
 uses IniFiles, TypInfo, LCLType,
   UtilUnit,
   DoECFUnit, DoGAVUnit, DoCHQUnit, DoDISUnit, DoLCBUnit, DoACBrUnit, DoBALUnit,
-  DoBolUnit,
+  DoBoletoUnit,
   {$IFDEF MSWINDOWS} sndkey32, {$ENDIF}
   {$IFDEF LINUX} unix, baseunix, {$ENDIF}
   ACBrECFNaoFiscal, ACBrUtil, ACBrConsts, Math, Sobre, DateUtils,
@@ -729,7 +736,8 @@ begin
   chRFD.Font.Color := clRed;
 
   pgBoleto.ActivePageIndex := 0;
-  rgFJClick(Self);
+  cbxBOLF_JChange(Self);
+  cbxBOLFiltroChange(Self);
 
   Application.Title := Caption;
 
@@ -779,6 +787,57 @@ end;
 procedure TFrmACBrMonitor.ApplicationProperties1Restore(Sender: TObject);
 begin
   Application.BringToFront;
+end;
+
+procedure TFrmACBrMonitor.cbxBOLFiltroChange ( Sender: TObject ) ;
+begin
+   deBOLDirArquivo.Enabled := cbxBOLFiltro.ItemIndex > 0;
+end;
+
+procedure TFrmACBrMonitor.cbxBOLF_JChange ( Sender: TObject ) ;
+begin
+   if cbxBOLF_J.ItemIndex = 0 then
+    begin
+      lblBOLCPFCNPJ.Caption := 'C.P.F';
+      lblBOLNomeRazao.Caption := 'Nome';
+      edtBOLCNPJ.EditMask := '999.999.999-99;1';
+    end
+   else
+    begin
+      lblBOLCPFCNPJ.Caption := 'C.N.P.J';
+      lblBOLNomeRazao.Caption := 'Razão Social';
+      edtBOLCNPJ.EditMask := '99.999.999/9999-99;1';
+   end;
+end;
+
+procedure TFrmACBrMonitor.deBOLDirArquivoExit ( Sender: TObject ) ;
+begin
+   if trim(deBOLDirArquivo.Text) <> '' then
+   begin
+     if not DirectoryExists(deBOLDirArquivo.Text) then
+     begin
+       deBOLDirArquivo.Clear;
+       raise Exception.Create('Diretorio destino do Arquivo não encontrado.');
+     end;
+
+     if Pos(PathDelim,deBOLDirArquivo.Text) <= 0 then
+        deBOLDirArquivo.Text := deBOLDirArquivo.Text+ PathDelim;
+   end;
+end;
+
+procedure TFrmACBrMonitor.deBOLDirLogoExit ( Sender: TObject ) ;
+begin
+   if trim(deBOLDirLogo.Text) <> '' then
+   begin
+     if not DirectoryExists(deBOLDirLogo.Text) then
+     begin
+       deBOLDirLogo.Clear;
+       raise Exception.Create('Diretorio de Logos não encontrado.');
+     end;
+
+     if Pos(PathDelim,deBOLDirLogo.Text) <= 0 then
+        deBOLDirLogo.Text := deBOLDirLogo.Text+ PathDelim;
+   end;
 end;
 
 {------------------------------------------------------------------------------}
@@ -1142,32 +1201,34 @@ begin
 
 
     {Parametros do Boleto - Cliente}
-    edtRazaoSocial.Text := ini.ReadString('BOL', 'Cedente.Nome', '');
-    edtCNPJ.Text := ini.ReadString('BOL', 'Cedente.CNPJCPF', '');
-    edtLogradouro.Text := ini.ReadString('BOL', 'Cedente.Logradouro', '');
-    edtNumero.Text := ini.ReadString('BOL', 'Cedente.Numero', '');
-    edtBairro.Text := ini.ReadString('BOL', 'Cedente.Bairro', '');
-    edtCidade.Text := ini.ReadString('BOL', 'Cedente.Cidade', '');
-    edtCEP.Text := ini.ReadString('BOL', 'Cedente.CEP', '');
-    edtComplemento.Text := ini.ReadString('BOL', 'Cedente.Complemento', '');
-    cbxUF.Text := ini.ReadString('BOL', 'Cedente.UF', '');
-    cbxEmissao.ItemIndex := ini.ReadInteger('BOL', 'Cedente.RespEmis', -1);
+    edtBOLRazaoSocial.Text  := ini.ReadString('BOLETO', 'Cedente.Nome', '');
+    edtBOLCNPJ.Text         := ini.ReadString('BOLETO', 'Cedente.CNPJCPF', '');
+    edtBOLLogradouro.Text   := ini.ReadString('BOLETO', 'Cedente.Logradouro', '');
+    edtBOLNumero.Text       := ini.ReadString('BOLETO', 'Cedente.Numero', '');
+    edtBOLBairro.Text       := ini.ReadString('BOLETO', 'Cedente.Bairro', '');
+    edtBOLCidade.Text       := ini.ReadString('BOLETO', 'Cedente.Cidade', '');
+    edtBOLCEP.Text          := ini.ReadString('BOLETO', 'Cedente.CEP', '');
+    edtBOLComplemento.Text  := ini.ReadString('BOLETO', 'Cedente.Complemento', '');
+    cbxBOLUF.Text           := ini.ReadString('BOLETO', 'Cedente.UF', '');
+    cbxBOLEmissao.ItemIndex := ini.ReadInteger('BOLETO', 'Cedente.RespEmis', -1);
+    cbxBOLF_J.ItemIndex     := ini.ReadInteger('BOLETO','Cedente.Pessoa',-1);
 
     {Parametros do Boleto - Banco}
-    cbxBanco.Text := IntToStrZero(ini.ReadInteger('BOL', 'Banco', 1), 3);
-    edtConta.Text := ini.ReadString('BOL', 'Conta', '');
-    edtDigitoConta.Text := ini.ReadString('BOL', 'DigitoConta', '');
-    edtAgencia.Text := ini.ReadString('BOL', 'Agencia', '');
-    edtDigitoAgencia.Text := ini.ReadString('BOL', 'DigitoAgencia', '');
+    cbxBOLBanco.Text := IntToStrZero(ini.ReadInteger('BOLETO', 'Banco', 1), 3);
+    edtBOLConta.Text := ini.ReadString('BOLETO', 'Conta', '');
+    edtBOLDigitoConta.Text := ini.ReadString('BOLETO', 'DigitoConta', '');
+    edtBOLAgencia.Text := ini.ReadString('BOLETO', 'Agencia', '');
+    edtBOLDigitoAgencia.Text := ini.ReadString('BOLETO', 'DigitoAgencia', '');
 
     {Parametros do Boleto - Boleto}
-    deBOLDirLogo.Text := ini.ReadString('BOL', 'DirLogos', '');
-    edtBOLSofwareHouse.Text := ini.ReadString('BOL', 'SoftwareHouse', '');
-    spCopias.Value := ini.ReadInteger('BOL', 'Copias', 1);
-    ckgMostrar.Checked[0] := Ini.ReadBool('BOL', 'Preview', True);
-    ckgMostrar.Checked[1] := ini.ReadBool('BOL', 'Setup', True);
-    cbxLayout.ItemIndex := ini.ReadInteger('BOL', 'Layout', 0);
-    cbxFiltro.ItemIndex := ini.ReadInteger('BOL', 'Filtro', 0);
+    deBOLDirLogo.Text        := ini.ReadString('BOLETO', 'DirLogos', '');
+    edtBOLSH.Text            := ini.ReadString('BOLETO', 'SoftwareHouse', '');
+    spBOLCopias.Value        := ini.ReadInteger('BOLETO', 'Copias', 1);
+    ckgBOLMostrar.Checked[0] := Ini.ReadBool('BOLETO', 'Preview', True);
+    ckgBOLMostrar.Checked[1] := ini.ReadBool('BOLETO', 'Setup', True);
+    cbxBOLLayout.ItemIndex   := ini.ReadInteger('BOLETO', 'Layout', 0);
+    cbxBOLFiltro.ItemIndex   := ini.ReadInteger('BOLETO', 'Filtro', 0);
+    deBOLDirArquivo.Text     := ini.ReadString('BOLETO', 'DirArquivoBoleto','');
 
   finally
     Ini.Free;
@@ -1280,56 +1341,62 @@ begin
 
   with ACBrBoleto1 do
   begin
-    Cedente.Nome := edtRazaoSocial.Text;
-    Cedente.CNPJCPF := edtCNPJ.Text;
+    Cedente.Nome := edtBOLRazaoSocial.Text;
+    Cedente.CNPJCPF := edtBOLCNPJ.Text;
 
-    if rgFJ.ItemIndex = 0 then
+    if cbxBOLF_J.ItemIndex = 0 then
       Cedente.TipoInscricao := pFisica
+    else if cbxBOLF_J.ItemIndex = 1 then
+      Cedente.TipoInscricao := pJuridica
     else
-      Cedente.TipoInscricao := pJuridica;
+      Cedente.TipoInscricao := pOutras;
 
-    Cedente.Logradouro := edtLogradouro.Text;
-    Cedente.NumeroRes := edtNumero.Text;
-    Cedente.Bairro := edtBairro.Text;
-    Cedente.Cidade := edtCidade.Text;
-    Cedente.CEP := edtCEP.Text;
-    Cedente.Complemento := edtComplemento.Text;
-    Cedente.UF := cbxUF.Text;
+    Cedente.Logradouro  := edtBOLLogradouro.Text;
+    Cedente.NumeroRes   := edtBOLNumero.Text;
+    Cedente.Bairro      := edtBOLBairro.Text;
+    Cedente.Cidade      := edtBOLCidade.Text;
+    Cedente.CEP         := edtBOLCEP.Text;
+    Cedente.Complemento := edtBOLComplemento.Text;
+    Cedente.UF          := cbxBOLUF.Text;
 
-    Cedente.Agencia := edtAgencia.Text;
-    Cedente.AgenciaDigito := edtDigitoAgencia.Text;
-    Cedente.Conta := edtConta.Text;
-    Cedente.ContaDigito := edtDigitoConta.Text;
+    Cedente.Agencia       := edtBOLAgencia.Text;
+    Cedente.AgenciaDigito := edtBOLDigitoAgencia.Text;
+    Cedente.Conta         := edtBOLConta.Text;
+    Cedente.ContaDigito   := edtBOLDigitoConta.Text;
 
-    case cbxEmissao.ItemIndex of
+    case cbxBOLEmissao.ItemIndex of
       0: Cedente.ResponEmissao := tbCliEmite;
       1: Cedente.ResponEmissao := tbBancoEmite;
       2: Cedente.ResponEmissao := tbBancoReemite;
       3: Cedente.ResponEmissao := tbBancoNaoReemite;
     end;
 
-    Banco.Numero := StrToIntDef(Copy(cbxBanco.Text, 1, 3), 0);
+    Banco.Numero := StrToIntDef(Copy(cbxBOLBanco.Text, 1, 3), 0);
   end;
 
   with ACBrBoletoFCFortes1 do
   begin
-    case cbxFiltro.ItemIndex of
+    case cbxBOLFiltro.ItemIndex of
       0: Filtro := fiNenhum;
       1: Filtro := fiPDF;
       2: Filtro := fiHTML;
     end;
 
-    case cbxLayout.ItemIndex of
+    case cbxBOLLayout.ItemIndex of
       0: LayOut := lPadrao;
       1: LayOut := lCarne;
       2: LayOut := lFatura;
     end;
 
-    NumCopias := spCopias.Value;
-    SoftwareHouse := edtBOLSofwareHouse.Text;
-    DirLogo := deBOLDirLogo.Text;
-    MostrarPreview := ckgMostrar.Checked[0];
-    MostrarSetup := ckgMostrar.Checked[1];
+    NumCopias      := spBOLCopias.Value;
+    SoftwareHouse  := edtBOLSH.Text;
+    DirLogo        := deBOLDirLogo.Text;
+    MostrarPreview := ckgBOLMostrar.Checked[0];
+    MostrarSetup   := ckgBOLMostrar.Checked[1];
+    if Filtro = fiHTML then
+       NomeArquivo := deBOLDirArquivo.Text+'boleto.html'
+    else
+       NomeArquivo := deBOLDirArquivo.Text+'boleto.pdf';
   end;
 
   if cbxTCModelo.ItemIndex > 0 then
@@ -1410,6 +1477,8 @@ var
   OldMonitoraTXT, OldMonitoraTCP: boolean;
   ACBrValidador: TACBrValidador;
   CNPJEMP: string;
+  DirLogoBanco: String;
+  DirArquivoBoleto: String;
 begin
   if cbSenha.Checked and (edSenha.Text <> 'NADAAQUI') and (edSenha.Text <> '') then
     fsHashSenha := StringCrc16(edSenha.Text);
@@ -1423,7 +1492,7 @@ begin
       'para proteger sua Chave Privada');
   end;
 
-  CNPJEMP := StringReplace(edtCNPJ.Text, '-', '', [rfReplaceAll]);
+  CNPJEMP := StringReplace(edtBOLCNPJ.Text, '-', '', [rfReplaceAll]);
   CNPJEMP := StringReplace(CNPJEMP, '/', '', [rfReplaceAll]);
   CNPJEMP := StringReplace(CNPJEMP, '.', '', [rfReplaceAll]);
 
@@ -1434,17 +1503,17 @@ begin
     try
       with ACbrValidador do
       begin
-        if rgFJ.ItemIndex = 0 then
+        if cbxBOLF_J.ItemIndex = 0 then
           TipoDocto := docCPF
         else
           TipoDocto := docCNPJ;
 
         IgnorarChar := './-';
         RaiseExcept := True;
-        Documento := edtCNPJ.Text;
+        Documento := edtBOLCNPJ.Text;
         Validar;    // Dispara Exception se Documento estiver errado
 
-        edtCNPJ.Text := Formatar;
+        edtBOLCNPJ.Text := Formatar;
       end;
     finally
       ACbrValidador.Free;
@@ -1536,37 +1605,11 @@ begin
     Ini.WriteInteger('TC', 'TCP_Porta', StrToIntDef(edTCArqPrecos.Text, 6500));
     Ini.WriteString('TC', 'Arq_Precos', edTCArqPrecos.Text);
     Ini.WriteString('TC', 'Nao_Econtrado', edTCNaoEncontrado.Text);
-
-    {Parametros do Boleto - Cliente}
-    ini.WriteString('BOL', 'Cedente.Nome', edtRazaoSocial.Text);
-    ini.WriteString('BOL', 'Cedente.CNPJCPF', edtCNPJ.Text);
-    ini.WriteString('BOL', 'Cedente.Logradouro', edtLogradouro.Text);
-    ini.WriteString('BOL', 'Cedente.Numero', edtNumero.Text);
-    ini.WriteString('BOL', 'Cedente.Bairro', edtBairro.Text);
-    ini.WriteString('BOL', 'Cedente.Cidade', edtCidade.Text);
-    ini.WriteString('BOL', 'Cedente.CEP', edtCEP.Text);
-    ini.WriteString('BOL', 'Cedente.Complemento', edtComplemento.Text);
-    ini.WriteString('BOL', 'Cedente.UF', cbxUF.Text);
-    ini.WriteInteger('BOL', 'Cedente.RespEmis', cbxEmissao.ItemIndex);
-
-    {Parametros do Boleto - Banco}
-    ini.WriteInteger('BOL', 'Banco', StrToIntDef(Copy(cbxBanco.Text, 1, 3), 0));
-    ini.WriteString('BOL', 'Conta', edtConta.Text);
-    ini.WriteString('BOL', 'DigitoConta', edtDigitoConta.Text);
-    ini.WriteString('BOL', 'Agencia', edtAgencia.Text);
-    ini.WriteString('BOL', 'DigitoAgencia', edtDigitoAgencia.Text);
-
-    {Parametros do Boleto - Boleto}
-    ini.WriteString('BOL', 'DirLogos', deBOLDirLogo.Text);
-    ini.WriteString('BOL', 'SoftwareHouse', edtBOLSofwareHouse.Text);
-    ini.WriteInteger('BOL', 'Copias', spCopias.Value);
-    Ini.WriteBool('BOL', 'Preview', ckgMostrar.Checked[0]);
-    ini.WriteBool('BOL', 'Setup', ckgMostrar.Checked[1]);
-    ini.WriteInteger('BOL', 'Layout', cbxLayout.ItemIndex);
-    ini.WriteInteger('BOL', 'Filtro', cbxFiltro.ItemIndex);
   finally
     Ini.Free;
   end;
+
+  SalvarConfBoletos;
 
   if chRFD.Checked then
   begin
@@ -1584,6 +1627,88 @@ begin
       mtInformation, [mbOK], 0);
     Application.Terminate;
   end;
+end;
+
+procedure TFrmACBrMonitor.SalvarConfBoletos;
+var
+  Ini: TIniFile;
+  CNPJEMP: String;
+  ACBrValidador: TACBrValidador;
+  DirLogoBanco: String;
+  DirArquivoBoleto: String;
+begin
+
+   CNPJEMP := StringReplace(edtBOLCNPJ.Text, '-', '', [rfReplaceAll]);
+   CNPJEMP := StringReplace(CNPJEMP, '/', '', [rfReplaceAll]);
+   CNPJEMP := StringReplace(CNPJEMP, '.', '', [rfReplaceAll]);
+
+   if trim(CNPJEMP) <> '' then
+   begin
+      ACbrValidador := TACBrValidador.Create(Self);
+      try
+       with ACbrValidador do
+       begin
+          if cbxBOLF_J.ItemIndex = 0 then
+             TipoDocto := docCPF
+          else
+             TipoDocto := docCNPJ;
+
+          IgnorarChar := './-';
+          RaiseExcept := True;
+          Documento := edtBOLCNPJ.Text;
+          Validar;    // Dispara Exception se Documento estiver errado
+
+          edtBOLCNPJ.Text := Formatar;
+       end;
+      finally
+         ACbrValidador.Free;
+      end;
+   end;
+
+   Ini := TIniFile.Create(ACBrMonitorINI);
+   try
+     {Parametros do Boleto - Cliente}
+     ini.WriteString('BOLETO', 'Cedente.Nome', edtBOLRazaoSocial.Text);
+     ini.WriteString('BOLETO', 'Cedente.CNPJCPF', edtBOLCNPJ.Text);
+     ini.WriteString('BOLETO', 'Cedente.Logradouro', edtBOLLogradouro.Text);
+     ini.WriteString('BOLETO', 'Cedente.Numero', edtBOLNumero.Text);
+     ini.WriteString('BOLETO', 'Cedente.Bairro', edtBOLBairro.Text);
+     ini.WriteString('BOLETO', 'Cedente.Cidade', edtBOLCidade.Text);
+     ini.WriteString('BOLETO', 'Cedente.CEP', edtBOLCEP.Text);
+     ini.WriteString('BOLETO', 'Cedente.Complemento', edtBOLComplemento.Text);
+     ini.WriteString('BOLETO', 'Cedente.UF', cbxBOLUF.Text);
+     ini.WriteInteger('BOLETO', 'Cedente.RespEmis', cbxBOLEmissao.ItemIndex);
+     ini.WriteInteger('BOLETO','Cedente.Pessoa',cbxBOLF_J.ItemIndex);
+
+     {Parametros do Boleto - Banco}
+     ini.WriteInteger('BOLETO', 'Banco', StrToIntDef(Copy(cbxBOLBanco.Text, 1, 3), 0));
+     ini.WriteString('BOLETO', 'Conta', edtBOLConta.Text);
+     ini.WriteString('BOLETO', 'DigitoConta', edtBOLDigitoConta.Text);
+     ini.WriteString('BOLETO', 'Agencia', edtBOLAgencia.Text);
+     ini.WriteString('BOLETO', 'DigitoAgencia', edtBOLDigitoAgencia.Text);
+
+     {Parametros do Boleto - Boleto}
+     if trim(deBOLDirLogo.Text) = '' then
+        DirLogoBanco:= ExtractFilePath(Application.ExeName) + 'logos' + PathDelim
+     else
+        DirLogoBanco := deBOLDirLogo.Text;
+
+     if trim(deBOLDirArquivo.Text) = '' then
+        DirArquivoBoleto:= ExtractFilePath(Application.ExeName)
+     else
+        DirArquivoBoleto := deBOLDirArquivo.Text;
+
+     ini.WriteString('BOLETO', 'DirLogos', DirLogoBanco);
+     ini.WriteString('BOLETO', 'SoftwareHouse', edtBOLSH.Text);
+     ini.WriteInteger('BOLETO', 'Copias', spBOLCopias.Value);
+     Ini.WriteBool('BOLETO', 'Preview', ckgBOLMostrar.Checked[0]);
+     ini.WriteBool('BOLETO', 'Setup', ckgBOLMostrar.Checked[1]);
+     ini.WriteInteger('BOLETO', 'Layout', cbxBOLLayout.ItemIndex);
+     ini.WriteInteger('BOLETO', 'Filtro', cbxBOLFiltro.ItemIndex);
+     ini.WriteString('BOLETO', 'DirArquivoBoleto',DirArquivoBoleto);
+   finally
+      ini.Free;
+   end;
 end;
 
 {------------------------------------------------------------------------------}
@@ -2105,21 +2230,6 @@ begin
   AvaliaEstadoTsECF;
 end;
 
-procedure TFrmACBrMonitor.rgFJClick(Sender: TObject);
-begin
-  if rgFJ.ItemIndex = 0 then
-  begin
-    lblCPFCNPJ.Caption := 'C.P.F';
-    lblNomeRazao.Caption := 'Nome';
-    edtCNPJ.EditMask := '999.999.999-99;1';
-  end
-  else
-  begin
-    lblCPFCNPJ.Caption := 'C.N.P.J';
-    lblNomeRazao.Caption := 'Razão Social';
-    edtCNPJ.EditMask := '99.999.999/9999-99;1';
-  end;
-end;
 
 procedure TFrmACBrMonitor.TcpServerConecta(const TCPBlockSocket: TTCPBlockSocket;
   var Enviar: ansistring);

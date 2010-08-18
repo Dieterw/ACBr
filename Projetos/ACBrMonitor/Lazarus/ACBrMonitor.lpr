@@ -9,7 +9,7 @@ uses
   Interfaces, // this includes the LCL widgetset
   Forms, ACBrTCP, UtilUnit, ACBrMonitor1, CmdUnit, ConfiguraSerial, DoACBrUnit,
   DoBALUnit, DoCHQUnit, DoDISUnit, DoECFBemafi32, DoECFObserver, DoECFUnit,
-  DoETQUnit, DoGAVUnit, DoLCBUnit, sndkey32, Sobre, ACBrSerial, DoBolUnit,
+  DoETQUnit, DoGAVUnit, DoLCBUnit, sndkey32, Sobre, DoBoletoUnit, ACBrSerial,
   ACBr_Boleto, ACBr_BoletoFC_Fortes;
 
 {$R *.res}

@@ -543,6 +543,7 @@ TACBrBoleto = class( TACBrComponent )
 
     procedure GerarRemessa(NumeroRemessa : Integer);
     procedure LerRetorno();
+
   published
     property About : String read GetAbout write SetAbout stored False ;
 

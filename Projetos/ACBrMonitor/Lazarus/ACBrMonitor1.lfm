@@ -1,5 +1,5 @@
 object FrmACBrMonitor: TFrmACBrMonitor
-  Left = 400
+  Left = 204
   Height = 562
   Top = 103
   Width = 616
@@ -3979,7 +3979,6 @@ object FrmACBrMonitor: TFrmACBrMonitor
               )
               ParentShowHint = False
               Sorted = True
-              Style = csDropDownList
               TabOrder = 0
             end
             object lblBOLBanco: TLabel

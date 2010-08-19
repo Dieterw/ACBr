@@ -47,13 +47,14 @@ Function ConvertStrRecived( AStr: String ) : String ;
 
 implementation
 
-uses ACBrBoleto,ACBrUtil,
+uses ACBrBoleto,ACBrUtil,Dialogs,
      {$IFNDEF CONSOLE}ACBrMonitor1 {$ELSE}ACBrMonitorConsoleDM {$ENDIF} ;
 
 procedure DoBoleto ( Cmd: TACBrCmd ) ;
 begin
    with {$IFNDEF CONSOLE}FrmACBrMonitor.ACBrBoleto1 {$ELSE}dm.ACBrBoleto {$ENDIF} do
    begin
+      //Showmessage(cmd.Metodo);
       if Cmd.Metodo = 'configurarcedente' then
        begin
          with Cedente do
@@ -161,7 +162,13 @@ begin
        end
 
       else if cmd.Metodo = 'incluirtitulos' then
+       begin
         LerIniBoletos(Cmd.Params(0));
+        if Cmd.Params(1) = 'I' then
+          Imprimir
+        else if Cmd.Params(1)= 'P' then
+          GerarPDF;
+      end;
    end;
 
 end;

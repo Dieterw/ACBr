@@ -1811,8 +1811,16 @@ begin
   begin
     Application.ProcessMessages;
 
-    Linha := Trim(mCmd.Lines[0]);
-    mCmd.Lines.Delete(0);
+    if UpperCase(Copy(mCmd.Lines[0],1,6)) = 'BOLETO' then
+     begin
+       Linha := Trim(mCmd.Lines.Text);
+       mCmd.Lines.Text := '';
+     end
+    else
+     begin
+       Linha := Trim(mCmd.Lines[0]);
+       mCmd.Lines.Delete(0);
+    end;
 
     if Linha <> '' then
     begin

@@ -66,7 +66,7 @@ type
     fDT_DAV: TDateTime;    /// Data de emissão do DAV
     fTIT_DAV: string;      /// Título atribuído ao DAV de acordo com sua função. Ex: Orçamento, Pedido, etc.
     fVLT_DAV: currency;    /// Valor total do DAV emitido, com duas casas decimais
-    fCCF: string;          /// Contador de Cupom Fiscal do documento fiscal vinculado
+    fCOO_DFV: string;      /// Contador de Ordem de Operação do Documento Fiscal Vinculado
   public
     constructor Create; virtual; /// Create
 
@@ -81,7 +81,7 @@ type
     property DT_DAV: TDateTime read FDT_DAV write FDT_DAV;
     property TIT_DAV: string read FTIT_DAV write FTIT_DAV;
     property VLT_DAV: currency read FVLT_DAV write FVLT_DAV;
-    property CCF: string read FCCF write FCCF;
+    property COO_DFV: string read FCOO_DFV write FCOO_DFV;
   end;
 
   /// REGISTRO D2 - Lista

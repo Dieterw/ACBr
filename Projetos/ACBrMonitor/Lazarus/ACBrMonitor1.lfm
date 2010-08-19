@@ -1,5 +1,5 @@
 object FrmACBrMonitor: TFrmACBrMonitor
-  Left = 204
+  Left = 400
   Height = 562
   Top = 103
   Width = 616
@@ -3688,9 +3688,9 @@ object FrmACBrMonitor: TFrmACBrMonitor
           Height = 181
           Top = 0
           Width = 606
-          ActivePage = tsBoleto
+          ActivePage = TabSheet2
           Align = alClient
-          TabIndex = 2
+          TabIndex = 1
           TabOrder = 0
           object tsCedente: TTabSheet
             Caption = 'Cedente'
@@ -3977,6 +3977,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
                 '389-Mercantil'
                 '748-Sicred'
               )
+              ParentShowHint = False
               Sorted = True
               Style = csDropDownList
               TabOrder = 0

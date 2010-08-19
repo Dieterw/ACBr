@@ -55,9 +55,9 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="ACBrMonitor"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
-        <CursorPos X="19" Y="21"/>
-        <UsageCount Value="64"/>
+        <TopLine Value="2"/>
+        <CursorPos X="1" Y="17"/>
+        <UsageCount Value="69"/>
       </Unit0>
       <Unit1>
         <Filename Value="UtilUnit.pas"/>
@@ -66,7 +66,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
-        <UsageCount Value="64"/>
+        <UsageCount Value="69"/>
       </Unit1>
       <Unit2>
         <Filename Value="ACBrMonitor1.pas"/>
@@ -78,12 +78,12 @@
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1385"/>
-        <CursorPos X="5" Y="1393"/>
-        <UsageCount Value="64"/>
+        <TopLine Value="1"/>
+        <CursorPos X="1" Y="1"/>
+        <UsageCount Value="69"/>
         <Bookmarks Count="2">
-          <Item0 X="3" Y="3735" ID="2"/>
-          <Item1 X="28" Y="392" ID="1"/>
+          <Item0 X="3" Y="3734" ID="2"/>
+          <Item1 X="28" Y="393" ID="1"/>
         </Bookmarks>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -101,12 +101,10 @@
         <Filename Value="CmdUnit.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="CmdUnit"/>
-        <EditorIndex Value="4"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="98"/>
-        <CursorPos X="20" Y="95"/>
-        <UsageCount Value="64"/>
-        <Loaded Value="True"/>
+        <TopLine Value="91"/>
+        <CursorPos X="1" Y="101"/>
+        <UsageCount Value="69"/>
       </Unit4>
       <Unit5>
         <Filename Value="ConfiguraSerial.pas"/>
@@ -118,7 +116,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="74" Y="6"/>
-        <UsageCount Value="64"/>
+        <UsageCount Value="69"/>
       </Unit5>
       <Unit6>
         <Filename Value="DoACBrUnit.pas"/>
@@ -127,7 +125,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="182"/>
         <CursorPos X="14" Y="208"/>
-        <UsageCount Value="64"/>
+        <UsageCount Value="69"/>
       </Unit6>
       <Unit7>
         <Filename Value="DoBALUnit.pas"/>
@@ -136,7 +134,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="29"/>
         <CursorPos X="6" Y="43"/>
-        <UsageCount Value="64"/>
+        <UsageCount Value="69"/>
       </Unit7>
       <Unit8>
         <Filename Value="DoCHQUnit.pas"/>
@@ -145,7 +143,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="29"/>
         <CursorPos X="25" Y="43"/>
-        <UsageCount Value="64"/>
+        <UsageCount Value="69"/>
       </Unit8>
       <Unit9>
         <Filename Value="DoDISUnit.pas"/>
@@ -154,7 +152,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="31"/>
         <CursorPos X="23" Y="45"/>
-        <UsageCount Value="64"/>
+        <UsageCount Value="69"/>
       </Unit9>
       <Unit10>
         <Filename Value="DoECFBemafi32.pas"/>
@@ -163,7 +161,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="34"/>
         <CursorPos X="72" Y="48"/>
-        <UsageCount Value="64"/>
+        <UsageCount Value="69"/>
       </Unit10>
       <Unit11>
         <Filename Value="DoECFObserver.pas"/>
@@ -172,18 +170,16 @@
         <WindowIndex Value="0"/>
         <TopLine Value="34"/>
         <CursorPos X="72" Y="48"/>
-        <UsageCount Value="64"/>
+        <UsageCount Value="69"/>
       </Unit11>
       <Unit12>
         <Filename Value="DoECFUnit.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="DoECFUnit"/>
-        <EditorIndex Value="5"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="64"/>
-        <CursorPos X="10" Y="67"/>
-        <UsageCount Value="64"/>
-        <Loaded Value="True"/>
+        <TopLine Value="97"/>
+        <CursorPos X="37" Y="109"/>
+        <UsageCount Value="69"/>
       </Unit12>
       <Unit13>
         <Filename Value="DoETQUnit.pas"/>
@@ -192,7 +188,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="31"/>
         <CursorPos X="35" Y="45"/>
-        <UsageCount Value="64"/>
+        <UsageCount Value="69"/>
       </Unit13>
       <Unit14>
         <Filename Value="DoGAVUnit.pas"/>
@@ -201,7 +197,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="87"/>
         <CursorPos X="11" Y="104"/>
-        <UsageCount Value="64"/>
+        <UsageCount Value="69"/>
       </Unit14>
       <Unit15>
         <Filename Value="DoLCBUnit.pas"/>
@@ -210,13 +206,13 @@
         <WindowIndex Value="0"/>
         <TopLine Value="29"/>
         <CursorPos X="17" Y="43"/>
-        <UsageCount Value="64"/>
+        <UsageCount Value="69"/>
       </Unit15>
       <Unit16>
         <Filename Value="sndkey32.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="sndkey32"/>
-        <UsageCount Value="64"/>
+        <UsageCount Value="69"/>
       </Unit16>
       <Unit17>
         <Filename Value="Sobre.pas"/>
@@ -228,7 +224,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="118"/>
         <CursorPos X="18" Y="129"/>
-        <UsageCount Value="64"/>
+        <UsageCount Value="69"/>
       </Unit17>
       <Unit18>
         <Filename Value="Sobre.lfm"/>
@@ -305,12 +301,10 @@
       <Unit27>
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
         <UnitName Value="ACBrBoleto"/>
-        <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
         <TopLine Value="565"/>
         <CursorPos X="14" Y="609"/>
-        <UsageCount Value="30"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="32"/>
       </Unit27>
       <Unit28>
         <Filename Value="C:\lazarus\fpc\2.4.3\source\packages\fcl-base\src\inifiles.pp"/>
@@ -345,12 +339,10 @@
       <Unit32>
         <Filename Value="..\..\..\Fontes\ACBrSerial\ACBrECF.pas"/>
         <UnitName Value="ACBrECF"/>
-        <EditorIndex Value="6"/>
         <WindowIndex Value="0"/>
         <TopLine Value="140"/>
         <CursorPos X="14" Y="472"/>
-        <UsageCount Value="16"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="18"/>
       </Unit32>
       <Unit33>
         <Filename Value="..\..\..\Fontes\ACBrSerial\ACBrECFClass.pas"/>
@@ -448,12 +440,10 @@
         <Filename Value="DoBoletoUnit.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="DoBoletoUnit"/>
-        <EditorIndex Value="3"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="47"/>
-        <CursorPos X="11" Y="75"/>
-        <UsageCount Value="32"/>
-        <Loaded Value="True"/>
+        <TopLine Value="311"/>
+        <CursorPos X="60" Y="355"/>
+        <UsageCount Value="37"/>
       </Unit45>
       <Unit46>
         <Filename Value="C:\lazarus\fpc\2.4.3\source\rtl\objpas\sysutils\datih.inc"/>
@@ -479,135 +469,61 @@
       </Unit48>
       <Unit49>
         <Filename Value="C:\lazarus\lcl\include\control.inc"/>
-        <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
         <TopLine Value="2742"/>
         <CursorPos X="1" Y="2753"/>
-        <UsageCount Value="10"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="12"/>
       </Unit49>
     </Units>
-    <JumpHistory Count="30" HistoryIndex="29">
+    <JumpHistory Count="12" HistoryIndex="11">
       <Position1>
         <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="1404" Column="1" TopLine="1391"/>
+        <Caret Line="1215" Column="20" TopLine="1206"/>
       </Position1>
       <Position2>
         <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="1407" Column="1" TopLine="1393"/>
+        <Caret Line="1218" Column="9" TopLine="1200"/>
       </Position2>
       <Position3>
         <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="1410" Column="1" TopLine="1402"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position3>
       <Position4>
         <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="1413" Column="1" TopLine="1402"/>
+        <Caret Line="68" Column="5" TopLine="59"/>
       </Position4>
       <Position5>
         <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="933" Column="1" TopLine="925"/>
+        <Caret Line="605" Column="33" TopLine="595"/>
       </Position5>
       <Position6>
         <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="1716" Column="68" TopLine="1714"/>
+        <Caret Line="1218" Column="73" TopLine="1210"/>
       </Position6>
       <Position7>
         <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="1400" Column="5" TopLine="1393"/>
+        <Caret Line="1219" Column="1" TopLine="1210"/>
       </Position7>
       <Position8>
         <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="1113" Column="1" TopLine="1105"/>
+        <Caret Line="1220" Column="1" TopLine="1210"/>
       </Position8>
       <Position9>
         <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="1212" Column="1" TopLine="1204"/>
+        <Caret Line="1223" Column="10" TopLine="1210"/>
       </Position9>
       <Position10>
         <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="1245" Column="1" TopLine="1237"/>
+        <Caret Line="1220" Column="1" TopLine="1212"/>
       </Position10>
       <Position11>
         <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="1399" Column="1" TopLine="1391"/>
+        <Caret Line="1219" Column="1" TopLine="1211"/>
       </Position11>
       <Position12>
         <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="1404" Column="18" TopLine="1391"/>
+        <Caret Line="1214" Column="9" TopLine="1211"/>
       </Position12>
-      <Position13>
-        <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="1113" Column="1" TopLine="1105"/>
-      </Position13>
-      <Position14>
-        <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="1212" Column="1" TopLine="1204"/>
-      </Position14>
-      <Position15>
-        <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="1401" Column="10" TopLine="1384"/>
-      </Position15>
-      <Position16>
-        <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
-      </Position16>
-      <Position17>
-        <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="1004" Column="1" TopLine="996"/>
-      </Position17>
-      <Position18>
-        <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="1105" Column="1" TopLine="1097"/>
-      </Position18>
-      <Position19>
-        <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="1204" Column="1" TopLine="1196"/>
-      </Position19>
-      <Position20>
-        <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="1237" Column="1" TopLine="1229"/>
-      </Position20>
-      <Position21>
-        <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="1391" Column="1" TopLine="1383"/>
-      </Position21>
-      <Position22>
-        <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="1394" Column="1" TopLine="1383"/>
-      </Position22>
-      <Position23>
-        <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="1403" Column="9" TopLine="1392"/>
-      </Position23>
-      <Position24>
-        <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="1105" Column="1" TopLine="1097"/>
-      </Position24>
-      <Position25>
-        <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="1204" Column="1" TopLine="1196"/>
-      </Position25>
-      <Position26>
-        <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="1237" Column="1" TopLine="1229"/>
-      </Position26>
-      <Position27>
-        <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="1391" Column="1" TopLine="1383"/>
-      </Position27>
-      <Position28>
-        <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="1394" Column="1" TopLine="1383"/>
-      </Position28>
-      <Position29>
-        <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="1396" Column="1" TopLine="1383"/>
-      </Position29>
-      <Position30>
-        <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="1395" Column="1" TopLine="1383"/>
-      </Position30>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>
@@ -635,23 +551,15 @@
     </Other>
   </CompilerOptions>
   <Debugging>
-    <BreakPoints Count="4">
+    <BreakPoints Count="2">
       <Item1>
         <Source Value="ACBrMonitor1.pas"/>
-        <Line Value="1828"/>
+        <Line Value="1827"/>
       </Item1>
       <Item2>
-        <Source Value="ACBrMonitor1.pas"/>
-        <Line Value="1105"/>
+        <Source Value="CmdUnit.pas"/>
+        <Line Value="101"/>
       </Item2>
-      <Item3>
-        <Source Value="ACBrMonitor1.pas"/>
-        <Line Value="1237"/>
-      </Item3>
-      <Item4>
-        <Source Value="ACBrMonitor1.pas"/>
-        <Line Value="1204"/>
-      </Item4>
     </BreakPoints>
     <Exceptions Count="7">
       <Item1>

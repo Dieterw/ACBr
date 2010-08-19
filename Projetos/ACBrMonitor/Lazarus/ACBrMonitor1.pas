@@ -78,6 +78,7 @@ const
     'Pagamento', 'Relatório', 'Bloqueada', 'Requer Z', 'Requer X',
     'Não Fiscal');
   BufferMemoResposta = 1000;              { Maximo de Linhas no MemoResposta }
+  AString: array[0..5] of string = ('.', '-', '/', '(', ')', ' ');
 {$I versao.txt}
   _C = 'tYk*5W@';
 
@@ -1638,9 +1639,7 @@ var
   DirArquivoBoleto: String;
 begin
 
-   CNPJEMP := StringReplace(edtBOLCNPJ.Text, '-', '', [rfReplaceAll]);
-   CNPJEMP := StringReplace(CNPJEMP, '/', '', [rfReplaceAll]);
-   CNPJEMP := StringReplace(CNPJEMP, '.', '', [rfReplaceAll]);
+   CNPJEMP := RemoveStrings(edtBOLCNPJ.Text,AString);
 
    if trim(CNPJEMP) <> '' then
    begin

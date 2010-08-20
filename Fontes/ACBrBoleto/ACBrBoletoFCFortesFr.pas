@@ -443,9 +443,6 @@ begin
                 {$ELSE}
                   RLFiltro.FilterPages( RLLayout.Pages );
                 {$ENDIF}
-             
-
-              
             end;
          end;
      end;

@@ -59,7 +59,10 @@ begin
   with {$IFNDEF CONSOLE}FrmACBrMonitor{$ELSE}dm{$ENDIF} do
   begin
      try
-        if Cmd.Metodo = 'run' then
+        if Cmd.Metodo = 'ativo' then
+           Cmd.Resposta := Caption
+
+        else if Cmd.Metodo = 'run' then
          begin
            VerificaPermiteComandosRemoto ;
 
@@ -243,5 +246,4 @@ begin
 end ;
 
 end.
-
 

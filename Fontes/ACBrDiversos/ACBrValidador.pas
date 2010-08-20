@@ -1262,7 +1262,7 @@ Begin
   IF UF = 'PA' Then Mascara := '**-******-*';
   IF UF = 'PB' Then Mascara := '********-*';
   IF UF = 'PR' Then Mascara := '********-**';
-  IF UF = 'PE' Then Mascara := '**.*.***.*******-*';
+  IF UF = 'PE' Then Mascara := IfThen((LenDoc>9),'**.*.***.*******-*','*******-**');
   IF UF = 'PI' Then Mascara := '*********';
   IF UF = 'RJ' Then Mascara := '**.***.**-*';
   IF UF = 'RN' Then Mascara := '**.***.***-*';

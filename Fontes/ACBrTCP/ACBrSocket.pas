@@ -483,7 +483,7 @@ procedure TACBrTCPServer.SetTerminador( const AValue: String) ;
 begin
   VerificaAtivo ;
   fsTerminador  := AValue;
-  fs_Terminador := Trim(TraduzComando( AValue )) ;
+  fs_Terminador := TraduzComando( fsTerminador ) ;
 end;
 
 procedure TACBrTCPServer.SetTimeOut(const Value: Integer);

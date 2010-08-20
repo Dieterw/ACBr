@@ -511,8 +511,8 @@ begin
   ALogradouro      := AjustaParam( ALogradouro ) ;
   AUF              := AjustaParam( AUF );
 
-  if (AMunicipio = '') or (ALogradouro = '') or (AUF = '') then
-     raise Exception.Create('UF, Cidade e Logradouro devem ser informados');
+  if (AMunicipio = '') or (ALogradouro = '') then
+     raise Exception.Create('Cidade e Logradouro devem ser informados');
 
 //  &logradouro=paulista&cidade=sao%20paulo&formato=csv
   Params := 'index.php?module=cep' +

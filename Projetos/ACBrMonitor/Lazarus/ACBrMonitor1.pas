@@ -73,14 +73,15 @@ uses
   ACBrValidador, ACBrBoleto, ACBrBoletoFCFortesFr;
 
 const
-  Estados: array[TACBrECFEstado] of string =
+  {$I versao.txt}
+  CEstados: array[TACBrECFEstado] of string =
     ('Não Inicializada', 'Desconhecido', 'Livre', 'Venda',
     'Pagamento', 'Relatório', 'Bloqueada', 'Requer Z', 'Requer X',
     'Não Fiscal');
-  BufferMemoResposta = 1000;              { Maximo de Linhas no MemoResposta }
-  AString: array[0..5] of string = ('.', '-', '/', '(', ')', ' ');
-{$I versao.txt}
+  CBufferMemoResposta = 1000;              { Maximo de Linhas no MemoResposta }
+  CIgnorarChars : array[0..5] of string = ('.', '-', '/', '(', ')', ' ');
   _C = 'tYk*5W@';
+  CDebugTCPFile = 'C:\TEMP\ACBrMonitorTCP.txt' ;
 
 type
 
@@ -90,6 +91,7 @@ type
     ACBrBoleto1: TACBrBoleto;
     ACBrBoletoFCFortes1: TACBrBoletoFCFortes;
     ACBrECF1: TACBrECF;
+    ACBrValidador1 : TACBrValidador ;
     ApplicationProperties1: TApplicationProperties;
     cbxBOLUF: TComboBox;
     cbxBOLBanco: TComboBox;
@@ -419,6 +421,7 @@ type
     procedure TrayIcon1Click(Sender: TObject);
     procedure TrayIcon1MouseUp(Sender: TObject; Button: TMouseButton;{%h-}
       Shift: TShiftState; X, Y: integer);{%h-}
+    procedure tsACBrBoletoShow(Sender : TObject) ;
     procedure tsECFShow(Sender: TObject);
     procedure Ocultar1Click(Sender: TObject);
     procedure Restaurar1Click(Sender: TObject);
@@ -601,7 +604,7 @@ var
 
 implementation
 
-uses IniFiles, TypInfo, LCLType,
+uses IniFiles, TypInfo, LCLType, strutils,
   UtilUnit,
   DoECFUnit, DoGAVUnit, DoCHQUnit, DoDISUnit, DoLCBUnit, DoACBrUnit, DoBALUnit,
   DoBoletoUnit,
@@ -864,7 +867,7 @@ begin
     exit;
   end;
 
-  CanClose := pCanClose;
+  CanClose := pCanClose or (WindowState = wsMinimized) ;
 
   if not CanClose then
     Application.Minimize;
@@ -902,6 +905,8 @@ var
   ArqIni: string;
   Txt: string;
   Erro: string;
+  IpList : TStringList ;
+  I : Integer ;
 begin
   Timer1.Enabled := False;
   Inicio := False;
@@ -965,9 +970,19 @@ begin
       if TcpServer.Ativo then
       begin
         try
-          Txt := 'Endereço: ' + TcpServer.TCPBlockSocket.LocalName;
-          // TODO:              For A := 0 to IdStack.GStack.LocalAddresses.Count-1 do
-          //                 Txt := Txt + '   ' + IdStack.GStack.LocalAddresses[A] ;
+          Txt := 'Endereço Local: ['+TcpServer.TCPBlockSocket.LocalName + '],   IP: ';
+          with TcpServer.TCPBlockSocket do
+          begin
+             IpList := TStringList.Create;
+             try
+                ResolveNameToIP( LocalName, IpList);
+                For I := 0 to IpList.Count-1 do
+                   if pos(':',IpList[I]) = 0 then
+                      Txt := Txt + '   '+IpList[I] ;
+             finally
+                IpList.Free;
+             end ;
+          end ;
         except
         end;
         mResp.Lines.Add(Txt);
@@ -1123,10 +1138,10 @@ begin
     TcpServer.Port := edPortaTCP.Text;
 
     { Parametros do ECF }
-    cbECFPorta.Text := Ini.ReadString('ECF', 'Porta', 'Procurar');
     ECFDeviceParams := Ini.ReadString('ECF', 'SerialParams', '');
     cbECFModelo.ItemIndex := Ini.ReadInteger('ECF', 'Modelo', 0) + 1;
     cbECFModeloChange(Self);
+    cbECFPorta.Text := Ini.ReadString('ECF', 'Porta', 'Procurar');
     sedECFTimeout.Value := Ini.ReadInteger('ECF', 'Timeout', 3);
     sedECFIntervalo.Value := Ini.ReadInteger('ECF', 'IntervaloAposComando', 100);
     chECFArredondaPorQtd.Checked := Ini.ReadBool('ECF', 'ArredondamentoPorQtd', False);
@@ -1136,9 +1151,9 @@ begin
     edECFLog.Text := Ini.ReadString('ECF', 'ArqLog', '');
 
     { Parametros do CHQ }
-    cbCHQPorta.Text := Ini.ReadString('CHQ', 'Porta', '');
     cbCHQModelo.ItemIndex := Ini.ReadInteger('CHQ', 'Modelo', 0);
     cbCHQModeloChange(Self);
+    cbCHQPorta.Text := Ini.ReadString('CHQ', 'Porta', '');
     chCHQVerForm.Checked := Ini.ReadBool('CHQ', 'VerificaFormulario', False);
     edCHQFavorecido.Text := Ini.ReadString('CHQ', 'Favorecido', '');
     edCHQCidade.Text := Ini.ReadString('CHQ', 'Cidade', '');
@@ -1146,9 +1161,9 @@ begin
     CHQDeviceParams := Ini.ReadString('CHQ', 'SerialParams', '');
 
     { Parametros do GAV }
-    cbGAVPorta.Text := Ini.ReadString('GAV', 'Porta', '');
     cbGAVModelo.ItemIndex := Ini.ReadInteger('GAV', 'Modelo', 0);
     cbGAVModeloChange(Self);
+    cbGAVPorta.Text := Ini.ReadString('GAV', 'Porta', '');
     cbGAVStrAbre.Text := Ini.ReadString('GAV', 'StringAbertura', '');
     sedGAVIntervaloAbertura.Value :=
       Ini.ReadInteger('GAV', 'AberturaIntervalo', ACBrGAV1.AberturaIntervalo);
@@ -1156,9 +1171,9 @@ begin
       Ini.ReadInteger('GAV', 'AcaoAberturaAntecipada', 1);
 
     { Parametros do DIS }
-    cbDISPorta.Text := Ini.ReadString('DIS', 'Porta', '');
     cbDISModelo.ItemIndex := Ini.ReadInteger('DIS', 'Modelo', 0);
     cbDISModeloChange(Self);
+    cbDISPorta.Text := Ini.ReadString('DIS', 'Porta', '');
     seDISIntervalo.Value := Ini.ReadInteger('DIS', 'Intervalo', 300);
     seDISPassos.Value := Ini.ReadInteger('DIS', 'Passos', 1);
     seDISIntByte.Value := Ini.ReadInteger('DIS', 'IntervaloEnvioBytes', 3);
@@ -1182,15 +1197,15 @@ begin
     edRFDDir.Text := INI.ReadString('RFD', 'DirRFD', edRFDDir.Text);
 
     { Parametros do BAL }
-    cbBALPorta.Text := Ini.ReadString('BAL', 'Porta', '');
     cbBALModelo.ItemIndex := Ini.ReadInteger('BAL', 'Modelo', 0);
     cbBALModeloChange(Self);
+    cbBALPorta.Text := Ini.ReadString('BAL', 'Porta', '');
     sedBALIntervalo.Value := Ini.ReadInteger('BAL', 'Intervalo', 200);
 
     { Parametros do ETQ }
-    cbETQPorta.Text := Ini.ReadString('ETQ', 'Porta', '');
     cbETQModelo.ItemIndex := Ini.ReadInteger('ETQ', 'Modelo', 0);
     cbETQModeloChange(Self);
+    cbETQPorta.Text := Ini.ReadString('ETQ', 'Porta', '');
 
     { Parametros do TC }
     cbxTCModelo.ItemIndex := Ini.ReadInteger('TC', 'Modelo', 0);
@@ -1239,7 +1254,7 @@ begin
   begin
     Desativar;
     Modelo := TACBrECFModelo(Max(cbECFModelo.ItemIndex - 1, 0));
-    Porta := cbECFPorta.Text;
+    Porta  := cbECFPorta.Text;
     if ECFDeviceParams <> '' then
       Device.ParamsString := ECFDeviceParams;
     TimeOut := sedECFTimeout.Value;
@@ -1257,7 +1272,7 @@ begin
   begin
     Desativar;
     Modelo := TACBrCHQModelo(cbCHQModelo.ItemIndex);
-    Porta := cbCHQPorta.Text;
+    Porta  := cbCHQPorta.Text;
     if CHQDeviceParams <> '' then
       Device.ParamsString := CHQDeviceParams;
     Favorecido := edCHQFavorecido.Text;
@@ -1476,10 +1491,6 @@ procedure TFrmACBrMonitor.SalvarIni;
 var
   Ini: TIniFile;
   OldMonitoraTXT, OldMonitoraTCP: boolean;
-  ACBrValidador: TACBrValidador;
-  CNPJEMP: string;
-  DirLogoBanco: String;
-  DirArquivoBoleto: String;
 begin
   if cbSenha.Checked and (edSenha.Text <> 'NADAAQUI') and (edSenha.Text <> '') then
     fsHashSenha := StringCrc16(edSenha.Text);
@@ -1490,35 +1501,7 @@ begin
     cbSenha.Checked := True;
     edSenha.SetFocus;
     raise Exception.Create('Para trabalhar com RFD é necessário definir uma Senha ' +
-      'para proteger sua Chave Privada');
-  end;
-
-  CNPJEMP := StringReplace(edtBOLCNPJ.Text, '-', '', [rfReplaceAll]);
-  CNPJEMP := StringReplace(CNPJEMP, '/', '', [rfReplaceAll]);
-  CNPJEMP := StringReplace(CNPJEMP, '.', '', [rfReplaceAll]);
-
-
-  if trim(CNPJEMP) <> '' then
-  begin
-    ACbrValidador := TACBrValidador.Create(Self);
-    try
-      with ACbrValidador do
-      begin
-        if cbxBOLF_J.ItemIndex = 0 then
-          TipoDocto := docCPF
-        else
-          TipoDocto := docCNPJ;
-
-        IgnorarChar := './-';
-        RaiseExcept := True;
-        Documento := edtBOLCNPJ.Text;
-        Validar;    // Dispara Exception se Documento estiver errado
-
-        edtBOLCNPJ.Text := Formatar;
-      end;
-    finally
-      ACbrValidador.Free;
-    end;
+                           'para proteger sua Chave Privada');
   end;
 
   Ini := TIniFile.Create(ACBrMonitorINI);
@@ -1633,47 +1616,45 @@ end;
 procedure TFrmACBrMonitor.SalvarConfBoletos;
 var
   Ini: TIniFile;
-  CNPJEMP: String;
-  ACBrValidador: TACBrValidador;
-  DirLogoBanco: String;
-  DirArquivoBoleto: String;
+  DirLogoBanco, DirArquivoBoleto: String;
+  TrimedCNPJ, TrimedCEP : String ;
 begin
+   TrimedCNPJ := OnlyNumber(edtBOLCNPJ.Text) ;
+   TrimedCEP  := OnlyNumber(edtBOLCEP.Text);
 
-   CNPJEMP := RemoveStrings(edtBOLCNPJ.Text,AString);
-
-   if trim(CNPJEMP) <> '' then
+   if pConfig.Visible and (TrimedCNPJ <> '') then
    begin
-      ACbrValidador := TACBrValidador.Create(Self);
-      try
-       with ACbrValidador do
-       begin
-          if cbxBOLF_J.ItemIndex = 0 then
-             TipoDocto := docCPF
-          else
-             TipoDocto := docCNPJ;
+     with ACBrValidador1 do
+     begin
+       if cbxBOLF_J.ItemIndex = 0 then
+         TipoDocto := docCPF
+       else
+         TipoDocto := docCNPJ;
 
-          IgnorarChar := './-';
-          RaiseExcept := True;
-          Documento := edtBOLCNPJ.Text;
+       Documento := edtBOLCNPJ.Text;
+       try
           Validar;    // Dispara Exception se Documento estiver errado
+       except
+          PageControl1.ActivePage := tsACBrBoleto;
+          pgBoleto.ActivePage     := tsCedente;
+          edtBOLCNPJ.SetFocus;
+          raise ;
+       end ;
 
-          edtBOLCNPJ.Text := Formatar;
-       end;
-      finally
-         ACbrValidador.Free;
-      end;
-   end;
+       edtBOLCNPJ.Text := Formatar;
+     end;
+   end ;
 
    Ini := TIniFile.Create(ACBrMonitorINI);
    try
      {Parametros do Boleto - Cliente}
      ini.WriteString('BOLETO', 'Cedente.Nome', edtBOLRazaoSocial.Text);
-     ini.WriteString('BOLETO', 'Cedente.CNPJCPF', edtBOLCNPJ.Text);
+     ini.WriteString('BOLETO', 'Cedente.CNPJCPF', ifthen(TrimedCNPJ='','',edtBOLCNPJ.Text));
      ini.WriteString('BOLETO', 'Cedente.Logradouro', edtBOLLogradouro.Text);
      ini.WriteString('BOLETO', 'Cedente.Numero', edtBOLNumero.Text);
      ini.WriteString('BOLETO', 'Cedente.Bairro', edtBOLBairro.Text);
      ini.WriteString('BOLETO', 'Cedente.Cidade', edtBOLCidade.Text);
-     ini.WriteString('BOLETO', 'Cedente.CEP', edtBOLCEP.Text);
+     ini.WriteString('BOLETO', 'Cedente.CEP', ifthen(TrimedCEP='','',edtBOLCEP.Text));
      ini.WriteString('BOLETO', 'Cedente.Complemento', edtBOLComplemento.Text);
      ini.WriteString('BOLETO', 'Cedente.UF', cbxBOLUF.Text);
      ini.WriteInteger('BOLETO', 'Cedente.RespEmis', cbxBOLEmissao.ItemIndex);
@@ -1688,12 +1669,12 @@ begin
 
      {Parametros do Boleto - Boleto}
      if trim(deBOLDirLogo.Text) = '' then
-        DirLogoBanco:= ExtractFilePath(Application.ExeName) + 'logos' + PathDelim
+        DirLogoBanco := ExtractFilePath(Application.ExeName) + 'logos' + PathDelim
      else
         DirLogoBanco := deBOLDirLogo.Text;
 
      if trim(deBOLDirArquivo.Text) = '' then
-        DirArquivoBoleto:= ExtractFilePath(Application.ExeName)
+        DirArquivoBoleto := edSaiTXT.Text
      else
         DirArquivoBoleto := deBOLDirArquivo.Text;
 
@@ -1811,10 +1792,12 @@ begin
   begin
     Application.ProcessMessages;
 
+    { Objeto BOLETO pode receber comandos com várias Linhas, 
+      portanto deve processar todas linhas de uma só vez... }
     if UpperCase(Copy(mCmd.Lines[0],1,6)) = 'BOLETO' then
      begin
        Linha := Trim(mCmd.Lines.Text);
-       mCmd.Lines.Text := '';
+       mCmd.Lines.Clear ;
      end
     else
      begin
@@ -1830,6 +1813,7 @@ begin
         if pos('.', Linha) = 0 then              { Comandos do ACBrMonitor }
           Linha := 'ACBR.' + Linha;
 
+		{ Interpretanto o Comando }
         Cmd.Comando := Linha;
 
         if Cmd.Objeto = 'ACBR' then
@@ -1870,8 +1854,14 @@ begin
   begin
     if Assigned(Conexao) then
     begin
+      {$IFDEF DEBUGTCP}
+      WriteToTXT(CDebugTCPFile, '--> Transmitindo dados');
+      {$ENDIF}
       Conexao.SendString(Resposta);
       Conexao.SendByte(3);
+      {$IFDEF DEBUGTCP}
+      WriteToTXT(CDebugTCPFile, '    Transmitido: '+Resposta+' [ETX]');
+      {$ENDIF}
     end;
   end;
 
@@ -1926,7 +1916,7 @@ begin
 
   mResp.Lines.BeginUpdate;
   mResp.Lines.Add(Comando + sLineBreak + Resposta);
-  while mResp.Lines.Count > BufferMemoResposta do
+  while mResp.Lines.Count > CBufferMemoResposta do
     mResp.Lines.Delete(0);
   mResp.Lines.EndUpdate;
 
@@ -2237,38 +2227,56 @@ begin
   AvaliaEstadoTsECF;
 end;
 
-
 procedure TFrmACBrMonitor.TcpServerConecta(const TCPBlockSocket: TTCPBlockSocket;
   var Enviar: ansistring);
+Var
+  Resp : String ;
 begin
-  sleep(100);
+
   Conexao := TCPBlockSocket;
   mCmd.Lines.Clear;
-  Resposta('', 'ACBrMonitor Ver. ' + Versao + sLineBreak +
+  Resp := 'ACBrMonitor Ver. ' + Versao + sLineBreak +
     'Conectado em: ' + FormatDateTime('dd/mm/yy hh:nn:ss', now) + sLineBreak +
     'Máquina: ' + Conexao.GetRemoteSinIP + sLineBreak +
-    'Esperando por comandos.');
+    'Esperando por comandos.' ;
 
+  Resposta('', Resp);
+
+  {$IFDEF DEBUGTCP}
+  WriteToTXT(CDebugTCPFile, sLineBreak+'== '+Resp);
+  {$ENDIF}
 end;
 
 procedure TFrmACBrMonitor.TcpServerDesConecta(const TCPBlockSocket: TTCPBlockSocket;
   Erro: integer; ErroDesc: string);
+var
+  Resp : String ;
 begin
   Conexao := TCPBlockSocket;
-  mResp.Lines.Add('ALERTA: Fim da Conexão com: ' +
+  Resp := 'ALERTA: Fim da Conexão com: ' +
     Conexao.GetRemoteSinIP + ' em: ' +
-    FormatDateTime('dd/mm/yy hh:nn:ss', now));
+    FormatDateTime('dd/mm/yy hh:nn:ss', now) ;
 
+  mResp.Lines.Add(Resp);
+  {$IFDEF DEBUGTCP}
+  WriteToTXT(CDebugTCPFile, sLineBreak+'XX '+ Resp);
+  {$ENDIF}
 end;
 
 procedure TFrmACBrMonitor.TcpServerRecebeDados(const TCPBlockSocket: TTCPBlockSocket;
-  const Recebido: ansistring; var Enviar: ansistring);
+  const Recebido: AnsiString; var Enviar: AnsiString);
 var
-  CmdEnviado: ansistring;
+  CmdEnviado: AnsiString;
 begin
   Conexao := TCPBlockSocket;
+  {$IFDEF DEBUGTCP}
+  WriteToTXT(CDebugTCPFile, '--> Recebendo dados');
+  {$ENDIF}
   { Le o que foi enviado atravez da conexao TCP }
-  CmdEnviado := trim(Conexao.RecvTerminated(5000, sLineBreak));
+  CmdEnviado := Trim(Recebido);
+  {$IFDEF DEBUGTCP}
+  WriteToTXT(CDebugTCPFile, '    Recebido: '+CmdEnviado);
+  {$ENDIF}
   if CmdEnviado <> '' then
   begin
     NewLines := CmdEnviado;
@@ -2285,6 +2293,11 @@ procedure TFrmACBrMonitor.TrayIcon1MouseUp(Sender: TObject;
   Button: TMouseButton; Shift: TShiftState; X, Y: integer);
 begin
   TrayIcon1.ShowBalloonHint;
+end;
+
+procedure TFrmACBrMonitor.tsACBrBoletoShow(Sender : TObject) ;
+begin
+  pgBoleto.ActivePageIndex := 0 ;
 end;
 
 {------------------------------------------------------------------------------}
@@ -3656,6 +3669,11 @@ begin
 end;
 
 end.
+
+(*
+
+TODO - Terminal de Consulta
+
 procedure TCPServerTCDisconnect(AThread: TIdPeerThread);
 procedure TCPServerTCExecute(AThread: TIdPeerThread);
 procedure TCPServerTCConnect(AThread: TIdPeerThread);
@@ -3739,4 +3757,6 @@ AThread.Connection.Tag := 0;
 AThread.Synchronize(AddLinesLog);
 end;
 end;
+
+*)
 

@@ -42,19 +42,16 @@ uses
 procedure DoBoleto(Cmd: TACBrCmd);
 procedure LerIniBoletos(aStr:WideString);
 procedure IncluirTitulo(aIni: TIniFile; Sessao: String);
-Function ConvertStrRecived( AStr: String ) : String ;
 
 
 implementation
 
-uses ACBrBoleto,ACBrUtil,Dialogs,
-     {$IFNDEF CONSOLE}ACBrMonitor1 {$ELSE}ACBrMonitorConsoleDM {$ENDIF} ;
+uses ACBrBoleto, ACBrUtil, ACBrMonitor1, DoACBrUnit ;
 
 procedure DoBoleto ( Cmd: TACBrCmd ) ;
 begin
-   with {$IFNDEF CONSOLE}FrmACBrMonitor.ACBrBoleto1 {$ELSE}dm.ACBrBoleto {$ENDIF} do
+   with FrmACBrMonitor.ACBrBoleto1 do
    begin
-      //Showmessage(cmd.Metodo);
       if Cmd.Metodo = 'configurarcedente' then
        begin
          with Cedente do
@@ -192,7 +189,7 @@ begin
   IniBoletos.SetStrings(SL);
   SL.Free;
 
-  with {$IFNDEF CONSOLE}FrmACBrMonitor.ACBrBoleto1 {$ELSE}dm.ACBrBoleto {$ENDIF} do
+  with FrmACBrMonitor.ACBrBoleto1 do
   begin
      if IniBoletos.SectionExists('Cedente') then
      begin
@@ -250,167 +247,75 @@ end;
 
 procedure IncluirTitulo ( aIni: TIniFile; Sessao: String ) ;
 var
-   Titulo: TACBrTitulo;
-   MemFormatada: String;
-   TipoPessoa: LongInt;
-   vVencimento: String;
-   vDataDocumento: String;
-   vDataProcessamento: String;
-   vDataAbatimento: String;
-   vDataDesconto: String;
-   vDataMoraJuros: String;
-   vDataProtesto: String;
-   vLocalPagamento: String;
+   Titulo : TACBrTitulo;
+   MemFormatada : String;
 begin
-   with {$IFNDEF CONSOLE}FrmACBrMonitor.ACBrBoleto1 {$ELSE}dm.ACBrBoleto {$ENDIF} do
+   with FrmACBrMonitor.ACBrBoleto1 do
    begin
-      Titulo:= CriarTituloNaLista;
+      Titulo := CriarTituloNaLista;
 
-      MemFormatada:= StringReplace(aIni.ReadString(Sessao,'Mensagem',''),'|',sLineBreak,[rfReplaceAll]);
+      MemFormatada := aIni.ReadString(Sessao,'Mensagem','') ;
+      MemFormatada := StringReplace( MemFormatada,'|',sLineBreak, [rfReplaceAll] );
 
       with Titulo do
       begin
-
-         if aini.ReadInteger(Sessao,'Aceite',1) = 0 then
-            Aceite:= atSim
+         if aIni.ReadInteger(Sessao,'Aceite',1) = 0 then
+            Aceite := atSim
          else
-            Aceite:= atNao;
+            Aceite := atNao;
 
-         TipoPessoa:= aini.ReadInteger(Sessao,'Sacado.Pessoa',2);
-
-         case TipoPessoa  of
-            0:Sacado.Pessoa := pFisica;
-            1:Sacado.Pessoa := pJuridica;
-           else
+         try
+            Sacado.Pessoa := TACBrPessoa( aIni.ReadInteger(Sessao,'Sacado.Pessoa',2) );
+         except
             Sacado.Pessoa := pOutras;
-         end;
+         end ;
 
-         case  aini.ReadInteger(Sessao,'OcorrenciaOriginal.TipoOcorrencia',1) of
-            0: OcorrenciaOriginal.Tipo := toRemessaRegistrar;
-            1: OcorrenciaOriginal.Tipo := toRemessaBaixar;
-            2: OcorrenciaOriginal.Tipo := toRemessaDebitarEmConta;
-            3: OcorrenciaOriginal.Tipo := toRemessaConcederAbatimento;
-            4: OcorrenciaOriginal.Tipo := toRemessaCancelarAbatimento;
-            5: OcorrenciaOriginal.Tipo := toRemessaConcederDesconto;
-            6: OcorrenciaOriginal.Tipo := toRemessaCancelarDesconto;
-            7: OcorrenciaOriginal.Tipo := toRemessaAlterarVencimento;
-            8: OcorrenciaOriginal.Tipo := toRemessaProtestar;
-            9: OcorrenciaOriginal.Tipo := toRemessaSustarProtesto;
-           10: OcorrenciaOriginal.Tipo := toRemessaCancelarIntrucaoProtestoBaixa;
-           11: OcorrenciaOriginal.Tipo := toRemessaCancelarInstrucaoProtesto;
-           12: OcorrenciaOriginal.Tipo := toRemessaDispensarJuros;
-           13: OcorrenciaOriginal.Tipo := toRemessaAlterarNomeEnderecoSacado;
-           14: OcorrenciaOriginal.Tipo := toRemessaAlterarNumeroControle;
-           15: OcorrenciaOriginal.Tipo := toRemessaOutrasOcorrencias;
-           16: OcorrenciaOriginal.Tipo := toRemessaAlterarControleParticipante;
-           17: OcorrenciaOriginal.Tipo := toRemessaAlterarSeuNumero;
-           18: OcorrenciaOriginal.Tipo := toRemessaTransfCessaoCreditoIDProd10;
-           19: OcorrenciaOriginal.Tipo := toRemessaTransferenciaCarteira;
-           20: OcorrenciaOriginal.Tipo := toRemessaDevTransferenciaCarteira;
-           21: OcorrenciaOriginal.Tipo := toRemessaDesagendarDebitoAutomatico;
-           22: OcorrenciaOriginal.Tipo := toRemessaAcertarRateioCredito;
-           23: OcorrenciaOriginal.Tipo := toRemessaCancelarRateioCredito;
-           24: OcorrenciaOriginal.Tipo := toRemessaAlterarUsoEmpresa;
-           25: OcorrenciaOriginal.Tipo := toRemessaNaoProtestar;
-           26: OcorrenciaOriginal.Tipo := toRemessaProtestoFinsFalimentares;
-           27: OcorrenciaOriginal.Tipo := toRemessaBaixaporPagtoDiretoCedente;
-           28: OcorrenciaOriginal.Tipo := toRemessaCancelarInstrucao;
-           29: OcorrenciaOriginal.Tipo := toRemessaAlterarVencSustarProtesto;
-           30: OcorrenciaOriginal.Tipo := toRemessaCedenteDiscordaSacado;
-           31: OcorrenciaOriginal.Tipo := toRemessaCedenteSolicitaDispensaJuros;
-           32: OcorrenciaOriginal.Tipo := toRemessaOutrasAlteracoes;
-           33: OcorrenciaOriginal.Tipo := toRemessaAlterarModalidade;
-          else
-            OcorrenciaOriginal.Tipo := toRemessaRegistrar;
-         end;
+         try
+            OcorrenciaOriginal.Tipo := TACBrTipoOcorrencia(
+               aini.ReadInteger(Sessao,'OcorrenciaOriginal.TipoOcorrencia',1) ) ;
+         except
+            OcorrenciaOriginal.Tipo := toRemessaRegistrar ;
+         end ;
 
-         vVencimento := trim(aIni.ReadString(Sessao,'Vencimento',''));
-         if vVencimento <> '' then
-            Vencimento := StrToDate(vVencimento);
-
-         vDataDocumento := trim(aIni.ReadString(Sessao,'DataDocumento',''));
-         if vDataDocumento <> '' then
-            DataDocumento := StrToDate(vDataDocumento);
-
-         vDataProcessamento := trim(aini.ReadString(Sessao,'DataProcessamento',''));
-         if vDataProcessamento <> '' then
-            DataProcessamento := StrToDate(vDataProcessamento);
-
-         vDataAbatimento := trim(aini.ReadString(Sessao,'DataAbatimento',''));
-         if vDataAbatimento <> '' then
-            DataAbatimento := StrToDate(vDataAbatimento);
-
-         vDataDesconto := trim(aini.ReadString(Sessao,'DataDesconto',''));
-         if vDataDesconto <> '' then
-            DataDesconto := StrToDate(vDataDesconto);
-
-         vDataMoraJuros := trim(aini.ReadString(Sessao,'DataMora',''));
-         if vDataMoraJuros <> '' then
-            DataMoraJuros := StrToDate(vDataMoraJuros);
-
-         vDataProtesto := trim(aIni.ReadString(Sessao,'DataProtesto',''));
-         if vDataProtesto <> '' then
-            DataProtesto := strtodate(vDataProtesto);
-
-         vLocalPagamento := trim(aini.ReadString(Sessao,'LocalPagamento',LocalPagamento));
-         if vLocalPagamento <> '' then
-            LocalPagamento :=  vLocalPagamento;
-
-         NumeroDocumento         := aIni.ReadString(Sessao,'NumeroDocumento',NumeroDocumento);
-         EspecieDoc              := aIni.ReadString(Sessao,'Especie',EspecieDoc);
-         NossoNumero             := aini.ReadString(Sessao,'NossoNumero','');
-         Carteira                := aini.ReadString(Sessao,'Carteira','');
-         ValorDocumento          := aini.ReadFloat(Sessao,'ValorDocumento',ValorDocumento);
-         Sacado.NomeSacado       := aIni.ReadString(Sessao,'Sacado.NomeSacado','');
-         Sacado.CNPJCPF          := RemoveStrings(aini.ReadString(Sessao,'Sacado.CNPJCPF',''),AString);
-         Sacado.Logradouro       := aIni.ReadString(Sessao,'Sacado.Logradouro','');
-         Sacado.Numero           := aIni.ReadString(Sessao,'Sacado.Numero','');
-         Sacado.Bairro           := aIni.ReadString(Sessao,'Sacado.Bairro','');
-         Sacado.Complemento      := aIni.ReadString(Sessao,'Sacado.Complemento','');
-         Sacado.Cidade           := aIni.ReadString(Sessao,'Sacado.Cidade','');
-         Sacado.UF               := aIni.ReadString(Sessao,'Sacado.UF','');
-         Sacado.CEP              := RemoveStrings(aIni.ReadString(Sessao,'Sacado.CEP',''),AString);
-         Sacado.Email            := aIni.ReadString(Sessao,'Sacado.Email',Sacado.Email);
-         EspecieMod              := aIni.ReadString(Sessao,'EspecieMod',EspecieMod);
-         Mensagem.Text           := MemFormatada;
-         Instrucao1              := padL(aIni.ReadString(Sessao,'Instrucao1',Instrucao1),2);
-         Instrucao2              := padL(aini.ReadString(Sessao,'Instrucao2',Instrucao2),2);
-         Parcela                 := aini.ReadInteger(Sessao,'Parcela',Parcela);
-         TotalParcelas           := aini.ReadInteger(Sessao,'TotalParcelas',TotalParcelas);
-         ValorAbatimento         := aini.ReadFloat(Sessao,'ValorAbatimento',ValorAbatimento);
-         ValorDesconto           := aini.ReadFloat(Sessao,'ValorDesconto',ValorDesconto);
-         ValorMoraJuros          := aini.ReadFloat(Sessao,'ValorMoraJuros',ValorMoraJuros);
-         ValorIOF                := aini.ReadFloat(Sessao,'ValorIOF',ValorIOF);
-         ValorOutrasDespesas     := aini.ReadFloat(Sessao,'ValorOutrasDespesas',ValorOutrasDespesas);
-         SeuNumero               := aini.ReadString(Sessao,'SeuNumero',SeuNumero);
-         PercentualMulta         := aIni.ReadFloat(Sessao,'PercentualMulta',PercentualMulta);
+         Vencimento          := StrToDateDef(Trim(aIni.ReadString(Sessao,'Vencimento','')), now);
+         DataDocumento       := StrToDateDef(Trim(aIni.ReadString(Sessao,'DataDocumento','')),now);
+         DataProcessamento   := StrToDateDef(Trim(aini.ReadString(Sessao,'DataProcessamento','')),now);
+         DataAbatimento      := StrToDateDef(Trim(aini.ReadString(Sessao,'DataAbatimento','')),0);
+         DataDesconto        := StrToDateDef(Trim(aini.ReadString(Sessao,'DataDesconto','')),0);
+         DataMoraJuros       := StrToDateDef(Trim(aini.ReadString(Sessao,'DataMora','')),0);
+         DataProtesto        := StrToDateDef(Trim(aIni.ReadString(Sessao,'DataProtesto','')),0);
+         LocalPagamento      := Trim(aIni.ReadString(Sessao,'LocalPagamento',LocalPagamento));
+         NumeroDocumento     := aIni.ReadString(Sessao,'NumeroDocumento',NumeroDocumento);
+         EspecieDoc          := aIni.ReadString(Sessao,'Especie',EspecieDoc);
+         NossoNumero         := aini.ReadString(Sessao,'NossoNumero','');
+         Carteira            := aini.ReadString(Sessao,'Carteira','');
+         ValorDocumento      := aini.ReadFloat(Sessao,'ValorDocumento',ValorDocumento);
+         Sacado.NomeSacado   := aIni.ReadString(Sessao,'Sacado.NomeSacado','');
+         Sacado.CNPJCPF      := RemoveStrings(aini.ReadString(Sessao,'Sacado.CNPJCPF',''),CIgnorarChars);
+         Sacado.Logradouro   := aIni.ReadString(Sessao,'Sacado.Logradouro','');
+         Sacado.Numero       := aIni.ReadString(Sessao,'Sacado.Numero','');
+         Sacado.Bairro       := aIni.ReadString(Sessao,'Sacado.Bairro','');
+         Sacado.Complemento  := aIni.ReadString(Sessao,'Sacado.Complemento','');
+         Sacado.Cidade       := aIni.ReadString(Sessao,'Sacado.Cidade','');
+         Sacado.UF           := aIni.ReadString(Sessao,'Sacado.UF','');
+         Sacado.CEP          := RemoveStrings(aIni.ReadString(Sessao,'Sacado.CEP',''),CIgnorarChars);
+         Sacado.Email        := aIni.ReadString(Sessao,'Sacado.Email',Sacado.Email);
+         EspecieMod          := aIni.ReadString(Sessao,'EspecieMod',EspecieMod);
+         Mensagem.Text       := MemFormatada;
+         Instrucao1          := padL(aIni.ReadString(Sessao,'Instrucao1',Instrucao1),2);
+         Instrucao2          := padL(aIni.ReadString(Sessao,'Instrucao2',Instrucao2),2);
+         Parcela             := aIni.ReadInteger(Sessao,'Parcela',Parcela);
+         TotalParcelas       := aIni.ReadInteger(Sessao,'TotalParcelas',TotalParcelas);
+         ValorAbatimento     := aIni.ReadFloat(Sessao,'ValorAbatimento',ValorAbatimento);
+         ValorDesconto       := aIni.ReadFloat(Sessao,'ValorDesconto',ValorDesconto);
+         ValorMoraJuros      := aIni.ReadFloat(Sessao,'ValorMoraJuros',ValorMoraJuros);
+         ValorIOF            := aIni.ReadFloat(Sessao,'ValorIOF',ValorIOF);
+         ValorOutrasDespesas := aIni.ReadFloat(Sessao,'ValorOutrasDespesas',ValorOutrasDespesas);
+         SeuNumero           := aIni.ReadString(Sessao,'SeuNumero',SeuNumero);
+         PercentualMulta     := aIni.ReadFloat(Sessao,'PercentualMulta',PercentualMulta);
       end;
    end;
 end;
-
-Function ConvertStrRecived( AStr: String ) : String ;
- Var P   : Integer ;
-     Hex : String ;
-     CharHex : Char ;
-begin
-  { Verificando por codigos em Hexa }
-  Result := AStr ;
-
-  P := pos('\x',Result) ;
-  while P > 0 do
-  begin
-     Hex := copy(Result,P+2,2) ;
-
-     try
-        CharHex := Chr(StrToInt('$'+Hex)) ;
-     except
-        CharHex := ' ' ;
-     end ;
-
-     Result := StringReplace(Result,'\x'+Hex,CharHex,[rfReplaceAll]) ;
-     P      := pos('\x',Result) ;
-  end ;
-end ;
 
 end.
 

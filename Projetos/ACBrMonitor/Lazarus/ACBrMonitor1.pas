@@ -439,6 +439,12 @@ type
       Erro: integer; ErroDesc: string);{%h-}
     procedure TcpServerRecebeDados(const TCPBlockSocket: TTCPBlockSocket;
       const Recebido: ansistring; var Enviar: ansistring);{%h-}
+    procedure TCPServerTCConecta(const TCPBlockSocket : TTCPBlockSocket ;
+      var Enviar : AnsiString) ;
+    procedure TCPServerTCDesConecta(const TCPBlockSocket : TTCPBlockSocket ;
+      Erro : Integer ; ErroDesc : String) ;
+    procedure TCPServerTCRecebeDados(const TCPBlockSocket : TTCPBlockSocket ;
+      const Recebido : AnsiString ; var Enviar : AnsiString) ;
     procedure TrayIcon1Click(Sender: TObject);
     procedure TrayIcon1MouseUp(Sender: TObject; Button: TMouseButton;{%h-}
       Shift: TShiftState; X, Y: integer);{%h-}
@@ -561,14 +567,6 @@ type
     procedure sbTCArqPrecosFindClick(Sender: TObject);
     procedure TimerTCTimer(Sender: TObject);
     procedure sbCHQSerialClick(Sender: TObject);
-(*    procedure TCPServerTCConecta(const TCPBlockSocket: TTCPBlockSocket;
-      var Enviar: String);
-    procedure TCPServerTCDesConecta(
-      const TCPBlockSocket: TTCPBlockSocket; Erro: Integer;
-      ErroDesc: String);
-    procedure TCPServerTCRecebeDados(
-      const TCPBlockSocket: TTCPBlockSocket; const Recebido: String;
-      var Enviar: String);*)
   private
     ACBrMonitorINI: string;
     Inicio: boolean;
@@ -2384,6 +2382,91 @@ begin
   end;
 end;
 
+procedure TFrmACBrMonitor.TCPServerTCConecta(
+  const TCPBlockSocket : TTCPBlockSocket ; var Enviar : AnsiString) ;
+var
+  IP, Resp, Id: ansistring;
+  Indice: integer;
+begin
+  TCPBlockSocket.SendString( '#ok' ) ;
+
+  Id := Trim(TCPBlockSocket.RecvPacket( 1000 ));
+  IP := TCPBlockSocket.GetRemoteSinIP ;
+  Indice := mTCConexoes.Lines.IndexOf(IP);
+  if Indice < 0 then
+  begin
+     mTCConexoes.Lines.Add(IP);
+     fsLinesLog := 'T.C. Inicio Conexão IP: [' + IP + '] ID: [' +Id +']' +
+                   ' em: ' +FormatDateTime('dd/mm/yy hh:nn:ss', now);
+     AddLinesLog;
+  end;
+end;
+
+procedure TFrmACBrMonitor.TCPServerTCDesConecta(
+  const TCPBlockSocket : TTCPBlockSocket ; Erro : Integer ; ErroDesc : String) ;
+Var
+  IP : String ;
+  Indice : Integer ;
+begin
+  IP  := TCPBlockSocket.GetRemoteSinIP ;
+  fsLinesLog := 'T.C. Fim Conexão IP: ['+ IP + '] em: '+
+                FormatDateTime('dd/mm/yy hh:nn:ss', now ) ;
+  AddLinesLog ;
+
+  Indice := mTCConexoes.Lines.IndexOf( IP ) ;
+  if Indice >= 0 then
+     mTCConexoes.Lines.Delete( Indice );
+end;
+
+procedure TFrmACBrMonitor.TCPServerTCRecebeDados(
+  const TCPBlockSocket : TTCPBlockSocket ; const Recebido : AnsiString ;
+  var Enviar : AnsiString) ;
+Var
+  Comando, Linha : AnsiString ;
+  Indice, P1, P2 : Integer ;
+begin
+  { Le o que foi enviado atravez da conexao TCP }
+  Comando := StringReplace(Trim(Recebido),#0,'',[rfReplaceAll]) ;  // Remove nulos
+
+  if pos( '#live', Comando ) > 0 then
+  begin
+     Comando := StringReplace(Comando,'#live','',[rfReplaceAll]) ; // Remove #live
+     TCPBlockSocket.Tag := 0 ;                      // Zera falhas de #live?
+  end ;
+
+  if Comando = '' then
+     exit ;
+
+  fsLinesLog := 'TC: ['+TCPBlockSocket.GetRemoteSinIP+'] RX: <- ['+Comando+']' ;
+  AddLinesLog ;
+
+  if copy(Comando,1,1) = '#' then
+  begin
+     Comando  := copy( Comando, 2, Length(Comando)) ;
+     P1       := 0 ;
+     P2       := 0 ;
+     Indice   := fsSLPrecos.IndexOfName( Comando ) ;
+     if Indice >= 0 then
+      begin
+        Linha := fsSLPrecos[ Indice ] ;
+        P1    := Pos('|',Linha) ;
+        P2    := PosAt('|',Linha,3) ;
+      end
+     else
+        Linha := edTCNaoEncontrado.Text ;
+
+     if P2 = 0 then
+        P2 := Length( Linha )+1 ;
+
+     Enviar := '#' + copy( Linha, P1+1, P2-P1-1 ) ;
+     Enviar := LeftStr(Enviar,45) ;
+
+     TCPBlockSocket.Tag := 0 ;  // Zera falhas de #live?
+     fsLinesLog := '     TX: -> ['+Enviar+']' ;
+     AddLinesLog ;
+  end ;
+end;
+
 procedure TFrmACBrMonitor.TrayIcon1Click(Sender: TObject);
 begin
   TrayIcon1.ShowBalloonHint;
@@ -3542,8 +3625,8 @@ begin
 
   AvaliaEstadoTsTC;
 
- { mResp.Lines.Add( 'Servidor de Terminal de Consulta: '+
-          IfThen( TCPServerTC.Ativo, 'ATIVADO', 'DESATIVADO' ) );}
+  mResp.Lines.Add( 'Servidor de Terminal de Consulta: '+
+          IfThen( TCPServerTC.Ativo, 'ATIVADO', 'DESATIVADO' ) );
 end;
 
 {------------------------------------------------------------------------------}
@@ -3596,7 +3679,7 @@ end;
 procedure TFrmACBrMonitor.TimerTCTimer(Sender: TObject);
 var
   I: integer;
-  // TODO:     AConnection : TIdTCPServerConnection ;
+  AConnection : TTCPBlockSocket ;
   Resp: ansistring;
   ATime: TDateTime;
 begin
@@ -3608,50 +3691,23 @@ begin
     fsDTPrecos := FileAge(edTCArqPrecos.Text);
   end;
 
-
-(*  TODO:
-  with TCPServerTC.Threads.LockList do
+  with TCPServerTC.ThreadList.LockList do
   try
      for I := 0 to Count-1 do
      begin
-        AConnection := TIdPeerThread(Items[I]).Connection ;
+        AConnection := TACBrTCPServerThread(Items[I]).TCPBlockSocket ;
         Try
            AConnection.Tag := AConnection.Tag + 1 ;
-           AConnection.Write('#live?');
+           AConnection.SendString('#live?');
            if AConnection.Tag > 10 then   // 10 Falhas no #live?... desconecte
-              AConnection.Disconnect ;
+              AConnection.CloseSocket ;
         except
-           AConnection.Disconnect ;
+           AConnection.CloseSocket ;
         end ;
      end ;
   finally
-     TCPServerTC.Threads.UnlockList;
+     TCPServerTC.ThreadList.UnlockList;
   end;
-
-*)
-
-(*  TCPServerTC.OnRecebeDados := nil ;
-  try
-     For I := 0 to TCPServerTC.ThreadList.Count-1 do
-     begin
-        try
-           TCPServerTC.ThreadList[I].TCPBlockSocket.SendString('#live?');
-           Resp := Trim(TCPServerTC.ThreadList[I].TCPBlockSocket.RecvPacket(2000)) ;
-           if Resp <> '#live' then
-            begin
-              fsLinesLog := 'T.C. não respondeu #live?' ;
-              TCPServerTC.ThreadList[I].TCPBlockSocket.CloseSocket ;
-            end
-           else
-              fsLinesLog := 'T.C. #live ok' ;
-           AddLinesLog ;
-        except
-           TCPServerTC.ThreadList[I].TCPBlockSocket.CloseSocket ;
-        end ;
-     end ;
-  finally
-     TCPServerTC.OnRecebeDados := TCPServerTCRecebeDados ;
-  end ; *)
 end;
 
 {------------------------------------------------------------------------------}
@@ -3769,94 +3825,3 @@ begin
 end;
 
 end.
-
-(*
-
-TODO - Terminal de Consulta
-
-procedure TCPServerTCDisconnect(AThread: TIdPeerThread);
-procedure TCPServerTCExecute(AThread: TIdPeerThread);
-procedure TCPServerTCConnect(AThread: TIdPeerThread);
-procedure TFrmACBrMonitor.TCPServerTCConnect(AThread: TIdPeerThread);
-var IP, Resp, Id: ansistring;
-Indice: integer;
-begin
-AThread.Connection.write('#ok');
-Id := trim(AThread.Connection.ReadLn(#0, 1000));
-    {
-      AThread.Connection.Write('#alwayslive');
-      Resp := trim(AThread.Connection.ReadLn(#0,1000)) ;
-      if Resp <> '#alwayslive_ok' then
-      begin
-         fsLinesLog := 'Resposta Inválida do T.C.' ;
-         AThread.Synchronize( AddLinesLog );
-         AThread.Connection.Disconnect ;
-      end ;
-    }      IP := AThread.Connection.Socket.Binding.PeerIP;
-Indice := mTCConexoes.Lines.IndexOf(IP);
-if Indice < 0 then
-begin
-mTCConexoes.Lines.Add(IP);
-fsLinesLog := 'T.C. Inicio Conexão IP: [' + IP + '] ID: [' +Id +']' +
-' em: ' +FormatDateTime('dd/mm/yy hh:nn:ss', now);
-AThread.Synchronize(AddLinesLog);
-end;
-end;
-{------------------------------------------------------------------------------}
-procedure TFrmACBrMonitor.TCPServerTCDisconnect(AThread: TIdPeerThread);
-var IP: string;
-Indice: integer;
-begin
-IP := AThread.Connection.Socket.Binding.PeerIP;
-fsLinesLog := 'T.C. Fim Conexão IP: [' + IP + '] em: ' +
-FormatDateTime('dd/mm/yy hh:nn:ss', now);
-AThread.Synchronize(AddLinesLog);
-Indice := mTCConexoes.Lines.IndexOf(IP);
-if Indice >= 0 then
-mTCConexoes.Lines.Delete(Indice);
-end;
-{------------------------------------------------------------------------------}
-procedure TFrmACBrMonitor.TCPServerTCExecute(AThread: TIdPeerThread);
-var Comando, Resposta, Linha: ansistring;
-Indice, P1, P2: integer;
-begin
-{ Le o que foi enviado atravez da conexao TCP }      Comando :=
-Trim(AThread.Connection.ReadLn(#0));
-Comando := StringReplace(Comando, #0, '', [rfReplaceAll]);
-// Remove nulos  if pos('#live', Comando) > 0 then
-begin
-Comando := StringReplace(Comando, '#live', '', [rfReplaceAll]);
-// Remove #live  AThread.Connection.Tag := 0;
-// Zera falhas de #live?  end;
-if Comando = '' then
-exit;
-fsLinesLog := 'TC: [' +AThread.Connection.Socket.Binding.PeerIP +
-'] RX: <- [' +Comando +']';
-AThread.Synchronize(AddLinesLog);
-if copy(Comando, 1, 1) = '#' then
-begin
-Comando := copy(Comando, 2, Length(Comando));
-P1 := 0;
-P2 := 0;
-Indice := fsSLPrecos.IndexOfName(Comando);
-if Indice > 0 then
-begin
-Linha := fsSLPrecos[Indice];
-P1 := Pos('|', Linha);
-P2 := PosAt('|', Linha, 3);
-end
-else
-Linha := edTCNaoEncontrado.Text;
-if P2 = 0 then
-P2 := Length(Linha) +1;
-Resposta := '#' + copy(Linha, P1 +1, P2 -P1 -1);
-Resposta := LeftStr(Resposta, 45);
-AThread.Connection.write(Resposta);
-AThread.Connection.Tag := 0;
-// Zera falhas de #live?  fsLinesLog := '     TX: -> [' +Resposta +']';
-AThread.Synchronize(AddLinesLog);
-end;
-end;
-
-*)
-

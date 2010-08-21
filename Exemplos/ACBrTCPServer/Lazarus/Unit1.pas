@@ -56,14 +56,23 @@ var
 implementation
 
 procedure TForm1.ExibirConexoes;
- Var I : Integer ;
+Var
+  I : Integer ;
 begin
   CheckListBox1.Items.Clear ;
-  For I := 0 to ACBrTCPServer1.ThreadList.Count - 1 do
-  begin
-     if ACBrTCPServer1.ThreadList[I].Active then
-        CheckListBox1.Items.Add( 'IP: '+ACBrTCPServer1.ThreadList[I].TCPBlockSocket.GetRemoteSinIP +' - '+
-          IntToStr( ACBrTCPServer1.ThreadList[I].TCPBlockSocket.GetRemoteSinPort ) ) ;
+  with ACBrTCPServer1.ThreadList.LockList do
+  try
+    for I := 0 to Count-1 do
+    begin
+      with TACBrTCPServerThread(Items[I]) do
+      begin
+         if Active then
+            CheckListBox1.Items.Add( 'IP: '+TCPBlockSocket.GetRemoteSinIP +' - '+
+              IntToStr( TCPBlockSocket.GetRemoteSinPort ) ) ;
+      end ;
+    end ;
+  finally
+     ACBrTCPServer1.ThreadList.UnlockList;
   end ;
 
   lNConexoes.Caption := IntToStr(CheckListBox1.Items.Count) ;
@@ -88,7 +97,7 @@ end;
 procedure TForm1.ACBrTCPServer1Conecta(
   const TCPBlockSocket: TTCPBlockSocket; var Enviar: String);
 begin
-  mOutput.Lines.Add('Conex„o estabelecida de: ' + TCPBlockSocket.GetRemoteSinIP ) ;
+  mOutput.Lines.Add('Conex√£o estabelecida de: ' + TCPBlockSocket.GetRemoteSinIP ) ;
   Enviar := 'Seja bem vindo' ;
   ExibirConexoes ;
 end;
@@ -108,7 +117,7 @@ end;
 procedure TForm1.ACBrTCPServer1DesConecta(
   const TCPBlockSocket: TTCPBlockSocket; Erro: Integer; ErroDesc: String);
 begin
-  mOutput.Lines.Add( 'Conex„o terminada. Erro:' + IntToStr(Erro) + ' - ' + ErroDesc ) ;
+  mOutput.Lines.Add( 'Conex√£o terminada. Erro:' + IntToStr(Erro) + ' - ' + ErroDesc ) ;
   ExibirConexoes ;
 end;
 
@@ -136,7 +145,7 @@ begin
   For I := 0 to CheckListBox1.Items.Count-1 do
   begin
      if CheckListBox1.Checked[I] then
-        ACBrTCPServer1.ThreadList[I].Terminate ;
+        ACBrTCPServer1.Terminar(I) ;
   end ;
 end;
 

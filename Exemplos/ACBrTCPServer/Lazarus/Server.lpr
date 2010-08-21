@@ -8,7 +8,9 @@ uses
   {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
   Forms,
-  Unit1 in 'Unit1.pas' {Form1}, ACBr_LCL;
+  Unit1 in 'Unit1.pas', ACBrTCP {Form1};
+
+{$R *.res}
 
 begin
   Application.Initialize;

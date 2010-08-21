@@ -67,8 +67,11 @@ TACBrTCPServerDesConecta = procedure( const TCPBlockSocket : TTCPBlockSocket;
 TACBrTCPServerRecive = procedure( const TCPBlockSocket : TTCPBlockSocket;
    const Recebido : AnsiString; var Enviar : AnsiString) of object ;
 
+{ TACBrTCPServerDaemon }
+
 TACBrTCPServerDaemon = class(TThread)
   private
+    fErroBind : Integer ;
     fsSock : TTCPBlockSocket;
     fsACBrTCPServer : TACBrTCPServer ;
 
@@ -81,6 +84,7 @@ TACBrTCPServerDaemon = class(TThread)
     procedure Execute; override;
 
     property TCPBlockSocket : TTCPBlockSocket read fsSock ;
+    property ErroBind : Integer read fErroBind ;
   end;
 
 TACBrTCPServerThread = class(TThread)
@@ -103,17 +107,6 @@ TACBrTCPServerThread = class(TThread)
     property TCPBlockSocket : TTCPBlockSocket read fsSock ;
   end;
 
-{ Lista de Threads (conexões) do TACBrTCPServer }
-TACBrTCPServerThreadList = class(TObjectList)
-  protected
-    procedure SetObject (Index: Integer; Item: TACBrTCPServerThread);
-    function GetObject (Index: Integer): TACBrTCPServerThread;
-    procedure Insert (Index: Integer; Obj: TACBrTCPServerThread);
-  public
-    function Add (Obj: TACBrTCPServerThread): Integer;
-    property Objects [Index: Integer]: TACBrTCPServerThread
-      read GetObject write SetObject; default;
-  end;
 
 { Componente ACBrTCPServer - Servidor TCP muito simples }
 
@@ -126,7 +119,7 @@ TACBrTCPServer = class( TACBrComponent )
     fsTimeOut: Integer;
     fsIP: String;
     fsPort: String;
-    fsThreadList : TACBrTCPServerThreadList ;
+    fsThreadList : TThreadList ;
     fsOnConecta: TACBrTCPServerConecta;
     fsOnRecebeDados: TACBrTCPServerRecive;
     fsOnDesConecta: TACBrTCPServerDesConecta;
@@ -147,10 +140,11 @@ TACBrTCPServer = class( TACBrComponent )
 
     procedure Ativar ;
     procedure Desativar ;
-    procedure EnviarString(const AString : AnsiString; NumConexao : Integer ) ;
+    procedure EnviarString(const AString : AnsiString; NumConexao : Integer = -1 ) ;
+    procedure Terminar(NumConexao : Integer = -1 ) ;
 
     property Ativo : Boolean read GetAtivo write SetAtivo ;
-    property ThreadList : TACBrTCPServerThreadList read fsThreadList ;
+    property ThreadList : TThreadList read fsThreadList ;
     property StrTerminador : AnsiString  read fs_Terminador  ;
 
      { Instancia do Componente TACBrTCPServerDaemon }
@@ -204,10 +198,11 @@ Uses ACBrUtil ;
 
 constructor TACBrTCPServerDaemon.Create( const ACBrTCPServer : TACBrTCPServer );
 begin
-  inherited create(False) ;
-
   fsACBrTCPServer := ACBrTCPServer ;
-  fsSock := TTCPBlockSocket.create ;
+  fsSock    := TTCPBlockSocket.create ;
+  fErroBind := -9999;   // Ainda nao inicializado
+
+  inherited create(False) ;
   FreeOnTerminate := False ;
 end;
 
@@ -225,10 +220,14 @@ begin
 //   CreateSocket ;
      SetLinger(True,10) ;
      Bind( fsACBrTCPServer.IP , fsACBrTCPServer.Port ) ;
-     Listen ;
+     if LastError = 0 then
+        Listen ;
 
-     repeat
-        if Terminated then
+     fErroBind := LastError;
+
+     while (fErroBind = 0) do
+     begin
+        if Terminated or (not Assigned(fsSock)) then
            break ;
 
         if CanRead( 1000 ) then
@@ -237,7 +236,7 @@ begin
            if lastError = 0 then
               TACBrTCPServerThread.create(ClientSock, Self);
         end;
-     until false;
+     end ;
   end;
 end;
 
@@ -364,35 +363,6 @@ begin
   Result := (not self.Terminated) and (fsSock.LastError = 0) ;
 end;
 
-{ TACBrTCPServerThreadList }
-
-function TACBrTCPServerThreadList.Add(Obj: TACBrTCPServerThread): Integer;
-begin
-  Result := inherited Add(Obj) ;
-end;
-
-function TACBrTCPServerThreadList.GetObject(
-  Index: Integer): TACBrTCPServerThread;
-  Var AObject : TObject ;
-begin
-  AObject := inherited GetItem(Index) ;
-  Result := nil ;
-  if Assigned( AObject ) then
-     if AObject is TACBrTCPServerThread then
-        Result := AObject as TACBrTCPServerThread ;
-end;
-
-procedure TACBrTCPServerThreadList.Insert(Index: Integer;
-  Obj: TACBrTCPServerThread);
-begin
-  inherited Insert(Index, Obj);
-end;
-
-procedure TACBrTCPServerThreadList.SetObject(Index: Integer;
-  Item: TACBrTCPServerThread);
-begin
-  inherited SetItem (Index, Item) ;
-end;
 
 { TACBrTCPServer }
 
@@ -403,15 +373,18 @@ begin
   fsIP   := '0.0.0.0' ;
   fsPort := '0' ;
   fsTimeOut := 5000 ;
-  fsTerminador  := '#13,#10' ;
-  fs_Terminador := #13+#10 ;
+  fsTerminador  := '' ;
+  fs_Terminador := '' ;
 
   fsACBrTCPServerDaemon := nil ;
-  fsThreadList := TACBrTCPServerThreadList.Create( False ) ;
+  fsThreadList := TThreadList.Create ;
 end;
 
 destructor TACBrTCPServer.Destroy;
+var
+  I : Integer ;
 begin
+  Desativar;
   fsThreadList.Free ;
 
   inherited Destroy;
@@ -438,31 +411,47 @@ begin
 end;
 
 procedure TACBrTCPServer.Ativar;
+Var
+  Erro : Integer ;
+  ErroDesc : String ;
 begin
   if Assigned( fsACBrTCPServerDaemon ) then
      exit ;
 
   fsACBrTCPServerDaemon := TACBrTCPServerDaemon.Create( Self );
+  // Aguarda termino do Bind //
+  while fsACBrTCPServerDaemon.ErroBind = -9999 do
+     sleep(100) ;
+
+  Erro := fsACBrTCPServerDaemon.TCPBlockSocket.LastError ;
+  ErroDesc := fsACBrTCPServerDaemon.TCPBlockSocket.LastErrorDesc;
+
+  if Erro <> 0 then
+  begin
+     Desativar;
+     raise Exception.Create( ACBrStr('Erro: '+IntToStr(Erro)+' - '+ErroDesc+sLineBreak+
+                                     'Não foi possível criar serviço na porta: '+Port)) ;
+  end ;
 end;
 
 procedure TACBrTCPServer.Desativar;
  Var I : Integer ;
 begin
+  with fsThreadList.LockList do
+  try
+     for I := 0 to Count-1 do
+        if Assigned( Items[I] ) then
+           TACBrTCPServerThread(Items[I]).Terminate;
+  finally
+     fsThreadList.UnlockList;
+  end ;
+  fsThreadList.Clear ;
+
   if not Assigned( fsACBrTCPServerDaemon )then
      exit ;
 
   fsACBrTCPServerDaemon.Terminate ;
   fsACBrTCPServerDaemon.WaitFor ;
-
-  For I := 0 to fsThreadList.Count - 1 do
-  begin
-    if Assigned( fsThreadList[I] ) then
-    begin
-       fsThreadList[I].Terminate ;
-//       fsThreadList[I].WaitFor ;
-    end ;
-  end ;
-  fsThreadList.Clear ;
 
   FreeAndNil( fsACBrTCPServerDaemon ) ;
 end;
@@ -501,23 +490,58 @@ begin
 end;
 
 procedure TACBrTCPServer.EnviarString(const AString : AnsiString;
-   NumConexao : Integer ) ;
- Var I : Integer ;
+   NumConexao : Integer = -1 ) ;
+Var
+  I : Integer ;
 begin
   if not Ativo then
      raise Exception.Create(ACBrStr('Componente ACBrTCPServer não está ATIVO'));
 
-  if NumConexao >= ThreadList.Count then
-     raise Exception.Create(ACBrStr('Numero de conexão inexistente: ')+IntToStr(NumConexao));
+  with fsThreadList.LockList do
+  try
+     if NumConexao < 0 then
+      begin
+        For I := 0 to Count-1 do
+           TACBrTCPServerThread(Items[I]).TCPBlockSocket.SendString( AString );
+      end
+     else
+      begin
+        if (NumConexao >= Count) then
+           raise Exception.Create(ACBrStr('Numero de conexão inexistente: ')+IntToStr(NumConexao));
 
-  if NumConexao < 0 then
-   begin
-     For I := 0 to ThreadList.Count-1 do
-        ThreadList[I].TCPBlockSocket.SendString( AString );
-   end
-  else
-     ThreadList[NumConexao].TCPBlockSocket.SendString( AString );
+        TACBrTCPServerThread(Items[NumConexao]).TCPBlockSocket.SendString( AString );
+      end ;
+  finally
+     fsThreadList.UnlockList;
+  end ;
 end;
+
+procedure TACBrTCPServer.Terminar(NumConexao : Integer) ;
+Var
+  I : Integer ;
+begin
+  with fsThreadList.LockList do
+  try
+     if NumConexao < 0 then
+      begin
+        For I := 0 to Count-1 do
+        begin
+           TACBrTCPServerThread(Items[I]).TCPBlockSocket.CloseSocket ;
+           TACBrTCPServerThread(Items[I]).Terminate ;
+        end ;
+      end
+     else
+      begin
+        if (NumConexao >= Count) then
+           raise Exception.Create(ACBrStr('Numero de conexão inexistente: ')+IntToStr(NumConexao));
+
+        TACBrTCPServerThread(Items[NumConexao]).TCPBlockSocket.CloseSocket;
+        TACBrTCPServerThread(Items[NumConexao]).Terminate;
+      end ;
+  finally
+     fsThreadList.UnlockList;
+  end ;
+end ;
 
 { TACBrHTTP }
 

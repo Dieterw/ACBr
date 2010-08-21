@@ -440,9 +440,9 @@ type
     procedure TcpServerRecebeDados(const TCPBlockSocket: TTCPBlockSocket;
       const Recebido: ansistring; var Enviar: ansistring);{%h-}
     procedure TCPServerTCConecta(const TCPBlockSocket : TTCPBlockSocket ;
-      var Enviar : AnsiString) ;
+      var Enviar : AnsiString) ;{%H-}
     procedure TCPServerTCDesConecta(const TCPBlockSocket : TTCPBlockSocket ;
-      Erro : Integer ; ErroDesc : String) ;
+      Erro : Integer ; ErroDesc : String) ;{%H-}
     procedure TCPServerTCRecebeDados(const TCPBlockSocket : TTCPBlockSocket ;
       const Recebido : AnsiString ; var Enviar : AnsiString) ;
     procedure TrayIcon1Click(Sender: TObject);
@@ -626,7 +626,7 @@ implementation
 uses IniFiles, TypInfo, LCLType, strutils,
   UtilUnit,
   DoECFUnit, DoGAVUnit, DoCHQUnit, DoDISUnit, DoLCBUnit, DoACBrUnit, DoBALUnit,
-  DoBoletoUnit,
+  DoBoletoUnit, DoCEPUnit,
   {$IFDEF MSWINDOWS} sndkey32, {$ENDIF}
   {$IFDEF LINUX} unix, baseunix, {$ENDIF}
   ACBrECFNaoFiscal, ACBrUtil, ACBrConsts, Math, Sobre, DateUtils,
@@ -1931,7 +1931,9 @@ begin
         else if Cmd.Objeto = 'ETQ' then
           DoETQ(Cmd)
         else if Cmd.Objeto = 'BOLETO' then
-          DoBoleto(Cmd);
+          DoBoleto(Cmd)
+        else if Cmd.Objeto = 'CEP' then
+          DoCEP(Cmd);
 
         Resposta(Linha, 'OK: ' + Cmd.Resposta);
 
@@ -2385,7 +2387,7 @@ end;
 procedure TFrmACBrMonitor.TCPServerTCConecta(
   const TCPBlockSocket : TTCPBlockSocket ; var Enviar : AnsiString) ;
 var
-  IP, Resp, Id: ansistring;
+  IP, Id: ansistring;
   Indice: integer;
 begin
   TCPBlockSocket.SendString( '#ok' ) ;
@@ -2769,13 +2771,13 @@ begin
   if ACBrLCB1.Ativo then
   begin
     bLCBAtivar.Caption := '&Desativar';
-    shpLCB.Color := clLime;
+    shpLCB.Brush.Color := clLime;
     ImageList1.GetBitmap(6, bLCBAtivar.Glyph);
   end
   else
   begin
     bLCBAtivar.Caption := '&Ativar';
-    shpLCB.Color := clRed;
+    shpLCB.Brush.Color := clRed;
     ImageList1.GetBitmap(5, bLCBAtivar.Glyph);
   end;
 end;
@@ -3614,7 +3616,8 @@ end;
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.bTCAtivarClick(Sender: TObject);
 begin
-  TCPServerTC.Port := edTCPort.Text;
+  if not TCPServerTC.Ativo then
+     TCPServerTC.Port := edTCPort.Text;
 
   if not FileExists(edTCArqPrecos.Text) then
     raise Exception.Create('Arquivo de Preços não encontrado em: [' +
@@ -3649,13 +3652,13 @@ begin
   if TCPServerTC.Ativo then
   begin
     bTCAtivar.Caption := '&Desativar';
-    shpTC.Color := clLime;
+    shpTC.Brush.Color := clLime;
     ImageList1.GetBitmap(6, bTCAtivar.Glyph);
   end
   else
   begin
     bTCAtivar.Caption := '&Ativar';
-    shpTC.Color := clRed;
+    shpTC.Brush.Color := clRed;
     ImageList1.GetBitmap(5, bTCAtivar.Glyph);
     mTCConexoes.Lines.Clear;
   end;
@@ -3680,8 +3683,6 @@ procedure TFrmACBrMonitor.TimerTCTimer(Sender: TObject);
 var
   I: integer;
   AConnection : TTCPBlockSocket ;
-  Resp: ansistring;
-  ATime: TDateTime;
 begin
   // Verificando se o arquivo de Preços foi atualizado //
   if FileAge(edTCArqPrecos.Text) > fsDTPrecos then

@@ -2540,14 +2540,14 @@ object FrmACBrMonitor: TFrmACBrMonitor
         Hint = 'SE NAO LEU O CÓDIGO DE BARRAS:'#13#10#13#10'1 - Verifique se a Porta está correta'#13#10'2 - Experimente deixar o SUFIXO vazio. Após uma leitura '#13#10'verifique o Sufixo correto no final de "Ultima Leitura"'
         Caption = 'Leitor Serial'
         ClientHeight = 181
-        ClientWidth = 618
+        ClientWidth = 584
         ImageIndex = 10
         OnShow = tsLCBShow
         object Bevel2: TBevel
           Left = 331
           Height = 127
           Top = 4
-          Width = 276
+          Width = 242
           Anchors = [akTop, akLeft, akRight]
         end
         object Bevel3: TBevel
@@ -2644,7 +2644,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
           Left = 347
           Height = 23
           Top = 98
-          Width = 247
+          Width = 213
           Anchors = [akTop, akLeft, akRight]
           OnChange = edLCBPreExcluirChange
           ParentShowHint = False
@@ -2655,7 +2655,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
           Height = 23
           Hint = 'IMPORTANTE: Informar o sufixo correto é importante '#13#10'para ler corretamente um código de cada vez.'#13#10#13#10'Passe um produto pelo leitor e verifique o código '#13#10'do Sufixo no Final do campo "Ultima Leitura"'
           Top = 27
-          Width = 247
+          Width = 213
           Anchors = [akTop, akLeft, akRight]
           ItemHeight = 15
           ItemIndex = 0
@@ -2793,7 +2793,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
           Height = 34
           Hint = 'Ultima Leitura'
           Top = 136
-          Width = 487
+          Width = 453
           Anchors = [akTop, akLeft, akRight]
           BevelInner = bvLowered
           Caption = 'Ultima leitura'
@@ -2805,14 +2805,14 @@ object FrmACBrMonitor: TFrmACBrMonitor
       object tsRFD: TTabSheet
         Caption = 'RFD'
         ClientHeight = 181
-        ClientWidth = 618
+        ClientWidth = 584
         ImageIndex = 13
         OnShow = tsRFDShow
         object pgConRFD: TPageControl
           Left = 0
           Height = 181
           Top = 0
-          Width = 618
+          Width = 584
           ActivePage = tsRFDConfig
           Align = alClient
           TabIndex = 0
@@ -2820,11 +2820,11 @@ object FrmACBrMonitor: TFrmACBrMonitor
           object tsRFDConfig: TTabSheet
             Caption = 'Geral'
             ClientHeight = 153
-            ClientWidth = 610
+            ClientWidth = 576
             ImageIndex = 3
             OnShow = tsRFDConfigShow
             object sbDirRFD: TSpeedButton
-              Left = 449
+              Left = 415
               Height = 22
               Hint = 'Abre o diretório RFD'
               Top = 27
@@ -2861,14 +2861,14 @@ object FrmACBrMonitor: TFrmACBrMonitor
               Height = 23
               Hint = 'Diretório para gravação dos arquivos da RFD.'#13#10'Se nada for especificado será criado um subdiretório '#13#10'"RFD" dentro da pasta do ACBrMonitor'#13#10#13#10'Para modifica-lo o componente ECF deve estar desativado'
               Top = 26
-              Width = 297
+              Width = 263
               Anchors = [akTop, akLeft, akRight]
               Enabled = False
               OnChange = edRFDDirChange
               TabOrder = 1
             end
             object bRFDMF: TBitBtn
-              Left = 495
+              Left = 461
               Height = 26
               Hint = 'Captura dados Memoria Fiscal.'#13#10#13#10'Útil para ajudar a preencher os campos '#13#10'de ACBrRFD.ini'
               Top = 16
@@ -2911,11 +2911,11 @@ object FrmACBrMonitor: TFrmACBrMonitor
               Left = 8
               Height = 93
               Top = 56
-              Width = 592
+              Width = 558
               Anchors = [akTop, akLeft, akRight]
               Caption = 'ECF'
               ClientHeight = 75
-              ClientWidth = 588
+              ClientWidth = 554
               TabOrder = 4
               object Label43: TLabel
                 Left = 16
@@ -2937,7 +2937,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
                 Left = 176
                 Height = 23
                 Top = 13
-                Width = 331
+                Width = 297
                 Anchors = [akTop, akLeft, akRight]
                 ItemHeight = 17
                 OnChange = cbRFDModeloChange
@@ -2945,7 +2945,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
                 TabOrder = 2
               end
               object Label45: TLabel
-                Left = 529
+                Left = 495
                 Height = 16
                 Top = -3
                 Width = 36
@@ -3559,7 +3559,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
       object tsBAL: TTabSheet
         Caption = 'Balança'
         ClientHeight = 181
-        ClientWidth = 618
+        ClientWidth = 584
         ImageIndex = 14
         object Label56: TLabel
           Left = 24
@@ -3674,7 +3674,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
       object tsETQ: TTabSheet
         Caption = 'Etiqueta'
         ClientHeight = 181
-        ClientWidth = 606
+        ClientWidth = 584
         ImageIndex = 15
         object Label60: TLabel
           Left = 15

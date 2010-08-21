@@ -10,7 +10,7 @@ uses
   Forms, ACBrTCP, UtilUnit, ACBrMonitor1, CmdUnit, ConfiguraSerial, DoACBrUnit,
   DoBALUnit, DoCHQUnit, DoDISUnit, DoECFBemafi32, DoECFObserver, DoECFUnit,
   DoETQUnit, DoGAVUnit, DoLCBUnit, sndkey32, Sobre, DoBoletoUnit, ACBrSerial,
-  ACBr_Boleto, ACBr_BoletoFC_Fortes, ACBrDiversos;
+  ACBr_Boleto, ACBr_BoletoFC_Fortes, ACBrDiversos, DoCEPUnit;
 
 {$R *.res}
 

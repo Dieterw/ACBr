@@ -165,7 +165,10 @@ begin
           Imprimir
         else if Cmd.Params(1)= 'P' then
           GerarPDF;
-      end;
+       end
+
+      ELSE
+         raise Exception.Create('Comando inválido ('+Cmd.Comando+')') ;
    end;
 
 end;

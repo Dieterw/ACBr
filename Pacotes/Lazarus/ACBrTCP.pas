@@ -7,7 +7,7 @@ unit ACBrTCP ;
 interface
 
 uses
-  ACBrSocket, ACBrCEP, ACBrTCPReg, LazarusPackageIntf;
+  ACBrSocket, ACBrCEP, ACBrTCPReg, ACBrIBGE, LazarusPackageIntf;
 
 implementation
 

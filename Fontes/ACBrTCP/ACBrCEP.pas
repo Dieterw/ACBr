@@ -5,7 +5,7 @@
 {                                                                              }
 { Direitos Autorais Reservados (c) 2004 Daniel Simoes de Almeida               }
 {                                                                              }
-{ Colaboradores nesse arquivo: André Moraes                                    }
+{ Colaboradores nesse arquivo:                                                 }
 {                                                                              }
 {  Você pode obter a última versão desse arquivo na pagina do  Projeto ACBr    }
 { Componentes localizado em      http://www.sourceforge.net/projects/acbr      }
@@ -52,10 +52,6 @@ uses
   ACBrSocket ;
 
 type
-
-  { EACBrCEPHTTPError }
-
-  EACBrCEPHTTPError = class( Exception ) ;
 
   TACBrCEPWebService = ( wsNenhum, wsBuscarCep, wsCepLivre ) ;
 
@@ -107,14 +103,10 @@ type
 
   { TACBrCEP }
 
-  TACBrCEPOnAntesEfetuarBusca = procedure( var AURL : String ) of object ;
-
   TACBrCEP = class( TACBrHTTP )
     private
-      fOnAntesEfetuarBusca : TACBrCEPOnAntesEfetuarBusca ;
       fWebService : TACBrCEPWebService ;
       fACBrCEPWS  : TACBrCEPWSClass ;
-      fRespHTTP   : TStringList ;
 
       fEnderecos : TACBrCEPEnderecos ;
       fOnBuscaEfetuada : TNotifyEvent ;
@@ -124,7 +116,6 @@ type
       constructor Create(AOwner: TComponent); override;
       Destructor Destroy ; override ;
 
-      property RespHTTP  : TStringList read fRespHTTP ;
       property Enderecos : TACBrCEPEnderecos  read fEnderecos ;
 
       function BuscarPorCEP( ACEP : String ) : Integer ;
@@ -138,12 +129,7 @@ type
 
       property OnBuscaEfetuada : TNotifyEvent read fOnBuscaEfetuada
          write fOnBuscaEfetuada ;
-      property OnAntesEfetuarBusca : TACBrCEPOnAntesEfetuarBusca
-         read fOnAntesEfetuarBusca write fOnAntesEfetuarBusca ;
   end ;
-
-
-  { TACBrECFClass }
 
   { TACBrCEPWSClass }
 
@@ -153,10 +139,6 @@ type
       fpURL : String ;
 
       procedure ErrorAbstract ;
-
-    protected
-      procedure HTTPGet( AURL : String) ; virtual ;
-      function AjustaParam(AParam : String) : String ;
 
     public
       constructor Create( AOwner : TACBrCEP ) ; virtual ;
@@ -196,8 +178,7 @@ type
 
 implementation
 
-uses Controls, Forms,
-     ACBrUtil, synacode ;
+uses ACBrUtil ;
 
 { TACBrCEPEndereco }
 
@@ -247,10 +228,8 @@ constructor TACBrCEP.Create(AOwner : TComponent) ;
 begin
   inherited Create(AOwner) ;
 
-  fOnBuscaEfetuada     := nil ;
-  fOnAntesEfetuarBusca := nil ;
+  fOnBuscaEfetuada := nil ;
 
-  fRespHTTP   := TStringList.Create;
   fEnderecos  := TACBrCEPEnderecos.create( True );
   fACBrCEPWS  := TACBrCEPWSClass.Create( Self );
   fWebService := wsNenhum ;
@@ -260,7 +239,6 @@ destructor TACBrCEP.Destroy ;
 begin
   fEnderecos.Free;
   fACBrCEPWS.Free;
-  fRespHTTP.Free;
 
   inherited Destroy ;
 end ;
@@ -335,56 +313,6 @@ begin
   ErrorAbstract ;
 end ;
 
-Function TACBrCEPWSClass.AjustaParam( AParam : String ) : String ;
-begin
-  Result := Trim( AParam ) ;
-
-  if (Result <> '') then
-  begin
-    {$IFDEF UNICODE}
-     Result := Utf8ToAnsi( Result ) ;
-    {$ENDIF}
-    Result := EncodeURLElement( Result ) ;
-  end ;
-end ;
-
-Procedure TACBrCEPWSClass.HTTPGet( AURL : String ) ;
-var
-  OldCursor : TCursor ;
-  OK : Boolean ;
-begin
-  OldCursor := Screen.Cursor ;
-  try
-    Screen.Cursor := crHourGlass;
-
-    with fOwner do
-    begin
-       RespHTTP.Clear;
-       HTTPSend.Clear;
-
-       // DEBUG //
-       // WriteToTXT( 'C:\TEMP\CEP.txt', 'URL: '+AURL );
-
-       if Assigned( OnAntesEfetuarBusca ) then
-          OnAntesEfetuarBusca( AURL ) ;
-
-       OK := HTTPSend.HTTPMethod('GET', AURL) and (HTTPSend.ResultCode = 200);
-       RespHTTP.LoadFromStream( HTTPSend.Document ) ;
-
-       // DEBUG //
-       // WriteToTXT( 'C:\TEMP\CEP.txt', RespHTTP.Text );
-
-       if not OK then
-          raise EACBrCEPHTTPError.Create( 'Erro HTTP: '+IntToStr(HTTPSend.ResultCode)+' '+
-                                          HTTPSend.ResultString + sLineBreak + sLineBreak +
-                                          'Resposta HTTP:' + sLineBreak +
-                                          RespHTTP.Text ) ;
-    end ;
-  finally
-    Screen.Cursor := OldCursor;
-  end;
-end ;
-
 { TACBrWSBuscarCEP - http://www.buscarcep.com.br }
 
 constructor TACBrWSBuscarCEP.Create(AOwner : TACBrCEP) ;
@@ -396,7 +324,7 @@ end ;
 
 Procedure TACBrWSBuscarCEP.BuscarPorCEP( ACEP : String ) ;
 begin
-  HTTPGet( fpURL + '?cep='+ACEP+'&formato=string' ) ;
+  fOwner.HTTPGet( fpURL + '?cep='+ACEP+'&formato=string' ) ;
   ProcessaResposta ;
 end ;
 
@@ -405,10 +333,10 @@ Procedure  TACBrWSBuscarCEP.BuscarPorLogradouro(AMunicipio,  ATipo_Logradouro,
 Var
    Params : String ;
 begin
-  AMunicipio       := AjustaParam( AMunicipio ) ;
-  ATipo_Logradouro := AjustaParam( ATipo_Logradouro );
-  ALogradouro      := AjustaParam( ALogradouro ) ;
-  AUF              := AjustaParam( AUF );
+  AMunicipio       := fOwner.AjustaParam( AMunicipio ) ;
+  ATipo_Logradouro := fOwner.AjustaParam( ATipo_Logradouro );
+  ALogradouro      := fOwner.AjustaParam( ALogradouro ) ;
+  AUF              := fOwner.AjustaParam( AUF );
 
   if (AMunicipio = '') or (ALogradouro = '') or (AUF = '') then
      raise Exception.Create('UF, Cidade e Logradouro devem ser informados');
@@ -425,7 +353,7 @@ begin
 
   Params := Params + '&formato=string' ;
 
-  HTTPGet( fpURL + Params ) ;
+  fOwner.HTTPGet( fpURL + Params ) ;
   ProcessaResposta ;
 end ;
 
@@ -497,7 +425,7 @@ begin
   // CEPLivre exige CEP formatado //
   ACEP := Copy(ACEP,1,5)+'-'+Copy(ACEP,6,3);
 
-  HTTPGet( fpURL + 'index.php?module=cep&cep='+ACEP+'&formato=csv' ) ;
+  fOwner.HTTPGet( fpURL + 'index.php?module=cep&cep='+ACEP+'&formato=csv' ) ;
   ProcessaResposta ;
 end ;
 
@@ -506,10 +434,10 @@ Procedure TACBrWSCEPLivre.BuscarPorLogradouro(AMunicipio, ATipo_Logradouro,
 Var
    Params : String ;
 begin
-  AMunicipio       := AjustaParam( AMunicipio ) ;
-  ATipo_Logradouro := AjustaParam( ATipo_Logradouro );
-  ALogradouro      := AjustaParam( ALogradouro ) ;
-  AUF              := AjustaParam( AUF );
+  AMunicipio       := fOwner.AjustaParam( AMunicipio ) ;
+  ATipo_Logradouro := fOwner.AjustaParam( ATipo_Logradouro );
+  ALogradouro      := fOwner.AjustaParam( ALogradouro ) ;
+  AUF              := fOwner.AjustaParam( AUF );
 
   if (AMunicipio = '') or (ALogradouro = '') then
      raise Exception.Create('Cidade e Logradouro devem ser informados');
@@ -528,7 +456,7 @@ begin
 
   Params := Params + '&formato=csv' ;
 
-  HTTPGet( fpURL + Params ) ;
+  fOwner.HTTPGet( fpURL + Params ) ;
   ProcessaResposta ;
 end ;
 
@@ -536,7 +464,7 @@ Procedure TACBrWSCEPLivre.ProcessaResposta ;
 Var
    SL1, SL2 : TStringList ;
    Buffer : String ;
-   PosIni, I : Integer ;
+   I : Integer ;
    Endereco : TACBrCEPEndereco ;
 begin
   fOwner.fEnderecos.Clear;

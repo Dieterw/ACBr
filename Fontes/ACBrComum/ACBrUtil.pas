@@ -127,6 +127,7 @@ function padS(const AString : AnsiString; const nLen : Integer; Separador : Stri
    const Caracter : AnsiChar = ' ') : AnsiString ;
 function RemoveString(const sSubStr, sString: AnsiString): AnsiString;
 function RemoveStrings(const AText: AnsiString; StringsToRemove: array of AnsiString): AnsiString;
+function StripHTML(const AHTMLString : AnsiString) : AnsiString;
 function RandomName(const LenName : Integer = 8) : String ;
 
 { PosEx, retirada de StrUtils.pas do D7, para compatibilizar com o Delphi 6
@@ -509,6 +510,31 @@ begin
   end ;
 end ;
 
+{-----------------------------------------------------------------------------
+   Remove todas as TAGS de HTML de uma String, retornando a String alterada
+ ---------------------------------------------------------------------------- }
+function StripHTML(const AHTMLString : AnsiString) : AnsiString;
+var
+   PosIniTag, PosFimTag ,HTMLSize : Integer;
+begin
+   Result   := '' ;
+   HTMLSize := Length( AHTMLString ) ;
+
+   PosFimTag := 0 ;
+   PosIniTag := Pos('<', AHTMLString) ;
+   while PosIniTag > 0 do
+   begin
+      Result := Result + copy(AHTMLString, PosFimTag+1, (PosIniTag - PosFimTag-1 ) ) ;
+
+      PosFimTag := PosEx( '>', AHTMLString, PosIniTag ) ;
+      if PosFimTag = 0 then
+         PosFimTag := PosIniTag-1
+      else
+         PosIniTag := PosEx( '<', AHTMLString, PosFimTag )
+   end ;
+   Result := Result + copy(AHTMLString, PosFimTag+1, HTMLSize ) ;
+
+end;
 {-----------------------------------------------------------------------------
    Remove todas ocorrencias <sSubStr> de <sString>, retornando a String alterada
  ---------------------------------------------------------------------------- }

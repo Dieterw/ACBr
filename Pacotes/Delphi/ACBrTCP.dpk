@@ -34,6 +34,7 @@ requires
 contains
   ACBrSocket in '..\..\Fontes\ACBrTCP\ACBrSocket.pas',
   ACBrCEP in '..\..\Fontes\ACBrTCP\ACBrCEP.pas',
-  ACBrTCPReg in '..\..\Fontes\ACBrTCP\ACBrTCPReg.pas';
+  ACBrTCPReg in '..\..\Fontes\ACBrTCP\ACBrTCPReg.pas',
+  ACBrIBGE in '..\..\Fontes\ACBrTCP\ACBrIBGE.pas';
 
 end.

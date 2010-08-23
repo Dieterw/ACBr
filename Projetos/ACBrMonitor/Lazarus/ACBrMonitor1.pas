@@ -69,8 +69,8 @@ uses
   SysUtils, Classes, Forms,
   CmdUnit, ACBrECF, ACBrDIS, ACBrGAV, ACBrDevice, ACBrCHQ, ACBrLCB, ACBrRFD, { Unit do ACBr }
   Dialogs, ExtCtrls, Menus, Buttons, StdCtrls, ComCtrls, Controls, Graphics,
-  Spin, MaskEdit, EditBtn, ACBrBAL, ACBrETQ, ACBrSocket, ACBrCEP, blcksock,
-  ACBrValidador, ACBrBoleto, ACBrBoletoFCFortesFr;
+  Spin, MaskEdit, EditBtn, ACBrBAL, ACBrETQ, ACBrSocket, ACBrCEP, ACBrIBGE,
+  blcksock, ACBrValidador, ACBrBoleto, ACBrBoletoFCFortesFr;
 
 const
   {$I versao.txt}
@@ -92,25 +92,28 @@ type
     ACBrBoletoFCFortes1: TACBrBoletoFCFortes;
     ACBrCEP1 : TACBrCEP ;
     ACBrECF1: TACBrECF;
+    ACBrIBGE1 : TACBrIBGE ;
     ACBrValidador1 : TACBrValidador ;
     ApplicationProperties1: TApplicationProperties;
     bCEPTestar : TButton ;
+    bIBGETestar : TButton ;
+    cbCEPWebService : TComboBox ;
     cbxBOLUF: TComboBox;
     cbxBOLBanco: TComboBox;
     cbxBOLEmissao: TComboBox;
-    cbCEPWebService : TComboBox ;
     ckgBOLMostrar: TCheckGroup;
     cbxBOLLayout: TComboBox;
     cbxBOLFiltro: TComboBox;
     cbxBOLF_J: TComboBox;
     deBOLDirLogo: TDirectoryEdit;
     deBOLDirArquivo: TDirectoryEdit;
-    edCEPTestar : TEdit ;
     edCEPChaveBuscarCEP : TEdit ;
-    edCEPProxyHost : TEdit ;
-    edCEPProxyPass : TEdit ;
-    edCEPProxyPort : TEdit ;
-    edCEPProxyUser : TEdit ;
+    edCONProxyHost : TEdit ;
+    edCONProxyPass : TEdit ;
+    edCONProxyPort : TEdit ;
+    edCONProxyUser : TEdit ;
+    edCEPTestar : TEdit ;
+    edIBGECodNome : TEdit ;
     edtBOLSH: TEdit;
     edtBOLComplemento: TEdit;
     edtBOLDigitoConta: TEdit;
@@ -124,20 +127,23 @@ type
     edtBOLLogradouro: TEdit;
     edtBOLNumero: TEdit;
     edtBOLRazaoSocial: TEdit;
-    gbCEPWebService : TGroupBox ;
     gbCEPProxy : TGroupBox ;
     gbCEPTestar : TGroupBox ;
+    gbCEP : TGroupBox ;
     Image1: TImage;
     Label11: TLabel;
     Label68: TLabel;
     Label69: TLabel;
     Label70: TLabel;
     Label71: TLabel;
-    Label72 : TLabel ;
-    Label73 : TLabel ;
-    Label74 : TLabel ;
-    Label75 : TLabel ;
-    Label77 : TLabel ;
+    lIBGECodNome : TLabel ;
+    lCEPChave : TLabel ;
+    lCEPProxyServidor : TLabel ;
+    lCEPProxyPorta : TLabel ;
+    lCEPProxyUsuario : TLabel ;
+    lCEPProxySenha : TLabel ;
+    lCEPCEP : TLabel ;
+    lCEPWebService : TLabel ;
     lblBOLCep: TLabel;
     lblBOLPessoa: TLabel;
     lblBOLDirLogo: TLabel;
@@ -184,7 +190,7 @@ type
     Splitter1: TSplitter;
     pConfig: TPanel;
     PageControl1: TPageControl;
-    tsCEP : TTabSheet ;
+    tsConsultas : TTabSheet ;
     tsACBrBoleto: TTabSheet;
     TabSheet2: TTabSheet;
     tsBoleto: TTabSheet;
@@ -413,11 +419,12 @@ type
     edTCNaoEncontrado: TEdit;
     TimerTC: TTimer;
     sbCHQSerial: TSpeedButton;
-    procedure ACBrCEP1AntesEfetuarBusca(var AURL : String) ;
+    procedure ACBrCEP1AntesAbrirHTTP(var AURL : String) ;
     procedure ApplicationProperties1Exception(Sender: TObject; E: Exception);
     procedure ApplicationProperties1Minimize(Sender: TObject);
     procedure ApplicationProperties1Restore(Sender: TObject);
     procedure bCEPTestarClick(Sender : TObject) ;
+    procedure bIBGETestarClick(Sender : TObject) ;
     procedure cbxBOLFiltroChange ( Sender: TObject ) ;
     procedure cbxBOLF_JChange ( Sender: TObject ) ;
     procedure cbCEPWebServiceChange(Sender : TObject) ;
@@ -626,7 +633,7 @@ implementation
 uses IniFiles, TypInfo, LCLType, strutils,
   UtilUnit,
   DoECFUnit, DoGAVUnit, DoCHQUnit, DoDISUnit, DoLCBUnit, DoACBrUnit, DoBALUnit,
-  DoBoletoUnit, DoCEPUnit,
+  DoBoletoUnit, DoCEPUnit, DoIBGEUnit,
   {$IFDEF MSWINDOWS} sndkey32, {$ENDIF}
   {$IFDEF LINUX} unix, baseunix, {$ENDIF}
   ACBrECFNaoFiscal, ACBrUtil, ACBrConsts, Math, Sobre, DateUtils,
@@ -798,7 +805,7 @@ begin
   //  MessageDlg( E.Message,mtError,[mbOk],0) ;
 end;
 
-procedure TFrmACBrMonitor.ACBrCEP1AntesEfetuarBusca(var AURL : String) ;
+procedure TFrmACBrMonitor.ACBrCEP1AntesAbrirHTTP(var AURL : String) ;
 begin
   if (ACBrCEP1.WebService = wsBuscarCep) and (edCEPChaveBuscarCEP.Text <> '') then
   begin
@@ -829,19 +836,19 @@ begin
   begin
      WebService := TACBrCEPWebService( cbCEPWebService.ItemIndex );
 
-     ProxyHost  := edCEPProxyHost.Text;
-     ProxyPort  := edCEPProxyPort.Text;
-     ProxyUser  := edCEPProxyUser.Text;
-     ProxyPass  := edCEPProxyPass.Text;
+     ProxyHost  := edCONProxyHost.Text;
+     ProxyPort  := edCONProxyPort.Text;
+     ProxyUser  := edCONProxyUser.Text;
+     ProxyPass  := edCONProxyPass.Text;
 
      if BuscarPorCEP( edCEPTestar.Text ) > 0 then
      begin
-       AMsg := IntToStr(ACBrCEP1.Enderecos.Count) + ' Endereço(s) encontrado(s)' +
+       AMsg := IntToStr(Enderecos.Count) + ' Endereço(s) encontrado(s)' +
                sLineBreak + sLineBreak ;
 
-       For I := 0 to ACBrCEP1.Enderecos.Count-1 do
+       For I := 0 to Enderecos.Count-1 do
        begin
-         with ACBrCEP1.Enderecos[I] do
+         with Enderecos[I] do
          begin
             AMsg := AMsg +
                     'CEP: '+CEP + sLineBreak +
@@ -855,6 +862,50 @@ begin
      end
      else
         AMsg := 'Nenhum Endereço encontrado' ;
+
+     MessageDlg(AMsg,mtInformation,[mbOK],0);
+  end ;
+end;
+
+procedure TFrmACBrMonitor.bIBGETestarClick(Sender : TObject) ;
+Var
+  AMsg : String ;
+  I, Cod : Integer ;
+begin
+  with ACBrIBGE1 do
+  begin
+     ProxyHost  := edCONProxyHost.Text;
+     ProxyPort  := edCONProxyPort.Text;
+     ProxyUser  := edCONProxyUser.Text;
+     ProxyPass  := edCONProxyPass.Text;
+
+     Cod := StrToIntDef( edIBGECodNome.Text, 0 ) ;
+
+     if Cod > 0 then
+        I := BuscarPorCodigo( Cod )
+     else
+        I := BuscarPorNome( edIBGECodNome.Text );
+
+     if I > 0 then
+     begin
+       AMsg := IntToStr(Cidades.Count) + ' Cidade(s) encontrada(s)' +
+               sLineBreak + sLineBreak ;
+
+       For I := 0 to Cidades.Count-1 do
+       begin
+         with Cidades[I] do
+         begin
+            AMsg := AMsg +
+                    'Cod UF: '+IntToStr(CodUF) + sLineBreak +
+                    'UF: '+UF + sLineBreak +
+                    'Cod.Município: '+IntToStr(CodMunicio)  + sLineBreak +
+                    'Município: '+Municipio  + sLineBreak +
+                    'Área: '+FormatFloat('0.00', Area) + sLineBreak + sLineBreak;
+         end ;
+       end ;
+     end
+     else
+        AMsg := 'Nenhuma Cidade encontrada' ;
 
      MessageDlg(AMsg,mtInformation,[mbOK],0);
   end ;
@@ -1292,10 +1343,10 @@ begin
     cbCEPWebService.ItemIndex := Ini.ReadInteger('CEP', 'WebService', 0);
     cbCEPWebServiceChange(Self);
     edCEPChaveBuscarCEP.Text := Ini.ReadString('CEP', 'Chave_BuscarCEP', '');
-    edCEPProxyHost.Text := Ini.ReadString('CEP', 'Proxy_Host', '');
-    edCEPProxyPort.Text := Ini.ReadString('CEP', 'Proxy_Port', '');
-    edCEPProxyUser.Text := Ini.ReadString('CEP', 'Proxy_User', '');
-    edCEPProxyPass.Text := LeINICrypt(INI, 'CEP', 'Proxy_Pass', _C) ;
+    edCONProxyHost.Text := Ini.ReadString('CEP', 'Proxy_Host', '');
+    edCONProxyPort.Text := Ini.ReadString('CEP', 'Proxy_Port', '');
+    edCONProxyUser.Text := Ini.ReadString('CEP', 'Proxy_User', '');
+    edCONProxyPass.Text := LeINICrypt(INI, 'CEP', 'Proxy_Pass', _C) ;
 
     {Parametros do Boleto - Cliente}
     edtBOLRazaoSocial.Text  := ini.ReadString('BOLETO', 'Cedente.Nome', '');
@@ -1439,10 +1490,18 @@ begin
   with ACBrCEP1 do
   begin
     WebService := TACBrCEPWebService(cbCEPWebService.ItemIndex) ;
-    ProxyHost  := edCEPProxyHost.Text;
-    ProxyPort  := edCEPProxyPort.Text;
-    ProxyUser  := edCEPProxyUser.Text;
-    ProxyPass  := edCEPProxyPass.Text;
+    ProxyHost  := edCONProxyHost.Text;
+    ProxyPort  := edCONProxyPort.Text;
+    ProxyUser  := edCONProxyUser.Text;
+    ProxyPass  := edCONProxyPass.Text;
+  end ;
+
+  with ACBrIBGE1 do
+  begin
+    ProxyHost  := edCONProxyHost.Text;
+    ProxyPort  := edCONProxyPort.Text;
+    ProxyUser  := edCONProxyUser.Text;
+    ProxyPass  := edCONProxyPass.Text;
   end ;
 
   with ACBrBoleto1 do
@@ -1677,10 +1736,10 @@ begin
     { Parametros do CEP }
     Ini.WriteInteger('CEP', 'WebService', cbCEPWebService.ItemIndex );
     Ini.WriteString('CEP', 'Chave_BuscarCEP', edCEPChaveBuscarCEP.Text);
-    Ini.WriteString('CEP', 'Proxy_Host', edCEPProxyHost.Text);
-    Ini.WriteString('CEP', 'Proxy_Port', edCEPProxyPort.Text);
-    Ini.WriteString('CEP', 'Proxy_User', edCEPProxyUser.Text);
-    GravaINICrypt(Ini, 'CEP', 'Proxy_Pass',edCEPProxyPass.Text, _C) ;
+    Ini.WriteString('CEP', 'Proxy_Host', edCONProxyHost.Text);
+    Ini.WriteString('CEP', 'Proxy_Port', edCONProxyPort.Text);
+    Ini.WriteString('CEP', 'Proxy_User', edCONProxyUser.Text);
+    GravaINICrypt(Ini, 'CEP', 'Proxy_Pass',edCONProxyPass.Text, _C) ;
 
     { Parametros do TC }
     Ini.WriteInteger('TC', 'Modelo', cbxTCModelo.ItemIndex);
@@ -1933,7 +1992,9 @@ begin
         else if Cmd.Objeto = 'BOLETO' then
           DoBoleto(Cmd)
         else if Cmd.Objeto = 'CEP' then
-          DoCEP(Cmd);
+          DoCEP(Cmd)
+        else if Cmd.Objeto = 'IBGE' then
+          DoIBGE(Cmd);
 
         Resposta(Linha, 'OK: ' + Cmd.Resposta);
 

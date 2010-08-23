@@ -167,9 +167,15 @@ end ;
 
 { TACBrHTTP }
 
+TACBrOnAntesAbrirHTTP = procedure( var AURL : String ) of object ;
+
+EACBrHTTPError = class( Exception ) ;
+
 TACBrHTTP = class( TACBrComponent )
   private
     fHTTPSend : THTTPSend ;
+    fOnAntesAbrirHTTP : TACBrOnAntesAbrirHTTP ;
+    fRespHTTP   : TStringList ;
     function GetProxyHost : string ;
     function GetProxyPass : string ;
     function GetProxyPort : string ;
@@ -182,17 +188,24 @@ TACBrHTTP = class( TACBrComponent )
     constructor Create( AOwner : TComponent ) ; override ;
     destructor Destroy ; override ;
 
+    function AjustaParam(AParam : String) : String ;
+    procedure HTTPGet( AURL : String) ; virtual ;
+
     property HTTPSend  : THTTPSend read fHTTPSend ;
+    property RespHTTP  : TStringList read fRespHTTP ;
   published
     property ProxyHost : string read GetProxyHost write SetProxyHost ;
     property ProxyPort : string read GetProxyPort write SetProxyPort ;
     property ProxyUser : string read GetProxyUser write SetProxyUser ;
     property ProxyPass : string read GetProxyPass write SetProxyPass ;
+
+    property OnAntesAbrirHTTP : TACBrOnAntesAbrirHTTP
+       read fOnAntesAbrirHTTP write fOnAntesAbrirHTTP ;
 end ;
 
 implementation
 
-Uses ACBrUtil ;
+Uses ACBrUtil, synacode {$IFNDEF CONSOLE},Controls, Forms {$ENDIF} ;
 
 { TACBrTCPServerDaemon }
 
@@ -381,8 +394,6 @@ begin
 end;
 
 destructor TACBrTCPServer.Destroy;
-var
-  I : Integer ;
 begin
   Desativar;
   fsThreadList.Free ;
@@ -550,13 +561,68 @@ begin
   inherited Create( AOwner ) ;
 
   fHTTPSend := THTTPSend.Create;
+  fRespHTTP   := TStringList.Create;
+  fOnAntesAbrirHTTP := nil ;
 end ;
 
 destructor TACBrHTTP.Destroy ;
 begin
   fHTTPSend.Free;
+  fRespHTTP.Free;
 
   inherited Destroy;
+end ;
+
+Function TACBrHTTP.AjustaParam( AParam : String ) : String ;
+begin
+  Result := Trim( AParam ) ;
+
+  if (Result <> '') then
+  begin
+    {$IFDEF UNICODE}
+     Result := Utf8ToAnsi( Result ) ;
+    {$ENDIF}
+    Result := EncodeURLElement( Result ) ;
+  end ;
+end ;
+
+Procedure TACBrHTTP.HTTPGet( AURL : String ) ;
+var
+  {$IFNDEF CONSOLE}
+   OldCursor : TCursor ;
+  {$ENDIF}
+  OK : Boolean ;
+begin
+  {$IFNDEF CONSOLE}
+   OldCursor := Screen.Cursor ;
+   Screen.Cursor := crHourGlass;
+  {$ENDIF}
+  try
+    RespHTTP.Clear;
+    HTTPSend.Clear;
+
+    // DEBUG //
+    // WriteToTXT( 'C:\TEMP\HTTP.txt', 'URL: '+AURL );
+
+    if Assigned( OnAntesAbrirHTTP ) then
+       OnAntesAbrirHTTP( AURL ) ;
+
+    OK := HTTPSend.HTTPMethod('GET', AURL) and (HTTPSend.ResultCode = 200);
+    RespHTTP.LoadFromStream( HTTPSend.Document ) ;
+
+    // DEBUG //
+    // WriteToTXT( 'C:\TEMP\HTTP.txt', RespHTTP.Text );
+
+    if not OK then
+       raise EACBrHTTPError.Create( 'Erro HTTP: '+IntToStr(HTTPSend.ResultCode)+' '+
+                                     HTTPSend.ResultString + sLineBreak + sLineBreak +
+                                     'Resposta HTTP:' + sLineBreak +
+                                     RespHTTP.Text ) ;
+  finally
+    {$IFNDEF CONSOLE}
+     Screen.Cursor := OldCursor;
+    {$ENDIF}
+  end;
 end ;
 
 function TACBrHTTP.GetProxyHost : string ;

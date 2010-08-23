@@ -25,7 +25,7 @@ FormOnTop=0
 [C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit1.pas]
 ModuleType=SourceModule
 FormState=1
-FormOnTop=0
+FormOnTop=1
 
 [C:\Pascal\Comp\ACBr\trunk\Fontes\ACBrTEFD\ACBrTEFDVeSPague.pas]
 ModuleType=SourceModule
@@ -75,9 +75,9 @@ BottomPanelData=0000040000000000630400000000000002550000000000000001000000000000
 
 [View0]
 Module=C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit1.pas
-CursorX=54
-CursorY=1137
-TopLine=1120
+CursorX=25
+CursorY=750
+TopLine=741
 LeftCol=1
 
 [View1]
@@ -136,8 +136,8 @@ Left=0
 Top=0
 Width=1680
 Height=122
-MaxLeft=-8
-MaxTop=-8
+MaxLeft=-1
+MaxTop=-1
 MaxWidth=1696
 MaxHeight=122
 ClientWidth=1680
@@ -222,7 +222,7 @@ LRDockWidth=190
 Dockable=1
 SplitPos=126
 ArrangeBy=Name
-SelectedItem=ScrollBars
+SelectedItem=Caption
 ExpandedItems=TEFCliSiTef,TEFDial,TEFDisc,TEFGPU,TEFHiper,TEFVeSPague
 HiddenCategories=
 

@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 441
-  Top = 170
+  Left = 451
+  Top = 163
   Width = 604
   Height = 358
   Caption = 'Form1'
@@ -8,7 +8,7 @@ object Form1: TForm1
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
-  Font.Name = 'Tahoma'
+  Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = True
   PixelsPerInch = 96
@@ -44,17 +44,17 @@ object Form1: TForm1
         Caption = 'WebService'
         TabOrder = 0
         object Label9: TLabel
-          Left = 12
-          Top = 55
-          Width = 35
+          Left = 7
+          Top = 57
+          Width = 34
           Height = 13
           Caption = 'Chave:'
           Color = clBtnFace
           ParentColor = False
         end
         object cbxWS: TComboBox
-          Left = 12
-          Top = 22
+          Left = 7
+          Top = 24
           Width = 156
           Height = 21
           Style = csDropDownList
@@ -69,8 +69,8 @@ object Form1: TForm1
             'CEPLivre')
         end
         object edChaveBuscarCEP: TEdit
-          Left = 12
-          Top = 70
+          Left = 7
+          Top = 72
           Width = 156
           Height = 21
           TabOrder = 1
@@ -86,7 +86,7 @@ object Form1: TForm1
         TabOrder = 1
         object Label2: TLabel
           Left = 22
-          Top = 17
+          Top = 16
           Width = 22
           Height = 13
           Caption = 'Host'
@@ -95,8 +95,8 @@ object Form1: TForm1
         end
         object Label3: TLabel
           Left = 191
-          Top = 17
-          Width = 26
+          Top = 16
+          Width = 25
           Height = 13
           Caption = 'Porta'
           Color = clBtnFace
@@ -104,17 +104,17 @@ object Form1: TForm1
         end
         object Label4: TLabel
           Left = 22
-          Top = 58
-          Width = 40
+          Top = 57
+          Width = 36
           Height = 13
-          Caption = 'Usu'#225#161'rio'
+          Caption = 'Usu'#225'rio'
           Color = clBtnFace
           ParentColor = False
         end
         object Label5: TLabel
           Left = 142
-          Top = 58
-          Width = 30
+          Top = 57
+          Width = 31
           Height = 13
           Caption = 'Senha'
           Color = clBtnFace
@@ -122,28 +122,28 @@ object Form1: TForm1
         end
         object edProxyHost: TEdit
           Left = 22
-          Top = 33
+          Top = 32
           Width = 154
           Height = 21
           TabOrder = 0
         end
         object edProxyPort: TEdit
           Left = 191
-          Top = 33
+          Top = 32
           Width = 56
           Height = 21
           TabOrder = 1
         end
         object edProxyUser: TEdit
           Left = 22
-          Top = 73
+          Top = 72
           Width = 105
           Height = 21
           TabOrder = 2
         end
         object edProxyPass: TEdit
           Left = 142
-          Top = 73
+          Top = 72
           Width = 105
           Height = 21
           TabOrder = 3
@@ -151,7 +151,7 @@ object Form1: TForm1
       end
     end
     object TabSheet2: TTabSheet
-      Caption = 'Buscar'
+      Caption = 'Buscar CEP'
       object GroupBox3: TGroupBox
         Left = 0
         Top = 0
@@ -161,16 +161,16 @@ object Form1: TForm1
         Caption = 'Por CEP'
         TabOrder = 0
         object edCEP: TEdit
-          Left = 18
-          Top = 33
+          Left = 26
+          Top = 26
           Width = 112
           Height = 21
           TabOrder = 0
           Text = '18270-170'
         end
         object bBuscarCEP: TButton
-          Left = 18
-          Top = 66
+          Left = 26
+          Top = 59
           Width = 112
           Height = 33
           Caption = 'Buscar'
@@ -189,7 +189,7 @@ object Form1: TForm1
         object Label1: TLabel
           Left = 70
           Top = 17
-          Width = 59
+          Width = 57
           Height = 13
           Caption = 'Logradouro:'
           Color = clBtnFace
@@ -198,7 +198,7 @@ object Form1: TForm1
         object Label6: TLabel
           Left = 14
           Top = 60
-          Width = 37
+          Width = 36
           Height = 13
           Caption = 'Cidade:'
           Color = clBtnFace
@@ -216,7 +216,7 @@ object Form1: TForm1
         object Label8: TLabel
           Left = 198
           Top = 60
-          Width = 78
+          Width = 76
           Height = 13
           Caption = 'Bairro (opcional)'
           Color = clBtnFace
@@ -237,7 +237,7 @@ object Form1: TForm1
           Width = 264
           Height = 21
           TabOrder = 1
-          Text = 'Coronel Aureliano de Camargo'
+          Text = 'Coronel Aureliano'
         end
         object bBuscarLogradouro: TButton
           Left = 347
@@ -281,13 +281,79 @@ object Form1: TForm1
         end
       end
     end
+    object tsIBGE: TTabSheet
+      Caption = 'Buscar IBGE'
+      object GroupBox5: TGroupBox
+        Left = 0
+        Top = 0
+        Width = 164
+        Height = 108
+        Align = alLeft
+        Caption = 'Por C'#243'digo'
+        TabOrder = 0
+        object edIBGECod: TEdit
+          Left = 26
+          Top = 26
+          Width = 112
+          Height = 21
+          TabOrder = 0
+          Text = '3554003'
+        end
+        object bBuscarCEP1: TButton
+          Left = 26
+          Top = 59
+          Width = 112
+          Height = 33
+          Caption = 'Buscar'
+          TabOrder = 1
+          OnClick = bBuscarCEP1Click
+        end
+      end
+      object GroupBox6: TGroupBox
+        Left = 164
+        Top = 0
+        Width = 416
+        Height = 108
+        Align = alClient
+        Caption = 'Por Nome'
+        TabOrder = 1
+        DesignSize = (
+          416
+          108)
+        object bBuscarLogradouro1: TButton
+          Left = 142
+          Top = 59
+          Width = 112
+          Height = 33
+          Caption = 'Buscar'
+          TabOrder = 1
+          OnClick = bBuscarLogradouro1Click
+        end
+        object edIBGENome: TEdit
+          Left = 38
+          Top = 26
+          Width = 336
+          Height = 21
+          Anchors = [akLeft, akTop, akRight]
+          TabOrder = 0
+          Text = 'Petrolina'
+        end
+      end
+    end
   end
   object ACBrCEP1: TACBrCEP
     ProxyPort = '8080'
+    OnAntesAbrirHTTP = ACBrCEP1AntesAbrirHTTP
     WebService = wsBuscarCep
     OnBuscaEfetuada = ACBrCEP1BuscaEfetuada
-    OnAntesEfetuarBusca = ACBrCEP1AntesEfetuarBusca
     Left = 248
+    Top = 160
+  end
+  object ACBrIBGE1: TACBrIBGE
+    ProxyPort = '8080'
+    OnAntesAbrirHTTP = ACBrIBGE1AntesAbrirHTTP
+    OnBuscaEfetuada = ACBrIBGE1BuscaEfetuada
+    Left = 312
     Top = 160
   end
 end

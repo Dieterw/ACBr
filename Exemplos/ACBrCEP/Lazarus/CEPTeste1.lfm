@@ -25,9 +25,9 @@ object Form1: TForm1
     Height = 136
     Top = 0
     Width = 588
-    ActivePage = TabSheet1
+    ActivePage = tsIBGE
     Align = alTop
-    TabIndex = 0
+    TabIndex = 2
     TabOrder = 1
     object TabSheet1: TTabSheet
       Caption = 'Configuração'
@@ -149,7 +149,7 @@ object Form1: TForm1
       end
     end
     object TabSheet2: TTabSheet
-      Caption = 'Buscar'
+      Caption = 'Buscar CEP'
       ClientHeight = 108
       ClientWidth = 580
       object GroupBox3: TGroupBox
@@ -280,13 +280,82 @@ object Form1: TForm1
         end
       end
     end
+    object tsIBGE: TTabSheet
+      Caption = 'Buscar IBGE'
+      ClientHeight = 108
+      ClientWidth = 580
+      object GroupBox5: TGroupBox
+        Left = 0
+        Height = 108
+        Top = 0
+        Width = 164
+        Align = alLeft
+        Caption = 'Por Código'
+        ClientHeight = 90
+        ClientWidth = 160
+        TabOrder = 0
+        object edIBGECod: TEdit
+          Left = 26
+          Height = 23
+          Top = 10
+          Width = 112
+          TabOrder = 0
+          Text = '3554003'
+        end
+        object bBuscarCEP1: TButton
+          Left = 26
+          Height = 33
+          Top = 43
+          Width = 112
+          Caption = 'Buscar'
+          OnClick = bBuscarCEP1Click
+          TabOrder = 1
+        end
+      end
+      object GroupBox6: TGroupBox
+        Left = 164
+        Height = 108
+        Top = 0
+        Width = 416
+        Align = alClient
+        Caption = 'Por Nome'
+        ClientHeight = 90
+        ClientWidth = 412
+        TabOrder = 1
+        object bBuscarLogradouro1: TButton
+          Left = 142
+          Height = 33
+          Top = 43
+          Width = 112
+          Caption = 'Buscar'
+          OnClick = bBuscarLogradouro1Click
+          TabOrder = 1
+        end
+        object edIBGENome: TEdit
+          Left = 38
+          Height = 23
+          Top = 10
+          Width = 336
+          Anchors = [akTop, akLeft, akRight]
+          TabOrder = 0
+          Text = 'Petrolina'
+        end
+      end
+    end
   end
   object ACBrCEP1: TACBrCEP
     ProxyPort = '8080'
+    OnAntesAbrirHTTP = ACBrCEP1AntesAbrirHTTP
     WebService = wsBuscarCep
     OnBuscaEfetuada = ACBrCEP1BuscaEfetuada
-    OnAntesEfetuarBusca = ACBrCEP1AntesEfetuarBusca
     left = 248
+    top = 160
+  end
+  object ACBrIBGE1: TACBrIBGE
+    ProxyPort = '8080'
+    OnAntesAbrirHTTP = ACBrIBGE1AntesAbrirHTTP
+    OnBuscaEfetuada = ACBrIBGE1BuscaEfetuada
+    left = 312
     top = 160
   end
 end

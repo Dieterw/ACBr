@@ -25,9 +25,9 @@ object Form1: TForm1
     Height = 136
     Top = 0
     Width = 588
-    ActivePage = tsIBGE
+    ActivePage = TabSheet1
     Align = alTop
-    TabIndex = 2
+    TabIndex = 0
     TabOrder = 1
     object TabSheet1: TTabSheet
       Caption = 'Configuração'
@@ -54,6 +54,7 @@ object Form1: TForm1
             'Nenhum'
             'BuscarCEP'
             'CEPLivre'
+            'RepublicaVirtual'
           )
           OnChange = cbxWSChange
           Style = csDropDownList
@@ -346,7 +347,7 @@ object Form1: TForm1
   object ACBrCEP1: TACBrCEP
     ProxyPort = '8080'
     OnAntesAbrirHTTP = ACBrCEP1AntesAbrirHTTP
-    WebService = wsBuscarCep
+    WebService = wsRepublicaVirtual
     OnBuscaEfetuada = ACBrCEP1BuscaEfetuada
     left = 248
     top = 160

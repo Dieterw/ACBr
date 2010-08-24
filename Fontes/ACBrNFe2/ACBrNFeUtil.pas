@@ -520,7 +520,7 @@ begin
   Result := '' ;
   For A := 1 to length(AValue) do
   begin
-    {$IFDEF CompilerVersion >= 20}
+    {$IFDEF DELPHI12_UP}
     if CharInSet(AValue[A], ['0'..'9']) then
     {$ELSE}
     if (AValue[A] in ['0'..'9']) then

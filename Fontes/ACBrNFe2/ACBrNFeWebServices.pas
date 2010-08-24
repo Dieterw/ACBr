@@ -990,6 +990,8 @@ var
 begin
   inherited Executar;
 
+  Result := False;
+
   Acao := TStringList.Create;
   Stream := TMemoryStream.Create;
 

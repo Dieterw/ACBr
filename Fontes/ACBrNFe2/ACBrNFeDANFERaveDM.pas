@@ -194,7 +194,7 @@ begin
       else
          if vChar > #127 then
            Resultado := #32
-         {$IFDEF CompilerVersion >= 20}
+         {$IFDEF UNICODE}
          else if CharInset(vChar, ['a'..'z','A'..'Z','0'..'9','-',' ']) then
          {$ELSE}
          else if vChar in ['a'..'z','A'..'Z','0'..'9','-',' '] then
@@ -494,7 +494,7 @@ var
    IndexCampo,IndexCampo2:Integer;
    Campos,Campos2:ArrOfStr;
 
-   {$IFDEF CompilerVersion >= 20}
+   {$IFDEF UNICODE}
    BufferXProd, BufferXInfProd: PWideChar;
    {$ELSE}
    BufferXProd, BufferXInfProd: PAnsiChar;
@@ -519,7 +519,7 @@ begin
             for indexCampo:=0 to Length(Campos)-1 do
                vTemp.Add(Trim(Campos[indexCampo]));
             TmpStr := vTemp.Text;
-            {$IFDEF CompilerVersion >= 20} //Igual ou Superior ao Delphi2009
+            {$IFDEF UNICODE} //Igual ou Superior ao Delphi2009
                Size := Length(TmpStr) * 2;
                BufferXProd := PWideChar(TmPStr);
             {$ELSE}
@@ -581,7 +581,7 @@ begin
                for IndexCampo2:=0 to Length(Campos2)-1 do
                   vTemp2.Add(Trim(Campos2[IndexCampo2]));
                TmpStr := vTemp2.Text;
-               {$IFDEF CompilerVersion >= 20} //Igual ou Superior ao Delphi2009
+               {$IFDEF UNICODE} //Igual ou Superior ao Delphi2009
                   Size := Length(TmpStr) * 2;
                   BufferXInfProd := PWideChar(TmPStr);
                {$ELSE}
@@ -1189,7 +1189,7 @@ var
   vTemp: TStringList;
   IndexCampo:Integer;
   Campos: ArrOfStr;
-  {$IFDEF CompilerVersion >= 20}
+  {$IFDEF UNICODE}
   BufferInfCpl: PWideChar;
   {$ELSE}
   BufferInfCpl: PAnsiChar;
@@ -1256,7 +1256,7 @@ begin
             vTemp.Add(Campos[indexCampo]);
          wLinhasObs:=TotalObS(vTemp.Text);
          TmpStr := vTemp.Text;
-         {$IFDEF CompilerVersion >= 20} //Igual ou Superior ao Delphi2009
+         {$IFDEF UNICODE} //Igual ou Superior ao Delphi2009
             Size := Length(TmpStr) * 2;
             BufferInfCpl := PWideChar(TmpStr);
          {$ELSE}

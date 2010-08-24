@@ -50,19 +50,21 @@ Símbolo : Significado
 
 Alterações   24/08/2010
 ---------------
-[*] Correção da exportação para PDF
-[*] Correção para checar se o relatório foi realmente preparado antes de continuar a imprir ou gerar o PDF
-[*] Correção nas diretivas de compilação para Delphi 2009 e superior
-[*] Correções para o Simples Nacional
-[*] correção para utilizar o caminho da logomarca como nos outros DANFEs
-[*] Correções gerais no DANFE
-      - layout
-      - exibição da logomarca
-      - tamanho das colunas para conter valores grandes
-      - marca d'agua para ambiente de homologação
-      - complemento a descrição da mercadoria
-      - origem no CST
-      - mostrar o CST corretamente quando for Simples Nacional
+[-] DANFE em FAST REPORT (Régys Borges da Silveira)
+    - Correção da exportação para PDF
+    - Correção para checar se o relatório foi realmente preparado antes de continuar a imprir ou gerar o PDF
+    - Correção nas diretivas de compilação para Delphi 2009 e superior
+    - Correções para o Simples Nacional
+    - correção para utilizar o caminho da logomarca como nos outros DANFEs
+    - Correçã para informar as propriedades titulo, criador, etc do PDF corretamente
+    - Correções gerais no DANFE
+        . layout
+        . exibição da logomarca
+        . tamanho das colunas para conter valores grandes
+        . marca d'agua para ambiente de homologação
+        . complemento a descrição da mercadoria
+        . origem no CST
+        . mostrar o CST corretamente quando for Simples Nacional
 
 
 Alterações   16/08/10

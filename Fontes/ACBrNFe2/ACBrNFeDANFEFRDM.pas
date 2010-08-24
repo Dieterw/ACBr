@@ -51,7 +51,7 @@
 |        . Acerto para mostrar o CST corretamente quando for Simples Nacional
 |*  - Padronização da logomarca para utilizar o caminho como nos outros DANFEs
 |*  - Acerto no CST para o Simples Nacional
-|*  - Acertos no relatório para o Simples Nacional
+|*  - Acertos no DANFE para o Simples Nacional
 ******************************************************************************}
 {$I ACBr.inc}
 

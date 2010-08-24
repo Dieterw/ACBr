@@ -43,6 +43,7 @@
 |*  - Acerto da exportação para PDF
 |*  - Acerto para checar se o relatório foi realmente preparado
 |     antes de continuar a imprir ou gerar o PDF
+|*  - Acerto nas propriedades do arquivo PDF
 ******************************************************************************}
 {$I ACBr.inc}
 
@@ -109,11 +110,19 @@ begin
 end;
 
 procedure TACBrNFeDANFEFR.ImprimirDANFEPDF(NFE: TNFe);
+const
+  TITULO_PDF = 'Nota Fiscal Eletrônica';
 var
   I: Integer;
 begin
   if PrepareReport(NFE) then
   begin
+    dmDanfe.frxPDFExport.Author     := Sistema;
+    dmDanfe.frxPDFExport.Creator    := Sistema;
+    dmDanfe.frxPDFExport.Producer   := Sistema;
+    dmDanfe.frxPDFExport.Title      := TITULO_PDF;
+    dmDanfe.frxPDFExport.Subject    := TITULO_PDF;
+    dmDanfe.frxPDFExport.Keywords   := TITULO_PDF;
     dmDanfe.frxPDFExport.ShowDialog := False;
 
     if Assigned(NFE) then

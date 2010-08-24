@@ -1466,7 +1466,8 @@ begin
        CarregaAliquotas;
     end;
 
-    RetCMD := RetornaInfoECF('E2');
+    RetCMD := RetornaInfoECF('D2');
+    RetCMD := RemoveNulos(RetCMD);
 
     for I := 0 to fpAliquotas.Count - 1 do
     begin

@@ -190,6 +190,7 @@ TACBrHTTP = class( TACBrComponent )
 
     function AjustaParam(AParam : String) : String ;
     procedure HTTPGet( AURL : String) ; virtual ;
+    function GetHeaderValue( AValue : String ) : String ;
 
     property HTTPSend  : THTTPSend read fHTTPSend ;
     property RespHTTP  : TStringList read fRespHTTP ;
@@ -623,6 +624,25 @@ begin
      Screen.Cursor := OldCursor;
     {$ENDIF}
   end;
+end ;
+
+function TACBrHTTP.GetHeaderValue(AValue : String) : String ;
+var
+  I : Integer ;
+  LinhaHeader : string ;
+begin
+  Result := '' ;
+  I      := 0 ;
+
+  while (Result = '') and (I < HTTPSend.Headers.Count) do
+  begin
+     LinhaHeader := HTTPSend.Headers[I];
+
+     if (pos(AValue, LinhaHeader) = 1) then
+        Result := copy(LinhaHeader, Length(AValue)+1, Length(LinhaHeader) ) ;
+
+     Inc( I ) ;
+  end ;
 end ;
 
 function TACBrHTTP.GetProxyHost : string ;

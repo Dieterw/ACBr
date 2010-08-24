@@ -56,12 +56,6 @@ const
 
 type
 
-  { EACBrCEPHTTPError }
-
-  EACBrCEPHTTPError = class( Exception ) ;
-
-  { TACBrCEPEndereco }
-
   { TACBrIBGECidade }
 
   TACBrIBGECidade = class
@@ -82,9 +76,9 @@ type
 
   end ;
 
-  { Lista de Objetos do tipo TACBrCEPEndereco }
+  { Lista de Objetos do tipo TACBrIBGECidade }
 
-  { TACBrCEPEnderecos }
+  { TACBrIBGECidades }
 
   TACBrIBGECidades = class(TObjectList)
     protected
@@ -96,8 +90,6 @@ type
       property Objects [Index: Integer]: TACBrIBGECidade
         read GetObject write SetObject; default;
     end;
-
-  TACBrOnAntesAbrirHTTP = procedure( var AURL : String ) of object ;
 
   TACBrIBGE = class( TACBrHTTP )
     private

@@ -320,11 +320,7 @@ begin
    begin
       { Tenta Abrir Arquivo/Porta para ver se xiste e está disponivel}
       if IsTXTFilePort and FileExists(Porta) then
-        {$IFDEF DELPHI12_UP}
-        DeleteFile(PwideChar(Porta));
-        {$ELSE}
-        DeleteFile(Porta);
-        {$ENDIF}
+         SysUtils.DeleteFile(Porta);
 
       EnviaStringArquivo( '' );
    end ;

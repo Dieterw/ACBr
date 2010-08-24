@@ -64,7 +64,7 @@ uses synaser, {Unit da SynaSer (comunicação serial) }
      SysUtils, math,
      ACBrConsts, 
      {$IFDEF COMPILER6_UP}
-        DateUtils, Types, StrUtils,
+        Windows, DateUtils, Types, StrUtils,
      {$ELSE}
         Windows, ACBrD5,
      {$ENDIF}
@@ -291,7 +291,6 @@ begin
 end;
 
 procedure TACBrDevice.Ativar;
-Var ArqPrn : TextFile ;
 begin
   if fsAtivo then exit ;
 
@@ -321,7 +320,11 @@ begin
    begin
       { Tenta Abrir Arquivo/Porta para ver se xiste e está disponivel}
       if IsTXTFilePort and FileExists(Porta) then
-         DeleteFile(Porta);
+        {$IFDEF DELPHI12_UP}
+        DeleteFile(PwideChar(Porta));
+        {$ELSE}
+        DeleteFile(Porta);
+        {$ENDIF}
 
       EnviaStringArquivo( '' );
    end ;
@@ -650,8 +653,12 @@ begin
 
   S := GetValue(Linha,'PARITY') ;
   if S <> '' then
-     if S[1] in ['O','E','M','S','N'] then
-        fsParity := S[1] ;
+    {$IFDEF DELPHI12_UP}
+    if CharInSet(S[1], ['O','E','M','S','N']) then
+    {$ELSE}
+    if S[1] in ['O','E','M','S','N'] then
+    {$ENDIF}
+      fsParity := S[1] ;
 
   Data := StrToIntDef(GetValue(Linha,'DATA'),Data) ;
 

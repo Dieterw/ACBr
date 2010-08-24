@@ -107,6 +107,8 @@ type
     cbxBOLF_J: TComboBox;
     deBOLDirLogo: TDirectoryEdit;
     deBOLDirArquivo: TDirectoryEdit;
+    deBolDirRemessa: TDirectoryEdit;
+    deBolDirRetorno: TDirectoryEdit;
     edCEPChaveBuscarCEP : TEdit ;
     edCONProxyHost : TEdit ;
     edCONProxyPass : TEdit ;
@@ -144,6 +146,8 @@ type
     lCEPProxySenha : TLabel ;
     lCEPCEP : TLabel ;
     lCEPWebService : TLabel ;
+    Label78: TLabel;
+    Label79: TLabel;
     lblBOLCep: TLabel;
     lblBOLPessoa: TLabel;
     lblBOLDirLogo: TLabel;
@@ -430,6 +434,8 @@ type
     procedure cbCEPWebServiceChange(Sender : TObject) ;
     procedure deBOLDirArquivoExit ( Sender: TObject ) ;
     procedure deBOLDirLogoExit ( Sender: TObject ) ;
+    procedure deBolDirRemessaExit ( Sender: TObject ) ;
+    procedure deBolDirRetornoExit ( Sender: TObject ) ;
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);{%h-}
     procedure FormCreate(Sender: TObject);
     procedure ACBrECF1MsgAguarde(Mensagem: string);
@@ -947,9 +953,6 @@ begin
        deBOLDirArquivo.Clear;
        raise Exception.Create('Diretorio destino do Arquivo não encontrado.');
      end;
-
-     if Pos(PathDelim,deBOLDirArquivo.Text) <= 0 then
-        deBOLDirArquivo.Text := deBOLDirArquivo.Text+ PathDelim;
    end;
 end;
 
@@ -962,9 +965,30 @@ begin
        deBOLDirLogo.Clear;
        raise Exception.Create('Diretorio de Logos não encontrado.');
      end;
+   end;
+end;
 
-     if Pos(PathDelim,deBOLDirLogo.Text) <= 0 then
-        deBOLDirLogo.Text := deBOLDirLogo.Text+ PathDelim;
+procedure TFrmACBrMonitor.deBolDirRemessaExit ( Sender: TObject ) ;
+begin
+   if trim(deBolDirRemessa.Text) <> '' then
+   begin
+     if not DirectoryExists(deBolDirRemessa.Text) then
+     begin
+       deBolDirRemessa.Clear;
+       raise Exception.Create('Diretorio de Arquivos Remessa não encontrado.');
+     end;
+   end;
+end;
+
+procedure TFrmACBrMonitor.deBolDirRetornoExit ( Sender: TObject ) ;
+begin
+   if trim(deBolDirRetorno.Text) <> '' then
+   begin
+     if not DirectoryExists(deBolDirRetorno.Text) then
+     begin
+       deBolDirRetorno.Clear;
+       raise Exception.Create('Diretorio de Arquivos Retorno não encontrado.');
+     end;
    end;
 end;
 
@@ -1377,7 +1401,8 @@ begin
     cbxBOLLayout.ItemIndex   := ini.ReadInteger('BOLETO', 'Layout', 0);
     cbxBOLFiltro.ItemIndex   := ini.ReadInteger('BOLETO', 'Filtro', 0);
     deBOLDirArquivo.Text     := ini.ReadString('BOLETO', 'DirArquivoBoleto','');
-
+    deBolDirRemessa.Text     := ini.ReadString('BOLETO', 'DirArquivoRemessa','');
+    deBolDirRetorno.Text     := ini.ReadString('BOLETO', 'DirArquivoRetorno','');
   finally
     Ini.Free;
   end;
@@ -1537,6 +1562,8 @@ begin
     end;
 
     Banco.Numero := StrToIntDef(Copy(cbxBOLBanco.Text, 1, 3), 0);
+    DirArqRemessa := deBolDirRemessa.Text;
+    DirArqRetorno := deBolDirRetorno.Text;
   end;
 
   with ACBrBoletoFCFortes1 do
@@ -1774,6 +1801,7 @@ procedure TFrmACBrMonitor.SalvarConfBoletos;
 var
   Ini: TIniFile;
   DirLogoBanco, DirArquivoBoleto: String;
+  DirArqRemessa, DirArqRetorno: String;
   TrimedCNPJ, TrimedCEP : String ;
 begin
    TrimedCNPJ := OnlyNumber(edtBOLCNPJ.Text) ;
@@ -1830,10 +1858,32 @@ begin
      else
         DirLogoBanco := deBOLDirLogo.Text;
 
+     if Pos(PathDelim,DirLogoBanco) <> Length(DirLogoBanco)  then
+        DirLogoBanco := DirLogoBanco + PathDelim;
+
      if trim(deBOLDirArquivo.Text) = '' then
-        DirArquivoBoleto := edSaiTXT.Text
+        DirArquivoBoleto := ExtractFileDir(edSaiTXT.Text)
      else
         DirArquivoBoleto := deBOLDirArquivo.Text;
+
+     if Pos(PathDelim,DirArquivoBoleto) <> Length(DirArquivoBoleto)  then
+        DirArquivoBoleto := DirArquivoBoleto + PathDelim;
+
+     if trim(deBolDirRemessa.Text) = '' then
+        DirArqRemessa := ExtractFileDir(edSaiTXT.Text)
+     else
+        DirArqRemessa := deBolDirRemessa.Text;
+
+     if Pos(PathDelim,DirArqRemessa) <> Length(DirArqRemessa)  then
+        DirArqRemessa := DirArqRemessa + PathDelim;
+
+     if trim(deBolDirRetorno.Text) = '' then
+        DirArqRetorno := ExtractFileDir(edSaiTXT.Text)
+     else
+        DirArqRetorno := deBolDirRetorno.Text;
+
+     if Pos(PathDelim,DirArqRetorno) <> Length(DirArqRetorno) then
+        DirArqRetorno := DirArqRetorno + PathDelim;
 
      ini.WriteString('BOLETO', 'DirLogos', DirLogoBanco);
      ini.WriteString('BOLETO', 'SoftwareHouse', edtBOLSH.Text);
@@ -1843,6 +1893,8 @@ begin
      ini.WriteInteger('BOLETO', 'Layout', cbxBOLLayout.ItemIndex);
      ini.WriteInteger('BOLETO', 'Filtro', cbxBOLFiltro.ItemIndex);
      ini.WriteString('BOLETO', 'DirArquivoBoleto',DirArquivoBoleto);
+     ini.WriteString('BOLETO', 'DirArquivoRemessa',DirArqRemessa);
+     ini.WriteString('BOLETO', 'DirArquivoRetorno',DirArqRetorno);
    finally
       ini.Free;
    end;

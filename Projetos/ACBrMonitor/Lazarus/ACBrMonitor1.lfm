@@ -4539,6 +4539,51 @@ object FrmACBrMonitor: TFrmACBrMonitor
               ParentColor = False
             end
           end
+          object TabSheet1: TTabSheet
+            Caption = 'Remessa\Retorno'
+            ClientHeight = 153
+            ClientWidth = 576
+            object deBolDirRemessa: TDirectoryEdit
+              Left = 162
+              Height = 23
+              Top = 34
+              Width = 343
+              ShowHidden = False
+              ButtonWidth = 23
+              NumGlyphs = 0
+              MaxLength = 0
+              TabOrder = 0
+              OnExit = deBolDirRemessaExit
+            end
+            object deBolDirRetorno: TDirectoryEdit
+              Left = 162
+              Height = 23
+              Top = 82
+              Width = 343
+              ShowHidden = False
+              ButtonWidth = 23
+              NumGlyphs = 0
+              MaxLength = 0
+              TabOrder = 1
+              OnExit = deBolDirRetornoExit
+            end
+            object Label78: TLabel
+              Left = 15
+              Height = 16
+              Top = 42
+              Width = 144
+              Caption = 'Diretório Arquivo Remessa:'
+              ParentColor = False
+            end
+            object Label79: TLabel
+              Left = 15
+              Height = 16
+              Top = 89
+              Width = 140
+              Caption = 'Diretório Arquivo Retorno:'
+              ParentColor = False
+            end
+          end
         end
       end
       object tsConsultas: TTabSheet

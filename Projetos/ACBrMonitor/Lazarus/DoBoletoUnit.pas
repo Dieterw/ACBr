@@ -52,83 +52,8 @@ procedure DoBoleto ( Cmd: TACBrCmd ) ;
 begin
    with FrmACBrMonitor.ACBrBoleto1 do
    begin
-      if Cmd.Metodo = 'configurarcedente' then
-       begin
-         with Cedente do
-         begin
-            Nome          := Cmd.Params(0);
-            CNPJCPF       := Cmd.Params(1);
-            Logradouro    := Cmd.Params(3);
-            NumeroRes     := cmd.Params(4);
-            Complemento   := cmd.Params(5);
-            Bairro        := cmd.Params(6);
-            Cidade        := cmd.Params(7);
-            UF            := Cmd.Params(8);
-            CEP           := Cmd.Params(9);
-
-            FrmACBrMonitor.cbxBOLF_J.ItemIndex := StrToIntDef(cmd.Params(2),2);
-
-            case  FrmACBrMonitor.cbxBOLF_J.ItemIndex of
-               0: TipoInscricao := pFisica;
-               1: TipoInscricao := pJuridica;
-              else
-                 TipoInscricao := pOutras;
-            end;
-
-            FrmACBrMonitor.cbxBOLEmissao.ItemIndex := StrToIntDef(cmd.Params(10),0);
-            case FrmACBrMonitor.cbxBOLEmissao.ItemIndex of
-              0: ResponEmissao := tbCliEmite;
-              1: ResponEmissao := tbBancoEmite;
-              2: ResponEmissao := tbBancoReemite;
-              3: ResponEmissao := tbBancoNaoReemite;
-              else
-                ResponEmissao := tbCliEmite;
-            end;
-         end;
-
-         with FrmACBrMonitor do
-         begin
-            edtBOLRazaoSocial.Text  := Cedente.Nome;
-            edtBOLCNPJ.Text         := Cedente.CNPJCPF;
-            edtBOLLogradouro.Text   := Cedente.Logradouro;
-            edtBOLNumero.Text       := Cedente.NumeroRes;
-            edtBOLBairro.Text       := Cedente.Bairro;
-            edtBOLCidade.Text       := Cedente.Cidade;
-            edtBOLComplemento.Text  := Cedente.Complemento;
-            cbxBOLUF.Text           := Cedente.UF;
-            edtBOLCEP.Text          := Cedente.CEP;
-
-            SalvarConfBoletos;
-         end;
-
-       end
-      else if Cmd.Metodo = 'configurarconta' then
-       begin
-          with Cedente do
-          begin
-            Conta         := cmd.Params(0);
-            ContaDigito   := Cmd.Params(1);
-            Agencia       := cmd.Params(2);
-            AgenciaDigito := Cmd.Params(3);
-          end;
-
-          with FrmACBrMonitor do
-          begin
-            edtBOLConta.Text         := Cedente.Conta;
-            edtBOLDigitoConta.Text   := Cedente.ContaDigito;
-            edtBOLAgencia.Text       := Cedente.Agencia;
-            edtBOLDigitoAgencia.Text := Cedente.AgenciaDigito;
-
-            SalvarConfBoletos;
-          end;
-       end
-
-      else if cmd.Metodo = 'configurarbanco' then
-       begin
-         Banco.Numero := StrToInt(cmd.Params(0));
-         FrmACBrMonitor.cbxBOLBanco.Text:= IntToStrZero(Banco.Numero,3);
-         FrmACBrMonitor.SalvarConfBoletos;
-       end
+      if Cmd.Metodo = 'configurardados' then
+         LerIniBoletos(Cmd.Params(0))
 
       else if cmd.Metodo = 'limparlista' then
          ListadeBoletos.Clear
@@ -180,7 +105,10 @@ var
    ContTitulos: Integer;
    NomeSessao: String;
    Emissao: LongInt;
+   MudouDados: boolean;
 begin
+
+  MudouDados := false;
   IniBoletos := TMemIniFile.Create('boletos.ini');
   SL         := TStringList.Create;
 
@@ -196,43 +124,81 @@ begin
   begin
      if IniBoletos.SectionExists('Cedente') then
      begin
+        MudouDados := true;
         with Cedente do
         begin
-           Nome          := IniBoletos.ReadString('BOLETO','Cedente.Nome',Nome);
-           CNPJCPF       := IniBoletos.ReadString('BOLETO','Cedente.CNPJCPF',CNPJCPF);
-           Logradouro    := IniBoletos.ReadString('BOLETO','Cedente.Logradouro',Logradouro);
-           NumeroRes     := IniBoletos.ReadString('BOLETO','Cedente.Numero',NumeroRes);
-           Bairro        := IniBoletos.ReadString('BOLETO','Cedente.Bairro','');
-           Cidade        := IniBoletos.ReadString('BOLETO','Cedente.Cidade','');
-           CEP           := IniBoletos.ReadString('BOLETO','Cedente.CEP','');
-           Complemento   := IniBoletos.ReadString('BOLETO','Cedente.Complemento','');
-           UF            := IniBoletos.ReadString('BOLETO','Cedente.UF','');
+           Nome          := IniBoletos.ReadString('CEDENTE','Nome',Nome);
+           CNPJCPF       := IniBoletos.ReadString('CEDENTE','CNPJCPF',CNPJCPF);
+           Logradouro    := IniBoletos.ReadString('CEDENTE','Logradouro',Logradouro);
+           NumeroRes     := IniBoletos.ReadString('CEDENTE','Numero',NumeroRes);
+           Bairro        := IniBoletos.ReadString('CEDENTE','Bairro','');
+           Cidade        := IniBoletos.ReadString('CEDENTE','Cidade','');
+           CEP           := IniBoletos.ReadString('CEDENTE','CEP','');
+           Complemento   := IniBoletos.ReadString('CEDENTE','Complemento','');
+           UF            := IniBoletos.ReadString('CEDENTE','UF','');
 
-           Emissao:= IniBoletos.ReadInteger('BOLETO','Cedente.RespEmis',0);
-           case Emissao of
-              0: ResponEmissao := tbCliEmite;
-              1: ResponEmissao := tbBancoEmite;
-              2: ResponEmissao := tbBancoReemite;
-              3: ResponEmissao := tbBancoNaoReemite;
+           FrmACBrMonitor.cbxBOLEmissao.ItemIndex := IniBoletos.ReadInteger('CEDENTE','RespEmis',0);
+           case FrmACBrMonitor.cbxBOLEmissao.ItemIndex of
+             0: ResponEmissao := tbCliEmite;
+             1: ResponEmissao := tbBancoEmite;
+             2: ResponEmissao := tbBancoReemite;
+             3: ResponEmissao := tbBancoNaoReemite;
              else
                ResponEmissao := tbCliEmite;
            end;
+
+           FrmACBrMonitor.cbxBOLF_J.ItemIndex := IniBoletos.ReadInteger('CEDENTE','TipoPessoa',2);
+           case  FrmACBrMonitor.cbxBOLF_J.ItemIndex of
+               0: TipoInscricao := pFisica;
+               1: TipoInscricao := pJuridica;
+              else
+                 TipoInscricao := pOutras;
+           end;
+        end;
+
+        with FrmACBrMonitor do
+        begin
+           edtBOLRazaoSocial.Text  := Cedente.Nome;
+           edtBOLCNPJ.Text         := Cedente.CNPJCPF;
+           edtBOLLogradouro.Text   := Cedente.Logradouro;
+           edtBOLNumero.Text       := Cedente.NumeroRes;
+           edtBOLBairro.Text       := Cedente.Bairro;
+           edtBOLCidade.Text       := Cedente.Cidade;
+           edtBOLComplemento.Text  := Cedente.Complemento;
+           cbxBOLUF.Text           := Cedente.UF;
+           edtBOLCEP.Text          := Cedente.CEP;
         end;
      end;
 
      if IniBoletos.SectionExists('Conta') then
      begin
+        MudouDados := true;
         with Cedente do
         begin
-          Conta         := IniBoletos.ReadString('BOLETO','Conta','');
-          ContaDigito   := IniBoletos.ReadString('BOLETO','DigitoConta','');
-          Agencia       := IniBoletos.ReadString('BOLETO','Agencia','');
-          AgenciaDigito := IniBoletos.ReadString('BOLETO','DigitoAgencia','');
+          Conta         := IniBoletos.ReadString('CONTA','Conta','');
+          ContaDigito   := IniBoletos.ReadString('CONTA','DigitoConta','');
+          Agencia       := IniBoletos.ReadString('CONTA','Agencia','');
+          AgenciaDigito := IniBoletos.ReadString('CONTA','DigitoAgencia','');
+        end;
+
+        with FrmACBrMonitor do
+        begin
+           edtBOLConta.Text         := Cedente.Conta;
+           edtBOLDigitoConta.Text   := Cedente.ContaDigito;
+           edtBOLAgencia.Text       := Cedente.Agencia;
+           edtBOLDigitoAgencia.Text := Cedente.AgenciaDigito;
         end;
      end;
 
      if IniBoletos.SectionExists('Banco') then
-        Banco.Numero := IniBoletos.ReadInteger('BOLETO','Banco',0);
+     begin
+        MudouDados := true;
+        Banco.Numero := IniBoletos.ReadInteger('BANCO','Numero',0);
+        FrmACBrMonitor.cbxBOLBanco.Text:= IntToStrZero(Banco.Numero,3);
+     end;
+
+     if MudouDados then
+        FrmACBrMonitor.SalvarConfBoletos;
 
      if IniBoletos.SectionExists('Titulo') then
         IncluirTitulo(IniBoletos,'Titulo');
@@ -275,7 +241,7 @@ begin
 
          try
             OcorrenciaOriginal.Tipo := TACBrTipoOcorrencia(
-               aini.ReadInteger(Sessao,'OcorrenciaOriginal.TipoOcorrencia',1) ) ;
+               aini.ReadInteger(Sessao,'OcorrenciaOriginal.TipoOcorrencia',0) ) ;
          except
             OcorrenciaOriginal.Tipo := toRemessaRegistrar ;
          end ;

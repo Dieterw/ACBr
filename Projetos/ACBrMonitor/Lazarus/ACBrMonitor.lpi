@@ -3,15 +3,14 @@
   <ProjectOptions>
     <Version Value="9"/>
     <PathDelim Value="\"/>
+    <i18n>
+      <EnableI18N LFM="False"/>
+    </i18n>
     <General>
-      <MainUnit Value="0"/>
       <UseXPManifest Value="True"/>
       <Icon Value="0"/>
       <ActiveWindowIndexAtStart Value="0"/>
     </General>
-    <i18n>
-      <EnableI18N LFM="False"/>
-    </i18n>
     <VersionInfo>
       <Language Value=""/>
       <CharSet Value=""/>
@@ -54,7 +53,7 @@
         <PackageName Value="LCL"/>
       </Item6>
     </RequiredPackages>
-    <Units Count="68">
+    <Units Count="69">
       <Unit0>
         <Filename Value="ACBrMonitor.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -62,7 +61,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="37" Y="18"/>
-        <UsageCount Value="102"/>
+        <UsageCount Value="108"/>
       </Unit0>
       <Unit1>
         <Filename Value="UtilUnit.pas"/>
@@ -71,7 +70,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="28"/>
         <CursorPos X="10" Y="42"/>
-        <UsageCount Value="102"/>
+        <UsageCount Value="108"/>
       </Unit1>
       <Unit2>
         <Filename Value="ACBrMonitor1.pas"/>
@@ -80,11 +79,11 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ACBrMonitor1"/>
-        <EditorIndex Value="0"/>
+        <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="58"/>
-        <CursorPos X="65" Y="72"/>
-        <UsageCount Value="102"/>
+        <TopLine Value="1884"/>
+        <CursorPos X="33" Y="1891"/>
+        <UsageCount Value="108"/>
         <Bookmarks Count="1">
           <Item0 X="32" Y="3713" ID="1"/>
         </Bookmarks>
@@ -98,7 +97,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="61" Y="8"/>
-        <UsageCount Value="14"/>
+        <UsageCount Value="13"/>
       </Unit3>
       <Unit4>
         <Filename Value="CmdUnit.pas"/>
@@ -107,7 +106,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="148"/>
         <CursorPos X="23" Y="162"/>
-        <UsageCount Value="102"/>
+        <UsageCount Value="108"/>
       </Unit4>
       <Unit5>
         <Filename Value="ConfiguraSerial.pas"/>
@@ -119,7 +118,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="74" Y="6"/>
-        <UsageCount Value="102"/>
+        <UsageCount Value="108"/>
       </Unit5>
       <Unit6>
         <Filename Value="DoACBrUnit.pas"/>
@@ -128,7 +127,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="71"/>
         <CursorPos X="31" Y="63"/>
-        <UsageCount Value="102"/>
+        <UsageCount Value="108"/>
       </Unit6>
       <Unit7>
         <Filename Value="DoBALUnit.pas"/>
@@ -137,7 +136,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="29"/>
         <CursorPos X="6" Y="43"/>
-        <UsageCount Value="102"/>
+        <UsageCount Value="108"/>
       </Unit7>
       <Unit8>
         <Filename Value="DoCHQUnit.pas"/>
@@ -146,7 +145,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="29"/>
         <CursorPos X="25" Y="43"/>
-        <UsageCount Value="102"/>
+        <UsageCount Value="108"/>
       </Unit8>
       <Unit9>
         <Filename Value="DoDISUnit.pas"/>
@@ -155,7 +154,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="31"/>
         <CursorPos X="23" Y="45"/>
-        <UsageCount Value="102"/>
+        <UsageCount Value="108"/>
       </Unit9>
       <Unit10>
         <Filename Value="DoECFBemafi32.pas"/>
@@ -164,7 +163,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="34"/>
         <CursorPos X="72" Y="48"/>
-        <UsageCount Value="102"/>
+        <UsageCount Value="108"/>
       </Unit10>
       <Unit11>
         <Filename Value="DoECFObserver.pas"/>
@@ -173,7 +172,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="34"/>
         <CursorPos X="72" Y="48"/>
-        <UsageCount Value="102"/>
+        <UsageCount Value="108"/>
       </Unit11>
       <Unit12>
         <Filename Value="DoECFUnit.pas"/>
@@ -182,7 +181,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="387"/>
         <CursorPos X="37" Y="402"/>
-        <UsageCount Value="102"/>
+        <UsageCount Value="108"/>
       </Unit12>
       <Unit13>
         <Filename Value="DoETQUnit.pas"/>
@@ -191,7 +190,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="35" Y="16"/>
-        <UsageCount Value="102"/>
+        <UsageCount Value="108"/>
       </Unit13>
       <Unit14>
         <Filename Value="DoGAVUnit.pas"/>
@@ -200,7 +199,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="87"/>
         <CursorPos X="11" Y="104"/>
-        <UsageCount Value="102"/>
+        <UsageCount Value="108"/>
       </Unit14>
       <Unit15>
         <Filename Value="DoLCBUnit.pas"/>
@@ -209,13 +208,13 @@
         <WindowIndex Value="0"/>
         <TopLine Value="29"/>
         <CursorPos X="17" Y="43"/>
-        <UsageCount Value="102"/>
+        <UsageCount Value="108"/>
       </Unit15>
       <Unit16>
         <Filename Value="sndkey32.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="sndkey32"/>
-        <UsageCount Value="102"/>
+        <UsageCount Value="108"/>
       </Unit16>
       <Unit17>
         <Filename Value="Sobre.pas"/>
@@ -227,14 +226,14 @@
         <WindowIndex Value="0"/>
         <TopLine Value="118"/>
         <CursorPos X="18" Y="129"/>
-        <UsageCount Value="102"/>
+        <UsageCount Value="108"/>
       </Unit17>
       <Unit18>
         <Filename Value="Sobre.lfm"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
-        <UsageCount Value="4"/>
+        <UsageCount Value="3"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit18>
       <Unit19>
@@ -242,7 +241,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="320"/>
         <CursorPos X="16" Y="13"/>
-        <UsageCount Value="4"/>
+        <UsageCount Value="3"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit19>
       <Unit20>
@@ -250,25 +249,23 @@
         <WindowIndex Value="0"/>
         <TopLine Value="968"/>
         <CursorPos X="47" Y="988"/>
-        <UsageCount Value="4"/>
+        <UsageCount Value="3"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit20>
       <Unit21>
         <Filename Value="..\..\..\Fontes\ACBrTCP\ACBrSocket.pas"/>
         <UnitName Value="ACBrSocket"/>
-        <EditorIndex Value="4"/>
         <WindowIndex Value="0"/>
         <TopLine Value="168"/>
         <CursorPos X="1" Y="192"/>
-        <UsageCount Value="12"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="11"/>
       </Unit21>
       <Unit22>
         <Filename Value="C:\lazarus\lcl\interfaces\win32\win32callback.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="965"/>
         <CursorPos X="39" Y="978"/>
-        <UsageCount Value="4"/>
+        <UsageCount Value="3"/>
       </Unit22>
       <Unit23>
         <Filename Value="..\..\..\Fontes\ACBrComum\ACBrConsts.pas"/>
@@ -276,14 +273,14 @@
         <WindowIndex Value="0"/>
         <TopLine Value="40"/>
         <CursorPos X="23" Y="61"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit23>
       <Unit24>
         <Filename Value="versao.txt"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="77" Y="3"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="4"/>
         <DefaultSyntaxHighlighter Value="None"/>
       </Unit24>
       <Unit25>
@@ -292,7 +289,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="480"/>
         <CursorPos X="23" Y="497"/>
-        <UsageCount Value="11"/>
+        <UsageCount Value="10"/>
       </Unit25>
       <Unit26>
         <Filename Value="C:\Lazarus\djpdv\djmonitor\Principal.pas"/>
@@ -301,15 +298,17 @@
         <WindowIndex Value="0"/>
         <TopLine Value="753"/>
         <CursorPos X="1" Y="758"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="4"/>
       </Unit26>
       <Unit27>
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
         <UnitName Value="ACBrBoleto"/>
+        <EditorIndex Value="4"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="49"/>
-        <CursorPos X="33" Y="56"/>
-        <UsageCount Value="46"/>
+        <TopLine Value="91"/>
+        <CursorPos X="32" Y="107"/>
+        <UsageCount Value="48"/>
+        <Loaded Value="True"/>
       </Unit27>
       <Unit28>
         <Filename Value="C:\lazarus\fpc\2.4.3\source\packages\fcl-base\src\inifiles.pp"/>
@@ -317,21 +316,21 @@
         <WindowIndex Value="0"/>
         <TopLine Value="620"/>
         <CursorPos X="3" Y="624"/>
-        <UsageCount Value="23"/>
+        <UsageCount Value="22"/>
       </Unit28>
       <Unit29>
         <Filename Value="C:\lazarus\fpc\2.4.3\source\rtl\objpas\sysutils\sysstrh.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="24"/>
         <CursorPos X="4" Y="33"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="8"/>
       </Unit29>
       <Unit30>
         <Filename Value="C:\lazarus\fpc\2.4.3\source\rtl\objpas\sysutils\sysstr.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="2581"/>
         <CursorPos X="3" Y="2571"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="4"/>
       </Unit30>
       <Unit31>
         <Filename Value="DoBolUnit.pas"/>
@@ -339,7 +338,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="25"/>
         <CursorPos X="16" Y="34"/>
-        <UsageCount Value="40"/>
+        <UsageCount Value="39"/>
       </Unit31>
       <Unit32>
         <Filename Value="..\..\..\Fontes\ACBrSerial\ACBrECF.pas"/>
@@ -347,7 +346,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="987"/>
         <CursorPos X="3" Y="989"/>
-        <UsageCount Value="16"/>
+        <UsageCount Value="15"/>
       </Unit32>
       <Unit33>
         <Filename Value="..\..\..\Fontes\ACBrSerial\ACBrECFClass.pas"/>
@@ -355,7 +354,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="247"/>
         <CursorPos X="14" Y="268"/>
-        <UsageCount Value="12"/>
+        <UsageCount Value="11"/>
       </Unit33>
       <Unit34>
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoletoFCFortesFr.pas"/>
@@ -366,7 +365,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
-        <UsageCount Value="11"/>
+        <UsageCount Value="10"/>
       </Unit34>
       <Unit35>
         <Filename Value="..\..\..\Fontes\ACBrDiversos\ACBrValidador.pas"/>
@@ -374,7 +373,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1246"/>
         <CursorPos X="28" Y="1282"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="8"/>
       </Unit35>
       <Unit36>
         <Filename Value="..\..\..\..\..\lazarus\Comp\Fortes\rlbarcode.pas"/>
@@ -382,14 +381,14 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="6" Y="13"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
       </Unit36>
       <Unit37>
         <Filename Value="C:\lazarus\fpc\2.4.3\source\rtl\objpas\sysutils\filutilh.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="77"/>
         <CursorPos X="10" Y="86"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
       </Unit37>
       <Unit38>
         <Filename Value="C:\lazarus\fpc\2.4.3\source\rtl\win\sysutils.pp"/>
@@ -397,14 +396,14 @@
         <WindowIndex Value="0"/>
         <TopLine Value="347"/>
         <CursorPos X="17" Y="351"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
       </Unit38>
       <Unit39>
         <Filename Value="C:\lazarus\fpc\2.4.3\source\rtl\win\wininc\ascdef.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="110"/>
         <CursorPos X="10" Y="119"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
       </Unit39>
       <Unit40>
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBancoBradesco.pas"/>
@@ -412,7 +411,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="237"/>
         <CursorPos X="29" Y="242"/>
-        <UsageCount Value="14"/>
+        <UsageCount Value="13"/>
       </Unit40>
       <Unit41>
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBancoBrasil.pas"/>
@@ -420,21 +419,21 @@
         <WindowIndex Value="0"/>
         <TopLine Value="279"/>
         <CursorPos X="41" Y="284"/>
-        <UsageCount Value="14"/>
+        <UsageCount Value="13"/>
       </Unit41>
       <Unit42>
         <Filename Value="C:\lazarus\fpc\2.4.3\source\rtl\inc\systemh.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="756"/>
         <CursorPos X="11" Y="765"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
       </Unit42>
       <Unit43>
         <Filename Value="C:\lazarus\fpc\2.4.3\source\rtl\inc\sstrings.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="162"/>
         <CursorPos X="3" Y="162"/>
-        <UsageCount Value="14"/>
+        <UsageCount Value="13"/>
       </Unit43>
       <Unit44>
         <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
@@ -442,30 +441,32 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1025"/>
         <CursorPos X="1" Y="1034"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit44>
       <Unit45>
         <Filename Value="DoBoletoUnit.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="DoBoletoUnit"/>
+        <EditorIndex Value="3"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="163"/>
-        <CursorPos X="11" Y="170"/>
-        <UsageCount Value="70"/>
+        <TopLine Value="225"/>
+        <CursorPos X="78" Y="181"/>
+        <UsageCount Value="76"/>
+        <Loaded Value="True"/>
       </Unit45>
       <Unit46>
         <Filename Value="C:\lazarus\fpc\2.4.3\source\rtl\objpas\sysutils\datih.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="117"/>
         <CursorPos X="10" Y="131"/>
-        <UsageCount Value="13"/>
+        <UsageCount Value="12"/>
       </Unit46>
       <Unit47>
         <Filename Value="C:\lazarus\fpc\2.4.3\source\rtl\objpas\sysutils\dati.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="527"/>
         <CursorPos X="1" Y="529"/>
-        <UsageCount Value="13"/>
+        <UsageCount Value="12"/>
       </Unit47>
       <Unit48>
         <Filename Value="..\..\..\Fontes\ACBrSerial\ACBrRFD.pas"/>
@@ -473,14 +474,14 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1639"/>
         <CursorPos X="50" Y="1640"/>
-        <UsageCount Value="8"/>
+        <UsageCount Value="7"/>
       </Unit48>
       <Unit49>
         <Filename Value="C:\lazarus\lcl\include\control.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="2758"/>
         <CursorPos X="1" Y="2772"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit49>
       <Unit50>
         <Filename Value="C:\lazarus\lcl\lclproc.pas"/>
@@ -488,15 +489,15 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1508"/>
         <CursorPos X="1" Y="1516"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="8"/>
       </Unit50>
       <Unit51>
         <Filename Value="C:\lazarus\ide\lazarus.pp"/>
         <UnitName Value="Lazarus"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="102"/>
-        <CursorPos X="11" Y="113"/>
-        <UsageCount Value="8"/>
+        <TopLine Value="111"/>
+        <CursorPos X="11" Y="124"/>
+        <UsageCount Value="9"/>
       </Unit51>
       <Unit52>
         <Filename Value="..\..\..\Fontes\synalist\sswin32.pas"/>
@@ -504,7 +505,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="310"/>
         <CursorPos X="3" Y="324"/>
-        <UsageCount Value="8"/>
+        <UsageCount Value="7"/>
       </Unit52>
       <Unit53>
         <Filename Value="..\..\..\Fontes\synalist\synamisc.pas"/>
@@ -512,7 +513,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="376"/>
         <CursorPos X="3" Y="387"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="8"/>
       </Unit53>
       <Unit54>
         <Filename Value="C:\lazarus\fpc\2.4.3\source\packages\winunits-base\src\shellapi.pp"/>
@@ -520,7 +521,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1682"/>
         <CursorPos X="10" Y="1696"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="8"/>
       </Unit54>
       <Unit55>
         <Filename Value="..\..\..\Fontes\ACBrSerial\ACBrECFBematech.pas"/>
@@ -528,7 +529,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="70"/>
         <CursorPos X="21" Y="11"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="8"/>
       </Unit55>
       <Unit56>
         <Filename Value="C:\lazarus\lcl\forms.pp"/>
@@ -536,7 +537,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="701"/>
         <CursorPos X="14" Y="715"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="8"/>
       </Unit56>
       <Unit57>
         <Filename Value="..\..\..\Exemplos\ACBrCEP\Lazarus\CEPTeste1.pas"/>
@@ -547,67 +548,66 @@
         <WindowIndex Value="0"/>
         <TopLine Value="112"/>
         <CursorPos X="32" Y="117"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit57>
       <Unit58>
-        <Filename Value="..\..\..\..\..\..\Lazarus\djpdv\djmonitor\Config.pas"/>
+        <Filename Value="C:\Lazarus\djpdv\djmonitor\Config.pas"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Config"/>
         <WindowIndex Value="0"/>
         <TopLine Value="459"/>
         <CursorPos X="39" Y="475"/>
-        <UsageCount Value="15"/>
+        <UsageCount Value="14"/>
       </Unit58>
       <Unit59>
         <Filename Value="C:\lazarus\lcl\include\wincontrol.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="7907"/>
         <CursorPos X="1" Y="7926"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit59>
       <Unit60>
         <Filename Value="C:\lazarus\fpc\2.4.3\source\rtl\objpas\classes\classesh.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="245"/>
         <CursorPos X="3" Y="259"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit60>
       <Unit61>
         <Filename Value="C:\lazarus\fpc\2.4.3\source\rtl\objpas\classes\lists.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="867"/>
         <CursorPos X="5" Y="867"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit61>
       <Unit62>
         <Filename Value="DoCEPUnit.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="DoCEPUnit"/>
-        <EditorIndex Value="1"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="89"/>
-        <CursorPos X="1" Y="117"/>
-        <UsageCount Value="23"/>
+        <TopLine Value="93"/>
+        <CursorPos X="65" Y="102"/>
+        <UsageCount Value="29"/>
         <Loaded Value="True"/>
       </Unit62>
       <Unit63>
-        <Filename Value="..\..\..\..\..\..\Lazarus\Comp\extpascal\ExtP_Toolkit\extp_proj\extp_proj.pas"/>
+        <Filename Value="C:\Lazarus\Comp\extpascal\ExtP_Toolkit\extp_proj\extp_proj.pas"/>
         <UnitName Value="ExtP_Proj"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit63>
       <Unit64>
         <Filename Value="..\..\..\Fontes\ACBrTCP\ACBrIBGE.pas"/>
         <UnitName Value="ACBrIBGE"/>
-        <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
         <TopLine Value="62"/>
         <CursorPos X="3" Y="67"/>
-        <UsageCount Value="10"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="9"/>
       </Unit64>
       <Unit65>
         <Filename Value="..\..\..\Exemplos\ACBrCEP\Delphi\CEPTeste1.pas"/>
@@ -618,7 +618,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="138"/>
         <CursorPos X="1" Y="159"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit65>
       <Unit66>
         <Filename Value="DoIBGEUnit.pas"/>
@@ -627,133 +627,148 @@
         <WindowIndex Value="0"/>
         <TopLine Value="67"/>
         <CursorPos X="16" Y="81"/>
-        <UsageCount Value="21"/>
+        <UsageCount Value="27"/>
       </Unit66>
       <Unit67>
         <Filename Value="..\..\..\Fontes\ACBrTCP\ACBrCEP.pas"/>
         <UnitName Value="ACBrCEP"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="133"/>
-        <CursorPos X="1" Y="146"/>
-        <UsageCount Value="10"/>
+        <TopLine Value="423"/>
+        <CursorPos X="16" Y="83"/>
+        <UsageCount Value="13"/>
         <Loaded Value="True"/>
       </Unit67>
+      <Unit68>
+        <Filename Value="..\..\..\Pacotes\Lazarus\ACBrTCP.pas"/>
+        <UnitName Value="ACBrTCP"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="1" Y="1"/>
+        <UsageCount Value="9"/>
+      </Unit68>
     </Units>
-    <JumpHistory Count="28" HistoryIndex="27">
+    <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="1111" Column="14" TopLine="1096"/>
+        <Filename Value="DoCEPUnit.pas"/>
+        <Caret Line="103" Column="68" TopLine="94"/>
       </Position1>
       <Position2>
-        <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="1141" Column="8" TopLine="1125"/>
+        <Filename Value="..\..\..\Fontes\ACBrTCP\ACBrCEP.pas"/>
+        <Caret Line="83" Column="50" TopLine="74"/>
       </Position2>
       <Position3>
-        <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="1146" Column="16" TopLine="1125"/>
+        <Filename Value="DoCEPUnit.pas"/>
+        <Caret Line="103" Column="68" TopLine="94"/>
       </Position3>
       <Position4>
-        <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="1216" Column="20" TopLine="1201"/>
+        <Filename Value="DoCEPUnit.pas"/>
+        <Caret Line="102" Column="65" TopLine="93"/>
       </Position4>
       <Position5>
-        <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="1265" Column="15" TopLine="1251"/>
+        <Filename Value="DoCEPUnit.pas"/>
+        <Caret Line="101" Column="68" TopLine="93"/>
       </Position5>
       <Position6>
-        <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="1501" Column="1" TopLine="1480"/>
+        <Filename Value="DoCEPUnit.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position6>
       <Position7>
-        <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Filename Value="DoCEPUnit.pas"/>
+        <Caret Line="103" Column="55" TopLine="93"/>
       </Position7>
       <Position8>
-        <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="72" Column="65" TopLine="58"/>
+        <Filename Value="DoCEPUnit.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position8>
       <Position9>
-        <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="93" Column="24" TopLine="79"/>
+        <Filename Value="DoCEPUnit.pas"/>
+        <Caret Line="103" Column="69" TopLine="94"/>
       </Position9>
       <Position10>
         <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="422" Column="22" TopLine="408"/>
+        <Caret Line="72" Column="18" TopLine="58"/>
       </Position10>
       <Position11>
         <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="808" Column="34" TopLine="794"/>
+        <Caret Line="73" Column="25" TopLine="58"/>
       </Position11>
       <Position12>
         <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="810" Column="14" TopLine="794"/>
+        <Caret Line="77" Column="33" TopLine="104"/>
       </Position12>
       <Position13>
         <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="835" Column="15" TopLine="821"/>
+        <Caret Line="78" Column="40" TopLine="69"/>
       </Position13>
       <Position14>
         <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="837" Column="26" TopLine="821"/>
+        <Caret Line="93" Column="25" TopLine="87"/>
       </Position14>
       <Position15>
         <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="937" Column="34" TopLine="923"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position15>
       <Position16>
         <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="939" Column="42" TopLine="923"/>
+        <Caret Line="68" Column="5" TopLine="59"/>
       </Position16>
       <Position17>
         <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="1496" Column="15" TopLine="1476"/>
+        <Caret Line="642" Column="8" TopLine="630"/>
       </Position17>
       <Position18>
-        <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="875" Column="3" TopLine="870"/>
+        <Filename Value="DoBoletoUnit.pas"/>
+        <Caret Line="122" Column="23" TopLine="106"/>
       </Position18>
       <Position19>
-        <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Filename Value="DoBoletoUnit.pas"/>
+        <Caret Line="124" Column="18" TopLine="119"/>
       </Position19>
       <Position20>
-        <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="637" Column="22" TopLine="622"/>
+        <Filename Value="DoBoletoUnit.pas"/>
+        <Caret Line="205" Column="30" TopLine="193"/>
       </Position20>
       <Position21>
-        <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="1988" Column="21" TopLine="1981"/>
+        <Filename Value="DoBoletoUnit.pas"/>
+        <Caret Line="107" Column="24" TopLine="94"/>
       </Position21>
       <Position22>
-        <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Filename Value="DoCEPUnit.pas"/>
+        <Caret Line="103" Column="69" TopLine="94"/>
       </Position22>
       <Position23>
-        <Filename Value="..\..\..\Fontes\ACBrTCP\ACBrCEP.pas"/>
-        <Caret Line="2" Column="29" TopLine="1"/>
+        <Filename Value="DoCEPUnit.pas"/>
+        <Caret Line="102" Column="65" TopLine="96"/>
       </Position23>
       <Position24>
-        <Filename Value="..\..\..\Fontes\ACBrTCP\ACBrCEP.pas"/>
-        <Caret Line="188" Column="24" TopLine="173"/>
+        <Filename Value="DoCEPUnit.pas"/>
+        <Caret Line="100" Column="61" TopLine="93"/>
       </Position24>
       <Position25>
-        <Filename Value="..\..\..\Fontes\ACBrTCP\ACBrCEP.pas"/>
-        <Caret Line="106" Column="26" TopLine="100"/>
+        <Filename Value="DoBoletoUnit.pas"/>
+        <Caret Line="239" Column="41" TopLine="230"/>
       </Position25>
       <Position26>
-        <Filename Value="..\..\..\Fontes\ACBrTCP\ACBrSocket.pas"/>
-        <Caret Line="579" Column="20" TopLine="565"/>
+        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
+        <Caret Line="551" Column="14" TopLine="542"/>
       </Position26>
       <Position27>
-        <Filename Value="..\..\..\Fontes\ACBrTCP\ACBrCEP.pas"/>
-        <Caret Line="104" Column="30" TopLine="100"/>
+        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position27>
       <Position28>
-        <Filename Value="..\..\..\Fontes\ACBrTCP\ACBrCEP.pas"/>
-        <Caret Line="29" Column="1" TopLine="1"/>
+        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
+        <Caret Line="393" Column="31" TopLine="384"/>
       </Position28>
+      <Position29>
+        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
+        <Caret Line="187" Column="23" TopLine="176"/>
+      </Position29>
+      <Position30>
+        <Filename Value="DoCEPUnit.pas"/>
+        <Caret Line="102" Column="60" TopLine="60"/>
+      </Position30>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

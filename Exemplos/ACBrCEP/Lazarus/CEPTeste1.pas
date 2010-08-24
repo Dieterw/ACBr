@@ -117,7 +117,7 @@ begin
           Memo1.Lines.Add('Logradouro: '+Tipo_Logradouro+ ' ' +Logradouro );
           Memo1.Lines.Add('Complemento: '+Complemento );
           Memo1.Lines.Add('Bairro: '+Bairro );
-          Memo1.Lines.Add('Municipio: '+Municipio + ' - IBGE: '+IBGE_Municio);
+          Memo1.Lines.Add('Municipio: '+Municipio + ' - IBGE: '+IBGE_Municipio);
           Memo1.Lines.Add('UF: '+UF + ' - IBGE: '+IBGE_UF);
           Memo1.Lines.Add( StringOfChar('-',20) );
        end ;

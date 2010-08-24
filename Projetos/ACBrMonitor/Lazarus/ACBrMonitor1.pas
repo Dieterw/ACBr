@@ -855,7 +855,7 @@ begin
                     'Logradouro: '+Tipo_Logradouro+ ' ' +Logradouro + sLineBreak +
                     'Complemento: '+Complemento + sLineBreak +
                     'Bairro: '+Bairro + sLineBreak +
-                    'Municipio: '+Municipio + ' - IBGE: '+IBGE_Municio + sLineBreak +
+                    'Municipio: '+Municipio + ' - IBGE: '+IBGE_Municipio + sLineBreak +
                     'UF: '+UF + ' - IBGE: '+ IBGE_UF + sLineBreak + sLineBreak ;
          end ;
        end ;

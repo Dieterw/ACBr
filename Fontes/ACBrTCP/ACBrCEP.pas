@@ -79,7 +79,7 @@ type
       property Bairro          : String read fBairro          write fBairro ;
       property Municipio       : String read fMunicipio       write fMunicipio ;
       property UF              : String read fUF              write fUF ;
-      property IBGE_Municio    : String read fCodigoIBGE      write fCodigoIBGE ;
+      property IBGE_Municipio  : String read fCodigoIBGE      write fCodigoIBGE ;
       property IBGE_UF         : String read GetIBGE_UF ;
 
   end ;
@@ -197,7 +197,7 @@ end ;
 
 function TACBrCEPEndereco.GetIBGE_UF : String ;
 begin
-  Result := copy(IBGE_Municio,1,2) ;
+  Result := copy(IBGE_Municipio,1,2) ;
 end;
 
 { TACBrCEPEnderecos }
@@ -396,7 +396,7 @@ begin
             Endereco.Bairro          := SL2.Values['bairro'] ;
             Endereco.Municipio       := SL2.Values['cidade'] ;
             Endereco.UF              := SL2.Values['uf'] ;
-            Endereco.IBGE_Municio    := SL2.Values['ibge_municipio_verificador'] ;
+            Endereco.IBGE_Municipio  := SL2.Values['ibge_municipio_verificador'] ;
 
             fOwner.Enderecos.Add( Endereco );
          end ;
@@ -493,7 +493,7 @@ begin
         Endereco.Municipio       := SL2[4] ;
         Endereco.UF              := SL2[5] ;
         if SL2.Count >= 10 then
-          Endereco.IBGE_Municio  := SL2[9] ;
+          Endereco.IBGE_Municipio:= SL2[9] ;
 
         fOwner.Enderecos.Add( Endereco );
       end ;

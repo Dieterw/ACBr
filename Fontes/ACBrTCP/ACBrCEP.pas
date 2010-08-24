@@ -53,7 +53,7 @@ uses
 
 type
 
-  TACBrCEPWebService = ( wsNenhum, wsBuscarCep, wsCepLivre ) ;
+  TACBrCEPWebService = ( wsNenhum, wsBuscarCep, wsCepLivre, wsRepublicaVirtual ) ;
 
   { TACBrCEPEndereco }
 
@@ -82,6 +82,7 @@ type
       property IBGE_Municipio  : String read fCodigoIBGE      write fCodigoIBGE ;
       property IBGE_UF         : String read GetIBGE_UF ;
 
+      function LerTagXML(Texto, NomeCampo: string): String;
   end ;
 
   { Lista de Objetos do tipo TACBrCEPEndereco }
@@ -176,6 +177,19 @@ type
          AUF, ABairro : String ) ; override ;
   end ;
 
+  { TACBrWSRepublicaVirtual }
+
+  TACBrWSRepublicaVirtual = class(TACBrCEPWSClass)
+    private
+      procedure ProcessaResposta ;
+    public
+      constructor Create( AOwner : TACBrCEP ) ; override ;
+
+      Procedure BuscarPorCEP( ACEP : String ) ; override ;
+      Procedure BuscarPorLogradouro( AMunicipio, ATipo_Logradouro, ALogradouro,
+         AUF, ABairro : String ) ; override ;
+  end ;
+
 implementation
 
 uses ACBrUtil ;
@@ -198,6 +212,30 @@ end ;
 function TACBrCEPEndereco.GetIBGE_UF : String ;
 begin
   Result := copy(IBGE_Municipio,1,2) ;
+end;
+
+function TACBrCEPEndereco.LerTagXML(Texto, NomeCampo: string): string;
+var
+  ConteudoTag: string;
+  inicio, fim: integer;
+begin
+  NomeCampo := '<'+UpperCase(Trim(NomeCampo))+'>';
+  inicio := pos(NomeCampo, UpperCase(Texto));
+  if inicio = 0 then
+    ConteudoTag := ''
+  else
+  begin
+    inicio := inicio + Length(NomeCampo);
+    Texto := copy(Texto,inicio,length(Texto));
+    inicio := 0;
+    fim := pos('</',Texto)-1;
+    ConteudoTag := trim(copy(Texto, inicio, fim));
+  end;
+  try
+     result := ConteudoTag;
+  except
+     raise Exception.Create('Conteúdo inválido. '+ConteudoTag);
+  end;
 end;
 
 { TACBrCEPEnderecos }
@@ -252,6 +290,7 @@ begin
   case AValue of
     wsBuscarCep : fACBrCEPWS := TACBrWSBuscarCEP.Create( Self );
     wsCepLivre  : fACBrCEPWS := TACBrWSCEPLivre.Create( Self );
+    wsRepublicaVirtual : fACBrCEPWS := TACBrWSRepublicaVirtual.Create(Self);
   else
      fACBrCEPWS := TACBrCEPWSClass.Create( Self ) ;
   end ;
@@ -506,6 +545,66 @@ begin
   if Assigned( fOwner.OnBuscaEfetuada ) then
      fOwner.OnBuscaEfetuada( Self );
 end ;
+
+{ TACBrWSRepublicaVirtual }
+constructor TACBrWSRepublicaVirtual.Create(AOwner: TACBrCEP);
+begin
+  inherited Create(AOwner);
+  fpURL := 'http://cep.republicavirtual.com.br/' ;
+end;
+
+procedure TACBrWSRepublicaVirtual.BuscarPorCEP(ACEP: String);
+begin
+  ACEP := OnlyNumber(ACEP);
+
+  fOwner.HTTPGet( fpURL + 'web_cep.php?cep='+ACEP+'&formato=xml' ) ;
+  ProcessaResposta ;
+end;
+
+procedure TACBrWSRepublicaVirtual.BuscarPorLogradouro(AMunicipio,
+  ATipo_Logradouro, ALogradouro, AUF, ABairro: String);
+begin
+  raise Exception.Create(AnsiToUtf8('Busca por Logradouro não disponível no site Republica Virtual.'));
+end;
+
+procedure TACBrWSRepublicaVirtual.ProcessaResposta;
+Var
+   Buffer : String ;
+   PosIni, I : Integer ;
+   Endereco : TACBrCEPEndereco ;
+begin
+  fOwner.fEnderecos.Clear;
+
+  try
+     Buffer := fOwner.RespHTTP.Text;
+     PosIni := pos('<resultado>1',Buffer) ;
+
+     if PosIni > 0 then
+       begin
+
+         Buffer := ACBrStr(Buffer);
+
+         Endereco := TACBrCEPEndereco.Create;
+
+         Endereco.CEP             := Endereco.LerTagXML(Buffer,'cep') ;
+         Endereco.Tipo_Logradouro := Endereco.LerTagXML(Buffer,'tipo_logradouro') ;
+         Endereco.Logradouro      := Endereco.LerTagXML(Buffer,'logradouro') ;
+         Endereco.Complemento     := Endereco.LerTagXML(Buffer,'complemento') ;
+         Endereco.Bairro          := Endereco.LerTagXML(Buffer,'bairro') ;
+         Endereco.Municipio       := Endereco.LerTagXML(Buffer,'cidade') ;
+         Endereco.UF              := Endereco.LerTagXML(Buffer,'uf') ;
+         Endereco.IBGE_Municipio  := '';
+
+         fOwner.Enderecos.Add( Endereco );
+        end ;
+  finally
+     Buffer:= '';
+  end ;
+
+  if Assigned( fOwner.OnBuscaEfetuada ) then
+     fOwner.OnBuscaEfetuada( Self );
+end ;
+
 
 end.
 

@@ -820,8 +820,17 @@ begin
 end;
 
 procedure TACBrBoleto.SetDirArqRetorno ( const AValue: String ) ;
+var
+  APath : AnsiString;
 begin
-   fDirArqRetorno := PathWithDelim(AValue);
+   if fNomeArqRetorno = AValue then
+      exit;
+
+   fNomeArqRetorno := ExtractFileName( AValue );
+   APath           := ExtractFilePath( AValue );
+
+   if APath <> '' then
+     DirArqRetorno:= APath;
 end;
 
 procedure TACBrBoleto.SetNomeArqRemessa(const AValue: String);
@@ -892,6 +901,9 @@ Procedure TACBrBoleto.Imprimir;
 begin
   if not Assigned(ACBrBoletoFC) then
      raise Exception.Create( 'Nenhum componente "ACBrBoletoFC" associado' ) ;
+
+  if Banco.Numero = 0 then
+     raise Exception.Create('Banco nao definido, impossivel listar boleto');
 
   ChecarDadosObrigatorios;
 
@@ -1530,7 +1542,7 @@ end;
 function TACBrBoletoFCClass.GetDirLogo: String;
 begin
   if fDirLogo = '' then
-     Result := '.' + PathDelim + 'logos' + PathDelim
+     Result := ExtractFilePath(Application.ExeName) + 'logos' + PathDelim
   else
      Result := fDirLogo;
 end;

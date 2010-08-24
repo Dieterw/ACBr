@@ -39,6 +39,10 @@
 |*
 |* 11/08/2010: Itamar Luiz Bermond
 |*  - Inicio do desenvolvimento
+|* 24/08/2010: Régys Silveira
+|*  - Acerto da exportação para PDF
+|*  - Acerto para checar se o relatório foi realmente preparado
+|     antes de continuar a imprir ou gerar o PDF
 ******************************************************************************}
 {$I ACBr.inc}
 
@@ -46,7 +50,8 @@ unit ACBrNFeDANFEFR;
 
 interface
 
-uses Forms, SysUtils, Classes, Graphics, ACBrNFeDANFEClass, ACBrNFeDANFEFRDM,
+uses
+  Forms, SysUtils, Classes, Graphics, ACBrNFeDANFEClass, ACBrNFeDANFEFRDM,
   pcnNFe, pcnConversao, frxClass;
 
 type
@@ -56,12 +61,12 @@ type
     FFastFile: String;
     FEspessuraBorda: Integer;
     function GetPreparedReport: TfrxReport;
+    function PrepareReport(NFE: TNFe = nil): Boolean;
    public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure ImprimirDANFE(NFE: TNFe = nil); override;
     procedure ImprimirDANFEPDF(NFE: TNFe = nil); override;
-    procedure PrepareReport(NFE: TNFe = nil);
   published
     property FastFile: String read FFastFile write FFastFile ;
     property dmDanfe: TdmACBrNFeFR read FdmDanfe write FdmDanfe;
@@ -84,7 +89,7 @@ end;
 destructor TACBrNFeDANFEFR.Destroy;
 begin
   dmDanfe.Free;
-  inherited Destroy ;
+  inherited Destroy;
 end;
 
 function TACBrNFeDANFEFR.GetPreparedReport: TfrxReport;
@@ -94,24 +99,59 @@ end;
 
 procedure TACBrNFeDANFEFR.ImprimirDANFE(NFE: TNFe);
 begin
-  PrepareReport(NFE);
-  dmDanfe.frxReport.ShowPreparedReport;
+  if PrepareReport(NFE) then
+  begin
+    if MostrarPreview then
+      dmDanfe.frxReport.ShowPreparedReport
+    else
+      dmDanfe.frxReport.Print;
+  end;
 end;
 
 procedure TACBrNFeDANFEFR.ImprimirDANFEPDF(NFE: TNFe);
+var
+  I: Integer;
 begin
-  PrepareReport(NFE);
-  dmDanfe.frxReport.Export(dmDanfe.frxPDFExport);
+  if PrepareReport(NFE) then
+  begin
+    dmDanfe.frxPDFExport.ShowDialog := False;
+
+    if Assigned(NFE) then
+    begin
+      dmDanfe.frxPDFExport.FileName := PathPDF + NFE.procNFe.chNFe;
+      dmDanfe.frxReport.Export(dmDanfe.frxPDFExport);
+    end
+    else
+    begin
+      for I := 0 to TACBrNFe(ACBrNFe).NotasFiscais.Count - 1 do
+      begin
+        dmDanfe.NFe := TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe;
+        dmDanfe.CarregaDados;
+
+        dmDanfe.frxPDFExport.FileName := PathPDF + dmDanfe.NFe.procNFe.chNFe + '.pdf';
+        dmDanfe.frxReport.Export(dmDanfe.frxPDFExport);
+      end;
+    end;
+  end;
 end;
 
-procedure TACBrNFeDANFEFR.PrepareReport(NFE: TNFe);
+function TACBrNFeDANFEFR.PrepareReport(NFE: TNFe): Boolean;
 var
   i: Integer;
 begin
+  Result := False;
+
   if FFastFile <> '' then
     dmDanfe.frxReport.LoadFromFile(FFastFile);
 
-  if NFE = nil then
+  if Assigned(NFE) then
+  begin
+    dmDanfe.NFe := NFE;
+    dmDanfe.CarregaDados;
+
+    Result := dmDanfe.frxReport.PrepareReport;
+  end
+  else
   begin
     for i := 0 to TACBrNFe(ACBrNFe).NotasFiscais.Count - 1 do
     begin
@@ -119,17 +159,10 @@ begin
       dmDanfe.CarregaDados;
 
       if (i > 0) then
-        dmDanfe.frxReport.PrepareReport(False)
+        Result := dmDanfe.frxReport.PrepareReport(False)
       else
-        dmDanfe.frxReport.PrepareReport;
-
+        Result := dmDanfe.frxReport.PrepareReport;
     end;
-  end else
-  begin
-    dmDanfe.NFe := NFE;
-    dmDanfe.CarregaDados;
-
-    dmDanfe.frxReport.PrepareReport;
   end;
 end;
 

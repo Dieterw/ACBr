@@ -39,7 +39,22 @@
 |*
 |* 11/08/2010: Itamar Luiz Bermond
 |*  - Inicio do desenvolvimento
+|* 24/08/2010: Régys Silveira
+|*  - Acerto nas diretivas de compilação para Delphi 2009 e superior
+|*  - Acertos gerais no DANFE
+|        . Layout
+|        . Exibição da logomarca
+|        . Tamanho das colunas para conter valores grandes
+|        . marca d'agua para ambiente de homologação
+|        . Adicionado o complemento a descrição da mercadoria
+|        . Adicionado a origem no CST
+|        . Acerto para mostrar o CST corretamente quando for Simples Nacional
+|*  - Padronização da logomarca para utilizar o caminho como nos outros DANFEs
+|*  - Acerto no CST para o Simples Nacional
+|*  - Acertos no relatório para o Simples Nacional
 ******************************************************************************}
+{$I ACBr.inc}
+
 unit ACBrNFeDANFEFRDM;
 
 interface
@@ -223,7 +238,7 @@ begin
       'ý', 'ÿ', 'Ý', 'Y': Resultado := 'Y';
     else
       if vChar > #127 then Resultado := #32
-      {$IFDEF CompilerVersion >= 20}
+      {$IFDEF DELPHI12_UP}
       else if CharInset(vChar, ['a'..'z','A'..'Z','0'..'9','-',' ']) then
       {$ELSE}
       else if vChar in ['a'..'z','A'..'Z','0'..'9','-',' '] then
@@ -306,13 +321,7 @@ var
   vTemp2: TStringList;
   IndexCampo2: Integer;
   Campos2: TSplitResult;
-
-  {$IFDEF CompilerVersion >= 20}
-  BufferXInfProd: PWideChar;
-  {$ELSE}
-  BufferXInfProd: PAnsiChar;
-  {$ENDIF}
-
+  BufferXInfProd: String;
   TmpStr: String;
   j: Integer;
   wInfAdProd: String;
@@ -342,7 +351,7 @@ begin
     FieldDefs.Add('vSeg', ftFloat); //Total do Seguro
     FieldDefs.Add('vDesc', ftString, 16); //Desconto
     FieldDefs.Add('ORIGEM', ftString, 1); //ORIGEM
-    FieldDefs.Add('CST', ftString, 2); //CST
+    FieldDefs.Add('CST', ftString, 3); //CST
     FieldDefs.Add('VBC', ftFloat); //ValorBase
     FieldDefs.Add('PICMS', ftFloat); //Aliquota
     FieldDefs.Add('VICMS', ftFloat); //Valor
@@ -412,17 +421,14 @@ begin
             for IndexCampo2 := 0 to Length(Campos2) - 1 do
               vTemp2.Add(Trim(Campos2[IndexCampo2]));
             TmpStr := vTemp2.Text;
-            {$IFDEF CompilerVersion >= 20} //Igual ou Superior ao Delphi2009
-            BufferXInfProd := PWideChar(TmPStr);
-            {$ELSE}
-            BufferXInfProd := PAnsiChar(TmPStr);
-            {$ENDIF}
-             //BufferXInfProd := PAnsiChar(TmPStr);
-          end else
-            BufferXInfProd := #0;
+
+            // Inserir a quebra de linha para ficar abaixo da descrição do produto
+            BufferXInfProd := #13 + TmPStr;
+          end
+          else
+            BufferXInfProd := '';
 
           FieldByName('infAdProd').AsString := BufferXInfProd;
-
         finally
           vTemp2.Free;
         end;
@@ -462,13 +468,13 @@ begin
           FieldByName('ORIGEM').AsString := OrigToStr(orig);
 
           case FNFe.Emit.CRT of
-            crtSimplesNacional:
+            crtSimplesNacional, crtSimplesExcessoReceita:
               begin
                 case CSOSN of
                   csosn101, csosn102, csosn103, csosn201, csosn202, csosn203, csosn300, csosn400, csosn500, csosn900:
                     begin
-                      FieldByName('CST').AsString := CSOSNIcmsToStr(CSOSN);
-                      FieldByName('VBC').AsFloat := vBC;
+                      FieldByName('CST').AsString  := CSOSNIcmsToStr(CSOSN);
+                      FieldByName('VBC').AsFloat   := vBC;
                       FieldByName('PICMS').AsFloat := pICMS;
                       FieldByName('VICMS').AsFloat := vICMS;
                     end;
@@ -692,6 +698,7 @@ begin
     FieldDefs.Add('IE', ftString, 14);
     FieldDefs.Add('IM', ftString, 15);
     FieldDefs.Add('IEST', ftString, 15);
+    FieldDefs.Add('CRT', ftString, 1);
 
     CreateDataSet;
     Append;
@@ -718,6 +725,7 @@ begin
       FieldByName('IE').AsString := IE;
       FieldByName('IM').AsString := IM;
       FieldByName('IEST').AsString := IEST;
+      FieldByName('CRT').AsString := CRTToStr(CRT);
     end;
 
     Post;
@@ -844,11 +852,7 @@ var
   vTemp: TStringList;
   IndexCampo:Integer;
   Campos: TSplitResult;
-  {$IFDEF CompilerVersion >= 20}
-  BufferInfCpl: PWideChar;
-  {$ELSE}
-  BufferInfCpl: PAnsiChar;
-  {$ENDIF}
+  BufferInfCpl: String;
   TmpStr: String;
   wContingencia: string;
   wObs:string;
@@ -920,22 +924,18 @@ begin
               vTemp.Add(Campos[IndexCampo]);
            wLinhasObs := 1; //TotalObS(vTemp.Text);
            TmpStr := vTemp.Text;
-           {$IFDEF CompilerVersion >= 20} //Igual ou Superior ao Delphi2009
-           BufferInfCpl := PWideChar(TmpStr);
-           {$ELSE}
-           BufferInfCpl := PAnsiChar(TmpStr);
-           {$ENDIF}
-           //BufferInfCpl:=PAnsiChar(TmpStr);
+
+           BufferInfCpl := TmpStr;
         end
         else
-           BufferInfCpl := #0;
+           BufferInfCpl := '';
 
       finally
         vTemp.Free;
       end;
     end;
 
-    FieldByName('OBS').AsString := BufferInfCpl;
+    FieldByName('OBS').AsString        := BufferInfCpl;
     FieldByName('LinhasOBS').AsInteger := wLinhasObs;
 
     Post;
@@ -1060,10 +1060,8 @@ end;
 
 procedure TdmACBrNFeFR.CarregaParametros;
 var
-  vStream: TMemoryStream;
   vChave_Contingencia: String;
   vResumo: String;
-  vStringStream: TStringStream;
 begin
   { parâmetros }
   with cdsParametros do
@@ -1072,7 +1070,7 @@ begin
     FieldDefs.Clear;
     FieldDefs.Add('ResumoCanhoto', ftString, 200);
     FieldDefs.Add('Mensagem0', ftString, 60);
-    FieldDefs.Add('Imagem', ftBlob, 60);
+    FieldDefs.Add('Imagem', ftString, 256);
     FieldDefs.Add('Sistema', ftString, 60);
     FieldDefs.Add('Usuario', ftString, 60);
     FieldDefs.Add('Fax', ftString, 60);
@@ -1124,29 +1122,9 @@ begin
         FieldByName('Mensagem0').AsString := '';
     end;
 
-    vStream := TMemoryStream.Create;
-    try
-      if NotaUtil.NaoEstaVazio(DANFEClassOwner.Logo) then
-      begin
-        if FileExists(DANFEClassOwner.Logo) then
-          vStream.LoadFromFile(DANFEClassOwner.Logo)
-        else
-        begin
-          vStringStream:= TStringStream.Create(DANFEClassOwner.Logo);
-          try
-            vStream.LoadFromStream(vStringStream);
-          finally
-            vStringStream.Free;
-          end;
-        end;
-      end;
-
-      vStream.Position := 0;
-//      TBlobField(FieldByName('Imagem')).Assign();
-//      Connection.WriteBlobData(vStream.Memory^, vStream.Size);
-    finally
-      vStream.Free;
-    end;
+    // Carregamento da imagem
+    if DANFEClassOwner.Logo <> '' then
+      FieldByName('Imagem').AsString := DANFEClassOwner.Logo;
 
     if FDANFEClassOwner.Sistema <> '' then
       FieldByName('Sistema').AsString := FDANFEClassOwner.Sistema

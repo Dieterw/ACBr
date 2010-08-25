@@ -5,7 +5,7 @@
     <Name Value="ACBrDiversos"/>
     <Author Value="Daniel Simoes de Almeida"/>
     <CompilerOptions>
-      <Version Value="8"/>
+      <Version Value="9"/>
       <PathDelim Value="\"/>
       <SearchPaths>
         <IncludeFiles Value="..\..\Fontes\ACBrDiversos\;..\..\Fontes\ACBrComum\"/>
@@ -16,6 +16,7 @@
       <Parsing>
         <SyntaxOptions>
           <CStyleOperator Value="False"/>
+          <UseAnsiStrings Value="False"/>
         </SyntaxOptions>
       </Parsing>
       <Other>
@@ -26,7 +27,7 @@
 ACBrCalculadora, ACBrExtenso, ACBrValidador, ACBrFala, ACBrCMC7, ACBrGIF, ACBrBarCode, ACBrEnterTab"/>
     <License Value="LGPL"/>
     <Version Minor="9"/>
-    <Files Count="14">
+    <Files Count="15">
       <Item1>
         <Filename Value="..\..\Fontes\ACBrDiversos\ACBrBarCode.pas"/>
         <UnitName Value="ACBrBarCode"/>
@@ -84,6 +85,10 @@ ACBrCalculadora, ACBrExtenso, ACBrValidador, ACBrFala, ACBrCMC7, ACBrGIF, ACBrBa
         <Filename Value="..\..\Fontes\ACBrDiversos\LCalculadora.pas"/>
         <UnitName Value="LCalculadora"/>
       </Item14>
+      <Item15>
+        <Filename Value="..\..\Fontes\ACBrDiversos\ACBrHTMLtoXML.pas"/>
+        <UnitName Value="ACBrHTMLtoXML"/>
+      </Item15>
     </Files>
     <Type Value="RunAndDesignTime"/>
     <RequiredPkgs Count="4">

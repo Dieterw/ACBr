@@ -9,7 +9,7 @@ interface
 uses
     ACBrBarCode, ACBrCalculadora, ACBrCMC7, ACBrDiversosReg, ACBrEnterTab, 
   ACBrExtenso, ACBrFala, ACBrGIF, ACBrTroco, ACBrValidador, AJBarcode, Gif1, 
-  Gif3, LCalculadora, LazarusPackageIntf;
+  Gif3, LCalculadora, ACBrHTMLtoXML, LazarusPackageIntf;
 
 implementation
 

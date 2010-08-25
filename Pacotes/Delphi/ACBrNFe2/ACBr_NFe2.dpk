@@ -79,14 +79,19 @@ requires
   inet,
   soaprtl,
   ACBrComum,
-  ACBrCapicom,
+  {$IFDEF ACBrNFeOpenSSL}
   ACBrOpenSSL,
+  {$ELSE}
+  ACBrCapicom,
+  {$ENDIF}
   synapse,
   PCN2;
 
 contains
+  ACBrNFeConfiguracoes in '..\..\..\Fontes\ACBrNFe2\ACBrNFeConfiguracoes.pas',
   ACBrNFeNotasFiscais in '..\..\..\Fontes\ACBrNFe2\ACBrNFeNotasFiscais.pas',
   ACBrNFeReg in '..\..\..\Fontes\ACBrNFe2\ACBrNFeReg.pas',
+  ACBrNFeUtil in '..\..\..\Fontes\ACBrNFe2\ACBrNFeUtil.pas',
   ACBrNFeWebServices in '..\..\..\Fontes\ACBrNFe2\ACBrNFeWebServices.pas',
   ACBrNFeDANFEClass in '..\..\..\Fontes\ACBrNFe2\ACBrNFeDANFEClass.pas',
   ACBrNFe in '..\..\..\Fontes\ACBrNFe2\ACBrNFe.pas';

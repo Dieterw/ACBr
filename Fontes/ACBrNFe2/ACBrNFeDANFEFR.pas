@@ -127,7 +127,7 @@ begin
 
     if Assigned(NFE) then
     begin
-      dmDanfe.frxPDFExport.FileName := PathPDF + NFE.procNFe.chNFe;
+      dmDanfe.frxPDFExport.FileName := PathPDF + NFE.procNFe.chNFe + '.pdf';
       dmDanfe.frxReport.Export(dmDanfe.frxPDFExport);
     end
     else

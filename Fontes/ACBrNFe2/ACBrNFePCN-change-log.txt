@@ -52,6 +52,7 @@ Alterações   25/08/2010
 ---------------
 [-] DANFE em FAST REPORT (Régys Borges da Silveira)
     - Configuração do preview do DANFE
+    - corrigido erro ao gerar pdf para uma nota só, gerava o arquivo sem extensão
 
 
 Alterações   24/08/2010

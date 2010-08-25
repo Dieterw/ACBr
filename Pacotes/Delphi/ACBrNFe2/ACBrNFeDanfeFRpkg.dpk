@@ -41,7 +41,7 @@
 |*  - Inicio do desenvolvimento
 |*
 ******************************************************************************}
-package ACBrNFeDanfeFR;
+package ACBrNFeDanfeFRpkg;
 
 {$R *.res}
 {$ALIGN 8}
@@ -70,13 +70,13 @@ package ACBrNFeDanfeFR;
 
 requires
   rtl,
-  ACBr_NFe2,
+  vclimg,
   designide,
-  vcljpg,
-  fs11,
-  frx11,
-  frxe11,
-  frxDB11;
+  ACBr_NFe2,
+  fs14,
+  frx14,
+  frxe14,
+  frxDB14;
 
 contains
   ACBrNFeDANFEFRReg in '..\..\..\Fontes\ACBrNFe2\ACBrNFeDANFEFRReg.pas',

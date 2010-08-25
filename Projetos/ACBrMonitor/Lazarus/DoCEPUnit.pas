@@ -99,7 +99,7 @@ begin
           Ini.WriteString(Secao,'Bairro',          Enderecos[I].Bairro);
           Ini.WriteString(Secao,'Municipio',       Enderecos[I].Municipio);
           Ini.WriteString(Secao,'UF',              Enderecos[I].UF);
-          Ini.WriteString(Secao,'IBGE_Municio',    Enderecos[I].IBGE_Municio);
+          Ini.WriteString(Secao,'IBGE_Municipio',  Enderecos[I].IBGE_Municipio);
           Ini.WriteString(Secao,'IBGE_UF',         Enderecos[I].IBGE_UF);
        end ;
 

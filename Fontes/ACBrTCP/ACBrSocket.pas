@@ -616,7 +616,8 @@ begin
 
     if not OK then
        raise EACBrHTTPError.Create( 'Erro HTTP: '+IntToStr(HTTPSend.ResultCode)+' '+
-                                     HTTPSend.ResultString + sLineBreak + sLineBreak +
+                                     HTTPSend.ResultString + sLineBreak +
+                                     'URL: '+AURL + sLineBreak + sLineBreak +
                                      'Resposta HTTP:' + sLineBreak +
                                      RespHTTP.Text ) ;
   finally

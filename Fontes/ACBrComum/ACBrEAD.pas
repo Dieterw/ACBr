@@ -122,7 +122,7 @@ type
 
 implementation
 
-uses Classes, {$IFDEF CLX}QForms{$ELSE}Forms{$ENDIF};
+uses Classes {$IFNDEF CONSOLE}{$IFDEF CLX},QForms{$ELSE},Forms{$ENDIF}{$ENDIF};
 
 function TACBrEAD.GetAbout: String;
 begin

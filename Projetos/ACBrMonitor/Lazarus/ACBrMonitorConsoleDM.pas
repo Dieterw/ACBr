@@ -36,16 +36,22 @@ unit ACBrMonitorConsoleDM;
 interface
 
 uses
-  SysUtils, Classes, ACBrUtil, ACBrLCB, ACBrDIS, ACBrGAV, ACBrGAVClass, ACBrDevice, 
-  ACBrCHQ, ACBrECF, ACBrRFD, ACBrBAL, ACBrETQ, ACBrBase, ACBrSocket,
-  CmdUnit ;
+  SysUtils, Classes,
+  CmdUnit , blcksock,
+  ACBrUtil, ACBrLCB, ACBrDIS, ACBrGAV, ACBrGAVClass, ACBrDevice, ACBrCHQ,
+  ACBrECF, ACBrRFD, ACBrBAL, ACBrETQ, ACBrBase, ACBrSocket, ACBrCEP, ACBrIBGE ;
 
 const
-   Versao = '0.8b' ;
+   Versao = '0.9b' ;
    _C = 'tYk*5W@' ;
 
 type
+
+  { Tdm }
+
   Tdm = class(TDataModule)
+    ACBrCEP1 : TACBrCEP ;
+    ACBrIBGE1 : TACBrIBGE ;
     TcpServer: TACBrTCPServer;
     ACBrCHQ1: TACBrCHQ;
     ACBrGAV1: TACBrGAV;
@@ -54,13 +60,16 @@ type
     ACBrRFD1: TACBrRFD;
     ACBrBAL1: TACBrBAL;
     ACBrETQ1: TACBrETQ;
-    procedure TcpServerConnect(AThread: TIdPeerThread);
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
-    procedure TcpServerDisconnect(AThread: TIdPeerThread);
-    procedure TcpServerExecute(AThread: TIdPeerThread);
     procedure ACBrLCB1LeCodigo(Sender: TObject);
     procedure ACBrRFD1GetKeyRSA(var PrivateKey_RSA: String);
+    procedure TcpServerConecta(const TCPBlockSocket : TTCPBlockSocket ;
+      var Enviar : AnsiString) ;
+    procedure TcpServerDesConecta(const TCPBlockSocket : TTCPBlockSocket ;
+      Erro : Integer ; ErroDesc : String) ;
+    procedure TcpServerRecebeDados(const TCPBlockSocket : TTCPBlockSocket ;
+      const Recebido : AnsiString ; var Enviar : AnsiString) ;
   private
     fsDisWorking: Boolean;
     fsOldIntervaloLCB:Integer ;
@@ -72,7 +81,7 @@ type
     { Private declarations }
   public
     { Public declarations }
-    Conexao  : TIdPeerThread ;
+    Conexao  : TTCPBlockSocket ;
     ACBrECF1 : TACBrECF ;
     Cmd : TACBrCmd ;
     ComandosAProcessar : TStringList ;
@@ -107,7 +116,6 @@ Uses IniFiles, UtilUnit, ACBrConsts,
      DoACBrUnit, DoECFUnit, DoGAVUnit, DoCHQUnit, DoDISUnit, DoLCBUnit,
      DoBALUnit , DoETQUnit;
 
-
 {$R *.lfm}
 
 procedure Tdm.DataModuleCreate(Sender: TObject);
@@ -137,40 +145,6 @@ begin
   ComandosAProcessar.Free ;
 end;
 
-
-{------------------------------------------------------------------------------}
-procedure Tdm.TcpServerConnect(AThread: TIdPeerThread);
-begin
-  sleep(100);
-  Conexao := AThread;
-  Resposta('','ACBrMonitorConsole Ver. '+ Versao + ' - ACBr: '+ACBR_VERSAO +sLineBreak +
-              'Conectado em: '+FormatDateTime('dd/mm/yy hh:nn:ss', now )+sLineBreak+
-              'Máquina: '+AThread.Connection.Socket.Binding.PeerIP+sLineBreak+
-              'Esperando por comandos.');
-end;
-
-{------------------------------------------------------------------------------}
-procedure Tdm.TcpServerDisconnect(AThread: TIdPeerThread);
-begin
-  WriteLn('ALERTA: Fim da Conexão com: '+
-          AThread.Connection.Socket.Binding.PeerIP+
-          ' em: '+FormatDateTime('dd/mm/yy hh:nn:ss', now ) )
-end;
-
-{------------------------------------------------------------------------------}
-procedure Tdm.TcpServerExecute(AThread: TIdPeerThread);
-Var Cmd : String ;
-begin
-  { Le o que foi enviado atravez da conexao TCP }
-  Cmd := trim(AThread.Connection.ReadLn()) ;
-  if Cmd <> '' then
-  begin
-     Conexao := AThread ;
-     ComandosAProcessar.Text := Cmd  ;
-     
-     Processar ;
-  end ;
-end;
 
 {------------------------------------------------------------------------------}
 procedure Tdm.ACBrECF1MsgPoucoPapel(Sender: TObject);
@@ -258,10 +232,7 @@ begin
 
     with dm.TcpServer do
     begin
-       DefaultPort    := Ini.ReadInteger('ACBrMonitor','TCP_Porta',3434);
-       MaxConnections := Ini.ReadInteger('ACBrMonitor','Conexoes_Simultaneas',1);
-       MaxConnectionReply.Text.Add( 'Pedido de conexão negado.') ;
-       MaxConnectionReply.Text.Add( 'Número máximo de conexões ('+IntToStr(MaxConnections)+') já atingido' ) ;
+       Port := Ini.ReadString('ACBrMonitor','TCP_Porta','3434');
     end ;
 
     ArqEntTXT := AcertaPath( Ini.ReadString('ACBrMonitor','TXT_Entrada','ENT.TXT') ) ;
@@ -294,8 +265,8 @@ begin
        if ECFDeviceParams <> '' then
           Device.ParamsString  := ECFDeviceParams ;
 
-       OnMsgPoucoPapel            := ACBrECF1MsgPoucoPapel ;
-       OnAguardandoRespostaChange := ACBrECF1AguardandoRespostaChange ;
+       OnMsgPoucoPapel            := @ACBrECF1MsgPoucoPapel ;
+       OnAguardandoRespostaChange := @ACBrECF1AguardandoRespostaChange ;
     end ;
 
     with ACBrCHQ1 do
@@ -495,11 +466,8 @@ begin
   begin
      if Assigned( dm.Conexao ) then
      begin
-        if Assigned( dm.Conexao.Connection ) then
-        begin
-           dm.Conexao.Connection.WriteLn(Resposta) ;
-           dm.Conexao.Connection.Write(#3) ;
-        end;
+        dm.Conexao.SendString(Resposta);
+        dm.Conexao.SendByte(3);
      end ;
   end ;
 
@@ -749,7 +717,40 @@ begin
   PrivateKey_RSA := LerChaveSWH ;
 end;
 
+procedure Tdm.TcpServerConecta(const TCPBlockSocket : TTCPBlockSocket ;
+  var Enviar : AnsiString) ;
+begin
+  Conexao := TCPBlockSocket;
+  Resposta( '', 'ACBrMonitorConsole Ver. ' + Versao + sLineBreak +
+                'Conectado em: ' + FormatDateTime('dd/mm/yy hh:nn:ss', now) + sLineBreak +
+                'Máquina: ' + Conexao.GetRemoteSinIP + sLineBreak +
+                'Esperando por comandos.' ) ;
+end;
+
+procedure Tdm.TcpServerDesConecta(const TCPBlockSocket : TTCPBlockSocket ;
+  Erro : Integer ; ErroDesc : String) ;
+begin
+  Conexao := TCPBlockSocket;
+  WriteLn( 'ALERTA: Fim da Conexão com: ' +
+    Conexao.GetRemoteSinIP + ' em: ' +
+    FormatDateTime('dd/mm/yy hh:nn:ss', now) ) ;
+end;
+
+procedure Tdm.TcpServerRecebeDados(const TCPBlockSocket : TTCPBlockSocket ;
+  const Recebido : AnsiString ; var Enviar : AnsiString) ;
+Var
+  CmdEnviado : String ;
+begin
+  { Le o que foi enviado atravez da conexao TCP }
+  CmdEnviado := trim(Recebido) ;
+  if CmdEnviado <> '' then
+  begin
+     Conexao := TCPBlockSocket;
+     ComandosAProcessar.Text := CmdEnviado  ;
+
+     Processar ;
+  end ;
+end;
+
 end.
-
-
 

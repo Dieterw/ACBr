@@ -85,12 +85,18 @@
 
 {$I ACBr.inc}
 
+{$IFNDEF CONSOLE}
+ {$IFDEF FPC}
+  {$DEFINE USE_LCLIntf}
+ {$ENDIF}
+{$ENDIF}
+
 unit ACBrUtil;
 
 interface
 Uses SysUtils, Math, Classes, 
     {$IFDEF COMPILER6_UP} StrUtils, DateUtils, {$ELSE} ACBrD5, FileCtrl, {$ENDIF}
-    {$IFDEF FPC} dynlibs, LCLIntf, {$ENDIF}
+    {$IFDEF FPC} dynlibs, {$IFDEF USE_LCLIntf}LCLIntf,{$ENDIF} {$ENDIF}
     {$ifdef MSWINDOWS}
       Windows, ShellAPI
     {$else}
@@ -1612,7 +1618,7 @@ procedure OpenURL( const URL : String ) ;
   Var BrowserName : String ;
 {$ENDIF}
 begin
- {$IFDEF FPC}
+ {$IFDEF USE_LCLIntf}
    LCLIntf.OpenURL( URL ) ;
  {$ELSE}
    {$IFDEF MSWINDOWS}

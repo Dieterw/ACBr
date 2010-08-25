@@ -79,15 +79,15 @@ Unit ACBrBase ;
 interface
 uses Classes, SysUtils, ACBrConsts,
      {$IFDEF COMPILER6_UP}
-        Types, 
+        Types
      {$ELSE}
-        Windows, ACBrD5,
+        Windows, ACBrD5
      {$ENDIF}
      {$IFNDEF CONSOLE}
        {$IFDEF VisualCLX}
-          QDialogs 
+          ,QDialogs
        {$ELSE}
-          Dialogs
+          ,Dialogs
        {$ENDIF}
      {$ENDIF};
 type

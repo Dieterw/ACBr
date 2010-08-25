@@ -60,7 +60,7 @@ begin
   begin
      try
         if Cmd.Metodo = 'ativo' then
-           Cmd.Resposta := Caption
+           Cmd.Resposta := 'ATIVO'
 
         else if Cmd.Metodo = 'run' then
          begin

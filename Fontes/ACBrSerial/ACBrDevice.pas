@@ -649,11 +649,7 @@ begin
 
   S := GetValue(Linha,'PARITY') ;
   if S <> '' then
-    {$IFDEF DELPHI12_UP}
-    if CharInSet(S[1], ['O','E','M','S','N']) then
-    {$ELSE}
     if S[1] in ['O','E','M','S','N'] then
-    {$ENDIF}
       fsParity := S[1] ;
 
   Data := StrToIntDef(GetValue(Linha,'DATA'),Data) ;

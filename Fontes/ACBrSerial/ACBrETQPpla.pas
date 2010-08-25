@@ -49,7 +49,9 @@ unit ACBrETQPpla;
 
 interface
 uses ACBrETQClass, ACBrUtil, ACBrDevice
-     {$IFDEF VisualCLX}, QGraphics {$ELSE}, Graphics {$ENDIF}
+     {$IFNDEF CONSOLE}
+      {$IFDEF VisualCLX}, QGraphics {$ELSE}, Graphics {$ENDIF}
+     {$ENDIF}
      ,Classes ;
 
 const
@@ -70,7 +72,9 @@ type
     procedure ImprimirCaixa(Vertical, Horizontal, Largura, Altura,
       EspessuraVertical, EspessuraHorizontal: Integer); override;
     procedure ImprimirImagem(MultiplicadorImagem, Linha, Coluna: Integer; NomeImagem: String); override;
-    procedure CarregarImagem(MonoBMP : TBitmap; NomeImagem: String; Flipped : Boolean); override;
+    {$IFNDEF CONSOLE}
+     procedure CarregarImagem(MonoBMP : TBitmap; NomeImagem: String; Flipped : Boolean); override;
+    {$ENDIF}
     procedure Imprimir(Copias: Integer = 1; AvancoEtq: Integer = 0); override;
 
   end ;
@@ -294,6 +298,7 @@ begin
 end;
 
 //Carrega a imagem na memória RAM da impressora de etiquetas
+{$IFNDEF CONSOLE}
 procedure TACBrETQPpla.CarregarImagem(MonoBMP : TBitmap; NomeImagem: String;
   Flipped : Boolean);
 Var
@@ -331,6 +336,6 @@ begin
 
   ListaCmd.Clear ;
 end;
-
+{$ENDIF}
 
 end.

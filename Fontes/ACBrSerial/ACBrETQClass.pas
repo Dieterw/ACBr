@@ -6,7 +6,7 @@
 { Direitos Autorais Reservados (c) 2007 Andrews Ricardo Bejatto                }
 {                                       Anderson Rogerio Bejatto               }
 {                                                                              }
-{ Colaboradores nesse arquivo:          Daniel Simooes de Almeida              }
+{ Colaboradores nesse arquivo:          Daniel Simoes de Almeida               }
 {                                                                              }
 {  Você pode obter a última versão desse arquivo na pagina do  Projeto ACBr    }
 { Componentes localizado em      http://www.sourceforge.net/projects/acbr      }
@@ -50,7 +50,9 @@ unit ACBrETQClass;
 interface
 uses ACBrDevice,
      Classes
-     {$IFDEF VisualCLX}, QGraphics {$ELSE}, Graphics {$ENDIF}
+     {$IFNDEF CONSOLE}
+      {$IFDEF VisualCLX}, QGraphics {$ELSE}, Graphics {$ENDIF}
+     {$ENDIF}
      {$IFDEF COMPILER6_UP}, Types {$ELSE}, Windows {$ENDIF} ;
 
 const
@@ -107,8 +109,11 @@ TACBrETQClass = class
       EspessuraVertical, EspessuraHorizontal: Integer); virtual;
     procedure ImprimirImagem(MultiplicadorImagem, Linha, Coluna: Integer;
        NomeImagem: String); virtual;
-    procedure CarregarImagem(MonoBMP : TBitmap; NomeImagem: String;
-       Flipped : Boolean = True ); virtual;
+
+    {$IFNDEF CONSOLE}
+     procedure CarregarImagem(MonoBMP : TBitmap; NomeImagem: String;
+        Flipped : Boolean = True ); virtual;
+    {$ENDIF}
     procedure Imprimir(Copias: Integer = 1; AvancoEtq: Integer = 0); virtual;
 end;
 
@@ -228,9 +233,11 @@ begin
   raise Exception.Create(ACBrStr('Função Imprimir não implementada em: ') + ModeloStr);
 end;
 
+{$IFNDEF CONSOLE}
 procedure TACBrETQClass.CarregarImagem(MonoBMP : TBitmap; NomeImagem: String; Flipped : Boolean);
 begin
   raise Exception.Create(ACBrStr('Função CarregarImagem não implementada em: ') + ModeloStr);
 end;
+{$ENDIF}
 
 end.

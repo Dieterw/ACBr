@@ -663,7 +663,9 @@ begin
   qrlInscEstReceb.Caption := FCTe.Receb.IE;
   qrlFoneReceb.Caption := CTeUtil.FormatarFone(FCTe.Receb.fone);
 
-  case FCTe.Ide.Toma03.Toma of
+  if FCTe.Ide.Toma4.xNome = ''
+   then begin
+    case FCTe.Ide.Toma03.Toma of
     tmRemetente:
       begin
         qrlRazaoToma.Caption := FCTe.Rem.xNome;
@@ -708,18 +710,18 @@ begin
         qrlInscEstToma.Caption := FCTe.Dest.IE;
         qrlFoneToma.Caption := CTeUtil.FormatarFone(FCTe.Dest.fone);
       end;
-    tmOutros:
-      begin
-        qrlRazaoToma.Caption := FCTe.Ide.Toma4.xNome;
-        qrlEnderecoToma.Caption := FCTe.Ide.Toma4.EnderToma.xLgr + ', ' + FCTe.Ide.Toma4.EnderToma.xNum + ' - ' + FCTe.Ide.Toma4.EnderToma.xCpl;
-        qrlCEPToma.Caption := CTeUtil.FormatarCEP(FormatFloat( '00000000', FCTe.Ide.Toma4.EnderToma.CEP));
-        qrlMunToma.Caption := FCTe.Ide.Toma4.EnderToma.xMun+' - '+FCTe.Ide.Toma4.EnderToma.UF;
-        qrlCnpjToma.Caption := CTeUtil.FormatarCNPJ(FCTe.Ide.Toma4.CNPJCPF);
-        qrlPaisToma.Caption := FCTe.Ide.Toma4.EnderToma.xPais;
-        qrlInscEstToma.Caption := FCTe.Ide.Toma4.IE;
-        qrlFoneToma.Caption := CTeUtil.FormatarFone(FCTe.Ide.Toma4.fone);
-      end;
-  end;
+    end;
+   end
+   else begin
+    qrlRazaoToma.Caption := FCTe.Ide.Toma4.xNome;
+    qrlEnderecoToma.Caption := FCTe.Ide.Toma4.EnderToma.xLgr + ', ' + FCTe.Ide.Toma4.EnderToma.xNum + ' - ' + FCTe.Ide.Toma4.EnderToma.xCpl;
+    qrlCEPToma.Caption := CTeUtil.FormatarCEP(FormatFloat( '00000000', FCTe.Ide.Toma4.EnderToma.CEP));
+    qrlMunToma.Caption := FCTe.Ide.Toma4.EnderToma.xMun+' - '+FCTe.Ide.Toma4.EnderToma.UF;
+    qrlCnpjToma.Caption := CTeUtil.FormatarCNPJ(FCTe.Ide.Toma4.CNPJCPF);
+    qrlPaisToma.Caption := FCTe.Ide.Toma4.EnderToma.xPais;
+    qrlInscEstToma.Caption := FCTe.Ide.Toma4.IE;
+    qrlFoneToma.Caption := CTeUtil.FormatarFone(FCTe.Ide.Toma4.fone);
+   end;
 
   qrlProdPredominante.Caption := FCTe.InfCarga.proPred;
   qrlOutrasCaracCarga.Caption := FCTe.InfCarga.xOutCat;

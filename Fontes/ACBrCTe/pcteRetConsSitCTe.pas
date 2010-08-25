@@ -115,7 +115,7 @@ begin
       (*ER05 *)FcStat    := leitor.rCampo(tcInt, 'cStat');
       (*ER06 *)FxMotivo  := leitor.rCampo(tcStr, 'xMotivo');
       (*ER07 *)FcUF      := leitor.rCampo(tcInt, 'cUF');
-      (*ER07a*)FchCTe    := leitor.rCampo(tcStr, 'chCTe'); // ?????
+//      (*ER07a*)FchCTe    := leitor.rCampo(tcStr, 'chCTe'); // Comentado por Italo em 28/08/2010
       
       if FcStat in  [100,101] then
        begin

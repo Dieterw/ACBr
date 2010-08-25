@@ -347,16 +347,19 @@ end;
 
 procedure TCTeW.GerarToma03;
 begin
-  Gerador.wGrupo('toma03', 'B28');
-  Gerador.wCampo(tcStr, 'B29', 'toma   ', 01, 01, 1, TpTomadorToStr(CTe.ide.Toma03.Toma), DSC_TOMA);
-  Gerador.wGrupo('/toma03');
+  if (CTe.Ide.Toma4.xNome = '') then
+  begin
+    Gerador.wGrupo('toma03', 'B28');
+    Gerador.wCampo(tcStr, 'B29', 'toma   ', 01, 01, 1, TpTomadorToStr(CTe.ide.Toma03.Toma), DSC_TOMA);
+    Gerador.wGrupo('/toma03');
+  end;
 end;
 
 procedure TCTeW.GerarToma4;
 begin
   if (CTe.Ide.Toma4.IE <> '') or
      (CTe.Ide.Toma4.xNome <> '') then
-  Begin
+  begin
     Gerador.wGrupo('toma4', 'B30');
     Gerador.wCampo(tcStr, 'B29', 'toma   ', 01, 01, 1, TpTomadorToStr(CTe.ide.Toma4.Toma), DSC_TOMA);
     Gerador.wCampoCNPJCPF('B31', 'B32', CTe.ide.Toma4.CNPJCPF, CTe.Ide.Toma4.EnderToma.cPais);

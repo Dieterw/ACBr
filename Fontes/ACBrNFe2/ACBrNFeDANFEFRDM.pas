@@ -52,6 +52,8 @@
 |*  - Padronização da logomarca para utilizar o caminho como nos outros DANFEs
 |*  - Acerto no CST para o Simples Nacional
 |*  - Acertos no DANFE para o Simples Nacional
+|* 25/08/2010: Régys Silveira
+|*  - Configuração do preview do DANFE
 ******************************************************************************}
 {$I ACBr.inc}
 

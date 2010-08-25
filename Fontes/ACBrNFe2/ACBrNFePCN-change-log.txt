@@ -48,6 +48,12 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   25/08/2010
+---------------
+[-] DANFE em FAST REPORT (Régys Borges da Silveira)
+    - Configuração do preview do DANFE
+
+
 Alterações   24/08/2010
 ---------------
 [-] DANFE em FAST REPORT (Régys Borges da Silveira)

@@ -1,0 +1,77 @@
+procedure TfrmMovEmitirCNT.EnviarLote(Lote: Integer);
+var
+ i: integer;
+ TestaEnvio: Boolean;
+begin
+ // Se False, apenas gera o XML, assina, valida e Imprime o DACTe não protocolado
+ // Se True, gera o XML, assina, valida, envia para o SEFAZ e Imprime o DACTe protocolado
+ TestaEnvio:=False;
+
+ MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
+ MemoStatus.Lines.Add(' =>  Enviando lote de Conhecimento(s)');
+ MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
+ MemoStatus.Lines.Add('XMLs:');
+ MemoStatus.Lines.Add(' Gerado(s)');
+ MemoStatus.Lines.Add(' Salvo(s) em: '+PathMensal);
+
+ // Gera o XML, Assina e Salva o Arquivo
+ CTe.Conhecimentos.Assinar;
+ MemoStatus.Lines.Add(' Assinado(s)');
+
+ // Valida os dados do XML salvo
+ CTe.Conhecimentos.Valida;
+ MemoStatus.Lines.Add(' Validado(s)');
+
+ if TestaEnvio
+  then begin
+   // *************************************************************************
+   //
+   // trecho não testado por falta de um certificado válido.
+   //
+   // *************************************************************************
+   MemoStatus.Lines.Add(' Aguarde Enviando...');
+   // Envia o lote de conhecimentos para o SEFAZ e Imprime o DACTe
+   // Lote = variável que contem o numero do lote (numero sequencial)
+   CTe.Enviar(Lote);
+
+   sRecibo   := CTe.WebServices.Enviar.Recibo;
+   sStat     := IntToStr(CTe.WebServices.Enviar.cStat);
+   sMotivo   := CTe.WebServices.Enviar.xMotivo;
+   sDataHora := DateTimeToStr(CTe.WebServices.Enviar.dhRecbto);
+   MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
+   MemoStatus.Lines.Add(' =>  Recibo nº ' + sRecibo);
+   MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
+   MemoStatus.Lines.Add('  Data / Hora      Status do CT-e');
+   MemoStatus.Lines.Add('  ---------------- ---------------------------------------');
+   MemoStatus.Lines.Add('  ' + sDataHora + '  ' + sStat + ' - ' + sMotivo);
+   MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
+   MemoStatus.Lines.Add('  ');
+   MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
+   MemoStatus.Lines.Add(' =>  Consultando recibo nº ' + sRecibo);
+   MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
+   CTe.WebServices.Retorno.Recibo := sRecibo;
+   CTe.WebServices.Retorno.Executar;
+   MemoStatus.Lines.Add('  Conhecimento Número do protocolo                  Status do CT-e');
+   MemoStatus.Lines.Add('  ------------ -----------------------------------  ---------------------------------------');
+   for i := 0 to (Cte.WebServices.Retorno.CteRetorno.ProtCTe.Count - 1) do
+    begin
+     sDataHora     := DateTimeToStr(CTe.WebServices.Retorno.CteRetorno.ProtCTe.Items[i].dhRecbto);
+     sProtocolo    := CTe.WebServices.Retorno.CteRetorno.ProtCTe.Items[i].nProt;
+     sStat         := IntToStr(CTe.WebServices.Retorno.CteRetorno.ProtCTe.Items[i].cStat);
+     sMotivo       := CTe.WebServices.Retorno.CteRetorno.ProtCTe.Items[i].xMotivo;
+     sConhecimento := Copy(CTe.WebServices.Retorno.CteRetorno.ProtCTe.Items[i].chCTe, 26, 3)
+                      + '.' + Copy(CTe.WebServices.Retorno.CteRetorno.ProtCTe.Items[i].chCTe, 29, 3)
+                      + '.' + Copy(CTe.WebServices.Retorno.CteRetorno.ProtCTe.Items[i].chCTe, 32, 3);
+
+     MemoStatus.Lines.Add('  ' + sConhecimento + '  ' + sProtocolo + ' ' + sDataHora + '  ' + sStat + ' - ' + sMotivo);
+    end;
+   MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
+  end
+  else begin
+   MemoStatus.Lines.Add(' Aguarde Imprimindo...');
+   // Somente imprime o CTe
+   CTe.Conhecimentos.Imprimir;
+  end;
+
+ MessageDlg('Conhecimento(s) Impresso(s)', mtInformation, [mbOk], 0);
+end;

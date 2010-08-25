@@ -1,0 +1,48 @@
+veja esta rotina:
+
+
+     Mensagem:=TStringList.Create;
+     Ok:=False;
+     for i:=0 to numConhec do
+      begin
+       Ok:=False;
+       LerDadosdoCliente;
+
+       // Variavel Endereco contem o email do cliente
+
+       if Endereco<>''
+        then begin
+         Mensagem.Clear;
+         Mensagem.Add('CT-e: '+Copy(CTe.Conhecimentos.Items[i].CTe.inFCTe.ID,4,44));
+
+         Falha:=False;
+         repeat
+          MemoStatus.Lines.Add('Aguarde... Enviando CT-e por e-mail.');
+          try
+
+           CTe.Conhecimentos.Items[i].EnviarEmail(HostServidorSMTP,
+                                        HostPortaSMTP,
+                                        HostUsuario,
+                                        HostSenha,
+                                        EmpresaEmail,
+                                        Endereco,
+                                        'CT-e',
+                                        Mensagem,
+                                        False,  // SSL
+                                        False); // Enviar em PDF
+
+           Ok:=True;
+          except
+           Falha:=True;
+          end;
+         until Ok or Falha;
+         if Falha
+          then MessageDlg('e-mail não enviado por motivo de Falha.', mtError, [mbOk], 0);
+        end
+        else MessageDlg('Tomador do Serviço não possui, e-mail Cadastrado.', mtInformation, [mbOk], 0);
+
+      end;
+     Mensagem.Free;
+     if Ok
+      then MessageDlg('e-mail enviado com Sucesso.', mtInformation, [mbOk], 0);
+    end

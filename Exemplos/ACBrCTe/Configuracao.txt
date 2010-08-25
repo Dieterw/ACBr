@@ -1,0 +1,55 @@
+   // Configurações -> Arquivos
+   CTe.Configuracoes.Arquivos.AdicionarLiteral:=True;
+   CTe.Configuracoes.Arquivos.EmissaoPathCTe:=True;
+   CTe.Configuracoes.Arquivos.PastaMensal:=True;
+   CTe.Configuracoes.Arquivos.PathCan:=trim(DM_CNT.ParametrosCTeGeralPathSalvar.AsString);
+   CTe.Configuracoes.Arquivos.PathDPEC:=trim(DM_CNT.ParametrosCTeGeralPathSalvar.AsString);
+   CTe.Configuracoes.Arquivos.PathInu:=trim(DM_CNT.ParametrosCTeGeralPathSalvar.AsString);
+   CTe.Configuracoes.Arquivos.PathCTe:=trim(DM_CNT.ParametrosCTeGeralPathSalvar.AsString);
+   CTe.Configuracoes.Arquivos.Salvar:=(DM_CNT.ParametrosCTeGeralSalvar.AsString='S');
+   PathMensal:=CTe.Configuracoes.Arquivos.GetPathCTe(0);
+
+   // Configurações -> Certificados
+   CTe.Configuracoes.Certificados.NumeroSerie:=trim(DM_CNT.ParametrosCTeCertNumSerie.AsString);
+   CTe.Configuracoes.Certificados.Senha:=trim(DM_CNT.ParametrosCTeCertSenha.AsString);
+
+   // Configurações -> Geral
+   case DM_CNT.ParametrosCTeGeralFormaEm.AsInteger of
+    0: CTe.Configuracoes.Geral.FormaEmissao:=teNormal;
+    1: CTe.Configuracoes.Geral.FormaEmissao:=teContingencia;
+    2: CTe.Configuracoes.Geral.FormaEmissao:=teDPEC;
+    3: CTe.Configuracoes.Geral.FormaEmissao:=teFSDA;
+    4: CTe.Configuracoes.Geral.FormaEmissao:=teSCAN;
+   end;
+   CTe.Configuracoes.Geral.PathSalvar:=PathMensal;
+   CTe.Configuracoes.Geral.PathSchemas:=trim(DM_CNT.ParametrosCTeGeralPathSchema.AsString);
+   CTe.Configuracoes.Geral.Salvar:=(DM_CNT.ParametrosCTeGeralSalvar.AsString='S');
+
+   // Configurações -> WebServices
+   CTe.Configuracoes.WebServices.AguardarConsultaRet:=0;
+   CTe.Configuracoes.WebServices.AjustaAguardaConsultaRet:=False;
+   case DM_CNT.ParametrosCTeWebServAmbiente.AsInteger of
+    0: CTe.Configuracoes.WebServices.Ambiente:=taHomologacao;
+    1: CTe.Configuracoes.WebServices.Ambiente:=taProducao;
+   end;
+   CTe.Configuracoes.WebServices.IntervaloTentativas:=0;
+   CTe.Configuracoes.WebServices.ProxyHost:=trim(DM_CNT.ParametrosCTeProxyHost.AsString);
+   CTe.Configuracoes.WebServices.ProxyPass:=trim(DM_CNT.ParametrosCTeProxyPass.AsString);
+   CTe.Configuracoes.WebServices.ProxyPort:=trim(DM_CNT.ParametrosCTeProxyPorta.AsString);
+   CTe.Configuracoes.WebServices.ProxyUser:=trim(DM_CNT.ParametrosCTeProxyUser.AsString);
+   CTe.Configuracoes.WebServices.Tentativas:=5;
+   CTe.Configuracoes.WebServices.UF:=DM_CNT.ParametrosCTeWebServUF.AsString;
+   CTe.Configuracoes.WebServices.Visualizar:=(DM_CNT.ParametrosCTeWebServVisualizar.AsString='S');
+
+   // DACTe
+   CTeDACTe.ExpandirLogoMarca:=False;
+   CTeDACTe.ImprimirDescPorc:=False;
+   CTeDACTe.ImprimirHoraSaida:=True;
+   CTeDACTe.ImprimirHoraSaida_Hora:=DateToStr(Date);
+   CTeDACTe.Logo:=trim(DM_CNT.ParametrosCTeGeralLogoMarca.AsString);
+   CTeDACTe.MostrarPreview:=chkVisualizar.Checked;
+   CTeDACTe.Sistema:='Sistema: Controle de Conhecimentos '+
+                     'Versão: 4.0';
+   CTeDACTe.Site:=trim(DM_SIS.EmpresaSite.AsString);
+   CTeDACTe.TipoDACTE:=tiRetrato;
+   CTeDACTe.Usuario:='Usuário: '+xUserName;

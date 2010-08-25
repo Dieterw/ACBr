@@ -390,7 +390,11 @@ begin
   Result := '';
   for A := 1 to length(AValue) do
   begin
+    {$IFDEF DELPHI12_UP}
+    if CharInSet(AValue[A], ['0'..'9']) then
+    {$ELSE}
     if (AValue[A] in ['0'..'9']) then
+    {$ENDIF}
       Result := Result + AValue[A];
   end;
 end;

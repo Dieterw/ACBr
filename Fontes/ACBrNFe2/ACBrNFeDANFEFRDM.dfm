@@ -6,11 +6,11 @@ object dmACBrNFeFR: TdmACBrNFeFR
     UseFileCache = True
     ShowProgress = True
     OverwritePrompt = False
-    EmbeddedFonts = True
     PrintOptimized = True
     Outline = False
     Background = True
     HTMLTags = True
+    Author = 'FastReport'
     Subject = 'Exportando DANFE para PDF'
     ProtectionFlags = [ePrint, eModify, eCopy, eAnnot]
     HideToolbar = False

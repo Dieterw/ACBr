@@ -6,13 +6,12 @@ object dmACBrNFeFR: TdmACBrNFeFR
     UseFileCache = True
     ShowProgress = True
     OverwritePrompt = False
+    EmbeddedFonts = True
     PrintOptimized = True
     Outline = False
     Background = True
     HTMLTags = True
-    Author = 'Componente ACBrNFe'
     Subject = 'Exportando DANFE para PDF'
-    Creator = 'Componente ACBrNFe '
     ProtectionFlags = [ePrint, eModify, eCopy, eAnnot]
     HideToolbar = False
     HideMenubar = False

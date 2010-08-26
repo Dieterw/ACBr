@@ -44,6 +44,8 @@
 |*  - Acerto para checar se o relatório foi realmente preparado
 |     antes de continuar a imprir ou gerar o PDF
 |*  - Acerto nas propriedades do arquivo PDF
+|* 26/08/2010: Régys Silveira / Itamar Bermond
+|*  - Acerto na propriedade "PreparedReport"
 ******************************************************************************}
 {$I ACBr.inc}
 
@@ -95,7 +97,10 @@ end;
 
 function TACBrNFeDANFEFR.GetPreparedReport: TfrxReport;
 begin
-  Result := dmDanfe.frxReport;
+  if PrepareReport(nil) then
+    Result := dmDanfe.frxReport
+  else
+    Result := nil;
 end;
 
 procedure TACBrNFeDANFEFR.ImprimirDANFE(NFE: TNFe);

@@ -258,12 +258,11 @@ object dmACBrNFeFR: TdmACBrNFeFR
     IniFile = '\Software\Fast Reports'
     PreviewOptions.AllowEdit = False
     PreviewOptions.Buttons = [pbPrint, pbZoom, pbFind, pbNavigator, pbExportQuick]
-    PreviewOptions.OutlineExpand = False
     PreviewOptions.Zoom = 1.000000000000000000
     PrintOptions.Printer = 'Default'
     PrintOptions.PrintOnSheet = 0
     ReportOptions.CreateDate = 40401.475989294000000000
-    ReportOptions.LastChange = 40414.611448414400000000
+    ReportOptions.LastChange = 40415.404595682900000000
     ScriptLanguage = 'PascalScript'
     ScriptText.Strings = (
       'var'
@@ -2591,7 +2590,7 @@ object dmACBrNFeFR: TdmACBrNFeFR
       OnBeforePrint = 'Page1OnBeforePrint'
       object MasterData1: TfrxMasterData
         Height = 11.338582677165400000
-        Top = 857.953310000000000000
+        Top = 865.512370000000000000
         Width = 755.906000000000000000
         DataSet = frxDadosProdutos
         DataSetName = 'DadosProdutos'
@@ -3044,7 +3043,7 @@ object dmACBrNFeFR: TdmACBrNFeFR
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
-          Font.Height = -7
+          Font.Height = -5
           Font.Name = 'Arial'
           Font.Style = []
           Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
@@ -3221,10 +3220,10 @@ object dmACBrNFeFR: TdmACBrNFeFR
           ParentFont = False
         end
         object Memo16: TfrxMemoView
-          Left = 412.968770000000000000
-          Top = 45.354360000000000000
-          Width = 22.677180000000000000
-          Height = 22.677180000000000000
+          Left = 416.748300000000000000
+          Top = 46.354360000000000000
+          Width = 18.897650000000000000
+          Height = 18.897650000000000000
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -3424,7 +3423,7 @@ object dmACBrNFeFR: TdmACBrNFeFR
       end
       object PageFooter1: TfrxPageFooter
         Height = 13.228346460000000000
-        Top = 1220.788190000000000000
+        Top = 1228.347250000000000000
         Width = 755.906000000000000000
         object Memo150: TfrxMemoView
           Width = 359.055350000000000000
@@ -3460,7 +3459,7 @@ object dmACBrNFeFR: TdmACBrNFeFR
         end
       end
       object Footer1: TfrxFooter
-        Top = 891.969080000000000000
+        Top = 899.528140000000000000
         Visible = False
         Width = 755.906000000000000000
         OnBeforePrint = 'Footer1OnBeforePrint'
@@ -3468,7 +3467,7 @@ object dmACBrNFeFR: TdmACBrNFeFR
       end
       object Child1: TfrxChild
         Height = 3.779527560000000000
-        Top = 914.646260000000000000
+        Top = 922.205320000000000000
         Width = 755.906000000000000000
         object Memo161: TfrxMemoView
           Width = 37.795300000000000000
@@ -3752,7 +3751,7 @@ object dmACBrNFeFR: TdmACBrNFeFR
       end
       object Child3: TfrxChild
         Height = 35.795300000000000000
-        Top = 532.913730000000000000
+        Top = 536.693260000000000000
         Width = 755.906000000000000000
         OnBeforePrint = 'Child3OnBeforePrint'
         Stretched = True
@@ -3781,7 +3780,7 @@ object dmACBrNFeFR: TdmACBrNFeFR
       end
       object MasterData3: TfrxMasterData
         Height = 96.267762910000000000
-        Top = 411.968770000000000000
+        Top = 415.748300000000000000
         Width = 755.906000000000000000
         Child = frxReport.Child3
         DataSet = frxIdentificacao
@@ -4237,7 +4236,7 @@ object dmACBrNFeFR: TdmACBrNFeFR
       end
       object Header1: TfrxHeader
         Height = 162.519772910000000000
-        Top = 593.386210000000000000
+        Top = 597.165740000000000000
         Width = 755.906000000000000000
         OnBeforePrint = 'Header1OnBeforePrint'
         object Memo58: TfrxMemoView
@@ -5281,8 +5280,8 @@ object dmACBrNFeFR: TdmACBrNFeFR
         end
       end
       object Header2: TfrxHeader
-        Height = 34.015757800000000000
-        Top = 801.260360000000000000
+        Height = 37.795287800000000000
+        Top = 805.039890000000000000
         Width = 755.906000000000000000
         OnBeforePrint = 'Header2OnBeforePrint'
         object Memo115: TfrxMemoView
@@ -5303,7 +5302,7 @@ object dmACBrNFeFR: TdmACBrNFeFR
         object Memo116: TfrxMemoView
           Top = 15.118119999999980000
           Width = 37.795300000000000000
-          Height = 18.897632910000000000
+          Height = 22.677162910000000000
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -5325,7 +5324,7 @@ object dmACBrNFeFR: TdmACBrNFeFR
           Left = 37.795300000000000000
           Top = 15.118119999999980000
           Width = 245.669269370000000000
-          Height = 18.897632910000000000
+          Height = 22.677162910000000000
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -5346,7 +5345,7 @@ object dmACBrNFeFR: TdmACBrNFeFR
           Left = 283.464537640000000000
           Top = 15.118119999999980000
           Width = 37.795300000000000000
-          Height = 18.897632910000000000
+          Height = 22.677162910000000000
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -5367,7 +5366,7 @@ object dmACBrNFeFR: TdmACBrNFeFR
           Left = 321.259813230000000000
           Top = 15.118119999999980000
           Width = 26.456695350000000000
-          Height = 18.897632910000000000
+          Height = 22.677162910000000000
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -5388,7 +5387,7 @@ object dmACBrNFeFR: TdmACBrNFeFR
           Left = 347.716506140000000000
           Top = 15.118119999999980000
           Width = 24.566929130000000000
-          Height = 18.897637800000000000
+          Height = 22.677167800000000000
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -5409,7 +5408,7 @@ object dmACBrNFeFR: TdmACBrNFeFR
           Left = 372.283493860000000000
           Top = 15.118119999999980000
           Width = 22.677180000000000000
-          Height = 18.897632910000000000
+          Height = 22.677162910000000000
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -5430,7 +5429,7 @@ object dmACBrNFeFR: TdmACBrNFeFR
           Left = 394.960659210000000000
           Top = 15.118119999999980000
           Width = 43.464574250000000000
-          Height = 18.897632910000000000
+          Height = 22.677162910000000000
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -5451,7 +5450,7 @@ object dmACBrNFeFR: TdmACBrNFeFR
           Left = 438.425480000000000000
           Top = 15.118119999999980000
           Width = 45.354360000000000000
-          Height = 18.897632910000000000
+          Height = 22.677162910000000000
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -5473,7 +5472,7 @@ object dmACBrNFeFR: TdmACBrNFeFR
           Left = 483.779840000000000000
           Top = 15.118119999999980000
           Width = 45.354360000000000000
-          Height = 18.897632910000000000
+          Height = 22.677162910000000000
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -5495,7 +5494,7 @@ object dmACBrNFeFR: TdmACBrNFeFR
           Left = 529.134200000000000000
           Top = 15.118119999999980000
           Width = 45.354360000000000000
-          Height = 18.897632910000000000
+          Height = 22.677162910000000000
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -5517,7 +5516,7 @@ object dmACBrNFeFR: TdmACBrNFeFR
           Left = 574.488560000000000000
           Top = 15.118119999999980000
           Width = 45.354360000000000000
-          Height = 18.897632910000000000
+          Height = 22.677162910000000000
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -5539,7 +5538,7 @@ object dmACBrNFeFR: TdmACBrNFeFR
           Left = 619.842920000000000000
           Top = 15.118119999999980000
           Width = 45.354360000000000000
-          Height = 18.897632910000000000
+          Height = 22.677162910000000000
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -5561,7 +5560,7 @@ object dmACBrNFeFR: TdmACBrNFeFR
           Left = 665.197280000000000000
           Top = 15.118119999999980000
           Width = 45.354360000000000000
-          Height = 18.897632910000000000
+          Height = 22.677162910000000000
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -5581,9 +5580,9 @@ object dmACBrNFeFR: TdmACBrNFeFR
         end
         object Memo129: TfrxMemoView
           Left = 710.551640000000000000
-          Top = 15.118119999999980000
+          Top = 26.456710000000040000
           Width = 22.677180000000000000
-          Height = 18.897632910000000000
+          Height = 11.338572910000000000
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -5595,7 +5594,6 @@ object dmACBrNFeFR: TdmACBrNFeFR
           GapY = 2.000000000000000000
           HAlign = haCenter
           Memo.UTF8W = (
-            'AL'#205'Q.'
             'ICMS')
           ParentFont = False
           WordWrap = False
@@ -5603,9 +5601,9 @@ object dmACBrNFeFR: TdmACBrNFeFR
         end
         object Memo130: TfrxMemoView
           Left = 733.228820000000000000
-          Top = 15.118119999999980000
+          Top = 26.456710000000040000
           Width = 22.677180000000000000
-          Height = 18.897632910000000000
+          Height = 11.338572910000000000
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -5617,20 +5615,40 @@ object dmACBrNFeFR: TdmACBrNFeFR
           GapY = 2.000000000000000000
           HAlign = haCenter
           Memo.UTF8W = (
-            'AL'#205'Q.'
             'IPI')
+          ParentFont = False
+          WordWrap = False
+          VAlign = vaCenter
+        end
+        object Memo189: TfrxMemoView
+          Left = 710.551640000000000000
+          Top = 15.118119999999980000
+          Width = 45.354360000000000000
+          Height = 11.338572910000000000
+          ShowHint = False
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -5
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
+          Frame.Width = 0.500000000000000000
+          GapY = 2.000000000000000000
+          HAlign = haCenter
+          Memo.UTF8W = (
+            'AL'#205'QUOTA %')
           ParentFont = False
           WordWrap = False
           VAlign = vaCenter
         end
       end
       object MasterData4: TfrxMasterData
-        Top = 778.583180000000000000
+        Top = 782.362710000000000000
         Width = 755.906000000000000000
         RowCount = 1
       end
       object ColumnHeader1: TfrxColumnHeader
-        Height = 32.015757800000000000
+        Height = 35.795287800000000000
         Top = 317.480520000000000000
         Width = 755.906000000000000000
         OnBeforePrint = 'ColumnHeader1OnBeforePrint'
@@ -5651,7 +5669,7 @@ object dmACBrNFeFR: TdmACBrNFeFR
         object Memo56: TfrxMemoView
           Top = 13.118119999999980000
           Width = 37.795300000000000000
-          Height = 18.897632910000000000
+          Height = 22.677162910000000000
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -5672,8 +5690,8 @@ object dmACBrNFeFR: TdmACBrNFeFR
         object Memo57: TfrxMemoView
           Left = 37.795300000000000000
           Top = 13.118119999999980000
-          Width = 268.346449370000000000
-          Height = 18.897632910000000000
+          Width = 245.669269370000000000
+          Height = 22.677162910000000000
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -5691,10 +5709,10 @@ object dmACBrNFeFR: TdmACBrNFeFR
           VAlign = vaCenter
         end
         object Memo176: TfrxMemoView
-          Left = 306.141717640000000000
+          Left = 283.464537640000000000
           Top = 13.118119999999980000
           Width = 37.795300000000000000
-          Height = 18.897632910000000000
+          Height = 22.677162910000000000
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -5712,10 +5730,10 @@ object dmACBrNFeFR: TdmACBrNFeFR
           VAlign = vaCenter
         end
         object Memo177: TfrxMemoView
-          Left = 343.936993230000000000
+          Left = 321.259813230000000000
           Top = 13.118119999999980000
           Width = 26.456695350000000000
-          Height = 18.897632910000000000
+          Height = 22.677162910000000000
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -5733,10 +5751,10 @@ object dmACBrNFeFR: TdmACBrNFeFR
           VAlign = vaCenter
         end
         object Memo178: TfrxMemoView
-          Left = 370.393686140000000000
+          Left = 347.716506140000000000
           Top = 13.118119999999980000
           Width = 24.566929130000000000
-          Height = 18.897637800000000000
+          Height = 22.677167800000000000
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -5754,10 +5772,10 @@ object dmACBrNFeFR: TdmACBrNFeFR
           VAlign = vaCenter
         end
         object Memo179: TfrxMemoView
-          Left = 394.960673860000000000
+          Left = 372.283493860000000000
           Top = 13.118119999999980000
           Width = 22.677180000000000000
-          Height = 18.897632910000000000
+          Height = 22.677162910000000000
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -5775,10 +5793,10 @@ object dmACBrNFeFR: TdmACBrNFeFR
           VAlign = vaCenter
         end
         object Memo180: TfrxMemoView
-          Left = 417.637839210000000000
+          Left = 394.960659210000000000
           Top = 13.118119999999980000
           Width = 43.464574250000000000
-          Height = 18.897632910000000000
+          Height = 22.677162910000000000
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -5796,10 +5814,10 @@ object dmACBrNFeFR: TdmACBrNFeFR
           VAlign = vaCenter
         end
         object Memo181: TfrxMemoView
-          Left = 461.102660000000000000
+          Left = 438.425480000000000000
           Top = 13.118119999999980000
           Width = 45.354360000000000000
-          Height = 18.897632910000000000
+          Height = 22.677162910000000000
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -5818,10 +5836,10 @@ object dmACBrNFeFR: TdmACBrNFeFR
           VAlign = vaCenter
         end
         object Memo182: TfrxMemoView
-          Left = 506.457020000000000000
+          Left = 483.779840000000000000
           Top = 13.118119999999980000
           Width = 45.354360000000000000
-          Height = 18.897632910000000000
+          Height = 22.677162910000000000
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -5840,10 +5858,10 @@ object dmACBrNFeFR: TdmACBrNFeFR
           VAlign = vaCenter
         end
         object Memo183: TfrxMemoView
-          Left = 551.811380000000000000
+          Left = 529.134200000000000000
           Top = 13.118119999999980000
           Width = 45.354360000000000000
-          Height = 18.897632910000000000
+          Height = 22.677162910000000000
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -5862,10 +5880,10 @@ object dmACBrNFeFR: TdmACBrNFeFR
           VAlign = vaCenter
         end
         object Memo184: TfrxMemoView
-          Left = 597.165740000000000000
+          Left = 574.488560000000000000
           Top = 13.118119999999980000
           Width = 45.354360000000000000
-          Height = 18.897632910000000000
+          Height = 22.677162910000000000
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -5884,10 +5902,10 @@ object dmACBrNFeFR: TdmACBrNFeFR
           VAlign = vaCenter
         end
         object Memo185: TfrxMemoView
-          Left = 642.520100000000000000
+          Left = 619.842920000000000000
           Top = 13.118119999999980000
-          Width = 34.015770000000000000
-          Height = 18.897632910000000000
+          Width = 45.354360000000000000
+          Height = 22.677162910000000000
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -5906,10 +5924,10 @@ object dmACBrNFeFR: TdmACBrNFeFR
           VAlign = vaCenter
         end
         object Memo186: TfrxMemoView
-          Left = 676.535870000000000000
+          Left = 665.197280000000000000
           Top = 13.118119999999980000
-          Width = 34.015770000000000000
-          Height = 18.897632910000000000
+          Width = 45.354360000000000000
+          Height = 22.677162910000000000
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -5930,8 +5948,8 @@ object dmACBrNFeFR: TdmACBrNFeFR
         object Memo187: TfrxMemoView
           Left = 710.551640000000000000
           Top = 13.118119999999980000
-          Width = 22.677180000000000000
-          Height = 18.897632910000000000
+          Width = 45.354360000000000000
+          Height = 11.338572910000000000
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -5943,37 +5961,14 @@ object dmACBrNFeFR: TdmACBrNFeFR
           GapY = 2.000000000000000000
           HAlign = haCenter
           Memo.UTF8W = (
-            'AL'#205'Q.'
-            'ICMS')
-          ParentFont = False
-          WordWrap = False
-          VAlign = vaCenter
-        end
-        object Memo188: TfrxMemoView
-          Left = 733.228820000000000000
-          Top = 13.118119999999980000
-          Width = 22.677180000000000000
-          Height = 18.897632910000000000
-          ShowHint = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -5
-          Font.Name = 'Arial'
-          Font.Style = [fsBold]
-          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
-          Frame.Width = 0.500000000000000000
-          GapY = 2.000000000000000000
-          HAlign = haCenter
-          Memo.UTF8W = (
-            'AL'#205'Q.'
-            'IPI')
+            'AL'#205'QUOTA %')
           ParentFont = False
           WordWrap = False
           VAlign = vaCenter
         end
       end
       object Child2: TfrxChild
-        Top = 941.102970000000000000
+        Top = 948.662030000000000000
         Width = 755.906000000000000000
         object Line2: TfrxLineView
           Align = baWidth
@@ -5985,7 +5980,7 @@ object dmACBrNFeFR: TdmACBrNFeFR
       end
       object ColumnFooter1: TfrxColumnFooter
         Height = 194.535542910000000000
-        Top = 1001.575450000000000000
+        Top = 1009.134510000000000000
         Width = 755.906000000000000000
         OnBeforePrint = 'ColumnFooter1OnBeforePrint'
         object Memo152: TfrxMemoView
@@ -6021,7 +6016,7 @@ object dmACBrNFeFR: TdmACBrNFeFR
           ParentFont = False
         end
         object Memo154: TfrxMemoView
-          Top = 26.346390790000210000
+          Top = 26.346390790000100000
           Width = 217.322859060000000000
           Height = 17.007874020000000000
           ShowHint = False
@@ -6056,7 +6051,7 @@ object dmACBrNFeFR: TdmACBrNFeFR
         end
         object Memo156: TfrxMemoView
           Left = 217.322859060000000000
-          Top = 26.346390790000210000
+          Top = 26.346390790000100000
           Width = 179.527559060000000000
           Height = 17.007874020000000000
           ShowHint = False
@@ -6094,7 +6089,7 @@ object dmACBrNFeFR: TdmACBrNFeFR
         end
         object Memo158: TfrxMemoView
           Left = 396.850418110000000000
-          Top = 26.346390790000210000
+          Top = 26.346390790000100000
           Width = 179.527559060000000000
           Height = 17.007874020000000000
           ShowHint = False
@@ -6132,7 +6127,7 @@ object dmACBrNFeFR: TdmACBrNFeFR
         end
         object Memo160: TfrxMemoView
           Left = 576.377977170000000000
-          Top = 26.346390790000210000
+          Top = 26.346390790000100000
           Width = 179.527559060000000000
           Height = 17.007874020000000000
           ShowHint = False
@@ -6152,7 +6147,7 @@ object dmACBrNFeFR: TdmACBrNFeFR
         end
         object Memo146: TfrxMemoView
           Left = 517.795610000000000000
-          Top = 58.472480000000130000
+          Top = 58.472480000000240000
           Width = 238.110216690000000000
           Height = 136.063062910000000000
           ShowHint = False
@@ -6169,7 +6164,7 @@ object dmACBrNFeFR: TdmACBrNFeFR
           ParentFont = False
         end
         object Memo147: TfrxMemoView
-          Top = 45.354360000000040000
+          Top = 45.354359999999930000
           Width = 430.866420000000000000
           Height = 13.228344020000000000
           ShowHint = False
@@ -6184,7 +6179,7 @@ object dmACBrNFeFR: TdmACBrNFeFR
           ParentFont = False
         end
         object Memo148: TfrxMemoView
-          Top = 58.472480000000130000
+          Top = 58.472480000000240000
           Width = 517.795319530000000000
           Height = 136.063062910000000000
           ShowHint = False
@@ -6201,7 +6196,7 @@ object dmACBrNFeFR: TdmACBrNFeFR
           ParentFont = False
         end
         object Memo149: TfrxMemoView
-          Top = 68.031540000000180000
+          Top = 68.031540000000290000
           Width = 517.795610000000000000
           Height = 124.724490000000000000
           ShowHint = False
@@ -6235,51 +6230,76 @@ object dmACBrNFeFR: TdmACBrNFeFR
       BottomMargin = 7.000000000000000000
       LargeDesignHeight = True
       object MasterData2: TfrxMasterData
-        Height = 34.015770000000000000
+        Height = 37.795300000000000000
         Top = 18.897650000000000000
         Width = 755.906000000000000000
-        Columns = 6
-        ColumnWidth = 119.433070866142000000
+        Columns = 5
+        ColumnWidth = 151.181102362205000000
         DataSet = frxDuplicatas
         DataSetName = 'Duplicatas'
         RowCount = 0
         object Memo81: TfrxMemoView
-          Left = 45.354360000000000000
-          Width = 74.078740157480290000
-          Height = 34.015745590000000000
+          Left = 52.913420000000000000
+          Width = 98.267780000000000000
+          Height = 37.795300000000000000
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -9
-          Font.Name = 'Arial'
+          Font.Name = 'Arial Narrow'
           Font.Style = []
           Frame.Typ = [ftRight, ftTop, ftBottom]
           Frame.Width = 0.500000000000000000
-          GapX = 5.000000000000000000
+          GapX = 3.000000000000000000
           HAlign = haRight
           Memo.UTF8W = (
             '[Duplicatas."NDup"]'
             '[Duplicatas."DVenc"]'
-            'R$ [Duplicatas."VDup" #n%2,2n]')
+            '[Duplicatas."VDup" #n%2,2n]')
           ParentFont = False
+          WordWrap = False
+          VAlign = vaCenter
         end
         object Memo54: TfrxMemoView
-          Width = 45.354360000000000000
-          Height = 34.015745590000000000
+          Width = 49.133890000000000000
+          Height = 37.795275590000000000
           ShowHint = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -9
-          Font.Name = 'Arial'
+          Font.Name = 'Arial Narrow'
           Font.Style = []
           Frame.Typ = [ftLeft, ftTop, ftBottom]
           Frame.Width = 0.500000000000000000
-          GapX = 5.000000000000000000
+          GapX = 3.000000000000000000
           Memo.UTF8W = (
             'N'#250'mero'
-            'Vencto'
-            'Valor')
+            'Vencimento'
+            'Valor R$')
           ParentFont = False
+          WordWrap = False
+          VAlign = vaCenter
+        end
+        object Memo188: TfrxMemoView
+          Left = 49.133890000000000000
+          Width = 3.779530000000000000
+          Height = 37.795275590000000000
+          ShowHint = False
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -8
+          Font.Name = 'Arial Narrow'
+          Font.Style = []
+          Frame.Typ = [ftTop, ftBottom]
+          Frame.Width = 0.500000000000000000
+          LineSpacing = 3.000000000000000000
+          Memo.UTF8W = (
+            ':'
+            ':'
+            ':')
+          ParentFont = False
+          WordWrap = False
+          VAlign = vaCenter
         end
       end
     end

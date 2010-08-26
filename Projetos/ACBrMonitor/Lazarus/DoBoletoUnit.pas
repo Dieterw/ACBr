@@ -136,6 +136,7 @@ begin
            CEP           := IniBoletos.ReadString('CEDENTE','CEP','');
            Complemento   := IniBoletos.ReadString('CEDENTE','Complemento','');
            UF            := IniBoletos.ReadString('CEDENTE','UF','');
+           CodigoCedente := IniBoletos.ReadString('CEDENTE','CodigoCedente','');
 
            FrmACBrMonitor.cbxBOLEmissao.ItemIndex := IniBoletos.ReadInteger('CEDENTE','RespEmis',0);
            case FrmACBrMonitor.cbxBOLEmissao.ItemIndex of

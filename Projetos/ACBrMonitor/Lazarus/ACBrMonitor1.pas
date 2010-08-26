@@ -116,6 +116,7 @@ type
     edCONProxyUser : TEdit ;
     edCEPTestar : TEdit ;
     edIBGECodNome : TEdit ;
+    edtCodCliente: TEdit;
     edtBOLSH: TEdit;
     edtBOLComplemento: TEdit;
     edtBOLDigitoConta: TEdit;
@@ -138,6 +139,7 @@ type
     Label69: TLabel;
     Label70: TLabel;
     Label71: TLabel;
+    Label72: TLabel;
     lIBGECodNome : TLabel ;
     lCEPChave : TLabel ;
     lCEPProxyServidor : TLabel ;
@@ -194,6 +196,7 @@ type
     Splitter1: TSplitter;
     pConfig: TPanel;
     PageControl1: TPageControl;
+    TabSheet1: TTabSheet;
     tsConsultas : TTabSheet ;
     tsACBrBoleto: TTabSheet;
     TabSheet2: TTabSheet;
@@ -1386,11 +1389,12 @@ begin
     cbxBOLF_J.ItemIndex     := ini.ReadInteger('BOLETO','Cedente.Pessoa',-1);
 
     {Parametros do Boleto - Banco}
-    cbxBOLBanco.Text := IntToStrZero(ini.ReadInteger('BOLETO', 'Banco', 1), 3);
-    edtBOLConta.Text := ini.ReadString('BOLETO', 'Conta', '');
-    edtBOLDigitoConta.Text := ini.ReadString('BOLETO', 'DigitoConta', '');
-    edtBOLAgencia.Text := ini.ReadString('BOLETO', 'Agencia', '');
+    cbxBOLBanco.Text         := IntToStrZero(ini.ReadInteger('BOLETO', 'Banco', 1), 3);
+    edtBOLConta.Text         := ini.ReadString('BOLETO', 'Conta', '');
+    edtBOLDigitoConta.Text   := ini.ReadString('BOLETO', 'DigitoConta', '');
+    edtBOLAgencia.Text       := ini.ReadString('BOLETO', 'Agencia', '');
     edtBOLDigitoAgencia.Text := ini.ReadString('BOLETO', 'DigitoAgencia', '');
+    edtCodCliente.Text       := ini.ReadString('BOLETO', 'CodigoCedente', '');
 
     {Parametros do Boleto - Boleto}
     deBOLDirLogo.Text        := ini.ReadString('BOLETO', 'DirLogos', '');
@@ -1541,13 +1545,14 @@ begin
     else
       Cedente.TipoInscricao := pOutras;
 
-    Cedente.Logradouro  := edtBOLLogradouro.Text;
-    Cedente.NumeroRes   := edtBOLNumero.Text;
-    Cedente.Bairro      := edtBOLBairro.Text;
-    Cedente.Cidade      := edtBOLCidade.Text;
-    Cedente.CEP         := edtBOLCEP.Text;
-    Cedente.Complemento := edtBOLComplemento.Text;
-    Cedente.UF          := cbxBOLUF.Text;
+    Cedente.Logradouro    := edtBOLLogradouro.Text;
+    Cedente.NumeroRes     := edtBOLNumero.Text;
+    Cedente.Bairro        := edtBOLBairro.Text;
+    Cedente.Cidade        := edtBOLCidade.Text;
+    Cedente.CEP           := edtBOLCEP.Text;
+    Cedente.Complemento   := edtBOLComplemento.Text;
+    Cedente.UF            := cbxBOLUF.Text;
+    Cedente.CodigoCedente := edtCodCliente.Text;
 
     Cedente.Agencia       := edtBOLAgencia.Text;
     Cedente.AgenciaDigito := edtBOLDigitoAgencia.Text;
@@ -1851,6 +1856,7 @@ begin
      ini.WriteString('BOLETO', 'DigitoConta', edtBOLDigitoConta.Text);
      ini.WriteString('BOLETO', 'Agencia', edtBOLAgencia.Text);
      ini.WriteString('BOLETO', 'DigitoAgencia', edtBOLDigitoAgencia.Text);
+     ini.WriteString('BOLETO', 'CodCedente', edtCodCliente.Text);
 
      {Parametros do Boleto - Boleto}
      if trim(deBOLDirLogo.Text) = '' then

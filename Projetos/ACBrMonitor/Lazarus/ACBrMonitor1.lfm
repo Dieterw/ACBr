@@ -1,7 +1,7 @@
 object FrmACBrMonitor: TFrmACBrMonitor
-  Left = 543
+  Left = 215
   Height = 562
-  Top = 191
+  Top = 103
   Width = 594
   Align = alClient
   Caption = 'ACBrMonitor'
@@ -1206,10 +1206,10 @@ object FrmACBrMonitor: TFrmACBrMonitor
       Height = 209
       Top = 1
       Width = 592
-      ActivePage = tsConsultas
+      ActivePage = tsACBrBoleto
       Align = alClient
       Images = ImageList1
-      TabIndex = 11
+      TabIndex = 10
       TabOrder = 0
       object tsMonitor: TTabSheet
         Caption = '&Monitor'
@@ -3921,9 +3921,9 @@ object FrmACBrMonitor: TFrmACBrMonitor
           Height = 181
           Top = 0
           Width = 584
-          ActivePage = tsCedente
+          ActivePage = TabSheet2
           Align = alClient
-          TabIndex = 0
+          TabIndex = 1
           TabOrder = 0
           object tsCedente: TTabSheet
             Caption = 'Cedente'
@@ -4182,7 +4182,6 @@ object FrmACBrMonitor: TFrmACBrMonitor
               )
               OnChange = cbxBOLF_JChange
               TabOrder = 0
-              Text = 'cbxBOLF_J'
             end
             object lblBOLPessoa: TLabel
               AnchorSideLeft.Control = cbxBOLF_J
@@ -4381,6 +4380,21 @@ object FrmACBrMonitor: TFrmACBrMonitor
               Top = 83
               Width = 149
               Caption = 'Responsável Emissão Boleto'
+              ParentColor = False
+            end
+            object edtCodCliente: TEdit
+              Left = 253
+              Height = 23
+              Top = 99
+              Width = 242
+              TabOrder = 6
+            end
+            object Label72: TLabel
+              Left = 253
+              Height = 16
+              Top = 83
+              Width = 150
+              Caption = 'Código do Cliente no Banco'
               ParentColor = False
             end
           end

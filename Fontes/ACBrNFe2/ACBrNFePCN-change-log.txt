@@ -48,6 +48,14 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   26/08/2010
+---------------
+[-] DANFE em FAST REPORT (Régys Borges da Silveira, Itamar Bermond)
+    - Desmarcada a propriedade StoreInDFM do FastReport para não gravar
+      o relatório no DFM e evitar o erro de compilação em versão menores
+      do delphi, favor utilizar o arquivo externo.
+
+
 Alterações   25/08/2010
 ---------------
 [-] DANFE em FAST REPORT (Régys Borges da Silveira)

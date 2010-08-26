@@ -36,6 +36,7 @@ contains
   JwaWinCrypt in '..\..\Fontes\ACBrCapicom\JwaWinCrypt.pas',
   JwaWinDLLNames in '..\..\Fontes\ACBrCapicom\JwaWinDLLNames.pas',
   JwaWindows in '..\..\Fontes\ACBrCapicom\JwaWindows.pas',
-  JwaWinType in '..\..\Fontes\ACBrCapicom\JwaWinType.pas';
+  JwaWinType in '..\..\Fontes\ACBrCapicom\JwaWinType.pas',
+  JwaWinNT in '..\..\Fontes\ACBrCapicom\JwaWinNT.pas';
 
 end.

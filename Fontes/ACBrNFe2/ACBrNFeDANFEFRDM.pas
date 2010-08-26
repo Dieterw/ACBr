@@ -53,7 +53,11 @@
 |*  - Acerto no CST para o Simples Nacional
 |*  - Acertos no DANFE para o Simples Nacional
 |* 25/08/2010: Régys Silveira
-|*  - Configuração do preview do DANFE
+|*  - Configuração do preview do DANFE.
+|* 26/08/2010: Régys Silveira, Itamar Bermond
+|*  - Desmarcada a propriedade StoreInDFM do FastReport para não gravar
+|*    o relatório no DFM e evitar o erro de compilação em versão menores
+|*    do delphi, favor utilizar o arquivo externo.
 ******************************************************************************}
 {$I ACBr.inc}
 

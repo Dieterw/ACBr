@@ -924,6 +924,9 @@ begin
          StrStream := TStringStream.Create('');
          StrStream.CopyFrom(Stream, 0);
          FRetornoWS := CTeUtil.ParseText(StrStream.DataString, True);
+         // Linha Abaixo acrescentada por Italo em 27/08/2010
+         // Retira os acentos das vogas e o cedilha
+         FRetornoWS := CteUtil.TrataString(FRetornoWS);
          FRetWS := CTeUtil.SeparaDados( FRetornoWS,'cteStatusServicoCTResult');
          StrStream.Free;
       {$ENDIF}

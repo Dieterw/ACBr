@@ -5,7 +5,7 @@ unit Relatorio;
 interface
 
 uses
-  Classes, SysUtils, LResources, Forms, Controls, Graphics, Dialogs, StdCtrls,
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls,
   Buttons;
 
 type
@@ -47,6 +47,8 @@ var
   frRelatorio: TfrRelatorio;
 
 implementation
+
+{$R *.lfm}
 
 uses ECFTeste1, ACBrECF;
 
@@ -93,7 +95,7 @@ begin
   if TipoRelatorio = 'V' then
      Caption := 'Cupom NAO Fiscal Vinculado'
   else
-     Caption := 'Relatório Gerêncial' ;
+     Caption := 'RelatÃ³rio GerÃªncial' ;
 end;
 
 procedure TfrRelatorio.sbFPGClick(Sender: TObject);
@@ -111,9 +113,6 @@ procedure TfrRelatorio.sbCNFClick(Sender: TObject);
 begin
   Form1.CarregaComprovantesNAOFiscais1Click( Sender );
 end;
-
-initialization
-  {$I relatorio.lrs}
 
 end.
 

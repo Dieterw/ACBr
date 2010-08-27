@@ -6,7 +6,7 @@ interface
 
 uses
   ACBrECF, ACBrBase, ACBrRFD, ACBrDevice, ACBrConsts, LCLIntf,
-  Classes, SysUtils, LResources, Forms, Controls, Graphics, LCLType,
+  Classes, SysUtils, Forms, Controls, Graphics, LCLType,
   Dialogs, DateUtils, IpHtml, Menus, Buttons, StdCtrls, ExtCtrls, ComCtrls,
   Spin, strutils;{%h-}
 
@@ -461,13 +461,15 @@ type
 const
   ECFTeste_VERSAO = '2.01' ;
   Estados : array[TACBrECFEstado] of string =
-    ('N„o Inicializada', 'Desconhecido', 'Livre', 'Venda',
-    'Pagamento', 'RelatÛrio', 'Bloqueada', 'Requer Z', 'Requer X', 'Nao Fiscal' );
+    ('N√£o Inicializada', 'Desconhecido', 'Livre', 'Venda',
+    'Pagamento', 'Relat√≥rio', 'Bloqueada', 'Requer Z', 'Requer X', 'Nao Fiscal' );
 
 var
   Form1: TForm1; 
 
 implementation
+
+{$R *.lfm}
 
 uses ACBrUtil, ACBrECFBematech, VendeItem, EfetuaPagamento,
      Relatorio, Sobre, TypInfo, Math, IniFiles,
@@ -680,7 +682,7 @@ end;
 
 procedure TForm1.mDataHoraSwBasicoClick(Sender : TObject) ;
 begin
-  mResp.Lines.Add( 'Data Hora Sw.B·sico: ('+ FormatDateTime('dd/mm/yy hh:nn:ss',
+  mResp.Lines.Add( 'Data Hora Sw.B√°sico: ('+ FormatDateTime('dd/mm/yy hh:nn:ss',
                    ACBrECF1.DataHoraSB) +')' );
   AtualizaMemos ;
 end;
@@ -822,7 +824,7 @@ end;
 
 procedure TForm1.mIdentificaConsumidorClick(Sender : TObject) ;
 begin
-  mResp.Lines.Add( 'Identifica Consumidor no RodapÈ: '+
+  mResp.Lines.Add( 'Identifica Consumidor no Rodap√©: '+
      IfThen( ACBrECF1.IdentificaConsumidorRodape , 'SIM', 'NAO') );
   AtualizaMemos ;
 end;
@@ -934,12 +936,12 @@ var
    rg:String;
 begin
   rg := '' ;
-  if not InputQuery('ProgramaÁao de RelatÛrio Gerencial',
-                    'Entre com a DescriÁ„o do RelatÛrio Gerencial:', rg ) then
+  if not InputQuery('Programa√ßao de Relat√≥rio Gerencial',
+                    'Entre com a Descri√ß√£o do Relat√≥rio Gerencial:', rg ) then
      exit ;
-  if MessageDlg('O RelatÛrio Gerencial: ['+rg+'] ser· programado.'+sLineBreak+sLineBreak+
-                'Cuidado a programaÁ„o de RelatÛrios Gerenciais È irreversivel'+sLineBreak+
-                'Confirma a operaÁ„o ?',mtConfirmation,mbYesNoCancel,0) <> mrYes then
+  if MessageDlg('O Relat√≥rio Gerencial: ['+rg+'] ser√° programado.'+sLineBreak+sLineBreak+
+                'Cuidado a programa√ß√£o de Relat√≥rios Gerenciais √© irreversivel'+sLineBreak+
+                'Confirma a opera√ß√£o ?',mtConfirmation,mbYesNoCancel,0) <> mrYes then
      exit ;
   ACBrECF1.ProgramaRelatoriosGerenciais( rg );
 end;
@@ -957,11 +959,11 @@ begin
      exit ;
 
   if not InputQuery('Sangria',
-                    'Entre com a DescriÁ„o do Comprovante N„o Fiscal', CNF ) then
+                    'Entre com a Descri√ß√£o do Comprovante N√£o Fiscal', CNF ) then
      exit ;
 
   if not InputQuery('Sangria',
-                    'Entre com a DescriÁ„o da Forrma de Pagamento', FPG ) then
+                    'Entre com a Descri√ß√£o da Forrma de Pagamento', FPG ) then
      exit ;
 
   ACBrECF1.Sangria( StrToFloat(Valor), 'TESTE DE SANGRIA', CNF, FPG ) ;
@@ -983,11 +985,11 @@ begin
      exit ;
 
   if not InputQuery('Suprimento',
-                    'Entre com a DescriÁ„o do Comprovante N„o Fiscal', CNF ) then
+                    'Entre com a Descri√ß√£o do Comprovante N√£o Fiscal', CNF ) then
      exit ;
 
   if not InputQuery('Suprimento',
-                    'Entre com a DescriÁ„o da Forrma de Pagamento', FPG ) then
+                    'Entre com a Descri√ß√£o da Forrma de Pagamento', FPG ) then
      exit ;
 
   ACBrECF1.Suprimento( StrToFloat(Valor), 'TESTE DE SUPRIMENTO' , CNF, FPG ) ;
@@ -1016,7 +1018,7 @@ begin
      exit ;
 
   if ACBrECF1.AchaFPGIndice(cFPG) = nil then
-     raise Exception.Create('Forma de pagamento '+cFPG+' n„o encontrada');
+     raise Exception.Create('Forma de pagamento '+cFPG+' n√£o encontrada');
 
   nCupons := StrToIntDef(cCupons,0) ;
   if nCupons < 1 then
@@ -1197,19 +1199,19 @@ end;
 
 procedure TForm1.NSrie1Click(Sender: TObject);
 begin
-  mResp.Lines.Add( 'N.SÈrie: ('+ ACBrECF1.NumSerie+')' );
+  mResp.Lines.Add( 'N.S√©rie: ('+ ACBrECF1.NumSerie+')' );
   AtualizaMemos ;
 end;
 
 procedure TForm1.NVerso1Click(Sender: TObject);
 begin
-  mResp.Lines.Add( 'N.Vers„o: '+ ACBrECF1.NumVersao );
+  mResp.Lines.Add( 'N.Vers√£o: '+ ACBrECF1.NumVersao );
   AtualizaMemos ;
 end;
 
 procedure TForm1.NumUltimoCupom1Click(Sender: TObject);
 begin
-  mResp.Lines.Add( 'N.⁄ltimo Cupom: ('+ ACBrECF1.NumCupom+')' );
+  mResp.Lines.Add( 'N.√öltimo Cupom: ('+ ACBrECF1.NumCupom+')' );
   AtualizaMemos ;
 end;
 
@@ -1232,11 +1234,11 @@ Var Resp : TModalResult ;
 begin
   if ACBrECF1.Estado <> estRequerZ then
   begin
-     if MessageDlg('A ReduÁ„o Z pode Bloquear o seu ECF atÈ a 12:00pm'+#10+#10+
+     if MessageDlg('A Redu√ß√£o Z pode Bloquear o seu ECF at√© a 12:00pm'+#10+#10+
                   'Continua assim mesmo ?',mtWarning,mbYesNoCancel,0) <> mrYes then
         exit ;
 
-     if MessageDlg('VocÍ tem certeza ?',mtWarning,mbYesNoCancel,0) <> mrYes then
+     if MessageDlg('Voc√™ tem certeza ?',mtWarning,mbYesNoCancel,0) <> mrYes then
         exit ;
   end ;
 
@@ -1249,7 +1251,7 @@ begin
   else
      exit ;
 
-  mResp.Lines.Add( 'ReduÁao Z');
+  mResp.Lines.Add( 'Redu√ßao Z');
   AtualizaMemos ;
 end;
 
@@ -1392,7 +1394,7 @@ begin
      mResp.Lines.Add( 'Pode Abrir Cupom.. OK') ;
   except
      mResp.Lines.Add( 'NAO Pode Abrir Cupom..') ;
-     mResp.Lines.Add( 'pois o estado Atual È '+Est) ;
+     mResp.Lines.Add( 'pois o estado Atual √© '+Est) ;
      AtualizaMemos ;
 
      raise ;
@@ -1434,7 +1436,7 @@ begin
      Consumidor := Consumidor+'|'+ACBrECF1.Consumidor.Endereco ;
 
   if InputQuery('Abre Cupom',
-                'Se necess·rio, Informe o Documento | Nome | Endereco'+sLineBreak +
+                'Se necess√°rio, Informe o Documento | Nome | Endereco'+sLineBreak +
                 'Nota: Use o sinal pipe (|) para separar os campos' ,Consumidor) then
   begin
      WB_LoadHTML(wbBobina, '<html></html>');
@@ -1473,7 +1475,7 @@ Var Item : String ;
 begin
   Item := '1' ;
   if InputQuery('Cancelar Item Vendido',
-                'Informe o n˙mero da Sequencia de Venda', Item ) then
+                'Informe o n√∫mero da Sequencia de Venda', Item ) then
   begin
      ACBrECF1.CancelaItemVendido( StrToIntDef(Item,0) );
      mResp.Lines.Add( 'Cancela Item Vendido: '+Item );
@@ -1489,9 +1491,9 @@ begin
 
   if ACBrECF1.ModeloStr = 'DataRegis' then
      InputQuery('Subtotaliza Cupom',
-                'Se Necess·rio digite alguma ObservaÁao (atÈ 8 linhas)'+#10+
-                'O sinal | (pipe) ser· convertido para #10 (quebra de linha)'+#10+
-                'A ObservaÁ„o tambÈm pode ser enviada no metodo FechaCupom' ,
+                'Se Necess√°rio digite alguma Observa√ßao (at√© 8 linhas)'+#10+
+                'O sinal | (pipe) ser√° convertido para #10 (quebra de linha)'+#10+
+                'A Observa√ß√£o tamb√©m pode ser enviada no metodo FechaCupom' ,
                 Obs );
 
   if InputQuery('Subtotaliza Cupom',
@@ -1508,7 +1510,7 @@ procedure TForm1.EfetuarPagamento1Click(Sender: TObject);
 begin
   if not (ACBrECF1.Modelo in [ecfDataRegis, ecfFiscNET]) then
      if ACBrECF1.Estado <> estPagamento then
-        MessageDlg('Impressora nao est· em Estado de Pagamento'+#10+
+        MessageDlg('Impressora nao est√° em Estado de Pagamento'+#10+
                    'Primeiro use SubTotaliza Cupom' ,mtWarning,[mbOk],0) ;
 
   frPagamento.Show ;
@@ -1520,8 +1522,8 @@ Var Obs : String ;
 begin
   Obs := 'Componentes ACBr|http://acbr.sourceforge.net' ;
   if InputQuery('Fechar Cupom',
-                'Se Necess·rio digite alguma ObservaÁao (atÈ 8 linhas)'+#10+
-                'O sinal | (pipe) ser· convertido para #10 (quebra de linha)' ,
+                'Se Necess√°rio digite alguma Observa√ßao (at√© 8 linhas)'+#10+
+                'O sinal | (pipe) ser√° convertido para #10 (quebra de linha)' ,
                 Obs ) then
   begin
      Obs := StringReplace(Obs,'|',#10,[rfReplaceAll,rfIgnoreCase]) ;
@@ -1541,7 +1543,7 @@ begin
   if InputQuery('Enviar Comando',
                 'Digite o comando de acordo com a Sintaxe da Impressora'+#10+#10+
                 'Para Caracteres ASC use #nnn  Ex: #006 = chr(006)'+#10+#10+
-                'Exemplo: #006 ir· imprimir uma Leitura X na Bematech' ,
+                'Exemplo: #006 ir√° imprimir uma Leitura X na Bematech' ,
                 CMD1 ) then
     if (not (ACBrECF1.Modelo = ecfBematech)) or
        InputQuery('Enviar Comando BEMATECH',
@@ -1592,7 +1594,7 @@ end;
 
 procedure TForm1.HorarioVerao2Click(Sender: TObject);
 begin
-  mResp.Lines.Add( 'Hor·rio de Ver„o: '+
+  mResp.Lines.Add( 'Hor√°rio de Ver√£o: '+
      IfThen( ACBrECF1.HorarioVerao , 'SIM', 'NAO') );
   AtualizaMemos ;
 end;
@@ -1682,11 +1684,11 @@ begin
            ACBrECF1.VendeItem( IntToStrZero(i,3),
                                'DESCRICAO PRODUTO: '+IntToStrZero(i,3),
                                'NN',1,i/100,0,'UN') ;
-          { Aguarda 1 segundo ou atÈ o ECF ficar Em linha novamente }
+          { Aguarda 1 segundo ou at√© o ECF ficar Em linha novamente }
           ACBrECF1.EmLinha( 1 ) ;
           mResp.Lines.Add('Item '+IntToStr(i)+': '+  FormatFloat('###.##',SecondSpan(tIni,Now))+' segundos');
-          { Semelhante ao "AguardaImpressao := True", porÈm È mais r·pido, pois no
-            mÈtodo "VerificaFimImpressao" alem de verificado o "EmLinha" tambÈm È
+          { Semelhante ao "AguardaImpressao := True", por√©m √© mais r√°pido, pois no
+            m√©todo "VerificaFimImpressao" alem de verificado o "EmLinha" tamb√©m √©
             solicitado o Status do ECF }
         end ;
 
@@ -1723,7 +1725,7 @@ begin
         ACBrECF1.FechaCupom('TESTE DE CUPOM');
         tFim := Now ;
         mResp.Lines.Add('Finalizado em: '+DateTimeToStr(tFim)) ;
-        mResp.Lines.Add('DiferenÁa: '+ FormatFloat('###.##',SecondSpan(tIni,tFim))+' segundos' ) ;
+        mResp.Lines.Add('Diferen√ßa: '+ FormatFloat('###.##',SecondSpan(tIni,tFim))+' segundos' ) ;
         mResp.Lines.Add('---------------------------------');
         AtualizaMemos ;
      end ;
@@ -1741,13 +1743,13 @@ begin
   cRedFim := '0' ;
 
   if not InputQuery('Captura da Memoria Fiscal',
-                'Entre com o a ReduÁao Z Inicial:', cRedIni ) then
+                'Entre com o a Redu√ßao Z Inicial:', cRedIni ) then
      exit ;
   nRedIni := StrToIntDef(cRedIni,-1) ;
   if nRedIni < 0 then exit ;
 
   if not InputQuery('Captura da Memoria Fiscal',
-                'Entre com o a ReduÁao Z Final:', cRedFim ) then
+                'Entre com o a Redu√ßao Z Final:', cRedFim ) then
      exit ;
   nRedFim := StrToIntDef(cRedFim,-1) ;
   if nRedFim < 0 then exit ;
@@ -1771,20 +1773,20 @@ begin
   cRedIni := '0' ;
   cRedFim := '0' ;
 
-  if not InputQuery('Impress„o da Memoria Fiscal',
-                'Entre com o a ReduÁao Z Inicial:', cRedIni ) then
+  if not InputQuery('Impress√£o da Memoria Fiscal',
+                'Entre com o a Redu√ßao Z Inicial:', cRedIni ) then
      exit ;
   nRedIni := StrToIntDef(cRedIni,-1) ;
   if nRedIni < 0 then exit ;
 
-  if not InputQuery('Impress„o da Memoria Fiscal',
-                'Entre com o a ReduÁao Z Final:', cRedFim ) then
+  if not InputQuery('Impress√£o da Memoria Fiscal',
+                'Entre com o a Redu√ßao Z Final:', cRedFim ) then
      exit ;
   nRedFim := StrToIntDef(cRedFim,-1) ;
   if nRedFim < 0 then exit ;
 
   ACBrECF1.LeituraMemoriaFiscal(nRedIni, nRedFim);
-  mResp.Lines.Add('Leitura da Memoria Fiscal por ReduÁao');
+  mResp.Lines.Add('Leitura da Memoria Fiscal por Redu√ßao');
 end;
 
 procedure TForm1.CapturaporPeriodo1Click(Sender: TObject);
@@ -1867,7 +1869,7 @@ Var cAliq : String ;
 begin
   cAliq := '18,00' ;
 
-  if not InputQuery('ProgramaÁao de Aliquotas',
+  if not InputQuery('Programa√ßao de Aliquotas',
                     'Entre com o valor da Aliquota:', cAliq ) then
      exit ;
 
@@ -1887,9 +1889,9 @@ begin
   end;
 
   if MessageDlg('A aliquota: ['+FloatToStr(nAliq)+'] do Tipo: ['+Tipo+
-                '] ser· programada.'+sLineBreak+sLineBreak+
-                'Cuidado !! A programaÁ„o de Aliquotas È irreversivel'+sLineBreak+
-                'Confirma a operaÁ„o ?',mtConfirmation,mbYesNoCancel,0) <> mrYes then
+                '] ser√° programada.'+sLineBreak+sLineBreak+
+                'Cuidado !! A programa√ß√£o de Aliquotas √© irreversivel'+sLineBreak+
+                'Confirma a opera√ß√£o ?',mtConfirmation,mbYesNoCancel,0) <> mrYes then
      exit ;
 
   ACBrECF1.ProgramaAliquota(nAliq,Tipo);
@@ -1904,8 +1906,8 @@ begin
   cDescricao := 'CARTAO' ;
   Vinculado  := true ;
 
-  if not InputQuery('ProgramaÁao de Formas de Pagamento (FPG)',
-                    'Entre com a DescriÁao:', cDescricao ) then
+  if not InputQuery('Programa√ßao de Formas de Pagamento (FPG)',
+                    'Entre com a Descri√ßao:', cDescricao ) then
      exit ;
 
   if not (ACBrECF1.Modelo in [ecfBematech, ecfNaoFiscal, ecfMecaf]) then
@@ -1919,9 +1921,9 @@ begin
   end ;
 
   if MessageDlg('A Forma de Pagamento: ['+cDescricao+'] '+
-                'ser· programada.'+sLineBreak+sLineBreak+
-                'Cuidado !! A programaÁ„o de Formas de Pagamento È irreversivel'+sLineBreak+
-                'Confirma a operaÁ„o ?',mtConfirmation,mbYesNoCancel,0) <> mrYes then
+                'ser√° programada.'+sLineBreak+sLineBreak+
+                'Cuidado !! A programa√ß√£o de Formas de Pagamento √© irreversivel'+sLineBreak+
+                'Confirma a opera√ß√£o ?',mtConfirmation,mbYesNoCancel,0) <> mrYes then
      exit ;
 
   ACBrECF1.ProgramaFormaPagamento(cDescricao,Vinculado);
@@ -1934,8 +1936,8 @@ begin
   cDescricao := 'CARTAO' ;
   cTipo      := '' ;
 
-  if not InputQuery('ProgramaÁao de Comprovantes NAO Fiscais (CNF)',
-                    'Entre com a DescriÁao:', cDescricao ) then
+  if not InputQuery('Programa√ßao de Comprovantes NAO Fiscais (CNF)',
+                    'Entre com a Descri√ßao:', cDescricao ) then
      exit ;
 
   case ACBrECF1.Modelo of
@@ -1950,7 +1952,7 @@ begin
                          'Pagamento nn'+sLineBreak+sLineBreak+
                          'Se vazio assume Default = "DAC"'+sLineBreak+
                          'Exemplos:  V04 -> Torna a Emissao do Cupom Fiscal '+
-                         'Vinculado obrigatÛria para a Forma de Pagamento 04',
+                         'Vinculado obrigat√≥ria para a Forma de Pagamento 04',
                          cTipo ) then
           exit ;
 
@@ -1961,18 +1963,18 @@ begin
                          '+  Entrada de Recursos'+sLineBreak+
                          '-  Saida de Recursos'+sLineBreak+sLineBreak+
                          'Se vazio assume Default = "V"'+sLineBreak+
-                         'Informe Apenas uma das OpÁoes',
+                         'Informe Apenas uma das Op√ßoes',
                          cTipo ) then
           exit ;
 
     ecfSweda, ecfQuattro :
        if not InputQuery('Comprovantes NAO Fiscal '+ACBrECF1.ModeloStr,
                          'Entre com a String do parametro "Tipo".'+sLineBreak+
-                         '&  CriaÁao de um novo Grupo (Titulo)'+sLineBreak+
+                         '&  Cria√ßao de um novo Grupo (Titulo)'+sLineBreak+
                          '+  Entrada de Recursos'+sLineBreak+
                          '-  Saida de Recursos'+sLineBreak+sLineBreak+
                          'Se vazio assume Default = "+"'+sLineBreak+
-                         'Informe Apenas uma das OpÁoes',
+                         'Informe Apenas uma das Op√ßoes',
                          cTipo ) then
           exit ;
 
@@ -1982,7 +1984,7 @@ begin
                          '+  Entrada de Recursos'+sLineBreak+
                          '-  Saida de Recursos'+sLineBreak+sLineBreak+
                          'Se vazio assume Default = "+"'+sLineBreak+
-                         'Informe Apenas uma das OpÁoes',
+                         'Informe Apenas uma das Op√ßoes',
                          cTipo ) then
           exit ;
 
@@ -1992,9 +1994,9 @@ begin
                 IfThen(ACBrECF1.Modelo in
                        [ecfDaruma,ecfSchalter,ecfSweda,ecfQuattro,ecfFiscNET],
                        ' do Tipo: ['+cTipo+'] ','') +
-                'ser· programado.'+sLineBreak+sLineBreak+
-                'Cuidado !! A programaÁ„o de CNFs È irreversivel'+sLineBreak+
-                'Confirma a operaÁ„o ?',mtConfirmation,mbYesNoCancel,0) <> mrYes then
+                'ser√° programado.'+sLineBreak+sLineBreak+
+                'Cuidado !! A programa√ß√£o de CNFs √© irreversivel'+sLineBreak+
+                'Confirma a opera√ß√£o ?',mtConfirmation,mbYesNoCancel,0) <> mrYes then
      exit ;
 
   ACBrECF1.ProgramaComprovanteNaoFiscal(cDescricao,cTipo);
@@ -2003,7 +2005,7 @@ end;
 
 procedure TForm1.ACBrECF1MsgPoucoPapel(Sender: TObject);
 begin
-  mResp.Lines.Add('ATEN«√O... POUCO PAPEL') ;
+  mResp.Lines.Add('ATEN√á√ÉO... POUCO PAPEL') ;
 end;
 
 procedure TForm1.CorrigeEstadodeErro1Click(Sender: TObject);
@@ -2028,7 +2030,7 @@ begin
   sFavorecido := 'Projeto ACBr' ;
   sCidade     := 'Sao Paulo' ;
 
-  if not InputQuery('Impress„o de Cheque',
+  if not InputQuery('Impress√£o de Cheque',
                     'Entre com o valor do Cheque:', sValor ) then
      exit ;
 
@@ -2038,15 +2040,15 @@ begin
   if dValor = 0 then
      exit ;
 
-  if not InputQuery('Impress„o de Cheque',
+  if not InputQuery('Impress√£o de Cheque',
                     'Entre com o Numero do Banco', sBanco ) then
      exit ;
 
-  if not InputQuery('Impress„o de Cheque',
+  if not InputQuery('Impress√£o de Cheque',
                     'Entre com o Favorecido', sFavorecido ) then
      exit ;
 
-  if not InputQuery('Impress„o de Cheque',
+  if not InputQuery('Impress√£o de Cheque',
                     'Entre com a Cidade', sCidade ) then
      exit ;
 
@@ -2094,12 +2096,12 @@ var
    um:String;
 begin
   um := '' ;
-  if not InputQuery('ProgramaÁao de Unidades de Medida',
-                    'Entre com a DescriÁ„o da Unidade de Medida:', um ) then
+  if not InputQuery('Programa√ßao de Unidades de Medida',
+                    'Entre com a Descri√ß√£o da Unidade de Medida:', um ) then
      exit ;
-  if MessageDlg('A Unidade de Medida: ['+um+'] ser· programada.'+sLineBreak+sLineBreak+
-                'Cuidado a programaÁ„o de Unidades de Medida È irreversivel'+sLineBreak+
-                'Confirma a operaÁ„o ?',mtConfirmation,mbYesNoCancel,0) <> mrYes then
+  if MessageDlg('A Unidade de Medida: ['+um+'] ser√° programada.'+sLineBreak+sLineBreak+
+                'Cuidado a programa√ß√£o de Unidades de Medida √© irreversivel'+sLineBreak+
+                'Confirma a opera√ß√£o ?',mtConfirmation,mbYesNoCancel,0) <> mrYes then
      exit ;
   ACBrECF1.ProgramaUnidadeMedida( um );
 end;
@@ -2125,14 +2127,14 @@ begin
      exit ;
 
   if not InputQuery('Abertura de Cupom Vinculado',
-                    'Digite o Cod.Comprovante N„o Fiscal'+sLineBreak+
-                    '(N„o È necess·rio na maioria dos modelos)',
+                    'Digite o Cod.Comprovante N√£o Fiscal'+sLineBreak+
+                    '(N√£o √© necess√°rio na maioria dos modelos)',
                      CodComprovanteNaoFiscal ) then
      exit ;
 
   if not InputQuery('Abertura de Cupom Vinculado',
                     'Digite o Valor a vincular no cupom anterior'+sLineBreak+
-                    '(N„o È necess·rio em alguns modelos)',
+                    '(N√£o √© necess√°rio em alguns modelos)',
                     sValor ) then
      exit ;
 
@@ -2155,7 +2157,7 @@ var
    Linha :String;
 begin
   Linha := '' ;
-  if not InputQuery('Inpress„o de Linha N√O Fiscal',
+  if not InputQuery('Inpress√£o de Linha N√ÉO Fiscal',
                     'Digite a linha a imprimir',
                     Linha ) then
      exit ;
@@ -2181,8 +2183,8 @@ end;
 
 procedure TForm1.ListaCupomVinculado1Click(Sender: TObject);
 begin
-  MessageDlg('Para imprimir um Cupom Vinculado vocÍ deve ter '+
-             'informaÁoes dos Pagamentos Efetuados no ˙ltimo Cupom Fiscal',
+  MessageDlg('Para imprimir um Cupom Vinculado voc√™ deve ter '+
+             'informa√ßoes dos Pagamentos Efetuados no √∫ltimo Cupom Fiscal',
              mtInformation,[mbOk],0) ;
   frRelatorio.TipoRelatorio := 'V' ;
   frRelatorio.ShowModal ;
@@ -2228,14 +2230,14 @@ end;
 
 procedure TForm1.MFD1Click(Sender: TObject);
 begin
-  mResp.Lines.Add( '… MFD: '+
+  mResp.Lines.Add( '√â MFD: '+
      IfThen( ACBrECF1.MFD , 'SIM', 'NAO') );
   AtualizaMemos ;
 end;
 
 procedure TForm1.Termica1Click(Sender: TObject);
 begin
-  mResp.Lines.Add( '… Termica: '+
+  mResp.Lines.Add( '√â Termica: '+
      IfThen( ACBrECF1.Termica , 'SIM', 'NAO') );
   AtualizaMemos ;
 end;
@@ -2357,7 +2359,7 @@ end;
 
 procedure TForm1.DadosReducaoZ1Click(Sender: TObject);
 begin
-  mResp.Lines.Add( 'Dados da ReduÁ„o Z' + sLineBreak + ACBrECF1.DadosReducaoZ );
+  mResp.Lines.Add( 'Dados da Redu√ß√£o Z' + sLineBreak + ACBrECF1.DadosReducaoZ );
   AtualizaMemos ;
 end;
 
@@ -2495,15 +2497,15 @@ begin
   CodFPG := '01' ;
   Valor  := '0' ;
 
-  if not InputQuery('Comprovante N„o Fiscal Completo',
-                    'Entre com o indice do Comprovante N„o Fiscal', CodCNF ) then
+  if not InputQuery('Comprovante N√£o Fiscal Completo',
+                    'Entre com o indice do Comprovante N√£o Fiscal', CodCNF ) then
      exit ;
 
-  if not InputQuery('Comprovante N„o Fiscal Completo',
-                    'Entre com o Valor do Comprovante N„o Fiscal', Valor ) then
+  if not InputQuery('Comprovante N√£o Fiscal Completo',
+                    'Entre com o Valor do Comprovante N√£o Fiscal', Valor ) then
      exit ;
 
-  if not InputQuery('Comprovante N„o Fiscal Completo',
+  if not InputQuery('Comprovante N√£o Fiscal Completo',
                     'Entre com o indice da Forma de Pagamento', CodFPG ) then
      exit ;
 
@@ -2518,12 +2520,12 @@ procedure TForm1.AbreNoFiscal1Click(Sender: TObject);
   Var CPF_CNPJ : String ;
 begin
   CPF_CNPJ := '' ;
-  if not InputQuery('Abre Comprovante N„o Fiscal',
-                    'Se necess·rio, informe o CPF ou CNPJ do cliente', CPF_CNPJ ) then
+  if not InputQuery('Abre Comprovante N√£o Fiscal',
+                    'Se necess√°rio, informe o CPF ou CNPJ do cliente', CPF_CNPJ ) then
      exit ;
 
   ACBrECF1.AbreNaoFiscal(CPF_CNPJ);
-  mResp.Lines.Add( 'Abre N„o Fiscal: '+ CPF_CNPJ );
+  mResp.Lines.Add( 'Abre N√£o Fiscal: '+ CPF_CNPJ );
   AtualizaMemos ;
 end;
 
@@ -2533,12 +2535,12 @@ begin
   CodCNF := '01' ;
   Valor  := '0' ;
 
-  if not InputQuery('Registra Item N„o Fiscal',
-                    'Entre com o indice do Comprovante N„o Fiscal', CodCNF ) then
+  if not InputQuery('Registra Item N√£o Fiscal',
+                    'Entre com o indice do Comprovante N√£o Fiscal', CodCNF ) then
      exit ;
 
-  if not InputQuery('Registra Item N„o Fiscal',
-                    'Entre com o Valor do Comprovante N„o Fiscal', Valor ) then
+  if not InputQuery('Registra Item N√£o Fiscal',
+                    'Entre com o Valor do Comprovante N√£o Fiscal', Valor ) then
      exit ;
 
   ACBrECF1.RegistraItemNaoFiscal(CodCNF, StrToFloatDef(Valor,0),
@@ -2552,12 +2554,12 @@ Var Desc : String ;
 begin
   Desc := '0' ;
 
-  if InputQuery('Subtotaliza N„o Fiscal',
+  if InputQuery('Subtotaliza N√£o Fiscal',
                 'Digite Valor negativo para Desconto'+#10+
                 'ou Valor Positivo para Acrescimo' , Desc ) then
   begin
      ACBrECF1.SubtotalizaNaoFiscal( StrToFloat(Desc) );
-     mResp.Lines.Add( 'Subtotaliza N„o Fiscal '+ Desc );
+     mResp.Lines.Add( 'Subtotaliza N√£o Fiscal '+ Desc );
      AtualizaMemos ;
   end ;
 end;
@@ -2572,14 +2574,14 @@ procedure TForm1.FechaNoFiscal1Click(Sender: TObject);
 Var Obs : String ;
 begin
   Obs := 'Componentes ACBr|http://acbr.sourceforge.net' ;
-  if InputQuery('Fecha N„o Fiscal',
-                'Se Necess·rio digite alguma ObservaÁao (atÈ 8 linhas)'+#10+
-                'O sinal | (pipe) ser· convertido para #10 (quebra de linha)' ,
+  if InputQuery('Fecha N√£o Fiscal',
+                'Se Necess√°rio digite alguma Observa√ßao (at√© 8 linhas)'+#10+
+                'O sinal | (pipe) ser√° convertido para #10 (quebra de linha)' ,
                 Obs ) then
   begin
      Obs := StringReplace(Obs,'|',#10,[rfReplaceAll,rfIgnoreCase]) ;
      ACBrECF1.FechaNaoFiscal( Obs );
-     mResp.Lines.Add( 'Fecha N„o Fiscal: '+#10+Obs );
+     mResp.Lines.Add( 'Fecha N√£o Fiscal: '+#10+Obs );
      AtualizaMemos ;
   end ;
 end;
@@ -2587,7 +2589,7 @@ end;
 procedure TForm1.CancelaNoFiscal1Click(Sender: TObject);
 begin
   ACBrECF1.CancelaNaoFiscal ;
-  mResp.Lines.Add( 'Cancela N„o Fiscal' );
+  mResp.Lines.Add( 'Cancela N√£o Fiscal' );
   AtualizaMemos ;
 end;
 
@@ -2614,7 +2616,7 @@ begin
   InputQuery('Identifica Consumidor',
              'Informe o Nome do Consumidor' ,NOME) ;
   InputQuery('Identifica Consumidor',
-             'Se necess·rios, informe o EndereÁo do Consumidor' ,ENDERECO) ;
+             'Se necess√°rios, informe o Endere√ßo do Consumidor' ,ENDERECO) ;
 
   ACBrECF1.IdentificaConsumidor( CPF, NOME, ENDERECO );
 end;
@@ -2632,7 +2634,7 @@ end;
 procedure TForm1.bRFDLerClick(Sender: TObject);
 begin
   if not ACBrRFD1.Ativo then
-     raise Exception.Create('ACBrRFD n„o est· ativo');
+     raise Exception.Create('ACBrRFD n√£o est√° ativo');
 
   mRFDParam.Lines.LoadFromFile(ACBrRFD1.ArqINI);
 end;
@@ -2836,7 +2838,7 @@ end;
 
 procedure TForm1.DadosUltimaReduoZ1Click(Sender: TObject);
 begin
-  mResp.Lines.Add( 'Dados da Ultima ReduÁ„o Z' + sLineBreak + ACBrECF1.DadosUltimaReducaoZ );
+  mResp.Lines.Add( 'Dados da Ultima Redu√ß√£o Z' + sLineBreak + ACBrECF1.DadosUltimaReducaoZ );
   AtualizaMemos ;
 end;
 
@@ -2864,9 +2866,6 @@ begin
      FreeAndNil( frConfiguraSerial ) ;
   end ;
 end;
-
-initialization
-  {$I ecfteste1.lrs}
 
 end.
 

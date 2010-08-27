@@ -38,8 +38,8 @@ interface
 uses
   SysUtils, Classes,
   CmdUnit , blcksock,
-  ACBrUtil, ACBrLCB, ACBrDIS, ACBrGAV, ACBrGAVClass, ACBrDevice, ACBrCHQ,
-  ACBrECF, ACBrRFD, ACBrBAL, ACBrETQ, ACBrBase, ACBrSocket, ACBrCEP, ACBrIBGE ;
+  ACBrUtil, ACBrLCB, ACBrDIS, ACBrGAV, ACBrDevice, ACBrCHQ,
+  ACBrECF, ACBrRFD, ACBrBAL, ACBrETQ, ACBrSocket, ACBrCEP, ACBrIBGE ;
 
 const
    Versao = '0.9b' ;
@@ -60,17 +60,19 @@ type
     ACBrRFD1: TACBrRFD;
     ACBrBAL1: TACBrBAL;
     ACBrETQ1: TACBrETQ;
+    procedure ACBrCEP1AntesAbrirHTTP(var AURL : String) ;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
     procedure ACBrLCB1LeCodigo(Sender: TObject);
     procedure ACBrRFD1GetKeyRSA(var PrivateKey_RSA: String);
     procedure TcpServerConecta(const TCPBlockSocket : TTCPBlockSocket ;
-      var Enviar : AnsiString) ;
+      var {%H-}Enviar : AnsiString) ;
     procedure TcpServerDesConecta(const TCPBlockSocket : TTCPBlockSocket ;
-      Erro : Integer ; ErroDesc : String) ;
+      {%H-}Erro : Integer ; {%H-}ErroDesc : String) ;
     procedure TcpServerRecebeDados(const TCPBlockSocket : TTCPBlockSocket ;
-      const Recebido : AnsiString ; var Enviar : AnsiString) ;
+      const Recebido : AnsiString ; var {%H-}Enviar : AnsiString) ;
   private
+    fChaveBuscarCEP : String ;
     fsDisWorking: Boolean;
     fsOldIntervaloLCB:Integer ;
     fsSWPwd : String ;
@@ -95,6 +97,7 @@ type
     TipoCMD : String ;
 
     property DISWorking : Boolean read fsDisWorking write SetDisWorking ;
+    property ChaveBuscarCEP : String read fChaveBuscarCEP ;
 
     procedure LerIni;
     procedure CriarIniDefault;
@@ -110,11 +113,11 @@ var
   dm: Tdm;
 
 implementation
-Uses IniFiles, UtilUnit, ACBrConsts, 
+Uses IniFiles, UtilUnit,
      {$IFDEF MSWINDOWS} sndkey32, {$ENDIF}
      {$IFDEF LINUX} unix, baseunix, {$ENDIF}
      DoACBrUnit, DoECFUnit, DoGAVUnit, DoCHQUnit, DoDISUnit, DoLCBUnit,
-     DoBALUnit , DoETQUnit;
+     DoBALUnit , DoETQUnit, DoCEPUnit, DoIBGEUnit;
 
 {$R *.lfm}
 
@@ -135,6 +138,14 @@ begin
   fsSWPwd   := '' ;
 
   TipoCMD   := 'A' ; {Tipo de Comando A - ACBr, B - Bematech, D - Daruma}
+end;
+
+procedure Tdm.ACBrCEP1AntesAbrirHTTP(var AURL : String) ;
+begin
+  if (ACBrCEP1.WebService = wsBuscarCep) and (fChaveBuscarCEP <> '') then
+  begin
+    AURL := AURL + '&chave='+fChaveBuscarCEP;
+  end ;
 end;
 
 {------------------------------------------------------------------------------}
@@ -230,10 +241,7 @@ begin
      IsTCP := Ini.ReadBool('ACBrMonitor','Modo_TCP',false);
      IsTXT := not IsTCP ;
 
-    with dm.TcpServer do
-    begin
-       Port := Ini.ReadString('ACBrMonitor','TCP_Porta','3434');
-    end ;
+    dm.TcpServer.Port := Ini.ReadString('ACBrMonitor','TCP_Porta','3434');
 
     ArqEntTXT := AcertaPath( Ini.ReadString('ACBrMonitor','TXT_Entrada','ENT.TXT') ) ;
     ArqSaiTXT := AcertaPath( Ini.ReadString('ACBrMonitor','TXT_Saida','SAI.TXT') ) ;
@@ -354,6 +362,23 @@ begin
        Porta     := Ini.ReadString('BAL','Porta','');
     end ;
 
+    with ACBrCEP1 do
+    begin
+      WebService := TACBrCEPWebService( Ini.ReadInteger('CEP', 'WebService', 0) ) ;
+      fChaveBuscarCEP := Ini.ReadString('CEP', 'Chave_BuscarCEP', '');
+      ProxyHost  := Ini.ReadString('CEP', 'Proxy_Host', '');
+      ProxyPort  := Ini.ReadString('CEP', 'Proxy_Port', '');
+      ProxyUser  := Ini.ReadString('CEP', 'Proxy_User', '');
+      ProxyPass  := LeINICrypt(INI, 'CEP', 'Proxy_Pass', _C) ;
+    end ;
+
+    with ACBrIBGE1 do
+    begin
+      ProxyHost  := Ini.ReadString('CEP', 'Proxy_Host', '');
+      ProxyPort  := Ini.ReadString('CEP', 'Proxy_Port', '');
+      ProxyUser  := Ini.ReadString('CEP', 'Proxy_User', '');
+      ProxyPass  := LeINICrypt(INI, 'CEP', 'Proxy_Pass', _C) ;
+    end ;
  finally
     Ini.Free ;
  end ;
@@ -448,7 +473,11 @@ begin
            else if Cmd.Objeto = 'BAL' then
               DoBAL( Cmd )
            else if Cmd.Objeto = 'ETQ' then
-              DoETQ( Cmd );
+              DoETQ( Cmd )
+           else if Cmd.Objeto = 'CEP' then
+             DoCEP( Cmd )
+           else if Cmd.Objeto = 'IBGE' then
+             DoIBGE( Cmd );
 
 
            Resposta(Linha, 'OK: '+Cmd.Resposta );
@@ -669,9 +698,12 @@ begin
 end;
 
 procedure Tdm.ACBrLCB1LeCodigo(Sender: TObject);
-Var Codigo : String ;
-    fd, I  : Integer ;
-    C : Char ;
+Var
+  Codigo : String ;
+  {$IFDEF LINUX}
+   fd, I  : Integer ;
+   C : Char ;
+  {$ENDIF}
 begin
   WriteLn('LCB -> '+ACBrLCB1.UltimoCodigo) ;
   if GravarLog then

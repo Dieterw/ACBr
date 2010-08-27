@@ -7,10 +7,9 @@ object frRelatorio: TfrRelatorio
   HorzScrollBar.Range = 298
   VertScrollBar.Page = 329
   VertScrollBar.Range = 329
-  ActiveControl = mRelat
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
-  Caption = 'Relatório Gerencial'
+  Caption = 'RelatÃ³rio Gerencial'
   ClientHeight = 330
   ClientWidth = 300
   Font.Height = -11
@@ -18,6 +17,7 @@ object frRelatorio: TfrRelatorio
   OnCreate = FormCreate
   OnShow = FormShow
   Position = poMainFormCenter
+  LCLVersion = '0.9.29'
   object sbFPG: TSpeedButton
     Left = 128
     Height = 22
@@ -79,7 +79,7 @@ object frRelatorio: TfrRelatorio
     Left = 96
     Height = 14
     Top = 5
-    Width = 57
+    Width = 55
     Caption = '&Form.Pagto'
     FocusControl = lCodFPG
     ParentColor = False
@@ -89,7 +89,7 @@ object frRelatorio: TfrRelatorio
     Left = 224
     Height = 14
     Top = 5
-    Width = 29
+    Width = 28
     Caption = '&Valor:'
     FocusControl = edValor
     ParentColor = False
@@ -108,7 +108,7 @@ object frRelatorio: TfrRelatorio
     Left = 160
     Height = 14
     Top = 5
-    Width = 21
+    Width = 22
     Caption = 'C&NF'
     FocusControl = lCodCNF
     ParentColor = False
@@ -140,6 +140,7 @@ object frRelatorio: TfrRelatorio
       'comprovantes, quando a impressao do '
       'Cupom NAO Fiscal vinculado falhar.'
     )
+    ParentFont = False
     ScrollBars = ssVertical
     TabOrder = 4
   end

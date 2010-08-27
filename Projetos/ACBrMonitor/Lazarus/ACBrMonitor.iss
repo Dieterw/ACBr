@@ -2,13 +2,12 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "ACBrMonitor"
-#define MyAppVerName "ACBrMonitor-0.8.14b"
+#define MyAppVerName "ACBrMonitor-0.9.00b"
 #define MyAppPublisher "Projeto ACBr"
 #define MyAppURL "http://acbr.sourceforge.net/wiki/index.php/Monitor"
 #define MyAppUrlName "ACBrMonitor.url"
 #define MyAppExeName "ACBrMonitor.exe"
-#define QTDLL "qtintf70.dll"
-#define DLLsDIR "..\DLLs"
+#define DLLsDIR "..\..\..\DLLs"
 
 [Setup]
 AppName={#MyAppName}
@@ -45,7 +44,7 @@ Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:Ad
 [Files]
 Source: ACBrMonitor.exe; DestDir: {app}; Flags: ignoreversion; Components: programa
 Source: ACBrMonitorConsole.exe; DestDir: {app}; Flags: ignoreversion; Components: console
-Source: QECFTeste.exe; DestDir: {app}; Flags: ignoreversion; Components: programa
+Source: ECFTeste.exe; DestDir: {app}; Flags: ignoreversion; Components: programa
 Source: ..\Exemplos\TesteTXT.BAT; DestDir: {app}\Exemplos; Flags: ignoreversion; Components: exemplos
 Source: ..\Exemplos\Clipper_TXT_xHarbour_Socket.zip; DestDir: {app}\Exemplos; Flags: ignoreversion; Components: exemplos
 Source: ..\Exemplos\Cobol_TXT_Socket.zip; DestDir: {app}\Exemplos; Flags: ignoreversion; Components: exemplos
@@ -54,7 +53,6 @@ Source: LICENCA.TXT; DestDir: {app}; Flags: ignoreversion; Components: programa
 Source: LICENSE.TXT; DestDir: {app}; Flags: ignoreversion; Components: programa
 Source: ACBrMonitor.chm; DestDir: {app}; Flags: ignoreversion; Components: help
 Source: ACBrMonitor-change-log.txt; DestDir: {app}; Flags: ignoreversion; Components: help
-Source: {#DLLsDIR}\CLX\{#QTDLL}; DestDir: {sys}; Flags: ; Components: programa
 Source: {#DLLsDIR}\Diversos\inpout32.dll; DestDir: {sys}; Flags: ; Components: programa
 Source: {#DLLsDIR}\OpenSSL\openssl.exe; DestDir: {app}; Flags: ; Components: programa
 Source: {#DLLsDIR}\OpenSSL\libeay32.dll; DestDir: {app}; Flags: ; Components: programa
@@ -78,3 +76,4 @@ Name: {group}\{cm:ProgramOnTheWeb,{#MyAppName}}; Filename: {app}\{#MyAppUrlName}
 
 [Run]
 Filename: {app}\{#MyAppExeName}; Description: {cm:LaunchProgram,{#MyAppName}}; Flags: nowait postinstall skipifsilent
+

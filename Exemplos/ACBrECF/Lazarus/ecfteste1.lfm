@@ -465,7 +465,7 @@ object Form1: TForm1
         Height = 19
         Top = 111
         Width = 106
-        Caption = 'DescriÁ„o Grande'
+        Caption = 'Descri√ß√£o Grande'
         Checked = True
         State = cbChecked
         TabOrder = 9
@@ -693,7 +693,7 @@ object Form1: TForm1
             Height = 14
             Top = 91
             Width = 34
-            Caption = 'Vers„o'
+            Caption = 'Vers√£o'
             ParentColor = False
           end
           object Label18: TLabel
@@ -883,7 +883,7 @@ object Form1: TForm1
           Height = 14
           Top = 7
           Width = 108
-          Caption = 'DiretÛrio arquivos RFD'
+          Caption = 'Diret√≥rio arquivos RFD'
           ParentColor = False
         end
         object chRFD: TCheckBox
@@ -1506,11 +1506,11 @@ object Form1: TForm1
           OnClick = NumLoja1Click
         end
         object NSrie1: TMenuItem
-          Caption = 'Num SÈrie'
+          Caption = 'Num S√©rie'
           OnClick = NSrie1Click
         end
         object NVerso1: TMenuItem
-          Caption = 'Num Vers„o'
+          Caption = 'Num Vers√£o'
           OnClick = NVerso1Click
         end
         object CNPJIE1: TMenuItem
@@ -1530,7 +1530,7 @@ object Form1: TForm1
           OnClick = mPAFClick
         end
         object mUsuarioAtual: TMenuItem
-          Caption = 'Usu·rio Atual'
+          Caption = 'Usu√°rio Atual'
           OnClick = mUsuarioAtualClick
         end
         object mCliche: TMenuItem
@@ -1560,15 +1560,15 @@ object Form1: TForm1
           OnClick = Arredonda1Click
         end
         object MFD1: TMenuItem
-          Caption = '… MFD ?'
+          Caption = '√â MFD ?'
           OnClick = MFD1Click
         end
         object Termica1: TMenuItem
-          Caption = '… Termica ?'
+          Caption = '√â Termica ?'
           OnClick = Termica1Click
         end
         object mIdentificaConsumidor: TMenuItem
-          Caption = 'Identifica Consumidor RodapÈ ?'
+          Caption = 'Identifica Consumidor Rodap√© ?'
           OnClick = mIdentificaConsumidorClick
         end
       end
@@ -1586,7 +1586,7 @@ object Form1: TForm1
           OnClick = DadosReducaoZ1Click
         end
         object DadosUltimaReduoZ1: TMenuItem
-          Caption = 'Dados Ultima ReduÁ„o Z'
+          Caption = 'Dados Ultima Redu√ß√£o Z'
           OnClick = DadosUltimaReduoZ1Click
         end
         object N20: TMenuItem
@@ -1664,7 +1664,7 @@ object Form1: TForm1
             OnClick = mICMSTotalNaoTributadoClick
           end
           object mICMSTotalIsencao: TMenuItem
-            Caption = 'Total IsenÁao'
+            Caption = 'Total Isen√ßao'
             OnClick = mICMSTotalIsencaoClick
           end
         end
@@ -1694,7 +1694,7 @@ object Form1: TForm1
             OnClick = MenuItem7Click
           end
           object MenuItem8: TMenuItem
-            Caption = 'Total IsenÁao'
+            Caption = 'Total Isen√ßao'
             OnClick = MenuItem8Click
           end
         end
@@ -1702,7 +1702,7 @@ object Form1: TForm1
           Caption = '-'
         end
         object mTotalNaoFiscal: TMenuItem
-          Caption = 'Total N„o Fiscal'
+          Caption = 'Total N√£o Fiscal'
           OnClick = mTotalNaoFiscalClick
         end
       end
@@ -1743,7 +1743,7 @@ object Form1: TForm1
         end
       end
       object mCarregaRelatorioGerenciais: TMenuItem
-        Caption = 'Carrega RelatÛrios Gerenciais'
+        Caption = 'Carrega Relat√≥rios Gerenciais'
         OnClick = mCarregaRelatorioGerenciaisClick
       end
       object CarregaUnidadesdeMedida1: TMenuItem
@@ -1759,13 +1759,13 @@ object Form1: TForm1
       end
     end
     object Relatrios1: TMenuItem
-      Caption = 'RelatÛrios'
+      Caption = 'Relat√≥rios'
       object LeituraX1: TMenuItem
         Caption = 'Leitura X'
         OnClick = LeituraX1Click
       end
       object ReduoZ1: TMenuItem
-        Caption = 'ReduÁ„o Z'
+        Caption = 'Redu√ß√£o Z'
         OnClick = ReduoZ1Click
       end
       object N9: TMenuItem
@@ -1826,7 +1826,7 @@ object Form1: TForm1
         Caption = '-'
       end
       object FechaRelatrio1: TMenuItem
-        Caption = 'Fecha RelatÛrio / Vinculado'
+        Caption = 'Fecha Relat√≥rio / Vinculado'
         OnClick = FechaRelatrio1Click
       end
       object N12: TMenuItem
@@ -1835,7 +1835,7 @@ object Form1: TForm1
       object LeituradeMemoriaFiscal1: TMenuItem
         Caption = 'Leitura de Memoria Fiscal'
         object CapturaporNReduaoZ1: TMenuItem
-          Caption = 'Captura por N.ReduÁaoZ'
+          Caption = 'Captura por N.Redu√ßaoZ'
           OnClick = CapturaporNReduaoZ1Click
         end
         object CapturaporPeriodo1: TMenuItem
@@ -1843,7 +1843,7 @@ object Form1: TForm1
           OnClick = CapturaporPeriodo1Click
         end
         object ImprimeporNReduaoZ1: TMenuItem
-          Caption = 'Imprime por N.ReduÁaoZ'
+          Caption = 'Imprime por N.Redu√ßaoZ'
           OnClick = ImprimeporNReduaoZ1Click
         end
         object ImprimeporPeriodo1: TMenuItem
@@ -1949,7 +1949,7 @@ object Form1: TForm1
         Caption = '-'
       end
       object Variveis1: TMenuItem
-        Caption = 'Vari·veis'
+        Caption = 'Vari√°veis'
         object NUltimoCupom1: TMenuItem
           Caption = 'Num Cupom'
           OnClick = NUltimoCupom1Click
@@ -1976,9 +1976,9 @@ object Form1: TForm1
       end
     end
     object NoFiscal1: TMenuItem
-      Caption = 'N„o Fiscal'
+      Caption = 'N√£o Fiscal'
       object NoFiscalCompleto1: TMenuItem
-        Caption = 'N„o Fiscal Completo'
+        Caption = 'N√£o Fiscal Completo'
         OnClick = NoFiscalCompleto1Click
       end
       object N16: TMenuItem
@@ -1996,30 +1996,30 @@ object Form1: TForm1
         Caption = '-'
       end
       object AbreNoFiscal1: TMenuItem
-        Caption = 'Abre N„o Fiscal'
+        Caption = 'Abre N√£o Fiscal'
         OnClick = AbreNoFiscal1Click
       end
       object RegistraItemNaoFiscal1: TMenuItem
-        Caption = 'Registra Item N„o Fiscal'
+        Caption = 'Registra Item N√£o Fiscal'
         OnClick = RegistraItemNaoFiscal1Click
       end
       object SubTotalizaNaoFiscal1: TMenuItem
-        Caption = 'SubTotaliza N„o Fiscal'
+        Caption = 'SubTotaliza N√£o Fiscal'
         OnClick = SubTotalizaNaoFiscal1Click
       end
       object EfetuaPagamentoNaoFiscal1: TMenuItem
-        Caption = 'Efetua Pagamento N„o Fiscal'
+        Caption = 'Efetua Pagamento N√£o Fiscal'
         OnClick = EfetuaPagamentoNaoFiscal1Click
       end
       object FechaNoFiscal1: TMenuItem
-        Caption = 'Fecha N„o Fiscal'
+        Caption = 'Fecha N√£o Fiscal'
         OnClick = FechaNoFiscal1Click
       end
       object N24: TMenuItem
         Caption = '-'
       end
       object CancelaNoFiscal1: TMenuItem
-        Caption = 'Cancela N„o Fiscal'
+        Caption = 'Cancela N√£o Fiscal'
         OnClick = CancelaNoFiscal1Click
       end
     end
@@ -2047,13 +2047,13 @@ object Form1: TForm1
           OnClick = ImprimeCheque1Click
         end
         object CancelaImpressoCheque1: TMenuItem
-          Caption = 'Cancela Impress„o Cheque'
+          Caption = 'Cancela Impress√£o Cheque'
           OnClick = CancelaImpressoCheque1Click
         end
       end
     end
     object Utilitrios1: TMenuItem
-      Caption = 'Utilit·rios'
+      Caption = 'Utilit√°rios'
       object ProgramaAliquota1: TMenuItem
         Caption = 'Programa Aliquota'
         OnClick = ProgramaAliquota1Click
@@ -2089,7 +2089,7 @@ object Form1: TForm1
         Caption = '-'
       end
       object HorarioVerao1: TMenuItem
-        Caption = 'Muda Hor·rio Ver„o'
+        Caption = 'Muda Hor√°rio Ver√£o'
         OnClick = HorarioVerao1Click
       end
       object MudaArredondamento1: TMenuItem
@@ -2121,9 +2121,9 @@ object Form1: TForm1
     ReTentar = False
     DescricaoGrande = True
     MsgAguarde = 'Aguardando a resposta da Impressora: %d segundos'
-    MsgTrabalhando = 'Impressora est· trabalhando'
-    MsgRelatorio = 'Imprimindo %s  %d™ Via '
-    MsgPausaRelatorio = 'Destaque a %d™ via, <ENTER> proxima, %d seg.'
+    MsgTrabalhando = 'Impressora est√° trabalhando'
+    MsgRelatorio = 'Imprimindo %s  %d¬™ Via '
+    MsgPausaRelatorio = 'Destaque a %d¬™ via, <ENTER> proxima, %d seg.'
     FormMsgFonte.Color = clWhite
     FormMsgFonte.Height = 11
     FormMsgFonte.Name = 'MS Sans Serif'

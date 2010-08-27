@@ -5,7 +5,7 @@ unit Sobre;
 interface
 
 uses
-  Classes, SysUtils, LResources, Forms, Controls, Graphics, Dialogs, ExtCtrls,
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls,
   StdCtrls, Buttons, LCLType;
 
 type
@@ -51,6 +51,8 @@ var
   frmSobre: TfrmSobre;
 
 implementation
+
+{$R *.lfm}
 
 Uses ACBrUtil, Math ;
 
@@ -139,9 +141,6 @@ begin
   if (Key = VK_F1) then
      bAjuda.Click ;
 end;
-
-initialization
-  {$I sobre.lrs}
 
 end.
 

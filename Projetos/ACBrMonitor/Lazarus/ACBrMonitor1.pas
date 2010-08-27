@@ -3544,9 +3544,9 @@ begin
   try
     ACBrECF1.Desativar;
     {$IFDEF LINUX}
-    Arquivo := 'QECFTeste';
+    Arquivo := 'ECFTeste';
     {$ELSE}
-    Arquivo := 'QECFTeste.exe';
+    Arquivo := 'ECFTeste.exe';
     {$ENDIF}
 
     Arquivo := ExtractFilePath(Application.ExeName) + Arquivo;

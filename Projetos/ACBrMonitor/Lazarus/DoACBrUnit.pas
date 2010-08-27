@@ -40,7 +40,7 @@ Uses Classes, TypInfo, SysUtils, CmdUnit, Types ;
   function BlockInput (fBlockInput: boolean): dword; stdcall; external 'user32.dll';
 {$ENDIF}
 
-Procedure DoACBr( Cmd : TACBrCmd ) ;
+Procedure DoACBr( {%H-}Cmd : TACBrCmd ) ;
 Procedure VerificaPermiteComandosRemoto ;
 Function ConvertStrRecived( AStr: String ) : String ;
 

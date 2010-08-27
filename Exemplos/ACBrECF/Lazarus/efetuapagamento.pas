@@ -72,7 +72,7 @@ begin
    begin
      Form1.ACBrECF1.EfetuaPagamentoNaoFiscal( edCod.Text, StrToFloat( edValor.Text),
                                      edObs.Text ,cbVinc.Checked );
-     Form1.mResp.Lines.Add( 'Efetua Pagamento N„o Fiscal: '+edCod.Text +
+     Form1.mResp.Lines.Add( 'Efetua Pagamento N√£o Fiscal: '+edCod.Text +
                             ' Valor: '+edValor.Text +
                             ' Obs: '+edObs.Text +
                             ' Vinc: '+IfThen(cbVinc.Checked,'S','N') );
@@ -100,15 +100,15 @@ Var Descricao : String ;
     FPG : TACBrECFFormaPagamento ;  { Necessita de uses ACBrECF }
 begin
   Descricao := '';
-  if InputQuery('Pesquisa DescriÁ„o Forma Pagamento',
-                'Entre com a DescriÁ„o a Localizar ou Cadastrar(Bematech)',
+  if InputQuery('Pesquisa Descri√ß√£o Forma Pagamento',
+                'Entre com a Descri√ß√£o a Localizar ou Cadastrar(Bematech)',
                 Descricao) then
   begin
      FPG := Form1.ACBrECF1.AchaFPGDescricao( Descricao ) ;
 
      if FPG = nil then
         raise Exception.Create('Forma de Pagamento: '+Descricao+
-                               ' n„o encontrada') ;
+                               ' n√£o encontrada') ;
 
      edCod.Text := FPG.Indice ;
 
@@ -130,7 +130,7 @@ begin
      if (Form1.ACBrECF1.Modelo in [ecfBematech,ecfNaoFiscal])then
         ACBrECF1.CarregaFormasPagamento
      else
-        ACBrECF1.AchaFPGIndice('') ;  { forÁa carregar, se ainda nao o fez }
+        ACBrECF1.AchaFPGIndice('') ;  { for√ßa carregar, se ainda nao o fez }
 
      for A := 0 to ACBrECF1.FormasPagamento.Count -1 do
      begin

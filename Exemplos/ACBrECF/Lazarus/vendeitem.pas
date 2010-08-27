@@ -5,7 +5,7 @@ unit VendeItem;
 interface
 
 uses
-  Classes, SysUtils, LResources, Forms, Controls, Graphics, Dialogs, StdCtrls,
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls,
   ExtCtrls;
 
 type
@@ -13,29 +13,34 @@ type
   { TfrVendeItem }
 
   TfrVendeItem = class(TForm)
-    Label1: TLabel;
-    edCodigo: TEdit;
-    Label2: TLabel;
-    edDescricao: TEdit;
-    Label3: TLabel;
-    Label4: TLabel;
-    edPrecoUnita: TEdit;
-    Label5: TLabel;
-    edICMS: TEdit;
-    Label6: TLabel;
-    edDesconto: TEdit;
-    Label7: TLabel;
-    edUN: TEdit;
-    Button1: TButton;
-    Label8: TLabel;
-    Label9: TLabel;
-    Label10: TLabel;
-    Button2: TButton;
-    edQtd: TEdit;
-    rbPercentagem: TRadioButton;
-    rbValor: TRadioButton;
-    Bevel1: TBevel;
-    Bevel2: TBevel;
+    Bevel1 : TBevel ;
+    Bevel2 : TBevel ;
+    Button1 : TButton ;
+    Button2 : TButton ;
+    edCodigo : TEdit ;
+    edDescAcres : TEdit ;
+    edDescricao : TEdit ;
+    edICMS : TEdit ;
+    edPrecoUnita : TEdit ;
+    edQtd : TEdit ;
+    edUN : TEdit ;
+    Label1 : TLabel ;
+    Label10 : TLabel ;
+    Label11 : TLabel ;
+    Label12 : TLabel ;
+    Label2 : TLabel ;
+    Label3 : TLabel ;
+    Label4 : TLabel ;
+    Label5 : TLabel ;
+    Label6 : TLabel ;
+    Label7 : TLabel ;
+    Label8 : TLabel ;
+    Label9 : TLabel ;
+    Panel1 : TPanel ;
+    rbAcrescimo : TRadioButton ;
+    rbDesconto : TRadioButton ;
+    rbPercentagem : TRadioButton ;
+    rbValor : TRadioButton ;
     procedure edQtdKeyPress(Sender: TObject; var Key: Char);
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
@@ -50,6 +55,8 @@ var
 
 implementation
 
+{$R *.lfm}
+
 uses ECFTeste1;
 
 procedure TfrVendeItem.edQtdKeyPress(Sender: TObject; var Key: Char);
@@ -59,30 +66,34 @@ begin
 end;
 
 procedure TfrVendeItem.Button1Click(Sender: TObject);
-Var Desc : Char ;
+Var Desc, Tipo : Char ;
 begin
 //  if Form1.ACBrECF1.AguardandoResposta then
 //     raise Exception.Create('Aguarde imprimindo Item anterior...') ;
 
   Button1.Enabled := False ;
-  Desc := '%' ;
+  Tipo := '%' ;
   if rbValor.Checked then
-     Desc := '$' ;
+     Tipo := '$' ;
+  Desc := 'D' ;
+  if rbAcrescimo.Checked then
+     Desc := 'A' ;
 
   try
      Form1.ACBrECF1.VendeItem( edCodigo.Text, edDescricao.Text,
                                edICMS.Text, StrToFloatDef( edQtd.Text, 0 ),
                                StrToFloatDef( edPrecoUnita.Text,0 ),
-                               StrToFloatDef( edDesconto.Text,0 ), edUN.Text,
-                               Desc );
+                               StrToFloatDef( edDescAcres.Text,0 ), edUN.Text,
+                               Tipo, Desc );
      Form1.mResp.Lines.Add( 'Vende Item: Cod:'+ edCodigo.Text+
                             ' Desc'+ edDescricao.Text+
                             ' Aliq:'+edICMS.Text +
                             ' Qtd:'+edQtd.Text +
-                            ' Preço:'+edPrecoUnita.Text +
-                            ' Desc:'+edDesconto.Text +
+                            ' PreÃ§o:'+edPrecoUnita.Text +
+                            ' Desc:'+edDescAcres.Text +
                             ' Un:'+edUN.Text +
-                            ' Desc:'+Desc );
+                            ' Tipo:'+Tipo +
+                            ' Desc:'+Desc);
      Form1.AtualizaMemos ;
   finally
      Button1.Enabled := True ;
@@ -93,9 +104,6 @@ procedure TfrVendeItem.Button2Click(Sender: TObject);
 begin
   close ;
 end;
-
-initialization
-  {$I vendeitem.lrs}
 
 end.
 

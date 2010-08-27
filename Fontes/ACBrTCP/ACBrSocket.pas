@@ -48,7 +48,7 @@ unit ACBrSocket;
 interface
 
 uses SysUtils, Classes, Contnrs,
-     blcksock, synsock, synamisc, httpsend,  {Units da Synapse}
+     blcksock, synsock, httpsend,  {Units da Synapse}
      ACBrBase ;
 
 type
@@ -277,7 +277,11 @@ begin
         fsStrToSend := '' ;
         fsErro      := 0 ;
 
-        Synchronize( CallOnConecta );
+        {$IFNDEF CONSOLE}
+         Synchronize( CallOnConecta );
+        {$ELSE}
+         CallOnConecta ;
+        {$ENDIF}
 
         if fsStrToSend <> '' then
         begin
@@ -321,7 +325,11 @@ begin
               break;
 
            if Assigned( fsACBrTCPServerDaemon.ACBrTCPServer.OnRecebeDados ) then
-              Synchronize( CallOnRecebeDados );
+              {$IFNDEF CONSOLE}
+               Synchronize( CallOnRecebeDados );
+              {$ELSE}
+               CallOnRecebeDados ;
+              {$ENDIF}
 
            if fsStrToSend <> '' then
            begin
@@ -331,7 +339,11 @@ begin
         end;
 
         // Chama o evento de Desconexão...
-        Synchronize( CallOnDesConecta );
+        {$IFNDEF CONSOLE}
+         Synchronize( CallOnDesConecta );
+        {$ELSE}
+         CallOnDesConecta ;
+        {$ENDIF}
      end;
   finally
      fsSock.CloseSocket ;

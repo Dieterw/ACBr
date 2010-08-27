@@ -5,7 +5,6 @@ object frmSobre: TfrmSobre
   Width = 500
   HorzScrollBar.Page = 499
   VertScrollBar.Page = 304
-  ActiveControl = BitBtn1
   BorderIcons = [biSystemMenu]
   BorderStyle = bsDialog
   Caption = 'Sobre o ECFTeste'
@@ -24,8 +23,11 @@ object frmSobre: TfrmSobre
   OnMouseDown = FormMouseDown
   OnMouseUp = FormMouseUp
   Position = poDesktopCenter
+  LCLVersion = '0.9.29'
   object Image1: TImage
+    Left = 0
     Height = 305
+    Top = 0
     Width = 500
     Align = alClient
     Picture.Data = {
@@ -1813,14 +1815,13 @@ object frmSobre: TfrmSobre
       FB41EE1FE4FE41EE1FE4FE41EEEF9CDCFF3F4C4E766DFCDD515C000000004945
       4E44AE426082
     }
-    Transparent = False
   end
   object lColaboradores: TLabel
     Left = 5
     Height = 736
     Top = 240
     Width = 480
-    Caption = '* Administradores:'#13#10'- Daniel Simıes de Almeida'#13#10'- AndrÈ Ferreira de Moraes'#13#10#13#10'* Desenvolvedores:'#13#10'- Airton Stodulski               ECFDataRegis'#13#10'- Anderson Rogerio Bejatto       ECFDataRegis, TACBrTroco, ECFBugFix, TACBrETQ'#13#10'- Rodrigo Fr¸hwirth              ECFIChash'#13#10'- Gabriel Rodrigo Frones         TACBrTER'#13#10'- Fabio Farias                   TACBrBAL, ECFBugFix, DISKeyTec'#13#10'- Walmir Silva                   TACBrBAL, BalancaTeste.dpr'#13#10'- Rennes Moreira Pimentel        TACBrValidador (CEP)'#13#10'- Aurimenes Apolonio Silva       ECFUrano, ECFBugFix'#13#10'- Vinicius de Oliveira           TACBrFala'#13#10'- Carlos do Nascimento Filho     ECFDaruma, ECFYanco'#13#10'- Thiago Delgado Pinto           Compatibilidade com BCB6'#13#10'- Nei JosÈ Van Lare Junior       ECFFiscNET'#13#10'- Jhony Alceu Pereira            ECFDaruma'#13#10'- Alan Lucas                     ECFSchalter, ECFSweda'#13#10'- Ederson Selvati                ECFDaruma, ECFBematech, ECFSweda'#13#10'- JosÈ LuÌs Schiavo              ECFDaruma'#13#10'- Andrews Ricardo Bejatto        TACBrETQ'#13#10'- Douglas Fernando Scheibler     Lazarus'#13#10'- Wagner Leandro Bueno Angelo    Lazarus'#13#10'- Maicon da Silva Evangelista    ECFDaruma'#13#10'- Eduardo Durieux Lopes          ECFEpson'#13#10#13#10'* Colaboradores:'#13#10'- Alexandre Rocha L.Marcondes    AdministraÁ„o'#13#10'- Mauro Sano (Sweda)             Emprestimo de ECFs'#13#10'- Valmor Florez                  ECFBugFix (Schalter)'#13#10'- Licerio Jose Rodrigues Neto    ECFBugFix (Mecaf, Sweda, NaoFiscal)'#13#10'- Adriano Alves Dornelas         ECFBugFix'#13#10'- Luciano Donato                 ACBr.INC D2006'#13#10'- Gabriel Fernandes              ECFBugFix (Mecaf)'#13#10'- Juliano Pereira dos Santos     ECFBufFix (Daruma FS600)'#13#10'- F·bio RogÈrio BaÌa             ACBrMonitor (TCP)'#13#10'- Waldir Paim                    LCBTeste (conf.serial)'#13#10'- Diogo Augusto Pereira          ACBrCMC7'#13#10'- Marcos Agostini                ECFBugFix (NaoFiscal)'#13#10'- Andre Bohn                     ECFBugFix (Daruma FS600)'#13#10#13#10'* Testadores / BugReport:'#13#10'- Rildecy de Queiroz Borba       ECFBugReport (Mecaf)'#13#10'- Claudio Borba                  ECFBugReport'#13#10'- Erique Costa                   ECFBugReport'#13#10'- Matheus Nogueira               CHQBugReport'#13#10'- Everton H. Cardoso (Bematech)'#13#10'- Miguel Silva (Perto S/A)'
+    Caption = '* Administradores:'#13#10'- Daniel Sim√µes de Almeida'#13#10'- Andr√© Ferreira de Moraes'#13#10#13#10'* Desenvolvedores:'#13#10'- Airton Stodulski               ECFDataRegis'#13#10'- Anderson Rogerio Bejatto       ECFDataRegis, TACBrTroco, ECFBugFix, TACBrETQ'#13#10'- Rodrigo Fr√ºhwirth              ECFIChash'#13#10'- Gabriel Rodrigo Frones         TACBrTER'#13#10'- Fabio Farias                   TACBrBAL, ECFBugFix, DISKeyTec'#13#10'- Walmir Silva                   TACBrBAL, BalancaTeste.dpr'#13#10'- Rennes Moreira Pimentel        TACBrValidador (CEP)'#13#10'- Aurimenes Apolonio Silva       ECFUrano, ECFBugFix'#13#10'- Vinicius de Oliveira           TACBrFala'#13#10'- Carlos do Nascimento Filho     ECFDaruma, ECFYanco'#13#10'- Thiago Delgado Pinto           Compatibilidade com BCB6'#13#10'- Nei Jos√© Van Lare Junior       ECFFiscNET'#13#10'- Jhony Alceu Pereira            ECFDaruma'#13#10'- Alan Lucas                     ECFSchalter, ECFSweda'#13#10'- Ederson Selvati                ECFDaruma, ECFBematech, ECFSweda'#13#10'- Jos√© Lu√≠s Schiavo              ECFDaruma'#13#10'- Andrews Ricardo Bejatto        TACBrETQ'#13#10'- Douglas Fernando Scheibler     Lazarus'#13#10'- Wagner Leandro Bueno Angelo    Lazarus'#13#10'- Maicon da Silva Evangelista    ECFDaruma'#13#10'- Eduardo Durieux Lopes          ECFEpson'#13#10#13#10'* Colaboradores:'#13#10'- Alexandre Rocha L.Marcondes    Administra√ß√£o'#13#10'- Mauro Sano (Sweda)             Emprestimo de ECFs'#13#10'- Valmor Florez                  ECFBugFix (Schalter)'#13#10'- Licerio Jose Rodrigues Neto    ECFBugFix (Mecaf, Sweda, NaoFiscal)'#13#10'- Adriano Alves Dornelas         ECFBugFix'#13#10'- Luciano Donato                 ACBr.INC D2006'#13#10'- Gabriel Fernandes              ECFBugFix (Mecaf)'#13#10'- Juliano Pereira dos Santos     ECFBufFix (Daruma FS600)'#13#10'- F√°bio Rog√©rio Ba√≠a             ACBrMonitor (TCP)'#13#10'- Waldir Paim                    LCBTeste (conf.serial)'#13#10'- Diogo Augusto Pereira          ACBrCMC7'#13#10'- Marcos Agostini                ECFBugFix (NaoFiscal)'#13#10'- Andre Bohn                     ECFBugFix (Daruma FS600)'#13#10#13#10'* Testadores / BugReport:'#13#10'- Rildecy de Queiroz Borba       ECFBugReport (Mecaf)'#13#10'- Claudio Borba                  ECFBugReport'#13#10'- Erique Costa                   ECFBugReport'#13#10'- Matheus Nogueira               CHQBugReport'#13#10'- Everton H. Cardoso (Bematech)'#13#10'- Miguel Silva (Perto S/A)'
     Constraints.MaxWidth = 480
     Font.CharSet = ANSI_CHARSET
     Font.Color = clBlack
@@ -1828,6 +1829,7 @@ object frmSobre: TfrmSobre
     Font.Name = 'Fixedsys'
     Font.Pitch = fpVariable
     ParentColor = False
+    ParentFont = False
     OnMouseDown = FormMouseDown
     OnMouseUp = FormMouseUp
   end
@@ -1847,6 +1849,7 @@ object frmSobre: TfrmSobre
     Font.Pitch = fpVariable
     Font.Style = [fsBold]
     ParentColor = False
+    ParentFont = False
     OnClick = lACBrClick
   end
   object lDesenvolvedores: TLabel
@@ -1857,7 +1860,7 @@ object frmSobre: TfrmSobre
     Width = 403
     Alignment = taCenter
     AutoSize = False
-    Caption = 'Daniel Simıes de Almeida - www.djsystem.com.br'
+    Caption = 'Daniel Sim√µes de Almeida - www.djsystem.com.br'
     Font.CharSet = ANSI_CHARSET
     Font.Color = clBlack
     Font.Height = -13
@@ -1865,6 +1868,7 @@ object frmSobre: TfrmSobre
     Font.Pitch = fpVariable
     Font.Style = [fsBold]
     ParentColor = False
+    ParentFont = False
     OnClick = lDesenvolvedoresClick
   end
   object lACBr: TLabel
@@ -1882,6 +1886,7 @@ object frmSobre: TfrmSobre
     Font.Name = 'MS Sans Serif'
     Font.Pitch = fpVariable
     ParentColor = False
+    ParentFont = False
     OnClick = lACBrClick
   end
   object lNome: TLabel
@@ -1900,6 +1905,7 @@ object frmSobre: TfrmSobre
     Font.Pitch = fpVariable
     Font.Style = [fsBold]
     ParentColor = False
+    ParentFont = False
     OnClick = lACBrClick
   end
   object Label1: TLabel
@@ -1916,6 +1922,7 @@ object frmSobre: TfrmSobre
     Font.Name = 'MS Sans Serif'
     Font.Pitch = fpVariable
     ParentColor = False
+    ParentFont = False
   end
   object Label2: TLabel
     Left = 86
@@ -1932,6 +1939,7 @@ object frmSobre: TfrmSobre
     Font.Pitch = fpVariable
     Font.Style = [fsBold]
     ParentColor = False
+    ParentFont = False
   end
   object lVersao1: TLabel
     Cursor = crHandPoint
@@ -1941,7 +1949,7 @@ object frmSobre: TfrmSobre
     Width = 321
     Alignment = taCenter
     AutoSize = False
-    Caption = 'Compilado com Lazarus 0.9.24 beta'#13#10'http://www.lazarus.freepascal.org/'
+    Caption = 'Compilado com Lazarus 0.9.29 beta'#13#10'http://www.lazarus.freepascal.org/'
     Font.CharSet = ANSI_CHARSET
     Font.Color = clTeal
     Font.Height = -11
@@ -1949,6 +1957,7 @@ object frmSobre: TfrmSobre
     Font.Pitch = fpVariable
     Font.Style = [fsBold]
     ParentColor = False
+    ParentFont = False
     OnClick = lACBrClick
   end
   object lDesenvolvedores1: TLabel
@@ -1967,6 +1976,7 @@ object frmSobre: TfrmSobre
     Font.Pitch = fpVariable
     Font.Style = [fsBold]
     ParentColor = False
+    ParentFont = False
     OnClick = lDesenvolvedoresClick
   end
   object Label3: TLabel
@@ -1983,6 +1993,7 @@ object frmSobre: TfrmSobre
     Font.Name = 'MS Sans Serif'
     Font.Pitch = fpVariable
     ParentColor = False
+    ParentFont = False
   end
   object bAjuda: TBitBtn
     Left = 403

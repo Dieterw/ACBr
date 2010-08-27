@@ -1206,15 +1206,15 @@ object FrmACBrMonitor: TFrmACBrMonitor
       Height = 209
       Top = 1
       Width = 592
-      ActivePage = tsACBrBoleto
+      ActivePage = tsECF
       Align = alClient
       Images = ImageList1
-      TabIndex = 10
+      TabIndex = 1
       TabOrder = 0
       object tsMonitor: TTabSheet
         Caption = '&Monitor'
         ClientHeight = 181
-        ClientWidth = 618
+        ClientWidth = 584
         object gbTCP: TGroupBox
           Left = 16
           Height = 78
@@ -1257,10 +1257,10 @@ object FrmACBrMonitor: TFrmACBrMonitor
           Left = 208
           Height = 78
           Top = 12
-          Width = 387
+          Width = 353
           Anchors = [akTop, akLeft, akRight]
           ClientHeight = 60
-          ClientWidth = 383
+          ClientWidth = 349
           Enabled = False
           TabOrder = 3
           object Label6: TLabel
@@ -1300,7 +1300,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
             Height = 23
             Hint = 'Nome do arquivo de Entrada que será monitorado pelo ACBrMonitor'#13#10'Especifique o caminho completo. '#13#10'Tenha certeza que a pasta especificada permite acesso de Leitura e Escrita'
             Top = 4
-            Width = 248
+            Width = 214
             Anchors = [akTop, akLeft, akRight]
             BorderSpacing.Top = 4
             TabOrder = 0
@@ -1314,7 +1314,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
             Height = 23
             Hint = 'Nome do arquivo de Saída que será criado pelo ACBrMonitor com as respostas'#13#10'Especifique o caminho completo.  '#13#10'Tenha certeza que a pasta especificada permite acesso de Leitura e Escrita'
             Top = 32
-            Width = 248
+            Width = 214
             Anchors = [akTop, akLeft, akRight]
             BorderSpacing.Top = 5
             TabOrder = 1
@@ -1322,7 +1322,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
           end
           object Label24: TLabel
             AnchorSideBottom.Control = sedIntervalo
-            Left = 326
+            Left = 292
             Height = 16
             Top = 3
             Width = 47
@@ -1335,7 +1335,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
           object sedIntervalo: TSpinEdit
             AnchorSideTop.Control = gbTXT
             AnchorSideTop.Side = asrCenter
-            Left = 326
+            Left = 292
             Height = 23
             Hint = 'Intervalo de Tempo em Milissegundos que o ACBrMonitor'#10'verifica a presença do arquivo de Entrada'
             Top = 19
@@ -1421,16 +1421,16 @@ object FrmACBrMonitor: TFrmACBrMonitor
           Height = 78
           Hint = 'Registra em arquivo todas as respostas do ACBrMonitor'
           Top = 100
-          Width = 363
+          Width = 329
           Anchors = [akTop, akLeft, akRight]
           ClientHeight = 60
-          ClientWidth = 359
+          ClientWidth = 325
           Enabled = False
           TabOrder = 7
           object sbLog: TSpeedButton
             AnchorSideTop.Control = edLogArq
             AnchorSideTop.Side = asrCenter
-            Left = 330
+            Left = 296
             Height = 23
             Top = 3
             Width = 23
@@ -1445,7 +1445,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
             Left = 85
             Height = 23
             Top = 3
-            Width = 246
+            Width = 212
             Anchors = [akTop, akLeft, akRight]
             TabOrder = 0
           end
@@ -1516,12 +1516,12 @@ object FrmACBrMonitor: TFrmACBrMonitor
       object tsECF: TTabSheet
         Caption = '&ECF'
         ClientHeight = 181
-        ClientWidth = 618
+        ClientWidth = 584
         ImageIndex = 1
         object sbECFLog: TSpeedButton
           AnchorSideTop.Control = edECFLog
           AnchorSideTop.Side = asrCenter
-          Left = 578
+          Left = 544
           Height = 23
           Top = 91
           Width = 23
@@ -1822,7 +1822,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
           Left = 272
           Height = 23
           Top = 91
-          Width = 307
+          Width = 273
           Anchors = [akTop, akLeft, akRight]
           OnChange = edECFLogChange
           TabOrder = 6
@@ -4582,18 +4582,28 @@ object FrmACBrMonitor: TFrmACBrMonitor
               OnExit = deBolDirRetornoExit
             end
             object Label78: TLabel
+              AnchorSideTop.Control = deBolDirRemessa
+              AnchorSideTop.Side = asrCenter
+              AnchorSideRight.Control = deBolDirRemessa
               Left = 15
               Height = 16
-              Top = 42
+              Top = 37
               Width = 144
+              Anchors = [akTop, akRight]
+              BorderSpacing.Right = 3
               Caption = 'Diretório Arquivo Remessa:'
               ParentColor = False
             end
             object Label79: TLabel
-              Left = 15
+              AnchorSideTop.Control = deBolDirRetorno
+              AnchorSideTop.Side = asrCenter
+              AnchorSideRight.Control = deBolDirRetorno
+              Left = 19
               Height = 16
-              Top = 89
+              Top = 85
               Width = 140
+              Anchors = [akTop, akRight]
+              BorderSpacing.Right = 3
               Caption = 'Diretório Arquivo Retorno:'
               ParentColor = False
             end

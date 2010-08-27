@@ -1,32 +1,32 @@
 {******************************************************************************}
 { Projeto: ACBr Monitor                                                        }
 {  Executavel multiplataforma que faz uso do conjunto de componentes ACBr para }
-{ criar uma interface de comunicação com equipamentos de automacao comercial.  }
+{ criar uma interface de comunicaÃ§Ã£o com equipamentos de automacao comercial.  }
 {                                                                              }
 { Direitos Autorais Reservados (c) 2006 Daniel Simoes de Almeida               }
 {                                                                              }
 { Colaboradores nesse arquivo:                                                 }
 {                                                                              }
-{  Você pode obter a última versão desse arquivo na página do Projeto ACBr     }
+{  VocÃª pode obter a Ãºltima versÃ£o desse arquivo na pÃ¡gina do Projeto ACBr     }
 { Componentes localizado em      http://www.sourceforge.net/projects/acbr      }
 {                                                                              }
-{  Este programa é software livre; você pode redistribuí-lo e/ou modificá-lo   }
-{ sob os termos da Licença Pública Geral GNU, conforme publicada pela Free     }
-{ Software Foundation; tanto a versão 2 da Licença como (a seu critério)       }
-{ qualquer versão mais nova.                                                   }
+{  Este programa Ã© software livre; vocÃª pode redistribuÃ­-lo e/ou modificÃ¡-lo   }
+{ sob os termos da LicenÃ§a PÃºblica Geral GNU, conforme publicada pela Free     }
+{ Software Foundation; tanto a versÃ£o 2 da LicenÃ§a como (a seu critÃ©rio)       }
+{ qualquer versÃ£o mais nova.                                                   }
 {                                                                              }
-{  Este programa é distribuído na expectativa de ser útil, mas SEM NENHUMA     }
-{ GARANTIA; nem mesmo a garantia implícita de COMERCIALIZAÇÃO OU DE ADEQUAÇÃO A}
-{ QUALQUER PROPÓSITO EM PARTICULAR. Consulte a Licença Pública Geral GNU para  }
+{  Este programa Ã© distribuÃ­do na expectativa de ser Ãºtil, mas SEM NENHUMA     }
+{ GARANTIA; nem mesmo a garantia implÃ­cita de COMERCIALIZAÃ‡ÃƒO OU DE ADEQUAÃ‡ÃƒO A}
+{ QUALQUER PROPÃ“SITO EM PARTICULAR. Consulte a LicenÃ§a PÃºblica Geral GNU para  }
 { obter mais detalhes. (Arquivo LICENCA.TXT ou LICENSE.TXT)                    }
 {                                                                              }
-{  Você deve ter recebido uma cópia da Licença Pública Geral GNU junto com este}
-{ programa; se não, escreva para a Free Software Foundation, Inc., 59 Temple   }
-{ Place, Suite 330, Boston, MA 02111-1307, USA. Você também pode obter uma     }
-{ copia da licença em:  http://www.opensource.org/licenses/gpl-license.php     }
+{  VocÃª deve ter recebido uma cÃ³pia da LicenÃ§a PÃºblica Geral GNU junto com este}
+{ programa; se nÃ£o, escreva para a Free Software Foundation, Inc., 59 Temple   }
+{ Place, Suite 330, Boston, MA 02111-1307, USA. VocÃª tambÃ©m pode obter uma     }
+{ copia da licenÃ§a em:  http://www.opensource.org/licenses/gpl-license.php     }
 {                                                                              }
-{ Daniel Simões de Almeida  -  daniel@djsystem.com.br  -  www.djsystem.com.br  }
-{              Praça Anita Costa, 34 - Tatuí - SP - 18270-410                  }
+{ Daniel SimÃµes de Almeida  -  daniel@djsystem.com.br  -  www.djsystem.com.br  }
+{              PraÃ§a Anita Costa, 34 - TatuÃ­ - SP - 18270-410                  }
 {                                                                              }
 {******************************************************************************}
 unit ConfiguraSerial;
@@ -37,7 +37,7 @@ interface
 
 uses
   ACBrDevice,
-  Classes, SysUtils, LResources, Forms, Controls, Graphics, Dialogs, StdCtrls,
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls,
   Buttons;
 
 type
@@ -84,6 +84,8 @@ var
   frConfiguraSerial: TfrConfiguraSerial;
 
 implementation
+
+{$R *.lfm}
 
 { TfrConfiguraSerial }
 
@@ -157,9 +159,6 @@ begin
   chHardFlow.Checked := Device.HardFlow ;
   chSoftFlow.Checked := Device.SoftFlow ;
 end;
-
-initialization
-  {$I configuraserial.lrs}
 
 end.
 

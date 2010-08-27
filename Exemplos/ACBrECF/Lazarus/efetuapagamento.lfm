@@ -121,7 +121,7 @@ object frPagamento: TfrPagamento
     Height = 14
     Top = 7
     Width = 315
-    Caption = '- Entre com um ou v·rios pagamentos atÈ atingir o Total do Cupom'
+    Caption = '- Entre com um ou v√°rios pagamentos at√© atingir o Total do Cupom'
     ParentColor = False
     WordWrap = True
   end
@@ -131,7 +131,7 @@ object frPagamento: TfrPagamento
     Top = 28
     Width = 313
     AutoSize = False
-    Caption = '- Se o valor pago for superior ao Total do Cupom ser· calculado o    TROCO'
+    Caption = '- Se o valor pago for superior ao Total do Cupom ser√° calculado o    TROCO'
     ParentColor = False
     WordWrap = True
   end

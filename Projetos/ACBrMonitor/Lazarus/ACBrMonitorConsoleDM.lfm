@@ -62,6 +62,7 @@ object dm: Tdm
   end
   object ACBrCEP1: TACBrCEP
     ProxyPort = '8080'
+    OnAntesAbrirHTTP = ACBrCEP1AntesAbrirHTTP
     left = 111
     top = 12
   end

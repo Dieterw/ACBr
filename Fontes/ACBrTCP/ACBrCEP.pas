@@ -570,7 +570,7 @@ end;
 procedure TACBrWSRepublicaVirtual.ProcessaResposta;
 Var
    Buffer : String ;
-   PosIni, I : Integer ;
+   PosIni : Integer ;
    Endereco : TACBrCEPEndereco ;
 begin
   fOwner.fEnderecos.Clear;

@@ -95,6 +95,8 @@ end;
 procedure TACBrMonitorConsole.DoRun;
 var
   ErrorMsg: String;
+  Txt : String ;
+  IpList : TStringList ;
 begin
   // quick check parameters
   ErrorMsg:=CheckOptions('h','help');
@@ -111,7 +113,140 @@ begin
     Exit;
   end;
 
-  { add your program here }
+  {$IFDEF LINUX}
+   signal(SIGINT , SignalProc); // catch the signal SIGINT  to procedure SignalProc
+   signal(SIGSTOP, SignalProc); // catch the signal SIGSTOP to procedure SignalProc
+   signal(SIGTSTP, SignalProc); // catch the signal SIGTSTP to procedure SignalProc
+   signal(SIGQUIT, SignalProc); // catch the signal SIGQUIT to procedure SignalProc
+
+   umask( 0 ) ;
+  {$ENDIF}
+
+  { Definindo constantes de Verdadeiro para TrueBoolsStrs }
+  SetLength( TrueBoolStrs, 5 ) ;
+  TrueBoolStrs[0] := 'True' ;
+  TrueBoolStrs[1] := 'T' ;
+  TrueBoolStrs[2] := 'Verdadeiro' ;
+  TrueBoolStrs[3] := 'V' ;
+  TrueBoolStrs[4] := 'Ok' ;
+
+  { Definindo constantes de Falso para FalseBoolStrs }
+  SetLength(FalseBoolStrs, 3);
+  FalseBoolStrs[0] := 'False' ;
+  FalseBoolStrs[1] := 'F' ;
+  FalseBoolStrs[2] := 'Falso' ;
+
+  { ---------------- Inicializando as variaveis ---------------- }
+  TRY
+    writeln('Bem vindo ao ACBrMonitorConsole '+Versao+' - ACBr: '+ACBR_VERSAO ) ;
+    writeln('') ;
+
+    { Lendo o arquivo INI. Se houver erro, dispara exception }
+    dm.LerIni ;
+
+    { Ajustando o tamanho do arquivo de LOG }
+    try
+       dm.AjustaLinhasLog ;
+    except
+       on E : Exception do
+          WriteLn( E.Message ) ;
+    end ;
+
+    { Ativando comunicacao TCP/IP }
+    dm.TcpServer.Ativo := dm.IsTCP ;
+    WriteLn('ACBrMonitorConsole - Ver.'+Versao);
+    WriteLn('Aguardando comandos ACBr');
+
+     { Exibindo estado atual e finalizando a inicializacao }
+     try
+        if dm.IsTCP then
+         begin
+           if dm.TcpServer.Ativo then
+           begin
+              Txt := 'Endereço Local: ['+dm.TcpServer.TCPBlockSocket.LocalName + '],   IP: ';
+              with dm.TcpServer.TCPBlockSocket do
+              begin
+                 IpList := TStringList.Create;
+                 try
+                    ResolveNameToIP( LocalName, IpList);
+                    For I := 0 to IpList.Count-1 do
+                       if pos(':',IpList[I]) = 0 then
+                          Txt := Txt + '   '+IpList[I] ;
+                 finally
+                    IpList.Free;
+                 end ;
+              end ;
+
+              WriteLn( Txt );
+              WriteLn( 'Porta: [' + dm.TcpServer.Port + ']') ;
+           end ;
+         end
+        else
+         begin
+           WriteLn( 'Monitorando TXT em: '+dm.ArqEntTXT);
+           WriteLn( 'Respostas gravadas em:'+dm.ArqSaiTXT);
+         end ;
+
+        if dm.GravarLog then
+           WriteLn( 'Log de comandos será gravado em: '+dm.ArqLogTXT) ;
+
+        { Se for NAO fiscal, desliga o AVISO antes de ativar }
+        if dm.ACBrECF1.Modelo = ecfNaoFiscal then
+        begin
+           ArqIni := (dm.ACBrECF1.ECF as TACBrECFNaoFiscal).NomeArqINI ;
+           if FileExists( ArqIni ) then
+           begin
+              Ini := TIniFile.Create( ArqIni ) ;
+              try
+                Ini.WriteString('Variaveis','Aviso_Legal','NAO');
+             finally
+                Ini.Free ;
+             end ;
+           end ;
+        end ;
+     except
+        on E : Exception do
+           WriteLn( E.Message ) ;
+     end ;
+
+     { Loop INFINITO, esperando arquivo TXT }
+     repeat
+        if FileExists( dm.ArqEntTXT ) then  { Existe arquivo para ler ? }
+        begin
+           try
+             dm.TipoCMD := 'A' ;
+             if ( UpperCase(ExtractFileName( dm.ArqEntTXT )) = 'BEMAFI32.CMD' ) then
+                dm.TipoCMD := 'B'
+             else if ( UpperCase(ExtractFileName( dm.ArqEntTXT )) = 'DARUMA.CMD' ) then
+                dm.TipoCMD := 'D' ;
+
+             dm.ComandosAProcessar.LoadFromFile( dm.ArqEntTXT );
+             DeleteFile( dm.ArqEntTXT );
+
+             if dm.TipoCMD = 'B' then
+                dm.ComandosAProcessar.Text := TraduzBemafi( dm.ComandosAProcessar.Text )
+             else if dm.TipoCMD = 'D' then
+                dm.ComandosAProcessar.Text := TraduzObserver( dm.ComandosAProcessar.Text ) ;
+
+           except
+             { Ignora Exceçoes na Tentativa de Leitura o Deleçao }
+           end ;
+
+           dm.Processar ;
+        end;
+
+        Sleep( dm.Intervalo ) ;
+
+     until False ;
+  EXCEPT
+    On E : Exception do
+    begin
+       if dm.GravarLog then
+          WriteToTXT(dm.ArqLogTXT, 'Exception: ' + E.Message);
+
+       raise ;
+    end ;
+  END ;
 
   // stop program loop
   Terminate;
@@ -120,10 +255,23 @@ end;
 constructor TACBrMonitorConsole.Create(TheOwner: TComponent);
 begin
   inherited Create(TheOwner);
+
+  dm := Tdm.Create(Self);
 end;
 
 destructor TACBrMonitorConsole.Destroy;
 begin
+  dm.ACBrECF1.Desativar ;
+  dm.ACBrCHQ1.Desativar ;
+  dm.ACBrGAV1.Desativar ;
+  dm.ACBrDIS1.Desativar ;
+  dm.ACBrLCB1.Desativar ;
+
+  dm.TcpServer.OnDesConecta := nil ;
+  dm.TCPServer.Ativo        := False ;    { Desliga TCP }
+
+  dm.Free ;
+
   inherited Destroy;
 end;
 
@@ -140,7 +288,10 @@ var
 
 begin
   Application:=TACBrMonitorConsole.Create(nil);
-  Application.Run;
-  Application.Free;
+  try
+     Application.Run;
+  finally
+     Application.Free;
+  end ;
 end.
 

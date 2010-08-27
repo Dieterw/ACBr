@@ -1,19 +1,19 @@
 <?xml version="1.0"?>
 <CONFIG>
   <ProjectOptions>
+    <Version Value="9"/>
     <PathDelim Value="\"/>
-    <Version Value="8"/>
     <General>
       <Flags>
         <LRSInOutputDirectory Value="False"/>
       </Flags>
       <MainUnit Value="0"/>
-      <TargetFileExt Value=".exe"/>
+      <Title Value="ECFTeste"/>
       <UseXPManifest Value="True"/>
       <ActiveWindowIndexAtStart Value="0"/>
     </General>
     <VersionInfo>
-      <StringTable Comments="" CompanyName="" FileDescription="" FileVersion="0.0.0.0" InternalName="" LegalCopyright="" LegalTrademarks="" OriginalFilename="" ProductName="" ProductVersion=""/>
+      <StringTable ProductVersion=""/>
     </VersionInfo>
     <PublishOptions>
       <Version Value="2"/>
@@ -38,7 +38,7 @@
         <PackageName Value="TurboPowerIPro"/>
       </Item3>
     </RequiredPackages>
-    <Units Count="72">
+    <Units Count="74">
       <Unit0>
         <Filename Value="ecfteste.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -46,8 +46,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="14"/>
-        <UsageCount Value="53"/>
-        <LoadedDesigner Value="True"/>
+        <UsageCount Value="54"/>
       </Unit0>
       <Unit1>
         <Filename Value="ecfteste1.pas"/>
@@ -55,11 +54,12 @@
         <ComponentName Value="Form1"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ECFTeste1"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="13"/>
-        <CursorPos X="32" Y="22"/>
-        <UsageCount Value="53"/>
+        <TopLine Value="846"/>
+        <CursorPos X="43" Y="865"/>
+        <UsageCount Value="54"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit1>
@@ -67,10 +67,10 @@
         <Filename Value="ecfteste1.lfm"/>
         <TopLine Value="1"/>
         <CursorPos X="37" Y="9"/>
-        <SyntaxHighlighter Value="LFM"/>
         <UsageCount Value="21"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
+        <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit2>
       <Unit3>
         <Filename Value="configuraserial.pas"/>
@@ -80,14 +80,14 @@
         <UnitName Value="ConfiguraSerial"/>
         <TopLine Value="21"/>
         <CursorPos X="32" Y="25"/>
-        <UsageCount Value="53"/>
+        <UsageCount Value="54"/>
       </Unit3>
       <Unit4>
         <Filename Value="configuraserial.lfm"/>
         <TopLine Value="199"/>
         <CursorPos X="4" Y="225"/>
-        <SyntaxHighlighter Value="LFM"/>
         <UsageCount Value="9"/>
+        <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit4>
       <Unit5>
         <Filename Value="efetuapagamento.pas"/>
@@ -95,11 +95,11 @@
         <ComponentName Value="frPagamento"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="EfetuaPagamento"/>
-        <EditorIndex Value="4"/>
+        <EditorIndex Value="6"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
-        <CursorPos X="20" Y="10"/>
-        <UsageCount Value="53"/>
+        <TopLine Value="90"/>
+        <CursorPos X="18" Y="102"/>
+        <UsageCount Value="54"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit5>
@@ -107,8 +107,8 @@
         <Filename Value="efetuapagamento.lfm"/>
         <TopLine Value="168"/>
         <CursorPos X="4" Y="194"/>
-        <SyntaxHighlighter Value="LFM"/>
         <UsageCount Value="9"/>
+        <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit6>
       <Unit7>
         <Filename Value="relatorio.pas"/>
@@ -117,14 +117,14 @@
         <UnitName Value="Relatorio"/>
         <TopLine Value="8"/>
         <CursorPos X="25" Y="31"/>
-        <UsageCount Value="53"/>
+        <UsageCount Value="54"/>
       </Unit7>
       <Unit8>
         <Filename Value="relatorio.lfm"/>
         <TopLine Value="182"/>
         <CursorPos X="4" Y="208"/>
-        <SyntaxHighlighter Value="LFM"/>
         <UsageCount Value="9"/>
+        <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit8>
       <Unit9>
         <Filename Value="sobre.pas"/>
@@ -133,14 +133,14 @@
         <UnitName Value="Sobre"/>
         <TopLine Value="100"/>
         <CursorPos X="1" Y="121"/>
-        <UsageCount Value="53"/>
+        <UsageCount Value="54"/>
       </Unit9>
       <Unit10>
         <Filename Value="sobre.lfm"/>
         <TopLine Value="1"/>
         <CursorPos X="34" Y="10"/>
-        <SyntaxHighlighter Value="LFM"/>
         <UsageCount Value="9"/>
+        <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit10>
       <Unit11>
         <Filename Value="vendeitem.pas"/>
@@ -149,14 +149,14 @@
         <UnitName Value="VendeItem"/>
         <TopLine Value="8"/>
         <CursorPos X="30" Y="15"/>
-        <UsageCount Value="53"/>
+        <UsageCount Value="54"/>
       </Unit11>
       <Unit12>
         <Filename Value="vendeitem.lfm"/>
         <TopLine Value="196"/>
         <CursorPos X="4" Y="222"/>
-        <SyntaxHighlighter Value="LFM"/>
         <UsageCount Value="9"/>
+        <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit12>
       <Unit13>
         <Filename Value="..\..\..\..\lazarus\components\ACBr\source\Pascal\ACBrECF.pas"/>
@@ -204,8 +204,8 @@
         <IsPartOfProject Value="True"/>
         <TopLine Value="1"/>
         <CursorPos X="10" Y="1"/>
-        <SyntaxHighlighter Value="None"/>
-        <UsageCount Value="47"/>
+        <UsageCount Value="48"/>
+        <DefaultSyntaxHighlighter Value="None"/>
       </Unit19>
       <Unit20>
         <Filename Value="C:\lazarus\components\turbopower_ipro\turbopoweripro.pas"/>
@@ -260,15 +260,15 @@
         <Filename Value="C:\lazarus\environmentoptions.xml"/>
         <TopLine Value="1"/>
         <CursorPos X="10" Y="17"/>
-        <SyntaxHighlighter Value="XML"/>
         <UsageCount Value="9"/>
+        <DefaultSyntaxHighlighter Value="XML"/>
       </Unit27>
       <Unit28>
         <Filename Value="C:\lazarus\tools\install\win\environmentoptions-win32.xml"/>
         <TopLine Value="1"/>
         <CursorPos X="67" Y="10"/>
-        <SyntaxHighlighter Value="XML"/>
         <UsageCount Value="9"/>
+        <DefaultSyntaxHighlighter Value="XML"/>
       </Unit28>
       <Unit29>
         <Filename Value="C:\lazarus\debugger\debugoptionsfrm.pas"/>
@@ -572,7 +572,7 @@
       <Unit70>
         <Filename Value="..\..\..\Fontes\ACBrSerial\ACBrECFSweda.pas"/>
         <UnitName Value="ACBrECFSweda"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="5"/>
         <WindowIndex Value="0"/>
         <TopLine Value="2451"/>
         <CursorPos X="35" Y="2464"/>
@@ -582,7 +582,6 @@
       <Unit71>
         <Filename Value="..\..\..\Fontes\ACBrSerial\ACBrECFClass.pas"/>
         <UnitName Value="ACBrECFClass"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1444"/>
@@ -590,124 +589,148 @@
         <UsageCount Value="10"/>
         <Loaded Value="True"/>
       </Unit71>
+      <Unit72>
+        <Filename Value="..\..\..\..\..\..\Lazarus\TOOLS\DJ_WebConsultas.pas"/>
+        <UnitName Value="DJ_WebConsultas"/>
+        <EditorIndex Value="3"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="824"/>
+        <CursorPos X="29" Y="844"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit72>
+      <Unit73>
+        <Filename Value="..\..\..\Fontes\ACBrDiversos\ACBrHTMLtoXML.pas"/>
+        <UnitName Value="ACBrHTMLtoXML"/>
+        <EditorIndex Value="4"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="49"/>
+        <CursorPos X="29" Y="64"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit73>
     </Units>
-    <JumpHistory Count="29" HistoryIndex="28">
+    <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="ecfteste1.pas"/>
-        <Caret Line="1728" Column="36" TopLine="1715"/>
+        <Caret Line="2665" Column="61" TopLine="2651"/>
       </Position1>
       <Position2>
         <Filename Value="ecfteste1.pas"/>
-        <Caret Line="8" Column="8" TopLine="1"/>
+        <Caret Line="2662" Column="25" TopLine="2652"/>
       </Position2>
       <Position3>
         <Filename Value="ecfteste1.pas"/>
-        <Caret Line="1724" Column="22" TopLine="1689"/>
+        <Caret Line="10" Column="81" TopLine="1"/>
       </Position3>
       <Position4>
         <Filename Value="ecfteste1.pas"/>
-        <Caret Line="1706" Column="38" TopLine="1689"/>
+        <Caret Line="9" Column="70" TopLine="1"/>
       </Position4>
       <Position5>
         <Filename Value="ecfteste1.pas"/>
-        <Caret Line="1716" Column="38" TopLine="1696"/>
+        <Caret Line="8" Column="43" TopLine="1"/>
       </Position5>
       <Position6>
         <Filename Value="ecfteste1.pas"/>
-        <Caret Line="2324" Column="1" TopLine="2295"/>
+        <Caret Line="2493" Column="18" TopLine="2480"/>
       </Position6>
       <Position7>
-        <Filename Value="..\..\..\Fontes\ACBrSerial\ACBrECF.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Filename Value="ecfteste1.pas"/>
+        <Caret Line="450" Column="61" TopLine="436"/>
       </Position7>
       <Position8>
-        <Filename Value="..\..\..\Fontes\ACBrSerial\ACBrECF.pas"/>
-        <Caret Line="138" Column="65" TopLine="123"/>
+        <Filename Value="ecfteste1.pas"/>
+        <Caret Line="392" Column="55" TopLine="378"/>
       </Position8>
       <Position9>
-        <Filename Value="..\..\..\Fontes\ACBrSerial\ACBrECF.pas"/>
-        <Caret Line="141" Column="27" TopLine="123"/>
+        <Filename Value="ecfteste1.pas"/>
+        <Caret Line="2143" Column="16" TopLine="2130"/>
       </Position9>
       <Position10>
-        <Filename Value="..\..\..\Fontes\ACBrSerial\ACBrECFSweda.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Filename Value="ecfteste1.pas"/>
+        <Caret Line="2132" Column="16" TopLine="2120"/>
       </Position10>
       <Position11>
-        <Filename Value="efetuapagamento.pas"/>
-        <Caret Line="8" Column="11" TopLine="1"/>
+        <Filename Value="ecfteste1.pas"/>
+        <Caret Line="2072" Column="13" TopLine="2059"/>
       </Position11>
       <Position12>
-        <Filename Value="efetuapagamento.pas"/>
-        <Caret Line="69" Column="45" TopLine="54"/>
+        <Filename Value="ecfteste1.pas"/>
+        <Caret Line="917" Column="13" TopLine="904"/>
       </Position12>
       <Position13>
         <Filename Value="ecfteste1.pas"/>
-        <Caret Line="8" Column="9" TopLine="1"/>
+        <Caret Line="807" Column="64" TopLine="793"/>
       </Position13>
       <Position14>
         <Filename Value="ecfteste1.pas"/>
-        <Caret Line="645" Column="48" TopLine="621"/>
+        <Caret Line="11" Column="17" TopLine="1"/>
       </Position14>
       <Position15>
-        <Filename Value="ecfteste1.pas"/>
-        <Caret Line="11" Column="11" TopLine="1"/>
+        <Filename Value="efetuapagamento.pas"/>
+        <Caret Line="10" Column="20" TopLine="1"/>
       </Position15>
       <Position16>
         <Filename Value="ecfteste1.pas"/>
-        <Caret Line="28" Column="23" TopLine="13"/>
+        <Caret Line="9" Column="17" TopLine="1"/>
       </Position16>
       <Position17>
         <Filename Value="ecfteste1.pas"/>
-        <Caret Line="27" Column="24" TopLine="13"/>
+        <Caret Line="1155" Column="50" TopLine="1153"/>
       </Position17>
       <Position18>
-        <Filename Value="..\..\..\Fontes\ACBrSerial\ACBrECF.pas"/>
-        <Caret Line="711" Column="31" TopLine="672"/>
+        <Filename Value="ecfteste1.pas"/>
+        <Caret Line="2073" Column="1" TopLine="2060"/>
       </Position18>
       <Position19>
-        <Filename Value="..\..\..\Fontes\ACBrSerial\ACBrECF.pas"/>
-        <Caret Line="120" Column="37" TopLine="115"/>
+        <Filename Value="ecfteste1.pas"/>
+        <Caret Line="2080" Column="1" TopLine="2067"/>
       </Position19>
       <Position20>
-        <Filename Value="..\..\..\Fontes\ACBrSerial\ACBrECFClass.pas"/>
-        <Caret Line="75" Column="35" TopLine="58"/>
+        <Filename Value="ecfteste1.pas"/>
+        <Caret Line="652" Column="54" TopLine="648"/>
       </Position20>
       <Position21>
-        <Filename Value="..\..\..\Fontes\ACBrSerial\ACBrECFClass.pas"/>
-        <Caret Line="439" Column="25" TopLine="424"/>
+        <Filename Value="ecfteste1.pas"/>
+        <Caret Line="653" Column="54" TopLine="649"/>
       </Position21>
       <Position22>
-        <Filename Value="..\..\..\Fontes\ACBrSerial\ACBrECFClass.pas"/>
-        <Caret Line="440" Column="27" TopLine="424"/>
+        <Filename Value="ecfteste1.pas"/>
+        <Caret Line="654" Column="54" TopLine="650"/>
       </Position22>
       <Position23>
-        <Filename Value="..\..\..\Fontes\ACBrSerial\ACBrECFClass.pas"/>
-        <Caret Line="470" Column="36" TopLine="455"/>
+        <Filename Value="ecfteste1.pas"/>
+        <Caret Line="1361" Column="1" TopLine="1347"/>
       </Position23>
       <Position24>
-        <Filename Value="..\..\..\Fontes\ACBrSerial\ACBrECFClass.pas"/>
-        <Caret Line="645" Column="34" TopLine="630"/>
+        <Filename Value="ecfteste1.pas"/>
+        <Caret Line="1346" Column="63" TopLine="1334"/>
       </Position24>
       <Position25>
-        <Filename Value="..\..\..\Fontes\ACBrSerial\ACBrECFClass.pas"/>
-        <Caret Line="646" Column="71" TopLine="630"/>
+        <Filename Value="ecfteste1.pas"/>
+        <Caret Line="665" Column="40" TopLine="650"/>
       </Position25>
       <Position26>
-        <Filename Value="..\..\..\Fontes\ACBrSerial\ACBrECFClass.pas"/>
-        <Caret Line="683" Column="68" TopLine="668"/>
+        <Filename Value="ecfteste1.pas"/>
+        <Caret Line="664" Column="40" TopLine="649"/>
       </Position26>
       <Position27>
-        <Filename Value="..\..\..\Fontes\ACBrSerial\ACBrECFClass.pas"/>
-        <Caret Line="684" Column="35" TopLine="668"/>
+        <Filename Value="ecfteste1.pas"/>
+        <Caret Line="670" Column="40" TopLine="655"/>
       </Position27>
       <Position28>
-        <Filename Value="..\..\..\Fontes\ACBrSerial\ACBrECFClass.pas"/>
-        <Caret Line="1303" Column="25" TopLine="1288"/>
+        <Filename Value="ecfteste1.pas"/>
+        <Caret Line="648" Column="3" TopLine="648"/>
       </Position28>
       <Position29>
-        <Filename Value="..\..\..\Fontes\ACBrSerial\ACBrECFClass.pas"/>
-        <Caret Line="1305" Column="23" TopLine="1288"/>
+        <Filename Value="ecfteste1.pas"/>
+        <Caret Line="647" Column="3" TopLine="647"/>
       </Position29>
+      <Position30>
+        <Filename Value="ecfteste1.pas"/>
+        <Caret Line="678" Column="95" TopLine="843"/>
+      </Position30>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>
@@ -726,6 +749,9 @@
       </Options>
     </Linking>
     <Other>
+      <CompilerMessages>
+        <UseMsgFile Value="True"/>
+      </CompilerMessages>
       <CompilerPath Value="$(CompPath)"/>
     </Other>
   </CompilerOptions>

@@ -1,11 +1,11 @@
 object Form1: TForm1
-  Left = 342
+  Left = 422
   Height = 400
-  Top = 374
-  Width = 499
+  Top = 325
+  Width = 514
   Caption = 'Teste de Impressora Fiscal'
   ClientHeight = 380
-  ClientWidth = 499
+  ClientWidth = 514
   Constraints.MinHeight = 400
   Constraints.MinWidth = 440
   Font.CharSet = ANSI_CHARSET
@@ -158,7 +158,7 @@ object Form1: TForm1
     Left = 0
     Height = 23
     Top = 357
-    Width = 499
+    Width = 514
     Panels = <    
       item
         Width = 80
@@ -172,18 +172,18 @@ object Form1: TForm1
     Left = 0
     Height = 317
     Top = 0
-    Width = 499
-    ActivePage = TabSheet3
+    Width = 514
+    ActivePage = TabSheet4
     Align = alClient
-    TabIndex = 3
+    TabIndex = 0
     TabOrder = 0
     object TabSheet4: TTabSheet
       Caption = 'ECF'
       ClientHeight = 291
-      ClientWidth = 491
+      ClientWidth = 506
       ImageIndex = 3
       object SbArqLog: TSpeedButton
-        Left = 452
+        Left = 467
         Height = 22
         Top = 216
         Width = 23
@@ -202,7 +202,7 @@ object Form1: TForm1
         ParentColor = False
       end
       object Label4: TLabel
-        Left = 148
+        Left = 140
         Height = 14
         Top = 8
         Width = 26
@@ -210,7 +210,7 @@ object Form1: TForm1
         ParentColor = False
       end
       object Label5: TLabel
-        Left = 267
+        Left = 260
         Height = 14
         Top = 8
         Width = 41
@@ -218,7 +218,7 @@ object Form1: TForm1
         ParentColor = False
       end
       object Label7: TLabel
-        Left = 331
+        Left = 327
         Height = 14
         Top = 8
         Width = 42
@@ -267,7 +267,7 @@ object Form1: TForm1
         TabOrder = 0
       end
       object cbxPorta: TComboBox
-        Left = 148
+        Left = 140
         Height = 21
         Top = 24
         Width = 105
@@ -296,77 +296,77 @@ object Form1: TForm1
         Text = 'Procurar'
       end
       object chTentar: TCheckBox
-        Left = 11
+        Left = 76
         Height = 19
-        Top = 68
+        Top = 66
         Width = 109
         Caption = 'Tentar Novamente'
         OnClick = chTentarClick
-        TabOrder = 5
+        TabOrder = 4
       end
       object chBloqueia: TCheckBox
-        Left = 11
+        Left = 76
         Height = 19
-        Top = 90
+        Top = 88
         Width = 138
         Caption = 'Bloqueia Mouse Teclado'
         Checked = True
         OnClick = chBloqueiaClick
         State = cbChecked
-        TabOrder = 7
+        TabOrder = 6
       end
       object chExibeMsg: TCheckBox
-        Left = 11
+        Left = 76
         Height = 19
-        Top = 113
+        Top = 111
         Width = 121
         Caption = 'Exibe Msg Aguarde...'
         Checked = True
         OnClick = chExibeMsgClick
         State = cbChecked
-        TabOrder = 9
+        TabOrder = 8
       end
       object chArredondaPorQtd: TCheckBox
-        Left = 195
+        Left = 260
         Height = 19
-        Top = 68
+        Top = 66
         Width = 174
         Caption = 'Arredondamento por Quantidade'
         OnClick = chArredondaPorQtdClick
-        TabOrder = 10
+        TabOrder = 5
       end
       object chGavetaSinalInvertido: TCheckBox
-        Left = 195
+        Left = 260
         Height = 19
-        Top = 90
+        Top = 88
         Width = 125
         Caption = 'Gaveta Sinal Invertido'
         OnClick = chGavetaSinalInvertidoClick
-        TabOrder = 4
+        TabOrder = 7
       end
       object mMsg: TMemo
         Left = 11
         Height = 41
         Top = 160
-        Width = 465
+        Width = 480
         Anchors = [akTop, akLeft, akRight]
         OnChange = mMsgChange
         ScrollBars = ssVertical
-        TabOrder = 6
+        TabOrder = 11
       end
       object edLog: TEdit
         Cursor = crIBeam
         Left = 56
         Height = 21
         Top = 216
-        Width = 396
+        Width = 411
         Anchors = [akTop, akLeft, akRight]
         OnChange = edLogChange
-        TabOrder = 8
+        TabOrder = 12
         Text = 'acbrlog.txt'
       end
       object seTimeOut: TSpinEdit
-        Left = 267
+        Left = 260
         Height = 21
         Top = 24
         Width = 46
@@ -376,7 +376,7 @@ object Form1: TForm1
         Value = 3
       end
       object seIntervaloAposComando: TSpinEdit
-        Left = 331
+        Left = 324
         Height = 21
         Top = 24
         Width = 54
@@ -387,11 +387,10 @@ object Form1: TForm1
         Value = 100
       end
       object btSerial: TBitBtn
-        Left = 388
-        Height = 28
-        Top = 120
-        Width = 88
-        Anchors = [akTop, akRight]
+        Left = 394
+        Height = 26
+        Top = 19
+        Width = 71
         Caption = 'Serial'
         Glyph.Data = {
           36030000424D3603000000000000360000002800000010000000100000000100
@@ -424,18 +423,63 @@ object Form1: TForm1
         ModalResult = 1
         NumGlyphs = 0
         OnClick = btSerialClick
-        TabOrder = 11
+        TabOrder = 10
+      end
+      object Label20: TLabel
+        Left = 3
+        Height = 14
+        Top = 255
+        Width = 48
+        Alignment = taRightJustify
+        Caption = 'Operador:'
+        ParentColor = False
+      end
+      object edOperador: TEdit
+        Cursor = crIBeam
+        Left = 56
+        Height = 21
+        Top = 248
+        Width = 101
+        TabOrder = 13
+      end
+      object Label22: TLabel
+        Left = 258
+        Height = 14
+        Top = 255
+        Width = 54
+        Caption = 'BandWidth'
+        ParentColor = False
+      end
+      object seBandWidth: TSpinEdit
+        Left = 324
+        Height = 21
+        Top = 248
+        Width = 54
+        Increment = 10
+        MaxValue = 1000
+        OnChange = seBandWidthChange
+        TabOrder = 14
+      end
+      object chDescricaoGrande: TCheckBox
+        Left = 260
+        Height = 19
+        Top = 111
+        Width = 106
+        Caption = 'Descrição Grande'
+        Checked = True
+        State = cbChecked
+        TabOrder = 9
       end
     end
     object TabSheet1: TTabSheet
       Caption = 'Cmd/Resp'
       ClientHeight = 291
-      ClientWidth = 491
+      ClientWidth = 506
       object Label2: TLabel
         Left = 0
         Height = 17
         Top = 54
-        Width = 491
+        Width = 506
         Align = alTop
         AutoSize = False
         Caption = 'Resposta'
@@ -446,7 +490,7 @@ object Form1: TForm1
         Left = 0
         Height = 15
         Top = 0
-        Width = 491
+        Width = 506
         Align = alTop
         AutoSize = False
         Caption = 'Comando Enviado'
@@ -457,7 +501,7 @@ object Form1: TForm1
         Left = 0
         Height = 220
         Top = 71
-        Width = 491
+        Width = 506
         Align = alClient
         Font.Color = clBlack
         Font.Height = 13
@@ -473,7 +517,7 @@ object Form1: TForm1
         Left = 0
         Height = 39
         Top = 15
-        Width = 491
+        Width = 506
         Align = alTop
         TabOrder = 0
         WantReturns = False
@@ -482,23 +526,23 @@ object Form1: TForm1
     object TabSheet2: TTabSheet
       Caption = 'Cupom'
       ClientHeight = 291
-      ClientWidth = 491
+      ClientWidth = 506
       ImageIndex = 1
       object Panel1: TPanel
         Left = 0
         Height = 250
         Top = 41
-        Width = 491
+        Width = 506
         Align = alClient
         BevelOuter = bvNone
         ClientHeight = 250
-        ClientWidth = 491
+        ClientWidth = 506
         TabOrder = 0
         object mBobina: TMemo
           Left = 0
           Height = 250
           Top = 0
-          Width = 491
+          Width = 506
           Align = alClient
           Font.CharSet = ANSI_CHARSET
           Font.Color = clBlack
@@ -515,7 +559,7 @@ object Form1: TForm1
           Left = 0
           Height = 250
           Top = 0
-          Width = 491
+          Width = 506
           Align = alClient
           FixedTypeface = 'Courier New'
           DefaultTypeFace = 'default'
@@ -532,11 +576,11 @@ object Form1: TForm1
         Left = 0
         Height = 41
         Top = 0
-        Width = 491
+        Width = 506
         Align = alTop
         BevelOuter = bvNone
         ClientHeight = 41
-        ClientWidth = 491
+        ClientWidth = 506
         TabOrder = 1
         object cbMemoHTML: TCheckBox
           Left = 272
@@ -572,13 +616,13 @@ object Form1: TForm1
     object TabSheet3: TTabSheet
       Caption = 'RFD'
       ClientHeight = 291
-      ClientWidth = 491
+      ClientWidth = 506
       ImageIndex = 2
       object PageControl2: TPageControl
         Left = 0
         Height = 236
         Top = 55
-        Width = 491
+        Width = 506
         ActivePage = TabSheet6
         Align = alClient
         TabIndex = 0
@@ -586,7 +630,7 @@ object Form1: TForm1
         object TabSheet6: TTabSheet
           Caption = 'Sw.House'
           ClientHeight = 210
-          ClientWidth = 483
+          ClientWidth = 498
           ImageIndex = 1
           object Label8: TLabel
             Left = 12
@@ -761,12 +805,12 @@ object Form1: TForm1
         end
         object TabSheet5: TTabSheet
           Caption = 'ACBrRFD.INI'
-          ClientHeight = 205
+          ClientHeight = 210
           ClientWidth = 483
           object Panel4: TPanel
             Left = 0
             Height = 34
-            Top = 171
+            Top = 176
             Width = 483
             Align = alBottom
             BevelOuter = bvNone
@@ -794,7 +838,7 @@ object Form1: TForm1
           end
           object mRFDParam: TMemo
             Left = 0
-            Height = 171
+            Height = 176
             Top = 0
             Width = 483
             Align = alClient
@@ -811,14 +855,14 @@ object Form1: TForm1
         Left = 0
         Height = 55
         Top = 0
-        Width = 491
+        Width = 506
         Align = alTop
         BevelOuter = bvNone
         ClientHeight = 55
-        ClientWidth = 491
+        ClientWidth = 506
         TabOrder = 0
         object sbDirRFD: TSpeedButton
-          Left = 458
+          Left = 473
           Height = 22
           Top = 23
           Width = 23
@@ -856,7 +900,7 @@ object Form1: TForm1
           Left = 134
           Height = 18
           Top = 23
-          Width = 324
+          Width = 339
           Anchors = [akTop, akLeft, akRight]
           Font.Color = clBlack
           Font.Height = 11
@@ -874,10 +918,10 @@ object Form1: TForm1
     Height = 40
     Hint = 'Sobre o ACBrMonitor ?'
     Top = 317
-    Width = 499
+    Width = 514
     Align = alBottom
     ClientHeight = 40
-    ClientWidth = 499
+    ClientWidth = 514
     TabOrder = 1
     TabStop = True
     object Image1: TImage
@@ -885,7 +929,7 @@ object Form1: TForm1
       Left = 1
       Height = 38
       Top = 1
-      Width = 497
+      Width = 512
       Align = alClient
       OnClick = Image1Click
       Picture.Data = {
@@ -1361,13 +1405,19 @@ object Form1: TForm1
       }
     end
     object bAtivar: TBitBtn
-      Left = 390
+      Left = 405
       Height = 32
       Top = 4
       Width = 96
       Anchors = [akTop, akRight]
       Caption = 'Ativar'
       Default = True
+      Font.CharSet = ANSI_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Pitch = fpVariable
+      Font.Style = [fsBold]
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000120B0000120B00000000000000000000FFFFFFFFFFFF
@@ -1399,12 +1449,13 @@ object Form1: TForm1
       ModalResult = 1
       NumGlyphs = 0
       OnClick = bAtivarClick
+      ParentFont = False
       TabOrder = 0
     end
   end
   object MainMenu1: TMainMenu
-    left = 72
-    top = 280
+    left = 16
+    top = 72
     object Principal1: TMenuItem
       Caption = 'Principal'
       object Ativcar1: TMenuItem
@@ -1470,6 +1521,26 @@ object Form1: TForm1
           Caption = 'IE'
           OnClick = IE1Click
         end
+        object mIM: TMenuItem
+          Caption = 'IM'
+          OnClick = mIMClick
+        end
+        object mPAF: TMenuItem
+          Caption = 'PAF'
+          OnClick = mPAFClick
+        end
+        object mUsuarioAtual: TMenuItem
+          Caption = 'Usuário Atual'
+          OnClick = mUsuarioAtualClick
+        end
+        object mCliche: TMenuItem
+          Caption = 'Cliche'
+          OnClick = mClicheClick
+        end
+        object mDataHoraSwBasico: TMenuItem
+          Caption = 'Data Hora Sw.Basico'
+          OnClick = mDataHoraSwBasicoClick
+        end
       end
       object N19: TMenuItem
         Caption = '-'
@@ -1495,6 +1566,10 @@ object Form1: TForm1
         object Termica1: TMenuItem
           Caption = 'É Termica ?'
           OnClick = Termica1Click
+        end
+        object mIdentificaConsumidor: TMenuItem
+          Caption = 'Identifica Consumidor Rodapé ?'
+          OnClick = mIdentificaConsumidorClick
         end
       end
       object N3: TMenuItem
@@ -1537,6 +1612,18 @@ object Form1: TForm1
           Caption = 'Num COO Inicial'
           OnClick = NumCOOInicial1Click
         end
+        object mNumGNF: TMenuItem
+          Caption = 'Num GNF'
+          OnClick = mNumGNFClick
+        end
+        object mNumGRG: TMenuItem
+          Caption = 'Num GRG'
+          OnClick = mNumGRGClick
+        end
+        object mNumCDC: TMenuItem
+          Caption = 'Num CDC'
+          OnClick = mNumCDCClick
+        end
         object N26: TMenuItem
           Caption = '-'
         end
@@ -1551,36 +1638,72 @@ object Form1: TForm1
         object N22: TMenuItem
           Caption = '-'
         end
-        object TotalCancelamentos1: TMenuItem
-          Caption = 'Total Cancelamentos'
-          OnClick = TotalCancelamentos1Click
+        object mTotaisICMS: TMenuItem
+          Caption = 'Totais ICMS'
+          object mICMSTotalCancelamentos: TMenuItem
+            Caption = 'Total Cancelamentos'
+            OnClick = mICMSTotalCancelamentosClick
+          end
+          object mICMSTotalDescontos: TMenuItem
+            Caption = 'Total Descontos'
+            OnClick = mICMSTotalDescontosClick
+          end
+          object mICMSTotalAcrescimos: TMenuItem
+            Caption = 'Total Acrescimos'
+            OnClick = mICMSTotalAcrescimosClick
+          end
+          object MenuItem1: TMenuItem
+            Caption = '-'
+          end
+          object mICMSTotalSubstituicaoTributaria: TMenuItem
+            Caption = 'Total Substituicao Tributaria'
+            OnClick = mICMSTotalSubstituicaoTributariaClick
+          end
+          object mICMSTotalNaoTributado: TMenuItem
+            Caption = 'Total Nao Tributado'
+            OnClick = mICMSTotalNaoTributadoClick
+          end
+          object mICMSTotalIsencao: TMenuItem
+            Caption = 'Total Isençao'
+            OnClick = mICMSTotalIsencaoClick
+          end
         end
-        object TotalDescontos1: TMenuItem
-          Caption = 'Total Descontos'
-          OnClick = TotalDescontos1Click
-        end
-        object TotalAcrescimos1: TMenuItem
-          Caption = 'Total Acrescimos'
-          OnClick = TotalAcrescimos1Click
-        end
-        object TotalNoFiscal1: TMenuItem
-          Caption = 'Total Não Fiscal'
-          OnClick = TotalNoFiscal1Click
+        object mTotaisISSQN: TMenuItem
+          Caption = 'Totais ISSQN'
+          object MenuItem2: TMenuItem
+            Caption = 'Total Cancelamentos'
+            OnClick = MenuItem2Click
+          end
+          object MenuItem3: TMenuItem
+            Caption = 'Total Descontos'
+            OnClick = MenuItem3Click
+          end
+          object MenuItem4: TMenuItem
+            Caption = 'Total Acrescimos'
+            OnClick = MenuItem4Click
+          end
+          object MenuItem5: TMenuItem
+            Caption = '-'
+          end
+          object MenuItem6: TMenuItem
+            Caption = 'Total Substituicao Tributaria'
+            OnClick = MenuItem6Click
+          end
+          object MenuItem7: TMenuItem
+            Caption = 'Total Nao Tributado'
+            OnClick = MenuItem7Click
+          end
+          object MenuItem8: TMenuItem
+            Caption = 'Total Isençao'
+            OnClick = MenuItem8Click
+          end
         end
         object N21: TMenuItem
           Caption = '-'
         end
-        object TotalSubstituicaoTributaria1: TMenuItem
-          Caption = 'Total Substituicao Tributaria'
-          OnClick = TotalSubstituicaoTributaria1Click
-        end
-        object TotalNaoTributado1: TMenuItem
-          Caption = 'Total Nao Tributado'
-          OnClick = TotalNaoTributado1Click
-        end
-        object TotalIsencao1: TMenuItem
-          Caption = 'Total Isencao'
-          OnClick = TotalIsencao1Click
+        object mTotalNaoFiscal: TMenuItem
+          Caption = 'Total Não Fiscal'
+          OnClick = mTotalNaoFiscalClick
         end
       end
       object N4: TMenuItem
@@ -1618,6 +1741,10 @@ object Form1: TForm1
           Caption = 'Ler Totais Comprovante Nao Fiscal'
           OnClick = LerTotaisComprovanetNaoFiscal1Click
         end
+      end
+      object mCarregaRelatorioGerenciais: TMenuItem
+        Caption = 'Carrega Relatórios Gerenciais'
+        OnClick = mCarregaRelatorioGerenciaisClick
       end
       object CarregaUnidadesdeMedida1: TMenuItem
         Caption = 'Carrega Unidades de Medida'
@@ -1661,6 +1788,13 @@ object Form1: TForm1
           Caption = 'Imprime Linha Cupom Vinculado'
           OnClick = ImprimeLinhaVinculado1Click
         end
+        object MenuItem9: TMenuItem
+          Caption = '-'
+        end
+        object mTesteVinculado: TMenuItem
+          Caption = 'Teste de Vinculado'
+          OnClick = mTesteVinculadoClick
+        end
       end
       object RelatorioGerencial1: TMenuItem
         Caption = 'Relatorio Gerencial'
@@ -1683,6 +1817,10 @@ object Form1: TForm1
       object PularLinhas1: TMenuItem
         Caption = 'Pular Linhas'
         OnClick = PularLinhas1Click
+      end
+      object mCortaPapel: TMenuItem
+        Caption = 'Corta Papel'
+        OnClick = mCortaPapelClick
       end
       object N15: TMenuItem
         Caption = '-'
@@ -1716,6 +1854,10 @@ object Form1: TForm1
       object N23: TMenuItem
         Caption = '-'
       end
+      object mLeituraXSerial: TMenuItem
+        Caption = 'Leitura X Serial'
+        OnClick = mLeituraXSerialClick
+      end
       object LeituraMFD1: TMenuItem
         Caption = 'Leitura MFD Serial'
         object PorCOO1: TMenuItem
@@ -1725,6 +1867,31 @@ object Form1: TForm1
         object PorPeriodo1: TMenuItem
           Caption = 'Por Periodo'
           OnClick = PorPeriodo1Click
+        end
+      end
+      object MenuItem10: TMenuItem
+        Caption = '-'
+      end
+      object MenuItem11: TMenuItem
+        Caption = 'Espelho MFD DLL'
+        object mESPMFDDLLCoo: TMenuItem
+          Caption = 'Por COO'
+          OnClick = mESPMFDDLLCooClick
+        end
+        object mESPMFDDLLPeriodo: TMenuItem
+          Caption = 'Por Periodo'
+          OnClick = mESPMFDDLLPeriodoClick
+        end
+      end
+      object MenuItem12: TMenuItem
+        Caption = 'Arquivo MFD DLL'
+        object mARQMFDDLLCoo: TMenuItem
+          Caption = 'Por COO'
+          OnClick = mARQMFDDLLCooClick
+        end
+        object mARQMFDDLLPeriodo: TMenuItem
+          Caption = 'Por Periodo'
+          OnClick = mARQMFDDLLPeriodoClick
         end
       end
     end
@@ -1817,6 +1984,17 @@ object Form1: TForm1
       object N16: TMenuItem
         Caption = '-'
       end
+      object mSangria: TMenuItem
+        Caption = 'Sangria'
+        OnClick = mSangriaClick
+      end
+      object mSuprimento: TMenuItem
+        Caption = 'Suprimento'
+        OnClick = mSuprimentoClick
+      end
+      object MenuItem15: TMenuItem
+        Caption = '-'
+      end
       object AbreNoFiscal1: TMenuItem
         Caption = 'Abre Não Fiscal'
         OnClick = AbreNoFiscal1Click
@@ -1892,7 +2070,22 @@ object Form1: TForm1
         Caption = 'Programa Unidade Medida'
         OnClick = ProgramaUnidadeMedida1Click
       end
+      object mProgramaRelatorioGerencial: TMenuItem
+        Caption = 'Programa Relatorio Gerencial'
+        OnClick = mProgramaRelatorioGerencialClick
+      end
       object N13: TMenuItem
+        Caption = '-'
+      end
+      object mIdentificaOperador: TMenuItem
+        Caption = 'Identifica Operador'
+        OnClick = mIdentificaOperadorClick
+      end
+      object mIdentificaPAF: TMenuItem
+        Caption = 'Identifica PAF'
+        OnClick = mIdentificaPAFClick
+      end
+      object MenuItem16: TMenuItem
         Caption = '-'
       end
       object HorarioVerao1: TMenuItem
@@ -1969,11 +2162,11 @@ object Form1: TForm1
     )
     OnBobinaAdicionaLinhas = ACBrECF1BobinaAdicionaLinhas
     ArqLOG = 'acbrlog.txt'
-    left = 128
-    top = 280
+    left = 24
+    top = 184
   end
   object ACBrRFD1: TACBrRFD
-    left = 180
-    top = 280
+    left = 88
+    top = 184
   end
 end

@@ -922,7 +922,7 @@ end;
 
 procedure TFrmACBrMonitor.cbxBOLFiltroChange ( Sender: TObject ) ;
 begin
-   deBOLDirArquivo.Enabled := cbxBOLFiltro.ItemIndex > 0;
+   deBOLDirArquivo.Enabled := (cbxBOLFiltro.ItemIndex > 0) ;
 end;
 
 procedure TFrmACBrMonitor.cbxBOLF_JChange ( Sender: TObject ) ;
@@ -953,7 +953,7 @@ begin
    begin
      if not DirectoryExists(deBOLDirArquivo.Text) then
      begin
-       deBOLDirArquivo.Clear;
+       deBOLDirArquivo.SetFocus;
        raise Exception.Create('Diretorio destino do Arquivo não encontrado.');
      end;
    end;
@@ -965,7 +965,7 @@ begin
    begin
      if not DirectoryExists(deBOLDirLogo.Text) then
      begin
-       deBOLDirLogo.Clear;
+       deBOLDirLogo.SetFocus;
        raise Exception.Create('Diretorio de Logos não encontrado.');
      end;
    end;
@@ -977,7 +977,7 @@ begin
    begin
      if not DirectoryExists(deBolDirRemessa.Text) then
      begin
-       deBolDirRemessa.Clear;
+       deBolDirRemessa.SetFocus;
        raise Exception.Create('Diretorio de Arquivos Remessa não encontrado.');
      end;
    end;

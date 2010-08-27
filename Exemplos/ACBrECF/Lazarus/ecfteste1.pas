@@ -5,10 +5,10 @@ unit ECFTeste1;
 interface
 
 uses
-  ACBrECF, ACBrBase, ACBrRFD, ACBrDevice, ACBrECFClass, ACBrConsts, LCLIntf,
-  Classes, SysUtils, LResources, Forms, Controls, Graphics, LCLType, LMessages,
-  Dialogs, DateUtils, IpHtml, Menus, Buttons, StdCtrls, ExtCtrls, ComCtrls, Spin,
-  strutils;
+  ACBrECF, ACBrBase, ACBrRFD, ACBrDevice, ACBrConsts, LCLIntf,
+  Classes, SysUtils, LResources, Forms, Controls, Graphics, LCLType,
+  Dialogs, DateUtils, IpHtml, Menus, Buttons, StdCtrls, ExtCtrls, ComCtrls,
+  Spin, strutils;{%h-}
 
 type
   TSimpleIpHtml = class(TIpHtml)
@@ -49,6 +49,7 @@ type
     cbxPorta: TComboBox;
     chArredondaPorQtd: TCheckBox;
     chBloqueia: TCheckBox;
+    chDescricaoGrande : TCheckBox ;
     Cheque1: TMenuItem;
     ChequePronto1: TMenuItem;
     chExibeMsg: TCheckBox;
@@ -69,6 +70,7 @@ type
     Dispositivos1: TMenuItem;
     edDirRFD: TEdit;
     edLog: TEdit;
+    edOperador : TEdit ;
     edSH_Aplicativo: TEdit;
     edSH_CNPJ: TEdit;
     edSH_COO: TEdit;
@@ -104,6 +106,53 @@ type
     ImprimeLinhaRelatorio1: TMenuItem;
     ImprimeporNReduaoZ1: TMenuItem;
     ImprimeporPeriodo1: TMenuItem;
+    Label20 : TLabel ;
+    Label22 : TLabel ;
+    mDataHoraSwBasico : TMenuItem ;
+    MenuItem1 : TMenuItem ;
+    mCortaPapel : TMenuItem ;
+    MenuItem10 : TMenuItem ;
+    MenuItem11 : TMenuItem ;
+    MenuItem12 : TMenuItem ;
+    mARQMFDDLLPeriodo : TMenuItem ;
+    mCarregaRelatorioGerenciais : TMenuItem ;
+    mProgramaRelatorioGerencial : TMenuItem ;
+    mIdentificaOperador : TMenuItem ;
+    mIdentificaPAF : TMenuItem ;
+    MenuItem16 : TMenuItem ;
+    mSangria : TMenuItem ;
+    mSuprimento : TMenuItem ;
+    MenuItem15 : TMenuItem ;
+    mESPMFDDLLCoo : TMenuItem ;
+    mARQMFDDLLCoo : TMenuItem ;
+    mESPMFDDLLPeriodo : TMenuItem ;
+    mLeituraXSerial : TMenuItem ;
+    mTesteVinculado : TMenuItem ;
+    MenuItem2 : TMenuItem ;
+    MenuItem3 : TMenuItem ;
+    MenuItem4 : TMenuItem ;
+    MenuItem5 : TMenuItem ;
+    MenuItem6 : TMenuItem ;
+    MenuItem7 : TMenuItem ;
+    MenuItem8 : TMenuItem ;
+    MenuItem9 : TMenuItem ;
+    mICMSTotalIsencao : TMenuItem ;
+    mICMSTotalNaoTributado : TMenuItem ;
+    mICMSTotalSubstituicaoTributaria : TMenuItem ;
+    mICMSTotalAcrescimos : TMenuItem ;
+    mICMSTotalDescontos : TMenuItem ;
+    mICMSTotalCancelamentos : TMenuItem ;
+    mTotaisISSQN : TMenuItem ;
+    mTotaisICMS : TMenuItem ;
+    mNumGNF : TMenuItem ;
+    mNumGRG : TMenuItem ;
+    mNumCDC : TMenuItem ;
+    mIdentificaConsumidor : TMenuItem ;
+    mPAF : TMenuItem ;
+    mCliche : TMenuItem ;
+    mUsuarioAtual : TMenuItem ;
+    mIM : TMenuItem ;
+    seBandWidth : TSpinEdit ;
     wbBobina: TIpHtmlPanel;
     Label1: TLabel;
     Label10: TLabel;
@@ -220,14 +269,8 @@ type
     TestaPodeAbrirCupom1: TMenuItem;
     Testar1: TMenuItem;
     TestedeVelocidade1: TMenuItem;
-    TotalAcrescimos1: TMenuItem;
-    TotalCancelamentos1: TMenuItem;
-    TotalDescontos1: TMenuItem;
-    TotalIsencao1: TMenuItem;
-    TotalNaoTributado1: TMenuItem;
-    TotalNoFiscal1: TMenuItem;
     TotalPago1: TMenuItem;
-    TotalSubstituicaoTributaria1: TMenuItem;
+    mTotalNaoFiscal: TMenuItem;
     UltimoItemVendido1: TMenuItem;
     Utilitrios1: TMenuItem;
     Variaveis1: TMenuItem;
@@ -235,6 +278,41 @@ type
     VendaBruta1: TMenuItem;
     VenderItem1: TMenuItem;
     procedure cbxModeloChange(Sender: TObject);
+    procedure mARQMFDDLLCooClick(Sender : TObject) ;
+    procedure mARQMFDDLLPeriodoClick(Sender : TObject) ;
+    procedure mCarregaRelatorioGerenciaisClick(Sender : TObject) ;
+    procedure mClicheClick(Sender : TObject) ;
+    procedure mCortaPapelClick(Sender : TObject) ;
+    procedure mDataHoraSwBasicoClick(Sender : TObject) ;
+    procedure MenuItem2Click(Sender : TObject) ;
+    procedure MenuItem3Click(Sender : TObject) ;
+    procedure MenuItem4Click(Sender : TObject) ;
+    procedure MenuItem6Click(Sender : TObject) ;
+    procedure MenuItem7Click(Sender : TObject) ;
+    procedure MenuItem8Click(Sender : TObject) ;
+    procedure mESPMFDDLLCooClick(Sender : TObject) ;
+    procedure mESPMFDDLLPeriodoClick(Sender : TObject) ;
+    procedure mICMSTotalAcrescimosClick(Sender : TObject) ;
+    procedure mICMSTotalDescontosClick(Sender : TObject) ;
+    procedure mICMSTotalIsencaoClick(Sender : TObject) ;
+    procedure mICMSTotalNaoTributadoClick(Sender : TObject) ;
+    procedure mICMSTotalSubstituicaoTributariaClick(Sender : TObject) ;
+    procedure mIdentificaConsumidorClick(Sender : TObject) ;
+    procedure mIdentificaOperadorClick(Sender : TObject) ;
+    procedure mIdentificaPAFClick(Sender : TObject) ;
+    procedure mIMClick(Sender : TObject) ;
+    procedure mLeituraXSerialClick(Sender : TObject) ;
+    procedure mNumCDCClick(Sender : TObject) ;
+    procedure mNumGNFClick(Sender : TObject) ;
+    procedure mNumGRGClick(Sender : TObject) ;
+    procedure mPAFClick(Sender : TObject) ;
+    procedure mICMSTotalCancelamentosClick(Sender : TObject) ;
+    procedure mProgramaRelatorioGerencialClick(Sender : TObject) ;
+    procedure mSangriaClick(Sender : TObject) ;
+    procedure mSuprimentoClick(Sender : TObject) ;
+    procedure mTesteVinculadoClick(Sender : TObject) ;
+    procedure mTotalNaoFiscalClick(Sender : TObject) ;
+    procedure mUsuarioAtualClick(Sender : TObject) ;
     procedure Sair1Click(Sender: TObject);
     procedure bAtivarClick(Sender: TObject);
     procedure cbxPortaChange(Sender: TObject);
@@ -244,6 +322,7 @@ type
     procedure chBloqueiaClick(Sender: TObject);
     procedure chExibeMsgClick(Sender: TObject);
     procedure mMsgChange(Sender: TObject);
+    procedure seBandWidthChange(Sender : TObject) ;
     procedure Testar1Click(Sender: TObject);
     procedure ACBrECF1MsgAguarde(Mensagem : String);
     procedure DataHora1Click(Sender: TObject);
@@ -314,19 +393,13 @@ type
     procedure cbMemoHTMLClick(Sender: TObject);
     procedure bBobinaLimparClick(Sender: TObject);
     procedure bBobinaParamsClick(Sender: TObject);
-    procedure ACBrECF1BobinaAdicionaLinhas(const Linhas, Operacao: String);
+    procedure ACBrECF1BobinaAdicionaLinhas(const {%H-}Linhas, {%H-}Operacao: String);
     procedure DadosReducaoZ1Click(Sender: TObject);
     procedure CNPJIE1Click(Sender: TObject);
     procedure NumCRZ1Click(Sender: TObject);
     procedure NumCOOInicial1Click(Sender: TObject);
     procedure VendaBruta1Click(Sender: TObject);
     procedure GrandeTotal1Click(Sender: TObject);
-    procedure TotalCancelamentos1Click(Sender: TObject);
-    procedure TotalDescontos1Click(Sender: TObject);
-    procedure TotalAcrescimos1Click(Sender: TObject);
-    procedure TotalSubstituicaoTributaria1Click(Sender: TObject);
-    procedure TotalNaoTributado1Click(Sender: TObject);
-    procedure TotalIsencao1Click(Sender: TObject);
     procedure LerTotaisAliquotas1Click(Sender: TObject);
     procedure LerTotaisFormadePagamento1Click(Sender: TObject);
     procedure LerTotaisComprovanetNaoFiscal1Click(Sender: TObject);
@@ -366,7 +439,6 @@ type
     procedure otalNoFiscal1Click(Sender: TObject);
     procedure DataMovimento1Click(Sender: TObject);
     procedure DadosUltimaReduoZ1Click(Sender: TObject);
-    procedure TotalNoFiscal1Click(Sender: TObject);
     procedure btSerialClick(Sender: TObject);
   private
     { Private declarations }
@@ -379,7 +451,7 @@ type
     procedure WB_LoadHTML(WebBrowser: TIpHtmlPanel; HTMLCode: string);
     procedure WB_ScrollToBottom(WebBrowser1: TIpHtmlPanel);
     procedure WB_ScrollToTop(WebBrowser1: TIpHtmlPanel);
-    procedure HTMLGetImageX(Sender: TIpHtmlNode; const URL: string;
+    procedure HTMLGetImageX(Sender: TIpHtmlNode; const {%H-}URL: string;
       var Picture: TPicture);
   public
     { Public declarations }
@@ -504,6 +576,504 @@ begin
   end ;
 end;
 
+procedure TForm1.mARQMFDDLLCooClick(Sender : TObject) ;
+Var
+  Arquivo: String ;
+  cCOOIni, cCOOFim : String ;
+  nCOOIni, nCOOFim : Integer ;
+begin
+  Arquivo := 'c:\temp\teste.txt' ;
+  if not InputQuery('Arquivo MFD DLL',
+                    'Nome Arquivo:', Arquivo ) then
+     exit ;
+
+  cCOOIni := '0' ;
+  cCOOFim := '0' ;
+
+  if not InputQuery('Arquivo MFD DLL',
+                'Entre com o COO Inicial:', cCOOIni ) then
+     exit ;
+  nCOOIni := StrToIntDef(cCOOIni,-1) ;
+  if nCOOIni < 0 then exit ;
+
+  if not InputQuery('Arquivo MFD DLL',
+                'Entre com o COO Final:', cCOOFim ) then
+     exit ;
+  nCOOFim := StrToIntDef(cCOOFim,-1) ;
+  if nCOOFim < 0 then exit ;
+
+  ACBrECF1.ArquivoMFD_DLL(nCOOIni, nCOOFim, Arquivo);
+  mResp.Lines.Add('---------------------------------');
+end;
+
+procedure TForm1.mARQMFDDLLPeriodoClick(Sender : TObject) ;
+Var
+  Arquivo: String ;
+  cDatIni, cDatFim : String ;
+  dDatIni, dDatFim : TDateTime ;
+begin
+  Arquivo := 'c:\temp\teste.txt' ;
+  if not InputQuery('Arquivo MFD DLL',
+                    'Nome Arquivo:', Arquivo ) then
+     exit ;
+
+  cDatIni := '01/'+FormatDateTime('mm/yy',now) ;
+  cDatFim := FormatDateTime('dd/mm/yy',now) ;
+
+  if not InputQuery('Arquivo MFD DLL',
+                'Entre com o a Data Inicial (DD/MM/AA):', cDatIni ) then
+     exit ;
+  try
+     dDatIni := StrToDateTime( StringReplace(cDatIni,'/', DateSeparator,
+                                [rfReplaceAll] ) ) ;
+  except
+     exit ;
+  end ;
+
+  if not InputQuery('Arquivo MFD DLL',
+                'Entre com o a Data Final (DD/MM/AA):', cDatFim ) then
+     exit ;
+  try
+     dDatFim := StrToDateTime( StringReplace(cDatFim,'/', DateSeparator,
+                                [rfReplaceAll] ) ) ;
+  except
+     exit
+  end ;
+
+  ACBrECF1.ArquivoMFD_DLL(dDatIni, dDatFim, Arquivo);
+  mResp.Lines.Add('---------------------------------');
+
+end;
+
+procedure TForm1.mCarregaRelatorioGerenciaisClick(Sender : TObject) ;
+var
+   A: Integer;
+begin
+  ACBrECF1.CarregaRelatoriosGerenciais ;
+
+  for A := 0 to ACBrECF1.RelatoriosGerenciais.Count -1 do
+  begin
+     if ACBrECF1.RelatoriosGerenciais[A].Descricao <> '' then
+        mResp.Lines.Add( 'Relatorio Gerencial: '+ACBrECF1.RelatoriosGerenciais[A].Indice+' -> '+
+           ACBrECF1.RelatoriosGerenciais[A].Descricao);
+  end ;
+  mResp.Lines.Add('---------------------------------');
+end;
+
+procedure TForm1.mClicheClick(Sender : TObject) ;
+begin
+  mResp.Lines.Add( 'Cliche: ('+ ACBrECF1.Cliche+')' );
+  AtualizaMemos ;
+end;
+
+procedure TForm1.mCortaPapelClick(Sender : TObject) ;
+Var
+  Resp : TModalResult ;
+begin
+  Resp := MessageDlg('Corte Parcial ?',mtConfirmation,mbYesNoCancel,0) ;
+
+  if Resp = mrCancel then
+     exit ;
+
+  ACBrECF1.CortaPapel( (Resp = mrYes) );
+end;
+
+procedure TForm1.mDataHoraSwBasicoClick(Sender : TObject) ;
+begin
+  mResp.Lines.Add( 'Data Hora Sw.Básico: ('+ FormatDateTime('dd/mm/yy hh:nn:ss',
+                   ACBrECF1.DataHoraSB) +')' );
+  AtualizaMemos ;
+end;
+
+procedure TForm1.MenuItem2Click(Sender : TObject) ;
+begin
+  mResp.Lines.Add( 'TotalCancelamentosISSQN: ('+ FloatToStr(ACBrECF1.TotalCancelamentosISSQN)+')' );
+  AtualizaMemos ;
+end;
+
+procedure TForm1.MenuItem3Click(Sender : TObject) ;
+begin
+  mResp.Lines.Add( 'TotalDescontosISSQN: ('+ FloatToStr(ACBrECF1.TotalDescontosISSQN)+')' );
+  AtualizaMemos ;
+end;
+
+procedure TForm1.MenuItem4Click(Sender : TObject) ;
+begin
+  mResp.Lines.Add( 'TotalAcrescimosISSQN: ('+ FloatToStr(ACBrECF1.TotalAcrescimosISSQN)+')' );
+  AtualizaMemos ;
+end;
+
+procedure TForm1.MenuItem6Click(Sender : TObject) ;
+begin
+  mResp.Lines.Add( 'TotalSubstituicaoTributariaISSQN: ('+ FloatToStr(ACBrECF1.TotalSubstituicaoTributariaISSQN)+')' );
+  AtualizaMemos ;
+end;
+
+procedure TForm1.MenuItem7Click(Sender : TObject) ;
+begin
+  mResp.Lines.Add( 'TotalNaoTributadoISSQN: ('+ FloatToStr(ACBrECF1.TotalNaoTributadoISSQN)+')' );
+  AtualizaMemos ;
+end;
+
+procedure TForm1.MenuItem8Click(Sender : TObject) ;
+begin
+  mResp.Lines.Add( 'TotalIsencaoISSQN: ('+ FloatToStr(ACBrECF1.TotalIsencaoISSQN)+')' );
+  AtualizaMemos ;
+end;
+
+procedure TForm1.mESPMFDDLLCooClick(Sender : TObject) ;
+Var
+  Arquivo: String ;
+  cCOOIni, cCOOFim : String ;
+  nCOOIni, nCOOFim : Integer ;
+begin
+  Arquivo := 'c:\temp\teste.txt' ;
+  if not InputQuery('Espelho MFD DLL',
+                    'Nome Arquivo:', Arquivo ) then
+     exit ;
+
+  cCOOIni := '0' ;
+  cCOOFim := '0' ;
+
+  if not InputQuery('Espelho MFD DLL',
+                'Entre com o COO Inicial:', cCOOIni ) then
+     exit ;
+  nCOOIni := StrToIntDef(cCOOIni,-1) ;
+  if nCOOIni < 0 then exit ;
+
+  if not InputQuery('Espelho MFD DLL',
+                'Entre com o COO Final:', cCOOFim ) then
+     exit ;
+  nCOOFim := StrToIntDef(cCOOFim,-1) ;
+  if nCOOFim < 0 then exit ;
+
+  ACBrECF1.EspelhoMFD_DLL(nCOOIni, nCOOFim, Arquivo);
+  mResp.Lines.Add('---------------------------------');
+end;
+
+procedure TForm1.mESPMFDDLLPeriodoClick(Sender : TObject) ;
+Var
+  Arquivo: String ;
+  cDatIni, cDatFim : String ;
+  dDatIni, dDatFim : TDateTime ;
+begin
+  Arquivo := 'c:\temp\teste.txt' ;
+  if not InputQuery('Espelho MFD DLL',
+                    'Nome Arquivo:', Arquivo ) then
+     exit ;
+
+  cDatIni := '01/'+FormatDateTime('mm/yy',now) ;
+  cDatFim := FormatDateTime('dd/mm/yy',now) ;
+
+  if not InputQuery('Espelho MFD DLL',
+                'Entre com o a Data Inicial (DD/MM/AA):', cDatIni ) then
+     exit ;
+  try
+     dDatIni := StrToDateTime( StringReplace(cDatIni,'/', DateSeparator,
+                                [rfReplaceAll] ) ) ;
+  except
+     exit ;
+  end ;
+
+  if not InputQuery('Espelho MFD DLL',
+                'Entre com o a Data Final (DD/MM/AA):', cDatFim ) then
+     exit ;
+  try
+     dDatFim := StrToDateTime( StringReplace(cDatFim,'/', DateSeparator,
+                                [rfReplaceAll] ) ) ;
+  except
+     exit
+  end ;
+
+  ACBrECF1.EspelhoMFD_DLL(dDatIni, dDatFim, Arquivo);
+  mResp.Lines.Add('---------------------------------');
+
+end;
+
+procedure TForm1.mICMSTotalAcrescimosClick(Sender : TObject) ;
+begin
+  mResp.Lines.Add( 'TotalAcrescimos: ('+ FloatToStr(ACBrECF1.TotalAcrescimos)+')' );
+  AtualizaMemos ;
+end;
+
+procedure TForm1.mICMSTotalDescontosClick(Sender : TObject) ;
+begin
+  mResp.Lines.Add( 'TotalDescontos: ('+ FloatToStr(ACBrECF1.TotalDescontos)+')' );
+  AtualizaMemos ;
+end;
+
+procedure TForm1.mICMSTotalIsencaoClick(Sender : TObject) ;
+begin
+  mResp.Lines.Add( 'TotalIsencao: ('+ FloatToStr(ACBrECF1.TotalIsencao)+')' );
+  AtualizaMemos ;
+end;
+
+procedure TForm1.mICMSTotalNaoTributadoClick(Sender : TObject) ;
+begin
+  mResp.Lines.Add( 'TotalNaoTributado: ('+ FloatToStr(ACBrECF1.TotalNaoTributado)+')' );
+  AtualizaMemos ;
+end;
+
+procedure TForm1.mICMSTotalSubstituicaoTributariaClick(Sender : TObject) ;
+begin
+  mResp.Lines.Add( 'TotalSubstituicaoTributaria: ('+ FloatToStr(ACBrECF1.TotalSubstituicaoTributaria)+')' );
+  AtualizaMemos ;
+end;
+
+procedure TForm1.mIdentificaConsumidorClick(Sender : TObject) ;
+begin
+  mResp.Lines.Add( 'Identifica Consumidor no Rodapé: '+
+     IfThen( ACBrECF1.IdentificaConsumidorRodape , 'SIM', 'NAO') );
+  AtualizaMemos ;
+end;
+
+procedure TForm1.mIdentificaOperadorClick(Sender : TObject) ;
+Var
+  Operador : String ;
+begin
+  Operador := edOperador.Text ;
+  if not InputQuery('Identifica Operador',
+                    'Entre com o Nome do Operador', Operador ) then
+     exit ;
+
+  if Operador <> '' then
+  begin
+     ACBrECF1.IdentificaOperador( Operador );
+     edOperador.Text := ACBrECF1.Operador ;
+  end ;
+end;
+
+procedure TForm1.mIdentificaPAFClick(Sender : TObject) ;
+Var
+  Linha1, Linha2 : String ;
+begin
+  Linha1 := ACBrECF1.PAF ;
+  Linha2 := copy(Linha1, pos('|',Linha1)+1, Length(Linha1) ) ;
+  Linha1 := copy(Linha1, 1, pos('|',Linha1)-1) ;
+  if not InputQuery('Identifica PAF (Programa Aplicativo Fiscal)',
+                    'Linhas 1:', Linha1 ) then
+     exit ;
+
+  if not InputQuery('Identifica PAF (Programa Aplicativo Fiscal)',
+                    'Linhas 2:', Linha2 ) then
+     exit ;
+
+  if Linha1 + Linha2 <> '' then
+  begin
+     ACBrECF1.IdentificaPAF(Linha1, Linha2);
+  end ;
+end;
+
+procedure TForm1.mIMClick(Sender : TObject) ;
+begin
+  mResp.Lines.Add( 'IM: ('+ ACBrECF1.IM+')' );
+  AtualizaMemos ;
+end;
+
+procedure TForm1.mLeituraXSerialClick(Sender : TObject) ;
+Var
+  Linhas : TStringList ;
+  I      : Integer ;
+  Arquivo: String ;
+begin
+  Arquivo := ' ' ;
+  if not InputQuery('LeituraX Serial',
+                    'Nome Arquivo (vazio lista no Memo):', Arquivo ) then
+     exit ;
+
+  Arquivo := Trim(Arquivo) ;
+  if Arquivo <> '' then
+     ACBrECF1.LeituraXSerial(Arquivo)
+  else
+   begin
+     Linhas := TStringList.Create ;
+     try
+        ACBrECF1.LeituraXSerial( Linhas );
+
+        For I := 0 to Linhas.Count - 1 do
+           mResp.Lines.Add(Linhas[I]) ;
+     finally
+        Linhas.Free ;
+     end ;
+   end ;
+  mResp.Lines.Add('---------------------------------');
+end;
+
+procedure TForm1.mNumCDCClick(Sender : TObject) ;
+begin
+  mResp.Lines.Add( 'Num.CDC: ('+ ACBrECF1.NumCDC +')' );
+  AtualizaMemos ;
+end;
+
+procedure TForm1.mNumGNFClick(Sender : TObject) ;
+begin
+  mResp.Lines.Add( 'Num.GNF: ('+ ACBrECF1.NumGNF +')' );
+  AtualizaMemos ;
+end;
+
+procedure TForm1.mNumGRGClick(Sender : TObject) ;
+begin
+  mResp.Lines.Add( 'Num.GRG: ('+ ACBrECF1.NumGRG +')' );
+  AtualizaMemos ;
+end;
+
+procedure TForm1.mPAFClick(Sender : TObject) ;
+begin
+  mResp.Lines.Add( 'PAF: ('+ ACBrECF1.PAF+')' );
+  AtualizaMemos ;
+end;
+
+procedure TForm1.mICMSTotalCancelamentosClick(Sender : TObject) ;
+begin
+  mResp.Lines.Add( 'TotalCancelamentos: ('+ FloatToStr(ACBrECF1.TotalCancelamentos)+')' );
+  AtualizaMemos ;
+end;
+
+procedure TForm1.mProgramaRelatorioGerencialClick(Sender : TObject) ;
+var
+   rg:String;
+begin
+  rg := '' ;
+  if not InputQuery('Programaçao de Relatório Gerencial',
+                    'Entre com a Descrição do Relatório Gerencial:', rg ) then
+     exit ;
+  if MessageDlg('O Relatório Gerencial: ['+rg+'] será programado.'+sLineBreak+sLineBreak+
+                'Cuidado a programação de Relatórios Gerenciais é irreversivel'+sLineBreak+
+                'Confirma a operação ?',mtConfirmation,mbYesNoCancel,0) <> mrYes then
+     exit ;
+  ACBrECF1.ProgramaRelatoriosGerenciais( rg );
+end;
+
+procedure TForm1.mSangriaClick(Sender : TObject) ;
+  Var CNF, FPG : String ;
+      Valor : String ;
+begin
+  CNF := 'SANGRIA' ;
+  FPG := 'DINHEIRO' ;
+  Valor  := '10' ;
+
+  if not InputQuery('Sangria',
+                    'Entre com o Valor da Sangria', Valor ) then
+     exit ;
+
+  if not InputQuery('Sangria',
+                    'Entre com a Descrição do Comprovante Não Fiscal', CNF ) then
+     exit ;
+
+  if not InputQuery('Sangria',
+                    'Entre com a Descrição da Forrma de Pagamento', FPG ) then
+     exit ;
+
+  ACBrECF1.Sangria( StrToFloat(Valor), 'TESTE DE SANGRIA', CNF, FPG ) ;
+
+  mResp.Lines.Add( 'Sangria: '+ Valor+' '+ CNF +' '+FPG );
+  AtualizaMemos ;
+end;
+
+procedure TForm1.mSuprimentoClick(Sender : TObject) ;
+  Var CNF, FPG : String ;
+      Valor : String ;
+begin
+  CNF := 'SUPRIMENTO' ;
+  FPG := 'DINHEIRO' ;
+  Valor  := '10' ;
+
+  if not InputQuery('Suprimento',
+                    'Entre com o Valor do Suprimento', Valor ) then
+     exit ;
+
+  if not InputQuery('Suprimento',
+                    'Entre com a Descrição do Comprovante Não Fiscal', CNF ) then
+     exit ;
+
+  if not InputQuery('Suprimento',
+                    'Entre com a Descrição da Forrma de Pagamento', FPG ) then
+     exit ;
+
+  ACBrECF1.Suprimento( StrToFloat(Valor), 'TESTE DE SUPRIMENTO' , CNF, FPG ) ;
+
+  mResp.Lines.Add( 'Suprimento: '+ Valor+' '+ CNF +' '+FPG );
+  AtualizaMemos ;
+end;
+
+procedure TForm1.mTesteVinculadoClick(Sender : TObject) ;
+Var cCupons, cFPG, cCOO : String ;
+    nCupons, J : Integer ;
+    tIni : TDateTime ;
+begin
+  ACBrECF1.CarregaFormasPagamento ;
+  if ACBrECF1.FormasPagamento.Count < 1 then
+     raise Exception.Create('Nenhuma Forma de Pagamento programada no ECF');
+
+  cCupons := '1' ;
+  if not InputQuery('Teste de Vinculado',
+                'Numero de Cupons a imprimir:', cCupons ) then
+     exit ;
+
+  cFPG := '02' ;
+  if not InputQuery('Teste de Vinculado',
+                'Forma de Pagamento a utilizar:', cFPG ) then
+     exit ;
+
+  if ACBrECF1.AchaFPGIndice(cFPG) = nil then
+     raise Exception.Create('Forma de pagamento '+cFPG+' não encontrada');
+
+  nCupons := StrToIntDef(cCupons,0) ;
+  if nCupons < 1 then
+     exit ;
+
+  For J := 1 to nCupons do
+  begin
+     tIni := Now ;
+     mResp.Lines.Add('Iniciando Cupom: '+IntToStr(nCupons)+ ' - '+ DateTimeToStr(tIni) ) ;
+     ACBrECF1.AbreCupom();
+     mResp.Lines.Add('Cupom Aberto: '+  FormatFloat('###.##',SecondSpan(tIni,Now))+' segundos') ;
+
+     ACBrECF1.VendeItem( '7654321',
+                         'TESTE DE PRODUTO, CUPOM: '+IntToStrZero(nCupons,3),
+                         'NN',1,1,0,'UN') ;
+     mResp.Lines.Add('Item Vendido: '+  FormatFloat('###.##',SecondSpan(tIni,Now))+' segundos');
+
+     ACBrECF1.SubtotalizaCupom( );
+     mResp.Lines.Add('SubTotalizado: '+  FormatFloat('###.##',SecondSpan(tIni,Now))+' segundos');
+
+     { Efetuando pagamento na FPG informada }
+     ACBrECF1.EfetuaPagamento(cFPG, 1 , 'TESTE DE VINCULADO', True);
+     mResp.Lines.Add('Pagamento Efetuado: '+  FormatFloat('###.##',SecondSpan(tIni,Now))+' segundos');
+
+     ACBrECF1.FechaCupom('TESTE DE CUPOM VINCULADO');
+     mResp.Lines.Add('Finalizado Cupom: '+FormatFloat('###.##',SecondSpan(tIni,Now))+' segundos') ;
+
+     cCOO := ACBrECF1.NumCupom ;
+     ACBrECF1.CupomVinculado(cCOO, cFPG, 1, frRelatorio.mRelat.Lines, 2);
+{
+     ACBrECF1.AbreCupomVinculado(cCOO, cFPG, 1);
+     mResp.Lines.Add('Abrindo Vinculado: '+FormatFloat('###.##',SecondSpan(tIni,Now))+' segundos') ;
+     ACBrECF1.LinhaCupomVinculado( frRelatorio.mRelat.Lines.Text ) ;
+     ACBrECF1.PulaLinhas  ;
+     ACBrECF1.AcionaGuilhotina ;
+     ACBrECF1.LinhaCupomVinculado( frRelatorio.mRelat.Lines.Text ) ;
+     mResp.Lines.Add('Imprimindo Linhas Vinculado: '+FormatFloat('###.##',SecondSpan(tIni,Now))+' segundos') ;
+     ACBrECF1.FechaRelatorio ;
+     mResp.Lines.Add('Finalizado Vinculado: '+FormatFloat('###.##',SecondSpan(tIni,Now))+' segundos') ;
+}
+     mResp.Lines.Add('---------------------------------');
+     AtualizaMemos ;
+  end ;
+end;
+
+procedure TForm1.mTotalNaoFiscalClick(Sender : TObject) ;
+begin
+  mResp.Lines.Add( 'TotalNaoFiscal: ('+ FloatToStr(ACBrECF1.TotalNaoFiscal)+')' );
+  AtualizaMemos ;
+end;
+
+procedure TForm1.mUsuarioAtualClick(Sender : TObject) ;
+begin
+  mResp.Lines.Add( 'UsuarioAtual: ('+ ACBrECF1.UsuarioAtual+')' );
+  AtualizaMemos ;
+end;
+
 procedure TForm1.Sair1Click(Sender: TObject);
 begin
   close ;
@@ -595,6 +1165,11 @@ begin
   end ;
 
   ACBrECF1.MsgAguarde := copy(Msg, 1, Length(Msg)-1 ) ;
+end;
+
+procedure TForm1.seBandWidthChange(Sender : TObject) ;
+begin
+  ACBrECF1.Device.MaxBandwidth := seBandWidth.Value ;
 end;
 
 procedure TForm1.Testar1Click(Sender: TObject);
@@ -1054,13 +1629,11 @@ begin
 end;
 
 procedure TForm1.TestedeVelocidade1Click(Sender: TObject);
-Var cItens : String ;
-    nItens, I : Integer ;
+Var cItens, cCupons : String ;
+    nItens, nCupons, I, J : Integer ;
     tIni,tFim : TDateTime ;
     Resp        : TModalResult ;
-    SubTot, Pago, Desc: Double ;
-
-//  Parcela   : Double ;
+    SubTot, Desc: Double ;
 begin
   ACBrECF1.CarregaFormasPagamento ;
   if ACBrECF1.FormasPagamento.Count < 1 then
@@ -1071,6 +1644,11 @@ begin
                 'Numero de Itens a imprimir:', cItens ) then
      exit ;
 
+  cCupons := '1' ;
+  if not InputQuery('Teste de Velocidade',
+                'Numero de Cupons a imprimir:', cCupons ) then
+     exit ;
+
   Resp := MessageDlg('Monitorar estado do ECF ?',mtConfirmation,
                              mbYesNoCancel,0) ;
   if Resp = mrCancel then
@@ -1079,76 +1657,78 @@ begin
   nItens := StrToIntDef(cItens,0) ;
   if nItens < 1 then
      exit ;
+  nCupons := StrToIntDef(cCupons,0) ;
+  if nCupons < 1 then
+     exit ;
 
-  Form1.Enabled:= False;
+  Form1.Enabled := False ;
   try
-    WB_LoadHTML(wbBobina, '<html></html>');
+     For J := 1 to nCupons do
+     begin
+        tIni := Now ;
+        mResp.Lines.Add('Imprimindo '+cItens+ ' itens.') ;
+        mResp.Lines.Add('Iniciando Cupom: '+DateTimeToStr(tIni)) ;
+        ACBrECF1.AbreCupom();
+        mResp.Lines.Add('Cupom Aberto: '+  FormatFloat('###.##',SecondSpan(tIni,Now))+' segundos') ;
+        if Resp = mrYes then
+           mResp.Lines.Add('Estado ECF: '+EstadoECF) ;
 
-    tIni := Now ;
-    mResp.Lines.Add('Imprimindo '+cItens+ ' itens.') ;
-    mResp.Lines.Add('Iniciando Cupom: '+DateTimeToStr(tIni)) ;
-    ACBrECF1.AbreCupom();
-    mResp.Lines.Add('Cupom Aberto: '+  FormatFloat('###.##',SecondSpan(tIni,Now))+' segundos') ;
-    if Resp = mrYes then
-       mResp.Lines.Add('Estado ECF: '+EstadoECF) ;
+        For i := 1 to nItens do
+        begin
+           if i = 1 then
+              if Resp = mrYes then
+                 mResp.Lines.Add('Estado ECF: '+EstadoECF) ;
 
-    For i := 1 to nItens do
-    begin
-       if i = 1 then
-          if Resp = mrYes then
-             mResp.Lines.Add('Estado ECF: '+EstadoECF) ;
+           ACBrECF1.VendeItem( IntToStrZero(i,3),
+                               'DESCRICAO PRODUTO: '+IntToStrZero(i,3),
+                               'NN',1,i/100,0,'UN') ;
+          { Aguarda 1 segundo ou até o ECF ficar Em linha novamente }
+          ACBrECF1.EmLinha( 1 ) ;
+          mResp.Lines.Add('Item '+IntToStr(i)+': '+  FormatFloat('###.##',SecondSpan(tIni,Now))+' segundos');
+          { Semelhante ao "AguardaImpressao := True", porém é mais rápido, pois no
+            método "VerificaFimImpressao" alem de verificado o "EmLinha" também é
+            solicitado o Status do ECF }
+        end ;
 
-       ACBrECF1.VendeItem( '7654321'+IntToStrZero(i,6),                        {13 chars}
-                           'DESCRICAO DO PRODUTO NUMERO: '+IntToStrZero(i,6),  {35 chars}
-                           'NN',i,i/100,0,'UN') ;
-      { Aguarda 1 segundo ou até o ECF ficar Em linha novamente }
-      ACBrECF1.EmLinha( 1 ) ;
-      mResp.Lines.Add('Item '+IntToStr(i)+': '+  FormatFloat('###.##',SecondSpan(tIni,Now))+' segundos');
-      { Semelhante ao "AguardaImpressao := True", porém é mais rápido, pois no
-        método "VerificaFimImpressao" alem de verificado o "EmLinha" também é
-        solicitado o Status do ECF }
-    end ;
+        SubTot := ACBrECF1.Subtotal ;
+        Desc   := 0 ;
+        if SubTot >= 1  then
+           Desc := Frac( SubTot ) * -1 ;
+        ACBrECF1.SubtotalizaCupom( Desc );
+        mResp.Lines.Add('SubTotalizado: '+  FormatFloat('###.##',SecondSpan(tIni,Now))+' segundos');
 
-    SubTot := ACBrECF1.Subtotal ;
-    Desc   := 0 ;
-    if SubTot >= 1  then
-       Desc := Frac( SubTot ) * -1 ;
-    ACBrECF1.SubtotalizaCupom( Desc );
-    mResp.Lines.Add('SubTotalizado: '+  FormatFloat('###.##',SecondSpan(tIni,Now))+' segundos');
+        if Resp = mrYes then
+           mResp.Lines.Add('Estado ECF: '+EstadoECF) ;
 
-    if Resp = mrYes then
-       mResp.Lines.Add('Estado ECF: '+EstadoECF) ;
+      //  ACBrECF1.AbreGaveta ;
 
-  //  ACBrECF1.AbreGaveta ;
+        { Executando todos os Pagamentos disponiveis }
+      (*  Parcela := max(  RoundTo(ACBrECF1.Subtotal/ACBrECF1.FormasPagamento.Count,-2),
+                         0.01) ;
+        For i := 1 to ACBrECF1.FormasPagamento.Count - 1 do
+           Try
+              ACBrECF1.EfetuaPagamento(ACBrECF1.FormasPagamento[i].Indice,  Parcela,
+                                  'OBSERVACAO PAGAMENTO: '+ IntToStrZero(i+1,2) );
+           except
+              Break ;
+           end ;
+      *)
+        { Efetuando ultimo pagamento no Item 0, deve zerar o Saldo a pagar }
+        ACBrECF1.EfetuaPagamento(ACBrECF1.FormasPagamento[0].Indice,
+           (ACBrECF1.Subtotal - ACBrECF1.TotalPago), 'ZERANDO SALDO A PAGAR RESTANTE');
+        mResp.Lines.Add('Pagamento Efetuado: '+  FormatFloat('###.##',SecondSpan(tIni,Now))+' segundos');
+        if Resp = mrYes then
+           mResp.Lines.Add('Estado ECF: '+EstadoECF) ;
 
-    { Executando todos os Pagamentos disponiveis }
-  (*  Parcela := max(  RoundTo(ACBrECF1.Subtotal/ACBrECF1.FormasPagamento.Count,-2),
-                     0.01) ;
-    For i := 1 to ACBrECF1.FormasPagamento.Count - 1 do
-       Try
-          ACBrECF1.EfetuaPagamento(ACBrECF1.FormasPagamento[i].Indice,  Parcela,
-                              'OBSERVACAO PAGAMENTO: '+ IntToStrZero(i+1,2) );
-       except
-          Break ;
-       end ;
-  *)
-    { Efetuando ultimo pagamento no Item 0, deve zerar o Saldo a pagar }
-    SubTot := ACBrECF1.Subtotal ;
-    Pago   := ACBrECF1.TotalPago ;
-    ACBrECF1.EfetuaPagamento(ACBrECF1.FormasPagamento[0].Indice, (SubTot - Pago),
-       'ZERANDO SALDO A PAGAR RESTANTE');
-    mResp.Lines.Add('Pagamento Efetuado: '+  FormatFloat('###.##',SecondSpan(tIni,Now))+' segundos');
-    if Resp = mrYes then
-       mResp.Lines.Add('Estado ECF: '+EstadoECF) ;
-
-    ACBrECF1.FechaCupom('TESTE DE CUPOM');
-    tFim := Now ;
-    mResp.Lines.Add('Finalizado em: '+DateTimeToStr(tFim)) ;
-    mResp.Lines.Add('Diferença: '+ FormatFloat('###.##',SecondSpan(tIni,tFim))+' segundos' ) ;
-    mResp.Lines.Add('---------------------------------');
-    AtualizaMemos ;
+        ACBrECF1.FechaCupom('TESTE DE CUPOM');
+        tFim := Now ;
+        mResp.Lines.Add('Finalizado em: '+DateTimeToStr(tFim)) ;
+        mResp.Lines.Add('Diferença: '+ FormatFloat('###.##',SecondSpan(tIni,tFim))+' segundos' ) ;
+        mResp.Lines.Add('---------------------------------');
+        AtualizaMemos ;
+     end ;
   finally
-    Form1.Enabled:= True;
+     Form1.Enabled := True ;
   end ;
 end;
 
@@ -1507,13 +2087,13 @@ begin
            ACBrECF1.UnidadesMedida[A].Descricao);
   end ;
   mResp.Lines.Add('---------------------------------');
-
 end;
 
 procedure TForm1.ProgramaUnidadeMedida1Click(Sender: TObject);
 var
    um:String;
 begin
+  um := '' ;
   if not InputQuery('Programaçao de Unidades de Medida',
                     'Entre com a Descrição da Unidade de Medida:', um ) then
      exit ;
@@ -1574,6 +2154,7 @@ procedure TForm1.ImprimeLinhaRelatorio1Click(Sender: TObject);
 var
    Linha :String;
 begin
+  Linha := '' ;
   if not InputQuery('Inpressão de Linha NÃO Fiscal',
                     'Digite a linha a imprimir',
                     Linha ) then
@@ -1585,6 +2166,7 @@ procedure TForm1.ImprimeLinhaVinculado1Click(Sender: TObject);
 var
    Linha :String;
 begin
+  Linha := '' ;
   if not InputQuery('Digite a linha a imprimir',
                     '', Linha ) then
      exit ;
@@ -1815,45 +2397,9 @@ begin
   AtualizaMemos ;
 end;
 
-procedure TForm1.TotalCancelamentos1Click(Sender: TObject);
-begin
-  mResp.Lines.Add( 'TotalCancelamentos: ('+ FloatToStr(ACBrECF1.TotalCancelamentos)+')' );
-  AtualizaMemos ;
-end;
-
-procedure TForm1.TotalDescontos1Click(Sender: TObject);
-begin
-  mResp.Lines.Add( 'TotalDescontos: ('+ FloatToStr(ACBrECF1.TotalDescontos)+')' );
-  AtualizaMemos ;
-end;
-
-procedure TForm1.TotalAcrescimos1Click(Sender: TObject);
-begin
-  mResp.Lines.Add( 'TotalAcrescimos: ('+ FloatToStr(ACBrECF1.TotalAcrescimos)+')' );
-  AtualizaMemos ;
-end;
-
 procedure TForm1.otalNoFiscal1Click(Sender: TObject);
 begin
   mResp.Lines.Add( 'TotalNaoFiscal: ('+ FloatToStr(ACBrECF1.TotalNaoFiscal)+')' );
-  AtualizaMemos ;
-end;
-
-procedure TForm1.TotalSubstituicaoTributaria1Click(Sender: TObject);
-begin
-  mResp.Lines.Add( 'TotalSubstituicaoTributaria: ('+ FloatToStr(ACBrECF1.TotalSubstituicaoTributaria)+')' );
-  AtualizaMemos ;
-end;
-
-procedure TForm1.TotalNaoTributado1Click(Sender: TObject);
-begin
-  mResp.Lines.Add( 'TotalNaoTributado: ('+ FloatToStr(ACBrECF1.TotalNaoTributado)+')' );
-  AtualizaMemos ;
-end;
-
-procedure TForm1.TotalIsencao1Click(Sender: TObject);
-begin
-  mResp.Lines.Add( 'TotalIsencao: ('+ FloatToStr(ACBrECF1.TotalIsencao)+')' );
   AtualizaMemos ;
 end;
 
@@ -1971,6 +2517,7 @@ end;
 procedure TForm1.AbreNoFiscal1Click(Sender: TObject);
   Var CPF_CNPJ : String ;
 begin
+  CPF_CNPJ := '' ;
   if not InputQuery('Abre Comprovante Não Fiscal',
                     'Se necessário, informe o CPF ou CNPJ do cliente', CPF_CNPJ ) then
      exit ;
@@ -2143,8 +2690,12 @@ begin
      INI.WriteBool('ECF','ExibeMsgAguarde',chExibeMsg.Checked);
      INI.WriteBool('ECF','ArredondaPorQtd',chArredondaPorQtd.Checked);
      INI.WriteBool('ECF','GavetaSinalInvertido',chGavetaSinalInvertido.Checked);
+     INI.WriteBool('ECF','DescricaoGrande',chDescricaoGrande.Checked);
      INI.WriteString('ECF','MensagemAguarde',StringReplace(mMsg.Text,sLineBreak,'|',[rfReplaceAll]));
      INI.WriteString('ECF','ArqLog',edLog.Text);
+     INI.WriteString('ECF','SerialParams',ACBrECF1.Device.ParamsString);
+     INI.WriteString('ECF','Operador',ACBrECF1.Operador);
+     INI.WriteInteger('ECF','BandWidth',seBandWidth.Value);
 
      INI.WriteBool('RFD','GerarRFD',chRFD.Checked);
      INI.WriteString('RFD','DirRFD',edDirRFD.Text);
@@ -2180,9 +2731,13 @@ begin
      chBloqueia.Checked := INI.ReadBool('ECF','BloqueiaMouseTeclado',chBloqueia.Checked);
      chExibeMsg.Checked := INI.ReadBool('ECF','ExibeMsgAguarde',chExibeMsg.Checked);
      chArredondaPorQtd.Checked := INI.ReadBool('ECF','ArredondaPorQtd',chArredondaPorQtd.Checked);
+     chDescricaoGrande.Checked := INI.ReadBool('ECF','DescricaoGrande',chDescricaoGrande.Checked);
      chGavetaSinalInvertido.Checked := INI.ReadBool('ECF','GavetaSinalInvertido',chGavetaSinalInvertido.Checked);
      mMsg.Text := StringReplace(INI.ReadString('ECF','MensagemAguarde',mMsg.Text),'|',sLineBreak,[rfReplaceAll]);
      edLog.Text := INI.ReadString('ECF','ArqLog',edLog.Text);
+     ACBrECF1.Device.ParamsString := INI.ReadString('ECF','SerialParams','');
+     edOperador.Text := INI.ReadString('ECF','Operador','');
+     seBandWidth.Value := INI.ReadInteger('ECF','BandWidth',seBandWidth.Value);
 
      chRFD.Checked := INI.ReadBool('RFD','GerarRFD',chRFD.Checked);
      edDirRFD.Text := INI.ReadString('RFD','DirRFD',edDirRFD.Text);
@@ -2282,12 +2837,6 @@ end;
 procedure TForm1.DadosUltimaReduoZ1Click(Sender: TObject);
 begin
   mResp.Lines.Add( 'Dados da Ultima Redução Z' + sLineBreak + ACBrECF1.DadosUltimaReducaoZ );
-  AtualizaMemos ;
-end;
-
-procedure TForm1.TotalNoFiscal1Click(Sender: TObject);
-begin
-  mResp.Lines.Add( 'TotalNaoFiscal: ('+ FloatToStr(ACBrECF1.TotalNaoFiscal)+')' );
   AtualizaMemos ;
 end;
 

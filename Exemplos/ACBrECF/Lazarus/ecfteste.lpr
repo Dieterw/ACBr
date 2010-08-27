@@ -11,6 +11,8 @@ uses
   { you can add units after this }, ECFTeste1, ConfiguraSerial,
 EfetuaPagamento, Relatorio, Sobre, VendeItem, TurboPowerIPro, ACBrSerial;
 
+{$R *.res}
+
 begin
   Application.Initialize;
   Application.CreateForm(TForm1, Form1);

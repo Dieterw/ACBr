@@ -99,6 +99,7 @@ procedure TfrPagamento.SpeedButton1Click(Sender: TObject);
 Var Descricao : String ;
     FPG : TACBrECFFormaPagamento ;  { Necessita de uses ACBrECF }
 begin
+  Descricao := '';
   if InputQuery('Pesquisa Descrição Forma Pagamento',
                 'Entre com a Descrição a Localizar ou Cadastrar(Bematech)',
                 Descricao) then

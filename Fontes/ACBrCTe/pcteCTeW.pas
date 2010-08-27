@@ -235,6 +235,8 @@ begin
   Gerador.ArquivoFormatoTXT := '';
 
   Gerador.wGrupo(ENCODING_UTF8, '', False);
+  if CTe.procCTe.nProt <> ''
+   then Gerador.wGrupo('cteProc ' + V1_03 + ' ' + NAME_SPACE_CTE, '');
   Gerador.wGrupo('CTe ' + NAME_SPACE_CTE);
   Gerador.wGrupo('infCte ' + V1_03 + ' Id="' + CTe.infCTe.ID + '"');
   (**)GerarInfCTe;

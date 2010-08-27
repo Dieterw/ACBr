@@ -226,6 +226,13 @@ begin
         else
            fsTexto := fsTexto + ' ' + fsCentavos ;
      end ;
+
+  {Verificando se é na casa de 1 HUM mil}
+  if fsFormato<>extDolar then
+    if (fsValor>=1000.00) then
+      if (fsValor<2000.00) then
+        fsTexto := 'Hum'+copy(fsTexto, 3, Length(fsTexto));
+
 end;
 
 function TACBrExtenso.ExtensoAux(Str3 : String) : String;

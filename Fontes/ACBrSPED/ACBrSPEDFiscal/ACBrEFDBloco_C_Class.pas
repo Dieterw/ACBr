@@ -204,7 +204,7 @@ type
     function RegistroC390New: TRegistroC390;
     function RegistroC400New: TRegistroC400;
     function RegistroC405New: TRegistroC405;
-    function RgeistroC410New: TRegistroC410;
+    function RegistroC410New: TRegistroC410;
     function RegistroC420New: TRegistroC420;
     function RegistroC425New: TRegistroC425;
     function RegistroC460New: TRegistroC460;
@@ -780,7 +780,7 @@ begin
    Result := FRegistroC001.RegistroC700.Items[C700Count].RegistroC790.Items[C790Count].RegistroC791.New;
 end;
 
-function TBloco_C.RgeistroC410New: TRegistroC410;
+function TBloco_C.RegistroC410New: TRegistroC410;
 var
 C400Count: integer;
 C405Count: integer;

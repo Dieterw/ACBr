@@ -523,9 +523,8 @@ TACBrBoleto = class( TACBrComponent )
     function GetAbout: String;
     procedure SetAbout(const AValue: String);
     procedure SetACBrBoletoFC(const Value: TACBrBoletoFCClass);
-    procedure SetDirArqRemessa(const AValue: String);
-    procedure SetDirArqRetorno ( const AValue: String ) ;
     procedure SetNomeArqRemessa(const AValue: String);
+    procedure SetNomeArqRetorno(const AValue: String);
   protected
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
   public
@@ -551,9 +550,9 @@ TACBrBoleto = class( TACBrComponent )
     property Cedente        : TACBrCedente       read fCedente                write fCedente ;
     property Banco          : TACBrBanco         read fBanco                  write fBanco;
     property NomeArqRemessa : String             read fNomeArqRemessa         write SetNomeArqRemessa;
-    property DirArqRemessa  : String             read fDirArqRemessa          write SetDirArqRemessa;
-    property NomeArqRetorno : String             read fNomeArqRetorno         write fNomeArqRetorno;
-    property DirArqRetorno  : String             read fDirArqRetorno          write SetDirArqRetorno;
+    property DirArqRemessa  : String             read fDirArqRemessa          write SetNomeArqRemessa;
+    property NomeArqRetorno : String             read fNomeArqRetorno         write SetNomeArqRetorno;
+    property DirArqRetorno  : String             read fDirArqRetorno          write SetNomeArqRetorno;
     property LeCedenteRetorno :boolean           read fLeCedenteRetorno       write fLeCedenteRetorno default false;
     property LayoutRemessa  : TACBrLayoutRemessa read fLayoutRemessa          write fLayoutRemessa default c400;
     property ImprimirMensagemPadrao : Boolean    read fImprimirMensagemPadrao write fImprimirMensagemPadrao default True;
@@ -814,38 +813,33 @@ begin
   {}
 end;
 
-procedure TACBrBoleto.SetDirArqRemessa(const AValue: String);
-begin
-  fDirArqRemessa := PathWithDelim( AValue );
-end;
-
-procedure TACBrBoleto.SetDirArqRetorno ( const AValue: String ) ;
-var
-  APath : AnsiString;
-begin
-   if fNomeArqRetorno = AValue then
-      exit;
-
-   fNomeArqRetorno := ExtractFileName( AValue );
-   APath           := ExtractFilePath( AValue );
-
-   if APath <> '' then
-     DirArqRetorno:= APath;
-end;
-
 procedure TACBrBoleto.SetNomeArqRemessa(const AValue: String);
 var
-  APath : AnsiString;
+  APath, AName : AnsiString;
 begin
-  if fNomeArqRemessa = AValue then
-     exit;
-
-  fNomeArqRemessa := ExtractFileName( AValue );
-  APath           := ExtractFilePath( AValue );
+  AName := ExtractFileName( AValue );
+  APath := ExtractFilePath( AValue );
 
   if APath <> '' then
-     DirArqRemessa := APath;
+     fDirArqRemessa := APath;
+
+  if AName <> '' then
+     fNomeArqRemessa := AName;
 end;
+
+procedure TACBrBoleto.SetNomeArqRetorno(const AValue : String) ;
+var
+  APath, AName : AnsiString;
+begin
+  AName := ExtractFileName( AValue );
+  APath := ExtractFilePath( AValue );
+
+  if APath <> '' then
+     fDirArqRetorno := APath;
+
+  if AName <> '' then
+     fNomeArqRetorno := AName;
+end ;
 
 procedure TACBrBoleto.Notification ( AComponent: TComponent;
    Operation: TOperation ) ;

@@ -2076,6 +2076,7 @@ begin
       {$IFDEF DEBUGTCP}
       WriteToTXT(CDebugTCPFile, '--> Transmitindo dados');
       {$ENDIF}
+      Resposta := StringReplace(Resposta, chr(3), '', [rfReplaceAll]);
       Conexao.SendString(Resposta);
       Conexao.SendByte(3);
       {$IFDEF DEBUGTCP}

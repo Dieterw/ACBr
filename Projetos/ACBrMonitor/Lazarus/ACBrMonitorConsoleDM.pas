@@ -495,6 +495,8 @@ begin
   begin
      if Assigned( dm.Conexao ) then
      begin
+        Resposta := StringReplace(Resposta, chr(3), '', [rfReplaceAll]);
+
         dm.Conexao.SendString(Resposta);
         dm.Conexao.SendByte(3);
      end ;

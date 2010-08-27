@@ -487,8 +487,11 @@ begin
   inherited;
   qrmObs.Lines.Clear;
   //qrmObs.Lines.Text := FCTe.Compl.xObs;
-
-  qrmObs.Lines.Add(FCTe.Compl.xObs);
+  //qrmObs.Lines.Add(FCTe.Compl.xObs);
+  
+  // Linha abaixo alterada por Italo em 27/08/2010
+  // para substituir os ponto e virgula por quebra de linha no quadro Observações
+  qrmObs.Lines.Add(StringReplace( FCTe.Compl.xObs, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) ) ;
   for i := 0 to FCTe.Compl.ObsCont.Count-1 do
    with FCTe.Compl.ObsCont.Items[i] do
     begin

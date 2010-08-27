@@ -167,15 +167,18 @@ begin
   end
   else
   begin
-    for i := 0 to TACBrNFe(ACBrNFe).NotasFiscais.Count - 1 do
+    if Assigned(ACBrNFe) then
     begin
-      dmDanfe.NFe := TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe;
-      dmDanfe.CarregaDados;
+      for i := 0 to TACBrNFe(ACBrNFe).NotasFiscais.Count - 1 do
+      begin
+        dmDanfe.NFe := TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe;
+        dmDanfe.CarregaDados;
 
-      if (i > 0) then
-        Result := dmDanfe.frxReport.PrepareReport(False)
-      else
-        Result := dmDanfe.frxReport.PrepareReport;
+        if (i > 0) then
+          Result := dmDanfe.frxReport.PrepareReport(False)
+        else
+          Result := dmDanfe.frxReport.PrepareReport;
+      end;
     end;
   end;
 end;

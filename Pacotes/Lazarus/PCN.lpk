@@ -5,7 +5,7 @@
     <Name Value="PCN"/>
     <Author Value="Paulo Casagrande"/>
     <CompilerOptions>
-      <Version Value="8"/>
+      <Version Value="9"/>
       <PathDelim Value="\"/>
       <SearchPaths>
         <IncludeFiles Value="..\..\Fontes\PCN\"/>
@@ -16,6 +16,7 @@
       <Parsing>
         <SyntaxOptions>
           <CStyleOperator Value="False"/>
+          <UseAnsiStrings Value="False"/>
         </SyntaxOptions>
       </Parsing>
       <Other>
@@ -34,7 +35,7 @@ Site do projeto: www.projetocooperar.org/nfe"/>
     <License Value="LGPL
 "/>
     <Version Minor="2"/>
-    <Files Count="32">
+    <Files Count="33">
       <Item1>
         <Filename Value="..\..\Fontes\PCN\pcnAuxiliar.pas"/>
         <UnitName Value="pcnAuxiliar"/>
@@ -163,6 +164,10 @@ Site do projeto: www.projetocooperar.org/nfe"/>
         <Filename Value="..\..\Fontes\PCN\pcnSignature.pas"/>
         <UnitName Value="pcnSignature"/>
       </Item32>
+      <Item33>
+        <Filename Value="..\..\Fontes\PCN\ACBrHTMLtoXML.pas"/>
+        <UnitName Value="ACBrHTMLtoXML"/>
+      </Item33>
     </Files>
     <RequiredPkgs Count="2">
       <Item1>

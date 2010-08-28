@@ -35,7 +35,7 @@
 unit DoACBrUnit ;
 
 interface
-Uses Classes, TypInfo, SysUtils, CmdUnit, Types ;
+Uses Classes, TypInfo, SysUtils, CmdUnit;
 {$IFDEF MSWINDOWS}
   function BlockInput (fBlockInput: boolean): dword; stdcall; external 'user32.dll';
 {$ENDIF}
@@ -53,7 +53,9 @@ Procedure DoACBr( Cmd : TACBrCmd ) ;
 Var AltTab : Boolean ;
     Memo   : TStringList ;
     dtFim  : TDateTime ;
-    nWait  : Integer ;
+    {$IFDEF MSWINDOWS}
+     nWait  : Integer ;
+    {$ENDIF}
     Files  : String ;
 begin
   with {$IFNDEF CONSOLE}FrmACBrMonitor{$ELSE}dm{$ENDIF} do
@@ -246,4 +248,4 @@ begin
 end ;
 
 end.
-
+

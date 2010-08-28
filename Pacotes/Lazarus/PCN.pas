@@ -13,7 +13,7 @@ uses
   pcnModeloNFe, pcnNFe, pcnNFeR, pcnNFeRTXT, pcnNFeW, pcnProcNFe, 
   pcnRetAtuCadEmiDFe, pcnRetCancNFe, pcnRetConsCad, pcnRetConsReciNFe, 
   pcnRetConsSitNFe, pcnRetConsStatServ, pcnRetDPEC, pcnRetEnvNFe, 
-  pcnRetInutNFe, pcnSignature;
+  pcnRetInutNFe, pcnSignature, ACBrHTMLtoXML;
 
 implementation
 

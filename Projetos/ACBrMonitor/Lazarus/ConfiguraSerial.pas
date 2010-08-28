@@ -36,7 +36,7 @@ unit ConfiguraSerial;
 interface
 
 uses
-  SysUtils, Types, Classes, Variants, Graphics, Controls, Forms, 
+  SysUtils, Classes, Variants, Graphics, Controls, Forms,
   Dialogs, StdCtrls, Buttons, ACBrDevice ;
 
 type
@@ -159,4 +159,4 @@ begin
   chSoftFlow.Checked := Device.SoftFlow ;
 end;
 
-end.
+end.

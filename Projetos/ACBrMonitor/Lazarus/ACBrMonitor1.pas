@@ -644,7 +644,7 @@ uses IniFiles, TypInfo, LCLType, strutils,
   DoECFUnit, DoGAVUnit, DoCHQUnit, DoDISUnit, DoLCBUnit, DoACBrUnit, DoBALUnit,
   DoBoletoUnit, DoCEPUnit, DoIBGEUnit,
   {$IFDEF MSWINDOWS} sndkey32, {$ENDIF}
-  {$IFDEF LINUX} unix, baseunix, {$ENDIF}
+  {$IFDEF LINUX} unix, baseunix, termio, {$ENDIF}
   ACBrECFNaoFiscal, ACBrUtil, ACBrConsts, Math, Sobre, DateUtils,
   ConfiguraSerial,
   DoECFBemafi32, DoECFObserver, DoETQUnit;
@@ -660,7 +660,7 @@ var
   iBAL: TACBrBALModelo;
 begin
   {$IFDEF LINUX}
-  umask(0);
+   FpUmask(0);
   {$ENDIF}
 
   mResp.Clear;
@@ -2973,7 +2973,7 @@ begin
         for I := 1 to length(Codigo) do
         begin
           C := Codigo[I];
-          Libc.ioctl(fd, TIOCSTI, @C);
+          FpIOCtl(fd, TIOCSTI, @C);
         end;
       finally
         FileClose(fd);
@@ -3945,4 +3945,4 @@ begin
 
 end;
 
-end.
+end.

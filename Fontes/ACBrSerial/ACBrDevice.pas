@@ -64,7 +64,10 @@ uses synaser, {Unit da SynaSer (comunicação serial) }
      SysUtils, math,
      ACBrConsts, 
      {$IFDEF COMPILER6_UP}
-        Windows, DateUtils, Types, StrUtils,
+       {$IFDEF MSWINDOWS}
+         Windows,
+       {$ENDIF}
+       DateUtils, Types, StrUtils,
      {$ELSE}
         Windows, ACBrD5,
      {$ENDIF}
@@ -902,4 +905,4 @@ end;
 
 
 end.
-
+

@@ -104,7 +104,6 @@ var
    SL: TStringList;
    ContTitulos: Integer;
    NomeSessao: String;
-   Emissao: LongInt;
    MudouDados: boolean;
 begin
 
@@ -288,4 +287,4 @@ begin
 end;
 
 end.
-
+

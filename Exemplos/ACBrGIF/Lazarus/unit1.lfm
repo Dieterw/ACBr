@@ -7,11 +7,12 @@ object Form1: TForm1
   HorzScrollBar.Range = 611
   VertScrollBar.Page = 290
   VertScrollBar.Range = 277
-  ActiveControl = cbTransparent
+  ActiveControl = btStart
   Caption = 'GIFTeste'
   ClientHeight = 291
   ClientWidth = 625
   OnCreate = FormCreate
+  LCLVersion = '0.9.29'
   object SpeedButton1: TSpeedButton
     Left = 136
     Height = 22
@@ -51,79 +52,79 @@ object Form1: TForm1
   end
   object Label1: TLabel
     Left = 8
-    Height = 14
+    Height = 18
     Top = 8
-    Width = 39
+    Width = 56
     Caption = 'Imagem'
     ParentColor = False
   end
   object Label2: TLabel
     Left = 176
-    Height = 14
+    Height = 18
     Top = 8
-    Width = 36
+    Width = 50
     Caption = 'Frames'
     ParentColor = False
   end
   object Label3: TLabel
     Left = 368
-    Height = 14
+    Height = 18
     Top = 8
-    Width = 29
+    Width = 40
     Caption = 'Loops'
     ParentColor = False
   end
   object Label4: TLabel
     Left = 240
-    Height = 14
+    Height = 18
     Top = 56
-    Width = 25
+    Width = 36
     Caption = 'Start'
     ParentColor = False
   end
   object Label5: TLabel
     Left = 304
-    Height = 14
+    Height = 18
     Top = 56
-    Width = 23
+    Width = 32
     Caption = 'Stop'
     ParentColor = False
   end
   object Label6: TLabel
     Left = 240
-    Height = 14
+    Height = 18
     Top = 8
-    Width = 29
+    Width = 40
     Caption = 'Width'
     ParentColor = False
   end
   object Label7: TLabel
     Left = 304
-    Height = 14
+    Height = 18
     Top = 8
-    Width = 32
+    Width = 46
     Caption = 'Height'
     ParentColor = False
   end
   object Label8: TLabel
     Left = 368
-    Height = 14
+    Height = 18
     Top = 56
-    Width = 55
+    Width = 79
     Caption = 'Repetitions'
     ParentColor = False
   end
   object Label9: TLabel
     Left = 176
-    Height = 14
+    Height = 18
     Top = 56
-    Width = 52
+    Width = 71
     Caption = 'CurrFrame'
     ParentColor = False
   end
   object edFileName: TEdit
     Left = 8
-    Height = 21
+    Height = 25
     Top = 24
     Width = 129
     Enabled = False
@@ -132,7 +133,7 @@ object Form1: TForm1
   end
   object edFrames: TEdit
     Left = 176
-    Height = 21
+    Height = 25
     Top = 24
     Width = 49
     Enabled = False
@@ -141,7 +142,7 @@ object Form1: TForm1
   end
   object edLoops: TEdit
     Left = 368
-    Height = 21
+    Height = 25
     Top = 24
     Width = 49
     Enabled = False
@@ -150,18 +151,18 @@ object Form1: TForm1
   end
   object cbTransparent: TCheckBox
     Left = 8
-    Height = 19
+    Height = 21
     Top = 56
-    Width = 83
+    Width = 102
     Caption = 'Transparent'
     OnClick = cbTransparentClick
     TabOrder = 3
   end
   object cbAutoSize: TCheckBox
     Left = 8
-    Height = 19
+    Height = 21
     Top = 80
-    Width = 71
+    Width = 89
     Caption = 'Auto-Size'
     Checked = True
     OnClick = cbAutoSizeClick
@@ -170,7 +171,7 @@ object Form1: TForm1
   end
   object edStart: TEdit
     Left = 240
-    Height = 21
+    Height = 25
     Top = 72
     Width = 49
     OnChange = edStartChange
@@ -179,7 +180,7 @@ object Form1: TForm1
   end
   object edStop: TEdit
     Left = 304
-    Height = 21
+    Height = 25
     Top = 72
     Width = 49
     OnChange = edStopChange
@@ -188,7 +189,7 @@ object Form1: TForm1
   end
   object edWidth: TEdit
     Left = 240
-    Height = 21
+    Height = 25
     Top = 24
     Width = 49
     Enabled = False
@@ -197,7 +198,7 @@ object Form1: TForm1
   end
   object edHeight: TEdit
     Left = 304
-    Height = 21
+    Height = 25
     Top = 24
     Width = 49
     Enabled = False
@@ -322,7 +323,7 @@ object Form1: TForm1
   end
   object edRepetitions: TEdit
     Left = 368
-    Height = 21
+    Height = 25
     Top = 72
     Width = 49
     OnChange = edRepetitionsChange
@@ -331,16 +332,16 @@ object Form1: TForm1
   end
   object cbActive: TCheckBox
     Left = 8
-    Height = 19
+    Height = 21
     Top = 104
-    Width = 56
+    Width = 67
     Caption = 'Active'
     Enabled = False
     TabOrder = 14
   end
   object edCurrentFrame: TEdit
     Left = 176
-    Height = 21
+    Height = 25
     Top = 72
     Width = 49
     OnChange = edCurrentFrameChange
@@ -368,14 +369,15 @@ object Form1: TForm1
   end
   object cbPaused: TCheckBox
     Left = 96
-    Height = 19
+    Height = 21
     Top = 104
-    Width = 62
+    Width = 71
     Caption = 'Paused'
     Enabled = False
     TabOrder = 17
   end
   object Panel1: TPanel
+    Left = 0
     Height = 144
     Top = 147
     Width = 625
@@ -402,11 +404,10 @@ object Form1: TForm1
     end
   end
   object OpenDialog1: TOpenDialog
-    Title = 'Open existing file'
     DefaultExt = '.gif'
     Filter = 'Imagens GIF|*.gif'
     FilterIndex = 0
     left = 584
     top = 160
   end
-end
+end

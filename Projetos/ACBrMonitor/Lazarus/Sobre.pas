@@ -36,7 +36,7 @@ unit Sobre;
 interface
 
 uses
-  SysUtils, Types, Classes, Variants, Graphics, Controls, Forms,
+  SysUtils, Classes, Variants, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, Buttons;
 
 type
@@ -62,8 +62,8 @@ type
     procedure lACBrClick(Sender: TObject);
     procedure lDesenvolvedoresClick(Sender: TObject);
     procedure bAjudaClick(Sender: TObject);
-    procedure FormShortCut(Key: Integer; Shift: TShiftState;
-      var Handled: Boolean);
+    procedure FormShortCut(Key: Integer; {%H-}Shift: TShiftState;
+      var {%H-}Handled: Boolean);
   private
     { Private declarations }
   public
@@ -142,4 +142,4 @@ begin
      bAjuda.Click ;
 end;
 
-end.
+end.

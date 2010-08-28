@@ -61,6 +61,7 @@ function funChecaCSTCOFINS(const CST: String): Boolean;
 function funChecaCSTPIS(const CST: String): Boolean;
 function funStrZero(Zeros: String; Quant: Integer): String;
 function IfThen(AValue: Boolean; const ATrue: Char; AFalse: Char): Char; overload;
+function IfThen(AValue: Boolean; const ATrue: Double; AFalse: Double): Double; overload;
 
 implementation
 
@@ -1564,6 +1565,14 @@ begin
 end;
 
 function IfThen(AValue: Boolean; const ATrue: Char; AFalse: Char): Char;
+begin
+  if AValue then
+     Result := ATrue
+  else
+     Result := AFalse;
+end;
+
+function IfThen(AValue: Boolean; const ATrue: Double; AFalse: Double): Double;
 begin
   if AValue then
      Result := ATrue

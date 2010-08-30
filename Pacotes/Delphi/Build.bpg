@@ -11,8 +11,8 @@ BRCC = $(ROOT)\bin\brcc32.exe $**
 #------------------------------------------------------------------------------
 PROJECTS = ACBrComum.bpl ACBrDiversos.bpl ACBrSerial.bpl ACBr_SPED.bpl \
   ACBr_PAF.bpl ACBr_Sintegra.bpl ACBr_TEFD.bpl ACBrTCP.bpl ACBr_Boleto.bpl \
-  ACBr_NFe.bpl ACBrNFeDanfeRVCodeBase.bpl ACBrNFeDanfeRV.bpl \
-  ACBrNFeDanfeQRpkg.bpl ACBr_CTe.bpl ACBrCTeDacteQRpkg.bpl
+  ACBrCapicom.bpl ACBrOpenSSL.bpl ACBr_NFe.bpl ACBrNFeDanfeRVCodeBase.bpl \
+  ACBrNFeDanfeRV.bpl ACBrNFeDanfeQRpkg.bpl ACBr_CTe.bpl ACBrCTeDacteQRpkg.bpl
 #------------------------------------------------------------------------------
 default: $(PROJECTS)
 #------------------------------------------------------------------------------
@@ -60,6 +60,12 @@ ACBr_CTe.bpl: ACBrNFe\ACBr_CTe.dpk
   $(DCC)
 
 ACBrCTeDacteQRpkg.bpl: ACBrNFe\ACBrCTeDacteQRpkg.dpk
+  $(DCC)
+
+ACBrCapicom.bpl: ACBrCapicom.dpk
+  $(DCC)
+
+ACBrOpenSSL.bpl: ACBrOpenSSL.dpk
   $(DCC)
 
 

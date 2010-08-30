@@ -235,17 +235,15 @@ begin
       if FImpressora > '' then
         RLPrinter.PrinterName := FImpressora;
 
+      if FNumCopias > 0 then
+        RLPrinter.Copies := FNumCopias
+      else
+        RLPrinter.Copies := 1;
+
       if FMostrarPreview = True then
         RLNFe.PreviewModal
       else
-        begin
-          if FNumCopias > 0 then
-            RLPrinter.Copies := FNumCopias
-          else
-            RLPrinter.Copies := 1;
-
-          RLNFe.Print;
-        end;
+        RLNFe.Print;
 
     finally
       Free ;

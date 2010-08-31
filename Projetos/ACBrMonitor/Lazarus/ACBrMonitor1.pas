@@ -81,7 +81,6 @@ const
   CBufferMemoResposta = 1000;              { Maximo de Linhas no MemoResposta }
   CIgnorarChars : array[0..5] of string = ('.', '-', '/', '(', ')', ' ');
   _C = 'tYk*5W@';
-  CDebugTCPFile = 'C:\TEMP\ACBrMonitorTCP.txt' ;
 
 type
 
@@ -587,7 +586,8 @@ type
     ACBrMonitorINI: string;
     Inicio: boolean;
     ArqSaiTXT, ArqSaiTMP, ArqEntTXT, ArqLogTXT: string;
-    Cmd: TACBrCmd;
+    fsCmd: TACBrCmd;
+    fsProcessar : TStringList ;
     NewLines: ansistring;
     fsDisWorking: boolean;
     fsRFDIni: string;
@@ -665,7 +665,10 @@ begin
 
   mResp.Clear;
   mCmd.Clear;
-  Cmd := TACBrCmd.Create;
+
+  fsCmd       := TACBrCmd.Create;
+  fsProcessar := TStringList.Create;
+
   Inicio := True;
   ArqSaiTXT := '';
   ArqSaiTMP := '';
@@ -999,7 +1002,8 @@ end;
 procedure TFrmACBrMonitor.FormDestroy(Sender: TObject);
 begin
   Timer1.Enabled := False;
-  Cmd.Free;
+  fsCmd.Free;
+  fsProcessar.Free;
 
   fsSLPrecos.Free;
 end;
@@ -1999,26 +2003,28 @@ var
   Linha: ansistring;
 begin
   if NewLines <> '' then
-    mCmd.Lines.Add(NewLines);
+    fsProcessar.Add(NewLines);
 
   NewLines := '';
 
-  while mCmd.Lines.Count > 0 do
+  while fsProcessar.Count > 0 do
   begin
+    // Atualiza Memo de Entrada //
+    mCmd.Lines.Assign( fsProcessar );
     Application.ProcessMessages;
 
-    { Objeto BOLETO pode receber comandos com várias Linhas, 
+    { Objeto BOLETO pode receber comandos com várias Linhas,
       portanto deve processar todas linhas de uma só vez... }
-    if UpperCase(Copy(mCmd.Lines[0],1,6)) = 'BOLETO' then
+    if UpperCase(Copy(fsProcessar[0],1,6)) = 'BOLETO' then
      begin
-       Linha := Trim(mCmd.Lines.Text);
-       mCmd.Lines.Clear ;
+       Linha := Trim(fsProcessar.Text);
+       fsProcessar.Clear ;
      end
     else
      begin
-       Linha := Trim(mCmd.Lines[0]);
-       mCmd.Lines.Delete(0);
-    end;
+       Linha := Trim(fsProcessar[0]) ;
+       fsProcessar.Delete(0);
+     end;
 
     if Linha <> '' then
     begin
@@ -2029,32 +2035,36 @@ begin
           Linha := 'ACBR.' + Linha;
 
 		{ Interpretanto o Comando }
-        Cmd.Comando := Linha;
+        fsCmd.Comando := Linha;
 
-        if Cmd.Objeto = 'ACBR' then
-          DoACBr(Cmd)
-        else if Cmd.Objeto = 'ECF' then
-          DoECF(Cmd)
-        else if Cmd.Objeto = 'GAV' then
-          DoGAV(Cmd)
-        else if Cmd.Objeto = 'CHQ' then
-          DoCHQ(Cmd)
-        else if Cmd.Objeto = 'DIS' then
-          DoDIS(Cmd)
-        else if Cmd.Objeto = 'LCB' then
-          DoLCB(Cmd)
-        else if Cmd.Objeto = 'BAL' then
-          DoBAL(Cmd)
-        else if Cmd.Objeto = 'ETQ' then
-          DoETQ(Cmd)
-        else if Cmd.Objeto = 'BOLETO' then
-          DoBoleto(Cmd)
-        else if Cmd.Objeto = 'CEP' then
-          DoCEP(Cmd)
-        else if Cmd.Objeto = 'IBGE' then
-          DoIBGE(Cmd);
+        if fsCmd.Objeto = 'ACBR' then
+          DoACBr(fsCmd)
+        else if fsCmd.Objeto = 'ECF' then
+          DoECF(fsCmd)
+        else if fsCmd.Objeto = 'GAV' then
+          DoGAV(fsCmd)
+        else if fsCmd.Objeto = 'CHQ' then
+          DoCHQ(fsCmd)
+        else if fsCmd.Objeto = 'DIS' then
+          DoDIS(fsCmd)
+        else if fsCmd.Objeto = 'LCB' then
+          DoLCB(fsCmd)
+        else if fsCmd.Objeto = 'BAL' then
+          DoBAL(fsCmd)
+        else if fsCmd.Objeto = 'ETQ' then
+          DoETQ(fsCmd)
+        else if fsCmd.Objeto = 'BOLETO' then
+          DoBoleto(fsCmd)
+        else if fsCmd.Objeto = 'CEP' then
+          DoCEP(fsCmd)
+        else if fsCmd.Objeto = 'IBGE' then
+          DoIBGE(fsCmd);
 
-        Resposta(Linha, 'OK: ' + Cmd.Resposta);
+        // Atualiza Memo de Entrada //
+        mCmd.Lines.Assign( fsProcessar );
+
+        Resposta(Linha, 'OK: ' + fsCmd.Resposta);
+        Application.ProcessMessages;
 
       except
         on E: Exception do
@@ -2073,15 +2083,9 @@ begin
   begin
     if Assigned(Conexao) then
     begin
-      {$IFDEF DEBUGTCP}
-      WriteToTXT(CDebugTCPFile, '--> Transmitindo dados');
-      {$ENDIF}
       Resposta := StringReplace(Resposta, chr(3), '', [rfReplaceAll]);
       Conexao.SendString(Resposta);
       Conexao.SendByte(3);
-      {$IFDEF DEBUGTCP}
-      WriteToTXT(CDebugTCPFile, '    Transmitido: '+Resposta+' [ETX]');
-      {$ENDIF}
     end;
   end;
 
@@ -2141,7 +2145,7 @@ begin
   mResp.Lines.EndUpdate;
 
   if cbLog.Checked then
-    WriteToTXT(ArqLogTXT, Comando + sLineBreak + Resposta);
+    WriteToTXT(ArqLogTXT, Comando + sLineBreak + Resposta, True, True);
 end;
 
 {------------------------------------------------------------------------------}
@@ -2242,8 +2246,9 @@ end;
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.DoACBrTimer(Sender: TObject);
 var
-  MS: TMemoryStream;
-  Linhas, S: ansistring;
+  MS     : TMemoryStream;
+  Linhas : TStringList;
+  S      : AnsiString;
 begin
   Timer1.Enabled := False;
 
@@ -2255,7 +2260,9 @@ begin
 
   try
     if FileExists(ArqEntTXT) then  { Existe arquivo para ler ? }
-    begin
+    try
+      Linhas := TStringList.Create;
+
       TipoCMD := 'A';
       if (UpperCase(ExtractFileName(ArqEntTXT)) = 'BEMAFI32.CMD') then
         TipoCMD := 'B'
@@ -2269,7 +2276,7 @@ begin
         MS.Position := 0;
         SetLength(S, MS.Size);
         MS.ReadBuffer(PChar(S)^, MS.Size);
-        Linhas := S;
+        Linhas.Text := S;
       finally
         MS.Free;
       end;
@@ -2277,12 +2284,14 @@ begin
       TryDeleteFile(ArqEntTXT, 1000); // Tenta apagar por até 1 segundo
 
       if TipoCMD = 'B' then
-        Linhas := TraduzBemafi(Linhas)
+        Linhas.Text := TraduzBemafi( Linhas.Text )
       else if TipoCMD = 'D' then
-        Linhas := TraduzObserver(Linhas);
+        Linhas.Text := TraduzObserver( Linhas.Text );
 
-      mCmd.Lines.Add(Linhas);
-    end;
+      fsProcessar.AddStrings( Linhas ) ;
+    finally
+      Linhas.Free ;
+    end ;
 
     Processar;
   finally
@@ -2455,16 +2464,13 @@ begin
 
   Conexao := TCPBlockSocket;
   mCmd.Lines.Clear;
+  fsProcessar.Clear;
   Resp := 'ACBrMonitor Ver. ' + Versao + sLineBreak +
     'Conectado em: ' + FormatDateTime('dd/mm/yy hh:nn:ss', now) + sLineBreak +
     'Máquina: ' + Conexao.GetRemoteSinIP + sLineBreak +
     'Esperando por comandos.' ;
 
   Resposta('', Resp);
-
-  {$IFDEF DEBUGTCP}
-  WriteToTXT(CDebugTCPFile, sLineBreak+'== '+Resp);
-  {$ENDIF}
 end;
 
 procedure TFrmACBrMonitor.TcpServerDesConecta(const TCPBlockSocket: TTCPBlockSocket;
@@ -2478,9 +2484,6 @@ begin
     FormatDateTime('dd/mm/yy hh:nn:ss', now) ;
 
   mResp.Lines.Add(Resp);
-  {$IFDEF DEBUGTCP}
-  WriteToTXT(CDebugTCPFile, sLineBreak+'XX '+ Resp);
-  {$ENDIF}
 end;
 
 procedure TFrmACBrMonitor.TcpServerRecebeDados(const TCPBlockSocket: TTCPBlockSocket;
@@ -2489,14 +2492,8 @@ var
   CmdEnviado: AnsiString;
 begin
   Conexao := TCPBlockSocket;
-  {$IFDEF DEBUGTCP}
-  WriteToTXT(CDebugTCPFile, '--> Recebendo dados');
-  {$ENDIF}
   { Le o que foi enviado atravez da conexao TCP }
   CmdEnviado := Trim(Recebido);
-  {$IFDEF DEBUGTCP}
-  WriteToTXT(CDebugTCPFile, '    Recebido: '+CmdEnviado);
-  {$ENDIF}
   if CmdEnviado <> '' then
   begin
     NewLines := CmdEnviado;
@@ -3792,7 +3789,7 @@ begin
   begin
     mResp.Lines.Add(fsLinesLog);
     if cbLog.Checked then
-      WriteToTXT(ArqLogTXT, fsLinesLog);
+      WriteToTXT(ArqLogTXT, fsLinesLog, True, True);
     fsLinesLog := '';
   end;
 end;
@@ -3945,4 +3942,4 @@ begin
 
 end;
 
-end.
+end.

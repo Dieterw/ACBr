@@ -32,12 +32,11 @@
 
 program ACBrMonitorConsole;
 
-{$APPTYPE CONSOLE}
 {$mode objfpc}{$H+}
 
 uses
   {$IFDEF UNIX}
-   Libc,
+   unix, baseunix, termio,
    {$IFDEF UseCThreads}cthreads,{$ENDIF}
   {$ENDIF}
   Classes, SysUtils, IniFiles,
@@ -71,7 +70,7 @@ Var I : Integer;
 procedure SignalProc(SigNum: Integer); cdecl;
  Var LogMsg : String ;
 begin
-  LogMsg := 'Sinal: ' ;
+  LogMsg := 'Sinal Interceptado: ' ;
 
   case SigNum of
      SIGINT  :
@@ -114,12 +113,12 @@ begin
   end;
 
   {$IFDEF LINUX}
-   signal(SIGINT , SignalProc); // catch the signal SIGINT  to procedure SignalProc
-   signal(SIGSTOP, SignalProc); // catch the signal SIGSTOP to procedure SignalProc
-   signal(SIGTSTP, SignalProc); // catch the signal SIGTSTP to procedure SignalProc
-   signal(SIGQUIT, SignalProc); // catch the signal SIGQUIT to procedure SignalProc
+   FpSignal(SIGINT , @SignalProc); // catch the signal SIGINT  to procedure SignalProc
+   FpSignal(SIGSTOP, @SignalProc); // catch the signal SIGSTOP to procedure SignalProc
+   FpSignal(SIGTSTP, @SignalProc); // catch the signal SIGTSTP to procedure SignalProc
+   FpSignal(SIGQUIT, @SignalProc); // catch the signal SIGQUIT to procedure SignalProc
 
-   umask( 0 ) ;
+   FpUmask( 0 ) ;
   {$ENDIF}
 
   { Definindo constantes de Verdadeiro para TrueBoolsStrs }
@@ -294,4 +293,4 @@ begin
      Application.Free;
   end ;
 end.
-
+

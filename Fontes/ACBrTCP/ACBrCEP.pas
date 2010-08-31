@@ -519,7 +519,7 @@ begin
       Buffer := ACBrStr( Buffer );
 
       SL2.Clear;
-      SL2.Text := StringReplace( Buffer, ',', sLineBreak, [rfReplaceAll] );
+      SL2.Text := ACBrStr( StringReplace( Buffer, ',', sLineBreak, [rfReplaceAll] ));
 
       if (SL2.Count >= 9) and (Length( OnlyNumber(SL2[8]) ) = 8) then
       begin
@@ -607,4 +607,4 @@ end ;
 
 
 end.
-
+

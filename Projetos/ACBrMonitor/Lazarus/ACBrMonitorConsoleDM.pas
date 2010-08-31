@@ -115,7 +115,7 @@ var
 implementation
 Uses IniFiles, UtilUnit,
      {$IFDEF MSWINDOWS} sndkey32, {$ENDIF}
-     {$IFDEF LINUX} unix, baseunix, {$ENDIF}
+     {$IFDEF LINUX} unix, baseunix, termio, {$ENDIF}
      DoACBrUnit, DoECFUnit, DoGAVUnit, DoCHQUnit, DoDISUnit, DoLCBUnit,
      DoBALUnit , DoETQUnit, DoCEPUnit, DoIBGEUnit;
 
@@ -733,7 +733,7 @@ begin
            for I := 1 to length(Codigo) do
            begin
               C := Codigo[I] ;
-              Libc.ioctl(fd, TIOCSTI, @C );
+              FpIOCtl(fd, TIOCSTI, @C);
            end ;
         finally
            FileClose(fd);
@@ -787,4 +787,4 @@ begin
 end;
 
 end.
-
+

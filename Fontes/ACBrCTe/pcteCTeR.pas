@@ -588,6 +588,7 @@ begin
       i02 := 0;
       while Leitor.rExtrai(3, 'lacContQt', '', i02 + 1) <> '' do
       begin
+        CTe.infCTeNorm.contQt[i01].lacContQt.Add;
         CTe.infCTeNorm.contQt[i01].lacContQt[i02].nLacre := Leitor.rCampo(tcStr, 'nLacre');
         inc(i02);
       end;

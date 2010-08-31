@@ -485,10 +485,11 @@ var
  i: integer;
 begin
   inherited;
+  qrmObs.Lines.BeginUpdate; // Linha inserida por Italo em 31/08/2010
   qrmObs.Lines.Clear;
   //qrmObs.Lines.Text := FCTe.Compl.xObs;
   //qrmObs.Lines.Add(FCTe.Compl.xObs);
-  
+
   // Linha abaixo alterada por Italo em 27/08/2010
   // para substituir os ponto e virgula por quebra de linha no quadro Observações
   qrmObs.Lines.Add(StringReplace( FCTe.Compl.xObs, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) ) ;
@@ -506,6 +507,10 @@ begin
      qrmObs.Lines.Add( StringReplace( xCampo, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] )+': '+
                        StringReplace( xTexto, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
     end;
+
+  // Linhas inseridas por Italo em 31/08/2010
+  qrmObs.Lines.Text:=StringReplace(qrmObs.Lines.Text,';',#13,[rfReplaceAll]);
+  qrmObs.Lines.EndUpdate;
 end;
 
 procedure TfrmDACTeQRRetrato.QRCTeBeforePrint(Sender: TCustomQuickRep; var PrintReport: Boolean);
@@ -823,7 +828,31 @@ begin
         qrlICMS_ST.Caption     := '';
         // CteUtil.FormatarValor(msk4x2, FCTe.Imp.ICMS.CST20.vICMS);
       end;
+    cst40:
+      begin
+        qrlRedBaseCalc.Caption := '';
+        qrlBaseCalc.Caption    := '';
+        qrlAliqICMS.Caption    := '';
+        qrlVlrICMS.Caption     := '';
+        qrlICMS_ST.Caption     := '';
+      end;
+    cst41:
+      begin
+        qrlRedBaseCalc.Caption := '';
+        qrlBaseCalc.Caption    := '';
+        qrlAliqICMS.Caption    := '';
+        qrlVlrICMS.Caption     := '';
+        qrlICMS_ST.Caption     := '';
+      end;
     cst45:
+      begin
+        qrlRedBaseCalc.Caption := '';
+        qrlBaseCalc.Caption    := '';
+        qrlAliqICMS.Caption    := '';
+        qrlVlrICMS.Caption     := '';
+        qrlICMS_ST.Caption     := '';
+      end;
+    cst51:
       begin
         qrlRedBaseCalc.Caption := '';
         qrlBaseCalc.Caption    := '';

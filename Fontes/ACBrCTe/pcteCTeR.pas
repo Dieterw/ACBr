@@ -94,6 +94,7 @@ function TCTeR.LerXml: boolean;
 var
   ok: boolean;
   i, j, i01, i02, i03: integer;
+  sCST: String;
 begin
 
   I := 0;
@@ -506,11 +507,12 @@ begin
 
       if Leitor.rExtrai(3, 'CST45') <> '' then
       begin
-        if (Leitor.rCampo(tcStr,'CST')='40') or
-           (Leitor.rCampo(tcStr,'CST')='41') or
-           (Leitor.rCampo(tcStr,'CST')='51')
+        sCST:=Leitor.rCampo(tcStr,'CST');
+        if (sCST='40') or (sCST='41') or (sCST='51')
         then begin
-          CTe.Imp.ICMS.SituTrib  := Leitor.rCampo(tcStr,'CST');
+          if sCST='40' then CTe.Imp.ICMS.SituTrib  := cst40;
+          if sCST='41' then CTe.Imp.ICMS.SituTrib  := cst41;
+          if sCST='51' then CTe.Imp.ICMS.SituTrib  := cst51;
           CTe.Imp.ICMS.CST45.CST := StrToCSTICMS(ok, Leitor.rCampo(tcStr,'CST'));
         end;
       end;

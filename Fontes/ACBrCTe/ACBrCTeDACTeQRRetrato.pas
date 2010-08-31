@@ -91,7 +91,7 @@ type
     qrlModal: TQRLabel;
     qrlProtocolo: TQRLabel;
     qrlTipoCte: TQRLabel;
-    QRLabel76: TQRLabel;
+    qrlDescricao: TQRLabel;
     QRLabel77: TQRLabel;
     QRLabel2: TQRLabel;
     QRLabel9: TQRLabel;
@@ -575,11 +575,31 @@ begin
   qrlTomaServico.Caption := TpTomadorToStrText(FCTe.Ide.Toma03.Toma);
   qrlFormaPagamento.Caption := tpforPagToStrText(FCTe.Ide.forPag);
 
-  if FProtocoloCTE <> ''
-   then qrlProtocolo.Caption := FProtocoloCTE
-   else qrlProtocolo.Caption :=  FCTe.procCTe.nProt + ' ' +
+  // As Linhas abaixo foram inseridas por Italo em 31/08/2010
+  // Normal **************************************************************
+  if FCTe.Ide.tpEmis in [teNormal, teSCAN] then
+   begin
+    if FCTe.procCTe.cStat = 100 then
+     begin
+      qrlDescricao.Caption:= 'PROTOCOLO DE AUTORIZAÇÃO DE USO';
+     end;
+
+    if FCTe.procCTe.cStat = 101 then
+     begin
+      qrlDescricao.Caption:= 'PROTOCOLO DE HOMOLOGAÇÃO DE CANCELAMENTO';
+     end;
+
+    if FCTe.procCTe.cStat = 102 then
+     begin
+      qrlDescricao.Caption:= 'PROTOCOLO DE DENEGAÇÃO DE USO';
+     end;
+
+    if FProtocoloCTE <> ''
+     then qrlProtocolo.Caption := FProtocoloCTE
+     else qrlProtocolo.Caption :=  FCTe.procCTe.nProt + ' ' +
                                  CTeUtil.SeSenao(FCTe.procCTe.dhRecbto <> 0,
                                       DateTimeToStr(FCTe.procCTe.dhRecbto), '');
+   end;
 
   qrlInscSuframa.Caption := FCTe.Dest.ISUF;
 end;
@@ -843,7 +863,53 @@ procedure TfrmDACTeQRRetrato.qrbDadosExcEmitenteBeforePrint(
   Sender: TQRCustomBand; var PrintBand: Boolean);
 begin
   inherited;
-  qrlMsgTeste.Enabled := FCTe.Ide.tpAmb = taHomologacao;
+
+  // As Linhas abaixo foram inseridas por Italo em 31/08/2010
+  // Mensagem para modo Homologacao.
+
+  qrlMsgTeste.Visible := False;
+  qrlMsgTeste.Enabled := False;
+
+  if FCTe.Ide.tpAmb = taHomologacao then
+   begin
+    qrlMsgTeste.Caption := 'AMBIENTE DE HOMOLOGAÇÃO - SEM VALOR FISCAL';
+    qrlMsgTeste.Visible := True;
+    qrlMsgTeste.Enabled := True;
+   end else
+   begin
+    if FCTe.procCTe.cStat > 0 then
+     begin
+      if FCTe.procCTe.cStat = 101 then
+       begin
+        qrlMsgTeste.Caption := 'CT-e CANCELADO';
+        qrlMsgTeste.Visible := True;
+        qrlMsgTeste.Enabled := True;
+       end;
+
+      if FCTe.procCTe.cStat = 102 then
+       begin
+        qrlMsgTeste.Caption := 'CT-e DENEGADO';
+        qrlMsgTeste.Visible := True;
+        qrlMsgTeste.Enabled := True;
+       end;
+
+      if not FCTe.procCTe.cStat in [101, 102, 100] then
+       begin
+        qrlMsgTeste.Caption := FCTe.procCTe.xMotivo;
+        qrlMsgTeste.Visible := True;
+        qrlMsgTeste.Enabled := True;
+       end;
+     end else
+     begin
+      qrlMsgTeste.Caption := 'CT-E NÃO ENVIADO PARA SEFAZ';
+      qrlMsgTeste.Visible := True;
+      qrlMsgTeste.Enabled := True;
+     end;
+   end;
+
+  qrlMsgTeste.Repaint;
+
+//  qrlMsgTeste.Enabled := FCTe.Ide.tpAmb = taHomologacao;
   qrmObsExcEmitente.Lines.Clear;
 //  qrmObsExcEmitente.Lines.Text := FCTe.Compl.xObs;
 end;

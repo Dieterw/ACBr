@@ -592,10 +592,8 @@ begin
 
   if (Result <> '') then
   begin
-    {$IFDEF UNICODE}
-     Result := Utf8ToAnsi( Result ) ;
-    {$ENDIF}
-    Result := EncodeURLElement( Result ) ;
+     Result := ACBrStrToAnsi( Result ) ;
+     Result := EncodeURLElement( Result ) ;
   end ;
 end ;
 
@@ -605,6 +603,7 @@ var
    OldCursor : TCursor ;
   {$ENDIF}
   OK : Boolean ;
+  CT : String ;
 begin
   {$IFNDEF CONSOLE}
    OldCursor := Screen.Cursor ;
@@ -615,7 +614,11 @@ begin
     HTTPSend.Clear;
 
     // DEBUG //
-    // WriteToTXT( 'C:\TEMP\HTTP.txt', 'URL: '+AURL );
+    // WriteToTXT( '/tmp/HTTP.txt', 'URL: '+AURL );
+
+    {$IFDEF UNICODE}
+     HTTPSend.Headers.Add('Accept-Charset: utf-8;q=*;q=0.7') ;
+    {$ENDIF}
 
     if Assigned( OnAntesAbrirHTTP ) then
        OnAntesAbrirHTTP( AURL ) ;
@@ -623,8 +626,18 @@ begin
     OK := HTTPSend.HTTPMethod('GET', AURL) and (HTTPSend.ResultCode = 200);
     RespHTTP.LoadFromStream( HTTPSend.Document ) ;
 
+    // BuscarCEP sempre responde em ANSI //
+    {$IFDEF UNICODE}
+     CT := LowerCase( GetHeaderValue('Content-Type:') );
+
+     if pos('utf-8', CT) = 0 then     // Resposta em ISO (ansi) ?
+        RespHTTP.Text := ACBrStr( RespHTTP.Text ) ;
+    {$ENDIF}
+
+
     // DEBUG //
-    // WriteToTXT( 'C:\TEMP\HTTP.txt', RespHTTP.Text );
+    // WriteToTXT( '/tmp/HTTP.txt', RespHTTP.Text );
+    // WriteToTXT( '/tmp/HeaderRESP.txt', HTTPSend.Headers.Text );
 
     if not OK then
        raise EACBrHTTPError.Create( 'Erro HTTP: '+IntToStr(HTTPSend.ResultCode)+' '+
@@ -698,4 +711,4 @@ begin
   fHTTPSend.ProxyUser := AValue;
 end;
 
-end.
+end.

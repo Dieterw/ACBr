@@ -85,29 +85,39 @@
 
 {$I ACBr.inc}
 
-{$IFNDEF CONSOLE}
- {$IFDEF FPC}
+{$IFDEF FPC}
+ {$IFNDEF CONSOLE}
   {$DEFINE USE_LCLIntf}
  {$ENDIF}
+ {$IFDEF LINUX}
+  {$DEFINE USE_LConvEncoding}
+ {$ENDIF}
 {$ENDIF}
+
+
 
 unit ACBrUtil;
 
 interface
-Uses SysUtils, Math, Classes, 
-    {$IFDEF COMPILER6_UP} StrUtils, DateUtils, {$ELSE} ACBrD5, FileCtrl, {$ENDIF}
-    {$IFDEF FPC} dynlibs, {$IFDEF USE_LCLIntf}LCLIntf,{$ENDIF} {$ENDIF}
-    {$ifdef MSWINDOWS}
-      Windows, ShellAPI
+Uses SysUtils, Math, Classes
+    {$IFDEF COMPILER6_UP} ,StrUtils, DateUtils {$ELSE} ,ACBrD5, FileCtrl {$ENDIF}
+    {$IFDEF FPC}
+      ,dynlibs
+      {$IFDEF USE_LConvEncoding} ,LConvEncoding {$ENDIF}
+      {$IFDEF USE_LCLIntf} ,LCLIntf {$ENDIF}
+    {$ENDIF}
+    {$IFDEF MSWINDOWS}
+      ,Windows, ShellAPI
     {$else}
       {$IFNDEF FPC}
-        Libc
+        ,Libc
       {$else}
-        unix
+        ,unix
       {$endif}
     {$endif} ;
 
 function ACBrStr( AString : AnsiString ) : String ;
+function ACBrStrToAnsi( AString : String ) : AnsiString ;
 function TruncFix( X : Double ) : Integer ;
 
 function TestBit(const Value: Integer; const Bit: Byte): Boolean;
@@ -237,16 +247,36 @@ var Randomized : Boolean ;
   Todos os Fontes do ACBr usam Encoding CP1252, para manter compatibilidade com
   D5 a D2007, Porém D2009 e superiores e Lazarus 0.9.27 e acima usam UTF8.
   A função abaixo converte a AString para de ANSI, para UTF8, apenas se o
-  sistema usar UNICODE
+  Conpilador usar UNICODE
  -----------------------------------------------------------------------------}
 function ACBrStr( AString : AnsiString ) : String ;
 begin
 {$IFDEF UNICODE}
-  Result := AnsiToUtf8( AString ) ;
+ {$IFDEF USE_LConvEncoding}
+   Result := CP1252ToUTF8( AString ) ;
+ {$ELSE}
+   Result := AnsiToUtf8( AString ) ;
+ {$ENDIF}
 {$ELSE}
   Result := AString
 {$ENDIF}
 end ;
+
+{-----------------------------------------------------------------------------
+  Converte a AString de UTF8 para ANSI nativo, apenas se o Compilador usar UNICODE
+ -----------------------------------------------------------------------------}
+function ACBrStrToAnsi(AString: String): AnsiString;
+begin
+{$IFDEF UNICODE}
+ {$IFDEF USE_LConvEncoding}
+   Result := UTF8ToCP1252( AString ) ;
+ {$ELSE}
+   Result := Utf8ToAnsi( AString ) ;
+ {$ENDIF}
+{$ELSE}
+  Result := AString
+{$ENDIF}
+end;
 
 {-----------------------------------------------------------------------------
  Corrige, bug da função Trunc.

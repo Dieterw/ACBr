@@ -87,6 +87,8 @@ end;
 
 procedure TForm1.AjustaProxy ;
 begin
+  cbxWSChange(Self);
+
   ACBrCEP1.ProxyHost := edProxyHost.Text ;
   ACBrCEP1.ProxyPort := edProxyPort.Text ;
   ACBrCEP1.ProxyUser := edProxyUser.Text ;
@@ -239,4 +241,4 @@ begin
 end;
 
 end.
-
+

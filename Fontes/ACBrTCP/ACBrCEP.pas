@@ -408,7 +408,7 @@ begin
   SL1 := TStringList.Create;
   SL2 := TStringList.Create;
   try
-    SL1.Text := StringReplace( fOwner.RespHTTP.Text, '&cep=',sLineBreak+'&cep=',
+    SL1.Text := StringReplace( fOwner.RespHTTP.Text, '&cep=', sLineBreak+'&cep=',
                                [rfReplaceAll] );
 
     For I := 0 to SL1.Count-1 do
@@ -419,7 +419,7 @@ begin
        if PosIni > 0 then
        begin
 
-         Buffer := ACBrStr( copy( Buffer, PosIni, Length(Buffer) ) );
+         Buffer := copy( Buffer, PosIni, Length(Buffer) ) ;
 
          SL2.Clear;
          SL2.Text := StringReplace( Buffer, '&', sLineBreak, [rfReplaceAll] );
@@ -516,10 +516,9 @@ begin
     For I := 0 to SL1.Count-1 do
     begin
       Buffer := SL1[I] ;
-      Buffer := ACBrStr( Buffer );
 
       SL2.Clear;
-      SL2.Text := ACBrStr( StringReplace( Buffer, ',', sLineBreak, [rfReplaceAll] ));
+      SL2.Text := StringReplace( Buffer, ',', sLineBreak, [rfReplaceAll] );
 
       if (SL2.Count >= 9) and (Length( OnlyNumber(SL2[8]) ) = 8) then
       begin
@@ -564,7 +563,7 @@ end;
 procedure TACBrWSRepublicaVirtual.BuscarPorLogradouro(AMunicipio,
   ATipo_Logradouro, ALogradouro, AUF, ABairro: String);
 begin
-  raise Exception.Create(AnsiToUtf8('Busca por Logradouro não disponível no site Republica Virtual.'));
+  raise Exception.Create(ACBrStr('Busca por Logradouro não disponível no site Republica Virtual.'));
 end;
 
 procedure TACBrWSRepublicaVirtual.ProcessaResposta;
@@ -581,9 +580,6 @@ begin
 
      if PosIni > 0 then
        begin
-
-         Buffer := ACBrStr(Buffer);
-
          Endereco := TACBrCEPEndereco.Create;
 
          Endereco.CEP             := Endereco.LerTagXML(Buffer,'cep') ;

@@ -217,8 +217,7 @@ begin
       begin
         SL := TStringList.Create;
         try
-          Buffer  :=  Trim( StripHTML( copy( RespHTTP.Text, PI, PF ) ));
-          SL.Text := ACBrStr( Buffer );
+          SL.Text := Trim( StripHTML( copy( RespHTTP.Text, PI, PF ) ));
 
           // DEBUG //
           // WriteToTXT( 'C:\TEMP\HTTP.txt', SL.Text );
@@ -264,4 +263,4 @@ begin
 end ;
 
 end.
-
+

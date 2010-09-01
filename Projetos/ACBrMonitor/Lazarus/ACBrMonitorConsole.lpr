@@ -283,8 +283,6 @@ end;
 var
   Application: TACBrMonitorConsole;
 
-{$R *.res}
-
 begin
   Application:=TACBrMonitorConsole.Create(nil);
   try

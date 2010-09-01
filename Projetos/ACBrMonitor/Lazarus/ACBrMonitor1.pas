@@ -461,8 +461,6 @@ type
     procedure TCPServerTCRecebeDados(const TCPBlockSocket : TTCPBlockSocket ;
       const Recebido : AnsiString ; var Enviar : AnsiString) ;
     procedure TrayIcon1Click(Sender: TObject);
-    procedure TrayIcon1MouseUp(Sender: TObject; Button: TMouseButton;{%h-}
-      Shift: TShiftState; X, Y: integer);{%h-}
     procedure tsACBrBoletoShow(Sender : TObject) ;
     procedure tsECFShow(Sender: TObject);
     procedure Ocultar1Click(Sender: TObject);
@@ -749,8 +747,7 @@ begin
   TrayIcon1.Icon.Assign(Self.Icon);
   TrayIcon1.Hint := 'ACBrMonitor ' + Versao;
   TrayIcon1.BalloonTitle := TrayIcon1.Hint;
-  TrayIcon1.BalloonHint := 'Projeto ACBr' + sLineBreak +
-    'http://acbr.sf.net';
+  TrayIcon1.BalloonHint := 'Projeto ACBr' + sLineBreak + 'http://acbr.sf.net';
 
   Caption := 'ACBrMonitor ' + Versao + ' - ACBr: ' + ACBR_VERSAO;
   PageControl1.ActivePageIndex := 0;
@@ -2588,13 +2585,7 @@ end;
 
 procedure TFrmACBrMonitor.TrayIcon1Click(Sender: TObject);
 begin
-  TrayIcon1.ShowBalloonHint;
-end;
-
-procedure TFrmACBrMonitor.TrayIcon1MouseUp(Sender: TObject;
-  Button: TMouseButton; Shift: TShiftState; X, Y: integer);
-begin
-  TrayIcon1.ShowBalloonHint;
+  TrayIcon1.PopUpMenu.PopUp;
 end;
 
 procedure TFrmACBrMonitor.tsACBrBoletoShow(Sender : TObject) ;
@@ -3942,4 +3933,4 @@ begin
 
 end;
 
-end.
+end.

@@ -88,13 +88,12 @@
 {$IFDEF FPC}
  {$IFNDEF CONSOLE}
   {$DEFINE USE_LCLIntf}
- {$ENDIF}
- {$IFDEF LINUX}
-  {$DEFINE USE_LConvEncoding}
+
+  {$IFDEF LINUX}
+   {$DEFINE USE_LConvEncoding}
+  {$ENDIF}
  {$ENDIF}
 {$ENDIF}
-
-
 
 unit ACBrUtil;
 

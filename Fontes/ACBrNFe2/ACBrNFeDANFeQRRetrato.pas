@@ -692,6 +692,10 @@ var
   nRestItens : Integer ;
 begin
   inherited;
+   //Alteracao infoaxel 01/09/2010
+   qrbISSQN.Height := 46;
+   qrbDadosAdicionais.Height := 135;
+   //Fim alteracao infoaxel 01/09/2010
    Itens ;
    nItemControle := 0 ;
    FTotalPages   := 1 ;

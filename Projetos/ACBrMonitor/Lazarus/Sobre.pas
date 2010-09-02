@@ -44,6 +44,7 @@ type
   { TfrmSobre }
 
   TfrmSobre = class(TForm)
+    bDoar: TBitBtn;
     Image1 : TImage ;
     Timer1: TTimer;
     lVersao: TLabel;
@@ -52,9 +53,8 @@ type
     BitBtn1: TBitBtn;
     lNome: TLabel;
     Label1: TLabel;
-    Label2: TLabel;
-    lColaboradores: TLabel;
     bAjuda: TBitBtn;
+    procedure bDoarClick(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
     procedure BitBtn1Click(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -102,6 +102,11 @@ begin
   end ;
 
   Application.ProcessMessages ;
+end;
+
+procedure TfrmSobre.bDoarClick(Sender: TObject);
+begin
+ OpenURL( 'http://acbr.sourceforge.net/drupal/?q=node/14' );
 end;
 
 procedure TfrmSobre.BitBtn1Click(Sender: TObject);

@@ -1,6 +1,6 @@
 array set info {
 AllowLanguageSelection
-{Yes}
+{No}
 
 AppName
 {ACBrMonitor}
@@ -93,7 +93,7 @@ Language,de
 {No}
 
 Language,en
-{Yes}
+{No}
 
 Language,es
 {No}
@@ -242,10 +242,26 @@ File ::7540B964-026E-0158-8435-411C66EBE80C -name /home/daniel/pascal/Comp/ACBr/
 File ::5E5D9E02-0F24-7EA1-B132-5F8295CB09E1 -name /home/daniel/pascal/Comp/ACBr/trunk/Projetos/ACBrMonitor/Lazarus/LICENSE.TXT -parent 15133E1A-7B55-8242-7D70-0B8ACE8BF3C2
 File ::0C8A0770-68D0-4474-37DC-0D309E91F088 -name /home/daniel/pascal/Comp/ACBr/trunk/Projetos/ACBrMonitor/Lazarus/leia-me.txt -parent 15133E1A-7B55-8242-7D70-0B8ACE8BF3C2
 File ::B624376E-3300-F3AB-AD54-39A9F3D85FA1 -name /home/daniel/pascal/Comp/ACBr/trunk/Projetos/ACBrMonitor/Lazarus/licenca.txt -parent 15133E1A-7B55-8242-7D70-0B8ACE8BF3C2
-File ::581B121F-92D7-8E6C-6C2D-E448A7985AEE -targetfilename ACBrMonitor.png -name /home/daniel/pascal/Comp/ACBr/trunk/Projetos/ACBrMonitor/Lazarus/ACBrMonitor_32x32.png -parent 15133E1A-7B55-8242-7D70-0B8ACE8BF3C2
-Component ::6AF4D544-97C9-12CA-F375-CF52511BEBC1 -setup Install -active Yes -platforms {AIX-ppc FreeBSD-4-x86 FreeBSD-5-x86 FreeBSD-6-x86 FreeBSD-7-x86 HPUX-hppa Linux-x86 Linux-x86_64 Solaris-sparc Solaris-x86 Windows} -name {Default Component} -parent Components
-SetupType ::A33356CA-D9D9-52BF-82C0-75EABD5054B8 -setup Install -active Yes -platforms {AIX-ppc FreeBSD-4-x86 FreeBSD-5-x86 FreeBSD-6-x86 FreeBSD-7-x86 HPUX-hppa Linux-x86 Linux-x86_64 Solaris-sparc Solaris-x86 Windows} -name Typical -parent SetupTypes
-SetupType ::8F2C45C8-302E-8C86-C72B-F4EE90CFB142 -setup Install -active Yes -platforms {AIX-ppc FreeBSD-4-x86 FreeBSD-5-x86 FreeBSD-6-x86 FreeBSD-7-x86 HPUX-hppa Linux-x86 Linux-x86_64 Solaris-sparc Solaris-x86 Windows} -name Custom -parent SetupTypes
+File ::CDAD7F9F-37A9-0CF6-F98A-3AF140CA9699 -targetfilename ACBrMonitor.png -name /home/daniel/pascal/Comp/ACBr/trunk/Projetos/ACBrMonitor/Lazarus/ACBrMonitor_48x48.png -parent 15133E1A-7B55-8242-7D70-0B8ACE8BF3C2
+File ::CA5EA250-0D87-F251-ACCF-6FEAE5415138 -name /home/daniel/pascal/Comp/ACBr/trunk/Projetos/ACBrMonitor/Lazarus/ACBrMonitor-change-log.txt -parent 15133E1A-7B55-8242-7D70-0B8ACE8BF3C2
+FileGroup ::A7445EB0-8070-6A51-67CA-70F86582B322 -setup Install -active Yes -platforms {AIX-ppc FreeBSD-4-x86 FreeBSD-5-x86 FreeBSD-6-x86 FreeBSD-7-x86 HPUX-hppa Linux-x86 Linux-x86_64 Solaris-sparc Solaris-x86 Windows TarArchive ZipArchive} -name ACBrMonitorConsole -parent FileGroups
+File ::B93A23F0-4828-6CDC-5C80-3FBC8A7E0B87 -name /home/daniel/pascal/Comp/ACBr/trunk/Projetos/ACBrMonitor/Lazarus/ACBrMonitorConsole -parent A7445EB0-8070-6A51-67CA-70F86582B322
+FileGroup ::A0AAD91A-0EEE-FEE2-D547-23427A537F3A -setup Install -active Yes -platforms {AIX-ppc FreeBSD-4-x86 FreeBSD-5-x86 FreeBSD-6-x86 FreeBSD-7-x86 HPUX-hppa Linux-x86 Linux-x86_64 Solaris-sparc Solaris-x86 Windows TarArchive ZipArchive} -name Documentacao -parent FileGroups
+File ::D3A21588-0AD7-A329-D898-B22EC05BF7B1 -name /home/daniel/pascal/Comp/ACBr/trunk/Projetos/ACBrMonitor/Lazarus/ManualACBrMonitor.html -parent A0AAD91A-0EEE-FEE2-D547-23427A537F3A
+File ::CCDA6226-D16D-F951-BA85-5293BF5E2C5B -name /home/daniel/pascal/Comp/ACBr/trunk/Projetos/ACBrMonitor/Lazarus/ACBrMonitor.chm -parent A0AAD91A-0EEE-FEE2-D547-23427A537F3A
+FileGroup ::273C89D4-5D0E-4060-1ED2-A90A3AE647DF -setup Install -active Yes -platforms {AIX-ppc FreeBSD-4-x86 FreeBSD-5-x86 FreeBSD-6-x86 FreeBSD-7-x86 HPUX-hppa Linux-x86 Linux-x86_64 Solaris-sparc Solaris-x86 Windows TarArchive ZipArchive} -name Exemplos -parent FileGroups
+File ::D1C8EE7E-32CB-24BB-440A-D19D3367C2F2 -name /home/daniel/pascal/Comp/ACBr/trunk/Projetos/ACBrMonitor/Exemplos/Clipper_TXT_xHarbour_Socket.zip -parent 273C89D4-5D0E-4060-1ED2-A90A3AE647DF
+File ::5DFAE295-2334-7488-3733-06B4292DEEFE -name /home/daniel/pascal/Comp/ACBr/trunk/Projetos/ACBrMonitor/Exemplos/Cobol_TXT_Socket.zip -parent 273C89D4-5D0E-4060-1ED2-A90A3AE647DF
+File ::A89FDB71-3C45-0CA7-6A97-D844E330FCCA -name /home/daniel/pascal/Comp/ACBr/trunk/Projetos/ACBrMonitor/Exemplos/Oracle.txt -parent 273C89D4-5D0E-4060-1ED2-A90A3AE647DF
+File ::4EB36FFE-ED98-856D-4160-7EB8D644C62A -name /home/daniel/pascal/Comp/ACBr/trunk/Projetos/ACBrMonitor/Exemplos/TesteTXT.BAT -parent 273C89D4-5D0E-4060-1ED2-A90A3AE647DF
+File ::32F6CA43-D359-4719-EE36-A85A0B0F55CB -name /home/daniel/pascal/Comp/ACBr/trunk/Projetos/ACBrMonitor/Exemplos/php_socket.zip -parent 273C89D4-5D0E-4060-1ED2-A90A3AE647DF
+File ::7EC8623B-F71C-D546-C8E6-EFE06B602C42 -name /home/daniel/pascal/Comp/ACBr/trunk/Projetos/ACBrMonitor/Exemplos/Java_socket.txt -parent 273C89D4-5D0E-4060-1ED2-A90A3AE647DF
+Component ::1E2CC756-1740-1A0F-E382-93742C781FAC -setup Install -active Yes -platforms {AIX-ppc FreeBSD-4-x86 FreeBSD-5-x86 FreeBSD-6-x86 FreeBSD-7-x86 HPUX-hppa Linux-x86 Linux-x86_64 Solaris-sparc Solaris-x86 Windows} -name Programa -parent Components
+Component ::657CC324-EE3E-9286-FD2D-927A572F8C0C -setup Install -active Yes -platforms {AIX-ppc FreeBSD-4-x86 FreeBSD-5-x86 FreeBSD-6-x86 FreeBSD-7-x86 HPUX-hppa Linux-x86 Linux-x86_64 Solaris-sparc Solaris-x86 Windows} -name Documentacao -parent Components
+Component ::A259A169-F947-20BF-81F9-4472A940DA0A -setup Install -active Yes -platforms {AIX-ppc FreeBSD-4-x86 FreeBSD-5-x86 FreeBSD-6-x86 FreeBSD-7-x86 HPUX-hppa Linux-x86 Linux-x86_64 Solaris-sparc Solaris-x86 Windows} -name Exemplos -parent Components
+SetupType ::A33356CA-D9D9-52BF-82C0-75EABD5054B8 -setup Install -active Yes -platforms {AIX-ppc FreeBSD-4-x86 FreeBSD-5-x86 FreeBSD-6-x86 FreeBSD-7-x86 HPUX-hppa Linux-x86 Linux-x86_64 Solaris-sparc Solaris-x86 Windows} -name Mínima -parent SetupTypes
+SetupType ::8F2C45C8-302E-8C86-C72B-F4EE90CFB142 -setup Install -active Yes -platforms {AIX-ppc FreeBSD-4-x86 FreeBSD-5-x86 FreeBSD-6-x86 FreeBSD-7-x86 HPUX-hppa Linux-x86 Linux-x86_64 Solaris-sparc Solaris-x86 Windows} -name Completa -parent SetupTypes
+SetupType ::AC89D521-3A3D-8519-E05F-974F187CBF20 -setup Install -active Yes -platforms {AIX-ppc FreeBSD-4-x86 FreeBSD-5-x86 FreeBSD-6-x86 FreeBSD-7-x86 HPUX-hppa Linux-x86 Linux-x86_64 Solaris-sparc Solaris-x86 Windows} -name Custom -parent SetupTypes
 
 InstallComponent C43D2C74-3BD2-E96D-A127-EBF551CDCA10 -setup Install -type pane -title {Welcome Screen} -component Welcome -active Yes -parent StandardInstall
 InstallComponent 013C9AEF-049E-7828-B559-0F912458DD35 -setup Install -type pane -conditions {90647666-A19A-341C-F7E4-2EFC8996E3F7 A60024AA-D544-F450-F3E4-374FF932FC84} -title {Select Destination} -component SelectDestination -active Yes -parent StandardInstall
@@ -525,7 +541,7 @@ array set Properties {
 {1}
 
 15133E1A-7B55-8242-7D70-0B8ACE8BF3C2,Comment
-{Instalação Mínima do ACBrMonitor}
+{Programa ACBrMonitor}
 
 15133E1A-7B55-8242-7D70-0B8ACE8BF3C2,Destination
 {<%InstallDir%>}
@@ -534,7 +550,7 @@ array set Properties {
 {Programas do ACBrMonitor}
 
 15133E1A-7B55-8242-7D70-0B8ACE8BF3C2,FileSize
-{15290016}
+{15308236}
 
 15133E1A-7B55-8242-7D70-0B8ACE8BF3C2,Name
 {Program Files}
@@ -559,6 +575,21 @@ array set Properties {
 
 1E2642E3-6B95-6E9B-9C60-2045D2E1C0AE,Alias
 {Startup Actions}
+
+1E2CC756-1740-1A0F-E382-93742C781FAC,Description,subst
+{1}
+
+1E2CC756-1740-1A0F-E382-93742C781FAC,DisplayName,subst
+{1}
+
+1E2CC756-1740-1A0F-E382-93742C781FAC,FileGroups
+{15133E1A-7B55-8242-7D70-0B8ACE8BF3C2 A7445EB0-8070-6A51-67CA-70F86582B322}
+
+1E2CC756-1740-1A0F-E382-93742C781FAC,Name
+{Programa}
+
+1E2CC756-1740-1A0F-E382-93742C781FAC,RequiredComponent
+{Yes}
 
 1E326DFB-65DD-F4D6-E450-551983656CDC,CheckCondition
 {Before Action is Executed}
@@ -595,6 +626,15 @@ array set Properties {
 
 2661D10C-DD77-3C5C-AD8F-E1236B77A5DA,Filename
 {<%ProgramExecutable%>}
+
+273C89D4-5D0E-4060-1ED2-A90A3AE647DF,Destination
+{<%InstallDir%>/Exemplos}
+
+273C89D4-5D0E-4060-1ED2-A90A3AE647DF,FileSize
+{67758}
+
+273C89D4-5D0E-4060-1ED2-A90A3AE647DF,Name
+{Exemplos}
 
 2B5D49AA-209F-A339-A9CF-1860D75C2D35,BackButton,subst
 {1}
@@ -899,6 +939,18 @@ array set Properties {
 6440C75D-AB77-DFE5-EE48-97BB2E50D5CD,Filename
 {<%ProgramExecutable%>}
 
+657CC324-EE3E-9286-FD2D-927A572F8C0C,Description,subst
+{1}
+
+657CC324-EE3E-9286-FD2D-927A572F8C0C,DisplayName,subst
+{1}
+
+657CC324-EE3E-9286-FD2D-927A572F8C0C,FileGroups
+{A0AAD91A-0EEE-FEE2-D547-23427A537F3A}
+
+657CC324-EE3E-9286-FD2D-927A572F8C0C,Name
+{Documentacao}
+
 69D38A55-F7DF-985C-DCB8-9581DD9E9108,CheckCondition
 {Before Action is Executed}
 
@@ -910,21 +962,6 @@ array set Properties {
 
 6A4BC2D8-E4AD-5DA7-C782-17D5382706D8,Filename
 {<%ProgramExecutable%>}
-
-6AF4D544-97C9-12CA-F375-CF52511BEBC1,Description,subst
-{1}
-
-6AF4D544-97C9-12CA-F375-CF52511BEBC1,DisplayName,subst
-{1}
-
-6AF4D544-97C9-12CA-F375-CF52511BEBC1,FileGroups
-{15133E1A-7B55-8242-7D70-0B8ACE8BF3C2}
-
-6AF4D544-97C9-12CA-F375-CF52511BEBC1,Name
-{Default Component}
-
-6AF4D544-97C9-12CA-F375-CF52511BEBC1,RequiredComponent
-{Yes}
 
 6EAD7CC9-A009-2D49-C6C4-41FABE25E2FC,Comment
 {Ask the user if they want to proceed with the install.}
@@ -1005,7 +1042,7 @@ array set Properties {
 {Uninstall Actions}
 
 8F2C45C8-302E-8C86-C72B-F4EE90CFB142,Components
-{6AF4D544-97C9-12CA-F375-CF52511BEBC1}
+{1E2CC756-1740-1A0F-E382-93742C781FAC 657CC324-EE3E-9286-FD2D-927A572F8C0C A259A169-F947-20BF-81F9-4472A940DA0A}
 
 8F2C45C8-302E-8C86-C72B-F4EE90CFB142,Description,subst
 {1}
@@ -1014,7 +1051,7 @@ array set Properties {
 {1}
 
 8F2C45C8-302E-8C86-C72B-F4EE90CFB142,Name
-{Custom}
+{Completa}
 
 8F89FAB3-0A90-7D23-A42C-EF26EE3683EC,Alias
 {Install Actions}
@@ -1046,6 +1083,9 @@ array set Properties {
 9A16B2A6-5C4E-E9FA-1365-7FA2BA95E69C,Action
 {Install Actions}
 
+9C4C1A01-A70D-881A-4A10-93634AB12849,Conditions
+{0 conditions}
+
 9C4C1A01-A70D-881A-4A10-93634AB12849,ExecuteAction
 {Before Pane is Displayed}
 
@@ -1058,8 +1098,29 @@ array set Properties {
 9EC33634-E940-0707-3AF0-C826639DB78D,UpdateFileText
 {Yes}
 
+A0AAD91A-0EEE-FEE2-D547-23427A537F3A,Destination
+{<%InstallDir%>}
+
+A0AAD91A-0EEE-FEE2-D547-23427A537F3A,FileSize
+{213062}
+
+A0AAD91A-0EEE-FEE2-D547-23427A537F3A,Name
+{Documentacao}
+
+A259A169-F947-20BF-81F9-4472A940DA0A,Description,subst
+{1}
+
+A259A169-F947-20BF-81F9-4472A940DA0A,DisplayName,subst
+{1}
+
+A259A169-F947-20BF-81F9-4472A940DA0A,FileGroups
+{273C89D4-5D0E-4060-1ED2-A90A3AE647DF}
+
+A259A169-F947-20BF-81F9-4472A940DA0A,Name
+{Exemplos}
+
 A33356CA-D9D9-52BF-82C0-75EABD5054B8,Components
-{6AF4D544-97C9-12CA-F375-CF52511BEBC1}
+{1E2CC756-1740-1A0F-E382-93742C781FAC}
 
 A33356CA-D9D9-52BF-82C0-75EABD5054B8,Description,subst
 {1}
@@ -1068,7 +1129,7 @@ A33356CA-D9D9-52BF-82C0-75EABD5054B8,DisplayName,subst
 {1}
 
 A33356CA-D9D9-52BF-82C0-75EABD5054B8,Name
-{Typical}
+{Mínima}
 
 A45FB3FD-5A21-6775-C7F6-E3E84553BC02,CheckCondition
 {Before Action is Executed}
@@ -1108,6 +1169,18 @@ A60024AA-D544-F450-F3E4-374FF932FC84,Filename
 
 A60024AA-D544-F450-F3E4-374FF932FC84,Permission
 {can create}
+
+A7445EB0-8070-6A51-67CA-70F86582B322,Comment
+{Versão Console do ACBrMonitor}
+
+A7445EB0-8070-6A51-67CA-70F86582B322,Destination
+{<%InstallDir%>}
+
+A7445EB0-8070-6A51-67CA-70F86582B322,FileSize
+{2132712}
+
+A7445EB0-8070-6A51-67CA-70F86582B322,Name
+{ACBrMonitorConsole}
 
 A895DA2F-FE3A-21CB-1AC2-DA2E281E79D6,BackButton,subst
 {1}
@@ -1162,6 +1235,18 @@ AC44E47A-5778-AA32-A6F1-2EC6E86A1062,CheckCondition
 
 AC44E47A-5778-AA32-A6F1-2EC6E86A1062,Filename
 {<%ProgramExecutable%>}
+
+AC89D521-3A3D-8519-E05F-974F187CBF20,Components
+{1E2CC756-1740-1A0F-E382-93742C781FAC 657CC324-EE3E-9286-FD2D-927A572F8C0C A259A169-F947-20BF-81F9-4472A940DA0A}
+
+AC89D521-3A3D-8519-E05F-974F187CBF20,Description,subst
+{1}
+
+AC89D521-3A3D-8519-E05F-974F187CBF20,DisplayName,subst
+{1}
+
+AC89D521-3A3D-8519-E05F-974F187CBF20,Name
+{Custom}
 
 ACCC2A7D-C99E-110A-A692-26A73A79C4CA,CheckCondition
 {Before Action is Executed}
@@ -1234,6 +1319,9 @@ AIX-ppc,RequireRoot
 
 AIX-ppc,RootInstallDir
 {/usr/local/<%ShortAppName%>}
+
+B4304F2D-48A7-E772-C8C8-A59F9A1770B8,Conditions
+{0 conditions}
 
 B4304F2D-48A7-E772-C8C8-A59F9A1770B8,ExecuteAction
 {Before Pane is Displayed}
@@ -2276,6 +2364,9 @@ C487BF78-F3E7-61C0-01B6-BE6E3828EB42,Message
 18D5A222-4B1B-D43D-42FF-CF7D32C2F0B5,Message
 {<%UninstallCompleteText%>}
 
+1E2CC756-1740-1A0F-E382-93742C781FAC,Description
+{Programas. ACBrMonitor e ACBrMonitorConsole}
+
 4904AD9C-08F1-11F0-E677-FAD374845677,Text
 {<%LaunchApplicationText%>}
 
@@ -2285,8 +2376,8 @@ C487BF78-F3E7-61C0-01B6-BE6E3828EB42,Message
 550E9534-305C-E629-2699-4D5203274487,Text
 {<%CreateQuickLaunchShortcutText%>}
 
-6AF4D544-97C9-12CA-F375-CF52511BEBC1,Description
-{<%ProgramFilesDescription%>}
+657CC324-EE3E-9286-FD2D-927A572F8C0C,Description
+{Arquivos de Ajuda do ACBrMonitor. Informações para Desenvolvedores, explicando procedimentos para Integração de sua aplicação com o ACBrMonitor}
 
 743B6269-B4EC-D31D-02B4-5BB38D4C72D8,Text
 {<%LaunchApplicationText%>}
@@ -2295,16 +2386,25 @@ C487BF78-F3E7-61C0-01B6-BE6E3828EB42,Message
 {<%UninstallingApplicationText%>}
 
 8F2C45C8-302E-8C86-C72B-F4EE90CFB142,Description
-{<%CustomInstallDescription%>}
+{Instalação Completa. Todos os Programas e arquivos serão instalados}
+
+A259A169-F947-20BF-81F9-4472A940DA0A,Description
+{Códigos Fontes de Exemplo de Integração com o ACBrmonitor, em diversas linguagens (Java, Cobol, xBase, Oracle, PHP, etc)}
 
 A33356CA-D9D9-52BF-82C0-75EABD5054B8,Description
-{<%TypicalInstallDescription%>}
+{Instalação Mínima. Apenas o Programa ACBrMonitor será instalado}
 
 A5DE0E53-5456-84B9-7FB2-61B45ABEE8C7,Message
 {<%InstallationCompleteText%>}
 
 AB53BF76-66A4-7BF8-F827-783129D45D31,Text
 {<%CreateQuickLaunchShortcutText%>}
+
+AC89D521-3A3D-8519-E05F-974F187CBF20,Description
+{<%CustomInstallDescription%>}
+
+AC89D521-3A3D-8519-E05F-974F187CBF20,DisplayName
+{Customizada}
 
 B9A8FBF5-C3CB-8C17-CBE1-E3B665D275D0,Caption
 {<%ApplicationReadmeText%>}

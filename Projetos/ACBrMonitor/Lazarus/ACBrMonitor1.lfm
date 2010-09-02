@@ -116,7 +116,6 @@ object FrmACBrMonitor: TFrmACBrMonitor
       end>
   end
   object pBotoes: TPanel
-    Cursor = crHelp
     Left = 0
     Height = 43
     Hint = 'Sobre o ACBrMonitor ?'
@@ -129,13 +128,14 @@ object FrmACBrMonitor: TFrmACBrMonitor
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 1
-    OnClick = pBotoesClick
     object Image1: TImage
+      Cursor = crHandPoint
       Left = 1
       Height = 41
       Top = 1
       Width = 592
       Align = alClient
+      OnClick = Image1Click
       Picture.Data = {
         1754506F727461626C654E6574776F726B47726170686963B94C000089504E47
         0D0A1A0A0000000D494844520000040000000028080600000060AD88CB000000

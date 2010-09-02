@@ -448,6 +448,7 @@ type
     procedure bECFTestarClick(Sender: TObject);
     procedure bECFLeituraXClick(Sender: TObject);
     procedure bECFAtivarClick(Sender: TObject);
+    procedure Image1Click(Sender: TObject);
     procedure TcpServerConecta(const TCPBlockSocket: TTCPBlockSocket;
       var Enviar: ansistring);{%h-}
     procedure TcpServerDesConecta(const TCPBlockSocket: TTCPBlockSocket;
@@ -496,7 +497,6 @@ type
     procedure AumentaTempoHint(Sender: TObject);
     procedure DiminuiTempoHint(Sender: TObject);
     procedure cbLCBSufixoLeitorChange(Sender: TObject);
-    procedure pBotoesClick(Sender: TObject);
     procedure FormShortCut(Key: integer; Shift: TShiftState;{%h-}
       var Handled: boolean);{%h-}
     procedure cbGAVStrAbreChange(Sender: TObject);
@@ -1149,6 +1149,15 @@ begin
 
     if cbLog.Checked then
       mResp.Lines.Add('Log de comandos será gravado em: ' + ArqLogTXT);
+
+    mResp.Lines.Add('');
+    mResp.Lines.Add('   * Você gosta do ACBrMonitor ?');
+    mResp.Lines.Add('');
+    mResp.Lines.Add('   * Incentive a equipe de desenvolvimento do ACBrMonitor') ;
+    mResp.Lines.Add('     a continuar com esse trabalho.');
+    mResp.Lines.Add('');
+    mResp.Lines.Add('   * EFETUE AINDA HOJE A SUA DOAÇÃO. Acesse:') ;
+    mResp.Lines.Add('     http://acbr.sourceforge.net/drupal/?q=node/14') ;
 
     { Se for NAO fiscal, desliga o AVISO antes de ativar }
     if ACBrECF1.Modelo = ecfNaoFiscal then
@@ -2453,6 +2462,17 @@ begin
   AvaliaEstadoTsECF;
 end;
 
+procedure TFrmACBrMonitor.Image1Click(Sender: TObject);
+begin
+  frmSobre := TfrmSobre.Create(self);
+  try
+    frmSobre.lVersao.Caption := 'Ver: ' + Versao;
+    frmSobre.ShowModal;
+  finally
+    FreeAndNil(frmSobre);
+  end;
+end;
+
 procedure TFrmACBrMonitor.TcpServerConecta(const TCPBlockSocket: TTCPBlockSocket;
   var Enviar: ansistring);
 Var
@@ -3508,19 +3528,7 @@ procedure TFrmACBrMonitor.FormShortCut(Key: integer; Shift: TShiftState;
   var Handled: boolean);
 begin
   if (Key = VK_HELP) or (Key = VK_F1) then
-    pBotoesClick(self);
-end;
-
-{------------------------------------------------------------------------------}
-procedure TFrmACBrMonitor.pBotoesClick(Sender: TObject);
-begin
-  frmSobre := TfrmSobre.Create(self);
-  try
-    frmSobre.lVersao.Caption := 'Ver: ' + Versao;
-    frmSobre.ShowModal;
-  finally
-    FreeAndNil(frmSobre);
-  end;
+    Image1Click(self);
 end;
 
 {------------------------------------------------------------------------------}

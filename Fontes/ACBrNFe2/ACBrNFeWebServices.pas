@@ -454,7 +454,7 @@ begin
   HTTP.ProxyUser  := FConfiguracoes.WebServices.ProxyUser;
   HTTP.ProxyPass  := FConfiguracoes.WebServices.ProxyPass;
 
-  HTTP.Sock.RaiseExcept := True;
+//  HTTP.Sock.RaiseExcept := True;
 
   if (pos('SCERECEPCAORFB',UpperCase(FURL)) <= 0) and
      (pos('SCECONSULTARFB',UpperCase(FURL)) <= 0) then

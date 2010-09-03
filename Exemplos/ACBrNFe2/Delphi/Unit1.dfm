@@ -962,7 +962,7 @@ object Form1: TForm1
         Height = 25
         Caption = 'Cancelamento NFe pela Chave'
         TabOrder = 16
-        OnClick = btnCancNFClick
+        OnClick = btnCancelarChaveClick
       end
     end
     object PageControl2: TPageControl
@@ -970,7 +970,7 @@ object Form1: TForm1
       Top = 193
       Width = 564
       Height = 362
-      ActivePage = TabSheet5
+      ActivePage = TabSheet10
       Align = alClient
       TabOrder = 1
       object TabSheet5: TTabSheet
@@ -1104,6 +1104,7 @@ object Form1: TForm1
       'D:\delphi\ACBr\trunk\Exemplos\ACBrNFe2\Delphi\Report\DANFE_Rave5' +
       '13.rav'
     EspessuraBorda = 1
+    TamanhoFonte_RazaoSocial = 12
     Left = 758
     Top = 377
   end

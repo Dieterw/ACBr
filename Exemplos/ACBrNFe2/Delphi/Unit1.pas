@@ -160,6 +160,7 @@ type
     procedure lblPatrocinadorClick(Sender: TObject);
     procedure lblDoar1Click(Sender: TObject);
     procedure btnConsultarChaveClick(Sender: TObject);
+    procedure btnCancelarChaveClick(Sender: TObject);
     
   private
     { Private declarations }
@@ -674,6 +675,8 @@ if not(InputQuery('WebServices Enviar', 'Numero da Nota', vAux)) then
 
   GerarNFe(vAux);
 
+  ACBrNFe1.NotasFiscais.Assinar;
+
   ACBrNFe1.NotasFiscais.Items[0].SaveToFile;
   ShowMessage('Arquivo gerado em: '+ACBrNFe1.NotasFiscais.Items[0].NomeArq);
   MemoDados.Lines.Add('Arquivo gerado em: '+ACBrNFe1.NotasFiscais.Items[0].NomeArq);
@@ -782,15 +785,16 @@ if not(InputQuery('WebServices DPEC', 'Numero da Nota', vAux)) then
   GerarNFe(vAux);
 
   ACBrNFe1.NotasFiscais.SaveToFile();
-  ACBrNFe1.WebServices.EnviarDPEC.Executar;
+  if ACBrNFe1.WebServices.EnviarDPEC.Executar then
+   begin
+     //protocolo de envio ao DPEC e impressão do DANFE
+     ACBrNFe1.DANFE.ProtocoloNFe:=ACBrNFe1.WebServices.EnviarDPEC.nRegDPEC+' '+
+                                  DateTimeToStr(ACBrNFe1.WebServices.EnviarDPEC.DhRegDPEC);
+     ACBrNFe1.NotasFiscais.Imprimir;
 
-  //protocolo de envio ao DPEC e impressão do DANFE
-  ACBrNFe1.DANFE.ProtocoloNFe:=ACBrNFe1.WebServices.EnviarDPEC.nRegDPEC+' '+
-                               DateTimeToStr(ACBrNFe1.WebServices.EnviarDPEC.DhRegDPEC);
-  ACBrNFe1.NotasFiscais.Imprimir;
-
-  ShowMessage(DateTimeToStr(ACBrNFe1.WebServices.EnviarDPEC.DhRegDPEC));
-  ShowMessage(ACBrNFe1.WebServices.EnviarDPEC.nRegDPEC);
+     ShowMessage(DateTimeToStr(ACBrNFe1.WebServices.EnviarDPEC.DhRegDPEC));
+     ShowMessage(ACBrNFe1.WebServices.EnviarDPEC.nRegDPEC);
+   end;  
 
   MemoResp.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.EnviarDPEC.RetWS);
   memoRespWS.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.EnviarDPEC.RetornoWS);  
@@ -1991,6 +1995,26 @@ begin
 
   MemoResp.Lines.Text :=  UTF8Encode(ACBrNFe1.WebServices.Consulta.RetWS);
   memoRespWS.Lines.Text :=  UTF8Encode(ACBrNFe1.WebServices.Consulta.RetornoWS);
+  LoadXML(MemoResp, WBResposta);
+end;
+
+procedure TForm1.btnCancelarChaveClick(Sender: TObject);
+var
+ Chave, Protocolo, Justificativa : string;
+begin
+  if not(InputQuery('WebServices Cancelamento', 'Chave da NF-e', Chave)) then
+     exit;
+  if not(InputQuery('WebServices Cancelamento', 'Protocolo de Autorização', Protocolo)) then
+     exit;
+  if not(InputQuery('WebServices Cancelamento', 'Justificativa', Justificativa)) then
+     exit;
+  ACBrNFe1.WebServices.Cancelamento.NFeChave      := Chave;
+  ACBrNFe1.WebServices.Cancelamento.Protocolo     := Protocolo;
+  ACBrNFe1.WebServices.Cancelamento.Justificativa := Justificativa;
+  ACBrNFe1.WebServices.Cancelamento.Executar;
+
+  MemoResp.Lines.Text :=  UTF8Encode(ACBrNFe1.WebServices.Cancelamento.RetWS);
+  memoRespWS.Lines.Text :=  UTF8Encode(ACBrNFe1.WebServices.Cancelamento.RetornoWS);
   LoadXML(MemoResp, WBResposta);
 end;
 

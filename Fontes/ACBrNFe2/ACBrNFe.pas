@@ -104,12 +104,12 @@ implementation
 procedure ACBrAboutDialog ;
 var Msg : String ;
 begin
-    Msg := 'Componente ACBrNFePCN'+#10+
+    Msg := 'Componente ACBrNFe2'+#10+
+           'Versão: '+ACBRNFE_VERSAO+#10+#10+
            'Automação Comercial Brasil'+#10+#10+
            'http://acbr.sourceforge.net'+#10+#10+
            'Projeto Cooperar - PCN'+#10+#10+
-           'http://www.projetocooperar.org/pcn/'+#10+#10+
-           'Versão: '+ACBRNFE_VERSAO ;
+           'http://www.projetocooperar.org/pcn/';
      MessageDlg(Msg ,mtInformation ,[mbOk],0) ;
 end;
 

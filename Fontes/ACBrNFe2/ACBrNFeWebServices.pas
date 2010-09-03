@@ -504,8 +504,11 @@ begin
        raise Exception.Create( 'Erro OnBeforePost: ' + IntToStr(GetLastError) );
    end;
 
-  ContentHeader := Format(ContentTypeTemplate, ['application/soap+xml; charset=utf-8']);
-  HttpAddRequestHeaders(Data, PChar(ContentHeader), Length(ContentHeader), HTTP_ADDREQ_FLAG_REPLACE);
+  if pos('DPEC',UpperCase(FURL)) <= 0 then
+   begin
+     ContentHeader := Format(ContentTypeTemplate, ['application/soap+xml; charset=utf-8']);
+     HttpAddRequestHeaders(Data, PChar(ContentHeader), Length(ContentHeader), HTTP_ADDREQ_FLAG_REPLACE);
+   end;  
 end;
 {$ENDIF}
 
@@ -2181,7 +2184,7 @@ end;
 destructor TNFeConsultaCadastro.destroy;
 begin
   FRetConsCad.Free;
-  
+
   inherited;
 end;
 
@@ -2360,7 +2363,7 @@ begin
   Texto := Texto + '</soap:Header>';
   Texto := Texto + '<soap:Body>';
   Texto := Texto + '  <sceDadosMsg xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/SCERecepcaoRFB">';
-  Texto := Texto + FDadosMsg;
+  Texto := Texto +  FDadosMsg;
   Texto := Texto +   '</sceDadosMsg>';
   Texto := Texto + '</soap:Body>';
   Texto := Texto + '</soap:Envelope>';
@@ -2387,25 +2390,23 @@ begin
       FConfiguracoes.Geral.Save(FormatDateTime('yyyymmddhhnnss',Now)+'-env-dpec.xml', FDadosMsg, FConfiguracoes.Arquivos.GetPathDPEC);
 
     FRetWS := '';
+    StrStream := TStringStream.Create('');
     {$IFDEF ACBrNFeOpenSSL}
        HTTP.Document.LoadFromStream(Stream);
        ConfiguraHTTP(HTTP,'SOAPAction: "http://www.portalfiscal.inf.br/nfe/wsdl/SCERecepcaoRFB/sceRecepcaoDPEC"');
        HTTP.HTTPMethod('POST', FURL);
 
-       StrStream := TStringStream.Create('');
        StrStream.CopyFrom(HTTP.Document, 0);
        FRetornoWS := NotaUtil.ParseText(StrStream.DataString, True);
        FRetWS := NotaUtil.SeparaDados( FRetornoWS,'sceRecepcaoDPECResult',True);
-       StrStream.Free;
     {$ELSE}
        ReqResp.Execute(Acao.Text, Stream);
-       StrStream := TStringStream.Create('');
        StrStream.CopyFrom(Stream, 0);
        FRetornoWS := NotaUtil.ParseText(StrStream.DataString, True);
        FRetWS := NotaUtil.SeparaDados( FRetornoWS,'sceRecepcaoDPECResult',True);
-       StrStream.Free;
     {$ENDIF}
-
+    StrStream.Free;
+    
     RetDPEC := TRetDPEC.Create;
     RetDPEC.Leitor.Arquivo := FRetWS;
     RetDPEC.LerXml;
@@ -2444,7 +2445,7 @@ begin
     if FConfiguracoes.Arquivos.Salvar then
       FConfiguracoes.Geral.Save(FormatDateTime('yyyymmddhhnnss',Now)+'-ret-dpec.xml', FRetWS, FConfiguracoes.Arquivos.GetPathDPEC);
 
-    //gerar arquivo proc de cancelamento
+    //gerar arquivo proc de DPEC
     if (RetDPEC.cStat = 124) then
     begin
       wProc := TStringList.Create;
@@ -2456,7 +2457,7 @@ begin
       FXML_ProcDPEC:=wProc.Text;
       wProc.Free;
       if FConfiguracoes.Geral.Salvar then
-         FConfiguracoes.Geral.Save(DateTimeToStr(now)+'-ProcDPEC.xml', FXML_ProcDPEC);
+         FConfiguracoes.Geral.Save(FormatDateTime('yyyymmddhhnnss',Now)+'-procdpec.xml', FXML_ProcDPEC);
     end;
 
     RetDPEC.Free;

@@ -246,7 +246,7 @@ var Randomized : Boolean ;
   Todos os Fontes do ACBr usam Encoding CP1252, para manter compatibilidade com
   D5 a D2007, Porém D2009 e superiores e Lazarus 0.9.27 e acima usam UTF8.
   A função abaixo converte a AString para de ANSI, para UTF8, apenas se o
-  Conpilador usar UNICODE
+  Compilador usar UNICODE
  -----------------------------------------------------------------------------}
 function ACBrStr( AString : AnsiString ) : String ;
 begin
@@ -1844,4 +1844,4 @@ initialization
 {$ENDIF}
 
   Randomized := False ;
-end.
+end.

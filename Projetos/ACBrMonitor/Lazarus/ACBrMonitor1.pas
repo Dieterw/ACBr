@@ -656,6 +656,7 @@ var
   iCHQ: TACBrCHQModelo;
   iDIS: TACBrDISModelo;
   iBAL: TACBrBALModelo;
+  iCEP: TACBrCEPWebService;
 begin
   {$IFDEF LINUX}
    FpUmask(0);
@@ -742,6 +743,15 @@ begin
   begin
     cbBALModelo.Items.Add(GetEnumName(TypeInfo(TACBrBALModelo), integer(iBAL)));
     Inc(iBAL);
+  end;
+
+  { Criando lista modelos de ECFs disponiveis }
+  cbCEPWebService.Items.Clear;
+  iCEP := Low(TACBrCEPWebService);
+  while iCEP <= High(TACBrCEPWebService) do
+  begin
+    cbCEPWebService.Items.Add(GetEnumName(TypeInfo(TACBrCEPWebService), integer(iCEP)));
+    Inc(iCEP);
   end;
 
   TrayIcon1.Icon.Assign(Self.Icon);
@@ -3941,4 +3951,4 @@ begin
 
 end;
 
-end.
+end.

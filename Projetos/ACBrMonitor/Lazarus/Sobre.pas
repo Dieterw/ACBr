@@ -134,7 +134,7 @@ end;
 procedure TfrmSobre.bAjudaClick(Sender: TObject);
 begin
  {$IFDEF Linux}
-  OpenURL('file:///'+ExtractFilePath(Application.ExeName)+'ManualACBrMonitor.html');
+  OpenURL('http://acbr.sourceforge.net/ACBrMonitor.htm');
  {$ELSE}
   OpenURL('file:///'+ExtractFilePath(Application.ExeName)+'ACBrMonitor.chm');
  {$ENDIF}
@@ -147,4 +147,4 @@ begin
      bAjuda.Click ;
 end;
 
-end.
+end.

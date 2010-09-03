@@ -456,10 +456,14 @@ begin
 
   HTTP.Sock.RaiseExcept := True;
 
-  HTTP.MimeType := 'application/soap+xml; charset=utf-8';
+  if (pos('SCERECEPCAORFB',UpperCase(FURL)) <= 0) and
+     (pos('SCECONSULTARFB',UpperCase(FURL)) <= 0) then
+     HTTP.MimeType := 'application/soap+xml; charset=utf-8'
+  else
+     HTTP.MimeType := 'text/xml; charset=utf-8';
+
   HTTP.UserAgent := '';
   HTTP.Protocol := '1.1' ;
-//  HTTP.KeepAlive := False;
   HTTP.AddPortNumberToHost := False;
   HTTP.Headers.Add(Action);
 end;
@@ -509,7 +513,8 @@ begin
    begin
      ContentHeader := Format(ContentTypeTemplate, ['application/soap+xml; charset=utf-8']);
      HttpAddRequestHeaders(Data, PChar(ContentHeader), Length(ContentHeader), HTTP_ADDREQ_FLAG_REPLACE);
-   end;  
+   end;
+  HTTPReqResp.CheckContentType;
 end;
 {$ENDIF}
 

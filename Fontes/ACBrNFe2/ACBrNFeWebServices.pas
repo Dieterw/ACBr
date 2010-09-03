@@ -504,7 +504,8 @@ begin
        raise Exception.Create( 'Erro OnBeforePost: ' + IntToStr(GetLastError) );
    end;
 
-  if pos('DPEC',UpperCase(FURL)) <= 0 then
+  if (pos('SCERECEPCAORFB',UpperCase(FURL)) <= 0) and
+     (pos('SCECONSULTARFB',UpperCase(FURL)) <= 0) then
    begin
      ContentHeader := Format(ContentTypeTemplate, ['application/soap+xml; charset=utf-8']);
      HttpAddRequestHeaders(Data, PChar(ContentHeader), Length(ContentHeader), HTTP_ADDREQ_FLAG_REPLACE);

@@ -83,7 +83,8 @@ type
                                 SSL : Boolean;
                                 EnviaPDF: Boolean = true;
                                 sCC: TStrings = nil;
-                                Anexos:TStrings=nil);
+                                Anexos:TStrings=nil;
+                                PedeConfirma: Boolean = False);  // Incluido por Italo em 03/09/2010
     property NFe: TNFe  read FNFe write FNFe;
     property XML: AnsiString  read GetNFeXML write FXML;
     property Confirmada: Boolean  read FConfirmada write FConfirmada;
@@ -245,7 +246,8 @@ procedure NotaFiscal.EnviarEmail(const sSmtpHost,
                                       SSL : Boolean;
                                       EnviaPDF: Boolean = true;
                                       sCC: TStrings=nil;
-                                      Anexos:TStrings=nil);
+                                      Anexos:TStrings=nil;
+                                      PedeConfirma: Boolean = False); // Incluido por Italo em 03/09/2010
 var
  ThreadSMTP : TSendMailThread;
  m:TMimemess;
@@ -283,6 +285,11 @@ begin
     m.header.tolist.add(sTo);
     m.header.From := sFrom;
     m.header.subject:=sAssunto;
+    // Inicio da Alteração realizada por Italo em 03/09/2010
+    m.Header.ReplyTo := sFrom;
+    if PedeConfirma then
+       m.Header.CustomHeaders.Add('Disposition-Notification-To: '+sFrom);
+    // Fim da Alteração
     m.EncodeMessage;
 
     ThreadSMTP.sFrom := sFrom;

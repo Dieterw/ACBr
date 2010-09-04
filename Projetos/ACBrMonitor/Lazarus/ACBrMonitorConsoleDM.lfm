@@ -11,6 +11,7 @@ object dm: Tdm
   object TcpServer: TACBrTCPServer
     IP = '0.0.0.0'
     Port = '0'
+    TimeOut = 10000
     Terminador = '#13,#10,#46,#13,#10'
     OnConecta = TcpServerConecta
     OnDesConecta = TcpServerDesConecta
@@ -71,4 +72,4 @@ object dm: Tdm
     left = 186
     top = 12
   end
-end
+end

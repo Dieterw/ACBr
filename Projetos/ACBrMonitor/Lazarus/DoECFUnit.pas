@@ -45,7 +45,7 @@ Function PegaTotaisFormasPagamento : String ;
 Function PegaComprovantesNaoFiscais : String ;
 Function PegaTotaisComprovantesNaoFiscais : String ;
 Function PegaUnidadesMedida : String ;
-Procedure StringToMemo( AString : AnsiString; var Memo : TStringList );
+Procedure StringToMemo( AString : AnsiString; Memo : TStringList );
 
 implementation
 uses ACBrECF, ACBrDevice, ACBrUtil, ACBrECFClass, StrUtils,
@@ -877,7 +877,7 @@ begin
 end ;
 
 {------------------------------------------------------------------------------}
-Procedure StringToMemo( AString : AnsiString; var Memo : TStringList );
+Procedure StringToMemo( AString : AnsiString; Memo : TStringList );
 begin
   AString   := StringReplace(AString,#13+#10,'|',[rfReplaceAll]) ;
   AString   := StringReplace(AString,#10,'|',[rfReplaceAll]) ;

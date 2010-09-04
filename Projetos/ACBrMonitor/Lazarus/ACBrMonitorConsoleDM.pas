@@ -241,7 +241,8 @@ begin
      IsTCP := Ini.ReadBool('ACBrMonitor','Modo_TCP',false);
      IsTXT := not IsTCP ;
 
-    dm.TcpServer.Port := Ini.ReadString('ACBrMonitor','TCP_Porta','3434');
+    dm.TcpServer.Port    := Ini.ReadString('ACBrMonitor','TCP_Porta','3434');
+    dm.TcpServer.TimeOut := Ini.ReadInteger('ACBrMonitor','TCP_TimeOut',10000);
 
     ArqEntTXT := AcertaPath( Ini.ReadString('ACBrMonitor','TXT_Entrada','ENT.TXT') ) ;
     ArqSaiTXT := AcertaPath( Ini.ReadString('ACBrMonitor','TXT_Saida','SAI.TXT') ) ;
@@ -787,4 +788,4 @@ begin
 end;
 
 end.
-
+

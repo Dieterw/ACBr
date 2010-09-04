@@ -115,6 +115,7 @@ type
     edCONProxyUser : TEdit ;
     edCEPTestar : TEdit ;
     edIBGECodNome : TEdit ;
+    edTimeOutTCP : TEdit ;
     edtCodCliente: TEdit;
     edtBOLSH: TEdit;
     edtBOLComplemento: TEdit;
@@ -139,6 +140,7 @@ type
     Label70: TLabel;
     Label71: TLabel;
     Label72: TLabel;
+    lTimeOutTCP : TLabel ;
     lIBGECodNome : TLabel ;
     lCEPChave : TLabel ;
     lCEPProxyServidor : TLabel ;
@@ -205,7 +207,7 @@ type
     tsMonitor: TTabSheet;
     cbLog: TCheckBox;
     gbTCP: TGroupBox;
-    Label5: TLabel;
+    lNumPortaTCP: TLabel;
     edPortaTCP: TEdit;
     gbTXT: TGroupBox;
     Label6: TLabel;
@@ -1292,6 +1294,7 @@ begin
     rbTCP.Checked := Ini.ReadBool('ACBrMonitor', 'Modo_TCP', False);
     rbTXT.Checked := Ini.ReadBool('ACBrMonitor', 'Modo_TXT', False);
     edPortaTCP.Text := IntToStr(Ini.ReadInteger('ACBrMonitor', 'TCP_Porta', 3434));
+    edTimeOutTCP.Text := IntToStr(Ini.ReadInteger('ACBrMonitor', 'TCP_TimeOut', 10000));
     edEntTXT.Text := Ini.ReadString('ACBrMonitor', 'TXT_Entrada', 'ENT.TXT');
     edSaiTXT.Text := Ini.ReadString('ACBrMonitor', 'TXT_Saida', 'SAI.TXT');
     sedIntervalo.Value := Ini.ReadInteger('ACBrMonitor', 'Intervalo', 50);
@@ -1306,7 +1309,8 @@ begin
     ArqSaiTMP := ChangeFileExt(ArqSaiTXT, '.tmp');
     ArqLogTXT := AcertaPath(edLogArq.Text);
 
-    TcpServer.Port := edPortaTCP.Text;
+    TcpServer.Port    := edPortaTCP.Text;
+    TcpServer.TimeOut := StrToIntDef( edTimeOutTCP.Text, 10000);
 
     { Parametros do ECF }
     ECFDeviceParams := Ini.ReadString('ECF', 'SerialParams', '');
@@ -1715,6 +1719,7 @@ begin
     Ini.WriteBool('ACBrMonitor', 'Modo_TCP', rbTCP.Checked);
     Ini.WriteBool('ACBrMonitor', 'Modo_TXT', rbTXT.Checked);
     Ini.WriteInteger('ACBrMonitor', 'TCP_Porta', StrToIntDef(edPortaTCP.Text, 3434));
+    Ini.WriteInteger('ACBrMonitor', 'TCP_TimeOut', StrToIntDef(edTimeOutTCP.Text, 10000));
     Ini.WriteString('ACBrMonitor', 'TXT_Entrada', edEntTXT.Text);
     Ini.WriteString('ACBrMonitor', 'TXT_Saida', edSaiTXT.Text);
     Ini.WriteInteger('ACBrMonitor', 'Intervalo', sedIntervalo.Value);
@@ -2210,6 +2215,9 @@ begin
   begin
     if edPortaTCP.Text = '' then
       edPortaTCP.Text := '3434';
+
+    if edTimeOutTCP.Text = '' then
+      edTimeOutTCP.Text := '10000';
   end;
 end;
 

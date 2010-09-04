@@ -75,7 +75,7 @@ Image
 {Modern/SetupModern01.gif}
 
 IncludeDebugging
-{Yes}
+{No}
 
 InstallPassword
 {}
@@ -338,12 +338,12 @@ Condition E6D521D3-C8A8-66F0-0F2E-AF89931C1417 -active Yes -parent 52BB4874-DD29
 InstallComponent 746ACDAE-BC75-84EA-8B23-4C8A344ABAB5 -setup Install -type action -conditions ACD3875B-09F6-B3D7-D5B6-7E4F8A49A2CD -title {Uninstall Shortcut} -component InstallProgramFolderShortcut -active Yes -parent 8F89FAB3-0A90-7D23-A42C-EF26EE3683EC
 Condition ACD3875B-09F6-B3D7-D5B6-7E4F8A49A2CD -active Yes -parent 746ACDAE-BC75-84EA-8B23-4C8A344ABAB5 -title {String Is Condition} -component StringIsCondition -TreeObject::id ACD3875B-09F6-B3D7-D5B6-7E4F8A49A2CD
 InstallComponent 5054CEC7-B3BC-3F24-5194-DE26A93E0D91 -setup Install -type actiongroup -title {Finish Actions} -alias {Finish Actions} -active Yes -parent ActionGroupsInstall
+InstallComponent 5CB136B1-7757-7658-D82A-487AF24F3DA2 -setup Install -type action -title {Change File Permissions} -component ChangeFilePermissions -active Yes -parent 5054CEC7-B3BC-3F24-5194-DE26A93E0D91
+InstallComponent 701E846A-4B9C-9535-1469-319F4503EEF6 -setup Install -type action -title {Execute External Program} -component ExecuteExternalProgram -active Yes -parent 5054CEC7-B3BC-3F24-5194-DE26A93E0D91
 InstallComponent FEF809E4-215F-1877-77F0-4E76E6719553 -setup Install -type action -conditions {B930C579-8381-D6E9-2FAA-FD9F73D1333E 2661D10C-DD77-3C5C-AD8F-E1236B77A5DA} -title {Install Desktop Shortcut} -component InstallDesktopShortcut -active Yes -parent 5054CEC7-B3BC-3F24-5194-DE26A93E0D91
 Condition B930C579-8381-D6E9-2FAA-FD9F73D1333E -active Yes -parent FEF809E4-215F-1877-77F0-4E76E6719553 -title {String Is Condition} -component StringIsCondition -TreeObject::id B930C579-8381-D6E9-2FAA-FD9F73D1333E
 Condition 2661D10C-DD77-3C5C-AD8F-E1236B77A5DA -active Yes -parent FEF809E4-215F-1877-77F0-4E76E6719553 -title {File Exists Condition} -component FileExistsCondition -TreeObject::id 2661D10C-DD77-3C5C-AD8F-E1236B77A5DA
-InstallComponent 306F1D9D-58BB-C428-1140-5102CA758D9E -setup Install -type action -conditions {1D1F4CBD-BA0B-891B-0548-021CB12859F6 3B6F9F6B-4D6B-531E-0D39-F7C786A21BD7} -title {Install Quick Launch Shortcut} -component InstallWindowsShortcut -active Yes -parent 5054CEC7-B3BC-3F24-5194-DE26A93E0D91
-Condition 1D1F4CBD-BA0B-891B-0548-021CB12859F6 -active Yes -parent 306F1D9D-58BB-C428-1140-5102CA758D9E -title {String Is Condition} -component StringIsCondition -TreeObject::id 1D1F4CBD-BA0B-891B-0548-021CB12859F6
-Condition 3B6F9F6B-4D6B-531E-0D39-F7C786A21BD7 -active Yes -parent 306F1D9D-58BB-C428-1140-5102CA758D9E -title {File Exists Condition} -component FileExistsCondition -TreeObject::id 3B6F9F6B-4D6B-531E-0D39-F7C786A21BD7
+InstallComponent 758FD918-C8E9-ABAB-DB15-2C57327B715D -setup Install -type action -title {Install UNIX Shortcut} -component InstallUNIXShortcut -active Yes -parent 5054CEC7-B3BC-3F24-5194-DE26A93E0D91
 InstallComponent B9A8FBF5-C3CB-8C17-CBE1-E3B665D275D0 -setup Install -type action -conditions {CB354D87-364F-A501-3112-1CF7F29611BC A45FB3FD-5A21-6775-C7F6-E3E84553BC02 1F9556AF-5165-E21B-A7DB-13DDBC7A66C0} -title {View Readme Window} -component TextWindow -active Yes -parent 5054CEC7-B3BC-3F24-5194-DE26A93E0D91
 Condition CB354D87-364F-A501-3112-1CF7F29611BC -active Yes -parent B9A8FBF5-C3CB-8C17-CBE1-E3B665D275D0 -title {String Is Condition} -component StringIsCondition -TreeObject::id CB354D87-364F-A501-3112-1CF7F29611BC
 Condition A45FB3FD-5A21-6775-C7F6-E3E84553BC02 -active Yes -parent B9A8FBF5-C3CB-8C17-CBE1-E3B665D275D0 -title {String Is Condition} -component StringIsCondition -TreeObject::id A45FB3FD-5A21-6775-C7F6-E3E84553BC02
@@ -375,6 +375,7 @@ InstallComponent 6F048A59-962C-9162-5D15-C400359C29AA -setup Uninstall -type act
 Condition 32532CCE-F099-735D-1591-33A0FC26522A -active Yes -parent 6F048A59-962C-9162-5D15-C400359C29AA -title {String Is Condition} -component StringIsCondition -TreeObject::id 32532CCE-F099-735D-1591-33A0FC26522A
 Condition D20878A7-ABEF-5079-4462-B7CCC0508E2E -active Yes -parent 6F048A59-962C-9162-5D15-C400359C29AA -title {Ask Yes or No} -component AskYesOrNo -TreeObject::id D20878A7-ABEF-5079-4462-B7CCC0508E2E
 InstallComponent 1EF186D0-BA78-DDF5-494C-A6E0D20AE50E -setup Uninstall -type actiongroup -title {Uninstall Actions} -alias {Uninstall Actions} -active Yes -parent ActionGroupsUninstall
+InstallComponent 71A228AD-1715-F1AC-0317-4937EAE030BE -setup Uninstall -type action -title {Delete File} -component DeleteFile -active Yes -parent 1EF186D0-BA78-DDF5-494C-A6E0D20AE50E
 InstallComponent BB0082A9-225B-58F8-B88E-BFC8867E3368 -setup Uninstall -type action -title {Uninstall Selected Files} -component UninstallSelectedFiles -active Yes -parent 1EF186D0-BA78-DDF5-494C-A6E0D20AE50E
 InstallComponent 50771B65-4FDB-50D1-3D7C-9555B1E5C3FA -setup Uninstall -type actiongroup -title {Finish Actions} -alias {Finish Actions} -active Yes -parent ActionGroupsUninstall
 InstallComponent EFC78690-46AC-FF73-FF48-CF97FE7C73C3 -setup Uninstall -type actiongroup -title {Cancel Actions} -alias {Cancel Actions} -active Yes -parent ActionGroupsUninstall
@@ -549,7 +550,7 @@ array set Properties {
 {Programas do ACBrMonitor}
 
 15133E1A-7B55-8242-7D70-0B8ACE8BF3C2,FileSize
-{15308236}
+{15309612}
 
 15133E1A-7B55-8242-7D70-0B8ACE8BF3C2,Name
 {Program Files}
@@ -565,12 +566,6 @@ array set Properties {
 
 1C98923B-B712-3051-E17C-69AA7945FE30,Filename
 {<%ProgramReadme%>}
-
-1D1F4CBD-BA0B-891B-0548-021CB12859F6,CheckCondition
-{Before Action is Executed}
-
-1D1F4CBD-BA0B-891B-0548-021CB12859F6,String
-{<%CreateQuickLaunchShortcut%>}
 
 1E2642E3-6B95-6E9B-9C60-2045D2E1C0AE,Alias
 {Startup Actions}
@@ -630,7 +625,7 @@ array set Properties {
 {<%InstallDir%>/Exemplos}
 
 273C89D4-5D0E-4060-1ED2-A90A3AE647DF,FileSize
-{67758}
+{67710}
 
 273C89D4-5D0E-4060-1ED2-A90A3AE647DF,Name
 {Exemplos}
@@ -680,24 +675,6 @@ array set Properties {
 2D23CAB5-B3D9-FE62-BB75-D54350C58FAE,Conditions
 {0 conditions}
 
-306F1D9D-58BB-C428-1140-5102CA758D9E,Conditions
-{2 conditions}
-
-306F1D9D-58BB-C428-1140-5102CA758D9E,IconPath
-{<%InstallDir%>/ACBrMonitor.png}
-
-306F1D9D-58BB-C428-1140-5102CA758D9E,ShortcutDirectory
-{<%QUICK_LAUNCH%>}
-
-306F1D9D-58BB-C428-1140-5102CA758D9E,ShortcutName
-{<%AppName%>}
-
-306F1D9D-58BB-C428-1140-5102CA758D9E,TargetFileName
-{<%ProgramExecutable%>}
-
-306F1D9D-58BB-C428-1140-5102CA758D9E,WorkingDirectory
-{<%InstallDir%>}
-
 32532CCE-F099-735D-1591-33A0FC26522A,CheckCondition
 {Before Action is Executed}
 
@@ -714,12 +691,6 @@ array set Properties {
 {Before Action is Executed}
 
 35B2EA46-C500-9CDE-249B-4495A8723112,Filename
-{<%ProgramExecutable%>}
-
-3B6F9F6B-4D6B-531E-0D39-F7C786A21BD7,CheckCondition
-{Before Action is Executed}
-
-3B6F9F6B-4D6B-531E-0D39-F7C786A21BD7,Filename
 {<%ProgramExecutable%>}
 
 3E4E6AF2-2154-F54D-1851-1C1A852BE04B,CheckCondition
@@ -917,6 +888,15 @@ array set Properties {
 5C403FB3-DECE-629C-9573-958122CCE8F3,Conditions
 {0 conditions}
 
+5CB136B1-7757-7658-D82A-487AF24F3DA2,Conditions
+{0 conditions}
+
+5CB136B1-7757-7658-D82A-487AF24F3DA2,Files
+{<%InstallDir%>/}
+
+5CB136B1-7757-7658-D82A-487AF24F3DA2,Permissions
+{5777}
+
 5FCC5616-1510-FC39-FD72-5F4379730008,CheckCondition
 {Before Action is Executed}
 
@@ -989,6 +969,21 @@ array set Properties {
 70005ED5-22E1-C6D6-4EEB-7F69B37A57A5,WorkingDirectory
 {<%InstallDir%>}
 
+701E846A-4B9C-9535-1469-319F4503EEF6,Conditions
+{0 conditions}
+
+701E846A-4B9C-9535-1469-319F4503EEF6,ExecuteAsRoot
+{Yes}
+
+701E846A-4B9C-9535-1469-319F4503EEF6,ProgramCommandLine
+{chmod 777 /var/lock && chmod 5777 <%InstallDir%>}
+
+71A228AD-1715-F1AC-0317-4937EAE030BE,Conditions
+{0 conditions}
+
+71A228AD-1715-F1AC-0317-4937EAE030BE,Files
+{/usr/share/autostart/<%ShortAppName%>.desktop}
+
 743B6269-B4EC-D31D-02B4-5BB38D4C72D8,Background
 {#FFFFFF}
 
@@ -1027,6 +1022,24 @@ array set Properties {
 
 748F7391-5E20-B3B0-C870-69CDEE63318F,Message,subst
 {1}
+
+758FD918-C8E9-ABAB-DB15-2C57327B715D,Conditions
+{0 conditions}
+
+758FD918-C8E9-ABAB-DB15-2C57327B715D,FileName
+{<%ShortAppName%>}
+
+758FD918-C8E9-ABAB-DB15-2C57327B715D,IconPath
+{<%InstallDir%>/ACBrMonitor.png}
+
+758FD918-C8E9-ABAB-DB15-2C57327B715D,ShortcutDirectory
+{/usr/share/autostart/}
+
+758FD918-C8E9-ABAB-DB15-2C57327B715D,ShortcutName
+{<%AppName%>}
+
+758FD918-C8E9-ABAB-DB15-2C57327B715D,TargetFileName
+{<%ProgramExecutable%>}
 
 8151E1C7-850A-02A2-B233-9E28E3D4A083,Comment
 {Don't display this pane in an upgrade install}
@@ -1101,7 +1114,7 @@ A0AAD91A-0EEE-FEE2-D547-23427A537F3A,Destination
 {<%InstallDir%>}
 
 A0AAD91A-0EEE-FEE2-D547-23427A537F3A,FileSize
-{213062}
+{138663}
 
 A0AAD91A-0EEE-FEE2-D547-23427A537F3A,Name
 {Documentacao}
@@ -1358,6 +1371,9 @@ B9A8FBF5-C3CB-8C17-CBE1-E3B665D275D0,Title,subst
 B9A8FBF5-C3CB-8C17-CBE1-E3B665D275D0,Width
 {600}
 
+BB0082A9-225B-58F8-B88E-BFC8867E3368,Conditions
+{0 conditions}
+
 BD0DF42B-4D91-DE10-A2C3-18E37BFF1DD8,CheckCondition
 {Before Action is Executed}
 
@@ -1576,6 +1592,9 @@ ED584259-7E2A-D54E-0ECE-E8AD0F928681,String2
 
 EFC78690-46AC-FF73-FF48-CF97FE7C73C3,Alias
 {Cancel Actions}
+
+EFC78690-46AC-FF73-FF48-CF97FE7C73C3,Conditions
+{0 conditions}
 
 F178D377-F8EA-6235-30F7-D6A32E0E2EB1,Conditions
 {1 condition}
@@ -1965,7 +1984,7 @@ Linux-x86,PromptForRoot
 {No}
 
 Linux-x86,RequireRoot
-{No}
+{Yes}
 
 Linux-x86,RootInstallDir
 {/opt/<%ShortAppName%>}

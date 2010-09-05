@@ -3,7 +3,7 @@
 {  Executavel multiplataforma que faz usocdo conjunto de componentes ACBr para }
 { criar uma interface de comunicação com equipamentos de automacao comercial.  }
 
-{ Direitos Autorais Reservados (c) 2006 Daniel Simoes de Almeida               }
+{ Direitos Autorais Reservados (c) 2010 Daniel Simões de Almeida               }
 
 { Colaboradores nesse arquivo:     2005 Fábio Rogério Baía                     }
 
@@ -26,38 +26,9 @@
 { copia da licença em:  http://www.opensource.org/licenses/gpl-license.php     }
 
 { Daniel Simões de Almeida  -  daniel@djsystem.com.br  -  www.djsystem.com.br  }
-{              Praça Anita Costa, 34 - Tatuí - SP - 18270-410                  }
+{       Rua Coronel Aureliano de Camargo, 973 - Tatuí - SP - 18270-170         }
 
 {******************************************************************************}
-
-{******************************************************************************
-|* Historico ACBr Monitor
-|*
-|* 07/03/2005: Fabio Rogerio Baia
-|*    Primeiros Esboços
-|* 24/03/2005: Daniel Simoes de Almeida
-|*    Migraçao para CLX
-|* 06/02/2006: Daniel Simoes de Almeida
-|*    Rotina GravaResposta otimizada para gravação em arquivos TXT
-|* 10/07/2006: Daniel Simoes de Almeida
-|*   - Corrigido Bug no interpretador de Comandos (na separação de parâmetros ,)
-|*   - Melhorias na Interface.
-|*   - Adicionada configuração para numero máximo de linhas no LOG. O Arquivo é
-|*     ajustado sempre que o ACBrMonitor é iniciado
-|*   - Adicionada configuração para Inverter o sinal da Gaveta de Dinheiro
-|* 07/07/2009: Marcelo Correia Pinheiro
-|*   - Adicionado suporte para leitura de parâmetros de configuração para
-|*     impressoras de cheque
-|* 21/07/2009: Marcelo Correia Pinheiro
-|*   - Inclusão do componente ETQ na constante Objetos (linha 38),
-|*     para prover suporte a etiquetas.
-|* 06/08/2009: Marcelo Correia Pinheiro
-|*   - DoECFUnit.pas: Correção na linha 401, onde o código atual envia o quarto
-|*     parâmetro e não o terceiro, na chamada do método "RegistraItemNaoFiscal".
-|*   - DoECFUnit.pas: Correção nas chamadas dos métodos ImprimirTexto e
-|*     ImprimirBarras, onde a conversão para o tipo TACBrETQOrientacao gerava
-|*     um erro no ACBrMonitor.
-******************************************************************************}
 
 {$mode objfpc}{$H+}
 

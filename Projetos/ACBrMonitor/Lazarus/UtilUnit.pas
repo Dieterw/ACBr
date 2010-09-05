@@ -3,7 +3,7 @@
 {  Executavel multiplataforma que faz uso do conjunto de componentes ACBr para }
 { criar uma interface de comunicação com equipamentos de automacao comercial.  }
 {                                                                              }
-{ Direitos Autorais Reservados (c) 2006 Daniel Simoes de Almeida               }
+{ Direitos Autorais Reservados (c) 2010 Daniel Simões de Almeida               }
 {                                                                              }
 { Colaboradores nesse arquivo:                                                 }
 {                                                                              }
@@ -26,7 +26,7 @@
 { copia da licença em:  http://www.opensource.org/licenses/gpl-license.php     }
 {                                                                              }
 { Daniel Simões de Almeida  -  daniel@djsystem.com.br  -  www.djsystem.com.br  }
-{              Praça Anita Costa, 34 - Tatuí - SP - 18270-410                  }
+{       Rua Coronel Aureliano de Camargo, 973 - Tatuí - SP - 18270-170         }
 {                                                                              }
 {******************************************************************************}
 unit UtilUnit;

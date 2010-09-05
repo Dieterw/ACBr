@@ -3,7 +3,7 @@
 {  Executavel multiplataforma que faz uso do conjunto de componentes ACBr para }
 { criar uma interface de comunicação com equipamentos de automacao comercial.  }
 {                                                                              }
-{ Direitos Autorais Reservados (c) 2006 Daniel Simoes de Almeida               }
+{ Direitos Autorais Reservados (c) 2010 Daniel SimÃµes de Almeida               }
 {                                                                              }
 { Colaboradores nesse arquivo:                                                 }
 {                                                                              }
@@ -572,7 +572,7 @@ begin
      Memo.Add('******************************************************************************'+sLineBreak+
               '* Projeto: ACBr Monitor Console                                              *'+sLineBreak+
               '*                                                                            *'+sLineBreak+
-              '* Direitos Autorais Reservados (c) 2006 Daniel Simoes de Almeida             *'+sLineBreak+
+              '* Direitos Autorais Reservados (c) 2010 Daniel SimÃµes de Almeida             *'+sLineBreak+
               '*                                                                            *'+sLineBreak+
               '*  Você pode obter a última versão desse arquivo na página do Projeto ACBr   *'+sLineBreak+
               '* Componentes localizado em      http://www.sourceforge.net/projects/acbr    *'+sLineBreak+

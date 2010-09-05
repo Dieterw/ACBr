@@ -18,7 +18,7 @@ AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName={sd}\{#MyAppName}
 DefaultGroupName={#MyAppName}
-LicenseFile=licenca.txt
+LicenseFile=LICENCA.TXT
 OutputBaseFilename={#MyAppVerName}-Windows-Instalador
 Compression=lzma
 SolidCompression=yes
@@ -45,17 +45,16 @@ Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:Ad
 Source: ACBrMonitor.exe; DestDir: {app}; Flags: ignoreversion; Components: programa
 Source: ACBrMonitorConsole.exe; DestDir: {app}; Flags: ignoreversion; Components: console
 Source: ECFTeste.exe; DestDir: {app}; Flags: ignoreversion; Components: programa
+Source: PRICETAB.TXT; DestDir: {app}; Flags: onlyifdoesntexist; Components: programa
 Source: ..\Exemplos\TesteTXT.BAT; DestDir: {app}\Exemplos; Flags: ignoreversion; Components: exemplos
 Source: ..\Exemplos\Clipper_TXT_xHarbour_Socket.zip; DestDir: {app}\Exemplos; Flags: ignoreversion; Components: exemplos
 Source: ..\Exemplos\Cobol_TXT_Socket.zip; DestDir: {app}\Exemplos; Flags: ignoreversion; Components: exemplos
 Source: ..\Exemplos\Java_socket.txt; DestDir: {app}\Exemplos; Flags: ignoreversion; Components: exemplos
 Source: ..\Exemplos\Oracle.txt; DestDir: {app}\Exemplos; Flags: ignoreversion; Components: exemplos
 Source: ..\Exemplos\php_socket.zip; DestDir: {app}\Exemplos; Flags: ignoreversion; Components: exemplos
-Source: leia-me.txt; DestDir: {app}; Flags: ignoreversion; Components: programa
 Source: LICENCA.TXT; DestDir: {app}; Flags: ignoreversion; Components: programa
 Source: LICENSE.TXT; DestDir: {app}; Flags: ignoreversion; Components: programa
 Source: ACBrMonitor.chm; DestDir: {app}; Flags: ignoreversion; Components: help
-Source: ACBrMonitor-change-log.txt; DestDir: {app}; Flags: ignoreversion; Components: help
 Source: {#DLLsDIR}\Diversos\inpout32.dll; DestDir: {sys}; Flags: ; Components: programa
 Source: {#DLLsDIR}\OpenSSL\openssl.exe; DestDir: {app}; Flags: ; Components: programa
 Source: {#DLLsDIR}\OpenSSL\libeay32.dll; DestDir: {app}; Flags: ; Components: programa
@@ -69,9 +68,7 @@ Filename: {app}\{#MyAppUrlName}; Section: InternetShortcut; Key: URL; String: {#
 [Icons]
 Name: {group}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}; Components: programa
 Name: {group}\Programa para Configurar e Testar ECF; Filename: {app}\QECFTeste.exe; WorkingDir: {app}; Components: programa
-Name: {group}\LEIA-ME.TXT; Filename: notepad; Parameters: leia-me.txt; WorkingDir: {app}; Components: help
 Name: {group}\Manual do ACBrMonitor; Filename: {app}\ACBrMonitor.chm; WorkingDir: {app}; Components: help
-Name: {group}\Exemplo usando Monitoramento TXT; Filename: {app}\Exemplos\TesteTXT.BAT; WorkingDir: {app}\Exemplos\; Components: exemplos
 Name: {group}\Pasta Exemplos; Filename: {app}\Exemplos\; Components: exemplos
 Name: {userdesktop}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}; Tasks: desktopicon
 Name: {userstartup}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}
@@ -79,5 +76,8 @@ Name: {group}\{cm:ProgramOnTheWeb,{#MyAppName}}; Filename: {app}\{#MyAppUrlName}
 
 [Run]
 Filename: {app}\{#MyAppExeName}; Description: {cm:LaunchProgram,{#MyAppName}}; Flags: nowait postinstall skipifsilent
+Filename: {app}\ACBrMonitor.chm; Description: Novidades desta Versão; Flags: nowait postinstall skipifsilent
+
+
 
 

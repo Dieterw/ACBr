@@ -3,7 +3,7 @@
 {  Executavel multiplataforma que faz uso do conjunto de componentes ACBr para }
 { criar uma interface de comunicação com equipamentos de automacao comercial.  }
 {                                                                              }
-{ Direitos Autorais Reservados (c) 2006 Daniel Simoes de Almeida               }
+{ Direitos Autorais Reservados (c) 2010 Daniel Simões de Almeida               }
 {                                                                              }
 { Colaboradores nesse arquivo:                                                 }
 {                                                                              }
@@ -26,7 +26,7 @@
 { copia da licença em:  http://www.opensource.org/licenses/gpl-license.php     }
 {                                                                              }
 { Daniel Simões de Almeida  -  daniel@djsystem.com.br  -  www.djsystem.com.br  }
-{              Praça Anita Costa, 34 - Tatuí - SP - 18270-410                  }
+{       Rua Coronel Aureliano de Camargo, 973 - Tatuí - SP - 18270-170         }
 {                                                                              }
 {******************************************************************************}
 unit Sobre;
@@ -46,6 +46,7 @@ type
   TfrmSobre = class(TForm)
     bDoar: TBitBtn;
     Image1 : TImage ;
+    Image2 : TImage ;
     Timer1: TTimer;
     lVersao: TLabel;
     lDesenvolvedores: TLabel;
@@ -55,6 +56,7 @@ type
     Label1: TLabel;
     bAjuda: TBitBtn;
     procedure bDoarClick(Sender: TObject);
+    procedure Image2Click(Sender : TObject) ;
     procedure Timer1Timer(Sender: TObject);
     procedure BitBtn1Click(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -107,6 +109,11 @@ end;
 procedure TfrmSobre.bDoarClick(Sender: TObject);
 begin
  OpenURL( 'http://acbr.sourceforge.net/drupal/?q=node/14' );
+end;
+
+procedure TfrmSobre.Image2Click(Sender : TObject) ;
+begin
+  OpenURL('http://www.lazarus.freepascal.org/');
 end;
 
 procedure TfrmSobre.BitBtn1Click(Sender: TObject);

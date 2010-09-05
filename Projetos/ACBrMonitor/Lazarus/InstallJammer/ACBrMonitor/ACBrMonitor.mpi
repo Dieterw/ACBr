@@ -240,10 +240,10 @@ FileGroup ::15133E1A-7B55-8242-7D70-0B8ACE8BF3C2 -setup Install -active Yes -pla
 File ::3DDA753B-0D23-96E6-9CFA-C953A6753402 -name /home/daniel/pascal/Comp/ACBr/trunk/Projetos/ACBrMonitor/Lazarus/ACBrMonitor -permissions 00775 -comment {Programa ACBrMonitor} -parent 15133E1A-7B55-8242-7D70-0B8ACE8BF3C2
 File ::7540B964-026E-0158-8435-411C66EBE80C -name /home/daniel/pascal/Comp/ACBr/trunk/Projetos/ACBrMonitor/Lazarus/ECFTeste -permissions 00775 -comment {Programa para Testes e Configuração de ECF} -parent 15133E1A-7B55-8242-7D70-0B8ACE8BF3C2
 File ::5E5D9E02-0F24-7EA1-B132-5F8295CB09E1 -name /home/daniel/pascal/Comp/ACBr/trunk/Projetos/ACBrMonitor/Lazarus/LICENSE.TXT -parent 15133E1A-7B55-8242-7D70-0B8ACE8BF3C2
-File ::0C8A0770-68D0-4474-37DC-0D309E91F088 -name /home/daniel/pascal/Comp/ACBr/trunk/Projetos/ACBrMonitor/Lazarus/leia-me.txt -parent 15133E1A-7B55-8242-7D70-0B8ACE8BF3C2
 File ::B624376E-3300-F3AB-AD54-39A9F3D85FA1 -name /home/daniel/pascal/Comp/ACBr/trunk/Projetos/ACBrMonitor/Lazarus/licenca.txt -parent 15133E1A-7B55-8242-7D70-0B8ACE8BF3C2
 File ::CDAD7F9F-37A9-0CF6-F98A-3AF140CA9699 -targetfilename ACBrMonitor.png -name /home/daniel/pascal/Comp/ACBr/trunk/Projetos/ACBrMonitor/Lazarus/ACBrMonitor_48x48.png -parent 15133E1A-7B55-8242-7D70-0B8ACE8BF3C2
 File ::CA5EA250-0D87-F251-ACCF-6FEAE5415138 -name /home/daniel/pascal/Comp/ACBr/trunk/Projetos/ACBrMonitor/Lazarus/ACBrMonitor-change-log.txt -parent 15133E1A-7B55-8242-7D70-0B8ACE8BF3C2
+File ::DA1BB9E3-1076-470E-906D-A46D3152A99B -filemethod {Never overwrite files} -name C:/Pascal/Comp/ACBr/trunk/Projetos/ACBrMonitor/Lazarus/PRICETAB.TXT -parent 15133E1A-7B55-8242-7D70-0B8ACE8BF3C2
 FileGroup ::A7445EB0-8070-6A51-67CA-70F86582B322 -setup Install -active Yes -platforms {AIX-ppc FreeBSD-4-x86 FreeBSD-5-x86 FreeBSD-6-x86 FreeBSD-7-x86 HPUX-hppa Linux-x86 Linux-x86_64 Solaris-sparc Solaris-x86 Windows TarArchive ZipArchive} -name ACBrMonitorConsole -parent FileGroups
 File ::B93A23F0-4828-6CDC-5C80-3FBC8A7E0B87 -name /home/daniel/pascal/Comp/ACBr/trunk/Projetos/ACBrMonitor/Lazarus/ACBrMonitorConsole -parent A7445EB0-8070-6A51-67CA-70F86582B322
 FileGroup ::A0AAD91A-0EEE-FEE2-D547-23427A537F3A -setup Install -active Yes -platforms {AIX-ppc FreeBSD-4-x86 FreeBSD-5-x86 FreeBSD-6-x86 FreeBSD-7-x86 HPUX-hppa Linux-x86 Linux-x86_64 Solaris-sparc Solaris-x86 Windows TarArchive ZipArchive} -name Documentacao -parent FileGroups
@@ -1360,7 +1360,7 @@ B9A8FBF5-C3CB-8C17-CBE1-E3B665D275D0,Message,subst
 {1}
 
 B9A8FBF5-C3CB-8C17-CBE1-E3B665D275D0,TextFile
-{<%ProgramReadme%>}
+{<%ProgramLicense%>}
 
 B9A8FBF5-C3CB-8C17-CBE1-E3B665D275D0,TextWrap
 {none}
@@ -1978,7 +1978,7 @@ Linux-x86,ProgramName
 {}
 
 Linux-x86,ProgramReadme
-{<%InstallDir%>/leia-me.txt}
+{}
 
 Linux-x86,PromptForRoot
 {No}
@@ -2425,13 +2425,13 @@ AC89D521-3A3D-8519-E05F-974F187CBF20,DisplayName
 {Customizada}
 
 B9A8FBF5-C3CB-8C17-CBE1-E3B665D275D0,Caption
-{<%ApplicationReadmeText%>}
+{Licença de Uso}
 
 B9A8FBF5-C3CB-8C17-CBE1-E3B665D275D0,Message
 {}
 
 B9A8FBF5-C3CB-8C17-CBE1-E3B665D275D0,Title
-{<%ApplicationReadmeText%>}
+{Licença de Uso}
 
 C487BF78-F3E7-61C0-01B6-BE6E3828EB42,Message
 {<%InstallingApplicationText%>}

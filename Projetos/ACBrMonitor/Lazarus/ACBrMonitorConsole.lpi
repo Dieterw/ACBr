@@ -48,9 +48,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
         <UnitName Value="ACBrMonitorConsoleDM"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="110"/>
+        <TopLine Value="111"/>
         <CursorPos X="53" Y="118"/>
         <UsageCount Value="27"/>
         <Loaded Value="True"/>
@@ -70,12 +71,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ACBrMonitor1"/>
-        <EditorIndex Value="6"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
         <UsageCount Value="11"/>
-        <Loaded Value="True"/>
       </Unit3>
       <Unit4>
         <Filename Value="CmdUnit.pas"/>
@@ -211,12 +210,10 @@
       <Unit22>
         <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
         <UnitName Value="ACBrUtil"/>
-        <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="237"/>
+        <TopLine Value="249"/>
         <CursorPos X="33" Y="256"/>
         <UsageCount Value="10"/>
-        <Loaded Value="True"/>
       </Unit22>
       <Unit23>
         <Filename Value="..\..\..\Fontes\ACBrSerial\ACBrECF.pas"/>
@@ -353,7 +350,7 @@
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit39>
       <Unit40>
-        <Filename Value="..\..\..\..\..\..\..\..\..\usr\lib\lazarus\debugger\gdbmidebugger.pp"/>
+        <Filename Value="C:\usr\lib\lazarus\debugger\gdbmidebugger.pp"/>
         <UnitName Value="GDBMIDebugger"/>
         <WindowIndex Value="0"/>
         <TopLine Value="3266"/>
@@ -361,53 +358,44 @@
         <UsageCount Value="10"/>
       </Unit40>
       <Unit41>
-        <Filename Value="..\..\..\..\..\..\..\..\..\usr\share\fpcsrc\rtl\linux\signal.inc"/>
+        <Filename Value="C:\usr\share\fpcsrc\rtl\linux\signal.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="53"/>
         <CursorPos X="3" Y="90"/>
         <UsageCount Value="10"/>
       </Unit41>
       <Unit42>
-        <Filename Value="..\..\..\..\..\..\..\..\..\usr\lib\lazarus\lcl\lconvencoding.pas"/>
+        <Filename Value="C:\usr\lib\lazarus\lcl\lconvencoding.pas"/>
         <UnitName Value="LConvEncoding"/>
-        <EditorIndex Value="7"/>
         <WindowIndex Value="0"/>
         <TopLine Value="4691"/>
         <CursorPos X="10" Y="4698"/>
         <UsageCount Value="10"/>
-        <Loaded Value="True"/>
       </Unit42>
       <Unit43>
-        <Filename Value="..\..\..\..\..\..\..\..\..\usr\share\fpcsrc\rtl\inc\ustringh.inc"/>
-        <EditorIndex Value="4"/>
+        <Filename Value="C:\usr\share\fpcsrc\rtl\inc\ustringh.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="81"/>
         <CursorPos X="10" Y="98"/>
         <UsageCount Value="10"/>
-        <Loaded Value="True"/>
       </Unit43>
       <Unit44>
-        <Filename Value="..\..\..\..\..\..\..\..\..\usr\share\fpcsrc\rtl\inc\ustrings.inc"/>
-        <EditorIndex Value="5"/>
+        <Filename Value="C:\usr\share\fpcsrc\rtl\inc\ustrings.inc"/>
         <WindowIndex Value="0"/>
         <TopLine Value="177"/>
         <CursorPos X="71" Y="137"/>
         <UsageCount Value="10"/>
-        <Loaded Value="True"/>
       </Unit44>
       <Unit45>
         <Filename Value="ACBrMonitor.iss"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="3"/>
         <WindowIndex Value="0"/>
         <TopLine Value="28"/>
         <CursorPos X="81" Y="47"/>
         <UsageCount Value="10"/>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="None"/>
       </Unit45>
     </Units>
-    <JumpHistory Count="28" HistoryIndex="27">
+    <JumpHistory Count="14" HistoryIndex="13">
       <Position1>
         <Filename Value="ACBrMonitorConsole.lpr"/>
         <Caret Line="289" Column="19" TopLine="270"/>
@@ -425,101 +413,45 @@
         <Caret Line="1" Column="1" TopLine="1"/>
       </Position4>
       <Position5>
-        <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
-        <Caret Line="484" Column="10" TopLine="470"/>
+        <Filename Value="ACBrMonitorConsoleDM.pas"/>
+        <Caret Line="508" Column="44" TopLine="488"/>
       </Position5>
       <Position6>
         <Filename Value="ACBrMonitorConsoleDM.pas"/>
-        <Caret Line="508" Column="44" TopLine="488"/>
+        <Caret Line="737" Column="1" TopLine="719"/>
       </Position6>
       <Position7>
-        <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="73" Column="60" TopLine="59"/>
+        <Filename Value="ACBrMonitorConsole.lpr"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position7>
       <Position8>
-        <Filename Value="ACBrMonitorConsoleDM.pas"/>
-        <Caret Line="737" Column="1" TopLine="719"/>
+        <Filename Value="ACBrMonitorConsole.lpr"/>
+        <Caret Line="117" Column="28" TopLine="100"/>
       </Position8>
       <Position9>
         <Filename Value="ACBrMonitorConsole.lpr"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Caret Line="121" Column="23" TopLine="104"/>
       </Position9>
       <Position10>
         <Filename Value="ACBrMonitorConsole.lpr"/>
-        <Caret Line="117" Column="28" TopLine="100"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position10>
       <Position11>
         <Filename Value="ACBrMonitorConsole.lpr"/>
-        <Caret Line="121" Column="23" TopLine="104"/>
+        <Caret Line="40" Column="6" TopLine="35"/>
       </Position11>
       <Position12>
-        <Filename Value="ACBrMonitorConsole.lpr"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Filename Value="ACBrMonitorConsoleDM.pas"/>
+        <Caret Line="34" Column="44" TopLine="1"/>
       </Position12>
       <Position13>
-        <Filename Value="ACBrMonitorConsole.lpr"/>
-        <Caret Line="40" Column="6" TopLine="35"/>
+        <Filename Value="ACBrMonitorConsoleDM.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position13>
       <Position14>
         <Filename Value="ACBrMonitorConsoleDM.pas"/>
-        <Caret Line="34" Column="44" TopLine="1"/>
-      </Position14>
-      <Position15>
-        <Filename Value="ACBrMonitorConsoleDM.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
-      </Position15>
-      <Position16>
-        <Filename Value="ACBrMonitorConsoleDM.pas"/>
         <Caret Line="38" Column="5" TopLine="21"/>
-      </Position16>
-      <Position17>
-        <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
-        <Caret Line="135" Column="10" TopLine="127"/>
-      </Position17>
-      <Position18>
-        <Filename Value="ACBrMonitor1.pas"/>
-        <Caret Line="2971" Column="54" TopLine="2886"/>
-      </Position18>
-      <Position19>
-        <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
-        <Caret Line="93" Column="35" TopLine="81"/>
-      </Position19>
-      <Position20>
-        <Filename Value="..\..\..\..\..\..\..\..\..\usr\lib\lazarus\lcl\lconvencoding.pas"/>
-        <Caret Line="5575" Column="41" TopLine="5573"/>
-      </Position20>
-      <Position21>
-        <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
-        <Caret Line="97" Column="47" TopLine="81"/>
-      </Position21>
-      <Position22>
-        <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
-        <Caret Line="105" Column="39" TopLine="81"/>
-      </Position22>
-      <Position23>
-        <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
-        <Caret Line="257" Column="22" TopLine="237"/>
-      </Position23>
-      <Position24>
-        <Filename Value="..\..\..\..\..\..\..\..\..\usr\share\fpcsrc\rtl\inc\ustrings.inc"/>
-        <Caret Line="2333" Column="18" TopLine="2331"/>
-      </Position24>
-      <Position25>
-        <Filename Value="..\..\..\..\..\..\..\..\..\usr\share\fpcsrc\rtl\inc\ustrings.inc"/>
-        <Caret Line="2291" Column="21" TopLine="2272"/>
-      </Position25>
-      <Position26>
-        <Filename Value="..\..\..\..\..\..\..\..\..\usr\share\fpcsrc\rtl\inc\ustrings.inc"/>
-        <Caret Line="2304" Column="15" TopLine="2295"/>
-      </Position26>
-      <Position27>
-        <Filename Value="ACBrMonitor.iss"/>
-        <Caret Line="33" Column="38" TopLine="11"/>
-      </Position27>
-      <Position28>
-        <Filename Value="ACBrMonitor.iss"/>
-        <Caret Line="45" Column="84" TopLine="28"/>
-      </Position28>
+      </Position14>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>
@@ -561,4 +493,4 @@
       </Item3>
     </Exceptions>
   </Debugging>
-</CONFIG>
+</CONFIG>

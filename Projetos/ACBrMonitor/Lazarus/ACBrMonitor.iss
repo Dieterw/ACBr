@@ -76,7 +76,7 @@ Name: {group}\{cm:ProgramOnTheWeb,{#MyAppName}}; Filename: {app}\{#MyAppUrlName}
 
 [Run]
 Filename: {app}\{#MyAppExeName}; Description: {cm:LaunchProgram,{#MyAppName}}; Flags: nowait postinstall skipifsilent
-Filename: {app}\ACBrMonitor.chm; Description: Novidades desta Versão; Flags: nowait postinstall skipifsilent
+Filename: {app}\ACBrMonitor.chm; Description: Novidades desta Versão; Flags: postinstall shellexec skipifsilent
 
 
 

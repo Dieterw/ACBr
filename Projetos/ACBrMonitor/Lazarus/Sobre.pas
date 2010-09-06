@@ -139,11 +139,17 @@ begin
 end;
 
 procedure TfrmSobre.bAjudaClick(Sender: TObject);
+Var
+  DirApp : String ;
 begin
+ DirApp := ExtractFilePath(Application.ExeName) ;
  {$IFDEF Linux}
-  OpenURL('http://acbr.sourceforge.net/ACBrMonitor.htm');
+  if FileExists(DirApp+'ACBrMonitor.htm') and DirectoryExists(DirApp+'files') then
+     OpenURL(DirApp+'ACBrMonitor.htm')
+  else
+     OpenURL('http://acbr.sourceforge.net/ACBrMonitor.htm');
  {$ELSE}
-  OpenURL('file:///'+ExtractFilePath(Application.ExeName)+'ACBrMonitor.chm');
+  RunCommand( DirApp+'ACBrMonitor.chm');
  {$ENDIF}
 end;
 
@@ -154,4 +160,4 @@ begin
      bAjuda.Click ;
 end;
 
-end.
+end.

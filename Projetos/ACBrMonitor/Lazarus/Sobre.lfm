@@ -3,6 +3,7 @@ object frmSobre: TfrmSobre
   Height = 220
   Top = 287
   Width = 500
+  ActiveControl = bAjuda
   BorderIcons = [biSystemMenu]
   BorderStyle = bsToolWindow
   Caption = 'Sobre o ACBrMonitor'
@@ -538,10 +539,10 @@ object frmSobre: TfrmSobre
     AnchorSideLeft.Control = Owner
     AnchorSideLeft.Side = asrCenter
     Cursor = crHandPoint
-    Left = 228
-    Height = 16
+    Left = 220
+    Height = 18
     Top = 62
-    Width = 45
+    Width = 60
     Alignment = taCenter
     Caption = 'Ver: 0.00'
     ParentColor = False
@@ -551,10 +552,10 @@ object frmSobre: TfrmSobre
     AnchorSideLeft.Control = Owner
     AnchorSideLeft.Side = asrCenter
     Cursor = crHandPoint
-    Left = 160
-    Height = 16
+    Left = 125
+    Height = 18
     Top = 91
-    Width = 180
+    Width = 250
     Alignment = taCenter
     Caption = 'Projeto ACBr - http://acbr.sf.net'
     Font.Color = clBlue
@@ -566,10 +567,10 @@ object frmSobre: TfrmSobre
   object BitBtn1: TBitBtn
     AnchorSideLeft.Control = bAjuda
     AnchorSideLeft.Side = asrCenter
-    Left = 426
-    Height = 26
+    Left = 429
+    Height = 27
     Top = 184
-    Width = 63
+    Width = 51
     AutoSize = True
     Cancel = True
     Caption = 'OK'
@@ -619,10 +620,10 @@ object frmSobre: TfrmSobre
     AnchorSideLeft.Control = Owner
     AnchorSideLeft.Side = asrCenter
     Cursor = crHandPoint
-    Left = 213
-    Height = 16
+    Left = 200
+    Height = 18
     Top = 39
-    Width = 74
+    Width = 100
     Alignment = taCenter
     Caption = 'ACBrMonitor'
     Font.Style = [fsBold]
@@ -633,10 +634,10 @@ object frmSobre: TfrmSobre
   object Label1: TLabel
     AnchorSideLeft.Control = Owner
     AnchorSideLeft.Side = asrCenter
-    Left = 200
-    Height = 16
+    Left = 181
+    Height = 18
     Top = 123
-    Width = 101
+    Width = 138
     Alignment = taCenter
     Caption = 'Desenvolvedores:'
     Font.Color = clGreen
@@ -646,9 +647,9 @@ object frmSobre: TfrmSobre
   end
   object bAjuda: TBitBtn
     Left = 419
-    Height = 26
+    Height = 30
     Top = 8
-    Width = 76
+    Width = 70
     AutoSize = True
     Caption = '&Ajuda'
     Kind = bkHelp
@@ -658,7 +659,7 @@ object frmSobre: TfrmSobre
   object bDoar: TBitBtn
     AnchorSideLeft.Control = bAjuda
     AnchorSideLeft.Side = asrCenter
-    Left = 427
+    Left = 424
     Height = 27
     Top = 39
     Width = 61
@@ -706,10 +707,10 @@ object frmSobre: TfrmSobre
     AnchorSideLeft.Control = Owner
     AnchorSideLeft.Side = asrCenter
     Cursor = crHandPoint
-    Left = 117
-    Height = 31
+    Left = 82
+    Height = 39
     Top = 143
-    Width = 267
+    Width = 336
     Alignment = taCenter
     Caption = 'Daniel Simões de Almeida - www.djsystem.com.br'#13#10'André Ferreira de Moraes - www.djsystem.com.br'
     ParentColor = False
@@ -721,4 +722,4 @@ object frmSobre: TfrmSobre
     left = 75
     top = 200
   end
-end
+end

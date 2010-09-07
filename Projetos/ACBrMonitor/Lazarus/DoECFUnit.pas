@@ -220,6 +220,9 @@ begin
         else if Cmd.Metodo = 'totalisencaoissqn' then
            Cmd.Resposta := FloatToStr( TotalIsencaoISSQN )
 
+        else if Cmd.Metodo = 'totalnaofiscal' then
+           Cmd.Resposta := FloatToStr( TotalNaoFiscal )
+
         else if Cmd.Metodo = 'numultitem' then
            Cmd.Resposta := IntToStr( NumUltItem )
 

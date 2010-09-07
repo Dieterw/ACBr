@@ -272,7 +272,6 @@ TACBrECFEpson = class( TACBrECFClass )
     Procedure MudaHorarioVerao( EHorarioVerao : Boolean ) ; overload ; override ;
     Procedure CorrigeEstadoErro(Reducao: Boolean = True) ; override ;
 
-
     Procedure LeituraMemoriaFiscal( DataInicial, DataFinal : TDateTime;
        Simplificada : Boolean = False ) ; override ;
     Procedure LeituraMemoriaFiscal( ReducaoInicial, ReducaoFinal : Integer;
@@ -332,7 +331,9 @@ TACBrECFEpson = class( TACBrECFClass )
     Procedure CortaPapel( const CorteParcial : Boolean = false) ; override ;
     procedure Suprimento( const Valor: Double; Obs : AnsiString;
        DescricaoCNF: String; DescricaoFPG: String) ; override ;
+
     procedure CarregaRelatoriosGerenciais; override;
+    procedure LerTotaisRelatoriosGerenciais ; override ;
     procedure ProgramaRelatorioGerencial(var Descricao: string;
        Posicao: string=''); override;
     function AchaCNFDescricao( Descricao: String;
@@ -2006,11 +2007,18 @@ begin
   fsRet0907 := '' ;
 end;
 
-procedure TACBrECFEpson.AbreRelatorioGerencial;
+procedure TACBrECFEpson.AbreRelatorioGerencial(Indice : Integer) ;
+Var
+  IndiceStr : String ;
 begin
+  if Indice = 0 then
+     IndiceStr := '1'
+  else
+     IndiceStr := IntToStr(Indice);
+
   EpsonComando.Comando  := '0E01' ;
   EpsonComando.Extensao := '0004' ;
-  EpsonComando.AddParam( '1' ) ;
+  EpsonComando.AddParam( IndiceStr ) ;
   EnviaComando ;
   
   fsRet0906 := '' ;
@@ -2737,8 +2745,8 @@ begin
   EnviaComando ;
 end;
 
-procedure TACBrECFEpson.Suprimento(const Valor: Double; Obs: AnsiString;
-  DescricaoCNF, DescricaoFPG: String);
+procedure TACBrECFEpson.Suprimento(const Valor : Double ; Obs : AnsiString ;
+  DescricaoCNF : String ; DescricaoFPG : String) ;
 begin
   if UpperCase(Trim(DescricaoCNF)) = 'SUPRIMENTO' then
      DescricaoCNF := 'FUNDO DE TROCO' ;
@@ -3082,6 +3090,11 @@ begin
      raise;
   end;
 end;
+
+procedure TACBrECFEpson.LerTotaisRelatoriosGerenciais ;
+begin
+  CarregaRelatoriosGerenciais;
+end ;
 
 procedure TACBrECFEpson.ProgramaRelatorioGerencial( var Descricao: String; Posicao: String);
 // Por: WagnerPV

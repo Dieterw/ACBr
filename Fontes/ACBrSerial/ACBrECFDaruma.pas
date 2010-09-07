@@ -396,6 +396,7 @@ TACBrECFDaruma = class( TACBrECFClass )
        PermiteVinculado : Boolean = true; Posicao : String = '' ) ; override ;
 
     procedure CarregaRelatoriosGerenciais ; override ;
+    procedure LerTotaisRelatoriosGerenciais ; override ;
     Procedure ProgramaRelatorioGerencial( var Descricao: String;
        Posicao : String = '') ; override ;
 
@@ -2356,11 +2357,9 @@ begin
         begin
           RG := TACBrECFRelatorioGerencial.create ;
 
-          RG.Indice     := IntToStrZero(Cont,2);
-
-          RG.Descricao  := Descricao ;
-
-          RG.Contador   :=  CER;
+          RG.Indice    := IntToStrZero(Cont,2);
+          RG.Descricao := Descricao ;
+          RG.Contador  := CER;
 
           fpRelatoriosGerenciais.Add( RG ) ;
         end ;
@@ -2378,6 +2377,11 @@ begin
   end ;
 
 end;
+
+procedure TACBrECFDaruma.LerTotaisRelatoriosGerenciais ;
+begin
+  CarregaRelatoriosGerenciais;
+end ;
 
 procedure TACBrECFDaruma.ProgramaRelatorioGerencial(var Descricao: String; Posicao: String);
 Var

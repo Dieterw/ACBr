@@ -29,7 +29,7 @@
         <LaunchingApplication PathPlusParams="\usr\bin\xterm -T 'Lazarus Run Output' -e $(LazarusDir)\tools\runwait.sh $(TargetCmdLine)"/>
       </local>
     </RunParams>
-    <Units Count="46">
+    <Units Count="47">
       <Unit0>
         <Filename Value="ACBrMonitorConsole.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -48,7 +48,6 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
         <UnitName Value="ACBrMonitorConsoleDM"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
         <TopLine Value="111"/>
@@ -394,8 +393,19 @@
         <UsageCount Value="10"/>
         <DefaultSyntaxHighlighter Value="None"/>
       </Unit45>
+      <Unit46>
+        <Filename Value="..\..\..\Fontes\ACBrSerial\ACBrGAVImpressoraComum.pas"/>
+        <UnitName Value="ACBrGAVImpressoraComum"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="2"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="83"/>
+        <CursorPos X="36" Y="101"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit46>
     </Units>
-    <JumpHistory Count="14" HistoryIndex="13">
+    <JumpHistory Count="15" HistoryIndex="14">
       <Position1>
         <Filename Value="ACBrMonitorConsole.lpr"/>
         <Caret Line="289" Column="19" TopLine="270"/>
@@ -452,6 +462,10 @@
         <Filename Value="ACBrMonitorConsoleDM.pas"/>
         <Caret Line="38" Column="5" TopLine="21"/>
       </Position14>
+      <Position15>
+        <Filename Value="..\..\..\Fontes\ACBrSerial\ACBrGAVImpressoraComum.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
+      </Position15>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

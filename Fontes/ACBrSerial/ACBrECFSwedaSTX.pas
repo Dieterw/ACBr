@@ -43,7 +43,7 @@
 unit ACBrECFSwedaSTX ;
 
 interface
-uses ACBrECFClass, ACBrBase, ACBrDevice, ACBrUtil, Classes, Contnrs
+uses ACBrECFClass, ACBrDevice, ACBrUtil, Classes, Contnrs
      {$IFNDEF CONSOLE}
      {$IFDEF VCL}, Dialogs , Controls , Forms {$ENDIF}
      {$IFDEF VisualCLX}, QDialogs, QControls, QForms {$ENDIF}
@@ -106,6 +106,9 @@ end;
 
 
 { Classe filha de TACBrECFClass com implementaçao para SwedaSTX }
+
+{ TACBrECFSwedaSTX }
+
 TACBrECFSwedaSTX = class( TACBrECFClass )
  private
 
@@ -253,7 +256,9 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
     procedure LerTotaisFormaPagamento ; override ;
     Procedure ProgramaFormaPagamento( var Descricao: String;
        PermiteVinculado : Boolean = true; Posicao : String = '' ) ; override ;
+
     procedure CarregaRelatoriosGerenciais ; override ;
+    procedure LerTotaisRelatoriosGerenciais ; override ;
     Procedure ProgramaRelatorioGerencial( var Descricao: String;
        Posicao : String = '') ; override ;
 
@@ -286,7 +291,7 @@ implementation
 Uses ACBrECF,
      SysUtils,
    {$IFDEF COMPILER6_UP} DateUtils, StrUtils, {$ELSE} ACBrD5, Windows,{$ENDIF}
-     Math , synaser;
+     Math;
 
 { --------------------------- TACBrECFSwedaCache ---------------------------- }
 function TACBrECFSwedaCache.AchaSecao(Secao: String): Integer;
@@ -1571,8 +1576,12 @@ begin
       RG.Contador := StrToIntDef(Copy(sCRE,(I*4)-3,4),0);
       fpRelatoriosGerenciais.Add(RG);
    end;
-
 end;
+
+procedure TACBrECFSwedaSTX.LerTotaisRelatoriosGerenciais ;
+begin
+  CarregaRelatoriosGerenciais;
+end ;
 
 procedure TACBrECFSwedaSTX.LerTotaisFormaPagamento;
 var
@@ -1895,12 +1904,13 @@ begin
    RetCMD := RetornaInfoECF('G64');
    Result := Copy(RemoveNulos(RetCMD),42,21);
 end;
+
 function TACBrECFSwedaSTX.GetCliche: String;
 var
    RetCMD:String;
 begin
    RetCMD := RetornaInfoECF('H4');
-   RetCMD := RemoveNulos(RetCMD);
+   Result := RemoveNulos(RetCMD);
 end;
 //IMS
 
@@ -1925,10 +1935,8 @@ end;
 function TACBrECFSwedaSTX.GetGrandeTotal: Double;
 var
    RetCMD : AnsiString;
-   sGT:AnsiString;
 begin
    RetCMD := Trim(RetornaInfoECF('A1'));
-   sGT := Copy(RetCMD,1,18);
    Result := StrToFloatDef(Copy(RetCMD,1,18),0)/100;
 end;
 

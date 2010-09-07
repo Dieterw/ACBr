@@ -115,6 +115,8 @@ type
     MenuItem11 : TMenuItem ;
     MenuItem12 : TMenuItem ;
     mARQMFDDLLPeriodo : TMenuItem ;
+    mLerTotaisRelatoriosGerenciais : TMenuItem ;
+    mRelatorioGerenciais : TMenuItem ;
     mCarregaRelatorioGerenciais : TMenuItem ;
     mProgramaRelatorioGerencial : TMenuItem ;
     mIdentificaOperador : TMenuItem ;
@@ -280,7 +282,8 @@ type
     procedure cbxModeloChange(Sender: TObject);
     procedure mARQMFDDLLCooClick(Sender : TObject) ;
     procedure mARQMFDDLLPeriodoClick(Sender : TObject) ;
-    procedure mCarregaRelatorioGerenciaisClick(Sender : TObject) ;
+    procedure mLerTotaisRelatoriosGerenciaisClick(Sender : TObject) ;
+    procedure mRelatorioGerenciaisClick(Sender : TObject) ;
     procedure mClicheClick(Sender : TObject) ;
     procedure mCortaPapelClick(Sender : TObject) ;
     procedure mDataHoraSwBasicoClick(Sender : TObject) ;
@@ -647,7 +650,23 @@ begin
 
 end;
 
-procedure TForm1.mCarregaRelatorioGerenciaisClick(Sender : TObject) ;
+procedure TForm1.mLerTotaisRelatoriosGerenciaisClick(Sender : TObject) ;
+var
+  A : Integer ;
+begin
+  ACBrECF1.LerTotaisRelatoriosGerenciais ;
+
+  for A := 0 to ACBrECF1.RelatoriosGerenciais.Count -1 do
+  begin
+     if ACBrECF1.RelatoriosGerenciais[A].Descricao <> '' then
+        mResp.Lines.Add( 'RG: '+ACBrECF1.RelatoriosGerenciais[A].Indice+' - '+
+           ACBrECF1.RelatoriosGerenciais[A].Descricao+' ('+
+           IntToStr(ACBrECF1.RelatoriosGerenciais[A].Contador)+')') ;
+  end ;
+  mResp.Lines.Add('---------------------------------');
+end;
+
+procedure TForm1.mRelatorioGerenciaisClick(Sender : TObject) ;
 var
    A: Integer;
 begin
@@ -1339,7 +1358,8 @@ begin
 end;
 
 procedure TForm1.LerTotaisComprovanetNaoFiscal1Click(Sender: TObject);
-var A : Integer ;
+var
+  A : Integer ;
 begin
   ACBrECF1.LerTotaisComprovanteNaoFiscal ;
 

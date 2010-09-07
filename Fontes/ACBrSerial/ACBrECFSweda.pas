@@ -353,7 +353,9 @@ TACBrECFSweda = class( TACBrECFClass )
     procedure LerTotaisFormaPagamento ; override ;
     Procedure ProgramaFormaPagamento( var Descricao: String;
        PermiteVinculado : Boolean = true; Posicao : String = '' ) ; override ;
+
     procedure CarregaRelatoriosGerenciais ; override ;
+    procedure LerTotaisRelatoriosGerenciais ; override ;
     Procedure ProgramaRelatorioGerencial( var Descricao: String;
        Posicao : String = '') ; override ;
 
@@ -1925,7 +1927,6 @@ begin
       if copy(RetCmd,1,3) <> '.+C' then exit ;
       StrCER := copy(RetCmd, 8, 120) ;
 
-
       for Cont := 1 to 30 do
       begin
         { Adicionando os Relatorios Gerenciais }
@@ -1937,9 +1938,9 @@ begin
         if (Descricao <> '') and (Descricao[2] <> #255) then
         begin
           RG := TACBrECFRelatorioGerencial.create ;
-          RG.Indice     := IntToStrZero(Cont,2);
-          RG.Descricao  := Descricao ;
-          RG.Contador   := CER;
+          RG.Indice    := IntToStrZero(Cont,2);
+          RG.Descricao := Descricao ;
+          RG.Contador  := CER;
 
           fpRelatoriosGerenciais.Add( RG ) ;
         end ;
@@ -1955,6 +1956,11 @@ begin
   end ;
 
 end;
+
+procedure TACBrECFSweda.LerTotaisRelatoriosGerenciais ;
+begin
+  CarregaRelatoriosGerenciais;
+end ;
 
 procedure TACBrECFSweda.ProgramaFormaPagamento(var Descricao: String;
   PermiteVinculado: Boolean; Posicao : String);

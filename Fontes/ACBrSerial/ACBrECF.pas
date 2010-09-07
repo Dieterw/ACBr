@@ -452,6 +452,7 @@ TACBrECF = class( TACBrComponent )
     Property RelatoriosGerenciais : TACBrECFRelatoriosGerenciais
                                read GetRelatoriosGerenciaisClass;
     procedure CarregaRelatoriosGerenciais ;
+    procedure LerTotaisRelatoriosGerenciais ;
     function AchaRGDescricao( Descricao : String;
        BuscaExata : Boolean = False; IgnorarCase : Boolean = True  ) :
        TACBrECFRelatorioGerencial ;
@@ -3164,6 +3165,12 @@ begin
   ComandoLOG := 'CarregaRelatoriosGerenciais' ;
   fsECF.CarregaRelatoriosGerenciais ;
 end;
+
+procedure TACBrECF.LerTotaisRelatoriosGerenciais ;
+begin
+  ComandoLOG := 'LerTotaisRelatoriosGerenciais' ;
+  fsECF.LerTotaisRelatoriosGerenciais ;
+end ;
 
 function TACBrECF.AchaRGDescricao(Descricao: String; BuscaExata: Boolean;
    IgnorarCase : Boolean ): TACBrECFRelatorioGerencial;

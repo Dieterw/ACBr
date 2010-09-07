@@ -767,6 +767,7 @@ TACBrECFClass = class
     procedure CarregaRelatoriosGerenciais ; virtual ;
     Property RelatoriosGerenciais : TACBrECFRelatoriosGerenciais
        read GetRelatoriosGerenciais ;
+    procedure LerTotaisRelatoriosGerenciais ; virtual ;
     function AchaRGDescricao( Descricao : String;
        BuscaExata : Boolean = False; IgnorarCase : Boolean = True ) :
        TACBrECFRelatorioGerencial ; virtual ;
@@ -2778,6 +2779,11 @@ begin
 
   fpRelatoriosGerenciais := TACBrECFRelatoriosGerenciais.Create( true ) ;
 end;
+
+procedure TACBrECFClass.LerTotaisRelatoriosGerenciais ;
+begin
+  ErroAbstract('LerTotaisRelatoriosGerenciais');
+end ;
 
 procedure TACBrECFClass.ProgramaRelatorioGerencial(var Descricao: String;
   Posicao: String);

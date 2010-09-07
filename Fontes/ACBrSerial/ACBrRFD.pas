@@ -2191,6 +2191,7 @@ begin
         SL.Add('EL1=ECF IF 400 2E') ;
         SL.Add('EL2=ECF IF 500 1E') ;
         //===================================//
+        //Elgin
         SL.Add('EL3=ECF IF 400 1E-EP') ;
         SL.Add('EL4=ECF-IF 600-2E-OL') ;
         SL.Add('EL5=ECF-MR 10000-S') ;
@@ -2203,6 +2204,12 @@ begin
         SL.Add('ELC=IF 6000TH') ;
         SL.Add('ELD=X5') ;
         //===================================//
+        //Epson
+        SL.Add('EP1=TM-H6000 FB');
+        SL.Add('EP2=TM-H6000 FBII');
+        SL.Add('EP3=TM-T81 FBII');
+        SL.Add('EP4=TM-T88 FB');
+        SL.Add('EP5=TM-T88 FBII');  
 
         SL.Add('GE1=ECF-IF GP-2000') ;
         SL.Add('IB1=4679 3BM') ;
@@ -2331,4 +2338,4 @@ begin
 end;
 
 end.
-
+

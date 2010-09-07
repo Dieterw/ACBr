@@ -63,8 +63,10 @@ unit ACBrECFFiscNET ;
 
 interface
 uses ACBrECFClass, ACBrDevice, ACBrUtil,
-     Classes ;
-
+     Classes
+     {$IFNDEF CONSOLE}
+       {$IFDEF VisualCLX}, QForms {$ELSE}, Forms {$ENDIF}
+     {$ENDIF};
 type
 
 TACBrECFFiscNETComando = class
@@ -128,13 +130,43 @@ TACBrECFFiscNET = class( TACBrECFClass )
     fsComandoVendeItem : String ;
     fsComandosImpressao : array[0..9] of AnsiString ;
     fsEmPagamento : Boolean ;
+    fsMarcaECF : String ;
 
-    xGera_AtoCotepe1704 : function (ComPortOrFileName: AnsiString;
-      Modelo: AnsiString; RegFileName: AnsiString; DataReducao: AnsiString): Integer; stdcall;
+    //dataregis | termoprinter
+    xGera_PAF                       : Function ( ComPort     : PAnsiChar;
+                                                 Modelo      : PAnsiChar;
+                                                 RegFileName : PAnsiChar;
+                                                 COOInicial  : PAnsiChar;
+                                                 COOFinal    : PAnsiChar) : integer; stdcall;
+    xGera_AtoCotepe1704_Periodo_MFD : Function ( ComPort            : PAnsiChar;
+                                                 Modelo             : PAnsiChar;
+                                                 RegFileName        : PAnsiChar;
+                                                 DataReducaoInicial : PAnsiChar;
+                                                 DataReducaoFinal   : PAnsiChar) : integer; stdcall;
+    //Elgin
+    xElgin_AbrePortaSerial  : function                                : Integer; StdCall;
+    XElgin_FechaPortaSerial : function                                : Integer; StdCall;
+    xElgin_DownloadMFD      : function(Arquivo          : AnsiString;
+                                       TipoDownload     : AnsiString;
+                                       ParametroInicial : AnsiString;
+                                       ParametroFinal   : AnsiString;
+                                       UsuarioECF       : AnsiString) : Integer; StdCall;
+    xElgin_FormatoDadosMFD  : function(ArquivoOrigem    : AnsiString;
+                                       ArquivoDestino   : AnsiString;
+                                       TipoFormato      : AnsiString;
+                                       TipoDownload     : AnsiString;
+                                       ParametroInicial : AnsiString;
+                                       ParametroFinal   : AnsiString;
+                                       UsuarioECF       : AnsiString) : Integer; StdCall;
+    xRFD_ConvertedaMFD      : function(CRZ: AnsiString)               : Integer; StdCall;
+    xRFD_ConvertedaMFDData  : function(DataInicial: AnsiString;
+                                       DataFinal: AnsiString)         : Integer; StdCall;
+
 
     procedure LoadDLLFunctions;
+    procedure AbrePortaSerialDLL(const Porta, Path : String ) ;
 
-    Function PreparaCmd( cmd : AnsiString ) : AnsiString ;
+    Procedure PreparaCmd( cmd : AnsiString ) ;
     Function AjustaLeitura( AString : AnsiString ) : AnsiString ;
     function DocumentosToStr(Documentos: TACBrECFTipoDocumentoSet): String;
  protected
@@ -258,7 +290,14 @@ TACBrECFFiscNET = class( TACBrECFClass )
     Procedure LeituraMFDSerial( COOInicial, COOFinal : Integer;
        Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
 
+    Procedure EspelhoMFD_DLL( DataInicial, DataFinal : TDateTime;
+       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
+    Procedure EspelhoMFD_DLL( COOInicial, COOFinal : Integer;
+       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
+
     Procedure ArquivoMFD_DLL( DataInicial, DataFinal : TDateTime;
+       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
+    Procedure ArquivoMFD_DLL( COOInicial, COOFinal : Integer;
        NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
 
     Procedure ImprimeCheque(Banco : String; Valor : Double ; Favorecido,
@@ -281,6 +320,7 @@ TACBrECFFiscNET = class( TACBrECFClass )
        PermiteVinculado : Boolean = true; Posicao : String = '' ) ; override ;
 
     procedure CarregaRelatoriosGerenciais ; override ;
+    procedure LerTotaisRelatoriosGerenciais ; override ;
     Procedure ProgramaRelatorioGerencial( var Descricao: String;
        Posicao : String = '') ; override ;
        
@@ -293,9 +333,9 @@ TACBrECFFiscNET = class( TACBrECFClass )
 
  end ;
 
-//Constantes usada para DLL do Ato Cotepe 1704
+//Constantes usada para DLL do Ato Cotepe 1704 DataRegis/TermoPrinter
 CONST
-  ERROS_DLL : Array[1..17] of String =
+  ERROS_DLLG2 : Array[1..17] of String =
     ( 'Erro ao executar comando EmiteLeituraX.',
       'Erro ao executar comando EmiteLeituraMF.',
       'Erro ao executar comando EmiteLeituraFitaDetalhe.',
@@ -318,7 +358,7 @@ CONST
 implementation
 Uses ACBrECF,
      {$IFDEF COMPILER6_UP} DateUtils, StrUtils{$ELSE} ACBrD5, SysUtils, Windows{$ENDIF},
-     SysUtils, Math ;
+     SysUtils, Math, IniFiles ;
 
 { -------------------------  TACBrECFFiscNETComando -------------------------- }
 constructor TACBrECFFiscNETComando.create;
@@ -556,6 +596,7 @@ begin
   fsArredonda := -1 ;
   fsComandoVendeItem := '' ;
   fsEmPagamento := false ;
+  fsMarcaECF := '';
   
   fpModeloStr := 'FiscNET' ;
   fpColunas   := 57 ;
@@ -597,6 +638,7 @@ begin
   fsNumLoja   := '' ;
   fsArredonda := -1 ;
   fsComandoVendeItem := '' ;
+  fsMarcaECF := '' ;
 
   GetPAF ;
 
@@ -635,7 +677,7 @@ var
   OldTimeOut : Integer ;
 begin
   if cmd <> '' then
-     cmd := PreparaCmd(cmd) ;  // Ajusta e move para FiscNETcomando
+     PreparaCmd(cmd) ;  // Ajusta e move para FiscNETcomando
 
   cmd := FiscNETComando.Comando ;
 
@@ -692,7 +734,7 @@ begin
   end ;
 end;
 
-function TACBrECFFiscNET.PreparaCmd(cmd: AnsiString): AnsiString;
+Procedure TACBrECFFiscNET.PreparaCmd(cmd: AnsiString) ;
 var
   P: Integer;
 begin
@@ -1493,7 +1535,8 @@ begin
   with FiscNETComando do
   begin
      NomeComando := 'DefineMeioPagamento' ;
-     AddParamInteger('CodMeioPagamentoProgram', StrToIntDef(Posicao,-1) ) ;
+     if StrToIntDef(Posicao,-1) >= 0 then
+        AddParamInteger('CodMeioPagamentoProgram', StrToInt(Posicao) ) ;
      AddParamString('DescricaoMeioPagamento',Descricao) ;
      AddParamString('NomeMeioPagamento',Descricao) ;
      AddParamBool('PermiteVinculado',PermiteVinculado) ;
@@ -1950,7 +1993,6 @@ begin
   Result := AjustaLinhas( Result, Cols ) ;
 end;
 
-
 procedure TACBrECFFiscNET.CorrigeEstadoErro(Reducao: Boolean);
 begin
   inherited CorrigeEstadoErro(Reducao) ;
@@ -2199,9 +2241,6 @@ begin
      RemoveString('.', FiscNETResposta.Params.Values['ValorMoeda'] ), 0) ;
 end;
 
-
-
-
 function TACBrECFFiscNET.GetTotalSubstituicaoTributaria: Double;
 // Autor: Nei José Van Lare Junior
 begin
@@ -2222,7 +2261,6 @@ begin
   Result := StringToFloatDef(
      RemoveString('.', FiscNETResposta.Params.Values['ValorMoeda'] ), 0) ;
 end;
-
 
 function TACBrECFFiscNET.GetTotalIsencao: Double;
 // Autor: Nei José Van Lare Junior
@@ -2245,7 +2283,6 @@ begin
      RemoveString('.', FiscNETResposta.Params.Values['ValorMoeda'] ), 0) ;
 end;
 
-
 function TACBrECFFiscNET.GetTotalNaoTributado: Double;
 // Autor: Nei José Van Lare Junior
 begin
@@ -2266,9 +2303,6 @@ begin
   Result := StringToFloatDef(
      RemoveString('.', FiscNETResposta.Params.Values['ValorMoeda'] ), 0) ;
 end;
-
-
-
 
 function TACBrECFFiscNET.GetVendaBruta: Double;
 begin
@@ -2376,21 +2410,119 @@ begin
 end;
 
 procedure TACBrECFFiscNET.CarregaRelatoriosGerenciais;
-begin
-  inherited;
+  Function SubCarregaGerenciais(Indice : Integer) : Boolean ;
+  var
+    RG: TACBrECFRelatorioGerencial;
+  begin
+     Result := True ;
+     FiscNETComando.NomeComando := 'LeGerencial' ;
+     FiscNETComando.AddParamInteger('CodGerencial',Indice) ;
+     try
+        EnviaComando ;
 
+        RG := TACBrECFRelatorioGerencial.create ;
+        RG.Indice    := FiscNETResposta.Params.Values['CodGerencial'] ;
+        RG.Descricao := FiscNETResposta.Params.Values['NomeGerencial'] ;
+
+        fpRelatoriosGerenciais.Add( RG ) ;
+     except
+        on E : Exception do
+        begin
+           Result := (pos('ErroCMDGerencialNaoDefinido',E.Message) <> 0)
+        end ;
+     end;
+  end ;
+
+var
+  A    : Integer;
+  Erro : Boolean ;
+begin
+  inherited CarregaRelatoriosGerenciais ;   { Cria fpRelatoriosGerenciais }
+
+  Erro := False ;
+
+  { Lê as Formas de Pagamento cadastradas na impressora }
+  A := 0 ;
+  while (A <= 19) and (not Erro) do
+  begin
+     Erro := not SubCarregaGerenciais(A);
+     Inc( A )
+  end ;
+
+  if Erro then   { "niliza" para tentar carregar novamente no futuro }
+  begin
+     fpRelatoriosGerenciais.Free ;
+     fpRelatoriosGerenciais := nil ;
+  end ;
 end;
+
+procedure TACBrECFFiscNET.LerTotaisRelatoriosGerenciais ;
+var
+  A: Integer;
+begin
+  if not Assigned( fpRelatoriosGerenciais ) then
+     CarregaRelatoriosGerenciais ;
+
+  For A := 0 to RelatoriosGerenciais.Count-1 do
+  begin
+     FiscNETComando.NomeComando := 'LeInteiro' ;
+     FiscNETComando.AddParamString('NomeInteiro','CER['+RelatoriosGerenciais[A].Indice+']');
+     EnviaComando ;
+
+     RelatoriosGerenciais[A].Contador := StrToIntDef(
+        FiscNETResposta.Params.Values['ValorInteiro'], 0) ;
+  end ;
+end ;
 
 procedure TACBrECFFiscNET.ProgramaRelatorioGerencial(var Descricao: String;
   Posicao: String);
+var
+  RG: TACBrECFRelatorioGerencial;
 begin
-  inherited;
+  with FiscNETComando do
+  begin
+     NomeComando := 'DefineGerencial' ;
+     if StrToIntDef(Posicao,-1) >= 0 then
+        AddParamInteger('CodGerencial', StrToInt(Posicao) ) ;
+     AddParamString('DescricaoGerencial',Descricao) ;
+     AddParamString('NomeGerencial',Descricao) ;
+  end ;
+  EnviaComando ;
 
+  { Adicionanodo novo RG no ObjectList }
+  if Assigned( fpRelatoriosGerenciais ) then
+  begin
+     RG := TACBrECFRelatorioGerencial.create ;
+     RG.Indice    := FiscNETResposta.Params.Values['CodGerencial'] ;
+     RG.Descricao := Descricao ;
+
+     fpRelatoriosGerenciais.Add( RG ) ;
+  end ;
 end;
+
+procedure TACBrECFFiscNET.IdentificaPAF(Linha1, Linha2: String);  // Por: rodrigosd
+begin
+   fsPAF := Linha1 + #10 + Linha2 ;
+   FiscNETComando.NomeComando := 'EscreveTexto' ;
+   FiscNETComando.AddParamString('NomeTexto' ,'TextoLivre') ;
+   FiscNETComando.AddParamString('ValorTexto', fsPAF ) ;
+   EnviaComando ;
+end;
+
+function TACBrECFFiscNET.GetPAF: String;   // Por: rodrigosd
+begin
+
+  FiscNETComando.NomeComando := 'LeTexto' ;
+  FiscNETComando.AddParamString('NomeTexto','TextoLivre') ;
+  EnviaComando ;
+  fsPAF  := FiscNETResposta.Params.Values['ValorTexto'] ;
+  Result := fsPAf ;
+end;
+
 
 procedure TACBrECFFiscNET.LoadDLLFunctions;
 Var
-  LIB_FiscNet, Marca : String ;
+  LIB_FiscNet : String ;
 
  procedure FiscNetFunctionDetect( LibName, FuncName: String; var LibPointer: Pointer ) ;
  begin
@@ -2407,76 +2539,296 @@ begin
   FiscNETComando.NomeComando := 'LeTexto';
   FiscNETComando.AddParamString('NomeTexto','Marca');
   EnviaComando;
-  Marca := FiscNETResposta.Params.Values['ValorTexto'] ;
-  Marca := LowerCase(Trim(Marca)) ;
+  fsMarcaECF := FiscNETResposta.Params.Values['ValorTexto'] ;
+  fsMarcaECF := LowerCase(Trim(fsMarcaECF)) ;
 
-  if pos(Marca, 'dataregis|termoprinter') > 0 then
+  if pos(fsMarcaECF, 'dataregis|termoprinter') > 0 then
    begin
      LIB_FiscNet := 'DLLG2_Gerador.dll' ;
-     FiscNetFunctionDetect(LIB_FiscNet, 'Gera_AtoCotepe1704',@xGera_AtoCotepe1704 );
+     FiscNetFunctionDetect(LIB_FiscNet, 'Gera_AtoCotepe1704_Periodo_MFD',@xGera_AtoCotepe1704_Periodo_MFD );
+     FiscNetFunctionDetect(LIB_FiscNet, 'Gera_PAF',@xGera_PAF );
+   end
+
+  else if (fsMarcaECF = 'elgin') then
+   begin
+     LIB_FiscNet := 'Elgin.dll' ;
+
+     FiscNetFunctionDetect(LIB_FiscNet, 'Elgin_AbrePortaSerial', @xElgin_AbrePortaSerial );
+     FiscNetFunctionDetect(LIB_FiscNet, 'Elgin_FechaPortaSerial', @xElgin_FechaPortaSerial );
+     FiscNetFunctionDetect(LIB_FiscNet, 'Elgin_DownloadMFD', @xElgin_DownloadMFD );
+     FiscNetFunctionDetect(LIB_FiscNet, 'Elgin_FormatoDadosMFD', @xElgin_FormatoDadosMFD );
+     FiscNetFunctionDetect(LIB_FiscNet, 'RFD_ConvertedaMFD', @xRFD_ConvertedaMFD );
+     FiscNetFunctionDetect(LIB_FiscNet, 'RFD_ConvertedaMFDData', @xRFD_ConvertedaMFDData );
    end
   else
-     raise Exception.Create( ACBrStr( 'Interface ACBrECF -> '+Marca+' ainda não Implementada') ) ;
-
+     raise Exception.Create( ACBrStr( 'Interface ACBrECF -> '+fsMarcaECF+' ainda não Implementada') ) ;
 end;
 
-procedure TACBrECFFiscNET.ArquivoMFD_DLL(DataInicial, DataFinal: TDateTime;
-  NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet);
+procedure TACBrECFFiscNET.AbrePortaSerialDLL(const Porta, Path: String);
 Var
-  iRet: Integer;
-  PortaSerial, Modelo, DataStr, Erro: AnsiString;
+  Resp : Integer ;
+  IniFile : String ;
+  Ini  : TIniFile ;
+begin
+  if (fsMarcaECF = 'elgin') then
+  begin
+     Resp := xElgin_AbrePortaSerial();
+     {
+     1: Indica que nenhum erro ocorreu
+     -4: O arquivo de inicialização Elgin.ini não foi encontrado no diretório de sistema do Windows.
+     -5: Erro ao abrir a porta de comunicação.
+     -50: Número de série inválido.
+     }
+     if (Resp = -4) or (Resp = -5) then
+     begin
+        IniFile := ExtractFilePath(
+             {$IFNDEF CONSOLE} Application.ExeName {$ELSE} ParamStr(0) {$ENDIF}
+                                       )+'ELGIN.ini' ;
+        Ini := TIniFile.Create( IniFile );
+        try
+           Ini.WriteString('Sistema','Porta',Porta ) ;
+           Ini.WriteString('Sistema','Path',Path ) ;
+           Ini.WriteString('Sistema','PathRFD', Path );
+           Ini.WriteString('Sistema','Gera_RFD_REDZ', '1');
+        finally
+           Ini.Free ;
+        end ;
+
+        Resp := xElgin_AbrePortaSerial();
+     end ;
+
+     if Resp <> 1 then
+        raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao abrir a Porta com:'+sLineBreak+
+        'Elgin_AbrePortaSerial()'));
+  end ;
+end;
+
+procedure TACBrECFFiscNET.EspelhoMFD_DLL(DataInicial, DataFinal: TDateTime; NomeArquivo: AnsiString;
+  Documentos: TACBrECFTipoDocumentoSet);
+Var
+  iRet : Integer;
+  PortaSerial : String;
+  DiaIni, DiaFim, ArqTmp : String ;
   OldAtivo : Boolean ;
 begin
   LoadDLLFunctions;
 
-  FiscNETComando.NomeComando := 'LeTexto';
-  FiscNETComando.AddParamString('NomeTexto','Modelo');
-  EnviaComando;
-  Modelo := FiscNETResposta.Params.Values['ValorTexto'] ;
-//Modelo := '3202DT' ;
+  DiaIni := FormatDateTime('ddmmyy', DataInicial) ;
+  DiaFim := FormatDateTime('ddmmyy', DataFinal) ;
+
+  PortaSerial := fpDevice.Porta ;
+  OldAtivo    := Ativo ;
+  try
+     Ativo := False ;
+
+     if (fsMarcaECF = 'elgin') then
+     begin
+        AbrePortaSerialDLL( PortaSerial, ExtractFilePath( NomeArquivo ) ) ;
+
+        ArqTmp := ExtractFilePath( NomeArquivo ) ;
+        DeleteFile( ArqTmp + '.mfd' ) ;
+
+        iRet := xElgin_DownloadMFD(ArqTmp + '.mfd', '1', DiaIni, DiaFim, '');
+        if (iRet <> 1) then
+           raise Exception.Create( ACBrStr( 'Erro ao executar Elgin_DownloadMFD.'+sLineBreak+
+                                            'Cod.: ' + IntToStr(iRet) )) ;
+        if not FileExists( ArqTmp + '.mfd' ) then
+           raise Exception.Create( ACBrStr( 'Erro na execução de Elgin_DownloadMFD.'+sLineBreak+
+                                            'Arquivo: "' + ArqTmp + '.mfd" não gerado' )) ;
+
+        iRet := xElgin_FormatoDadosMFD(ArqTmp + '.mfd', nomeArquivo, '0', '1', DiaIni, DiaFim, '');
+        if (iRet <> 1) then
+           raise Exception.Create( ACBrStr( 'Erro ao executar Elgin_FormatoDadosMFD.'+sLineBreak+
+                                            'Cod.: ' + IntToStr(iRet) )) ;
+        if not FileExists( NomeArquivo ) then
+           raise Exception.Create( ACBrStr( 'Erro na execução de Elgin_FormatoDadosMFD.'+sLineBreak+
+                                            'Arquivo: "' + NomeArquivo + '" não gerado' )) ;
+        xElgin_FechaPortaSerial();
+        DeleteFile( ArqTmp + '.mfd' ) ;
+     end
+     else
+        raise Exception.Create( ACBrStr( 'EspelhoMFD_DLL por período ainda não Implementado para: '+fsMarcaECF ) ) ;
+  finally
+    Ativo := OldAtivo ;
+  end;
+end;
+
+procedure TACBrECFFiscNET.EspelhoMFD_DLL(COOInicial, COOFinal: Integer; NomeArquivo: AnsiString;
+  Documentos: TACBrECFTipoDocumentoSet);
+Var
+  iRet : Integer;
+  PortaSerial : String;
+  CooIni, CooFim, Prop, ArqTmp : String ;
+  OldAtivo : Boolean ;
+begin
+  LoadDLLFunctions;
+
+  CooIni := IntToStrZero( COOInicial, 6 ) ;
+  CooFim := IntToStrZero( COOFinal, 6 ) ;
+  Prop   := IntToStr( StrToIntDef( UsuarioAtual, 1) ) ;
+
   PortaSerial := fpDevice.Porta ;
 
   OldAtivo := Ativo ;
   try
      Ativo := False ;
 
-     DataStr := FormatDateTime('dd/mm/yyyy',DataInicial) ;
+     if (fsMarcaECF = 'elgin') then
+     begin
+        AbrePortaSerialDLL( PortaSerial, ExtractFilePath( NomeArquivo ) ) ;
 
-     iRet := xGera_AtoCotepe1704( PChar(PortaSerial), PChar(Modelo),
-                                  PChar(NomeArquivo), PChar(DataStr) );
+        ArqTmp := ExtractFilePath( NomeArquivo ) ;
+        DeleteFile( ArqTmp + '.mfd' ) ;
 
-     if (-iRet >= Low(ERROS_DLL)) and (-iRet <= High(ERROS_DLL)) then
-        Erro := ERROS_DLL[ -iRet ] ;
+        iRet := xElgin_DownloadMFD(ArqTmp + '.mfd', '2', CooIni, CooFim, Prop);
+        if (iRet <> 1) then
+           raise Exception.Create( ACBrStr( 'Erro ao executar Elgin_DownloadMFD.'+sLineBreak+
+                                            'Cod.: ' + IntToStr(iRet) )) ;
+        if not FileExists( ArqTmp + '.mfd' ) then
+           raise Exception.Create( ACBrStr( 'Erro na execução de Elgin_DownloadMFD.'+sLineBreak+
+                                            'Arquivo: "' + ArqTmp + '.mfd" não gerado' )) ;
 
-     if iRet <> 0 then
-        raise Exception.Create( ACBrStr( 'Erro ao executar Gera_AtoCotepe1704.'+sLineBreak+
-                                         'Cod.: '+IntToStr(iRet) + ' - ' + Erro )) ;
+        iRet := xElgin_FormatoDadosMFD(ArqTmp + '.mfd', nomeArquivo, '0', '2', CooIni, CooFim, Prop);
+        if (iRet <> 1) then
+           raise Exception.Create( ACBrStr( 'Erro ao executar Elgin_FormatoDadosMFD.'+sLineBreak+
+                                            'Cod.: ' + IntToStr(iRet) )) ;
+        if not FileExists( NomeArquivo ) then
+           raise Exception.Create( ACBrStr( 'Erro na execução de Elgin_FormatoDadosMFD.'+sLineBreak+
+                                            'Arquivo: "' + NomeArquivo + '" não gerado' )) ;
+        xElgin_FechaPortaSerial();
+        DeleteFile( ArqTmp + '.mfd' ) ;
+     end
+     else
+        raise Exception.Create( ACBrStr( 'EspelhoMFD_DLL por COO ainda não Implementado para: '+fsMarcaECF ) ) ;
+
   finally
     Ativo := OldAtivo ;
+  end;
+end;
+
+procedure TACBrECFFiscNET.ArquivoMFD_DLL(DataInicial, DataFinal: TDateTime;
+  NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet);
+Var
+  iRet      : Integer;
+  PortaSerial, ModeloECF, Erro, NumFab : String;
+  DiaIni, DiaFim : AnsiString;
+  OldAtivo  : Boolean;
+begin
+  LoadDLLFunctions;
+
+  NumFab      := NumSerie;
+  ModeloECF   := SubModeloECF;
+  DiaIni      := FormatDateTime('dd/mm/yyyy', DataInicial);
+  DiaFim      := FormatDateTime('dd/mm/yyyy', DataFinal);
+  PortaSerial := fpDevice.Porta;
+
+  OldAtivo := Ativo;
+  try
+     Ativo := False;
+
+     if pos(fsMarcaECF, 'dataregis|termoprinter') > 0 then
+      begin
+        iRet:= xGera_AtoCotepe1704_Periodo_MFD( PAnsiChar( PortaSerial ),
+                                                PAnsiChar( ModeloECF ),
+                                                PAnsiChar( NomeArquivo ),
+                                                PAnsiChar( DiaIni ),
+                                                PAnsiChar( DiaFim ) );
+
+        if (-iRet >= Low(ERROS_DLLG2)) and (-iRet <= High(ERROS_DLLG2)) then
+           Erro := ERROS_DLLG2[ -iRet ] ;
+        if iRet <> 0 then
+           raise Exception.Create( ACBrStr( 'Erro ao executar Gera_AtoCotepe1704_Periodo_MFD.'+sLineBreak+
+                                            'Cod.: '+IntToStr(iRet) + ' - ' + Erro )) ;
+        if not FileExists( NomeArquivo ) then
+           raise Exception.Create( ACBrStr( 'Erro na execução de Gera_AtoCotepe1704_Periodo_MFD.'+sLineBreak+
+                                            'Arquivo: "'+NomeArquivo + '" não gerado' ))
+      end
+
+     else if (fsMarcaECF = 'elgin') then
+      begin
+        AbrePortaSerialDLL( PortaSerial, ExtractFilePath(NomeArquivo) );
+
+        iRet := xRFD_ConvertedaMFDData( DiaIni, DiaFim );
+
+        xElgin_FechaPortaSerial();
+
+        if (iRet <> 1) then
+           raise Exception.Create(ACBrStr('Erro ao executar RFD_ConvertedaMFDData.'+sLineBreak+
+                                          'Cod.: ' + IntToStr(iRet))) ;
+        if not FilesExists( ExtractFilePath(NomeArquivo)+ 'EL' + RightStr(NumFab,5) + '.*' ) then
+           raise Exception.Create(ACBrStr('Erro na execução de RFD_ConvertedaMFDData.'+sLineBreak+
+                                          'Arquivos diários não gerados!'));
+      end
+     else
+        raise Exception.Create( ACBrStr( 'ArquivoMFD_DLL por período ainda não Implementado para: '+fsMarcaECF ) ) ;
+  finally
+     Ativo := OldAtivo ;
   end ;
-
-  if not FileExists( NomeArquivo ) then
-     raise Exception.Create( ACBrStr( 'Erro na execução de Gera_AtoCotepe1704.'+sLineBreak+
-                            'Arquivo: "'+NomeArquivo + '" não gerado' ))
 end;
 
-procedure TACBrECFFiscNET.IdentificaPAF(Linha1, Linha2: String);  // Por: rodrigosd
+procedure TACBrECFFiscNET.ArquivoMFD_DLL(COOInicial, COOFinal: Integer; NomeArquivo: AnsiString;
+  Documentos: TACBrECFTipoDocumentoSet);
+Var
+  iRet, iCRZ: Integer;
+  PortaSerial, ModeloECF, Erro, NumFab : String;
+  CooIni, CooFim, Prop : String ;
+  OldAtivo : Boolean ;
 begin
-   fsPAF := Linha1 + #10 + Linha2 ;
-   FiscNETComando.NomeComando := 'EscreveTexto' ;
-   FiscNETComando.AddParamString('NomeTexto' ,'TextoLivre') ;
-   FiscNETComando.AddParamString('ValorTexto', fsPAF ) ;
-   EnviaComando ;
-end;
+  LoadDLLFunctions;
 
-function TACBrECFFiscNET.GetPAF: String;   // Por: rodrigosd
-begin
-  
-  FiscNETComando.NomeComando := 'LeTexto' ;
-  FiscNETComando.AddParamString('NomeTexto','TextoLivre') ;
-  EnviaComando ;
-  fsPAF  := FiscNETResposta.Params.Values['ValorTexto'] ;
-  Result := fsPAf ;
+  NumFab      := NumSerie;
+  ModeloECF   := SubModeloECF;
+  CooIni      := IntToStrZero( COOInicial, 6 ) ;
+  CooFim      := IntToStrZero( COOFinal, 6 ) ;
+  Prop        := IntToStr( StrToIntDef( UsuarioAtual, 1) ) ;
+  PortaSerial := fpDevice.Porta ;
+
+  OldAtivo := Ativo ;
+  try
+     Ativo := False ;
+
+     if pos(fsMarcaECF, 'dataregis|termoprinter') > 0 then
+      begin
+        iRet := xGera_PAF( PAnsiChar( PortaSerial ) ,
+                           PAnsiChar( ModeloECF ),
+                           PAnsiChar( NomeArquivo ),
+                           PAnsiChar( CooIni ),
+                           PAnsiChar( CooFim ) );
+
+        if (-iRet >= Low(ERROS_DLLG2)) and (-iRet <= High(ERROS_DLLG2)) then
+           Erro := ERROS_DLLG2[ -iRet ] ;
+        if iRet <> 0 then
+           raise Exception.Create( ACBrStr( 'Erro ao executar Gera_PAF.'+sLineBreak+
+                                            'Cod.: '+IntToStr(iRet) + ' - ' + Erro )) ;
+        if not FileExists( NomeArquivo ) then
+           raise Exception.Create( ACBrStr( 'Erro na execução de Gera_PAF.'+sLineBreak+
+                                            ': "'+NomeArquivo + '" não gerado' ))
+      end
+
+     else if (fsMarcaECF = 'elgin') then
+      begin
+        AbrePortaSerialDLL(fpDevice.Porta, ExtractFilePath(NomeArquivo));
+
+        iCRZ := COOInicial-1;
+        repeat
+           inc(iCRZ);
+           iRet := xRFD_ConvertedaMFD( IntToStr(iCRZ) );
+        until ( (iCRZ = COOFinal) or (iRet <> 1) );
+
+        xElgin_FechaPortaSerial();
+
+        if (iRet <> 1) then
+           raise Exception.Create(ACBrStr('Erro ao executar RFD_ConvertedaMFD.'+sLineBreak+
+                                          'Cod.: ' + IntToStr(iRet))) ;
+        if not FilesExists( ExtractFilePath(NomeArquivo)+ 'EL' + RightStr(NumFab,5) + '.*' ) then
+           raise Exception.Create(ACBrStr('Erro na execução de RFD_ConvertedaMFD.'+sLineBreak+
+                                          'Arquivos diários não gerados!'));
+      end
+     else
+        raise Exception.Create( ACBrStr( 'ArquivoMFD_DLL por COO ainda não Implementado para: '+fsMarcaECF ) ) ;
+  finally
+    Ativo := OldAtivo ;
+  end;
 end;
 
 end.

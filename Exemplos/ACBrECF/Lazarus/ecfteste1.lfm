@@ -3,9 +3,8 @@ object Form1: TForm1
   Height = 400
   Top = 325
   Width = 514
-  ActiveControl = PageControl1
   Caption = 'Teste de Impressora Fiscal'
-  ClientHeight = 373
+  ClientHeight = 380
   ClientWidth = 514
   Constraints.MinHeight = 400
   Constraints.MinWidth = 440
@@ -157,8 +156,8 @@ object Form1: TForm1
   LCLVersion = '0.9.29'
   object StatusBar1: TStatusBar
     Left = 0
-    Height = 21
-    Top = 352
+    Height = 23
+    Top = 357
     Width = 514
     Panels = <    
       item
@@ -171,7 +170,7 @@ object Form1: TForm1
   end
   object PageControl1: TPageControl
     Left = 0
-    Height = 312
+    Height = 317
     Top = 0
     Width = 514
     ActivePage = TabSheet4
@@ -180,11 +179,11 @@ object Form1: TForm1
     TabOrder = 0
     object TabSheet4: TTabSheet
       Caption = 'ECF'
-      ClientHeight = 285
-      ClientWidth = 512
+      ClientHeight = 291
+      ClientWidth = 506
       ImageIndex = 3
       object SbArqLog: TSpeedButton
-        Left = 473
+        Left = 467
         Height = 22
         Top = 216
         Width = 23
@@ -198,7 +197,7 @@ object Form1: TForm1
         Left = 20
         Height = 14
         Top = 8
-        Width = 38
+        Width = 36
         Caption = 'Modelo'
         ParentColor = False
       end
@@ -206,7 +205,7 @@ object Form1: TForm1
         Left = 140
         Height = 14
         Top = 8
-        Width = 28
+        Width = 26
         Caption = 'Porta'
         ParentColor = False
       end
@@ -214,7 +213,7 @@ object Form1: TForm1
         Left = 260
         Height = 14
         Top = 8
-        Width = 48
+        Width = 41
         Caption = 'TimeOut'
         ParentColor = False
       end
@@ -222,7 +221,7 @@ object Form1: TForm1
         Left = 327
         Height = 14
         Top = 8
-        Width = 47
+        Width = 42
         Caption = 'Intervalo'
         ParentColor = False
       end
@@ -230,7 +229,7 @@ object Form1: TForm1
         Left = 11
         Height = 14
         Top = 141
-        Width = 116
+        Width = 105
         Caption = 'Mensagem Aguarde...'
         ParentColor = False
       end
@@ -238,17 +237,17 @@ object Form1: TForm1
         Left = 10
         Height = 14
         Top = 224
-        Width = 44
+        Width = 41
         Alignment = taRightJustify
         Caption = 'Arq.Log:'
         ParentColor = False
       end
       object cbxModelo: TComboBox
         Left = 20
-        Height = 29
+        Height = 21
         Top = 24
         Width = 105
-        ItemHeight = 0
+        ItemHeight = 13
         Items.Strings = (
           'Procurar'
           'ecfNaoFiscal'
@@ -269,10 +268,10 @@ object Form1: TForm1
       end
       object cbxPorta: TComboBox
         Left = 140
-        Height = 25
+        Height = 21
         Top = 24
         Width = 105
-        ItemHeight = 0
+        ItemHeight = 13
         ItemIndex = 0
         Items.Strings = (
           'Procurar'
@@ -298,18 +297,18 @@ object Form1: TForm1
       end
       object chTentar: TCheckBox
         Left = 76
-        Height = 21
+        Height = 19
         Top = 66
-        Width = 120
+        Width = 109
         Caption = 'Tentar Novamente'
         OnClick = chTentarClick
         TabOrder = 4
       end
       object chBloqueia: TCheckBox
         Left = 76
-        Height = 21
+        Height = 19
         Top = 88
-        Width = 148
+        Width = 138
         Caption = 'Bloqueia Mouse Teclado'
         Checked = True
         OnClick = chBloqueiaClick
@@ -318,9 +317,9 @@ object Form1: TForm1
       end
       object chExibeMsg: TCheckBox
         Left = 76
-        Height = 21
+        Height = 19
         Top = 111
-        Width = 133
+        Width = 121
         Caption = 'Exibe Msg Aguarde...'
         Checked = True
         OnClick = chExibeMsgClick
@@ -329,18 +328,18 @@ object Form1: TForm1
       end
       object chArredondaPorQtd: TCheckBox
         Left = 260
-        Height = 21
+        Height = 19
         Top = 66
-        Width = 199
+        Width = 174
         Caption = 'Arredondamento por Quantidade'
         OnClick = chArredondaPorQtdClick
         TabOrder = 5
       end
       object chGavetaSinalInvertido: TCheckBox
         Left = 260
-        Height = 21
+        Height = 19
         Top = 88
-        Width = 141
+        Width = 125
         Caption = 'Gaveta Sinal Invertido'
         OnClick = chGavetaSinalInvertidoClick
         TabOrder = 7
@@ -349,7 +348,7 @@ object Form1: TForm1
         Left = 11
         Height = 41
         Top = 160
-        Width = 486
+        Width = 480
         Anchors = [akTop, akLeft, akRight]
         OnChange = mMsgChange
         ScrollBars = ssVertical
@@ -360,7 +359,7 @@ object Form1: TForm1
         Left = 56
         Height = 21
         Top = 216
-        Width = 417
+        Width = 411
         Anchors = [akTop, akLeft, akRight]
         OnChange = edLogChange
         TabOrder = 12
@@ -430,7 +429,7 @@ object Form1: TForm1
         Left = 3
         Height = 14
         Top = 255
-        Width = 54
+        Width = 48
         Alignment = taRightJustify
         Caption = 'Operador:'
         ParentColor = False
@@ -447,7 +446,7 @@ object Form1: TForm1
         Left = 258
         Height = 14
         Top = 255
-        Width = 61
+        Width = 54
         Caption = 'BandWidth'
         ParentColor = False
       end
@@ -463,9 +462,9 @@ object Form1: TForm1
       end
       object chDescricaoGrande: TCheckBox
         Left = 260
-        Height = 21
+        Height = 19
         Top = 111
-        Width = 117
+        Width = 106
         Caption = 'Descrição Grande'
         Checked = True
         State = cbChecked
@@ -918,7 +917,7 @@ object Form1: TForm1
     Left = 0
     Height = 40
     Hint = 'Sobre o ACBrMonitor ?'
-    Top = 312
+    Top = 317
     Width = 514
     Align = alBottom
     ClientHeight = 40
@@ -1743,9 +1742,16 @@ object Form1: TForm1
           OnClick = LerTotaisComprovanetNaoFiscal1Click
         end
       end
-      object mCarregaRelatorioGerenciais: TMenuItem
-        Caption = 'Carrega Relatórios Gerenciais'
-        OnClick = mCarregaRelatorioGerenciaisClick
+      object mRelatorioGerenciais: TMenuItem
+        Caption = 'Relatórios Gerenciais'
+        object mCarregaRelatorioGerenciais: TMenuItem
+          Caption = 'Carrega Relatórios Gerenciais'
+          OnClick = mRelatorioGerenciaisClick
+        end
+        object mLerTotaisRelatoriosGerenciais: TMenuItem
+          Caption = 'Ler Totais Relatorios Gerenciais'
+          OnClick = mLerTotaisRelatoriosGerenciaisClick
+        end
       end
       object CarregaUnidadesdeMedida1: TMenuItem
         Caption = 'Carrega Unidades de Medida'
@@ -2170,4 +2176,4 @@ object Form1: TForm1
     left = 88
     top = 184
   end
-end
+end

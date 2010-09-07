@@ -360,7 +360,9 @@ TACBrECFBematech = class( TACBrECFClass )
        TACBrECFFormaPagamento ; override ;
     Procedure ProgramaFormaPagamento( var Descricao: String;
        PermiteVinculado : Boolean = true; Posicao : String = '' ) ; override ;
+
     procedure CarregaRelatoriosGerenciais ; override ;
+    procedure LerTotaisRelatoriosGerenciais ; override ;
     Procedure ProgramaRelatorioGerencial( var Descricao: String;
        Posicao : String = '') ; override ;
 
@@ -1327,8 +1329,8 @@ Var StrRet : AnsiString ;
     Cont, qtdAliq : Integer ;
     Aliquota : TACBrECFAliquota ;
     ValAliq : Double ;
-    ByteISS1,ByteISS2 : Byte ;
-    bErroLeituraQtd: Boolean;
+    ByteISS1,ByteISS2,ByteUltimaAliquota : Byte ;
+    
 begin
   BytesResp := 2 ;
   StrRet    := EnviaComando( #35 + #29 ) ;
@@ -1338,41 +1340,44 @@ begin
   BytesResp := 33 ;
   StrRet := EnviaComando( #26 ) ;
 
-  try
-    qtdAliq := StrToInt( Copy( BcdToAsc( copy( StrRet, 1, 1) ), 1, 2 ) );
-    bErroLeituraQtd := false;
-  except
-    qtdAliq := 16;
-    bErroLeituraQtd := true;
-  end;
-
   StrRet := BcdToAsc( copy( StrRet,2, Length(StrRet)) ) ;  { 1o Byte nao é BCD }
+  qtdAliq := Trunc(Length(StrRet)/4);
 
 
   inherited CarregaAliquotas ;   { Cria fpAliquotas }
 
-  for Cont := 1 to qtdAliq do
+  {Procura qual foi a última alíquota cadastrada diferente de alíquota zero}
+  for Cont := qtdAliq Downto 1 do
+  begin
+     ValAliq  := RoundTo( StrToIntDef(copy(StrRet,((Cont-1)*4)+1,4),0)/100,-2);
+     if SimpleRoundTo(ValAliq) > 0 then
+     begin
+        ByteUltimaAliquota := Cont;
+        Break;       
+     end;
+  end;
+
+
+  {Adiciona todas alíquotas até a última cadastrada}
+  for Cont := 1 to ByteUltimaAliquota do
   begin
     ValAliq  := RoundTo( StrToIntDef(copy(StrRet,((Cont-1)*4)+1,4),0)/100,-2);
 
-    if Not(bErroLeituraQtd) or (ValAliq > 0) then // Se a quantidade de alíquotas foi lida com sucesso então ler todas incluindo com valor zero no final
+    Aliquota := TACBrECFAliquota.create ;
+ 
+    Aliquota.Indice   := IntToStrZero(Cont,2) ;
+    Aliquota.Aliquota := ValAliq ;
+
+    if Cont < 9 then
     begin
-       Aliquota := TACBrECFAliquota.create ;
+       if TestBit( ByteISS1, 8 -Cont) then
+          Aliquota.Tipo := 'S' ;
+    end
+    else
+       if TestBit( ByteISS2, 16-Cont) then
+          Aliquota.Tipo := 'S' ;
 
-       Aliquota.Indice   := IntToStrZero(Cont,2) ;
-       Aliquota.Aliquota := ValAliq ;
-
-       if Cont < 9 then
-        begin
-          if TestBit( ByteISS1, 8 -Cont) then
-             Aliquota.Tipo := 'S' ;
-        end
-       else
-          if TestBit( ByteISS2, 16-Cont) then
-             Aliquota.Tipo := 'S' ;
-
-       fpAliquotas.Add( Aliquota ) ;
-    end ;
+    fpAliquotas.Add( Aliquota ) ;
   end ;
 end;
 
@@ -1460,6 +1465,11 @@ begin
   end ;
 end;
 
+procedure TACBrECFBematech.LerTotaisFormaPagamento;
+begin
+  CarregaFormasPagamento ;
+end;
+
 procedure TACBrECFBematech.CarregaRelatoriosGerenciais;
 Var
   RetCmd, Token1, Token2, Descricao : AnsiString ;
@@ -1505,11 +1515,10 @@ begin
 
 end;
 
-procedure TACBrECFBematech.LerTotaisFormaPagamento;
+procedure TACBrECFBematech.LerTotaisRelatoriosGerenciais ;
 begin
-  CarregaFormasPagamento ;
-end;
-
+  CarregaRelatoriosGerenciais;
+end ;
 
 function TACBrECFBematech.AchaFPGDescricao( Descricao: String;
   BuscaExata : Boolean; IgnorarCase : Boolean ): TACBrECFFormaPagamento;

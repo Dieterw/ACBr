@@ -255,7 +255,8 @@ begin
      begin
        if Conhecimentos.Items[i].Confirmada and Imprimir then
        begin
-          DaCTe.ProtocoloCTe:=WebServices.Retorno.CTeRetorno.ProtCTe.Items[i].nProt;
+          // A linha abaixo foi comentada por Italo em 08/09/2010
+          // DaCTe.ProtocoloCTe:=WebServices.Retorno.CTeRetorno.ProtCTe.Items[i].nProt;
           Conhecimentos.Items[i].Imprimir;
        end;
      end;

@@ -111,12 +111,13 @@ implementation
 procedure ACBrAboutDialog ;
 var Msg : String ;
 begin
-    Msg := 'Componente ACBrCTePCN'+#10+
+    Msg := 'Componente ACBrCTe'+#10+
+           'Versão: '+ACBRCTe_VERSAO+#10+#10+
            'Automação Comercial Brasil'+#10+#10+
            'http://acbr.sourceforge.net'+#10+#10+
            'Projeto Cooperar - PCN'+#10+#10+
-           'http://www.projetocooperar.org/pcn/'+#10+#10+
-           'Versão: '+ACBRCTe_VERSAO ;
+           'http://www.projetocooperar.org/pcn/';
+
      MessageDlg(Msg ,mtInformation ,[mbOk],0) ;
 end;
 

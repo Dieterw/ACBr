@@ -409,7 +409,8 @@ begin
   HTTP.ProxyUser := FConfiguracoes.WebServices.ProxyUser;
   HTTP.ProxyPass := FConfiguracoes.WebServices.ProxyPass;
 
-  HTTP.Sock.RaiseExcept := True;
+  // Linha abaixo comentada por Italo em 08/09/2010
+//  HTTP.Sock.RaiseExcept := True;
 
   HTTP.MimeType  := 'text/xml; charset=utf-8';
   HTTP.UserAgent := '';

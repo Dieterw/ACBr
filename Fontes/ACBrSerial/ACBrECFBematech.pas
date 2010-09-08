@@ -1216,7 +1216,7 @@ begin
   Descricao := trim(Descricao) ;
   Unidade   := padL(Unidade,2) ;
 
-  if fs25MFD and (Pos(Trim(GetSubModeloECF), 'MP-7000 TH FI') > 0) then
+  if fpMFD and (Pos(Trim(GetSubModeloECF), 'MP-7000 TH FI') > 0) then
    begin
      BytesResp   := 0 ;
      Codigo      := padL(Codigo,14) ;

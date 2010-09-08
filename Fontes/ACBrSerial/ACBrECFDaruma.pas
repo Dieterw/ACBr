@@ -1372,8 +1372,17 @@ Var RetCmd : AnsiString ;
 begin
   if fsArredonda = ' ' then
   begin
-     if fpMFD or (fsNumVersao = '2000') then
+     if fpMFD then
+      begin
+        if fpArredondaItemMFD then
+           fsArredonda := 'S'
+        else
+           fsArredonda := 'N' ;
+      end
+
+     else if (fsNumVersao = '2000') then
         fsArredonda := 'N'
+
      else
       begin
         RetCmd := EnviaComando( ESC + #229 ) ;
@@ -1766,7 +1775,17 @@ begin
      QtdStr      := IntToStrZero( Round(Qtd * power(10,fpDecimaisQtd)), 7) ;
      ValorStr    := IntToStrZero( Round( ValorUnitario * power(10,fpDecimaisPreco)),8 ) ;
      DescontoStr := StringOfChar('0',12) ;
-     
+
+     if fpArredondaItemMFD and (fsArredonda <> 'N') then
+     begin
+       try
+          // Tenta enviar o comando, se o ECF não reconhecer (except), desativa o Arredondamento
+          EnviaComando(FS + 'C' + #219 + 'A'); // A = Arredondamento / T = Truncamento
+       except
+          fsArredonda := 'N' ;
+       end ;
+     end ;
+
      RetCmd := EnviaComando(FS + 'F' + #201 + AliquotaECF + QtdStr + ValorStr +
                   DescontoStr + FlagDesc + Codigo + Unidade + Descricao ) ;
 

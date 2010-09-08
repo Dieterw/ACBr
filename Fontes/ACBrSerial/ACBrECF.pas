@@ -178,6 +178,8 @@ TACBrECF = class( TACBrComponent )
     fsGavetaSinalInvertido: Boolean;
     fsIdentificarOperador : Boolean;
 
+    function GetArredondaItemMFD : Boolean ;
+    procedure SetArredondaItemMFD(const AValue : Boolean) ;
     procedure SetAtivo(const Value: Boolean);
     procedure SetModelo(const Value: TACBrECFModelo);
     procedure SetPorta(const Value: String);
@@ -663,6 +665,8 @@ TACBrECF = class( TACBrComponent )
                  write SetTempoInicioMsg default cACBrTempoInicioMsg ;
      property ArredondaPorQtd : Boolean read GetArredondaPorQtd
                  write SetArredondaPorQtd default false ;
+     property ArredondaItemMFD : Boolean read GetArredondaItemMFD
+                 write SetArredondaItemMFD default false ;
      property BloqueiaMouseTeclado : Boolean read  GetBloqueiaMouseTeclado
                  write SetBloqueiaMouseTeclado default true ;
      property MsgPoucoPapel : Integer read  GetMsgPoucoPapel
@@ -828,6 +832,7 @@ var wRetentar : Boolean ;   { Variaveis de Trabalho, usadas para transportar }
     wLinhasEntreCupons : Integer ;
     wMaxLinhasBuffer : Integer ;
     wArredondaPorQtd : Boolean ;
+    wArredondaItemMFD : Boolean ;
     wDecimaisPreco : Integer ;
     wDecimaisQtd : Integer ;
     wArqLOG : String ;
@@ -860,6 +865,7 @@ begin
   wLinhasEntreCupons    := LinhasEntreCupons ;
   wMaxLinhasBuffer      := MaxLinhasBuffer ;
   wArredondaPorQtd      := ArredondaPorQtd ;
+  wArredondaItemMFD     := ArredondaItemMFD ;
   wDecimaisPreco        := DecimaisPreco ;
   wArqLOG               := ArqLOG ;
   wDecimaisQtd          := DecimaisQtd ;
@@ -909,6 +915,7 @@ begin
   LinhasEntreCupons    := wLinhasEntreCupons ;
   MaxLinhasBuffer      := wMaxLinhasBuffer ;
   ArredondaPorQtd      := wArredondaPorQtd ;
+  ArredondaItemMFD     := wArredondaItemMFD ;
   DecimaisPreco        := wDecimaisPreco ;
   ArqLOG               := wArqLOG ;
   DecimaisQtd          := wDecimaisQtd ;
@@ -1141,6 +1148,16 @@ end;
 procedure TACBrECF.SetArredondaPorQtd(const Value: Boolean);
 begin
   fsECF.ArredondaPorQtd := Value ;
+end;
+
+function TACBrECF.GetArredondaItemMFD : Boolean ;
+begin
+  Result := fsECF.ArredondaItemMFD;
+end;
+
+procedure TACBrECF.SetArredondaItemMFD(const AValue : Boolean) ;
+begin
+  fsECF.ArredondaItemMFD := AValue;
 end;
 
 function TACBrECF.GetDecimaisPreco: Integer;

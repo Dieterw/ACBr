@@ -50,6 +50,7 @@ type
     chArredondaPorQtd: TCheckBox;
     chBloqueia: TCheckBox;
     chDescricaoGrande : TCheckBox ;
+    chArredondamentoItemMFD : TCheckBox ;
     Cheque1: TMenuItem;
     ChequePronto1: TMenuItem;
     chExibeMsg: TCheckBox;
@@ -280,6 +281,13 @@ type
     VendaBruta1: TMenuItem;
     VenderItem1: TMenuItem;
     procedure cbxModeloChange(Sender: TObject);
+    procedure chArredondamentoItemMFDChange(Sender : TObject) ;
+    procedure chArredondaPorQtdChange(Sender : TObject) ;
+    procedure chBloqueiaChange(Sender : TObject) ;
+    procedure chDescricaoGrandeChange(Sender : TObject) ;
+    procedure chExibeMsgChange(Sender : TObject) ;
+    procedure chGavetaSinalInvertidoChange(Sender : TObject) ;
+    procedure chTentarChange(Sender : TObject) ;
     procedure mARQMFDDLLCooClick(Sender : TObject) ;
     procedure mARQMFDDLLPeriodoClick(Sender : TObject) ;
     procedure mLerTotaisRelatoriosGerenciaisClick(Sender : TObject) ;
@@ -321,9 +329,6 @@ type
     procedure cbxPortaChange(Sender: TObject);
     procedure Ativcar1Click(Sender: TObject);
     procedure Desativar1Click(Sender: TObject);
-    procedure chTentarClick(Sender: TObject);
-    procedure chBloqueiaClick(Sender: TObject);
-    procedure chExibeMsgClick(Sender: TObject);
     procedure mMsgChange(Sender: TObject);
     procedure seBandWidthChange(Sender : TObject) ;
     procedure Testar1Click(Sender: TObject);
@@ -367,7 +372,6 @@ type
     procedure NumLoja1Click(Sender: TObject);
     procedure NumCRO1Click(Sender: TObject);
     procedure TestedeVelocidade1Click(Sender: TObject);
-    procedure chArredondaPorQtdClick(Sender: TObject);
     procedure CapturaporNReduaoZ1Click(Sender: TObject);
     procedure ImprimeporNReduaoZ1Click(Sender: TObject);
     procedure CapturaporPeriodo1Click(Sender: TObject);
@@ -387,7 +391,6 @@ type
     procedure ListaRelatorioGerencial1Click(Sender: TObject);
     procedure ListaCupomVinculado1Click(Sender: TObject);
     procedure PularLinhas1Click(Sender: TObject);
-    procedure chGavetaSinalInvertidoClick(Sender: TObject);
     procedure LerTodasasVariveis1Click(Sender: TObject);
     procedure MFD1Click(Sender: TObject);
     procedure Termica1Click(Sender: TObject);
@@ -579,6 +582,41 @@ begin
      cbxModelo.ItemIndex := Integer( ACBrECF1.Modelo ) ;
      raise ;
   end ;
+end;
+
+procedure TForm1.chArredondamentoItemMFDChange(Sender : TObject) ;
+begin
+  ACBrECF1.ArredondaItemMFD := chArredondamentoItemMFD.Checked ;
+end;
+
+procedure TForm1.chArredondaPorQtdChange(Sender : TObject) ;
+begin
+  ACBrECF1.ArredondaPorQtd := chArredondaPorQtd.Checked ;
+end;
+
+procedure TForm1.chBloqueiaChange(Sender : TObject) ;
+begin
+  ACBrECF1.BloqueiaMouseTeclado := chBloqueia.Checked ;
+end;
+
+procedure TForm1.chDescricaoGrandeChange(Sender : TObject) ;
+begin
+  ACBrECF1.DescricaoGrande := chDescricaoGrande.Checked ;
+end;
+
+procedure TForm1.chExibeMsgChange(Sender : TObject) ;
+begin
+  ACBrECF1.ExibeMensagem := chExibeMsg.Checked ;
+end;
+
+procedure TForm1.chGavetaSinalInvertidoChange(Sender : TObject) ;
+begin
+  ACBrECF1.GavetaSinalInvertido := chGavetaSinalInvertido.Checked ;
+end;
+
+procedure TForm1.chTentarChange(Sender : TObject) ;
+begin
+  ACBrECF1.ReTentar := chTentar.Checked ;
 end;
 
 procedure TForm1.mARQMFDDLLCooClick(Sender : TObject) ;
@@ -1153,26 +1191,6 @@ begin
   mResp.Lines.Add( 'Desativar' );
   AtualizaMemos ;
   btSerial.Enabled := True ;
-end;
-
-procedure TForm1.chTentarClick(Sender: TObject);
-begin
-  ACBrECF1.ReTentar := chTentar.Checked ;
-end;
-
-procedure TForm1.chBloqueiaClick(Sender: TObject);
-begin
-  ACBrECF1.BloqueiaMouseTeclado := chBloqueia.Checked ;
-end;
-
-procedure TForm1.chExibeMsgClick(Sender: TObject);
-begin
-  ACBrECF1.ExibeMensagem := chExibeMsg.Checked ;
-end;
-
-procedure TForm1.chArredondaPorQtdClick(Sender: TObject);
-begin
-  ACBrECF1.ArredondaPorQtd := chArredondaPorQtd.Checked ;
 end;
 
 procedure TForm1.mMsgChange(Sender: TObject);
@@ -2221,11 +2239,6 @@ begin
   ACBrECF1.PulaLinhas( StrToIntDef(Linhas,0) ) ;
 end;
 
-procedure TForm1.chGavetaSinalInvertidoClick(Sender: TObject);
-begin
-  ACBrECF1.GavetaSinalInvertido := chGavetaSinalInvertido.Checked ;
-end;
-
 procedure TForm1.LerTodasasVariveis1Click(Sender: TObject);
 begin
   DataHora1.Click ;
@@ -2713,6 +2726,7 @@ begin
      INI.WriteBool('ECF','ArredondaPorQtd',chArredondaPorQtd.Checked);
      INI.WriteBool('ECF','GavetaSinalInvertido',chGavetaSinalInvertido.Checked);
      INI.WriteBool('ECF','DescricaoGrande',chDescricaoGrande.Checked);
+     INI.WriteBool('ECF','ArredondamentoItemMFD',chArredondamentoItemMFD.Checked);
      INI.WriteString('ECF','MensagemAguarde',StringReplace(mMsg.Text,sLineBreak,'|',[rfReplaceAll]));
      INI.WriteString('ECF','ArqLog',edLog.Text);
      INI.WriteString('ECF','SerialParams',ACBrECF1.Device.ParamsString);
@@ -2754,6 +2768,7 @@ begin
      chExibeMsg.Checked := INI.ReadBool('ECF','ExibeMsgAguarde',chExibeMsg.Checked);
      chArredondaPorQtd.Checked := INI.ReadBool('ECF','ArredondaPorQtd',chArredondaPorQtd.Checked);
      chDescricaoGrande.Checked := INI.ReadBool('ECF','DescricaoGrande',chDescricaoGrande.Checked);
+     chArredondamentoItemMFD.Checked := INI.ReadBool('ECF','ArredondamentoItemMFD',chArredondamentoItemMFD.Checked);
      chGavetaSinalInvertido.Checked := INI.ReadBool('ECF','GavetaSinalInvertido',chGavetaSinalInvertido.Checked);
      mMsg.Text := StringReplace(INI.ReadString('ECF','MensagemAguarde',mMsg.Text),'|',sLineBreak,[rfReplaceAll]);
      edLog.Text := INI.ReadString('ECF','ArqLog',edLog.Text);

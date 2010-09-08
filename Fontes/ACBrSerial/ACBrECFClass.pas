@@ -509,6 +509,7 @@ TACBrECFClass = class
     fpUltimaMsgPoucoPapel : TDateTime ;
     fpEstado: TACBrECFEstado;
     fpArredondaPorQtd: Boolean;
+    fpArredondaItemMFD : Boolean ;
     fpDecimaisPreco: Integer;
     fpDecimaisQtd: Integer;
     fpArqLOG: String;
@@ -619,6 +620,9 @@ TACBrECFClass = class
 
     property ArredondaPorQtd : Boolean read fpArredondaPorQtd
        write fpArredondaPorQtd ;
+    property ArredondaItemMFD : Boolean read fpArredondaItemMFD
+       write fpArredondaItemMFD ;
+
     property DecimaisPreco : Integer read fpDecimaisPreco
        write fpDecimaisPreco default 3 ;
     property DecimaisQtd : Integer read fpDecimaisQtd
@@ -1320,7 +1324,8 @@ begin
   fpComandoEnviado        := '' ;
   fpRespostaComando       := '' ;
   fpUltimaMsgPoucoPapel   := 0 ;
-  fpArredondaPorQtd       := false ;
+  fpArredondaPorQtd       := False ;
+  fpArredondaItemMFD      := False;
   fpDecimaisPreco         := 3 ;
   fpDecimaisQtd           := 3 ;
   fpAliquotas             := nil ;
@@ -2114,10 +2119,11 @@ begin
   SubtotalizaCupom(DescontoAcrescimo, MensagemRodape);
 end;
 
-procedure TACBrECFClass.Sangria( const Valor: Double; Obs: AnsiString;
-   DescricaoCNF, DescricaoFPG: String ) ;
- Var CNF : TACBrECFComprovanteNaoFiscal ;
-     FPG : TACBrECFFormaPagamento ;
+procedure TACBrECFClass.Sangria(const Valor : Double ; Obs : AnsiString ;
+  DescricaoCNF : String ; DescricaoFPG : String) ;
+Var
+  CNF : TACBrECFComprovanteNaoFiscal ;
+  FPG : TACBrECFFormaPagamento ;
 begin
   CNF := AchaCNFDescricao(DescricaoCNF, True) ;
   if CNF = nil then
@@ -2132,12 +2138,11 @@ begin
   NaoFiscalCompleto( CNF.Indice, Valor, FPG.Indice, Obs);
 end;
 
-procedure TACBrECFClass.Suprimento( const Valor: Double; Obs: AnsiString;
-   DescricaoCNF, DescricaoFPG: String ) ;
+procedure TACBrECFClass.Suprimento(const Valor : Double ; Obs : AnsiString ;
+  DescricaoCNF : String ; DescricaoFPG : String) ;
 begin
   Sangria( Valor, Obs, DescricaoCNF, DescricaoFPG);
 end;
-
 
 procedure TACBrECFClass.PulaLinhas(NumLinhas: Integer);
 begin
@@ -3159,7 +3164,7 @@ begin
    ListaRelatorioGerencial( fsRelatorio, fsVias, fsIndiceRG )
 end;
 
-procedure TACBrECFClass.AbreRelatorioGerencial;
+procedure TACBrECFClass.AbreRelatorioGerencial(Indice : Integer) ;
 begin
   ErroAbstract('AbreRelatorioGerencial');
 end;

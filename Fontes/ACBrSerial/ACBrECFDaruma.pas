@@ -207,6 +207,7 @@ TACBrECFDaruma = class( TACBrECFClass )
        Data_COO_Final: AnsiString ): Integer; StdCall;
     xDaruma_Registry_AlterarRegistry : function ( Produto: AnsiString;
        Chave: AnsiString; Valor: AnsiString ): Integer; StdCall;
+    xDaruma_Registry_Porta : function ( Porta: AnsiString ): Integer; StdCall;
     xDaruma_FI_AbrePortaSerial  : function (): Integer; StdCall;
     xDaruma_FI_FechaPortaSerial  : function (): Integer; StdCall;
 
@@ -4067,6 +4068,7 @@ begin
    DarumaFunctionDetect('Daruma_FI_AbrePortaSerial', @xDaruma_FI_AbrePortaSerial);
    DarumaFunctionDetect('Daruma_FI_FechaPortaSerial', @xDaruma_FI_FechaPortaSerial);
    DarumaFunctionDetect('Daruma_Registry_AlterarRegistry', @xDaruma_Registry_AlterarRegistry);
+   DarumaFunctionDetect('Daruma_Registry_Porta', @xDaruma_Registry_Porta);
    DarumaFunctionDetect('Daruma_FIMFD_GerarAtoCotepePafData', @xDaruma_FIMFD_GerarAtoCotepePafData);
    DarumaFunctionDetect('Daruma_FIMFD_GerarAtoCotepePafCOO', @xDaruma_FIMFD_GerarAtoCotepePafCOO);
    DarumaFunctionDetect('Daruma_FIMFD_DownloadDaMFD', @xDaruma_FIMFD_DownloadDaMFD);
@@ -4100,11 +4102,6 @@ begin
      raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar:'+sLineBreak+
      'Daruma_Registry_AlterarRegistry( "ECF", "Velocidade", "'+Velocidade+'" ) ') );
 
-  Resp := xDaruma_Registry_AlterarRegistry( 'ECF', 'Porta', PChar( Porta ) );
-  if Resp <> 1 then
-     raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar:'+sLineBreak+
-     'Daruma_Registry_AlterarRegistry( "ECF", "Porta", "'+Porta+'" ) ') );
-
   Resp := xDaruma_Registry_AlterarRegistry( 'AtoCotepe', 'Path', PChar( Path ) );
   if Resp <> 1 then
      raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar:'+sLineBreak+
@@ -4115,10 +4112,11 @@ begin
      raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar:'+sLineBreak+
      'Daruma_Registry_AlterarRegistry( "ECF", "Path", "'+Path+'" ) ') );
 
-  Resp := xDaruma_FI_AbrePortaSerial();
+  Resp := xDaruma_Registry_Porta(PChar( Porta ));
   if Resp <> 1 then
-     raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao abrir a Porta com:'+sLineBreak+
-     'xDaruma_FI_AbrePortaSerial()'));
+     raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar:'+sLineBreak+
+        'xDaruma_Registry_Porta( "'+Porta+'" ) ') );
+
 end;
 
 procedure TACBrECFDaruma.EspelhoMFD_DLL(COOInicial, COOFinal: Integer;

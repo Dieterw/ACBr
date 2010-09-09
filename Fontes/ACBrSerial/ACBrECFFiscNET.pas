@@ -144,8 +144,8 @@ TACBrECFFiscNET = class( TACBrECFClass )
                                                  DataReducaoInicial : PAnsiChar;
                                                  DataReducaoFinal   : PAnsiChar) : integer; stdcall;
     //Elgin
-    xElgin_AbrePortaSerial  : function                                : Integer; StdCall;
-    XElgin_FechaPortaSerial : function                                : Integer; StdCall;
+    xElgin_AbrePortaSerial  : function : Integer; StdCall;
+    XElgin_FechaPortaSerial : function : Integer; StdCall;
     xElgin_DownloadMFD      : function(Arquivo          : AnsiString;
                                        TipoDownload     : AnsiString;
                                        ParametroInicial : AnsiString;
@@ -158,10 +158,16 @@ TACBrECFFiscNET = class( TACBrECFClass )
                                        ParametroInicial : AnsiString;
                                        ParametroFinal   : AnsiString;
                                        UsuarioECF       : AnsiString) : Integer; StdCall;
-    xRFD_ConvertedaMFD      : function(CRZ: AnsiString)               : Integer; StdCall;
-    xRFD_ConvertedaMFDData  : function(DataInicial: AnsiString;
-                                       DataFinal: AnsiString)         : Integer; StdCall;
-
+    xElgin_LeMemoriasBinario : function(Arquivo: AnsiString;
+                                        NumSerie: AnsiString;
+                                        AguardaLeitura: Boolean) : Integer; StdCall;
+    xElgin_GeraArquivoATO17Binario : function(ArquivoBinario: AnsiString;
+                                              ArquivoTexto: AnsiString;
+                                              PeriodoIni: AnsiString;
+                                              PeriodoFim: AnsiString;
+                                              TipoPeriodo :AnsiChar;
+                                              UsuarioECF: AnsiString;
+                                              TipoLeitura: AnsiString) : Integer; StdCall;
 
     procedure LoadDLLFunctions;
     procedure AbrePortaSerialDLL(const Porta, Path : String ) ;
@@ -2557,8 +2563,8 @@ begin
      FiscNetFunctionDetect(LIB_FiscNet, 'Elgin_FechaPortaSerial', @xElgin_FechaPortaSerial );
      FiscNetFunctionDetect(LIB_FiscNet, 'Elgin_DownloadMFD', @xElgin_DownloadMFD );
      FiscNetFunctionDetect(LIB_FiscNet, 'Elgin_FormatoDadosMFD', @xElgin_FormatoDadosMFD );
-     FiscNetFunctionDetect(LIB_FiscNet, 'RFD_ConvertedaMFD', @xRFD_ConvertedaMFD );
-     FiscNetFunctionDetect(LIB_FiscNet, 'RFD_ConvertedaMFDData', @xRFD_ConvertedaMFDData );
+     FiscNetFunctionDetect(LIB_FiscNet, 'Elgin_LeMemoriasBinario', @xElgin_LeMemoriasBinario );
+     FiscNetFunctionDetect(LIB_FiscNet, 'Elgin_GeraArquivoATO17Binario', @xElgin_GeraArquivoATO17Binario  );
    end
   else
      raise Exception.Create( ACBrStr( 'Interface ACBrECF -> '+fsMarcaECF+' ainda não Implementada') ) ;
@@ -2710,7 +2716,7 @@ procedure TACBrECFFiscNET.ArquivoMFD_DLL(DataInicial, DataFinal: TDateTime;
   NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet);
 Var
   iRet      : Integer;
-  PortaSerial, ModeloECF, Erro, NumFab : String;
+  PortaSerial, ModeloECF, Erro, NumFab, ArqTmp, Prop : String;
   DiaIni, DiaFim : AnsiString;
   OldAtivo  : Boolean;
 begin
@@ -2718,9 +2724,8 @@ begin
 
   NumFab      := NumSerie;
   ModeloECF   := SubModeloECF;
-  DiaIni      := FormatDateTime('dd/mm/yyyy', DataInicial);
-  DiaFim      := FormatDateTime('dd/mm/yyyy', DataFinal);
   PortaSerial := fpDevice.Porta;
+  Prop        := IntToStr( StrToIntDef( UsuarioAtual, 1) ) ;
 
   OldAtivo := Ativo;
   try
@@ -2728,11 +2733,14 @@ begin
 
      if pos(fsMarcaECF, 'dataregis|termoprinter') > 0 then
       begin
-        iRet:= xGera_AtoCotepe1704_Periodo_MFD( PAnsiChar( PortaSerial ),
-                                                PAnsiChar( ModeloECF ),
-                                                PAnsiChar( NomeArquivo ),
-                                                PAnsiChar( DiaIni ),
-                                                PAnsiChar( DiaFim ) );
+        DiaIni := FormatDateTime('dd/mm/yyyy', DataInicial);
+        DiaFim := FormatDateTime('dd/mm/yyyy', DataFinal);
+
+        iRet := xGera_AtoCotepe1704_Periodo_MFD( PAnsiChar( PortaSerial ),
+                                                 PAnsiChar( ModeloECF ),
+                                                 PAnsiChar( NomeArquivo ),
+                                                 PAnsiChar( DiaIni ),
+                                                 PAnsiChar( DiaFim ) );
 
         if (-iRet >= Low(ERROS_DLLG2)) and (-iRet <= High(ERROS_DLLG2)) then
            Erro := ERROS_DLLG2[ -iRet ] ;
@@ -2746,18 +2754,32 @@ begin
 
      else if (fsMarcaECF = 'elgin') then
       begin
+        DiaIni := FormatDateTime('yyyymmdd', DataInicial);
+        DiaFim := FormatDateTime('yyyymmdd', DataFinal);
+
         AbrePortaSerialDLL( PortaSerial, ExtractFilePath(NomeArquivo) );
 
-        iRet := xRFD_ConvertedaMFDData( DiaIni, DiaFim );
+        ArqTmp := ExtractFilePath( NomeArquivo ) + 'Memoria.tdm' ;
+        DeleteFile( ArqTmp ) ;
+
+        iRet:=xElgin_LeMemoriasBinario( ArqTmp , NumFab, true );
+
+        if (iRet <> 1) then
+           raise Exception.Create(ACBrStr('Erro ao executar Elgin_LeMemoriasBinario.'+sLineBreak+
+                                                   'Cod.: ' + IntToStr(iRet))) ;
+        if not FilesExists( ArqTmp ) then
+           raise Exception.Create(ACBrStr('Erro na execução de Elgin_LeMemoriasBinario.'+sLineBreak+
+                                                    'Arquivo binário não gerado!'));
+
+
+        iRet := xElgin_GeraArquivoATO17Binario(ArqTmp , NomeArquivo, DiaIni, DiaFim, 'D', Prop, 'TDM');
+
+        if (iRet <> 1) then
+           raise Exception.Create(ACBrStr('Erro ao executar Elgin_GeraArquivoATO17Binario.'+sLineBreak+
+                                                'Cod.: ' + IntToStr(iRet))) ;
 
         xElgin_FechaPortaSerial();
 
-        if (iRet <> 1) then
-           raise Exception.Create(ACBrStr('Erro ao executar RFD_ConvertedaMFDData.'+sLineBreak+
-                                          'Cod.: ' + IntToStr(iRet))) ;
-        if not FilesExists( ExtractFilePath(NomeArquivo)+ 'EL' + RightStr(NumFab,5) + '.*' ) then
-           raise Exception.Create(ACBrStr('Erro na execução de RFD_ConvertedaMFDData.'+sLineBreak+
-                                          'Arquivos diários não gerados!'));
       end
      else
         raise Exception.Create( ACBrStr( 'ArquivoMFD_DLL por período ainda não Implementado para: '+fsMarcaECF ) ) ;
@@ -2771,7 +2793,7 @@ procedure TACBrECFFiscNET.ArquivoMFD_DLL(COOInicial, COOFinal: Integer; NomeArqu
 Var
   iRet, iCRZ: Integer;
   PortaSerial, ModeloECF, Erro, NumFab : String;
-  CooIni, CooFim, Prop : String ;
+  CooIni, CooFim, Prop, ArqTmp : String ;
   OldAtivo : Boolean ;
 begin
   LoadDLLFunctions;
@@ -2809,20 +2831,26 @@ begin
       begin
         AbrePortaSerialDLL(fpDevice.Porta, ExtractFilePath(NomeArquivo));
 
-        iCRZ := COOInicial-1;
-        repeat
-           inc(iCRZ);
-           iRet := xRFD_ConvertedaMFD( IntToStr(iCRZ) );
-        until ( (iCRZ = COOFinal) or (iRet <> 1) );
+        ArqTmp := ExtractFilePath( NomeArquivo ) + 'Memoria.tdm' ;
+        DeleteFile( ArqTmp ) ;
 
-        xElgin_FechaPortaSerial();
+        iRet:=xElgin_LeMemoriasBinario( ArqTmp , NumFab, true );
 
         if (iRet <> 1) then
-           raise Exception.Create(ACBrStr('Erro ao executar RFD_ConvertedaMFD.'+sLineBreak+
+           raise Exception.Create(ACBrStr('Erro ao executar Elgin_LeMemoriasBinario.'+sLineBreak+
+                                                   'Cod.: ' + IntToStr(iRet))) ;
+        if not FilesExists( ArqTmp ) then
+           raise Exception.Create(ACBrStr('Erro na execução de Elgin_LeMemoriasBinario.'+sLineBreak+
+                                          'Arquivo binário não gerado!'));
+
+
+        iRet := xElgin_GeraArquivoATO17Binario(ArqTmp , NomeArquivo, CooIni, CooFim, 'C', Prop, 'TDM');
+
+        if (iRet <> 1) then
+           raise Exception.Create(ACBrStr('Erro ao executar Elgin_GeraArquivoATO17Binario.'+sLineBreak+
                                           'Cod.: ' + IntToStr(iRet))) ;
-        if not FilesExists( ExtractFilePath(NomeArquivo)+ 'EL' + RightStr(NumFab,5) + '.*' ) then
-           raise Exception.Create(ACBrStr('Erro na execução de RFD_ConvertedaMFD.'+sLineBreak+
-                                          'Arquivos diários não gerados!'));
+
+        xElgin_FechaPortaSerial();
       end
      else
         raise Exception.Create( ACBrStr( 'ArquivoMFD_DLL por COO ainda não Implementado para: '+fsMarcaECF ) ) ;

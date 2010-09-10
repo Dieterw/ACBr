@@ -1219,8 +1219,8 @@ begin
   //tamanho padrao das colunas
   ColsWidth[1]:=15;
   ColsWidth[2]:=54;
-  ColsWidth[3]:=12;
-  ColsWidth[4]:=6;
+  ColsWidth[3]:=11;
+  ColsWidth[4]:=7;
   ColsWidth[5]:=7;
   ColsWidth[6]:=7;
   ColsWidth[7]:=12;

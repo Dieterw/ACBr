@@ -4212,7 +4212,7 @@ begin
      Ativo := False;
 
      AbrePortaSerialDLL( PathDest ) ;
-     Resp := xDaruma_FIMFD_GerarAtoCotepePAFCoo( PChar( CooIni ), PChar( CooFim )) ;
+     Resp := xDaruma_FIMFD_GerarAtoCotepePAFCoo( PAnsiChar( CooIni ), PAnsiChar( CooFim )) ;
      if (Resp <> 1) then
         raise Exception.Create( ACBrStr( 'Erro ao executar Daruma_FIMFD_GerarAtoCotepePAFCoo.'+sLineBreak+
                                          'Cod.: '+IntToStr(Resp) ) ) ;

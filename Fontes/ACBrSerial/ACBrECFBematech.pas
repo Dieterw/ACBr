@@ -2190,8 +2190,16 @@ begin
 end;
 
 function TACBrECFBematech.GetTotalTroco: Double;
+var
+  Cont : Integer ;
+  StrRet : AnsiString ;
 begin
-   Result:= 0 ; // Alguem sabe como a Bematech Retorna essa informação ???
+   // Result:= 0 ; // Alguem sabe como a Bematech Retorna essa informação ???
+  Cont      := 52;
+  BytesResp := 1925 ;
+  StrRet := EnviaComando( #35+#32, 8 ) ;
+  Result := RoundTo( StrToFloatDef( BcdToAsc(
+                     copy(StrRet,(Cont*10) - 9 + 833,10) ),0) / 10000, -4) ;
 end;
 
 function TACBrECFBematech.GetTotalDescontosISSQN: Double;

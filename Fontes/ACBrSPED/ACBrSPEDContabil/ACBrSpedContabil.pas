@@ -259,7 +259,7 @@ end;
 
 function TACBrSPEDContabil.GetDT_INI: TDateTime;
 begin
-   Result := FDT_FIN;
+   Result := FDT_INI;
 end;
 
 procedure TACBrSPEDContabil.SetDT_INI(const Value: TDateTime);
@@ -279,7 +279,7 @@ end;
 
 function TACBrSPEDContabil.GetDT_FIN: TDateTime;
 begin
-   Result := FDT_INI;
+   Result := FDT_FIN;
 end;
 
 procedure TACBrSPEDContabil.SetDT_FIN(const Value: TDateTime);

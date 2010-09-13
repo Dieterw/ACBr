@@ -110,7 +110,7 @@ type
 
   TRegistroD100 = class
   private
-    fIND_OPER: TACBrTipoOpereracao; /// Indicador do tipo de operação: 0- Aquisição; 1- Prestação
+    fIND_OPER: TACBrTipoOperacao;   /// Indicador do tipo de operação: 0- Aquisição; 1- Prestação
     fIND_EMIT: TACBrEmitente;       /// Indicador do emitente do documento fiscal: 0- Emissão própria; 1- Terceiros
     fCOD_PART: String;              /// Código do participante (campo 02 do Registro 0150):
     fCOD_MOD: String;               /// Código do modelo do documento fiscal, conforme a Tabela 4.1.1
@@ -145,7 +145,7 @@ type
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
 
-    property IND_OPER: TACBrTipoOpereracao read FIND_OPER write FIND_OPER;
+    property IND_OPER: TACBrTipoOperacao read FIND_OPER write FIND_OPER;
     property IND_EMIT: TACBrEmitente read FIND_EMIT write FIND_EMIT;
     property COD_PART: String read FCOD_PART write FCOD_PART;
     property COD_MOD: String read FCOD_MOD write FCOD_MOD;
@@ -1077,7 +1077,7 @@ type
 
   TRegistroD500 = class
   private
-    fIND_OPER: TACBrTipoOpereracao;    /// Indicador do tipo de operação: 0- Aquisição, 1- Prestação
+    fIND_OPER: TACBrTipoOperacao;      /// Indicador do tipo de operação: 0- Aquisição, 1- Prestação
     fIND_EMIT: TACBrEmitente;          /// Indicador do emitente do documento fiscal: 0- Emissão própria, 1- Terceiros
     fCOD_PART: String;                 /// Código do participante (campo 02 do Registro 0150): - do prestador do serviço, no caso de aquisição, - do tomador do serviço, no caso de prestação.
     fCOD_MOD: String;                  /// Código do modelo do documento fiscal, conforme a Tabela 4.1.1
@@ -1108,7 +1108,7 @@ type
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
 
-    property IND_OPER: TACBrTipoOpereracao read FIND_OPER write FIND_OPER;
+    property IND_OPER: TACBrTipoOperacao read FIND_OPER write FIND_OPER;
     property IND_EMIT: TACBrEmitente read FIND_EMIT write FIND_EMIT;
     property COD_PART: String read FCOD_PART write FCOD_PART;
     property COD_MOD: String read FCOD_MOD write FCOD_MOD;

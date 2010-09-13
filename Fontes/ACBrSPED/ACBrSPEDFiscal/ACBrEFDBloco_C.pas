@@ -129,7 +129,7 @@ type
 
   TRegistroC100 = class
   private
-    fIND_OPER: TACBrTipoOpereracao;     /// Indicador do tipo de operação: 0- Entrada; 1- Saída
+    fIND_OPER: TACBrTipoOperacao;       /// Indicador do tipo de operação: 0- Entrada; 1- Saída
     fIND_EMIT: TACBrEmitente;           /// Indicador do emitente do documento fiscal: 0- Emissão própria; 1- Terceiros
     fCOD_PART: String;                  /// Código do participante (campo 02 do Registro 0150):
     fCOD_MOD: String;                   /// Código do modelo do documento fiscal, conforme a Tabela 4.1.1
@@ -171,7 +171,7 @@ type
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
 
-    property IND_OPER: TACBrTipoOpereracao read FIND_OPER write FIND_OPER;
+    property IND_OPER: TACBrTipoOperacao read FIND_OPER write FIND_OPER;
     property IND_EMIT: TACBrEmitente read FIND_EMIT write FIND_EMIT;
     property COD_PART: String read FCOD_PART write FCOD_PART;
     property COD_MOD: String read FCOD_MOD write FCOD_MOD;
@@ -317,7 +317,7 @@ type
 
   TRegistroC113 = class
   private
-    fIND_OPER: TACBrTipoOpereracao; /// Indicador do tipo de operação: 0 - Entrada/aquisição; 1- Saída/prestação
+    fIND_OPER: TACBrTipoOperacao;   /// Indicador do tipo de operação: 0 - Entrada/aquisição; 1- Saída/prestação
     fIND_EMIT: TACBrEmitente;       /// Indicador do emitente do título: 0 - Emissão própria; 1- Terceiros
     fCOD_PART: String;              /// Código do participante emitente (campo 02 do Registro 0150)  do documento referenciado.
     fCOD_MOD: String;               /// Código do documento fiscal, conforme a Tabela 4.1.1
@@ -326,7 +326,7 @@ type
     fNUM_DOC: String;               /// Número do documento fiscal
     fDT_DOC: TDateTime;             /// Data da emissão do documento fiscal.
   public
-    property IND_OPER: TACBrTipoOpereracao read fIND_OPER write fIND_OPER;
+    property IND_OPER: TACBrTipoOperacao read fIND_OPER write fIND_OPER;
     property IND_EMIT: TACBrEmitente read fIND_EMIT write fIND_EMIT;
     property COD_PART: String read fCOD_PART write fCOD_PART;
     property COD_MOD: String read fCOD_MOD write fCOD_MOD;
@@ -1639,7 +1639,7 @@ type
 
   TRegistroC500 = class
   private
-    fIND_OPER: TACBrTipoOpereracao;      /// Indicador do tipo de operação: 0 - Entrada; 1- Saída
+    fIND_OPER: TACBrTipoOperacao;        /// Indicador do tipo de operação: 0 - Entrada; 1- Saída
     fIND_EMIT: TACBrEmitente;            /// Indicador do emitente do documento fiscal: 0- Emissão própria; 1- Terceiros
     fCOD_PART: String;                   /// Código do participante (campo 02 do Registro 0150): - do adquirente, no caso das saídas; - do fornecedor no caso de entradas
     fCOD_MOD: String;                    /// Código do modelo do documento fiscal, conforme a Tabela 4.1.1
@@ -1673,7 +1673,7 @@ type
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
 
-    property IND_OPER: TACBrTipoOpereracao read fIND_OPER write fIND_OPER;
+    property IND_OPER: TACBrTipoOperacao read fIND_OPER write fIND_OPER;
     property IND_EMIT: TACBrEmitente read fIND_EMIT write fIND_EMIT;
     property COD_PART: String read fCOD_PART write fCOD_PART;
     property COD_MOD: String read fCOD_MOD write fCOD_MOD;

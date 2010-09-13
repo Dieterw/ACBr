@@ -122,9 +122,9 @@ type
                    tiOutras                // 99 – Outras
                    );
   /// Indicador do tipo de operação:
-  TACBrTipoOpereracao = (tpEntradaAquisicao, // 0 - Entrada
-                         tpSaidaPrestacao    // 1 - Saída
-                         );
+  TACBrTipoOperacao = (tpEntradaAquisicao, // 0 - Entrada
+                       tpSaidaPrestacao    // 1 - Saída
+                       );
   /// Indicador do emitente do documento fiscal
   TACBrEmitente = (edEmissaoPropria,         // 0 - Emissão própria
                    edTerceiros               // 1 - Terceiro

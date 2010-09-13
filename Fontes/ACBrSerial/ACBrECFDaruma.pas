@@ -1874,6 +1874,7 @@ begin
            LenQtd   := 8 ;
            Cmd      := #223 ;
            Qtd      := RoundTo(Qtd,-3) ;   // Venda fixa com 3 decimais
+           Qtd      := (Qtd * 1000) ; 
            SepDec   := '';
            ValorStr := IntToStrZero( Round(ValorUnitario * 1000), 10);
          end

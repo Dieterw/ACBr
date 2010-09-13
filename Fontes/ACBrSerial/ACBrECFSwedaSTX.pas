@@ -1392,8 +1392,7 @@ begin
  {Vai vir o indice, tem que transformar em aliquota no formato Tipo + Aliquota}
   if (AliquotaECF[1] <> 'I') and
      (AliquotaECF[1] <> 'F') and
-     (AliquotaECF[1] <> 'N') and
-     (AliquotaECF[1] <> 'S') then
+     (AliquotaECF[1] <> 'N') then
   begin
      {Formato tem que ser T18,00% por exemplo}
      Aliquota := AchaICMSIndice(AliquotaECF);
@@ -1441,7 +1440,7 @@ begin
    begin
       Aliquota := TACBrECFAliquota.create;
       Aliquota.Sequencia := I;
-      Aliquota.Indice := FormatFloat('00',I);
+      Aliquota.Indice := FormatFloat('T00',I);
       Aliquota.Aliquota := StrToFloatDef(Copy(RetCMD,(I*4)-3,4),0)/100;
       fpAliquotas.Add(Aliquota);
    end;
@@ -1453,7 +1452,7 @@ begin
    begin
       Aliquota := TACBrECFAliquota.create;
       Aliquota.Sequencia := I;
-      Aliquota.Indice := FormatFloat('00',I);
+      Aliquota.Indice := FormatFloat('S00',I);
       Aliquota.Tipo := 'S';
       Aliquota.Aliquota := StrToFloatDef(Copy(RetCMD,(I*4)-3,4),0)/100;
       fpAliquotas.Add(Aliquota);

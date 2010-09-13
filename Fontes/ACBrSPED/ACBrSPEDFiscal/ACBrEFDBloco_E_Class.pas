@@ -203,43 +203,56 @@ end;
 
 function TBloco_E.RegistroE100New: TRegistroE100;
 begin
-   Result := FRegistroE001.RegistroE100;
+   Result := FRegistroE001.RegistroE100.New;
 end;
 
 function TBloco_E.RegistroE110New: TRegistroE110;
 begin
-   Result := FRegistroE001.RegistroE100.RegistroE110;
+   Result := FRegistroE001.RegistroE100.Items[FRegistroE001.RegistroE100.Count -1].RegistroE110;
 end;
 
 function TBloco_E.RegistroE111New: TRegistroE111;
+var
+E110Count: Integer;
 begin
-   Result := FRegistroE001.RegistroE100.RegistroE110.RegistroE111.New;
+   E110Count := FRegistroE001.RegistroE100.Count -1;
+   Result := FRegistroE001.RegistroE100.Items[E110Count].RegistroE110.RegistroE111.New;
 end;
 
 function TBloco_E.RegistroE112New: TRegistroE112;
 var
+E110Count: Integer;
 E111Count: integer;
 begin
-   E111Count := FRegistroE001.RegistroE100.RegistroE110.RegistroE111.Count -1;
-   Result    := FRegistroE001.RegistroE100.RegistroE110.RegistroE111.Items[E111Count].RegistroE112.New;
+   E110Count := FRegistroE001.RegistroE100.Count -1;
+   E111Count := FRegistroE001.RegistroE100.Items[E110Count].RegistroE110.RegistroE111.Count -1;
+   Result    := FRegistroE001.RegistroE100.Items[E110Count].RegistroE110.RegistroE111.Items[E111Count].RegistroE112.New;
 end;
 
 function TBloco_E.RegistroE113New: TRegistroE113;
 var
+E110Count: Integer;
 E111Count: integer;
 begin
-   E111Count := FRegistroE001.RegistroE100.RegistroE110.RegistroE111.Count -1;
-   Result    := FRegistroE001.RegistroE100.RegistroE110.RegistroE111.Items[E111Count].RegistroE113.New;
+   E110Count := FRegistroE001.RegistroE100.Count -1;
+   E111Count := FRegistroE001.RegistroE100.Items[E110Count].RegistroE110.RegistroE111.Count -1;
+   Result    := FRegistroE001.RegistroE100.Items[E110Count].RegistroE110.RegistroE111.Items[E111Count].RegistroE113.New;
 end;
 
 function TBloco_E.RegistroE115New: TRegistroE115;
+var
+E110Count: Integer;
 begin
-   Result := FRegistroE001.RegistroE100.RegistroE110.RegistroE115.New;
+   E110Count := FRegistroE001.RegistroE100.Count -1;
+   Result := FRegistroE001.RegistroE100.Items[E110Count].RegistroE110.RegistroE115.New;
 end;
 
 function TBloco_E.RegistroE116New: TRegistroE116;
+var
+E110Count: Integer;
 begin
-   Result := FRegistroE001.RegistroE100.RegistroE110.RegistroE116.New;
+   E110Count := FRegistroE001.RegistroE100.Count -1;
+   Result := FRegistroE001.RegistroE100.Items[E110Count].RegistroE110.RegistroE116.New;
 end;
 
 function TBloco_E.RegistroE200New: TRegistroE200;
@@ -348,18 +361,26 @@ begin
 end;
 
 procedure TBloco_E.WriteRegistroE100(RegE001: TRegistroE001);
+var
+  intFor: integer;
 begin
   if Assigned(RegE001.RegistroE100) then
   begin
-     with RegE001.RegistroE100 do
+     for intFor := 0 to RegE001.RegistroE100.Count - 1 do
      begin
-       Add( LFill('E100') +
-            LFill(DT_INI) +
-            LFill(DT_FIN) ) ;
+        with RegE001.RegistroE100.Items[intFor] do
+        begin
+           Add( LFill('E100') +
+                LFill(DT_INI) +
+                LFill(DT_FIN) ) ;
+        end;
+        /// Registros FILHOS
+        WriteRegistroE110(RegE001.RegistroE100.Items[intFor]);
+        ///
+        RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
      end;
-     WriteRegistroE110(RegE001.RegistroE100);
-     ///
-     RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
+     /// Variavél para armazenar a quantidade de registro do tipo.
+     FRegistroE100Count := FRegistroE100Count + RegE001.RegistroE100.Count;
   end;
 end;
 
@@ -390,6 +411,7 @@ begin
      WriteRegistroE116(RegE100.RegistroE110) ;
      ///
      RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
+     FRegistroE110Count := FRegistroE110Count + 1;
   end;
 end;
 

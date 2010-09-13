@@ -46,7 +46,7 @@ uses
   SysUtils, Classes, Contnrs, DateUtils, ACBrEFDBlocos;
 
 type
-  TRegistroE100 = class;
+  TRegistroE100List = class;
   TRegistroE110 = class;
   TRegistroE111List = class;
   TRegistroE112List = class;
@@ -68,14 +68,14 @@ type
 
   TRegistroE001 = class(TOpenBlocos)
   private
-    FRegistroE100: TRegistroE100;
+    FRegistroE100: TRegistroE100List;
     FRegistroE200: TRegistroE200List;
     FRegistroE500: TRegistroE500List;
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
 
-    property RegistroE100: TRegistroE100     read FRegistroE100 write FRegistroE100;
+    property RegistroE100: TRegistroE100List read FRegistroE100 write FRegistroE100;
     property RegistroE200: TRegistroE200List read FRegistroE200 write FRegistroE200;
     property RegistroE500: TRegistroE500List read FRegistroE500 write FRegistroE500;
   end;
@@ -96,6 +96,16 @@ type
     property DT_FIN: TDateTime read FDT_FIN write FDT_FIN;
 
     property RegistroE110: TRegistroE110 read FRegistroE110 write FRegistroE110;
+  end;
+
+
+  TRegistroE100List = class(TObjectList)
+  private
+    function  GetItem(Index: Integer): TRegistroE100;              /// GetItem
+    procedure SetItem(Index: Integer; const Value: TRegistroE100); /// SetItem
+  public
+    function New: TRegistroE100;
+    property Items[Index: Integer]: TRegistroE100 read GetItem write SetItem;
   end;
 
   /// Registro E110 - APURAÇÃO DO ICMS - OPERAÇÕES PRÓPRIAS
@@ -1054,7 +1064,7 @@ end;
 
 constructor TRegistroE001.Create;
 begin
-   FRegistroE100 := TRegistroE100.Create;
+   FRegistroE100 := TRegistroE100List.Create;
    FRegistroE200 := TRegistroE200List.Create;
    FRegistroE500 := TRegistroE500List.Create;
    //
@@ -1068,5 +1078,24 @@ begin
   FRegistroE500.Free;
   inherited;
 end;
+
+{ TRegistroE100List }
+
+function TRegistroE100List.GetItem(Index: Integer): TRegistroE100;
+begin
+  Result := TRegistroE100(Inherited Items[Index]);
+end;
+
+function TRegistroE100List.New: TRegistroE100;
+begin
+  Result := TRegistroE100.Create;
+  Add(Result);
+end;
+
+procedure TRegistroE100List.SetItem(Index: Integer; const Value: TRegistroE100);
+begin
+  Put(Index, Value);
+end;
+
 
 end.

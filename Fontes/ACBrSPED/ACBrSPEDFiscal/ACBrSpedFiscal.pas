@@ -1789,12 +1789,12 @@ begin
          with New do
          begin
             REG_BLC := 'E100';
-            QTD_REG_BLC := 1;
+            QTD_REG_BLC := Bloco_E.RegistroE100Count;
          end;
          with New do
          begin
             REG_BLC := 'E110';
-            QTD_REG_BLC := 1;
+            QTD_REG_BLC := Bloco_E.RegistroE110Count;
          end;
          if Bloco_E.RegistroE111Count > 0 then
          begin

@@ -410,6 +410,8 @@ type
      fpModalidadePagtoDescrita: String;
      fpModalidadePagtoExtenso: String;
      fpCodigoRedeAutorizada: String;
+     fpDebito: Boolean;
+     fpCredito: Boolean;
 
      procedure SetCNFEnviado(const AValue : Boolean);
      procedure SetIndiceFPG_ECF(const AValue : String);
@@ -491,6 +493,8 @@ type
      property ModalidadePagtoDescrita:String read fpModalidadePagtoDescrita;
      property ModalidadeExtenso:String read fpModalidadePagtoExtenso;
      property CodigoRedeAutorizada:String read fpCodigoRedeAutorizada;
+     property Debito:Boolean read fpDebito;
+     property Credito:Boolean read fpCredito;
    end;
 
    { TACBrTEFDRespTXT }
@@ -1225,7 +1229,8 @@ end;
 constructor TACBrTEFDResp.Create ;
 begin
   inherited Create ;
-
+  fpDebito   := False;
+  fpCredito  := False;
   fpConteudo := TACBrTEFDArquivo.Create;
   fpParcelas := TACBrTEFDRespParcelas.create(True) ;
 
@@ -2265,7 +2270,8 @@ begin
                       end
                      else
                       begin
-                        ComandarECF( opePulaLinhas ) ;
+                        if I <> 1 then 
+                           ComandarECF( opePulaLinhas ) ;
                         DoExibeMsg( opmDestaqueVia, 'Destaque a '+IntToStr(I)+'ª Via') ;
                       end ;
 
@@ -2382,6 +2388,7 @@ begin
   begin
      UltimaTransacao := (Valor >= RespostasPendentes.SaldoRestante );
 
+     {Se a transação não foi aprovada, faz tratamento e sai}
      if not Self.Resp.TransacaoAprovada then
      begin
        ProcessarResposta;           { Exibe a Mensagem ao Operador }
@@ -2401,6 +2408,8 @@ begin
        exit ;
      end ;
 
+     {...Se está aqui, então a Transação foi aprovada...}
+
      Self.Resp.IndiceFPG_ECF := IndiceFPG_ECF;
 
      { Cria Arquivo de Backup, contendo inclusive informacoess internas como :
@@ -2415,14 +2424,18 @@ begin
      RespostaPendente.Assign( Resp );
      RespostasPendentes.Add( RespostaPendente );
 
+     ImpressaoOk := true;
+
+     {Efetuar o pagamento automaticamente?}
      if AutoEfetuarPagamento then
      begin
-        ImpressaoOk := False ;
+        try //Faz tratamento para caso ocorra erro na impressora durante impressão
+           ImpressaoOk := False ;
 
-        try
            while not ImpressaoOk do
            begin
               try
+                 BloquearMouseTeclado( True ); //
                  ECFPagamento( IndiceFPG_ECF, Valor );
                  RespostasPendentes.SaldoAPagar  := RoundTo( RespostasPendentes.SaldoAPagar - Valor, -2 ) ;
                  RespostaPendente.OrdemPagamento := RespostasPendentes.Count + 1 ;
@@ -2446,7 +2459,7 @@ begin
         finally
            if not ImpressaoOk then
               CancelarTransacoesPendentes;
-        end;
+        end; //end do "if AutoEfetuarPagamento try ..."
      end;
 
      { Se é Multiplos Cartoes, e ainda Resta SALDO deve enviar um CNF }
@@ -2467,7 +2480,8 @@ begin
 
         if AutoFinalizarCupom then
         begin
-           FinalizarCupom;
+           if ImpressaoOk then
+              FinalizarCupom; // Não tentar finalizar o cupom caso tenha dado erro na impressão do TEF. Evita mostrar a pergunta de tentar novamente ao operador duas vezes
            ImprimirTransacoesPendentes;
         end;
       end ;

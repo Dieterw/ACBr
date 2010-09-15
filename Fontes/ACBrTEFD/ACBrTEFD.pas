@@ -912,6 +912,7 @@ begin
                              DoExibeMsg( opmExibirMsgCliente, TextoEspecialCliente ) ;
                           end;
 
+                          //Verifica se há vias a serem impressas
                           NVias := fTefClass.NumVias ;
                           if ImagemComprovante2aVia.Text = '' then   // Tem 2a via ?
                              NVias := 1 ;

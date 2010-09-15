@@ -1200,6 +1200,7 @@ begin
   EnviaComando( #32 + A_D +
                 IntToStrZero( Round( DescontoAcrescimo * 100),14) );
   fsTotalPago := 0 ;
+  fsTotalizadoresParciais := '';
 end;
 
 Procedure TACBrECFBematech.VendeItem( Codigo, Descricao : String;
@@ -1386,6 +1387,8 @@ Var A : Integer ;
 begin
   if not Assigned( fpAliquotas ) then
      CarregaAliquotas ;
+
+  fsTotalizadoresParciais := '';
 
   For A := 0 to fpAliquotas.Count-1 do
   begin

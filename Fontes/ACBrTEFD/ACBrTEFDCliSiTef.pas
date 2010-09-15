@@ -89,6 +89,7 @@ type
 
    TACBrTEFDCliSiTef = class( TACBrTEFDClass )
    private
+      fReimpressao: Boolean; {Indica se foi selecionado uma reimpressão}
       fCodigoLoja : AnsiString;
       fEnderecoIP : AnsiString;
       fNumeroTerminal : AnsiString;
@@ -249,7 +250,8 @@ begin
    fpValorTotal := 0 ;
    fpImagemComprovante1aVia.Clear;
    fpImagemComprovante2aVia.Clear;
-
+   fpDebito  := False;
+   fpCredito := False;
    for I := 0 to Conteudo.Count - 1 do
    begin
      Linha := Conteudo.Linha[I];
@@ -258,9 +260,11 @@ begin
 
      case Linha.Identificacao of
        // TODO: Mapear mais propriedades do CliSiTef //
-       100 :fpModalidadePagto              := LinStr;
-       101 :fpModalidadePagtoExtenso       := LinStr;
-       102 :fpModalidadePagtoDescrita      := LinStr;
+       15  : fpDebito                  := True;
+       25  : fpCredito                 := True;
+       100 : fpModalidadePagto         := LinStr;
+       101 : fpModalidadePagtoExtenso  := LinStr;
+       102 : fpModalidadePagtoDescrita := LinStr;
        105 :
          begin
            fpDataHoraTransacaoComprovante  := Linha.Informacao.AsTimeStampSQL;
@@ -348,6 +352,7 @@ constructor TACBrTEFDCliSiTef.Create(AOwner : TComponent);
 begin
   inherited Create(AOwner);
 
+  fReimpressao := False;
   ArqReq    := '' ;
   ArqResp   := '' ;
   ArqSTS    := '' ;
@@ -719,6 +724,7 @@ begin
    if fpAguardandoResposta then
       raise Exception.Create( ACBrStr( 'Requisição anterior não concluida' ) ) ;
 
+   fReimpressao := False;
    Result   := 0 ;
    ANow     := Now ;
    DataStr  := FormatDateTime('YYYYMMDD', ANow );
@@ -832,6 +838,10 @@ begin
                      TACBrTEFDRespCliSiTef( Self.Resp ).GravaInformacao( TipoCampo, Mensagem ) ;
 
                      case TipoCampo of
+                        15 : TACBrTEFDRespCliSiTef( Self.Resp ).GravaInformacao( TipoCampo, 'True') ;//Selecionou Debito;
+                        25 : TACBrTEFDRespCliSiTef( Self.Resp ).GravaInformacao( TipoCampo, 'True') ;//Selecionou Credito;
+                        {Indica que foi escolhido menu de reimpressão}
+                        56,57,58 : fReimpressao := True;
                         121, 122 :
                           if ImprimirComprovantes then
                           begin
@@ -1023,6 +1033,8 @@ begin
                      BloquearMouseTeclado(False);
                      OnObtemCampo( ACBrStr(Mensagem), TamanhoMinimo, TamanhoMaximo,
                                    TipoCampo, tcString, Resposta, Digitado, Voltar) ;
+                     {Se o tipo campo for 505 é a quantidade de parcelas}
+                     TACBrTEFDRespCliSiTef( Self.Resp ).GravaInformacao( TipoCampo, Resposta ) ;
                      BloquearMouseTeclado(True);
                    end;
 
@@ -1098,24 +1110,10 @@ procedure TACBrTEFDCliSiTef.FinalizarTransacao( Confirma : Boolean;
 Var
    DataStr, HoraStr : AnsiString;
 begin
-  fRespostas.Clear;
+   fRespostas.Clear;
 
-  if ( pos(DocumentoVinculado, fDocumentosProcessados) > 0 ) or
-     ( DocumentoVinculado = '' ) and (fDocumentosProcessados = '') then
-  begin
-     {Se não tem documento vinculado/processado significa que não é um cupom
-     fiscal, pode ser reimpressão ou cdc, nesse caso tem que verificar se
-     existe transação pendente}
-
-     {Só fazer a verificação quando não tiver vinculado/processados}
-     if ( ObtemQuantidadeTransacoesPendentes(now,'0') = 0 ) then
-     begin
-        {Se existe transação pendente, tem que confirmar ou cancelar, senão
-        não é necessário, apenas saia da rotina }
-        exit;
-     end;
-
-  end;
+   if (fReimpressao) or (pos(DocumentoVinculado, fDocumentosProcessados) > 0) then
+      exit;
 
   fDocumentosProcessados := fDocumentosProcessados + DocumentoVinculado + '|' ;
 
@@ -1134,7 +1132,8 @@ begin
 
   if not Confirma then
      TACBrTEFD(Owner).DoExibeMsg( opmOK, 'Transação não efetuada.'+sLineBreak+
-                                         'Favor reter o Cupom' );
+                                         'Favor reter o Cupom');
+
 end;
 
 procedure TACBrTEFDCliSiTef.AvaliaErro( Sts : Integer );

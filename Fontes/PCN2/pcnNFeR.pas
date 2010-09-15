@@ -399,7 +399,7 @@ begin
       (*J21*)NFe.Det[i].Prod.veicProd.VIN := Leitor.rCampo(tcStr, 'VIN');
       (*J22*)NFe.Det[i].Prod.veicProd.condVeic := StrToCondVeic(ok, Leitor.rCampo(tcStr, 'condVeic'));
       (*J23*)NFe.Det[i].Prod.veicProd.cMod := Leitor.rCampo(tcStr, 'cMod');
-      (*J24*)NFe.Det[i].Prod.veicProd.cCorDEN := Leitor.rCampo(tcStr, 'cCorDEN');
+      (*J24*)NFe.Det[i].Prod.veicProd.cCorDENATRAN := Leitor.rCampo(tcStr, 'cCorDENATRAN');
       (*J25*)NFe.Det[i].Prod.veicProd.lota := Leitor.rCampo(tcInt, 'lota');
       (*J26*)NFe.Det[i].Prod.veicProd.tpRest := Leitor.rCampo(tcInt, 'tpRest');
     end;

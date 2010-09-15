@@ -698,7 +698,7 @@ begin
     Gerador.wCampo(tcStr, 'J21', 'VIN     ', 00, 01, 1, nfe.Det[i].Prod.veicProd.VIN, DSC_VIN);
     Gerador.wCampo(tcStr, 'J22', 'condVeic', 00, 01, 1, condVeicToStr(nfe.Det[i].Prod.veicProd.condVeic), DSC_CONDVEIC);
     Gerador.wCampo(tcStr, 'J23', 'cMod    ', 00, 06, 1, nfe.Det[i].Prod.veicProd.cMod, DSC_CMOD);
-    Gerador.wCampo(tcStr, 'J24', 'cCorDEN ', 00, 02, 1, nfe.Det[i].Prod.veicProd.cCorDEN, DSC_CCORDEN);
+    Gerador.wCampo(tcStr, 'J24', 'cCorDENATRAN', 00, 2, 1, nfe.Det[i].Prod.veicProd.cCorDENATRAN, DSC_CCORDEN);
     Gerador.wCampo(tcInt, 'J25', 'lota    ', 01, 03, 1, nfe.Det[i].Prod.veicProd.lota, DSC_LOTA);
     Gerador.wCampo(tcInt, 'J26', 'tpRest  ', 01, 01, 1, nfe.Det[i].Prod.veicProd.tpRest, DSC_TPREST);
     Gerador.wGrupo('/veicProd');

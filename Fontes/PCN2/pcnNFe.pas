@@ -612,7 +612,7 @@ type
     FVIN: string;
     FcondVeic: TpcnCondicaoVeiculo;
     FcMod: string;
-    FcCorDEN: string;
+    FcCorDENATRAN: string;
     Flota: integer;
     FtpRest: integer;
   published
@@ -638,7 +638,7 @@ type
     property VIN: string read FVIN write FVIN;
     property condVeic: TpcnCondicaoVeiculo read FcondVeic write FcondVeic;
     property cMod: string read FcMod write FcMod;
-    property cCorDEN: string read FcCorDEN write FcCorDEN;
+    property cCorDENATRAN: string read FcCorDENATRAN write FcCorDENATRAN;
     property lota: integer read Flota write Flota;
     property tpRest: integer read FtpRest write FtpRest;
   end;

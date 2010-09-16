@@ -58,6 +58,8 @@ uses
   pcnNFe, pcnConversao, frxClass;
 
 type
+  EACBrNFeDANFEFR = class(Exception);
+
   TACBrNFeDANFEFR = class( TACBrNFeDANFEClass )
    private
     FdmDanfe: TdmACBrNFeFR;
@@ -144,8 +146,15 @@ var
 begin
   Result := False;
 
-  if FFastFile <> '' then
-    dmDanfe.frxReport.LoadFromFile(FFastFile);
+  if Trim(FFastFile) <> '' then
+  begin
+    if FileExists(FFastFile) then
+      dmDanfe.frxReport.LoadFromFile(FFastFile)
+    else
+      raise EACBrNFeDANFEFR.CreateFmt('Caminho do arquivo de impressão do DANFE "%s" inválido.', [FFastFile]);
+  end
+  else
+    raise EACBrNFeDANFEFR.Create('Caminho do arquivo de impressão do DANFE não assinalado.');
 
   if Assigned(NFE) then
   begin

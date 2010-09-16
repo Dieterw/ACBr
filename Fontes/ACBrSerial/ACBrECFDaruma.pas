@@ -1762,7 +1762,7 @@ Procedure TACBrECFDaruma.VendeItem( Codigo, Descricao : String;
   ValorDescontoAcrescimo : Double; Unidade : String;
   TipoDescontoAcrescimo : String; DescontoAcrescimo : String) ;
 Var
-  QtdStr, ValorStr, DescontoStr, SepDec, FlagDesc, NumItem : String;
+  QtdStr, ValorStr, DescontoStr, SepDec, FlagDesc, NumItem, ModoCalculo : String;
   LenQtd : Integer ;
   RetCmd : AnsiString ;
   Cmd : AnsiChar ;
@@ -1785,18 +1785,28 @@ begin
      ValorStr    := IntToStrZero( Round( ValorUnitario * power(10,fpDecimaisPreco)),8 ) ;
      DescontoStr := StringOfChar('0',12) ;
 
-     if fpArredondaItemMFD and (fsArredonda <> 'N') then
-     begin
-       try
-          // Tenta enviar o comando, se o ECF não reconhecer (except), desativa o Arredondamento
-          EnviaComando(FS + 'C' + #219 + 'A'); // A = Arredondamento / T = Truncamento
-       except
-          fsArredonda := 'N' ;
-       end ;
-     end ;
 
-     RetCmd := EnviaComando(FS + 'F' + #201 + AliquotaECF + QtdStr + ValorStr +
-                  DescontoStr + FlagDesc + Codigo + Unidade + Descricao ) ;
+     if ( (fsModeloDaruma >= fs700L) and (StrToInt(fsNumVersao) > 10000) ) then
+      begin
+          ModoCalculo :=  ifthen(fpArredondaItemMFD, 'A', 'T' );
+          RetCmd := EnviaComando(FS + 'F' + #207 + AliquotaECF + QtdStr + ValorStr +
+                      DescontoStr + FlagDesc + Codigo + Unidade + ModoCalculo + Descricao ) ;
+      end
+     else
+      begin
+        if fpArredondaItemMFD and (fsArredonda <> 'N') then
+        begin
+          try
+             // Tenta enviar o comando, se o ECF não reconhecer (except), desativa o Arredondamento
+             EnviaComando(FS + 'C' + #219 + 'A'); // A = Arredondamento / T = Truncamento
+          except
+             fsArredonda := 'N' ;
+          end ;
+        end ;
+
+        RetCmd := EnviaComando(FS + 'F' + #201 + AliquotaECF + QtdStr + ValorStr +
+                     DescontoStr + FlagDesc + Codigo + Unidade + Descricao ) ;
+      end ;
 
      if ValorDescontoAcrescimo > 0 then
      begin

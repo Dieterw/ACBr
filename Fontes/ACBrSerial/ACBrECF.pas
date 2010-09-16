@@ -274,6 +274,7 @@ TACBrECF = class( TACBrComponent )
     function GetNumGNFClass: String;
     function GetNumGRGClass: String;
     function GetNumCDCClass: String;
+    function GetNumCFCClass: String;
     function GetArredondaPorQtd: Boolean;
     procedure SetArredondaPorQtd(const Value: Boolean);
     function GetDecimaisPreco: Integer;
@@ -390,6 +391,7 @@ TACBrECF = class( TACBrComponent )
     Property NumGNF             : String     read GetNumGNFClass ;
     Property NumGRG             : String     read GetNumGRGClass ;
     Property NumCDC             : String     read GetNumCDCClass ;
+    Property NumCFC             : String     read GetNumCFCClass ;
     Property NumCOOInicial      : String     read GetNumCOOInicialClass ;
     Property VendaBruta         : Double     read GetVendaBrutaClass ;
     Property GrandeTotal        : Double     read GetGrandeTotalClass ;
@@ -1429,6 +1431,12 @@ begin
   Result := fsECF.NumCDC ;
 end;
 
+function TACBrECF.GetNumCFCClass: String;
+begin
+  ComandoLOG := 'NumCFC' ;
+  Result := fsECF.NumCFC ;
+end;
+
 function TACBrECF.GetNumLojaClass: String;
 begin
   ComandoLOG := 'NumLoja' ;
@@ -1725,6 +1733,11 @@ begin
 
      try
         CDC := StrToIntDef(Self.NumCDC,0);
+     except
+     end ;
+
+     try
+        CFC := StrToIntDef(Self.NumCFC,0);
      except
      end ;
 

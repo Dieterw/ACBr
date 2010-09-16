@@ -561,6 +561,7 @@ TACBrECFClass = class
     function GetNumGNF: String; virtual ;
     function GetNumGRG: String; virtual ;
     function GetNumCDC: String; virtual ;
+    function GetNumCFC: String; virtual ;
     function GetNumCRZ: String; virtual ;
     function GetVendaBruta: Double; virtual ;
     function GetTotalAcrescimos: Double; virtual ;
@@ -719,6 +720,7 @@ TACBrECFClass = class
     Property NumGNF             : String     read GetNumGNF ;
     Property NumGRG             : String     read GetNumGRG ;
     Property NumCDC             : String     read GetNumCDC ;
+    Property NumCFC             : String     read GetNumCFC ;
     Property NumCOOInicial      : String     read GetNumCOOInicial ;
     Property VendaBruta         : Double     read GetVendaBruta ;
     Property GrandeTotal        : Double     read GetGrandeTotal ;
@@ -1826,6 +1828,11 @@ begin
 end;
 
 function TACBrECFClass.GetNumCDC: String;
+begin
+  Result := '' ;
+end;
+
+function TACBrECFClass.GetNumCFC: String;
 begin
   Result := '' ;
 end;
@@ -3683,6 +3690,7 @@ begin
    FCCF                         := 0 ;
    FTotalISSQN                  := 0 ;
    FCDC                         := 0 ;
+   FCFC                         := 0 ;
    FDataDoMovimento             := 0 ;
    FNumeroCOOInicial            := '' ;
    FNumeroDoECF                 := '' ;

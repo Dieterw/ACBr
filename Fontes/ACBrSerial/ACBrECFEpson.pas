@@ -185,6 +185,7 @@ TACBrECFEpson = class( TACBrECFClass )
     function GetNumGNF: String; override ;
     function GetNumGRG: String; override ;
     function GetNumCDC: String; override ;
+    function GetNumCFC: String; override ;
     function GetNumLoja: String; override ;
     function GetNumSerie: String; override ;
     function GetNumVersao: String; override ;
@@ -1235,6 +1236,12 @@ function TACBrECFEpson.GetNumCDC: String;
 begin
   EpsonResposta.Resposta := Ret0907 ;
   Result := EpsonResposta.Params[4] ;
+end;
+
+function TACBrECFEpson.GetNumCFC: String;
+begin
+  EpsonResposta.Resposta := Ret0907 ;
+  Result := EpsonResposta.Params[8] ;
 end;
 
 function TACBrECFEpson.GetNumLoja: String;

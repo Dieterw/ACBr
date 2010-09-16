@@ -237,6 +237,7 @@ TACBrECFDaruma = class( TACBrECFClass )
     function GetNumGNF: String; override ;
     function GetNumGRG: String; override ;
     function GetNumCDC: String; override ;
+    function GetNumCFC: String; override ;
     function GetNumSerie: String; override ;
     function GetNumVersao: String; override ;
     function GetSubTotal: Double; override ;
@@ -961,6 +962,13 @@ begin
   Result := '0' ;
   if fpMFD then
     Result  :=  RetornaInfoECF('45');
+end;
+
+function TACBrECFDaruma.GetNumCFC: String;
+begin
+  Result := '0' ;
+  if fpMFD then
+    Result  :=  RetornaInfoECF('39');
 end;
 
 function TACBrECFDaruma.GetNumECF: String;

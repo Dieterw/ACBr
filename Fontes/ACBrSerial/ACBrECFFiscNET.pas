@@ -209,6 +209,7 @@ TACBrECFFiscNET = class( TACBrECFClass )
     function GetNumGRG: String; override ;
     function GetNumGNF: String; override ;
     function GetNumCDC: String; override ;    
+    function GetNumCFC: String; override ;    
     function GetNumCRZ: String; override ;
     function GetVendaBruta: Double; override ;
     function GetTotalAcrescimos: Double; override ;
@@ -856,6 +857,15 @@ begin
                   FiscNETResposta.Params.Values['ValorInteiro'],0 ), 6) ;
 end;
 
+function TACBrECFFiscNET.GetNumCFC: String;
+begin
+  FiscNETComando.NomeComando := 'LeInteiro' ;
+  FiscNETComando.AddParamString('NomeInteiro','CFC') ;
+  EnviaComando ;
+
+  Result := IntToStrZero(  StrToIntDef(
+                  FiscNETResposta.Params.Values['ValorInteiro'],0 ), 6) ;
+end;
 
 function TACBrECFFiscNET.GetNumLoja: String;
 begin

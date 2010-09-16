@@ -239,6 +239,7 @@ TACBrECFBematech = class( TACBrECFClass )
     function GetNumGNF: String; override ;
     function GetNumGRG: String; override ;
     function GetNumCDC: String; override ;
+    function GetNumCFC: String; override ;
     function GetNumCRZ: String; override ;
     function GetVendaBruta: Double; override ;
 
@@ -2639,6 +2640,12 @@ begin
   end;
 end;
 
+function TACBrECFBematech.GetNumCFC: String;
+begin
+  BytesResp := 2;
+  Result    := RetornaInfoECF( '8' ) ;
+end;
+
 function TACBrECFBematech.GetNumGNF: String;
 begin
   BytesResp := 3;
@@ -2674,6 +2681,7 @@ begin
      3,68         : BytesResp := 9 ;
      4,5,22,30,66 : BytesResp := 7 ;
      6,7,27,31,41,54,55,56,67 : BytesResp := 3 ;
+     8            : BytesResp := 2 ;
      13           : begin BytesResp := 186 ; IsBCD := False ; end ;
      16,29,70     : IsBCD := False ;
      17,20,21,28,65,74,75,253 : begin BytesResp := 1 ; IsBCD := False ; end ;

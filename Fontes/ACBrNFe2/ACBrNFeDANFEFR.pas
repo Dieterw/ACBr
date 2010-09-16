@@ -130,21 +130,10 @@ begin
     dmDanfe.frxPDFExport.Keywords   := TITULO_PDF;
     dmDanfe.frxPDFExport.ShowDialog := False;
 
-    if Assigned(NFE) then
+    for I := 0 to TACBrNFe(ACBrNFe).NotasFiscais.Count - 1 do
     begin
-      dmDanfe.frxPDFExport.FileName := PathPDF + NFE.procNFe.chNFe + '.pdf';
+      dmDanfe.frxPDFExport.FileName := PathPDF + dmDanfe.NFe.procNFe.chNFe + '.pdf';
       dmDanfe.frxReport.Export(dmDanfe.frxPDFExport);
-    end
-    else
-    begin
-      for I := 0 to TACBrNFe(ACBrNFe).NotasFiscais.Count - 1 do
-      begin
-        dmDanfe.NFe := TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe;
-        dmDanfe.CarregaDados;
-
-        dmDanfe.frxPDFExport.FileName := PathPDF + dmDanfe.NFe.procNFe.chNFe + '.pdf';
-        dmDanfe.frxReport.Export(dmDanfe.frxPDFExport);
-      end;
     end;
   end;
 end;

@@ -48,6 +48,14 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   17/09/2010
+---------------
+[+] Envio de nota eletrônica por e-mail (Régys Borges da Silveira, Itamar Bermond)
+    - Adicionados dois novos parâmetros, um para o nome do remetente, permitindo 
+      que ao enviar o e-mail apareça o nome do remetente ao invés do e-mail e outro 
+      para instruir o método a ficar esperando ou não a execução da thread de
+      envio de e-mail.
+
 Alterações   26/08/2010
 ---------------
 [-] DANFE em FAST REPORT (Régys Borges da Silveira, Itamar Bermond)

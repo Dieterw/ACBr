@@ -89,7 +89,9 @@ type
                                 EnviaPDF: Boolean = true;
                                 sCC: TStrings = nil;
                                 Anexos:TStrings=nil;
-                                PedeConfirma: Boolean = False);
+                                PedeConfirma: Boolean = False;
+                                AguardarEnvio: Boolean = False;
+                                NomeRemetente: String = '');
     property NFe: TNFe  read FNFe write FNFe;
     property XML: AnsiString  read GetNFeXML write FXML;
     property Confirmada: Boolean  read FConfirmada write FConfirmada;
@@ -131,6 +133,7 @@ type
     FException : Exception;
     procedure DoHandleException;
   public
+    Terminado: Boolean;
     smtp : TSMTPSend;
     sFrom : String;
     sTo : String;
@@ -259,7 +262,9 @@ procedure NotaFiscal.EnviarEmail(const sSmtpHost,
                                       EnviaPDF: Boolean = true;
                                       sCC: TStrings=nil;
                                       Anexos:TStrings=nil;
-                                      PedeConfirma: Boolean = False);
+                                      PedeConfirma: Boolean = False;
+                                      AguardarEnvio: Boolean = False;
+                                      NomeRemetente: String = '');
 var
  ThreadSMTP : TSendMailThread;
  m:TMimemess;
@@ -295,8 +300,13 @@ begin
       end;
 
     m.header.tolist.add(sTo);
-    m.header.From := sFrom;
-    m.header.subject:=sAssunto;
+
+    if Trim(NomeRemetente) <> '' then
+      m.header.From := Format('%s<%s>', [NomeRemetente, sFrom])
+    else
+      m.header.From := sFrom;
+
+    m.header.subject:= sAssunto;
     m.Header.ReplyTo := sFrom;
     if PedeConfirma then
        m.Header.CustomHeaders.Add('Disposition-Notification-To: '+sFrom);
@@ -317,10 +327,16 @@ begin
 
     ThreadSMTP.smtp.FullSSL := SSL;
     ThreadSMTP.smtp.AutoTLS := True;
+
     TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).SetStatus( stNFeEmail );
-
     ThreadSMTP.Resume; // inicia a thread
-
+    if AguardarEnvio then
+    begin
+      repeat
+        Sleep(1000);
+        Application.ProcessMessages;
+      until ThreadSMTP.Terminado;
+    end;
     TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).SetStatus( stIdle );
  finally
     m.free;
@@ -599,27 +615,41 @@ begin
   inherited;
 
   try
-     if not smtp.Login() then
+    Terminado := False;
+    try
+      if not smtp.Login() then
         raise Exception.Create('SMTP ERROR: Login:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
-     if not smtp.MailFrom( sFrom, Length(sFrom)) then
+
+      if not smtp.MailFrom( sFrom, Length(sFrom)) then
         raise Exception.Create('SMTP ERROR: MailFrom:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
-     if not smtp.MailTo(sTo) then
+
+      if not smtp.MailTo(sTo) then
         raise Exception.Create('SMTP ERROR: MailTo:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
-     if (sCC <> nil) then
-     begin
+
+      if (sCC <> nil) then
+      begin
         for I := 0 to sCC.Count - 1 do
         begin
-           if not smtp.MailTo(sCC.Strings[i]) then
-              raise Exception.Create('SMTP ERROR: MailTo:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
+          if not smtp.MailTo(sCC.Strings[i]) then
+            raise Exception.Create('SMTP ERROR: MailTo:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
         end;
-     end;
-     if not smtp.MailData(slmsg_Lines) then
+      end;
+
+      if not smtp.MailData(slmsg_Lines) then
         raise Exception.Create('SMTP ERROR: MailData:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
-     if not smtp.Logout() then
+
+      if not smtp.Logout() then
         raise Exception.Create('SMTP ERROR: Logout:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
+    finally
+      Terminado := True;
+    end;
   except
-     try smtp.Sock.CloseSocket ; except end ;
-     HandleException;
+    try
+      smtp.Sock.CloseSocket ;
+    except
+    end ;
+    Terminado := False;
+    HandleException;
   end;
 end;
 

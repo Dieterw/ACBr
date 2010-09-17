@@ -177,7 +177,9 @@ begin
         else
           Result := dmDanfe.frxReport.PrepareReport;
       end;
-    end;
+    end
+    else
+      raise EACBrNFeDANFEFR.Create('Propriedade ACBrNFe não assinalada.');
   end;
 end;
 

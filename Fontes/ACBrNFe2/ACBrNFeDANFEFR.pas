@@ -73,7 +73,7 @@ type
     procedure ImprimirDANFE(NFE: TNFe = nil); override;
     procedure ImprimirDANFEPDF(NFE: TNFe = nil); override;
   published
-    property FastFile: String read FFastFile write FFastFile ;
+    property FastFile: String read FFastFile write FFastFile;
     property dmDanfe: TdmACBrNFeFR read FdmDanfe write FdmDanfe;
     property EspessuraBorda: Integer read FEspessuraBorda write FEspessuraBorda;
     property PreparedReport: TfrxReport read GetPreparedReport;
@@ -99,10 +99,15 @@ end;
 
 function TACBrNFeDANFEFR.GetPreparedReport: TfrxReport;
 begin
-  if PrepareReport(nil) then
-    Result := dmDanfe.frxReport
+  if Trim(FFastFile) = '' then
+    Result := nil
   else
-    Result := nil;
+  begin
+    if PrepareReport(nil) then
+      Result := dmDanfe.frxReport
+    else
+      Result := nil;
+  end;
 end;
 
 procedure TACBrNFeDANFEFR.ImprimirDANFE(NFE: TNFe);
@@ -146,12 +151,12 @@ var
 begin
   Result := False;
 
-  if Trim(FFastFile) <> '' then
+  if Trim(FastFile) <> '' then
   begin
-    if FileExists(FFastFile) then
-      dmDanfe.frxReport.LoadFromFile(FFastFile)
+    if FileExists(FastFile) then
+      dmDanfe.frxReport.LoadFromFile(FastFile)
     else
-      raise EACBrNFeDANFEFR.CreateFmt('Caminho do arquivo de impressão do DANFE "%s" inválido.', [FFastFile]);
+      raise EACBrNFeDANFEFR.CreateFmt('Caminho do arquivo de impressão do DANFE "%s" inválido.', [FastFile]);
   end
   else
     raise EACBrNFeDANFEFR.Create('Caminho do arquivo de impressão do DANFE não assinalado.');

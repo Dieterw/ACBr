@@ -168,7 +168,7 @@ TACBrECFEpson = class( TACBrECFClass )
     
     Function DocumentosToNum(Documentos : TACBrECFTipoDocumentoSet) : Integer ;
 
-    Function  PreparaCmd( cmd : AnsiString ) : AnsiString ;
+    Procedure PreparaCmd( cmd : AnsiString ) ;
 
     function  GetRet0906: AnsiString;
     property  Ret0906 : AnsiString read GetRet0906 ;
@@ -341,6 +341,7 @@ TACBrECFEpson = class( TACBrECFClass )
        BuscaExata : Boolean; IgnorarCase : Boolean = True  ):
        TACBrECFComprovanteNaoFiscal; override;
 
+    function GetDadosUltimaReducaoZ: AnsiString; override ;
  end ;
 
 function EpsonCheckSum(Dados: AnsiString): AnsiString;
@@ -982,7 +983,7 @@ Var ErroMsg    : String ;
     ByteACK    : Byte ;
 begin
   if cmd <> '' then
-     cmd := PreparaCmd(cmd) ;  // Ajusta e move para Epsoncomando
+     PreparaCmd(cmd) ;  // Ajusta e move para Epsoncomando
 
   cmd := EpsonComando.FrameEnvio ;
 
@@ -1093,7 +1094,7 @@ begin
   end ;
 end;
 
-function TACBrECFEpson.PreparaCmd(cmd: AnsiString): AnsiString;
+Procedure TACBrECFEpson.PreparaCmd(cmd: AnsiString) ;
  Var Buf : AnsiString ;
      P   : Integer ;
      SL  : TStringList ;
@@ -2785,6 +2786,131 @@ begin
      end ;
   end ;
 end ;
+
+function TACBrECFEpson.GetDadosUltimaReducaoZ: AnsiString;
+var
+  Total, ValAliq : Double;
+  Aliq : TACBrECFAliquota ;
+  CRZ  : String ;
+  I, J : Integer ;
+begin
+//ASSEINFO - Sistemas de Informação (Desen.: Ronaldo)
+//15/09/2010
+
+
+//Esta função utiliza o comando "Obter Totais da Jornada (09 0D)", que aceita
+//como parâmetro um CRZ. Então para obter os totais da última redução, passamos o
+//CRZ atual, que guarda o número da última redução Z. Os campos retornados pelo
+//comando estão abaixo:
+//Campo                      Tipo Tamanho
+//1-Número da Redução Z      N    4
+//2-Número do COO            N    6
+//3-CRO                      N    6
+//4-Venda Bruta Diária       N    14
+//5-Total F                  N    13
+//6-Total I                  N    13
+//7-Total N                  N    13
+//8-Total FS                 N    13
+//9-Total IS                 N    13
+//10-Total NS                N    13
+//11-Total Canc. ICMS        N    13
+//12-Total Canc. ISS         N    13
+//13-Total Canc. NF          N    13
+//14-Total Desc. ICMS        N    13
+//15-Total Desc. ISS         N    13
+//16-Total Desc. NF          N    13
+//17-Total Acre. ICMS        N    13
+//18-Total Acre. ISS         N    13
+//19-Total Acre. NF          N    13
+//20-Total ICMS              N    13
+//21-Total ISS               N    13
+//22-Total NF                N    13
+//23-Data de Fechamento RZ  (D)  8
+//24-Hora de Fechamento RZ  (H)  6
+//25-Totalizador Geral       N   17
+//n+25-Percentual do Totalizador parcial  N  4
+//n+26-Total vendido         N  13
+  Result := '';
+
+  try
+     // Seção ECF
+     Result := '[ECF]'+ sLineBreak ;
+     Result := Result + 'NumSerie = ' + numSerie + sLineBreak;
+     Result := Result + 'NumLoja = ' + numLoja + sLineBreak;
+     Result := Result + 'NumECF = ' + numECF + sLineBreak;
+     CRZ    := NumCRZ;
+
+     EpsonComando.Comando := '090D';
+     EpsonComando.Params.Clear;
+     EpsonComando.AddParam(CRZ);
+     EnviaComando;
+  except
+     Exit;
+  end;
+
+  Result := Result + 'NumCRZ = ' + EpsonResposta.Params[0] + sLineBreak;
+  Result := Result + 'NumCOO = ' + EpsonResposta.Params[1] + sLineBreak;
+  Result := Result + 'NumCRO = ' + EpsonResposta.Params[2] + sLineBreak;
+
+  // Seção OutrasICMS
+  Result := Result + sLineBreak;
+  Result := Result + '[OutrasICMS]' + sLineBreak;
+
+  {a divisão por 100 ocorre para transformar, por exemplo 7886 em 78,86, pois
+   o ECF não traz a informação com a virgula}
+  Total  := RoundTo( StrToFloatDef(EpsonResposta.Params[4],0)/100, -2);
+  Result := Result + 'TotalSubstituicaoTributaria = ' + FloatToStr(Total) + sLineBreak;
+
+  Total  := RoundTo( StrToFloatDef(EpsonResposta.Params[5],0)/100, -2);
+  Result := Result + 'TotalIsencao = ' + FloatToStr(Total) + sLineBreak;
+
+  Total  := RoundTo( StrToFloatDef(EpsonResposta.Params[6],0)/100, -2);
+  Result := Result + 'TotalNaoTributado = ' + FloatToStr(Total) + sLineBreak;
+
+  // Seção Totalizadores
+  Result := Result + sLineBreak;
+  Result := Result + '[Totalizadores]'+sLineBreak;
+
+  Total  := StrToFloatDef(EpsonResposta.Params[13],0)/100; //Total Desc. ICMS
+  Total  := RoundTo( Total + StrToFloatDef(EpsonResposta.Params[14],0)/100, -2); //Total Desc. ICMS
+  Result := Result + 'TotalDescontos = ' + FloatToStr(Total) + sLineBreak;
+
+  Total  := StrToFloatDef(EpsonResposta.Params[10],0)/100; //Total Canc. ICMS
+  Total  := RoundTo( Total + StrToFloatDef(EpsonResposta.Params[11],0)/100, -2); // Total Canc. ISS
+  Result := Result + 'TotalCancelamentos = ' + FloatToStr(Total) + sLineBreak;
+
+  Total  := StrToFloatDef(EpsonResposta.Params[16],0)/100; //Total Acre. ICMS
+  Total  := RoundTo( Total + StrToFloatDef(EpsonResposta.Params[17],0)/100, -2); //Total Acre. ISS
+  Result := Result + 'TotalAcrescimos = ' + FloatToStr(Total) + sLineBreak;
+
+  Total  := RoundTo( StrToFloatDef(EpsonResposta.Params[21],0)/100, -2);
+  Result := Result + 'TotalNaoFiscal = ' + FloatToStr(Total) + sLineBreak ;
+
+  Total  := RoundTo( StrToFloatDef(EpsonResposta.Params[3],0)/100, -2);
+  Result := Result + 'VendaBruta = ' + FloatToStr(Total) + sLineBreak;
+
+  Total  := RoundTo( StrToFloatDef(EpsonResposta.Params[24],0)/100, -2);
+  Result := Result + 'GrandeTotal = ' + FloatToStr(Total) + sLineBreak;
+
+  // Aliquotas de ICMS, por: DSA //
+  Result := Result + sLineBreak + '[Aliquotas]'+sLineBreak ;
+  I := 25 ;
+  J := 1 ;
+  while I < EpsonResposta.Params.Count do
+  begin
+     ValAliq := RoundTo( StrToFloatDef(EpsonResposta.Params[ I ],0)/100, -2);
+     Total   := RoundTo( StrToFloatDef(EpsonResposta.Params[I+1],0)/100, -2);
+
+     Aliq := AchaICMSAliquota( ValAliq );
+     if Aliq <> Nil then
+        Result := Result + IntToStrZero(J,2) + Aliq.Tipo +
+                           IntToStrZero(Trunc(ValAliq*100),4) + ' = '+
+                           FloatToStr(Total) + sLineBreak ;
+
+     I := I + 2 ;
+     J := J + 1 ;
+  end ;
+end;
 
 procedure TACBrECFEpson.LoadDLLFunctions ;
  procedure EpsonFunctionDetect( FuncName: String; var LibPointer: Pointer ) ;

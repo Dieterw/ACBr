@@ -9,8 +9,8 @@ uses
 
 {Handle para o componente TACBrBAL }
 type TBALHandle = record
-  BAL : TACBrBAL;
   UltimoErro : String;
+  BAL : TACBrBAL;
 end;
 
 {Ponteiro para o Handle}
@@ -49,7 +49,7 @@ CRIA um novo componente TACBrBAL retornando o ponteiro para o objeto criado.
 Este ponteiro deve ser armazenado pela aplicação que utiliza a DLL e informado
 em todas as chamadas de função relativas ao TACBrBAL
 }
-Function BAL_Create(var balHandle: PBALHandle): Integer; cdecl; export;
+Function BAL_Create(var balHandle: PBALHandle): Integer; {$IFDEF STDCALL} stdcall; {$ELSE} cdecl; {$ENDIF} export;
 begin
 
   try
@@ -77,7 +77,7 @@ DESTRÓI o objeto TACBrBAL e libera a memória utilizada.
 Esta função deve SEMPRE ser chamada pela aplicação que utiliza a DLL
 quando o componente não mais for utilizado.
 }
-Function BAL_Destroy(var balHandle: PBALHandle): Integer; cdecl; export;
+Function BAL_Destroy(var balHandle: PBALHandle): Integer; {$IFDEF STDCALL} stdcall; {$ELSE} cdecl; {$ENDIF} export;
 begin
 
   try
@@ -99,7 +99,7 @@ begin
 
 end;
 
-Function BAL_GetUltimoErro(const balHandle: PBALHandle; var Buffer : pChar; const BufferLen : Integer) : Integer ; cdecl ; export;
+Function BAL_GetUltimoErro(const balHandle: PBALHandle; Buffer : pChar; const BufferLen : Integer) : Integer ; {$IFDEF STDCALL} stdcall; {$ELSE} cdecl; {$ENDIF} export;
 begin
 
   if (balHandle = nil) then
@@ -121,7 +121,7 @@ begin
 end;
 
 
-Function BAL_Ativar(const balHandle: PBALHandle) : Integer; cdecl; export;
+Function BAL_Ativar(const balHandle: PBALHandle) : Integer; {$IFDEF STDCALL} stdcall; {$ELSE} cdecl; {$ENDIF} export;
 begin
 
   if (balHandle = nil) then
@@ -143,7 +143,7 @@ begin
 
 end;
 
-Function BAL_Desativar(const balHandle: PBALHandle) : Integer; cdecl; export;
+Function BAL_Desativar(const balHandle: PBALHandle) : Integer; {$IFDEF STDCALL} stdcall; {$ELSE} cdecl; {$ENDIF} export;
 begin
 
   if (balHandle = nil) then
@@ -165,7 +165,7 @@ begin
 
 end;
 
-Function BAL_GetModelo(const balHandle: PBALHandle) : Integer; cdecl; export;
+Function BAL_GetModelo(const balHandle: PBALHandle) : Integer; {$IFDEF STDCALL} stdcall; {$ELSE} cdecl; {$ENDIF} export;
 begin
 
   if (balHandle = nil) then
@@ -186,7 +186,7 @@ begin
 
 end;
 
-Function BAL_SetModelo(const balHandle: PBALHandle; const Modelo : Integer) : Integer; cdecl; export;
+Function BAL_SetModelo(const balHandle: PBALHandle; const Modelo : Integer) : Integer; {$IFDEF STDCALL} stdcall; {$ELSE} cdecl; {$ENDIF} export;
 begin
 
   if (balHandle = nil) then
@@ -208,7 +208,7 @@ begin
 
 end;
 
-Function BAL_GetModeloStr(const balHandle: PBALHandle; var Buffer : pChar; const BufferLen : Integer) : Integer ; cdecl ; export;
+Function BAL_GetModeloStr(const balHandle: PBALHandle; Buffer : pChar; const BufferLen : Integer) : Integer ; {$IFDEF STDCALL} stdcall; {$ELSE} cdecl; {$ENDIF} export;
 var
   StrTmp : String;
 begin
@@ -233,7 +233,7 @@ begin
 
 end;
 
-Function BAL_GetPorta(const balHandle: PBALHandle; var Buffer : pChar; const BufferLen : Integer) : Integer ; cdecl ; export;
+Function BAL_GetPorta(const balHandle: PBALHandle; Buffer : pChar; const BufferLen : Integer) : Integer ; {$IFDEF STDCALL} stdcall; {$ELSE} cdecl; {$ENDIF} export;
 var
   StrTmp : String;
 begin
@@ -258,7 +258,7 @@ begin
 
 end;
 
-Function BAL_SetPorta(const balHandle: PBALHandle; const Porta : pChar) : Integer; cdecl; export;
+Function BAL_SetPorta(const balHandle: PBALHandle; const Porta : pChar) : Integer; {$IFDEF STDCALL} stdcall; {$ELSE} cdecl; {$ENDIF} export;
 begin
 
   if (balHandle = nil) then
@@ -280,7 +280,7 @@ begin
 
 end;
 
-Function BAL_GetAtivo(const balHandle: PBALHandle) : Integer; cdecl; export;
+Function BAL_GetAtivo(const balHandle: PBALHandle) : Integer; {$IFDEF STDCALL} stdcall; {$ELSE} cdecl; {$ENDIF} export;
 begin
 
   if (balHandle = nil) then
@@ -304,7 +304,7 @@ begin
 
 end;
 
-Function BAL_GetUltimoPesoLido(const balHandle: PBALHandle; var peso : Double) : Integer; cdecl; export;
+Function BAL_GetUltimoPesoLido(const balHandle: PBALHandle; var peso : Double) : Integer; {$IFDEF STDCALL} stdcall; {$ELSE} cdecl; {$ENDIF} export;
 begin
 
   if (balHandle = nil) then
@@ -327,7 +327,7 @@ begin
 end;
 
 
-Function BAL_GetUltimaResposta(const balHandle: PBALHandle; var Buffer : pChar; const BufferLen : Integer) : Integer ; cdecl ; export;
+Function BAL_GetUltimaResposta(const balHandle: PBALHandle; Buffer : pChar; const BufferLen : Integer) : Integer ; {$IFDEF STDCALL} stdcall; {$ELSE} cdecl; {$ENDIF} export;
 var
   StrTmp : String;
 begin
@@ -352,7 +352,7 @@ begin
 
 end;
 
-Function BAL_LePeso(const balHandle: PBALHandle; const timeout : Integer; var peso : Double) : Integer; cdecl; export;
+Function BAL_LePeso(const balHandle: PBALHandle; const timeout : Integer; var peso : Double) : Integer; {$IFDEF STDCALL} stdcall; {$ELSE} cdecl; {$ENDIF} export;
 begin
 
   if (balHandle = nil) then

@@ -42,12 +42,12 @@ ImageBase=4194304
 ExeDescription=
 [Directories]
 OutputDir=
-UnitOutputDir=
+UnitOutputDir=bin
 PackageDLLOutputDir=
 PackageDCPOutputDir=
 SearchPath=C:\ACBr\Fontes\ACBrDiversos;C:\ACBr\Fontes\ACBrComum;C:\ACBr\Fontes\ACBrSerial;C:\ACBr\Fontes\synalist
 Packages=vcl;rtl;dbrtl;adortl;vcldb;vclx;bdertl;vcldbx;ibxpress;dsnap;cds;bdecds;qrpt;teeui;teedb;tee;dss;teeqr;visualclx;visualdbclx;dsnapcrba;dsnapcon;VclSmp;vclshlctrls;ACBrComum;ACBrDiversos;ACBrSerial;synapse
-Conditionals=CONSOLE
+Conditionals=CONSOLE;
 DebugSourceDirs=
 UsePackages=0
 [Parameters]
@@ -84,10 +84,13 @@ Comments=
 [Excluded Packages]
 c:\program files\borland\delphi6\Projects\Bpl\ACBrSerial.bpl=ACBr Automação Comercial Brasil - ACBrSerial (http://acbr.sf.net/)
 [HistoryLists\hlConditionals]
-Count=3
-Item0=CONSOLE
-Item1=CONSOLE;CONSOLE
-Item2=CONSOLE;COMPILER6_UP
+Count=6
+Item0=CONSOLE;
+Item1=CONSOLE;STDCALL;
+Item2=CONSOLE;STDCALL;STDCALL
+Item3=CONSOLE
+Item4=CONSOLE;CONSOLE
+Item5=CONSOLE;COMPILER6_UP
 [HistoryLists\hlUnitAliases]
 Count=1
 Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
@@ -99,3 +102,6 @@ Item2=C:\ACBr\Fontes;C:\ACBr\DLLs\Diversos;C:\ACBr\DLLs\CLX;C:\ACBr\DLLs\Capicom
 Item3=C:\ACBr\Fontes;C:\ACBr\DLLs\Diversos;C:\ACBr\DLLs\CLX;C:\ACBr\DLLs\Capicom;C:\ACBr\DLLs\OpenSSL;C:\ACBr\DLLs\XMLSec;C:\ACBr\Pacotes\Delphi;C:\ACBr\Pacotes;C:\ACBr\lib\i386-win32;C:\ACBr\Fontes\ACBrComum
 Item4=C:\ACBr\Fontes;C:\ACBr\DLLs\Diversos;C:\ACBr\DLLs\CLX;C:\ACBr\DLLs\Capicom;C:\ACBr\DLLs\OpenSSL;C:\ACBr\DLLs\XMLSec;C:\ACBr\lib\i386-win32;C:\ACBr\Pacotes\Delphi;C:\ACBr\Pacotes
 Item5=C:\ACBr;C:\ACBr\DLLs\Diversos;C:\ACBr\DLLs\CLX;C:\ACBr\DLLs\Capicom;C:\ACBr\DLLs\OpenSSL;C:\ACBr\DLLs\XMLSec;C:\ACBr\lib\i386-win32;C:\ACBr\Pacotes\Delphi;C:\ACBr\Pacotes
+[HistoryLists\hlUnitOutputDirectory]
+Count=1
+Item0=bin

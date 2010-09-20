@@ -48,7 +48,7 @@ int main()
 	CheckResult(ret);
 
 	printf("GetModeloStr");
-	ret = ECF_GetModeloStr(ecfHANDLE, &buff, 100);
+	ret = ECF_GetModeloStr(ecfHANDLE, buff, 100);
 	CheckResult(ret);
 	printf(": %s\n", buff);
 
@@ -57,7 +57,7 @@ int main()
 	CheckResult(ret);
 
 	printf("GetPorta");
-	ret = ECF_GetPorta(ecfHANDLE, &buff, 100);
+	ret = ECF_GetPorta(ecfHANDLE, buff, 100);
 	CheckResult(ret);
 	printf(": %s\n", buff);
 
@@ -133,7 +133,7 @@ void CheckResult(int ret)
 	if (ret < 0)
 	{
 		PCHAR buff = malloc(100);
-		ECF_GetUltimoErro(ecfHANDLE, &buff, 100);
+		ECF_GetUltimoErro(ecfHANDLE, buff, 100);
 		printf("ERRO: ");
 		printf(buff);
 		printf("\n");

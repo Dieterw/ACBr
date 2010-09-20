@@ -69,7 +69,8 @@ namespace ACBr.Net
             {
                 case -1:
 
-                    string error = GetString(ACBrDll.LCB_GetUltimoErro);
+					const int BUFFER_LEN = 1024;
+                    string error = GetString(ACBrDll.LCB_GetUltimoErro, BUFFER_LEN);
                     throw new ACBrECFException(error);
 
                 case -2:

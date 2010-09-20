@@ -9,9 +9,9 @@ namespace ACBr.Net
     {
         #region Fields
 
-        private IList<ACBrECFAliquota> aliquotas;
-        private IList<ACBrECFFormaPagamento> formasPagamento;
-        private IList<ACBrECFComprovanteNaoFiscal> comprovantesNaoFiscais;
+        private ACBrECFAliquota[] aliquotas;
+        private ACBrECFFormaPagamento[] formasPagamento;
+        private ACBrECFComprovanteNaoFiscal[] comprovantesNaoFiscais;
 
         #endregion Fields
 
@@ -631,30 +631,30 @@ namespace ACBr.Net
             }
         }
 
-        public IList<ACBrECFAliquota> Aliquotas
+        public ACBrECFAliquota[] Aliquotas
         {
             get
             {
                 if (aliquotas == null) this.CarregaAliquotas();
-                return aliquotas;
+                return (ACBrECFAliquota[])aliquotas.Clone();
             }
         }
 
-        public IList<ACBrECFFormaPagamento> FormasPagamento
+        public ACBrECFFormaPagamento[] FormasPagamento
         {
             get
             {
                 if (formasPagamento == null) CarregaFormasPagamento();
-                return formasPagamento;
+                return (ACBrECFFormaPagamento[])formasPagamento;
             }
         }
 
-        public IList<ACBrECFComprovanteNaoFiscal> ComprovantesNaoFiscais
+        public ACBrECFComprovanteNaoFiscal[] ComprovantesNaoFiscais
         {
             get
             {
                 if (comprovantesNaoFiscais == null) CarregaComprovantesNaoFiscais();
-                return comprovantesNaoFiscais;
+                return (ACBrECFComprovanteNaoFiscal[])comprovantesNaoFiscais;
             }
         }
 
@@ -840,7 +840,8 @@ namespace ACBr.Net
 
         private void CarregaAliquotas(int count)
         {
-            aliquotas = new List<ACBrECFAliquota>(count);
+            aliquotas = new ACBrECFAliquota[count];
+
             for (int i = 0; i < count; i++)
             {
                 var record = new ACBrDll.AliquotaRec();
@@ -854,7 +855,7 @@ namespace ACBr.Net
                 aliquota.Tipo = record.Tipo.ToString();
                 aliquota.Total = Convert.ToDecimal(record.Total);
 
-                aliquotas.Add(aliquota);
+                aliquotas[i] = aliquota;
             }
         }
 
@@ -893,7 +894,7 @@ namespace ACBr.Net
 
         private void CarregaFormasPagamento(int count)
         {
-            formasPagamento = new List<ACBrECFFormaPagamento>(count);
+            formasPagamento = new ACBrECFFormaPagamento[count];
             for (int i = 0; i < count; i++)
             {
                 var record = new ACBrDll.FormaPagamentoRec();
@@ -906,7 +907,7 @@ namespace ACBr.Net
                 formaPagamento.PermiteVinculado = record.PermiteVinculado;
                 formaPagamento.Total = Convert.ToDecimal(record.Total);
 
-                formasPagamento.Add(formaPagamento);
+                formasPagamento[i] = formaPagamento;
             }
         }
 
@@ -943,7 +944,7 @@ namespace ACBr.Net
 
         private void CarregaComprovantesNaoFiscais(int count)
         {
-            comprovantesNaoFiscais = new List<ACBrECFComprovanteNaoFiscal>(count);
+            comprovantesNaoFiscais = new ACBrECFComprovanteNaoFiscal[count];
             for (int i = 0; i < count; i++)
             {
                 var record = new ACBrDll.ComprovanteNaoFiscalRec();
@@ -958,7 +959,7 @@ namespace ACBr.Net
                 comprovanteNaoFiscal.Total = Convert.ToDecimal(record.Total);
                 comprovanteNaoFiscal.Contador = record.Contador;
 
-                comprovantesNaoFiscais.Add(comprovanteNaoFiscal);
+                comprovantesNaoFiscais[i] = comprovanteNaoFiscal;
             }
         }
 

@@ -25,7 +25,7 @@ namespace ACBr.Net
 
         #region Inner Types
 
-        protected delegate int GetStringEntryPointDelegate(IntPtr handle, ref StringBuilder buffer, int bufferLen);
+        protected delegate int GetStringEntryPointDelegate(IntPtr handle, StringBuilder buffer, int bufferLen);
         protected delegate int GetDoubleEntryPointDelegate(IntPtr handle, ref double value);
         protected delegate int GetInt32EntryPointDelegate(IntPtr handle);
 
@@ -40,10 +40,15 @@ namespace ACBr.Net
 
         protected string GetString(GetStringEntryPointDelegate entryPoint)
         {
-            const int BUFFER_LEN = 1024;
-            StringBuilder buffer = new StringBuilder(BUFFER_LEN);
+            const int BUFFER_LEN = 256;
+            return GetString(entryPoint, BUFFER_LEN);
+        }
 
-            int ret = entryPoint(handle, ref buffer, BUFFER_LEN);
+        protected string GetString(GetStringEntryPointDelegate entryPoint, int len)
+        {
+			StringBuilder buffer = new StringBuilder(len);
+
+			int ret = entryPoint(handle, buffer, len);
             CheckResult(ret);
 
             return buffer.ToString();

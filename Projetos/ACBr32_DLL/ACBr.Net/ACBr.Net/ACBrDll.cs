@@ -76,7 +76,7 @@ namespace ACBr.Net
         public static extern int ECF_Destroy(ref IntPtr ecfHandle);
 
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int ECF_GetUltimoErro(IntPtr ecfHandle, ref StringBuilder buffer, int bufferLen);
+        public static extern int ECF_GetUltimoErro(IntPtr ecfHandle, StringBuilder buffer, int bufferLen);
 
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern int ECF_Ativar(IntPtr ecfHandle);
@@ -93,7 +93,7 @@ namespace ACBr.Net
         public static extern int ECF_SetModelo(IntPtr ecfHandle, int modelo);
 
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int ECF_GetPorta(IntPtr ecfHandle, ref StringBuilder buffer, int bufferLen);
+        public static extern int ECF_GetPorta(IntPtr ecfHandle, StringBuilder buffer, int bufferLen);
 
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern int ECF_SetPorta(IntPtr ecfHandle, string porta);
@@ -114,13 +114,13 @@ namespace ACBr.Net
         public static extern int ECF_GetAguardandoResposta(IntPtr ecfHandle);
 
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int ECF_GetComandoEnviado(IntPtr ecfHandle, ref StringBuilder buffer, int bufferLen);
+        public static extern int ECF_GetComandoEnviado(IntPtr ecfHandle, StringBuilder buffer, int bufferLen);
 
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int ECF_GetRespostaComando(IntPtr ecfHandle, ref StringBuilder buffer, int bufferLen);
+        public static extern int ECF_GetRespostaComando(IntPtr ecfHandle, StringBuilder buffer, int bufferLen);
 
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int ECF_GetComandoLOG(IntPtr ecfHandle, ref StringBuilder buffer, int bufferLen);
+        public static extern int ECF_GetComandoLOG(IntPtr ecfHandle, StringBuilder buffer, int bufferLen);
 
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern int ECF_SetComandoLOG(IntPtr ecfHandle, string comandoLog);
@@ -132,31 +132,31 @@ namespace ACBr.Net
         public static extern int ECF_SetAguardaImpressao(IntPtr ecfHandle, bool aguardaImpressao);
 
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int ECF_GetModeloStr(IntPtr ecfHandle, ref StringBuilder buffer, int bufferLen);
+        public static extern int ECF_GetModeloStr(IntPtr ecfHandle, StringBuilder buffer, int bufferLen);
 
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int ECF_GetRFDID(IntPtr ecfHandle, ref StringBuilder buffer, int bufferLen);
+        public static extern int ECF_GetRFDID(IntPtr ecfHandle, StringBuilder buffer, int bufferLen);
 
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern int ECF_GetDataHora(IntPtr ecfHandle, ref double value);
 
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int ECF_GetNumCupom(IntPtr ecfHandle, ref StringBuilder buffer, int bufferLen);
+        public static extern int ECF_GetNumCupom(IntPtr ecfHandle, StringBuilder buffer, int bufferLen);
 
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int ECF_GetNumCOO(IntPtr ecfHandle, ref StringBuilder buffer, int bufferLen);
+        public static extern int ECF_GetNumCOO(IntPtr ecfHandle, StringBuilder buffer, int bufferLen);
 
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int ECF_GetNumLoja(IntPtr ecfHandle, ref StringBuilder buffer, int bufferLen);
+        public static extern int ECF_GetNumLoja(IntPtr ecfHandle, StringBuilder buffer, int bufferLen);
 
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int ECF_GetNumECF(IntPtr ecfHandle, ref StringBuilder buffer, int bufferLen);
+        public static extern int ECF_GetNumECF(IntPtr ecfHandle, StringBuilder buffer, int bufferLen);
 
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int ECF_GetNumSerie(IntPtr ecfHandle, ref StringBuilder buffer, int bufferLen);
+        public static extern int ECF_GetNumSerie(IntPtr ecfHandle, StringBuilder buffer, int bufferLen);
 
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int ECF_GetNumVersao(IntPtr ecfHandle, ref StringBuilder buffer, int bufferLen);
+        public static extern int ECF_GetNumVersao(IntPtr ecfHandle, StringBuilder buffer, int bufferLen);
 
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern int ECF_GetDataMovimento(IntPtr ecfHandle, ref double value);
@@ -165,46 +165,46 @@ namespace ACBr.Net
         public static extern int ECF_GetDataHoraSB(IntPtr ecfHandle, ref double value);
 
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int ECF_GetCNPJ(IntPtr ecfHandle, ref StringBuilder buffer, int bufferLen);
+        public static extern int ECF_GetCNPJ(IntPtr ecfHandle, StringBuilder buffer, int bufferLen);
 
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int ECF_GetIE(IntPtr ecfHandle, ref StringBuilder buffer, int bufferLen);
+        public static extern int ECF_GetIE(IntPtr ecfHandle, StringBuilder buffer, int bufferLen);
 
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int ECF_GetIM(IntPtr ecfHandle, ref StringBuilder buffer, int bufferLen);
+        public static extern int ECF_GetIM(IntPtr ecfHandle, StringBuilder buffer, int bufferLen);
 
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int ECF_GetCliche(IntPtr ecfHandle, ref StringBuilder buffer, int bufferLen);
+        public static extern int ECF_GetCliche(IntPtr ecfHandle, StringBuilder buffer, int bufferLen);
 
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int ECF_GetUsuarioAtual(IntPtr ecfHandle, ref StringBuilder buffer, int bufferLen);
+        public static extern int ECF_GetUsuarioAtual(IntPtr ecfHandle, StringBuilder buffer, int bufferLen);
 
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int ECF_GetSubModeloECF(IntPtr ecfHandle, ref StringBuilder buffer, int bufferLen);
+        public static extern int ECF_GetSubModeloECF(IntPtr ecfHandle, StringBuilder buffer, int bufferLen);
         
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int ECF_GetPAF(IntPtr ecfHandle, ref StringBuilder buffer, int bufferLen);
+        public static extern int ECF_GetPAF(IntPtr ecfHandle, StringBuilder buffer, int bufferLen);
 
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int ECF_GetNumCRZ(IntPtr ecfHandle, ref StringBuilder buffer, int bufferLen);
+        public static extern int ECF_GetNumCRZ(IntPtr ecfHandle, StringBuilder buffer, int bufferLen);
 
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int ECF_GetNumCRO(IntPtr ecfHandle, ref StringBuilder buffer, int bufferLen);
+        public static extern int ECF_GetNumCRO(IntPtr ecfHandle, StringBuilder buffer, int bufferLen);
 
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int ECF_GetNumCCF(IntPtr ecfHandle, ref StringBuilder buffer, int bufferLen);
+        public static extern int ECF_GetNumCCF(IntPtr ecfHandle, StringBuilder buffer, int bufferLen);
 
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int ECF_GetNumGNF(IntPtr ecfHandle, ref StringBuilder buffer, int bufferLen);
+        public static extern int ECF_GetNumGNF(IntPtr ecfHandle, StringBuilder buffer, int bufferLen);
 
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int ECF_GetNumGRG(IntPtr ecfHandle, ref StringBuilder buffer, int bufferLen);
+        public static extern int ECF_GetNumGRG(IntPtr ecfHandle, StringBuilder buffer, int bufferLen);
 
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int ECF_GetNumCDC(IntPtr ecfHandle, ref StringBuilder buffer, int bufferLen);
+        public static extern int ECF_GetNumCDC(IntPtr ecfHandle, StringBuilder buffer, int bufferLen);
 
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int ECF_GetNumCOOInicial(IntPtr ecfHandle, ref StringBuilder buffer, int bufferLen);
+        public static extern int ECF_GetNumCOOInicial(IntPtr ecfHandle, StringBuilder buffer, int bufferLen);
 
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern int ECF_GetVendaBruta(IntPtr ecfHandle, ref double value);
@@ -312,7 +312,7 @@ namespace ACBr.Net
         public static extern int ECF_SetGavetaSinalInvertido(IntPtr ecfHandle, bool gavetaSinalInvertido);
 
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int ECF_GetOperador(IntPtr ecfHandle, ref StringBuilder buffer, int bufferLen);
+        public static extern int ECF_GetOperador(IntPtr ecfHandle, StringBuilder buffer, int bufferLen);
 
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern int ECF_SetOperador(IntPtr ecfHandle, string operador);
@@ -485,7 +485,7 @@ namespace ACBr.Net
         public static extern int BAL_Destroy(ref IntPtr balHandle);
 
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int BAL_GetUltimoErro(IntPtr balHandle, ref StringBuilder buffer, int bufferLen);
+        public static extern int BAL_GetUltimoErro(IntPtr balHandle, StringBuilder buffer, int bufferLen);
 
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern int BAL_Ativar(IntPtr balHandle);
@@ -502,10 +502,10 @@ namespace ACBr.Net
         public static extern int BAL_SetModelo(IntPtr balHandle, int modelo);
 
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int BAL_GetModeloStr(IntPtr balHandle, ref StringBuilder buffer, int bufferLen);
+        public static extern int BAL_GetModeloStr(IntPtr balHandle, StringBuilder buffer, int bufferLen);
 
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int BAL_GetPorta(IntPtr balHandle, ref StringBuilder buffer, int bufferLen);
+        public static extern int BAL_GetPorta(IntPtr balHandle, StringBuilder buffer, int bufferLen);
 
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern int BAL_SetPorta(IntPtr balHandle, string porta);
@@ -517,7 +517,7 @@ namespace ACBr.Net
         public static extern int BAL_GetUltimoPesoLido(IntPtr balHandle, ref double peso);
 
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int BAL_GetUltimaResposta(IntPtr balHandle, ref StringBuilder buffer, int bufferLen);
+        public static extern int BAL_GetUltimaResposta(IntPtr balHandle, StringBuilder buffer, int bufferLen);
 
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern int BAL_LePeso(IntPtr balHandle, int timeout, ref double peso);
@@ -535,7 +535,7 @@ namespace ACBr.Net
         public static extern int LCB_Destroy(ref IntPtr lcbHandle);
 
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int LCB_GetUltimoErro(IntPtr lcbHandle, ref StringBuilder buffer, int bufferLen);
+        public static extern int LCB_GetUltimoErro(IntPtr lcbHandle, StringBuilder buffer, int bufferLen);
 
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern int LCB_Ativar(IntPtr lcbHandle);
@@ -546,7 +546,7 @@ namespace ACBr.Net
         #region Propriedades do Componente
 
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int LCB_GetPorta(IntPtr lcbHandle, ref StringBuilder buffer, int bufferLen);
+        public static extern int LCB_GetPorta(IntPtr lcbHandle, StringBuilder buffer, int bufferLen);
 
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern int LCB_SetPorta(IntPtr lcbHandle, string porta);

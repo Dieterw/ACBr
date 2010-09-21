@@ -1092,6 +1092,7 @@ begin
 
 //    Gerador.wCampo(tcDat, 'K31', 'dPrev  ', 10, 10, 0, CTe.infCTeNorm.contQt[i].dPrev, '');
 //    Gerador.wGrupo('/contQt');
+    Gerador.wGrupo('/emiDocAnt');
   end;
   if CTe.infCTeNorm.emiDocAnt.Count > 990 then
     Gerador.wAlerta('K16', 'emiDocAnt', '', ERR_MSG_MAIOR_MAXIMO + '990');

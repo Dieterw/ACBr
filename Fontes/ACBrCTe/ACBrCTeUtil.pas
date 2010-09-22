@@ -829,7 +829,7 @@ var
   schema_filename   : PChar;
   Tipo, I           : Integer;
 begin
-  I := pos('<infCTe', AXML);
+  I := pos('<infCte', AXML);
   Tipo := 1;
   if I = 0 then
   begin
@@ -971,7 +971,7 @@ var
   Schema      : XMLSchemaCache;
   Tipo, I     : Integer;
 begin
-  I := pos('<infCTe',XML) ;
+  I := pos('<infCte',XML) ;
   Tipo := 1;
   if I = 0  then
    begin
@@ -1095,7 +1095,7 @@ begin
    end;
 
   if I = 0 then
-    raise Exception.Create('Não encontrei inicio do URI: <infCTe');
+    raise Exception.Create('Não encontrei inicio do URI: <infCte');
   I := CTeUtil.PosEx('Id=', AStr, I + 6);
   if I = 0 then
     raise Exception.Create('Não encontrei inicio do URI: Id=');

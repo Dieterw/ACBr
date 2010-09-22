@@ -292,10 +292,15 @@ begin
   GerarExped;
   GerarReceb;
   GerarDest;
-  GerarvPrest;
-  GerarImp;
-  GerarInfCTeNorm;
-  GerarinfCTeComp;
+
+  if (CTe.Ide.tpCTe = tcComplemento)
+   then GerarinfCTeComp
+   else begin
+    GerarvPrest;
+    GerarImp;
+    GerarInfCTeNorm;
+   end;
+
   GerarInfCTeAnu;
 end;
 

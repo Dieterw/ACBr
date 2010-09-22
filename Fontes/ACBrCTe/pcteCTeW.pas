@@ -968,6 +968,7 @@ end;
 
 procedure TCTeW.GerarInfCTeNorm;
 begin
+  // A checagem da condição abaixo incluida por Italo em 22/09/2010
   if (CTe.Ide.tpCTe = tcNormal) then
   begin
     Gerador.wGrupo('infCTeNorm', 'K01');

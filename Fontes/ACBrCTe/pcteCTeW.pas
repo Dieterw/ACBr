@@ -292,16 +292,12 @@ begin
   GerarExped;
   GerarReceb;
   GerarDest;
+  GerarvPrest;
+  GerarImp;
 
-  if (CTe.Ide.tpCTe = tcComplemento)
-   then GerarinfCTeComp
-   else begin
-    GerarvPrest;
-    GerarImp;
-    GerarInfCTeNorm;
-   end;
-
-  GerarInfCTeAnu;
+  GerarInfCTeNorm; // Gerado somente se Tipo de CTe = tcNormal
+  GerarinfCTeComp; // Gerado somente se Tipo de CTe = tcComplemento
+  GerarInfCTeAnu;  // Gerado somente se Tipo de CTe = tcAnulacao
 end;
 
 procedure TCTeW.GerarIde;
@@ -972,26 +968,29 @@ end;
 
 procedure TCTeW.GerarInfCTeNorm;
 begin
-  Gerador.wGrupo('infCTeNorm', 'K01');
-  (**)GerarinfCarga;
-  (**)GerarContQt;
-  if CTe.infCTeNorm.emiDocAnt.Count>0
-   then (**)GerarDocAnt;
-  (**)GerarInfSeg;
+  if (CTe.Ide.tpCTe = tcNormal) then
+  begin
+    Gerador.wGrupo('infCTeNorm', 'K01');
+    (**)GerarinfCarga;
+    (**)GerarContQt;
+    if CTe.infCTeNorm.emiDocAnt.Count>0
+     then (**)GerarDocAnt;
+    (**)GerarInfSeg;
 
-  case StrToInt(TpModalToStr(CTe.Ide.modal)) of
-   01: (**)GerarRodo; // Informações do Modal Rodoviário
-   02: (**)GerarAereo;
-   03: (**)GerarAquav;
-   04: (**)GerarFerrov;
-   05: (**)GerarDuto;
+    case StrToInt(TpModalToStr(CTe.Ide.modal)) of
+     01: (**)GerarRodo; // Informações do Modal Rodoviário
+     02: (**)GerarAereo;
+     03: (**)GerarAquav;
+     04: (**)GerarFerrov;
+     05: (**)GerarDuto;
+    end;
+
+    (**)GerarPeri; // Informações de produtos classificados pela ONU como Perigosos
+    (**)GerarVeicNovos;
+    (**)GerarInfCTeSub;
+
+    Gerador.wGrupo('/infCTeNorm');
   end;
-
-  (**)GerarPeri; // Informações de produtos classificados pela ONU como Perigosos
-  (**)GerarVeicNovos;
-  (**)GerarInfCTeSub;
-
-  Gerador.wGrupo('/infCTeNorm');
 end;
 
 procedure TCTeW.GerarinfCarga;

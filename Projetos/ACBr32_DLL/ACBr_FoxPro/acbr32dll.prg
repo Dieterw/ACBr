@@ -357,7 +357,7 @@ DECLARE INTEGER ECF_FechaRelatorio IN ACBr32.DLL INTEGER iECFHandle
 DECLARE INTEGER ECF_PulaLinhas IN ACBr32.DLL INTEGER iECFHandle, INTEGER iNumLinhas
 
 *Function ECF_CortaPapel(const ecfHandle: PECFHandle; const CorteParcial : Boolean) : Integer 
-DECLARE INTEGER ECF_CortaPapel IN ACBr32.DLL INTEGER iECFHandle, STRING bCorteParcial
+DECLARE INTEGER ECF_CortaPapel IN ACBr32.DLL INTEGER iECFHandle, INTEGER bCorteParcial
 
 ** Alíquotas
 
@@ -477,7 +477,7 @@ CLEAR
 iHandle = 0
 ECF_Create(@iHandle)
 
-ECF_SetPorta(iHandle, "COM5")
+ECF_SetPorta(iHandle, "COM1")
 ECF_SetModelo(iHandle, ECF_Bematech)
 ret = ECF_Ativar(iHandle)
 
@@ -502,6 +502,10 @@ INKEY(1)
 ECF_AbreRelatorioGerencial(iHandle, 0)
 ECF_LinhaRelatorioGerencial(iHandle, "Teste 1", 0)
 ECF_LinhaRelatorioGerencial(iHandle, "Teste 2", 0)
+
+ECF_PulaLinhas(iHandle, 5)
+ECF_CortaPapel(iHandle, 0);
+
 ECF_LinhaRelatorioGerencial(iHandle, "Teste 3", 0)
 ECF_LinhaRelatorioGerencial(iHandle, "Teste 4", 0)
 ECF_LinhaRelatorioGerencial(iHandle, "Teste 5", 0)

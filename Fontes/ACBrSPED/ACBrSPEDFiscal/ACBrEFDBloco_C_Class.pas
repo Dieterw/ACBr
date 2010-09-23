@@ -1229,7 +1229,7 @@ begin
           Add( LFill('C160') +
                LFill( COD_PART ) +
                LFill( VEIC_ID ) +
-               LFill( QTD_VOL,0,0 ) +
+               LFill( QTD_VOL,0 ) +
                LFill( PESO_BRT,0,2 ) +
                LFill( PESO_LIQ,0,2 ) +
                LFill( UF_ID ) ) ;
@@ -1263,7 +1263,7 @@ begin
                LFill( NR_PASSE ) +
                LFill( HORA ) +
                LFill( TEMPER ) +
-               LFill( QTD_VOL,0,0 ) +
+               LFill( QTD_VOL,0 ) +
                LFill( PESO_BRT,0,2 ) +
                LFill( PESO_LIQ,0,2 ) +
                LFill( NOM_MOT ) +

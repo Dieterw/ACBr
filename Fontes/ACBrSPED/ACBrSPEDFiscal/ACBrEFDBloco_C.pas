@@ -536,14 +536,14 @@ type
   private
     fCOD_PART: String;      /// Código do participante (campo 02 do Registro 0150):
     fVEIC_ID: String;       /// Placa de identificação do veículo
-    fQTD_VOL: currency;     /// Quantidade de volumes transportados
+    fQTD_VOL: Integer;      /// Quantidade de volumes transportados
     fPESO_BRT: currency;    /// Peso bruto dos volumes transportados (em Kg)
     fPESO_LIQ: currency;    /// Peso líquido dos volumes transportados (em Kg)
     fUF_ID: String;         /// Sigla da UF da placa do veículo
   public
     property COD_PART: String read FCOD_PART write FCOD_PART;
     property VEIC_ID: String read FVEIC_ID write FVEIC_ID;
-    property QTD_VOL: currency read FQTD_VOL write FQTD_VOL;
+    property QTD_VOL: Integer read FQTD_VOL write FQTD_VOL;
     property PESO_BRT: currency read FPESO_BRT write FPESO_BRT;
     property PESO_LIQ: currency read FPESO_LIQ write FPESO_LIQ;
     property UF_ID: String read FUF_ID write FUF_ID;
@@ -570,7 +570,7 @@ type
     fNR_PASSE: String;      /// Número do Passe Fiscal
     fHORA: String;          /// Hora da saída das mercadorias
     fTEMPER: String;        /// Temperatura em graus Celsius utilizada para quantificação do volume de combustível
-    fQTD_VOL: currency;     /// Quantidade de volumes transportados
+    fQTD_VOL: Integer;      /// Quantidade de volumes transportados
     fPESO_BRT: currency;    /// Peso bruto dos volumes transportados (em Kg)
     fPESO_LIQ: currency;    /// Peso líquido dos volumes transportados (em Kg)
     fNOM_MOT: String;       /// Nome do motorista
@@ -583,7 +583,7 @@ type
     property NR_PASSE: String read FNR_PASSE write FNR_PASSE;
     property HORA: String read FHORA write FHORA;
     property TEMPER: String read FTEMPER write FTEMPER;
-    property QTD_VOL: currency read FQTD_VOL write FQTD_VOL;
+    property QTD_VOL: Integer read FQTD_VOL write FQTD_VOL;
     property PESO_BRT: currency read FPESO_BRT write FPESO_BRT;
     property PESO_LIQ: currency read FPESO_LIQ write FPESO_LIQ;
     property NOM_MOT: String read FNOM_MOT write FNOM_MOT;

@@ -1,9 +1,9 @@
 object Form1: TForm1
   Left = 265
   Top = 119
-  Width = 879
-  Height = 592
   Caption = 'ACBrNFe'
+  ClientHeight = 556
+  ClientWidth = 863
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -11,6 +11,7 @@ object Form1: TForm1
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
+  Position = poScreenCenter
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
@@ -942,7 +943,7 @@ object Form1: TForm1
         Top = 96
         Width = 177
         Height = 25
-        Caption = 'Importar XML'
+        Caption = 'Importar TXT/XML'
         TabOrder = 14
         OnClick = btnImportarXMLClick
       end
@@ -963,6 +964,15 @@ object Form1: TForm1
         Caption = 'Cancelamento NFe pela Chave'
         TabOrder = 16
         OnClick = btnCancelarChaveClick
+      end
+      object btnGerarTXT: TButton
+        Left = 377
+        Top = 66
+        Width = 177
+        Height = 25
+        Caption = 'Gerar TXT'
+        TabOrder = 17
+        OnClick = btnGerarTXTClick
       end
     end
     object PageControl2: TPageControl

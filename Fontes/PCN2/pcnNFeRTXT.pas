@@ -221,6 +221,7 @@ begin
     (*B08*)NFe.ide.nNF := LerCampo(tcInt, 'nNF');
     (*B09*)NFe.ide.dEmi := LerCampo(tcDat, 'dEmi');
     (*B10*)NFe.ide.dSaiEnt := LerCampo(tcDat, 'dSaiEnt');
+   (*B10a*)NFe.ide.hSaiEnt := LerCampo(tcHor, 'hSaiEnt');
     (*B11*)NFe.ide.tpNF := StrToTpNF(ok, LerCampo(tcStr, 'tpNF'));
     (*B12*)NFe.ide.cMunFG := LerCampo(tcInt, 'cMunFG');
     (*B21*)NFe.Ide.tpImp := StrToTpImp(ok, LerCampo(tcStr, 'tpImp'));
@@ -230,6 +231,8 @@ begin
     (*B25*)NFe.Ide.finNFe := StrToFinNFe(ok, LerCampo(tcStr, 'finNFe'));
     (*B26*)NFe.Ide.procEmi := StrToprocEmi(ok, LerCampo(tcStr, 'procEmi'));
     (*B27*)NFe.Ide.verProc := LerCampo(tcStr, 'verProc');
+    (*B28*)NFe.Ide.dhCont := LerCampo(tcDatHor, 'dhCont');
+    (*B29*)NFe.Ide.xJust := LerCampo(tcStr, 'xJust');
   end;
 
   (* Grupo da TAG <ide><NFref><refNFe> ****************************************)
@@ -260,6 +263,7 @@ begin
     (*C18*)NFe.Emit.IEST := LerCampo(tcStr, 'IEST');
     (*C19*)NFe.Emit.IM := LerCampo(tcStr, 'IM');
     (*C20*)NFe.Emit.CNAE := LerCampo(tcStr, 'CNAE');
+    (*C21*)NFe.Emit.CRT := StrToCRT(ok, LerCampo(tcStr, 'CRT'));
   end;
   if ID = 'C02' then
     (*C02*)NFe.Emit.CNPJCPF := LerCampo(tcStr, 'CNPJ');
@@ -306,6 +310,7 @@ begin
     (*E04*)NFe.Dest.xNome := LerCampo(tcStr, 'xNome');
     (*E17*)NFe.Dest.IE := LerCampo(tcStr, 'IE');
     (*E18*)NFe.Dest.ISUF := LerCampo(tcStr, 'ISUF');
+    (*E19*)NFe.Dest.Email := LerCampo(tcStr, 'email');
   end;
   if ID = 'E02' then
     (*E02*)NFe.Dest.CNPJCPF := LerCampo(tcStr, 'CNPJ');
@@ -392,6 +397,10 @@ begin
     (*I15*)NFe.Det[i].Prod.vFrete := LerCampo(tcDe2, 'vFrete');
     (*I16*)NFe.Det[i].Prod.vSeg := LerCampo(tcDe2, 'vSeg');
     (*I17*)NFe.Det[i].Prod.vDesc := LerCampo(tcDe2, 'vDesc');
+   (*I17a*)NFe.Det[i].Prod.vOutro := LerCampo(tcDe2, 'vOutro');
+   (*I17b*)NFe.Det[i].Prod.IndTot := StrToIndTot(ok, LerCampo(tcStr, 'indTot'));
+   (*I28a*)NFe.Det[i].Prod.xPed := LerCampo(tcStr, 'xPed');
+   (*I28b*)NFe.Det[i].Prod.nItemPed := LerCampo(tcInt, 'nItemPed');
   end;
 
   if ID = 'I18' then (* Grupo da TAG <det><prod><DI> **************************)
@@ -444,6 +453,9 @@ begin
     (*J21*)NFe.Det[i].Prod.veicProd.VIN := LerCampo(tcStr, 'VIN');
     (*J22*)NFe.Det[i].Prod.veicProd.condVeic := StrToCondVeic(ok, LerCampo(tcStr, 'condVeic'));
     (*J23*)NFe.Det[i].Prod.veicProd.cMod := LerCampo(tcStr, 'cMod');
+    (*J24*)NFe.Det[i].Prod.veicProd.cCorDENATRAN := LerCampo(tcStr, 'cCorDenatran');
+    (*J25*)NFe.Det[i].Prod.veicProd.lota := LerCampo(tcInt, 'lota');
+    (*J26*)NFe.Det[i].Prod.veicProd.tpRest := LerCampo(tcInt, 'tpRest');
   end;
 
   if ID = 'K' then (* Grupo da TAG <det><prod><med> ***************************)
@@ -509,13 +521,16 @@ begin
     (*L120*)NFe.Det[i].Prod.comb.ICMSCons.UFcons := LerCampo(tcStr, 'UFcons');
   end;
 
-  if (ID = 'N02') or (ID = 'N03') or (ID = 'N04') or (ID = 'N05')
-    or (ID = 'N06') or (ID = 'N07') or (ID = 'N08') or (ID = 'N09') or
-    (ID = 'N10') then (* Grupo da TAG <det><imposto><ICMS> ********************)
+  if (ID = 'N02') or (ID = 'N03') or (ID = 'N04') or (ID = 'N05') or
+     (ID = 'N06') or (ID = 'N07') or (ID = 'N08') or (ID = 'N09') or
+     (ID = 'N10') or (ID = 'N10a') or (ID = 'N10b') or (ID = 'N10c') or
+     (ID = 'N10d') or (ID = 'N10e') or (ID = 'N10f') or (ID = 'N10g') or
+     (ID = 'N10h') then (* Grupo da TAG <det><imposto><ICMS> ********************)
   begin
     i := NFe.Det.Count - 1;
     (*N11*)NFe.Det[i].Imposto.ICMS.orig := StrToOrig(ok, LerCampo(tcStr, 'orig'));
     (*N12*)NFe.Det[i].Imposto.ICMS.CST := StrToCSTICMS(ok, LerCampo(tcStr, 'CST'));
+   (*N12a*)NFe.Det[i].Imposto.ICMS.CSOSN := StrToCSOSNICMS(ok, LerCampo(tcStr, 'CSOSN'));
     (*N13*)NFe.Det[i].Imposto.ICMS.modBC := StrToModBC(ok, LerCampo(tcStr, 'modBC'));
     (*N14*)NFe.Det[i].Imposto.ICMS.pRedBC := LerCampo(tcDe2, 'pRedBC');
     (*N15*)NFe.Det[i].Imposto.ICMS.vBC := LerCampo(tcDe2, 'vBC');
@@ -527,6 +542,15 @@ begin
     (*N21*)NFe.Det[i].Imposto.ICMS.vBCST := LerCampo(tcDe2, 'vBCST');
     (*N22*)NFe.Det[i].Imposto.ICMS.pICMSST := LerCampo(tcDe2, 'pICMSST');
     (*N23*)NFe.Det[i].Imposto.ICMS.vICMSST := LerCampo(tcDe2, 'vICMSST');
+    (*N24*)NFe.Det[i].Imposto.ICMS.UFST := LerCampo(tcStr, 'UFST');
+    (*N25*)NFe.Det[i].Imposto.ICMS.pBCOp := LerCampo(tcDe2, 'pBCOp');
+    (*N26*)NFe.Det[i].Imposto.ICMS.vBCSTRet := LerCampo(tcDe2, 'vBCSTRet');
+    (*N27*)NFe.Det[i].Imposto.ICMS.vICMSSTRet := LerCampo(tcDe2, 'vICMSSTRet');
+    (*N28*)NFe.Det[i].Imposto.ICMS.motDesICMS := StrToMotDesICMS(ok, LerCampo(tcStr, 'motDesICMS'));
+    (*N29*)NFe.Det[i].Imposto.ICMS.pCredSN := LerCampo(tcDe2, 'pCredSN');
+    (*N30*)NFe.Det[i].Imposto.ICMS.vCredICMSSN := LerCampo(tcDe2, 'vCredICMSSN');
+    (*N31*)NFe.Det[i].Imposto.ICMS.vBCSTDest := LerCampo(tcDe2, 'vBCSTDest');
+    (*N32*)NFe.Det[i].Imposto.ICMS.vICMSSTDest := LerCampo(tcDe2, 'vICMSSTDest');
   end;
 
   if ID = 'O' then (* Grupo da TAG <det><imposto><IPI> **********************)

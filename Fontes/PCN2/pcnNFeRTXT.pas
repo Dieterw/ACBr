@@ -145,21 +145,37 @@ begin
   ConteudoTag := RetornarConteudoTag(TAG);
   if copy(ConteudoTag,1,1) = '§' then
     ConteudoTag := '';
-  if Tipo = tcStr then
-    result := ReverterFiltroTextoXML(ConteudoTag)
-  else if Tipo = tcDat then
-  begin
-    if length(ConteudoTag)>0 then
-       result := EncodeDate(StrToInt(copy(ConteudoTag, 1, 4)), StrToInt(copy(ConteudoTag, 6, 2)), StrToInt(copy(ConteudoTag, 9, 2)))
+
+  case Tipo of
+    tcStr     : result := ReverterFiltroTextoXML(ConteudoTag);
+    tcDat     : begin
+                  if length(ConteudoTag)>0 then
+                    result := EncodeDate(StrToInt(copy(ConteudoTag, 01, 4)), StrToInt(copy(ConteudoTag, 06, 2)), StrToInt(copy(ConteudoTag, 09, 2)))
+                  else
+                    result:=0;
+                  end;
+    tcDatHor  : begin
+                    if length(ConteudoTag)>0 then
+                      result := EncodeDate(StrToInt(copy(ConteudoTag, 01, 4)), StrToInt(copy(ConteudoTag, 06, 2)), StrToInt(copy(ConteudoTag, 09, 2))) +
+                      EncodeTime(StrToInt(copy(ConteudoTag, 12, 2)), StrToInt(copy(ConteudoTag, 15, 2)), StrToInt(copy(ConteudoTag, 18, 2)), 0)
+                    else
+                      result:=0;
+                  end;
+    tcHor     : begin
+                    if length(ConteudoTag)>0 then
+                    result := EncodeTime(StrToInt(copy(ConteudoTag, 1, 2)), StrToInt(copy(ConteudoTag, 4, 2)), StrToInt(copy(ConteudoTag, 7, 2)), 0)
+                    else
+                    result:=0;
+                  end;
+    tcDe2,
+    tcDe3,
+    tcDe4,
+    tcDe10    : result := StrToFloat(StringReplace('0' + ConteudoTag, '.', DecimalSeparator, []));
+    tcEsp     : result := ConteudoTag;
+    tcInt     : result := StrToInt('0' + Trim(SomenteNumeros(ConteudoTag)));
     else
-       result := 0;
-  end
-  else if (Tipo = tcDe2) or (Tipo = tcDe3) or (Tipo = tcDe4) then
-    result := StrToFloat(StringReplace('0' + ConteudoTag, '.', DecimalSeparator, []))
-  else if Tipo = tcEsp then
-    result := ConteudoTag
-  else if Tipo = tcInt then
-    result := StrToInt('0' + Trim(SomenteNumeros(ConteudoTag)));
+      raise Exception.Create('Tag <' + Tag + '> com conteúdo inválido. '+ConteudoTag);
+  end;
 end;
 
 function TNFeRTXT.LocalizarPosicaoTAG(TAG: string; Conteudo: string): integer;

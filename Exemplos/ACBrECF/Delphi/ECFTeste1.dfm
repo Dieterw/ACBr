@@ -1347,6 +1347,10 @@ object Form1: TForm1
           Caption = 'Usuario Aual'
           OnClick = UsuarioAual1Click
         end
+        object NumSerieMFD: TMenuItem
+          Caption = 'Num S'#233'rie MFD'
+          OnClick = NumSerieMFDClick
+        end
         object NSrie1: TMenuItem
           Caption = 'Num S'#233'rie'
           OnClick = NSrie1Click

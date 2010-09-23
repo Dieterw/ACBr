@@ -227,6 +227,7 @@ TACBrECF = class( TACBrComponent )
     function GetNumCupomClass: String;
     function GetNumECFClass: String;
     function GetNumSerieClass: String;
+    function GetNumSerieMFDClass: String;
     function GetNumVersaoClass: String;
     function GetEstadoClass: TACBrECFEstado;
     function GetPoucoPapelClass: Boolean;
@@ -367,6 +368,7 @@ TACBrECF = class( TACBrComponent )
     Property NumLoja   : String    read GetNumLojaClass  ;
     Property NumECF    : String    read GetNumECFClass   ;
     Property NumSerie  : String    read GetNumSerieClass ;
+    Property NumSerieMFD  : String read GetNumSerieMFDClass ;
     Property NumVersao : String    read GetNumVersaoClass;
 
     { Dados da Reducao Z - Registro 60M }
@@ -1449,6 +1451,12 @@ begin
   Result := fsECF.NumSerie ;
 end;
 
+function TACBrECF.GetNumSerieMFDClass: String;
+begin
+  ComandoLOG := 'NumSerieMFD' ;
+  Result := fsECF.NumSerieMFD ;
+end;
+
 function TACBrECF.GetNumVersaoClass: String;
 begin
   ComandoLOG := 'NumVersao' ;
@@ -1695,6 +1703,11 @@ begin
      end ;
 
      try
+        NumeroDeSerieMFD := Self.NumSerieMFD;
+     except
+     end ;
+
+     try
         NumeroDoECF  := Self.NumECF;
         NumeroDaLoja := Self.NumLoja;
      except
@@ -1902,6 +1915,7 @@ begin
   Result := Result + 'DataMovimento = ' +
                FormatDateTime('dd/mm/yy', fsDadosReducaoZClass.DataDoMovimento) + sLineBreak ;
   Result := Result + 'NumSerie = ' + fsDadosReducaoZClass.NumeroDeSerie + sLineBreak ;
+  Result := Result + 'NumSerieMFD = ' + fsDadosReducaoZClass.NumeroDeSerieMFD + sLineBreak ;
   Result := Result + 'NumECF = ' + fsDadosReducaoZClass.NumeroDoECF + sLineBreak ;
   Result := Result + 'NumLoja = ' + fsDadosReducaoZClass.NumeroDaLoja + sLineBreak ;
   Result := Result + 'NumCOOInicial = ' + fsDadosReducaoZClass.NumeroCOOInicial + sLineBreak ;
@@ -3962,6 +3976,8 @@ begin
         Code := NumCOO
      else if Code = 'numserie' then
         Code := NumSerie
+     else if Code = 'numseriemfd' then
+        Code := NumSerieMFD
      else if Code = 'numecf' then
         Code := NumECF
      else if Code = 'acbr' then

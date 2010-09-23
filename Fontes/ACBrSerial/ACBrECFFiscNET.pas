@@ -184,6 +184,7 @@ TACBrECFFiscNET = class( TACBrECFClass )
     function GetNumECF: String; override ;
     function GetNumLoja: String; override ;
     function GetNumSerie: String; override ;
+    function GetNumSerieMFD: String; override ;
     function GetNumVersao: String; override ;
     function GetSubTotal: Double; override ;
     function GetTotalPago: Double; override ;
@@ -901,6 +902,15 @@ function TACBrECFFiscNET.GetNumSerie: String;
 begin
   FiscNETComando.NomeComando := 'LeTexto' ;
   FiscNETComando.AddParamString('NomeTexto','NumeroSerieECF') ;
+  EnviaComando ;
+
+  Result := FiscNETResposta.Params.Values['ValorTexto'] ;
+end;
+
+function TACBrECFFiscNET.GetNumSerieMFD: String;
+begin
+  FiscNETComando.NomeComando := 'LeTexto' ;
+  FiscNETComando.AddParamString('NomeTexto','NumeroSerieMFD') ;
   EnviaComando ;
 
   Result := FiscNETResposta.Params.Values['ValorTexto'] ;

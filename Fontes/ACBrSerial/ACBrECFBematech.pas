@@ -212,6 +212,7 @@ TACBrECFBematech = class( TACBrECFClass )
     function GetNumECF: String; override ;
     function GetNumLoja: String; override ;
     function GetNumSerie: String; override ;
+    function GetNumSerieMFD: String; override ;
     function GetNumVersao: String; override ;
     function GetSubTotal: Double; override ;
     function GetTotalPago: Double; override ;
@@ -809,6 +810,14 @@ begin
 
   if BytesResp = 15 then
      Result := Trim( EnviaComando( #35+#00 ) ) ;
+end;
+
+function TACBrECFBematech.GetNumSerieMFD: String;
+var wRetentar : Boolean ;
+begin
+  Result := '' ;
+  if fpMFD then
+     Result := RetornaInfoECF( '58' ) ;
 end;
 
 function TACBrECFBematech.GetNumVersao: String ;
@@ -2470,6 +2479,11 @@ RRGGGGGGGGGGGGGGGGGGCCCCCCCCCCCCCCDDDDDDDDDDDDDDT001T002T003T004T005T006T007T008
 
   try
      Result := Result + 'NumSerie = ' + NumSerie + sLineBreak ;
+  except
+  end ;
+
+  try
+     Result := Result + 'NumSerieMFD = ' + NumSerieMFD + sLineBreak ;
   except
   end ;
 

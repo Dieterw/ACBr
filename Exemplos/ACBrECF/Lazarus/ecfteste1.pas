@@ -116,6 +116,7 @@ type
     MenuItem11 : TMenuItem ;
     MenuItem12 : TMenuItem ;
     mARQMFDDLLPeriodo : TMenuItem ;
+    NumSerieMFD : TMenuItem ;
     mLerTotaisRelatoriosGerenciais : TMenuItem ;
     mRelatorioGerenciais : TMenuItem ;
     mCarregaRelatorioGerenciais : TMenuItem ;
@@ -324,6 +325,7 @@ type
     procedure mTesteVinculadoClick(Sender : TObject) ;
     procedure mTotalNaoFiscalClick(Sender : TObject) ;
     procedure mUsuarioAtualClick(Sender : TObject) ;
+    procedure NumSerieMFDClick(Sender : TObject) ;
     procedure Sair1Click(Sender: TObject);
     procedure bAtivarClick(Sender: TObject);
     procedure cbxPortaChange(Sender: TObject);
@@ -1130,6 +1132,12 @@ end;
 procedure TForm1.mUsuarioAtualClick(Sender : TObject) ;
 begin
   mResp.Lines.Add( 'UsuarioAtual: ('+ ACBrECF1.UsuarioAtual+')' );
+  AtualizaMemos ;
+end;
+
+procedure TForm1.NumSerieMFDClick(Sender : TObject) ;
+begin
+  mResp.Lines.Add( 'N.Série MFD: ('+ ACBrECF1.NumSerieMFD+')' );
   AtualizaMemos ;
 end;
 

@@ -304,6 +304,7 @@ type
     LerTroco1: TMenuItem;
     Label22: TLabel;
     speLinBuf: TSpinEdit;
+    NumSerieMFD: TMenuItem;
     procedure cbxModeloChange(Sender: TObject);
     procedure Sair1Click(Sender: TObject);
     procedure bAtivarClick(Sender: TObject);
@@ -483,6 +484,7 @@ type
     procedure Button2Click(Sender: TObject);
     procedure LerTroco1Click(Sender: TObject);
     procedure speLinBufChange(Sender: TObject);
+    procedure NumSerieMFDClick(Sender: TObject);
   private
     { Private declarations }
     Function Converte( cmd : String) : String;
@@ -3360,6 +3362,12 @@ end;
 procedure TForm1.speLinBufChange(Sender: TObject);
 begin
   ACBrECF1.MaxLinhasBuffer := speLinBuf.Value ;
+end;
+
+procedure TForm1.NumSerieMFDClick(Sender: TObject);
+begin
+  mResp.Lines.Add( 'N.Série MFD: ('+ ACBrECF1.NumSerieMFD+')' );
+  AtualizaMemos ;
 end;
 
 END.

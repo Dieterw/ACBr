@@ -329,6 +329,7 @@ TACBrECFDadosRZ = class
     FNumeroCOOInicial: AnsiString;
     FNumeroDoECF: AnsiString;
     FNumeroDeSerie: AnsiString;
+    FNumeroDeSerieMFD: AnsiString;
     FNumeroDaLoja: AnsiString;
     fTotalTroco: Double;
   public
@@ -338,6 +339,7 @@ TACBrECFDadosRZ = class
     //
     property DataDaImpressora: TDateTime read FDataDaImpressora write FDataDaImpressora;
     property NumeroDeSerie: AnsiString read FNumeroDeSerie write FNumeroDeSerie;
+    property NumeroDeSerieMFD: AnsiString read FNumeroDeSerieMFD write FNumeroDeSerieMFD;
     property NumeroDoECF: AnsiString read FNumeroDoECF write FNumeroDoECF;
     property NumeroDaLoja: AnsiString read FNumeroDaLoja write FNumeroDaLoja;
     property NumeroCOOInicial: AnsiString read FNumeroCOOInicial write FNumeroCOOInicial;
@@ -541,6 +543,7 @@ TACBrECFClass = class
     function GetNumECF: String; virtual ;
     function GetNumLoja: String; virtual ;
     function GetNumSerie: String; virtual ;
+    function GetNumSerieMFD: String; virtual ;
     function GetNumVersao: String ; virtual ;
     function GetSubTotal: Double; virtual ;
     function GetTotalPago: Double; virtual ;
@@ -701,6 +704,7 @@ TACBrECFClass = class
     Property NumLoja   : String    read GetNumLoja   ;
     Property NumECF    : String    read GetNumECF    ;
     Property NumSerie  : String    read GetNumSerie  ;
+    Property NumSerieMFD  : String read GetNumSerieMFD  ;
     Property NumVersao : String    read GetNumVersao ;
 
     { Dados da Reducao Z - Registro 60M }
@@ -1847,6 +1851,10 @@ begin
   Result := '' ;
 end;
 
+function TACBrECFClass.GetNumSerieMFD: String;
+begin
+  Result := '' ;
+end;
 
 { Essa função DEVE ser override por cada Classe Filha criada }
 Procedure TACBrECFClass.AbreGaveta ;
@@ -3695,6 +3703,7 @@ begin
    FNumeroCOOInicial            := '' ;
    FNumeroDoECF                 := '' ;
    FNumeroDeSerie               := '' ;
+   FNumeroDeSerieMFD            := '' ;
    FNumeroDaLoja                := '' ;
 end ;
 

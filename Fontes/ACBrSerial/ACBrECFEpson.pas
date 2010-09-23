@@ -188,6 +188,7 @@ TACBrECFEpson = class( TACBrECFClass )
     function GetNumCFC: String; override ;
     function GetNumLoja: String; override ;
     function GetNumSerie: String; override ;
+    function GetNumSerieMFD: String; override ;
     function GetNumVersao: String; override ;
     function GetSubTotal: Double; override ;
     function GetTotalPago: Double; override ;
@@ -1278,6 +1279,15 @@ begin
   EnviaComando ;
 
   Result      := EpsonResposta.Params[0] ;
+  fsNumVersao := EpsonResposta.Params[5];
+end;
+
+function TACBrECFEpson.GetNumSerieMFD: String;
+begin
+  EpsonComando.Comando := '0402' ;
+  EnviaComando ;
+
+  Result      := EpsonResposta.Params[1] ;
   fsNumVersao := EpsonResposta.Params[5];
 end;
 

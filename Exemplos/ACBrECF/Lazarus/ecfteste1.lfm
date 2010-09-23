@@ -1521,6 +1521,10 @@ object Form1: TForm1
           Caption = 'Num Série'
           OnClick = NSrie1Click
         end
+        object NumSerieMFD: TMenuItem
+          Caption = 'Num Série MFD'
+          OnClick = NumSerieMFDClick
+        end
         object NVerso1: TMenuItem
           Caption = 'Num Versão'
           OnClick = NVerso1Click

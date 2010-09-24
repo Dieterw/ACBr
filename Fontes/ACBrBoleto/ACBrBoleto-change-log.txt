@@ -51,7 +51,7 @@ Símbolo : Significado
 Versão 0.017a  24/09/2010
 [+] Adicionado classe para a Caixa Economica (João Elson)
 [*] Adicionado verificação se O Total de Parcelas informado é menor que a
-    parcela informada.(João Elson)
+    parcela informada.(Elson Junior)
 
 Versão 0.0.16a 27/07/2010
 [*] Finalizado rotina de Leitura do Arquivo de Retorno em 400 colunas para o

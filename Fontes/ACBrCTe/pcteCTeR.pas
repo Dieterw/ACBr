@@ -786,9 +786,9 @@ begin
     end;
   end;
 
-  (* Grupo da TAG <infCTeComp> ************************************************)
+  (* Grupo da TAG <infCteComp> ************************************************)
   i01 := 0;
-  while Leitor.rExtrai(1, 'infCTeComp', '', i01 + 1) <> '' do
+  while Leitor.rExtrai(1, 'infCteComp', '', i01 + 1) <> '' do
   begin
     CTe.InfCTeComp.Add;
     CTe.InfCTeComp[i01].Chave := Leitor.rCampo(tcStr, 'chave');

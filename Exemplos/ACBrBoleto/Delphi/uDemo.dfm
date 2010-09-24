@@ -619,9 +619,10 @@ object frmDemo: TfrmDemo
     Cedente.Conta = '079489'
     Cedente.ContaDigito = '9'
     Cedente.TipoInscricao = pOutras
-    Banco.Numero = 237
+    Banco.Numero = 104
     NomeArqRemessa = 'cb00001.rem'
     DirArqRemessa = '.\remessa\'
+    LayoutRemessa = c240
     ACBrBoletoFC = ACBrBoletoFCFortes1
     Left = 64
     Top = 231

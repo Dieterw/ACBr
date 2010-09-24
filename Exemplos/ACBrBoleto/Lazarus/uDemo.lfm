@@ -909,15 +909,17 @@ object frmDemo: TfrmDemo
     Cedente.Cidade = 'Tatui'
     Cedente.UF = 'SP'
     Cedente.CEP = '18270000'
-    Banco.Numero = 237
+    Banco.Numero = 104
     NomeArqRemessa = 'cb00001.rem'
     DirArqRemessa = '.\remessa\'
+    LayoutRemessa = c240
     ACBrBoletoFC = ACBrBoletoFCFortes1
     left = 176
     top = 256
   end
   object ACBrBoletoFCFortes1: TACBrBoletoFCFortes
     ACBrBoleto = ACBrBoleto1
+    LayOut = lCarne
     DirLogo = '..\..\..\Fontes\ACBrBoleto\Logos\Colorido\'
     SoftwareHouse = 'Projeto ACBr - http://acbr.sf.net'
     left = 72

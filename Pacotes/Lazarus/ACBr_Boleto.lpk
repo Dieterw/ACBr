@@ -5,19 +5,14 @@
     <Name Value="ACBr_Boleto"/>
     <Author Value="Daniel Simoes de Almeida"/>
     <CompilerOptions>
-      <Version Value="8"/>
+      <Version Value="9"/>
       <PathDelim Value="\"/>
       <SearchPaths>
-        <IncludeFiles Value="..\..\Fontes\ACBrBoleto\;..\..\Fontes\ACBrComum\"/>
-        <OtherUnitFiles Value="..\..\Fontes\ACBrBoleto\;..\..\Fontes\ACBrComum\"/>
+        <IncludeFiles Value="..\..\Fontes\ACBrBoleto;..\..\Fontes\ACBrComum"/>
+        <OtherUnitFiles Value="..\..\Fontes\ACBrBoleto;..\..\Fontes\ACBrComum"/>
         <UnitOutputDirectory Value="..\..\lib\$(TargetCPU)-$(TargetOS)"/>
-        <SrcPath Value="..\..\Fontes\ACBrBoleto\;..\..\Fontes\ACBrComum\"/>
+        <SrcPath Value="..\..\Fontes\ACBrBoleto;..\..\Fontes\ACBrComum"/>
       </SearchPaths>
-      <Parsing>
-        <SyntaxOptions>
-          <UseAnsiStrings Value="True"/>
-        </SyntaxOptions>
-      </Parsing>
       <Other>
         <CompilerPath Value="$(CompPath)"/>
       </Other>
@@ -25,7 +20,7 @@
     <Description Value="ACBrBoleto"/>
     <License Value="LGPL"/>
     <Version Minor="1"/>
-    <Files Count="6">
+    <Files Count="7">
       <Item1>
         <Filename Value="..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
         <HasRegisterProc Value="True"/>
@@ -51,6 +46,10 @@
         <Filename Value="..\..\Fontes\ACBrBoleto\ACBrBancoMercantil.pas"/>
         <UnitName Value="ACBrBancoMercantil"/>
       </Item6>
+      <Item7>
+        <Filename Value="..\..\Fontes\ACBrBoleto\ACBrCaixaEconomica.pas"/>
+        <UnitName Value="ACBrCaixaEconomica"/>
+      </Item7>
     </Files>
     <Type Value="RunAndDesignTime"/>
     <RequiredPkgs Count="2">

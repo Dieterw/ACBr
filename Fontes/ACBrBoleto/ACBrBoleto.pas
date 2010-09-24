@@ -57,7 +57,7 @@ uses ACBrBase,  {Units da ACBr}
      Graphics, Contnrs, Classes;
 
 const
-  CACBrBoleto_Versao = '0.0.16a' ;
+  CACBrBoleto_Versao = '0.0.17a' ;
 
 type
   TACBrTitulo = class;
@@ -437,6 +437,7 @@ type
 
     procedure SetNossoNumero ( const AValue: String ) ;
     procedure SetParcela ( const AValue: Integer ) ;
+    procedure SetTotalParcelas ( const AValue: Integer );
     procedure SetTipoOcorrencia ( const AValue: TACBrTipoOcorrencia ) ;
    public
      constructor Create(ACBrBoleto:TACBrBoleto);
@@ -460,7 +461,7 @@ type
      property Instrucao2        : String      read fInstrucao2        write fInstrucao2;
      property Sacado            : TACBrSacado read fSacado            write fSacado;
      property Parcela           :Integer      read fParcela           write SetParcela default 1;
-     property TotalParcelas     :Integer      read fTotalParcelas     write fTotalParcelas default 1;
+     property TotalParcelas     :Integer      read fTotalParcelas     write SetTotalParcelas default 1;
 
      //property TipoOcorrencia                 : TACBrTipoOcorrencia read fTipoOcorrencia  write SetTipoOcorrencia default toRemessaRegistrar ;
      property OcorrenciaOriginal : TACBrOcorrencia read  fOcorrenciaOriginal write fOcorrenciaOriginal;
@@ -617,7 +618,7 @@ procedure Register;
 implementation
 
 Uses ACBrUtil, ACBrBancoBradesco, ACBrBancoBrasil, ACBrBancoItau, ACBrBancoSicredi,
-     ACBrBancoMercantil, Forms, {$IFDEF COMPILER6_UP} StrUtils {$ELSE} ACBrD5{$ENDIF}, Math;
+     ACBrBancoMercantil, ACBrCaixaEconomica, Forms, {$IFDEF COMPILER6_UP} StrUtils {$ELSE} ACBrD5{$ENDIF}, Math;
 
 {$IFNDEF FPC}
    {$R ACBrBoleto.dcr}
@@ -709,6 +710,14 @@ begin
       raise Exception.Create('Numero da Parcela Atual deve ser menor ' +
                              'que o Total de Parcelas do Carne');
    fParcela := AValue;
+end;
+
+procedure TACBrTitulo.SetTotalParcelas ( const AValue: Integer ) ;
+begin
+   if (AValue < Parcela) and (ACBrBoleto.ACBrBoletoFC.LayOut = lCarne) then
+      raise Exception.Create('Numero da Parcela Atual deve ser menor ou igual ' +
+                             'o Total de Parcelas do Carne');
+   fTotalParcelas := AValue;
 end;
 
 procedure TACBrTitulo.SetTipoOcorrencia ( const AValue: TACBrTipoOcorrencia ) ;
@@ -1039,6 +1048,7 @@ begin
       341 : fBancoClass := TACBrBancoItau.Create(self);
       748 : fBancoClass := TACBrBancoSicredi.Create(self);
       389 : fBancoClass := TACBrBancoMercantil.create(Self);
+      104 : fBancoClass := TACBrCaixaEconomica.create(Self);
    else
       fBancoClass := TACBrBancoClass.create(Self);
    end;

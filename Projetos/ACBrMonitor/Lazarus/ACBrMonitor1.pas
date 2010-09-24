@@ -1860,7 +1860,7 @@ begin
      else
         DirLogoBanco := deBOLDirLogo.Text;
 
-     if Pos(PathDelim,DirLogoBanco) <> Length(DirLogoBanco)  then
+     if DirLogoBanco[Length(DirLogoBanco)] <> PathDelim  then
         DirLogoBanco := DirLogoBanco + PathDelim;
 
      if trim(deBOLDirArquivo.Text) = '' then
@@ -1868,7 +1868,7 @@ begin
      else
         DirArquivoBoleto := deBOLDirArquivo.Text;
 
-     if Pos(PathDelim,DirArquivoBoleto) <> Length(DirArquivoBoleto)  then
+     if DirArquivoBoleto[Length(DirArquivoBoleto)] <> PathDelim  then
         DirArquivoBoleto := DirArquivoBoleto + PathDelim;
 
      if trim(deBolDirRemessa.Text) = '' then
@@ -1876,7 +1876,7 @@ begin
      else
         DirArqRemessa := deBolDirRemessa.Text;
 
-     if Pos(PathDelim,DirArqRemessa) <> Length(DirArqRemessa)  then
+     if  DirArqRemessa[Length(DirArqRemessa)] <> PathDelim  then
         DirArqRemessa := DirArqRemessa + PathDelim;
 
      if trim(deBolDirRetorno.Text) = '' then
@@ -1884,7 +1884,7 @@ begin
      else
         DirArqRetorno := deBolDirRetorno.Text;
 
-     if Pos(PathDelim,DirArqRetorno) <> Length(DirArqRetorno) then
+     if DirArqRetorno[Length(DirArqRetorno)] <> PathDelim then
         DirArqRetorno := DirArqRetorno + PathDelim;
 
      ini.WriteString('BOLETO', 'DirLogos', DirLogoBanco);

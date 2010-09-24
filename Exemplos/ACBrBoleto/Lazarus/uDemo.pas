@@ -166,7 +166,7 @@ begin
         Instrucao1        := '00';
         Instrucao2        := '00';
 
-        ACBrBoleto1.AdicionarMensagensPadroes(Titulo,Mensagem);
+        //ACBrBoleto1.AdicionarMensagensPadroes(Titulo,Mensagem);
      end;
    end;
 end;
@@ -234,6 +234,8 @@ begin
         OcorrenciaOriginal.Tipo  := toRemessaBaixar;
         Instrucao1        := padL(trim(edtInstrucoes1.Text),2,'0');
         Instrucao2        := padL(trim(edtInstrucoes2.Text),2,'0');
+        Parcela := 2;
+        TotalParcelas := 1;
 
        // ACBrBoleto1.AdicionarMensagensPadroes(Titulo,Mensagem);
      end;

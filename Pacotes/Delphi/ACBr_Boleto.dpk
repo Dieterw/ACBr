@@ -37,6 +37,7 @@ contains
   ACBrBoleto in '..\..\Fontes\ACBrBoleto\ACBrBoleto.pas',
   ACBrBancoItau in '..\..\Fontes\ACBrBoleto\ACBrBancoItau.pas',
   ACBrBancoSicredi in '..\..\Fontes\ACBrBoleto\ACBrBancoSicredi.pas',
-  ACBrBancoMercantil in '..\..\Fontes\ACBrBoleto\ACBrBancoMercantil.pas';
+  ACBrBancoMercantil in '..\..\Fontes\ACBrBoleto\ACBrBancoMercantil.pas',
+  ACBrCaixaEconomica in '..\..\Fontes\ACBrBoleto\ACBrCaixaEconomica.pas';
 
 end.

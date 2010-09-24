@@ -206,72 +206,6 @@ type
     QRLabel113: TQRLabel;
     qrlPaisToma: TQRLabel;
     qrlMunToma: TQRLabel;
-    QRLabel1: TQRLabel;
-    qrlProdPredominante: TQRLabel;
-    QRShape7: TQRShape;
-    QRShape8: TQRShape;
-    QRLabel5: TQRLabel;
-    QRShape9: TQRShape;
-    qrlNomeSeguradora: TQRLabel;
-    QRLabel4: TQRLabel;
-    qrlOutrasCaracCarga: TQRLabel;
-    QRLabel34: TQRLabel;
-    qrlVlrTotalMerc: TQRLabel;
-    QRLabel37: TQRLabel;
-    qrlRespSeguroMerc: TQRLabel;
-    qrlNroApolice: TQRLabel;
-    QRLabel39: TQRLabel;
-    QRLabel40: TQRLabel;
-    qrlNroAverbacao: TQRLabel;
-    qrlQtdUndMedida1: TQRLabel;
-    qrlQtdUndMedida2: TQRLabel;
-    qrlQtdUndMedida3: TQRLabel;
-    qrlQtdUndMedida4: TQRLabel;
-    QRLabel35: TQRLabel;
-    QRLabel36: TQRLabel;
-    QRLabel41: TQRLabel;
-    QRLabel43: TQRLabel;
-    QRShape15: TQRShape;
-    QRLabel38: TQRLabel;
-    QRShape17: TQRShape;
-    QRLabel44: TQRLabel;
-    QRShape18: TQRShape;
-    QRShape19: TQRShape;
-    QRLabel46: TQRLabel;
-    qrmCompNome1: TQRMemo;
-    qrmCompValor1: TQRMemo;
-    QRLabel42: TQRLabel;
-    QRLabel45: TQRLabel;
-    qrmCompNome2: TQRMemo;
-    qrmCompValor2: TQRMemo;
-    QRLabel47: TQRLabel;
-    QRLabel48: TQRLabel;
-    qrmCompNome3: TQRMemo;
-    qrmCompValor3: TQRMemo;
-    QRShape16: TQRShape;
-    QRLabel49: TQRLabel;
-    QRLabel50: TQRLabel;
-    qrlVlrTotServico: TQRLabel;
-    qrlVlrTotReceber: TQRLabel;
-    QRShape20: TQRShape;
-    QRLabel51: TQRLabel;
-    QRShape21: TQRShape;
-    QRShape22: TQRShape;
-    QRShape23: TQRShape;
-    QRLabel58: TQRLabel;
-    QRLabel52: TQRLabel;
-    QRShape25: TQRShape;
-    QRShape26: TQRShape;
-    QRLabel53: TQRLabel;
-    QRLabel54: TQRLabel;
-    QRLabel55: TQRLabel;
-    QRLabel56: TQRLabel;
-    qrlSitTrib: TQRLabel;
-    qrlBaseCalc: TQRLabel;
-    qrlVlrICMS: TQRLabel;
-    qrlICMS_ST: TQRLabel;
-    qrlRedBaseCalc: TQRLabel;
-    qrlAliqICMS: TQRLabel;
     qrbObs: TQRChildBand;
     qrbModRodFracionado: TQRChildBand;
     QRLabel10: TQRLabel;
@@ -331,16 +265,6 @@ type
     QRRoundRect21: TQRRoundRect;
     QRRoundRect22: TQRRoundRect;
     QRRoundRect23: TQRRoundRect;
-    QRRoundRect24: TQRRoundRect;
-    QRRoundRect25: TQRRoundRect;
-    QRRoundRect26: TQRRoundRect;
-    QRRoundRect27: TQRRoundRect;
-    QRRoundRect28: TQRRoundRect;
-    QRRoundRect29: TQRRoundRect;
-    QRRoundRect30: TQRRoundRect;
-    QRRoundRect31: TQRRoundRect;
-    QRRoundRect32: TQRRoundRect;
-    QRRoundRect33: TQRRoundRect;
     QRShape4: TQRShape;
     QRRoundRect34: TQRRoundRect;
     QRLabel19: TQRLabel;
@@ -351,6 +275,97 @@ type
     QRRoundRect35: TQRRoundRect;
     QRRoundRect36: TQRRoundRect;
     QRRoundRect37: TQRRoundRect;
+    qrbDadosNotaFiscal: TQRChildBand;
+    QRRoundRect24: TQRRoundRect;
+    QRLabel1: TQRLabel;
+    qrlProdPredominante: TQRLabel;
+    QRLabel4: TQRLabel;
+    qrlOutrasCaracCarga: TQRLabel;
+    QRRoundRect25: TQRRoundRect;
+    QRRoundRect26: TQRRoundRect;
+    QRLabel34: TQRLabel;
+    qrlVlrTotalMerc: TQRLabel;
+    QRRoundRect27: TQRRoundRect;
+    QRRoundRect28: TQRRoundRect;
+    QRRoundRect29: TQRRoundRect;
+    QRRoundRect30: TQRRoundRect;
+    QRLabel35: TQRLabel;
+    qrlQtdUndMedida1: TQRLabel;
+    QRLabel36: TQRLabel;
+    qrlQtdUndMedida2: TQRLabel;
+    QRLabel41: TQRLabel;
+    qrlQtdUndMedida3: TQRLabel;
+    QRLabel43: TQRLabel;
+    qrlQtdUndMedida4: TQRLabel;
+    QRRoundRect31: TQRRoundRect;
+    QRLabel5: TQRLabel;
+    qrlNomeSeguradora: TQRLabel;
+    QRLabel37: TQRLabel;
+    qrlRespSeguroMerc: TQRLabel;
+    QRLabel39: TQRLabel;
+    qrlNroApolice: TQRLabel;
+    QRLabel40: TQRLabel;
+    qrlNroAverbacao: TQRLabel;
+    QRShape9: TQRShape;
+    QRShape8: TQRShape;
+    QRShape7: TQRShape;
+    qrbComplementado: TQRChildBand;
+    qrbValorPrestacao: TQRChildBand;
+    QRRoundRect32: TQRRoundRect;
+    QRRoundRect33: TQRRoundRect;
+    QRLabel38: TQRLabel;
+    QRLabel44: TQRLabel;
+    qrmCompNome1: TQRMemo;
+    QRLabel46: TQRLabel;
+    qrmCompValor1: TQRMemo;
+    QRLabel42: TQRLabel;
+    qrmCompNome2: TQRMemo;
+    QRLabel45: TQRLabel;
+    qrmCompValor2: TQRMemo;
+    QRLabel47: TQRLabel;
+    qrmCompNome3: TQRMemo;
+    QRLabel48: TQRLabel;
+    qrmCompValor3: TQRMemo;
+    QRLabel49: TQRLabel;
+    qrlVlrTotServico: TQRLabel;
+    QRLabel50: TQRLabel;
+    qrlVlrTotReceber: TQRLabel;
+    QRShape18: TQRShape;
+    QRShape17: TQRShape;
+    QRShape16: TQRShape;
+    QRShape15: TQRShape;
+    QRShape19: TQRShape;
+    QRLabel51: TQRLabel;
+    QRLabel52: TQRLabel;
+    qrlSitTrib: TQRLabel;
+    QRLabel55: TQRLabel;
+    qrlBaseCalc: TQRLabel;
+    QRLabel56: TQRLabel;
+    qrlAliqICMS: TQRLabel;
+    QRLabel54: TQRLabel;
+    qrlVlrICMS: TQRLabel;
+    QRLabel53: TQRLabel;
+    qrlRedBaseCalc: TQRLabel;
+    QRLabel58: TQRLabel;
+    qrlICMS_ST: TQRLabel;
+    QRShape26: TQRShape;
+    QRShape25: TQRShape;
+    QRShape23: TQRShape;
+    QRShape22: TQRShape;
+    QRShape21: TQRShape;
+    QRShape20: TQRShape;
+    QRRoundRect38: TQRRoundRect;
+    QRLabel59: TQRLabel;
+    QRShape5: TQRShape;
+    QRShape6: TQRShape;
+    QRLabel61: TQRLabel;
+    QRLabel62: TQRLabel;
+    QRLabel63: TQRLabel;
+    QRLabel64: TQRLabel;
+    qrmComplChave1: TQRMemo;
+    qrmComplValor1: TQRMemo;
+    qrmComplChave2: TQRMemo;
+    qrmComplValor2: TQRMemo;
     procedure qrbDadosExcEmitenteBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
     procedure qrbModRodFracionadoBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
     procedure qrbObsBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
@@ -359,6 +374,12 @@ type
     procedure QRCTeBeforePrint(Sender: TCustomQuickRep; var PrintReport: Boolean);
     procedure qrbItensBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
     procedure qrbSistemaBeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure qrbDadosNotaFiscalBeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure qrbComplementadoBeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure qrbHeaderItensBeforePrint(Sender: TQRCustomBand;
       var PrintBand: Boolean);
   private
     FTotalPages: integer;
@@ -466,6 +487,11 @@ procedure TfrmDACTeQRRetrato.qrbModRodFracionadoBeforePrint(
   Sender: TQRCustomBand; var PrintBand: Boolean);
 begin
   inherited;
+
+  // Imprime as Informações Especificas do Modal se o Tipo de CTe for Normal
+  // Incluido / Alterado por Italo e Doni em 24/09/2010
+  qrbModRodFracionado.Enabled:=(FCTe.Ide.tpCTe = tcNormal);
+
   with FCTe.Rodo do
   begin
     qrlRntrcEmpresa.Caption := RNTRC;
@@ -614,6 +640,10 @@ var
   i : integer;
 begin
   inherited;
+
+  // Imprime os Documentos Originários se o Tipo de CTe for Normal
+  // Incluido / Alterado por Italo e Doni em 24/09/2010
+  qrbItens.Enabled:=(FCTe.Ide.tpCTe = tcNormal);
 
   for i := 1 to 2 do
     if Trim(cdsDocumentos.FieldByName('DOCUMENTO_' + IntToStr(i)).AsString) = '' then
@@ -948,6 +978,57 @@ procedure TfrmDACTeQRRetrato.qrbSistemaBeforePrint(Sender: TQRCustomBand;
 begin
   inherited;
   qrlblSistema.Caption := FSistema + ' - ' + FUsuario;
+end;
+
+procedure TfrmDACTeQRRetrato.qrbDadosNotaFiscalBeforePrint(
+  Sender: TQRCustomBand; var PrintBand: Boolean);
+begin
+  inherited;
+
+  // Imprime os dados da da Nota Fiscal se o Tipo de CTe for Normal
+  // Incluido / Alterado por Italo e Doni em 24/09/2010
+  qrbDadosNotaFiscal.Enabled:=(FCTe.Ide.tpCTe = tcNormal);
+end;
+
+procedure TfrmDACTeQRRetrato.qrbComplementadoBeforePrint(
+  Sender: TQRCustomBand; var PrintBand: Boolean);
+var
+ i: Integer;  
+begin
+  inherited;
+
+  // Imprime a lista dos CT-e Complementados se o Tipo de CTe for Complemento
+  // Incluido / Alterado por Italo e Doni em 24/09/2010
+  qrmComplChave1.Lines.Clear;
+  qrmComplValor1.Lines.Clear;
+  qrmComplChave2.Lines.Clear;
+  qrmComplValor2.Lines.Clear;
+  qrbComplementado.Enabled:=(FCTe.Ide.tpCTe = tcComplemento);
+
+  for i := 0 to FCTe.InfCTeComp.Count - 1 do
+  begin
+    case i of
+      0..4:
+        begin
+          qrmComplChave1.Lines.Add(FCTe.InfCTeComp[i].Chave);
+          qrmComplValor1.Lines.Add(CteUtil.FormatarValor(msk10x2, FCTe.InfCTeComp[i].vPresComp.vTPrest));
+        end;
+      5..9:
+        begin
+          qrmComplChave2.Lines.Add(FCTe.InfCTeComp[i].Chave);
+          qrmComplValor2.Lines.Add(CteUtil.FormatarValor(msk10x2, FCTe.InfCTeComp[i].vPresComp.vTPrest));
+        end;
+    end;
+  end;
+end;
+
+procedure TfrmDACTeQRRetrato.qrbHeaderItensBeforePrint(
+  Sender: TQRCustomBand; var PrintBand: Boolean);
+begin
+  inherited;
+  // Imprime os Documentos Originários se o Tipo de CTe for Normal
+  // Incluido / Alterado por Italo e Doni em 24/09/2010
+  // qrbHeaderItens.Enabled:=(FCTe.Ide.tpCTe = tcNormal);
 end;
 
 end.

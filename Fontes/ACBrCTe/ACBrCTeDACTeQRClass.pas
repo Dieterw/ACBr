@@ -94,6 +94,7 @@ begin
                                     , Logo
                                     , Email
                                     , ImprimirHoraSaida
+                                    , ExpandirLogoMarca
                                     , ImprimirHoraSaida_Hora
                                     , false
                                     , Fax
@@ -112,6 +113,7 @@ begin
                                 , Logo
                                 , Email
                                 , ImprimirHoraSaida
+                                , ExpandirLogoMarca
                                 , ImprimirHoraSaida_Hora
                                 , False
                                 , Fax
@@ -151,6 +153,7 @@ begin
                                     , Logo
                                     , Email
                                     , ImprimirHoraSaida
+                                    , ExpandirLogoMarca
                                     , ImprimirHoraSaida_Hora
                                     , false
                                     , Fax
@@ -173,6 +176,7 @@ begin
                                 , Logo
                                 , Email
                                 , ImprimirHoraSaida
+                                , ExpandirLogoMarca
                                 , ImprimirHoraSaida_Hora
                                 , False
                                 , Fax

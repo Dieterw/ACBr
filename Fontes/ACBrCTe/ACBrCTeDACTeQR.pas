@@ -79,6 +79,7 @@ type
     FUrl                : String;
     FUsuario            : String;
     AfterPreview        : Boolean ;
+    FExpandirLogoMarca  : Boolean;
     ChangedPos          : Boolean ;
     FSemValorFiscal     : Boolean ;
     FMargemSuperior     : double;
@@ -92,6 +93,7 @@ type
                              ALogo               : String    = '';
                              AEmail              : String    = '';
                              AImprimeHoraSaida   : Boolean   = False;
+                             AExpandirLogoMarca  : Boolean   = False;
                              AHoraSaida          : String    = '';
                              AResumoCanhoto      : Boolean   = False;
                              AFax                : String    = '';
@@ -110,6 +112,7 @@ type
                             ALogo               : String    = '';
                             AEmail              : String    = '';
                             AImprimeHoraSaida   : Boolean   = False;
+                            AExpandirLogoMarca  : Boolean   = False;
                             AHoraSaida          : String    = '';
                             AResumoCanhoto      : Boolean   = False;
                             AFax                : String    = '';
@@ -134,6 +137,7 @@ class procedure TfrmDACTeQR.Imprimir(ACTe               : TCTe;
                                     ALogo               : String    = '';
                                     AEmail              : String    = '';
                                     AImprimeHoraSaida   : Boolean   = False;
+                                    AExpandirLogoMarca  : Boolean   = False;
                                     AHoraSaida          : String    = '';
                                     AResumoCanhoto      : Boolean   = False;
                                     AFax                : String    = '';
@@ -164,6 +168,7 @@ begin
         FMargemInferior     := AMargemInferior;
         FMargemEsquerda     := AMargemEsquerda;
         FMargemDireita      := AMargemDireita;
+        FExpandirLogoMarca  := AExpandirLogoMarca;
 
         if APreview then
         begin
@@ -185,6 +190,7 @@ class procedure TfrmDACTeQR.SavePDF(AFile               : String;
                                     ALogo               : String    = '';
                                     AEmail              : String    = '';
                                     AImprimeHoraSaida   : Boolean   = False;
+                                    AExpandirLogoMarca  : Boolean   = False;
                                     AHoraSaida          : String    = '';
                                     AResumoCanhoto      : Boolean   = False;
                                     AFax                : String    = '';
@@ -217,6 +223,7 @@ begin
         FMargemInferior     := AMargemInferior;
         FMargemEsquerda     := AMargemEsquerda;
         FMargemDireita      := AMargemDireita;
+        FExpandirLogoMarca  := AExpandirLogoMarca;
 
         For i := 0 to ComponentCount -1 do
           begin

@@ -862,21 +862,21 @@ begin
       begin
         for I := 0 to Transp.Vol.Count - 1 do
         begin
-           if (Transp.Vol.Items[i].qVol <> 0) then
-              Box([fsTop],PosX,YPos,20,aHeigthPadrao,'Quantidade',IntToStr(Transp.Vol.Items[i].qVol),taRightJustify)
-           else
-              Box([fsTop],PosX,YPos,20,aHeigthPadrao,'Quantidade','',taRightJustify);
+           //if (Transp.Vol.Items[i].qVol <> 0) then
+              Box([fsTop],PosX,YPos,20,aHeigthPadrao,'Quantidade',IntToStr(Transp.Vol.Items[i].qVol),taRightJustify);
+           //else
+           //   Box([fsTop],PosX,YPos,20,aHeigthPadrao,'Quantidade','',taRightJustify);
            Box([fsTop,fsLeft],XPos,YPos,34,aHeigthPadrao,'Espécie',Transp.Vol.Items[i].esp,taCenter);
            Box([fsTop,fsLeft],XPos,YPos,50,aHeigthPadrao,'Marca',Transp.Vol.Items[i].marca,taCenter);
            Box([fsTop,fsLeft],XPos,YPos,30,aHeigthPadrao,'Numero',Transp.Vol.Items[i].nVol,taCenter);
-           if (Transp.Vol.Items[i].pesoB <> 0) then
-              Box([fsTop,fsLeft],XPos,YPos,30,aHeigthPadrao,'Peso Bruto',NotaUtil.FormatFloat(Transp.Vol.Items[i].pesoB,NotaUtil.PreparaCasasDecimais(3)),taRightJustify)
-           else
-              Box([fsTop,fsLeft],XPos,YPos,30,aHeigthPadrao,'Peso Bruto','',taRightJustify);
-           if (Transp.Vol.Items[i].pesoL <> 0) then
-              Box([fsTop,fsLeft],XPos,YPos,30,aHeigthPadrao,'Peso Líquido',NotaUtil.FormatFloat(Transp.Vol.Items[i].pesoL,NotaUtil.PreparaCasasDecimais(3)),taRightJustify,True)
-           else
-              Box([fsTop,fsLeft],XPos,YPos,30,aHeigthPadrao,'Peso Líquido','',taRightJustify,True);
+           //if (Transp.Vol.Items[i].pesoB <> 0) then
+              Box([fsTop,fsLeft],XPos,YPos,30,aHeigthPadrao,'Peso Bruto',NotaUtil.FormatFloat(Transp.Vol.Items[i].pesoB,NotaUtil.PreparaCasasDecimais(3)),taRightJustify);
+           //else
+           //   Box([fsTop,fsLeft],XPos,YPos,30,aHeigthPadrao,'Peso Bruto','',taRightJustify);
+           //if (Transp.Vol.Items[i].pesoL <> 0) then
+              Box([fsTop,fsLeft],XPos,YPos,30,aHeigthPadrao,'Peso Líquido',NotaUtil.FormatFloat(Transp.Vol.Items[i].pesoL,NotaUtil.PreparaCasasDecimais(3)),taRightJustify,True);
+           //else
+           //   Box([fsTop,fsLeft],XPos,YPos,30,aHeigthPadrao,'Peso Líquido','',taRightJustify,True);
         end;
      end;
      

@@ -433,8 +433,8 @@ begin
             end;
          end;
 
-         //omitir campos quadro volume
-         if dmDanfe.NFe.Transp.Vol.Count > 0 then
+         //omitir campos quadro volume (AGUARDANDO LEI QUE APROVE A MUDANÇA)
+{         if dmDanfe.NFe.Transp.Vol.Count > 0 then
          begin
             wPage[1] := FindRaveComponent('GlobalTransportador',nil) as TRavePage;
 
@@ -460,7 +460,7 @@ begin
                      wDataText[12].Left:=30;
                end;
             end;
-         end;
+         end;}
 
          //Total2Liquido
          if FImprimirTotalLiquido then

@@ -436,12 +436,29 @@ begin
          //omitir campos quadro volume
          if dmDanfe.NFe.Transp.Vol.Count > 0 then
          begin
-            if dmDanfe.NFe.Transp.Vol.Items[0].qVol=0 then
+            wPage[1] := FindRaveComponent('GlobalTransportador',nil) as TRavePage;
+
+            for I := 0 to dmDanfe.NFe.Transp.Vol.Count - 1 do
             begin
-               wPage[1] := FindRaveComponent('GlobalTransportador',nil) as TRavePage;
-               wDataText[1] := FindRaveComponent('DataText5',wPage[1]) as TRaveDataText;
-               if (wDataText[1] <> nil) then
-                  wDataText[1].Left:=30;
+               wDataText[5] := FindRaveComponent('DataText5',wPage[1]) as TRaveDataText;
+               wDataText[12] := FindRaveComponent('DataText12',wPage[1]) as TRaveDataText;
+               wDataText[17] := FindRaveComponent('DataText17',wPage[1]) as TRaveDataText;
+
+               if dmDanfe.NFe.Transp.Vol.Items[I].qVol=0 then
+               begin
+                  if (wDataText[5] <> nil) then
+                     wDataText[5].Left:=30;
+               end;
+               if dmDanfe.NFe.Transp.Vol.Items[I].pesoB=0 then
+               begin
+                  if (wDataText[17] <> nil) then
+                     wDataText[17].Left:=30;
+               end;
+               if dmDanfe.NFe.Transp.Vol.Items[I].pesoL=0 then
+               begin
+                  if (wDataText[12] <> nil) then
+                     wDataText[12].Left:=30;
+               end;
             end;
          end;
 

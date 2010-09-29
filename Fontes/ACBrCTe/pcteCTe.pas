@@ -150,8 +150,10 @@ type
   // Tperi = class; // Informações de produtos classificados pela ONU como perigosos
   // TveicNovos = class; // Informações dos veículos transportados
 
+  TrefNF = class;
+  TtomaICMS = class;
+  TtomaNaoICMS = class;
   TinfCTeSub = class; // Informações do CT-e de substituição
-
   TinfCTeCompCollection = class;
   TinfCTeCompCollectionItem = class;
   TvPresComp = class;
@@ -1523,14 +1525,62 @@ type
     property CPF: string read FCPF write FCPF;
   end;
 
+
+
+
+
+  TrefNF = class(TPersistent)
+  private
+    FCNPJ     : String;
+    Fmod      : String;
+    Fserie    : Integer;
+    Fsubserie : Integer;
+    Fnro      : Integer;
+    Fvalor    : Currency;
+    FdEmi     : TDateTime;
+  published
+    property CNPJ: String read FCNPJ write FCNPJ;
+    property modelo: String read Fmod write Fmod;
+    property serie: Integer read Fserie write Fserie;
+    property subserie: Integer read Fsubserie write Fsubserie;
+    property nro: Integer read Fnro write Fnro;
+    property valor: Currency read Fvalor write Fvalor;
+    property dEmi: TDateTime read FdEmi write FdEmi;
+  end;
+
+  TtomaICMS = class(TPersistent)
+  private
+    FrefNFe    : String;
+    FrefNF     : TrefNF;
+    FrefCte    : String;
+  public
+    constructor Create(AOwner: TinfCTeSub);
+    destructor Destroy; override;
+  published
+    property refNFe: String read FrefNFe write FrefNFe;
+    property refNF: TrefNF read FrefNF write FrefNF;
+    property refCte: String read FrefCte write FrefCte;
+  end;
+
+  TtomaNaoICMS = class(TPersistent)
+  private
+    FrefCteAnu : String;
+  published
+    property refCteAnu: String read FrefCteAnu write FrefCteAnu;
+  end;
+
   TInfCTeSub = class(TPersistent)
   private
-    FchCte    : String;
+    FchCte       : String;
+    FtomaICMS    : TtomaICMS;
+    FtomaNaoICMS : TtomaNaoICMS;
   public
     constructor Create(AOwner: TCTe);
     destructor Destroy; override;
   published
     property chCte: String read FchCte write FchCte;
+    property tomaICMS: TtomaICMS read FtomaICMS write FtomaICMS;
+    property tomaNaoICMS: TtomaNaoICMS read FtomaNaoICMS write FtomaNaoICMS;
   end;
 
   TinfCTeCompCollection = class(TCollection)
@@ -2831,15 +2881,39 @@ begin
   inherited;
 end;
 
+
+
+
+
+
+
+
+
+{ TtomaICMS }
+
+constructor TtomaICMS.Create(AOwner: TinfCteSub);
+begin
+  FrefNF := TrefNF.Create;
+end;
+
+destructor TtomaICMS.Destroy;
+begin
+  FrefNF.Free;
+  inherited;
+end;
+
 { TinfCTeSub }
 
 constructor TinfCTeSub.Create(AOwner: TCTe);
 begin
- {a}
+  FtomaICMS    := TtomaICMS.Create(Self);
+  FtomaNaoICMS := TtomaNaoICMS.Create;
 end;
 
 destructor TinfCTeSub.Destroy;
 begin
+  FtomaICMS.Free;
+  FtomaNaoICMS.Free;
   inherited;
 end;
 

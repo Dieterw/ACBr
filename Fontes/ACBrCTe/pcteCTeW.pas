@@ -1303,7 +1303,9 @@ end;
 
 procedure TCTeW.GerarInfCTeSub;  // S
 begin
- {a}
+  Gerador.wGrupo('infCteSub', 'S01');
+  Gerador.wCampo(tcEsp, 'S02', 'chCte', 44, 44, 1, SomenteNumeros(CTe.infCTeSub.chCte), DSC_CHCTE);
+  Gerador.wGrupo('/infCteSub');
 end;
 
 procedure TCTeW.GerarInfCTeComp;

@@ -149,7 +149,8 @@ type
   // Tduto = class; // Informações do modal Dutoviário
   // Tperi = class; // Informações de produtos classificados pela ONU como perigosos
   // TveicNovos = class; // Informações dos veículos transportados
-  // TinfCTeSub = class; // Informações do CT-e de substituição
+
+  TinfCTeSub = class; // Informações do CT-e de substituição
 
   TinfCTeCompCollection = class;
   TinfCTeCompCollectionItem = class;
@@ -180,6 +181,7 @@ type
     FInfSeg     : TInfSegCollection;
     FRodo       : TRodo;
 
+    FinfCTeSub  : TinfCTeSub;
     FinfCTeComp : TinfCTeCompCollection;
     FInfCTeAnuEnt : TInfCTeAnuEnt;
     FProcCTe: TProcCTe;
@@ -205,6 +207,8 @@ type
     property InfCarga: TInfCarga read FInfCarga write FInfCarga;
     property InfSeg: TInfSegCollection read FInfSeg write SetInfSeg;
     property Rodo: TRodo read FRodo write FRodo;
+
+    property infCTeSub: TinfCTeSub read FinfCTeSub write FinfCTeSub;
     property InfCTeComp: TInfCTeCompCollection read FInfCTeComp write SetInfCTeComp;
     property InfCTeAnuEnt: TInfCTeAnuEnt read FInfCTeAnuEnt write FInfCTeAnuEnt;
     property procCTe: TProcCTe read FProcCTe write FProcCTe;
@@ -1519,6 +1523,16 @@ type
     property CPF: string read FCPF write FCPF;
   end;
 
+  TInfCTeSub = class(TPersistent)
+  private
+    FchCte    : String;
+  public
+    constructor Create(AOwner: TCTe);
+    destructor Destroy; override;
+  published
+    property chCte: String read FchCte write FchCte;
+  end;
+
   TinfCTeCompCollection = class(TCollection)
   private
     function GetItem(Index: Integer): TinfCTeCompCollectionItem;
@@ -1649,6 +1663,7 @@ begin
   FInfSeg       := TInfSegCollection.Create(Self);
   FRodo         := TRodo.Create(Self);
 
+  FinfCTeSub    := TinfCTeSub.Create(Self);
   FinfCTeComp   := TinfCTeCompCollection.Create(Self);
   FInfCTeAnuEnt := TInfCTeAnuEnt.Create(Self);
   FProcCTe      := TProcCTe.create;
@@ -1672,6 +1687,7 @@ begin
   FInfSeg.Free;
   FRodo.Free;
 
+  FinfCTeSub.Free;
   FInfCTeComp.Free;
   FInfCTeAnuEnt.Free;
   FProcCTe.Free;
@@ -2812,6 +2828,18 @@ end;
 destructor TMotoCollectionItem.Destroy;
 begin
 
+  inherited;
+end;
+
+{ TinfCTeSub }
+
+constructor TinfCTeSub.Create(AOwner: TCTe);
+begin
+ {a}
+end;
+
+destructor TinfCTeSub.Destroy;
+begin
   inherited;
 end;
 

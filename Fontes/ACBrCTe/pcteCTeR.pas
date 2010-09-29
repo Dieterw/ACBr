@@ -782,6 +782,7 @@ begin
 
     if Leitor.rExtrai(2, 'infCteSub') <> '' then
     begin
+     CTe.infCTeSub.chCte := Leitor.rCampo(tcStr, 'chCte');
      //
     end;
   end;

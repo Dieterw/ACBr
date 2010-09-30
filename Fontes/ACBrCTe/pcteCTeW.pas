@@ -1288,7 +1288,9 @@ end;
 
 procedure TCTeW.GerarDuto;  // P
 begin
- {a}
+  Gerador.wGrupo('duto', 'P01');
+  Gerador.wCampo(tcDe6, 'P02', 'vTar', 01, 15, 0, CTe.duto.vTar, '');
+  Gerador.wGrupo('/duto');
 end;
 
 procedure TCTeW.GerarPeri;  // Q

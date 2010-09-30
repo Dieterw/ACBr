@@ -146,10 +146,13 @@ type
   // Taereo = class; // Informações do modal Aéreo
   // Taquav = class; // Informações do modal Aquaviário
   // Tferrov = class; // Informações do modal Ferroviário
-  // Tduto = class; // Informações do modal Dutoviário
-  // Tperi = class; // Informações de produtos classificados pela ONU como perigosos
-  // TveicNovos = class; // Informações dos veículos transportados
 
+  Tduto = class; // Informações do modal Dutoviário
+
+  TperiCollection = class; // Informações de produtos classificados pela ONU como perigosos
+  TperiCollectionItem = class;
+  TveicNovosCollection = class; // Informações dos veículos transportados
+  TveicNovosCollectionItem = class;
   TrefNF = class;
   TtomaICMS = class;
   TtomaNaoICMS = class;
@@ -161,7 +164,6 @@ type
   TcompCompCollectionItem = class;
   TImpComp = class;
   TICMSComp = class;
-
   TInfCTeAnuEnt = class;
 
   TCTe = class(TPersistent)
@@ -178,16 +180,22 @@ type
     FvPrest     : TvPrest;
     FImp        : TImp;
     FInfCTeNorm : TInfCteNorm;
-
     FInfCarga   : TInfCarga;
     FInfSeg     : TInfSegCollection;
-    FRodo       : TRodo;
 
+    FRodo       : TRodo; // Informações do modal Rodoviário
+
+    Fduto       : Tduto; // Informações do modal Dutoviário
+
+    Fperi       : TperiCollection;
+    FveicNovos  : TveicNovosCollection;
     FinfCTeSub  : TinfCTeSub;
     FinfCTeComp : TinfCTeCompCollection;
     FInfCTeAnuEnt : TInfCTeAnuEnt;
     FProcCTe: TProcCTe;
     FSignature: TSignature;
+    procedure Setperi(Value: TperiCollection);
+    procedure SetveicNovos(Value: TveicNovosCollection);
     procedure SetInfSeg(Value: TInfSegCollection);
     procedure SetInfCTeComp(Value: TInfCTeCompCollection);
   public
@@ -208,8 +216,13 @@ type
     property infCTeNorm: TInfCTeNorm read FInfCteNorm write FInfCTeNorm;
     property InfCarga: TInfCarga read FInfCarga write FInfCarga;
     property InfSeg: TInfSegCollection read FInfSeg write SetInfSeg;
+
     property Rodo: TRodo read FRodo write FRodo;
 
+    property duto: Tduto read Fduto write Fduto;
+
+    property peri: TperiCollection read Fperi write Setperi;
+    property veicNovos: TveicNovosCollection read FveicNovos write SetveicNovos;
     property infCTeSub: TinfCTeSub read FinfCTeSub write FinfCTeSub;
     property InfCTeComp: TInfCTeCompCollection read FInfCTeComp write SetInfCTeComp;
     property InfCTeAnuEnt: TInfCTeAnuEnt read FInfCTeAnuEnt write FInfCTeAnuEnt;
@@ -607,7 +620,7 @@ type
     property EnderReme: TEnderReme read FEnderReme write FEnderReme;
     property InfNF: TInfNFCollection read FInfNF write SetInfNF;
     property InfNFE: TInfNFECollection read FInfNFE write SetInfNFE;
-    property InfOutros: TInfOutrosCollection read FInfOutros write FInfOutros;
+    property InfOutros: TInfOutrosCollection read FInfOutros write SetInfOutros;
     property CNPJCPF: String read FCNPJCPF write FCNPJCPF;
     property IE: String read FIE write FIE;
     property xNome: String read FxNome write FxNome;
@@ -1528,6 +1541,82 @@ type
 
 
 
+  // Taereo = class; // Informações do modal Aéreo
+  // Taquav = class; // Informações do modal Aquaviário
+  // Tferrov = class; // Informações do modal Ferroviário
+
+
+
+
+
+  Tduto = class(TPersistent)
+  private
+    FvTar : Currency;
+  published
+    property vTar: Currency read FvTar write FvTar;
+  end;
+
+  TperiCollection = class(TCollection)
+  private
+    function GetItem(Index: Integer): TperiCollectionItem;
+    procedure SetItem(Index: Integer; Value: TperiCollectionItem);
+  public
+    constructor Create(AOwner: TCTe);
+    function Add: TperiCollectionItem;
+    property Items[Index: Integer]: TperiCollectionItem read GetItem write SetItem; default;
+  end;
+
+  TperiCollectionItem = class(TCollectionItem)
+  private
+    FnONU        : String;
+    FxNomeAE     : String;
+    FxClaRisco   : String;
+    FgrEmb       : String;
+    FqTotProd    : String;
+    FqVolTipo    : String;
+    FpontoFulgor : String;
+  public
+    constructor Create; reintroduce;
+    destructor Destroy; override;
+  published
+    property nONU: string read FnONU write FnONU;
+    property xNomeAE: string read FxNomeAE write FxNomeAE;
+    property xClaRisco: string read FxClaRisco write FxClaRisco;
+    property grEmb: string read FgrEmb write FgrEmb;
+    property qTotProd: string read FqTotProd write FqTotProd;
+    property qVolTipo: string read FqVolTipo write FqVolTipo;
+    property pontoFulgor: string read FpontoFulgor write FpontoFulgor;
+  end;
+
+  TveicNovosCollection = class(TCollection)
+  private
+    function GetItem(Index: Integer): TveicNovosCollectionItem;
+    procedure SetItem(Index: Integer; Value: TveicNovosCollectionItem);
+  public
+    constructor Create(AOwner: TCTe);
+    function Add: TveicNovosCollectionItem;
+    property Items[Index: Integer]: TveicNovosCollectionItem read GetItem write SetItem; default;
+  end;
+
+  TveicNovosCollectionItem = class(TCollectionItem)
+  private
+    Fchassi : String;
+    FcCor   : String;
+    FxCor   : String;
+    FcMod   : String;
+    FvUnit  : Currency;
+    FvFrete : Currency;
+  public
+    constructor Create; reintroduce;
+    destructor Destroy; override;
+  published
+    property chassi: string read Fchassi write Fchassi;
+    property cCor: string read FcCor write FcCor;
+    property xCor: string read FxCor write FxCor;
+    property cMod: string read FcMod write FcMod;
+    property vUnit: Currency read FvUnit write FvUnit;
+    property vFrete: Currency read FvFrete write FvFrete;
+  end;
 
   TrefNF = class(TPersistent)
   private
@@ -1711,8 +1800,13 @@ begin
   FInfCTeNorm   := TInfCTeNorm.Create(Self);
   FInfCarga     := TInfCarga.Create(Self);
   FInfSeg       := TInfSegCollection.Create(Self);
+
   FRodo         := TRodo.Create(Self);
 
+  Fduto         := Tduto.Create;
+
+  Fperi        := TperiCollection.Create(Self);
+  FveicNovos   := TveicNovosCollection.Create(Self);
   FinfCTeSub    := TinfCTeSub.Create(Self);
   FinfCTeComp   := TinfCTeCompCollection.Create(Self);
   FInfCTeAnuEnt := TInfCTeAnuEnt.Create(Self);
@@ -1735,8 +1829,13 @@ begin
   FInfCTeNorm.Free;
   FInfCarga.Free;
   FInfSeg.Free;
+
   FRodo.Free;
 
+  Fduto.Free;
+
+  Fperi.Free;
+  FveicNovos.Free;
   FinfCTeSub.Free;
   FInfCTeComp.Free;
   FInfCTeAnuEnt.Free;
@@ -1759,6 +1858,16 @@ begin
   FToma03.Free;
   FToma4.Free;
   inherited;
+end;
+
+procedure TCTe.Setperi(Value: TperiCollection);
+begin
+  Fperi.Assign(Value);
+end;
+
+procedure TCTe.SetveicNovos(Value: TveicNovosCollection);
+begin
+  FveicNovos.Assign(Value);
 end;
 
 procedure TCTe.SetInfSeg(Value: TInfSegCollection);
@@ -2888,6 +2997,86 @@ end;
 
 
 
+
+
+
+
+
+
+{ TperiCollection }
+
+function TperiCollection.Add: TperiCollectionItem;
+begin
+  Result := TperiCollectionItem(inherited Add);
+  Result.create;
+end;
+
+constructor TperiCollection.Create(AOwner: TCTe);
+begin
+  inherited Create(TperiCollectionItem);
+end;
+
+function TperiCollection.GetItem(Index: Integer): TperiCollectionItem;
+begin
+  Result := TperiCollectionItem(inherited GetItem(Index));
+end;
+
+procedure TperiCollection.SetItem(Index: Integer;
+  Value: TperiCollectionItem);
+begin
+  inherited SetItem(Index, Value);
+end;
+
+{ TperiCollectionItem }
+
+constructor TperiCollectionItem.Create;
+begin
+
+end;
+
+destructor TperiCollectionItem.Destroy;
+begin
+
+  inherited;
+end;
+
+{ TveicNovosCollection }
+
+function TveicNovosCollection.Add: TveicNovosCollectionItem;
+begin
+  Result := TveicNovosCollectionItem(inherited Add);
+  Result.create;
+end;
+
+constructor TveicNovosCollection.Create(AOwner: TCTe);
+begin
+  inherited Create(TveicNovosCollectionItem);
+end;
+
+function TveicNovosCollection.GetItem(
+  Index: Integer): TveicNovosCollectionItem;
+begin
+  Result := TveicNovosCollectionItem(inherited GetItem(Index));
+end;
+
+procedure TveicNovosCollection.SetItem(Index: Integer;
+  Value: TveicNovosCollectionItem);
+begin
+  inherited SetItem(Index, Value);
+end;
+
+{ TveicNovosCollectionItem }
+
+constructor TveicNovosCollectionItem.Create;
+begin
+
+end;
+
+destructor TveicNovosCollectionItem.Destroy;
+begin
+
+  inherited;
+end;
 
 { TtomaICMS }
 

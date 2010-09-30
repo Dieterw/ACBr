@@ -767,7 +767,7 @@ begin
 
     if Leitor.rExtrai(2, 'duto') <> '' then
     begin
-     //
+     CTe.duto.vTar := Leitor.rCampo(tcDe6, 'vTar');
     end;
 
     if Leitor.rExtrai(2, 'peri') <> '' then

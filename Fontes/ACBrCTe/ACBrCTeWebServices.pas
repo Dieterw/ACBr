@@ -1400,7 +1400,7 @@ var
  Acao  : TStringList ;
  Stream: TMemoryStream;
  StrStream: TStringStream;
- MotivoAux : String;
+// MotivoAux : String;
  {$IFDEF ACBrCTeOpenSSL}
     HTTP: THTTPSend;
  {$ELSE}

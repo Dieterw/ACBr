@@ -96,7 +96,6 @@ function TConsCad.GerarXML: boolean;
 var
   i: integer;
 begin
-  Result := False;
   Gerador.ArquivoFormatoXML := '';
 
   if retornarVersaoLayout(Fschema, tlConsCad) = '1.01' then

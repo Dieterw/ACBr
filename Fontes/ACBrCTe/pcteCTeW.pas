@@ -1294,13 +1294,42 @@ begin
 end;
 
 procedure TCTeW.GerarPeri;  // Q
+var
+ i: Integer;
 begin
- {a}
+  for i := 0 to CTe.peri.Count - 1 do
+   begin
+    Gerador.wGrupo('peri', 'Q01');
+    Gerador.wCampo(tcStr, 'Q02', 'nONU       ', 01,  04, 1, CTe.peri.Items[i].nONU, '');
+    Gerador.wCampo(tcStr, 'Q03', 'xNomeAE    ', 01, 150, 1, CTe.peri.Items[i].xNomeAE, '');
+    Gerador.wCampo(tcStr, 'Q04', 'xClaRisco  ', 01,  40, 1, CTe.peri.Items[i].xClaRisco, '');
+    Gerador.wCampo(tcStr, 'Q05', 'grEmb      ', 01,  06, 0, CTe.peri.Items[i].grEmb, '');
+    Gerador.wCampo(tcStr, 'Q06', 'qTotProd   ', 01,  20, 1, CTe.peri.Items[i].qTotProd, '');
+    Gerador.wCampo(tcStr, 'Q07', 'qVolTipo   ', 01,  60, 0, CTe.peri.Items[i].qVolTipo, '');
+    Gerador.wCampo(tcStr, 'Q08', 'pontoFugor ', 01,  06, 0, CTe.peri.Items[i].pontoFulgor, '');
+    Gerador.wGrupo('/peri');
+   end;
+  if CTe.peri.Count > 990 then
+   Gerador.wAlerta('Q01', 'peri', '', ERR_MSG_MAIOR_MAXIMO + '990');
 end;
 
 procedure TCTeW.GerarVeicNovos;  // R
+var
+ i: Integer;
 begin
- {a}
+  for i := 0 to CTe.veicNovos.Count - 1 do
+   begin
+    Gerador.wGrupo('veicNovos', 'R01');
+    Gerador.wCampo(tcStr, 'R02', 'chassi  ', 17, 17, 1, CTe.veicNovos.Items[i].chassi, '');
+    Gerador.wCampo(tcStr, 'R03', 'cCor    ', 01, 04, 1, CTe.veicNovos.Items[i].cCor, '');
+    Gerador.wCampo(tcStr, 'R04', 'xCor    ', 01, 40, 1, CTe.veicNovos.Items[i].xCor, '');
+    Gerador.wCampo(tcStr, 'R05', 'cMod    ', 01, 06, 1, CTe.veicNovos.Items[i].cMod, '');
+    Gerador.wCampo(tcDe2, 'R06', 'vUnit   ', 01, 15, 1, CTe.veicNovos.Items[i].vUnit, '');
+    Gerador.wCampo(tcDe2, 'R06', 'vFrete  ', 01, 15, 1, CTe.veicNovos.Items[i].vFrete, '');
+    Gerador.wGrupo('/veicNovos');
+   end;
+  if CTe.veicNovos.Count > 990 then
+   Gerador.wAlerta('R01', 'veicNovos', '', ERR_MSG_MAIOR_MAXIMO + '990');
 end;
 
 procedure TCTeW.GerarInfCTeSub;  // S

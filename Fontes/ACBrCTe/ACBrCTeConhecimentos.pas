@@ -92,7 +92,8 @@ type
                                 AguardarEnvio: Boolean = False;
                                 NomeRemetente: String = '');
     property CTe: TCTe  read FCTe write FCTe;
-    property XML: AnsiString  read FXML write FXML;
+//    property XML: AnsiString  read FXML write FXML;
+    property XML: AnsiString  read GetCTeXML write FXML;  // Alterada por Italo em 30/09/2010
     property Confirmada: Boolean  read FConfirmada write FConfirmada;
     property Msg: AnsiString  read FMsg write FMsg;
     property Alertas: AnsiString read FAlertas write FAlertas;

@@ -770,14 +770,31 @@ begin
      CTe.duto.vTar := Leitor.rCampo(tcDe6, 'vTar');
     end;
 
-    if Leitor.rExtrai(2, 'peri') <> '' then
+    i01 := 0;
+    while Leitor.rExtrai(2, 'peri', '', i01 + 1) <> '' do
     begin
-     //
+      CTe.peri.Add;
+      CTe.peri[i01].nONU        := Leitor.rCampo(tcStr, 'nONU');
+      CTe.peri[i01].xNomeAE     := Leitor.rCampo(tcStr, 'xNomeAE');
+      CTe.peri[i01].xClaRisco   := Leitor.rCampo(tcStr, 'xClaRisco');
+      CTe.peri[i01].grEmb       := Leitor.rCampo(tcStr, 'grEmb');
+      CTe.peri[i01].qTotProd    := Leitor.rCampo(tcStr, 'qTotProd');
+      CTe.peri[i01].qVolTipo    := Leitor.rCampo(tcStr, 'qVolTipo');
+      CTe.peri[i01].pontoFulgor := Leitor.rCampo(tcStr, 'pontoFulgor');
+      inc(i01);
     end;
 
-    if Leitor.rExtrai(2, 'veicNovos') <> '' then
+    i01 := 0;
+    while Leitor.rExtrai(2, 'veicNovos', '', i01 + 1) <> '' do
     begin
-     //
+      CTe.veicNovos.Add;
+      CTe.veicNovos[i01].chassi := Leitor.rCampo(tcStr, 'chassi');
+      CTe.veicNovos[i01].cCor   := Leitor.rCampo(tcStr, 'cCor');
+      CTe.veicNovos[i01].xCor   := Leitor.rCampo(tcStr, 'xCor');
+      CTe.veicNovos[i01].cMod   := Leitor.rCampo(tcStr, 'cMod');
+      CTe.veicNovos[i01].vUnit  := Leitor.rCampo(tcDe2, 'vUnit');
+      CTe.veicNovos[i01].vFrete := Leitor.rCampo(tcDe2, 'vFrete');
+      inc(i01);
     end;
 
     if Leitor.rExtrai(2, 'infCteSub') <> '' then

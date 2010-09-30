@@ -117,6 +117,10 @@ type
   TpcnECFModRef = (ECFModRefVazio, ECFModRef2B,ECFModRef2C,ECFModRef2D);
   TpcnISSQNcSitTrib  = ( ISSQNcSitTribVazio , ISSQNcSitTribNORMAL, ISSQNcSitTribRETIDA, ISSQNcSitTribSUBSTITUTA,ISSQNcSitTribISENTA);
 
+  // Incluido por Italo em 31/09/2010
+  TpcteDirecao = (drNorte, drLeste, drSul, drOeste);
+  TpcteTipoNavegacao = (tnInterior, tnCabotagem);
+
 const
   NFeUF: array[0..26] of String =
   ('AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA',
@@ -247,6 +251,11 @@ function StrToECFModRef(var ok: boolean; const s: string): TpcnECFModRef;
 function ISSQNcSitTribToStr(const t: TpcnISSQNcSitTrib ): string;
 function StrToISSQNcSitTrib(var ok: boolean; const s: string) : TpcnISSQNcSitTrib;
 
+  // Incluido por Italo em 31/09/2010
+function TpDirecaoToStr(const t: TpcteDirecao): string;
+function StrToTpDirecao(var ok: boolean; const s: string): TpcteDirecao;
+function TpNavegacaoToStr(const t: TpcteTipoNavegacao): string;
+function StrToTpNavegacao(var ok: boolean; const s: string): TpcteTipoNavegacao;
 
 
 
@@ -878,12 +887,32 @@ function ISSQNcSitTribToStr(const t: TpcnISSQNcSitTrib ): string;
 begin
     result := EnumeradoToStr(t, ['','N','R','S','I'],[ISSQNcSitTribVazio , ISSQNcSitTribNORMAL, ISSQNcSitTribRETIDA, ISSQNcSitTribSUBSTITUTA,ISSQNcSitTribISENTA]);
 end;
+
 function StrToISSQNcSitTrib(var ok: boolean; const s: string) : TpcnISSQNcSitTrib;
 begin
   result := StrToEnumerado(ok, s, ['','N','R','S','I'],[ISSQNcSitTribVazio , ISSQNcSitTribNORMAL, ISSQNcSitTribRETIDA, ISSQNcSitTribSUBSTITUTA,ISSQNcSitTribISENTA]);
 end;
 
+  // Incluido por Italo em 31/09/2010
+function TpDirecaoToStr(const t: TpcteDirecao): string;
+begin
+  result := EnumeradoToStr(t, ['N','L','S','O'], [drNorte , drLeste, drSul, drOeste]);
+end;
 
+function StrToTpDirecao(var ok: boolean; const s: string): TpcteDirecao;
+begin
+  result := StrToEnumerado(ok, s, ['N','L','S','O'], [drNorte , drLeste, drSul, drOeste]);
+end;
+
+function TpNavegacaoToStr(const t: TpcteTipoNavegacao): string;
+begin
+  result := EnumeradoToStr(t, ['0','1'], [tnInterior , tnCabotagem]);
+end;
+
+function StrToTpNavegacao(var ok: boolean; const s: string): TpcteTipoNavegacao;
+begin
+  result := StrToEnumerado(ok, s, ['0','1'], [tnInterior , tnCabotagem]);
+end;
 
 end.
 

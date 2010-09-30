@@ -783,7 +783,25 @@ begin
     if Leitor.rExtrai(2, 'infCteSub') <> '' then
     begin
      CTe.infCTeSub.chCte := Leitor.rCampo(tcStr, 'chCte');
-     //
+     if Leitor.rExtrai(3, 'tomaICMS') <> '' then
+      begin
+       CTe.infCTeSub.tomaICMS.refNFe := Leitor.rCampo(tcStr, 'refNFe');
+       if Leitor.rExtrai(4, 'refNF') <> '' then
+        begin
+         CTe.infCTeSub.tomaICMS.refNF.CNPJ     := Leitor.rCampo(tcStr, 'CNPJ');
+         CTe.infCTeSub.tomaICMS.refNF.modelo   := Leitor.rCampo(tcStr, 'mod');
+         CTe.infCTeSub.tomaICMS.refNF.serie    := Leitor.rCampo(tcInt, 'serie');
+         CTe.infCTeSub.tomaICMS.refNF.subserie := Leitor.rCampo(tcInt, 'subserie');
+         CTe.infCTeSub.tomaICMS.refNF.nro      := Leitor.rCampo(tcInt, 'nro');
+         CTe.infCTeSub.tomaICMS.refNF.valor    := Leitor.rCampo(tcDe2, 'valor');
+         CTe.infCTeSub.tomaICMS.refNF.dEmi     := Leitor.rCampo(tcDat, 'dEmi');
+        end;
+       CTe.infCTeSub.tomaICMS.refCte := Leitor.rCampo(tcStr, 'refCte');
+      end;
+     if Leitor.rExtrai(3, 'tomaNaoICMS') <> '' then
+      begin
+       CTe.infCTeSub.tomaNaoICMS.refCteAnu := Leitor.rCampo(tcStr, 'refCteAnu');
+      end;
     end;
   end;
 

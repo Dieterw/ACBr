@@ -193,7 +193,7 @@ begin
          else
             result:=0;
       end
-     else if (Tipo = tcDe2) or (Tipo = tcDe3) or (Tipo = tcDe4) then
+     else if (Tipo = tcDe2) or (Tipo = tcDe3) or (Tipo = tcDe4) or (tipo = tcDe6) then  // tcDe6, Incluido por Italo em 30/09/2010
        result := StrToFloat(StringReplace('0' + ConteudoTag, '.', DecimalSeparator, []))
      else if Tipo = tcEsp then
        result := ConteudoTag

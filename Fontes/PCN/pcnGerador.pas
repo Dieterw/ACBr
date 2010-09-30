@@ -593,7 +593,7 @@ begin
   end;
 
   // Tipo numerico com decimais
-  if (Tipo = tcDe2) or (Tipo = tcDe3) or (Tipo = tcDe4) then
+  if (Tipo = tcDe2) or (Tipo = tcDe3) or (Tipo = tcDe4) or (Tipo = tcDe6) then
   begin
     if Tipo = tcDe2 then
       NumeroDecimais := 2;
@@ -601,6 +601,8 @@ begin
       NumeroDecimais := 3;
     if Tipo = tcDe4 then
       NumeroDecimais := 4;
+    if Tipo = tcDe6 then    // Incluido por Italo em 30/09/2010
+      NumeroDecimais := 6;
     ConteudoProcessado := FormatFloat('0.000000', valor);
     EstaVazio := (valor = 0) and (ocorrencias = 0);
     if StrToInt(Copy(ConteudoProcessado, pos(DecimalSeparator, ConteudoProcessado) + NumeroDecimais + 1, 6)) > 0 then

@@ -72,7 +72,9 @@ type
                     tlCancCTe, tlConsReciCTe, tlConsSitCTe,
     tlInutCTe, tlCTe, tlProcCTe, tlProcInutCTe, tlRetCancCTe, tlRetConsReciCTe,
     tlRetConsSitCTe, tlRetEnvCTe, tlRetInutCTe, tlEnvCTe, tlProcCancCTe, tlEnvDPEC, tlConsDPEC, tlConsStatServCTe);
-  TpcnTipoCampo = (tcStr, tcInt, tcDat, tcDatHor, tcEsp, tcDe2, tcDe3, tcDe4 ); // tcEsp = String: somente numeros;
+
+  // Tipo tcDe6 incluido por Italo em 30/09/2010 (usado no CTe campo 435: vTar = valor da tarifa do modal Dutoviário)
+  TpcnTipoCampo = (tcStr, tcInt, tcDat, tcDatHor, tcEsp, tcDe2, tcDe3, tcDe4, tcDe6 ); // tcEsp = String: somente numeros;
   TpcnFormatoGravacao = (fgXML, fgTXT);
   TpcnTagAssinatura = (taSempre, taNunca, taSomenteSeAssinada, taSomenteParaNaoAssinada);
 

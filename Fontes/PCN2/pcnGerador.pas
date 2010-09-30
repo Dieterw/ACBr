@@ -648,12 +648,14 @@ begin
       tcDe2,
       tcDe3,
       tcDe4,
+      tcDe6,  // Incluido por Italo em 30/09/2010
       tcDe10 : begin
                 // Tipo numerico com decimais
                   case Tipo of
                     tcDe2 : NumeroDecimais :=  2;
                     tcDe3 : NumeroDecimais :=  3;
                     tcDe4 : NumeroDecimais :=  4;
+                    tcDe6 : NumeroDecimais :=  6; // Incluido por Italo em 30/09/2010
                     tcDe10: NumeroDecimais := 10;
                   end;
                   ConteudoProcessado  := FormatFloat('0.000000000000', valor);

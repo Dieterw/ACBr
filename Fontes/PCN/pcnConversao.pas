@@ -111,6 +111,10 @@ type
   TpcteMask = (msk4x2, msk7x2, msk9x2, msk10x2, msk13x2, msk15x2, msk6x3, mskAliq);
   UnidMed = (uM3,uKG, uTON, uUNIDADE, uLITROS);
 
+  // Incluido por Italo em 31/09/2010
+  TpcteDirecao = (drNorte, drLeste, drSul, drOeste);
+  TpcteTipoNavegacao = (tnInterior, tnCabotagem);
+
 const
   NFeUF: array[0..26] of String =
   ('AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA',
@@ -224,6 +228,11 @@ function StrToUnidMed(var ok: boolean; const s: String ): UnidMed;
 function TpMaskToStrText(const t: TpcteMask): string;
 function StrToTpMask(var ok: boolean; const s: string): TpcteMask;
 
+  // Incluido por Italo em 31/09/2010
+function TpDirecaoToStr(const t: TpcteDirecao): string;
+function StrToTpDirecao(var ok: boolean; const s: string): TpcteDirecao;
+function TpNavegacaoToStr(const t: TpcteTipoNavegacao): string;
+function StrToTpNavegacao(var ok: boolean; const s: string): TpcteTipoNavegacao;
 
 implementation
 
@@ -752,6 +761,26 @@ begin
   result := StrToEnumerado(ok, s, ['00', '01', '02', '03', '04'], [uM3,uKG, uTON, uUNIDADE, uLITROS]);
 end;
 
+  // Incluido por Italo em 31/09/2010
+function TpDirecaoToStr(const t: TpcteDirecao): string;
+begin
+  result := EnumeradoToStr(t, ['N','L','S','O'], [drNorte , drLeste, drSul, drOeste]);
+end;
+
+function StrToTpDirecao(var ok: boolean; const s: string): TpcteDirecao;
+begin
+  result := StrToEnumerado(ok, s, ['N','L','S','O'], [drNorte , drLeste, drSul, drOeste]);
+end;
+
+function TpNavegacaoToStr(const t: TpcteTipoNavegacao): string;
+begin
+  result := EnumeradoToStr(t, ['0','1'], [tnInterior , tnCabotagem]);
+end;
+
+function StrToTpNavegacao(var ok: boolean; const s: string): TpcteTipoNavegacao;
+begin
+  result := StrToEnumerado(ok, s, ['0','1'], [tnInterior , tnCabotagem]);
+end;
 
 end.
 

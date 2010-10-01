@@ -243,9 +243,6 @@ type
     QRLabel70: TQRLabel;
     QRLabel71: TQRLabel;
     QRLabel72: TQRLabel;
-    QRShape110: TQRShape;
-    QRLabel91: TQRLabel;
-    QRLabel92: TQRLabel;
     qrlFatData1: TQRLabel;
     qrlFatData2: TQRLabel;
     qrlFatData3: TQRLabel;
@@ -826,7 +823,13 @@ begin
 
    with FNFe.Transp do
    begin
-      qrlTransModFrete.Caption   := modFreteToStr( ModFrete ) ;
+     case ModFrete of
+      mfContaEmitente     : qrlTransModFrete.Caption := '0-Emitente';
+      mfContaDestinatario : qrlTransModFrete.Caption := '1-Destinat.';
+      mfContaTerceiros    : qrlTransModFrete.Caption := '2-Terceiros';
+      mfSemFrete          : qrlTransModFrete.Caption := '9-Sem Frete';
+     end;
+      // qrlTransModFrete.Caption   := modFreteToStr( ModFrete ) ;
       qrlTransCodigoANTT.Caption := '' ;
       qrlTransPlaca.Caption      := '' ;
       qrlTransUFPlaca.Caption    := '' ;

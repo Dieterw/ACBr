@@ -929,15 +929,14 @@ end;
 class function NotaUtil.GetURLMT(AAmbiente: Integer;
   ALayOut: TLayOut): WideString;
 begin
-  raise Exception.Create('WebServices 2.0 não liberados pelo estado');
   case ALayOut of
-    LayNfeRecepcao      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.mt.gov.br/nfews/NfeRecepcao', 'https://homologacao.sefaz.mt.gov.br/nfews/NfeRecepcao');
-    LayNfeRetRecepcao   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.mt.gov.br/nfews/NfeRetRecepcao', 'https://homologacao.sefaz.mt.gov.br/nfews/NfeRetRecepcao');
-    LayNfeCancelamento  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.mt.gov.br/nfews/NfeCancelamento', 'https://homologacao.sefaz.mt.gov.br/nfews/NfeCancelamento');
-    LayNfeInutilizacao  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.mt.gov.br/nfews/NfeInutilizacao', 'https://homologacao.sefaz.mt.gov.br/nfews/NfeInutilizacao');
-    LayNfeConsulta      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.mt.gov.br/nfews/NfeConsulta', 'https://homologacao.sefaz.mt.gov.br/nfews/NfeConsulta');
-    LayNfeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.mt.gov.br/nfews/NfeStatusServico', 'https://homologacao.sefaz.mt.gov.br/nfews/NfeStatusServico');
-    LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.mt.gov.br/nfews/CadConsultaCadastro', 'https://homologacao.sefaz.mt.gov.br/nfews/CadConsultaCadastro');
+    LayNfeRecepcao      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeRecepcao2', 'https://homologacao.sefaz.mt.gov.br/nfews/NfeRecepcao');
+    LayNfeRetRecepcao   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeRetRecepcao2', 'https://homologacao.sefaz.mt.gov.br/nfews/NfeRetRecepcao');
+    LayNfeCancelamento  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeCancelamento2', 'https://homologacao.sefaz.mt.gov.br/nfews/NfeCancelamento');
+    LayNfeInutilizacao  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeInutilizacao2', 'https://homologacao.sefaz.mt.gov.br/nfews/NfeInutilizacao');
+    LayNfeConsulta      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeConsulta2', 'https://homologacao.sefaz.mt.gov.br/nfews/NfeConsulta');
+    LayNfeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeStatusServico2', 'https://homologacao.sefaz.mt.gov.br/nfews/NfeStatusServico');
+    LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.mt.gov.br/nfews/v2/services/CadConsultaCadastro2', 'https://homologacao.sefaz.mt.gov.br/nfews/CadConsultaCadastro');
   end;
 end;
 

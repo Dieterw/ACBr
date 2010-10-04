@@ -1334,40 +1334,43 @@ end;
 
 procedure TCTeW.GerarInfCTeSub;  // S
 begin
-  Gerador.wGrupo('infCteSub', 'S01');
-  Gerador.wCampo(tcEsp, 'S02', 'chCte', 44, 44, 1, SomenteNumeros(CTe.infCTeSub.chCte), DSC_CHCTE);
-  if (CTe.infCTeSub.tomaNaoICMS.refCteAnu='')
-   then begin
-    Gerador.wGrupo('tomaICMS', 'S03');
-    if (CTe.infCTeSub.tomaICMS.refNFe<>'')
-     then begin
-      Gerador.wCampo(tcEsp, 'S04', 'refNFe', 44, 44, 1, SomenteNumeros(CTe.infCTeSub.tomaICMS.refNFe), DSC_CHCTE);
-     end
-     else begin
-      if (CTe.infCTeSub.tomaICMS.refNF.CNPJ<>'')
-       then begin
-        Gerador.wGrupo('refNF', 'S05');
-        Gerador.wCampoCNPJ('S06', CTe.infCTeSub.tomaICMS.refNF.CNPJ, CODIGO_BRASIL, True);
-        Gerador.wCampo(tcStr, 'S07', 'mod     ', 02, 02, 1, CTe.infCTeSub.tomaICMS.refNF.modelo, '');
-        Gerador.wCampo(tcInt, 'S08', 'serie   ', 01, 03, 1, CTe.infCTeSub.tomaICMS.refNF.serie, '');
-        Gerador.wCampo(tcInt, 'S09', 'subserie', 01, 03, 1, CTe.infCTeSub.tomaICMS.refNF.subserie, '');
-        Gerador.wCampo(tcInt, 'S10', 'nro     ', 01, 06, 1, CTe.infCTeSub.tomaICMS.refNF.nro, '');
-        Gerador.wCampo(tcDe2, 'S11', 'valor   ', 01, 15, 1, CTe.infCTeSub.tomaICMS.refNF.valor, '');
-        Gerador.wCampo(tcDat, 'S12', 'dEmi    ', 10, 10, 1, CTe.infCTeSub.tomaICMS.refNF.dEmi, '');
-        Gerador.wGrupo('/refNF');
-       end
-       else begin
-        Gerador.wCampo(tcEsp, 'S04', 'refCte', 44, 44, 1, SomenteNumeros(CTe.infCTeSub.tomaICMS.refCte), DSC_CHCTE);
-       end;
-     end;
-    Gerador.wGrupo('/tomaICMS');
-   end
-   else begin
-    Gerador.wGrupo('tomaNaoICMS', 'S01');
-    Gerador.wCampo(tcEsp, 'S02', 'refCteAnu', 44, 44, 1, SomenteNumeros(CTe.infCTeSub.tomaNaoICMS.refCteAnu), DSC_CHCTE);
-    Gerador.wGrupo('/tomaNaoICMS');
-   end;
-  Gerador.wGrupo('/infCteSub');
+ if CTe.infCTeSub.chCte<>''
+  then begin
+   Gerador.wGrupo('infCteSub', 'S01');
+   Gerador.wCampo(tcEsp, 'S02', 'chCte', 44, 44, 1, SomenteNumeros(CTe.infCTeSub.chCte), DSC_CHCTE);
+   if (CTe.infCTeSub.tomaNaoICMS.refCteAnu='')
+    then begin
+     Gerador.wGrupo('tomaICMS', 'S03');
+     if (CTe.infCTeSub.tomaICMS.refNFe<>'')
+      then begin
+       Gerador.wCampo(tcEsp, 'S04', 'refNFe', 44, 44, 1, SomenteNumeros(CTe.infCTeSub.tomaICMS.refNFe), DSC_CHCTE);
+      end
+      else begin
+       if (CTe.infCTeSub.tomaICMS.refNF.CNPJ<>'')
+        then begin
+         Gerador.wGrupo('refNF', 'S05');
+         Gerador.wCampoCNPJ('S06', CTe.infCTeSub.tomaICMS.refNF.CNPJ, CODIGO_BRASIL, True);
+         Gerador.wCampo(tcStr, 'S07', 'mod     ', 02, 02, 1, CTe.infCTeSub.tomaICMS.refNF.modelo, '');
+         Gerador.wCampo(tcInt, 'S08', 'serie   ', 01, 03, 1, CTe.infCTeSub.tomaICMS.refNF.serie, '');
+         Gerador.wCampo(tcInt, 'S09', 'subserie', 01, 03, 1, CTe.infCTeSub.tomaICMS.refNF.subserie, '');
+         Gerador.wCampo(tcInt, 'S10', 'nro     ', 01, 06, 1, CTe.infCTeSub.tomaICMS.refNF.nro, '');
+         Gerador.wCampo(tcDe2, 'S11', 'valor   ', 01, 15, 1, CTe.infCTeSub.tomaICMS.refNF.valor, '');
+         Gerador.wCampo(tcDat, 'S12', 'dEmi    ', 10, 10, 1, CTe.infCTeSub.tomaICMS.refNF.dEmi, '');
+         Gerador.wGrupo('/refNF');
+        end
+        else begin
+         Gerador.wCampo(tcEsp, 'S04', 'refCte', 44, 44, 1, SomenteNumeros(CTe.infCTeSub.tomaICMS.refCte), DSC_CHCTE);
+        end;
+      end;
+     Gerador.wGrupo('/tomaICMS');
+    end
+    else begin
+     Gerador.wGrupo('tomaNaoICMS', 'S01');
+     Gerador.wCampo(tcEsp, 'S02', 'refCteAnu', 44, 44, 1, SomenteNumeros(CTe.infCTeSub.tomaNaoICMS.refCteAnu), DSC_CHCTE);
+     Gerador.wGrupo('/tomaNaoICMS');
+    end;
+   Gerador.wGrupo('/infCteSub');
+  end;
 end;
 
 procedure TCTeW.GerarInfCTeComp;

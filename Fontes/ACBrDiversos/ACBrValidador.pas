@@ -866,10 +866,23 @@ begin
 
   if fsComplemento = 'RN' then
   begin
-     Tamanho := 9 ;
-     xROT := 'BD' ;
-     vDigitos := VarArrayOf(
-        [ 'DVX',c0_9,c0_9,c0_9,c0_9,c0_9,'0-3','0','2','','','','',''] ) ;
+      if Length(fsDocto) = 9 then
+      begin
+         Tamanho := 9 ;
+         xROT := 'BD' ;
+         vDigitos := VarArrayOf(
+            [ 'DVX',c0_9,c0_9,c0_9,c0_9,c0_9,c0_9,'0','2','','','','',''] ) ;
+      end
+     else
+       if Length(fsDocto) = 10 then
+       begin
+         Tamanho := 10 ;
+         xROT := 'BD' ;
+         xTP := 11 ;
+         vDigitos := VarArrayOf(
+            [ 'DVX',c0_9,c0_9,c0_9,c0_9,c0_9,c0_9,c0_9,'0','2','','','',''] ) ;
+       end;
+
   end ;
 
   if fsComplemento = 'RS' then
@@ -1282,7 +1295,7 @@ Begin
   IF UF = 'PE' Then Mascara := IfThen((LenDoc>9),'**.*.***.*******-*','*******-**');
   IF UF = 'PI' Then Mascara := '*********';
   IF UF = 'RJ' Then Mascara := '**.***.**-*';
-  IF UF = 'RN' Then Mascara := '**.***.***-*';
+  IF UF = 'RN' Then Mascara := IfThen((LenDoc>9),'**.*.***.***-*','**.***.***-*');
   IF UF = 'RS' Then Mascara := '***/*******';
   IF UF = 'RO' Then Mascara := '*************-*'; // Antiga = '***.*****-*';
   IF UF = 'RR' Then Mascara := '********-*';

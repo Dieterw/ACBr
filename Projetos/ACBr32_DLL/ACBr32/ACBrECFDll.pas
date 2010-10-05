@@ -3455,20 +3455,13 @@ begin
 end;
 
 
-{ AINDA NÃO IMPLEMENTADO }
-
-
-{
-
-
-
-Function ECF_AbreNaoFiscal(const ecfHandle: PECFHandle; const CPF_CNPJ: pChar) : Integer ; cdecl; export;
+Function ECF_AbreNaoFiscal(const ecfHandle: PECFHandle; const CPF_CNPJ : pChar) : Integer; {$IFDEF STDCALL} stdcall; {$ELSE} cdecl; {$ENDIF}  export;
 begin
-  if ECF = nil then
-   begin
+  if (ecfHandle = nil) then
+  begin
      Result := -2;
-     Exit ;
-   end;
+     Exit;
+  end;
 
   try
      ecfHandle^.ECF.AbreNaoFiscal(CPF_CNPJ);
@@ -3482,14 +3475,14 @@ begin
   end;
 end;
 
-Function ECF_RegistraItemNaoFiscal(const ecfHandle: PECFHandle; CodCNF: String; Valor: Double;
-  Obs: AnsiString = '') : Integer ; cdecl; export;
+
+Function ECF_RegistraItemNaoFiscal(const ecfHandle: PECFHandle; const CodCNF: pChar; const Valor: Double; const Obs: pChar) : Integer; {$IFDEF STDCALL} stdcall; {$ELSE} cdecl; {$ENDIF}  export;
 begin
-  if ECF = nil then
-   begin
+  if (ecfHandle = nil) then
+  begin
      Result := -2;
-     Exit ;
-   end;
+     Exit;
+  end;
 
   try
      ecfHandle^.ECF.RegistraItemNaoFiscal(CodCNF,Valor,Obs);
@@ -3503,14 +3496,13 @@ begin
   end;
 end;
 
-Function ECF_SubtotalizaNaoFiscal(const ecfHandle: PECFHandle; DescontoAcrescimo: Double;
-   MensagemRodape: AnsiString) : Integer ; cdecl; export;
+Function ECF_SubtotalizaNaoFiscal(const ecfHandle: PECFHandle; const DescontoAcrescimo: Double; const MensagemRodape: pChar) : Integer; {$IFDEF STDCALL} stdcall; {$ELSE} cdecl; {$ENDIF}  export;
 begin
-  if ECF = nil then
-   begin
+  if (ecfHandle = nil) then
+  begin
      Result := -2;
-     Exit ;
-   end;
+     Exit;
+  end;
 
   try
      ecfHandle^.ECF.SubtotalizaNaoFiscal(DescontoAcrescimo,MensagemRodape);
@@ -3524,14 +3516,13 @@ begin
   end;
 end;
 
-Function ECF_EfetuaPagamentoNaoFiscal(const ecfHandle: PECFHandle; CodFormaPagto: String;
-  Valor: Double; Observacao: AnsiString; ImprimeVinculado: Boolean) : Integer ; cdecl;  export;
+Function ECF_EfetuaPagamentoNaoFiscal(const ecfHandle: PECFHandle; const CodFormaPagto: pChar; const Valor: Double; const Observacao: pChar; const ImprimeVinculado: Boolean) : Integer; {$IFDEF STDCALL} stdcall; {$ELSE} cdecl; {$ENDIF}  export;
 begin
-  if ECF = nil then
-   begin
+  if (ecfHandle = nil) then
+  begin
      Result := -2;
-     Exit ;
-   end;
+     Exit;
+  end;
 
   try
      ecfHandle^.ECF.EfetuaPagamentoNaoFiscal(CodFormaPagto,Valor,Observacao,ImprimeVinculado);
@@ -3545,13 +3536,13 @@ begin
   end;
 end;
 
-Function ECF_FechaNaoFiscal(const ecfHandle: PECFHandle; Observacao: AnsiString) : Integer ; cdecl; export;
+Function ECF_FechaNaoFiscal(const ecfHandle: PECFHandle; const Observacao: pChar) : Integer; {$IFDEF STDCALL} stdcall; {$ELSE} cdecl; {$ENDIF}  export;
 begin
-  if ECF = nil then
-   begin
+  if (ecfHandle = nil) then
+  begin
      Result := -2;
-     Exit ;
-   end;
+     Exit;
+  end;
 
   try
      ecfHandle^.ECF.FechaNaoFiscal(Observacao);
@@ -3565,13 +3556,13 @@ begin
   end;
 end;
 
-Function ECF_CancelaNaoFiscal(const ecfHandle: PECFHandle) : Integer ; cdecl;export;
+Function ECF_CancelaNaoFiscal(const ecfHandle: PECFHandle) : Integer; {$IFDEF STDCALL} stdcall; {$ELSE} cdecl; {$ENDIF}  export;
 begin
-  if ECF = nil then
-   begin
+  if (ecfHandle = nil) then
+  begin
      Result := -2;
-     Exit ;
-   end;
+     Exit;
+  end;
 
   try
      ecfHandle^.ECF.CancelaNaoFiscal;
@@ -3584,6 +3575,10 @@ begin
      end
   end;
 end;
+
+
+{
+NÀO IMPLEMENTADO
 
 Function ECF_ImprimeCheque(const ecfHandle: PECFHandle;
                            const Banco: pChar;
@@ -3929,10 +3924,9 @@ ECF_ComprovantesNaoFiscais, ECF_LerTotaisComprovante, {ECF_AchaCNFDescricao,}
 
 ECF_TestaPodeAbrirCupom,
 ECF_Sangria, ECF_Suprimento, ECF_CortaPapel,
-{
 ECF_AbreNaoFiscal,
 ECF_RegistraItemNaoFiscal, ECF_SubtotalizaNaoFiscal, ECF_EfetuaPagamentoNaoFiscal,
-ECF_FechaNaoFiscal, ECF_CancelaNaoFiscal,}
+ECF_FechaNaoFiscal, ECF_CancelaNaoFiscal,
 
 ECF_AbreGaveta,
 {

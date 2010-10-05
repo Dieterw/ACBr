@@ -57,7 +57,7 @@ uses ACBrDevice, ACBrBase, ACBrBALClass,  {Units da ACBr}
 
 type
 
-TACBrBALModelo = (balNenhum, balFilizola, balToledo, balUrano ) ;
+TACBrBALModelo = (balNenhum, balFilizola, balToledo, balToledo2180, balUrano, balLucasTec ) ;
 TACBrBALLePeso = procedure(Peso : Double; Resposta : AnsiString) of object ;
 
 { Componente ACBrBAL }
@@ -120,6 +120,7 @@ TACBrBAL = class( TACBrComponent )
 
 implementation
 Uses ACBrUtil, ACBrBALFilizola, ACBrBALToledo, ACBrBALUrano,
+     ACBrBALLucasTec,  ACBrBALToledo2180,
      {$IFDEF COMPILER6_UP} StrUtils {$ELSE} ACBrD5{$ENDIF},
      Math;
 
@@ -182,7 +183,9 @@ begin
   case Value of
      balFilizola    : fsBAL := TACBrBALFilizola.create( Self ) ;
      balToledo      : fsBAL := TACBrBALToledo.Create( Self );
+     balToledo2180  : fsBAL := TACBrBALToledo2180.Create( Self );
      balUrano       : fsBAL := TACBrBALUrano.Create( Self );
+     balLucasTec    : fsBAL := TACBrBALLucasTec.Create( Self );
   else
      fsBAL := TACBrBALClass.create( Self ) ;
   end;

@@ -183,6 +183,8 @@ end ;
 
 function ACBrValidadorValidarDocumento( const TipoDocto : TACBrValTipoDocto;
   const Documento : AnsiString; const Complemento : AnsiString = '') : String ;
+function ACBrValidadorFormatarDocumento( const TipoDocto : TACBrValTipoDocto;
+  const Documento : AnsiString) : String ;
 
 implementation
 {$IFDEF COMPILER6_UP} uses Variants , Math, StrUtils;
@@ -190,24 +192,39 @@ implementation
 function ACBrValidadorValidarDocumento(const TipoDocto : TACBrValTipoDocto ;
   const Documento: AnsiString; const Complemento : AnsiString = '') : String ;
 Var
-  ACBrValidador : TACBrValidador ;
+  ACBrVal : TACBrValidador ;
 begin
-  ACBrValidador := TACBrValidador.Create(nil);
+  ACBrVal := TACBrValidador.Create(nil);
   try
-    ACBrValidador.RaiseExcept := False;
-    ACBrValidador.PermiteVazio:= False ;
-    ACBrValidador.TipoDocto   := TipoDocto;
-    ACBrValidador.Documento   := Documento;
-    ACBrValidador.Complemento := Complemento;
+    ACBrVal.RaiseExcept := False;
+    ACBrVal.PermiteVazio:= False ;
+    ACBrVal.TipoDocto   := TipoDocto;
+    ACBrVal.Documento   := Documento;
+    ACBrVal.Complemento := Complemento;
 
-    if ACBrValidador.Validar then
+    if ACBrVal.Validar then
        Result := ''
     else
-       Result := ACBrValidador.MsgErro;
+       Result := ACBrVal.MsgErro;
   finally
-    ACBrValidador.Free;
+    ACBrVal.Free;
   end;
+end;
 
+function ACBrValidadorFormatarDocumento(const TipoDocto : TACBrValTipoDocto ;
+  const Documento : AnsiString) : String ;
+Var
+  ACBrVal : TACBrValidador ;
+begin
+  ACBrVal := TACBrValidador.Create(nil);
+  try
+    ACBrVal.RaiseExcept := False;
+    ACBrVal.TipoDocto   := TipoDocto;
+    ACBrVal.Documento   := Documento;
+    Result := ACBrVal.Formatar;
+  finally
+    ACBrVal.Free;
+  end;
 end;
 
 {$ENDIF}

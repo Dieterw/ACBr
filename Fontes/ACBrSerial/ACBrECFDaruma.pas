@@ -1961,15 +1961,32 @@ Var RetCmd    : AnsiString ;
     Aliquota  : TACBrECFAliquota ;
     ValAliq   : Double ;
     AliquotaStr:String;
-    Cont      : Integer;
+    Cont, UltimaAliquota : Integer ;
 begin
   inherited CarregaAliquotas ;   { Cria fpAliquotas }
 
   if fpMFD then
   begin
     RetCmd :=  RetornaInfoECF('125');
+    UltimaAliquota := 16 ;
 
-    for Cont := 1 to 16 do
+    {Procura qual foi a última alíquota cadastrada diferente de alíquota zero}
+    for Cont := 16 Downto 1 do
+    begin
+       AliquotaStr := Trim(copy(RetCmd, ((Cont-1) * 5) + 1, 5)) ;
+
+       if (AliquotaStr <> '') and (AliquotaStr[2] <> #255) then
+       begin
+          ValAliq := RoundTo( StrToIntDef( copy(AliquotaStr,2,4) ,0) / 100, -2) ;
+          if ValAliq > 0 then
+          begin
+             UltimaAliquota := Cont;
+             Break;
+          end;
+       end ;
+    end;
+
+    for Cont := 1 to UltimaAliquota do
     begin
       AliquotaStr := Trim(copy(RetCmd, ((Cont-1) * 5) + 1, 5)) ;
 

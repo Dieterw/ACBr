@@ -626,7 +626,7 @@ begin
     OK := HTTPSend.HTTPMethod('GET', AURL) and (HTTPSend.ResultCode = 200);
     RespHTTP.LoadFromStream( HTTPSend.Document ) ;
 
-    // BuscarCEP sempre responde em ANSI //
+    // Verifica se a Resposta está em ANSI //
     {$IFDEF UNICODE}
      CT := LowerCase( GetHeaderValue('Content-Type:') );
 
@@ -711,4 +711,4 @@ begin
   fHTTPSend.ProxyUser := AValue;
 end;
 
-end.
+end.

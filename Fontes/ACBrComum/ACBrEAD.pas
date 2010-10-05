@@ -39,6 +39,8 @@
 |*  - Esboço da Primeira Versao para avaliação.
 *******************************************************************************}
 
+{$I ACBr.inc}
+
 unit ACBrEAD;
 
 interface
@@ -68,6 +70,7 @@ const
 
    { Chave padrão... por motivos de segurança, GERE A SUA PROPRIA CHAVE e
      informe-a em: "OnGetKeyRSA" }
+
    cRFDRSAKey = '-----BEGIN RSA PRIVATE KEY-----' + sLineBreak +
                 'MIICXQIBAAKBgQCtpPqcoOX4rwgdoKi6zJwPX9PA2iX2KxgvyxjE+daI5ZmYxcg0'+ sLineBreak +
                 'NScjX59nXRaLmtltVRfsRc1n4+mLSXiWMh3jIbw+TWn+GXKQhS2GitpLVhO3A6Ns'+ sLineBreak +

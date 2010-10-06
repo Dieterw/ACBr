@@ -870,14 +870,13 @@ end;
 class function NotaUtil.GetURLAM(AAmbiente: Integer;
   ALayOut: TLayOut): WideString;
 begin
-  raise Exception.Create('WebServices 2.0 não liberados pelo estado');
   case ALayOut of
-    LayNfeRecepcao      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.am.gov.br/ws/services/NfeRecepcao', 'https://homnfe.sefaz.am.gov.br/ws/services/NfeRecepcao');
-    LayNfeRetRecepcao   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.am.gov.br/ws/services/NfeRetRecepcao', 'https://homnfe.sefaz.am.gov.br/ws/services/NfeRetRecepcao');
-    LayNfeCancelamento  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.am.gov.br/ws/services/NfeCancelamento', 'https://homnfe.sefaz.am.gov.br/ws/services/NfeCancelamento');
-    LayNfeInutilizacao  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.am.gov.br/ws/services/NfeInutilizacao', 'https://homnfe.sefaz.am.gov.br/ws/services/NfeInutilizacao');
-    LayNfeConsulta      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.am.gov.br/ws/services/NfeConsulta', 'https://homnfe.sefaz.am.gov.br/ws/services/NfeConsulta');
-    LayNfeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.am.gov.br/ws/services/NfeStatusServico', 'https://homnfe.sefaz.am.gov.br/ws/services/NfeStatusServico');
+    LayNfeRecepcao      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.am.gov.br/services2/services/NfeRecepcao2', 'https://homnfe.sefaz.am.gov.br/services2/services/NfeRecepcao2');
+    LayNfeRetRecepcao   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.am.gov.br/services2/services/NfeRetRecepcao2', 'https://homnfe.sefaz.am.gov.br/services2/services/NfeRetRecepcao2');
+    LayNfeCancelamento  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.am.gov.br/services2/services/NfeCancelamento2', 'https://homnfe.sefaz.am.gov.br/services2/services/NfeCancelamento2');
+    LayNfeInutilizacao  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.am.gov.br/services2/services/NfeInutilizacao2', 'https://homnfe.sefaz.am.gov.br/services2/services/NfeInutilizacao2');
+    LayNfeConsulta      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.am.gov.br/services2/services/NfeConsulta2', 'https://homnfe.sefaz.am.gov.br/services2/services/NfeConsulta2');
+    LayNfeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.am.gov.br/services2/services/NfeStatusServico2', 'https://homnfe.sefaz.am.gov.br/services2/services/NfeStatusServico2');
 //    LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, '', '');
   end;
 end;
@@ -941,16 +940,14 @@ end;
 class function NotaUtil.GetURLMS(AAmbiente: Integer;
   ALayOut: TLayOut): WideString;
 begin
-  if AAmbiente = 1 then
-     raise Exception.Create('WebServices 2.0 apenas do ambiente de homologação já foram liberados pelo estado');
   case ALayOut of
-    LayNfeRecepcao      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://producao.nfe.ms.gov.br/producao/services/NfeRecepcao', 'https://homologacao.nfe.ms.gov.br/homologacao/services2/NfeRecepcao2');
-    LayNfeRetRecepcao   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://producao.nfe.ms.gov.br/producao/services/NfeRetRecepcao', 'https://homologacao.nfe.ms.gov.br/homologacao/services2/NfeRetRecepcao2');
-    LayNfeCancelamento  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://producao.nfe.ms.gov.br/producao/services/NfeCancelamento', 'https://homologacao.nfe.ms.gov.br/homologacao/services2/NfeCancelamento2');
-    LayNfeInutilizacao  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://producao.nfe.ms.gov.br/producao/services/NfeInutilizacao', 'https://homologacao.nfe.ms.gov.br/homologacao/services2/NfeInutilizacao2');
-    LayNfeConsulta      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://producao.nfe.ms.gov.br/producao/services/NfeConsulta', 'https://homologacao.nfe.ms.gov.br/homologacao/services2/NfeConsulta2');
-    LayNfeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://producao.nfe.ms.gov.br/producao/services/NfeStatusServico', 'https://homologacao.nfe.ms.gov.br/homologacao/services2/NfeStatusServico2');
-    LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, '', 'https://homologacao.nfe.ms.gov.br/homologacao/services2/CadConsultaCadastro2');
+    LayNfeRecepcao      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.ms.gov.br/producao/services2/NfeRecepcao2', 'https://homologacao.nfe.ms.gov.br/homologacao/services2/NfeRecepcao2');
+    LayNfeRetRecepcao   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.ms.gov.br/producao/services2/NfeRetRecepcao2', 'https://homologacao.nfe.ms.gov.br/homologacao/services2/NfeRetRecepcao2');
+    LayNfeCancelamento  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.ms.gov.br/producao/services2/NfeCancelamento2', 'https://homologacao.nfe.ms.gov.br/homologacao/services2/NfeCancelamento2');
+    LayNfeInutilizacao  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.ms.gov.br/producao/services2/NfeInutilizacao2', 'https://homologacao.nfe.ms.gov.br/homologacao/services2/NfeInutilizacao2');
+    LayNfeConsulta      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.ms.gov.br/producao/services2/NfeConsulta2', 'https://homologacao.nfe.ms.gov.br/homologacao/services2/NfeConsulta2');
+    LayNfeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.ms.gov.br/producao/services2/NfeStatusServico2', 'https://homologacao.nfe.ms.gov.br/homologacao/services2/NfeStatusServico2');
+    LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.ms.gov.br/producao/services2/CadConsultaCadastro2', 'https://homologacao.nfe.ms.gov.br/homologacao/services2/CadConsultaCadastro2');
   end;
 end;
 

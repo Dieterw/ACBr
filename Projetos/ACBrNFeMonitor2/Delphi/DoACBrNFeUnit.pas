@@ -2363,7 +2363,6 @@ begin
                INIRec.WriteFloat( sSecao,'vLiqFor' ,vLiqFor) ;
              end;
           end;
-
        end;
    finally
       IniNFe := TStringList.Create;

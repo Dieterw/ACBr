@@ -931,7 +931,6 @@ begin
       ACBrNFe1.NotasFiscais.Clear;
       with ACBrNFe1.NotasFiscais.Add.NFe do
        begin
-         Ide.cUF        := INIRec.ReadInteger( 'Identificacao','cUF'       ,UFparaCodigo(Emit.EnderEmit.UF));
          Ide.cNF        := INIRec.ReadInteger( 'Identificacao','Codigo' ,0);
          Ide.natOp      := INIRec.ReadString(  'Identificacao','NaturezaOperacao' ,'');
          Ide.indPag     := StrToIndpag(OK,INIRec.ReadString( 'Identificacao','FormaPag','0'));
@@ -942,7 +941,6 @@ begin
          Ide.dSaiEnt    := NotaUtil.StringToDate(INIRec.ReadString( 'Identificacao','Saida'  ,'0'));
          Ide.hSaiEnt    := StrToTime(INIRec.ReadString( 'Identificacao','hSaiEnt','0'));  //NFe2
          Ide.tpNF       := StrToTpNF(OK,INIRec.ReadString( 'Identificacao','Tipo','1'));
-         Ide.cMunFG    := INIRec.ReadInteger( 'Identificacao','CidadeCod' ,Emit.EnderEmit.cMun);
 
          Ide.tpImp      := StrToTpImp(  OK, INIRec.ReadString( 'Identificacao','tpImp',TpImpToStr(ACBrNFe1.DANFE.TipoDANFE)));  //NFe2
          Ide.tpEmis     := StrToTpEmis( OK,INIRec.ReadString( 'Identificacao','tpemis',IntToStr(ACBrNFe1.Configuracoes.Geral.FormaEmissaoCodigo)));
@@ -1023,6 +1021,9 @@ begin
          Emit.EnderEmit.cPais   := INIRec.ReadInteger( 'Emitente','PaisCod'    ,1058);
          Emit.EnderEmit.xPais   := INIRec.ReadString(  'Emitente','Pais'       ,'BRASIL');
          Emit.EnderEmit.fone    := INIRec.ReadString(  'Emitente','Fone' ,'');
+
+         Ide.cUF       := INIRec.ReadInteger( 'Identificacao','cUF'       ,UFparaCodigo(Emit.EnderEmit.UF));
+         Ide.cMunFG    := INIRec.ReadInteger( 'Identificacao','CidadeCod' ,Emit.EnderEmit.cMun);
 
          if INIRec.ReadString(  'Avulsa','CNPJ','') <> '' then
           begin

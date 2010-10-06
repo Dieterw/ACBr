@@ -4175,7 +4175,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
       Top = 1
       Width = 528
       Height = 212
-      ActivePage = tsECF
+      ActivePage = tsMonitor
       Align = alClient
       HotTrack = True
       Images = ImageList1

@@ -520,7 +520,7 @@ begin
            CorrigeEstadoErro
 
         else if Cmd.Metodo = 'abrerelatoriogerencial' then
-           AbreRelatorioGerencial
+           AbreRelatorioGerencial( StrToIntDef( Trim(Cmd.Params(0)),0))
 
         else if Cmd.Metodo = 'relatoriogerencial' then
          begin

@@ -70,6 +70,7 @@ type
     FTagNivel: string;
     FIDNivel: string;
     FOpcoes: TGeradorOpcoes;
+    FPrefixo : string;
   public
     FIgnorarTagNivel: string;
     FIgnorarTagIdentacao: string;
@@ -78,6 +79,8 @@ type
     function SalvarArquivo(const CaminhoArquivo: string; const FormatoGravacao: TpcnFormatoGravacao = fgXML): Boolean;
     procedure wGrupo(const TAG: string; ID: string = ''; const Identar: Boolean = True);
     procedure wCampo(const Tipo: TpcnTipoCampo; ID, TAG: string; const min, max, ocorrencias: smallint; const valor: variant; const Descricao: string = '');
+    procedure wGrupoNFSe(const TAG: string; ID: string = ''; const Identar: Boolean = True);
+    procedure wCampoNFSe(const Tipo: TpcnTipoCampo; ID, TAG: string; const min, max, ocorrencias: smallint; const valor: variant; const Descricao: string = '');
     procedure wCampoCNPJCPF(const ID1, ID2: string; CNPJCPF: string; const cPais: Integer);
     procedure wCampoCNPJ(const ID: string; CNPJ: string; const cPais: Integer; obrigatorio: Boolean);
     procedure wCampoCPF(const ID: string; CPF: string; const cPais: Integer; obrigatorio: Boolean);
@@ -93,6 +96,7 @@ type
     property ListaDeAlertas: TStringList read FListaDeAlertas write FListaDeAlertas;
     property LayoutArquivoTXT: TStringList read FLayoutArquivoTXT write FLayoutArquivoTXT;
     property Opcoes: TGeradorOpcoes read FOpcoes write FOpcoes;
+    property Prefixo: string read FPrefixo write FPrefixo;
   end;
 
   TGeradorOpcoes = class(TPersistent)
@@ -821,6 +825,22 @@ begin
   ListTAGs.Free;
   ListArquivo.Free;
   ListCorrigido.Free;
+end;
+
+procedure TGerador.wCampoNFSe(const Tipo: TpcnTipoCampo; ID, TAG: string;
+  const min, max, ocorrencias: smallint; const valor: variant;
+  const Descricao: string);
+begin
+  Self.wCampo(Tipo, ID, Self.Prefixo + TAG, min, max, ocorrencias, valor, Descricao);
+end;
+
+procedure TGerador.wGrupoNFSe(const TAG: string; ID: string;
+  const Identar: Boolean);
+begin
+  if copy(TAG,1,1) = '/' then
+     Self.wGrupo('/'+Self.Prefixo + copy(TAG,2,length(TAG)), ID, Identar)
+  else
+     Self.wGrupo(Self.Prefixo + TAG, ID, Identar);
 end;
 
 end.

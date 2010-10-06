@@ -164,14 +164,14 @@ var
   ConteudoTag: string;
   inicio, fim: integer;
 begin
-  Tag := Trim(TAG);
-  inicio := pos('<' + Tag + '>', FGrupo);
+  Tag := UpperCase(Trim(TAG));
+  inicio := pos('<' + Tag + '>', UpperCase(FGrupo));
   if inicio = 0 then
     ConteudoTag := ''
   else
   begin
     inicio := inicio + Length(Tag) + 2;
-    fim := pos('</' + Tag + '>', FGrupo) - inicio;
+    fim := pos('</' + Tag + '>', UpperCase(FGrupo)) - inicio;
     ConteudoTag := trim(copy(FGrupo, inicio, fim));
   end;
   case Tipo of

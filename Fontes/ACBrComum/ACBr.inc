@@ -337,7 +337,7 @@
 //{$DEFINE ACBrNFeOpenSSL}  // Para Usar OpenSSL no ACBrNFe em Delphi, descomente essa linha
 //{$DEFINE ACBrCTeOpenSSL}
 //{$DEFINE CLX}             // Para usar CLX no Windows / Delphi descomente essa linha
-
+{$DEFINE VCL}
 {$DEFINE BORLAND}
 
 { Ajusta FreePascal para o modo Delphi }

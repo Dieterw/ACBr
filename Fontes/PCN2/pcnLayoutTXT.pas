@@ -52,7 +52,7 @@ interface uses
 function CarregarLayoutTXT(const versao: string): AnsiString;
 
 const
-  VERSOES_VALIDAS_LAYOUT_TXT = {'|1.10|'}'|2.00|';
+  VERSOES_VALIDAS_LAYOUT_TXT = '|1.10|2.00|';
 
 implementation
 
@@ -64,7 +64,6 @@ var
     Layout := Layout + UpperCase(s + #10 + #13);
   end;
 begin
-
   if versao = '1.10' then
   begin
     LoadLayout('<B01>       NOTA FISCAL|1');

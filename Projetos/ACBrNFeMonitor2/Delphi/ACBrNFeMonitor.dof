@@ -134,38 +134,3 @@ OriginalFilename=
 ProductName=
 ProductVersion=1.0.0.0
 Comments=
-[Excluded Packages]
-C:\ARQUIV~1\Borland\Delphi7\Projects\Bpl\JclDebugIdeD70.bpl=JCL Debug IDE extension for Delphi 7
-C:\ARQUIV~1\Borland\Delphi7\Projects\Bpl\ProjectAnalyzerD70.bpl=JCL Project Analyzer for Delphi 7
-C:\ARQUIV~1\Borland\Delphi7\Projects\Bpl\IdeOpenDlgFavoriteD70.bpl=JCL Open and Save IDE dialogs with favorite folders for Delphi 7
-c:\program files\borland\delphi7\Projects\Bpl\DJComps_CLX.bpl=Componentes DJSystem
-[HistoryLists\hlConditionals]
-Count=2
-Item0=VisualCLX
-Item1=VisualCLX;CLX
-[HistoryLists\hlUnitAliases]
-Count=1
-Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
-[HistoryLists\hlSearchPath]
-Count=10
-Item0=../ACBrComum
-Item1=../synapse
-Item2=..\ACBr\source\synapse
-Item3=..\ACBr\source\Pascal;..\ACBr\dcu
-Item4=..\ACBr\source\Pascal
-Item5=C:\DELPHI\ACBr\source\Pascal\synaser\source
-Item6=synaser/source
-Item7=../Pascal/SynaSer/SOURCE
-Item8=.\SynaSer\SOURCE
-Item9=./SynaSer/SOURCE
-[HistoryLists\hlUnitOutputDirectory]
-Count=1
-Item0=../../dcu
-[HistoryLists\hlBPLOutput]
-Count=2
-Item0=../../bin
-Item1=.\
-[HistoryLists\hlDCPOutput]
-Count=2
-Item0=../../bin
-Item1=.\

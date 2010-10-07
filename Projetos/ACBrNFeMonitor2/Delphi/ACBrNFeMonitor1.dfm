@@ -1,8 +1,8 @@
 object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
-  Left = 469
-  Top = 150
-  Width = 586
-  Height = 566
+  Left = 468
+  Top = 133
+  Width = 587
+  Height = 583
   ActiveControl = btMinimizar
   Caption = 'ACBrNFeMonitor2'
   Color = clBtnFace
@@ -26,14 +26,14 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
   object pPrincipal: TPanel
     Left = 0
     Top = 0
-    Width = 570
-    Height = 208
+    Width = 571
+    Height = 225
     Align = alClient
     TabOrder = 0
     object Splitter1: TSplitter
       Left = 1
       Top = 89
-      Width = 568
+      Width = 569
       Height = 3
       Cursor = crVSplit
       Align = alTop
@@ -41,14 +41,14 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
     object pCmd: TPanel
       Left = 1
       Top = 1
-      Width = 568
+      Width = 569
       Height = 88
       Align = alTop
       TabOrder = 0
       object pTopCmd: TPanel
         Left = 1
         Top = 1
-        Width = 566
+        Width = 567
         Height = 17
         Align = alTop
         Caption = 'Comandos a Processar'
@@ -58,7 +58,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
       object sbProcessando: TStatusBar
         Left = 1
         Top = 68
-        Width = 566
+        Width = 567
         Height = 19
         Panels = <
           item
@@ -72,7 +72,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
       object mCmd: TMemo
         Left = 1
         Top = 18
-        Width = 566
+        Width = 567
         Height = 50
         Align = alClient
         Lines.Strings = (
@@ -84,14 +84,14 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
     object pResp: TPanel
       Left = 1
       Top = 92
-      Width = 568
-      Height = 115
+      Width = 569
+      Height = 132
       Align = alClient
       TabOrder = 1
       object pTodResp: TPanel
         Left = 1
         Top = 1
-        Width = 566
+        Width = 567
         Height = 17
         Align = alTop
         Caption = 'Respostas Enviadas'
@@ -101,8 +101,8 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
       object mResp: TMemo
         Left = 1
         Top = 18
-        Width = 566
-        Height = 96
+        Width = 567
+        Height = 113
         Align = alClient
         Lines.Strings = (
           '')
@@ -116,18 +116,18 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
   end
   object pBotoes: TPanel
     Left = 0
-    Top = 471
-    Width = 570
+    Top = 488
+    Width = 571
     Height = 40
     Align = alBottom
     TabOrder = 1
     DesignSize = (
-      570
+      571
       40)
     object Image1: TImage
       Left = 1
       Top = 1
-      Width = 568
+      Width = 569
       Height = 38
       Cursor = crHandPoint
       Align = alClient
@@ -3978,7 +3978,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
       OnClick = Image1Click
     end
     object btCancelar: TBitBtn
-      Left = 361
+      Left = 362
       Top = 3
       Width = 96
       Height = 37
@@ -4016,7 +4016,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
         00FFFF00FFFF00FFFF00FF0000295A59E7181C7BFF00FFFF00FF}
     end
     object btMinimizar: TBitBtn
-      Left = 361
+      Left = 362
       Top = 2
       Width = 96
       Height = 37
@@ -4053,7 +4053,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
         FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
     end
     object btConfig: TBitBtn
-      Left = 467
+      Left = 468
       Top = 2
       Width = 96
       Height = 37
@@ -4100,8 +4100,8 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 511
-    Width = 570
+    Top = 528
+    Width = 571
     Height = 19
     Panels = <
       item
@@ -4113,8 +4113,8 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
   end
   object pConfig: TPanel
     Left = 0
-    Top = 208
-    Width = 570
+    Top = 225
+    Width = 571
     Height = 263
     Align = alBottom
     TabOrder = 3
@@ -4122,7 +4122,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
     object PageControl1: TPageControl
       Left = 1
       Top = 1
-      Width = 568
+      Width = 569
       Height = 261
       ActivePage = Monitor
       Align = alClient
@@ -4420,7 +4420,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
         Caption = 'Certificado/Software House'
         ImageIndex = 1
         DesignSize = (
-          560
+          561
           230)
         object Label27: TLabel
           Left = 6
@@ -4432,13 +4432,13 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
         object gbxCertificado: TGroupBox
           Left = 6
           Top = 4
-          Width = 548
+          Width = 549
           Height = 109
           Anchors = [akLeft, akTop, akRight]
           Caption = 'Certificado'
           TabOrder = 0
           DesignSize = (
-            548
+            549
             109)
           object lblCaminho: TLabel
             Left = 8
@@ -4455,7 +4455,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
             Caption = 'Senha'
           end
           object sbArquivoCert: TSpeedButton
-            Left = 518
+            Left = 519
             Top = 34
             Width = 23
             Height = 24
@@ -4479,7 +4479,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           object edtCaminho: TEdit
             Left = 8
             Top = 36
-            Width = 508
+            Width = 509
             Height = 21
             Anchors = [akLeft, akTop, akRight]
             TabOrder = 0
@@ -4487,7 +4487,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           object edtSenha: TEdit
             Left = 8
             Top = 78
-            Width = 532
+            Width = 533
             Height = 21
             Anchors = [akLeft, akTop, akRight]
             PasswordChar = '*'
@@ -4497,7 +4497,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
         object edtSoftwareHouse: TEdit
           Left = 6
           Top = 132
-          Width = 540
+          Width = 541
           Height = 21
           Anchors = [akLeft, akTop, akRight]
           TabOrder = 1
@@ -4781,18 +4781,18 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
         Caption = 'Email'
         ImageIndex = 3
         DesignSize = (
-          560
+          561
           230)
         object GroupBox1: TGroupBox
           Left = 6
           Top = 4
-          Width = 549
+          Width = 550
           Height = 173
           Anchors = [akLeft, akTop, akRight]
           Caption = 'Email'
           TabOrder = 0
           DesignSize = (
-            549
+            550
             173)
           object Label20: TLabel
             Left = 8
@@ -4884,7 +4884,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           object mmEmailMsg: TMemo
             Left = 288
             Top = 32
-            Width = 253
+            Width = 254
             Height = 129
             Anchors = [akLeft, akTop, akRight]
             TabOrder = 6
@@ -4897,7 +4897,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
         object PageControl2: TPageControl
           Left = 0
           Top = 0
-          Width = 560
+          Width = 561
           Height = 230
           ActivePage = TabSheet1
           Align = alClient
@@ -5200,7 +5200,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
             Caption = 'Dados Empresa'
             ImageIndex = 1
             DesignSize = (
-              552
+              553
               199)
             object Label3: TLabel
               Left = 6
@@ -5254,7 +5254,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
             object edtSiteEmpresa: TEdit
               Left = 6
               Top = 20
-              Width = 243
+              Width = 244
               Height = 21
               Anchors = [akLeft, akTop, akRight]
               TabOrder = 0
@@ -5262,7 +5262,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
             object edtEmailEmpresa: TEdit
               Left = 214
               Top = 19
-              Width = 243
+              Width = 244
               Height = 21
               Anchors = [akLeft, akTop, akRight]
               TabOrder = 1
@@ -5270,7 +5270,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
             object edtFaxEmpresa: TEdit
               Left = 6
               Top = 60
-              Width = 163
+              Width = 164
               Height = 21
               Anchors = [akLeft, akTop, akRight]
               TabOrder = 2
@@ -5289,7 +5289,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
         Caption = 'Diret'#243'rios'
         ImageIndex = 6
         DesignSize = (
-          560
+          561
           230)
         object sbPathNFe: TSpeedButton
           Left = 258
@@ -5411,7 +5411,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           Caption = 'Salvar arquivos PDF em:'
         end
         object sbPathPDF: TSpeedButton
-          Left = 258
+          Left = 259
           Top = 172
           Width = 23
           Height = 24
@@ -5588,19 +5588,19 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
         object Panel2: TPanel
           Left = 153
           Top = 0
-          Width = 407
+          Width = 408
           Height = 230
           Align = alClient
           TabOrder = 1
           object WBResposta: TWebBrowser
             Left = 1
             Top = 18
-            Width = 405
+            Width = 406
             Height = 211
             Align = alClient
             TabOrder = 0
             ControlData = {
-              4C000000DC290000CF1500000000000000000000000000000000000000000000
+              4C000000F6290000CF1500000000000000000000000000000000000000000000
               000000004C000000000000000000000001000000E0D057007335CF11AE690800
               2B2E126208000000000000004C0000000114020000000000C000000000000046
               8000000000000000000000000000000000000000000000000000000000000000
@@ -5609,7 +5609,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           object Panel3: TPanel
             Left = 1
             Top = 1
-            Width = 405
+            Width = 406
             Height = 17
             Align = alTop
             Alignment = taLeftJustify

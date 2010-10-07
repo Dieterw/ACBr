@@ -947,8 +947,8 @@ begin
 //         Ide.cDV
 //         Ide.tpAmb
          Ide.finNFe     := StrToFinNFe( OK,INIRec.ReadString( 'Identificacao','Finalidade','0'));
-         Ide.procEmi    := StrToProcEmi(OK,INIRec.ReadString( 'Identificacao','procEmi','0'));
-         Ide.verProc    := INIRec.ReadString(  'Identificacao','verProc' ,'1.0.0.0' ); //NFe2
+         Ide.procEmi    := StrToProcEmi(OK,INIRec.ReadString( 'Identificacao','procEmi','0')); //NFe2
+         Ide.verProc    := INIRec.ReadString(  'Identificacao','verProc' ,'1.0.0.0' );
          Ide.dhCont     := NotaUtil.StringToDate(INIRec.ReadString( 'Identificacao','dhCont'  ,'0')); //NFe2
          Ide.xJust      := INIRec.ReadString(  'Identificacao','xJust' ,'' ); //NFe2
 

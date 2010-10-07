@@ -30,7 +30,7 @@ var
          RPDefine.DataID := IntToStr(Application.Handle);
          Application.Initialize;
          Application.CreateForm(TfrmAcbrNfeMonitor, frmAcbrNfeMonitor);
-         Application.Run;
+  Application.Run;
        end
       else
           MessageBox(0, 'ACBrNFeMonitor já está em execução!','ACBrNFeMonitor', mb_IconHand);

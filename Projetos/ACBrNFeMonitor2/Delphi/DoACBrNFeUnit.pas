@@ -939,7 +939,7 @@ begin
          Ide.nNF        := INIRec.ReadInteger( 'Identificacao','Numero' ,0);
          Ide.dEmi       := NotaUtil.StringToDate(INIRec.ReadString( 'Identificacao','Emissao','0'));
          Ide.dSaiEnt    := NotaUtil.StringToDate(INIRec.ReadString( 'Identificacao','Saida'  ,'0'));
-         Ide.hSaiEnt    := StrToTime(INIRec.ReadString( 'Identificacao','hSaiEnt','0'));  //NFe2
+         Ide.hSaiEnt    := NotaUtil.StringToTime(INIRec.ReadString( 'Identificacao','hSaiEnt','0'));  //NFe2
          Ide.tpNF       := StrToTpNF(OK,INIRec.ReadString( 'Identificacao','Tipo','1'));
 
          Ide.tpImp      := StrToTpImp(  OK, INIRec.ReadString( 'Identificacao','tpImp',TpImpToStr(ACBrNFe1.DANFE.TipoDANFE)));  //NFe2

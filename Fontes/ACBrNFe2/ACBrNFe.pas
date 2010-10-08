@@ -240,6 +240,13 @@ function TACBrNFe.Enviar(ALote: String; Imprimir: Boolean): Boolean;
 var
   i: Integer;
 begin
+  if NotasFiscais.Count > 50 then
+   begin
+      if Assigned(Self.OnGerarLog) then
+         Self.OnGerarLog('ERRO: Conjunto de NF-e transmitidas (máximo de 50 NF-e) excedido. Quantidade atual: '+IntToStr(NotasFiscais.Count));
+      raise Exception.Create('ERRO: Conjunto de NF-e transmitidas (máximo de 50 NF-e) excedido. Quantidade atual: '+IntToStr(NotasFiscais.Count));
+     exit;
+   end;
   NotasFiscais.Assinar;
   NotasFiscais.Valida;
 

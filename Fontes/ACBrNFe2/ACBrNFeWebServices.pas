@@ -748,6 +748,13 @@ begin
   FDadosMsg := '<enviNFe xmlns="http://www.portalfiscal.inf.br/nfe" versao="'+NFenviNFe+'">'+
                '<idLote>'+TNFeRecepcao(Self).Lote+'</idLote>'+vNotas+'</enviNFe>';
 
+  if Length(FDadosMsg) > (500 * 1024) then
+   begin
+      if Assigned(TACBrNFe(Self.FACBrNFe).OnGerarLog) then
+         TACBrNFe(Self.FACBrNFe).OnGerarLog('ERRO: Tamanho do XML de Dados superior a 500 Kbytes. Tamanho atual: '+FloatToStr(Length(FDadosMsg)/500));
+      raise Exception.Create('ERRO: Tamanho do XML de Dados superior a 500 Kbytes. Tamanho atual: '+FloatToStr(Length(FDadosMsg)/500));
+      exit;
+   end;
 end;
 
 procedure TWebServicesBase.DoNFeRetRecepcao;

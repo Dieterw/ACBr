@@ -648,7 +648,7 @@ begin
       smtp.Sock.CloseSocket ;
     except
     end ;
-    Terminado := False;
+    Terminado := True; // Alterado por Italo em 21/09/2010
     HandleException;
   end;
 end;

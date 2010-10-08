@@ -729,8 +729,8 @@ begin
   begin
     Gerador.wGrupo('arma', 'L00');
     Gerador.wCampo(tcStr, 'L02', 'tpArma', 01, 001, 1, tpArmaToStr(nfe.Det[i].Prod.arma[j].tpArma), DSC_TPARMA);
-    Gerador.wCampo(tcInt, 'L03', 'nSerie', 01, 009, 1, nfe.Det[i].Prod.arma[j].nSerie, DSC_NSERIE);
-    Gerador.wCampo(tcInt, 'L04', 'nCano ', 01, 009, 1, nfe.Det[i].Prod.arma[j].nCano, DSC_NCANO);
+    Gerador.wCampo(tcStr, 'L03', 'nSerie', 01, 009, 1, nfe.Det[i].Prod.arma[j].nSerie, DSC_NSERIE);
+    Gerador.wCampo(tcStr, 'L04', 'nCano ', 01, 009, 1, nfe.Det[i].Prod.arma[j].nCano, DSC_NCANO);
     Gerador.wCampo(tcStr, 'L05', 'descr ', 01, 256, 1, nfe.Det[i].Prod.arma[j].descr, DSC_DESCR);
     Gerador.wGrupo('/arma');
   end;

@@ -423,8 +423,8 @@ begin
     begin
       NFe.Det[i].Prod.arma.add;
       (*L02*)NFe.Det[i].Prod.arma[j].tpArma := StrToTpArma(ok, Leitor.rCampo(tcStr, 'tpArma'));
-      (*L03*)NFe.Det[i].Prod.arma[j].nSerie := Leitor.rCampo(tcInt, 'nSerie');
-      (*L04*)NFe.Det[i].Prod.arma[j].nCano := Leitor.rCampo(tcInt, 'nCano');
+      (*L03*)NFe.Det[i].Prod.arma[j].nSerie := Leitor.rCampo(tcStr, 'nSerie');
+      (*L04*)NFe.Det[i].Prod.arma[j].nCano := Leitor.rCampo(tcStr, 'nCano');
       (*L05*)NFe.Det[i].Prod.arma[j].descr := Leitor.rCampo(tcStr, 'descr');
       inc(j);
     end;

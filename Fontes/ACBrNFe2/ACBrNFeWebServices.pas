@@ -751,8 +751,8 @@ begin
   if Length(FDadosMsg) > (500 * 1024) then
    begin
       if Assigned(TACBrNFe(Self.FACBrNFe).OnGerarLog) then
-         TACBrNFe(Self.FACBrNFe).OnGerarLog('ERRO: Tamanho do XML de Dados superior a 500 Kbytes. Tamanho atual: '+FloatToStr(Length(FDadosMsg)/500));
-      raise Exception.Create('ERRO: Tamanho do XML de Dados superior a 500 Kbytes. Tamanho atual: '+FloatToStr(Length(FDadosMsg)/500));
+         TACBrNFe(Self.FACBrNFe).OnGerarLog('ERRO: Tamanho do XML de Dados superior a 500 Kbytes. Tamanho atual: '+FloatToStr(Int(Length(FDadosMsg)/500))+' Kbytes');
+      raise Exception.Create('ERRO: Tamanho do XML de Dados superior a 500 Kbytes. Tamanho atual: '+FloatToStr(Int(Length(FDadosMsg)/500))+' Kbytes');
       exit;
    end;
 end;

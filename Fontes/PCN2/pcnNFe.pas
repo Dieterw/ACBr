@@ -683,13 +683,13 @@ type
   TArmaCollectionItem = class(TCollectionItem)
   private
     FtpArma: TpcnTipoArma;
-    FnSerie: Integer;
-    FnCano: Integer;
+    FnSerie: string;
+    FnCano: string;
     Fdescr: string;
   published
     property tpArma: TpcnTipoArma read FtpArma write FtpArma default taUsoPermitido;
-    property nSerie: Integer read FnSerie write FnSerie;
-    property nCano: Integer read FnCano write FnCano;
+    property nSerie: string read FnSerie write FnSerie;
+    property nCano: string read FnCano write FnCano;
     property descr: string read Fdescr write Fdescr;
   end;
 

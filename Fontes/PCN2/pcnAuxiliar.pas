@@ -60,7 +60,7 @@ interface uses
 function CodigoParaUF(const codigo: integer): string;
 function DateTimeTodh(DataHora: TDateTime): string;
 function ExecutarAjusteTagNro(Corrigir: boolean; Nro: string): string;
-function FiltrarTextoXML(const RetirarEspacos: boolean; aTexto: AnsiString): AnsiString;
+function FiltrarTextoXML(const RetirarEspacos: boolean; aTexto: AnsiString; RetirarAcentos: boolean = True): AnsiString;
 function IIf(const condicao: Boolean; const Verdadeiro, Falso: Variant): Variant;
 function IntToStrZero(const Numero: integer; const tamanho: integer): string;
 function GerarCodigoNumerico(numero: integer): integer;
@@ -129,23 +129,26 @@ begin
     Result := '0' + Nro;
 end;
 
-function FiltrarTextoXML(const RetirarEspacos: boolean; aTexto: AnsiString): AnsiString;
+function FiltrarTextoXML(const RetirarEspacos: boolean; aTexto: AnsiString; RetirarAcentos: boolean = True): AnsiString;
 var
   i: integer;
 const
   COM_ACENTO = '‡‚ÍÙ˚„ı·ÈÌÛ˙Á¸Ó‰ÎÔˆËÏÚ˘¿¬ ‘€√’¡…Õ”⁄«‹ŒƒÀœ÷»Ã“Ÿ';
   SEM_ACENTO = 'aaeouaoaeioucuiaeioeiouAAEOUAOAEIOUCUIAEIOEIOU';
 begin
-  for i := 1 to Length(aTexto) do
-  begin
+  if RetirarAcentos then
+   begin
+     for i := 1 to Length(aTexto) do
+      begin
 {$WARNINGS OFF}
-    if Pos(aTexto[i], COM_ACENTO) <> 0 then
-      aTexto[i] := AnsiChar(SEM_ACENTO[Pos(aTexto[i], COM_ACENTO)]);
-//      aTexto[i] := SEM_ACENTO[Pos(aTexto[i], COM_ACENTO)];
-    if not (aTexto[i] in [' '..'~']) then
-      aTexto[i] := ' ';
+        if Pos(aTexto[i], COM_ACENTO) <> 0 then
+          aTexto[i] := AnsiChar(SEM_ACENTO[Pos(aTexto[i], COM_ACENTO)]);
+//          aTexto[i] := SEM_ACENTO[Pos(aTexto[i], COM_ACENTO)];
+        if not (aTexto[i] in [' '..'~']) then
+          aTexto[i] := ' ';
 {$WARNINGS ON}
-  end;
+      end;
+   end;
   aTexto := StringReplace(aTexto, '&', '&amp;', [rfReplaceAll]);
   aTexto := StringReplace(aTexto, '<', '&lt;', [rfReplaceAll]);
   aTexto := StringReplace(aTexto, '>', '&gt;', [rfReplaceAll]);

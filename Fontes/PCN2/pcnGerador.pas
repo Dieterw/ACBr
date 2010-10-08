@@ -104,6 +104,7 @@ type
     FSomenteValidar: boolean;
     FIdentarXML: boolean;
     FRetirarEspacos: boolean;
+    FRetirarAcentos: boolean;
     FNivelIdentacao: integer;
     FTamanhoIdentacao: integer;
     FSuprimirDecimais: boolean;
@@ -112,6 +113,7 @@ type
   published
     property SomenteValidar: boolean read FSomenteValidar write FSomenteValidar;
     property RetirarEspacos: boolean read FRetirarEspacos write FRetirarEspacos;
+    property RetirarAcentos: boolean read FRetirarAcentos write FRetirarAcentos;
     property IdentarXML: boolean read FIdentarXML write FIdentarXML;
     property TamanhoIdentacao: integer read FTamanhoIdentacao write FTamanhoIdentacao;
     property SuprimirDecimais: boolean read FSuprimirDecimais write FSuprimirDecimais;
@@ -461,6 +463,7 @@ begin
   FOpcoes.FTamanhoIdentacao := 3;
   FOpcoes.FFormatoAlerta := 'TAG:%TAGNIVEL% ID:%ID%/%TAG%(%DESCRICAO%) - %MSG%.'; // Vide comentário em wAlerta
   FOpcoes.FRetirarEspacos := True;
+  FOpcoes.FRetirarAcentos := True;  
   FOpcoes.FSuprimirDecimais := False;
   FOpcoes.FSomenteValidar := False;
   FOpcoes.FTagVaziaNoFormatoResumido := True;
@@ -729,9 +732,9 @@ begin
     // Grava a tag no arquivo - Quando existir algum conteúdo
     if ((ocorrencias = 1) or (not EstaVazio)) then
       if FOpcoes.FIdentarXML then
-        FArquivoFormatoXML := FArquivoFormatoXML + StringOfChar(' ', FOpcoes.FTamanhoIdentacao * FOpcoes.FNivelIdentacao) + '<' + tag + '>' + FiltrarTextoXML(FOpcoes.FRetirarEspacos, ConteudoProcessado) + '</' + tag + '>' + #13#10
+        FArquivoFormatoXML := FArquivoFormatoXML + StringOfChar(' ', FOpcoes.FTamanhoIdentacao * FOpcoes.FNivelIdentacao) + '<' + tag + '>' + FiltrarTextoXML(FOpcoes.FRetirarEspacos, ConteudoProcessado, FOpcoes.FRetirarAcentos) + '</' + tag + '>' + #13#10
     else
-      FArquivoFormatoXML := FArquivoFormatoXML + '<' + tag + '>' + FiltrarTextoXML(FOpcoes.FRetirarEspacos, ConteudoProcessado) + '</' + tag + '>';
+      FArquivoFormatoXML := FArquivoFormatoXML + '<' + tag + '>' + FiltrarTextoXML(FOpcoes.FRetirarEspacos, ConteudoProcessado, FOpcoes.FRetirarAcentos) + '</' + tag + '>';
 end;
 
 procedure TGerador.wTexto(const Texto: string);

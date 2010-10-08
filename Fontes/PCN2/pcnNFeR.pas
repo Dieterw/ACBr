@@ -192,8 +192,8 @@ begin
       (*B20i*)NFe.ide.NFref[i].refCTe         := Leitor.rCampo(tcEsp, 'refCTe');
 
       (*B20k*) NFe.Ide.NFref[i].RefECF.modelo := StrToECFModRef(ok,Leitor.rCampo(tcStr, 'mod') ) ;
-      (*B20l*) NFe.ide.NFref[i].RefECF.nECF   := Leitor.rCampo(tcInt, 'nECF');
-      (*B20m*) NFe.Ide.NFref[i].RefECF.nCOO   := Leitor.rCampo(tcInt, 'nCOO');
+      (*B20l*) NFe.ide.NFref[i].RefECF.nECF   := Leitor.rCampo(tcStr, 'nECF');
+      (*B20m*) NFe.Ide.NFref[i].RefECF.nCOO   := Leitor.rCampo(tcStr, 'nCOO');
 
       inc(i);
     end;

@@ -615,6 +615,14 @@ begin
 
   FDadosMsg := '<enviCTe xmlns="http://www.portalfiscal.inf.br/cte" versao="'+CTenviCTe+'">'+
                '<idLote>'+IntToStr(TCTeRecepcao(Self).Lote)+'</idLote>'+vCtes+'</enviCTe>';
+
+  if Length(FDadosMsg) > (500 * 1024) then
+   begin
+      if Assigned(TACBrCTe(Self.FACBrCTe).OnGerarLog) then
+         TACBrCTe(Self.FACBrCTe).OnGerarLog('ERRO: Tamanho do XML de Dados superior a 500 Kbytes. Tamanho atual: '+FloatToStr(Int(Length(FDadosMsg)/500))+' Kbytes');
+      raise Exception.Create('ERRO: Tamanho do XML de Dados superior a 500 Kbytes. Tamanho atual: '+FloatToStr(Int(Length(FDadosMsg)/500))+' Kbytes');
+      exit;
+   end;
 end;
 
 procedure TWebServicesBase.DoCTeRetRecepcao;

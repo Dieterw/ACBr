@@ -136,6 +136,7 @@ type
     class function padC(const AString: string; const nLen: Integer; const Caracter: Char = ' '): string;
     class function SeSenao(ACondicao: Boolean; ATrue, AFalse: Variant): Variant;
     class function StringToDate(const AString: string): TDateTime;
+    class function StringToTime(const AString: string): TDateTime;    
     class function TamanhoIgual(const AValue: string; const ATamanho: Integer): Boolean; overload;
     class procedure TamanhoIgual(const AValue: string; const ATamanho: Integer; AMensagem: string); overload;
     class function TamanhoIgual(const AValue: Integer; const ATamanho: Integer): Boolean; overload;
@@ -573,6 +574,14 @@ begin
     Result := 0
   else
     Result := StrToDate(AString);
+end;
+
+class function CTeUtil.StringToTime(const AString: string): TDateTime;
+begin
+  if (AString = '0') or (AString = '') then
+     Result := 0
+  else
+     Result := StrToTime(AString);
 end;
 
 class function CTeUtil.FormatDateTime(const AString: string): string;

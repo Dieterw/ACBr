@@ -244,6 +244,14 @@ function TACBrCTe.Enviar(ALote: Integer; Imprimir:Boolean = True): Boolean;
 var
   i: Integer;
 begin
+  if Conhecimentos.Count > 50 then
+   begin
+      if Assigned(Self.OnGerarLog) then
+         Self.OnGerarLog('ERRO: Conjunto de CT-e transmitidos (máximo de 50 CT-e) excedido. Quantidade atual: '+IntToStr(Conhecimentos.Count));
+      raise Exception.Create('ERRO: Conjunto de CT-e transmitidos (máximo de 50 CT-e) excedido. Quantidade atual: '+IntToStr(Conhecimentos.Count));
+     exit;
+   end;
+
   Conhecimentos.Assinar;
   Conhecimentos.Valida;
 

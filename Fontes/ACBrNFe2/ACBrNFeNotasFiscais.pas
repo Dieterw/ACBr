@@ -43,6 +43,7 @@
 |*  - Envio do e-mail utilizando Thread
 ******************************************************************************}
 {$I ACBr.inc}
+{$I IdCompilerDefines.inc}
 
 unit ACBrNFeNotasFiscais;
 
@@ -52,17 +53,21 @@ uses
   Classes, Sysutils, Dialogs, Forms,
   ACBrNFeUtil, ACBrNFeConfiguracoes,
   {$IFDEF FPC}
-     ACBrNFeDMLaz,
+    ACBrNFeDMLaz,
   {$ELSE}
-     ACBrNFeDANFEClass,
-     IdMessage, IdSMTP, IdBaseComponent, IdComponent,
-     IdAntiFreezeBase, IdAntiFreeze,
-     IdIOHandler, IdIOHandlerSocket, IdSSLOpenSSL, // units para enviar email indy
+    {$IFDEF INDY100}
+      IdAttachmentFile,
+    {$ENDIF}
+    ACBrNFeDANFEClass,
+    IdMessage, IdSMTP, IdBaseComponent, IdComponent,
+    IdAntiFreezeBase, IdAntiFreeze,
+    IdIOHandler, IdIOHandlerSocket, IdSSLOpenSSL, // units para enviar email indy
   {$ENDIF}
   smtpsend, ssl_openssl, mimemess, mimepart, // units para enviar email synapse
   pcnNFe, pcnNFeR, pcnNFeW, pcnConversao, pcnAuxiliar, pcnLeitor;
 
 type
+
   NotaFiscal = class(TCollectionItem)
   private
     FNFe: TNFe;
@@ -282,6 +287,8 @@ var
  IdMessage : TIdMessage;
  {$IFNDEF INDY100}
     IdISSLOHANDLERSocket : TIdSSLIOHandlerSocket;
+ {$ELSE}
+    IdISSLOHANDLERSocket : TIdSSLIOHandlerSocketOpenSSL;
  {$ENDIF}
  IdAntiFreeze: TIdAntiFreeze;
 begin
@@ -366,26 +373,38 @@ begin
      IdMessage := TIdMessage.Create(Application);
      {$IFNDEF INDY100}
         IdISSLOHANDLERSocket := TIdSSLIOHandlerSocket.Create(Application);
+     {$ELSE}
+        IdISSLOHANDLERSocket := TIdSSLIOHandlerSocketOpenSSL.Create(Application);
      {$ENDIF}
      if not AguardarEnvio then
         IdAntiFreeze := TIdAntiFreeze.Create(Application);
      try
-        IdSMTP.Host := sSmtpHost;
-        IdSMTP.Port := StrToIntDef(sSmtpPort,25);
+        IdSMTP.Host     := sSmtpHost;
+        IdSMTP.Port     := StrToIntDef(sSmtpPort,25);
         IdSMTP.Username := sSmtpUser;
         IdSMTP.Password := sSmtpPasswd;
 
         if SSL then
-         begin
-           {$IFNDEF INDY100}
-              IdISSLOHANDLERSocket.SSLOptions.Method := sslvSSLv3;
-              IdISSLOHANDLERSocket.SSLOptions.Mode := sslmClient;
-              IdSMTP.IOHandler := IdISSLOHANDLERSocket;
-           {$ENDIF}
-           IdSMTP.AuthenticationType := atLogin;
-         end
+        begin
+          IdISSLOHANDLERSocket.SSLOptions.Method := sslvSSLv3;
+          IdISSLOHANDLERSocket.SSLOptions.Mode   := sslmClient;
+
+          IdSMTP.IOHandler := IdISSLOHANDLERSocket;
+
+          {$IFNDEF INDY100}
+             IdSMTP.AuthenticationType := atLogin;
+          {$ELSE}
+             IdSMTP.AuthType := satDefault;
+          {$ENDIF}
+        end
         else
-           IdSMTP.AuthenticationType := atNone;
+        begin
+          {$IFNDEF INDY100}
+             IdSMTP.AuthenticationType := atNone;
+          {$ELSE}
+             IdSMTP.AuthType := satNone;
+          {$ENDIF}
+        end;
 
         IdMessage.From.Address := sFrom;
         IdMessage.From.Name    := NomeRemetente;
@@ -402,7 +421,11 @@ begin
         IdMessage.Subject := sAssunto;
         IdMessage.Body.Text := sMensagem.Text;
 
-        TIdAttachment.create(IdMessage.MessageParts, copy(NFe.infNFe.ID, (length(NFe.infNFe.ID)-44)+1, 44)+'-NFe.xml');
+        {$IFNDEF INDY100}
+           TIdAttachment.create(IdMessage.MessageParts, copy(NFe.infNFe.ID, (length(NFe.infNFe.ID)-44)+1, 44)+'-NFe.xml');
+        {$ELSE}
+           TIdAttachmentFile.create(IdMessage.MessageParts, copy(NFe.infNFe.ID, (length(NFe.infNFe.ID)-44)+1, 44)+'-NFe.xml');
+        {$ENDIF}
 
         if (EnviaPDF) then
         begin
@@ -411,7 +434,12 @@ begin
               TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.ImprimirDANFEPDF(NFe);
               NomeArq :=  StringReplace(NFe.infNFe.ID,'NFe', '', [rfIgnoreCase]);
               NomeArq := PathWithDelim(TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.PathPDF)+NomeArq+'.pdf';
-              TIdAttachment.create(IdMessage.MessageParts, NomeArq);
+
+              {$IFNDEF INDY100}
+                 TIdAttachment.create(IdMessage.MessageParts, NomeArq);
+              {$ELSE}
+                 TIdAttachmentFile.create(IdMessage.MessageParts, NomeArq);
+              {$ENDIF}
            end;
         end;
 
@@ -429,9 +457,8 @@ begin
      finally
        if not AguardarEnvio then
           IdAntiFreeze.Free;
-       {$IFNDEF INDY100}
-          IdISSLOHANDLERSocket.Free;
-       {$ENDIF}   
+
+       IdISSLOHANDLERSocket.Free;
        IdMessage.Free;
        IdSMTP.Free;
      end;

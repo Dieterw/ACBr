@@ -62,9 +62,9 @@ type
   public
     constructor Create(AOwner: TComponent);
 
-    procedure ImprimirTexto(Orientacao: TACBrETQOrientacao; Fonte: Integer;
-      MultiplicadorH, MultiplicadorV: Char; Vertical, Horizontal: Integer;
-      Texto: String; SubFonte: Integer = 0); override;
+    procedure ImprimirTexto(Orientacao: TACBrETQOrientacao; Fonte, MultiplicadorH,
+      MultiplicadorV, Vertical, Horizontal: Integer; Texto: String;
+      SubFonte: Integer = 0); override;
     procedure ImprimirBarras(Orientacao: TACBrETQOrientacao; TipoBarras,
       LarguraBarraLarga, LarguraBarraFina: Char; Vertical, Horizontal: Integer;
       Texto: String; AlturaCodBarras: Integer = 0); override;
@@ -230,12 +230,13 @@ begin
   ListaCmd.Add(Cmd);
 end;
 
-procedure TACBrETQPpla.ImprimirTexto(Orientacao: TACBrETQOrientacao; Fonte: Integer;
-  MultiplicadorH, MultiplicadorV: Char; Vertical, Horizontal: Integer;
-  Texto: String; SubFonte: Integer);
+procedure TACBrETQPpla.ImprimirTexto(Orientacao: TACBrETQOrientacao; Fonte, MultiplicadorH,
+  MultiplicadorV, Vertical, Horizontal: Integer; Texto: String;
+  SubFonte: Integer = 0);
 var
    eixoY, eixoX, Smooth: String;
 begin
+
   Cmd := '';
 
   if ((Integer(Orientacao) + 1) < 1) or ((Integer(Orientacao) + 1) > 4) then
@@ -266,8 +267,8 @@ begin
   else
     Smooth := padR(IntToStr(SubFonte), 3, '0');
 
-  Cmd := IntToStr(Integer(Orientacao) + 1) + Chr(48+Fonte) + MultiplicadorH +
-         MultiplicadorV + Smooth + eixoY + eixoX + Texto;
+  Cmd := IntToStr(Integer(Orientacao) + 1) + Chr(48+Fonte) + IntToStr(MultiplicadorH) +
+         IntToStr(MultiplicadorV) + Smooth + eixoY + eixoX + Texto;
 
   ListaCmd.Add(Cmd);
 end;

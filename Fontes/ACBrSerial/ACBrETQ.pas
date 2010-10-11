@@ -61,7 +61,7 @@ uses ACBrBase, ACBrDevice, ACBrETQClass,  {Units da ACBr}
 
 type
 
-TACBrETQModelo = (etqNenhum, etqPpla, etqPplb);
+TACBrETQModelo = (etqNenhum, etqPpla, etqPplb, etqZPLII);
 
 TACBrETQUnidade = (etqMilimetros, etqPolegadas);
 
@@ -104,9 +104,10 @@ TACBrETQ = class( TACBrComponent )
     procedure Ativar ;
     procedure Desativar ;
 
-    procedure ImprimirTexto(Orientacao: TACBrETQOrientacao; Fonte: Integer;
-      MultiplicadorH, MultiplicadorV: Char ; Vertical, Horizontal: Integer;
-      Texto: String; SubFonte: Integer = 0);
+    procedure ImprimirTexto(Orientacao: TACBrETQOrientacao; Fonte, MultiplicadorH,
+      MultiplicadorV, Vertical, Horizontal: Integer; Texto: String;
+      SubFonte: Integer = 0);
+
     procedure ImprimirBarras(Orientacao: TACBrETQOrientacao; TipoBarras,
       LarguraBarraLarga, LarguraBarraFina: Char; Vertical, Horizontal: Integer;
       Texto: String; AlturaCodBarras: Integer = 0);
@@ -138,7 +139,7 @@ TACBrETQ = class( TACBrComponent )
   end ;
 
 implementation
-Uses ACBrUtil, ACBrETQPpla, ACBrETQPplb,
+Uses ACBrUtil, ACBrETQPpla, ACBrETQPplb, ACBrETQZPLII, 
      {$IFDEF COMPILER6_UP} StrUtils {$ELSE} ACBrD5{$ENDIF},
      Math;
 
@@ -186,7 +187,7 @@ begin
   wTemperatura := Temperatura ;
   wAvanco      := Avanco ;
   wUnidade     := Unidade;
-  
+
   if fsAtivo then
      raise Exception.Create(ACBrStr('Não é possível mudar o Modelo com ACBrETQ Ativo'));
 
@@ -194,8 +195,9 @@ begin
 
   { Instanciando uma nova classe de acordo com fsModelo }
   case Value of
-     etqPpla: fsETQ:= TACBrETQPpla.create( Self ) ;
-     etqPplb: fsETQ:= TACBrETQPplb.Create( self );
+     etqPpla : fsETQ:= TACBrETQPpla.create( Self ) ;
+     etqPplb : fsETQ:= TACBrETQPplb.Create( self );
+     etqZPLII: fsETQ:=TACBrETQZPLII.Create ( Self );
   else
      fsETQ := TACBrETQClass.create( Self ) ;
   end;
@@ -290,9 +292,9 @@ begin
   fsETQ.ImprimirLinha(Vertical, Horizontal, Largura, Altura);
 end;
 
-procedure TACBrETQ.ImprimirTexto(Orientacao: TACBrETQOrientacao; Fonte: Integer;
-  MultiplicadorH, MultiplicadorV: Char; Vertical, Horizontal: Integer;
-  Texto: String; SubFonte: Integer);
+procedure TACBrETQ.ImprimirTexto(Orientacao: TACBrETQOrientacao; Fonte, MultiplicadorH,
+  MultiplicadorV, Vertical, Horizontal: Integer; Texto: String;
+  SubFonte: Integer = 0);
 begin
   if not Ativo then
      Ativar;

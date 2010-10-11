@@ -62,7 +62,7 @@ type
 
 { Classe generica de ETIQUETA, nao implementa nenhum modelo especifico, apenas
   declara a Classe. NAO DEVE SER INSTANCIADA. Usada apenas como base para
-  as demais Classes de BALANCA como por exemplo a classe TACBrETQPpla }
+  as demais Classes de Impressora como por exemplo a classe TACBrETQPpla }
 
 { TACBrETQClass }
 
@@ -98,9 +98,10 @@ TACBrETQClass = class
     procedure Ativar ; virtual;
     procedure Desativar ; virtual;
 
-    procedure ImprimirTexto(Orientacao: TACBrETQOrientacao; Fonte: Integer;
-      MultiplicadorH, MultiplicadorV: Char; Vertical, Horizontal: Integer;
+    procedure ImprimirTexto(Orientacao: TACBrETQOrientacao; Fonte, MultiplicadorH,
+      MultiplicadorV, Vertical, Horizontal: Integer;
       Texto: String; SubFonte: Integer = 0); virtual;
+
     procedure ImprimirBarras(Orientacao: TACBrETQOrientacao; TipoBarras,
       LarguraBarraLarga, LarguraBarraFina: Char; Vertical, Horizontal: Integer;
       Texto: String; AlturaCodBarras: Integer); virtual;
@@ -159,7 +160,7 @@ begin
      Ativar
   else
      Desativar ;
-end;
+end;                  
 
 procedure TACBrETQClass.Ativar;
 begin
@@ -206,9 +207,9 @@ begin
   raise Exception.Create(ACBrStr('Função ImprimirLinha não implementada em: ') + ModeloStr);
 end;
 
-procedure TACBrETQClass.ImprimirTexto(Orientacao: TACBrETQOrientacao; Fonte: Integer;
-  MultiplicadorH, MultiplicadorV: Char; Vertical, Horizontal: Integer;
-  Texto: String; SubFonte: Integer);
+procedure TACBrETQClass.ImprimirTexto(Orientacao: TACBrETQOrientacao; Fonte, MultiplicadorH,
+  MultiplicadorV, Vertical, Horizontal: Integer; Texto: String;
+  SubFonte: Integer = 0);
 begin
   raise Exception.Create(ACBrStr('Função ImprimirTexto não implementada em: ') + ModeloStr);
 end;

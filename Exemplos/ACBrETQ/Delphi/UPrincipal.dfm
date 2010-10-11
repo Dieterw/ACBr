@@ -1,6 +1,6 @@
 object FPrincipal: TFPrincipal
-  Left = 309
-  Top = 236
+  Left = 276
+  Top = 211
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'Impress'#227'o de Etiquetas'
@@ -181,7 +181,8 @@ object FPrincipal: TFPrincipal
     Items.Strings = (
       'etqNenhuma'
       'etqPpla'
-      'etqPPlb')
+      'etqPPlb'
+      'etqZPLII')
   end
   object cbPorta: TComboBox
     Left = 175

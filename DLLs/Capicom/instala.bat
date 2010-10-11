@@ -1,4 +1,4 @@
-@ECHO OFF
+
 
 if EXIST %windir%\SysWOW64\x64 goto Win64
 

@@ -1196,7 +1196,7 @@ begin
     Gerador.wCampo(tcStr, 'Q06', 'CST      ', 02, 02, 1, CSTPISTOStr(nfe.Det[i].Imposto.PIS.CST), DSC_CST);
     Gerador.wGrupo('/PISNT');
   end
-  else if nfe.Det[i].Imposto.PIS.CST = pis99 then
+  else if nfe.Det[i].Imposto.PIS.CSTin [pis49, pis50, pis51, pis52, pis53, pis54, pis55, pis56, pis60, pis61, pis62, pis63, pis64, pis65, pis66, pis67, pis70, pis71, pis72, pis73, pis74, pis75, pis98, pis99] then
   begin
 
     if (NFe.Det[i].Imposto.PIS.vBC + NFe.Det[i].Imposto.PIS.pPIS > 0) and (NFe.Det[i].Imposto.PIS.qBCProd + NFe.Det[i].Imposto.PIS.vAliqProd > 0) then
@@ -1282,7 +1282,7 @@ begin
     Gerador.wCampo(tcStr, 'S06', 'CST      ', 02, 02, 1, CSTCOFINSTOStr(nfe.Det[i].Imposto.COFINS.CST), DSC_CST);
     Gerador.wGrupo('/COFINSNT');
   end
-  else if nfe.Det[i].Imposto.COFINS.CST = cof99 then
+  else if nfe.Det[i].Imposto.COFINS.CST in [cof49, cof50, cof51, cof52, cof53, cof54, cof55, cof56, cof60, cof61, cof62, cof63, cof64, cof65, cof66, cof67, cof70, cof71, cof72, cof73, cof74, cof75, cof98, cof99] then
   begin
 
     if (nfe.Det[i].Imposto.COFINS.vBC + nfe.Det[i].Imposto.COFINS.pCOFINS > 0) and (nfe.Det[i].Imposto.COFINS.qBCProd + nfe.Det[i].Imposto.COFINS.vAliqProd > 0) then

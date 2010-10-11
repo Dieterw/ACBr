@@ -43,7 +43,7 @@
 |*  - Envio do e-mail utilizando Thread
 ******************************************************************************}
 {$I ACBr.inc}
-{$I IdCompilerDefines.inc}
+{$DEFINE INDY100}  // COMENTAR SE UTILIZA INDY < VERSÃO 10
 
 unit ACBrNFeNotasFiscais;
 

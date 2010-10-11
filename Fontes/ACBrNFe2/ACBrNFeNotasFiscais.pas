@@ -353,15 +353,19 @@ begin
        ThreadSMTP.smtp.AutoTLS := True;
 
        TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).SetStatus( stNFeEmail );
-       ThreadSMTP.Resume; // inicia a thread
-       if AguardarEnvio then
-       begin
-         repeat
-           Sleep(1000);
-           Application.ProcessMessages;
-         until ThreadSMTP.Terminado;
+       try
+         ThreadSMTP.Resume; // inicia a thread
+         if AguardarEnvio then
+         begin
+           repeat
+             Sleep(1000);
+             Application.ProcessMessages;
+           until ThreadSMTP.Terminado;
+         end;
+       finally
+        TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).SetStatus( stIdle );
        end;
-       TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).SetStatus( stIdle );
+
     finally
        m.free;
        StreamNFe.Free ;
@@ -444,15 +448,17 @@ begin
         end;
 
         try
-           IdSMTP.Connect;
-        except
-           IdSMTP.Connect;
-        end;
+          try
+             IdSMTP.Connect;
+          except
+             IdSMTP.Connect;
+          end;
 
-        try
-           IdSMTP.Send(IdMessage);
+          TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).SetStatus( stNFeEmail );
+          IdSMTP.Send(IdMessage);
         finally
-           IdSMTP.Disconnect;
+          TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).SetStatus( stIdle );
+          IdSMTP.Disconnect;
         end;
      finally
        if not AguardarEnvio then

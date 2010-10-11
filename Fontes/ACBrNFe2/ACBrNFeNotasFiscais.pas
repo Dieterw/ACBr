@@ -63,7 +63,6 @@ uses
   pcnNFe, pcnNFeR, pcnNFeW, pcnConversao, pcnAuxiliar, pcnLeitor;
 
 type
-
   NotaFiscal = class(TCollectionItem)
   private
     FNFe: TNFe;
@@ -281,7 +280,7 @@ var
  //indy
  IdSMTP    : TIdSMTP;
  IdMessage : TIdMessage;
- {$IFNDEF INDY10}
+ {$IFNDEF INDY100}
     IdISSLOHANDLERSocket : TIdSSLIOHandlerSocket;
  {$ENDIF}
  IdAntiFreeze: TIdAntiFreeze;
@@ -365,7 +364,7 @@ begin
   begin
      IdSMTP    := TIdSMTP.Create(Application);
      IdMessage := TIdMessage.Create(Application);
-     {$IFNDEF INDY10}
+     {$IFNDEF INDY100}
         IdISSLOHANDLERSocket := TIdSSLIOHandlerSocket.Create(Application);
      {$ENDIF}
      if not AguardarEnvio then
@@ -378,7 +377,7 @@ begin
 
         if SSL then
          begin
-           {$IFNDEF INDY10}
+           {$IFNDEF INDY100}
               IdISSLOHANDLERSocket.SSLOptions.Method := sslvSSLv3;
               IdISSLOHANDLERSocket.SSLOptions.Mode := sslmClient;
               IdSMTP.IOHandler := IdISSLOHANDLERSocket;
@@ -430,7 +429,7 @@ begin
      finally
        if not AguardarEnvio then
           IdAntiFreeze.Free;
-       {$IFNDEF INDY10}
+       {$IFNDEF INDY100}
           IdISSLOHANDLERSocket.Free;
        {$ENDIF}   
        IdMessage.Free;

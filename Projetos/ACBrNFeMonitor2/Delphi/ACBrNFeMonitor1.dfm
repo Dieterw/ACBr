@@ -4124,7 +4124,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
       Top = 1
       Width = 569
       Height = 261
-      ActivePage = Monitor
+      ActivePage = Email
       Align = alClient
       Style = tsFlatButtons
       TabOrder = 0
@@ -4787,13 +4787,13 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           Left = 6
           Top = 4
           Width = 550
-          Height = 173
+          Height = 213
           Anchors = [akLeft, akTop, akRight]
           Caption = 'Email'
           TabOrder = 0
           DesignSize = (
             550
-            173)
+            213)
           object Label20: TLabel
             Left = 8
             Top = 16
@@ -4885,9 +4885,22 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
             Left = 288
             Top = 32
             Width = 254
-            Height = 129
+            Height = 169
             Anchors = [akLeft, akTop, akRight]
             TabOrder = 6
+          end
+          object rgEmailTipoEnvio: TRadioGroup
+            Left = 8
+            Top = 166
+            Width = 268
+            Height = 38
+            Caption = 'Tipo de Envio'
+            Columns = 2
+            ItemIndex = 0
+            Items.Strings = (
+              'Synapse'
+              'Indy')
+            TabOrder = 7
           end
         end
       end

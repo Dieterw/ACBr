@@ -8,214 +8,238 @@
   resources were bound to the produced executable.
 */
 
-#define SOAPConst_SUnsupportedVariant 65008
-#define SOAPConst_SNoVarDispatch 65009
-#define SOAPConst_SNoErrorDispatch 65010
-#define SOAPConst_SEmptyStream 65011
-#define SOAPConst_SMethodNotSupported 65012
-#define SOAPConst_SInvalidContentLength 65013
-#define SOAPConst_SMimeReadError 65014
-#define SOAPConst_STempFileAccessError 65015
-#define SOAPConst_SCantLoadLocation 65016
-#define xdom_SOddSizeInvalid 65017
-#define xdom_SNegativeSizeInvalid 65018
-#define xdom_SCapacityLessSize 65019
-#define xdom_STargetNil 65020
-#define JConsts_sChangeJPGSize 65021
-#define JConsts_sJPEGError 65022
-#define JConsts_sJPEGImageFile 65023
-#define SOAPConst_SInvalidDateString 65024
-#define SOAPConst_SInvalidTimeString 65025
-#define SOAPConst_SInvalidHour 65026
-#define SOAPConst_SInvalidMinute 65027
-#define SOAPConst_SInvalidSecond 65028
-#define SOAPConst_SInvalidMillisecond 65029
-#define SOAPConst_SInvalidHourOffset 65030
-#define SOAPConst_SInvalidDay 65031
-#define SOAPConst_SInvalidMonth 65032
-#define SOAPConst_SInvalidDuration 65033
-#define SOAPConst_SInvalidTimeOffset 65034
-#define SOAPConst_SInvalidHexValue 65035
-#define SOAPConst_SInvalidHTTPRequest 65036
-#define SOAPConst_SEmptyURL 65037
-#define SOAPConst_SInvalidURL 65038
-#define SOAPConst_SMethNoRTTI 65039
-#define SOAPConst_SUnsuportedClassType 65040
-#define SOAPConst_SUnexpectedDataType 65041
-#define SOAPConst_SInvalidContentType 65042
-#define SOAPConst_SArrayTooManyElem 65043
-#define SOAPConst_SWrongDocElem 65044
-#define SOAPConst_STooManyParameters 65045
-#define SOAPConst_SNoArrayElemRTTI 65046
-#define SOAPConst_SInvalidResponse 65047
-#define SOAPConst_SVariantCastNotSupported 65048
-#define SOAPConst_SHeaderError 65049
-#define SOAPConst_SMissingSoapReturn 65050
-#define SOAPConst_SNoMessageConverter 65051
-#define SOAPConst_SNoMsgProcessingNode 65052
-#define SOAPConst_SHeaderAttributeError 65053
-#define SOAPConst_SNoRTTI 65054
-#define SOAPConst_SNoRTTIParam 65055
-#define SOAPConst_SInvalidSoapRequest 65056
-#define SOAPConst_SInvalidSoapResponse 65057
-#define SOAPConst_SMultiBodyNotSupported 65058
-#define SOAPConst_SUnsupportedCCIntfMeth 65059
-#define SOAPConst_SRemTypeNotRegistered 65060
-#define SOAPConst_STypeMismatchInParam 65061
-#define SOAPConst_SNoSuchMethod 65062
-#define SOAPConst_SInterfaceNotReg 65063
-#define SOAPConst_SInterfaceNoRTTI 65064
-#define SOAPConst_SNoWSDL 65065
-#define SOAPConst_SWSDLError 65066
-#define SOAPConst_SEmptyWSDL 65067
-#define SOAPConst_sNoWSDLURL 65068
-#define SOAPConst_sCantGetURL 65069
-#define SOAPConst_SDataTypeNotSupported 65070
-#define SOAPConst_SNoSerializeGraphs 65071
-#define XMLConst_SMissingFileName 65072
-#define XMLConst_SLine 65073
-#define XMLConst_SInvalidSchema 65074
-#define XMLConst_SNoLocalTypeName 65075
-#define XMLConst_SUnknownDataType 65076
-#define XMLConst_SInvalidGroupDecl 65077
-#define XMLConst_SMissingName 65078
-#define XMLConst_SInvalidDerivation 65079
-#define XMLConst_SNoNameOnRef 65080
-#define XMLConst_SNoGlobalRef 65081
-#define XMLConst_SNoRefPropSet 65082
-#define XMLConst_SSetGroupRefProp 65083
-#define XMLConst_SNoContentModel 65084
-#define XMLConst_SNoFacetsAllowed 65085
-#define XMLConst_SNotBuiltInType 65086
-#define SOAPConst_SUnsupportedEncodingSyle 65087
-#define XMLConst_SINVALID_ACCESS_ERR 65088
-#define XMLConst_SBadTransformArgs 65089
-#define XMLConst_SErrorWritingFile 65090
-#define XMLConst_SUnhandledXercesErr 65091
-#define XMLConst_SDOMError 65092
-#define XMLConst_SNotActive 65093
-#define XMLConst_SNodeNotFound 65094
-#define XMLConst_SMissingNode 65095
-#define XMLConst_SNoAttributes 65096
-#define XMLConst_SInvalidNodeType 65097
-#define XMLConst_SMismatchedRegItems 65098
-#define XMLConst_SNotSingleTextNode 65099
-#define XMLConst_SNoDOMParseOptions 65100
-#define XMLConst_SMissingItemTag 65101
-#define XMLConst_SNodeReadOnly 65102
-#define XMLConst_SNoRefresh 65103
-#define XMLConst_SErrorDownloadingURL 65104
-#define XMLConst_SUrlMonDllMissing 65105
-#define XMLConst_SINDEX_SIZE_ERR 65106
-#define XMLConst_SDOMSTRING_SIZE_ERR 65107
-#define XMLConst_SHIERARCHY_REQUEST_ERR 65108
-#define XMLConst_SWRONG_DOCUMENT_ERR 65109
-#define XMLConst_SINVALID_CHARACTER_ERR 65110
-#define XMLConst_SNO_DATA_ALLOWED_ERR 65111
-#define XMLConst_SNO_MODIFICATION_ALLOWED_ERR 65112
-#define XMLConst_SNOT_FOUND_ERR 65113
-#define XMLConst_SNOT_SUPPORTED_ERR 65114
-#define XMLConst_SINUSE_ATTRIBUTE_ERR 65115
-#define XMLConst_SINVALID_STATE_ERR 65116
-#define XMLConst_SSYNTAX_ERR 65117
-#define XMLConst_SINVALID_MODIFICATION_ERR 65118
-#define XMLConst_SNAMESPACE_ERR 65119
-#define IdResourceStrings_RSSocksServerConnectionRefusedError 65120
-#define IdResourceStrings_RSSocksServerTTLExpiredError 65121
-#define IdResourceStrings_RSSocksServerCommandError 65122
-#define IdResourceStrings_RSSocksServerAddressError 65123
-#define IdResourceStrings_RSThreadTerminateAndWaitFor 65124
-#define OleConst_SCannotActivate 65125
-#define OleConst_SNoWindowHandle 65126
-#define OleConst_SInvalidLicense 65127
-#define OleConst_SNotLicensed 65128
-#define OleConst_sNoRunningObject 65129
-#define XMLConst_SDuplicateRegistration 65130
-#define XMLConst_SNoMatchingDOMVendor 65131
-#define XMLConst_SNoDOMNodeEx 65132
-#define XMLConst_SDOMNotSupported 65133
-#define XMLConst_SNodeExpected 65134
-#define XMLConst_SMSDOMNotInstalled 65135
-#define IdResourceStrings_RSStackENAMETOOLONG 65136
-#define IdResourceStrings_RSStackEHOSTDOWN 65137
-#define IdResourceStrings_RSStackEHOSTUNREACH 65138
-#define IdResourceStrings_RSStackENOTEMPTY 65139
-#define IdResourceStrings_RSStackHOST_NOT_FOUND 65140
-#define IdResourceStrings_RSSocksRequestFailed 65141
-#define IdResourceStrings_RSSocksRequestServerFailed 65142
-#define IdResourceStrings_RSSocksRequestIdentFailed 65143
-#define IdResourceStrings_RSSocksUnknownError 65144
-#define IdResourceStrings_RSSocksServerRespondError 65145
-#define IdResourceStrings_RSSocksAuthMethodError 65146
-#define IdResourceStrings_RSSocksAuthError 65147
-#define IdResourceStrings_RSSocksServerGeneralError 65148
-#define IdResourceStrings_RSSocksServerPermissionError 65149
-#define IdResourceStrings_RSSocksServerNetUnreachableError 65150
-#define IdResourceStrings_RSSocksServerHostUnreachableError 65151
-#define IdResourceStrings_RSStackEAFNOSUPPORT 65152
-#define IdResourceStrings_RSStackEADDRINUSE 65153
-#define IdResourceStrings_RSStackEADDRNOTAVAIL 65154
-#define IdResourceStrings_RSStackENETDOWN 65155
-#define IdResourceStrings_RSStackENETUNREACH 65156
-#define IdResourceStrings_RSStackENETRESET 65157
-#define IdResourceStrings_RSStackECONNABORTED 65158
-#define IdResourceStrings_RSStackECONNRESET 65159
-#define IdResourceStrings_RSStackENOBUFS 65160
-#define IdResourceStrings_RSStackEISCONN 65161
-#define IdResourceStrings_RSStackENOTCONN 65162
-#define IdResourceStrings_RSStackESHUTDOWN 65163
-#define IdResourceStrings_RSStackETOOMANYREFS 65164
-#define IdResourceStrings_RSStackETIMEDOUT 65165
-#define IdResourceStrings_RSStackECONNREFUSED 65166
-#define IdResourceStrings_RSStackELOOP 65167
-#define IdResourceStrings_RSStackEACCES 65168
-#define IdResourceStrings_RSStackEFAULT 65169
-#define IdResourceStrings_RSStackEINVAL 65170
-#define IdResourceStrings_RSStackEMFILE 65171
-#define IdResourceStrings_RSStackEWOULDBLOCK 65172
-#define IdResourceStrings_RSStackEINPROGRESS 65173
-#define IdResourceStrings_RSStackEALREADY 65174
-#define IdResourceStrings_RSStackENOTSOCK 65175
-#define IdResourceStrings_RSStackEDESTADDRREQ 65176
-#define IdResourceStrings_RSStackEMSGSIZE 65177
-#define IdResourceStrings_RSStackEPROTOTYPE 65178
-#define IdResourceStrings_RSStackENOPROTOOPT 65179
-#define IdResourceStrings_RSStackEPROTONOSUPPORT 65180
-#define IdResourceStrings_RSStackESOCKTNOSUPPORT 65181
-#define IdResourceStrings_RSStackEOPNOTSUPP 65182
-#define IdResourceStrings_RSStackEPFNOSUPPORT 65183
-#define IdResourceStrings_RSReadTimeout 65184
-#define IdResourceStrings_RSReadLnMaxLineLengthExceeded 65185
-#define IdResourceStrings_RSNoCommandHandlerFound 65186
-#define IdResourceStrings_RSWS2CallError 65187
-#define IdResourceStrings_RSWS2LoadError 65188
-#define IdResourceStrings_RSStatusResolving 65189
-#define IdResourceStrings_RSStatusConnecting 65190
-#define IdResourceStrings_RSStatusConnected 65191
-#define IdResourceStrings_RSStatusDisconnecting 65192
-#define IdResourceStrings_RSStatusDisconnected 65193
-#define IdResourceStrings_RSStatusText 65194
-#define IdResourceStrings_RSConnectTimeout 65195
-#define IdResourceStrings_RSInvalidServiceName 65196
-#define IdResourceStrings_RSStackError 65197
-#define IdResourceStrings_RSStackEINTR 65198
-#define IdResourceStrings_RSStackEBADF 65199
-#define IdResourceStrings_RSCannotAllocateSocket 65200
-#define IdResourceStrings_RSConnectionClosedGracefully 65201
-#define IdResourceStrings_RSCouldNotBindSocket 65202
-#define IdResourceStrings_RSNotEnoughDataInBuffer 65203
-#define IdResourceStrings_RSWinsockInitializationError 65204
-#define IdResourceStrings_RSSetSizeExceeded 65205
-#define IdResourceStrings_RSThreadClassNotSpecified 65206
-#define IdResourceStrings_RSFileNotFound 65207
-#define IdResourceStrings_RSOnlyOneAntiFreeze 65208
-#define IdResourceStrings_RSNotConnected 65209
-#define IdResourceStrings_RSObjectTypeNotSupported 65210
-#define IdResourceStrings_RSTerminateThreadTimeout 65211
-#define IdResourceStrings_RSNoExecuteSpecified 65212
-#define IdResourceStrings_RSIdNoDataToRead 65213
-#define IdResourceStrings_RSCanNotBindRange 65214
-#define IdResourceStrings_RSInvalidPortRange 65215
+#define SOAPConst_SCantLoadLocation 64976
+#define xdom_SOddSizeInvalid 64977
+#define xdom_SNegativeSizeInvalid 64978
+#define xdom_SCapacityLessSize 64979
+#define xdom_STargetNil 64980
+#define JConsts_sChangeJPGSize 64981
+#define JConsts_sJPEGError 64982
+#define JConsts_sJPEGImageFile 64983
+#define SOAPConst_SInvalidMonth 64992
+#define SOAPConst_SInvalidDuration 64993
+#define SOAPConst_SInvalidTimeOffset 64994
+#define SOAPConst_SInvalidHexValue 64995
+#define SOAPConst_SInvalidHTTPRequest 64996
+#define SOAPConst_SEmptyURL 64997
+#define SOAPConst_SInvalidURL 64998
+#define SOAPConst_SMethNoRTTI 64999
+#define SOAPConst_SUnsupportedVariant 65000
+#define SOAPConst_SNoVarDispatch 65001
+#define SOAPConst_SNoErrorDispatch 65002
+#define SOAPConst_SEmptyStream 65003
+#define SOAPConst_SMethodNotSupported 65004
+#define SOAPConst_SInvalidContentLength 65005
+#define SOAPConst_SMimeReadError 65006
+#define SOAPConst_STempFileAccessError 65007
+#define SOAPConst_SVariantCastNotSupported 65008
+#define SOAPConst_SHeaderError 65009
+#define SOAPConst_SMissingSoapReturn 65010
+#define SOAPConst_SNoMessageConverter 65011
+#define SOAPConst_SNoMsgProcessingNode 65012
+#define SOAPConst_SHeaderAttributeError 65013
+#define SOAPConst_SNoRTTI 65014
+#define SOAPConst_SNoRTTIParam 65015
+#define SOAPConst_SInvalidDateString 65016
+#define SOAPConst_SInvalidTimeString 65017
+#define SOAPConst_SInvalidHour 65018
+#define SOAPConst_SInvalidMinute 65019
+#define SOAPConst_SInvalidSecond 65020
+#define SOAPConst_SInvalidMillisecond 65021
+#define SOAPConst_SInvalidHourOffset 65022
+#define SOAPConst_SInvalidDay 65023
+#define SOAPConst_SInterfaceNoRTTI 65024
+#define SOAPConst_SNoWSDL 65025
+#define SOAPConst_SWSDLError 65026
+#define SOAPConst_SEmptyWSDL 65027
+#define SOAPConst_sNoWSDLURL 65028
+#define SOAPConst_sCantGetURL 65029
+#define SOAPConst_SDataTypeNotSupported 65030
+#define SOAPConst_SNoSerializeGraphs 65031
+#define SOAPConst_SUnsuportedClassType 65032
+#define SOAPConst_SUnexpectedDataType 65033
+#define SOAPConst_SInvalidContentType 65034
+#define SOAPConst_SArrayTooManyElem 65035
+#define SOAPConst_SWrongDocElem 65036
+#define SOAPConst_STooManyParameters 65037
+#define SOAPConst_SNoArrayElemRTTI 65038
+#define SOAPConst_SInvalidResponse 65039
+#define XMLConst_SNoNameOnRef 65040
+#define XMLConst_SNoGlobalRef 65041
+#define XMLConst_SNoRefPropSet 65042
+#define XMLConst_SSetGroupRefProp 65043
+#define XMLConst_SNoContentModel 65044
+#define XMLConst_SNoFacetsAllowed 65045
+#define XMLConst_SNotBuiltInType 65046
+#define SOAPConst_SUnsupportedEncodingSyle 65047
+#define SOAPConst_SInvalidSoapRequest 65048
+#define SOAPConst_SInvalidSoapResponse 65049
+#define SOAPConst_SMultiBodyNotSupported 65050
+#define SOAPConst_SUnsupportedCCIntfMeth 65051
+#define SOAPConst_SRemTypeNotRegistered 65052
+#define SOAPConst_STypeMismatchInParam 65053
+#define SOAPConst_SNoSuchMethod 65054
+#define SOAPConst_SInterfaceNotReg 65055
+#define XMLConst_SNoAttributes 65056
+#define XMLConst_SInvalidNodeType 65057
+#define XMLConst_SMismatchedRegItems 65058
+#define XMLConst_SNotSingleTextNode 65059
+#define XMLConst_SNoDOMParseOptions 65060
+#define XMLConst_SMissingItemTag 65061
+#define XMLConst_SNodeReadOnly 65062
+#define XMLConst_SNoRefresh 65063
+#define XMLConst_SMissingFileName 65064
+#define XMLConst_SLine 65065
+#define XMLConst_SInvalidSchema 65066
+#define XMLConst_SNoLocalTypeName 65067
+#define XMLConst_SUnknownDataType 65068
+#define XMLConst_SInvalidGroupDecl 65069
+#define XMLConst_SMissingName 65070
+#define XMLConst_SInvalidDerivation 65071
+#define XMLConst_SNO_MODIFICATION_ALLOWED_ERR 65072
+#define XMLConst_SNOT_FOUND_ERR 65073
+#define XMLConst_SNOT_SUPPORTED_ERR 65074
+#define XMLConst_SINUSE_ATTRIBUTE_ERR 65075
+#define XMLConst_SINVALID_STATE_ERR 65076
+#define XMLConst_SSYNTAX_ERR 65077
+#define XMLConst_SINVALID_MODIFICATION_ERR 65078
+#define XMLConst_SNAMESPACE_ERR 65079
+#define XMLConst_SINVALID_ACCESS_ERR 65080
+#define XMLConst_SBadTransformArgs 65081
+#define XMLConst_SErrorWritingFile 65082
+#define XMLConst_SUnhandledXercesErr 65083
+#define XMLConst_SDOMError 65084
+#define XMLConst_SNotActive 65085
+#define XMLConst_SNodeNotFound 65086
+#define XMLConst_SMissingNode 65087
+#define OleConst_SNotLicensed 65088
+#define OleConst_sNoRunningObject 65089
+#define XMLConst_SDuplicateRegistration 65090
+#define XMLConst_SNoMatchingDOMVendor 65091
+#define XMLConst_SNoDOMNodeEx 65092
+#define XMLConst_SDOMNotSupported 65093
+#define XMLConst_SNodeExpected 65094
+#define XMLConst_SMSDOMNotInstalled 65095
+#define XMLConst_SErrorDownloadingURL 65096
+#define XMLConst_SUrlMonDllMissing 65097
+#define XMLConst_SINDEX_SIZE_ERR 65098
+#define XMLConst_SDOMSTRING_SIZE_ERR 65099
+#define XMLConst_SHIERARCHY_REQUEST_ERR 65100
+#define XMLConst_SWRONG_DOCUMENT_ERR 65101
+#define XMLConst_SINVALID_CHARACTER_ERR 65102
+#define XMLConst_SNO_DATA_ALLOWED_ERR 65103
+#define IdResourceStrings_RSSSLLoadingRootCertError 65104
+#define IdResourceStrings_RSSSLLoadingCertError 65105
+#define IdResourceStrings_RSSSLLoadingKeyError 65106
+#define IdResourceStrings_RSSSLGetMethodError 65107
+#define IdResourceStrings_RSSSLDataBindingError 65108
+#define IdResourceStrings_RSOSSLModeNotSet 65109
+#define IdResourceStrings_RSOSSLCouldNotLoadSSLLibrary 65110
+#define IdResourceStrings_RSOSSLStatusString 65111
+#define IdResourceStrings_RSUnevenSizeInDecodeStream 65112
+#define IdResourceStrings_RSUnevenSizeInEncodeStream 65113
+#define IdResourceStrings_RSMessageEncoderNotFound 65114
+#define IdResourceStrings_RSUnrecognizedUUEEncodingScheme 65115
+#define IdResourceStrings_RSThreadTerminateAndWaitFor 65116
+#define OleConst_SCannotActivate 65117
+#define OleConst_SNoWindowHandle 65118
+#define OleConst_SInvalidLicense 65119
+#define IdResourceStrings_RSSocksUnknownError 65120
+#define IdResourceStrings_RSSocksServerRespondError 65121
+#define IdResourceStrings_RSSocksAuthMethodError 65122
+#define IdResourceStrings_RSSocksAuthError 65123
+#define IdResourceStrings_RSSocksServerGeneralError 65124
+#define IdResourceStrings_RSSocksServerPermissionError 65125
+#define IdResourceStrings_RSSocksServerNetUnreachableError 65126
+#define IdResourceStrings_RSSocksServerHostUnreachableError 65127
+#define IdResourceStrings_RSSocksServerConnectionRefusedError 65128
+#define IdResourceStrings_RSSocksServerTTLExpiredError 65129
+#define IdResourceStrings_RSSocksServerCommandError 65130
+#define IdResourceStrings_RSSocksServerAddressError 65131
+#define IdResourceStrings_RSSSLAcceptError 65132
+#define IdResourceStrings_RSSSLConnectError 65133
+#define IdResourceStrings_RSSSLSettingCipherError 65134
+#define IdResourceStrings_RSSSLCreatingContextError 65135
+#define IdResourceStrings_RSStackEISCONN 65136
+#define IdResourceStrings_RSStackENOTCONN 65137
+#define IdResourceStrings_RSStackESHUTDOWN 65138
+#define IdResourceStrings_RSStackETOOMANYREFS 65139
+#define IdResourceStrings_RSStackETIMEDOUT 65140
+#define IdResourceStrings_RSStackECONNREFUSED 65141
+#define IdResourceStrings_RSStackELOOP 65142
+#define IdResourceStrings_RSStackENAMETOOLONG 65143
+#define IdResourceStrings_RSStackEHOSTDOWN 65144
+#define IdResourceStrings_RSStackEHOSTUNREACH 65145
+#define IdResourceStrings_RSStackENOTEMPTY 65146
+#define IdResourceStrings_RSStackHOST_NOT_FOUND 65147
+#define IdResourceStrings_RSTIdMessagePartCreate 65148
+#define IdResourceStrings_RSSocksRequestFailed 65149
+#define IdResourceStrings_RSSocksRequestServerFailed 65150
+#define IdResourceStrings_RSSocksRequestIdentFailed 65151
+#define IdResourceStrings_RSStackEMSGSIZE 65152
+#define IdResourceStrings_RSStackEPROTOTYPE 65153
+#define IdResourceStrings_RSStackENOPROTOOPT 65154
+#define IdResourceStrings_RSStackEPROTONOSUPPORT 65155
+#define IdResourceStrings_RSStackESOCKTNOSUPPORT 65156
+#define IdResourceStrings_RSStackEOPNOTSUPP 65157
+#define IdResourceStrings_RSStackEPFNOSUPPORT 65158
+#define IdResourceStrings_RSStackEAFNOSUPPORT 65159
+#define IdResourceStrings_RSStackEADDRINUSE 65160
+#define IdResourceStrings_RSStackEADDRNOTAVAIL 65161
+#define IdResourceStrings_RSStackENETDOWN 65162
+#define IdResourceStrings_RSStackENETUNREACH 65163
+#define IdResourceStrings_RSStackENETRESET 65164
+#define IdResourceStrings_RSStackECONNABORTED 65165
+#define IdResourceStrings_RSStackECONNRESET 65166
+#define IdResourceStrings_RSStackENOBUFS 65167
+#define IdResourceStrings_RSMsgClientEncodingAttachment 65168
+#define IdResourceStrings_RSMsgClientUnkownMessagePartType 65169
+#define IdResourceStrings_RSMsgClientInvalidEncoding 65170
+#define IdResourceStrings_RSInvalidServiceName 65171
+#define IdResourceStrings_RSStackError 65172
+#define IdResourceStrings_RSStackEINTR 65173
+#define IdResourceStrings_RSStackEBADF 65174
+#define IdResourceStrings_RSStackEACCES 65175
+#define IdResourceStrings_RSStackEFAULT 65176
+#define IdResourceStrings_RSStackEINVAL 65177
+#define IdResourceStrings_RSStackEMFILE 65178
+#define IdResourceStrings_RSStackEWOULDBLOCK 65179
+#define IdResourceStrings_RSStackEINPROGRESS 65180
+#define IdResourceStrings_RSStackEALREADY 65181
+#define IdResourceStrings_RSStackENOTSOCK 65182
+#define IdResourceStrings_RSStackEDESTADDRREQ 65183
+#define IdResourceStrings_RSCanNotBindRange 65184
+#define IdResourceStrings_RSInvalidPortRange 65185
+#define IdResourceStrings_RSReadTimeout 65186
+#define IdResourceStrings_RSReadLnMaxLineLengthExceeded 65187
+#define IdResourceStrings_RSNoCommandHandlerFound 65188
+#define IdResourceStrings_RSEMailSymbolOutsideAddress 65189
+#define IdResourceStrings_RSWS2CallError 65190
+#define IdResourceStrings_RSWS2LoadError 65191
+#define IdResourceStrings_RSStatusResolving 65192
+#define IdResourceStrings_RSStatusConnecting 65193
+#define IdResourceStrings_RSStatusConnected 65194
+#define IdResourceStrings_RSStatusDisconnecting 65195
+#define IdResourceStrings_RSStatusDisconnected 65196
+#define IdResourceStrings_RSStatusText 65197
+#define IdResourceStrings_RSConnectTimeout 65198
+#define IdResourceStrings_RSMsgClientEncodingText 65199
+#define IdResourceStrings_RSAlreadyConnected 65200
+#define IdResourceStrings_RSCannotAllocateSocket 65201
+#define IdResourceStrings_RSConnectionClosedGracefully 65202
+#define IdResourceStrings_RSCouldNotBindSocket 65203
+#define IdResourceStrings_RSFailedTimeZoneInfo 65204
+#define IdResourceStrings_RSNotEnoughDataInBuffer 65205
+#define IdResourceStrings_RSWinsockInitializationError 65206
+#define IdResourceStrings_RSSetSizeExceeded 65207
+#define IdResourceStrings_RSThreadClassNotSpecified 65208
+#define IdResourceStrings_RSFileNotFound 65209
+#define IdResourceStrings_RSOnlyOneAntiFreeze 65210
+#define IdResourceStrings_RSNotConnected 65211
+#define IdResourceStrings_RSObjectTypeNotSupported 65212
+#define IdResourceStrings_RSTerminateThreadTimeout 65213
+#define IdResourceStrings_RSNoExecuteSpecified 65214
+#define IdResourceStrings_RSIdNoDataToRead 65215
 #define ComStrs_sTabFailRetrieve 65216
 #define ComStrs_sTabFailGetObject 65217
 #define ComStrs_sTabFailSet 65218
@@ -538,14 +562,6 @@
 #define SysConst_SDiskFull 65535
 STRINGTABLE
 BEGIN
-	SOAPConst_SUnsupportedVariant,	"Unsuppported variant type %d"
-	SOAPConst_SNoVarDispatch,	"varDispatch type not supported"
-	SOAPConst_SNoErrorDispatch,	"varError type not supported"
-	SOAPConst_SEmptyStream,	"TAggregateStream Error: no internal streams"
-	SOAPConst_SMethodNotSupported,	"method not supported"
-	SOAPConst_SInvalidContentLength,	"Insufficient data for Content-Length"
-	SOAPConst_SMimeReadError,	"Error reading from Mime Request Stream"
-	SOAPConst_STempFileAccessError,	"No access to temporary file"
 	SOAPConst_SCantLoadLocation,	"Unable to load WSDL File/Location: %s.  Error [%s]"
 	xdom_SOddSizeInvalid,	"Odd size not valid for WideString"
 	xdom_SNegativeSizeInvalid,	"Negative stream size invalid"
@@ -554,14 +570,6 @@ BEGIN
 	JConsts_sChangeJPGSize,	"Cannot change the size of a JPEG image"
 	JConsts_sJPEGError,	"JPEG error #%d"
 	JConsts_sJPEGImageFile,	"JPEG Image File"
-	SOAPConst_SInvalidDateString,	"Invalid date string: %s"
-	SOAPConst_SInvalidTimeString,	"Invalid time string: %s"
-	SOAPConst_SInvalidHour,	"Invalid hour: %d"
-	SOAPConst_SInvalidMinute,	"Invalid minute: %d"
-	SOAPConst_SInvalidSecond,	"Invalid second: %d"
-	SOAPConst_SInvalidMillisecond,	"Invalid millisecond: %d"
-	SOAPConst_SInvalidHourOffset,	"Invalid hour offset: %d"
-	SOAPConst_SInvalidDay,	"Invalid day: %d"
 	SOAPConst_SInvalidMonth,	"Invalid month: %d"
 	SOAPConst_SInvalidDuration,	"Invalid duration string: %s"
 	SOAPConst_SInvalidTimeOffset,	"Hour Offset portion of time invalid"
@@ -570,14 +578,14 @@ BEGIN
 	SOAPConst_SEmptyURL,	"No URL was specified for 'GET'"
 	SOAPConst_SInvalidURL,	"Invalid url '%s' - only supports 'http' and 'https' schemes"
 	SOAPConst_SMethNoRTTI,	"Method has no RTTI"
-	SOAPConst_SUnsuportedClassType,	"Conversion from class %s to SOAP is not supported - SOAP classes must derive from TRemotable"
-	SOAPConst_SUnexpectedDataType,	"Internal error: data type kind %s not expected in this context"
-	SOAPConst_SInvalidContentType,	"Received content of invalid Content-Type setting: %s - SOAP expects \"text/xml\""
-	SOAPConst_SArrayTooManyElem,	"Array Node: %s has too many elements"
-	SOAPConst_SWrongDocElem,	"DocumentElement %s:%s expected, %s:%s found"
-	SOAPConst_STooManyParameters,	"Too many parameters in method %s"
-	SOAPConst_SNoArrayElemRTTI,	"Element of Array type %s has no RTTI"
-	SOAPConst_SInvalidResponse,	"Invalid SOAP Response"
+	SOAPConst_SUnsupportedVariant,	"Unsuppported variant type %d"
+	SOAPConst_SNoVarDispatch,	"varDispatch type not supported"
+	SOAPConst_SNoErrorDispatch,	"varError type not supported"
+	SOAPConst_SEmptyStream,	"TAggregateStream Error: no internal streams"
+	SOAPConst_SMethodNotSupported,	"method not supported"
+	SOAPConst_SInvalidContentLength,	"Insufficient data for Content-Length"
+	SOAPConst_SMimeReadError,	"Error reading from Mime Request Stream"
+	SOAPConst_STempFileAccessError,	"No access to temporary file"
 	SOAPConst_SVariantCastNotSupported,	"Type cannot be cast as Variant"
 	SOAPConst_SHeaderError,	"Error Processing Header (%s)%s"
 	SOAPConst_SMissingSoapReturn,	"SOAP Response Packet: result element expected, received \"%s\""
@@ -586,14 +594,14 @@ BEGIN
 	SOAPConst_SHeaderAttributeError,	"Soap header %s with attribute 'mustUnderstand' set to true was not handled"
 	SOAPConst_SNoRTTI,	"Interface %s has no RTTI"
 	SOAPConst_SNoRTTIParam,	"Parameter %s on Method %s of Interface %s has no RTTI"
-	SOAPConst_SInvalidSoapRequest,	"Invalid SOAP request"
-	SOAPConst_SInvalidSoapResponse,	"Invalid SOAP response"
-	SOAPConst_SMultiBodyNotSupported,	"Multiple body elements not supported"
-	SOAPConst_SUnsupportedCCIntfMeth,	"Remote Method Call: unsupported calling convention %s for method %s on interface %s"
-	SOAPConst_SRemTypeNotRegistered,	"Remotable Type %s not registered"
-	SOAPConst_STypeMismatchInParam,	"Type mismatch in parameter %s"
-	SOAPConst_SNoSuchMethod,	"No method named '%s' is supported by interface '%s'"
-	SOAPConst_SInterfaceNotReg,	"Interface not registered, UUID = %s"
+	SOAPConst_SInvalidDateString,	"Invalid date string: %s"
+	SOAPConst_SInvalidTimeString,	"Invalid time string: %s"
+	SOAPConst_SInvalidHour,	"Invalid hour: %d"
+	SOAPConst_SInvalidMinute,	"Invalid minute: %d"
+	SOAPConst_SInvalidSecond,	"Invalid second: %d"
+	SOAPConst_SInvalidMillisecond,	"Invalid millisecond: %d"
+	SOAPConst_SInvalidHourOffset,	"Invalid hour offset: %d"
+	SOAPConst_SInvalidDay,	"Invalid day: %d"
 	SOAPConst_SInterfaceNoRTTI,	"Interface has no RTTI, UUID = %s"
 	SOAPConst_SNoWSDL,	"No WSDL document associated with WSDLView"
 	SOAPConst_SWSDLError,	"Invalid WSDL document '%s' - Please verify the location and content!\r\nError: %s"
@@ -602,14 +610,14 @@ BEGIN
 	SOAPConst_sCantGetURL,	"Unable to retrieve the URL endpoint for Service/Port '%s'/'%s' from WSDL '%s'"
 	SOAPConst_SDataTypeNotSupported,	"Datatype of TypeKind: %s not supported as argument for remote invocation"
 	SOAPConst_SNoSerializeGraphs,	"Must enable multiref output for objects when serializing a graph of objects - (%s)"
-	XMLConst_SMissingFileName,	"FileName cannot be blank"
-	XMLConst_SLine,	"Line"
-	XMLConst_SInvalidSchema,	"Invalid or unsupported XML Schema document"
-	XMLConst_SNoLocalTypeName,	"Local type declarations cannot have a name.  Element: %s"
-	XMLConst_SUnknownDataType,	"Unknown datatype \"%s\""
-	XMLConst_SInvalidGroupDecl,	"Invalid group declaration in \"%s\""
-	XMLConst_SMissingName,	"Missing Type name"
-	XMLConst_SInvalidDerivation,	"Invalid complex type derivation: %s"
+	SOAPConst_SUnsuportedClassType,	"Conversion from class %s to SOAP is not supported - SOAP classes must derive from TRemotable"
+	SOAPConst_SUnexpectedDataType,	"Internal error: data type kind %s not expected in this context"
+	SOAPConst_SInvalidContentType,	"Received content of invalid Content-Type setting: %s - SOAP expects \"text/xml\""
+	SOAPConst_SArrayTooManyElem,	"Array Node: %s has too many elements"
+	SOAPConst_SWrongDocElem,	"DocumentElement %s:%s expected, %s:%s found"
+	SOAPConst_STooManyParameters,	"Too many parameters in method %s"
+	SOAPConst_SNoArrayElemRTTI,	"Element of Array type %s has no RTTI"
+	SOAPConst_SInvalidResponse,	"Invalid SOAP Response"
 	XMLConst_SNoNameOnRef,	"Name not allowed on a ref item"
 	XMLConst_SNoGlobalRef,	"Global scheam items may not contain a ref"
 	XMLConst_SNoRefPropSet,	"%s cannot be set on a ref item"
@@ -618,14 +626,14 @@ BEGIN
 	XMLConst_SNoFacetsAllowed,	"Facets and Enumeration not allowed on this kind of datatype \"%s\""
 	XMLConst_SNotBuiltInType,	"Invalid built-in type name \"%s\""
 	SOAPConst_SUnsupportedEncodingSyle,	"Unsupported SOAP encodingStyle %s"
-	XMLConst_SINVALID_ACCESS_ERR,	"Invalid access"
-	XMLConst_SBadTransformArgs,	"TransformNode most be called using a document node (not a document element) for the source and the stylesheet."
-	XMLConst_SErrorWritingFile,	"Error creating file \"%s\""
-	XMLConst_SUnhandledXercesErr,	"Unhandled Xerces DOM error (no message available): %d"
-	XMLConst_SDOMError,	"DOM Error: "
-	XMLConst_SNotActive,	"No active document"
-	XMLConst_SNodeNotFound,	"Node \"%s\" not found"
-	XMLConst_SMissingNode,	"IDOMNode required"
+	SOAPConst_SInvalidSoapRequest,	"Invalid SOAP request"
+	SOAPConst_SInvalidSoapResponse,	"Invalid SOAP response"
+	SOAPConst_SMultiBodyNotSupported,	"Multiple body elements not supported"
+	SOAPConst_SUnsupportedCCIntfMeth,	"Remote Method Call: unsupported calling convention %s for method %s on interface %s"
+	SOAPConst_SRemTypeNotRegistered,	"Remotable Type %s not registered"
+	SOAPConst_STypeMismatchInParam,	"Type mismatch in parameter %s"
+	SOAPConst_SNoSuchMethod,	"No method named '%s' is supported by interface '%s'"
+	SOAPConst_SInterfaceNotReg,	"Interface not registered, UUID = %s"
 	XMLConst_SNoAttributes,	"Attributes are not supported on this node type"
 	XMLConst_SInvalidNodeType,	"Invalid node type"
 	XMLConst_SMismatchedRegItems,	"Mismatched paramaters to RegisterChildNodes"
@@ -634,14 +642,14 @@ BEGIN
 	XMLConst_SMissingItemTag,	"ItemTag property is not initialized"
 	XMLConst_SNodeReadOnly,	"Node is readonly"
 	XMLConst_SNoRefresh,	"Refresh is only supported if the FileName or XML properties are set"
-	XMLConst_SErrorDownloadingURL,	"Error downloading URL: %s"
-	XMLConst_SUrlMonDllMissing,	"Unable to load %s"
-	XMLConst_SINDEX_SIZE_ERR,	"Invalid string offset"
-	XMLConst_SDOMSTRING_SIZE_ERR,	"Invalid DOMString size"
-	XMLConst_SHIERARCHY_REQUEST_ERR,	"Cannot insert child node"
-	XMLConst_SWRONG_DOCUMENT_ERR,	"Node is owned by a different document"
-	XMLConst_SINVALID_CHARACTER_ERR,	"Invalid character in name"
-	XMLConst_SNO_DATA_ALLOWED_ERR,	"No data allowed"
+	XMLConst_SMissingFileName,	"FileName cannot be blank"
+	XMLConst_SLine,	"Line"
+	XMLConst_SInvalidSchema,	"Invalid or unsupported XML Schema document"
+	XMLConst_SNoLocalTypeName,	"Local type declarations cannot have a name.  Element: %s"
+	XMLConst_SUnknownDataType,	"Unknown datatype \"%s\""
+	XMLConst_SInvalidGroupDecl,	"Invalid group declaration in \"%s\""
+	XMLConst_SMissingName,	"Missing Type name"
+	XMLConst_SInvalidDerivation,	"Invalid complex type derivation: %s"
 	XMLConst_SNO_MODIFICATION_ALLOWED_ERR,	"No modification allowed (readonly data)"
 	XMLConst_SNOT_FOUND_ERR,	"Node not found"
 	XMLConst_SNOT_SUPPORTED_ERR,	"Not supported"
@@ -650,14 +658,14 @@ BEGIN
 	XMLConst_SSYNTAX_ERR,	"Invalid syntax"
 	XMLConst_SINVALID_MODIFICATION_ERR,	"Invalid modification"
 	XMLConst_SNAMESPACE_ERR,	"Invalid namespace request"
-	IdResourceStrings_RSSocksServerConnectionRefusedError,	"Connection refused."
-	IdResourceStrings_RSSocksServerTTLExpiredError,	"TTL expired."
-	IdResourceStrings_RSSocksServerCommandError,	"Command not supported."
-	IdResourceStrings_RSSocksServerAddressError,	"Address type not supported."
-	IdResourceStrings_RSThreadTerminateAndWaitFor,	"Cannot call TerminateAndWaitFor on FreeAndTerminate threads"
-	OleConst_SCannotActivate,	"OLE control activation failed"
-	OleConst_SNoWindowHandle,	"Could not obtain OLE control window handle"
-	OleConst_SInvalidLicense,	"License information for %s is invalid"
+	XMLConst_SINVALID_ACCESS_ERR,	"Invalid access"
+	XMLConst_SBadTransformArgs,	"TransformNode most be called using a document node (not a document element) for the source and the stylesheet."
+	XMLConst_SErrorWritingFile,	"Error creating file \"%s\""
+	XMLConst_SUnhandledXercesErr,	"Unhandled Xerces DOM error (no message available): %d"
+	XMLConst_SDOMError,	"DOM Error: "
+	XMLConst_SNotActive,	"No active document"
+	XMLConst_SNodeNotFound,	"Node \"%s\" not found"
+	XMLConst_SMissingNode,	"IDOMNode required"
 	OleConst_SNotLicensed,	"License information for %s not found. You cannot use this control in design mode"
 	OleConst_sNoRunningObject,	"Unable to retrieve a pointer to a running object registered with OLE for %s/%s"
 	XMLConst_SDuplicateRegistration,	"\"%s\" DOMImplementation already registered"
@@ -666,14 +674,30 @@ BEGIN
 	XMLConst_SDOMNotSupported,	"Property or Method \"%s\" is not supported by DOM Vendor \"%s\""
 	XMLConst_SNodeExpected,	"Node cannot be null"
 	XMLConst_SMSDOMNotInstalled,	"Microsoft MSXML is not installed"
-	IdResourceStrings_RSStackENAMETOOLONG,	"File name too long."
-	IdResourceStrings_RSStackEHOSTDOWN,	"Host is down."
-	IdResourceStrings_RSStackEHOSTUNREACH,	"No route to host."
-	IdResourceStrings_RSStackENOTEMPTY,	"Directory not empty"
-	IdResourceStrings_RSStackHOST_NOT_FOUND,	"Host not found."
-	IdResourceStrings_RSSocksRequestFailed,	"Request rejected or failed."
-	IdResourceStrings_RSSocksRequestServerFailed,	"Request rejected because SOCKS server cannot connect."
-	IdResourceStrings_RSSocksRequestIdentFailed,	"Request rejected because the client program and identd report different user-ids."
+	XMLConst_SErrorDownloadingURL,	"Error downloading URL: %s"
+	XMLConst_SUrlMonDllMissing,	"Unable to load %s"
+	XMLConst_SINDEX_SIZE_ERR,	"Invalid string offset"
+	XMLConst_SDOMSTRING_SIZE_ERR,	"Invalid DOMString size"
+	XMLConst_SHIERARCHY_REQUEST_ERR,	"Cannot insert child node"
+	XMLConst_SWRONG_DOCUMENT_ERR,	"Node is owned by a different document"
+	XMLConst_SINVALID_CHARACTER_ERR,	"Invalid character in name"
+	XMLConst_SNO_DATA_ALLOWED_ERR,	"No data allowed"
+	IdResourceStrings_RSSSLLoadingRootCertError,	"Could not load root certificate."
+	IdResourceStrings_RSSSLLoadingCertError,	"Could not load certificate."
+	IdResourceStrings_RSSSLLoadingKeyError,	"Could not load key, check password."
+	IdResourceStrings_RSSSLGetMethodError,	"Error geting SSL method."
+	IdResourceStrings_RSSSLDataBindingError,	"Error binding data to SSL socket."
+	IdResourceStrings_RSOSSLModeNotSet,	"Mode has not been set."
+	IdResourceStrings_RSOSSLCouldNotLoadSSLLibrary,	"Could not load SSL library."
+	IdResourceStrings_RSOSSLStatusString,	"SSL status: \"%s\""
+	IdResourceStrings_RSUnevenSizeInDecodeStream,	"Uneven size in DecodeToStream."
+	IdResourceStrings_RSUnevenSizeInEncodeStream,	"Uneven size in Encode."
+	IdResourceStrings_RSMessageEncoderNotFound,	"Message encoder not found"
+	IdResourceStrings_RSUnrecognizedUUEEncodingScheme,	"Unrecognized UUE encoding scheme."
+	IdResourceStrings_RSThreadTerminateAndWaitFor,	"Cannot call TerminateAndWaitFor on FreeAndTerminate threads"
+	OleConst_SCannotActivate,	"OLE control activation failed"
+	OleConst_SNoWindowHandle,	"Could not obtain OLE control window handle"
+	OleConst_SInvalidLicense,	"License information for %s is invalid"
 	IdResourceStrings_RSSocksUnknownError,	"Unknown socks error."
 	IdResourceStrings_RSSocksServerRespondError,	"Socks server did not respond."
 	IdResourceStrings_RSSocksAuthMethodError,	"Invalid socks authentication method."
@@ -682,6 +706,37 @@ BEGIN
 	IdResourceStrings_RSSocksServerPermissionError,	"Connection not allowed by ruleset."
 	IdResourceStrings_RSSocksServerNetUnreachableError,	"Network unreachable."
 	IdResourceStrings_RSSocksServerHostUnreachableError,	"Host unreachable."
+	IdResourceStrings_RSSocksServerConnectionRefusedError,	"Connection refused."
+	IdResourceStrings_RSSocksServerTTLExpiredError,	"TTL expired."
+	IdResourceStrings_RSSocksServerCommandError,	"Command not supported."
+	IdResourceStrings_RSSocksServerAddressError,	"Address type not supported."
+	IdResourceStrings_RSSSLAcceptError,	"Error accepting connection with SSL."
+	IdResourceStrings_RSSSLConnectError,	"Error connecting with SSL."
+	IdResourceStrings_RSSSLSettingCipherError,	"SetCipher failed."
+	IdResourceStrings_RSSSLCreatingContextError,	"Error creating SSL context."
+	IdResourceStrings_RSStackEISCONN,	"Socket is already connected."
+	IdResourceStrings_RSStackENOTCONN,	"Socket is not connected."
+	IdResourceStrings_RSStackESHUTDOWN,	"Cannot send or receive after socket is closed."
+	IdResourceStrings_RSStackETOOMANYREFS,	"Too many references, cannot splice."
+	IdResourceStrings_RSStackETIMEDOUT,	"Connection timed out."
+	IdResourceStrings_RSStackECONNREFUSED,	"Connection refused."
+	IdResourceStrings_RSStackELOOP,	"Too many levels of symbolic links."
+	IdResourceStrings_RSStackENAMETOOLONG,	"File name too long."
+	IdResourceStrings_RSStackEHOSTDOWN,	"Host is down."
+	IdResourceStrings_RSStackEHOSTUNREACH,	"No route to host."
+	IdResourceStrings_RSStackENOTEMPTY,	"Directory not empty"
+	IdResourceStrings_RSStackHOST_NOT_FOUND,	"Host not found."
+	IdResourceStrings_RSTIdMessagePartCreate,	"TIdMessagePart can not be created.  Use descendant classes. "
+	IdResourceStrings_RSSocksRequestFailed,	"Request rejected or failed."
+	IdResourceStrings_RSSocksRequestServerFailed,	"Request rejected because SOCKS server cannot connect."
+	IdResourceStrings_RSSocksRequestIdentFailed,	"Request rejected because the client program and identd report different user-ids."
+	IdResourceStrings_RSStackEMSGSIZE,	"Message too long."
+	IdResourceStrings_RSStackEPROTOTYPE,	"Protocol wrong type for socket."
+	IdResourceStrings_RSStackENOPROTOOPT,	"Bad protocol option."
+	IdResourceStrings_RSStackEPROTONOSUPPORT,	"Protocol not supported."
+	IdResourceStrings_RSStackESOCKTNOSUPPORT,	"Socket type not supported."
+	IdResourceStrings_RSStackEOPNOTSUPP,	"Operation not supported on socket."
+	IdResourceStrings_RSStackEPFNOSUPPORT,	"Protocol family not supported."
 	IdResourceStrings_RSStackEAFNOSUPPORT,	"Address family not supported by protocol family."
 	IdResourceStrings_RSStackEADDRINUSE,	"Address already in use."
 	IdResourceStrings_RSStackEADDRNOTAVAIL,	"Cannot assign requested address."
@@ -691,13 +746,13 @@ BEGIN
 	IdResourceStrings_RSStackECONNABORTED,	"Software caused connection abort."
 	IdResourceStrings_RSStackECONNRESET,	"Connection reset by peer."
 	IdResourceStrings_RSStackENOBUFS,	"No buffer space available."
-	IdResourceStrings_RSStackEISCONN,	"Socket is already connected."
-	IdResourceStrings_RSStackENOTCONN,	"Socket is not connected."
-	IdResourceStrings_RSStackESHUTDOWN,	"Cannot send or receive after socket is closed."
-	IdResourceStrings_RSStackETOOMANYREFS,	"Too many references, cannot splice."
-	IdResourceStrings_RSStackETIMEDOUT,	"Connection timed out."
-	IdResourceStrings_RSStackECONNREFUSED,	"Connection refused."
-	IdResourceStrings_RSStackELOOP,	"Too many levels of symbolic links."
+	IdResourceStrings_RSMsgClientEncodingAttachment,	"Encoding attachment"
+	IdResourceStrings_RSMsgClientUnkownMessagePartType,	"Unknown Message Part Type."
+	IdResourceStrings_RSMsgClientInvalidEncoding,	"Invalid Encoding. UU only allows Body and Attachments"
+	IdResourceStrings_RSInvalidServiceName,	"%s is not a valid service."
+	IdResourceStrings_RSStackError,	"Socket Error # %d\r\n%s"
+	IdResourceStrings_RSStackEINTR,	"Interrupted system call."
+	IdResourceStrings_RSStackEBADF,	"Bad file number."
 	IdResourceStrings_RSStackEACCES,	"Access denied."
 	IdResourceStrings_RSStackEFAULT,	"Bad address."
 	IdResourceStrings_RSStackEINVAL,	"Invalid argument."
@@ -707,16 +762,12 @@ BEGIN
 	IdResourceStrings_RSStackEALREADY,	"Operation already in progress."
 	IdResourceStrings_RSStackENOTSOCK,	"Socket operation on non-socket."
 	IdResourceStrings_RSStackEDESTADDRREQ,	"Destination address required."
-	IdResourceStrings_RSStackEMSGSIZE,	"Message too long."
-	IdResourceStrings_RSStackEPROTOTYPE,	"Protocol wrong type for socket."
-	IdResourceStrings_RSStackENOPROTOOPT,	"Bad protocol option."
-	IdResourceStrings_RSStackEPROTONOSUPPORT,	"Protocol not supported."
-	IdResourceStrings_RSStackESOCKTNOSUPPORT,	"Socket type not supported."
-	IdResourceStrings_RSStackEOPNOTSUPP,	"Operation not supported on socket."
-	IdResourceStrings_RSStackEPFNOSUPPORT,	"Protocol family not supported."
+	IdResourceStrings_RSCanNotBindRange,	"Can not bind in port range (%d - %d)"
+	IdResourceStrings_RSInvalidPortRange,	"Invalid Port Range (%d - %d)"
 	IdResourceStrings_RSReadTimeout,	"Read Timeout"
 	IdResourceStrings_RSReadLnMaxLineLengthExceeded,	"Max line length exceeded."
 	IdResourceStrings_RSNoCommandHandlerFound,	"No command handler found."
+	IdResourceStrings_RSEMailSymbolOutsideAddress,	"@ Outside address"
 	IdResourceStrings_RSWS2CallError,	"Error on call Winsock2 library function %s"
 	IdResourceStrings_RSWS2LoadError,	"Error on loading Winsock2 library (%s)"
 	IdResourceStrings_RSStatusResolving,	"Resolving hostname %s."
@@ -726,13 +777,12 @@ BEGIN
 	IdResourceStrings_RSStatusDisconnected,	"Disconnected."
 	IdResourceStrings_RSStatusText,	"%s"
 	IdResourceStrings_RSConnectTimeout,	"Connect timed out."
-	IdResourceStrings_RSInvalidServiceName,	"%s is not a valid service."
-	IdResourceStrings_RSStackError,	"Socket Error # %d\r\n%s"
-	IdResourceStrings_RSStackEINTR,	"Interrupted system call."
-	IdResourceStrings_RSStackEBADF,	"Bad file number."
+	IdResourceStrings_RSMsgClientEncodingText,	"Encoding text"
+	IdResourceStrings_RSAlreadyConnected,	"Already connected."
 	IdResourceStrings_RSCannotAllocateSocket,	"Cannot allocate socket."
 	IdResourceStrings_RSConnectionClosedGracefully,	"Connection Closed Gracefully."
 	IdResourceStrings_RSCouldNotBindSocket,	"Could not bind socket. Address and port are already in use."
+	IdResourceStrings_RSFailedTimeZoneInfo,	"Failed attempting to retrieve time zone information."
 	IdResourceStrings_RSNotEnoughDataInBuffer,	"Not enough data in buffer."
 	IdResourceStrings_RSWinsockInitializationError,	"Winsock Initialization Error."
 	IdResourceStrings_RSSetSizeExceeded,	"Set Size Exceeded."
@@ -744,8 +794,6 @@ BEGIN
 	IdResourceStrings_RSTerminateThreadTimeout,	"Terminate Thread Timeout"
 	IdResourceStrings_RSNoExecuteSpecified,	"No execute handler found."
 	IdResourceStrings_RSIdNoDataToRead,	"No data to read."
-	IdResourceStrings_RSCanNotBindRange,	"Can not bind in port range (%d - %d)"
-	IdResourceStrings_RSInvalidPortRange,	"Invalid Port Range (%d - %d)"
 	ComStrs_sTabFailRetrieve,	"Failed to retrieve tab at index %d"
 	ComStrs_sTabFailGetObject,	"Failed to get object at index %d"
 	ComStrs_sTabFailSet,	"Failed to set tab \"%s\" at index %d"

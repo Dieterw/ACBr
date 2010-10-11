@@ -36,7 +36,9 @@ unit DoACBrNFeUnit ;
 interface
 Uses Classes, TypInfo, SysUtils, CmdUnitNFe, Types,
      smtpsend, ssl_openssl, mimemess, mimepart,
-     ACBrNFeUtil, RpDevice;
+     ACBrNFeUtil, RpDevice,
+     IdMessage, IdSMTP, IdBaseComponent, IdComponent,
+     IdIOHandler, IdIOHandlerSocket, IdSSLOpenSSL;
 
 Procedure DoACBrNFe( Cmd : TACBrNFeCmd ) ;
 Function ConvertStrRecived( AStr: String ) : String ;
@@ -45,6 +47,7 @@ function ObterCodigoMunicipio(const xMun, xUF: string): integer;
 procedure GerarIniNFe( AStr: WideString ) ;
 function GerarNFeIni( XML : WideString ) : WideString;
 procedure EnviarEmail(const sSmtpHost, sSmtpPort, sSmtpUser, sSmtpPasswd, sFrom, sTo, sAssunto, sAttachment, sAttachment2: String; sMensagem : TStrings; SSL : Boolean; sCopias: String='');
+procedure EnviarEmailIndy(const sSmtpHost, sSmtpPort, sSmtpUser, sSmtpPasswd, sFrom, sTo, sAssunto, sAttachment, sAttachment2: String; sMensagem : TStrings; SSL : Boolean; sCopias: String='');
 
 implementation
 
@@ -680,7 +683,10 @@ begin
               end;
             end;
             try
-               EnviarEmail(edtSmtpHost.Text, edtSmtpPort.Text, edtSmtpUser.Text, edtSmtpPass.Text, edtSmtpUser.Text, Cmd.Params(0),NotaUtil.SeSenao(NotaUtil.NaoEstaVazio(Cmd.Params(3)),Cmd.Params(3),edtEmailAssunto.Text), ArqNFe, ArqPDF, mmEmailMsg.Lines, cbEmailSSL.Checked,Cmd.Params(4));
+               if rgEmailTipoEnvio.ItemIndex = 0 then
+                  EnviarEmail(edtSmtpHost.Text, edtSmtpPort.Text, edtSmtpUser.Text, edtSmtpPass.Text, edtSmtpUser.Text, Cmd.Params(0),NotaUtil.SeSenao(NotaUtil.NaoEstaVazio(Cmd.Params(3)),Cmd.Params(3),edtEmailAssunto.Text), ArqNFe, ArqPDF, mmEmailMsg.Lines, cbEmailSSL.Checked,Cmd.Params(4))
+               else
+                  EnviarEmailIndy(edtSmtpHost.Text, edtSmtpPort.Text, edtSmtpUser.Text, edtSmtpPass.Text, edtSmtpUser.Text, Cmd.Params(0),NotaUtil.SeSenao(NotaUtil.NaoEstaVazio(Cmd.Params(3)),Cmd.Params(3),edtEmailAssunto.Text), ArqNFe, ArqPDF, mmEmailMsg.Lines, cbEmailSSL.Checked,Cmd.Params(4));
                Cmd.Resposta := 'Email enviado com sucesso';
             except
                on E: Exception do
@@ -1242,8 +1248,8 @@ begin
                  with Prod.arma.Add do
                   begin
                     tpArma := StrTotpArma(OK,INIRec.ReadString( sSecao,'tpArma','0')) ;
-                    nSerie := StrToInt(sFim);
-                    nCano  := INIRec.ReadInteger( sSecao,'nCano',0) ;
+                    nSerie := sFim;
+                    nCano  := INIRec.ReadString( sSecao,'nCano','') ;
                     descr  := INIRec.ReadString( sSecao,'descr','') ;
                    end;
                   Inc(J)
@@ -1990,8 +1996,8 @@ begin
                   with Prod.arma.Items[J] do
                    begin
                      INIRec.WriteString( sSecao,'tpArma',tpArmaToStr(tpArma)) ;
-                     INIRec.WriteInteger(sSecao,'nSerie',nSerie) ;
-                     INIRec.WriteInteger(sSecao,'nCano' ,nCano) ;
+                     INIRec.WriteString( sSecao,'nSerie',nSerie) ;
+                     INIRec.WriteString( sSecao,'nCano' ,nCano) ;
                      INIRec.WriteString( sSecao,'descr' ,descr) ;
                     end;
                 end;
@@ -2396,7 +2402,7 @@ begin
        m.AddPartBinaryFromFile(sAttachment, p);
      if sAttachment2 <> '' then
        m.AddPartBinaryFromFile(sAttachment2, p);
-     m.header.tolist.add(sTo);  
+     m.header.tolist.add(sTo);
      m.header.From := sFrom;
      m.header.subject:=sAssunto;
      m.EncodeMessage;
@@ -2437,6 +2443,64 @@ begin
      msg_lines.Free;
      smtp.Free;
      m.free;
+  end;
+end;
+
+procedure EnviarEmailIndy(const sSmtpHost, sSmtpPort, sSmtpUser, sSmtpPasswd, sFrom, sTo, sAssunto, sAttachment, sAttachment2: String; sMensagem : TStrings; SSL : Boolean; sCopias: String='');
+var
+  IdSMTP    : TIdSMTP;
+  IdMessage : TIdMessage;
+  IdISSLOHANDLERSocket : TIdSSLIOHandlerSocket;
+begin
+  IdSMTP    := TIdSMTP.Create(Application);
+  IdMessage := TIdMessage.Create(Application);
+  IdISSLOHANDLERSocket := TIdSSLIOHandlerSocket.Create(Application);
+  try
+     IdSMTP.Host := sSmtpHost;
+     IdSMTP.Port := StrToIntDef(sSmtpPort,25);
+     IdSMTP.Username := sSmtpUser;
+     IdSMTP.Password := sSmtpPasswd;
+
+     if SSL then
+      begin
+        IdISSLOHANDLERSocket.SSLOptions.Method := sslvSSLv3;
+        IdISSLOHANDLERSocket.SSLOptions.Mode := sslmClient;
+        IdSMTP.AuthenticationType := atLogin;
+        IdSMTP.IOHandler := IdISSLOHANDLERSocket;
+      end
+     else
+        IdSMTP.AuthenticationType := atNone;
+
+     IdMessage.From.Address := sFrom;
+     IdMessage.Recipients.EMailAddresses := sTo;
+     if NotaUtil.NaoEstaVazio(sCopias) then
+        IdMessage.CCList.EMailAddresses := sCopias;
+
+     IdMessage.Priority := mpNormal;
+     IdMessage.Subject := sAssunto;
+     IdMessage.Body.Text := sMensagem.Text;
+
+     if NotaUtil.NaoEstaVazio(sAttachment) then
+        TIdAttachment.create(IdMessage.MessageParts, sAttachment);
+
+     if NotaUtil.NaoEstaVazio(sAttachment2) then
+        TIdAttachment.create(IdMessage.MessageParts, sAttachment2);
+
+     try
+        IdSMTP.Connect;
+     except
+        IdSMTP.Connect;
+     end;
+
+     try
+        IdSMTP.Send(IdMessage);
+     finally
+        IdSMTP.Disconnect;
+     end;
+  finally
+    IdISSLOHANDLERSocket.Free;
+    IdMessage.Free;
+    IdSMTP.Free;
   end;
 end;
 

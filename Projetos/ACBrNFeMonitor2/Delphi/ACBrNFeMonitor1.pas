@@ -243,6 +243,7 @@ type
     edtFonteCampos: TEdit;
     Label44: TLabel;
     cbUmaInstancia: TCheckBox;
+    rgEmailTipoEnvio: TRadioGroup;
     procedure DoACBrTimer(Sender: TObject);
     procedure edOnlyNumbers(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
@@ -736,6 +737,7 @@ begin
      edtSmtpPass.Text      := LeINICrypt( INI, 'Email','Pass' ,_C) ;
      edtEmailAssunto.Text  := Ini.ReadString( 'Email','Assunto','') ;
      cbEmailSSL.Checked    := Ini.ReadBool(   'Email','SSL'    ,False) ;
+     rgEmailTipoEnvio.ItemIndex := Ini.ReadInteger( 'Email','Tipo'   ,0) ;
      StreamMemo := TMemoryStream.Create;
      Ini.ReadBinaryStream( 'Email','Mensagem',StreamMemo) ;
      mmEmailMsg.Lines.LoadFromStream(StreamMemo);
@@ -827,6 +829,7 @@ begin
      GravaINICrypt(INI, 'Email','Pass'  ,edtSmtpPass.Text, _C) ;
      Ini.WriteString( 'Email','Assunto' ,edtEmailAssunto.Text) ;
      Ini.WriteBool(   'Email','SSL'     ,cbEmailSSL.Checked ) ;
+     Ini.WriteInteger('Email','Tipo'    ,rgEmailTipoEnvio.ItemIndex) ;
      StreamMemo := TMemoryStream.Create;
      mmEmailMsg.Lines.SaveToStream(StreamMemo);
      StreamMemo.Seek(0,soFromBeginning);
@@ -1487,7 +1490,10 @@ begin
     if not(InputQuery('Enviar Email', 'Email de Destino', vPara)) then
        exit;
     try
-       EnviarEmail(edtSmtpHost.Text, edtSmtpPort.Text, edtSmtpUser.Text, edtSmtpPass.Text, edtSmtpUser.Text, vPara, edtEmailAssunto.Text, OpenDialog1.FileName, ArqPDF, mmEmailMsg.Lines, cbEmailSSL.Checked);
+       if rgEmailTipoEnvio.ItemIndex = 0 then
+          EnviarEmail(edtSmtpHost.Text, edtSmtpPort.Text, edtSmtpUser.Text, edtSmtpPass.Text, edtSmtpUser.Text, vPara, edtEmailAssunto.Text, OpenDialog1.FileName, ArqPDF, mmEmailMsg.Lines, cbEmailSSL.Checked)
+       else
+          EnviarEmailIndy(edtSmtpHost.Text, edtSmtpPort.Text, edtSmtpUser.Text, edtSmtpPass.Text, edtSmtpUser.Text, vPara, edtEmailAssunto.Text, OpenDialog1.FileName, ArqPDF, mmEmailMsg.Lines, cbEmailSSL.Checked);
     except
        on E: Exception do
         begin

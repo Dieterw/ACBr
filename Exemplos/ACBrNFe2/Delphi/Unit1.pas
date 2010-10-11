@@ -784,7 +784,7 @@ begin
     ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
     CC:=TstringList.Create;
     CC.Add('email_1@provedor.com'); //especifique um email válido
-    CC.Add('email_2@provedor.com.br'); //especifique um email válido
+    CC.Add('email_2@provedor.com'); //especifique um email válido
     ACBrNFe1.NotasFiscais.Items[0].EnviarEmail(edtSmtpHost.Text
                                              , edtSmtpPort.Text
                                              , edtSmtpUser.Text
@@ -797,7 +797,10 @@ begin
                                              , True //Enviar PDF junto
                                              , nil //Lista com emails que serão enviado cópias - TStrings
                                              , nil // Lista de anexos - TStrings
-                                             , False ); //Pede confirmação de leitura do email
+                                             , False  //Pede confirmação de leitura do email
+                                             , False  //Aguarda Envio do Email(não usa thread)
+                                             , 'ACBrNFe2' // Nome do Rementente
+                                             , True ); //Usa Indy - Para enviar email usando a Indy deixe como True e para enviar usando Synapse deixe como False
     CC.Free;
   end;
 end;
@@ -1155,9 +1158,9 @@ begin
                   Node := trvwNFe.Items.AddChild(NodeItem,'Arma'+IntToStrZero(J+1,3));
                   with Prod.arma.Items[J] do
                    begin
-                     trvwNFe.Items.AddChild(Node,'nSerie=' +IntToStr(nSerie)) ;
+                     trvwNFe.Items.AddChild(Node,'nSerie=' +nSerie) ;
                      trvwNFe.Items.AddChild(Node,'tpArma=' +tpArmaToStr(tpArma)) ;
-                     trvwNFe.Items.AddChild(Node,'nCano='  +IntToStr(nCano)) ;
+                     trvwNFe.Items.AddChild(Node,'nCano='  +nCano) ;
                      trvwNFe.Items.AddChild(Node,'descr='  +descr) ;
                     end;
                 end;
@@ -1741,7 +1744,7 @@ begin
          Prod.cProd    := '123456';
          Prod.cEAN     := '1234567890123';
          Prod.xProd    := 'Descrição do Produto';
-         Prod.NCM      := '12345678'; // Tabela NCM disponível em 
+         Prod.NCM      := '12345678'; // Tabela NCM disponível em
          Prod.EXTIPI   := '';
          Prod.CFOP     := '5101';
          Prod.uCom     := 'UN';

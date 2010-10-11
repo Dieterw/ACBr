@@ -55,8 +55,11 @@ uses
      ACBrNFeDMLaz,
   {$ELSE}
      ACBrNFeDANFEClass,
+     IdMessage, IdSMTP, IdBaseComponent, IdComponent,
+     IdAntiFreezeBase, IdAntiFreeze,
+     IdIOHandler, IdIOHandlerSocket, IdSSLOpenSSL, // units para enviar email indy
   {$ENDIF}
-  smtpsend, ssl_openssl, mimemess, mimepart, // units para enviar email
+  smtpsend, ssl_openssl, mimemess, mimepart, // units para enviar email synapse
   pcnNFe, pcnNFeR, pcnNFeW, pcnConversao, pcnAuxiliar, pcnLeitor;
 
 type
@@ -91,7 +94,8 @@ type
                                 Anexos:TStrings=nil;
                                 PedeConfirma: Boolean = False;
                                 AguardarEnvio: Boolean = False;
-                                NomeRemetente: String = '');
+                                NomeRemetente: String = '';
+                                UsaIndy : Boolean = False);
     property NFe: TNFe  read FNFe write FNFe;
     property XML: AnsiString  read GetNFeXML write FXML;
     property Confirmada: Boolean  read FConfirmada write FConfirmada;
@@ -264,84 +268,167 @@ procedure NotaFiscal.EnviarEmail(const sSmtpHost,
                                       Anexos:TStrings=nil;
                                       PedeConfirma: Boolean = False;
                                       AguardarEnvio: Boolean = False;
-                                      NomeRemetente: String = '');
+                                      NomeRemetente: String = '';
+                                      UsaIndy : Boolean = False);
 var
+ NomeArq : String;
+ i: Integer;
+ //synapse
  ThreadSMTP : TSendMailThread;
  m:TMimemess;
  p: TMimepart;
  StreamNFe : TStringStream;
- NomeArq : String;
- i: Integer;
+ //indy
+ IdSMTP    : TIdSMTP;
+ IdMessage : TIdMessage;
+ IdISSLOHANDLERSocket : TIdSSLIOHandlerSocket;
+ IdAntiFreeze: TIdAntiFreeze;
 begin
- m:=TMimemess.create;
- ThreadSMTP := TSendMailThread.Create ;  // Não Libera, pois usa FreeOnTerminate := True ;
- StreamNFe  := TStringStream.Create('');
- try
-    p := m.AddPartMultipart('mixed', nil);
-    if sMensagem <> nil then
-       m.AddPartText(sMensagem, p);
-    SaveToStream(StreamNFe) ;
-    m.AddPartBinary(StreamNFe,copy(NFe.infNFe.ID, (length(NFe.infNFe.ID)-44)+1, 44)+'-NFe.xml', p);
-    if (EnviaPDF) then
-    begin
-       if TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE <> nil then
+ {$IFDEF FPC}
+    UsaIndy := True;
+ {$ENDIF}
+ if not UsaIndy then
+  begin
+    m:=TMimemess.create;
+    ThreadSMTP := TSendMailThread.Create ;  // Não Libera, pois usa FreeOnTerminate := True ;
+    StreamNFe  := TStringStream.Create('');
+    try
+       p := m.AddPartMultipart('mixed', nil);
+       if sMensagem <> nil then
+          m.AddPartText(sMensagem, p);
+       SaveToStream(StreamNFe) ;
+       m.AddPartBinary(StreamNFe,copy(NFe.infNFe.ID, (length(NFe.infNFe.ID)-44)+1, 44)+'-NFe.xml', p);
+       if (EnviaPDF) then
        begin
-          TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.ImprimirDANFEPDF(NFe);
-          NomeArq :=  StringReplace(NFe.infNFe.ID,'NFe', '', [rfIgnoreCase]);
-          NomeArq := PathWithDelim(TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.PathPDF)+NomeArq+'.pdf';
-          m.AddPartBinaryFromFile(NomeArq, p);
+          if TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE <> nil then
+          begin
+             TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.ImprimirDANFEPDF(NFe);
+             NomeArq :=  StringReplace(NFe.infNFe.ID,'NFe', '', [rfIgnoreCase]);
+             NomeArq := PathWithDelim(TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.PathPDF)+NomeArq+'.pdf';
+             m.AddPartBinaryFromFile(NomeArq, p);
+          end;
        end;
+
+       if assigned(Anexos) then
+         for i := 0 to Anexos.Count - 1 do
+         begin
+           m.AddPartBinaryFromFile(Anexos[i], p);
+         end;
+
+       m.header.tolist.add(sTo);
+
+       if Trim(NomeRemetente) <> '' then
+         m.header.From := Format('%s<%s>', [NomeRemetente, sFrom])
+       else
+         m.header.From := sFrom;
+
+       m.header.subject:= sAssunto;
+       m.Header.ReplyTo := sFrom;
+       if PedeConfirma then
+          m.Header.CustomHeaders.Add('Disposition-Notification-To: '+sFrom);
+       m.EncodeMessage;
+
+       ThreadSMTP.sFrom := sFrom;
+       ThreadSMTP.sTo   := sTo;
+       if sCC <> nil then
+          ThreadSMTP.sCC.AddStrings(sCC);
+       ThreadSMTP.slmsg_Lines.AddStrings(m.Lines);
+
+       ThreadSMTP.smtp.UserName := sSmtpUser;
+       ThreadSMTP.smtp.Password := sSmtpPasswd;
+
+       ThreadSMTP.smtp.TargetHost := sSmtpHost;
+       if not NotaUtil.EstaVazio( sSmtpPort ) then     // Usa default
+          ThreadSMTP.smtp.TargetPort := sSmtpPort;
+
+       ThreadSMTP.smtp.FullSSL := SSL;
+       ThreadSMTP.smtp.AutoTLS := True;
+
+       TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).SetStatus( stNFeEmail );
+       ThreadSMTP.Resume; // inicia a thread
+       if AguardarEnvio then
+       begin
+         repeat
+           Sleep(1000);
+           Application.ProcessMessages;
+         until ThreadSMTP.Terminado;
+       end;
+       TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).SetStatus( stIdle );
+    finally
+       m.free;
+       StreamNFe.Free ;
     end;
+  end
+ else
+  begin
+     IdSMTP    := TIdSMTP.Create(Application);
+     IdMessage := TIdMessage.Create(Application);
+     IdISSLOHANDLERSocket := TIdSSLIOHandlerSocket.Create(Application);
+     if not AguardarEnvio then
+        IdAntiFreeze := TIdAntiFreeze.Create(Application);
+     try
+        IdSMTP.Host := sSmtpHost;
+        IdSMTP.Port := StrToIntDef(sSmtpPort,25);
+        IdSMTP.Username := sSmtpUser;
+        IdSMTP.Password := sSmtpPasswd;
 
-    if assigned(Anexos) then
-      for i := 0 to Anexos.Count - 1 do
-      begin
-        m.AddPartBinaryFromFile(Anexos[i], p);
-      end;
+        if SSL then
+         begin
+           IdISSLOHANDLERSocket.SSLOptions.Method := sslvSSLv3;
+           IdISSLOHANDLERSocket.SSLOptions.Mode := sslmClient;
+           IdSMTP.AuthenticationType := atLogin;
+           IdSMTP.IOHandler := IdISSLOHANDLERSocket;
+         end
+        else
+           IdSMTP.AuthenticationType := atNone;
 
-    m.header.tolist.add(sTo);
+        IdMessage.From.Address := sFrom;
+        IdMessage.From.Name    := NomeRemetente;
+        if PedeConfirma then
+           IdMessage.Flags := [mfAnswered];
+        IdMessage.Recipients.EMailAddresses := sTo;
+        if sCC <> nil then
+         begin
+           for i:=0 to sCC.Count-1 do
+              IdMessage.CCList.Add.Address := sCC[i];
+         end;
 
-    if Trim(NomeRemetente) <> '' then
-      m.header.From := Format('%s<%s>', [NomeRemetente, sFrom])
-    else
-      m.header.From := sFrom;
+        IdMessage.Priority := mpNormal;
+        IdMessage.Subject := sAssunto;
+        IdMessage.Body.Text := sMensagem.Text;
 
-    m.header.subject:= sAssunto;
-    m.Header.ReplyTo := sFrom;
-    if PedeConfirma then
-       m.Header.CustomHeaders.Add('Disposition-Notification-To: '+sFrom);
-    m.EncodeMessage;
+        TIdAttachment.create(IdMessage.MessageParts, copy(NFe.infNFe.ID, (length(NFe.infNFe.ID)-44)+1, 44)+'-NFe.xml');
 
-    ThreadSMTP.sFrom := sFrom;
-    ThreadSMTP.sTo   := sTo;
-    if sCC <> nil then
-       ThreadSMTP.sCC.AddStrings(sCC);
-    ThreadSMTP.slmsg_Lines.AddStrings(m.Lines);
+        if (EnviaPDF) then
+        begin
+           if TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE <> nil then
+           begin
+              TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.ImprimirDANFEPDF(NFe);
+              NomeArq :=  StringReplace(NFe.infNFe.ID,'NFe', '', [rfIgnoreCase]);
+              NomeArq := PathWithDelim(TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.PathPDF)+NomeArq+'.pdf';
+              TIdAttachment.create(IdMessage.MessageParts, NomeArq);
+           end;
+        end;
 
-    ThreadSMTP.smtp.UserName := sSmtpUser;
-    ThreadSMTP.smtp.Password := sSmtpPasswd;
+        try
+           IdSMTP.Connect;
+        except
+           IdSMTP.Connect;
+        end;
 
-    ThreadSMTP.smtp.TargetHost := sSmtpHost;
-    if not NotaUtil.EstaVazio( sSmtpPort ) then     // Usa default
-       ThreadSMTP.smtp.TargetPort := sSmtpPort;
-
-    ThreadSMTP.smtp.FullSSL := SSL;
-    ThreadSMTP.smtp.AutoTLS := True;
-
-    TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).SetStatus( stNFeEmail );
-    ThreadSMTP.Resume; // inicia a thread
-    if AguardarEnvio then
-    begin
-      repeat
-        Sleep(1000);
-        Application.ProcessMessages;
-      until ThreadSMTP.Terminado;
-    end;
-    TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).SetStatus( stIdle );
- finally
-    m.free;
-    StreamNFe.Free ;
- end;
+        try
+           IdSMTP.Send(IdMessage);
+        finally
+           IdSMTP.Disconnect;
+        end;
+     finally
+       if not AguardarEnvio then
+          IdAntiFreeze.Free;
+       IdISSLOHANDLERSocket.Free;
+       IdMessage.Free;
+       IdSMTP.Free;
+     end;
+  end;
 end;
 
 function NotaFiscal.GetNFeXML: AnsiString;

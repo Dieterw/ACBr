@@ -281,7 +281,9 @@ var
  //indy
  IdSMTP    : TIdSMTP;
  IdMessage : TIdMessage;
- IdISSLOHANDLERSocket : TIdSSLIOHandlerSocket;
+ {$IFNDEF INDY10}
+    IdISSLOHANDLERSocket : TIdSSLIOHandlerSocket;
+ {$ENDIF}
  IdAntiFreeze: TIdAntiFreeze;
 begin
  {$IFDEF FPC}
@@ -363,7 +365,9 @@ begin
   begin
      IdSMTP    := TIdSMTP.Create(Application);
      IdMessage := TIdMessage.Create(Application);
-     IdISSLOHANDLERSocket := TIdSSLIOHandlerSocket.Create(Application);
+     {$IFNDEF INDY10}
+        IdISSLOHANDLERSocket := TIdSSLIOHandlerSocket.Create(Application);
+     {$ENDIF}
      if not AguardarEnvio then
         IdAntiFreeze := TIdAntiFreeze.Create(Application);
      try
@@ -374,10 +378,12 @@ begin
 
         if SSL then
          begin
-           IdISSLOHANDLERSocket.SSLOptions.Method := sslvSSLv3;
-           IdISSLOHANDLERSocket.SSLOptions.Mode := sslmClient;
+           {$IFNDEF INDY10}
+              IdISSLOHANDLERSocket.SSLOptions.Method := sslvSSLv3;
+              IdISSLOHANDLERSocket.SSLOptions.Mode := sslmClient;
+              IdSMTP.IOHandler := IdISSLOHANDLERSocket;
+           {$ENDIF}
            IdSMTP.AuthenticationType := atLogin;
-           IdSMTP.IOHandler := IdISSLOHANDLERSocket;
          end
         else
            IdSMTP.AuthenticationType := atNone;
@@ -424,7 +430,9 @@ begin
      finally
        if not AguardarEnvio then
           IdAntiFreeze.Free;
-       IdISSLOHANDLERSocket.Free;
+       {$IFNDEF INDY10}
+          IdISSLOHANDLERSocket.Free;
+       {$ENDIF}   
        IdMessage.Free;
        IdSMTP.Free;
      end;

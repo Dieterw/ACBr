@@ -42,7 +42,7 @@
 |*  - Inicio do componente ACBrCTe baseado no componente ACBrCTePCN
 ******************************************************************************}
 {$I ACBr.inc}
-{$DEFINE INDY100}  // COMENTAR SE UTILIZA INDY < VERSÃO 10
+// {$DEFINE INDY100}  // DESCOMENTAR SE UTILIZA INDY VERSÃO 10 
 
 unit ACBrCTeConhecimentos;
 
@@ -332,7 +332,7 @@ begin
 
        ThreadSMTP.smtp.FullSSL := SSL;
        ThreadSMTP.smtp.AutoTLS := True;
-       TACBrCTe( TConnhecimentos( Collection ).ACBrCTe ).SetStatus( stCTeEmail );
+       TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).SetStatus( stCTeEmail );
 
        try
          ThreadSMTP.Resume; // inicia a thread

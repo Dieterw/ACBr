@@ -43,7 +43,10 @@
 |*  - Envio do e-mail utilizando Thread
 ******************************************************************************}
 {$I ACBr.inc}
-{$DEFINE INDY100}  // COMENTAR SE UTILIZA INDY < VERSÃO 10
+//{$DEFINE INDY100}  // DESCOMENTAR SE UTILIZA INDY < VERSÃO 10 em Delphi 7 ou Menor
+{$IFDEF DELPHI8_UP}
+   {$DEFINE INDY100}  // COMENTAR SE UTILIZA INDY < VERSÃO 10 em Delphi 8 ou Superior
+{$ENDIF}   
 
 unit ACBrNFeNotasFiscais;
 

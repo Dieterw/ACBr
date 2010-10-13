@@ -55,8 +55,8 @@ uses
   {$IFDEF FPC}
     ACBrNFeDMLaz,
   {$ELSE}
-    {$IFDEF INDY100}
-      IdAttachmentFile,
+    {$IFDEF INDY100} 
+      IdAttachmentFile, //Para quem tiver erro nesta linha, comente a linha {$DEFINE INDY100} no começo desta unit
     {$ENDIF}
     ACBrNFeDANFEClass,
     IdMessage, IdSMTP, IdBaseComponent, IdComponent,

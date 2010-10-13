@@ -142,6 +142,7 @@ type
   TSendMailThread = class(TThread)
   private
     FException : Exception;
+    FOwner: TNotasFiscais;
     procedure DoHandleException;
   public
     Terminado: Boolean;
@@ -150,8 +151,8 @@ type
     sTo : String;
     sCC : TStrings;
     slmsg_Lines : TStrings;
-    constructor Create;
-    destructor Destroy ; override ;
+    constructor Create(AOwner: TNotasFiscais);
+    destructor Destroy; override;
   protected
     procedure Execute; override;
     procedure HandleException;
@@ -301,7 +302,7 @@ begin
  if not UsaIndy then
   begin
     m:=TMimemess.create;
-    ThreadSMTP := TSendMailThread.Create ;  // Não Libera, pois usa FreeOnTerminate := True ;
+    ThreadSMTP := TSendMailThread.Create(TNotasFiscais(Collection));  // Não Libera, pois usa FreeOnTerminate := True ;
     StreamNFe  := TStringStream.Create('');
     try
        p := m.AddPartMultipart('mixed', nil);
@@ -451,13 +452,13 @@ begin
         end;
 
         try
+          TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).SetStatus( stNFeEmail );
           try
              IdSMTP.Connect;
           except
              IdSMTP.Connect;
           end;
 
-          TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).SetStatus( stNFeEmail );
           IdSMTP.Send(IdMessage);
         finally
           TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).SetStatus( stIdle );
@@ -465,7 +466,7 @@ begin
         end;
      finally
        if not AguardarEnvio then
-          IdAntiFreeze.Free;
+         IdAntiFreeze.Free;
 
        IdISSLOHANDLERSocket.Free;
        IdMessage.Free;
@@ -712,11 +713,14 @@ end;
 
 procedure TSendMailThread.DoHandleException;
 begin
-  Sysutils.ShowException(FException, nil );
+  TACBrNFe(FOwner.ACBrNFe).SetStatus( stIdle );
+  Sysutils.ShowException(FException, nil);
 end;
 
-constructor TSendMailThread.Create ;
+constructor TSendMailThread.Create(AOwner: TNotasFiscais);
 begin
+  FOwner := AOwner;
+
   smtp        := TSMTPSend.Create;
   slmsg_Lines := TStringList.Create;
   sCC         := TStringList.Create;
@@ -775,10 +779,9 @@ begin
     end;
   except
     try
-      smtp.Sock.CloseSocket ;
+      smtp.Sock.CloseSocket;
     except
     end ;
-    Terminado := True; // Alterado por Italo em 21/09/2010
     HandleException;
   end;
 end;

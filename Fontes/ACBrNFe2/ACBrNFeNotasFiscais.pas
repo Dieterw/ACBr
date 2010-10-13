@@ -135,22 +135,23 @@ type
     function LoadFromStream(Stream: TStringStream): boolean;
     function SaveToFile(PathArquivo: string = ''; SalvaTXT : Boolean = False): boolean;
 
-    property ACBrNFe : TComponent read FACBrNFe ;
+    property ACBrNFe : TComponent read FACBrNFe;
   end;
 
   TSendMailThread = class(TThread)
   private
     FException : Exception;
-    FOwner: TNotasFiscais;
+    FOwner: NotaFiscal;
     procedure DoHandleException;
   public
+    OcorreramErros: Boolean;
     Terminado: Boolean;
     smtp : TSMTPSend;
     sFrom : String;
     sTo : String;
     sCC : TStrings;
     slmsg_Lines : TStrings;
-    constructor Create(AOwner: TNotasFiscais);
+    constructor Create(AOwner: NotaFiscal);
     destructor Destroy; override;
   protected
     procedure Execute; override;
@@ -301,7 +302,7 @@ begin
  if not UsaIndy then
   begin
     m:=TMimemess.create;
-    ThreadSMTP := TSendMailThread.Create(TNotasFiscais(Collection));  // Não Libera, pois usa FreeOnTerminate := True ;
+    ThreadSMTP := TSendMailThread.Create(Self);  // Não Libera, pois usa FreeOnTerminate := True ;
     StreamNFe  := TStringStream.Create('');
     try
        p := m.AddPartMultipart('mixed', nil);
@@ -366,7 +367,7 @@ begin
            until ThreadSMTP.Terminado;
          end;
        finally
-        TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).SetStatus( stIdle );
+         TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).SetStatus( stIdle );
        end;
 
     finally
@@ -712,20 +713,24 @@ end;
 
 procedure TSendMailThread.DoHandleException;
 begin
-  TACBrNFe(FOwner.ACBrNFe).SetStatus( stIdle );
-  Sysutils.ShowException(FException, nil);
+  TACBrNFe(TNotasFiscais(FOwner.GetOwner).ACBrNFe).SetStatus( stIdle );
+
+  FOwner.Alertas := FException.Message;
+
+  if FException is Exception then
+    Application.ShowException(FException)
+  else
+    SysUtils.ShowException(FException, nil);
 end;
 
-constructor TSendMailThread.Create(AOwner: TNotasFiscais);
+constructor TSendMailThread.Create(AOwner: NotaFiscal);
 begin
-  FOwner := AOwner;
-
+  FOwner      := AOwner;
   smtp        := TSMTPSend.Create;
   slmsg_Lines := TStringList.Create;
   sCC         := TStringList.Create;
-
-  sFrom := '';
-  sTo   := '';
+  sFrom       := '';
+  sTo         := '';
 
   FreeOnTerminate := True;
 
@@ -734,16 +739,16 @@ end;
 
 destructor TSendMailThread.Destroy;
 begin
-  slmsg_Lines.Free ;
-  sCC.Free ;
-  smtp.Free ;
+  slmsg_Lines.Free;
+  sCC.Free;
+  smtp.Free;
 
   inherited;
 end;
 
 procedure TSendMailThread.Execute;
 var
-   i: integer;
+   I: integer;
 begin
   inherited;
 
@@ -774,13 +779,13 @@ begin
       if not smtp.Logout() then
         raise Exception.Create('SMTP ERROR: Logout:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
     finally
+      try
+        smtp.Sock.CloseSocket;
+      except
+      end ;
       Terminado := True;
     end;
   except
-    try
-      smtp.Sock.CloseSocket;
-    except
-    end ;
     HandleException;
   end;
 end;

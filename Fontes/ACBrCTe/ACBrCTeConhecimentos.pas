@@ -42,7 +42,9 @@
 |*  - Inicio do componente ACBrCTe baseado no componente ACBrCTePCN
 ******************************************************************************}
 {$I ACBr.inc}
-// {$DEFINE INDY100}  // DESCOMENTAR SE UTILIZA INDY VERSÃO 10 
+{$IFDEF DELPHI8_UP}
+   {$DEFINE INDY100}  // COMENTAR SE UTILIZA INDY < VERSÃO 10 em Delphi 8 ou Superior
+{$ENDIF}   
 
 unit ACBrCTeConhecimentos;
 
@@ -55,7 +57,7 @@ uses
      ACBrCTeDMLaz,
   {$ELSE}
     {$IFDEF INDY100}
-      IdAttachmentFile,
+      IdAttachmentFile, //Para quem tiver erro nesta linha, comente a linha {$DEFINE INDY100} no começo desta unit
     {$ENDIF}
      ACBrCTeDACTEClass,
     IdMessage, IdSMTP, IdBaseComponent, IdComponent,
@@ -100,7 +102,6 @@ type
                                 NomeRemetente: String = '';
                                 UsaIndy : Boolean = False);
     property CTe: TCTe  read FCTe write FCTe;
-//    property XML: AnsiString  read FXML write FXML;
     property XML: AnsiString  read GetCTeXML write FXML;  // Alterada por Italo em 30/09/2010
     property Confirmada: Boolean  read FConfirmada write FConfirmada;
     property Msg: AnsiString  read FMsg write FMsg;
@@ -139,15 +140,17 @@ type
   TSendMailThread = class(TThread)
   private
     FException : Exception;
+    FOwner: Conhecimento;
     procedure DoHandleException;
   public
+    OcorreramErros: Boolean;
     Terminado: Boolean;
     smtp : TSMTPSend;
     sFrom : String;
     sTo : String;
     sCC : TStrings;
     slmsg_Lines : TStrings;
-    constructor Create;
+    constructor Create(AOwner: Conhecimento);
     destructor Destroy ; override ;
   protected
     procedure Execute; override;
@@ -280,7 +283,7 @@ begin
  if not UsaIndy then
   begin
     m:=TMimemess.create;
-    ThreadSMTP := TSendMailThread.Create ;  // Não Libera, pois usa FreeOnTerminate := True ;
+    ThreadSMTP := TSendMailThread.Create(Self);  // Não Libera, pois usa FreeOnTerminate := True ;
     StreamCTe  := TStringStream.Create('');
     try
        p := m.AddPartMultipart('mixed', nil);
@@ -429,13 +432,13 @@ begin
         end;
 
         try
+          TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).SetStatus( stCTeEmail );
           try
              IdSMTP.Connect;
           except
              IdSMTP.Connect;
           end;
 
-          TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).SetStatus( stCTeEmail );
           IdSMTP.Send(IdMessage);
         finally
           TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).SetStatus( stCTeIdle );
@@ -693,17 +696,24 @@ end;
 
 procedure TSendMailThread.DoHandleException;
 begin
-  Sysutils.ShowException(FException, nil );
+  TACBrCTe(TConhecimentos(FOwner.GetOwner).ACBrCTe).SetStatus( stCTeIdle );
+
+  FOwner.Alertas := FException.Message;
+
+  if FException is Exception then
+    Application.ShowException(FException)
+  else
+    SysUtils.ShowException(FException, nil);
 end;
 
-constructor TSendMailThread.Create ;
+constructor TSendMailThread.Create(AOwner: Conhecimento);
 begin
+  FOwner      := AOwner;
   smtp        := TSMTPSend.Create;
   slmsg_Lines := TStringList.Create;
   sCC         := TStringList.Create;
-
-  sFrom := '';
-  sTo   := '';
+  sFrom       := '';
+  sTo         := '';
 
   FreeOnTerminate := True;
 
@@ -712,9 +722,9 @@ end;
 
 destructor TSendMailThread.Destroy;
 begin
-  slmsg_Lines.Free ;
-  sCC.Free ;
-  smtp.Free ;
+  slmsg_Lines.Free;
+  sCC.Free;
+  smtp.Free;
 
   inherited;
 end;
@@ -752,14 +762,13 @@ begin
       if not smtp.Logout() then
         raise Exception.Create('SMTP ERROR: Logout:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
     finally
+      try
+        smtp.Sock.CloseSocket;
+      except
+      end ;
       Terminado := True;
     end;
   except
-    try
-      smtp.Sock.CloseSocket ;
-    except
-    end ;
-    Terminado := True; // Alterado por Italo em 21/09/2010
     HandleException;
   end;
 end;

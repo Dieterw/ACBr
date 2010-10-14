@@ -1967,7 +1967,7 @@ begin
   if not SenhaOk then
   begin
     Senha := '';
-    if InputQuery('Configuração', 'Digite a Senha de Configuração', Senha) then
+    if InputQuery('Configuração', 'Digite a Senha de Configuração', True, Senha) then
     begin
       Senha := Trim(Senha);
       HashSenha := StringCrc16(Senha);

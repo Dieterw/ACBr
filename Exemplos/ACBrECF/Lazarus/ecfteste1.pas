@@ -8,7 +8,7 @@ uses
   ACBrECF, ACBrBase, ACBrRFD, ACBrDevice, ACBrConsts, LCLIntf,
   Classes, SysUtils, Forms, Controls, Graphics, LCLType,
   Dialogs, DateUtils, IpHtml, Menus, Buttons, StdCtrls, ExtCtrls, ComCtrls,
-  Spin, strutils;{%h-}
+  Spin, strutils;
 
 type
   TSimpleIpHtml = class(TIpHtml)

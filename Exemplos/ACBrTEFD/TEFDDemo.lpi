@@ -17,6 +17,9 @@
     <VersionInfo>
       <StringTable ProductVersion=""/>
     </VersionInfo>
+    <BuildModes Count="1">
+      <Item1 Name="default" Default="True"/>
+    </BuildModes>
     <PublishOptions>
       <Version Value="2"/>
       <IgnoreBinaries Value="False"/>
@@ -281,7 +284,7 @@
       <Unit27>
         <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFD.pas"/>
         <UnitName Value="ACBrTEFD"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="3"/>
         <WindowIndex Value="0"/>
         <TopLine Value="36"/>
         <CursorPos X="62" Y="49"/>
@@ -291,11 +294,11 @@
       <Unit28>
         <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFDClass.pas"/>
         <UnitName Value="ACBrTEFDClass"/>
-        <EditorIndex Value="4"/>
+        <EditorIndex Value="5"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="2028"/>
-        <CursorPos X="17" Y="2042"/>
-        <UsageCount Value="98"/>
+        <TopLine Value="392"/>
+        <CursorPos X="6" Y="405"/>
+        <UsageCount Value="99"/>
         <Bookmarks Count="2">
           <Item0 X="3" Y="2068" ID="0"/>
           <Item1 X="12" Y="1811" ID="7"/>
@@ -305,12 +308,11 @@
       <Unit29>
         <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFDCliSiTef.pas"/>
         <UnitName Value="ACBrTEFDCliSiTef"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="4"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1112"/>
-        <CursorPos X="42" Y="1135"/>
-        <UsageCount Value="97"/>
+        <CursorPos X="24" Y="1118"/>
+        <UsageCount Value="98"/>
         <Loaded Value="True"/>
       </Unit29>
       <Unit30>
@@ -324,10 +326,10 @@
       <Unit31>
         <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFDVeSPague.pas"/>
         <UnitName Value="ACBrTEFDVeSPague"/>
-        <EditorIndex Value="8"/>
+        <EditorIndex Value="9"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1407"/>
-        <CursorPos X="17" Y="1407"/>
+        <TopLine Value="615"/>
+        <CursorPos X="13" Y="628"/>
         <UsageCount Value="100"/>
         <Bookmarks Count="7">
           <Item0 X="54" Y="1239" ID="3"/>
@@ -384,11 +386,11 @@
       <Unit37>
         <Filename Value="..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
         <UnitName Value="ACBrUtil"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="6"/>
         <WindowIndex Value="0"/>
         <TopLine Value="180"/>
         <CursorPos X="1" Y="196"/>
-        <UsageCount Value="41"/>
+        <UsageCount Value="42"/>
         <Loaded Value="True"/>
       </Unit37>
       <Unit38>
@@ -422,18 +424,21 @@
         <UnitName Value="ACBrECF"/>
         <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1704"/>
-        <CursorPos X="59" Y="1716"/>
-        <UsageCount Value="11"/>
+        <TopLine Value="709"/>
+        <CursorPos X="64" Y="722"/>
+        <UsageCount Value="12"/>
         <Loaded Value="True"/>
       </Unit41>
       <Unit42>
         <Filename Value="..\..\Fontes\ACBrSerial\ACBrECFDaruma.pas"/>
         <UnitName Value="ACBrECFDaruma"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="3763"/>
-        <CursorPos X="17" Y="3787"/>
-        <UsageCount Value="3"/>
+        <TopLine Value="4252"/>
+        <CursorPos X="1" Y="4307"/>
+        <UsageCount Value="11"/>
+        <Loaded Value="True"/>
       </Unit42>
       <Unit43>
         <Filename Value="..\..\Fontes\ACBrSerial\ACBrECFSwedaSTX.pas"/>
@@ -678,11 +683,11 @@
       <Unit73>
         <Filename Value="..\..\Fontes\ACBrSerial\ACBrRFD.pas"/>
         <UnitName Value="ACBrRFD"/>
-        <EditorIndex Value="6"/>
+        <EditorIndex Value="7"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1807"/>
         <CursorPos X="30" Y="1813"/>
-        <UsageCount Value="17"/>
+        <UsageCount Value="18"/>
         <Loaded Value="True"/>
       </Unit73>
       <Unit74>
@@ -720,133 +725,133 @@
       <Unit78>
         <Filename Value="..\..\..\..\..\Lazarus\TOOLS\DJ_Sistema.pas"/>
         <UnitName Value="DJ_Sistema"/>
-        <EditorIndex Value="7"/>
+        <EditorIndex Value="8"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="39" Y="15"/>
-        <UsageCount Value="17"/>
+        <UsageCount Value="18"/>
         <Loaded Value="True"/>
       </Unit78>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="..\..\Fontes\ACBrSerial\ACBrECF.pas"/>
-        <Caret Line="388" Column="60" TopLine="373"/>
+        <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFDVeSPague.pas"/>
+        <Caret Line="1427" Column="34" TopLine="1415"/>
       </Position1>
       <Position2>
-        <Filename Value="..\..\Fontes\ACBrSerial\ACBrECF.pas"/>
-        <Caret Line="1396" Column="28" TopLine="1381"/>
+        <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFDVeSPague.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position2>
       <Position3>
-        <Filename Value="..\..\Fontes\ACBrSerial\ACBrECF.pas"/>
-        <Caret Line="1398" Column="24" TopLine="1381"/>
+        <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFDVeSPague.pas"/>
+        <Caret Line="170" Column="33" TopLine="157"/>
       </Position3>
       <Position4>
-        <Filename Value="..\..\Fontes\ACBrSerial\ACBrECF.pas"/>
-        <Caret Line="1399" Column="25" TopLine="1381"/>
+        <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFDVeSPague.pas"/>
+        <Caret Line="171" Column="32" TopLine="157"/>
       </Position4>
       <Position5>
-        <Filename Value="..\..\Fontes\ACBrSerial\ACBrECF.pas"/>
-        <Caret Line="1689" Column="39" TopLine="1674"/>
+        <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFDVeSPague.pas"/>
+        <Caret Line="861" Column="20" TopLine="842"/>
       </Position5>
       <Position6>
-        <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFD.pas"/>
-        <Caret Line="1527" Column="11" TopLine="1514"/>
+        <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFDVeSPague.pas"/>
+        <Caret Line="1423" Column="37" TopLine="1415"/>
       </Position6>
       <Position7>
-        <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFD.pas"/>
+        <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFDVeSPague.pas"/>
         <Caret Line="1" Column="1" TopLine="1"/>
       </Position7>
       <Position8>
-        <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFD.pas"/>
-        <Caret Line="794" Column="48" TopLine="792"/>
+        <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFDVeSPague.pas"/>
+        <Caret Line="595" Column="43" TopLine="579"/>
       </Position8>
       <Position9>
-        <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFD.pas"/>
-        <Caret Line="803" Column="48" TopLine="803"/>
+        <Filename Value="..\..\Fontes\ACBrSerial\ACBrECF.pas"/>
+        <Caret Line="1716" Column="59" TopLine="1704"/>
       </Position9>
       <Position10>
-        <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFD.pas"/>
-        <Caret Line="805" Column="48" TopLine="803"/>
+        <Filename Value="..\..\Fontes\ACBrSerial\ACBrECF.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position10>
       <Position11>
-        <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFD.pas"/>
-        <Caret Line="807" Column="81" TopLine="803"/>
+        <Filename Value="..\..\Fontes\ACBrSerial\ACBrECF.pas"/>
+        <Caret Line="516" Column="23" TopLine="508"/>
       </Position11>
       <Position12>
-        <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFD.pas"/>
-        <Caret Line="808" Column="81" TopLine="803"/>
+        <Filename Value="..\..\Fontes\ACBrSerial\ACBrECF.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position12>
       <Position13>
-        <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFD.pas"/>
-        <Caret Line="893" Column="51" TopLine="879"/>
+        <Filename Value="..\..\Fontes\ACBrSerial\ACBrECF.pas"/>
+        <Caret Line="138" Column="76" TopLine="125"/>
       </Position13>
       <Position14>
-        <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFD.pas"/>
-        <Caret Line="895" Column="84" TopLine="879"/>
+        <Filename Value="..\..\Fontes\ACBrSerial\ACBrECFDaruma.pas"/>
+        <Caret Line="3787" Column="17" TopLine="3763"/>
       </Position14>
       <Position15>
-        <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFD.pas"/>
-        <Caret Line="900" Column="9" TopLine="900"/>
+        <Filename Value="..\..\Fontes\ACBrSerial\ACBrECFDaruma.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position15>
       <Position16>
-        <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFD.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Filename Value="..\..\Fontes\ACBrSerial\ACBrECFDaruma.pas"/>
+        <Caret Line="4144" Column="75" TopLine="4123"/>
       </Position16>
       <Position17>
-        <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFD.pas"/>
-        <Caret Line="799" Column="48" TopLine="791"/>
+        <Filename Value="..\..\Fontes\ACBrSerial\ACBrECFDaruma.pas"/>
+        <Caret Line="4146" Column="69" TopLine="4123"/>
       </Position17>
       <Position18>
-        <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFDClass.pas"/>
-        <Caret Line="2076" Column="23" TopLine="2073"/>
+        <Filename Value="..\..\Fontes\ACBrSerial\ACBrECFDaruma.pas"/>
+        <Caret Line="4151" Column="43" TopLine="4138"/>
       </Position18>
       <Position19>
-        <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFDClass.pas"/>
-        <Caret Line="2050" Column="44" TopLine="2022"/>
+        <Filename Value="..\..\Fontes\ACBrSerial\ACBrECFDaruma.pas"/>
+        <Caret Line="19" Column="37" TopLine="1"/>
       </Position19>
       <Position20>
-        <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFDClass.pas"/>
-        <Caret Line="2043" Column="36" TopLine="2022"/>
+        <Filename Value="..\..\Fontes\ACBrSerial\ACBrECFDaruma.pas"/>
+        <Caret Line="41" Column="29" TopLine="27"/>
       </Position20>
       <Position21>
-        <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFDClass.pas"/>
-        <Caret Line="2189" Column="31" TopLine="2187"/>
+        <Filename Value="..\..\Fontes\ACBrSerial\ACBrECFDaruma.pas"/>
+        <Caret Line="170" Column="57" TopLine="154"/>
       </Position21>
       <Position22>
-        <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFDClass.pas"/>
-        <Caret Line="2220" Column="52" TopLine="2220"/>
+        <Filename Value="..\..\Fontes\ACBrSerial\ACBrECFDaruma.pas"/>
+        <Caret Line="192" Column="25" TopLine="179"/>
       </Position22>
       <Position23>
-        <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFDClass.pas"/>
-        <Caret Line="2239" Column="52" TopLine="2220"/>
+        <Filename Value="..\..\Fontes\ACBrSerial\ACBrECFDaruma.pas"/>
+        <Caret Line="196" Column="25" TopLine="179"/>
       </Position23>
       <Position24>
-        <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFDVeSPague.pas"/>
-        <Caret Line="1581" Column="1" TopLine="1507"/>
+        <Filename Value="..\..\Fontes\ACBrSerial\ACBrECFDaruma.pas"/>
+        <Caret Line="309" Column="75" TopLine="323"/>
       </Position24>
       <Position25>
-        <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFDClass.pas"/>
-        <Caret Line="2243" Column="86" TopLine="2220"/>
+        <Filename Value="..\..\Fontes\ACBrSerial\ACBrECFDaruma.pas"/>
+        <Caret Line="354" Column="29" TopLine="398"/>
       </Position25>
       <Position26>
-        <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFD.pas"/>
+        <Filename Value="..\..\Fontes\ACBrSerial\ACBrECFDaruma.pas"/>
         <Caret Line="1" Column="1" TopLine="1"/>
       </Position26>
       <Position27>
-        <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFD.pas"/>
-        <Caret Line="810" Column="22" TopLine="805"/>
+        <Filename Value="..\..\Fontes\ACBrSerial\ACBrECFDaruma.pas"/>
+        <Caret Line="174" Column="11" TopLine="170"/>
       </Position27>
       <Position28>
-        <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFD.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Filename Value="..\..\Fontes\ACBrSerial\ACBrECFDaruma.pas"/>
+        <Caret Line="4104" Column="64" TopLine="4083"/>
       </Position28>
       <Position29>
-        <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFDCliSiTef.pas"/>
-        <Caret Line="683" Column="20" TopLine="665"/>
+        <Filename Value="..\..\Fontes\ACBrSerial\ACBrECFDaruma.pas"/>
+        <Caret Line="211" Column="5" TopLine="246"/>
       </Position29>
       <Position30>
-        <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFDCliSiTef.pas"/>
+        <Filename Value="..\..\Fontes\ACBrSerial\ACBrECFDaruma.pas"/>
         <Caret Line="1" Column="1" TopLine="1"/>
       </Position30>
     </JumpHistory>
@@ -858,7 +863,7 @@
       <Filename Value="TEFDDemo"/>
     </Target>
     <SearchPaths>
-      <IncludeFiles Value="$(ProjOutDir)\"/>
+      <IncludeFiles Value="$(ProjOutDir)"/>
       <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Parsing>
@@ -881,6 +886,12 @@
     </Other>
   </CompilerOptions>
   <Debugging>
+    <BreakPoints Count="1">
+      <Item1>
+        <Source Value="..\..\Fontes\ACBrTEFD\ACBrTEFDVeSPague.pas"/>
+        <Line Value="544"/>
+      </Item1>
+    </BreakPoints>
     <Exceptions Count="18" IgnoreAll="True">
       <Item1>
         <Name Value="EAbort"/>

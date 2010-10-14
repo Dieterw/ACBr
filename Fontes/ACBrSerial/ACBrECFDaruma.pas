@@ -4133,22 +4133,22 @@ begin
      raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar:'+sLineBreak+
      'Daruma_Registry_AlterarRegistry( "ECF", "ThreadNoStartup", "0" ) ') );
 
-  Resp := xDaruma_Registry_AlterarRegistry( 'ECF', 'Velocidade', PChar( Velocidade ) );
+  Resp := xDaruma_Registry_AlterarRegistry( 'ECF', 'Velocidade', PAnsiChar( Velocidade ) );
   if Resp <> 1 then
      raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar:'+sLineBreak+
      'Daruma_Registry_AlterarRegistry( "ECF", "Velocidade", "'+Velocidade+'" ) ') );
 
-  Resp := xDaruma_Registry_AlterarRegistry( 'AtoCotepe', 'Path', PChar( Path ) );
+  Resp := xDaruma_Registry_AlterarRegistry( 'AtoCotepe', 'Path', PAnsiChar( Path ) );
   if Resp <> 1 then
      raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar:'+sLineBreak+
      'Daruma_Registry_AlterarRegistry( "AtoCotepe", "Path", "'+Path+'" ) ') );
 
-  Resp := xDaruma_Registry_AlterarRegistry( 'ECF', 'Path', PChar( Path ) );
+  Resp := xDaruma_Registry_AlterarRegistry( 'ECF', 'Path', PAnsiChar( Path ) );
   if Resp <> 1 then
      raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar:'+sLineBreak+
      'Daruma_Registry_AlterarRegistry( "ECF", "Path", "'+Path+'" ) ') );
 
-  Resp := xDaruma_Registry_Porta(PChar( Porta ));
+  Resp := xDaruma_Registry_Porta(PAnsiChar( Porta ));
   if Resp <> 1 then
      raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar:'+sLineBreak+
         'xDaruma_Registry_Porta( "'+Porta+'" ) ') );

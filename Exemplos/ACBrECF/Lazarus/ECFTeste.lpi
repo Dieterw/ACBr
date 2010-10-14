@@ -5,13 +5,14 @@
     <PathDelim Value="\"/>
     <General>
       <Flags>
+        <SaveOnlyProjectUnits Value="True"/>
         <LRSInOutputDirectory Value="False"/>
       </Flags>
-      <SessionStorage Value="InIDEConfig"/>
       <MainUnit Value="0"/>
       <Title Value="ECFTeste"/>
       <ResourceType Value="res"/>
       <UseXPManifest Value="True"/>
+      <ActiveWindowIndexAtStart Value="0"/>
     </General>
     <VersionInfo>
       <UseVersionInfo Value="True"/>
@@ -22,6 +23,9 @@
       <CharSet Value="04B0"/>
       <StringTable ProductVersion=""/>
     </VersionInfo>
+    <BuildModes Count="1">
+      <Item1 Name="default" Default="True"/>
+    </BuildModes>
     <PublishOptions>
       <Version Value="2"/>
       <IgnoreBinaries Value="False"/>
@@ -50,6 +54,10 @@
         <Filename Value="ecfteste.lpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="ECFTeste"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="11" Y="12"/>
+        <UsageCount Value="81"/>
       </Unit0>
       <Unit1>
         <Filename Value="ecfteste1.pas"/>
@@ -57,6 +65,13 @@
         <ComponentName Value="Form1"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ECFTeste1"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="41" Y="11"/>
+        <UsageCount Value="81"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
       </Unit1>
       <Unit2>
         <Filename Value="configuraserial.pas"/>
@@ -64,6 +79,10 @@
         <ComponentName Value="frConfiguraSerial"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ConfiguraSerial"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="19"/>
+        <CursorPos X="21" Y="40"/>
+        <UsageCount Value="81"/>
       </Unit2>
       <Unit3>
         <Filename Value="efetuapagamento.pas"/>
@@ -71,6 +90,10 @@
         <ComponentName Value="frPagamento"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="EfetuaPagamento"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="95"/>
+        <CursorPos X="37" Y="107"/>
+        <UsageCount Value="81"/>
       </Unit3>
       <Unit4>
         <Filename Value="relatorio.pas"/>
@@ -78,6 +101,10 @@
         <ComponentName Value="frRelatorio"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Relatorio"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="21" Y="8"/>
+        <UsageCount Value="81"/>
       </Unit4>
       <Unit5>
         <Filename Value="sobre.pas"/>
@@ -85,6 +112,10 @@
         <ComponentName Value="frmSobre"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Sobre"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="20"/>
+        <CursorPos X="65" Y="45"/>
+        <UsageCount Value="81"/>
       </Unit5>
       <Unit6>
         <Filename Value="vendeitem.pas"/>
@@ -92,6 +123,10 @@
         <ComponentName Value="frVendeItem"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="VendeItem"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="82"/>
+        <CursorPos X="1" Y="108"/>
+        <UsageCount Value="81"/>
       </Unit6>
     </Units>
   </ProjectOptions>
@@ -101,6 +136,9 @@
     <Target>
       <Filename Value="ECFTeste"/>
     </Target>
+    <SearchPaths>
+      <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
+    </SearchPaths>
     <Parsing>
       <SyntaxOptions>
         <UseAnsiStrings Value="False"/>

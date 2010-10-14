@@ -47,7 +47,7 @@
         <PackageName Value="LCL"/>
       </Item4>
     </RequiredPackages>
-    <Units Count="83">
+    <Units Count="84">
       <Unit0>
         <Filename Value="AcbrBoletoDemo.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -87,7 +87,6 @@
       <Unit3>
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
         <UnitName Value="ACBrBoleto"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1557"/>
@@ -739,8 +738,19 @@
         <CursorPos X="1" Y="290"/>
         <UsageCount Value="10"/>
       </Unit82>
+      <Unit83>
+        <Filename Value="..\..\..\..\..\..\Lazarus\Comp\fortes4lazarus\trunk\rlfilters.pas"/>
+        <UnitName Value="RLFilters"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="3"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="210"/>
+        <CursorPos X="51" Y="226"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit83>
     </Units>
-    <JumpHistory Count="16" HistoryIndex="15">
+    <JumpHistory Count="17" HistoryIndex="16">
       <Position1>
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoletoFCFortesFr.pas"/>
         <Caret Line="344" Column="38" TopLine="331"/>
@@ -805,6 +815,10 @@
         <Filename Value="uDemo.pas"/>
         <Caret Line="22" Column="107" TopLine="1"/>
       </Position16>
+      <Position17>
+        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
+        <Caret Line="1571" Column="14" TopLine="1557"/>
+      </Position17>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

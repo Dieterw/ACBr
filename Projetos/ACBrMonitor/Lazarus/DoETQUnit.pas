@@ -94,8 +94,8 @@ begin
            ImprimirTexto(
                          TACBrETQOrientacao(StrToInt(Cmd.Params(0))), { Orientacao }
                          StrToInt(Cmd.Params(1)),                { Fonte }
-                         StrToChr(Trim(Cmd.Params(2)),1),        { MultiplicadorH }
-                         StrToChr(Trim(Cmd.Params(3)),1),        { MultiplicadorV }
+                         StrToInt(Cmd.Params(2)),                { MultiplicadorH }
+                         StrToInt(Cmd.Params(3)),                { MultiplicadorV }
                          StrToInt(Cmd.Params(4)),                { Vertical }
                          StrToInt(Cmd.Params(5)),                { Horizontal }
                          Cmd.Params(6),                          { Texto }

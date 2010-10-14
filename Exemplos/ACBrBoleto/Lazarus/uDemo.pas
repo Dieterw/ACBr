@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
-  StdCtrls, EditBtn, ACBrBoleto, ACBrBoletoFCFortesFr, ExtCtrls, MaskEdit,
+  StdCtrls, EditBtn, ACBrBoleto, ACbrBoletoFCLazReport, ExtCtrls, MaskEdit,
   Buttons, ACBrUtil;
 
 type
@@ -16,7 +16,7 @@ type
 
   TfrmDemo = class ( TForm )
      ACBrBoleto1: TACBrBoleto;
-     ACBrBoletoFCFortes1: TACBrBoletoFCFortes;
+     ACBrBoletoFCLazReport1 : TACBrBoletoFCLazReport ;
      btnIncluiBoleto: TButton;
      btnIncluir10Boletos: TButton;
      btnGerarRemessa: TButton;
@@ -248,13 +248,13 @@ end;
 
 procedure TfrmDemo.Button1Click ( Sender: TObject ) ;
 begin
-   ACBrBoletoFCFortes1.NomeArquivo := './teste.pdf' ;
+   ACBrBoletoFCLazReport1.NomeArquivo := './teste.pdf' ;
    ACBrBoleto1.GerarPDF;
 end;
 
 procedure TfrmDemo.Button2Click ( Sender: TObject ) ;
 begin
-   ACBrBoletoFCFortes1.NomeArquivo := './teste.html' ;
+   ACBrBoletoFCLazReport1.NomeArquivo := './teste.html' ;
    ACBrBoleto1.GerarHTML;
 end;
 

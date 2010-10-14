@@ -713,9 +713,8 @@ TACBrECF = class( TACBrComponent )
           read  fsOnBobinaAdicionaLinhas write fsOnBobinaAdicionaLinhas ;
     {$ENDIF}
      { Instancia do Componente ACBrDevice, será passada para fsECF.create }
-     property Device  : TACBrDevice read fsDevice ;
-     property RFD     : TACBrRFD    read fsRFD write SetRFD ;
-
+     property Device : TACBrDevice read fsDevice ;
+     property RFD    : TACBrRFD    read fsRFD write SetRFD ;
      property ArqLOG : String read GetArqLOG write SetArqLOG ;
 end ;
 

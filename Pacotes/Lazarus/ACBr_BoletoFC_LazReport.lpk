@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<CONFIG>
+  <Package Version="3">
+    <PathDelim Value="\"/>
+    <Name Value="ACBr_BoletoFC_LazReport"/>
+    <Author Value="Juliana Rodrigues"/>
+    <CompilerOptions>
+      <Version Value="9"/>
+      <PathDelim Value="\"/>
+      <SearchPaths>
+        <IncludeFiles Value="..\..\Fontes\ACBrBoleto;..\..\Fontes\ACBrComum"/>
+        <OtherUnitFiles Value="..\..\Fontes\ACBrBoleto;..\..\Fontes\ACBrComum"/>
+        <UnitOutputDirectory Value="..\..\lib\$(TargetCPU)-$(TargetOS)"/>
+        <SrcPath Value="..\..\Fontes\ACBrBoleto;..\..\Fontes\ACBrComum"/>
+      </SearchPaths>
+      <Other>
+        <CompilerPath Value="$(CompPath)"/>
+      </Other>
+    </CompilerOptions>
+    <Version Minor="1"/>
+    <Files Count="1">
+      <Item1>
+        <Filename Value="..\..\Fontes\ACBrBoleto\ACBrBoletoFCLazReport.pas"/>
+        <HasRegisterProc Value="True"/>
+        <UnitName Value="ACBrBoletoFCLazReport"/>
+      </Item1>
+    </Files>
+    <Type Value="RunAndDesignTime"/>
+    <RequiredPkgs Count="6">
+      <Item1>
+        <PackageName Value="Printer4Lazarus"/>
+      </Item1>
+      <Item2>
+        <PackageName Value="pack_powerpdf"/>
+      </Item2>
+      <Item3>
+        <PackageName Value="lazreportpdfexport"/>
+      </Item3>
+      <Item4>
+        <PackageName Value="ACBr_Boleto"/>
+      </Item4>
+      <Item5>
+        <PackageName Value="lazreport"/>
+      </Item5>
+      <Item6>
+        <PackageName Value="FCL"/>
+        <MinVersion Major="1" Valid="True"/>
+      </Item6>
+    </RequiredPkgs>
+    <UsageOptions>
+      <UnitPath Value="$(PkgOutDir)"/>
+    </UsageOptions>
+    <PublishOptions>
+      <Version Value="2"/>
+    </PublishOptions>
+  </Package>
+</CONFIG>

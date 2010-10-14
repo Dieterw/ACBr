@@ -34,12 +34,12 @@ type
     procedure lACBrClick(Sender: TObject);
     procedure lDesenvolvedoresClick(Sender: TObject);
     procedure bAjudaClick(Sender: TObject);
-    procedure FormMouseDown(Sender: TObject; Button: TMouseButton;
-      Shift: TShiftState; X, Y: Integer);
-    procedure FormMouseUp(Sender: TObject; Button: TMouseButton;
-      Shift: TShiftState; X, Y: Integer);
+    procedure FormMouseDown(Sender: TObject; Button: TMouseButton;{%h-}
+      Shift: TShiftState; X, Y: Integer);{%h-}
+    procedure FormMouseUp(Sender: TObject; Button: TMouseButton;{%h-}
+      Shift: TShiftState; X, Y: Integer);{%h-}
     procedure FormKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
+      Shift: TShiftState);{%h-}
   private
     { Private declarations }
     fsFinal : Integer ;

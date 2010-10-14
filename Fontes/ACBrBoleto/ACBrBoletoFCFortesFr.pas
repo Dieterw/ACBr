@@ -45,18 +45,11 @@ interface
 
 uses
   SysUtils, Classes, Graphics, Controls, Forms, Dialogs, RLReport, RLBarcode,
-  RLPDFFilter, RLHTMLFilter, RLRichFilter, RLPrintDialog, RLMetaFile, ACBrBoleto
+  RLPDFFilter, RLHTMLFilter, RLPrintDialog, RLFilters, RLPrinters,
   {$IFDEF FPC}
-    ,LResources, StdCtrls
+    LResources, StdCtrls,
   {$ENDIF}
- {$IFDEF VER150}
-   ,Variants
- {$ELSE}
-  {$IFDEF VER140}
-    ,Variants, RLSaveDialog, RLFilters, RLPDFFilter
-  {$ENDIF}
- {$ENDIF}
-  ;
+  ACBrBoleto ;
 
 const
   CACBrBoletoFCFortes_Versao = '0.0.7a' ;
@@ -200,7 +193,6 @@ type
     RLLabel97: TRLLabel;
     RLLabel99: TRLLabel;
     RLPDFFilter1: TRLPDFFilter;
-    RLPrintDialogSetup1: TRLPrintDialogSetup;
     txtNumeroBanco2: TRLLabel;
     RLLabel67: TRLLabel;
     RLLabel68: TRLLabel;
@@ -367,7 +359,7 @@ procedure Register;
 
 implementation
 
-Uses RLFilters, RLConsts, ACBrUtil,strutils ;
+Uses ACBrUtil, strutils, RLConsts ;
 
 {$ifdef FPC}
   {$R *.lfm}
@@ -399,6 +391,13 @@ var
 begin
   inherited Imprimir;    // Executa verificações padroes
 
+  {$IFDEF FPC}
+   LoadPortugueseStrings;
+  {$ELSE}
+   // Para que serve esse método ?? //
+   SetVersion( CommercialVersion, ReleaseVersion, CommentVersion );
+  {$ENDIF}
+
   frACBrBoletoFortes := TACBrBoletoFCFortesFr.Create(Self);
   try
      with frACBrBoletoFortes do
@@ -410,9 +409,8 @@ begin
            RLLayout:= LayoutBoleto;
         end;
 
-        LoadPortugueseStrings;
-        RLPrintDialogSetup1.Copies := NumCopias ;
-        RLLayout.PrintDialog       := MostrarSetup;
+        RLPrinter.Copies     := NumCopias ;  // Aparentemente isso está errado... :(
+        RLLayout.PrintDialog := MostrarSetup;
 
         if Filtro = fiNenhum then
          begin
@@ -437,12 +435,12 @@ begin
               {$ENDIF}
               RLFiltro.FileName := NomeArquivo ;
 
-                {$IFDEF FPC}
-                  RLFiltro.Pages := RLLayout.Pages ;
-                  RLFiltro.Run;
-                {$ELSE}
-                  RLFiltro.FilterPages( RLLayout.Pages );
-                {$ENDIF}
+              {$IFDEF FPC}
+                RLFiltro.Pages := RLLayout.Pages ;
+                RLFiltro.Run;
+              {$ELSE}
+                RLFiltro.FilterPages( RLLayout.Pages );
+              {$ENDIF}
             end;
          end;
      end;

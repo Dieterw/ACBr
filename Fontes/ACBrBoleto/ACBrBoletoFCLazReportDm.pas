@@ -39,7 +39,7 @@
 ******************************************************************************}
 {$I ACBr.inc}
 
-unit ACBrBoletoFCLazReport;
+unit ACBrBoletoFCLazReportDm;
 
 interface
 

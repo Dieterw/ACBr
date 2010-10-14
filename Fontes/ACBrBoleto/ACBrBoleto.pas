@@ -618,7 +618,8 @@ procedure Register;
 implementation
 
 Uses ACBrUtil, ACBrBancoBradesco, ACBrBancoBrasil, ACBrBancoItau, ACBrBancoSicredi,
-     ACBrBancoMercantil, ACBrCaixaEconomica, Forms, {$IFDEF COMPILER6_UP} StrUtils {$ELSE} ACBrD5{$ENDIF}, Math;
+     ACBrBancoMercantil, ACBrCaixaEconomica, Forms,
+     {$IFDEF COMPILER6_UP} StrUtils {$ELSE} ACBrD5 {$ENDIF}, Math;
 
 {$IFNDEF FPC}
    {$R ACBrBoleto.dcr}
@@ -1620,8 +1621,6 @@ begin
      MostrarSetup   := MostrarSetupAntigo;
    end;
 end;
-
-//{$ifdef FPC}
 
 { TACBrOcorrencia }
 

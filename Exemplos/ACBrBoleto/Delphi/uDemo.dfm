@@ -1,6 +1,6 @@
 object frmDemo: TfrmDemo
-  Left = 113
-  Top = 182
+  Left = 304
+  Top = 184
   Width = 817
   Height = 560
   Caption = 'Demo ACBrBoleto '
@@ -543,7 +543,7 @@ object frmDemo: TfrmDemo
   end
   object Panel1: TPanel
     Left = 0
-    Top = 474
+    Top = 472
     Width = 801
     Height = 50
     Align = alBottom
@@ -627,10 +627,17 @@ object frmDemo: TfrmDemo
     Left = 64
     Top = 231
   end
+  object ACBrBoletoFCQuick1: TACBrBoletoFCQuick
+    DirLogo = '..\..\..\Fontes\ACBrBoleto\Logos\Colorido\'
+    SoftwareHouse = 'Projeto ACBr - http://acbr.sf.net'
+    Left = 112
+    Top = 231
+  end
   object ACBrBoletoFCFortes1: TACBrBoletoFCFortes
     ACBrBoleto = ACBrBoleto1
     DirLogo = '..\..\..\Fontes\ACBrBoleto\Logos\Colorido\'
-    Left = 128
+    SoftwareHouse = 'Projeto ACBr - http://acbr.sf.net'
+    Left = 160
     Top = 231
   end
 end

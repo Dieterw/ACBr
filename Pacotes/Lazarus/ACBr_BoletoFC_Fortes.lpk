@@ -5,19 +5,14 @@
     <Name Value="ACBr_BoletoFC_Fortes"/>
     <Author Value="Projeto RLBoleto"/>
     <CompilerOptions>
-      <Version Value="8"/>
+      <Version Value="9"/>
       <PathDelim Value="\"/>
       <SearchPaths>
-        <IncludeFiles Value="..\..\Fontes\ACBrBoleto\;..\..\Fontes\ACBrComum\"/>
-        <OtherUnitFiles Value="..\..\Fontes\ACBrBoleto\;..\..\Fontes\ACBrComum\"/>
+        <IncludeFiles Value="..\..\Fontes\ACBrBoleto;..\..\Fontes\ACBrComum"/>
+        <OtherUnitFiles Value="..\..\Fontes\ACBrBoleto;..\..\Fontes\ACBrComum"/>
         <UnitOutputDirectory Value="..\..\lib\$(TargetCPU)-$(TargetOS)"/>
-        <SrcPath Value="..\..\Fontes\ACBrBoleto\;..\..\Fontes\ACBrComum\"/>
+        <SrcPath Value="..\..\Fontes\ACBrBoleto;..\..\Fontes\ACBrComum"/>
       </SearchPaths>
-      <Parsing>
-        <SyntaxOptions>
-          <UseAnsiStrings Value="True"/>
-        </SyntaxOptions>
-      </Parsing>
       <Other>
         <CompilerPath Value="$(CompPath)"/>
       </Other>
@@ -25,16 +20,12 @@
     <Description Value="Ficha de Compensação ACBrBoleto, para Fortes Report"/>
     <License Value="LGPL"/>
     <Version Minor="1"/>
-    <Files Count="2">
+    <Files Count="1">
       <Item1>
-        <Filename Value="..\..\Fontes\ACBrBoleto\ACBrBoletoFCFortesFr.lfm"/>
-        <Type Value="LFM"/>
-      </Item1>
-      <Item2>
         <Filename Value="..\..\Fontes\ACBrBoleto\ACBrBoletoFCFortesFr.pas"/>
         <HasRegisterProc Value="True"/>
         <UnitName Value="ACBrBoletoFCFortesFr"/>
-      </Item2>
+      </Item1>
     </Files>
     <Type Value="RunAndDesignTime"/>
     <RequiredPkgs Count="3">
@@ -57,4 +48,4 @@
       <IgnoreBinaries Value="False"/>
     </PublishOptions>
   </Package>
-</CONFIG>
+</CONFIG>

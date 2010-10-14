@@ -1,7 +1,7 @@
 object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
-  Left = 71
+  Left = 405
   Height = 702
-  Top = 0
+  Top = 131
   Width = 937
   VertScrollBar.Position = 538
   Caption = 'ACBRBoletoFCFortesFr'
@@ -11,6 +11,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
   Font.Name = 'MS Sans Serif'
   OnCreate = FormCreate
   LCLVersion = '0.9.29'
+  Visible = True
   object LayoutBoleto: TRLReport
     Left = 16
     Height = 1123
@@ -3837,10 +3838,5 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
     ShowProgress = False
     left = 824
     top = 568
-  end
-  object RLPrintDialogSetup1: TRLPrintDialogSetup
-    Copies = 0
-    left = 823
-    top = 752
   end
 end

@@ -4,8 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ExtCtrls, Mask, ACBrBase, ACBrBoleto, ACBrBoletoFCFortesFr,
-  ACBrUtil;
+  Dialogs, StdCtrls, ExtCtrls, Mask, ACBrBase, ACBrBoleto, ACBrUtil,
+  ACBrBoletoFCQuickFr, ACBrBoletoFCFortesFr;
 
 type
   TfrmDemo = class(TForm)
@@ -85,6 +85,7 @@ type
     Label30: TLabel;
     edtUF: TEdit;
     ACBrBoleto1: TACBrBoleto;
+    ACBrBoletoFCQuick1: TACBrBoletoFCQuick;
     ACBrBoletoFCFortes1: TACBrBoletoFCFortes;
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
@@ -110,13 +111,13 @@ implementation
 
 procedure TfrmDemo.Button1Click(Sender: TObject);
 begin
-   ACBrBoletoFCFortes1.NomeArquivo := ExtractFilePath(Application.ExeName)+'teste.html';
+   ACBrBoleto1.ACBrBoletoFC.NomeArquivo := ExtractFilePath(Application.ExeName)+'teste.html';
    ACBrBoleto1.GerarHTML;
 end;
 
 procedure TfrmDemo.Button2Click(Sender: TObject);
 begin
-   ACBrBoletoFCFortes1.NomeArquivo := ExtractFilePath(Application.ExeName)+'teste.pdf';
+   ACBrBoleto1.ACBrBoletoFC.NomeArquivo := ExtractFilePath(Application.ExeName)+'teste.pdf';
    ACBrBoleto1.GerarPDF;
 end;
 

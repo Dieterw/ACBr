@@ -20,9 +20,9 @@
     <Version Minor="1"/>
     <Files Count="1">
       <Item1>
-        <Filename Value="..\..\Fontes\ACBrBoleto\ACBrBoletoFCLazReport.pas"/>
+        <Filename Value="..\..\Fontes\ACBrBoleto\ACBrBoletoFCLazReportDm.pas"/>
         <HasRegisterProc Value="True"/>
-        <UnitName Value="ACBrBoletoFCLazReport"/>
+        <UnitName Value="ACBrBoletoFCLazReportDm"/>
       </Item1>
     </Files>
     <Type Value="RunAndDesignTime"/>

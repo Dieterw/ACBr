@@ -913,18 +913,24 @@ object frmDemo: TfrmDemo
     NomeArqRemessa = 'cb00001.rem'
     DirArqRemessa = '.\remessa\'
     LayoutRemessa = c240
-    ACBrBoletoFC = ACBrBoletoFCLazReport1
-    left = 176
-    top = 256
+    ACBrBoletoFC = ACBrBoletoFCFortes1
+    left = 200
+    top = 264
   end
   object ACBrBoletoFCLazReport1: TACBrBoletoFCLazReport
+    DirLogo = '..\..\..\Fontes\ACBrBoleto\Logos\Colorido\'
+    SoftwareHouse = 'Projeto ACBr - http://acbr.sf.net'
+    DirRel = '.\'
+    left = 64
+    top = 232
+  end
+  object ACBrBoletoFCFortes1: TACBrBoletoFCFortes
     ACBrBoleto = ACBrBoleto1
     DirLogo = '..\..\..\Fontes\ACBrBoleto\Logos\Colorido\'
     MostrarPreview = False
-    MostrarSetup = False
+    NumCopias = 2
     SoftwareHouse = 'Projeto ACBr - http://acbr.sf.net'
-    DirRel = '.\'
-    left = 113
-    top = 255
+    left = 64
+    top = 280
   end
 end

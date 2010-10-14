@@ -96,6 +96,7 @@ type
     destructor Destroy ; override ;
 
     property BarCode : TAsBarcode read fsBarCode ;
+    property Canvas ;
 
     procedure DrawBarcode(Canvas:TCanvas);
     procedure DrawText(Canvas:TCanvas);

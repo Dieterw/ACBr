@@ -3,7 +3,6 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
   Top = 92
   Width = 970
   Height = 780
-  VertScrollBar.Position = 538
   Caption = 'ACBRBoletoFCFortesFr'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -17,7 +16,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
   TextHeight = 13
   object LayoutBoleto: TRLReport
     Left = 8
-    Top = 48
+    Top = 50
     Width = 794
     Height = 1123
     Margins.LeftMargin = 3.000000000000000000
@@ -561,6 +560,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Width = 529
         Height = 83
         AutoSize = False
+        Behavior = [beSiteExpander]
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -11
@@ -883,6 +883,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Height = 39
         Alignment = taJustify
         AutoSize = False
+        Behavior = [beSiteExpander]
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -9
@@ -1625,6 +1626,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Width = 529
         Height = 82
         AutoSize = False
+        Behavior = [beSiteExpander]
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -11
@@ -1928,8 +1930,8 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
     end
   end
   object BoletoCarne: TRLReport
-    Left = 856
-    Top = 664
+    Left = 816
+    Top = 50
     Width = 794
     Height = 1123
     Font.Charset = DEFAULT_CHARSET
@@ -2762,6 +2764,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Width = 410
         Height = 64
         AutoSize = False
+        Behavior = [beSiteExpander]
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -9
@@ -3133,23 +3136,15 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
   object RLHTMLFilter1: TRLHTMLFilter
     DocumentStyle = dsCSS2
     DisplayName = 'ACBrBoleto - http://acbr.sf.net'
-    Left = 822
-    Top = 624
+    Left = 158
+    Top = 8
   end
   object RLPDFFilter1: TRLPDFFilter
     DocumentInfo.Creator = 
       'FortesReport (Open Source) v3.24(B14)  \251 Copyright '#169' 1999-200' +
       '8 Fortes Inform'#225'tica'
-    ViewerOptions = []
-    FontEncoding = feNoEncoding
     DisplayName = 'ACBrBoleto - http://acbr.sf.net'
-    ShowProgress = False
-    Left = 824
-    Top = 568
-  end
-  object RLPrintDialogSetup1: TRLPrintDialogSetup
-    Copies = 0
-    Left = 823
-    Top = 752
+    Left = 104
+    Top = 8
   end
 end

@@ -7,13 +7,13 @@ unit ACBr_BoletoFC_LazReport ;
 interface
 
 uses
-  ACBrBoletoFCLazReport, LazarusPackageIntf;
+  ACBrBoletoFCLazReportDm, LazarusPackageIntf;
 
 implementation
 
 procedure Register ; 
 begin
-  RegisterUnit('ACBrBoletoFCLazReport', @ACBrBoletoFCLazReport.Register) ; 
+  RegisterUnit('ACBrBoletoFCLazReportDm', @ACBrBoletoFCLazReportDm.Register) ; 
 end ; 
 
 initialization

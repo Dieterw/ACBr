@@ -1069,6 +1069,7 @@ object frmDemo_ACBrCTe: TfrmDemo_ACBrCTe
     MargemSuperior = 0.800000000000000000
     MargemEsquerda = 0.600000000000000000
     MargemDireita = 0.510000000000000000
+    CTeCancelada = False
     Left = 560
     Top = 256
   end

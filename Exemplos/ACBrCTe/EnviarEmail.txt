@@ -20,16 +20,23 @@ veja esta rotina:
           MemoStatus.Lines.Add('Aguarde... Enviando CT-e por e-mail.');
           try
 
-           CTe.Conhecimentos.Items[i].EnviarEmail(HostServidorSMTP,
+
+           CTe.Conhecimentos.Items[i].EnviarEmail(
+                                        HostServidorSMTP,
                                         HostPortaSMTP,
                                         HostUsuario,
                                         HostSenha,
-                                        EmpresaEmail,
-                                        Endereco,
-                                        'CT-e',
+                                        EmpresaEmail, // e-mail do remetente
+                                        Endereco,     // e-mail do destinatário 
+                                        'CT-e',       // Assunto
                                         Mensagem,
-                                        False,  // SSL
-                                        False); // Enviar em PDF
+                                        ConexaoSSL,   // SSL
+                                        False,        // Enviar em PDF
+                                        nil,          // sCC
+                                        nil,          // Anexos
+                                        True,         // Pede Confirmação de Recebimento
+                                        False,        // Aguarda o Envio
+                                        EmpresaNome); // Nome do remetente
 
            Ok:=True;
           except

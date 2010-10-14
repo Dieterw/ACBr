@@ -1,14 +1,9 @@
 procedure TfrmMovEmitirCNT.EnviarLote(Lote: Integer);
 var
  i: integer;
- TestaEnvio: Boolean;
 begin
- // Se False, apenas gera o XML, assina, valida e Imprime o DACTe não protocolado
- // Se True, gera o XML, assina, valida, envia para o SEFAZ e Imprime o DACTe protocolado
- TestaEnvio:=False;
-
  MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
- MemoStatus.Lines.Add(' =>  Enviando lote de Conhecimento(s)');
+ MemoStatus.Lines.Add(' =>  Enviando Lote de Conhecimento(s)');
  MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
  MemoStatus.Lines.Add('XMLs:');
  MemoStatus.Lines.Add(' Gerado(s)');
@@ -22,7 +17,9 @@ begin
  CTe.Conhecimentos.Valida;
  MemoStatus.Lines.Add(' Validado(s)');
 
- if TestaEnvio
+ // Se False, apenas gera o XML, assina, valida e Imprime o DACTe não protocolado
+ // Se True, gera o XML, assina, valida, envia para o SEFAZ e Imprime o DACTe protocolado
+ if DM_CTA.EnviaSefaz
   then begin
    // *************************************************************************
    //
@@ -30,7 +27,7 @@ begin
    //
    // *************************************************************************
    MemoStatus.Lines.Add(' Aguarde Enviando...');
-   // Envia o lote de conhecimentos para o SEFAZ e Imprime o DACTe
+   // Envia o lote de Conhecimentos para o SEFAZ e Imprime o DACTe
    // Lote = variável que contem o numero do lote (numero sequencial)
    CTe.Enviar(Lote);
 
@@ -47,7 +44,7 @@ begin
    MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
    MemoStatus.Lines.Add('  ');
    MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
-   MemoStatus.Lines.Add(' =>  Consultando recibo nº ' + sRecibo);
+   MemoStatus.Lines.Add(' =>  Consultando Recibo nº ' + sRecibo);
    MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
    CTe.WebServices.Retorno.Recibo := sRecibo;
    CTe.WebServices.Retorno.Executar;
@@ -64,6 +61,25 @@ begin
                       + '.' + Copy(CTe.WebServices.Retorno.CteRetorno.ProtCTe.Items[i].chCTe, 32, 3);
 
      MemoStatus.Lines.Add('  ' + sConhecimento + '  ' + sProtocolo + ' ' + sDataHora + '  ' + sStat + ' - ' + sMotivo);
+
+     if CTe.WebServices.Retorno.CTeRetorno.ProtCTe.Items[i].cStat=100
+      then begin
+       DM_CNT.IncAltDel.SQL.Clear;
+       DM_CNT.IncAltDel.SQL.Add('Update Cnt_Conhecimento Set');
+       DM_CNT.IncAltDel.SQL.Add('Enviado = :xEnviado,');
+       DM_CNT.IncAltDel.SQL.Add('Protocolado = :xProtocolado,');
+       DM_CNT.IncAltDel.SQL.Add('Protocolo = :xProtocolo,');
+       DM_CNT.IncAltDel.SQL.Add('Impresso = :xImpresso');
+       DM_CNT.IncAltDel.SQL.Add('Where Serie = :xSerie');
+       DM_CNT.IncAltDel.SQL.Add('and Numero = :xNumero');
+       DM_CNT.IncAltDel.Params[0].AsString:='S';
+       DM_CNT.IncAltDel.Params[1].AsString:='S';
+       DM_CNT.IncAltDel.Params[2].AsString:=sProtocolo;
+       DM_CNT.IncAltDel.Params[3].AsString:='S';
+       DM_CNT.IncAltDel.Params[4].AsInteger:=CTe.Conhecimentos.Items[i].CTe.Ide.serie;
+       DM_CNT.IncAltDel.Params[5].AsInteger:=CTe.Conhecimentos.Items[i].CTe.Ide.nCT;
+       DM_CNT.IncAltDel.ExecSQL;
+      end;
     end;
    MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
   end
@@ -72,6 +88,4 @@ begin
    // Somente imprime o CTe
    CTe.Conhecimentos.Imprimir;
   end;
-
- MessageDlg('Conhecimento(s) Impresso(s)', mtInformation, [mbOk], 0);
 end;

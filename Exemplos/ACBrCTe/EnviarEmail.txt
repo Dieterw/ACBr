@@ -1,55 +1,57 @@
-veja esta rotina:
-
-
-     Mensagem:=TStringList.Create;
      Ok:=False;
-     for i:=0 to numConhec do
-      begin
-       Ok:=False;
-       LerDadosdoCliente;
+     if Endereco<>''
+      then begin
+       Mensagem.Clear;
+       sCC.Clear;
+       Mensagem.Add('CT-e: '+Copy(CTe.Conhecimentos.Items[i].CTe.inFCTe.ID,4,44));
+       sCC.Add(Trim(DM_CTA.EmpresaEmail.AsString));
+       sCC.Add(CopiaPara);
 
-       // Variavel Endereco contem o email do cliente
+       DM_CTA.TabHost.Last;
+       jHost:=DM_CTA.TabHost.RecordCount;
+       iHost:=1;
+       DM_CTA.TabHost.First;
+       Falha:=False;
+       repeat
+        MemoStatus.Lines.Add(' CT-e: '+Copy(CTe.Conhecimentos.Items[i].CTe.inFCTe.ID,4,44));
+        MemoStatus.Lines.Add(' Destinatário: ' + Endereco);
+        MemoStatus.Lines.Add('  Aguarde... Enviando CT-e por e-mail. Host ['+
+           IntToStr(iHost)+']  ');
+        ConexaoSSL := (DM_CTA.TabHostPortaSMTP.AsInteger<>25);
 
-       if Endereco<>''
-        then begin
-         Mensagem.Clear;
-         Mensagem.Add('CT-e: '+Copy(CTe.Conhecimentos.Items[i].CTe.inFCTe.ID,4,44));
+        try
 
-         Falha:=False;
-         repeat
-          MemoStatus.Lines.Add('Aguarde... Enviando CT-e por e-mail.');
-          try
+         CTe.Conhecimentos.Items[i].EnviarEmail(DM_CTA.TabHostServidorSMTP.AsString,
+                                      DM_CTA.TabHostPortaSMTP.AsString,
+                                      DM_CTA.TabHostUsuario.AsString,
+                                      DM_CTA.TabHostSenha.AsString,
+                                      DM_CTA.EmpresaEmail.AsString,
+                                      Endereco,
+                                      'CT-e',
+                                      Mensagem,
+                                      ConexaoSSL,                  // SSL
+                                      EnviaPDF,                    // Enviar em PDF
+                                      sCC,                         // sCC
+                                      nil,                         // Anexos
+                                      PedeConfirmacao,             // Pede Confirmação de Recebimento
+                                      AguardarEnvio,               // Aguarda o Envio
+                                      DM_CTA.EmpresaNome.AsString, // Nome do remetente
+                                      UsaIndy);
+         Ok:=True;
+        except
+         DM_CTA.TabHost.Next;
+         Inc(iHost);
+         if iHost>jHost then Falha:=True;
+        end;
+       until Ok or Falha;
+       if Falha
+        then MessageDlg('e-mail não enviado por motivo de Falha.', mtError, [mbOk], 0);
+      end
+      else MessageDlg('Tomador do Serviço não possui, e-mail Cadastrado.', mtInformation, [mbOk], 0);
 
-
-           CTe.Conhecimentos.Items[i].EnviarEmail(
-                                        HostServidorSMTP,
-                                        HostPortaSMTP,
-                                        HostUsuario,
-                                        HostSenha,
-                                        EmpresaEmail, // e-mail do remetente
-                                        Endereco,     // e-mail do destinatário 
-                                        'CT-e',       // Assunto
-                                        Mensagem,
-                                        ConexaoSSL,   // SSL
-                                        False,        // Enviar em PDF
-                                        nil,          // sCC
-                                        nil,          // Anexos
-                                        True,         // Pede Confirmação de Recebimento
-                                        False,        // Aguarda o Envio
-                                        EmpresaNome); // Nome do remetente
-
-           Ok:=True;
-          except
-           Falha:=True;
-          end;
-         until Ok or Falha;
-         if Falha
-          then MessageDlg('e-mail não enviado por motivo de Falha.', mtError, [mbOk], 0);
-        end
-        else MessageDlg('Tomador do Serviço não possui, e-mail Cadastrado.', mtInformation, [mbOk], 0);
-
-      end;
-     Mensagem.Free;
-     if Ok
-      then MessageDlg('e-mail enviado com Sucesso.', mtInformation, [mbOk], 0);
-    end
+     DM_CNT.Conhec2.Next;
+    end;
+   Mensagem.Free;
+   sCC.Free;
+   if Ok
+    then MessageDlg('e-mail enviado com Sucesso.', mtInformation, [mbOk], 0);

@@ -159,12 +159,14 @@ begin
 
         if APreview
          then begin
+           QRNFe.PrinterSettings.Copies := FNumCopias; // Incluido por Italo em 15/10/2010
            QRNFe.Prepare;
            HrTotalPages := QRNFe.QRPrinter.PageCount; //hrsoft 4/8/2010
            QRNFe.Preview;
          end
          else begin
            AfterPreview := True ;
+           QRNFe.PrinterSettings.Copies := FNumCopias; // Incluido por Italo em 15/10/2010
            QRNFe.Prepare;
            HrTotalPages := QRNFe.QRPrinter.PageCount; //hrsoft 4/8/2010
            QRNFe.Print ;

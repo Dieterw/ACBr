@@ -1,6 +1,6 @@
 object frmDemo: TfrmDemo
-  Left = 304
-  Top = 184
+  Left = 207
+  Top = 178
   Width = 817
   Height = 560
   Caption = 'Demo ACBrBoleto '
@@ -543,7 +543,7 @@ object frmDemo: TfrmDemo
   end
   object Panel1: TPanel
     Left = 0
-    Top = 472
+    Top = 474
     Width = 801
     Height = 50
     Align = alBottom
@@ -623,18 +623,19 @@ object frmDemo: TfrmDemo
     NomeArqRemessa = 'cb00001.rem'
     DirArqRemessa = '.\remessa\'
     LayoutRemessa = c240
-    ACBrBoletoFC = ACBrBoletoFCFortes1
+    ACBrBoletoFC = ACBrBoletoFCQuick1
     Left = 64
     Top = 231
   end
   object ACBrBoletoFCQuick1: TACBrBoletoFCQuick
+    ACBrBoleto = ACBrBoleto1
     DirLogo = '..\..\..\Fontes\ACBrBoleto\Logos\Colorido\'
+    NomeArquivo = 'boleto'
     SoftwareHouse = 'Projeto ACBr - http://acbr.sf.net'
     Left = 112
     Top = 231
   end
   object ACBrBoletoFCFortes1: TACBrBoletoFCFortes
-    ACBrBoleto = ACBrBoleto1
     DirLogo = '..\..\..\Fontes\ACBrBoleto\Logos\Colorido\'
     SoftwareHouse = 'Projeto ACBr - http://acbr.sf.net'
     Left = 160

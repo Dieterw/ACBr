@@ -942,50 +942,50 @@ begin
    with Titulo do
    begin
       if DataProtesto <> 0 then
-         AStringList.Add('Protestar em ' + FormatDateTime('dd/mm/yyyy',DataProtesto));
+         AStringList.Add(ACBrStr('Protestar em ' + FormatDateTime('dd/mm/yyyy',DataProtesto)));
 
       if ValorAbatimento <> 0 then
       begin
          if DataAbatimento <> 0 then
-            AStringList.Add( 'Conceder abatimento de ' +
+            AStringList.Add(ACBrStr('Conceder abatimento de ' +
                              FormatCurr('R$ #,##0.00',ValorAbatimento) +
-                             ' para pagamento ate ' + FormatDateTime('dd/mm/yyyy',DataAbatimento))
+                             ' para pagamento ate ' + FormatDateTime('dd/mm/yyyy',DataAbatimento)))
          else
-            AStringList.Add( 'Conceder abatimento de ' +
+            AStringList.Add(ACBrStr('Conceder abatimento de ' +
                              FormatCurr('R$ #,##0.00',ValorAbatimento) +
-                             ' para pagamento ate ' + FormatDateTime('dd/mm/yyyy',Vencimento));
+                             ' para pagamento ate ' + FormatDateTime('dd/mm/yyyy',Vencimento)));
       end;
 
       if ValorDesconto <> 0 then
       begin
          if DataDesconto <> 0 then
-            AStringList.Add( 'Conceder desconto de '                       +
+            AStringList.Add(ACBrStr('Conceder desconto de '                       +
                              FormatCurr('R$ #,##0.00',ValorDesconto)       +
                              ' por dia de antecipação para pagamento até ' +
-                             FormatDateTime('dd/mm/yyyy',DataDesconto))
+                             FormatDateTime('dd/mm/yyyy',DataDesconto)))
          else
-            AStringList.Add( 'Conceder desconto de '                 +
+            AStringList.Add(ACBrStr('Conceder desconto de '                 +
                              FormatCurr('R$ #,##0.00',ValorDesconto) +
-                             ' por dia de antecipaçao');
+                             ' por dia de antecipaçao'));
       end;
 
       if ValorMoraJuros <> 0 then
       begin
          if DataMoraJuros <> 0 then
-            AStringList.Add( 'Cobrar juros de '                               +
+            AStringList.Add(ACBrStr('Cobrar juros de '                               +
                              FormatCurr('R$ #,##0.00',ValorMoraJuros)         +
                              ' por dia de atraso para pagamento a partir de ' +
-                             FormatDateTime('dd/mm/yyyy',DataMoraJuros))
+                             FormatDateTime('dd/mm/yyyy',DataMoraJuros)))
          else
-            AStringList.Add( 'Cobrar juros de '                       +
+            AStringList.Add(ACBrStr('Cobrar juros de '                       +
                              FormatCurr('R$ #,##0.00',ValorMoraJuros) +
-                             ' por dia de atraso');
+                             ' por dia de atraso'));
       end;
 
       if PercentualMulta <> 0 then
-         AStringList.Add('Cobrar Multa de ' +
+         AStringList.Add(ACBrStr('Cobrar Multa de ' +
                          FormatCurr('R$ #,##0.00',ValorDocumento*( 1+ PercentualMulta/100)-ValorDocumento) +
-                         ' após o vencimento.');
+                         ' após o vencimento.'));
    end;
 end;
 
@@ -1495,11 +1495,16 @@ begin
 end;
 
 procedure TACBrBoletoFCClass.CarregaLogo(const PictureLogo : TPicture; const NumeroBanco: Integer ) ;
+var
+   teste: String;
+   teste1: String;
 begin
   if Assigned( fOnObterLogo ) then
      fOnObterLogo( PictureLogo, NumeroBanco)
   else
    begin
+     teste1:= ExtractFilePath(Application.ExeName);
+     teste:= ArquivoLogo;
      if FileExists( ArquivoLogo ) then
         PictureLogo.LoadFromFile( ArquivoLogo );
    end ;

@@ -135,7 +135,7 @@ begin
       AConvenio := ACBrBoleto.Cedente.Convenio;
       ANossoNumero := trim(inttostr(strtoint(NossoNumero)));
 
-      if (Carteira = '1') then {carterira registrada}
+      if  (Carteira = '1') or (Carteira = 'RG') then {carterira registrada}
           ANossoNumero := '14' + padR(ANossoNumero, 15, '0')
 
       else {carteira 2 sem registro}

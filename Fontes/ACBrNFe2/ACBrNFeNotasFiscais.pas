@@ -276,7 +276,8 @@ var
  i: Integer;
 begin
  m:=TMimemess.create;
- ThreadSMTP := TSendMailThread.Create ;  // Não Libera, pois usa FreeOnTerminate := True ;
+
+ ThreadSMTP := TSendMailThread.Create(Self) ;  // Não Libera, pois usa FreeOnTerminate := True ;
  StreamNFe  := TStringStream.Create('');
  try
     p := m.AddPartMultipart('mixed', nil);

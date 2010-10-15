@@ -2107,7 +2107,7 @@
           <Size>
             <Left Value="241"/>
             <Top Value="479"/>
-            <Width Value="458"/>
+            <Width Value="573"/>
             <Height Value="20"/>
           </Size>
           <Flags Value="3"/>
@@ -2126,7 +2126,7 @@
           </Data>
           <Font>
             <Name Value="Arial"/>
-            <Size Value="14"/>
+            <Size Value="12"/>
             <Color Value="clBlack"/>
             <Charset Value="0"/>
             <Style Value=""/>

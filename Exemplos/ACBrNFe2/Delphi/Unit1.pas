@@ -799,8 +799,7 @@ begin
                                              , nil // Lista de anexos - TStrings
                                              , False  //Pede confirmação de leitura do email
                                              , False  //Aguarda Envio do Email(não usa thread)
-                                             , 'ACBrNFe2' // Nome do Rementente
-                                             , True ); //Usa Indy - Para enviar email usando a Indy deixe como True e para enviar usando Synapse deixe como False
+                                             , 'ACBrNFe2' ); // Nome do Rementente
     CC.Free;
   end;
 end;

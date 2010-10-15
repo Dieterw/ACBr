@@ -1111,8 +1111,8 @@ object Form1: TForm1
     ImprimirDetalhamentoEspecifico = True
     NFeCancelada = False
     RavFile = 
-      'D:\delphi\ACBr\trunk\Exemplos\ACBrNFe2\Delphi\Report\DANFE_Rave5' +
-      '13.rav'
+      'D:\delphi\ACBr\trunk\Exemplos\ACBrNFe2\Delphi\Report\NotaFiscalE' +
+      'letronica.rav'
     EspessuraBorda = 1
     TamanhoFonte_RazaoSocial = 12
     Left = 758

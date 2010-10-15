@@ -410,7 +410,10 @@ begin
         IdMessage.Body.Text := sMensagem.Text;
 
         {$IFNDEF INDY100}
-           TIdAttachment.create(IdMessage.MessageParts, copy(CTe.infCTe.ID, (length(CTe.infCTe.ID)-44)+1, 44)+'-cte.xml');
+           // Incluido o Path do arquivo. Alterado por Italo em 15/10/2010
+           TIdAttachment.create(IdMessage.MessageParts,
+              PathWithDelim(TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).Configuracoes.Geral.PathSalvar) +
+              copy(CTe.infCTe.ID, (length(CTe.infCTe.ID)-44)+1, 44)+'-cte.xml');
         {$ELSE}
            TIdAttachmentFile.create(IdMessage.MessageParts, copy(CTe.infCTe.ID, (length(CTe.infCTe.ID)-44)+1, 44)+'-cte.xml');
         {$ENDIF}

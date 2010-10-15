@@ -171,15 +171,17 @@ begin
         FExpandirLogoMarca  := AExpandirLogoMarca;
 
         if APreview then
-        begin
-            QRCTe.Prepare;
-            QRCTe.Preview;
-        end else
-           begin
-              AfterPreview := True ;
-              QRCTe.Prepare;
-              QRCTe.Print ;
-           end ;
+         begin
+           QRCTe.PrinterSettings.Copies := FNumCopias; // Incluido por Italo em 15/10/2010
+           QRCTe.Prepare;
+           QRCTe.Preview;
+         end else
+         begin
+           AfterPreview := True ;
+           QRCTe.PrinterSettings.Copies := FNumCopias; // Incluido por Italo em 15/10/2010
+           QRCTe.Prepare;
+           QRCTe.Print ;
+         end ;
      finally
         Free ;
      end ;

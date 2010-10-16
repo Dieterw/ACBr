@@ -66,7 +66,7 @@ echo.
 :Boleto
 %1\tools\lazres.exe ACBrBoleto.lrs TACBrBoleto.bmp
 %1\tools\lazres.exe ACBrBoletoFCFortes.lrs TACBrBoletoFCFortes.bmp
-%1\tools\lazres.exe ACBrBoletoFCLazReport.lrs TACBrBoletoFCLazReport.bmp
+%1\tools\lazres.exe ACBrBoletoFCLazReport.lrs TACBrBoletoFCLazReport.bmp ..\ACBrBoleto\FCLazReport_Padrao.lrf
 move ACBrBoleto.lrs ..\ACBrBoleto
 move ACBrBoletoFCFortes.lrs ..\ACBrBoleto
 move ACBrBoletoFCLazReport.lrs ..\ACBrBoleto

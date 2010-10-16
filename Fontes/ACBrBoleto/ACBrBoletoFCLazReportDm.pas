@@ -57,9 +57,6 @@ type
 
   TACBrBoletoFCLazReport = class(TACBrBoletoFCClass)
   private
-    fDirRel: String;
-    function GetDirRel: String;
-    procedure SetDirRel(const AValue: String);
     { Private declarations }
   public
     { Public declarations }
@@ -67,7 +64,6 @@ type
 
     procedure Imprimir; override;
   published
-    property DirRel: String read GetDirRel  write SetDirRel;
   end;
 
   TdmACbrBoletoFCLazReport = class(TDataModule)
@@ -120,24 +116,13 @@ begin
   fpAbout := 'ACBRBoletoFCLazReport ver: ' + CACBrBoletoFCLazReport_Versao;
 end;
 
-function TACBrBoletoFCLazReport.GetDirRel: String;
-begin
-   if fDirRel = '' then
-     Result := ExtractFilePath(Application.ExeName) + PathDelim
-  else
-     Result := fDirRel;
-end;
-
-procedure TACBrBoletoFCLazReport.SetDirRel ( const AValue: String ) ;
-begin
-   fDirRel := PathWithDelim( AValue );
-end;
-
 procedure TACBrBoletoFCLazReport.Imprimir;
 var
   frACBrBoletoLazReport : TdmACbrBoletoFCLazReport;
   RelBoleto : string;
   PageIni, PageFim, PInd : Integer;
+  Res : TLResource ;
+  MS  : TMemoryStream ;
 begin
   inherited Imprimir;    // Verifica se a Lista de Boletos está vazia
 
@@ -146,15 +131,24 @@ begin
      with frACBrBoletoLazReport do
      begin
         case LayOut of
-           lCarne : RelBoleto := DirRel + 'FCLazReport_Carne.lrf';
+           lCarne : RelBoleto := 'FCLazReport_Carne';
         else
-           RelBoleto := DirRel + 'FCLazReport_Padrao.lrf';
+           RelBoleto := 'FCLazReport_Padrao';
         end;
 
-        if not FileExists( RelBoleto ) then
-           raise Exception.Create('Relatório: '+RelBoleto+' não encontrado');
+        Res := LazarusResources.Find(RelBoleto,'LRF');  // Le de ACBrBoletoFCLazReport.lrs
+        if Res = nil then
+           raise Exception.Create('Resource: '+RelBoleto+' não encontrado');
 
-        frReport1.LoadFromFile( RelBoleto );
+        MS := TMemoryStream.Create ;
+        try
+           MS.Write(Pointer(Res.Value)^,Length(Res.Value)) ;
+           MS.Position := 0;
+
+           frReport1.LoadFromXMLStream( MS );
+        finally
+           MS.Free ;
+        end;
 
         PInd := Printer.PrinterIndex;
         frReport1.ChangePrinter( PInd, 0 );

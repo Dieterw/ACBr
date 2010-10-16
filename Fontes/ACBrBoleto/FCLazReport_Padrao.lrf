@@ -1995,22 +1995,22 @@
           <Typ Value="gtAddIn"/>
           <StreamMode Value="0"/>
           <Size>
-            <Left Value="14"/>
+            <Left Value="30"/>
             <Top Value="806"/>
-            <Width Value="64"/>
-            <Height Value="70"/>
+            <Width Value="96"/>
+            <Height Value="58"/>
           </Size>
           <Flags Value="1"/>
           <Frames>
             <FrameColor Value="clBlack"/>
-            <FrameStyle Value="frsDot"/>
-            <FrameWidth Value="8"/>
+            <FrameStyle Value="frsSolid"/>
+            <FrameWidth Value="1"/>
             <FrameBorders Value=""/>
           </Frames>
           <Data>
             <Memo Value="[Barras]&#xD;&#xA;"/>
           </Data>
-          <BarCode Zoom="1" BarType="bcCode_2_5_interleaved" CheckSum="0" ShowText="0"/>
+          <BarCode Zoom="1.5" BarType="bcCode_2_5_interleaved" CheckSum="0" ShowText="0"/>
         </Object48>
         <Object49>
           <Name Value="Memo45"/>
@@ -4051,8 +4051,8 @@
           <Typ Value="gtPicture"/>
           <StreamMode Value="0"/>
           <Size>
-            <Left Value="9"/>
-            <Top Value="432"/>
+            <Left Value="5"/>
+            <Top Value="420"/>
             <Width Value="15"/>
             <Height Value="15"/>
           </Size>
@@ -4118,9 +4118,9 @@
           <Typ Value="gtLine"/>
           <StreamMode Value="0"/>
           <Size>
-            <Left Value="9"/>
+            <Left Value="13"/>
             <Top Value="427"/>
-            <Width Value="741"/>
+            <Width Value="737"/>
             <Height Value="0"/>
           </Size>
           <Flags Value="1"/>

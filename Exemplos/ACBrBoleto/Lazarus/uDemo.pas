@@ -6,8 +6,8 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
-  StdCtrls, EditBtn, ACBrBoleto, ACBrBoletoFCLazReportDm, ACBrBoletoFCFortesFr,
-  ExtCtrls, MaskEdit, Buttons, ACBrUtil;
+  StdCtrls, EditBtn, ACBrBoleto, ACBrBoletoFCLazReportDm, ExtCtrls, MaskEdit,
+  Buttons, LR_View, ACBrUtil;
 
 type
 
@@ -16,7 +16,6 @@ type
 
   TfrmDemo = class ( TForm )
      ACBrBoleto1: TACBrBoleto;
-     ACBrBoletoFCFortes1 : TACBrBoletoFCFortes ;
      ACBrBoletoFCLazReport1 : TACBrBoletoFCLazReport ;
      btnIncluiBoleto: TButton;
      btnIncluir10Boletos: TButton;

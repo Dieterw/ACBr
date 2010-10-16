@@ -853,7 +853,7 @@ begin
   begin
      Retorno := FazerRequisicao( Transacao, 'ADM' ) ;
 
-     if Retorno = 0 then
+     if Retorno in [0,1] then
         Retorno := ContinuarRequisicao( True ) ;  { True = Imprimir Comprovantes agora }
 
      Result := ( Retorno in [0,1] ) ;

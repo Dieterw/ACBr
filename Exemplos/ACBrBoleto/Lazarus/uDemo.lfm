@@ -1,11 +1,11 @@
 object frmDemo: TfrmDemo
-  Left = 349
+  Left = 357
   Height = 595
-  Top = 105
-  Width = 716
+  Top = 109
+  Width = 813
   Caption = 'Demo ACBrBoleto'
   ClientHeight = 595
-  ClientWidth = 716
+  ClientWidth = 813
   OnCreate = FormCreate
   Position = poScreenCenter
   LCLVersion = '0.9.29'
@@ -183,10 +183,10 @@ object frmDemo: TfrmDemo
     Left = 0
     Height = 50
     Top = 545
-    Width = 716
+    Width = 813
     Align = alBottom
     ClientHeight = 50
-    ClientWidth = 716
+    ClientWidth = 813
     TabOrder = 5
     object btnIncluiBoleto: TButton
       Left = 360
@@ -922,16 +922,7 @@ object frmDemo: TfrmDemo
     DirLogo = '..\..\..\Fontes\ACBrBoleto\Logos\Colorido\'
     NomeArquivo = 'boleto'
     SoftwareHouse = 'Projeto ACBr - http://acbr.sf.net'
-    DirRel = '.\'
-    left = 64
-    top = 232
-  end
-  object ACBrBoletoFCFortes1: TACBrBoletoFCFortes
-    DirLogo = '..\..\..\Fontes\ACBrBoleto\Logos\Colorido\'
-    MostrarPreview = False
-    NumCopias = 2
-    SoftwareHouse = 'Projeto ACBr - http://acbr.sf.net'
-    left = 64
-    top = 280
+    left = 80
+    top = 264
   end
 end

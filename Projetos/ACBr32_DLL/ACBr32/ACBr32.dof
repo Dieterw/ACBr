@@ -1,5 +1,5 @@
 [FileVersion]
-Version=6.0
+Version=7.0
 [Compiler]
 A=8
 B=0
@@ -30,6 +30,55 @@ Z=1
 ShowHints=1
 ShowWarnings=1
 UnitAliases=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
+NamespacePrefix=
+SymbolDeprecated=1
+SymbolLibrary=1
+SymbolPlatform=1
+UnitLibrary=1
+UnitPlatform=1
+UnitDeprecated=1
+HResultCompat=1
+HidingMember=1
+HiddenVirtual=1
+Garbage=1
+BoundsError=1
+ZeroNilCompat=1
+StringConstTruncated=1
+ForLoopVarVarPar=1
+TypedConstVarPar=1
+AsgToTypedConst=1
+CaseLabelRange=1
+ForVariable=1
+ConstructingAbstract=1
+ComparisonFalse=1
+ComparisonTrue=1
+ComparingSignedUnsigned=1
+CombiningSignedUnsigned=1
+UnsupportedConstruct=1
+FileOpen=1
+FileOpenUnitSrc=1
+BadGlobalSymbol=1
+DuplicateConstructorDestructor=1
+InvalidDirective=1
+PackageNoLink=1
+PackageThreadVar=1
+ImplicitImport=1
+HPPEMITIgnored=1
+NoRetVal=1
+UseBeforeDef=1
+ForLoopVarUndef=1
+UnitNameMismatch=1
+NoCFGFileFound=1
+MessageDirective=1
+ImplicitVariants=1
+UnicodeToLocale=1
+LocaleToUnicode=1
+ImagebaseMultiple=1
+SuspiciousTypecast=1
+PrivatePropAccessor=1
+UnsafeType=1
+UnsafeCode=1
+UnsafeCast=1
 [Linker]
 MapFile=0
 OutputObjs=0
@@ -45,7 +94,7 @@ OutputDir=
 UnitOutputDir=bin
 PackageDLLOutputDir=
 PackageDCPOutputDir=
-SearchPath=C:\ACBr\Fontes\ACBrDiversos;C:\ACBr\Fontes\ACBrComum;C:\ACBr\Fontes\ACBrSerial;C:\ACBr\Fontes\synalist
+SearchPath=..\..\..\Fontes\ACBrDiversos;..\..\..\Fontes\ACBrComum;..\..\..\Fontes\ACBrSerial;..\..\..\Fontes\synalist
 Packages=vcl;rtl;dbrtl;adortl;vcldb;vclx;bdertl;vcldbx;ibxpress;dsnap;cds;bdecds;qrpt;teeui;teedb;tee;dss;teeqr;visualclx;visualdbclx;dsnapcrba;dsnapcon;VclSmp;vclshlctrls;ACBrComum;ACBrDiversos;ACBrSerial;synapse
 Conditionals=CONSOLE;
 DebugSourceDirs=
@@ -56,6 +105,10 @@ HostApplication=
 Launcher=
 UseLauncher=0
 DebugCWD=
+[Language]
+ActiveLang=
+ProjectLang=
+RootDir=
 [Version Info]
 IncludeVerInfo=0
 AutoIncBuild=0
@@ -82,7 +135,10 @@ ProductName=
 ProductVersion=1.0.0.0
 Comments=
 [Excluded Packages]
-c:\program files\borland\delphi6\Projects\Bpl\ACBrSerial.bpl=ACBr Automação Comercial Brasil - ACBrSerial (http://acbr.sf.net/)
+c:\program files (x86)\borland\delphi7\Projects\Bpl\ACBr_NFe.bpl=ACBrNFePCN - (http://acbr.sourceforge.net/)
+c:\program files (x86)\borland\delphi7\Projects\Bpl\ACBrNFeDanfeRVCodeBase.bpl=ACBrNFeDanfeRVCodeBase - (http://acbr.sourceforge.net/)
+c:\program files (x86)\borland\delphi7\Projects\Bpl\B305cd70.bpl=TurboPower Abbrevia 3.05 CLX Design-time package - CLX70
+c:\program files (x86)\borland\delphi7\Projects\Bpl\ACBrNFeDanfeQRpkg.bpl=ACBrNFeDanfeQR - (http://acbr.sourceforge.net/)
 [HistoryLists\hlConditionals]
 Count=6
 Item0=CONSOLE;
@@ -95,13 +151,14 @@ Item5=CONSOLE;COMPILER6_UP
 Count=1
 Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
 [HistoryLists\hlSearchPath]
-Count=6
-Item0=C:\ACBr\Fontes\ACBrDiversos;C:\ACBr\Fontes\ACBrComum;C:\ACBr\Fontes\ACBrSerial;C:\ACBr\Fontes\synalist
-Item1=C:\ACBr\Fontes;C:\ACBr\DLLs\Diversos;C:\ACBr\DLLs\CLX;C:\ACBr\DLLs\Capicom;C:\ACBr\DLLs\OpenSSL;C:\ACBr\DLLs\XMLSec;C:\ACBr\Pacotes\Delphi;C:\ACBr\Pacotes;C:\ACBr\Fontes\ACBrDiversos;C:\ACBr\Fontes\ACBrComum;C:\ACBr\Fontes\ACBrSerial;C:\ACBr\Fontes\synalist
-Item2=C:\ACBr\Fontes;C:\ACBr\DLLs\Diversos;C:\ACBr\DLLs\CLX;C:\ACBr\DLLs\Capicom;C:\ACBr\DLLs\OpenSSL;C:\ACBr\DLLs\XMLSec;C:\ACBr\Pacotes\Delphi;C:\ACBr\Pacotes;C:\ACBr\lib\i386-win32;C:\ACBr\Fontes\ACBrComum;C:\ACBr\Fontes\ACBrSerial;C:\ACBr\Fontes\synalist
-Item3=C:\ACBr\Fontes;C:\ACBr\DLLs\Diversos;C:\ACBr\DLLs\CLX;C:\ACBr\DLLs\Capicom;C:\ACBr\DLLs\OpenSSL;C:\ACBr\DLLs\XMLSec;C:\ACBr\Pacotes\Delphi;C:\ACBr\Pacotes;C:\ACBr\lib\i386-win32;C:\ACBr\Fontes\ACBrComum
-Item4=C:\ACBr\Fontes;C:\ACBr\DLLs\Diversos;C:\ACBr\DLLs\CLX;C:\ACBr\DLLs\Capicom;C:\ACBr\DLLs\OpenSSL;C:\ACBr\DLLs\XMLSec;C:\ACBr\lib\i386-win32;C:\ACBr\Pacotes\Delphi;C:\ACBr\Pacotes
-Item5=C:\ACBr;C:\ACBr\DLLs\Diversos;C:\ACBr\DLLs\CLX;C:\ACBr\DLLs\Capicom;C:\ACBr\DLLs\OpenSSL;C:\ACBr\DLLs\XMLSec;C:\ACBr\lib\i386-win32;C:\ACBr\Pacotes\Delphi;C:\ACBr\Pacotes
+Count=7
+Item0=..\..\..\Fontes\ACBrDiversos;..\..\..\Fontes\ACBrComum;..\..\..\Fontes\ACBrSerial;..\..\..\Fontes\synalist
+Item1=C:\ACBr\Fontes\ACBrDiversos;C:\ACBr\Fontes\ACBrComum;C:\ACBr\Fontes\ACBrSerial;C:\ACBr\Fontes\synalist
+Item2=C:\ACBr\Fontes;C:\ACBr\DLLs\Diversos;C:\ACBr\DLLs\CLX;C:\ACBr\DLLs\Capicom;C:\ACBr\DLLs\OpenSSL;C:\ACBr\DLLs\XMLSec;C:\ACBr\Pacotes\Delphi;C:\ACBr\Pacotes;C:\ACBr\Fontes\ACBrDiversos;C:\ACBr\Fontes\ACBrComum;C:\ACBr\Fontes\ACBrSerial;C:\ACBr\Fontes\synalist
+Item3=C:\ACBr\Fontes;C:\ACBr\DLLs\Diversos;C:\ACBr\DLLs\CLX;C:\ACBr\DLLs\Capicom;C:\ACBr\DLLs\OpenSSL;C:\ACBr\DLLs\XMLSec;C:\ACBr\Pacotes\Delphi;C:\ACBr\Pacotes;C:\ACBr\lib\i386-win32;C:\ACBr\Fontes\ACBrComum;C:\ACBr\Fontes\ACBrSerial;C:\ACBr\Fontes\synalist
+Item4=C:\ACBr\Fontes;C:\ACBr\DLLs\Diversos;C:\ACBr\DLLs\CLX;C:\ACBr\DLLs\Capicom;C:\ACBr\DLLs\OpenSSL;C:\ACBr\DLLs\XMLSec;C:\ACBr\Pacotes\Delphi;C:\ACBr\Pacotes;C:\ACBr\lib\i386-win32;C:\ACBr\Fontes\ACBrComum
+Item5=C:\ACBr\Fontes;C:\ACBr\DLLs\Diversos;C:\ACBr\DLLs\CLX;C:\ACBr\DLLs\Capicom;C:\ACBr\DLLs\OpenSSL;C:\ACBr\DLLs\XMLSec;C:\ACBr\lib\i386-win32;C:\ACBr\Pacotes\Delphi;C:\ACBr\Pacotes
+Item6=C:\ACBr;C:\ACBr\DLLs\Diversos;C:\ACBr\DLLs\CLX;C:\ACBr\DLLs\Capicom;C:\ACBr\DLLs\OpenSSL;C:\ACBr\DLLs\XMLSec;C:\ACBr\lib\i386-win32;C:\ACBr\Pacotes\Delphi;C:\ACBr\Pacotes
 [HistoryLists\hlUnitOutputDirectory]
 Count=1
 Item0=bin

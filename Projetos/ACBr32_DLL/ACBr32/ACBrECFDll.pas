@@ -3922,7 +3922,7 @@ ECF_LerTotaisComprovanteNaoFiscal, ECF_ProgramaComprovanteNaoFiscal,
 ECF_ComprovantesNaoFiscais, ECF_LerTotaisComprovante, {ECF_AchaCNFDescricao,}
 
 ECF_TestaPodeAbrirCupom,
-ECF_Sangria, ECF_Suprimento, ECF_CortaPapel,
+ECF_Sangria, ECF_Suprimento,
 ECF_AbreNaoFiscal,
 ECF_RegistraItemNaoFiscal, ECF_SubtotalizaNaoFiscal, ECF_EfetuaPagamentoNaoFiscal,
 ECF_FechaNaoFiscal, ECF_CancelaNaoFiscal,
@@ -3933,10 +3933,6 @@ ECF_ImprimeCheque, ECF_CancelaImpressaoCheque,
 }
 
 ECF_MudaHorarioVerao, ECF_MudaArredondamento,
-
-ECF_AbreRelatorioGerencial,
-ECF_LinhaRelatorioGerencial, ECF_PulaLinhas, ECF_LinhaCupomVinculado, ECF_FechaRelatorio,
-
 
 ECF_CorrigeEstadoErro;
 

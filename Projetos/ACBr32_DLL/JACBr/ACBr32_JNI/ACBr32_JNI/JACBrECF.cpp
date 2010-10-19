@@ -1,10 +1,10 @@
 #include <stdlib.h>
 
-#include "jni.h";
+#include "jni.h"
 #include "JNIHelper.h"
 
 #include "ACBr.h"
-#include "JACBrECF.h";
+#include "JACBrECF.h"
 
 JNIEXPORT void JNICALL Java_jACBr_ACBrECF_create(JNIEnv *env, jobject obj)
 {

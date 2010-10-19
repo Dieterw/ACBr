@@ -10,9 +10,9 @@ int main()
 {
 	int ret, i;
 	FormaPagamentoRec formaPagto;
-	PCHAR buff = malloc(100);
-	PCHAR porta = malloc(20);
-	PCHAR modelo = malloc(20);
+	PCHAR buff = (PCHAR)malloc(100);
+	PCHAR porta = (PCHAR)malloc(20);
+	PCHAR modelo = (PCHAR)malloc(20);
 
 	printf("ACBR32.dll - Teste em C/C++\n\n");
 

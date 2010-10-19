@@ -3144,7 +3144,7 @@ begin
 
   try
      ecfHandle^.ECF.CarregaComprovantesNaoFiscais;
-     Result := ecfHandle^.ECF.Aliquotas.Count;
+     Result := ecfHandle^.ECF.ComprovantesNaoFiscais.Count;
   except
      on exception : Exception do
      begin
@@ -3576,6 +3576,25 @@ begin
   end;
 end;
 
+Function ECF_CorrigeEstadoErro(const ecfHandle: PECFHandle; const ReducaoZ: Boolean) : Integer; {$IFDEF STDCALL} stdcall; {$ELSE} cdecl; {$ENDIF}  export;
+begin
+  if (ecfHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+  try
+     ecfHandle^.ECF.CorrigeEstadoErro(ReducaoZ);
+     Result := 0;
+  except
+     on exception : Exception do
+     begin
+        ecfHandle^.UltimoErro := exception.Message;
+        Result  := -1;
+     end
+  end;
+end;
 
 {
 NÀO IMPLEMENTADO
@@ -3679,26 +3698,6 @@ begin
 
   try
      ecfHandle^.ECF.PreparaTEF;
-     Result := 0 ;
-  except
-     on exception : Exception do
-     begin
-        ecfHandle^.UltimoErro := exception.Message;
-        Result  := -1;
-     end
-  end;
-end;
-
-Function CorrigeEstadoErro(ReducaoZ: Boolean) : Integer ; cdecl; export;
-begin
-  if ECF = nil then
-   begin
-     Result := -2;
-     Exit ;
-   end;
-
-  try
-     ecfHandle^.ECF.CorrigeEstadoErro(ReducaoZ);
      Result := 0 ;
   except
      on exception : Exception do
@@ -3936,12 +3935,15 @@ ECF_ImprimeCheque, ECF_CancelaImpressaoCheque,
 ECF_MudaHorarioVerao, ECF_MudaArredondamento,
 
 ECF_AbreRelatorioGerencial,
-ECF_LinhaRelatorioGerencial, ECF_PulaLinhas, ECF_LinhaCupomVinculado, ECF_FechaRelatorio;
+ECF_LinhaRelatorioGerencial, ECF_PulaLinhas, ECF_LinhaCupomVinculado, ECF_FechaRelatorio,
+
+
+ECF_CorrigeEstadoErro;
 
 {Não implementado}
 
 {
-PreparaTEF, CorrigeEstadoErro;
+PreparaTEF,
 
 exports EnviaComando(cmd: AnsiString; var resp : pchar ) overload;
 exports EnviaComando(cmd: AnsiString; lTimeOut: Integer; var resp : pchar ) overload;

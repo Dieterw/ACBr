@@ -199,9 +199,9 @@ begin
 
         wCstat:=RetornarConteudoEntre(XMLinfProt.text, '<cStat>', '</cStat>');
         if trim(wCstat) = '101' then //esta cancelada
-           XMLinfProt2.Text:=RetornarConteudoEntre(XMLinfProt.text, '<infCanc>', '</infCanc>')
+           XMLinfProt2.Text:=RetornarConteudoEntre(XMLinfProt.text, '<infCanc', '</infCanc>')
         else
-           XMLinfProt2.Text:=RetornarConteudoEntre(XMLinfProt.text, '<infProt>', '</infProt>');
+           XMLinfProt2.Text:=RetornarConteudoEntre(XMLinfProt.text, '<infProt', '</infProt>');
 
         xProtNFe :=
           (**)'<protNFe versao="2.00">' +

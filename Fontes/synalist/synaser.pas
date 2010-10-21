@@ -1938,7 +1938,7 @@ begin
     {$IFDEF DARWIN}
     SerialCheck(fpioctl(FHandle, TCIOflush, TCIOFLUSH));
     {$ELSE}
-    SerialCheck(fpioctl(FHandle, TCFLSH, TCIOFLUSH));
+    SerialCheck(fpioctl(FHandle, TCFLSH, pointer(TCIOFLUSH)));
     {$ENDIF}
   {$ENDIF}
   FBuffer := '';
@@ -2336,4 +2336,4 @@ begin
 end;
 {$ENDIF}
 
-end.
+end.

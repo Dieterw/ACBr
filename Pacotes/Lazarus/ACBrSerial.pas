@@ -7,19 +7,18 @@ unit ACBrSerial;
 interface
 
 uses
-      ACBrCHQ, ACBrTERWilbor, ACBrBAL, ACBrBALClass, ACBrBALFilizola, 
-   ACBrBALToledo, ACBrBALUrano, ACBrCHQBematech, ACBrCHQChronos, ACBrCHQClass, 
-   ACBrCHQImpressoraComum, ACBrCHQImpressoraECF, ACBrCHQPerto, 
-   ACBrCHQSchalter, ACBrCHQSotomaq, ACBrCHQUrano, ACBrDevice, ACBrDIS, 
-   ACBrDISClass, ACBrDISGertecSerial, ACBrDISGertecTeclado, 
-   ACBrDISKeytecTeclado, ACBrECF, ACBrECFBematech, ACBrECFClass, 
-   ACBrECFDaruma, ACBrECFDataRegis, ACBrECFEpson, ACBrECFFiscNET, 
-   ACBrECFICash, ACBrECFMecaf, ACBrECFNaoFiscal, ACBrECFNCR, ACBrECFQuattro, 
-   ACBrECFSchalter, ACBrECFSweda, ACBrECFSwedaSTX, ACBrECFUrano, ACBrECFYanco, 
-   ACBrETQ, ACBrETQClass, ACBrETQPpla, ACBrETQPplb, ACBrGAV, ACBrGAVClass, 
-   ACBrGAVImpressoraComum, ACBrGAVImpressoraECF, ACBrGAVSerialGerbo, 
-   ACBrGAVSerialMenno, ACBrLCB, ACBrRFD, ACBrTER, ACBrTERClass, ACBrSerialReg, 
-   LazarusPackageIntf;
+    ACBrCHQ, ACBrTERWilbor, ACBrBAL, ACBrBALClass, ACBrBALFilizola, 
+  ACBrBALToledo, ACBrBALUrano, ACBrCHQBematech, ACBrCHQChronos, ACBrCHQClass, 
+  ACBrCHQImpressoraComum, ACBrCHQImpressoraECF, ACBrCHQPerto, ACBrCHQSchalter, 
+  ACBrCHQSotomaq, ACBrCHQUrano, ACBrDevice, ACBrDIS, ACBrDISClass, 
+  ACBrDISGertecSerial, ACBrDISGertecTeclado, ACBrDISKeytecTeclado, ACBrECF, 
+  ACBrECFBematech, ACBrECFClass, ACBrECFDaruma, ACBrECFDataRegis, 
+  ACBrECFEpson, ACBrECFFiscNET, ACBrECFICash, ACBrECFMecaf, ACBrECFNaoFiscal, 
+  ACBrECFNCR, ACBrECFQuattro, ACBrECFSchalter, ACBrECFSweda, ACBrECFSwedaSTX, 
+  ACBrECFUrano, ACBrECFYanco, ACBrETQ, ACBrETQClass, ACBrETQPpla, ACBrETQPplb, 
+  ACBrGAV, ACBrGAVClass, ACBrGAVImpressoraComum, ACBrGAVImpressoraECF, 
+  ACBrGAVSerialGerbo, ACBrGAVSerialMenno, ACBrLCB, ACBrRFD, ACBrTER, 
+  ACBrTERClass, ACBrSerialReg, ACBrETQZplII, LazarusPackageIntf;
 
 implementation
 

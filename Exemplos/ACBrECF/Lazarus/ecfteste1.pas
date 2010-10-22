@@ -5,7 +5,7 @@ unit ECFTeste1;
 interface
 
 uses
-  ACBrECF, ACBrBase, ACBrRFD, ACBrDevice, ACBrConsts, LCLIntf,
+  ACBrECF, ACBrECFClass, ACBrBase, ACBrRFD, ACBrDevice, ACBrConsts, LCLIntf,
   Classes, SysUtils, Forms, Controls, Graphics, LCLType,
   Dialogs, DateUtils, IpHtml, Menus, Buttons, StdCtrls, ExtCtrls, ComCtrls,
   Spin, strutils;
@@ -116,6 +116,20 @@ type
     MenuItem11 : TMenuItem ;
     MenuItem12 : TMenuItem ;
     mARQMFDDLLPeriodo : TMenuItem ;
+    MenuItem13 : TMenuItem ;
+    mAcharAliqPorIndice : TMenuItem ;
+    mAcharAliqPorValor : TMenuItem ;
+    MenuItem14 : TMenuItem ;
+    mAcharFPGIndice : TMenuItem ;
+    mAcharFPGDescricao : TMenuItem ;
+    MenuItem17 : TMenuItem ;
+    MenuItem18 : TMenuItem ;
+    mAcharCNFIndice : TMenuItem ;
+    mAchaCNFDescricao : TMenuItem ;
+    MenuItem19 : TMenuItem ;
+    mAcharRGIndice : TMenuItem ;
+    mAcharRGDescricao : TMenuItem ;
+    mLerTroco : TMenuItem ;
     NumSerieMFD : TMenuItem ;
     mLerTotaisRelatoriosGerenciais : TMenuItem ;
     mRelatorioGerenciais : TMenuItem ;
@@ -289,9 +303,18 @@ type
     procedure chExibeMsgChange(Sender : TObject) ;
     procedure chGavetaSinalInvertidoChange(Sender : TObject) ;
     procedure chTentarChange(Sender : TObject) ;
+    procedure mAchaCNFDescricaoClick(Sender : TObject) ;
+    procedure mAcharAliqPorIndiceClick(Sender : TObject) ;
+    procedure mAcharAliqPorValorClick(Sender : TObject) ;
+    procedure mAcharCNFIndiceClick(Sender : TObject) ;
+    procedure mAcharFPGDescricaoClick(Sender : TObject) ;
+    procedure mAcharFPGIndiceClick(Sender : TObject) ;
+    procedure mAcharRGDescricaoClick(Sender : TObject) ;
+    procedure mAcharRGIndiceClick(Sender : TObject) ;
     procedure mARQMFDDLLCooClick(Sender : TObject) ;
     procedure mARQMFDDLLPeriodoClick(Sender : TObject) ;
     procedure mLerTotaisRelatoriosGerenciaisClick(Sender : TObject) ;
+    procedure mLerTrocoClick(Sender : TObject) ;
     procedure mRelatorioGerenciaisClick(Sender : TObject) ;
     procedure mClicheClick(Sender : TObject) ;
     procedure mCortaPapelClick(Sender : TObject) ;
@@ -621,6 +644,212 @@ begin
   ACBrECF1.ReTentar := chTentar.Checked ;
 end;
 
+procedure TForm1.mAchaCNFDescricaoClick(Sender : TObject) ;
+var
+  CNF       : TACBrECFComprovanteNaoFiscal;
+  Descricao : String;
+begin
+  ACBrECF1.LerTotaisComprovanteNaoFiscal ;
+
+  if not InputQuery('Acha CNF por Descrição',
+                    'Entre com o descricao:', Descricao ) then
+    Exit;
+
+  CNF  :=  ACBrECF1.AchaCNFDescricao(Descricao);
+
+  if CNF <> Nil then
+  begin
+    mResp.Lines.Add('Indice   : ' + CNF.Indice);
+    mResp.Lines.Add('CON      : ' + IntToStrZero(CNF.Contador, 4));
+    mResp.Lines.Add('Descrição: ' + CNF.Descricao);
+    mResp.Lines.Add('Valor atual do totalizador R$ ' + FormatFloat('###,##0.00',CNF.Total));
+  end
+  else
+    mResp.Lines.Add('CNF (' + Descricao + ') não encontrado!');
+
+  AtualizaMemos();
+end;
+
+procedure TForm1.mAcharAliqPorIndiceClick(Sender : TObject) ;
+var
+  Aliquota  : TACBrECFAliquota;
+  Indice    : String;
+begin
+  ACBrECF1.LerTotaisAliquota ;
+
+  if not InputQuery('Acha Aliquota por Indice',
+                    'Entre com o Indice:', Indice ) then
+    Exit;
+
+  Aliquota  :=  ACBrECF1.AchaICMSIndice(Indice);
+
+  if Aliquota <> Nil then
+  begin
+    mResp.Lines.Add('Indice  : ' + Aliquota.Indice);
+    mResp.Lines.Add('Aliquota: ' + FormatFloat('###,##0.00',Aliquota.Aliquota));
+    mResp.Lines.Add('Valor atual do totalizador R$ ' + FormatFloat('###,##0.00',Aliquota.Total));
+  end
+  else
+    mResp.Lines.Add('Indice (' + Indice + ') não encontrado!');
+
+  AtualizaMemos();
+end;
+
+procedure TForm1.mAcharAliqPorValorClick(Sender : TObject) ;
+var
+  Aliquota  : TACBrECFAliquota;
+  ValorStr  : String;
+  Valor     : Double;
+begin
+  ACBrECF1.LerTotaisAliquota ;
+
+  if not InputQuery('Acha Aliquota por Valor',
+                    'Entre com o Valor:', ValorStr ) then
+    Exit;
+
+  Valor     := StrToFloatDef(ValorStr, 0);
+  Aliquota  :=  ACBrECF1.AchaICMSAliquota(Valor);
+
+  if Aliquota <> Nil then
+  begin
+    mResp.Lines.Add('Indice  : ' + Aliquota.Indice);
+    mResp.Lines.Add('Aliquota: ' + FormatFloat('###,##0.00',Aliquota.Aliquota));
+    mResp.Lines.Add('Valor atual do totalizador R$ ' + FormatFloat('###,##0.00',Aliquota.Total));
+  end
+  else
+    mResp.Lines.Add('Aliquota (' + FloatToStr(Valor) + ') não encontrada!');
+
+  AtualizaMemos();
+
+end;
+
+procedure TForm1.mAcharCNFIndiceClick(Sender : TObject) ;
+var
+  CNF     : TACBrECFComprovanteNaoFiscal;
+  Indice  : String;
+begin
+  ACBrECF1.LerTotaisComprovanteNaoFiscal ;
+
+  if not InputQuery('Acha CNF por Indice',
+                    'Entre com o Indice:', Indice ) then
+    Exit;
+
+  CNF  :=  ACBrECF1.AchaCNFIndice(Indice);
+
+  if CNF <> Nil then
+  begin
+    mResp.Lines.Add('Indice   : ' + CNF.Indice);
+    mResp.Lines.Add('CON      : ' + IntToStrZero(CNF.Contador, 4));
+    mResp.Lines.Add('Descrição: ' + CNF.Descricao);
+    mResp.Lines.Add('Valor atual do totalizador R$ ' + FormatFloat('###,##0.00',CNF.Total));
+  end
+  else
+    mResp.Lines.Add('Indice (' + Indice + ') não encontrado!');
+
+  AtualizaMemos();
+end;
+
+procedure TForm1.mAcharFPGDescricaoClick(Sender : TObject) ;
+var
+  FormaPagto: TACBrECFFormaPagamento;
+  Descricao : String;
+begin
+  ACBrECF1.LerTotaisFormaPagamento ;
+
+  if not InputQuery('Acha Forma Pagamento por Descrição',
+                    'Entre com a descrição:', Descricao ) then
+    Exit;
+
+  FormaPagto  :=  ACBrECF1.AchaFPGDescricao(Descricao);
+
+  if FormaPagto <> Nil then
+  begin
+    mResp.Lines.Add('Indice   : ' + FormaPagto.Indice);
+    mResp.Lines.Add('Descrição: ' + FormaPagto.Descricao);
+    mResp.Lines.Add('Valor atual do totalizador R$ ' + FormatFloat('###,##0.00',FormaPagto.Total));
+  end
+  else
+    mResp.Lines.Add('Forma de Pagamento (' + Descricao + ') não encontrada!');
+
+  AtualizaMemos();
+
+end;
+
+procedure TForm1.mAcharFPGIndiceClick(Sender : TObject) ;
+var
+  FormaPagto: TACBrECFFormaPagamento;
+  Indice    : String;
+begin
+  ACBrECF1.LerTotaisFormaPagamento ;
+
+  if not InputQuery('Acha Forma Pagamento por Indice',
+                    'Entre com o Indice:', Indice ) then
+    Exit;
+
+  FormaPagto  :=  ACBrECF1.AchaFPGIndice(Indice);
+
+  if FormaPagto <> Nil then
+  begin
+    mResp.Lines.Add('Indice   : ' + FormaPagto.Indice);
+    mResp.Lines.Add('Descrição: ' + FormaPagto.Descricao);
+    mResp.Lines.Add('Valor atual do totalizador R$ ' + FormatFloat('###,##0.00',FormaPagto.Total));
+  end
+  else
+    mResp.Lines.Add('Indice (' + Indice + ') não encontrado!');
+
+  AtualizaMemos();
+end;
+
+procedure TForm1.mAcharRGDescricaoClick(Sender : TObject) ;
+var
+  RG       : TACBrECFRelatorioGerencial;
+  Descricao: String;
+begin
+  ACBrECF1.CarregaRelatoriosGerenciais ;
+
+  if not InputQuery('Acha Relatório Gerencial por Indice',
+                    'Entre com o Indice:', Descricao ) then
+    Exit;
+
+  RG  :=  ACBrECF1.AchaRGDescricao(Descricao);
+
+  if RG <> Nil then
+  begin
+    mResp.Lines.Add('Indice   : ' + RG.Indice);
+    mResp.Lines.Add('Descrição: ' + RG.Descricao);
+    mResp.Lines.Add('CER:     : ' + FormatFloat('0000',RG.Contador));
+  end
+  else
+    mResp.Lines.Add('Relatório Gerencial (' + Descricao + ') não encontrado!');
+
+  AtualizaMemos();
+end;
+
+procedure TForm1.mAcharRGIndiceClick(Sender : TObject) ;
+var
+  RG      : TACBrECFRelatorioGerencial;
+  Indice  : String;
+begin
+  ACBrECF1.CarregaRelatoriosGerenciais ;
+
+  if not InputQuery('Acha Relatório Gerencial por Indice',
+                    'Entre com o Indice:', Indice ) then
+    Exit;
+
+  RG  :=  ACBrECF1.AchaRGIndice(Indice);
+
+  if RG <> Nil then
+  begin
+    mResp.Lines.Add('Indice   : ' + RG.Indice);
+    mResp.Lines.Add('Descrição: ' + RG.Descricao);
+    mResp.Lines.Add('CER:     : ' + FormatFloat('0000',RG.Contador));
+  end
+  else
+    mResp.Lines.Add('Indice (' + Indice + ') não encontrado!');
+
+  AtualizaMemos();
+end;
+
 procedure TForm1.mARQMFDDLLCooClick(Sender : TObject) ;
 Var
   Arquivo: String ;
@@ -704,6 +933,12 @@ begin
            IntToStr(ACBrECF1.RelatoriosGerenciais[A].Contador)+')') ;
   end ;
   mResp.Lines.Add('---------------------------------');
+end;
+
+procedure TForm1.mLerTrocoClick(Sender : TObject) ;
+begin
+  mResp.Lines.Add( 'Total do Troco: '+ FormatFloat('#,###,##0.00', ACBrECF1.TotalTroco) ) ;
+  AtualizaMemos ;
 end;
 
 procedure TForm1.mRelatorioGerenciaisClick(Sender : TObject) ;
@@ -1166,6 +1401,7 @@ end;
 procedure TForm1.Ativcar1Click(Sender: TObject);
 begin
   try
+     Self.Enabled := False;
      ACBrECF1.Porta := cbxPorta.Text;
      
      if cbxModelo.ItemIndex = 0 then
@@ -1187,6 +1423,7 @@ begin
      if PageControl1.ActivePageIndex = 0 then
         PageControl1.ActivePageIndex := 1 ;
   finally
+     Self.Enabled := True;
      cbxModelo.ItemIndex := Integer(ACBrECF1.Modelo) ;
      cbxPorta.Text       := ACBrECF1.Porta ;
   end ;

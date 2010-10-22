@@ -189,7 +189,6 @@ object Form1: TForm1
         Width = 23
         Anchors = [akTop, akRight]
         Caption = '...'
-        Color = clBtnFace
         NumGlyphs = 0
         OnClick = SbArqLogClick
       end
@@ -880,7 +879,6 @@ object Form1: TForm1
           Width = 23
           Anchors = [akTop, akRight]
           Caption = '...'
-          Color = clBtnFace
           Font.Color = clBlack
           Font.Height = 11
           Font.Name = 'Arial'
@@ -1735,6 +1733,17 @@ object Form1: TForm1
           Caption = 'Ler Totais Aliquotas'
           OnClick = LerTotaisAliquotas1Click
         end
+        object MenuItem13: TMenuItem
+          Caption = '-'
+        end
+        object mAcharAliqPorIndice: TMenuItem
+          Caption = 'Achar Aliquota por Indice'
+          OnClick = mAcharAliqPorIndiceClick
+        end
+        object mAcharAliqPorValor: TMenuItem
+          Caption = 'Achar Aliquota por Valor'
+          OnClick = mAcharAliqPorValorClick
+        end
       end
       object FormasdePagamento2: TMenuItem
         Caption = 'Formas de Pagamento'
@@ -1745,6 +1754,24 @@ object Form1: TForm1
         object LerTotaisFormadePagamento1: TMenuItem
           Caption = 'Ler Totais Forma de Pagamento'
           OnClick = LerTotaisFormadePagamento1Click
+        end
+        object MenuItem14: TMenuItem
+          Caption = '-'
+        end
+        object mAcharFPGIndice: TMenuItem
+          Caption = 'Achar Forma de Pagamento por Indice'
+          OnClick = mAcharFPGIndiceClick
+        end
+        object mAcharFPGDescricao: TMenuItem
+          Caption = 'Achar Forma de Pagamento por Descrição'
+          OnClick = mAcharFPGDescricaoClick
+        end
+        object MenuItem17: TMenuItem
+          Caption = '-'
+        end
+        object mLerTroco: TMenuItem
+          Caption = 'LerTroco'
+          OnClick = mLerTrocoClick
         end
       end
       object ComprovantesNaoFiscais1: TMenuItem
@@ -1757,6 +1784,17 @@ object Form1: TForm1
           Caption = 'Ler Totais Comprovante Nao Fiscal'
           OnClick = LerTotaisComprovanetNaoFiscal1Click
         end
+        object MenuItem18: TMenuItem
+          Caption = '-'
+        end
+        object mAcharCNFIndice: TMenuItem
+          Caption = 'Achar CNF por Indice'
+          OnClick = mAcharCNFIndiceClick
+        end
+        object mAchaCNFDescricao: TMenuItem
+          Caption = 'Achar CNF por Descrição'
+          OnClick = mAchaCNFDescricaoClick
+        end
       end
       object mRelatorioGerenciais: TMenuItem
         Caption = 'Relatórios Gerenciais'
@@ -1767,6 +1805,17 @@ object Form1: TForm1
         object mLerTotaisRelatoriosGerenciais: TMenuItem
           Caption = 'Ler Totais Relatorios Gerenciais'
           OnClick = mLerTotaisRelatoriosGerenciaisClick
+        end
+        object MenuItem19: TMenuItem
+          Caption = '-'
+        end
+        object mAcharRGIndice: TMenuItem
+          Caption = 'Achar Relatório Gerêncial por Indice'
+          OnClick = mAcharRGIndiceClick
+        end
+        object mAcharRGDescricao: TMenuItem
+          Caption = 'Achar Relatório Gerêncial por Descrição'
+          OnClick = mAcharRGDescricaoClick
         end
       end
       object CarregaUnidadesdeMedida1: TMenuItem

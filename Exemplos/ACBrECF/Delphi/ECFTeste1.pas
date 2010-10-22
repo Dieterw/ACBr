@@ -623,6 +623,7 @@ end;
 procedure TForm1.Ativar1Click(Sender: TObject);
 begin
   try
+     Self.Enabled := False ;
      ACBrECF1.Porta := cbxPorta.Text ;
      
      if cbxModelo.ItemIndex = 0 then
@@ -644,6 +645,7 @@ begin
      if PageControl1.ActivePageIndex = 0 then
         PageControl1.ActivePageIndex := 1 ;
   finally
+     Self.Enabled := True ;
      cbxModelo.ItemIndex := Integer(ACBrECF1.Modelo) ;
      cbxPorta.Text       := ACBrECF1.Porta ;
   end ;
@@ -2970,6 +2972,7 @@ procedure TForm1.AchaAliquotaporValor1Click(Sender: TObject);
 var
   Aliquota  : TACBrECFAliquota;
   ValorStr  : String;
+  Valor     : Double;
 begin
   ACBrECF1.LerTotaisAliquota ;
 
@@ -2977,7 +2980,8 @@ begin
                     'Entre com o Valor:', ValorStr ) then
     Exit;
 
-  Aliquota  :=  ACBrECF1.AchaICMSAliquota(StrToFloatDef(ValorStr, 0));
+  Valor     := StrToFloatDef(ValorStr, 0);
+  Aliquota  :=  ACBrECF1.AchaICMSAliquota(Valor);
 
   if Aliquota <> Nil then
   begin
@@ -2986,7 +2990,7 @@ begin
     mResp.Lines.Add('Valor atual do totalizador R$ ' + FormatFloat('###,##0.00',Aliquota.Total));
   end
   else
-    mResp.Lines.Add('Aliquota (' + ValorStr + ') não encontrada!');
+    mResp.Lines.Add('Aliquota (' + FloatToStr(Valor) + ') não encontrada!');
 
   AtualizaMemos();
 

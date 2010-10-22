@@ -1316,7 +1316,8 @@ begin
 end;
 
 procedure TfrlDANFeRLRetrato.DadosAdicionais;
-var sInfCompl, sInfAdFisco, sInfInteira, sProtocolo, sSuframa : WideString;
+var sInfCompl, sInfAdFisco, sInfContr, sInfInteira, sProtocolo,
+    sSuframa : WideString;
     sLinhaProvisoria, sLinha: String;
 iTotalCaracteres, iTotalLinhas, iUltimoEspacoLinha, i: Integer;
 begin
@@ -1366,7 +1367,26 @@ begin
   else
     sInfCompl := '';
 
-  sInfInteira := sInfAdFisco + sInfCompl;
+  if FNFe.InfAdic.obsCont.Count > 0 then
+    begin
+      sInfContr := '';
+      for i := 0 to (FNFe.InfAdic.obsCont.Count - 1) do
+        begin
+          if FNFe.InfAdic.obsCont.Items[i].Index =
+                                          (FNFe.InfAdic.obsCont.Count - 1) then
+            sInfContr := sInfContr + FNFe.InfAdic.obsCont.Items[i].xCampo +
+                              ': ' + FNFe.InfAdic.obsCont.Items[i].xTexto
+          else
+            sInfContr := sInfContr + FNFe.InfAdic.obsCont.Items[i].xCampo +
+                            ': ' + FNFe.InfAdic.obsCont.Items[i].xTexto + '; ';
+        end; // i := 0 to (FNFe.InfAdic.obsCont.Count - 1)
+      if (sInfCompl > '') or (sInfAdFisco > '') then
+        sInfContr := sInfContr + '; '
+    end // if FNFe.InfAdic.obsCont.Count > 0
+  else
+    sInfContr := '';
+
+  sInfInteira := sInfAdFisco + sInfContr + sInfCompl;
   InsereLinhas(sInfInteira, iLimiteCaracteresLinha, rlmDadosAdicionaisAuxiliar);
   rlmDadosAdicionaisAuxiliar.Lines.EndUpdate;
 end;

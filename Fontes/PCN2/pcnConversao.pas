@@ -745,7 +745,9 @@ end;
 
 function tpforPagToStrText(const t: TpcteFormaPagamento): string;
 begin
-  result := EnumeradoToStr(t, ['A VISTA','A PRAZO', 'OUTROS'], [fpPago, fpAPagar, fpOutros]);
+  // Alterado por Italo em 24/10/2010
+  // Conforme Manual de Integração Página: 88
+  result := EnumeradoToStr(t, ['PAGO','A PAGAR', 'OUTROS'], [fpPago, fpAPagar, fpOutros]);
 end;
 
 function StrTotpforPag(var ok: boolean; const s: string): TpcteFormaPagamento;

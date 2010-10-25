@@ -129,7 +129,7 @@ end;
 function TLeitor.rExtrai(const nivel: integer; const TagInicio: string; TagFim: string = ''; const item: integer = 1): AnsiString;
 var
   Texto: AnsiString;
-  i: integer;
+  i,j: integer;
 begin
   //NOTA: Extrai um grupo de dentro do nivel informado
   FNivel.strings[0] := FArquivo;
@@ -145,9 +145,14 @@ begin
   if i = 0 then
     i := pos('<' + Trim(TagInicio) + ' ', Texto);
   if i = 0 then
+    i := pos('<' + Trim(TagInicio) + ':', Texto); //correção para webservice do Ceará
+  if i = 0 then
     exit;
   Texto := copy(Texto, i, maxInt);
-  Result := TrimRight(copy(Texto, 1, pos('</' + Trim(TagFim) + '>', Texto) - 1));
+  j:=pos('</' + Trim(TagFim) + '>',Texto);
+  if j=0 then
+   j:=pos('</' + Trim(TagFim) + ':',Texto); //correção para webservice do Ceará
+  Result := TrimRight(copy(Texto, 1, j - 1));
   FNivel.strings[nivel] := Result;
   FGrupo := result;
 end;

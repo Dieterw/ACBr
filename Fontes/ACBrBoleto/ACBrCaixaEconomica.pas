@@ -70,24 +70,24 @@ uses ACBrUtil, StrUtils, Variants;
 constructor TACBrCaixaEconomica.create(AOwner: TACBrBanco);
 begin
    inherited create(AOwner);
-   fpDigito := 0;
+   fpDigito := 9;
    fpNome   := 'Caixa Econômica Federal';
    fpTamanhoMaximoNossoNum := 15;
 end;
 
 function TACBrCaixaEconomica.CalcularDigitoVerificador(const ACBrTitulo: TACBrTitulo ): String;
 var
-  Num, ACarteira, ANossoNumero, Res :string;
+  Num, ACarteira, ANossoNumero, Res :String;
 begin
-   if (ACBrTitulo.Carteira = 'RG')then
-    ACBrTitulo.Carteira := '1'
-   else
-    if (ACBrTitulo.Carteira = 'SR')then
-      ACBrTitulo.Carteira := '2';
-
    Result := '0';
-   ACarteira := trim(inttostr(strtoint(ACBrTitulo.Carteira)));
-   ANossoNumero := trim(inttostr(strtoint(ACBrTitulo.NossoNumero)));
+   if (ACBrTitulo.Carteira = 'RG') then
+      ACarteira := '1'
+   else if (ACBrTitulo.Carteira = 'SR')then
+      ACarteira := '2'
+   else
+      raise Exception.Create( ACBrStr('Carteira Inválida.'+sLineBreak+'Utilize "RG" ou "SR"') ) ;
+
+   ANossoNumero := Trim(IntToStr(StrToInt(ACBrTitulo.NossoNumero)));
    Num := ACarteira + '4' + PadR(ANossoNumero, 15, '0');
 
    Modulo.CalculoPadrao;
@@ -96,7 +96,7 @@ begin
    Modulo.Documento := Num;
    Modulo.Calcular;
 
-   Res:= intTostr(Modulo.ModuloFinal);
+   Res:= IntToStr(Modulo.ModuloFinal);
 
    if Length(Res) > 1 then
     Result := '0'
@@ -135,12 +135,12 @@ begin
       AConvenio := ACBrBoleto.Cedente.Convenio;
       ANossoNumero := trim(inttostr(strtoint(NossoNumero)));
 
-      if  (Carteira = '1') or (Carteira = 'RG') then {carterira registrada}
+      if (ACBrTitulo.Carteira = 'RG') then         {carterira registrada}
           ANossoNumero := '14' + padR(ANossoNumero, 15, '0')
-
-      else {carteira 2 sem registro}
-          ANossoNumero := '24'+padR(ANossoNumero, 15, '0');
-
+      else if (ACBrTitulo.Carteira = 'SR')then     {carteira 2 sem registro}
+          ANossoNumero := '24'+padR(ANossoNumero, 15, '0')
+      else
+         raise Exception.Create( ACBrStr('Carteira Inválida.'+sLineBreak+'Utilize "RG" ou "SR"') ) ;
    end;
 
     Result := ANossoNumero;
@@ -185,20 +185,13 @@ begin
 
     DigitoCodBarras := CalcularDigitoCodigoBarras(CodigoBarras);
     Result:= copy( CodigoBarras, 1, 4) + DigitoCodBarras + copy( CodigoBarras, 5, 44);
-
-  {Aqui estou modificando o campo carteira para impressão }
-  if (ACBrTitulo.Carteira = '1')then
-    ACBrTitulo.Carteira := 'RG'
-  else
-    if (ACBrTitulo.Carteira = '2') then
-      ACBrTitulo.Carteira := 'SR';
 end;
 
 function TACBrCaixaEconomica.MontarCampoCodigoCedente (
    const ACBrTitulo: TACBrTitulo ) : String;
 begin
       Result := ACBrTitulo.ACBrBoleto.Cedente.Agencia + '/'+ ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente+'-'+
-                CalcularDVCedente(ACBrTitulo)
+                CalcularDVCedente(ACBrTitulo);
 end;
 
 function TACBrCaixaEconomica.MontarCampoNossoNumero (const ACBrTitulo: TACBrTitulo ) : String;

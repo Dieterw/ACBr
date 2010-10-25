@@ -1677,7 +1677,7 @@ end;
 
 function TACBrECF.GetDadosReducaoZ: AnsiString;
 Var
-  I,J : Integer ;
+  I    : Integer ;
   Aliq : TACBrECFAliquota ;
   FPG  : TACBrECFFormaPagamento ;
   CNF  : TACBrECFComprovanteNaoFiscal ;
@@ -1935,20 +1935,14 @@ begin
 
   Result := Result + sLineBreak + '[Aliquotas]'+sLineBreak ;
 
-  with fsDadosReducaoZClass do
+  For I := 0 to Aliquotas.Count-1 do
   begin
-     For I := 0 to ICMS.Count-1 do
-        Result := Result + FormatFloat('00',(Aliquotas[I].Sequencia))+    {padL(ICMS[I].Indice,2)}
-                           ICMS[I].Tipo +
-                           IntToStrZero(Round(ICMS[I].Aliquota*100),4) + ' = '+
-                           FloatToStr(ICMS[I].Total) + sLineBreak ;
-     inc(I);
-     For J := 0 to ISSQN.Count-1 do
-        Result := Result + FormatFloat('00',(Aliquotas[I + J].Sequencia))+
-                           ISSQN[J].Tipo +
-                           IntToStrZero(Round(ISSQN[J].Aliquota*100),4) + ' = '+
-                           FloatToStr(ISSQN[J].Total) + sLineBreak ;
-  end;
+     Result := Result +
+               FormatFloat('00', I+1 )+
+               Aliquotas[I].Tipo +
+               IntToStrZero(Round(Aliquotas[I].Aliquota*100),4) + ' = '+
+               FloatToStr(Aliquotas[I].Total) + sLineBreak ;
+  end ;
 
   Result := Result + sLineBreak + '[OutrasICMS]'+sLineBreak ;
   Result := Result + 'TotalSubstituicaoTributaria = ' +

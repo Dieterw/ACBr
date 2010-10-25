@@ -280,6 +280,8 @@ TACBrECFSweda = class( TACBrECFClass )
     Function EnviaComando_ECF( cmd : AnsiString ) : AnsiString ; override ;
 
     Procedure AbreCupom ; override ;
+    Procedure DescontoAcrescimoItemAnterior(ValorDescontoAcrescimo : Double;
+       DescontoAcrescimo : String = 'D'); override ;
     Procedure VendeItem( Codigo, Descricao : String; AliquotaECF : String;
        Qtd : Double ; ValorUnitario : Double; ValorDescontoAcrescimo : Double = 0;
        Unidade : String = ''; TipoDescontoAcrescimo : String = '%';
@@ -1538,6 +1540,16 @@ begin
 
   fsVinculado := 0;
   fsTotalPago := 0; // 0 define estado em estPagamento
+end;
+
+Procedure TACBrECFSweda.DescontoAcrescimoItemAnterior(ValorDescontoAcrescimo :
+   Double; DescontoAcrescimo : String);
+begin
+  if (fsVersaoSweda >= swdD) then
+     EnviaComando('02' + '0000' + IntToStrZero( Round(ValorDescontoAcrescimo * 100) ,12) )
+  else
+     EnviaComando('02' + padL(FormatFloat('00.00',ValorDescontoAcrescimo),10) +
+                  IntToStrZero( Round(ValorDescontoAcrescimo * 100) ,12) ) ;
 end;
 
 Procedure TACBrECFSweda.VendeItem( Codigo, Descricao : String;

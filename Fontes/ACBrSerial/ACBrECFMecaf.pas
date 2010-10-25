@@ -140,6 +140,11 @@ TACBrECFMecaf = class( TACBrECFClass )
     function GetTotalNaoTributado: Double; override ;
     function GetTotalIsencao: Double; override ;
 
+    function GetTotalAcrescimosISSQN: Double; override;
+    function GetTotalCancelamentosISSQN: Double; override;
+    function GetTotalDescontosISSQN: Double; override;
+
+
     function GetCNPJ: String; override ;
     function GetIE: String; override ;
     function GetDataMovimento: TDateTime; override ;
@@ -1395,6 +1400,36 @@ function TACBrECFMecaf.GetTotalIsencao: Double;
  Var RetCmd : AnsiString ;
 begin
   RetCmd := EnviaComando( '34M32' ) ;
+  Result := 0 ;
+  if LeftStr(RetCmd,1) = '+' then
+     Result := RoundTo( StrToFloatDef(copy(RetCmd,6,15),0) / 100, -2 ) ;
+end;
+
+function TACBrECFMecaf.GetTotalAcrescimosISSQN: Double;
+Var RetCmd : AnsiString ;
+begin
+  RetCmd := EnviaComando( '34M87' ) ;
+  Result := 0 ;
+  if LeftStr(RetCmd,1) = '+' then
+     Result := RoundTo( StrToFloatDef(copy(RetCmd,21,15),0) / 100, -2 ) ;
+
+end;
+
+
+function TACBrECFMecaf.GetTotalCancelamentosISSQN: Double;
+Var RetCmd : AnsiString ;
+begin
+  RetCmd := EnviaComando( '34M87' ) ;
+  Result := 0 ;
+  if LeftStr(RetCmd,1) = '+' then
+     Result := RoundTo( StrToFloatDef(copy(RetCmd,36,15),0) / 100, -2 ) ;
+
+end;
+
+function TACBrECFMecaf.GetTotalDescontosISSQN: Double;
+Var RetCmd : AnsiString ;
+begin
+  RetCmd := EnviaComando( '34M87' ) ;
   Result := 0 ;
   if LeftStr(RetCmd,1) = '+' then
      Result := RoundTo( StrToFloatDef(copy(RetCmd,6,15),0) / 100, -2 ) ;

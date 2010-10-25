@@ -532,22 +532,12 @@ end;
 
 {-----------------------------------------------------------------------------}
 Procedure TForm1.TrataErros(Sender: TObject; E: Exception);
- Var Erro : String ;
-     Linhas : TStringList ;
 begin
-  Erro := E.Message ;
-  Erro := Converte( TiraAcentos( Erro ) );
-  Linhas :=  TStringList.Create;
-  try
-     Linhas.Text := Erro ;
-     mResp.Lines.AddStrings( Linhas );
-  finally
-     Linhas.Free;
-  end ;
+  mResp.Lines.Add( E.Message );
 
   StatusBar1.Panels[0].Text := 'Exception' ;
   AtualizaMemos( False ) ;
-  StatusBar1.Panels[1].Text := Erro ;
+  StatusBar1.Panels[1].Text := E.Message ;
 //  PageControl1.ActivePageIndex := 1 ;
 //  MessageDlg( E.Message,mtError,[mbOk],0) ;
 end ;

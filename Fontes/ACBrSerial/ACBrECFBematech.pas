@@ -134,6 +134,226 @@ const ErrosST2 : array[0..7] of string =
        'Memória fiscal lotada',
        'Tipo de parâmetro de CMD inválido') ;
 
+  ErrosST3: array [0 .. 217] of string = (
+    { 0 } 'Comando ok',
+    { 1 } 'Comando inválido',
+    { 2 } 'Erro desconhecido',
+    { 3 } 'Número de parâmetro inválido',
+    { 4 } 'Tipo de parâmetro inválido',
+    { 5 } 'Todas alíquotas já programadas',
+    { 6 } 'Totalizador não fiscal já programado',
+    { 7 } 'Cupom fiscal aberto',
+    { 8 } 'Cupom fiscal fechado',
+    { 9 } 'ECF ocupado',
+    { 10 } 'Impressora em erro',
+    { 11 } 'Impressora sem papel',
+    { 12 } 'Impressora com cabeça levantada',
+    { 13 } 'Impressora off line',
+    { 14 } 'Alíquota não programada',
+    { 15 } 'Terminador de string faltando',
+    { 16 } 'Acréscimo ou desconto maior que o total do cupom fiscal',
+    { 17 } 'Cupom fiscal sem item vendido',
+    { 18 } 'Comando não efetivado',
+    { 19 } 'Sem espaço para novas formas de pagamento',
+    { 20 } 'Forma de pagamento não programada',
+    { 21 } 'Índice maior que número de forma de pagamento',
+    { 22 } 'Formas de pagamento encerradas',
+    { 23 } 'Cupom não totalizado',
+    { 24 } 'Comando maior que 7f',
+    { 25 } 'Cupom fiscal aberto e sem item',
+    { 26 } 'Cancelamento não imediatamente após',
+    { 27 } 'Cancelamento já efetuado',
+    { 28 } 'Comprovante de crédito ou débito não permitido ou já emitido',
+    { 29 } 'Meio de pagamento não permite tef',
+    { 30 } 'Sem comprovante não fiscal aberto',
+    { 31 } 'Comprovante de crédito ou débito já aberto',
+    { 32 } 'Reimpressão não permitida',
+    { 33 } 'Comprovante não fiscal já aberto',
+    { 34 } 'Totalizador não fiscal não programado',
+    { 35 } 'Cupom não fiscal sem item vendido',
+    { 36 } 'Acréscimo e desconto maior que total cnf',
+    { 37 } 'Meio de pagamento não indicado',
+    { 38 } 'Meio de pagamento diferente do total de recebimento',
+    { 39 } 'Não permitido mais de uma sangria ou suprimento',
+    { 40 } 'Relatório já programado',
+    { 41 } 'Relatório gerencial não programado',
+    { 42 } 'Relatório gerencial não permitido',
+    { 43 } 'Mfd não inicializada',
+    { 44 } 'Mfd ausente',
+    { 45 } 'Mfd sem número de série',
+    { 46 } 'Mfd já inicializada',
+    { 47 } 'Mfd lotada',
+    { 48 } 'Cupom não fiscal aberto',
+    { 49 } 'Memória fiscal desconectada',
+    { 50 } 'Memória fiscal sem número de série da mfd',
+    { 51 } 'Memória fiscal lotada',
+    { 52 } 'Data inicial inválida',
+    { 53 } 'Data final inválida',
+    { 54 } 'Contador de redução z inicial inválido',
+    { 55 } 'Contador de redução z final inválido',
+    { 56 } 'Erro de alocação',
+    { 57 } 'Dados do RTC incorretos',
+    { 58 } 'Data anterior ao último documento emitido',
+    { 59 } 'Fora de intervenção técnica',
+    { 60 } 'Em intervenção técnica',
+    { 61 } 'Erro na memória de trabalho',
+    { 62 } 'Já houve movimento no dia',
+    { 63 } 'Bloqueio por RZ',
+    { 64 } 'Forma de pagamento aberta',
+    { 65 } 'Aguardando primeiro proprietário',
+    { 66 } 'Aguardando RZ',
+    { 67 } 'Ecf ou loja igual a zero',
+    { 68 } 'Cupom adicional não permitido',
+    { 69 } 'Desconto maior que total vendido em ICMS',
+    { 70 } 'Recebimento não fiscal nulo não permitido',
+    { 71 } 'Acréscimo ou desconto maior que total não fiscal',
+    { 72 } 'Memória fiscal lotada para novo cartucho',
+    { 73 } 'Erro de gravação na MF',
+    { 74 } 'Erro de gravação na MFD',
+    { 75 } 'Dados do RTC anteriores ao último documento armazenado',
+    { 76 } 'Memória fiscal sem espaço para gravar leituras da MFD',
+    { 77 } 'Memória fiscal sem espaço para gravar versão do SB',
+    { 78 } 'Descrição igual a default não permitido',
+    { 79 } 'Extrapolado número de repetições permitidas',
+    { 80 } 'Segunda via do comprovante de crédito ou débito não permitido',
+    { 81 } 'Parcelamento fora da sequência',
+    { 82 } 'Comprovante de crédito ou débito aberto',
+    { 83 } 'Texto com sequência de ESC inválida',
+    { 84 } 'Texto com sequência de ESC incompleta',
+    { 85 } 'Venda com valor nulo',
+    { 86 } 'Estorno de valor nulo',
+    { 87 } 'Forma de pagamento diferente do total da sangria',
+    { 88 } 'Redução não permitida em intervenção técnica',
+    { 89 } 'Aguardando RZ para entrada em intervenção técnica',
+    { 90 } 'Forma de pagamento com valor nulo não permitido',
+    { 91 } 'Acréscimo e desconto maior que valor do item',
+    { 92 } 'Autenticação não permitida',
+    { 93 } 'Timeout na validação',
+    { 94 } 'Comando não executado em impressora bilhete de passagem',
+    { 95 } 'Comando não executado em impressora de Cupom Fiscal',
+    { 96 } 'Cupom Não Fiscal fechado',
+    { 97 } 'Parâmetro não ASCII em campo ASCII',
+    { 98 } 'Parâmetro não ASCII num em campo ASCII num',
+    { 99 } 'Tipo de transporte inválido',
+    { 100 } 'Data e hora inválida',
+    { 101 } 'Sem relatório gerencial',
+    { 102 } 'Número do totalizador não fiscal inválido',
+    { 103 } 'Parâmetro de acréscimo ou desconto inválido',
+    { 104 } 'Acréscimo ou desconto em sangria ou suprimento não permitido',
+    { 105 } 'Número do relatório gerencial inválido',
+    { 106 } 'Forma de pagamento fonte não programada',
+    { 107 } 'Forma de pagamento destino não programada',
+    { 108 } 'Estorno maior que forma pagamento',
+    { 109 } 'Caracter numérico na codificação GT não permitido',
+    { 110 } 'Erro na inicialização da MF',
+    { 111 } 'Nome do totalizador em branco não permitido',
+    { 112 } 'Data e hora anteriores ao último doc armazenado',
+    { 113 } 'Parâmetro de acréscimo ou desconto inválido',
+    { 114 } 'Item anterior aos trezentos últimos',
+    { 115 } 'Item não existe ou já cancelado',
+    { 116 } 'Código com espaços não permitido',
+    { 117 } 'Descrição sem caracter alfabético não permitido',
+    { 118 } 'Acréscimo maior que valor do item',
+    { 119 } 'Desconto maior que valor do item',
+    { 120 } 'Desconto em iss não permitido',
+    { 121 } 'Acréscimo em item já efetuado',
+    { 122 } 'Desconto em item já efetuado',
+    { 123 } 'Erro na Memória Fiscal chamar credenciado',
+    { 124 } 'Aguardando gravação na Memória Fiscal',
+    { 125 } 'Caracter repetido na codificação do GT',
+    { 126 } 'Versão já gravada na memória fiscal',
+    { 127 } 'Estouro de capacidade no cheque',
+    { 128 } 'Timeout na leitura do cheque',
+    { 129 } 'Mês inválido',
+    { 130 } 'Coordenada inválida',
+    { 131 } 'Sobreposição de texto',
+    { 132 } 'Sobreposição de texto no valor',
+    { 133 } 'Sobreposição de texto no extenso',
+    { 134 } 'Sobreposição de texto no favorecido',
+    { 135 } 'Sobreposição de texto na localidade',
+    { 136 } 'Sobreposição de texto no opcional',
+    { 137 } 'Sobreposição de texto no dia',
+    { 138 } 'Sobreposição de texto no mês',
+    { 139 } 'Sobreposição de texto no ano',
+    { 140 } 'Usando MFD de outro ECF',
+    { 141 } 'Primeiro dado diferente de ESC ou 1C',
+    { 142 } 'Não permitido alterar sem intervenção técnica',
+    { 143 } 'Dados da última RZ corrompidos',
+    { 144 } 'Comando não permitido no modo inicialização',
+    { 145 } 'Aguardando acerto de relógio',
+    { 146 } 'MFD já inicializada para outra memória fiscal',
+    { 147 } 'Aguardando acerto do relógio ou desbloqueio pelo teclado',
+    { 148 } 'Valor forma de pagamento maior que máximo permitido',
+    { 149 } 'Razão social em branco',
+    { 150 } 'Nome de fantasia em branco',
+    { 151 } 'Endereço em branco',
+    { 152 } 'Estorno de CDC não permitido',
+    { 153 } 'Dados do proprietário iguais ao atual',
+    { 154 } 'Estorno de forma de pagamento não permitido',
+    { 155 } 'Descrição forma de pagamento igual já programada',
+    { 156 } 'Acerto de horário de verão só imediatamente após Redução Z',
+    { 157 } 'Intervenção técnica não permitida MF reservada para Redução Z',
+    { 158 } 'Senha CNPJ inválida',
+    { 159 } 'Timeout na inicialização de nova MF',
+    { 160 } 'Dados da MFD não encontrados',
+    { 161 } 'Sangria ou Suprimento devem ser únicos no comprovante não fiscal',
+    { 162 } 'Índice da forma de pagamento nulo não permitido',
+    { 163 } 'UF de destino inválida',
+    { 164 } 'Tipo de transporte incompatível com a UF de destino',
+    { 165 } 'Descrição do primeiro item do Bilhete de passagem diferente de “TARIFA”',
+    { 166 } 'Aguardando impressão de cheque ou autenticação166  Aguardando impressão de cheque ou autenticação',
+    { 167 } 'Programação de CNPJ e IE preenchido com espaços em branco não permitido',
+    { 168 } 'Número de impressões da fita detalhe nesta intervenção técnica esgotado',
+    { 169 } 'Cupom fiscal já sub-totalizado',
+    { 170 } 'Cupom não sub-totalizado',
+    { 171 } 'Acréscimo em sub-total já efetuado',
+    { 172 } 'Desconto em sub-total já efetuado',
+    { 173 } 'Acréscimo com valor nulo não permitido',
+    { 174 } 'Desconto com valor nulo não permitido',
+    { 175 } 'Cancelamento de acréscimo ou desconto em sub-total não permitido',
+    { 176 } 'Data inválida',
+    { 177 } 'Valor do cheque nulo não permitido',
+    { 178 } 'Valor do cheque inválido',
+    { 179 } 'Cheque sem a informação da localidade não permitido',
+    { 180 } 'Cancelamento de acréscimo em item não permitido',
+    { 181 } 'Cancelamento de desconto em item não permitido',
+    { 182 } 'Número máximo de itens atingido',
+    { 183 } 'Número do item nulo não permitido',
+    { 184 } 'Mais que duas alíquotas diferentes no Bilhete de Passagem não permitido',
+    { 185 } 'Acréscimo ou Desconto em item não permitido',
+    { 186 } 'Cancelamento de acréscimo ou desconto em item não permitido',
+    { 187 } 'Clichê já impresso',
+    { 188 } 'Texto opcional do cheque excedeu o máximo de linhas permitido',
+    { 189 } 'Impressão automática no verso não disponível neste equipamento',
+    { 190 } 'Timeout na inserção do cheque',
+    { 191 } 'Overflow na capacidade de texto do comprovante de débito ou crédito',
+    { 192 } 'Programação de espaços entre cupons menor que o mínimo permitido',
+    { 193 } 'Equipamento não possui leitor de cheque',
+    { 194 } 'Programação de alíquota com valor nulo não permitido',
+    { 195 } 'Erro nao documentado',
+    { 196 } 'Parâmetro Baud Rate inválido',
+    { 197 } 'Configuração permitida somente pela porta do fisco',
+    { 198 } 'Valor total do item excede 11 dígitos',
+    { 199 } 'Programação da moeda com espaços em branco não permitido',
+    { 200 } 'Casa decimais devem ser programadas com 2 ou 3',
+    { 201 } 'Erro não documento',
+    { 202 } 'Identificação do consumidor não permitido para sangria ou suprimento',
+    { 203 } 'Casas decimais em quantidade maior que permitida',
+    { 204 } 'Casas decimais do unitário maior que a permitida',
+    { 205 } 'Posição reservada para ICMS',
+    { 206 } 'Posição reservada para ISSQN',
+    { 207 } 'Todas as alíquotas com a mesma vinculação não permitida',
+    { 208 } 'Data de embarque anterior à data de emissão',
+    { 209 } 'Alíquota para ISSQN não permitida sem inicialização da Inscrição Municipal',
+    { 210 } 'Pacote do clichê gráfico fora da seqüência',
+    { 211 } 'Espaço para armazenamento do clichê gráfico esgotado',
+    { 212 } 'Clichê gráfico não disponível para confirmação',
+    { 213 } 'CRC do clichê gráfico diferente do informado',
+    { 214 } 'Intervalo inválido',
+    { 215 } 'Usuário já programado',
+    { 216 } 'Troca de MFD não danificada não permitida',
+    { 217 } 'Detectada abertura do equipamento');
+
 const ETX = #03 ;
 
 {$IFDEF LINUX}
@@ -152,7 +372,7 @@ type
 
 TACBrECFBematech = class( TACBrECFClass )
  private
-    fsACK, fsST1, fsST2 : Integer ; { Status da Bematech }
+    fsACK, fsST1, fsST2, fsST3: Integer ; { Status da Bematech }
     { Tamanho da Resposta Esperada ao comando. Necessário, pois a Bematech nao
       usa um Sufixo padrão no fim da resposta da Impressora. }
     fs25MFD     : Boolean ;  // True se for MP25 ou Superior (MFD)
@@ -277,6 +497,7 @@ TACBrECFBematech = class( TACBrECFClass )
     Property ACK   : Integer read fsACK ;
     Property ST1   : Integer read fsST1 ;
     Property ST2   : Integer read fsST2 ;
+    property ST3   : Integer read fsST3 ;
     property ModelosCheque : TACBrCHQModelos read fsModelosCheque
        write fsModelosCheque ;
 
@@ -402,6 +623,7 @@ begin
   { Variaveis internas dessa classe }
   fsST1       := 0 ;
   fsST2       := 0 ;
+  fsST3       := 0 ;
   fsACK       := 0 ;
   fsBytesResp := 0 ;
   fsTotalPago := 0 ;
@@ -458,7 +680,13 @@ begin
 
   try
      { Testando a comunicaçao com a porta }
-     EnviaComando( #19 ) ;    { Pede Status }
+     try
+        fs25MFD := True;
+        EnviaComando( #19 ) ;    { Pede Status }
+     except
+        fs25MFD := False;
+        EnviaComando( #19 ) ;    { Pede Status }
+     end ;
 
      if (fsACK = 21) or (fsACK <> 6) then
         raise EACBrECFNaoInicializado.Create( ACBrStr(
@@ -479,14 +707,17 @@ end;
 
 
 Function TACBrECFBematech.EnviaComando_ECF( cmd : AnsiString ) : AnsiString ;
-Var ErroMsg : String ;
-    B : Byte ;
-    PediuStatus : Boolean ;
-    FalhasACK   : Integer;
+Var
+  ErroMsg : String ;
+  B : Byte ;
+  PediuStatus : Boolean ;
+  FalhasACK   : Integer;
+  nSTL, nSTH  : Integer;
 begin
   fsACK   := 0  ;
   fsST1   := 0  ;
   fsST2   := 0  ;
+  fsST3   := 0  ;
   Result  := '' ;
   ErroMsg := '' ;
   fpComandoEnviado     := '' ;
@@ -561,18 +792,41 @@ begin
      try
         if BytesResp >= 0 then
          begin
-           fsST1  := ord( fpRespostaComando[ BytesResp+1 ] ) ;
-           fsST2  := ord( fpRespostaComando[ BytesResp+2 ] ) ;
+           fsST1 := ord( fpRespostaComando[ BytesResp + 1 ] ) ;
+           fsST2 := ord( fpRespostaComando[ BytesResp + 2 ] ) ;
+
+           if fs25MFD then
+           try
+             nSTL := ord( fpRespostaComando[ BytesResp + 3 ] );
+             nSTH := ord( fpRespostaComando[ BytesResp + 4 ] );
+           except
+           end;
+
            Result := copy(fpRespostaComando, 1, BytesResp) ;
          end
         else  { Quando BytesResp < 0 espera por ETX no final }
          begin
-           fsST1  := ord( fpRespostaComando[ 1 ] ) ;
-           fsST2  := ord( fpRespostaComando[ 2 ] ) ;
-           Result := copy(fpRespostaComando, 3, Length(fpRespostaComando)-3 ) ;
+           fsST1 := ord( fpRespostaComando[ 1 ] ) ;
+           fsST2 := ord( fpRespostaComando[ 2 ] ) ;
+
+           if fs25MFD then
+            begin
+              try
+                 nSTL := ord( fpRespostaComando[ 3 ] );
+                 nSTH := ord( fpRespostaComando[ 4 ] );
+              except
+              end;
+
+              Result := copy(fpRespostaComando, 5, Length(fpRespostaComando)-5 ) ;
+            end
+           else
+              Result := copy(fpRespostaComando, 3, Length(fpRespostaComando)-3 ) ;
          end ;
      except
      end ;
+
+     if fs25MFD then
+        fsST3 := (nSTH shl 8) + nSTL;
 
      { Verificando por erros em ST1 e ST2 }
      ErroMsg := '' ;
@@ -595,6 +849,11 @@ begin
                                          [rfReplaceAll,rfIgnoreCase]) ;
      end ;
 
+     // Alguns erros estendidos não impedem de continuar a 'conversa' com o ECF
+     // por isso só busca o erro estendido se realmente tiver algum erro grave!
+     if (ErroMsg <> '') and (fsST3 > 0) and (fsST3 < 218) then
+       ErroMsg := ErroMsg + ErrosST3[fsST3] + sLineBreak;
+
      if ErroMsg <> '' then
       begin
         ErroMsg := ACBrStr('Erro retornado pela Impressora: '+fpModeloStr+sLineBreak+
@@ -613,22 +872,31 @@ end;
 
 function TACBrECFBematech.VerificaFimLeitura(var Retorno: AnsiString;
    var TempoLimite: TDateTime) : Boolean ;
- Var LenRet : Integer ;
+Var
+  LenRet, LenST : Integer ;
 begin
   LenRet := Length(Retorno) ;
 
   { Lê até atingir todos os Bytes esperados (BytesResp) e ECF entra EmLinha}
   { BytesResp é necessário, pois a Bematech nao usa um Sufixo padrão no fim
     da resposta da Impressora. }
-  { Somei + 2 em BytesResp pois a Bematech tambem envia ST1 e ST2 no final
-    de cada comando }
   if BytesResp >= 0 then
-     Result := (LenRet >= (BytesResp + 2) )
+   begin
+     { Somei + 2 em BytesResp pois a Bematech tambem envia ST1 e ST2 no final
+       de cada comando
+      Se for MFD ou MP25 envia ainda STL e STH bytes do status estendido }
+     if fs25MFD then
+        LenST := 4
+     else
+        LenST := 2 ;
+
+     Result := (LenRet >= (BytesResp + LenST) )
+   end
   else
      if (Length(Retorno) >= 2) and (copy(Retorno,1,2) <> #0+#0) then  // Retornou Erro, não virá ETX
         Result := True
      else
-        Result := (pos(ETX, RightStr(Retorno,4)) > 0)
+        Result := (pos(ETX, RightStr(Retorno,6)) > 0)
 
   { Nota sobre o VerificaFimLeitura: A Bematech responde muito antes da
     Impressao terminar, o que pode causar problemas com comandos enviados logo
@@ -705,7 +973,10 @@ begin
   result := '' ;
   if cmd = '' then exit ;
 
-  cmd := #27 + cmd ;   { Prefixo ESC }
+  if fs25MFD then
+     cmd := #28 + cmd
+  else
+     cmd := #27 + cmd ;   { Prefixo ESC }
 
   { Calculando a Soma dos caracteres ASC }
   iSoma := 0 ;

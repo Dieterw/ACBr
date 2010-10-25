@@ -218,6 +218,7 @@ Procedure TryDeleteFile(const AFile: String; WaitTime: Integer = 100)  ;
 function CopyFileTo(const AFromFileName, AToFileName : String;
    const AFailIfExists : Boolean = false) : Boolean;
 Function PathWithDelim( const APath : String ) : String ;
+Function PathWithoutDelim( const APath : String ) : String ;
 Procedure CopyFilesToDir( FileMask : String ; ToDirName : String;
    const ForceDirectory : Boolean = False)  ;
 procedure RunCommand(Command: String; Params: String = ''; Wait : Boolean = false;
@@ -1520,6 +1521,18 @@ begin
      if RightStr(Result,1) <> PathDelim then   { Tem delimitador no final ? }
         Result := Result + PathDelim ;
 end ;
+
+{-----------------------------------------------------------------------------
+  Verifica se <APath> possui "PathDelim" no final. Retorna String SEM o
+  DELIMITADOR de Path no final
+ ---------------------------------------------------------------------------- }
+function PathWithoutDelim(const APath : String) : String ;
+begin
+  Result := Trim(APath) ;
+
+  while (Result <> '') and (pos(RightStr(Result,1), PathDelim+'/\' ) > 0) do   { Tem delimitador no final ? }
+     Result := copy(Result,1,Length(Result)-1)
+end;
 
 {-----------------------------------------------------------------------------
   Copia todos os arquivos especificados na mascara <FileMask> para o diretório

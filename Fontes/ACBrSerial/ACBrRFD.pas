@@ -1253,10 +1253,7 @@ begin
   if fsAtivo then
      raise Exception.Create(ACBrStr('DirRFD não pode ser modificado com o ACBrRFD Ativo'));
 
-  fsDirRFD := Trim(Value) ;
-
-  if RightStr(fsDirRFD,1) = PathDelim then   { Remove ultimo PathDelim }
-     fsDirRFD := copy( fsDirRFD,1,Length(fsDirRFD)-1 ) ;
+  fsDirRFD := PathWithoutDelim( Value ) ;    { Remove ultimo PathDelim }
 end;
 
 

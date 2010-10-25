@@ -831,7 +831,7 @@ begin
   APath := ExtractFilePath( AValue );
 
   if APath <> '' then
-     fDirArqRemessa := APath;
+     fDirArqRemessa := PathWithoutDelim( APath ) ;
 
   if AName <> '' then
      fNomeArqRemessa := AName;
@@ -845,7 +845,7 @@ begin
   APath := ExtractFilePath( AValue );
 
   if APath <> '' then
-     fDirArqRetorno := APath;
+     fDirArqRetorno := PathWithoutDelim( APath ) ;
 
   if AName <> '' then
      fNomeArqRetorno := AName;
@@ -1209,7 +1209,7 @@ begin
    begin
       if DirArqRemessa = '' then
       begin
-         Diretorio := ExtractFilePath(Application.ExeName)+'remessa'+PathDelim;
+         Diretorio := ExtractFilePath(Application.ExeName)+'remessa';
 
          if not DirectoryExists(Diretorio) then
             CreateDir(Diretorio);
@@ -1219,7 +1219,7 @@ begin
 
       if NomeArqRemessa = '' then
        begin
-         NomeFixo := DirArqRemessa + 'cb' + FormatDateTime( 'ddmm', Now );
+         NomeFixo := DirArqRemessa + PathDelim + 'cb' + FormatDateTime( 'ddmm', Now );
 
          repeat
             Inc( Sequencia );
@@ -1229,7 +1229,7 @@ begin
          Result := NomeArq;
        end
       else
-         Result := DirArqRemessa + NomeArqRemessa ;
+         Result := DirArqRemessa + PathDelim + NomeArqRemessa ;
    end;
 end;
 
@@ -1302,12 +1302,12 @@ begin
       ForceDirectories( fDirArqRemessa );
 
    if not DirectoryExists(fDirArqRemessa) then
-      raise Exception.Create( ACBrStr('Diretório inválido '+fDirArqRemessa) );
+      raise Exception.Create( ACBrStr('Diretório inválido:'+sLineBreak+fDirArqRemessa) );
 
    if Trim( NomeArqRemessa ) = '' then
       NomeArq := Banco.CalcularNomeArquivoRemessa( DirArqRemessa )
    else
-      NomeArq := DirArqRemessa + NomeArqRemessa;
+      NomeArq := DirArqRemessa + PathDelim + NomeArqRemessa;
 
    SLRemessa := TStringList.Create;
    try
@@ -1343,14 +1343,14 @@ begin
    SlRetorno:= TStringList.Create;
    Self.ListadeBoletos.Clear;
 
-   if not FilesExists(fDirArqRetorno+fNomeArqRetorno) then
-      raise Exception.Create(ACBrStr('Arquivo ou Diretório Inválido '+
-                             fDirArqRetorno+NomeArqRetorno));
+   if not FilesExists(fDirArqRetorno + PathDelim + fNomeArqRetorno) then
+      raise Exception.Create(ACBrStr('Arquivo ou Diretório Inválido:'+sLineBreak+
+                             fDirArqRetorno + PathDelim + NomeArqRetorno));
 
    if trim(NomeArqRetorno) = '' then
       raise Exception.Create(ACBrStr('Nome do arquivo deve ser informado.'));
 
-   SlRetorno.LoadFromFile(fDirArqRetorno+NomeArqRetorno);
+   SlRetorno.LoadFromFile(fDirArqRetorno + PathDelim + NomeArqRetorno);
 
    if SlRetorno.Count < 1 then
       raise exception.Create(ACBrStr('O retorno está vazio. Não há dados para '+
@@ -1495,16 +1495,11 @@ begin
 end;
 
 procedure TACBrBoletoFCClass.CarregaLogo(const PictureLogo : TPicture; const NumeroBanco: Integer ) ;
-var
-   teste: String;
-   teste1: String;
 begin
   if Assigned( fOnObterLogo ) then
      fOnObterLogo( PictureLogo, NumeroBanco)
   else
    begin
-     teste1:= ExtractFilePath(Application.ExeName);
-     teste:= ArquivoLogo;
      if FileExists( ArquivoLogo ) then
         PictureLogo.LoadFromFile( ArquivoLogo );
    end ;
@@ -1536,12 +1531,12 @@ end;
 
 procedure TACBrBoletoFCClass.SetDirLogo(const AValue: String);
 begin
-  fDirLogo := PathWithDelim( AValue );
+  fDirLogo := PathWithoutDelim( AValue );
 end;
 
 function TACBrBoletoFCClass.GetArqLogo: String;
 begin
-   Result := DirLogo + IntToStrZero( ACBrBoleto.Banco.Numero, 3)+'.bmp';
+   Result := DirLogo + PathDelim + IntToStrZero( ACBrBoleto.Banco.Numero, 3)+'.bmp';
 end;
 
 function TACBrBoletoFCClass.GetAbout: String;
@@ -1552,7 +1547,7 @@ end;
 function TACBrBoletoFCClass.GetDirLogo: String;
 begin
   if fDirLogo = '' then
-     Result := ExtractFilePath(Application.ExeName) + 'logos' + PathDelim
+     Result := ExtractFilePath(Application.ExeName) + 'logos'
   else
      Result := fDirLogo;
 end;

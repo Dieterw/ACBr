@@ -709,9 +709,8 @@ begin
         with Reg0300.Registro0305 do
         begin
           Add( LFill('0305') +
-               LFill(COD_CTA_DEPR) +
-               LFill(DT_DEPR_INI, 'ddmmyyyy') +
                LFill(COD_CCUS) +
+               LFill(FUNC) +
                DFill(VIDA_UTIL, 0) ) ;
           ///
           Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;

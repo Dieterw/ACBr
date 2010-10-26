@@ -473,15 +473,13 @@ type
 
   TRegistro0305 = class
   private
-    FCOD_CTA_DEPR: String;      /// Código da conta analítica de contabilização da depreciação acumulada do bem (campo 06 do Registro 0500)
-    FDT_DEPR_INI: TDateTime;    /// Data de início de depreciação do bem
-    FCOD_CCUS: String;          /// Código do centro de custo onde está localizado o bem (campo 03 do Registro 0600)
-    FVIDA_UTIL: Double;         /// Vida útil estimada do bem, em número de meses
+    FCOD_CCUS: string; /// Código do centro de custo onde o bem está sendo ou será utilizado (campo 03 do Registro 0600)
+    FFUNC: string;      /// Descrição sucinta da função do bem na atividade do estabelecimento
+    FVIDA_UTIL: Integer; /// Vida útil estimada do bem, em número de meses
   public
-    property COD_CTA_DEPR: String   read FCOD_CTA_DEPR write FCOD_CTA_DEPR;
-    property DT_DEPR_INI: TDateTime read FDT_DEPR_INI  write FDT_DEPR_INI;
-    property COD_CCUS: String       read FCOD_CCUS     write FCOD_CCUS;
-    property VIDA_UTIL: Double      read FVIDA_UTIL    write FVIDA_UTIL;
+    property COD_CCUS: String   read FCOD_CCUS  write FCOD_CCUS;
+    property FUNC: String       read FFUNC      write FFUNC;
+    property VIDA_UTIL: Integer read FVIDA_UTIL write FVIDA_UTIL;
   end;
 
   /// Registro 0400 - TABELA DE NATUREZA DA OPERAÇÃO/PRESTAÇÃO

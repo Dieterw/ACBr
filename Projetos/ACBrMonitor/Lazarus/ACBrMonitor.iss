@@ -2,12 +2,12 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "ACBrMonitor"
-#define MyAppVerName "ACBrMonitor-0.9.00b"
+#define MyAppVerName "ACBrMonitor-0.9.1b"
 #define MyAppPublisher "Projeto ACBr"
 #define MyAppURL "http://acbr.sourceforge.net/wiki/index.php/Monitor"
 #define MyAppUrlName "ACBrMonitor.url"
 #define MyAppExeName "ACBrMonitor.exe"
-#define DLLsDIR "..\..\..\DLLs"
+#define ACBrDIR "..\..\..\"
 
 [Setup]
 AppName={#MyAppName}
@@ -55,11 +55,12 @@ Source: ..\Exemplos\php_socket.zip; DestDir: {app}\Exemplos; Flags: ignoreversio
 Source: LICENCA.TXT; DestDir: {app}; Flags: ignoreversion; Components: programa
 Source: LICENSE.TXT; DestDir: {app}; Flags: ignoreversion; Components: programa
 Source: ACBrMonitor.chm; DestDir: {app}; Flags: ignoreversion; Components: help
-Source: {#DLLsDIR}\Diversos\inpout32.dll; DestDir: {sys}; Flags: ; Components: programa
-Source: {#DLLsDIR}\OpenSSL\openssl.exe; DestDir: {app}; Flags: ; Components: programa
-Source: {#DLLsDIR}\OpenSSL\libeay32.dll; DestDir: {app}; Flags: ; Components: programa
-Source: {#DLLsDIR}\OpenSSL\ssleay32.dll; DestDir: {app}; Flags: ; Components: programa
-Source: {#DLLsDIR}\MSVCR\msvcr71.dll; DestDir: {app}; Flags: ; Components: programa
+Source: {#ACBrDIR}\DLLs\Diversos\inpout32.dll; DestDir: {sys}; Flags: ; Components: programa
+Source: {#ACBrDIR}\DLLs\OpenSSL\openssl.exe; DestDir: {app}; Flags: ; Components: programa
+Source: {#ACBrDIR}\DLLs\OpenSSL\libeay32.dll; DestDir: {app}; Flags: ; Components: programa
+Source: {#ACBrDIR}\DLLs\OpenSSL\ssleay32.dll; DestDir: {app}; Flags: ; Components: programa
+Source: {#ACBrDIR}\DLLs\MSVCR\msvcr71.dll; DestDir: {app}; Flags: ; Components: programa
+Source: {#ACBrDIR}\Fontes\ACBrBoleto\Logos\Colorido\*.*; DestDir: {app}\Logos; Flags: ; Components: programa
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [INI]
@@ -67,7 +68,7 @@ Filename: {app}\{#MyAppUrlName}; Section: InternetShortcut; Key: URL; String: {#
 
 [Icons]
 Name: {group}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}; Components: programa
-Name: {group}\Programa para Configurar e Testar ECF; Filename: {app}\QECFTeste.exe; WorkingDir: {app}; Components: programa
+Name: {group}\Programa para Configurar e Testar ECF; Filename: {app}\ECFTeste.exe; WorkingDir: {app}; Components: programa
 Name: {group}\Manual do ACBrMonitor; Filename: {app}\ACBrMonitor.chm; WorkingDir: {app}; Components: help
 Name: {group}\Pasta Exemplos; Filename: {app}\Exemplos\; Components: exemplos
 Name: {userdesktop}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}; Tasks: desktopicon
@@ -76,7 +77,8 @@ Name: {group}\{cm:ProgramOnTheWeb,{#MyAppName}}; Filename: {app}\{#MyAppUrlName}
 
 [Run]
 Filename: {app}\{#MyAppExeName}; Description: {cm:LaunchProgram,{#MyAppName}}; Flags: nowait postinstall skipifsilent
-Filename: {app}\ACBrMonitor.chm; Description: Novidades desta Versão; Flags: postinstall shellexec skipifsilent
+Filename: {app}\ACBrMonitor.chm; Description: Novidades desta Versão; Flags: postinstall shellexec skipifsilent; Components: help
+
 
 
 

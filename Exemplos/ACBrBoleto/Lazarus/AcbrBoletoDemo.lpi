@@ -59,7 +59,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="90" Y="16"/>
-        <UsageCount Value="135"/>
+        <UsageCount Value="136"/>
       </Unit0>
       <Unit1>
         <Filename Value="uDemo.pas"/>
@@ -71,7 +71,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="96" Y="11"/>
-        <UsageCount Value="135"/>
+        <UsageCount Value="136"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit1>
@@ -357,10 +357,11 @@
       <Unit36>
         <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
         <UnitName Value="ACBrUtil"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="4"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1525"/>
-        <CursorPos X="20" Y="1533"/>
+        <TopLine Value="1528"/>
+        <CursorPos X="16" Y="1537"/>
         <UsageCount Value="12"/>
         <Loaded Value="True"/>
       </Unit36>
@@ -616,7 +617,6 @@
       <Unit67>
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrCaixaEconomica.pas"/>
         <UnitName Value="ACBrCaixaEconomica"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="3"/>
         <WindowIndex Value="0"/>
         <TopLine Value="423"/>
@@ -872,7 +872,7 @@
         <Loaded Value="True"/>
       </Unit97>
     </Units>
-    <JumpHistory Count="29" HistoryIndex="28">
+    <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrCaixaEconomica.pas"/>
         <Caret Line="1" Column="1" TopLine="1"/>
@@ -989,6 +989,10 @@
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrCaixaEconomica.pas"/>
         <Caret Line="438" Column="106" TopLine="423"/>
       </Position29>
+      <Position30>
+        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrCaixaEconomica.pas"/>
+        <Caret Line="440" Column="110" TopLine="423"/>
+      </Position30>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>
@@ -1013,15 +1017,11 @@
     </Other>
   </CompilerOptions>
   <Debugging>
-    <BreakPoints Count="2">
+    <BreakPoints Count="1">
       <Item1>
         <Source Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
         <Line Value="659"/>
       </Item1>
-      <Item2>
-        <Source Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
-        <Line Value="1531"/>
-      </Item2>
     </BreakPoints>
     <Exceptions Count="8">
       <Item1>

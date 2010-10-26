@@ -222,10 +222,10 @@ type
 
     function CalcularDigitoVerificador(const ACBrTitulo : TACBrTitulo): String; virtual;
 
-    function TipoOcorrenciaToDescricao(const TipoOcorrencia: TACBrTipoOcorrencia): String; virtual; abstract;
-    function CodOcorrenciaToTipo(const CodOcorrencia:Integer): TACBrTipoOcorrencia; virtual; abstract;
-    function TipoOCorrenciaToCod(const TipoOcorrencia: TACBrTipoOcorrencia): String; virtual; abstract;
-    function CodMotivoRejeicaoToDescricao(const TipoOcorrencia: TACBrTipoOcorrencia;CodMotivo:Integer): String; virtual; abstract;
+    function TipoOcorrenciaToDescricao(const TipoOcorrencia: TACBrTipoOcorrencia): String; virtual;
+    function CodOcorrenciaToTipo(const CodOcorrencia:Integer): TACBrTipoOcorrencia; virtual;
+    function TipoOCorrenciaToCod(const TipoOcorrencia: TACBrTipoOcorrencia): String; virtual;
+    function CodMotivoRejeicaoToDescricao(const TipoOcorrencia: TACBrTipoOcorrencia;CodMotivo:Integer): String; virtual;
 
     function MontarCodigoBarras(const ACBrTitulo : TACBrTitulo): String; virtual;
     function MontarCampoNossoNumero(const ACBrTitulo : TACBrTitulo): String; virtual;
@@ -241,7 +241,7 @@ type
     Procedure LerRetorno400(ARetorno:TStringList); Virtual;
     Procedure LerRetorno240(ARetorno:TStringList); Virtual;
 
-    function CalcularNomeArquivoRemessa(const DirArquivo: String): String; Virtual;
+    function CalcularNomeArquivoRemessa : String; Virtual;
   end;
 
 
@@ -286,7 +286,7 @@ type
     procedure LerRetorno400(ARetorno:TStringList);
     procedure LerRetorno240(ARetorno:TStringList);
 
-    function CalcularNomeArquivoRemessa(const DirArquivo: String): String;
+    function CalcularNomeArquivoRemessa : String;
   published
     property Numero    : Integer        read fNumeroBanco    write SetNumero default 0;
     property Digito    : Integer        read GetDigito  write SetDigito stored false;
@@ -318,7 +318,6 @@ type
     fContaDigito   : String;
     fModalidade    : String;
     fConvenio      : String;
-    fNumero: String;
     fResponEmissao : TACBrResponEmissao;
     fCNPJCPF       : String;
     fTipoInscricao : TACBrPessoa;
@@ -522,6 +521,8 @@ TACBrBoleto = class( TACBrComponent )
     fNomeArqRetorno: String;
     fLeCedenteRetorno: boolean;
     function GetAbout: String;
+    function GetDirArqRemessa : String ;
+    function GetDirArqRetorno : String ;
     procedure SetAbout(const AValue: String);
     procedure SetACBrBoletoFC(const Value: TACBrBoletoFCClass);
     procedure SetNomeArqRemessa(const AValue: String);
@@ -551,9 +552,9 @@ TACBrBoleto = class( TACBrComponent )
     property Cedente        : TACBrCedente       read fCedente                write fCedente ;
     property Banco          : TACBrBanco         read fBanco                  write fBanco;
     property NomeArqRemessa : String             read fNomeArqRemessa         write SetNomeArqRemessa;
-    property DirArqRemessa  : String             read fDirArqRemessa          write SetNomeArqRemessa;
+    property DirArqRemessa  : String             read GetDirArqRemessa        write SetNomeArqRemessa;
     property NomeArqRetorno : String             read fNomeArqRetorno         write SetNomeArqRetorno;
-    property DirArqRetorno  : String             read fDirArqRetorno          write SetNomeArqRetorno;
+    property DirArqRetorno  : String             read GetDirArqRetorno        write SetNomeArqRetorno;
     property LeCedenteRetorno :boolean           read fLeCedenteRetorno       write fLeCedenteRetorno default false;
     property LayoutRemessa  : TACBrLayoutRemessa read fLayoutRemessa          write fLayoutRemessa default c400;
     property ImprimirMensagemPadrao : Boolean    read fImprimirMensagemPadrao write fImprimirMensagemPadrao default True;
@@ -818,6 +819,28 @@ begin
   Result := 'ACBrBoleto Ver: '+CACBrBoleto_Versao;
 end;
 
+function TACBrBoleto.GetDirArqRemessa : String ;
+begin
+  if fDirArqRemessa = '' then
+     if not (csDesigning in Self.ComponentState) then
+        fDirArqRemessa := ExtractFilePath(
+        {$IFNDEF CONSOLE} Application.ExeName {$ELSE} ParamStr(0) {$ENDIF}
+                                      ) + 'remessa' ;
+
+  Result := fDirArqRemessa ;
+end;
+
+function TACBrBoleto.GetDirArqRetorno : String ;
+begin
+  if fDirArqRetorno = '' then
+     if not (csDesigning in Self.ComponentState) then
+        fDirArqRetorno := ExtractFilePath(
+        {$IFNDEF CONSOLE} Application.ExeName {$ELSE} ParamStr(0) {$ENDIF}
+                                      ) + 'retorno' ;
+
+  Result := fDirArqRetorno ;
+end;
+
 procedure TACBrBoleto.SetAbout(const AValue: String);
 begin
   {}
@@ -827,8 +850,8 @@ procedure TACBrBoleto.SetNomeArqRemessa(const AValue: String);
 var
   APath, AName : AnsiString;
 begin
-  AName := ExtractFileName( AValue );
-  APath := ExtractFilePath( AValue );
+  AName := Trim(ExtractFileName( AValue ));
+  APath := Trim(ExtractFilePath( AValue ));
 
   if APath <> '' then
      fDirArqRemessa := PathWithoutDelim( APath ) ;
@@ -841,8 +864,8 @@ procedure TACBrBoleto.SetNomeArqRetorno(const AValue : String) ;
 var
   APath, AName : AnsiString;
 begin
-  AName := ExtractFileName( AValue );
-  APath := ExtractFilePath( AValue );
+  AName := Trim(ExtractFileName( AValue ));
+  APath := Trim(ExtractFilePath( AValue ));
 
   if APath <> '' then
      fDirArqRetorno := PathWithoutDelim( APath ) ;
@@ -1157,9 +1180,9 @@ begin
    BancoClass.LerRetorno240(ARetorno);
 end;
 
-function TACBrBanco.CalcularNomeArquivoRemessa(const DirArquivo: String ): String;
+function TACBrBanco.CalcularNomeArquivoRemessa : String;
 begin
-  Result:= BancoClass.CalcularNomeArquivoRemessa( DirArquivo );
+  Result:= BancoClass.CalcularNomeArquivoRemessa ;
 end;
 
 function TACBrBanco.MontarCampoCodigoCedente(
@@ -1175,6 +1198,31 @@ function TACBrBancoClass.CalcularDigitoVerificador(const ACBrTitulo :TACBrTitulo
 begin
    Result:= '';
 end;
+
+function TACBrBancoClass.TipoOcorrenciaToDescricao(
+  const TipoOcorrencia : TACBrTipoOcorrencia) : String ;
+begin
+  Result := '';
+end ;
+
+function TACBrBancoClass.CodOcorrenciaToTipo(const CodOcorrencia : Integer
+  ) : TACBrTipoOcorrencia ;
+begin
+  Result := toRemessaRegistrar;
+end ;
+
+function TACBrBancoClass.TipoOCorrenciaToCod(
+  const TipoOcorrencia : TACBrTipoOcorrencia) : String ;
+begin
+  Result := '';
+end ;
+
+function TACBrBancoClass.CodMotivoRejeicaoToDescricao(
+  const TipoOcorrencia : TACBrTipoOcorrencia ; CodMotivo : Integer) : String ;
+begin
+  Result := '';
+end ;
+
  function TACBrBancoClass.GetNumero: Integer;
 begin
    Result:= ACBrBanco.Numero;
@@ -1198,25 +1246,15 @@ begin
       Result := IntToStr(Modulo.DigitoFinal);
 end;
 
-function TACBrBancoClass.CalcularNomeArquivoRemessa ( const DirArquivo: String) : String;
+function TACBrBancoClass.CalcularNomeArquivoRemessa : String;
 var
   Sequencia :Integer;
-  Diretorio, NomeFixo, NomeArq: String;
+  NomeFixo, NomeArq: String;
 begin
    Sequencia := 0;
 
    with ACBrBanco.ACBrBoleto do
    begin
-      if DirArqRemessa = '' then
-      begin
-         Diretorio := ExtractFilePath(Application.ExeName)+'remessa';
-
-         if not DirectoryExists(Diretorio) then
-            CreateDir(Diretorio);
-
-         DirArqRemessa := Diretorio;
-      end;
-
       if NomeArqRemessa = '' then
        begin
          NomeFixo := DirArqRemessa + PathDelim + 'cb' + FormatDateTime( 'ddmm', Now );
@@ -1298,14 +1336,14 @@ begin
 
    ChecarDadosObrigatorios;
 
-   if not DirectoryExists(fDirArqRemessa) then
-      ForceDirectories( fDirArqRemessa );
+   if not DirectoryExists( DirArqRemessa ) then
+      ForceDirectories( DirArqRemessa );
 
-   if not DirectoryExists(fDirArqRemessa) then
-      raise Exception.Create( ACBrStr('Diretório inválido:'+sLineBreak+fDirArqRemessa) );
+   if not DirectoryExists( DirArqRemessa ) then
+      raise Exception.Create( ACBrStr('Diretório inválido:' + sLineBreak + DirArqRemessa) );
 
-   if Trim( NomeArqRemessa ) = '' then
-      NomeArq := Banco.CalcularNomeArquivoRemessa( DirArqRemessa )
+   if ( NomeArqRemessa = '' ) then
+      NomeArq := Banco.CalcularNomeArquivoRemessa
    else
       NomeArq := DirArqRemessa + PathDelim + NomeArqRemessa;
 
@@ -1339,43 +1377,46 @@ end;
 procedure TACBrBoleto.LerRetorno( ) ;
 var
   SlRetorno: TStringList;
+  NomeArq  : String;
 begin
    SlRetorno:= TStringList.Create;
    Self.ListadeBoletos.Clear;
 
-   if not FilesExists(fDirArqRetorno + PathDelim + fNomeArqRetorno) then
-      raise Exception.Create(ACBrStr('Arquivo ou Diretório Inválido:'+sLineBreak+
-                             fDirArqRetorno + PathDelim + NomeArqRetorno));
+   if NomeArqRetorno = '' then
+      raise Exception.Create(ACBrStr('NomeArqRetorno deve ser informado.'));
 
-   if trim(NomeArqRetorno) = '' then
-      raise Exception.Create(ACBrStr('Nome do arquivo deve ser informado.'));
+   NomeArq := fDirArqRetorno + PathDelim + NomeArqRetorno;
 
-   SlRetorno.LoadFromFile(fDirArqRetorno + PathDelim + NomeArqRetorno);
+   if not FilesExists( NomeArq ) then
+      raise Exception.Create(ACBrStr('Arquivo não encontrado:'+sLineBreak+NomeArq));
+
+   SlRetorno.LoadFromFile( NomeArq );
 
    if SlRetorno.Count < 1 then
-      raise exception.Create(ACBrStr('O retorno está vazio. Não há dados para '+
-                             'processar'));
+      raise exception.Create(ACBrStr('O Arquivo de Retorno:'+sLineBreak+
+                                     NomeArq + sLineBreak+
+                                     'está vazio.'+sLineBreak+
+                                     ' Não há dados para processar'));
 
    case Length(SlRetorno.Strings[0]) of
       240 :
         begin
           if Copy(SlRetorno.Strings[0],143,1) <> '2' then
-             Raise Exception.Create(NomeArqRetorno +' não é um arquivo de '+
-                                    'retorno de cobrança com layout CNAB240');
+             Raise Exception.Create( ACBrStr( NomeArq + sLineBreak +
+                'Não é um arquivo de Retorno de cobrança com layout CNAB240') );
           LayoutRemessa := c240 ;
         end;
 
       400 :
         begin
           if Copy(SlRetorno.Strings[0],1,19) <> '02RETORNO01COBRANCA' then
-             Raise Exception.Create(NomeArqRetorno +' não é um arquivo de '+
-                                     'retorno de cobrança com layout CNAB400');
+             Raise Exception.Create( ACBrStr( NomeArq + sLineBreak +
+                'Não é um arquivo de Retorno de cobrança com layout CNAB400'));
           LayoutRemessa := c400 ;
         end;
       else
-          raise Exception.Create(NomeArqRetorno+' não é um arquivo de  ' +
-                                 'retorno de cobrança CNAB240 ou CNAB400');
-
+          raise Exception.Create( ACBrStr( NomeArq + sLineBreak+
+             'Não é um arquivo de  Retorno de cobrança CNAB240 ou CNAB400'));
    end;
 
    if LayoutRemessa = c240 then
@@ -1414,14 +1455,15 @@ function TACBrBancoClass.GerarRegistroHeader400( NumeroRemessa: Integer): String
 begin
   { Método implementado apenas para evitar Warnings de compilação (poderia ser abstrato)
     Você de fazer "override" desse método em todas as classes filhas de TACBrBancoClass }
-  //Result := '' ;
+  Result := '' ;
   raise Exception.Create( ACBrStr('Geracao do arquivo Remessa em 400 colunas não implementada o banco '+ Nome+'.')) ;
 end;
 
 function TACBrBancoClass.GerarRegistroHeader240 ( NumeroRemessa: Integer
    ) : String;
 begin
-   raise Exception.Create( ACBrStr('Geracao do arquivo Remessa em 240 colunas não implementada para o banco '+ Nome+'.')) ;
+  Result := '';
+  raise Exception.Create( ACBrStr('Geracao do arquivo Remessa em 240 colunas não implementada para o banco '+ Nome+'.')) ;
 end;
 
 function TACBrBancoClass.GerarRegistroTrailler400( ARemessa: TStringList): String;
@@ -1547,9 +1589,12 @@ end;
 function TACBrBoletoFCClass.GetDirLogo: String;
 begin
   if fDirLogo = '' then
-     Result := ExtractFilePath(Application.ExeName) + 'logos'
-  else
-     Result := fDirLogo;
+     if not (csDesigning in Self.ComponentState) then
+        fDirLogo := ExtractFilePath(
+        {$IFNDEF CONSOLE} Application.ExeName {$ELSE} ParamStr(0) {$ENDIF}
+                                      ) + 'Logos' ;
+
+  Result := fDirLogo ;
 end;
 
 procedure TACBrBoletoFCClass.SetAbout(const AValue: String);

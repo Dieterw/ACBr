@@ -1527,10 +1527,13 @@ end ;
   DELIMITADOR de Path no final
  ---------------------------------------------------------------------------- }
 function PathWithoutDelim(const APath : String) : String ;
+Var
+  Delimiters : AnsiString ;
 begin
   Result := Trim(APath) ;
 
-  while (Result <> '') and (pos(RightStr(Result,1), PathDelim+'/\' ) > 0) do   { Tem delimitador no final ? }
+  Delimiters := PathDelim+'/\' ;
+  while (Result <> '') and (pos(RightStr(Result,1), Delimiters ) > 0) do   { Tem delimitador no final ? }
      Result := copy(Result,1,Length(Result)-1)
 end;
 

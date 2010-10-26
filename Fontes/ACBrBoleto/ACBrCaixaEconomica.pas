@@ -107,8 +107,6 @@ end;
 
 function TACBrCaixaEconomica.CalcularDVCedente(const ACBrTitulo: TACBrTitulo): String;
 var
-  ACedente : String;
-  Resto: integer;
   Num, Res: string;
 begin
 

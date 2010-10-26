@@ -1997,22 +1997,22 @@ end;
 
 procedure TACBrRFD.SetCONT_Endereco(const Value: String);
 begin
-  fsCONT_Endereco := LeftStr(Value,120);
+  fsCONT_Endereco := Trim(LeftStr(Value,120));
 end;
 
 procedure TACBrRFD.SetCONT_CNPJ(const Value: String);
 begin
-  fsCONT_CNPJ := LeftStr( OnlyNumber( Value ), 14);
+  fsCONT_CNPJ := Trim(LeftStr( OnlyNumber( Value ), 14));
 end;
 
 procedure TACBrRFD.SetCONT_IE(const Value: String);
 begin
-  fsCONT_IE := LeftStr( OnlyNumber( Value ), 14);
+  fsCONT_IE := Trim(LeftStr( OnlyNumber( Value ), 14));
 end;
 
 procedure TACBrRFD.SetCONT_RazaoSocial(const Value: String);
 begin
-  fsCONT_RazaoSocial := LeftStr( Value, 40);
+  fsCONT_RazaoSocial := Trim(LeftStr( Value, 40));
 end;
 
 

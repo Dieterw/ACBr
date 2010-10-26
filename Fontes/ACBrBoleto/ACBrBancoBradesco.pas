@@ -95,7 +95,6 @@ end;
 function TACBrBancoBradesco.MontarCodigoBarras ( const ACBrTitulo: TACBrTitulo) : String;
 var
   CodigoBarras, FatorVencimento, DigitoCodBarras:String;
-  DigitoNum: Integer;
 begin
    with ACBrTitulo.ACBrBoleto do
    begin

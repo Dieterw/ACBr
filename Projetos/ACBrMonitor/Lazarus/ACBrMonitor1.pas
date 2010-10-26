@@ -142,6 +142,8 @@ type
     lblBOLCidade: TLabel;
     lblCep: TLabel;
     lLCBCodigoLido: TPanel;
+    deRFDDataCadastro : TDateEdit ;
+    deRFDDataSwBasico : TDateEdit ;
     pgBoleto: TPageControl;
     spBOLCopias: TSpinEdit;
     StatusBar1: TStatusBar;
@@ -348,7 +350,6 @@ type
     Label54: TLabel;
     bRFDINI: TButton;
     bRFDID: TButton;
-    meRFDDataCadastro: TMaskEdit;
     meRFDHoraCadastro: TMaskEdit;
     edRFDGTCadastro: TEdit;
     cbSenha: TCheckBox;
@@ -372,7 +373,6 @@ type
     ACBrBAL1: TACBrBAL;
     sbECFSerial: TSpeedButton;
     Label59: TLabel;
-    meRFDDataSwBasico: TMaskEdit;
     meRFDHoraSwBasico: TMaskEdit;
     tsETQ: TTabSheet;
     Label60: TLabel;
@@ -521,7 +521,7 @@ type
     procedure edRFDEnderecoChange(Sender: TObject);
     procedure edRFDIEChange(Sender: TObject);
     procedure seRFDNumeroCadastroChanged(Sender: TObject);
-    procedure meRFDDataCadastroExit(Sender: TObject);
+    procedure deRFDDataCadastroExit(Sender: TObject);
     procedure seRFDCROCadastroChanged(Sender: TObject);
     procedure edRFDGTCadastroKeyPress(Sender: TObject; var Key: char);
     procedure edRFDGTCadastroExit(Sender: TObject);
@@ -542,7 +542,7 @@ type
     procedure bBALAtivarClick(Sender: TObject);
     procedure bBALTestarClick(Sender: TObject);
     procedure sbECFSerialClick(Sender: TObject);
-    procedure meRFDDataSwBasicoExit(Sender: TObject);
+    procedure deRFDDataSwBasicoExit(Sender: TObject);
     procedure tsRFDConfigShow(Sender: TObject);
     procedure cbETQModeloChange(Sender: TObject);
     procedure cbETQPortaChange(Sender: TObject);
@@ -1801,8 +1801,6 @@ end;
 procedure TFrmACBrMonitor.SalvarConfBoletos;
 var
   Ini: TIniFile;
-  DirLogoBanco, DirArquivoBoleto: String;
-  DirArqRemessa, DirArqRetorno: String;
   TrimedCNPJ, TrimedCEP : String ;
 begin
    TrimedCNPJ := OnlyNumber(edtBOLCNPJ.Text) ;
@@ -1855,48 +1853,16 @@ begin
      ini.WriteString('BOLETO', 'CodCedente', edtCodCliente.Text);
 
      {Parametros do Boleto - Boleto}
-     if trim(deBOLDirLogo.Text) = '' then
-        DirLogoBanco := ExtractFilePath(Application.ExeName) + 'logos' + PathDelim
-     else
-        DirLogoBanco := deBOLDirLogo.Text;
-
-     if DirLogoBanco[Length(DirLogoBanco)] <> PathDelim  then
-        DirLogoBanco := DirLogoBanco + PathDelim;
-
-     if trim(deBOLDirArquivo.Text) = '' then
-        DirArquivoBoleto := ExtractFileDir(edSaiTXT.Text)
-     else
-        DirArquivoBoleto := deBOLDirArquivo.Text;
-
-     if DirArquivoBoleto[Length(DirArquivoBoleto)] <> PathDelim  then
-        DirArquivoBoleto := DirArquivoBoleto + PathDelim;
-
-     if trim(deBolDirRemessa.Text) = '' then
-        DirArqRemessa := ExtractFileDir(edSaiTXT.Text)
-     else
-        DirArqRemessa := deBolDirRemessa.Text;
-
-     if  DirArqRemessa[Length(DirArqRemessa)] <> PathDelim  then
-        DirArqRemessa := DirArqRemessa + PathDelim;
-
-     if trim(deBolDirRetorno.Text) = '' then
-        DirArqRetorno := ExtractFileDir(edSaiTXT.Text)
-     else
-        DirArqRetorno := deBolDirRetorno.Text;
-
-     if DirArqRetorno[Length(DirArqRetorno)] <> PathDelim then
-        DirArqRetorno := DirArqRetorno + PathDelim;
-
-     ini.WriteString('BOLETO', 'DirLogos', DirLogoBanco);
+     ini.WriteString('BOLETO', 'DirLogos', PathWithoutDelim( deBOLDirLogo.Text ) );
      ini.WriteString('BOLETO', 'SoftwareHouse', edtBOLSH.Text);
      ini.WriteInteger('BOLETO', 'Copias', spBOLCopias.Value);
      Ini.WriteBool('BOLETO', 'Preview', ckgBOLMostrar.Checked[0]);
      ini.WriteBool('BOLETO', 'Setup', ckgBOLMostrar.Checked[1]);
      ini.WriteInteger('BOLETO', 'Layout', cbxBOLLayout.ItemIndex);
      ini.WriteInteger('BOLETO', 'Filtro', cbxBOLFiltro.ItemIndex);
-     ini.WriteString('BOLETO', 'DirArquivoBoleto',DirArquivoBoleto);
-     ini.WriteString('BOLETO', 'DirArquivoRemessa',DirArqRemessa);
-     ini.WriteString('BOLETO', 'DirArquivoRetorno',DirArqRetorno);
+     ini.WriteString('BOLETO', 'DirArquivoBoleto',PathWithoutDelim( deBOLDirArquivo.Text ));
+     ini.WriteString('BOLETO', 'DirArquivoRemessa',PathWithoutDelim( deBolDirRemessa.Text ));
+     ini.WriteString('BOLETO', 'DirArquivoRetorno',PathWithoutDelim( deBolDirRetorno.Text ));
    finally
       ini.Free;
    end;
@@ -3080,7 +3046,7 @@ end;
 {-------------------------------- Aba Config ----------------------------------}
 procedure TFrmACBrMonitor.tsRFDConfigShow(Sender: TObject);
 begin
-  meRFDDataSwBasico.Text := FormatDateTime('dd/mm/yy', ACBrRFD1.ECF_DataHoraSwBasico);
+  deRFDDataSwBasico.Date := ACBrRFD1.ECF_DataHoraSwBasico ;
   meRFDHoraSwBasico.Text := FormatDateTime('hh:nn', ACBrRFD1.ECF_DataHoraSwBasico);
 end;
 
@@ -3151,21 +3117,9 @@ begin
 end;
 
 
-procedure TFrmACBrMonitor.meRFDDataSwBasicoExit(Sender: TObject);
-var
-  OldShortDateFormat: string;
-  DT: TDateTime;
+procedure TFrmACBrMonitor.deRFDDataSwBasicoExit(Sender: TObject);
 begin
-  DT := ACBrRFD1.ECF_DataHoraSwBasico;
-  OldShortDateFormat := ShortDateFormat;
-  try
-    ShortDateFormat := 'dd/mm/yyyy hh:nn:ss';
-    DT := StrToDateTimeDef(meRFDDataSwBasico.Text + ' ' + meRFDHoraSwBasico.Text, DT);
-  finally
-    ShortDateFormat := OldShortDateFormat;
-  end;
-
-  ACBrRFD1.ECF_DataHoraSwBasico := DT;
+  ACBrRFD1.ECF_DataHoraSwBasico := deRFDDataSwBasico.Date;
 end;
 
 
@@ -3177,17 +3131,15 @@ begin
 
   if not fsRFDLeuParams then
   begin
-    edRFDRazaoSocial.Text := ACBrRFD1.CONT_RazaoSocial;
-    edRFDEndereco.Text := ACBrRFD1.CONT_Endereco;
-    edRFDCNPJ.Text := ACBrRFD1.CONT_CNPJ;
-    edRFDIE.Text := ACBrRFD1.CONT_IE;
+    meRFDHoraCadastro.Text    := FormatDateTime('hh:nn', ACBrRFD1.CONT_DataHoraCadastro) ;
+    edRFDRazaoSocial.Text     := ACBrRFD1.CONT_RazaoSocial;
+    edRFDEndereco.Text        := ACBrRFD1.CONT_Endereco;
+    edRFDCNPJ.Text            := ACBrRFD1.CONT_CNPJ;
+    edRFDIE.Text              := ACBrRFD1.CONT_IE;
     seRFDNumeroCadastro.Value := ACBrRFD1.CONT_NumUsuario;
-    meRFDDataCadastro.Text :=
-      FormatDateTime('dd/mm/yy', ACBrRFD1.CONT_DataHoraCadastro);
-    meRFDHoraCadastro.Text :=
-      FormatDateTime('hh:nn', ACBrRFD1.CONT_DataHoraCadastro);
-    seRFDCROCadastro.Value := ACBrRFD1.CONT_CROCadastro;
-    edRFDGTCadastro.Text := FormatFloat('0.00', ACBrRFD1.CONT_GTCadastro);
+    deRFDDataCadastro.Date    := ACBrRFD1.CONT_DataHoraCadastro ;
+    seRFDCROCadastro.Value    := ACBrRFD1.CONT_CROCadastro;
+    edRFDGTCadastro.Text      := FormatFloat('0.00', ACBrRFD1.CONT_GTCadastro);
 
     fsRFDLeuParams := True;
   end;
@@ -3218,21 +3170,9 @@ begin
   ACBrRFD1.CONT_NumUsuario := seRFDNumeroCadastro.Value;
 end;
 
-procedure TFrmACBrMonitor.meRFDDataCadastroExit(Sender: TObject);
-var
-  OldShortDateFormat: string;
-  DT: TDateTime;
+procedure TFrmACBrMonitor.deRFDDataCadastroExit(Sender: TObject);
 begin
-  DT := ACBrRFD1.CONT_DataHoraCadastro;
-  OldShortDateFormat := ShortDateFormat;
-  try
-    ShortDateFormat := 'dd/mm/yyyy hh:nn:ss';
-    DT := StrToDateTimeDef(meRFDDataCadastro.Text + ' ' + meRFDHoraCadastro.Text, DT);
-  finally
-    ShortDateFormat := OldShortDateFormat;
-  end;
-
-  ACBrRFD1.CONT_DataHoraCadastro := DT;
+  ACBrRFD1.CONT_DataHoraCadastro := deRFDDataCadastro.Date;
 end;
 
 procedure TFrmACBrMonitor.seRFDCROCadastroChanged(Sender: TObject);

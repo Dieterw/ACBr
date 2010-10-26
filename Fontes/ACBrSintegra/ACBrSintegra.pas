@@ -1593,6 +1593,7 @@ begin
         and (Registros56[a].modelo=registros54[i].modelo)
         and (Registros56[a].serie=registros54[i].serie)
         and (Registros56[a].numero=registros54[i].numero)
+        and (Registros56[a].NumeroItem=registros54[i].NumeroItem)
         and (Registros56[a].cfop=registros54[i].cfop) then begin
           wregistro:='56';
           wregistro:=wregistro+TBStrZero(TiraPontos(Registros56[a].CNPJ),14);

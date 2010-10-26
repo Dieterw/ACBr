@@ -1,6 +1,6 @@
 object fqrDANFeQR: TfqrDANFeQR
-  Left = 94
-  Top = 88
+  Left = 195
+  Top = 114
   Width = 880
   Height = 742
   Caption = 'fqrDANFeQR'

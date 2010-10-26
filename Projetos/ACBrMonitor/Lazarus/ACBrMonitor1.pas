@@ -41,7 +41,7 @@ uses
   CmdUnit, ACBrECF, ACBrDIS, ACBrGAV, ACBrDevice, ACBrCHQ, ACBrLCB, ACBrRFD, { Unit do ACBr }
   Dialogs, ExtCtrls, Menus, Buttons, StdCtrls, ComCtrls, Controls, Graphics,
   Spin, MaskEdit, EditBtn, ACBrBAL, ACBrETQ, ACBrSocket, ACBrCEP, ACBrIBGE,
-  blcksock, ACBrValidador, ACBrBoleto, ACBrBoletoFCFortesFr;
+  blcksock, ACBrValidador, ACBrBoleto, ACBrBoletoFCLazReportDm;
 
 const
   {$I versao.txt}
@@ -59,7 +59,7 @@ type
 
   TFrmACBrMonitor = class(TForm)
     ACBrBoleto1: TACBrBoleto;
-    ACBrBoletoFCFortes1: TACBrBoletoFCFortes;
+    ACBrBoletoFCLazReport1 : TACBrBoletoFCLazReport ;
     ACBrCEP1 : TACBrCEP ;
     ACBrECF1: TACBrECF;
     ACBrIBGE1 : TACBrIBGE ;
@@ -1566,7 +1566,7 @@ begin
     DirArqRetorno := deBolDirRetorno.Text;
   end;
 
-  with ACBrBoletoFCFortes1 do
+  with ACBrBoletoFCLazReport1 do
   begin
     case cbxBOLFiltro.ItemIndex of
       0: Filtro := fiNenhum;
@@ -3126,12 +3126,13 @@ end;
 {-------------------------------- Aba Usuario ---------------------------------}
 procedure TFrmACBrMonitor.tsRFDUsuarioShow(Sender: TObject);
 begin
-  if not tsRFDUsuario.Enabled then
+(*  if not tsRFDUsuario.Enabled then
     exit;
 
   if not fsRFDLeuParams then
   begin
     meRFDHoraCadastro.Text    := FormatDateTime('hh:nn', ACBrRFD1.CONT_DataHoraCadastro) ;
+    edRFDGTCadastro.Text      := FormatFloat('0.00', ACBrRFD1.CONT_GTCadastro);
     edRFDRazaoSocial.Text     := ACBrRFD1.CONT_RazaoSocial;
     edRFDEndereco.Text        := ACBrRFD1.CONT_Endereco;
     edRFDCNPJ.Text            := ACBrRFD1.CONT_CNPJ;
@@ -3139,10 +3140,9 @@ begin
     seRFDNumeroCadastro.Value := ACBrRFD1.CONT_NumUsuario;
     deRFDDataCadastro.Date    := ACBrRFD1.CONT_DataHoraCadastro ;
     seRFDCROCadastro.Value    := ACBrRFD1.CONT_CROCadastro;
-    edRFDGTCadastro.Text      := FormatFloat('0.00', ACBrRFD1.CONT_GTCadastro);
 
     fsRFDLeuParams := True;
-  end;
+  end;*)
 end;
 
 procedure TFrmACBrMonitor.edRFDRazaoSocialChange(Sender: TObject);

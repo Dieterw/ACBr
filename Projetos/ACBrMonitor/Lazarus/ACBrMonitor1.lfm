@@ -5797,15 +5797,8 @@ object FrmACBrMonitor: TFrmACBrMonitor
   end
   object ACBrBoleto1: TACBrBoleto
     Cedente.TipoInscricao = pOutras
-    ACBrBoletoFC = ACBrBoletoFCFortes1
     left = 528
     top = 24
-  end
-  object ACBrBoletoFCFortes1: TACBrBoletoFCFortes
-    ACBrBoleto = ACBrBoleto1
-    DirLogo = '.\logos'
-    left = 528
-    top = 72
   end
   object ACBrValidador1: TACBrValidador
     IgnorarChar = './-'
@@ -5824,5 +5817,11 @@ object FrmACBrMonitor: TFrmACBrMonitor
     ProxyPort = '8080'
     left = 250
     top = 55
+  end
+  object ACBrBoletoFCLazReport1: TACBrBoletoFCLazReport
+    ACBrBoleto = ACBrBoleto1
+    SoftwareHouse = 'Projeto ACBr - http://acbr.sf.net'
+    left = 530
+    top = 64
   end
 end

@@ -72,4 +72,4 @@ object dm: Tdm
     left = 186
     top = 12
   end
-end
+end

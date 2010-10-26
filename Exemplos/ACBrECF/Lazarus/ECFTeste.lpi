@@ -18,7 +18,7 @@
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
       <MinorVersionNr Value="9"/>
-      <BuildNr Value="6"/>
+      <BuildNr Value="7"/>
       <Language Value="0416"/>
       <CharSet Value="04B0"/>
       <StringTable ProductVersion=""/>
@@ -57,7 +57,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="11" Y="12"/>
-        <UsageCount Value="88"/>
+        <UsageCount Value="93"/>
       </Unit0>
       <Unit1>
         <Filename Value="ecfteste1.pas"/>
@@ -65,11 +65,12 @@
         <ComponentName Value="Form1"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ECFTeste1"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
-        <CursorPos X="8" Y="8"/>
-        <UsageCount Value="88"/>
+        <TopLine Value="4"/>
+        <CursorPos X="62" Y="16"/>
+        <UsageCount Value="93"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit1>
@@ -82,7 +83,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="19"/>
         <CursorPos X="21" Y="40"/>
-        <UsageCount Value="88"/>
+        <UsageCount Value="93"/>
       </Unit2>
       <Unit3>
         <Filename Value="efetuapagamento.pas"/>
@@ -93,7 +94,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="95"/>
         <CursorPos X="37" Y="107"/>
-        <UsageCount Value="88"/>
+        <UsageCount Value="93"/>
       </Unit3>
       <Unit4>
         <Filename Value="relatorio.pas"/>
@@ -104,7 +105,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="21" Y="8"/>
-        <UsageCount Value="88"/>
+        <UsageCount Value="93"/>
       </Unit4>
       <Unit5>
         <Filename Value="sobre.pas"/>
@@ -115,7 +116,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="20"/>
         <CursorPos X="65" Y="45"/>
-        <UsageCount Value="88"/>
+        <UsageCount Value="93"/>
       </Unit5>
       <Unit6>
         <Filename Value="vendeitem.pas"/>
@@ -126,7 +127,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="82"/>
         <CursorPos X="1" Y="108"/>
-        <UsageCount Value="88"/>
+        <UsageCount Value="93"/>
       </Unit6>
     </Units>
   </ProjectOptions>
@@ -145,6 +146,10 @@
       </SyntaxOptions>
     </Parsing>
     <Linking>
+      <Debugging>
+        <UseLineInfoUnit Value="False"/>
+        <StripSymbols Value="True"/>
+      </Debugging>
       <Options>
         <Win32>
           <GraphicApplication Value="True"/>
@@ -159,13 +164,7 @@
     </Other>
   </CompilerOptions>
   <Debugging>
-    <BreakPoints Count="1">
-      <Item1>
-        <Source Value="..\..\..\Fontes\ACBrSerial\ACBrECFBematech.pas"/>
-        <Line Value="687"/>
-      </Item1>
-    </BreakPoints>
-    <Exceptions Count="8">
+    <Exceptions Count="8" IgnoreAll="True">
       <Item1>
         <Name Value="ESynaSerError"/>
       </Item1>

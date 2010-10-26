@@ -42,7 +42,7 @@ uses
   ACBrECF, ACBrRFD, ACBrBAL, ACBrETQ, ACBrSocket, ACBrCEP, ACBrIBGE ;
 
 const
-   Versao = '0.9b' ;
+   Versao = '0.9.1b' ;
    _C = 'tYk*5W@' ;
 
 type

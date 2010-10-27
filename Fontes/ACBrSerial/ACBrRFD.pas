@@ -250,10 +250,10 @@ TACBrRFD = class( TACBrComponent )     { Componente ACBrRFD }
     procedure SetSH_RazaoSocial(const AValue: String);
     procedure SetSH_VersaoAplicativo(const AValue: String);
     procedure SetAtoCotepe(const AValue: String);
-    procedure SetCONT_RazaoSocial(AValue: String);
-    procedure SetCONT_Endereco(AValue: String);
-    procedure SetCONT_CNPJ(AValue: String);
-    procedure SetCONT_IE(AValue: String);
+    procedure SetCONT_RazaoSocial(const AValue: String);
+    procedure SetCONT_Endereco(const AValue: String);
+    procedure SetCONT_CNPJ(const AValue: String);
+    procedure SetCONT_IE(const AValue: String);
     procedure SetECF_RFDID(const AValue: String);
     procedure SetECF(const AValue: TACBrComponent);
     procedure SetAtivo(const AValue: Boolean);
@@ -317,8 +317,8 @@ TACBrRFD = class( TACBrComponent )     { Componente ACBrRFD }
     property AtoCotepe    : String  read fsAtoCotepe    write SetAtoCotepe ;
 
     { DADOS DO CONTRIBUINTE }
-    property CONT_CNPJ    : String read fsCONT_CNPJ write SetCONT_CNPJ ;
-    property CONT_IE      : String read fsCONT_IE write SetCONT_IE ;
+    property CONT_CNPJ : String read fsCONT_CNPJ write SetCONT_CNPJ ;
+    property CONT_IE   : String read fsCONT_IE write SetCONT_IE ;
     property CONT_NumUsuario : Integer read fsCONT_NumUsuario
        write fsCONT_NumUsuario ;
     property CONT_RazaoSocial : String  read fsCONT_RazaoSocial
@@ -1539,9 +1539,9 @@ begin
 
         wCNPJECF    := Poem_Zeros( fsCONT_CNPJ, 14) ;
         wNumUsuario := IntToStrZero( fsCONT_NumUsuario, 2) ;
-        wNumCRZ := Poem_Zeros( Ini.ReadString('ECF','NumCRZ','0'), 6) ;
-        wDiaMov := DtoS( DiaMov ) ;
-        wTipoECF:= PadL( cRFDTipoECF, 7) ;
+        wNumCRZ     := Poem_Zeros( Ini.ReadString('ECF','NumCRZ','0'), 6) ;
+        wDiaMov     := DtoS( DiaMov ) ;
+        wTipoECF    := PadL( cRFDTipoECF, 7) ;
         if fsECF_DataHoraSwBasico = 0 then
            wDtHrSwBasico := StringOfChar(' ',14)
         else
@@ -1875,18 +1875,18 @@ begin
 
      AtoCotepe := Ini.ReadString('ECF', 'VersaoAtoCotepe', cRFDAtoCotepe ) ;
 
-     CONT_RazaoSocial      := Ini.ReadString('CONTRIBUINTE', 'Nome', '' ) ;
-     CONT_CNPJ             := Ini.ReadString('CONTRIBUINTE', 'CNPJ', '' ) ;
-     CONT_IE               := Ini.ReadString('CONTRIBUINTE', 'IE', '' ) ;
-     CONT_Endereco         := Ini.ReadString('CONTRIBUINTE', 'Endereco', '' ) ;
-     CONT_NumUsuario       := Ini.ReadInteger('CONTRIBUINTE', 'NumUsuario', -1 ) ;
+     CONT_RazaoSocial := Ini.ReadString('CONTRIBUINTE', 'Nome', '' ) ;
+     CONT_CNPJ        := Ini.ReadString('CONTRIBUINTE', 'CNPJ', '' ) ;
+     CONT_IE          := Ini.ReadString('CONTRIBUINTE', 'IE', '' ) ;
+     CONT_Endereco    := Ini.ReadString('CONTRIBUINTE', 'Endereco', '' ) ;
+     CONT_NumUsuario  := Ini.ReadInteger('CONTRIBUINTE', 'NumUsuario', -1 ) ;
      try
         CONT_DataHoraCadastro := StoD( Ini.ReadString('CONTRIBUINTE', 'DataHoraCadastro', '' ) ) ;
      except
         CONT_DataHoraCadastro := 0 ;
      end ;
-     CONT_CROCadastro      := Ini.ReadInteger('CONTRIBUINTE', 'CROCadastro', -1 ) ;
-     CONT_GTCadastro       := Ini.ReadFloat('CONTRIBUINTE', 'GTCadastro', -1 ) ;
+     CONT_CROCadastro := Ini.ReadInteger('CONTRIBUINTE', 'CROCadastro', -1 ) ;
+     CONT_GTCadastro  := Ini.ReadFloat('CONTRIBUINTE', 'GTCadastro', -1 ) ;
   finally
      Ini.Free ;
   end ;
@@ -1995,22 +1995,22 @@ begin
   FACBrEAD.OnGetKeyRSA := AValue;
 end;
 
-procedure TACBrRFD.SetCONT_Endereco(AValue: String);
+procedure TACBrRFD.SetCONT_Endereco(const AValue: String);
 begin
   fsCONT_Endereco := Trim(LeftStr(AValue,120));
 end;
 
-procedure TACBrRFD.SetCONT_CNPJ(AValue: String);
+procedure TACBrRFD.SetCONT_CNPJ(const AValue: String);
 begin
   fsCONT_CNPJ := Trim(LeftStr( OnlyNumber( AValue ), 14));
 end;
 
-procedure TACBrRFD.SetCONT_IE(AValue: String);
+procedure TACBrRFD.SetCONT_IE(const AValue: String);
 begin
   fsCONT_IE := Trim(LeftStr( OnlyNumber( AValue ), 14));
 end;
 
-procedure TACBrRFD.SetCONT_RazaoSocial(AValue: String);
+procedure TACBrRFD.SetCONT_RazaoSocial(const AValue: String);
 begin
   fsCONT_RazaoSocial := Trim(LeftStr( AValue, 40));
 end;

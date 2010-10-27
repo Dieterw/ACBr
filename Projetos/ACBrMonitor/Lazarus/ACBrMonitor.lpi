@@ -183,10 +183,6 @@
       <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Linking>
-      <Debugging>
-        <GenerateDebugInfo Value="True"/>
-        <UseHeaptrc Value="True"/>
-      </Debugging>
       <Options>
         <Win32>
           <GraphicApplication Value="True"/>
@@ -201,7 +197,7 @@
     </Other>
   </CompilerOptions>
   <Debugging>
-    <Exceptions Count="10">
+    <Exceptions Count="11">
       <Item1>
         <Name Value="EAbort"/>
       </Item1>
@@ -232,6 +228,9 @@
       <Item10>
         <Name Value="EACBrCEPHTTPError"/>
       </Item10>
+      <Item11>
+        <Name Value="EConvertError"/>
+      </Item11>
     </Exceptions>
   </Debugging>
 </CONFIG>

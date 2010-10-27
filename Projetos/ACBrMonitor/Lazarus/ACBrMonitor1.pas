@@ -525,7 +525,6 @@ type
     procedure seRFDCROCadastroChanged(Sender: TObject);
     procedure edRFDGTCadastroKeyPress(Sender: TObject; var Key: char);
     procedure edRFDGTCadastroExit(Sender: TObject);
-    procedure tsRFDUsuarioShow(Sender: TObject);
     procedure tsRFDRSAShow(Sender: TObject);
     procedure cbSenhaClick(Sender: TObject);
     procedure bRFDRSAPrivadaClick(Sender: TObject);
@@ -543,7 +542,6 @@ type
     procedure bBALTestarClick(Sender: TObject);
     procedure sbECFSerialClick(Sender: TObject);
     procedure deRFDDataSwBasicoExit(Sender: TObject);
-    procedure tsRFDConfigShow(Sender: TObject);
     procedure cbETQModeloChange(Sender: TObject);
     procedure cbETQPortaChange(Sender: TObject);
     procedure bTCAtivarClick(Sender: TObject);
@@ -2978,6 +2976,8 @@ begin
   tsRFDINI.Enabled := tsRFDUsuario.Enabled;
 
   lRFDID.Caption := ACBrRFD1.ECF_RFDID;
+  deRFDDataSwBasico.Date := ACBrRFD1.ECF_DataHoraSwBasico ;
+  meRFDHoraSwBasico.Text := FormatDateTime('hh:nn', ACBrRFD1.ECF_DataHoraSwBasico);
 
   if ACBrECF1.Ativo then
     gbRFDECF.Hint := 'Selecione o Modelo do ECF'
@@ -3016,6 +3016,21 @@ begin
       end;
 
       ACBrRFD1.ECF_RFDID := lRFDID.Caption;
+
+      if not fsRFDLeuParams then
+      begin
+        edRFDRazaoSocial.Text     := ACBrRFD1.CONT_RazaoSocial;
+        edRFDEndereco.Text        := ACBrRFD1.CONT_Endereco;
+        edRFDCNPJ.Text            := ACBrRFD1.CONT_CNPJ;
+        edRFDIE.Text              := ACBrRFD1.CONT_IE;
+        seRFDNumeroCadastro.Value := ACBrRFD1.CONT_NumUsuario;
+        deRFDDataCadastro.Date    := ACBrRFD1.CONT_DataHoraCadastro ;
+        seRFDCROCadastro.Value    := ACBrRFD1.CONT_CROCadastro;
+        meRFDHoraCadastro.Text    := FormatDateTime('hh:nn', ACBrRFD1.CONT_DataHoraCadastro) ;
+        edRFDGTCadastro.Text      := FormatFloat('0.00', ACBrRFD1.CONT_GTCadastro);
+
+        fsRFDLeuParams := True;
+      end;
     end;
   end;
 end;
@@ -3041,13 +3056,6 @@ begin
     AllowChange := fsCNPJSWOK;
     pgConRFD.ActivePageIndex := 0;
   end;
-end;
-
-{-------------------------------- Aba Config ----------------------------------}
-procedure TFrmACBrMonitor.tsRFDConfigShow(Sender: TObject);
-begin
-  deRFDDataSwBasico.Date := ACBrRFD1.ECF_DataHoraSwBasico ;
-  meRFDHoraSwBasico.Text := FormatDateTime('hh:nn', ACBrRFD1.ECF_DataHoraSwBasico);
 end;
 
 procedure TFrmACBrMonitor.chRFDClick(Sender: TObject);
@@ -3122,28 +3130,6 @@ begin
   ACBrRFD1.ECF_DataHoraSwBasico := deRFDDataSwBasico.Date;
 end;
 
-
-{-------------------------------- Aba Usuario ---------------------------------}
-procedure TFrmACBrMonitor.tsRFDUsuarioShow(Sender: TObject);
-begin
-(*  if not tsRFDUsuario.Enabled then
-    exit;
-
-  if not fsRFDLeuParams then
-  begin
-    meRFDHoraCadastro.Text    := FormatDateTime('hh:nn', ACBrRFD1.CONT_DataHoraCadastro) ;
-    edRFDGTCadastro.Text      := FormatFloat('0.00', ACBrRFD1.CONT_GTCadastro);
-    edRFDRazaoSocial.Text     := ACBrRFD1.CONT_RazaoSocial;
-    edRFDEndereco.Text        := ACBrRFD1.CONT_Endereco;
-    edRFDCNPJ.Text            := ACBrRFD1.CONT_CNPJ;
-    edRFDIE.Text              := ACBrRFD1.CONT_IE;
-    seRFDNumeroCadastro.Value := ACBrRFD1.CONT_NumUsuario;
-    deRFDDataCadastro.Date    := ACBrRFD1.CONT_DataHoraCadastro ;
-    seRFDCROCadastro.Value    := ACBrRFD1.CONT_CROCadastro;
-
-    fsRFDLeuParams := True;
-  end;*)
-end;
 
 procedure TFrmACBrMonitor.edRFDRazaoSocialChange(Sender: TObject);
 begin

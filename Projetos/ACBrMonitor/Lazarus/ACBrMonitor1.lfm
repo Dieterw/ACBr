@@ -2719,7 +2719,6 @@ object FrmACBrMonitor: TFrmACBrMonitor
             ClientHeight = 149
             ClientWidth = 576
             ImageIndex = 3
-            OnShow = tsRFDConfigShow
             object sbDirRFD: TSpeedButton
               AnchorSideLeft.Control = edRFDDir
               AnchorSideLeft.Side = asrBottom
@@ -2991,7 +2990,6 @@ object FrmACBrMonitor: TFrmACBrMonitor
             ClientWidth = 576
             Font.Height = -12
             ImageIndex = 4
-            OnShow = tsRFDUsuarioShow
             ParentFont = False
             object Label46: TLabel
               AnchorSideLeft.Control = edRFDRazaoSocial
@@ -5797,6 +5795,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
   end
   object ACBrBoleto1: TACBrBoleto
     Cedente.TipoInscricao = pOutras
+    ACBrBoletoFC = ACBrBoletoFCLazReport1
     left = 528
     top = 24
   end

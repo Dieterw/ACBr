@@ -159,4 +159,4 @@ begin
   chSoftFlow.Checked := Device.SoftFlow ;
 end;
 
-end.
+end.

@@ -7,18 +7,19 @@ uses
   {$IFDEF UNIX}{$IFDEF UseCThreads}
   cthreads,
   {$ENDIF}{$ENDIF}
-  Interfaces, // this includes the LCL widgetset
+  Interfaces, sysutils,// this includes the LCL widgetset
   {$IFDEF MSWINDOWS}
    Windows, Dialogs,
   {$ENDIF}
   Forms, ACBrTCP, UtilUnit, ACBrMonitor1, CmdUnit, ConfiguraSerial, DoACBrUnit,
   DoBALUnit, DoCHQUnit, DoDISUnit, DoECFBemafi32, DoECFObserver, DoECFUnit,
-  DoETQUnit, DoGAVUnit, DoLCBUnit, Sobre, DoBoletoUnit, ACBrSerial, ACBr_Boleto, ACBrDiversos, ACBr_BoletoFC_LazReport, DoCEPUnit,
-  DoIBGEUnit;
+  DoETQUnit, DoGAVUnit, DoLCBUnit, Sobre, DoBoletoUnit, ACBrSerial, ACBr_Boleto,
+  ACBrDiversos, ACBr_BoletoFC_LazReport, DoCEPUnit, DoIBGEUnit;
 
 {$R *.res}
 
 begin
+  SetHeapTraceOutput(ExtractFilePath(ParamStr(0)) + 'heaptrclog.trc'); // Aqui.
   Application.Initialize;
 
   {$IFDEF MSWINDOWS}

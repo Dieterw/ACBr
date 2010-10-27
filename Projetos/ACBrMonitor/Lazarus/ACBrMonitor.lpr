@@ -3,10 +3,9 @@ program ACBrMonitor;
 {$mode objfpc}{$H+}
 
 uses
-  {$DEFINE UseCThreads}
-  {$IFDEF UNIX}{$IFDEF UseCThreads}
+  {$IFDEF UNIX}
   cthreads,
-  {$ENDIF}{$ENDIF}
+  {$ENDIF}
   Interfaces, sysutils,// this includes the LCL widgetset
   {$IFDEF MSWINDOWS}
    Windows, Dialogs,
@@ -19,7 +18,7 @@ uses
 {$R *.res}
 
 begin
-  SetHeapTraceOutput(ExtractFilePath(ParamStr(0)) + 'heaptrclog.trc'); // Aqui.
+  SetHeapTraceOutput(ExtractFilePath(ParamStr(0)) + 'heaptrclog.trc');
   Application.Initialize;
 
   {$IFDEF MSWINDOWS}

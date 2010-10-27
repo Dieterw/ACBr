@@ -351,6 +351,7 @@
   {$DEFINE COMPILER7}
   {$ASMMODE Intel}
   {$UNDEF BORLAND}
+  {$H+}
 {$ENDIF}
 
 {$IFDEF BORLAND}

@@ -260,6 +260,7 @@ type
     procedure SetNumero(const AValue: Integer);
   public
     constructor Create( AOwner : TComponent); override;
+    destructor Destroy ; override ;
 
     property ACBrBoleto : TACBrBoleto     read fACBrBoleto;
     property BancoClass : TACBrBancoClass read fBancoClass ;
@@ -1034,6 +1035,27 @@ begin
    Result := inherited Add(Obj) ;
 end;
 
+{ TACBrBanco }
+
+constructor TACBrBanco.Create ( AOwner: TComponent ) ;
+begin
+   inherited Create ( AOwner ) ;
+
+   if not (AOwner is TACBrBoleto) then
+      raise Exception.Create('Aowner deve ser do tipo TACBrBoleto');
+
+   fACBrBoleto  := TACBrBoleto(AOwner);
+   fNumeroBanco := 0;
+
+   fBancoClass := TACBrBancoClass.create(Self);
+end;
+
+destructor TACBrBanco.Destroy ;
+begin
+  fBancoClass.Free;
+  inherited ;
+end ;
+
 function TACBrBanco.GetNome: String;
 begin
    Result := ACBrStr(fBancoClass.Nome);
@@ -1078,21 +1100,6 @@ begin
    end;
 
    fNumeroBanco := AValue;
-end;
-
-{ TACBrBanco }
-
-constructor TACBrBanco.Create ( AOwner: TComponent ) ;
-begin
-   inherited Create ( AOwner ) ;
-
-   if not (AOwner is TACBrBoleto) then
-      raise Exception.Create('Aowner deve ser do tipo TACBrBoleto');
-
-   fACBrBoleto  := TACBrBoleto(AOwner);
-   fNumeroBanco := 0;
-
-   fBancoClass := TACBrBancoClass.create(Self);
 end;
 
 function TACBrBanco.TipoOcorrenciaToDescricao( const TipoOcorrencia: TACBrTipoOcorrencia
@@ -1193,6 +1200,83 @@ end;
 
 
 { TACBrBancoClass }
+
+constructor TACBrBancoClass.create(AOwner: TACBrBanco);
+begin
+   inherited create;
+
+   fpAOwner := AOwner;
+   fpDigito := 0;
+   fpNome   := 'Não definido';
+   fpTamanhoMaximoNossoNum := 10;
+   fpModulo := TACBrCalcDigito.Create;
+end;
+
+destructor TACBrBancoClass.Destroy;
+begin
+   fpModulo.Free;
+   Inherited Destroy;
+end;
+
+function TACBrBancoClass.GerarRegistroHeader400( NumeroRemessa: Integer): String;
+begin
+  { Método implementado apenas para evitar Warnings de compilação (poderia ser abstrato)
+    Você de fazer "override" desse método em todas as classes filhas de TACBrBancoClass }
+  Result := '' ;
+  raise Exception.Create( ACBrStr('Geracao do arquivo Remessa em 400 colunas não implementada o banco '+ Nome+'.')) ;
+end;
+
+function TACBrBancoClass.GerarRegistroHeader240 ( NumeroRemessa: Integer
+   ) : String;
+begin
+  Result := '';
+  raise Exception.Create( ACBrStr('Geracao do arquivo Remessa em 240 colunas não implementada para o banco '+ Nome+'.')) ;
+end;
+
+function TACBrBancoClass.GerarRegistroTrailler400( ARemessa: TStringList): String;
+begin
+  { Método implementado apenas para evitar Warnings de compilação (poderia ser abstrato)
+    Você de fazer "override" desse método em todas as classes filhas de TACBrBancoClass }
+  Result := '' ;
+end;
+
+function TACBrBancoClass.MontarCampoCodigoCedente(
+  const ACBrTitulo: TACBrTitulo): String;
+begin
+  Result := '';
+end;
+
+
+function TACBrBancoClass.GerarRegistroTrailler240 ( ARemessa: TStringList
+   ) : String;
+begin
+   Result:= '';
+end;
+
+Procedure TACBrBancoClass.LerRetorno400 ( ARetorno: TStringList );
+begin
+   raise Exception.Create( ACBrStr('Leitura do arquivo Retorno em 400 '+
+                           'colunas não implementada no banco '+ Nome+'.')) ;
+end;
+
+Procedure TACBrBancoClass.LerRetorno240 ( ARetorno: TStringList );
+begin
+   raise Exception.Create( ACBrStr('Leitura do arquivo Retorno em 240 '+
+                           'colunas não implementada no banco '+ Nome+'.')) ;
+end;
+
+function TACBrBancoClass.GerarRegistroTransacao400(  ACBrTitulo: TACBrTitulo): String;
+begin
+  { Método implementado apenas para evitar Warnings de compilação (poderia ser abstrato)
+    Você de fazer "override" desse método em todas as classes filhas de TACBrBancoClass }
+   Result:= '';
+end;
+
+function TACBrBancoClass.GerarRegistroTransacao240 ( ACBrTitulo: TACBrTitulo
+   ) : String;
+begin
+   Result:= '';
+end;
 
 function TACBrBancoClass.CalcularDigitoVerificador(const ACBrTitulo :TACBrTitulo ): String;
 begin
@@ -1430,85 +1514,6 @@ begin
    if (Cedente.Nome= '') or (cedente.Conta = '') or (Cedente.ContaDigito ='') or
       (Cedente.Agencia = '') or (Cedente.AgenciaDigito = '') then
      raise Exception.Create('Informações do Cedente Imcompletas');
-end;
-
-{ TACBrBancoClass }
-
-constructor TACBrBancoClass.create(AOwner: TACBrBanco);
-begin
-   inherited create;
-
-   fpAOwner := AOwner;
-   fpDigito := 0;
-   fpNome   := 'Não definido';
-   fpTamanhoMaximoNossoNum := 10;
-   fpModulo := TACBrCalcDigito.Create;
-end;
-
-destructor TACBrBancoClass.Destroy;
-begin
-   fpModulo.Free;
-   Inherited Destroy;
-end;
-
-function TACBrBancoClass.GerarRegistroHeader400( NumeroRemessa: Integer): String;
-begin
-  { Método implementado apenas para evitar Warnings de compilação (poderia ser abstrato)
-    Você de fazer "override" desse método em todas as classes filhas de TACBrBancoClass }
-  Result := '' ;
-  raise Exception.Create( ACBrStr('Geracao do arquivo Remessa em 400 colunas não implementada o banco '+ Nome+'.')) ;
-end;
-
-function TACBrBancoClass.GerarRegistroHeader240 ( NumeroRemessa: Integer
-   ) : String;
-begin
-  Result := '';
-  raise Exception.Create( ACBrStr('Geracao do arquivo Remessa em 240 colunas não implementada para o banco '+ Nome+'.')) ;
-end;
-
-function TACBrBancoClass.GerarRegistroTrailler400( ARemessa: TStringList): String;
-begin
-  { Método implementado apenas para evitar Warnings de compilação (poderia ser abstrato)
-    Você de fazer "override" desse método em todas as classes filhas de TACBrBancoClass }
-  Result := '' ;
-end;
-
-function TACBrBancoClass.MontarCampoCodigoCedente(
-  const ACBrTitulo: TACBrTitulo): String;
-begin
-  Result := '';
-end;
-
-
-function TACBrBancoClass.GerarRegistroTrailler240 ( ARemessa: TStringList
-   ) : String;
-begin
-   Result:= '';
-end;
-
-Procedure TACBrBancoClass.LerRetorno400 ( ARetorno: TStringList );
-begin
-   raise Exception.Create( ACBrStr('Leitura do arquivo Retorno em 400 '+
-                           'colunas não implementada no banco '+ Nome+'.')) ;
-end;
-
-Procedure TACBrBancoClass.LerRetorno240 ( ARetorno: TStringList );
-begin
-   raise Exception.Create( ACBrStr('Leitura do arquivo Retorno em 240 '+
-                           'colunas não implementada no banco '+ Nome+'.')) ;
-end;
-
-function TACBrBancoClass.GerarRegistroTransacao400(  ACBrTitulo: TACBrTitulo): String;
-begin
-  { Método implementado apenas para evitar Warnings de compilação (poderia ser abstrato)
-    Você de fazer "override" desse método em todas as classes filhas de TACBrBancoClass }
-   Result:= '';
-end;
-
-function TACBrBancoClass.GerarRegistroTransacao240 ( ACBrTitulo: TACBrTitulo
-   ) : String;
-begin
-   Result:= '';
 end;
 
 { TACBrBoletoFCClass }

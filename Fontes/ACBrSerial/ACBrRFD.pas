@@ -99,7 +99,7 @@ TACBrRFDItemCupom = class
     fsCancelado: Char ;
     fsUnidade: String;
     fsAcrescimo: Double;
-    procedure SetCancelado(const Value: Char);
+    procedure SetCancelado(const AValue: Char);
  public
     constructor create ;
 
@@ -147,12 +147,12 @@ TACBrRFDCupom = class
     fsPagamentos: TObjectList;
     fsNomeArq: String;
 
-    procedure SetOrdemDA(const Value: Char);
-    procedure SetTipoAcrescimo(const Value: Char);
-    procedure SetTipoDesconto(const Value: Char);
-    procedure SetCancelado(const Value: Char);
-    procedure SetDoctoConsumidor(const Value: String);
-    procedure SetNomeArq(const Value: String);
+    procedure SetOrdemDA(const AValue: Char);
+    procedure SetTipoAcrescimo(const AValue: Char);
+    procedure SetTipoDesconto(const AValue: Char);
+    procedure SetCancelado(const AValue: Char);
+    procedure SetDoctoConsumidor(const AValue: String);
+    procedure SetNomeArq(const AValue: String);
 
     procedure ZeraCupom ;
     procedure Le ;
@@ -239,25 +239,25 @@ TACBrRFD = class( TACBrComponent )     { Componente ACBrRFD }
     Procedure CriarArqRFDID ;
     Procedure GerarRFD ;
 
-    procedure SetSH_CNPJ(const Value: String);
-    procedure SetSH_COO(const Value: String);
-    procedure SetSH_IE(const Value: String);
-    procedure SetSH_IM(const Value: String);
-    procedure SetSH_Linha1(const Value: String);
-    procedure SetSH_Linha2(const Value: String);
-    procedure SetSH_NomeAplicativo(const Value: String);
-    procedure SetSH_NumeroAplicativo(const Value: String);
-    procedure SetSH_RazaoSocial(const Value: String);
-    procedure SetSH_VersaoAplicativo(const Value: String);
-    procedure SetAtoCotepe(const Value: String);
-    procedure SetCONT_RazaoSocial(const Value: String);
-    procedure SetCONT_Endereco(const Value: String);
-    procedure SetCONT_CNPJ(const Value: String);
-    procedure SetCONT_IE(const Value: String);
-    procedure SetECF_RFDID(const Value: String);
-    procedure SetECF(const Value: TACBrComponent);
-    procedure SetAtivo(const Value: Boolean);
-    procedure SetDirRFD(const Value: String);
+    procedure SetSH_CNPJ(const AValue: String);
+    procedure SetSH_COO(const AValue: String);
+    procedure SetSH_IE(const AValue: String);
+    procedure SetSH_IM(const AValue: String);
+    procedure SetSH_Linha1(const AValue: String);
+    procedure SetSH_Linha2(const AValue: String);
+    procedure SetSH_NomeAplicativo(const AValue: String);
+    procedure SetSH_NumeroAplicativo(const AValue: String);
+    procedure SetSH_RazaoSocial(const AValue: String);
+    procedure SetSH_VersaoAplicativo(const AValue: String);
+    procedure SetAtoCotepe(const AValue: String);
+    procedure SetCONT_RazaoSocial(AValue: String);
+    procedure SetCONT_Endereco(AValue: String);
+    procedure SetCONT_CNPJ(AValue: String);
+    procedure SetCONT_IE(AValue: String);
+    procedure SetECF_RFDID(const AValue: String);
+    procedure SetECF(const AValue: TACBrComponent);
+    procedure SetAtivo(const AValue: Boolean);
+    procedure SetDirRFD(const AValue: String);
     function GetDirRFD: String;
     function GetArqINI: String;
 
@@ -266,17 +266,17 @@ TACBrRFD = class( TACBrComponent )     { Componente ACBrRFD }
     function VerificaHashLinhaLog(var Linha: String): Boolean;
     function CalcHashLinhaLog(Linha: String): String;
 
-    procedure SetDiaMov(const Value: TDateTime);
+    procedure SetDiaMov(const AValue: TDateTime);
     property pDiaMov : TDateTime read fsDiaMov write SetDiaMov ;
     procedure LeUltimaReducaoZ;
     procedure VerificaNovoDia;
 
 
     function GetOnRFDCalcEAD: TACBrCalcEAD;
-    procedure SetOnRFDCalcEAD (const Value: TACBrCalcEAD);
+    procedure SetOnRFDCalcEAD (const AValue: TACBrCalcEAD);
 
     function GetOnRFDGetKeyRSA: TACBrEADGetKeyRSA;
-    procedure SetOnRFDGetKeyRSA (const Value: TACBrEADGetKeyRSA);
+    procedure SetOnRFDGetKeyRSA (const AValue: TACBrEADGetKeyRSA);
 
   protected
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
@@ -401,12 +401,12 @@ begin
   fsUnidade       := '' ;
 end;
 
-procedure TACBrRFDItemCupom.SetCancelado(const Value: Char);
+procedure TACBrRFDItemCupom.SetCancelado(const AValue: Char);
 begin
-  if not (UpCase(Value) in ['S','N']) then
+  if not (UpCase(AValue) in ['S','N']) then
      raise Exception.Create(ACBrStr('Valores válidos para TACBrRFDItemCupom.Cancelado, "S" ou "N"')) ;
 
-  fsCancelado := UpCase( Value );
+  fsCancelado := UpCase( AValue );
 end;
 
 
@@ -450,9 +450,9 @@ begin
   fsPagamentos.Clear ;
 end;
 
-procedure TACBrRFDCupom.SetNomeArq(const Value: String);
+procedure TACBrRFDCupom.SetNomeArq(const AValue: String);
 begin
-  fsNomeArq := Value;
+  fsNomeArq := AValue;
   Le ;
 end;
 
@@ -842,41 +842,41 @@ begin
   SysUtils.DeleteFile( fsNomeArq ) ;
 end;
 
-procedure TACBrRFDCupom.SetOrdemDA(const Value: Char);
+procedure TACBrRFDCupom.SetOrdemDA(const AValue: Char);
 begin
-  if not (UpCase(Value) in ['D','A']) then
+  if not (UpCase(AValue) in ['D','A']) then
      raise Exception.Create(ACBrStr('Valores válidos para TACBrRFDE14.OrdemDA, "D" ou "A"')) ;
 
-  fsOrdemDA := UpCase( Value );
+  fsOrdemDA := UpCase( AValue );
 end;
 
-procedure TACBrRFDCupom.SetTipoAcrescimo(const Value: Char);
+procedure TACBrRFDCupom.SetTipoAcrescimo(const AValue: Char);
 begin
-  if not (UpCase(Value) in ['V','P']) then
+  if not (UpCase(AValue) in ['V','P']) then
      raise Exception.Create(ACBrStr('Valores válidos para TACBrRFDE14.TipoAcrescimo, "V" ou "P"')) ;
 
-  fsTipoAcrescimo := UpCase( Value );
+  fsTipoAcrescimo := UpCase( AValue );
 end;
 
-procedure TACBrRFDCupom.SetTipoDesconto(const Value: Char);
+procedure TACBrRFDCupom.SetTipoDesconto(const AValue: Char);
 begin
-  if not (UpCase(Value) in ['V','P']) then
+  if not (UpCase(AValue) in ['V','P']) then
      raise Exception.Create(ACBrStr('Valores válidos para TACBrRFDE14.TipoDesconto, "V" ou "P"')) ;
 
-  fsTipoDesconto := UpCase( Value );
+  fsTipoDesconto := UpCase( AValue );
 end;
 
-procedure TACBrRFDCupom.SetCancelado(const Value: Char);
+procedure TACBrRFDCupom.SetCancelado(const AValue: Char);
 begin
-  if not (UpCase(Value) in ['S','N']) then
+  if not (UpCase(AValue) in ['S','N']) then
      raise Exception.Create(ACBrStr('Valores válidos para TACBrRFDE14.Cancelado, "S" ou "N"')) ;
 
-  fsCancelado := UpCase( Value );
+  fsCancelado := UpCase( AValue );
 end;
 
-procedure TACBrRFDCupom.SetDoctoConsumidor(const Value: String);
+procedure TACBrRFDCupom.SetDoctoConsumidor(const AValue: String);
 begin
-  fsDoctoConsumidor := Trim( OnlyNumber( Value ) ) ;
+  fsDoctoConsumidor := Trim( OnlyNumber( AValue ) ) ;
 end;
 
 
@@ -916,9 +916,9 @@ begin
   inherited Destroy ;
 end;
 
-procedure TACBrRFD.SetAtivo(const Value: Boolean);
+procedure TACBrRFD.SetAtivo(const AValue: Boolean);
 begin
-  if Value then
+  if AValue then
      Ativar
   else
      Desativar ;
@@ -1202,9 +1202,9 @@ begin
   end ;
 end;
 
-procedure TACBrRFD.SetDiaMov(const Value: TDateTime);
+procedure TACBrRFD.SetDiaMov(const AValue: TDateTime);
 begin
-  fsDiaMov      := DateOf( Value );
+  fsDiaMov      := DateOf( AValue );
   fsArqRFD      := NomeArqRFD( fsDiaMov ) ;
   fsDirECFMes   := ExtractFilePath( fsArqRFD ) ;
   fsArqReducaoZ := fsDirECFMes + PathDelim +
@@ -1246,14 +1246,14 @@ begin
   Result := FACBrEAD.OnGetKeyRSA;
 end;
 
-procedure TACBrRFD.SetDirRFD(const Value: String);
+procedure TACBrRFD.SetDirRFD(const AValue: String);
 begin
-  if fsDirRFD = Value then exit ;
+  if fsDirRFD = AValue then exit ;
 
   if fsAtivo then
      raise Exception.Create(ACBrStr('DirRFD não pode ser modificado com o ACBrRFD Ativo'));
 
-  fsDirRFD := PathWithoutDelim( Value ) ;    { Remove ultimo PathDelim }
+  fsDirRFD := PathWithoutDelim( AValue ) ;    { Remove ultimo PathDelim }
 end;
 
 
@@ -1925,121 +1925,121 @@ begin
 end;
 
 
-procedure TACBrRFD.SetSH_RazaoSocial(const Value: String);
+procedure TACBrRFD.SetSH_RazaoSocial(const AValue: String);
 begin
-  fsSH_RazaoSocial := LeftStr(Value,40) ;
+  fsSH_RazaoSocial := LeftStr(AValue,40) ;
 end;
 
-procedure TACBrRFD.SetSH_CNPJ(const Value: String);
+procedure TACBrRFD.SetSH_CNPJ(const AValue: String);
 begin
-  fsSH_CNPJ := Trim( OnlyNumber( Value ) ) ;
+  fsSH_CNPJ := Trim( OnlyNumber( AValue ) ) ;
 end;
 
-procedure TACBrRFD.SetSH_IE(const Value: String);
+procedure TACBrRFD.SetSH_IE(const AValue: String);
 begin
-  fsSH_IE := Trim( OnlyNumber( Value ) ) ;
+  fsSH_IE := Trim( OnlyNumber( AValue ) ) ;
 end;
 
-procedure TACBrRFD.SetSH_IM(const Value: String);
+procedure TACBrRFD.SetSH_IM(const AValue: String);
 begin
-  fsSH_IM := Trim( OnlyNumber( Value ) ) ;
+  fsSH_IM := Trim( OnlyNumber( AValue ) ) ;
 end;
 
-procedure TACBrRFD.SetSH_COO(const Value: String);
+procedure TACBrRFD.SetSH_COO(const AValue: String);
 begin
-  fsSH_COO := Trim( OnlyNumber( Value ) ) ;
+  fsSH_COO := Trim( OnlyNumber( AValue ) ) ;
 end;
 
-procedure TACBrRFD.SetSH_Linha1(const Value: String);
+procedure TACBrRFD.SetSH_Linha1(const AValue: String);
 begin
-  fsSH_Linha1 := LeftStr( Value, 42);
+  fsSH_Linha1 := LeftStr( AValue, 42);
 end;
 
-procedure TACBrRFD.SetSH_Linha2(const Value: String);
+procedure TACBrRFD.SetSH_Linha2(const AValue: String);
 begin
-  fsSH_Linha2 := LeftStr( Value, 42);
+  fsSH_Linha2 := LeftStr( AValue, 42);
 end;
 
-procedure TACBrRFD.SetSH_NomeAplicativo(const Value: String);
+procedure TACBrRFD.SetSH_NomeAplicativo(const AValue: String);
 begin
-  fsSH_NomeAplicativo := LeftStr( Value, 40);
+  fsSH_NomeAplicativo := LeftStr( AValue, 40);
 end;
 
-procedure TACBrRFD.SetSH_NumeroAplicativo(const Value: String);
+procedure TACBrRFD.SetSH_NumeroAplicativo(const AValue: String);
 begin
-  fsSH_NumeroAplicativo := LeftStr( Value, 2);
+  fsSH_NumeroAplicativo := LeftStr( AValue, 2);
 end;
 
-procedure TACBrRFD.SetSH_VersaoAplicativo(const Value: String);
+procedure TACBrRFD.SetSH_VersaoAplicativo(const AValue: String);
 begin
-  fsSH_VersaoAplicativo := LeftStr( Value, 10);
+  fsSH_VersaoAplicativo := LeftStr( AValue, 10);
 end;
 
-procedure TACBrRFD.SetAtoCotepe(const Value: String);
+procedure TACBrRFD.SetAtoCotepe(const AValue: String);
 begin
-  fsAtoCotepe := LeftStr(Value, 15);
+  fsAtoCotepe := LeftStr(AValue, 15);
 end;
 
-procedure TACBrRFD.SetECF_RFDID(const Value: String);
+procedure TACBrRFD.SetECF_RFDID(const AValue: String);
 begin
-  fsECF_RFDID := LeftStr( UpperCase(Value), 3);
+  fsECF_RFDID := LeftStr( UpperCase(AValue), 3);
 end;
 
-procedure TACBrRFD.SetOnRFDCalcEAD(const Value: TACBrCalcEAD);
+procedure TACBrRFD.SetOnRFDCalcEAD(const AValue: TACBrCalcEAD);
 begin
-  FACBrEAD.OnCalcEAD := Value;
+  FACBrEAD.OnCalcEAD := AValue;
 end;
 
-procedure TACBrRFD.SetOnRFDGetKeyRSA(const Value: TACBrEADGetKeyRSA);
+procedure TACBrRFD.SetOnRFDGetKeyRSA(const AValue: TACBrEADGetKeyRSA);
 begin
-  FACBrEAD.OnGetKeyRSA := Value;
+  FACBrEAD.OnGetKeyRSA := AValue;
 end;
 
-procedure TACBrRFD.SetCONT_Endereco(const Value: String);
+procedure TACBrRFD.SetCONT_Endereco(AValue: String);
 begin
-  fsCONT_Endereco := Trim(LeftStr(Value,120));
+  fsCONT_Endereco := Trim(LeftStr(AValue,120));
 end;
 
-procedure TACBrRFD.SetCONT_CNPJ(const Value: String);
+procedure TACBrRFD.SetCONT_CNPJ(AValue: String);
 begin
-  fsCONT_CNPJ := Trim(LeftStr( OnlyNumber( Value ), 14));
+  fsCONT_CNPJ := Trim(LeftStr( OnlyNumber( AValue ), 14));
 end;
 
-procedure TACBrRFD.SetCONT_IE(const Value: String);
+procedure TACBrRFD.SetCONT_IE(AValue: String);
 begin
-  fsCONT_IE := Trim(LeftStr( OnlyNumber( Value ), 14));
+  fsCONT_IE := Trim(LeftStr( OnlyNumber( AValue ), 14));
 end;
 
-procedure TACBrRFD.SetCONT_RazaoSocial(const Value: String);
+procedure TACBrRFD.SetCONT_RazaoSocial(AValue: String);
 begin
-  fsCONT_RazaoSocial := Trim(LeftStr( Value, 40));
+  fsCONT_RazaoSocial := Trim(LeftStr( AValue, 40));
 end;
 
 
 
-procedure TACBrRFD.SetECF(const Value: TACBrComponent);
+procedure TACBrRFD.SetECF(const AValue: TACBrComponent);
   Var OldValue : TACBrECF ;
 begin
-  if Value <> fsECF then
+  if AValue <> fsECF then
   begin
-     if Value <> nil then
-        if not (Value is TACBrECF) then
+     if AValue <> nil then
+        if not (AValue is TACBrECF) then
            raise Exception.Create(ACBrStr('ACBrRFD.ECF deve ser do tipo TACBrECF')) ;
 
      if Assigned(fsECF) then
         fsECF.RemoveFreeNotification(Self);
 
      OldValue := TACBrECF(fsECF) ;   // Usa outra variavel para evitar Loop Infinito
-     fsECF := Value;                 // na remoção da associação dos componentes
+     fsECF := AValue;                 // na remoção da associação dos componentes
 
      if Assigned(OldValue) then
         if Assigned(OldValue.ECF) then
            OldValue.RFD := nil ;
 
-     if Value <> nil then
+     if AValue <> nil then
      begin
-        Value.FreeNotification(self);
-        TACBrECF(Value).RFD := self ;
+        AValue.FreeNotification(self);
+        TACBrECF(AValue).RFD := self ;
      end ;
   end ;
 end;

@@ -1510,20 +1510,20 @@ end;
 function TACBrECF.GetCNPJClass: String;
 begin
   ComandoLOG := 'CNPJ' ;
-  Result := fsECF.CNPJ ;
+  Result := Trim(fsECF.CNPJ) ;
 end;
 
 function TACBrECF.GetIEClass: String;
 begin
   ComandoLOG := 'IE' ;
-  Result := fsECF.IE ;
+  Result := Trim(fsECF.IE) ;
 end;
 
 //IMS 28/09/2009
 function TACBrECF.GetIMClass: String;
 begin
   ComandoLOG := 'IM' ;
-  Result := fsECF.IM ;
+  Result := Trim(fsECF.IM) ;
 end;
 function TACBrECF.GetClicheClass: String;
 begin

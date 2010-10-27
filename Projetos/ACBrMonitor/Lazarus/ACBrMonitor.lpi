@@ -10,6 +10,7 @@
       </Flags>
       <SessionStorage Value="InIDEConfig"/>
       <MainUnit Value="0"/>
+      <Title Value="ACBrMonitor"/>
       <ResourceType Value="res"/>
       <UseXPManifest Value="True"/>
       <Icon Value="0"/>
@@ -18,7 +19,6 @@
       <EnableI18N LFM="False"/>
     </i18n>
     <VersionInfo>
-      <UseVersionInfo Value="True"/>
       <MinorVersionNr Value="9"/>
       <RevisionNr Value="1"/>
       <Language Value="0416"/>
@@ -184,6 +184,7 @@
     </SearchPaths>
     <Linking>
       <Debugging>
+        <GenerateDebugInfo Value="True"/>
         <UseHeaptrc Value="True"/>
       </Debugging>
       <Options>

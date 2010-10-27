@@ -100,8 +100,6 @@
 |*    O Caractere ponto-e-vírgula ';' será considerado quebra de linha
 |* 10/08/2010: Peterson de Cerqueira Matos
 |*  - Tratamento do tamanho da fonte da razão social do emitente
-|* 27/10/2010: Peterson de Cerqueira Matos
-|*  - Acréscimo do campo Inscrição Municipal no quadro do emitente
 ******************************************************************************}
 {$I ACBr.inc}
 unit ACBrNFeDANFeRLRetrato;
@@ -487,9 +485,6 @@ type
     cdsItensCST2: TStringField;
     rllContingencia: TRLLabel;
     RLDraw4: TRLDraw;
-    RLDraw3: TRLDraw;
-    rllInscricaoMunicipal: TRLLabel;
-    RLLabel13: TRLLabel;
     procedure RLNFeBeforePrint(Sender: TObject; var PrintIt: Boolean);
     procedure rlbEmitenteBeforePrint(Sender: TObject;
       var PrintIt: Boolean);
@@ -1103,7 +1098,6 @@ begin
       rllRecebemosDe.Caption := Format (FRecebemoDe, [ XNome ]);
       rllInscricaoEstadual.Caption := IE;
       rllInscrEstSubst.caption := IEST;
-      rllInscricaoMunicipal.Caption := IM;
       rllCNPJ.Caption := NotaUtil.FormatarCNPJ(CNPJCPF );
       rlmEmitente.Lines.Text   := XNome;
       with EnderEmit do

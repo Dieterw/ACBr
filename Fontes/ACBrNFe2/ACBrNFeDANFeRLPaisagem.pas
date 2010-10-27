@@ -129,7 +129,6 @@ type
     rliNatOpe1: TRLDraw;
     RLDraw9: TRLDraw;
     RLDraw10: TRLDraw;
-    RLDraw11: TRLDraw;
     rllDANFE: TRLLabel;
     rllDocumento1: TRLLabel;
     rllDocumento2: TRLLabel;
@@ -516,8 +515,6 @@ type
     LinhaObsItemDireita: TRLDraw;
     rlmObsItem: TRLMemo;
     RLDraw2: TRLDraw;
-    RLLabel12: TRLLabel;
-    rllInscricaoMunicipal: TRLLabel;
     procedure RLNFeBeforePrint(Sender: TObject; var PrintIt: Boolean);
     procedure rlbEmitenteBeforePrint(Sender: TObject;
       var PrintIt: Boolean);
@@ -1146,8 +1143,7 @@ begin
 
       rllRecebemosDe.Caption := Format (FRecebemoDe, [ XNome ]);
       rllInscricaoEstadual.Caption := IE;
-      rllInscrEstSubst.Caption := IEST;      
-      rllInscricaoMunicipal.Caption := IM;
+      rllInscrEstSubst.caption := IEST;
       rllCNPJ.Caption := NotaUtil.FormatarCNPJ(CNPJCPF );
       rlmEmitente.Lines.Text   := XNome;
       with EnderEmit do

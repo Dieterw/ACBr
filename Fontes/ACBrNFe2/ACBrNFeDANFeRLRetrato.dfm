@@ -693,7 +693,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         HoldStyle = hsVertically
       end
       object RLDraw10: TRLDraw
-        Left = 246
+        Left = 185
         Top = 146
         Width = 1
         Height = 31
@@ -702,7 +702,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         HoldStyle = hsVertically
       end
       object RLDraw11: TRLDraw
-        Left = 492
+        Left = 555
         Top = 146
         Width = 1
         Height = 31
@@ -944,7 +944,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       end
       object RLLabel30: TRLLabel
         Tag = 10
-        Left = 249
+        Left = 188
         Top = 149
         Width = 144
         Height = 7
@@ -959,7 +959,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       end
       object RLLabel31: TRLLabel
         Tag = 10
-        Left = 495
+        Left = 558
         Top = 149
         Width = 21
         Height = 7
@@ -1052,7 +1052,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       object rllInscricaoEstadual: TRLLabel
         Left = 7
         Top = 159
-        Width = 234
+        Width = 170
         Height = 14
         AutoSize = False
         Font.Charset = DEFAULT_CHARSET
@@ -1063,9 +1063,9 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllInscrEstSubst: TRLLabel
-        Left = 253
+        Left = 192
         Top = 159
-        Width = 236
+        Width = 169
         Height = 14
         AutoSize = False
         Font.Charset = DEFAULT_CHARSET
@@ -1076,9 +1076,9 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllCNPJ: TRLLabel
-        Left = 499
+        Left = 562
         Top = 159
-        Width = 236
+        Width = 174
         Height = 14
         AutoSize = False
         Font.Charset = DEFAULT_CHARSET
@@ -1181,6 +1181,43 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Height = 1
         DrawKind = dkLine
         HoldStyle = hsHorizontally
+      end
+      object RLDraw3: TRLDraw
+        Left = 370
+        Top = 146
+        Width = 1
+        Height = 31
+        Angle = 90.000000000000000000
+        DrawKind = dkLine
+        HoldStyle = hsVertically
+      end
+      object rllInscricaoMunicipal: TRLLabel
+        Left = 377
+        Top = 159
+        Width = 170
+        Height = 14
+        AutoSize = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object RLLabel13: TRLLabel
+        Tag = 10
+        Left = 373
+        Top = 149
+        Width = 81
+        Height = 7
+        Caption = 'INSCRI'#199#195'O MUNICIPAL'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -7
+        Font.Name = 'Arial'
+        Font.Style = []
+        HoldStyle = hsRelatively
+        ParentFont = False
       end
     end
     object rlbDadosAdicionais: TRLBand

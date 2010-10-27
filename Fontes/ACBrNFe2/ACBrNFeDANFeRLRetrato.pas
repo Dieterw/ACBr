@@ -1600,21 +1600,24 @@ end;
 
 procedure TfrlDANFeRLRetrato.ISSQN;
 begin
-  if FNFe.Det.Items[0].Imposto.ISSQN.vISSQN = 0 then
-    rlbISSQN.Visible := False
-  else
+  with FNFe.Total.ISSQNtot do
     begin
-      rlbISSQN.Visible := True;
-      rllISSQNInscricao.Caption := '';
-      rllISSQNValorServicos.Caption :=
+      if FNFe.Emit.IM > '' then
+        begin
+          rlbISSQN.Visible := True;
+          rllISSQNInscricao.Caption := FNFe.Emit.IM;
+          rllISSQNValorServicos.Caption :=
                                 NotaUtil.FormatFloat(FNFe.Total.ISSQNtot.vServ,
                                 '###,###,##0.00');
-      rllISSQNBaseCalculo.Caption :=
+          rllISSQNBaseCalculo.Caption :=
                                   NotaUtil.FormatFloat(FNFe.Total.ISSQNtot.vBC,
                                   '###,###,##0.00');
-      rllISSQNValorISSQN.Caption :=
-                                NotaUtil.FormatFloat(FNFe.Total.ISSQNtot.vISS,
-                                '###,###,##0.00');
+          rllISSQNValorISSQN.Caption :=
+                                  NotaUtil.FormatFloat(FNFe.Total.ISSQNtot.vISS,
+                                  '###,###,##0.00');
+        end
+      else
+        rlbISSQN.Visible := False
     end;
 end;
 

@@ -4412,14 +4412,14 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
       object RLAngleLabel8: TRLAngleLabel
         Left = 13
         Top = 1
-        Width = 10
-        Height = 26
+        Width = 7
+        Height = 24
         Angle = 90.000000000000000000
         AngleBorders = True
         Caption = 'ISSQN'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
-        Font.Height = -8
+        Font.Height = -7
         Font.Name = 'Arial'
         Font.Style = [fsBold]
         Layout = tlCenter

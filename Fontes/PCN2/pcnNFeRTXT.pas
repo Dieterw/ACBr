@@ -200,7 +200,7 @@ begin
   for i := 0 to FLayoutArquivoTXT.count - 1 do
   begin
     s := FLayoutArquivoTXT[i];
-    if (pos('§' + FID + '|', s) > 0) and (j = 0) then
+    if (pos('§' + UpperCase(FID) + '|', s) > 0) and (j = 0) then
       j := LocalizarPosicaoTAG(UpperCase(TAG), s);
   end;
   k := 0;
@@ -240,6 +240,7 @@ begin
    (*B10a*)NFe.ide.hSaiEnt := LerCampo(tcHor, 'hSaiEnt');
     (*B11*)NFe.ide.tpNF := StrToTpNF(ok, LerCampo(tcStr, 'tpNF'));
     (*B12*)NFe.ide.cMunFG := LerCampo(tcInt, 'cMunFG');
+
     (*B21*)NFe.Ide.tpImp := StrToTpImp(ok, LerCampo(tcStr, 'tpImp'));
     (*B22*)NFe.Ide.tpEmis := StrToTpEmis(ok, LerCampo(tcStr, 'tpEmis'));
     (*B23*)NFe.Ide.cDV := LerCampo(tcInt, 'cDV');

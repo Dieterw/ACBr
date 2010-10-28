@@ -1,5 +1,5 @@
 {******************************************************************************}
-{ Projeto: ACBrNFeMonitor                                                        }
+{ Projeto: ACBrNFeMonitor                                                      }
 {  Executavel multiplataforma que faz uso do conjunto de componentes ACBr para }
 { criar uma interface de comunicação com equipamentos de automacao comercial.  }
 {                                                                              }
@@ -961,8 +961,8 @@ begin
          I := 1 ;
          while true do
           begin
-            sSecao    := 'NFRef'+IntToStrZero(I,3) ;
-            sFim   := INIRec.ReadString(sSecao,'refNFe','FIM') ;
+            sSecao := 'NFRef'+IntToStrZero(I,3) ;
+            sFim   := INIRec.ReadString(  sSecao,'Tipo'  ,'FIM');
             if (sFim = 'FIM') or (Length(sFim) <= 0) then
                break ;
 
@@ -971,7 +971,7 @@ begin
             with Ide.NFref.Add do
              begin
                if sTipo = 'NFE' then
-                  refNFe := sFim
+                  refNFe :=  INIRec.ReadString(sSecao,'refNFe','')
                else if sTipo = 'NF' then
                 begin
                   RefNF.cUF    := INIRec.ReadInteger( sSecao,'cUF'   ,0);

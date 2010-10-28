@@ -1840,7 +1840,7 @@ begin
 
           GravarINI;
 
-          fsLinesLog := 'Dados do RFD salvos com sucesso' ;
+          fsLinesLog := 'Dados do RFD gravados com sucesso' ;
           AddLinesLog;
        end ;
     end ;
@@ -1982,7 +1982,7 @@ begin
     Ini.Free;
   end;
 
-  fsLinesLog := 'Dados da Sw.House salvos com sucesso' ;
+  fsLinesLog := 'Dados da Sw.House gravados com sucesso' ;
   AddLinesLog;
 end;
 

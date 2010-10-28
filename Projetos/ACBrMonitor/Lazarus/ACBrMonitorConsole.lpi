@@ -480,9 +480,6 @@
       </Debugging>
     </Linking>
     <Other>
-      <CompilerMessages>
-        <UseMsgFile Value="True"/>
-      </CompilerMessages>
       <CustomOptions Value="-dCONSOLE
 -dUseCThreads"/>
       <CompilerPath Value="$(CompPath)"/>

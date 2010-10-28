@@ -982,10 +982,10 @@ object FrmACBrMonitor: TFrmACBrMonitor
       Height = 209
       Top = 1
       Width = 592
-      ActivePage = tsRFD
+      ActivePage = tsACBrBoleto
       Align = alClient
       Images = ImageList1
-      TabIndex = 6
+      TabIndex = 10
       TabOrder = 0
       object tsMonitor: TTabSheet
         Caption = '&Monitor'

@@ -18,7 +18,7 @@
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
       <MinorVersionNr Value="9"/>
-      <BuildNr Value="7"/>
+      <BuildNr Value="8"/>
       <Language Value="0416"/>
       <CharSet Value="04B0"/>
       <StringTable ProductVersion=""/>
@@ -57,7 +57,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="11" Y="12"/>
-        <UsageCount Value="93"/>
+        <UsageCount Value="97"/>
       </Unit0>
       <Unit1>
         <Filename Value="ecfteste1.pas"/>
@@ -69,8 +69,8 @@
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
         <TopLine Value="4"/>
-        <CursorPos X="12" Y="7"/>
-        <UsageCount Value="93"/>
+        <CursorPos X="88" Y="17"/>
+        <UsageCount Value="97"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit1>
@@ -83,7 +83,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="19"/>
         <CursorPos X="21" Y="40"/>
-        <UsageCount Value="93"/>
+        <UsageCount Value="97"/>
       </Unit2>
       <Unit3>
         <Filename Value="efetuapagamento.pas"/>
@@ -94,7 +94,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="95"/>
         <CursorPos X="37" Y="107"/>
-        <UsageCount Value="93"/>
+        <UsageCount Value="97"/>
       </Unit3>
       <Unit4>
         <Filename Value="relatorio.pas"/>
@@ -105,7 +105,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="21" Y="8"/>
-        <UsageCount Value="93"/>
+        <UsageCount Value="97"/>
       </Unit4>
       <Unit5>
         <Filename Value="sobre.pas"/>
@@ -116,7 +116,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="20"/>
         <CursorPos X="65" Y="45"/>
-        <UsageCount Value="93"/>
+        <UsageCount Value="97"/>
       </Unit5>
       <Unit6>
         <Filename Value="vendeitem.pas"/>
@@ -127,7 +127,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="82"/>
         <CursorPos X="1" Y="108"/>
-        <UsageCount Value="93"/>
+        <UsageCount Value="97"/>
       </Unit6>
     </Units>
   </ProjectOptions>
@@ -188,4 +188,4 @@
       </Item8>
     </Exceptions>
   </Debugging>
-</CONFIG>
+</CONFIG>

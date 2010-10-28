@@ -139,7 +139,7 @@ TACBrETQ = class( TACBrComponent )
   end ;
 
 implementation
-Uses ACBrUtil, ACBrETQPpla, ACBrETQPplb, ACBrETQZPLII, 
+Uses ACBrUtil, ACBrETQPpla, ACBrETQPplb, ACBrETQZplII,
      {$IFDEF COMPILER6_UP} StrUtils {$ELSE} ACBrD5{$ENDIF},
      Math;
 
@@ -371,4 +371,4 @@ end;
 
 end.
 
-
+

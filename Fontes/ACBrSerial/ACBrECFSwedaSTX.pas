@@ -125,6 +125,7 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
     xECF_ReproduzirMemoriaFiscalMFD : Function (tipo: PAnsichar; fxai: PAnsichar;
       fxaf:  PAnsichar; asc: PAnsichar; bin: PAnsichar): Integer; stdcall;
     xECF_FechaPortaSerial : Function: Integer; stdcall;
+    xECF_DownloadMF : Function(Arquivo:PAnsiChar):Integer; stdcall;
 
 
     procedure AbrePortaSerialDLL;
@@ -538,7 +539,6 @@ begin
   OldAtivo := Ativo ;
   try
     Ativo := False ;
-
     AbrePortaSerialDLL ;
 
     OldShortDateFormat := ShortDateFormat ;
@@ -991,6 +991,7 @@ Var
   Resp : Integer ;
   CooIni, CooFim : AnsiString ;
   OldAtivo : Boolean ;
+  PathBin:AnsiString;
 begin
   // Por: Magno System
   LoadDLLFunctions ;
@@ -998,13 +999,31 @@ begin
   OldAtivo := Ativo ;
   try
     Ativo := False ;
-
     AbrePortaSerialDLL ;
 
-    CooIni := IntToStrZero( COOInicial, 7 ) ;
-    CooFim := IntToStrZero( COOFinal, 7 ) ;
+    if Documentos = [docRZ] then
+    begin
+       {Por CRZ}
+       CooIni := IntToStrZero( COOInicial, 4 ) ;
+       CooFim := IntToStrZero( COOFinal, 4 ) ;
+    end
+    else
+    begin
+       {POr COO}
+       CooIni := IntToStrZero(COOInicial, 7);
+       CooFim := IntToStrZero( COOFinal, 7 ) ;
+    end;
+    PathBin := ExtractFilePath(NomeArquivo);
+    PathBin:= PathBin + 'MF.BIN';
+    Resp := xECF_DownloadMF(PAnsiChar(pathBin));
+    if Resp <> 1 then
+      raise Exception.Create( ACBrStr( 'Erro ao executar xECFDownloadMF'+sLineBreak+
+                                       'Cod.: '+IntToStr(Resp) ));
 
-    Resp := xECF_ReproduzirMemoriaFiscalMFD('2', PAnsiChar(CooIni), PAnsiChar(CooFim), PAnsichar( NomeArquivo), '');
+    Resp := xECF_ReproduzirMemoriaFiscalMFD('2', PAnsiChar(CooIni), PAnsiChar(CooFim),PAnsichar(NomeArquivo),PansiChar(PathBin));
+    DeleteFile(IncludeTrailingPathDelimiter(ExtractFilePath(
+      {$IFNDEF CONSOLE} Application.ExeName {$ELSE} ParamStr(0) {$ENDIF})) + 'MF.BIN');
+
     if (Resp <> 1) then
       raise Exception.Create( ACBrStr( 'Erro ao executar xECF_ReproduzirMemoriaFiscalMFD.'+sLineBreak+
                                        'Cod.: '+IntToStr(Resp) ))
@@ -1024,8 +1043,7 @@ Var
   Resp : Integer ;
   DiaIni, DiaFim : AnsiString ;
   OldAtivo : Boolean ;
-  OldDateSeparator: Char;
-  OldShortDateFormat : String;
+  PathBin:AnsiString;
 begin
   // Por: Magno System
   LoadDLLFunctions ;
@@ -1033,24 +1051,26 @@ begin
   OldAtivo := Ativo ;
   try
     Ativo := False ;
-
     AbrePortaSerialDLL ;
 
-    OldShortDateFormat := ShortDateFormat ;
-    OldDateSeparator   := DateSeparator;
-    DateSeparator      :='/';
-    ShortDateFormat    := 'dd/mm/yy' ;
+    PathBin := ExtractFilePath(NomeArquivo);
+    PathBin:= PathBin + 'MF.BIN';
+    Resp := xECF_DownloadMF(PAnsiChar(pathBin));
+    if Resp <> 1 then
+      raise Exception.Create( ACBrStr( 'Erro ao executar xECFDownloadMF'+sLineBreak+
+                                       'Cod.: '+IntToStr(Resp) ));
 
     DiaIni := FormatDateTime('DD/MM/YY',DataInicial) ;
     DiaFim := FormatDateTime('DD/MM/YY',DataFinal) ;
 
-    Resp := xECF_ReproduzirMemoriaFiscalMFD('2', PAnsiChar(DiaIni), PAnsiChar(DiaFim), PAnsichar( NomeArquivo ), '');
+    Resp := xECF_ReproduzirMemoriaFiscalMFD('2', PAnsiChar(DiaIni), PAnsiChar(DiaFim), PAnsichar( NomeArquivo ),PAnsiChar(pathBin));
+    DeleteFile(IncludeTrailingPathDelimiter(ExtractFilePath(
+      {$IFNDEF CONSOLE} Application.ExeName {$ELSE} ParamStr(0) {$ENDIF})) + 'MF.BIN');
+
     if (Resp <> 1) then
       raise Exception.Create( ACBrStr( 'Erro ao executar ECF_DownloadMFD.'+sLineBreak+
                                        'Cod.: '+IntToStr(Resp) ))
   finally
-    DateSeparator   := OldDateSeparator;
-    ShortDateFormat := OldShortDateFormat;
     xECF_FechaPortaSerial ;
     Ativo := OldAtivo ;
   end ;
@@ -1766,6 +1786,7 @@ begin
    SwedaFunctionDetect('ECF_DownloadMFD', @xECF_DownloadMFD);
    SwedaFunctionDetect('ECF_ReproduzirMemoriaFiscalMFD', @xECF_ReproduzirMemoriaFiscalMFD);
    SwedaFunctionDetect('ECF_FechaPortaSerial', @xECF_FechaPortaSerial);
+   SwedaFunctionDetect('ECF_DownloadMF',@xECF_DownloadMF);
 end ;
 
 
@@ -2047,29 +2068,8 @@ begin
 end;
 
 procedure TACBrECFSwedaSTX.AbrePortaSerialDLL;
- procedure SwedaFunctionDetect( FuncName: String; var LibPointer: Pointer ) ;
- begin
-   if not Assigned( LibPointer )  then
-   begin
-     if not FunctionDetect( cLIB_Sweda, FuncName, LibPointer) then
-     begin
-        LibPointer := NIL ;
-        raise Exception.Create( ACBrStr( 'Erro ao carregar a função:'+FuncName+' de: '+cLIB_Sweda ) ) ;
-     end ;
-   end ;
- end ;
 begin
-   {$IFDEF MSWINDOWS}
-    if not fileexists(IncludeTrailingPathDelimiter(ExtractFilePath(
-      {$IFNDEF CONSOLE} Application.ExeName {$ELSE} ParamStr(0) {$ENDIF})) + 'Swmfd.dll') then
-       raise Exception.Create( ACBrStr( 'Não foi encontrada a dll auxiliar Swmfd.dll.' ) ) ;
-   {$ENDIF}
-   DeleteFile(IncludeTrailingPathDelimiter(ExtractFilePath(
-      {$IFNDEF CONSOLE} Application.ExeName {$ELSE} ParamStr(0) {$ENDIF})) + 'SWC.INI');
-   SwedaFunctionDetect('ECF_AbrePortaSerial', @xECF_AbrePortaSerial);
-   SwedaFunctionDetect('ECF_DownloadMFD', @xECF_DownloadMFD);
-   SwedaFunctionDetect('ECF_ReproduzirMemoriaFiscalMFD', @xECF_ReproduzirMemoriaFiscalMFD);
-   SwedaFunctionDetect('ECF_FechaPortaSerial', @xECF_FechaPortaSerial);
+  { Nada a fazer (ainda) }
 end;
 
 procedure TACBrECFSwedaSTX.RegistraItemNaoFiscal(CodCNF: String;

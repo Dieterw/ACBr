@@ -560,6 +560,13 @@ begin
         Inc(FTotalPages)
     end;
   end;
+
+  QRCTe.ReportTitle:='CT-e: ' + FormatFloat( '000,000,000', FCTe.Ide.nCT );
+
+  QRCTe.Page.TopMargin    := FMargemSuperior * 100;
+  QRCTe.Page.BottomMargin := FMargemInferior * 100;
+  QRCTe.Page.LeftMargin   := FMargemEsquerda * 100;
+  QRCTe.Page.RightMargin  := FMargemDireita  * 100;
 end;
 
 procedure TfrmDACTeQRRetrato.qrbCabecalhoBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
@@ -584,15 +591,13 @@ begin
   qrlModelo.Caption := FCTe.Ide.modelo;
   qrlSerie.Caption := IntToStr(FCTe.Ide.serie);
   qrlSerie1.Caption := IntToStr(FCTe.Ide.serie);
-  qrlNumCte.Caption := CTeUtil.FormatarNumCTe(FCTe.Ide.nCT);
-  qrlNumCte1.Caption := CTeUtil.FormatarNumCTe(FCTe.Ide.nCT);
+  qrlNumCte.Caption := FormatFloat( '000,000,000', FCTe.Ide.nCT );
+  qrlNumCte1.Caption := FormatFloat( '000,000,000', FCTe.Ide.nCT );
   qrlPageNumber.Caption := format('%2.2d', [QRCTe.PageNumber]) + '/' + format('%2.2d', [FTotalPages]);
   qrlEmissao.Caption := CTeUtil.FormatDateTime(DateTimeToStr(FCTe.Ide.dhEmi));
   SetBarCodeImage(Copy(FCTe.InfCTe.Id, 4, 44), qriBarCode);
   qrlChave.Caption := CTeUtil.FormatarChaveAcesso(Copy(FCTe.InfCTe.Id, 4, 44));
 
-  QRCTe.ReportTitle:='CT-e: '+qrlNumCte.Caption;
-  
   // Emitente
   with FCTe.Emit do
   begin

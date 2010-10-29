@@ -55,6 +55,7 @@ object frmDACTeQR: TfrmDACTeQR
     PrinterSettings.LastPage = 0
     PrinterSettings.OutputBin = Auto
     PrintIfEmpty = True
+    ShowProgress = False
     SnapToGrid = True
     Units = MM
     Zoom = 100

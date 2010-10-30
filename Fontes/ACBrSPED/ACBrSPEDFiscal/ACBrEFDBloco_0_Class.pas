@@ -706,17 +706,20 @@ begin
   begin
      if Assigned(Reg0300.Registro0305) then
      begin
-        with Reg0300.Registro0305 do
+        if (Length(Reg0300.Registro0305.COD_CCUS) > 0) and (Length(Reg0300.Registro0305.FUNC) > 0) then
         begin
-          Add( LFill('0305') +
-               LFill(COD_CCUS) +
-               LFill(FUNC) +
-               DFill(VIDA_UTIL, 0) ) ;
-          ///
-          Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
+           with Reg0300.Registro0305 do
+           begin
+             Add( LFill('0305') +
+                  LFill(COD_CCUS) +
+                  LFill(FUNC) +
+                  DFill(VIDA_UTIL, 0) ) ;
+             ///
+             Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
+           end;
+           /// Variavél para armazenar a quantidade de registro do tipo.
+           FRegistro0305Count := FRegistro0305Count + 1;
         end;
-        /// Variavél para armazenar a quantidade de registro do tipo.
-        FRegistro0305Count := FRegistro0305Count + 1;
      end;
   end;
 end;

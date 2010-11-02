@@ -1,9 +1,9 @@
 object FrmSPEDFiscal: TFrmSPEDFiscal
   Left = 356
   Top = 153
-  Width = 686
-  Height = 546
   Caption = 'ACBrSpedFiscal - Demo'
+  ClientHeight = 508
+  ClientWidth = 670
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -134,6 +134,7 @@ object FrmSPEDFiscal: TFrmSPEDFiscal
       Font.Style = [fsBold]
       ParentColor = False
       ParentFont = False
+      ExplicitWidth = 341
     end
     object Label6: TLabel
       Left = 526
@@ -147,7 +148,7 @@ object FrmSPEDFiscal: TFrmSPEDFiscal
     object edtFile: TEdit
       Left = 22
       Top = 28
-      Width = 304
+      Width = 296
       Height = 21
       Anchors = [akLeft, akTop, akRight]
       TabOrder = 0
@@ -155,7 +156,7 @@ object FrmSPEDFiscal: TFrmSPEDFiscal
       OnChange = edtFileChange
     end
     object cbConcomitante: TCheckBox
-      Left = 350
+      Left = 342
       Top = 30
       Width = 134
       Height = 19
@@ -212,6 +213,7 @@ object FrmSPEDFiscal: TFrmSPEDFiscal
       Font.Style = [fsBold]
       ParentColor = False
       ParentFont = False
+      ExplicitWidth = 450
     end
     object btnB_0: TButton
       Left = 16

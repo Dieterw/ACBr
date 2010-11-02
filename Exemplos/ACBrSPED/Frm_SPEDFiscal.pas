@@ -57,7 +57,7 @@ type
     procedure btnErrorClick(Sender: TObject);
     procedure edtFileChange(Sender: TObject);
     procedure cbConcomitanteClick(Sender: TObject);
-    procedure ACBrSPEDFiscal1Error(const MsnError: String);
+    procedure ACBrSPEDFiscal1Error(const MsnError: AnsiString);
   private
      procedure LoadToMemo;
     { Private declarations }
@@ -76,11 +76,22 @@ implementation
  {$R *.dfm}
 {$ENDIF}
 
+procedure TFrmSPEDFiscal.ACBrSPEDFiscal1Error(const MsnError: AnsiString);
+begin
+   memoError.Lines.Add(MsnError);
+end;
+
 procedure TFrmSPEDFiscal.btnB_0Click(Sender: TObject);
+
+const
+strUNID: array[0..4] of string = ('PC', 'UN', 'LT', 'PC', 'MT');
+
 var
 int0150: integer;
 int0175: integer;
 int0300: integer;
+int0190: integer;
+
 begin
    // Alimenta o componente com informações para gerar todos os registros do
    // Bloco 0.
@@ -155,6 +166,8 @@ begin
             EMAIL      := '';
             COD_MUN    := 3200607;
          end;
+//          Check(Reg0001.Registro0190.LocalizaRegistro(UNID), '(0-0190) UNIDADE MEDIDA: A unidade de medida "%s" foi duplicada na lista de registros 0190!', [UNID]);
+
          // FILHO
          for int0150 := 1 to 10 do
          begin
@@ -187,6 +200,20 @@ begin
             end;
          end;
          // FILHO
+         // 4 Unidades de medida
+         // Const strUNID, esta declarada no inicio deste evento.
+         for int0190 := Low(strUNID) to High(strUNID) do
+         begin
+            if not Registro0190.LocalizaRegistro(strUNID[int0190]) then
+            begin
+               with Registro0190New do
+               begin
+                  UNID  := strUNID[int0190];
+                  DESCR := 'Descricao ' + strUNID[int0190];
+               end;
+            end;
+         end;
+         // FILHO
          for int0300 := 1 to 10 do
          begin
             // 10 Bens Imobilizados
@@ -201,8 +228,6 @@ begin
                // FILHO
                with Registro0305New do
                begin
-                  COD_CTA_DEPR := '123456';
-                  DT_DEPR_INI  := Date;
                   COD_CCUS     := '123';
                   VIDA_UTIL    := 60;
                end;
@@ -594,11 +619,6 @@ begin
       btnB_1.Enabled := False ;
       btnB_9.Enabled := False ;
    end;
-end;
-
-procedure TFrmSPEDFiscal.ACBrSPEDFiscal1Error(const MsnError: String);
-begin
-   memoError.Lines.Add(MsnError);
 end;
 
 end.

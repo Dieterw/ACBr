@@ -346,6 +346,8 @@ type
     fIND_EST: string;           /// Informar "S" ou "N", conforme tenha ocorrido ou não, o estorno do pagamento, ou “P” para estorno parcial do pagamento
     fVL_EST: currency;          /// Valor do estorno efetuado, com duas casas decimais
   public
+    constructor Create; virtual; /// Create
+
     property RegistroValido: Boolean read fRegistroValido write fRegistroValido default True;
     property CCF: integer read FCCF write FCCF;
     property GNF: integer read FGNF write FGNF;
@@ -539,6 +541,13 @@ destructor TRegistroR06.Destroy;
 begin
   FRegistroR07.Free;
   inherited;
+end;
+
+{ TRegistroR07 }
+
+constructor TRegistroR07.Create;
+begin
+  fRegistroValido := True;
 end;
 
 end.

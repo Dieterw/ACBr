@@ -1298,7 +1298,7 @@ begin
                with Imposto do
                 begin
                    sSecao := 'ICMS'+IntToStrZero(I,3) ;
-                   sFim   := INIRec.ReadString( sSecao,'CST','FIM') ;
+                   sFim   := INIRec.ReadString( sSecao,'CST',INIRec.ReadString(sSecao,'CSOSN','FIM')) ;
                    if (sFim <> 'FIM') then
                     begin
                       with ICMS do
@@ -1430,11 +1430,11 @@ begin
                          end
                         else if CST = cof99 then
                          begin
-                           COFINS.vBC       := StringToFloatDef( INIRec.ReadString(sSecao,'Valor'     ,'') ,0);
+                           COFINS.vBC       := StringToFloatDef( INIRec.ReadString(sSecao,'ValorBase'     ,'') ,0);
                            COFINS.pCOFINS   := StringToFloatDef( INIRec.ReadString(sSecao,'Aliquota'  ,'') ,0);
                            COFINS.qBCProd   := StringToFloatDef( INIRec.ReadString(sSecao,'Quantidade','') ,0);
                            COFINS.vAliqProd := StringToFloatDef( INIRec.ReadString(sSecao,'ValorAliquota'  ,'') ,0);
-                           COFINS.vCOFINS   := StringToFloatDef( INIRec.ReadString(sSecao,'ValorBase' ,'') ,0);
+                           COFINS.vCOFINS   := StringToFloatDef( INIRec.ReadString(sSecao,'Valor' ,'') ,0);
                          end;
                       end;
                     end;

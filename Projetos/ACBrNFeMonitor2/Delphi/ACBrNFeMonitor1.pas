@@ -244,6 +244,7 @@ type
     Label44: TLabel;
     cbUmaInstancia: TCheckBox;
     rgEmailTipoEnvio: TRadioGroup;
+    btnDoar: TBitBtn;
     procedure DoACBrTimer(Sender: TObject);
     procedure edOnlyNumbers(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
@@ -286,6 +287,7 @@ type
     procedure cbxPastaMensalClick(Sender: TObject);
     procedure ACBrNFe1GerarLog(const Mensagem: String);
     procedure Image1Click(Sender: TObject);
+    procedure btnDoarClick(Sender: TObject);
   private
     { Private declarations }
     ACBrNFeMonitorINI : string;
@@ -435,6 +437,14 @@ begin
      if cbLogComp.Checked then
         mResp.Lines.Add('Log de mensagens do componente será gravado em: '+ArqLogCompTXT) ;
 
+     mResp.Lines.Add('');
+     mResp.Lines.Add('   * Você gosta do ACBrNFeMonitor ?');
+     mResp.Lines.Add('');
+     mResp.Lines.Add('   * Incentive a equipe de desenvolvimento do ACBrNFeMonitor') ;
+     mResp.Lines.Add('     a continuar com esse trabalho.');
+     mResp.Lines.Add('');
+     mResp.Lines.Add('   * EFETUE AINDA HOJE A SUA DOAÇÃO. Acesse:') ;
+     mResp.Lines.Add('     http://acbr.sourceforge.net/drupal/?q=node/14') ;
 
   except
      on E : Exception do
@@ -722,7 +732,7 @@ begin
          begin
            ACBrNFeDANFERave1.EspessuraBorda := StrToIntDef(edtEspBorda.Text, 1);
            ACBrNFeDANFERave1.TamanhoFonte_RazaoSocial := StrToIntDef(edtFonteRazao.Text, 12);
-           ACBrNFeDANFERave1.RavFile := PathWithDelim(ExtractFilePath(Application.ExeName))+'Report\DANFE_Rave513.rav';
+           ACBrNFeDANFERave1.RavFile := PathWithDelim(ExtractFilePath(Application.ExeName))+'Report\DANFE_Rave513.rav'; //NotaFiscalEletronica
          end
         else
          begin
@@ -1549,6 +1559,11 @@ end;
 procedure TfrmAcbrNfeMonitor.Image1Click(Sender: TObject);
 begin
  OpenURL('http://acbr.sf.net');
+end;
+
+procedure TfrmAcbrNfeMonitor.btnDoarClick(Sender: TObject);
+begin
+ OpenURL('http://acbr.sourceforge.net/drupal/?q=node/14');
 end;
 
 end.

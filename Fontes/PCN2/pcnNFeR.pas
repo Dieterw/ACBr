@@ -177,7 +177,7 @@ begin
       (*B15*) NFe.Ide.NFref[i].RefNF.cUF      := Leitor.rCampo(tcInt, 'cUF');
       (*B16*) NFe.Ide.NFref[i].RefNF.AAMM     := Leitor.rCampo(tcEsp, 'AAMM');
       (*B17*) NFe.Ide.NFref[i].RefNF.CNPJ     := Leitor.rCampo(tcEsp, 'CNPJ');
-      (*B18*) NFe.Ide.NFref[i].RefNF.Modelo   := StrToInt(Leitor.rCampo(tcInt, 'mod'));
+      (*B18*) NFe.Ide.NFref[i].RefNF.Modelo   := StrToIntDef(Leitor.rCampo(tcInt, 'mod'),55);
       (*B19*) NFe.ide.NFref[i].RefNF.serie    := Leitor.rCampo(tcInt, 'serie');
       (*B20*) NFe.Ide.NFref[i].RefNF.nNF      := Leitor.rCampo(tcInt, 'nNF');
 

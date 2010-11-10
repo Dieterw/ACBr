@@ -48,6 +48,13 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   10/11/2010
+---------------
+[+] Criação de classe exception para a nota eletrônica
+    - Foi criado uma classe de exception própria EACBrNFeException para o
+      componente de nota eletrônica, visando facilitar o tratamento de exceções 
+      vindas da nota fiscal eletrônica.
+
 Alterações   17/09/2010
 ---------------
 [+] Envio de nota eletrônica por e-mail (Régys Borges da Silveira, Itamar Bermond)

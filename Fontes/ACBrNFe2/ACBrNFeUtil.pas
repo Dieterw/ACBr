@@ -176,7 +176,7 @@ type
 implementation
 
 uses {$IFDEF ACBrNFeOpenSSL}libxml2, libxmlsec, libxslt, {$ELSE} ComObj, {$ENDIF} Sysutils,
-  Variants, ACBrUtil;
+  Variants, ACBrUtil, ACBrNFe;
 
 { NotaUtil }
 
@@ -201,30 +201,30 @@ begin
        { load template }
        doc := xmlParseDoc(Axml);
        if ((doc = nil) or (xmlDocGetRootElement(doc) = nil)) then
-         raise Exception.Create('Error: unable to parse');
+         raise EACBrNFeException.Create('Error: unable to parse');
 
        { find start node }
        node := xmlSecFindNode(xmlDocGetRootElement(doc), PAnsiChar(xmlSecNodeSignature), PAnsiChar(xmlSecDSigNs));
        if (node = nil) then
-         raise Exception.Create('Error: start node not found');
+         raise EACBrNFeException.Create('Error: start node not found');
 
        { create signature context, we don't need keys manager in this example }
        dsigCtx := xmlSecDSigCtxCreate(nil);
        if (dsigCtx = nil) then
-         raise Exception.Create('Error :failed to create signature context');
+         raise EACBrNFeException.Create('Error :failed to create signature context');
 
        // { load private key}
        dsigCtx^.signKey := xmlSecCryptoAppKeyLoad(key_file, xmlSecKeyDataFormatPkcs12, senha, nil, nil);
        if (dsigCtx^.signKey = nil) then
-          raise Exception.Create('Error: failed to load private pem key from "' + key_file + '"');
+          raise EACBrNFeException.Create('Error: failed to load private pem key from "' + key_file + '"');
 
        { set key name to the file name, this is just an example! }
        if (xmlSecKeySetName(dsigCtx^.signKey, PAnsiChar(key_file)) < 0) then
-         raise Exception.Create('Error: failed to set key name for key from "' + key_file + '"');
+         raise EACBrNFeException.Create('Error: failed to set key name for key from "' + key_file + '"');
 
        { sign the template }
        if (xmlSecDSigCtxSign(dsigCtx, node) < 0) then
-         raise Exception.Create('Error: signature failed');
+         raise EACBrNFeException.Create('Error: signature failed');
 
        { print signed document to stdout }
        // xmlDocDump(stdout, doc);
@@ -263,31 +263,31 @@ begin
        { load template }
        doc := xmlParseDoc(Axml);
        if ((doc = nil) or (xmlDocGetRootElement(doc) = nil)) then
-         raise Exception.Create('Error: unable to parse');
+         raise EACBrNFeException.Create('Error: unable to parse');
 
        { find start node }
        node := xmlSecFindNode(xmlDocGetRootElement(doc), PChar(xmlSecNodeSignature), PChar(xmlSecDSigNs));
        if (node = nil) then
-         raise Exception.Create('Error: start node not found');
+         raise EACBrNFeException.Create('Error: start node not found');
 
        { create signature context, we don't need keys manager in this example }
        dsigCtx := xmlSecDSigCtxCreate(nil);
        if (dsigCtx = nil) then
-         raise Exception.Create('Error :failed to create signature context');
+         raise EACBrNFeException.Create('Error :failed to create signature context');
 
        // { load private key, assuming that there is not password }
        dsigCtx^.signKey := xmlSecCryptoAppKeyLoadMemory(Ponteiro, size, xmlSecKeyDataFormatPkcs12, senha, nil, nil);
 
        if (dsigCtx^.signKey = nil) then
-          raise Exception.Create('Error: failed to load private pem key from "' + key_file + '"');
+          raise EACBrNFeException.Create('Error: failed to load private pem key from "' + key_file + '"');
 
        { set key name to the file name, this is just an example! }
        if (xmlSecKeySetName(dsigCtx^.signKey, key_file) < 0) then
-         raise Exception.Create('Error: failed to set key name for key from "' + key_file + '"');
+         raise EACBrNFeException.Create('Error: failed to set key name for key from "' + key_file + '"');
 
        { sign the template }
        if (xmlSecDSigCtxSign(dsigCtx, node) < 0) then
-         raise Exception.Create('Error: signature failed');
+         raise EACBrNFeException.Create('Error: signature failed');
 
        { print signed document to stdout }
        // xmlDocDump(stdout, doc);
@@ -318,11 +318,11 @@ begin
 
     { Init xmlsec library }
     if (xmlSecInit() < 0) then
-       raise Exception.Create('Error: xmlsec initialization failed.');
+       raise EACBrNFeException.Create('Error: xmlsec initialization failed.');
 
     { Check loaded library version }
     if (xmlSecCheckVersionExt(1, 2, 8, xmlSecCheckVersionABICompatible) <> 1) then
-       raise Exception.Create('Error: loaded xmlsec library version is not compatible.');
+       raise EACBrNFeException.Create('Error: loaded xmlsec library version is not compatible.');
 
     (* Load default crypto engine if we are supporting dynamic
      * loading for xmlsec-crypto libraries. Use the crypto library
@@ -330,17 +330,17 @@ begin
      * xmlsec-crypto library.
      *)
     if (xmlSecCryptoDLLoadLibrary('openssl') < 0) then
-       raise Exception.Create( 'Error: unable to load default xmlsec-crypto library. Make sure'#10 +
+       raise EACBrNFeException.Create( 'Error: unable to load default xmlsec-crypto library. Make sure'#10 +
                           			'that you have it installed and check shared libraries path'#10 +
                           			'(LD_LIBRARY_PATH) environment variable.');
 
     { Init crypto library }
     if (xmlSecCryptoAppInit(nil) < 0) then
-       raise Exception.Create('Error: crypto initialization failed.');
+       raise EACBrNFeException.Create('Error: crypto initialization failed.');
 
     { Init xmlsec-crypto library }
     if (xmlSecCryptoInit() < 0) then
-       raise Exception.Create('Error: xmlsec-crypto initialization failed.');
+       raise EACBrNFeException.Create('Error: xmlsec-crypto initialization failed.');
 end ;
 
 class Procedure NotaUtil.ShutDownXmlSec ;
@@ -448,7 +448,7 @@ end;
 class procedure NotaUtil.EstaVazio(const AValue, AMensagem: String);
 begin
   if NotaUtil.EstaVazio(AValue) then
-    raise Exception.Create(AMensagem);
+    raise EACBrNFeException.Create(AMensagem);
 end;
 
 class function NotaUtil.EstaZerado(AValue: Integer): Boolean;
@@ -688,7 +688,7 @@ class procedure NotaUtil.TamanhoIgual(const AValue: String;
   const ATamanho: Integer; AMensagem: String);
 begin
   if not(NotaUtil.TamanhoIgual(AValue, ATamanho)) then
-    raise Exception.Create(AMensagem);
+    raise EACBrNFeException.Create(AMensagem);
 end;
 
 class function NotaUtil.TamanhoIgual(const AValue,
@@ -701,7 +701,7 @@ class procedure NotaUtil.TamanhoIgual(const AValue,
   ATamanho: Integer; AMensagem: String);
 begin
   if not(NotaUtil.TamanhoIgual(AValue, ATamanho)) then
-    raise Exception.Create(AMensagem);
+    raise EACBrNFeException.Create(AMensagem);
 end;
 
 
@@ -709,7 +709,7 @@ class procedure NotaUtil.EstaZerado(AValue: Integer;
   AMensagem: String);
 begin
   if NotaUtil.EstaZerado(AValue) then
-    raise Exception.Create(AMensagem);
+    raise EACBrNFeException.Create(AMensagem);
 end;
 
 class function NotaUtil.FormatarCPF(AValue: String): String;
@@ -841,7 +841,7 @@ case FormaEmissao of
      end;
   end;
   if Result = '' then
-     raise Exception.Create('URL não disponível para o estado solicitado.');
+     raise EACBrNFeException.Create('URL não disponível para o estado solicitado.');
 end;
 
 //AC,AL,AP,MA,PA,PB,PI,RJ,RN,RR,SC,SE,TO - Estados sem WebServices próprios
@@ -977,7 +977,7 @@ end;
 class function NotaUtil.GetURLPR(AAmbiente: Integer;
   ALayOut: TLayOut): WideString;
 begin
-  raise Exception.Create('WebServices 2.0 não liberados pelo estado');
+  raise EACBrNFeException.Create('WebServices 2.0 não liberados pelo estado');
   case ALayOut of
     LayNfeRecepcao      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.pr.gov.br/NFENWebServices/services/nfeRecepcao', 'https://homologacao.nfe.fazenda.pr.gov.br/NFENWebServices/services/nfeRecepcao');
     LayNfeRetRecepcao   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.pr.gov.br/NFENWebServices/services/nfeRetRecepcao', 'https://homologacao.nfe.fazenda.pr.gov.br/NFENWebServices/services/nfeRetRecepcao');
@@ -992,7 +992,7 @@ end;
 class function NotaUtil.GetURLPE(AAmbiente: Integer;
   ALayOut: TLayOut): WideString;
 begin
-  raise Exception.Create('WebServices 2.0 não liberados pelo estado');
+  raise EACBrNFeException.Create('WebServices 2.0 não liberados pelo estado');
   case ALayOut of
     LayNfeRecepcao      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeRecepcao', 'https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeRecepcao');
     LayNfeRetRecepcao   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeRetRecepcao', 'https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeRetRecepcao');
@@ -1063,7 +1063,7 @@ begin
    end;
 
  if not DirectoryExists(NotaUtil.SeSenao(NotaUtil.EstaVazio(APathSchemas),PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas',PathWithDelim(APathSchemas))) then
-    raise Exception.Create('Diretório de Schemas não encontrado'+sLineBreak+
+    raise EACBrNFeException.Create('Diretório de Schemas não encontrado'+sLineBreak+
                            NotaUtil.SeSenao(NotaUtil.EstaVazio(APathSchemas),PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas',PathWithDelim(APathSchemas)));
 
  if Tipo = 1 then
@@ -1096,7 +1096,7 @@ begin
  end;
 
  if not FilesExists(schema_filename) then
-    raise Exception.Create('Arquivo '+schema_filename+' não encontrado');
+    raise EACBrNFeException.Create('Arquivo '+schema_filename+' não encontrado');
 
  doc         := nil;
  schema_doc  := nil;
@@ -1203,7 +1203,7 @@ begin
   Schema := CoXMLSchemaCache50.Create;
 
  if not DirectoryExists(NotaUtil.SeSenao(NotaUtil.EstaVazio(APathSchemas),PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas',PathWithDelim(APathSchemas))) then
-    raise Exception.Create('Diretório de Schemas não encontrado'+sLineBreak+
+    raise EACBrNFeException.Create('Diretório de Schemas não encontrado'+sLineBreak+
                            NotaUtil.SeSenao(NotaUtil.EstaVazio(APathSchemas),PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas',PathWithDelim(APathSchemas)));
   if Tipo = 1 then
      schema_filename := NotaUtil.SeSenao(NotaUtil.EstaVazio(APathSchemas),PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',PathWithDelim(APathSchemas))+'nfe_v2.00.xsd'
@@ -1215,7 +1215,7 @@ begin
      schema_filename := NotaUtil.SeSenao(NotaUtil.EstaVazio(APathSchemas),PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',PathWithDelim(APathSchemas))+'envDPEC_v1.01.xsd';
 
  if not FilesExists(schema_filename) then
-    raise Exception.Create('Arquivo '+schema_filename+' não encontrado');
+    raise EACBrNFeException.Create('Arquivo '+schema_filename+' não encontrado');
 
   Schema.add( 'http://www.portalfiscal.inf.br/nfe', schema_filename );
 
@@ -1272,13 +1272,13 @@ begin
 
   I := NotaUtil.PosEx('Id=',AStr,I+6) ;
   if I = 0 then
-     raise Exception.Create('Não encontrei inicio do URI: Id=') ;
+     raise EACBrNFeException.Create('Não encontrei inicio do URI: Id=') ;
   I := NotaUtil.PosEx('"',AStr,I+2) ;
   if I = 0 then
-     raise Exception.Create('Não encontrei inicio do URI: aspas inicial') ;
+     raise EACBrNFeException.Create('Não encontrei inicio do URI: aspas inicial') ;
   J := NotaUtil.PosEx('"',AStr,I+1) ;
   if J = 0 then
-     raise Exception.Create('Não encontrei inicio do URI: aspas final') ;
+     raise EACBrNFeException.Create('Não encontrei inicio do URI: aspas final') ;
 
   URI := copy(AStr,I+1,J-I-1) ;
 
@@ -1299,25 +1299,25 @@ begin
    begin
      I := pos('</NFe>',AStr) ;
      if I = 0 then
-        raise Exception.Create('Não encontrei final do XML: </NFe>') ;
+        raise EACBrNFeException.Create('Não encontrei final do XML: </NFe>') ;
    end
   else if Tipo = 2 then
    begin
      I := pos('</cancNFe>',AStr) ;
      if I = 0 then
-        raise Exception.Create('Não encontrei final do XML: </cancNFe>') ;
+        raise EACBrNFeException.Create('Não encontrei final do XML: </cancNFe>') ;
    end
   else if Tipo = 3 then
    begin
      I := pos('</inutNFe>',AStr) ;
      if I = 0 then
-        raise Exception.Create('Não encontrei final do XML: </inutNFe>') ;
+        raise EACBrNFeException.Create('Não encontrei final do XML: </inutNFe>') ;
    end
   else if Tipo = 4 then
    begin
      I := pos('</envDPEC>',AStr) ;
      if I = 0 then
-        raise Exception.Create('Não encontrei final do XML: </envDPEC>') ;
+        raise EACBrNFeException.Create('Não encontrei final do XML: </envDPEC>') ;
    end;
 
 
@@ -1425,13 +1425,13 @@ begin
 
       I := NotaUtil.PosEx('Id=',XML,6) ;
       if I = 0 then
-         raise Exception.Create('Não encontrei inicio do URI: Id=') ;
+         raise EACBrNFeException.Create('Não encontrei inicio do URI: Id=') ;
       I := NotaUtil.PosEx('"',XML,I+2) ;
       if I = 0 then
-         raise Exception.Create('Não encontrei inicio do URI: aspas inicial') ;
+         raise EACBrNFeException.Create('Não encontrei inicio do URI: aspas inicial') ;
       J := NotaUtil.PosEx('"',XML,I+1) ;
       if J = 0 then
-         raise Exception.Create('Não encontrei inicio do URI: aspas final') ;
+         raise EACBrNFeException.Create('Não encontrei inicio do URI: aspas final') ;
 
       URI := copy(XML,I+1,J-I-1) ;
 
@@ -1474,14 +1474,14 @@ begin
    xmldsig := CoMXDigitalSignature50.Create;
 
    if (not xmldoc.loadXML(XML) ) then
-      raise Exception.Create('Não foi possível carregar o arquivo: '+XML);
+      raise EACBrNFeException.Create('Não foi possível carregar o arquivo: '+XML);
 
    xmldoc.setProperty('SelectionNamespaces', DSIGNS);
 
    xmldsig.signature := xmldoc.selectSingleNode('.//ds:Signature');
 
    if (xmldsig.signature = nil) then
-      raise Exception.Create('É preciso carregar o template antes de assinar.');
+      raise EACBrNFeException.Create('É preciso carregar o template antes de assinar.');
 
    if NumCertCarregado <> Certificado.SerialNumber then
       CertStoreMem := nil;
@@ -1511,7 +1511,7 @@ begin
 
    dsigKey := xmldsig.createKeyFromCSP(PrivateKey.ProviderType, PrivateKey.ProviderName, PrivateKey.ContainerName, 0);
    if (dsigKey = nil) then
-      raise Exception.Create('Erro ao criar a chave do CSP.');
+      raise EACBrNFeException.Create('Erro ao criar a chave do CSP.');
 
    signedKey := xmldsig.sign(dsigKey, $00000002);
    if (signedKey <> nil) then
@@ -1527,7 +1527,7 @@ begin
       XMLAssinado := copy(XMLAssinado,1,PosIni)+copy(XMLAssinado,PosFim,length(XMLAssinado));
     end
    else
-      raise Exception.Create('Assinatura Falhou.');
+      raise EACBrNFeException.Create('Assinatura Falhou.');
 
    if xmlHeaderAntes <> '' then
    begin
@@ -1574,7 +1574,7 @@ class procedure NotaUtil.ValidaUFCidade(const UF, Cidade: Integer;
   const AMensagem: String);
 begin
   if not(ValidaUFCidade(UF,Cidade)) then
-    raise Exception.Create(AMensagem);
+    raise EACBrNFeException.Create(AMensagem);
 end;
 
 class function NotaUtil.StringToFloat(AValue: String): Double;

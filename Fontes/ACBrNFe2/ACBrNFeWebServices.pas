@@ -496,16 +496,16 @@ begin
    begin
      if Assigned(TACBrNFe( FACBrNFe ).OnGerarLog) then
         TACBrNFe( FACBrNFe ).OnGerarLog('ERRO: Erro OnBeforePost: ' + IntToStr(GetLastError));
-     raise Exception.Create( 'Erro OnBeforePost: ' + IntToStr(GetLastError) );
+     raise EACBrNFeException.Create( 'Erro OnBeforePost: ' + IntToStr(GetLastError) );
    end;
 
    if trim(FConfiguracoes.WebServices.ProxyUser) <> '' then begin
      if not InternetSetOption(Data, INTERNET_OPTION_PROXY_USERNAME, PChar(FConfiguracoes.WebServices.ProxyUser), Length(FConfiguracoes.WebServices.ProxyUser)) then
-       raise Exception.Create( 'Erro OnBeforePost: ' + IntToStr(GetLastError) );
+       raise EACBrNFeException.Create( 'Erro OnBeforePost: ' + IntToStr(GetLastError) );
    end;
    if trim(FConfiguracoes.WebServices.ProxyPass) <> '' then begin
      if not InternetSetOption(Data, INTERNET_OPTION_PROXY_PASSWORD, PChar(FConfiguracoes.WebServices.ProxyPass),Length (FConfiguracoes.WebServices.ProxyPass)) then
-       raise Exception.Create( 'Erro OnBeforePost: ' + IntToStr(GetLastError) );
+       raise EACBrNFeException.Create( 'Erro OnBeforePost: ' + IntToStr(GetLastError) );
    end;
 
   if (pos('SCERECEPCAORFB',UpperCase(FURL)) <= 0) and
@@ -535,14 +535,14 @@ begin
     begin
       if Assigned(TACBrNFe( FACBrNFe ).OnGerarLog) then
          TACBrNFe( FACBrNFe ).OnGerarLog('ERRO: Falha ao assinar Cancelamento Nota Fiscal Eletrônica '+LineBreak+FMsg);
-      raise Exception.Create('Falha ao assinar Cancelamento Nota Fiscal Eletrônica '+LineBreak+FMsg);
+      raise EACBrNFeException.Create('Falha ao assinar Cancelamento Nota Fiscal Eletrônica '+LineBreak+FMsg);
     end;
 {$ELSE}
   if not(NotaUtil.Assinar(CancNFe.Gerador.ArquivoFormatoXML, TConfiguracoes(FConfiguracoes).Certificados.GetCertificado , FDadosMsg, FMsg)) then
      begin
        if Assigned(TACBrNFe( FACBrNFe ).OnGerarLog) then
           TACBrNFe( FACBrNFe ).OnGerarLog('Falha ao assinar Cancelamento Nota Fiscal Eletrônica '+LineBreak+FMsg);
-       raise Exception.Create('Falha ao assinar Cancelamento de Nota Fiscal Eletrônica '+LineBreak+FMsg);
+       raise EACBrNFeException.Create('Falha ao assinar Cancelamento de Nota Fiscal Eletrônica '+LineBreak+FMsg);
      end;
 {$ENDIF}
 
@@ -551,7 +551,7 @@ begin
      begin
        if Assigned(TACBrNFe( FACBrNFe ).OnGerarLog) then
           TACBrNFe( FACBrNFe ).OnGerarLog('Falha na validação dos dados do cancelamento '+LineBreak+FMsg);
-       raise Exception.Create('Falha na validação dos dados do cancelamento '+LineBreak+FMsg);
+       raise EACBrNFeException.Create('Falha na validação dos dados do cancelamento '+LineBreak+FMsg);
      end;
 
   CancNFe.Free;
@@ -601,14 +601,14 @@ begin
      begin
        if Assigned(TACBrNFe( FACBrNFe ).OnGerarLog) then
           TACBrNFe( FACBrNFe ).OnGerarLog('Falha ao assinar Inutilização Nota Fiscal Eletrônica '+LineBreak+FMsg);
-       raise Exception.Create('Falha ao assinar Inutilização Nota Fiscal Eletrônica '+LineBreak+FMsg);
+       raise EACBrNFeException.Create('Falha ao assinar Inutilização Nota Fiscal Eletrônica '+LineBreak+FMsg);
      end;
 {$ELSE}
   if not(NotaUtil.Assinar(InutNFe.Gerador.ArquivoFormatoXML, TConfiguracoes(FConfiguracoes).Certificados.GetCertificado , FDadosMsg, FMsg)) then
      begin
        if Assigned(TACBrNFe( FACBrNFe ).OnGerarLog) then
           TACBrNFe( FACBrNFe ).OnGerarLog('Falha ao assinar Inutilização Nota Fiscal Eletrônica '+LineBreak+FMsg);
-       raise Exception.Create('Falha ao assinar Inutilização Nota Fiscal Eletrônica '+LineBreak+FMsg);
+       raise EACBrNFeException.Create('Falha ao assinar Inutilização Nota Fiscal Eletrônica '+LineBreak+FMsg);
      end;
 {$ENDIF}
 
@@ -697,14 +697,14 @@ begin
      begin
        if Assigned(TACBrNFe( FACBrNFe ).OnGerarLog) then
           TACBrNFe( FACBrNFe ).OnGerarLog('Falha ao assinar DPEC '+LineBreak+FMsg);
-       raise Exception.Create('Falha ao assinar DPEC '+LineBreak+FMsg);
+       raise EACBrNFeException.Create('Falha ao assinar DPEC '+LineBreak+FMsg);
      end;
 {$ELSE}
   if not(NotaUtil.Assinar(EnvDPEC.Gerador.ArquivoFormatoXML, TConfiguracoes(FConfiguracoes).Certificados.GetCertificado , FDadosMsg, FMsg)) then
      begin
        if Assigned(TACBrNFe( FACBrNFe ).OnGerarLog) then
           TACBrNFe( FACBrNFe ).OnGerarLog('Falha ao assinar DPEC '+LineBreak+FMsg);
-       raise Exception.Create('Falha ao assinar DPEC '+LineBreak+FMsg);
+       raise EACBrNFeException.Create('Falha ao assinar DPEC '+LineBreak+FMsg);
      end;
 {$ENDIF}
   EnvDPEC.Free ;
@@ -752,7 +752,7 @@ begin
    begin
       if Assigned(TACBrNFe(Self.FACBrNFe).OnGerarLog) then
          TACBrNFe(Self.FACBrNFe).OnGerarLog('ERRO: Tamanho do XML de Dados superior a 500 Kbytes. Tamanho atual: '+FloatToStr(Int(Length(FDadosMsg)/500))+' Kbytes');
-      raise Exception.Create('ERRO: Tamanho do XML de Dados superior a 500 Kbytes. Tamanho atual: '+FloatToStr(Int(Length(FDadosMsg)/500))+' Kbytes');
+      raise EACBrNFeException.Create('ERRO: Tamanho do XML de Dados superior a 500 Kbytes. Tamanho atual: '+FloatToStr(Int(Length(FDadosMsg)/500))+' Kbytes');
       exit;
    end;
 end;
@@ -875,7 +875,7 @@ begin
       begin
         if Assigned(TACBrNFe( FACBrNFe ).OnGerarLog) then
            TACBrNFe( FACBrNFe ).OnGerarLog(Self.StatusServico.Msg);
-        raise Exception.Create(Self.StatusServico.Msg);
+        raise EACBrNFeException.Create(Self.StatusServico.Msg);
       end;
    end;
 
@@ -883,7 +883,7 @@ begin
      begin
        if Assigned(TACBrNFe( FACBrNFe ).OnGerarLog) then
           TACBrNFe( FACBrNFe ).OnGerarLog(Self.Consulta.Msg);
-       raise Exception.Create(Self.Consulta.Msg);
+       raise EACBrNFeException.Create(Self.Consulta.Msg);
      end;
 
   Self.Cancelamento.NFeChave      := Self.Consulta.FNFeChave;
@@ -893,7 +893,7 @@ begin
      begin
        if Assigned(TACBrNFe( FACBrNFe ).OnGerarLog) then
           TACBrNFe( FACBrNFe ).OnGerarLog(Self.Cancelamento.Msg);
-       raise Exception.Create(Self.Cancelamento.Msg);
+       raise EACBrNFeException.Create(Self.Cancelamento.Msg);
      end;
 end;
 
@@ -905,7 +905,7 @@ begin
       begin
         if Assigned(TACBrNFe( FACBrNFe ).OnGerarLog) then
            TACBrNFe( FACBrNFe ).OnGerarLog(Self.StatusServico.Msg);
-          raise Exception.Create(Self.StatusServico.Msg);
+          raise EACBrNFeException.Create(Self.StatusServico.Msg);
       end;
    end;
    
@@ -921,7 +921,7 @@ begin
      begin
        if Assigned(TACBrNFe( FACBrNFe ).OnGerarLog) then
           TACBrNFe( FACBrNFe ).OnGerarLog(Self.Inutilizacao.Msg);
-       raise Exception.Create(Self.Inutilizacao.Msg);
+       raise EACBrNFeException.Create(Self.Inutilizacao.Msg);
      end;
 end;
 
@@ -967,7 +967,7 @@ begin
      begin
        if Assigned(TACBrNFe( FACBrNFe ).OnGerarLog) then
           TACBrNFe( FACBrNFe ).OnGerarLog(Self.StatusServico.Msg);
-       raise Exception.Create(Self.StatusServico.Msg);
+       raise EACBrNFeException.Create(Self.StatusServico.Msg);
      end;
 
   self.Enviar.FLote := ALote;
@@ -975,7 +975,7 @@ begin
      begin
        if Assigned(TACBrNFe( FACBrNFe ).OnGerarLog) then
           TACBrNFe( FACBrNFe ).OnGerarLog(Self.Enviar.Msg);
-       raise Exception.Create(Self.Enviar.Msg);
+       raise EACBrNFeException.Create(Self.Enviar.Msg);
      end;
 
   Self.Retorno.Recibo := Self.Enviar.Recibo;
@@ -983,7 +983,7 @@ begin
      begin
        if Assigned(TACBrNFe( FACBrNFe ).OnGerarLog) then
           TACBrNFe( FACBrNFe ).OnGerarLog(Self.Retorno.Msg);
-       raise Exception.Create(Self.Retorno.Msg);
+       raise EACBrNFeException.Create(Self.Retorno.Msg);
      end;
   Result := true;
 end;
@@ -1114,7 +1114,7 @@ begin
           TACBrNFe( FACBrNFe ).OnGerarLog('WebService Consulta Status serviço:'+LineBreak+
                                           '- Inativo ou Inoperante tente novamente.'+LineBreak+
                                           '- '+E.Message);
-       raise Exception.Create('WebService Consulta Status serviço:'+LineBreak+
+       raise EACBrNFeException.Create('WebService Consulta Status serviço:'+LineBreak+
                               '- Inativo ou Inoperante tente novamente.'+LineBreak+
                               '- '+E.Message);
       end;
@@ -2020,7 +2020,7 @@ begin
    begin
      if Assigned(TACBrNFe( FACBrNFe ).OnGerarLog) then
         TACBrNFe( FACBrNFe ).OnGerarLog('ERRO: Informar uma Justificativa para cancelar a Nota Fiscal Eletronica');
-     raise Exception.Create('Informar uma Justificativa para cancelar a Nota Fiscal Eletronica')
+     raise EACBrNFeException.Create('Informar uma Justificativa para cancelar a Nota Fiscal Eletronica')
    end
   else
     AValue := NotaUtil.TrataString(AValue);
@@ -2029,7 +2029,7 @@ begin
    begin
      if Assigned(TACBrNFe( FACBrNFe ).OnGerarLog) then
         TACBrNFe( FACBrNFe ).OnGerarLog('ERRO: A Justificativa para Cancelamento da Nota Fiscal Eletronica deve ter no minimo 15 caracteres');
-     raise Exception.Create('A Justificativa para Cancelamento da Nota Fiscal Eletronica deve ter no minimo 15 caracteres')
+     raise EACBrNFeException.Create('A Justificativa para Cancelamento da Nota Fiscal Eletronica deve ter no minimo 15 caracteres')
    end
   else
     FJustificativa := Trim(AValue);
@@ -2178,7 +2178,7 @@ begin
    begin
      if Assigned(TACBrNFe( FACBrNFe ).OnGerarLog) then
         TACBrNFe( FACBrNFe ).OnGerarLog('ERRO: Informar uma Justificativa para Inutilização de numeração da Nota Fiscal Eletronica');
-     raise Exception.Create('Informar uma Justificativa para Inutilização de numeração da Nota Fiscal Eletronica')
+     raise EACBrNFeException.Create('Informar uma Justificativa para Inutilização de numeração da Nota Fiscal Eletronica')
    end
   else
     AValue := NotaUtil.TrataString(AValue);
@@ -2187,7 +2187,7 @@ begin
    begin
      if Assigned(TACBrNFe( FACBrNFe ).OnGerarLog) then
         TACBrNFe( FACBrNFe ).OnGerarLog('ERRO: A Justificativa para Inutilização de numeração da Nota Fiscal Eletronica deve ter no minimo 15 caracteres');
-     raise Exception.Create('A Justificativa para Inutilização de numeração da Nota Fiscal Eletronica deve ter no minimo 15 caracteres')
+     raise EACBrNFeException.Create('A Justificativa para Inutilização de numeração da Nota Fiscal Eletronica deve ter no minimo 15 caracteres')
    end
   else
     FJustificativa := Trim(AValue);

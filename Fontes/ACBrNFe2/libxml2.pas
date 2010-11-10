@@ -4429,7 +4429,7 @@ var
 procedure CheckForNil(ptr: Pointer; name:string);
 begin
   if not Assigned(ptr) then
-    raise Exception.Create('"' + name + '" could not be loaded from the dynamic library ' + LIBXML2_SO);
+    raise EACBrNFeException.Create('"' + name + '" could not be loaded from the dynamic library ' + LIBXML2_SO);
 end;
 
 

@@ -781,7 +781,7 @@ begin
   {$ENDIF}
 
    if FRaveFile = '' then
-      raise Exception.Create(' Arquivo de Relatório nao informado.') ;
+      raise EACBrNFeException.Create(' Arquivo de Relatório nao informado.') ;
 
    if not (uppercase(copy(FRaveFile,length(FRaveFile)-3,4))='.RAV') then
    begin
@@ -793,7 +793,7 @@ begin
    else
    begin
       if not FilesExists(FRaveFile) then
-         raise Exception.Create('Arquivo '+FRaveFile+' Nao encontrado');
+         raise EACBrNFeException.Create('Arquivo '+FRaveFile+' Nao encontrado');
 
       dmDanfe.RvProject.ClearRaveBlob;
       dmDanfe.RvProject.ProjectFile := FRaveFile;  //ExtractFileDir(application.ExeName)+'\Report\NotaFiscalEletronica.rav';
@@ -865,7 +865,7 @@ begin
   {$ENDIF}
 
    if FRaveFile = '' then
-      raise Exception.Create(' Arquivo de Relatório nao informado.') ;
+      raise EACBrNFeException.Create(' Arquivo de Relatório nao informado.') ;
 
    if not (uppercase(copy(FRaveFile,length(FRaveFile)-3,4))='.RAV') then
    begin
@@ -877,7 +877,7 @@ begin
    else
    begin
       if not FilesExists(FRaveFile) then
-         raise Exception.Create('Arquivo '+FRaveFile+' Nao encontrado');
+         raise EACBrNFeException.Create('Arquivo '+FRaveFile+' Nao encontrado');
 
       dmDanfe.RvProject.ClearRaveBlob;
       dmDanfe.RvProject.ProjectFile := FRaveFile;  //ExtractFileDir(application.ExeName)+'\Report\NotaFiscalEletronica.rav';

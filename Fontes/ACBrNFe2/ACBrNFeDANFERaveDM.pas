@@ -985,7 +985,7 @@ begin
          Connection.WriteStrData('', 'NÚMERO DE REGISTRO DPEC');
          //precisa testar
          if notautil.EstaVazio(FDANFEClassOwner.ProtocoloNFe) then
-            raise Exception.Create('Protocolo de Registro no DPEC não informado.')
+            raise EACBrNFeException.Create('Protocolo de Registro no DPEC não informado.')
          else
             Connection.WriteStrData('', FDANFEClassOwner.ProtocoloNFe);
       end;

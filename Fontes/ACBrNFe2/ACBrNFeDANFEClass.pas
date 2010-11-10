@@ -251,7 +251,7 @@ begin
   begin
      if Value <> nil then
         if not (Value is TACBrNFe) then
-           raise Exception.Create('ACBrDANFE.NFE deve ser do tipo TACBrNFe') ;
+           raise EACBrNFeException.Create('ACBrDANFE.NFE deve ser do tipo TACBrNFe') ;
 
      if Assigned(FACBrNFe) then
         FACBrNFe.RemoveFreeNotification(Self);
@@ -273,7 +273,7 @@ end;
 
 procedure TACBrNFeDANFEClass.ErroAbstract(NomeProcedure: String);
 begin
-  raise Exception.Create( NomeProcedure ) ;
+  raise EACBrNFeException.Create( NomeProcedure ) ;
 end;
 
 

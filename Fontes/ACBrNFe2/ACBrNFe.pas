@@ -59,10 +59,12 @@ const
   ACBRNFE_VERSAO = '0.4.0a';
   
 type
- TACBrNFeAboutInfo = (ACBrNFeAbout);
+  TACBrNFeAboutInfo = (ACBrNFeAbout);
 
- { Evento para gerar log das mensagens do Componente }
- TACBrNFeLog = procedure(const Mensagem : String) of object ;
+  EACBrNFeException = class(Exception);
+
+  // Evento para gerar log das mensagens do Componente
+  TACBrNFeLog = procedure(const Mensagem : String) of object ;
 
   TACBrNFe = class(TComponent)
   private
@@ -198,7 +200,7 @@ begin
    begin
       if Assigned(Self.OnGerarLog) then
          Self.OnGerarLog('ERRO: Nenhuma Nota Fiscal Eletrônica Informada!');
-      raise Exception.Create('Nenhuma Nota Fiscal Eletrônica Informada!');
+      raise EACBrNFeException.Create('Nenhuma Nota Fiscal Eletrônica Informada!');
    end;
 
   for i:= 0 to self.NotasFiscais.Count-1 do
@@ -219,7 +221,7 @@ begin
    begin
      if Assigned(Self.OnGerarLog) then
         Self.OnGerarLog('ERRO: Nenhuma Nota Fiscal Eletrônica Informada!');
-     raise Exception.Create('Nenhuma Nota Fiscal Eletrônica Informada!');
+     raise EACBrNFeException.Create('Nenhuma Nota Fiscal Eletrônica Informada!');
    end;
 
   for i := 0 to Self.NotasFiscais.Count-1 do
@@ -244,7 +246,7 @@ begin
    begin
       if Assigned(Self.OnGerarLog) then
          Self.OnGerarLog('ERRO: Conjunto de NF-e transmitidas (máximo de 50 NF-e) excedido. Quantidade atual: '+IntToStr(NotasFiscais.Count));
-      raise Exception.Create('ERRO: Conjunto de NF-e transmitidas (máximo de 50 NF-e) excedido. Quantidade atual: '+IntToStr(NotasFiscais.Count));
+      raise EACBrNFeException.Create('ERRO: Conjunto de NF-e transmitidas (máximo de 50 NF-e) excedido. Quantidade atual: '+IntToStr(NotasFiscais.Count));
      exit;
    end;
   NotasFiscais.Assinar;

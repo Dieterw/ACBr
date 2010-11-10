@@ -591,7 +591,7 @@ var
         bcDigits[RLen + 1] := J;
         Inc (I);
       except
-        Raise Exception.Create( 'Caracteres inválidos' );
+        raise EACBrNFeException.Create( 'Caracteres inválidos' );
       end;
     end;
     Inc (I);

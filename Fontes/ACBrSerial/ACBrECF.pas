@@ -1808,8 +1808,6 @@ begin
      except
      end ;
 
-     VendaLiquida := 0; // Falta implementar
-
      { Copiando objetos de ICMS e ISS}
      try
         CarregaAliquotas;
@@ -1858,6 +1856,14 @@ begin
         NaoTributadoISSQN := Self.TotalNaoTributadoISSQN;
      except
      end ;
+
+     VendaLiquida :=
+      VendaBruta -
+      CancelamentoICMS -
+      DescontoICMS -
+      TotalISSQN -
+      CancelamentoISSQN -
+      DescontoISSQN;
 
      { TOTALIZADORES NÃO FISCAIS }
      try

@@ -190,7 +190,7 @@ end;
 procedure NotaFiscal.Imprimir;
 begin
   if not Assigned( TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE ) then
-     raise Exception.Create('Componente DANFE não associado.')
+     raise EACBrNFeException.Create('Componente DANFE não associado.')
   else
      TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.ImprimirDANFE(NFe);
 end;
@@ -198,7 +198,7 @@ end;
 procedure NotaFiscal.ImprimirPDF;
 begin
   if not Assigned( TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE ) then
-     raise Exception.Create('Componente DANFE não associado.')
+     raise EACBrNFeException.Create('Componente DANFE não associado.')
   else
      TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.ImprimirDANFEPDF(NFe);
 end;
@@ -218,7 +218,7 @@ begin
            CaminhoArquivo := PathWithDelim(TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).Configuracoes.Geral.PathSalvar)+copy(NFe.infNFe.ID, (length(NFe.infNFe.ID)-44)+1, 44)+'-NFe.xml';
 
         if NotaUtil.EstaVazio(CaminhoArquivo) or not DirectoryExists(ExtractFilePath(CaminhoArquivo)) then
-           raise Exception.Create('Caminho Inválido: ' + CaminhoArquivo);
+           raise EACBrNFeException.Create('Caminho Inválido: ' + CaminhoArquivo);
 
         LocNFeW.Gerador.SalvarArquivo(CaminhoArquivo);
         if SalvaTXT then
@@ -367,7 +367,7 @@ constructor TNotasFiscais.Create(AOwner: TPersistent;
   ItemClass: TCollectionItemClass);
 begin
   if not (AOwner is TACBrNFe ) then
-     raise Exception.Create( 'AOwner deve ser do tipo TACBrNFe') ;
+     raise EACBrNFeException.Create( 'AOwner deve ser do tipo TACBrNFe') ;
 
   inherited;
 
@@ -397,11 +397,11 @@ begin
         Self.Items[i].Alertas := LocNFeW.Gerador.ListaDeAlertas.Text;
 {$IFDEF ACBrNFeOpenSSL}
         if not(NotaUtil.Assinar(LocNFeW.Gerador.ArquivoFormatoXML, FConfiguracoes.Certificados.Certificado , FConfiguracoes.Certificados.Senha, vAssinada, FMsg)) then
-           raise Exception.Create('Falha ao assinar Nota Fiscal Eletrônica '+
+           raise EACBrNFeException.Create('Falha ao assinar Nota Fiscal Eletrônica '+
                                    IntToStr(Self.Items[i].NFe.Ide.nNF)+FMsg);
 {$ELSE}
         if not(NotaUtil.Assinar(LocNFeW.Gerador.ArquivoFormatoXML, FConfiguracoes.Certificados.GetCertificado , vAssinada, FMsg)) then
-           raise Exception.Create('Falha ao assinar Nota Fiscal Eletrônica '+
+           raise EACBrNFeException.Create('Falha ao assinar Nota Fiscal Eletrônica '+
                                    IntToStr(Self.Items[i].NFe.Ide.nNF)+FMsg);
 {$ENDIF}
         vAssinada := StringReplace( vAssinada, '<'+ENCODING_UTF8_STD+'>', '', [rfReplaceAll] ) ;
@@ -461,7 +461,7 @@ end;
 procedure TNotasFiscais.Imprimir;
 begin
   if not Assigned( TACBrNFe( FACBrNFe ).DANFE ) then
-     raise Exception.Create('Componente DANFE não associado.')
+     raise EACBrNFeException.Create('Componente DANFE não associado.')
   else
      TACBrNFe( FACBrNFe ).DANFE.ImprimirDANFE(nil);
 end;
@@ -469,7 +469,7 @@ end;
 procedure TNotasFiscais.ImprimirPDF;
 begin
   if not Assigned( TACBrNFe( FACBrNFe ).DANFE ) then
-     raise Exception.Create('Componente DANFE não associado.')
+     raise EACBrNFeException.Create('Componente DANFE não associado.')
   else
      TACBrNFe( FACBrNFe ).DANFE.ImprimirDANFEPDF(nil);
 end;
@@ -495,7 +495,7 @@ begin
         Assinar;
      if not(NotaUtil.Valida(('<NFe xmlns' + RetornarConteudoEntre(Self.Items[i].XML, '<NFe xmlns', '</NFe>')+ '</NFe>'), FMsg,Self.FConfiguracoes.Geral.PathSchemas)) then
      //if not(NotaUtil.Valida(('<NFe xmlns' + RetornarConteudoEntre(Self.Items[i].XML, '<NFe xmlns', '</NFe>')+ '</NFe>'), FMsg)) then
-       raise Exception.Create('Falha na validação dos dados da nota '+
+       raise EACBrNFeException.Create('Falha na validação dos dados da nota '+
                                IntToStr(Self.Items[i].NFe.Ide.nNF)+sLineBreak+Self.Items[i].Alertas+FMsg);
   end;
 end;                                               
@@ -628,28 +628,28 @@ begin
     Terminado := False;
     try
       if not smtp.Login() then
-        raise Exception.Create('SMTP ERROR: Login:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
+        raise EACBrNFeException.Create('SMTP ERROR: Login:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
 
       if not smtp.MailFrom( sFrom, Length(sFrom)) then
-        raise Exception.Create('SMTP ERROR: MailFrom:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
+        raise EACBrNFeException.Create('SMTP ERROR: MailFrom:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
 
       if not smtp.MailTo(sTo) then
-        raise Exception.Create('SMTP ERROR: MailTo:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
+        raise EACBrNFeException.Create('SMTP ERROR: MailTo:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
 
       if (sCC <> nil) then
       begin
         for I := 0 to sCC.Count - 1 do
         begin
           if not smtp.MailTo(sCC.Strings[i]) then
-            raise Exception.Create('SMTP ERROR: MailTo:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
+            raise EACBrNFeException.Create('SMTP ERROR: MailTo:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
         end;
       end;
 
       if not smtp.MailData(slmsg_Lines) then
-        raise Exception.Create('SMTP ERROR: MailData:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
+        raise EACBrNFeException.Create('SMTP ERROR: MailData:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
 
       if not smtp.Logout() then
-        raise Exception.Create('SMTP ERROR: Logout:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
+        raise EACBrNFeException.Create('SMTP ERROR: Logout:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
     finally
       try
         smtp.Sock.CloseSocket;

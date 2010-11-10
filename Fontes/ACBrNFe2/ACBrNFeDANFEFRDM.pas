@@ -1193,7 +1193,7 @@ begin
 
         //precisa testar
         if notautil.EstaVazio(FDANFEClassOwner.ProtocoloNFe) then
-          raise Exception.Create('Protocolo de Registro no DPEC não informado.')
+          raise EACBrNFeException.Create('Protocolo de Registro no DPEC não informado.')
         else
           FieldByName('Contingencia_Valor').AsString := FDANFEClassOwner.ProtocoloNFe;
       end;

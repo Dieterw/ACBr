@@ -189,7 +189,7 @@ type
 
 implementation
 
-uses ACBrNFeUtil, Math, StrUtils, ACBrUtil, DateUtils;
+uses ACBrNFe, ACBrNFeUtil, Math, StrUtils, ACBrUtil, DateUtils;
 
 { TConfiguracoes }
 
@@ -283,7 +283,7 @@ begin
       vSalvar.SaveToFile( aPath + AXMLName);
       Result := True;
     except on E: Exception do
-      raise Exception.Create('Erro ao salvar .'+E.Message);
+      raise EACBrNFeException.Create('Erro ao salvar .'+E.Message);
     end;
   finally
     vSalvar.Free;
@@ -343,7 +343,7 @@ begin
   end;
 
   if Codigo < 0 then
-     raise Exception.Create('UF inválida');
+     raise EACBrNFeException.Create('UF inválida');
      
   FUF       := AValue;
   FUFCodigo := Codigo;
@@ -368,7 +368,7 @@ var
   XML : String;
 begin
   if NotaUtil.EstaVazio( FNumeroSerie ) then
-    raise Exception.Create('Número de Série do Certificado Digital não especificado !');
+    raise EACBrNFeException.Create('Número de Série do Certificado Digital não especificado !');
 
   Result := nil;
   Store := CoStore.Create;
@@ -413,7 +413,7 @@ begin
 
          dsigKey := xmldsig.createKeyFromCSP(PrivateKey.ProviderType, PrivateKey.ProviderName, PrivateKey.ContainerName, 0);
          if (dsigKey = nil) then
-            raise Exception.Create('Erro ao criar a chave do CSP.');
+            raise EACBrNFeException.Create('Erro ao criar a chave do CSP.');
 
          SigKey := dsigKey as IXMLDSigKeyEx;
          SigKey.getCSPHandle( hCryptProvider );
@@ -437,7 +437,7 @@ begin
   end;
 
   if not(Assigned(Result)) then
-    raise Exception.Create('Certificado Digital não encontrado!');
+    raise EACBrNFeException.Create('Certificado Digital não encontrado!');
 
 end;
 

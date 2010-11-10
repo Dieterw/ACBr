@@ -43,7 +43,7 @@ unit ACBrEFDBloco_D;
 interface
 
 uses
-  SysUtils, Classes, Contnrs, DateUtils, ACBrEFDBlocos;
+  SysUtils, Classes, Contnrs, DateUtils, ACBrEFDBlocos, ACBrUtil;
 
 type
   TRegistroD100List = class;
@@ -589,9 +589,11 @@ type
     fVL_ICMS: currency;       /// Parcela correspondente ao "Valor do ICMS" referente à combinação CST_ICMS,  CFOP e alíquota do ICMS
     fVL_RED_BC: currency;     /// Valor não tributado em função da redução da base de cálculo do ICMS, referente à combinação de CST_ICMS, CFOP e alíquota do ICMS.
     fCOD_OBS: String;         /// Código da observação do lançamento fiscal (campo 02 do Registro 0460)
+
+    procedure SetCFOP(const Value: String);
   public
     property CST_ICMS: String read FCST_ICMS write FCST_ICMS;
-    property CFOP: String read FCFOP write FCFOP;
+    property CFOP: String read FCFOP write SetCFOP;
     property ALIQ_ICMS: currency read FALIQ_ICMS write FALIQ_ICMS;
     property VL_OPR: currency read FVL_OPR write FVL_OPR;
     property VL_BC_ICMS: currency read FVL_BC_ICMS write FVL_BC_ICMS;
@@ -2197,6 +2199,14 @@ begin
   FRegistroD161.Free;
   FRegistroD162.Free;
   inherited;
+end;
+
+{ TRegistroD190 }
+
+procedure TRegistroD190.SetCFOP(const Value: String);
+begin
+  if FCFOP <> Value then
+     FCFOP := TiraPontos(Value);
 end;
 
 end.

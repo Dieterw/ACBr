@@ -1687,7 +1687,7 @@ var
 procedure CheckForNil(ptr: Pointer; name:string);
 begin
   if not Assigned(ptr) then
-    raise EACBrNFeException.Create('"' + name + '" could not be loaded from the dynamic library ' + LIBXMLSEC_SO);
+    raise Exception.Create('"' + name + '" could not be loaded from the dynamic library ' + LIBXMLSEC_SO);
 end;
 
 var

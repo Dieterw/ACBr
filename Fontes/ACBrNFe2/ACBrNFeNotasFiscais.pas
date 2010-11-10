@@ -628,28 +628,28 @@ begin
     Terminado := False;
     try
       if not smtp.Login() then
-        raise EACBrNFeException.Create('SMTP ERROR: Login:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
+        raise Exception.Create('SMTP ERROR: Login:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
 
       if not smtp.MailFrom( sFrom, Length(sFrom)) then
-        raise EACBrNFeException.Create('SMTP ERROR: MailFrom:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
+        raise Exception.Create('SMTP ERROR: MailFrom:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
 
       if not smtp.MailTo(sTo) then
-        raise EACBrNFeException.Create('SMTP ERROR: MailTo:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
+        raise Exception.Create('SMTP ERROR: MailTo:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
 
       if (sCC <> nil) then
       begin
         for I := 0 to sCC.Count - 1 do
         begin
           if not smtp.MailTo(sCC.Strings[i]) then
-            raise EACBrNFeException.Create('SMTP ERROR: MailTo:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
+            raise Exception.Create('SMTP ERROR: MailTo:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
         end;
       end;
 
       if not smtp.MailData(slmsg_Lines) then
-        raise EACBrNFeException.Create('SMTP ERROR: MailData:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
+        raise Exception.Create('SMTP ERROR: MailData:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
 
       if not smtp.Logout() then
-        raise EACBrNFeException.Create('SMTP ERROR: Logout:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
+        raise Exception.Create('SMTP ERROR: Logout:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
     finally
       try
         smtp.Sock.CloseSocket;

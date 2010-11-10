@@ -201,30 +201,30 @@ begin
        { load template }
        doc := xmlParseDoc(Axml);
        if ((doc = nil) or (xmlDocGetRootElement(doc) = nil)) then
-         raise EACBrNFeException.Create('Error: unable to parse');
+         raise Exception.Create('Error: unable to parse');
 
        { find start node }
        node := xmlSecFindNode(xmlDocGetRootElement(doc), PAnsiChar(xmlSecNodeSignature), PAnsiChar(xmlSecDSigNs));
        if (node = nil) then
-         raise EACBrNFeException.Create('Error: start node not found');
+         raise Exception.Create('Error: start node not found');
 
        { create signature context, we don't need keys manager in this example }
        dsigCtx := xmlSecDSigCtxCreate(nil);
        if (dsigCtx = nil) then
-         raise EACBrNFeException.Create('Error :failed to create signature context');
+         raise Exception.Create('Error :failed to create signature context');
 
        // { load private key}
        dsigCtx^.signKey := xmlSecCryptoAppKeyLoad(key_file, xmlSecKeyDataFormatPkcs12, senha, nil, nil);
        if (dsigCtx^.signKey = nil) then
-          raise EACBrNFeException.Create('Error: failed to load private pem key from "' + key_file + '"');
+          raise Exception.Create('Error: failed to load private pem key from "' + key_file + '"');
 
        { set key name to the file name, this is just an example! }
        if (xmlSecKeySetName(dsigCtx^.signKey, PAnsiChar(key_file)) < 0) then
-         raise EACBrNFeException.Create('Error: failed to set key name for key from "' + key_file + '"');
+         raise Exception.Create('Error: failed to set key name for key from "' + key_file + '"');
 
        { sign the template }
        if (xmlSecDSigCtxSign(dsigCtx, node) < 0) then
-         raise EACBrNFeException.Create('Error: signature failed');
+         raise Exception.Create('Error: signature failed');
 
        { print signed document to stdout }
        // xmlDocDump(stdout, doc);
@@ -263,31 +263,31 @@ begin
        { load template }
        doc := xmlParseDoc(Axml);
        if ((doc = nil) or (xmlDocGetRootElement(doc) = nil)) then
-         raise EACBrNFeException.Create('Error: unable to parse');
+         raise Exception.Create('Error: unable to parse');
 
        { find start node }
        node := xmlSecFindNode(xmlDocGetRootElement(doc), PChar(xmlSecNodeSignature), PChar(xmlSecDSigNs));
        if (node = nil) then
-         raise EACBrNFeException.Create('Error: start node not found');
+         raise Exception.Create('Error: start node not found');
 
        { create signature context, we don't need keys manager in this example }
        dsigCtx := xmlSecDSigCtxCreate(nil);
        if (dsigCtx = nil) then
-         raise EACBrNFeException.Create('Error :failed to create signature context');
+         raise Exception.Create('Error :failed to create signature context');
 
        // { load private key, assuming that there is not password }
        dsigCtx^.signKey := xmlSecCryptoAppKeyLoadMemory(Ponteiro, size, xmlSecKeyDataFormatPkcs12, senha, nil, nil);
 
        if (dsigCtx^.signKey = nil) then
-          raise EACBrNFeException.Create('Error: failed to load private pem key from "' + key_file + '"');
+          raise Exception.Create('Error: failed to load private pem key from "' + key_file + '"');
 
        { set key name to the file name, this is just an example! }
        if (xmlSecKeySetName(dsigCtx^.signKey, key_file) < 0) then
-         raise EACBrNFeException.Create('Error: failed to set key name for key from "' + key_file + '"');
+         raise Exception.Create('Error: failed to set key name for key from "' + key_file + '"');
 
        { sign the template }
        if (xmlSecDSigCtxSign(dsigCtx, node) < 0) then
-         raise EACBrNFeException.Create('Error: signature failed');
+         raise Exception.Create('Error: signature failed');
 
        { print signed document to stdout }
        // xmlDocDump(stdout, doc);
@@ -318,11 +318,11 @@ begin
 
     { Init xmlsec library }
     if (xmlSecInit() < 0) then
-       raise EACBrNFeException.Create('Error: xmlsec initialization failed.');
+       raise Exception.Create('Error: xmlsec initialization failed.');
 
     { Check loaded library version }
     if (xmlSecCheckVersionExt(1, 2, 8, xmlSecCheckVersionABICompatible) <> 1) then
-       raise EACBrNFeException.Create('Error: loaded xmlsec library version is not compatible.');
+       raise Exception.Create('Error: loaded xmlsec library version is not compatible.');
 
     (* Load default crypto engine if we are supporting dynamic
      * loading for xmlsec-crypto libraries. Use the crypto library
@@ -330,17 +330,17 @@ begin
      * xmlsec-crypto library.
      *)
     if (xmlSecCryptoDLLoadLibrary('openssl') < 0) then
-       raise EACBrNFeException.Create( 'Error: unable to load default xmlsec-crypto library. Make sure'#10 +
+       raise Exception.Create( 'Error: unable to load default xmlsec-crypto library. Make sure'#10 +
                           			'that you have it installed and check shared libraries path'#10 +
                           			'(LD_LIBRARY_PATH) environment variable.');
 
     { Init crypto library }
     if (xmlSecCryptoAppInit(nil) < 0) then
-       raise EACBrNFeException.Create('Error: crypto initialization failed.');
+       raise Exception.Create('Error: crypto initialization failed.');
 
     { Init xmlsec-crypto library }
     if (xmlSecCryptoInit() < 0) then
-       raise EACBrNFeException.Create('Error: xmlsec-crypto initialization failed.');
+       raise Exception.Create('Error: xmlsec-crypto initialization failed.');
 end ;
 
 class Procedure NotaUtil.ShutDownXmlSec ;

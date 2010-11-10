@@ -956,56 +956,10 @@ TACBrECFClass = class
     property CodBarras : TACBrECFCodBarras read fpCodBarras ;
 end ;
 
-function AjustaLinhas(Texto: AnsiString; Colunas: Integer ;
-   NumMaxLinhas: Integer = 0; PadLinhas: Boolean = False): AnsiString;
-
 implementation
 Uses ACBrECF, ACBrUtil, Math,
      {$IFDEF COMPILER6_UP} DateUtils, StrUtils {$ELSE} ACBrD5, Windows {$ENDIF},
      TypInfo ;
-
-function AjustaLinhas(Texto: AnsiString; Colunas: Integer ;
-   NumMaxLinhas: Integer = 0; PadLinhas: Boolean = False): AnsiString;
-Var Count,P,I : Integer ;
-    Linha : AnsiString ;
-begin
-  { Trocando todos os #13+#10 por #10 }
-  Texto := StringReplace(Texto,CR+LF,#10,[rfReplaceAll]) ;
-  Texto := StringReplace(Texto,sLineBreak,#10,[rfReplaceAll]) ;
-
-  { Ajustando a largura das Linhas para o máximo permitido em  "Colunas"
-    e limitando em "NumMaxLinhas" o total de Linhas}
-  Count  := 0 ;
-  Result := '' ;
-  while ((Count < NumMaxLinhas) or (NumMaxLinhas = 0)) and
-        (Length(Texto) > 0) do
-  begin
-     P := pos(#10, Texto) ;
-     if P > (Colunas + 1) then
-        P := Colunas + 1 ;
-
-     if P = 0 then
-        P := min( Length( Texto ), Colunas ) + 1 ;
-
-     I := 0 ;
-     if copy(Texto,P,1) = #10 then   // Pula #10 ?
-        I := 1 ;
-
-     Linha := copy(Texto,1,P-1) ;    // Remove #10 (se hover)
-
-     if PadLinhas then
-        Result := Result + padL( Linha, Colunas) + #10
-     else
-        Result := Result + Linha + #10 ;
-
-     Inc(Count) ;
-     Texto := copy(Texto, P+I, Length(Texto) ) ;
-  end ;
-
-  { Permitir impressão de uma linha em branco --Acrescentado por Marciano Lizzoni }
-  if Result = '' then
-    Result := Result + #10;
-end;
 
 { ---------------------------- TACBrECFAliquotas -------------------------- }
 

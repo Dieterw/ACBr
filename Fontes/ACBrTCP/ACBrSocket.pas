@@ -644,7 +644,7 @@ begin
                                      HTTPSend.ResultString + sLineBreak +
                                      'URL: '+AURL + sLineBreak + sLineBreak +
                                      'Resposta HTTP:' + sLineBreak +
-                                     RespHTTP.Text ) ;
+                                     AjustaLinhas( RespHTTP.Text, 80, 20) ) ;
   finally
     {$IFNDEF CONSOLE}
      Screen.Cursor := OldCursor;

@@ -655,6 +655,8 @@ begin
 end;
 
 procedure TACBrECFBematech.Ativar;
+var
+  wRetentar : Boolean ;
 begin
   if not fpDevice.IsSerialPort  then
      raise Exception.Create(ACBrStr('A impressora: '+fpModeloStr+' requer'+sLineBreak+
@@ -681,11 +683,17 @@ begin
   try
      { Testando a comunicaçao com a porta }
      try
-        fs25MFD := True;
-        EnviaComando( #19 ) ;    { Pede Status }
+        fs25MFD   := True;     // Tenta conectar com protocolo Novo (28)
+        wRetentar := Retentar ;
+        try
+           Retentar := False;
+           EnviaComando( #19 ) ;    { Pede Status }
+        finally
+           Retentar := wRetentar;
+        end ;
      except
-        fs25MFD := False;
-        EnviaComando( #19 ) ;    { Pede Status }
+        fs25MFD := False;      // Protocolo Novo não foi entendido, usando antigo (27)
+        EnviaComando( #19 ) ;       { Pede Status }
      end ;
 
      if (fsACK = 21) or (fsACK <> 6) then

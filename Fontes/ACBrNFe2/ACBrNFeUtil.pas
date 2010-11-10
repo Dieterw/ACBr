@@ -97,8 +97,8 @@ type
     class function GetURLMT(AAmbiente: Integer; ALayOut: TLayOut): WideString;
     class function GetURLMS(AAmbiente: Integer; ALayOut: TLayOut): WideString;   //atualizado 2.0 Homologação
     class function GetURLMG(AAmbiente: Integer; ALayOut: TLayOut): WideString;   //atualizado 2.0 Homologação
-    class function GetURLPR(AAmbiente: Integer; ALayOut: TLayOut): WideString;
-    class function GetURLPE(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+    class function GetURLPR(AAmbiente: Integer; ALayOut: TLayOut): WideString;   //atualizado 2.0 Homologação
+    class function GetURLPE(AAmbiente: Integer; ALayOut: TLayOut): WideString;   //atualizado 2.0 Homologação
     class function GetURLRS(AAmbiente: Integer; ALayOut: TLayOut): WideString;   //atualizado 2.0 Homologação e Produção
     class function GetURLSP(AAmbiente: Integer; ALayOut: TLayOut): WideString;   //atualizado 2.0 Homologação e Produção
   protected
@@ -977,14 +977,16 @@ end;
 class function NotaUtil.GetURLPR(AAmbiente: Integer;
   ALayOut: TLayOut): WideString;
 begin
-  raise EACBrNFeException.Create('WebServices 2.0 não liberados pelo estado');
+  if AAmbiente = 1 then
+     raise EACBrNFeException.Create('WebServices 2.0 não liberados pelo estado');
+
   case ALayOut of
-    LayNfeRecepcao      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.pr.gov.br/NFENWebServices/services/nfeRecepcao', 'https://homologacao.nfe.fazenda.pr.gov.br/NFENWebServices/services/nfeRecepcao');
-    LayNfeRetRecepcao   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.pr.gov.br/NFENWebServices/services/nfeRetRecepcao', 'https://homologacao.nfe.fazenda.pr.gov.br/NFENWebServices/services/nfeRetRecepcao');
-    LayNfeCancelamento  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.pr.gov.br/NFENWebServices/services/nfeCancelamentoNF', 'https://homologacao.nfe.fazenda.pr.gov.br/NFENWebServices/services/nfeCancelamentoNF');
-    LayNfeInutilizacao  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.pr.gov.br/NFENWebServices/services/nfeInutilizacaoNF', 'https://homologacao.nfe.fazenda.pr.gov.br/NFENWebServices/services/nfeInutilizacaoNF');
-    LayNfeConsulta      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.pr.gov.br/NFENWebServices/services/nfeConsultaNF', 'https://homologacao.nfe.fazenda.pr.gov.br/NFENWebServices/services/nfeConsultaNF');
-    LayNfeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.pr.gov.br/NFENWebServices/services/nfeStatusServicoNF', 'https://homologacao.nfe.fazenda.pr.gov.br/NFENWebServices/services/nfeStatusServicoNF');
+    LayNfeRecepcao      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.pr.gov.br/NFENWebServices/services/nfeRecepcao', 'https://homologacao.nfe2.fazenda.pr.gov.br/nfe/NFeRecepcao2');
+    LayNfeRetRecepcao   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.pr.gov.br/NFENWebServices/services/nfeRetRecepcao', 'https://homologacao.nfe2.fazenda.pr.gov.br/nfe/NFeRetRecepcao2');
+    LayNfeCancelamento  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.pr.gov.br/NFENWebServices/services/nfeCancelamentoNF', 'https://homologacao.nfe2.fazenda.pr.gov.br/nfe/NFeCancelamento2');
+    LayNfeInutilizacao  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.pr.gov.br/NFENWebServices/services/nfeInutilizacaoNF', 'https://homologacao.nfe2.fazenda.pr.gov.br/nfe/NFeInutilizacao2');
+    LayNfeConsulta      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.pr.gov.br/NFENWebServices/services/nfeConsultaNF', 'https://homologacao.nfe2.fazenda.pr.gov.br/nfe/NFeConsulta2');
+    LayNfeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.pr.gov.br/NFENWebServices/services/nfeStatusServicoNF', 'https://homologacao.nfe2.fazenda.pr.gov.br/nfe/NFeStatusServico2');
 //    LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, '', '');
   end;
 end;
@@ -992,14 +994,16 @@ end;
 class function NotaUtil.GetURLPE(AAmbiente: Integer;
   ALayOut: TLayOut): WideString;
 begin
-  raise EACBrNFeException.Create('WebServices 2.0 não liberados pelo estado');
+  if AAmbiente = 1 then
+     raise EACBrNFeException.Create('WebServices 2.0 não liberados pelo estado');
+
   case ALayOut of
-    LayNfeRecepcao      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeRecepcao', 'https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeRecepcao');
-    LayNfeRetRecepcao   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeRetRecepcao', 'https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeRetRecepcao');
-    LayNfeCancelamento  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeCancelamento', 'https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeCancelamento');
-    LayNfeInutilizacao  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeInutilizacao', 'https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeInutilizacao');
-    LayNfeConsulta      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeConsulta', 'https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeConsulta');
-    LayNfeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeStatusServico', 'https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeStatusServico');
+    LayNfeRecepcao      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeRecepcao', 'https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeRecepcao2');
+    LayNfeRetRecepcao   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeRetRecepcao', 'https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeRetRecepcao2');
+    LayNfeCancelamento  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeCancelamento', 'https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeCancelamento2');
+    LayNfeInutilizacao  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeInutilizacao', 'https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeInutilizacao2');
+    LayNfeConsulta      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeConsulta', 'https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeConsulta2');
+    LayNfeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeStatusServico', 'https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeStatusServico2');
     LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.pe.gov.br/nfe-service/services/CadConsultaCadastro', 'https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/CadConsultaCadastro');
   end;
 end;

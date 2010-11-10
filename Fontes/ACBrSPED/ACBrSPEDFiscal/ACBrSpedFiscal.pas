@@ -339,7 +339,7 @@ end;
 
 function TACBrSPEDFiscal.GetDT_INI: TDateTime;
 begin
-  Result := FDT_FIN;
+  Result := FDT_INI;
 end;
 
 procedure TACBrSPEDFiscal.InicializaBloco( Bloco: TACBrSPED ) ;
@@ -438,7 +438,7 @@ end;
 
 function TACBrSPEDFiscal.GetDT_FIN: TDateTime;
 begin
-  Result := FDT_INI;
+  Result := FDT_FIN;
 end;
 
 procedure TACBrSPEDFiscal.SetDT_FIN(const Value: TDateTime);

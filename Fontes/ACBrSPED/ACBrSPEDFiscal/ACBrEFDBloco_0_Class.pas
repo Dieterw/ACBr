@@ -537,9 +537,10 @@ begin
      begin
         with Reg0001.Registro0190.Items[intFor] do
         begin
-          ///
+//          Check(Reg0001.Registro0190.LocalizaRegistro(UNID), '(0-0190) UNIDADE MEDIDA: A unidade de medida "%s" foi duplicada na lista de registros 0190!', [UNID]);
+
           Add( LFill('0190') +
-               LFill(UNID ) +
+               LFill(UNID) +
                LFill(DESCR) ) ;
         end;
         Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;

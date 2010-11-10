@@ -47,6 +47,16 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+
+Versão 1.00b   10/11/10
+-- ACBrSPEDFiscal --
+[*] Implementação do Registro D190, o procedimento "SetCFOP" no atributo "CFOP" 
+    para que o componente trate o atibuto retirando dele os pontos caso o conteúdo 
+    venha com o mesmo. Por (Isaque Pinheiro)
+    Quem desejar siga o código de exemplo e implemente em outros registros e 
+    atibutos o tratamento em seguida me envie o código alterado.
+
+
 Versão 1.00b   12/09/10
 -- ACBrSPEDFiscal --
 [*] Implementação do Registro E100, para apuração de ICMS quinzenal por (Prevedello)

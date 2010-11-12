@@ -50,7 +50,7 @@ Símbolo : Significado
 
 Alterações   10/11/2010
 ---------------
-[+] Criação de classe exception para a nota eletrônica
+[+] Criação de classe exception para a nota eletrônica (Régys Borges da Silveira)
     - Foi criado uma classe de exception própria EACBrNFeException para o
       componente de nota eletrônica, visando facilitar o tratamento de exceções 
       vindas da nota fiscal eletrônica.

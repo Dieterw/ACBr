@@ -844,7 +844,8 @@ begin
 
 //
 //  versao 3.01
-  if nfe.Det[i].Imposto.ISSQN.cSitTrib = ISSQNcSitTribVazio then (**)GerarDetImpostoISSQN(i);
+  if NFe.infNFe.Versao < 2 then
+     if nfe.Det[i].Imposto.ISSQN.cSitTrib = ISSQNcSitTribVazio then (**)GerarDetImpostoISSQN(i);
 
   Gerador.wGrupo('/imposto');
 end;
@@ -1360,7 +1361,8 @@ begin
     if (FOpcoes.ValidarListaServicos) and (nfe.Det[i].Imposto.ISSQN.cListServ <> 0) then
       if not ValidarCListServ(nfe.Det[i].Imposto.ISSQN.cListServ) then
       Gerador.wAlerta('U06', 'cListServ', DSC_CLISTSERV, ERR_MSG_INVALIDO);
-    if nfe.Det[i].Imposto.ISSQN.cSitTrib <> ISSQNcSitTribVazio then Gerador.wCampo(tcStr, 'U07', 'cSitTrib', 01, 01, 1, ISSQNcSitTribToStr( nfe.Det[i].Imposto.ISSQN.cSitTrib ) , DSC_CSITTRIB);
+    if NFe.infNFe.Versao >= 2 then
+       Gerador.wCampo(tcStr, 'U07', 'cSitTrib', 01, 01, 1, ISSQNcSitTribToStr( nfe.Det[i].Imposto.ISSQN.cSitTrib ) , DSC_CSITTRIB);
     Gerador.wGrupo('/ISSQN');
   end;
 end;

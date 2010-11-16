@@ -1780,26 +1780,36 @@ var
 begin
   inherited CarregaAliquotas ;   { Cria fpAliquotas }
 
-  EpsonComando.Comando := '0542' ;
-  EnviaComando ;
+  try
+     EpsonComando.Comando := '0542' ;
+     EnviaComando ;
 
-  iAliquotas := Trunc(EpsonResposta.Params.Count / 3);
+     iAliquotas := Trunc(EpsonResposta.Params.Count / 3);
 
-  For A := 1 to iAliquotas do
-  begin
-     IndAliq  := EpsonResposta.Params[(A * 3) - 3];
-     ValAliq  := RoundTo( StrToFloatDef(EpsonResposta.Params[(A * 3) - 2], 0 ) / 100, -2) ;
-     TotAliq  := RoundTo( StrToFloatDef(EpsonResposta.Params[(A * 3) - 1], 0 ) / 100, -2) ;
+     For A := 1 to iAliquotas do
+     begin
+        IndAliq  := EpsonResposta.Params[(A * 3) - 3];
+        ValAliq  := RoundTo( StrToFloatDef(EpsonResposta.Params[(A * 3) - 2], 0 ) / 100, -2) ;
+        TotAliq  := RoundTo( StrToFloatDef(EpsonResposta.Params[(A * 3) - 1], 0 ) / 100, -2) ;
 
-     Aliquota := TACBrECFAliquota.create;
+        Aliquota := TACBrECFAliquota.create;
 
-     Aliquota.Indice   := IndAliq ;
-     Aliquota.Tipo     := Char(IndAliq[1]);
-     Aliquota.Aliquota := ValAliq ;
-     Aliquota.Total    := TotAliq ;
+        Aliquota.Indice   := IndAliq ;
+        Aliquota.Tipo     := Char(IndAliq[1]);
+        Aliquota.Aliquota := ValAliq ;
+        Aliquota.Total    := TotAliq ;
 
-     fpAliquotas.Add(Aliquota);
-  end;
+        fpAliquotas.Add(Aliquota);
+     end;
+
+  except
+     { Se falhou ao carregar, deve "nilzar" as variaveis para que as rotinas
+       "Acha*" tentem carregar novamente }
+     fpAliquotas.Free;
+     fpAliquotas := nil;
+
+     raise ;
+  end ;
 end;
 
 procedure TACBrECFEpson.LerTotaisAliquota;
@@ -1855,46 +1865,44 @@ end;
 
 
 procedure TACBrECFEpson.CarregaFormasPagamento;
-  Function SubCarregaFormasPagamento(Indice : Integer) : Boolean ;
-    var FPagto : TACBrECFFormaPagamento ;
-  begin
-     Result := True ;
-     EpsonComando.Comando := '050D' ;
-     EpsonComando.AddParam( IntToStr(Indice) ) ;
-     try
-        EnviaComando ;
-
-        FPagto := TACBrECFFormaPagamento.create ;
-        FPagto.Indice    := IntToStr( Indice ) ;
-        FPagto.Descricao := EpsonResposta.Params[0] ;
-        FPagto.PermiteVinculado := ( EpsonResposta.Params[1] = 'S' ) ;
-
-        fpFormasPagamentos.Add( FPagto ) ;
-     except
-        on E : Exception do
-        begin
-           Result := (pos('090C',E.Message) <> 0)
-        end ;
-     end;
-  end ;
-Var A    : Integer;
-    Erro : Boolean ;
+Var A      : Integer;
+    FPagto : TACBrECFFormaPagamento ;
 begin
   inherited CarregaFormasPagamento ;   { Cria fpFormasPagamentos }
 
-  Erro := False ;
-  { Lê as Formas de Pagamento cadastradas na impressora }
-  A := 1;
-  while (A <= 20) and (not Erro) do
-  begin
-     Erro := not SubCarregaFormasPagamento(A);
-     Inc( A )
-  end ;
+  try
+     { Lê as Formas de Pagamento cadastradas na impressora }
+     A := 1;
+     while (A <= 20) do
+     begin
+        EpsonComando.Comando := '050D' ;
+        EpsonComando.AddParam( IntToStr(A) ) ;
+        try
+           EnviaComando ;
 
-  if Erro then   { "niliza" para tentar carregar novamente no futuro }
-  begin
-     fpFormasPagamentos.Free ;
-     fpFormasPagamentos := nil ;
+           FPagto := TACBrECFFormaPagamento.create ;
+           FPagto.Indice    := IntToStr( A ) ;
+           FPagto.Descricao := EpsonResposta.Params[0] ;
+           FPagto.PermiteVinculado := ( EpsonResposta.Params[1] = 'S' ) ;
+
+           fpFormasPagamentos.Add( FPagto ) ;
+        except
+           on E : Exception do
+           begin
+              if (pos('090C',E.Message) = 0) then
+                 raise ;
+           end ;
+        end;
+
+        Inc( A )
+     end ;
+  except
+     { Se falhou ao carregar, deve "nilzar" as variaveis para que as rotinas
+       "Acha*" tentem carregar novamente }
+     fpFormasPagamentos.Free;
+     fpFormasPagamentos := nil;
+
+     raise ;
   end ;
 end;
 
@@ -1962,48 +1970,48 @@ end;
 procedure TACBrECFEpson.CarregaComprovantesNaoFiscais;
 Var A    : Integer ;
     CNF  : TACBrECFComprovanteNaoFiscal ;
-    Erro : Boolean ;
 begin
   inherited CarregaComprovantesNaoFiscais ;
 
-  A    := 1 ;
-  Erro := False ;
-  while (A <= 20) and (not Erro) do
-  begin
-     EpsonComando.Comando  := '0902' ;
-     EpsonComando.Extensao := '0001' ;
-     EpsonComando.AddParam( IntToStr(A) ) ;
-     try
-        EnviaComando ;
+  try
+     A := 1 ;
+     while (A <= 20) do
+     begin
+        EpsonComando.Comando  := '0902' ;
+        EpsonComando.Extensao := '0001' ;
+        EpsonComando.AddParam( IntToStr(A) ) ;
+        try
+           EnviaComando ;
 
-        // André Bohn - Se não tem comprovante cadastrado na posição solicitada
-        // estava dando list index of bounds.
-        if EpsonResposta.Params[0] <> '' then
-        begin
-          CNF := TACBrECFComprovanteNaoFiscal.create ;
+           if EpsonResposta.Params.Count > 2 then
+           begin
+             CNF := TACBrECFComprovanteNaoFiscal.create ;
 
-          CNF.Indice    := IntToStr(A) ;
-          CNF.Descricao := EpsonResposta.Params[0] ;
-          CNF.Total     := RoundTo( StringToFloatDef(
-                                          EpsonResposta.Params[1], 0) / 100, -2) ;
-          CNF.Contador  := StrToIntDef( EpsonResposta.Params[2], 0) ;
+             CNF.Indice    := IntToStr(A) ;
+             CNF.Descricao := EpsonResposta.Params[0] ;
+             CNF.Total     := RoundTo( StringToFloatDef(
+                                             EpsonResposta.Params[1], 0) / 100, -2) ;
+             CNF.Contador  := StrToIntDef( EpsonResposta.Params[2], 0) ;
 
-          fpComprovantesNaoFiscais.Add( CNF ) ;
+             fpComprovantesNaoFiscais.Add( CNF ) ;
+           end;
+        except
+           on E : Exception do
+           begin
+              if (pos('0701',E.Message) = 0) then
+                 raise ;
+           end ;
         end;
-     except
-        on E : Exception do
-        begin
-           Erro := (pos('0701',E.Message) = 0)
-        end ;
-     end;
 
-     Inc( A ) ;
-  end ;
-
-  if Erro then   { "niliza" para tentar carregar novamente no futuro }
-  begin
-     fpComprovantesNaoFiscais.Free ;
+        Inc( A ) ;
+     end ;
+  except
+     { Se falhou ao carregar, deve "nilzar" as variaveis para que as rotinas
+       "Acha*" tentem carregar novamente }
+     fpComprovantesNaoFiscais.Free;
      fpComprovantesNaoFiscais := nil ;
+
+     raise ;
   end ;
 end;
 
@@ -3204,6 +3212,7 @@ var
   RG: TACBrECFRelatorioGerencial;
 begin
   inherited CarregaRelatoriosGerenciais ;   {Inicializa fpRelatoriosGerenciais}
+
   try
      //Consulta a qtde de RG cadastrados
      EpsonComando.Comando  :='0901';
@@ -3228,10 +3237,13 @@ begin
         fpRelatoriosGerenciais.Add(RG);
      end;
   except
-     //para que as rotinas Acha* tentem carregar novamente
-     FreeAndNil(fpRelatoriosGerenciais);
-     raise;
-  end;
+     { Se falhou ao carregar, deve "nilzar" as variaveis para que as rotinas
+       "Acha*" tentem carregar novamente }
+     fpRelatoriosGerenciais.Free;
+     fpRelatoriosGerenciais := nil;
+
+     raise ;
+  end ;
 end;
 
 procedure TACBrECFEpson.LerTotaisRelatoriosGerenciais ;

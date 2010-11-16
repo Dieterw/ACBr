@@ -47,7 +47,7 @@ unit ACBrSocket;
 
 interface
 
-uses SysUtils, Classes, Contnrs,
+uses SysUtils, Classes,
      blcksock, synsock, httpsend,  {Units da Synapse}
      ACBrBase ;
 
@@ -599,11 +599,13 @@ end ;
 
 Procedure TACBrHTTP.HTTPGet( AURL : String ) ;
 var
+  OK : Boolean ;
   {$IFNDEF CONSOLE}
    OldCursor : TCursor ;
   {$ENDIF}
-  OK : Boolean ;
-  CT : String ;
+  {$IFDEF UNICODE}
+   CT : String ;
+  {$ENDIF}
 begin
   {$IFNDEF CONSOLE}
    OldCursor := Screen.Cursor ;

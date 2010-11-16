@@ -1630,23 +1630,22 @@ begin
   BytesResp := 33 ;
   StrRet := EnviaComando( #26 ) ;
 
-  StrRet := BcdToAsc( copy( StrRet,2, Length(StrRet)) ) ;  { 1o Byte nao é BCD }
+  ByteUltimaAliquota := 0 ;
+  StrRet  := BcdToAsc( copy( StrRet, 2, Length(StrRet)) ) ;  { 1o Byte nao é BCD }
   qtdAliq := Trunc(Length(StrRet)/4);
-
 
   inherited CarregaAliquotas ;   { Cria fpAliquotas }
 
   {Procura qual foi a última alíquota cadastrada diferente de alíquota zero}
   for Cont := qtdAliq Downto 1 do
   begin
-     ValAliq  := RoundTo( StrToIntDef(copy(StrRet,((Cont-1)*4)+1,4),0)/100,-2);
-     if SimpleRoundTo(ValAliq) > 0 then
+     ValAliq := RoundTo( StrToIntDef(copy(StrRet,((Cont-1)*4)+1,4),0)/100,-2);
+     if ValAliq > 0 then
      begin
         ByteUltimaAliquota := Cont;
-        Break;       
+        Break;
      end;
   end;
-
 
   {Adiciona todas alíquotas até a última cadastrada}
   for Cont := 1 to ByteUltimaAliquota do
@@ -1654,7 +1653,6 @@ begin
     ValAliq  := RoundTo( StrToIntDef(copy(StrRet,((Cont-1)*4)+1,4),0)/100,-2);
 
     Aliquota := TACBrECFAliquota.create ;
- 
     Aliquota.Indice   := IntToStrZero(Cont,2) ;
     Aliquota.Aliquota := ValAliq ;
 
@@ -1929,49 +1927,58 @@ begin
 
   inherited CarregaComprovantesNaoFiscais ;
 
-  S := RetCmd ;
-  while Length(S) > 0 do
-  begin
-    Descr  := trim( copy(S, 13,19) ) ;
+  try
+     S := RetCmd ;
+     while Length(S) > 0 do
+     begin
+       Descr  := trim( copy(S, 13,19) ) ;
 
-    if Descr <> '' then
-    begin
-       CNF := TACBrECFComprovanteNaoFiscal.create ;
+       if Descr <> '' then
+       begin
+          CNF := TACBrECFComprovanteNaoFiscal.create ;
 
-       CNF.Indice    := IntToStrZero(Cont,2) ;
-       CNF.Descricao := Descr ;
-       CNF.Total     := RoundTo( StrToFloatDef(
-                                 BcdToAsc(copy(S,3,10)),0) / 10000, -4) ;
-       CNF.Contador  := StrToIntDef( BcdToAsc(copy(S,1,2)),0) ;
+          CNF.Indice    := IntToStrZero(Cont,2) ;
+          CNF.Descricao := Descr ;
+          CNF.Total     := RoundTo( StrToFloatDef(
+                                    BcdToAsc(copy(S,3,10)),0) / 10000, -4) ;
+          CNF.Contador  := StrToIntDef( BcdToAsc(copy(S,1,2)),0) ;
 
-       fpComprovantesNaoFiscais.Add( CNF ) ;
-    end ;
+          fpComprovantesNaoFiscais.Add( CNF ) ;
+       end ;
 
-    S    := copy(S, 32, Length(S) ) ;
-    Cont := Cont + 1 ;
+       S    := copy(S, 32, Length(S) ) ;
+       Cont := Cont + 1 ;
+     end ;
+
+     RetCmd := '' ;
+     if fs25MFD then
+     begin
+        BytesResp := 60 ;
+        RetCmd    := EnviaComando( #35 + #47 ) ;
+     end ;
+
+    { Adicionando SA-Sangria e SU-Suprimento que sempre estarão presentes na Bematech}
+     CNF := TACBrECFComprovanteNaoFiscal.create ;
+     CNF.Indice    := 'SA' ;
+     CNF.Descricao := 'Sangria' ;
+     CNF.Total     := StrToFloatDef( BcdToAsc( copy(TotalizadoresParciais,ifThen(fs25MFD,393,197),7) ),0) / 100 ;
+     CNF.Contador  := StrToIntDef( BcdToAsc( copy(RetCmd,57,2) ),0) ;
+     fpComprovantesNaoFiscais.Insert(0, CNF ) ;
+
+     CNF := TACBrECFComprovanteNaoFiscal.create ;
+     CNF.Indice    := 'SU' ;
+     CNF.Descricao := 'Suprimento' ;
+     CNF.Total     := StrToFloatDef( BcdToAsc( copy(TotalizadoresParciais,ifThen(fs25MFD,400,204),7) ),0) / 100 ;
+     CNF.Contador  := StrToIntDef( BcdToAsc( copy(RetCmd,59,2) ),0) ;
+     fpComprovantesNaoFiscais.Insert(1, CNF ) ;
+  except
+    { Se falhou ao carregar, deve "nilzar" as variaveis para que as rotinas
+      "Acha*" tentem carregar novamente }
+     fpComprovantesNaoFiscais.Free;
+     fpComprovantesNaoFiscais := nil ;
+
+     raise ;
   end ;
-
-  RetCmd := '' ;
-  if fs25MFD then
-  begin
-     BytesResp := 60 ;
-     RetCmd    := EnviaComando( #35 + #47 ) ;
-  end ;
-
- { Adicionando SA-Sangria e SU-Suprimento que sempre estarão presentes na Bematech}
-  CNF := TACBrECFComprovanteNaoFiscal.create ;
-  CNF.Indice    := 'SA' ;
-  CNF.Descricao := 'Sangria' ;
-  CNF.Total     := StrToFloatDef( BcdToAsc( copy(TotalizadoresParciais,ifThen(fs25MFD,393,197),7) ),0) / 100 ;
-  CNF.Contador  := StrToIntDef( BcdToAsc( copy(RetCmd,57,2) ),0) ;
-  fpComprovantesNaoFiscais.Insert(0, CNF ) ;
-
-  CNF := TACBrECFComprovanteNaoFiscal.create ;
-  CNF.Indice    := 'SU' ;
-  CNF.Descricao := 'Suprimento' ;
-  CNF.Total     := StrToFloatDef( BcdToAsc( copy(TotalizadoresParciais,ifThen(fs25MFD,400,204),7) ),0) / 100 ;
-  CNF.Contador  := StrToIntDef( BcdToAsc( copy(RetCmd,59,2) ),0) ;
-  fpComprovantesNaoFiscais.Insert(1, CNF ) ;
 end;
 
 procedure TACBrECFBematech.LerTotaisComprovanteNaoFiscal;

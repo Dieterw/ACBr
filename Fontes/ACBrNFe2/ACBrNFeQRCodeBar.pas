@@ -78,7 +78,7 @@ interface
 
 uses
   Windows,
-  Classes, ClipBrd, Controls, Graphics, Messages, SysUtils ;
+  Classes, ClipBrd, Controls, Graphics, Messages, SysUtils, ACBrNFe ;
 
 const
   bcMaxBarCodeLen = 255;

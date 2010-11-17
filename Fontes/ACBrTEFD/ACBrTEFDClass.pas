@@ -2213,7 +2213,6 @@ begin
 
   ImpressaoOk     := False ;
   RemoverMsg      := False ;
-  GerencialAberto := False ;
   TempoInicio     := now ;
 
   with TACBrTEFD( Owner ) do
@@ -2240,7 +2239,9 @@ begin
                        raise EACBrTEFDECF.Create( ACBrStr('ECF não está LIVRE') ) ;
                  end;
 
-                 TempoInicio := now ;
+                 GerencialAberto := False ;
+                 TempoInicio     := now ;
+
                  if Self.Resp.TextoEspecialOperador <> '' then
                  begin
                     RemoverMsg := True ;

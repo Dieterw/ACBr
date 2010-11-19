@@ -517,7 +517,7 @@ type
 
 implementation
 
-uses ACBrNFeUtil, pcnNFe;
+uses ACBrNFeUtil, pcnNFe, Math;
 
 var iLimiteLinhas: Integer = 10;
 iLinhasUtilizadas: Integer = 0;
@@ -1316,14 +1316,15 @@ begin
 end;
 
 procedure TfrlDANFeRLRetrato.DadosAdicionais;
-var sInfCompl, sInfAdFisco, sInfContr, sInfInteira, sProtocolo,
-    sSuframa : WideString;
-    sLinhaProvisoria, sLinha: String;
+var sInfCompl, sInfAdFisco, sInfContr, sObsFisco, sObsProcRef, sInfInteira,
+    sProtocolo, sSuframa : WideString;
+    sLinhaProvisoria, sLinha, sIndProc: String;
 iTotalCaracteres, iTotalLinhas, iUltimoEspacoLinha, i: Integer;
 begin
   rlmDadosAdicionaisAuxiliar.Lines.BeginUpdate;
   rlmDadosAdicionaisAuxiliar.Lines.Clear;
 
+  // Protocolo de autorização, nos casos de emissão em contingência
   if (FNFe.Ide.tpEmis in [teContingencia, teFSDA, teDPEC]) and
                                               (FNFe.procNFe.cStat = 100) then
     begin
@@ -1332,12 +1333,14 @@ begin
       InsereLinhas(sProtocolo, iLimiteCaracteresLinha, rlmDadosAdicionaisAuxiliar);
     end;
 
+  // Inscrição Suframa
   if FNFe.Dest.ISUF > '' then
     begin
       sSuframa := 'INSCRIÇÃO SUFRAMA: ' + FNFe.Dest.ISUF;
       InsereLinhas(sSuframa, iLimiteCaracteresLinha, rlmDadosAdicionaisAuxiliar);
     end;
 
+  // Endereço de retirada
   if FNFe.Retirada.xLgr > '' then
     begin
       EnderecoRetirada;
@@ -1345,6 +1348,7 @@ begin
       InsereLinhas(sRetirada, iLimiteCaracteresLinha, rlmDadosAdicionaisAuxiliar);
     end;
 
+  // Endereço de entrega
   if FNFe.Entrega.xLgr > '' then
     begin
       EnderecoEntrega;
@@ -1352,6 +1356,7 @@ begin
       InsereLinhas(sEntrega, iLimiteCaracteresLinha, rlmDadosAdicionaisAuxiliar);
     end;
 
+  // Informações de interesse do fisco
   if FNFe.InfAdic.infAdFisco > '' then
     begin
       if FNFe.InfAdic.infCpl > '' then
@@ -1362,11 +1367,13 @@ begin
   else
     sInfAdFisco := '';
 
+  // Informações de interesse do contribuinte
   if FNFe.InfAdic.infCpl > '' then
     sInfCompl := FNFe.InfAdic.infCpl
   else
     sInfCompl := '';
 
+  // Informações de uso livre do contribuinte com "xCampo" e "xTexto"
   if FNFe.InfAdic.obsCont.Count > 0 then
     begin
       sInfContr := '';
@@ -1379,14 +1386,63 @@ begin
           else
             sInfContr := sInfContr + FNFe.InfAdic.obsCont.Items[i].xCampo +
                             ': ' + FNFe.InfAdic.obsCont.Items[i].xTexto + '; ';
-        end; // i := 0 to (FNFe.InfAdic.obsCont.Count - 1)
+        end; // for i := 0 to (FNFe.InfAdic.obsCont.Count - 1)
       if (sInfCompl > '') or (sInfAdFisco > '') then
         sInfContr := sInfContr + '; '
     end // if FNFe.InfAdic.obsCont.Count > 0
   else
     sInfContr := '';
 
-  sInfInteira := sInfAdFisco + sInfContr + sInfCompl;
+  // Informações de uso livre do fisco com "xCampo" e "xTexto"
+  if FNFe.InfAdic.obsFisco.Count > 0 then
+    begin
+      sObsFisco := '';
+      for i := 0 to (FNFe.InfAdic.obsFisco.Count - 1) do
+        begin
+          if FNFe.InfAdic.obsFisco.Items[i].Index =
+                                          (FNFe.InfAdic.obsFisco.Count - 1) then
+            sObsFisco := sObsFisco + FNFe.InfAdic.obsFisco.Items[i].xCampo +
+                              ': ' + FNFe.InfAdic.obsFisco.Items[i].xTexto
+          else
+            sObsFisco := sObsFisco + FNFe.InfAdic.obsFisco.Items[i].xCampo +
+                            ': ' + FNFe.InfAdic.obsFisco.Items[i].xTexto + '; ';
+        end; // for i := 0 to (FNFe.InfAdic.obsFisco.Count - 1)
+      if (sInfCompl > '') or (sInfAdFisco > '') then
+        sObsFisco := sObsFisco + '; '
+    end // if FNFe.InfAdic.obsFisco.Count > 0
+  else
+    sObsFisco := '';
+
+  // Informações do processo referenciado
+  if FNFe.InfAdic.procRef.Count > 0 then
+    begin
+      for i := 0 to (FNFe.InfAdic.procRef.Count - 1) do
+        begin
+          case FNFe.InfAdic.procRef.Items[i].indProc of
+            ipSEFAZ: sIndProc := 'SEFAZ';
+            ipJusticaFederal: sIndProc := 'JUSTIÇA FEDERAL';
+            ipJusticaEstadual: sIndProc := 'JUSTIÇA ESTADUAL';
+            ipSecexRFB: sIndProc := 'SECEX / RFB';
+            ipOutros: sIndProc := 'OUTROS';
+          end;
+
+          if FNFe.InfAdic.procRef.Items[i].Index =
+                                          (FNFe.InfAdic.procRef.Count - 1) then
+            sObsProcRef := sObsProcRef + 'PROCESSO OU ATO CONCESSÓRIO Nº: ' +
+                           FNFe.InfAdic.procRef.Items[i].nProc + ' - ORIGEM: ' +
+                           sIndProc
+          else
+            sObsProcRef := sObsProcRef + 'PROCESSO OU ATO CONCESSÓRIO Nº: ' +
+                           FNFe.InfAdic.procRef.Items[i].nProc + ' - ORIGEM: ' +
+                           sIndProc + '; ';
+        end; // for i := 0 to (FNFe.InfAdic.procRef.Count - 1)
+      if (sInfCompl > '') or (sInfAdFisco > '') then
+        sObsProcRef := sObsProcRef + '; '
+    end // if FNFe.InfAdic.procRef.Count > 0
+  else
+    sObsProcRef := '';
+
+  sInfInteira := sInfAdFisco + sObsFisco + sObsProcRef + sInfContr + sInfCompl;
   InsereLinhas(sInfInteira, iLimiteCaracteresLinha, rlmDadosAdicionaisAuxiliar);
   rlmDadosAdicionaisAuxiliar.Lines.EndUpdate;
 end;

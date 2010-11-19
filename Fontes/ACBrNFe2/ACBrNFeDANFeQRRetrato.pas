@@ -449,7 +449,7 @@ type
 
 implementation
 
-uses StrUtils, ACBrNFeUtil, DateUtils, ACBrUtil;
+uses StrUtils, ACBrNFeUtil, DateUtils, ACBrUtil, pcnNFe;
 
 {$R *.dfm}
 
@@ -948,6 +948,7 @@ procedure TfqrDANFeQRRetrato.qrbDadosAdicionaisBeforePrint(Sender: TQRCustomBand
   var PrintBand: Boolean);
 var
    i: Integer;
+   sIndProc: String;
 begin
   inherited;
     PrintBand := QRNFe.PageNumber = 1;
@@ -958,17 +959,48 @@ begin
     begin
         qrmDadosAdicionais.Lines.BeginUpdate;
         qrmDadosAdicionais.Lines.Clear;
+
+        //**********************************************************************
+        // informacoes de uso livre do fisco
+        for i := 0 to obsFisco.Count-1 do with obsFisco.Items[i] do
+        begin
+            qrmDadosAdicionais.Lines.Add( StringReplace( XCampo, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] )+': '+
+                                           StringReplace( XTexto, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
+        end;
+
+        //**********************************************************************
+        // informacoes de uso livre do contribuinte
         for i := 0 to ObsCont.Count-1 do with ObsCont.Items[i] do
         begin
             qrmDadosAdicionais.Lines.Add( StringReplace( XCampo, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] )+': '+
                                            StringReplace( XTexto, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
         end;
+
+        //**********************************************************************
+        // informacoes do grupo de processo referenciado
+        for i := 0 to procRef.Count-1 do with procRef.Items[i] do
+        begin
+          case indProc of
+            ipSEFAZ:           sIndProc := 'SEFAZ';
+            ipJusticaFederal:  sIndProc := 'JUSTIÇA FEDERAL';
+            ipJusticaEstadual: sIndProc := 'JUSTIÇA ESTADUAL';
+            ipSecexRFB:        sIndProc := 'SECEX / RFB';
+            ipOutros:          sIndProc := 'OUTROS';
+          end;
+
+            qrmDadosAdicionais.Lines.Add( StringReplace( 'PROCESSO OU ATO CONCESSÓRIO Nº: ' +
+                                                         nProc, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] )+' - '+
+                                           StringReplace( 'ORIGEM: ' +
+                                                          sIndProc , '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
+        end;
+
         //**********************************************************************
         // informacoes complementares emitente
         if infCpl <> '' then
         begin
             qrmDadosAdicionais.Lines.Add(StringReplace( InfCpl, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
         end;
+
         //**********************************************************************
         // informacoes complementares interesse ao fisco
         if infAdFisco <> '' then
@@ -1012,7 +1044,7 @@ begin
         if FNFe.Ide.tpEmis = teDPEC then
             qrmDadosAdicionais.Lines.Add('DANFE em Contingência - DPEC regularmente recebida pela Receita Federal do Brasil');
         //**********************************************************************
-      qrmDadosAdicionais.Lines.Text:=StringReplace(qrmDadosAdicionais.Lines.Text,';',#13,[rfReplaceAll]);        
+      qrmDadosAdicionais.Lines.Text:=StringReplace(qrmDadosAdicionais.Lines.Text,';',#13,[rfReplaceAll]);
       qrmDadosAdicionais.Lines.EndUpdate;
 
         // imprime data e hora da impressao

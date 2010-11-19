@@ -519,7 +519,7 @@ begin
            PreparaTEF
 
         else if Cmd.Metodo = 'corrigeestadoerro' then
-           CorrigeEstadoErro
+           CorrigeEstadoErro( StrToBoolDef(Trim(Cmd.Params(0)),True) )
 
         else if Cmd.Metodo = 'abrerelatoriogerencial' then
            AbreRelatorioGerencial( StrToIntDef(Trim(Cmd.Params(0)), 0 ) ) { Indice }

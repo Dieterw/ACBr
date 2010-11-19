@@ -1572,12 +1572,12 @@ type
 
   Ttarifa = class(TPersistent)
   private
-    Ftecho : String;
+    Ftrecho : String;
     FCL    : String;
     FcTar  : String;
     FvTar  : Currency;
   public
-    property techo: String read Ftecho write Ftecho;
+    property trecho: String read Ftrecho write Ftrecho;
     property CL: String read FCL write FCL;
     property cTar: String read FcTar write FcTar;
     property vTar: Currency read FvTar write FvTar;

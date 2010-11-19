@@ -979,11 +979,11 @@ begin
     (**)GerarInfSeg;
 
     case StrToInt(TpModalToStr(CTe.Ide.modal)) of
-     01: (**)GerarRodo; // Informações do Modal Rodoviário
-     02: (**)GerarAereo;
-     03: (**)GerarAquav;
-     04: (**)GerarFerrov;
-     05: (**)GerarDuto;
+     01: (**)GerarRodo;   // Informações do Modal Rodoviário
+     02: (**)GerarAereo;  // Informações do Modal Aéreo
+     03: (**)GerarAquav;  // Informações do Modal Aquaviário
+     04: (**)GerarFerrov; // Informações do Modal Ferroviário
+     05: (**)GerarDuto;   // Informações do Modal Dutoviário
     end;
 
     (**)GerarPeri; // Informações de produtos classificados pela ONU como Perigosos
@@ -1273,12 +1273,51 @@ end;
 
 procedure TCTeW.GerarAereo;  // M
 begin
- {a}
+  Gerador.wGrupo('aereo', 'M01');
+  Gerador.wCampo(tcInt, 'M02', 'nMinu  ', 01, 09, 0, CTe.Aereo.nMinu, '');
+  Gerador.wCampo(tcStr, 'M03', 'nOCA   ', 01, 14, 0, CTe.Aereo.nOCA, '');
+  Gerador.wCampo(tcDat, 'M04', 'dPrev  ', 10, 10, 0, CTe.Aereo.dPrev, '');
+  Gerador.wCampo(tcStr, 'M05', 'xLAgEmi', 01, 20, 0, CTe.Aereo.xLAgEmi, '');
+  Gerador.wCampo(tcStr, 'M06', 'cIATA  ', 01, 14, 0, CTe.Aereo.cIATA, '');
+
+  Gerador.wGrupo('tarifa', 'M07');
+  Gerador.wCampo(tcStr, 'M08', 'trecho  ', 01, 07, 0, CTe.Aereo.tarifa.trecho, '');
+  Gerador.wCampo(tcStr, 'M09', 'CL      ', 01, 02, 0, CTe.Aereo.tarifa.CL, '');
+  Gerador.wCampo(tcStr, 'M10', 'cTar    ', 01, 04, 0, CTe.Aereo.tarifa.cTar, '');
+  Gerador.wCampo(tcDe2, 'M11', 'vTar    ', 01, 15, 0, CTe.Aereo.tarifa.vTar, '');
+  Gerador.wGrupo('/tarifa');
+
+  Gerador.wGrupo('/aereo');
 end;
 
 procedure TCTeW.GerarAquav;  // N
+var
+ i: Integer;
 begin
- {a}
+  Gerador.wGrupo('aquav', 'N01');
+  Gerador.wCampo(tcDe2, 'N02', 'vPrest  ', 01, 15, 1, CTe.Aquav.vPrest, '');
+  Gerador.wCampo(tcDe2, 'N03', 'vAFRMM  ', 01, 15, 1, CTe.Aquav.vAFRMM, '');
+  Gerador.wCampo(tcStr, 'N04', 'nBooking', 01, 10, 0, CTe.Aquav.nBooking, '');
+  Gerador.wCampo(tcStr, 'N05', 'nCtrl   ', 01, 10, 0, CTe.Aquav.nCtrl, '');
+  Gerador.wCampo(tcStr, 'N06', 'xNavio  ', 01, 60, 1, CTe.Aquav.xNavio, '');
+  Gerador.wCampo(tcStr, 'N07', 'nViag   ', 01, 10, 0, CTe.Aquav.nViag, '');
+  Gerador.wCampo(tcStr, 'N08', 'direc   ', 01, 01, 1, TpDirecaoToStr(CTe.Aquav.direc), '');
+  Gerador.wCampo(tcStr, 'N09', 'prtEmb  ', 01, 60, 0, CTe.Aquav.prtEmb, '');
+  Gerador.wCampo(tcStr, 'N10', 'prtTrans', 01, 60, 0, CTe.Aquav.prtTrans, '');
+  Gerador.wCampo(tcStr, 'N11', 'prtDest ', 01, 60, 0, CTe.Aquav.prtDest, '');
+  Gerador.wCampo(tcStr, 'N12', 'tpNav   ', 01, 01, 1, TpNavegacaoToStr(CTe.Aquav.tpNav), '');
+  Gerador.wCampo(tcStr, 'N13', 'irin    ', 01, 10, 1, CTe.Aquav.irin, '');
+
+  for i := 0 to CTe.Aquav.Lacre.Count - 1 do
+   begin
+    Gerador.wGrupo('lacre', 'N14');
+    Gerador.wCampo(tcStr, 'N15', 'nLacre', 01, 10, 1, CTe.Aquav.Lacre.Items[i].nLacre, '');
+    Gerador.wGrupo('/lacre');
+   end;
+  if CTe.Aquav.Lacre.Count > 3 then
+   Gerador.wAlerta('N14', 'lacre', '', ERR_MSG_MAIOR_MAXIMO + '3');
+
+  Gerador.wGrupo('/aquav');
 end;
 
 procedure TCTeW.GerarFerrov;  // O

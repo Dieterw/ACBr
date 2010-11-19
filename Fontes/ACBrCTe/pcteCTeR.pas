@@ -752,23 +752,56 @@ begin
 
     if Leitor.rExtrai(2, 'aereo') <> '' then
     begin
-     //
-    end;
+      CTe.Aereo.nMinu   := Leitor.rCampo(tcInt,'nMinu');
+      CTe.Aereo.nOCA    := Leitor.rCampo(tcStr,'nOCA');
+      CTe.Aereo.dPrev   := Leitor.rCampo(tcDat,'dPrev');
+      CTe.Aereo.xLAgEmi := Leitor.rCampo(tcStr,'xLAgEmi');
+      CTe.Aereo.cIATA   := Leitor.rCampo(tcStr,'cIATA');
+
+      if Leitor.rExtrai(3, 'tarifa') <> '' then
+      begin
+        CTe.Aereo.tarifa.trecho := Leitor.rCampo(tcStr,'trecho');
+        CTe.Aereo.tarifa.CL     := Leitor.rCampo(tcStr,'CL');
+        CTe.Aereo.tarifa.cTar   := Leitor.rCampo(tcStr,'cTar');
+        CTe.Aereo.tarifa.vTar   := Leitor.rCampo(tcDe2,'vTar');
+      end;
+
+    end; // fim das informações do modal Aéreo
 
     if Leitor.rExtrai(2, 'aquav') <> '' then
     begin
-     //
-    end;
+      CTe.Aquav.vPrest   := Leitor.rCampo(tcDe2,'vPrest');
+      CTe.Aquav.vAFRMM   := Leitor.rCampo(tcDe2,'vAFRMM');
+      CTe.Aquav.nBooking := Leitor.rCampo(tcStr,'nBooking');
+      CTe.Aquav.nCtrl    := Leitor.rCampo(tcStr,'nCtrl');
+      CTe.Aquav.xNavio   := Leitor.rCampo(tcStr,'xNavio');
+      CTe.Aquav.nViag    := Leitor.rCampo(tcStr,'nViag');
+      CTe.Aquav.direc    := StrToTpDirecao(ok, Leitor.rCampo(tcStr, 'direc'));
+      CTe.Aquav.prtEmb   := Leitor.rCampo(tcStr,'prtEmb');
+      CTe.Aquav.prtTrans := Leitor.rCampo(tcStr,'prtTrans');
+      CTe.Aquav.prtDest  := Leitor.rCampo(tcStr,'prtDest');
+      CTe.Aquav.tpNav    := StrToTpNavegacao(ok, Leitor.rCampo(tcStr, 'tpNav'));
+      CTe.Aquav.irin     := Leitor.rCampo(tcStr,'irin');
+
+      i01 := 0;
+      while Leitor.rExtrai(3, 'lacre', '', i01 + 1) <> '' do
+      begin
+        CTe.Aquav.Lacre.Add;
+        CTe.Aquav.Lacre[i01].nLacre := Leitor.rCampo(tcStr, 'nLacre');
+        inc(i01);
+      end;
+
+    end; // fim das informações do modal Aquaviário
 
     if Leitor.rExtrai(2, 'ferrov') <> '' then
     begin
      //
-    end;
+    end; // fim das informações do modal Ferroviário
 
     if Leitor.rExtrai(2, 'duto') <> '' then
     begin
      CTe.duto.vTar := Leitor.rCampo(tcDe6, 'vTar');
-    end;
+    end; // fim das informações do modal Dutoviário
 
     i01 := 0;
     while Leitor.rExtrai(2, 'peri', '', i01 + 1) <> '' do

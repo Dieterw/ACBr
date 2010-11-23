@@ -58,7 +58,10 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ExtCtrls, QuickRpt, QRCtrls,
-  ACBrNFeQRCodeBar, pcnNFe, ACBrNFe, ACBrNFeUtil, Printers{, QRPDFFilt {Descomentar para usar PDF};
+  {$IFDEF QReport_PDF}
+     QRPDFFilt,
+  {$ENDIF}
+  ACBrNFeQRCodeBar, pcnNFe, ACBrNFe, ACBrNFeUtil, Printers;
 
 type
   TfqrDANFeQR = class(TForm)
@@ -134,6 +137,7 @@ implementation
 
 uses MaskUtils ;
 var Printer: TPrinter;
+
 {$R *.dfm}
 
 class procedure TfqrDANFeQR.Imprimir(ANFe               : TNFe;
@@ -214,11 +218,13 @@ class procedure TfqrDANFeQR.SavePDF(AFile               : String;
                                     AMargemDireita      : Double    = 0.51;
                                     ACasasDecimaisqCom  : Integer   = 4;
                                     ACasasDecimaisvUncCom: Integer  = 4);
-{Var
-  qf : TQRPDFDocumentFilter ;{Descomentar para usar PDF}
+{$IFDEF QReport_PDF}
+var
+  qf : TQRPDFDocumentFilter;
+{$ENDIF}
 begin
-  {Descomentar para usar PDF}
-  {with Create ( nil ) do
+{$IFDEF QReport_PDF}
+  with Create ( nil ) do
      try
         FNFe                := ANFe;
         FLogo               := ALogo;
@@ -236,7 +242,7 @@ begin
         FCasasDecimaisqCom  := ACasasDecimaisqCom;
         FCasasDecimaisvUnCom := ACasasDecimaisvUncCom;
 
-        For i := 0 to ComponentCount -1 do
+        for i := 0 to ComponentCount -1 do
           begin
             if (Components[i] is TQRShape) and (TQRShape(Components[i]).Shape = qrsRoundRect) then
               begin
@@ -252,7 +258,8 @@ begin
         qf.Free;
      finally
         Free;
-     end ;}
+     end;
+{$ENDIF}
 end;
 
 procedure TfqrDANFeQR.qrlSemValorFiscalPrint(sender: TObject;

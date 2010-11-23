@@ -25,6 +25,10 @@ do Library Path, pois a partir de Maio de 2010 a estrutura de pastas do componen
 deixaram de existir sendo dividos em pacotes com os nomes ACBrDiversos, ACBrSerial, ACBrTCP, etc.
 
 
+- Se a versão do Quick Report instalada no seu Delphi tem suporte para gerar arquivos PDF, abra o arquivo Fontes\ACBrComum\ACBr.inc e 
+procure por {$DEFINE QReport_PDF}. Esta linha estará comentada, descomente esta linha e salve o arquivo.
+
+
 Versão OpenSSL
 - Abra o arquivo Fontes\ACBrComum\ACBr.inc e procure por {$DEFINE ACBrNFeOpenSSL}. Esta linha estará comentada,
 descomente esta linha e salve o arquivo.

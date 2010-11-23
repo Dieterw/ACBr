@@ -150,7 +150,25 @@ type
   TLacreCollection = class;
   TLacreCollectionItem = class;
 
-  // Tferrov = class; // Informações do modal Ferroviário
+  Tferrov = class; // Informações do modal Ferroviário
+  TferroSub = class;
+  TEnderFerro = class;
+//  TDCLCollection = class;
+//  TDCLCollectionItem = class;
+
+//  TdetVagDCLCollection = class;
+//  TdetVagDCLCollectionItem = class;
+//  TlacDetVagDCLCollection = class;
+//  TlacDetVagDCLCollectionItem = class;
+//  TcontDCLCollection = class;
+//  TcontDCLCollectionItem = class;
+
+//  TdetVagCollection = class;
+//  TdetVagCollectionItem = class;
+//  TlacDetVagCollection = class;
+//  TlacDetVagCollectionItem = class;
+//  TcontVagCollection = class;
+//  TcontVagCollectionItem = class;
 
   Tduto = class; // Informações do modal Dutoviário
 
@@ -193,7 +211,7 @@ type
     FRodo       : TRodo;   // Informações do modal Rodoviário
     Faereo      : Taereo;  // Informações do modal Aéreo
     Faquav      : Taquav;  // Informações do modal Aquaviário
-//    Fferrov     : Tferrov; // Informações do modal Ferroviário
+    Fferrov     : Tferrov; // Informações do modal Ferroviário
     Fduto       : Tduto;  // Informações do modal Dutoviário
 
     Fperi       : TperiCollection;
@@ -230,7 +248,7 @@ type
     property Rodo: TRodo read FRodo write FRodo;
     property Aereo: Taereo read Faereo write Faereo;
     property Aquav: Taquav read Faquav write Faquav;
-//    property Ferrov: Tferrov read Fferrov write Fferrov;
+    property Ferrov: Tferrov read Fferrov write Fferrov;
     property duto: Tduto read Fduto write Fduto;
 
     property peri: TperiCollection read Fperi write Setperi;
@@ -1638,10 +1656,225 @@ type
     property nLacre: string read FnLacre write FnLacre;
   end;
 
+  // Informações do modal Ferroviário
+  Tferrov = class(TPersistent)
+  private
+    FtpTraf   : TpcteTipoTrafego;
+    Ffluxo    : String;
+    FidTrem   : String;
+    FvFrete   : Currency;
+    FferroSub : TferroSub;
+//    FDCL      : TDCLCollection;
+//    FdetVag   : TdetVagCollection;
+//    procedure SetDCL(const Value: TDCLCollection);
+//    procedure SetdetVag(const Value: TdetVagCollection);
+  public
+    constructor Create(AOwner: TCTe);
+    destructor Destroy; override;
+  published
+    property tpTraf: TpcteTipoTrafego read FtpTraf write FtpTraf;
+    property fluxo: String read Ffluxo write Ffluxo;
+    property idTrem: String read FidTrem write FidTrem;
+    property vFrete: Currency read FvFrete write FvFrete;
+    property ferroSub: TferroSub read FferroSub write FferroSub;
+//    property DCL: TDCLCollection read FDCL write SetDCL;
+//    property detVag: TdetVagCollection read FdetVag write SetdetVag;
+  end;
+
+  TferroSub = class(TPersistent)
+  private
+    FCNPJCPF    : String;
+    FcInt       : String;
+    FIE         : String;
+    FxNome      : String;
+    FEnderFerro : TEnderFerro;
+  public
+    constructor Create(AOwner: Tferrov);
+    destructor Destroy; override;
+  published
+    property CNPJCPF : String read FCNPJCPF write FCNPJCPF;
+    property cInt : String read FcInt write FcInt;
+    property IE : String read FIE write FIE;
+    property xNome : String read FxNome write FxNome;
+    property EnderFerro: TEnderFerro read FEnderFerro write FEnderFerro;
+  end;
+
+  TEnderFerro = class(TPersistent)
+  private
+    FxLgr    : string;
+    Fnro     : string;
+    FxCpl    : string;
+    FxBairro : string;
+    FcMun    : integer;
+    FxMun    : string;
+    FCEP     : integer;
+    FUF      : string;
+  published
+    property xLgr: string read FxLgr write FxLgr;
+    property nro: string read Fnro write Fnro;
+    property xCpl: string read FxCpl write FxCpl;
+    property xBairro: string read FxBairro write FxBairro;
+    property cMun: integer read FcMun write FcMun;
+    property xMun: string read FxMun write FxMun;
+    property CEP: integer read FCEP write FCEP;
+    property UF: string read FUF write FUF;
+  end;
+{
+  TDCLCollection = class(TCollection)
+  private
+    function GetItem(Index: Integer): TDCLCollectionItem;
+    procedure SetItem(Index: Integer; Value: TDCLCollectionItem);
+  public
+    constructor Create(AOwner: Tferrov);
+    function Add: TDCLCollectionItem;
+    property Items[Index: Integer]: TDCLCollectionItem read GetItem write SetItem; default;
+  end;
+
+  TDCLCollectionItem = class(TCollectionItem)
+  private
+    Fserie     : string;
+    FnDCL      : string;
+    FdEmi      : TDateTime;
+    FqVag      : integer;
+    FpCalc     : Currency;
+    FvTar      : Currency;
+    FvFrete    : Currency;
+    FvSAcess   : Currency;
+    FvTServ    : Currency;
+    FidTrem    : string;
+    FdetVagDCL : TdetVagDCLCollection;
+    procedure SetdetVagDCL(const Value: TdetVagDCLCollection);
+  public
+    constructor Create; reintroduce;
+    destructor Destroy; override;
+  published
+    property serie: string read Fserie write Fserie;
+    property nDCL: string read FnDCL write FnDCL;
+    property dEmi: TDateTime read FdEmi write FdEmi;
+    property qVag: integer read FqVag write FqVag;
+    property pCalc: Currency read FpCalc write FpCalc;
+    property vTar: Currency read FvTar write FvTar;
+    property vFrete: Currency read FvFrete write FvFrete;
+    property vSAcess: Currency read FvSAcess write FvSAcess;
+    property vTServ: Currency read FvTServ write FvTServ;
+    property idTrem: string read FidTrem write FidTrem;
+    property detVagDCL: TdetVagDCLCollection read FdetVagDCL write SetdetVagDCL;
+  end;
+
+  TdetVagDCLCollection = class(TCollection)
+  private
+    function GetItem(Index: Integer): TdetVagDCLCollectionItem;
+    procedure SetItem(Index: Integer; Value: TdetVagDCLCollectionItem);
+  public
+    constructor Create(AOwner: TDCLCollectionItem);
+    function Add: TdetVagDCLCollectionItem;
+    property Items[Index: Integer]: TdetVagDCLCollectionItem read GetItem write SetItem; default;
+  end;
+
+  TdetVagDCLCollectionItem = class(TCollectionItem)
+  private
+    FnVag         : integer;
+    Fcap          : Currency;
+    FtpVag        : string;
+    FpesoR        : Currency;
+    FpesoBC       : Currency;
+    FlacDetVagDCL : TlacDetVagDCLCollection;
+    procedure SetlacDetVagDCL(const Value: TlacDetVagDCLCollection);
+  public
+    constructor Create; reintroduce;
+    destructor Destroy; override;
+  published
+    property nVag: integer read FnVag write FnVag;
+    property cap: Currency read Fcap write Fcap;
+    property tpVag: string read FtpVag write FtpVag;
+    property pesoR: Currency read FpesoR write FpesoR;
+    property pesoBC: Currency read FpesoBC write FpesoBC;
+    property lacDetVagDCL: TlacDetVagDCLCollection read FlacDetVagDCL write SetlacDetVagDCL;
+  end;
+
+  TlacDetVagDCLCollection = class(TCollection)
+  private
+    function GetItem(Index: Integer): TlacDetVagDCLCollectionItem;
+    procedure SetItem(Index: Integer; Value: TlacDetVagDCLCollectionItem);
+  public
+    constructor Create(AOwner: TdetVagDCLCollectionItem);
+    function Add: TlacDetVagDCLCollectionItem;
+    property Items[Index: Integer]: TlacDetVagDCLCollectionItem read GetItem write SetItem; default;
+  end;
+
+  TlacDetVagDCLCollectionItem = class(TCollectionItem)
+  private
+    FnLacre : string;
+  public
+    constructor Create; reintroduce;
+    destructor Destroy; override;
+  published
+    property nLacre: string read FnLacre write FnLacre;
+  end;
 
 
 
-  // Tferrov = class; // Informações do modal Ferroviário
+
+
+
+
+
+
+  TdetVagCollection = class(TCollection)
+  private
+    function GetItem(Index: Integer): TdetVagCollectionItem;
+    procedure SetItem(Index: Integer; Value: TdetVagCollectionItem);
+  public
+    constructor Create(AOwner: Tferrov);
+    function Add: TdetVagCollectionItem;
+    property Items[Index: Integer]: TdetVagCollectionItem read GetItem write SetItem; default;
+  end;
+
+  TdetVagCollectionItem = class(TCollectionItem)
+  private
+    FnVag   : integer;
+    Fcap    : Currency;
+    FtpVag  : string;
+    FpesoR  : Currency;
+    FpesoBC : Currency;
+    FlacDetVag : TlacDetVagCollection;
+    procedure SetlacDetVag(const Value: TlacDetVagCollection);
+  public
+    constructor Create; reintroduce;
+    destructor Destroy; override;
+  published
+    property nVag: integer read FnVag write FnVag;
+    property cap: Currency read Fcap write Fcap;
+    property tpVag: string read FtpVag write FtpVag;
+    property pesoR: Currency read FpesoR write FpesoR;
+    property pesoBC: Currency read FpesoBC write FpesoBC;
+    property lacDetVag: TlacDetVagCollection read FlacDetVag write SetlacDetVag;
+  end;
+
+  TlacDetVagCollection = class(TCollection)
+  private
+    function GetItem(Index: Integer): TlacDetVagCollectionItem;
+    procedure SetItem(Index: Integer; Value: TlacDetVagCollectionItem);
+  public
+    constructor Create(AOwner: TdetVagCollectionItem);
+    function Add: TlacDetVagCollectionItem;
+    property Items[Index: Integer]: TlacDetVagCollectionItem read GetItem write SetItem; default;
+  end;
+
+  TlacDetVagCollectionItem = class(TCollectionItem)
+  private
+    FnLacre : string;
+  public
+    constructor Create; reintroduce;
+    destructor Destroy; override;
+  published
+    property nLacre: string read FnLacre write FnLacre;
+  end;
+ }
+
+
+
+
 
 
 
@@ -1902,7 +2135,7 @@ begin
   FRodo         := TRodo.Create(Self);
   FAereo        := Taereo.Create(Self);
   FAquav        := Taquav.Create(Self);
-//  FFerrov       := Tferrov.Create(Self);
+  FFerrov       := Tferrov.Create(Self);
   Fduto         := Tduto.Create;
 
   Fperi         := TperiCollection.Create(Self);
@@ -1933,7 +2166,7 @@ begin
   FRodo.Free;
   FAereo.Free;
   FAquav.Free;
-//  FFerrov.Free;
+  FFerrov.Free;
   Fduto.Free;
 
   Fperi.Free;
@@ -3421,5 +3654,232 @@ begin
   inherited;
 end;
 
+{ Tferrov }
+
+constructor Tferrov.Create(AOwner: TCTe);
+begin
+  inherited Create;
+  FferroSub := TferroSub.Create(self);
+end;
+
+destructor Tferrov.Destroy;
+begin
+  FferroSub.Free;
+  inherited;
+end;
+
+//procedure Tferrov.SetDCL(const Value: TDCLCollection);
+//begin
+//  FDCL.Assign(Value);
+//end;
+
+{ TferroSub }
+
+constructor TferroSub.Create(AOwner: Tferrov);
+begin
+  inherited Create;
+  FEnderFerro := TEnderFerro.Create;
+end;
+
+destructor TferroSub.Destroy;
+begin
+  FEnderFerro.Free;
+  inherited;
+end;
+
+{ TDCLCollection }
+{
+function TDCLCollection.Add: TDCLCollectionItem;
+begin
+  Result := TDCLCollectionItem(inherited Add);
+  Result.create;
+end;
+
+constructor TDCLCollection.Create(AOwner: Tferrov);
+begin
+  inherited Create(TDCLCollectionItem);
+end;
+
+function TDCLCollection.GetItem(Index: Integer): TDCLCollectionItem;
+begin
+  Result := TDCLCollectionItem(inherited GetItem(Index));
+end;
+
+procedure TDCLCollection.SetItem(Index: Integer;
+  Value: TDCLCollectionItem);
+begin
+  inherited SetItem(Index, Value);
+end;
+}
+{ TDCLCollectionItem }
+{
+constructor TDCLCollectionItem.Create;
+begin
+
+end;
+
+destructor TDCLCollectionItem.Destroy;
+begin
+
+  inherited;
+end;
+}
+{ TdetVagDCLCollection }
+{
+function TdetVagDCLCollection.Add: TdetVagDCLCollectionItem;
+begin
+  Result := TdetVagDCLCollectionItem(inherited Add);
+  Result.create;
+end;
+
+constructor TdetVagDCLCollection.Create(AOwner: TDCLCollectionItem);
+begin
+  inherited Create(TdetVagDCLCollectionItem);
+end;
+
+function TdetVagDCLCollection.GetItem(
+  Index: Integer): TdetVagDCLCollectionItem;
+begin
+  Result := TdetVagDCLCollectionItem(inherited GetItem(Index));
+end;
+
+procedure TdetVagDCLCollection.SetItem(Index: Integer;
+  Value: TdetVagDCLCollectionItem);
+begin
+  inherited SetItem(Index, Value);
+end;
+}
+{ TdetVagDCLCollectionItem }
+{
+constructor TdetVagDCLCollectionItem.Create;
+begin
+//  FlacDetVagDCL := TlacDetVagDCLCollection.Create;
+end;
+
+destructor TdetVagDCLCollectionItem.Destroy;
+begin
+//  FlacDetVagDCL.Free;
+  inherited;
+end;
+
+procedure TdetVagDCLCollectionItem.SetlacDetVagDCL(
+  const Value: TlacDetVagDCLCollection);
+begin
+ FlacDetVagDCL.Assign(Value);
+end;
+}
+{ TdetVagCollection }
+{
+function TdetVagCollection.Add: TdetVagCollectionItem;
+begin
+  Result := TdetVagCollectionItem(inherited Add);
+  Result.create;
+end;
+
+constructor TdetVagCollection.Create(AOwner: Tferrov);
+begin
+  inherited Create(TdetVagCollectionItem);
+end;
+
+function TdetVagCollection.GetItem(Index: Integer): TdetVagCollectionItem;
+begin
+  Result := TdetVagCollectionItem(inherited GetItem(Index));
+end;
+
+procedure TdetVagCollection.SetItem(Index: Integer;
+  Value: TdetVagCollectionItem);
+begin
+  inherited SetItem(Index, Value);
+end;
+}
+{ TdetVagCollectionItem }
+{
+constructor TdetVagCollectionItem.Create;
+begin
+
+end;
+
+destructor TdetVagCollectionItem.Destroy;
+begin
+
+  inherited;
+end;
+}
+{ TlacDetVagDCLCollection }
+{
+function TlacDetVagDCLCollection.Add: TlacDetVagDCLCollectionItem;
+begin
+  Result := TlacdetVagDCLCollectionItem(inherited Add);
+  Result.create;
+end;
+
+constructor TlacDetVagDCLCollection.Create(
+  AOwner: TdetVagDCLCollectionItem);
+begin
+  inherited Create(TlacdetVagDCLCollectionItem);
+end;
+
+function TlacDetVagDCLCollection.GetItem(
+  Index: Integer): TlacDetVagDCLCollectionItem;
+begin
+  Result := TlacdetVagDCLCollectionItem(inherited GetItem(Index));
+end;
+
+procedure TlacDetVagDCLCollection.SetItem(Index: Integer;
+  Value: TlacDetVagDCLCollectionItem);
+begin
+  inherited SetItem(Index, Value);
+end;
+}
+{ TlacDetVagDCLCollectionItem }
+{
+constructor TlacDetVagDCLCollectionItem.Create;
+begin
+
+end;
+
+destructor TlacDetVagDCLCollectionItem.Destroy;
+begin
+
+  inherited;
+end;
+}
+{ TlacDetVagCollection }
+{
+function TlacDetVagCollection.Add: TlacDetVagCollectionItem;
+begin
+
+end;
+
+constructor TlacDetVagCollection.Create(AOwner: TdetVagCollectionItem);
+begin
+
+end;
+
+function TlacDetVagCollection.GetItem(
+  Index: Integer): TlacDetVagCollectionItem;
+begin
+
+end;
+
+procedure TlacDetVagCollection.SetItem(Index: Integer;
+  Value: TlacDetVagCollectionItem);
+begin
+
+end;
+}
+{ TlacDetVagCollectionItem }
+{
+constructor TlacDetVagCollectionItem.Create;
+begin
+
+end;
+
+destructor TlacDetVagCollectionItem.Destroy;
+begin
+
+  inherited;
+end;
+}
 end.
 

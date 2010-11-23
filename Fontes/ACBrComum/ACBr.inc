@@ -1448,3 +1448,9 @@
 {$IFDEF ACBrCTeOpenSSL}
   {$DEFINE ACBrNFeOpenSSL}
 {$ENDIF}
+
+//------------------------------------------------------------------------------
+// Definições para o Quick Report
+//------------------------------------------------------------------------------
+
+// {$DEFINE QReport_PDF} Descomente esta linha caso o Quick Report tenha suporte a PDF

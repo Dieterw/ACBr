@@ -55,9 +55,11 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ExtCtrls, QuickRpt,
-  QRCtrls, ACBrCTeQRCodeBar, pcteCTe, ACBrCTe
-  {, QRPDFFilt Decomentar para usar PDF};
+  Dialogs, ExtCtrls, QuickRpt, QRCtrls,
+  {$IFDEF QReport_PDF}
+     QRPDFFilt,
+  {$ENDIF}
+  ACBrCTeQRCodeBar, pcteCTe, ACBrCTe;
 
 type
   TfrmDACTeQR = class(TForm)
@@ -204,11 +206,14 @@ class procedure TfrmDACTeQR.SavePDF(AFile               : String;
                                     AMargemInferior     : Double    = 0.8;
                                     AMargemEsquerda     : Double    = 0.6;
                                     AMargemDireita      : Double    = 0.51);
-{Var
-  // qf : TQRPDFDocumentFilter;}
+{$IFDEF QReport_PDF}
+ var
+  qf : TQRPDFDocumentFilter;
+{$ENDIF}
 begin
   {Descomentar para usar PDF}
-{  with Create ( nil ) do
+{$IFDEF QReport_PDF}
+  with Create ( nil ) do
      try
         FCTe                := ACTe;
         FLogo               := ALogo;
@@ -227,7 +232,7 @@ begin
         FMargemDireita      := AMargemDireita;
         FExpandirLogoMarca  := AExpandirLogoMarca;
 
-        For i := 0 to ComponentCount -1 do
+        for i := 0 to ComponentCount -1 do
           begin
             if (Components[i] is TQRShape) and (TQRShape(Components[i]).Shape = qrsRoundRect) then
               begin
@@ -244,7 +249,8 @@ begin
         qf.Free;
      finally
         Free;
-     end ;}
+     end ;
+{$ENDIF}
 end;
 
 procedure TfrmDACTeQR.qrlSemValorFiscalPrint(sender: TObject;  var Value: string);

@@ -43,7 +43,6 @@
 |*  - Doação units para geração do Danfe via QuickReport
 ******************************************************************************}
 {$I ACBr.inc}
-{$I ACBr.inc}
 
 unit ACBrNFeDANFeQRReg;
 

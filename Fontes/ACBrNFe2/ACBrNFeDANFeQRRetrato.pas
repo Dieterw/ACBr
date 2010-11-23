@@ -74,7 +74,10 @@
 |
 | 16/12/2008: Wemerson Souto
 |  - Doação do componente para o Projeto ACBr
-|
+|  23/11/2010: Peterson de Cerqueira Matos
+|   - Formatação das casas decimais da "Quantidade" e do "Valor Unitário"
+|   - Correção na exibição da coluna CST. Quando o emitente for "Simples
+|     Nacional - CRT=1", será exibida a informação CSOSN ao invés do CST
 ******************************************************************************}
 
 {$I ACBr.inc}
@@ -336,7 +339,7 @@ type
     QRLabel142: TQRLabel;
     QRLabel143: TQRLabel;
     QRLabel144: TQRLabel;
-    QRLabel145: TQRLabel;
+    lblCST: TQRLabel;
     QRLabel146: TQRLabel;
     QRLabel147: TQRLabel;
     QRLabel148: TQRLabel;
@@ -422,6 +425,7 @@ type
     qrs13: TQRShape;
     qrs14: TQRShape;
     qrs15: TQRShape;
+    cdsItensCSOSN: TStringField;
     procedure QRNFeBeforePrint(Sender: TCustomQuickRep;
       var PrintReport: Boolean);
     procedure qrbReciboBeforePrint(Sender: TQRCustomBand;
@@ -545,7 +549,7 @@ begin
 end;
 
 procedure TfqrDANFeQRRetrato.Itens;
-var
+{var
    nItem : Integer;
    sCST, sBCICMS, sALIQICMS, sVALORICMS, sALIQIPI, sVALORIPI, sDESCRICAOPRODUTO : String;
 begin
@@ -675,7 +679,170 @@ begin
    end;
 
    cdsItens.First;
+ }
+var nItem : Integer ;
+sCST, sBCICMS, sALIQICMS, sVALORICMS, sALIQIPI, sVALORIPI : String ;
+begin
+  cdsItens.Close;
+  cdsItens.CreateDataSet ;
+  cdsItens.Open ;
 
+  for nItem := 0 to (FNFe.Det.Count - 1) do
+    begin
+      with FNFe.Det.Items[nItem] do
+        begin
+          with Prod do
+            begin
+              with Imposto.ICMS do
+                begin
+                  sALIQIPI   := '0,00' ;
+                  sVALORIPI  := '0,00' ;
+
+                  cdsItens.Append ;
+                  cdsItens.FieldByName('CODIGO').AsString := CProd;
+                  cdsItens.FieldByName('DESCRICAO').AsString := XProd;
+                  cdsItens.FieldByName('NCM').AsString := NCM;
+                  cdsItens.FieldByName('CFOP').AsString := CFOP;
+
+                  case FCasasDecimaisqCom of
+                    0: cdsItens.FieldByName('QTDE').AsString := FormatFloat('###,###,###,##0', QCom);
+                    1: cdsItens.FieldByName('QTDE').AsString := FormatFloat('###,###,###,##0.0', QCom);
+                    2: cdsItens.FieldByName('QTDE').AsString := FormatFloat('###,###,###,##0.00', QCom);
+                    3: cdsItens.FieldByName('QTDE').AsString := FormatFloat('###,###,###,##0.000', QCom);
+                    4: cdsItens.FieldByName('QTDE').AsString := FormatFloat('###,###,###,##0.0000', QCom);
+                    5: cdsItens.FieldByName('QTDE').AsString := FormatFloat('###,###,###,##0.00000', QCom);
+                    6: cdsItens.FieldByName('QTDE').AsString := FormatFloat('###,###,###,##0.000000', QCom);
+                    7: cdsItens.FieldByName('QTDE').AsString := FormatFloat('###,###,###,##0.0000000', QCom);
+                    8: cdsItens.FieldByName('QTDE').AsString := FormatFloat('###,###,###,##0.00000000', QCom);
+                    9: cdsItens.FieldByName('QTDE').AsString := FormatFloat('###,###,###,##0.000000000', QCom);
+                   10: cdsItens.FieldByName('QTDE').AsString := FormatFloat('###,###,###,##0.0000000000', QCom);
+                  end;
+
+                  case FCasasDecimaisvUnCom of
+                    0: cdsItens.FieldByName('VALOR').AsString := FormatFloat('###,###,###,##0', vUnCom);
+                    1: cdsItens.FieldByName('VALOR').AsString := FormatFloat('###,###,###,##0.0', vUnCom);
+                    2: cdsItens.FieldByName('VALOR').AsString := FormatFloat('###,###,###,##0.00', vUnCom);
+                    3: cdsItens.FieldByName('VALOR').AsString := FormatFloat('###,###,###,##0.000', vUnCom);
+                    4: cdsItens.FieldByName('VALOR').AsString := FormatFloat('###,###,###,##0.0000', vUnCom);
+                    5: cdsItens.FieldByName('VALOR').AsString := FormatFloat('###,###,###,##0.00000', vUnCom);
+                    6: cdsItens.FieldByName('VALOR').AsString := FormatFloat('###,###,###,##0.000000', vUnCom);
+                    7: cdsItens.FieldByName('VALOR').AsString := FormatFloat('###,###,###,##0.0000000', vUnCom);
+                    8: cdsItens.FieldByName('VALOR').AsString := FormatFloat('###,###,###,##0.00000000', vUnCom);
+                    9: cdsItens.FieldByName('VALOR').AsString := FormatFloat('###,###,###,##0.000000000', vUnCom);
+                   10: cdsItens.FieldByName('VALOR').AsString := FormatFloat('###,###,###,##0.0000000000', vUnCom);
+                  end;
+
+                  cdsItens.FieldByName('UNIDADE').AsString := UCom;
+                  cdsItens.FieldByName('TOTAL').AsString :=
+                                      FormatFloat('###,###,###,##0.00', vProd);
+
+                  if FNFe.Emit.CRT in [crtRegimeNormal] then
+                    begin
+                      if CSTICMSToStr(CST) > '' then
+                        sCST := OrigToStr(orig) + CSTICMSToStr(CST)
+                      else
+                        sCST := '';
+                      sBCICMS    := '0,00';
+                      sALIQICMS  := '0,00';
+                      sVALORICMS := '0,00';
+
+                      if (CST = cst00) then
+                        begin
+                          sBCICMS    := FormatFloat('###,###,###,##0.00', VBC);
+                          sALIQICMS  := FormatFloat('###,###,###,##0.00', PICMS);
+                          sVALORICMS := FormatFloat('###,###,###,##0.00', VICMS);
+                        end
+                      else if (CST = cst10) then
+                        begin
+                          sBCICMS    := FormatFloat('###,###,###,##0.00', VBC);
+                          sALIQICMS  := FormatFloat('###,###,###,##0.00', PICMS);
+                          sVALORICMS := FormatFloat('###,###,###,##0.00', VICMS);
+                        end
+                      else if (CST = cst20) then
+                        begin
+                          sBCICMS    := FormatFloat('###,###,###,##0.00', VBC);
+                          sALIQICMS  := FormatFloat('###,###,###,##0.00', PICMS);
+                          sVALORICMS := FormatFloat('###,###,###,##0.00', VICMS);
+                        end
+                      else if (CST = cst30) then
+                        begin
+                          sBCICMS    := FormatFloat('###,###,###,##0.00', VBCST);
+                          sALIQICMS  := FormatFloat('###,###,###,##0.00', PICMSST);
+                          sVALORICMS := FormatFloat('###,###,###,##0.00', VICMSST);
+                        end
+                      else if (CST = cst40) or (CST = cst41) or (CST = cst50) then
+                        begin
+                          // Campos vazios
+                        end
+                      else if (CST = cst51) then
+                        begin
+                          sBCICMS    := FormatFloat('###,###,###,##0.00', VBC);
+                          sALIQICMS  := FormatFloat('###,###,###,##0.00', PICMS);
+                          sVALORICMS := FormatFloat('###,###,###,##0.00', VICMS);
+                        end
+                      else if (CST = cst60) then
+                        begin
+                          sBCICMS    := FormatFloat('###,###,###,##0.00', VBCST);
+                          sVALORICMS := FormatFloat('###,###,###,##0.00', VICMSST);
+                        end
+                      else if (CST = cst70) then
+                        begin
+                          sBCICMS    := FormatFloat('###,###,###,##0.00', VBC);
+                          sALIQICMS  := FormatFloat('###,###,###,##0.00', PICMS);
+                          sVALORICMS := FormatFloat('###,###,###,##0.00', VICMS);
+                        end
+                      else if (CST = cst90) then
+                        begin
+                          sBCICMS    := FormatFloat('###,###,###,##0.00', VBC);
+                          sALIQICMS  := FormatFloat('###,###,###,##0.00', PICMS);
+                          sVALORICMS := FormatFloat('###,###,###,##0.00', VICMS);
+                       end;
+
+                      cdsItens.FieldByName('CST').AsString := sCST;
+                      cdsItens.FieldByName('BICMS').AsString := sBCICMS;
+                      cdsItens.FieldByName('ALIQICMS').AsString := sALIQICMS;
+                      cdsItens.FieldByName('VALORICMS').AsString := sVALORICMS;
+                      lblCST.Caption := 'CST';
+                      lblCST.Font.Size := 5;
+                      lblCST.Top := 20;
+                      qrmProdutoCST.DataField := 'CST';
+                    end; //FNFe.Emit.CRT = crtRegimeNormal
+
+                  if FNFe.Emit.CRT = crtSimplesNacional then
+                    begin
+                      if CSOSNIcmsToStr(Imposto.ICMS.CSOSN) > '' then
+                        cdsItens.FieldByName('CSOSN').AsString :=
+                            OrigToStr(orig) + CSOSNIcmsToStr(Imposto.ICMS.CSOSN)
+                      else
+                        cdsItens.FieldByName('CSOSN').AsString := '';
+                      cdsItens.FieldByName('BICMS').AsString := '0,00';
+                      cdsItens.FieldByName('ALIQICMS').AsString := '0,00';
+                      cdsItens.FieldByName('VALORICMS').AsString := '0,00';
+                      lblCST.Caption := 'CSOSN';
+                      lblCST.Font.Size := 4;
+                      lblCST.Top := 22;
+                      qrmProdutoCST.DataField := 'CSOSN';
+                    end; //FNFe.Emit.CRT = crtSimplesNacional
+                end; // with Imposto.ICMS do
+
+              with Imposto.IPI do
+                begin
+                  if (CST = ipi00) or (CST = ipi49) or
+                     (CST = ipi50) or (CST = ipi99) then
+                    begin
+                      sALIQIPI  := FormatFloat('##0.00', PIPI) ;
+                      sVALORIPI := FormatFloat('##0.00', VIPI) ;
+                    end
+                end;
+
+              cdsItens.FieldByName('ALIQIPI').AsString := sALIQIPI;
+              cdsItens.FieldByName('VALORIPI').AsString := sVALORIPI;
+              cdsItens.Post ;
+            end; // with Prod do
+        end; //  with FNFe.Det.Items[nItem] do
+    end; //  for nItem := 0 to ( FNFe.Det.Count - 1 ) do
+
+   cdsItens.First ;
 end;
 
 procedure TfqrDANFeQRRetrato.ProtocoloNFE( const sProtocolo : String );

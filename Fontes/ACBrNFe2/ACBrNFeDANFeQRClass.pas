@@ -42,6 +42,9 @@
 |*  - Doação do componente para o Projeto ACBr
 |* 20/08/2009: Caique Rodrigues
 |*  - Doação units para geração do Danfe via QuickReport
+|* 23/11/2010: Peterson de Cerqueira Matos
+|*  - Tratamento das propriedades "CasasDecimais._qCom", "CasasDecimais._vUnCom",
+|*    "Impressora"
 ******************************************************************************}
 {$I ACBr.inc}
 unit ACBrNFeDANFeQRClass;
@@ -104,7 +107,10 @@ begin
                                     , MargemSuperior
                                     , MargemInferior
                                     , MargemEsquerda
-                                    , MargemDireita);
+                                    , MargemDireita
+                                    , CasasDecimais._qCom
+                                    , CasasDecimais._vUnCom
+                                    , Impressora);
       end;
    end
   else
@@ -121,7 +127,11 @@ begin
                                 , MargemSuperior
                                 , MargemInferior
                                 , MargemEsquerda
-                                , MargemDireita);
+                                , MargemDireita
+                                , CasasDecimais._qCom
+                                , CasasDecimais._vUnCom
+                                , Impressora);
+
   fqrDANFeQRRetrato.Free;
 end;
 
@@ -156,7 +166,9 @@ begin
                                     , MargemSuperior
                                     , MargemInferior
                                     , MargemEsquerda
-                                    , MargemDireita);
+                                    , MargemDireita
+                                    , CasasDecimais._qCom
+                                    , CasasDecimais._vUnCom);
       end;
    end
   else
@@ -176,7 +188,9 @@ begin
                                 , MargemSuperior
                                 , MargemInferior
                                 , MargemEsquerda
-                                , MargemDireita);
+                                , MargemDireita
+                                , CasasDecimais._qCom
+                                , CasasDecimais._vUnCom);
   end;
 
   fqrDANFeQRRetrato.Free;

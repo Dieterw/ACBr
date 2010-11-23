@@ -46,6 +46,9 @@
 |*    "FSistema", "FSite", "FUsuario", "FImprimeHoraSaida", "FHoraSaida",
 |*    nas Class procedures "Imprimir" e "SavePDF"
 |*  - Habilitada a funcionalidade da procedure "SavePDF";
+|* 23/11/2010: Peterson de Cerqueira Matos
+|*  - Acréscimo dos parâmetros "FCasasDecimaisqCom", "FCasasDecimaisvUnCom",
+|*    "FImpressora" nas Class procedures "Imprimir" e "SavePDF"
 ******************************************************************************}
 {$I ACBr.inc}
 unit ACBrNFeDANFeQR;
@@ -55,7 +58,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ExtCtrls, QuickRpt, QRCtrls,
-  ACBrNFeQRCodeBar, pcnNFe, ACBrNFe, ACBrNFeUtil{, QRPDFFilt {Descomentar para usar PDF};
+  ACBrNFeQRCodeBar, pcnNFe, ACBrNFe, ACBrNFeUtil, Printers{, QRPDFFilt {Descomentar para usar PDF};
 
 type
   TfqrDANFeQR = class(TForm)
@@ -81,6 +84,9 @@ type
     FMargemInferior     : double;
     FMargemEsquerda     : double;
     FMargemDireita      : double;
+    FCasasDecimaisqCom  : Integer;
+    FCasasDecimaisvUnCom: Integer;
+    FImpressora         : String;
 
     procedure qrlSemValorFiscalPrint(sender: TObject; var Value: String);
     procedure SetBarCodeImage ( ACode : String ; QRImage : TQRImage ) ;
@@ -100,7 +106,10 @@ type
                              AMargemSuperior     : Double    = 0.8;
                              AMargemInferior     : Double    = 0.8;
                              AMargemEsquerda     : Double    = 0.6;
-                             AMargemDireita      : Double    = 0.51);
+                             AMargemDireita      : Double    = 0.51;
+                             ACasasDecimaisqCom  : Integer = 4;
+                             ACasasDecimaisvUncCom: Integer = 4;
+                             AImpressora         : String    = '');
 
     class procedure SavePDF(AFile: String;
                             ANFe                : TNFe;
@@ -115,15 +124,16 @@ type
                             AMargemSuperior     : Double    = 0.8;
                             AMargemInferior     : Double    = 0.8;
                             AMargemEsquerda     : Double    = 0.6;
-                            AMargemDireita      : Double    = 0.51);
+                            AMargemDireita      : Double    = 0.51;
+                            ACasasDecimaisqCom  : Integer = 4;
+                            ACasasDecimaisvUncCom: Integer = 4);
 
   end;
-
 
 implementation
 
 uses MaskUtils ;
-
+var Printer: TPrinter;
 {$R *.dfm}
 
 class procedure TfqrDANFeQR.Imprimir(ANFe               : TNFe;
@@ -139,7 +149,10 @@ class procedure TfqrDANFeQR.Imprimir(ANFe               : TNFe;
                                     AMargemSuperior     : Double    = 0.8;
                                     AMargemInferior     : Double    = 0.8;
                                     AMargemEsquerda     : Double    = 0.6;
-                                    AMargemDireita      : Double    = 0.51);
+                                    AMargemDireita      : Double    = 0.51;
+                                    ACasasDecimaisqCom  : Integer   = 4;
+                                    ACasasDecimaisvUncCom: Integer  = 4;
+                                    AImpressora         : String    = '');
 begin
   with Create ( nil ) do
      try
@@ -156,6 +169,14 @@ begin
         FMargemInferior     := AMargemInferior;
         FMargemEsquerda     := AMargemEsquerda;
         FMargemDireita      := AMargemDireita;
+        FCasasDecimaisqCom  := ACasasDecimaisqCom;
+        FCasasDecimaisvUnCom := ACasasDecimaisvUncCom;
+        FImpressora         := AImpressora;
+
+        Printer := TPrinter.Create;
+
+        if FImpressora > '' then
+          QRNFe.PrinterSettings.PrinterIndex := Printer.Printers.IndexOf(FImpressora);
 
         if APreview
          then begin
@@ -171,7 +192,7 @@ begin
            HrTotalPages := QRNFe.QRPrinter.PageCount; //hrsoft 4/8/2010
            QRNFe.Print ;
          end;
-         
+
      finally
         Free ;
      end ;
@@ -190,7 +211,9 @@ class procedure TfqrDANFeQR.SavePDF(AFile               : String;
                                     AMargemSuperior     : Double    = 0.8;
                                     AMargemInferior     : Double    = 0.8;
                                     AMargemEsquerda     : Double    = 0.6;
-                                    AMargemDireita      : Double    = 0.51);
+                                    AMargemDireita      : Double    = 0.51;
+                                    ACasasDecimaisqCom  : Integer   = 4;
+                                    ACasasDecimaisvUncCom: Integer  = 4);
 {Var
   qf : TQRPDFDocumentFilter ;{Descomentar para usar PDF}
 begin
@@ -210,6 +233,8 @@ begin
         FMargemInferior     := AMargemInferior;
         FMargemEsquerda     := AMargemEsquerda;
         FMargemDireita      := AMargemDireita;
+        FCasasDecimaisqCom  := ACasasDecimaisqCom;
+        FCasasDecimaisvUnCom := ACasasDecimaisvUncCom;
 
         For i := 0 to ComponentCount -1 do
           begin

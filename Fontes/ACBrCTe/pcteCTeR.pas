@@ -795,12 +795,65 @@ begin
 
     if Leitor.rExtrai(2, 'ferrov') <> '' then
     begin
-     //
+      CTe.Ferrov.tpTraf := StrToTpTrafego(ok, Leitor.rCampo(tcStr, 'tpTraf'));
+      CTe.Ferrov.fluxo  := Leitor.rCampo(tcStr,'fluxo');
+      CTe.Ferrov.idTrem := Leitor.rCampo(tcStr,'idTrem');
+      CTe.Ferrov.vFrete := Leitor.rCampo(tcDe2,'vFrete');
+      if Leitor.rExtrai(3, 'ferroSub') <> '' then
+      begin
+        CTe.Ferrov.ferroSub.CNPJ  := Leitor.rCampo(tcStr,'CNPJ');
+        CTe.Ferrov.ferroSub.cInt  := Leitor.rCampo(tcStr,'cInt');
+        CTe.Ferrov.ferroSub.IE    := Leitor.rCampo(tcStr,'IE');
+        CTe.Ferrov.ferroSub.xNome := Leitor.rCampo(tcStr,'xNome');
+        if Leitor.rExtrai(4, 'enderFerro') <> '' then
+        begin
+          CTe.Ferrov.ferroSub.EnderFerro.xLgr    := Leitor.rCampo(tcStr, 'xLgr');
+          CTe.Ferrov.ferroSub.EnderFerro.nro     := Leitor.rCampo(tcStr, 'nro');
+          CTe.Ferrov.ferroSub.EnderFerro.xCpl    := Leitor.rCampo(tcStr, 'xCpl');
+          CTe.Ferrov.ferroSub.EnderFerro.xBairro := Leitor.rCampo(tcStr, 'xBairro');
+          CTe.Ferrov.ferroSub.EnderFerro.cMun    := Leitor.rCampo(tcInt, 'cMun');
+          CTe.Ferrov.ferroSub.EnderFerro.xMun    := Leitor.rCampo(tcStr, 'xMun');
+          CTe.Ferrov.ferroSub.EnderFerro.CEP     := Leitor.rCampo(tcInt, 'CEP');
+          CTe.Ferrov.ferroSub.EnderFerro.UF      := Leitor.rCampo(tcStr, 'UF');
+        end;
+      end;
+
+      i01 := 0;
+      while Leitor.rExtrai(3, 'DCL', '', i01 + 1) <> '' do
+      begin
+        {
+        CTe.peri.Add;
+        CTe.peri[i01].nONU        := Leitor.rCampo(tcStr, 'nONU');
+        CTe.peri[i01].xNomeAE     := Leitor.rCampo(tcStr, 'xNomeAE');
+        CTe.peri[i01].xClaRisco   := Leitor.rCampo(tcStr, 'xClaRisco');
+        CTe.peri[i01].grEmb       := Leitor.rCampo(tcStr, 'grEmb');
+        CTe.peri[i01].qTotProd    := Leitor.rCampo(tcStr, 'qTotProd');
+        CTe.peri[i01].qVolTipo    := Leitor.rCampo(tcStr, 'qVolTipo');
+        CTe.peri[i01].pontoFulgor := Leitor.rCampo(tcStr, 'pontoFulgor');
+        }
+        inc(i01);
+      end;
+
+      i01 := 0;
+      while Leitor.rExtrai(3, 'detVag', '', i01 + 1) <> '' do
+      begin
+        {
+        CTe.peri.Add;
+        CTe.peri[i01].nONU        := Leitor.rCampo(tcStr, 'nONU');
+        CTe.peri[i01].xNomeAE     := Leitor.rCampo(tcStr, 'xNomeAE');
+        CTe.peri[i01].xClaRisco   := Leitor.rCampo(tcStr, 'xClaRisco');
+        CTe.peri[i01].grEmb       := Leitor.rCampo(tcStr, 'grEmb');
+        CTe.peri[i01].qTotProd    := Leitor.rCampo(tcStr, 'qTotProd');
+        CTe.peri[i01].qVolTipo    := Leitor.rCampo(tcStr, 'qVolTipo');
+        CTe.peri[i01].pontoFulgor := Leitor.rCampo(tcStr, 'pontoFulgor');
+        }
+        inc(i01);
+      end;
     end; // fim das informações do modal Ferroviário
 
     if Leitor.rExtrai(2, 'duto') <> '' then
     begin
-     CTe.duto.vTar := Leitor.rCampo(tcDe6, 'vTar');
+      CTe.duto.vTar := Leitor.rCampo(tcDe6, 'vTar');
     end; // fim das informações do modal Dutoviário
 
     i01 := 0;

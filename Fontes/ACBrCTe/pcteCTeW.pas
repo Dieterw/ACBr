@@ -122,6 +122,8 @@ type
     procedure GerarAereo;      // Nivel 2
     procedure GerarAquav;      // Nivel 2
     procedure GerarFerrov;     // Nivel 2
+    procedure GerarFerroSub;   // Nivel 3
+    procedure GerarEnderFerro; // Nivel 4
     procedure GerarDuto;       // Nivel 2
     procedure GerarPeri;       // Nivel 2
     procedure GerarVeicNovos;  // Nivel 2
@@ -1322,7 +1324,52 @@ end;
 
 procedure TCTeW.GerarFerrov;  // O
 begin
- {a}
+  Gerador.wGrupo('ferrov', 'O01');
+  Gerador.wCampo(tcStr, 'O02', 'tpTraf   ', 01, 01, 1, TpTrafegoToStr(CTe.Ferrov.tpTraf), '');
+  Gerador.wCampo(tcStr, 'O03', 'fluxo    ', 01, 10, 1, CTe.Ferrov.fluxo, '');
+  Gerador.wCampo(tcStr, 'O04', 'idTrem   ', 01, 07, 0, CTe.Ferrov.idTrem, '');
+  Gerador.wCampo(tcDe2, 'O05', 'vFrete   ', 01, 15, 1, CTe.Ferrov.vFrete, '');
+  (**) GerarFerroSub;
+  Gerador.wGrupo('/ferrov');
+end;
+
+procedure TCTeW.GerarFerroSub;
+begin
+  if (CTe.Ferrov.ferroSub.CNPJ <> '') or
+     (CTe.Ferrov.ferroSub.xNome <> '') then
+  begin
+    Gerador.wGrupo('ferroSub', 'O06');
+    Gerador.wCampoCNPJ('O07', CTe.Ferrov.ferroSub.CNPJ, CODIGO_BRASIL, True);
+    Gerador.wCampo(tcStr, 'O08', 'cInt   ', 01, 10, 0, CTe.Ferrov.ferroSub.cInt, '');
+    Gerador.wCampo(tcStr, 'O09', 'IE     ', 02, 14, 0, SomenteNumeros(CTe.Ferrov.ferroSub.IE), DSC_IE);
+    Gerador.wCampo(tcStr, 'O10', 'xNome  ', 01, 60, 1, CTe.Ferrov.ferroSub.xNome, DSC_XNOME);
+    (**) GerarEnderFerro;
+    Gerador.wGrupo('/ferroSub');
+  end;
+end;
+
+procedure TCTeW.GerarEnderFerro;
+var
+  cMun: integer;
+  xMun: string;
+  xUF: string;
+begin
+  AjustarMunicipioUF(xUF, xMun, cMun, CODIGO_BRASIL, CTe.Ferrov.ferroSub.EnderFerro.UF,
+      CTe.Ferrov.ferroSub.EnderFerro.xMun, CTe.Ferrov.ferroSub.EnderFerro.cMun);
+  Gerador.wGrupo('enderFerro', 'O11');
+  Gerador.wCampo(tcStr, 'O12', 'xLgr   ', 01, 255, 1, CTe.Ferrov.ferroSub.EnderFerro.xLgr, DSC_XLGR);
+  Gerador.wCampo(tcStr, 'O13', 'nro    ', 01, 60, 1, ExecutarAjusteTagNro(FOpcoes.FAjustarTagNro, CTe.Ferrov.ferroSub.EnderFerro.nro), DSC_NRO);
+  Gerador.wCampo(tcStr, 'O14', 'xCpl   ', 01, 60, 0, CTe.Ferrov.ferroSub.EnderFerro.xCpl, DSC_XCPL);
+  Gerador.wCampo(tcStr, 'O15', 'xBairro', 01, 60, 0, CTe.Ferrov.ferroSub.EnderFerro.xBairro, DSC_XBAIRRO);
+  Gerador.wCampo(tcInt, 'O16', 'cMun   ', 07, 07, 1, cMun, DSC_CMUN);
+  if not ValidarMunicipio(CTe.Ferrov.ferroSub.EnderFerro.cMun) then
+    Gerador.wAlerta('O16', 'cMun', DSC_CMUN, ERR_MSG_INVALIDO);
+  Gerador.wCampo(tcStr, 'O17', 'xMun   ', 01, 60, 1, xMun, DSC_XMUN);
+  Gerador.wCampo(tcInt, 'O18', 'CEP    ', 08, 08, 0, CTe.Ferrov.ferroSub.EnderFerro.CEP, DSC_CEP);
+  Gerador.wCampo(tcStr, 'O19', 'UF     ', 02, 02, 1, xUF, DSC_UF);
+  if not ValidarUF(xUF) then
+    Gerador.wAlerta('O19', 'UF', DSC_UF, ERR_MSG_INVALIDO);
+  Gerador.wGrupo('/enderFerro');
 end;
 
 procedure TCTeW.GerarDuto;  // P

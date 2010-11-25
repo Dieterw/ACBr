@@ -1683,7 +1683,7 @@ type
 
   TferroSub = class(TPersistent)
   private
-    FCNPJCPF    : String;
+    FCNPJ       : String;
     FcInt       : String;
     FIE         : String;
     FxNome      : String;
@@ -1692,7 +1692,7 @@ type
     constructor Create(AOwner: Tferrov);
     destructor Destroy; override;
   published
-    property CNPJCPF : String read FCNPJCPF write FCNPJCPF;
+    property CNPJ : String read FCNPJ write FCNPJ;
     property cInt : String read FcInt write FcInt;
     property IE : String read FIE write FIE;
     property xNome : String read FxNome write FxNome;

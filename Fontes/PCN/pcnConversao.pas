@@ -114,6 +114,8 @@ type
   // Incluido por Italo em 31/09/2010
   TpcteDirecao = (drNorte, drLeste, drSul, drOeste);
   TpcteTipoNavegacao = (tnInterior, tnCabotagem);
+  // Incluido por Italo em 19/11/2010
+  TpcteTipoTrafego = (ttProprio, ttMutuo, ttRodoferroviario, ttRodoviario);
 
 const
   NFeUF: array[0..26] of String =
@@ -233,6 +235,10 @@ function TpDirecaoToStr(const t: TpcteDirecao): string;
 function StrToTpDirecao(var ok: boolean; const s: string): TpcteDirecao;
 function TpNavegacaoToStr(const t: TpcteTipoNavegacao): string;
 function StrToTpNavegacao(var ok: boolean; const s: string): TpcteTipoNavegacao;
+
+  // Incluido por Italo em 19/11/2010
+function TpTrafegoToStr(const t: TpcteTipoTrafego): string;
+function StrToTpTrafego(var ok: boolean; const s: string): TpcteTipoTrafego;
 
 implementation
 
@@ -780,6 +786,17 @@ end;
 function StrToTpNavegacao(var ok: boolean; const s: string): TpcteTipoNavegacao;
 begin
   result := StrToEnumerado(ok, s, ['0','1'], [tnInterior , tnCabotagem]);
+end;
+
+  // Incluido por Italo em 19/11/2010
+function TpTrafegoToStr(const t: TpcteTipoTrafego): string;
+begin
+  result := EnumeradoToStr(t, ['0','1','2','3'], [ttProprio , ttMutuo, ttRodoferroviario, ttRodoviario]);
+end;
+
+function StrToTpTrafego(var ok: boolean; const s: string): TpcteTipoTrafego;
+begin
+  result := StrToEnumerado(ok, s, ['0','1','2','3'], [ttProprio , ttMutuo, ttRodoferroviario, ttRodoviario]);
 end;
 
 end.

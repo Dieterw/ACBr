@@ -1191,7 +1191,7 @@ begin
             end;
         end;
         //**********************************************************************
-        // local de retirada
+        // local de entrega
         with FNFe.Entrega do
         begin
             if xLgr <> '' then

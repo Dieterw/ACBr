@@ -182,9 +182,9 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
         end
         object rlmDescricaoProduto: TRLMemo
           Tag = 10
-          Left = 56
+          Left = 128
           Top = 13
-          Width = 426
+          Width = 366
           Height = 7
           Alignment = taCenter
           AutoSize = False
@@ -196,6 +196,32 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
           Lines.Strings = (
             'DESCRI'#199#195'O DO PRODUTO / SERVI'#199'O')
           ParentFont = False
+        end
+        object rllEAN: TRLLabel
+          Tag = 10
+          Left = 55
+          Top = 13
+          Width = 70
+          Height = 7
+          Alignment = taCenter
+          AutoSize = False
+          Caption = 'EAN'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -7
+          Font.Name = 'Arial'
+          Font.Style = []
+          HoldStyle = hsRelatively
+          ParentFont = False
+        end
+        object rlsDivProdEAN: TRLDraw
+          Left = 126
+          Top = 7
+          Width = 1
+          Height = 19
+          Angle = 90.000000000000000000
+          DrawKind = dkLine
+          HoldStyle = hsRelatively
         end
       end
       object pnlCabecalho2: TRLPanel
@@ -3880,6 +3906,7 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
           Top = 0
           Width = 1
           Height = 13
+          Align = faHeight
           Angle = 90.000000000000000000
           DrawKind = dkLine
           HoldStyle = hsRelatively
@@ -3889,14 +3916,15 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
           Top = 0
           Width = 1
           Height = 13
+          Align = faHeight
           Angle = 90.000000000000000000
           DrawKind = dkLine
           HoldStyle = hsRelatively
         end
         object rlmDescricao: TRLDBMemo
-          Left = 56
+          Left = 128
           Top = 1
-          Width = 409
+          Width = 337
           Height = 10
           DataField = 'DESCRICAO'
           DataSource = DataSource1
@@ -3906,6 +3934,31 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
           Font.Name = 'Arial'
           Font.Style = []
           ParentFont = False
+        end
+        object txtEAN: TRLDBText
+          Left = 55
+          Top = 1
+          Width = 70
+          Height = 10
+          AutoSize = False
+          DataField = 'EAN'
+          DataSource = DataSource1
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -8
+          Font.Name = 'Arial'
+          Font.Style = []
+          ParentFont = False
+        end
+        object LinhaProdEAN: TRLDraw
+          Left = 126
+          Top = 0
+          Width = 1
+          Height = 13
+          Align = faHeight
+          Angle = 90.000000000000000000
+          DrawKind = dkLine
+          HoldStyle = hsRelatively
         end
       end
       object pnlDescricao2: TRLPanel
@@ -4123,6 +4176,7 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
           Top = 0
           Width = 1
           Height = 13
+          Align = faHeight
           Angle = 90.000000000000000000
           DrawKind = dkLine
           HoldStyle = hsRelatively
@@ -4132,6 +4186,7 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
           Top = 0
           Width = 1
           Height = 13
+          Align = faHeight
           Angle = 90.000000000000000000
           DrawKind = dkLine
           HoldStyle = hsRelatively
@@ -4141,6 +4196,7 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
           Top = 0
           Width = 1
           Height = 13
+          Align = faHeight
           Angle = 90.000000000000000000
           DrawKind = dkLine
           HoldStyle = hsRelatively
@@ -4150,6 +4206,7 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
           Top = 0
           Width = 1
           Height = 13
+          Align = faHeight
           Angle = 90.000000000000000000
           DrawKind = dkLine
           HoldStyle = hsRelatively
@@ -4159,6 +4216,7 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
           Top = 0
           Width = 1
           Height = 13
+          Align = faHeight
           Angle = 90.000000000000000000
           DrawKind = dkLine
           HoldStyle = hsRelatively
@@ -4168,6 +4226,7 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
           Top = 0
           Width = 1
           Height = 13
+          Align = faHeight
           Angle = 90.000000000000000000
           DrawKind = dkLine
           HoldStyle = hsRelatively
@@ -4177,6 +4236,7 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
           Top = 0
           Width = 1
           Height = 13
+          Align = faHeight
           Angle = 90.000000000000000000
           DrawKind = dkLine
           HoldStyle = hsRelatively
@@ -4186,6 +4246,7 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
           Top = 0
           Width = 1
           Height = 13
+          Align = faHeight
           Angle = 90.000000000000000000
           DrawKind = dkLine
           HoldStyle = hsRelatively
@@ -4195,6 +4256,7 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
           Top = 0
           Width = 1
           Height = 13
+          Align = faHeight
           Angle = 90.000000000000000000
           DrawKind = dkLine
           HoldStyle = hsRelatively
@@ -4204,6 +4266,7 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
           Top = 0
           Width = 1
           Height = 13
+          Align = faHeight
           Angle = 90.000000000000000000
           DrawKind = dkLine
           HoldStyle = hsRelatively
@@ -4213,6 +4276,7 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
           Top = 0
           Width = 1
           Height = 13
+          Align = faHeight
           Angle = 90.000000000000000000
           DrawKind = dkLine
           HoldStyle = hsRelatively
@@ -4222,6 +4286,7 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
           Top = 0
           Width = 1
           Height = 13
+          Align = faHeight
           Angle = 90.000000000000000000
           DrawKind = dkLine
           HoldStyle = hsRelatively
@@ -4231,6 +4296,7 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
           Top = 0
           Width = 1
           Height = 13
+          Align = faHeight
           Angle = 90.000000000000000000
           DrawKind = dkLine
           HoldStyle = hsRelatively
@@ -4240,6 +4306,7 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
           Top = 0
           Width = 1
           Height = 13
+          Align = faHeight
           Angle = 90.000000000000000000
           DrawKind = dkLine
           HoldStyle = hsRelatively
@@ -4727,6 +4794,10 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
     object cdsItensCODIGO: TStringField
       FieldName = 'CODIGO'
       Size = 60
+    end
+    object cdsItensEAN: TStringField
+      FieldName = 'EAN'
+      Size = 14
     end
     object cdsItensDESCRICAO: TStringField
       FieldName = 'DESCRICAO'

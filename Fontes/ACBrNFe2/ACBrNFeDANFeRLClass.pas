@@ -72,6 +72,8 @@
 |*  - Alteração do sulfixo do arquivo PDF de '-nfe.pdf' para '.pdf'
 |* 10/08/2010: Peterson de Cerqueira Matos
 |*  - Tratamento do tamanho da fonte da razão social do emitente
+|* 25/11/2010: Peterson de Cerqueira Matos
+|*  - Acréscimo da propriedade "ExibirEAN"
 ******************************************************************************}
 {$I ACBr.inc}
 unit ACBrNFeDANFeRLClass;
@@ -95,22 +97,25 @@ type
     FPosCanhoto: TPosCanhoto;
     FFonteDANFE: TFonteDANFE;
     FTamanhoFonte_RazaoSocial: Integer;
+    FExibirEAN: Boolean;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure ImprimirDANFE(NFE : TNFe = nil); override ;
     procedure ImprimirDANFEPDF(NFE : TNFe = nil); override ;
-    procedure SetPosCanhoto(Value: TPosCanhoto); virtual;
-    procedure SetFonteDANFE(Value: TFonteDANFE); virtual;
+    procedure SetExibirEAN(Value: Boolean); virtual;
+    procedure SetTipoDANFE(Value: TpcnTipoImpressao); virtual;
   published
     property MarcadAgua : String read FMarcadagua write FMarcadagua ;
     property LarguraCodProd: Integer read FLarguraCodProd write FLarguraCodProd;
-    property PosCanhoto: TPosCanhoto read FPosCanhoto write SetPosCanhoto
+    property PosCanhoto: TPosCanhoto read FPosCanhoto write FPosCanhoto
                                                           default pcCabecalho;
-    property FonteDANFE: TFonteDANFE read FFonteDANFE write SetFonteDANFE
+    property FonteDANFE: TFonteDANFE read FFonteDANFE write FFonteDANFE
                                                       default fdTimesNewRoman;
     property TamanhoFonte_RazaoSocial: Integer read FTamanhoFonte_RazaoSocial
                                               write FTamanhoFonte_RazaoSocial;
+    property ExibirEAN: Boolean read FExibirEAN write SetExibirEAN;
+    property TipoDANFE: TpcnTipoImpressao read FTipoDANFE write SetTipoDANFE;
   end;
 
 implementation
@@ -133,13 +138,13 @@ begin
   FCasasDecimais._vUnCom := 4;
   FProdutosPorPagina := 10;
   FTamanhoFonte_RazaoSocial := 8;
+  FExibirEAN := False;
 end;
 
 destructor TACBrNFeDANFeRL.Destroy;
 begin
   inherited Destroy ;
 end;
-
 
 procedure TACBrNFeDANFeRL.ImprimirDANFE(NFE : TNFe = nil);
 begin
@@ -158,7 +163,7 @@ begin
           ExpandirLogoMarca, MostrarPreview, FonteDANFE, MargemSuperior,
           MargemInferior, MargemEsquerda, MargemDireita, CasasDecimais._qCom,
           CasasDecimais._vUnCom, ProdutosPorPagina, Impressora,
-          TamanhoFonte_RazaoSocial);
+          TamanhoFonte_RazaoSocial, ExibirEAN);
         end;
     end
   else
@@ -169,7 +174,7 @@ begin
       ExpandirLogoMarca, MostrarPreview, FonteDANFE, MargemSuperior,
       MargemInferior, MargemEsquerda, MargemDireita, CasasDecimais._qCom,
       CasasDecimais._vUnCom, ProdutosPorPagina, Impressora,
-      TamanhoFonte_RazaoSocial);
+      TamanhoFonte_RazaoSocial, ExibirEAN);
     end;
 
   frlDANFeRL.Free;
@@ -195,21 +200,30 @@ begin
         NumCopias, Sistema, Site, Usuario, sFile, PosCanhoto, FormularioContinuo,
         ExpandirLogoMarca, FonteDANFE, MargemSuperior,
         MargemInferior, MargemEsquerda, MargemDireita, CasasDecimais._qCom,
-        CasasDecimais._vUnCom, ProdutosPorPagina, TamanhoFonte_RazaoSocial);
+        CasasDecimais._vUnCom, ProdutosPorPagina, TamanhoFonte_RazaoSocial,
+        ExibirEAN);
       end;
    end;
 
   frlDANFeRL.Free;
 end;
 
-procedure TACBrNFeDANFeRL.SetPosCanhoto(Value: TPosCanhoto);
+procedure TACBrNFeDANFeRL.SetExibirEAN(Value: Boolean);
 begin
-  FPosCanhoto := Value;
+  if FTipoDANFE = tiRetrato then
+    FExibirEAN := False
+  else
+    FExibirEAN := Value;
 end;
 
-procedure TACBrNFeDANFeRL.SetFonteDANFE(Value: TFonteDANFE);
+procedure TACBrNFeDANFeRL.SetTipoDANFE(Value: TpcnTipoImpressao);
 begin
-  FFonteDANFE := Value;
+  if Value = tiRetrato then
+    begin
+      FExibirEAN := False;
+    end;
+
+  FTipoDANFE := Value;
 end;
 
 end.

@@ -102,8 +102,8 @@
 |*    O Caractere ponto-e-vírgula ';' será considerado quebra de linha
 |* 10/08/2010: Peterson de Cerqueira Matos
 |*  - Tratamento do tamanho da fonte da razão social do emitente
-|* 27/10/2010: Peterson de Cerqueira Matos
-|*  - Acréscimo do campo Inscrição Municipal no quadro do emitente
+|* 25/11/2010: Peterson de Cerqueira Matos
+|*  - Acréscimo da coluna "EAN"
 ******************************************************************************}
 {$I ACBr.inc}
 unit ACBrNFeDANFeRLPaisagem;
@@ -515,6 +515,11 @@ type
     LinhaObsItemDireita: TRLDraw;
     rlmObsItem: TRLMemo;
     RLDraw2: TRLDraw;
+    cdsItensEAN: TStringField;
+    rllEAN: TRLLabel;
+    txtEAN: TRLDBText;
+    LinhaProdEAN: TRLDraw;
+    rlsDivProdEAN: TRLDraw;
     procedure RLNFeBeforePrint(Sender: TObject; var PrintIt: Boolean);
     procedure rlbEmitenteBeforePrint(Sender: TObject;
       var PrintIt: Boolean);
@@ -832,10 +837,34 @@ begin
   rlmCodProd.Width := FLarguraCodProd;
   rlsDivProd1.Left := FLarguraCodProd + 2;
   LinhaProd2.Left :=  FLarguraCodProd + 2;
-  rlmDescricaoProduto.Left := rlsDivProd1.Left + 2;
-  rlmDescricaoProduto.Width := ((rlsRectProdutos1.Left + rlsRectProdutos1.Width) - rlsDivProd1.Left) - 3;
-  rlmDescricao.Left := LinhaProd2.Left + 2;
-  rlmDescricao.Width := (pnlDescricao1.Width - LinhaProd2.Left) - 24;
+
+  if FExibirEAN = False then
+    begin
+      rllEAN.Visible := False;
+      txtEAN.Visible := False;
+      rlsDivProdEAN.Visible := False;
+      LinhaProdEAN.Visible := False;
+      rlmDescricaoProduto.Left := rlsDivProd1.Left + 2;
+      rlmDescricaoProduto.Width := ((rlsRectProdutos1.Left + rlsRectProdutos1.Width) - rlsDivProd1.Left) - 3;
+      rlmDescricao.Left := LinhaProd2.Left + 2;
+      rlmDescricao.Width := (pnlDescricao1.Width - LinhaProd2.Left) - 24;
+    end
+  else
+    begin
+      rllEAN.Visible := True;
+      txtEAN.Visible := True;
+      rlsDivProdEAN.Visible := True;
+      LinhaProdEAN.Visible := True;
+      rllEAN.Left := rlsDivProd1.Left + 2;
+      txtEAN.Left := LinhaProd2.Left + 2;
+      rlsDivProdEAN.Left := (rllEAN.Left + rllEAN.Width) + 2;
+      LinhaProdEAN.Left := (txtEAN.Left + txtEAN.Width) + 2;
+      rlmDescricaoProduto.Left := (rlsDivProdEAN.Left) + 2;
+      rlmDescricaoProduto.Width := ((rlsRectProdutos1.Left + rlsRectProdutos1.Width) - (rlsDivProdEAN.Left)) - 3;
+      rlmDescricao.Left := LinhaProdEAN.Left + 2;
+      rlmDescricao.Width := (pnlDescricao1.Width - LinhaProdEAN.Left) - 24;
+    end;
+
   rlmDescricaoProduto.Lines.BeginUpdate;
   rlmDescricaoProduto.Lines.Clear;
   rlmCodProd.Lines.BeginUpdate;
@@ -1551,6 +1580,7 @@ begin
 
                   cdsItens.Append ;
                   cdsItens.FieldByName('CODIGO').AsString := CProd;
+                  cdsItens.FieldByName('EAN').AsString := cEAN;
                   cdsItens.FieldByName('DESCRICAO').AsString := XProd;
                   cdsItens.FieldByName('NCM').AsString := NCM;
                   cdsItens.FieldByName('CFOP').AsString := CFOP;

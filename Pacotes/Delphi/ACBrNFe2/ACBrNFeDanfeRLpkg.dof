@@ -108,7 +108,7 @@ DebugCWD=
 [Language]
 ActiveLang=
 ProjectLang=
-RootDir=C:\Program Files (x86)\Borland\Delphi7\Bin\
+RootDir=
 [Version Info]
 IncludeVerInfo=1
 AutoIncBuild=0

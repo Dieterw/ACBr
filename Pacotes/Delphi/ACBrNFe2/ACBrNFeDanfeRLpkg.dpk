@@ -69,26 +69,32 @@ package ACBrNFeDanfeRLpkg;
 {$DESCRIPTION 'ACBrNFeDanfeRL - (http://acbr.sourceforge.net/)'}
 {$IMPLICITBUILD ON}
 
-requires
-  rtl,
-  designide,
-  ACBr_NFe2,
-  vcljpg,
-  vcl,
-  dbrtl,
-  xmlrtl,
-  inet,
-  dsnap,
-  visualclx,
-  RLibWinD7vcl,
-  vcldb,
-  vclactnband,
-  vclx,
-  PCN2,
-  ACBrComum,
-  synapse,
-  ACBrCapicom,
-  soaprtl;
+    requires
+      rtl,
+      designide,
+      ACBr_NFe2,
+      vcljpg,
+      vcl,
+      dbrtl,
+      xmlrtl,
+      inet,
+      dsnap,
+      visualclx,
+      {$IFDEF VER140}
+        RLibWinD6vcl,
+      {$ELSE}
+        {$IFDEF VER150}
+          RLibWinD7vcl,
+        {$ENDIF}
+      {$ENDIF}
+      vcldb,
+      vclactnband,
+      vclx,
+      PCN2,
+      ACBrComum,
+      synapse,
+      ACBrCapicom,
+      soaprtl;
 
 contains
   ACBrNFeDANFeRL in '..\..\..\Fontes\ACBrNFe2\ACBrNFeDANFeRL.pas' {frlDANFeRL},

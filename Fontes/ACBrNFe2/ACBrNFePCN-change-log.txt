@@ -47,6 +47,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Alterações   26/11/2010
+---------------
+[+] Liberação dos Webservices de Produção 2.0 do estado de Pernambuco.
+
 Alterações   24/11/2010
 ---------------
 [-] Correção de Loop infinito no DANFE_RAVE513.rav quando o DANFE conter mais de uma página

@@ -105,8 +105,8 @@ type
 
   public
     {$IFDEF ACBrNFeOpenSSL}
-       class function sign_file(const Axml: PAnsiChar; const key_file: PChar; const senha: PChar): AnsiString;
-       class function sign_memory(const Axml: PChar; const key_file: Pchar; const senha: PChar; Size: Cardinal; Ponteiro: Pointer): AnsiString;
+       class function sign_file(const Axml: PAnsiChar; const key_file: PAnsiChar; const senha: PAnsiChar): AnsiString;
+       class function sign_memory(const Axml: PAnsiChar; const key_file: PAnsichar; const senha: PAnsiChar; Size: Cardinal; Ponteiro: Pointer): AnsiString;
        class Procedure InitXmlSec ;
        class Procedure ShutDownXmlSec ;
     {$ENDIF}
@@ -181,12 +181,12 @@ uses {$IFDEF ACBrNFeOpenSSL}libxml2, libxmlsec, libxslt, {$ELSE} ComObj, {$ENDIF
 { NotaUtil }
 
 {$IFDEF ACBrNFeOpenSSL}
-class function NotaUtil.sign_file(const Axml: PAnsiChar; const key_file: PChar; const senha: PChar): AnsiString;
+class function NotaUtil.sign_file(const Axml: PAnsiChar; const key_file: PAnsiChar; const senha: PAnsiChar): AnsiString;
 var
   doc: xmlDocPtr;
   node: xmlNodePtr;
   dsigCtx: xmlSecDSigCtxPtr;
-  buffer: PChar;
+  buffer: PAnsiChar;
   bufSize: integer;
 label done;
 begin
@@ -244,12 +244,12 @@ begin
    end ;
 end;
 
-class function NotaUtil.sign_memory(const Axml: PChar; const key_file: Pchar; const senha: PChar; Size: Cardinal; Ponteiro: Pointer): AnsiString;
+class function NotaUtil.sign_memory(const Axml: PAnsiChar; const key_file: PAnsichar; const senha: PAnsiChar; Size: Cardinal; Ponteiro: Pointer): AnsiString;
 var
   doc: xmlDocPtr;
   node: xmlNodePtr;
   dsigCtx: xmlSecDSigCtxPtr;
-  buffer: PChar;
+  buffer: PAnsiChar;
   bufSize: integer;
 label done;
 begin
@@ -266,7 +266,7 @@ begin
          raise Exception.Create('Error: unable to parse');
 
        { find start node }
-       node := xmlSecFindNode(xmlDocGetRootElement(doc), PChar(xmlSecNodeSignature), PChar(xmlSecDSigNs));
+       node := xmlSecFindNode(xmlDocGetRootElement(doc), PAnsiChar(xmlSecNodeSignature), PAnsiChar(xmlSecDSigNs));
        if (node = nil) then
          raise Exception.Create('Error: start node not found');
 
@@ -994,17 +994,14 @@ end;
 class function NotaUtil.GetURLPE(AAmbiente: Integer;
   ALayOut: TLayOut): WideString;
 begin
-  if AAmbiente = 1 then
-     raise EACBrNFeException.Create('WebServices 2.0 não liberados pelo estado');
-
   case ALayOut of
-    LayNfeRecepcao      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeRecepcao', 'https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeRecepcao2');
-    LayNfeRetRecepcao   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeRetRecepcao', 'https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeRetRecepcao2');
-    LayNfeCancelamento  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeCancelamento', 'https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeCancelamento2');
-    LayNfeInutilizacao  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeInutilizacao', 'https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeInutilizacao2');
-    LayNfeConsulta      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeConsulta', 'https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeConsulta2');
-    LayNfeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeStatusServico', 'https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeStatusServico2');
-    LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.pe.gov.br/nfe-service/services/CadConsultaCadastro', 'https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/CadConsultaCadastro');
+    LayNfeRecepcao      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeRecepcao2', 'https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeRecepcao2');
+    LayNfeRetRecepcao   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeRetRecepcao2', 'https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeRetRecepcao2');
+    LayNfeCancelamento  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeCancelamento2', 'https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeCancelamento2');
+    LayNfeInutilizacao  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeInutilizacao2', 'https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeInutilizacao2');
+    LayNfeConsulta      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeConsulta2', 'https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeConsulta2');
+    LayNfeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeStatusServico2', 'https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeStatusServico2');
+    LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.pe.gov.br/nfe-service/services/CadConsultaCadastro2', 'https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/CadConsultaCadastro');
   end;
 end;
 
@@ -1049,7 +1046,7 @@ var
 
  Tipo, I : Integer;
 begin
-  I := pos('<infNFe',AXML) ;
+{  I := pos('<infNFe',AXML) ;
   Tipo := 1;
   if I = 0  then
    begin
@@ -1169,7 +1166,7 @@ begin
     xmlSchemaFreeValidCtxt(valid_ctxt);
     xmlSchemaFree(schema);
     xmlSchemaFreeParserCtxt(parser_ctxt);
-    xmlFreeDoc(schema_doc);
+    xmlFreeDoc(schema_doc);}
     Result := True;
 end;
 {$ELSE}
@@ -1360,7 +1357,7 @@ begin
 
 
   if FileExists(ArqPFX) then
-    XmlAss := NotaUtil.sign_file(PChar(AStr), PChar(ArqPFX), PChar(PFXSenha))
+    XmlAss := NotaUtil.sign_file(PAnsiChar(AStr), PAnsiChar(ArqPFX), PAnsiChar(PFXSenha))
   else
    begin
     Cert := TMemoryStream.Create;
@@ -1368,7 +1365,7 @@ begin
 
     Cert.LoadFromStream(Cert2);
 
-    XmlAss := NotaUtil.sign_memory(PChar(AStr), PChar(ArqPFX), PChar(PFXSenha), Cert.Size, Cert.Memory) ;
+    XmlAss := NotaUtil.sign_memory(PAnsiChar(AStr), PAnsiChar(ArqPFX), PAnsiChar(PFXSenha), Cert.Size, Cert.Memory) ;
   end;
 
   // Removendo quebras de linha //

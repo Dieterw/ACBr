@@ -1066,10 +1066,11 @@ begin
 end;
 
 function TACBrECFBematech.GetNumSerie: String;
-var wRetentar : Boolean ;
+var
+  wRetentar, Falhou40 : Boolean ;
 begin
-  BytesResp := 15 ;
   Result    := '' ;
+  Falhou40  := False;
   wRetentar := Retentar ;
 
   if fs25MFD then
@@ -1077,18 +1078,17 @@ begin
      Retentar := false ;
      try
         try
-           BytesResp  := 20 ;
-           Result     := Trim( EnviaComando( #35+#40 ) ) ;
+           Result := Trim( RetornaInfoECF( '40' ) ) ;
         except
-           BytesResp := 15
+           Falhou40 := True;
         end ;
      finally
         Retentar := wRetentar ;
      end ;
   end ;
 
-  if BytesResp = 15 then
-     Result := Trim( EnviaComando( #35+#00 ) ) ;
+  if Falhou40 then
+     Result := Trim( RetornaInfoECF( '00' ) ) ;
 end;
 
 function TACBrECFBematech.GetNumSerieMFD: String;
@@ -1112,12 +1112,10 @@ begin
         try
            Retentar    := false ;
            TimeOut     := 1 ;
-           BytesResp   := 3 ;      { #35+#41 só existe na MP2000 Termica }
-           fsNumVersao := Trim( BcdToAsc( EnviaComando( #35+#41 ))) ;
+           fsNumVersao := Trim( RetornaInfoECF( '41' )) ;
            fs25MFD     := True ;
            try
-              BytesResp := 42 ;
-              RetCmd    := Trim( EnviaComando( #35+#60 )) ;
+              RetCmd    := Trim( RetornaInfoECF( '60' )) ;
               fsSubModeloECF := copy(RetCmd,16,20) ; //IMS 20/10/2009
               fpTermica := (Pos('TH ',RetCmd) > 0) ;
               fpMFD     := fpTermica ;
@@ -1129,8 +1127,7 @@ begin
         end ;
      except
         fpMFD       := False ;
-        BytesResp   := 2 ;
-        fsNumVersao := Trim( BcdToAsc( EnviaComando( #35+#01 )))  ;
+        fsNumVersao := Trim( RetornaInfoECF( '01' ))  ;
      end ;
   end ;
 
@@ -1144,14 +1141,12 @@ begin
   if fs25MFD then   //  if NumVersao = '010000' then
      Result := fsTotalPago
   else
-   begin
-     BytesResp := 7 ;
-     Result    := StrToFloatDef( BcdToAsc( EnviaComando( #35+#22 ) ),0 ) / 100 ;
-   end ;
+     Result := StrToFloatDef( RetornaInfoECF( '22' ),0 ) / 100 ;
 end;
 
 function TACBrECFBematech.GetSubTotal: Double;
-Var RetCmd : AnsiString ;
+Var
+  RetCmd : AnsiString ;
 begin
   BytesResp := 7 ;
   RetCmd    := EnviaComando( #29 ) ;
@@ -1182,9 +1177,8 @@ begin
       exit ;
 
     fpEstado := estDesconhecido ;
+    RetCmd   := RetornaInfoECF( '17' ) ;
 
-    BytesResp := 1 ;
-    RetCmd    := EnviaComando( #35+#17 ) ;
     try B1 := ord( RetCmd[1] ) except B1 := 0 end ;
 
     if TestBit( B1 ,1) then
@@ -1196,9 +1190,8 @@ begin
        if fpMFD and fpTermica then    { Bematech Matricial, nao possui Flag para }
        begin                          { inidicar se está Imprimindo Relatório }
          try                          { (Cupom Fiscal Vinculado ou Relatorio Gerencial) }
-            BytesResp := 1 ;
-            RetCmd    := EnviaComando( #35+#65 ) ;
-            B2        := ord( RetCmd[1] )  ;
+            RetCmd := RetornaInfoECF( '65' ) ;
+            B2     := ord( RetCmd[1] )  ;
 
             if TestBit( B2 ,0) then
               fpEstado := estNaoFiscal
@@ -1215,9 +1208,8 @@ begin
          fpEstado := estBloqueada
       else
        begin
-         fpEstado  := estLivre ;
-         BytesResp := 3 ;
-         DataMov   := RetornaInfoECF( '27' ) ;
+         fpEstado := estLivre ;
+         DataMov  := RetornaInfoECF( '27' ) ;
 
          if DataMov <> '000000' then
           begin
@@ -1255,8 +1247,7 @@ function TACBrECFBematech.GetHorarioVerao: Boolean;
 Var RetCmd : AnsiString ;
     B : Byte ;
 begin
-   BytesResp := 1 ;
-   RetCmd    := EnviaComando( #35+#17 ) ;
+   RetCmd := RetornaInfoECF( '17' ) ;
    try B := ord( RetCmd[1] ) except B := 0 end ;
 
    Result := TestBit( B ,2)
@@ -1268,8 +1259,7 @@ Var RetCmd : AnsiString ;
 begin
   if fsArredonda = ' ' then
   begin
-     BytesResp := 1 ;
-     RetCmd    := EnviaComando( #35+#28 ) ;
+     RetCmd := RetornaInfoECF( '28' ) ;
      try B := ord( RetCmd[1] ) except B := 0 end ;
 
      if (B <> 0) then
@@ -1387,8 +1377,7 @@ procedure TACBrECFBematech.CancelaCupom;
      B      : Byte ;
      TemRel : Boolean ;
 begin
-  BytesResp := 1 ;
-  RetCmd := EnviaComando( #35+#17 ) ;
+  RetCmd := RetornaInfoECF( '17' ) ;
   try B := ord( RetCmd[1] ) except B := 0 end ;
 
   if not TestBit(B, 5) then         { Não Permite cancelar cupom fiscal ?? }
@@ -1405,9 +1394,8 @@ begin
       begin
         { Vamos verificar se o último documento é Vinculado (CDC) }
         try
-           BytesResp := 1 ;
-           RetCmd := EnviaComando( #35+#65 ) ;
-           B := ord( RetCmd[1] )
+           RetCmd := RetornaInfoECF( '65' ) ;
+           B      := ord( RetCmd[1] )
         except
            B := 0
         end ;
@@ -1622,8 +1610,7 @@ Var StrRet : AnsiString ;
     ByteISS1,ByteISS2,ByteUltimaAliquota : Byte ;
     
 begin
-  BytesResp := 2 ;
-  StrRet    := EnviaComando( #35 + #29 ) ;
+  StrRet := RetornaInfoECF( '29' ) ;
   try ByteISS1 := Ord(StrRet[1]) ; except ByteISS1 := 0 ; end ;
   try ByteISS2 := Ord(StrRet[2]) ; except ByteISS2 := 0 ; end ;
 
@@ -2340,20 +2327,20 @@ end;
 function TACBrECFBematech.GetIM: String;
 begin
   if fs25MFD then
-     Result  := RetornaInfoECF( '44' )
+     Result := RetornaInfoECF( '44' )
   else
-     Result  := copy(Trim( RetornaInfoECF( '02' ) ),37,18) ;
+     Result := copy(Trim( RetornaInfoECF( '02' ) ),37,18) ;
 end;
 
 function TACBrECFBematech.GetCliche: String;
 begin
-     Result  := RetornaInfoECF( '13' ) ;
+  Result := RetornaInfoECF( '13' ) ;
 end;
 
 //IMS 09/10/2009
 function TACBrECFBematech.GetUsuarioAtual: String;
 begin
-     Result  := RetornaInfoECF( '11' ) ;
+  Result := RetornaInfoECF( '11' ) ;
 end;
 
 function TACBrECFBematech.GetDataHoraSB: TDateTime;
@@ -2420,7 +2407,7 @@ function TACBrECFBematech.GetSubModeloECF: String;
 
 begin
     if fsSubModeloECF = '' then
-      fsSubModeloECF := Trim( EnviaComando ( #35+#60 )) ;
+      fsSubModeloECF := Trim( RetornaInfoECF( '60' )) ;
 
     Result  := fsSubModeloECF ;
 end;
@@ -2431,7 +2418,7 @@ function TACBrECFBematech.GetDataMovimento: TDateTime;
 Var RetCmd : AnsiString ;
     OldShortDateFormat : String ;
 begin
-   RetCmd    := RetornaInfoECF( '27' ) ;
+   RetCmd := RetornaInfoECF( '27' ) ;
 
    if RetCmd = '000000' then
       Result := DataHora
@@ -2585,10 +2572,9 @@ begin
   if fpMFD then
   begin
      try
-        BytesResp := 6 ;
         { Comando disponivel epenas a partir da MP2100 }
-        RetCmd    := EnviaComando( #35 + #72 ) ;
-        fsNumCOOInicial := copy( BcdToAsc( RetCmd ) ,1,6) ;
+        RetCmd := RetornaInfoECF( '72' ) ;
+        fsNumCOOInicial := copy( RetCmd ,1,6) ;
      except
         Erro := True ;
      end ;
@@ -2942,14 +2928,12 @@ end;
 
 function TACBrECFBematech.GetNumCFC: String;
 begin
-  BytesResp := 2;
-  Result    := RetornaInfoECF( '8' ) ;
+  Result := RetornaInfoECF( '08' ) ;
 end;
 
 function TACBrECFBematech.GetNumGNF: String;
 begin
-  BytesResp := 3;
-  Result    := RetornaInfoECF( '7' ) ;
+  Result := RetornaInfoECF( '07' ) ;
 end;
 
 function TACBrECFBematech.GetNumGRG: String;
@@ -2979,7 +2963,7 @@ begin
      0            : begin BytesResp := 15 ; IsBCD := False ; end ;
      2            : begin BytesResp := 33 ; IsBCD := False ; end ;
      3,68         : BytesResp := 9 ;
-     4,5,22,30,66 : BytesResp := 7 ;
+     4,5,22,30,66,77,78,79,80,81,82 : BytesResp := 7 ;
      6,7,27,31,41,54,55,56,67 : BytesResp := 3 ;
      8            : BytesResp := 2 ;
      13           : begin BytesResp := 186 ; IsBCD := False ; end ;
@@ -3029,7 +3013,6 @@ begin
    BematechFunctionDetect('Bematech_FI_FechaPortaSerial',@xBematech_FI_FechaPortaSerial );
    BematechFunctionDetect('Bematech_FI_DownloadMFD',@xBematech_FI_DownloadMFD );
    BematechFunctionDetect('Bematech_FI_FormatoDadosMFD',@xBematech_FI_FormatoDadosMFD );
-
 
    BematechFunctionDetect('Bematech_FI_HabilitaDesabilitaRetornoEstendidoMFD',@xBematech_FI_HabilitaDesabilitaRetornoEstendidoMFD );
    BematechFunctionDetect('Bematech_FI_RetornoImpressoraMFD',@xBematech_FI_RetornoImpressoraMFD );
@@ -3213,11 +3196,11 @@ begin
 
      AbrePortaSerialDLL( fpDevice.Porta, ExtractFilePath( NomeArquivo ) ) ;
 
-     Resp := xBematech_FI_DownloadMFD( PChar( ArqTmp + '.mfd'),   // Arquivo de Saida
+     Resp := xBematech_FI_DownloadMFD( PAnsichar( ArqTmp + '.mfd'),   // Arquivo de Saida
                                        '2',                       // 2 = Por Coo
-                                       PChar( CooIni ),
-                                       PChar( CooFim ),
-                                       PChar( Prop ) ) ;          // Propietário Atual
+                                       PAnsiChar( CooIni ),
+                                       PAnsiChar( CooFim ),
+                                       PAnsiChar( Prop ) ) ;          // Propietário Atual
 
      if (Resp <> 1) then
         raise Exception.Create( ACBrStr( 'Erro ao executar Bematech_FI_DownloadMFD.'+sLineBreak+
@@ -3227,13 +3210,13 @@ begin
         raise Exception.Create( ACBrStr( 'Erro na execução de Bematech_FI_DownloadMFD.'+sLineBreak+
                                'Arquivo: "'+ArqTmp + '.mfd" não gerado' )) ;
 
-     Resp := xBematech_FI_FormatoDadosMFD( PChar( ArqTmp + '.mfd'),   // Arquivo de Entrada
-                                           PChar( NomeArquivo ),      // Arquivo de Saida
+     Resp := xBematech_FI_FormatoDadosMFD( PAnsichar( ArqTmp + '.mfd'),   // Arquivo de Entrada
+                                           PAnsichar( NomeArquivo ),      // Arquivo de Saida
                                            '0',                       // Formato TXT
                                            '2',                       // Por COO
-                                           PChar( CooIni ),
-                                           PChar( CooFim ),
-                                           PChar( Prop ) ) ;          // Propietário Atual
+                                           PAnsichar( CooIni ),
+                                           PAnsichar( CooFim ),
+                                           PAnsichar( Prop ) ) ;          // Propietário Atual
      if (Resp <> 1) then
         raise Exception.Create( ACBrStr( 'Erro ao executar Bematech_FI_FormatoDadosMFD.'+sLineBreak+
                                          'Cod.: '+IntToStr(Resp) )) ;

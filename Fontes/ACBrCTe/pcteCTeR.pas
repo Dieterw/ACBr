@@ -821,16 +821,54 @@ begin
       i01 := 0;
       while Leitor.rExtrai(3, 'DCL', '', i01 + 1) <> '' do
       begin
-        {
-        CTe.peri.Add;
-        CTe.peri[i01].nONU        := Leitor.rCampo(tcStr, 'nONU');
-        CTe.peri[i01].xNomeAE     := Leitor.rCampo(tcStr, 'xNomeAE');
-        CTe.peri[i01].xClaRisco   := Leitor.rCampo(tcStr, 'xClaRisco');
-        CTe.peri[i01].grEmb       := Leitor.rCampo(tcStr, 'grEmb');
-        CTe.peri[i01].qTotProd    := Leitor.rCampo(tcStr, 'qTotProd');
-        CTe.peri[i01].qVolTipo    := Leitor.rCampo(tcStr, 'qVolTipo');
-        CTe.peri[i01].pontoFulgor := Leitor.rCampo(tcStr, 'pontoFulgor');
-        }
+        CTe.Ferrov.DCL.Add;
+        CTe.Ferrov.DCL[i01].serie   := Leitor.rCampo(tcStr, 'serie');
+        CTe.Ferrov.DCL[i01].nDCL    := Leitor.rCampo(tcStr, 'nDCL');
+        CTe.Ferrov.DCL[i01].dEmi    := Leitor.rCampo(tcDat, 'dEmi');
+        CTe.Ferrov.DCL[i01].qVag    := Leitor.rCampo(tcInt, 'qVag');
+        CTe.Ferrov.DCL[i01].pCalc   := Leitor.rCampo(tcDe2, 'pCalc');
+        CTe.Ferrov.DCL[i01].vTar    := Leitor.rCampo(tcDe2, 'vTar');
+        CTe.Ferrov.DCL[i01].vFrete  := Leitor.rCampo(tcDe2, 'vFrete');
+        CTe.Ferrov.DCL[i01].vSAcess := Leitor.rCampo(tcDe2, 'vSAcess');
+        CTe.Ferrov.DCL[i01].vTServ  := Leitor.rCampo(tcDe2, 'vTServ');
+        CTe.Ferrov.DCL[i01].idTrem  := Leitor.rCampo(tcStr, 'idTrem');
+
+        i02 := 0;
+        while Leitor.rExtrai(4, 'detVagDCL', '', i02 + 1) <> '' do
+        begin
+          CTe.Ferrov.DCL[i01].detVagDCL.Add;
+          CTe.Ferrov.DCL[i01].detVagDCL[i02].nVag   := Leitor.rCampo(tcInt, 'nVag');
+          CTe.Ferrov.DCL[i01].detVagDCL[i02].cap    := Leitor.rCampo(tcDe2, 'cap');
+          CTe.Ferrov.DCL[i01].detVagDCL[i02].tpVag  := Leitor.rCampo(tcStr, 'tpVag');
+          CTe.Ferrov.DCL[i01].detVagDCL[i02].pesoR  := Leitor.rCampo(tcDe2, 'pesoR');
+          CTe.Ferrov.DCL[i01].detVagDCL[i02].pesoBC := Leitor.rCampo(tcDe2, 'pesoBC');
+
+          i03 := 0;
+          while Leitor.rExtrai(5, 'lacDetVagDCL', '', i03 + 1) <> '' do
+          begin
+          {
+            CTe.infCTeNorm.emiDocAnt[i01].idDocAnt[i02].idDocAntPap.Add;
+            CTe.infCTeNorm.emiDocAnt[i01].idDocAnt[i02].idDocAntPap[i03].tpDoc  := Leitor.rCampo(tcInt, 'tpDoc');
+            CTe.infCTeNorm.emiDocAnt[i01].idDocAnt[i02].idDocAntPap[i03].serie  := Leitor.rCampo(tcStr, 'serie');
+            CTe.infCTeNorm.emiDocAnt[i01].idDocAnt[i02].idDocAntPap[i03].subser := Leitor.rCampo(tcStr, 'subser');
+            CTe.infCTeNorm.emiDocAnt[i01].idDocAnt[i02].idDocAntPap[i03].nDoc   := Leitor.rCampo(tcInt, 'nDoc');
+            CTe.infCTeNorm.emiDocAnt[i01].idDocAnt[i02].idDocAntPap[i03].dEmi   := Leitor.rCampo(tcDat, 'dEmi');
+            }
+            inc(i03);
+          end;
+
+          i03 := 0;
+          while Leitor.rExtrai(5, 'contDCL', '', i03 + 1) <> '' do
+          begin
+          {
+            CTe.infCTeNorm.emiDocAnt[i01].idDocAnt[i02].idDocAntEle.Add;
+            CTe.infCTeNorm.emiDocAnt[i01].idDocAnt[i02].idDocAntEle[i03].chave := Leitor.rCampo(tcStr, 'chave');
+            }
+            inc(i03);
+          end;
+          inc(i02);
+        end;
+
         inc(i01);
       end;
 
@@ -847,6 +885,31 @@ begin
         CTe.peri[i01].qVolTipo    := Leitor.rCampo(tcStr, 'qVolTipo');
         CTe.peri[i01].pontoFulgor := Leitor.rCampo(tcStr, 'pontoFulgor');
         }
+
+        i02 := 0;
+        while Leitor.rExtrai(4, 'lacDetVag', '', i02 + 1) <> '' do
+        begin
+        {
+          CTe.infCTeNorm.emiDocAnt[i01].idDocAnt[i02].idDocAntPap.Add;
+          CTe.infCTeNorm.emiDocAnt[i01].idDocAnt[i02].idDocAntPap[i03].tpDoc  := Leitor.rCampo(tcInt, 'tpDoc');
+          CTe.infCTeNorm.emiDocAnt[i01].idDocAnt[i02].idDocAntPap[i03].serie  := Leitor.rCampo(tcStr, 'serie');
+          CTe.infCTeNorm.emiDocAnt[i01].idDocAnt[i02].idDocAntPap[i03].subser := Leitor.rCampo(tcStr, 'subser');
+          CTe.infCTeNorm.emiDocAnt[i01].idDocAnt[i02].idDocAntPap[i03].nDoc   := Leitor.rCampo(tcInt, 'nDoc');
+          CTe.infCTeNorm.emiDocAnt[i01].idDocAnt[i02].idDocAntPap[i03].dEmi   := Leitor.rCampo(tcDat, 'dEmi');
+          }
+          inc(i02);
+        end;
+
+        i02 := 0;
+        while Leitor.rExtrai(4, 'contVag', '', i02 + 1) <> '' do
+        begin
+        {
+          CTe.infCTeNorm.emiDocAnt[i01].idDocAnt[i02].idDocAntEle.Add;
+          CTe.infCTeNorm.emiDocAnt[i01].idDocAnt[i02].idDocAntEle[i03].chave := Leitor.rCampo(tcStr, 'chave');
+          }
+          inc(i02);
+        end;
+
         inc(i01);
       end;
     end; // fim das informações do modal Ferroviário

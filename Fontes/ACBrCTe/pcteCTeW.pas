@@ -124,6 +124,8 @@ type
     procedure GerarFerrov;     // Nivel 2
     procedure GerarFerroSub;   // Nivel 3
     procedure GerarEnderFerro; // Nivel 4
+    procedure GerarDCL;        // Nivel 3
+
     procedure GerarDuto;       // Nivel 2
     procedure GerarPeri;       // Nivel 2
     procedure GerarVeicNovos;  // Nivel 2
@@ -1330,6 +1332,7 @@ begin
   Gerador.wCampo(tcStr, 'O04', 'idTrem   ', 01, 07, 0, CTe.Ferrov.idTrem, '');
   Gerador.wCampo(tcDe2, 'O05', 'vFrete   ', 01, 15, 1, CTe.Ferrov.vFrete, '');
   (**) GerarFerroSub;
+  (**) GerarDCL;
   Gerador.wGrupo('/ferrov');
 end;
 
@@ -1371,6 +1374,57 @@ begin
     Gerador.wAlerta('O19', 'UF', DSC_UF, ERR_MSG_INVALIDO);
   Gerador.wGrupo('/enderFerro');
 end;
+
+procedure TCTeW.GerarDCL;
+var
+ i, i01: Integer;
+begin
+  for i := 0 to CTe.Ferrov.DCL.Count - 1 do
+   begin
+    Gerador.wGrupo('DCL', 'O20');
+    Gerador.wCampo(tcStr, 'O21', 'serie   ', 01, 03, 1, CTe.Ferrov.DCL.Items[i].serie, '');
+    Gerador.wCampo(tcStr, 'O22', 'nDCL    ', 01, 20, 1, CTe.Ferrov.DCL.Items[i].nDCL, '');
+    Gerador.wCampo(tcDat, 'O23', 'dEmi    ', 10, 10, 1, CTe.Ferrov.DCL.Items[i].dEmi, '');
+    Gerador.wCampo(tcInt, 'O24', 'qVag    ', 01, 05, 1, CTe.Ferrov.DCL.Items[i].qVag, '');
+    Gerador.wCampo(tcDe2, 'O25', 'pCalc   ', 01, 15, 1, CTe.Ferrov.DCL.Items[i].pCalc, '');
+    Gerador.wCampo(tcDe2, 'O26', 'vTar    ', 01, 15, 1, CTe.Ferrov.DCL.Items[i].vTar, '');
+    Gerador.wCampo(tcDe2, 'O27', 'vFrete  ', 01, 15, 1, CTe.Ferrov.DCL.Items[i].vFrete, '');
+    Gerador.wCampo(tcDe2, 'O28', 'vSAcess ', 01, 15, 1, CTe.Ferrov.DCL.Items[i].vSAcess, '');
+    Gerador.wCampo(tcDe2, 'O28', 'vTServ  ', 01, 15, 1, CTe.Ferrov.DCL.Items[i].vTServ, '');
+    Gerador.wCampo(tcStr, 'O29', 'idTrem  ', 01, 07, 0, CTe.Ferrov.DCL.Items[i].idTrem, '');
+
+    for i01 := 0 to CTe.Ferrov.DCL.Items[i].detVagDCL.Count - 1 do
+     begin
+      Gerador.wGrupo('detVagDCL', 'O30');
+      Gerador.wCampo(tcInt, 'O31', 'nVag   ', 01, 08, 1, CTe.Ferrov.DCL.Items[i].detVagDCL.Items[i01].nVag, '');
+      Gerador.wCampo(tcDe2, 'O32', 'cap    ', 01, 05, 0, CTe.Ferrov.DCL.Items[i].detVagDCL.Items[i01].cap, '');
+      Gerador.wCampo(tcStr, 'O33', 'tpVag  ', 01, 03, 0, CTe.Ferrov.DCL.Items[i].detVagDCL.Items[i01].tpVag, '');
+      Gerador.wCampo(tcDe2, 'O34', 'pesoR  ', 01, 05, 1, CTe.Ferrov.DCL.Items[i].detVagDCL.Items[i01].pesoR, '');
+      Gerador.wCampo(tcDe2, 'O35', 'pesoBC ', 01, 15, 1, CTe.Ferrov.DCL.Items[i].detVagDCL.Items[i01].pesoBC, '');
+
+
+
+
+      Gerador.wGrupo('/detVagDCL');
+     end;
+    if CTe.Ferrov.DCL.Items[i].detVagDCL.Count > 990 then
+     Gerador.wAlerta('O30', 'detVagDCL', '', ERR_MSG_MAIOR_MAXIMO + '990');
+
+    Gerador.wGrupo('/DCL');
+   end;
+  if CTe.Ferrov.DCL.Count > 990 then
+   Gerador.wAlerta('O20', 'DCL', '', ERR_MSG_MAIOR_MAXIMO + '990');
+end;
+
+
+
+
+
+
+
+
+
+
 
 procedure TCTeW.GerarDuto;  // P
 begin

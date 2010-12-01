@@ -316,6 +316,7 @@ object frConfiguraSerial: TfrConfiguraSerial
     Top = 312
     Width = 75
     Kind = bkOK
+    ModalResult = 1
     TabOrder = 6
   end
   object BitBtn2: TBitBtn
@@ -324,6 +325,7 @@ object frConfiguraSerial: TfrConfiguraSerial
     Top = 312
     Width = 75
     Kind = bkCancel
+    ModalResult = 2
     TabOrder = 7
   end
   object chHardFlow: TCheckBox

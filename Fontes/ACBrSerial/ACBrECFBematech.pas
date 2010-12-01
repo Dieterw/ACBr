@@ -2980,7 +2980,7 @@ begin
      48,51        : begin BytesResp := 570; IsBCD := False ; end ;
      49           : begin BytesResp := 620; IsBCD := False ; end ;
      50           : begin BytesResp := 780; IsBCD := False ; end ;
-     60           : BytesResp := 42 ;
+     60           : begin BytesResp := 42 ; IsBCD := False ; end ;
      61           : BytesResp := 6 ;
      62,63        : BytesResp := 10 ;
      73           : BytesResp := 18 ;

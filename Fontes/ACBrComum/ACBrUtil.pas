@@ -201,6 +201,7 @@ function TiraAcentos( const AString : AnsiString ) : AnsiString ;
 function TiraAcento( const AChar : AnsiChar ) : AnsiChar ;
 function AjustaLinhas(Texto: AnsiString; Colunas: Integer ;
    NumMaxLinhas: Integer = 0; PadLinhas: Boolean = False): AnsiString;
+function QuebraLinhas(Texto: AnsiString; Colunas: Integer): AnsiString;
 function TraduzComando( AString : AnsiString ) : AnsiString ;
 Function StringToAsc( AString : AnsiString ) : AnsiString ;
 Function AscToString( AString : AnsiString ) : AnsiString ;
@@ -1133,6 +1134,46 @@ begin
   { Permitir impressão de uma linha em branco --Acrescentado por Marciano Lizzoni }
   if Result = '' then
     Result := Result + #10;
+end;
+
+function QuebraLinhas(Texto: AnsiString; Colunas: Integer): AnsiString;
+Var TextoCortado, Resultado : AnsiString;
+    Pos, Tamanho : Integer ;
+begin
+
+  Texto := Trim(Texto);
+  Tamanho := Length(Texto) ;
+  Result := '';
+
+  if Tamanho <= Colunas then
+   begin
+     Result := Texto;
+     exit;
+   end;
+  Resultado := '';
+  while (Tamanho > Colunas) do
+   begin
+     TextoCortado := copy(Texto,1,48);
+     Pos   := Length(TextoCortado);
+
+      { Acha um espaço }
+        while (Texto[Pos] <> ' ') and (Pos > 0) do
+           Pos := Pos - 1 ;
+
+        Pos := Pos - 1 ;
+
+      TextoCortado := Trim(copy(TextoCortado,1,Pos));
+      if Resultado = '' then
+         Resultado    := TextoCortado
+      else
+         Resultado    := Resultado + sLineBreak + TextoCortado;
+      Texto        := copy(Texto,Length(TextoCortado)+2,Tamanho);
+      Tamanho := Length( Texto ) ;
+   end ;
+
+   if Trim(Texto) <> '' then
+      Resultado    := Resultado + sLineBreak + Texto;
+   Result := Resultado;
 end;
 
 {-----------------------------------------------------------------------------

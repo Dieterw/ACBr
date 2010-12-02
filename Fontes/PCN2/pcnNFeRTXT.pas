@@ -357,10 +357,6 @@ begin
 
   if ID = 'F' then (* Grupo da TAG <retirada> *********************************)
   begin
-    if ID = 'F02' then
-      (*F02*)NFe.Retirada.CNPJCPF := LerCampo(tcStr, 'CNPJ');
-    if ID = 'F02a' then
-      (*F02a*)NFe.Retirada.CNPJCPF := LerCampo(tcStr, 'CPF');
     (*F03*)NFe.Retirada.xLgr := LerCampo(tcStr, 'xLgr');
     (*F04*)NFe.Retirada.nro := LerCampo(tcStr, 'nro');
     (*F05*)NFe.Retirada.xCpl := LerCampo(tcStr, 'xCpl');
@@ -369,13 +365,13 @@ begin
     (*F08*)NFe.Retirada.xMun := LerCampo(tcStr, 'xMun');
     (*F09*)NFe.Retirada.UF := LerCampo(tcStr, 'UF');
   end;
+  if ID = 'F02' then
+    (*F02*)NFe.Retirada.CNPJCPF := LerCampo(tcStr, 'CNPJ');
+  if ID = 'F02a' then
+    (*F02a*)NFe.Retirada.CNPJCPF := LerCampo(tcStr, 'CPF');
 
   if ID = 'G' then (* Grupo da TAG <entrega> **********************************)
   begin
-    if ID = 'G02' then
-      (*G02*)NFe.Entrega.CNPJCPF := LerCampo(tcStr, 'CNPJ');
-    if ID = 'G02a' then
-      (*G02a*)NFe.Entrega.CNPJCPF := LerCampo(tcStr, 'CPF');
     (*G03*)NFe.Entrega.xLgr := LerCampo(tcStr, 'xLgr');
     (*G04*)NFe.Entrega.nro := LerCampo(tcStr, 'nro');
     (*G05*)NFe.Entrega.xCpl := LerCampo(tcStr, 'xCpl');
@@ -384,6 +380,10 @@ begin
     (*G08*)NFe.Entrega.xMun := LerCampo(tcStr, 'xMun');
     (*G09*)NFe.Entrega.UF := LerCampo(tcStr, 'UF');
   end;
+  if ID = 'G02' then
+    (*G02*)NFe.Entrega.CNPJCPF := LerCampo(tcStr, 'CNPJ');
+  if ID = 'G02a' then
+    (*G02a*)NFe.Entrega.CNPJCPF := LerCampo(tcStr, 'CPF');
 
   if ID = 'H' then (* Grupo da TAG <det> **************************************)
   begin

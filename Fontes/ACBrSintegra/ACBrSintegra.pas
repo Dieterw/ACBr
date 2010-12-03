@@ -67,6 +67,8 @@
 |   - Adição dos registros 76 e 77
 |* 05/07/2010: Francisco a Souza
 |   - Adição do registro 56
+|* 03/12/2010: Marcelo Cainelli
+|   - Adição dos registros 88 para combustíveis
 *******************************************************************************}
 
 {$I ACBr.inc}

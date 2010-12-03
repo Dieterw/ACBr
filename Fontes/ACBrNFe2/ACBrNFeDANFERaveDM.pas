@@ -639,6 +639,7 @@ begin
 	          crtSimplesNacional:
                 begin
                    case CSOSN of
+                      csosnVazio,
                       csosn101,
                       csosn102,
                       csosn103,

@@ -47,6 +47,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Alterações   03/12/2010
+---------------
+[-] Correção na impressão do Danfe em Rave Arquivo quando CSOSN for Vazio.
+
 Alterações   26/11/2010
 ---------------
 [+] Liberação dos Webservices de Produção 2.0 do estado de Pernambuco.

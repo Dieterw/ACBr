@@ -163,6 +163,170 @@ type
     property AlteraEmpresa: integer read FAlteraEmpresa write FAlteraEmpresa;
   end;
 
+  TRegistro88C = class
+  private
+    FCPFCNPJ: string;
+    FModelo: string;
+    FSerie: string;
+    FNumero: string;
+    FCFOP: string;
+    FNumeroItem: Integer;
+    FCodigo: string;
+    FQuantidade: Double;
+    FBaseST: Double;
+    FValorIcmsSTRepassar: Double;
+    FValorIcmsSTComplementar: Double;
+    FBasedeCalculoRetencao: Double;
+    FValorParcelaImpostoRetido: Double;
+  public
+    property CPFCNPJ: string read FCPFCNPJ write FCPFCNPJ;
+    property Modelo: string read FModelo write FModelo;
+    property Serie: string read FSerie write FSerie;
+    property Numero: string read FNumero write FNumero;
+    property CFOP: string read FCFOP write FCFOP;
+    property NumeroItem: Integer read FNumeroItem write FNumeroItem;
+    property Codigo: string read FCodigo write FCodigo;
+    property Quantidade: Double read FQuantidade write FQuantidade;
+    property BaseST: Double read FBaseST write FBaseST;
+    property ValorIcmsSTRepassar: Double read FValorIcmsSTRepassar write FValorIcmsSTRepassar;
+    property ValorIcmsSTComplementar: Double read FValorIcmsSTComplementar write FValorIcmsSTComplementar;
+    property BasedeCalculoRetencao: Double read FBasedeCalculoRetencao write FBasedeCalculoRetencao;
+    property ValorParcelaImpostoRetido: Double read FValorParcelaImpostoRetido write FValorParcelaImpostoRetido;
+  end;
+
+  {Lista de objetos do tipo Registro88C}
+  TRegistros88C = class(TObjectList)
+  protected
+    procedure SetObject (Index: Integer; Item: TRegistro88C);
+    function GetObject (Index: Integer): TRegistro88C;
+    procedure Insert (Index: Integer; Obj: TRegistro88C);
+  public
+    function Add (Obj: TRegistro88C): Integer;
+    property Objects [Index: Integer]: TRegistro88C read GetObject write SetObject; default;
+  end;
+
+  TRegistro88D = class
+  private
+    FCPFCNPJ: string;
+    FInscricao: string;
+    FUF: string;
+    FModelo: string;
+    FSerie: string;
+    FNumero: string;
+    FEmissorDocumento: string;
+    FDataDocumento: TDateTime;
+    FDataSaidaEntrada: TDateTime;
+    FCNPJLocalSaida: String;
+    FUFLocalSaida: string;
+    FIeLocalSaida: string;
+    FCNPJLocalEntrega: String;
+    FUFLocalEntrega: string;
+    FIeLocalEntrega: string;
+  public
+    property CPFCNPJ: string read FCPFCNPJ write FCPFCNPJ;
+    property Inscricao: string read FInscricao write FInscricao;
+    property UF: string read FUF write FUF;
+    property Modelo: string read FModelo write FModelo;
+    property Serie: string read FSerie write FSerie;
+    property Numero: string read FNumero write FNumero;
+    property EmissorDocumento: string read FEmissorDocumento write FEmissorDocumento;
+    property DataDocumento: TDateTime read FDataDocumento write FDataDocumento;
+    property DataSaidaEntrada: TDateTime read FDataSaidaEntrada write FDataSaidaEntrada;
+    property CNPJLocalSaida: String read FCNPJLocalSaida write FCNPJLocalSaida;
+    property UFLocalSaida: string read FUFLocalSaida write FUFLocalSaida;
+    property IeLocalSaida: string read FIeLocalSaida write FIeLocalSaida;
+    property CNPJLocalEntrega: String read FCNPJLocalEntrega write FCNPJLocalEntrega;
+    property UFLocalEntrega: string read FUFLocalEntrega write FUFLocalEntrega;
+    property IeLocalEntrega: string read FIeLocalEntrega write FIeLocalEntrega;
+  end;
+
+  {Lista de objetos do tipo Registro88D}
+  TRegistros88D = class(TObjectList)
+  protected
+    procedure SetObject (Index: Integer; Item: TRegistro88D);
+    function GetObject (Index: Integer): TRegistro88D;
+    procedure Insert (Index: Integer; Obj: TRegistro88D);
+  public
+    function Add (Obj: TRegistro88D): Integer;
+    property Objects [Index: Integer]: TRegistro88D read GetObject write SetObject; default;
+  end;
+
+  TRegistro88E = class
+  private
+    FCPFCNPJ: string;
+    FInscricao: string;
+    FCodigoInformante: string;
+    FCodigoSefaz: string;
+  public
+    property CPFCNPJ: string read FCPFCNPJ write FCPFCNPJ;
+    property Inscricao: string read FInscricao write FInscricao;
+    property CodigoInformate: string read FCodigoInformante write FCodigoInformante;
+    property CodigoSefaz: string read FCodigoSefaz write FCodigoSefaz;
+  end;
+
+  {Lista de objetos do tipo Registro88E}
+  TRegistros88E = class(TObjectList)
+  protected
+    procedure SetObject (Index: Integer; Item: TRegistro88E);
+    function GetObject (Index: Integer): TRegistro88E;
+    procedure Insert (Index: Integer; Obj: TRegistro88E);
+  public
+    function Add (Obj: TRegistro88E): Integer;
+    property Objects [Index: Integer]: TRegistro88E read GetObject write SetObject; default;
+  end;
+
+  TRegistro88T = class
+  private
+    FCPFCNPJ: string;
+    FDataDocumento: TDateTime;
+    FUF: string;
+    FModelo: string;
+    FSerie: string;
+    FNumero: string;
+    FEmissorDocumento: string;
+    FCifFob: String;
+    FCPFCNPJFrete: String;
+    FUFFrete: string;
+    FIeFrete: string;
+    FModal: Integer;
+    FPlaca1: String;
+    FUFPlaca1: String;
+    FPlaca2: String;
+    FUFPlaca2: String;
+    FPlaca3: String;
+    FUFPlaca3: String;
+  public
+    property CPFCNPJ: string read FCPFCNPJ write FCPFCNPJ;
+    property DataDocumento: TDateTime read FDataDocumento write FDataDocumento;
+    property UF: string read FUF write FUF;
+    property Modelo: string read FModelo write FModelo;
+    property Serie: string read FSerie write FSerie;
+    property Numero: string read FNumero write FNumero;
+    property EmissorDocumento: string read FEmissorDocumento write FEmissorDocumento;
+    property CifFob: String read FCifFob write FCifFob;
+    property CPFCNPJFrete: String read FCPFCNPJFrete write FCPFCNPJFrete;
+    property UFFrete: string read FUFFrete write FUFFrete;
+    property IeFrete: string read FIeFrete write FIeFrete;
+    property Modal: Integer read FModal write FModal;
+    property Placa1: String read FPlaca1 write FPlaca1;
+    property UFPlaca1: String read FUFPlaca1 write FUFPlaca1;
+    property Placa2: String read FPlaca2 write FPlaca2;
+    property UFPlaca2: String read FUFPlaca2 write FUFPlaca2;
+    property Placa3: String read FPlaca3 write FPlaca3;
+    property UFPlaca3: String read FUFPlaca3 write FUFPlaca3;
+  end;
+
+  {Lista de objetos do tipo Registro88D}
+  TRegistros88T = class(TObjectList)
+  protected
+    procedure SetObject (Index: Integer; Item: TRegistro88T);
+    function GetObject (Index: Integer): TRegistro88T;
+    procedure Insert (Index: Integer; Obj: TRegistro88T);
+  public
+    function Add (Obj: TRegistro88T): Integer;
+    property Objects [Index: Integer]: TRegistro88T read GetObject write SetObject; default;
+  end;
+
   TRegistro54 = class
   private
     FAliquota: Double;
@@ -1118,6 +1282,11 @@ type
     FRegistros76: TRegistros76;
     FRegistros77: TRegistros77;
     FInforma88EAN: Boolean;
+    FRegistros88C: TRegistros88C;
+    FRegistros88D: TRegistros88D;
+    FRegistros88E: TRegistros88E;
+    FRegistros88T: TRegistros88T;
+    FInforma88C: Boolean;
 
     procedure GeraRegistro10;
     procedure GeraRegistro11;
@@ -1157,6 +1326,10 @@ type
     function GetVersao: string;
     procedure GerarRegistro88EC;
     procedure GerarRegistro88SF;
+    procedure GerarRegistros88C;
+    procedure GerarRegistros88D;
+    procedure GerarRegistros88E;
+    procedure GerarRegistros88T;
   public
     property Registro10: TRegistro10 read FRegistro10 write FRegistro10;
     property Registro11: TRegistro11 read FRegistro11 write FRegistro11;
@@ -1187,6 +1360,10 @@ type
     property Registros88Ean: TRegistros88Ean read FRegistros88Ean write FRegistros88Ean;
     property Registro88EC: TRegistro88EC read FRegistro88EC write FRegistro88EC;
     property Registro88SF: TRegistro88SF read FRegistro88SF write FRegistro88SF;
+    property Registros88C: TRegistros88C read FRegistros88C write FRegistros88C;
+    property Registros88D: TRegistros88D read FRegistros88D write FRegistros88D;
+    property Registros88E: TRegistros88E read FRegistros88E write FRegistros88E;
+    property Registros88T: TRegistros88T read FRegistros88T write FRegistros88T;
     property Ativo: Boolean read FAtivo write FAtivo;
     procedure LimparRegistros;
     procedure GeraArquivo;
@@ -1201,6 +1378,7 @@ type
     property Informa88SME: Boolean read FInforma88SME write FInforma88SME;
     property Informa88SMS: Boolean read FInforma88SMS write FInforma88SMS;
     property Informa88EAN: Boolean read FInforma88EAN write FInforma88EAN;
+    property Informa88C: Boolean read FInforma88C write FInforma88C;
   end;
 
   function Sort50(Item1: Pointer;Item2: Pointer): Integer;
@@ -1253,6 +1431,10 @@ FRegistros86:=TRegistros86.Create(True);
 FRegistros88Ean:=TRegistros88Ean.Create(True);
 FRegistro88EC:=TRegistro88EC.Create;
 FRegistro88SF:=TRegistro88SF.Create;
+FRegistros88C:=TRegistros88C.Create;
+FRegistros88D:=TRegistros88D.Create;
+FRegistros88E:=TRegistros88E.Create;
+FRegistros88T:=TRegistros88T.Create;
 FVersaoValidador:=vv524;
 Ativo:=True;
 end;
@@ -1286,6 +1468,10 @@ FRegistros86.Free;
 FRegistros88Ean.Free;
 FRegistro88EC.Free;
 FRegistro88SF.Free;
+FRegistros88C.Free;
+FRegistros88D.Free;
+FRegistros88E.Free;
+FRegistros88T.Free;
 Ativo:=False;
   inherited;
 end;
@@ -1343,6 +1529,13 @@ try
 
   if FInforma88SMS then
     GerarRegistro88SMS;
+
+  if FInforma88C then begin
+    GerarRegistros88C;
+    GerarRegistros88D;
+    GerarRegistros88E;
+    GerarRegistros88T;
+  end;  
 
   GerarRegistros90;
 finally
@@ -1435,7 +1628,7 @@ wregistro:=wregistro+Padl(Trim(TiraPontos(Registro10.Inscricao)),14);
 wregistro:=wregistro+Padl(Copy(Registro10.RazaoSocial,1,35),35);
 wregistro:=wregistro+Padl(Copy(Registro10.Cidade,1,30),30);
 wregistro:=wregistro+Padl(Registro10.Estado,2);
-wregistro:=wregistro+Padl(TBStrZero(TiraPontos(Registro10.Telefone),10),10);
+wregistro:=wregistro+TBStrZero(TiraPontos(Registro10.Telefone),10);
 wregistro:=wregistro+FormatDateTime('yyyymmdd',Registro10.DataInicial);
 wregistro:=wregistro+FormatDateTime('yyyymmdd',Registro10.DataFinal);
 wregistro:=wregistro+Padl(Registro10.CodigoConvenio,1);
@@ -1919,6 +2112,13 @@ if FInforma88SME then
 if FInforma88SMS then
   inc(wtotal88);
 
+if FInforma88C then begin
+  wtotal88:=wtotal88+Registros88C.Count;
+  wtotal88:=wtotal88+Registros88D.Count;
+  wtotal88:=wtotal88+Registros88E.Count;
+  wtotal88:=wtotal88+Registros88T.Count;
+end;
+
 if wtotal88>0 then
   wregistro:=wregistro+'88'+TBStrZero(IntToStr(wtotal88),8);
 
@@ -1979,6 +2179,10 @@ FRegistros77.Clear;
 FRegistros85.Clear;
 FRegistros86.Clear;
 FRegistros88Ean.Clear;
+FRegistros88C.Clear;
+FRegistros88D.Clear;
+FRegistros88E.Clear;
+FRegistros88T.Clear;
 end;
 
 function TACBrSintegra.GetVersao: string;
@@ -2250,6 +2454,121 @@ begin
     WriteRecord(wregistro);
   end;
 end;
+end;
+
+procedure TACBrSintegra.GerarRegistros88C;
+var
+  wregistro: string;
+  i: Integer;
+begin
+  for i:=0 to Registros88C.Count-1 do
+  begin
+    wregistro:='88C';
+    wregistro:=wregistro+TBStrZero(TiraPontos(Registros88C[i].CPFCNPJ),14);
+    wregistro:=wregistro+TBStrZero(Registros88C[i].Modelo,2);
+    wregistro:=wregistro+Padl(Registros88C[i].Serie,3);
+    wregistro:=wregistro+TBStrZero(RightStr(Registros88C[i].Numero,6),6);
+    wregistro:=wregistro+Padl(TiraPontos(Registros88C[i].CFOP),4);
+    wregistro:=wregistro+IntToStrZero(Registros88C[i].NumeroItem,3);
+    wregistro:=wregistro+Padl(Registros88C[i].Codigo,14); //codigo do produto
+    wregistro:=wregistro+TBStrZero(TiraPontos(FormatFloat('#,###0.000',
+      Registros88C[i].Quantidade)),11); //quantidade do produto
+    wregistro:=wregistro+TBStrZero(TiraPontos(FormatFloat('#,##0.00',
+      Registros88C[i].BaseST)),12); //total do produto
+    wregistro:=wregistro+TBStrZero(TiraPontos(FormatFloat('#,##0.00',
+      Registros88C[i].ValorIcmsSTRepassar)),12); //ICMS-ST a repassar/reduzir
+    wregistro:=wregistro+TBStrZero(TiraPontos(FormatFloat('#,##0.00',
+      Registros88C[i].ValorIcmsSTComplementar)),12); //ICMS-ST a complementar
+    wregistro:=wregistro+TBStrZero(TiraPontos(FormatFloat('#,##0.00',
+      Registros88C[i].BasedeCalculoRetencao)),12); //base de calculo da retenção
+    wregistro:=wregistro+TBStrZero(TiraPontos(FormatFloat('#,##0.00',
+      Registros88C[i].ValorParcelaImpostoRetido)),12); //valor da parcela do imposto retido
+    wregistro:=wregistro+Space(6);
+    WriteRecord(wregistro);
+  end;//for
+end;
+
+procedure TACBrSintegra.GerarRegistros88D;
+var
+  wregistro: string;
+  i: Integer;
+begin
+  For i:=0 to Registros88D.Count-1 do
+  begin
+    With Registros88D[i] do
+    begin
+      wregistro:='88D';
+      wregistro:=wregistro+TBStrZero(TiraPontos(CPFCNPJ),14)+Padl(TiraPontos(Inscricao),14);
+      wregistro:=wregistro+Padl(UF,2);
+      wregistro:=wregistro+TBStrZero(Modelo,2);
+      wregistro:=wregistro+Padl(Serie,3);
+      wregistro:=wregistro+TBStrZero(RightStr(Numero,6),6);
+      wregistro:=wregistro+Padl(EmissorDocumento,1);
+      wregistro:=wregistro+FormatDateTime('yyyymmdd',DataDocumento);
+      wregistro:=wregistro+FormatDateTime('yyyymmdd',DataSaidaEntrada);
+      wregistro:=wregistro+TBStrZero(TiraPontos(CNPJLocalSaida),14);
+      wregistro:=wregistro+Padl(UFLocalSaida,2);
+      wregistro:=wregistro+Padl(TiraPontos(IeLocalSaida),14);
+      wregistro:=wregistro+TBStrZero(TiraPontos(CNPJLocalEntrega),14);
+      wregistro:=wregistro+Padl(UFLocalEntrega,2);
+      wregistro:=wregistro+Padl(TiraPontos(IeLocalEntrega),14);
+      wregistro:=wregistro+Space(5);
+      WriteRecord(wregistro);
+    end;//With
+  end;//For
+end;
+
+procedure TACBrSintegra.GerarRegistros88E;
+var
+  wregistro: string;
+  i: Integer;
+begin
+  For i:=0 to Registros88E.Count-1 do
+  begin
+    With Registros88E[i] do
+    begin
+      wregistro:='88E';
+      wregistro:=wregistro+TBStrZero(TiraPontos(CPFCNPJ),14)+Padl(TiraPontos(Inscricao),14);
+      wregistro:=wregistro+Padl(Registros88E[i].CodigoInformate,14); //codigo do produto
+      wregistro:=wregistro+Padl(Registros88E[i].CodigoSefaz,14); //codigo do produto
+      wregistro:=wregistro+Space(67);
+      WriteRecord(wregistro);
+    end;//With
+  end;//For
+end;
+
+procedure TACBrSintegra.GerarRegistros88T;
+var
+  wregistro: string;
+  i: Integer;
+begin
+  For i:=0 to Registros88T.Count-1 do
+  begin
+    With Registros88T[i] do
+    begin
+      wregistro:='88T';
+      wregistro:=wregistro+TBStrZero(TiraPontos(CPFCNPJ),14);
+      wregistro:=wregistro+FormatDateTime('yyyymmdd',DataDocumento);
+      wregistro:=wregistro+Padl(UF,2);
+      wregistro:=wregistro+TBStrZero(Modelo,2);
+      wregistro:=wregistro+Padl(Serie,3);
+      wregistro:=wregistro+TBStrZero(RightStr(Numero,6),6);
+      wregistro:=wregistro+Padl(EmissorDocumento,1);
+      wregistro:=wregistro+Padl(CifFob,1);
+      wregistro:=wregistro+TBStrZero(TiraPontos(CPFCNPJFrete),14);
+      wregistro:=wregistro+Padl(UFFrete,2);
+      wregistro:=wregistro+Padl(TiraPontos(IeFrete),14);
+      wregistro:=wregistro+IntToStrZero(Modal,1);
+      wregistro:=wregistro+Padl(Placa1,7);
+      wregistro:=wregistro+Padl(UFPlaca1,2);
+      wregistro:=wregistro+Padl(Placa2,7);
+      wregistro:=wregistro+Padl(UFPlaca2,2);
+      wregistro:=wregistro+Padl(Placa3,7);
+      wregistro:=wregistro+Padl(UFPlaca3,2);
+      wregistro:=wregistro+Space(28);
+      WriteRecord(wregistro);
+    end;//With
+  end;//For
 end;
 
 { TRegistros50 }
@@ -3078,6 +3397,94 @@ constructor TRegistro88Ean.Create;
 begin
   inherited;
 VersaoEan:=eanIndefinido;
+end;
+
+{ TRegistros88C }
+
+function TRegistros88C.Add(Obj: TRegistro88C): Integer;
+begin
+  Result:=inherited Add(Obj);
+end;
+
+function TRegistros88C.GetObject(Index: Integer): TRegistro88C;
+begin
+  Result:=inherited GetItem(Index) as TRegistro88C;
+end;
+
+procedure TRegistros88C.Insert(Index: Integer; Obj: TRegistro88C);
+begin
+  inherited SetItem(Index, Obj);
+end;
+
+procedure TRegistros88C.SetObject(Index: Integer; Item: TRegistro88C);
+begin
+  inherited SetItem(Index, Item);
+end;
+
+{ TRegistros88D }
+
+function TRegistros88D.Add(Obj: TRegistro88D): Integer;
+begin
+  Result:=inherited Add(Obj);
+end;
+
+function TRegistros88D.GetObject(Index: Integer): TRegistro88D;
+begin
+  Result:=inherited GetItem(Index) as TRegistro88D;
+end;
+
+procedure TRegistros88D.Insert(Index: Integer; Obj: TRegistro88D);
+begin
+  inherited SetItem(Index, Obj);
+end;
+
+procedure TRegistros88D.SetObject(Index: Integer; Item: TRegistro88D);
+begin
+  inherited SetItem(Index, Item);
+end;
+
+{ TRegistros88E }
+
+function TRegistros88E.Add(Obj: TRegistro88E): Integer;
+begin
+  Result:=inherited Add(Obj);
+end;
+
+function TRegistros88E.GetObject(Index: Integer): TRegistro88E;
+begin
+  Result:=inherited GetItem(Index) as TRegistro88E;
+end;
+
+procedure TRegistros88E.Insert(Index: Integer; Obj: TRegistro88E);
+begin
+  inherited SetItem(Index, Obj);
+end;
+
+procedure TRegistros88E.SetObject(Index: Integer; Item: TRegistro88E);
+begin
+  inherited SetItem(Index, Item);
+end;
+
+{ TRegistros88T }
+
+function TRegistros88T.Add(Obj: TRegistro88T): Integer;
+begin
+  Result:=inherited Add(Obj);
+end;
+
+function TRegistros88T.GetObject(Index: Integer): TRegistro88T;
+begin
+  Result:=inherited GetItem(Index) as TRegistro88T;
+end;
+
+procedure TRegistros88T.Insert(Index: Integer; Obj: TRegistro88T);
+begin
+  inherited SetItem(Index, Obj);
+end;
+
+procedure TRegistros88T.SetObject(Index: Integer; Item: TRegistro88T);
+begin
+  inherited SetItem(Index, Item);
 end;
 
 end.

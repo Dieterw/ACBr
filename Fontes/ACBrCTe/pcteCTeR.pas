@@ -846,24 +846,17 @@ begin
           i03 := 0;
           while Leitor.rExtrai(5, 'lacDetVagDCL', '', i03 + 1) <> '' do
           begin
-          {
-            CTe.infCTeNorm.emiDocAnt[i01].idDocAnt[i02].idDocAntPap.Add;
-            CTe.infCTeNorm.emiDocAnt[i01].idDocAnt[i02].idDocAntPap[i03].tpDoc  := Leitor.rCampo(tcInt, 'tpDoc');
-            CTe.infCTeNorm.emiDocAnt[i01].idDocAnt[i02].idDocAntPap[i03].serie  := Leitor.rCampo(tcStr, 'serie');
-            CTe.infCTeNorm.emiDocAnt[i01].idDocAnt[i02].idDocAntPap[i03].subser := Leitor.rCampo(tcStr, 'subser');
-            CTe.infCTeNorm.emiDocAnt[i01].idDocAnt[i02].idDocAntPap[i03].nDoc   := Leitor.rCampo(tcInt, 'nDoc');
-            CTe.infCTeNorm.emiDocAnt[i01].idDocAnt[i02].idDocAntPap[i03].dEmi   := Leitor.rCampo(tcDat, 'dEmi');
-            }
+            CTe.Ferrov.DCL[i01].detVagDCL[i02].lacDetVagDCL.Add;
+            CTe.Ferrov.DCL[i01].detVagDCL[i02].lacDetVagDCL[i03].nLacre := Leitor.rCampo(tcStr, 'nLacre');
             inc(i03);
           end;
 
           i03 := 0;
           while Leitor.rExtrai(5, 'contDCL', '', i03 + 1) <> '' do
           begin
-          {
-            CTe.infCTeNorm.emiDocAnt[i01].idDocAnt[i02].idDocAntEle.Add;
-            CTe.infCTeNorm.emiDocAnt[i01].idDocAnt[i02].idDocAntEle[i03].chave := Leitor.rCampo(tcStr, 'chave');
-            }
+            CTe.Ferrov.DCL[i01].detVagDCL[i02].contDCL.Add;
+            CTe.Ferrov.DCL[i01].detVagDCL[i02].contDCL[i03].nCont := Leitor.rCampo(tcStr, 'nCont');
+            CTe.Ferrov.DCL[i01].detVagDCL[i02].contDCL[i03].dPrev := Leitor.rCampo(tcDat, 'dPrev');
             inc(i03);
           end;
           inc(i02);
@@ -875,38 +868,28 @@ begin
       i01 := 0;
       while Leitor.rExtrai(3, 'detVag', '', i01 + 1) <> '' do
       begin
-        {
-        CTe.peri.Add;
-        CTe.peri[i01].nONU        := Leitor.rCampo(tcStr, 'nONU');
-        CTe.peri[i01].xNomeAE     := Leitor.rCampo(tcStr, 'xNomeAE');
-        CTe.peri[i01].xClaRisco   := Leitor.rCampo(tcStr, 'xClaRisco');
-        CTe.peri[i01].grEmb       := Leitor.rCampo(tcStr, 'grEmb');
-        CTe.peri[i01].qTotProd    := Leitor.rCampo(tcStr, 'qTotProd');
-        CTe.peri[i01].qVolTipo    := Leitor.rCampo(tcStr, 'qVolTipo');
-        CTe.peri[i01].pontoFulgor := Leitor.rCampo(tcStr, 'pontoFulgor');
-        }
+        CTe.Ferrov.detVag.Add;
+        CTe.Ferrov.detVag[i01].nVag   := Leitor.rCampo(tcInt, 'nVag');
+        CTe.Ferrov.detVag[i01].cap    := Leitor.rCampo(tcDe2, 'cap');
+        CTe.Ferrov.detVag[i01].tpVag  := Leitor.rCampo(tcStr, 'tpVag');
+        CTe.Ferrov.detVag[i01].pesoR  := Leitor.rCampo(tcDe2, 'pesoR');
+        CTe.Ferrov.detVag[i01].pesoBC := Leitor.rCampo(tcDe2, 'pesoBC');
 
         i02 := 0;
         while Leitor.rExtrai(4, 'lacDetVag', '', i02 + 1) <> '' do
         begin
-        {
-          CTe.infCTeNorm.emiDocAnt[i01].idDocAnt[i02].idDocAntPap.Add;
-          CTe.infCTeNorm.emiDocAnt[i01].idDocAnt[i02].idDocAntPap[i03].tpDoc  := Leitor.rCampo(tcInt, 'tpDoc');
-          CTe.infCTeNorm.emiDocAnt[i01].idDocAnt[i02].idDocAntPap[i03].serie  := Leitor.rCampo(tcStr, 'serie');
-          CTe.infCTeNorm.emiDocAnt[i01].idDocAnt[i02].idDocAntPap[i03].subser := Leitor.rCampo(tcStr, 'subser');
-          CTe.infCTeNorm.emiDocAnt[i01].idDocAnt[i02].idDocAntPap[i03].nDoc   := Leitor.rCampo(tcInt, 'nDoc');
-          CTe.infCTeNorm.emiDocAnt[i01].idDocAnt[i02].idDocAntPap[i03].dEmi   := Leitor.rCampo(tcDat, 'dEmi');
-          }
+          CTe.Ferrov.detVag[i01].lacDetVag.Add;
+          CTe.Ferrov.detVag[i01].lacdetVag[i02].nLacre := Leitor.rCampo(tcStr, 'nLacre');
+
           inc(i02);
         end;
 
         i02 := 0;
         while Leitor.rExtrai(4, 'contVag', '', i02 + 1) <> '' do
         begin
-        {
-          CTe.infCTeNorm.emiDocAnt[i01].idDocAnt[i02].idDocAntEle.Add;
-          CTe.infCTeNorm.emiDocAnt[i01].idDocAnt[i02].idDocAntEle[i03].chave := Leitor.rCampo(tcStr, 'chave');
-          }
+          CTe.Ferrov.detVag[i01].contVag.Add;
+          CTe.Ferrov.detVag[i01].contVag[i02].nCont := Leitor.rCampo(tcStr, 'nCont');
+          CTe.Ferrov.detVag[i01].contVag[i02].dPrev := Leitor.rCampo(tcDat, 'dPrev');
           inc(i02);
         end;
 

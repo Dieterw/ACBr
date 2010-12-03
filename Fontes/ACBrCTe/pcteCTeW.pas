@@ -125,6 +125,7 @@ type
     procedure GerarFerroSub;   // Nivel 3
     procedure GerarEnderFerro; // Nivel 4
     procedure GerarDCL;        // Nivel 3
+    procedure GerardetVag;     // Nivel 3
 
     procedure GerarDuto;       // Nivel 2
     procedure GerarPeri;       // Nivel 2
@@ -1377,7 +1378,7 @@ end;
 
 procedure TCTeW.GerarDCL;
 var
- i, i01: Integer;
+ i, i01, i02: Integer;
 begin
   for i := 0 to CTe.Ferrov.DCL.Count - 1 do
    begin
@@ -1402,8 +1403,24 @@ begin
       Gerador.wCampo(tcDe2, 'O34', 'pesoR  ', 01, 05, 1, CTe.Ferrov.DCL.Items[i].detVagDCL.Items[i01].pesoR, '');
       Gerador.wCampo(tcDe2, 'O35', 'pesoBC ', 01, 15, 1, CTe.Ferrov.DCL.Items[i].detVagDCL.Items[i01].pesoBC, '');
 
+      for i02 := 0 to CTe.Ferrov.DCL.Items[i].detVagDCL[i01].lacDetVagDCL.Count - 1 do
+       begin
+        Gerador.wGrupo('lacDetVagDCL', 'O36');
+        Gerador.wCampo(tcStr, 'O37', 'nLacre', 01, 20, 1, CTe.Ferrov.DCL.Items[i].detVagDCL.Items[i01].lacDetVagDCL.Items[i02].nLacre, '');
+        Gerador.wGrupo('/lacDetVagDCL');
+       end;
+      if CTe.Ferrov.DCL.Items[i].detVagDCL[i01].lacDetVagDCL.Count > 990 then
+       Gerador.wAlerta('O36', 'lacDetVagDCL', '', ERR_MSG_MAIOR_MAXIMO + '990');
 
-
+      for i02 := 0 to CTe.Ferrov.DCL.Items[i].detVagDCL[i01].contDCL.Count - 1 do
+       begin
+        Gerador.wGrupo('contDCL', 'O38');
+        Gerador.wCampo(tcStr, 'O39', 'nCont ', 01, 20, 1, CTe.Ferrov.DCL.Items[i].detVagDCL.Items[i01].contDCL.Items[i02].nCont, '');
+        Gerador.wCampo(tcDat, 'O40', 'dPrev ', 10, 10, 0, CTe.Ferrov.DCL.Items[i].detVagDCL.Items[i01].contDCL.Items[i02].dPrev, '');
+        Gerador.wGrupo('/contDCL');
+       end;
+      if CTe.Ferrov.DCL.Items[i].detVagDCL[i01].contDCL.Count > 990 then
+       Gerador.wAlerta('O38', 'contDCL', '', ERR_MSG_MAIOR_MAXIMO + '990');
 
       Gerador.wGrupo('/detVagDCL');
      end;
@@ -1416,15 +1433,44 @@ begin
    Gerador.wAlerta('O20', 'DCL', '', ERR_MSG_MAIOR_MAXIMO + '990');
 end;
 
+procedure TCTeW.GerardetVag;
+var
+ i, i01, i02: Integer;
+begin
+  for i := 0 to CTe.Ferrov.detVag.Count - 1 do
+   begin
+    Gerador.wGrupo('detVag', 'O41');
+    Gerador.wCampo(tcInt, 'O42', 'nVag   ', 01, 08, 1, CTe.Ferrov.detVag.Items[i].nVag, '');
+    Gerador.wCampo(tcDe2, 'O43', 'cap    ', 01, 05, 0, CTe.Ferrov.detVag.Items[i].cap, '');
+    Gerador.wCampo(tcStr, 'O44', 'tpVag  ', 01, 03, 0, CTe.Ferrov.detVag.Items[i].tpVag, '');
+    Gerador.wCampo(tcDe2, 'O45', 'pesoR  ', 01, 05, 1, CTe.Ferrov.detVag.Items[i].pesoR, '');
+    Gerador.wCampo(tcDe2, 'O46', 'pesoBC ', 01, 15, 1, CTe.Ferrov.detVag.Items[i].pesoBC, '');
 
+    for i01 := 0 to CTe.Ferrov.detVag.Items[i].lacDetVag.Count - 1 do
+     begin
+      Gerador.wGrupo('lacDetVag', 'O47');
+      Gerador.wCampo(tcStr, 'O48', 'nLacre', 01, 20, 1, CTe.Ferrov.detVag.Items[i].lacDetVag.Items[i01].nLacre, '');
+      Gerador.wGrupo('/lacDetVag');
+     end;
 
+    if CTe.Ferrov.detVag.Items[i].lacDetVag.Count > 990 then
+     Gerador.wAlerta('O47', 'lacDetVag', '', ERR_MSG_MAIOR_MAXIMO + '990');
 
+    for i01 := 0 to CTe.Ferrov.detVag.Items[i].contVag.Count - 1 do
+     begin
+      Gerador.wGrupo('contVag', 'O49');
+      Gerador.wCampo(tcStr, 'O50', 'nCont ', 01, 20, 1, CTe.Ferrov.detVag.Items[i].contVag.Items[i01].nCont, '');
+      Gerador.wCampo(tcDat, 'O51', 'dPrev ', 10, 10, 0, CTe.Ferrov.detVag.Items[i].contVag.Items[i01].dPrev, '');
+      Gerador.wGrupo('/contVag');
+     end;
+    if CTe.Ferrov.detVag.Items[i].contVag.Count > 990 then
+     Gerador.wAlerta('O49', 'contVag', '', ERR_MSG_MAIOR_MAXIMO + '990');
 
-
-
-
-
-
+    Gerador.wGrupo('/detVag');
+   end;
+  if CTe.Ferrov.detVag.Count > 990 then
+   Gerador.wAlerta('O41', 'detVag', '', ERR_MSG_MAIOR_MAXIMO + '990');
+end;
 
 procedure TCTeW.GerarDuto;  // P
 begin

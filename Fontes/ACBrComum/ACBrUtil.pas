@@ -1153,7 +1153,7 @@ begin
   Resultado := '';
   while (Tamanho > Colunas) do
    begin
-     TextoCortado := copy(Texto,1,48);
+     TextoCortado := copy(Texto,1,Colunas);
      Pos   := Length(TextoCortado);
 
       { Acha um espaço }

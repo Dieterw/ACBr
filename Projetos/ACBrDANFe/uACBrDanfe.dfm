@@ -1092,7 +1092,7 @@ object frm_danfe: Tfrm_danfe
     Width = 282
     Height = 34
     Align = alBottom
-    Caption = 'REVIS'#195'O: 1539'
+    Caption = 'REVIS'#195'O: 1856'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
@@ -1194,6 +1194,8 @@ object frm_danfe: Tfrm_danfe
     ImprimirDetalhamentoEspecifico = True
     NFeCancelada = False
     LarguraCodProd = 0
+    TamanhoFonte_RazaoSocial = 8
+    ExibirEAN = False
     Left = 104
     Top = 40
   end

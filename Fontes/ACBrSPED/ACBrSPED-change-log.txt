@@ -48,6 +48,10 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Versão 0.01   06/12/10
+-- ACBrSPEDPisCofins --
+[+] Início do Projeto (Isaque Pinheiro)
+
 Versão 1.00b   10/11/10
 -- ACBrSPEDFiscal --
 [*] Implementação do Registro D190, o procedimento "SetCFOP" no atributo "CFOP" 

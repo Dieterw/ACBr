@@ -1070,7 +1070,7 @@ var
   wRetentar, Falhou40 : Boolean ;
 begin
   Result    := '' ;
-  Falhou40  := False;
+  Falhou40  := True;
   wRetentar := Retentar ;
 
   if fs25MFD then
@@ -1078,9 +1078,9 @@ begin
      Retentar := false ;
      try
         try
-           Result := Trim( RetornaInfoECF( '40' ) ) ;
+           Result   := Trim( RetornaInfoECF( '40' ) ) ;
+           Falhou40 := False;
         except
-           Falhou40 := True;
         end ;
      finally
         Retentar := wRetentar ;

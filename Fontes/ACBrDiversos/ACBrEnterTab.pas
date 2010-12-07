@@ -141,7 +141,11 @@ begin
            exit ;
         end ;
 
-        THackForm( AForm ).SelectNext( TForm(AForm).ActiveControl, True, True );
+        {$IFDEF FPC}
+         THackForm( AForm ).SelectNext( Screen.ActiveControl, True, True );
+        {$ELSE}
+         THackForm( AForm ).SelectNext( TForm(AForm).ActiveControl, True, True );
+        {$ENDIF}
      end ;
   finally
      if Assigned( FOldOnKeyPress ) then

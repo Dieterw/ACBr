@@ -47,6 +47,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Alterações   07/12/2010
+---------------
+[-] Correção no método LoadFromFile no tratamento da TAG REFNFP. Caso 814 do Mantis
+[-] Correção no tratamento da TAG L120 referente de combustiveis. Caso 817 do Mantis
+
 Alterações   03/12/2010
 ---------------
 [-] Correção na impressão do Danfe em Rave Arquivo quando CSOSN for Vazio.

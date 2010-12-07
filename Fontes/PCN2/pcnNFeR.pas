@@ -181,13 +181,17 @@ begin
       (*B19*) NFe.ide.NFref[i].RefNF.serie    := Leitor.rCampo(tcInt, 'serie');
       (*B20*) NFe.Ide.NFref[i].RefNF.nNF      := Leitor.rCampo(tcInt, 'nNF');
 
-      (*B20b*) NFe.Ide.NFref[i].RefNFP.cUF    := Leitor.rCampo(tcInt, 'cUF');
-      (*B20c*) NFe.Ide.NFref[i].RefNFP.AAMM   := Leitor.rCampo(tcEsp, 'AAMM');
- (*B20d/B20e*) NFe.Ide.NFref[i].RefNFP.CNPJCPF:= Leitor.rCampoCNPJCPF;
-      (*B20f*) NFe.Ide.NFref[i].RefNFP.IE     := Leitor.rCampo(tcEsp, 'IE');
-      (*B20f*) NFe.Ide.NFref[i].RefNFP.Modelo := Leitor.rCampo(tcInt, 'mod');
-      (*B20g*) NFe.ide.NFref[i].RefNFP.serie  := Leitor.rCampo(tcInt, 'serie');
-      (*B20h*) NFe.Ide.NFref[i].RefNFP.nNF    := Leitor.rCampo(tcInt, 'nNF');
+      //correção sugerida no MANTIS caso 814
+      if Length(Trim(Leitor.rCampo(tcEsp,'refNFP'))) > 0 Then
+      Begin
+        (*B20b*) NFe.Ide.NFref[i].RefNFP.cUF     := Leitor.rCampo(tcInt, 'cUF');
+        (*B20c*) NFe.Ide.NFref[i].RefNFP.AAMM    := Leitor.rCampo(tcEsp, 'AAMM');
+   (*B20d/B20e*) NFe.Ide.NFref[i].RefNFP.CNPJCPF := Leitor.rCampoCNPJCPF;
+        (*B20f*) NFe.Ide.NFref[i].RefNFP.IE      := Leitor.rCampo(tcEsp, 'IE');
+        (*B20f*) NFe.Ide.NFref[i].RefNFP.Modelo  := Leitor.rCampo(tcInt, 'mod');
+        (*B20g*) NFe.ide.NFref[i].RefNFP.serie   := Leitor.rCampo(tcInt, 'serie');
+        (*B20h*) NFe.Ide.NFref[i].RefNFP.nNF     := Leitor.rCampo(tcInt, 'nNF');
+      end;
 
       (*B20i*)NFe.ide.NFref[i].refCTe         := Leitor.rCampo(tcEsp, 'refCTe');
 
@@ -436,6 +440,8 @@ begin
       (*L103*)NFe.Det[i].Prod.comb.CODIF := Leitor.rCampo(tcEsp, 'CODIF');
       (*L104*)NFe.Det[i].Prod.comb.qTemp := Leitor.rCampo(tcDe4, 'qTemp');
 
+      (*L120*)NFe.Det[i].Prod.comb.ICMSCons.UFcons := Leitor.rCampo(tcStr, 'UFcons');
+
       if Leitor.rExtrai(4, 'CIDE') <> '' then
       begin
         (*L106*)NFe.Det[i].Prod.comb.CIDE.qBCprod := Leitor.rCampo(tcDe4, 'qBCprod');
@@ -459,11 +465,6 @@ begin
         (*L118*)NFe.Det[i].Prod.comb.ICMSCons.vBCICMSSTCons := Leitor.rCampo(tcDe2, 'vBCICMSSTCons');
         (*L119*)NFe.Det[i].Prod.comb.ICMSCons.vICMSSTCons   := Leitor.rCampo(tcDe2, 'vICMSSTCons');
       end;
-
-
-      (*L120*)NFe.Det[i].Prod.comb.ICMSCons.UFcons := Leitor.rCampo(tcStr, 'UFcons');
-
-
     end;
 
     (* Grupo da TAG <det><imposto> ********************************************)

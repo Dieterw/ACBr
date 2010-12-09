@@ -48,6 +48,11 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   09/12/10 (Italo Jurisato Junior)
+---------------
+[-] Correção na procedure GerarEnderExped, estava usando a UF do Emitende em vez
+    do Expedidor, gerando o XML de forma incorreta.
+
 Alterações   14/07/10 (Italo Jurisato Junior)
 ---------------
 [+] Foi incluido na classe TGeralConf a propriedade AtualizarXMLCancelado.

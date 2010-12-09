@@ -388,7 +388,10 @@ var
   xMun: string;
   xUF: string;
 begin
-  AjustarMunicipioUF(xUF, xMun, cMun, CTe.Ide.Toma4.EnderToma.cPais, CTe.Ide.Toma4.EnderToma.UF, CTe.Ide.Toma4.EnderToma.xMun, CTe.Ide.Toma4.EnderToma.cMun);
+  AjustarMunicipioUF(xUF, xMun, cMun, CTe.Ide.Toma4.EnderToma.cPais,
+                                      CTe.Ide.Toma4.EnderToma.UF,
+                                      CTe.Ide.Toma4.EnderToma.xMun,
+                                      CTe.Ide.Toma4.EnderToma.cMun);
   Gerador.wGrupo('enderToma', 'B36');
   Gerador.wCampo(tcStr, 'B37', 'xLgr   ', 01, 255, 1, CTe.Ide.Toma4.EnderToma.xLgr, DSC_XLGR);
   Gerador.wCampo(tcStr, 'B38', 'nro    ', 01, 60, 1, ExecutarAjusteTagNro(FOpcoes.FAjustarTagNro, CTe.Ide.Toma4.EnderToma.xNum), DSC_NRO);
@@ -549,7 +552,10 @@ var
   xMun: string;
   xUF: string;
 begin
-  AjustarMunicipioUF(xUF, xMun, cMun, CTe.Emit.enderEmit.cPais, CTe.Emit.enderEmit.UF, CTe.Emit.enderEmit.xMun, CTe.Emit.EnderEmit.cMun);
+  AjustarMunicipioUF(xUF, xMun, cMun, CTe.Emit.enderEmit.cPais,
+                                      CTe.Emit.enderEmit.UF,
+                                      CTe.Emit.enderEmit.xMun,
+                                      CTe.Emit.EnderEmit.cMun);
   Gerador.wGrupo('enderEmit', 'D06');
   Gerador.wCampo(tcStr, 'D07', 'xLgr   ', 01, 60, 1, CTe.Emit.enderEmit.xLgr, DSC_XLGR);
   Gerador.wCampo(tcStr, 'D08', 'nro    ', 01, 60, 1, ExecutarAjusteTagNro(FOpcoes.FAjustarTagNro, CTe.Emit.enderEmit.nro), DSC_NRO);
@@ -591,7 +597,10 @@ var
   xMun: string;
   xUF: string;
 begin
-  AjustarMunicipioUF(xUF, xMun, cMun, CTe.Rem.EnderReme.cPais, CTe.Rem.EnderReme.UF, CTe.Rem.EnderReme.xMun, CTe.Rem.EnderReme.cMun);
+  AjustarMunicipioUF(xUF, xMun, cMun, CTe.Rem.EnderReme.cPais,
+                                      CTe.Rem.EnderReme.UF,
+                                      CTe.Rem.EnderReme.xMun,
+                                      CTe.Rem.EnderReme.cMun);
   Gerador.wGrupo('enderReme', 'E07');
   Gerador.wCampo(tcStr, 'E08', 'xLgr   ', 01, 255, 1, CTe.Rem.EnderReme.xLgr, DSC_XLGR);
   Gerador.wCampo(tcStr, 'E09', 'nro    ', 01, 60, 1, ExecutarAjusteTagNro(FOpcoes.FAjustarTagNro, CTe.Rem.EnderReme.nro), DSC_NRO);
@@ -723,7 +732,10 @@ var
   xMun: string;
   xUF: string;
 begin
-  AjustarMunicipioUF(xUF, xMun, cMun, CTe.Exped.EnderExped.cPais, CTe.Emit.enderEmit.UF, CTe.Exped.EnderExped.xMun, CTe.Exped.EnderExped.cMun);
+  AjustarMunicipioUF(xUF, xMun, cMun, CTe.Exped.EnderExped.cPais,
+                                      CTe.Exped.EnderExped.UF,
+                                      CTe.Exped.EnderExped.xMun,
+                                      CTe.Exped.EnderExped.cMun);
   Gerador.wGrupo('enderExped', 'F07');
   Gerador.wCampo(tcStr, 'F08', 'xLgr   ', 01, 255, 1, CTe.Exped.EnderExped.xLgr, DSC_XLGR);
   Gerador.wCampo(tcStr, 'F09', 'nro    ', 01, 60, 1, ExecutarAjusteTagNro(FOpcoes.FAjustarTagNro, CTe.Exped.EnderExped.nro), DSC_NRO);
@@ -764,7 +776,10 @@ var
   xMun: string;
   xUF: string;
 begin
-  AjustarMunicipioUF(xUF, xMun, cMun, CTe.Receb.EnderReceb.cPais, CTe.Receb.EnderReceb.UF, CTe.Receb.EnderReceb.xMun, CTe.Receb.EnderReceb.cMun);
+  AjustarMunicipioUF(xUF, xMun, cMun, CTe.Receb.EnderReceb.cPais,
+                                      CTe.Receb.EnderReceb.UF,
+                                      CTe.Receb.EnderReceb.xMun,
+                                      CTe.Receb.EnderReceb.cMun);
   Gerador.wGrupo('enderReceb', 'G07');
   Gerador.wCampo(tcStr, 'G08', 'xLgr   ', 01, 255, 1, CTe.Receb.EnderReceb.xLgr, DSC_XLGR);
   Gerador.wCampo(tcStr, 'G09', 'nro    ', 01, 60, 1, ExecutarAjusteTagNro(FOpcoes.FAjustarTagNro, CTe.Receb.EnderReceb.nro), DSC_NRO);
@@ -806,7 +821,10 @@ var
   xMun: string;
   xUF: string;
 begin
-  AjustarMunicipioUF(xUF, xMun, cMun, CTe.Dest.EnderDest.cPais, CTe.Dest.EnderDest.UF, CTe.Dest.EnderDest.xMun, CTe.Dest.EnderDest.cMun);
+  AjustarMunicipioUF(xUF, xMun, cMun, CTe.Dest.EnderDest.cPais,
+                                      CTe.Dest.EnderDest.UF,
+                                      CTe.Dest.EnderDest.xMun,
+                                      CTe.Dest.EnderDest.cMun);
   Gerador.wGrupo('enderDest', 'H08');
   Gerador.wCampo(tcStr, 'H09', 'xLgr   ', 01, 255, 1, CTe.Dest.EnderDest.xLgr, DSC_XLGR);
   Gerador.wCampo(tcStr, 'H10', 'nro    ', 01, 60, 1, ExecutarAjusteTagNro(FOpcoes.FAjustarTagNro, CTe.Dest.EnderDest.nro), DSC_NRO);
@@ -1358,8 +1376,10 @@ var
   xMun: string;
   xUF: string;
 begin
-  AjustarMunicipioUF(xUF, xMun, cMun, CODIGO_BRASIL, CTe.Ferrov.ferroSub.EnderFerro.UF,
-      CTe.Ferrov.ferroSub.EnderFerro.xMun, CTe.Ferrov.ferroSub.EnderFerro.cMun);
+  AjustarMunicipioUF(xUF, xMun, cMun, CODIGO_BRASIL,
+                                      CTe.Ferrov.ferroSub.EnderFerro.UF,
+                                      CTe.Ferrov.ferroSub.EnderFerro.xMun,
+                                      CTe.Ferrov.ferroSub.EnderFerro.cMun);
   Gerador.wGrupo('enderFerro', 'O11');
   Gerador.wCampo(tcStr, 'O12', 'xLgr   ', 01, 255, 1, CTe.Ferrov.ferroSub.EnderFerro.xLgr, DSC_XLGR);
   Gerador.wCampo(tcStr, 'O13', 'nro    ', 01, 60, 1, ExecutarAjusteTagNro(FOpcoes.FAjustarTagNro, CTe.Ferrov.ferroSub.EnderFerro.nro), DSC_NRO);

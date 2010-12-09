@@ -339,7 +339,7 @@ begin
             LFill( IE ) +
             LFill( COD_MUN, 7 ) +
             LFill( IM ) +
-            LFill( SUFRAMA, 9 ) +
+            LFill( SUFRAMA ) +
             LFill( strIND_PERFIL ) +
             LFill( Integer(IND_ATIV), 1 ) ) ;
        ///

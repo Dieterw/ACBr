@@ -468,6 +468,9 @@ begin
                LFill( CRED_UTIL,0 ) +
                LFill( SLD_CRED_FIM,0 ) ) ;
         end;
+        // Registros - FILHO
+        WriteRegistro1210( Reg1001.Registro1200.Items[intFor] );
+
         Registro1990.QTD_LIN_1 := Registro1990.QTD_LIN_1 + 1;
      end;
      /// Variavél para armazenar a quantidade de registro do tipo.
@@ -488,7 +491,7 @@ begin
           Add( LFill('1210') +
                LFill( TIPO_UTIL ) +
                LFill( NR_DOC ) +
-               LFill( VL_CRED_UTIL ) ) ;
+               LFill( VL_CRED_UTIL,0 ) ) ;
         end;
         Registro1990.QTD_LIN_1 := Registro1990.QTD_LIN_1 + 1;
      end;

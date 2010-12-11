@@ -692,6 +692,7 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
       Height = 158
       AutoExpand = False
       BandType = btHeader
+      AfterPrint = rlbEmitenteAfterPrint
       BeforePrint = rlbEmitenteBeforePrint
       object rliEmitente: TRLDraw
         Left = 0

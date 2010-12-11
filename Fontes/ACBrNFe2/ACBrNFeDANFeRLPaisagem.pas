@@ -529,6 +529,7 @@ type
     procedure rlbItensBeforePrint(Sender: TObject; var PrintIt: Boolean);
     procedure rlbDadosAdicionaisAfterPrint(Sender: TObject);
     procedure rlbObsItemBeforePrint(Sender: TObject; var PrintIt: Boolean);
+    procedure rlbEmitenteAfterPrint(Sender: TObject);
   private
     FRecebemoDe : string;
     procedure InitDados;
@@ -560,7 +561,7 @@ var iLimiteLinhas: Integer = 12;
 iLinhasUtilizadas: Integer = 0;
 iLimiteCaracteresLinha: Integer = 142;
 iLimiteCaracteresContinuacao: Integer = 204;
-q, iQuantItens: Integer;
+q, iQuantItens, iItemAtual: Integer;
 sRetirada, sEntrega: WideString;
 
 {$R *.dfm}
@@ -1841,14 +1842,24 @@ procedure TfrlDANFeRLPaisagem.rlbItensBeforePrint(Sender: TObject;
   var PrintIt: Boolean);
 var i, iAumento: Integer;
 begin
-  // Controla os itens por página
-  if FProdutosPorPagina = 0 then
-    FProdutosPorPagina := 200;
 
-  if (q + 1) mod FProdutosPorPagina = 0 then
-    rlbItens.PageBreaking := pbAfterPrint
+  // Controla os itens por página
+  iItemAtual := iItemAtual + 1;
+
+  if FProdutosPorPagina = 0 then
+    rlbItens.PageBreaking := pbNone
   else
-    rlbItens.PageBreaking := pbNone;
+    begin
+      if iItemAtual = FProdutosPorPagina then
+        begin
+          if RLNFe.PageNumber = 2 then
+            rlbItens.PageBreaking := pbAfterPrint
+          else
+            rlbItens.PageBreaking := pbBeforePrint;
+        end
+      else
+        rlbItens.PageBreaking := pbNone;
+    end; // if FProdutosPorPagina = 0
 
   for i := 1 to 16 do
     TRLDraw(FindComponent ('LinhaProd' + intToStr(i))).Height :=
@@ -1862,6 +1873,7 @@ begin
       LinhaFimItens.Width := LinhaFimItens.Width + iAumento;
       pnlDescricao2.Left := pnlDescricao2.Left + iAumento;
     end;
+
 end;
 
 procedure TfrlDANFeRLPaisagem.rlbDadosAdicionaisAfterPrint(
@@ -1888,6 +1900,11 @@ begin
       LinhaInicioItem.Width := LinhaInicioItem.Width + iAumento;
       rlmObsItem.Width := rlmObsItem.Width + iAumento;
     end;
+end;
+
+procedure TfrlDANFeRLPaisagem.rlbEmitenteAfterPrint(Sender: TObject);
+begin
+  iItemAtual := 0;
 end;
 
 end.

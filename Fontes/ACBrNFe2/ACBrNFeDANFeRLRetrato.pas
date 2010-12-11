@@ -492,6 +492,7 @@ type
     procedure rlbDadosAdicionaisBeforePrint(Sender: TObject;
       var PrintIt: Boolean);
     procedure rlbItensBeforePrint(Sender: TObject; var PrintIt: Boolean);
+    procedure rlbEmitenteAfterPrint(Sender: TObject);
   private
     FRecebemoDe : string;
     procedure InitDados;
@@ -523,7 +524,7 @@ var iLimiteLinhas: Integer = 10;
 iLinhasUtilizadas: Integer = 0;
 iLimiteCaracteresLinha: Integer = 81;
 iLimiteCaracteresContinuacao: Integer = 129;
-q, iQuantItens: Integer;
+q, iQuantItens, iItemAtual: Integer;
 sRetirada, sEntrega: WideString;
 
 {$R *.dfm}
@@ -1749,14 +1750,28 @@ procedure TfrlDANFeRLRetrato.rlbItensBeforePrint(Sender: TObject;
   var PrintIt: Boolean);
 begin
   // Controla os itens por página
+  iItemAtual := iItemAtual + 1;
+
   if FProdutosPorPagina = 0 then
-    FProdutosPorPagina := 200;
-
-  if (q + 1) mod FProdutosPorPagina = 0 then
-    rlbItens.PageBreaking := pbAfterPrint
+    rlbItens.PageBreaking := pbNone
   else
-    rlbItens.PageBreaking := pbNone;
+    begin
+      if iItemAtual = FProdutosPorPagina then
+        begin
+          if RLNFe.PageNumber = 2 then
+            rlbItens.PageBreaking := pbAfterPrint
+          else
+            rlbItens.PageBreaking := pbBeforePrint;
+        end
+      else
+        rlbItens.PageBreaking := pbNone;
+    end; // if FProdutosPorPagina = 0
 
+end;
+
+procedure TfrlDANFeRLRetrato.rlbEmitenteAfterPrint(Sender: TObject);
+begin
+  iItemAtual := 0;
 end;
 
 end.

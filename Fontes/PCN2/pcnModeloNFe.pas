@@ -159,17 +159,27 @@ begin
   NFe.Emit.IM := '';                // C19 - Inscrição Municipal (NF-e conjugada, com prestação de serviços sujeitos ao ISSQN e fornecimento de peças sujeitos ao ICMS.)
   NFe.Emit.CNAE := '';              // C20 - CNAE fiscal Este campo deve ser informado quando o campo NFe.Emit.IM for informado.
                                     //       TAG de grupo do Endereço do emitente - <enderEmit> - Ocorrência 1-1 ********
-  NFe.Emit.enderEmit.xLgr := '';    // C06 - Logradouro
-  NFe.Emit.enderEmit.nro := '';     // C07 - Número
-  NFe.Emit.enderEmit.xCpl := '';    // C08 - Complemento
-  NFe.Emit.enderEmit.xBairro := ''; // C09 - Bairro
-  NFe.Emit.enderEmit.cMun := 0;     // C10 - Código do município (Tabela do IBGE - '9999999' para operações com o exterior))
-  NFe.Emit.enderEmit.xMun := '';    // C11 - Nome do município   ('EXTERIOR' para operações com o exterior)
-  NFe.Emit.enderEmit.UF := '';      // C12 - Sigla da UF         ('EX' para operações com o exterior.)
-  NFe.Emit.enderEmit.CEP := 0;      // C13 - Código do CEP
-  NFe.Emit.enderEmit.cPais := 0;    // C14 - Código do País      (Tabela do BACEN )
-  NFe.Emit.enderEmit.xPais := '';   // C15 - Nome do País
-  NFe.Emit.enderEmit.fone := '';    // C16 - Telefone            ( Código DDD + número do telefone. )
+
+// Henrique Leonardo
+  Nfe.Emit.CRT  := crtRegimeNormal; // C21  - Código de Regime Tributário
+                                    //  Este campo será obrigatoriamente preenchido com:
+                                    //  crtSimplesNacional        1 – Simples Nacional;
+                                    //  crtSimplesExcessoReceita  2 – Simples Nacional – excesso de sublimite de receita bruta;
+                                    //  crtRegimeNormal           3 – Regime Normal. (v2.0).
+
+// Henrique Leonardo
+
+  NFe.Emit.enderEmit.xLgr     := '';    // C06 - Logradouro
+  NFe.Emit.enderEmit.nro      := '';    // C07 - Número
+  NFe.Emit.enderEmit.xCpl     := '';    // C08 - Complemento
+  NFe.Emit.enderEmit.xBairro  := '';    // C09 - Bairro
+  NFe.Emit.enderEmit.cMun     := 0;     // C10 - Código do município (Tabela do IBGE - '9999999' para operações com o exterior))
+  NFe.Emit.enderEmit.xMun     := '';    // C11 - Nome do município   ('EXTERIOR' para operações com o exterior)
+  NFe.Emit.enderEmit.UF       := '';    // C12 - Sigla da UF         ('EX' para operações com o exterior.)
+  NFe.Emit.enderEmit.CEP      := 0;     // C13 - Código do CEP
+  NFe.Emit.enderEmit.cPais    := 0;     // C14 - Código do País      (Tabela do BACEN )
+  NFe.Emit.enderEmit.xPais    := '';    // C15 - Nome do País
+  NFe.Emit.enderEmit.fone     := '';    // C16 - Telefone            ( Código DDD + número do telefone. )
 
 
   (* ----------------------------------------------------------------------------------------------------------------- *)
@@ -365,8 +375,8 @@ begin
                                                         //        Se for informado algum dos valores abaixo:
                                                         //        a TAG grava o grupo no XML ********************************************
     NFe.Det[i].prod.comb.cProdANP := 0;                 // L102 - Código de produto da ANP - codificação de produtos do SIMP
-    NFe.Det[i].prod.comb.CODIF := '';                   // L103 - Código de autorização / registro do CODIF
-    NFe.Det[i].prod.comb.qTemp := 0;                    // L104 - Quantidade de combustível faturada à temperatura ambiente.
+    NFe.Det[i].prod.comb.CODIF    := '';                   // L103 - Código de autorização / registro do CODIF
+    NFe.Det[i].prod.comb.qTemp    := 0;                    // L104 - Quantidade de combustível faturada à temperatura ambiente.
                                                         //        TAG de grupo da CIDE - <CIDE> - Ocorrência 0-1
     NFe.Det[i].prod.comb.CIDE.qBCprod := 0;             // L106 - BC da CIDE em quantidad
     NFe.Det[i].prod.comb.CIDE.vAliqProd := 0;           // L107 - Valor da alíquota da CIDE
@@ -390,96 +400,191 @@ begin
                                                                    //         (0)=oeNacional
                                                                    //         (1)=oeEstrangeiraImportacaoDireta
                                                                    //         (2)=oeEstrangeiraAdquiridaBrasil
-    NFe.Det[i].Imposto.ICMS.CST  := cst00;                         // N12 - Tributação do ICMS
-                                                                   //         (00)=cst00
-                                                                   //         (10)=cst10
-                                                                   //         (20)=cst20
-                                                                   //         (30)=cst30
-                                                                   //         (40)=cst40
-                                                                   //         (41)=cst41
-                                                                   //         (50)=cst50
-                                                                   //         (51)=cst51
-                                                                   //         (60)=cst60
-                                                                   //         (70)=cst70
-                                                                   //         (90)=cst90
-    if NFe.Det[i].Imposto.ICMS.CST = cst00 then
-    begin
-      NFe.Det[i].Imposto.ICMS.modBC := dbiMargemValorAgregado;     // N13 - Modalidade de determinação da BC do ICMS
-      NFe.Det[i].Imposto.ICMS.vBC := 0;                            // N15 - Valor da BC do ICMS
-      NFe.Det[i].Imposto.ICMS.pICMS := 0;                          // N16 - Alíquota do imposto
-      NFe.Det[i].Imposto.ICMS.vICMS := 0;                          // N17 - Valor do ICMS
-    end;
-    if NFe.Det[i].Imposto.ICMS.CST = cst10 then
-    begin
-      NFe.Det[i].Imposto.ICMS.modBC := dbiMargemValorAgregado;     // N13 - Modalidade de determinação da BC do ICMS
-      NFe.Det[i].Imposto.ICMS.vBC := 0;                            // N15 - Valor da BC do ICMS
-      NFe.Det[i].Imposto.ICMS.pICMS := 0;                          // N16 - Alíquota do imposto
-      NFe.Det[i].Imposto.ICMS.vICMS := 0;                          // N17 - Valor do ICMS
-      NFe.Det[i].Imposto.ICMS.modBCST := dbisMargemValorAgregado;  // N18 - Modalidade de determinação da BC do ICMS ST
-      NFe.Det[i].Imposto.ICMS.pMVAST := 0;                         // N19 - Percentual da margem de valor Adicionado do ICMS ST
-      NFe.Det[i].Imposto.ICMS.pRedBCST := 0;                       // N20 - Percentual da Redução de BC do ICMS ST
-      NFe.Det[i].Imposto.ICMS.vBCST := 0;                          // N21 - Valor da BC do ICMS ST
-      NFe.Det[i].Imposto.ICMS.pICMSST := 0;                        // N22 - Alíquota do imposto do ICMS ST
-      NFe.Det[i].Imposto.ICMS.vICMSST := 0;                        // N23 - Valor do ICMS ST
-    end;
-    if NFe.Det[i].Imposto.ICMS.CST = cst20 then
-    begin
-      NFe.Det[i].Imposto.ICMS.modBC := dbiMargemValorAgregado;     // N13 - Modalidade de determinação da BC do ICMS
-      NFe.Det[i].Imposto.ICMS.pRedBC := 0;                         // N14 - Percentual da Redução de BC do ICMS
-      NFe.Det[i].Imposto.ICMS.vBC := 0;                            // N15 - Valor da BC do ICMS
-      NFe.Det[i].Imposto.ICMS.pICMS := 0;                          // N16 - Alíquota do imposto
-      NFe.Det[i].Imposto.ICMS.vICMS := 0;                          // N17 - Valor do ICMS
-    end;
-    if NFe.Det[i].Imposto.ICMS.CST = cst30 then
-    begin
-      NFe.Det[i].Imposto.ICMS.modBCST := dbisMargemValorAgregado; // N18 - Modalidade de determinação da BC do ICMS ST
-      NFe.Det[i].Imposto.ICMS.pMVAST := 0;                        // N19 - Percentual da margem de valor Adicionado do ICMS ST
-      NFe.Det[i].Imposto.ICMS.pRedBCST := 0;                      // N20 - Percentual da Redução de BC do ICMS ST
-      NFe.Det[i].Imposto.ICMS.vBCST := 0;                         // N21 - Valor da BC do ICMS ST
-      NFe.Det[i].Imposto.ICMS.pICMSST := 0;                       // N22 - Alíquota do imposto do ICMS ST
-      NFe.Det[i].Imposto.ICMS.vICMSST := 0;                       // N23 - Valor do ICMS ST
-    end;
-    if NFe.Det[i].Imposto.ICMS.CST = cst51 then
-    begin
-      NFe.Det[i].Imposto.ICMS.modBC := dbiMargemValorAgregado;     // N13 - Modalidade de determinação da BC do ICMS
-      NFe.Det[i].Imposto.ICMS.pRedBC := 0;                         // N14 - Percentual da Redução de BC do ICMS
-      NFe.Det[i].Imposto.ICMS.vBC := 0;                            // N15 - Valor da BC do ICMS
-      NFe.Det[i].Imposto.ICMS.pICMS := 0;                          // N16 - Alíquota do imposto
-      NFe.Det[i].Imposto.ICMS.vICMS := 0;                          // N17 - Valor do ICMS
-    end;
-    if NFe.Det[i].Imposto.ICMS.CST = cst60 then
-    begin
-      NFe.Det[i].Imposto.ICMS.vBCST := 0;                          // N21 - Valor da BC do ICMS ST
-      NFe.Det[i].Imposto.ICMS.vICMSST := 0;                        // N23 - Valor do ICMS ST
-    end;
-    if NFe.Det[i].Imposto.ICMS.CST = cst70 then
-    begin
-      NFe.Det[i].Imposto.ICMS.modBC := dbiMargemValorAgregado;     // N13 - Modalidade de determinação da BC do ICMS
-      NFe.Det[i].Imposto.ICMS.pRedBC := 0;                         // N14 - Percentual da Redução de BC do ICMS
-      NFe.Det[i].Imposto.ICMS.vBC := 0;                            // N15 - Valor da BC do ICMS
-      NFe.Det[i].Imposto.ICMS.pICMS := 0;                          // N16 - Alíquota do imposto
-      NFe.Det[i].Imposto.ICMS.vICMS := 0;                          // N17 - Valor do ICMS
-      NFe.Det[i].Imposto.ICMS.modBCST := dbisMargemValorAgregado;  // N18 - Modalidade de determinação da BC do ICMS ST
-      NFe.Det[i].Imposto.ICMS.pMVAST := 0;                         // N19 - Percentual da margem de valor Adicionado do ICMS ST
-      NFe.Det[i].Imposto.ICMS.pRedBCST := 0;                       // N20 - Percentual da Redução de BC do ICMS ST
-      NFe.Det[i].Imposto.ICMS.vBCST := 0;                          // N21 - Valor da BC do ICMS ST
-      NFe.Det[i].Imposto.ICMS.pICMSST := 0;                        // N22 - Alíquota do imposto do ICMS ST
-      NFe.Det[i].Imposto.ICMS.vICMSST := 0;                        // N23 - Valor do ICMS ST
-    end;
-    if NFe.Det[i].Imposto.ICMS.CST = cst90 then
-    begin
-      NFe.Det[i].Imposto.ICMS.modBC := dbiMargemValorAgregado;     // N13 - Modalidade de determinação da BC do ICMS
-      NFe.Det[i].Imposto.ICMS.pRedBC := 0;                         // N14 - Percentual da Redução de BC do ICMS
-      NFe.Det[i].Imposto.ICMS.vBC := 0;                            // N15 - Valor da BC do ICMS
-      NFe.Det[i].Imposto.ICMS.pICMS := 0;                          // N16 - Alíquota do imposto
-      NFe.Det[i].Imposto.ICMS.vICMS := 0;                          // N17 - Valor do ICMS
-      NFe.Det[i].Imposto.ICMS.modBCST := dbisMargemValorAgregado;  // N18 - Modalidade de determinação da BC do ICMS ST
-      NFe.Det[i].Imposto.ICMS.pMVAST := 0;                         // N19 - Percentual da margem de valor Adicionado do ICMS ST
-      NFe.Det[i].Imposto.ICMS.pRedBCST := 0;                       // N20 - Percentual da Redução de BC do ICMS ST
-      NFe.Det[i].Imposto.ICMS.vBCST := 0;                          // N21 - Valor da BC do ICMS ST
-      NFe.Det[i].Imposto.ICMS.pICMSST := 0;                        // N22 - Alíquota do imposto do ICMS ST
-      NFe.Det[i].Imposto.ICMS.vICMSST := 0;                        // N23 - Valor do ICMS ST
-    end;
+    NFe.Det[i].Imposto.ICMS.CST := cst00;
+
+    // Henrique Leonardo
+    case nfe.Emit.CRT of
+      crtRegimeNormal, crtSimplesExcessoReceita :
+         begin
+            case nfe.Det[i].Imposto.ICMS.CST of
+               cst00 :
+                  begin
+                    NFe.Det[i].Imposto.ICMS.modBC := dbiMargemValorAgregado;     // N13 - Modalidade de determinação da BC do ICMS
+                    NFe.Det[i].Imposto.ICMS.vBC   := 0;                          // N15 - Valor da BC do ICMS
+                    NFe.Det[i].Imposto.ICMS.pICMS := 0;                          // N16 - Alíquota do imposto
+                    NFe.Det[i].Imposto.ICMS.vICMS := 0;                          // N17 - Valor do ICMS
+                  end;
+               cst10 :
+				  begin
+                    NFe.Det[i].Imposto.ICMS.modBC     := dbiMargemValorAgregado;    // N13 - Modalidade de determinação da BC do ICMS
+                    NFe.Det[i].Imposto.ICMS.vBC       := 0;                         // N15 - Valor da BC do ICMS
+                    NFe.Det[i].Imposto.ICMS.pICMS     := 0;                         // N16 - Alíquota do imposto
+                    NFe.Det[i].Imposto.ICMS.vICMS     := 0;                         // N17 - Valor do ICMS
+                    NFe.Det[i].Imposto.ICMS.modBCST   := dbisMargemValorAgregado;   // N18 - Modalidade de determinação da BC do ICMS ST
+                    NFe.Det[i].Imposto.ICMS.pMVAST    := 0;                         // N19 - Percentual da margem de valor Adicionado do ICMS ST
+                    NFe.Det[i].Imposto.ICMS.pRedBCST  := 0;                         // N20 - Percentual da Redução de BC do ICMS ST
+                    NFe.Det[i].Imposto.ICMS.vBCST     := 0;                         // N21 - Valor da BC do ICMS ST
+                    NFe.Det[i].Imposto.ICMS.pICMSST   := 0;                         // N22 - Alíquota do imposto do ICMS ST
+                    NFe.Det[i].Imposto.ICMS.vICMSST   := 0;                         // N23 - Valor do ICMS ST
+                  end;
+               cst20 :
+                  begin
+                    NFe.Det[i].Imposto.ICMS.modBC   := dbiMargemValorAgregado;      // N13 - Modalidade de determinação da BC do ICMS
+                    NFe.Det[i].Imposto.ICMS.pRedBC  := 0;                           // N14 - Percentual da Redução de BC do ICMS
+                    NFe.Det[i].Imposto.ICMS.vBC     := 0;                           // N15 - Valor da BC do ICMS
+                    NFe.Det[i].Imposto.ICMS.pICMS   := 0;                           // N16 - Alíquota do imposto
+                    NFe.Det[i].Imposto.ICMS.vICMS   := 0;                           // N17 - Valor do ICMS
+                  end;
+               cst30 :
+                  begin
+                    NFe.Det[i].Imposto.ICMS.modBCST   := dbisMargemValorAgregado; // N18 - Modalidade de determinação da BC do ICMS ST
+                    NFe.Det[i].Imposto.ICMS.pMVAST    := 0;                       // N19 - Percentual da margem de valor Adicionado do ICMS ST
+                    NFe.Det[i].Imposto.ICMS.pRedBCST  := 0;                       // N20 - Percentual da Redução de BC do ICMS ST
+                    NFe.Det[i].Imposto.ICMS.vBCST     := 0;                       // N21 - Valor da BC do ICMS ST
+                    NFe.Det[i].Imposto.ICMS.pICMSST   := 0;                       // N22 - Alíquota do imposto do ICMS ST
+                    NFe.Det[i].Imposto.ICMS.vICMSST   := 0;                       // N23 - Valor do ICMS ST
+                  end;
+               cst40,
+               cst41,
+	             cst50 :
+                  begin
+                     //Esse bloco fica a critério de cada UF a obrigação das informações, conforme o manual
+                    NFe.Det[i].Imposto.ICMS.vICMS       := 0;                     // N17 - Valor do ICMS
+                    Nfe.Det[i].Imposto.ICMS.motDesICMS  := mdiOutros;             // N28 - Motivo da desoneração do ICMS
+                  end;
+               cst51 :
+                  begin
+                     //Esse bloco fica a critério de cada UF a obrigação das informações, conforme o manual
+
+                     NFe.Det[i].Imposto.ICMS.modBC  := dbiMargemValorAgregado;    // N13 - Modalidade de determinação da BC do ICMS
+                                                                                    //  0 - Margem Valor Agregado (%);
+                                                                                    //  1 - Pauta (Valor);
+                                                                                    //  2 - Preço Tabelado Máx. (valor);
+                                                                                    //  3 - valor da operação
+
+                     NFe.Det[i].Imposto.ICMS.pRedBC := 0;                          // N14 - Percentual da Redução de BC do ICMS
+                     NFe.Det[i].Imposto.ICMS.vBC    := 0;                          // N15 - Valor da BC do ICMS
+                     NFe.Det[i].Imposto.ICMS.pICMS  := 0;                          // N16 - Alíquota do imposto
+                     NFe.Det[i].Imposto.ICMS.vICMS  := 0;                          // N17 - Valor do ICMS
+                  end;
+               cst60 :
+                  begin
+                     nfe.Det[i].Imposto.ICMS.vBCSTRET   := 0;                     // N26 - Valor da BC do ICMS ST retido
+                     nfe.Det[i].Imposto.ICMS.vICMSSTRET := 0;                     // N27 - Valor do ICMS ST retido
+                  end;
+               cst70 :
+                  begin
+                    NFe.Det[i].Imposto.ICMS.modBC     := dbiMargemValorAgregado;  // N13 - Modalidade de determinação da BC do ICMS
+                    NFe.Det[i].Imposto.ICMS.pRedBC    := 0;                       // N14 - Percentual da Redução de BC do ICMS
+                    NFe.Det[i].Imposto.ICMS.vBC       := 0;                       // N15 - Valor da BC do ICMS
+                    NFe.Det[i].Imposto.ICMS.pICMS     := 0;                       // N16 - Alíquota do imposto
+                    NFe.Det[i].Imposto.ICMS.vICMS     := 0;                       // N17 - Valor do ICMS
+                    NFe.Det[i].Imposto.ICMS.modBCST   := dbisMargemValorAgregado; // N18 - Modalidade de determinação da BC do ICMS ST
+                    NFe.Det[i].Imposto.ICMS.pMVAST    := 0;                       // N19 - Percentual da margem de valor Adicionado do ICMS ST
+                    NFe.Det[i].Imposto.ICMS.pRedBCST  := 0;                       // N20 - Percentual da Redução de BC do ICMS ST
+                    NFe.Det[i].Imposto.ICMS.vBCST     := 0;                       // N21 - Valor da BC do ICMS ST
+                    NFe.Det[i].Imposto.ICMS.pICMSST   := 0;                       // N22 - Alíquota do imposto do ICMS ST
+                    NFe.Det[i].Imposto.ICMS.vICMSST   := 0;                       // N23 - Valor do ICMS ST
+                  end;
+               cst90,
+		           cstPart10,
+	             cstPart90 :
+                  begin
+                    NFe.Det[i].Imposto.ICMS.modBC     := dbiMargemValorAgregado;    // N13 - Modalidade de determinação da BC do ICMS
+                    NFe.Det[i].Imposto.ICMS.pRedBC    := 0;                         // N14 - Percentual da Redução de BC do ICMS
+                    NFe.Det[i].Imposto.ICMS.vBC       := 0;                         // N15 - Valor da BC do ICMS
+                    NFe.Det[i].Imposto.ICMS.pICMS     := 0;                         // N16 - Alíquota do imposto
+                    NFe.Det[i].Imposto.ICMS.vICMS     := 0;                         // N17 - Valor do ICMS
+                    NFe.Det[i].Imposto.ICMS.modBCST   := dbisMargemValorAgregado;   // N18 - Modalidade de determinação da BC do ICMS ST
+                    NFe.Det[i].Imposto.ICMS.pMVAST    := 0;                         // N19 - Percentual da margem de valor Adicionado do ICMS ST
+                    NFe.Det[i].Imposto.ICMS.pRedBCST  := 0;                         // N20 - Percentual da Redução de BC do ICMS ST
+                    NFe.Det[i].Imposto.ICMS.vBCST     := 0;                         // N21 - Valor da BC do ICMS ST
+                    NFe.Det[i].Imposto.ICMS.pICMSST   := 0;                         // N22 - Alíquota do imposto do ICMS ST
+                    NFe.Det[i].Imposto.ICMS.vICMSST   := 0;                         // N23 - Valor do ICMS ST
+                    if ( nfe.Det[i].Imposto.ICMS.CST = cstPart10 ) or ( nfe.Det[i].Imposto.ICMS.CST = cstPart90 ) then
+                    begin
+                      NFe.Det[i].Imposto.ICMS.UFST  := '';                         // N24  UF para qual é devido o ICMS ST
+                      NFe.Det[i].Imposto.ICMS.pBCOp := 0;                          // N25  Percentual da BC operação própria
+                     end;
+                  end;
+	            	cstRep41 :
+                  begin
+                    // ICMSST - Repasse
+                    NFe.Det[i].Imposto.ICMS.vBCSTRet    := 0;                     // N26 - Valor da BC do ICMS ST retido
+                    NFe.Det[i].Imposto.ICMS.vICMSSTRet  := 0;                     // N27 - Valor do ICMS ST retido
+                    NFe.Det[i].Imposto.ICMS.vBCSTDest   := 0;                     // N31 - Informar o valor da BC do ICMS ST da UF destino (v2.0)
+                    NFe.Det[i].Imposto.ICMS.vICMSSTDest := 0;                     // N32 - Informar o valor da BC do ICMS ST da UF destino (v2.0)
+		              end;
+            end;
+         end;
+      crtSimplesNacional :
+         begin
+            //Grupo do Simples Nacional
+            case  nfe.Det[i].Imposto.ICMS.CSOSN of
+               csosn101 :  // N12a
+                  begin
+                    nfe.Det[i].Imposto.ICMS.pCredSN     := 0;                     // N29 - Alíquota aplicável de cálculo do crédito (Simples Nacional).
+                    nfe.Det[i].Imposto.ICMS.vCredICMSSN := 0;                     // N30 - Valor crédito do ICMS que pode ser aproveitado nostermos do art. 23 da LC 123 (Simples Nacional)
+                  end;
+               csosn102,
+               csosn103,
+               csosn300,
+               csosn400:  // N10d
+                  begin
+                     //Tags ORIG e CSON já criadas antes do case
+                     //102 - Tributada pelo Simples Nacional sem permissão de crédito.
+                     //103 – Isenção do ICMS no Simples Nacional para faixa de receita bruta.
+                     //300 – Imune.
+                     //400 – Não tributada pelo Simples Nacional (v.2.0) (v.2.0)
+                  end;
+               csosn201 :
+                  begin  //n10e
+                    nfe.Det[i].Imposto.ICMS.modBCST     := dbisMargemValorAgregado;   // N18 - Modalidade de determinação da BC do ICMS ST
+                    nfe.Det[i].Imposto.ICMS.pMVAST      := 0;                         // N19 - Percentual da margem de valor Adicionado do ICMS ST
+                    nfe.Det[i].Imposto.ICMS.pRedBCST    := 0;                         // N20 - Percentual da Redução de BC do ICMS ST
+                    nfe.Det[i].Imposto.ICMS.vBCST       := 0;                         // N21 - Valor da BC do ICMS ST
+                    nfe.Det[i].Imposto.ICMS.pICMSST     := 0;                         // N22 - Alíquota do imposto do ICMS ST
+                    nfe.Det[i].Imposto.ICMS.vICMSST     := 0;                         // N23 - Valor do ICMS ST
+                    nfe.Det[i].Imposto.ICMS.pCredSN     := 0;                         // N29 - Alíquota aplicável de cálculo do crédito (Simples Nacional).
+                    nfe.Det[i].Imposto.ICMS.vCredICMSSN := 0;                         // N30 - Valor crédito do ICMS que pode ser aproveitado nostermos do art. 23 da LC 123 (Simples Nacional)
+                  end;
+               csosn202,
+               csosn203 :
+                  begin   //n10f
+                    nfe.Det[i].Imposto.ICMS.modBCST     := dbisMargemValorAgregado;   // N18 - Modalidade de determinação da BC do ICMS ST
+                    nfe.Det[i].Imposto.ICMS.pMVAST      := 0;                         // N19 - Percentual da margem de valor Adicionado do ICMS ST
+                    nfe.Det[i].Imposto.ICMS.pRedBCST    := 0;                         // N20 - Percentual da Redução de BC do ICMS ST
+                    nfe.Det[i].Imposto.ICMS.vBCST       := 0;                         // N21 - Valor da BC do ICMS ST
+                    nfe.Det[i].Imposto.ICMS.pICMSST     := 0;                         // N22 - Alíquota do imposto do ICMS ST
+                    nfe.Det[i].Imposto.ICMS.vICMSST     := 0;                         // N23 - Valor do ICMS ST
+                  end;
+               csosn500 :
+                  begin //10g
+                     nfe.Det[i].Imposto.ICMS.vBCSTRET   := 0;                     // N26 - Valor da BC do ICMS ST retido
+                     nfe.Det[i].Imposto.ICMS.vICMSSTRET := 0;                     // N27 - Valor do ICMS ST retido
+                  end;
+               csosn900:
+                 begin //10h
+                    NFe.Det[i].Imposto.ICMS.modBC       := dbiMargemValorAgregado;    // N13 - Modalidade de determinação da BC do ICMS
+                    NFe.Det[i].Imposto.ICMS.pRedBC      := 0;                         // N14 - Percentual da Redução de BC do ICMS
+                    NFe.Det[i].Imposto.ICMS.vBC         := 0;                         // N15 - Valor da BC do ICMS
+                    NFe.Det[i].Imposto.ICMS.pICMS       := 0;                         // N16 - Alíquota do imposto
+                    NFe.Det[i].Imposto.ICMS.vICMS       := 0;                         // N17 - Valor do ICMS
+                    NFe.Det[i].Imposto.ICMS.modBCST     := dbisMargemValorAgregado;   // N18 - Modalidade de determinação da BC do ICMS ST
+                    NFe.Det[i].Imposto.ICMS.pMVAST      := 0;                         // N19 - Percentual da margem de valor Adicionado do ICMS ST
+                    NFe.Det[i].Imposto.ICMS.pRedBCST    := 0;                         // N20 - Percentual da Redução de BC do ICMS ST
+                    NFe.Det[i].Imposto.ICMS.vBCST       := 0;                         // N21 - Valor da BC do ICMS ST
+                    NFe.Det[i].Imposto.ICMS.pICMSST     := 0;                         // N22 - Alíquota do imposto do ICMS ST
+                    NFe.Det[i].Imposto.ICMS.vICMSST     := 0;                         // N23 - Valor do ICMS ST
+                    nfe.Det[i].Imposto.ICMS.pCredSN     := 0;                         // N29 - Alíquota aplicável de cálculo do crédito (Simples Nacional).
+                    nfe.Det[i].Imposto.ICMS.vCredICMSSN := 0;                         // N30 - Valor crédito do ICMS que pode ser aproveitado nostermos do art. 23 da LC 123 (Simples Nacional)
+                 end;
+            end;
+         end;
+	  end;
+    // Henrique Leonardo
+
+
                                                                    // N13 - Modalidade de determinação da BC do ICMS
                                                                    //         (0)=dbiMargemValorAgregado
                                                                    //         (1)=dbiPauta

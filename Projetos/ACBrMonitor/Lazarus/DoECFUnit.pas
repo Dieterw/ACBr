@@ -111,7 +111,7 @@ begin
         else if Cmd.Metodo = 'datahora' then
            Cmd.Resposta := FormatDateTime('dd/mm/yy hh:nn:ss', DataHora )
 
-        else if Cmd.Metodo = 'numcupom' then
+        else if (Cmd.Metodo = 'numcupom') or (Cmd.Metodo = 'numcoo') then
          begin
            Cmd.Resposta := NumCupom ;
            if Cmd.Resposta = '' then

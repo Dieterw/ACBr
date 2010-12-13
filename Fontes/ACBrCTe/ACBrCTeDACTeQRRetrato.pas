@@ -404,7 +404,7 @@ var
 
 procedure TfrmDACTeQRRetrato.Itens;
 var
-  I : Integer;
+  I, J, K : Integer;
 begin
   if QRCTe.PageNumber > 0 then
     exit;
@@ -471,6 +471,96 @@ begin
         cdsDocumentosCNPJCPF_2.AsString := CTeUtil.FormatarCNPJ(FCTe.Rem.CNPJCPF);
         cdsDocumentosDOCUMENTO_2.AsString := nDoc;
         cdsDocumentos.Post;
+      end;
+    end;
+  end;
+ //Varrendo Documentos de Transporte anterior em Papel
+ // Incluido / Alterado por Italo em 13/12/2010
+  for I := 0 to (FCTe.infCTeNorm.emiDocAnt.Count - 1) do
+  begin
+    for J := 0 to (FCTe.infCTeNorm.emiDocAnt.Items[I].idDocAnt.Count - 1) do
+    begin
+      for K := 0 to (FCTe.infCTeNorm.emiDocAnt.Items[I].idDocAnt.Items[J].idDocAntPap.Count - 1) do
+      begin
+        with FCTe.infCTeNorm.emiDocAnt.Items[I].idDocAnt.Items[J].idDocAntPap.Items[K] do
+        begin
+          if (I mod 2) = 0 then
+          begin
+            cdsDocumentos.Append;
+
+            case tpDoc of
+             00: cdsDocumentosTIPO_1.AsString := 'CTRC';
+             01: cdsDocumentosTIPO_1.AsString := 'CTAC';
+             02: cdsDocumentosTIPO_1.AsString := 'ACT';
+             03: cdsDocumentosTIPO_1.AsString := 'NF M7';
+             04: cdsDocumentosTIPO_1.AsString := 'NF M27';
+             05: cdsDocumentosTIPO_1.AsString := 'CAN';
+             06: cdsDocumentosTIPO_1.AsString := 'CTMC';
+             07: cdsDocumentosTIPO_1.AsString := 'ATRE';
+             08: cdsDocumentosTIPO_1.AsString := 'DTA';
+             09: cdsDocumentosTIPO_1.AsString := 'CAI';
+             10: cdsDocumentosTIPO_1.AsString := 'CCPI';
+             11: cdsDocumentosTIPO_1.AsString := 'CA';
+             12: cdsDocumentosTIPO_1.AsString := 'TIF';
+             99: cdsDocumentosTIPO_1.AsString := 'Outros';
+            end;
+            cdsDocumentosCNPJCPF_1.AsString := CTeUtil.FormatarCNPJ(FCTe.infCTeNorm.emiDocAnt.Items[I].CNPJCPF);
+            cdsDocumentosDOCUMENTO_1.AsString := serie + '-' + IntToStr(nDoc);
+          end
+          else
+          begin
+            case tpDoc of
+             00: cdsDocumentosTIPO_2.AsString := 'CTRC';
+             01: cdsDocumentosTIPO_2.AsString := 'CTAC';
+             02: cdsDocumentosTIPO_2.AsString := 'ACT';
+             03: cdsDocumentosTIPO_2.AsString := 'NF M7';
+             04: cdsDocumentosTIPO_2.AsString := 'NF M27';
+             05: cdsDocumentosTIPO_2.AsString := 'CAN';
+             06: cdsDocumentosTIPO_2.AsString := 'CTMC';
+             07: cdsDocumentosTIPO_2.AsString := 'ATRE';
+             08: cdsDocumentosTIPO_2.AsString := 'DTA';
+             09: cdsDocumentosTIPO_2.AsString := 'CAI';
+             10: cdsDocumentosTIPO_2.AsString := 'CCPI';
+             11: cdsDocumentosTIPO_2.AsString := 'CA';
+             12: cdsDocumentosTIPO_2.AsString := 'TIF';
+             99: cdsDocumentosTIPO_2.AsString := 'Outros';
+            end;
+            cdsDocumentosCNPJCPF_2.AsString := CTeUtil.FormatarCNPJ(FCTe.infCTeNorm.emiDocAnt.Items[I].CNPJCPF);
+            cdsDocumentosDOCUMENTO_2.AsString := serie + '-' + IntToStr(nDoc);
+
+            cdsDocumentos.Post;
+          end;
+        end;
+      end;
+    end;
+  end;
+ //Varrendo Documentos de Transporte anterior Eletrônico
+ // Incluido / Alterado por Italo em 13/12/2010
+  for I := 0 to (FCTe.infCTeNorm.emiDocAnt.Count - 1) do
+  begin
+    for J := 0 to (FCTe.infCTeNorm.emiDocAnt.Items[I].idDocAnt.Count - 1) do
+    begin
+      for K := 0 to (FCTe.infCTeNorm.emiDocAnt.Items[I].idDocAnt.Items[J].idDocAntEle.Count - 1) do
+      begin
+        with FCTe.infCTeNorm.emiDocAnt.Items[I].idDocAnt.Items[J].idDocAntEle.Items[K] do
+        begin
+          if (I mod 2) = 0 then
+          begin
+            cdsDocumentos.Append;
+
+            cdsDocumentosTIPO_1.AsString := 'CT-E';
+            cdsDocumentosCNPJCPF_1.AsString := chave;
+          end
+          else
+          begin
+            cdsDocumentosTIPO_2.AsString := 'CT-E';
+            cdsDocumentosCNPJCPF_2.AsString := chave;
+
+            cdsDocumentos.Post;
+          end;
+
+
+        end;
       end;
     end;
   end;

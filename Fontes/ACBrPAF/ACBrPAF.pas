@@ -36,6 +36,8 @@
 |*
 |* 10/04/2009: Isaque Pinheiro
 |*  - Criação e distribuição da Primeira Versao
+|* 29/11/2010: Gutierres Santana da Costa
+|*  - Implementado Registro Tipo C "Controle de Abastecimento e Encerrante"
 *******************************************************************************}
 
 unit ACBrPAF;
@@ -53,10 +55,11 @@ uses
    ACBrPAF_E, ACBrPAF_E_Class,
    ACBrPAF_P, ACBrPAF_P_Class,
    ACBrPAF_R, ACBrPAF_R_Class,
-   ACBrPAF_T, ACBrPAF_T_Class;
+   ACBrPAF_T, ACBrPAF_T_Class,
+   ACBrPAF_C, ACBrPAF_C_Class;
 
 const
-   CACBrPAF_Versao = '0.05' ;
+   CACBrPAF_Versao = '0.06' ;
 
 type
 
@@ -78,6 +81,7 @@ type
     FPAF_P: TPAF_P;
     FPAF_R: TPAF_R;
     FPAF_T: TPAF_T;
+    FPAF_C: TPAF_C;
 
     function GetAbout: String;
     function GetDelimitador: String;
@@ -122,6 +126,10 @@ type
     function WriteRegistroT1: String;
     function WriteRegistroT2: String;
     function WriteRegistroT9: String;
+    /// REGISTROS C
+    function WriteRegistroC1: String;
+    function WriteRegistroC2: String;
+    function WriteRegistroC9: String;
   public
     constructor Create(AOwner: TComponent); override; /// Create
     destructor Destroy; override; /// Destroy
@@ -131,12 +139,14 @@ type
     function SaveFileTXT_P(Arquivo: String): Boolean; /// Método que escreve o arquivo texto no caminho passado como parâmetro
     function SaveFileTXT_R(Arquivo: String): Boolean; /// Método que escreve o arquivo texto no caminho passado como parâmetro
     function SaveFileTXT_T(Arquivo: String): Boolean; /// Método que escreve o arquivo texto no caminho passado como parâmetro
+    function SaveFileTXT_C(Arquivo: String): Boolean; /// Método que escreve o arquivo texto no caminho passado como parâmetro
 
     property PAF_D: TPAF_D read FPAF_D write FPAF_D;
     property PAF_E: TPAF_E read FPAF_E write FPAF_E;
     property PAF_P: TPAF_P read FPAF_P write FPAF_P;
     property PAF_R: TPAF_R read FPAF_R write FPAF_R;
     property PAF_T: TPAF_T read FPAF_T write FPAF_T;
+    property PAF_C: TPAF_C read FPAF_C write FPAF_C;
 
     function AssinaArquivoComEAD(Arquivo: String): Boolean;
   published
@@ -175,6 +185,7 @@ begin
   FPAF_P := TPAF_P.Create;
   FPAF_R := TPAF_R.Create;
   FPAF_T := TPAF_T.Create;
+  FPAF_C := TPAF_C.Create;
   //
   FPath := ExtractFilePath( ParamStr(0) );
   FDelimitador := '';
@@ -193,6 +204,7 @@ begin
   FPAF_P.Free;
   FPAF_R.Free;
   FPAF_T.Free;
+  FPAF_C.Free;
   inherited;
 end;
 
@@ -225,6 +237,7 @@ begin
   FPAF_P.Delimitador := Value;
   FPAF_R.Delimitador := Value;
   FPAF_T.Delimitador := Value;
+  FPAF_C.Delimitador := Value;  
 end;
 
 function TACBrPAF.GetCurMascara: String;
@@ -241,6 +254,7 @@ begin
   FPAF_P.CurMascara := Value;
   FPAF_R.CurMascara := Value;
   FPAF_T.CurMascara := Value;
+  FPAF_C.CurMascara := Value;  
 end;
 
 function TACBrPAF.GetTrimString: boolean;
@@ -257,6 +271,7 @@ begin
   FPAF_P.TrimString := Value;
   FPAF_R.TrimString := Value;
   FPAF_T.TrimString := Value;
+  FPAF_C.TrimString := Value;  
 end;
 
 function TACBrPAF.GetOnError: TErrorEvent;
@@ -283,6 +298,7 @@ begin
   FPAF_P.OnError := Value;
   FPAF_R.OnError := Value;
   FPAF_T.OnError := Value;
+  FPAF_C.OnError := Value;  
   FACBrEAD.OnError := Value;
 end;
 
@@ -374,6 +390,21 @@ end;
 function TACBrPAF.WriteRegistroT9: String;
 begin
    Result := FPAF_T.WriteRegistroT9;
+end;
+
+function TACBrPAF.WriteRegistroC1: String;
+begin
+  Result := FPAF_C.WriteRegistroC1;
+end;
+
+function TACBrPAF.WriteRegistroC2: String;
+begin
+  Result := FPAF_C.WriteRegistroC2;
+end;
+
+function TACBrPAF.WriteRegistroC9: String;
+begin
+  Result := FPAF_C.WriteRegistroC9;
 end;
 
 function TACBrPAF.SaveFileTXT_D(Arquivo: String): Boolean;
@@ -534,6 +565,37 @@ begin
   end;
 end;
 
+
+function TACBrPAF.SaveFileTXT_C(Arquivo: String): Boolean;
+var
+txtFile: TextFile;
+begin
+  Result := True;
+  ///
+  if (Trim(Arquivo) = '') or (Trim(fPath) = '') then
+     raise Exception.Create('Caminho ou nome do arquivo não informado!');
+
+  try
+    AssignFile(txtFile, fPath + Arquivo);
+    Rewrite(txtFile);
+    ///
+    Write(txtFile, WriteRegistroC1);
+    if FPAF_C.RegistroC2.Count > 0 then Write(txtFile, WriteRegistroC2);
+    Write(txtFile, WriteRegistroC9);
+    ///
+    CloseFile(txtFile);
+    /// Assinatura EAD
+    AssinaArquivoComEAD(fPath + Arquivo);
+
+    /// Limpa de todos os Blocos as listas de todos os registros.
+    LimpaRegistros;
+  except
+    on E: Exception do
+    begin
+      raise Exception.Create(E.Message);
+    end;
+  end;
+end;
 
 procedure TACBrPAF.ReordenarRegistroR(Arquivo: String);
 var

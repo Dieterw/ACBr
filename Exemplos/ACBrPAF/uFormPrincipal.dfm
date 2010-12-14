@@ -3,7 +3,7 @@ object Form6: TForm6
   Top = 265
   BorderStyle = bsDialog
   Caption = 'Demo do ACBrPAF'
-  ClientHeight = 313
+  ClientHeight = 369
   ClientWidth = 417
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -102,12 +102,13 @@ object Form6: TForm6
   end
   object GroupBox2: TGroupBox
     Left = 0
-    Top = 156
+    Top = 212
     Width = 417
     Height = 157
     Align = alBottom
     Caption = 'Log de erros'
     TabOrder = 1
+    ExplicitTop = 156
     object logErros: TMemo
       Left = 2
       Top = 15
@@ -146,8 +147,8 @@ object Form6: TForm6
     OnClick = btnPClick
   end
   object btnR: TButton
-    Left = 251
-    Top = 127
+    Left = 8
+    Top = 158
     Width = 75
     Height = 25
     Caption = 'Tipo R'
@@ -155,13 +156,22 @@ object Form6: TForm6
     OnClick = btnRClick
   end
   object btnT: TButton
-    Left = 332
-    Top = 127
+    Left = 89
+    Top = 158
     Width = 75
     Height = 25
     Caption = 'Tipo T'
     TabOrder = 6
     OnClick = btnTClick
+  end
+  object btnC: TButton
+    Left = 170
+    Top = 158
+    Width = 75
+    Height = 25
+    Caption = 'Tipo C'
+    TabOrder = 7
+    OnClick = btnCClick
   end
   object ACBrPAF: TACBrPAF
     Path = '.\'

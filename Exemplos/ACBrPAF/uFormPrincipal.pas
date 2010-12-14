@@ -70,6 +70,7 @@ type
     btnP: TButton;
     btnR: TButton;
     btnT: TButton;
+    btnC: TButton;
     procedure btnDClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure PreencherHeader(Header: TRegistroX1);
@@ -80,6 +81,7 @@ type
     procedure btnTClick(Sender: TObject);
     procedure ACBrPAFMsnError(const MsnError: String);
     procedure ACBrPAFPAFCalcEAD(Arquivo: String);
+    procedure btnCClick(Sender: TObject);
   private
     { Private declarations }
     function QualquerNumero: Integer;
@@ -152,6 +154,41 @@ begin
      Header.RAZAOSOCIAL:=edtRAZAO.Text;
 end;
 
+procedure TForm6.btnCClick(Sender: TObject);
+var
+     i: integer;
+     OldMask:string;
+begin
+     // registro C1
+     PreencherHeader(ACBrPAF.PAF_C.RegistroC1); // preencher header do arquivo
+     // registro C2
+     ACBrPAF.PAF_C.RegistroC2.Clear;
+     for I := 1 to 15 do
+     begin
+       with ACBrPAF.PAF_C.RegistroC2.New do
+       begin
+          TANQUE                := '001';
+          BOMBA                 := '001';
+          BICO                  := '001';
+          COMBUSTIVEL           := GerarDados('S',20);
+          HORA_ABASTECIMENTO    := time;
+          ENCERRANTE_INICIAL    := GerarDados('I',5);
+          ENCERRANTE_FINAL      := GerarDados('I',5);
+          STATUS_ABASTECIMENTO  := 'EMITIDO CF';
+          NRO_SERIE_ECF         := GerarDados('S',14);
+          DATA                  := date;
+          HORA                  := time;
+          COO                   := GerarDados('I',3);
+          NRO_NOTA_FISCAL       := GerarDados('I',4);
+          VOLUME                := GerarDados('I',2);
+       end;
+     end;
+     OldMask := ACBrPAF.CurMascara;
+     ACBrPAF.CurMascara := '';
+     ACBrPAF.SaveFileTXT_C('PAF_C.txt');
+     ACBrPAF.CurMascara := OldMask;
+end;
+
 procedure TForm6.btnDClick(Sender: TObject);
 var
      D2: TRegistroD2;
@@ -174,7 +211,7 @@ begin
        D2.DT_DAV      :=Date-QualquerNumero;
        D2.TIT_DAV     :='Pedido';
        D2.VLT_DAV     :=GerarDados('I',2);
-       D2.CCF         :=''; // não está no layout do ato/cotepe
+//       D2.CCF         :=''; // não está no layout do ato/cotepe
      end;
      ACBrPAF.SaveFileTXT_D('PAF_D.txt');
 end;

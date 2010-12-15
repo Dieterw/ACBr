@@ -665,13 +665,14 @@ begin
                     tcDe6 : NumeroDecimais :=  6; // Incluido por Italo em 30/09/2010
                     tcDe10: NumeroDecimais := 10;
                   end;
-                  ConteudoProcessado  := FormatFloat('0.000000000000', valor);
-                  EstaVazio           := (valor = 0) and (ocorrencias = 0);
-                  if StrToInt(Copy(ConteudoProcessado, pos(DecimalSeparator, ConteudoProcessado) + NumeroDecimais + 1, 6)) > 0 then
+                  ConteudoProcessado := FloatToStr(valor);
+                  if StrToIntDef(Copy(ConteudoProcessado, pos(DecimalSeparator, ConteudoProcessado) + NumeroDecimais + 1, 6),0) > 0 then
                     walerta(ID, Tag, Descricao, ERR_MSG_MAXIMO_DECIMAIS + ' ' + IntToStr(NumeroDecimais));
 
                   ConteudoProcessado := FormatFloat('0.' + StringOfChar('0', NumeroDecimais), valor);
                   ConteudoProcessado := StringReplace(ConteudoProcessado, ',', '.', [rfReplaceAll]);
+                  EstaVazio           := (valor = 0) and (ocorrencias = 0);
+
                   // Caso não seja um valor fracionário; retira os decimais.
                   if FOpcoes.FSuprimirDecimais then
                     if int(Valor) = Valor then

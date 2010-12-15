@@ -1046,7 +1046,7 @@ var
 
  Tipo, I : Integer;
 begin
-{  I := pos('<infNFe',AXML) ;
+  I := pos('<infNFe',AXML) ;
   Tipo := 1;
   if I = 0  then
    begin
@@ -1166,7 +1166,7 @@ begin
     xmlSchemaFreeValidCtxt(valid_ctxt);
     xmlSchemaFree(schema);
     xmlSchemaFreeParserCtxt(parser_ctxt);
-    xmlFreeDoc(schema_doc);}
+    xmlFreeDoc(schema_doc);
     Result := True;
 end;
 {$ELSE}

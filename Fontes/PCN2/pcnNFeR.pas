@@ -96,7 +96,7 @@ function TNFeR.LerXml: boolean;
 var
   ok: boolean;
   i, j, k, z, nItem: integer;
-  Arquivo, Itens, ItensTemp, VersaoInfNFe, Temp_VersaoInfNFe: AnsiString;
+  Arquivo, Itens, ItensTemp, VersaoInfNFe, Temp_VersaoInfNFe, NumItem: AnsiString;
   Function VerificaParSt(const t: TpcnCSTIcms): TpcnCSTIcms;
   // 	Verifica se existe Partilha ou St
   begin
@@ -316,7 +316,9 @@ begin
   begin
     Leitor.Arquivo := 'Item '+ItensTemp;
 
-    nItem := StrToInt(copy(ItensTemp,Pos('nItem=',ItensTemp)+7,Pos('">',ItensTemp)-(Pos('nItem=',ItensTemp)+7)));
+    NumItem := copy(ItensTemp,Pos('nItem=',ItensTemp)+7,Pos('"',ItensTemp));
+    NumItem := copy(NumItem,1,Pos('"',NumItem)-1);
+    nItem := StrToInt(NumItem);
     Itens     := StringReplace(Itens, ItensTemp, '',[]);
     ItensTemp := copy(Itens,Pos('<det nItem=',Itens),(Pos('</det>',Itens)+6)-Pos('<det nItem=',Itens));
 

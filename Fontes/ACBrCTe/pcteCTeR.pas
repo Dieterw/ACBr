@@ -616,7 +616,7 @@ begin
           CTe.infCTeNorm.emiDocAnt[i01].idDocAnt.Add;
 
           i03 := 0;
-          while Leitor.rExtrai(5, 'idDocAntPag', '', i03 + 1) <> '' do
+          while Leitor.rExtrai(5, 'idDocAntPap', '', i03 + 1) <> '' do
           begin
             CTe.infCTeNorm.emiDocAnt[i01].idDocAnt[i02].idDocAntPap.Add;
             CTe.infCTeNorm.emiDocAnt[i01].idDocAnt[i02].idDocAntPap[i03].tpDoc  := Leitor.rCampo(tcInt, 'tpDoc');

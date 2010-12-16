@@ -495,7 +495,7 @@ begin
       (*N29*)NFe.Det[i].Imposto.ICMS.pCredSN      := Leitor.rCampo(tcDe2, 'pCredSN');
       (*N30*)NFe.Det[i].Imposto.ICMS.vCredICMSSN  := Leitor.rCampo(tcDe2, 'vCredICMSSN');
       (*N31*)NFe.Det[i].Imposto.ICMS.vBCSTDest    := Leitor.rCampo(tcDe2, 'vBCSTDest');
-      (*N32*)NFe.Det[i].Imposto.ICMS.vICMSSTDest  := Leitor.rCampo(tcDe2, 'vICMSSTDes');
+      (*N32*)NFe.Det[i].Imposto.ICMS.vICMSSTDest  := Leitor.rCampo(tcDe2, 'vICMSSTDest');
 
       (*N10a*)
       (*N10b*)

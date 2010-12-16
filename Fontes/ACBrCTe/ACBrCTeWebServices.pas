@@ -744,7 +744,8 @@ end;
 { TWebServices }
 procedure TWebServices.Cancela(AJustificativa: String);
 begin
-  if TACBrCTe( FACBrCTe ).Configuracoes.Geral.FormaEmissao = teNormal then
+// retirado por recomendação do documento disponivel em http://www.nfe.fazenda.gov.br/PORTAL/docs/Consumo_Indevido_Aplicacao_Cliente_v1.00.pdf
+{  if TACBrCTe( FACBrCTe ).Configuracoes.Geral.FormaEmissao = teNormal then
    begin
      if not(Self.StatusServico.Executar) then
       begin
@@ -752,7 +753,7 @@ begin
            TACBrCTe( FACBrCTe ).OnGerarLog(Self.StatusServico.Msg);
         raise Exception.Create(Self.StatusServico.Msg);
       end;
-   end;
+   end;}
 
   if not(Self.Consulta.Executar) then
      begin
@@ -774,7 +775,8 @@ end;
 
 procedure TWebServices.Inutiliza(CNPJ, AJustificativa: String; Ano, Modelo, Serie, NumeroInicial, NumeroFinal : Integer);
 begin
-  if TACBrCTe( FACBrCTe ).Configuracoes.Geral.FormaEmissao = teNormal then
+// retirado por recomendação do documento disponivel em http://www.nfe.fazenda.gov.br/PORTAL/docs/Consumo_Indevido_Aplicacao_Cliente_v1.00.pdf
+{  if TACBrCTe( FACBrCTe ).Configuracoes.Geral.FormaEmissao = teNormal then
    begin
      if not(Self.StatusServico.Executar) then
       begin
@@ -784,7 +786,7 @@ begin
                                '- Inativo ou Inoperante tente novamente.'+LineBreak+
                                Self.StatusServico.Msg);
       end;
-   end;
+   end;}
 
   Self.Inutilizacao.CTeChave      := 'ID';
   Self.Inutilizacao.CNPJ          := CNPJ;
@@ -836,12 +838,13 @@ end;
 
 function TWebServices.Envia(ALote: Integer): Boolean;
 begin
-  if not(Self.StatusServico.Executar) then
+// retirado por recomendação do documento disponivel em http://www.nfe.fazenda.gov.br/PORTAL/docs/Consumo_Indevido_Aplicacao_Cliente_v1.00.pdf
+{  if not(Self.StatusServico.Executar) then
      begin
        if Assigned(TACBrCTe( FACBrCTe ).OnGerarLog) then
           TACBrCTe( FACBrCTe ).OnGerarLog(Self.StatusServico.Msg);
        raise Exception.Create(Self.StatusServico.Msg);
-     end;
+     end;}
 
   self.Enviar.FLote := ALote;
   if not(Self.Enviar.Executar) then

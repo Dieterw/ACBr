@@ -209,6 +209,7 @@ class procedure TfrmDACTeQR.SavePDF(AFile               : String;
 {$IFDEF QReport_PDF}
  var
   qf : TQRPDFDocumentFilter;
+  i:   integer;
 {$ENDIF}
 begin
   {Descomentar para usar PDF}

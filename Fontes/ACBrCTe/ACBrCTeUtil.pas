@@ -1180,24 +1180,24 @@ begin
     I := pos('<Signature', AStr);
   AStr := copy(AStr, 1, I - 1) +
     '<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">' +
-    '<SignedInfo>' +
-    '<CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>' +
-    '<SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />' +
-    '<Reference URI="#' + URI + '">' +
-    '<Transforms>' +
-    '<Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />' +
-    '<Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />' +
-    '</Transforms>' +
-    '<DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />' +
-    '<DigestValue></DigestValue>' +
-    '</Reference>' +
-    '</SignedInfo>' +
-    '<SignatureValue></SignatureValue>' +
-    '<KeyInfo>' +
-    '<X509Data>' +
-    '<X509Certificate></X509Certificate>' +
-    '</X509Data>' +
-    '</KeyInfo>' +
+      '<SignedInfo>' +
+        '<CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />' +
+        '<SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />' +
+        '<Reference URI="#' + URI + '">' +
+          '<Transforms>' +
+            '<Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />' +
+            '<Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />' +
+          '</Transforms>' +
+          '<DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />' +
+          '<DigestValue></DigestValue>' +
+        '</Reference>' +
+      '</SignedInfo>' +
+      '<SignatureValue></SignatureValue>' +
+      '<KeyInfo>' +
+        '<X509Data>' +
+          '<X509Certificate></X509Certificate>' +
+        '</X509Data>' +
+      '</KeyInfo>' +
     '</Signature>';
 
   if Tipo = 1 then
@@ -1276,7 +1276,7 @@ begin
     else if Tipo = 3 then
       XML := copy(XML, 1, pos('</inutCTe>', XML) - 1);
 
-    XML := XML + '<Signature xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />';
+    XML := XML + '<Signature xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />';
     XML := XML + '<Reference URI="#' + URI + '">';
     XML := XML + '<Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />';
     XML := XML + '<DigestValue></DigestValue></Reference></SignedInfo><SignatureValue></SignatureValue><KeyInfo></KeyInfo></Signature>';

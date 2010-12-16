@@ -267,18 +267,18 @@ begin
   if CTe.procCTe.nProt <> '' then
    begin
      xProtCTe :=
-     (****)'<protCTe ' + V1_03 + '>' +
-     (******)'<infProt>'+
-     (*********)'<tpAmb>'+TpAmbToStr(CTe.procCTe.tpAmb)+'</tpAmb>'+
-     (*********)'<verAplic>'+CTe.procCTe.verAplic+'</verAplic>'+
-     (*********)'<chCTe>'+CTe.procCTe.chCTe+'</chCTe>'+
-     (*********)'<dhRecbto>'+FormatDateTime('yyyy-mm-dd"T"hh:nn:ss',CTe.procCTe.dhRecbto)+'</dhRecbto>'+
-     (*********)'<nProt>'+CTe.procCTe.nProt+'</nProt>'+
-     (*********)'<digVal>'+CTe.procCTe.digVal+'</digVal>'+
-     (*********)'<cStat>'+IntToStr(CTe.procCTe.cStat)+'</cStat>'+
-     (*********)'<xMotivo>'+CTe.procCTe.xMotivo+'</xMotivo>'+
-     (******)'</infProt>'+
-     {****}'</protCTe>';
+           '<protCTe ' + V1_03 + '>' +
+             '<infProt>'+
+               '<tpAmb>'+TpAmbToStr(CTe.procCTe.tpAmb)+'</tpAmb>'+
+               '<verAplic>'+CTe.procCTe.verAplic+'</verAplic>'+
+               '<chCTe>'+CTe.procCTe.chCTe+'</chCTe>'+
+               '<dhRecbto>'+FormatDateTime('yyyy-mm-dd"T"hh:nn:ss',CTe.procCTe.dhRecbto)+'</dhRecbto>'+
+               '<nProt>'+CTe.procCTe.nProt+'</nProt>'+
+               '<digVal>'+CTe.procCTe.digVal+'</digVal>'+
+               '<cStat>'+IntToStr(CTe.procCTe.cStat)+'</cStat>'+
+               '<xMotivo>'+CTe.procCTe.xMotivo+'</xMotivo>'+
+             '</infProt>'+
+           '</protCTe>';
 
      Gerador.wTexto(xProtCTe);
      Gerador.wGrupo('/cteProc');

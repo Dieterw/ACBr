@@ -201,36 +201,36 @@ begin
            XMLinfProt2.Text:=RetornarConteudoEntre(XMLinfProt.text, '<infProt>', '</infProt>');
 
         xProtCTe :=
-        (****)'<protCTe ' + V1_03 +'>' +
-        (******)'<infProt>' +
-        (*********)PreencherTAG('tpAmb', XMLinfProt.text) +
-        (*********)PreencherTAG('verAplic', XMLinfProt.text) +
-        (*********)PreencherTAG('chCTe', XMLinfProt.text) +
-        (*********)PreencherTAG('dhRecbto', XMLinfProt2.text) +
-        (*********)PreencherTAG('nProt', XMLinfProt2.text) +
-        (*********)PreencherTAG('digVal', XMLinfProt.text) +
-        (*********)PreencherTAG('cStat', XMLinfProt.text) +
-        (*********)PreencherTAG('xMotivo', XMLinfProt.text) +
-        (******)'</infProt>' +
-        (****)'</protCTe>';
+              '<protCTe ' + V1_03 +'>' +
+                '<infProt>' +
+                  PreencherTAG('tpAmb', XMLinfProt.text) +
+                  PreencherTAG('verAplic', XMLinfProt.text) +
+                  PreencherTAG('chCTe', XMLinfProt.text) +
+                  PreencherTAG('dhRecbto', XMLinfProt2.text) +
+                  PreencherTAG('nProt', XMLinfProt2.text) +
+                  PreencherTAG('digVal', XMLinfProt.text) +
+                  PreencherTAG('cStat', XMLinfProt.text) +
+                  PreencherTAG('xMotivo', XMLinfProt.text) +
+                '</infProt>' +
+              '</protCTe>';
       end;
     end;
 
     if ProtLido
      then begin
       xProtCTe :=
-      (****)'<protCTe ' + V1_03 + '>' +
-      (******)'<infProt>' +
-      (*********)'<tpAmb>'+TpAmbToStr(FtpAmb)+'</tpAmb>'+
-      (*********)'<verAplic>'+FverAplic+'</verAplic>'+
-      (*********)'<chCTe>'+FchCTe+'</chCTe>'+
-      (*********)'<dhRecbto>'+FormatDateTime('yyyy-mm-dd"T"hh:nn:ss',FdhRecbto)+'</dhRecbto>'+
-      (*********)'<nProt>'+FnProt+'</nProt>'+
-      (*********)'<digVal>'+FdigVal+'</digVal>'+
-      (*********)'<cStat>'+IntToStr(FcStat)+'</cStat>'+
-      (*********)'<xMotivo>'+FxMotivo+'</xMotivo>'+
-      (******)'</infProt>'+
-      (****)'</protCTe>';
+            '<protCTe ' + V1_03 + '>' +
+              '<infProt>' +
+                '<tpAmb>'+TpAmbToStr(FtpAmb)+'</tpAmb>'+
+                '<verAplic>'+FverAplic+'</verAplic>'+
+                '<chCTe>'+FchCTe+'</chCTe>'+
+                '<dhRecbto>'+FormatDateTime('yyyy-mm-dd"T"hh:nn:ss',FdhRecbto)+'</dhRecbto>'+
+                '<nProt>'+FnProt+'</nProt>'+
+                '<digVal>'+FdigVal+'</digVal>'+
+                '<cStat>'+IntToStr(FcStat)+'</cStat>'+
+                '<xMotivo>'+FxMotivo+'</xMotivo>'+
+              '</infProt>'+
+            '</protCTe>';
      end;
 
     // Gerar arquivo

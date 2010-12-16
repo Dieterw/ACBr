@@ -2058,10 +2058,12 @@ procedure TACBrSintegra.GerarRegistros90;
 var
   wregistro: string;
   wtotal88: Integer;
+  WTotal90:integer;
+  WSeque90:integer;
 begin
+
 wregistro:='90'+TBStrZero(TiraPontos(Registro10.CNPJ),14);
 wregistro:=wregistro+Padl(TiraPontos(Registro10.Inscricao),14);
-
 if Registros50.Count>0 then
   wregistro:=wregistro+'50'+TBStrZero(IntToStr(Registros50.Count),8);
 if Registros51.Count>0 then
@@ -2123,9 +2125,14 @@ end;
 
 if wtotal88>0 then
   wregistro:=wregistro+'88'+TBStrZero(IntToStr(wtotal88),8);
-
-wregistro:=wregistro+Space(125-length(wregistro))+'2';
-WriteRecord(wregistro);
+wtotal90:=3;
+WSeque90:=1;
+if length(wregistro)>30 then begin
+   wregistro:=wregistro+Space(125-length(wregistro))+inttostr(wseque90+1);
+   WriteRecord(wregistro);
+   inc(wtotal90);
+   inc(WSeque90);
+end;
 
 wregistro:='90'+TBStrZero(TiraPontos(Registro10.CNPJ),14);
 wregistro:=wregistro+Padl(TiraPontos(Registro10.Inscricao),14);
@@ -2134,9 +2141,9 @@ wregistro:=wregistro+'99'+TBStrZero(IntToStr(Registros50.Count+Registros51.Count
   (Registros60M.Count+Registros60A.Count+Registros60D.Count+Registros60I.Count+Registros60R.Count)+
   (Registros61.Count+Registros61R.Count)+Registros70.Count+Registros71.Count+
   Registros74.Count+Registros75.Count+Registros76.Count+Registros77.Count+
-  Registros85.Count+Registros86.Count+wtotal88+4),8);
+  Registros85.Count+Registros86.Count+wtotal88+wtotal90),8);
 
-wregistro:=wregistro+Space(125-length(wregistro))+'2';
+wregistro:=wregistro+Space(125-length(wregistro))+inttostr(wseque90);
 WriteRecord(wregistro);
 end;
 

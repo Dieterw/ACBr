@@ -46,8 +46,6 @@ uses
   SysUtils, Classes, Contnrs, DateUtils;
 
 type
-  TRegistro9900List = class;
-
   //REGISTRO 9001: ABERTURA DO BLOCO 9
   TRegistro9001 = class(TOpenBlocos)
   private

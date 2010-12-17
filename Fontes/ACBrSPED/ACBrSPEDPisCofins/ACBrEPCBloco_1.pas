@@ -46,33 +46,10 @@ uses
   SysUtils, Classes, Contnrs, DateUtils;
 
 type
-  TRegistro1010List = class;
-  TRegistro1020List = class;
-  TRegistro1100List = class;
-  TRegistro1101List = class;
-  TRegistro1200List = class;
-  TRegistro1210List = class;
-  TRegistro1220List = class;
-  TRegistro1300List = class;
-  TRegistro1500List = class;
-  TRegistro1501List = class;
-  TRegistro1600List = class;
-  TRegistro1610List = class;
-  TRegistro1620List = class;
-  TRegistro1700List = class;
-  TRegistro1800List = class;
-  TRegistro1809List = class;
-
-
   //REGISTRO 1001: ABERTURA DO BLOCO 1
   TRegistro1001 = class(TOpenBlocos)
   private
-    FRegistro1001: TRegistro1001List;
   public
-    constructor Create; virtual; /// Create
-    destructor Destroy; override; /// Destroy
-
-    property Registro1001: TRegistro1001List read FRegistro1001 write FRegistro1001;
   end;
 
   //REGISTRO 1010: PROCESSO REFERENCIADO – AÇÃO JUDICIAL
@@ -102,7 +79,6 @@ type
     function New: TRegistro1010;
     property Items[Index: Integer]: TRegistro1010 read GetItem write SetItem;
   end;
-
 
   //REGISTRO 1020: PROCESSO REFERENCIADO – PROCESSO ADMINISTRATIVO
   TRegistro1020 = class
@@ -679,18 +655,5 @@ type
   end;
 
 implementation
-
-{ TRegistroA001 }
-
-constructor TRegistro1001.Create;
-begin
-  FRegistro1001 := TRegistro1001List.Create;
-end;
-
-destructor TRegistro1001.Destroy;
-begin
-  FRegistro1001.Free;
-  inherited;
-end;
 
 end.

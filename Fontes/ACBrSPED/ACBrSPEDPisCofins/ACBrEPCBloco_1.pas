@@ -46,10 +46,33 @@ uses
   SysUtils, Classes, Contnrs, DateUtils;
 
 type
+  TRegistro1010List = class;
+  TRegistro1020List = class;
+  TRegistro1100List = class;
+  TRegistro1101List = class;
+  TRegistro1200List = class;
+  TRegistro1210List = class;
+  TRegistro1220List = class;
+  TRegistro1300List = class;
+  TRegistro1500List = class;
+  TRegistro1501List = class;
+  TRegistro1600List = class;
+  TRegistro1610List = class;
+  TRegistro1620List = class;
+  TRegistro1700List = class;
+  TRegistro1800List = class;
+  TRegistro1809List = class;
+
+
   //REGISTRO 1001: ABERTURA DO BLOCO 1
   TRegistro1001 = class(TOpenBlocos)
   private
+    FRegistro1001: TRegistro1001List;
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
+    property Registro1001: TRegistro1001List read FRegistro1001 write FRegistro1001;
   end;
 
   //REGISTRO 1010: PROCESSO REFERENCIADO – AÇÃO JUDICIAL
@@ -70,6 +93,17 @@ type
     property DT_SENT_JUD: TDateTime read FDT_SENT_JUD write FDT_SENT_JUD;
   end;
 
+  // Registro 1010 - Lista
+  TRegistro1010List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistro1010;
+    procedure SetItem(Index: Integer; const Value: TRegistro1010);
+  public
+    function New: TRegistro1010;
+    property Items[Index: Integer]: TRegistro1010 read GetItem write SetItem;
+  end;
+
+
   //REGISTRO 1020: PROCESSO REFERENCIADO – PROCESSO ADMINISTRATIVO
   TRegistro1020 = class
   private
@@ -80,6 +114,16 @@ type
     property NUM_PROC: string read FNUM_PROC write FNUM_PROC;
     property IND_NAT_ACAO: Integer read FIND_NAT_ACAO write FIND_NAT_ACAO;
     property DT_DEC_ADM: TDateTime read FDT_DEC_ADM write FDT_DEC_ADM;
+  end;
+
+  // Registro 1020 - Lista
+  TRegistro1020List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistro1020;
+    procedure SetItem(Index: Integer; const Value: TRegistro1020);
+  public
+    function New: TRegistro1020;
+    property Items[Index: Integer]: TRegistro1020 read GetItem write SetItem;
   end;
 
   //REGISTRO 1100: CONTROLE DE CRÉDITOS FISCAIS – PIS/PASEP
@@ -120,6 +164,16 @@ type
     property VL_CRED_TRANS: Currency read FVL_CRED_TRANS write FVL_CRED_TRANS;
     property VL_CRED_OUT: Currency read FVL_CRED_OUT write FVL_CRED_OUT;
     property SLD_CRED_FIM: Currency read FSLD_CRED_FIM write FSLD_CRED_FIM;
+  end;
+
+  // Registro 1100 - Lista
+  TRegistro1100List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistro1100;
+    procedure SetItem(Index: Integer; const Value: TRegistro1100);
+  public
+    function New: TRegistro1100;
+    property Items[Index: Integer]: TRegistro1100 read GetItem write SetItem;
   end;
 
   //REGISTRO 1101: APURAÇÃO DE CRÉDITO EXTEMPORÂNEO - DOCUMENTOS E OPERAÇÕES DE PERÍODOS ANTERIORES – PIS/PASEP
@@ -170,6 +224,16 @@ type
     property CNPJ: Integer read FCNPJ write FCNPJ;
   end;
 
+  // Registro 1101 - Lista
+  TRegistro1101List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistro1101;
+    procedure SetItem(Index: Integer; const Value: TRegistro1101);
+  public
+    function New: TRegistro1101;
+    property Items[Index: Integer]: TRegistro1101 read GetItem write SetItem;
+  end;
+
   //REGISTRO 1102: DETALHAMENTO DO CRÉDITO EXTEMPORANEO VINCULADO A MAIS DE UM TIPO DE RECEITA – PIS/PASEP
   TRegistro1102 = class
   private
@@ -208,6 +272,16 @@ type
     property DT_RECOL: TDateTime read FDT_RECOL write FDT_RECOL;
   end;
 
+  // Registro 1200 - Lista
+  TRegistro1200List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistro1200;
+    procedure SetItem(Index: Integer; const Value: TRegistro1200);
+  public
+    function New: TRegistro1200;
+    property Items[Index: Integer]: TRegistro1200 read GetItem write SetItem;
+  end;
+
   //REGISTRO 1210: DETALHAMENTO DA CONTRIBUIÇÃO SOCIAL EXTEMPORÂNEA – PIS/PASEP
   TRegistro1210 = class
   private
@@ -234,6 +308,16 @@ type
     property DESC_COMPL: string read FDESC_COMPL write FDESC_COMPL;
   end;
 
+  // Registro 1210 - Lista
+  TRegistro1210List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistro1210;
+    procedure SetItem(Index: Integer; const Value: TRegistro1210);
+  public
+    function New: TRegistro1210;
+    property Items[Index: Integer]: TRegistro1210 read GetItem write SetItem;
+  end;
+
   //REGISTRO 1220: DEMONSTRAÇÃO DO CRÉDITO A DESCONTAR DA CONTRIBUIÇÃO EXTEMPORÂNEA – PIS/PASEP
   TRegistro1220 = class
   private
@@ -246,6 +330,16 @@ type
     property ORIG_CRED: Integer read FORIG_CRED write FORIG_CRED;
     property COD_CRED: Integer read FCOD_CRED write FCOD_CRED;
     property VL_CRED: Currency read FVL_CRED write FVL_CRED;
+  end;
+
+  // Registro 1220 - Lista
+  TRegistro1220List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistro1220;
+    procedure SetItem(Index: Integer; const Value: TRegistro1220);
+  public
+    function New: TRegistro1220;
+    property Items[Index: Integer]: TRegistro1220 read GetItem write SetItem;
   end;
 
   //REGISTRO 1300: CONTROLE DOS VALORES RETIDOS NA FONTE – PIS/PASEP
@@ -266,6 +360,16 @@ type
     property VL_RET_PER: Currency read FVL_RET_PER write FVL_RET_PER;
     property VL_RET_DCOMP: Currency read FVL_RET_DCOMP write FVL_RET_DCOMP;
     property SLD_RET: Currency read FSLD_RET write FSLD_RET;
+  end;
+
+  // Registro 1300 - Lista
+  TRegistro1300List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistro1300;
+    procedure SetItem(Index: Integer; const Value: TRegistro1300);
+  public
+    function New: TRegistro1300;
+    property Items[Index: Integer]: TRegistro1300 read GetItem write SetItem;
   end;
 
   //REGISTRO 1500: CONTROLE DE CRÉDITOS FISCAIS – COFINS
@@ -306,6 +410,16 @@ type
     property VL_CRED_TRANS: Currency read FVL_CRED_TRANS write FVL_CRED_TRANS;
     property VL_CRED_OUT: Currency read FVL_CRED_OUT write FVL_CRED_OUT;
     property SLD_CRED_FIM: Currency read FSLD_CRED_FIM write FSLD_CRED_FIM;
+  end;
+
+  // Registro 1500 - Lista
+  TRegistro1500List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistro1500;
+    procedure SetItem(Index: Integer; const Value: TRegistro1500);
+  public
+    function New: TRegistro1500;
+    property Items[Index: Integer]: TRegistro1500 read GetItem write SetItem;
   end;
 
   //REGISTRO 1501: APURAÇÃO DE CRÉDITO EXTEMPORÂNEO - DOCUMENTOS E OPERAÇÕES DE PERÍODOS ANTERIORES – COFINS
@@ -356,6 +470,16 @@ type
     property CNPJ: Integer read FCNPJ write FCNPJ;
   end;
 
+  // Registro 1501 - Lista
+  TRegistro1501List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistro1501;
+    procedure SetItem(Index: Integer; const Value: TRegistro1501);
+  public
+    function New: TRegistro1501;
+    property Items[Index: Integer]: TRegistro1501 read GetItem write SetItem;
+  end;
+
   //REGISTRO 1502: DETALHAMENTO DO CRÉDITO EXTEMPORÂNEO VINCULADO A MAIS DE UM TIPO DE RECEITA – COFINS
   TRegistro1502 = class
   private
@@ -394,6 +518,16 @@ type
     property DT_RECOL: TDateTime read FDT_RECOL write FDT_RECOL;
   end;
 
+  // Registro 1600 - Lista
+  TRegistro1600List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistro1600;
+    procedure SetItem(Index: Integer; const Value: TRegistro1600);
+  public
+    function New: TRegistro1600;
+    property Items[Index: Integer]: TRegistro1600 read GetItem write SetItem;
+  end;
+
   //REGISTRO 1610: DETALHAMENTO DA CONTRIBUIÇÃO SOCIAL EXTEMPORÂNEA – COFINS
   TRegistro1610 = class
   private
@@ -420,6 +554,16 @@ type
     property DESC_COMPL: string read FDESC_COMPL write FDESC_COMPL;
   end;
 
+  // Registro 1610 - Lista
+  TRegistro1610List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistro1610;
+    procedure SetItem(Index: Integer; const Value: TRegistro1610);
+  public
+    function New: TRegistro1610;
+    property Items[Index: Integer]: TRegistro1610 read GetItem write SetItem;
+  end;
+
   //REGISTRO 1620: DEMONSTRAÇÃO DO CRÉDITO A DESCONTAR DA CONTRIBUIÇÃO EXTEMPORÂNEA – COFINS
   TRegistro1620 = class
   private
@@ -432,6 +576,16 @@ type
     property ORIG_CRED: Integer read FORIG_CRED write FORIG_CRED;
     property COD_CRED: Integer read FCOD_CRED write FCOD_CRED;
     property VL_CRED: Currency read FVL_CRED write FVL_CRED;
+  end;
+
+  // Registro 1620 - Lista
+  TRegistro1620List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistro1620;
+    procedure SetItem(Index: Integer; const Value: TRegistro1620);
+  public
+    function New: TRegistro1620;
+    property Items[Index: Integer]: TRegistro1620 read GetItem write SetItem;
   end;
 
   //REGISTRO 1700: CONTROLE DOS VALORES RETIDOS NA FONTE – COFINS
@@ -452,6 +606,16 @@ type
     property VL_RET_PER: Currency read FVL_RET_PER write FVL_RET_PER;
     property VL_RET_DCOMP: Currency read FVL_RET_DCOMP write FVL_RET_DCOMP;
     property SLD_RET: Currency read FSLD_RET write FSLD_RET;
+  end;
+
+  // Registro 1700 - Lista
+  TRegistro1700List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistro1700;
+    procedure SetItem(Index: Integer; const Value: TRegistro1700);
+  public
+    function New: TRegistro1700;
+    property Items[Index: Integer]: TRegistro1700 read GetItem write SetItem;
   end;
 
   //REGISTRO 1800: INCORPORAÇÃO IMOBILIÁRIA - RET
@@ -476,6 +640,16 @@ type
     property COD_REC: string read FCOD_REC write FCOD_REC;
   end;
 
+  // Registro 1800 - Lista
+  TRegistro1800List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistro1800;
+    procedure SetItem(Index: Integer; const Value: TRegistro1800);
+  public
+    function New: TRegistro1800;
+    property Items[Index: Integer]: TRegistro1800 read GetItem write SetItem;
+  end;
+
   //REGISTRO 1809: PROCESSO REFERENCIADO
   TRegistro1809 = class
   private
@@ -484,6 +658,16 @@ type
   public
     property NUM_PROC: string read FNUM_PROC write FNUM_PROC;
     property IND_PROC: Integer read FIND_PROC write FIND_PROC;
+  end;
+
+  // Registro 1809 - Lista
+  TRegistro1809List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistro1809;
+    procedure SetItem(Index: Integer; const Value: TRegistro1809);
+  public
+    function New: TRegistro1809;
+    property Items[Index: Integer]: TRegistro1809 read GetItem write SetItem;
   end;
 
   //REGISTRO 1990: ENCERRAMENTO DO BLOCO 1
@@ -495,5 +679,18 @@ type
   end;
 
 implementation
+
+{ TRegistroA001 }
+
+constructor TRegistro1001.Create;
+begin
+  FRegistro1001 := TRegistro1001List.Create;
+end;
+
+destructor TRegistro1001.Destroy;
+begin
+  FRegistro1001.Free;
+  inherited;
+end;
 
 end.

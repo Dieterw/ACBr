@@ -46,6 +46,8 @@ uses
   SysUtils, Classes, Contnrs, DateUtils;
 
 type
+  TRegistro9900List = class;
+
   //REGISTRO 9001: ABERTURA DO BLOCO 9
   TRegistro9001 = class(TOpenBlocos)
   private
@@ -70,6 +72,16 @@ type
     property QTD_LIN_9: Integer read FQTD_LIN_9 write FQTD_LIN_9;
   end;
 
+  // Registro 9990 - Lista
+  TRegistro9990List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistro9990;
+    procedure SetItem(Index: Integer; const Value: TRegistro9990);
+  public
+    function New: TRegistro9990;
+    property Items[Index: Integer]: TRegistro9990 read GetItem write SetItem;
+  end;
+
   //REGISTRO 9999: ENCERRAMENTO DO ARQUIVO DIGITAL
   TRegistro9999 = class
   private
@@ -79,5 +91,19 @@ type
   end;
 
 implementation
+
+{ TRegistro9990 }
+
+constructor TRegistro9990.Create;
+begin
+  FRegistro9990 := TRegistro9990List.Create;
+end;
+
+destructor TRegistro9990.Destroy;
+begin
+  FRegistro9990.Free;
+  inherited;
+end;
+
 
 end.

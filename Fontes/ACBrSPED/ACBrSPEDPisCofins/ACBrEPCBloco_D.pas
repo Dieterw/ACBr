@@ -46,6 +46,28 @@ uses
   SysUtils, Classes, Contnrs, DateUtils;
 
 type
+   TRegistroD010List = class;
+   TRegistroD100List = class;
+   TRegistroD101List = class;
+   TRegistroD105List = class;
+   TRegistroD111List = class;
+   TRegistroD200List = class;
+   TRegistroD201List = class;
+   TRegistroD205List = class;
+   TRegistroD209List = class;
+   TRegistroD300List = class;
+   TRegistroD309List = class;
+   TRegistroD350List = class;
+   TRegistroD359List = class;
+   TRegistroD500List = class;
+   TRegistroD501List = class;
+   TRegistroD505List = class;
+   TRegistroD509List = class;
+   TRegistroD600List = class;
+   TRegistroD601List = class;
+   TRegistroD605List = class;
+   TRegistroD609List = class;
+
   //REGISTRO D001: ABERTURA DO BLOCO D
   TRegistroD001 = class(TOpenBlocos)
   private
@@ -58,6 +80,16 @@ type
     fCNPJ: Integer;        //02	CNPJ	Número de inscrição do estabelecimento no CNPJ.	N	014*	-
   public
     property CNPJ: Integer read FCNPJ write FCNPJ;
+  end;
+
+  // Registro D010 - Lista
+  TRegistroD010List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroD010;
+    procedure SetItem(Index: Integer; const Value: TRegistroD010);
+  public
+    function New: TRegistroD010;
+    property Items[Index: Integer]: TRegistroD010 read GetItem write SetItem;
   end;
 
   //REGISTRO D100: AQUISIÇÃO DE SERVIÇOS DE TRANSPORTE - NOTA FISCAL DE SERVIÇO DE TRANSPORTE (CÓDIGO 07) E CONHECIMENTOS DE TRANSPORTE RODOVIÁRIO DE CARGAS (CÓDIGO 08), CONHECIMENTO DE TRANSPORTE DE CARGAS AVULSO (CÓDIGO 8B), AQUAVIÁRIO DE CARGAS (CÓDIGO 09), AÉREO (CÓDIGO 10), FERROVIÁRIO DE CARGAS (CÓDIGO 11), MULTIMODAL DE CARGAS (CÓDIGO 26), NOTA FISCAL DE TRANSPORTE FERROVIÁRIO DE CARGA (CÓDIGO 27) E CONHECIMENTO DE TRANSPORTE ELETRÔNICO – CT-e (CÓDIGO 57)
@@ -110,6 +142,16 @@ type
     property COD_CTA: string read FCOD_CTA write FCOD_CTA;
   end;
 
+  // Registro D100 - Lista
+  TRegistroD100List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroD100;
+    procedure SetItem(Index: Integer; const Value: TRegistroD100);
+  public
+    function New: TRegistroD100;
+    property Items[Index: Integer]: TRegistroD100 read GetItem write SetItem;
+  end;
+
   //REGISTRO D101: COMPLEMENTO DO DOCUMENTO DE TRANSPORTE (Códigos 07, 08, 8B, 09, 10, 11, 26, 27 e 57) – PIS/PASEP
   TRegistroD101 = class
   private
@@ -130,6 +172,16 @@ type
     property ALIQ_PIS: Currency read FALIQ_PIS write FALIQ_PIS;
     property VL_PIS: Currency read FVL_PIS write FVL_PIS;
     property COD_CTA: string read FCOD_CTA write FCOD_CTA;
+  end;
+
+  // Registro D101 - Lista
+  TRegistroD101List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroD101;
+    procedure SetItem(Index: Integer; const Value: TRegistroD101);
+  public
+    function New: TRegistroD101;
+    property Items[Index: Integer]: TRegistroD101 read GetItem write SetItem;
   end;
 
   //REGISTRO D105: COMPLEMENTO DO DOCUMENTO DE TRANSPORTE (Códigos 07, 08, 8B, 09, 10, 11, 26, 27 e 57) – COFINS
@@ -154,6 +206,16 @@ type
     property COD_CTA: string read FCOD_CTA write FCOD_CTA;
   end;
 
+  // Registro D105 - Lista
+  TRegistroD105List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroD105;
+    procedure SetItem(Index: Integer; const Value: TRegistroD105);
+  public
+    function New: TRegistroD105;
+    property Items[Index: Integer]: TRegistroD105 read GetItem write SetItem;
+  end;
+
   //REGISTRO D111: PROCESSO REFERENCIADO
   TRegistroD111 = class
   private
@@ -162,6 +224,16 @@ type
   public
     property NUM_PROC: string read FNUM_PROC write FNUM_PROC;
     property IND_PROC: Integer read FIND_PROC write FIND_PROC;
+  end;
+
+  // Registro D111 - Lista
+  TRegistroD111List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroD111;
+    procedure SetItem(Index: Integer; const Value: TRegistroD111);
+  public
+    function New: TRegistroD111;
+    property Items[Index: Integer]: TRegistroD111 read GetItem write SetItem;
   end;
 
   //REGISTRO D200: RESUMO DA ESCRITURAÇÃO DIÁRIA – PRESTAÇÃO DE SERVIÇOS DE TRANSPORTE - NOTA FISCAL DE SERVIÇO DE TRANSPORTE (CÓDIGO 07) E CONHECIMENTOS DE TRANSPORTE RODOVIÁRIO DE CARGAS (CÓDIGO 08), CONHECIMENTO DE TRANSPORTE DE CARGAS AVULSO (CÓDIGO 8B), AQUAVIÁRIO DE CARGAS (CÓDIGO 09), AÉREO (CÓDIGO 10), FERROVIÁRIO DE CARGAS (CÓDIGO 11), MULTIMODAL DE CARGAS (CÓDIGO 26), NOTA FISCAL DE TRANSPORTE FERROVIÁRIO DE CARGA (CÓDIGO 27) E CONHECIMENTO DE TRANSPORTE ELETRÔNICO – CT-e (CÓDIGO 57)
@@ -190,6 +262,16 @@ type
     property VL_DESC: Currency read FVL_DESC write FVL_DESC;
   end;
 
+  // Registro D200 - Lista
+  TRegistroD200List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroD200;
+    procedure SetItem(Index: Integer; const Value: TRegistroD200);
+  public
+    function New: TRegistroD200;
+    property Items[Index: Integer]: TRegistroD200 read GetItem write SetItem;
+  end;
+
   //REGISTRO D201: TOTALIZAÇÃO DO RESUMO DIÁRIO – PIS/PASEP
   TRegistroD201 = class
   private
@@ -206,6 +288,16 @@ type
     property ALIQ_PIS: Currency  read FALIQ_PIS write FALIQ_PIS;
     property VL_PIS: Currency  read FVL_PIS write FVL_PIS;
     property COD_CTA: string  read FCOD_CTA write FCOD_CTA;
+  end;
+
+  // Registro D201 - Lista
+  TRegistroD201List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroD201;
+    procedure SetItem(Index: Integer; const Value: TRegistroD201);
+  public
+    function New: TRegistroD201;
+    property Items[Index: Integer]: TRegistroD201 read GetItem write SetItem;
   end;
 
   //REGISTRO D205: TOTALIZAÇÃO DO RESUMO DIÁRIO – COFINS
@@ -226,6 +318,16 @@ type
     property COD_CTA: string read FCOD_CTA write FCOD_CTA;
   end;
 
+  // Registro D205 - Lista
+  TRegistroD205List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroD205;
+    procedure SetItem(Index: Integer; const Value: TRegistroD205);
+  public
+    function New: TRegistroD205;
+    property Items[Index: Integer]: TRegistroD205 read GetItem write SetItem;
+  end;
+
   //REGISTRO D209: PROCESSO REFERENCIADO
   TRegistroD209 = class
   private
@@ -234,6 +336,16 @@ type
   public
     property NUM_PROC: string read FNUM_PROC write FNUM_PROC;
     property IND_PROC: Integer read FIND_PROC write FIND_PROC;
+  end;
+
+  // Registro D209 - Lista
+  TRegistroD209List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroD209;
+    procedure SetItem(Index: Integer; const Value: TRegistroD209);
+  public
+    function New: TRegistroD209;
+    property Items[Index: Integer]: TRegistroD209 read GetItem write SetItem;
   end;
 
   //REGISTRO D300: RESUMO DA ESCRITURAÇÃO DIÁRIA - BILHETES CONSOLIDADOS DE PASSAGEM RODOVIÁRIO (CÓDIGO 13), DE PASSAGEM AQUAVIÁRIO (CÓDIGO 14), DE PASSAGEM E NOTA DE BAGAGEM (CÓDIGO 15) E DE PASSAGEM FERROVIÁRIO (CÓDIGO 16)
@@ -278,6 +390,16 @@ type
     property COD_CTA: string read FCOD_CTA write FCOD_CTA;
   end;
 
+  // Registro D300 - Lista
+  TRegistroD300List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroD300;
+    procedure SetItem(Index: Integer; const Value: TRegistroD300);
+  public
+    function New: TRegistroD300;
+    property Items[Index: Integer]: TRegistroD300 read GetItem write SetItem;
+  end;
+
   //REGISTRO D309: PROCESSO REFERENCIADO
   TRegistroD309 = class
   private
@@ -286,6 +408,16 @@ type
   public
     property NUM_PROC: string read FNUM_PROC write FNUM_PROC;
     property IND_PROC: Integer read FIND_PROC write FIND_PROC;
+  end;
+
+  // Registro D309 - Lista
+  TRegistroD309List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroD309;
+    procedure SetItem(Index: Integer; const Value: TRegistroD309);
+  public
+    function New: TRegistroD309;
+    property Items[Index: Integer]: TRegistroD309 read GetItem write SetItem;
   end;
 
   //REGISTRO D350: RESUMO DIÁRIO DE CUPOM FISCAL EMITIDO POR ECF - (CÓDIGOS 2E, 13, 14, 15 e 16)
@@ -338,6 +470,16 @@ type
     property COD_CTA: string read FCOD_CTA write FCOD_CTA;
   end;
 
+  // Registro D350 - Lista
+  TRegistroD350List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroD350;
+    procedure SetItem(Index: Integer; const Value: TRegistroD350);
+  public
+    function New: TRegistroD350;
+    property Items[Index: Integer]: TRegistroD350 read GetItem write SetItem;
+  end;
+
   //REGISTRO D359: PROCESSO REFERENCIADO
   TRegistroD359 = class
   private
@@ -346,6 +488,16 @@ type
   public
     property NUM_PROC: string read FNUM_PROC write FNUM_PROC;
     property IND_PROC: Integer read FIND_PROC write FIND_PROC;
+  end;
+
+  // Registro D359 - Lista
+  TRegistroD359List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroD359;
+    procedure SetItem(Index: Integer; const Value: TRegistroD359);
+  public
+    function New: TRegistroD359;
+    property Items[Index: Integer]: TRegistroD359 read GetItem write SetItem;
   end;
 
   //REGISTRO D500: NOTA FISCAL DE SERVIÇO DE COMUNICAÇÃO (CÓDIGO 21) E NOTA FISCAL DE SERVIÇO DE TELECOMUNICAÇÃO (CÓDIGO 22) – DOCUMENTOS DE AQUISIÇÃO COM DIREITO A CRÉDITO
@@ -396,6 +548,16 @@ type
     property VL_COFINS: Currency read FVL_COFINS write FVL_COFINS;
   end;
 
+  // Registro D500 - Lista
+  TRegistroD500List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroD500;
+    procedure SetItem(Index: Integer; const Value: TRegistroD500);
+  public
+    function New: TRegistroD500;
+    property Items[Index: Integer]: TRegistroD500 read GetItem write SetItem;
+  end;
+
   //REGISTRO D501: COMPLEMENTO DA OPERAÇÃO (CÓDIGOS 21 e 22) – PIS/PASEP
   TRegistroD501 = class
   private
@@ -414,6 +576,16 @@ type
     property ALIQ_PIS: Currency read FALIQ_PIS write FALIQ_PIS;
     property VL_PIS: Currency read FVL_PIS write FVL_PIS;
     property COD_CTA: string read FCOD_CTA write FCOD_CTA;
+  end;
+
+  // Registro D501 - Lista
+  TRegistroD501List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroD501;
+    procedure SetItem(Index: Integer; const Value: TRegistroD501);
+  public
+    function New: TRegistroD501;
+    property Items[Index: Integer]: TRegistroD501 read GetItem write SetItem;
   end;
 
   //REGISTRO D505: COMPLEMENTO DA OPERAÇÃO (CÓDIGOS 21 e 22) – COFINS
@@ -436,6 +608,16 @@ type
     property COD_CTA: string read FCOD_CTA write FCOD_CTA;
   end;
 
+  // Registro D505 - Lista
+  TRegistroD505List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroD505;
+    procedure SetItem(Index: Integer; const Value: TRegistroD505);
+  public
+    function New: TRegistroD505;
+    property Items[Index: Integer]: TRegistroD505 read GetItem write SetItem;
+  end;
+
   //REGISTRO D509: PROCESSO REFERENCIADO
   TRegistroD509 = class
   private
@@ -444,6 +626,16 @@ type
   public
     property NUM_PROC: string read FNUM_PROC write FNUM_PROC;
     property IND_PROC: Integer read FIND_PROC write FIND_PROC;
+  end;
+
+  // Registro D509 - Lista
+  TRegistroD509List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroD509;
+    procedure SetItem(Index: Integer; const Value: TRegistroD509);
+  public
+    function New: TRegistroD509;
+    property Items[Index: Integer]: TRegistroD509 read GetItem write SetItem;
   end;
 
   //REGISTRO D600: CONSOLIDAÇÃO DA PRESTAÇÃO DE SERVIÇOS - NOTAS DE SERVIÇO DE COMUNICAÇÃO (CÓDIGO 21) E DE SERVIÇO DE TELECOMUNICAÇÃO (CÓDIGO 22)
@@ -488,6 +680,16 @@ type
     property VL_COFINS: Currency read FVL_COFINS write FVL_COFINS;
   end;
 
+  // Registro D600 - Lista
+  TRegistroD600List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroD600;
+    procedure SetItem(Index: Integer; const Value: TRegistroD600);
+  public
+    function New: TRegistroD600;
+    property Items[Index: Integer]: TRegistroD600 read GetItem write SetItem;
+  end;
+
   //REGISTRO D601: COMPLEMENTO DA CONSOLIDAÇÃO DA PRESTAÇÃO DE SERVIÇOS (CÓDIGOS 21 E 22) - PIS/PASEP
   TRegistroD601 = class
   private
@@ -508,6 +710,16 @@ type
     property ALIQ_PIS: Currency read FALIQ_PIS write FALIQ_PIS;
     property VL_PIS: Currency read FVL_PIS write FVL_PIS;
     property COD_CTA: string read FCOD_CTA write FCOD_CTA;
+  end;
+
+  // Registro D601 - Lista
+  TRegistroD601List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroD601;
+    procedure SetItem(Index: Integer; const Value: TRegistroD601);
+  public
+    function New: TRegistroD601;
+    property Items[Index: Integer]: TRegistroD601 read GetItem write SetItem;
   end;
 
   //REGISTRO D605: COMPLEMENTO DA CONSOLIDAÇÃO DA PRESTAÇÃO DE SERVIÇOS (CÓDIGOS 21 E 22) - COFINS
@@ -532,6 +744,16 @@ type
     property COD_CTA: string read FCOD_CTA write FCOD_CTA;
   end;
 
+  // Registro D605 - Lista
+  TRegistroD605List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroD605;
+    procedure SetItem(Index: Integer; const Value: TRegistroD605);
+  public
+    function New: TRegistroD605;
+    property Items[Index: Integer]: TRegistroD605 read GetItem write SetItem;
+  end;
+
   //REGISTRO D609: PROCESSO REFERENCIADO
   TRegistroD609 = class
   private
@@ -540,6 +762,16 @@ type
   public
     property NUM_PROC: string read FNUM_PROC write FNUM_PROC;
     property IND_PROC: Integer read FIND_PROC write FIND_PROC;
+  end;
+
+  // Registro D609 - Lista
+  TRegistroD609List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroD609;
+    procedure SetItem(Index: Integer; const Value: TRegistroD609);
+  public
+    function New: TRegistroD609;
+    property Items[Index: Integer]: TRegistroD609 read GetItem write SetItem;
   end;
 
   //REGISTRO D990: ENCERRAMENTO DO BLOCO D

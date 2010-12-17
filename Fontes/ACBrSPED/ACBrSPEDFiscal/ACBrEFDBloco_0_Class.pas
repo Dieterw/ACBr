@@ -75,28 +75,28 @@ type
     FRegistro0500Count: Integer;
     FRegistro0600Count: Integer;
 
-    procedure WriteRegistro0005(Reg0001: TRegistro0001) ;
-    procedure WriteRegistro0015(Reg0001: TRegistro0001) ;
-    procedure WriteRegistro0100(Reg0001: TRegistro0001) ;
-    procedure WriteRegistro0150(Reg0001: TRegistro0001) ;
-    procedure WriteRegistro0175(Reg0150: TRegistro0150) ;
-    procedure WriteRegistro0190(Reg0001: TRegistro0001) ;
-    procedure WriteRegistro0200(Reg0001: TRegistro0001) ;
-    procedure WriteRegistro0205(Reg0200: TRegistro0200) ;
-    procedure WriteRegistro0206(Reg0200: TRegistro0200) ;
-    procedure WriteRegistro0220(Reg0200: TRegistro0200) ;
-    procedure WriteRegistro0300(Reg0001: TRegistro0001) ;
-    procedure WriteRegistro0305(Reg0300: TRegistro0300) ;
-    procedure WriteRegistro0400(Reg0001: TRegistro0001) ;
-    procedure WriteRegistro0450(Reg0001: TRegistro0001) ;
-    procedure WriteRegistro0460(Reg0001: TRegistro0001) ;
-    procedure WriteRegistro0500(Reg0001: TRegistro0001) ;
-    procedure WriteRegistro0600(Reg0001: TRegistro0001) ;
+    procedure WriteRegistro0005(Reg0001: TRegistro0001);
+    procedure WriteRegistro0015(Reg0001: TRegistro0001);
+    procedure WriteRegistro0100(Reg0001: TRegistro0001);
+    procedure WriteRegistro0150(Reg0001: TRegistro0001);
+    procedure WriteRegistro0175(Reg0150: TRegistro0150);
+    procedure WriteRegistro0190(Reg0001: TRegistro0001);
+    procedure WriteRegistro0200(Reg0001: TRegistro0001);
+    procedure WriteRegistro0205(Reg0200: TRegistro0200);
+    procedure WriteRegistro0206(Reg0200: TRegistro0200);
+    procedure WriteRegistro0220(Reg0200: TRegistro0200);
+    procedure WriteRegistro0300(Reg0001: TRegistro0001);
+    procedure WriteRegistro0305(Reg0300: TRegistro0300);
+    procedure WriteRegistro0400(Reg0001: TRegistro0001);
+    procedure WriteRegistro0450(Reg0001: TRegistro0001);
+    procedure WriteRegistro0460(Reg0001: TRegistro0001);
+    procedure WriteRegistro0500(Reg0001: TRegistro0001);
+    procedure WriteRegistro0600(Reg0001: TRegistro0001);
 
     procedure CriaRegistros;
     procedure LiberaRegistros;
   public
-    constructor Create ;          /// Create
+    constructor Create;           /// Create
     destructor Destroy; override; /// Destroy
     procedure LimpaRegistros;
 
@@ -120,9 +120,9 @@ type
     function Registro0500New: TRegistro0500;
     function Registro0600New: TRegistro0600;
 
-    procedure WriteRegistro0000 ;
-    procedure WriteRegistro0001 ;
-    procedure WriteRegistro0990 ;
+    procedure WriteRegistro0000;
+    procedure WriteRegistro0001;
+    procedure WriteRegistro0990;
 
     property Registro0000: TRegistro0000 read FRegistro0000 write FRegistro0000;
     property Registro0001: TRegistro0001 read FRegistro0001 write FRegistro0001;

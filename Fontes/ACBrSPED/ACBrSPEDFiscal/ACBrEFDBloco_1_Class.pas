@@ -42,12 +42,15 @@ unit ACBrEFDBloco_1_Class;
 
 interface
 
-uses SysUtils, Classes, DateUtils, ACBrSped, ACBrEFDBloco_1, ACBrEFDBlocos;
+uses SysUtils, Classes, DateUtils, ACBrSped, ACBrEFDBloco_1,
+     ACBrEFDBloco_0_Class, ACBrEFDBlocos;
 
 type
   /// TBLOCO_1 -
   TBloco_1 = class(TACBrSPED)
   private
+    FBloco_0: TBloco_0;
+
     FRegistro1001: TRegistro1001;      /// BLOCO 1 - Registro1001
     FRegistro1990: TRegistro1990;      /// BLOCO 1 - Registro1990
 
@@ -119,7 +122,8 @@ type
     procedure WriteRegistro1001 ;
     procedure WriteRegistro1990 ;
 
-    property Registro1001: TRegistro1001     read FRegistro1001 write FRegistro1001;
+    property Bloco_0: TBloco_0 read FBloco_0 write FBloco_0;
+    property Registro1001: TRegistro1001 read FRegistro1001 write FRegistro1001;
     property Registro1990: TRegistro1990 read FRegistro1990 write FRegistro1990;
 
     property Registro1100Count: Integer read FRegistro1100Count write FRegistro1100Count;

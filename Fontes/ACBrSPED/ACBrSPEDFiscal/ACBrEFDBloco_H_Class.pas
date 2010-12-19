@@ -42,12 +42,15 @@ unit ACBrEFDBloco_H_Class;
 
 interface
 
-uses SysUtils, Classes, DateUtils, ACBrSped, ACBrEFDBloco_H, ACBrEFDBlocos;
+uses SysUtils, Classes, DateUtils, ACBrSped, ACBrEFDBloco_H,
+     ACBrEFDBloco_0_Class, ACBrEFDBlocos;
 
 type
   /// TBLOCO_H -
   TBloco_H = class(TACBrSPED)
   private
+    FBloco_0: TBloco_0;
+
     FRegistroH001: TRegistroH001;      /// BLOCO H - RegistroH001
     FRegistroH990: TRegistroH990;      /// BLOCO H - RegistroH990
 
@@ -71,6 +74,7 @@ type
     procedure WriteRegistroH001;
     procedure WriteRegistroH990;
 
+    property Bloco_0: TBloco_0 read FBloco_0 write FBloco_0;
     property RegistroH001: TRegistroH001 read FRegistroH001 write FRegistroH001;
     property RegistroH990: TRegistroH990 read FRegistroH990 write FRegistroH990;
 

@@ -952,7 +952,7 @@ begin
      try
         EpsonComando.Comando := '0905' ;  // Obtendo o numero de colunas
         EnviaComando ;
-        fpColunas := StrToIntDef( EpsonResposta.Params[0], 48 ) ;
+        fpColunas := max( StrToIntDef( EpsonResposta.Params[0], 0 ), 48) ;
 
         EpsonComando.Comando := '0585' ;  // Obtendo o numero de Decimais
         EnviaComando ;

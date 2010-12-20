@@ -201,7 +201,8 @@ function TiraAcentos( const AString : AnsiString ) : AnsiString ;
 function TiraAcento( const AChar : AnsiChar ) : AnsiChar ;
 function AjustaLinhas(Texto: AnsiString; Colunas: Integer ;
    NumMaxLinhas: Integer = 0; PadLinhas: Boolean = False): AnsiString;
-function QuebraLinhas(Texto: AnsiString; Colunas: Integer): AnsiString;
+function QuebraLinhas(const Texto: String; const Colunas: Integer;
+   const CaracterQuebrar : Char = ' '): String;
 function TraduzComando( AString : AnsiString ) : AnsiString ;
 Function StringToAsc( AString : AnsiString ) : AnsiString ;
 Function AscToString( AString : AnsiString ) : AnsiString ;
@@ -1136,44 +1137,36 @@ begin
     Result := Result + #10;
 end;
 
-function QuebraLinhas(Texto: AnsiString; Colunas: Integer): AnsiString;
-Var TextoCortado, Resultado : AnsiString;
-    Pos, Tamanho : Integer ;
+function QuebraLinhas(const Texto: String; const Colunas: Integer;
+   const CaracterQuebrar : Char = ' '): String;
+Var
+  PosIni, PosFim, Tamanho : Integer ;
 begin
-
-  Texto := Trim(Texto);
+  Result  := '';
   Tamanho := Length(Texto) ;
-  Result := '';
+  PosIni  := 1 ;
+  repeat
+     if PosIni > 1 then
+        Result := Result + sLineBreak;
 
-  if Tamanho <= Colunas then
-   begin
-     Result := Texto;
-     exit;
-   end;
-  Resultado := '';
-  while (Tamanho > Colunas) do
-   begin
-     TextoCortado := copy(Texto,1,Colunas);
-     Pos   := Length(TextoCortado);
+     PosFim := PosIni + Colunas - 1 ;
 
-      { Acha um espaço }
-        while (Texto[Pos] <> ' ') and (Pos > 0) do
-           Pos := Pos - 1 ;
+     if Tamanho > PosFim then                  // Ainda tem proxima linha ?
+        if Texto[PosFim+1] <> CaracterQuebrar then   // Proximo já é uma Quebra ?
+           while (Texto[PosFim] <> CaracterQuebrar) and (PosFim > PosIni) do // Ache uma Quebra
+              Dec(PosFim) ;
 
-        Pos := Pos - 1 ;
+     if PosFim = PosIni then  // Não foi capaz de encontrar uma quebra
+        PosFim := PosIni + Colunas - 1 ;
 
-      TextoCortado := Trim(copy(TextoCortado,1,Pos));
-      if Resultado = '' then
-         Resultado    := TextoCortado
-      else
-         Resultado    := Resultado + sLineBreak + TextoCortado;
-      Texto        := copy(Texto,Length(TextoCortado)+2,Tamanho);
-      Tamanho := Length( Texto ) ;
-   end ;
+     Result := Result + Copy( Texto, PosIni, (PosFim-PosIni)+1 );
+     PosIni := PosFim + 1 ;
 
-   if Trim(Texto) <> '' then
-      Resultado    := Resultado + sLineBreak + Texto;
-   Result := Resultado;
+     // Pula CaracterQuebrar no Inicio da String
+     while (Texto[PosIni] = CaracterQuebrar) and (PosIni <= Tamanho) do
+        Inc(PosIni) ;
+
+  until (PosIni > Tamanho);
 end;
 
 {-----------------------------------------------------------------------------

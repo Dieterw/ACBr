@@ -43,9 +43,24 @@ unit ACBrEPCBloco_F;
 interface
 
 uses
-  SysUtils, Classes, Contnrs, DateUtils;
+  SysUtils, Classes, Contnrs, DateUtils, ACBrEPCBlocos;
 
 type
+  TRegistroF010List = class;
+  TRegistroF100List = class;
+  TRegistroF111List = class;
+  TRegistroF120List = class;
+  TRegistroF129List = class;
+  TRegistroF130List = class;
+  TRegistroF139List = class;
+  TRegistroF150List = class;
+  TRegistroF200List = class;
+  TRegistroF210List = class;
+  TRegistroF211List = class;
+  TRegistroF600List = class;
+  TRegistroF700List = class;
+  TRegistroF800List = class;
+
   //REGISTRO F001: ABERTURA DO BLOCO C
   TRegistroF001 = class(TOpenBlocos)
   private
@@ -60,11 +75,22 @@ type
     property CNPJ: Integer read FCNPJ write FCNPJ;
   end;
 
+  // Registro F010 - Lista
+  TRegistroF010List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroF010;
+    procedure SetItem(Index: Integer; const Value: TRegistroF010);
+  public
+    function New: TRegistroF010;
+    property Items[Index: Integer]: TRegistroF010 read GetItem write SetItem;
+  end;
+
   //REGISTRO F100: COMPLEMENTO DO DOCUMENTO - INFORMAÇÃO COMPLEMENTAR DA NOTA FISCAL
   TRegistroF100 = class
   private
     FCOD_PART: string;           //Código do participante (Campo 02 do Registro 0150)
     FCOD_ITEM: string;           //Código do item (campo 02 do Registro 0200)
+    FDT_OPER: TDateTime;
     FVL_OPER: currency;          //Valor da Operação/Item
     FCST_PIS: integer;           //Código da Situação Tributária referente ao PIS/PASEP, conforme a Tabela indicada no item 4.3.3.
     FVL_BC_PIS: currency;        //Valor da Base de cálculo do PIS/PASEP
@@ -99,6 +125,16 @@ type
     property DESC_DOC_OPER: string read FDESC_DOC_OPER write FDESC_DOC_OPER;
   end;
 
+  // Registro F100 - Lista
+  TRegistroF100List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroF100;
+    procedure SetItem(Index: Integer; const Value: TRegistroF100);
+  public
+    function New: TRegistroF100;
+    property Items[Index: Integer]: TRegistroF100 read GetItem write SetItem;
+  end;
+
   //REGISTRO F111: PROCESSO REFERENCIADO
   TRegistroF111 = class
   private
@@ -107,6 +143,16 @@ type
   public
     property NUM_PROC: string read FNUM_PROC write FNUM_PROC;
     property IND_PROC: string read FIND_PROC write FIND_PROC;
+  end;
+
+  // Registro F111 - Lista
+  TRegistroF111List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroF111;
+    procedure SetItem(Index: Integer; const Value: TRegistroF111);
+  public
+    function New: TRegistroF111;
+    property Items[Index: Integer]: TRegistroF111 read GetItem write SetItem;
   end;
 
   //REGISTRO F120: BENS INCORPORADOS AO ATIVO IMOBILIZADO - OPERAÇÕES GERADORAS DE CRÉDITOS COM BASE NOS ENCARGOS DE DEPRECIAÇÀO E AMORTIZAÇÃO
@@ -146,7 +192,7 @@ type
     property IND_ORIG_CRED: string read fIND_ORIG_CRED write fIND_ORIG_CRED;
     property IND_UTIL_BEM_IMOB: string read fIND_UTIL_BEM_IMOB write fIND_UTIL_BEM_IMOB;
     property VL_OPER_DEP: currency read fVL_OPER_DEP write fVL_OPER_DEP;
-    property PARC_OPER_NAO_BC_CRED: currency read fPARC_OPER_NAO_BC_CRED write ffPARC_OPER_NAO_BC_CRED;
+    property PARC_OPER_NAO_BC_CRED: currency read fPARC_OPER_NAO_BC_CRED write fPARC_OPER_NAO_BC_CRED;
     property CST_PIS: string read fCST_PIS write fCST_PIS;
     property ALIQ_PIS: currency read fALIQ_PIS write fALIQ_PIS;
     property VL_PIS: currency read fVL_PIS write fVL_PIS;
@@ -159,6 +205,16 @@ type
     property DESC_BEM_IMOB: string read fDESC_BEM_IMOB write fDESC_BEM_IMOB;
   end;
 
+  // Registro F120 - Lista
+  TRegistroF120List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroF120;
+    procedure SetItem(Index: Integer; const Value: TRegistroF120);
+  public
+    function New: TRegistroF120;
+    property Items[Index: Integer]: TRegistroF120 read GetItem write SetItem;
+  end;
+
   //REGISTRO F129: PROCESSO REFERENCIADO
   TRegistroF129 = class
   private
@@ -167,6 +223,16 @@ type
   public
     property NUM_PROC: string read FNUM_PROC write FNUM_PROC;
     property IND_PROC: string read FIND_PROC write FIND_PROC;
+  end;
+
+  // Registro F129 - Lista
+  TRegistroF129List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroF129;
+    procedure SetItem(Index: Integer; const Value: TRegistroF129);
+  public
+    function New: TRegistroF129;
+    property Items[Index: Integer]: TRegistroF129 read GetItem write SetItem;
   end;
 
   //REGISTRO F130: BENS INCORPORADOS AO ATIVO IMOBILIZADO - OPERAÇÕES GERADORAS DE CRÉDITOS COM BASE NO VALOR DE AQUISIÇÃO/CONTRIBUIÇÃO
@@ -232,6 +298,16 @@ type
     property DESC_BEM_IMOB: string read fDESC_BEM_IMOB write fDESC_BEM_IMOB;
   end;
 
+  // Registro F130 - Lista
+  TRegistroF130List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroF130;
+    procedure SetItem(Index: Integer; const Value: TRegistroF130);
+  public
+    function New: TRegistroF130;
+    property Items[Index: Integer]: TRegistroF130 read GetItem write SetItem;
+  end;
+
   //REGISTRO F139: PROCESSO REFERENCIADO
   TRegistroF139 = class
   private
@@ -262,6 +338,16 @@ type
     property VL_CRED_COFINS: currency read FVL_CRED_COFINS write FVL_CRED_COFINS;
     property DESC_EST: string read FDESC_EST write FDESC_EST;
     property COD_CTA: string read FCOD_CTA write FCOD_CTA;
+  end;
+
+  // Registro F139 - Lista
+  TRegistroF139List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroF139;
+    procedure SetItem(Index: Integer; const Value: TRegistroF139);
+  public
+    function New: TRegistroF139;
+    property Items[Index: Integer]: TRegistroF139 read GetItem write SetItem;
   end;
 
   //REGISTRO F150: CRÉDITO PRESUMIDO SOBRE ESTOQUE DE ABERTURA
@@ -296,12 +382,23 @@ type
     property COD_CTA: string read FCOD_CTA write FCOD_CTA;
   end;
 
+  // Registro F150 - Lista
+  TRegistroF150List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroF150;
+    procedure SetItem(Index: Integer; const Value: TRegistroF150);
+  public
+    function New: TRegistroF150;
+    property Items[Index: Integer]: TRegistroF150 read GetItem write SetItem;
+  end;
+
   //REGISTRO F200: OPERAÇÕES DA ATIVIDADE IMOBILIÁRIA - UNIDADE IMOBILIÁRIA VENDIDA
   TRegistroF200 = class
   private
     FALIQ_PIS: currency;
     FVL_REC_ACUM: currency;
     FVL_BC_COFINS: currency;
+    FVL_BC_PIS: currency;
     FALIQ_COFINS: currency;
     FVL_TOT_VEND: currency;
     FPERC_REC_RECEB: currency;
@@ -331,7 +428,6 @@ type
     property VL_REC_ACUM: currency read FVL_REC_ACUM write FVL_REC_ACUM;
     property VL_TOT_REC: currency read FVL_TOT_REC write FVL_TOT_REC;
     property CST_PIS: string read FCST_PIS write FCST_PIS;
-    property VL_TOT_REC: currency read FVL_TOT_REC write FVL_TOT_REC;
     property VL_BC_PIS: currency read FVL_BC_PIS write FVL_BC_PIS;
     property ALIQ_PIS: currency read FALIQ_PIS write FALIQ_PIS;
     property VL_PIS: currency read FVL_PIS write FVL_PIS;
@@ -342,6 +438,16 @@ type
     property PERC_REC_RECEB: currency read FPERC_REC_RECEB write FPERC_REC_RECEB;
     property IND_NAT_EMP: string read FIND_NAT_EMP write FIND_NAT_EMP;
     property INF_COMP: string read FINF_COMP write FINF_COMP;
+  end;
+
+  // Registro F200 - Lista
+  TRegistroF200List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroF200;
+    procedure SetItem(Index: Integer; const Value: TRegistroF200);
+  public
+    function New: TRegistroF200;
+    property Items[Index: Integer]: TRegistroF200 read GetItem write SetItem;
   end;
 
   //REGISTRO F205: OPERAÇÕES DA ATIVIDADE IMOBILIÁRIA - CUSTO INCORRIDO DA UNIDADE IMOBILIÁRIA
@@ -410,6 +516,16 @@ type
     property VL_CRED_COFINS_UTIL: currency read FVL_CRED_COFINS_UTIL write FVL_CRED_COFINS_UTIL;
   end;
 
+  // Registro F210 - Lista
+  TRegistroF210List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroF210;
+    procedure SetItem(Index: Integer; const Value: TRegistroF210);
+  public
+    function New: TRegistroF210;
+    property Items[Index: Integer]: TRegistroF210 read GetItem write SetItem;
+  end;
+
   //REGISTRO F211: PROCESSO REFERENCIADO
   TRegistroF211 = class
   private
@@ -418,6 +534,16 @@ type
   public
     property NUM_PROC: string read FNUM_PROC write FNUM_PROC;
     property IND_PROC: string read FIND_PROC write FIND_PROC;
+  end;
+
+  // Registro F211 - Lista
+  TRegistroF211List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroF211;
+    procedure SetItem(Index: Integer; const Value: TRegistroF211);
+  public
+    function New: TRegistroF211;
+    property Items[Index: Integer]: TRegistroF211 read GetItem write SetItem;
   end;
 
   //REGISTRO F600: CONTRIBUIÇÃO RETIDA NA FONTE
@@ -446,6 +572,16 @@ type
     property IND_DEC: string read FIND_DEC write FIND_DEC;
   end;
 
+  // Registro F600 - Lista
+  TRegistroF600List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroF600;
+    procedure SetItem(Index: Integer; const Value: TRegistroF600);
+  public
+    function New: TRegistroF600;
+    property Items[Index: Integer]: TRegistroF600 read GetItem write SetItem;
+  end;
+
   //REGISTRO F700: DEDUÇÕES DIVERSAS
   TRegistroF700 = class
   private
@@ -458,6 +594,16 @@ type
     property IND_NAT_DED: string read FIND_NAT_DED write FIND_NAT_DED;
     property VL_DED_PIS: currency read FVL_DED_PIS write FVL_DED_PIS;
     property VL_DED_COFINS: currency read FVL_DED_COFINS write FVL_DED_COFINS;
+  end;
+
+  // Registro F700 - Lista
+  TRegistroF700List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroF700;
+    procedure SetItem(Index: Integer; const Value: TRegistroF700);
+  public
+    function New: TRegistroF700;
+    property Items[Index: Integer]: TRegistroF700 read GetItem write SetItem;
   end;
 
   //REGISTRO F800: CRÉDITOS DECORRENTES DE EVENTOS DE INCORPORAÇÃO, FUSÃO E CISÃO
@@ -482,6 +628,16 @@ type
     property PER_CRED_CIS: currency read FPER_CRED_CIS write FPER_CRED_CIS;
   end;
 
+  // Registro F800 - Lista
+  TRegistroF800List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroF800;
+    procedure SetItem(Index: Integer; const Value: TRegistroF800);
+  public
+    function New: TRegistroF800;
+    property Items[Index: Integer]: TRegistroF800 read GetItem write SetItem;
+  end;
+
   //REGISTRO F990: ENCERRAMENTO DO BLOCO F
   TRegistroF990 = class
   private
@@ -491,5 +647,257 @@ type
   end;
 
 implementation
+
+{TRegistroF010}
+
+function TRegistroF010List.GetItem(Index: Integer): TRegistroF010;
+begin
+  Result := TRegistroF010(Inherited Items[Index]);
+end;
+
+function TRegistroF010List.New: TRegistroF010;
+begin
+  Result := TRegistroF010.Create;
+  Add(Result);
+end;
+
+procedure TRegistroF010List.SetItem(Index: Integer; const Value: TRegistroF010);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroF100}
+
+function TRegistroF100List.GetItem(Index: Integer): TRegistroF100;
+begin
+  Result := TRegistroF100(Inherited Items[Index]);
+end;
+
+function TRegistroF100List.New: TRegistroF100;
+begin
+  Result := TRegistroF100.Create;
+  Add(Result);
+end;
+
+procedure TRegistroF100List.SetItem(Index: Integer; const Value: TRegistroF100);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroF111}
+
+function TRegistroF111List.GetItem(Index: Integer): TRegistroF111;
+begin
+  Result := TRegistroF111(Inherited Items[Index]);
+end;
+
+function TRegistroF111List.New: TRegistroF111;
+begin
+  Result := TRegistroF111.Create;
+  Add(Result);
+end;
+
+procedure TRegistroF111List.SetItem(Index: Integer; const Value: TRegistroF111);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroF120}
+
+function TRegistroF120List.GetItem(Index: Integer): TRegistroF120;
+begin
+  Result := TRegistroF120(Inherited Items[Index]);
+end;
+
+function TRegistroF120List.New: TRegistroF120;
+begin
+  Result := TRegistroF120.Create;
+  Add(Result);
+end;
+
+procedure TRegistroF120List.SetItem(Index: Integer; const Value: TRegistroF120);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroF129}
+
+function TRegistroF129List.GetItem(Index: Integer): TRegistroF129;
+begin
+  Result := TRegistroF129(Inherited Items[Index]);
+end;
+
+function TRegistroF129List.New: TRegistroF129;
+begin
+  Result := TRegistroF129.Create;
+  Add(Result);
+end;
+
+procedure TRegistroF129List.SetItem(Index: Integer; const Value: TRegistroF129);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroF130}
+
+function TRegistroF130List.GetItem(Index: Integer): TRegistroF130;
+begin
+  Result := TRegistroF130(Inherited Items[Index]);
+end;
+
+function TRegistroF130List.New: TRegistroF130;
+begin
+  Result := TRegistroF130.Create;
+  Add(Result);
+end;
+
+procedure TRegistroF130List.SetItem(Index: Integer; const Value: TRegistroF130);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroF139}
+
+function TRegistroF139List.GetItem(Index: Integer): TRegistroF139;
+begin
+  Result := TRegistroF139(Inherited Items[Index]);
+end;
+
+function TRegistroF139List.New: TRegistroF139;
+begin
+  Result := TRegistroF139.Create;
+  Add(Result);
+end;
+
+procedure TRegistroF139List.SetItem(Index: Integer; const Value: TRegistroF139);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroF150}
+
+function TRegistroF150List.GetItem(Index: Integer): TRegistroF150;
+begin
+  Result := TRegistroF150(Inherited Items[Index]);
+end;
+
+function TRegistroF150List.New: TRegistroF150;
+begin
+  Result := TRegistroF150.Create;
+  Add(Result);
+end;
+
+procedure TRegistroF150List.SetItem(Index: Integer; const Value: TRegistroF150);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroF200}
+
+function TRegistroF200List.GetItem(Index: Integer): TRegistroF200;
+begin
+  Result := TRegistroF200(Inherited Items[Index]);
+end;
+
+function TRegistroF200List.New: TRegistroF200;
+begin
+  Result := TRegistroF200.Create;
+  Add(Result);
+end;
+
+procedure TRegistroF200List.SetItem(Index: Integer; const Value: TRegistroF200);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroF210}
+
+function TRegistroF210List.GetItem(Index: Integer): TRegistroF210;
+begin
+  Result := TRegistroF210(Inherited Items[Index]);
+end;
+
+function TRegistroF210List.New: TRegistroF210;
+begin
+  Result := TRegistroF210.Create;
+  Add(Result);
+end;
+
+procedure TRegistroF210List.SetItem(Index: Integer; const Value: TRegistroF210);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroF211}
+
+function TRegistroF211List.GetItem(Index: Integer): TRegistroF211;
+begin
+  Result := TRegistroF211(Inherited Items[Index]);
+end;
+
+function TRegistroF211List.New: TRegistroF211;
+begin
+  Result := TRegistroF211.Create;
+  Add(Result);
+end;
+
+procedure TRegistroF211List.SetItem(Index: Integer; const Value: TRegistroF211);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroF600}
+
+function TRegistroF600List.GetItem(Index: Integer): TRegistroF600;
+begin
+  Result := TRegistroF600(Inherited Items[Index]);
+end;
+
+function TRegistroF600List.New: TRegistroF600;
+begin
+  Result := TRegistroF600.Create;
+  Add(Result);
+end;
+
+procedure TRegistroF600List.SetItem(Index: Integer; const Value: TRegistroF600);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroF700}
+
+function TRegistroF700List.GetItem(Index: Integer): TRegistroF700;
+begin
+  Result := TRegistroF700(Inherited Items[Index]);
+end;
+
+function TRegistroF700List.New: TRegistroF700;
+begin
+  Result := TRegistroF700.Create;
+  Add(Result);
+end;
+
+procedure TRegistroF700List.SetItem(Index: Integer; const Value: TRegistroF700);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroF800}
+
+function TRegistroF800List.GetItem(Index: Integer): TRegistroF800;
+begin
+  Result := TRegistroF800(Inherited Items[Index]);
+end;
+
+function TRegistroF800List.New: TRegistroF800;
+begin
+  Result := TRegistroF800.Create;
+  Add(Result);
+end;
+
+procedure TRegistroF800List.SetItem(Index: Integer; const Value: TRegistroF800);
+begin
+  Put(Index, Value);
+end;
 
 end.

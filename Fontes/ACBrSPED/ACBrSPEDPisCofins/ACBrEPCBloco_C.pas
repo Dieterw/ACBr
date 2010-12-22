@@ -43,7 +43,7 @@ unit ACBrEPCBloco_C;
 interface
 
 uses
-  SysUtils, Classes, Contnrs, DateUtils;
+  SysUtils, Classes, Contnrs, DateUtils, ACBrEPCBlocos;
 
 type
   TRegistroC010List = class;
@@ -95,6 +95,7 @@ type
   TRegistroC010 = class
   private
     fCNPJ: Integer;           //02	CNPJ	Número de inscrição do estabelecimento no CNPJ.	N	014*	-
+    { TODO : Criar tipos }
     fIND_ESCRI: Integer;      //03	IND_ESCRI	Indicador da apuração das contribuições e créditos, na escrituração das operações por NF-e e ECF, no período:1 – Apuração com base nos registros de consolidação das operações por NF-e (C180 e C190) e por ECF (C490);2 – Apuração com base no registro individualizado de NF-e (C100 e C170) e de ECF (C400)	C	001*	-
   public
     property CNPJ: Integer read FCNPJ write FCNPJ;
@@ -145,10 +146,6 @@ type
 
     FRegistroC110: TRegistroC110List;  /// BLOCO C - Lista de RegistroC110 (FILHO)
     FRegistroC120: TRegistroC120List;  /// BLOCO C - Lista de RegistroC120 (FILHO)
-    FRegistroC130: TRegistroC130List;  /// BLOCO C - Lista de RegistroC130 (FILHO)
-    FRegistroC140: TRegistroC140List;  /// BLOCO C - Lista de RegistroC140 (FILHO) {Márcio Lopes 30Nov2009}
-    FRegistroC160: TRegistroC160List;  /// BLOCO C - Lista de RegistroC160 (FILHO)
-    FRegistroC165: TRegistroC165List;  /// BLOCO C - Lista de RegistroC165 (FILHO)
     FRegistroC170: TRegistroC170List;  /// BLOCO C - Lista de RegistroC170 (FILHO)
     FRegistroC190: TRegistroC190List;  /// BLOCO C - Lista de RegistroC190 (FILHO) {Jean Barreiros 17Nov2009}
     FRegistroC195: TRegistroC195List;  /// BLOCO C - Lista de RegistroC195 (FILHO)
@@ -187,10 +184,6 @@ type
     /// Registros FILHOS
     property RegistroC110: TRegistroC110List read FRegistroC110 write FRegistroC110;
     property RegistroC120: TRegistroC120List read FRegistroC120 write FRegistroC120;
-    property RegistroC130: TRegistroC130List read FRegistroC130 write FRegistroC130;
-    property RegistroC140: TRegistroC140List read FRegistroC140 write FRegistroC140; {Márcio Lopes 30Nov2009}
-    property RegistroC160: TRegistroC160List read FRegistroC160 write FRegistroC160;
-    property RegistroC165: TRegistroC165List read FRegistroC165 write FRegistroC165;
     property RegistroC170: TRegistroC170List read FRegistroC170 write FRegistroC170;
     property RegistroC190: TRegistroC190List read FRegistroC190 write FRegistroC190;  {Jean Barreiros 17Nov2009}
     property RegistroC195: TRegistroC195List read FRegistroC195 write FRegistroC195;
@@ -214,10 +207,6 @@ type
     fTXT_COMPL: String;    /// Descrição complementar do código de referência.
 
     FRegistroC111: TRegistroC111List;  /// BLOCO C - Lista de RegistroC111 (FILHO fo FILHO)
-    FRegistroC112: TRegistroC112List;  /// BLOCO C - Lista de RegistroC111 (FILHO fo FILHO)
-    FRegistroC113: TRegistroC113List;  /// BLOCO C - Lista de RegistroC111 (FILHO fo FILHO)
-    FRegistroC114: TRegistroC114List;  /// BLOCO C - Lista de RegistroC111 (FILHO fo FILHO)
-    FRegistroC115: TRegistroC115List;  /// BLOCO C - Lista de RegistroC111 (FILHO fo FILHO)
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
@@ -226,10 +215,6 @@ type
     property TXT_COMPL: String read FTXT_COMPL write FTXT_COMPL;
     /// Resgistro FILHO do FILHO
     property RegistroC111: TRegistroC111List read FRegistroC111 write FRegistroC111;
-    property RegistroC112: TRegistroC112List read FRegistroC112 write FRegistroC112;
-    property RegistroC113: TRegistroC113List read FRegistroC113 write FRegistroC113;
-    property RegistroC114: TRegistroC114List read FRegistroC114 write FRegistroC114;
-    property RegistroC115: TRegistroC115List read FRegistroC115 write FRegistroC115;
   end;
 
   /// Registro C110 - Lista
@@ -309,41 +294,25 @@ type
     fALIQ_ST: currency;                   /// Alíquota do ICMS da substituição tributária na unidade da federação de destino
     fVL_ICMS_ST: currency;                /// Valor do ICMS referente à substituição tributária
     fIND_APUR: TACBrApuracaoIPI;          /// Indicador de período de apuração do IPI: 0 - Mensal; 1 - Decendial
-//    fCST_IPI: TACBrSituacaoTribIPI;       /// Código da Situação Tributária referente ao IPI, conforme a Tabela indicada no item 4.3.2.
-    fCST_IPI: string;                     /// Código da Situação Tributária referente ao IPI, conforme a Tabela indicada no item 4.3.2.
+    fCST_IPI: TACBrSituacaoTribIPI;       /// Código da Situação Tributária referente ao IPI, conforme a Tabela indicada no item 4.3.2.
     fCOD_ENQ: String;                     /// Código de enquadramento legal do IPI, conforme tabela indicada no item 4.5.3.
     fVL_BC_IPI: currency;                 /// Valor da base de cálculo do IPI
     fALIQ_IPI: currency;                  /// Alíquota do IPI
     fVL_IPI: currency;                    /// Valor do IPI creditado/debitado
-//    fCST_PIS: TACBrSituacaoTribPIS;       /// Código da Situação Tributária referente ao PIS.
-    fCST_PIS: string;                     /// Código da Situação Tributária referente ao PIS.
+    fCST_PIS: TACBrSituacaoTribPIS;       /// Código da Situação Tributária referente ao PIS.
     fVL_BC_PIS: currency;                 /// Valor da base de cálculo do PIS
     fALIQ_PIS_PERC: currency;             /// Alíquota do PIS (em percentual)
     fQUANT_BC_PIS: Double;                /// Quantidade - Base de cálculo PIS
     fALIQ_PIS_R: Double;                  /// Alíquota do PIS (em reais)
     fVL_PIS: currency;                    /// Valor do PIS
-//    fCST_COFINS: TACBrSituacaoTribCOFINS; /// Código da Situação Tributária referente ao COFINS.
-    fCST_COFINS: string;                  /// Código da Situação Tributária referente ao COFINS.
+    fCST_COFINS: TACBrSituacaoTribCOFINS; /// Código da Situação Tributária referente ao COFINS.
     fVL_BC_COFINS: currency;              /// Valor da base de cálculo da COFINS
     fALIQ_COFINS_PERC: currency;          /// Alíquota do COFINS (em percentual)
     fQUANT_BC_COFINS: Double;             /// Quantidade - Base de cálculo COFINS
     fALIQ_COFINS_R: Double;               /// Alíquota da COFINS (em reais)
     fVL_COFINS: currency;                 /// Valor da COFINS
     fCOD_CTA: String;                     /// Código da conta analítica contábil debitada/creditada
-
-    FRegistroC171: TRegistroC171List;  /// BLOCO C - Lista de RegistroC141 (FILHO fo FILHO)
-    FRegistroC172: TRegistroC172List;  /// BLOCO C - Lista de RegistroC141 (FILHO fo FILHO)
-    FRegistroC173: TRegistroC173List;  /// BLOCO C - Lista de RegistroC141 (FILHO fo FILHO)
-    FRegistroC174: TRegistroC174List;  /// BLOCO C - Lista de RegistroC141 (FILHO fo FILHO)
-    FRegistroC175: TRegistroC175List;  /// BLOCO C - Lista de RegistroC141 (FILHO fo FILHO)
-    FRegistroC176: TRegistroC176List;  /// BLOCO C - Lista de RegistroC141 (FILHO fo FILHO)
-    FRegistroC177: TRegistroC177List;  /// BLOCO C - Lista de RegistroC141 (FILHO fo FILHO)
-    FRegistroC178: TRegistroC178List;  /// BLOCO C - Lista de RegistroC141 (FILHO fo FILHO)
-    FRegistroC179: TRegistroC179List;  /// BLOCO C - Lista de RegistroC141 (FILHO fo FILHO)
   public
-    constructor Create; virtual; /// Create
-    destructor Destroy; override; /// Destroy
-
     property NUM_ITEM: String                    read FNUM_ITEM         write FNUM_ITEM;
     property COD_ITEM: String                    read FCOD_ITEM         write FCOD_ITEM;
     property DESCR_COMPL: String                 read FDESCR_COMPL      write FDESCR_COMPL;
@@ -362,37 +331,24 @@ type
     property ALIQ_ST: currency                   read FALIQ_ST          write FALIQ_ST;
     property VL_ICMS_ST: currency                read FVL_ICMS_ST       write FVL_ICMS_ST;
     property IND_APUR: TACBrApuracaoIPI          read FIND_APUR         write FIND_APUR;
-//    property CST_IPI: TACBrSituacaoTribIPI       read FCST_IPI          write FCST_IPI;
-    property CST_IPI: string                     read FCST_IPI          write FCST_IPI;
+    property CST_IPI: TACBrSituacaoTribIPI       read FCST_IPI          write FCST_IPI;
     property COD_ENQ: String                     read FCOD_ENQ          write FCOD_ENQ;
     property VL_BC_IPI: currency                 read FVL_BC_IPI        write FVL_BC_IPI;
     property ALIQ_IPI: currency                  read FALIQ_IPI         write FALIQ_IPI;
     property VL_IPI: currency                    read FVL_IPI           write FVL_IPI;
-//    property CST_PIS: TACBrSituacaoTribPIS       read FCST_PIS          write FCST_PIS;
-    property CST_PIS: string                     read FCST_PIS          write FCST_PIS;
+    property CST_PIS: TACBrSituacaoTribPIS       read FCST_PIS          write FCST_PIS;
     property VL_BC_PIS: currency                 read FVL_BC_PIS        write FVL_BC_PIS;
     property ALIQ_PIS_PERC: currency             read FALIQ_PIS_PERC    write FALIQ_PIS_PERC;
     property QUANT_BC_PIS: Double                read FQUANT_BC_PIS     write FQUANT_BC_PIS;
     property ALIQ_PIS_R: Double                  read FALIQ_PIS_R       write FALIQ_PIS_R;
     property VL_PIS: currency                    read FVL_PIS           write FVL_PIS;
-//    property CST_COFINS: TACBrSituacaoTribCOFINS read FCST_COFINS       write FCST_COFINS;
-    property CST_COFINS: string                  read FCST_COFINS       write FCST_COFINS;
+    property CST_COFINS: TACBrSituacaoTribCOFINS read FCST_COFINS       write FCST_COFINS;
     property VL_BC_COFINS: currency              read FVL_BC_COFINS     write FVL_BC_COFINS;
     property ALIQ_COFINS_PERC: currency          read FALIQ_COFINS_PERC write FALIQ_COFINS_PERC;
     property QUANT_BC_COFINS: Double             read FQUANT_BC_COFINS  write FQUANT_BC_COFINS;
     property ALIQ_COFINS_R: Double               read FALIQ_COFINS_R    write FALIQ_COFINS_R;
     property VL_COFINS: currency                 read FVL_COFINS        write FVL_COFINS;
     property COD_CTA: String                     read FCOD_CTA          write FCOD_CTA;
-    /// Registros FILHOS
-    property RegistroC171: TRegistroC171List read FRegistroC171 write FRegistroC171;
-    property RegistroC172: TRegistroC172List read FRegistroC172 write FRegistroC172;
-    property RegistroC173: TRegistroC173List read FRegistroC173 write FRegistroC173;
-    property RegistroC174: TRegistroC174List read FRegistroC174 write FRegistroC174;
-    property RegistroC175: TRegistroC175List read FRegistroC175 write FRegistroC175;
-    property RegistroC176: TRegistroC176List read FRegistroC176 write FRegistroC176;
-    property RegistroC177: TRegistroC177List read FRegistroC177 write FRegistroC177;
-    property RegistroC178: TRegistroC178List read FRegistroC178 write FRegistroC178;
-    property RegistroC179: TRegistroC179List read FRegistroC179 write FRegistroC179;
   end;
 
   /// Registro C170 - Lista
@@ -444,10 +400,10 @@ type
     fVL_ITEM: Currency;	            //04	VL_ITEM	Valor do item	N	-	02
     fVL_DESC: Currency;	            //05	VL_DESC	Valor do desconto comercial	N	-	02
     fVL_BC_PIS: Currency;	          //06	VL_BC_PIS	Valor da base de cálculo do PIS/PASEP	N	 -	02
-    fALIQ_PIS: Currency;	            //07	ALIQ_PIS	Alíquota do PIS/PASEP (em percentual)	N	008	04
-    fQUANT_BC_PIS: Currency;	        //08	QUANT_BC_PIS	Quantidade – Base de cálculo PIS/PASEP	N	 -	03
-    fALIQ_PIS_QUANT: Currency;	      //09	ALIQ_PIS_QUANT	Alíquota do PIS/PASEP (em reais)	N	 -	04
-    fVL_PIS: Currency;	              //10	VL_PIS	Valor do PIS/PASEP	N	-	02
+    fALIQ_PIS: Currency;	          //07	ALIQ_PIS	Alíquota do PIS/PASEP (em percentual)	N	008	04
+    fQUANT_BC_PIS: Currency;	      //08	QUANT_BC_PIS	Quantidade – Base de cálculo PIS/PASEP	N	 -	03
+    fALIQ_PIS_QUANT: Currency;	    //09	ALIQ_PIS_QUANT	Alíquota do PIS/PASEP (em reais)	N	 -	04
+    fVL_PIS: Currency;	            //10	VL_PIS	Valor do PIS/PASEP	N	-	02
     fCOD_CTA: string;	              //11	COD_CTA	Código da conta analítica contábil debitada/creditada	C	060	-
   public
     property CST_PIS: string read FCST_PIS write FCST_PIS;
@@ -678,6 +634,36 @@ type
   public
     function New: TRegistroC199;
     property Items[Index: Integer]: TRegistroC199 read GetItem write SetItem;
+  end;
+
+  //REGISTRO C380: NOTA FISCAL DE VENDA A CONSUMIDOR (CÓDIGO 02) - CONSOLIDAÇÃO DE DOCUMENTOS EMITIDOS
+  TRegistroC380 = class
+  private
+   fCOD_MOD: string;	               //02	COD_MOD	Código do modelo do documento fiscal, conforme a Tabela 4.1.1 (Código 02 – Nota Fiscal de Venda a Consumidor)	C	002*	-
+   fDT_DOC_INI: TDateTime;           //03	DT_DOC_INI	Data de Emissão Inicial dos Documentos	N	008*	-
+   fDT_DOC_FIN: TDateTime;           //04	DT_DOC_FIN	Data de Emissão Final dos Documentos	N	008*	-
+   fNUM_DOC_INI: Integer;            //05	NUM_DOC_INI	Número do documento fiscal inicial	N	006	-
+   fNUM_DOC_FIN: Integer;            //06	NUM_DOC_FIN	Número do documento fiscal final	N	006	-
+   fVL_DOC: Currency;	               //07	VL_DOC	Valor total dos documentos emitidos	N	-	02
+   fVL_DOC_CANC: Currency;           //08	VL_DOC_CANC	Valor total dos documentos cancelados	N	-	02
+  public
+    property COD_MOD: string read FCOD_MOD write FCOD_MOD;
+    property DT_DOC_INI: TDateTime read FDT_DOC_INI write FDT_DOC_INI;
+    property DT_DOC_FIN: TDateTime read FDT_DOC_FIN write FDT_DOC_FIN;
+    property NUM_DOC_INI: Integer read FNUM_DOC_INI write FNUM_DOC_INI;
+    property NUM_DOC_FIN: Integer read FNUM_DOC_FIN write FNUM_DOC_FIN;
+    property VL_DOC: Currency read FVL_DOC write FVL_DOC;
+    property VL_DOC_CANC: Currency read FVL_DOC_CANC write FVL_DOC_CANC;
+  end;
+
+  // Registro C380 - Lista
+  TRegistroC380List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroC380;
+    procedure SetItem(Index: Integer; const Value: TRegistroC380);
+  public
+    function New: TRegistroC380;
+    property Items[Index: Integer]: TRegistroC380 read GetItem write SetItem;
   end;
 
   //REGISTRO C381: DETALHAMENTO DA CONSOLIDAÇÃO – PIS/PASEP
@@ -1340,5 +1326,704 @@ type
 
 implementation
 
+{TRegistroC010}
+
+function TRegistroC010List.GetItem(Index: Integer): TRegistroC010;
+begin
+  Result := TRegistroC010(Inherited Items[Index]);
+end;
+
+function TRegistroC010List.New: TRegistroC010;
+begin
+  Result := TRegistroC010.Create;
+  Add(Result);
+end;
+
+procedure TRegistroC010List.SetItem(Index: Integer; const Value: TRegistroC010);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroC100}
+
+function TRegistroC100List.GetItem(Index: Integer): TRegistroC100;
+begin
+  Result := TRegistroC100(Inherited Items[Index]);
+end;
+
+function TRegistroC100List.New: TRegistroC100;
+begin
+  Result := TRegistroC100.Create;
+  Add(Result);
+end;
+
+procedure TRegistroC100List.SetItem(Index: Integer; const Value: TRegistroC100);
+begin
+  Put(Index, Value);
+end;
+
+{ TRegistroC100 }
+
+constructor TRegistroC100.Create;
+begin
+   FRegistroC110 := TRegistroC110List.Create;
+   FRegistroC120 := TRegistroC120List.Create;
+   FRegistroC170 := TRegistroC170List.Create;
+   FRegistroC190 := TRegistroC190List.Create;
+   FRegistroC195 := TRegistroC195List.Create;
+end;
+
+destructor TRegistroC100.Destroy;
+begin
+  FRegistroC110.Free;
+  FRegistroC120.Free;
+  FRegistroC170.Free;
+  FRegistroC190.Free;
+  FRegistroC195.Free;
+  inherited;
+end;
+
+{TRegistroC110}
+
+function TRegistroC110List.GetItem(Index: Integer): TRegistroC110;
+begin
+  Result := TRegistroC110(Inherited Items[Index]);
+end;
+
+function TRegistroC110List.New: TRegistroC110;
+begin
+  Result := TRegistroC110.Create;
+  Add(Result);
+end;
+
+procedure TRegistroC110List.SetItem(Index: Integer; const Value: TRegistroC110);
+begin
+  Put(Index, Value);
+end;
+
+{ TRegistroC110 }
+
+constructor TRegistroC110.Create;
+begin
+   FRegistroC111 := TRegistroC111List.Create;
+end;
+
+destructor TRegistroC110.Destroy;
+begin
+  FRegistroC111.Free;
+  inherited;
+end;
+
+{TRegistroC111}
+
+function TRegistroC111List.GetItem(Index: Integer): TRegistroC111;
+begin
+  Result := TRegistroC111(Inherited Items[Index]);
+end;
+
+function TRegistroC111List.New: TRegistroC111;
+begin
+  Result := TRegistroC111.Create;
+  Add(Result);
+end;
+
+procedure TRegistroC111List.SetItem(Index: Integer; const Value: TRegistroC111);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroC120}
+
+function TRegistroC120List.GetItem(Index: Integer): TRegistroC120;
+begin
+  Result := TRegistroC120(Inherited Items[Index]);
+end;
+
+function TRegistroC120List.New: TRegistroC120;
+begin
+  Result := TRegistroC120.Create;
+  Add(Result);
+end;
+
+procedure TRegistroC120List.SetItem(Index: Integer; const Value: TRegistroC120);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroC170}
+
+function TRegistroC170List.GetItem(Index: Integer): TRegistroC170;
+begin
+  Result := TRegistroC170(Inherited Items[Index]);
+end;
+
+function TRegistroC170List.New: TRegistroC170;
+begin
+  Result := TRegistroC170.Create;
+  Add(Result);
+end;
+
+procedure TRegistroC170List.SetItem(Index: Integer; const Value: TRegistroC170);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroC180}
+
+function TRegistroC180List.GetItem(Index: Integer): TRegistroC180;
+begin
+  Result := TRegistroC180(Inherited Items[Index]);
+end;
+
+function TRegistroC180List.New: TRegistroC180;
+begin
+  Result := TRegistroC180.Create;
+  Add(Result);
+end;
+
+procedure TRegistroC180List.SetItem(Index: Integer; const Value: TRegistroC180);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroC181}
+
+function TRegistroC181List.GetItem(Index: Integer): TRegistroC181;
+begin
+  Result := TRegistroC181(Inherited Items[Index]);
+end;
+
+function TRegistroC181List.New: TRegistroC181;
+begin
+  Result := TRegistroC181.Create;
+  Add(Result);
+end;
+
+procedure TRegistroC181List.SetItem(Index: Integer; const Value: TRegistroC181);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroC185}
+
+function TRegistroC185List.GetItem(Index: Integer): TRegistroC185;
+begin
+  Result := TRegistroC185(Inherited Items[Index]);
+end;
+
+function TRegistroC185List.New: TRegistroC185;
+begin
+  Result := TRegistroC185.Create;
+  Add(Result);
+end;
+
+procedure TRegistroC185List.SetItem(Index: Integer; const Value: TRegistroC185);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroC188}
+
+function TRegistroC188List.GetItem(Index: Integer): TRegistroC188;
+begin
+  Result := TRegistroC188(Inherited Items[Index]);
+end;
+
+function TRegistroC188List.New: TRegistroC188;
+begin
+  Result := TRegistroC188.Create;
+  Add(Result);
+end;
+
+procedure TRegistroC188List.SetItem(Index: Integer; const Value: TRegistroC188);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroC190}
+
+function TRegistroC190List.GetItem(Index: Integer): TRegistroC190;
+begin
+  Result := TRegistroC190(Inherited Items[Index]);
+end;
+
+function TRegistroC190List.New: TRegistroC190;
+begin
+  Result := TRegistroC190.Create;
+  Add(Result);
+end;
+
+procedure TRegistroC190List.SetItem(Index: Integer; const Value: TRegistroC190);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroC191}
+
+function TRegistroC191List.GetItem(Index: Integer): TRegistroC191;
+begin
+  Result := TRegistroC191(Inherited Items[Index]);
+end;
+
+function TRegistroC191List.New: TRegistroC191;
+begin
+  Result := TRegistroC191.Create;
+  Add(Result);
+end;
+
+procedure TRegistroC191List.SetItem(Index: Integer; const Value: TRegistroC191);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroC195}
+
+function TRegistroC195List.GetItem(Index: Integer): TRegistroC195;
+begin
+  Result := TRegistroC195(Inherited Items[Index]);
+end;
+
+function TRegistroC195List.New: TRegistroC195;
+begin
+  Result := TRegistroC195.Create;
+  Add(Result);
+end;
+
+procedure TRegistroC195List.SetItem(Index: Integer; const Value: TRegistroC195);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroC198}
+
+function TRegistroC198List.GetItem(Index: Integer): TRegistroC198;
+begin
+  Result := TRegistroC198(Inherited Items[Index]);
+end;
+
+function TRegistroC198List.New: TRegistroC198;
+begin
+  Result := TRegistroC198.Create;
+  Add(Result);
+end;
+
+procedure TRegistroC198List.SetItem(Index: Integer; const Value: TRegistroC198);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroC199}
+
+function TRegistroC199List.GetItem(Index: Integer): TRegistroC199;
+begin
+  Result := TRegistroC199(Inherited Items[Index]);
+end;
+
+function TRegistroC199List.New: TRegistroC199;
+begin
+  Result := TRegistroC199.Create;
+  Add(Result);
+end;
+
+procedure TRegistroC199List.SetItem(Index: Integer; const Value: TRegistroC199);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroC380}
+
+function TRegistroC380List.GetItem(Index: Integer): TRegistroC380;
+begin
+  Result := TRegistroC380(Inherited Items[Index]);
+end;
+
+function TRegistroC380List.New: TRegistroC380;
+begin
+  Result := TRegistroC380.Create;
+  Add(Result);
+end;
+
+procedure TRegistroC380List.SetItem(Index: Integer; const Value: TRegistroC380);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroC381}
+
+function TRegistroC381List.GetItem(Index: Integer): TRegistroC381;
+begin
+  Result := TRegistroC381(Inherited Items[Index]);
+end;
+
+function TRegistroC381List.New: TRegistroC381;
+begin
+  Result := TRegistroC381.Create;
+  Add(Result);
+end;
+
+procedure TRegistroC381List.SetItem(Index: Integer; const Value: TRegistroC381);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroC385}
+
+function TRegistroC385List.GetItem(Index: Integer): TRegistroC385;
+begin
+  Result := TRegistroC385(Inherited Items[Index]);
+end;
+
+function TRegistroC385List.New: TRegistroC385;
+begin
+  Result := TRegistroC385.Create;
+  Add(Result);
+end;
+
+procedure TRegistroC385List.SetItem(Index: Integer; const Value: TRegistroC385);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroC395}
+
+function TRegistroC395List.GetItem(Index: Integer): TRegistroC395;
+begin
+  Result := TRegistroC395(Inherited Items[Index]);
+end;
+
+function TRegistroC395List.New: TRegistroC395;
+begin
+  Result := TRegistroC395.Create;
+  Add(Result);
+end;
+
+procedure TRegistroC395List.SetItem(Index: Integer; const Value: TRegistroC395);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroC396}
+
+function TRegistroC396List.GetItem(Index: Integer): TRegistroC396;
+begin
+  Result := TRegistroC396(Inherited Items[Index]);
+end;
+
+function TRegistroC396List.New: TRegistroC396;
+begin
+  Result := TRegistroC396.Create;
+  Add(Result);
+end;
+
+procedure TRegistroC396List.SetItem(Index: Integer; const Value: TRegistroC396);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroC400}
+
+function TRegistroC400List.GetItem(Index: Integer): TRegistroC400;
+begin
+  Result := TRegistroC400(Inherited Items[Index]);
+end;
+
+function TRegistroC400List.New: TRegistroC400;
+begin
+  Result := TRegistroC400.Create;
+  Add(Result);
+end;
+
+procedure TRegistroC400List.SetItem(Index: Integer; const Value: TRegistroC400);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroC405}
+
+function TRegistroC405List.GetItem(Index: Integer): TRegistroC405;
+begin
+  Result := TRegistroC405(Inherited Items[Index]);
+end;
+
+function TRegistroC405List.New: TRegistroC405;
+begin
+  Result := TRegistroC405.Create;
+  Add(Result);
+end;
+
+procedure TRegistroC405List.SetItem(Index: Integer; const Value: TRegistroC405);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroC481}
+
+function TRegistroC481List.GetItem(Index: Integer): TRegistroC481;
+begin
+  Result := TRegistroC481(Inherited Items[Index]);
+end;
+
+function TRegistroC481List.New: TRegistroC481;
+begin
+  Result := TRegistroC481.Create;
+  Add(Result);
+end;
+
+procedure TRegistroC481List.SetItem(Index: Integer; const Value: TRegistroC481);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroC485}
+
+function TRegistroC485List.GetItem(Index: Integer): TRegistroC485;
+begin
+  Result := TRegistroC485(Inherited Items[Index]);
+end;
+
+function TRegistroC485List.New: TRegistroC485;
+begin
+  Result := TRegistroC485.Create;
+  Add(Result);
+end;
+
+procedure TRegistroC485List.SetItem(Index: Integer; const Value: TRegistroC485);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroC489}
+
+function TRegistroC489List.GetItem(Index: Integer): TRegistroC489;
+begin
+  Result := TRegistroC489(Inherited Items[Index]);
+end;
+
+function TRegistroC489List.New: TRegistroC489;
+begin
+  Result := TRegistroC489.Create;
+  Add(Result);
+end;
+
+procedure TRegistroC489List.SetItem(Index: Integer; const Value: TRegistroC489);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroC490}
+
+function TRegistroC490List.GetItem(Index: Integer): TRegistroC490;
+begin
+  Result := TRegistroC490(Inherited Items[Index]);
+end;
+
+function TRegistroC490List.New: TRegistroC490;
+begin
+  Result := TRegistroC490.Create;
+  Add(Result);
+end;
+
+procedure TRegistroC490List.SetItem(Index: Integer; const Value: TRegistroC490);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroC491}
+
+function TRegistroC491List.GetItem(Index: Integer): TRegistroC491;
+begin
+  Result := TRegistroC491(Inherited Items[Index]);
+end;
+
+function TRegistroC491List.New: TRegistroC491;
+begin
+  Result := TRegistroC491.Create;
+  Add(Result);
+end;
+
+procedure TRegistroC491List.SetItem(Index: Integer; const Value: TRegistroC491);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroC495}
+
+function TRegistroC495List.GetItem(Index: Integer): TRegistroC495;
+begin
+  Result := TRegistroC495(Inherited Items[Index]);
+end;
+
+function TRegistroC495List.New: TRegistroC495;
+begin
+  Result := TRegistroC495.Create;
+  Add(Result);
+end;
+
+procedure TRegistroC495List.SetItem(Index: Integer; const Value: TRegistroC495);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroC499}
+
+function TRegistroC499List.GetItem(Index: Integer): TRegistroC499;
+begin
+  Result := TRegistroC499(Inherited Items[Index]);
+end;
+
+function TRegistroC499List.New: TRegistroC499;
+begin
+  Result := TRegistroC499.Create;
+  Add(Result);
+end;
+
+procedure TRegistroC499List.SetItem(Index: Integer; const Value: TRegistroC499);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroC500}
+
+function TRegistroC500List.GetItem(Index: Integer): TRegistroC500;
+begin
+  Result := TRegistroC500(Inherited Items[Index]);
+end;
+
+function TRegistroC500List.New: TRegistroC500;
+begin
+  Result := TRegistroC500.Create;
+  Add(Result);
+end;
+
+procedure TRegistroC500List.SetItem(Index: Integer; const Value: TRegistroC500);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroC501}
+
+function TRegistroC501List.GetItem(Index: Integer): TRegistroC501;
+begin
+  Result := TRegistroC501(Inherited Items[Index]);
+end;
+
+function TRegistroC501List.New: TRegistroC501;
+begin
+  Result := TRegistroC501.Create;
+  Add(Result);
+end;
+
+procedure TRegistroC501List.SetItem(Index: Integer; const Value: TRegistroC501);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroC505}
+
+function TRegistroC505List.GetItem(Index: Integer): TRegistroC505;
+begin
+  Result := TRegistroC505(Inherited Items[Index]);
+end;
+
+function TRegistroC505List.New: TRegistroC505;
+begin
+  Result := TRegistroC505.Create;
+  Add(Result);
+end;
+
+procedure TRegistroC505List.SetItem(Index: Integer; const Value: TRegistroC505);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroC509}
+
+function TRegistroC509List.GetItem(Index: Integer): TRegistroC509;
+begin
+  Result := TRegistroC509(Inherited Items[Index]);
+end;
+
+function TRegistroC509List.New: TRegistroC509;
+begin
+  Result := TRegistroC509.Create;
+  Add(Result);
+end;
+
+procedure TRegistroC509List.SetItem(Index: Integer; const Value: TRegistroC509);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroC600}
+
+function TRegistroC600List.GetItem(Index: Integer): TRegistroC600;
+begin
+  Result := TRegistroC600(Inherited Items[Index]);
+end;
+
+function TRegistroC600List.New: TRegistroC600;
+begin
+  Result := TRegistroC600.Create;
+  Add(Result);
+end;
+
+procedure TRegistroC600List.SetItem(Index: Integer; const Value: TRegistroC600);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroC601}
+
+function TRegistroC601List.GetItem(Index: Integer): TRegistroC601;
+begin
+  Result := TRegistroC601(Inherited Items[Index]);
+end;
+
+function TRegistroC601List.New: TRegistroC601;
+begin
+  Result := TRegistroC601.Create;
+  Add(Result);
+end;
+
+procedure TRegistroC601List.SetItem(Index: Integer; const Value: TRegistroC601);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroC605}
+
+function TRegistroC605List.GetItem(Index: Integer): TRegistroC605;
+begin
+  Result := TRegistroC605(Inherited Items[Index]);
+end;
+
+function TRegistroC605List.New: TRegistroC605;
+begin
+  Result := TRegistroC605.Create;
+  Add(Result);
+end;
+
+procedure TRegistroC605List.SetItem(Index: Integer; const Value: TRegistroC605);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroC609}
+
+function TRegistroC609List.GetItem(Index: Integer): TRegistroC609;
+begin
+  Result := TRegistroC609(Inherited Items[Index]);
+end;
+
+function TRegistroC609List.New: TRegistroC609;
+begin
+  Result := TRegistroC609.Create;
+  Add(Result);
+end;
+
+procedure TRegistroC609List.SetItem(Index: Integer; const Value: TRegistroC609);
+begin
+  Put(Index, Value);
+end;
 
 end.

@@ -43,7 +43,7 @@ unit ACBrEPCBloco_9;
 interface
 
 uses
-  SysUtils, Classes, Contnrs, DateUtils;
+  SysUtils, Classes, Contnrs, DateUtils, ACBrEPCBlocos;
 
 type
   //REGISTRO 9001: ABERTURA DO BLOCO 9
@@ -62,22 +62,22 @@ type
     property QTD_REG_BLC: Integer read FQTD_REG_BLC write FQTD_REG_BLC;
   end;
 
+  // Registro 9900 - Lista
+  TRegistro9900List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistro9900;
+    procedure SetItem(Index: Integer; const Value: TRegistro9900);
+  public
+    function New: TRegistro9900;
+    property Items[Index: Integer]: TRegistro9900 read GetItem write SetItem;
+  end;
+
   //REGISTRO 9990: ENCERRAMENTO DO BLOCO 9
   TRegistro9990 = class
   private
     fQTD_LIN_9: Integer;       //02	QTD_LIN_9	Quantidade total de linhas do Bloco 9.	N	-	-
   public
     property QTD_LIN_9: Integer read FQTD_LIN_9 write FQTD_LIN_9;
-  end;
-
-  // Registro 9990 - Lista
-  TRegistro9990List = class(TObjectList)
-  private
-    function GetItem(Index: Integer): TRegistro9990;
-    procedure SetItem(Index: Integer; const Value: TRegistro9990);
-  public
-    function New: TRegistro9990;
-    property Items[Index: Integer]: TRegistro9990 read GetItem write SetItem;
   end;
 
   //REGISTRO 9999: ENCERRAMENTO DO ARQUIVO DIGITAL
@@ -92,16 +92,20 @@ implementation
 
 { TRegistro9990 }
 
-constructor TRegistro9990.Create;
+function TRegistro9900List.GetItem(Index: Integer): TRegistro9900;
 begin
-  FRegistro9990 := TRegistro9990List.Create;
+  Result := TRegistro9900(Inherited Items[Index]);
 end;
 
-destructor TRegistro9990.Destroy;
+function TRegistro9900List.New: TRegistro9900;
 begin
-  FRegistro9990.Free;
-  inherited;
+  Result := TRegistro9900.Create;
+  Add(Result);
 end;
 
+procedure TRegistro9900List.SetItem(Index: Integer; const Value: TRegistro9900);
+begin
+  Put(Index, Value);
+end;
 
 end.

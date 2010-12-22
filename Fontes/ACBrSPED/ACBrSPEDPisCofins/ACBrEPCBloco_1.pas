@@ -43,9 +43,27 @@ unit ACBrEPCBloco_1;
 interface
 
 uses
-  SysUtils, Classes, Contnrs, DateUtils;
+  SysUtils, Classes, Contnrs, DateUtils, ACBrEPCBlocos;
 
 type
+  TRegistro1010List = class;
+  TRegistro1020List = class;
+  TRegistro1100List = class;
+  TRegistro1101List = class;
+  TRegistro1200List = class;
+  TRegistro1210List = class;
+  TRegistro1220List = class;
+  TRegistro1300List = class;
+  TRegistro1500List = class;
+  TRegistro1501List = class;
+  TRegistro1600List = class;
+  TRegistro1610List = class;
+  TRegistro1620List = class;
+  TRegistro1700List = class;
+  TRegistro1800List = class;
+  TRegistro1809List = class;
+
+
   //REGISTRO 1001: ABERTURA DO BLOCO 1
   TRegistro1001 = class(TOpenBlocos)
   private
@@ -655,5 +673,294 @@ type
   end;
 
 implementation
+
+{TRegistro1010}
+
+function TRegistro1010List.GetItem(Index: Integer): TRegistro1010;
+begin
+  Result := TRegistro1010(Inherited Items[Index]);
+end;
+
+function TRegistro1010List.New: TRegistro1010;
+begin
+  Result := TRegistro1010.Create;
+  Add(Result);
+end;
+
+procedure TRegistro1010List.SetItem(Index: Integer; const Value: TRegistro1010);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistro1020}
+
+function TRegistro1020List.GetItem(Index: Integer): TRegistro1020;
+begin
+  Result := TRegistro1020(Inherited Items[Index]);
+end;
+
+function TRegistro1020List.New: TRegistro1020;
+begin
+  Result := TRegistro1020.Create;
+  Add(Result);
+end;
+
+procedure TRegistro1020List.SetItem(Index: Integer; const Value: TRegistro1020);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistro1100}
+
+function TRegistro1100List.GetItem(Index: Integer): TRegistro1100;
+begin
+  Result := TRegistro1100(Inherited Items[Index]);
+end;
+
+function TRegistro1100List.New: TRegistro1100;
+begin
+  Result := TRegistro1100.Create;
+  Add(Result);
+end;
+
+procedure TRegistro1100List.SetItem(Index: Integer; const Value: TRegistro1100);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistro1101}
+
+function TRegistro1101List.GetItem(Index: Integer): TRegistro1101;
+begin
+  Result := TRegistro1101(Inherited Items[Index]);
+end;
+
+function TRegistro1101List.New: TRegistro1101;
+begin
+  Result := TRegistro1101.Create;
+  Add(Result);
+end;
+
+procedure TRegistro1101List.SetItem(Index: Integer; const Value: TRegistro1101);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistro1200}
+
+function TRegistro1200List.GetItem(Index: Integer): TRegistro1200;
+begin
+  Result := TRegistro1200(Inherited Items[Index]);
+end;
+
+function TRegistro1200List.New: TRegistro1200;
+begin
+  Result := TRegistro1200.Create;
+  Add(Result);
+end;
+
+procedure TRegistro1200List.SetItem(Index: Integer; const Value: TRegistro1200);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistro1210}
+
+function TRegistro1210List.GetItem(Index: Integer): TRegistro1210;
+begin
+  Result := TRegistro1210(Inherited Items[Index]);
+end;
+
+function TRegistro1210List.New: TRegistro1210;
+begin
+  Result := TRegistro1210.Create;
+  Add(Result);
+end;
+
+procedure TRegistro1210List.SetItem(Index: Integer; const Value: TRegistro1210);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistro1220}
+
+function TRegistro1220List.GetItem(Index: Integer): TRegistro1220;
+begin
+  Result := TRegistro1220(Inherited Items[Index]);
+end;
+
+function TRegistro1220List.New: TRegistro1220;
+begin
+  Result := TRegistro1220.Create;
+  Add(Result);
+end;
+
+procedure TRegistro1220List.SetItem(Index: Integer; const Value: TRegistro1220);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistro1300}
+
+function TRegistro1300List.GetItem(Index: Integer): TRegistro1300;
+begin
+  Result := TRegistro1300(Inherited Items[Index]);
+end;
+
+function TRegistro1300List.New: TRegistro1300;
+begin
+  Result := TRegistro1300.Create;
+  Add(Result);
+end;
+
+procedure TRegistro1300List.SetItem(Index: Integer; const Value: TRegistro1300);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistro1500}
+
+function TRegistro1500List.GetItem(Index: Integer): TRegistro1500;
+begin
+  Result := TRegistro1500(Inherited Items[Index]);
+end;
+
+function TRegistro1500List.New: TRegistro1500;
+begin
+  Result := TRegistro1500.Create;
+  Add(Result);
+end;
+
+procedure TRegistro1500List.SetItem(Index: Integer; const Value: TRegistro1500);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistro1501}
+
+function TRegistro1501List.GetItem(Index: Integer): TRegistro1501;
+begin
+  Result := TRegistro1501(Inherited Items[Index]);
+end;
+
+function TRegistro1501List.New: TRegistro1501;
+begin
+  Result := TRegistro1501.Create;
+  Add(Result);
+end;
+
+procedure TRegistro1501List.SetItem(Index: Integer; const Value: TRegistro1501);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistro1600}
+
+function TRegistro1600List.GetItem(Index: Integer): TRegistro1600;
+begin
+  Result := TRegistro1600(Inherited Items[Index]);
+end;
+
+function TRegistro1600List.New: TRegistro1600;
+begin
+  Result := TRegistro1600.Create;
+  Add(Result);
+end;
+
+procedure TRegistro1600List.SetItem(Index: Integer; const Value: TRegistro1600);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistro1610}
+
+function TRegistro1610List.GetItem(Index: Integer): TRegistro1610;
+begin
+  Result := TRegistro1610(Inherited Items[Index]);
+end;
+
+function TRegistro1610List.New: TRegistro1610;
+begin
+  Result := TRegistro1610.Create;
+  Add(Result);
+end;
+
+procedure TRegistro1610List.SetItem(Index: Integer; const Value: TRegistro1610);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistro1620}
+
+function TRegistro1620List.GetItem(Index: Integer): TRegistro1620;
+begin
+  Result := TRegistro1620(Inherited Items[Index]);
+end;
+
+function TRegistro1620List.New: TRegistro1620;
+begin
+  Result := TRegistro1620.Create;
+  Add(Result);
+end;
+
+procedure TRegistro1620List.SetItem(Index: Integer; const Value: TRegistro1620);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistro1700}
+
+function TRegistro1700List.GetItem(Index: Integer): TRegistro1700;
+begin
+  Result := TRegistro1700(Inherited Items[Index]);
+end;
+
+function TRegistro1700List.New: TRegistro1700;
+begin
+  Result := TRegistro1700.Create;
+  Add(Result);
+end;
+
+procedure TRegistro1700List.SetItem(Index: Integer; const Value: TRegistro1700);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistro1800}
+
+function TRegistro1800List.GetItem(Index: Integer): TRegistro1800;
+begin
+  Result := TRegistro1800(Inherited Items[Index]);
+end;
+
+function TRegistro1800List.New: TRegistro1800;
+begin
+  Result := TRegistro1800.Create;
+  Add(Result);
+end;
+
+procedure TRegistro1800List.SetItem(Index: Integer; const Value: TRegistro1800);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistro1809}
+
+function TRegistro1809List.GetItem(Index: Integer): TRegistro1809;
+begin
+  Result := TRegistro1809(Inherited Items[Index]);
+end;
+
+function TRegistro1809List.New: TRegistro1809;
+begin
+  Result := TRegistro1809.Create;
+  Add(Result);
+end;
+
+procedure TRegistro1809List.SetItem(Index: Integer; const Value: TRegistro1809);
+begin
+  Put(Index, Value);
+end;
+
 
 end.

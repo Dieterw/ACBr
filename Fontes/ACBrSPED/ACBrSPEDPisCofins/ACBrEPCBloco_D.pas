@@ -43,7 +43,7 @@ unit ACBrEPCBloco_D;
 interface
 
 uses
-  SysUtils, Classes, Contnrs, DateUtils;
+  SysUtils, Classes, Contnrs, DateUtils, ACBrEPCBlocos;
 
 type
    TRegistroD010List = class;
@@ -783,5 +783,383 @@ type
   end;
 
 implementation
+
+{TRegistroD010}
+
+function TRegistroD010List.GetItem(Index: Integer): TRegistroD010;
+begin
+  Result := TRegistroD010(Inherited Items[Index]);
+end;
+
+function TRegistroD010List.New: TRegistroD010;
+begin
+  Result := TRegistroD010.Create;
+  Add(Result);
+end;
+
+procedure TRegistroD010List.SetItem(Index: Integer; const Value: TRegistroD010);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroD100}
+
+function TRegistroD100List.GetItem(Index: Integer): TRegistroD100;
+begin
+  Result := TRegistroD100(Inherited Items[Index]);
+end;
+
+function TRegistroD100List.New: TRegistroD100;
+begin
+  Result := TRegistroD100.Create;
+  Add(Result);
+end;
+
+procedure TRegistroD100List.SetItem(Index: Integer; const Value: TRegistroD100);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroD101}
+
+function TRegistroD101List.GetItem(Index: Integer): TRegistroD101;
+begin
+  Result := TRegistroD101(Inherited Items[Index]);
+end;
+
+function TRegistroD101List.New: TRegistroD101;
+begin
+  Result := TRegistroD101.Create;
+  Add(Result);
+end;
+
+procedure TRegistroD101List.SetItem(Index: Integer; const Value: TRegistroD101);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroD105}
+
+function TRegistroD105List.GetItem(Index: Integer): TRegistroD105;
+begin
+  Result := TRegistroD105(Inherited Items[Index]);
+end;
+
+function TRegistroD105List.New: TRegistroD105;
+begin
+  Result := TRegistroD105.Create;
+  Add(Result);
+end;
+
+procedure TRegistroD105List.SetItem(Index: Integer; const Value: TRegistroD105);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroD111}
+
+function TRegistroD111List.GetItem(Index: Integer): TRegistroD111;
+begin
+  Result := TRegistroD111(Inherited Items[Index]);
+end;
+
+function TRegistroD111List.New: TRegistroD111;
+begin
+  Result := TRegistroD111.Create;
+  Add(Result);
+end;
+
+procedure TRegistroD111List.SetItem(Index: Integer; const Value: TRegistroD111);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroD200}
+
+function TRegistroD200List.GetItem(Index: Integer): TRegistroD200;
+begin
+  Result := TRegistroD200(Inherited Items[Index]);
+end;
+
+function TRegistroD200List.New: TRegistroD200;
+begin
+  Result := TRegistroD200.Create;
+  Add(Result);
+end;
+
+procedure TRegistroD200List.SetItem(Index: Integer; const Value: TRegistroD200);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroD201}
+
+function TRegistroD201List.GetItem(Index: Integer): TRegistroD201;
+begin
+  Result := TRegistroD201(Inherited Items[Index]);
+end;
+
+function TRegistroD201List.New: TRegistroD201;
+begin
+  Result := TRegistroD201.Create;
+  Add(Result);
+end;
+
+procedure TRegistroD201List.SetItem(Index: Integer; const Value: TRegistroD201);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroD205}
+
+function TRegistroD205List.GetItem(Index: Integer): TRegistroD205;
+begin
+  Result := TRegistroD205(Inherited Items[Index]);
+end;
+
+function TRegistroD205List.New: TRegistroD205;
+begin
+  Result := TRegistroD205.Create;
+  Add(Result);
+end;
+
+procedure TRegistroD205List.SetItem(Index: Integer; const Value: TRegistroD205);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroD209}
+
+function TRegistroD209List.GetItem(Index: Integer): TRegistroD209;
+begin
+  Result := TRegistroD209(Inherited Items[Index]);
+end;
+
+function TRegistroD209List.New: TRegistroD209;
+begin
+  Result := TRegistroD209.Create;
+  Add(Result);
+end;
+
+procedure TRegistroD209List.SetItem(Index: Integer; const Value: TRegistroD209);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroD300}
+
+function TRegistroD300List.GetItem(Index: Integer): TRegistroD300;
+begin
+  Result := TRegistroD300(Inherited Items[Index]);
+end;
+
+function TRegistroD300List.New: TRegistroD300;
+begin
+  Result := TRegistroD300.Create;
+  Add(Result);
+end;
+
+procedure TRegistroD300List.SetItem(Index: Integer; const Value: TRegistroD300);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroD309}
+
+function TRegistroD309List.GetItem(Index: Integer): TRegistroD309;
+begin
+  Result := TRegistroD309(Inherited Items[Index]);
+end;
+
+function TRegistroD309List.New: TRegistroD309;
+begin
+  Result := TRegistroD309.Create;
+  Add(Result);
+end;
+
+procedure TRegistroD309List.SetItem(Index: Integer; const Value: TRegistroD309);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroD350}
+
+function TRegistroD350List.GetItem(Index: Integer): TRegistroD350;
+begin
+  Result := TRegistroD350(Inherited Items[Index]);
+end;
+
+function TRegistroD350List.New: TRegistroD350;
+begin
+  Result := TRegistroD350.Create;
+  Add(Result);
+end;
+
+procedure TRegistroD350List.SetItem(Index: Integer; const Value: TRegistroD350);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroD359}
+
+function TRegistroD359List.GetItem(Index: Integer): TRegistroD359;
+begin
+  Result := TRegistroD359(Inherited Items[Index]);
+end;
+
+function TRegistroD359List.New: TRegistroD359;
+begin
+  Result := TRegistroD359.Create;
+  Add(Result);
+end;
+
+procedure TRegistroD359List.SetItem(Index: Integer; const Value: TRegistroD359);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroD500}
+
+function TRegistroD500List.GetItem(Index: Integer): TRegistroD500;
+begin
+  Result := TRegistroD500(Inherited Items[Index]);
+end;
+
+function TRegistroD500List.New: TRegistroD500;
+begin
+  Result := TRegistroD500.Create;
+  Add(Result);
+end;
+
+procedure TRegistroD500List.SetItem(Index: Integer; const Value: TRegistroD500);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroD501}
+
+function TRegistroD501List.GetItem(Index: Integer): TRegistroD501;
+begin
+  Result := TRegistroD501(Inherited Items[Index]);
+end;
+
+function TRegistroD501List.New: TRegistroD501;
+begin
+  Result := TRegistroD501.Create;
+  Add(Result);
+end;
+
+procedure TRegistroD501List.SetItem(Index: Integer; const Value: TRegistroD501);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroD505}
+
+function TRegistroD505List.GetItem(Index: Integer): TRegistroD505;
+begin
+  Result := TRegistroD505(Inherited Items[Index]);
+end;
+
+function TRegistroD505List.New: TRegistroD505;
+begin
+  Result := TRegistroD505.Create;
+  Add(Result);
+end;
+
+procedure TRegistroD505List.SetItem(Index: Integer; const Value: TRegistroD505);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroD509}
+
+function TRegistroD509List.GetItem(Index: Integer): TRegistroD509;
+begin
+  Result := TRegistroD509(Inherited Items[Index]);
+end;
+
+function TRegistroD509List.New: TRegistroD509;
+begin
+  Result := TRegistroD509.Create;
+  Add(Result);
+end;
+
+procedure TRegistroD509List.SetItem(Index: Integer; const Value: TRegistroD509);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroD600}
+
+function TRegistroD600List.GetItem(Index: Integer): TRegistroD600;
+begin
+  Result := TRegistroD600(Inherited Items[Index]);
+end;
+
+function TRegistroD600List.New: TRegistroD600;
+begin
+  Result := TRegistroD600.Create;
+  Add(Result);
+end;
+
+procedure TRegistroD600List.SetItem(Index: Integer; const Value: TRegistroD600);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroD601}
+
+function TRegistroD601List.GetItem(Index: Integer): TRegistroD601;
+begin
+  Result := TRegistroD601(Inherited Items[Index]);
+end;
+
+function TRegistroD601List.New: TRegistroD601;
+begin
+  Result := TRegistroD601.Create;
+  Add(Result);
+end;
+
+procedure TRegistroD601List.SetItem(Index: Integer; const Value: TRegistroD601);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroD605}
+
+function TRegistroD605List.GetItem(Index: Integer): TRegistroD605;
+begin
+  Result := TRegistroD605(Inherited Items[Index]);
+end;
+
+function TRegistroD605List.New: TRegistroD605;
+begin
+  Result := TRegistroD605.Create;
+  Add(Result);
+end;
+
+procedure TRegistroD605List.SetItem(Index: Integer; const Value: TRegistroD605);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroD609}
+
+function TRegistroD609List.GetItem(Index: Integer): TRegistroD609;
+begin
+  Result := TRegistroD609(Inherited Items[Index]);
+end;
+
+function TRegistroD609List.New: TRegistroD609;
+begin
+  Result := TRegistroD609.Create;
+  Add(Result);
+end;
+
+procedure TRegistroD609List.SetItem(Index: Integer; const Value: TRegistroD609);
+begin
+  Put(Index, Value);
+end;
 
 end.

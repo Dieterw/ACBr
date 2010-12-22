@@ -50,7 +50,6 @@ uses
 type
   TRegistroA010List = class;
   TRegistroA100List = class;
-  TRegistroA100List = class;
   TRegistroA110List = class;
   TRegistroA111List = class;
   TRegistroA120List = class;
@@ -97,12 +96,10 @@ type
 
   TRegistroA100 = class
   private
-   { TODO : Criar tipos }
-    fIND_OPER: Integer;	      //02	Indicador do tipo de operação: 0 - Serviço Contratado pelo Estabelecimento; 1 - Serviço Prestado pelo Estabelecimento.	C	001*
-   { TODO : Criar tipos }
-    fIND_EMIT: Integer;	      //03	Indicador do emitente do documento fiscal: 0 - Emissão própria; 1 - Emissão de Terceiros	C	001*
-    fCOD_PART: string; 	      //04	Código do participante (campo 02 do Registro 0150):- do emitente do documento, no caso de emissão de terceiros;- do adquirente, no caso de serviços prestados.	C	060
-    fCOD_SIT: string;	      //05	Código da situação do documento fiscal:00 – Documento regular 02 – Documento cancelado	N	002*
+    fIND_OPER: TACBrIndicadorTpOperacao;	 //02	Indicador do tipo de operação: 0 - Serviço Contratado pelo Estabelecimento; 1 - Serviço Prestado pelo Estabelecimento.	C	001*
+    fIND_EMIT: TACBrIndicadorEmitenteDF;   //03	Indicador do emitente do documento fiscal: 0 - Emissão própria; 1 - Emissão de Terceiros	C	001*
+    fCOD_PART: string; 	                   //04	Código do participante (campo 02 do Registro 0150):- do emitente do documento, no caso de emissão de terceiros;- do adquirente, no caso de serviços prestados.	C	060
+    fCOD_SIT: TACBrSituacaoDF;	          //05	Código da situação do documento fiscal:00 – Documento regular 02 – Documento cancelado	N	002*
     fSER: string;	            //06	Série do documento fiscal	C	020
     fSUB: string;	            //07	Subsérie do documento fiscal	C	020
     fNUM_DOC: string;	      //08	Número do documento fiscal ou documento internacional equivalente	C	060
@@ -128,10 +125,10 @@ type
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
 
-    property IND_OPER: Integer read FIND_OPER write FIND_OPER;
-    property IND_EMIT: Integer read FIND_EMIT write FIND_EMIT;
+    property IND_OPER: TACBrIndicadoTipoOperacao read FIND_OPER write FIND_OPER;
+    property IND_EMIT: TACBrIndicadorEmitenteDF read FIND_EMIT write FIND_EMIT;
     property COD_PART: string read FCOD_PART write FCOD_PART;
-    property COD_SIT: string read FCOD_SIT write FCOD_SIT;
+    property COD_SIT: TACBrSituacaoDF read FCOD_SIT write FCOD_SIT;
     property SER: string read FSER write FSER;
     property SUB: string read FSUB write FSUB;
     property NUM_DOC: string read FNUM_DOC write FNUM_DOC;
@@ -334,7 +331,113 @@ begin
   inherited;
 end;
 
+function TRegistroA010List.GetItem(Index: Integer): TRegistroA010;
+begin
+  Result := TRegistroA010(Inherited Items[Index]);
+end;
+
+function TRegistroA010List.New: TRegistroA010;
+begin
+  Result := TRegistroA010.Create;
+  Add(Result);
+end;
+
+procedure TRegistroA010List.SetItem(Index: Integer; const Value: TRegistroA010);
+begin
+  Put(Index, Value);
+end;
+
+
 { TRegistroA100 }
+
+function TRegistroA100List.GetItem(Index: Integer): TRegistroA100;
+begin
+  Result := TRegistroA100(Inherited Items[Index]);
+end;
+
+function TRegistroA100List.New: TRegistroA100;
+begin
+  Result := TRegistroA100.Create;
+  Add(Result);
+end;
+
+procedure TRegistroA100List.SetItem(Index: Integer; const Value: TRegistroA100);
+begin
+  Put(Index, Value);
+end;
+
+
+{TRegistroA110}
+
+function TRegistroA110List.GetItem(Index: Integer): TRegistroA110;
+begin
+  Result := TRegistroA110(Inherited Items[Index]);
+end;
+
+function TRegistroA110List.New: TRegistroA110;
+begin
+  Result := TRegistroA110.Create;
+  Add(Result);
+end;
+
+procedure TRegistroA110List.SetItem(Index: Integer; const Value: TRegistroA110);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroA111}
+
+function TRegistroA111List.GetItem(Index: Integer): TRegistroA111;
+begin
+  Result := TRegistroA111(Inherited Items[Index]);
+end;
+
+function TRegistroA111List.New: TRegistroA111;
+begin
+  Result := TRegistroA111.Create;
+  Add(Result);
+end;
+
+procedure TRegistroA111List.SetItem(Index: Integer; const Value: TRegistroA111);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroA120}
+
+function TRegistroA120List.GetItem(Index: Integer): TRegistroA120;
+begin
+  Result := TRegistroA120(Inherited Items[Index]);
+end;
+
+function TRegistroA120List.New: TRegistroA120;
+begin
+  Result := TRegistroA120.Create;
+  Add(Result);
+end;
+
+procedure TRegistroA120List.SetItem(Index: Integer; const Value: TRegistroA120);
+begin
+  Put(Index, Value);
+end;
+
+{TRegistroA170}
+
+function TRegistroA170List.GetItem(Index: Integer): TRegistroA170;
+begin
+  Result := TRegistroA170(Inherited Items[Index]);
+end;
+
+function TRegistroA170List.New: TRegistroA170;
+begin
+  Result := TRegistroA170.Create;
+  Add(Result);
+end;
+
+procedure TRegistroA170List.SetItem(Index: Integer; const Value: TRegistroA170);
+begin
+  Put(Index, Value);
+end;
 
 constructor TRegistroA100.Create;
 begin

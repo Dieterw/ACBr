@@ -2382,7 +2382,7 @@ fazer Pausa entre as vias a Mensagem enviada ao usuário também foi modificada *)
      Linha := 0 ;
      while Linha <= ( Relatorio.Count - 1) do
      begin
-        LinhaRelatorioGerencial( LeftStr( Relatorio[ Linha ], fpColunas) ) ;
+        TACBrECF(fpOwner).LinhaRelatorioGerencial( LeftStr( Relatorio[ Linha ], fpColunas) ) ;
         Linha := Linha + 1 ;
 
         {$IFNDEF CONSOLE}
@@ -2395,8 +2395,8 @@ fazer Pausa entre as vias a Mensagem enviada ao usuário também foi modificada *)
 
      if Imp < Vias then
      begin
-        PulaLinhas ;
-        CortaPapel ;
+        TACBrECF(fpOwner).PulaLinhas ;
+        TACBrECF(fpOwner).CortaPapel ;
         if not Bufferiza then
            PausarRelatorio( Imp ) ;
      end ;
@@ -2409,7 +2409,7 @@ fazer Pausa entre as vias a Mensagem enviada ao usuário também foi modificada *)
        FormMsgPinta( 'Fechando Relatório Gerencial' );
   {$ENDIF}
 
-  FechaRelatorio ;
+  TACBrECF(fpOwner).FechaRelatorio ;
 end;
 
 procedure TACBrECFSweda.ListaCupomVinculado(Relatorio: TStrings;

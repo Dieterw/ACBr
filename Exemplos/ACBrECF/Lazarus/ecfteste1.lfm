@@ -442,17 +442,17 @@ object Form1: TForm1
         TabOrder = 14
       end
       object Label22: TLabel
-        Left = 258
+        Left = 411
         Height = 14
-        Top = 255
+        Top = 58
         Width = 54
         Caption = 'BandWidth'
         ParentColor = False
       end
       object seBandWidth: TSpinEdit
-        Left = 324
+        Left = 411
         Height = 21
-        Top = 248
+        Top = 74
         Width = 54
         Increment = 10
         MaxValue = 1000
@@ -480,6 +480,26 @@ object Form1: TForm1
         OnChange = chArredondamentoItemMFDChange
         State = cbChecked
         TabOrder = 9
+      end
+      object Label23: TLabel
+        Left = 332
+        Height = 14
+        Top = 255
+        Width = 83
+        Caption = 'MaxLinhasBuffer:'
+        ParentColor = False
+      end
+      object seMaxLinhasBuffer: TSpinEdit
+        Left = 430
+        Height = 21
+        Hint = 'Para homologação TEF utilize 3'#13#10'(Impressão de 3 em 3 linhas)'
+        Top = 248
+        Width = 54
+        MaxValue = 10
+        OnChange = seMaxLinhasBufferChange
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 16
       end
     end
     object TabSheet1: TTabSheet

@@ -156,6 +156,7 @@ TACBrECF = class( TACBrComponent )
     fsMensagemRodape : String ;
     fsRegistrouRFDCNF : Boolean ;
     fsSubTotalPagto :Double; //lampada
+    fsIndiceGerencial : Integer ;
     {$IFNDEF CONSOLE}
       fsFormMsgColor : TColor ;
       fsFormMsgFont  : TFont ;
@@ -544,9 +545,11 @@ TACBrECF = class( TACBrComponent )
     Procedure LeituraXSerial( Linhas : TStringList ) ; overload ;
     Procedure LeituraXSerial( NomeArquivo : String  ); overload ;
     Procedure ReducaoZ( DataHora : TDateTime = 0 ) ;
-    Procedure RelatorioGerencial(Relatorio : TStrings; Vias : Integer = 1; Indice: Integer = 0) ;
+    Procedure RelatorioGerencial(Relatorio : TStrings; const Vias : Integer = 1;
+      const Indice: Integer = 0) ;
     Procedure AbreRelatorioGerencial(Indice: Integer = 0) ;
-    Procedure LinhaRelatorioGerencial( const Linha : AnsiString; const IndiceBMP: Integer = 0 ) ;
+    Procedure LinhaRelatorioGerencial( const Linha : AnsiString;
+      const IndiceBMP: Integer = 0 ) ;
     Procedure CupomVinculado(COO, CodFormaPagto : String; Valor : Double;
               Relatorio : TStrings; Vias : Integer = 1) ; overload ;
     Procedure CupomVinculado(COO, CodFormaPagto, CodComprovanteNaoFiscal :
@@ -733,6 +736,7 @@ begin
 
   { Inicializando as Variaveis Internas }
   fsSubTotalPagto   := 0;//lampada
+  fsIndiceGerencial := 0;
   fsAtivo           := false ;
   fsProcurandoECF   := false ;
   fsProcurandoPorta := false ;
@@ -3319,7 +3323,8 @@ begin
   fsECF.ProgramaUnidadeMedida(Descricao);
 end;
 
-procedure TACBrECF.RelatorioGerencial(Relatorio: TStrings; Vias: Integer; Indice: Integer);
+procedure TACBrECF.RelatorioGerencial(Relatorio: TStrings; const Vias: Integer;
+  const Indice: Integer);
 begin
   ComandoLOG := 'RelatorioGerencial( ' + Relatorio.Text + ' , ' +
                     IntToStr(Vias) + ' , ' + IntToStr(indice) + ' )' ;
@@ -3330,7 +3335,9 @@ procedure TACBrECF.AbreRelatorioGerencial(Indice: Integer);
 begin
   if RFDAtivo then
      fsRFD.VerificaParametros ;
-     
+
+  fsIndiceGerencial := Indice;
+
   ComandoLOG := 'AbreRelatorioGerencial' ;
   fsECF.AbreRelatorioGerencial(Indice) ;
 
@@ -3347,16 +3354,48 @@ begin
      fsRFD.Documento('RG') ;
 end;
 
-procedure TACBrECF.LinhaRelatorioGerencial(const Linha: AnsiString; const IndiceBMP: Integer);
+procedure TACBrECF.LinhaRelatorioGerencial(const Linha: AnsiString;
+  const IndiceBMP: Integer);
 Var
   Texto, Buffer : String ;
   Lin   : Integer ;
   SL    : TStringList ;
+
+  Procedure TentaImprimirLinhas( Texto: AnsiString; IndiceBMP: Integer )  ;
+  var
+     Est : TACBrECFEstado ;
+     OldTimeOut : LongInt ;
+  begin
+     ComandoLOG := 'LinhaRelatorioGerencial( "'+Texto+'", '+IntToStr(IndiceBMP)+' )';
+     try
+        fsECF.LinhaRelatorioGerencial( Texto, IndiceBMP ) ;
+     except
+        // Não conseguiu imprimir ? Verifique se o relatório foi fechado pelo ECF //
+        OldTimeOut := TimeOut;
+        TimeOut    := max(TimeOut,5);  // Tenta ler o Estado por 5 seg ou mais
+        try
+           Est := Estado;              // Lendo o estado do ECF
+
+           if Est = estLivre then
+           begin
+              // Está Livre, provavelmente foi fechado por longo tempo de
+              // impressao... (O ECF é obrigado a fechar o Gerencial após 2
+              // minutos de Impressão). Vamos abrir um Novo Gerencial e Tentar
+              // novamente
+              AbreRelatorioGerencial(fsIndiceGerencial);
+              fsECF.LinhaRelatorioGerencial( Texto, IndiceBMP );
+           end ;
+        finally
+           TimeOut := OldTimeOut;
+        end ;
+     end ;
+  end ;
+
 begin
   if MaxLinhasBuffer < 1 then
    begin
-     ComandoLOG := 'LinhaRelatorioGerencial( '+Linha+' )';
-     fsECF.LinhaRelatorioGerencial( Linha, IndiceBMP );
+     ComandoLOG := 'LinhaRelatorioGerencial( "'+Texto+'", '+IntToStr(IndiceBMP)+' )';
+     fsECF.LinhaRelatorioGerencial( Texto, IndiceBMP ) ;
    end
   else
    begin
@@ -3369,19 +3408,16 @@ begin
         For Lin := 0 to SL.Count - 1 do
         begin
            Texto := Texto + SL[Lin] + sLineBreak;
+
            if (Lin mod MaxLinhasBuffer) = 0 then
            begin
-              ComandoLOG := 'LinhaRelatorioGerencial( '+Texto+' )';
-              fsECF.LinhaRelatorioGerencial( Texto ) ;
+              TentaImprimirLinhas( Texto, IndiceBMP ) ;
               Texto := '' ;
            end ;
         end ;
 
         if Texto <> '' then
-        begin
-           ComandoLOG := 'LinhaRelatorioGerencial( '+Texto+' )';
-           fsECF.LinhaRelatorioGerencial( Texto, IndiceBMP ) ;
-        end ;
+           TentaImprimirLinhas( Texto, IndiceBMP ) ;
      finally
         SL.Free ;
      end ;

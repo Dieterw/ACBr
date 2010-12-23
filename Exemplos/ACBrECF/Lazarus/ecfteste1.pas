@@ -109,6 +109,7 @@ type
     ImprimeporPeriodo1: TMenuItem;
     Label20 : TLabel ;
     Label22 : TLabel ;
+    Label23 : TLabel ;
     mDataHoraSwBasico : TMenuItem ;
     MenuItem1 : TMenuItem ;
     mCortaPapel : TMenuItem ;
@@ -171,6 +172,7 @@ type
     mUsuarioAtual : TMenuItem ;
     mIM : TMenuItem ;
     seBandWidth : TSpinEdit ;
+    seMaxLinhasBuffer : TSpinEdit ;
     wbBobina: TIpHtmlPanel;
     Label1: TLabel;
     Label10: TLabel;
@@ -355,6 +357,7 @@ type
     procedure Ativcar1Click(Sender: TObject);
     procedure Desativar1Click(Sender: TObject);
     procedure mMsgChange(Sender: TObject);
+    procedure seMaxLinhasBufferChange(Sender : TObject) ;
     procedure seBandWidthChange(Sender : TObject) ;
     procedure Testar1Click(Sender: TObject);
     procedure ACBrECF1MsgAguarde(Mensagem : String);
@@ -1439,6 +1442,11 @@ begin
   end ;
 
   ACBrECF1.MsgAguarde := copy(Msg, 1, Length(Msg)-1 ) ;
+end;
+
+procedure TForm1.seMaxLinhasBufferChange(Sender : TObject) ;
+begin
+   ACBrECF1.MaxLinhasBuffer := seMaxLinhasBuffer.Value;
 end;
 
 procedure TForm1.seBandWidthChange(Sender : TObject) ;

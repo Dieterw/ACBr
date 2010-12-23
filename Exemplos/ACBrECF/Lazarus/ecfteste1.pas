@@ -3115,11 +3115,7 @@ end;
 procedure TForm1.btSerialClick(Sender: TObject);
   Var frConfiguraSerial : TfrConfiguraSerial ;
 begin
-  mResp.Lines.Add( 'apenas 1 Linha' );
-  mResp.Lines.Add( 'Linha 1 LF'+#10+'Linha2' );
-  mResp.Lines.Add( 'Linha 1 CR'+#13+'Linha2' );
-  mResp.Lines.Add( 'Linha 1 CR+LF'+#13+#10+'Linha2' );
-  mResp.Lines.Add( 'Linha 1 CR+LF'+#13+#10+#225+'Linha 225' );
+
   frConfiguraSerial := TfrConfiguraSerial.Create(self);
 
   try

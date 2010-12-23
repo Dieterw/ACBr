@@ -126,6 +126,8 @@ TACBrECFFiscNET = class( TACBrECFClass )
     fsNumECF    : String ;
     fsNumLoja   : String ;
     fsPAF       : String ;
+    fsBaseTotalDiaMeioPagamento : Integer ;
+    fsBaseTotalDiaNaoFiscal     : Integer ;
     fsArredonda : Integer ;
     fsFiscNETComando: TACBrECFFiscNETComando;
     fsFiscNETResposta: TACBrECFFiscNETResposta;
@@ -605,6 +607,8 @@ begin
   fsNumECF    := '' ;
   fsNumLoja   := '' ;
   fsPAF       := '' ;
+  fsBaseTotalDiaMeioPagamento := 99;
+  fsBaseTotalDiaNaoFiscal     := 99;
   fsArredonda := -1 ;
   fsComandoVendeItem := '' ;
   fsEmPagamento := false ;
@@ -651,6 +655,8 @@ begin
   fsArredonda := -1 ;
   fsComandoVendeItem := '' ;
   fsMarcaECF := '' ;
+  fsBaseTotalDiaMeioPagamento := 99;
+  fsBaseTotalDiaNaoFiscal     := 99;
 
   GetPAF ;
 
@@ -1542,6 +1548,26 @@ begin
   if not Assigned( fpFormasPagamentos ) then
      CarregaFormasPagamento ;
 
+  A := 0 ;
+  while fsBaseTotalDiaMeioPagamento = 99 do
+  begin
+    FiscNETComando.NomeComando := 'LeMoeda' ;
+    FiscNETComando.AddParamString('NomeDadoMonetario',
+                                  'TotalDiaMeioPagamento['+IntToStrZero(A,2)+']');
+    try
+       EnviaComando ;
+       fsBaseTotalDiaMeioPagamento := A;
+    except
+       On E : Exception do
+       begin
+          if Pos('11017',E.Message) > 0 then  // ErroProtIndiceRegistrador
+             Inc(A)
+          else
+             raise ;
+       end ;
+    end ;
+  end ;
+
   For A := 0 to FormasPagamento.Count-1 do
   begin
      FiscNETComando.NomeComando := 'LeMoeda' ;
@@ -1549,7 +1575,7 @@ begin
         FiscNETComando.AddParamString('NomeDadoMonetario','TotalDiaDinheiro')
      else
         FiscNETComando.AddParamString('NomeDadoMonetario',
-                                   'TotalDiaMeioPagamento['+IntToStrZero(A-1,2)+']');
+          'TotalDiaMeioPagamento['+IntToStrZero(A+fsBaseTotalDiaMeioPagamento-1,2)+']');
      EnviaComando ;
 
      FormasPagamento[A].Total := StringToFloatDef(
@@ -1632,18 +1658,39 @@ begin
   if not Assigned( fpComprovantesNaoFiscais ) then
      CarregaComprovantesNaoFiscais ;
 
+  A := 0 ;
+  while fsBaseTotalDiaNaoFiscal = 99 do
+  begin
+    FiscNETComando.NomeComando := 'LeMoeda' ;
+    FiscNETComando.AddParamString('NomeDadoMonetario',
+                                  'TotalDiaNaoFiscal['+IntToStrZero(A,2)+']');
+    try
+       EnviaComando ;
+       fsBaseTotalDiaNaoFiscal := A;
+    except
+       On E : Exception do
+       begin
+          if Pos('11017',E.Message) > 0 then  // ErroProtIndiceRegistrador
+             Inc(A)
+          else
+             raise ;
+       end ;
+    end ;
+  end ;
+
   For A := 0 to ComprovantesNaoFiscais.Count-1 do
   begin
      FiscNETComando.NomeComando := 'LeMoeda' ;
      FiscNETComando.AddParamString('NomeDadoMonetario',
-                                   'TotalDiaNaoFiscal['+IntToStrZero(A,2)+']');
+        'TotalDiaNaoFiscal['+IntToStrZero(A+fsBaseTotalDiaNaoFiscal,2)+']');
      EnviaComando ;
 
      ComprovantesNaoFiscais[A].Total := StringToFloatDef(
         RemoveString('.', FiscNETResposta.Params.Values['ValorMoeda']), 0) ;
 
      FiscNETComando.NomeComando := 'LeInteiro' ;
-     FiscNETComando.AddParamString('NomeInteiro','CON['+IntToStrZero(A,2)+']');
+     FiscNETComando.AddParamString('NomeInteiro',
+        'CON['+IntToStrZero(A+fsBaseTotalDiaNaoFiscal,2)+']');
      EnviaComando ;
 
      ComprovantesNaoFiscais[A].Contador := StrToIntDef(

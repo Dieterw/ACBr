@@ -88,7 +88,7 @@ RemoteSymbols=0
 MinStackSize=16384
 MaxStackSize=1048576
 ImageBase=4194304
-ExeDescription=ACBr AutomaÃ§Ã£o Comercial Brasil - ACBrBoletoFC Fortes
+ExeDescription=ACBr Automação Comercial Brasil - ACBrBoletoFC Fortes
 [Directories]
 OutputDir=
 UnitOutputDir=

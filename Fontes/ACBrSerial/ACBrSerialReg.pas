@@ -168,6 +168,7 @@ begin
   Proc('#254 | Daruma') ;
   Proc('#027,p,0,#050,#200 | Mecaf') ;
   Proc('#027,p,#000,#050,#200 | Schalter') ;
+  Proc('#027,#112,#048,#050 | Zantus') ;
 end;
 
 

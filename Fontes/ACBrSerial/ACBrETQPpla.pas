@@ -58,7 +58,13 @@ const
    STX : String = chr(002);
 
 type
+
+  { TACBrETQPpla }
+
   TACBrETQPpla = class( TACBrETQClass )
+  private
+    function ConverteMultiplicador( Multiplicador : Integer) : String ;
+
   public
     constructor Create(AOwner: TComponent);
 
@@ -94,6 +100,16 @@ begin
   Temperatura := 10;
   Unidade := 'm';
 end;
+
+function TACBrETQPpla.ConverteMultiplicador(Multiplicador : Integer) : String ;
+begin
+  if (Multiplicador >= 0) and (Multiplicador < 10) then
+     Result := IntToStr(Multiplicador)
+  else if Multiplicador < 24 then
+     Result := chr(Multiplicador+55)   //Ex: 10 + 55 = 65 = A
+  else
+     Raise Exception.Create(ACBrStr('Informe um valor entre 0 e 24 para Multiplicador'));
+end ;
 
 procedure TACBrETQPpla.Imprimir(Copias: Integer = 1; AvancoEtq: Integer = 0);
 var
@@ -267,8 +283,10 @@ begin
   else
     Smooth := padR(IntToStr(SubFonte), 3, '0');
 
-  Cmd := IntToStr(Integer(Orientacao) + 1) + Chr(48+Fonte) + IntToStr(MultiplicadorH) +
-         IntToStr(MultiplicadorV) + Smooth + eixoY + eixoX + Texto;
+  Cmd := IntToStr(Integer(Orientacao) + 1) + Chr(48+Fonte) +
+         ConverteMultiplicador(MultiplicadorH) +
+         ConverteMultiplicador(MultiplicadorV) +
+         Smooth + eixoY + eixoX + Texto;
 
   ListaCmd.Add(Cmd);
 end;

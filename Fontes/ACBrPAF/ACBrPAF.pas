@@ -73,8 +73,9 @@ type
 
     FPath: String;            /// Path do arquivo a ser gerado
     FDelimitador: String;     /// Caracter delimitador de campos
-    FTrimString: boolean;         /// Retorna a string sem espaços em branco iniciais e finais
+    FTrimString: boolean;     /// Retorna a string sem espaços em branco iniciais e finais
     FCurMascara: String;      /// Mascara para valores tipo currency
+    FAssinar : Boolean;       /// Define se o arquivo gerado deve ser assinado
     ///
     FPAF_D: TPAF_D;
     FPAF_E: TPAF_E;
@@ -154,8 +155,11 @@ type
     property Path: String read FPath write FPath;
     ///
     property Delimitador: String read GetDelimitador write SetDelimitador;
-    property TrimString: boolean read GetTrimString write SetTrimString;
+    property TrimString: Boolean read GetTrimString write SetTrimString
+       default True ;
     property CurMascara: String read GetCurMascara write SetCurMascara;
+    property AssinarArquivo : Boolean read FAssinar write FAssinar
+      default True ;
 
     property OnError: TErrorEvent  read GetOnError write SetOnError;
     property OnPAFCalcEAD: TACBrCalcEAD read GetOnPAFCalcEAD write SetOnPAFCalcEAD;
@@ -191,8 +195,7 @@ begin
   FDelimitador := '';
   FCurMascara  := '';
   FTrimString  := True;
-
-
+  FAssinar     := True;
 end;
 
 destructor TACBrPAF.Destroy;
@@ -426,7 +429,8 @@ begin
     ///
     CloseFile(txtFile);
     /// Assinatura EAD
-    AssinaArquivoComEAD(fPath + Arquivo);
+    if FAssinar then
+      AssinaArquivoComEAD(fPath + Arquivo);
 
     /// Limpa de todos os Blocos as listas de todos os registros.
     LimpaRegistros;
@@ -457,7 +461,8 @@ begin
     ///
     CloseFile(txtFile);
     /// Assinatura EAD
-    AssinaArquivoComEAD(fPath + Arquivo);
+    if FAssinar then
+      AssinaArquivoComEAD(fPath + Arquivo);
 
     /// Limpa de todos os Blocos as listas de todos os registros.
     LimpaRegistros;
@@ -488,7 +493,8 @@ begin
     ///
     CloseFile(txtFile);
     /// Assinatura EAD
-    AssinaArquivoComEAD(fPath + Arquivo);
+    if FAssinar then
+      AssinaArquivoComEAD(fPath + Arquivo);
 
     /// Limpa de todos os Blocos as listas de todos os registros.
     LimpaRegistros;
@@ -522,7 +528,8 @@ begin
     /// Coloca os registros R em ordem crescente
     ReordenarRegistroR(Arquivo);
     /// Assinatura EAD
-    AssinaArquivoComEAD(fPath + Arquivo);
+    if FAssinar then
+      AssinaArquivoComEAD(fPath + Arquivo);
 
     /// Limpa de todos os Blocos as listas de todos os registros.
     LimpaRegistros;
@@ -553,7 +560,8 @@ begin
     ///
     CloseFile(txtFile);
     /// Assinatura EAD
-    AssinaArquivoComEAD(fPath + Arquivo);
+    if FAssinar then
+      AssinaArquivoComEAD(fPath + Arquivo);
 
     /// Limpa de todos os Blocos as listas de todos os registros.
     LimpaRegistros;

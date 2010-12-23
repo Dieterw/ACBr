@@ -586,10 +586,10 @@ begin
          raise EACBrTEFDECF.Create(E.Message);
    end;
 
-   SaldoAPagar := StringToFloatDef( SubTotal, -2);
+   SaldoAPagar := StringToFloatDef( SubTotal, -98787158);
    SaldoAPagar := SimpleRoundTo( SaldoAPagar, -2);     // por Rodrigo Baltazar
 
-   if SaldoAPagar = -2 then
+   if SaldoAPagar = -98787158 then
       raise Exception.Create( ACBrStr( 'Erro na conversão do Valor Retornado '+
                                        'em: OnInfoECF( ineSubTotal, SaldoAPagar )' ) );
    Result := SaldoAPagar;

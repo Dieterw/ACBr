@@ -114,7 +114,6 @@ object Form1: TForm1
           Top = 59
           Width = 25
           BorderSpacing.Left = 8
-          Color = clBtnFace
           Glyph.Data = {
             36030000424D3603000000000000360000002800000010000000100000000100
             1800000000000003000000000000000000000000000000000000FFFFFFFFFFFF
@@ -867,6 +866,7 @@ object Form1: TForm1
     MsgPausaRelatorio = 'Destaque a %dª via, <ENTER> proxima, %d seg.'
     MaxLinhasBuffer = 3
     FormMsgColor = clHighlight
+    OnMsgPoucoPapel = ACBrECF1MsgPoucoPapel
     MemoParams.Strings = (
       '[Cabecalho]'
       'LIN000=<center><b>Nome da Empresa</b></center>'
@@ -896,6 +896,7 @@ object Form1: TForm1
     )
     Device.HandShake = hsRTS_CTS
     Device.HardFlow = True
+    ArqLOG = 'ecf.log'
     left = 16
     top = 296
   end

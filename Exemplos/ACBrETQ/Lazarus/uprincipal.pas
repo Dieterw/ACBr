@@ -55,11 +55,11 @@ begin
      LimparMemoria := ckMemoria.Checked;
      Ativar;
 
-     ImprimirTexto(orNormal, 2, '2', '2', 190, 5, 'BISCOITO MARILAN RECH 335G');
-     ImprimirTexto(orNormal, 2, '2', '1', 158, 5, 'CHOC BRANCO');
+     ImprimirTexto(orNormal, 2, 2, 2, 190, 5, 'BISCOITO MARILAN RECH 335G');
+     ImprimirTexto(orNormal, 2, 2, 1, 158, 5, 'CHOC BRANCO');
      ImprimirBarras(orNormal, 'F', '2', '2', 32, 0, '7896003701685', 90);
-     ImprimirTexto(orNormal, 3, '3', '2', 15, 300, 'R$');
-     ImprimirTexto(orNormal, 3, '4', '4', 15, 450, '20.59');
+     ImprimirTexto(orNormal, 3, 3, 2, 15, 300, 'R$');
+     ImprimirTexto(orNormal, 3, 4, 4, 15, 450, '20.59');
 
      Imprimir(StrToInt(eCopias.Text), StrToInt(eAvanco.Text));
      Desativar;
@@ -76,16 +76,16 @@ begin
      LimparMemoria := ckMemoria.Checked;
      Ativar;
 
-     ImprimirTexto(orNormal, 2, '1', '2', 0180, 0015, 'BISCOITO REC 335G');
-     ImprimirTexto(orNormal, 2, '1', '1', 0140, 0015, 'CHOC BRANCO');
+     ImprimirTexto(orNormal, 2, 1, 2, 0180, 0015, 'BISCOITO REC 335G');
+     ImprimirTexto(orNormal, 2, 1, 1, 0140, 0015, 'CHOC BRANCO');
      ImprimirBarras(orNormal, 'F', '2', '2', 0020, 0010, '7896003701685', 070);
 
-     ImprimirTexto(orNormal, 2, '1', '2', 0180, 0315, 'BISCOITO RECH 335G');
-     ImprimirTexto(orNormal, 2, '1', '1', 0140, 0315, 'CHOC BRANCO');
+     ImprimirTexto(orNormal, 2, 1, 2, 0180, 0315, 'BISCOITO RECH 335G');
+     ImprimirTexto(orNormal, 2, 1, 1, 0140, 0315, 'CHOC BRANCO');
      ImprimirBarras(orNormal, 'F', '2', '2', 0020, 0315, '7896003701685', 070);
 
-     ImprimirTexto(orNormal, 2, '1', '2', 0180, 0620, 'BISCOITO RECH 335G');
-     ImprimirTexto(orNormal, 2, '1', '1', 0140, 0620, 'CHOC BRANCO');
+     ImprimirTexto(orNormal, 2, 1, 2, 0180, 0620, 'BISCOITO RECH 335G');
+     ImprimirTexto(orNormal, 2, 1, 1, 0140, 0620, 'CHOC BRANCO');
      ImprimirBarras(orNormal, 'F', '2', '2', 0020, 0620, '7896003701685', 070);
 
      Imprimir(StrToInt(eCopias.Text), StrToInt(eAvanco.Text));

@@ -101,6 +101,7 @@ type
      tsOperacao : TTabSheet;
      sCliSiTef: TShape;
      ckCliSiTef: TCheckBox;
+     procedure ACBrECF1MsgPoucoPapel(Sender : TObject) ;
      procedure ACBrTEFD1AguardaResp(Arquivo : String;
         SegundosTimeOut : Integer; var Interromper : Boolean);
      procedure ACBrTEFD1AntesCancelarTransacao(RespostaPendente: TACBrTEFDResp);{%h-}
@@ -916,6 +917,18 @@ begin
 
   if fCancelado then
      Interromper := True ;
+end;
+
+procedure TForm1.ACBrECF1MsgPoucoPapel(Sender : TObject) ;
+Var
+  OldTecladoBloqueado : Boolean ;
+begin
+  OldTecladoBloqueado := ACBrTEFD1.TecladoBloqueado;
+  try
+     ShowMessage('ATENÇÃO. Detectada proximadade do fim da Bobina');
+  finally
+    ACBrTEFD1.BloquearMouseTeclado(OldTecladoBloqueado);
+  end ;
 end;
 
 procedure TForm1.ACBrTEFD1AntesCancelarTransacao(RespostaPendente: TACBrTEFDResp

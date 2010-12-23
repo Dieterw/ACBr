@@ -7,8 +7,8 @@ uses
   cthreads,
   {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms
-  { add your units here }, GAVTeste1, ACBr_LCL;
+  Forms, ACBrSerial
+  { add your units here }, GAVTeste1;
 
 begin
   Application.Initialize;

@@ -897,11 +897,11 @@ object frmDemo: TfrmDemo
   end
   object ACBrBoleto1: TACBrBoleto
     Cedente.Nome = 'TodaObra Materias p/ Construcao'
-    Cedente.CodigoCedente = '4266443'
-    Cedente.Agencia = '284'
-    Cedente.AgenciaDigito = '4'
-    Cedente.Conta = '079489'
-    Cedente.ContaDigito = '9'
+    Cedente.CodigoCedente = '000193'
+    Cedente.Agencia = '0741'
+    Cedente.AgenciaDigito = '2'
+    Cedente.Conta = '1934'
+    Cedente.ContaDigito = '5'
     Cedente.TipoInscricao = pOutras
     Cedente.Logradouro = 'Rua  XI de Agosto'
     Cedente.NumeroRes = '100'
@@ -910,8 +910,7 @@ object frmDemo: TfrmDemo
     Cedente.UF = 'SP'
     Cedente.CEP = '18270000'
     Banco.Numero = 104
-    NomeArqRemessa = 'remessa'
-    DirArqRemessa = '.'
+    NomeArqRemessa = '.'
     LayoutRemessa = c240
     ACBrBoletoFC = ACBrBoletoFCFortes1
     left = 200

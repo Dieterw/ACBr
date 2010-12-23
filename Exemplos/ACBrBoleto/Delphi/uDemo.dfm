@@ -619,24 +619,24 @@ object frmDemo: TfrmDemo
     Cedente.Conta = '079489'
     Cedente.ContaDigito = '9'
     Cedente.TipoInscricao = pOutras
-    Banco.Numero = 104
-    NomeArqRemessa = 'cb00001.rem'
-    DirArqRemessa = '.\remessa\'
+    Banco.Numero = 341
+    NomeArqRemessa = 'remessa'
+    DirArqRemessa = '.'
     LayoutRemessa = c240
-    ACBrBoletoFC = ACBrBoletoFCQuick1
+    ACBrBoletoFC = ACBrBoletoFCFortes1
     Left = 64
     Top = 231
   end
   object ACBrBoletoFCQuick1: TACBrBoletoFCQuick
-    ACBrBoleto = ACBrBoleto1
-    DirLogo = '..\..\..\Fontes\ACBrBoleto\Logos\Colorido\'
+    DirLogo = '..\..\..\Fontes\ACBrBoleto\Logos\Colorido'
     NomeArquivo = 'boleto'
     SoftwareHouse = 'Projeto ACBr - http://acbr.sf.net'
     Left = 112
     Top = 231
   end
   object ACBrBoletoFCFortes1: TACBrBoletoFCFortes
-    DirLogo = '..\..\..\Fontes\ACBrBoleto\Logos\Colorido\'
+    ACBrBoleto = ACBrBoleto1
+    DirLogo = '..\..\..\Fontes\ACBrBoleto\Logos\Colorido'
     SoftwareHouse = 'Projeto ACBr - http://acbr.sf.net'
     Left = 160
     Top = 231

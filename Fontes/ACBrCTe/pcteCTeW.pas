@@ -577,18 +577,22 @@ end;
 
 procedure TCTeW.GerarRem;
 begin
-  Gerador.wGrupo('rem', 'E01');
-  Gerador.wCampoCNPJCPF('E02', 'E03', CTe.Rem.CNPJCPF, CODIGO_BRASIL);
-  Gerador.wCampo(tcStr, 'E04', 'IE     ', 00, 14, 1, SomenteNumeros(CTe.Rem.IE), DSC_IE);
-  Gerador.wCampo(tcStr, 'E05', 'xNome  ', 01, 60, 1, CTe.Rem.xNome, DSC_XNOME);
-  Gerador.wCampo(tcStr, 'E06', 'xFant  ', 01, 60, 0, CTe.Rem.xFant, DSC_XFANT);
-  Gerador.wCampo(tcStr, 'E06', 'fone   ', 07, 12, 0, somenteNumeros(CTe.Rem.fone), DSC_FONE);
+  if (CTe.Rem.CNPJCPF <> '') or
+     (CTe.Rem.xNome <> '') then
+    begin
+      Gerador.wGrupo('rem', 'E01');
+      Gerador.wCampoCNPJCPF('E02', 'E03', CTe.Rem.CNPJCPF, CODIGO_BRASIL);
+      Gerador.wCampo(tcStr, 'E04', 'IE     ', 00, 14, 1, SomenteNumeros(CTe.Rem.IE), DSC_IE);
+      Gerador.wCampo(tcStr, 'E05', 'xNome  ', 01, 60, 1, CTe.Rem.xNome, DSC_XNOME);
+      Gerador.wCampo(tcStr, 'E06', 'xFant  ', 01, 60, 0, CTe.Rem.xFant, DSC_XFANT);
+      Gerador.wCampo(tcStr, 'E06', 'fone   ', 07, 12, 0, somenteNumeros(CTe.Rem.fone), DSC_FONE);
 
-  (**)GerarEnderReme;
-  (**)GerarInfNF;
-  (**)GerarInfNFE;
-  (**)GerarInfOutros;
-  Gerador.wGrupo('/rem');
+      (**)GerarEnderReme;
+      (**)GerarInfNF;
+      (**)GerarInfNFE;
+      (**)GerarInfOutros;
+      Gerador.wGrupo('/rem');
+    end;
 end;
 
 procedure TCTeW.GerarEnderReme;
@@ -800,19 +804,23 @@ end;
 
 procedure TCTeW.GerarDest;
 begin
-  Gerador.wGrupo('dest', 'H01');
-  Gerador.wCampoCNPJCPF('H02', 'H03', CTe.Dest.CNPJCPF, CODIGO_BRASIL);
-  Gerador.wCampo(tcStr, 'H04', 'IE     ', 00, 14, 0, SomenteNumeros(CTe.Dest.IE), DSC_IE);
-  Gerador.wCampo(tcStr, 'H05', 'xNome  ', 01, 60, 1, CTe.Dest.xNome, DSC_XNOME);
-  Gerador.wCampo(tcStr, 'H06', 'fone   ', 07, 12, 0, somenteNumeros(CTe.Dest.fone), DSC_FONE);
-  Gerador.wCampo(tcStr, 'H07', 'ISUF   ', 08, 09, 0, CTe.Dest.ISUF, DSC_ISUF);
-  if (FOpcoes.ValidarInscricoes) and (CTe.Dest.ISUF <> '') then
-    if not ValidarISUF(CTe.Dest.ISUF) then
-      Gerador.wAlerta('H07', 'ISUF', DSC_ISUF, ERR_MSG_INVALIDO);
+  if (CTe.Dest.CNPJCPF <> '') or
+     (CTe.Dest.xNome <> '') then
+    begin
+      Gerador.wGrupo('dest', 'H01');
+      Gerador.wCampoCNPJCPF('H02', 'H03', CTe.Dest.CNPJCPF, CODIGO_BRASIL);
+      Gerador.wCampo(tcStr, 'H04', 'IE     ', 00, 14, 0, SomenteNumeros(CTe.Dest.IE), DSC_IE);
+      Gerador.wCampo(tcStr, 'H05', 'xNome  ', 01, 60, 1, CTe.Dest.xNome, DSC_XNOME);
+      Gerador.wCampo(tcStr, 'H06', 'fone   ', 07, 12, 0, somenteNumeros(CTe.Dest.fone), DSC_FONE);
+      Gerador.wCampo(tcStr, 'H07', 'ISUF   ', 08, 09, 0, CTe.Dest.ISUF, DSC_ISUF);
+      if (FOpcoes.ValidarInscricoes) and (CTe.Dest.ISUF <> '') then
+        if not ValidarISUF(CTe.Dest.ISUF) then
+          Gerador.wAlerta('H07', 'ISUF', DSC_ISUF, ERR_MSG_INVALIDO);
 
-  (**)GerarEnderDest;
-  (**)GerarLocEnt;
-  Gerador.wGrupo('/dest');
+      (**)GerarEnderDest;
+      (**)GerarLocEnt;
+      Gerador.wGrupo('/dest');
+    end;
 end;
 
 procedure TCTeW.GerarEnderDest;

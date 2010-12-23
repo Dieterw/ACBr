@@ -47,6 +47,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.0.18a 23/12/2010
+[-] Corrigido bug na impressão dos boletos no fortes e quickreport, estava sendo
+    ignorado o valor retornado pela função MontarCampoCodigoCedente.(Juliana Tamizou)
+
 
 Versão 0.017a  24/09/2010
 [+] Adicionado classe para a Caixa Economica (João Elson)

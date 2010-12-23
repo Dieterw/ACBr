@@ -49,7 +49,7 @@ uses
   QRMultiExport, QRCtrls, QuickRpt, ExtCtrls, QRExport, ACBrBarCode ;
 
 const
-  CACBrBoletoFCQuick_Versao = '0.0.7a' ;
+  CACBrBoletoFCQuick_Versao = '0.0.8a' ;
 
 type
 
@@ -353,7 +353,7 @@ begin
       lblLocalPagto.Caption           := Titulo.LocalPagamento;
       txtDataVencimento2.Caption      := FormatDateTime('dd/mm/yyyy', Titulo.Vencimento);
       txtNomeCedente2.Caption         := Cedente.Nome;
-      txtCodigoCedente2.Caption       := Cedente.Agencia+'-'+Cedente.AgenciaDigito+'/'+ Cedente.Conta+'-'+Cedente.ContaDigito;
+      txtCodigoCedente2.Caption       := CodCedente;
       txtDataDocumento2.Caption       := FormatDateTime('dd/mm/yyyy', Titulo.DataDocumento);
       txtNumeroDocumento2.Caption     := Titulo.NumeroDocumento;
       txtEspecieDoc2.Caption          := Titulo.EspecieDoc;

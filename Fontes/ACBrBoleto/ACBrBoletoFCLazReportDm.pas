@@ -298,8 +298,11 @@ begin
     else if ParName = 'NumDocto' then                      {Número do Documento}
        ParValue := Titulo.NumeroDocumento
 
-    else if ParName = 'EspecieDoc' then                   {Espécie do Documento}
+    else if ParName = 'Especie' then                   {Espécie do Documento}
        ParValue := Titulo.EspecieDoc
+
+    else if ParName = 'Moeda' then                   {Espécie Moeda}
+       ParValue := Titulo.EspecieMod
 
     else if ParName = 'Aceite' then                                     {Aceite}
        ParValue := IfThen(Titulo.Aceite = atSim, 'S', 'N')

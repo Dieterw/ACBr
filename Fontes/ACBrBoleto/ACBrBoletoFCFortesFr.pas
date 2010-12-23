@@ -52,7 +52,7 @@ uses
   ACBrBoleto ;
 
 const
-  CACBrBoletoFCFortes_Versao = '0.0.7a' ;
+  CACBrBoletoFCFortes_Versao = '0.0.8a' ;
 
 type
 
@@ -395,7 +395,7 @@ begin
    LoadPortugueseStrings;
   {$ELSE}
    // Para que serve esse método ?? //
-   SetVersion( CommercialVersion, ReleaseVersion, CommentVersion );
+   //SetVersion( CommercialVersion, ReleaseVersion, CommentVersion );
   {$ENDIF}
 
   frACBrBoletoFortes := TACBrBoletoFCFortesFr.Create(Self);
@@ -546,7 +546,7 @@ begin
       lblLocalPagto.Caption           := Titulo.LocalPagamento;
       txtDataVencimento2.Caption      := FormatDateTime('dd/mm/yyyy', Titulo.Vencimento);
       txtNomeCedente2.Caption         := Cedente.Nome+ ' - '+TipoDoc + Cedente.CNPJCPF;
-      txtCodigoCedente2.Caption       := Cedente.Agencia+'-'+Cedente.AgenciaDigito+'/'+ Cedente.Conta+'-'+Cedente.ContaDigito;
+      txtCodigoCedente2.Caption       := CodCedente;
       txtDataDocumento2.Caption       := FormatDateTime('dd/mm/yyyy', Titulo.DataDocumento);
       txtNumeroDocumento2.Caption     := Titulo.NumeroDocumento;
       txtEspecieDoc2.Caption          := Titulo.EspecieDoc;

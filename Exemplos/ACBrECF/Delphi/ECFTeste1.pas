@@ -305,6 +305,7 @@ type
     Label22: TLabel;
     speLinBuf: TSpinEdit;
     NumSerieMFD: TMenuItem;
+    ParametroDescontoISSQN1: TMenuItem;
     procedure cbxModeloChange(Sender: TObject);
     procedure Sair1Click(Sender: TObject);
     procedure bAtivarClick(Sender: TObject);
@@ -485,6 +486,7 @@ type
     procedure LerTroco1Click(Sender: TObject);
     procedure speLinBufChange(Sender: TObject);
     procedure NumSerieMFDClick(Sender: TObject);
+    procedure ParametroDescontoISSQN1Click(Sender: TObject);
   private
     { Private declarations }
     Function Converte( cmd : String) : String;
@@ -2110,6 +2112,13 @@ begin
   AtualizaMemos ;
 end;
 
+procedure TForm1.ParametroDescontoISSQN1Click(Sender: TObject);
+begin
+  mResp.Lines.Add( 'Parametro Desconto ISSQN: '+
+     IfThen( ACBrECF1.ParamDescontoISSQN , 'SIM', 'NAO') );
+  AtualizaMemos ;
+end;
+
 procedure TForm1.PorCOO1Click(Sender: TObject);
 Var Linhas : TStringList ;
     cCOOIni, cCOOFim : String ;
@@ -2626,6 +2635,7 @@ begin
   begin
      mRZ.Lines.Add( 'Data Impressora    : ' + DateToStr( DataDaImpressora ) );
      mRZ.Lines.Add( 'Numero Série       : ' + NumeroDeSerie );
+     mRZ.Lines.Add( 'Numero Série MFD   : ' + NumeroDeSerieMFD );
      mRZ.Lines.Add( 'Numero ECF         : ' + NumeroDoECF );
      mRZ.Lines.Add( 'Numero Loja        : ' + NumeroDaLoja );
      mRZ.Lines.Add( 'Numero COO Inicial : ' + NumeroCOOInicial );
@@ -2644,6 +2654,8 @@ begin
      mRZ.Lines.Add( 'GRG  : ' + IntToStr(GRG) );
      mRZ.Lines.Add( 'GNFC : ' + IntToStr(GNFC) );
      mRZ.Lines.Add( 'CFC  : ' + IntToStr(CFC) );
+     mRZ.Lines.Add( 'NCN  : ' + IntToStr(NCN) );
+     mRZ.Lines.Add( 'CCDC : ' + IntToStr(CCDC  ) );
      mRZ.Lines.Add( '' );
 
      mRZ.Lines.Add( '{ TOTALIZADORES }' );
@@ -2654,9 +2666,12 @@ begin
      mRZ.Lines.Add( 'TotalISSQN        : ' + FormatFloat('###,##0.00', TotalISSQN) );
      mRZ.Lines.Add( 'CancelamentoISSQN : ' + FormatFloat('###,##0.00', CancelamentoISSQN) );
      mRZ.Lines.Add( 'DescontoISSQN     : ' + FormatFloat('###,##0.00', DescontoISSQN) );
+     mRZ.Lines.Add( 'CancelamentoOPNF  : ' + FormatFloat('###,##0.00', CancelamentoOPNF) );
+     mRZ.Lines.Add( 'DescontoOPNF      : ' + FormatFloat('###,##0.00', DescontoOPNF) );
      mRZ.Lines.Add( 'VendaLiquida      : ' + FormatFloat('###,##0.00', VendaLiquida) );
      mRZ.Lines.Add( 'AcrescimoICMS     : ' + FormatFloat('###,##0.00', AcrescimoICMS) );
      mRZ.Lines.Add( 'AcrescimoISSQN    : ' + FormatFloat('###,##0.00', AcrescimoISSQN) );
+     mRZ.Lines.Add( 'AcrescimoOPNF     : ' + FormatFloat('###,##0.00', AcrescimoOPNF) );
      mRZ.Lines.Add( '' );
 
      mRZ.Lines.Add( '{ ICMS }' );

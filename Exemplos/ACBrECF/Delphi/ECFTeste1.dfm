@@ -41,7 +41,7 @@ object Form1: TForm1
     Top = 0
     Width = 594
     Height = 330
-    ActivePage = TabSheet4
+    ActivePage = TabSheet8
     Align = alClient
     TabOrder = 1
     object TabSheet4: TTabSheet
@@ -879,7 +879,6 @@ object Form1: TForm1
         MinValue = 50
         TabOrder = 1
         Value = 80
-        OnChange = seTimeOutChange
       end
       object EdtCodBarras: TEdit
         Left = 176
@@ -981,7 +980,6 @@ object Form1: TForm1
         MinValue = 2
         TabOrder = 8
         Value = 2
-        OnChange = seTimeOutChange
       end
     end
     object TabSheet9: TTabSheet
@@ -1396,6 +1394,10 @@ object Form1: TForm1
         object Termica1: TMenuItem
           Caption = #201' Termica ?'
           OnClick = Termica1Click
+        end
+        object ParametroDescontoISSQN1: TMenuItem
+          Caption = 'ParametroDescontoISSQN ?'
+          OnClick = ParametroDescontoISSQN1Click
         end
       end
       object N3: TMenuItem

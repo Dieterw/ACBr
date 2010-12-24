@@ -315,6 +315,9 @@ TACBrECFDadosRZ = class
     FDataDaImpressora: TDateTime;
     FTotalOperacaoNaoFiscal: double;
     FDescontoISSQN: double;
+    FCancelamentoOPNF: double;
+    FAcrescimoOPNF: double;
+    FDescontoOPNF: double;
     FCancelamentoICMS: double;
     FGNF: integer;
     FIsentoISSQN: double;
@@ -324,6 +327,8 @@ TACBrECFDadosRZ = class
     FCCF: integer;
     FTotalISSQN: double;
     FCDC: integer;
+    FCCDC: integer;
+    FNCN: integer;
     FDataDoMovimento: TDateTime;
     FMeiosDePagamento: TACBrECFFormasPagamento;
     FNumeroCOOInicial: AnsiString;
@@ -351,10 +356,12 @@ TACBrECFDadosRZ = class
     property CRO: integer read FCRO write FCRO;
     property CRZ: integer read FCRZ write FCRZ;
     property CCF: integer read FCCF write FCCF;
-    property CFD: integer read FCFD write FCFD;
+    property CFD: integer read FCFD write FCFD;   //Contador Fita Detalhe
     property CDC: integer read FCDC write FCDC;
+    property NCN: integer read FNCN write FNCN;
     property GRG: integer read FGRG write FGRG;
     property GNFC: integer read FGNFC write FGNFC;
+    property CCDC: integer read FCCDC write FCCDC;
     property CFC: integer read FCFC write FCFC;
     // TOTALIZADORES
     property ValorGrandeTotal: double read FValorGrandeTotal write FValorGrandeTotal;
@@ -363,10 +370,13 @@ TACBrECFDadosRZ = class
     property DescontoICMS: double read FDescontoICMS write FDescontoICMS;
     property TotalISSQN: double read FTotalISSQN write FTotalISSQN;
     property CancelamentoISSQN: double read FCancelamentoISSQN write FCancelamentoISSQN;
+    property CancelamentoOPNF: double read FCancelamentoOPNF write FCancelamentoOPNF;
     property DescontoISSQN: double read FDescontoISSQN write FDescontoISSQN;
+    property DescontoOPNF: double read FDescontoOPNF write FDescontoOPNF;
     property VendaLiquida: double read FVendaLiquida write FVendaLiquida;
     property AcrescimoICMS: double read FAcrescimoICMS write FAcrescimoICMS;
     property AcrescimoISSQN: double read FAcrescimoISSQN write FAcrescimoISSQN;
+    property AcrescimoOPNF: double read FAcrescimoOPNF write FAcrescimoOPNF;
     // ICMS
     property ICMS: TACBrECFAliquotas read FICMS;
     property SubstituicaoTributariaICMS: double read FSubstituicaoTributariaICMS write FSubstituicaoTributariaICMS;
@@ -565,7 +575,11 @@ TACBrECFClass = class
     function GetNumGRG: String; virtual ;
     function GetNumCDC: String; virtual ;
     function GetNumCFC: String; virtual ;
+    function GetNumGNFC: String; virtual ;
     function GetNumCRZ: String; virtual ;
+    function GetNumCFD: String; virtual ;
+    function GetNumNCN: String; virtual ;
+    function GetNumCCDC: String; virtual ;
     function GetVendaBruta: Double; virtual ;
     function GetTotalAcrescimos: Double; virtual ;
     function GetTotalCancelamentos: Double; virtual ;
@@ -581,6 +595,9 @@ TACBrECFClass = class
     function GetTotalIsencaoISSQN: Double; virtual ;
     function GetTotalNaoTributadoISSQN: Double; virtual ;
     function GetTotalSubstituicaoTributariaISSQN: Double; virtual ;
+    function GetTotalAcrescimosOPNF: Double; virtual ;
+    function GetTotalCancelamentosOPNF: Double; virtual ;
+    function GetTotalDescontosOPNF: Double; virtual ;
     function GetNumCOOInicial: String; virtual ;
     function GetNumUltimoItem: Integer; virtual ;
 
@@ -592,6 +609,7 @@ TACBrECFClass = class
     function GetHorarioVerao: Boolean; virtual ;
     function GetArredonda: Boolean; virtual ;
     function GetChequePronto: Boolean; virtual ;
+    function GetParamDescontoISSQN: Boolean; virtual;
 
     Function EnviaComando_ECF( cmd : AnsiString ) : AnsiString ; virtual ;
 
@@ -725,6 +743,10 @@ TACBrECFClass = class
     Property NumGRG             : String     read GetNumGRG ;
     Property NumCDC             : String     read GetNumCDC ;
     Property NumCFC             : String     read GetNumCFC ;
+    Property NumGNFC            : String     read GetNumGNFC ;
+    Property NumCFD             : String     read GetNumCFD ;
+    Property NumNCN             : String     read GetNumNCN ;
+    Property NumCCDC            : String     read GetNumCCDC ;
     Property NumCOOInicial      : String     read GetNumCOOInicial ;
     Property VendaBruta         : Double     read GetVendaBruta ;
     Property GrandeTotal        : Double     read GetGrandeTotal ;
@@ -743,6 +765,10 @@ TACBrECFClass = class
     Property TotalSubstituicaoTributariaISSQN : Double read GetTotalSubstituicaoTributariaISSQN;
     Property TotalNaoTributadoISSQN           : Double read GetTotalNaoTributadoISSQN;
     Property TotalIsencaoISSQN                : Double read GetTotalIsencaoISSQN;
+
+    Property TotalCancelamentosOPNF           : Double read GetTotalCancelamentosOPNF;
+    Property TotalDescontosOPNF               : Double read GetTotalDescontosOPNF;
+    Property TotalAcrescimosOPNF              : Double read GetTotalAcrescimosOPNF;
 
     Property NumUltItem         : Integer    read GetNumUltimoItem ;
     Property TotalNaoFiscal     : Double     read GetTotalNaoFiscal ;
@@ -818,6 +844,7 @@ TACBrECFClass = class
     Property Arredonda    : Boolean read GetArredonda ;
     Property Termica      : Boolean read fpTermica ;
     Property MFD          : Boolean read fpMFD ;
+    Property ParamDescontoISSQN : Boolean read GetParamDescontoISSQN ;
     Property IdentificaConsumidorRodape : Boolean read fpIdentificaConsumidorRodape ;
 
     { Procedimentos de Cupom Fiscal }
@@ -1780,6 +1807,11 @@ begin
   Result := '' ;
 end;
 
+function TACBrECFClass.GetNumGNFC: String;
+begin
+  Result := '' ;
+end;
+
 function TACBrECFClass.GetNumGRG: String;
 begin
   Result := '' ;
@@ -1795,9 +1827,24 @@ begin
   Result := '' ;
 end;
 
+function TACBrECFClass.GetNumCFD: String;
+begin
+  Result := '' ;
+end;
+
 function TACBrECFClass.GetNumLoja: String;
 begin
   Result := '001' ;
+end;
+
+function TACBrECFClass.GetNumNCN: String;
+begin
+  Result := '' ;
+end;
+
+function TACBrECFClass.GetNumCCDC: String;
+begin
+  Result := '' ;
 end;
 
 function TACBrECFClass.GetNumSerie: String;
@@ -2186,6 +2233,12 @@ begin
   Result := '' ;
 end;
 
+{ Essa função DEVE ser override por cada Classe Filha criada }
+function TACBrECFClass.GetParamDescontoISSQN: Boolean;
+begin
+  Result := false ;
+end;
+
 function TACBrECFClass.GetDataMovimento: TDateTime;
 begin
   Result := now ;
@@ -2255,6 +2308,21 @@ begin
 end;
 
 function TACBrECFClass.GetTotalDescontosISSQN: Double;
+begin
+  Result := 0;
+end;
+
+function TACBrECFClass.GetTotalAcrescimosOPNF: Double;
+begin
+  Result := 0;
+end;
+
+function TACBrECFClass.GetTotalCancelamentosOPNF: Double;
+begin
+  Result := 0;
+end;
+
+function TACBrECFClass.GetTotalDescontosOPNF: Double;
 begin
   Result := 0;
 end;

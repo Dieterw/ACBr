@@ -33,9 +33,12 @@ type
     bAtivar: TBitBtn;
     bBobinaLimpar: TButton;
     bBobinaParams: TButton;
+    BitBtn6 : TBitBtn ;
+    BitBtn7 : TBitBtn ;
     bRFDLer: TButton;
     bRFDSalvar: TButton;
     btSerial: TBitBtn;
+    bLerDadosRedZ : TButton ;
     CancelaCupom1: TMenuItem;
     CancelaImpressoCheque1: TMenuItem;
     CancelaNoFiscal1: TMenuItem;
@@ -55,6 +58,8 @@ type
     ChequePronto1: TMenuItem;
     chExibeMsg: TCheckBox;
     chGavetaSinalInvertido: TCheckBox;
+    ChImpTextoAbaixoBarras : TCheckBox ;
+    ChImpTextoVertical : TCheckBox ;
     chRFD: TCheckBox;
     chTentar: TCheckBox;
     CNPJIE1: TMenuItem;
@@ -82,6 +87,7 @@ type
     edSH_NumeroAP: TEdit;
     edSH_RazaoSocial: TEdit;
     edSH_VersaoAP: TEdit;
+    EdtCodBarras : TEdit ;
     EfetuaPagamentoNaoFiscal1: TMenuItem;
     EfetuarPagamento1: TMenuItem;
     EnviaComando1: TMenuItem;
@@ -110,7 +116,13 @@ type
     Label20 : TLabel ;
     Label22 : TLabel ;
     Label23 : TLabel ;
+    Label24 : TLabel ;
+    Label27 : TLabel ;
+    Label28 : TLabel ;
+    Label29 : TLabel ;
+    Label37 : TLabel ;
     mDataHoraSwBasico : TMenuItem ;
+    MenTextoBarras : TMemo ;
     MenuItem1 : TMenuItem ;
     mCortaPapel : TMenuItem ;
     MenuItem10 : TMenuItem ;
@@ -130,7 +142,10 @@ type
     MenuItem19 : TMenuItem ;
     mAcharRGIndice : TMenuItem ;
     mAcharRGDescricao : TMenuItem ;
+    MenuItem20 : TMenuItem ;
+    mFontesECF : TMenuItem ;
     mLerTroco : TMenuItem ;
+    mRZ : TMemo ;
     NumSerieMFD : TMenuItem ;
     mLerTotaisRelatoriosGerenciais : TMenuItem ;
     mRelatorioGerenciais : TMenuItem ;
@@ -171,8 +186,13 @@ type
     mCliche : TMenuItem ;
     mUsuarioAtual : TMenuItem ;
     mIM : TMenuItem ;
+    RdgTipoBarra : TRadioGroup ;
     seBandWidth : TSpinEdit ;
     seMaxLinhasBuffer : TSpinEdit ;
+    SpEdAlturaBarra : TSpinEdit ;
+    SpEdtLarguraBarra : TSpinEdit ;
+    tsDadosRedZ : TTabSheet ;
+    tsCodBarras : TTabSheet ;
     wbBobina: TIpHtmlPanel;
     Label1: TLabel;
     Label10: TLabel;
@@ -297,6 +317,9 @@ type
     Variveis1: TMenuItem;
     VendaBruta1: TMenuItem;
     VenderItem1: TMenuItem;
+    procedure BitBtn6Click(Sender : TObject) ;
+    procedure BitBtn7Click(Sender : TObject) ;
+    procedure bLerDadosRedZClick(Sender : TObject) ;
     procedure cbxModeloChange(Sender: TObject);
     procedure chArredondamentoItemMFDChange(Sender : TObject) ;
     procedure chArredondaPorQtdChange(Sender : TObject) ;
@@ -304,6 +327,7 @@ type
     procedure chDescricaoGrandeChange(Sender : TObject) ;
     procedure chExibeMsgChange(Sender : TObject) ;
     procedure chGavetaSinalInvertidoChange(Sender : TObject) ;
+    procedure ChImpTextoVerticalChange(Sender : TObject) ;
     procedure chTentarChange(Sender : TObject) ;
     procedure mAchaCNFDescricaoClick(Sender : TObject) ;
     procedure mAcharAliqPorIndiceClick(Sender : TObject) ;
@@ -315,6 +339,8 @@ type
     procedure mAcharRGIndiceClick(Sender : TObject) ;
     procedure mARQMFDDLLCooClick(Sender : TObject) ;
     procedure mARQMFDDLLPeriodoClick(Sender : TObject) ;
+    procedure MenuItem20Click(Sender : TObject) ;
+    procedure mFontesECFClick(Sender : TObject) ;
     procedure mLerTotaisRelatoriosGerenciaisClick(Sender : TObject) ;
     procedure mLerTrocoClick(Sender : TObject) ;
     procedure mRelatorioGerenciaisClick(Sender : TObject) ;
@@ -351,6 +377,7 @@ type
     procedure mTotalNaoFiscalClick(Sender : TObject) ;
     procedure mUsuarioAtualClick(Sender : TObject) ;
     procedure NumSerieMFDClick(Sender : TObject) ;
+    procedure RdgTipoBarraClick(Sender : TObject) ;
     procedure Sair1Click(Sender: TObject);
     procedure bAtivarClick(Sender: TObject);
     procedure cbxPortaChange(Sender: TObject);
@@ -602,6 +629,130 @@ begin
   end ;
 end;
 
+procedure TForm1.bLerDadosRedZClick(Sender : TObject) ;
+var
+  I: integer;
+begin
+  ACBrECF1.DadosReducaoZ;
+
+  mRZ.Clear;
+  with ACBrECF1.DadosReducaoZClass do
+  begin
+     mRZ.Lines.Add( 'Data Impressora    : ' + DateToStr( DataDaImpressora ) );
+     mRZ.Lines.Add( 'Numero Série       : ' + NumeroDeSerie );
+     mRZ.Lines.Add( 'Numero Série MFD   : ' + NumeroDeSerieMFD );
+     mRZ.Lines.Add( 'Numero ECF         : ' + NumeroDoECF );
+     mRZ.Lines.Add( 'Numero Loja        : ' + NumeroDaLoja );
+     mRZ.Lines.Add( 'Numero COO Inicial : ' + NumeroCOOInicial );
+
+     mRZ.Lines.Add( '{ REDUÇÃO Z }');
+     mRZ.Lines.Add( 'Data Movimento  : ' +DateToStr( DataDoMovimento ) );
+     mRZ.Lines.Add( '' );
+     mRZ.Lines.Add( '{ CONTADORES }');
+     mRZ.Lines.Add( 'COO  : ' + IntToStr(COO) );
+     mRZ.Lines.Add( 'GNF  : ' + IntToStr(GNF) );
+     mRZ.Lines.Add( 'CRO  : ' + IntToStr(CRO) );
+     mRZ.Lines.Add( 'CRZ  : ' + IntToStr(CRZ) );
+     mRZ.Lines.Add( 'CCF  : ' + IntToStr(CCF) );
+     mRZ.Lines.Add( 'CFD  : ' + IntToStr(CFD) );
+     mRZ.Lines.Add( 'CDC  : ' + IntToStr(CDC) );
+     mRZ.Lines.Add( 'GRG  : ' + IntToStr(GRG) );
+     mRZ.Lines.Add( 'GNFC : ' + IntToStr(GNFC) );
+     mRZ.Lines.Add( 'CFC  : ' + IntToStr(CFC) );
+     mRZ.Lines.Add( 'NCN  : ' + IntToStr(NCN) );
+     mRZ.Lines.Add( 'CCDC : ' + IntToStr(CCDC  ) );
+     mRZ.Lines.Add( '' );
+
+     mRZ.Lines.Add( '{ TOTALIZADORES }' );
+     mRZ.Lines.Add( 'Grande Total      : ' + FormatFloat('###,##0.00', ValorGrandeTotal) );
+     mRZ.Lines.Add( 'VendaBruta        : ' + FormatFloat('###,##0.00', ValorVendaBruta) );
+     mRZ.Lines.Add( 'CancelamentoICMS  : ' + FormatFloat('###,##0.00', CancelamentoICMS) );
+     mRZ.Lines.Add( 'DescontoICMS      : ' + FormatFloat('###,##0.00', DescontoICMS) );
+     mRZ.Lines.Add( 'TotalISSQN        : ' + FormatFloat('###,##0.00', TotalISSQN) );
+     mRZ.Lines.Add( 'CancelamentoISSQN : ' + FormatFloat('###,##0.00', CancelamentoISSQN) );
+     mRZ.Lines.Add( 'DescontoISSQN     : ' + FormatFloat('###,##0.00', DescontoISSQN) );
+     mRZ.Lines.Add( 'CancelamentoOPNF  : ' + FormatFloat('###,##0.00', CancelamentoOPNF) );
+     mRZ.Lines.Add( 'DescontoOPNF      : ' + FormatFloat('###,##0.00', DescontoOPNF) );
+     mRZ.Lines.Add( 'VendaLiquida      : ' + FormatFloat('###,##0.00', VendaLiquida) );
+     mRZ.Lines.Add( 'AcrescimoICMS     : ' + FormatFloat('###,##0.00', AcrescimoICMS) );
+     mRZ.Lines.Add( 'AcrescimoISSQN    : ' + FormatFloat('###,##0.00', AcrescimoISSQN) );
+     mRZ.Lines.Add( 'AcrescimoOPNF     : ' + FormatFloat('###,##0.00', AcrescimoOPNF) );
+     mRZ.Lines.Add( '' );
+
+     mRZ.Lines.Add( '{ ICMS }' );
+     for I := 0 to ICMS.Count -1 do
+     begin
+         mRZ.Lines.Add( 'Indice    : ' + ICMS[I].Indice );
+         mRZ.Lines.Add( 'Tipo      : ' + ICMS[I].Tipo );
+         mRZ.Lines.Add( 'Aliquota  : ' + FormatFloat('0.00', ICMS[I].Aliquota) );
+         mRZ.Lines.Add( 'Total     : ' + FormatFloat('###,##0.00', ICMS[I].Total) );
+     end;
+     mRZ.Lines.Add( 'SubstituicaoTributariaICMS: ' + FormatFloat('###,##0.00', SubstituicaoTributariaICMS) );
+     mRZ.Lines.Add( 'IsentoICMS                : ' + FormatFloat('###,##0.00', IsentoICMS) );
+     mRZ.Lines.Add( 'NaoTributadoICMS          : ' + FormatFloat('###,##0.00', NaoTributadoICMS) );
+     mRZ.Lines.Add( '' );
+
+     mRZ.Lines.Add( '{ ISSQN }' );
+     for I := 0 to ISSQN.Count -1 do
+     begin
+         mRZ.Lines.Add( 'Indice    : ' + ISSQN[I].Indice );
+         mRZ.Lines.Add( 'Tipo      : ' + ISSQN[I].Tipo );
+         mRZ.Lines.Add( 'Aliquota  : ' + FormatFloat('0.00', ISSQN[I].Aliquota) );
+         mRZ.Lines.Add( 'Total     : ' + FormatFloat('###,##0.00', ISSQN[I].Total) );
+     end;
+     mRZ.Lines.Add( 'SubstituicaoTributariaISSQN: ' + FormatFloat('###,##0.00', SubstituicaoTributariaISSQN) );
+     mRZ.Lines.Add( 'IsentoISSQN                : ' + FormatFloat('###,##0.00', IsentoISSQN) );
+     mRZ.Lines.Add( 'NaoTributadoISSQN          : ' + FormatFloat('###,##0.00', NaoTributadoISSQN) );
+     mRZ.Lines.Add( '' );
+
+     mRZ.Lines.Add( '{ TOTALIZADORES NÃO FISCAIS }' );
+     for I := 0 to TotalizadoresNaoFiscais.Count -1 do
+     begin
+         mRZ.Lines.Add( 'Indice     : ' + TotalizadoresNaoFiscais[I].Indice );
+         mRZ.Lines.Add( 'Descrição  : ' + TotalizadoresNaoFiscais[I].Descricao );
+         mRZ.Lines.Add( 'Forma Pagto: ' + TotalizadoresNaoFiscais[I].FormaPagamento );
+         mRZ.Lines.Add( 'Total      : ' + FormatFloat('###,##0.00', TotalizadoresNaoFiscais[I].Total) );
+     end;
+     mRZ.Lines.Add( 'TotalOperacaoNaoFiscal : ' + FormatFloat('###,##0.00', TotalOperacaoNaoFiscal) );
+     mRZ.Lines.Add( '' );
+
+     mRZ.Lines.Add( '{ RELATÓRIO GERENCIAL }' );
+     for I := 0 to RelatorioGerencial.Count -1 do
+     begin
+         mRZ.Lines.Add( 'Indice     : ' + RelatorioGerencial[I].Indice );
+         mRZ.Lines.Add( 'Descrição  : ' + RelatorioGerencial[I].Descricao );
+     end;
+     mRZ.Lines.Add( '' );
+
+     mRZ.Lines.Add( '{ MEIOS DE PAGAMENTO }' );
+     for I := 0 to MeiosDePagamento.Count -1 do
+     begin
+         mRZ.Lines.Add( 'Indice     : ' + MeiosDePagamento[I].Indice );
+         mRZ.Lines.Add( 'Descrição  : ' + MeiosDePagamento[I].Descricao );
+         mRZ.Lines.Add( 'Total      : ' + FormatFloat('###,##0.00', MeiosDePagamento[I].Total) );
+     end;
+     mRZ.Lines.Add( 'Total Troco : ' + FormatFloat('###,##0.00', TotalTroco) );
+  end;
+end;
+
+procedure TForm1.BitBtn7Click(Sender : TObject) ;
+begin
+  ACBrECF1.CodigodeBarras.AdicionarCodBarra(TACBrECFTipoCodBarra(RdgTipoBarra.ItemIndex),
+    SpEdtLarguraBarra.Value, SpEdAlturaBarra.Value, EdtCodBarras.Text,
+    ChImpTextoAbaixoBarras.Checked, ChImpTextoVertical.Checked);
+
+  ACBrECF1.FechaCupom( MenTextoBarras.Text );
+end;
+
+procedure TForm1.BitBtn6Click(Sender : TObject) ;
+begin
+  ACBrECF1.CodigodeBarras.AdicionarCodBarra(TACBrECFTipoCodBarra(RdgTipoBarra.ItemIndex),
+    SpEdtLarguraBarra.Value, SpEdAlturaBarra.Value, EdtCodBarras.Text,
+    ChImpTextoAbaixoBarras.Checked, ChImpTextoVertical.Checked);
+
+  ACBrECF1.LinhaRelatorioGerencial( MenTextoBarras.Text );
+end;
+
 procedure TForm1.chArredondamentoItemMFDChange(Sender : TObject) ;
 begin
   ACBrECF1.ArredondaItemMFD := chArredondamentoItemMFD.Checked ;
@@ -630,6 +781,11 @@ end;
 procedure TForm1.chGavetaSinalInvertidoChange(Sender : TObject) ;
 begin
   ACBrECF1.GavetaSinalInvertido := chGavetaSinalInvertido.Checked ;
+end;
+
+procedure TForm1.ChImpTextoVerticalChange(Sender : TObject) ;
+begin
+  MenTextoBarras.Enabled  :=  ChImpTextoVertical.Enabled;
 end;
 
 procedure TForm1.chTentarChange(Sender : TObject) ;
@@ -910,6 +1066,24 @@ begin
   ACBrECF1.ArquivoMFD_DLL(dDatIni, dDatFim, Arquivo);
   mResp.Lines.Add('---------------------------------');
 
+end;
+
+procedure TForm1.MenuItem20Click(Sender : TObject) ;
+begin
+  mResp.Lines.Add( 'Parametro Desconto ISSQN: '+
+     IfThen( ACBrECF1.ParamDescontoISSQN , 'SIM', 'NAO') );
+  AtualizaMemos ;
+end;
+
+procedure TForm1.mFontesECFClick(Sender : TObject) ;
+begin
+  ACBrECF1.AbreRelatorioGerencial;
+  ACBRECF1.LinhaRelatorioGerencial('LINHA NORMAL 1');
+  ACBRECF1.LinhaRelatorioGerencial(#14+'EXPANDIDO 1 LINHA');
+  ACBRECF1.LinhaRelatorioGerencial('LINHA NORMAL 1');
+  ACBRECF1.LinhaRelatorioGerencial(#15+'ON/OFF MODO CONDENSADO'+#18);
+  ACBRECF1.LinhaRelatorioGerencial(#27+'W1'+'ON/OFF MODO EXPANDIDO'+#27+'W0');
+  ACBRECF1.FechaRelatorio;
 end;
 
 procedure TForm1.mLerTotaisRelatoriosGerenciaisClick(Sender : TObject) ;
@@ -1367,6 +1541,23 @@ procedure TForm1.NumSerieMFDClick(Sender : TObject) ;
 begin
   mResp.Lines.Add( 'N.Série MFD: ('+ ACBrECF1.NumSerieMFD+')' );
   AtualizaMemos ;
+end;
+
+procedure TForm1.RdgTipoBarraClick(Sender : TObject) ;
+begin
+  Case RdgTipoBarra.ItemIndex of
+    0 : EdtCodBarras.Text :=  '789000000001';
+    1 : EdtCodBarras.Text :=  '0000000';
+    2 : EdtCodBarras.Text :=  '123456';
+    3 : EdtCodBarras.Text :=  '123456';
+    4 : EdtCodBarras.Text :=  'abcABC123';
+    5 : EdtCodBarras.Text :=  'ABC123';
+    6 : EdtCodBarras.Text :=  'ABC123';
+    7 : EdtCodBarras.Text :=  '00000000000';
+    8 : EdtCodBarras.Text :=  '123456';
+    9 : EdtCodBarras.Text :=  '123456';
+    10: EdtCodBarras.Text :=  '123456';
+  end;
 end;
 
 procedure TForm1.Sair1Click(Sender: TObject);

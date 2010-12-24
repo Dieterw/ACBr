@@ -125,7 +125,7 @@ uses ACBrBase, ACBrDevice, ACBrECFClass, ACBrRFD, {Units da ACBr}
      {$ENDIF} ;
 
 const
-   CACBrECF_Versao = '0.9.6' ;
+   CACBrECF_Versao = '1.0.0' ;
 
 type
 
@@ -139,6 +139,39 @@ TACBrECFModelo = (ecfNenhum, ecfNaoFiscal, ecfBematech, ecfSweda, ecfDaruma,
                   ecfSchalter, ecfMecaf, ecfYanco, ecfDataRegis, ecfUrano,
                   ecfICash, ecfQuattro, ecfFiscNET, ecfEpson, ecfNCR,
                   ecfSwedaSTX );
+
+// fhaut - Assinatura de métodos
+TACBrECFEventoOnError = procedure( var Tratado : Boolean) of object ;
+TACBrECFOnAbreCupom = procedure(const CPF_CNPJ, Nome, Endereco : String ) of object ;
+TACBrECFOnVendeItem = procedure(const Codigo, Descricao, AliquotaICMS : String ;
+  const Qtd, ValorUnitario, ValorDescontoAcrescimo : Double;
+  const Unidade, TipoDescontoAcrescimo, DescontoAcrescimo : String ) of object ;
+TACBrECFOnSubtotalizaCupom = procedure( const DescontoAcrescimo: Double;
+  const MensagemRodape : AnsiString ) of object ;
+TACBrECFOnEfetuaPagamento = procedure( const CodFormaPagto: String;
+  const Valor: Double; const Observacao: AnsiString;
+  const ImprimeVinculado: Boolean ) of object ;
+TACBrECFOnFechaCupom = procedure( const Observacao: AnsiString;
+  const IndiceBMP : Integer) of object ;
+TACBrECFOnCancelaItemVendido = procedure( const NumItem: Integer) of object ;
+TACBrECFOnAbreNaoFiscal = procedure( const CPF_CNPJ: String ) of object ;
+TACBrECFOnSubtotalizaNaoFiscal = procedure( const DescontoAcrescimo: Double;
+  const MensagemRodape: AnsiString ) of object ;
+TACBrECFOnEfetuaPagamentoNaoFiscal = procedure(const CodFormaPagto: String;
+  const Valor: Double; const Observacao: AnsiString;
+  const ImprimeVinculado: Boolean ) of object ;
+TACBrECFOnFechaNaoFiscal = procedure( const Observacao: AnsiString;
+  const IndiceBMP : Integer ) of object ;
+TACBrECFOnSangria = procedure(const Valor: Double; const Obs: AnsiString;
+  const DescricaoCNF, DescricaoFPG: String ) of object ;
+TACBrECFOnSuprimento = procedure( const Valor: Double; const Obs: AnsiString;
+  const DescricaoCNF, DescricaoFPG: String) of object ;
+TACBrECFOnRelatorioGerencial = procedure( const Indice: Integer ) of object ;
+TACBrECFOnErrorAbreRelatorioGerencial = procedure(var Tratado: Boolean;
+  const Indice: Integer ) of object ;
+TACBrECFOnChangeEstado = procedure( const EstadoAnterior, EstadoAtual :
+  TACBrECFEstado ) of object ;
+
 
 { Componente ACBrECF }
 
@@ -175,6 +208,64 @@ TACBrECF = class( TACBrComponent )
     fsECF : TACBrECFClass ;  { Classe com instancia do ECF de fsModelo }
     fsRFD : TACBrRFD ;
     fsDadosReducaoZClass: TACBrECFDadosRZ; {Class com instacia para guadar dados da RZ.}
+    fOnAntesAbreCupom : TACBrECFOnAbreCupom;
+    fOnDepoisAbreCupom  : TACBrECFOnAbreCupom;
+    fOnErrorAbreCupom  : TACBrECFEventoOnError;
+    fOnAntesVendeItem : TACBrECFOnVendeItem;
+    fOnDepoisVendeItem  : TACBrECFOnVendeItem;
+    fOnErrorVendeItem  : TACBrECFEventoOnError;
+    fOnAntesSubtotalizaCupom: TACBrECFOnSubtotalizaCupom;
+    fOnDepoisSubtotalizaCupom: TACBrECFOnSubtotalizaCupom;
+    fOnErrorSubtotalizaCupom: TACBrECFEventoOnError;
+    fOnAntesEfetuaPagamento : TACBrECFOnEfetuaPagamento;
+    fOnDepoisEfetuaPagamento  : TACBrECFOnEfetuaPagamento;
+    fOnErrorEfetuaPagamento  : TACBrECFEventoOnError;
+    fOnAntesFechaCupom : TACBrECFOnFechaCupom;
+    fOnDepoisFechaCupom  : TACBrECFOnFechaCupom;
+    fOnErrorFechaCupom  : TACBrECFEventoOnError;
+    fOnAntesCancelaCupom : TNotifyEvent;
+    fOnDepoisCancelaCupom  : TNotifyEvent;
+    fOnErrorCancelaCupom  : TACBrECFEventoOnError;
+    fOnAntesCancelaItemVendido : TACBrECFOnCancelaItemVendido;
+    fOnDepoisCancelaItemVendido  : TACBrECFOnCancelaItemVendido;
+    fOnErrorCancelaItemVendido  : TACBrECFEventoOnError;
+    fOnAntesAbreNaoFiscal : TACBrECFOnAbreNaoFiscal;
+    fOnDepoisAbreNaoFiscal  : TACBrECFOnAbreNaoFiscal;
+    fOnErrorAbreNaoFiscal  : TACBrECFEventoOnError;
+    fOnAntesSubtotalizaNaoFiscal : TACBrECFOnSubtotalizaNaoFiscal;
+    fOnDepoisSubtotalizaNaoFiscal  : TACBrECFOnSubtotalizaNaoFiscal;
+    fOnErrorSubtotalizaNaoFiscal  : TACBrECFEventoOnError;
+    fOnAntesEfetuaPagamentoNaoFiscal : TACBrECFOnEfetuaPagamentoNaoFiscal;
+    fOnDepoisEfetuaPagamentoNaoFiscal  : TACBrECFOnEfetuaPagamentoNaoFiscal;
+    fOnErrorEfetuaPagamentoNaoFiscal  : TACBrECFEventoOnError;
+    fOnAntesFechaNaoFiscal : TACBrECFOnFechaNaoFiscal;
+    fOnDepoisFechaNaoFiscal  : TACBrECFOnFechaNaoFiscal;
+    fOnErrorFechaNaoFiscal  : TACBrECFEventoOnError;
+    fOnAntesCancelaNaoFiscal : TNotifyEvent;
+    fOnDepoisCancelaNaoFiscal  : TNotifyEvent;
+    fOnErrorCancelaNaoFiscal  : TACBrECFEventoOnError;
+    fOnAntesSangria : TACBrECFOnSangria;
+    fOnDepoisSangria  : TACBrECFOnSangria;
+    fOnErrorSangria  : TACBrECFEventoOnError;
+    fOnAntesSuprimento : TACBrECFOnSuprimento;
+    fOnDepoisSuprimento  : TACBrECFOnSuprimento;
+    fOnErrorSuprimento  : TACBrECFEventoOnError;
+    fOnAntesLeituraX : TNotifyEvent;
+    fOnDepoisLeituraX  : TNotifyEvent;
+    fOnErrorLeituraX  : TACBrECFEventoOnError;
+    fOnAntesReducaoZ : TNotifyEvent;
+    fOnDepoisReducaoZ  : TNotifyEvent;
+    fOnErrorReducaoZ  : TACBrECFEventoOnError;
+    fOnAntesAbreRelatorioGerencial : TACBrECFOnRelatorioGerencial;
+    fOnDepoisAbreRelatorioGerencial  : TACBrECFOnRelatorioGerencial;
+    fOnErrorAbreRelatorioGerencial  : TACBrECFOnErrorAbreRelatorioGerencial;
+    fOnAntesAbreCupomVinculado : TNotifyEvent;
+    fOnDepoisAbreCupomVinculado  : TNotifyEvent;
+    fOnErrorAbreCupomVinculado  : TACBrECFEventoOnError;
+    fOnAntesFechaRelatorio : TNotifyEvent;
+    fOnDepoisFechaRelatorio  : TNotifyEvent;
+    fOnErrorFechaRelatorio  : TACBrECFEventoOnError;
+    fOnChangeEstado : TACBrECFOnChangeEstado;
 
     fsGavetaSinalInvertido: Boolean;
     fsIdentificarOperador : Boolean;
@@ -196,7 +287,6 @@ TACBrECF = class( TACBrComponent )
     procedure SetExibeMensagem(const Value: Boolean);
     procedure SetMsgPoucoPapel(const Value: Integer);
     procedure SetDescricaoGrande(const Value: Boolean);
-//    procedure SetOnMsgErro(const Value: TACBrECFExibeErroEvent);
     procedure SetOnMsgAguarde(const Value: TACBrECFMsgAguarde);
     procedure SetOnAguardandoRespostaChange(const Value: TNotifyEvent);
     procedure SetOnMsgPoucoPapel(const Value: TNotifyEvent);
@@ -214,7 +304,6 @@ TACBrECF = class( TACBrComponent )
     function GetExibeMensagem: Boolean;
     function GetTempoInicioMsg: Integer;
     function GetMsgPoucoPapel: Integer;
-//    function GetOnMsgErro: TACBrECFExibeErroEvent;
     function GetOnMsgAguarde: TACBrECFMsgAguarde;
     function GetOnAguardandoRespostaChange: TNotifyEvent;
     function GetOnMsgPoucoPapel: TNotifyEvent;
@@ -277,6 +366,10 @@ TACBrECF = class( TACBrComponent )
     function GetNumGRGClass: String;
     function GetNumCDCClass: String;
     function GetNumCFCClass: String;
+    function GetNumGNFCClass: String;
+    function GetNumCFDClass: String;
+    function GetNumNCNClass: String;
+    function GetNumCCDCClass: String;
     function GetArredondaPorQtd: Boolean;
     procedure SetArredondaPorQtd(const Value: Boolean);
     function GetDecimaisPreco: Integer;
@@ -320,6 +413,9 @@ TACBrECF = class( TACBrComponent )
     function GetTotalAcrescimosISSQNClass: Double;
     function GetTotalCancelamentosISSQNClass: Double;
     function GetTotalDescontosISSQNClass: Double;
+    function GetTotalAcrescimosOPNFClass: Double;
+    function GetTotalCancelamentosOPNFClass: Double;
+    function GetTotalDescontosOPNFClass: Double;
     function GetTotalIsencaoISSQNClass: Double;
     function GetTotalNaoTributadoISSQNClass: Double;
     function GetTotalSubstituicaoTributariaISSQNClass: Double;
@@ -330,7 +426,9 @@ TACBrECF = class( TACBrComponent )
     Function RFDAtivo : Boolean ;
     function GetAbout: String;
     procedure SetAbout(const Value: String);
+    function GetParamDescontoISSQNClass: Boolean;
   protected
+    fpUltimoEstadoObtido: TACBrECFEstado;
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
 
   public
@@ -395,6 +493,10 @@ TACBrECF = class( TACBrComponent )
     Property NumGRG             : String     read GetNumGRGClass ;
     Property NumCDC             : String     read GetNumCDCClass ;
     Property NumCFC             : String     read GetNumCFCClass ;
+    Property NumGNFC            : String     read GetNumGNFCClass ;
+    Property NumCFD             : String     read GetNumCFDClass ;
+    Property NumNCN             : String     read GetNumNCNClass ;
+    Property NumCCDC            : String     read GetNumCCDCClass ;
     Property NumCOOInicial      : String     read GetNumCOOInicialClass ;
     Property VendaBruta         : Double     read GetVendaBrutaClass ;
     Property GrandeTotal        : Double     read GetGrandeTotalClass ;
@@ -410,6 +512,9 @@ TACBrECF = class( TACBrComponent )
     Property TotalCancelamentosISSQN          : Double read GetTotalCancelamentosISSQNClass;
     Property TotalDescontosISSQN              : Double read GetTotalDescontosISSQNClass;
     Property TotalAcrescimosISSQN             : Double read GetTotalAcrescimosISSQNClass;
+    Property TotalCancelamentosOPNF           : Double read GetTotalCancelamentosOPNFClass;
+    Property TotalDescontosOPNF               : Double read GetTotalDescontosOPNFClass;
+    Property TotalAcrescimosOPNF              : Double read GetTotalAcrescimosOPNFClass;
     Property TotalSubstituicaoTributariaISSQN : Double read GetTotalSubstituicaoTributariaISSQNClass;
     Property TotalNaoTributadoISSQN           : Double read GetTotalNaoTributadoISSQNClass;
     Property TotalIsencaoISSQN                : Double read GetTotalIsencaoISSQNClass;
@@ -483,6 +588,7 @@ TACBrECF = class( TACBrComponent )
     Property Arredonda    : Boolean        read GetArredondaClass ;
     Property Termica      : Boolean        read GetTermicaClass ;
     Property MFD          : Boolean        read GetMFDClass ;
+    Property ParamDescontoISSQN : Boolean  read GetParamDescontoISSQNClass ;
     Property IdentificaConsumidorRodape : Boolean read GetIdentificaConsumidorRodapeClass ;
 
     { Procedimentos de Cupom Fiscal }
@@ -693,8 +799,6 @@ TACBrECF = class( TACBrComponent )
        property FormMsgColor: TColor read  fsFormMsgColor write fsFormMsgColor ;
     {$ENDIF}
 
-//     property OnMsgErro : TACBrECFExibeErroEvent  read  GetOnMsgErro
-//                                                  write SetOnMsgErro ;
      property OnMsgAguarde : TACBrECFMsgAguarde   read  GetOnMsgAguarde
                                                   write SetOnMsgAguarde ;
      property OnAguardandoRespostaChange : TNotifyEvent
@@ -703,6 +807,119 @@ TACBrECF = class( TACBrComponent )
                                              write SetOnMsgPoucoPapel ;
      property OnMsgRetentar : TACBrECFMsgRetentar read  GetOnMsgRetentar
                                                   write SetOnMsgRetentar ;
+
+    // fhaut 2010-09-11
+    property OnAntesAbreCupom : TACBrECFOnAbreCupom
+       read FOnAntesAbreCupom write FOnAntesAbreCupom;
+    property OnDepoisAbreCupom : TACBrECFOnAbreCupom
+       read FOnDepoisAbreCupom write FOnDepoisAbreCupom;
+    property OnErrorAbreCupom : TACBrECFEventoOnError
+       read FOnErrorAbreCupom write FOnErrorAbreCupom;
+    property OnAntesVendeItem : TACBrECFOnVendeItem
+       read FOnAntesVendeItem write FOnAntesVendeItem;
+    property OnDepoisVendeItem : TACBrECFOnVendeItem
+       read FOnDepoisVendeItem write FOnDepoisVendeItem;
+    property OnErrorVendeItem : TACBrECFEventoOnError
+       read FOnErrorVendeItem write FOnErrorVendeItem;
+    property OnAntesEfetuaPagamento : TACBrECFOnEfetuaPagamento
+       read FOnAntesEfetuaPagamento write FOnAntesEfetuaPagamento;
+    property OnDepoisEfetuaPagamento : TACBrECFOnEfetuaPagamento
+       read FOnDepoisEfetuaPagamento write FOnDepoisEfetuaPagamento;
+    property OnErrorEfetuaPagamento : TACBrECFEventoOnError
+       read FOnErrorEfetuaPagamento write FOnErrorEfetuaPagamento;
+    property OnAntesFechaCupom : TACBrECFOnFechaCupom
+       read FOnAntesFechaCupom write FOnAntesFechaCupom;
+    property OnDepoisFechaCupom : TACBrECFOnFechaCupom
+       read FOnDepoisFechaCupom write FOnDepoisFechaCupom;
+    property OnErrorFechaCupom : TACBrECFEventoOnError
+       read FOnErrorFechaCupom write FOnErrorFechaCupom;
+    property OnAntesCancelaCupom : TNotifyEvent
+       read FOnAntesCancelaCupom write FOnAntesCancelaCupom;
+    property OnDepoisCancelaCupom : TNotifyEvent
+       read FOnDepoisCancelaCupom write FOnDepoisCancelaCupom;
+    property OnErrorCancelaCupom : TACBrECFEventoOnError
+       read FOnErrorCancelaCupom write FOnErrorCancelaCupom;
+    property OnAntesCancelaItemVendido : TACBrECFOnCancelaItemVendido
+       read FOnAntesCancelaItemVendido write FOnAntesCancelaItemVendido;
+    property OnDepoisCancelaItemVendido : TACBrECFOnCancelaItemVendido
+       read FOnDepoisCancelaItemVendido write FOnDepoisCancelaItemVendido;
+    property OnErrorCancelaItemVendido : TACBrECFEventoOnError
+       read FOnErrorCancelaItemVendido write FOnErrorCancelaItemVendido;
+    property OnAntesAbreNaoFiscal : TACBrECFOnAbreNaoFiscal
+       read FOnAntesAbreNaoFiscal write FOnAntesAbreNaoFiscal;
+    property OnDepoisAbreNaoFiscal : TACBrECFOnAbreNaoFiscal
+       read FOnDepoisAbreNaoFiscal write FOnDepoisAbreNaoFiscal;
+    property OnErrorAbreNaoFiscal : TACBrECFEventoOnError
+       read FOnErrorAbreNaoFiscal write FOnErrorAbreNaoFiscal;
+    property OnAntesSubtotalizaNaoFiscal : TACBrECFOnSubtotalizaNaoFiscal
+       read FOnAntesSubtotalizaNaoFiscal write FOnAntesSubtotalizaNaoFiscal;
+    property OnDepoisSubtotalizaNaoFiscal : TACBrECFOnSubtotalizaNaoFiscal
+       read FOnDepoisSubtotalizaNaoFiscal write FOnDepoisSubtotalizaNaoFiscal;
+    property OnErrorSubtotalizaNaoFiscal : TACBrECFEventoOnError
+       read FOnErrorSubtotalizaNaoFiscal write FOnErrorSubtotalizaNaoFiscal;
+    property OnAntesEfetuaPagamentoNaoFiscal : TACBrECFOnEfetuaPagamentoNaoFiscal
+       read FOnAntesEfetuaPagamentoNaoFiscal write FOnAntesEfetuaPagamentoNaoFiscal;
+    property OnDepoisEfetuaPagamentoNaoFiscal : TACBrECFOnEfetuaPagamentoNaoFiscal
+       read FOnDepoisEfetuaPagamentoNaoFiscal write FOnDepoisEfetuaPagamentoNaoFiscal;
+    property OnErrorEfetuaPagamentoNaoFiscal : TACBrECFEventoOnError
+       read FOnErrorEfetuaPagamentoNaoFiscal write FOnErrorEfetuaPagamentoNaoFiscal;
+    property OnAntesFechaNaoFiscal : TACBrECFOnFechaNaoFiscal
+       read FOnAntesFechaNaoFiscal write FOnAntesFechaNaoFiscal;
+    property OnDepoisFechaNaoFiscal : TACBrECFOnFechaNaoFiscal
+       read FOnDepoisFechaNaoFiscal write FOnDepoisFechaNaoFiscal;
+    property OnErrorFechaNaoFiscal : TACBrECFEventoOnError
+       read FOnErrorFechaNaoFiscal write FOnErrorFechaNaoFiscal;
+    property OnAntesCancelaNaoFiscal : TNotifyEvent
+       read FOnAntesCancelaNaoFiscal write FOnAntesCancelaNaoFiscal;
+    property OnDepoisCancelaNaoFiscal : TNotifyEvent
+       read FOnDepoisCancelaNaoFiscal write FOnDepoisCancelaNaoFiscal;
+    property OnErrorCancelaNaoFiscal : TACBrECFEventoOnError
+       read FOnErrorCancelaNaoFiscal write FOnErrorCancelaNaoFiscal;
+    property OnAntesSangria : TACBrECFOnSangria
+       read FOnAntesSangria write FOnAntesSangria;
+    property OnDepoisSangria : TACBrECFOnSangria
+       read FOnDepoisSangria write FOnDepoisSangria;
+    property OnErrorSangria : TACBrECFEventoOnError
+       read FOnErrorSangria write FOnErrorSangria;
+    property OnAntesSuprimento : TACBrECFOnSuprimento
+       read FOnAntesSuprimento write FOnAntesSuprimento;
+    property OnDepoisSuprimento : TACBrECFOnSuprimento
+       read FOnDepoisSuprimento write FOnDepoisSuprimento;
+    property OnErrorSuprimento : TACBrECFEventoOnError
+       read FOnErrorSuprimento write FOnErrorSuprimento;
+    property OnAntesLeituraX : TNotifyEvent
+       read FOnAntesLeituraX write FOnAntesLeituraX;
+    property OnDepoisLeituraX : TNotifyEvent
+       read FOnDepoisLeituraX write FOnDepoisLeituraX;
+    property OnErrorLeituraX : TACBrECFEventoOnError
+       read FOnErrorLeituraX write FOnErrorLeituraX;
+    property OnAntesReducaoZ : TNotifyEvent
+       read FOnAntesReducaoZ write FOnAntesReducaoZ;
+    property OnDepoisReducaoZ : TNotifyEvent
+       read FOnDepoisReducaoZ write FOnDepoisReducaoZ;
+    property OnErrorReducaoZ : TACBrECFEventoOnError
+       read FOnErrorReducaoZ write FOnErrorReducaoZ;
+    property OnAntesAbreRelatorioGerencial : TACBrECFOnRelatorioGerencial
+       read FOnAntesAbreRelatorioGerencial write FOnAntesAbreRelatorioGerencial;
+    property OnDepoisAbreRelatorioGerencial : TACBrECFOnRelatorioGerencial
+       read FOnDepoisAbreRelatorioGerencial write FOnDepoisAbreRelatorioGerencial;
+    property OnErrorAbreRelatorioGerencial : TACBrECFOnErrorAbreRelatorioGerencial
+       read FOnErrorAbreRelatorioGerencial write FOnErrorAbreRelatorioGerencial;
+    property OnAntesAbreCupomVinculado : TNotifyEvent
+       read FOnAntesAbreCupomVinculado write FOnAntesAbreCupomVinculado;
+    property OnDepoisAbreCupomVinculado : TNotifyEvent
+       read FOnDepoisAbreCupomVinculado write FOnDepoisAbreCupomVinculado;
+    property OnErrorAbreCupomVinculado : TACBrECFEventoOnError
+       read FOnErrorAbreCupomVinculado write FOnErrorAbreCupomVinculado;
+    property OnAntesFechaRelatorio : TNotifyEvent
+       read FOnAntesFechaRelatorio write FOnAntesFechaRelatorio;
+    property OnDepoisFechaRelatorio : TNotifyEvent
+       read FOnDepoisFechaRelatorio write FOnDepoisFechaRelatorio;
+    property OnErrorFechaRelatorio : TACBrECFEventoOnError
+       read FOnErrorFechaRelatorio write FOnErrorFechaRelatorio;
+    property OnChangeEstado : TACBrECFOnChangeEstado
+       read FOnChangeEstado write FOnChangeEstado;
+    // fim fhaut
 
      property DecimaisPreco : Integer read GetDecimaisPreco
         write SetDecimaisPreco default 3 ;
@@ -1243,6 +1460,12 @@ begin
   fsECF.MsgPoucoPapel := Value;
 end;
 
+function TACBrECF.GetParamDescontoISSQNClass: Boolean;
+begin
+  ComandoLOG := 'ParamDescontoISSQNClass' ;
+  Result := fsECF.ParamDescontoISSQN ;
+end;
+
 function TACBrECF.GetDescricaoGrande: Boolean;
 begin
   Result := fsECF.DescricaoGrande ;
@@ -1418,6 +1641,12 @@ begin
   Result := fsECF.NumCCF ;
 end;
 
+function TACBrECF.GetNumGNFCClass: String;
+begin
+  ComandoLOG := 'NumGNFC' ;
+  Result := fsECF.NumGNFC ;
+end;
+
 function TACBrECF.GetNumGNFClass: String;
 begin
   ComandoLOG := 'NumGNF' ;
@@ -1440,6 +1669,24 @@ function TACBrECF.GetNumCFCClass: String;
 begin
   ComandoLOG := 'NumCFC' ;
   Result := fsECF.NumCFC ;
+end;
+
+function TACBrECF.GetNumCFDClass: String;
+begin
+  ComandoLOG := 'NumCFD' ;
+  Result := fsECF.NumCFD ;
+end;
+
+function TACBrECF.GetNumNCNClass: String;
+begin
+  ComandoLOG := 'NumNCN' ;
+  Result := fsECF.NumNCN ;
+end;
+
+function TACBrECF.GetNumCCDCClass: String;
+begin
+  ComandoLOG := 'NumCCDC' ;
+  Result := fsECF.NumCCDC ;
 end;
 
 function TACBrECF.GetNumLojaClass: String;
@@ -1475,6 +1722,16 @@ function TACBrECF.GetEstadoClass: TACBrECFEstado;
 begin
   ComandoLOG := 'Estado' ;
   Result := fsECF.Estado ;
+
+  if Result <> fpUltimoEstadoObtido then
+  begin
+     try
+        if Assigned( FOnChangeEstado ) then
+           FOnChangeEstado( fpUltimoEstadoObtido, Result);
+     finally
+        fpUltimoEstadoObtido := Result;
+     end;
+  end ;
 end;
 
 function TACBrECF.GetPoucoPapelClass: Boolean;
@@ -1649,6 +1906,24 @@ begin
   Result := RoundTo( fsECF.TotalDescontosISSQN, -2);
 end;
 
+function TACBrECF.GetTotalAcrescimosOPNFClass: Double;
+begin
+  ComandoLOG := 'TotalAcrescimosOPNF';
+  Result := RoundTo( fsECF.TotalAcrescimosOPNF, -2);
+end;
+
+function TACBrECF.GetTotalCancelamentosOPNFClass: Double;
+begin
+  ComandoLOG := 'TotalCancelamentosOPNF';
+  Result := RoundTo( fsECF.TotalCancelamentosOPNF, -2);
+end;
+
+function TACBrECF.GetTotalDescontosOPNFClass: Double;
+begin
+  ComandoLOG := 'TotalDescontosOPNF';
+  Result := RoundTo( fsECF.TotalDescontosOPNF, -2);
+end;
+
 function TACBrECF.GetTotalSubstituicaoTributariaISSQNClass: Double;
 begin
   ComandoLOG := 'TotalSubstituicaoTributariaISSQN';
@@ -1687,7 +1962,7 @@ Var
   CNF  : TACBrECFComprovanteNaoFiscal ;
   RG   : TACBrECFRelatorioGerencial ;
 begin
-  { Alimanta a class com os dados atuais do ACF }
+  { Alimenta a class com os dados atuais do ECF }
   with fsDadosReducaoZClass do
   begin
      Clear ;
@@ -1762,9 +2037,27 @@ begin
      except
      end ;
 
-     CFD  := 0; // Falta implementar
-     GNFC := 0; // Falta implementar
-     CFC  := 0; // Falta implementar
+     try
+        GNFC := StrToIntDef(Self.NumGNFC,0);
+     except
+     end ;
+
+     try
+        CFD := StrToIntDef(Self.NumCFD,0);
+     except
+     end ;
+
+     try
+        NCN := StrToIntDef(Self.NumNCN,0);
+     except
+     end ;
+
+     try
+        CCDC := StrToIntDef(Self.NumCCDC,0);
+     except
+     end ;
+
+
 
      { TOTALIZADORES }
      try
@@ -1787,10 +2080,10 @@ begin
      except
      end ;
 
-     try
-        TotalISSQN := Self.TotalNaoTributadoISSQN;
-     except
-     end ;
+//     try
+//        TotalISSQN := Self.TotalNaoTributadoISSQN; //Total ISSQN e Total Não tributado são coisas diferentes... ???
+//     except
+//     end ;
 
      try
         CancelamentoISSQN := Self.TotalCancelamentosISSQN;
@@ -1809,6 +2102,21 @@ begin
 
      try
         AcrescimoISSQN := Self.TotalAcrescimosISSQN;
+     except
+     end ;
+
+     try
+        CancelamentoOPNF := Self.TotalCancelamentosOPNF;
+     except
+     end ;
+
+     try
+        DescontoOPNF := Self.TotalDescontosOPNF;
+     except
+     end ;
+
+     try
+        AcrescimoOPNF := Self.TotalAcrescimosOPNF;
      except
      end ;
 
@@ -1931,6 +2239,15 @@ begin
   Result := Result + 'NumCOO = ' + FormatFloat('000000', fsDadosReducaoZClass.COO) + sLineBreak ;
   Result := Result + 'NumCRZ = ' + FormatFloat('000000', fsDadosReducaoZClass.CRZ) + sLineBreak ;
   Result := Result + 'NumCRO = ' + FormatFloat('000000', fsDadosReducaoZClass.CRO) + sLineBreak ;
+  Result := Result + 'NumGNF = ' + FormatFloat('000000', fsDadosReducaoZClass.GNF) + sLineBreak ;
+  Result := Result + 'NumCCF = ' + FormatFloat('000000', fsDadosReducaoZClass.CCF) + sLineBreak ;
+  Result := Result + 'NumCFD = ' + FormatFloat('000000', fsDadosReducaoZClass.CFD) + sLineBreak ;
+  Result := Result + 'NumCDC = ' + FormatFloat('000000', fsDadosReducaoZClass.CDC) + sLineBreak ;
+  Result := Result + 'NumGRG = ' + FormatFloat('000000', fsDadosReducaoZClass.GRG) + sLineBreak ;
+  Result := Result + 'NumGNFC = ' + FormatFloat('000000', fsDadosReducaoZClass.GNFC) + sLineBreak ;
+  Result := Result + 'NumCFC = ' + FormatFloat('000000', fsDadosReducaoZClass.CFC) + sLineBreak ;
+  Result := Result + 'NumNCN = ' + FormatFloat('000000', fsDadosReducaoZClass.NCN) + sLineBreak ;
+  Result := Result + 'NumCCDC = ' + FormatFloat('000000', fsDadosReducaoZClass.CCDC) + sLineBreak ;
 
   Result := Result + sLineBreak + '[Totalizadores]'+sLineBreak;
   Result := Result + 'VendaBruta = ' + FloatToStr(fsDadosReducaoZClass.ValorVendaBruta) + sLineBreak ;
@@ -1942,6 +2259,9 @@ begin
   Result := Result + 'TotalCancelamentosISSQN = ' + FloatToStr(fsDadosReducaoZClass.CancelamentoISSQN) + sLineBreak;
   Result := Result + 'TotalAcrescimosISSQN = ' + FloatToStr(fsDadosReducaoZClass.AcrescimoISSQN) + sLineBreak;
   Result := Result + 'TotalNaoFiscal = ' + FloatToStr(fsDadosReducaoZClass.TotalOperacaoNaoFiscal) + sLineBreak ;
+  Result := Result + 'TotalDescontosOPNF = ' + FloatToStr(fsDadosReducaoZClass.DescontoOPNF) + sLineBreak;
+  Result := Result + 'TotalCancelamentosOPNF = ' + FloatToStr(fsDadosReducaoZClass.CancelamentoOPNF) + sLineBreak;
+  Result := Result + 'TotalAcrescimosOPNF = ' + FloatToStr(fsDadosReducaoZClass.AcrescimoOPNF) + sLineBreak;
 
   Result := Result + sLineBreak + '[Aliquotas]'+sLineBreak ;
 
@@ -1985,10 +2305,15 @@ end ;
 
 procedure TACBrECF.AbreCupom(CPF_CNPJ: String = ''; Nome : String = '';
    Endereco : String = '') ;
+var
+  Tratado : Boolean;
 begin
   if RFDAtivo then
      fsRFD.VerificaParametros ;
-     
+
+  if Assigned( fOnAntesAbreCupom ) then
+     fOnAntesAbreCupom( CPF_CNPJ, Nome, Endereco);
+
   if Trim(CPF_CNPJ) + Trim(Nome) + Trim(Endereco) <> '' then
      IdentificaConsumidor(CPF_CNPJ, Nome, Endereco);
 
@@ -2001,7 +2326,16 @@ begin
   end ;
 
   ComandoLOG := 'AbreCupom( '+CPF_CNPJ+', '+NOME+', '+ENDERECO+' )' ;
-  fsECF.AbreCupom ;
+  try
+    Tratado := False;
+    fsECF.AbreCupom ;
+  except
+     if Assigned( FOnErrorAbreCupom ) then
+        FOnErrorAbreCupom(Tratado);
+
+     if not Tratado then
+        raise;
+  end;
 
   {$IFNDEF CONSOLE}
    if MemoAssigned then
@@ -2026,6 +2360,10 @@ begin
 
   if RFDAtivo then
      fsRFD.AbreCupom ;
+
+  if Assigned( FOnDepoisAbreCupom ) then
+     FOnDepoisAbreCupom(CPF_CNPJ, Nome, Endereco);
+
 end;
 
 Procedure TACBrECF.IdentificaConsumidor( CPF_CNPJ : String; Nome : String = '';
@@ -2044,6 +2382,7 @@ procedure TACBrECF.CancelaCupom;
   Var Docto     : String ;
       OldEstado : TACBrECFEstado ;
       SubTot    : Double ;
+      Tratado   : Boolean;
 begin
   if RFDAtivo then
      fsRFD.VerificaParametros ;
@@ -2060,7 +2399,20 @@ begin
   end ;
 
   ComandoLOG := 'CancelaCupom' ;
-  fsECF.CancelaCupom ;
+
+  if Assigned( fOnAntesCancelaCupom ) then
+     fOnAntesCancelaCupom(Self);
+
+  try
+    Tratado := False;
+    fsECF.CancelaCupom ;
+  except
+     if Assigned( FOnErrorCancelaCupom ) then
+        FOnErrorCancelaCupom(Tratado);
+
+     if not Tratado then
+        raise;
+  end;
 
   if RFDAtivo then
      fsRFD.CancelaCupom( StrToInt(Docto) ) ;
@@ -2103,6 +2455,9 @@ begin
    end ;
   {$ENDIF}
 
+  if Assigned( fOnDepoisCancelaCupom ) then
+     FOnDepoisCancelaCupom(Self);
+
 end;
 
 procedure TACBrECF.TestaPodeAbrirCupom;
@@ -2124,6 +2479,7 @@ procedure TACBrECF.VendeItem(Codigo, Descricao: String; AliquotaICMS : String ;
   Unidade: String; TipoDescontoAcrescimo : String; DescontoAcrescimo : String);
  Var AliquotaECF : String ;
      Aliquota    : TACBrECFAliquota ;
+     Tratado : Boolean;
 {$IFNDEF CONSOLE}
      Linha, Buffer, StrQtd, StrPreco, StrDescAcre : String ;
      Total, PorcDesc, ValDesc : Double ;
@@ -2177,9 +2533,25 @@ begin
                      FloatToStr(ValorDescontoAcrescimo)+' , '+Unidade+' , '+
                      TipoDescontoAcrescimo+' , '+DescontoAcrescimo+' )';
 
-  fsECF.VendeItem( Codigo, Descricao, AliquotaECF, Qtd, ValorUnitario,
-                   ValorDescontoAcrescimo, Unidade, TipoDescontoAcrescimo,
-                   DescontoAcrescimo );
+  if Assigned( fOnAntesVendeItem ) then
+     fOnAntesVendeItem( Codigo, Descricao, AliquotaECF, Qtd, ValorUnitario,
+                     ValorDescontoAcrescimo, Unidade, TipoDescontoAcrescimo,
+                     DescontoAcrescimo);
+
+  try
+    Tratado := False;
+    fsECF.VendeItem( Codigo, Descricao, AliquotaECF, Qtd, ValorUnitario,
+                     ValorDescontoAcrescimo, Unidade, TipoDescontoAcrescimo,
+                     DescontoAcrescimo );
+  except
+     if Assigned( FOnErrorVendeItem ) then
+        FOnErrorAbreCupom(Tratado);
+
+     if not Tratado then
+        raise;
+  end;
+
+
   {$IFNDEF CONSOLE}
    if MemoAssigned then
    begin
@@ -2285,7 +2657,11 @@ begin
 
      fsRFD.VendeItem( Codigo, Descricao, Qtd, ValorUnitario, Unidade,
                       ValorDescontoAcrescimo, AliquotaICMS ) ;
+
   end ;
+
+  if Assigned( FOnDepoisVendeItem ) then
+     FOnDepoisVendeItem( Codigo, Descricao, AliquotaICMS, Qtd, ValorUnitario, ValorDescontoAcrescimo, Unidade, TipoDescontoAcrescimo, DescontoAcrescimo);
 
 end;
 
@@ -2340,9 +2716,24 @@ begin
 end;
 
 procedure TACBrECF.CancelaItemVendido(NumItem: Integer);
+var
+  Tratado : Boolean;
 begin
   ComandoLOG := 'CancelaItemVendido( '+IntToStr(NumItem)+' )' ;
-  fsECF.CancelaItemVendido( NumItem );
+
+  if Assigned( fOnAntesCancelaItemVendido ) then
+     fOnAntesCancelaItemVendido( NumItem);
+
+  try
+    Tratado := False;
+    fsECF.CancelaItemVendido( NumItem );
+  except
+     if Assigned( FOnErrorCancelaItemVendido ) then
+        FOnErrorCancelaItemVendido(Tratado);
+
+     if not Tratado then
+        raise;
+  end;
 
   {$IFNDEF CONSOLE}
    if MemoAssigned then
@@ -2354,10 +2745,16 @@ begin
 
   if RFDAtivo then
      fsRFD.CancelaItemVendido( NumItem ) ;
+
+  if Assigned( fOnDepoisCancelaItemVendido ) then
+     FOnDepoisCancelaItemVendido( NumItem);
+
 end;
 
 procedure TACBrECF.SubtotalizaCupom(DescontoAcrescimo: Double;
    MensagemRodape : AnsiString );
+var
+  Tratado : Boolean;
 begin
   { Ajustando valores acima de 2 Decimais }
   DescontoAcrescimo := RoundTo( DescontoAcrescimo, -2) ;
@@ -2373,7 +2770,20 @@ begin
 
   ComandoLOG := 'SubtotalizaCupom( '+FloatToStr(DescontoAcrescimo)+' , '+
                     fsMensagemRodape+' )';
-  fsECF.SubtotalizaCupom( DescontoAcrescimo, fsMensagemRodape );
+
+  if Assigned( fOnAntesSubtotalizaCupom ) then
+     fOnAntesSubtotalizaCupom( DescontoAcrescimo, MensagemRodape);
+
+  try
+    Tratado := False;
+    fsECF.SubtotalizaCupom( DescontoAcrescimo, fsMensagemRodape );
+  except
+     if Assigned( FOnErrorSubtotalizaCupom ) then
+        FOnErrorSubtotalizaCupom(Tratado);
+
+     if not Tratado then
+        raise;
+  end;
 
   {$IFNDEF CONSOLE}
    if MemoAssigned then
@@ -2382,6 +2792,10 @@ begin
 
   if RFDAtivo then
      fsRFD.SubTotalizaCupom( DescontoAcrescimo ) ;
+
+  if Assigned( FOnDepoisSubtotalizaCupom ) then
+     FOnDepoisSubtotalizaCupom( DescontoAcrescimo, fsMensagemRodape);
+
 end;
 
 { Cancela o Acrescimo ou Desconto do Subtotal do Cupom }
@@ -2402,7 +2816,9 @@ end;
 
 procedure TACBrECF.EfetuaPagamento(CodFormaPagto: String; Valor: Double;
   Observacao: AnsiString; ImprimeVinculado: Boolean);
- Var FPG : TACBrECFFormaPagamento ;
+Var
+  FPG     : TACBrECFFormaPagamento ;
+  Tratado : Boolean;
 begin
   FPG := AchaFPGIndice( CodFormaPagto ) ;
   if FPG = nil then
@@ -2423,7 +2839,19 @@ begin
                     FloatToStr(Valor)+' , '+Observacao+', '+
                     BoolToStr( ImprimeVinculado)+' )';
 
-  fsECF.EfetuaPagamento( CodFormaPagto, Valor, Observacao, ImprimeVinculado);
+  if Assigned( fOnAntesEfetuaPagamento ) then
+     fOnAntesEfetuaPagamento( CodFormaPagto, Valor, Observacao, ImprimeVinculado);
+
+  try
+    Tratado := False;
+    fsECF.EfetuaPagamento( CodFormaPagto, Valor, Observacao, ImprimeVinculado);
+  except
+     if Assigned( fOnErrorEfetuaPagamento ) then
+        fOnErrorEfetuaPagamento(Tratado);
+
+     if not Tratado then
+        raise;
+  end;
 
   {$IFNDEF CONSOLE}
    if MemoAssigned then
@@ -2432,6 +2860,10 @@ begin
 
   if RFDAtivo then
      fsRFD.EfetuaPagamento( FPG.Descricao, Valor ) ;
+
+  if Assigned( fOnDepoisEfetuaPagamento ) then
+     fOnDepoisEfetuaPagamento( CodFormaPagto, Valor, Observacao, ImprimeVinculado);
+
 end;
 
 { Estorna um Pagamento Efetuado }
@@ -2446,6 +2878,8 @@ begin
 end;
 
 procedure TACBrECF.FechaCupom(Observacao: AnsiString; IndiceBMP : Integer);
+var
+  Tratado : Boolean;
 begin
   if (Observacao = '') then
      Observacao := fsMensagemRodape ;
@@ -2467,7 +2901,20 @@ begin
   Observacao := StringReplace(Observacao,'|',#10,[rfReplaceAll]) ;
 
   ComandoLOG := 'FechaCupom( '+Observacao+' )' ;
-  fsECF.FechaCupom( Observacao, IndiceBMP ) ;
+
+  if Assigned( fOnAntesFechaCupom ) then
+     fOnAntesFechaCupom( Observacao, IndiceBMP);
+
+  try
+    Tratado := False;
+    fsECF.FechaCupom( Observacao, IndiceBMP ) ;
+  except
+     if Assigned( fOnErrorFechaCupom ) then
+        fOnErrorFechaCupom(Tratado);
+
+     if not Tratado then
+        raise;
+  end;
 
   {$IFNDEF CONSOLE}
    if MemoAssigned then
@@ -2482,6 +2929,9 @@ begin
   if RFDAtivo then
      fsRFD.FechaCupom ;
 
+  if Assigned( fOnDepoisFechaCupom ) then
+     fOnDepoisFechaCupom( Observacao, IndiceBMP);
+
   fsMensagemRodape := '' ;
   Consumidor.Zera ;
   CodigodeBarras.Zera ;
@@ -2491,6 +2941,8 @@ end;
 
 procedure TACBrECF.Sangria(const Valor: Double; Obs: AnsiString;
    DescricaoCNF: String; DescricaoFPG: String ) ;
+Var
+  Tratado : Boolean;
 begin
   if DescricaoCNF = '' then
      DescricaoCNF := 'SANGRIA' ;
@@ -2498,11 +2950,29 @@ begin
   if DescricaoFPG = '' then
      DescricaoFPG := 'DINHEIRO' ;
 
-  fsECF.Sangria( Valor, Obs, DescricaoCNF, DescricaoFPG );
+  if Assigned( fOnAntesSangria ) then
+     fOnAntesSangria( Valor, Obs, DescricaoCNF, DescricaoFPG);
+
+  try
+    Tratado := False;
+    fsECF.Sangria( Valor, Obs, DescricaoCNF, DescricaoFPG );
+  except
+     if Assigned( FOnErrorSangria ) then
+        FOnErrorSangria(Tratado);
+
+     if not Tratado then
+        raise;
+  end;
+
+  if Assigned( FOnDepoisSangria ) then
+     FOnDepoisSangria( Valor, Obs, DescricaoCNF, DescricaoFPG);
+
 end;
 
 procedure TACBrECF.Suprimento(const Valor: Double; Obs: AnsiString;
    DescricaoCNF: String; DescricaoFPG: String ) ;
+Var
+  Tratado : Boolean;
 begin
   if DescricaoCNF = '' then
      DescricaoCNF := 'SUPRIMENTO' ;
@@ -2510,7 +2980,22 @@ begin
   if DescricaoFPG = '' then
      DescricaoFPG := 'DINHEIRO' ;
 
-  fsECF.Suprimento( Valor, Obs, DescricaoCNF, DescricaoFPG );
+  if Assigned( fOnAntesSuprimento ) then
+     fOnAntesSuprimento( Valor, Obs, DescricaoCNF, DescricaoFPG);
+
+  try
+    Tratado := False;
+    fsECF.Suprimento( Valor, Obs, DescricaoCNF, DescricaoFPG );
+  except
+     if Assigned( fOnErrorSuprimento ) then
+        fOnErrorSuprimento(Tratado);
+
+     if not Tratado then
+        raise;
+  end;
+
+  if Assigned( fOnDepoisSuprimento ) then
+     fOnDepoisSuprimento( Valor, Obs, DescricaoCNF, DescricaoFPG);
 end;
 
 
@@ -2534,12 +3019,27 @@ begin
 end;
 
 procedure TACBrECF.AbreNaoFiscal(CPF_CNPJ: String);
+Var
+  Tratado : Boolean;
 begin
   if RFDAtivo then
      fsRFD.VerificaParametros ;
-     
+
   ComandoLOG := 'AbreNaoFiscal( '+CPF_CNPJ+' )' ;
-  fsECF.AbreNaoFiscal( CPF_CNPJ );
+
+  if Assigned( fOnAntesAbreNaoFiscal ) then
+     fOnAntesAbreNaoFiscal(CPF_CNPJ);
+
+  try
+    Tratado := False;
+    fsECF.AbreNaoFiscal( CPF_CNPJ );
+  except
+     if Assigned( fOnErrorAbreNaoFiscal ) then
+        fOnErrorAbreNaoFiscal(Tratado);
+
+     if not Tratado then
+        raise;
+  end;
 
   {$IFNDEF CONSOLE}
    if MemoAssigned then
@@ -2562,6 +3062,10 @@ begin
      fsRFD.Documento('CN');
      fsRegistrouRFDCNF := True ;
   end ;
+
+  if Assigned( fOnDepoisAbreNaoFiscal ) then
+     fOnDepoisAbreNaoFiscal( CPF_CNPJ);
+
 end;
 
 procedure TACBrECF.RegistraItemNaoFiscal(CodCNF: String; Valor: Double;
@@ -2599,9 +3103,24 @@ begin
 end;
 
 procedure TACBrECF.CancelaNaoFiscal;
+Var
+  Tratado : Boolean;
 begin
   ComandoLOG := 'CancelaNaoFiscal';
-  fsECF.CancelaNaoFiscal ;
+
+  if Assigned( fOnAntesCancelaNaoFiscal ) then
+     fOnAntesCancelaNaoFiscal(Self);
+
+  try
+    Tratado := False;
+    fsECF.CancelaNaoFiscal ;
+  except
+     if Assigned( FOnErrorCancelaNaoFiscal ) then
+        FOnErrorCancelaNaoFiscal(Tratado);
+
+     if not Tratado then
+        raise;
+  end;
 
   {$IFNDEF CONSOLE}
   // TODO
@@ -2609,11 +3128,16 @@ begin
 
   if RFDAtivo then
      fsRFD.Documento('NC');
+
+  if Assigned( FOnDepoisCancelaNaoFiscal ) then
+     FOnDepoisCancelaNaoFiscal(Self);
 end;
 
 procedure TACBrECF.EfetuaPagamentoNaoFiscal(CodFormaPagto: String;
   Valor: Double; Observacao: AnsiString; ImprimeVinculado: Boolean);
- Var FPG : TACBrECFFormaPagamento ;
+Var
+  FPG     : TACBrECFFormaPagamento ;
+  Tratado : Boolean;
 begin
   FPG := AchaFPGIndice( CodFormaPagto ) ;
   if FPG = nil then
@@ -2636,8 +3160,20 @@ begin
                     FloatToStr(Valor)+' , '+Observacao+', '+
                     BoolToStr( ImprimeVinculado)+' )';
 
-  fsECF.EfetuaPagamentoNaoFiscal( CodFormaPagto, Valor, Observacao,
+  if Assigned( fOnAntesEfetuaPagamentoNaoFiscal ) then
+     fOnAntesEfetuaPagamentoNaoFiscal( CodFormaPagto, Valor, Observacao, ImprimeVinculado);
+
+  try
+    Tratado := False;
+    fsECF.EfetuaPagamentoNaoFiscal( CodFormaPagto, Valor, Observacao,
                                   ImprimeVinculado);
+  except
+     if Assigned( FOnErrorEfetuaPagamentoNaoFiscal ) then
+        FOnErrorEfetuaPagamentoNaoFiscal(Tratado);
+
+     if not Tratado then
+        raise;
+  end;
 
   {$IFNDEF CONSOLE}
    if MemoAssigned then
@@ -2646,10 +3182,16 @@ begin
 
   if RFDAtivo then
      fsRFD.EfetuaPagamento( FPG.Descricao, Valor ) ;
+
+  if Assigned( FOnDepoisEfetuaPagamentoNaoFiscal ) then
+     FOnDepoisEfetuaPagamentoNaoFiscal( CodFormaPagto, Valor, Observacao, ImprimeVinculado);
+
 end;
 
 procedure TACBrECF.SubtotalizaNaoFiscal(DescontoAcrescimo: Double;
    MensagemRodape: AnsiString);
+Var
+  Tratado : Boolean;
 begin
   { Ajustando valores acima de 2 Decimais }
   DescontoAcrescimo := RoundTo( DescontoAcrescimo, -2) ;
@@ -2665,15 +3207,34 @@ begin
 
   ComandoLOG := 'SubtotalizaNaoFiscal( '+FloatToStr(DescontoAcrescimo)+' , '+
                     fsMensagemRodape+' )';
-  fsECF.SubtotalizaNaoFiscal( DescontoAcrescimo, fsMensagemRodape );
+
+  if Assigned( fOnAntesSubtotalizaNaoFiscal ) then
+     fOnAntesSubtotalizaNaoFiscal( DescontoAcrescimo, MensagemRodape);
+
+  try
+    Tratado := False;
+    fsECF.SubtotalizaNaoFiscal( DescontoAcrescimo, fsMensagemRodape );
+  except
+     if Assigned( fOnErrorSubtotalizaNaoFiscal ) then
+        fOnErrorSubtotalizaNaoFiscal(Tratado);
+
+     if not Tratado then
+        raise;
+  end;
 
   {$IFNDEF CONSOLE}
    if MemoAssigned then
       MemoSubtotaliza( DescontoAcrescimo );
   {$ENDIF}
+
+  if Assigned( fOnDepoisSubtotalizaNaoFiscal ) then
+     fOnDepoisSubtotalizaNaoFiscal( DescontoAcrescimo, MensagemRodape);
+
 end;
 
 procedure TACBrECF.FechaNaoFiscal(Observacao: AnsiString; IndiceBMP : Integer);
+Var
+  Tratado : Boolean;
 begin
   if (Observacao = '') then
      Observacao := fsMensagemRodape ;
@@ -2683,7 +3244,20 @@ begin
   Observacao := StringReplace(Observacao,'|',#10,[rfReplaceAll]) ;
 
   ComandoLOG := 'FechaNaoFiscal( '+Observacao+' )' ;
-  fsECF.FechaNaoFiscal( Observacao, IndiceBMP ) ;
+
+  if Assigned( fOnAntesFechaNaoFiscal ) then
+     fOnAntesFechaNaoFiscal(Observacao, IndiceBMP);
+
+  try
+    Tratado := False;
+    fsECF.FechaNaoFiscal( Observacao, IndiceBMP ) ;
+  except
+     if Assigned( FOnErrorFechaNaoFiscal ) then
+        FOnErrorFechaNaoFiscal(Tratado);
+
+     if not Tratado then
+        raise;
+  end;
 
   fsMensagemRodape := '' ;
   Consumidor.Zera ;
@@ -2697,6 +3271,10 @@ begin
       MemoAdicionaLinha( Observacao + sLineBreak + fsMemoRodape );
    end ;
   {$ENDIF}
+
+  if Assigned( FOnDepoisFechaNaoFiscal ) then
+     FOnDepoisFechaNaoFiscal(Observacao, IndiceBMP);
+
 end;
 
 procedure TACBrECF.CorrigeEstadoErro(ReducaoZ: Boolean);
@@ -2721,6 +3299,8 @@ procedure TACBrECF.FechaRelatorio;
 {$IFNDEF CONSOLE}
  Var OldEstado : TACBrECFEstado ;
 {$ENDIF}
+Var
+  Tratado : Boolean;
 begin
   {$IFNDEF CONSOLE}
   OldEstado := estDesconhecido ;
@@ -2729,7 +3309,20 @@ begin
   {$ENDIF}
 
   ComandoLOG := 'FechaRelatorio' ;
-  fsECF.FechaRelatorio ;
+
+  if Assigned( fOnAntesFechaRelatorio ) then
+     fOnAntesFechaRelatorio(Self);
+
+  try
+    Tratado := False;
+    fsECF.FechaRelatorio ;
+  except
+     if Assigned( FOnErrorFechaRelatorio ) then
+        FOnErrorFechaRelatorio(Tratado);
+
+     if not Tratado then
+        raise;
+  end;
 
   {$IFNDEF CONSOLE}
    if MemoAssigned then
@@ -2741,6 +3334,10 @@ begin
       end ;
    end ;
   {$ENDIF}
+
+  if Assigned( FOnDepoisFechaRelatorio ) then
+     FOnDepoisFechaRelatorio(Self);
+
 end;
 
 procedure TACBrECF.PulaLinhas(const NumLinhas: Integer);
@@ -3012,14 +3609,28 @@ begin
 end;
 
 procedure TACBrECF.LeituraX;
- Var wRespostaComando : AnsiString ;
+Var
+  wRespostaComando : AnsiString ;
+  Tratado          : Boolean;
 begin
   if RFDAtivo then
      fsRFD.VerificaParametros ;
-     
+
   ComandoLOG := 'LeituraX' ;
-  fsECF.LeituraX ;
-  
+  if Assigned( fOnAntesLeituraX ) then
+     fOnAntesLeituraX(Self);
+
+  try
+    Tratado := False;
+    fsECF.LeituraX ;
+  except
+     if Assigned( fOnErrorLeituraX ) then
+        fOnErrorLeituraX(Tratado);
+
+     if not Tratado then
+        raise;
+  end;
+
   {$IFNDEF CONSOLE}
    if MemoAssigned then
    begin
@@ -3029,13 +3640,17 @@ begin
       MemoAdicionaLinha( fsMemoRodape );
    end ;
   {$ENDIF}
-  
+
   if RFDAtivo then
   begin
      wRespostaComando := fsECF.RespostaComando ;
      fsRFD.Documento('LX') ;
      fsECF.RespostaComando := wRespostaComando ;
   end ;
+
+  if Assigned( fOnDepoisLeituraX ) then
+     fOnDepoisLeituraX(Self);
+
 end;
 
 procedure TACBrECF.LeituraXSerial(Linhas: TStringList);
@@ -3084,8 +3699,10 @@ begin
 end;
 
 procedure TACBrECF.ReducaoZ(DataHora: TDateTime);
- Var RedZ : AnsiString ;
-     Est  : TACBrECFEstado ;
+Var
+  RedZ    : AnsiString ;
+  Est     : TACBrECFEstado ;
+  Tratado : Boolean;
 begin
   Est := Estado ;
   if RFDAtivo then
@@ -3096,7 +3713,20 @@ begin
 
   try
      ComandoLOG := 'ReducaoZ( '+DateToStr(DataHora)+' )' ;
-     fsECF.ReducaoZ( DataHora ) ;
+
+     if Assigned( fOnAntesReducaoZ ) then
+        fOnAntesReducaoZ(Self);
+
+     try
+       Tratado := False;
+       fsECF.ReducaoZ( DataHora ) ;
+     except
+        if Assigned( fOnErrorReducaoZ ) then
+           fOnErrorReducaoZ(Tratado);
+
+        if not Tratado then
+           raise;
+     end;
   finally
       if Est <> Estado then
       begin
@@ -3114,6 +3744,10 @@ begin
            fsRFD.ReducaoZ( RedZ ) ;
       end ;
   end ;
+
+  if Assigned( fOnDepoisReducaoZ ) then
+     fOnDepoisReducaoZ(Self);
+
 end;
 
 function TACBrECF.GetAliquotasClass: TACBrECFAliquotas;
@@ -3332,14 +3966,28 @@ begin
 end;
 
 procedure TACBrECF.AbreRelatorioGerencial(Indice: Integer);
+Var 
+  Tratado : Boolean;
 begin
   if RFDAtivo then
      fsRFD.VerificaParametros ;
 
   fsIndiceGerencial := Indice;
-
   ComandoLOG := 'AbreRelatorioGerencial' ;
-  fsECF.AbreRelatorioGerencial(Indice) ;
+
+  if Assigned( fOnAntesAbreRelatorioGerencial ) then
+     fOnAntesAbreRelatorioGerencial( Indice);
+
+  try
+    Tratado := False;
+    fsECF.AbreRelatorioGerencial(Indice) ;
+  except
+     if Assigned( FOnErrorAbreRelatorioGerencial ) then
+        FOnErrorAbreRelatorioGerencial(Tratado, Indice);
+
+     if not Tratado then
+        raise;
+  end;
 
   {$IFNDEF CONSOLE}
    if MemoAssigned then
@@ -3352,6 +4000,10 @@ begin
 
   if RFDAtivo then
      fsRFD.Documento('RG') ;
+
+  if Assigned( FOnDepoisAbreRelatorioGerencial ) then
+     FOnDepoisAbreRelatorioGerencial( Indice);
+
 end;
 
 procedure TACBrECF.LinhaRelatorioGerencial(const Linha: AnsiString;
@@ -3395,7 +4047,7 @@ begin
   if MaxLinhasBuffer < 1 then
    begin
      ComandoLOG := 'LinhaRelatorioGerencial( "'+Texto+'", '+IntToStr(IndiceBMP)+' )';
-     fsECF.LinhaRelatorioGerencial( Texto, IndiceBMP ) ;
+     fsECF.LinhaRelatorioGerencial( Linha, IndiceBMP ) ;
    end
   else
    begin
@@ -3460,12 +4112,28 @@ end;
 
 procedure TACBrECF.AbreCupomVinculado(COO, CodFormaPagto: String;
    Valor: Double);
+Var
+  Tratado : Boolean;
 begin
   Valor := RoundTo( Valor, -2) ;  { Ajustando valores acima de 2 Decimais }
 
+  if Assigned( fOnAntesAbreCupomVinculado ) then
+     fOnAntesAbreCupomVinculado(Self);
+
   ComandoLOG := 'AbreCupomVinculado( '+COO+' , '+CodFormaPagto+' , '+
                     FloatToStr(Valor)+' )';
-  fsECF.AbreCupomVinculado( COO, CodFormaPagto, '', Valor);
+
+  try
+    Tratado := False;
+    fsECF.AbreCupomVinculado( COO, CodFormaPagto, '', Valor);
+  except
+     if Assigned( fOnErrorAbreCupomVinculado ) then
+        fOnErrorAbreCupomVinculado(Tratado);
+
+     if not Tratado then
+        raise;
+  end;
+
 
   {$IFNDEF CONSOLE}
    if MemoAssigned then
@@ -3475,9 +4143,13 @@ begin
       MemoTitulo('CUPOM VINCULADO');
    end ;
   {$ENDIF}
-  
+
   if RFDAtivo then
      fsRFD.Documento('CC') ;
+
+  if Assigned( fOnDepoisAbreCupomVinculado ) then
+     fOnDepoisAbreCupomVinculado(Self);
+
 end;
 
 procedure TACBrECF.AbreCupomVinculado(COO, CodFormaPagto,

@@ -441,6 +441,7 @@ TACBrECFBematech = class( TACBrECFClass )
     function GetGavetaAberta: Boolean; override ;
     function GetPoucoPapel : Boolean; override ;
     function GetHorarioVerao: Boolean; override ;
+    function GetParamDescontoISSQN: Boolean; override ;
     function GetArredonda: Boolean; override ;
     function GetChequePronto: Boolean; override ;
 
@@ -461,7 +462,11 @@ TACBrECFBematech = class( TACBrECFClass )
     function GetNumGRG: String; override ;
     function GetNumCDC: String; override ;
     function GetNumCFC: String; override ;
+    function GetNumGNFC: String; override ;
+    function GetNumCFD: String; override ;
     function GetNumCRZ: String; override ;
+    function GetNumNCN: String; override ;
+    function GetNumCCDC: String; override ;
     function GetVendaBruta: Double; override ;
 
     function GetTotalAcrescimos: Double; override ;
@@ -478,6 +483,10 @@ TACBrECFBematech = class( TACBrECFClass )
     function GetTotalSubstituicaoTributariaISSQN: Double; override;
     function GetTotalNaoTributadoISSQN: Double; override;
     function GetTotalIsencaoISSQN: Double; override;
+
+    function GetTotalAcrescimosOPNF: Double; override;
+    function GetTotalCancelamentosOPNF: Double; override;
+    function GetTotalDescontosOPNF: Double; override;
 
     function GetNumCOOInicial: String; override ;
     function GetNumUltimoItem: Integer; override ;
@@ -2447,6 +2456,16 @@ begin
   Result := RetornaInfoECF( '09' ) ;
 end;
 
+function TACBrECFBematech.GetNumNCN: String;
+begin
+  Result := RetornaInfoECF( '57' ) ;
+end;
+
+function TACBrECFBematech.GetNumCCDC: String;
+begin
+  Result := '0000' ; //Ainda não descobrimos como essa informação pode ser retornada fora da DadosdaUltimaReducaoZ
+end;
+
 function TACBrECFBematech.GetTotalAcrescimos: Double;
 begin
   Result := StrToFloatDef( RetornaInfoECF( '30' ) ,0) / 100 ;
@@ -2456,6 +2475,11 @@ end;
 function TACBrECFBematech.GetTotalAcrescimosISSQN: Double;
 begin
   Result := StrToFloatDef( BcdToAsc( copy(TotalizadoresParciais,183,7) ),0) / 100 ;
+end;
+
+function TACBrECFBematech.GetTotalAcrescimosOPNF: Double;
+begin
+  Result := StrToFloatDef( BcdToAsc( copy(TotalizadoresParciais,414,7) ),0) / 100 ;
 end;
 
 function TACBrECFBematech.GetTotalCancelamentos: Double;
@@ -2469,10 +2493,20 @@ begin
   Result := StrToFloatDef( BcdToAsc( copy(TotalizadoresParciais,190,7) ),0) / 100 ;
 end;
 
+function TACBrECFBematech.GetTotalCancelamentosOPNF: Double;
+begin
+  Result := StrToFloatDef( BcdToAsc( copy(TotalizadoresParciais,421,7) ),0) / 100 ;
+end;
+
 function TACBrECFBematech.GetTotalDescontos: Double;
 begin
   Result := StrToFloatDef( RetornaInfoECF( '05' ) ,0 ) / 100 ;
   Result := RoundTo( Result, -2) ;
+end;
+
+function TACBrECFBematech.GetTotalDescontosOPNF: Double;
+begin
+  Result := StrToFloatDef( BcdToAsc( copy(TotalizadoresParciais,407,7) ),0) / 100 ;
 end;
 
 function TACBrECFBematech.GetTotalTroco: Double;
@@ -2704,177 +2738,512 @@ begin
 end;
 
 function TACBrECFBematech.GetDadosUltimaReducaoZ: AnsiString;
- Var RetCmd, S : AnsiString ;
-     I : Integer ;
-     VBruta, TOPNF, V : Double ;
+Var
+  RetCmd, S, SS, SSS  : AnsiString ;
+  I, k : Integer ;
+  VBruta, TOPNF, V : Double ;
 begin
-  try
-     BytesResp := 308 ;
-     RetCmd    := BcdToAsc(EnviaComando( #62 + #55, 5 )) ;
-  except
-     Result := '' ;
-     exit ;
-  end ;
 
-{ ESC 62 55 - Tamanho de Retorno 616 dígitos BCD (308 bytes),
-              com a seguinte estrutura.
-  2 RZAUT Se 00 redução por comando, caso contrário automática.
- 18 GTDA GT no momento da última redução.
- 14 CANCEL Cancelamentos
- 14 DESCON Descontos
- 64 TR Tributos
-266 TP Totalizadores Parciais Tributados
- 14 SANGRIA Sangria
- 14 SUPRIMENTOS Suprimentos
-126 NSI Totalizadores não Sujeitos ao ICMS
- 36 CNSI Contadores dos TP’s não Sujeitos ao ICMS
-  6 COO Contador de Ordem de Operação
-  6 CNS Contador de Operações não Sujeitas ao ICMS
-  2 AL Número de Alíquotas Cadastradas
-  6 DATA_PC Data do Movimento
- 14 ACRESC Acréscimo
- 14 ACRFIN Acréscimo Financeiro
+  if fpMFD then
+  begin
+    try
+       BytesResp := 621 ;
+       RetCmd    := BcdToAsc(EnviaComando( #88, 5 )) ;
+    except
+       Result := '' ;
+       exit ;
+    end ;
 
-RRGGGGGGGGGGGGGGGGGGCCCCCCCCCCCCCCDDDDDDDDDDDDDDT001T002T003T004T005T006T007T008T009T010T011T012T013T014T015T016TPT00000000001TPT00000000002TPT00000000003TPT00000000004TPT00000000005TPT00000000006TPT00000000007TPT00000000008TPT00000000009TPT00000000010TPT00000000011TPT00000000012TPT00000000013TPT00000000014TPT00000000015TPT00000000016IIIIIIIIIIIIIINNNNNNNNNNNNNNFFFFFFFFFFFFFFAAAAAAAAAAAAAAUUUUUUUUUUUUUUTNS00000000001TNS00000000002TNS00000000003TNS00000000004TNS00000000005TNS00000000006TNS00000000007TNS00000000008TNS00000000009CN01CN02CN03CN04CN05CN06CN07CN08CN09COOCOOCNSCNSALDTMOVTAAAAAAAAAAAAAAFFFFFFFFFFFFFF
-0000000000000014231000000000000000000000000000001800021605001200050025000250180013001600170002110200100006000100000000000001000000000000020000000000000300000000000004010000000000050100000000000601000000000007010000000000080100000000000901000000000010010000000000110200000000001202000000000013020000000000140200000000001502000000000016020000000001001400000000010114000000000408640000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000162000019161708070000000000011100000000000000
-....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+....0....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+....0....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+....0....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+....0....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+....0....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+....0....+....1....+.
-}
+    {ESC 88 Tamanho de Retorno: 621 bytes (BCD), com a seguinte estrutura:
+    Descrição             Bytes         (Digitos BCD)                   0
+    RZautomática se zero indica que a RZ foi emitida por comando 1 (2)  2
+    CRO Contador de Reinício de Operação 2 (4)                          6
+    CRZ Contador de Redução Z 2 (4)                                     10
+    COO Contador de Ordem de Operação 3 (6)                             16
+    GNF Contador Geral de Operações Não Fiscais 3 (6)                   22
+    CCF Contador de Cupom Fiscal 3 (6)                                  28
+    GRG Contador Geral de Relatório Gerencial 3 (6)                     34
+    CFD Contador de Fita Detalhe Emitida 3 (6)                          40
+    NFC Contador de Operação Não Fiscal Cancelada 2 (4)                 44
+    CFC Contador de Cupom Fiscal Cancelado 2 (4)                        48
+    CON[30] Contadores Específicos de Operações não Fiscais 30x2 (30x4) 168
+    CER[30] Contadores Específicos de Relatórios Gerenciais 30x2 (30x4) 288
+    CDC Contador de Comprovantes de Débito ou Crédito 2 (4)             292
+    NCN Contador de Débito ou Crédito não Emitidos 2 (4)                296
+    CCDC Contador de Débito ou Crédito Cancelados 2 (4)                 300
+    GT Totalizador Geral 9 (18)                                         318
+    TP[16] Totalizadores Parciais Tributados 16x7 (16x14)               542
+    I I Totalizador de Isenção de ICMS 7 (14)                           556
+    NN Totalizador de Não Incidência de ICMS 7 (14)                     570
+    FF Totalizador de Substituição Tributária de ICMS 7 (14)            584
+    SI Totalizador de Isenção de ISSQN 7 (14)                           598
+    SN Totalizador de Não Incidência de ISSQN 7 (14)                    612
+    SF Totalizador de Substituição Tributária de ISSQN 7 (14)           626
+    Totalizador de Desconto em ICMS 7 (14)                              640
+    Totalizador de Desconto em ISSQN 7 (14)                             654
+    Totalizador de Acrécimo em ICMS 7 (14)                              668
+    Totalizador de Acrécimo em ISSQN 7 (14)                             682
+    Totalizador de Cancelamentos em ICMS 7 (14)                         696
+    Totalizador de Cancelamentos em ISSQN 7 (14)                        710
+    TPNS Totalizadores Parciais Não sujeitos ao ICMS 28x7 (28x14)       1102
+    Sangria Totalizador de Sangria 7 (14)                               1116
+    Suprimento Totalizador de Suprimento 7 (14)                         1130
+    Totalizador de Cancelamentos de Não Fiscais 7 (14)                  1144
+    Totalizador de Descontos de Não Fiscais 7 (14)                      1158
+    Totalizador de Acrécimos de Não Fiscais 7 (14)                      1172
+    Alíquotas Tributadas 16x2 (16x4)                                    1236
 
-  Result := '[ECF]'+sLineBreak ;
-  try
-     Result := Result + 'DataMovimento = ' +
-               copy(RetCmd,583,2)+DateSeparator+
-               copy(RetCmd,585,2)+DateSeparator+
-               copy(RetCmd,587,2)+sLineBreak ;
-  except
-  end ;
+    Data do Movimento 3     (6)                                         1242}
 
-  try
-     Result := Result + 'NumSerie = ' + NumSerie + sLineBreak ;
-  except
-  end ;
+    Result := '[ECF]'+sLineBreak ;
+    try
+       Result := Result + 'DataMovimento = ' +
+                 copy(RetCmd,1237,2)+DateSeparator+
+                 copy(RetCmd,1239,2)+DateSeparator+
+                 copy(RetCmd,1241,2)+sLineBreak ;
+    except
+    end ;
 
-  try
-     Result := Result + 'NumSerieMFD = ' + NumSerieMFD + sLineBreak ;
-  except
-  end ;
 
-  try
-     Result := Result + 'NumLoja = ' + NumLoja + sLineBreak ;
-     Result := Result + 'NumECF = ' + NumECF + sLineBreak ;
-  except
-  end ;
+    try
+       Result := Result + 'NumSerie = ' + NumSerie + sLineBreak ;
+    except
+    end ;
 
-  try
-     Result := Result + 'NumCOO = ' + copy(RetCmd,569,6) + sLineBreak ;
-  except
-  end ;
+    try
+       Result := Result + 'NumSerieMFD = ' + NumSerieMFD + sLineBreak ;
+    except
+    end ;
 
-  try
-     Result := Result + 'NumCRZ = ' + NumCRZ + sLineBreak ;
-  except
-  end ;
+    try
+       Result := Result + 'NumLoja = ' + NumLoja + sLineBreak ;
+       Result := Result + 'NumECF = ' + NumECF + sLineBreak ;
+    except
+    end ;
 
-  try
-     Result := Result + 'NumCRO = ' + NumCRO + sLineBreak ;
-  except
-  end ;
+    try
+       Result := Result + 'RZAut = ' + copy(RetCmd,1,2) + sLineBreak ; //Indica se a RZ foi automática (01) ou manual (00)
+    except
+    end ;
 
-  VBruta := 0 ;
-  TOPNF  := 0 ;
 
-  try
-     Result := Result + sLineBreak + '[Aliquotas]'+sLineBreak ;
-     
-     if not Assigned( fpAliquotas ) then
-        CarregaAliquotas ;
+    try
+       Result := Result + 'NumCOO = ' + copy(RetCmd,11,6) + sLineBreak ;
+    except
+    end ;
 
-     S := copy(RetCmd,113,224) ;
-     For I := 0 to Aliquotas.Count-1 do
-     begin
-        V := RoundTo( StrToFloatDef( copy(S,(I*14)+1,14),0) / 100, -2) ;
-        Result := Result + padL(Aliquotas[I].Indice,2) +
-                           Aliquotas[I].Tipo +
-                           IntToStrZero(Trunc(Aliquotas[I].Aliquota*100),4) + ' = '+
-                           FloatToStr( V ) + sLineBreak ;
-        VBruta := VBruta + V ;
-     end ;
-  except
-  end ;
+    try
+       Result := Result + 'NumCRZ = ' + copy(RetCmd,7,4) + sLineBreak ;
+       //Result := Result + 'NumCRZ = ' + NumCRZ + sLineBreak ; //comentado para se utilizar o retorno da impressora.
+    except
+    end ;
 
-  try
-     Result := Result + sLineBreak + '[OutrasICMS]'+sLineBreak ;
-     V := RoundTo( StrToFloatDef( copy(RetCmd,365,14),0) / 100, -2) ;
-     Result := Result + 'TotalSubstituicaoTributaria = ' + FloatToStr(V) + sLineBreak ;
-     VBruta := VBruta + V ;
+    try
+       Result := Result + 'NumCRO = ' + copy(RetCmd,3,4) + sLineBreak ;
+       //Result := Result + 'NumCRO = ' + NumCRO + sLineBreak ; //comentado para se utilizar o retorno da impressora.
+    except
+    end ;
 
-     V := RoundTo( StrToFloatDef( copy(RetCmd,351,14),0) / 100, -2) ;
-     Result := Result + 'TotalNaoTributado = ' + FloatToStr(V) + sLineBreak ;
-     VBruta := VBruta + V ;
+    try
+       Result := Result + 'NumGNF = ' + copy(RetCmd,17,6) + sLineBreak ;
+    except
+    end ;
 
-     V := RoundTo( StrToFloatDef( copy(RetCmd,337,14),0) / 100, -2) ;
-     Result := Result + 'TotalIsencao = ' + FloatToStr(V) + sLineBreak ;
-     VBruta := VBruta + V ;
-  except
-  end ;
+    try
+       Result := Result + 'NumCCF = ' + copy(RetCmd,23,6) + sLineBreak ;
+    except
+    end ;
 
-  try
-     Result := Result + sLineBreak + '[NaoFiscais]'+sLineBreak ;
+    try
+       Result := Result + 'NumGRG = ' + copy(RetCmd,29,6) + sLineBreak ;
+    except
+    end ;
 
-     if not Assigned( fpComprovantesNaoFiscais ) then
-        CarregaComprovantesNaoFiscais ;
+    try
+       Result := Result + 'NumCFD = ' + copy(RetCmd,35,6) + sLineBreak ;
+    except
+    end ;
 
-     S := copy(RetCmd,379,126) ;
+    try
+       Result := Result + 'NumNFC = ' + copy(RetCmd,41,4) + sLineBreak ;
+    except
+    end ;
 
-     For I := 0 to min(ComprovantesNaoFiscais.Count-1,11) do
-     begin
-        V := RoundTo( StrToFloatDef( copy(S,(I*14)+1,14),0) / 100, -2) ;
-        Result := Result + padL(ComprovantesNaoFiscais[I].Indice,2) + '_' +
-                           ComprovantesNaoFiscais[I].Descricao +' = '+
-                           FloatToStr(V) + sLineBreak ;
-        TOPNF := TOPNF + V ;
-     end ;
-  except
-  end ;
+    try
+       Result := Result + 'NumCFC = ' + copy(RetCmd,45,4) + sLineBreak ;
+    except
+    end ;
 
-  Result := Result + sLineBreak + '[Totalizadores]'+sLineBreak;
+    try
+       Result := Result + 'NumCDC = ' + copy(RetCmd,289,4) + sLineBreak ;
+    except
+    end ;
 
-  try
-     V := RoundTo( StrToFloatDef( copy(RetCmd,35,14),0) / 100, -2)  ;
-     Result := Result + 'TotalDescontos = ' + FloatToStr( V ) + sLineBreak ;
-     VBruta := VBruta + V ;
-  except
-  end ;
+    try
+       Result := Result + 'NumNCN = ' + copy(RetCmd,293,4) + sLineBreak ;
+    except
+    end ;
 
-  try
-     V := RoundTo( StrToFloatDef( copy(RetCmd,21,14),0) / 100, -2)  ;
-     Result := Result + 'TotalCancelamentos = ' + FloatToStr( V ) + sLineBreak ;
-     VBruta := VBruta + V ;
-  except
-  end ;
+    try
+       Result := Result + 'NumCCDC = ' + copy(RetCmd,297,4) + sLineBreak ;
+    except
+    end ;
 
-  try
-     Result := Result + 'TotalAcrescimos = ' + FloatToStr(
-         RoundTo( StrToFloatDef( copy(RetCmd,589,14),0) / 100, -2) )  + sLineBreak ;
-  except
-  end ;
+    VBruta := 0 ;
+    TOPNF  := 0 ;
 
-  try
-     Result := Result + 'TotalNaoFiscal = ' + FloatToStr(TOPNF) + sLineBreak ;
-  except
-  end ;
+    try
+       Result := Result + sLineBreak + '[Aliquotas]'+sLineBreak ;
 
-  try
-     Result := Result + 'VendaBruta = ' + FloatToStr(VBruta) + sLineBreak ;
-  except
-  end ;
+       if not Assigned( fpAliquotas ) then
+          CarregaAliquotas ;
 
-  try
-     Result := Result + 'GrandeTotal = ' + FloatToStr(
-         RoundTo( StrToFloatDef( copy(RetCmd,3,18),0) / 100, -2) )  + sLineBreak ;
-  except
-  end ;
+       S := copy(RetCmd,319,224) ; // TP[16] Totalizadores Parciais Tributados
+       SS := copy(RetCmd,1173,64) ; // Alíquotas Tributadas
+       For I := 0 to Aliquotas.Count-1 do
+       begin
+          V := RoundTo( StrToFloatDef( copy(S,(I*14)+1,14),0) / 100, -2) ;
+          Result := Result + padL(Aliquotas[I].Indice,2) +
+                             Aliquotas[I].Tipo +
+                             //IntToStrZero(Trunc(Aliquotas[I].Aliquota*100),4) + ' = '+ //comentado para se utilizar o retorno da impressora.
+                             copy(SS,(I*4)+1,4) + ' = '+    //idêntico ao código acima, mas usando o retorno da impressora
+                             FloatToStr( V ) + sLineBreak ;
+          VBruta := VBruta + V ;
+       end ;
+    except
+    end ;
 
+    try
+       Result := Result + sLineBreak + '[OutrasICMS]'+sLineBreak ;
+       V := RoundTo( StrToFloatDef( copy(RetCmd,571,14),0) / 100, -2) ;
+       Result := Result + 'TotalSubstituicaoTributaria = ' + FloatToStr(V) + sLineBreak ;
+       VBruta := VBruta + V ;
+
+       V := RoundTo( StrToFloatDef( copy(RetCmd,557,14),0) / 100, -2) ;
+       Result := Result + 'TotalNaoTributado = ' + FloatToStr(V) + sLineBreak ;
+       VBruta := VBruta + V ;
+
+       V := RoundTo( StrToFloatDef( copy(RetCmd,543,14),0) / 100, -2) ;
+       Result := Result + 'TotalIsencao = ' + FloatToStr(V) + sLineBreak ;
+       VBruta := VBruta + V ;
+
+       V := RoundTo( StrToFloatDef( copy(RetCmd,613,14),0) / 100, -2) ;
+       Result := Result + 'TotalSubstituicaoTributariaISSQN = ' + FloatToStr(V) + sLineBreak ;
+       VBruta := VBruta + V ;
+
+       V := RoundTo( StrToFloatDef( copy(RetCmd,599,14),0) / 100, -2) ;
+       Result := Result + 'TotalNaoTributadoISSQN = ' + FloatToStr(V) + sLineBreak ;
+       VBruta := VBruta + V ;
+
+       V := RoundTo( StrToFloatDef( copy(RetCmd,585,14),0) / 100, -2) ;
+       Result := Result + 'TotalIsencaoISSQN = ' + FloatToStr(V) + sLineBreak ;
+       VBruta := VBruta + V ;
+    except
+    end ;
+
+    try
+       Result := Result + sLineBreak + '[NaoFiscais]'+sLineBreak ;
+
+       if not Assigned( fpComprovantesNaoFiscais ) then
+          CarregaComprovantesNaoFiscais ;
+
+       S := copy(RetCmd,1103,14) + copy(RetCmd,1117,14) + copy(RetCmd,711,392) ;//Sangria + Suprimento + Não ICMS  (14+14+392)
+       //SS := copy(RetCmd,49,120); // O Retorno natural poe Sangria e Suprimento no final, mas o retorno da função ComprovantesNaoFiscais coloca Sangria e Suprimento no início...
+       SS := copy(RetCmd,161,8) + copy(RetCmd,49,112); //Passando sangria e Suprimento para o início
+       SSS := '[ContadoresOPNF]' + sLineBreak ;
+       For I := 0 to min(ComprovantesNaoFiscais.Count-1,30) do
+       begin
+          //Fora Sangria e Suprimento, pegar o resto de acordo com o índice, pois
+          //pode acontecer de o primeiro Totalizador Não Fiscal ser o de índice 03. :S
+          if (I > 1) and (I <> StrToInt(ComprovantesNaoFiscais[I].Indice))  then
+             K := StrToInt(ComprovantesNaoFiscais[I].Indice) + 1
+          else
+             K := I;
+
+          V := RoundTo( StrToFloatDef( copy(S,(K*14)+1,14),0) / 100, -2) ;
+
+          Result := Result + padL(ComprovantesNaoFiscais[I].Indice,2) + '_' +
+                             ComprovantesNaoFiscais[I].Descricao +' = '+
+                             FloatToStr(V) + sLineBreak ;
+          SSS := SSS + 'CON_' + ComprovantesNaoFiscais[I].Descricao +' = '+
+                              copy(SS,(K*4)+1,4)+ sLineBreak ;
+
+          TOPNF := TOPNF + V ;
+       end ;
+    except
+    end ;
+    Result := Result + sLineBreak + SSS + sLineBreak ;
+
+    Result := Result + sLineBreak + '[Totalizadores]'+sLineBreak;
+
+    try
+       Result := Result + 'GrandeTotal = ' + FloatToStr(
+           RoundTo( StrToFloatDef( copy(RetCmd,301,18),0) / 100, -2) )  + sLineBreak ;
+    except
+    end ;
+
+    try
+       V := RoundTo( StrToFloatDef( copy(RetCmd,627,14),0) / 100, -2)  ;
+       Result := Result + 'TotalDescontos = ' + FloatToStr( V ) + sLineBreak ;
+       VBruta := VBruta + V ;
+    except
+    end ;
+
+    try
+       V := RoundTo( StrToFloatDef( copy(RetCmd,683,14),0) / 100, -2)  ;
+       Result := Result + 'TotalCancelamentos = ' + FloatToStr( V ) + sLineBreak ;
+       VBruta := VBruta + V ;
+    except
+    end ;
+
+    try
+       Result := Result + 'TotalAcrescimos = ' + FloatToStr(
+           RoundTo( StrToFloatDef( copy(RetCmd,655,14),0) / 100, -2) )  + sLineBreak ;
+    except
+    end ;
+
+
+    try
+       V := RoundTo( StrToFloatDef( copy(RetCmd,641,14),0) / 100, -2)  ;
+       Result := Result + 'TotalDescontosISSQN = ' + FloatToStr( V ) + sLineBreak ;
+       VBruta := VBruta + V ;
+    except
+    end ;
+
+    try
+       V := RoundTo( StrToFloatDef( copy(RetCmd,697,14),0) / 100, -2)  ;
+       Result := Result + 'TotalCancelamentosISSQN = ' + FloatToStr( V ) + sLineBreak ;
+       VBruta := VBruta + V ;
+    except
+    end ;
+
+    try
+       Result := Result + 'TotalAcrescimosISSQN = ' + FloatToStr(
+           RoundTo( StrToFloatDef( copy(RetCmd,669,14),0) / 100, -2) )  + sLineBreak ;
+    except
+    end ;
+
+    try
+       V := RoundTo( StrToFloatDef( copy(RetCmd,1145,14),0) / 100, -2)  ;
+       Result := Result + 'TotalAcrescimosOPNF = ' + FloatToStr( V ) + sLineBreak ;
+       VBruta := VBruta + V ;
+    except
+    end ;
+
+    try
+       V := RoundTo( StrToFloatDef( copy(RetCmd,1131,14),0) / 100, -2)  ;
+       Result := Result + 'TotalDescontosOPNF = ' + FloatToStr( V ) + sLineBreak ;
+       VBruta := VBruta + V ;
+    except
+    end ;
+
+    try
+       Result := Result + 'TotalCancelamentosOPNF = ' + FloatToStr(
+           RoundTo( StrToFloatDef( copy(RetCmd,1159,14),0) / 100, -2) )  + sLineBreak ;
+    except
+    end ;
+
+
+    try
+       Result := Result + 'TotalNaoFiscal = ' + FloatToStr(TOPNF) + sLineBreak ;
+    except
+    end ;
+
+    try
+       Result := Result + 'VendaBruta = ' + FloatToStr(VBruta) + sLineBreak ;
+    except
+    end ;
+
+    try
+       Result := Result + sLineBreak + '[RelatoriosGerenciais]'+sLineBreak;
+
+       if not Assigned( fpRelatoriosGerenciais ) then
+          CarregaRelatoriosGerenciais ;
+
+       S := copy(RetCmd,169,120) ; // 30 * 4
+
+       For I := 0 to min(RelatoriosGerenciais.Count-1,30) do
+       begin
+          Result := Result + padL(RelatoriosGerenciais[I].Indice,2) + '_' +
+                             RelatoriosGerenciais[I].Descricao +' = '+
+                             copy(S,(I*4)+1,4) + sLineBreak ;
+       end ;
+    except
+    end ;
+
+
+  end
+  else //Não é impressora MFD
+  begin
+    try
+       BytesResp := 308 ;
+       RetCmd    := BcdToAsc(EnviaComando( #62 + #55, 5 )) ;
+    except
+       Result := '' ;
+       exit ;
+    end ;
+
+  { ESC 62 55 - Tamanho de Retorno 616 dígitos BCD (308 bytes),
+                com a seguinte estrutura.
+    2 RZAUT Se 00 redução por comando, caso contrário automática.
+   18 GTDA GT no momento da última redução.
+   14 CANCEL Cancelamentos
+   14 DESCON Descontos
+   64 TR Tributos
+  266 TP Totalizadores Parciais Tributados
+   14 SANGRIA Sangria
+   14 SUPRIMENTOS Suprimentos
+  126 NSI Totalizadores não Sujeitos ao ICMS
+   36 CNSI Contadores dos TP’s não Sujeitos ao ICMS
+    6 COO Contador de Ordem de Operação
+    6 CNS Contador de Operações não Sujeitas ao ICMS
+    2 AL Número de Alíquotas Cadastradas
+    6 DATA_PC Data do Movimento
+   14 ACRESC Acréscimo
+   14 ACRFIN Acréscimo Financeiro
+
+  RRGGGGGGGGGGGGGGGGGGCCCCCCCCCCCCCCDDDDDDDDDDDDDDT001T002T003T004T005T006T007T008T009T010T011T012T013T014T015T016TPT00000000001TPT00000000002TPT00000000003TPT00000000004TPT00000000005TPT00000000006TPT00000000007TPT00000000008TPT00000000009TPT00000000010TPT00000000011TPT00000000012TPT00000000013TPT00000000014TPT00000000015TPT00000000016IIIIIIIIIIIIIINNNNNNNNNNNNNNFFFFFFFFFFFFFFAAAAAAAAAAAAAAUUUUUUUUUUUUUUTNS00000000001TNS00000000002TNS00000000003TNS00000000004TNS00000000005TNS00000000006TNS00000000007TNS00000000008TNS00000000009CN01CN02CN03CN04CN05CN06CN07CN08CN09COOCOOCNSCNSALDTMOVTAAAAAAAAAAAAAAFFFFFFFFFFFFFF
+  0000000000000014231000000000000000000000000000001800021605001200050025000250180013001600170002110200100006000100000000000001000000000000020000000000000300000000000004010000000000050100000000000601000000000007010000000000080100000000000901000000000010010000000000110200000000001202000000000013020000000000140200000000001502000000000016020000000001001400000000010114000000000408640000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000162000019161708070000000000011100000000000000
+  ....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+....0....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+....0....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+....0....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+....0....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+....0....+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8....+....9....+....0....+....1....+.
+  }
+
+    Result := '[ECF]'+sLineBreak ;
+    try
+       Result := Result + 'DataMovimento = ' +
+                 copy(RetCmd,583,2)+DateSeparator+
+                 copy(RetCmd,585,2)+DateSeparator+
+                 copy(RetCmd,587,2)+sLineBreak ;
+    except
+    end ;
+
+    try
+       Result := Result + 'NumSerie = ' + NumSerie + sLineBreak ;
+    except
+    end ;
+
+    try
+       Result := Result + 'NumSerieMFD = ' + NumSerieMFD + sLineBreak ;
+    except
+    end ;
+
+    try
+       Result := Result + 'NumLoja = ' + NumLoja + sLineBreak ;
+       Result := Result + 'NumECF = ' + NumECF + sLineBreak ;
+    except
+    end ;
+
+    try
+       Result := Result + 'NumCOO = ' + copy(RetCmd,569,6) + sLineBreak ;
+    except
+    end ;
+
+    try
+       Result := Result + 'NumCRZ = ' + NumCRZ + sLineBreak ;
+    except
+    end ;
+
+    try
+       Result := Result + 'NumCRO = ' + NumCRO + sLineBreak ;
+    except
+    end ;
+
+    VBruta := 0 ;
+    TOPNF  := 0 ;
+
+    try
+       Result := Result + sLineBreak + '[Aliquotas]'+sLineBreak ;
+
+       if not Assigned( fpAliquotas ) then
+          CarregaAliquotas ;
+
+       S := copy(RetCmd,113,224) ;
+       For I := 0 to Aliquotas.Count-1 do
+       begin
+          V := RoundTo( StrToFloatDef( copy(S,(I*14)+1,14),0) / 100, -2) ;
+          Result := Result + padL(Aliquotas[I].Indice,2) +
+                             Aliquotas[I].Tipo +
+                             IntToStrZero(Trunc(Aliquotas[I].Aliquota*100),4) + ' = '+
+                             FloatToStr( V ) + sLineBreak ;
+          VBruta := VBruta + V ;
+       end ;
+    except
+    end ;
+
+    try
+       Result := Result + sLineBreak + '[OutrasICMS]'+sLineBreak ;
+       V := RoundTo( StrToFloatDef( copy(RetCmd,365,14),0) / 100, -2) ;
+       Result := Result + 'TotalSubstituicaoTributaria = ' + FloatToStr(V) + sLineBreak ;
+       VBruta := VBruta + V ;
+
+       V := RoundTo( StrToFloatDef( copy(RetCmd,351,14),0) / 100, -2) ;
+       Result := Result + 'TotalNaoTributado = ' + FloatToStr(V) + sLineBreak ;
+       VBruta := VBruta + V ;
+
+       V := RoundTo( StrToFloatDef( copy(RetCmd,337,14),0) / 100, -2) ;
+       Result := Result + 'TotalIsencao = ' + FloatToStr(V) + sLineBreak ;
+       VBruta := VBruta + V ;
+    except
+    end ;
+
+    try
+       Result := Result + sLineBreak + '[NaoFiscais]'+sLineBreak ;
+
+       if not Assigned( fpComprovantesNaoFiscais ) then
+          CarregaComprovantesNaoFiscais ;
+
+       S := copy(RetCmd,379,154) ;//Começa na posição 379 para pegar os dados da Sangria e Suprimento, deveria então ter tamanho (14+14+126)
+
+       For I := 0 to min(ComprovantesNaoFiscais.Count-1,11) do
+       begin
+          V := RoundTo( StrToFloatDef( copy(S,(I*14)+1,14),0) / 100, -2) ;
+          Result := Result + padL(ComprovantesNaoFiscais[I].Indice,2) + '_' +
+                             ComprovantesNaoFiscais[I].Descricao +' = '+
+                             FloatToStr(V) + sLineBreak ;
+          TOPNF := TOPNF + V ;
+       end ;
+    except
+    end ;
+
+    Result := Result + sLineBreak + '[Totalizadores]'+sLineBreak;
+
+    try
+       V := RoundTo( StrToFloatDef( copy(RetCmd,35,14),0) / 100, -2)  ;
+       Result := Result + 'TotalDescontos = ' + FloatToStr( V ) + sLineBreak ;
+       VBruta := VBruta + V ;
+    except
+    end ;
+
+    try
+       V := RoundTo( StrToFloatDef( copy(RetCmd,21,14),0) / 100, -2)  ;
+       Result := Result + 'TotalCancelamentos = ' + FloatToStr( V ) + sLineBreak ;
+       VBruta := VBruta + V ;
+    except
+    end ;
+
+    try
+       Result := Result + 'TotalAcrescimos = ' + FloatToStr(
+           RoundTo( StrToFloatDef( copy(RetCmd,589,14),0) / 100, -2) )  + sLineBreak ;
+    except
+    end ;
+
+    try
+       Result := Result + 'TotalNaoFiscal = ' + FloatToStr(TOPNF) + sLineBreak ;
+    except
+    end ;
+
+    try
+       Result := Result + 'VendaBruta = ' + FloatToStr(VBruta) + sLineBreak ;
+    except
+    end ;
+
+    try
+       Result := Result + 'GrandeTotal = ' + FloatToStr(
+           RoundTo( StrToFloatDef( copy(RetCmd,3,18),0) / 100, -2) )  + sLineBreak ;
+    except
+    end ;
+
+  end;
+  Result := Result + sLineBreak + RetCmd;
 end;
 
 procedure TACBrECFBematech.CortaPapel(const CorteParcial: Boolean);
@@ -2913,6 +3282,17 @@ begin
   Result := fsPAF ;
 end;
 
+function TACBrECFBematech.GetParamDescontoISSQN: Boolean;
+Var
+  RetCmd : AnsiString ;
+  B : Byte ;
+begin
+   RetCmd := RetornaInfoECF( '76' ) ;
+   try B := ord( RetCmd[1] ) except B := 0 end ;
+
+   Result := TestBit( B ,4)
+end;
+
 function TACBrECFBematech.GetNumCDC: String;
 begin
   Result := '';
@@ -2936,6 +3316,16 @@ begin
   Result := RetornaInfoECF( '07' ) ;
 end;
 
+function TACBrECFBematech.GetNumGNFC: String;
+begin
+  Result := RetornaInfoECF( '53' ) ;
+end;
+
+function TACBrECFBematech.GetNumCFD: String;
+begin
+  Result := RetornaInfoECF( '56' ) ;
+end;
+
 function TACBrECFBematech.GetNumGRG: String;
 begin
   Result := '';
@@ -2954,23 +3344,27 @@ function TACBrECFBematech.RetornaInfoECF(Registrador: String): AnsiString;
      IsBCD   : Boolean ;
      Resp    : AnsiString ;
 begin
+  {Nota: Ainda é preciso implementar o tratamento para os Registradores 4A e 4B}
   IsBCD     := True ;
   BytesResp := 2 ;
 
   ByteReg := StrToIntDef( Registrador, 0 ) ;
 
   Case ByteReg of
+      //Nota: Conforme os manuais da Bematech (ECFs MP2100, MP3000 e MP4000),
+      //      os valores dos registradores 0, 1, 2, 32, 33 e 34 só devem ser
+      //      usados para impressoras MP20 e MP40.
      0            : begin BytesResp := 15 ; IsBCD := False ; end ;
      2            : begin BytesResp := 33 ; IsBCD := False ; end ;
      3,68         : BytesResp := 9 ;
-     4,5,22,30,66,77,78,79,80,81,82 : BytesResp := 7 ;
-     6,7,27,31,41,54,55,56,67 : BytesResp := 3 ;
-     8            : BytesResp := 2 ;
+     4,5,22,30,66,77,78,79,80,81,82 : BytesResp := 7 ; //Apesar de documentados na MP4000 registradores 80,81,82 não funcionam no emulador nem na MP3000, é preciso testar numa MP4000
+     6,7,27,31,41,54,55,56,67,253 : BytesResp := 3 ;
+     //1,8,9,10,11,12,14,15,18,19,45,46,52,53,57,59,71 : BytesResp := 2 ; //Não são necessários pois o padrão é esse...
      13           : begin BytesResp := 186 ; IsBCD := False ; end ;
      16,29,70     : IsBCD := False ;
-     17,20,21,28,65,74,75,253 : begin BytesResp := 1 ; IsBCD := False ; end ;
+     17,20,21,28,65,74,75,76,254 : begin BytesResp := 1 ; IsBCD := False ; end ;
      23,26,64,72  : BytesResp := 6 ;
-     24           : BytesResp := 18 ;
+     24,73        : BytesResp := 18 ;
      25           : BytesResp := 171 ;
      32           : begin BytesResp := 1925 ; IsBCD := False ; end ;
      33           : begin BytesResp := 1550 ; IsBCD := False ; end ;
@@ -2981,9 +3375,8 @@ begin
      49           : begin BytesResp := 620; IsBCD := False ; end ;
      50           : begin BytesResp := 780; IsBCD := False ; end ;
      60           : begin BytesResp := 42 ; IsBCD := False ; end ;
-     61           : BytesResp := 6 ;
-     62,63        : BytesResp := 10 ;
-     73           : BytesResp := 18 ;
+     61           : begin BytesResp := 6 ; IsBCD := False ; end ;
+     62,63        : begin BytesResp := 10 ; IsBCD := False ; end ;
   end ;
 
   Resp := EnviaComando( #35 + chr(ByteReg) ) ;

@@ -97,6 +97,15 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 1.0.0  24/12/2010
+[+] Novos Eventos para acompanhar as operações básicas do ECF, Exemplo:
+   OnAntesAbreCupom, OnDepoisAbreCupom, OnErrorAbreCupom, etc
+   (por: Franklin e Elton)
+
+[*] Método "LinhaRelatorioGerencial" agora suporta impressão de Longos Gerenciais
+    abrindo um Novo Gerencial se necessário (caso o ECF o tenha fechado por
+    TimeOut de 2 minutos)  (por: DSA)
+
 Versão 0.9.6  11/09/2010
 -- ACBrECF --
 [-] Corrigido rotina VendaItem, para Daruma FS345, quando quantidade do item 

@@ -245,7 +245,7 @@ begin
         QRCTe.Prepare;
         qf := TQRPDFDocumentFilter.Create(AFile) ;
         qf.CompressionOn := False;
-        qf.SetDocumentInfo( 'TurboCode CTe/CTe Integrator', 'www.turbocode.com.br', 'CTe', 'DACTe'  );
+        // qf.SetDocumentInfo( 'TurboCode CTe/CTe Integrator', 'www.turbocode.com.br', 'CTe', 'DACTe'  );
         QRCTe.QRPrinter.ExportToFilter( qf );
         qf.Free;
      finally

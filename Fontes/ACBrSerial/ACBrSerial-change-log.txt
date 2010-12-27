@@ -98,13 +98,40 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 Versão 1.0.0  24/12/2010
+-- ACBrECF --
 [+] Novos Eventos para acompanhar as operações básicas do ECF, Exemplo:
    OnAntesAbreCupom, OnDepoisAbreCupom, OnErrorAbreCupom, etc
    (por: Franklin e Elton)
 
-[*] Método "LinhaRelatorioGerencial" agora suporta impressão de Longos Gerenciais
-    abrindo um Novo Gerencial se necessário (caso o ECF o tenha fechado por
-    TimeOut de 2 minutos)  (por: DSA)
+[+] Adicionadas propriedades "NumGNFC", "NumCFD", "NumNCN", "NumCCDC", 
+    "TotalCancelamentosOPNF", "TotalDescontosOPNF", "TotalAcrescimosOPNF" e
+    "ParamDescontoISSQN". (por: Elton)
+
+[*] Modificado GetDadosReducaoZ para retornar dados das novas propriedades
+    acima.Também foram adicionadas propriedades já implementadas que não 
+    estavam saindo no INI, a saber, "NumGNF", "NumCCF", "NumCDC", "NumGRG" e 
+    "NumCFC". (por: Elton)
+
+[*] Modificado GetDadosReducaoZ, onde TotalISSQN estava retornando valor 
+    incorreto. É necessária averiguação de valor correto. (por: Elton)
+
+[*] Método "LinhaRelatorioGerencial" agora suporta impressão de Longos 
+    Gerenciais abrindo um Novo Gerencial se necessário (caso o ECF o tenha 
+    fechado por TimeOut de 2 minutos)  (por: DSA)
+
+-- ACBrECFBematech --
+[+] Implementados métodos "GetParamDescontoISSQN", "GetNumGNFC", "GetNumCFD", 
+    "GetNumNCN", "GetNumCCDC", "GetTotalAcrescimosOPNF", 
+    "GetTotalCancelamentosOPNF" e "GetTotalDescontosOPNF". (por: Elton)
+
+[*] Corrigido método RetornaInfoECF para refletir melhor as informações das 
+    impressoras atuais. Por padrão agora é chamado nos lugares em que se 
+    precisa buscar as informações da função "Retorno de Variáveis" (ESC 35).
+    (por: Elton)
+
+[*] GetDadosUltimaReducaoZ foi modificada para retornar os dados possibilitados
+    pelas impressoras MFD no comando novo (ESC 88). (por: Elton)
+
 
 Versão 0.9.6  11/09/2010
 -- ACBrECF --

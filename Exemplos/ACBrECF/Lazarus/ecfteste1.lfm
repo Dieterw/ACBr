@@ -1930,6 +1930,10 @@ object Form1: TForm1
           Caption = 'Num GNF'
           OnClick = mNumGNFClick
         end
+        object mNumGNFC: TMenuItem
+          Caption = 'Num GNFC'
+          OnClick = mNumGNFCClick
+        end
         object mNumGRG: TMenuItem
           Caption = 'Num GRG'
           OnClick = mNumGRGClick
@@ -1937,6 +1941,18 @@ object Form1: TForm1
         object mNumCDC: TMenuItem
           Caption = 'Num CDC'
           OnClick = mNumCDCClick
+        end
+        object mNumCCDC: TMenuItem
+          Caption = 'Num CCDC'
+          OnClick = mNumCCDCClick
+        end
+        object mNumCFD: TMenuItem
+          Caption = 'Num CFD'
+          OnClick = mNumCFDClick
+        end
+        object mNumNCN: TMenuItem
+          Caption = 'Num NCN'
+          OnClick = mNumNCNClick
         end
         object N26: TMenuItem
           Caption = '-'
@@ -2017,7 +2033,22 @@ object Form1: TForm1
         end
         object mTotalNaoFiscal: TMenuItem
           Caption = 'Total Não Fiscal'
-          OnClick = mTotalNaoFiscalClick
+          object mValorTotalNaoFiscal: TMenuItem
+            Caption = 'Valor Total'
+            OnClick = mValorTotalNaoFiscalClick
+          end
+          object mCancNaoFiscal: TMenuItem
+            Caption = 'Total Cancelamentos'
+            OnClick = mCancNaoFiscalClick
+          end
+          object mDescNaoFiscal: TMenuItem
+            Caption = 'Total Descontos'
+            OnClick = mDescNaoFiscalClick
+          end
+          object mAcresNaoFiscal: TMenuItem
+            Caption = 'Total Acréscimos'
+            OnClick = mAcresNaoFiscalClick
+          end
         end
       end
       object N4: TMenuItem

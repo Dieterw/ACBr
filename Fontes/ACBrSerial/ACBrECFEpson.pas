@@ -183,9 +183,12 @@ TACBrECFEpson = class( TACBrECFClass )
     function GetNumCRO: String; override ;
     function GetNumCRZ: String; override ;
     function GetNumGNF: String; override ;
+    function GetNumGNFC: String; override ;
+    function GetNumCFD: String; override ;
     function GetNumGRG: String; override ;
     function GetNumCDC: String; override ;
     function GetNumCFC: String; override ;
+    function GetNumNCN: String; override ;
     function GetNumLoja: String; override ;
     function GetNumSerie: String; override ;
     function GetNumSerieMFD: String; override ;
@@ -197,6 +200,7 @@ TACBrECFEpson = class( TACBrECFClass )
     function GetGavetaAberta: Boolean; override ;
     function GetPoucoPapel : Boolean; override ;
     function GetHorarioVerao: Boolean; override ;
+    function GetParamDescontoISSQN: Boolean; override ;
 
     function GetCNPJ: String; override ;
     function GetIE: String; override ;
@@ -224,6 +228,10 @@ TACBrECFEpson = class( TACBrECFClass )
     function GetTotalSubstituicaoTributariaISSQN: Double; override;
     function GetTotalIsencaoISSQN: Double; override;
     function GetTotalNaoTributadoISSQN: Double; override;
+
+    function GetTotalAcrescimosOPNF: Double; override;
+    function GetTotalCancelamentosOPNF: Double; override;
+    function GetTotalDescontosOPNF: Double; override;
 
     function GetNumCOOInicial: String; override ;
     function GetNumUltimoItem: Integer; override ;
@@ -1228,6 +1236,18 @@ begin
   Result := EpsonResposta.Params[3] ;
 end;
 
+function TACBrECFEpson.GetNumGNFC : String ;
+begin
+  EpsonResposta.Resposta := Ret0907 ;
+  Result := EpsonResposta.Params[5] ;
+end ;
+
+function TACBrECFEpson.GetNumCFD : String ;
+begin
+  EpsonResposta.Resposta := Ret0907 ;
+  Result := EpsonResposta.Params[9] ;
+end ;
+
 function TACBrECFEpson.GetNumGRG: String;
 begin
   EpsonResposta.Resposta := Ret0907 ;
@@ -1245,6 +1265,12 @@ begin
   EpsonResposta.Resposta := Ret0907 ;
   Result := EpsonResposta.Params[8] ;
 end;
+
+function TACBrECFEpson.GetNumNCN : String ;
+begin
+  EpsonResposta.Resposta := Ret0907 ;
+  Result := EpsonResposta.Params[11] ;
+end ;
 
 function TACBrECFEpson.GetNumLoja: String;
 begin
@@ -1425,6 +1451,14 @@ begin
 
   Result := (EpsonResposta.Params[0] = 'S') ;
 end;
+
+function TACBrECFEpson.GetParamDescontoISSQN : Boolean ;
+begin
+  EpsonComando.Comando := '0513' ;
+  EnviaComando ;
+
+  Result := (EpsonResposta.Params[0] = 'S') ;
+end ;
 
 Procedure TACBrECFEpson.LeituraX ;
 begin
@@ -3199,6 +3233,24 @@ begin
   EpsonResposta.Resposta := Ret0906 ;
   Result := RoundTo( StrToFloatDef(EpsonResposta.Params[20],0) /100, -2) ;
 end;
+
+function TACBrECFEpson.GetTotalAcrescimosOPNF : Double ;
+begin
+  EpsonResposta.Resposta := Ret0906 ;
+  Result := RoundTo( StrToFloatDef(EpsonResposta.Params[13],0) /100, -2) ;
+end ;
+
+function TACBrECFEpson.GetTotalCancelamentosOPNF : Double ;
+begin
+  EpsonResposta.Resposta := Ret0906 ;
+  Result := RoundTo( StrToFloatDef(EpsonResposta.Params[11],0) /100, -2) ;
+end ;
+
+function TACBrECFEpson.GetTotalDescontosOPNF : Double ;
+begin
+  EpsonResposta.Resposta := Ret0906 ;
+  Result := RoundTo( StrToFloatDef(EpsonResposta.Params[12],0) /100, -2) ;
+end ;
 
 function TACBrECFEpson.GetTotalSubstituicaoTributariaISSQN: Double;
 begin

@@ -143,6 +143,14 @@ type
     mAcharRGIndice : TMenuItem ;
     mAcharRGDescricao : TMenuItem ;
     MenuItem20 : TMenuItem ;
+    mValorTotalNaoFiscal : TMenuItem ;
+    mCancNaoFiscal : TMenuItem ;
+    mAcresNaoFiscal : TMenuItem ;
+    mDescNaoFiscal : TMenuItem ;
+    mNumCCDC : TMenuItem ;
+    mNumNCN : TMenuItem ;
+    mNumCFD : TMenuItem ;
+    mNumGNFC : TMenuItem ;
     mModeloStr : TMenuItem ;
     MenuItem22 : TMenuItem ;
     mFontesECF : TMenuItem ;
@@ -339,13 +347,20 @@ type
     procedure mAcharFPGIndiceClick(Sender : TObject) ;
     procedure mAcharRGDescricaoClick(Sender : TObject) ;
     procedure mAcharRGIndiceClick(Sender : TObject) ;
+    procedure mAcresNaoFiscalClick(Sender : TObject) ;
     procedure mARQMFDDLLCooClick(Sender : TObject) ;
     procedure mARQMFDDLLPeriodoClick(Sender : TObject) ;
+    procedure mCancNaoFiscalClick(Sender : TObject) ;
+    procedure mDescNaoFiscalClick(Sender : TObject) ;
     procedure MenuItem20Click(Sender : TObject) ;
     procedure mFontesECFClick(Sender : TObject) ;
     procedure mLerTotaisRelatoriosGerenciaisClick(Sender : TObject) ;
     procedure mLerTrocoClick(Sender : TObject) ;
     procedure mModeloStrClick(Sender : TObject) ;
+    procedure mNumCCDCClick(Sender : TObject) ;
+    procedure mNumCFDClick(Sender : TObject) ;
+    procedure mNumGNFCClick(Sender : TObject) ;
+    procedure mNumNCNClick(Sender : TObject) ;
     procedure mRelatorioGerenciaisClick(Sender : TObject) ;
     procedure mClicheClick(Sender : TObject) ;
     procedure mCortaPapelClick(Sender : TObject) ;
@@ -377,8 +392,8 @@ type
     procedure mSangriaClick(Sender : TObject) ;
     procedure mSuprimentoClick(Sender : TObject) ;
     procedure mTesteVinculadoClick(Sender : TObject) ;
-    procedure mTotalNaoFiscalClick(Sender : TObject) ;
     procedure mUsuarioAtualClick(Sender : TObject) ;
+    procedure mValorTotalNaoFiscalClick(Sender : TObject) ;
     procedure NumSerieMFDClick(Sender : TObject) ;
     procedure RdgTipoBarraClick(Sender : TObject) ;
     procedure Sair1Click(Sender: TObject);
@@ -1002,6 +1017,12 @@ begin
   AtualizaMemos();
 end;
 
+procedure TForm1.mAcresNaoFiscalClick(Sender : TObject) ;
+begin
+  mResp.Lines.Add( 'TotalAcrescimosOPNF: ('+ FloatToStr(ACBrECF1.TotalAcrescimosOPNF)+')' );
+  AtualizaMemos ;
+end;
+
 procedure TForm1.mARQMFDDLLCooClick(Sender : TObject) ;
 Var
   Arquivo: String ;
@@ -1071,6 +1092,18 @@ begin
 
 end;
 
+procedure TForm1.mCancNaoFiscalClick(Sender : TObject) ;
+begin
+  mResp.Lines.Add( 'TotalCancelamentosOPNF: ('+ FloatToStr(ACBrECF1.TotalCancelamentosOPNF)+')' );
+  AtualizaMemos ;
+end;
+
+procedure TForm1.mDescNaoFiscalClick(Sender : TObject) ;
+begin
+  mResp.Lines.Add( 'TotalDescontosOPNF: ('+ FloatToStr(ACBrECF1.TotalDescontosOPNF)+')' );
+  AtualizaMemos ;
+end;
+
 procedure TForm1.MenuItem20Click(Sender : TObject) ;
 begin
   mResp.Lines.Add( 'Parametro Desconto ISSQN: '+
@@ -1114,6 +1147,30 @@ end;
 procedure TForm1.mModeloStrClick(Sender : TObject) ;
 begin
   mResp.Lines.Add( 'ModeloStr: ('+ ACBrECF1.ModeloStr+')' );
+  AtualizaMemos ;
+end;
+
+procedure TForm1.mNumCCDCClick(Sender : TObject) ;
+begin
+  mResp.Lines.Add( 'Num.CCDC: ('+ ACBrECF1.NumCCDC +')' );
+  AtualizaMemos ;
+end;
+
+procedure TForm1.mNumCFDClick(Sender : TObject) ;
+begin
+  mResp.Lines.Add( 'Num.CFD: ('+ ACBrECF1.NumCFD +')' );
+  AtualizaMemos ;
+end;
+
+procedure TForm1.mNumGNFCClick(Sender : TObject) ;
+begin
+  mResp.Lines.Add( 'Num.GNFC: ('+ ACBrECF1.NumGNFC +')' );
+  AtualizaMemos ;
+end;
+
+procedure TForm1.mNumNCNClick(Sender : TObject) ;
+begin
+  mResp.Lines.Add( 'Num.NCN: ('+ ACBrECF1.NumNCN +')' );
   AtualizaMemos ;
 end;
 
@@ -1534,15 +1591,15 @@ begin
   end ;
 end;
 
-procedure TForm1.mTotalNaoFiscalClick(Sender : TObject) ;
-begin
-  mResp.Lines.Add( 'TotalNaoFiscal: ('+ FloatToStr(ACBrECF1.TotalNaoFiscal)+')' );
-  AtualizaMemos ;
-end;
-
 procedure TForm1.mUsuarioAtualClick(Sender : TObject) ;
 begin
   mResp.Lines.Add( 'UsuarioAtual: ('+ ACBrECF1.UsuarioAtual+')' );
+  AtualizaMemos ;
+end;
+
+procedure TForm1.mValorTotalNaoFiscalClick(Sender : TObject) ;
+begin
+  mResp.Lines.Add( 'TotalNaoFiscal: ('+ FloatToStr(ACBrECF1.TotalNaoFiscal)+')' );
   AtualizaMemos ;
 end;
 

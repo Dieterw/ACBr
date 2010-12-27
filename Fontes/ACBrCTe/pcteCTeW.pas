@@ -1126,8 +1126,6 @@ begin
     if CTe.infCTeNorm.emiDocAnt[i].idDocAnt.Count > 2 then
       Gerador.wAlerta('K22', 'idDocAnt', '', ERR_MSG_MAIOR_MAXIMO + '02');
 
-//    Gerador.wCampo(tcDat, 'K31', 'dPrev  ', 10, 10, 0, CTe.infCTeNorm.contQt[i].dPrev, '');
-//    Gerador.wGrupo('/contQt');
     Gerador.wGrupo('/emiDocAnt');
   end;
   if CTe.infCTeNorm.emiDocAnt.Count > 990 then

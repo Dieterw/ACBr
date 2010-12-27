@@ -471,10 +471,12 @@ begin
       end;
     end;
   end;
- //Varrendo Documentos de Transporte anterior em Papel
+ //Varrendo Documentos de Transporte anterior
  // Incluido / Alterado por Italo em 13/12/2010
   for I := 0 to (FCTe.infCTeNorm.emiDocAnt.Count - 1) do
   begin
+    // Em Papel
+    // Alterado por Italo em 27/12/2010
     for J := 0 to (FCTe.infCTeNorm.emiDocAnt.Items[I].idDocAnt.Count - 1) do
     begin
       for K := 0 to (FCTe.infCTeNorm.emiDocAnt.Items[I].idDocAnt.Items[J].idDocAntPap.Count - 1) do
@@ -530,11 +532,9 @@ begin
         end;
       end;
     end;
-  end;
- //Varrendo Documentos de Transporte anterior Eletrônico
- // Incluido / Alterado por Italo em 13/12/2010
-  for I := 0 to (FCTe.infCTeNorm.emiDocAnt.Count - 1) do
-  begin
+
+    // Eletrônico
+    // Alterado por Italo em 27/12/2010
     for J := 0 to (FCTe.infCTeNorm.emiDocAnt.Items[I].idDocAnt.Count - 1) do
     begin
       for K := 0 to (FCTe.infCTeNorm.emiDocAnt.Items[I].idDocAnt.Items[J].idDocAntEle.Count - 1) do
@@ -555,11 +555,10 @@ begin
 
             cdsDocumentos.Post;
           end;
-
-
         end;
       end;
     end;
+
   end;
 
   cdsDocumentos.First;

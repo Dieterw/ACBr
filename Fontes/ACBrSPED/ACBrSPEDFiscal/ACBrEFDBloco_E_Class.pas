@@ -562,16 +562,32 @@ begin
            opOutros:          strIND_PROC := '9';
            opNenhum:          strIND_PROC := '';
           end;
-          Add( LFill('E116') +
-               LFill( COD_OR ) +
-               LFill( VL_OR,0 ) +
-               LFill( DT_VCTO ) +
-               LFill( COD_REC ) +
-               LFill( NUM_PROC ) +
-               LFill( strIND_PROC ) +
-               LFill( PROC ) +
-               LFill( TXT_COMPL ) ) ;
-//               LFill( MES_REF ) ) ; // Julho 2010
+          if FBloco_0.Registro0000.COD_VER = vlVersao102 then
+          begin
+             Add( LFill('E116') +
+                  LFill( COD_OR ) +
+                  LFill( VL_OR,0 ) +
+                  LFill( DT_VCTO ) +
+                  LFill( COD_REC ) +
+                  LFill( NUM_PROC ) +
+                  LFill( strIND_PROC ) +
+                  LFill( PROC ) +
+                  LFill( TXT_COMPL ) ) ;
+          end
+          else
+          if FBloco_0.Registro0000.COD_VER = vlVersao103 then
+          begin
+             Add( LFill('E116') +
+                  LFill( COD_OR ) +
+                  LFill( VL_OR,0 ) +
+                  LFill( DT_VCTO ) +
+                  LFill( COD_REC ) +
+                  LFill( NUM_PROC ) +
+                  LFill( strIND_PROC ) +
+                  LFill( PROC ) +
+                  LFill( TXT_COMPL ) +
+                  LFill( MES_REF ) );
+          end;
         end;
         RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
      end;
@@ -748,17 +764,32 @@ begin
            opOutros:          strIND_PROC := '9';
            opNenhum:          strIND_PROC := '';
           end;
-
-          Add( LFill('E250') +
-               LFill( COD_OR ) +
-               LFill( VL_OR,0 ) +
-               LFill( DT_VCTO ) +
-               LFill( COD_REC ) +
-               LFill( NUM_PROC ) +
-               LFill( strIND_PROC ) +
-               LFill( PROC ) +
-               LFill( TXT_COMPL ) ) ;
-//               LFill( MES_REF ) ) ; // Julho 2010
+          if FBloco_0.Registro0000.COD_VER = vlVersao102 then
+          begin
+             Add( LFill('E250') +
+                  LFill( COD_OR ) +
+                  LFill( VL_OR,0 ) +
+                  LFill( DT_VCTO ) +
+                  LFill( COD_REC ) +
+                  LFill( NUM_PROC ) +
+                  LFill( strIND_PROC ) +
+                  LFill( PROC ) +
+                  LFill( TXT_COMPL ) );
+          end
+          else
+          if FBloco_0.Registro0000.COD_VER = vlVersao103 then
+          begin
+             Add( LFill('E250') +
+                  LFill( COD_OR ) +
+                  LFill( VL_OR,0 ) +
+                  LFill( DT_VCTO ) +
+                  LFill( COD_REC ) +
+                  LFill( NUM_PROC ) +
+                  LFill( strIND_PROC ) +
+                  LFill( PROC ) +
+                  LFill( TXT_COMPL ) +
+                  LFill( MES_REF ) );
+          end;
         end;
         RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
      end;

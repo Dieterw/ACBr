@@ -59,7 +59,7 @@ uses
   {$IFDEF QReport_PDF}
      QRPDFFilt,
   {$ENDIF}
-  ACBrCTeQRCodeBar, pcteCTe, ACBrCTe;
+  ACBrCTeQRCodeBar, pcteCTe, ACBrCTe, ACBrCTeUtil, Printers;
 
 type
   TfrmDACTeQR = class(TForm)
@@ -88,6 +88,8 @@ type
     FMargemInferior     : double;
     FMargemEsquerda     : double;
     FMargemDireita      : double;
+    FImpressora         : String;  // Incluido por Italo em 27/12/2010
+
     procedure qrlSemValorFiscalPrint(sender: TObject; var Value: string);
     procedure SetBarCodeImage(ACode: string; QRImage: TQRImage);
   public
@@ -107,7 +109,8 @@ type
                              AMargemSuperior     : Double    = 0.8;
                              AMargemInferior     : Double    = 0.8;
                              AMargemEsquerda     : Double    = 0.6;
-                             AMargemDireita      : Double    = 0.51);
+                             AMargemDireita      : Double    = 0.51;
+                             AImpressora         : String    = '');
 
     class procedure SavePDF(AFile: String;
                             ACTe                : TCTe;
@@ -133,6 +136,9 @@ implementation
 
 uses MaskUtils;
 
+var
+  Printer: TPrinter;
+
 {$R *.dfm}
 
 class procedure TfrmDACTeQR.Imprimir(ACTe               : TCTe;
@@ -151,7 +157,8 @@ class procedure TfrmDACTeQR.Imprimir(ACTe               : TCTe;
                                     AMargemSuperior     : Double    = 0.8;
                                     AMargemInferior     : Double    = 0.8;
                                     AMargemEsquerda     : Double    = 0.6;
-                                    AMargemDireita      : Double    = 0.51);
+                                    AMargemDireita      : Double    = 0.51;
+                                    AImpressora         : String    = '');
 begin
   with Create ( nil ) do
      try
@@ -159,6 +166,7 @@ begin
         FLogo               := ALogo;
         FEmail              := AEmail;
         FImprimeHoraSaida   := AImprimeHoraSaida;
+        FExpandirLogoMarca  := AExpandirLogoMarca;
         FHoraSaida          := AHoraSaida;
         FResumoCanhoto      := AResumoCanhoto;
         FFax                := AFax;
@@ -170,7 +178,12 @@ begin
         FMargemInferior     := AMargemInferior;
         FMargemEsquerda     := AMargemEsquerda;
         FMargemDireita      := AMargemDireita;
-        FExpandirLogoMarca  := AExpandirLogoMarca;
+        FImpressora         := AImpressora;
+
+        Printer := TPrinter.Create;
+
+        if FImpressora > '' then
+          QRCTe.PrinterSettings.PrinterIndex := Printer.Printers.IndexOf(FImpressora);
 
         if APreview then
          begin
@@ -212,7 +225,6 @@ class procedure TfrmDACTeQR.SavePDF(AFile               : String;
   i:   integer;
 {$ENDIF}
 begin
-  {Descomentar para usar PDF}
 {$IFDEF QReport_PDF}
   with Create ( nil ) do
      try
@@ -245,7 +257,6 @@ begin
         QRCTe.Prepare;
         qf := TQRPDFDocumentFilter.Create(AFile) ;
         qf.CompressionOn := False;
-        // qf.SetDocumentInfo( 'TurboCode CTe/CTe Integrator', 'www.turbocode.com.br', 'CTe', 'DACTe'  );
         QRCTe.QRPrinter.ExportToFilter( qf );
         qf.Free;
      finally

@@ -1,7 +1,7 @@
 object frmDACTeQR: TfrmDACTeQR
   Left = 193
   Top = 114
-  Width = 995
+  Width = 880
   Height = 708
   Caption = 'frmDACTeQR'
   Color = clBtnFace

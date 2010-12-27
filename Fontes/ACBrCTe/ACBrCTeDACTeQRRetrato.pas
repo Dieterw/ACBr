@@ -336,7 +336,6 @@ type
     QRShape68: TQRShape;
     QRShape69: TQRShape;
     QRShape70: TQRShape;
-    QRShape71: TQRShape;
     QRShape12: TQRShape;
     QRShape13: TQRShape;
     QRShape40: TQRShape;
@@ -363,6 +362,7 @@ type
     QRShape60: TQRShape;
     QRShape61: TQRShape;
     QRShape62: TQRShape;
+    QRShape42: TQRShape;
     procedure qrbDadosExcEmitenteBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
     procedure qrbModRodFracionadoBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
     procedure qrbObsBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);

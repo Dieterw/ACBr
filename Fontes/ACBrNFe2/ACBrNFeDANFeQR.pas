@@ -221,6 +221,7 @@ class procedure TfqrDANFeQR.SavePDF(AFile               : String;
 {$IFDEF QReport_PDF}
 var
   qf : TQRPDFDocumentFilter;
+  i  : integer;
 {$ENDIF}
 begin
 {$IFDEF QReport_PDF}

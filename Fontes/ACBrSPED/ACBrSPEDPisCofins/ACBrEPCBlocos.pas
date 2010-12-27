@@ -401,6 +401,21 @@ type
                      sdfCancelado                // 02 – Documento cancelado
                      );
 
+  // Código da Situação Tributária referente ao IPI
+  TACBrSituacaoTribIPI = (tipo1,//ver o que por
+                          tipo2 //ver o que por
+                          );
+
+  // Código da Situação Tributária referente ao PIS
+  TACBrSituacaoTribPIS = (tipo3, //ver o que por
+                          tipo4  //ver o que por
+                          );
+
+  // Código da Situação Tributária referente ao COFINS
+  TACBrSituacaoTribCOFINS = (tipo5, //ver o que por
+                             tipo6  //ver o que por
+                             );
+
   TOpenBlocos = class
   private
     FIND_MOV: TACBrIndicadorMovimento;    /// Indicador de movimento: 0- Bloco com dados informados, 1- Bloco sem dados informados.

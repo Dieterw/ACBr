@@ -45,7 +45,7 @@ unit ACBrEPCBloco_A;
 interface
 
 uses
-  SysUtils, Classes, Contnrs, DateUtils, ACBrEFDBlocos;
+  SysUtils, Classes, Contnrs, DateUtils, ACBrEPCBlocos;
 
 type
   TRegistroA010List = class;
@@ -117,7 +117,7 @@ type
     fVL_COFINS_RET: currency; //20	Valor total da COFINS retido na fonte.	N	-	02
     fVL_ISS: currency;	      //21	Valor do ISS	N	-	02
 
-    FRegistroA110: TRegistroA110List;
+    FRegistroA110: TRegistroA110List;                  
     FRegistroA111: TRegistroA111List;
     FRegistroA120: TRegistroA120List;
     FRegistroA170: TRegistroA170List;
@@ -125,7 +125,7 @@ type
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
 
-    property IND_OPER: TACBrIndicadoTipoOperacao read FIND_OPER write FIND_OPER;
+    property IND_OPER: TACBrIndicadorTpOperacao read FIND_OPER write FIND_OPER;
     property IND_EMIT: TACBrIndicadorEmitenteDF read FIND_EMIT write FIND_EMIT;
     property COD_PART: string read FCOD_PART write FCOD_PART;
     property COD_SIT: TACBrSituacaoDF read FCOD_SIT write FCOD_SIT;
@@ -304,6 +304,7 @@ type
   end;
 
 implementation
+
 
 { TRegistroA001 }
 

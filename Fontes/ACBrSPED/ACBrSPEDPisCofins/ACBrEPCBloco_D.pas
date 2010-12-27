@@ -71,15 +71,37 @@ type
   //REGISTRO D001: ABERTURA DO BLOCO D
   TRegistroD001 = class(TOpenBlocos)
   private
+    FRegistroD010: TRegistroD010List;
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
+    property RegistroD010: TRegistroD010List read FRegistroD010 write FRegistroD010;
   end;
 
   //REGISTRO D010: IDENTIFICAÇÃO DO ESTABELECIMENTO
   TRegistroD010 = class
   private
     fCNPJ: Integer;        //02	CNPJ	Número de inscrição do estabelecimento no CNPJ.	N	014*	-
+
+    FRegistroD100: TRegistroD100List;
+    FRegistroD200: TRegistroD200List;
+    FRegistroD300: TRegistroD300List;
+    FRegistroD350: TRegistroD350List;
+    FRegistroD500: TRegistroD500List;
+    FRegistroD600: TRegistroD600List;
   public
+    constructor Create; virtual; // Create
+    destructor Destroy; override; // Destroy
+
     property CNPJ: Integer read FCNPJ write FCNPJ;
+
+    property RegistroD100: TRegistroD100List read FRegistroD100 write FRegistroD100;
+    property RegistroD200: TRegistroD200List read FRegistroD200 write FRegistroD200;
+    property RegistroD300: TRegistroD300List read FRegistroD300 write FRegistroD300;
+    property RegistroD350: TRegistroD350List read FRegistroD350 write FRegistroD350;
+    property RegistroD500: TRegistroD500List read FRegistroD500 write FRegistroD500;
+    property RegistroD600: TRegistroD600List read FRegistroD600 write FRegistroD600;
   end;
 
   // Registro D010 - Lista
@@ -117,7 +139,14 @@ type
     fVL_NT: Currency;	           //21	VL_NT	Valor não-tributado do ICMS	N	-	02
     fCOD_INF: string;	           //22	COD_INF	Código da informação complementar do documento fiscal (campo 02 do Registro 0450)	C	006	-
     fCOD_CTA: string;	           //23	COD_CTA	Código da conta analítica contábil debitada/creditada	C	060	-
+
+    FRegistroD101: TRegistroD101List;
+    FRegistroD105: TRegistroD105List;
+    FRegistroD111: TRegistroD111List;
   public
+    constructor Create; virtual; // Create
+    destructor Destroy; override; // Destroy
+
     property IND_OPER: string read FIND_OPER write FIND_OPER;
     property IND_EMIT: string read FIND_EMIT write FIND_EMIT;
     property COD_PART: string read FCOD_PART write FCOD_PART;
@@ -140,6 +169,10 @@ type
     property VL_NT: Currency read FVL_NT write FVL_NT;
     property COD_INF: string read FCOD_INF write FCOD_INF;
     property COD_CTA: string read FCOD_CTA write FCOD_CTA;
+
+    property RegistroD101: TRegistroD101List read FRegistroD101 write FRegistroD101;
+    property RegistroD105: TRegistroD105List read FRegistroD105 write FRegistroD105;
+    property RegistroD111: TRegistroD111List read FRegistroD111 write FRegistroD111;
   end;
 
   // Registro D100 - Lista
@@ -249,7 +282,14 @@ type
     fDT_REF: TDateTime;	         //09	DT_REF	Data do dia de referência do resumo diário	N	008*	-
     fVL_DOC: Currency;	         //10	VL_DOC	Valor total dos documentos fiscais	N	-	02
     fVL_DESC: Currency;	         //11	VL_DESC	Valor total dos descontos	N	-	02
+
+    FRegistroD201: TRegistroD201List;
+    FRegistroD205: TRegistroD205List;
+    FRegistroD209: TRegistroD209List;
   public
+    constructor Create; virtual; // Create
+    destructor Destroy; override; // Destroy
+
     property COD_MOD: string read FCOD_MOD write FCOD_MOD;
     property COD_SIT: Integer read FCOD_SIT write FCOD_SIT;
     property SER: string read FSER write FSER;
@@ -260,6 +300,10 @@ type
     property DT_REF: TDateTime read FDT_REF write FDT_REF;
     property VL_DOC: Currency read FVL_DOC write FVL_DOC;
     property VL_DESC: Currency read FVL_DESC write FVL_DESC;
+
+    property RegistroD201: TRegistroD201List read FRegistroD201 write FRegistroD201;
+    property RegistroD205: TRegistroD205List read FRegistroD205 write FRegistroD205;
+    property RegistroD209: TRegistroD209List read FRegistroD209 write FRegistroD209;
   end;
 
   // Registro D200 - Lista
@@ -369,7 +413,12 @@ type
     fALIQ_COFINS: Currency;	      //17	ALIQ_COFINS	Alíquota da COFINS (em percentual)	N	008	04
     fVL_COFINS: Currency;	        //18	VL_COFINS	Valor da COFINS	N	-	02
     fCOD_CTA: string;	            //19	COD_CTA	Código da conta analítica contábil debitada/creditada	C	060	-
+
+    FRegistroD309: TRegistroD309List;
   public
+    constructor Create; virtual; // Create
+    destructor Destroy; override; // Destroy
+
     property COD_MOD: string read FCOD_MOD write FCOD_MOD;
     property SER: string read FSER write FSER;
     property SUB: Integer read FSUB write FSUB;
@@ -388,6 +437,8 @@ type
     property ALIQ_COFINS: Currency read FALIQ_COFINS write FALIQ_COFINS;
     property VL_COFINS: Currency read FVL_COFINS write FVL_COFINS;
     property COD_CTA: string read FCOD_CTA write FCOD_CTA;
+
+    property RegistroD309: TRegistroD309List read FRegistroD309 write FRegistroD309;
   end;
 
   // Registro D300 - Lista
@@ -445,7 +496,12 @@ type
     fALIQ_COFINS_QUANT: Currency;  //21	ALIQ_COFINS_QUANT	Alíquota da COFINS (em reais)	N	- 	04
     fVL_COFINS: Currency;	         //22	VL_COFINS	Valor da COFINS	N	-	02
     fCOD_CTA: string;	             //23	COD_CTA	Código da conta analítica contábil debitada/creditada	C	060	-
+
+    FRegistroD359: TRegistroD359List;
   public
+    constructor Create; virtual; // Create
+    destructor Destroy; override; // Destroy
+
     property COD_MOD: string read FCOD_MOD write FCOD_MOD;
     property ECF_MOD: string read FECF_MOD write FECF_MOD;
     property ECF_FAB: string read FECF_FAB write FECF_FAB;
@@ -468,6 +524,8 @@ type
     property ALIQ_COFINS_QUANT: Currency read FALIQ_COFINS_QUANT write FALIQ_COFINS_QUANT;
     property VL_COFINS: Currency read FVL_COFINS write FVL_COFINS;
     property COD_CTA: string read FCOD_CTA write FCOD_CTA;
+
+    property RegistroD359: TRegistroD359List read FRegistroD359 write FRegistroD359;
   end;
 
   // Registro D350 - Lista
@@ -524,7 +582,13 @@ type
     fCOD_INF: string;	                //20	COD_INF	Código da informação complementar (campo 02 do Registro 0450)	C	006	-
     fVL_PIS: Currency;                //21	VL_PIS	Valor do PIS/PASEP	N	-	02
     fVL_COFINS: Currency;             //22	VL_COFINS	Valor da COFINS	N	-	02
+
+    FRegistroD505: TRegistroD505List;
+    FRegistroD509: TRegistroD509List;
   public
+    constructor Create; virtual; // Create
+    destructor Destroy; override; // Destroy
+
     property IND_OPER: string read FIND_OPER write FIND_OPER;
     property IND_EMIT: string read FIND_EMIT write FIND_EMIT;
     property COD_PART: string read FCOD_PART write FCOD_PART;
@@ -546,6 +610,9 @@ type
     property COD_INF: string read FCOD_INF write FCOD_INF;
     property VL_PIS: Currency read FVL_PIS write FVL_PIS;
     property VL_COFINS: Currency read FVL_COFINS write FVL_COFINS;
+
+    property RegistroD505: TRegistroD505List read FRegistroD505 write FRegistroD505;
+    property RegistroD509: TRegistroD509List read FRegistroD509 write FRegistroD509;
   end;
 
   // Registro D500 - Lista
@@ -659,7 +726,14 @@ type
     fVL_ICMS: Currency;	          //17	VL_ICMS	Valor acumulado do ICMS	N	-	02
     fVL_PIS: Currency;	          //18	VL_PIS	Valor do PIS/PASEP	N	-	02
     fVL_COFINS: Currency;	        //19	VL_COFINS	Valor da COFINS	N	-	02
+
+    FRegistroD601: TRegistroD601List;
+    FRegistroD605: TRegistroD605List;
+    FRegistroD609: TRegistroD609List;
   public
+    constructor Create; virtual; // Create
+    destructor Destroy; override; // Destroy
+
     property COD_MOD: string read FCOD_MOD write FCOD_MOD;
     property COD_MUN: Integer read FCOD_MUN write FCOD_MUN;
     property SER: string read FSER write FSER;
@@ -678,6 +752,10 @@ type
     property VL_ICMS: Currency read FVL_ICMS write FVL_ICMS;
     property VL_PIS: Currency read FVL_PIS write FVL_PIS;
     property VL_COFINS: Currency read FVL_COFINS write FVL_COFINS;
+
+    property RegistroD601: TRegistroD601List read FRegistroD601 write FRegistroD601;
+    property RegistroD605: TRegistroD605List read FRegistroD605 write FRegistroD605;
+    property RegistroD609: TRegistroD609List read FRegistroD609 write FRegistroD609;
   end;
 
   // Registro D600 - Lista
@@ -786,6 +864,17 @@ implementation
 
 {TRegistroD010}
 
+constructor TRegistroD001.Create;
+begin
+  FRegistroD010 := TRegistroD010List.Create;
+end;
+
+destructor TRegistroD001.Destroy;
+begin
+  FRegistroD010.Free;
+  inherited;
+end;
+
 function TRegistroD010List.GetItem(Index: Integer): TRegistroD010;
 begin
   Result := TRegistroD010(Inherited Items[Index]);
@@ -800,6 +889,29 @@ end;
 procedure TRegistroD010List.SetItem(Index: Integer; const Value: TRegistroD010);
 begin
   Put(Index, Value);
+end;
+
+{ TRegistroD010 }
+
+constructor TRegistroD010.Create;
+begin
+  FRegistroD100 := TRegistroD100List.Create;
+  FRegistroD200 := TRegistroD200List.Create;
+  FRegistroD300 := TRegistroD300List.Create;
+  FRegistroD350 := TRegistroD350List.Create;
+  FRegistroD500 := TRegistroD500List.Create;
+  FRegistroD600 := TRegistroD600List.Create;
+end;
+
+destructor TRegistroD010.Destroy;
+begin
+  FRegistroD100.Free;
+  FRegistroD200.Free;
+  FRegistroD300.Free;
+  FRegistroD350.Free;
+  FRegistroD500.Free;
+  FRegistroD600.Free;
+  inherited;
 end;
 
 {TRegistroD100}
@@ -818,6 +930,23 @@ end;
 procedure TRegistroD100List.SetItem(Index: Integer; const Value: TRegistroD100);
 begin
   Put(Index, Value);
+end;
+
+{ TRegistroD100 }
+
+constructor TRegistroD100.Create;
+begin
+  FRegistroD101 := TRegistroD101List.Create;
+  FRegistroD105 := TRegistroD105List.Create;
+  FRegistroD111 := TRegistroD111List.Create;
+end;
+
+destructor TRegistroD100.Destroy;
+begin
+  FRegistroD101.Free;
+  FRegistroD105.Free;
+  FRegistroD111.Free;
+  inherited;
 end;
 
 {TRegistroD101}
@@ -892,6 +1021,23 @@ begin
   Put(Index, Value);
 end;
 
+{ TRegistroD200 }
+
+constructor TRegistroD200.Create;
+begin
+  FRegistroD201 := TRegistroD201List.Create;
+  FRegistroD205 := TRegistroD205List.Create;
+  FRegistroD209 := TRegistroD209List.Create;
+end;
+
+destructor TRegistroD200.Destroy;
+begin
+  FRegistroD201.Free;
+  FRegistroD205.Free;
+  FRegistroD209.Free;
+  inherited;
+end;
+
 {TRegistroD201}
 
 function TRegistroD201List.GetItem(Index: Integer): TRegistroD201;
@@ -964,6 +1110,19 @@ begin
   Put(Index, Value);
 end;
 
+{ TRegistroD300 }
+
+constructor TRegistroD300.Create;
+begin
+  FRegistroD309 := TRegistroD309List.Create;
+end;
+
+destructor TRegistroD300.Destroy;
+begin
+  FRegistroD309.Free;
+  inherited;
+end;
+
 {TRegistroD309}
 
 function TRegistroD309List.GetItem(Index: Integer): TRegistroD309;
@@ -1000,6 +1159,19 @@ begin
   Put(Index, Value);
 end;
 
+{ TRegistroD350 }
+
+constructor TRegistroD350.Create;
+begin
+  FRegistroD359 := TRegistroD359List.Create;
+end;
+
+destructor TRegistroD350.Destroy;
+begin
+  FRegistroD359.Free;
+  inherited;
+end;
+
 {TRegistroD359}
 
 function TRegistroD359List.GetItem(Index: Integer): TRegistroD359;
@@ -1034,6 +1206,21 @@ end;
 procedure TRegistroD500List.SetItem(Index: Integer; const Value: TRegistroD500);
 begin
   Put(Index, Value);
+end;
+
+{ TRegistroD500 }
+
+constructor TRegistroD500.Create;
+begin
+  FRegistroD505 := TRegistroD505List.Create;
+  FRegistroD509 := TRegistroD509List.Create;
+end;
+
+destructor TRegistroD500.Destroy;
+begin
+  FRegistroD505.Free;
+  FRegistroD509.Free;
+  inherited;
 end;
 
 {TRegistroD501}
@@ -1106,6 +1293,23 @@ end;
 procedure TRegistroD600List.SetItem(Index: Integer; const Value: TRegistroD600);
 begin
   Put(Index, Value);
+end;
+
+{ TRegistroD600 }
+
+constructor TRegistroD600.Create;
+begin
+  FRegistroD601 := TRegistroD601List.Create;
+  FRegistroD605 := TRegistroD605List.Create;
+  FRegistroD609 := TRegistroD609List.Create;
+end;
+
+destructor TRegistroD600.Destroy;
+begin
+  FRegistroD601.Free;
+  FRegistroD605.Free;
+  FRegistroD609.Free;
+  inherited;
 end;
 
 {TRegistroD601}

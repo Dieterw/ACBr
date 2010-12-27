@@ -50,12 +50,14 @@ type
   TRegistro1020List = class;
   TRegistro1100List = class;
   TRegistro1101List = class;
+  TRegistro1102 = class;
   TRegistro1200List = class;
   TRegistro1210List = class;
   TRegistro1220List = class;
   TRegistro1300List = class;
   TRegistro1500List = class;
   TRegistro1501List = class;
+  TRegistro1502 = class;
   TRegistro1600List = class;
   TRegistro1610List = class;
   TRegistro1620List = class;
@@ -67,7 +69,28 @@ type
   //REGISTRO 1001: ABERTURA DO BLOCO 1
   TRegistro1001 = class(TOpenBlocos)
   private
+    FRegistro1010: TRegistro1010List;
+    FRegistro1020: TRegistro1020List;
+    FRegistro1100: TRegistro1100List;
+    FRegistro1200: TRegistro1200List;
+    FRegistro1300: TRegistro1300List;
+    FRegistro1500: TRegistro1500List;
+    FRegistro1600: TRegistro1600List;
+    FRegistro1700: TRegistro1700List;
+    FRegistro1800: TRegistro1800List;
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
+    property Registro1010: TRegistro1010List read FRegistro1010 write FRegistro1010;
+    property Registro1020: TRegistro1020List read FRegistro1020 write FRegistro1020;
+    property Registro1100: TRegistro1100List read FRegistro1100 write FRegistro1100;
+    property Registro1200: TRegistro1200List read FRegistro1200 write FRegistro1200;
+    property Registro1300: TRegistro1300List read FRegistro1300 write FRegistro1300;
+    property Registro1500: TRegistro1500List read FRegistro1500 write FRegistro1500;
+    property Registro1600: TRegistro1600List read FRegistro1600 write FRegistro1600;
+    property Registro1700: TRegistro1700List read FRegistro1700 write FRegistro1700;
+    property Registro1800: TRegistro1800List read FRegistro1800 write FRegistro1800;
   end;
 
   //REGISTRO 1010: PROCESSO REFERENCIADO – AÇÃO JUDICIAL
@@ -140,7 +163,12 @@ type
     fVL_CRED_TRANS: Currency;	           //16	VL_CRED_TRANS	Valor do crédito transferido em evento de cisão, fusão ou incorporação.	N	-	02
     fVL_CRED_OUT: Currency;	             //17	VL_CRED_OUT	Valor do crédito utilizado por outras formas.	N	-	02
     fSLD_CRED_FIM: Currency;	           //18	SLD_CRED_FIM	Saldo de créditos a utilizar em período de apuração futuro (12 – 13 – 14 – 15 – 16 - 17).	N	-	02
+
+    FRegistro1101: TRegistro1101List;
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
     property PER_APU_CRED: Integer read FPER_APU_CRED write FPER_APU_CRED;
     property ORIG_CRED: Integer read FORIG_CRED write FORIG_CRED;
     property CNPJ_SUC: Integer read FCNPJ_SUC write FCNPJ_SUC;
@@ -158,6 +186,8 @@ type
     property VL_CRED_TRANS: Currency read FVL_CRED_TRANS write FVL_CRED_TRANS;
     property VL_CRED_OUT: Currency read FVL_CRED_OUT write FVL_CRED_OUT;
     property SLD_CRED_FIM: Currency read FSLD_CRED_FIM write FSLD_CRED_FIM;
+
+    property Registro1101: TRegistro1101List read FRegistro1101 write FRegistro1101;
   end;
 
   // Registro 1100 - Lista
@@ -194,7 +224,12 @@ type
     fDESC_COMPL: string;	          //20	DESC_COMPL	Descrição complementar do Documento/Operação.	C	-	-
     fPER_ESCRIT: Integer;	          //21	PER_ESCRIT	Mês/Ano da Escrituração em que foi registrado o documento/operação (Crédito pelo método da Apropriação Direta).	N	006*	-
     fCNPJ: Integer;	                //22	CNPJ	CNPJ do estabelecimento gerador do crédito extemporâneo (Campo 04  do Registro 0140)	N	014*	-
+
+    FRegistro1102: TRegistro1102;
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
     property COD_PART: string read FCOD_PART write FCOD_PART;
     property COD_ITEM: string read FCOD_ITEM write FCOD_ITEM;
     property COD_MOD: string read FCOD_MOD write FCOD_MOD;
@@ -216,6 +251,8 @@ type
     property DESC_COMPL: string read FDESC_COMPL write FDESC_COMPL;
     property PER_ESCRIT: Integer read FPER_ESCRIT write FPER_ESCRIT;
     property CNPJ: Integer read FCNPJ write FCNPJ;
+
+    property Registro1102: TRegistro1102 read FRegistro1102 write FRegistro1102;
   end;
 
   // Registro 1101 - Lista
@@ -253,7 +290,13 @@ type
     fVL_MUL: Currency;	               //09	VL_MUL	Valor da Multa.	N	-	02
     fVL_JUR: Currency;	               //10	VL_JUR	Valor dos Juros.	N	-	02
     fDT_RECOL: TDateTime;	             //11	DT_RECOL	Data do Recolhimento.	N	008*	-
+
+    FRegistro1210: TRegistro1210List;
+    FRegistro1220: TRegistro1220List;
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
     property PER_APUR_ANT: Integer read FPER_APUR_ANT write FPER_APUR_ANT;
     property NAT_CONT_REC: string read FNAT_CONT_REC write FNAT_CONT_REC;
     property VL_CONT_APUR: Currency read FVL_CONT_APUR write FVL_CONT_APUR;
@@ -264,6 +307,9 @@ type
     property VL_MUL: Currency read FVL_MUL write FVL_MUL;
     property VL_JUR: Currency read FVL_JUR write FVL_JUR;
     property DT_RECOL: TDateTime read FDT_RECOL write FDT_RECOL;
+
+    property Registro1210: TRegistro1210List read FRegistro1210 write FRegistro1210;
+    property Registro1220: TRegistro1220List read FRegistro1220 write FRegistro1220;
   end;
 
   // Registro 1200 - Lista
@@ -386,7 +432,12 @@ type
     fVL_CRED_TRANS: Currency;	          //16	VL_CRED_TRANS	Valor do crédito transferido em evento de cisão, fusão ou incorporação	N	-	02
     fVL_CRED_OUT: Currency;	            //17	VL_CRED_OUT	Valor do crédito utilizado por outras formas	N	-	02
     fSLD_CRED_FIM: Currency;	          //18	SLD_CRED_FIM	Saldo de créditos a utilizar em período de apuração futuro (12-13-14-15-16-17).	N	-	02
+
+    FRegistro1501: TRegistro1501List;
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
     property PER_APU_CRED: Integer read FPER_APU_CRED write FPER_APU_CRED;
     property ORIG_CRED: Integer read FORIG_CRED write FORIG_CRED;
     property CNPJ_SUC: Integer read FCNPJ_SUC write FCNPJ_SUC;
@@ -404,6 +455,8 @@ type
     property VL_CRED_TRANS: Currency read FVL_CRED_TRANS write FVL_CRED_TRANS;
     property VL_CRED_OUT: Currency read FVL_CRED_OUT write FVL_CRED_OUT;
     property SLD_CRED_FIM: Currency read FSLD_CRED_FIM write FSLD_CRED_FIM;
+
+    property Registro1501: TRegistro1501List read FRegistro1501 write FRegistro1501;
   end;
 
   // Registro 1500 - Lista
@@ -440,7 +493,12 @@ type
     fDESC_COMPL: string;	          //20	DESC_COMPL	Descrição complementar do Documento/Operação	C	-	-
     fPER_ESCRIT: Integer;	          //21	PER_ESCRIT	Mês/Ano da Escrituração em que foi registrado o documento/operação (Crédito pelo método da Apropriação Direta).	N	006*	-
     fCNPJ: Integer;	                //22	CNPJ	CNPJ do estabelecimento gerador do crédito extemporâneo (Campo 04  do Registro 0140)	N	014*	-
+
+    FRegistro1502: TRegistro1502;
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
     property COD_PART: string read FCOD_PART write FCOD_PART;
     property COD_ITEM: string read FCOD_ITEM write FCOD_ITEM;
     property COD_MOD: string read FCOD_MOD write FCOD_MOD;
@@ -462,6 +520,8 @@ type
     property DESC_COMPL: string read FDESC_COMPL write FDESC_COMPL;
     property PER_ESCRIT: Integer read FPER_ESCRIT write FPER_ESCRIT;
     property CNPJ: Integer read FCNPJ write FCNPJ;
+
+    property Registro1502: TRegistro1502 read FRegistro1502 write FRegistro1502;
   end;
 
   // Registro 1501 - Lista
@@ -499,7 +559,13 @@ type
     fVL_MUL: Currency;	                    //09	VL_MUL	Valor da Multa.	N	-	02
     fVL_JUR: Currency;	                    //10	VL_JUR	Valor dos Juros.	N	-	02
     fDT_RECOL: TDateTime;	                  //11	DT_RECOL	Data do Recolhimento.	N	008*	-
+
+    FRegistro1610: TRegistro1610List;
+    FRegistro1620: TRegistro1620List;
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
     property PER_APUR_ANT: Integer read FPER_APUR_ANT write FPER_APUR_ANT;
     property NAT_CONT_REC: string read FNAT_CONT_REC write FNAT_CONT_REC;
     property VL_CONT_APUR: Currency read FVL_CONT_APUR write FVL_CONT_APUR;
@@ -510,6 +576,9 @@ type
     property VL_MUL: Currency read FVL_MUL write FVL_MUL;
     property VL_JUR: Currency read FVL_JUR write FVL_JUR;
     property DT_RECOL: TDateTime read FDT_RECOL write FDT_RECOL;
+
+    property Registro1610: TRegistro1610List read FRegistro1610 write FRegistro1610;
+    property Registro1620: TRegistro1620List read FRegistro1620 write FRegistro1620;
   end;
 
   // Registro 1600 - Lista
@@ -623,7 +692,12 @@ type
     fVL_REC_UNI: Currency;	        //07	VL_REC_UNI	Valor do Recolhimento Unificado.	N	-	02
     fDT_REC_UNI: TDateTime;	        //08	DT_REC_UNI	Data do recolhimento unificado	N	008*	-
     fCOD_REC: string;	              //09	COD_REC	Código da Receita	C	004	-
+
+    FRegistro1809: TRegistro1809List;
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
     property INC_IMOB: string read FINC_IMOB write FINC_IMOB;
     property REC_RECEB_RET: Currency read FREC_RECEB_RET write FREC_RECEB_RET;
     property REC_FIN_RET: Currency read FREC_FIN_RET write FREC_FIN_RET;
@@ -632,6 +706,8 @@ type
     property VL_REC_UNI: Currency read FVL_REC_UNI write FVL_REC_UNI;
     property DT_REC_UNI: TDateTime read FDT_REC_UNI write FDT_REC_UNI;
     property COD_REC: string read FCOD_REC write FCOD_REC;
+
+    property Registro1809: TRegistro1809List read FRegistro1809 write FRegistro1809;
   end;
 
   // Registro 1800 - Lista
@@ -673,6 +749,35 @@ type
   end;
 
 implementation
+
+{TRegistro1001}
+
+constructor TRegistro1001.Create;
+begin
+  FRegistro1010 := TRegistro1010List.Create;
+  FRegistro1020 := TRegistro1020List.Create;
+  FRegistro1100 := TRegistro1100List.Create;
+  FRegistro1200 := TRegistro1200List.Create;
+  FRegistro1300 := TRegistro1300List.Create;
+  FRegistro1500 := TRegistro1500List.Create;
+  FRegistro1600 := TRegistro1600List.Create;
+  FRegistro1700 := TRegistro1700List.Create;
+  FRegistro1800 := TRegistro1800List.Create;
+end;
+
+destructor TRegistro1001.Destroy;
+begin
+  FRegistro1010.Free;
+  FRegistro1020.Free;
+  FRegistro1100.Free;
+  FRegistro1200.Free;
+  FRegistro1300.Free;
+  FRegistro1500.Free;
+  FRegistro1600.Free;
+  FRegistro1700.Free;
+  FRegistro1800.Free;
+  inherited;
+end;
 
 {TRegistro1010}
 
@@ -728,6 +833,19 @@ begin
   Put(Index, Value);
 end;
 
+{ TRegistro1100 }
+
+constructor TRegistro1100.Create;
+begin
+  FRegistro1101 := TRegistro1101List.Create;
+end;
+
+destructor TRegistro1100.Destroy;
+begin
+  FRegistro1101.Free;
+  inherited;
+end;
+
 {TRegistro1101}
 
 function TRegistro1101List.GetItem(Index: Integer): TRegistro1101;
@@ -746,6 +864,19 @@ begin
   Put(Index, Value);
 end;
 
+{ TRegistro1101 }
+
+constructor TRegistro1101.Create;
+begin
+  FRegistro1102 := TRegistro1102.Create;
+end;
+
+destructor TRegistro1101.Destroy;
+begin
+  FRegistro1102.Free;
+  inherited;
+end;
+
 {TRegistro1200}
 
 function TRegistro1200List.GetItem(Index: Integer): TRegistro1200;
@@ -762,6 +893,21 @@ end;
 procedure TRegistro1200List.SetItem(Index: Integer; const Value: TRegistro1200);
 begin
   Put(Index, Value);
+end;
+
+{ TRegistro1200 }
+
+constructor TRegistro1200.Create;
+begin
+  FRegistro1210 := TRegistro1210List.Create;
+  FRegistro1220 := TRegistro1220List.Create;
+end;
+
+destructor TRegistro1200.Destroy;
+begin
+  FRegistro1210.Free;
+  FRegistro1220.Free;
+  inherited;
 end;
 
 {TRegistro1210}
@@ -836,6 +982,19 @@ begin
   Put(Index, Value);
 end;
 
+{ TRegistro1500 }
+
+constructor TRegistro1500.Create;
+begin
+  FRegistro1501 := TRegistro1501List.Create;
+end;
+
+destructor TRegistro1500.Destroy;
+begin
+  FRegistro1501.Free;
+  inherited;
+end;
+
 {TRegistro1501}
 
 function TRegistro1501List.GetItem(Index: Integer): TRegistro1501;
@@ -854,6 +1013,19 @@ begin
   Put(Index, Value);
 end;
 
+{ TRegistro1501 }
+
+constructor TRegistro1501.Create;
+begin
+  FRegistro1502 := TRegistro1502.Create;
+end;
+
+destructor TRegistro1501.Destroy;
+begin
+  FRegistro1502.Free;
+  inherited;
+end;
+
 {TRegistro1600}
 
 function TRegistro1600List.GetItem(Index: Integer): TRegistro1600;
@@ -870,6 +1042,21 @@ end;
 procedure TRegistro1600List.SetItem(Index: Integer; const Value: TRegistro1600);
 begin
   Put(Index, Value);
+end;
+
+{ TRegistro1600 }
+
+constructor TRegistro1600.Create;
+begin
+  FRegistro1610 := TRegistro1610List.Create;
+  FRegistro1620 := TRegistro1620List.Create;
+end;
+
+destructor TRegistro1600.Destroy;
+begin
+  FRegistro1610.Free;
+  FRegistro1620.Free;
+  inherited;
 end;
 
 {TRegistro1610}
@@ -942,6 +1129,19 @@ end;
 procedure TRegistro1800List.SetItem(Index: Integer; const Value: TRegistro1800);
 begin
   Put(Index, Value);
+end;
+
+{ TRegistro1800 }
+
+constructor TRegistro1800.Create;
+begin
+  FRegistro1809 := TRegistro1809List.Create;
+end;
+
+destructor TRegistro1800.Destroy;
+begin
+  FRegistro1809.Free;
+  inherited;
 end;
 
 {TRegistro1809}

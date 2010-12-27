@@ -46,10 +46,17 @@ uses
   SysUtils, Classes, Contnrs, DateUtils, ACBrEPCBlocos;
 
 type
+  TRegistro9900List = class;
+
   //REGISTRO 9001: ABERTURA DO BLOCO 9
   TRegistro9001 = class(TOpenBlocos)
   private
+    FRegistro9900: TRegistro9900List;
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
+    property Registro9900: TRegistro9900List read FRegistro9900 write FRegistro9900;
   end;
 
   //REGISTRO 9900: REGISTROS DO ARQUIVO
@@ -89,6 +96,19 @@ type
   end;
 
 implementation
+
+{ TRegistro9001 }
+
+constructor TRegistro9001.Create;
+begin
+  FRegistro9900 := TRegistro9900List.Create;
+end;
+
+destructor TRegistro9001.Destroy;
+begin
+  FRegistro9900.Free;
+  inherited;
+end;
 
 { TRegistro9990 }
 

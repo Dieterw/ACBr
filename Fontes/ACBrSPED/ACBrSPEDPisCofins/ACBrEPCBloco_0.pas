@@ -34,7 +34,7 @@
 {******************************************************************************
 |* Historico
 |*
-|* 14/12/2010: Isaque Pinheiro e Paulo Junqueira
+|* 14/12/2010: Isaque Pinheiro, Paulo Junqueira e Claudio Roberto de Souza
 |*  - Criação e distribuição da Primeira Versao
 *******************************************************************************}
 
@@ -47,15 +47,19 @@ uses
 
 type
   TRegistro0100List = class;
+  TRegistro0110 = class;
+  TRegistro0111List = class;
   TRegistro0140List = class;
   TRegistro0150List = class;
   TRegistro0190List = class;
   TRegistro0200List = class;
   TRegistro0205List = class;
+  TRegistro0206 = class;
+  TRegistro0208 = class;
   TRegistro0400List = class;
   TRegistro0450List = class;
   TRegistro0500List = class;
-  TRegistro0600List = class; 
+  TRegistro0600List = class;
 
   //REGISTRO 0000: ABERTURA DO ARQUIVO DIGITAL E IDENTIFICAÇÃO DA PESSOA JURÍDICA
   TRegistro0000 = class
@@ -92,7 +96,20 @@ type
   //REGISTRO 0001: ABERTURA DO BLOCO 0
   TRegistro0001 = class(TOpenBlocos)
   private
+    FRegistro0100: TRegistro0100List;
+    FRegistro0110: TRegistro0110;
+    FRegistro0140: TRegistro0140List;
+    FRegistro0500: TRegistro0500List;
+    FRegistro0600: TRegistro0600List;
   public
+    constructor Create; virtual; // Create
+    destructor Destroy; override;// Destroy
+
+    property Registro0100: TRegistro0100List read FRegistro0100 write FRegistro0100;
+    property Registro0110: TRegistro0110 read FRegistro0110 write FRegistro0110;
+    property Registro0140: TRegistro0140List read FRegistro0140 write FRegistro0140;
+    property Registro0500: TRegistro0500List read FRegistro0500 write FRegistro0500;
+    property Registro0600: TRegistro0600List read FRegistro0600 write FRegistro0600;
   end;
 
   //REGISTRO 0100: DADOS DO CONTABILISTA
@@ -142,9 +159,13 @@ type
   private
     FCOD_INC_TRIB: integer;
     FCOD_TIPO_CONT: integer;
+
+    FRegistro0111: TRegistro0111List;
   public
     property COD_INC_TRIB: integer read FCOD_INC_TRIB write FCOD_INC_TRIB;
     property COD_TIPO_CONT: integer read FCOD_TIPO_CONT write FCOD_TIPO_CONT;
+
+    property Registro0111: TRegistro0111List read FRegistro0111 write FRegistro0111;
   end;
 
   //REGISTRO 0111: DE RECEITA BRUTA MENSAL PARA FINS DE RATEIO DE CRÉDITOS COMUNS
@@ -184,7 +205,16 @@ type
     FCNPJ: string;
     FIE: string;
     FUF: string;
+
+    FRegistro0150: TRegistro0150List;
+    FRegistro0190: TRegistro0190List;
+    FRegistro0200: TRegistro0200List;
+    FRegistro0400: TRegistro0400List;
+    FRegistro0450: TRegistro0450List;
   public
+    constructor Create; virtual; // Create
+    destructor Destroy; override;// Destroy
+
     property COD_EST: string read FCOD_EST write FCOD_EST;
     property NOME: string read FNOME write FNOME;
     property CNPJ: string read FCNPJ write FCNPJ;
@@ -193,6 +223,12 @@ type
     property COD_MUN: string read FCOD_MUN write FCOD_MUN;
     property IM: string read FIM write FIM;
     property SUFRAMA: string read FSUFRAMA write FSUFRAMA;
+
+    property Registro0150: TRegistro0150List read FRegistro0150 write FRegistro0150;
+    property Registro0190: TRegistro0190List read FRegistro0190 write FRegistro0190;
+    property Registro0200: TRegistro0200List read FRegistro0200 write FRegistro0200;
+    property Registro0400: TRegistro0400List read FRegistro0400 write FRegistro0400;
+    property Registro0450: TRegistro0450List read FRegistro0450 write FRegistro0450;
   end;
 
   // Registro 0140 - Lista
@@ -279,7 +315,14 @@ type
     FCOD_GEN: string;
     FCOD_LST: string;
     FALIQ_ICMS: currency;
+
+    FRegistro0205: TRegistro0205List;
+    FRegistro0206: TRegistro0206;
+    FRegistro0208: TRegistro0208;
   public
+    constructor Create; virtual; // Create
+    destructor Destroy; override;// Destroy
+
     property COD_ITEM: string read FCOD_ITEM write FCOD_ITEM;
     property DESCR_ITEM: string read FDESCR_ITEM write FDESCR_ITEM;
     property COD_BARRA: string read FCOD_BARRA write FCOD_BARRA;
@@ -291,6 +334,10 @@ type
     property COD_GEN: string read FCOD_GEN write FCOD_GEN;
     property COD_LST: string read FCOD_LST write FCOD_LST;
     property ALIQ_ICMS: currency read FALIQ_ICMS write FALIQ_ICMS;
+
+    property Registro0205: TRegistro0205List read FRegistro0205 write FRegistro0205;
+    property Registro0206: TRegistro0206 read FRegistro0206 write FRegistro0206;
+    property Registro0208: TRegistro0208 read FRegistro0208 write FRegistro0208;
   end;
 
   // Registro 0200 - Lista
@@ -451,6 +498,27 @@ type
 
 implementation
 
+{ TRegistro0001 }
+
+constructor TRegistro0001.Create;
+begin
+  FRegistro0100 := TRegistro0100List.Create;
+  FRegistro0110 := TRegistro0110.Create;
+  FRegistro0140 := TRegistro0140List.Create;
+  FRegistro0500 := TRegistro0500List.Create;
+  FRegistro0600 := TRegistro0600List.Create;
+end;
+
+destructor TRegistro0001.Destroy;
+begin
+  FRegistro0100.Free;
+  FRegistro0110.Free;
+  FRegistro0140.Free;
+  FRegistro0500.Free;
+  FRegistro0600.Free;
+  inherited;
+end;
+
 { TRegistro0100 }
 
 function TRegistro0100List.GetItem(Index: Integer): TRegistro0100;
@@ -505,6 +573,27 @@ begin
   Put(Index, Value);
 end;
 
+{ TRegistro0140 }
+
+constructor TRegistro0140.Create;
+begin
+  FRegistro0150 := TRegistro0150List.Create;
+  FRegistro0190 := TRegistro0190List.Create;
+  FRegistro0200 := TRegistro0200List.Create;
+  FRegistro0400 := TRegistro0400List.Create;
+  FRegistro0450 := TRegistro0450List.Create;
+end;
+
+destructor TRegistro0140.Destroy;
+begin
+  FRegistro0150.Free;
+  FRegistro0190.Free;
+  FRegistro0200.Free;
+  FRegistro0400.Free;
+  FRegistro0450.Free;
+  inherited;
+end;
+
 {TRegistro0150}
 
 function TRegistro0150List.GetItem(Index: Integer): TRegistro0150;
@@ -557,6 +646,23 @@ end;
 procedure TRegistro0200List.SetItem(Index: Integer; const Value: TRegistro0200);
 begin
   Put(Index, Value);
+end;
+
+{ TRegistro0200 }
+
+constructor TRegistro0200.Create;
+begin
+  FRegistro0205 := TRegistro0205List.Create;
+  FRegistro0206 := TRegistro0206.Create;
+  FRegistro0208 := TRegistro0208.Create;
+end;
+
+destructor TRegistro0200.Destroy;
+begin
+  FRegistro0205.Free;
+  FRegistro0206.Free;
+  FRegistro0208.Free;
+  inherited;
 end;
 
 {TRegistro0205}

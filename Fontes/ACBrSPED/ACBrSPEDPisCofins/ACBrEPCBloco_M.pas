@@ -49,16 +49,21 @@ type
   TRegistroM100List = class;
   TRegistroM105List = class;
   TRegistroM110List = class;
+  TRegistroM200 = class;
   TRegistroM210List = class;
+  TRegistroM211 = class;
   TRegistroM220List = class;
   TRegistroM230List = class;
   TRegistroM300List = class;
+  TRegistroM350 = class;
   TRegistroM400List = class;
   TRegistroM410List = class;
   TRegistroM500List = class;
   TRegistroM505List = class;
   TRegistroM510List = class;
+  TRegistroM600 = class;
   TRegistroM610List = class;
+  TRegistroM611 = class;
   TRegistroM620List = class;
   TRegistroM630List = class;
   TRegistroM700List = class;
@@ -68,8 +73,30 @@ type
   //REGISTRO M001: ABERTURA DO BLOCO M
   TRegistroM001 = class(TOpenBlocos)
   private
+    FRegistroM100: TRegistroM100List;
+    FRegistroM200: TRegistroM200;
+    FRegistroM300: TRegistroM300List;
+    FRegistroM350: TRegistroM350;
+    FRegistroM400: TRegistroM400List;
+    FRegistroM500: TRegistroM500List;
+    FRegistroM600: TRegistroM600;
+    FRegistroM700: TRegistroM700List;
+    FRegistroM800: TRegistroM800List;
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
+    property RegistroM100: TRegistroM100List read FRegistroM100 write FRegistroM100;
+    property RegistroM200: TRegistroM200 read FRegistroM200 write FRegistroM200;
+    property RegistroM300: TRegistroM300List read FRegistroM300 write FRegistroM300;
+    property RegistroM350: TRegistroM350 read FRegistroM350 write FRegistroM350;
+    property RegistroM400: TRegistroM400List read FRegistroM400 write FRegistroM400;
+    property RegistroM500: TRegistroM500List read FRegistroM500 write FRegistroM500;
+    property RegistroM600: TRegistroM600 read FRegistroM600 write FRegistroM600;
+    property RegistroM700: TRegistroM700List read FRegistroM700 write FRegistroM700;
+    property RegistroM800: TRegistroM800List read FRegistroM800 write FRegistroM800;
   end;
+
 
   //REGISTRO M100: ABERTURA DO BLOCO M
   TRegistroM100 = class
@@ -88,7 +115,13 @@ type
     FIND_CRED_ORI: integer;
     FCOD_CRED: string;
     FIND_DESC_CRED: string;
+
+    FRegistroM105: TRegistroM105List;
+    FRegistroM110: TRegistroM110List;
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
     property COD_CRED: string read FCOD_CRED write FCOD_CRED;
     property IND_CRED_ORI: integer read FIND_CRED_ORI write FIND_CRED_ORI;
     property VL_BC_PIS: currency read FVL_BC_PIS write FVL_BC_PIS;
@@ -103,6 +136,9 @@ type
     property IND_DESC_CRED: string read FIND_DESC_CRED write FIND_DESC_CRED;
     property VL_CRED_DESC: currency read FVL_CRED_DESC write FVL_CRED_DESC;
     property SLD_CRED: currency read FSLD_CRED write FSLD_CRED;
+
+    property RegistroM105: TRegistroM105List read FRegistroM105 write FRegistroM105;
+    property RegistroM110: TRegistroM110List read FRegistroM110 write FRegistroM110;
   end;
 
   // Registro M100 - Lista
@@ -192,7 +228,12 @@ type
     FVL_OUT_DED_NC: currency;
     FVL_TOT_CRED_DESC_ANT: currency;
     FVL_TOT_CONT_CUM_PER: currency;
+
+    FRegistroM210: TRegistroM210List;
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
     property VL_TOT_CONT_NC_PER: currency read FVL_TOT_CONT_NC_PER write FVL_TOT_CONT_NC_PER;
     property VL_TOT_CRED_DESC: currency read FVL_TOT_CRED_DESC write FVL_TOT_CRED_DESC;
     property VL_TOT_CRED_DESC_ANT: currency read FVL_TOT_CRED_DESC_ANT write FVL_TOT_CRED_DESC_ANT;
@@ -205,6 +246,8 @@ type
     property VL_OUT_DED_CUM: currency read FVL_OUT_DED_CUM write FVL_OUT_DED_CUM;
     property VL_CONT_CUM_REC: currency read FVL_CONT_CUM_REC write FVL_CONT_CUM_REC;
     property VL_TOT_CONT_REC: currency read FVL_TOT_CONT_REC write FVL_TOT_CONT_REC;
+
+    property RegistroM210: TRegistroM210List read FRegistroM210 write FRegistroM210;
   end;
 
   //REGISTRO M210: DETALHAMENTO DA CONTRIBUIÇÃO PARA O PIS/PASEP DO PERÍODO
@@ -222,7 +265,14 @@ type
     FVL_REC_BRT: currency;
     FQUANT_BC_PIS: currency;
     FCOD_CONT: string;
+
+    FRegistroM211: TRegistroM211;
+    FRegistroM220: TRegistroM220List;
+    FRegistroM230: TRegistroM230List;
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
     property COD_CONT: string read FCOD_CONT write FCOD_CONT;
     property VL_REC_BRT: currency read FVL_REC_BRT write FVL_REC_BRT;
     property VL_BC_CONT: currency read FVL_BC_CONT write FVL_BC_CONT;
@@ -235,6 +285,10 @@ type
     property VL_CONT_DIFER: currency read FVL_CONT_DIFER write FVL_CONT_DIFER;
     property VL_CONT_DIFER_ANT: currency read FVL_CONT_DIFER_ANT write FVL_CONT_DIFER_ANT;
     property VL_CONT_PER: currency read FVL_CONT_PER write FVL_CONT_PER;
+
+    property RegistroM211: TRegistroM211 read FRegistroM211 write FRegistroM211;
+    property RegistroM220: TRegistroM220List read FRegistroM220 write FRegistroM220;
+    property RegistroM230: TRegistroM230List read FRegistroM230 write FRegistroM230;
   end;
 
   // Registro M210 - Lista
@@ -370,11 +424,18 @@ type
     FDESC_COMPL: string;
     FCOD_CTA: string;
     FCST_PIS: string;
+
+    FRegistroM410: TRegistroM410List;
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
     property CST_PIS: string read FCST_PIS write FCST_PIS;
     property VL_TOT_REC: currency read FVL_TOT_REC write FVL_TOT_REC;
     property COD_CTA: string read FCOD_CTA write FCOD_CTA;
     property DESC_COMPL: string read FDESC_COMPL write FDESC_COMPL;
+
+    property RegistroM410: TRegistroM410List read FRegistroM410 write FRegistroM410;
   end;
 
   // Registro M400 - Lista
@@ -428,7 +489,13 @@ type
     FIND_DESC_CRED: integer;
     FIND_CRED_ORI: integer;
     FCOD_CRED: string;
+
+    FRegistroM505: TRegistroM505List;
+    FRegistroM510: TRegistroM510List;
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
     property COD_CRED: string read FCOD_CRED write FCOD_CRED;
     property IND_CRED_ORI: integer read FIND_CRED_ORI write FIND_CRED_ORI;
     property VL_BC_COFINS: currency read FVL_BC_COFINS write FVL_BC_COFINS;
@@ -443,6 +510,9 @@ type
     property IND_DESC_CRED: integer read FIND_DESC_CRED write FIND_DESC_CRED;
     property VL_CRED_DESC: currency read FVL_CRED_DESC write FVL_CRED_DESC;
     property SLD_CRED: currency read FSLD_CRED write FSLD_CRED;
+
+    property RegistroM505: TRegistroM505List read FRegistroM505 write FRegistroM505;
+    property RegistroM510: TRegistroM510List read FRegistroM510 write FRegistroM510;
   end;
 
   // Registro M500 - Lista
@@ -532,7 +602,12 @@ type
     FVL_OUT_DED_NC: currency;
     FVL_TOT_CRED_DESC_ANT: currency;
     FVL_TOT_CONT_CUM_PER: currency;
+
+    FRegistroM610: TRegistroM610List;
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
     property VL_TOT_CONT_NC_PER: currency read FVL_TOT_CONT_NC_PER write FVL_TOT_CONT_NC_PER;
     property VL_TOT_CRED_DESC: currency read FVL_TOT_CRED_DESC write FVL_TOT_CRED_DESC;
     property VL_TOT_CRED_DESC_ANT: currency read FVL_TOT_CRED_DESC_ANT write FVL_TOT_CRED_DESC_ANT;
@@ -545,6 +620,8 @@ type
     property VL_OUT_DED_CUM: currency read FVL_OUT_DED_CUM write FVL_OUT_DED_CUM;
     property VL_CONT_CUM_REC: currency read FVL_CONT_CUM_REC write FVL_CONT_CUM_REC;
     property VL_TOT_CONT_REC: currency read FVL_TOT_CONT_REC write FVL_TOT_CONT_REC;
+
+    property RegistroM610: TRegistroM610List read FRegistroM610 write FRegistroM610;
   end;
 
   //REGISTRO M610: DETALHAMENTO DA CONTRIBUIÇÃO PARA A SEGURIDADE SOCIAL - COFINS DO PERÍODO
@@ -562,7 +639,14 @@ type
     FVL_REC_BRT: currency;
     FQUANT_BC_COFINS: currency;
     FCOD_CONT: string;
+
+    FRegistroM611: TRegistroM611;
+    FRegistroM620: TRegistroM620List;
+    FRegistroM630: TRegistroM630List;
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
     property COD_CONT: string read FCOD_CONT write FCOD_CONT;
     property VL_REC_BRT: currency read FVL_REC_BRT write FVL_REC_BRT;
     property VL_BC_CONT: currency read FVL_BC_CONT write FVL_BC_CONT;
@@ -575,6 +659,10 @@ type
     property VL_CONT_DIFER: currency read FVL_CONT_DIFER write FVL_CONT_DIFER;
     property VL_CONT_DIFER_ANT: currency read FVL_CONT_DIFER_ANT write FVL_CONT_DIFER_ANT;
     property VL_CONT_PER: currency read FVL_CONT_PER write FVL_CONT_PER;
+
+    property RegistroM611: TRegistroM611 read FRegistroM611 write FRegistroM611;
+    property RegistroM620: TRegistroM620List read FRegistroM620 write FRegistroM620;
+    property RegistroM630: TRegistroM630List read FRegistroM630 write FRegistroM630;
   end;
 
   // Registro M610 - Lista
@@ -694,11 +782,18 @@ type
     FDESC_COMPL: string;
     FCOD_CTA: string;
     FCST_COFINS: string;
+
+    FRegistroM810: TRegistroM810List;
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
     property CST_COFINS: string read FCST_COFINS write FCST_COFINS;
     property VL_TOT_REC: currency read FVL_TOT_REC write FVL_TOT_REC;
     property COD_CTA: string read FCOD_CTA write FCOD_CTA;
     property DESC_COMPL: string read FDESC_COMPL write FDESC_COMPL;
+
+    property RegistroM810: TRegistroM810List read FRegistroM810 write FRegistroM810;
   end;
 
   // Registro M800 - Lista
@@ -745,6 +840,35 @@ type
 
 implementation
 
+{TRegistroM001}
+
+constructor TRegistroM001.Create;
+begin
+  FRegistroM100 := TRegistroM100List.Create;
+  FRegistroM200 := TRegistroM200.Create;
+  FRegistroM300 := TRegistroM300List.Create;
+  FRegistroM350 := TRegistroM350.Create;
+  FRegistroM400 := TRegistroM400List.Create;
+  FRegistroM500 := TRegistroM500List.Create;
+  FRegistroM600 := TRegistroM600.Create;
+  FRegistroM700 := TRegistroM700List.Create;
+  FRegistroM800 := TRegistroM800List.Create;
+end;
+
+destructor TRegistroM001.Destroy;
+begin
+  FRegistroM100.Free;
+  FRegistroM200.Free;
+  FRegistroM300.Free;
+  FRegistroM350.Free;
+  FRegistroM400.Free;
+  FRegistroM500.Free;
+  FRegistroM600.Free;
+  FRegistroM700.Free;
+  FRegistroM800.Free;
+  inherited;
+end;
+
 {TRegistroM100}
 
 function TRegistroM100List.GetItem(Index: Integer): TRegistroM100;
@@ -761,6 +885,21 @@ end;
 procedure TRegistroM100List.SetItem(Index: Integer; const Value: TRegistroM100);
 begin
   Put(Index, Value);
+end;
+
+{ TRegistroM100 }
+
+constructor TRegistroM100.Create;
+begin
+  FRegistroM105 := TRegistroM105List.Create;
+  FRegistroM110 := TRegistroM110List.Create;
+end;
+
+destructor TRegistroM100.Destroy;
+begin
+  FRegistroM105.Free;
+  FRegistroM110.Free;
+  inherited;
 end;
 
 {TRegistroM105}
@@ -815,6 +954,23 @@ end;
 procedure TRegistroM210List.SetItem(Index: Integer; const Value: TRegistroM210);
 begin
   Put(Index, Value);
+end;
+
+{ TRegistroM210 }
+
+constructor TRegistroM210.Create;
+begin
+  FRegistroM211 := TRegistroM211.Create;
+  FRegistroM220 := TRegistroM220List.Create;
+  FRegistroM230 := TRegistroM230List.Create;
+end;
+
+destructor TRegistroM210.Destroy;
+begin
+  FRegistroM211.Free;
+  FRegistroM220.Free;
+  FRegistroM230.Free;
+  inherited;
 end;
 
 {TRegistroM220}
@@ -889,6 +1045,19 @@ begin
   Put(Index, Value);
 end;
 
+{ TRegistroM400 }
+
+constructor TRegistroM400.Create;
+begin
+  FRegistroM410 := TRegistroM410List.Create;
+end;
+
+destructor TRegistroM400.Destroy;
+begin
+  FRegistroM410.Free;
+  inherited;
+end;
+
 {TRegistroM410}
 
 function TRegistroM410List.GetItem(Index: Integer): TRegistroM410;
@@ -923,6 +1092,21 @@ end;
 procedure TRegistroM500List.SetItem(Index: Integer; const Value: TRegistroM500);
 begin
   Put(Index, Value);
+end;
+
+{ TRegistroM500 }
+
+constructor TRegistroM500.Create;
+begin
+  FRegistroM505 := TRegistroM505List.Create;
+  FRegistroM510 := TRegistroM510List.Create;
+end;
+
+destructor TRegistroM500.Destroy;
+begin
+  FRegistroM505.Free;
+  FRegistroM510.Free;
+  inherited;
 end;
 
 {TRegistroM505}
@@ -977,6 +1161,23 @@ end;
 procedure TRegistroM610List.SetItem(Index: Integer; const Value: TRegistroM610);
 begin
   Put(Index, Value);
+end;
+
+{ TRegistroM610 }
+
+constructor TRegistroM610.Create;
+begin
+  FRegistroM611 := TRegistroM611.Create;
+  FRegistroM620 := TRegistroM620List.Create;
+  FRegistroM630 := TRegistroM630List.Create;
+end;
+
+destructor TRegistroM610.Destroy;
+begin
+  FRegistroM611.Free;
+  FRegistroM620.Free;
+  FRegistroM630.Free;
+  inherited;
 end;
 
 {TRegistroM620}
@@ -1051,6 +1252,19 @@ begin
   Put(Index, Value);
 end;
 
+{ TRegistroM800 }
+
+constructor TRegistroM800.Create;
+begin
+  FRegistroM810 := TRegistroM810List.Create;
+end;
+
+destructor TRegistroM800.Destroy;
+begin
+  FRegistroM810.Free;
+  inherited;
+end;
+
 {TRegistroM810}
 
 function TRegistroM810List.GetItem(Index: Integer): TRegistroM810;
@@ -1069,5 +1283,31 @@ begin
   Put(Index, Value);
 end;
 
+
+{ TRegistroM200 }
+
+constructor TRegistroM200.Create;
+begin
+  FRegistroM210 := TRegistroM210List.Create;
+end;
+
+destructor TRegistroM200.Destroy;
+begin
+  FRegistroM210.Free;
+  inherited;
+end;
+
+{ TRegistroM600 }
+
+constructor TRegistroM600.Create;
+begin
+  FRegistroM610 := TRegistroM610List.Create;
+end;
+
+destructor TRegistroM600.Destroy;
+begin
+  FRegistroM610.Free;
+  inherited;
+end;
 
 end.

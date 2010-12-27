@@ -55,6 +55,7 @@ type
   TRegistroF139List = class;
   TRegistroF150List = class;
   TRegistroF200List = class;
+  TRegistroF205 = class;
   TRegistroF210List = class;
   TRegistroF211List = class;
   TRegistroF600List = class;
@@ -64,15 +65,41 @@ type
   //REGISTRO F001: ABERTURA DO BLOCO C
   TRegistroF001 = class(TOpenBlocos)
   private
+    FRegistroF010: TRegistroF010List;
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
+    property RegistroF010: TRegistroF010List read FRegistroF010 write FRegistroF010;
   end;
 
   //REGISTRO F010: IDENTIFICAÇÃO DO ESTABELECIMENTO
   TRegistroF010 = class
   private
     fCNPJ: Integer;           //02	CNPJ	Número de inscrição do estabelecimento no CNPJ.	N	014*	-
+
+    FRegistroF100: TRegistroF100List;
+    FRegistroF120: TRegistroF120List;
+    FRegistroF130: TRegistroF130List;
+    FRegistroF150: TRegistroF150List;
+    FRegistroF200: TRegistroF200List;
+    FRegistroF600: TRegistroF600List;
+    FRegistroF700: TRegistroF700List;
+    FRegistroF800: TRegistroF800List;
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
     property CNPJ: Integer read FCNPJ write FCNPJ;
+
+    property RegistroF100: TRegistroF100List read FRegistroF100 write FRegistroF100;
+    property RegistroF120: TRegistroF120List read FRegistroF120 write FRegistroF120;
+    property RegistroF130: TRegistroF130List read FRegistroF130 write FRegistroF130;
+    property RegistroF150: TRegistroF150List read FRegistroF150 write FRegistroF150;
+    property RegistroF200: TRegistroF200List read FRegistroF200 write FRegistroF200;
+    property RegistroF600: TRegistroF600List read FRegistroF600 write FRegistroF600;
+    property RegistroF700: TRegistroF700List read FRegistroF700 write FRegistroF700;
+    property RegistroF800: TRegistroF800List read FRegistroF800 write FRegistroF800;
   end;
 
   // Registro F010 - Lista
@@ -105,7 +132,12 @@ type
     FCOD_CTA: string;            //Código da conta analítica contábil debitada/creditada
     FCOD_CCUS: string;           //Código do Centro de Custos
     FDESC_DOC_OPER: string;      //Descrição  do Documento/Operação
+
+    FRegistroF111: TRegistroF111List;
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
     property COD_PART: string read FCOD_PART write FCOD_PART;
     property COD_ITEM: string read FCOD_ITEM write FCOD_ITEM;
     property DT_OPER: TDateTime read FDT_OPER write FDT_OPER;
@@ -123,6 +155,8 @@ type
     property COD_CTA: string read FCOD_CTA write FCOD_CTA;
     property COD_CCUS: string read FCOD_CCUS write FCOD_CCUS;
     property DESC_DOC_OPER: string read FDESC_DOC_OPER write FDESC_DOC_OPER;
+
+    property RegistroF111: TRegistroF111List read FRegistroF111 write FRegistroF111;
   end;
 
   // Registro F100 - Lista
@@ -186,7 +220,12 @@ type
     fCOD_CTA: string;	             //Código da conta analítica contábil debitada/creditada
     fCOD_CCUS: string;	           //Código do Centro de Custos
     fDESC_BEM_IMOB: string;	       //Descrição complementar do bem ou grupo de bens, com crédito apurado com base nos encargos de depreciação ou amortização.
+
+    FRegistroF129: TRegistroF129List;
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
     property NAT_BC_CRED: string read FNAT_BC_CRED write FNAT_BC_CRED;
     property IDENT_BEM_IMOB: string read fIDENT_BEM_IMOB write fIDENT_BEM_IMOB;
     property IND_ORIG_CRED: string read fIND_ORIG_CRED write fIND_ORIG_CRED;
@@ -203,6 +242,8 @@ type
     property COD_CTA: string read fCOD_CTA write fCOD_CTA;
     property COD_CCUS: string read fCOD_CCUS write fCOD_CCUS;
     property DESC_BEM_IMOB: string read fDESC_BEM_IMOB write fDESC_BEM_IMOB;
+
+    property RegistroF129: TRegistroF129List read FRegistroF129 write FRegistroF129;
   end;
 
   // Registro F120 - Lista
@@ -264,18 +305,23 @@ type
                                     //4 - 48 Meses;
                                     //5 - 6 Meses (Embalagens de bebidas frias)
                                     //9 - Outra periodicidade definida em Lei.
-   fCST_PIS: string;	             //Código da Situação Tributária referente ao PIS/PASEP, conforme a Tabela indicada no item 4.3.3.
-   fVL_BC_PIS: currency;	         //Base de cálculo Mensal do Crédito de PIS/PASEP, conforme indicador informado no campo 10.
-   fALIQ_PIS: currency;	           //Alíquota do PIS/PASEP
-   fVL_PIS: currency;	             //Valor do Crédito de PIS/PASEP
-   fCST_COFINS: string;	           //Código da Situação Tributária referente a COFINS, conforme a Tabela indicada no item 4.3.4.
-   fVL_BC_COFINS: currency;	       //Base de Cálculo Mensal do Crédito da COFINS, conforme indicador informado no campo 10.
-   fALIQ_COFINS: currency;	       //Alíquota da COFINS
-   fVL_COFINS: currency;	         //Valor do crédito da COFINS
-   fCOD_CTA: string;	             //Código da conta analítica contábil debitada/creditada
-   fCOD_CCUS: string;	             //Código do Centro de Custos
-   fDESC_BEM_IMOB: string;	       //Descrição complementar do bem ou grupo de bens, com crédito apurado com base no valor de aquisição.
+    fCST_PIS: string;	             //Código da Situação Tributária referente ao PIS/PASEP, conforme a Tabela indicada no item 4.3.3.
+    fVL_BC_PIS: currency;	         //Base de cálculo Mensal do Crédito de PIS/PASEP, conforme indicador informado no campo 10.
+    fALIQ_PIS: currency;	           //Alíquota do PIS/PASEP
+    fVL_PIS: currency;	             //Valor do Crédito de PIS/PASEP
+    fCST_COFINS: string;	           //Código da Situação Tributária referente a COFINS, conforme a Tabela indicada no item 4.3.4.
+    fVL_BC_COFINS: currency;	       //Base de Cálculo Mensal do Crédito da COFINS, conforme indicador informado no campo 10.
+    fALIQ_COFINS: currency;	       //Alíquota da COFINS
+    fVL_COFINS: currency;	         //Valor do crédito da COFINS
+    fCOD_CTA: string;	             //Código da conta analítica contábil debitada/creditada
+    fCOD_CCUS: string;	             //Código do Centro de Custos
+    fDESC_BEM_IMOB: string;	       //Descrição complementar do bem ou grupo de bens, com crédito apurado com base no valor de aquisição.
+
+    FRegistroF139: TRegistroF139List;
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
     property NAT_BC_CRED: string read FNAT_BC_CRED write FNAT_BC_CRED;
     property IDENT_BEM_IMOB: string read fIDENT_BEM_IMOB write fIDENT_BEM_IMOB;
     property IND_ORIG_CRED: string read fIND_ORIG_CRED write fIND_ORIG_CRED;
@@ -296,6 +342,8 @@ type
     property COD_CTA: string read fCOD_CTA write fCOD_CTA;
     property COD_CCUS: string read fCOD_CCUS write fCOD_CCUS;
     property DESC_BEM_IMOB: string read fDESC_BEM_IMOB write fDESC_BEM_IMOB;
+
+    property RegistroF139: TRegistroF139List read FRegistroF139 write FRegistroF139;
   end;
 
   // Registro F130 - Lista
@@ -416,7 +464,14 @@ type
     FDESC_UNID_IMOB: string;
     FIND_NAT_EMP: string;
     FDT_OPER: TDateTime;
+
+    FRegistroF205: TRegistroF205;
+    FRegistroF210: TRegistroF210List;
+    FRegistroF211: TRegistroF211List;
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
     property IND_OPER: string read FIND_OPER write FIND_OPER;
     property UNID_IMOB: string read FUNID_IMOB write FUNID_IMOB;
     property IDENT_EMP: string read FIDENT_EMP write FIDENT_EMP;
@@ -438,6 +493,10 @@ type
     property PERC_REC_RECEB: currency read FPERC_REC_RECEB write FPERC_REC_RECEB;
     property IND_NAT_EMP: string read FIND_NAT_EMP write FIND_NAT_EMP;
     property INF_COMP: string read FINF_COMP write FINF_COMP;
+
+    property RegistroF205: TRegistroF205 read FRegistroF205 write FRegistroF205;
+    property RegistroF210: TRegistroF210List read FRegistroF210 write FRegistroF210;
+    property RegistroF211: TRegistroF211List read FRegistroF211 write FRegistroF211;
   end;
 
   // Registro F200 - Lista
@@ -476,8 +535,8 @@ type
     property VL_CUS_INC_ACUM: currency read FVL_CUS_INC_ACUM write FVL_CUS_INC_ACUM;
     property VL_EXC_BC_CUS_INC_ACUM: currency read FVL_EXC_BC_CUS_INC_ACUM write FVL_EXC_BC_CUS_INC_ACUM;
     property VL_BC_CUS_INC: currency read FVL_BC_CUS_INC write FVL_BC_CUS_INC;
-    property CST_PIS: string read FCST_PIS write FCST_PIS;
-    property ALIQ_PIS: currency read FALIQ_PIS write FALIQ_PIS;
+    //property CST_PIS: string read FCST_PIS write FCST_PIS;
+    //property ALIQ_PIS: currency read FALIQ_PIS write FALIQ_PIS;
     property VL_CRED_PIS_ACUM: currency read FVL_CRED_PIS_ACUM write FVL_CRED_PIS_ACUM;
     property VL_CRED_PIS_DESC_ANT: currency read FVL_CRED_PIS_DESC_ANT write FVL_CRED_PIS_DESC_ANT;
     property VL_CRED_PIS_DESC: currency read FVL_CRED_PIS_DESC write FVL_CRED_PIS_DESC;
@@ -648,6 +707,19 @@ type
 
 implementation
 
+{TRegistroF001}
+
+constructor TRegistroF001.Create;
+begin
+  FRegistroF010 := TRegistroF010List.Create;
+end;
+
+destructor TRegistroF001.Destroy;
+begin
+  FRegistroF010.Free;
+  inherited;
+end;
+
 {TRegistroF010}
 
 function TRegistroF010List.GetItem(Index: Integer): TRegistroF010;
@@ -666,6 +738,33 @@ begin
   Put(Index, Value);
 end;
 
+{ TRegistroF010 }
+
+constructor TRegistroF010.Create;
+begin
+  FRegistroF100 := TRegistroF100List.Create;
+  FRegistroF120 := TRegistroF120List.Create;
+  FRegistroF130 := TRegistroF130List.Create;
+  FRegistroF150 := TRegistroF150List.Create;
+  FRegistroF200 := TRegistroF200List.Create;
+  FRegistroF600 := TRegistroF600List.Create;
+  FRegistroF700 := TRegistroF700List.Create;
+  FRegistroF800 := TRegistroF800List.Create;
+end;
+
+destructor TRegistroF010.Destroy;
+begin
+  FRegistroF100.Free;
+  FRegistroF120.Free;
+  FRegistroF130.Free;
+  FRegistroF150.Free;
+  FRegistroF200.Free;
+  FRegistroF600.Free;
+  FRegistroF700.Free;
+  FRegistroF800.Free;
+  inherited;
+end;
+
 {TRegistroF100}
 
 function TRegistroF100List.GetItem(Index: Integer): TRegistroF100;
@@ -682,6 +781,19 @@ end;
 procedure TRegistroF100List.SetItem(Index: Integer; const Value: TRegistroF100);
 begin
   Put(Index, Value);
+end;
+
+{ TRegistroF100 }
+
+constructor TRegistroF100.Create;
+begin
+  FRegistroF111 := TRegistroF111List.Create;
+end;
+
+destructor TRegistroF100.Destroy;
+begin
+  FRegistroF111.Free;
+  inherited;
 end;
 
 {TRegistroF111}
@@ -720,6 +832,19 @@ begin
   Put(Index, Value);
 end;
 
+{ TRegistroF120 }
+
+constructor TRegistroF120.Create;
+begin
+  FRegistroF129 := TRegistroF129List.Create;
+end;
+
+destructor TRegistroF120.Destroy;
+begin
+  FRegistroF129.Free;
+  inherited;
+end;
+
 {TRegistroF129}
 
 function TRegistroF129List.GetItem(Index: Integer): TRegistroF129;
@@ -754,6 +879,19 @@ end;
 procedure TRegistroF130List.SetItem(Index: Integer; const Value: TRegistroF130);
 begin
   Put(Index, Value);
+end;
+
+{ TRegistroF130 }
+
+constructor TRegistroF130.Create;
+begin
+  FRegistroF139 := TRegistroF139List.Create;
+end;
+
+destructor TRegistroF130.Destroy;
+begin
+  FRegistroF139.Free;
+  inherited;
 end;
 
 {TRegistroF139}
@@ -808,6 +946,23 @@ end;
 procedure TRegistroF200List.SetItem(Index: Integer; const Value: TRegistroF200);
 begin
   Put(Index, Value);
+end;
+
+{ TRegistroF200 }
+
+constructor TRegistroF200.Create;
+begin
+  FRegistroF205 := TRegistroF205.Create;
+  FRegistroF210 := TRegistroF210List.Create;
+  FRegistroF211 := TRegistroF211List.Create;
+end;
+
+destructor TRegistroF200.Destroy;
+begin
+  FRegistroF205.Free;
+  FRegistroF210.Free;
+  FRegistroF211.Free;
+  inherited;
 end;
 
 {TRegistroF210}

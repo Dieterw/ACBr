@@ -103,17 +103,36 @@ Versão 1.0.0  24/12/2010
    OnAntesAbreCupom, OnDepoisAbreCupom, OnErrorAbreCupom, etc
    (por: Franklin e Elton)
 
-[+] Adicionadas propriedades "NumGNFC", "NumCFD", "NumNCN", "NumCCDC", 
-    "TotalCancelamentosOPNF", "TotalDescontosOPNF", "TotalAcrescimosOPNF" e
-    "ParamDescontoISSQN". (por: Elton)
+[+] Adicionadas propriedades:
+     - "NumGNFC" é o "Contador de Operação Não Fiscal Cancelada" armazenando 
+    o número de cupons de Operaçôes Não Fiscais que foram cancelados;
+     - "NumCFD" é o "Contador de Fita-Detalhe Emitida";
+     - "NumNCN" é o "Contador de Débito ou Crédito não Emitidos", ou seja, os
+    Comprovantes de Débito ou Crédito (CDC) que não foram emitidos. Em geral,
+    ao fazer uma venda com forma de pagamento que permite CDC, mas não se emita
+    um CDC no final, esse contador é incrementado;
+     - "NumCCDC" é o "Contador de Débito ou Crédito Cancelados", ou seja, cada
+    CDC cancelado é contado nesse registrador;
+     - "TotalCancelamentosOPNF", "Total das Operações Não Fiscais Canceladas"
+    Exemplo, ao cancelar uma Sangria ou Suprimento;
+     - "TotalDescontosOPNF", "Total dos Descontos nas Operações Não Fiscais";
+     - "TotalAcrescimosOPNF","Total dos Acréscimos nas Operações Não Fiscais";
+     - "ParamDescontoISSQN", é o parâmetro da impressora que define se o 
+    Desconto em ISSQN está (ou não) habilitado; (por: Elton)
 
 [*] Modificado GetDadosReducaoZ para retornar dados das novas propriedades
-    acima.Também foram adicionadas propriedades já implementadas que não 
-    estavam saindo no INI, a saber, "NumGNF", "NumCCF", "NumCDC", "NumGRG" e 
-    "NumCFC". (por: Elton)
+    acima. Também foram adicionadas propriedades já implementadas que não 
+    estavam saindo no INI mas são requeridos pelo PAF, a saber:
+     - "NumGNF", "Contador Geral de Operaçôes Não Fiscais";
+     - "NumCCF", "Contador de Cupom Fiscal";
+     - "NumCDC", "Contador de Comprovantes de Débito ou Crédito";
+     - "NumGRG", "Contador Geral de Relatório Gerencial";
+     - "NumCFC", "Contador de Cupom Fiscal Cancelado";
+     (por: Elton)
 
 [*] Modificado GetDadosReducaoZ, onde TotalISSQN estava retornando valor 
-    incorreto. É necessária averiguação de valor correto. (por: Elton)
+    incorreto. Na verdade, estava retornando o valor
+    É necessária averiguação de valor correto. (por: Elton)
 
 [*] Método "LinhaRelatorioGerencial" agora suporta impressão de Longos 
     Gerenciais abrindo um Novo Gerencial se necessário (caso o ECF o tenha 
@@ -122,7 +141,8 @@ Versão 1.0.0  24/12/2010
 -- ACBrECFBematech --
 [+] Implementados métodos "GetParamDescontoISSQN", "GetNumGNFC", "GetNumCFD", 
     "GetNumNCN", "GetNumCCDC", "GetTotalAcrescimosOPNF", 
-    "GetTotalCancelamentosOPNF" e "GetTotalDescontosOPNF". (por: Elton)
+    "GetTotalCancelamentosOPNF" e "GetTotalDescontosOPNF". Veja propriedades
+    adicionadas no ACBrECF acima. (por: Elton)
 
 [*] Corrigido método RetornaInfoECF para refletir melhor as informações das 
     impressoras atuais. Por padrão agora é chamado nos lugares em que se 

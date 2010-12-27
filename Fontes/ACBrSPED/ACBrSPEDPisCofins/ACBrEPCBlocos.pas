@@ -99,9 +99,8 @@ type
                              atOutros      // 1 – Outros.
                              );
   /// Versão do Leiaute do arquivo - TRegistro0000
-  TACBrVersaoLeiaute      = (vlVersao100,  // Código 001 - Versão 100 Ato COTEPE 01/01/2008
-                             vlVersao101,  // Código 002 - Versão 101 Ato COTEPE 01/01/2009
-                             vlVersao102   // Código 003 - Versão 102 Ato COTEPE 01/01/2010
+  TACBrVersaoLeiaute      = (vlVersao100,  // Código 001 - Versão 100 ADE Cofis nº 31/2010 de 01/01/2011
+                             vlVersao101   // Código 002 - Versão 101 ADE Cofis nº 34/2010 de 01/01/2011
                              );
   /// Código da finalidade do arquivo - TRegistro0000
   TACBrCodFinalidade      = (raOriginal,     // 0 - Remessa do arquivo original

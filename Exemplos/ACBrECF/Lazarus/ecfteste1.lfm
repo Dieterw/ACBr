@@ -173,9 +173,9 @@ object Form1: TForm1
     Height = 317
     Top = 0
     Width = 514
-    ActivePage = tsCodBarras
+    ActivePage = TabSheet4
     Align = alClient
-    TabIndex = 4
+    TabIndex = 0
     TabOrder = 0
     object TabSheet4: TTabSheet
       Caption = 'ECF'
@@ -504,8 +504,8 @@ object Form1: TForm1
     end
     object TabSheet1: TTabSheet
       Caption = 'Cmd/Resp'
-      ClientHeight = 285
-      ClientWidth = 512
+      ClientHeight = 291
+      ClientWidth = 506
       object Label2: TLabel
         Left = 0
         Height = 17
@@ -1795,6 +1795,13 @@ object Form1: TForm1
         object DataHora1: TMenuItem
           Caption = 'Data Hora'
           OnClick = DataHora1Click
+        end
+        object MenuItem22: TMenuItem
+          Caption = '-'
+        end
+        object mModeloStr: TMenuItem
+          Caption = 'ModeloStr'
+          OnClick = mModeloStrClick
         end
         object NumECF1: TMenuItem
           Caption = 'Num ECF'

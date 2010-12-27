@@ -41,7 +41,7 @@ object Form1: TForm1
     Top = 0
     Width = 594
     Height = 330
-    ActivePage = TabSheet8
+    ActivePage = TabSheet4
     Align = alClient
     TabOrder = 1
     object TabSheet4: TTabSheet
@@ -1332,6 +1332,13 @@ object Form1: TForm1
         object DataHora1: TMenuItem
           Caption = 'Data Hora'
           OnClick = DataHora1Click
+        end
+        object N42: TMenuItem
+          Caption = '-'
+        end
+        object mModeloStr: TMenuItem
+          Caption = 'ModeloStr'
+          OnClick = mModeloStrClick
         end
         object NumECF1: TMenuItem
           Caption = 'Num ECF'

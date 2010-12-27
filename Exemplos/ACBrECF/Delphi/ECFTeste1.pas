@@ -306,6 +306,8 @@ type
     speLinBuf: TSpinEdit;
     NumSerieMFD: TMenuItem;
     ParametroDescontoISSQN1: TMenuItem;
+    N42: TMenuItem;
+    mModeloStr: TMenuItem;
     procedure cbxModeloChange(Sender: TObject);
     procedure Sair1Click(Sender: TObject);
     procedure bAtivarClick(Sender: TObject);
@@ -487,6 +489,7 @@ type
     procedure speLinBufChange(Sender: TObject);
     procedure NumSerieMFDClick(Sender: TObject);
     procedure ParametroDescontoISSQN1Click(Sender: TObject);
+    procedure mModeloStrClick(Sender: TObject);
   private
     { Private declarations }
     Function Converte( cmd : String) : String;
@@ -3386,6 +3389,12 @@ end;
 procedure TForm1.NumSerieMFDClick(Sender: TObject);
 begin
   mResp.Lines.Add( 'N.Série MFD: ('+ ACBrECF1.NumSerieMFD+')' );
+  AtualizaMemos ;
+end;
+
+procedure TForm1.mModeloStrClick(Sender: TObject);
+begin
+  mResp.Lines.Add( 'ModeloStr: ('+ ACBrECF1.ModeloStr+')' );
   AtualizaMemos ;
 end;
 

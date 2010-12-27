@@ -143,6 +143,8 @@ type
     mAcharRGIndice : TMenuItem ;
     mAcharRGDescricao : TMenuItem ;
     MenuItem20 : TMenuItem ;
+    mModeloStr : TMenuItem ;
+    MenuItem22 : TMenuItem ;
     mFontesECF : TMenuItem ;
     mLerTroco : TMenuItem ;
     mRZ : TMemo ;
@@ -343,6 +345,7 @@ type
     procedure mFontesECFClick(Sender : TObject) ;
     procedure mLerTotaisRelatoriosGerenciaisClick(Sender : TObject) ;
     procedure mLerTrocoClick(Sender : TObject) ;
+    procedure mModeloStrClick(Sender : TObject) ;
     procedure mRelatorioGerenciaisClick(Sender : TObject) ;
     procedure mClicheClick(Sender : TObject) ;
     procedure mCortaPapelClick(Sender : TObject) ;
@@ -1105,6 +1108,12 @@ end;
 procedure TForm1.mLerTrocoClick(Sender : TObject) ;
 begin
   mResp.Lines.Add( 'Total do Troco: '+ FormatFloat('#,###,##0.00', ACBrECF1.TotalTroco) ) ;
+  AtualizaMemos ;
+end;
+
+procedure TForm1.mModeloStrClick(Sender : TObject) ;
+begin
+  mResp.Lines.Add( 'ModeloStr: ('+ ACBrECF1.ModeloStr+')' );
   AtualizaMemos ;
 end;
 

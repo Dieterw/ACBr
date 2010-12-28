@@ -1,7 +1,7 @@
 object frmDemo: TfrmDemo
-  Left = 357
+  Left = 196
   Height = 595
-  Top = 109
+  Top = 189
   Width = 813
   Caption = 'Demo ACBrBoleto'
   ClientHeight = 595
@@ -909,7 +909,7 @@ object frmDemo: TfrmDemo
     Cedente.Cidade = 'Tatui'
     Cedente.UF = 'SP'
     Cedente.CEP = '18270000'
-    Banco.Numero = 104
+    Banco.Numero = 237
     NomeArqRemessa = '.'
     LayoutRemessa = c240
     ACBrBoletoFC = ACBrBoletoFCFortes1

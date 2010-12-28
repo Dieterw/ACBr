@@ -208,7 +208,10 @@ begin
         DataDocumento     := edtDataDoc.Date;
         NumeroDocumento   := edtNumeroDoc.Text;
         EspecieDoc        := edtEspecieDoc.Text;
-        Aceite            := atSim;
+        if cbxAceite.ItemIndex = 0 then
+           Aceite := atSim
+        else
+           Aceite := atNao;
         DataProcessamento := Now;
         NossoNumero       := padR(edtNossoNro.Text,ACBrBoleto.Banco.TamanhoMaximoNossoNum);
         Carteira          := edtCarteira.Text;

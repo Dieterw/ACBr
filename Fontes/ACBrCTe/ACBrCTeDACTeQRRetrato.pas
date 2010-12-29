@@ -50,7 +50,6 @@ uses
 type
   TfrmDACTeQRRetrato = class(TfrmDACTeQR)
     qrbItens: TQRBand;
-    qrbSistema: TQRChildBand;
     qrdbtTpDoc1: TQRDBText;
     cdsDocumentos: TClientDataSet;
     qrdbtCnpjEmitente1: TQRDBText;
@@ -222,31 +221,10 @@ type
     qrlRntrcEmpresa: TQRLabel;
     qrlLotacao: TQRLabel;
     qrlDtPrevEntrega: TQRLabel;
-    QRLabel65: TQRLabel;
-    QRShape2: TQRShape;
-    QRLabel66: TQRLabel;
-    QRShape3: TQRShape;
-    QRShape53: TQRShape;
-    QRLabel67: TQRLabel;
-    QRShape30: TQRShape;
-    QRLabel70: TQRLabel;
-    QRLabel69: TQRLabel;
-    QRLabel68: TQRLabel;
-    qrlDHChegada: TQRLabel;
-    QRLabel72: TQRLabel;
-    qrlblSistema: TQRLabel;
-    QRSysData1: TQRSysData;
-    QRLabel15: TQRLabel;
     qrmObsExcEmitente: TQRMemo;
     qrlMsgTeste: TQRLabel;
     QRLabel7: TQRLabel;
     QRShape27: TQRShape;
-    QRShape4: TQRShape;
-    QRLabel19: TQRLabel;
-    QRLabel57: TQRLabel;
-    qrlNumCte1: TQRLabel;
-    QRLabel60: TQRLabel;
-    qrlSerie1: TQRLabel;
     qrbDadosNotaFiscal: TQRChildBand;
     QRLabel1: TQRLabel;
     qrlProdPredominante: TQRLabel;
@@ -361,7 +339,61 @@ type
     QRShape60: TQRShape;
     QRShape61: TQRShape;
     QRShape62: TQRShape;
+    qrbRecibo: TQRChildBand;
+    qrbLotacaoSim: TQRChildBand;
+    QRShape10: TQRShape;
+    QRLabel65: TQRLabel;
+    QRShape2: TQRShape;
+    QRLabel66: TQRLabel;
+    QRLabel70: TQRLabel;
+    QRShape3: TQRShape;
+    QRShape53: TQRShape;
+    QRLabel69: TQRLabel;
+    QRShape4: TQRShape;
+    QRShape30: TQRShape;
+    QRLabel67: TQRLabel;
+    qrlDHChegada: TQRLabel;
+    QRLabel68: TQRLabel;
+    QRLabel72: TQRLabel;
+    QRLabel19: TQRLabel;
+    QRLabel57: TQRLabel;
+    qrlNumCte1: TQRLabel;
+    QRLabel60: TQRLabel;
+    qrlSerie1: TQRLabel;
+    QRShape11: TQRShape;
+    QRLabel71: TQRLabel;
+    QRShape12: TQRShape;
+    QRLabel75: TQRLabel;
+    QRShape13: TQRShape;
+    QRLabel76: TQRLabel;
+    QRLabel112: TQRLabel;
+    QRLabel115: TQRLabel;
+    QRLabel117: TQRLabel;
+    QRShape14: TQRShape;
+    QRShape31: TQRShape;
+    QRShape33: TQRShape;
+    QRLabel118: TQRLabel;
+    QRLabel120: TQRLabel;
+    QRLabel121: TQRLabel;
+    QRShape39: TQRShape;
+    QRLabel122: TQRLabel;
+    QRLabel124: TQRLabel;
+    QRLabel126: TQRLabel;
+    QRLabel127: TQRLabel;
+    QRShape40: TQRShape;
+    QRShape41: TQRShape;
+    QRLabel129: TQRLabel;
+    QRLabel130: TQRLabel;
+    QRLabel131: TQRLabel;
     QRShape42: TQRShape;
+    QRShape43: TQRShape;
+    QRShape44: TQRShape;
+    qrbSistema: TQRChildBand;
+    QRLabel15: TQRLabel;
+    QRSysData1: TQRSysData;
+    qrlblSistema: TQRLabel;
+    qrlNomeMotorista: TQRLabel;
+    qrlCPFMotorista: TQRLabel;
     procedure qrbDadosExcEmitenteBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
     procedure qrbModRodFracionadoBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
     procedure qrbObsBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
@@ -376,6 +408,8 @@ type
     procedure qrbComplementadoBeforePrint(Sender: TQRCustomBand;
       var PrintBand: Boolean);
     procedure qrbHeaderItensBeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure qrbLotacaoSimBeforePrint(Sender: TQRCustomBand;
       var PrintBand: Boolean);
   private
     FTotalPages: integer;
@@ -577,13 +611,23 @@ begin
   // Incluido / Alterado por Italo e Doni em 24/09/2010
   qrbModRodFracionado.Enabled:=(FCTe.Ide.tpCTe = tcNormal);
 
+  // Incluido / Alterado por Italo em 29/12/2010
+  qrbLotacaoSim.Enabled := False;
+
   with FCTe.Rodo do
   begin
     qrlRntrcEmpresa.Caption := RNTRC;
 
+  // Incluido / Alterado por Italo em 29/12/2010
     case Lota of
-      ltNao: qrlLotacao.Caption := 'NÃO';
-      ltsim: qrlLotacao.Caption := 'SIM';
+      ltNao: begin
+              qrlLotacao.Caption    := 'NÃO';
+              qrbLotacaoSim.Enabled := False;
+             end;
+      ltsim: begin
+              qrlLotacao.Caption    := 'SIM';
+              qrbLotacaoSim.Enabled := True;
+             end;
     end;
 
     qrlDtPrevEntrega.Caption := FormatDateTime('DD/MM/YYYY', dPrev);
@@ -1129,6 +1173,16 @@ begin
   // Imprime os Documentos Originários se o Tipo de CTe for Normal
   // Incluido / Alterado por Italo e Doni em 24/09/2010
   // qrbHeaderItens.Enabled:=(FCTe.Ide.tpCTe = tcNormal);
+end;
+
+procedure TfrmDACTeQRRetrato.qrbLotacaoSimBeforePrint(
+  Sender: TQRCustomBand; var PrintBand: Boolean);
+begin
+  inherited;
+  // Incluido / Alterado por Italo em 29/12/2010
+
+  qrlNomeMotorista.Caption := FCTe.Rodo.moto.Items[0].xNome;
+  qrlCPFMotorista.Caption  := CTeUtil.FormatarCNPJ(FCTe.Rodo.moto.Items[0].CPF);
 end;
 
 end.

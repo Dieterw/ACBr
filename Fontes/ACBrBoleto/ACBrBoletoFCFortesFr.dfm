@@ -1,8 +1,8 @@
 object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
-  Left = 54
-  Top = 0
+  Left = 191
+  Top = 168
   Width = 970
-  Height = 738
+  Height = 780
   Caption = 'ACBRBoletoFCFortesFr'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -19,9 +19,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
     Top = 50
     Width = 794
     Height = 1123
-    Margins.LeftMargin = 3.000000000000000000
+    Margins.LeftMargin = 4.000000000000000000
     Margins.TopMargin = 5.000000000000000000
-    Margins.RightMargin = 5.000000000000000000
+    Margins.RightMargin = 3.000000000000000000
     Margins.BottomMargin = 5.000000000000000000
     ParentFont = True
     PreviewOptions.ShowModal = True
@@ -29,54 +29,751 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
     BeforePrint = LayoutBoletoBeforePrint
     OnDataCount = LayoutBoletoDataCount
     OnDataRecord = LayoutBoletoDataRecord
-    object RLBand1: TRLBand
-      Left = 11
+    object txtSwHouse: TRLAngleLabel
+      Left = 3
+      Top = 677
+      Width = 12
+      Height = 53
+      Alignment = taCenter
+        Angle = 90.000000000000000000
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -9
+      Font.Name = 'Arial'
+      Font.Pitch = fpFixed
+      Font.Style = []
+      Layout = tlCenter
+      ParentFont = False
+      end
+    object RLBand4: TRLBand
+      Left = 15
       Top = 19
-      Width = 764
-      Height = 408
-      BeforePrint = RLBand1BeforePrint
-      object RLDraw29: TRLDraw
+      Width = 768
+      Height = 203
+      BeforePrint = RLBand4BeforePrint
+      object RLDraw14: TRLDraw
+        Left = 278
+        Top = 3
+        Width = 17
+        Height = 126
+        Angle = 90.000000000000000000
+        DrawKind = dkLine
+      end
+      object RLDraw8: TRLDraw
+        Left = 248
+        Top = 128
+        Width = 10
+        Height = 29
+        Angle = 90.000000000000000000
+        DrawKind = dkLine
+      end
+      object RLDraw12: TRLDraw
+        Left = 456
+        Top = 44
+        Width = 9
+        Height = 113
+        Angle = 90.000000000000000000
+        DrawKind = dkLine
+      end
+      object RLDraw6: TRLDraw
+        Left = 224
+        Top = 99
+        Width = 8
+        Height = 29
+        Angle = 90.000000000000000000
+        DrawKind = dkLine
+      end
+      object RLDraw9: TRLDraw
+        Left = 69
+        Top = 99
+        Width = 17
+        Height = 29
+        Angle = 90.000000000000000000
+        DrawKind = dkLine
+      end
+      object RLDraw7: TRLDraw
+        Left = 162
+        Top = 128
+        Width = 8
+        Height = 29
+        Angle = 90.000000000000000000
+        DrawKind = dkLine
+      end
+      object RLDraw4: TRLDraw
         Left = 0
-        Top = 388
-        Width = 756
+        Top = 176
+        Width = 763
+        Height = 17
+        DrawKind = dkLine
+      end
+      object RLDraw73: TRLDraw
+        Left = 0
+        Top = 186
+        Width = 763
         Height = 16
         DrawKind = dkLine
         Pen.Style = psDot
       end
-      object RLDraw39: TRLDraw
-        Left = 2
-        Top = 337
-        Width = 754
+      object RLDraw13: TRLDraw
+        Left = 0
+        Top = 148
+        Width = 763
         Height = 17
         DrawKind = dkLine
       end
-      object RLDraw38: TRLDraw
-        Left = 2
-        Top = 273
-        Width = 754
+      object RLDraw10: TRLDraw
+        Left = 0
+        Top = 63
+        Width = 460
         Height = 17
         DrawKind = dkLine
       end
-      object RLDraw37: TRLDraw
-        Left = 571
-        Top = 239
-        Width = 185
+      object RLDraw2: TRLDraw
+        Left = 173
+        Top = 3
+        Width = 17
+        Height = 41
+        Angle = 90.000000000000000000
+        DrawKind = dkLine
+      end
+      object RLDraw3: TRLDraw
+        Left = 0
+        Top = 120
+        Width = 763
         Height = 17
         DrawKind = dkLine
       end
-      object RLDraw34: TRLDraw
-        Left = 570
-        Top = 207
-        Width = 185
+      object RLDraw5: TRLDraw
+        Left = 0
+        Top = 90
+        Width = 460
         Height = 17
+        DrawKind = dkLine
+      end
+      object RLDraw11: TRLDraw
+        Left = 0
+        Top = 36
+        Width = 763
+        Height = 17
+        DrawKind = dkLine
+      end
+      object RLLabel2: TRLLabel
+        Left = 4
+        Top = 46
+        Width = 30
+        Height = 10
+        Caption = 'Cedente'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object txtNomeCedente4: TRLLabel
+        Left = 9
+        Top = 57
+        Width = 275
+        Height = 13
+        AutoSize = False
+        Caption = 'Nome do Cedente'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -9
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object RLLabel6: TRLLabel
+        Left = 289
+        Top = 46
+        Width = 91
+        Height = 10
+        Caption = 'Ag'#234'ncia / C'#243'digo Cedente'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object txtCodigoCedente4: TRLLabel
+        Left = 289
+        Top = 57
+        Width = 168
+        Height = 13
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'Ag'#234'ncia / C'#243'digo Cedente'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -9
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object RLLabel8: TRLLabel
+        Left = 169
+        Top = 130
+        Width = 18
+        Height = 10
+        Caption = 'Data'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object RLLabel11: TRLLabel
+        Left = 80
+        Top = 100
+        Width = 79
+        Height = 10
+        Caption = 'N'#250'mero do Documento'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object txtNumeroDocumento4: TRLLabel
+        Left = 80
+        Top = 113
+        Width = 145
+        Height = 13
+        AutoSize = False
+        Caption = 'N'#250'mero do Documento'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -9
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object RLLabel14: TRLLabel
+        Left = 231
+        Top = 100
+        Width = 29
+        Height = 10
+        Caption = 'Esp'#233'cie'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object txtEspecie4: TRLLabel
+        Left = 231
+        Top = 113
+        Width = 53
+        Height = 13
+        AutoSize = False
+        Caption = 'Esp'#233'cie'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -9
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object RLLabel23: TRLLabel
+        Left = 289
+        Top = 73
+        Width = 53
+        Height = 10
+        Caption = 'Nosso N'#250'mero'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object txtNossoNumero4: TRLLabel
+        Left = 289
+        Top = 84
+        Width = 168
+        Height = 13
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'Nosso N'#250'mero'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -9
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object RLLabel33: TRLLabel
+        Left = 289
+        Top = 100
+        Width = 70
+        Height = 10
+        Caption = 'Valor do Documento'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object txtValorDocumento4: TRLLabel
+        Left = 289
+        Top = 113
+        Width = 168
+        Height = 13
+        AutoSize = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -9
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object imgBanco4: TRLImage
+        Left = 1
+        Top = -1
+        Width = 179
+        Height = 42
+      end
+      object txtNumeroBanco4: TRLLabel
+        Left = 184
+        Top = 12
+        Width = 102
+        Height = 27
+        Alignment = taCenter
+        AutoSize = False
+        Caption = '000-0'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -24
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object RLLabel3: TRLLabel
+        Left = 289
+        Top = 21
+        Width = 465
+        Height = 18
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'Comprovante de Entrega'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -16
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object RLLabel51: TRLLabel
+        Left = 496
+        Top = 46
+        Width = 219
+        Height = 10
+        Caption = 'Motivo de n'#227'o entrega. (Para uso da empresa entregadora)'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object RLLabel52: TRLLabel
+        Left = 4
+        Top = 158
+        Width = 70
+        Height = 10
+        Caption = 'Local de Pagamento'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lblLocalPagto4: TRLLabel
+        Left = 9
+        Top = 169
+        Width = 496
+        Height = 15
+        AutoSize = False
+        Caption = 'Local de Pagamento'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -9
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object RLLabel21: TRLLabel
+        Left = 4
+        Top = 100
+        Width = 41
+        Height = 10
+        Caption = 'Vencimento'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object txtDataVencimento4: TRLLabel
+        Left = 9
+        Top = 113
+        Width = 66
+        Height = 13
+        AutoSize = False
+        Caption = 'Vencimento'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -9
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object RLLabel18: TRLLabel
+        Left = 4
+        Top = 130
+        Width = 89
+        Height = 12
+        Caption = 'Recebemos o Titulo '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -9
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object RLLabel20: TRLLabel
+        Left = 4
+        Top = 143
+        Width = 132
+        Height = 11
+        Caption = 'com as caracterist'#237'cas acima'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -9
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object RLLabel25: TRLLabel
+        Left = 4
+        Top = 73
+        Width = 27
+        Height = 10
+        Caption = 'Sacado'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object txtNomeSacado4: TRLLabel
+        Left = 9
+        Top = 84
+        Width = 275
+        Height = 13
+        AutoSize = False
+        Caption = 'Nome do Sacado'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -9
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object RLLabel27: TRLLabel
+        Left = 256
+        Top = 130
+        Width = 38
+        Height = 10
+        Caption = 'Assinatura'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object RLLabel28: TRLLabel
+        Left = 463
+        Top = 130
+        Width = 18
+        Height = 10
+        Caption = 'Data'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object RLLabel30: TRLLabel
+        Left = 553
+        Top = 130
+        Width = 38
+        Height = 10
+        Caption = 'Assinatura'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object RLLabel29: TRLLabel
+        Left = 466
+        Top = 64
+        Width = 48
+        Height = 10
+        Caption = '[   ] Mudou-se'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object RLLabel31: TRLLabel
+        Left = 466
+        Top = 88
+        Width = 48
+        Height = 10
+        Caption = '[   ] Recusado'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object RLLabel32: TRLLabel
+        Left = 466
+        Top = 112
+        Width = 62
+        Height = 10
+        Caption = '[   ] Desconhecido'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object RLLabel35: TRLLabel
+        Left = 560
+        Top = 64
+        Width = 41
+        Height = 10
+        Caption = '[   ] Ausente'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object RLLabel37: TRLLabel
+        Left = 560
+        Top = 88
+        Width = 64
+        Height = 10
+        Caption = '[   ] N'#227'o procurado'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object RLLabel50: TRLLabel
+        Left = 560
+        Top = 112
+        Width = 43
+        Height = 10
+        Caption = '[   ] Falecido'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object RLLabel54: TRLLabel
+        Left = 655
+        Top = 64
+        Width = 90
+        Height = 10
+        Caption = '[   ] N'#227'o existe n'#186'. indicado'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object RLLabel55: TRLLabel
+        Left = 655
+        Top = 88
+        Width = 86
+        Height = 10
+        Caption = '[   ] Endere'#231'o insuficiente'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object RLLabel56: TRLLabel
+        Left = 655
+        Top = 112
+        Width = 96
+        Height = 10
+        Caption = '[   ] Outros (anotar no verso)'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object RLLabel57: TRLLabel
+        Left = 0
+        Top = 187
+        Width = 26
+        Height = 14
+        Caption = '"'
+        Font.Charset = SYMBOL_CHARSET
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Wingdings'
+        Font.Style = []
+        ParentFont = False
+      end
+      object RLDraw72: TRLDraw
+        Left = 542
+        Top = 128
+        Width = 10
+        Height = 29
+        Angle = 90.000000000000000000
+        DrawKind = dkLine
+      end
+      object RLDraw15: TRLDraw
+        Left = 635
+        Top = 156
+        Width = 10
+        Height = 29
+        Angle = 90.000000000000000000
+        DrawKind = dkLine
+      end
+      object RLLabel4: TRLLabel
+        Left = 641
+        Top = 158
+        Width = 82
+        Height = 10
+        Caption = 'Data do Processamento'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object txtDataProcessamento4: TRLLabel
+        Left = 644
+        Top = 169
+        Width = 109
+        Height = 15
+        AutoSize = False
+        Caption = 'Data do Processamento'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -9
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+    end
+    object RLBand1: TRLBand
+      Left = 15
+      Top = 222
+      Width = 768
+      Height = 408
+      BeforePrint = RLBand1BeforePrint
+      object RLDraw21: TRLDraw
+        Left = 117
+        Top = 121
+        Width = 17
+        Height = 62
+        Angle = 90.000000000000000000
+        DrawKind = dkLine
+      end
+      object RLDraw24: TRLDraw
+        Left = 241
+        Top = 121
+        Width = 17
+        Height = 62
+        Angle = 90.000000000000000000
+        DrawKind = dkLine
+      end
+      object RLDraw25: TRLDraw
+        Left = 387
+        Top = 121
+        Width = 17
+        Height = 62
+        Angle = 90.000000000000000000
         DrawKind = dkLine
       end
       object RLDraw28: TRLDraw
         Left = 562
         Top = 43
         Width = 17
-        Height = 235
+        Height = 238
         Angle = 90.000000000000000000
+        DrawKind = dkLine
+      end
+      object RLDraw29: TRLDraw
+        Left = 0
+        Top = 388
+        Width = 763
+        Height = 16
+        DrawKind = dkLine
+        Pen.Style = psDot
+      end
+      object RLDraw39: TRLDraw
+        Left = 0
+        Top = 337
+        Width = 763
+        Height = 17
+        DrawKind = dkLine
+      end
+      object RLDraw38: TRLDraw
+        Left = 0
+        Top = 273
+        Width = 763
+        Height = 17
+        DrawKind = dkLine
+      end
+      object RLDraw37: TRLDraw
+        Left = 571
+        Top = 239
+        Width = 193
+        Height = 17
+        DrawKind = dkLine
+      end
+      object RLDraw34: TRLDraw
+        Left = 570
+        Top = 207
+        Width = 193
+        Height = 17
         DrawKind = dkLine
       end
       object RLDraw27: TRLDraw
@@ -95,62 +792,38 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Angle = 90.000000000000000000
         DrawKind = dkLine
       end
-      object RLDraw25: TRLDraw
-        Left = 387
-        Top = 123
-        Width = 17
-        Height = 57
-        Angle = 90.000000000000000000
-        DrawKind = dkLine
-      end
-      object RLDraw24: TRLDraw
-        Left = 241
-        Top = 123
-        Width = 17
-        Height = 60
-        Angle = 90.000000000000000000
-        DrawKind = dkLine
-      end
-      object RLDraw21: TRLDraw
-        Left = 117
-        Top = 124
-        Width = 17
-        Height = 59
-        Angle = 90.000000000000000000
-        DrawKind = dkLine
-      end
       object RLDraw23: TRLDraw
-        Left = -2
+        Left = 0
         Top = 175
-        Width = 759
+        Width = 763
         Height = 17
         DrawKind = dkLine
       end
       object RLDraw22: TRLDraw
-        Left = -2
+        Left = 0
         Top = 143
-        Width = 757
+        Width = 763
         Height = 17
         DrawKind = dkLine
       end
       object RLDraw20: TRLDraw
-        Left = -3
+        Left = 0
         Top = 69
-        Width = 757
+        Width = 763
         Height = 17
         DrawKind = dkLine
       end
       object RLDraw19: TRLDraw
-        Left = -11
+        Left = 0
         Top = 112
-        Width = 757
+        Width = 763
         Height = 17
         DrawKind = dkLine
       end
       object RLDraw18: TRLDraw
         Left = 0
         Top = 36
-        Width = 756
+        Width = 763
         Height = 13
         DrawKind = dkLine
       end
@@ -158,7 +831,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Left = 278
         Top = 3
         Width = 17
-        Height = 41
+        Height = 39
         Angle = 90.000000000000000000
         DrawKind = dkLine
       end
@@ -166,7 +839,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Left = 173
         Top = 3
         Width = 17
-        Height = 41
+        Height = 39
         Angle = 90.000000000000000000
         DrawKind = dkLine
       end
@@ -207,7 +880,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         ParentFont = False
       end
       object RLLabel68: TRLLabel
-        Left = 0
+        Left = 4
         Top = 43
         Width = 70
         Height = 10
@@ -220,8 +893,8 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         ParentFont = False
       end
       object lblLocalPagto: TRLLabel
-        Left = 4
-        Top = 51
+        Left = 9
+        Top = 52
         Width = 529
         Height = 20
         AutoSize = False
@@ -234,7 +907,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         ParentFont = False
       end
       object RLLabel69: TRLLabel
-        Left = 0
+        Left = 4
         Top = 79
         Width = 30
         Height = 10
@@ -247,7 +920,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         ParentFont = False
       end
       object txtNomeCedente2: TRLLabel
-        Left = 34
+        Left = 38
         Top = 80
         Width = 529
         Height = 17
@@ -261,7 +934,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         ParentFont = False
       end
       object RLLabel70: TRLLabel
-        Left = 0
+        Left = 4
         Top = 123
         Width = 68
         Height = 10
@@ -274,9 +947,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         ParentFont = False
       end
       object txtDataDocumento2: TRLLabel
-        Left = 0
+        Left = 4
         Top = 132
-        Width = 124
+        Width = 120
         Height = 16
         Alignment = taCenter
         AutoSize = False
@@ -401,9 +1074,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         ParentFont = False
       end
       object txtUsoBanco2: TRLLabel
-        Left = 0
+        Left = 4
         Top = 162
-        Width = 124
+        Width = 120
         Height = 16
         Alignment = taCenter
         AutoSize = False
@@ -417,7 +1090,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Visible = False
       end
       object RLLabel75: TRLLabel
-        Left = 0
+        Left = 4
         Top = 153
         Width = 49
         Height = 10
@@ -540,7 +1213,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         ParentFont = False
       end
       object RLLabel80: TRLLabel
-        Left = 0
+        Left = 4
         Top = 184
         Width = 325
         Height = 10
@@ -555,7 +1228,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         ParentFont = False
       end
       object txtInstrucoes2: TRLMemo
-        Left = 4
+        Left = 5
         Top = 192
         Width = 529
         Height = 83
@@ -877,7 +1550,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         ParentFont = False
       end
       object RLMemo2: TRLMemo
-        Left = 3
+        Left = 4
         Top = 347
         Width = 321
         Height = 39
@@ -911,8 +1584,8 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         ParentFont = False
       end
       object RLLabel93: TRLLabel
-        Left = 394
-        Top = 153
+        Left = 393
+        Top = 161
         Width = 5
         Height = 10
         Caption = 'x'
@@ -978,7 +1651,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Visible = False
       end
       object txtEndCedente: TRLLabel
-        Left = 34
+        Left = 38
         Top = 99
         Width = 106
         Height = 15
@@ -992,43 +1665,43 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       end
     end
     object RLBand2: TRLBand
-      Left = 11
-      Top = 427
-      Width = 764
+      Left = 15
+      Top = 630
+      Width = 768
       Height = 419
       BeforePrint = RLBand2BeforePrint
       object RLDraw50: TRLDraw
-        Left = -2
+        Left = 0
         Top = 337
-        Width = 754
+        Width = 763
         Height = 17
         DrawKind = dkLine
       end
       object RLDraw49: TRLDraw
-        Left = 6
+        Left = 0
         Top = 274
-        Width = 754
+        Width = 763
         Height = 17
         DrawKind = dkLine
       end
       object RLDraw48: TRLDraw
         Left = 540
         Top = 242
-        Width = 220
+        Width = 223
         Height = 17
         DrawKind = dkLine
       end
       object RLDraw47: TRLDraw
         Left = 540
         Top = 210
-        Width = 220
+        Width = 223
         Height = 17
         DrawKind = dkLine
       end
       object RLDraw46: TRLDraw
-        Left = 1
+        Left = 0
         Top = 178
-        Width = 759
+        Width = 763
         Height = 17
         DrawKind = dkLine
       end
@@ -1041,9 +1714,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         DrawKind = dkLine
       end
       object RLDraw44: TRLDraw
-        Left = 3
+        Left = 0
         Top = 146
-        Width = 757
+        Width = 763
         Height = 17
         DrawKind = dkLine
       end
@@ -1057,9 +1730,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       end
       object RLDraw42: TRLDraw
         Left = 316
-        Top = 121
+        Top = 122
         Width = 17
-        Height = 35
+        Height = 34
         Angle = 90.000000000000000000
         DrawKind = dkLine
       end
@@ -1080,23 +1753,23 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         DrawKind = dkLine
       end
       object RLDraw36: TRLDraw
-        Left = 3
+        Left = 0
         Top = 114
-        Width = 757
+        Width = 763
         Height = 17
         DrawKind = dkLine
       end
       object RLDraw35: TRLDraw
-        Left = 4
+        Left = 0
         Top = 50
-        Width = 756
+        Width = 763
         Height = 16
         DrawKind = dkLine
       end
       object RLDraw33: TRLDraw
-        Left = 3
+        Left = 0
         Top = 82
-        Width = 757
+        Width = 763
         Height = 17
         DrawKind = dkLine
       end
@@ -1844,7 +2517,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         ParentFont = False
       end
       object RLLabel170: TRLLabel
-        Left = 396
+        Left = 397
         Top = 167
         Width = 5
         Height = 10
@@ -1899,7 +2572,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Visible = False
       end
       object imgCodigoBarra: TRLBarcode
-        Left = 4
+        Left = 8
         Top = 350
         Width = 465
         Height = 66
@@ -1912,22 +2585,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Ratio = 3.000000000000000000
       end
     end
-    object txtSwHouse: TRLAngleLabel
-      Left = 3
-      Top = 677
-      Width = 12
-      Height = 53
-      Alignment = taCenter
-      Angle = 90.000000000000000000
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
-      Font.Height = -9
-      Font.Name = 'Arial'
-      Font.Pitch = fpFixed
-      Font.Style = []
-      Layout = tlCenter
-      ParentFont = False
-    end
+
   end
   object BoletoCarne: TRLReport
     Left = 816
@@ -3144,7 +3802,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       'FortesReport (Open Source) v3.24(B14)  \251 Copyright '#169' 1999-200' +
       '8 Fortes Inform'#225'tica'
     DisplayName = 'ACBrBoleto - http://acbr.sf.net'
-    Left = 104
+    Left = 128
     Top = 8
   end
 end

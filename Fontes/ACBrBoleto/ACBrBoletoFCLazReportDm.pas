@@ -350,7 +350,7 @@ end;
 procedure TdmACbrBoletoFCLazReport.frReport1EnterRect(Memo: TStringList;
   View: TfrView);
 begin
-   if (View.Name = 'Picture1') or (View.Name = 'Picture2') then
+   if (View.Name = 'Picture1') or (View.Name = 'Picture2')  or (View.Name = 'Picture4') then
       fBoletoFC.CarregaLogo( TfrPictureView(View).Picture,
                              fBoletoFC.ACBrBoleto.Banco.Numero );
 end;

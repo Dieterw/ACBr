@@ -47,6 +47,14 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+
+Versão 0.0.q9a 30/12/2010
+[-] Corrigido bug ao gerar a linha do cabealho do arquivo de remessa 240 colunas
+    do Banco do Brasil. (Reginaldo Costa)
+
+[+] Adicionado opção de imprimir o Comprovante de Entrega no boleto para o 
+    FortesReport(Carlos) e para o LazReport(Juliana Tamizou)
+
 Versão 0.0.18a 23/12/2010
 [-] Corrigido bug na impressão dos boletos no fortes e quickreport, estava sendo
     ignorado o valor retornado pela função MontarCampoCodigoCedente.(Juliana Tamizou)

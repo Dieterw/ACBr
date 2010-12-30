@@ -163,7 +163,7 @@ end;
 
 function TACBrBancoBrasil.GerarRegistroHeader240(NumeroRemessa : Integer): String;
 var
-  ATipoInscricao: string;
+  ATipoInscricao,CNPJCIC: string;
 begin
 
    with ACBrBanco.ACBrBoleto.Cedente do
@@ -173,6 +173,11 @@ begin
          pJuridica: ATipoInscricao := '2';
          pOutras  : ATipoInscricao := '3';
       end;
+
+      CNPJCIC := CNPJCPF;
+      CNPJCIC := StringReplace(cnpjcic, '.', '', [rfReplaceAll]);
+      CNPJCIC := StringReplace(cnpjcic, '/', '', [rfReplaceAll]);
+      CNPJCIC := StringReplace(cnpjcic, '-', '', [rfReplaceAll]);
 
           { GERAR REGISTRO-HEADER DO ARQUIVO }
 

@@ -46,7 +46,8 @@ interface
 
 uses
   SysUtils, StdCtrls, Classes, Graphics, Controls, Forms, Dialogs, ACBrBoleto,
-  QRMultiExport, QRCtrls, QuickRpt, ExtCtrls, QRExport, ACBrBarCode ;
+  QRMultiExport, QRCtrls, QuickRpt, ExtCtrls, QRExport, ACBrBarCode,
+  QRWebFilt ;
 
 const
   CACBrBoletoFCQuick_Versao = '0.0.8a' ;

@@ -1,33 +1,33 @@
 {******************************************************************************}
 { Projeto: Componentes ACBr                                                    }
-{  Biblioteca multiplataforma de componentes Delphi para interação com equipa- }
-{ mentos de Automação Comercial utilizados no Brasil                           }
+{  Biblioteca multiplataforma de componentes Delphi para interaÃ§Ã£o com equipa- }
+{ mentos de AutomaÃ§Ã£o Comercial utilizados no Brasil                           }
 {                                                                              }
 { Direitos Autorais Reservados (c) 2009   http://www.produsys.com.br/          }
 {                                                                              }
 { Colaboradores nesse arquivo:  Juliana Rodrigues Prado, Daniel Simoes Almeida }
 {                                                                              }
-{  Você pode obter a última versão desse arquivo na pagina do  Projeto ACBr    }
+{  VocÃª pode obter a Ãºltima versÃ£o desse arquivo na pagina do  Projeto ACBr    }
 { Componentes localizado em      http://www.sourceforge.net/projects/acbr      }
 {                                                                              }
-{  Esta biblioteca é software livre; você pode redistribuí-la e/ou modificá-la }
-{ sob os termos da Licença Pública Geral Menor do GNU conforme publicada pela  }
-{ Free Software Foundation; tanto a versão 2.1 da Licença, ou (a seu critério) }
-{ qualquer versão posterior.                                                   }
+{  Esta biblioteca Ã© software livre; vocÃª pode redistribuÃ­-la e/ou modificÃ¡-la }
+{ sob os termos da LicenÃ§a PÃºblica Geral Menor do GNU conforme publicada pela  }
+{ Free Software Foundation; tanto a versÃ£o 2.1 da LicenÃ§a, ou (a seu critÃ©rio) }
+{ qualquer versÃ£o posterior.                                                   }
 {                                                                              }
-{  Esta biblioteca é distribuída na expectativa de que seja útil, porém, SEM   }
-{ NENHUMA GARANTIA; nem mesmo a garantia implícita de COMERCIABILIDADE OU      }
-{ ADEQUAÇÃO A UMA FINALIDADE ESPECÍFICA. Consulte a Licença Pública Geral Menor}
-{ do GNU para mais detalhes. (Arquivo LICENÇA.TXT ou LICENSE.TXT)              }
+{  Esta biblioteca Ã© distribuÃ­da na expectativa de que seja Ãºtil, porÃ©m, SEM   }
+{ NENHUMA GARANTIA; nem mesmo a garantia implÃ­cita de COMERCIABILIDADE OU      }
+{ ADEQUAÃ‡ÃƒO A UMA FINALIDADE ESPECÃFICA. Consulte a LicenÃ§a PÃºblica Geral Menor}
+{ do GNU para mais detalhes. (Arquivo LICENÃ‡A.TXT ou LICENSE.TXT)              }
 {                                                                              }
-{  Você deve ter recebido uma cópia da Licença Pública Geral Menor do GNU junto}
-{ com esta biblioteca; se não, escreva para a Free Software Foundation, Inc.,  }
-{ no endereço 59 Temple Street, Suite 330, Boston, MA 02111-1307 USA.          }
-{ Você também pode obter uma copia da licença em:                              }
+{  VocÃª deve ter recebido uma cÃ³pia da LicenÃ§a PÃºblica Geral Menor do GNU junto}
+{ com esta biblioteca; se nÃ£o, escreva para a Free Software Foundation, Inc.,  }
+{ no endereÃ§o 59 Temple Street, Suite 330, Boston, MA 02111-1307 USA.          }
+{ VocÃª tambÃ©m pode obter uma copia da licenÃ§a em:                              }
 { http://www.opensource.org/licenses/lgpl-license.php                          }
 {                                                                              }
-{ Daniel Simões de Almeida  -  daniel@djsystem.com.br  -  www.djsystem.com.br  }
-{              Praça Anita Costa, 34 - Tatuí - SP - 18270-410                  }
+{ Daniel SimÃµes de Almeida  -  daniel@djsystem.com.br  -  www.djsystem.com.br  }
+{              PraÃ§a Anita Costa, 34 - TatuÃ­ - SP - 18270-410                  }
 {                                                                              }
 {******************************************************************************}
 
@@ -35,7 +35,7 @@
 |* Historico
 |*
 |* 01/04/2010: Juliana Rodrigues Prado Tamizou
-|*  - Adaptação do Boleto do Projeto RLBoleto  ( http://www.produsys.com.br/ )
+|*  - AdaptaÃ§Ã£o do Boleto do Projeto RLBoleto  ( http://www.produsys.com.br/ )
 ******************************************************************************}
 {$I ACBr.inc}
 
@@ -193,6 +193,64 @@ type
     RLLabel97: TRLLabel;
     RLLabel99: TRLLabel;
     RLPDFFilter1: TRLPDFFilter;
+    RLBand4: TRLBand;
+    RLDraw14: TRLDraw;
+    RLDraw8: TRLDraw;
+    RLDraw12: TRLDraw;
+    RLDraw6: TRLDraw;
+    RLDraw9: TRLDraw;
+    RLDraw7: TRLDraw;
+    RLDraw4: TRLDraw;
+    RLDraw73: TRLDraw;
+    RLDraw13: TRLDraw;
+    RLDraw10: TRLDraw;
+    RLDraw2: TRLDraw;
+    RLDraw3: TRLDraw;
+    RLDraw5: TRLDraw;
+    RLDraw11: TRLDraw;
+    RLLabel2: TRLLabel;
+    txtNomeCedente4: TRLLabel;
+    RLLabel6: TRLLabel;
+    txtCodigoCedente4: TRLLabel;
+    RLLabel8: TRLLabel;
+    RLLabel11: TRLLabel;
+    txtNumeroDocumento4: TRLLabel;
+    RLLabel14: TRLLabel;
+    txtEspecie4: TRLLabel;
+    RLLabel23: TRLLabel;
+    txtNossoNumero4: TRLLabel;
+    RLLabel33: TRLLabel;
+    txtValorDocumento4: TRLLabel;
+    imgBanco4: TRLImage;
+    txtNumeroBanco4: TRLLabel;
+    RLLabel3: TRLLabel;
+    RLLabel51: TRLLabel;
+    RLLabel52: TRLLabel;
+    lblLocalPagto4: TRLLabel;
+    RLLabel21: TRLLabel;
+    txtDataVencimento4: TRLLabel;
+    RLLabel18: TRLLabel;
+    RLLabel20: TRLLabel;
+    RLLabel25: TRLLabel;
+    txtNomeSacado4: TRLLabel;
+    RLLabel27: TRLLabel;
+    RLLabel28: TRLLabel;
+    RLLabel30: TRLLabel;
+    RLLabel29: TRLLabel;
+    RLLabel31: TRLLabel;
+    RLLabel32: TRLLabel;
+    RLLabel35: TRLLabel;
+    RLLabel37: TRLLabel;
+    RLLabel50: TRLLabel;
+    RLLabel54: TRLLabel;
+    RLLabel55: TRLLabel;
+    RLLabel56: TRLLabel;
+    RLLabel57: TRLLabel;
+    RLDraw72: TRLDraw;
+    RLDraw15: TRLDraw;
+    RLLabel4: TRLLabel;
+    txtDataProcessamento4: TRLLabel;
+
     txtNumeroBanco2: TRLLabel;
     RLLabel67: TRLLabel;
     RLLabel68: TRLLabel;
@@ -339,6 +397,7 @@ type
     procedure RLBand1BeforePrint(Sender: TObject; var PrintIt: boolean);
     procedure RLBand2BeforePrint(Sender: TObject; var PrintIt: boolean);
     procedure RLBand3BeforePrint ( Sender: TObject; var PrintIt: boolean ) ;
+    procedure RLBand4BeforePrint(Sender: TObject; var PrintIt: Boolean);
   private
      MensagemPadrao: TStringList;
      fBoletoFC: TACBrBoletoFCFortes;
@@ -389,12 +448,12 @@ var
   RLFiltro : TRLCustomSaveFilter;
   RLLayout: TRLReport;
 begin
-  inherited Imprimir;    // Executa verificações padroes
+  inherited Imprimir;    // Executa verificaÃ§Ãµes padroes
 
   {$IFDEF FPC}
    LoadPortugueseStrings;
   {$ELSE}
-   // Para que serve esse método ?? //
+   // Para que serve esse mÃ©todo ?? //
    //SetVersion( CommercialVersion, ReleaseVersion, CommentVersion );
   {$ENDIF}
 
@@ -409,7 +468,7 @@ begin
            RLLayout:= LayoutBoleto;
         end;
 
-        RLPrinter.Copies     := NumCopias ;  // Aparentemente isso está errado... :(
+        RLPrinter.Copies     := NumCopias ;  // Aparentemente isso estÃ¡ errado... :(
         RLLayout.PrintDialog := MostrarSetup;
 
         if Filtro = fiNenhum then
@@ -457,6 +516,10 @@ begin
    fIndice   := 0 ;
    fBoletoFC := TACBrBoletoFCFortes(Owner) ;  // Link para o Pai
    MensagemPadrao := TStringList.Create;
+   if (fBoletoFC.ACBrBoleto.ComprovanteEntrega = true)then
+      RLBand4.Visible := true
+   else
+      RLBand4.Visible := false;
 end;
 
 procedure TACBrBoletoFCFortesFr.FormDestroy ( Sender: TObject ) ;
@@ -668,6 +731,41 @@ begin
 
 
 
+end;
+
+procedure TACBrBoletoFCFortesFr.RLBand4BeforePrint(Sender: TObject;
+  var PrintIt: Boolean);
+Var
+   NossoNum,CodCedente,TipoDoc : String;
+begin
+   with fBoletoFC.ACBrBoleto do
+   begin
+      NossoNum    := Banco.MontarCampoNossoNumero( Titulo );
+      CodCedente  := Banco.MontarCampoCodigoCedente(titulo);
+
+      case Cedente.TipoInscricao of
+         pFisica   : TipoDoc:= 'CPF: ';
+         pJuridica : TipoDoc:= 'CNPJ: ';
+      else
+         TipoDoc := 'DOC.: ';
+      end;
+
+      fBoletoFC.CarregaLogo( imgBanco4.Picture, Banco.Numero );
+      txtNumeroBanco4.Caption         := IntToStrZero(Banco.Numero, 3)+ '-' +
+                                         IfThen(Banco.Digito >= 10,'X',
+                                         IntToStrZero(Banco.Digito, 1));
+      lblLocalPagto4.Caption           := Titulo.LocalPagamento;
+      txtDataVencimento4.Caption      := FormatDateTime('dd/mm/yyyy', Titulo.Vencimento);
+      txtNomeCedente4.Caption         := Cedente.Nome+ ' - '+TipoDoc + Cedente.CNPJCPF;
+      txtCodigoCedente4.Caption       := Cedente.Agencia+'-'+Cedente.AgenciaDigito+'/'+ Cedente.Conta+'-'+Cedente.ContaDigito;
+
+      txtNumeroDocumento4.Caption     := Titulo.NumeroDocumento;
+      txtDataProcessamento4.Caption   := FormatDateTime('dd/mm/yyyy',Now);
+      txtNossoNumero4.Caption         := NossoNum;
+      txtEspecie4.Caption             := 'R$';
+      txtValorDocumento4.Caption      := FormatFloat('###,###,##0.00',Titulo.ValorDocumento);
+      txtNomeSacado4.Caption          := Titulo.Sacado.NomeSacado;
+   end;
 end;
 
 {$ifdef FPC}

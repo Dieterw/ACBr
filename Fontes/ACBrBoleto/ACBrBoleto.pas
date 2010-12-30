@@ -57,7 +57,7 @@ uses ACBrBase,  {Units da ACBr}
      Graphics, Contnrs, Classes;
 
 const
-  CACBrBoleto_Versao = '0.0.18a' ;
+  CACBrBoleto_Versao = '0.0.19a' ;
 
 type
   TACBrTitulo = class;
@@ -515,6 +515,7 @@ TACBrBoleto = class( TACBrComponent )
     fDirArqRemessa: String;
     fDirArqRetorno: String;
     fLayoutRemessa: TACBrLayoutRemessa;
+    fComprovanteEntrega: boolean;
     fImprimirMensagemPadrao: boolean;
     fListadeBoletos : TListadeBoletos;
     fCedente        : TACBrCedente;
@@ -558,6 +559,7 @@ TACBrBoleto = class( TACBrComponent )
     property DirArqRetorno  : String             read GetDirArqRetorno        write SetNomeArqRetorno;
     property LeCedenteRetorno :boolean           read fLeCedenteRetorno       write fLeCedenteRetorno default false;
     property LayoutRemessa  : TACBrLayoutRemessa read fLayoutRemessa          write fLayoutRemessa default c400;
+    property ComprovanteEntrega : Boolean        read fComprovanteEntrega     write fComprovanteEntrega default False;
     property ImprimirMensagemPadrao : Boolean    read fImprimirMensagemPadrao write fImprimirMensagemPadrao default True;
     property ACBrBoletoFC : TACBrBoletoFCClass   read fACBrBoletoFC           write SetACBrBoletoFC;
     procedure ChecarDadosObrigatorios;
@@ -891,6 +893,7 @@ begin
   inherited Create(AOwner);
 
   fACBrBoletoFC           := nil;
+  fComprovanteEntrega     := False;
   fImprimirMensagemPadrao := True;
 
   fListadeBoletos := TListadeBoletos.Create(true);

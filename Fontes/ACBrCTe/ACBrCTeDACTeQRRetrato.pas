@@ -309,7 +309,6 @@ type
     qrsQuadro03: TQRShape;
     qrsQuadro04: TQRShape;
     qrsQuadro05: TQRShape;
-    qrsQuadro06: TQRShape;
     qrsQuadro07: TQRShape;
     qrsQuadro08: TQRShape;
     qrsQuadro09: TQRShape;
@@ -406,6 +405,7 @@ type
     qrmVigencias: TQRMemo;
     qrmNumDispositivo: TQRMemo;
     qrmCodTransacao: TQRMemo;
+    QRShape45: TQRShape;
     procedure qrbDadosExcEmitenteBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
     procedure qrbModRodFracionadoBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
     procedure qrbObsBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
@@ -761,7 +761,10 @@ begin
 
   qrlTipoCte.Caption := tpCTToStrText(FCTe.Ide.tpCTe);
   qrlTipoServico.Caption := TpServToStrText(FCTe.Ide.tpServ);
-  qrlTomaServico.Caption := TpTomadorToStrText(FCTe.Ide.Toma03.Toma);
+  // Alterado por Italo em 30/12/2010
+  if FCTe.Ide.Toma4.xNome = ''
+   then qrlTomaServico.Caption := TpTomadorToStrText(FCTe.Ide.Toma03.Toma)
+   else qrlTomaServico.Caption := TpTomadorToStrText(FCTe.Ide.Toma4.toma);
   qrlFormaPagamento.Caption := tpforPagToStrText(FCTe.Ide.forPag);
 
   // As Linhas abaixo foram inseridas por Italo em 31/08/2010

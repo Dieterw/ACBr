@@ -446,19 +446,20 @@ var
 
 procedure TfrmDACTeQRRetrato.Itens;
 var
-  I, J, K : Integer;
+  I, J, K, Item : Integer;
 begin
   if QRCTe.PageNumber > 0 then
     exit;
 
   cdsDocumentos.CreateDataSet;
   cdsDocumentos.Open;
+  Item := 0;
   //Varrendo NF comum
   for I := 0 to (FCTe.Rem.InfNF.Count - 1) do
   begin
     with FCTe.Rem.InfNF.Items[I] do
     begin
-      if (I mod 2) = 0 then
+      if (Item mod 2) = 0 then
       begin
         cdsDocumentos.Append;
 
@@ -474,6 +475,7 @@ begin
 
         cdsDocumentos.Post;
       end;
+      inc(Item);
     end;
   end;
   //Varrendo NFe
@@ -481,7 +483,7 @@ begin
   begin
     with FCTe.Rem.InfNFE.Items[I] do
     begin
-      if (I mod 2) = 0 then
+      if (Item mod 2) = 0 then
       begin
         cdsDocumentos.Append;
         cdsDocumentosTIPO_1.AsString := 'NF-E';
@@ -493,6 +495,7 @@ begin
         cdsDocumentosCNPJCPF_2.AsString := chave;
         cdsDocumentos.Post;
       end;
+      inc(Item);
     end;
   end;
   //Varrendo Outros
@@ -500,7 +503,7 @@ begin
   begin
     with FCTe.Rem.InfOutros.Items[I] do
     begin
-      if (I mod 2) = 0 then
+      if (Item mod 2) = 0 then
       begin
         cdsDocumentos.Append;
         cdsDocumentosTIPO_1.AsString := descOutros;
@@ -514,6 +517,7 @@ begin
         cdsDocumentosDOCUMENTO_2.AsString := nDoc;
         cdsDocumentos.Post;
       end;
+      inc(Item);
     end;
   end;
  //Varrendo Documentos de Transporte anterior
@@ -528,7 +532,7 @@ begin
       begin
         with FCTe.infCTeNorm.emiDocAnt.Items[I].idDocAnt.Items[J].idDocAntPap.Items[K] do
         begin
-          if (I mod 2) = 0 then
+          if (Item mod 2) = 0 then
           begin
             cdsDocumentos.Append;
 
@@ -574,6 +578,7 @@ begin
 
             cdsDocumentos.Post;
           end;
+          inc(Item);
         end;
       end;
     end;
@@ -586,7 +591,7 @@ begin
       begin
         with FCTe.infCTeNorm.emiDocAnt.Items[I].idDocAnt.Items[J].idDocAntEle.Items[K] do
         begin
-          if (I mod 2) = 0 then
+          if (Item mod 2) = 0 then
           begin
             cdsDocumentos.Append;
 
@@ -600,6 +605,7 @@ begin
 
             cdsDocumentos.Post;
           end;
+          inc(Item);
         end;
       end;
     end;

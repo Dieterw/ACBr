@@ -209,7 +209,7 @@ type
     QRLabel10: TQRLabel;
     QRShape1: TQRShape;
     qrmObs: TQRMemo;
-    QRLabel3: TQRLabel;
+    qrlTituloLotacao: TQRLabel;
     QRShape24: TQRShape;
     QRLabel11: TQRLabel;
     QRShape36: TQRShape;
@@ -394,6 +394,18 @@ type
     qrlblSistema: TQRLabel;
     qrlNomeMotorista: TQRLabel;
     qrlCPFMotorista: TQRLabel;
+    qrlNumRegEsp: TQRLabel;
+    qrlResponsavel: TQRLabel;
+    qrlValorTotal: TQRLabel;
+    qrlLacres: TQRLabel;
+    qrmTipo: TQRMemo;
+    qrmPlaca: TQRMemo;
+    qrmUF: TQRMemo;
+    qrmRNTRC: TQRMemo;
+    qrmEmpresas: TQRMemo;
+    qrmVigencias: TQRMemo;
+    qrmNumDispositivo: TQRMemo;
+    qrmCodTransacao: TQRMemo;
     procedure qrbDadosExcEmitenteBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
     procedure qrbModRodFracionadoBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
     procedure qrbObsBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
@@ -621,12 +633,14 @@ begin
   // Incluido / Alterado por Italo em 29/12/2010
     case Lota of
       ltNao: begin
-              qrlLotacao.Caption    := 'NÃO';
-              qrbLotacaoSim.Enabled := False;
+              qrlTituloLotacao.Caption := 'DADOS ESPECÍFICOS DO MODAL RODOVIÁRIO - CARGA FRACIONADA';
+              qrlLotacao.Caption       := 'NÃO';
+              qrbLotacaoSim.Enabled    := False;
              end;
       ltsim: begin
-              qrlLotacao.Caption    := 'SIM';
-              qrbLotacaoSim.Enabled := True;
+              qrlTituloLotacao.Caption := 'DADOS ESPECÍFICOS DO MODAL RODOVIÁRIO - LOTAÇÃO';
+              qrlLotacao.Caption       := 'SIM';
+              qrbLotacaoSim.Enabled    := True;
              end;
     end;
 
@@ -1177,12 +1191,58 @@ end;
 
 procedure TfrmDACTeQRRetrato.qrbLotacaoSimBeforePrint(
   Sender: TQRCustomBand; var PrintBand: Boolean);
+var
+  i: integer;
 begin
   inherited;
-  // Incluido / Alterado por Italo em 29/12/2010
+  // Incluido / Alterado por Italo em 29/12/2010 e 30/12/2010
+  qrlNumRegEsp.Caption   := FCTe.Rodo.valePed.nroRE;
+  case FCTe.Rodo.valePed.respPg of
+   0: qrlResponsavel.Caption := 'EMITENTE';
+   1: qrlResponsavel.Caption := 'REMETENTE';
+   2: qrlResponsavel.Caption := 'EXPEDIDOR';
+   3: qrlResponsavel.Caption := 'RECEBEDOR';
+   4: qrlResponsavel.Caption := 'DESTINATÁRIO';
+   5: qrlResponsavel.Caption := 'TOMADOR DO SERVIÇO';
+  end;
+  qrlValorTotal.Caption := CteUtil.FormatarValor(msk13x2, FCTe.Rodo.valePed.vTValePed);
+
+  qrmTipo.Lines.Clear;
+  qrmPlaca.Lines.Clear;
+  qrmUF.Lines.Clear;
+  qrmRNTRC.Lines.Clear;
+
+  for i:= 0 to FCTe.Rodo.veic.Count - 1 do
+  begin
+   if FCTe.Rodo.veic.Items[i].tpProp = 'P'
+    then qrmTipo.Lines.Add('Próprio')
+    else qrmTipo.Lines.Add('Terceiro');
+   qrmPlaca.Lines.Add(FCTe.Rodo.veic.Items[i].placa);
+   qrmUF.Lines.Add(FCTe.Rodo.veic.Items[i].UF);
+   qrmRNTRC.Lines.Add(FCTe.Rodo.veic.Items[i].Prop.RNTRC);
+  end;
+
+  qrmEmpresas.Lines.Clear;
+  qrmVigencias.Lines.Clear;
+  qrmNumDispositivo.Lines.Clear;
+  qrmCodTransacao.Lines.Clear;
+
+  for i := 0 to FCTe.Rodo.valePed.disp.Count - 1 do
+  begin
+   qrmEmpresas.Lines.Add(FCTe.Rodo.valePed.disp.Items[i].xEmp);
+   qrmVigencias.Lines.Add(FormatDateTime('DD/MM/YYYY', FCTe.Rodo.valePed.disp.Items[i].dVig));
+   qrmNumDispositivo.Lines.Add(FCTe.Rodo.valePed.disp.Items[i].nDisp);
+   qrmCodTransacao.Lines.Add(FCTe.Rodo.valePed.disp.Items[i].nCompC);
+  end;
 
   qrlNomeMotorista.Caption := FCTe.Rodo.moto.Items[0].xNome;
   qrlCPFMotorista.Caption  := CTeUtil.FormatarCNPJ(FCTe.Rodo.moto.Items[0].CPF);
+  qrlLacres.Caption        := '';
+
+  for i := 0 to FCTe.Rodo.Lacres.Count - 1 do
+  begin
+   qrlLacres.Caption := qrlLacres.Caption + FCTe.Rodo.Lacres.Items[i].nLacre + '/';
+  end;
 end;
 
 end.

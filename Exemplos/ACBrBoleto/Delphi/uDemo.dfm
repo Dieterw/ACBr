@@ -622,6 +622,7 @@ object frmDemo: TfrmDemo
     Banco.Numero = 341
     NomeArqRemessa = '.'
     LayoutRemessa = c240
+    ComprovanteEntrega = True
     ACBrBoletoFC = ACBrBoletoFCFortes1
     Left = 64
     Top = 231

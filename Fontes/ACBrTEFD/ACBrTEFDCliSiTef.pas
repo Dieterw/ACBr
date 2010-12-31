@@ -542,7 +542,7 @@ begin
            if Resp.NSU <> '' then
               NSUs := NSUs + sLineBreak + 'NSU: '+Resp.NSU ;
 
-           DeleteFile( ArquivosVerficar[ 0 ] );
+           SysUtils.DeleteFile( ArquivosVerficar[ 0 ] );
            ArquivosVerficar.Delete( 0 );
         except
         end;

@@ -228,7 +228,12 @@ Procedure CopyFilesToDir( FileMask : String ; ToDirName : String;
 procedure RunCommand(Command: String; Params: String = ''; Wait : Boolean = false;
    WindowState : Word = 5);
 procedure OpenURL( const URL : String ) ;
-function FunctionDetect (LibName, FuncName: String; var LibPointer: Pointer): boolean;
+
+function FunctionDetect (LibName, FuncName: String; var LibPointer: Pointer)
+ : boolean; overload ;
+function FunctionDetect (LibName, FuncName: String; var LibPointer: Pointer;
+   var LibHandle: THandle ): boolean; overload ;
+
 Procedure DesligarMaquina(Reboot: Boolean = False; Forcar: Boolean = False) ;
 Procedure WriteToTXT( const ArqTXT, AString : AnsiString;
    const AppendIfExists : Boolean = True; AddLineBreak : Boolean = True );
@@ -1867,6 +1872,12 @@ end;
 function FunctionDetect (LibName, FuncName: String; var LibPointer: Pointer): boolean;
 Var
   LibHandle: tHandle;
+begin
+ Result := FunctionDetect(LibName, FuncName, LibPointer, LibHandle);
+end;
+
+function FunctionDetect (LibName, FuncName: String; var LibPointer: Pointer;
+   var LibHandle: THandle ): boolean;
 begin
  Result := false;
  LibPointer := NIL;

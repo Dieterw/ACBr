@@ -224,6 +224,7 @@ TACBrECFDaruma = class( TACBrECFClass )
     function LimpaRetorno( Retorno : AnsiString ) : AnsiString ;
 
     function GetRet244: AnsiString;
+    procedure ZeraTotalApagar ;
     property Ret244 : AnsiString read GetRet244 ;
     function LimpaChr0(const AString: AnsiString): AnsiString;
     function EnviaComando_ECF_Daruma(cmd: AnsiString): AnsiString;
@@ -746,7 +747,6 @@ begin
 
   fpDevice.HandShake := hsRTS_CTS ;
   { Variaveis internas dessa classe }
-  fsTotalAPagar := 0 ;
   fsEmPagamento := false ;
   fsNumVersao   := '' ;
   fsNumECF      := '' ;
@@ -759,6 +759,7 @@ begin
   fsTipoRel     := ' ' ;
   fsEsperaFFCR  := False ;
   fpIdentificaConsumidorRodape := True ;
+  ZeraTotalApagar;
 
   fpModeloStr := 'Daruma' ;
   fpRFDID     := 'DR' ;
@@ -796,6 +797,13 @@ begin
 
   inherited Destroy ;
 end;
+
+procedure TACBrECFDaruma.ZeraTotalApagar;
+begin
+  fsTotalAPagar := -987654 ;
+  fsEmPagamento := false ;
+  fsRet244      := '' ;
+end ;
 
 procedure TACBrECFDaruma.Ativar;
 begin
@@ -1507,7 +1515,12 @@ begin
      Result := RoundTo( StrToFloatDef(RetCmd,0) / 100,-2) ;
    end
   else
-     Result := Subtotal - fsTotalAPagar ;
+   begin
+     if fsTotalAPagar = -987654 then
+        Result := 0
+     else
+        Result := Subtotal - fsTotalAPagar ;
+   end ;
 end;
 
 function TACBrECFDaruma.GetSubTotal: Double;
@@ -1855,9 +1868,7 @@ begin
   else
      EnviaComando(ESC + #200, 8) ;
 
-  fsEmPagamento := false ;
-  fsTotalAPagar := 0 ;
-  fsRet244      := '' ;
+  ZeraTotalApagar;
 end;
 
 procedure TACBrECFDaruma.CancelaCupom;
@@ -1894,9 +1905,7 @@ begin
   else
      EnviaComando(ESC + #206, 15) ;
      
-  fsEmPagamento := false ;
-  fsTotalAPagar := 0 ;
-  fsRet244      := '' ;
+  ZeraTotalApagar;
 
   FechaRelatorio ;   { Fecha relatorio se ficou algum aberto (só por garantia)}
 end;
@@ -2037,9 +2046,7 @@ begin
   else
      EnviaComando( ESC + #243 + Obs, 10) ;
 
-  fsEmPagamento := false ;
-  fsTotalAPagar := 0 ;
-  fsRet244      := '' ;
+  ZeraTotalApagar;
 end;
 
 procedure TACBrECFDaruma.SubtotalizaCupom(DescontoAcrescimo: Double;
@@ -2254,9 +2261,7 @@ begin
                    ValorStr + QtdStr + Unidade + Descricao) ;
    end ;
 
-  fsTotalAPagar := 0 ;
-  fsEmPagamento := false ;
-  fsRet244      := '' ;
+  ZeraTotalApagar;
 end;
 
 procedure TACBrECFDaruma.ImprimeCheque(Banco: String; Valor: Double;
@@ -3892,8 +3897,8 @@ begin
     try
       ShortDateFormat := 'dd/mm/yyyy';
       Result := StrToDate( copy(RetCmd,1,2) + DateSeparator +
-                             copy(RetCmd,3,2) + DateSeparator +
-                             copy(RetCmd,5,4) );
+                           copy(RetCmd,3,2) + DateSeparator +
+                           copy(RetCmd,5,4) );
     finally
       ShortDateFormat := OldShortDateFormat;
     end;

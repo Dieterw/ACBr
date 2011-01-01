@@ -174,10 +174,7 @@ begin
          pOutras  : ATipoInscricao := '3';
       end;
 
-      CNPJCIC := CNPJCPF;
-      CNPJCIC := StringReplace(cnpjcic, '.', '', [rfReplaceAll]);
-      CNPJCIC := StringReplace(cnpjcic, '/', '', [rfReplaceAll]);
-      CNPJCIC := StringReplace(cnpjcic, '-', '', [rfReplaceAll]);
+      CNPJCIC := OnlyNumber(CNPJCPF);
 
           { GERAR REGISTRO-HEADER DO ARQUIVO }
 
@@ -186,7 +183,7 @@ begin
                '0'                                     + //8 - Tipo de registro - Registro header de arquivo
                padL('', 9, ' ')                        + //9 a 17 Uso exclusivo FEBRABAN/CNAB
                ATipoInscricao                           + //18 - Tipo de inscrição do cedente
-               padL(CNPJCPF, 14, '0')                  + //19 a 32 -Número de inscrição do cedente
+               padL(CNPJCIC, 14, '0')                  + //19 a 32 -Número de inscrição do cedente
                padL(CodigoCedente, 18, '0') + '  '     + //33 a 52 - Código do convênio no banco [ Alterado conforme instruções da CSO Brasília ] 27-07-09
                padL(Agencia, 5, '0')                   + //53 a 57 - Código da agência do cedente
                padL(AgenciaDigito, 1 , '0')            + //58 - Dígito da agência do cedente
@@ -222,7 +219,7 @@ begin
                '020'                                   + //14 a 16 - Número da versão do layout do lote
                ' '                                     + //17 - Uso exclusivo FEBRABAN/CNAB
                ATipoInscricao                          + //18 - Tipo de inscrição do cedente
-               padL(CNPJCPF, 14, '0')                  + //19 a 32 -Número de inscrição do cedente
+               padL(CNPJCIC, 14, '0')                  + //19 a 32 -Número de inscrição do cedente
                padL(CodigoCedente, 18, '0') + '  '     + //33 a 52 - Código do convênio no banco [ Alterado conforme instruções da CSO Brasília ] 27-07-09
                padL(Agencia, 5, '0')                   + //53 a 57 - Código da agência do cedente
                padL(AgenciaDigito, 1 , '0')            + //58 - Dígito da agência do cedente

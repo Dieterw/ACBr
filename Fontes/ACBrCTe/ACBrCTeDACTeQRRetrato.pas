@@ -667,7 +667,7 @@ begin
 
   // Linha abaixo alterada por Italo em 27/08/2010
   // para substituir os ponto e virgula por quebra de linha no quadro Observações
-  qrmObs.Lines.Add(StringReplace( FCTe.Compl.xObs, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) ) ;
+  qrmObs.Lines.Add(StringReplace( FCTe.Compl.xObs, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
   for i := 0 to FCTe.Compl.ObsCont.Count-1 do
    with FCTe.Compl.ObsCont.Items[i] do
     begin
@@ -721,7 +721,7 @@ end;
 procedure TfrmDACTeQRRetrato.qrbCabecalhoBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
 begin
   inherited;
-  PrintBand := QRCTe.PageNumber = 1 ;
+  PrintBand := QRCTe.PageNumber = 1;
 
   if Trim(FLogo) <> '' then
    begin
@@ -1205,7 +1205,7 @@ var
 begin
   inherited;
   // Incluido / Alterado por Italo em 29/12/2010 e 30/12/2010
-  qrlNumRegEsp.Caption   := FCTe.Rodo.valePed.nroRE;
+  qrlNumRegEsp.Caption := FCTe.Rodo.valePed.nroRE;
   case FCTe.Rodo.valePed.respPg of
    0: qrlResponsavel.Caption := 'EMITENTE';
    1: qrlResponsavel.Caption := 'REMETENTE';
@@ -1244,9 +1244,14 @@ begin
    qrmCodTransacao.Lines.Add(FCTe.Rodo.valePed.disp.Items[i].nCompC);
   end;
 
-  qrlNomeMotorista.Caption := FCTe.Rodo.moto.Items[0].xNome;
-  qrlCPFMotorista.Caption  := CTeUtil.FormatarCNPJ(FCTe.Rodo.moto.Items[0].CPF);
+  qrlNomeMotorista.Caption := '';
+  qrlCPFMotorista.Caption  := '';
   qrlLacres.Caption        := '';
+  if FCTe.Rodo.moto.Count>0
+   then begin
+    qrlNomeMotorista.Caption := FCTe.Rodo.moto.Items[0].xNome;
+    qrlCPFMotorista.Caption  := CTeUtil.FormatarCNPJ(FCTe.Rodo.moto.Items[0].CPF);
+   end;
 
   for i := 0 to FCTe.Rodo.Lacres.Count - 1 do
   begin

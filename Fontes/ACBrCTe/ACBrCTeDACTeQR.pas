@@ -67,7 +67,7 @@ type
   private
 
   protected
-    //BarCode : TBarCode128c ;
+    //BarCode : TBarCode128c;
     FACBrCTe            : TACBrCTe;
     FCTe                : TCTe;
     FLogo               : String;
@@ -80,10 +80,10 @@ type
     FSistema            : String;
     FUrl                : String;
     FUsuario            : String;
-    AfterPreview        : Boolean ;
+    AfterPreview        : Boolean;
     FExpandirLogoMarca  : Boolean;
-    ChangedPos          : Boolean ;
-    FSemValorFiscal     : Boolean ;
+    ChangedPos          : Boolean;
+    FSemValorFiscal     : Boolean;
     FMargemSuperior     : double;
     FMargemInferior     : double;
     FMargemEsquerda     : double;
@@ -104,7 +104,7 @@ type
                              ANumCopias          : Integer   = 1;
                              ASistema            : String    = '';
                              AUrl                : String    = '';
-                             AUsuario            : String    = '' ;
+                             AUsuario            : String    = '';
                              APreview            : Boolean   = True;
                              AMargemSuperior     : Double    = 0.8;
                              AMargemInferior     : Double    = 0.8;
@@ -152,7 +152,7 @@ class procedure TfrmDACTeQR.Imprimir(ACTe               : TCTe;
                                     ANumCopias          : Integer   = 1;
                                     ASistema            : String    = '';
                                     AUrl                : String    = '';
-                                    AUsuario            : String    = '' ;
+                                    AUsuario            : String    = '';
                                     APreview            : Boolean   = True;
                                     AMargemSuperior     : Double    = 0.8;
                                     AMargemInferior     : Double    = 0.8;
@@ -192,14 +192,14 @@ begin
            QRCTe.Preview;
          end else
          begin
-           AfterPreview := True ;
+           AfterPreview := True;
            QRCTe.PrinterSettings.Copies := FNumCopias; // Incluido por Italo em 15/10/2010
            QRCTe.Prepare;
-           QRCTe.Print ;
-         end ;
+           QRCTe.Print;
+         end;
      finally
-        Free ;
-     end ;
+        Free;
+     end;
 end;
 
 class procedure TfrmDACTeQR.SavePDF(AFile               : String;
@@ -222,7 +222,7 @@ class procedure TfrmDACTeQR.SavePDF(AFile               : String;
 {$IFDEF QReport_PDF}
  var
   qf : TQRPDFDocumentFilter;
-  i:   integer;
+  i  : Integer;
 {$ENDIF}
 begin
 {$IFDEF QReport_PDF}
@@ -253,15 +253,15 @@ begin
                 TQRShape(Components[i]).Pen.Width := 1;
               end;
           end;
-        AfterPreview := True ;
+        AfterPreview := True;
         QRCTe.Prepare;
-        qf := TQRPDFDocumentFilter.Create(AFile) ;
+        qf := TQRPDFDocumentFilter.Create(AFile);
         qf.CompressionOn := False;
         QRCTe.QRPrinter.ExportToFilter( qf );
         qf.Free;
      finally
         Free;
-     end ;
+     end;
 {$ENDIF}
 end;
 
@@ -278,7 +278,7 @@ var
   b : TBarCode128c;
 begin
   b := TBarCode128c.Create;
-  //      Width  := QRImage.Width ;
+  //      Width  := QRImage.Width;
   b.Code := ACode;
   b.PaintCodeToCanvas(ACode, QRImage.Canvas, QRImage.ClientRect);
   b.free;

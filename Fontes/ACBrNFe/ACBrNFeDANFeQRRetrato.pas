@@ -87,7 +87,8 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ExtCtrls, QuickRpt, QRCtrls,  XMLIntf, XMLDoc, 
   JPEG,  pcnConversao, DB, DBClient, pcnNFe,
-  ACBrNFeDANFEClass,ACBrNFeDANFeQR, ACBrNFeQRCodeBar, ACBrNFeDANFeQRClass {$IFNDEF ver150}, QRPDFFilt {$ENDIF};
+  ACBrNFeDANFEClass,ACBrNFeDANFeQR, ACBrNFeQRCodeBar, ACBrNFeDANFeQRClass;
+//   {$IFNDEF ver150}, QRPDFFilt {$ENDIF};
 
 type
 

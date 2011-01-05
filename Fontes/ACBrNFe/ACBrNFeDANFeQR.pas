@@ -55,7 +55,10 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ExtCtrls, QuickRpt, QRCtrls,
-  ACBrNFeQRCodeBar, pcnNFe, ACBrNFe, ACBrNFeUtil, pcnConversao{$IFNDEF ver150}, QRPDFFilt {$ENDIF};
+  {$IFDEF QReport_PDF}
+     QRPDFFilt,
+  {$ENDIF}
+  ACBrNFeQRCodeBar, pcnNFe, ACBrNFe, ACBrNFeUtil, pcnConversao;
 
 type
   TfqrDANFeQR = class(TForm)
@@ -209,13 +212,13 @@ class procedure TfqrDANFeQR.SavePDF(AFile               : String;
                                     AMargemDireita      : Double    = 0.51;
                                     ACasasDecimais_VCom : integer    = 2;
                                     ACasasDecimais_Qcom : integer    = 2);
-Var
-  i: Integer;
-{$IFNDEF ver150}
-  qf : TQRPDFDocumentFilter ;
+{$IFDEF QReport_PDF}
+var
+  qf : TQRPDFDocumentFilter;
+  i  : integer;
 {$ENDIF}
 begin
-{$IFNDEF ver150}
+{$IFDEF QReport_PDF}
   with Create ( nil ) do
      try
         FNFe                := ANFe;

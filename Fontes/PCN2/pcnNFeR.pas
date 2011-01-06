@@ -174,16 +174,20 @@ begin
     begin
       NFe.Ide.NFref.Add;
       (*B13*) NFe.ide.NFref[i].refNFe         := Leitor.rCampo(tcEsp, 'refNFe');
-      (*B15*) NFe.Ide.NFref[i].RefNF.cUF      := Leitor.rCampo(tcInt, 'cUF');
-      (*B16*) NFe.Ide.NFref[i].RefNF.AAMM     := Leitor.rCampo(tcEsp, 'AAMM');
-      (*B17*) NFe.Ide.NFref[i].RefNF.CNPJ     := Leitor.rCampo(tcEsp, 'CNPJ');
-      (*B18*) NFe.Ide.NFref[i].RefNF.Modelo   := StrToIntDef(Leitor.rCampo(tcInt, 'mod'),55);
-      (*B19*) NFe.ide.NFref[i].RefNF.serie    := Leitor.rCampo(tcInt, 'serie');
-      (*B20*) NFe.Ide.NFref[i].RefNF.nNF      := Leitor.rCampo(tcInt, 'nNF');
+
+      if Length(Trim(Leitor.rCampo(tcEsp,'refNF'))) > 0 then // Verificação adicionada
+      begin
+        (*B15*) NFe.Ide.NFref[i].RefNF.cUF      := Leitor.rCampo(tcInt, 'cUF');
+        (*B16*) NFe.Ide.NFref[i].RefNF.AAMM     := Leitor.rCampo(tcEsp, 'AAMM');
+        (*B17*) NFe.Ide.NFref[i].RefNF.CNPJ     := Leitor.rCampo(tcEsp, 'CNPJ');
+        (*B18*) NFe.Ide.NFref[i].RefNF.Modelo   := StrToIntDef(Leitor.rCampo(tcInt, 'mod'),55);
+        (*B19*) NFe.ide.NFref[i].RefNF.serie    := Leitor.rCampo(tcInt, 'serie');
+        (*B20*) NFe.Ide.NFref[i].RefNF.nNF      := Leitor.rCampo(tcInt, 'nNF');
+      end;
 
       //correção sugerida no MANTIS caso 814
-      if Length(Trim(Leitor.rCampo(tcEsp,'refNFP'))) > 0 Then
-      Begin
+      if Length(Trim(Leitor.rCampo(tcEsp,'refNFP'))) > 0 then
+      begin
         (*B20b*) NFe.Ide.NFref[i].RefNFP.cUF     := Leitor.rCampo(tcInt, 'cUF');
         (*B20c*) NFe.Ide.NFref[i].RefNFP.AAMM    := Leitor.rCampo(tcEsp, 'AAMM');
    (*B20d/B20e*) NFe.Ide.NFref[i].RefNFP.CNPJCPF := Leitor.rCampoCNPJCPF;

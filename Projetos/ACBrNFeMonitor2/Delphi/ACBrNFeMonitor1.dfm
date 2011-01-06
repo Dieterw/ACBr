@@ -4124,7 +4124,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
       Top = 1
       Width = 569
       Height = 261
-      ActivePage = Monitor
+      ActivePage = Testes
       Align = alClient
       Style = tsFlatButtons
       TabOrder = 0
@@ -4948,7 +4948,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           Top = 0
           Width = 561
           Height = 230
-          ActivePage = TabSheet1
+          ActivePage = TabSheet2
           Align = alClient
           Style = tsFlatButtons
           TabOrder = 0
@@ -5251,9 +5251,6 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           object TabSheet2: TTabSheet
             Caption = 'Dados Empresa'
             ImageIndex = 1
-            DesignSize = (
-              553
-              199)
             object Label3: TLabel
               Left = 6
               Top = 4
@@ -5262,7 +5259,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
               Caption = 'Site'
             end
             object Label4: TLabel
-              Left = 214
+              Left = 259
               Top = 5
               Width = 25
               Height = 13
@@ -5276,14 +5273,14 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
               Caption = 'Fax'
             end
             object Label7: TLabel
-              Left = 135
+              Left = 175
               Top = 44
               Width = 57
               Height = 13
               Caption = 'Logo Marca'
             end
             object sbLogoMarca: TSpeedButton
-              Left = 394
+              Left = 434
               Top = 56
               Width = 23
               Height = 24
@@ -5308,15 +5305,13 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
               Top = 20
               Width = 244
               Height = 21
-              Anchors = [akLeft, akTop, akRight]
               TabOrder = 0
             end
             object edtEmailEmpresa: TEdit
-              Left = 214
+              Left = 258
               Top = 19
               Width = 244
               Height = 21
-              Anchors = [akLeft, akTop, akRight]
               TabOrder = 1
             end
             object edtFaxEmpresa: TEdit
@@ -5324,11 +5319,10 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
               Top = 60
               Width = 164
               Height = 21
-              Anchors = [akLeft, akTop, akRight]
               TabOrder = 2
             end
             object edtLogoMarca: TEdit
-              Left = 135
+              Left = 175
               Top = 60
               Width = 258
               Height = 21
@@ -5340,9 +5334,6 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
       object Diretorios: TTabSheet
         Caption = 'Diret'#243'rios'
         ImageIndex = 6
-        DesignSize = (
-          561
-          230)
         object sbPathNFe: TSpeedButton
           Left = 258
           Top = 94
@@ -5467,7 +5458,6 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           Top = 172
           Width = 23
           Height = 24
-          Anchors = [akTop, akRight]
           Glyph.Data = {
             76010000424D7601000000000000760000002800000020000000100000000100
             04000000000000010000130B0000130B00001000000000000000000000000000

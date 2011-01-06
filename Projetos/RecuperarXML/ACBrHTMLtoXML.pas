@@ -52,9 +52,12 @@ begin
   end;
 end;
 
-function ConverteStrToNumero( Valor : String ) : Real;
+function ConverteStrToNumero( Valor : String; TrocaPonto : Boolean = False ) : Real;
 begin
-  Result := StrToFloatDef(StringReplace(Valor,ThousandSeparator,'',[rfReplaceAll]),0);
+  if TrocaPonto then
+     Result := StrToFloatDef(StringReplace(Valor,ThousandSeparator,',',[rfReplaceAll]),0)
+  else
+     Result := StrToFloatDef(StringReplace(Valor,ThousandSeparator,'',[rfReplaceAll]),0);
 end;
 
 function GerarXML(Arquivo : AnsiString) : String;
@@ -74,7 +77,7 @@ begin
 
  NFe.infNFe.ID := OnlyNumber(LerCampo(Grupo,'Chave de acesso'));
  NFe.Ide.nNF   := StrToIntDef(OnlyNumber(LerCampo(Grupo,'Número NF-e')),0);
- NFe.infNFe.Versao := StrToFloatDef(LerCampo(Grupo,'Versão XML'),2);
+ NFe.infNFe.Versao := ConverteStrToNumero(LerCampo(Grupo,'Versão XML'),True);
 
  NFe.Ide.cNF := RetornarCodigoNumerico(NFe.infNFe.ID,NFe.infNFe.Versao);
 

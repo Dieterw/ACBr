@@ -710,12 +710,12 @@ end;
 
 function indProcToStr(const t: TpcnIndicadorProcesso): string;
 begin
-  result := EnumeradoToStr(t, ['0', '1', '2', '3', '4'], [ipSEFAZ, ipJusticaFederal, ipJusticaEstadual, ipSecexRFB, ipOutros]);
+  result := EnumeradoToStr(t, ['0', '1', '2', '3', '9'], [ipSEFAZ, ipJusticaFederal, ipJusticaEstadual, ipSecexRFB, ipOutros]);
 end;
 
 function StrToindProc(var ok: boolean; const s: string): TpcnIndicadorProcesso;
 begin
-  result := StrToEnumerado(ok, s, ['0', '1', '2', '3', '4'], [ipSEFAZ, ipJusticaFederal, ipJusticaEstadual, ipSecexRFB, ipOutros]);
+  result := StrToEnumerado(ok, s, ['0', '1', '2', '3', '9'], [ipSEFAZ, ipJusticaFederal, ipJusticaEstadual, ipSecexRFB, ipOutros]);
 end;
 
 // 49a - Código do Regime Tributário **************************************

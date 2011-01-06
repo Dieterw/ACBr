@@ -587,7 +587,7 @@ begin
 
      TituloDoBloco(PosX,PosY,'DESTINATÁRIO / REMETENTE');
      Box([],PosX,YPos,132,aHeigthPadrao,'Nome / Razão Social',Dest.XNome);
-     if Length(Dest.CNPJCPF) > 11 then
+     if Length(Trim(Dest.CNPJCPF)) > 11 then
        Box([fsLeft],XPos,YPos,41,aHeigthPadrao,'CNPJ / CPF',NotaUtil.FormatarCNPJ(Dest.CNPJCPF),taCenter)
      else
        Box([fsLeft],XPos,YPos,41,aHeigthPadrao,'CNPJ / CPF',NotaUtil.FormatarCPF(Dest.CNPJCPF),taCenter);
@@ -637,7 +637,7 @@ begin
        wtemp_FontSizeText:=FontSizeText;
        if FontNameUsed = 'Courier New' then
           FontSizeText:=8;
-       if Length(CNPJCPF) > 11 then
+       if Length(Trim(CNPJCPF)) > 11 then
          Box([],XPos,YPos,34,aHeigthPadrao,'CNPJ/CPF',NotaUtil.FormatarCNPJ(CNPJCPF),taCenter)
        else
          Box([],XPos,YPos,34,aHeigthPadrao,'CNPJ/CPF',NotaUtil.FormatarCPF(CNPJCPF),taCenter);
@@ -676,7 +676,7 @@ begin
        wtemp_FontSizeText:=FontSizeText;
        if FontNameUsed = 'Courier New' then
           FontSizeText:=8;
-       if Length(CNPJCPF) > 11 then
+       if Length(Trim(CNPJCPF)) > 11 then
          Box([],XPos,YPos,34,aHeigthPadrao,'CNPJ/CPF',NotaUtil.FormatarCNPJ(CNPJCPF),taCenter)
        else
          Box([],XPos,YPos,34,aHeigthPadrao,'CNPJ/CPF',NotaUtil.FormatarCPF(CNPJCPF),taCenter);
@@ -860,7 +860,7 @@ begin
      wtemp_FontSizeText:=FontSizeText;
      if FontNameUsed = 'Courier New' then
         FontSizeText:=8;
-     if Length(Transp.Transporta.CNPJCPF) > 11 then
+     if Length(TRim(Transp.Transporta.CNPJCPF)) > 11 then
        Box([fsLeft],XPos,YPos,30,aHeigthPadrao,'CNPJ / CPF',NotaUtil.FormatarCNPJ(Transp.Transporta.CNPJCPF),taCenter,True)
      else
        Box([fsLeft],XPos,YPos,30,aHeigthPadrao,'CNPJ / CPF',NotaUtil.FormatarCPF(Transp.Transporta.CNPJCPF),taCenter,True);

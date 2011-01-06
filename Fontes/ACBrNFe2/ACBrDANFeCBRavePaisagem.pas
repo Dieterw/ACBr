@@ -591,7 +591,7 @@ begin
         Box([],PosX,PosY,192,aWidthTituloBloco,'Nome / Razão Social',Dest.XNome)
      else
         Box([fsTop],PosX,PosY,192,aWidthTituloBloco,'Nome / Razão Social',Dest.XNome);
-     if Length(Dest.CNPJCPF) > 11 then
+     if Length(Trim(Dest.CNPJCPF)) > 11 then
      begin
        if FormularioContinuo then
           Box([fsLeft],XPos,YPos,38,aWidthTituloBloco,'CNPJ / CPF',NotaUtil.FormatarCNPJ(Dest.CNPJCPF),taCenter)
@@ -651,7 +651,7 @@ begin
      PosX:=PosX+aWidthTituloBloco;
      with Retirada do
      begin
-       if Length(CNPJCPF) > 11 then
+       if Length(Trim(CNPJCPF)) > 11 then
          Box([fstop],PosX,PosY,50,aHeigthPadrao+1,'CNPJ/CPF',NotaUtil.FormatarCNPJ(CNPJCPF),taCenter)
        else
          Box([fstop],PosX,PosY,50,aHeigthPadrao+1,'CNPJ/CPF',NotaUtil.FormatarCPF(CNPJCPF),taCenter);
@@ -686,7 +686,7 @@ begin
      PosX:=PosX+aWidthTituloBloco;
      with Entrega do
      begin
-       if Length(CNPJCPF) > 11 then
+       if Length(Trim(CNPJCPF)) > 11 then
          Box([fstop],PosX,PosY,50,aHeigthPadrao+1,'CNPJ/CPF',NotaUtil.FormatarCNPJ(CNPJCPF),taCenter)
        else
          Box([fstop],PosX,PosY,50,aHeigthPadrao+1,'CNPJ/CPF',NotaUtil.FormatarCPF(CNPJCPF),taCenter);
@@ -873,7 +873,7 @@ begin
      Box([fsTop,fsLeft],XPos,YPos,23,aHeigthPadrao+aIncHeigth,'Código ANTT',Transp.VeicTransp.RNTC,taCenter);
      Box([fsTop,fsLeft],XPos,YPos,27,aHeigthPadrao+aIncHeigth,'Placa do Veículo',Transp.VeicTransp.Placa,taCenter);
      Box([fsTop,fsLeft],XPos,YPos,14,aHeigthPadrao+aIncHeigth,'Estado',Transp.VeicTransp.UF,taCenter);
-     if Length(Transp.Transporta.CNPJCPF) > 11 then
+     if Length(Trim(Transp.Transporta.CNPJCPF)) > 11 then
        Box([fsTop,fsLeft],XPos,YPos,38,aHeigthPadrao+aIncHeigth,'CNPJ / CPF',NotaUtil.FormatarCNPJ(Transp.Transporta.CNPJCPF),taCenter,True)
      else
        Box([fsTop,fsLeft],XPos,YPos,38,aHeigthPadrao+aIncHeigth,'CNPJ / CPF',NotaUtil.FormatarCPF(Transp.Transporta.CNPJCPF),taCenter,True);

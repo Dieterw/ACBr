@@ -200,8 +200,6 @@ type
     edtMargemSup: TEdit;
     edtMargemDir: TEdit;
     edtMargemEsq: TEdit;
-    rgCasasDecimaisQtd: TRadioGroup;
-    rgCasasDecimaisValor: TRadioGroup;
     rgModeloDanfe: TRadioGroup;
     cbxExibeResumo: TCheckBox;
     cbxImpValLiq: TCheckBox;
@@ -245,6 +243,9 @@ type
     cbUmaInstancia: TCheckBox;
     rgEmailTipoEnvio: TRadioGroup;
     btnDoar: TBitBtn;
+    rgCasasDecimaisQtd: TRadioGroup;
+    spedtDecimaisVUnit: TSpinEdit;
+    Label45: TLabel;
     procedure DoACBrTimer(Sender: TObject);
     procedure edOnlyNumbers(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
@@ -687,8 +688,8 @@ begin
      edtMargemDir.Text         := Ini.ReadString( 'DANFE','MargemDir','0,51') ;
      edtMargemEsq.Text         := Ini.ReadString( 'DANFE','MargemEsq','0,6') ;
      edtPathPDF.Text           := PathWithDelim(Ini.ReadString( 'DANFE','PathPDF',ExtractFilePath(Application.ExeName))) ;
-     rgCasasDecimaisQtd.ItemIndex   := Ini.ReadInteger('DANFE','DecimaisQTD',0) ;
-     rgCasasDecimaisValor.ItemIndex := Ini.ReadInteger('DANFE','DecimaisValor',0) ;
+     rgCasasDecimaisQtd.ItemIndex   := Ini.ReadInteger('DANFE','DecimaisQTD',2) ;
+     spedtDecimaisVUnit.Value  := Ini.ReadInteger('DANFE','DecimaisValor',2) ;
      cbxExibeResumo.Checked    := Ini.ReadBool(   'DANFE','ExibeResumo',False) ;
      cbxImpValLiq.Checked      := Ini.ReadBool(   'DANFE','ImprimirValLiq',False) ;
      cbxFormCont.Checked       := Ini.ReadBool(   'DANFE','PreImpresso',False) ;
@@ -720,7 +721,7 @@ begin
         ACBrNFe1.DANFE.MargemEsquerda  := StrToFloatDef(edtMargemEsq.Text,0.6);
         ACBrNFe1.DANFE.PathPDF    := edtPathPDF.Text;
         ACBrNFe1.DANFE.CasasDecimais._qCom   := rgCasasDecimaisQtd.ItemIndex+2;
-        ACBrNFe1.DANFE.CasasDecimais._vUnCom := rgCasasDecimaisValor.ItemIndex+2;
+        ACBrNFe1.DANFE.CasasDecimais._vUnCom := spedtDecimaisVUnit.Value;
         ACBrNFe1.DANFE.ExibirResumoCanhoto  :=  cbxExibeResumo.Checked;
         ACBrNFe1.DANFE.ImprimirTotalLiquido := cbxImpValLiq.Checked;
         ACBrNFe1.DANFE.FormularioContinuo   := cbxFormCont.Checked;
@@ -864,7 +865,7 @@ begin
      Ini.WriteString( 'DANFE','MargemEsq',edtMargemEsq.Text) ;
      Ini.WriteString( 'DANFE','PathPDF'  ,edtPathPDF.Text) ;
      Ini.WriteInteger('DANFE','DecimaisQTD'   ,rgCasasDecimaisQtd.ItemIndex  );
-     Ini.WriteInteger('DANFE','DecimaisValor' ,rgCasasDecimaisValor.ItemIndex);
+     Ini.WriteInteger('DANFE','DecimaisValor' ,spedtDecimaisVUnit.Value);
      Ini.WriteBool(   'DANFE','ExibeResumo'   ,cbxExibeResumo.Checked) ;
      Ini.WriteBool(   'DANFE','ImprimirValLiq',cbxImpValLiq.Checked) ;
      Ini.WriteBool(   'DANFE','PreImpresso'   ,cbxFormCont.Checked) ;

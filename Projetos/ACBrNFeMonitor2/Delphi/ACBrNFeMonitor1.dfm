@@ -4124,7 +4124,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
       Top = 1
       Width = 569
       Height = 261
-      ActivePage = DANFE
+      ActivePage = Monitor
       Align = alClient
       Style = tsFlatButtons
       TabOrder = 0
@@ -4996,6 +4996,13 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
               Height = 13
               Caption = 'Fonte Demais Campos'
             end
+            object Label45: TLabel
+              Left = 177
+              Top = 164
+              Width = 109
+              Height = 13
+              Caption = 'Decimais Valor Unit'#225'rio'
+            end
             object rgTipoDanfe: TRadioGroup
               Left = 145
               Top = -2
@@ -5023,7 +5030,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
               Width = 200
               Height = 17
               Caption = 'Imprimir Desconto em Porcentagem'
-              TabOrder = 8
+              TabOrder = 10
             end
             object cbxMostrarPreview: TCheckBox
               Left = 316
@@ -5031,7 +5038,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
               Width = 200
               Height = 17
               Caption = 'Mostrar Preview antes da impress'#227'o'
-              TabOrder = 9
+              TabOrder = 11
             end
             object edtNumCopia: TEdit
               Left = 231
@@ -5114,34 +5121,6 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
                 OnKeyPress = edtMargemInfKeyPress
               end
             end
-            object rgCasasDecimaisQtd: TRadioGroup
-              Left = 6
-              Top = 163
-              Width = 140
-              Height = 32
-              Caption = 'Decimais Quantidade'
-              Columns = 3
-              ItemIndex = 0
-              Items.Strings = (
-                '2'
-                '3'
-                '4')
-              TabOrder = 6
-            end
-            object rgCasasDecimaisValor: TRadioGroup
-              Left = 157
-              Top = 163
-              Width = 140
-              Height = 32
-              Caption = 'Decimais Valor Unit'#225'rio'
-              Columns = 3
-              ItemIndex = 0
-              Items.Strings = (
-                '2'
-                '3'
-                '4')
-              TabOrder = 7
-            end
             object rgModeloDanfe: TRadioGroup
               Left = 6
               Top = -2
@@ -5162,7 +5141,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
               Width = 200
               Height = 17
               Caption = 'Exibir Resumo no Canhoto'
-              TabOrder = 10
+              TabOrder = 12
             end
             object cbxImpValLiq: TCheckBox
               Left = 316
@@ -5170,7 +5149,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
               Width = 200
               Height = 17
               Caption = 'Imprimir Valor L'#237'quido do Produto'
-              TabOrder = 11
+              TabOrder = 13
             end
             object cbxFormCont: TCheckBox
               Left = 316
@@ -5178,19 +5157,19 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
               Width = 200
               Height = 17
               Caption = 'Formulario Pr'#233'-Impresso'
-              TabOrder = 12
+              TabOrder = 14
             end
             object rgTipoFonte: TRadioGroup
               Left = 316
-              Top = 163
+              Top = 164
               Width = 212
-              Height = 32
+              Height = 36
               Caption = 'Tipo de Fonte(Rave CB)'
               Columns = 2
               Items.Strings = (
                 'Times'
                 'Courier')
-              TabOrder = 15
+              TabOrder = 18
             end
             object cbxMostraStatus: TCheckBox
               Left = 316
@@ -5198,7 +5177,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
               Width = 200
               Height = 17
               Caption = 'Mostrar Status'
-              TabOrder = 13
+              TabOrder = 15
             end
             object cbxExpandirLogo: TCheckBox
               Left = 316
@@ -5206,7 +5185,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
               Width = 200
               Height = 17
               Caption = 'Expandir Logo '
-              TabOrder = 14
+              TabOrder = 16
             end
             object edtProdPag: TEdit
               Left = 6
@@ -5222,7 +5201,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
               Top = 142
               Width = 83
               Height = 21
-              TabOrder = 16
+              TabOrder = 6
               Text = '1'
               OnKeyPress = edtNumCopiaKeyPress
             end
@@ -5231,7 +5210,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
               Top = 142
               Width = 98
               Height = 21
-              TabOrder = 17
+              TabOrder = 7
               Text = '12'
               OnKeyPress = edtNumCopiaKeyPress
             end
@@ -5240,9 +5219,33 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
               Top = 142
               Width = 106
               Height = 21
-              TabOrder = 18
+              TabOrder = 17
               Text = '10'
               OnKeyPress = edtNumCopiaKeyPress
+            end
+            object rgCasasDecimaisQtd: TRadioGroup
+              Left = 6
+              Top = 164
+              Width = 163
+              Height = 36
+              Caption = 'Decimais Quantidade'
+              Columns = 3
+              ItemIndex = 0
+              Items.Strings = (
+                '2'
+                '3'
+                '4')
+              TabOrder = 8
+            end
+            object spedtDecimaisVUnit: TSpinEdit
+              Left = 177
+              Top = 177
+              Width = 121
+              Height = 22
+              MaxValue = 10
+              MinValue = 0
+              TabOrder = 9
+              Value = 0
             end
           end
           object TabSheet2: TTabSheet

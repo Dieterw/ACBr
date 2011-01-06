@@ -187,7 +187,20 @@ begin
         GotoXY(FFirstX+80,YY-80);
         FontRotation:=45;
         Print('NFe Cancelada');
-      end;
+      end
+     else if (procNFe.cStat <> 100 ) then
+      begin //Não autorizada
+        SetFont(FontNameUsed,25);
+        FontColor:=clRed;
+        Bold:=True;
+        Underline:=True;
+        GotoXY(FFirstX+5,YY);
+        FontRotation:=45;
+        if procNFe.cStat <= 0 then
+           Print('NFe não autorizada pela SEFAZ(SEM VALIDADE FISCAL)')
+        else
+           Print(IntToStr(procNFe.cStat) + '-' +procNFe.xMotivo);
+      end;      
 
      SetFont(FontNameUsed,22);
      FontColor:=clSilver;

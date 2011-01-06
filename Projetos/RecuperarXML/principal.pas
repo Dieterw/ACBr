@@ -2,9 +2,10 @@ unit principal;
 
 interface
 
-uses UrlMon, JvGIF, MSHtml, ACBrUtil, pcnAuxiliar,
+uses UrlMon, JvGif, MSHtml, ACBrUtil, pcnAuxiliar,
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, OleCtrls, SHDocVw, ExtCtrls, ComCtrls;
+  Dialogs, StdCtrls, OleCtrls, SHDocVw, ExtCtrls, ComCtrls, WinInet;
+
 
 type
   TfrmPrincipal = class(TForm)
@@ -34,6 +35,7 @@ type
     { Private declarations }
     function DownloadFile(SourceFile, DestFile: string): Boolean;
     function StripHTML(S: string): string;
+    procedure DeleteIECache;
   public
     { Public declarations }
   end;
@@ -46,6 +48,43 @@ implementation
 uses ACBrNFeUtil, ACBrHTMLtoXML;
 
 {$R *.dfm}
+
+
+procedure TfrmPrincipal.DeleteIECache;
+var
+  lpEntryInfo: PInternetCacheEntryInfo;
+  hCacheDir: LongWord;
+  dwEntrySize: LongWord;
+begin { DeleteIECache }
+  dwEntrySize := 0;
+
+  FindFirstUrlCacheEntry(nil, TInternetCacheEntryInfo(nil^), dwEntrySize);
+
+  GetMem(lpEntryInfo, dwEntrySize);
+
+  if dwEntrySize>0 then
+    lpEntryInfo^.dwStructSize := dwEntrySize;
+
+  hCacheDir := FindFirstUrlCacheEntry(nil, lpEntryInfo^, dwEntrySize);
+
+  if hCacheDir<>0 then
+  begin
+    repeat
+      DeleteUrlCacheEntry(lpEntryInfo^.lpszSourceUrlName);
+      FreeMem(lpEntryInfo, dwEntrySize);
+      dwEntrySize := 0;
+      FindNextUrlCacheEntry(hCacheDir, TInternetCacheEntryInfo(nil^), dwEntrySize);
+      GetMem(lpEntryInfo, dwEntrySize);
+      if dwEntrySize>0 then
+        lpEntryInfo^.dwStructSize := dwEntrySize;
+    until not FindNextUrlCacheEntry(hCacheDir, lpEntryInfo^, dwEntrySize)
+  end; { hCacheDir<>0 }
+  FreeMem(lpEntryInfo, dwEntrySize);
+
+  FindCloseUrlCache(hCacheDir)
+end; { DeleteIECache }
+
+
 function TfrmPrincipal.DownloadFile(SourceFile, DestFile: string): Boolean;
 begin
   try
@@ -91,6 +130,7 @@ begin
    end;
 
   Memo2.Lines.Clear;
+
 
   btnPegarHTML.Enabled    := False;
   btnNovaConsulta.Enabled := False;
@@ -210,8 +250,8 @@ procedure TfrmPrincipal.btnNovaConsultaClick(Sender: TObject);
 begin
   btnNovaConsulta.Enabled := False;
   btnGerarXML.Enabled := False;
+DeleteIECache;
   Memo2.Lines.Clear;
-
   WebBrowser1.Navigate('https://www.nfe.fazenda.gov.br/portal/FormularioDePesquisa.aspx?tipoconsulta=completa');
 end;
 

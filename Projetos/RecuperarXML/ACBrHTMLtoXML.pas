@@ -74,9 +74,9 @@ begin
 
  NFe.infNFe.ID := OnlyNumber(LerCampo(Grupo,'Chave de acesso'));
  NFe.Ide.nNF   := StrToIntDef(OnlyNumber(LerCampo(Grupo,'Número NF-e')),0);
- // NFe.infNFe.Versao := OnlyNumber(LerCampo(Grupo,'Versão XML'));
+ NFe.infNFe.Versao := StrToFloatDef(LerCampo(Grupo,'Versão XML'),2);
 
- NFe.Ide.cNF := RetornarCodigoNumerico(NFe.infNFe.ID);
+ NFe.Ide.cNF := RetornarCodigoNumerico(NFe.infNFe.ID,NFe.infNFe.Versao);
 
  Grupo :=  SeparaAte('EMITENTE',ArquivoRestante,ArquivoRestante);
 
@@ -173,11 +173,11 @@ begin
        Prod.xProd  := LerCampo(Grupo,'Descrição');
        Prod.qCom   := ConverteStrToNumero(LerCampo(Grupo,'Qtd.'));
        Prod.uCom   := LerCampo(Grupo,'Unidade Comercial');
-       Prod.vUnCom := ConverteStrToNumero(LerCampo(Grupo,'Valor(R$)'));
+       Prod.vProd   := ConverteStrToNumero(LerCampo(Grupo,'Valor(R$)'));
        Prod.cProd  := LerCampo(Grupo,'Código do Produto');
        Prod.NCM    := LerCampo(Grupo,'Código NCM');
        Prod.CFOP   := LerCampo(Grupo,'CFOP');
-       Prod.genero := StrToIntDef(LerCampo(Grupo,'Gênero'),0);
+//       Prod.genero := StrToIntDef(LerCampo(Grupo,'Gênero'),0);
        Prod.vFrete  := ConverteStrToNumero(LerCampo(Grupo,'Valor Total do Frete'));
        Prod.cEAN   := LerCampo(Grupo,'Código EAN Comercial');
        Prod.qCom   := ConverteStrToNumero(LerCampo(Grupo,'Quantidade Comercial'));
@@ -303,6 +303,28 @@ begin
     posIni := pos('INFORMAÇÕES COMPLEMENTARES DE INTERESSE DO CONTRIBUINTE',UpperCase(Grupo)) + Length('INFORMAÇÕES COMPLEMENTARES DE INTERESSE DO CONTRIBUINTE') + 4 ;
     posFim := pos('|&|',UpperCase(copy(Grupo,posIni,length(Grupo))))-1;
     NFe.InfAdic.infCpl     := copy(Grupo,posIni,posFim);
+  end;
+
+ Grupo :=  SeparaAte('Dados de Nota Fiscal Avulsa',ArquivoRestante,Grupo);
+ //OBSERVAÇÕES DO CONTRIBUINTE
+ if pos('OBSERVAÇÕES DO CONTRIBUINTE',UpperCase(Grupo)) > 0 then
+  begin
+    i := 0;
+    posIni := pos('OBSERVAÇÕES DO CONTRIBUINTE',UpperCase(Grupo)) + Length('OBSERVAÇÕES DO CONTRIBUINTE') + 3;
+    ArquivoDuplicatas := copy(Grupo,posIni,length(Grupo));
+    posIni := pos('TEXTO',UpperCase(ArquivoDuplicatas)) + Length('TEXTO') + 4;
+    ArquivoDuplicatas := copy(ArquivoDuplicatas,posIni,Length(ArquivoDuplicatas));
+    while True do
+     begin
+       NFe.InfAdic.obsCont.Add;
+       NFe.InfAdic.obsCont[i].xCampo  := copy(ArquivoDuplicatas,1,pos('|&|',ArquivoDuplicatas)-1);
+       ArquivoDuplicatas := copy(ArquivoDuplicatas,pos('|&|',ArquivoDuplicatas)+ 3,Length(ArquivoDuplicatas));
+       NFe.InfAdic.obsCont[i].xTexto := copy(ArquivoDuplicatas,1,pos('|&|',ArquivoDuplicatas)-1);
+       ArquivoDuplicatas := copy(ArquivoDuplicatas,pos('|&|',ArquivoDuplicatas)+ 3,Length(ArquivoDuplicatas));
+       Inc(i);
+       if Length(ArquivoDuplicatas) <= 4 then
+          break;
+     end;
   end;
 
  GeradorXML := TNFeW.Create(NFe);

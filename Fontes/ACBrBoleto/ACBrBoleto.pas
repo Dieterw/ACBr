@@ -57,7 +57,7 @@ uses ACBrBase,  {Units da ACBr}
      Graphics, Contnrs, Classes;
 
 const
-  CACBrBoleto_Versao = '0.0.19a' ;
+  CACBrBoleto_Versao = '0.0.20a' ;
 
 type
   TACBrTitulo = class;
@@ -117,6 +117,7 @@ type
     toRetornoLiquidadoSemRegistro,
     toRetornoLiquidadoPorConta,
     toRetornoLiquidadoAposBaixaouNaoRegistro,
+    toRetornoBaixaRejeitada,
     toRetornoBaixaSolicitada,
     toRetornoBaixado,
     toRetornoBaixadoViaArquivo,
@@ -124,61 +125,103 @@ type
     toRetornoBaixadoPorDevolucao,
     toRetornoBaixadoFrancoPagamento,
     toRetornoBaixaPorProtesto,
-    toRetornoRecebimentoInstrucaoBaixar,
+    toRetornoBaixaSimples,
+    toRetornoBaixaPorTerSidoLiquidado,
     toRetornoBaixaOuLiquidacaoEstornada,
+    toRetornoBaixaTransferenciaParaDesconto,
+    toRetornoBaixaCreditoCCAtravesSispag,
+    toRetornoBaixaCreditoCCAtravesSispagSemTituloCorresp,
     toRetornoTituloEmSer,
+    toRetornoTituloPagoemCheque,
+    toRetornoTituloPagamentoCancelado,
+    toRetornoTituloSustadoJudicialmente,
+    toRetornoRecebimentoInstrucaoBaixar,
     toRetornoRecebimentoInstrucaoConcederAbatimento,
-    toRetornoAbatimentoConcedido,
     toRetornoRecebimentoInstrucaoCancelarAbatimento,
-    toRetornoAbatimentoCancelado,
     toRetornoRecebimentoInstrucaoConcederDesconto,
-    toRetornoDescontoConcedido,
     toRetornoRecebimentoInstrucaoCancelarDesconto,
-    toRetornoDescontoCancelado,
     toRetornoRecebimentoInstrucaoAlterarDados,
-    toRetornoDadosAlterados,
     toRetornoRecebimentoInstrucaoAlterarVencimento,
+    toRetornoRecebimentoInstrucaoProtestar,
+    toRetornoRecebimentoInstrucaoSustarProtesto,
+    toRetornoRecebimentoInstrucaoNaoProtestar,
+    toRetornoRecebimentoInstrucaoAlterarNomeSacado,
+    toRetornoRecebimentoInstrucaoAlterarEnderecoSacado,
+    toRetornoRecebimentoInstrucaoAlterarTipoCobranca,
+    toRetornoRecebimentoInstrucaoDispensarJuros,
+    toRetornoAbatimentoConcedido,
+    toRetornoAbatimentoCancelado,
+    toRetornoDescontoConcedido,
+    toRetornoDescontoCancelado,
+    toRetornoDadosAlterados,
     toRetornoVencimentoAlterado,
     toRetornoAlteracaoDadosNovaEntrada,
     toRetornoAlteracaoDadosBaixa,
-    toRetornoRecebimentoInstrucaoProtestar,
+    toRetornoAlteracaoDadosRejeitados,
+    toRetornoAlteracaoOutrosDadosRejeitada,
     toRetornoProtestado,
-    toRetornoRecebimentoInstrucaoSustarProtesto,
     toRetornoProtestoSustado,
+    toRetornoProtestoOuSustacaoEstornado,
     toRetornoInstrucaoProtestoRejeitadaSustadaOuPendente,
+    toRetornoInstrucaoRejeitada,
+    toRetornoInstrucaoCancelada,
     toRetornoDebitoEmConta,
-    toRetornoRecebimentoInstrucaoAlterarNomeSacado,
     toRetornoNomeSacadoAlterado,
-    toRetornoRecebimentoInstrucaoAlterarEnderecoSacado,
     toRetornoEnderecoSacadoAlterado,
     toRetornoEncaminhadoACartorio,
     toRetornoRetiradoDeCartorio,
-    toRetornoRecebimentoInstrucaoDispensarJuros,
     toRetornoJurosDispensados,
-    toRetornoManutencaoTituloVencido,
-    toRetornoRecebimentoInstrucaoAlterarTipoCobranca,
-    toRetornoTipoCobrancaAlterado,
     toRetornoDespesasProtesto,
     toRetornoDespesasSustacaoProtesto,
-    toRetornoDebitoCustasAntecipadas,
+    toRetornoCustasSustacao,
+    toRetornoCustasProtesto,
     toRetornoCustasCartorioDistribuidor,
     toRetornoCustasEdital,
-    toRetornoProtestoOuSustacaoEstornado,
-    toRetornoDebitoTarifas,
+    toRetornoCustasSustacaoJudicial,
+    toRetornoCustasIrregularidade,
     toRetornoAcertoDepositaria,
-    toRetornoOutrasOcorrencias,
-    toRetornoOcorrenciasdoSacado,
-    toRetornoTituloPagoemCheque,
     toRetornoAcertoControleParticipante,
-    toRetornoTituloPagamentoCancelado,
+    toRetornoAcertoDadosRateioCredito,
     toRetornoEntradaRejeitaCEPIrregular,
-    toRetornoBaixaRejeitada,
-    toRetornoALteracaoOutrosDadosRejeitada,
+    toRetornoEntradaConfirmadaRateioCredito,
+    toRetornoEntradaRegistradaAguardandoAvaliacao,
+    toRetornoEntradaRejeitadaCarne,
     toRetornoDesagendamentoDebitoAutomatico,
     toRetornoEstornoPagamento,
     toRetornoSustadoJudicial,
-    toRetornoAcertoDadosRateioCredito,
-    toRetornoCancelamentoDadosRateio
+    toRetornoManutencaoTituloVencido,
+    toRetornoTipoCobrancaAlterado,
+    toRetornoCancelamentoDadosRateio,
+    toRetornoOutrasOcorrencias,
+    toRetornoOcorrenciasdoSacado,
+    toRetornoCobrancaContratual,
+    toRetornoTarifaExtratoPosicao,
+    toRetornoTarifaDeRelacaoDasLiquidacoes,
+    toRetornoTarifaDeManutencaoDeTitulosVencidos,
+    toRetornoTarifaEmissaoBoletoEnvioDuplicata,
+    toRetornoTarifaInstrucao,
+    toRetornoTarifaOcorrencias,
+    toRetornoTarifaAvisoCobranca,
+    toRetornoTarifaMensalEmissaoBoletoEnvioDuplicata,
+    toRetornoTarifaMensalRefEntradasBancosCorrespCarteira,
+    toRetornoTarifaMensalBaixasCarteira,
+    toRetornoTarifaMensalBaixasBancosCorrespCarteira,
+    toRetornoTarifaMensalLiquidacoesCarteira,
+    toRetornoTarifaMensalLiquidacoesBancosCorrespCarteira,
+    toRetornoTarifaEmissaoAvisoMovimentacaoTitulos,
+    toRetornoDebitoTarifas,
+    toRetornoDebitoCustasAntecipadas,
+    toRetornoDebitoMensalTarifasExtradoPosicao,
+    toRetornoDebitoMensalTarifasOutrasInstrucoes,
+    toRetornoDebitoMensalTarifasManutencaoTitulosVencidos,
+    toRetornoDebitoMensalTarifasOutrasOcorrencias,
+    toRetornoDebitoMensalTarifasProtestos,
+    toRetornoDebitoMensalTarifasSustacaoProtestos,
+    toRetornoDebitoMensalTarifaAvisoMovimentacaoTitulos,
+    toRetornoChequeDevolvido,
+    toRetornoChequeCompensado,
+    toRetornoConfirmacaoEntradaCobrancaSimples,
+    toRetornoAlegacaoDoSacado
   );
 
   {TACBrOcorrencia}
@@ -413,8 +456,8 @@ type
     //fTipoOcorrencia                 : TACBrTipoOcorrencia;
     //fOcorrenciaOriginal             : String;
     //fDescricaoOcorrenciaOriginal    : String;
-    fMotivoRejeicaoComando          : String;
-    fDescricaoMotivoRejeicaoComando : String;
+    fMotivoRejeicaoComando          : TStrings;
+    fDescricaoMotivoRejeicaoComando : TStrings; 
 
     fDataOcorrencia       : TDateTime;
     fDataCredito          : TDateTime;
@@ -467,8 +510,8 @@ type
      property OcorrenciaOriginal : TACBrOcorrencia read  fOcorrenciaOriginal write fOcorrenciaOriginal;
      //property OcorrenciaOriginal             : String    read fOcorrenciaOriginal  write fOcorrenciaOriginal;
      //property DescricaoOcorrenciaOriginal    : String    read fDescricaoOcorrenciaOriginal  write fDescricaoOcorrenciaOriginal;
-     property MotivoRejeicaoComando          : String    read fMotivoRejeicaoComando  write fMotivoRejeicaoComando;
-     property DescricaoMotivoRejeicaoComando : String    read fDescricaoMotivoRejeicaoComando  write fDescricaoMotivoRejeicaoComando;
+     property MotivoRejeicaoComando          : TStrings    read fMotivoRejeicaoComando  write fMotivoRejeicaoComando;
+     property DescricaoMotivoRejeicaoComando : TStrings    read fDescricaoMotivoRejeicaoComando  write fDescricaoMotivoRejeicaoComando;
      property DataOcorrencia                 : TDateTime read fDataOcorrencia  write fDataOcorrencia;
      property DataCredito                    : TDateTime read fDataCredito  write fDataCredito;
      property DataAbatimento                 : TDateTime read fDataAbatimento  write fDataAbatimento;
@@ -622,7 +665,7 @@ procedure Register;
 implementation
 
 Uses ACBrUtil, ACBrBancoBradesco, ACBrBancoBrasil, ACBrBancoItau, ACBrBancoSicredi,
-     ACBrBancoMercantil, ACBrCaixaEconomica, Forms,
+     ACBrBancoMercantil, ACBrCaixaEconomica, ACBrBancoBanrisul,Forms,
      {$IFDEF COMPILER6_UP} StrUtils {$ELSE} ACBrD5 {$ENDIF}, Math;
 
 {$IFNDEF FPC}
@@ -762,8 +805,8 @@ begin
   //fTipoOcorrencia                 := toRemessaRegistrar;
   //fOcorrenciaOriginal             := '';
   //fDescricaoOcorrenciaOriginal    := '';
-  fMotivoRejeicaoComando          := '';
-  fDescricaoMotivoRejeicaoComando := '';
+  fMotivoRejeicaoComando          := TStringList.Create;
+  fDescricaoMotivoRejeicaoComando := TStringList.Create;
 
   fDataOcorrencia       := 0;
   fDataCredito          := 0;
@@ -790,6 +833,8 @@ begin
   fSacado.Free;
   fInstrucoes.Free;
   fOcorrenciaOriginal.Free;
+  fMotivoRejeicaoComando.Free;
+  fDescricaoMotivoRejeicaoComando.Free;
   inherited;
 end;
 
@@ -1098,6 +1143,7 @@ begin
       748 : fBancoClass := TACBrBancoSicredi.Create(self);
       389 : fBancoClass := TACBrBancoMercantil.create(Self);
       104 : fBancoClass := TACBrCaixaEconomica.create(Self);
+      041 : fBancoClass := TACBrBanrisul.create(Self);
    else
       fBancoClass := TACBrBancoClass.create(Self);
    end;

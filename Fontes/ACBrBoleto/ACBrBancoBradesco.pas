@@ -276,10 +276,14 @@ var
   ContLinha: Integer;
   Titulo   : TACBrTitulo;
 
-  Linha,rCedente: String ;
-  rCNPJCPF: String;
+  Linha,
+  rCedente,
+  rCNPJCPF,
+  DigitoNossoNumero: String;
 
-  CodOCorrencia: Integer;
+  CodOcorrencia, CodMotivo : Integer;
+  CodMotivo_19 : String;
+  i, MotivoLinha : Integer;
 begin
    ContLinha := 0;
 
@@ -323,18 +327,66 @@ begin
          NumeroDocumento             := copy(Linha,117,10);
          OcorrenciaOriginal.Tipo     := CodOcorrenciaToTipo(StrToIntDef(
                                         copy(Linha,109,2),0));
-         MotivoRejeicaoComando       := copy(Linha,319,2);
-         MotivoRejeicaoComando       := IfThen(MotivoRejeicaoComando = '00',
-                                           '00',MotivoRejeicaoComando );
 
-         if MotivoRejeicaoComando <> '00' then
+         CodOcorrencia := StrToInt(IfThen(copy(Linha,109,2) = '00','00',copy(Linha,109,2)));
+
+         //-|Se a ocorrencia for igual a 19 - Confirmação de Receb. de Protesto
+         //-|Verifica o motivo na posição 295 - A = Aceite , D = Desprezado
+         if(CodOcorrencia = 19)then
          begin
-            CodOCorrencia:= StrToIntDef(MotivoRejeicaoComando,0) ;
-            DescricaoMotivoRejeicaoComando := CodMotivoRejeicaoToDescricao(
-                                              OcorrenciaOriginal.Tipo,CodOCorrencia);
+            CodMotivo_19:= copy(Linha,295,1);
+            if(CodMotivo_19 = 'A')then
+            begin
+              MotivoRejeicaoComando.Add(copy(Linha,295,1));
+              DescricaoMotivoRejeicaoComando.Add('A - Aceito');
+            end
+            else
+            begin
+              MotivoRejeicaoComando.Add(copy(Linha,295,1));
+              DescricaoMotivoRejeicaoComando.Add('D - Desprezado');
+            end;
          end
          else
-            DescricaoMotivoRejeicaoComando := '';
+         begin
+           MotivoLinha := 319;
+           for i := 0 to 4 do
+           begin
+             //MotivoRejeicaoComando.Add(IfThen(copy(Linha,MotivoLinha,2) = '00','00',copy(Linha,MotivoLinha,2)));
+             CodMotivo := StrToInt(IfThen(copy(Linha,MotivoLinha,2) = '00','00',copy(Linha,MotivoLinha,2)));
+             //Se for o primeiro motivo
+             if(i = 0)then
+             begin
+                if(CodOcorrencia in [02, 06, 09, 10, 15, 17])then //Somente estas ocorrencias possuem motivos 00
+                begin
+                  MotivoRejeicaoComando.Add(IfThen(copy(Linha,MotivoLinha,2) = '00','00',copy(Linha,MotivoLinha,2)));
+                  DescricaoMotivoRejeicaoComando.Add(CodMotivoRejeicaoToDescricao(OcorrenciaOriginal.Tipo,CodMotivo));
+                end
+                else
+                begin
+                  if(CodMotivo = 0)then
+                  begin
+                    MotivoRejeicaoComando.Add('00');
+                    DescricaoMotivoRejeicaoComando.Add('Sem Motivo');
+                  end
+                  else
+                  begin
+                    MotivoRejeicaoComando.Add(IfThen(copy(Linha,MotivoLinha,2) = '00','00',copy(Linha,MotivoLinha,2)));
+                    DescricaoMotivoRejeicaoComando.Add(CodMotivoRejeicaoToDescricao(OcorrenciaOriginal.Tipo,CodMotivo));
+                  end;
+                end;
+         end
+         else
+             begin
+               if CodMotivo <> 0 then //Apos o 1º motivo os 00 significam que não existe mais motivo
+               begin
+                  MotivoRejeicaoComando.Add(IfThen(copy(Linha,MotivoLinha,2) = '00','00',copy(Linha,MotivoLinha,2)));
+                  DescricaoMotivoRejeicaoComando.Add(CodMotivoRejeicaoToDescricao(OcorrenciaOriginal.Tipo,CodMotivo));
+               end;
+             end;
+
+             MotivoLinha := MotivoLinha + 2; //Incrementa a coluna dos motivos
+           end;
+         end;
 
          DataOcorrencia := StringToDateTimeDef( Copy(Linha,111,2)+'/'+
                                                 Copy(Linha,113,2)+'/'+
@@ -413,22 +465,22 @@ begin
       02: Result := toRetornoRegistroConfirmado;
       03: Result := toRetornoRegistroRecusado;
       06: Result := toRetornoLiquidado;
-      09: Result := toRetornoBaixado;
-      10: Result := toRetornoBaixado;
+      09: Result := toRetornoBaixadoViaArquivo;
+      10: Result := toRetornoBaixadoInstAgencia;
       11: Result := toRetornoTituloEmSer;
       12: Result := toRetornoAbatimentoConcedido;
       13: Result := toRetornoAbatimentoCancelado;
       14: Result := toRetornoVencimentoAlterado;
       15: Result := toRetornoLiquidadoEmCartorio;
       16: Result := toRetornoLiquidado;
-      17: Result := toRetornoLiquidadoSemRegistro;
+      17: Result := toRetornoLiquidadoAposBaixaouNaoRegistro;
       18: Result := toRetornoAcertoDepositaria;
       19: Result := toRetornoRecebimentoInstrucaoProtestar;
       20: Result := toRetornoRecebimentoInstrucaoSustarProtesto;
-      21: Result := toRetornoDadosAlterados;
+      21: Result := toRetornoAcertoControleParticipante;
       22: Result := toRetornoRecebimentoInstrucaoAlterarDados;
       23: Result := toRetornoEncaminhadoACartorio;
-      24: Result := toRetornoRegistroRecusado;
+      24: Result := toRetornoEntradaRejeitaCEPIrregular;
       27: Result := toRetornoBaixaRejeitada;
       28: Result := toRetornoDebitoTarifas;
       29: Result := toRetornoOcorrenciasdoSacado;
@@ -436,6 +488,7 @@ begin
       32: Result := toRetornoComandoRecusado;
       33: Result := toRetornoRecebimentoInstrucaoAlterarDados;
       34: Result := toRetornoRetiradoDeCartorio;
+      35: Result := toRetornoDesagendamentoDebitoAutomatico;
       99: Result := toRetornoRegistroRecusado;
    else
       Result := toRetornoOutrasOcorrencias;
@@ -459,7 +512,18 @@ begin
       toRetornoTituloPagoemCheque : Result:='16';
       toRetornoLiquidadoAposBaixaouNaoRegistro : Result:= '17';
       toRetornoAcertoDepositaria  : Result:='18';
+      toRetornoRecebimentoInstrucaoProtestar      : Result := '19';
+      toRetornoRecebimentoInstrucaoSustarProtesto : Result := '20';
+      toRetornoAcertoControleParticipante         : Result := '21';
+      toRetornoRecebimentoInstrucaoAlterarDados   : Result := '22';
+      toRetornoEncaminhadoACartorio               : Result := '23';
+      toRetornoEntradaRejeitaCEPIrregular         : Result := '24';
+      toRetornoBaixaRejeitada                     : Result := '27';
       toRetornoDebitoTarifas      : Result:='28';
+      toRetornoOcorrenciasdoSacado                : Result := '29';
+      toRetornoALteracaoOutrosDadosRejeitada      : Result := '30';
+      toRetornoComandoRecusado                    : Result := '32';
+      toRetornoDesagendamentoDebitoAutomatico     : Result := '35';
    else
       Result:= '02';
    end;

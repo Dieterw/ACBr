@@ -48,7 +48,12 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
-Versão 0.0.q9a 30/12/2010
+Versão 0.0.20a 10/01/2010
+[-] Corrigo leitura do arquivo retorno na classe do Bradesco (Carlos Fitti)
+[+] Adicionado leitura do arquivo retorno na classe do banco Itaú (Carlos Fitti)
+[+] Adicionado classe para o banco Banrisul (Reginaldo Costa)
+
+Versão 0.0.19a 30/12/2010
 [-] Corrigido bug ao gerar a linha do cabealho do arquivo de remessa 240 colunas
     do Banco do Brasil. (Reginaldo Costa)
 

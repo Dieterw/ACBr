@@ -49,8 +49,8 @@ Símbolo : Significado
 
 
 Versão 0.0.20a 10/01/2010
-[-] Corrigo leitura do arquivo retorno na classe do Bradesco (Carlos Fitti)
-[+] Adicionado leitura do arquivo retorno na classe do banco Itaú (Carlos Fitti)
+[-] Corrigo leitura do arquivo retorno na classe do Bradesco (Carlos Fitl)
+[+] Adicionado leitura do arquivo retorno na classe do banco Itaú (Carlos Fitl)
 [+] Adicionado classe para o banco Banrisul (Reginaldo Costa)
 
 Versão 0.0.19a 30/12/2010

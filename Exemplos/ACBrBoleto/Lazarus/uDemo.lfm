@@ -909,7 +909,7 @@ object frmDemo: TfrmDemo
     Cedente.Cidade = 'Tatui'
     Cedente.UF = 'SP'
     Cedente.CEP = '18270000'
-    Banco.Numero = 237
+    Banco.Numero = 41
     NomeArqRemessa = '.'
     LayoutRemessa = c240
     ComprovanteEntrega = True

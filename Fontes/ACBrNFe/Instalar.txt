@@ -109,4 +109,4 @@ ATENÇÃO - Para envio de email com conexão segura é necessário que as DLLs do Ope
 libeay32.dll e ssleay32.dll
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-PARA TIRAR DÚVIDAS SOBRE O COMPONENTE UTILIZE O FÓRUMWEB - http://www.forumweb.com.br/foruns/index.php?/forum/465-projeto-acbr/
+PARA TIRAR DÚVIDAS SOBRE O COMPONENTE UTILIZE - http://www.djsystem.com.br/acbr/forum

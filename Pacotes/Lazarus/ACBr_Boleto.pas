@@ -7,16 +7,17 @@ unit ACBr_Boleto;
 interface
 
 uses
-      ACBrBoleto, ACBrBancoBradesco, ACBrBancoBrasil, ACBrBancoItau, 
-   ACBrBancoSicredi, ACBrBancoMercantil, ACBrCaixaEconomica, LazarusPackageIntf;
+    ACBrBoleto, ACBrBancoBradesco, ACBrBancoBrasil, ACBrBancoItau, 
+  ACBrBancoSicredi, ACBrBancoMercantil, ACBrCaixaEconomica, ACBrBancoBanrisul, 
+  LazarusPackageIntf;
 
 implementation
 
 procedure Register; 
 begin
-  RegisterUnit ( 'ACBrBoleto', @ACBrBoleto.Register ) ; 
+  RegisterUnit('ACBrBoleto', @ACBrBoleto.Register); 
 end; 
 
 initialization
-  RegisterPackage ( 'ACBr_Boleto', @Register ) ; 
+  RegisterPackage('ACBr_Boleto', @Register); 
 end.

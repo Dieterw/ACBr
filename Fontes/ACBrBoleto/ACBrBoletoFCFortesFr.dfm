@@ -1,8 +1,8 @@
 object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
-  Left = 191
-  Top = 168
+  Left = 136
+  Top = -19
   Width = 970
-  Height = 780
+  Height = 768
   Caption = 'ACBRBoletoFCFortesFr'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -15,8 +15,8 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
   PixelsPerInch = 96
   TextHeight = 13
   object LayoutBoleto: TRLReport
-    Left = 8
-    Top = 50
+    Left = -8
+    Top = -382
     Width = 794
     Height = 1123
     Margins.LeftMargin = 4.000000000000000000
@@ -35,7 +35,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       Width = 12
       Height = 53
       Alignment = taCenter
-        Angle = 90.000000000000000000
+      Angle = 90.000000000000000000
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
       Font.Height = -9
@@ -44,7 +44,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       Font.Style = []
       Layout = tlCenter
       ParentFont = False
-      end
+    end
     object RLBand4: TRLBand
       Left = 15
       Top = 19
@@ -2585,7 +2585,6 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Ratio = 3.000000000000000000
       end
     end
-
   end
   object BoletoCarne: TRLReport
     Left = 816

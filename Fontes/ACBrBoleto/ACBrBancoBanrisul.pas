@@ -56,12 +56,11 @@ type
     function GerarRegistroTransacao400(ACBrTitulo: TACBrTitulo): string; Override;
     function GerarRegistroTrailler400(ARemessa: TStringList): string; Override;
     function CalculaDigitosChaveASBACE(ChaveASBACESemDigito: string): string;
-    function Modulo11BRB(Valor: string; Base: Integer=9): string;
   end;
 
 implementation
 
-uses ACBrUtil, StrUtils;
+uses ACBrUtil, StrUtils, ACBrValidador;
 
 var
   aTotal: Extended;
@@ -74,34 +73,6 @@ begin
   fpDigito:=8;
   fpNome:='Banrisul';
   fpTamanhoMaximoNossoNum:=8;
-end;
-
-function Modulo10(Valor: string): string;
-var
-  Auxiliar: string;
-  Contador, Peso: integer;
-  Digito: integer;
-begin
-  Auxiliar:='';
-  Peso:=2;
-  for Contador:=Length(Valor)downto 1 do
-  begin
-    Auxiliar:=IntToStr(StrToInt(Valor[Contador])*Peso)+Auxiliar;
-    if Peso=1 then
-      Peso:=2
-    else
-      Peso:=1;
-  end;
-
-  Digito:=0;
-  for Contador:=1 to Length(Auxiliar) do
-  begin
-    Digito:=Digito+StrToInt(Auxiliar[Contador]);
-  end;
-  Digito:=10-(Digito mod 10);
-  if (Digito>9) then
-    Digito:=0;
-  Result:=IntToStr(Digito);
 end;
 
 function Modulo11(Valor: string; Base: Integer=9; Resto: boolean=false): string;
@@ -202,30 +173,6 @@ begin
   Result:=IntToStr(Digito1)+IntToStr(Digito2);
 end;
 
-function TACBrBanrisul.Modulo11BRB(Valor: string; Base: Integer=9): string;
-var
-  Soma: integer;
-  Contador, Peso: integer;
-begin
-  Soma:=0;
-  Peso:=2;
-  for Contador:=Length(Valor)downto 1 do
-  begin
-    Soma:=Soma+(StrToInt(Valor[Contador])*Peso);
-    if Peso<Base then
-      Peso:=Peso+1
-    else
-      Peso:=2;
-  end;
-
-  Soma:=Soma mod 11;
-  case Soma of
-    0, 1, 10: Result:='1';
-  else
-    Result:=IntToStr(11-Soma);
-  end;
-end;
-
 function TACBrBanrisul.MontarCodigoBarras(const ACBrTitulo: TACBrTitulo): string;
 var
   CodigoBarras, FatorVencimento, DigitoCodBarras, CampoLivre, Modalidade: string;
@@ -244,8 +191,26 @@ begin
       padR(ACBrBoleto.Cedente.Conta, 7, '0')+{ Código cedente = Número da conta }
       padR(NossoNumero, 8, '0')+{ Nosso número }
       '40';
-    CampoLivre:=CampoLivre+Modulo10(CampoLivre);
-    CampoLivre:=CampoLivre+Modulo11BRB(CampoLivre, 7);
+
+    {Calculando Módulo 10}
+    Modulo.MultiplicadorInicial:= 1;
+    Modulo.MultiplicadorFinal:= 2;
+    Modulo.MultiplicadorAtual:= 2;
+    Modulo.FormulaDigito := frModulo10;
+    Modulo.Documento := CampoLivre;
+    Modulo.Calcular;
+    CampoLivre := CampoLivre+  IntToStr(Modulo.DigitoFinal);
+
+    {Calculando Módulo 11}
+    Modulo.CalculoPadrao;
+    Modulo.MultiplicadorFinal:= 7;
+    Modulo.Documento:= CampoLivre;
+    Modulo.Calcular;
+
+    if (Modulo.ModuloFinal >= 10) or (Modulo.ModuloFinal < 1) then
+       CampoLivre := CampoLivre +'1'
+    else
+       CampoLivre := CampoLivre + IntToStr(Modulo.DigitoFinal);
 
     CodigoBarras:=PadR(IntToStr(Numero), 3, '0')+'9'+
       FatorVencimento+{ Fator de vencimento, não obrigatório }

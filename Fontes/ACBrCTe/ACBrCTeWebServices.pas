@@ -414,7 +414,7 @@ begin
 
   HTTP.MimeType  := 'text/xml; charset=utf-8';
   HTTP.UserAgent := '';
-  HTTP.Protocol  := '1.2' ;
+  HTTP.Protocol  := '1.1'; // (1.2 para 1.1) Alterado por Italo em 13/01/2011
 
   HTTP.AddPortNumberToHost := False;
   HTTP.Headers.Add(Action);

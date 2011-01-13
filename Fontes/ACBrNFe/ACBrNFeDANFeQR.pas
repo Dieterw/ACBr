@@ -57,6 +57,8 @@ uses
   Dialogs, ExtCtrls, QuickRpt, QRCtrls,
   {$IFDEF QReport_PDF}
      QRPDFFilt,
+     // Incluido por Italo em 13/01/2011
+     QRPrntr,
   {$ENDIF}
   ACBrNFeQRCodeBar, pcnNFe, ACBrNFe, ACBrNFeUtil, pcnConversao;
 
@@ -181,6 +183,14 @@ begin
 
         if APreview then
         begin
+           // Incluido por Italo em 13/01/2011
+          {$IFDEF QReport_PDF}
+            QRNFe.PrevShowSearch      := False;
+            QRNFe.PrevShowThumbs      := False;
+            QRNFe.PreviewInitialState := wsMaximized;
+            QRNFe.PrevInitialZoom     := qrZoomToWidth;
+          {$ENDIF}
+
             QRNFe.Prepare;
             QRNFe.Preview;
         end else

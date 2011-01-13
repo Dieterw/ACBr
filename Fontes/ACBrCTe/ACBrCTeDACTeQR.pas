@@ -58,6 +58,8 @@ uses
   Dialogs, ExtCtrls, QuickRpt, QRCtrls,
   {$IFDEF QReport_PDF}
      QRPDFFilt,
+     // Incluido por Italo em 13/01/2011
+     QRPrntr,
   {$ENDIF}
   ACBrCTeQRCodeBar, pcteCTe, ACBrCTe, ACBrCTeUtil, Printers;
 
@@ -188,6 +190,15 @@ begin
         if APreview then
          begin
            QRCTe.PrinterSettings.Copies := FNumCopias; // Incluido por Italo em 15/10/2010
+
+          // Incluido por Italo em 13/01/2011
+         {$IFDEF QReport_PDF}
+           QRCTe.PrevShowSearch      := False;
+           QRCTe.PrevShowThumbs      := False;
+           QRCTe.PreviewInitialState := wsMaximized;
+           QRCTe.PrevInitialZoom     := qrZoomToWidth;
+         {$ENDIF}
+
            QRCTe.Prepare;
            QRCTe.Preview;
          end else

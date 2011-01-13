@@ -1,9 +1,9 @@
 object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
-  Left = 85
-  Top = 0
+  Left = 252
+  Top = 163
   Width = 867
   Height = 738
-  VertScrollBar.Position = 229
+  VertScrollBar.Position = 421
   Caption = 'ACBRBoletoFCQuickFr'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -18,7 +18,7 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
   TextHeight = 13
   object ACBrBarCode1: TACBrBarCode
     Left = 64
-    Top = 731
+    Top = 539
     Width = 401
     Height = 58
     Text = '12345678901234567890'
@@ -33,7 +33,7 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
   end
   object LayoutBoleto: TQuickRep
     Left = 0
-    Top = -229
+    Top = -421
     Width = 794
     Height = 1123
     Frame.Color = clBlack
@@ -2524,18 +2524,18 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
       object imgBarra: TQRImage
         Left = 5
         Top = 775
-        Width = 532
-        Height = 57
+        Width = 414
+        Height = 66
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          150.812500000000000000
+          174.625000000000000000
           13.229166666666670000
           2050.520833333333000000
-          1407.583333333333000000)
+          1095.375000000000000000)
       end
       object imgBanco3: TQRImage
         Left = 12

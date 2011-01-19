@@ -2120,9 +2120,10 @@ begin
         I := 0 ;
         while (not JaCancelado) and (I < RespostasCanceladas.Count) do
         begin
-           if RespostasCanceladas[I] is TACBrTEFDRespTXT then
+           if (RespostasCanceladas[I] is TACBrTEFDRespTXT) or
+              (Tipo = gpVeSPague) then
             begin
-              with TACBrTEFDRespTXT( RespostasCanceladas[I] ) do
+              with TACBrTEFDResp( RespostasCanceladas[I] ) do
               begin
                  JaCancelado := (Resp.Rede        = Rede)        and
                                 (Resp.NSU         = NSU)         and

@@ -156,6 +156,7 @@ type
      procedure FinalizarTransacao( Confirma : Boolean;
         DocumentoVinculado : AnsiString);
      procedure LoadDLLFunctions;
+     procedure SetParametrosAdicionais(const AValue : TStringList) ;
    protected
      procedure SetNumVias(const AValue : Integer); override;
 
@@ -206,7 +207,8 @@ type
      property CodigoLoja     : AnsiString read fCodigoLoja     write fCodigoLoja ;
      property NumeroTerminal : AnsiString read fNumeroTerminal write fNumeroTerminal ;
      property Operador       : AnsiString read fOperador       write fOperador ;
-     property ParametrosAdicionais : TStringList read fParametrosAdicionais ;
+     property ParametrosAdicionais : TStringList read fParametrosAdicionais
+        write SetParametrosAdicionais ;
      property Restricoes : AnsiString read fRestricoes write fRestricoes ;
      property OperacaoATV : Integer read fOperacaoATV write fOperacaoATV
         default 111 ;
@@ -435,6 +437,12 @@ begin
    CliSiTefFunctionDetect('FinalizaTransacaoSiTefInterativo', @xFinalizaTransacaoSiTefInterativo);
    CliSiTefFunctionDetect('EscreveMensagemPermanentePinPad',@xEscreveMensagemPermanentePinPad);
    CliSiTefFunctionDetect('ObtemQuantidadeTransacoesPendentes',@xObtemQuantidadeTransacoesPendentes);
+end ;
+
+procedure TACBrTEFDCliSiTef.SetParametrosAdicionais(const AValue : TStringList
+   ) ;
+begin
+   fParametrosAdicionais.Assign( AValue ) ;
 end ;
 
 procedure TACBrTEFDCliSiTef.SetNumVias(const AValue : Integer);

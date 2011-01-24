@@ -533,7 +533,7 @@ begin
     {     N = Numeros 0 1 2 3 4 5 6 7 8 ou 9                                        }
     {     A = Numeros 1 2 3 4 5 6 7 8 ou 9                                          }
     {     B = Numeros 0 3 5 7 ou 8                                                  }
-    {     C = Numeros 4 ou 7                                                        }
+    {     C = Numeros 4 6 ou 7                                                        }
     {     D = Numeros 3 ou 4                                                        }
     {     E = Numeros 0 ou 8                                                        }
     {     F = Numeros 0 1 ou 5                                                      }
@@ -558,7 +558,7 @@ begin
     {                                  A A  A O O  E  O O  E                        }
     {                                  S M  T T D  S  T D  S                        }
     {                                                                               }
-    {                                  a b  c d e  f  g h  if  jjjjjjjjjjjjjj        }
+    {                                  a b  c d e  f  g h  if  jjjjjjjjjjjjjj       }
     {                                  0000000001111111111222222222233333333        }
     {                                  1234567890123456789012345678901234567        }
 
@@ -654,7 +654,7 @@ begin
             if ( Posicao_1  = 'N'        ) and ( Pos( Posicao_2, '0123456789' )  =   0 ) then Erro_3 := 1;
             if ( Posicao_1  = 'A'        ) and ( Pos( Posicao_2, '123456789'  )  =   0 ) then Erro_3 := 1;
             if ( Posicao_1  = 'B'        ) and ( Pos( Posicao_2, '03578'      )  =   0 ) then Erro_3 := 1;
-            if ( Posicao_1  = 'C'        ) and ( Pos( Posicao_2, '47'         )  =   0 ) then Erro_3 := 1;
+            if ( Posicao_1  = 'C'        ) and ( Pos( Posicao_2, '467'        )  =   0 ) then Erro_3 := 1;
             if ( Posicao_1  = 'D'        ) and ( Pos( Posicao_2, '34'         )  =   0 ) then Erro_3 := 1;
             if ( Posicao_1  = 'E'        ) and ( Pos( Posicao_2, '08'         )  =   0 ) then Erro_3 := 1;
             if ( Posicao_1  = 'F'        ) and ( Pos( Posicao_2, '015'        )  =   0 ) then Erro_3 := 1;

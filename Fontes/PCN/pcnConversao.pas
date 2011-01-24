@@ -106,7 +106,7 @@ type
   TpcteRetira = (rtSim, rtNao);
   TpcteTomador = ( tmRemetente, tmExpedidor, tmRecebedor, tmDestinatario, tmOutros);
   TpcteRspSeg = (rsRemetente, rsExpedidor, rsRecebedor, rsDestinatario, rsEmitenteCTe, rsTomadorServico);
-  TpcteLocacao = (ltNao, ltsim);
+  TpcteLotacao = (ltNao, ltSim);
   TpcteProp = (tpTACAgregado, tpTACIndependente, tpOutros);
   TpcteMask = (msk4x2, msk7x2, msk9x2, msk10x2, msk13x2, msk15x2, msk6x3, mskAliq);
   UnidMed = (uM3,uKG, uTON, uUNIDADE, uLITROS);
@@ -116,6 +116,17 @@ type
   TpcteTipoNavegacao = (tnInterior, tnCabotagem);
   // Incluido por Italo em 19/11/2010
   TpcteTipoTrafego = (ttProprio, ttMutuo, ttRodoferroviario, ttRodoviario);
+  // Incluido por Italo em 24/01/2011
+  TpcteTipoDataPeriodo = (tdSemData, tdNaData, tdAteData, tdApartirData, tdNoPeriodo);
+  TpcteTipoHorarioIntervalo = (thSemHorario, thNoHorario, thAteHorario, thApartirHorio, thNoIntervalo);
+  TpcteTipoDocumento = (tdDeclaracao, tdOutros);
+  TpcteTipoDocumentoAnterior = (daCTRC, daCTAC, daACT, daNF7, daNF27, daCAN, daCTMC, daATRE, daDTA, daCAI, daCCPI, daCA, daTIF, daOutros);
+  TpcteRspPagPedagio = (rpEmitente, rpRemetente, rpExpedidor, rpRecebedor, rpDestinatario, rpTomadorServico);
+  TpcteTipoDispositivo = (tdCartaoMagnetico, tdTAG, tdTicket);
+  TpcteTipoPropriedade = (tpProprio, tpTerceiro);
+  TpcteTipoVeiculo = (tvTracao, tvReboque);
+  TpcteTipoRodado = (trNaoAplicavel, trTruck, trToco, trCavaloMecanico, trVAN, trUtilitario, trOutros);
+  TpcteTipoCarroceria = (tcNaoAplicavel, tcAberta, tcFechada, tcGraneleira, tcPortaContainer, tcSider);
 
 const
   NFeUF: array[0..26] of String =
@@ -219,12 +230,12 @@ function TpTomadorToStr(const t: TpcteTomador): String;
 function TpTomadorToStrText(const t: TpcteTomador): String;
 function TpRspSeguroToStr(const t: TpcteRspSeg): String;
 function TpRspSeguroToStrText(const t: TpcteRspSeg): String;
-function TpLotacaoToStr(const t: TpcteLocacao): string;
+function TpLotacaoToStr(const t: TpcteLotacao): string;
 function TpPropToStr(const t: TpcteProp): String;
 function UnidMedToStr(const t: UnidMed): string;
 function StrToTpTomador(var ok: boolean; const s: String ): TpcteTomador;
 function StrToTpRspSeguro(var ok: boolean; const s: String ): TpcteRspSeg;
-function StrToTpLotacao(var ok: boolean; const s: String ): TpcteLocacao;
+function StrToTpLotacao(var ok: boolean; const s: String ): TpcteLotacao;
 function StrToTpProp(var ok: boolean; const s: String ): TpcteProp;
 function StrToUnidMed(var ok: boolean; const s: String ): UnidMed;
 function TpMaskToStrText(const t: TpcteMask): string;
@@ -727,7 +738,7 @@ begin
     [rsRemetente, rsExpedidor, rsRecebedor, rsDestinatario, rsEmitenteCTe, rsTomadorServico]);
 end;
 
-function TpLotacaoToStr(const t: TpcteLocacao): string;
+function TpLotacaoToStr(const t: TpcteLotacao): string;
 begin
   result := EnumeradoToStr(t, ['0','1'], [ltNao, ltSim]);
 end;
@@ -747,7 +758,7 @@ begin
   result := StrToEnumerado(ok, s, ['0', '1', '2', '3', '4', '5'], [rsRemetente, rsExpedidor, rsRecebedor, rsDestinatario, rsEmitenteCTe, rsTomadorServico]);
 end;
 
-function StrToTpLotacao(var ok: boolean; const s: String ): TpcteLocacao;
+function StrToTpLotacao(var ok: boolean; const s: String ): TpcteLotacao;
 begin
   result := StrToEnumerado(ok, s, ['0', '1'], [ltNao, ltSim]);
 end;

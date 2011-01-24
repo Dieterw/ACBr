@@ -57,9 +57,11 @@ type
     FRegistroG125Count: Integer;
     FRegistroG130Count: Integer;
     FRegistroG140Count: Integer;
+    FRegistroG126Count: Integer;
 
     procedure WriteRegistroG110(RegG001: TRegistroG001);
     procedure WriteRegistroG125(RegG110: TRegistroG110);
+    procedure WriteRegistroG126(RegG125: TRegistroG125);
     procedure WriteRegistroG130(RegG125: TRegistroG125);
     procedure WriteRegistroG140(RegG130: TRegistroG130);
 
@@ -73,6 +75,7 @@ type
     function RegistroG001New: TRegistroG001;
     function RegistroG110New: TRegistroG110;
     function RegistroG125New: TRegistroG125;
+    function RegistroG126New: TRegistroG126;
     function RegistroG130New: TRegistroG130;
     function RegistroG140New: TRegistroG140;
 
@@ -85,6 +88,7 @@ type
 
     property RegistroG110Count: Integer read FRegistroG110Count write FRegistroG110Count;
     property RegistroG125Count: Integer read FRegistroG125Count write FRegistroG125Count;
+    property RegistroG126Count: Integer read FRegistroG126Count write FRegistroG126Count;
     property RegistroG130Count: Integer read FRegistroG130Count write FRegistroG130Count;
     property RegistroG140Count: Integer read FRegistroG140Count write FRegistroG140Count;
 
@@ -207,20 +211,38 @@ begin
      begin
         with RegG001.RegistroG110.Items[intFor] do
         begin
-           Add( LFill('G110') +
-                LFill( DT_INI) +
-                LFill( DT_FIN) +
-                LFill( MODO_CIAP ) +
-                LFill( SALDO_IN_ICMS, 0, 2 ) +
-                LFill( SALDO_FN_ICMS, 0, 2 ) +
-                LFill( SOM_PARC, 0, 2 ) +
-                LFill( VL_TRIB_EXP, 0, 2 ) +
-                LFill( VL_TOTAL, 0, 2 ) +
-                DFill( PER_SAI_TRIB, 4 ) +
-                LFill( ICMS_APROP, 0, 2 ) ) ;
+           if FBloco_0.Registro0000.COD_VER = vlVersao102 then
+           begin
+              Add( LFill('G110') +
+                   LFill( DT_INI) +
+                   LFill( DT_FIN) +
+                   LFill( MODO_CIAP ) +
+                   LFill( SALDO_IN_ICMS, 0, 2 ) +
+                   LFill( SALDO_FN_ICMS, 0, 2 ) +
+                   LFill( SOM_PARC, 0, 2 ) +
+                   LFill( VL_TRIB_EXP, 0, 2 ) +
+                   LFill( VL_TOTAL, 0, 2 ) +
+                   DFill( IND_PER_SAI, 4 ) +
+                   LFill( ICMS_APROP, 0, 2 )+
+                   LFill( SOM_ICMS_OC, 0, 2) );
+           end
+           else
+           if FBloco_0.Registro0000.COD_VER = vlVersao103 then
+           begin
+              Add( LFill('G110') +
+                   LFill( DT_INI) +
+                   LFill( DT_FIN) +
+                   LFill( SALDO_IN_ICMS, 0, 2 ) +
+                   LFill( SOM_PARC, 0, 2 ) +
+                   LFill( VL_TRIB_EXP, 0, 2 ) +
+                   LFill( VL_TOTAL, 0, 2 ) +
+                   DFill( IND_PER_SAI, 4 ) +
+                   LFill( ICMS_APROP, 0, 2 )+
+                   LFill( SOM_ICMS_OC, 0, 2) );
+           end;
            ///
            WriteRegistroG125( RegG001.RegistroG110.Items[intFor] );
-         end;
+        end;
         RegistroG990.QTD_LIN_G := RegistroG990.QTD_LIN_G + 1;
      end;
      /// Variavél para armazenar a quantidade de registro do tipo.
@@ -239,28 +261,50 @@ begin
      begin
         with RegG110.RegistroG125.Items[intFor] do
         begin
-          case TIPO_MOV of
-           mbcSI: strTIPO_MOV := 'SI';
-           mbcIM: strTIPO_MOV := 'IM';
-           mbcIA: strTIPO_MOV := 'IA';
-           mbcCI: strTIPO_MOV := 'CI';
-           mbcMC: strTIPO_MOV := 'MC';
-           mbcBA: strTIPO_MOV := 'BA';
-           mbcAT: strTIPO_MOV := 'AT';
-           mbcPE: strTIPO_MOV := 'PE';
-           mbcOT: strTIPO_MOV := 'OT';
-          end;
-          Add( LFill('E111') +
-               LFill( COD_IND_BEM ) +
-               LFill( DT_MOV ) +
-               LFill( strTIPO_MOV ) +
-               LFill( VL_IMOB_ICMS_OP, 0, 2 ) +
-               LFill( VL_IMOB_ICMS_ST, 0, 2 ) +
-               LFill( VL_IMOB_ICMS_FRT, 0, 2 ) +
-               LFill( VL_IMOB_ICMS_DIF, 0, 2 ) +
-               LFill( NUM_PARC ,0 ) +
-               LFill( VL_PARC_PASS, 0, 2 ) +
-               LFill( VL_PARC_APROP, 0, 2 ) ) ;
+           case TIPO_MOV of
+            mbcSI: strTIPO_MOV := 'SI';
+            mbcIM: strTIPO_MOV := 'IM';
+            mbcIA: strTIPO_MOV := 'IA';
+            mbcCI: strTIPO_MOV := 'CI';
+            mbcMC: strTIPO_MOV := 'MC';
+            mbcBA: strTIPO_MOV := 'BA';
+            mbcAT: strTIPO_MOV := 'AT';
+            mbcPE: strTIPO_MOV := 'PE';
+            mbcOT: strTIPO_MOV := 'OT';
+           end;
+           if FBloco_0.Registro0000.COD_VER = vlVersao102 then
+           begin
+              Add( LFill('G125') +
+                   LFill( COD_IND_BEM ) +
+                   LFill( DT_MOV ) +
+                   LFill( strTIPO_MOV ) +
+                   LFill( VL_IMOB_ICMS_OP, 0, 2 ) +
+                   LFill( VL_IMOB_ICMS_ST, 0, 2 ) +
+                   LFill( VL_IMOB_ICMS_FRT, 0, 2 ) +
+                   LFill( VL_IMOB_ICMS_DIF, 0, 2 ) +
+                   LFill( NUM_PARC ,0 ) +
+                   LFill( VL_PARC_PASS, 0, 2 ) +
+                   LFill( VL_PARC_APROP, 0, 2 ) );
+           end
+           else
+           if FBloco_0.Registro0000.COD_VER = vlVersao103 then
+           begin
+              Add( LFill('G125') +
+                   LFill( COD_IND_BEM ) +
+                   LFill( DT_MOV ) +
+                   LFill( strTIPO_MOV ) +
+                   LFill( VL_IMOB_ICMS_OP, 0, 2 ) +
+                   LFill( VL_IMOB_ICMS_ST, 0, 2 ) +
+                   LFill( VL_IMOB_ICMS_FRT, 0, 2 ) +
+                   LFill( VL_IMOB_ICMS_DIF, 0, 2 ) +
+                   LFill( NUM_PARC ,0 ) +
+                   LFill( VL_PARC_PASS, 0, 2 ) );
+           end;
+        end;
+        /// Registro FILHOS do FILHO
+        if FBloco_0.Registro0000.COD_VER = vlVersao103 then
+        begin
+          WriteRegistroG126( RegG110.RegistroG125.Items[intFor]);
         end;
         /// Registro FILHOS do FILHO
         WriteRegistroG130( RegG110.RegistroG125.Items[intFor]);
@@ -282,7 +326,7 @@ begin
      begin
         with RegG125.RegistroG130.Items[intFor] do
         begin
-          Add( LFill('E111') +
+          Add( LFill('G130') +
                LFill( Integer(IND_EMIT), 0 ) +
                LFill( COD_PART ) +
                LFill( COD_MOD ) +
@@ -311,7 +355,7 @@ begin
         begin
           Check(FBloco_0.Registro0001.Registro0200.LocalizaRegistro(COD_ITEM), '(G-G140) ITENS: O código do item "%s" não existe no registro 0200!', [COD_ITEM]);
 
-          Add( LFill('E111') +
+          Add( LFill('G140') +
                LFill( NUM_ITEM, 3) +
                LFill( COD_ITEM ) ) ;
         end;
@@ -332,6 +376,44 @@ begin
        Add( LFill('G990') +
             LFill(QTD_LIN_G,0) ) ;
      end;
+  end;
+end;
+
+function TBloco_G.RegistroG126New: TRegistroG126;
+var
+G110Count: integer;
+G125Count: integer;
+begin
+   G110Count := FRegistroG001.RegistroG110.Count -1;
+   G125Count := FRegistroG001.RegistroG110.Items[G110Count].RegistroG125.Count -1;
+   Result := FRegistroG001.RegistroG110.Items[G110Count].RegistroG125.Items[G125Count].RegistroG126.New;
+end;
+
+(*Por: Edilson Alves de oliveira*)
+procedure TBloco_G.WriteRegistroG126(RegG125: TRegistroG125);
+var
+  intFor: integer;
+begin
+  if Assigned( RegG125.RegistroG126 ) then
+  begin
+     for intFor := 0 to RegG125.RegistroG126.Count - 1 do
+     begin
+        with RegG125.RegistroG126.Items[intFor] do
+        begin
+          Add( LFill('G126') +
+               LFill( DT_INI) +
+               LFill( DT_FIN) +
+               LFill( NUM_PARC ,0 ) +
+               LFill( VL_PARC_PASS, 0, 2 )+
+               LFill( VL_TRIB_OC, 0, 2 ) +
+               LFill( VL_TOTAL, 0, 2 ) +
+               DFill( IND_PER_SAI, 4 ) +
+               LFill( VL_PARC_APROP, 0, 2 )) ;
+        end;
+        RegistroG990.QTD_LIN_G := RegistroG990.QTD_LIN_G + 1;
+     end;
+     /// Variavél para armazenar a quantidade de registro do tipo.
+     FRegistroG126Count := FRegistroG126Count + RegG125.RegistroG126.Count;
   end;
 end;
 

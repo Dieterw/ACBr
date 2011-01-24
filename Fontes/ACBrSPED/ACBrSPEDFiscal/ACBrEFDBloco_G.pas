@@ -48,6 +48,7 @@ uses
 type
   TRegistroG110List = class;
   TRegistroG125List = class;
+  TRegistroG126List = class;
   TRegistroG130List = class;
   TRegistroG140List = class;
 
@@ -69,15 +70,15 @@ type
   private
     fDT_INI: TDateTime;         /// Data Inicial da Apuracao
     fDT_FIN: TDateTime;         /// Data Final da Apuracao
-    fMODO_CIAP: String;     /// Modelo de CIAP adotado C ou D
+    fMODO_CIAP: String;         /// Modelo de CIAP adotado C ou D
     fSALDO_IN_ICMS: Currency;   /// Saldo inicial de ICMS do CIAP Modelo C
     fSALDO_FN_ICMS: Currency;   /// Saldo Final ICMS do CIAP Modelo C
     fSOM_PARC: Currency;        /// Somatorio das Parcelas ICMS Passivel de Apropriacao Modelo D
     fVL_TRIB_EXP: Currency;     /// Valor do somatorio das saidas tributadas e saidas para exportacao
     fVL_TOTAL: Currency;        /// Valor Total das Saidas
-    fPER_SAI_TRIB: Double;      /// Participacao percentual do valor do somatorio das saidas tributadas e para exportacao
+    fIND_PER_SAI: Double;       /// Participacao percentual do valor do somatorio das saidas tributadas e para exportacao
     fICMS_APROP: Currency;      /// Parcela de ICMS a ser apropriada no Registro de Apuracao do ICMS
-
+    FSOM_ICMS_OC: Currency;     /// Valor de outros créditos a ser apropriado na Apuração do ICMS, correspondente ao somatório do campo 09 do registro G126
     FRegistroG125: TRegistroG125List;  /// BLOCO G - Lista de RegistroG110 (FILHO fo FILHO)
   public
     constructor Create; virtual; /// Create
@@ -85,14 +86,15 @@ type
 
     property DT_INI: TDateTime read fDT_INI write fDT_INI;
     property DT_FIN: TDateTime read fDT_FIN write fDT_FIN;
-    property MODO_CIAP: String read fMODO_CIAP write fMODO_CIAP;
+    property MODO_CIAP: String read fMODO_CIAP write fMODO_CIAP;                /// Até versão 102
     property SALDO_IN_ICMS: Currency read fSALDO_IN_ICMS write fSALDO_IN_ICMS;
-    property SALDO_FN_ICMS: Currency read fSALDO_FN_ICMS write fSALDO_FN_ICMS;
+    property SALDO_FN_ICMS: Currency read fSALDO_FN_ICMS write fSALDO_FN_ICMS;  /// Até versão 102
     property SOM_PARC: Currency read fSOM_PARC write fSOM_PARC;
     property VL_TRIB_EXP: Currency read fVL_TRIB_EXP write fVL_TRIB_EXP;
     property VL_TOTAL: Currency read fVL_TOTAL write fVL_TOTAL;
-    property PER_SAI_TRIB: Double read fPER_SAI_TRIB write fPER_SAI_TRIB;
+    property IND_PER_SAI: Double read fIND_PER_SAI write fIND_PER_SAI;          /// Foi renomeado na versão 103
     property ICMS_APROP: Currency read fICMS_APROP write fICMS_APROP;
+    property SOM_ICMS_OC: Currency read FSOM_ICMS_OC write FSOM_ICMS_OC;
 
     property RegistroG125: TRegistroG125List read FRegistroG125 write FRegistroG125;
   end;
@@ -123,7 +125,8 @@ type
     fVL_PARC_PASS: Currency;       /// Valor parcela icms passivel de apropriacao
     fVL_PARC_APROP: Currency;      /// Valor da parcela apropriada do ICMS
 
-    FRegistroG130: TRegistroG130List;  /// BLOCO G - Lista de RegistroG130 (FILHO fo FILHO)
+    FRegistroG130: TRegistroG130List;  /// BLOCO G - Lista de RegistroG130 (FILHO do FILHO)
+    FRegistroG126: TRegistroG126List;
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
@@ -137,9 +140,10 @@ type
     property VL_IMOB_ICMS_DIF: Currency   read fVL_IMOB_ICMS_DIF write fVL_IMOB_ICMS_DIF;
     property NUM_PARC: Currency   read fNUM_PARC write fNUM_PARC;
     property VL_PARC_PASS: Currency   read fVL_PARC_PASS write fVL_PARC_PASS;
-    property VL_PARC_APROP: Currency   read fVL_PARC_APROP write fVL_PARC_APROP;
+    property VL_PARC_APROP: Currency   read fVL_PARC_APROP write fVL_PARC_APROP;   /// Até versão 102
 
     property RegistroG130: TRegistroG130List read FRegistroG130 write FRegistroG130;
+    property RegistroG126: TRegistroG126List read FRegistroG126 write FRegistroG126;
   end;
 
   /// Registro G125 - Lista
@@ -151,6 +155,40 @@ type
   public
     function New: TRegistroG125;
     property Items[Index: Integer]: TRegistroG125 read GetItem write SetItem;
+  end;
+
+  /// Registro G126 - OUTROS CRÉDITOS CIAP
+  //  Por: Edilson Alves de oliveira
+  TRegistroG126 = class
+  private
+    FDT_INI       : TDateTime;
+    FDT_FIM       : TDateTime;
+    FNUM_PARC     : WORD;
+    FVL_PARC_PASS : Currency;
+    FVL_TRIB_OC   : Currency;
+    FVL_TOTAL     : Currency;
+    FIND_PER_SAI  : Double;
+    FVL_PARC_APROP: Currency;
+  public
+    property DT_INI: TDateTime       read fDT_INI        write fDT_INI;
+    property DT_FIM: TDateTime       read FDT_FIM        write FDT_FIM;
+    property NUM_PARC:word           read FNUM_PARC      write FNUM_PARC;
+    property VL_PARC_PASS:Currency   read FVL_PARC_PASS  write FVL_PARC_PASS;
+    property VL_TRIB_OC:Currency     read FVL_TRIB_OC    write FVL_TRIB_OC;
+    property VL_TOTAL:Currency       read FVL_TOTAL      write FVL_TOTAL;
+    property IND_PER_SAI:Double      read FIND_PER_SAI   write FIND_PER_SAI;
+    property VL_PARC_APROP:Currency  read FVL_PARC_APROP write FVL_PARC_APROP;
+  end;
+
+  /// Registro G126 - Lista
+
+  TRegistroG126List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroG126; /// GetItem
+    procedure SetItem(Index: Integer; const Value: TRegistroG126); /// SetItem
+  public
+    function New: TRegistroG126;
+    property Items[Index: Integer]: TRegistroG126 read GetItem write SetItem;
   end;
 
   /// Registro G130 - IDENTIFICACAO DO DOCUMENTO FISCAL
@@ -261,11 +299,13 @@ end;
 constructor TRegistroG125.Create;
 begin
   FRegistroG130 := TRegistroG130List.Create;  /// BLOCO G - Lista de RegistroG130 (FILHO fo FILHO)
+  FRegistroG126 := TRegistroG126List.Create;  /// BLOCO G - Lista de RegistroG126 (FILHO fo FILHO)
 end;
 
 destructor TRegistroG125.Destroy;
 begin
   FRegistroG130.Free;
+  FRegistroG126.Free;
   inherited;
 end;
 
@@ -349,6 +389,25 @@ destructor TRegistroG001.Destroy;
 begin
    FRegistroG110.Free;
   inherited;
+end;
+
+{ TRegistroG126List }
+
+function TRegistroG126List.GetItem(Index: Integer): TRegistroG126;
+begin
+  Result := TRegistroG126(Inherited Items[Index]);
+end;
+
+function TRegistroG126List.New: TRegistroG126;
+begin
+  Result := TRegistroG126.Create;
+  Add(Result);
+end;
+
+procedure TRegistroG126List.SetItem(Index: Integer;
+  const Value: TRegistroG126);
+begin
+  Put(Index, Value);
 end;
 
 end.

@@ -1346,7 +1346,7 @@ type
   private
     FRNTRC   : String;
     FdPrev   : tDateTime;
-    FLota    : TpcteLocacao;
+    FLota    : TpcteLotacao;
     FCTRB    : TCTRB;
     FOcc     : TOccCollection;
     FvalePed : TValePed;
@@ -1363,7 +1363,7 @@ type
   published
     property RNTRC: String read FRNTRC write FRNTRC;
     property dPrev: TDateTime read FdPrev write FdPrev;
-    property Lota: TpcteLocacao read FLota write FLota;
+    property Lota: TpcteLotacao read FLota write FLota;
     property CTRB: TCTRB read FCTRB write FCTRB;
     property Occ: TOccCollection read FOcc write SetOcc;
     property valePed: TValePed read FvalePed write FvalePed;

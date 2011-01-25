@@ -657,7 +657,7 @@ begin
     begin
       CTe.Rodo.RNTRC := Leitor.rCampo(tcStr,'RNTRC');
       CTe.Rodo.dPrev := Leitor.rCampo(tcDat,'dPrev');
-      CTe.Rodo.lota  := Leitor.rCampo(tcStr,'lota');
+      CTe.Rodo.lota  := StrToTpLotacao(ok, Leitor.rCampo(tcStr,'lota'));
 
       if Leitor.rExtrai(3, 'CTRB') <> '' then
       begin

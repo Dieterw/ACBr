@@ -48,6 +48,11 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   25/01/11 (Italo Jurisato Junior)
+---------------
+[+] Foi incluido novos tipos conforme solicitação no Mantis #613
+
+
 Alterações   09/12/10 (Italo Jurisato Junior)
 ---------------
 [-] Correção na procedure GerarEnderExped, estava usando a UF do Emitende em vez

@@ -475,7 +475,7 @@ var
     intResto   :Integer;
 begin
   inherited;
-  	 intAlturaLinhaUnica :=	qrbItens.Height - 1;
+  	 intAlturaLinhaUnica :=	qrbItens.Height;
     intTamanhoDescricao := Length(cdsItens.FieldByName( 'DESCRICAO' ).AsString);
     intDivisao          := intTamanhoDescricao DIV _MAX_LARGURA_DESCRICAO;
     intResto            := intTamanhoDescricao MOD _MAX_LARGURA_DESCRICAO;

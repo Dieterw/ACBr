@@ -214,36 +214,36 @@ begin
     begin
       if Leitor.rExtrai(3, 'semData') <> '' then
       begin
-        CTe.Compl.Entrega.semData.tpPer := Leitor.rCampo(tcInt, 'tpPer');
+        CTe.Compl.Entrega.semData.tpPer := StrToTpDataPeriodo(ok, Leitor.rCampo(tcStr, 'tpPer'));
       end;
 
       if Leitor.rExtrai(3, 'comData') <> '' then
       begin
-        CTe.Compl.Entrega.comData.tpPer := Leitor.rCampo(tcInt, 'tpPer');
+        CTe.Compl.Entrega.comData.tpPer := StrToTpDataPeriodo(ok, Leitor.rCampo(tcStr, 'tpPer'));
         CTe.Compl.Entrega.comData.dProg := Leitor.rCampo(tcDat, 'dProg');
       end;
 
       if Leitor.rExtrai(3, 'noPeriodo') <> '' then
       begin
-        CTe.Compl.Entrega.noPeriodo.tpPer := Leitor.rCampo(tcInt, 'tpPer');
+        CTe.Compl.Entrega.noPeriodo.tpPer := StrToTpDataPeriodo(ok, Leitor.rCampo(tcStr, 'tpPer'));
         CTe.Compl.Entrega.noPeriodo.dIni  := Leitor.rCampo(tcDat, 'dIni');
         CTe.Compl.Entrega.noPeriodo.dFim  := Leitor.rCampo(tcDat, 'dFim');
       end;
 
       if Leitor.rExtrai(3, 'semHora') <> '' then
       begin
-        CTe.Compl.Entrega.semHora.tpHor := Leitor.rCampo(tcInt, 'tpHor');
+        CTe.Compl.Entrega.semHora.tpHor := StrToTpHorarioIntervalo(ok, Leitor.rCampo(tcStr, 'tpHor'));
       end;
 
       if Leitor.rExtrai(3, 'comHora') <> '' then
       begin
-        CTe.Compl.Entrega.comHora.tpHor := Leitor.rCampo(tcInt, 'tpHor');
+        CTe.Compl.Entrega.comHora.tpHor := StrToTpHorarioIntervalo(ok, Leitor.rCampo(tcStr, 'tpHor'));
         CTe.Compl.Entrega.comHora.hProg := StrToTime(Leitor.rCampo(tcStr, 'hProg'));
       end;
 
       if Leitor.rExtrai(3, 'noInter') <> '' then
       begin
-        CTe.Compl.Entrega.noInter.tpHor := Leitor.rCampo(tcInt, 'tpHor');
+        CTe.Compl.Entrega.noInter.tpHor := StrToTpHorarioIntervalo(ok, Leitor.rCampo(tcStr, 'tpHor'));
         CTe.Compl.Entrega.noInter.hIni  := StrToTime(Leitor.rCampo(tcStr, 'hIni'));
         CTe.Compl.Entrega.noInter.hFim  := StrToTime(Leitor.rCampo(tcStr, 'hFim'));
       end;
@@ -368,7 +368,7 @@ begin
     while Leitor.rExtrai(2, 'infOutros', '', i01 + 1) <> '' do
     begin
       CTe.Rem.InfOutros.Add;
-      CTe.Rem.InfOutros[i01].tpDoc      := Leitor.rCampo(tcStr, 'tpDoc');
+      CTe.Rem.InfOutros[i01].tpDoc      := StrToTpDocumento(ok, Leitor.rCampo(tcStr, 'tpDoc'));
       CTe.Rem.InfOutros[i01].descOutros := Leitor.rCampo(tcStr, 'descOutros');
       CTe.Rem.InfOutros[i01].nDoc       := Leitor.rCampo(tcStr, 'nDoc');
       CTe.Rem.InfOutros[i01].dEmi       := Leitor.rCampo(tcDat, 'dEmi');
@@ -619,7 +619,7 @@ begin
           while Leitor.rExtrai(5, 'idDocAntPap', '', i03 + 1) <> '' do
           begin
             CTe.infCTeNorm.emiDocAnt[i01].idDocAnt[i02].idDocAntPap.Add;
-            CTe.infCTeNorm.emiDocAnt[i01].idDocAnt[i02].idDocAntPap[i03].tpDoc  := Leitor.rCampo(tcInt, 'tpDoc');
+            CTe.infCTeNorm.emiDocAnt[i01].idDocAnt[i02].idDocAntPap[i03].tpDoc  := StrToTpDocumentoAnterior(ok, Leitor.rCampo(tcStr, 'tpDoc'));
             CTe.infCTeNorm.emiDocAnt[i01].idDocAnt[i02].idDocAntPap[i03].serie  := Leitor.rCampo(tcStr, 'serie');
             CTe.infCTeNorm.emiDocAnt[i01].idDocAnt[i02].idDocAntPap[i03].subser := Leitor.rCampo(tcStr, 'subser');
             CTe.infCTeNorm.emiDocAnt[i01].idDocAnt[i02].idDocAntPap[i03].nDoc   := Leitor.rCampo(tcInt, 'nDoc');
@@ -688,13 +688,13 @@ begin
       begin
         CTe.Rodo.valePed.nroRE     := Leitor.rCampo(tcStr, 'nroRE');
         CTe.Rodo.valePed.vTValePed := Leitor.rCampo(tcDe2,'vTValePed');
-        CTe.Rodo.valePed.respPg    := Leitor.rCampo(tcInt, 'respPg');
+        CTe.Rodo.valePed.respPg    := StrToRspPagPedagio(ok, Leitor.rCampo(tcStr, 'respPg'));
 
         i01 := 0;
         while Leitor.rExtrai(4, 'disp', '', i01 + 1) <> '' do
         begin
           CTe.Rodo.valePed.disp.Add;
-          CTe.Rodo.valePed.disp[i01].tpDisp := Leitor.rCampo(tcInt, 'tpDisp');
+          CTe.Rodo.valePed.disp[i01].tpDisp := StrToTpDispositivo(ok, Leitor.rCampo(tcStr, 'tpDisp'));
           CTe.Rodo.valePed.disp[i01].xEmp   := Leitor.rCampo(tcStr, 'xEmp');
           CTe.Rodo.valePed.disp[i01].dVig   := Leitor.rCampo(tcDat, 'dVig');
           CTe.Rodo.valePed.disp[i01].nDisp  := Leitor.rCampo(tcStr, 'nDisp');
@@ -713,10 +713,10 @@ begin
         CTe.Rodo.veic[i01].tara    := Leitor.rCampo(tcInt, 'tara');
         CTe.Rodo.veic[i01].capKG   := Leitor.rCampo(tcInt, 'capKG');
         CTe.Rodo.veic[i01].capM3   := Leitor.rCampo(tcInt, 'capM3');
-        CTe.Rodo.veic[i01].tpProp  := Leitor.rCampo(tcStr, 'tpProp');
-        CTe.Rodo.veic[i01].tpVeic  := Leitor.rCampo(tcInt, 'tpVeic');
-        CTe.Rodo.veic[i01].tpRod   := Leitor.rCampo(tcInt, 'tpRod');
-        CTe.Rodo.veic[i01].tpCar   := Leitor.rCampo(tcInt, 'tpCar');
+        CTe.Rodo.veic[i01].tpProp  := StrToTpPropriedade(ok, Leitor.rCampo(tcStr, 'tpProp'));
+        CTe.Rodo.veic[i01].tpVeic  := StrToTpVeiculo(ok, Leitor.rCampo(tcStr, 'tpVeic'));
+        CTe.Rodo.veic[i01].tpRod   := StrToTpRodado(ok, Leitor.rCampo(tcStr, 'tpRod'));
+        CTe.Rodo.veic[i01].tpCar   := StrToTpCarroceria(ok, Leitor.rCampo(tcStr, 'tpCar'));
         CTe.Rodo.veic[i01].UF      := Leitor.rCampo(tcStr, 'UF');
 
         if Leitor.rExtrai(4, 'prop') <> '' then

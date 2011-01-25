@@ -462,8 +462,8 @@ type
 
   TEntrega = class(TPersistent)
   private
-    FTipoData  : Integer;
-    FTipoHora  : Integer;
+    FTipoData  : TpcteTipoDataPeriodo;
+    FTipoHora  : TpcteTipoHorarioIntervalo;
 
     FsemData   : TSemData;
     FcomData   : TComData;
@@ -475,8 +475,8 @@ type
     constructor Create(AOwner: TCompl);
     destructor Destroy; override;
   published
-    property TipoData : Integer read FTipoData write FTipoData;
-    property TipoHora : Integer read FTipoHora write FTipoHora;
+    property TipoData : TpcteTipoDataPeriodo read FTipoData write FTipoData;
+    property TipoHora : TpcteTipoHorarioIntervalo read FTipoHora write FTipoHora;
 
     property semData : TSemData read FsemData write FsemData;
     property comData : TComData read FcomData write FcomData;
@@ -488,54 +488,54 @@ type
 
   TSemData = class(TPersistent)
   private
-   FtpPer : integer;
+   FtpPer : TpcteTipoDataPeriodo;
   published
-    property tpPer : integer read FtpPer write FtpPer;
+    property tpPer : TpcteTipoDataPeriodo read FtpPer write FtpPer;
   end;
 
   TComData = class(TPersistent)
   private
-   FtpPer : integer;
+   FtpPer : TpcteTipoDataPeriodo;
    FdProg : TDateTime;
   published
-    property tpPer : integer read FtpPer write FtpPer;
+    property tpPer : TpcteTipoDataPeriodo read FtpPer write FtpPer;
     property dProg : TDateTime read FdProg write FdProg;
   end;
 
   TNoPeriodo = class(TPersistent)
   private
-   FtpPer : integer;
+   FtpPer : TpcteTipoDataPeriodo;
    FdIni  : TDateTime;
    FdFim  : TDateTime;
   published
-    property tpPer : integer read FtpPer write FtpPer;
+    property tpPer : TpcteTipoDataPeriodo read FtpPer write FtpPer;
     property dIni : TDateTime read FdIni write FdIni;
     property dFim : TDateTime read FdFim write FdFim;
   end;
 
   TSemHora = class(TPersistent)
   private
-   FtpHor : integer;
+   FtpHor : TpcteTipoHorarioIntervalo;
   published
-    property tpHor : integer read FtpHor write FtpHor;
+    property tpHor : TpcteTipoHorarioIntervalo read FtpHor write FtpHor;
   end;
 
   TComHora = class(TPersistent)
   private
-   FtpHor : integer;
+   FtpHor : TpcteTipoHorarioIntervalo;
    FhProg : TDateTime;
   published
-    property tpHor : integer read FtpHor write FtpHor;
+    property tpHor : TpcteTipoHorarioIntervalo read FtpHor write FtpHor;
     property hProg : TDateTime read FhProg write FhProg;
   end;
 
   TNoInter = class(TPersistent)
   private
-   FtpHor : integer;
+   FtpHor : TpcteTipoHorarioIntervalo;
    FhIni  : TDateTime;
    FhFim  : TDateTime;
   published
-    property tpHor : integer read FtpHor write FtpHor;
+    property tpHor : TpcteTipoHorarioIntervalo read FtpHor write FtpHor;
     property hIni : TDateTime read FhIni write FhIni;
     property hFim : TDateTime read FhFim write FhFim;
   end;
@@ -788,7 +788,7 @@ type
 
   TInfOutrosCollectionItem = class(TCollectionItem)
   private
-    FtpDoc      : string;
+    FtpDoc      : TpcteTipoDocumento;
     FdescOutros : string;
     FnDoc       : string;
     FdEmi       : TdateTime;
@@ -797,7 +797,7 @@ type
     constructor Create; reintroduce;
     destructor Destroy; override;
   published
-    property tpDoc: string read FtpDoc write FtpDoc;
+    property tpDoc: TpcteTipoDocumento read FtpDoc write FtpDoc;
     property descOutros: string read FdescOutros write FdescOutros;
     property nDoc: string read FnDoc write FnDoc;
     property dEmi: TdateTime read FdEmi write FdEmi;
@@ -1278,7 +1278,7 @@ type
 
   TidDocAntPapCollectionItem = class(TCollectionItem)
   private
-    FtpDoc  : Integer;
+    FtpDoc  : TpcteTipoDocumentoAnterior;
     Fserie  : String;
     Fsubser : String;
     FnDoc   : Integer;
@@ -1287,7 +1287,7 @@ type
     constructor Create; reintroduce;
     destructor Destroy; override;
   published
-    property tpDoc: Integer read FtpDoc write FtpDoc;
+    property tpDoc: TpcteTipoDocumentoAnterior read FtpDoc write FtpDoc;
     property serie: String read Fserie write Fserie;
     property subser: String read Fsubser write Fsubser;
     property nDoc: Integer read FnDoc write FnDoc;
@@ -1426,7 +1426,7 @@ type
   private
     FnroRE     : String;
     FvTValePed : Currency;
-    FrespPg    : Integer;
+    FrespPg    : TpcteRspPagPedagio;
     Fdisp      : TDispCollection;
     procedure SetDisp(const Value: TDispCollection);
   public
@@ -1435,7 +1435,7 @@ type
   published
     property nroRE: String read FnroRE write FnroRE;
     property vTValePed: Currency read FvTValePed write FvTValePed;
-    property respPg: Integer read FrespPg write FrespPg;
+    property respPg: TpcteRspPagPedagio read FrespPg write FrespPg;
     property disp: TDispCollection read Fdisp write SetDisp;
   end;
 
@@ -1451,7 +1451,7 @@ type
 
   TDispCollectionItem = class(TCollectionItem)
   private
-    FtpDisp : Integer;
+    FtpDisp : TpcteTipoDispositivo;
     FxEmp   : String;
     FdVig   : TDateTime;
     FnDisp  : String;
@@ -1460,7 +1460,7 @@ type
     constructor Create; reintroduce;
     destructor Destroy; override;
   published
-    property tpDisp: Integer read FtpDisp write FtpDisp;
+    property tpDisp: TpcteTipoDispositivo read FtpDisp write FtpDisp;
     property xEmp: String read FxEmp write FxEmp;
     property dVig: TDateTime read FdVig write FdVig;
     property nDisp: String read FnDisp write FnDisp;
@@ -1485,10 +1485,10 @@ type
     Ftara    : Integer;
     FcapKG   : Integer;
     FcapM3   : Integer;
-    FtpProp  : String;
-    FtpVeic  : Integer;
-    FtpRod   : Integer;
-    FtpCar   : Integer;
+    FtpProp  : TpcteTipoPropriedade;
+    FtpVeic  : TpcteTipoVeiculo;
+    FtpRod   : TpcteTipoRodado;
+    FtpCar   : TpcteTipoCarroceria;
     FUF      : String;
     FProp    : Tprop;
   public
@@ -1501,10 +1501,10 @@ type
     property tara: Integer read Ftara write Ftara;
     property capKG: Integer read FcapKG write FcapKG;
     property capM3: Integer read FcapM3 write FcapM3;
-    property tpProp: String read FtpProp write FtpProp;
-    property tpVeic: Integer read FtpVeic write FtpVeic;
-    property tpRod: Integer read FtpRod write FtpRod;
-    property tpCar: Integer read FtpCar write FtpCar;
+    property tpProp: TpcteTipoPropriedade read FtpProp write FtpProp;
+    property tpVeic: TpcteTipoVeiculo read FtpVeic write FtpVeic;
+    property tpRod: TpcteTipoRodado read FtpRod write FtpRod;
+    property tpCar: TpcteTipoCarroceria read FtpCar write FtpCar;
     property UF: String read FUF write FUF;
     property Prop: Tprop read FProp write FProp;
   end;

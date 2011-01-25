@@ -537,20 +537,20 @@ begin
             cdsDocumentos.Append;
 
             case tpDoc of
-             00: cdsDocumentosTIPO_1.AsString := 'CTRC';
-             01: cdsDocumentosTIPO_1.AsString := 'CTAC';
-             02: cdsDocumentosTIPO_1.AsString := 'ACT';
-             03: cdsDocumentosTIPO_1.AsString := 'NF M7';
-             04: cdsDocumentosTIPO_1.AsString := 'NF M27';
-             05: cdsDocumentosTIPO_1.AsString := 'CAN';
-             06: cdsDocumentosTIPO_1.AsString := 'CTMC';
-             07: cdsDocumentosTIPO_1.AsString := 'ATRE';
-             08: cdsDocumentosTIPO_1.AsString := 'DTA';
-             09: cdsDocumentosTIPO_1.AsString := 'CAI';
-             10: cdsDocumentosTIPO_1.AsString := 'CCPI';
-             11: cdsDocumentosTIPO_1.AsString := 'CA';
-             12: cdsDocumentosTIPO_1.AsString := 'TIF';
-             99: cdsDocumentosTIPO_1.AsString := 'Outros';
+             daCTRC: cdsDocumentosTIPO_1.AsString := 'CTRC';
+             daCTAC: cdsDocumentosTIPO_1.AsString := 'CTAC';
+             daACT:  cdsDocumentosTIPO_1.AsString := 'ACT';
+             daNF7:  cdsDocumentosTIPO_1.AsString := 'NF M7';
+             daNF27: cdsDocumentosTIPO_1.AsString := 'NF M27';
+             daCAN:  cdsDocumentosTIPO_1.AsString := 'CAN';
+             daCTMC: cdsDocumentosTIPO_1.AsString := 'CTMC';
+             daATRE: cdsDocumentosTIPO_1.AsString := 'ATRE';
+             daDTA:  cdsDocumentosTIPO_1.AsString := 'DTA';
+             daCAI:  cdsDocumentosTIPO_1.AsString := 'CAI';
+             daCCPI: cdsDocumentosTIPO_1.AsString := 'CCPI';
+             daCA:   cdsDocumentosTIPO_1.AsString := 'CA';
+             daTIF:  cdsDocumentosTIPO_1.AsString := 'TIF';
+             daOutros: cdsDocumentosTIPO_1.AsString := 'Outros';
             end;
             cdsDocumentosCNPJCPF_1.AsString := CTeUtil.FormatarCNPJ(FCTe.infCTeNorm.emiDocAnt.Items[I].CNPJCPF);
             cdsDocumentosDOCUMENTO_1.AsString := serie + '-' + IntToStr(nDoc);
@@ -558,20 +558,20 @@ begin
           else
           begin
             case tpDoc of
-             00: cdsDocumentosTIPO_2.AsString := 'CTRC';
-             01: cdsDocumentosTIPO_2.AsString := 'CTAC';
-             02: cdsDocumentosTIPO_2.AsString := 'ACT';
-             03: cdsDocumentosTIPO_2.AsString := 'NF M7';
-             04: cdsDocumentosTIPO_2.AsString := 'NF M27';
-             05: cdsDocumentosTIPO_2.AsString := 'CAN';
-             06: cdsDocumentosTIPO_2.AsString := 'CTMC';
-             07: cdsDocumentosTIPO_2.AsString := 'ATRE';
-             08: cdsDocumentosTIPO_2.AsString := 'DTA';
-             09: cdsDocumentosTIPO_2.AsString := 'CAI';
-             10: cdsDocumentosTIPO_2.AsString := 'CCPI';
-             11: cdsDocumentosTIPO_2.AsString := 'CA';
-             12: cdsDocumentosTIPO_2.AsString := 'TIF';
-             99: cdsDocumentosTIPO_2.AsString := 'Outros';
+             daCTRC: cdsDocumentosTIPO_2.AsString := 'CTRC';
+             daCTAC: cdsDocumentosTIPO_2.AsString := 'CTAC';
+             daACT:  cdsDocumentosTIPO_2.AsString := 'ACT';
+             daNF7:  cdsDocumentosTIPO_2.AsString := 'NF M7';
+             daNF27: cdsDocumentosTIPO_2.AsString := 'NF M27';
+             daCAN:  cdsDocumentosTIPO_2.AsString := 'CAN';
+             daCTMC: cdsDocumentosTIPO_2.AsString := 'CTMC';
+             daATRE: cdsDocumentosTIPO_2.AsString := 'ATRE';
+             daDTA:  cdsDocumentosTIPO_2.AsString := 'DTA';
+             daCAI:  cdsDocumentosTIPO_2.AsString := 'CAI';
+             daCCPI: cdsDocumentosTIPO_2.AsString := 'CCPI';
+             daCA:   cdsDocumentosTIPO_2.AsString := 'CA';
+             daTIF:  cdsDocumentosTIPO_2.AsString := 'TIF';
+             daOutros: cdsDocumentosTIPO_2.AsString := 'Outros';
             end;
             cdsDocumentosCNPJCPF_2.AsString := CTeUtil.FormatarCNPJ(FCTe.infCTeNorm.emiDocAnt.Items[I].CNPJCPF);
             cdsDocumentosDOCUMENTO_2.AsString := serie + '-' + IntToStr(nDoc);
@@ -1207,12 +1207,12 @@ begin
   // Incluido / Alterado por Italo em 29/12/2010 e 30/12/2010
   qrlNumRegEsp.Caption := FCTe.Rodo.valePed.nroRE;
   case FCTe.Rodo.valePed.respPg of
-   0: qrlResponsavel.Caption := 'EMITENTE';
-   1: qrlResponsavel.Caption := 'REMETENTE';
-   2: qrlResponsavel.Caption := 'EXPEDIDOR';
-   3: qrlResponsavel.Caption := 'RECEBEDOR';
-   4: qrlResponsavel.Caption := 'DESTINATÁRIO';
-   5: qrlResponsavel.Caption := 'TOMADOR DO SERVIÇO';
+   rpEmitente:       qrlResponsavel.Caption := 'EMITENTE';
+   rpRemetente:      qrlResponsavel.Caption := 'REMETENTE';
+   rpExpedidor:      qrlResponsavel.Caption := 'EXPEDIDOR';
+   rpRecebedor:      qrlResponsavel.Caption := 'RECEBEDOR';
+   rpDestinatario:   qrlResponsavel.Caption := 'DESTINATÁRIO';
+   rpTomadorServico: qrlResponsavel.Caption := 'TOMADOR DO SERVIÇO';
   end;
   qrlValorTotal.Caption := CteUtil.FormatarValor(msk13x2, FCTe.Rodo.valePed.vTValePed);
 
@@ -1223,7 +1223,7 @@ begin
 
   for i:= 0 to FCTe.Rodo.veic.Count - 1 do
   begin
-   if FCTe.Rodo.veic.Items[i].tpProp = 'P'
+   if TpPropriedadeToStr(FCTe.Rodo.veic.Items[i].tpProp) = 'P'
     then qrmTipo.Lines.Add('Próprio')
     else qrmTipo.Lines.Add('Terceiro');
    qrmPlaca.Lines.Add(FCTe.Rodo.veic.Items[i].placa);

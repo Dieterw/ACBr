@@ -419,7 +419,8 @@ begin
 
   (**)GerarFluxo;
 
-  if (CTe.Compl.Entrega.TipoData>=0) and (CTe.Compl.Entrega.TipoHora>=0)
+  if (TpDataPeriodoToStr(CTe.Compl.Entrega.TipoData)>='0') and
+     (TpHorarioIntervaloToStr(CTe.Compl.Entrega.TipoHora)>='0')
    then (**)GerarEntrega;
 
   Gerador.wCampo(tcStr, 'C26', 'origCalc    ', 01, 40, 0, CTe.Compl.origCalc, DSC_ORIGCALC);
@@ -462,20 +463,20 @@ begin
   Gerador.wGrupo('Entrega', 'C11');//Entrega
 
   case CTe.Compl.Entrega.TipoData of
-   0: begin
+   tdSemData: begin
        Gerador.wGrupo('semData', 'C12');
-       Gerador.wCampo(tcInt, 'C13', 'tpPer  ', 01, 01, 1, CTe.Compl.Entrega.semData.tpPer, '');
+       Gerador.wCampo(tcStr, 'C13', 'tpPer  ', 01, 01, 1, TpDataPeriodoToStr(CTe.Compl.Entrega.semData.tpPer), '');
        Gerador.wGrupo('/semData');
       end;
-  1,2,3: begin
+  tdNaData,tdAteData,tdApartirData: begin
           Gerador.wGrupo('comData', 'C14');
-          Gerador.wCampo(tcInt, 'C15', 'tpPer  ', 01, 01, 1, CTe.Compl.Entrega.comData.tpPer, '');
+          Gerador.wCampo(tcStr, 'C15', 'tpPer  ', 01, 01, 1, TpDataPeriodoToStr(CTe.Compl.Entrega.comData.tpPer), '');
           Gerador.wCampo(tcDat, 'C16', 'dProg  ', 10, 10, 1, CTe.Compl.Entrega.comData.dProg, '');
           Gerador.wGrupo('/comData');
          end;
-   4: begin
+   tdNoPeriodo: begin
        Gerador.wGrupo('noPeriodo', 'C17');
-       Gerador.wCampo(tcInt, 'C18', 'tpPer ', 01, 01, 1, CTe.Compl.Entrega.noPeriodo.tpPer, '');
+       Gerador.wCampo(tcStr, 'C18', 'tpPer ', 01, 01, 1, TpDataPeriodoToStr(CTe.Compl.Entrega.noPeriodo.tpPer), '');
        Gerador.wCampo(tcDat, 'C19', 'dIni  ', 10, 10, 1, CTe.Compl.Entrega.noPeriodo.dIni, '');
        Gerador.wCampo(tcDat, 'C20', 'dFim  ', 10, 10, 1, CTe.Compl.Entrega.noPeriodo.dFim, '');
        Gerador.wGrupo('/noPeriodo');
@@ -483,20 +484,20 @@ begin
   end;
 
   case CTe.Compl.Entrega.TipoHora of
-   0: begin
+   thSemHorario: begin
        Gerador.wGrupo('semHora', 'C21');
-       Gerador.wCampo(tcInt, 'C22', 'tpHor    ', 01, 01, 1, CTe.Compl.Entrega.semHora.tpHor, '');
+       Gerador.wCampo(tcStr, 'C22', 'tpHor    ', 01, 01, 1, TpHorarioIntervaloToStr(CTe.Compl.Entrega.semHora.tpHor), '');
        Gerador.wGrupo('/semHora');
       end;
-  1,2,3: begin
+  thNoHorario,thAteHorario,thApartirHorario: begin
           Gerador.wGrupo('comHora', 'C23');
-          Gerador.wCampo(tcInt, 'C24', 'tpHor    ', 01, 01, 1, CTe.Compl.Entrega.comHora.tpHor, '');
+          Gerador.wCampo(tcStr, 'C24', 'tpHor    ', 01, 01, 1, TpHorarioIntervaloToStr(CTe.Compl.Entrega.comHora.tpHor), '');
           Gerador.wCampo(tcStr, 'C25', 'hProg    ', 08, 08, 1, TimeToStr(CTe.Compl.Entrega.comHora.hProg), '');
           Gerador.wGrupo('/comHora');
          end;
-   4: begin
+   thNoIntervalo: begin
        Gerador.wGrupo('noInter', 'C25a');
-       Gerador.wCampo(tcInt, 'C25b', 'tphor    ', 01, 01, 1, CTe.Compl.Entrega.noInter.tpHor, '');
+       Gerador.wCampo(tcStr, 'C25b', 'tphor    ', 01, 01, 1, TpHorarioIntervaloToStr(CTe.Compl.Entrega.noInter.tpHor), '');
        Gerador.wCampo(tcStr, 'C25c', 'hIni     ', 08, 08, 1, TimeToStr(CTe.Compl.Entrega.noInter.hIni), '');
        Gerador.wCampo(tcStr, 'C25d', 'hFim     ', 08, 08, 1, TimeToStr(CTe.Compl.Entrega.noInter.hFim), '');
        Gerador.wGrupo('/noInter');
@@ -703,7 +704,7 @@ begin
   for i := 0 to CTe.Rem.InfOutros.Count - 1 do
   begin
     Gerador.wGrupo('infOutros', 'E48');
-    Gerador.wCampo(tcStr, 'E49', 'tpDoc       ', 02, 02, 1, SomenteNumeros(CTe.Rem.InfOutros[i].tpDoc), DSC_TPDOC);
+    Gerador.wCampo(tcStr, 'E49', 'tpDoc       ', 02, 02, 1, TpDocumentoToStr(CTe.Rem.InfOutros[i].tpDoc), DSC_TPDOC);
     Gerador.wCampo(tcStr, 'E50', 'descOutros  ', 01, 60, 0, CTe.Rem.InfOutros[i].descOutros, DSC_OUTROS);
     Gerador.wCampo(tcStr, 'E51', 'nDoc        ', 01, 20, 0, CTe.Rem.InfOutros[i].nDoc, DSC_NRO);
     Gerador.wCampo(tcDat, 'E52', 'dEmi        ', 10, 10, 1, CTe.Rem.InfOutros[i].dEmi, DSC_DEMI);
@@ -1102,7 +1103,7 @@ begin
       for i02 := 0 to CTe.infCTeNorm.emiDocAnt[i].idDocAnt[i01].idDocAntPap.Count - 1 do
       begin
         Gerador.wGrupo('idDocAntPap', 'K23');
-        Gerador.wCampo(tcInt, 'K24', 'tpDoc  ', 02, 02, 1, CTe.infCTeNorm.emiDocAnt[i].idDocAnt[i01].idDocAntPap[i02].tpDoc, '');
+        Gerador.wCampo(tcStr, 'K24', 'tpDoc  ', 02, 02, 1, TpDocumentoAnteriorToStr(CTe.infCTeNorm.emiDocAnt[i].idDocAnt[i01].idDocAntPap[i02].tpDoc), '');
         Gerador.wCampo(tcStr, 'K25', 'serie  ', 01, 03, 1, CTe.infCTeNorm.emiDocAnt[i].idDocAnt[i01].idDocAntPap[i02].serie, '');
         Gerador.wCampo(tcStr, 'K26', 'subser ', 01, 02, 0, CTe.infCTeNorm.emiDocAnt[i].idDocAnt[i01].idDocAntPap[i02].subser, '');
         Gerador.wCampo(tcInt, 'K27', 'nDoc   ', 01, 20, 1, CTe.infCTeNorm.emiDocAnt[i].idDocAnt[i01].idDocAntPap[i02].nDoc, '');
@@ -1214,12 +1215,12 @@ begin
     Gerador.wGrupo('valePed', 'L23');
     Gerador.wCampo(tcStr, 'L24', 'nroRE     ', 05, 09, 0, CTe.Rodo.valePed.nroRE, '');
     Gerador.wCampo(tcDe2, 'L25', 'vTValePed ', 01, 15, 0, CTe.Rodo.valePed.vTValePed, '');
-    Gerador.wCampo(tcInt, 'L26', 'respPg    ', 01, 01, 1, CTe.Rodo.valePed.respPg, '');
+    Gerador.wCampo(tcStr, 'L26', 'respPg    ', 01, 01, 1, RspPagPedagioToStr(CTe.Rodo.valePed.respPg), '');
 
     for i := 0 to CTe.Rodo.valePed.disp.Count - 1 do
     begin
       Gerador.wGrupo('disp', 'L27');
-      Gerador.wCampo(tcInt, 'L28', 'tpDisp  ', 01, 01, 1, CTe.Rodo.valePed.disp[i].tpDisp, '');
+      Gerador.wCampo(tcStr, 'L28', 'tpDisp  ', 01, 01, 1, TpDispositivoToStr(CTe.Rodo.valePed.disp[i].tpDisp), '');
       Gerador.wCampo(tcStr, 'L29', 'xEmp    ', 01, 30, 1, CTe.Rodo.valePed.disp[i].xEmp, '');
       Gerador.wCampo(tcDat, 'L30', 'dVig    ', 10, 10, 1, CTe.Rodo.valePed.disp[i].dVig, '');
       Gerador.wCampo(tcStr, 'L31', 'nDisp   ', 01, 20, 0, CTe.Rodo.valePed.disp[i].nDisp, '');
@@ -1245,10 +1246,10 @@ begin
     Gerador.wCampo(tcInt, 'L37', 'tara   ', 01, 06, 1, CTe.Rodo.veic[i].tara, '');
     Gerador.wCampo(tcInt, 'L38', 'capKG  ', 01, 06, 1, CTe.Rodo.veic[i].capKG, '');
     Gerador.wCampo(tcInt, 'L39', 'capM3  ', 01, 03, 1, CTe.Rodo.veic[i].capM3, '');
-    Gerador.wCampo(tcStr, 'L40', 'tpProp ', 01, 01, 1, CTe.Rodo.veic[i].tpProp, '');
-    Gerador.wCampo(tcInt, 'L41', 'tpVeic ', 01, 01, 1, CTe.Rodo.veic[i].tpVeic, '');
-    Gerador.wCampo(tcInt, 'L42', 'tpRod  ', 02, 02, 1, CTe.Rodo.veic[i].tpRod, '');
-    Gerador.wCampo(tcInt, 'L43', 'tpCar  ', 02, 02, 1, CTe.Rodo.veic[i].tpCar, '');
+    Gerador.wCampo(tcStr, 'L40', 'tpProp ', 01, 01, 1, TpPropriedadeToStr(CTe.Rodo.veic[i].tpProp), '');
+    Gerador.wCampo(tcStr, 'L41', 'tpVeic ', 01, 01, 1, TpVeiculoToStr(CTe.Rodo.veic[i].tpVeic), '');
+    Gerador.wCampo(tcStr, 'L42', 'tpRod  ', 02, 02, 1, TpRodadoToStr(CTe.Rodo.veic[i].tpRod), '');
+    Gerador.wCampo(tcStr, 'L43', 'tpCar  ', 02, 02, 1, TpCarroceriaToStr(CTe.Rodo.veic[i].tpCar), '');
     Gerador.wCampo(tcStr, 'L44', 'UF     ', 02, 02, 1, CTe.Rodo.veic[i].UF, DSC_CUF);
 
     if (CTe.Rodo.veic[i].Prop.CNPJCPF <> '') or

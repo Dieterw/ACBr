@@ -844,6 +844,7 @@ function ImprimirTransportadorVolumes(PosX,
 const aIncHeigth:Double=0.5;
 var i: integer;
     wfrete: string;
+    wTemp_FontSizeText: double;
 begin
   with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
    begin
@@ -870,7 +871,11 @@ begin
      end;
      Box([fsTop,fsLeft],XPos,YPos,29,aHeigthPadrao+aIncHeigth,'Frete Por Conta',wfrete,taCenter);
 
+     wTemp_FontSizeText:=FontSizeText;
+     FontSizeText:=TamanhoFonte_ANTT;
      Box([fsTop,fsLeft],XPos,YPos,23,aHeigthPadrao+aIncHeigth,'Código ANTT',Transp.VeicTransp.RNTC,taCenter);
+     FontSizeText:=wTemp_FontSizeText;
+
      Box([fsTop,fsLeft],XPos,YPos,27,aHeigthPadrao+aIncHeigth,'Placa do Veículo',Transp.VeicTransp.Placa,taCenter);
      Box([fsTop,fsLeft],XPos,YPos,14,aHeigthPadrao+aIncHeigth,'Estado',Transp.VeicTransp.UF,taCenter);
      if Length(Trim(Transp.Transporta.CNPJCPF)) > 11 then

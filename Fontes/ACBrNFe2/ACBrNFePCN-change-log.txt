@@ -47,6 +47,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Alterações   25/01/2011
+---------------
+[*] Inclusão da Propriedade TamanhoFonte_ANTT nos Danfes em RAVE. Casos 853 e 868 do Mantis
+
+
 Alterações   07/12/2010
 ---------------
 [-] Correção no método LoadFromFile no tratamento da TAG REFNFP. Caso 814 do Mantis

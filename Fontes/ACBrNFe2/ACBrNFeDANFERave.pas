@@ -67,6 +67,7 @@ type
     FRaveFile: String;
     FEspessuraBorda: Integer;
     FTamanhoFonte_RazaoSocial: Integer;
+    FTamanhoFonte_ANTT: Integer;
     procedure ExecutaReport;
    public
     constructor Create(AOwner: TComponent); override;
@@ -75,10 +76,11 @@ type
     procedure ImprimirDANFE(NFE : TNFe = nil); override ;
     procedure ImprimirDANFEPDF(NFE : TNFe = nil); override ;
   published
-    property RavFile : String read FRaveFile write FRaveFile ;
+    property RavFile : String read FRaveFile write FRaveFile;
     property dmDanfe : TdmACBrNFeRave read FdmDanfe write FdmDanfe;
-    property EspessuraBorda : Integer read FEspessuraBorda write FEspessuraBorda ;
-    property TamanhoFonte_RazaoSocial: Integer read FTamanhoFonte_RazaoSocial write FTamanhoFonte_RazaoSocial ;
+    property EspessuraBorda : Integer read FEspessuraBorda write FEspessuraBorda;
+    property TamanhoFonte_RazaoSocial: Integer read FTamanhoFonte_RazaoSocial write FTamanhoFonte_RazaoSocial;
+    property TamanhoFonte_ANTT: Integer read FTamanhoFonte_ANTT write FTamanhoFonte_ANTT;
   end;
 
 implementation
@@ -92,6 +94,7 @@ begin
   FRaveFile := '' ;
   FEspessuraBorda := 1;
   FTamanhoFonte_RazaoSocial := 12;
+  FTamanhoFonte_ANTT := 10;
 end;
 
 destructor TACBrNFeDANFERave.Destroy;
@@ -170,6 +173,15 @@ begin
                wDataText[4].Font.Height:=FTamanhoFonte_RazaoSocial;
          end;
 
+         //Tamanho Fonte ANTT
+         if (FTamanhoFonte_ANTT <> 8) then //8=tamanho padrao que esta nos .RAV
+         begin
+            wPage[1] := FindRaveComponent('GlobalTransportador',nil) as TRavePage;
+            wDataText[16] := FindRaveComponent('DataText'+inttostr(16),wPage[1]) as TRaveDataText;
+            if (wDataText[16] <> nil) then
+               wDataText[16].Font.Height:=FTamanhoFonte_ANTT;
+         end;
+
          //Tamanho Fonte Demais Campos
          if (FTamanhoFonte_DemaisCampos <> 8) then //8=tamanho padrao que esta nos .RAV
          begin
@@ -245,7 +257,7 @@ begin
             i:=22;
             while i>0 do
             begin
-               if (i in [14,16,8,9,10,1,2,3,4,5,11,6,7,17,12]) then
+               if (i in [14,8,9,10,1,2,3,4,5,11,6,7,17,12]) then
                begin
                   wDataText[i] := FindRaveComponent('DataText'+inttostr(i),wPage[1]) as TRaveDataText;
                   if (wDataText[i] <> nil) then

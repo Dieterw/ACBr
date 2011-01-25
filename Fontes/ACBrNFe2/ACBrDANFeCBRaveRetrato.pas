@@ -853,7 +853,11 @@ begin
      Box([fsLeft],XPos,YPos,27,aHeigthPadrao,'Frete Por Conta',wFRETE,taCenter);
      FontSizeText:=wTemp_FontSizeText;
 
+     wTemp_FontSizeText:=FontSizeText;
+     FontSizeText:=TamanhoFonte_ANTT;
      Box([fsLeft],XPos,YPos,19,aHeigthPadrao,'Código ANTT',Transp.VeicTransp.RNTC,taCenter);
+     FontSizeText:=wTemp_FontSizeText;
+
      Box([fsLeft],XPos,YPos,22,aHeigthPadrao,'Placa do Veículo',Transp.VeicTransp.Placa,taCenter);
      Box([fsLeft],XPos,YPos,8,aHeigthPadrao,'UF',Transp.VeicTransp.UF,taCenter);
 

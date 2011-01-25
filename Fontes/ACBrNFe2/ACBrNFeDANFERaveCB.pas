@@ -58,6 +58,7 @@ type
   TACBrNFeDANFERaveCB = class( TACBrNFeDANFEClass )
    private
      FTamanhoCampoCodigo: integer;
+     FTamanhoFonte_ANTT: integer;
      FFonte : TFont;
      FEspessuraBorda: Integer;
    public
@@ -67,6 +68,7 @@ type
     procedure ImprimirDANFEPDF(NFE : TNFe = nil); override ;
   published
      property TamanhoCampoCodigo:integer read FTamanhoCampoCodigo write FTamanhoCampoCodigo;
+     property TamanhoFonte_ANTT:integer read FTamanhoFonte_ANTT write FTamanhoFonte_ANTT;
      property Fonte:TFont read FFonte write FFonte;
      property EspessuraBorda:Integer read FEspessuraBorda write FEspessuraBorda;
   end;
@@ -80,6 +82,7 @@ begin
   inherited create( AOwner );
 
   FTamanhoCampoCodigo:=0;
+  FTamanhoFonte_ANTT:=10;
   FEspessuraBorda:=2;
 end;
 
@@ -134,6 +137,7 @@ begin
                        CasasDecimais._Mask_vUnCom,
                        TamanhoCampoCodigo,
                        TamanhoFonte_DemaisCampos,
+                       TamanhoFonte_ANTT,
                        ProdutosPorPagina,
                        EspessuraBorda,
                        ExibirResumoCanhoto,
@@ -203,6 +207,7 @@ begin
                        CasasDecimais._Mask_vUnCom,
                        TamanhoCampoCodigo,
                        TamanhoFonte_DemaisCampos,
+                       TamanhoFonte_ANTT,
                        ProdutosPorPagina,
                        EspessuraBorda,
                        ExibirResumoCanhoto,

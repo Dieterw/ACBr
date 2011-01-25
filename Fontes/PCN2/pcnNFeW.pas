@@ -1719,7 +1719,13 @@ begin
      Gerador.wCampo(tcStr, 'ZC02', 'safra', 04, 09, 0, nfe.cana.safra, DSC_SAFRA);
      Gerador.wCampo(tcStr, 'ZC03', 'ref  ', 04, 09, 0, nfe.cana.ref, DSC_REF);
      (**)GerarforDia;
+    Gerador.wCampo(tcDe10,'ZC07','qTotMes', 01, 11, 1, nfe.cana.qTotMes, DSC_QTOTMES);
+    Gerador.wCampo(tcDe10,'ZC08','qTotAnt', 01, 11, 1, nfe.cana.qTotAnt, DSC_QTOTANT);
+    Gerador.wCampo(tcDe10,'ZC09','qTotGer', 01, 11, 1, nfe.cana.qTotGer, DSC_TOTGER);
      (**)GerarDeduc;
+    Gerador.wCampo(tcDe2,'ZC13','vFor   ', 01, 15, 1, nfe.cana.vFor, DSC_VFOR);
+    Gerador.wCampo(tcDe2,'ZC14','vTotDed', 01, 15, 1, nfe.cana.vTotDed, DSC_VTOTDED);
+    Gerador.wCampo(tcDe2,'ZC15','vLiqFor', 01, 15, 1, nfe.cana.vLiqFor, DSC_VLIQFOR);
      Gerador.wGrupo('/cana');
    end;
 end;
@@ -1735,9 +1741,6 @@ begin
     Gerador.wGrupo('forDia', 'ZC04');
     Gerador.wCampo(tcInt, 'ZC05','dia    ', 01, 02, 1, nfe.cana.fordia[i].dia, DSC_DIA);
     Gerador.wCampo(tcDe10,'ZC06','qtde   ', 11, 11, 1, nfe.cana.fordia[i].qtde, DSC_QTDE);
-    Gerador.wCampo(tcDe10,'ZC07','qTotMes', 01, 11, 1, nfe.cana.fordia[i].qTotMes, DSC_QTOTMES);
-    Gerador.wCampo(tcDe10,'ZC08','qTotAnt', 01, 11, 1, nfe.cana.fordia[i].qTotAnt, DSC_QTOTANT);
-    Gerador.wCampo(tcDe10,'ZC09','qTotGer', 01, 11, 1, nfe.cana.fordia[i].qTotGer, DSC_TOTGER);
     Gerador.wGrupo('/forDia');
   end;
 end;
@@ -1753,9 +1756,6 @@ begin
     Gerador.wGrupo('deduc', 'ZC10');
     Gerador.wCampo(tcStr,'ZC11','xDed   ', 01, 60, 1, nfe.cana.deduc[i].xDed, DSC_XDED);
     Gerador.wCampo(tcDe2,'ZC12','vDed   ', 01, 15, 1, nfe.cana.deduc[i].vDed, DSC_VDED);
-    Gerador.wCampo(tcDe2,'ZC13','vFor   ', 01, 15, 1, nfe.cana.deduc[i].vFor, DSC_VFOR);
-    Gerador.wCampo(tcDe2,'ZC14','vTotDed', 01, 15, 1, nfe.cana.deduc[i].vTotDed, DSC_VTOTDED);
-    Gerador.wCampo(tcDe2,'ZC15','vLiqFor', 01, 15, 1, nfe.cana.deduc[i].vLiqFor, DSC_VLIQFOR);
     Gerador.wGrupo('/deduc');
   end;
 end;

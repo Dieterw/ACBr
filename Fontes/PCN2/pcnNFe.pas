@@ -1392,7 +1392,13 @@ type
     Fsafra: string;
     Fref: string;
     Ffordia : TForDiaCollection;
+    FqTotMes: double;
+    FqTotAnt: double;
+    FqTotGer: double;
     Fdeduc : TDeducCollection;
+    FvFor: currency;
+    FvTotDed: currency;
+    FvLiqFor: currency;
     procedure SetDeduc(const Value: TDeducCollection);
     procedure SetForDia(const Value: TForDiaCollection);
   private
@@ -1402,7 +1408,13 @@ type
     property safra: string read Fsafra write Fsafra;
     property ref: string read Fref write Fref;
     property fordia: TForDiaCollection read Ffordia write SetForDia;
+    property qTotMes: double read FqTotMes write FqTotMes;
+    property qTotAnt: double read FqTotAnt write FqTotAnt;
+    property qTotGer: double read FqTotGer write FqTotGer;
     property deduc: TDeducCollection read Fdeduc write SetDeduc;
+    property vFor: currency read FvFor write FvFor;
+    property vTotDed: currency read FvTotDed write FvTotDed;
+    property vLiqFor: currency read FvLiqFor write FvLiqFor;
   end;
 
   TForDiaCollection = class(TCollection)
@@ -1419,15 +1431,9 @@ type
   private
     Fdia: integer;
     Fqtde: currency;
-    FqTotMes: currency;
-    FqTotAnt: currency;
-    FqTotGer: currency;
   published
     property dia: integer read Fdia write Fdia;
     property qtde: currency read Fqtde write Fqtde;
-    property qTotMes: currency read FqTotMes write FqTotMes;
-    property qTotAnt: currency read FqTotAnt write FqTotAnt;
-    property qTotGer: currency read FqTotGer write FqTotGer;
   end;
 
   TDeducCollection = class(TCollection)
@@ -1444,15 +1450,9 @@ type
   private
     FxDed: string;
     FvDed: currency;
-    FvFor: currency;
-    FvTotDed: currency;
-    FvLiqFor: currency;
   published
     property xDed: string read FxDed write FxDed;
     property vDed: currency read FvDed write FvDed;
-    property vFor: currency read FvFor write FvFor;
-    property vTotDed: currency read FvTotDed write FvTotDed;
-    property vLiqFor: currency read FvLiqFor write FvLiqFor;
   end;
 
 const

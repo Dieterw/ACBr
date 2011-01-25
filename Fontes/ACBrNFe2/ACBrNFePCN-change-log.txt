@@ -51,6 +51,7 @@ Alterações   25/01/2011
 ---------------
 [*] Inclusão da Propriedade TamanhoFonte_ANTT nos Danfes em RAVE. Casos 853 e 868 do Mantis
 [-] Correção da cardinalidade das TAGs BALSA e VAGAO. Caso 860 do MANTIS.
+[-] Correção da cardinalidade das TAGs referente a CANA. Caso 863 do MANTIS.
 
 
 Alterações   07/12/2010

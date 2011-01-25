@@ -765,8 +765,14 @@ begin
   (* Grupo da TAG <cana> ****************************************************)
   if Leitor.rExtrai(1, 'cana') <> '' then
   begin
-    (*ZC02*)NFe.cana.safra := Leitor.rCampo(tcStr, 'safra');
-    (*ZC03*)NFe.cana.ref := Leitor.rCampo(tcStr, 'ref');
+    (*ZC02*) NFe.cana.safra := Leitor.rCampo(tcStr, 'safra');
+    (*ZC03*) NFe.cana.ref := Leitor.rCampo(tcStr, 'ref');
+    (*ZC07*) NFe.cana.qTotMes := Leitor.rCampo(tcDe10, 'qTotMes');
+    (*ZC08*) NFe.cana.qTotAnt := Leitor.rCampo(tcDe10, 'qTotAnt');
+    (*ZC09*) NFe.cana.qTotGer := Leitor.rCampo(tcDe10, 'qTotGer');
+    (*ZC13*) NFe.cana.vFor := Leitor.rCampo(tcDe2, 'vFor');
+    (*ZC14*) NFe.cana.vTotDed := Leitor.rCampo(tcDe2, 'vTotDed');
+    (*ZC15*) NFe.cana.vLiqFor := Leitor.rCampo(tcDe2, 'vLiqFor');
 
     i := 0;
     while Leitor.rExtrai(2, 'forDia', '', i + 1) <> '' do
@@ -774,9 +780,6 @@ begin
       NFe.cana.fordia.Add;
       (*ZC05*) NFe.cana.fordia[i].dia := Leitor.rCampo(tcInt, 'dia');
       (*ZC06*) NFe.cana.fordia[i].qtde := Leitor.rCampo(tcDe10, 'qtde');
-      (*ZC07*) NFe.cana.fordia[i].qTotMes := Leitor.rCampo(tcDe10, 'qTotMes');
-      (*ZC08*) NFe.cana.fordia[i].qTotAnt := Leitor.rCampo(tcDe10, 'qTotAnt');
-      (*ZC09*) NFe.cana.fordia[i].qTotGer := Leitor.rCampo(tcDe10, 'qTotGer');
       inc(i);
     end;
 
@@ -786,12 +789,8 @@ begin
       NFe.cana.deduc.Add;
       (*ZC11*) NFe.cana.deduc[i].xDed := Leitor.rCampo(tcStr, 'xDed');
       (*ZC12*) NFe.cana.deduc[i].vDed := Leitor.rCampo(tcDe2, 'vDed');
-      (*ZC13*) NFe.cana.deduc[i].vFor := Leitor.rCampo(tcDe2, 'vFor');
-      (*ZC14*) NFe.cana.deduc[i].vTotDed := Leitor.rCampo(tcDe2, 'vTotDed');
-      (*ZC15*) NFe.cana.deduc[i].vLiqFor := Leitor.rCampo(tcDe2, 'vLiqFor');
       inc(i);
     end;
-
 
   end;
 

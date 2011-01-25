@@ -1104,6 +1104,8 @@ type
     FveicTransp: TveicTransp;
     FVol: TVolCollection;
     FReboque: TReboqueCollection;
+    Fvagao: string;
+    Fbalsa: string;
     procedure SetVol(Value: TVolCollection);
     procedure SetReboque(Value: TReboqueCollection);
   public
@@ -1116,6 +1118,8 @@ type
     property veicTransp: TveicTransp read FveicTransp write FveicTransp;
     property Vol: TVolCollection read FVol write SetVol;
     property Reboque: TReboqueCollection read FReboque write SetReboque;
+    property vagao: string read Fvagao write Fvagao;
+    property balsa: string read Fbalsa write Fbalsa;
   end;
 
   TTransporta = class(TPersistent)
@@ -1180,14 +1184,10 @@ type
     Fplaca: string;
     FUF: string;
     FRNTC: string;
-    Fvagao: string;
-    Fbalsa: string;
   published
     property placa: string read Fplaca write Fplaca;
     property UF: string read FUF write FUF;
     property RNTC: string read FRNTC write FRNTC;
-    property vagao: string read Fvagao write Fvagao;
-    property balsa: string read Fbalsa write Fbalsa;
   end;
 
   TVolCollection = class(TCollection)

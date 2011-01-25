@@ -1489,6 +1489,8 @@ begin
   (**)GerarTranspRetTransp;
   (**)GerarTranspVeicTransp;
   (**)GerarTranspReboque;
+  Gerador.wCampo(tcStr, 'X25a','vagao ', 01, 20, 0, nfe.Transp.vagao, DSC_VAGAO);
+  Gerador.wCampo(tcStr, 'X25b','balsa ', 01, 20, 0, nfe.Transp.balsa, DSC_BALSA);
   (**)GerarTranspVol;
   Gerador.wGrupo('/transp');
 end;
@@ -1579,8 +1581,6 @@ begin
     if not ValidarUF(nfe.Transp.Reboque[i].UF) then
       Gerador.wAlerta('X24', 'UF', DSC_UF, ERR_MSG_INVALIDO);
     Gerador.wCampo(tcStr, 'X25', 'RNTC  ', 01, 20, 0, nfe.Transp.Reboque[i].RNTC, DSC_RNTC);
-    Gerador.wCampo(tcStr, 'X25a','vagao ', 01, 20, 0, nfe.Transp.Reboque[i].vagao, DSC_VAGAO);
-    Gerador.wCampo(tcStr, 'X25b','balsa ', 01, 20, 0, nfe.Transp.Reboque[i].balsa, DSC_BALSA);
     Gerador.wGrupo('/reboque');
   end;
 end;

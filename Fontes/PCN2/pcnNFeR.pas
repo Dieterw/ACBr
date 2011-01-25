@@ -635,6 +635,8 @@ begin
   if Leitor.rExtrai(1, 'transp') <> '' then
   begin
     (*X02*)NFe.Transp.modFrete := StrToModFrete(ok, Leitor.rCampo(tcStr, 'modFrete'));
+    (*X25a*)NFe.Transp.vagao := Leitor.rCampo(tcStr, 'vagao');
+    (*X25b*)NFe.Transp.balsa := Leitor.rCampo(tcStr, 'balsa');
     if Leitor.rExtrai(2, 'transporta') <> '' then
     begin
       (*X04/X05*)NFe.Transp.Transporta.CNPJCPF := Leitor.rCampoCNPJCPF;
@@ -667,8 +669,6 @@ begin
       (*X23*) NFe.Transp.Reboque[i].placa := Leitor.rCampo(tcStr, 'placa');
       (*X24*) NFe.Transp.Reboque[i].UF := Leitor.rCampo(tcStr, 'UF');
       (*X25*) NFe.Transp.Reboque[i].RNTC := Leitor.rCampo(tcStr, 'RNTC');
-      (*X25a*)NFe.Transp.Reboque[i].vagao := Leitor.rCampo(tcStr, 'vagao');
-      (*X25b*)NFe.Transp.Reboque[i].balsa := Leitor.rCampo(tcStr, 'balsa');
       inc(i);
     end;
 

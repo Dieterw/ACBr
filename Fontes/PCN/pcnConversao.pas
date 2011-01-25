@@ -251,6 +251,28 @@ function StrToTpNavegacao(var ok: boolean; const s: string): TpcteTipoNavegacao;
 function TpTrafegoToStr(const t: TpcteTipoTrafego): string;
 function StrToTpTrafego(var ok: boolean; const s: string): TpcteTipoTrafego;
 
+  // Incluido por Italo em 25/01/2011
+function TpDataPeriodoToStr(const t: TpcteTipoDataPeriodo): string;
+function StrToTpDataPeriodo(var ok: boolean; const s: string): TpcteTipoDataPeriodo;
+function TpHorarioIntervaloToStr(const t: TpcteTipoHorarioIntervalo): string;
+function StrToTpHorarioIntervalo(var ok: boolean; const s: string): TpcteTipoHorarioIntervalo;
+function TpDocumentoToStr(const t: TpcteTipoDocumento): string;
+function StrToTpDocumento(var ok: boolean; const s: string): TpcteTipoDocumento;
+function TpDocumentoAnteriorToStr(const t: TpcteTipoDocumentoAnterior): string;
+function StrToTpDocumentoAnterior(var ok: boolean; const s: string): TpcteTipoDocumentoAnterior;
+function RspPagPedagioToStr(const t: TpcteRspPagPedagio): string;
+function StrToRspPagPedagio(var ok: boolean; const s: string): TpcteRspPagPedagio;
+function TpDispositivoToStr(const t: TpcteTipoDispositivo): string;
+function StrToTpDispositivo(var ok: boolean; const s: string): TpcteTipoDispositivo;
+function TpPropriedadeToStr(const t: TpcteTipoPropriedade): string;
+function StrToTpPropriedade(var ok: boolean; const s: string): TpcteTipoPropriedade;
+function TpVeiculoToStr(const t: TpcteTipoVeiculo): string;
+function StrToTpVeiculo(var ok: boolean; const s: string): TpcteTipoVeiculo;
+function TpRodadoToStr(const t: TpcteTipoRodado): string;
+function StrToTpRodado(var ok: boolean; const s: string): TpcteTipoRodado;
+function TpCarroceriaToStr(const t: TpcteTipoCarroceria): string;
+function StrToTpCarroceria(var ok: boolean; const s: string): TpcteTipoCarroceria;
+
 implementation
 
 function StrToEnumerado(var ok: boolean; const s: string; const AString:
@@ -808,6 +830,113 @@ end;
 function StrToTpTrafego(var ok: boolean; const s: string): TpcteTipoTrafego;
 begin
   result := StrToEnumerado(ok, s, ['0','1','2','3'], [ttProprio , ttMutuo, ttRodoferroviario, ttRodoviario]);
+end;
+
+  // Incluido por Italo em 25/01/2011
+function TpDataPeriodoToStr(const t: TpcteTipoDataPeriodo): string;
+begin
+  result := EnumeradoToStr(t, ['0','1','2','3','4'], [tdSemData, tdNaData, tdAteData, tdApartirData, tdNoPeriodo]);
+end;
+
+function StrToTpDataPeriodo(var ok: boolean; const s: string): TpcteTipoDataPeriodo;
+begin
+  result := StrToEnumerado(ok, s, ['0','1','2','3','4'], [tdSemData, tdNaData, tdAteData, tdApartirData, tdNoPeriodo]);
+end;
+
+function TpHorarioIntervaloToStr(const t: TpcteTipoHorarioIntervalo): string;
+begin
+  result := EnumeradoToStr(t, ['0','1','2','3','4'], [thSemHorario, thNoHorario, thAteHorario, thApartirHorio, thNoIntervalo]);
+end;
+
+function StrToTpHorarioIntervalo(var ok: boolean; const s: string): TpcteTipoHorarioIntervalo;
+begin
+  result := StrToEnumerado(ok, s, ['0','1','2','3','4'], [thSemHorario, thNoHorario, thAteHorario, thApartirHorio, thNoIntervalo]);
+end;
+
+function TpDocumentoToStr(const t: TpcteTipoDocumento): string;
+begin
+  result := EnumeradoToStr(t, ['00','99'], [tdDeclaracao, tdOutros]);
+end;
+
+function StrToTpDocumento(var ok: boolean; const s: string): TpcteTipoDocumento;
+begin
+  result := StrToEnumerado(ok, s, ['00','99'], [tdDeclaracao, tdOutros]);
+end;
+
+function TpDocumentoAnteriorToStr(const t: TpcteTipoDocumentoAnterior): string;
+begin
+  result := EnumeradoToStr(t, ['00','01','02','03','04','05','06','07','08','09','10','11','12','99'],
+   [daCTRC, daCTAC, daACT, daNF7, daNF27, daCAN, daCTMC, daATRE, daDTA, daCAI, daCCPI, daCA, daTIF, daOutros]);
+end;
+
+function StrToTpDocumentoAnterior(var ok: boolean; const s: string): TpcteTipoDocumentoAnterior;
+begin
+  result := StrToEnumerado(ok, s, ['00','01','02','03','04','05','06','07','08','09','10','11','12','99'],
+   [daCTRC, daCTAC, daACT, daNF7, daNF27, daCAN, daCTMC, daATRE, daDTA, daCAI, daCCPI, daCA, daTIF, daOutros]);
+end;
+
+function RspPagPedagioToStr(const t: TpcteRspPagPedagio): string;
+begin
+  result := EnumeradoToStr(t, ['0','1','2','3','4','5'], [rpEmitente, rpRemetente, rpExpedidor, rpRecebedor, rpDestinatario, rpTomadorServico]);
+end;
+
+function StrToRspPagPedagio(var ok: boolean; const s: string): TpcteRspPagPedagio;
+begin
+  result := StrToEnumerado(ok, s, ['0','1','2','3','4','5'], [rpEmitente, rpRemetente, rpExpedidor, rpRecebedor, rpDestinatario, rpTomadorServico]);
+end;
+
+function TpDispositivoToStr(const t: TpcteTipoDispositivo): string;
+begin
+  result := EnumeradoToStr(t, ['0','1','2'], [tdCartaoMagnetico, tdTAG, tdTicket]);
+end;
+
+function StrToTpDispositivo(var ok: boolean; const s: string): TpcteTipoDispositivo;
+begin
+  result := StrToEnumerado(ok, s, ['0','1','2'], [tdCartaoMagnetico, tdTAG, tdTicket]);
+end;
+
+function TpPropriedadeToStr(const t: TpcteTipoPropriedade): string;
+begin
+  result := EnumeradoToStr(t, ['P','T'], [tpProprio, tpTerceiro]);
+end;
+
+function StrToTpPropriedade(var ok: boolean; const s: string): TpcteTipoPropriedade;
+begin
+  result := StrToEnumerado(ok, s, ['P','T'], [tpProprio, tpTerceiro]);
+end;
+
+function TpVeiculoToStr(const t: TpcteTipoVeiculo): string;
+begin
+  result := EnumeradoToStr(t, ['0','1'], [tvTracao, tvReboque]);
+end;
+
+function StrToTpVeiculo(var ok: boolean; const s: string): TpcteTipoVeiculo;
+begin
+  result := StrToEnumerado(ok, s, ['0','1'], [tvTracao, tvReboque]);
+end;
+
+function TpRodadoToStr(const t: TpcteTipoRodado): string;
+begin
+  result := EnumeradoToStr(t, ['00','01','02','03','04','05','06'],
+   [trNaoAplicavel, trTruck, trToco, trCavaloMecanico, trVAN, trUtilitario, trOutros]);
+end;
+
+function StrToTpRodado(var ok: boolean; const s: string): TpcteTipoRodado;
+begin
+  result := StrToEnumerado(ok, s, ['00','01','02','03','04','05','06'],
+   [trNaoAplicavel, trTruck, trToco, trCavaloMecanico, trVAN, trUtilitario, trOutros]);
+end;
+
+function TpCarroceriaToStr(const t: TpcteTipoCarroceria): string;
+begin
+  result := EnumeradoToStr(t, ['00','01','02','03','04','05'],
+   [tcNaoAplicavel, tcAberta, tcFechada, tcGraneleira, tcPortaContainer, tcSider]);
+end;
+
+function StrToTpCarroceria(var ok: boolean; const s: string): TpcteTipoCarroceria;
+begin
+  result := StrToEnumerado(ok, s, ['00','01','02','03','04','05'],
+   [tcNaoAplicavel, tcAberta, tcFechada, tcGraneleira, tcPortaContainer, tcSider]);
 end;
 
 end.

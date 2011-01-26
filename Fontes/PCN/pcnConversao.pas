@@ -845,12 +845,12 @@ end;
 
 function TpHorarioIntervaloToStr(const t: TpcteTipoHorarioIntervalo): string;
 begin
-  result := EnumeradoToStr(t, ['0','1','2','3','4'], [thSemHorario, thNoHorario, thAteHorario, thApartirHorio, thNoIntervalo]);
+  result := EnumeradoToStr(t, ['0','1','2','3','4'], [thSemHorario, thNoHorario, thAteHorario, thApartirHorario, thNoIntervalo]);
 end;
 
 function StrToTpHorarioIntervalo(var ok: boolean; const s: string): TpcteTipoHorarioIntervalo;
 begin
-  result := StrToEnumerado(ok, s, ['0','1','2','3','4'], [thSemHorario, thNoHorario, thAteHorario, thApartirHorio, thNoIntervalo]);
+  result := StrToEnumerado(ok, s, ['0','1','2','3','4'], [thSemHorario, thNoHorario, thAteHorario, thApartirHorario, thNoIntervalo]);
 end;
 
 function TpDocumentoToStr(const t: TpcteTipoDocumento): string;

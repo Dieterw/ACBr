@@ -625,7 +625,7 @@ begin
   Gerador.wCampo(tcDe2, 'I16 ', 'vSeg    ', 00, 15, 0, nfe.Det[i].Prod.vSeg, DSC_VSEG);
   Gerador.wCampo(tcDe2, 'I17 ', 'vDesc   ', 00, 15, 0, nfe.Det[i].Prod.vDesc, DSC_VDESC);
   Gerador.wCampo(tcDe2, 'I17a', 'vOutro  ', 00, 15, 0, nfe.Det[i].Prod.vOutro, DSC_VOUTRO);
-  Gerador.wCampo(tcInt, 'I17b', 'indTot  ', 01, 01, 1, indTotToStr(nfe.Det[i].Prod.IndTot), DSC_INDTOT);
+  Gerador.wCampo(tcStr, 'I17b', 'indTot  ', 01, 01, 1, indTotToStr(nfe.Det[i].Prod.IndTot), DSC_INDTOT);
   (**)GerarDetProdDI(i);
   Gerador.wCampo(tcStr, 'I30', 'xPed       ', 01, 15, 0, nfe.Det[i].Prod.xPed, DSC_XPED);
   Gerador.wCampo(tcInt, 'I31', 'nItemPed   ', 06, 06, 0, nfe.Det[i].Prod.nItemPed, DSC_NITEMPED);

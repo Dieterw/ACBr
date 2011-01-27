@@ -126,6 +126,16 @@ begin
         MudouDados := true;
         with Cedente do
         begin
+
+           FrmACBrMonitor.cbxBOLF_J.ItemIndex := IniBoletos.ReadInteger('CEDENTE','TipoPessoa',2);
+           case  FrmACBrMonitor.cbxBOLF_J.ItemIndex of
+               0: TipoInscricao := pFisica;
+               1: TipoInscricao := pJuridica;
+              else
+                 TipoInscricao := pOutras;
+           end;
+
+
            Nome          := IniBoletos.ReadString('CEDENTE','Nome',Nome);
            CNPJCPF       := IniBoletos.ReadString('CEDENTE','CNPJCPF',CNPJCPF);
            Logradouro    := IniBoletos.ReadString('CEDENTE','Logradouro',Logradouro);
@@ -145,14 +155,6 @@ begin
              3: ResponEmissao := tbBancoNaoReemite;
              else
                ResponEmissao := tbCliEmite;
-           end;
-
-           FrmACBrMonitor.cbxBOLF_J.ItemIndex := IniBoletos.ReadInteger('CEDENTE','TipoPessoa',2);
-           case  FrmACBrMonitor.cbxBOLF_J.ItemIndex of
-               0: TipoInscricao := pFisica;
-               1: TipoInscricao := pJuridica;
-              else
-                 TipoInscricao := pOutras;
            end;
         end;
 
@@ -187,6 +189,7 @@ begin
            edtBOLDigitoConta.Text   := Cedente.ContaDigito;
            edtBOLAgencia.Text       := Cedente.Agencia;
            edtBOLDigitoAgencia.Text := Cedente.AgenciaDigito;
+           edtCodCliente.Text       := Cedente.CodigoCedente;
         end;
      end;
 
@@ -195,6 +198,11 @@ begin
         MudouDados := true;
         Banco.Numero := IniBoletos.ReadInteger('BANCO','Numero',0);
         FrmACBrMonitor.cbxBOLBanco.Text:= IntToStrZero(Banco.Numero,3);
+        FrmACBrMonitor.cbxCNAB.ItemIndex:= IniBoletos.ReadInteger('BANCO','CNAB',0);
+        if FrmACBrMonitor.cbxCNAB.ItemIndex = 0 then
+           LayoutRemessa := c240
+        else
+           LayoutRemessa := c400;
      end;
 
      if MudouDados then

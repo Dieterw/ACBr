@@ -75,6 +75,7 @@ type
     cbxBOLLayout: TComboBox;
     cbxBOLFiltro: TComboBox;
     cbxBOLF_J: TComboBox;
+    cbxCNAB: TComboBox;
     deBOLDirLogo: TDirectoryEdit;
     deBOLDirArquivo: TDirectoryEdit;
     deBolDirRemessa: TDirectoryEdit;
@@ -86,6 +87,7 @@ type
     edCONProxyUser : TEdit ;
     edCEPTestar : TEdit ;
     edIBGECodNome : TEdit ;
+    Label5: TLabel;
     seRFDGTCadastro : TFloatSpinEdit ;
     edTimeOutTCP : TEdit ;
     edtCodCliente: TEdit;
@@ -891,13 +893,13 @@ begin
     begin
       lblBOLCPFCNPJ.Caption := 'C.P.F';
       lblBOLNomeRazao.Caption := 'Nome';
-      edtBOLCNPJ.EditMask := '999.999.999-99;1';
+      //edtBOLCNPJ.EditMask := '999.999.999-99;1';
     end
    else
     begin
       lblBOLCPFCNPJ.Caption := 'C.N.P.J';
       lblBOLNomeRazao.Caption := 'Razão Social';
-      edtBOLCNPJ.EditMask := '99.999.999/9999-99;1';
+     // edtBOLCNPJ.EditMask := '99.999.999/9999-99;1';
    end;
 end;
 
@@ -1422,6 +1424,7 @@ begin
     deBOLDirArquivo.Text     := ini.ReadString('BOLETO', 'DirArquivoBoleto','');
     deBolDirRemessa.Text     := ini.ReadString('BOLETO', 'DirArquivoRemessa','');
     deBolDirRetorno.Text     := ini.ReadString('BOLETO', 'DirArquivoRetorno','');
+    cbxCNAB.ItemIndex        := ini.ReadInteger('BOLETO', 'CNAB',0);
   finally
     Ini.Free;
   end;
@@ -1586,6 +1589,11 @@ begin
       2: Cedente.ResponEmissao := tbBancoReemite;
       3: Cedente.ResponEmissao := tbBancoNaoReemite;
     end;
+
+    if cbxCNAB.ItemIndex = 0 then
+       LayoutRemessa := c240
+    else
+       LayoutRemessa := c400;
 
     Banco.Numero := StrToIntDef(Copy(cbxBOLBanco.Text, 1, 3), 0);
     DirArqRemessa := deBolDirRemessa.Text;
@@ -1921,6 +1929,7 @@ begin
      ini.WriteString('BOLETO', 'DirArquivoBoleto',PathWithoutDelim( deBOLDirArquivo.Text ));
      ini.WriteString('BOLETO', 'DirArquivoRemessa',PathWithoutDelim( deBolDirRemessa.Text ));
      ini.WriteString('BOLETO', 'DirArquivoRetorno',PathWithoutDelim( deBolDirRetorno.Text ));
+     ini.WriteString('BOLETO','CNAB',cbxCNAB.ItemIndex);
    finally
       ini.Free;
    end;

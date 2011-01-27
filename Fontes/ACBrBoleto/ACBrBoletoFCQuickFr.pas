@@ -303,7 +303,8 @@ begin
                if MostrarSetup then
                   RLLayout.PrinterSetup ;
 
-               RLLayout.Print;
+               if (RLLayout.Tag = 0) then
+                  RLLayout.Print;
              end ;
           end
         end ;

@@ -6,6 +6,15 @@ if NOT EXIST %1\lazarus.exe goto erro_param
 
 if NOT EXIST %1\tools\lazres.exe GOTO erro_lazres
 
+:Comum
+%1\tools\lazres.exe ACBrComum.lrs TACBrEAD.bmp
+move ACBrComum.lrs ..\ACBrComum
+echo.
+echo "****************************************"
+echo "* Arquivo   ACBrDiversos.lrs   gerado  *"
+echo "****************************************"
+echo.
+
 :Diversos
 %1\tools\lazres.exe ACBrDiversos.lrs TACBrCalculadora.bmp TACBrExtenso.bmp TACBrValidador.bmp TACBrTroco.bmp TACBrCMC7.bmp TACBrFala.bmp TACBrGIF.bmp TACBrBarCode.bmp TACBrEnterTab.bmp
 move ACBrDiversos.lrs ..\ACBrDiversos

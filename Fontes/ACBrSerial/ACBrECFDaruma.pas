@@ -146,6 +146,8 @@
 |*   - FS600/FS700 - Corrigido Retorno Venda Bruta
 |*   - FS600/FS700 - Corrigido Retorno Número do COO Inicial
 |*   - FS600/FS700 - Ajustado Retorno do Estado da Impressora
+|* 26/01/2011:  Daniel Simoes de Almeida
+|*   - FS345 - Corrigido problema de Leitura de Aliquotas com 0
 ******************************************************************************}
 
 {$I ACBr.inc}
@@ -2353,9 +2355,9 @@ begin
     while Length(RetCmd) > 0 do
     begin
       if fsNumVersao = '2000' then
-         ValAliq := RoundTo( StrToIntDef( copy(RetCmd,1,4) ,0) / 100, -2)
+         ValAliq := RoundTo( StrToIntDef( copy(RetCmd,1,4) ,-100) / 100, -2)
       else
-         ValAliq := RoundTo( StrToIntDef( copy(RetCmd,2,4) ,0) / 100, -2) ;
+         ValAliq := RoundTo( StrToIntDef( copy(RetCmd,2,4) ,-100) / 100, -2) ;
 
       if ValAliq >= 0 then
       begin

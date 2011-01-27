@@ -42,7 +42,7 @@ Uses Classes, TypInfo, SysUtils, CmdUnit;
 
 Procedure DoACBr( {%H-}Cmd : TACBrCmd ) ;
 Procedure VerificaPermiteComandosRemoto ;
-Function ConvertStrRecived( AStr: String ) : String ;
+Function ConvertStrRecived( AStr: AnsiString ) : AnsiString ;
 
 implementation
 Uses ACBrUtil, DateUtils,
@@ -223,7 +223,7 @@ begin
   end ;
 end ;
 
-Function ConvertStrRecived( AStr: String ) : String ;
+Function ConvertStrRecived( AStr: AnsiString ) : AnsiString ;
  Var P   : Integer ;
      Hex : String ;
      CharHex : Char ;

@@ -49,8 +49,7 @@ const
     ('Não Inicializada', 'Desconhecido', 'Livre', 'Venda',
     'Pagamento', 'Relatório', 'Bloqueada', 'Requer Z', 'Requer X',
     'Não Fiscal');
-  CBufferMemoResposta = 1000;              { Maximo de Linhas no MemoResposta }
-  CIgnorarChars : array[0..5] of string = ('.', '-', '/', '(', ')', ' ');
+  CBufferMemoResposta = 10000;              { Maximo de Linhas no MemoResposta }
   _C = 'tYk*5W@';
 
 type
@@ -1929,7 +1928,7 @@ begin
      ini.WriteString('BOLETO', 'DirArquivoBoleto',PathWithoutDelim( deBOLDirArquivo.Text ));
      ini.WriteString('BOLETO', 'DirArquivoRemessa',PathWithoutDelim( deBolDirRemessa.Text ));
      ini.WriteString('BOLETO', 'DirArquivoRetorno',PathWithoutDelim( deBolDirRetorno.Text ));
-     ini.WriteString('BOLETO','CNAB',cbxCNAB.ItemIndex);
+     ini.WriteInteger('BOLETO','CNAB',cbxCNAB.ItemIndex);
    finally
       ini.Free;
    end;
@@ -2123,7 +2122,9 @@ begin
 end;
 
 {------------------------------------------------------------------------------}
-procedure TFrmACBrMonitor.Resposta(Comando, Resposta: ansistring);
+procedure TFrmACBrMonitor.Resposta(Comando, Resposta: Ansistring);
+var
+   SL : TStringList ;
 begin
   if rbTCP.Checked then
   begin
@@ -2143,52 +2144,68 @@ begin
     TryDeleteFile(ArqSaiTMP, 1000); // Tenta apagar por até 1 segundo
 
     if FileExists(ArqSaiTXT) then
-      RenameFile(ArqSaiTXT, ArqSaiTMP); { GravaArqResp faz append se arq. existir }
+       RenameFile(ArqSaiTXT, ArqSaiTMP); { GravaArqResp faz append se arq. existir }
+
     if TipoCMD = 'A' then
-    begin
-      WriteToTXT(ArqSaiTMP, Resposta);
-      RenameFile(ArqSaiTMP, ArqSaiTXT);
-    end
+     begin
+       WriteToTXT(ArqSaiTMP, Resposta);
+       RenameFile(ArqSaiTMP, ArqSaiTXT);
+     end
+
     else if TipoCMD = 'B' then
-    begin
-      if copy(Resposta, 1, 3) <> 'OK:' then
-      begin
-        WriteToTXT(ExtractFilePath(ArqSaiTMP) + 'STATUS.TXT', '0,0,0');
-      end
-      else
-      begin
-        WriteToTXT(ExtractFilePath(ArqSaiTMP) + 'STATUS.TXT', '6,0,0');
-        Resposta := StringReplace(Resposta, 'OK: ', '', [rfReplaceAll]);
-        Resposta := StringReplace(Resposta, '/', '', [rfReplaceAll]);
-        Resposta := StringReplace(Resposta, ':', '', [rfReplaceAll]);
-        WriteToTXT(ArqSaiTMP, Resposta);
-        RenameFile(ArqSaiTMP, ArqSaiTXT);
-      end;
-    end
+     begin
+       if copy(Resposta, 1, 3) <> 'OK:' then
+        begin
+          WriteToTXT(ExtractFilePath(ArqSaiTMP) + 'STATUS.TXT', '0,0,0');
+        end
+       else
+        begin
+          WriteToTXT(ExtractFilePath(ArqSaiTMP) + 'STATUS.TXT', '6,0,0');
+          Resposta := StringReplace(Resposta, 'OK: ', '', [rfReplaceAll]);
+          Resposta := StringReplace(Resposta, '/', '', [rfReplaceAll]);
+          Resposta := StringReplace(Resposta, ':', '', [rfReplaceAll]);
+          WriteToTXT(ArqSaiTMP, Resposta);
+          RenameFile(ArqSaiTMP, ArqSaiTXT);
+        end;
+     end
+
     else if TipoCMD = 'D' then
-    begin
-      if copy(Resposta, 1, 3) <> 'OK:' then
-      begin
-        WriteToTXT(ExtractFilePath(ArqSaiTMP) + 'DARUMA.RET', '-27;006;000;000');
-      end
-      else
-      begin
-        Resposta := StringReplace(Resposta, 'OK: ', '', [rfReplaceAll]);
-        Resposta := StringReplace(Resposta, '/', '', [rfReplaceAll]);
-        Resposta := StringReplace(Resposta, ':', '', [rfReplaceAll]);
-        Resposta := '001;006;000;000;' + Resposta;
-        WriteToTXT(ArqSaiTMP, Resposta);
-        RenameFile(ArqSaiTMP, ExtractFilePath(ArqSaiTMP) + 'DARUMA.RET');
-      end;
-    end;
+     begin
+       if copy(Resposta, 1, 3) <> 'OK:' then
+        begin
+          WriteToTXT(ExtractFilePath(ArqSaiTMP) + 'DARUMA.RET', '-27;006;000;000');
+        end
+       else
+        begin
+          Resposta := StringReplace(Resposta, 'OK: ', '', [rfReplaceAll]);
+          Resposta := StringReplace(Resposta, '/', '', [rfReplaceAll]);
+          Resposta := StringReplace(Resposta, ':', '', [rfReplaceAll]);
+          Resposta := '001;006;000;000;' + Resposta;
+          WriteToTXT(ArqSaiTMP, Resposta);
+          RenameFile(ArqSaiTMP, ExtractFilePath(ArqSaiTMP) + 'DARUMA.RET');
+        end;
+     end;
 
   end;
 
-  mResp.Lines.BeginUpdate;
   mResp.Lines.Add(Comando + sLineBreak + Resposta);
-  while mResp.Lines.Count > CBufferMemoResposta do
-    mResp.Lines.Delete(0);
-  mResp.Lines.EndUpdate;
+  if mResp.Lines.Count > CBufferMemoResposta then
+  begin
+     SL := TStringList.Create;
+     try
+        SL.Assign( mResp.Lines );
+        SL.BeginUpdate;
+        while SL.Count > CBufferMemoResposta do
+           SL.Delete(0);
+        SL.EndUpdate;
+
+        mResp.Lines.Assign( SL );
+        mResp.SelStart := mResp.Lines.Count;
+     finally
+        SL.Free;
+     end ;
+  end ;
+  pTopRespostas.Caption := 'Respostas envidas ('+IntToStr(mResp.Lines.Count)+' linhas)';
 
   if cbLog.Checked then
     WriteToTXT(ArqLogTXT, Comando + sLineBreak + Resposta, True, True);

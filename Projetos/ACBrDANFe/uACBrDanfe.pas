@@ -65,6 +65,7 @@ type
 'EspessuraBorda                 = 1'+#13+
 'ImprimirDetalhamentoEspecifico = 1'+#13+
 'TamanhoFonte_RazaoSocial       = 12'+#13+
+'TamanhoFonte_ANTT              = 10'+#13+
 #13+
 '[PROPRIEDADEs_DANFe_RAVECB]'+#13+
 'EspessuraBorda                 = 2'+#13+
@@ -72,6 +73,7 @@ type
 'Fonte                          = ftTimes'+#13+
 'ImprimirDetalhamentoEspecifico = 1'+#13+
 'TamanhoCampoCodigo             = 0'+#13+
+'TamanhoFonte_ANTT              = 10'+#13+
 #13+
 '[PROPRIEDADEs_DANFe_FORTES]'+#13+
 '# FonteDANFE                     = fdArial'+#13+
@@ -173,6 +175,7 @@ begin
             ImprimirDetalhamentoEspecifico := Ini.ReadBool('PROPRIEDADES_DANFe_RAVE','ImprimirDetalhamentoEspecifico' ,true);
             RavFile                        := ExtractFilePath(Application.ExeName)+'DANFE_Rave513.rav';
             TamanhoFonte_RazaoSocial       := Ini.ReadInteger('PROPRIEDADES_DANFe_RAVE','TamanhoFonte_RazaoSocial' ,12);
+            TamanhoFonte_ANTT              := Ini.ReadInteger('PROPRIEDADES_DANFe_RAVE','TamanhoFonte_ANTT' ,10);
          end;
 
          with ACBrNFeDANFeRaveCB1 do
@@ -181,6 +184,7 @@ begin
             Fonte                          := NotaUtil.SeSenao(Trim(Ini.ReadString('PROPRIEDADEs_DANFe_RAVECB','Fonte' ,'ftTimes'))='ftTimes',ftTimes, ftCourier);
             ImprimirDetalhamentoEspecifico := Ini.ReadBool('PROPRIEDADEs_DANFe_RAVECB','ImprimirDetalhamentoEspecifico' ,true);
             TamanhoCampoCodigo             := Ini.ReadInteger('PROPRIEDADEs_DANFe_RAVECB','TamanhoCampoCodigo' ,10);
+            TamanhoFonte_ANTT              := Ini.ReadInteger('PROPRIEDADES_DANFe_RAVE','TamanhoFonte_ANTT' ,10);
          end;
 
          with ACBrNFeDANFeRL1 do

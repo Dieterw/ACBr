@@ -683,6 +683,12 @@ begin
                        StringReplace( xTexto, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
     end;
 
+  // Linhas inseridas por Italo em 28/01/2011
+  if FCTe.Ide.tpEmis in [teContingencia, teFSDA]
+   then qrmObs.Lines.Add('DACTE em Contingência - Impresso em decorrência de problemas técnicos.');
+  if FCTe.Ide.tpEmis = teDPEC
+   then qrmObs.Lines.Add('DACTE em Contingência - DPEC regularmente recebida pela Receita Federal do Brasil');
+
   // Linhas inseridas por Italo em 31/08/2010
   qrmObs.Lines.Text:=StringReplace(qrmObs.Lines.Text,';',#13,[rfReplaceAll]);
   qrmObs.Lines.EndUpdate;
@@ -719,6 +725,8 @@ begin
 end;
 
 procedure TfrmDACTeQRRetrato.qrbCabecalhoBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
+var
+    strChaveContingencia: string;
 begin
   inherited;
   PrintBand := QRCTe.PageNumber = 1;
@@ -797,6 +805,23 @@ begin
      else qrlProtocolo.Caption :=  FCTe.procCTe.nProt + ' ' +
                                  CTeUtil.SeSenao(FCTe.procCTe.dhRecbto <> 0,
                                       DateTimeToStr(FCTe.procCTe.dhRecbto), '');
+   end;
+
+  // As Linhas abaixo foram inseridas por Italo em 28/01/2011
+  // Contingencia ********************************************************
+
+  if FCTe.Ide.tpEmis in [teContingencia, teFSDA] then
+   begin
+    strChaveContingencia := CTeUtil.GerarChaveContingencia(FCTe);
+    SetBarCodeImage(strChaveContingencia,qriBarCode);
+    qrlDescricao.Caption := 'DADOS DO CT-E';
+    qrlProtocolo.Caption := CTeUtil.FormatarChaveContigencia(strChaveContingencia);
+   end;
+  // DPEC ****************************************************************
+  if FCTe.Ide.tpEmis = teDPEC then
+   begin
+    qrlDescricao.Caption := 'NÚMERO DE REGISTRO DPEC';
+    qrlProtocolo.Caption := FProtocoloCTE;
    end;
 
   qrlInscSuframa.Caption := FCTe.Dest.ISUF;

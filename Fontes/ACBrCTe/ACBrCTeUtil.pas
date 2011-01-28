@@ -65,7 +65,7 @@ uses{$IFNDEF ACBrCTeOpenSSL}ACBrCAPICOM_TLB, ACBrMSXML2_TLB, JwaWinCrypt, {$ENDI
 {$ELSE}
   StrUtils,
 {$ENDIF}
-  ACBrCTeConfiguracoes, pcnConversao;
+  ACBrCTeConfiguracoes, pcnConversao, pcteCTe;
 
 {$IFDEF ACBrCTeOpenSSL}
 const
@@ -136,7 +136,7 @@ type
     class function padC(const AString: string; const nLen: Integer; const Caracter: Char = ' '): string;
     class function SeSenao(ACondicao: Boolean; ATrue, AFalse: Variant): Variant;
     class function StringToDate(const AString: string): TDateTime;
-    class function StringToTime(const AString: string): TDateTime;    
+    class function StringToTime(const AString: string): TDateTime;
     class function TamanhoIgual(const AValue: string; const ATamanho: Integer): Boolean; overload;
     class procedure TamanhoIgual(const AValue: string; const ATamanho: Integer; AMensagem: string); overload;
     class function TamanhoIgual(const AValue: Integer; const ATamanho: Integer): Boolean; overload;
@@ -147,6 +147,9 @@ type
     class function FormatarChaveAcesso(AValue : String ): String;
     class function FormatarNumCTe(const AValue: Integer): string;
     class function FormatarValor(mask: TpcteMask; const AValue: real): string;
+    // Incluido por Italo em 28/01/2011
+    class function GerarChaveContingencia(FCTe:TCTe): String;
+    class function FormatarChaveContigencia(AValue: String): String;
 
 
 {$IFDEF ACBrCTeOpenSSL}
@@ -1538,6 +1541,94 @@ begin
      Result := -1
   else
      Result := Codigo;
+end;
+
+// Incluido por Italo em 28/01/2011
+
+class function CTeUtil.GerarChaveContingencia(FCTe:TCTe): string;
+
+   function GerarDigito_Contigencia(var Digito: integer; chave: string): boolean;
+   var
+     i, j: integer;
+   const
+     PESO = '43298765432987654329876543298765432';
+   begin
+     chave  := CTeUtil.LimpaNumero(chave);
+     j      := 0;
+     Digito := 0;
+     result := True;
+     try
+       for i := 1 to 35 do
+         j := j + StrToInt(copy(chave, i, 1)) * StrToInt(copy(PESO, i, 1));
+       Digito := 11 - (j mod 11);
+       if (j mod 11) < 2 then
+         Digito := 0;
+     except
+       result := False;
+     end;
+     if length(chave) <> 35 then
+       result := False;
+   end;
+
+var
+   wchave: string;
+   wicms_s, wicms_p: string;
+   wd,wm,wa: word;
+   Digito: integer;
+begin
+   //UF
+   if FCTe.Dest.EnderDest.UF = 'EX'
+    then wchave := '99' //exterior
+    else wchave := copy(inttostr(FCTe.Dest.EnderDest.cMun),1,2);
+
+   //TIPO DE EMISSAO
+   if FCTe.Ide.tpEmis = teContingencia
+    then wchave := wchave + '2'
+    else if FCTe.Ide.tpEmis = teFSDA
+          then wchave := wchave + '5'
+          else wchave := wchave + '0'; //esta valor caracteriza ERRO, valor tem q ser  2 ou 5
+
+   //CNPJ OU CPF
+   if (FCTe.Dest.EnderDest.UF='EX')
+    then wchave:=wchave+CTeUtil.Poem_Zeros('0',14)
+    else wchave:=wchave+CTeUtil.Poem_Zeros(FCTe.Dest.CNPJCPF,14);
+
+   //VALOR DA CT-e
+   wchave := wchave + CTeUtil.Poem_Zeros(CTeUtil.LimpaNumero(FloatToStrf(FCTe.vPrest.vTPrest, ffFixed,18,2)),14);
+
+   //DESTAQUE ICMS PROPRIO E ST
+   wicms_p := '2';
+   wicms_s := '2';
+
+   // Checar esse trecho
+
+   if (CTeUtil.NaoEstaZerado(FCTe.Imp.ICMS.CST00.vICMS))
+    then wicms_p := '1';
+   if (CTeUtil.NaoEstaZerado(FCTe.Imp.ICMS.CST80.vICMS))
+    then wicms_s := '1';
+
+   wchave := wchave + wicms_p + wicms_s;
+
+   //DIA DA EMISSAO
+   decodedate(FCTe.Ide.dhEmi, wa, wm, wd);
+   wchave := wchave + CTeUtil.Poem_Zeros(inttostr(wd), 2);
+
+   //DIGITO VERIFICADOR
+   GerarDigito_Contigencia(Digito, wchave);
+   wchave := wchave + inttostr(digito);
+
+   //RETORNA A CHAVE DE CONTINGENCIA
+   result:=wchave;
+end;
+
+class function CTeUtil.FormatarChaveContigencia(AValue: String): String;
+begin
+  AValue := CTeUtil.LimpaNumero(AValue);
+  Result := copy(AValue,1,4)  + ' ' + copy(AValue,5,4)  + ' ' +
+            copy(AValue,9,4)  + ' ' + copy(AValue,13,4) + ' ' +
+            copy(AValue,17,4) + ' ' + copy(AValue,21,4) + ' ' +
+            copy(AValue,25,4) + ' ' + copy(AValue,29,4) + ' ' +
+            copy(AValue,33,4) ;
 end;
 
 end.

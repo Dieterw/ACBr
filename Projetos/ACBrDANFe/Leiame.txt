@@ -1,8 +1,8 @@
 ACBrDANFe 
 ----------------------------------
 Programa para impressão de DANFE
-Compilado com Delphi 2010
-Compatível com NFe 2.0
+Compilado com Delphi 2010 
+ACBrNFe2 - Revisao 1969
 
 
 1- INSTALAÇÃO

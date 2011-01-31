@@ -133,7 +133,10 @@ begin
         case LayOut of
            lCarne : RelBoleto := 'FCLazReport_Carne';
         else
-           RelBoleto := 'FCLazReport_Padrao';
+           if ACBrBoleto.ComprovanteEntrega then
+              RelBoleto := 'FCLazReport_CompEntrega'
+           else
+              RelBoleto := 'FCLazReport_Padrao';
         end;
 
         Res := LazarusResources.Find(RelBoleto,'LRF');  // Le de ACBrBoletoFCLazReport.lrs
@@ -342,7 +345,10 @@ begin
        ParValue := LinhaDigitavel
 
     else if ParName = 'Site' then                                {SoftwareHouse}
-       ParValue := ACBrBoletoFC.SoftwareHouse;
+       ParValue := ACBrBoletoFC.SoftwareHouse
+
+    else if ParName = 'UsoBanco' then
+       ParValue := Titulo.UsoBanco;
 
   end;
 end;

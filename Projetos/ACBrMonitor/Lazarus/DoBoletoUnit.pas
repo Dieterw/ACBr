@@ -73,7 +73,7 @@ begin
       else if cmd.Metodo = 'gerarremessa' then
        begin
          DirArqRemessa := Cmd.Params(0);
-         GerarRemessa( StrToInt(cmd.Params(1)))
+         GerarRemessa( StrToIntDef(cmd.Params(1),1))
        end
 
       else if cmd.Metodo = 'lerretorno' then

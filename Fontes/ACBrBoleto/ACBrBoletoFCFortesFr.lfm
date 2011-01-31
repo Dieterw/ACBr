@@ -1,10 +1,10 @@
 object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
-  Left = 428
-  Height = 744
-  Top = -18
+  Left = 322
+  Height = 732
+  Top = -17
   Width = 970
   Caption = 'ACBRBoletoFCFortesFr'
-  ClientHeight = 744
+  ClientHeight = 732
   ClientWidth = 970
   Color = clBtnFace
   Font.Color = clWindowText
@@ -1789,9 +1789,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         RealBounds.Height = 0
       end
       object RLLabel88: TRLLabel
-        Left = 4
+        Left = 65
         Height = 14
-        Top = 284
+        Top = 285
         Width = 43
         Caption = 'Sacado:'
         Font.CharSet = ANSI_CHARSET
@@ -1805,10 +1805,10 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         RealBounds.Height = 0
       end
       object txtNomeSacado2: TRLLabel
-        Left = 53
+        Left = 110
         Height = 14
         Top = 284
-        Width = 512
+        Width = 456
         AutoSize = False
         Caption = 'Nome do Sacado'
         Font.CharSet = ANSI_CHARSET
@@ -1822,10 +1822,10 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         RealBounds.Height = 0
       end
       object txtEnderecoSacado2: TRLLabel
-        Left = 53
+        Left = 110
         Height = 14
         Top = 297
-        Width = 512
+        Width = 455
         AutoSize = False
         Caption = 'Rua / Numero / Complemento'
         Font.CharSet = ANSI_CHARSET
@@ -1839,10 +1839,10 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         RealBounds.Height = 0
       end
       object txtCidadeSacado2: TRLLabel
-        Left = 53
+        Left = 110
         Height = 14
         Top = 313
-        Width = 512
+        Width = 455
         AutoSize = False
         Caption = 'Cep / Bairro / Cidade / Estado'
         Font.CharSet = ANSI_CHARSET
@@ -2950,7 +2950,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         RealBounds.Height = 0
       end
       object RLLabel165: TRLLabel
-        Left = 4
+        Left = 73
         Height = 14
         Top = 284
         Width = 43
@@ -2965,10 +2965,10 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         RealBounds.Height = 0
       end
       object txtNomeSacado3: TRLLabel
-        Left = 53
+        Left = 118
         Height = 14
         Top = 284
-        Width = 488
+        Width = 423
         AutoSize = False
         Caption = 'Nome do Sacado'
         Font.Color = clBlack
@@ -3012,10 +3012,10 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         RealBounds.Height = 0
       end
       object txtEnderecoSacado3: TRLLabel
-        Left = 53
+        Left = 117
         Height = 14
         Top = 300
-        Width = 488
+        Width = 424
         AutoSize = False
         Caption = 'Rua / Numero / Complemento'
         Font.Color = clBlack
@@ -3043,10 +3043,10 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         RealBounds.Height = 0
       end
       object txtCidadeSacado3: TRLLabel
-        Left = 53
+        Left = 117
         Height = 14
         Top = 316
-        Width = 488
+        Width = 424
         AutoSize = False
         Caption = 'Cep / Bairro / Cidade / Estado'
         Font.Color = clBlack

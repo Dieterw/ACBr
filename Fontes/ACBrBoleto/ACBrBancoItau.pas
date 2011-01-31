@@ -632,6 +632,17 @@ begin
                              'é um arquivo de retorno do '+ Nome));
 
    rCedente := trim(Copy(ARetorno[0],47,30));
+
+   ACBrBanco.ACBrBoleto.NumeroArquivo := StrToInt(Copy(ARetorno[0],109,5)); //|Implementado por Carlos Fitl - 27/12/2010
+
+   ACBrBanco.ACBrBoleto.DataArquivo   := StringToDateTimeDef(Copy(ARetorno[0],95,2)+'/'+            //|
+                                                             Copy(ARetorno[0],97,2)+'/'+            //|Implementado por Carlos Fitl - 27/12/2010
+                                                             Copy(ARetorno[0],99,2),0, 'DD/MM/YY' );//|
+
+   ACBrBanco.ACBrBoleto.DataCreditoLanc := StringToDateTimeDef(Copy(ARetorno[0],114,2)+'/'+            //|
+                                                               Copy(ARetorno[0],116,2)+'/'+            //|Implementado por Carlos Fitl - 27/12/2010
+                                                               Copy(ARetorno[0],118,2),0, 'DD/MM/YY' );//|
+
    rCNPJCPF := trim(IntToStr(StrToIntDef(Copy(ARetorno[1],04,14),0)));
 
    with ACBrBanco.ACBrBoleto do

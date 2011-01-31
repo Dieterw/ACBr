@@ -48,6 +48,7 @@ type
   TACBrBancoSantander = class(TACBrBancoClass)
   private
   protected
+    vTotalTitulos : Double;
   public
     Constructor create(AOwner: TACBrBanco);
     function CalcularDigitoVerificador(const ACBrTitulo:TACBrTitulo): String; override;
@@ -92,34 +93,38 @@ end;
 function TACBrBancoSantander.MontarCodigoBarras ( const ACBrTitulo: TACBrTitulo) : String;
 var
   CodigoBarras, FatorVencimento, DigitoCodBarras, DigitoNossoNumero:String;
-  TipoCobranca: String;
 begin
+
    with ACBrTitulo.ACBrBoleto do
    begin
       DigitoNossoNumero := CalcularDigitoVerificador(ACBrTitulo);
       FatorVencimento   := CalcularFatorVencimento(ACBrTitulo.Vencimento);
-      case StrToInt(ACBrTitulo.Carteira) of
-         1,5 :TipoCobranca := '101';
-         4   :TipoCobranca := '102';
-      end;
 
-      CodigoBarras := IntToStrZero( Numero, 3 )+'9'+ FatorVencimento +
+      CodigoBarras := '033'+'9'+ FatorVencimento +
                       IntToStrZero(Round(ACBrTitulo.ValorDocumento*100),10) +
                       '9'+ padR(Cedente.CodigoCedente,7,'0') +
                       padR(ACBrTitulo.NossoNumero + DigitoNossoNumero, 13) +
-                      '0'+ TipoCobranca;
+                      '0'+ padR(trim(Cedente.Modalidade),3,'0');
 
 
 
       DigitoCodBarras := CalcularDigitoCodigoBarras(CodigoBarras);
    end;
 
-   Result:= IntToStrZero(Numero,3) + '9'+ DigitoCodBarras + Copy(CodigoBarras,5,39);
+   Result:= '033' + '9'+ DigitoCodBarras + Copy(CodigoBarras,5,39);
 end;
 
 function TACBrBancoSantander.MontarCampoNossoNumero (
    const ACBrTitulo: TACBrTitulo ) : String;
 begin
+   with ACBrTitulo do
+   begin
+      case StrToInt(Carteira) of
+         5: Carteira := '101';
+         6: Carteira := '201';
+      end;
+   end;
+
    Result:= padR(ACBrTitulo.NossoNumero,12,'0')+ ' '+ CalcularDigitoVerificador(ACBrTitulo);
 end;
 
@@ -133,6 +138,7 @@ end;
 
 function TACBrBancoSantander.GerarRegistroHeader400(NumeroRemessa : Integer): String;
 begin
+   vTotalTitulos:= 0;
    with ACBrBanco.ACBrBoleto.Cedente do
    begin
       Result:= '0'                                        + // ID do Registro
@@ -140,12 +146,12 @@ begin
                'REMESSA'                                  + // Literal de Remessa
                '01'                                       + // Código do Tipo de Serviço
                padL( 'COBRANCA', 15 )                     + // Descrição do tipo de serviço
-               padR( CodigoCedente, 20, '0')              + // Codigo da Empresa no Banco
-               padL( Nome, 30)                                 + // Nome da Empresa
-               IntToStrZero( Numero, 3 )+ padL('SANTANDER', 15)        + // Código e Nome do Banco(237 - Bradesco)
-               FormatDateTime('ddmmyy',Now)                  + // Data de geração do arquivo + brancos
-               StringOfChar( '0', 16)                        +
-               Space(275)+ '000' +                          // Nr. Sequencial de Remessa + brancos
+               padR( CodigoTransmissao, 20, '0')          + // Codigo da Empresa no Banco
+               padL( Nome, 30)                            + // Nome da Empresa
+               '033'+ padL('SANTANDER', 15)               + // Código e Nome do Banco(237 - Bradesco)
+               FormatDateTime('ddmmyy',Now)               + // Data de geração do arquivo + brancos
+               StringOfChar( '0', 16)                     +
+               Space(275)+ '000'                          + // Nr. Sequencial de Remessa + brancos
                IntToStrZero(1,6);                           // Nr. Sequencial de Remessa + brancos + Contador
 
       Result:= UpperCase(Result);
@@ -156,13 +162,27 @@ function TACBrBancoSantander.GerarRegistroTransacao400(ACBrTitulo :TACBrTitulo):
 var
   DigitoNossoNumero,
   Ocorrencia,aEspecie,
-  Protesto,
+  Protesto, aAgencia,
   TipoSacado: String;
   TipoBoleto: Char;
   MensagemCedente: String;
   I: Integer;
+  aCarteira: Integer;
 begin
+   aCarteira := StrToInt(ACBrTitulo.Carteira );
 
+   if aCarteira = 101  then
+      aCarteira:= 5
+   else if aCarteira = 201 then
+      aCarteira:= 6;
+
+   if aCarteira = 5 then
+      aAgencia := padR(ACBrTitulo.ACBrBoleto.Cedente.Agencia +
+                       ACBrTitulo.ACBrBoleto.Cedente.AgenciaDigito,5,'0')
+   else
+      aAgencia:= '00000';
+
+   vTotalTitulos:= vTotalTitulos+ ACBrTitulo.ValorDocumento;
    with ACBrTitulo do
    begin
       DigitoNossoNumero := CalcularDigitoVerificador(ACBrTitulo);
@@ -205,8 +225,8 @@ begin
          aEspecie := EspecieDoc;
 
       {Pegando campo Intruções}
-      if (DataProtesto > 0) and (DataProtesto > Vencimento) then
-          Protesto :=  IntToStrZero(DaysBetween(DataProtesto,Vencimento),2)
+      if (DataProtesto > 0) and (DataProtesto > Vencimento)  and (Instrucao1 = '06') then
+         Protesto :=  IntToStrZero(DaysBetween(DataProtesto,Vencimento),2)
       else
          Protesto:= '00';
 
@@ -218,51 +238,49 @@ begin
          TipoSacado := '99'; //TODO: CHECAR OQ FAZER PARA CEDENTE SEM TIPO
       end;
 
-
       with ACBrBoleto do
       begin
          Result:= '1'                                                     +  // ID Registro
-
-                  padL(OnlyNumber(Cedente.CNPJCPF),14,'0')                +
-                  padL(trim(Cedente.CodigoCedente),20,'0')                      +
-                  padL( SeuNumero,25,' ')                                 +
+                  IfThen(Length(Cedente.CNPJCPF) > 12,'01','02')          +
+                  padR(trim(OnlyNumber(Cedente.CNPJCPF)),14,'0')          +
+                  padL(trim(Cedente.CodigoTransmissao),20,'0')            +
+                  padL( SeuNumero ,25,' ')                    +
                   Copy(NossoNumero,6,7) + DigitoNossoNumero               +
                   IfThen(DataAbatimento < EncodeDate(2000,01,01),
                    '000000',FormatDateTime( 'ddmmyy', DataAbatimento))    +
-                    IntToStrZero( round( ValorDesconto * 100), 13)        +
-                  IfThen( PercentualMulta > 0, '4', '0')                  +  // Indica se exite Multa ou não
+                  ' '+IfThen(PercentualMulta > 0,'4','0')                 +
+                  IntToStrZero( round( PercentualMulta * 100 ), 4)        +
                   '00'+StringOfChar( '0', 13)+space(4)                    +
                   IfThen(DataMoraJuros < EncodeDate(2000,01,01),
                   '000000',FormatDateTime( 'ddmmyy', DataMoraJuros))      +
-                  padR( Carteira, 3, '0') + Ocorrencia                    +
-                  padL( SeuNumero,10,' ')                                 +
+                   IntToStr(aCarteira) + Ocorrencia                       +
+                  padL( NumeroDocumento,10,' ')                                       +
                   FormatDateTime( 'ddmmyy', Vencimento)                   +
-                  IntToStrZero( Banco.Numero, 3)                          +
-                  '000000'                                                + //Checar código agencia para carteira 5
+                  IntToStrZero( round( ValorDocumento * 100), 13)         +
+                  '033' + aAgencia                                        +
                   padl(aEspecie,2) + 'N'                                  +
                   FormatDateTime( 'ddmmyy', DataDocumento )               +
                   padL(Instrucao1,2,'0') + padL(Instrucao2,2,'0')         +
                   IntToStrZero( round(ValorMoraJuros * 100 ), 13)         +
                   IfThen(DataDesconto < EncodeDate(2000,01,01),
                    '000000',FormatDateTime( 'ddmmyy', DataDesconto))      +
-                    IntToStrZero( round( ValorDesconto * 100), 13)        +
+                  IntToStrZero( round( ValorDesconto * 100), 13)          +
                   IntToStrZero( round( ValorIOF * 100 ), 13)              +
                   IntToStrZero( round( ValorAbatimento * 100 ), 13)       +
                   TipoSacado + padR(OnlyNumber(Sacado.CNPJCPF),14,'0')    +
                   padL( Sacado.NomeSacado, 40, ' ')                       +
-                  padL( Sacado.Logradouro + Sacado.Numero, 40, ' ')       +
+                  padL( Sacado.Logradouro + ' '+ Sacado.Numero, 40, ' ')  +
                   padL( Sacado.Bairro,12,' ')                             +
                   padL( OnlyNumber(Sacado.CEP) , 8, ' ' )                 +
                   padL( Sacado.Cidade, 15, ' ') + Sacado.UF               +
                   padL(Sacado.Avalista, 30, ' ' )+ ' '+ 'I'               +
-                  StringOfChar( '0', 2)                                   + //Todo: Checar Complemento
-                  Space(6)                                                +
+                  Copy(Cedente.Conta,Length(Cedente.Conta),1)             +
+                  Cedente.ContaDigito + Space(6)                          +
                   Protesto + ' ' +
                   IntToStrZero( ListadeBoletos.IndexOf(ACBrTitulo)+2, 6 );
 
 
          Result:= UpperCase(Result);
-
 
        {  for I:= 0 to Mensagem.count-1 do
              Result:= Result + #13#10                         +
@@ -282,8 +300,11 @@ end;
 
 function TACBrBancoSantander.GerarRegistroTrailler400( ARemessa:TStringList ): String;
 begin
-   Result:= '9' + Space(393)                     + // ID Registro
-            IntToStrZero( ARemessa.Count + 1, 6);  // Contador de Registros
+   Result:= '9' +                                           // ID Registro
+            IntToStrZero( ARemessa.Count + 1, 6)+           // Contador de Registros
+            IntToStrZero( round( vTotalTitulos* 100), 13) + // Valor Total dos Titulos
+            StringOfChar( '0', 374) + IntToStrZero( ARemessa.Count + 1, 6);
+
    Result:= UpperCase(Result);
 end;
 
@@ -319,8 +340,8 @@ begin
       Cedente.CNPJCPF := rCNPJCPF;
 
       case StrToIntDef(Copy(ARetorno[1],2,2),0) of
-         11: Cedente.TipoInscricao:= pFisica;
-         14: Cedente.TipoInscricao:= pJuridica;
+         01: Cedente.TipoInscricao:= pFisica;
+         02: Cedente.TipoInscricao:= pJuridica;
          else
             Cedente.TipoInscricao := pOutras;
       end;
@@ -339,95 +360,85 @@ begin
 
       with Titulo do
       begin
-         SeuNumero                   := copy(Linha,38,25);
-         NumeroDocumento             := copy(Linha,117,10);
-         OcorrenciaOriginal.Tipo     := CodOcorrenciaToTipo(StrToIntDef(
-                                        copy(Linha,109,2),0));
+         SeuNumero   := copy(Linha,38,25);
+         NossoNumero := Copy(Linha,63,08);
+         Carteira    := Copy(Linha,108,1);
 
-         CodOcorrencia := StrToInt(IfThen(copy(Linha,109,2) = '00','00',copy(Linha,109,2)));
+         OcorrenciaOriginal.Tipo := CodOcorrenciaToTipo(StrToIntDef(
+                                                        copy(Linha,109,2),0));
 
-         //-|Se a ocorrencia for igual a 19 - Confirmação de Receb. de Protesto
-         //-|Verifica o motivo na posição 295 - A = Aceite , D = Desprezado
-         if(CodOcorrencia = 19)then
+         DataOcorrencia:= StringToDateTimeDef(Copy(Linha,296,2)+'/'+
+                                              Copy(Linha,298,2)+'/'+
+                                              Copy(Linha,300,2),0, 'DD/MM/YY' );
+
+         NumeroDocumento:= Copy(Linha,117,10);
+
+         CodOcorrencia := StrToIntDef(copy(Linha,135,2),0);
+
+         //-|Se a ocorrencia for igual a > 0 - Houve Erros
+         if(CodOcorrencia > 0) then
          begin
-            CodMotivo_19:= copy(Linha,295,1);
-            if(CodMotivo_19 = 'A')then
+            if copy(Linha,137,3) <> '   ' then
             begin
-              MotivoRejeicaoComando.Add(copy(Linha,295,1));
-              DescricaoMotivoRejeicaoComando.Add('A - Aceito');
-            end
-            else
-            begin
-              MotivoRejeicaoComando.Add(copy(Linha,295,1));
-              DescricaoMotivoRejeicaoComando.Add('D - Desprezado');
+               CodMotivo:= StrToInt(copy(Linha,137,3));
+               MotivoRejeicaoComando.Add(copy(Linha,137,3));
+               DescricaoMotivoRejeicaoComando.Add(CodMotivoRejeicaoToDescricao(
+                                                  OcorrenciaOriginal.Tipo,CodMotivo));
             end;
-         end
-         else
-         begin
-           MotivoLinha := 319;
-           for i := 0 to 4 do
-           begin
-             //MotivoRejeicaoComando.Add(IfThen(copy(Linha,MotivoLinha,2) = '00','00',copy(Linha,MotivoLinha,2)));
-             CodMotivo := StrToInt(IfThen(copy(Linha,MotivoLinha,2) = '00','00',copy(Linha,MotivoLinha,2)));
-             //Se for o primeiro motivo
-             if(i = 0)then
-             begin
-                if(CodOcorrencia in [02, 06, 09, 10, 15, 17])then //Somente estas ocorrencias possuem motivos 00
-                begin
-                  MotivoRejeicaoComando.Add(IfThen(copy(Linha,MotivoLinha,2) = '00','00',copy(Linha,MotivoLinha,2)));
-                  DescricaoMotivoRejeicaoComando.Add(CodMotivoRejeicaoToDescricao(OcorrenciaOriginal.Tipo,CodMotivo));
-                end
-                else
-                begin
-                  if(CodMotivo = 0)then
-                  begin
-                    MotivoRejeicaoComando.Add('00');
-                    DescricaoMotivoRejeicaoComando.Add('Sem Motivo');
-                  end
-                  else
-                  begin
-                    MotivoRejeicaoComando.Add(IfThen(copy(Linha,MotivoLinha,2) = '00','00',copy(Linha,MotivoLinha,2)));
-                    DescricaoMotivoRejeicaoComando.Add(CodMotivoRejeicaoToDescricao(OcorrenciaOriginal.Tipo,CodMotivo));
-                  end;
-                end;
-         end
-         else
-             begin
-               if CodMotivo <> 0 then //Apos o 1º motivo os 00 significam que não existe mais motivo
-               begin
-                  MotivoRejeicaoComando.Add(IfThen(copy(Linha,MotivoLinha,2) = '00','00',copy(Linha,MotivoLinha,2)));
-                  DescricaoMotivoRejeicaoComando.Add(CodMotivoRejeicaoToDescricao(OcorrenciaOriginal.Tipo,CodMotivo));
-               end;
-             end;
 
-             MotivoLinha := MotivoLinha + 2; //Incrementa a coluna dos motivos
-           end;
+            if copy(Linha,140,3) <> '   ' then
+            begin
+               CodMotivo:= strtoint(copy(Linha,140,3));
+               MotivoRejeicaoComando.Add(copy(Linha,137,3));
+               DescricaoMotivoRejeicaoComando.Add(CodMotivoRejeicaoToDescricao(
+                                                  OcorrenciaOriginal.Tipo,CodMotivo));
+            end;
+
+            if copy(Linha,143,3) <> '   ' then
+            begin
+               CodMotivo:= strtoint(copy(Linha,143,3));
+               MotivoRejeicaoComando.Add(copy(Linha,137,3));
+               DescricaoMotivoRejeicaoComando.Add(CodMotivoRejeicaoToDescricao(
+                                                  OcorrenciaOriginal.Tipo,CodMotivo));
+            end;
          end;
-
-         DataOcorrencia := StringToDateTimeDef( Copy(Linha,111,2)+'/'+
-                                                Copy(Linha,113,2)+'/'+
-                                                Copy(Linha,115,2),0, 'DD/MM/YY' );
 
          Vencimento := StringToDateTimeDef( Copy(Linha,147,2)+'/'+
                                             Copy(Linha,149,2)+'/'+
                                             Copy(Linha,151,2),0, 'DD/MM/YY' );
 
          ValorDocumento       := StrToFloatDef(Copy(Linha,153,13),0)/100;
+
+         case StrToInt(Copy(Linha,174,2)) of
+            1: EspecieDoc:= 'DM';
+            2: EspecieDoc:= 'NP';
+            3: EspecieDoc:= 'NS';
+            5: EspecieDoc:= 'RC';
+            6: EspecieDoc:= 'DS';
+            7: EspecieDoc:= 'LS';
+         end;
+
+         ValorDespesaCobranca := StrToFloatDef(Copy(Linha,176,13),0)/100;
+         ValorOutrasDespesas  := StrToFloatDef(Copy(Linha,189,13),0)/100;
+         ValorMoraJuros       := StrToFloatDef(Copy(Linha,202,13),0) +
+                                 StrToFloatDef(Copy(Linha,267,13),0)/100;
          ValorIOF             := StrToFloatDef(Copy(Linha,215,13),0)/100;
          ValorAbatimento      := StrToFloatDef(Copy(Linha,228,13),0)/100;
          ValorDesconto        := StrToFloatDef(Copy(Linha,241,13),0)/100;
-         ValorMoraJuros       := StrToFloatDef(Copy(Linha,267,13),0)/100;
-         ValorOutrosCreditos  := StrToFloatDef(Copy(Linha,280,13),0)/100;
          ValorRecebido        := StrToFloatDef(Copy(Linha,254,13),0)/100;
-         NossoNumero          := Copy(Linha,71,11);
-         Carteira             := Copy(Linha,22,3);
-         ValorDespesaCobranca := StrToFloatDef(Copy(Linha,176,13),0)/100;
-         ValorOutrasDespesas  := StrToFloatDef(Copy(Linha,189,13),0)/100;
+         ValorOutrosCreditos  := StrToFloatDef(Copy(Linha,280,13),0)/100;
+
+         if Copy(Linha,294,1) = 'N' then
+            Aceite:=  atNao
+         else
+            Aceite:=  atSim;
 
          if StrToIntDef(Copy(Linha,296,6),0) <> 0 then
             DataCredito:= StringToDateTimeDef( Copy(Linha,296,2)+'/'+
                                                Copy(Linha,298,2)+'/'+
                                                Copy(Linha,300,2),0, 'DD/MM/YY' );
+
+         Sacado.NomeSacado:= Copy(Linha,302,36);
       end;
    end;
 end;
@@ -478,34 +489,26 @@ function TACBrBancoSantander.CodOcorrenciaToTipo(const CodOcorrencia:
    Integer ) : TACBrTipoOcorrencia;
 begin
    case CodOcorrencia of
+      01: Result := toRetornoTituloNaoExiste;
       02: Result := toRetornoRegistroConfirmado;
       03: Result := toRetornoRegistroRecusado;
       06: Result := toRetornoLiquidado;
-      09: Result := toRetornoBaixadoViaArquivo;
+      07: Result := toRetornoLiquidadoPorConta;
+      08: Result := toRetornoLiquidadoSaldoRestante;
+      09: Result := toRetornoBaixaAutomatica;
       10: Result := toRetornoBaixadoInstAgencia;
       11: Result := toRetornoTituloEmSer;
       12: Result := toRetornoAbatimentoConcedido;
       13: Result := toRetornoAbatimentoCancelado;
       14: Result := toRetornoVencimentoAlterado;
-      15: Result := toRetornoLiquidadoEmCartorio;
-      16: Result := toRetornoLiquidado;
-      17: Result := toRetornoLiquidadoAposBaixaouNaoRegistro;
-      18: Result := toRetornoAcertoDepositaria;
-      19: Result := toRetornoRecebimentoInstrucaoProtestar;
-      20: Result := toRetornoRecebimentoInstrucaoSustarProtesto;
-      21: Result := toRetornoAcertoControleParticipante;
-      22: Result := toRetornoRecebimentoInstrucaoAlterarDados;
-      23: Result := toRetornoEncaminhadoACartorio;
-      24: Result := toRetornoEntradaRejeitaCEPIrregular;
-      27: Result := toRetornoBaixaRejeitada;
-      28: Result := toRetornoDebitoTarifas;
-      29: Result := toRetornoOcorrenciasdoSacado;
-      30: Result := toRetornoALteracaoOutrosDadosRejeitada;
-      32: Result := toRetornoComandoRecusado;
-      33: Result := toRetornoRecebimentoInstrucaoAlterarDados;
-      34: Result := toRetornoRetiradoDeCartorio;
-      35: Result := toRetornoDesagendamentoDebitoAutomatico;
-      99: Result := toRetornoRegistroRecusado;
+      15: Result := toRetornoEncaminhadoACartorio;
+      16: Result := toRetornoTituloJaBaixado;
+      17: Result := toRetornoLiquidadoEmCartorio;
+      21: Result := toREtornoEntradaEmCartorio;
+      22: Result := toRetornoRetiradoDeCartorio;
+      24: Result := toRetornoCustasCartorioDistribuidor;
+      25: Result := toRetornoProtestado;
+      26: Result := toRetornoProtestoSustado;
    else
       Result := toRetornoOutrasOcorrencias;
    end;

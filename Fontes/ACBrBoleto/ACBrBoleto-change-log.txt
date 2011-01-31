@@ -48,6 +48,39 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Versão 0.0.21a 29/01/2010
+[*] Alterado impressão da mensagem do desconto, para que caso seja informado a 
+    data limite seja impressa a mensagem "Conceder desconto de R$xx.xx até 
+    data limite ", caso não seja informado mantém o texto normal "Conceder 
+    desconto de R$XX.Xx até o vencimento". Modificação necessária devido ao 
+    Santander poder receber este campo das duas maneiras.(Juliana Tamizou)
+
+[+] Adicionado as propriedades NumeroArquivo,DataArquivo e DataCredLanc no
+    ACBrBoleto, todas referentes ao arquivo Retorno.(Carlos Fitl)
+
+[*] Concluida homologacao da impressao dos boletos e envio do arquivo remessa
+    CNAB400 para o Santander.(Juliana Tamizou) 
+
+[+] Adicionado a propriedade CodTranmissao ao ACBrBoleto, utilizada pelo banco
+    Santander. (Juliana Tamizou)
+
+[-] Corrigido bug ao utizar o lazReport para imprimir os boletos, onde mesmo 
+    com a propridade ComprovanteEntrega desabilitada, o comprovante estava 
+    sendo impresso.(Juliana Tamizou)
+
+[-] Corrigido montagem do campo livre do Banrisul, o valor da constante 040
+    foi corrigido e passou a ser 041 e o tamanho do campo agencia passou a
+    ter 3 caracteres.(Jair Carlos Muller)
+
+[-] Corrigido função FormataNossoNumero da unit do Banco do Brasil, caso a
+    carteira fosse diferente de 16,17 ou 18, o tamanho do nosso número ficava
+    errado.(Juliana Tamizou)
+
+[+] Implementando geração do arquivo de remessa CNAB240 para o banco 
+    Banrisul.(Filipe Sortica)
+ 
+
+
 Versão 0.0.20a 10/01/2010
 [-] Corrigo leitura do arquivo retorno na classe do Bradesco (Carlos Fitl)
 [+] Adicionado leitura do arquivo retorno na classe do banco Itaú (Carlos Fitl)

@@ -57,7 +57,7 @@ uses ACBrBase,  {Units da ACBr}
      Graphics, Contnrs, Classes;
 
 const
-  CACBrBoleto_Versao = '0.0.20a' ;
+  CACBrBoleto_Versao = '0.0.21a' ;
 
 type
   TACBrTitulo = class;
@@ -66,6 +66,7 @@ type
   TACBrBanco  = class;
   TACBrBoleto = class;
 
+  TACBrLayoutRemessa = (c400, c240);
 
   {Tipos de ocorrências permitidas no arquivos remessa / retorno}
   TACBrTipoOcorrencia =
@@ -120,6 +121,7 @@ type
     toRetornoBaixaRejeitada,
     toRetornoBaixaSolicitada,
     toRetornoBaixado,
+    toRetornoBaixaAutomatica,
     toRetornoBaixadoViaArquivo,
     toRetornoBaixadoInstAgencia,
     toRetornoBaixadoPorDevolucao,
@@ -132,8 +134,10 @@ type
     toRetornoBaixaCreditoCCAtravesSispag,
     toRetornoBaixaCreditoCCAtravesSispagSemTituloCorresp,
     toRetornoTituloEmSer,
+    toRetornoTituloNaoExiste,
     toRetornoTituloPagoemCheque,
     toRetornoTituloPagamentoCancelado,
+    toRetornoTituloJaBaixado,
     toRetornoTituloSustadoJudicialmente,
     toRetornoRecebimentoInstrucaoBaixar,
     toRetornoRecebimentoInstrucaoConcederAbatimento,
@@ -169,6 +173,7 @@ type
     toRetornoNomeSacadoAlterado,
     toRetornoEnderecoSacadoAlterado,
     toRetornoEncaminhadoACartorio,
+    toREtornoEntradaEmCartorio,
     toRetornoRetiradoDeCartorio,
     toRetornoJurosDispensados,
     toRetornoDespesasProtesto,
@@ -348,6 +353,7 @@ type
 
   TACBrCedente = class(TComponent)
   private
+    fCodigoTransmissao: String;
     fLogradouro: String;
     fBairro: String;
     fNumeroRes: String;
@@ -374,6 +380,7 @@ type
   published
     property Nome         : String read fNomeCedente   write fNomeCedente;
     property CodigoCedente: String read fCodigoCedente write fCodigoCedente;
+    property CodigoTransmissao : String read fCodigoTransmissao write fCodigoTransmissao;
     property Agencia      : String read fAgencia       write fAgencia;
     property AgenciaDigito: String read fAgenciaDigito write fAgenciaDigito;
     property Conta        : String read fConta         write fConta;
@@ -548,8 +555,6 @@ type
 
 TACBrBolLayOut = (lPadrao, lCarne, lFatura) ;
 
-TACBrLayoutRemessa = (c400, c240);
-
 { TACBrBoleto }
 TACBrBoleto = class( TACBrComponent )
   private
@@ -564,6 +569,9 @@ TACBrBoleto = class( TACBrComponent )
     fCedente        : TACBrCedente;
     fNomeArqRemessa: String;
     fNomeArqRetorno: String;
+    fNumeroArquivo : integer;     {Número seqüencial do arquivo remessa ou retorno}    //Implementado por Carlos Fitl - 27/12/2010
+    fDataArquivo : TDateTime;     {Data da geração do arquivo remessa ou retorno}      //Implementado por Carlos Fitl - 27/12/2010
+    fDataCreditoLanc : TDateTime; {Data de crédito dos lançamentos do arquivo retorno} //Implementado por Carlos Fitl - 27/12/2010
     fLeCedenteRetorno: boolean;
     function GetAbout: String;
     function GetDirArqRemessa : String ;
@@ -600,6 +608,9 @@ TACBrBoleto = class( TACBrComponent )
     property DirArqRemessa  : String             read GetDirArqRemessa        write SetNomeArqRemessa;
     property NomeArqRetorno : String             read fNomeArqRetorno         write SetNomeArqRetorno;
     property DirArqRetorno  : String             read GetDirArqRetorno        write SetNomeArqRetorno;
+    property NumeroArquivo  : integer            read fNumeroArquivo          write fNumeroArquivo;
+    property DataArquivo    : TDateTime          read fDataArquivo            write fDataArquivo;
+    property DataCreditoLanc: TDateTime          read fDataCreditoLanc        write fDataCreditoLanc;
     property LeCedenteRetorno :boolean           read fLeCedenteRetorno       write fLeCedenteRetorno default false;
     property LayoutRemessa  : TACBrLayoutRemessa read fLayoutRemessa          write fLayoutRemessa default c400;
     property ComprovanteEntrega : Boolean        read fComprovanteEntrega     write fComprovanteEntrega default False;
@@ -665,7 +676,8 @@ procedure Register;
 implementation
 
 Uses ACBrUtil, ACBrBancoBradesco, ACBrBancoBrasil, ACBrBancoItau, ACBrBancoSicredi,
-     ACBrBancoMercantil, ACBrCaixaEconomica, ACBrBancoBanrisul,Forms,
+     ACBrBancoMercantil, ACBrCaixaEconomica, ACBrBancoBanrisul, ACBrBancoSantander,
+     Forms,
      {$IFDEF COMPILER6_UP} StrUtils {$ELSE} ACBrD5 {$ENDIF}, Math;
 
 {$IFNDEF FPC}
@@ -1033,7 +1045,7 @@ begin
          if DataDesconto <> 0 then
             AStringList.Add(ACBrStr('Conceder desconto de '                       +
                              FormatCurr('R$ #,##0.00',ValorDesconto)       +
-                             ' por dia de antecipação para pagamento até ' +
+                             'para pagamento até ' +
                              FormatDateTime('dd/mm/yyyy',DataDesconto)))
          else
             AStringList.Add(ACBrStr('Conceder desconto de '                 +
@@ -1144,6 +1156,7 @@ begin
       389 : fBancoClass := TACBrBancoMercantil.create(Self);
       104 : fBancoClass := TACBrCaixaEconomica.create(Self);
       041 : fBancoClass := TACBrBanrisul.create(Self);
+      033,353,008 : fBancoClass := TACBrBancoSantander.create(Self)
    else
       fBancoClass := TACBrBancoClass.create(Self);
    end;
@@ -1426,7 +1439,7 @@ begin
 
 
   {Campo 1(Código Banco,Tipo de Moeda,5 primeiro digitos do Campo Livre) }
-   fpModulo.Documento := IntToStrZero(Numero,3)+'9'+Copy(CodigoBarras,20,5);
+   fpModulo.Documento := Copy(CodigoBarras,1,3)+'9'+Copy(CodigoBarras,20,5);
    fpModulo.Calcular;
 
    Campo1 := copy( fpModulo.Documento, 1, 5) + '.' +

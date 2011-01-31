@@ -97,7 +97,6 @@ begin
    begin
       AConvenio := ACBrBoleto.Cedente.Convenio;
       ANossoNumero := trim(inttostr(strtoint(NossoNumero)));
-
       if (Carteira = '16') or (Carteira = '17') or (Carteira = '18') then
        begin
          if Length(AConvenio) <= 4 then
@@ -108,7 +107,7 @@ begin
             ANossoNumero := padR(AConvenio, 7, '0') + padR(ANossoNumero, 10, '0');
        end
       else 
-         ANossoNumero := padL(ANossoNumero, 11, '0');
+         ANossoNumero :=   padR(AConvenio, 7, '0')+ padR(ANossoNumero, 11, '0');
    end;
    Result := ANossoNumero;
 end;

@@ -39,30 +39,34 @@
         <LaunchingApplication PathPlusParams="\usr\X11R6\bin\xterm -T 'Lazarus Run Output' -e $(LazarusDir)\tools\runwait.sh $(TargetCmdLine)"/>
       </local>
     </RunParams>
-    <RequiredPackages Count="6">
+    <RequiredPackages Count="7">
       <Item1>
-        <PackageName Value="ACBr_BoletoFC_LazReport"/>
-        <MinVersion Minor="1" Valid="True"/>
+        <PackageName Value="LCLBase"/>
+        <MinVersion Major="1" Release="1" Valid="True"/>
       </Item1>
       <Item2>
-        <PackageName Value="ACBrDiversos"/>
-        <MinVersion Minor="9" Valid="True"/>
+        <PackageName Value="ACBr_BoletoFC_LazReport"/>
+        <MinVersion Minor="1" Valid="True"/>
       </Item2>
       <Item3>
-        <PackageName Value="ACBr_Boleto"/>
-        <MinVersion Minor="1" Valid="True"/>
+        <PackageName Value="ACBrDiversos"/>
+        <MinVersion Minor="9" Valid="True"/>
       </Item3>
       <Item4>
-        <PackageName Value="ACBrSerial"/>
-        <MinVersion Minor="9" Valid="True"/>
+        <PackageName Value="ACBr_Boleto"/>
+        <MinVersion Minor="1" Valid="True"/>
       </Item4>
       <Item5>
-        <PackageName Value="ACBrTCP"/>
+        <PackageName Value="ACBrSerial"/>
         <MinVersion Minor="9" Valid="True"/>
       </Item5>
       <Item6>
-        <PackageName Value="LCL"/>
+        <PackageName Value="ACBrTCP"/>
+        <MinVersion Minor="9" Valid="True"/>
       </Item6>
+      <Item7>
+        <PackageName Value="LCL"/>
+      </Item7>
     </RequiredPackages>
     <Units Count="19">
       <Unit0>

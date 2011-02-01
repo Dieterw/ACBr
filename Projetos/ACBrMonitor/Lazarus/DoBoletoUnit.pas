@@ -141,6 +141,11 @@ begin
               Complemento   := IniBoletos.ReadString('CEDENTE','Complemento','');
               UF            := IniBoletos.ReadString('CEDENTE','UF','');
               CodigoCedente := IniBoletos.ReadString('CEDENTE','CodigoCedente','');
+              Modalidade    := IniBoletos.ReadString('CEDENTE','MODALIDADE','');
+              CodigoTransmissao:= IniBoletos.ReadString('CEDENTE','CODTRANSMISSAO','');
+
+              FrmACBrMonitor.edtCodTransmissao.Text := CodigoTransmissao;
+              FrmACBrMonitor.edtModalidade.Text :=  Modalidade;
 
               FrmACBrMonitor.cbxBOLEmissao.ItemIndex := IniBoletos.ReadInteger('CEDENTE','RespEmis',0);
               try

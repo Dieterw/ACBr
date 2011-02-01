@@ -1,7 +1,7 @@
 object FrmACBrMonitor: TFrmACBrMonitor
-  Left = 543
+  Left = 215
   Height = 562
-  Top = 191
+  Top = 103
   Width = 594
   ActiveControl = PageControl1
   Align = alClient
@@ -4011,9 +4011,9 @@ object FrmACBrMonitor: TFrmACBrMonitor
           Height = 179
           Top = 0
           Width = 584
-          ActivePage = tsBoleto
+          ActivePage = TabSheet2
           Align = alClient
-          TabIndex = 2
+          TabIndex = 1
           TabOrder = 0
           object tsCedente: TTabSheet
             Caption = 'Cedente'
@@ -4295,7 +4295,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
               Left = 31
               Height = 25
               Top = 41
-              Width = 192
+              Width = 184
               AutoSelect = False
               ItemHeight = 17
               Items.Strings = (
@@ -4322,7 +4322,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
               AnchorSideLeft.Side = asrBottom
               AnchorSideTop.Control = cbxBOLBanco
               AnchorSideTop.Side = asrCenter
-              Left = 253
+              Left = 245
               Height = 25
               Top = 41
               Width = 80
@@ -4334,7 +4334,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
               AnchorSideLeft.Side = asrBottom
               AnchorSideTop.Control = cbxBOLBanco
               AnchorSideTop.Side = asrCenter
-              Left = 334
+              Left = 326
               Height = 19
               Top = 44
               Width = 9
@@ -4353,7 +4353,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
             object lblBOLAgencia: TLabel
               AnchorSideLeft.Control = edtBOLAgencia
               AnchorSideBottom.Control = edtBOLAgencia
-              Left = 253
+              Left = 245
               Height = 18
               Top = 23
               Width = 47
@@ -4366,7 +4366,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
               AnchorSideLeft.Side = asrBottom
               AnchorSideTop.Control = cbxBOLBanco
               AnchorSideTop.Side = asrCenter
-              Left = 344
+              Left = 336
               Height = 25
               Top = 41
               Width = 48
@@ -4376,7 +4376,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
             object lblBOLDigAgencia: TLabel
               AnchorSideLeft.Control = edtBOLDigitoAgencia
               AnchorSideTop.Control = lblBOLAgencia
-              Left = 344
+              Left = 336
               Height = 18
               Top = 23
               Width = 36
@@ -4388,7 +4388,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
               AnchorSideLeft.Side = asrBottom
               AnchorSideTop.Control = cbxBOLBanco
               AnchorSideTop.Side = asrCenter
-              Left = 412
+              Left = 404
               Height = 25
               Top = 41
               Width = 80
@@ -4400,7 +4400,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
               AnchorSideLeft.Side = asrBottom
               AnchorSideTop.Control = cbxBOLBanco
               AnchorSideTop.Side = asrCenter
-              Left = 493
+              Left = 485
               Height = 19
               Top = 44
               Width = 9
@@ -4419,7 +4419,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
             object lblBOLConta: TLabel
               AnchorSideLeft.Control = edtBOLConta
               AnchorSideTop.Control = lblBOLDigAgencia
-              Left = 412
+              Left = 404
               Height = 18
               Top = 23
               Width = 35
@@ -4431,7 +4431,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
               AnchorSideLeft.Side = asrBottom
               AnchorSideTop.Control = cbxBOLBanco
               AnchorSideTop.Side = asrCenter
-              Left = 503
+              Left = 495
               Height = 25
               Top = 41
               Width = 48
@@ -4441,7 +4441,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
             object lblBOLDigConta: TLabel
               AnchorSideLeft.Control = edtBOLDigitoConta
               AnchorSideTop.Control = lblBOLConta
-              Left = 503
+              Left = 495
               Height = 18
               Top = 23
               Width = 36
@@ -4472,18 +4472,33 @@ object FrmACBrMonitor: TFrmACBrMonitor
               ParentColor = False
             end
             object edtCodCliente: TEdit
-              Left = 253
+              Left = 245
               Height = 25
-              Top = 95
-              Width = 242
+              Top = 94
+              Width = 213
               TabOrder = 6
             end
             object Label72: TLabel
-              Left = 253
+              Left = 247
               Height = 18
               Top = 79
               Width = 165
               Caption = 'Código do Cliente no Banco'
+              ParentColor = False
+            end
+            object edtModalidade: TEdit
+              Left = 471
+              Height = 25
+              Top = 94
+              Width = 72
+              TabOrder = 7
+            end
+            object Label74: TLabel
+              Left = 471
+              Height = 18
+              Top = 78
+              Width = 72
+              Caption = 'Modalidade'
               ParentColor = False
             end
           end
@@ -4673,7 +4688,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
               Left = 213
               Height = 25
               Top = 34
-              Width = 292
+              Width = 314
               ShowHidden = False
               ButtonWidth = 23
               NumGlyphs = 0
@@ -4685,7 +4700,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
               Left = 213
               Height = 25
               Top = 82
-              Width = 292
+              Width = 314
               ShowHidden = False
               ButtonWidth = 23
               NumGlyphs = 0
@@ -4723,7 +4738,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
               Left = 213
               Height = 25
               Top = 118
-              Width = 112
+              Width = 82
               ItemHeight = 17
               ItemIndex = 0
               Items.Strings = (
@@ -4734,11 +4749,26 @@ object FrmACBrMonitor: TFrmACBrMonitor
               Text = 'CNAB240'
             end
             object Label5: TLabel
-              Left = 62
+              Left = 47
               Height = 18
               Top = 121
               Width = 151
               Caption = 'Layout Arquivo Remessa: '
+              ParentColor = False
+            end
+            object edtCodTransmissao: TEdit
+              Left = 412
+              Height = 25
+              Top = 118
+              Width = 138
+              TabOrder = 3
+            end
+            object Label73: TLabel
+              Left = 303
+              Height = 18
+              Top = 125
+              Width = 108
+              Caption = 'Cod. Transmissao:'
               ParentColor = False
             end
           end
@@ -5834,6 +5864,9 @@ object FrmACBrMonitor: TFrmACBrMonitor
   end
   object ACBrBoleto1: TACBrBoleto
     Cedente.TipoInscricao = pOutras
+    NumeroArquivo = 0
+    DataArquivo = 0
+    DataCreditoLanc = 0
     ACBrBoletoFC = ACBrBoletoFCLazReport1
     left = 528
     top = 24

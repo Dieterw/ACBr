@@ -65,10 +65,15 @@ procedure Register ;
 
 implementation
 
-Uses ACBrUtil ;
+Uses ACBrUtil, ACBrEAD ;
+{$IFNDEF FPC}
+   {$R ACBrComum.dcr}
+{$ENDIF}
 
 procedure Register;
 begin
+  RegisterComponents('ACBr', [TACBrEAD]);
+
   RegisterPropertyEditor(TypeInfo(TACBrAboutInfo), nil, 'AboutACBr',
      TACBrAboutDialogProperty);
 end;
@@ -88,6 +93,11 @@ function TACBrAboutDialogProperty.GetValue: string;
 begin
   Result := 'http://acbr.sf.net' ;  //ACBrStr( 'Versão: ' + ACBR_VERSAO ) ;
 end;
+
+{$IFDEF FPC}
+initialization
+   {$I ACBrComum.lrs}
+{$ENDIF}
 
 end.
 

@@ -189,6 +189,8 @@ TACBrRFDCupom = class
     Procedure EfetuaPagamento(DescricaoFormaPagto: String; Valor: Double ) ;
 end ;
 
+{ TACBrRFD }
+
 TACBrRFD = class( TACBrComponent )     { Componente ACBrRFD }
   private
     fsDirECF: String;
@@ -201,6 +203,7 @@ TACBrRFD = class( TACBrComponent )     { Componente ACBrRFD }
     fsCupom : TACBrRFDCupom ;
 
     FACBrEAD: TACBrEAD;       /// Classe usada para AssinarArquivo com assinatura EAD.
+    fsOnCalcEAD : TACBrEADCalc ;
 
     fsSH_Linha1: String;
     fsSH_CNPJ: String;
@@ -271,12 +274,8 @@ TACBrRFD = class( TACBrComponent )     { Componente ACBrRFD }
     procedure LeUltimaReducaoZ;
     procedure VerificaNovoDia;
 
-
-    function GetOnRFDCalcEAD: TACBrCalcEAD;
-    procedure SetOnRFDCalcEAD (const AValue: TACBrCalcEAD);
-
-    function GetOnRFDGetKeyRSA: TACBrEADGetKeyRSA;
-    procedure SetOnRFDGetKeyRSA (const AValue: TACBrEADGetKeyRSA);
+    function GetOnRFDGetKeyRSA: TACBrEADGetChave;
+    procedure SetOnRFDGetKeyRSA (const AValue: TACBrEADGetChave);
 
   protected
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
@@ -372,8 +371,8 @@ TACBrRFD = class( TACBrComponent )     { Componente ACBrRFD }
        read fsOnGetKeyHashLog write fsOnGetKeyHashLog ;
     property OnCalcHashLog : TACBrRFDCalcHashLog
         read  fsOnCalcHashLog write fsOnCalcHashLog ;
-    property OnCalcEAD: TACBrCalcEAD read GetOnRFDCalcEAD write SetOnRFDCalcEAD;
-    property OnGetKeyRSA: TACBrEADGetKeyRSA read GetOnRFDGetKeyRSA write SetOnRFDGetKeyRSA;
+    property OnCalcEAD: TACBrEADCalc read fsOnCalcEAD write fsOnCalcEAD;
+    property OnGetKeyRSA: TACBrEADGetChave read GetOnRFDGetKeyRSA write SetOnRFDGetKeyRSA;
 end;
 
 implementation
@@ -903,14 +902,12 @@ begin
   fsSH_Linha2           := '' ;
   fsSH_COO              := '' ;
 
-  FACBrEAD := TACBrEAD.Create; //Classe para fazer assinatura EAD
-
+  FACBrEAD := TACBrEAD.Create(Self); //Classe para fazer assinatura EAD
 end;
 
 destructor TACBrRFD.Destroy;
 begin
   fsCupom.Free ;
-
   FACBrEAD.Free;
 
   inherited Destroy ;
@@ -1236,14 +1233,9 @@ begin
   Result := fsDirRFD ;
 end;
 
-function TACBrRFD.GetOnRFDCalcEAD: TACBrCalcEAD;
+function TACBrRFD.GetOnRFDGetKeyRSA: TACBrEADGetChave;
 begin
-  Result := FACBrEAD.OnCalcEAD;
-end;
-
-function TACBrRFD.GetOnRFDGetKeyRSA: TACBrEADGetKeyRSA;
-begin
-  Result := FACBrEAD.OnGetKeyRSA;
+  Result := FACBrEAD.OnGetChavePrivada;
 end;
 
 procedure TACBrRFD.SetDirRFD(const AValue: String);
@@ -1747,10 +1739,11 @@ begin
      Ini.Free ;
   end ;
 
-
   { Assinando arquivo com registro EAD }
-  FACBrEAD.AssinaArquivoComEAD(ArqTmp);
-
+  if Assigned( fsOnCalcEAD ) then
+     fsOnCalcEAD( ArqTmp )
+  else
+     FACBrEAD.AssinarArquivoComEAD( ArqTmp );
 
   if not DirectoryExists( DirECFMes ) then
      if not CreateDir( DirECFMes ) then
@@ -1899,17 +1892,17 @@ begin
   try
      Ini.WriteString('ECF','DiaMov', DtoS(DiaMov) ) ;
      Ini.WriteInteger('ECF','CROAtual', fsECF_CROAtual ) ;
-     Ini.WriteString('ECF','RFDID', fsECF_RFDID ) ;
+     Ini.WriteString('ECF','RFDID', fsECF_RFDID+' ' ) ;
      Ini.WriteString('ECF', 'VersaoAtoCotepe', fsAtoCotepe ) ;
      if fsCONT_DataHoraCadastro = 0 then
         Ini.WriteString('ECF', 'DataHoraSwBasico', 'YYYYMMDDhhmmss' )
      else
         Ini.WriteString('ECF', 'DataHoraSwBasico', DTtoS(fsECF_DataHoraSwBasico) ) ;
 
-     Ini.WriteString('CONTRIBUINTE', 'Nome', fsCONT_RazaoSocial ) ;
-     Ini.WriteString('CONTRIBUINTE', 'CNPJ', fsCONT_CNPJ ) ;
-     Ini.WriteString('CONTRIBUINTE', 'IE', fsCONT_IE ) ;
-     Ini.WriteString('CONTRIBUINTE', 'Endereco', fsCONT_Endereco ) ;
+     Ini.WriteString('CONTRIBUINTE', 'Nome', fsCONT_RazaoSocial+' ' ) ;
+     Ini.WriteString('CONTRIBUINTE', 'CNPJ', fsCONT_CNPJ+' ' ) ;
+     Ini.WriteString('CONTRIBUINTE', 'IE', fsCONT_IE+' ' ) ;
+     Ini.WriteString('CONTRIBUINTE', 'Endereco', fsCONT_Endereco+' ' ) ;
      Ini.WriteInteger('CONTRIBUINTE', 'NumUsuario', fsCONT_NumUsuario ) ;
      if fsCONT_DataHoraCadastro = 0 then
         Ini.WriteString('CONTRIBUINTE', 'DataHoraCadastro', 'YYYYMMDDhhmmss' )
@@ -1985,14 +1978,9 @@ begin
   fsECF_RFDID := LeftStr( UpperCase(AValue), 3);
 end;
 
-procedure TACBrRFD.SetOnRFDCalcEAD(const AValue: TACBrCalcEAD);
+procedure TACBrRFD.SetOnRFDGetKeyRSA(const AValue: TACBrEADGetChave);
 begin
-  FACBrEAD.OnCalcEAD := AValue;
-end;
-
-procedure TACBrRFD.SetOnRFDGetKeyRSA(const AValue: TACBrEADGetKeyRSA);
-begin
-  FACBrEAD.OnGetKeyRSA := AValue;
+  FACBrEAD.OnGetChavePrivada := AValue;
 end;
 
 procedure TACBrRFD.SetCONT_Endereco(const AValue: String);

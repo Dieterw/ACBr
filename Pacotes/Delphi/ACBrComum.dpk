@@ -23,7 +23,6 @@ package ACBrComum;
 {$MINENUMSIZE 1}
 {$IMAGEBASE $400000}
 {$DESCRIPTION 'ACBr Automação Comercial Brasil  ACBrComum   (http://acbr.sf.ne)'}
-{$RUNONLY}
 {$IMPLICITBUILD ON}
 
 requires
@@ -37,6 +36,7 @@ contains
   ACBrTXTClass in '..\..\Fontes\ACBrComum\ACBrTXTClass.pas',
   ACBrUtil in '..\..\Fontes\ACBrComum\ACBrUtil.pas',
   ACBrReg in '..\..\Fontes\ACBrComum\ACBrReg.pas',
-  ACBrEAD in '..\..\Fontes\ACBrComum\ACBrEAD.pas';
+  ACBrEAD in '..\..\Fontes\ACBrComum\ACBrEAD.pas',
+  libeay32 in '..\..\Fontes\ACBrComum\libeay32.pas';
 
 end.

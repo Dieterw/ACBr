@@ -83,6 +83,7 @@ type
     FPAF_R: TPAF_R;
     FPAF_T: TPAF_T;
     FPAF_C: TPAF_C;
+    fsOnPAFCalcEAD: TACBrEADCalc;
 
     function GetAbout: String;
     function GetDelimitador: String;
@@ -96,12 +97,8 @@ type
     function GetOnError: TErrorEvent; /// Método do evento OnError
     procedure SetOnError(const Value: TErrorEvent); /// Método SetError
 
-    function GetOnPAFCalcEAD: TACBrCalcEAD;
-    procedure SetOnPAFCalcEAD (const Value: TACBrCalcEAD);
-
-    function GetOnPAFGetKeyRSA: TACBrEADGetKeyRSA;
-    procedure SetOnPAFGetKeyRSA (const Value: TACBrEADGetKeyRSA);
-
+    function GetOnPAFGetKeyRSA: TACBrEADGetChave;
+    procedure SetOnPAFGetKeyRSA (const Value: TACBrEADGetChave);
 
     procedure LimpaRegistros;
     procedure ReordenarRegistroR(Arquivo: String);
@@ -162,8 +159,8 @@ type
       default True ;
 
     property OnError: TErrorEvent  read GetOnError write SetOnError;
-    property OnPAFCalcEAD: TACBrCalcEAD read GetOnPAFCalcEAD write SetOnPAFCalcEAD;
-    property OnPAFGetKeyRSA: TACBrEADGetKeyRSA read GetOnPAFGetKeyRSA write SetOnPAFGetKeyRSA;
+    property OnPAFCalcEAD: TACBrEADCalc read fsOnPAFCalcEAD write fsOnPAFCalcEAD;
+    property OnPAFGetKeyRSA: TACBrEADGetChave read GetOnPAFGetKeyRSA write SetOnPAFGetKeyRSA;
   end;
 
   procedure Register;
@@ -183,7 +180,7 @@ constructor TACBrPAF.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   FACBrTXT := TACBrTXTClass.Create;
-  FACBrEAD := TACBrEAD.Create;
+  FACBrEAD := TACBrEAD.Create(Self);
   FPAF_D := TPAF_D.Create;
   FPAF_E := TPAF_E.Create;
   FPAF_P := TPAF_P.Create;
@@ -282,14 +279,9 @@ begin
    Result := FOnError;
 end;
 
-function TACBrPAF.GetOnPAFCalcEAD: TACBrCalcEAD;
+function TACBrPAF.GetOnPAFGetKeyRSA: TACBrEADGetChave;
 begin
-  Result := FACBrEAD.OnCalcEAD;
-end;
-
-function TACBrPAF.GetOnPAFGetKeyRSA: TACBrEADGetKeyRSA;
-begin
-  Result := FACBrEAD.OnGetKeyRSA;
+  Result := FACBrEAD.OnGetChavePrivada;
 end;
 
 procedure TACBrPAF.SetOnError(const Value: TErrorEvent);
@@ -302,17 +294,11 @@ begin
   FPAF_R.OnError := Value;
   FPAF_T.OnError := Value;
   FPAF_C.OnError := Value;  
-  FACBrEAD.OnError := Value;
 end;
 
-procedure TACBrPAF.SetOnPAFCalcEAD(const Value: TACBrCalcEAD);
+procedure TACBrPAF.SetOnPAFGetKeyRSA(const Value: TACBrEADGetChave);
 begin
-  FACBrEAD.OnCalcEAD := Value;
-end;
-
-procedure TACBrPAF.SetOnPAFGetKeyRSA(const Value: TACBrEADGetKeyRSA);
-begin
-  FACBrEAD.OnGetKeyRSA := Value;
+  FACBrEAD.OnGetChavePrivada := Value;
 end;
 
 function TACBrPAF.WriteRegistroD1: String;
@@ -625,7 +611,12 @@ end;
 
 function TACBrPAF.AssinaArquivoComEAD(Arquivo: String): Boolean;
 begin
-  Result := FACBrEAD.AssinaArquivoComEAD(Arquivo);
+  if Assigned( fsOnPAFCalcEAD ) then
+     fsOnPAFCalcEAD( Arquivo )
+  else
+     FACBrEAD.AssinarArquivoComEAD( Arquivo ) ;
+
+  Result := True;
 end;
 
 {$ifdef FPC}

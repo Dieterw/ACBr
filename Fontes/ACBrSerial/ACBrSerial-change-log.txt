@@ -97,6 +97,22 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 1.0.0  01/02/2011
+-- ACBrRFD --
+[*] - Modificado para usar o novo componente ACBrEAD, que permite efetuar a
+      assinatura digital de forma muito mais eficiente e segura (leia mais em
+      ACBrComum-change-log.txt)
+    - No Delphi isso causará a dependencia estática da DLL libeay32.dll em todos
+      os programas que usem os componentes ACBrECF ou ACBrRFD..
+    - A DLL pode ser encontrada em: ACBr\DLLs\OpenSSL
+    - Copie-a para a pasta do seu executável.
+
+-- ACBrECFDaruma --
+[-] Modificadas as chamadas da DLL, removendo o typecast de PAnsiChar(),
+    conforme relatado em:
+    http://www.djsystem.com.br/acbr/forum/viewtopic.php?f=10&t=567
+[-] Corrigido problema de Leitura de Aliquotas com 0 na FS345
+
 Versão 1.0.0  24/12/2010
 -- ACBrECF --
 [+] Novos Eventos para acompanhar as operações básicas do ECF, Exemplo:

@@ -88,14 +88,14 @@ RemoteSymbols=0
 MinStackSize=16384
 MaxStackSize=1048576
 ImageBase=4194304
-ExeDescription=ACBr Automação Comercial Brasil  ACBrComum   (http://acbr.sf.ne)
+ExeDescription=
 [Directories]
 OutputDir=
 UnitOutputDir=
 PackageDLLOutputDir=
 PackageDCPOutputDir=
-SearchPath=..\..\Fontes\ACBrComum
-Packages=vcl;rtl;vclx;indy;vclie;xmlrtl;inetdbbde;inet;inetdbxpress;dbrtl;soaprtl;dsnap;VclSmp;dbexpress;vcldb;dbxcds;inetdb;bdertl;vcldbx;adortl;teeui;teedb;tee;ibxpress;visualclx;visualdbclx;vclactnband;vclshlctrls;IntrawebDB_50_70;Intraweb_50_70;dclOfficeXP;Rave50CLX;Rave50VCL;qrpt;teeqr
+SearchPath=
+Packages=vcl;rtl;vclx;indy;vclie;xmlrtl;inetdbbde;inet;inetdbxpress;dbrtl;soaprtl;dsnap;VclSmp;dbexpress;vcldb;dbxcds;inetdb;bdertl;vcldbx;adortl;teeui;teedb;tee;ibxpress;visualclx;visualdbclx;vclactnband;vclshlctrls;IntrawebDB_50_70;Intraweb_50_70;dclOfficeXP;Rave50CLX;Rave50VCL;qrpt;teeqr;ACBrDiversos;ACBr_Boleto;RLibWinD7vcl;ACBr_BoletoFC_Fortes;qrpt70;ACBr_BoletoFC_Quick;synapse;ACBrSerial;ACBrComum;ACBrTCP;ACBr_SPED;ACBr_PAF
 Conditionals=
 DebugSourceDirs=
 UsePackages=0
@@ -110,10 +110,10 @@ ActiveLang=
 ProjectLang=
 RootDir=C:\Program Files (x86)\Borland\Delphi7\Bin\
 [Version Info]
-IncludeVerInfo=1
+IncludeVerInfo=0
 AutoIncBuild=0
-MajorVer=0
-MinorVer=9
+MajorVer=1
+MinorVer=0
 Release=0
 Build=0
 Debug=0
@@ -126,7 +126,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=
 FileDescription=
-FileVersion=0.9.0.0
+FileVersion=1.0.0.0
 InternalName=
 LegalCopyright=
 LegalTrademarks=
@@ -136,25 +136,3 @@ ProductVersion=1.0.0.0
 Comments=
 [Excluded Packages]
 c:\program files (x86)\borland\delphi7\Projects\Bpl\B305cd70.bpl=TurboPower Abbrevia 3.05 CLX Design-time package - CLX70
-[HistoryLists\hlDebugSourcePath]
-Count=1
-Item0=..\..\Fontes\ACBrComum
-[HistoryLists\hlUnitAliases]
-Count=1
-Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
-[HistoryLists\hlSearchPath]
-Count=3
-Item0=..\..\Fontes\ACBrComum
-Item1=../../Fontes/ACBrComum
-Item2=../../ACBrComum
-[HistoryLists\hlUnitOutputDirectory]
-Count=2
-Item0=..\..\lib
-Item1=../../lib
-[HistoryLists\hlBPLOutput]
-Count=2
-Item0=..\..\lib
-Item1=../../lib
-[HistoryLists\hlDCPOutput]
-Count=1
-Item0=..\..\lib

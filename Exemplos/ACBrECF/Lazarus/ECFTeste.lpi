@@ -57,7 +57,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="11" Y="12"/>
-        <UsageCount Value="126"/>
+        <UsageCount Value="139"/>
       </Unit0>
       <Unit1>
         <Filename Value="ecfteste1.pas"/>
@@ -68,9 +68,9 @@
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1020"/>
-        <CursorPos X="40" Y="1022"/>
-        <UsageCount Value="126"/>
+        <TopLine Value="1"/>
+        <CursorPos X="17" Y="11"/>
+        <UsageCount Value="139"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit1>
@@ -83,7 +83,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="19"/>
         <CursorPos X="21" Y="40"/>
-        <UsageCount Value="126"/>
+        <UsageCount Value="139"/>
       </Unit2>
       <Unit3>
         <Filename Value="efetuapagamento.pas"/>
@@ -94,7 +94,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="95"/>
         <CursorPos X="37" Y="107"/>
-        <UsageCount Value="126"/>
+        <UsageCount Value="139"/>
       </Unit3>
       <Unit4>
         <Filename Value="relatorio.pas"/>
@@ -105,7 +105,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="59"/>
         <CursorPos X="1" Y="73"/>
-        <UsageCount Value="126"/>
+        <UsageCount Value="139"/>
       </Unit4>
       <Unit5>
         <Filename Value="sobre.pas"/>
@@ -116,7 +116,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="20"/>
         <CursorPos X="65" Y="45"/>
-        <UsageCount Value="126"/>
+        <UsageCount Value="139"/>
       </Unit5>
       <Unit6>
         <Filename Value="vendeitem.pas"/>
@@ -127,12 +127,12 @@
         <WindowIndex Value="0"/>
         <TopLine Value="82"/>
         <CursorPos X="1" Y="108"/>
-        <UsageCount Value="126"/>
+        <UsageCount Value="139"/>
       </Unit6>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
-    <Version Value="9"/>
+    <Version Value="10"/>
     <PathDelim Value="\"/>
     <Target>
       <Filename Value="ECFTeste"/>
@@ -163,6 +163,20 @@
     </Other>
   </CompilerOptions>
   <Debugging>
+    <BreakPoints Count="3">
+      <Item1>
+        <Source Value="..\..\..\Fontes\ACBrSerial\ACBrECFDaruma.pas"/>
+        <Line Value="2360"/>
+      </Item1>
+      <Item2>
+        <Source Value="..\..\..\Fontes\ACBrSerial\ACBrRFD.pas"/>
+        <Line Value="1743"/>
+      </Item2>
+      <Item3>
+        <Source Value="..\..\..\Fontes\ACBrComum\ACBrEAD.pas"/>
+        <Line Value="572"/>
+      </Item3>
+    </BreakPoints>
     <Exceptions Count="8" IgnoreAll="True">
       <Item1>
         <Name Value="ESynaSerError"/>

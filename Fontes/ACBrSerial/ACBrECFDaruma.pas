@@ -219,7 +219,7 @@ TACBrECFDaruma = class( TACBrECFClass )
        COOFim: AnsiString): Integer; StdCall;
 
     procedure LoadDLLFunctions;
-    procedure AbrePortaSerialDLL(const Path : String );
+    procedure AbrePortaSerialDLL(const Path : AnsiString );
 
     Function PreparaCmd( cmd : AnsiString ) : AnsiString ;
     function GetComprovantesNaoFiscaisVinculado: TACBrECFComprovantesNaoFiscais;
@@ -4447,7 +4447,7 @@ begin
    DarumaFunctionDetect('Daruma_FIMFD_DownloadDaMFD', @xDaruma_FIMFD_DownloadDaMFD);
 end;
 
-procedure TACBrECFDaruma.AbrePortaSerialDLL(const Path : String );
+procedure TACBrECFDaruma.AbrePortaSerialDLL(const Path : AnsiString );
 Var
   Resp : Integer ;
   Porta, Velocidade : AnsiString ;
@@ -4470,22 +4470,22 @@ begin
      raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar:'+sLineBreak+
      'Daruma_Registry_AlterarRegistry( "ECF", "ThreadNoStartup", "0" ) ') );
 
-  Resp := xDaruma_Registry_AlterarRegistry( 'ECF', 'Velocidade', PAnsiChar( Velocidade ) );
+  Resp := xDaruma_Registry_AlterarRegistry( 'ECF', 'Velocidade', Velocidade );
   if Resp <> 1 then
      raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar:'+sLineBreak+
      'Daruma_Registry_AlterarRegistry( "ECF", "Velocidade", "'+Velocidade+'" ) ') );
 
-  Resp := xDaruma_Registry_AlterarRegistry( 'AtoCotepe', 'Path', PAnsiChar( Path ) );
+  Resp := xDaruma_Registry_AlterarRegistry( 'AtoCotepe', 'Path', Path );
   if Resp <> 1 then
      raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar:'+sLineBreak+
      'Daruma_Registry_AlterarRegistry( "AtoCotepe", "Path", "'+Path+'" ) ') );
 
-  Resp := xDaruma_Registry_AlterarRegistry( 'ECF', 'Path', PAnsiChar( Path ) );
+  Resp := xDaruma_Registry_AlterarRegistry( 'ECF', 'Path', Path );
   if Resp <> 1 then
      raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar:'+sLineBreak+
      'Daruma_Registry_AlterarRegistry( "ECF", "Path", "'+Path+'" ) ') );
 
-  Resp := xDaruma_Registry_Porta(PAnsiChar( Porta ));
+  Resp := xDaruma_Registry_Porta( Porta );
   if Resp <> 1 then
      raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar:'+sLineBreak+
         'xDaruma_Registry_Porta( "'+Porta+'" ) ') );
@@ -4512,7 +4512,7 @@ begin
 
      AbrePortaSerialDLL( PathDest ) ;
 
-     Resp := xDaruma_FIMFD_DownloadDaMFD( PAnsiChar( CooIni ), PAnsiChar( CooFim )) ;
+     Resp := xDaruma_FIMFD_DownloadDaMFD( CooIni, CooFim ) ;
      if (Resp <> 1) then
         raise Exception.Create( ACBrStr( 'Erro ao executar Daruma_FIMFD_DownloadDaMFD.'+sLineBreak+
                                          'Cod.: '+IntToStr(Resp) )) ;
@@ -4549,7 +4549,7 @@ begin
 
      AbrePortaSerialDLL( PathDest ) ;
 
-     Resp := xDaruma_FIMFD_DownloadDaMFD(  PAnsiChar( DiaIni ), PAnsiChar( DiaFim )) ;
+     Resp := xDaruma_FIMFD_DownloadDaMFD( DiaIni, DiaFim ) ;
      if (Resp <> 1) then
         raise Exception.Create( ACBrStr( 'Erro ao executar Daruma_FIMFD_DownloadDaMFD.'+sLineBreak+
                                          'Cod.: '+IntToStr(Resp) )) ;
@@ -4585,7 +4585,7 @@ begin
      Ativo := False;
 
      AbrePortaSerialDLL( PathDest ) ;
-     Resp := xDaruma_FIMFD_GerarAtoCotepePAFCoo( PAnsiChar( CooIni ), PAnsiChar( CooFim )) ;
+     Resp := xDaruma_FIMFD_GerarAtoCotepePAFCoo( CooIni, CooFim ) ;
      if (Resp <> 1) then
         raise Exception.Create( ACBrStr( 'Erro ao executar Daruma_FIMFD_GerarAtoCotepePAFCoo.'+sLineBreak+
                                          'Cod.: '+IntToStr(Resp) ) ) ;
@@ -4622,7 +4622,7 @@ begin
 
      AbrePortaSerialDLL( PathDest ) ;
 
-     Resp := xDaruma_FIMFD_GerarAtoCotepePAFData( PAnsiChar( DiaIni ), PAnsiChar( DiaFim )) ;
+     Resp := xDaruma_FIMFD_GerarAtoCotepePAFData( DiaIni, DiaFim ) ;
      if (Resp <> 1) then
         raise Exception.Create( ACBrStr( 'Erro ao executar Daruma_FIMFD_GerarAtoCotepeData.'+sLineBreak+
                                          'Cod.: '+IntToStr(Resp) )) ;

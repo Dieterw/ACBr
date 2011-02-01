@@ -130,7 +130,7 @@ de existir sendo dividos em pacotes com os nomes ACBrDiversos, ACBrSerial, ACBrT
      via SVN - http://acbr.sourceforge.net/drupal/?q=node/37
 
   2. Adicionando os diretórios no LibPath  (não é necessário no Lazarus)
-       Adcione os diretórios " Fontes\ACBrComum ", " Fontes\ACBrSerial " e os
+       Adicione os diretórios " Fontes\ACBrComum ", " Fontes\ACBrSerial " e os
      demais subdiretorios da pasta Fontes dos componentes que deseja utilizar no
      "Library Path".
        Na IDE do Delphi acione  "Tools, Enviroment Options" selecione a guia
@@ -143,7 +143,7 @@ de existir sendo dividos em pacotes com os nomes ACBrDiversos, ACBrSerial, ACBrT
   3.1 Procure pela pasta Pacotes\Delphi e abra o arquivo synapse.dpk e clique em
       Compile.
   3.2 Procure pela pasta Pacotes\Delphi e abra o arquivo ACBrComum.dpk e clique em 
-      Compile.
+      Compile e depois em Install.
   3.3 Procure pela pasta Pacotes\Delphi e abra o arquivo ACBrDiversos.dpk e
       clique em Compile e depois em Install.
   3.4 Procure pela pasta Pacotes\Delphi e abra o arquivo ACBrSerial.dpk e clique
@@ -227,9 +227,10 @@ Synapse.dpk - Contém os componentes e units do Synapse que é usado para comunica
 
 ACBrComum.dpk - Contém Units com comandos básicos usados por praticamente todos os 
   componentes ACBr. Units ACBrUtil, ACBrBase, ACBrConsts, ACBrReg, etc... estão 
-  presentes nesse pacote.  Esse pacote não é instalado, apenas Compilado (Build).
-  * ACBrUtil - Unit contendo diversos procedimentos e funções úteis para aplicações
-    	  comerciais: ValidaCNPJ, ValidaCPF, ValidaINSCEST, Extenso, etc
+  presentes nesse pacote. 
+  * ACBrEAD - Componente para Gerar Chaves RSA Privadas/Publicas, assinar e validar arquivos 
+          TXT usando a Biblioteca OpenSSL (libeay32.dll)
+  * ACBrUtil - Unit contendo diversos procedimentos e funções úteis para aplicações comerciais
 
 ACBrCapicom.dpk - ??? Descrição ???. Esse pacote não é instalado, apenas Compilado (Build).
 

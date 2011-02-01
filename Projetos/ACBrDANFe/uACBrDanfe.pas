@@ -3,7 +3,7 @@ unit uACBrDanfe;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, RLConsts,
   Dialogs, ACBrNFeDANFEClass, ACBrNFeDANFERaveCB, ACBrNFe, IniFiles, ExtCtrls,
   ACBrNFeUtil, pcnConversao, ACBrNFeDANFeRLClass, ACBrNFeDANFERave, ACBrNFeDANFeRL;
 
@@ -272,5 +272,20 @@ procedure Tfrm_danfe.Timer1Timer(Sender: TObject);
 begin
    Close;
 end;
+
+initialization
+{
+"Sistema não está de acordo com a versão do Fortesreport. Versão atual 3.69B."
+
+Esta verificação existe para evitar que o projeto utilize uma outra
+versão do Fortes Report que não a indicada, evitando problemas em
+ambientes com vários desenvolvedores.
+para resolver faça o seguinte:
+
+Adcionar na uses do form principal na parte interface a unit RLConsts
+e colocar o código abaixo no final da unit antes do end.(end final) }
+
+
+  RLConsts.SetVersion(3,70,'B');
 
 end.

@@ -204,7 +204,7 @@ end;
 Function TACBrEAD.BioToStr( ABio: pBIO) : String ;
 Var
   {$IFDEF USE_libeay32}
-   Buf : array [0..1023] of char;
+   Buf : array [0..1023] of AnsiChar;
   {$ENDIF}
   Lin : AnsiString ;
   Ret : Integer ;
@@ -262,7 +262,7 @@ begin
 
   // Load a pseudo random file
   FileSeed := FindFileSeed;
-  RAND_load_file(PChar(FileSeed), -1);
+  RAND_load_file(PAnsiChar(FileSeed), -1);
 
   // Gera a Chave RSA
   LiberarChave;
@@ -375,7 +375,7 @@ end ;
 
 function TACBrEAD.GerarXMLeECFc( const NomeSwHouse, Diretorio : String ) : Boolean ;
 Var
-  Modulo, Expoente : String ;
+  Modulo, Expoente : AnsiString ;
   SL : TStringList ;
 begin
   Modulo   := '';

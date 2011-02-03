@@ -48,6 +48,7 @@
 |*    nas Class procedures "Imprimir" e "SavePDF"
 |*  - Habilitada a funcionalidade da procedure "SavePDF";
 ******************************************************************************}
+
 {$I ACBr.inc}
 unit ACBrCTeDACTeQR;
 

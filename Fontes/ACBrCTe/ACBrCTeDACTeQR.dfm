@@ -15,8 +15,8 @@ object frmDACTeQR: TfrmDACTeQR
   PixelsPerInch = 96
   TextHeight = 13
   object QRCTe: TQuickRep
-    Left = 0
-    Top = 0
+    Left = 8
+    Top = 8
     Width = 794
     Height = 1123
     Frame.Color = clBlack

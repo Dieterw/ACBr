@@ -863,6 +863,7 @@ begin
                LFill( COD_MOD ) +
                LFill( SER ) +
                LFill( NUM_DOC ) +
+               LFill( DT_DOC ) +
                LFill( VL_DOC,0,2 ) +
                LFill( VL_MERC,0,2 ) +
                LFill( QTD_VOL,0 ) +

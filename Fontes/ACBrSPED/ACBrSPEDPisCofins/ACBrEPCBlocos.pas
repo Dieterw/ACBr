@@ -36,6 +36,12 @@
 |*
 |* 07/12/2010: Isaque Pinheiro
 |*  - Criação e distribuição da Primeira Versao
+|* 11/01/2011:Alessandro Yamasaki
+|*  - Ajustes referente aos conteudos da Origem do Processo
+|*  - Criado 'Local da execução do serviço',
+|*  - Criado 'Base de Cálculo do Crédito'
+|*  - Criado 'Origem Credito'
+|*
 *******************************************************************************}
 
 unit ACBrEPCBlocos;
@@ -150,10 +156,8 @@ type
                               frNenhum                 // Preencher vazio
                               );
   /// Indicador da origem do processo
-  TACBrOrigemProcesso = (opSefaz,            // 0 - Sefaz
-                         opJusticaFederal,   // 1 - Justiça Federal
-                         opJusticaEstadual,  // 2 - Justiça Estadual
-                         opSecexRFB,         // 3 - Secex/RFB
+  TACBrOrigemProcesso = (opJusticaFederal,   // 1 - Justiça Federal'
+                         opSecexRFB,         // 3 – Secretaria da Receita Federal do Brasil
                          opOutros,           // 9 - Outros
                          opNenhum           // Preencher vazio
                          );
@@ -414,6 +418,19 @@ type
   TACBrSituacaoTribCOFINS = (tipo5, //ver o que por
                              tipo6  //ver o que por
                              );
+
+  // Local da Execução do Serviço
+  TACBrLocalExecServico = ( lesExecutPais,     // 0 – Executado no País;
+                            lesExecutExterior  // 1 – Executado no Exterior, cujo resultado se verifique no País.
+                          );
+
+  // Indicador da Origem do Crédito
+  TACBrOrigemCredito = ( opcMercadoInterno,      // 0 – Operação no Mercado Interno
+                         opcImportacao           // 1 – Operação de Importação
+                       );
+
+
+
 
   TOpenBlocos = class
   private

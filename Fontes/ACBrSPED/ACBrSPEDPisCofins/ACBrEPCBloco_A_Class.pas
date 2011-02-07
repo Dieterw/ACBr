@@ -36,13 +36,23 @@
 |*
 |* 12/12/2010: Isaque Pinheiro e Claudio Roberto
 |*  - Criação e distribuição da Primeira Versao
+|* 10/01/2011: Alessandro Yamasaki
+|*  - Implementação ou atualização dos campos conforme
+|*    Anexo Único do Ato Declaratório Executivo Cofis nº 034, de 2010 (Atualizado pelo ADE Cofis nº 37, de 2010)
+|*    - A010 < WriteRegistroA010 > - REGISTRO A010: IDENTIFICAÇÃO DO ESTABELECIMENTO
+|*    - A100 < WriteRegistroA100 > - REGISTRO A100: DOCUMENTO - NOTA FISCAL DE SERVIÇO
+|*    - A111 < WriteRegistroA111 > - REGISTRO A111: PROCESSO REFERENCIADO
+|*    - A120 < WriteRegistroA120 > - REGISTRO A120: INFORMAÇÃO COMPLEMENTAR - OPERAÇÕES DE IMPORTAÇÃO
+|*    - A170 < WriteRegistroA170 > - REGISTRO A170: COMPLEMENTO DO DOCUMENTO - ITENS DO DOCUMENTO
+|*
+|*
 *******************************************************************************}
 
-unit ACBrEFDBloco_A_Class;
+unit ACBrEPCBloco_A_Class;
 
 interface
 
-uses SysUtils, Classes, DateUtils, ACBrSped, ACBrEFDBloco_A, ACBrEFDBlocos,
+uses SysUtils, Classes, DateUtils, ACBrSped, ACBrEPCBloco_A, ACBrEPCBlocos,
      ACBrTXTClass;
 
 type
@@ -64,8 +74,9 @@ type
 
     procedure WriteRegistroA010(RegA001: TRegistroA001);
     procedure WriteRegistroA100(RegA010: TRegistroA010);
-    procedure WriteRegistroA111(RegA010: TRegistroA010);
-    procedure WriteRegistroA120(RegA010: TRegistroA010);
+    procedure WriteRegistroA110(RegA010: TRegistroA010);
+    procedure WriteRegistroA111(RegA010: TRegistroA110);
+    procedure WriteRegistroA120(RegA010: TRegistroA100);
     procedure WriteRegistroA170(RegA010: TRegistroA010);
 
     procedure CriaRegistros;
@@ -78,6 +89,7 @@ type
     function RegistroA001New: TRegistroA001;
     function RegistroA010New: TRegistroA010;
     function RegistroA100New: TRegistroA100;
+    function RegistroA110New: TRegistroA110;
     function RegistroA111New: TRegistroA111;
     function RegistroA120New: TRegistroA120;
     function RegistroA170New: TRegistroA170;
@@ -90,7 +102,7 @@ type
 
     property RegistroA010Count: Integer read FRegistroA010Count write FRegistroA010Count;
     property RegistroA100Count: Integer read FRegistroA100Count write FRegistroA100Count;
-    property RegistroA111Count: Integer read FRegistroA111Count write FRegistroA111Count;
+    property RegistroA110Count: Integer read FRegistroA110Count write FRegistroA111Count;
     property RegistroA120Count: Integer read FRegistroA120Count write FRegistroA120Count;
     property RegistroA170Count: Integer read FRegistroA170Count write FRegistroA170Count;
   end;
@@ -120,7 +132,7 @@ begin
 
   FRegistroA010Count := 0;
   FRegistroA100Count := 0;
-  FRegistroA111Count := 0;
+  FRegistroA110Count := 0;
   FRegistroA120Count := 0;
   FRegistroA170Count := 0;
 
@@ -231,34 +243,33 @@ intFor: Integer;
 begin
   if Assigned(RegA001.RegistroA010) then
   begin
-     for intFor := 0 to RegA001.RegistroA010.Count - 1 do
-     begin
-        with RegA001.RegistroA010.Items[intFor] do
-        begin
-          Add( LFill('A010') +
-               LFill(FANTASIA) +
-               LFill(CEP, 8) +
-               LFill(ENDERECO) +
-               LFill(NUM) +
-               LFill(COMPL) +
-               LFill(BAIRRO) +
-               LFill(FONE, 10) +
-               LFill(FAX, 10) +
-               LFill(EMAIL) ) ;
-        end;
-        /// Registros FILHOS
-        WriteRegistroA100( RegA001.RegistroA010.Items[intFor] );
-        ///
-        RegistroA990.QTD_LIN_A := RegistroA990.QTD_LIN_A + 1;
-     end;
-     /// Variavél para armazenar a quantidade de registro do tipo.
-     FRegistroA010Count := FRegistroA010Count + RegA001.RegistroA010.Count;
+    for intFor := 0 to RegA001.RegistroA010.Count - 1 do
+    begin
+      with RegA001.RegistroA010.Items[intFor] do
+      begin
+        Check(funChecaCNPJ(CNPJ), '(0-010) ESTABELECIMENTO: O CNPJ "%s" digitado é inválido!', [CNPJ]);
+
+        Add( LFill('A010') +
+             LFill(CNPJ, 14) ) ;
+      end;
+
+      // Registros FILHOS
+      WriteRegistroA100( RegA001.RegistroA010.Items[intFor] );
+      //
+      RegistroA990.QTD_LIN_A := RegistroA990.QTD_LIN_A + 1;
+    end;
+    // Variavél para armazenar a quantidade de registro do tipo.
+    FRegistroA010Count := FRegistroA010Count + RegA001.RegistroA010.Count;
   end;
 end;
 
 procedure TBloco_A.WriteRegistroA100(RegA010: TRegistroA010) ;
 var
 intFor: integer;
+strIND_OPER : AnsiString;
+strIND_EMIT : AnsiString;
+strCOD_SIT  : AnsiString;
+strIND_PGTO : AnsiString;
 begin
   if Assigned(RegA010.RegistroA100) then
   begin
@@ -266,14 +277,51 @@ begin
      begin
         with RegA010.RegistroA100.Items[intFor] do
         begin
-           Check(funChecaUF(UF_ST),        '(0-0015) CONTRIBUINTE SUBSTITUTO: A UF "%s" digitada é inválido!', [UF_ST]);
-           Check(funChecaIE(IE_ST, UF_ST), '(0-0015) CONTRIBUINTE SUBSTITUTO: A Inscrição Estadual "%s" digitada é inválida!', [IE_ST]);
-           ///
-           Add( LFill('A100') +
-                LFill(UF_ST) +
-                LFill(IE_ST) ) ;
+          //Check(NOME <> '', '(A-100) DOCUMENTO: O nome do XXX é obrigatório!');
+
+          case IND_OPER of
+            itoContratado : strIND_OPER := '0';
+            itoPrestado   : strIND_OPER := '1';
+          end;
+          case IND_EMIT of
+            iedfProprio  : strIND_EMIT := '0';
+            iedfTerceiro : strIND_EMIT := '1';
+          end;
+          case COD_SIT of
+            sdfRegular   : strCOD_SIT := '00';
+            sdfCancelado : strCOD_SIT := '02';
+          end;
+          case IND_PGTO of
+            tpVista : strIND_PGTO := '0';
+            tpPrazo : strIND_PGTO := '1';
+            tpSemPagamento : strIND_PGTO := '9';
+            tpNenhum : strIND_PGTO := '';
+          end;
+
+          Add( LFill('A100') +
+               LFill( strIND_OPER ) +
+               LFill( strIND_EMIT ) +
+               LFill( COD_PART ) +
+               LFill( strCOD_SIT ) +
+               LFill( SER ) +
+               LFill( SUB ) +
+               LFill( NUM_DOC ) +
+               LFill( CHV_NFSE ) +
+               LFill( DT_DOC ) +
+               LFill( DT_EXE_SERV ) +
+               LFill( VL_DOC,0,2 ) +
+               LFill( strIND_PGTO ) +
+               LFill( VL_DESC,0,2 ) +
+               LFill( VL_BC_PIS,0,2 ) +
+               LFill( VL_PIS,0,2 ) +
+               LFill( VL_BC_COFINS,0,2 ) +
+               LFill( VL_COFINS,0,2 ) +
+               LFill( VL_PIS_RET,0,2 ) +
+               LFill( VL_COFINS_RET,0,2 ) +
+               LFill( VL_ISS,0,2 ) ) ;
         end;
-        /// Registros FILHOS
+
+        // Registros FILHOS
         WriteRegistroA110( RegA010.RegistroA100.Items[intFor] );
         WriteRegistroA111( RegA010.RegistroA100.Items[intFor] );
         WriteRegistroA120( RegA010.RegistroA100.Items[intFor] );
@@ -290,85 +338,58 @@ procedure TBloco_A.WriteRegistroA110(RegA100: TRegistroA100) ;
 var
 intFor: integer;
 begin
-  if Assigned(RegA100.RegistroA110) then
+  if Assigned(RegA010.RegistroA110) then
   begin
-     for intFor := 0 to RegA010.RegistroA100.Count - 1 do
-     begin
-        with RegA100.RegistroA110.Items[intFor] do
-        begin
-          Check(funChecaCPF(CPF),     '(0-0100) CONTADOR: %s, o CPF "%s" digitado é inválido!', [NOME, CPF]);
-          Check(funChecaCNPJ(CNPJ),   '(0-0100) CONTADOR: %s, o CNPJ "%s" digitado é inválido!', [NOME, CNPJ]);
-   //       Check(funChecaCEP(CEP, Registro0000.UF), '(0-0100) CONTADOR: %s, o CEP "%s" digitada é inválido para a unidade de federação "%s"!', [NOME, CEP, Registro0000.UF]);
-          Check(funChecaMUN(COD_MUN), '(0-0100) CONTADOR: %s, o código do município "%s" digitado é inválido!', [NOME, IntToStr(COD_MUN)]);
-          Check(NOME <> '', '(0-0100) CONTADOR: O nome do contabilista/escritório é obrigatório!');
-          ///
-          Add( LFill('A110') +
-               LFill(NOME) +
-               LFill(CPF) +
-               LFill(CRC) +
-               LFill(CNPJ) +
-               LFill(CEP, 8) +
-               LFill(ENDERECO) +
-               LFill(NUM) +
-               LFill(COMPL) +
-               LFill(BAIRRO) +
-               LFill(FONE, 10) +
-               LFill(FAX, 10) +
-               LFill(EMAIL) +
-               LFill(COD_MUN, 7) ) ;
-          ///
-          RegistroA990.QTD_LIN_A := RegistroA990.QTD_LIN_A + 1;
-        end;
-     end;
-     /// Variavél para armazenar a quantidade de registro do tipo.
-     FRegistroA110Count := FRegistroA110Count + RegA100.RegistroA110.Count;
+    for intFor := 0 to RegA010.RegistroA100.Count - 1 do
+    begin
+      with RegA100.RegistroA110.Items[intFor] do
+      begin
+        Add( LFill('A110') +
+             LFill(COD_INF) +
+             LFill(TXT_COMPL) ) ;
+        //
+        RegistroA990.QTD_LIN_A := RegistroA990.QTD_LIN_A + 1;
+      end;
+   end;
+   // Variavél para armazenar a quantidade de registro do tipo.
+   FRegistroA110Count := FRegistroA110Count + RegA100.RegistroA110.Count;
   end;
 end;
 
 procedure TBloco_A.WriteRegistroA111(RegA100: TRegistroA100) ;
 var
 intFor: integer;
+strIND_PROC : AnsiString;
 begin
   if Assigned(RegA100.RegistroA111) then
   begin
-     for intFor := 0 to RegA100.RegistroA111.Count - 1 do
-     begin
-        with RegA100.RegistroA111.Items[intFor] do
-        begin
-//          Check(funChecaPAISIBGE(COD_PAIS), '(0-0150) %s-%s, o código do país "%s" digitado é inválido!', [COD_PART, NOME, COD_PAIS]);
-          if Length(CNPJ) > 0 then
-             Check(funChecaCNPJ(CNPJ), '(0-0150) %s-%s, o CNPJ "%s" digitado é inválido!', [COD_PART, NOME, CNPJ]);
-          if Length(CPF)  > 0 then
-             Check(funChecaCPF(CPF), '(0-0150) %s-%s, o CPF "%s" digitado é inválido!', [COD_PART, NOME, CPF]);
-//          Check(funChecaIE(IE, UF),         '(0-0150) %s-%s, a Inscrição Estadual "%s" digitada é inválida!', [COD_PART, NOME, IE]);
-//          Check(funChecaMUN(COD_MUN),       '(0-0150) %s-%s, o código do município "%s" digitado é inválido!', [COD_PART, NOME, IntToStr(COD_MUN)]);
-          Check(NOME <> '',                 '(0-0150) O nome do participante é obrigatório!');
-          ///
-          Add( LFill('A111') +
-               LFill(COD_PART) +
-               LFill(NOME) +
-               LFill(COD_PAIS) +
-               LFill(CNPJ) +
-               LFill(CPF) +
-               LFill(IE) +
-               LFill(COD_MUN, 7) +
-               LFill(SUFRAMA) +
-               LFill(ENDERECO) +
-               LFill(NUM) +
-               LFill(COMPL) +
-               LFill(BAIRRO) ) ;
+    for intFor := 0 to RegA100.RegistroA111.Count - 1 do
+    begin
+      with RegA100.RegistroA111.Items[intFor] do
+      begin
+        case IND_PROC of
+          opJusticaFederal : strIND_PROC := '0';
+          opSecexRFB       : strIND_PROC := '1';
+          opOutros         : strIND_PROC := '';
+          opNenhum         : strIND_PROC := '';
         end;
 
-        RegistroA990.QTD_LIN_A := RegistroA990.QTD_LIN_A + 1;
-     end;
-     /// Variavél para armazenar a quantidade de registro do tipo.
-     FRegistroA111Count := FRegistroA111Count + RegA100.RegistroA111.Count;
+        Add( LFill('A111') +
+             LFill(NUM_PROC) +
+             LFill(strIND_PROC) ) ;
+      end;
+
+      RegistroA990.QTD_LIN_A := RegistroA990.QTD_LIN_A + 1;
+    end;
+    /// Variavél para armazenar a quantidade de registro do tipo.
+    FRegistroA111Count := FRegistroA111Count + RegA100.RegistroA111.Count;
   end;
 end;
 
 procedure TBloco_A.WriteRegistroA120(RegA100: TRegistroA100) ;
 var
 intFor: integer;
+strLOC_EXE_SERV: AnsiString;
 begin
   if Assigned(RegA100.RegistroA120) then
   begin
@@ -376,12 +397,20 @@ begin
      begin
         with RegA100.RegistroA120.Items[intFor] do
         begin
-          Check(((DT_ALT >= DT_INI) and (DT_ALT <= DT_FIN)),  '(0-0175) ALTERAÇÃO NO CADASTRO DE CLIENTES/FORNECEDORES: A data da alteração deve estar no intervalo de: %s a %s!', [DateToStr(DT_INI), DateToStr(DT_FIN)]);
-          ///
+          case LOC_EXE_SERV of
+            lesExecutPais     : strLOC_EXE_SERV := '0';
+            lesExecutExterior : strLOC_EXE_SERV := '1';
+          end;
+
           Add( LFill('A120') +
-               LFill(DT_ALT) +
-               LFill(NR_CAMPO) +
-               LFill(CONT_ANT) ) ;
+               LFill( VL_TOT_SERV,0,2 ) +
+               LFill( VL_BC_PIS,0,2 ) +
+               LFill( VL_PIS_IMP,0,2 ) +
+               LFill( DT_PAG_PIS) +
+               LFill( VL_BC_COFINS,0,2 ) +
+               LFill( VL_COFINS_IMP,0,2 ) +
+               LFill( DT_PAG_COFINS) +
+               LFill( strLOC_EXE_SERV) );
         end;
         RegistroA990.QTD_LIN_A := RegistroA990.QTD_LIN_A + 1;
      end;
@@ -393,18 +422,40 @@ end;
 procedure TBloco_A.WriteRegistroA170(RegA100: TRegistroA100) ;
 var
 intFor: integer;
+strIND_ORIG_CRED : AnsiString;
 begin
   if Assigned(RegA100.RegistroA170) then
   begin
-     for intFor := 0 to RegA100.RegistroA170.Count - 1 do
-     begin
-        with RegA100.RegistroA170.Items[intFor] do
-        begin
-//          Check(Reg0001.Registro0190.LocalizaRegistro(UNID), '(0-0190) UNIDADE MEDIDA: A unidade de medida "%s" foi duplicada na lista de registros 0190!', [UNID]);
+    for intFor := 0 to RegA100.RegistroA170.Count - 1 do
+    begin
+      with RegA100.RegistroA170.Items[intFor] do
+      begin
+        //Check(Reg0001.Registro0190.LocalizaRegistro(UNID), '(0-0190) UNIDADE MEDIDA: A unidade de medida "%s" foi duplicada na lista de registros 0190!', [UNID]);
 
-          Add( LFill('A170') +
-               LFill(UNID) +
-               LFill(DESCR) ) ;
+        case IND_ORIG_CRED of
+            opcMercadoInterno : strIND_ORIG_CRED := '0';
+            opcImportacao     : strIND_ORIG_CRED := '1';
+        end;
+
+        Add( LFill('A170') +
+             LFill(NUM_ITEM) +
+             LFill(COD_ITEM) +
+             LFill(DESCR_COMPL) +
+             LFill( VL_ITEM,0,2 ) +
+             LFill( VL_DESC,0,2 ) +
+             LFill( NAT_BC_CRED) +
+             LFill(strIND_ORIG_CRED) +
+             LFill(CST_PIS) +
+             LFill( VL_BC_PIS,0,2 ) +
+             LFill( ALIQ_PIS,0,2 ) +
+             LFill( VL_PIS,0,2 ) +
+             LFill(CST_COFINS) +
+             LFill( VL_BC_COFINS,0,2 ) +
+             LFill( ALIQ_COFINS,0,2 ) +
+             LFill( VL_COFINS,0,2 ) +
+             LFill(COD_CTA) +
+             LFill(COD_CCUS) ) ;
+
         end;
         RegistroA990.QTD_LIN_A := RegistroA990.QTD_LIN_A + 1;
      end;

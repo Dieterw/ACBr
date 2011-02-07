@@ -36,6 +36,12 @@
 |*
 |* 12/12/2010: Isaque Pinheiro e Claudio Roberto de Souza
 |*  - Criação e distribuição da Primeira Versao
+|* 10/01/2011: Alessandro Yamasaki
+|*  - Adicionado TACBrOrigemProcesso no REGISTRO A111: PROCESSO REFERENCIADO
+|*  - Criado Tipo Local da execução do serviço para o Registro A120
+|*  - Adicionado TACBrOrigemCredito no REGISTRO A170: COMPLEMENTO DO DOCUMENTO - ITENS DO DOCUMENTO
+|*  -
+|*  -
 *******************************************************************************}
 
 // Documentos Fiscais - Serviços (ISS)
@@ -70,7 +76,7 @@ type
   // REGISTRO A010: IDENTIFICAÇÃO DO ESTABELECIMENTO
   TRegistroA010 = class
   private
-    fCNPJ:Integer;    //02	Número de inscrição do estabelecimento no CNPJ.	N	014*	-
+    fCNPJ:string;    //02	Número de inscrição do estabelecimento no CNPJ.	N	014*	-
 
     FRegistroA100: TRegistroA100List;
   public
@@ -78,7 +84,7 @@ type
     destructor Destroy; override; /// Destroy
 
     property RegistroA100: TRegistroA100List read FRegistroA100 write FRegistroA100;
-    property CNPJ: Integer read FCNPJ write FCNPJ;
+    property CNPJ: string read FCNPJ write FCNPJ;
   end;
 
   /// Registro A010 - Lista
@@ -100,22 +106,22 @@ type
     fIND_EMIT: TACBrIndicadorEmitenteDF;   //03	Indicador do emitente do documento fiscal: 0 - Emissão própria; 1 - Emissão de Terceiros	C	001*
     fCOD_PART: string; 	                   //04	Código do participante (campo 02 do Registro 0150):- do emitente do documento, no caso de emissão de terceiros;- do adquirente, no caso de serviços prestados.	C	060
     fCOD_SIT: TACBrSituacaoDF;	          //05	Código da situação do documento fiscal:00 – Documento regular 02 – Documento cancelado	N	002*
-    fSER: string;	            //06	Série do documento fiscal	C	020
-    fSUB: string;	            //07	Subsérie do documento fiscal	C	020
-    fNUM_DOC: string;	      //08	Número do documento fiscal ou documento internacional equivalente	C	060
-    fCHV_NFSE: string;	      //09	Chave/Código de Verificação da nota fiscal de serviço eletrônica	C	060
-    fDT_DOC: TDateTime;	      //10	Data da emissão do documento fiscal	N	008*
-    fDT_EXE_SERV: TDateTime;	//11	Data de Execução / Conclusão do Serviço	N	008*
-    fVL_DOC: currency;	      //12	Valor total do documento	N	-	02
-    fIND_PGTO: Integer;	      //13	Indicador do tipo de pagamento:0- À vista;1- A prazo;9- Sem pagamento.	C	001*	-
-    fVL_DESC: currency;	      //14	Valor total do desconto	N	-	02
-    fVL_BC_PIS: currency;	   //15	Valor da base de cálculo do PIS/PASEP	N	-	02
-    fVL_PIS: currency;	      //16	Valor total do PIS	N	-	02
-    fVL_BC_COFINS: currency;	//17	Valor da base de cálculo da COFINS	N	-	02
-    fVL_COFINS: currency;	   //18	Valor total da COFINS	N	-	02
-    fVL_PIS_RET: currency;	   //19	Valor total do PIS retido na fonte	N	-	02
-    fVL_COFINS_RET: currency; //20	Valor total da COFINS retido na fonte.	N	-	02
-    fVL_ISS: currency;	      //21	Valor do ISS	N	-	02
+    fSER: string;	                        //06	Série do documento fiscal	C	020
+    fSUB: string;	                  //07	Subsérie do documento fiscal	C	020
+    fNUM_DOC: string;	              //08	Número do documento fiscal ou documento internacional equivalente	C	060
+    fCHV_NFSE: string;	            //09	Chave/Código de Verificação da nota fiscal de serviço eletrônica	C	060
+    fDT_DOC: TDateTime;	            //10	Data da emissão do documento fiscal	N	008*
+    fDT_EXE_SERV: TDateTime;	      //11	Data de Execução / Conclusão do Serviço	N	008*
+    fVL_DOC: currency;	            //12	Valor total do documento	N	-	02
+    fIND_PGTO: TACBrTipoPagamento;  //13	Indicador do tipo de pagamento:0- À vista;1- A prazo;9- Sem pagamento.	C	001*	-
+    fVL_DESC: currency;	        //14	Valor total do desconto	N	-	02
+    fVL_BC_PIS: currency;	      //15	Valor da base de cálculo do PIS/PASEP	N	-	02
+    fVL_PIS: currency;	        //16	Valor total do PIS	N	-	02
+    fVL_BC_COFINS: currency;	  //17	Valor da base de cálculo da COFINS	N	-	02
+    fVL_COFINS: currency;	      //18	Valor total da COFINS	N	-	02
+    fVL_PIS_RET: currency;	    //19	Valor total do PIS retido na fonte	N	-	02
+    fVL_COFINS_RET: currency;   //20	Valor total da COFINS retido na fonte.	N	-	02
+    fVL_ISS: currency;	        //21	Valor do ISS	N	-	02
 
     FRegistroA110: TRegistroA110List;                  
     FRegistroA111: TRegistroA111List;
@@ -136,7 +142,7 @@ type
     property DT_DOC: TDateTime read FDT_DOC write FDT_DOC;
     property DT_EXE_SERV: TDateTime read FDT_EXE_SERV write FDT_EXE_SERV;
     property VL_DOC: currency read FVL_DOC write FVL_DOC;
-    property IND_PGTO: Integer read FIND_PGTO write FIND_PGTO;
+    property IND_PGTO: TACBrTipoPagamento read FIND_PGTO write FIND_PGTO;
     property VL_DESC: currency read FVL_DESC write FVL_DESC;
     property VL_BC_PIS: currency read FVL_BC_PIS write FVL_BC_PIS;
     property VL_PIS: currency read FVL_PIS write FVL_PIS;
@@ -188,12 +194,11 @@ type
   // REGISTRO A111: PROCESSO REFERENCIADO
   TRegistroA111 = class
   private
-    fNUM_PROC: String;      //02	Identificação do processo ou ato concessório	C	020
-   { TODO : Criar tipos }
-    fIND_PROC: string;      //03	Indicador da origem do processo: 1 - Justiça Federal; 3 – Secretaria da Receita Federal do Brasil; 9 - Outros.	C	001*
+    fNUM_PROC: String;                //02	Identificação do processo ou ato concessório	C	020
+    fIND_PROC: TACBrOrigemProcesso;	  //03	Indicador da origem do processo: 1 - Justiça Federal; 3 – Secretaria da Receita Federal do Brasil; 9 - Outros.	C	001*
   public
     property NUM_PROC: string read FNUM_PROC write FNUM_PROC;
-    property IND_PROC: string read FIND_PROC write FIND_PROC;
+    property IND_PROC: TACBrOrigemProcesso read FIND_PROC write FIND_PROC;
   end;
 
   /// Registro A111 - Lista
@@ -211,15 +216,14 @@ type
 
   TRegistroA120 = class
   private
-    fVL_TOT_SERV: Currency;	    //02	Valor total do serviço, prestado por pessoa física ou jurídica domiciliada no exterior.	N	-	02
-    fVL_BC_PIS: Currency;	       //03	Valor da base de cálculo da Operação – PIS/PASEP – Importação	N	-	02
-    fVL_PIS_IMP: Currency;	       //04	Valor pago/recolhido de PIS/PASEP – Importação	N	-	02
-    fDT_PAG_PIS: TDateTime;	    //05	Data de pagamento do PIS/PASEP – Importação	N	008*	-
+    fVL_TOT_SERV: Currency;	      //02	Valor total do serviço, prestado por pessoa física ou jurídica domiciliada no exterior.	N	-	02
+    fVL_BC_PIS: Currency;	        //03	Valor da base de cálculo da Operação – PIS/PASEP – Importação	N	-	02
+    fVL_PIS_IMP: Currency;	      //04	Valor pago/recolhido de PIS/PASEP – Importação	N	-	02
+    fDT_PAG_PIS: TDateTime;	      //05	Data de pagamento do PIS/PASEP – Importação	N	008*	-
     fVL_BC_COFINS: Currency;      //06	Valor da base de cálculo da Operação – COFINS – Importação	N	-	02
     fVL_COFINS_IMP: Currency;     //07	Valor pago/recolhido de COFINS – Importação	N	-	02
-    fDT_PAG_COFINS: TDateTime;    //08	Data de pagamento do COFINS – Importação	N	008*	-
-    { TODO : Criar tipo }
-    fLOC_EXE_SERV: Integer;       //09	Local da execução do serviço: 0 – Executado no País; 1 – Executado no Exterior, cujo resultado se verifique no País.	C	001*	-
+    fDT_PAG_COFINS: TDateTime;    //08	Data de pagamento do COFINS – Importação	N	008*
+    fLOC_EXE_SERV: TACBrLocalExecServico; //09	Local da execução do serviço: 0 – Executado no País; 1 – Executado no Exterior, cujo resultado se verifique no País.	C	001*	-
   public
     property VL_TOT_SERV: Currency read FVL_TOT_SERV write FVL_TOT_SERV;
     property VL_BC_PIS: Currency read FVL_BC_PIS write FVL_BC_PIS;
@@ -228,7 +232,7 @@ type
     property VL_BC_COFINS: Currency read FVL_BC_COFINS write FVL_BC_COFINS;
     property VL_COFINS_IMP: Currency read FVL_COFINS_IMP write FVL_COFINS_IMP;
     property DT_PAG_COFINS: TDateTime read FDT_PAG_COFINS write FDT_PAG_COFINS;
-    property LOC_EXE_SERV: Integer read FLOC_EXE_SERV write FLOC_EXE_SERV;
+    property LOC_EXE_SERV: TACBrLocalExecServico read FLOC_EXE_SERV write FLOC_EXE_SERV;
   end;
 
   /// Registro A120 - Lista
@@ -248,11 +252,11 @@ type
   private
     fNUM_ITEM: Integer;	       //02	Número seqüencial do item no documento fiscal	N	003	-
     fCOD_ITEM: string;	       //03	Código do item (campo 02 do Registro 0200)	C	060	-
-    fDESCR_COMPL: string;	    //04	Descrição complementar do item como adotado no documento fiscal	C	-	-
+    fDESCR_COMPL: string;	     //04	Descrição complementar do item como adotado no documento fiscal	C	-	-
     fVL_ITEM: Currency;	       //05	Valor total do item (mercadorias ou serviços)	N	-	02
     fVL_DESC: Currency;	       //06	Valor do desconto do item	N	-	02
-    fNAT_BC_CRED: string;	    //07	Código da Base de Cálculo do Crédito, conforme a Tabela indicada no item 4.3.7, caso seja informado código representativo de crédito no Campo 09 (CST_PIS) ou no Campo 13 (CST_COFINS).	C	002*	-
-    fIND_ORIG_CRED: Integer;	 //08	Indicador da origem do crédito:0 – Operação no Mercado Interno 1 – Operação de Importação	C	001*	-
+    fNAT_BC_CRED: string;	     //07	Código da Base de Cálculo do Crédito, conforme a Tabela indicada no item 4.3.7, caso seja informado código representativo de crédito no Campo 09 (CST_PIS) ou no Campo 13 (CST_COFINS).	C	002*	-
+    fIND_ORIG_CRED: TACBrOrigemCredito;	 //08	Indicador da origem do crédito:0 – Operação no Mercado Interno 1 – Operação de Importação	C	001*	-
     fCST_PIS: Integer;	       //09	Código da Situação Tributária referente ao PIS/PASEP – Tabela 4.3.3.	N	002*	-
     fVL_BC_PIS: Currency;      //10	Valor da base de cálculo do PIS/PASEP.	N	- 	02
     fALIQ_PIS: Currency;       //11	Alíquota do PIS/PASEP (em percentual)	N	-	02
@@ -270,7 +274,7 @@ type
     property VL_ITEM: Currency read FVL_ITEM write FVL_ITEM;
     property VL_DESC: Currency read FVL_DESC write FVL_DESC;
     property NAT_BC_CRED: string read FNAT_BC_CRED write FNAT_BC_CRED;
-    property IND_ORIG_CRED: Integer read FIND_ORIG_CRED write FIND_ORIG_CRED;
+    property IND_ORIG_CRED: TACBrOrigemCredito read FIND_ORIG_CRED write FIND_ORIG_CRED;
     property CST_PIS: Integer read FCST_PIS write FCST_PIS;
     property VL_BC_PIS: Currency read FVL_BC_PIS write FVL_BC_PIS;
     property ALIQ_PIS: Currency read FALIQ_PIS write FALIQ_PIS;
@@ -298,9 +302,9 @@ type
 
   TRegistroA990 = class
   private
-    fQTD_LIN_A: string;          //02	Quantidade total de linhas do Bloco A	N	-	-
+    fQTD_LIN_A: integer;          //02	Quantidade total de linhas do Bloco A	N	-	-
   public
-    property QTD_LIN_A: string read FQTD_LIN_A write FQTD_LIN_A;
+    property QTD_LIN_A: integer read FQTD_LIN_A write FQTD_LIN_A;
   end;
 
 implementation

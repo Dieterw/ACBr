@@ -124,6 +124,7 @@ type
     function LoadFromFile(CaminhoArquivo: string): boolean;
     function LoadFromStream(Stream: TStringStream): boolean;
     function SaveToFile(PathArquivo: string = ''; SalvaTXT : Boolean = False): boolean;
+    function SaveToTXT(PathArquivo: string = ''): boolean;
 
     property ACBrNFe : TComponent read FACBrNFe;
   end;
@@ -578,6 +579,55 @@ begin
  except
     Result := False;
  end;
+end;
+
+function TNotasFiscais.SaveToTXT(PathArquivo: string): boolean;
+var
+  loSTR: TStringList;
+  loNFeW : TNFeW;
+  I,J: integer;
+  CaminhoArquivo: string;
+begin
+  Result:=False;
+  loSTR := TStringList.Create;
+  try
+    loSTR.Clear;
+    for I := 0 to Self.Count - 1 do
+    begin
+      loNFeW := TNFeW.Create(Self.Items[I].Nfe);
+      try
+        loNFeW.schema := TsPL006;
+        loNFeW.Opcoes.GerarTXTSimultaneamente:=true;
+        loNFeW.GerarXml;
+        loSTR.Text := loSTR.Text +
+                      copy(loNFeW.Gerador.ArquivoFormatoTXT,14,length(loNFeW.Gerador.ArquivoFormatoTXT));
+      finally
+        loNFeW.Free;
+      end;
+    end;
+    if loSTR.Count > 0 then
+    begin
+      loSTR.Strings[0]:='NOTA FISCAL|'+IntToStr(Self.Count);
+      J:=loSTR.Count;
+      while (I <= J-1) do
+      begin
+        if loSTR.Strings[I] = '' then
+        begin
+          loSTR.Delete(I);
+          J:=J-1;
+        end
+        else
+          I:=I+1;
+      end;
+
+      if NotaUtil.EstaVazio(PathArquivo) then
+        PathArquivo := PathWithDelim(TACBrNFe( FACBrNFe ).Configuracoes.Geral.PathSalvar)+'NFe.TXT';
+      loSTR.SaveToFile(PathArquivo);
+      Result:=True;
+    end;
+  finally
+    loSTR.free;
+  end;
 end;
 
 { TSendMailThread }

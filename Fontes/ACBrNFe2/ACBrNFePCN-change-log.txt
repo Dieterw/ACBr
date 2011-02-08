@@ -51,6 +51,9 @@ Símbolo : Significado
 Alterações   08/02/2011
 ---------------
 [-] Correção da impressão do DANFE em PDF no Danfe em Rave Arquivo. Caso 878 do Mantis
+[+] Incluido opção de Salvar diretamente para arquivo TXT as NFs carregadas no componente
+    Utilizem o método: ACBrNFe1.NotasFiscais.SaveToTXT({caminho e nome do arquivo TXT});
+    Vejam o DEMO para exemplo.
 
 Alterações   25/01/2011
 ---------------

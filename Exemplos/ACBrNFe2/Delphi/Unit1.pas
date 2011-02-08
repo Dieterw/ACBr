@@ -728,9 +728,6 @@ end;
 
 procedure TForm1.btnGerarTXTClick(Sender: TObject);
 var
-   LocNFeW : TNFeW;
-   wchave: string;
-   wnome_arquivo: string;
    vAux, vNumLote : String;
 begin
   if not(InputQuery('WebServices Enviar', 'Numero da Nota', vAux)) then
@@ -750,20 +747,10 @@ begin
   ACBrNFe1.NotasFiscais.Clear;
 
   GerarNFe(vAux);
+  GerarNFe(vAux);
+  GerarNFe(vAux);
 
-  LocNFeW := TNFeW.Create(ACBrNFe1.NotasFiscais.Items[0].Nfe);
-  try
-     LocNFeW.schema := TsPL006;
-     LocNFeW.Opcoes.GerarTXTSimultaneamente:=true;
-     LocNFeW.GerarXml;
-     wchave:=ACBrNFe1.NotasFiscais.Items[0].Nfe.InfNFe.ID;
-     if length(wchave)>44 then
-        wchave:=copy(wchave,(length(wchave)-44)+1,44);
-     wnome_arquivo:=ACBrNFe1.Configuracoes.Geral.PathSalvar+wchave+'-nfe.txt';
-     LocNFeW.Gerador.SalvarArquivo(wnome_arquivo,fgTXT);
-  finally
-     LocNFeW.Free;
-  end;
+  ACBrNFe1.NotasFiscais.SaveToTXT({caminho e nome do arquivo TXT});
 end;
 
 procedure TForm1.btnEnviarEmailClick(Sender: TObject);

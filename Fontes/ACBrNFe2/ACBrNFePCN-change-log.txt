@@ -47,6 +47,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+
+Alterações   08/02/2011
+---------------
+[-] Correção da impressão do DANFE em PDF no Danfe em Rave Arquivo. Caso 878 do Mantis
+
 Alterações   25/01/2011
 ---------------
 [*] Inclusão da Propriedade TamanhoFonte_ANTT nos Danfes em RAVE. Casos 853 e 868 do Mantis

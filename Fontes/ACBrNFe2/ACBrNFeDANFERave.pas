@@ -812,6 +812,7 @@ begin
    end;
 
   dmDanfe.RvSystem1.DoNativeOutput := True;
+  dmDanfe.RvRenderPDF1.Active := True;
   if MostrarPreview then
    begin
      dmDanfe.RvSystem1.DefaultDest    := rdPreview;

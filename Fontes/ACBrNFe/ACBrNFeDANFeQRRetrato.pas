@@ -1004,58 +1004,45 @@ begin
 
    if QRNFe.PageNumber = 1 then
    begin
+      //==============================================================================
       // Emitente
-
+      //==============================================================================
       with FNFe.Emit do
       begin
          qrlCNPJ.Caption              := NotaUtil.FormatarCNPJ( CNPJCPF  ) ;
          qrlInscrEstSubst.caption     := IEST ;
          qrlInscricaoEstadual.Caption := IE ;
          qrmEmitente.Lines.Text       := XNome ;
+
          with EnderEmit do
          begin
             qrmEndereco.Lines.Clear ;
             qrmEndereco.Lines.add ( XLgr + IfThen ( Nro = '0', '', ', ' + Nro ) + ' ' + XCpl + ' ' + XBairro ) ;
             qrmEndereco.Lines.add ( NotaUtil.FormatarCEP( FormatFloat( '00000000', CEP ) ) + ' - ' + XMun + ' - ' + UF ) ;
+
             if Trim(FSite) <> '' then
-            begin
                qrmEndereco.Lines.Add (FSite);
-            end;
 
             if Trim(FEmail) <> '' then
-            begin
+
                qrmEndereco.Lines.Add (FEmail);
-            end;
 
+            //==============================================================================
             // telefone
-
-            qrlFone.Caption:= '';
-
-            if (fone <> '') and (FFax = '') then
-            begin
-                 qrlFone.Caption := 'FONE: ' + NotaUtil.FormatarFone( Fone );
-            end;
-
-            if (FFax <> '') and (fone = '') then
-            begin
-                qrlFone.Caption:= 'FAX: ' + FFax;
-            end;
-
-            if (FFax <> '') and (fone <> '') then
-            begin
-                qrlFone.Caption:= 'FONE: ' + NotaUtil.FormatarFone( Fone ) + #13 +'FAX: ' + FFax;
-            end;
-
+            //==============================================================================
+            qrlFone.Caption := '';
+            qrlFone.Caption :=  IfThen( fone <> ''                  , 'FONE: ' + NotaUtil.FormatarFone(Fone), '')
+            						+ IfThen((fone <> '') and (FFax <> ''), #13                                   , '')
+                              + IfThen( FFax <> ''                  , ' FAX: ' + NotaUtil.FormatarFone(FFax), '');
          end;
 
          if (FLogo <> '') and FilesExists(FLogo) then
-         begin
              qriLogo.Picture.LoadFromFile(FLogo);
-         end;
+      end;
 
-      end ;
+      //==============================================================================
       // Danfe
-
+      //==============================================================================
       qrlEntradaSaida.Caption := tpNFToStr( FNFe.Ide.tpNF ) ;
       qrlNumNF1.Caption       := FormatFloat( '000,000,000', FNFe.Ide.nNF ) ;
       qrlSERIE1.Caption       := IntToStr( FNFe.Ide.serie ) ;
@@ -1063,50 +1050,50 @@ begin
       qrlNatOperacao.Caption  := FNFe.Ide.natOp ;
       SetBarCodeImage( Copy ( FNFe.InfNFe.Id, 4, 44 ), qriBarCode ) ;
 
-        // Normal **************************************************************
-        if FNFe.Ide.tpEmis in [teNormal, teSCAN] then
-        begin
-            if FNFe.procNFe.cStat = 100 then
-            begin
-                qrlDescricao.Caption:= 'PROTOCOLO DE AUTORIZAÇÃO DE USO';
-            end;
+      //==============================================================================
+      // Normal **********************************************************************
+      //==============================================================================
+      if FNFe.Ide.tpEmis in [teNormal, teSCAN] then
+      begin
+         if FNFe.procNFe.cStat = 100 then
+             qrlDescricao.Caption:= 'PROTOCOLO DE AUTORIZAÇÃO DE USO';
 
-            if FNFe.procNFe.cStat = 101 then
-            begin
-                qrlDescricao.Caption:= 'PROTOCOLO DE HOMOLOGAÇÃO DE CANCELAMENTO';
-            end;
+         if FNFe.procNFe.cStat = 101 then
+             qrlDescricao.Caption:= 'PROTOCOLO DE HOMOLOGAÇÃO DE CANCELAMENTO';
 
-            if FNFe.procNFe.cStat = 102 then
-            begin
-                qrlDescricao.Caption:= 'PROTOCOLO DE DENEGAÇÃO DE USO';
-            end;
+         if FNFe.procNFe.cStat = 102 then
+             qrlDescricao.Caption:= 'PROTOCOLO DE DENEGAÇÃO DE USO';
 
-            if FProtocoloNFE <> '' then
-                qrlProtocolo.Caption        := FProtocoloNFE
-            else
-                qrlProtocolo.Caption        :=  FNFe.procNFe.nProt + ' ' +
-                                                NotaUtil.SeSenao(FNFe.procNFe.dhRecbto <> 0, DateTimeToStr(FNFe.procNFe.dhRecbto),'') ;
-            qriBarCodeContingencia.Visible  := False;
-        end;
-        // Contingencia ********************************************************
-        if FNFe.Ide.tpEmis in [teContingencia, teFSDA] then
-        begin
-            strChaveContingencia:= NotaUtil.GerarChaveContingencia(FNFe);
-            SetBarCodeImage(strChaveContingencia,qriBarCodeContingencia);
-            qriBarCodeContingencia.Visible  := True;
-            qrlDescricao.Caption            := 'DADOS DA NF-E';
-            qrlProtocolo.Caption            := NotaUtil.FormatarChaveContigencia(strChaveContingencia);
-        end;
-        // DPEC ****************************************************************
-        if FNFe.Ide.tpEmis = teDPEC then
-        begin
-            qrlDescricao.Caption := 'NÚMERO DE REGISTRO DPEC';
-            qrlProtocolo.Caption := FProtocoloNFE;
-            //qrlProtocolo.Caption := FNFe.procNFe.nProt + ' '  +
-            //                        NotaUtil.SeSenao(FNFe.procNFe.dhRecbto <> 0, DateTimeToStr(FNFe.procNFe.dhRecbto),'') ;
-        end;
-    //************************************************************************
-    end ;
+         if FProtocoloNFE <> '' then
+             qrlProtocolo.Caption        := FProtocoloNFE
+         else
+             qrlProtocolo.Caption        :=  FNFe.procNFe.nProt + ' ' +
+                                             NotaUtil.SeSenao(FNFe.procNFe.dhRecbto <> 0, DateTimeToStr(FNFe.procNFe.dhRecbto),'') ;
+         qriBarCodeContingencia.Visible  := False;
+      end;
+
+      //==============================================================================
+      // Contingencia ****************************************************************
+      //==============================================================================
+      if FNFe.Ide.tpEmis in [teContingencia, teFSDA] then
+      begin
+         strChaveContingencia:= NotaUtil.GerarChaveContingencia(FNFe);
+         SetBarCodeImage(strChaveContingencia,qriBarCodeContingencia);
+         qriBarCodeContingencia.Visible  := True;
+         qrlDescricao.Caption            := 'DADOS DA NF-E';
+         qrlProtocolo.Caption            := NotaUtil.FormatarChaveContigencia(strChaveContingencia);
+      end;
+
+      //==============================================================================
+      // DPEC ****************************************************************
+      //==============================================================================
+      if FNFe.Ide.tpEmis = teDPEC then
+      begin
+         qrlDescricao.Caption := 'NÚMERO DE REGISTRO DPEC';
+         qrlProtocolo.Caption := FProtocoloNFE;
+      end;
+    	//************************************************************************
+   end ;
 end;
 
 end.

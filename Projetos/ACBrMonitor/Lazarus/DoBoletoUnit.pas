@@ -73,6 +73,7 @@ begin
       else if cmd.Metodo = 'gerarremessa' then
        begin
          DirArqRemessa := Cmd.Params(0);
+         NomeArqRemessa:= Cmd.Params(2);
          GerarRemessa( StrToIntDef(cmd.Params(1),1))
        end
 
@@ -260,7 +261,7 @@ begin
          DataProcessamento   := StrToDateDef(Trim(aIni.ReadString(Sessao,'DataProcessamento','')),now);
          DataAbatimento      := StrToDateDef(Trim(aIni.ReadString(Sessao,'DataAbatimento','')),0);
          DataDesconto        := StrToDateDef(Trim(aIni.ReadString(Sessao,'DataDesconto','')),0);
-         DataMoraJuros       := StrToDateDef(Trim(aIni.ReadString(Sessao,'DataMora','')),0);
+         DataMoraJuros       := StrToDateDef(Trim(aIni.ReadString(Sessao,'DataMoraJuros','')),0);
          DataProtesto        := StrToDateDef(Trim(aIni.ReadString(Sessao,'DataProtesto','')),0);
          LocalPagamento      := Trim(aIni.ReadString(Sessao,'LocalPagamento',LocalPagamento));
          NumeroDocumento     := aIni.ReadString(Sessao,'NumeroDocumento',NumeroDocumento);

@@ -787,6 +787,9 @@ begin
                                Self.StatusServico.Msg);
       end;
    end;}
+  CNPJ := OnlyNumber(CNPJ);
+  if not ValidarCNPJ(CNPJ) then
+     raise Exception.Create('CNPJ '+CNPJ+' inválido.');
 
   Self.Inutilizacao.CTeChave      := 'ID';
   Self.Inutilizacao.CNPJ          := CNPJ;

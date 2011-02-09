@@ -48,6 +48,10 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   09/02/2011
+---------------
+[*] Adicionado endereço de produção da NFe 2.0 para os WebServices do Paraná
+
 Alterações   08/02/2011
 ---------------
 [-] Correção da impressão do DANFE em PDF no Danfe em Rave Arquivo. Caso 878 do Mantis

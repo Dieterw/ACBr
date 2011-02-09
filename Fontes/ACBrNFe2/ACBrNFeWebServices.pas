@@ -910,6 +910,9 @@ begin
           raise EACBrNFeException.Create(Self.StatusServico.Msg);
       end;
    end;}
+  CNPJ := OnlyNumber(CNPJ);
+  if not ValidarCNPJ(CNPJ) then
+     raise EACBrNFeException.Create('CNPJ '+CNPJ+' inválido.');
 
   Self.Inutilizacao.CNPJ   := CNPJ;
   Self.Inutilizacao.Modelo := Modelo;

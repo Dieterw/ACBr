@@ -90,15 +90,15 @@ type
 //Estados Emissores pela Sefaz Virtual AN (Ambiente Nacional): ES, MA, PA, PI e RN.
     class function GetURLSVRS(AAmbiente: Integer; ALayOut: TLayOut): WideString; //atualizado 2.0 Homologação e Produção
     class function GetURLSVAN(AAmbiente: Integer; ALayOut: TLayOut): WideString; //atualizado 2.0 Homologação e Produção
-    class function GetURLAM(AAmbiente: Integer; ALayOut: TLayOut): WideString;
-    class function GetURLBA(AAmbiente: Integer; ALayOut: TLayOut): WideString;   //atualizado 2.0 Homologação
-    class function GetURLCE(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+    class function GetURLAM(AAmbiente: Integer; ALayOut: TLayOut): WideString;   //atualizado 2.0 Homologação e Produção
+    class function GetURLBA(AAmbiente: Integer; ALayOut: TLayOut): WideString;   //atualizado 2.0 Homologação e Produção
+    class function GetURLCE(AAmbiente: Integer; ALayOut: TLayOut): WideString;   //atualizado 2.0 Homologação e Produção
     class function GetURLGO(AAmbiente: Integer; ALayOut: TLayOut): WideString;   //atualizado 2.0 Homologação e Produção
-    class function GetURLMT(AAmbiente: Integer; ALayOut: TLayOut): WideString;
-    class function GetURLMS(AAmbiente: Integer; ALayOut: TLayOut): WideString;   //atualizado 2.0 Homologação
-    class function GetURLMG(AAmbiente: Integer; ALayOut: TLayOut): WideString;   //atualizado 2.0 Homologação
-    class function GetURLPR(AAmbiente: Integer; ALayOut: TLayOut): WideString;   //atualizado 2.0 Homologação
-    class function GetURLPE(AAmbiente: Integer; ALayOut: TLayOut): WideString;   //atualizado 2.0 Homologação
+    class function GetURLMT(AAmbiente: Integer; ALayOut: TLayOut): WideString;   //atualizado 2.0 Homologação e Produção
+    class function GetURLMS(AAmbiente: Integer; ALayOut: TLayOut): WideString;   //atualizado 2.0 Homologação e Produção
+    class function GetURLMG(AAmbiente: Integer; ALayOut: TLayOut): WideString;   //atualizado 2.0 Homologação e Produção
+    class function GetURLPR(AAmbiente: Integer; ALayOut: TLayOut): WideString;   //atualizado 2.0 Homologação e Produção
+    class function GetURLPE(AAmbiente: Integer; ALayOut: TLayOut): WideString;   //atualizado 2.0 Homologação e Produção
     class function GetURLRS(AAmbiente: Integer; ALayOut: TLayOut): WideString;   //atualizado 2.0 Homologação e Produção
     class function GetURLSP(AAmbiente: Integer; ALayOut: TLayOut): WideString;   //atualizado 2.0 Homologação e Produção
   protected
@@ -977,16 +977,13 @@ end;
 class function NotaUtil.GetURLPR(AAmbiente: Integer;
   ALayOut: TLayOut): WideString;
 begin
-  if AAmbiente = 1 then
-     raise EACBrNFeException.Create('WebServices 2.0 não liberados pelo estado');
-
   case ALayOut of
-    LayNfeRecepcao      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.pr.gov.br/NFENWebServices/services/nfeRecepcao', 'https://homologacao.nfe2.fazenda.pr.gov.br/nfe/NFeRecepcao2');
-    LayNfeRetRecepcao   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.pr.gov.br/NFENWebServices/services/nfeRetRecepcao', 'https://homologacao.nfe2.fazenda.pr.gov.br/nfe/NFeRetRecepcao2');
-    LayNfeCancelamento  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.pr.gov.br/NFENWebServices/services/nfeCancelamentoNF', 'https://homologacao.nfe2.fazenda.pr.gov.br/nfe/NFeCancelamento2');
-    LayNfeInutilizacao  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.pr.gov.br/NFENWebServices/services/nfeInutilizacaoNF', 'https://homologacao.nfe2.fazenda.pr.gov.br/nfe/NFeInutilizacao2');
-    LayNfeConsulta      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.pr.gov.br/NFENWebServices/services/nfeConsultaNF', 'https://homologacao.nfe2.fazenda.pr.gov.br/nfe/NFeConsulta2');
-    LayNfeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.pr.gov.br/NFENWebServices/services/nfeStatusServicoNF', 'https://homologacao.nfe2.fazenda.pr.gov.br/nfe/NFeStatusServico2');
+    LayNfeRecepcao      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe2.fazenda.pr.gov.br/nfe/NFeRecepcao2', 'https://homologacao.nfe2.fazenda.pr.gov.br/nfe/NFeRecepcao2');
+    LayNfeRetRecepcao   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe2.fazenda.pr.gov.br/nfe/NFeRetRecepcao2', 'https://homologacao.nfe2.fazenda.pr.gov.br/nfe/NFeRetRecepcao2');
+    LayNfeCancelamento  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe2.fazenda.pr.gov.br/nfe/NFeCancelamento2', 'https://homologacao.nfe2.fazenda.pr.gov.br/nfe/NFeCancelamento2');
+    LayNfeInutilizacao  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe2.fazenda.pr.gov.br/nfe/NFeInutilizacao2', 'https://homologacao.nfe2.fazenda.pr.gov.br/nfe/NFeInutilizacao2');
+    LayNfeConsulta      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe2.fazenda.pr.gov.br/nfe/NFeConsulta2', 'https://homologacao.nfe2.fazenda.pr.gov.br/nfe/NFeConsulta2');
+    LayNfeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe2.fazenda.pr.gov.br/nfe/NFeStatusServico2', 'https://homologacao.nfe2.fazenda.pr.gov.br/nfe/NFeStatusServico2');
 //    LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, '', '');
   end;
 end;

@@ -1,10 +1,10 @@
 object Form1: TForm1
   Left = 307
-  Height = 500
+  Height = 495
   Top = 249
   Width = 791
   Caption = 'EAD Teste'
-  ClientHeight = 500
+  ClientHeight = 495
   ClientWidth = 791
   Font.Height = -11
   OnCreate = FormCreate
@@ -718,17 +718,17 @@ object Form1: TForm1
   end
   object GroupBox1: TGroupBox
     Left = 0
-    Height = 145
+    Height = 140
     Top = 355
     Width = 791
     Align = alClient
     Caption = 'Respostas'
-    ClientHeight = 127
+    ClientHeight = 122
     ClientWidth = 787
     TabOrder = 3
     object mResp: TMemo
       Left = 0
-      Height = 127
+      Height = 122
       Top = 0
       Width = 787
       Align = alClient

@@ -3266,10 +3266,10 @@ end;
 
 procedure TFrmACBrMonitor.bRFDKeyImportarClick(Sender: TObject);
 begin
-  OpenDialog1.Filter := 'Arquivos KEY|*.key|Todos Arquivos|*.*';
+  OpenDialog1.Filter := 'Arquivos KEY|*.key|Arquivos PEM|*.pem|Todos Arquivos|*.*';
 
   if OpenDialog1.Execute then
-    mRFDKey.Lines.LoadFromFile(OpenDialog1.FileName);
+     mRFDKey.Lines.LoadFromFile(OpenDialog1.FileName);
 end;
 
 procedure TFrmACBrMonitor.ACBrRFD1GetKeyRSA(var PrivateKey_RSA: string);

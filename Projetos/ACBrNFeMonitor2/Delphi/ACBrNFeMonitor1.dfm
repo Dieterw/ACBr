@@ -6159,6 +6159,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
     NFeCancelada = False
     EspessuraBorda = 1
     TamanhoFonte_RazaoSocial = 12
+    TamanhoFonte_ANTT = 10
     Left = 169
     Top = 25
   end
@@ -6184,6 +6185,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
     ImprimirDetalhamentoEspecifico = True
     NFeCancelada = False
     TamanhoCampoCodigo = 0
+    TamanhoFonte_ANTT = 10
     Fonte = ftTimes
     EspessuraBorda = 1
     Left = 201

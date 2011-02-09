@@ -1524,6 +1524,9 @@ begin
          Transp.veicTransp.UF    := INIRec.ReadString('Transportador','UFPlaca','');
          Transp.veicTransp.RNTC  := INIRec.ReadString('Transportador','RNTC'   ,'');
 
+         Transp.vagao := INIRec.ReadString( 'Transportador','vagao','') ;  //NFe2
+         Transp.balsa := INIRec.ReadString( 'Transportador','balsa','') ;  //NFe2
+
          J := 1 ;
          while true do
           begin
@@ -1537,8 +1540,6 @@ begin
                placa := sFim;
                UF    := INIRec.ReadString( sSecao,'UF'  ,'') ;
                RNTC  := INIRec.ReadString( sSecao,'RNTC','') ;
-               vagao := INIRec.ReadString( sSecao,'vagao','') ;  //NFe2
-               balsa := INIRec.ReadString( sSecao,'balsa','') ;  //NFe2
              end;
             Inc(J)
           end;
@@ -1666,6 +1667,12 @@ begin
 
          cana.safra  := INIRec.ReadString( 'cana','safra','');  //NFe2
          cana.ref    := INIRec.ReadString( 'cana','ref'  ,'');  //NFe2
+         cana.qTotMes := StringToFloatDef( INIRec.ReadString('cana','qTotMes','') ,0) ; //NFe2
+         cana.qTotAnt := StringToFloatDef( INIRec.ReadString('cana','qTotAnt','') ,0) ; //NFe2
+         cana.qTotGer := StringToFloatDef( INIRec.ReadString('cana','qTotGer','') ,0) ; //NFe2
+         cana.vFor    := StringToFloatDef( INIRec.ReadString('cana','vFor'   ,'') ,0) ; //NFe2
+         cana.vTotDed := StringToFloatDef( INIRec.ReadString('cana','vTotDed','') ,0) ; //NFe2
+         cana.vLiqFor := StringToFloatDef( INIRec.ReadString('cana','vLiqFor','') ,0) ; //NFe2
 
          I := 1 ;
          while true do
@@ -1679,9 +1686,6 @@ begin
              begin
                dia     := StrToInt(sDia);                                                //NFe2
                qtde    := StringToFloatDef( INIRec.ReadString(sSecao,'qtde'   ,'') ,0) ; //NFe2
-               qTotMes := StringToFloatDef( INIRec.ReadString(sSecao,'qTotMes','') ,0) ; //NFe2
-               qTotAnt := StringToFloatDef( INIRec.ReadString(sSecao,'qTotAnt','') ,0) ; //NFe2
-               qTotGer := StringToFloatDef( INIRec.ReadString(sSecao,'qTotGer','') ,0) ; //NFe2
              end;
             Inc(I);
           end;
@@ -1698,9 +1702,6 @@ begin
              begin
                xDed    := sDeduc;                                                        //NFe2
                vDed    := StringToFloatDef( INIRec.ReadString(sSecao,'vDed'   ,'') ,0) ; //NFe2
-               vFor    := StringToFloatDef( INIRec.ReadString(sSecao,'vFor'   ,'') ,0) ; //NFe2
-               vTotDed := StringToFloatDef( INIRec.ReadString(sSecao,'vTotDed','') ,0) ; //NFe2
-               vLiqFor := StringToFloatDef( INIRec.ReadString(sSecao,'vLiqFor','') ,0) ; //NFe2
              end;
             Inc(I);
           end;
@@ -2247,6 +2248,9 @@ begin
          INIRec.WriteString('Transportador','UFPlaca',Transp.veicTransp.UF);
          INIRec.WriteString('Transportador','RNTC'   ,Transp.veicTransp.RNTC);
 
+         INIRec.WriteString( 'Transportador','vagao' ,Transp.vagao) ;
+         INIRec.WriteString( 'Transportador','balsa' ,Transp.balsa) ;
+
          for J:=0 to Transp.Reboque.Count-1 do
           begin
             sSecao := 'Reboque'+IntToStrZero(J+1,3) ;
@@ -2255,8 +2259,6 @@ begin
                INIRec.WriteString(sSecao,'placa',placa) ;
                INIRec.WriteString( sSecao,'UF'  ,UF) ;
                INIRec.WriteString( sSecao,'RNTC',RNTC) ;
-               INIRec.WriteString( sSecao,'vagao',vagao) ;
-               INIRec.WriteString( sSecao,'balsa',balsa) ;
              end;
           end;
 
@@ -2342,8 +2344,14 @@ begin
             INIRec.WriteString( 'Compra','xCont',compra.xCont);
           end;
 
-         INIRec.WriteString('cana','safra',cana.safra);
-         INIRec.WriteString('cana','ref',cana.ref);
+         INIRec.WriteString('cana','safra'   ,cana.safra);
+         INIRec.WriteString('cana','ref'     ,cana.ref);
+         INIRec.WriteFloat( 'cana','qTotMes' ,cana.qTotMes) ;
+         INIRec.WriteFloat( 'cana','qTotAnt' ,cana.qTotAnt) ;
+         INIRec.WriteFloat( 'cana','qTotGer' ,cana.qTotGer) ;
+         INIRec.WriteFloat( 'cana','vFor'    ,cana.vFor) ;
+         INIRec.WriteFloat( 'cana','vTotDed' ,cana.vTotDed) ;
+         INIRec.WriteFloat( 'cana','vLiqFor' ,cana.vLiqFor) ;
 
          for I:=0 to cana.fordia.Count-1 do
           begin
@@ -2352,9 +2360,6 @@ begin
              begin
                INIRec.WriteInteger(sSecao,'dia',dia) ;
                INIRec.WriteFloat( sSecao,'qtde' ,qtde) ;
-               INIRec.WriteFloat( sSecao,'qTotMes' ,qTotMes) ;
-               INIRec.WriteFloat( sSecao,'qTotAnt' ,qTotAnt) ;
-               INIRec.WriteFloat( sSecao,'qTotGer' ,qTotGer) ;
              end;
           end;
 
@@ -2365,9 +2370,6 @@ begin
              begin
                INIRec.WriteString(sSecao,'xDed',xDed) ;
                INIRec.WriteFloat( sSecao,'vDed' ,vDed) ;
-               INIRec.WriteFloat( sSecao,'vFor' ,vFor) ;
-               INIRec.WriteFloat( sSecao,'vTotDed' ,vTotDed) ;
-               INIRec.WriteFloat( sSecao,'vLiqFor' ,vLiqFor) ;
              end;
           end;
        end;

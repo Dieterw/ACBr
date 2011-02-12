@@ -5,7 +5,7 @@
     <Name Value="ACBr_Boleto"/>
     <Author Value="Daniel Simoes de Almeida"/>
     <CompilerOptions>
-      <Version Value="9"/>
+      <Version Value="10"/>
       <PathDelim Value="\"/>
       <SearchPaths>
         <IncludeFiles Value="..\..\Fontes\ACBrBoleto;..\..\Fontes\ACBrComum"/>
@@ -20,7 +20,7 @@
     <Description Value="ACBrBoleto"/>
     <License Value="LGPL"/>
     <Version Minor="1"/>
-    <Files Count="9">
+    <Files Count="10">
       <Item1>
         <Filename Value="..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
         <HasRegisterProc Value="True"/>
@@ -58,6 +58,10 @@
         <Filename Value="..\..\Fontes\ACBrBoleto\ACBrBancoSantander.pas"/>
         <UnitName Value="ACBrBancoSantander"/>
       </Item9>
+      <Item10>
+        <Filename Value="..\..\Fontes\ACBrBoleto\ACBrBancoob.pas"/>
+        <UnitName Value="ACBrBancoob"/>
+      </Item10>
     </Files>
     <Type Value="RunAndDesignTime"/>
     <RequiredPkgs Count="2">

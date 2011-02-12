@@ -7,9 +7,9 @@ unit ACBr_Boleto;
 interface
 
 uses
-    ACBrBoleto, ACBrBancoBradesco, ACBrBancoBrasil, ACBrBancoItau, 
+  ACBrBoleto, ACBrBancoBradesco, ACBrBancoBrasil, ACBrBancoItau, 
   ACBrBancoSicredi, ACBrBancoMercantil, ACBrCaixaEconomica, ACBrBancoBanrisul, 
-  ACBrBancoSantander, LazarusPackageIntf;
+  ACBrBancoSantander, ACBrBancoob, LazarusPackageIntf;
 
 implementation
 

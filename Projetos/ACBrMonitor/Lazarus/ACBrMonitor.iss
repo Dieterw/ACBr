@@ -2,9 +2,9 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "ACBrMonitor"
-#define MyAppVerName "ACBrMonitor-0.9.1b"
+#define MyAppVerName "ACBrMonitor-0.9.2b"
 #define MyAppPublisher "Projeto ACBr"
-#define MyAppURL "http://acbr.sourceforge.net/wiki/index.php/Monitor"
+#define MyAppURL "http://acbr.sourceforge.net/ACBrMonitor.htm"
 #define MyAppUrlName "ACBrMonitor.url"
 #define MyAppExeName "ACBrMonitor.exe"
 #define ACBrDIR "..\..\..\"
@@ -78,6 +78,7 @@ Name: {group}\{cm:ProgramOnTheWeb,{#MyAppName}}; Filename: {app}\{#MyAppUrlName}
 [Run]
 Filename: {app}\{#MyAppExeName}; Description: {cm:LaunchProgram,{#MyAppName}}; Flags: nowait postinstall skipifsilent
 Filename: {app}\ACBrMonitor.chm; Description: Novidades desta Versão; Flags: postinstall shellexec skipifsilent; Components: help
+
 
 
 

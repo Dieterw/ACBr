@@ -2625,7 +2625,7 @@ procedure TACBrECFBematech.NaoFiscalCompleto(CodCNF: String; Valor: Double;
   Var FPG : TACBrECFFormaPagamento ;
 begin
   fsTotalizadoresParciais := '' ;
-  if fs25MFD then
+  if not fs25MFD then
      inherited NaoFiscalCompleto(CodCNF, Valor, CodFormaPagto, Obs)
      
   else

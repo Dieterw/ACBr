@@ -2953,6 +2953,7 @@ begin
   if Assigned( fOnAntesSangria ) then
      fOnAntesSangria( Valor, Obs, DescricaoCNF, DescricaoFPG);
 
+  ComandoLOG := 'Sangria( '+FloatToStr(Valor)+', '+Obs+', '+DescricaoCNF+', '+DescricaoFPG+' )' ;
   try
     Tratado := False;
     fsECF.Sangria( Valor, Obs, DescricaoCNF, DescricaoFPG );
@@ -2983,6 +2984,7 @@ begin
   if Assigned( fOnAntesSuprimento ) then
      fOnAntesSuprimento( Valor, Obs, DescricaoCNF, DescricaoFPG);
 
+  ComandoLOG := 'Suprimento( '+FloatToStr(Valor)+', '+Obs+', '+DescricaoCNF+', '+DescricaoFPG+' )' ;
   try
     Tratado := False;
     fsECF.Suprimento( Valor, Obs, DescricaoCNF, DescricaoFPG );

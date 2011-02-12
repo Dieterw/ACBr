@@ -2021,32 +2021,32 @@ var
 begin
   VerificarIniciouRequisicao;
 
-  with TACBrTEFD(Owner) do
-  begin
-     GravaLog( Name +' ProcessarResposta: '+Req.Header );
+  GravaLog( Name +' ProcessarResposta: '+Req.Header );
 
-     EstadoResp := respProcessando;
+  TACBrTEFD(Owner).EstadoResp := respProcessando;
 
-     if Resp.QtdLinhasComprovante > 0 then
-      begin
-         { Cria cópia do Objeto Resp, e salva no ObjectList "RespostasPendentes" }
-         RespostaPendente := TACBrTEFDRespTXT.Create ;
-         try
-            RespostaPendente.Assign( Resp );
-            RespostasPendentes.Add( RespostaPendente );
+  if Resp.QtdLinhasComprovante > 0 then
+   begin
+      { Cria cópia do Objeto Resp, e salva no ObjectList "RespostasPendentes" }
+      RespostaPendente := TACBrTEFDRespTXT.Create ;
+      try
+         RespostaPendente.Assign( Resp );
+         TACBrTEFD(Owner).RespostasPendentes.Add( RespostaPendente );
 
-            ImprimirRelatorio ;
+         ImprimirRelatorio ;
 
+         with TACBrTEFD(Owner) do
+         begin
             if Assigned( OnDepoisConfirmarTransacoes ) then
                OnDepoisConfirmarTransacoes( RespostasPendentes );
-         finally
-            RespostasPendentes.Clear;
-         end;
-      end
-     else
-        if Resp.TextoEspecialOperador <> '' then
-           DoExibeMsg( opmOK, Resp.TextoEspecialOperador )
-  end ;
+         end ;
+      finally
+         TACBrTEFD(Owner).RespostasPendentes.Clear;
+      end;
+   end
+  else
+     if Resp.TextoEspecialOperador <> '' then
+        DoExibeMsg( opmOK, Resp.TextoEspecialOperador )
 end;
 
 procedure TACBrTEFDClass.FinalizarResposta( ApagarArqResp : Boolean );
@@ -2330,11 +2330,10 @@ begin
                 self.CNF
              else
                 self.NCN ;
-
-             DeleteFile( ArqBackup ) ;
-
           except
           end;
+
+          DeleteFile( ArqBackup ) ;
        end ;
 
        BloquearMouseTeclado( False );

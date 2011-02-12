@@ -144,9 +144,11 @@ begin
               CodigoCedente := IniBoletos.ReadString('CEDENTE','CodigoCedente','');
               Modalidade    := IniBoletos.ReadString('CEDENTE','MODALIDADE','');
               CodigoTransmissao:= IniBoletos.ReadString('CEDENTE','CODTRANSMISSAO','');
+              Convenio      := IniBoletos.ReadString('CEDENTE','CONVENIO','');
 
               FrmACBrMonitor.edtCodTransmissao.Text := CodigoTransmissao;
-              FrmACBrMonitor.edtModalidade.Text :=  Modalidade;
+              FrmACBrMonitor.edtModalidade.Text     := Modalidade;
+              FrmACBrMonitor.edtConvenio.Text       := Convenio;
 
               FrmACBrMonitor.cbxBOLEmissao.ItemIndex := IniBoletos.ReadInteger('CEDENTE','RespEmis',0);
               try
@@ -283,8 +285,8 @@ begin
          Mensagem.Text       := MemFormatada;
          Instrucao1          := padL(aIni.ReadString(Sessao,'Instrucao1',Instrucao1),2);
          Instrucao2          := padL(aIni.ReadString(Sessao,'Instrucao2',Instrucao2),2);
-         Parcela             := aIni.ReadInteger(Sessao,'Parcela',Parcela);
          TotalParcelas       := aIni.ReadInteger(Sessao,'TotalParcelas',TotalParcelas);
+         Parcela             := aIni.ReadInteger(Sessao,'Parcela',Parcela);
          ValorAbatimento     := aIni.ReadFloat(Sessao,'ValorAbatimento',ValorAbatimento);
          ValorDesconto       := aIni.ReadFloat(Sessao,'ValorDesconto',ValorDesconto);
          ValorMoraJuros      := aIni.ReadFloat(Sessao,'ValorMoraJuros',ValorMoraJuros);

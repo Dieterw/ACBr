@@ -86,11 +86,13 @@ type
     edCONProxyUser : TEdit ;
     edCEPTestar : TEdit ;
     edIBGECodNome : TEdit ;
+    edtConvenio: TEdit;
     edtModalidade: TEdit;
     edtCodTransmissao: TEdit;
     Label5: TLabel;
     Label73: TLabel;
     Label74: TLabel;
+    Label75: TLabel;
     seRFDGTCadastro : TFloatSpinEdit ;
     edTimeOutTCP : TEdit ;
     edtCodCliente: TEdit;
@@ -1409,6 +1411,7 @@ begin
     cbxBOLF_J.ItemIndex     := ini.ReadInteger('BOLETO','Cedente.Pessoa',-1);
     edtCodTransmissao.Text  := ini.ReadString('BOLETO', 'Cedente.CodTransmissao','');
     edtModalidade.Text      := ini.ReadString('BOLETO','Cedende.Modalidade','');
+    edtConvenio.Text        := ini.ReadString('BOLETO','Cedente.Convenio','');
 
     {Parametros do Boleto - Banco}
     cbxBOLBanco.Text         := IntToStrZero(ini.ReadInteger('BOLETO', 'Banco', 1), 3);
@@ -1914,6 +1917,8 @@ begin
      ini.WriteString('BOLETO', 'Cedente.UF', cbxBOLUF.Text);
      ini.WriteInteger('BOLETO','Cedente.RespEmis', cbxBOLEmissao.ItemIndex);
      ini.WriteInteger('BOLETO','Cedente.Pessoa',cbxBOLF_J.ItemIndex);
+     ini.WriteString('BOLETO', 'Cedente.CodTransmissao', edtCodTransmissao.Text) ;
+     ini.WriteString('BOLETO', 'Cedente.Modalidade', edtModalidade.Text);
 
      {Parametros do Boleto - Banco}
      ini.WriteInteger('BOLETO','Banco', StrToIntDef(Copy(cbxBOLBanco.Text, 1, 3), 0));
@@ -1922,8 +1927,6 @@ begin
      ini.WriteString('BOLETO', 'Agencia', edtBOLAgencia.Text);
      ini.WriteString('BOLETO', 'DigitoAgencia', edtBOLDigitoAgencia.Text);
      ini.WriteString('BOLETO', 'CodCedente', edtCodCliente.Text);
-     ini.WriteString('BOLETO', 'CodTransmissao', edtCodTransmissao.Text) ;
-     ini.WriteString('BOLETO', 'Modalidade', edtModalidade.Text);
 
      {Parametros do Boleto - Boleto}
      ini.WriteString('BOLETO', 'DirLogos', PathWithoutDelim( deBOLDirLogo.Text ) );

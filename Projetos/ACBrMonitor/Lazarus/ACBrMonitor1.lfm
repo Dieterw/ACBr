@@ -4011,9 +4011,9 @@ object FrmACBrMonitor: TFrmACBrMonitor
           Height = 179
           Top = 0
           Width = 584
-          ActivePage = TabSheet2
+          ActivePage = tsBoleto
           Align = alClient
-          TabIndex = 1
+          TabIndex = 2
           TabOrder = 0
           object tsCedente: TTabSheet
             Caption = 'Cedente'
@@ -4434,7 +4434,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
               Left = 495
               Height = 25
               Top = 41
-              Width = 48
+              Width = 59
               BorderSpacing.Left = 1
               TabOrder = 4
             end
@@ -4452,7 +4452,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
               Left = 31
               Height = 25
               Top = 95
-              Width = 192
+              Width = 184
               ItemHeight = 17
               Items.Strings = (
                 'Cliente emite'
@@ -4472,14 +4472,14 @@ object FrmACBrMonitor: TFrmACBrMonitor
               ParentColor = False
             end
             object edtCodCliente: TEdit
-              Left = 245
+              Left = 223
               Height = 25
-              Top = 94
-              Width = 213
+              Top = 95
+              Width = 165
               TabOrder = 6
             end
             object Label72: TLabel
-              Left = 247
+              Left = 223
               Height = 18
               Top = 79
               Width = 165
@@ -4487,18 +4487,33 @@ object FrmACBrMonitor: TFrmACBrMonitor
               ParentColor = False
             end
             object edtModalidade: TEdit
-              Left = 471
+              Left = 393
               Height = 25
               Top = 94
               Width = 72
               TabOrder = 7
             end
             object Label74: TLabel
-              Left = 471
+              Left = 393
               Height = 18
-              Top = 78
+              Top = 79
               Width = 72
               Caption = 'Modalidade'
+              ParentColor = False
+            end
+            object edtConvenio: TEdit
+              Left = 472
+              Height = 25
+              Top = 94
+              Width = 81
+              TabOrder = 8
+            end
+            object Label75: TLabel
+              Left = 472
+              Height = 18
+              Top = 79
+              Width = 77
+              Caption = 'Nr. Convênio'
               ParentColor = False
             end
           end

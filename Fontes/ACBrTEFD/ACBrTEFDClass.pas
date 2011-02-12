@@ -2046,7 +2046,7 @@ begin
    end
   else
      if Resp.TextoEspecialOperador <> '' then
-        DoExibeMsg( opmOK, Resp.TextoEspecialOperador )
+        TACBrTEFD(Owner).DoExibeMsg( opmOK, Resp.TextoEspecialOperador )
 end;
 
 procedure TACBrTEFDClass.FinalizarResposta( ApagarArqResp : Boolean );

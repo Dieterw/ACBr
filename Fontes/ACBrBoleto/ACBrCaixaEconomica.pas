@@ -220,7 +220,7 @@ begin
                '0'                                     + //8 - Tipo de registro - Registro header de arquivo
                padL('', 9, ' ')                        + //9 a 17 Uso exclusivo FEBRABAN/CNAB
                ATipoInscricao                          + //18 - Tipo de inscrição do cedente
-               padL(CNPJCPF, 14, '0')                  + //19 a 32 -Número de inscrição do cedente
+               padL(OnlyNumber(CNPJCPF), 14, '0')      + //19 a 32 -Número de inscrição do cedente
                padL(CodigoCedente, 18, '0') + '  '     + //33 a 52 - Código do convênio no banco [ Alterado conforme instruções da CSO Brasília ] 27-07-09
                padL(Agencia, 5, '0')                   + //53 a 57 - Código da agência do cedente
                padL(AgenciaDigito, 1 , '0')            + //58 - Dígito da agência do cedente
@@ -253,7 +253,7 @@ begin
                '030'                                   + //14 a 16 - Número da versão do layout do lote
                ' '                                     + //17 - Uso exclusivo FEBRABAN/CNAB
                ATipoInscricao                          + //18 - Tipo de inscrição do cedente
-               padL(CNPJCPF, 15, '0')                  + //19 a 33 -Número de inscrição do cedente
+               padL(OnlyNumber(CNPJCPF), 15, '0')      + //19 a 33 -Número de inscrição do cedente
                padL(CodigoCedente, 6, '0')             + //34 a 39 - Código do convênio no banco (código do cedente)
                padL('', 14, '0')                       + //40 a 53 - Uso Exclusivo Caixa
                padL(Agencia, 5 , '0')                  + //54 a 58 - Dígito da agência do cedente
@@ -405,7 +405,7 @@ begin
                ATipoOcorrencia                                            + //16 a 17 - Código de movimento
                    {Dados do sacado}
                ATipoInscricao                                             + //18 - Tipo inscricao
-               padL(Sacado.CNPJCPF, 15, '0')                              + //19 a 33 - Número de Inscrição
+               padL(OnlyNumber(Sacado.CNPJCPF), 15, '0')                  + //19 a 33 - Número de Inscrição
                padL(Sacado.NomeSacado, 40, ' ')                           + //34 a 73 - Nome sacado
                padL(Sacado.Logradouro +' '+ Sacado.Numero +' '+ Sacado.Complemento , 40, ' ') + //74 a 113 - Endereço
                padL(Sacado.Bairro, 15, ' ')                               + // 114 a 128 - bairro sacado

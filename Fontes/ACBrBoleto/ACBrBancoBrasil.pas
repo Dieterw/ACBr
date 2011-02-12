@@ -368,7 +368,7 @@ begin
                ' '                                                        + //Uso exclusivo FEBRABAN/CNAB: Branco
                    {Dados do sacado}
                ATipoInscricao                                             + //Tipo inscricao
-               padL(Sacado.CNPJCPF, 15, '0')                              +
+               padL(OnlyNumber(Sacado.CNPJCPF), 15, '0')                              +
                padL(Sacado.NomeSacado, 40, ' ')                                 +
                padL(Sacado.Logradouro +' '+ Sacado.Numero +' '+ Sacado.Complemento , 40, ' ') +
                padL(Sacado.Bairro, 15, ' ')                               +
@@ -499,7 +499,7 @@ begin
       else if ATipoOcorrencia = '31' then
          AProtesto := '9999'
       else
-         AProtesto := Instrucao1 + Instrucao2;
+         AProtesto := padR(trim(Instrucao1),2,'0') + padR(trim(Instrucao2),2,'0');
 
       {Pegando Tipo de Sacado}
       case Sacado.Pessoa of
@@ -523,7 +523,7 @@ begin
       with ACBrBoleto do
       begin
          Result:= '1'                                                     + // ID Registro
-                  ATipoCendente + padR(Cedente.CNPJCPF,14,'0')            + // Tipo de inscrição da empresa 01-CPF / 02-CNPJ  + Inscrição da empresa
+                  ATipoCendente + padR(OnlyNumber(Cedente.CNPJCPF),14,'0')+ // Tipo de inscrição da empresa 01-CPF / 02-CNPJ  + Inscrição da empresa
                   padR( Cedente.Agencia, 4, '0')                          + // Prefixo da agencia
                   padL( Cedente.AgenciaDigito, 1)                         + // DV-prefixo da agencia
                   padR( Cedente.Conta, 8, '0')                            + // Código do cendete/nr. conta corrente da empresa
@@ -552,7 +552,7 @@ begin
                   IntToStrZero( round( ValorDesconto * 100), 13)          + // Valor do desconto
                   IntToStrZero( round( ValorIOF * 100 ), 13)              + // Valor do IOF
                   IntToStrZero( round( ValorAbatimento * 100 ), 13)       + // Valor do abatimento permitido
-                  ATipoSacado + padR(Sacado.CNPJCPF,14,'0')               + // Tipo de inscricao do sacado + CNPJ ou CPF do sacado
+                  ATipoSacado + padR(OnlyNumber(Sacado.CNPJCPF),14,'0')   + // Tipo de inscricao do sacado + CNPJ ou CPF do sacado
                   padL( Sacado.NomeSacado, 40     )                       + // Nome do sacado + Brancos
                   padL((Sacado.Logradouro +
                         ', ' +

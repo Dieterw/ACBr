@@ -47,8 +47,23 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.0.22a 12/02/2011
 
-Versão 0.0.21a 29/01/2010
+[+] Adicionado ao ACBrBoletoFCLazReport a opção de imprimir Carnês.
+    (Juliana Tamizou)
+
+[+] Adicionado classe para o banco Bancoob.(DOUGLAS TYBEL)
+
+[*] Adicionado formatação dos campos Instrução1 e Instrução2 na geração da 
+    remessa. Adicionado pad para garantir o tamanho do  campo.(Juliana Tamizou) 
+
+[*] Adicionado função para remover os caracteres de formatação do CPF\CNPJ 
+    para geração dos arquivos remessa e leitura do arquivo retorno.(Juliana Tamizou)
+
+[*] Corrigido impressão dos textos no ACBrBoletoFCFortes no Lazurus. 
+    (Juliana Tamizou)
+
+Versão 0.0.21a 29/01/2011
 [*] Alterado impressão da mensagem do desconto, para que caso seja informado a 
     data limite seja impressa a mensagem "Conceder desconto de R$xx.xx até 
     data limite ", caso não seja informado mantém o texto normal "Conceder 

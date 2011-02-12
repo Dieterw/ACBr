@@ -153,19 +153,19 @@ function TACBrBancoMercantil.GerarRegistroHeader400(NumeroRemessa : Integer): St
 begin
    with ACBrBanco.ACBrBoleto.Cedente do
    begin
-      Result:= '0'                                        + // ID do Registro
-               '1'                                        + // ID do Arquivo( 1 - Remessa)
-               'REMESSA'                                  + // Literal de Remessa
-               '01'                                       + // Código do Tipo de Serviço
-               padL( 'COBRANCA', 15 )                     + // Descrição do tipo de serviço
-               padL( Agencia, 4)                          + // agencia origem
-			         padR( CNPJCPF,15,'0')                      + // CNPJ/CPF CEDENTE
+      Result:= '0'                                                          + // ID do Registro
+               '1'                                                          + // ID do Arquivo( 1 - Remessa)
+               'REMESSA'                                                    + // Literal de Remessa
+               '01'                                                         + // Código do Tipo de Serviço
+               padL( 'COBRANCA', 15 )                                       + // Descrição do tipo de serviço
+               padL( Agencia, 4)                                            + // agencia origem
+			         padR( OnlyNumber(CNPJCPF),15,'0')          + // CNPJ/CPF CEDENTE
 			         ' '                                        + // BRANCO
 			         padL( Nome, 30)                            + // Nome da Empresa
 			         '389'                                      + // ID BANCO
 			         'BANCO MERCANTIL'                          + // nome banco
 			         FormatDateTime('ddmmyy',Now)               + // data geração
-               Space(281)                                 + // espaços branco
+               Space(281)                                                   + // espaços branco
 			         '01600   '                                 + // densidade da gravação
 			         IntToStrZero(NumeroRemessa,5)              + // nr. sequencial remessa
 			         IntToStrZero(1,6);                           // Nr. Sequencial de Remessa
@@ -213,7 +213,7 @@ begin
       else if Ocorrencia = '31' then
          Protesto := '9999'
       else
-         Protesto := Instrucao1 + Instrucao2;
+         Protesto := padR(trim(Instrucao1),2,'0') + padR(trim(Instrucao2),2,'0');
 
       {Pegando Tipo de Sacado}
       case Sacado.Pessoa of
@@ -240,7 +240,7 @@ begin
 				  padR( SeuNumero,25,'0')                                 +  // Numero de Controle do Participante
           FormataNossoNumero(ACBrTitulo)                          +
           Space(5)                                                +
-          padR( Cedente.CNPJCPF, 15 , '0')                        +
+          padR( OnlyNumber(Cedente.CNPJCPF), 15 , '0')                        +
           IntToStrZero( Round( ValorDocumento * 100 ), 10)        +  // qtde de moeda
           '1'                                                     +  // Codigo Operação 1- Cobrança Simples
           Ocorrencia                                              +
@@ -260,7 +260,7 @@ begin
           StringOfChar( '0', 13)                                  + // iof - caso seguro
           StringOfChar( '0', 13)                                  + // valor abatimento ?????
           TipoSacado                                              +
-          padR( Sacado.CNPJCPF,14,'0')                            +
+          padR( OnlyNumber(Sacado.CNPJCPF),14,'0')                +
           padL( Sacado.NomeSacado, 40, ' ')                       +
           padL( Sacado.Logradouro + Sacado.Numero , 40)           +
           padL( Sacado.Bairro ,12)                                +

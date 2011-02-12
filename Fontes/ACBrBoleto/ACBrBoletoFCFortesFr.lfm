@@ -1,7 +1,7 @@
 object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
-  Left = 322
+  Left = 44
   Height = 732
-  Top = -17
+  Top = -19
   Width = 970
   Caption = 'ACBRBoletoFCFortesFr'
   ClientHeight = 732
@@ -11,7 +11,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   OnCreate = FormCreate
-  LCLVersion = '0.9.29'
+  LCLVersion = '0.9.31'
   object LayoutBoleto: TRLReport
     Left = 8
     Height = 1123
@@ -310,8 +310,8 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Left = 80
         Height = 10
         Top = 100
-        Width = 83
-        Caption = 'NÃºmero do Documento'
+        Width = 79
+        Caption = 'Número do Documento'
         Font.Color = clBlack
         Font.Height = -8
         Font.Name = 'Arial'
@@ -375,7 +375,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Height = 10
         Top = 73
         Width = 53
-        Caption = 'Nosso Numero'
+        Caption = 'Nosso Número'
         Font.Color = clBlack
         Font.Height = -8
         Font.Name = 'Arial'
@@ -1531,8 +1531,8 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Left = 4
         Height = 10
         Top = 184
-        Width = 335
-        Caption = 'InstruÃ§oes (Todas as informaÃ§oes deste bloqueto s?o de exclusiva responsabilidade do cedente.)'
+        Width = 325
+        Caption = 'Instruções (Todas as informações deste bloqueto são de exclusiva responsabilidade do cedente.)'
         Font.Color = clBlack
         Font.Height = -8
         Font.Name = 'Arial'
@@ -1634,8 +1634,8 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Left = 574
         Height = 10
         Top = 124
-        Width = 57
-        Caption = 'Nosso NÃºmero'
+        Width = 53
+        Caption = 'Nosso Número'
         Font.Color = clBlack
         Font.Height = -8
         Font.Name = 'Arial'
@@ -1927,8 +1927,8 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Font.Height = -9
         Font.Name = 'Arial'
         Lines.Strings = (
-          'Recebimento atravÃ©s do cheque nÃºmero                         do banco'
-          'Esta quitaÃ§Ã£o sÃ³ terÃ¡ validade apÃ³s o pagamento do cheque pelo'
+          'Recebimento através do cheque número                         do banco'
+          'Esta quitação só terá validade após o pagamento do cheque pelo'
           'banco sacado.'
         )
         ParentFont = False

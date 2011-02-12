@@ -348,7 +348,13 @@ begin
        ParValue := ACBrBoletoFC.SoftwareHouse
 
     else if ParName = 'UsoBanco' then
-       ParValue := Titulo.UsoBanco;
+       ParValue := Titulo.UsoBanco
+
+    else if ParName = 'Parcela' then
+       ParValue:= Titulo.Parcela
+
+    else if ParName = 'TotalParcelas' then
+       ParValue:= Titulo.TotalParcelas;
 
   end;
 end;

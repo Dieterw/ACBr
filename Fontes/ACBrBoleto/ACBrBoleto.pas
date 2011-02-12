@@ -57,7 +57,7 @@ uses ACBrBase,  {Units da ACBr}
      Graphics, Contnrs, Classes;
 
 const
-  CACBrBoleto_Versao = '0.0.21a' ;
+  CACBrBoleto_Versao = '0.0.22a' ;
 
 type
   TACBrTitulo = class;
@@ -677,7 +677,7 @@ implementation
 
 Uses ACBrUtil, ACBrBancoBradesco, ACBrBancoBrasil, ACBrBancoItau, ACBrBancoSicredi,
      ACBrBancoMercantil, ACBrCaixaEconomica, ACBrBancoBanrisul, ACBrBancoSantander,
-     Forms,
+     ACBrBancoob, Forms,
      {$IFDEF COMPILER6_UP} StrUtils {$ELSE} ACBrD5 {$ENDIF}, Math;
 
 {$IFNDEF FPC}
@@ -1150,13 +1150,15 @@ begin
 
    case AValue of
       001 : fBancoClass := TACBrBancoBrasil.create(Self);
+      033,353,008 : fBancoClass := TACBrBancoSantander.create(Self);
+      041 : fBancoClass := TACBrBanrisul.create(Self);
+      104 : fBancoClass := TACBrCaixaEconomica.create(Self);
       237 : fBancoClass := TACBrBancoBradesco.create(Self);
       341 : fBancoClass := TACBrBancoItau.Create(self);
-      748 : fBancoClass := TACBrBancoSicredi.Create(self);
       389 : fBancoClass := TACBrBancoMercantil.create(Self);
-      104 : fBancoClass := TACBrCaixaEconomica.create(Self);
-      041 : fBancoClass := TACBrBanrisul.create(Self);
-      033,353,008 : fBancoClass := TACBrBancoSantander.create(Self)
+      748 : fBancoClass := TACBrBancoSicredi.Create(self);
+      756 : fBancoClass := TACBrBancoob.create(self)
+
    else
       fBancoClass := TACBrBancoClass.create(Self);
    end;

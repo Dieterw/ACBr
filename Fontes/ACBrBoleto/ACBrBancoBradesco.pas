@@ -207,7 +207,7 @@ begin
       else if Ocorrencia = '31' then
          Protesto := '9999'
       else
-         Protesto := Instrucao1+Instrucao2;
+         Protesto := padR(trim(Instrucao1),2,'0') + padR(trim(Instrucao2),2,'0');
 
       {Pegando Tipo de Sacado}
       case Sacado.Pessoa of
@@ -251,7 +251,7 @@ begin
                   IntToStrZero( round( ValorDesconto * 100 ), 13)         +
                   IntToStrZero( round( ValorIOF * 100 ), 13)              +
                   IntToStrZero( round( ValorAbatimento * 100 ), 13)       +
-                  TipoSacado + padR(Sacado.CNPJCPF,14,'0')                +
+                  TipoSacado + padR(OnlyNumber(Sacado.CNPJCPF),14,'0')                +
                   padL( Sacado.NomeSacado, 40, ' ')                       +
                   padL( Sacado.Logradouro + Sacado.Numero              +
                            Sacado.Bairro + Sacado.Cidade + Sacado.UF, 40) +
@@ -307,7 +307,7 @@ begin
 
    with ACBrBanco.ACBrBoleto do
    begin
-      if (not LeCedenteRetorno) and (rCNPJCPF <> Cedente.CNPJCPF) then
+      if (not LeCedenteRetorno) and (rCNPJCPF <> OnlyNumber(Cedente.CNPJCPF)) then
          raise Exception.Create(ACBrStr('CNPJ\CPF do arquivo inválido'));
 
       Cedente.Nome    := rCedente;

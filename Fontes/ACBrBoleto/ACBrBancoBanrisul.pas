@@ -358,7 +358,7 @@ begin
         '0000000000000'+
         '0000000000000'+
         TipoSacado+
-        PadL(Sacado.CNPJCPF, 14, '0')+
+        PadL(OnlyNumber(Sacado.CNPJCPF), 14, '0')+
         PadL(Sacado.NomeSacado, 35)+
         space(5)+
         PadL(Sacado.Logradouro+' '+
@@ -412,7 +412,7 @@ begin
                DupeString('0', 5) +
                DupeString(' ', 9) +
                TipoInsc +
-               CNPJCPF +
+               OnlyNumber(CNPJCPF) +
                padR(Agencia, 4, '0') +
                padR(OnlyNumber(CodigoCedente), 9, '0') +
                DupeString(' ', 7) +
@@ -432,7 +432,7 @@ begin
                '04100011R0100020 '+
                TipoInsc +
                '0' +
-               CNPJCPF +
+               OnlyNumber(CNPJCPF) +
                padR(Agencia, 4, '0') +
                padR(OnlyNumber(CodigoCedente), 9, '0') +
                DupeString(' ', 7) +

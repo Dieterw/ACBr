@@ -160,7 +160,7 @@ begin
                '01'                              + // Código do Tipo de Serviço
                padL( 'COBRANCA', 15 )            + // Descrição do tipo de serviço
                padR( CodigoCedente, 5, '0')      + // Codigo da Empresa no Banco
-               padR( CNPJCPF, 14, '0')           + // CNPJ do Cedente
+               padR( OnlyNumber(CNPJCPF), 14, '0')           + // CNPJ do Cedente
                Space(31)                         + // Fillers - Branco
                '748'                             + // Número do banco
                padL('SICREDI', 15)               + // Código e Nome do Banco(237 - Bradesco)
@@ -214,7 +214,7 @@ begin
       else if Ocorrencia = '31' then
          Protesto := '9999'
       else
-         Protesto := Instrucao1+Instrucao2;
+         Protesto := padR(trim(Instrucao1),2,'0')+padR(trim(Instrucao2),2,'0');
 
       {Pegando Tipo de Sacado}
       case Sacado.Pessoa of
@@ -257,7 +257,7 @@ begin
                   IntToStrZero( round( ValorDesconto * 100 ), 13)         +
                   IntToStrZero( round( ValorIOF * 100 ), 13)              +
                   IntToStrZero( round( ValorAbatimento * 100 ), 13)       +
-                  TipoSacado + padR(Sacado.CNPJCPF,14,'0')                +
+                  TipoSacado + padR(OnlyNumber(Sacado.CNPJCPF),14,'0')    +
                   padL( Sacado.NomeSacado, 40, ' ')                       +
                   padL( Sacado.Logradouro + Sacado.Numero              +
                            Sacado.Bairro + Sacado.Cidade + Sacado.UF, 40) +

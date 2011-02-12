@@ -179,7 +179,7 @@ begin
                '0'                                      + //8 - Tipo de registro - Registro header de arquivo
                space(9)                                 + //9 a 17 Uso exclusivo FEBRABAN/CNAB
                ATipoInscricao                           + //18 - Tipo de inscrição do cedente
-               padR(CNPJCPF, 14, '0')                   + //19 a 32 -Número de inscrição do cedente
+               padR(OnlyNumber(CNPJCPF), 14, '0')                   + //19 a 32 -Número de inscrição do cedente
                space(20)                                + // 33 a 52 - Brancos
                '0'                                      + // 53 - Zeros
                padR(Agencia, 4, '0')                    + //54 a 57 - Código da agência do cedente
@@ -213,7 +213,7 @@ begin
                '030'                                   + //14 a 16 - Número da versão do layout do lote
                ' '                                     + //17 - Uso exclusivo FEBRABAN/CNAB
                ATipoInscricao                          + //18 - Tipo de inscrição do cedente
-               padR(CNPJCPF, 15, '0')                  + //19 a 33 -Número de inscrição do cedente
+               padR(OnlyNumber(CNPJCPF), 15, '0')      + //19 a 33 -Número de inscrição do cedente
                space(20)                               + //34 a 53 - Brancos
                '0'                                     + // 54 - Zeros
                padR(Agencia, 4, '0')                   + //55 a 58 - Código da agência do cedente
@@ -352,7 +352,7 @@ begin
                '01'                                                       + // 16 a 17
                         {Dados do sacado}
                ATipoInscricao                                             + // 18 a 18 Tipo inscricao
-               padR(Sacado.CNPJCPF, 15, '0')                              + // 19 a 33
+               padR(OnlyNumber(Sacado.CNPJCPF), 15, '0')                  + // 19 a 33
                padL(Sacado.NomeSacado, 30, ' ')                           + // 34 a 63
                space(10)                                                  + // 64 a 73
                padL(Sacado.Logradouro +' '+ Sacado.Numero +' '+ Sacado.Complemento , 40, ' ') + // 74 a 113
@@ -549,8 +549,8 @@ begin
     begin
       Result:= '1'                                                                            + // 1 a 1 - IDENTIFICAÇÃO DO REGISTRO TRANSAÇÃO
                ATipoCedente                                                                   + // TIPO DE INSCRIÇÃO DA EMPRESA
-               padR(Cedente.CNPJCPF,14,'0')                                                   + // Nº DE INSCRIÇÃO DA EMPRESA (CPF/CGC)
-               padR(Cedente.Agencia, 4, '0')                                                  + // AGÊNCIA MANTENEDORA DA CONTA
+               padR(OnlyNumber(Cedente.CNPJCPF),14,'0')                                                   + // Nº DE INSCRIÇÃO DA EMPRESA (CPF/CGC)
+               padR(OnlyNumber(Cedente.Agencia), 4, '0')                                                  + // AGÊNCIA MANTENEDORA DA CONTA
                '00'                                                                           + // COMPLEMENTO DE REGISTRO
                padR(Cedente.Conta, 5, '0')                                                    + // NÚMERO DA CONTA CORRENTE DA EMPRESA
                padL(Cedente.ContaDigito, 1)                                                   + // DÍGITO DE AUTO CONFERÊNCIA AG/CONTA EMPRESA
@@ -571,8 +571,8 @@ begin
                padR(ATipoEspecieDoc, 2, '0')                                                  + // ESPÉCIE DO TÍTULO
                ATipoAceite                                                                    + // IDENTIFICAÇÃO DE TITILO ACEITO OU NÃO ACEITO
                FormatDateTime('ddmmyy', DataDocumento)                                        + // DATA DA EMISSÃO DO TÍTULO
-               padR(Instrucao1, 2, '0')                                                       + // 1ª INSTRUÇÃO
-               padR(Instrucao2, 2, '0')                                                       + // 2ª INSTRUÇÃO
+               padR(trim(Instrucao1), 2, '0')                                                       + // 1ª INSTRUÇÃO
+               padR(trim(Instrucao2), 2, '0')                                                       + // 2ª INSTRUÇÃO
                IntToStrZero( round(ValorMoraJuros * 100 ), 13)                                + // VALOR DE MORA POR DIA DE ATRASO
                ADataDesconto                                                                  + // DATA LIMITE PARA CONCESSÃO DE DESCONTO
                IfThen(ValorDesconto > 0, IntToStrZero( round(ValorDesconto * 100), 13),
@@ -582,7 +582,7 @@ begin
 
                {Dados do sacado}
                ATipoSacado                                                                    + // IDENTIFICAÇÃO DO TIPO DE INSCRIÇÃO/SACADO
-               padR(Sacado.CNPJCPF, 14, '0')                                                  + // Nº DE INSCRIÇÃO DO SACADO  (CPF/CGC)
+               padR(OnlyNumber(Sacado.CNPJCPF), 14, '0')                                                  + // Nº DE INSCRIÇÃO DO SACADO  (CPF/CGC)
                padL(Sacado.NomeSacado, 40, ' ')                                               + // NOME DO SACADO + BRANCOS
                padL(Sacado.Logradouro +' '+ Sacado.Numero +' '+ Sacado.Complemento , 40, ' ') + // RUA, NÚMERO E COMPLEMENTO DO SACADO
                padL(Sacado.Bairro, 12, ' ')                                                   + // BAIRRO DO SACADO
@@ -647,7 +647,7 @@ begin
 
    with ACBrBanco.ACBrBoleto do
    begin
-      if (not LeCedenteRetorno) and (rCNPJCPF <> Cedente.CNPJCPF) then
+      if (not LeCedenteRetorno) and (rCNPJCPF <> OnlyNumber(Cedente.CNPJCPF)) then
          raise Exception.Create(ACBrStr('CNPJ\CPF do arquivo inválido'));
 
       Cedente.Nome    := rCedente;

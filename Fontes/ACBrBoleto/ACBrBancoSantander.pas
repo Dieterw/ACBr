@@ -260,7 +260,7 @@ begin
                   '033' + aAgencia                                        +
                   padl(aEspecie,2) + 'N'                                  +
                   FormatDateTime( 'ddmmyy', DataDocumento )               +
-                  padL(Instrucao1,2,'0') + padL(Instrucao2,2,'0')         +
+                  padL(trim(Instrucao1),2,'0') + padL(trim(Instrucao2),2,'0') +
                   IntToStrZero( round(ValorMoraJuros * 100 ), 13)         +
                   IfThen(DataDesconto < EncodeDate(2000,01,01),
                    '000000',FormatDateTime( 'ddmmyy', DataDesconto))      +

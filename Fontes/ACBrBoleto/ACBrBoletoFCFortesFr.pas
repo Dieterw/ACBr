@@ -52,7 +52,7 @@ uses
   ACBrBoleto ;
 
 const
-  CACBrBoletoFCFortes_Versao = '0.0.8a' ;
+  CACBrBoletoFCFortes_Versao = '0.0.9a' ;
 
 type
 

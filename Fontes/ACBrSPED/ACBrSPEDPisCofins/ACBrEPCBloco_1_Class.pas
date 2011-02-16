@@ -34,7 +34,7 @@
 {******************************************************************************
 |* Historico
 |*
-|* 14/12/2010: Isaque Pinheiro e Paulo Junqueira
+|* 15/02/2011: Isaque Pinheiro e Fernando Amado
 |*  - Criação e distribuição da Primeira Versao
 *******************************************************************************}
 

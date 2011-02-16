@@ -101,8 +101,12 @@ type
                              pfPerfilC  // C – Perfil C
                              );
   /// Indicador de tipo de atividade - TRegistro0000
-  TACBrAtividade          = (atIndustrial, // 0 – Industrial ou equiparado a industrial
-                             atOutros      // 1 – Outros.
+  TACBrAtividade          = (atIndustrial,         // 0 – Industrial ou equiparado a industrial
+                             atPrestadorDeServicos,//1 - Prestador de serviços
+                             atComercio,           //2 - Atividade de comércio
+                             atFinanceira,         //3 - Atividade financeira
+                             atImobiliaria,        //4 - Atividade imobiliaria
+                             atOutros = 9          //9 - Outros
                              );
   /// Versão do Leiaute do arquivo - TRegistro0000
   TACBrVersaoLeiaute      = (vlVersao100,  // Código 001 - Versão 100 ADE Cofis nº 31/2010 de 01/01/2011
@@ -221,6 +225,7 @@ type
   TACBrTipoReceita = (trPropria,   // 0 - Receita própria
                       trTerceiro   // 1 - Receita de terceiros
                       );
+
   /// Indicador do tipo do veículo transportador
   TACBrTipoVeiculo = (tvEmbarcacao,
                       tvEmpuradorRebocador
@@ -401,7 +406,14 @@ type
 
   /// Código da situação do documento fiscal:
   TACBrSituacaoDF = (sdfRegular,                 // 00 – Documento regular
-                     sdfCancelado                // 02 – Documento cancelado
+                     sdfExtRegular,              // 01 - Escrituração extemporânea de documento regular
+                     sdfCancelado,               // 02 – Documento cancelado
+                     sdfExtCancelado,            // 03 Escrituração extemporânea de documento cancelado
+                     sdfDenegado,                // 04 NF-e ou CT-e – denegado
+                     sdfInutilizado,             // 05 NF-e ou CT-e - Numeração inutilizada
+                     sdfComplementar,            // 06 Documento Fiscal Complementar
+                     sdfExtComplementar,         // 07 Escrituração extemporânea de documento complementar
+                     sdfEspecial                 // 08 Documento Fiscal emitido com base em Regime Especial ou Norma Específica
                      );
 
   // Código da Situação Tributária referente ao IPI
@@ -428,10 +440,71 @@ type
   TACBrOrigemCredito = ( opcMercadoInterno,      // 0 – Operação no Mercado Interno
                          opcImportacao           // 1 – Operação de Importação
                        );
+  // Tipo de Escrituração
+  TACBrTipoEscrituracao = ( tpEscrOriginal,     //0 - Original
+                            tpEscrRetificadora  //1 - Retificadora
+                          );
+  // Indicador de situação especial
+  TACBrIndicadorSituacaoEspecial = (
+                                     indSitAbertura,      //0 - Abertura
+                                     IndSitCisao,         //1 - Cisão
+                                     IndSitFusao,         //2 - Fusão
+                                     IndSitIncorporacao,  //3 - Incorporação
+                                     IndSitEncerramento   //4 - Encerramento
+                                     );
+  // Indicador da natureza da pessoa juridica
+  TACBrIndicadorNaturezaPJ = (
+                                indNatPJSocEmpresariaGeral, //0 - Sociedade empresária geral
+                                indNatPJSocCooperativa,     //1 - Sociedade Cooperativa
+                                indNatPJEntExclusivaFolhaSal//2 - Entidade sujeita ao PIS/Pasep exclusivamente com base  na folha de salários
+                             );
 
+  //Indicador de tipo de atividade prepoderante
+  TACBrIndicadorAtividade = (
+                               indAtivIndustrial,       //0 - Industrial ou equiparado a industrial
+                               indAtivPrestadorServico, //1 - Prestador de serviços
+                               indAtivComercio,         //2 - Atividade de comércios
+                               indAtivoFincanceira,     //3 - Atividade Financeira
+                               indAtivoImobiliaria,     //4 - Atividade Imobiliária
+                               indAtivoOutros = 9       //9 - Outros
+                           );
 
-
-
+  //Codigo indicador da incidencia tributária no período (0110)
+  TACBrCodIndIncTributaria = (
+                                codEscrOpIncNaoCumulativo, //0 - Escrituração de operações com incidencia exclusivamente no regime não cumulativo
+                                codEscrOpIncCumulativo,    //1 - Escrituração de operações com incidencia exclusivamente no regime cumulativo
+                                codEscrOpIncAmbos          //2 - Escrituração de operações com incidencia nos regimes cumulativo e não cumulativo
+                             );
+  //Código indicador de  método  de apropriação de  créditos  comuns, no caso  de incidencia no regime não cumulativo(COD_INC_TRIB = 1 ou 3)(0110)
+  TACBrIndAproCred = (
+                        indMetodoApropriacaoDireta,   //0 - Método de apropriação direta
+                        indMetodoDeRateioProporcional //1 - Método de rateio proporcional(Receita Bruta);
+                     );
+  //Código indicador do Tipo de Contribuição Apurada no Período(0110)
+  TACBrCodIndTipoCon = (
+                          codIndTipoConExclAliqBasica, // 0 - Apuração da Contribuição Exclusivamente a Alíquota Básica
+                          codIndTipoAliqEspecificas   // 1 - Apuração da Contribuição a Alíquotas Específicas (Diferenciadas e/ou por Unidade de Medida de Produto)
+                       );
+  //Código indicador da tabela de incidencia, conforme anexo III
+  TACBrIndCodIncidencia = (
+                             codIndTabI = 1, //Tabela I
+                             codIndTabII,    //Tabela II
+                             codIndTabIII,   //Tabela III
+                             codIndTabIV,    //Tabela IV
+                             codIndTabV,     //Tabela V
+                             codIndTabVI,    //Tabela VI
+                             codIndTabVII,   //Tabela VII
+                             codIndTabVIII,  //Tabela VIII
+                             codIndTabIX,    //Tabela IX
+                             codIndTabX,     //Tabela X
+                             codIndTabXI,    //Tabela XI
+                             codIndiTabXII   //Tabela XII
+                          );
+  //Indicador do tipo de conta (0500)
+  TACBrIndCTA = (
+                   IndCTASintetica,  //S Sintética
+                   IndACTAnalitica   //A Analitica
+                );
   TOpenBlocos = class
   private
     FIND_MOV: TACBrIndicadorMovimento;    /// Indicador de movimento: 0- Bloco com dados informados, 1- Bloco sem dados informados.

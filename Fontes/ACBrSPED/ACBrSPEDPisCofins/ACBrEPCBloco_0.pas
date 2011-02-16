@@ -64,23 +64,23 @@ type
   //REGISTRO 0000: ABERTURA DO ARQUIVO DIGITAL E IDENTIFICAÇÃO DA PESSOA JURÍDICA
   TRegistro0000 = class
   private
-    FIND_SIT_ESP: string;
+    FIND_SIT_ESP: TACBrIndicadorSituacaoEspecial;
     FNOME: string;
     FSUFRAMA: string;
-    FTIPO_ESCRIT: string;
+    FTIPO_ESCRIT: TACBrTipoEscrituracao;
     FCOD_MUN: string;
-    FCOD_VER: string;
-    FIND_NAT_PJ: string;
+    FCOD_VER: TACBrVersaoLeiaute;
+    FIND_NAT_PJ: TACBrIndicadorNaturezaPJ;
     FCNPJ: string;
     FNUM_REC_ANTERIOR: string;
-    FIND_ATIV: string;
+    FIND_ATIV: TACBrIndicadorAtividade;
     FUF: string;
     FDT_INI: TDateTime;
     FDT_FIN: TDateTime;
   public
-    property COD_VER: string read FCOD_VER write FCOD_VER;
-    property TIPO_ESCRIT: string read FTIPO_ESCRIT write FTIPO_ESCRIT;
-    property IND_SIT_ESP: string read FIND_SIT_ESP write FIND_SIT_ESP;
+    property COD_VER: TACBrVersaoLeiaute read FCOD_VER write FCOD_VER;
+    property TIPO_ESCRIT: TACBrTipoEscrituracao read FTIPO_ESCRIT write FTIPO_ESCRIT;
+    property IND_SIT_ESP: TACBrIndicadorSituacaoEspecial read FIND_SIT_ESP write FIND_SIT_ESP;
     property NUM_REC_ANTERIOR: string read FNUM_REC_ANTERIOR write FNUM_REC_ANTERIOR;
     property DT_INI: TDateTime read FDT_INI write FDT_INI;
     property DT_FIN: TDateTime read FDT_FIN write FDT_FIN;
@@ -89,8 +89,8 @@ type
     property UF: string read FUF write FUF;
     property COD_MUN: string read FCOD_MUN write FCOD_MUN;
     property SUFRAMA: string read FSUFRAMA write FSUFRAMA;
-    property IND_NAT_PJ: string read FIND_NAT_PJ write FIND_NAT_PJ;
-    property IND_ATIV: string read FIND_ATIV write FIND_ATIV;
+    property IND_NAT_PJ: TACBrIndicadorNaturezaPJ read FIND_NAT_PJ write FIND_NAT_PJ;
+    property IND_ATIV: TACBrIndicadorAtividade read FIND_ATIV write FIND_ATIV;
   end;
 
   //REGISTRO 0001: ABERTURA DO BLOCO 0
@@ -157,13 +157,14 @@ type
   //REGISTRO 0110: REGIMES DE APURAÇÃO DA CONTRIBUIÇÃO SOCIAL E DE APROPRIAÇÃO DE CRÉDITO
   TRegistro0110 = class
   private
-    FCOD_INC_TRIB: integer;
-    FCOD_TIPO_CONT: integer;
-
+    FCOD_INC_TRIB: TACBrCodIndIncTributaria;
+    FCOD_TIPO_CONT: TACBrCodIndTipoCon;
     FRegistro0111: TRegistro0111List;
+    FIND_APRO_CRED: TACBrIndAproCred;
   public
-    property COD_INC_TRIB: integer read FCOD_INC_TRIB write FCOD_INC_TRIB;
-    property COD_TIPO_CONT: integer read FCOD_TIPO_CONT write FCOD_TIPO_CONT;
+    property COD_INC_TRIB: TACBrCodIndIncTributaria read FCOD_INC_TRIB write FCOD_INC_TRIB;
+    property IND_APRO_CRED: TACBrIndAproCred read FIND_APRO_CRED write FIND_APRO_CRED;
+    property COD_TIPO_CONT: TACBrCodIndTipoCon read FCOD_TIPO_CONT write FCOD_TIPO_CONT;
 
     property Registro0111: TRegistro0111List read FRegistro0111 write FRegistro0111;
   end;
@@ -309,7 +310,7 @@ type
     FCOD_ANT_ITEM: string;
     FCOD_NCM: string;
     FDESCR_ITEM: string;
-    FTIPO_ITEM: string;
+    FTIPO_ITEM: TACBrTipoItem;
     FCOD_ITEM: string;
     FUNID_INV: string;
     FCOD_GEN: string;
@@ -328,7 +329,7 @@ type
     property COD_BARRA: string read FCOD_BARRA write FCOD_BARRA;
     property COD_ANT_ITEM: string read FCOD_ANT_ITEM write FCOD_ANT_ITEM;
     property UNID_INV: string read FUNID_INV write FUNID_INV;
-    property TIPO_ITEM: string read FTIPO_ITEM write FTIPO_ITEM;
+    property TIPO_ITEM: TACBrTipoItem read FTIPO_ITEM write FTIPO_ITEM;
     property COD_NCM: string read FCOD_NCM write FCOD_NCM;
     property EX_IPI: string read FEX_IPI write FEX_IPI;
     property COD_GEN: string read FCOD_GEN write FCOD_GEN;
@@ -386,10 +387,10 @@ type
   TRegistro0208 = class
   private
     FMARCA_COM: string;
-    FCOD_TAB: string;
+    FCOD_TAB: TACBrIndCodIncidencia;
     FCOD_GRU: string;
   public
-    property COD_TAB: string read FCOD_TAB write FCOD_TAB;
+    property COD_TAB: TACBrIndCodIncidencia read FCOD_TAB write FCOD_TAB;
     property COD_GRU: string read FCOD_GRU write FCOD_GRU;
     property MARCA_COM: string read FMARCA_COM write FMARCA_COM;
   end;
@@ -440,7 +441,7 @@ type
     FDT_ALT: TDateTime;
     FCOD_NAT_CC: TACBrNaturezaConta;
     FCNPJ_EST: string;
-    FCOD_CTA: string;
+    FCOD_CTA: TACBrIndCTA;
     FNOME_CTA: string;
     FCOD_CTA_REF: string;
     FNIVEL: string;
@@ -448,7 +449,7 @@ type
   public
     property DT_ALT: TDateTime read FDT_ALT  write FDT_ALT;
     property COD_NAT_CC: TACBrNaturezaConta read FCOD_NAT_CC write FCOD_NAT_CC;
-    property IND_CTA: string read FIND_CTA  write FIND_CTA ;
+    property IND_CTA: TACBrIndCTA read FIND_CTA  write FIND_CTA ;
     property NIVEL: string read FNIVEL write FNIVEL;
     property COD_CTA : string read FCOD_CTA  write FCOD_CTA ;
     property NOME_CTA : string read FNOME_CTA  write FNOME_CTA ;

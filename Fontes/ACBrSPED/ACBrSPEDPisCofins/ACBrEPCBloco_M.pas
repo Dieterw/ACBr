@@ -833,9 +833,9 @@ type
   //REGISTRO M900: ENCERRAMENTO DO BLOCO M
   TRegistroM900 = class
   private
-    FQTD_LIN_E: integer;
+    FQTD_LIN_M: integer;
   public
-    property QTD_LIN_E: integer read FQTD_LIN_E write FQTD_LIN_E;
+    property QTD_LIN_M: integer read FQTD_LIN_M write FQTD_LIN_M;
   end;
 
 implementation

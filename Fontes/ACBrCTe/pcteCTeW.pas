@@ -371,7 +371,18 @@ begin
     Gerador.wGrupo('toma4', 'B30');
     Gerador.wCampo(tcStr, 'B29', 'toma   ', 01, 01, 1, TpTomadorToStr(CTe.ide.Toma4.Toma), DSC_TOMA);
     Gerador.wCampoCNPJCPF('B31', 'B32', CTe.ide.Toma4.CNPJCPF, CTe.Ide.Toma4.EnderToma.cPais);
-    Gerador.wCampo(tcStr, 'B33', 'IE     ', 00, 14, 0, SomenteNumeros(CTe.Ide.Toma4.IE), DSC_IE);
+
+//    Gerador.wCampo(tcStr, 'B33', 'IE     ', 00, 14, 0, SomenteNumeros(CTe.Ide.Toma4.IE), DSC_IE);
+
+    // Alterado por Italo em 17/02/2011
+    if CTe.Ide.Toma4.IE = 'ISENTO'
+     then Gerador.wCampo(tcStr, 'B33', 'IE ', 00, 14, 1, CTe.Ide.Toma4.IE, DSC_IE)
+     else Gerador.wCampo(tcStr, 'B33', 'IE ', 00, 14, 1, SomenteNumeros(CTe.Ide.Toma4.IE), DSC_IE);
+
+    if (FOpcoes.ValidarInscricoes) and (CTe.Ide.Toma4.IE <> '') and (CTe.Ide.Toma4.IE <> 'ISENTO')
+     then if not ValidarIE(CTe.Ide.Toma4.IE, CTe.Ide.Toma4.EnderToma.UF) then
+      Gerador.wAlerta('B33', 'IE', DSC_IE, ERR_MSG_INVALIDO);
+
     Gerador.wCampo(tcStr, 'B34', 'xNome  ', 01, 60, 1, CTe.Ide.Toma4.xNome, DSC_XNOME);
     Gerador.wCampo(tcStr, 'B35', 'xFant  ', 01, 60, 0, CTe.Ide.Toma4.xFant, DSC_XFANT);
     Gerador.wCampo(tcStr, 'B35a', 'fone  ', 07, 12, 0, CTe.Ide.Toma4.fone, DSC_FONE);
@@ -583,7 +594,18 @@ begin
     begin
       Gerador.wGrupo('rem', 'E01');
       Gerador.wCampoCNPJCPF('E02', 'E03', CTe.Rem.CNPJCPF, CODIGO_BRASIL);
-      Gerador.wCampo(tcStr, 'E04', 'IE     ', 00, 14, 1, SomenteNumeros(CTe.Rem.IE), DSC_IE);
+
+//      Gerador.wCampo(tcStr, 'E04', 'IE     ', 00, 14, 1, SomenteNumeros(CTe.Rem.IE), DSC_IE);
+
+      // Alterado por Italo em 17/02/2011
+      if CTe.Rem.IE = 'ISENTO'
+       then Gerador.wCampo(tcStr, 'E04', 'IE ', 00, 14, 1, CTe.Rem.IE, DSC_IE)
+       else Gerador.wCampo(tcStr, 'E04', 'IE ', 00, 14, 1, SomenteNumeros(CTe.Rem.IE), DSC_IE);
+
+      if (FOpcoes.ValidarInscricoes) and (CTe.Rem.IE <> '') and (CTe.Rem.IE <> 'ISENTO')
+       then if not ValidarIE(CTe.Rem.IE, CTe.Rem.EnderReme.UF) then
+        Gerador.wAlerta('E04', 'IE', DSC_IE, ERR_MSG_INVALIDO);
+
       Gerador.wCampo(tcStr, 'E05', 'xNome  ', 01, 60, 1, CTe.Rem.xNome, DSC_XNOME);
       Gerador.wCampo(tcStr, 'E06', 'xFant  ', 01, 60, 0, CTe.Rem.xFant, DSC_XFANT);
       Gerador.wCampo(tcStr, 'E06', 'fone   ', 07, 12, 0, somenteNumeros(CTe.Rem.fone), DSC_FONE);
@@ -722,7 +744,18 @@ begin
   begin
     Gerador.wGrupo('exped', 'F01');
     Gerador.wCampoCNPJCPF('F02', 'F03', CTe.Exped.CNPJCPF, CODIGO_BRASIL);
-    Gerador.wCampo(tcStr, 'F04', 'IE     ', 00, 14, 1, SomenteNumeros(CTe.Exped.IE), DSC_IE);
+    
+//    Gerador.wCampo(tcStr, 'F04', 'IE     ', 00, 14, 1, SomenteNumeros(CTe.Exped.IE), DSC_IE);
+
+    // Alterado por Italo em 17/02/2011
+    if CTe.Exped.IE = 'ISENTO'
+     then Gerador.wCampo(tcStr, 'F04', 'IE ', 00, 14, 1, CTe.Exped.IE, DSC_IE)
+     else Gerador.wCampo(tcStr, 'F04', 'IE ', 00, 14, 1, SomenteNumeros(CTe.Exped.IE), DSC_IE);
+
+    if (FOpcoes.ValidarInscricoes) and (CTe.Exped.IE <> '') and (CTe.Exped.IE <> 'ISENTO')
+     then if not ValidarIE(CTe.Exped.IE, CTe.Exped.EnderExped.UF) then
+      Gerador.wAlerta('F04', 'IE', DSC_IE, ERR_MSG_INVALIDO);
+
     Gerador.wCampo(tcStr, 'F05', 'xNome  ', 01, 60, 1, CTe.Exped.xNome, DSC_XNOME);
     Gerador.wCampo(tcStr, 'F06', 'fone   ', 07, 12, 0, somenteNumeros(CTe.Exped.fone), DSC_FONE);
 
@@ -766,7 +799,18 @@ begin
   Begin
     Gerador.wGrupo('receb', 'G01');
     Gerador.wCampoCNPJCPF('G02', 'G03', CTe.Receb.CNPJCPF, CODIGO_BRASIL);
-    Gerador.wCampo(tcStr, 'G04', 'IE     ', 00, 14, 1, SomenteNumeros(CTe.Receb.IE), DSC_IE);
+    
+//    Gerador.wCampo(tcStr, 'G04', 'IE     ', 00, 14, 1, SomenteNumeros(CTe.Receb.IE), DSC_IE);
+
+    // Alterado por Italo em 17/02/2011
+    if CTe.Receb.IE = 'ISENTO'
+     then Gerador.wCampo(tcStr, 'G04', 'IE ', 00, 14, 1, CTe.Receb.IE, DSC_IE)
+     else Gerador.wCampo(tcStr, 'G04', 'IE ', 00, 14, 1, SomenteNumeros(CTe.Receb.IE), DSC_IE);
+
+    if (FOpcoes.ValidarInscricoes) and (CTe.Receb.IE <> '') and (CTe.Receb.IE <> 'ISENTO')
+     then if not ValidarIE(CTe.Receb.IE, CTe.Receb.EnderReceb.UF) then
+      Gerador.wAlerta('G04', 'IE', DSC_IE, ERR_MSG_INVALIDO);
+
     Gerador.wCampo(tcStr, 'G05', 'xNome  ', 01, 60, 1, CTe.Receb.xNome, DSC_XNOME);
     Gerador.wCampo(tcStr, 'G06', 'fone   ', 07, 12, 0, somenteNumeros(CTe.Receb.fone), DSC_FONE);
 
@@ -810,7 +854,18 @@ begin
     begin
       Gerador.wGrupo('dest', 'H01');
       Gerador.wCampoCNPJCPF('H02', 'H03', CTe.Dest.CNPJCPF, CODIGO_BRASIL);
-      Gerador.wCampo(tcStr, 'H04', 'IE     ', 00, 14, 0, SomenteNumeros(CTe.Dest.IE), DSC_IE);
+      
+//      Gerador.wCampo(tcStr, 'H04', 'IE     ', 00, 14, 0, SomenteNumeros(CTe.Dest.IE), DSC_IE);
+
+      // Alterado por Italo em 17/02/2011
+      if CTe.Dest.IE = 'ISENTO'
+       then Gerador.wCampo(tcStr, 'H04', 'IE ', 00, 14, 1, CTe.Dest.IE, DSC_IE)
+       else Gerador.wCampo(tcStr, 'H04', 'IE ', 00, 14, 1, SomenteNumeros(CTe.Dest.IE), DSC_IE);
+
+      if (FOpcoes.ValidarInscricoes) and (CTe.Dest.IE <> '') and (CTe.Dest.IE <> 'ISENTO')
+       then if not ValidarIE(CTe.Dest.IE, CTe.Dest.EnderDest.UF) then
+        Gerador.wAlerta('H04', 'IE', DSC_IE, ERR_MSG_INVALIDO);
+
       Gerador.wCampo(tcStr, 'H05', 'xNome  ', 01, 60, 1, CTe.Dest.xNome, DSC_XNOME);
       Gerador.wCampo(tcStr, 'H06', 'fone   ', 07, 12, 0, somenteNumeros(CTe.Dest.fone), DSC_FONE);
       Gerador.wCampo(tcStr, 'H07', 'ISUF   ', 08, 09, 0, CTe.Dest.ISUF, DSC_ISUF);
@@ -1092,7 +1147,18 @@ begin
   begin
     Gerador.wGrupo('emiDocAnt', 'K16');
     Gerador.wCampoCNPJCPF('K17', 'K18', CTe.infCTeNorm.emiDocAnt[i].CNPJCPF, CODIGO_BRASIL);
-    Gerador.wCampo(tcStr, 'K19', 'IE     ', 02, 14, 1, CTe.infCTeNorm.emiDocAnt[i].IE, DSC_IE);
+    
+//    Gerador.wCampo(tcStr, 'K19', 'IE     ', 02, 14, 1, CTe.infCTeNorm.emiDocAnt[i].IE, DSC_IE);
+
+    // Alterado por Italo em 17/02/2011
+    if CTe.infCTeNorm.emiDocAnt[i].IE = 'ISENTO'
+     then Gerador.wCampo(tcStr, 'K19', 'IE ', 00, 14, 1, CTe.infCTeNorm.emiDocAnt[i].IE, DSC_IE)
+     else Gerador.wCampo(tcStr, 'K19', 'IE ', 00, 14, 1, SomenteNumeros(CTe.infCTeNorm.emiDocAnt[i].IE), DSC_IE);
+
+    if (FOpcoes.ValidarInscricoes) and (CTe.infCTeNorm.emiDocAnt[i].IE <> '') and (CTe.infCTeNorm.emiDocAnt[i].IE <> 'ISENTO')
+     then if not ValidarIE(CTe.infCTeNorm.emiDocAnt[i].IE, CTe.infCTeNorm.emiDocAnt[i].UF) then
+      Gerador.wAlerta('K19', 'IE', DSC_IE, ERR_MSG_INVALIDO);
+
     Gerador.wCampo(tcStr, 'K20', 'UF     ', 02, 02, 1, CTe.infCTeNorm.emiDocAnt[i].UF, '');
     Gerador.wCampo(tcStr, 'K21', 'xNome  ', 01, 60, 1, CTe.infCTeNorm.emiDocAnt[i].xNome, '');
 
@@ -1195,7 +1261,18 @@ begin
     Gerador.wGrupo('emiOcc', 'L14');
     Gerador.wCampoCNPJ('L15', CTe.Rodo.Occ[i].EmiOCC.CNPJ, CODIGO_BRASIL, True);
     Gerador.wCampo(tcStr, 'L16', 'cInt   ', 01, 10, 0, CTe.Rodo.Occ[i].EmiOCC.cInt, DSC_CINT);
-    Gerador.wCampo(tcStr, 'L20', 'IE     ', 02, 14, 1, SomenteNumeros(CTe.Rodo.Occ[i].EmiOCC.IE), DSC_IE);
+    
+//    Gerador.wCampo(tcStr, 'L20', 'IE     ', 02, 14, 1, SomenteNumeros(CTe.Rodo.Occ[i].EmiOCC.IE), DSC_IE);
+
+    // Alterado por Italo em 17/02/2011
+    if CTe.Rodo.Occ[i].EmiOCC.IE = 'ISENTO'
+     then Gerador.wCampo(tcStr, 'L20', 'IE ', 00, 14, 1, CTe.Rodo.Occ[i].EmiOCC.IE, DSC_IE)
+     else Gerador.wCampo(tcStr, 'L20', 'IE ', 00, 14, 1, SomenteNumeros(CTe.Rodo.Occ[i].EmiOCC.IE), DSC_IE);
+
+    if (FOpcoes.ValidarInscricoes) and (CTe.Rodo.Occ[i].EmiOCC.IE <> '') and (CTe.Rodo.Occ[i].EmiOCC.IE <> 'ISENTO')
+     then if not ValidarIE(CTe.Rodo.Occ[i].EmiOCC.IE, CTe.Rodo.Occ[i].EmiOCC.UF) then
+      Gerador.wAlerta('L20', 'IE', DSC_IE, ERR_MSG_INVALIDO);
+
     Gerador.wCampo(tcStr, 'L21', 'UF    ', 02, 02, 1, CTe.Rodo.Occ[i].EmiOCC.UF, DSC_CUF);
     Gerador.wCampo(tcStr, 'L22', 'fone   ', 07, 12, 0, somenteNumeros(CTe.Rodo.Occ[i].EmiOCC.fone), DSC_FONE);
     Gerador.wGrupo('/emiOcc');
@@ -1260,7 +1337,18 @@ begin
       Gerador.wCampoCNPJCPF('L46', 'L47', CTe.Rodo.veic[i].Prop.CNPJCPF, CODIGO_BRASIL);
       Gerador.wCampo(tcStr, 'L48', 'RNTRC  ', 14, 14, 1, SomenteNumeros(CTe.Rodo.veic[i].Prop.RNTRC), DSC_RNTRC);
       Gerador.wCampo(tcStr, 'L49', 'xNome  ', 01, 60, 1, CTe.Rodo.veic[i].Prop.xNome, DSC_XNOME);
-      Gerador.wCampo(tcStr, 'L50', 'IE     ', 02, 14, 1, SomenteNumeros(CTe.Rodo.veic[i].Prop.IE), DSC_IE);
+      
+//      Gerador.wCampo(tcStr, 'L50', 'IE     ', 02, 14, 1, SomenteNumeros(CTe.Rodo.veic[i].Prop.IE), DSC_IE);
+
+      // Alterado por Italo em 17/02/2011
+      if CTe.Rodo.veic[i].Prop.IE = 'ISENTO'
+       then Gerador.wCampo(tcStr, 'L50', 'IE ', 00, 14, 1, CTe.Rodo.veic[i].Prop.IE, DSC_IE)
+       else Gerador.wCampo(tcStr, 'L50', 'IE ', 00, 14, 1, SomenteNumeros(CTe.Rodo.veic[i].Prop.IE), DSC_IE);
+
+      if (FOpcoes.ValidarInscricoes) and (CTe.Rodo.veic[i].Prop.IE <> '') and (CTe.Rodo.veic[i].Prop.IE <> 'ISENTO')
+       then if not ValidarIE(CTe.Rodo.veic[i].Prop.IE, CTe.Rodo.veic[i].Prop.UF) then
+        Gerador.wAlerta('L50', 'IE', DSC_IE, ERR_MSG_INVALIDO);
+
       Gerador.wCampo(tcStr, 'L51', 'UF     ', 02, 02, 1, CTe.Rodo.veic[i].Prop.UF, DSC_CUF);
       Gerador.wCampo(tcStr, 'L52', 'tpProp ', 01, 01, 1, TpPropToStr(CTe.Rodo.veic[i].Prop.tpProp), DSC_TPPROP);
       Gerador.wGrupo('/prop');
@@ -1370,7 +1458,18 @@ begin
     Gerador.wGrupo('ferroSub', 'O06');
     Gerador.wCampoCNPJ('O07', CTe.Ferrov.ferroSub.CNPJ, CODIGO_BRASIL, True);
     Gerador.wCampo(tcStr, 'O08', 'cInt   ', 01, 10, 0, CTe.Ferrov.ferroSub.cInt, '');
-    Gerador.wCampo(tcStr, 'O09', 'IE     ', 02, 14, 0, SomenteNumeros(CTe.Ferrov.ferroSub.IE), DSC_IE);
+    
+//    Gerador.wCampo(tcStr, 'O09', 'IE     ', 02, 14, 0, SomenteNumeros(CTe.Ferrov.ferroSub.IE), DSC_IE);
+
+    // Alterado por Italo em 17/02/2011
+    if CTe.Ferrov.ferroSub.IE = 'ISENTO'
+     then Gerador.wCampo(tcStr, 'O09', 'IE ', 00, 14, 1, CTe.Ferrov.ferroSub.IE, DSC_IE)
+     else Gerador.wCampo(tcStr, 'O09', 'IE ', 00, 14, 1, SomenteNumeros(CTe.Ferrov.ferroSub.IE), DSC_IE);
+
+    if (FOpcoes.ValidarInscricoes) and (CTe.Ferrov.ferroSub.IE <> '') and (CTe.Ferrov.ferroSub.IE <> 'ISENTO')
+     then if not ValidarIE(CTe.Ferrov.ferroSub.IE, CTe.Ferrov.ferroSub.EnderFerro.UF) then
+      Gerador.wAlerta('O09', 'IE', DSC_IE, ERR_MSG_INVALIDO);
+
     Gerador.wCampo(tcStr, 'O10', 'xNome  ', 01, 60, 1, CTe.Ferrov.ferroSub.xNome, DSC_XNOME);
     (**) GerarEnderFerro;
     Gerador.wGrupo('/ferroSub');

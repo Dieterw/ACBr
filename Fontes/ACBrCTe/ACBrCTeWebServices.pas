@@ -579,10 +579,10 @@ begin
 
   FCabMsg := Cabecalho.Gerador.ArquivoFormatoXML;
   Cabecalho.Free;
-
-//  FCabMsg := StringReplace( FCabMsg, '<'+ENCODING_UTF8_STD+'>', '', [rfReplaceAll] ) ;
-//  FCabMsg := StringReplace( FCabMsg, '<'+ENCODING_UTF8+'>', '', [rfReplaceAll] ) ;
-//  FCabMsg := StringReplace( FCabMsg, '<?xml version="1.0"?>', '', [rfReplaceAll] ) ;
+  // Italo
+  FCabMsg := StringReplace( FCabMsg, '<'+ENCODING_UTF8_STD+'>', '', [rfReplaceAll] ) ;
+  FCabMsg := StringReplace( FCabMsg, '<'+ENCODING_UTF8+'>', '', [rfReplaceAll] ) ;
+  FCabMsg := StringReplace( FCabMsg, '<?xml version="1.0"?>', '', [rfReplaceAll] ) ;
 
   ConCadCTe        := TConsCad.Create;
   ConCadCTe.schema := TsPL005c;
@@ -594,11 +594,11 @@ begin
 
   FDadosMsg := ConCadCTe.Gerador.ArquivoFormatoXML;
 
-  ConCadCTe.Free
-
-//  FDadosMsg := StringReplace( FDadosMsg, '<'+ENCODING_UTF8_STD+'>', '', [rfReplaceAll] ) ;
-//  FDadosMsg := StringReplace( FDadosMsg, '<'+ENCODING_UTF8+'>', '', [rfReplaceAll] ) ;
-//  FDadosMsg := StringReplace( FDadosMsg, '<?xml version="1.0"?>', '', [rfReplaceAll] ) ;
+  ConCadCTe.Free;
+  // Italo
+  FDadosMsg := StringReplace( FDadosMsg, '<'+ENCODING_UTF8_STD+'>', '', [rfReplaceAll] ) ;
+  FDadosMsg := StringReplace( FDadosMsg, '<'+ENCODING_UTF8+'>', '', [rfReplaceAll] ) ;
+  FDadosMsg := StringReplace( FDadosMsg, '<?xml version="1.0"?>', '', [rfReplaceAll] ) ;
 end;
 
 procedure TWebServicesBase.DoCTeRecepcao;

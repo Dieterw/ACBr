@@ -149,8 +149,8 @@ begin
       with FRegistroN3.Items[intFor] do
         begin
         strRegistroN3 := strRegistroN3 + LFill('N3') +
-                                         LFill(NOME_ARQUIVO, 50) +
-                                           LFill(MD5, 32) +
+                                         RFill(NOME_ARQUIVO, 50) +
+                                         LFill(MD5, 32) +
                                          #13#10;
         end;
       ///

@@ -2,8 +2,7 @@ program SPEDFiscal;
 
 uses
   Forms,
-  Frm_SPEDFiscal in 'Frm_SPEDFiscal.pas' {FrmSPEDFiscal},
-  ACBrSpedFiscal in '..\ACBrSpedFiscal.pas';
+  Frm_SPEDFiscal in 'Frm_SPEDFiscal.pas' {FrmSPEDFiscal};
 
 {$R *.res}
 

@@ -457,7 +457,7 @@ type
     FDT_DOC: TDateTime;     /// Data de emissão
     FVL_DOC: currency;      /// Valor total do documento fiscal
     FVL_MERC: currency;     /// Valor das mercadorias constantes no documento fiscal
-    FQTD_VOL: currency;     /// Quantidade de volumes transportados
+    FQTD_VOL: Integer;     /// Quantidade de volumes transportados
     FPESO_BRT: currency;    /// Peso bruto
     FPESO_LIQ: currency;    /// Peso liquido
   public
@@ -467,7 +467,7 @@ type
     property DT_DOC: TDateTime read FDT_DOC write FDT_DOC;
     property VL_DOC: currency read FVL_DOC write FVL_DOC;
     property VL_MERC: currency read FVL_MERC write FVL_MERC;
-    property QTD_VOL: currency read FQTD_VOL write FQTD_VOL;
+    property QTD_VOL: Integer read FQTD_VOL write FQTD_VOL;
     property PESO_BRT: currency read FPESO_BRT write FPESO_BRT;
     property PESO_LIQ: currency read FPESO_LIQ write FPESO_LIQ;
   end;

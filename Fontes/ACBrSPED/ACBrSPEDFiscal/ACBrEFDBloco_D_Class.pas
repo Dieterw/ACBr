@@ -635,7 +635,7 @@ begin
         with RegD100.RegistroD110.Items[intFor] do
         begin
           Add( LFill('D110') +
-               LFill(NUN_ITEM) +
+               LFill(NUN_ITEM, 3) +
                LFill(COD_ITEM ) +
                LFill(VL_SERV ) +
                LFill(VL_OUT ) );
@@ -866,7 +866,7 @@ begin
                LFill( DT_DOC ) +
                LFill( VL_DOC,0,2 ) +
                LFill( VL_MERC,0,2 ) +
-               LFill( QTD_VOL,0 ) +
+               LFill( QTD_VOL ) +
                LFill( PESO_BRT,0,2 ) +
                LFill( PESO_LIQ,0,2 ) ) ;
         end;

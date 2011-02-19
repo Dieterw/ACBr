@@ -127,7 +127,7 @@ begin
         begin
         Result :=
                LFill('N2') +
-               LFill(LAUDO, 10) +
+               RFill(LAUDO, 10) +
                RFill(NOME, 50) +
                RFill(VERSAO, 10) +
                #13#10;

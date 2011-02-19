@@ -684,7 +684,7 @@ begin
              ///
              Add( LFill('0300') +
                   LFill( COD_IND_BEM ) +
-                  LFill( IDENT_MERC ) +
+                  LFill( IDENT_MERC, 1) +
                   LFill( DESCR_ITEM ) +
                   LFill( COD_PRNC ) +
                   LFill( COD_CTA ) +

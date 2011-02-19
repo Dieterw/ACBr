@@ -591,7 +591,7 @@ begin
            Porta := 'COM'+IntToStr(I) ;
 
            BS.Connect( Porta );
-           if BS.LastError = 0 then
+           if BS.LastError <> 2 then
               AStringList.Add(Porta) ;
 
            BS.CloseSocket;

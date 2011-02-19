@@ -195,6 +195,9 @@ TACBrDevice = class( TComponent )
     Function IsSerialPort : Boolean ;
     Function IsTXTFilePort: Boolean ;
 
+    procedure AcharPortasSeriais( const AStringList : TStrings;
+       UltimaPorta : Integer = 64 ) ;
+
   published
      property Baud     : Integer read fsBaud write SetBaud default 9600 ;
      property Data     : Integer read fsData write SetData default 8 ;
@@ -571,6 +574,35 @@ begin
   Result := UpperCase(RightStr(fsPorta,4)) = '.TXT' ;
 end;
 
+procedure TACBrDevice.AcharPortasSeriais(const AStringList : TStrings ;
+   UltimaPorta : Integer) ;
+var
+   I     : Integer ;
+   BS    : TBlockSerial ;
+   Porta : String ;
+begin
+   AStringList.Clear;
+
+   BS := TBlockSerial.Create;
+   try
+      For I := 1 to UltimaPorta do
+      begin
+        try
+           Porta := 'COM'+IntToStr(I) ;
+
+           BS.Connect( Porta );
+           if BS.LastError = 0 then
+              AStringList.Add(Porta) ;
+
+           BS.CloseSocket;
+        except
+        end ;
+      end ;
+   finally
+      BS.Free ;
+   end ;
+end ;
+
 function TACBrDevice.GetParamsString: String;
 Var sStop, sHandShake : String ;
 begin
@@ -905,4 +937,4 @@ end;
 
 
 end.
-
+

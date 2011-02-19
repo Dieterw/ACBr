@@ -4357,19 +4357,26 @@ procedure TACBrECF.DoAcharPorta ;
 
 Var I : Integer ;
     Achou : Boolean ;
+    SL : TStringList ;
 begin
   Achou := false ;
   
   if (Porta = '') or (LowerCase(Porta) = 'procurar') then
    begin
-     I := 1 ;
-     { Procura de COM1 a COM6 }
-     while (I < 7) and (not Achou)
-       {$IFNDEF CONSOLE} and (fsECF.FormMsgEstado = fmsProcessando) {$ENDIF} do
-     begin
-        Porta := 'COM'+IntToStr(I) ;
-        Achou := AtivarECF ;
-        Inc( I ) ;
+     SL := TStringList.Create;
+     try
+        Device.AcharPortasSeriais( SL );
+
+        I := 0 ;
+        while (I < SL.Count) and (not Achou)
+          {$IFNDEF CONSOLE} and (fsECF.FormMsgEstado = fmsProcessando) {$ENDIF} do
+        begin
+           Porta := SL[I] ;
+           Achou := AtivarECF ;
+           Inc( I ) ;
+        end ;
+     finally
+        SL.Free ;
      end ;
    end
   else

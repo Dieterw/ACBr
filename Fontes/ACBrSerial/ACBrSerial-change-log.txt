@@ -97,6 +97,17 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 1.0.0  19/02/2011
+-- ACBrDevice --
+[+] - Adicionado método:
+         ACBrDevice.AcharPortasSeriais(const AStringList : TStrings ;
+            UltimaPorta : Integer) ;
+      que preenche a Lista de String com as portas existentes do S.O.
+
+-- ACBrECF --
+[*] - Método ACBrECF.AcharECF agora faz uso de ACBrDevice.AcharPortasSeriais,
+      agilizando muito a busca.
+
 Versão 1.0.0  01/02/2011
 -- ACBrRFD --
 [*] - Modificado para usar o novo componente ACBrEAD, que permite efetuar a

@@ -74,7 +74,10 @@ begin
    inherited create(AOwner);
    fpDigito := 7;
    fpNome   := 'Banco Itau';
-   fpTamanhoMaximoNossoNum := 8
+   fpTamanhoMaximoNossoNum := 8;
+   fpTamanhoAgencia := 4;
+   fpTamanhoConta   := 5;
+   fpTamanhoCarteira:= 3;
 end;
 
 function TACBrBancoItau.CalcularDigitoVerificador(const ACBrTitulo: TACBrTitulo ): String;
@@ -86,14 +89,14 @@ begin
 
    with ACBrTitulo do
    begin
-      Docto := padR(Carteira,3,'0') + padR(NossoNumero,TamanhoMaximoNossoNum,'0');
+      Docto := Carteira + padR(NossoNumero,TamanhoMaximoNossoNum,'0');
       if not ((Carteira = '126') or (Carteira = '131') or (Carteira = '146') or
              (Carteira = '150') or (Carteira = '168')) then
-         Docto := padr(ACBrBoleto.Cedente.Agencia,4,'0') + padr(ACBrBoleto.Cedente.Conta,5,'0') + docto
+         Docto := ACBrBoleto.Cedente.Agencia + ACBrBoleto.Cedente.Conta + docto
       else
-         Docto := padR(ACBrTitulo.ACBrBoleto.Cedente.Agencia,4,'0') +
-                  padR(ACBrTitulo.ACBrBoleto.Cedente.Conta,5,'0') +
-                  padR(ACBrTitulo.Carteira,3,'0') +
+         Docto := ACBrTitulo.ACBrBoleto.Cedente.Agencia +
+                  ACBrTitulo.ACBrBoleto.Cedente.Conta +
+                  ACBrTitulo.Carteira +
                   padR(ACBrTitulo.NossoNumero,TamanhoMaximoNossoNum,'0')
    end;
 
@@ -117,12 +120,12 @@ begin
     begin
       FatorVencimento := CalcularFatorVencimento(ACBrTitulo.Vencimento);
 
-      ANossoNumero := padR(ACBrTitulo.Carteira,3,'0') +
+      ANossoNumero := ACBrTitulo.Carteira +
                       padR(ACBrTitulo.NossoNumero,8,'0') +
                       CalcularDigitoVerificador(ACBrTitulo);
 
-      aAgenciaCC   := padR(Cedente.Agencia, 4, '0') +
-                      padR(Cedente.Conta, 5, '0') +
+      aAgenciaCC   := Cedente.Agencia +
+                      Cedente.Conta   +
                       Cedente.ContaDigito;
 
       CodigoBarras := IntToStr( Numero ) +
@@ -145,7 +148,7 @@ var
 begin
   with ACBrTitulo do
   begin
-    NossoNr := padR(Carteira,3,'0') + padR(NossoNumero,TamanhoMaximoNossoNum,'0');
+    NossoNr := Carteira + padR(NossoNumero,TamanhoMaximoNossoNum,'0');
   end;
   Insert('/',NossoNr,4);  Insert('-',NossoNr,13);
   Result := NossoNr + CalcularDigitoVerificador(ACBrTitulo);
@@ -293,13 +296,13 @@ begin
                ' '                                                        + //15 - Uso exclusivo FEBRABAN/CNAB: Branco
                ATipoOcorrencia                                            + //16 a 17 - Código de movimento
                '0'                                                        + // 18
-               padR(ACBrBoleto.Cedente.Agencia, 4, '0')                   + //19 a 22 - Agência mantenedora da conta
+               ACBrBoleto.Cedente.Agencia                                 + //19 a 22 - Agência mantenedora da conta
                ' '                                                        + // 23
                '0000000'                                                  + //24 a 30 - Complemento de Registro
-               padR(ACBrBoleto.Cedente.Conta,5,'0')                       + //31 a 35 - Número da Conta Corrente
+               ACBrBoleto.Cedente.Conta                                   + //31 a 35 - Número da Conta Corrente
                ' '                                                        + // 36
                ACBrBoleto.Cedente.ContaDigito                             + //37 - Dígito verificador da agência / conta
-               padR(Carteira, 3, '0')                                     + // 38 a 40 - Carteira
+               Carteira                                                   + // 38 a 40 - Carteira
                padR(NossoNumero, 8, '0')                                  + // 41 a 48 - Nosso número - identificação do título no banco
                CalcularDigitoVerificador(ACBrTitulo)                      + // 49 - Dígito verificador da agência / conta preencher somente em cobrança sem registro
                space(8)                                                   + // 50 a 57 - Brancos
@@ -555,11 +558,11 @@ begin
                padR(Cedente.Conta, 5, '0')                                                    + // NÚMERO DA CONTA CORRENTE DA EMPRESA
                padL(Cedente.ContaDigito, 1)                                                   + // DÍGITO DE AUTO CONFERÊNCIA AG/CONTA EMPRESA
                space(4)                                                                       + // COMPLEMENTO DE REGISTRO
-               space(4)                                                                       + // CÓD.INSTRUÇÃO/ALEGAÇÃO A SER CANCELADA
+               '0000'                                                                         + // CÓD.INSTRUÇÃO/ALEGAÇÃO A SER CANCELADA
                padL(SeuNumero, 25, ' ')                                                       + // IDENTIFICAÇÃO DO TÍTULO NA EMPRESA
                padR(NossoNumero, 8, '0')                                                      + // IDENTIFICAÇÃO DO TÍTULO NO BANCO
                '0000000000000'                                                                + // QUANTIDADE DE MOEDA VARIÁVEL
-               padR(Carteira, 3, '0')                                                         + // NÚMERO DA CARTEIRA NO BANCO
+               Carteira                                                                       + // NÚMERO DA CARTEIRA NO BANCO
                space(21)                                                                      + // IDENTIFICAÇÃO DA OPERAÇÃO NO BANCO
                'I'                                                                            + // CÓDIGO DA CARTEIRA
                ATipoOcorrencia                                                                + // IDENTIFICAÇÃO DA OCORRÊNCIA
@@ -583,7 +586,8 @@ begin
                {Dados do sacado}
                ATipoSacado                                                                    + // IDENTIFICAÇÃO DO TIPO DE INSCRIÇÃO/SACADO
                padR(OnlyNumber(Sacado.CNPJCPF), 14, '0')                                                  + // Nº DE INSCRIÇÃO DO SACADO  (CPF/CGC)
-               padL(Sacado.NomeSacado, 40, ' ')                                               + // NOME DO SACADO + BRANCOS
+               padL(Sacado.NomeSacado, 30, ' ')                                               + // NOME DO SACADO
+               space(10)                                                                      + // BRANCOS(COMPLEMENTO DE REGISTRO)
                padL(Sacado.Logradouro +' '+ Sacado.Numero +' '+ Sacado.Complemento , 40, ' ') + // RUA, NÚMERO E COMPLEMENTO DO SACADO
                padL(Sacado.Bairro, 12, ' ')                                                   + // BAIRRO DO SACADO
                padR(Sacado.CEP, 8, '0')                                                       + // CEP DO SACADO

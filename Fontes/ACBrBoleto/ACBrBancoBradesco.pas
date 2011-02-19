@@ -77,6 +77,9 @@ begin
    fpDigito := 2;
    fpNome   := 'Bradesco';
    fpTamanhoMaximoNossoNum := 11;
+   fpTamanhoAgencia := 4;
+   fpTamanhoConta   := 6;
+   fpTamanhoCarteira:= 2;
 end;
 
 function TACBrBancoBradesco.CalcularDigitoVerificador(const ACBrTitulo: TACBrTitulo ): String;
@@ -150,18 +153,20 @@ end;
 
 function TACBrBancoBradesco.GerarRegistroTransacao400(ACBrTitulo :TACBrTitulo): String;
 var
-  DigitoNossoNumero,
-  Ocorrencia,aEspecie,
-  Protesto,
-  TipoSacado: String;
-  TipoBoleto: Char;
-  MensagemCedente: String;
-  I: Integer;
+  DigitoNossoNumero, Ocorrencia, aEspecie, aAgencia :String;
+  Protesto, TipoSacado, MensagemCedente, aConta     :String;
+  aCarteira: String;
+  TipoBoleto :Char;
+  I :Integer;
 begin
 
    with ACBrTitulo do
    begin
       DigitoNossoNumero := CalcularDigitoVerificador(ACBrTitulo);
+
+      aAgencia := IntToStrZero(StrToIntDef(trim(ACBrBoleto.Cedente.Agencia),0),5);
+      aConta   := IntToStrZero(StrToIntDef(trim(ACBrBoleto.Cedente.Conta),0),7);
+      aCarteira:= IntToStrZero(StrToIntDef(trim(Carteira),0), 3);
 
       {Pegando Código da Ocorrencia}
       case OcorrenciaOriginal.Tipo of
@@ -226,12 +231,11 @@ begin
             MensagemCedente:= copy(MensagemCedente,1,60);
 
 
-
          Result:= '1'                                                     +  // ID Registro
                   StringOfChar( '0', 19)                                  +  // Dados p/ Débito Automático
-                  '0'+ padR( Carteira, 3, '0')                            +
-                  padR( Cedente.Agencia, 5, '0')                          +
-                  padR( Cedente.Conta, 7, '0')                            +
+                  '0'+ aCarteira                                          +
+                  aAgencia                                                +
+                  aConta                                                  +
                   Cedente.ContaDigito                                     +
                   padL( SeuNumero,25,' ') +'000'                          +  // Numero de Controle do Participante
                   IfThen( PercentualMulta > 0, '2', '0')                  +  // Indica se exite Multa ou não

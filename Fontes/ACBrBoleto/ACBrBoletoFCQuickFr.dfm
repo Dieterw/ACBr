@@ -1,6 +1,6 @@
 object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
-  Left = 252
-  Top = 163
+  Left = 190
+  Top = -8
   Width = 867
   Height = 738
   VertScrollBar.Position = 421
@@ -2524,7 +2524,7 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
       object imgBarra: TQRImage
         Left = 5
         Top = 775
-        Width = 414
+        Width = 452
         Height = 66
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -2535,7 +2535,7 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           174.625000000000000000
           13.229166666666670000
           2050.520833333333000000
-          1095.375000000000000000)
+          1195.916666666667000000)
       end
       object imgBanco3: TQRImage
         Left = 12
@@ -3594,7 +3594,7 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         FontSize = 6
       end
       object RLLabel165: TQRLabel
-        Left = 7
+        Left = 79
         Top = 705
         Width = 41
         Height = 15
@@ -3605,7 +3605,7 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         Frame.DrawRight = False
         Size.Values = (
           39.687500000000000000
-          18.520833333333330000
+          209.020833333333300000
           1865.312500000000000000
           108.479166666666700000)
         Alignment = taLeftJustify
@@ -3625,9 +3625,9 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         FontSize = 8
       end
       object txtNomeSacado3: TQRLabel
-        Left = 53
+        Left = 122
         Top = 705
-        Width = 510
+        Width = 445
         Height = 15
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -3636,9 +3636,9 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         Frame.DrawRight = False
         Size.Values = (
           39.687500000000000000
-          140.229166666666700000
+          322.791666666666700000
           1865.312500000000000000
-          1349.375000000000000000)
+          1177.395833333333000000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = False
@@ -3656,9 +3656,9 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         FontSize = 8
       end
       object txtEnderecoSacado3: TQRLabel
-        Left = 53
+        Left = 122
         Top = 723
-        Width = 510
+        Width = 445
         Height = 15
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -3667,9 +3667,9 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         Frame.DrawRight = False
         Size.Values = (
           39.687500000000000000
-          140.229166666666700000
+          322.791666666666700000
           1912.937500000000000000
-          1349.375000000000000000)
+          1177.395833333333000000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = False
@@ -3749,9 +3749,9 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         FontSize = 8
       end
       object txtCidadeSacado3: TQRLabel
-        Left = 48
+        Left = 122
         Top = 736
-        Width = 510
+        Width = 445
         Height = 15
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -3760,9 +3760,9 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         Frame.DrawRight = False
         Size.Values = (
           39.687500000000000000
-          127.000000000000000000
+          322.791666666666700000
           1947.333333333333000000
-          1349.375000000000000000)
+          1177.395833333333000000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = False

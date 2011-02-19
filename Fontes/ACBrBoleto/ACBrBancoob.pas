@@ -154,13 +154,10 @@ begin
 
     ANossoNumero := ACBrTitulo.NossoNumero+CalcularDigitoVerificador(ACBrTitulo);
 
-    if (ACBrTitulo.Carteira = 'RG') then         {carteira registrada}
-        ACarteira := '9'
-    else if (ACBrTitulo.Carteira = 'SR')then     {carteira 2 sem registro}
-        ACarteira := '1'
+    if (Length(ACBrTitulo.Carteira) > 0 )then
+      ACarteira := ACBrTitulo.Carteira
     else
-       raise Exception.Create(ACBrStr('Carteira Inválida.'+sLineBreak+
-                              'Utilize "RG" ou "SR"'));
+       raise Exception.Create( ACBrStr('Carteira Inválida.'+sLineBreak) ) ;
 
     {Montando Campo Livre}
     CampoLivre    := padR(ACBrTitulo.ACBrBoleto.Cedente.Modalidade, 2, '0') +
@@ -176,7 +173,7 @@ begin
                       '9' +
                       FatorVencimento +
                       IntToStrZero(Round(ACBrTitulo.ValorDocumento * 100), 10) +
-                      padR(ACarteira, 1, '0') +
+                      padR(ACBrTitulo.Carteira, 1, '0') +
                       padR(Cedente.Agencia,4,'0') +
                       CampoLivre;
     end;
@@ -209,11 +206,10 @@ begin
                Space(7)                                   + // Brancos
                padR( Agencia, 4 )                         + // Prefixo da Cooperativa
                padR( AgenciaDigito, 1 )                   + // Dígito Verificador do Prefixo
-               padR( CodigoCedente, 8 )                   + // Código do Cliente/Cedente
-               padR( copy(CodigoCedente,length(CodigoCedente),1) , 1 )  + // Código do Cliente/Cedente digito
+               padR( trim(CodigoCedente), 9 )                   + // Código do Cliente/Cedente
                Space(6)                                   + // Brancos
                padR( Nome, 30 )                           + // Nome do Cedente
-               padR( 'SICOOB', 18 )                       + // Identificação do Banco: "SICOOB"
+               padL( '756BANCOOBCED', 18 )                + // Identificação do Banco: "756BANCOOBCED"  //Enviado pelo pessoal da homologação por email
                FormatDateTime('ddmmyy',Now)               + // Data de geração do arquivo
                IntToStrZero(NumeroRemessa,7)              + // Seqüencial da Remessa: número seqüencial acrescido de 1 a cada remessa. Inicia com "0000001"
                Space(287)                                 + // Brancos
@@ -235,12 +231,10 @@ var
   I: Integer;
 begin
 
-    if (ACBrTitulo.Carteira = 'RG') then         {carterira registrada}
-        ACarteira := '9'
-    else if (ACBrTitulo.Carteira = 'SR')then     {carteira 2 sem registro}
-        ACarteira := '1'
+    if (Length(ACBrTitulo.Carteira) > 0 )then
+      ACarteira := ACBrTitulo.Carteira
     else
-       raise Exception.Create( ACBrStr('Carteira Inválida.'+sLineBreak+'Utilize "RG" ou "SR"') ) ;
+       raise Exception.Create( ACBrStr('Carteira Inválida.'+sLineBreak) ) ;
 
    with ACBrTitulo do
    begin
@@ -315,7 +309,7 @@ begin
                   padR( Cedente.Agencia, 4, '0')                          +  // Agência
                   padR( Cedente.AgenciaDigito, 1, '0')                    +  // Agência digito
                   padR( Cedente.Conta+Cedente.ContaDigito, 9, '0')        +  // Conta Corrente c/ Dígito
-                  padR( Cedente.CodigoCedente, 6, '0')                    +  // Código do Cedente
+                  padR( '0', 6, '0')                                      +  // Número do Convênio de Cobrança do Cedente fixo zeros: "000000"
                   Space(25)                                               +  // Brancos
                   padR( NossoNumero + DigitoNossoNumero, 12, '0')         +  // Nosso Número + //nosso numero com digito
                   '01'                                                    +  // Número da Parcela: "01" se parcela única
@@ -329,7 +323,7 @@ begin
                   IntToStrZero( 0, 1)                                     +  // DV do código de responsabilidade: "0"
                   IntToStrZero( 0, 6)                                     +  // Numero do borderô: “000000”
                   Space(5)                                                +  // Brancos
-                  padR( ACarteira, 2, '0')                                +  // Carteira/Modalidade
+                  padR( Cedente.Modalidade, 2, '0')                       +  // Carteira/Modalidade
                   Ocorrencia                                              +  // Ocorrencia (remessa)
                   padL( NumeroDocumento,  10)                             +  // Número do Documento
                   FormatDateTime( 'ddmmyy', Vencimento)                   +  // Data de Vencimento do Título
@@ -347,7 +341,8 @@ begin
                   Space(1)                                                +  // Brancos
                   IntToStrZero( 0, 6)                                     +  // Preencher com zeros quando não for concedido nenhum desconto.
                   IntToStrZero( 0, 13)                                    +  // Preencher com zeros quando não for concedido nenhum desconto.
-                  IntToStrZero( 0, 13)                                    +  // Valor IOF / Quantidade Monetária: "0000000000000"
+                  IntToStrZero( 9 , 1)                                    +  // MOEDA 9 BRASIL
+                  IntToStrZero( 0, 12)                                    +  // Valor IOF / Quantidade Monetária: "0000000000000"
                   IntToStrZero( 0, 13)                                    +  // Valor Abatimento
                   TipoSacado                                              +  // Tipo de Inscrição do Sacado: 01 - CPF 02 - CNPJ
                   padR(onlyNumber(Sacado.CNPJCPF),14,'0')                 +  // Número de Inscrição do Sacado

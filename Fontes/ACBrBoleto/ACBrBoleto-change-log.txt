@@ -47,6 +47,25 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.0.23a 19/02/2011
+
+[+] Adicionado verificação do tamanho dos campos Agencia, Conta e Carteira, para
+    todos bancos, para evitar que o campo seja informado fora do padrao do banco.
+    (Juliana Tamizou)
+
+[*] Adicionado a geração do CNABr400 Banco Brasil, a opção de gerar o arquivo
+    no padrão de convenios de ate 6 digitos e também com 7 digitos.(Juliana Tamizou)
+
+[*] Homologado boletos e arquivos remessa CNAB240 e CNAB400 junto ao Banco Brasil.
+    (Juliana Tamizou) 
+
+[-] Corrigida geração do arquivo CNAB240 Banco Brasil.(Juliana Tamizou)
+
+[-] Corrigida geração do arquivo de remessa CNAB400 do Itau.(RogiH)
+
+[-] Aumentado tamanho do código de barras  para o QuickReport.(Juliana Tamizou)
+
+
 Versão 0.0.22a 12/02/2011
 
 [+] Adicionado ao ACBrBoletoFCLazReport a opção de imprimir Carnês.

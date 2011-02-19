@@ -57,7 +57,7 @@ uses ACBrBase,  {Units da ACBr}
      Graphics, Contnrs, Classes;
 
 const
-  CACBrBoleto_Versao = '0.0.22a' ;
+  CACBrBoleto_Versao = '0.0.23a' ;
 
 type
   TACBrTitulo = class;
@@ -248,11 +248,13 @@ type
   TACBrBancoClass = class
   private
      function GetNumero: Integer;
-
   protected
     fpDigito: Integer;
     fpNome:   String;
     fpModulo: TACBrCalcDigito;
+    fpTamanhoAgencia: Integer;
+    fpTamanhoCarteira: Integer;
+    fpTamanhoConta: Integer;
     fpAOwner: TACBrBanco;
     fpTamanhoMaximoNossoNum: Integer;
     function CalcularFatorVencimento(const DataVencimento: TDateTime): String; virtual;
@@ -267,6 +269,9 @@ type
     property Nome      : String          read fpNome;
     Property Modulo    : TACBrCalcDigito read fpModulo;
     property TamanhoMaximoNossoNum: Integer    read fpTamanhoMaximoNossoNum;
+    property TamanhoAgencia  :Integer read fpTamanhoAgencia;
+    property TamanhoConta    :Integer read fpTamanhoConta;
+    property TamanhoCarteira :Integer read fpTamanhoCarteira;
 
     function CalcularDigitoVerificador(const ACBrTitulo : TACBrTitulo): String; virtual;
 
@@ -302,6 +307,9 @@ type
     fBancoClass        : TACBrBancoClass;
     function GetNome   : String;
     function GetDigito : Integer;
+    function GetTamanhoAgencia: Integer;
+    function GetTamanhoCarteira: Integer;
+    function GetTamanhoConta: Integer;
     function GetTamanhoMaximoNossoNum : Integer;
     procedure SetDigito(const AValue: Integer);
     procedure SetNome(const AValue: String);
@@ -313,6 +321,9 @@ type
     property ACBrBoleto : TACBrBoleto     read fACBrBoleto;
     property BancoClass : TACBrBancoClass read fBancoClass ;
     property TamanhoMaximoNossoNum :Integer read GetTamanhoMaximoNossoNum;
+    property TamanhoAgencia        :Integer read GetTamanhoAgencia;
+    property TamanhoConta          :Integer read GetTamanhoConta;
+    property TamanhoCarteira       :Integer read GetTamanhoCarteira;
 
     function TipoOcorrenciaToDescricao(const TipoOcorrencia: TACBrTipoOcorrencia): String;
     function CodOcorrenciaToTipo(const CodOcorrencia:Integer): TACBrTipoOcorrencia;
@@ -371,8 +382,11 @@ type
     fResponEmissao : TACBrResponEmissao;
     fCNPJCPF       : String;
     fTipoInscricao : TACBrPessoa;
-    fUF: String;
+    fUF            : String;
+    fAcbrBoleto    : TACBrBoleto;
+    procedure SetAgencia(const AValue: String);
     procedure SetCNPJCPF ( const AValue: String ) ;
+    procedure SetConta(const AValue: String);
     procedure SetTipoInscricao ( const AValue: TACBrPessoa ) ;
   public
     constructor Create( AOwner : TComponent ) ; override ;
@@ -381,9 +395,9 @@ type
     property Nome         : String read fNomeCedente   write fNomeCedente;
     property CodigoCedente: String read fCodigoCedente write fCodigoCedente;
     property CodigoTransmissao : String read fCodigoTransmissao write fCodigoTransmissao;
-    property Agencia      : String read fAgencia       write fAgencia;
+    property Agencia      : String read fAgencia       write SetAgencia;
     property AgenciaDigito: String read fAgenciaDigito write fAgenciaDigito;
-    property Conta        : String read fConta         write fConta;
+    property Conta        : String read fConta         write SetConta;
     property ContaDigito  : String read fContaDigito   write fContaDigito;
     property Modalidade   : String read fModalidade    write fModalidade;
     property Convenio     : String read fConvenio      write fConvenio;
@@ -397,6 +411,7 @@ type
     property Cidade      : String  read fCidade      write fCidade;
     property UF          : String  read fUF          write fUF;
     property CEP         : String  read fCEP         write fCEP;
+    property ACBrBoleto  : TACBrBoleto read fACBrBoleto;
   end;
 
   TACBrSacado = class
@@ -485,6 +500,7 @@ type
     fVersao               : String;
     fACBrBoleto           : TACBrBoleto;
 
+    procedure SetCarteira(const AValue: String);
     procedure SetNossoNumero ( const AValue: String ) ;
     procedure SetParcela ( const AValue: Integer ) ;
     procedure SetTotalParcelas ( const AValue: Integer );
@@ -503,7 +519,7 @@ type
      property DataProcessamento : TDateTime   read fDataProcessamento write fDataProcessamento;
      property NossoNumero       : String      read fNossoNumero       write SetNossoNumero;
      property UsoBanco          : String      read fUsoBanco          write fUsoBanco;
-     property Carteira          : String      read fCarteira          write fCarteira;
+     property Carteira          : String      read fCarteira          write SetCarteira;
      property EspecieMod        : String      read fEspecieMod        write fEspecieMod;
      property ValorDocumento    : Currency    read fValorDocumento    write fValorDocumento;
      property Mensagem          : TStrings    read fMensagem          write fMensagem;
@@ -647,6 +663,7 @@ TACBrBoletoFCClass = class(TACBrComponent)
     procedure SetNumCopias(AValue: Integer);
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
   public
+
     Constructor Create(AOwner: TComponent); override;
 
     procedure Imprimir; virtual;
@@ -724,6 +741,39 @@ begin
    end;
 end;
 
+procedure TACBrCedente.SetConta(const AValue: String);
+var  aConta: Integer;
+begin
+  if fConta = AValue then
+     exit;
+
+
+  fConta:= AValue;
+  aConta:= StrToIntDef(trim(AValue),0);
+
+  if aConta = 0 then
+     exit;
+
+  fConta:= IntToStrZero(aConta, ACBrBoleto.Banco.TamanhoConta );
+end;
+
+procedure TACBrCedente.SetAgencia(const AValue: String);
+var  aAgencia: Integer;
+begin
+  if fAgencia = AValue then
+     exit;
+
+  fAgencia:= AValue;
+
+  aAgencia:= StrToIntDef(trim(AValue),0);
+
+  if aAgencia = 0 then
+     exit;
+
+  fAgencia:= IntToStrZero(aAgencia, ACBrBoleto.Banco.TamanhoAgencia );
+
+end;
+
 procedure TACBrCedente.SetTipoInscricao ( const AValue: TACBrPessoa ) ;
 begin
    if fTipoInscricao = AValue then
@@ -746,6 +796,7 @@ begin
   fCNPJCPF       := '';
   fResponEmissao := tbCliEmite;
   fTipoInscricao := pOutras;
+  fAcbrBoleto    := TACBrBoleto(AOwner);
 end;
 
 destructor TACBrCedente.Destroy;
@@ -762,6 +813,27 @@ begin
 
       fNossoNumero := padR(trim(AValue),TamanhoMaximoNossoNum,'0');
    end;
+end;
+
+procedure TACBrTitulo.SetCarteira(const AValue: String);
+var
+  aCarteira: LongInt;
+begin
+  if fCarteira = AValue then
+     exit;
+
+  with ACBrBoleto.Banco do
+  begin
+     aCarteira:= StrToIntDef(trim(AValue),0);
+
+     fCarteira:=  AValue;
+
+     if aCarteira < 1 then
+        exit;
+
+     fCarteira:= IntToStrZero(aCarteira,TamanhoCarteira);
+
+  end;
 end;
 
 procedure TACBrTitulo.SetParcela ( const AValue: Integer ) ;
@@ -955,17 +1027,24 @@ begin
 
   fListadeBoletos := TListadeBoletos.Create(true);
 
-  fCedente      := TACBrCedente.Create(self);
-  fCedente.Name := 'Cedente';
-  {$IFDEF COMPILER6_UP}
-   fCedente.SetSubComponent(True);   // Ajustando como SubComponente para aparecer no ObjectInspector
-  {$ENDIF}
+  //fCedente      := TACBrCedente.Create(self);
+  //fCedente.Name := 'Cedente';
+  //{$IFDEF COMPILER6_UP}
+  // fCedente.SetSubComponent(True);   // Ajustando como SubComponente para aparecer no ObjectInspector
+  //{$ENDIF}
 
   fBanco := TACBrBanco.Create(self);
   fBanco.Name := 'Banco';
   {$IFDEF COMPILER6_UP}
    fBanco.SetSubComponent(True);   // Ajustando como SubComponente para aparecer no ObjectInspector
   {$ENDIF}
+
+  fCedente      := TACBrCedente.Create(self);
+  fCedente.Name := 'Cedente';
+  {$IFDEF COMPILER6_UP}
+   fCedente.SetSubComponent(True);   // Ajustando como SubComponente para aparecer no ObjectInspector
+  {$ENDIF}
+
 end;
 
 destructor TACBrBoleto.Destroy;
@@ -1126,6 +1205,21 @@ begin
    Result := fBancoClass.Digito;
 end;
 
+function TACBrBanco.GetTamanhoAgencia: Integer;
+begin
+  Result:= BancoClass.TamanhoAgencia;
+end;
+
+function TACBrBanco.GetTamanhoCarteira: Integer;
+begin
+  Result:= BancoClass.TamanhoCarteira;
+end;
+
+function TACBrBanco.GetTamanhoConta: Integer;
+begin
+   Result:= BancoClass.TamanhoConta;
+end;
+
 function TACBrBanco.GetTamanhoMaximoNossoNum: Integer;
 begin
    Result := BancoClass.TamanhoMaximoNossoNum;
@@ -1273,6 +1367,8 @@ begin
    fpDigito := 0;
    fpNome   := 'Não definido';
    fpTamanhoMaximoNossoNum := 10;
+   fpTamanhoAgencia        := 4;
+   fpTamanhoConta          := 5;
    fpModulo := TACBrCalcDigito.Create;
 end;
 

@@ -78,6 +78,7 @@ begin
    fpDigito := 7;
    fpNome   := 'Santander';
    fpTamanhoMaximoNossoNum := 12;
+   fpTamanhoCarteira:= 3;
 end;
 
 function TACBrBancoSantander.CalcularDigitoVerificador(const ACBrTitulo: TACBrTitulo ): String;

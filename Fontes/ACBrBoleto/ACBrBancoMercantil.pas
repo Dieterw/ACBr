@@ -79,9 +79,9 @@ var
   ANossoNumero: string;
 begin
     ANossoNumero := padL(ACBrTitulo.ACBrBoleto.Cedente.Agencia,4,'0') + //4
-                    '22' +                                              //6
-                    padL(ACBrTitulo.Carteira,2 ,'0') +                  //8
-                    padL(ACBrTitulo.NossoNumero, 6, '0')+               //14
+                    '22'                                              + //6
+                    ACBrTitulo.Carteira                               + //8
+                    padL(ACBrTitulo.NossoNumero, 6, '0')              + //14
                     CalcularDigitoVerificador(ACBrTitulo);              //15
 
     Result := ANossoNumero;
@@ -91,9 +91,9 @@ function TACBrBancoMercantil.CalcularDigitoVerificador(const ACBrTitulo: TACBrTi
 begin
    Modulo.CalculoPadrao;
    Modulo.MultiplicadorAtual   := 2;
-   Modulo.Documento := padL(ACBrTitulo.ACBrBoleto.Cedente.Agencia,4,'0') +
+   Modulo.Documento := ACBrTitulo.ACBrBoleto.Cedente.Agencia +
                        '22' +
-                       padL(ACBrTitulo.Carteira,2 ,'0') +
+                       ACBrTitulo.Carteira +
                        padL(ACBrTitulo.NossoNumero, 6, '0');
 
    Modulo.Calcular;

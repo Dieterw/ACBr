@@ -107,9 +107,9 @@ begin
                       '1'                                   + { 1-Carteira simples }
                       padR(ACBrTitulo.NossoNumero,8,'0')    + { Nosso número }
                       CalcularDigitoVerificador(ACBrTitulo) + { Dígito verificador do nosso número }
-                      padR(Cedente.Agencia,4,'0')           + { Código agência (cooperativa) }
+                      Cedente.Agencia                       + { Código agência (cooperativa) }
                       padR(Cedente.AgenciaDigito,2,'0')     + { Dígito da agência (posto da cooperativa) }
-                      padR(Cedente.Conta,5,'0')             + { Código cedente = Número da conta }
+                      Cedente.Conta                         + { Código cedente = Número da conta }
                       '1'                                   + { Filler - zero. Obs: Será 1 quando o valor do documento for diferente se zero }
                       '0';                                    { Filler - zero }
       { Calcula o dígito do campo livre }

@@ -185,7 +185,7 @@ var
 begin
   with ACBrTitulo do
   begin
-     if StrToIntDef(Carteira, 8)=8 then
+     if StrToIntDef(Carteira, 8)= 8 then
         Modalidade:='21'
      else
         Modalidade:='11';
@@ -346,7 +346,7 @@ begin
         IntToStrZero(Round(ValorDocumento*100), 13)+
         '041'+
         space(5)+
-        PadR(Carteira, 2, '0')+
+        Carteira+
         aTipoAceite+
         FormatDateTime('ddmmyy', DataDocumento)+// Data de Emissão
         PadR(Instrucao1, 2)+

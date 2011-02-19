@@ -81,7 +81,7 @@ InstallPassword
 {}
 
 InstallVersion
-{0.9.1.0}
+{0.9.2.0}
 
 Language,ca
 {No}
@@ -192,7 +192,7 @@ UpgradeApplicationID
 {}
 
 Version
-{0.9.1}
+{0.9.2}
 
 ViewReadme
 {Yes}
@@ -894,7 +894,7 @@ array set Properties {
 {Programas do ACBrMonitor}
 
 15133E1A-7B55-8242-7D70-0B8ACE8BF3C2,FileSize
-{15998154}
+{17269786}
 
 15133E1A-7B55-8242-7D70-0B8ACE8BF3C2,Name
 {Program Files}
@@ -1407,7 +1407,7 @@ A0AAD91A-0EEE-FEE2-D547-23427A537F3A,Destination
 {<%InstallDir%>}
 
 A0AAD91A-0EEE-FEE2-D547-23427A537F3A,FileSize
-{2086485}
+{2086703}
 
 A0AAD91A-0EEE-FEE2-D547-23427A537F3A,Name
 {Documentacao}
@@ -1476,7 +1476,7 @@ A7445EB0-8070-6A51-67CA-70F86582B322,Destination
 {<%InstallDir%>}
 
 A7445EB0-8070-6A51-67CA-70F86582B322,FileSize
-{2420992}
+{2491856}
 
 A7445EB0-8070-6A51-67CA-70F86582B322,Name
 {ACBrMonitorConsole}

@@ -517,23 +517,30 @@ begin
       begin
          IND_MOV := imComDados;
          ///
-         with RegistroE110New do
+         ///
+         with RegistroE100New do
          begin
-            VL_TOT_DEBITOS := 0;
-            VL_AJ_DEBITOS := 0;
-            VL_TOT_AJ_DEBITOS := 0;
-            VL_ESTORNOS_CRED := 0;
-            VL_TOT_CREDITOS := 0;
-            VL_AJ_CREDITOS := 0;
-            VL_TOT_AJ_CREDITOS := 0;
-            VL_ESTORNOS_DEB := 0;
-            VL_SLD_CREDOR_ANT := 0;
-            VL_SLD_APURADO := 0;
-            VL_TOT_DED := 0;
-            VL_ICMS_RECOLHER := 0;
-            VL_SLD_CREDOR_TRANSPORTAR := 0;
-            DEB_ESP := 0;
+           DT_INI := Now;
+           DT_FIN := Now;
+           with RegistroE110New do
+           begin
+              VL_TOT_DEBITOS := 0;
+              VL_AJ_DEBITOS := 0;
+              VL_TOT_AJ_DEBITOS := 0;
+              VL_ESTORNOS_CRED := 0;
+              VL_TOT_CREDITOS := 0;
+              VL_AJ_CREDITOS := 0;
+              VL_TOT_AJ_CREDITOS := 0;
+              VL_ESTORNOS_DEB := 0;
+              VL_SLD_CREDOR_ANT := 0;
+              VL_SLD_APURADO := 0;
+              VL_TOT_DED := 0;
+              VL_ICMS_RECOLHER := 0;
+              VL_SLD_CREDOR_TRANSPORTAR := 0;
+              DEB_ESP := 0;
+           end;
          end;
+
       end;
    end;
 

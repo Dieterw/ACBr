@@ -534,6 +534,19 @@ begin
   cbxModelo.Items[0] := 'Procurar' ;
   cbxModelo.ItemIndex := 0 ;
 
+  cbxPorta.Items.Clear;
+  ACBrECF1.Device.AcharPortasSeriais( cbxPorta.Items );
+  cbxPorta.Items.Insert(0,'Procurar') ;
+  cbxPorta.Items.Add('LPT1') ;
+  cbxPorta.Items.Add('LPT2') ;
+  cbxPorta.Items.Add('LPT3') ;
+  cbxPorta.Items.Add('/dev/ttyS0') ;
+  cbxPorta.Items.Add('/dev/ttyS1') ;
+  cbxPorta.Items.Add('/dev/ttyUSB0') ;
+  cbxPorta.Items.Add('/dev/ttyUSB1') ;
+  cbxPorta.Items.Add('c:\temp\ecf.txt') ;
+  cbxPorta.Items.Add('/tmp/ecf.txt') ;
+
   mMsgChange( Sender );
   Application.OnException := TrataErros ;
   PageControl1.ActivePageIndex := 0 ;

@@ -157,23 +157,6 @@ object Form1: TForm1
         TabOrder = 1
         Text = 'Procurar'
         OnChange = cbxPortaChange
-        Items.Strings = (
-          'Procurar'
-          'COM1'
-          'COM2'
-          'COM3'
-          'COM4'
-          'COM5'
-          'COM6'
-          'LPT1'
-          'LPT2'
-          'LPT3'
-          '/dev/ttyS0'
-          '/dev/ttyS1'
-          '/dev/ttyUSB0'
-          '/dev/ttyUSB1'
-          'c:\temp\ecf.txt'
-          '/tmp/ecf.txt')
       end
       object chTentar: TCheckBox
         Left = 11

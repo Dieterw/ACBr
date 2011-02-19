@@ -46,7 +46,7 @@ procedure IncluirTitulo(aIni: TMemIniFile; Sessao: String);
 
 implementation
 
-uses ACBrBoleto, ACBrUtil, ACBrMonitor1, DoACBrUnit ;
+uses ACBrBoleto, ACBrUtil, ACBrMonitor1, DoACBrUnit,strutils ;
 
 procedure DoBoleto ( Cmd: TACBrCmd ) ;
 begin
@@ -230,6 +230,7 @@ procedure IncluirTitulo( aIni: TMemIniFile; Sessao: String ) ;
 var
    Titulo : TACBrTitulo;
    MemFormatada : String;
+   LocalPagto: String;
 begin
    with FrmACBrMonitor.ACBrBoleto1 do
    begin
@@ -258,6 +259,8 @@ begin
             OcorrenciaOriginal.Tipo := toRemessaRegistrar ;
          end ;
 
+         LocalPagto := aIni.ReadString(Sessao,'LocalPagamento','');
+
          Vencimento          := StrToDateDef(Trim(aIni.ReadString(Sessao,'Vencimento','')), now);
          DataDocumento       := StrToDateDef(Trim(aIni.ReadString(Sessao,'DataDocumento','')),now);
          DataProcessamento   := StrToDateDef(Trim(aIni.ReadString(Sessao,'DataProcessamento','')),now);
@@ -265,7 +268,7 @@ begin
          DataDesconto        := StrToDateDef(Trim(aIni.ReadString(Sessao,'DataDesconto','')),0);
          DataMoraJuros       := StrToDateDef(Trim(aIni.ReadString(Sessao,'DataMoraJuros','')),0);
          DataProtesto        := StrToDateDef(Trim(aIni.ReadString(Sessao,'DataProtesto','')),0);
-         LocalPagamento      := Trim(aIni.ReadString(Sessao,'LocalPagamento',LocalPagamento));
+         LocalPagamento      := IfThen(Trim(LocalPagto) <> '',LocalPagto,LocalPagamento);
          NumeroDocumento     := aIni.ReadString(Sessao,'NumeroDocumento',NumeroDocumento);
          EspecieDoc          := aIni.ReadString(Sessao,'Especie',EspecieDoc);
          NossoNumero         := aIni.ReadString(Sessao,'NossoNumero','');

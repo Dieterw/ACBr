@@ -2545,7 +2545,7 @@ begin
                      DescontoAcrescimo );
   except
      if Assigned( FOnErrorVendeItem ) then
-        FOnErrorAbreCupom(Tratado);
+        FOnErrorVendeItem(Tratado);
 
      if not Tratado then
         raise;

@@ -152,7 +152,7 @@ begin
       with dmDanfe.RvProject.ProjMan do
       begin
          //descricao CST ou CSON
-         if (dmDanfe.NFe.Emit.CRT <> crtRegimeNormal) then
+         if (dmDanfe.NFe.Emit.CRT = crtSimplesNacional) then
          begin
             wPage[1] := FindRaveComponent('GlobalDadosProdutos',nil) as TRavePage;
             wText[1] := FindRaveComponent('Text1',wPage[1]) as TRaveText;

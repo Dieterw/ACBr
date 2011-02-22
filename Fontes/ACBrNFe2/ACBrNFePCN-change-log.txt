@@ -47,6 +47,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Alterações   22/02/2011
+---------------
+[-] Inversão dos campos vBC e pRedBC quando ICMSSN900. Caso 892 do MANTIS
+[-] Correção para imprimir o cabeçãlho CSOSN somente quando for SIMPLES NACIONAL. Danfe em Rave Arquivo.
 
 Alterações   09/02/2011
 ---------------

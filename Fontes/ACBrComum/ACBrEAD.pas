@@ -76,6 +76,8 @@ const
      "OnGetChavePrivada" }
 
 type
+  TACBrEADDgst = (dgstMD2, dgstMD4, dgstMD5, dgstRMD160, dgstSHA, dgstSHA1) ;
+
   TACBrEADCalc = procedure(Arquivo: String) of object ;
   TACBrEADGetChave = procedure(var Chave: AnsiString) of object ;
 
@@ -126,10 +128,14 @@ type
     Procedure CalcularModuloeExpoente( var Modulo, Expoente : AnsiString );
     Function CalcularChavePublica : AnsiString ;
 
-    function CalcularMD5Arquivo( const NomeArquivo: String): AnsiString ; overload ;
-    function CalcularMD5( const AString : AnsiString): AnsiString ; overload ;
-    function CalcularMD5( const AStringList : TStringList): AnsiString ; overload ;
-    function CalcularMD5( const MS : TMemoryStream): AnsiString ; overload ;
+    function CalcularHashArquivo( const NomeArquivo: String;
+       const Digest: TACBrEADDgst ): AnsiString ; overload ;
+    function CalcularHash( const AString : AnsiString;
+       const Digest: TACBrEADDgst ): AnsiString ; overload ;
+    function CalcularHash( const AStringList : TStringList;
+       const Digest: TACBrEADDgst ): AnsiString ; overload ;
+    function CalcularHash( const MS : TMemoryStream;
+       const Digest: TACBrEADDgst ): AnsiString ; overload ;
 
     function CalcularEADArquivo( const NomeArquivo: String): AnsiString ; overload ;
     function CalcularEAD( const AString : AnsiString): AnsiString ; overload ;
@@ -449,7 +455,8 @@ begin
   end ;
 end ;
 
-function TACBrEAD.CalcularMD5Arquivo(const NomeArquivo : String) : AnsiString ;
+function TACBrEAD.CalcularHashArquivo(const NomeArquivo : String;
+   const Digest: TACBrEADDgst) : AnsiString ;
 Var
    MS : TMemoryStream ;
 begin
@@ -458,51 +465,65 @@ begin
   MS := TMemoryStream.Create;
   try
     MS.LoadFromFile( NomeArquivo );
-    Result := CalcularMD5( MS );
+    Result := CalcularHash( MS, Digest );
   finally
     MS.Free ;
   end ;
 end ;
 
-function TACBrEAD.CalcularMD5(const AString : AnsiString) : AnsiString ;
+function TACBrEAD.CalcularHash(const AString : AnsiString;
+   const Digest: TACBrEADDgst) : AnsiString ;
 Var
    MS : TMemoryStream ;
 begin
   MS := TMemoryStream.Create;
   try
     MS.Write( Pointer(AString)^, Length(AString) );
-    Result := CalcularMD5( MS );
+    Result := CalcularHash( MS, Digest );
   finally
     MS.Free ;
   end ;
 end ;
 
-function TACBrEAD.CalcularMD5(const AStringList : TStringList) : AnsiString ;
+function TACBrEAD.CalcularHash(const AStringList : TStringList;
+   const Digest: TACBrEADDgst) : AnsiString ;
 Var
-   MS : TMemoryStream ;
+  MS : TMemoryStream ;
 begin
   MS := TMemoryStream.Create;
   try
     AStringList.SaveToStream( MS );
-    Result := CalcularMD5( MS );
+    Result := CalcularHash( MS, Digest );
   finally
     MS.Free ;
   end ;
 end ;
 
-function TACBrEAD.CalcularMD5(const MS : TMemoryStream) : AnsiString ;
+function TACBrEAD.CalcularHash(const MS : TMemoryStream;
+   const Digest: TACBrEADDgst) : AnsiString ;
 Var
   md : PEVP_MD ;
   md_len: cardinal;
   md_ctx: EVP_MD_CTX;
   md_value_bin : array [0..EVP_MAX_MD_SIZE] of char;
   md_value_hex : array [0..1023] of char;
+  NameDgst : String ;
 begin
   InitOpenSSL ;
-  Result := '';
+  Result   := '';
+  NameDgst := '';
+
+  case Digest of
+    dgstMD2    : NameDgst := 'md2';
+    dgstMD4    : NameDgst := 'md4';
+    dgstMD5    : NameDgst := 'md5';
+    dgstRMD160 : NameDgst := 'rmd160';
+    dgstSHA    : NameDgst := 'sha';
+    dgstSHA1   : NameDgst := 'sha1';
+ end ;
 
   MS.Position := 0;
-  md := EVP_get_digestbyname('md5');
+  md := EVP_get_digestbyname( PAnsiChar( NameDgst ) );
   EVP_DigestInit( @md_ctx, md );
   EVP_DigestUpdate( @md_ctx, MS.Memory, MS.Size );
   EVP_DigestFinal( @md_ctx, @md_value_bin, {$IFNDEF USE_libeay32}@{$ENDIF}md_len);

@@ -239,7 +239,6 @@ TACBrRFD = class( TACBrComponent )     { Componente ACBrRFD }
     fsArqRFD: String;
     fsIgnoraEcfMfd: Boolean;
 
-    Procedure CriarArqRFDID ;
     Procedure GerarRFD ;
 
     procedure SetSH_CNPJ(const AValue: String);
@@ -304,6 +303,7 @@ TACBrRFD = class( TACBrComponent )     { Componente ACBrRFD }
     procedure LerINI ;
     procedure GravarINI ;
     property ArqINI : String read GetArqINI ;
+    Procedure CriarArqRFDID( NomeArq : String );
 
     Function NomeArqRFD( DtMov : TDatetime ) : String ;
 
@@ -973,7 +973,7 @@ begin
 
   { Verifica se precisa criar arquivo RFDID.INI }
   if not FileExists( ArqRFDID ) then
-      CriarArqRFDID ;
+     CriarArqRFDID( ArqRFDID ) ;
 
   if not Assigned(fsECF) then
      raise Exception.Create( ACBrStr('ACBrRFD não está associado a ACBrECF'));
@@ -2051,7 +2051,7 @@ begin
      exit ;
 
   if not FileExists( ArqRFDID ) then
-     CriarArqRFDID ;
+     CriarArqRFDID( ArqRFDID ) ;
 
   Ini := TMemIniFile.Create( ArqRFDID ) ;
   try
@@ -2069,11 +2069,10 @@ begin
   end ;
 end;
 
-procedure TACBrRFD.CriarArqRFDID ;
- Var NomeArq : String ;
-     SL : TStringList ;
+procedure TACBrRFD.CriarArqRFDID( NomeArq : String ) ;
+Var
+  SL : TStringList ;
 begin
-  NomeArq := ArqRFDID ;
   if NomeArq = '' then exit ;
 
   if not FileExists( NomeArq ) then
@@ -2175,8 +2174,6 @@ begin
         SL.Add('EA6=PRINTER 2002 II ECF-IF') ;
         SL.Add('EL1=ECF IF 400 2E') ;
         SL.Add('EL2=ECF IF 500 1E') ;
-        //===================================//
-        //Elgin
         SL.Add('EL3=ECF IF 400 1E-EP') ;
         SL.Add('EL4=ECF-IF 600-2E-OL') ;
         SL.Add('EL5=ECF-MR 10000-S') ;
@@ -2188,14 +2185,11 @@ begin
         SL.Add('ELB=FX7') ;
         SL.Add('ELC=IF 6000TH') ;
         SL.Add('ELD=X5') ;
-        //===================================//
-        //Epson
         SL.Add('EP1=TM-H6000 FB');
         SL.Add('EP2=TM-H6000 FBII');
         SL.Add('EP3=TM-T81 FBII');
         SL.Add('EP4=TM-T88 FB');
         SL.Add('EP5=TM-T88 FBII');  
-
         SL.Add('GE1=ECF-IF GP-2000') ;
         SL.Add('IB1=4679 3BM') ;
         SL.Add('IB2=4679 3BS') ;

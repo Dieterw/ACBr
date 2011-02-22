@@ -41,6 +41,7 @@ type
      mPubKey : TMemo ;
      mResp : TMemo ;
      OpenDialog1 : TOpenDialog ;
+    cbxDgst: TComboBox;
      procedure btAssinarArqEADClick(Sender : TObject) ;
      procedure btCalcPubKeyClick(Sender : TObject) ;
      procedure btGravarPrivKeyClick(Sender : TObject) ;
@@ -113,8 +114,8 @@ end;
 
 procedure TForm1.btCalcMD5Click(Sender : TObject) ;
 begin
-   mResp.Lines.Add('Calculando o MD5 do arquivo: '+edArqEntrada.Text );
-   mResp.Lines.Add('MD5 = '+  ACBrEAD1.CalcularMD5Arquivo( edArqEntrada.Text ) );
+   mResp.Lines.Add('Calculando o HASH - "'+cbxDgst.Text+'" do arquivo: '+edArqEntrada.Text );
+   mResp.Lines.Add(UpperCase(cbxDgst.Text)+' = '+  ACBrEAD1.CalcularHashArquivo( edArqEntrada.Text, TACBrEADDgst( cbxDgst.ItemIndex ) ) );
    mResp.Lines.Add('------------------------------');
 end;
 

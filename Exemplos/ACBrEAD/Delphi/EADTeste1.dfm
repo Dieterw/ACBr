@@ -533,7 +533,7 @@ object Form1: TForm1
       TabOrder = 1
     end
     object btCalcEAD: TBitBtn
-      Left = 150
+      Left = 278
       Top = 48
       Width = 120
       Height = 27
@@ -577,11 +577,11 @@ object Form1: TForm1
         0000000000000000000000000000000000000000000000000000}
     end
     object btCalcMD5: TBitBtn
-      Left = 286
+      Left = 176
       Top = 48
-      Width = 112
+      Width = 70
       Height = 27
-      Caption = 'Calcular MD5'
+      Caption = 'Hash'
       TabOrder = 3
       OnClick = btCalcMD5Click
       Glyph.Data = {
@@ -718,6 +718,24 @@ object Form1: TForm1
       Caption = 'Vers'#227'o'
       TabOrder = 6
       OnClick = Button1Click
+    end
+    object cbxDgst: TComboBox
+      Left = 102
+      Top = 52
+      Width = 64
+      Height = 21
+      Style = csDropDownList
+      ItemHeight = 13
+      ItemIndex = 2
+      TabOrder = 7
+      Text = 'md5'
+      Items.Strings = (
+        'md2'
+        'md4'
+        'md5'
+        'rmd160'
+        'sha'
+        'sha1')
     end
   end
   object GroupBox1: TGroupBox

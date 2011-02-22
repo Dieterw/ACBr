@@ -38,6 +38,16 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+22/02/2011
+-- ACBrEAD --
+[*] Métodos de MD5 modificados para permitir todos os mecanismos de Digest do
+    OpenSSL. permitindo os seguintes calculos de HASH: (MD2, MD4, MD5, RMD160,
+    SHA, SHA1).
+    Infelizmente isso "quebrou" a assinatura do componente, mas o ajuste é
+    rápido. Exemplo:
+    ACBrEAD1.CalcularMD5Arquivo( StrArqEntrada )              mudou para:
+    ACBrEAD1.CalcularHashArquivo( StrArqEntrada, dgstMD5 )
+
 01/02/2011
 -- ACBrEAD --
 [*] Unit ACBrEAD modificada para se tornar um componente. Portanto o package

@@ -1063,8 +1063,9 @@ begin
 
   try
     TACBrCTe( FACBrCTe ).SetStatus( stCTeRecepcao );
+    // Alterado por Italo em 23/02/2011
     if FConfiguracoes.Geral.Salvar then
-      FConfiguracoes.Geral.Save(FormatDateTime('yyyymmddhhnnss',Now)+'-env-lot.xml', FDadosMsg);
+      FConfiguracoes.Geral.Save(IntToStr(Lote)+'-env-lot.xml', FDadosMsg);
 
     try
       {$IFDEF ACBrCTeOpenSSL}

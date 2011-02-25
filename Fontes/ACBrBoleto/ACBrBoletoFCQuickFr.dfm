@@ -2524,18 +2524,18 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
       object imgBarra: TQRImage
         Left = 5
         Top = 775
-        Width = 452
-        Height = 66
+        Width = 427
+        Height = 49
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          174.625000000000000000
+          130.000000000000000000
           13.229166666666670000
           2050.520833333333000000
-          1195.916666666667000000)
+          1130.000000000000000000)
       end
       object imgBanco3: TQRImage
         Left = 12

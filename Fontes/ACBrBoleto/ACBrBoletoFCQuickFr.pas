@@ -6,7 +6,7 @@
 { Direitos Autorais Reservados (c) 2009   http://acbr.sf.net                   }
 {                                                                              }
 { Colaboradores nesse arquivo: Juliana Rodrigues Prado,                        }
-{                              Paulo Henrique M. Gurgel, Daniel Simoes Almeida }
+{                              Paulo Hfaenrique M. Gurgel, Daniel Simoes Almeida }
 {                                                                              }
 {  Você pode obter a última versão desse arquivo na pagina do  Projeto ACBr    }
 { Componentes localizado em      http://www.sourceforge.net/projects/acbr      }
@@ -401,7 +401,7 @@ begin
      txtLinhaDigitavel.Caption       := LinhaDigitavel;
      txtInstrucoes3.Lines.Text       := txtInstrucoes2.Lines.Text;
 
-     ACBrBarCode1.Typ  := bcCode_2_5_interleaved ;   
+     ACBrBarCode1.Typ  := bcCode_2_5_interleaved ;
      ACBrBarCode1.Text := CodBarras;
      BMP := TBitmap.Create ;
      try

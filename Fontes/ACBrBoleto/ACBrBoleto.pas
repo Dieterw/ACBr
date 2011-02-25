@@ -743,6 +743,7 @@ end;
 
 procedure TACBrCedente.SetConta(const AValue: String);
 var  aConta: Integer;
+  tamconta: LongInt;
 begin
   if fConta = AValue then
      exit;
@@ -753,6 +754,8 @@ begin
 
   if aConta = 0 then
      exit;
+
+  tamconta:=ACBrBoleto.Banco.TamanhoConta;
 
   fConta:= IntToStrZero(aConta, ACBrBoleto.Banco.TamanhoConta );
 end;

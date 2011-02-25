@@ -394,8 +394,8 @@ begin
             LFill(NUM) +
             LFill(COMPL) +
             LFill(BAIRRO) +
-            LFill(FONE, 10) +
-            LFill(FAX, 10) +
+            LFill(FONE) +
+            LFill(FAX) +
             LFill(EMAIL) ) ;
        ///
        Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
@@ -451,8 +451,8 @@ begin
             LFill(NUM) +
             LFill(COMPL) +
             LFill(BAIRRO) +
-            LFill(FONE, 10) +
-            LFill(FAX, 10) +
+            LFill(FONE) +
+            LFill(FAX) +
             LFill(EMAIL) +
             LFill(COD_MUN, 7) ) ;
        ///

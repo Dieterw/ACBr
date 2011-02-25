@@ -103,14 +103,42 @@ end; { DeleteIECache }
 
 
 function TfrmPrincipal.DownloadFile(SourceFile, DestFile: string): Boolean;
+const BufferSize = 1024;
+var
+  hSession, hURL: HInternet;
+  Buffer: array[1..BufferSize] of Byte;
+  BufferLen: DWORD;
+  f: File;
+  sAppName: string;
 begin
+ sAppName := ExtractFileName(Application.ExeName);
+ hSession := InternetOpen(PChar(sAppName),INTERNET_OPEN_TYPE_PRECONFIG,nil, nil, 0);
+ try
+   hURL := InternetOpenURL(hSession,PChar(SourceFile),nil,0,0,0);
+   try
+     AssignFile(f, DestFile);
+     Rewrite(f,1);
+     repeat
+       InternetReadFile(hURL, @Buffer,SizeOf(Buffer), BufferLen);
+       BlockWrite(f, Buffer, BufferLen)
+     until BufferLen = 0;
+     CloseFile(f);
+     Result:=True;
+   finally
+     InternetCloseHandle(hURL)
+   end
+ finally
+   InternetCloseHandle(hSession)
+ end;
+end;
+{begin
   try
     Result := UrlDownloadToFile(nil, PChar(SourceFile), PChar(DestFile), 0,
       nil) = 0;
   except
     Result := False;
   end;
-end;
+end;   }
 
 function TfrmPrincipal.StripHTML(S: string): string;
 var

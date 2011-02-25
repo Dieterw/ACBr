@@ -51,7 +51,7 @@ unit pcnGerador;
 
 interface uses
 
-  SysUtils, Classes,
+  SysUtils, Classes, Math,
 {$IFNDEF VER130}
   Variants,
 {$ENDIF}
@@ -666,7 +666,7 @@ begin
                     tcDe10: NumeroDecimais := 10;
                   end;
                   ConteudoProcessado := FloatToStr(valor);
-                  if StrToIntDef(Copy(ConteudoProcessado, pos(DecimalSeparator, ConteudoProcessado) + NumeroDecimais + 1, 6),0) > 0 then
+                  if not SameValue(Abs(Frac(valor*Power(10,NumeroDecimais))), 0.0, {epsilon = }0.0000001) then
                     walerta(ID, Tag, Descricao, ERR_MSG_MAXIMO_DECIMAIS + ' ' + IntToStr(NumeroDecimais));
 
                   ConteudoProcessado := FormatFloat('0.' + StringOfChar('0', NumeroDecimais), valor);

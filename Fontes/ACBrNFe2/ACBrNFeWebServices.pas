@@ -1127,7 +1127,9 @@ begin
     end;
   finally
     {$IFDEF ACBrNFeOpenSSL}
-       HTTP.Free;
+      HTTP.Free;
+    {$ELSE}
+      ReqResp.Free;
     {$ENDIF}
     Acao.Free;
     Stream.Free;
@@ -1254,6 +1256,8 @@ begin
   finally
     {$IFDEF ACBrNFeOpenSSL}
        HTTP.Free;
+    {$ELSE}
+      ReqResp.Free;
     {$ENDIF}
     Acao.Free;
     Stream.Free;
@@ -1474,7 +1478,9 @@ function TNFeRetRecepcao.Executar: Boolean;
 
     finally
       {$IFDEF ACBrNFeOpenSSL}
-         HTTP.Free;
+        HTTP.Free;
+      {$ELSE}
+        ReqResp.Free;
       {$ENDIF}
       Acao.Free;
       Stream.Free;
@@ -1631,6 +1637,8 @@ begin
  finally
    {$IFDEF ACBrNFeOpenSSL}
       HTTP.Free;
+   {$ELSE}
+      ReqResp.Free;
    {$ENDIF}
    Acao.Free;
    Stream.Free;
@@ -1690,6 +1698,7 @@ begin
      ReqResp.UseUTF8InHeader := True;
      ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsulta2';
   {$ENDIF}
+  NFeRetorno := TRetConsSitNFe.Create;
   try
     TACBrNFe( FACBrNFe ).SetStatus( stNfeConsulta );
     if FConfiguracoes.Geral.Salvar then
@@ -1713,7 +1722,6 @@ begin
        FRetWS := NotaUtil.SeparaDados( FRetornoWS,'nfeConsultaNF2Result');
        StrStream.Free;
     {$ENDIF}
-    NFeRetorno := TRetConsSitNFe.Create;
     NFeRetorno.Leitor.Arquivo := FRetWS;
     NFeRetorno.LerXML;
 
@@ -1825,8 +1833,10 @@ begin
   finally
     {$IFDEF ACBrNFeOpenSSL}
        HTTP.Free;
+    {$ELSE}
+      ReqResp.Free;
     {$ENDIF}
-    //NFeRetorno.Free;
+    NFeRetorno.Free;
     Acao.Free;
     Stream.Free;
     NotaUtil.ConfAmbiente;
@@ -2011,6 +2021,8 @@ begin
   finally
     {$IFDEF ACBrNFeOpenSSL}
        HTTP.Free;
+    {$ELSE}
+      ReqResp.Free;
     {$ENDIF}
     Acao.Free;
     Stream.Free;
@@ -2170,6 +2182,8 @@ begin
   finally
     {$IFDEF ACBrNFeOpenSSL}
        HTTP.Free;
+    {$ELSE}
+      ReqResp.Free;
     {$ENDIF}
     Acao.Free;
     Stream.Free;
@@ -2315,9 +2329,11 @@ begin
   finally
     {$IFDEF ACBrNFeOpenSSL}
        HTTP.Free;
-       Acao.Free;
-       Stream.Free;
+    {$ELSE}
+       ReqResp.Free;
     {$ENDIF}
+    Acao.Free;
+    Stream.Free;
     NotaUtil.ConfAmbiente;
     TACBrNFe( FACBrNFe ).SetStatus( stIdle );
   end;
@@ -2484,6 +2500,8 @@ begin
   finally
     {$IFDEF ACBrNFeOpenSSL}
        HTTP.Free;
+    {$ELSE}
+       ReqResp.Free;
     {$ENDIF}
     Acao.Free;
     Stream.Free;
@@ -2598,6 +2616,8 @@ begin
   finally
     {$IFDEF ACBrNFeOpenSSL}
        HTTP.Free;
+    {$ELSE}
+       ReqResp.Free;
     {$ENDIF}
     Acao.Free;
     Stream.Free;

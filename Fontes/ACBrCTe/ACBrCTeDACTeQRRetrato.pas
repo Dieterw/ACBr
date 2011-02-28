@@ -232,13 +232,9 @@ type
     QRLabel34: TQRLabel;
     qrlVlrTotalMerc: TQRLabel;
     QRLabel35: TQRLabel;
-    qrlQtdUndMedida1: TQRLabel;
     QRLabel36: TQRLabel;
-    qrlQtdUndMedida2: TQRLabel;
     QRLabel41: TQRLabel;
-    qrlQtdUndMedida3: TQRLabel;
     QRLabel43: TQRLabel;
-    qrlQtdUndMedida4: TQRLabel;
     QRLabel5: TQRLabel;
     qrlNomeSeguradora: TQRLabel;
     QRLabel37: TQRLabel;
@@ -405,6 +401,10 @@ type
     qrmNumDispositivo: TQRMemo;
     qrmCodTransacao: TQRMemo;
     QRShape45: TQRShape;
+    qrmQtdUnidMedida1: TQRMemo;
+    qrmQtdUnidMedida2: TQRMemo;
+    qrmQtdUnidMedida3: TQRMemo;
+    qrmQtdUnidMedida4: TQRMemo;
     procedure qrbDadosExcEmitenteBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
     procedure qrbModRodFracionadoBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
     procedure qrbObsBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
@@ -976,13 +976,34 @@ begin
   qrlOutrasCaracCarga.Caption := FCTe.InfCarga.xOutCat;
   qrlVlrTotalMerc.Caption := CteUtil.FormatarValor(msk15x2, FCTe.InfCarga.vMerc);
 
+  {
   for i := 1 to 4 do
     TQRLabel(FindComponent('qrlQtdUndMedida' + intToStr(i))).Caption := '';
-
+  
   for i := 0 to FCTe.InfCarga.InfQ.Count - 1 do
     TQRLabel(FindComponent('qrlQtdUndMedida' + intToStr(i + 1))).Caption :=
       CteUtil.FormatarValor(msk6x3, FCTe.InfCarga.InfQ.Items[i].qCarga) + '/' +
       FCTe.InfCarga.InfQ.Items[i].tpMed;
+  }
+  // Incluido por Italo em 28/02/2011
+  qrmQtdUnidMedida1.Lines.Clear;
+  qrmQtdUnidMedida2.Lines.Clear;
+  qrmQtdUnidMedida3.Lines.Clear;
+  qrmQtdUnidMedida4.Lines.Clear;
+
+  for i := 0 to FCTe.InfCarga.InfQ.Count - 1 do
+   begin
+    case i of
+     0,4,8: qrmQtdUnidMedida1.Lines.Add(CteUtil.FormatarValor(msk6x3,
+            FCTe.InfCarga.InfQ.Items[i].qCarga) + '/' + FCTe.InfCarga.InfQ.Items[i].tpMed);
+     1,5,9: qrmQtdUnidMedida2.Lines.Add(CteUtil.FormatarValor(msk6x3,
+            FCTe.InfCarga.InfQ.Items[i].qCarga) + '/' + FCTe.InfCarga.InfQ.Items[i].tpMed);
+     2,6,10: qrmQtdUnidMedida3.Lines.Add(CteUtil.FormatarValor(msk6x3,
+             FCTe.InfCarga.InfQ.Items[i].qCarga) + '/' + FCTe.InfCarga.InfQ.Items[i].tpMed);
+     3,7,11: qrmQtdUnidMedida4.Lines.Add(CteUtil.FormatarValor(msk6x3,
+            FCTe.InfCarga.InfQ.Items[i].qCarga) + '/' + FCTe.InfCarga.InfQ.Items[i].tpMed);
+    end;
+   end;
 
   qrlNomeSeguradora.Caption := '';
   qrlRespSeguroMerc.Caption := '';

@@ -1766,7 +1766,7 @@ begin
     wregistro:=wregistro+Padl(Registros54[i].CST,3);
     wregistro:=wregistro+IntToStrZero(Registros54[i].NumeroItem,3);
     if Registros54[i].NumeroItem<=900 then
-       wregistro:=wregistro+Padl(Registros54[i].Codigo,14); //codigo do produto
+       wregistro:=wregistro+Padl(Registros54[i].Codigo,14) //codigo do produto
     else
        wregistro:=wregistro+space(14);
 

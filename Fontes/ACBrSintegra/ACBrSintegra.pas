@@ -1765,7 +1765,11 @@ begin
     wregistro:=wregistro+Padl(TiraPontos(Registros54[i].CFOP),4);
     wregistro:=wregistro+Padl(Registros54[i].CST,3);
     wregistro:=wregistro+IntToStrZero(Registros54[i].NumeroItem,3);
-    wregistro:=wregistro+Padl(Registros54[i].Codigo,14); //codigo do produto
+    if Registros54[i].NumeroItem<=900 then
+       wregistro:=wregistro+Padl(Registros54[i].Codigo,14); //codigo do produto
+    else
+       wregistro:=wregistro+space(14);
+
     wregistro:=wregistro+TBStrZero(TiraPontos(FormatFloat('#,###0.000',
       Registros54[i].Quantidade)),11); //quantidade do produto
     wregistro:=wregistro+TBStrZero(TiraPontos(FormatFloat('#,##0.00',

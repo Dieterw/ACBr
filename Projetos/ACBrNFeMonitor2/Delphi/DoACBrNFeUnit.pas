@@ -139,10 +139,14 @@ begin
 
         else if Cmd.Metodo = 'consultarnfe' then
          begin
-           if FileExists(Cmd.Params(0)) then
+           if FileExists(Cmd.Params(0)) or FileExists(PathWithDelim(ACBrNFe1.Configuracoes.Geral.PathSalvar)+Cmd.Params(0)) then
             begin
               ACBrNFe1.NotasFiscais.Clear;
-              ACBrNFe1.NotasFiscais.LoadFromFile(Cmd.Params(0));
+              if FileExists(PathWithDelim(ACBrNFe1.Configuracoes.Geral.PathSalvar)+Cmd.Params(0)) then
+                 ACBrNFe1.NotasFiscais.LoadFromFile(PathWithDelim(ACBrNFe1.Configuracoes.Geral.PathSalvar)+Cmd.Params(0))
+              else
+                 ACBrNFe1.NotasFiscais.LoadFromFile(Cmd.Params(0));
+
               ACBrNFe1.WebServices.Consulta.NFeChave := StringReplace(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID,'NFe','',[rfIgnoreCase]);
             end
            else
@@ -330,7 +334,7 @@ begin
                 if 'NFe'+ACBrNFe1.WebServices.Retorno.NFeRetorno.ProtNFe.Items[i].chNFe = ACBrNFe1.NotasFiscais.Items[j].NFe.InfNFe.Id  then
                 begin
                   Cmd.Resposta := Cmd.Resposta+
-                             '[NFE'+Trim(IntToStr(ACBrNFe1.NotasFiscais.Items[i].NFe.Ide.NNF))+']'+sLineBreak+
+                             '[NFE'+Trim(IntToStr(ACBrNFe1.NotasFiscais.Items[J].NFe.Ide.NNF))+']'+sLineBreak+
                              'Versao='+ACBrNFe1.WebServices.Retorno.NFeRetorno.ProtNFe.Items[i].verAplic+sLineBreak+
                              'TpAmb='+TpAmbToStr(ACBrNFe1.WebServices.Retorno.NFeRetorno.ProtNFe.Items[i].tpAmb)+sLineBreak+
                              'VerAplic='+ACBrNFe1.WebServices.Retorno.NFeRetorno.ProtNFe.Items[i].verAplic+sLineBreak+
@@ -1123,7 +1127,7 @@ begin
                if Length(INIRec.ReadString( sSecao,'cEANTrib','')) > 0 then
                   Prod.cEANTrib      := INIRec.ReadString( sSecao,'cEANTrib'      ,'');
                Prod.uTrib     := INIRec.ReadString( sSecao,'uTrib'  , Prod.uCom);
-               Prod.qTrib     := StringToFloatDef( INIRec.ReadString(sSecao,'qTrib'  ,''), Prod.qTrib);
+               Prod.qTrib     := StringToFloatDef( INIRec.ReadString(sSecao,'qTrib'  ,''), Prod.qCom);
                Prod.vUnTrib   := StringToFloatDef( INIRec.ReadString(sSecao,'vUnTrib','') ,Prod.vUnCom) ;
 
                Prod.vFrete    := StringToFloatDef( INIRec.ReadString(sSecao,'vFrete','') ,0) ;
@@ -1264,6 +1268,7 @@ begin
                     cProdANP := INIRec.ReadInteger( sSecao,'cProdANP',0) ;
                     CODIF    := INIRec.ReadString(  sSecao,'CODIF'   ,'') ;
                     qTemp    := StringToFloatDef(INIRec.ReadString( sSecao,'qTemp',''),0) ;
+                    UFcons   := INIRec.ReadString( sSecao,'UFCons','') ;
 
                     sSecao := 'CIDE'+IntToStrZero(I,3) ;
                     CIDE.qBCprod   := StringToFloatDef(INIRec.ReadString( sSecao,'qBCprod'  ,''),0) ;
@@ -2010,32 +2015,37 @@ begin
                   begin
                     INIRec.WriteInteger( sSecao,'cProdANP',cProdANP) ;
                     INIRec.WriteString(  sSecao,'CODIF'   ,CODIF) ;
-                    INIRec.WriteFloat(   sSecao,'qTemp'    ,qTemp) ;
+                    INIRec.WriteFloat(   sSecao,'qTemp'   ,qTemp) ;
+                    INIRec.WriteString(  sSecao,'UFCons'  ,UFcons) ;
 
                     sSecao := 'CIDE'+IntToStrZero(I+1,3) ;
                     INIRec.WriteFloat( sSecao,'qBCprod'  ,CIDE.qBCprod) ;
                     INIRec.WriteFloat( sSecao,'vAliqProd',CIDE.vAliqProd) ;
                     INIRec.WriteFloat( sSecao,'vCIDE'    ,CIDE.vCIDE) ;
 
-                    sSecao := 'ICMSComb'+IntToStrZero(I+1,3) ;
-                    INIRec.WriteFloat( sSecao,'vBCICMS'  ,ICMS.vBCICMS) ;
-                    INIRec.WriteFloat( sSecao,'vICMS'    ,ICMS.vICMS) ;
-                    INIRec.WriteFloat( sSecao,'vBCICMSST',ICMS.vBCICMSST) ;
-                    INIRec.WriteFloat( sSecao,'vICMSST'  ,ICMS.vICMSST) ;
 
-                    if (ICMSInter.vBCICMSSTDest>0) then
+                    if infNFe.Versao < 2 then
                      begin
-                       sSecao := 'ICMSInter'+IntToStrZero(I+1,3) ;
-                       INIRec.WriteFloat( sSecao,'vBCICMSSTDest',ICMSInter.vBCICMSSTDest) ;
-                       INIRec.WriteFloat( sSecao,'vICMSSTDest'  ,ICMSInter.vICMSSTDest) ;
-                     end;
+                       sSecao := 'ICMSComb'+IntToStrZero(I+1,3) ;
+                       INIRec.WriteFloat( sSecao,'vBCICMS'  ,ICMS.vBCICMS) ;
+                       INIRec.WriteFloat( sSecao,'vICMS'    ,ICMS.vICMS) ;
+                       INIRec.WriteFloat( sSecao,'vBCICMSST',ICMS.vBCICMSST) ;
+                       INIRec.WriteFloat( sSecao,'vICMSST'  ,ICMS.vICMSST) ;
 
-                    if (ICMSCons.vBCICMSSTCons>0) then
-                     begin
-                       sSecao := 'ICMSCons'+IntToStrZero(I+1,3) ;
-                       INIRec.WriteFloat( sSecao,'vBCICMSSTCons',ICMSCons.vBCICMSSTCons) ;
-                       INIRec.WriteFloat( sSecao,'vICMSSTCons'  ,ICMSCons.vICMSSTCons) ;
-                       INIRec.WriteString(sSecao,'UFCons'       ,ICMSCons.UFcons) ;
+                       if (ICMSInter.vBCICMSSTDest>0) then
+                        begin
+                          sSecao := 'ICMSInter'+IntToStrZero(I+1,3) ;
+                          INIRec.WriteFloat( sSecao,'vBCICMSSTDest',ICMSInter.vBCICMSSTDest) ;
+                          INIRec.WriteFloat( sSecao,'vICMSSTDest'  ,ICMSInter.vICMSSTDest) ;
+                        end;
+
+                       if (ICMSCons.vBCICMSSTCons>0) then
+                        begin
+                          sSecao := 'ICMSCons'+IntToStrZero(I+1,3) ;
+                          INIRec.WriteFloat( sSecao,'vBCICMSSTCons',ICMSCons.vBCICMSSTCons) ;
+                          INIRec.WriteFloat( sSecao,'vICMSSTCons'  ,ICMSCons.vICMSSTCons) ;
+                          INIRec.WriteString(sSecao,'UFCons'       ,ICMSCons.UFcons) ;
+                        end;
                      end;
                   end;
                end;

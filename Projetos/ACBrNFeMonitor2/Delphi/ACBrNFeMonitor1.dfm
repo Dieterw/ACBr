@@ -4124,7 +4124,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
       Top = 1
       Width = 569
       Height = 261
-      ActivePage = Testes
+      ActivePage = Monitor
       Align = alClient
       Style = tsFlatButtons
       TabOrder = 0
@@ -4631,9 +4631,9 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           object ckSalvar: TCheckBox
             Left = 8
             Top = 96
-            Width = 209
+            Width = 278
             Height = 15
-            Caption = 'Salvar Arquivos de Envio e Resposta'
+            Caption = 'Salvar Arquivos Enviados/Recebidos p/WebServices'
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
             Font.Height = -11
@@ -4948,7 +4948,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           Top = 0
           Width = 561
           Height = 230
-          ActivePage = TabSheet2
+          ActivePage = TabSheet1
           Align = alClient
           Style = tsFlatButtons
           TabOrder = 0

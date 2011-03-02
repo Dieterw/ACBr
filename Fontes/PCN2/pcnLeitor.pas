@@ -141,6 +141,8 @@ begin
   for i := 1 to item do
     if i < item then
       Texto := copy(Texto, pos('</' + Trim(TagFim) + '>', Texto) + length(Trim(TagFim)) + 3, maxInt);
+
+  Texto := copy(Texto, 1,pos('</' + Trim(TagFim) + '>', Texto) + length(Trim(TagFim)) + 3);   //Correção para leitura de tags em que a primeira é diferente da segunda Ex: <infProt id=XXX> e a segunda apenas <infProt>   
   i := pos('<' + Trim(TagInicio) + '>', Texto);
   if i = 0 then
     i := pos('<' + Trim(TagInicio) + ' ', Texto);

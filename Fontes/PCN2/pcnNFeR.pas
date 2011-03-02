@@ -443,8 +443,9 @@ begin
     if Leitor.rExtrai(3, 'comb') <> '' then
     begin
       (*L102*)NFe.Det[i].Prod.comb.cProdANP := Leitor.rCampo(tcInt, 'cProdANP');
-      (*L103*)NFe.Det[i].Prod.comb.CODIF := Leitor.rCampo(tcEsp, 'CODIF');
-      (*L104*)NFe.Det[i].Prod.comb.qTemp := Leitor.rCampo(tcDe4, 'qTemp');
+      (*L103*)NFe.Det[i].Prod.comb.CODIF    := Leitor.rCampo(tcEsp, 'CODIF');
+      (*L104*)NFe.Det[i].Prod.comb.qTemp    := Leitor.rCampo(tcDe4, 'qTemp');
+      (*L120*)NFe.Det[i].Prod.comb.UFcons   := Leitor.rCampo(tcStr, 'UFCons');
 
       (*L120*)NFe.Det[i].Prod.comb.ICMSCons.UFcons := Leitor.rCampo(tcStr, 'UFcons');
 
@@ -470,6 +471,7 @@ begin
       begin
         (*L118*)NFe.Det[i].Prod.comb.ICMSCons.vBCICMSSTCons := Leitor.rCampo(tcDe2, 'vBCICMSSTCons');
         (*L119*)NFe.Det[i].Prod.comb.ICMSCons.vICMSSTCons   := Leitor.rCampo(tcDe2, 'vICMSSTCons');
+        (*L119*)NFe.Det[i].Prod.comb.ICMSCons.UFcons        := Leitor.rCampo(tcStr, 'UFCons');
       end;
     end;
 

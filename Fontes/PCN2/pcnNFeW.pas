@@ -423,7 +423,8 @@ begin
   Gerador.wCampo(tcStr, 'C19', 'IM     ', 01, 15, 0, nfe.Emit.IM, DSC_IM);
   if Length(nfe.Emit.IM) > 0 then
     Gerador.wCampo(tcStr, 'C20', 'CNAE ', 07, 07, 1, nfe.Emit.CNAE, DSC_CNAE); //Está definido como obrigatório porque foi informado IM (Conforme o manual)
-  Gerador.wCampo(tcStr, 'C21', 'CRT ', 01, 01, 1, CRTToStr(nfe.Emit.CRT), DSC_CRT);
+  if NFe.infNFe.Versao >= 2 then
+     Gerador.wCampo(tcStr, 'C21', 'CRT ', 01, 01, 1, CRTToStr(nfe.Emit.CRT), DSC_CRT);
   Gerador.wGrupo('/emit');
 end;
 
@@ -609,23 +610,24 @@ begin
   Gerador.wCampo(tcStr, 'I02 ', 'cProd   ', 01, 60, 1, nfe.Det[i].Prod.cProd, DSC_CPROD);
   Gerador.wCampo(tcStr, 'I03 ', 'cEAN    ', 00, 14, 1, nfe.Det[i].Prod.cEAN, DSC_CEAN);
   Gerador.wCampo(tcStr, 'I04 ', 'xProd   ', 1, 120, 1, nfe.Det[i].Prod.xProd, DSC_XPROD);
-  Gerador.wCampo(tcStr, 'I05 ', 'NCM     ', 02, 08, 1, nfe.Det[i].Prod.NCM, DSC_NCM);
+  Gerador.wCampo(tcStr, 'I05 ', 'NCM     ', 02, 08,   IIf(NFe.infNFe.Versao >= 2,1,0), nfe.Det[i].Prod.NCM, DSC_NCM);
   Gerador.wCampo(tcStr, 'I06 ', 'EXTIPI  ', 02, 03, 0, nfe.Det[i].Prod.EXTIPI, DSC_EXTIPI);
   //Gerador.wCampo(tcInt, 'I07 ', 'genero  ', 02, 02, 0, nfe.Det[i].Prod.genero, DSC_GENERO);
   Gerador.wCampo(tcEsp, 'I08 ', 'CFOP    ', 04, 04, 1, somenteNumeros(nfe.Det[i].Prod.CFOP), DSC_CFOP);
   Gerador.wCampo(tcStr, 'I09 ', 'uCom    ', 01, 06, 1, nfe.Det[i].Prod.uCom, DSC_UCOM);
   Gerador.wCampo(tcDe4, 'I10 ', 'qCom    ', 00, 15, 1, nfe.Det[i].Prod.qCom, DSC_QCOM);
-  Gerador.wCampo(tcDe10,'I10a', 'vUnCom  ', 00, 21, 1, nfe.Det[i].Prod.vUnCom, DSC_VUNCOM);
+  Gerador.wCampo(IIf(NFe.infNFe.Versao >= 2,tcDe10,tcDe4),'I10a', 'vUnCom  ', 00, 21, 1, nfe.Det[i].Prod.vUnCom, DSC_VUNCOM);
   Gerador.wCampo(tcDe2, 'I11 ', 'vProd   ', 00, 15, 1, nfe.Det[i].Prod.vProd, DSC_VPROD);
   Gerador.wCampo(tcStr, 'I12 ', 'cEANTrib', 00, 14, 1, nfe.Det[i].Prod.cEANTrib, DSC_CEANTRIB);
   Gerador.wCampo(tcStr, 'I13 ', 'uTrib   ', 01, 06, 1, nfe.Det[i].Prod.uTrib, DSC_UTRIB);
   Gerador.wCampo(tcDe4, 'I14 ', 'qTrib   ', 00, 15, 1, nfe.Det[i].Prod.qTrib, DSC_QTRIB);
-  Gerador.wCampo(tcDe10, 'I14a', 'vUnTrib ', 00, 21, 1, nfe.Det[i].Prod.vUnTrib, DSC_VUNTRIB);
+  Gerador.wCampo(IIf(NFe.infNFe.Versao >= 2,tcDe10,tcDe4), 'I14a', 'vUnTrib ', 00, 21, 1, nfe.Det[i].Prod.vUnTrib, DSC_VUNTRIB);
   Gerador.wCampo(tcDe2, 'I15 ', 'vFrete  ', 00, 15, 0, nfe.Det[i].Prod.vFrete, DSC_VFRETE);
   Gerador.wCampo(tcDe2, 'I16 ', 'vSeg    ', 00, 15, 0, nfe.Det[i].Prod.vSeg, DSC_VSEG);
   Gerador.wCampo(tcDe2, 'I17 ', 'vDesc   ', 00, 15, 0, nfe.Det[i].Prod.vDesc, DSC_VDESC);
   Gerador.wCampo(tcDe2, 'I17a', 'vOutro  ', 00, 15, 0, nfe.Det[i].Prod.vOutro, DSC_VOUTRO);
-  Gerador.wCampo(tcStr, 'I17b', 'indTot  ', 01, 01, 1, indTotToStr(nfe.Det[i].Prod.IndTot), DSC_INDTOT);
+  if NFe.infNFe.Versao >= 2 then
+     Gerador.wCampo(tcStr, 'I17b', 'indTot  ', 01, 01, 1, indTotToStr(nfe.Det[i].Prod.IndTot), DSC_INDTOT);
   (**)GerarDetProdDI(i);
   Gerador.wCampo(tcStr, 'I30', 'xPed       ', 01, 15, 0, nfe.Det[i].Prod.xPed, DSC_XPED);
   Gerador.wCampo(tcInt, 'I31', 'nItemPed   ', 06, 06, 0, nfe.Det[i].Prod.nItemPed, DSC_NITEMPED);
@@ -681,13 +683,19 @@ begin
     Gerador.wCampo(tcStr, 'J04', 'cCor    ', 04, 04, 1, nfe.Det[i].Prod.veicProd.cCor, DSC_CCOR);
     Gerador.wCampo(tcStr, 'J05', 'xCor    ', 01, 40, 1, nfe.Det[i].Prod.veicProd.xCor, DSC_XCOR);
     Gerador.wCampo(tcStr, 'J06', 'pot     ', 04, 04, 1, nfe.Det[i].Prod.veicProd.pot, DSC_POT);
-    Gerador.wCampo(tcStr, 'J07', 'cilin   ', 04, 04, 1, nfe.Det[i].Prod.veicProd.cilin, DSC_CILIN);
+    if NFe.infNFe.Versao >= 2 then
+       Gerador.wCampo(tcStr, 'J07', 'cilin   ', 04, 04, 1, nfe.Det[i].Prod.veicProd.cilin, DSC_CILIN)
+    else
+       Gerador.wCampo(tcStr, 'J07', 'CM3     ', 04, 04, 1, nfe.Det[i].Prod.veicProd.cilin, DSC_CILIN);
     Gerador.wCampo(tcStr, 'J08', 'pesoL   ', 00, 09, 1, nfe.Det[i].Prod.veicProd.pesoL, DSC_PESOL);
     Gerador.wCampo(tcStr, 'J09', 'pesoB   ', 00, 09, 1, nfe.Det[i].Prod.veicProd.pesoB, DSC_PESOB);
     Gerador.wCampo(tcStr, 'J10', 'nSerie  ', 00, 09, 1, nfe.Det[i].Prod.veicProd.nSerie, DSC_NSERIE);
     Gerador.wCampo(tcStr, 'J11', 'tpComb  ', 02, 02, 1, nfe.Det[i].Prod.veicProd.tpComb, DSC_TPCOMB);
     Gerador.wCampo(tcStr, 'J12', 'nMotor  ', 00, 21, 1, nfe.Det[i].Prod.veicProd.nMotor, DSC_NMOTOR);
-    Gerador.wCampo(tcStr, 'J13', 'CMT     ', 09, 09, 1, nfe.Det[i].Prod.veicProd.CMT, DSC_CMT);
+    if NFe.infNFe.Versao >= 2 then
+       Gerador.wCampo(tcStr, 'J13', 'CMT     ', 09, 09, 1, nfe.Det[i].Prod.veicProd.CMT, DSC_CMT)
+    else
+       Gerador.wCampo(tcStr, 'J13', 'CMKG    ', 09, 09, 1, nfe.Det[i].Prod.veicProd.CMT, DSC_CMT);
     Gerador.wCampo(tcStr, 'J14', 'dist    ', 00, 04, 1, nfe.Det[i].Prod.veicProd.dist, DSC_DIST);
     Gerador.wCampo(tcStr, 'J15', 'RENAVAM ', 00, 09, 0, nfe.Det[i].Prod.veicProd.RENAVAM, DSC_RENAVAM);
     Gerador.wCampo(tcInt, 'J16', 'anoMod  ', 00, 04, 1, nfe.Det[i].Prod.veicProd.anoMod, DSC_ANOMOD);
@@ -698,9 +706,12 @@ begin
     Gerador.wCampo(tcStr, 'J21', 'VIN     ', 00, 01, 1, nfe.Det[i].Prod.veicProd.VIN, DSC_VIN);
     Gerador.wCampo(tcStr, 'J22', 'condVeic', 00, 01, 1, condVeicToStr(nfe.Det[i].Prod.veicProd.condVeic), DSC_CONDVEIC);
     Gerador.wCampo(tcStr, 'J23', 'cMod    ', 00, 06, 1, nfe.Det[i].Prod.veicProd.cMod, DSC_CMOD);
-    Gerador.wCampo(tcStr, 'J24', 'cCorDENATRAN', 00, 2, 1, nfe.Det[i].Prod.veicProd.cCorDENATRAN, DSC_CCORDEN);
-    Gerador.wCampo(tcInt, 'J25', 'lota    ', 01, 03, 1, nfe.Det[i].Prod.veicProd.lota, DSC_LOTA);
-    Gerador.wCampo(tcInt, 'J26', 'tpRest  ', 01, 01, 1, nfe.Det[i].Prod.veicProd.tpRest, DSC_TPREST);
+    if NFe.infNFe.Versao >= 2 then
+     begin
+       Gerador.wCampo(tcStr, 'J24', 'cCorDENATRAN', 00, 2, 1, nfe.Det[i].Prod.veicProd.cCorDENATRAN, DSC_CCORDEN);
+       Gerador.wCampo(tcInt, 'J25', 'lota    ', 01, 03, 1, nfe.Det[i].Prod.veicProd.lota, DSC_LOTA);
+       Gerador.wCampo(tcInt, 'J26', 'tpRest  ', 01, 01, 1, nfe.Det[i].Prod.veicProd.tpRest, DSC_TPREST);
+     end;  
     Gerador.wGrupo('/veicProd');
   end;
 end;
@@ -746,14 +757,14 @@ begin
     if (trim(nfe.Det[i].Prod.comb.CODIF))  <> '' then Gerador.wCampo(tcEsp, 'L103', 'CODIF   ', 00, 21, 1, nfe.Det[i].Prod.comb.CODIF, DSC_CODIF);
     if nfe.Det[i].Prod.comb.qTemp         <> 0  then Gerador.wCampo(tcDe4, 'L104', 'qTemp   ', 01, 16, 1, nfe.Det[i].Prod.comb.qTemp, DSC_QTEMP);
 
-    if  (nfe.Det[i].Prod.comb.ICMS.vBCICMS    > 0) or
+    if  (nfe.infNFe.Versao < 2) and ((nfe.Det[i].Prod.comb.ICMS.vBCICMS    > 0) or
         (nfe.Det[i].Prod.comb.ICMS.vICMS      > 0) or
         (nfe.Det[i].Prod.comb.ICMS.vBCICMSST  > 0) or
         (nfe.Det[i].Prod.comb.ICMS.vICMSST    > 0) or
         (nfe.Det[i].Prod.comb.ICMSInter.vBCICMSSTDest > 0) or
         (nfe.Det[i].Prod.comb.ICMSInter.vICMSSTDest   > 0) or
         (nfe.Det[i].Prod.comb.ICMSCons.vBCICMSSTCons  > 0) or
-        (nfe.Det[i].Prod.comb.ICMSCons.vICMSSTCons    > 0) then
+        (nfe.Det[i].Prod.comb.ICMSCons.vICMSSTCons    > 0)) then
       begin
         // Manter Disponivel para versao 3.0
         (**)GerarDetProdCombCIDE(i);
@@ -764,8 +775,8 @@ begin
       else
       begin
        //  versao 4.01
-        Gerador.wCampo(tcStr, 'L120', 'UFCons       ', 02, 02, 1, nfe.Det[i].Prod.comb.ICMSCons.UFcons, DSC_UFCONS);
-        if not ValidarUF(nfe.Det[i].Prod.comb.ICMSCons.UFcons) then Gerador.wAlerta('L120', 'UFcons', DSC_UFCONS, ERR_MSG_INVALIDO);
+        Gerador.wCampo(tcStr, 'L120', 'UFCons       ', 02, 02, 1, nfe.Det[i].Prod.comb.UFcons, DSC_UFCONS);
+        if not ValidarUF(nfe.Det[i].Prod.comb.UFcons) then Gerador.wAlerta('L120', 'UFcons', DSC_UFCONS, ERR_MSG_INVALIDO);
         (**)GerarDetProdCombCIDE(i);
       end;
 
@@ -950,8 +961,16 @@ begin
                   end;
                cst60 :
                   begin
-                     Gerador.wCampo(tcDe2, 'N26', 'vBCSTRet  ', 01, 15, 1, nfe.Det[i].Imposto.ICMS.vBCSTRET, DSC_VBCSTRET);
-                     Gerador.wCampo(tcDe2, 'N27', 'vICMSSTRet', 01, 15, 1, nfe.Det[i].Imposto.ICMS.vICMSSTRET, DSC_VICMSSTRET);
+                     if NFe.infNFe.Versao >= 2 then
+                      begin
+                        Gerador.wCampo(tcDe2, 'N26', 'vBCSTRet  ', 01, 15, 1, nfe.Det[i].Imposto.ICMS.vBCSTRET, DSC_VBCSTRET);
+                        Gerador.wCampo(tcDe2, 'N27', 'vICMSSTRet', 01, 15, 1, nfe.Det[i].Imposto.ICMS.vICMSSTRET, DSC_VICMSSTRET);
+                      end
+                     else
+                      begin
+                        Gerador.wCampo(tcDe2, 'N21', 'vBCST   ', 01, 15, 1, nfe.Det[i].Imposto.ICMS.vBCST, DSC_VBCST);
+                        Gerador.wCampo(tcDe2, 'N23', 'vICMSST ', 01, 15, 1, nfe.Det[i].Imposto.ICMS.vICMSST, DSC_VICMSST);
+                      end;   
                   end;
                cst70 :
                   begin

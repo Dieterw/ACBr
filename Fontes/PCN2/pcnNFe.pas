@@ -698,6 +698,7 @@ type
     FcProdANP: integer;
     FCODIF: string;
     FqTemp: currency;
+    FUFcons: string;
     FCIDE: TCIDE;
     FICMS: TICMSComb;
     FICMSInter: TICMSInter;
@@ -709,6 +710,7 @@ type
     property cProdANP: integer read FcProdANP write FcProdANP;
     property CODIF: string read FCODIF write FCODIF;
     property qTemp: currency read FqTemp write FqTemp;
+    property UFcons: string read FUFcons write FUFcons;
     property CIDE: TCIDE read FCIDE write FCIDE;
     property ICMS: TICMSComb read FICMS write FICMS;
     property ICMSInter: TICMSInter read FICMSInter write FICMSInter;

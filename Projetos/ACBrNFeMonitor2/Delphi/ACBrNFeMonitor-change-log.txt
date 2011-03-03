@@ -48,6 +48,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+03/03/11
+[-]	: Corrigido geração de ICMSPart(10,90) e ICMSST(41)
+[-]	: Corrigido geração do arquivo no formato TXT do SEFAZ para a versão 2.0
+[-]	: Corrigido importação do endereço de entrega/retirada quando usado o TXT no formato do SEFAZ
+[-]	: Corrigido retorno de processamento de lote, quando alguma NFe era retornada com erro dentro de um lote(http://www.djsystem.com.br/acbr/mantis/view.php?id=823)
+
 30/03/10
 [*]	: Corrigido problema que era causado quando números de cópias estava vazio. Agora, caso esteja vazio será assumido como default 1.
 [-] 	: DANFE com RAVE CB 

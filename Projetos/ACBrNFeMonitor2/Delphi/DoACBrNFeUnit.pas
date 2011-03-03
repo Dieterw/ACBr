@@ -1400,7 +1400,7 @@ begin
                     end;
 
                    sSecao    := 'PISST'+IntToStrZero(I,3) ;
-                   sFim   := INIRec.ReadString( sSecao,'ValorBase','FIM') ;
+                   sFim   := INIRec.ReadString( sSecao,'ValorBase','F')+ INIRec.ReadString( sSecao,'Quantidade','IM') ;
                    if (sFim <> 'FIM') then
                     begin
                      with PISST do
@@ -1445,7 +1445,7 @@ begin
                     end;
 
                    sSecao    := 'COFINSST'+IntToStrZero(I,3) ;
-                   sFim   := INIRec.ReadString( sSecao,'ValorBase','FIM') ;
+                   sFim   := INIRec.ReadString( sSecao,'ValorBase','F')+ INIRec.ReadString( sSecao,'Quantidade','IM');
                    if (sFim <> 'FIM') then
                     begin
                      with COFINSST do

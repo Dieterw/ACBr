@@ -938,7 +938,7 @@ begin
                      if (nfe.Det[i].Imposto.ICMS.UFST <> '') or
                         (nfe.Det[i].Imposto.ICMS.pBCOp <> 0) or
                         (nfe.Det[i].Imposto.ICMS.CST = cstPart10) then
-                        Gerador.wCampo(tcDe2, 'N14', 'pRedBC  ', 01, 05, 1, nfe.Det[i].Imposto.ICMS.pRedBC, DSC_PREDBC);
+                        Gerador.wCampo(tcDe2, 'N14', 'pRedBC  ', 01, 05, 0, nfe.Det[i].Imposto.ICMS.pRedBC, DSC_PREDBC);
                      Gerador.wCampo(tcDe2, 'N16', 'pICMS   ', 01, 05, 1, nfe.Det[i].Imposto.ICMS.pICMS, DSC_PICMS);
                      Gerador.wCampo(tcDe2, 'N17', 'vICMS   ', 01, 15, 1, nfe.Det[i].Imposto.ICMS.vICMS, DSC_VICMS);
                      Gerador.wCampo(tcStr, 'N18', 'modBCST ', 01, 01, 1, modBCSTToStr(nfe.Det[i].Imposto.ICMS.modBCST), DSC_MODBCST);

@@ -1660,8 +1660,7 @@ begin
 
       400 :
         begin
-          if (Copy(SlRetorno.Strings[0],1,19) <> '02RETORNO01COBRANCA') and
-             (Copy(SlRetorno.Strings[0],1,9) <> '02RETORNO')   then
+           if (Copy(SlRetorno.Strings[0],1,9) <> '02RETORNO')   then
              Raise Exception.Create( ACBrStr( NomeArq + sLineBreak +
                 'Não é um arquivo de Retorno de cobrança com layout CNAB400'));
           LayoutRemessa := c400 ;

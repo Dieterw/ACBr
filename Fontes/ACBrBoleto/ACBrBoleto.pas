@@ -1625,6 +1625,8 @@ procedure TACBrBoleto.LerRetorno( ) ;
 var
   SlRetorno: TStringList;
   NomeArq  : String;
+  testedirarq: String;
+  testenomearq: String;
 begin
    SlRetorno:= TStringList.Create;
    Self.ListadeBoletos.Clear;
@@ -1632,6 +1634,8 @@ begin
    if NomeArqRetorno = '' then
       raise Exception.Create(ACBrStr('NomeArqRetorno deve ser informado.'));
 
+   testedirarq:= fDirArqRetorno;
+   testenomearq:= NomeArqRetorno;
    NomeArq := fDirArqRetorno + PathDelim + NomeArqRetorno;
 
    if not FilesExists( NomeArq ) then
@@ -1656,8 +1660,8 @@ begin
 
       400 :
         begin
-          if (Copy(SlRetorno.Strings[0],1,19) <> '02RETORNO01COBRANCA') or 
-             (Copy(SlRetorno.Strings[0],1,9) <> '02RETONRO')   then
+          if (Copy(SlRetorno.Strings[0],1,19) <> '02RETORNO01COBRANCA') and
+             (Copy(SlRetorno.Strings[0],1,9) <> '02RETORNO')   then
              Raise Exception.Create( ACBrStr( NomeArq + sLineBreak +
                 'Não é um arquivo de Retorno de cobrança com layout CNAB400'));
           LayoutRemessa := c400 ;

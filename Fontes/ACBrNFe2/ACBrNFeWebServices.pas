@@ -1411,11 +1411,12 @@ function TNFeRetRecepcao.Executar: Boolean;
        ReqResp.UseUTF8InHeader := True;
        ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/nfe/wsdl/NfeStatusServico2';
     {$ENDIF}
+    if assigned(FNFeRetorno) then
+       FNFeRetorno.Free;
+    FNFeRetorno := TRetConsReciNFe.Create;
     try
       TACBrNFe( FACBrNFe ).SetStatus( stNfeRetRecepcao );
-      if assigned(FNFeRetorno) then
-         FNFeRetorno.Free;
-               
+
       if FConfiguracoes.Geral.Salvar then
         FConfiguracoes.Geral.Save(Recibo+'-ped-rec.xml', FDadosMsg);
 
@@ -1440,7 +1441,6 @@ function TNFeRetRecepcao.Executar: Boolean;
       if FConfiguracoes.Geral.Salvar then
          FConfiguracoes.Geral.Save(Recibo+'-pro-rec.xml', FRetWS);
 
-      FNFeRetorno := TRetConsReciNFe.Create;
       FNFeRetorno.Leitor.Arquivo := FRetWS;
       FNFeRetorno.LerXML;
 
@@ -1579,11 +1579,12 @@ begin
      ReqResp.UseUTF8InHeader := True;
      ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetRecepcao2';
   {$ENDIF}
+ if assigned(FNFeRetorno) then
+    FNFeRetorno.Free;
+ FNFeRetorno := TRetConsReciNFe.Create;
  try
    TACBrNFe( FACBrNFe ).SetStatus( stNfeRetRecepcao );
-   if assigned(FNFeRetorno) then
-      FNFeRetorno.Free;
-         
+
    if FConfiguracoes.Geral.Salvar then
      FConfiguracoes.Geral.Save(Recibo+'-ped-rec.xml', FDadosMsg);
 
@@ -1605,7 +1606,6 @@ begin
       FRetWS := NotaUtil.SeparaDados( FRetornoWS,'nfeRetRecepcao2Result');
       StrStream.Free;
    {$ENDIF}
-   FNFeRetorno := TRetConsReciNFe.Create;
    FNFeRetorno.Leitor.Arquivo := FRetWS;
    FNFeRetorno.LerXML;
 

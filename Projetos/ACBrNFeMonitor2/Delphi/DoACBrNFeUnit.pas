@@ -1429,9 +1429,9 @@ begin
                          end
                         else if CST = cof03 then
                          begin
-                           COFINS.qBCProd   := StringToFloatDef( INIRec.ReadString(sSecao,'Quantidade','') ,0);
-                           COFINS.vAliqProd := StringToFloatDef( INIRec.ReadString(sSecao,'Aliquota'  ,'') ,0);
-                           COFINS.vCOFINS   := StringToFloatDef( INIRec.ReadString(sSecao,'Valor'     ,'') ,0);
+                           COFINS.qBCProd   := StringToFloatDef( INIRec.ReadString(sSecao,'Quantidade'   ,'') ,0);
+                           COFINS.vAliqProd := StringToFloatDef( INIRec.ReadString(sSecao,'ValorAliquota','') ,0);
+                           COFINS.vCOFINS   := StringToFloatDef( INIRec.ReadString(sSecao,'Valor'        ,'') ,0);
                          end
                         else if CST = cof99 then
                          begin

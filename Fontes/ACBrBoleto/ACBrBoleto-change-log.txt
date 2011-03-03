@@ -47,6 +47,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versao 0.0.24a 03/03/2011
+[+] Adicionado leitura do arquivo retorno para o Bancoob.(Douglas Tybel)
+[-] Corrigido Montagem do Campo Nosso Numero e do Código de Barras para a 
+    Carteira 18 quando o Convênio tiver 6 digitos.(Jeter Rabelo Ferreira)
+
 Versão 0.0.23a 19/02/2011
 
 [+] Adicionado verificação do tamanho dos campos Agencia, Conta e Carteira, para

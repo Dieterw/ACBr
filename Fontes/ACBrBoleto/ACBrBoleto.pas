@@ -57,7 +57,7 @@ uses ACBrBase,  {Units da ACBr}
      Graphics, Contnrs, Classes;
 
 const
-  CACBrBoleto_Versao = '0.0.23a' ;
+  CACBrBoleto_Versao = '0.0.24a' ;
 
 type
   TACBrTitulo = class;
@@ -1656,7 +1656,8 @@ begin
 
       400 :
         begin
-          if Copy(SlRetorno.Strings[0],1,19) <> '02RETORNO01COBRANCA' then
+          if (Copy(SlRetorno.Strings[0],1,19) <> '02RETORNO01COBRANCA') or 
+             (Copy(SlRetorno.Strings[0],1,9) <> '02RETONRO')   then
              Raise Exception.Create( ACBrStr( NomeArq + sLineBreak +
                 'Não é um arquivo de Retorno de cobrança com layout CNAB400'));
           LayoutRemessa := c400 ;

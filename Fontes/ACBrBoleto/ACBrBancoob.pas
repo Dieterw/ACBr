@@ -60,6 +60,8 @@ type
     function GerarRegistroHeader400(NumeroRemessa : Integer): String; override;
     function GerarRegistroTransacao400(ACBrTitulo :TACBrTitulo): String; override;
     function GerarRegistroTrailler400( ARemessa: TStringList  ): String; override;
+
+    Procedure LerRetorno400(ARetorno:TStringList); override;
    end;
 
 implementation
@@ -378,5 +380,95 @@ begin
    Result:= UpperCase(Result);
 end;
 
+
+procedure TACBrBancoob.LerRetorno400(ARetorno: TStringList);
+var
+  ContLinha: Integer;
+  Titulo   : TACBrTitulo;
+
+  Linha,
+  rCedente,
+  rCNPJCPF,
+  DigitoNossoNumero: String;
+  i : Integer;
+begin
+   ContLinha := 0;
+
+   if (copy(ARetorno.Strings[0],1,9) <> '02RETORNO') then
+      raise Exception.Create(ACBrStr(ACBrBanco.ACBrBoleto.NomeArqRetorno + 'nao' +
+                             'é um arquivo de retorno do '+ Nome));
+
+   rCedente := trim(Copy(ARetorno[0],32,8));
+
+
+   ACBrBanco.ACBrBoleto.DataArquivo   := StringToDateTimeDef(Copy(ARetorno[0],95,2)+'/'+
+                                                             Copy(ARetorno[0],97,2)+'/'+
+                                                             Copy(ARetorno[0],99,2),0, 'DD/MM/YY' );
+
+   ACBrBanco.ACBrBoleto.DataCreditoLanc := StringToDateTimeDef(Copy(ARetorno[1],111,2)+'/'+
+                                                               Copy(ARetorno[1],113,2)+'/'+
+                                                               Copy(ARetorno[1],115,2),0, 'DD/MM/YY' );
+   rCNPJCPF := trim( Copy(ARetorno[1],4,14)) ;
+
+   with ACBrBanco.ACBrBoleto do
+   begin
+      Cedente.Nome    := rCedente;
+      Cedente.CNPJCPF := rCNPJCPF;
+
+      case StrToIntDef(Copy(ARetorno[1],2,2),0) of
+         11: Cedente.TipoInscricao:= pFisica;
+         14: Cedente.TipoInscricao:= pJuridica;
+         else
+            Cedente.TipoInscricao := pOutras;
+      end;
+
+      ACBrBanco.ACBrBoleto.ListadeBoletos.Clear;
+   end;
+
+   for ContLinha := 1 to ARetorno.Count - 2 do
+   begin
+      Linha := ARetorno[ContLinha] ;
+
+      if Copy(Linha,1,1)<> '1' then
+         Continue;
+
+      Titulo := ACBrBanco.ACBrBoleto.CriarTituloNaLista;
+
+      with Titulo do
+      begin
+         SeuNumero                   := copy(Linha,38,25);
+         NumeroDocumento             := copy(Linha,117,10);
+         OcorrenciaOriginal.Tipo     := CodOcorrenciaToTipo(StrToIntDef(
+                                        copy(Linha,109,2),0));
+         //05 = Liquidação Sem Registro
+
+         DataOcorrencia := StringToDateTimeDef( Copy(Linha,111,2)+'/'+
+                                                Copy(Linha,113,2)+'/'+
+                                                Copy(Linha,115,2),0, 'DD/MM/YY' );
+
+         Vencimento := StringToDateTimeDef( Copy(Linha,147,2)+'/'+
+                                            Copy(Linha,149,2)+'/'+
+                                            Copy(Linha,151,2),0, 'DD/MM/YY' );
+
+         ValorDocumento       := StrToFloatDef(Copy(Linha,153,13),0)/100;
+         ValorIOF             := StrToFloatDef(Copy(Linha,215,13),0)/100;
+         ValorAbatimento      := StrToFloatDef(Copy(Linha,228,13),0)/100;
+         ValorDesconto        := StrToFloatDef(Copy(Linha,241,13),0)/100;
+         ValorMoraJuros       := StrToFloatDef(Copy(Linha,267,13),0)/100;
+         ValorOutrosCreditos  := StrToFloatDef(Copy(Linha,280,13),0)/100;
+         ValorRecebido        := StrToFloatDef(Copy(Linha,254,13),0)/100;
+         NossoNumero          := copy( Copy(Linha,63,11),Length( Copy(Linha,63,11) )-TamanhoMaximoNossoNum+1  ,TamanhoMaximoNossoNum);
+         Carteira             := Copy(Linha,86,3);
+         ValorDespesaCobranca := StrToFloatDef(Copy(Linha,182,13),0)/100;
+         ValorOutrasDespesas  := StrToFloatDef(Copy(Linha,189,13),0)/100;
+
+         if StrToIntDef(Copy(Linha,176,6),0) <> 0 then
+            DataCredito:= StringToDateTimeDef( Copy(Linha,176,2)+'/'+
+                                               Copy(Linha,178,2)+'/'+
+                                               Copy(Linha,180,2),0, 'DD/MM/YY' );
+      end;
+   end;
+
+end;
 
 end.

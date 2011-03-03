@@ -105,7 +105,9 @@ begin
       aCarteira    := StrToIntDef(Carteira,0);
       if (aCarteira = 16) or (aCarteira = 17) or (aCarteira = 18) then
        begin
-         if Length(AConvenio) <= 4 then
+         if (ACBrTitulo.Carteira = '18') and (Length(AConvenio) = 6) then
+           ANossoNumero := padR(ANossoNumero, 17, '0')
+         else if Length(AConvenio) <= 4 then
             ANossoNumero := padR(AConvenio, 4, '0') + padR(ANossoNumero, 7, '0')
          else if (Length(AConvenio) > 4) and (Length(AConvenio) <= 6) then
             ANossoNumero := padR(AConvenio, 6, '0') + padR(ANossoNumero, 5, '0')
@@ -132,15 +134,26 @@ begin
     begin
       FatorVencimento := CalcularFatorVencimento(ACBrTitulo.Vencimento);
 
-      CodigoBarras := IntToStrZero(Banco.Numero, 3) +
-                      '9' +
-                      FatorVencimento +
-                      IntToStrZero(Round(ACBrTitulo.ValorDocumento * 100), 10) +
-                      IfThen((Length(AConvenio) = 7), '000000', '') +
-                      ANossoNumero +
-                      IfThen((Length(AConvenio) < 7), padR(Cedente.Agencia, 4, '0'), '') +
-                      IfThen((Length(AConvenio) < 7), padR(Cedente.Conta, 8, '0'), '') +
-                      ACBrTitulo.Carteira;
+      if (ACBrTitulo.Carteira = '18') and (Length(AConvenio) = 6) then
+       begin
+        CodigoBarras := IntToStrZero(Banco.Numero, 3) +
+                        '9' +
+                        FatorVencimento +
+                        IntToStrZero(Round(ACBrTitulo.ValorDocumento * 100), 10) +
+                        AConvenio + ANossoNumero + '21';
+       end
+      else
+       begin
+         CodigoBarras := IntToStrZero(Banco.Numero, 3) +
+                         '9' +
+                         FatorVencimento +
+                         IntToStrZero(Round(ACBrTitulo.ValorDocumento * 100), 10) +
+                         IfThen((Length(AConvenio) = 7), '000000', '') +
+                         ANossoNumero +
+                         IfThen((Length(AConvenio) < 7), padR(Cedente.Agencia, 4, '0'), '') +
+                         IfThen((Length(AConvenio) < 7), padR(Cedente.Conta, 8, '0'), '') +
+                         ACBrTitulo.Carteira;
+      end;
 
       DigitoCodBarras := CalcularDigitoCodigoBarras(CodigoBarras);
     end;

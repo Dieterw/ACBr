@@ -102,7 +102,7 @@ Portanto, apenas inicie o instalador e leia as instruções na tela :)
   ( Leia o arquivo ManualACBrMonitor.html )
 
   Para duvidas, suporte e sugestões ao ACBrMonitor por favor acessar:
-  http://www.forumweb.com.br/foruns/index.php?showforum=465
+  http://www.djsystem.com.br/acbr/forum/
 
 4.1 COMO USAR O ACBrMonitorConsole no Linux
 

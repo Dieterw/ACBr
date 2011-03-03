@@ -100,4 +100,4 @@ ATENÇÃO - Para envio de email com conexão segura é necessário que as DLLs do Ope
           estejam na máquina (no diretório do EXE ou na System32)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-PARA TIRAR DÚVIDAS SOBRE O COMPONENTE UTILIZE O FÓRUMWEB - http://www.forumweb.com.br/foruns/index.php?/forum/465-projeto-acbr/
+PARA TIRAR DÚVIDAS SOBRE O COMPONENTE UTILIZE O FORUM OFICIAL - http://www.djsystem.com.br/acbr/forum/

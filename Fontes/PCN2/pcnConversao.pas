@@ -204,6 +204,7 @@ function StrToCSOSNIcms(var ok: boolean; const s: string): TpcnCSOSNIcms;
 function CSTICMSToStrTagPos(const t: TpcnCSTIcms): string;
 function CSTICMSToStrTagPosText(const t: TpcnCSTIcms): string;
 function CSOSNToStrTagPos(const t: TpcnCSOSNIcms): string;
+function CSOSNToStrID(const t: TpcnCSOSNIcms): string;
 
 function modBCToStr(const t: TpcnDeterminacaoBaseIcms): string;
 function StrTomodBC(var ok: boolean; const s: string): TpcnDeterminacaoBaseIcms;
@@ -554,6 +555,18 @@ begin
   end;
 end;
 
+function CSOSNToStrID(const t: TpcnCSOSNIcms): string;
+begin
+  case  t of
+    csosn101                               : result := '10c';
+    csosn102, csosn103, csosn300, csosn400 : result := '10d';
+    csosn201                               : result := '10e';
+    csosn202,csosn203                      : result := '10f';
+    csosn500                               : result := '10g';
+    csosn900                               : result := '10h';
+  end;
+end;
+
 //***************************************************************************
 
 // CST ICMS ********************************************************************
@@ -575,8 +588,8 @@ begin
   // ID -> N10b - Grupo de informação do ICMS ST devido para a UF de destino,nas operações interestaduais de produtos que tiveram retenção antecipada de ICMS por ST na UF do remetente. Repasse via Substituto Tributário. (v2.0)
   // ID -> N11  - ICMS devido para outras UF
   // ID -> N12  - Outros
-  result := EnumeradoToStr(t, ['00' , '10' , '20' , '30' , '40' , '41' , '50' , '51' , '60' , '70' , '80' , '81', '90','10','90','41'],
-                              [cst00, cst10, cst20, cst30, cst40, cst41, cst50, cst51, cst60, cst70, cst80, cst81, cst90,cstPart10 , cstPart90 , cstRep41]);
+  result := EnumeradoToStr(t, ['00' , '10' , '20' , '30' , '40' , '41' , '50' , '51' , '60' , '70' , '80' , '81', '90', '10', '90', '41'],
+                              [cst00, cst10, cst20, cst30, cst40, cst41, cst50, cst51, cst60, cst70, cst80, cst81, cst90, cstPart10 , cstPart90 , cstRep41]);
 end;
 
 // A função abaixo foi alterada em 21/06/2010 por: Italo Jurisato Junior
@@ -593,8 +606,8 @@ end;
 // Para ficar compativel com a função: CSTICMSToStr, logo acima
 function CSTICMSToStrTagPos(const t: TpcnCSTIcms): string;
 begin
-  result := EnumeradoToStr(t, ['02', '03', '04', '05', '06', '06', '06', '07', '08', '09', '10', '11', '12'],
-    [cst00, cst10, cst20, cst30, cst40, cst41, cst50, cst51, cst60, cst70, cst80, cst81, cst90]);
+  result := EnumeradoToStr(t, ['02', '03', '04', '05', '06', '06', '06', '07', '08', '09', '10', '11', '12', '10a', '10a', '10b'],
+    [cst00, cst10, cst20, cst30, cst40, cst41, cst50, cst51, cst60, cst70, cst80, cst81, cst90, cstPart10 , cstPart90 , cstRep41]);
 end;
 
 // A função abaixo foi alterada em 21/06/2010 por: Italo Jurisato Junior

@@ -200,12 +200,14 @@ begin
   chave := '';
   if NFe.infNFe.Versao >= 2 then
    begin
+     FSchema := TsPL006;
      if not GerarChave(Chave, nfe.ide.cUF, nfe.ide.cNF, nfe.ide.modelo, nfe.ide.serie,
        nfe.ide.nNF, StrToInt(TpEmisToStr(nfe.ide.tpEmis)), nfe.ide.dEmi, nfe.emit.CNPJCPF) then
        Gerador.wAlerta('A01', 'infNFe', DSC_CHAVE, ERR_MSG_GERAR_CHAVE);
    end
   else
    begin
+     FSchema := TsPL005c;
      if not GerarChaveCTe(chave, nfe.ide.cUF, nfe.ide.cNF, nfe.ide.modelo, nfe.ide.serie,
        nfe.ide.nNF, nfe.ide.dEmi, nfe.emit.CNPJCPF) then
        Gerador.wAlerta('A01', 'infNFe', DSC_CHAVE, ERR_MSG_GERAR_CHAVE);
@@ -896,7 +898,24 @@ begin
       crtRegimeNormal, crtSimplesExcessoReceita :
          begin
 
-	         sTagTemp := BuscaTag( nfe.Det[i].Imposto.ICMS.CST );
+            if (nfe.Det[i].Imposto.ICMS.CST = cst41) and       //Ajuste para funcionar no ACBrNFeMonitor
+               ((nfe.Det[i].Imposto.ICMS.vBCSTRet <> 0) or     //Qdo passar CST 41 e algum campo de repasse de ICMS ST
+                (nfe.Det[i].Imposto.ICMS.vICMSSTRet <> 0) or   //estiver preenchido será trocado o cst para cstRep41
+                (nfe.Det[i].Imposto.ICMS.vBCSTDest <> 0) or
+                (nfe.Det[i].Imposto.ICMS.vICMSSTDest <> 0)) then
+               nfe.Det[i].Imposto.ICMS.CST := cstRep41;
+
+            if (nfe.Det[i].Imposto.ICMS.CST = cst10) and       //Ajuste para funcionar no ACBrNFeMonitor
+               ((nfe.Det[i].Imposto.ICMS.UFST <> '') or        //Qdo passar CST 10 e algum campo de partilha de ICMS ST
+                (nfe.Det[i].Imposto.ICMS.pBCOp <> 0)) then     //estiver preenchido será trocado o cst para cstPart10
+               nfe.Det[i].Imposto.ICMS.CST := cstPart10;
+
+            if (nfe.Det[i].Imposto.ICMS.CST = cst90) and       //Ajuste para funcionar no ACBrNFeMonitor
+               ((nfe.Det[i].Imposto.ICMS.UFST <> '') or        //Qdo passar CST 90 e algum campo de partilha de ICMS ST
+                (nfe.Det[i].Imposto.ICMS.pBCOp <> 0)) then     //estiver preenchido será trocado o cst para cstPart90
+               nfe.Det[i].Imposto.ICMS.CST := cstPart90;
+               
+	          sTagTemp := BuscaTag( nfe.Det[i].Imposto.ICMS.CST );
 
             Gerador.wGrupo('ICMS' + sTagTemp, 'N' + CSTICMSTOStrTagPos(nfe.Det[i].Imposto.ICMS.CST));
 
@@ -911,10 +930,15 @@ begin
                      Gerador.wCampo(tcDe2, 'N16', 'pICMS   ', 01, 05, 1, nfe.Det[i].Imposto.ICMS.pICMS, DSC_PICMS);
                      Gerador.wCampo(tcDe2, 'N17', 'vICMS   ', 01, 15, 1, nfe.Det[i].Imposto.ICMS.vICMS, DSC_VICMS);
                   end;
-               cst10 :
+               cst10,
+               cstPart10 :
 				          begin
                      Gerador.wCampo(tcStr, 'N13', 'modBC   ', 01, 01, 1, modBCToStr(nfe.Det[i].Imposto.ICMS.modBC), DSC_MODBC);
                      Gerador.wCampo(tcDe2, 'N15', 'vBC     ', 01, 15, 1, nfe.Det[i].Imposto.ICMS.vBC, DSC_VBC);
+                     if (nfe.Det[i].Imposto.ICMS.UFST <> '') or
+                        (nfe.Det[i].Imposto.ICMS.pBCOp <> 0) or
+                        (nfe.Det[i].Imposto.ICMS.CST = cstPart10) then
+                        Gerador.wCampo(tcDe2, 'N14', 'pRedBC  ', 01, 05, 1, nfe.Det[i].Imposto.ICMS.pRedBC, DSC_PREDBC);
                      Gerador.wCampo(tcDe2, 'N16', 'pICMS   ', 01, 05, 1, nfe.Det[i].Imposto.ICMS.pICMS, DSC_PICMS);
                      Gerador.wCampo(tcDe2, 'N17', 'vICMS   ', 01, 15, 1, nfe.Det[i].Imposto.ICMS.vICMS, DSC_VICMS);
                      Gerador.wCampo(tcStr, 'N18', 'modBCST ', 01, 01, 1, modBCSTToStr(nfe.Det[i].Imposto.ICMS.modBCST), DSC_MODBCST);
@@ -923,6 +947,13 @@ begin
                      Gerador.wCampo(tcDe2, 'N21', 'vBCST   ', 01, 15, 1, nfe.Det[i].Imposto.ICMS.vBCST, DSC_VBCST);
                      Gerador.wCampo(tcDe2, 'N22', 'pICMSST ', 01, 05, 1, nfe.Det[i].Imposto.ICMS.pICMSST, DSC_PICMSST);
                      Gerador.wCampo(tcDe2, 'N23', 'vICMSST ', 01, 15, 1, nfe.Det[i].Imposto.ICMS.vICMSST, DSC_VICMSST);
+                     if (nfe.Det[i].Imposto.ICMS.UFST <> '') or
+                        (nfe.Det[i].Imposto.ICMS.pBCOp <> 0) or
+                        (nfe.Det[i].Imposto.ICMS.CST = cstPart10) then
+                      begin
+                        Gerador.wCampo(tcDe2, 'N25', 'pBCOp   ', 01, 05, 1, nfe.Det[i].Imposto.ICMS.pBCOp, DSC_PBCOP);
+                        Gerador.wCampo(tcStr, 'N24', 'UFST    ', 02, 02, 1, nfe.Det[i].Imposto.ICMS.UFST, DSC_UFST);
+                      end;
                   end;
                cst20 :
                   begin
@@ -970,7 +1001,7 @@ begin
                       begin
                         Gerador.wCampo(tcDe2, 'N21', 'vBCST   ', 01, 15, 1, nfe.Det[i].Imposto.ICMS.vBCST, DSC_VBCST);
                         Gerador.wCampo(tcDe2, 'N23', 'vICMSST ', 01, 15, 1, nfe.Det[i].Imposto.ICMS.vICMSST, DSC_VICMSST);
-                      end;   
+                      end;
                   end;
                cst70 :
                   begin
@@ -1000,27 +1031,13 @@ begin
                      Gerador.wCampo(tcDe2, 'N21', 'vBCST   ', 01, 15, 1, nfe.Det[i].Imposto.ICMS.vBCST, DSC_VBCST);
                      Gerador.wCampo(tcDe2, 'N22', 'pICMSST ', 01, 05, 1, nfe.Det[i].Imposto.ICMS.pICMSST, DSC_PICMSST);
                      Gerador.wCampo(tcDe2, 'N23', 'vICMSST ', 01, 15, 1, nfe.Det[i].Imposto.ICMS.vICMSST, DSC_VICMSST);
-                     if nfe.Det[i].Imposto.ICMS.CST = cstPart90 then
+                     if (nfe.Det[i].Imposto.ICMS.UFST <> '') or
+                        (nfe.Det[i].Imposto.ICMS.pBCOp <> 0) or
+                        (nfe.Det[i].Imposto.ICMS.CST = cstPart90) then
                      begin
-                        Gerador.wCampo(tcStr, 'N24', 'UFST   ', 02, 02, 1, nfe.Det[i].Imposto.ICMS.UFST, DSC_UFST);
                         Gerador.wCampo(tcDe2, 'N25', 'pBCOp  ', 01, 05, 1, nfe.Det[i].Imposto.ICMS.pBCOp, DSC_PBCOP);
+                        Gerador.wCampo(tcStr, 'N24', 'UFST   ', 02, 02, 1, nfe.Det[i].Imposto.ICMS.UFST, DSC_UFST);
                      end;
-                  end;
-		           cstPart10 :
-                  begin
-                     Gerador.wCampo(tcStr, 'N13', 'modBC   ', 01, 01, 1, modBCToStr(nfe.Det[i].Imposto.ICMS.modBC), DSC_MODBC);
-                     Gerador.wCampo(tcDe2, 'N15', 'vBC     ', 01, 15, 1, nfe.Det[i].Imposto.ICMS.vBC, DSC_VBC);
-                     Gerador.wCampo(tcDe2, 'N14', 'pRedBC  ', 01, 05, 0, nfe.Det[i].Imposto.ICMS.pRedBC, DSC_PREDBC);
-                     Gerador.wCampo(tcDe2, 'N16', 'pICMS   ', 01, 05, 1, nfe.Det[i].Imposto.ICMS.pICMS, DSC_PICMS);
-                     Gerador.wCampo(tcDe2, 'N17', 'vICMS   ', 01, 15, 1, nfe.Det[i].Imposto.ICMS.vICMS, DSC_VICMS);
-                     Gerador.wCampo(tcStr, 'N18', 'modBCST ', 01, 01, 1, modBCSTToStr(nfe.Det[i].Imposto.ICMS.modBCST), DSC_MODBCST);
-                     Gerador.wCampo(tcDe2, 'N19', 'pMVAST  ', 01, 05, 0, nfe.Det[i].Imposto.ICMS.pMVAST, DSC_PMVAST);
-                     Gerador.wCampo(tcDe2, 'N20', 'pRedBCST', 01, 05, 0, nfe.Det[i].Imposto.ICMS.pRedBCST, DSC_PREDBCST);
-                     Gerador.wCampo(tcDe2, 'N21', 'vBCST   ', 01, 15, 1, nfe.Det[i].Imposto.ICMS.vBCST, DSC_VBCST);
-                     Gerador.wCampo(tcDe2, 'N22', 'pICMSST ', 01, 05, 1, nfe.Det[i].Imposto.ICMS.pICMSST, DSC_PICMSST);
-                     Gerador.wCampo(tcDe2, 'N23', 'vICMSST ', 01, 15, 1, nfe.Det[i].Imposto.ICMS.vICMSST, DSC_VICMSST);
-                     Gerador.wCampo(tcDe2, 'N25', 'pBCOp   ', 01, 05, 1, nfe.Det[i].Imposto.ICMS.pBCOp, DSC_PBCOP);
-                     Gerador.wCampo(tcStr, 'N24', 'UFST    ', 02, 02, 1, nfe.Det[i].Imposto.ICMS.UFST, DSC_UFST);
                   end;
 	            	cstRep41 :
 		               begin
@@ -1037,7 +1054,7 @@ begin
          begin
             //Grupo do Simples Nacional
             sTagTemp  := CSOSNTOStrTagPos(nfe.Det[i].Imposto.ICMS.CSOSN);
-            Gerador.wGrupo('ICMSSN' + sTagTemp, 'N' + CSOSNTOStrTagPos(nfe.Det[i].Imposto.ICMS.CSOSN));
+            Gerador.wGrupo('ICMSSN' + sTagTemp, 'N' + CSOSNToStrID(nfe.Det[i].Imposto.ICMS.CSOSN));
             Gerador.wCampo(tcStr, 'N11' , 'orig ', 01, 01, 1, OrigTOStr(nfe.Det[i].Imposto.ICMS.orig), DSC_ORIG);
             Gerador.wCampo(tcStr, 'N12a', 'CSOSN', 03, 03, 1, CSOSNIcmsToStr(nfe.Det[i].Imposto.ICMS.CSOSN), DSC_CSOSN);
             case  nfe.Det[i].Imposto.ICMS.CSOSN of

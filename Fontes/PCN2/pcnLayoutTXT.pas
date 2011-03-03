@@ -172,8 +172,12 @@ begin
     LoadLayout('<E01>   E02|CNPJ¨'); //ok
     LoadLayout('<E01>   E03|CPF¨'); //ok
     LoadLayout('<E05>   E05|XLgr¨|Nro¨|XCpl¨|XBairro¨|CMun¨|XMun¨|UF¨|CEP¨|CPais¨|XPais¨|Fone¨'); //ok
-    LoadLayout('<F01>     F|CNPJ¨|XLgr¨|Nro¨|XCpl¨|XBairro¨|CMun¨|XMun¨|UF¨'); //ok
-    LoadLayout('<G01>     G|CNPJ¨|XLgr¨|Nro¨|XCpl¨|XBairro¨|CMun¨|XMun¨|UF¨'); //ok
+    LoadLayout('<F01>     F|XLgr¨|Nro¨|XCpl¨|XBairro¨|CMun¨|XMun¨|UF¨'); //ok
+    LoadLayout('<F01>   F02|CNPJ¨'); //ok
+    LoadLayout('<F01>  F02a|CPF¨');  //ok
+    LoadLayout('<G01>     G|XLgr¨|Nro¨|XCpl¨|XBairro¨|CMun¨|XMun¨|UF¨'); //ok
+    LoadLayout('<G01>   G02|CNPJ¨'); //ok
+    LoadLayout('<G01>  G02a|CPF¨');  //ok
     LoadLayout('<H01>     H|NItem¨|InfAdProd¨'); //ok
     LoadLayout('<I01>     I|CProd¨|CEAN¨|XProd¨|NCM¨|EXTIPI¨|CFOP¨|UCom¨|QCom¨|VUnCom¨|VProd¨|CEANTrib¨|UTrib¨|QTrib¨|VUnTrib¨|VFrete¨|VSeg¨|VDesc¨|VOutro¨|indTot¨|xPed¨|nItemPed¨'); //ok
     LoadLayout('<I18>   I18|NDI¨|DDI¨|XLocDesemb¨|UFDesemb¨|DDesemb¨|CExportador¨'); //ok
@@ -181,7 +185,7 @@ begin
     LoadLayout('<J01>     J|TpOp¨|Chassi¨|CCor¨|XCor¨|Pot¨|cilin¨|PesoL¨|PesoB¨|NSerie¨|TpComb¨|NMotor¨|CMT¨|Dist¨|RENAVAM¨|AnoMod¨|AnoFab¨|TpPint¨|TpVeic¨|EspVeic¨|VIN¨|CondVeic¨|CMod¨|cCorDENATRAN¨|lota¨|tpRest¨'); //ok
     LoadLayout('<K01>     K|NLote¨|QLote¨|DFab¨|DVal¨|VPMC¨'); //ok
     LoadLayout('<L00>     L|TpArma¨|NSerie¨|NCano¨|Descr¨'); //ok
-    LoadLayout('<L01>   L01|CProdANP¨|CODIF¨|QTemp¨'); //ok
+    LoadLayout('<L01>   L01|CProdANP¨|CODIF¨|QTemp¨|UFCons¨'); //ok
     LoadLayout('<L105> L105|QBCProd¨|VAliqProd¨|VCIDE¨'); //ok
     LoadLayout('<L109> L109|VBCICMS¨|VICMS¨|VBCICMSST¨|VICMSST¨'); //ok
     LoadLayout('<L114> L114|VBCICMSSTDest¨|VICMSSTDest¨'); //ok
@@ -197,14 +201,14 @@ begin
     LoadLayout('<N08>   N08|Orig¨|CST¨|VBCSTRet¨|VICMSSTRet¨'); //ok
     LoadLayout('<N09>   N09|Orig¨|CST¨|ModBC¨|PRedBC¨|VBC¨|PICMS¨|VICMS¨|ModBCST¨|PMVAST¨|PRedBCST¨|VBCST¨|PICMSST¨|VICMSST¨'); //ok
     LoadLayout('<N10>   N10|Orig¨|CST¨|ModBC¨|VBC¨|PRedBC¨|PICMS¨|VICMS¨|ModBCST¨|PMVAST¨|PRedBCST¨|VBCST¨|PICMSST¨|VICMSST¨'); //ok
-    LoadLayout('<N10a>  N10a|Orig¨|CST¨|ModBC¨|PRedBC¨|VBC¨|PICMS¨|VICMS¨|ModBCST¨|PMVAST¨|PRedBCST¨|VBCST¨|PICMSST¨|VICMSST¨|pBCOp¨|UFST¨');
-    LoadLayout('<N10b>  N10b|Orig¨|CST¨|vBCSTRet¨|vICMSSTRet¨|vBCSTDest¨|vICMSSTDest¨');
-    LoadLayout('<N10c>  N10c|Orig¨|CSOSN¨|pCredSN¨|vCredICMSSN¨');
-    LoadLayout('<N10d>  N10d|Orig¨|CSOSN¨');
-    LoadLayout('<N10e>  N10e|Orig¨|CSOSN¨|modBCST¨|pMVAST¨|pRedBCST¨|vBCST¨|pICMSST¨|vICMSST¨|pCredSN¨|vCredICMSSN¨');
-    LoadLayout('<N10f>  N10f|Orig¨|CSOSN¨|modBCST¨|pMVAST¨|pRedBCST¨|vBCST¨|pICMSST¨|vICMSST¨');
-    LoadLayout('<N10g>  N10g|Orig¨|CSOSN¨|modBCST¨|vBCSTRet¨|vICMSSTRet¨');
-    LoadLayout('<N10h>  N10h|Orig¨|CSOSN¨|modBC¨|vBC¨|pRedBC¨|pICMS¨|vICMS¨|modBCST¨|pMVAST¨|pRedBCST¨|vBCST¨|pICMSST¨|vICMSST¨|pCredSN¨|vCredICMSSN¨');
+    LoadLayout('<N10a> N10a|Orig¨|CST¨|ModBC¨|PRedBC¨|VBC¨|PICMS¨|VICMS¨|ModBCST¨|PMVAST¨|PRedBCST¨|VBCST¨|PICMSST¨|VICMSST¨|pBCOp¨|UFST¨');
+    LoadLayout('<N10b> N10b|Orig¨|CST¨|vBCSTRet¨|vICMSSTRet¨|vBCSTDest¨|vICMSSTDest¨');
+    LoadLayout('<N10c> N10c|Orig¨|CSOSN¨|pCredSN¨|vCredICMSSN¨');
+    LoadLayout('<N10d> N10d|Orig¨|CSOSN¨');
+    LoadLayout('<N10e> N10e|Orig¨|CSOSN¨|modBCST¨|pMVAST¨|pRedBCST¨|vBCST¨|pICMSST¨|vICMSST¨|pCredSN¨|vCredICMSSN¨');
+    LoadLayout('<N10f> N10f|Orig¨|CSOSN¨|modBCST¨|pMVAST¨|pRedBCST¨|vBCST¨|pICMSST¨|vICMSST¨');
+    LoadLayout('<N10g> N10g|Orig¨|CSOSN¨|modBCST¨|vBCSTRet¨|vICMSSTRet¨');
+    LoadLayout('<N10h> N10h|Orig¨|CSOSN¨|modBC¨|vBC¨|pRedBC¨|pICMS¨|vICMS¨|modBCST¨|pMVAST¨|pRedBCST¨|vBCST¨|pICMSST¨|vICMSST¨|pCredSN¨|vCredICMSSN¨');
     LoadLayout('<O01>     O|ClEnq¨|CNPJProd¨|CSelo¨|QSelo¨|CEnq¨'); //ok
     LoadLayout('<O07>   O07|CST¨|VIPI¨'); //ok
     LoadLayout('<O07>   O10|VBC¨|PIPI¨'); //ok
@@ -250,7 +254,7 @@ begin
     LoadLayout('<Y07>   Y07|NDup¨|DVenc¨|VDup¨'); //ok
     LoadLayout('<Z01>     Z|InfAdFisco¨|InfCpl¨'); //ok
     LoadLayout('<Z04>   Z04|XCampo¨|XTexto¨'); //ok
-    //adLayout('<Z07>   Z07|XCampo¨|XTexto¨'); //ok - ?
+    LoadLayout('<Z07>   Z07|XCampo¨|XTexto¨'); //ok - ?
     LoadLayout('<Z10>   Z10|NProc¨|IndProc¨'); //ok
     LoadLayout('<ZA01>   ZA|UFEmbarq¨|XLocEmbarq¨'); //ok
     LoadLayout('<ZB01>   ZB|XNEmp¨|XPed¨|XCont¨'); //ok

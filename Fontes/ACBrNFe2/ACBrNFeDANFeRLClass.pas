@@ -74,6 +74,8 @@
 |*  - Tratamento do tamanho da fonte da razão social do emitente
 |* 25/11/2010: Peterson de Cerqueira Matos
 |*  - Acréscimo da propriedade "ExibirEAN"
+|* 16/02/2011: Fernando Emiliano David Nunes
+|*  - Acrescentado ao Método ImprimeDANFEPDF a condição ELSE quando NFE <> NIL
 ******************************************************************************}
 {$I ACBr.inc}
 unit ACBrNFeDANFeRLClass;
@@ -189,21 +191,31 @@ begin
   end;
 
   if NFE = nil then
-   begin
-     for i:= 0 to TACBrNFe(ACBrNFe).NotasFiscais.Count-1 do
-      begin
-        sFile := TACBrNFe(ACBrNFe).DANFE.PathPDF +
-                 Copy(TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe.infNFe.ID,
-                 4, 44) + '.pdf';
-        frlDANFeRL.SavePDF(TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe,
-        Logo, MarcaDagua, LarguraCodProd, Email, ExibirResumoCanhoto, Fax,
-        NumCopias, Sistema, Site, Usuario, sFile, PosCanhoto, FormularioContinuo,
-        ExpandirLogoMarca, FonteDANFE, MargemSuperior,
-        MargemInferior, MargemEsquerda, MargemDireita, CasasDecimais._qCom,
-        CasasDecimais._vUnCom, ProdutosPorPagina, TamanhoFonte_RazaoSocial,
-        ExibirEAN);
-      end;
-   end;
+    begin
+      for i:= 0 to TACBrNFe(ACBrNFe).NotasFiscais.Count-1 do
+        begin
+          sFile := TACBrNFe(ACBrNFe).DANFE.PathPDF +
+                   Copy(TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe.infNFe.ID,
+                   4, 44) + '.pdf';
+          frlDANFeRL.SavePDF(TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe,
+          Logo, MarcaDagua, LarguraCodProd, Email, ExibirResumoCanhoto, Fax,
+          NumCopias, Sistema, Site, Usuario, sFile, PosCanhoto, FormularioContinuo,
+          ExpandirLogoMarca, FonteDANFE, MargemSuperior,
+          MargemInferior, MargemEsquerda, MargemDireita, CasasDecimais._qCom,
+          CasasDecimais._vUnCom, ProdutosPorPagina, TamanhoFonte_RazaoSocial,
+          ExibirEAN);
+        end;
+    end
+  else
+    begin
+      sFile := Self.PathPDF + Copy(NFe.infNFe.ID, 4, 44) + '.pdf';
+      frlDANFeRL.SavePDF(NFe, Logo, MarcaDagua, LarguraCodProd, Email,
+      ExibirResumoCanhoto, Fax, NumCopias, Sistema, Site, Usuario, sFile,
+      PosCanhoto, FormularioContinuo, ExpandirLogoMarca, FonteDANFE,
+      MargemSuperior, MargemInferior, MargemEsquerda, MargemDireita,
+      CasasDecimais._qCom, CasasDecimais._vUnCom, ProdutosPorPagina,
+      TamanhoFonte_RazaoSocial, ExibirEAN);
+    end;
 
   frlDANFeRL.Free;
 end;

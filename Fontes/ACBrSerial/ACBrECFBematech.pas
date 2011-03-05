@@ -134,7 +134,7 @@ const ErrosST2 : array[0..7] of string =
        'Memória fiscal lotada',
        'Tipo de parâmetro de CMD inválido') ;
 
-  ErrosST3: array [0 .. 217] of string = (
+  ErrosST3: array [0 .. 218] of string = (
     { 0 } 'Comando ok',
     { 1 } 'Comando inválido',
     { 2 } 'Erro desconhecido',
@@ -352,7 +352,8 @@ const ErrosST2 : array[0..7] of string =
     { 214 } 'Intervalo inválido',
     { 215 } 'Usuário já programado',
     { 216 } 'Troca de MFD não danificada não permitida',
-    { 217 } 'Detectada abertura do equipamento');
+    { 217 } 'Detectada abertura do equipamento',
+    { 218 } 'Cancelamento de Acréscimo/Desconto não permitido');
 
 const ETX = #03 ;
 
@@ -1726,8 +1727,8 @@ Var StrRet : AnsiString ;
     FPagto : TACBrECFFormaPagamento ;
     Descr : String ;
 begin
-  BytesResp := 1925 ;
-  StrRet := EnviaComando( #35+#32, 8 ) ;
+  //BytesResp := 1925 ;
+  StrRet := RetornaInfoECF( '32' ); //, 8 ) ;
   //  1 + (52 * 16) + (52 * 10) + (52 * 10) + (52 * 1)
   //  1 + 832 + 520 + 520 + 52 = 1925
 
@@ -1767,8 +1768,8 @@ begin
   try
     if fpMFD then
     begin
-      BytesResp  := 570;
-      RetCmd  := EnviaComando( #35 + #51 );
+      //BytesResp  := 570;
+      RetCmd  := RetornaInfoECF( '51' );
 
       for Cont := 1 to 30 do
       begin
@@ -3736,7 +3737,7 @@ procedure TACBrECFBematech.ArquivoMFD_DLL(COOInicial, COOFinal: Integer;
 Var
   ClicheSL : TStringList ;
   Resp : Integer ;
-  DiaIni, DiaFim, Prop, ArqTmp, cEndereco, cRazao : AnsiString ;
+  DiaIni, DiaFim, Prop, ArqTmp, cEndereco, cRazao, COOIni, CooFim : AnsiString ;
   OldAtivo : Boolean ;
 //iACK, iST1, iST2, iST3: Integer;
   cArqTemp, cArqTempTXT : TextFile;
@@ -3748,6 +3749,8 @@ begin
   DeleteFile( ArqTmp + '.mfd' ) ;
 
   Prop   := IntToStr( StrToIntDef( UsuarioAtual, 1) ) ;
+  CooIni := IntToStrZero( COOInicial, 6 ) ;
+  CooFim := IntToStrZero( COOFinal, 6 ) ;
 
   { Obtendo Dados do Usuário }
   ClicheSL  := TStringList.Create ;
@@ -3796,11 +3799,11 @@ begin
 
      AbrePortaSerialDLL( fpDevice.Porta, ExtractFilePath( NomeArquivo ) ) ;
 
-     Resp := xBematech_FI_DownloadMFD( PChar( ArqTmp + '.mfd'),   // Arquivo de Saida
+     Resp := xBematech_FI_DownloadMFD( PAnsiChar( ArqTmp + '.mfd'),   // Arquivo de Saida
                                        '2',                       // 1 = Por Data
-                                       PChar( IntToStr(COOInicial) ),
-                                       PChar( IntToStr(COOFinal) ),
-                                       PChar( Prop ) ) ;          // Propietário Atual
+                                       PAnsiChar( CooIni ),
+                                       PAnsiChar( CooFim ),
+                                       PAnsiChar( Prop ) ) ;          // Propietário Atual
      if (Resp <> 1) then
         raise Exception.Create( ACBrStr( 'Erro ao executar Bematech_FI_DownloadMFD.'+sLineBreak+
                                          'Cod.: '+IntToStr(Resp) )) ;
@@ -3810,8 +3813,8 @@ begin
                                'Arquivo: "'+ArqTmp + '.mfd" não gerado' )) ;
 
 
-     Resp := xGeraTxtPorCOO( PChar( ArqTmp + '.mfd'),
-                             PChar( ArqTmp+'_ESP_' + '.txt'),
+     Resp := xGeraTxtPorCOO( PAnsiChar( ArqTmp + '.mfd'),
+                             PAnsiChar( ArqTmp+'_ESP_' + '.txt'),
                              StrToInt(Prop),
                              COOInicial,
                              COOFinal);
@@ -3869,12 +3872,12 @@ begin
 //   Resp := xBematech_FI_HabilitaDesabilitaRetornoEstendidoMFD('1');
 //   Resp := xBematech_FI_RetornoImpressoraMFD(iACK,iST1,iST2,iST3);
 
-     Resp := xBemaGeraRegistrosTipoE( PChar( ArqTmp + '.mfd'),
-                                      Pchar( NomeArquivo ),
-                                      PChar( DiaIni ),
-                                      PChar( DiaFim ),
-                                      Pchar( cRazao ),
-                                      Pchar( cEndereco ),
+     Resp := xBemaGeraRegistrosTipoE( PAnsiChar( ArqTmp + '.mfd'),
+                                      PAnsichar( NomeArquivo ),
+                                      PAnsiChar( DiaIni ),
+                                      PAnsiChar( DiaFim ),
+                                      PAnsichar( cRazao ),
+                                      PAnsichar( cEndereco ),
                                       '','2','','','','','','','','','','','','','' );
 
      if (Resp < 0) or (Resp > 1) then

@@ -116,7 +116,7 @@ begin
       (*ER06 *)FxMotivo  := leitor.rCampo(tcStr, 'xMotivo');
       (*ER07 *)FcUF      := leitor.rCampo(tcInt, 'cUF');
 //      (*ER07a*)FchCTe    := leitor.rCampo(tcStr, 'chCTe'); // Comentado por Italo em 28/08/2010
-      
+
       if FcStat in  [100,101] then
        begin
          if (Leitor.rExtrai(1, 'protCTe') <> '') or (Leitor.rExtrai(1, 'infProt') <> '') then
@@ -129,6 +129,9 @@ begin
             protCTe.digVal   := Leitor.rCampo(tcStr, 'digVal');
             protCTe.cStat    := Leitor.rCampo(tcInt, 'cStat');
             protCTe.xMotivo  := Leitor.rCampo(tcStr, 'xMotivo');
+
+            // Incluido por Italo em 09/03/2011
+            FchCTe           := protCTe.chCTe;
          end;
        end;
 
@@ -144,6 +147,9 @@ begin
             retCancCTe.chCTe    := Leitor.rCampo(tcStr, 'chCTe');
             retCancCTe.dhRecbto := Leitor.rCampo(tcDatHor, 'dhRecbto');
             retCancCTe.nProt    := Leitor.rCampo(tcStr, 'nProt');
+
+            // Incluido por Italo em 09/03/2011
+            FchCTe           := retCancCTe.chCTe;
          end;
        end;
 

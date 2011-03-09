@@ -1608,7 +1608,7 @@ begin
     FcStat      := CTeRetorno.cStat;
     FxMotivo    := CTeRetorno.xMotivo;
     FcUF        := CTeRetorno.cUF;
-//    FCTeChave   := CTeRetorno.chCTe;
+    FCTeChave   := CTeRetorno.chCTe;
     FprotCTe    := CTeRetorno.protCTe;    //Arrumar
     FretCancCTe := CTeRetorno.retCancCTe; //Arrumar
     FMsg        := CTeRetorno.XMotivo;

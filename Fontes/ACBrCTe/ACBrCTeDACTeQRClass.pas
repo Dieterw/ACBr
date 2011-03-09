@@ -106,7 +106,8 @@ begin
                                     , MargemSuperior
                                     , MargemInferior
                                     , MargemEsquerda
-                                    , MargemDireita);
+                                    , MargemDireita
+                                    , Impressora);
   end
   else
     frmDACTeQRRetrato.Imprimir(CTe
@@ -125,7 +126,8 @@ begin
                                 , MargemSuperior
                                 , MargemInferior
                                 , MargemEsquerda
-                                , MargemDireita);
+                                , MargemDireita
+                                , Impressora);
 
   frmDACTeQRRetrato.Free;
 end;

@@ -821,6 +821,12 @@ TACBrECF = class( TACBrComponent )
        read FOnDepoisVendeItem write FOnDepoisVendeItem;
     property OnErrorVendeItem : TACBrECFEventoOnError
        read FOnErrorVendeItem write FOnErrorVendeItem;
+    property OnAntesSubtotalizaCupom: TACBrECFOnSubtotalizaCupom
+       read FOnAntesSubtotalizaCupom write FOnAntesSubtotalizaCupom;
+    property OnDepoisSubtotalizaCupom: TACBrECFOnSubtotalizaCupom
+       read FOnDepoisSubtotalizaCupom write FOnDepoisSubtotalizaCupom;
+    property OnErrorSubtotalizaCupom: TACBrECFEventoOnError
+       read FOnErrorSubtotalizaCupom write FOnErrorSubtotalizaCupom;
     property OnAntesEfetuaPagamento : TACBrECFOnEfetuaPagamento
        read FOnAntesEfetuaPagamento write FOnAntesEfetuaPagamento;
     property OnDepoisEfetuaPagamento : TACBrECFOnEfetuaPagamento

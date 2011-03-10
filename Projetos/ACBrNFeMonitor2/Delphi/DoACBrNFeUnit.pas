@@ -169,8 +169,8 @@ begin
                               'CUF='+IntToStr(ACBrNFe1.WebServices.Consulta.CUF)+sLineBreak+
                               'ChNFe='+ACBrNFe1.WebServices.Consulta.NFeChave+sLineBreak+
                               'DhRecbto='+DateTimeToStr(ACBrNFe1.WebServices.Consulta.DhRecbto)+sLineBreak+
-                              'NProt='+ACBrNFe1.WebServices.Consulta.Protocolo+sLineBreak;
-//                              'DigVal='+ACBrNFe1.WebServices.Consulta.digVal+sLineBreak;
+                              'NProt='+ACBrNFe1.WebServices.Consulta.Protocolo+sLineBreak+
+                              'DigVal='+ACBrNFe1.WebServices.Consulta.protNFe.digVal+sLineBreak;
 
            except
               raise Exception.Create(ACBrNFe1.WebServices.Consulta.Msg);
@@ -959,7 +959,7 @@ begin
          Ide.finNFe     := StrToFinNFe( OK,INIRec.ReadString( 'Identificacao','Finalidade','0'));
          Ide.procEmi    := StrToProcEmi(OK,INIRec.ReadString( 'Identificacao','procEmi','0')); //NFe2
          Ide.verProc    := INIRec.ReadString(  'Identificacao','verProc' ,'1.0.0.0' );
-         Ide.dhCont     := NotaUtil.StringToDate(INIRec.ReadString( 'Identificacao','dhCont'  ,'0')); //NFe2
+         Ide.dhCont     := NotaUtil.StringToDateTime(INIRec.ReadString( 'Identificacao','dhCont'  ,'0')); //NFe2
          Ide.xJust      := INIRec.ReadString(  'Identificacao','xJust' ,'' ); //NFe2
 
          I := 1 ;

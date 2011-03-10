@@ -762,10 +762,17 @@ begin
     qrmDadosEmitente.Lines.Clear;
     with EnderEmit do
     begin
-      qrmDadosEmitente.Lines.Add(XLgr + IfThen(Nro = '0', '', ', ' + Nro) + ' ' + XCpl + ' ' + XBairro);
+//      qrmDadosEmitente.Lines.Add(XLgr + IfThen(Nro = '0', '', ', ' + Nro) + ' ' + XCpl + ' ' + XBairro);
+      // Alterado por Italo em 10/03/2011
+      qrmDadosEmitente.Lines.Add(XLgr + IfThen(Nro = '0', '', ', ' + Nro));
+      if XCpl<>'' then qrmDadosEmitente.Lines.Add(XCpl);
+      if XBairro<>'' then qrmDadosEmitente.Lines.Add(XBairro);
       qrmDadosEmitente.Lines.Add('CEP: ' + CTeUtil.FormatarCEP(FormatFloat( '00000000', CEP )) + ' - ' + XMun + ' - ' + UF);
     end;
-    qrmDadosEmitente.Lines.Add('CNPJ: ' + CTeUtil.FormatarCNPJ(CNPJ) + ' INSCRIÇÃO ESTADUAL: ' + IE);
+//    qrmDadosEmitente.Lines.Add('CNPJ: ' + CTeUtil.FormatarCNPJ(CNPJ) + ' INSCRIÇÃO ESTADUAL: ' + IE);
+    // Alterado por Italo em 10/03/2011
+    qrmDadosEmitente.Lines.Add('CNPJ: ' + CTeUtil.FormatarCNPJ(CNPJ));
+    qrmDadosEmitente.Lines.Add('INSCRIÇÃO ESTADUAL: ' + IE);
     qrmDadosEmitente.Lines.Add('TELEFONE: ' + CTeUtil.FormatarFone(EnderEmit.Fone));
 
     if Trim(FUrl) <> '' then
@@ -1028,17 +1035,17 @@ begin
   for i := 0 to FCTe.vPrest.comp.Count - 1 do
   begin
     case i of
-      0..3:
+      0,3,6,9:
         begin
           qrmCompNome1.Lines.Add(FCTe.vPrest.comp[i].xNome);
           qrmCompValor1.Lines.Add(CteUtil.FormatarValor(msk10x2, FCTe.vPrest.comp[i].vComp));
         end;
-      4..7:
+      1,4,7,10:
         begin
           qrmCompNome2.Lines.Add(FCTe.vPrest.comp[i].xNome);
           qrmCompValor2.Lines.Add(CteUtil.FormatarValor(msk10x2, FCTe.vPrest.comp[i].vComp));
         end;
-      8..11:
+      2,5,8,11:
         begin
           qrmCompNome3.Lines.Add(FCTe.vPrest.comp[i].xNome);
           qrmCompValor3.Lines.Add(CteUtil.FormatarValor(msk10x2, FCTe.vPrest.comp[i].vComp));

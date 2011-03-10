@@ -3,6 +3,7 @@ object frmDACTeQR: TfrmDACTeQR
   Top = 114
   Width = 880
   Height = 708
+  VertScrollBar.Position = 457
   Caption = 'frmDACTeQR'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -16,7 +17,7 @@ object frmDACTeQR: TfrmDACTeQR
   TextHeight = 13
   object QRCTe: TQuickRep
     Left = 8
-    Top = 8
+    Top = -449
     Width = 794
     Height = 1123
     Frame.Color = clBlack
@@ -42,9 +43,9 @@ object frmDACTeQR: TfrmDACTeQR
     Page.Orientation = poPortrait
     Page.PaperSize = A4
     Page.Values = (
-      100.000000000000000000
+      80.000000000000000000
       2970.000000000000000000
-      100.000000000000000000
+      80.000000000000000000
       2100.000000000000000000
       100.000000000000000000
       100.000000000000000000

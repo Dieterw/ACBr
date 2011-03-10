@@ -111,7 +111,7 @@ type
     QRShape28: TQRShape;
     QRShape35: TQRShape;
     qrsFimItens: TQRShape;
-    qrbDadosExcEmitente: TQRBand;
+    qrbObs: TQRBand;
     qrbDadosDACTe: TQRChildBand;
     QRLabel29: TQRLabel;
     qrlNatOperacao: TQRLabel;
@@ -203,8 +203,8 @@ type
     QRLabel113: TQRLabel;
     qrlPaisToma: TQRLabel;
     qrlMunToma: TQRLabel;
-    qrbObs: TQRChildBand;
     qrbModRodFracionado: TQRChildBand;
+    qrbLotacaoSim: TQRChildBand;
     QRLabel10: TQRLabel;
     QRShape1: TQRShape;
     qrmObs: TQRMemo;
@@ -333,8 +333,8 @@ type
     QRShape60: TQRShape;
     QRShape61: TQRShape;
     QRShape62: TQRShape;
+    qrbSistema: TQRChildBand;
     qrbRecibo: TQRChildBand;
-    qrbLotacaoSim: TQRChildBand;
     QRShape10: TQRShape;
     QRLabel65: TQRLabel;
     QRShape2: TQRShape;
@@ -382,7 +382,7 @@ type
     QRShape42: TQRShape;
     QRShape43: TQRShape;
     QRShape44: TQRShape;
-    qrbSistema: TQRChildBand;
+    qrbDadosExcEmitente: TQRChildBand;
     QRLabel15: TQRLabel;
     QRSysData1: TQRSysData;
     qrlblSistema: TQRLabel;
@@ -405,14 +405,14 @@ type
     qrmQtdUnidMedida2: TQRMemo;
     qrmQtdUnidMedida3: TQRMemo;
     qrmQtdUnidMedida4: TQRMemo;
-    procedure qrbDadosExcEmitenteBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
-    procedure qrbModRodFracionadoBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
     procedure qrbObsBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
+    procedure qrbLotacaoSimBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
+    procedure qrbModRodFracionadoBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
     procedure qrbDadosDACTeBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
     procedure qrbCabecalhoBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
     procedure QRCTeBeforePrint(Sender: TCustomQuickRep; var PrintReport: Boolean);
     procedure qrbItensBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
-    procedure qrbSistemaBeforePrint(Sender: TQRCustomBand;
+    procedure qrbDadosExcEmitenteBeforePrint(Sender: TQRCustomBand;
       var PrintBand: Boolean);
     procedure qrbDadosNotaFiscalBeforePrint(Sender: TQRCustomBand;
       var PrintBand: Boolean);
@@ -420,7 +420,7 @@ type
       var PrintBand: Boolean);
     procedure qrbHeaderItensBeforePrint(Sender: TQRCustomBand;
       var PrintBand: Boolean);
-    procedure qrbLotacaoSimBeforePrint(Sender: TQRCustomBand;
+    procedure qrbSistemaBeforePrint(Sender: TQRCustomBand;
       var PrintBand: Boolean);
   private
     FTotalPages: integer;
@@ -619,11 +619,71 @@ begin
   FProtocoloCTe := sProtocolo;
 end;
 
-procedure TfrmDACTeQRRetrato.qrbModRodFracionadoBeforePrint(
+procedure TfrmDACTeQRRetrato.qrbLotacaoSimBeforePrint(
   Sender: TQRCustomBand; var PrintBand: Boolean);
+var
+  i: integer;
 begin
   inherited;
+  // Incluido / Alterado por Italo em 29/12/2010 e 30/12/2010
+  qrlNumRegEsp.Caption := FCTe.Rodo.valePed.nroRE;
+  case FCTe.Rodo.valePed.respPg of
+   rpEmitente:       qrlResponsavel.Caption := 'EMITENTE';
+   rpRemetente:      qrlResponsavel.Caption := 'REMETENTE';
+   rpExpedidor:      qrlResponsavel.Caption := 'EXPEDIDOR';
+   rpRecebedor:      qrlResponsavel.Caption := 'RECEBEDOR';
+   rpDestinatario:   qrlResponsavel.Caption := 'DESTINATÁRIO';
+   rpTomadorServico: qrlResponsavel.Caption := 'TOMADOR DO SERVIÇO';
+  end;
+  qrlValorTotal.Caption := CteUtil.FormatarValor(msk13x2, FCTe.Rodo.valePed.vTValePed);
 
+  qrmTipo.Lines.Clear;
+  qrmPlaca.Lines.Clear;
+  qrmUF.Lines.Clear;
+  qrmRNTRC.Lines.Clear;
+
+  for i:= 0 to FCTe.Rodo.veic.Count - 1 do
+  begin
+   if TpPropriedadeToStr(FCTe.Rodo.veic.Items[i].tpProp) = 'P'
+    then qrmTipo.Lines.Add('Próprio')
+    else qrmTipo.Lines.Add('Terceiro');
+   qrmPlaca.Lines.Add(FCTe.Rodo.veic.Items[i].placa);
+   qrmUF.Lines.Add(FCTe.Rodo.veic.Items[i].UF);
+   qrmRNTRC.Lines.Add(FCTe.Rodo.veic.Items[i].Prop.RNTRC);
+  end;
+
+  qrmEmpresas.Lines.Clear;
+  qrmVigencias.Lines.Clear;
+  qrmNumDispositivo.Lines.Clear;
+  qrmCodTransacao.Lines.Clear;
+
+  for i := 0 to FCTe.Rodo.valePed.disp.Count - 1 do
+  begin
+   qrmEmpresas.Lines.Add(FCTe.Rodo.valePed.disp.Items[i].xEmp);
+   qrmVigencias.Lines.Add(FormatDateTime('DD/MM/YYYY', FCTe.Rodo.valePed.disp.Items[i].dVig));
+   qrmNumDispositivo.Lines.Add(FCTe.Rodo.valePed.disp.Items[i].nDisp);
+   qrmCodTransacao.Lines.Add(FCTe.Rodo.valePed.disp.Items[i].nCompC);
+  end;
+
+  qrlNomeMotorista.Caption := '';
+  qrlCPFMotorista.Caption  := '';
+  qrlLacres.Caption        := '';
+  if FCTe.Rodo.moto.Count>0
+   then begin
+    qrlNomeMotorista.Caption := FCTe.Rodo.moto.Items[0].xNome;
+    qrlCPFMotorista.Caption  := CTeUtil.FormatarCNPJ(FCTe.Rodo.moto.Items[0].CPF);
+   end;
+
+  for i := 0 to FCTe.Rodo.Lacres.Count - 1 do
+  begin
+   qrlLacres.Caption := qrlLacres.Caption + FCTe.Rodo.Lacres.Items[i].nLacre + '/';
+  end;
+end;
+
+procedure TfrmDACTeQRRetrato.qrbModRodFracionadoBeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+  inherited;
   // Imprime as Informações Especificas do Modal se o Tipo de CTe for Normal
   // Incluido / Alterado por Italo e Doni em 24/09/2010
   qrbModRodFracionado.Enabled:=(FCTe.Ide.tpCTe = tcNormal);
@@ -651,46 +711,6 @@ begin
 
     qrlDtPrevEntrega.Caption := FormatDateTime('DD/MM/YYYY', dPrev);
   end;
-end;
-
-procedure TfrmDACTeQRRetrato.qrbObsBeforePrint(Sender: TQRCustomBand;
-  var PrintBand: Boolean);
-var
- i: integer;
-begin
-  inherited;
-  qrmObs.Lines.BeginUpdate; // Linha inserida por Italo em 31/08/2010
-  qrmObs.Lines.Clear;
-  //qrmObs.Lines.Text := FCTe.Compl.xObs;
-  //qrmObs.Lines.Add(FCTe.Compl.xObs);
-
-  // Linha abaixo alterada por Italo em 27/08/2010
-  // para substituir os ponto e virgula por quebra de linha no quadro Observações
-  qrmObs.Lines.Add(StringReplace( FCTe.Compl.xObs, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
-  for i := 0 to FCTe.Compl.ObsCont.Count-1 do
-   with FCTe.Compl.ObsCont.Items[i] do
-    begin
-     qrmObs.Lines.Add( StringReplace( xCampo, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] )+': '+
-                       StringReplace( xTexto, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
-    end;
-  if FCTe.Compl.ObsFisco.Count>0
-   then qrmObs.Lines.Add('INFORMAÇÕES ADICIONAIS DE INTERESSE DO FISCO:');
-  for i := 0 to FCTe.Compl.ObsFisco.Count-1 do
-   with FCTe.Compl.ObsFisco.Items[i] do
-    begin
-     qrmObs.Lines.Add( StringReplace( xCampo, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] )+': '+
-                       StringReplace( xTexto, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
-    end;
-
-  // Linhas inseridas por Italo em 28/01/2011
-  if FCTe.Ide.tpEmis in [teContingencia, teFSDA]
-   then qrmObs.Lines.Add('DACTE em Contingência - Impresso em decorrência de problemas técnicos.');
-  if FCTe.Ide.tpEmis = teDPEC
-   then qrmObs.Lines.Add('DACTE em Contingência - DPEC regularmente recebida pela Receita Federal do Brasil');
-
-  // Linhas inseridas por Italo em 31/08/2010
-  qrmObs.Lines.Text:=StringReplace(qrmObs.Lines.Text,';',#13,[rfReplaceAll]);
-  qrmObs.Lines.EndUpdate;
 end;
 
 procedure TfrmDACTeQRRetrato.QRCTeBeforePrint(Sender: TCustomQuickRep; var PrintReport: Boolean);
@@ -1137,14 +1157,48 @@ begin
   end;
 end;
 
-procedure TfrmDACTeQRRetrato.qrbDadosExcEmitenteBeforePrint(
+procedure TfrmDACTeQRRetrato.qrbObsBeforePrint(
   Sender: TQRCustomBand; var PrintBand: Boolean);
+var
+ i: integer;
 begin
   inherited;
 
+  qrmObs.Lines.BeginUpdate; // Linha inserida por Italo em 31/08/2010
+  qrmObs.Lines.Clear;
+  //qrmObs.Lines.Text := FCTe.Compl.xObs;
+  //qrmObs.Lines.Add(FCTe.Compl.xObs);
+
+  // Linha abaixo alterada por Italo em 27/08/2010
+  // para substituir os ponto e virgula por quebra de linha no quadro Observações
+  qrmObs.Lines.Add(StringReplace( FCTe.Compl.xObs, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
+  for i := 0 to FCTe.Compl.ObsCont.Count-1 do
+   with FCTe.Compl.ObsCont.Items[i] do
+    begin
+     qrmObs.Lines.Add( StringReplace( xCampo, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] )+': '+
+                       StringReplace( xTexto, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
+    end;
+  if FCTe.Compl.ObsFisco.Count>0
+   then qrmObs.Lines.Add('INFORMAÇÕES ADICIONAIS DE INTERESSE DO FISCO:');
+  for i := 0 to FCTe.Compl.ObsFisco.Count-1 do
+   with FCTe.Compl.ObsFisco.Items[i] do
+    begin
+     qrmObs.Lines.Add( StringReplace( xCampo, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] )+': '+
+                       StringReplace( xTexto, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
+    end;
+
+  // Linhas inseridas por Italo em 28/01/2011
+  if FCTe.Ide.tpEmis in [teContingencia, teFSDA]
+   then qrmObs.Lines.Add('DACTE em Contingência - Impresso em decorrência de problemas técnicos.');
+  if FCTe.Ide.tpEmis = teDPEC
+   then qrmObs.Lines.Add('DACTE em Contingência - DPEC regularmente recebida pela Receita Federal do Brasil');
+
+  // Linhas inseridas por Italo em 31/08/2010
+  qrmObs.Lines.Text:=StringReplace(qrmObs.Lines.Text,';',#13,[rfReplaceAll]);
+  qrmObs.Lines.EndUpdate;
+
   // As Linhas abaixo foram inseridas por Italo em 31/08/2010
   // Mensagem para modo Homologacao.
-
   qrlMsgTeste.Visible := False;
   qrlMsgTeste.Enabled := False;
 
@@ -1188,15 +1242,14 @@ begin
   qrlMsgTeste.Repaint;
 
 //  qrlMsgTeste.Enabled := FCTe.Ide.tpAmb = taHomologacao;
-  qrmObsExcEmitente.Lines.Clear;
-//  qrmObsExcEmitente.Lines.Text := FCTe.Compl.xObs;
 end;
 
-procedure TfrmDACTeQRRetrato.qrbSistemaBeforePrint(Sender: TQRCustomBand;
+procedure TfrmDACTeQRRetrato.qrbDadosExcEmitenteBeforePrint(Sender: TQRCustomBand;
   var PrintBand: Boolean);
 begin
   inherited;
-  qrlblSistema.Caption := FSistema + ' - ' + FUsuario;
+  qrmObsExcEmitente.Lines.Clear;
+//  qrmObsExcEmitente.Lines.Text := FCTe.Compl.xObs;
 end;
 
 procedure TfrmDACTeQRRetrato.qrbDadosNotaFiscalBeforePrint(
@@ -1250,65 +1303,11 @@ begin
   // qrbHeaderItens.Enabled:=(FCTe.Ide.tpCTe = tcNormal);
 end;
 
-procedure TfrmDACTeQRRetrato.qrbLotacaoSimBeforePrint(
-  Sender: TQRCustomBand; var PrintBand: Boolean);
-var
-  i: integer;
+procedure TfrmDACTeQRRetrato.qrbSistemaBeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
 begin
   inherited;
-  // Incluido / Alterado por Italo em 29/12/2010 e 30/12/2010
-  qrlNumRegEsp.Caption := FCTe.Rodo.valePed.nroRE;
-  case FCTe.Rodo.valePed.respPg of
-   rpEmitente:       qrlResponsavel.Caption := 'EMITENTE';
-   rpRemetente:      qrlResponsavel.Caption := 'REMETENTE';
-   rpExpedidor:      qrlResponsavel.Caption := 'EXPEDIDOR';
-   rpRecebedor:      qrlResponsavel.Caption := 'RECEBEDOR';
-   rpDestinatario:   qrlResponsavel.Caption := 'DESTINATÁRIO';
-   rpTomadorServico: qrlResponsavel.Caption := 'TOMADOR DO SERVIÇO';
-  end;
-  qrlValorTotal.Caption := CteUtil.FormatarValor(msk13x2, FCTe.Rodo.valePed.vTValePed);
-
-  qrmTipo.Lines.Clear;
-  qrmPlaca.Lines.Clear;
-  qrmUF.Lines.Clear;
-  qrmRNTRC.Lines.Clear;
-
-  for i:= 0 to FCTe.Rodo.veic.Count - 1 do
-  begin
-   if TpPropriedadeToStr(FCTe.Rodo.veic.Items[i].tpProp) = 'P'
-    then qrmTipo.Lines.Add('Próprio')
-    else qrmTipo.Lines.Add('Terceiro');
-   qrmPlaca.Lines.Add(FCTe.Rodo.veic.Items[i].placa);
-   qrmUF.Lines.Add(FCTe.Rodo.veic.Items[i].UF);
-   qrmRNTRC.Lines.Add(FCTe.Rodo.veic.Items[i].Prop.RNTRC);
-  end;
-
-  qrmEmpresas.Lines.Clear;
-  qrmVigencias.Lines.Clear;
-  qrmNumDispositivo.Lines.Clear;
-  qrmCodTransacao.Lines.Clear;
-
-  for i := 0 to FCTe.Rodo.valePed.disp.Count - 1 do
-  begin
-   qrmEmpresas.Lines.Add(FCTe.Rodo.valePed.disp.Items[i].xEmp);
-   qrmVigencias.Lines.Add(FormatDateTime('DD/MM/YYYY', FCTe.Rodo.valePed.disp.Items[i].dVig));
-   qrmNumDispositivo.Lines.Add(FCTe.Rodo.valePed.disp.Items[i].nDisp);
-   qrmCodTransacao.Lines.Add(FCTe.Rodo.valePed.disp.Items[i].nCompC);
-  end;
-
-  qrlNomeMotorista.Caption := '';
-  qrlCPFMotorista.Caption  := '';
-  qrlLacres.Caption        := '';
-  if FCTe.Rodo.moto.Count>0
-   then begin
-    qrlNomeMotorista.Caption := FCTe.Rodo.moto.Items[0].xNome;
-    qrlCPFMotorista.Caption  := CTeUtil.FormatarCNPJ(FCTe.Rodo.moto.Items[0].CPF);
-   end;
-
-  for i := 0 to FCTe.Rodo.Lacres.Count - 1 do
-  begin
-   qrlLacres.Caption := qrlLacres.Caption + FCTe.Rodo.Lacres.Items[i].nLacre + '/';
-  end;
+  qrlblSistema.Caption := FSistema + ' - ' + FUsuario;
 end;
 
 end.

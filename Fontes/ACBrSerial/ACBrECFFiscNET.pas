@@ -1261,11 +1261,16 @@ begin
      else 
         Obs := fsPAF + #10 + Obs ;
 
+  if (Obs <> '') then
+  begin
+     FiscNETComando.NomeComando := 'ImprimeTexto' ;
+     FiscNETComando.AddParamString('TextoLivre',Obs);
+     EnviaComando ;
+  end ;
+
   FiscNETComando.NomeComando := 'EncerraDocumento' ;
   FiscNETComando.TimeOut     := 5 ;
   FiscNETComando.AddParamString('Operador',Operador) ;
-  if Obs <> '' then
-     FiscNETComando.AddParamString('TextoPromocional',Obs) ;
   EnviaComando ;
 
   fsEmPagamento := false ;

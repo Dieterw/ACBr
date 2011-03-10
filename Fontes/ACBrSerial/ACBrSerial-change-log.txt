@@ -97,6 +97,15 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 1.0.0  10/03/2011
+-- ACBrECFDaruma --
+[*] - Método ReducaoZ usa a data/hora do próprio ECF ao invez da data/hora do
+      micro, se a mesma não for informada
+
+-- ACBrECFFiscNet --
+[-] - Método FechaCupom corrigido para funcionar corretamente com Fechamento
+      contendo Observações e a Identificação do Operador
+
 Versão 1.0.0  19/02/2011
 -- ACBrDevice --
 [+] - Adicionado método:

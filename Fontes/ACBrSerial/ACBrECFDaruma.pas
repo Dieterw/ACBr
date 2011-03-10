@@ -1804,7 +1804,7 @@ end;
 Procedure TACBrECFDaruma.ReducaoZ(DataHora: TDateTime) ;
 begin
   if DataHora = 0 then  { Aparentemente a DataHora é obrigatória na Daruma }
-     DataHora := now ;
+     DataHora := TACBrECF(fpOwner).DataHora ;
 
   AguardaImpressao := True ;
   if fpMFD then

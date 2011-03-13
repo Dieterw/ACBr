@@ -5,7 +5,7 @@
     <Name Value="ACBrSerial"/>
     <Author Value="Daniel Simoes de Almeida"/>
     <CompilerOptions>
-      <Version Value="9"/>
+      <Version Value="10"/>
       <PathDelim Value="\"/>
       <SearchPaths>
         <IncludeFiles Value="..\..\Fontes\ACBrSerial;..\..\Fontes\ACBrComum"/>
@@ -29,7 +29,7 @@ ACBrECF, ACBrRFD, ACBrDIS, ACBrGAV, ACBrCHQ, ACBrETQ, ACBrLCB, ACBrTER
     <License Value="LGPL
 "/>
     <Version Minor="9"/>
-    <Files Count="55">
+    <Files Count="54">
       <Item1>
         <Filename Value="..\..\Fontes\ACBrSerial\ACBrCHQ.pas"/>
         <UnitName Value="ACBrCHQ"/>
@@ -199,58 +199,54 @@ ACBrECF, ACBrRFD, ACBrDIS, ACBrGAV, ACBrCHQ, ACBrETQ, ACBrLCB, ACBrTER
         <UnitName Value="ACBrETQPpla"/>
       </Item42>
       <Item43>
-        <Filename Value="..\..\Fontes\ACBrSerial\ACBrETQPplb.pas"/>
-        <UnitName Value="ACBrETQPplb"/>
-      </Item43>
-      <Item44>
         <Filename Value="..\..\Fontes\ACBrSerial\ACBrGAV.pas"/>
         <UnitName Value="ACBrGAV"/>
-      </Item44>
-      <Item45>
+      </Item43>
+      <Item44>
         <Filename Value="..\..\Fontes\ACBrSerial\ACBrGAVClass.pas"/>
         <UnitName Value="ACBrGAVClass"/>
-      </Item45>
-      <Item46>
+      </Item44>
+      <Item45>
         <Filename Value="..\..\Fontes\ACBrSerial\ACBrGAVImpressoraComum.pas"/>
         <UnitName Value="ACBrGAVImpressoraComum"/>
-      </Item46>
-      <Item47>
+      </Item45>
+      <Item46>
         <Filename Value="..\..\Fontes\ACBrSerial\ACBrGAVImpressoraECF.pas"/>
         <UnitName Value="ACBrGAVImpressoraECF"/>
-      </Item47>
-      <Item48>
+      </Item46>
+      <Item47>
         <Filename Value="..\..\Fontes\ACBrSerial\ACBrGAVSerialGerbo.pas"/>
         <UnitName Value="ACBrGAVSerialGerbo"/>
-      </Item48>
-      <Item49>
+      </Item47>
+      <Item48>
         <Filename Value="..\..\Fontes\ACBrSerial\ACBrGAVSerialMenno.pas"/>
         <UnitName Value="ACBrGAVSerialMenno"/>
-      </Item49>
-      <Item50>
+      </Item48>
+      <Item49>
         <Filename Value="..\..\Fontes\ACBrSerial\ACBrLCB.pas"/>
         <UnitName Value="ACBrLCB"/>
-      </Item50>
-      <Item51>
+      </Item49>
+      <Item50>
         <Filename Value="..\..\Fontes\ACBrSerial\ACBrRFD.pas"/>
         <UnitName Value="ACBrRFD"/>
-      </Item51>
-      <Item52>
+      </Item50>
+      <Item51>
         <Filename Value="..\..\Fontes\ACBrSerial\ACBrTER.pas"/>
         <UnitName Value="ACBrTER"/>
-      </Item52>
-      <Item53>
+      </Item51>
+      <Item52>
         <Filename Value="..\..\Fontes\ACBrSerial\ACBrTERClass.pas"/>
         <UnitName Value="ACBrTERClass"/>
-      </Item53>
-      <Item54>
+      </Item52>
+      <Item53>
         <Filename Value="..\..\Fontes\ACBrSerial\ACBrSerialReg.pas"/>
         <HasRegisterProc Value="True"/>
         <UnitName Value="ACBrSerialReg"/>
-      </Item54>
-      <Item55>
+      </Item53>
+      <Item54>
         <Filename Value="..\..\Fontes\ACBrSerial\ACBrETQZplII.pas"/>
         <UnitName Value="ACBrETQZplII"/>
-      </Item55>
+      </Item54>
     </Files>
     <Type Value="RunAndDesignTime"/>
     <RequiredPkgs Count="5">
@@ -279,4 +275,4 @@ ACBrECF, ACBrRFD, ACBrDIS, ACBrGAV, ACBrCHQ, ACBrETQ, ACBrLCB, ACBrTER
       <IgnoreBinaries Value="False"/>
     </PublishOptions>
   </Package>
-</CONFIG>
+</CONFIG>

@@ -75,7 +75,6 @@ contains
   ACBrETQ in '..\..\Fontes\ACBrSerial\ACBrETQ.pas',
   ACBrETQClass in '..\..\Fontes\ACBrSerial\ACBrETQClass.pas',
   ACBrETQPpla in '..\..\Fontes\ACBrSerial\ACBrETQPpla.pas',
-  ACBrETQPplb in '..\..\Fontes\ACBrSerial\ACBrETQPplb.pas',
   ACBrGAV in '..\..\Fontes\ACBrSerial\ACBrGAV.pas',
   ACBrGAVClass in '..\..\Fontes\ACBrSerial\ACBrGAVClass.pas',
   ACBrGAVImpressoraComum in '..\..\Fontes\ACBrSerial\ACBrGAVImpressoraComum.pas',

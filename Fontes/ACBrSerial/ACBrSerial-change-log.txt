@@ -97,6 +97,26 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data:  13/03/2011
+-- ACBrETQ --
+[+] - Adicionado suporte a novo protocolo EPL2 (que é igual ao PPLB)
+      Por: José Luís Schiavo  e DSA
+[*] - Modificada a assinatura do método: CarregarImagem, para:
+      CarregarImagem(AStream : TStream; NomeImagem: String;
+            Flipped : Boolean = True; Tipo: String = 'BMP' ); overload;
+      Pois alguns modelos de Impressoras suportam imagens diferentes de BMP e
+      não suportadas pelo Delphi. A mudança também permitira o uso desse método
+      em aplicações console
+[+] - Adicionado o método: CarregarImagem(ArquivoImagem, NomeImagem:
+                                          String; Flipped : Boolean = True  )
+      (Uma sobrecarga do método já existente)
+[+] - Adicionada a propriedade "DPI", que permite informar ao ACBrETQ,
+      quantas DPI o equipamento comandado suporta. Dessa maneira é possível
+      utilizar unidades de medida em Milimitros ou Polegadas mesmo em modelos
+      EPL2 e PPLB (que originalmente só suportam medidas em Dots)
+[*] - Aplicação Demo - ETQTeste, modificada para melhor exemplifiar as novas
+      funcionalidades
+
 Versão 1.0.0  10/03/2011
 -- ACBrECFDaruma --
 [*] - Método ReducaoZ usa a data/hora do próprio ECF ao invez da data/hora do

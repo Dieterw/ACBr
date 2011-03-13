@@ -562,7 +562,7 @@ begin
   end;
   Result := upcase( padL(Retorno,1)[1] );
 
-  if not (Result in ['L','V','P','C','G','R','O']) then
+  if not (Result in ['L','V','P','C','G','R','N','O']) then
      raise EACBrTEFDECF.Create(
         ACBrStr( 'Retorno de "OnInfoEcf( ineEstadoECF, Retorno )" deve ser:'+sLineBreak+
                  '"L" = Livre'+sLineBreak+
@@ -570,6 +570,7 @@ begin
                  '"P" - Pagamento (ou SubTotal efetuado)'+sLineBreak+
                  '"C" ou "R" - CDC ou Cupom Vinculado'+sLineBreak+
                  '"G" ou "R" - Relatório Gerencial'+sLineBreak+
+                 '"N" - Recebimento Não Fiscal'+sLineBreak+
                  '"O" - Outro' ) );
 end;
 
@@ -747,9 +748,9 @@ begin
   if Est <> 'L' then
   begin
      case Est of
-       'V', 'P' : FinalizarCupom;
-       'R', 'G' : ComandarECF( opeFechaGerencial );
-       'C'      : ComandarECF( opeFechaVinculado );
+       'V', 'P', 'N' : FinalizarCupom;
+       'R', 'G'      : ComandarECF( opeFechaGerencial );
+       'C'           : ComandarECF( opeFechaVinculado );
      end;
 
      if EstadoECF <> 'L' then
@@ -1143,7 +1144,7 @@ end;
 procedure TACBrTEFD.FinalizarCupom;
 Var
   I, J, Ordem : Integer;
-  Est  : AnsiChar;
+  Est, EstNaoFiscal  : AnsiChar;
   ImpressaoOk : Boolean ;
   GrupoFPG    : TACBrTEFDArrayGrupoRespostasPendentes ;
 begin
@@ -1157,47 +1158,81 @@ begin
            BloquearMouseTeclado( True );
 
            try
-              Est := EstadoECF;
+              EstNaoFiscal := 'N';
+              Est          := EstadoECF;
               while Est <> 'L' do
               begin
-                 Case Est of
-                   'V' : ComandarECF( opeSubTotalizaCupom );
+                 // É não fiscal ? Se SIM, vamos passar por todas as fases...
+                 if Est = 'N' then
+                 begin
+                    case EstNaoFiscal of
+                      'N' : EstNaoFiscal := 'V' ;
+                      'V' : EstNaoFiscal := 'P' ;
+                      'P' : EstNaoFiscal := 'N' ;
+                    end ;
 
-                   'P' :
-                     begin
-                       if not AutoEfetuarPagamento then
-                       begin
-                          GrupoFPG := nil ;
-                          AgruparRespostasPendentes( GrupoFPG );
-                          Ordem := 0 ;
+                    Est := EstNaoFiscal ;
+                 end ;
 
-                          For I := 0 to Length( GrupoFPG )-1 do
+                 try
+                    Case Est of
+                      'V' : ComandarECF( opeSubTotalizaCupom );
+
+                      'P' :
+                        begin
+                          if not AutoEfetuarPagamento then
                           begin
-                             if GrupoFPG[I].OrdemPagamento = 0 then
-                              begin
-                                Inc( Ordem ) ;
+                             GrupoFPG := nil ;
+                             AgruparRespostasPendentes( GrupoFPG );
+                             Ordem := 0 ;
 
-                                if SubTotalECF > 0 then
-                                   ECFPagamento( GrupoFPG[I].IndiceFPG_ECF, GrupoFPG[I].Total );
+                             For I := 0 to Length( GrupoFPG )-1 do
+                             begin
+                                if GrupoFPG[I].OrdemPagamento = 0 then
+                                 begin
+                                   Inc( Ordem ) ;
 
-                                For J := 0 to RespostasPendentes.Count-1 do
-                                   if RespostasPendentes[J].IndiceFPG_ECF = GrupoFPG[I].IndiceFPG_ECF then
-                                      RespostasPendentes[J].OrdemPagamento := Ordem;
-                              end
-                             else
-                                Ordem := GrupoFPG[I].OrdemPagamento ;
+                                   if SubTotalECF > 0 then
+                                      ECFPagamento( GrupoFPG[I].IndiceFPG_ECF, GrupoFPG[I].Total );
+
+                                   For J := 0 to RespostasPendentes.Count-1 do
+                                      if RespostasPendentes[J].IndiceFPG_ECF = GrupoFPG[I].IndiceFPG_ECF then
+                                         RespostasPendentes[J].OrdemPagamento := Ordem;
+                                 end
+                                else
+                                   Ordem := GrupoFPG[I].OrdemPagamento ;
+                             end;
                           end;
-                       end;
 
-                       if SubTotalECF <= 0 then
-                          ComandarECF( opeFechaCupom )
-                       else
-                          break ;
-                     end ;
-                 else
-                   raise Exception.Create(
-                      ACBrStr('ECF deve estar em Venda ou Pagamento'));
-                 end;
+                          if SubTotalECF <= 0 then
+                             ComandarECF( opeFechaCupom )
+                          else
+                             break ;
+                        end ;
+
+                      'N' :     // Usado apenas no Fechamento de NaoFiscal
+                        begin
+                          if SubTotalECF <= 0 then
+                             ComandarECF( opeFechaCupom )
+                          else
+                             break ;
+                        end ;
+                    else
+                      raise Exception.Create(
+                         ACBrStr('ECF deve estar em Venda ou Pagamento'));
+                    end;
+                 except
+                    { A condição abaixo, será True se não for Cupom Nao Fiscal,
+                       ou se já tentou todas as fases do Cupom Nao Fiscal
+                       (SubTotaliza, Pagamento, Fechamento)...
+                      Se for NaoFiscal não deve disparar uma exceção até ter
+                       tentado todas as fases descritas acima, pois o ACBrECF
+                       não é capaz de detectar com precisão a fase atual do
+                       Cupom Não Fiscal (poucos ECFs possuem flags para isso) }
+
+                    if EstNaoFiscal = 'N' then
+                       raise ;
+                 end ;
 
                  Est := EstadoECF;
               end;
@@ -1229,7 +1264,6 @@ begin
        CancelarTransacoesPendentes;
   end;
 end;
-
 
 procedure TACBrTEFD.AgruparRespostasPendentes(
    var Grupo : TACBrTEFDArrayGrupoRespostasPendentes);

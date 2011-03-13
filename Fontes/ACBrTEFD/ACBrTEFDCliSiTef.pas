@@ -498,7 +498,7 @@ begin
      Est := 'O' ;
   end ;
 
-  if (Est in ['V','P','O']) then                // Cupom Ficou aberto ?? //
+  if (Est in ['V','P','N','O']) then            // Cupom Ficou aberto ?? //
      CancelarTransacoesPendentesClass           // SIM, Cancele tudo... //
   else
      ConfirmarEReimprimirTransacoesPendentes ;  // NAO, Cupom Fechado, basta re-imprimir //
@@ -875,9 +875,9 @@ begin
 
                                          { Fecha Vinculado ou Gerencial ou Cupom, se ficou algum aberto por Desligamento }
                                          case Est of
-                                           'C'      : ComandarECF( opeFechaVinculado );
-                                           'G', 'R' : ComandarECF( opeFechaGerencial );
-                                           'V', 'P' : ComandarECF( opeCancelaCupom );
+                                           'C'         : ComandarECF( opeFechaVinculado );
+                                           'G','R'     : ComandarECF( opeFechaGerencial );
+                                           'V','P','N' : ComandarECF( opeCancelaCupom );
                                          end;
 
                                          GerencialAberto      := False ;

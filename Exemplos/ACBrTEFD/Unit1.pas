@@ -688,6 +688,7 @@ begin
            estVenda     : RetornoECF := 'V' ;
            estPagamento : RetornoECF := 'P' ;
            estRelatorio : RetornoECF := 'R' ;
+           estNaoFiscal : RetornoECF := 'N' ;
          else
            RetornoECF := 'O' ;
          end;
@@ -968,22 +969,36 @@ end;
 
 procedure TForm1.ACBrTEFD1ComandaECF(Operacao : TACBrTEFDOperacaoECF;
    Resp : TACBrTEFDResp; var RetornoECF : Integer );
+Var
+   Est : TACBrECFEstado ;
 begin
   Memo1.Lines.Add('ComandaECF: '+GetEnumName( TypeInfo(TACBrTEFDOperacaoECF),
                                               integer(Operacao) ));
+
   try
+    Est := ACBrECF1.Estado;
+
     case Operacao of
       opeAbreGerencial :
-          ACBrECF1.AbreRelatorioGerencial ;
+         ACBrECF1.AbreRelatorioGerencial ;
 
       opeCancelaCupom :
-          ACBrECF1.CancelaCupom;
+         if Est = estNaoFiscal then
+            ACBrECF1.CancelaNaoFiscal
+         else
+            ACBrECF1.CancelaCupom;
 
       opeFechaCupom :
-         ACBrECF1.FechaCupom('Projeto ACBr|http://acbr.sf.net');
+         if Est = estNaoFiscal then
+            ACBrECF1.FechaNaoFiscal('Projeto ACBr|http://acbr.sf.net')
+         else
+            ACBrECF1.FechaCupom('Projeto ACBr|http://acbr.sf.net');
 
       opeSubTotalizaCupom :
-         ACBrECF1.SubtotalizaCupom( 0, 'Projeto ACBr|http://acbr.sf.net' );
+         if Est = estNaoFiscal then
+            ACBrECF1.SubtotalizaNaoFiscal( 0, 'Projeto ACBr|http://acbr.sf.net' )
+         else
+            ACBrECF1.SubtotalizaCupom( 0, 'Projeto ACBr|http://acbr.sf.net' );
 
       opeFechaGerencial, opeFechaVinculado :
         ACBrECF1.FechaRelatorio ;
@@ -1048,11 +1063,19 @@ end;
 
 procedure TForm1.ACBrTEFD1ComandaECFPagamento(IndiceECF : String;
    Valor : Double; var RetornoECF : Integer);
+var
+   Est : TACBrECFEstado ;
 begin
   try
      Memo1.Lines.Add( 'ACBrTEFD1ComandaECFPagamento, IndiceECF: '+IndiceECF+
         ' Valor: '+FormatFloat('0.00',Valor) );
-     ACBrECF1.EfetuaPagamento(IndiceECF, Valor);
+     Est := ACBrECF1.Estado;
+
+     if Est = estNaoFiscal then
+        ACBrECF1.EfetuaPagamentoNaoFiscal(IndiceECF, Valor)
+     else
+        ACBrECF1.EfetuaPagamento(IndiceECF, Valor);
+
      RetornoECF := 1 ;
   except
      RetornoECF := 0 ;

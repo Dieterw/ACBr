@@ -3,13 +3,23 @@ unit UPrincipal;
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
-  Dialogs, ACBrBase, ACBrDevice, ACBrETQ, StdCtrls, ExtDlgs, ExtCtrls;
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls,
+  Buttons, ExtDlgs, ExtCtrls, ACBrDevice, ACBrETQ, ACBrBase;
 
 type
+
+  { TFPrincipal }
+
   TFPrincipal = class(TForm)
     ACBrETQ: TACBrETQ;
+    bImprimirImagem : TButton;
+    bCarregarImg : TButton;
     cbModelo: TComboBox;
+    cbDPI : TComboBox ;
+    ckMemoria : TCheckBox;
+    eAvanco1 : TEdit ;
+    Edit1 : TEdit;
+    Image1 : TImage;
     Label1: TLabel;
     Label2: TLabel;
     cbPorta: TComboBox;
@@ -19,23 +29,24 @@ type
     Label4: TLabel;
     bEtqSimples: TButton;
     bEtqCarreiras: TButton;
-    Image1: TImage;
-    Edit1: TEdit;
-    Label5: TLabel;
-    Button2: TButton;
-    Button1: TButton;
-    OpenPictureDialog1: TOpenPictureDialog;
-    ckMemoria: TCheckBox;
+    Label5 : TLabel;
+    Label6 : TLabel ;
+    Label7 : TLabel ;
+    OpenPictureDialog1 : TOpenPictureDialog;
+    rbStream : TRadioButton ;
+    rbArquivo : TRadioButton ;
     procedure bEtqSimplesClick(Sender: TObject);
     procedure bEtqCarreirasClick(Sender: TObject);
-    procedure FormCreate(Sender: TObject);
-    procedure Button2Click(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
+    procedure bImprimirImagemClick(Sender : TObject);
+    procedure bCarregarImgClick(Sender : TObject);
+    procedure cbModeloChange(Sender : TObject) ;
+    procedure eCopiasKeyPress(Sender : TObject ; var Key : char) ;
   private
-    { Private declarations }
+     procedure AtivarACBrETQ ;
+    { private declarations }
   public
-    { Public declarations }
-  end;
+    { public declarations }
+  end; 
 
 var
   FPrincipal: TFPrincipal;
@@ -44,25 +55,28 @@ implementation
 
 {$R *.dfm}
 
-procedure TFPrincipal.FormCreate(Sender: TObject);
-begin
-  cbModelo.ItemIndex := 1 ;
-end;
-
 procedure TFPrincipal.bEtqSimplesClick(Sender: TObject);
 begin
+  AtivarACBrETQ ;
+
   with ACBrETQ do
   begin
-     Modelo := TACBrETQModelo(cbModelo.ItemIndex);
-     Porta := cbPorta.Text;
-     LimparMemoria := ckMemoria.Checked ;
-     Ativar;
-
-     ImprimirTexto(orNormal, 2, 2, 2, 190, 5, 'BISCOITO MARILAN RECH 335G');
-     ImprimirTexto(orNormal, 2, 2, 1, 158, 5, 'CHOC BRANCO');
-     ImprimirBarras(orNormal, 'F', '2', '2', 32, 0, '7896003701685', 90);
-     ImprimirTexto(orNormal, 3, 3, 2, 15, 300, 'R$');
-     ImprimirTexto(orNormal, 3, 4, 4, 15, 450, '20.59');
+     if Modelo = etqPpla then
+      begin
+        ImprimirTexto(orNormal, 2, 2, 2, 190, 5, 'BISCOITO MARILAN RECH 335G');
+        ImprimirTexto(orNormal, 2, 2, 1, 158, 5, 'CHOC BRANCO');
+        ImprimirBarras(orNormal, 'F', '2', '2', 32, 0, '7896003701685', 90, becSIM);
+        ImprimirTexto(orNormal, 3, 3, 2, 15, 300, 'R$');
+        ImprimirTexto(orNormal, 3, 4, 4, 15, 450, '20.59');
+      end
+     else
+      begin
+        ImprimirTexto(orNormal, 2, 2, 2, 15, 55, 'BISCOITO MARILAN RECH 335G');
+        ImprimirTexto(orNormal, 3, 2, 1, 60, 55, 'CHOC BRANCO');
+        ImprimirBarras(orNormal, 'E30', '2', '2', 95, 55, '7896003701685', 90, becSIM);
+        ImprimirTexto(orNormal, 3, 3, 2, 110, 355, 'R$');
+        ImprimirTexto(orNormal, 3, 4, 5, 85, 515, '20.59');
+      end ;
 
      Imprimir(StrToInt(eCopias.Text), StrToInt(eAvanco.Text));
      Desativar;
@@ -71,66 +85,121 @@ end;
 
 procedure TFPrincipal.bEtqCarreirasClick(Sender: TObject);
 begin
+  AtivarACBrETQ;
+
   with ACBrETQ do
   begin
-     Modelo := TACBrETQModelo(cbModelo.ItemIndex);
-     Porta := cbPorta.Text;
-     Avanco := StrToInt(eAvanco.Text);
-     LimparMemoria := ckMemoria.Checked ;
-     Ativar;
+     if Modelo = etqPpla then
+      begin
+        ImprimirTexto(orNormal, 2, 1, 2, 180, 15, 'BISCOITO REC 335G');
+        ImprimirTexto(orNormal, 2, 1, 1, 140, 15, 'CHOC BRANCO');
+        ImprimirBarras(orNormal, 'F', '2', '2', 20, 10, '7896003701685', 70);
 
-     ImprimirTexto(orNormal, 2, 1, 2, 0180, 0015, 'BISCOITO REC 335G');
-     ImprimirTexto(orNormal, 2, 1, 1, 0140, 0015, 'CHOC BRANCO');
-     ImprimirBarras(orNormal, 'F', '2', '2', 0020, 0010, '7896003701685', 070);
+        ImprimirTexto(orNormal, 2, 1, 2, 180, 315, 'BISCOITO RECH 335G');
+        ImprimirTexto(orNormal, 2, 1, 1, 140, 315, 'CHOC BRANCO');
+        ImprimirBarras(orNormal, 'F', '2', '2', 20, 315, '7896003701685', 70);
 
-     ImprimirTexto(orNormal, 2, 1, 2, 0180, 0315, 'BISCOITO RECH 335G');
-     ImprimirTexto(orNormal, 2, 1, 1, 0140, 0315, 'CHOC BRANCO');
-     ImprimirBarras(orNormal, 'F', '2', '2', 0020, 0315, '7896003701685', 070);
+        ImprimirTexto(orNormal, 2, 1, 2, 180, 620, 'BISCOITO RECH 335G');
+        ImprimirTexto(orNormal, 2, 1, 1, 140, 620, 'CHOC BRANCO');
+        ImprimirBarras(orNormal, 'F', '2', '2', 20, 620, '7896003701685', 70);
+      end
+     else
+      begin
+        ImprimirTexto(orNormal, 2, 1, 3, 15, 55, 'BISCOITO REC 335G');
+        ImprimirTexto(orNormal, 2, 1, 1, 80, 55, 'CHOC BRANCO');
+        ImprimirBarras(orNormal, 'E30', '2', '2', 120, 55, '7896003701685', 080, becSIM);
 
-     ImprimirTexto(orNormal, 2, 1, 2, 0180, 0620, 'BISCOITO RECH 335G');
-     ImprimirTexto(orNormal, 2, 1, 1, 0140, 0620, 'CHOC BRANCO');
-     ImprimirBarras(orNormal, 'F', '2', '2', 0020, 0620, '7896003701685', 070);
+        ImprimirTexto(orNormal, 2, 1, 3, 15, 365, 'BISCOITO RECH 335G');
+        ImprimirTexto(orNormal, 2, 1, 1, 80, 365, 'CHOC BRANCO');
+        ImprimirBarras(orNormal, 'E30', '2', '2', 120, 365, '7896003701685', 080, becSIM);
+
+        ImprimirTexto(orNormal, 2, 1, 3, 15, 670, 'BISCOITO RECH 335G');
+        ImprimirTexto(orNormal, 2, 1, 1, 80, 670, 'CHOC BRANCO');
+        ImprimirBarras(orNormal, 'E30', '2', '2', 120, 670, '7896003701685', 080, becSIM);
+      end ;
 
      Imprimir(StrToInt(eCopias.Text), StrToInt(eAvanco.Text));
      Desativar;
   end;
 end;
 
-procedure TFPrincipal.Button1Click(Sender: TObject);
+procedure TFPrincipal.bImprimirImagemClick(Sender : TObject);
 begin
+  AtivarACBrETQ;
+
   with ACBrETQ do
   begin
-     Modelo := TACBrETQModelo(cbModelo.ItemIndex);
-     Porta := cbPorta.Text;
-     Avanco := StrToInt(eAvanco.Text);
-     LimparMemoria := ckMemoria.Checked ;
-     Ativar;
-
      ImprimirImagem(1,10,10,Edit1.Text);
-
      Imprimir(StrToInt(eCopias.Text), StrToInt(eAvanco.Text));
      Desativar;
   end ;
 end;
 
-procedure TFPrincipal.Button2Click(Sender: TObject);
+procedure TFPrincipal.bCarregarImgClick(Sender : TObject);
+var
+   MS : TMemoryStream ;
 begin
-  if OpenPictureDialog1.Execute then
-  begin
-     Image1.Picture.LoadFromFile(OpenPictureDialog1.FileName);
-  end ;
+  AtivarACBrETQ;
 
-  with ACBrETQ do
-  begin
-     Modelo := TACBrETQModelo(cbModelo.ItemIndex);
-     Porta := cbPorta.Text;
-     LimparMemoria := ckMemoria.Checked ;
-     Ativar;
+  OpenPictureDialog1.InitialDir := ExtractFileDir(Application.ExeName);
 
-     CarregarImagem(Image1.Picture.Bitmap, Edit1.Text, True);
+  if rbStream.Checked then
+   begin
+     OpenPictureDialog1.Filter := 'BMP MonoCromático|*.bmp' ;
+     if OpenPictureDialog1.Execute then
+     begin
+        Image1.Picture.LoadFromFile(OpenPictureDialog1.FileName) ;
+        MS := TMemoryStream.Create;
+        try
+           Image1.Picture.Bitmap.SaveToStream( MS );
+           ACBrETQ.CarregarImagem( MS, Edit1.Text, True,
+                                   ExtractFileExt(OpenPictureDialog1.FileName) );
+        finally
+           MS.Free ;
+        end ;
+     end ;
+   end
+  else
+   begin
+      OpenPictureDialog1.Filter := 'PCX|*.pcx|BMP MonoCromático|*.bmp|IMG|*.img' ;
+      if OpenPictureDialog1.Execute then
+      begin
+         try
+            Image1.Picture.LoadFromFile(OpenPictureDialog1.FileName);
+         except
+            Image1.Picture := nil;
+         end ;
+         ACBrETQ.CarregarImagem( OpenPictureDialog1.FileName, Edit1.Text );
+      end ;
+   end ;
 
-     Desativar;
-  end ;
+  ACBrETQ.Desativar;
 end;
 
+procedure TFPrincipal.cbModeloChange(Sender : TObject) ;
+begin
+   eAvanco.Enabled := (cbModelo.ItemIndex = 1);
+   ACBrETQ.Desativar;
+end;
+
+procedure TFPrincipal.eCopiasKeyPress(Sender : TObject ; var Key : char) ;
+begin
+   if not (Key in ['0'..'9',#8,#13]) then
+      Key := #0 ;
+end;
+
+procedure TFPrincipal.AtivarACBrETQ ;
+begin
+  with ACBrETQ do
+  begin
+     DPI           := TACBrETQDPI(cbDPI.ItemIndex);
+     Modelo        := TACBrETQModelo(cbModelo.ItemIndex) ;
+     Porta         := cbPorta.Text ;
+     LimparMemoria := ckMemoria.Checked ;
+
+     Ativar ;
+  end ;
+end ;
+
 end.
+

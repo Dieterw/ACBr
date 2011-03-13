@@ -2,31 +2,32 @@
   This source is only used to compile and install the package.
  }
 
-unit ACBrSerial; 
+unit ACBrSerial ; 
 
 interface
 
 uses
-    ACBrCHQ, ACBrTERWilbor, ACBrBAL, ACBrBALClass, ACBrBALFilizola, 
-  ACBrBALToledo, ACBrBALUrano, ACBrCHQBematech, ACBrCHQChronos, ACBrCHQClass, 
-  ACBrCHQImpressoraComum, ACBrCHQImpressoraECF, ACBrCHQPerto, ACBrCHQSchalter, 
-  ACBrCHQSotomaq, ACBrCHQUrano, ACBrDevice, ACBrDIS, ACBrDISClass, 
-  ACBrDISGertecSerial, ACBrDISGertecTeclado, ACBrDISKeytecTeclado, ACBrECF, 
-  ACBrECFBematech, ACBrECFClass, ACBrECFDaruma, ACBrECFDataRegis, 
-  ACBrECFEpson, ACBrECFFiscNET, ACBrECFICash, ACBrECFMecaf, ACBrECFNaoFiscal, 
-  ACBrECFNCR, ACBrECFQuattro, ACBrECFSchalter, ACBrECFSweda, ACBrECFSwedaSTX, 
-  ACBrECFUrano, ACBrECFYanco, ACBrETQ, ACBrETQClass, ACBrETQPpla, ACBrETQPplb, 
-  ACBrGAV, ACBrGAVClass, ACBrGAVImpressoraComum, ACBrGAVImpressoraECF, 
-  ACBrGAVSerialGerbo, ACBrGAVSerialMenno, ACBrLCB, ACBrRFD, ACBrTER, 
-  ACBrTERClass, ACBrSerialReg, ACBrETQZplII, LazarusPackageIntf;
+   ACBrCHQ, ACBrTERWilbor, ACBrBAL, ACBrBALClass, ACBrBALFilizola, 
+   ACBrBALToledo, ACBrBALUrano, ACBrCHQBematech, ACBrCHQChronos, ACBrCHQClass, 
+   ACBrCHQImpressoraComum, ACBrCHQImpressoraECF, ACBrCHQPerto, 
+   ACBrCHQSchalter, ACBrCHQSotomaq, ACBrCHQUrano, ACBrDevice, ACBrDIS, 
+   ACBrDISClass, ACBrDISGertecSerial, ACBrDISGertecTeclado, 
+   ACBrDISKeytecTeclado, ACBrECF, ACBrECFBematech, ACBrECFClass, 
+   ACBrECFDaruma, ACBrECFDataRegis, ACBrECFEpson, ACBrECFFiscNET, 
+   ACBrECFICash, ACBrECFMecaf, ACBrECFNaoFiscal, ACBrECFNCR, ACBrECFQuattro, 
+   ACBrECFSchalter, ACBrECFSweda, ACBrECFSwedaSTX, ACBrECFUrano, ACBrECFYanco, 
+   ACBrETQ, ACBrETQClass, ACBrETQPpla, ACBrGAV, ACBrGAVClass, 
+   ACBrGAVImpressoraComum, ACBrGAVImpressoraECF, ACBrGAVSerialGerbo, 
+   ACBrGAVSerialMenno, ACBrLCB, ACBrRFD, ACBrTER, ACBrTERClass, ACBrSerialReg, 
+   ACBrETQZplII, LazarusPackageIntf;
 
 implementation
 
-procedure Register; 
+procedure Register ; 
 begin
-  RegisterUnit('ACBrSerialReg', @ACBrSerialReg.Register); 
-end; 
+  RegisterUnit('ACBrSerialReg', @ACBrSerialReg.Register) ; 
+end ; 
 
 initialization
-  RegisterPackage('ACBrSerial', @Register); 
+  RegisterPackage('ACBrSerial', @Register) ; 
 end.

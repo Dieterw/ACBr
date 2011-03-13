@@ -47,6 +47,14 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 1.30    13/03/11
+[+] Adicionado suporte ao tratamento de Cupons Não Fiscais. Porém, é necessário
+    modificar a aplicação Host para que a mesma distingua entre a necessidade de
+    executar um método de Cupom Fiscal ou Não Fiscal. Veja exemplo na aplicação
+    Demo, nos eventos "OnComandaECF, e "OnComandaECFPagamento". Também é
+    necessário modificar o evento "OnInfoECF" para sinalizar com "N" quando o
+    Estado do ECF for "estNaoFiscal".
+
 Versão 1.20b   06/07/10
 [-] Corrigido Bug em: TACBrTEFDArquivo.GravaInformacao, que não apagava
     corretamente o valor anterior da Informaçao, em algumas ocasiões

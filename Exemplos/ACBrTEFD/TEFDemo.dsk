@@ -37,7 +37,7 @@ ModuleType=SourceModule
 FormState=0
 FormOnTop=0
 
-[C:\Program Files (x86)\Borland\Delphi7\Projects\ProjectGroup1.bpg]
+[C:\Program Files (x86)\Borland\Delphi7\Bin\ProjectGroup1.bpg]
 FormState=0
 FormOnTop=0
 
@@ -57,7 +57,7 @@ MessageView=MessageView@EditWindow0
 Create=1
 Visible=1
 State=0
-Left=282
+Left=279
 Top=138
 Width=1139
 Height=597
@@ -69,9 +69,9 @@ LeftPanelSize=0
 LeftPanelClients=CodeExplorer@EditWindow0
 LeftPanelData=00000400010000000C000000436F64654578706C6F7265720000000000000000000000000000000000FFFFFFFF
 RightPanelSize=0
-BottomPanelSize=85
+BottomPanelSize=0
 BottomPanelClients=MessageView@EditWindow0
-BottomPanelData=00000400000000006304000000000000025500000000000000010000000000000000000000000100000000630400000B0000004D65737361676556696577FFFFFFFF
+BottomPanelData=00000400010000000B0000004D657373616765566965770000000000000000000000000000000000FFFFFFFF
 
 [View0]
 Module=C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit1.pas
@@ -82,8 +82,8 @@ LeftCol=1
 
 [View1]
 Module=C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit4.pas
-CursorX=12
-CursorY=4
+CursorX=62
+CursorY=15
 TopLine=1
 LeftCol=1
 
@@ -194,7 +194,7 @@ FlagPane=64
 
 [AlignmentPalette]
 Create=1
-Visible=1
+Visible=0
 State=0
 Left=200
 Top=122
@@ -209,21 +209,21 @@ ClientHeight=60
 Create=1
 Visible=1
 State=0
-Left=8
-Top=300
-Width=300
-Height=551
+Left=5
+Top=312
+Width=264
+Height=487
 MaxLeft=-1
 MaxTop=-1
-ClientWidth=284
-ClientHeight=517
+ClientWidth=248
+ClientHeight=453
 TBDockHeight=375
 LRDockWidth=190
 Dockable=1
 SplitPos=126
 ArrangeBy=Name
 SelectedItem=Caption
-ExpandedItems=TEFCliSiTef,TEFDial,TEFDisc,TEFGPU,TEFHiper,TEFVeSPague
+ExpandedItems=TEFCliSiTef,TEFDial,TEFDisc,TEFGPU,TEFHiper
 HiddenCategories=
 
 [BreakpointWindow]
@@ -412,7 +412,7 @@ CompUnitPane=104
 Create=1
 Visible=0
 State=0
-Left=-86
+Left=-83
 Top=-6
 Width=140
 Height=305
@@ -426,15 +426,15 @@ Dockable=1
 
 [MessageView@EditWindow0]
 Create=1
-Visible=1
+Visible=0
 State=0
-Left=12
-Top=0
-Width=1111
+Left=-89
+Top=-620
+Width=443
 Height=85
 MaxLeft=-1
 MaxTop=-1
-ClientWidth=1111
+ClientWidth=443
 ClientHeight=85
 TBDockHeight=85
 LRDockWidth=443

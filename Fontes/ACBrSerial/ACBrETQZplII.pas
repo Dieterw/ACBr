@@ -61,10 +61,10 @@ type
     procedure ImprimirTexto(Orientacao: TACBrETQOrientacao; Fonte, MultiplicadorH,
       MultiplicadorV, Vertical, Horizontal: Integer; Texto: String;
       SubFonte: Integer = 0); override;
-
     procedure ImprimirBarras(Orientacao: TACBrETQOrientacao; TipoBarras,
-      LarguraBarraLarga, LarguraBarraFina: Char; Vertical, Horizontal: Integer;
-      Texto: String; AlturaCodBarras: Integer = 0); override;
+      LarguraBarraLarga, LarguraBarraFina: String; Vertical, Horizontal: Integer;
+      Texto: String; AlturaCodBarras: Integer = 0;
+      ExibeCodigo: TACBrETQBarraExibeCodigo = becPadrao); override;
 
     procedure ImprimirCaixa(Vertical, Horizontal, Largura, Altura,
       EspessuraVertical, EspessuraHorizontal: Integer); override;
@@ -85,24 +85,64 @@ begin
   inherited Create( AOwner );
 
   fpModeloStr := 'ZPLII';
-  Temperatura := 10;
-  Unidade := 'm';
 end;
 
-procedure TACBrETQZplII.Imprimir(Copias: Integer = 1; AvancoEtq: Integer = 0);
+procedure TACBrETQZplII.ImprimirTexto(Orientacao: TACBrETQOrientacao; Fonte, MultiplicadorH,
+  MultiplicadorV, Vertical, Horizontal: Integer; Texto: String;
+  SubFonte: Integer = 0);
+var
+   eixoY, eixoX, MultH, MultV, fnt: String;
+   wOrientacao: char;
 begin
-  {Inserindo comando iniciais na posicao Zero}
-  ListaCmd.Insert(0, '^XA');
+  Cmd := '';
 
-  ListaCmd.Add('^XZ');
+  if not (Fonte in [0..Ord('Z')]) then
+     Raise Exception.Create(ACBrStr('Informe um valor entre "" e Z para Fonte'));
 
-  fpDevice.EnviaString(ListaCmd.Text);
-  ListaCmd.Clear;
+{ Multiplicador Horizontal, Multiplicador Vertical:
+ De 0 a 9 e de A até O representa as escalas de multiplicação (A=10, B=11,..., O=24)}
+
+  if (Vertical < 0) or (Vertical > 32000) then
+     Raise Exception.Create(ACBrStr('Informe um valor entre 0 e 32000 para Vertical'));
+  eixoY := inttostr(Vertical);
+
+  if (Horizontal < 0) or (Horizontal > 32000) then
+     Raise Exception.Create(ACBrStr('Informe um valor entre 0 e 32000 para Horizontal'));
+  eixoX := inttostr(Horizontal);
+
+  if (Integer(MultiplicadorH) < 0) or (Integer(MultiplicadorH) > 32000) then
+     Raise Exception.Create(ACBrStr('Informe um valor entre 0 e 32000 para Multiplicador Horizontal'));
+  MultH := IntToStr(MultiplicadorH);
+
+  if (MultiplicadorV < 0) or (MultiplicadorV > 32000) then
+     Raise Exception.Create(ACBrStr('Informe um valor entre 0 e 32000 para Multiplicador Vertical'));
+  MultV := IntToStr(MultiplicadorV);
+
+  if Length(Texto) > 255 then
+     Raise Exception.Create(ACBrStr('Tamanho maximo para o texto 255 caracteres'));
+
+  case Orientacao of
+    orNormal: wOrientacao := 'N'; //normal
+    or270   : wOrientacao := 'B'; //270
+    or180   : wOrientacao := 'I'; //180
+    or90    : wOrientacao := 'R'; //90
+  end;
+
+  if Fonte = 0 then
+    fnt := ''
+  else
+    fnt := chr(Fonte)+',';
+
+  ListaCmd.Add('^CF'+fnt+MultH+','+MultV);
+  ListaCmd.Add('^FO'+EixoX+','+EixoY);
+  ListaCmd.Add('^FW'+ wOrientacao); //Verificar s é aqui mesmo que adiciona ou dentro do FD
+  ListaCmd.Add('^FD'+Texto+'^FS');
 end;
 
 procedure TACBrETQZplII.ImprimirBarras(Orientacao: TACBrETQOrientacao;
-  TipoBarras, LarguraBarraLarga, LarguraBarraFina: Char; Vertical,
-  Horizontal: Integer; Texto: String; AlturaCodBarras: Integer);
+  TipoBarras, LarguraBarraLarga, LarguraBarraFina: String; Vertical,
+  Horizontal: Integer; Texto: String; AlturaCodBarras: Integer;
+  ExibeCodigo: TACBrETQBarraExibeCodigo);
 var
    eixoY, eixoX, Alt: String;
    wOrientacao: Char;
@@ -112,8 +152,8 @@ begin
   if ((Integer(Orientacao) + 1) < 1) or ((Integer(Orientacao) + 1) > 4) then
      Raise Exception.Create(ACBrStr('Informe um valor entre 1 e 4 para Orienta��o'));
 
-{Tipo de Código de Barras - vai de 'a' até 't' e de 'A' até 'T'
- Largura da Barra Larga, Largura da Barra Fina - De 0 a 9 e de 'A' até 'O'}
+{Tipo de Código de Barras - vai de 'a' at� 't' e de 'A' at� 'T'
+ Largura da Barra Larga, Largura da Barra Fina - De 0 a 9 e de 'A' at� 'O'}
 
   if (Vertical < 0) or (Vertical > 32000) then
      Raise Exception.Create(ACBrStr('Informe um valor entre 0 e 762 para Vertical'));
@@ -128,7 +168,7 @@ begin
   Alt := IntToStr(AlturaCodBarras);
 
   case Orientacao of
-    orNormal: wOrientacao := 'N';  //normal
+    orNormal: wOrientacao := 'N'; //normal
     or270   : wOrientacao := 'B'; //270
     or180   : wOrientacao := 'I'; //180
     or90    : wOrientacao := 'R'; //90
@@ -172,61 +212,15 @@ begin
 
 end;
 
-procedure TACBrETQZplII.ImprimirTexto(Orientacao: TACBrETQOrientacao; Fonte, MultiplicadorH,
-  MultiplicadorV, Vertical, Horizontal: Integer; Texto: String;
-  SubFonte: Integer = 0);
-var
-   eixoY, eixoX, MultH, MultV, fnt: String;
-   wOrientacao: char;
+procedure TACBrETQZplII.Imprimir(Copias: Integer = 1; AvancoEtq: Integer = 0);
 begin
-  Cmd := '';
+  {Inserindo comando iniciais na posicao Zero}
+  ListaCmd.Insert(0, '^XA');
 
-  if ((Integer(Orientacao) + 1) < 1) or ((Integer(Orientacao) + 1) > 4) then
-     Raise Exception.Create(ACBrStr('Informe um valor entre 1 e 4 para Orientação'));
+  ListaCmd.Add('^XZ');
 
-  if not (Fonte in [0..Ord('Z')]) then
-     Raise Exception.Create(ACBrStr('Informe um valor entre "" e Z para Fonte'));
-
-{ Multiplicador Horizontal, Multiplicador Vertical:
- De 0 a 9 e de A até O representa as escalas de multiplicação (A=10, B=11,..., O=24)}
-
-  if (Vertical < 0) or (Vertical > 32000) then
-     Raise Exception.Create(ACBrStr('Informe um valor entre 0 e 32000 para Vertical'));
-  eixoY := inttostr(Vertical);
-
-  if (Horizontal < 0) or (Horizontal > 32000) then
-     Raise Exception.Create(ACBrStr('Informe um valor entre 0 e 32000 para Horizontal'));
-  eixoX := inttostr(Horizontal);
-
-  if (Integer(MultiplicadorH) < 0) or (Integer(MultiplicadorH) > 32000) then
-     Raise Exception.Create(ACBrStr('Informe um valor entre 0 e 32000 para Multiplicador Horizontal'));
-  MultH := IntToStr(MultiplicadorH);
-
-
-  if (MultiplicadorV < 0) or (MultiplicadorV > 32000) then
-     Raise Exception.Create(ACBrStr('Informe um valor entre 0 e 32000 para Multiplicador Vertical'));
-  MultV := IntToStr(MultiplicadorV);
-
-
-  if Length(Texto) > 255 then
-     Raise Exception.Create(ACBrStr('Tamanho maximo para o texto 255 caracteres'));
-
-  case Orientacao of
-    orNormal: wOrientacao := 'N';  //normal
-    or270   : wOrientacao := 'B'; //270
-    or180   : wOrientacao := 'I'; //180
-    or90    : wOrientacao := 'R'; //90
-  end;
-
-  if Fonte = 0 then
-    fnt := ''
-  else
-    fnt := chr(Fonte)+',';
-
-  ListaCmd.Add('^CF'+fnt+MultH+','+MultV);
-  ListaCmd.Add('^FO'+EixoX+','+EixoY);
-  ListaCmd.Add('^FW'+ wOrientacao); //Verificar s é aqui mesmo que adiciona ou dentro do FD
-  ListaCmd.Add('^FD'+Texto+'^FS');
+  fpDevice.EnviaString(ListaCmd.Text);
+  ListaCmd.Clear;
 end;
 
 end.

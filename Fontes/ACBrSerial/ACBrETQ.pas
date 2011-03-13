@@ -52,20 +52,11 @@ unit ACBrETQ;
 
 interface
 uses ACBrBase, ACBrDevice, ACBrETQClass,  {Units da ACBr}
-     SysUtils
-     {$IFNDEF CONSOLE}
-       {$IFDEF VisualCLX}, QExtCtrls, QGraphics {$ELSE}, ExtCtrls, Graphics {$ENDIF}
-     {$ENDIF}
-     {$IFDEF COMPILER6_UP}, Types {$ELSE}, Windows {$ENDIF}
-     ,Contnrs, Classes;
+     Classes, SysUtils;
 
 type
 
-TACBrETQModelo = (etqNenhum, etqPpla, etqPplb, etqZPLII);
-
-TACBrETQUnidade = (etqMilimetros, etqPolegadas);
-
-{ Componente ACBrETQ }
+TACBrETQModelo = (etqNenhum, etqPpla, etqPplb, etqZPLII, etqEpl2);
 
 { TACBrETQ }
 
@@ -88,9 +79,11 @@ TACBrETQ = class( TACBrComponent )
     procedure SetTemperatura(const Value: Integer);
     function GetTemperatura: Integer;
     function GetAvanco: Integer;
-    procedure SetAvanco(const Value: Integer);
-    procedure SetUnidade(const Value: TACBrETQUnidade);
+    procedure SetAvanco(const AValue: Integer);
     function GetUnidade: TACBrETQUnidade;
+    procedure SetUnidade(const AValue: TACBrETQUnidade);
+    function GetDPI : TACBrETQDPI ;
+    procedure SetDPI(const AValue : TACBrETQDPI) ;
   protected
 
   public
@@ -107,18 +100,19 @@ TACBrETQ = class( TACBrComponent )
     procedure ImprimirTexto(Orientacao: TACBrETQOrientacao; Fonte, MultiplicadorH,
       MultiplicadorV, Vertical, Horizontal: Integer; Texto: String;
       SubFonte: Integer = 0);
-
     procedure ImprimirBarras(Orientacao: TACBrETQOrientacao; TipoBarras,
-      LarguraBarraLarga, LarguraBarraFina: Char; Vertical, Horizontal: Integer;
-      Texto: String; AlturaCodBarras: Integer = 0);
+      LarguraBarraLarga, LarguraBarraFina: String; Vertical, Horizontal: Integer;
+      Texto: String; AlturaCodBarras: Integer = 0;
+      ExibeCodigo: TACBrETQBarraExibeCodigo = becPadrao);
     procedure ImprimirLinha(Vertical, Horizontal, Largura, Altura: Integer);
     procedure ImprimirCaixa(Vertical, Horizontal, Largura, Altura,
       EspessuraVertical, EspessuraHorizontal: Integer);
-    procedure ImprimirImagem(MultiplicadorImagem, Linha, Coluna: Integer; NomeImagem: String);
-    {$IFNDEF CONSOLE}
-     procedure CarregarImagem(MonoBMP : TBitmap; NomeImagem: String;
-        Flipped : Boolean = True);
-    {$ENDIF}
+    procedure ImprimirImagem(MultiplicadorImagem, Vertical, Horizontal: Integer;
+       NomeImagem: String);
+    procedure CarregarImagem(AStream : TStream; NomeImagem: String;
+       Flipped : Boolean = True; Tipo: String = 'BMP' ); overload;
+    procedure CarregarImagem(ArquivoImagem, NomeImagem: String;
+       Flipped : Boolean = True  ); overload;
     procedure Imprimir(Copias: Integer = 1; AvancoEtq: Integer = 0);
 
   published
@@ -126,6 +120,7 @@ TACBrETQ = class( TACBrComponent )
       default etqNenhum ;
     property Unidade : TACBrETQUnidade read GetUnidade write SetUnidade
       default etqMilimetros;
+    property DPI: TACBrETQDPI read GetDPI write SetDPI default dpi203;
     property Porta : String read GetPorta write SetPorta ;
     property Temperatura: Integer read GetTemperatura write SetTemperatura
       default 10 ;
@@ -139,9 +134,8 @@ TACBrETQ = class( TACBrComponent )
   end ;
 
 implementation
-Uses ACBrUtil, ACBrETQPpla, ACBrETQPplb, ACBrETQZplII,
-     {$IFDEF COMPILER6_UP} StrUtils {$ELSE} ACBrD5{$ENDIF},
-     Math;
+Uses ACBrUtil, ACBrETQPpla, ACBrETQZplII, ACBrETQEpl2,
+     {$IFDEF COMPILER6_UP} StrUtils {$ELSE} ACBrD5{$ENDIF};
 
 { TACBrETQ }
 
@@ -181,12 +175,14 @@ procedure TACBrETQ.SetModelo(const Value: TACBrETQModelo);
   Var wTemperatura: Integer ;
       wAvanco: Integer ;
       wUnidade: TACBrETQUnidade;
+      wDPI: TACBrETQDPI;
 begin
   if fsModelo = Value then exit ;
 
   wTemperatura := Temperatura ;
   wAvanco      := Avanco ;
   wUnidade     := Unidade;
+  wDPI         := DPI;
 
   if fsAtivo then
      raise Exception.Create(ACBrStr('Não é possível mudar o Modelo com ACBrETQ Ativo'));
@@ -195,9 +191,9 @@ begin
 
   { Instanciando uma nova classe de acordo com fsModelo }
   case Value of
-     etqPpla : fsETQ:= TACBrETQPpla.create( Self ) ;
-     etqPplb : fsETQ:= TACBrETQPplb.Create( self );
-     etqZPLII: fsETQ:=TACBrETQZPLII.Create ( Self );
+     etqPpla          : fsETQ := TACBrETQPpla.create( Self ) ;
+     etqPplb, etqEpl2 : fsETQ := TACBrETQEpl2.Create( self );  // EPL2 = PPLB
+     etqZPLII         : fsETQ := TACBrETQZplII.Create ( Self );
   else
      fsETQ := TACBrETQClass.create( Self ) ;
   end;
@@ -205,6 +201,7 @@ begin
   Temperatura := wTemperatura ;
   Avanco      := wAvanco ;
   Unidade     := wUnidade;
+  DPI         := wDPI;
 
   fsModelo := Value;
 end;
@@ -259,19 +256,6 @@ begin
    fsETQ.LimparMemoria := AValue;
 end;
 
-procedure TACBrETQ.ImprimirBarras(Orientacao: TACBrETQOrientacao; TipoBarras,
-  LarguraBarraLarga, LarguraBarraFina: Char; Vertical, Horizontal: Integer;
-  Texto: String; AlturaCodBarras: Integer);
-begin
-  if not Ativo then
-     Ativar ;
-
-  fsETQ.ImprimirBarras( Orientacao, TipoBarras,
-                        LarguraBarraLarga, LarguraBarraFina,
-                        Vertical, Horizontal, Texto,
-                        AlturaCodBarras);
-end;
-
 procedure TACBrETQ.ImprimirCaixa(Vertical, Horizontal, Largura, Altura,
   EspessuraVertical, EspessuraHorizontal: Integer);
 begin
@@ -299,13 +283,42 @@ begin
   if not Ativo then
      Ativar;
 
+  if (Vertical < 0) then
+     Raise Exception.Create(ACBrStr('Informe um valor positivo para Vertical'));
+
+  if (Horizontal < 0) then
+     Raise Exception.Create(ACBrStr('Informe um valor positivo para Horizontal'));
+
   fsETQ.ImprimirTexto( Orientacao, Fonte,
                        MultiplicadorH, MultiplicadorV,
                        Vertical, Horizontal,
                        Texto, SubFonte);
 end;
 
-procedure TACBrETQ.Imprimir(Copias, AvancoEtq: Integer);
+procedure TACBrETQ.ImprimirBarras(Orientacao: TACBrETQOrientacao; TipoBarras,
+  LarguraBarraLarga, LarguraBarraFina: String; Vertical, Horizontal: Integer;
+  Texto: String; AlturaCodBarras: Integer;
+  ExibeCodigo: TACBrETQBarraExibeCodigo);
+begin
+  if not Ativo then
+     Ativar ;
+
+  if (Vertical < 0) then
+     Raise Exception.Create(ACBrStr('Informe um valor positivo para Vertical'));
+
+  if (Horizontal < 0) then
+     Raise Exception.Create(ACBrStr('Informe um valor positivo para Horizontal'));
+
+  if (AlturaCodBarras < 0) then
+     Raise Exception.Create(ACBrStr('Informe um valor positivo para AlturaCodBarras'));
+
+  fsETQ.ImprimirBarras( Orientacao, TipoBarras,
+                        LarguraBarraLarga, LarguraBarraFina,
+                        Vertical, Horizontal, Texto,
+                        AlturaCodBarras, ExibeCodigo);
+end;
+
+procedure TACBrETQ.Imprimir(Copias : Integer ; AvancoEtq : Integer) ;
 begin
   if not Ativo then
      Ativar ;
@@ -328,47 +341,71 @@ begin
   Result := fsETQ.Avanco;
 end;
 
-procedure TACBrETQ.SetAvanco(const Value: Integer);
+procedure TACBrETQ.SetAvanco(const AValue: Integer);
 begin
-  fsETQ.Avanco := Value;
+  fsETQ.Avanco := AValue;
 end;
 
-procedure TACBrETQ.ImprimirImagem(MultiplicadorImagem, Linha,
-  Coluna: Integer; NomeImagem: String);
-begin
-  if not Ativo then
-    Ativar;
-
-  fsETQ.ImprimirImagem(MultiplicadorImagem, Linha, Coluna, NomeImagem);
-end;
-
-{$IFNDEF CONSOLE}
-procedure TACBrETQ.CarregarImagem(MonoBMP : TBitmap; NomeImagem: String;
-   Flipped : Boolean);
+procedure TACBrETQ.ImprimirImagem(MultiplicadorImagem, Vertical, Horizontal:
+  Integer; NomeImagem: String);
 begin
   if not Ativo then
     Ativar;
 
-  fsETQ.CarregarImagem( MonoBMP, NomeImagem, Flipped );
+  fsETQ.ImprimirImagem(MultiplicadorImagem, Vertical, Horizontal, NomeImagem);
 end;
-{$ENDIF}
 
-procedure TACBrETQ.SetUnidade(const Value: TACBrETQUnidade);
+procedure TACBrETQ.CarregarImagem(AStream : TStream; NomeImagem: String;
+   Flipped : Boolean; Tipo: String);
 begin
-  if Value = etqPolegadas then
-    fsETQ.Unidade := 'n'
-  else
-    fsETQ.Unidade := 'm';
+  if not Ativo then
+    Ativar;
+
+  Tipo := UpperCase( RightStr( Tipo, 3) );
+
+  fsETQ.CarregarImagem( AStream, NomeImagem, Flipped, Tipo );
 end;
+
+procedure TACBrETQ.CarregarImagem(ArquivoImagem, NomeImagem: String;
+   Flipped : Boolean = True  );
+var
+   MS : TMemoryStream ;
+   Tipo : String ;
+begin
+  if not FileExists( ArquivoImagem ) then
+     raise Exception.Create( ACBrStr('Arquivo '+ArquivoImagem+' não encontrado'));
+
+  Tipo := ExtractFileExt( ArquivoImagem );
+  MS   := TMemoryStream.Create;
+  try
+     MS.LoadFromFile( ArquivoImagem );
+     CarregarImagem( MS, NomeImagem, Flipped, Tipo);
+  finally
+     MS.Free;
+  end ;
+end ;
 
 function TACBrETQ.GetUnidade: TACBrETQUnidade;
 begin
-  if fsETQ.Unidade = 'n' then
-    Result := etqPolegadas
-  else
-    Result := etqMilimetros;
+  Result := fsETQ.Unidade ;
 end;
+
+procedure TACBrETQ.SetUnidade(const AValue: TACBrETQUnidade);
+begin
+  fsETQ.Unidade := AValue ;
+end;
+
+function TACBrETQ.GetDPI : TACBrETQDPI ;
+begin
+   Result := fsETQ.DPI;
+end;
+
+procedure TACBrETQ.SetDPI(const AValue : TACBrETQDPI) ;
+begin
+  fsETQ.DPI := AValue;
+end;
+
 
 end.
 
-
+

@@ -1,48 +1,56 @@
 object FPrincipal: TFPrincipal
-  Left = 276
-  Top = 211
+  Left = 342
+  Top = 243
+  ActiveControl = cbModelo
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'Impress'#227'o de Etiquetas'
-  ClientHeight = 194
-  ClientWidth = 543
+  ClientHeight = 214
+  ClientWidth = 537
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
-  OldCreateOrder = False
-  OnCreate = FormCreate
+  OldCreateOrder = True
   PixelsPerInch = 96
   TextHeight = 13
   object Label1: TLabel
-    Left = 15
-    Top = 11
+    Left = 16
+    Top = 16
     Width = 38
     Height = 13
     Caption = 'Modelo:'
+    Color = clBtnFace
+    ParentColor = False
   end
   object Label2: TLabel
-    Left = 175
-    Top = 11
+    Left = 129
+    Top = 16
     Width = 28
     Height = 13
     Caption = 'Porta:'
+    Color = clBtnFace
+    ParentColor = False
   end
   object Label3: TLabel
-    Left = 15
-    Top = 59
+    Left = 16
+    Top = 120
     Width = 47
     Height = 13
     Caption = 'N'#186' Copias'
+    Color = clBtnFace
+    ParentColor = False
   end
   object Label4: TLabel
-    Left = 175
-    Top = 59
+    Left = 104
+    Top = 120
     Width = 59
     Height = 13
     Caption = 'Avan'#231'o Etq:'
+    Color = clBtnFace
+    ParentColor = False
   end
   object Image1: TImage
     Left = 280
@@ -164,107 +172,130 @@ object FPrincipal: TFPrincipal
       02040000010080004100}
   end
   object Label5: TLabel
-    Left = 280
-    Top = 136
-    Width = 68
+    Left = 281
+    Top = 126
+    Width = 111
     Height = 13
-    Caption = 'Nome Imagem'
+    Caption = 'Nome Imagem Mem'#243'ria'
+    Color = clBtnFace
+    ParentColor = False
+  end
+  object Label6: TLabel
+    Left = 16
+    Top = 61
+    Width = 72
+    Height = 13
+    Caption = 'DPI Impressora'
+    Color = clBtnFace
+    ParentColor = False
+  end
+  object Label7: TLabel
+    Left = 192
+    Top = 120
+    Width = 60
+    Height = 13
+    Caption = 'Temperatura'
+    Color = clBtnFace
+    ParentColor = False
   end
   object cbModelo: TComboBox
-    Left = 15
-    Top = 28
+    Left = 16
+    Top = 33
     Width = 90
     Height = 21
+    Style = csDropDownList
     ItemHeight = 13
     TabOrder = 0
-    Text = 'etqPpla'
+    OnChange = cbModeloChange
     Items.Strings = (
       'etqNenhuma'
       'etqPpla'
       'etqPPlb'
-      'etqZPLII')
+      'etqZPLII'
+      'etqEpl2')
   end
   object cbPorta: TComboBox
-    Left = 175
-    Top = 28
-    Width = 90
+    Left = 129
+    Top = 33
+    Width = 126
     Height = 21
     ItemHeight = 13
     TabOrder = 1
-    Text = 'LPT1'
     Items.Strings = (
       'LPT1'
       'LPT2'
-      'LPT3'
       'COM1'
       'COM2'
       'COM3'
-      'COM4'
-      'COM5')
+      '\\localhost\ZEBRA'
+      '\\127.0.0.1\ARGOX'
+      'Digite a porta')
   end
   object eCopias: TEdit
-    Left = 15
-    Top = 75
-    Width = 70
+    Left = 16
+    Top = 136
+    Width = 65
     Height = 21
     TabOrder = 2
     Text = '1'
+    OnKeyPress = eCopiasKeyPress
   end
   object eAvanco: TEdit
-    Left = 175
-    Top = 75
+    Left = 104
+    Top = 136
     Width = 70
     Height = 21
     TabOrder = 3
     Text = '600'
+    OnKeyPress = eCopiasKeyPress
   end
   object bEtqSimples: TButton
-    Left = 23
-    Top = 115
-    Width = 80
+    Left = 15
+    Top = 176
+    Width = 113
     Height = 25
-    Caption = 'Etq Simples'
+    Caption = 'Etiqueta Simples'
     TabOrder = 4
     OnClick = bEtqSimplesClick
   end
   object bEtqCarreiras: TButton
-    Left = 174
-    Top = 115
-    Width = 80
+    Left = 141
+    Top = 176
+    Width = 113
     Height = 25
-    Caption = 'Etq 3 Carreiras'
+    Caption = 'Etiqueta 3 Colunas'
     TabOrder = 5
     OnClick = bEtqCarreirasClick
   end
   object Edit1: TEdit
-    Left = 280
-    Top = 152
+    Left = 281
+    Top = 142
     Width = 121
     Height = 21
     TabOrder = 6
     Text = 'ACBR'
   end
-  object Button2: TButton
-    Left = 408
-    Top = 128
+  object bCarregarImg: TButton
+    Left = 281
+    Top = 176
     Width = 121
     Height = 25
     Caption = 'Carregar Imagem'
     TabOrder = 7
-    OnClick = Button2Click
+    OnClick = bCarregarImgClick
   end
-  object Button1: TButton
-    Left = 408
-    Top = 160
+  object bImprimirImagem: TButton
+    Left = 409
+    Top = 176
     Width = 121
     Height = 25
     Caption = 'Imprimir Imagem'
     TabOrder = 8
-    OnClick = Button1Click
+    OnClick = bImprimirImagemClick
   end
   object ckMemoria: TCheckBox
-    Left = 32
-    Top = 154
+    Left = 142
+    Top = 77
     Width = 94
     Height = 19
     Caption = 'Limpar Mem'#243'ria'
@@ -272,14 +303,56 @@ object FPrincipal: TFPrincipal
     State = cbChecked
     TabOrder = 9
   end
+  object rbStream: TRadioButton
+    Left = 422
+    Top = 124
+    Width = 87
+    Height = 19
+    Caption = 'De um Stream'
+    TabOrder = 11
+  end
+  object rbArquivo: TRadioButton
+    Left = 422
+    Top = 144
+    Width = 90
+    Height = 19
+    Caption = 'De um Arquivo'
+    Checked = True
+    TabOrder = 10
+    TabStop = True
+  end
+  object cbDPI: TComboBox
+    Left = 16
+    Top = 78
+    Width = 90
+    Height = 21
+    Style = csDropDownList
+    ItemHeight = 13
+    ItemIndex = 0
+    TabOrder = 12
+    Text = 'dpi203'
+    Items.Strings = (
+      'dpi203'
+      'dpi300'
+      'dpi600')
+  end
+  object eAvanco1: TEdit
+    Left = 192
+    Top = 136
+    Width = 70
+    Height = 21
+    TabOrder = 13
+    Text = '10'
+    OnKeyPress = eCopiasKeyPress
+  end
   object ACBrETQ: TACBrETQ
     Porta = 'LPT1'
-    Left = 127
-    Top = 27
+    Left = 472
+    Top = 44
   end
   object OpenPictureDialog1: TOpenPictureDialog
-    Filter = 'BMP MonoCrom'#225'tico|*.bmp'
-    Left = 304
-    Top = 16
+    Filter = 'BMP MonoCrom'#195#161'tico|*.bmp|PCX|*.pcx|IMG|*.img'
+    Left = 332
+    Top = 44
   end
 end

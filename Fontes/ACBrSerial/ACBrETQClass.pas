@@ -48,12 +48,7 @@
 unit ACBrETQClass;
 
 interface
-uses ACBrDevice,
-     Classes
-     {$IFNDEF CONSOLE}
-      {$IFDEF VisualCLX}, QGraphics {$ELSE}, Graphics {$ENDIF}
-     {$ENDIF}
-     {$IFDEF COMPILER6_UP}, Types {$ELSE}, Windows {$ENDIF} ;
+uses ACBrDevice, Classes;
 
 const
    CRLF = #13 + #10;
@@ -70,11 +65,11 @@ TACBrETQClass = class
   private
     FTemperatura: Integer;
     FAvanco: Integer;
-    FUnidade: Char;
+    FUnidade: TACBrETQUnidade;
+    FDPI: TACBrETQDPI;
     procedure SetAtivo(const Value: Boolean);
     procedure SetTemperatura(const Value: Integer);
     procedure SetAvanco(const Value: Integer);
-    procedure SetUnidade(const Value: Char);
   protected
     fpDevice  : TACBrDevice ;
     fpAtivo   : Boolean ;
@@ -82,6 +77,10 @@ TACBrETQClass = class
     fpListaCmd: TStringList;
     fpCmd: AnsiString;
     fpLimparMemoria : Boolean;
+
+    procedure SetUnidade(const AValue: TACBrETQUnidade); virtual;
+    procedure SetDPI(const AValue : TACBrETQDPI) ; virtual;
+
   public
     property Ativo  : Boolean read fpAtivo write SetAtivo;
     property ModeloStr: String read fpModeloStr;
@@ -89,7 +88,8 @@ TACBrETQClass = class
     property Cmd: AnsiString read fpCmd write fpCmd;
     property Temperatura: Integer read FTemperatura write SetTemperatura;
     property Avanco: Integer read FAvanco write SetAvanco;
-    property Unidade: Char read FUnidade write SetUnidade;
+    property Unidade: TACBrETQUnidade read FUnidade write SetUnidade;
+    property DPI: TACBrETQDPI read FDPI write SetDPI;
     property LimparMemoria: Boolean read fpLimparMemoria write fpLimparMemoria ;
 
     constructor Create(AOwner: TComponent);
@@ -98,23 +98,23 @@ TACBrETQClass = class
     procedure Ativar ; virtual;
     procedure Desativar ; virtual;
 
+    function ConverterUnidade( UnidadeSaida: TACBrETQUnidade;
+       AValue : Integer) : Integer ; virtual;
+
     procedure ImprimirTexto(Orientacao: TACBrETQOrientacao; Fonte, MultiplicadorH,
       MultiplicadorV, Vertical, Horizontal: Integer;
       Texto: String; SubFonte: Integer = 0); virtual;
-
     procedure ImprimirBarras(Orientacao: TACBrETQOrientacao; TipoBarras,
-      LarguraBarraLarga, LarguraBarraFina: Char; Vertical, Horizontal: Integer;
-      Texto: String; AlturaCodBarras: Integer); virtual;
+      LarguraBarraLarga, LarguraBarraFina: String; Vertical, Horizontal: Integer;
+      Texto: String; AlturaCodBarras: Integer;
+      ExibeCodigo: TACBrETQBarraExibeCodigo = becPadrao); virtual;
     procedure ImprimirLinha(Vertical, Horizontal, Largura, Altura: Integer); virtual;
     procedure ImprimirCaixa(Vertical, Horizontal, Largura, Altura,
       EspessuraVertical, EspessuraHorizontal: Integer); virtual;
-    procedure ImprimirImagem(MultiplicadorImagem, Linha, Coluna: Integer;
+    procedure ImprimirImagem(MultiplicadorImagem, Vertical, Horizontal: Integer;
        NomeImagem: String); virtual;
-
-    {$IFNDEF CONSOLE}
-     procedure CarregarImagem(MonoBMP : TBitmap; NomeImagem: String;
-        Flipped : Boolean = True ); virtual;
-    {$ENDIF}
+    procedure CarregarImagem(AStream : TStream; NomeImagem: String;
+       Flipped : Boolean = True; Tipo: String = 'BMP' ); virtual; 
     procedure Imprimir(Copias: Integer = 1; AvancoEtq: Integer = 0); virtual;
 end;
 
@@ -122,7 +122,7 @@ implementation
 
 Uses
   ACBrETQ, ACBrUtil, 
-  SysUtils;
+  SysUtils, math;
 
 { TACBrBAETQClass }
 
@@ -144,6 +144,8 @@ begin
   
   FAvanco      := 0;
   FTemperatura := 10 ;
+  FUnidade     := etqMilimetros;
+  FDPI         := dpi203;
 end;
 
 destructor TACBrETQClass.Destroy;
@@ -160,7 +162,7 @@ begin
      Ativar
   else
      Desativar ;
-end;                  
+end;
 
 procedure TACBrETQClass.Ativar;
 begin
@@ -182,9 +184,79 @@ begin
   fpAtivo := false ;
 end;
 
-procedure TACBrETQClass.ImprimirBarras(Orientacao: TACBrETQOrientacao; TipoBarras,
-  LarguraBarraLarga, LarguraBarraFina: Char; Vertical, Horizontal: Integer;
-  Texto: String; AlturaCodBarras: Integer);
+function TACBrETQClass.ConverterUnidade( UnidadeSaida : TACBrETQUnidade;
+   AValue : Integer) : Integer ;
+Var
+  ValorReal, ValorFinal, DotsMM, DotsPI : Double ;
+begin
+  Result     := AValue;
+  ValorFinal := AValue ;  // evita Warnings
+  ValorReal  := AValue ;
+
+  if UnidadeSaida = Unidade then
+     exit ;
+
+  case DPI of
+    dpi300 :
+      begin
+        DotsMM := 12;
+        DotsPI := 300;
+      end ;
+
+    dpi600 :
+      begin
+        DotsMM := 23.5;
+        DotsPI := 600;
+      end ;
+  else
+   begin
+     DotsMM := 8;
+     DotsPI := 203;
+   end ;
+  end ;
+
+  case Unidade of
+    etqMilimetros : ValorReal := AValue / 10 ;
+    etqPolegadas  : ValorReal := AValue / 100;
+  end ;
+
+  case UnidadeSaida of
+    etqMilimetros :
+       begin
+         case Unidade of
+            etqPolegadas : ValorFinal := ValorReal * 25.4;
+            etqDots      : ValorFinal := ValorReal / DotsMM ;
+         end ;
+
+         ValorFinal := ValorFinal * 10;
+       end ;
+
+    etqPolegadas :
+       begin
+         case Unidade of
+            etqMilimetros : ValorFinal := ValorReal / 25.4;
+            etqDots       : ValorFinal := ValorReal / DotsPI ;
+         end ;
+
+         ValorFinal := ValorFinal * 100;
+       end ;
+
+    etqDots :
+       begin
+         case Unidade of
+            etqMilimetros : ValorFinal := ValorReal * DotsMM;
+            etqPolegadas  : ValorFinal := ValorReal * DotsPI ;
+         end ;
+       end ;
+  end ;
+
+  Result := trunc( RoundTo( ValorFinal, 0 ) );
+end ;
+
+procedure TACBrETQClass.ImprimirBarras(Orientacao: TACBrETQOrientacao;
+  TipoBarras, LarguraBarraLarga, LarguraBarraFina: String;
+  Vertical, Horizontal: Integer; Texto: String; AlturaCodBarras: Integer;
+  ExibeCodigo: TACBrETQBarraExibeCodigo = becPadrao);
 begin
   raise Exception.Create(ACBrStr('Função ImprimirBarras não implementada em: ') + ModeloStr);
 end;
@@ -193,12 +265,6 @@ procedure TACBrETQClass.ImprimirCaixa(Vertical, Horizontal, Largura,
   Altura, EspessuraVertical, EspessuraHorizontal: Integer);
 begin
   raise Exception.Create(ACBrStr('Função ImprimirCaixa não implementada em: ') + ModeloStr);
-end;
-
-procedure TACBrETQClass.ImprimirImagem(MultiplicadorImagem, Linha,
-   Coluna : Integer; NomeImagem : String);
-begin
-  raise Exception.Create(ACBrStr('Função ImprimirImagem não implementada em: ') + ModeloStr);
 end;
 
 procedure TACBrETQClass.ImprimirLinha(Vertical, Horizontal, Largura,
@@ -224,21 +290,31 @@ begin
   FAvanco := Value;
 end;
 
-procedure TACBrETQClass.SetUnidade(const Value: Char);
+procedure TACBrETQClass.SetUnidade(const AValue: TACBrETQUnidade);
 begin
-  FUnidade := Value;
+  FUnidade := AValue;
 end;
 
-procedure TACBrETQClass.Imprimir(Copias, AvancoEtq: Integer);
+procedure TACBrETQClass.SetDPI(const AValue : TACBrETQDPI) ;
+begin
+   FDPI := AValue ;
+end ;
+
+procedure TACBrETQClass.Imprimir(Copias : Integer ; AvancoEtq : Integer) ;
 begin
   raise Exception.Create(ACBrStr('Função Imprimir não implementada em: ') + ModeloStr);
 end;
 
-{$IFNDEF CONSOLE}
-procedure TACBrETQClass.CarregarImagem(MonoBMP : TBitmap; NomeImagem: String; Flipped : Boolean);
+procedure TACBrETQClass.ImprimirImagem(MultiplicadorImagem, Vertical, Horizontal
+  : Integer; NomeImagem : String);
+begin
+  raise Exception.Create(ACBrStr('Função ImprimirImagem não implementada em: ') + ModeloStr);
+end;
+
+procedure TACBrETQClass.CarregarImagem(AStream : TStream; NomeImagem: String;
+   Flipped : Boolean; Tipo: String);
 begin
   raise Exception.Create(ACBrStr('Função CarregarImagem não implementada em: ') + ModeloStr);
 end;
-{$ENDIF}
 
 end.

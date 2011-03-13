@@ -48,11 +48,7 @@
 unit ACBrETQPpla;
 
 interface
-uses ACBrETQClass, ACBrUtil, ACBrDevice
-     {$IFNDEF CONSOLE}
-      {$IFDEF VisualCLX}, QGraphics {$ELSE}, Graphics {$ENDIF}
-     {$ENDIF}
-     ,Classes ;
+uses ACBrETQClass, ACBrUtil, ACBrDevice, Classes ;
 
 const
    STX : String = chr(002);
@@ -63,7 +59,11 @@ type
 
   TACBrETQPpla = class( TACBrETQClass )
   private
-    function ConverteMultiplicador( Multiplicador : Integer) : String ;
+    function MultiplicadorToStr( Multiplicador : Integer) : String ;
+    function UnidadeToStr( Unidade : TACBrETQUnidade ) : Char ;
+
+  protected
+    function ConverterUnidade( AValue : Integer) : Integer ; reintroduce;
 
   public
     constructor Create(AOwner: TComponent);
@@ -72,15 +72,16 @@ type
       MultiplicadorV, Vertical, Horizontal: Integer; Texto: String;
       SubFonte: Integer = 0); override;
     procedure ImprimirBarras(Orientacao: TACBrETQOrientacao; TipoBarras,
-      LarguraBarraLarga, LarguraBarraFina: Char; Vertical, Horizontal: Integer;
-      Texto: String; AlturaCodBarras: Integer = 0); override;
+      LarguraBarraLarga, LarguraBarraFina: String; Vertical, Horizontal: Integer;
+      Texto: String; AlturaCodBarras: Integer = 0;
+      ExibeCodigo: TACBrETQBarraExibeCodigo = becPadrao); override;
     procedure ImprimirLinha(Vertical, Horizontal, Largura, Altura: Integer); override;
     procedure ImprimirCaixa(Vertical, Horizontal, Largura, Altura,
       EspessuraVertical, EspessuraHorizontal: Integer); override;
-    procedure ImprimirImagem(MultiplicadorImagem, Linha, Coluna: Integer; NomeImagem: String); override;
-    {$IFNDEF CONSOLE}
-     procedure CarregarImagem(MonoBMP : TBitmap; NomeImagem: String; Flipped : Boolean); override;
-    {$ENDIF}
+    procedure ImprimirImagem(MultiplicadorImagem, Vertical, Horizontal: Integer;
+       NomeImagem: String); override;
+    procedure CarregarImagem(AStream : TStream; NomeImagem: String;
+       Flipped : Boolean = True; Tipo: String = 'BMP' ); override;
     procedure Imprimir(Copias: Integer = 1; AvancoEtq: Integer = 0); override;
 
   end ;
@@ -88,7 +89,7 @@ type
 implementation
 Uses ACBrETQ,
      {$IFDEF COMPILER6_UP} StrUtils {$ELSE} ACBrD5, Windows{$ENDIF},
-     SysUtils ;
+     SysUtils, math ;
 
 { TACBrETQPpla }
 
@@ -98,10 +99,10 @@ begin
 
   fpModeloStr := 'PPLA';
   Temperatura := 10;
-  Unidade := 'm';
+  Unidade     := etqMilimetros;
 end;
 
-function TACBrETQPpla.ConverteMultiplicador(Multiplicador : Integer) : String ;
+function TACBrETQPpla.MultiplicadorToStr(Multiplicador : Integer) : String ;
 begin
   if (Multiplicador >= 0) and (Multiplicador < 10) then
      Result := IntToStr(Multiplicador)
@@ -111,73 +112,132 @@ begin
      Raise Exception.Create(ACBrStr('Informe um valor entre 0 e 24 para Multiplicador'));
 end ;
 
-procedure TACBrETQPpla.Imprimir(Copias: Integer = 1; AvancoEtq: Integer = 0);
-var
-   Temp, NCop : String;
+function TACBrETQPpla.UnidadeToStr( Unidade : TACBrETQUnidade ) : Char ;
 begin
+  if Unidade = etqPolegadas then
+     Result := 'n'
+  else
+     Result := 'm' ;
+end ;
+
+function TACBrETQPpla.ConverterUnidade(AValue : Integer) : Integer ;
+Var
+  Valor : Double ;
+begin
+  Result := AValue;
+  if Unidade <> etqDots then
+     exit ;
+
+  Valor  := inherited ConverterUnidade( etqMilimetros, AValue ) ;
+end ;
+
+procedure TACBrETQPpla.ImprimirTexto(Orientacao: TACBrETQOrientacao; Fonte, MultiplicadorH,
+  MultiplicadorV, Vertical, Horizontal: Integer; Texto: String;
+  SubFonte: Integer = 0);
+var
+   eixoY, eixoX, Smooth: String;
+begin
+
   Cmd := '';
 
-  if (Temperatura < 0) or (Temperatura > 20) then
-     Raise Exception.Create(ACBrStr('Informe um valor entre 0 e 20 para Temperatura'));
-  Temp := IntToStrZero(Temperatura,2);
+  if (Fonte < 0) or (Fonte > 10) then
+     Raise Exception.Create(ACBrStr('Informe um valor entre 0 e 10 para Fonte'));
 
-  if (Copias < 0) or (Copias > 9999) then
-     Raise Exception.Create(ACBrStr('Tamanho máximo para o Número de Cópias 4 caracteres'));
-  NCop := IntToStrZero(Copias,4);
+  if (SubFonte < 0) or (SubFonte > 7) then
+     Raise Exception.Create(ACBrStr('Informe um valor entre 0 e 7 para SubFonte'));
 
-  Cmd := STX + 'L' + CRLF + STX + Unidade + CRLF + 'H' + Temp + CRLF + 'D11' + CRLF +
-         'Q' + NCop;
+{ Multiplicador Horizontal, Multiplicador Vertical:
+ De 0 a 9 e de A até O representa as escalas de multiplicação (A=10, B=11,..., O=24)}
 
-  {Inserindo comando iniciais na posicao Zero}
-  ListaCmd.Insert(0, Cmd);
+  Vertical := ConverterUnidade(Vertical);
+  if (Vertical > 9999) then
+     Raise Exception.Create(ACBrStr('Vertical deve ter no máximo 4 dígitos'));
+  eixoY := IntToStrZero(Vertical, 4);
 
-  Cmd := '';
-  if AvancoEtq = 0 then
-     AvancoEtq := Avanco;
-  if (AvancoEtq < 0) or (AvancoEtq > 779) then
-     Raise Exception.Create(ACBrStr('O Valor máximo para o Avanço de Etiquetas é 779'));
+  Horizontal := ConverterUnidade(Horizontal);
+  if (Horizontal > 9999) then
+     Raise Exception.Create(ACBrStr('Horizontal deve ter no máximo 4 dígitos'));
+  eixoX := IntToStrZero(Horizontal, 4);
 
-  AvancoEtq := AvancoEtq + 220;
+  if Length(Texto) > 255 then
+     Raise Exception.Create(ACBrStr('Tamanho maximo para o texto 255 caracteres'));
 
-  Cmd := 'E' + CRLF + STX + 'f' + IntToStr(AvancoEtq) + CRLF ;
+  if Fonte < 9 then
+    Smooth := '000'
+  else
+    Smooth := IntToStrZero(SubFonte, 3);
 
-  if LimparMemoria then
-    Cmd := Cmd + STX + 'Q' ;
+  Cmd := IntToStr(Integer(Orientacao) + 1)    +
+         Chr(48+Fonte)                        +
+         MultiplicadorToStr( MultiplicadorH ) +
+         MultiplicadorToStr( MultiplicadorV ) +
+         Smooth + eixoY + eixoX + Texto;
 
   ListaCmd.Add(Cmd);
-
-  fpDevice.EnviaString(ListaCmd.Text);
-  ListaCmd.Clear;
 end;
 
 procedure TACBrETQPpla.ImprimirBarras(Orientacao: TACBrETQOrientacao; TipoBarras,
-  LarguraBarraLarga, LarguraBarraFina: Char; Vertical, Horizontal: Integer;
-  Texto: String; AlturaCodBarras: Integer);
+  LarguraBarraLarga, LarguraBarraFina: String; Vertical, Horizontal: Integer;
+  Texto: String; AlturaCodBarras: Integer;
+  ExibeCodigo: TACBrETQBarraExibeCodigo);
 var
-   eixoY, eixoX, LCodBarras: String;
+   eixoY, eixoX, AltCodBarras: String;
 begin
   Cmd := '';
-
-  if ((Integer(Orientacao) + 1) < 1) or ((Integer(Orientacao) + 1) > 4) then
-     Raise Exception.Create(ACBrStr('Informe um valor entre 1 e 4 para Orientação'));
 
 {Tipo de Código de Barras - vai de 'a' até 't' e de 'A' até 'T'
  Largura da Barra Larga, Largura da Barra Fina - De 0 a 9 e de 'A' até 'O'}
 
-  if (Vertical < 0) or (Vertical > 999) then
-     Raise Exception.Create(ACBrStr('Informe um valor entre 0 e 762 para Vertical'));
-  eixoY := IntToStrZero(Vertical,4);
+  Vertical := ConverterUnidade(Vertical);
+  if (Vertical > 9999) then
+     Raise Exception.Create(ACBrStr('Vertical deve ter no máximo 4 dígitos'));
+  eixoY := IntToStrZero(Vertical, 4);
 
-  if (Horizontal < 0) or (Horizontal > 999) then
-     Raise Exception.Create(ACBrStr('Informe um valor entre 0 e 762 para Horizontal'));
-  eixoX := IntToStrZero(Horizontal,4);
+  Horizontal := ConverterUnidade(Horizontal);
+  if (Horizontal > 9999) then
+     Raise Exception.Create(ACBrStr('Horizontal deve ter no máximo 4 dígitos'));
+  eixoX := IntToStrZero(Horizontal, 4);
 
+  AlturaCodBarras := ConverterUnidade(AlturaCodBarras);
   if (AlturaCodBarras < 0) or (AlturaCodBarras > 999) then
-     Raise Exception.Create(ACBrStr('Tamanho máximo para a Altura do Código de Barras 3 caracteres'));
-  LCodBarras := IntToStrZero(AlturaCodBarras,3);
+     Raise Exception.Create(ACBrStr('AlturaCodBarras deve ter no máximo 3 dígitos'));
+  AltCodBarras := IntToStrZero(AlturaCodBarras,3);
 
-  Cmd:= IntToStr(Integer(Orientacao) + 1) + TipoBarras + LarguraBarraLarga +
-        LarguraBarraFina + LCodBarras + eixoY + eixoX + Texto;
+  case ExibeCodigo of
+     becNAO : TipoBarras := LowerCase(TipoBarras);
+     becSIM : TipoBarras := UpperCase(TipoBarras);
+  end ;
+
+  Cmd := IntToStr(Integer(Orientacao) + 1) + TipoBarras + LarguraBarraLarga +
+         LarguraBarraFina + AltCodBarras + eixoY + eixoX + Texto;
+
+  ListaCmd.Add(Cmd);
+end;
+
+procedure TACBrETQPpla.ImprimirLinha(Vertical, Horizontal, Largura,
+  Altura: Integer);
+var
+   eixoY, eixoX, Larg, Alt: String;
+begin
+  Cmd := '';
+
+  if (Vertical < 0) or (Vertical > 9999) then
+     Raise Exception.Create(ACBrStr('Informe um valor entre 0 e 9999 para Vertical'));
+  eixoY := IntToStrZero(Vertical, 4);
+
+  if (Horizontal < 0) or (Horizontal > 9999) then
+     Raise Exception.Create(ACBrStr('Informe um valor entre 0 e 9999 para Horizontal'));
+  eixoX := IntToStrZero(Horizontal, 4);
+
+  if (Largura < 0) or (Largura > 999) then
+     Raise Exception.Create(ACBrStr('Informe um valor entre 0 e 999 para Largura'));
+  Larg := IntToStrZero(Largura, 3);
+
+  if (Altura < 0) or (Altura > 999) then
+     Raise Exception.Create(ACBrStr('Informe um valor entre 0 e 999 para Altura'));
+  Alt := IntToStrZero(Altura, 3);
+
+  Cmd := '1X11000' + eixoY + eixoX + 'L' + Larg + Alt;
 
   ListaCmd.Add(Cmd);
 end;
@@ -191,123 +251,49 @@ begin
 
   if (Vertical < 0) or (Vertical > 9999) then
      Raise Exception.Create(ACBrStr('Tamanho máximo para Vertical 4 caracteres'));
-  eixoY := padR(IntToStr(Vertical),4,'0');
+  eixoY := IntToStrZero(Vertical, 4);
 
   if (Horizontal < 0) or (Horizontal > 9999) then
      Raise Exception.Create(ACBrStr('Tamanho máximo para Horizontal 4 caracteres'));
-  eixoX := padR(IntToStr(Horizontal),4,'0');
+  eixoX := IntToStrZero(Horizontal, 4);
 
   if (Largura < 0) or (Largura > 999) then
      Raise Exception.Create(ACBrStr('Tamanho máximo para a Largura da Linha 3 caracteres'));
-  Larg := padR(IntToStr(Largura),3,'0');
+  Larg := IntToStrZero(Largura, 3);
 
   if (Altura < 0) or (Altura > 999) then
      Raise Exception.Create(ACBrStr('Tamanho máximo para a Altura da Linha 3 caracteres'));
-  Alt := padR(IntToStr(Altura),3,'0');
+  Alt := IntToStrZero(Altura, 3);
 
   if (EspessuraHorizontal < 0) or (EspessuraHorizontal > 999) then
      Raise Exception.Create(ACBrStr('Tamanho máximo para a Espessura das Linhas Horizontais 3 caracteres'));
-  EspH := padR(IntToStr(EspessuraHorizontal),3,'0');
+  EspH := IntToStrZero(EspessuraHorizontal, 3);
 
   if (EspessuraVertical < 0) or (EspessuraVertical > 999) then
      Raise Exception.Create(ACBrStr('Tamanho máximo para a Espessura das Linhas Verticais 3 caracteres'));
-  EspV := padR(IntToStr(EspessuraVertical),3,'0');
+  EspV := IntToStrZero(EspessuraVertical, 3);
 
   Cmd := '1X11000' + eixoY + eixoX + 'B' + Larg + Alt + EspH + EspV;
 
   ListaCmd.Add(Cmd);
 end;
 
-procedure TACBrETQPpla.ImprimirLinha(Vertical, Horizontal, Largura,
-  Altura: Integer);
-var
-   eixoY, eixoX, Larg, Alt: String;
-begin
-  Cmd := '';
-
-  if (Vertical < 0) or (Vertical > 999) then
-     Raise Exception.Create(ACBrStr('Informe um valor entre 0 e 762 para Vertical'));
-  eixoY := padR(IntToStr(Vertical), 4, '0');
-
-  if (Horizontal < 0) or (Horizontal > 999) then
-     Raise Exception.Create(ACBrStr('Informe um valor entre 0 e 762 para Horizontal'));
-  eixoX := padR(IntToStr(Horizontal), 4, '0');
-
-  if (Largura < 0) or (Largura > 999) then
-     Raise Exception.Create(ACBrStr('Tamanho máximo para a Largura da Linha 3 caracteres'));
-  Larg := padR(IntToStr(Largura), 3, '0');
-
-  if (Altura < 0) or (Altura > 999) then
-     Raise Exception.Create(ACBrStr('Tamanho máximo para a Altura da Linha 3 caracteres'));
-  Alt := padR(IntToStr(Altura), 3, '0');
-
-  Cmd := '1X11000' + eixoY + eixoX + 'L' + Larg + Alt;
-
-  ListaCmd.Add(Cmd);
-end;
-
-procedure TACBrETQPpla.ImprimirTexto(Orientacao: TACBrETQOrientacao; Fonte, MultiplicadorH,
-  MultiplicadorV, Vertical, Horizontal: Integer; Texto: String;
-  SubFonte: Integer = 0);
-var
-   eixoY, eixoX, Smooth: String;
-begin
-
-  Cmd := '';
-
-  if ((Integer(Orientacao) + 1) < 1) or ((Integer(Orientacao) + 1) > 4) then
-     Raise Exception.Create(ACBrStr('Informe um valor entre 1 e 4 para Orientação'));
-
-  if (Fonte < 0) or (Fonte > 10) then
-     Raise Exception.Create(ACBrStr('Informe um valor entre 0 e 10 para Fonte'));
-
-  if (SubFonte < 0) or (SubFonte > 7) then
-     Raise Exception.Create(ACBrStr('Informe um valor entre 0 e 7 para SubFonte'));
-
-{ Multiplicador Horizontal, Multiplicador Vertical:
- De 0 a 9 e de A até O representa as escalas de multiplicação (A=10, B=11,..., O=24)}
-
-  if (Vertical < 0) or (Vertical > 1800) then
-     Raise Exception.Create(ACBrStr('Informe um valor entre 0 e 1800 para Vertical'));
-  eixoY := padR(IntToStr(Vertical), 4, '0');
-
-  if (Horizontal < 0) or (Horizontal > 999) then
-     Raise Exception.Create(ACBrStr('Informe um valor entre 0 e 762 para Horizontal'));
-  eixoX := padR(IntToStr(Horizontal), 4, '0');
-
-  if Length(Texto) > 255 then
-     Raise Exception.Create(ACBrStr('Tamanho maximo para o texto 255 caracteres'));
-
-  if Fonte < 9 then
-    Smooth := '000'
-  else
-    Smooth := padR(IntToStr(SubFonte), 3, '0');
-
-  Cmd := IntToStr(Integer(Orientacao) + 1) + Chr(48+Fonte) +
-         ConverteMultiplicador(MultiplicadorH) +
-         ConverteMultiplicador(MultiplicadorV) +
-         Smooth + eixoY + eixoX + Texto;
-
-  ListaCmd.Add(Cmd);
-end;
-
-
-procedure TACBrETQPpla.ImprimirImagem(MultiplicadorImagem, Linha,
-  Coluna: Integer; NomeImagem: String);
+procedure TACBrETQPpla.ImprimirImagem(MultiplicadorImagem, Vertical, Horizontal:
+  Integer; NomeImagem: String);
 var
   Mul, Lin, Col: String;
 begin
   if (MultiplicadorImagem < 0) or (MultiplicadorImagem > 99) then
     Raise Exception.Create(ACBrStr('Informe um valor entre 0 e 99 para MultiplicadorImagem'));
-  Mul := padR(IntToStr(MultiplicadorImagem), 2, '0');
+  Mul := IntToStrZero(MultiplicadorImagem, 2);
 
-  if (Linha < 0) or (Linha > 9999) then
-    Raise Exception.Create(ACBrStr('Informe um valor entre 0 e 9999 para Linha'));
-  Lin := padR(IntToStr(Linha), 4, '0');
+  if (Vertical < 0) or (Vertical > 9999) then
+    Raise Exception.Create(ACBrStr('Informe um valor entre 0 e 9999 para Vertical'));
+  Lin := IntToStrZero(Vertical, 4);
 
-  if (Coluna < 0) or (Coluna > 9999) then
-    Raise Exception.Create(ACBrStr('Informe um valor entre 0 e 9999 para Coluna'));
-  Col := padR(IntToStr(Coluna), 4, '0');
+  if (Horizontal < 0) or (Horizontal > 9999) then
+    Raise Exception.Create(ACBrStr('Informe um valor entre 0 e 9999 para Horizontal'));
+  Col := IntToStrZero(Horizontal, 4);
 
   NomeImagem := OnlyAlphaNum(UpperCase(LeftStr(Trim(NomeImagem),16))) ;
 
@@ -316,45 +302,82 @@ begin
   ListaCmd.Add(Cmd);
 end;
 
-//Carrega a imagem na memória RAM da impressora de etiquetas
-{$IFNDEF CONSOLE}
-procedure TACBrETQPpla.CarregarImagem(MonoBMP : TBitmap; NomeImagem: String;
-  Flipped : Boolean);
+procedure TACBrETQPpla.CarregarImagem(AStream : TStream; NomeImagem: String;
+  Flipped : Boolean; Tipo: String);
 Var
   TipoImagem : Char ;
-  MS : TMemoryStream;
   S  : AnsiString ;
 begin
-  if Flipped then
-     TipoImagem := 'B'
+  if Tipo = 'PCX' then
+     TipoImagem := 'p'
+  else if Tipo = 'IMG' then
+     TipoImagem := 'i'
+  else if Tipo = 'HEX' then
+     TipoImagem := 'f'
+  else if Tipo = 'BMP' then
+     TipoImagem := 'b'
   else
-     TipoImagem := 'b' ;
+     raise Exception.Create( ACBrStr('Formato de Imagem deve ser MonoCromático e '+
+                                     ' do tipo: BMP, PCX, IMG ou HEX') );
+
+  if Flipped then
+     TipoImagem := UpCase( TipoImagem ) ;
 
   NomeImagem := OnlyAlphaNum(UpperCase(LeftStr(Trim(NomeImagem),16))) ;
 
   Cmd := STX + 'IA' + TipoImagem + NomeImagem + CRLF ;
   S   := '' ;
 
-  { Lendo em MemoryStream temporário para nao apagar comandos nao processados }
-  MS := TMemoryStream.Create;
-  try
-     MonoBMP.SaveToStream(MS);
-     MS.Position := 0 ;
-     SetLength(S,MS.Size);
-     MS.ReadBuffer(pchar(S)^,MS.Size);
-  finally
-     MS.Free ;
-  end ;
-
-  if Length(S) = 0 then
-     raise Exception.Create(ACBrStr('Erro ao ler a Imagem'));
+  AStream.Position := 0 ;
+  SetLength(S,AStream.Size);
+  AStream.ReadBuffer(pchar(S)^,AStream.Size);
 
   Cmd := Cmd + S ;
 
   fpDevice.EnviaString( Cmd );
-
-  ListaCmd.Clear ;
 end;
-{$ENDIF}
+
+procedure TACBrETQPpla.Imprimir(Copias: Integer = 1; AvancoEtq: Integer = 0);
+var
+   Temp, NCop : String;
+begin
+  Cmd := '';
+
+  if (Temperatura < 0) or (Temperatura > 20) then
+     Raise Exception.Create(ACBrStr('Informe um valor entre 0 e 20 para Temperatura'));
+  Temp := IntToStrZero(Temperatura, 2);
+
+  if (Copias < 0) or (Copias > 9999) then
+     Raise Exception.Create(ACBrStr('Tamanho máximo para o Número de Cópias 4 caracteres'));
+  NCop := IntToStrZero(Copias, 4);
+
+  Cmd := STX + 'L'                     + CRLF +  // Enters label formatting state
+         STX + UnidadeToStr( Unidade ) + CRLF +  // Informa a Unidade utilizada
+         'H' + Temp                    + CRLF +  // Ajusta a Temperatura
+         'D11'                         + CRLF +  // Ajusta a resolução
+         'Q' + NCop;                             // Ajusta o número de cópias
+
+  {Inserindo comando iniciais na posicao Zero}
+  ListaCmd.Insert(0, Cmd);
+
+  Cmd := '';
+  if AvancoEtq = 0 then
+     AvancoEtq := Avanco;
+  if (AvancoEtq < 0) or (AvancoEtq > 779) then
+     Raise Exception.Create(ACBrStr('O Valor máximo para o Avanço de Etiquetas é 779'));
+
+  AvancoEtq := AvancoEtq + 220;
+
+  Cmd := 'E'                                   + CRLF +   // Ends the job and exit from label formatting mode
+         STX + 'f' + IntToStrZero(AvancoEtq,3) + CRLF ;   // Ajusta o avanço para corte da etiqueta
+
+  if LimparMemoria then
+    Cmd := Cmd + STX + 'Q' ;
+
+  ListaCmd.Add(Cmd);
+
+  fpDevice.EnviaString(ListaCmd.Text);
+  ListaCmd.Clear;
+end;
 
 end.

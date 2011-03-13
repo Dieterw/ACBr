@@ -55,7 +55,7 @@ uses
   {$ENDIF} ;
 
 const
-   CACBrTEFD_Versao      = '1.20b' ;
+   CACBrTEFD_Versao      = '1.30' ;
    CACBrTEFD_EsperaSTS   = 7 ;
    CACBrTEFD_EsperaSleep = 250 ;
    CACBrTEFD_NumVias     = 2 ;
@@ -140,6 +140,7 @@ type
                                      //               "P" Em Pagamento,
                                      //               "C" CDC ou Vinculado
                                      //               "G" Relatório Gerencial
+                                     //               "N" Não Fiscal (em qq fase, pois é dificil detectar a fase)
                                      //               "O" Outro
                      ) ;
 
@@ -2231,9 +2232,9 @@ begin
                  begin
                     { Fecha Vinculado ou Gerencial ou Cupom, se ficou algum aberto por Desligamento }
                     case Est of
-                      'C'      : ComandarECF( opeFechaVinculado );
-                      'G', 'R' : ComandarECF( opeFechaGerencial );
-                      'V', 'P' : ComandarECF( opeCancelaCupom );
+                      'C'         : ComandarECF( opeFechaVinculado );
+                      'G','R'     : ComandarECF( opeFechaGerencial );
+                      'V','P','N' : ComandarECF( opeCancelaCupom );
                     end;
 
                     if EstadoECF <> 'L' then
@@ -2507,8 +2508,9 @@ begin
   { Lendo o SubTotal do ECF }
   with TACBrTEFD(Owner) do
   begin
-    if not (EstadoECF in ['V','P']) then
-       raise Exception.Create( ACBrStr('ECF deve estar em Venda ou Pagamento'));
+    if not (EstadoECF in ['V','P','N']) then
+       raise Exception.Create(
+          ACBrStr('ECF deve estar em Estado de "Venda", "Pagamento" ou "Não Fiscal"') );
 
     SaldoAPagar := SubTotalECF ;
     RespostasPendentes.SaldoAPagar := SaldoAPagar ;

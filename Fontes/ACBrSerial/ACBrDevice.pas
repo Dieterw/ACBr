@@ -103,7 +103,13 @@ TACBrECFEstadoSet = set of TACBrECFEstado ;
 
 TACBrGAVAberturaAntecipada = ( aaIgnorar , aaException, aaAguardar ) ;
 
+TACBrETQUnidade = (etqMilimetros, etqPolegadas, etqDots);
+
+TACBrETQDPI = (dpi203, dpi300, dpi600) ;
+
 TACBrETQOrientacao = (orNormal, or270, or180, or90);
+
+TACBrETQBarraExibeCodigo = (becPadrao, becSIM, becNAO);
 
 {Criando o tipo enumerado para tipos de código de barras }
 TACBrECFTipoCodBarra =  ( barEAN13, barEAN8, barSTANDARD, barINTERLEAVED,

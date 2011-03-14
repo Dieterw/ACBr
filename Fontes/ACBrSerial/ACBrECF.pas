@@ -427,6 +427,7 @@ TACBrECF = class( TACBrComponent )
     function GetAbout: String;
     procedure SetAbout(const Value: String);
     function GetParamDescontoISSQNClass: Boolean;
+    function GetMFAdicional: String;
   protected
     fpUltimoEstadoObtido: TACBrECFEstado;
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
@@ -484,6 +485,7 @@ TACBrECF = class( TACBrComponent )
     Property Cliche             : String     read GetClicheClass ;  //IMS 28/09/2009
     Property UsuarioAtual       : String     read GetUsuarioAtualClass ;  //IMS 09/10/2009
     Property SubModeloECF       : String     read GetSubModeloECFClass ; //IMS 20/10/2009
+    Property MFAdicional        : String     read GetMFAdicional ;
 
     Property PAF                : String     read GetPAFClass ;
     Property NumCRZ             : String     read GetNumCRZClass ;
@@ -1756,6 +1758,19 @@ function TACBrECF.GetHorarioVeraoClass: Boolean;
 begin
   ComandoLOG := 'HorarioVerao' ;
   Result := fsECF.HorarioVerao ;
+end;
+
+function TACBrECF.GetMFAdicional: String;
+var
+  Letra: AnsiString;
+begin
+  ComandoLOG := 'MF Adicional' ;
+
+  Letra := RightStr(fsECF.NumSerie, 1);
+  if CharIsAlpha(Letra[1]) then
+    Result := Letra
+  else
+    Result := '';
 end;
 
 function TACBrECF.GetMFDClass: Boolean;

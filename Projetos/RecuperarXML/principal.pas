@@ -123,7 +123,7 @@ begin
        BlockWrite(f, Buffer, BufferLen)
      until BufferLen = 0;
      CloseFile(f);
-     Result:=True;
+     Result := True;
    finally
      InternetCloseHandle(hURL)
    end
@@ -147,10 +147,10 @@ begin
   TagBegin := Pos( '<', S);      // search position of first <
 
   while (TagBegin > 0) do begin  // while there is a < in S
-    TagEnd := Pos('>', S);              // find the matching >
+    TagEnd    := Pos('>', S);              // find the matching >
     TagLength := TagEnd - TagBegin + 1;
     Delete(S, TagBegin, TagLength);     // delete the tag
-    TagBegin:= Pos( '<', S);            // search for next <
+    TagBegin := Pos( '<', S);            // search for next <
   end;
 
   Result := S;                   // give the result
@@ -193,7 +193,7 @@ begin
      btnNovaConsulta.Enabled := True;
      raise;
   end;
-  PageControl1.ActivePageIndex:=0;
+  PageControl1.ActivePageIndex := 0;
 end;
 
 procedure TfrmPrincipal.FormCreate(Sender: TObject);
@@ -236,7 +236,7 @@ begin
     Memo2.Lines.Text := StripHTML(textoNFe.body.innerHTML);
     Memo2.Lines.Text := StringReplace(Memo2.Lines.Text,'&nbsp;','',[rfReplaceAll, rfIgnoreCase]);
 
-    i:= 0;
+    i := 0;
     while i < memo2.Lines.Count-1 do
     begin
       if trim(Memo2.Lines[i]) = '' then
@@ -246,22 +246,22 @@ begin
       end;
       i := i + 1;
     end;
-    Image1.Picture := nil;
+    Image1.Picture      := nil;
     btnGerarXML.Enabled := True;
     GeraXml;
   end
   else if WebBrowser1.LocationURL = 'https://www.nfe.fazenda.gov.br/portal/inexistente_completa.aspx' then
   begin
     MessageDlg('NF-e INEXISTENTE na base nacional, favor consultar esta NF-e no site da SEFAZ de origem.',mtError,[mbok],0);
-    Image1.Picture := nil;
-    btnGerarXML.Enabled := True;
+    Image1.Picture          := nil;
+    btnGerarXML.Enabled     := True;
     btnNovaConsulta.Enabled := True;
   end
   else
   begin
     MessageDlg('Erro carregando URL: '+WebBrowser1.LocationURL,mtError,[mbok],0);
-    Image1.Picture := nil;
-    btnGerarXML.Enabled := True;
+    Image1.Picture          := nil;
+    btnGerarXML.Enabled     := True;
     btnNovaConsulta.Enabled := True;
   end;
 end;
@@ -272,13 +272,13 @@ begin
  if ProgressMax = 0 then
   begin
     ProgressBar1.Visible := False;
-    lblStatus.Visible := False;
+    lblStatus.Visible    := False;
     exit;
   end
  else
   begin
     ProgressBar1.Visible := True;
-    lblStatus.Visible := True;
+    lblStatus.Visible    := True;
     try
        ProgressBar1.Max := ProgressMax;
        if (Progress <> -1) and (Progress <= ProgressMax) then
@@ -286,7 +286,7 @@ begin
        else
         begin
           ProgressBar1.Visible := False;
-          lblStatus.Visible := False;
+          lblStatus.Visible    := False;
         end;
     except
        on EDivByZero do
@@ -303,7 +303,7 @@ end;
 procedure TfrmPrincipal.NovaConsulta;
 begin
   btnNovaConsulta.Enabled := False;
-  btnGerarXML.Enabled := False;
+  btnGerarXML.Enabled     := False;
   DeleteIECache;
   Memo2.Lines.Clear;
   WebBrowser1.Navigate('https://www.nfe.fazenda.gov.br/portal/FormularioDePesquisa.aspx?tipoconsulta=completa');
@@ -311,7 +311,7 @@ end;
 
 procedure TfrmPrincipal.btnGerarXMLClick(Sender: TObject);
 begin
-GeraXML;
+  GeraXML;
 end;
 
 procedure TfrmPrincipal.GeraXml;
@@ -320,8 +320,8 @@ begin
   WBXML.Navigate(FPath);
   MessageBox(0,PChar('XML '+FPath+' gerado com sucesso!'),'Informação',
     MB_ICONINFORMATION+MB_TASKMODAL);
-  btnNovaConsulta.Enabled:=True;
-  btnPegarHTML.Enabled:=True;
+  btnNovaConsulta.Enabled := True;
+  btnPegarHTML.Enabled    := True;
 end;
 
 procedure TfrmPrincipal.FormKeyDown(Sender: TObject; var Key: Word;
@@ -334,17 +334,17 @@ end;
 procedure TfrmPrincipal.FormClose(Sender: TObject;
   var Action: TCloseAction);
 begin
-Action:=caFree;
+  Action := caFree;
 end;
 
 procedure TfrmPrincipal.Button1Click(Sender: TObject);
 begin
-PegarHTML;
+  PegarHTML;
 end;
 
 procedure TfrmPrincipal.Label3Click(Sender: TObject);
 begin
-NovaConsulta;
+  NovaConsulta;
 end;
 
 end.

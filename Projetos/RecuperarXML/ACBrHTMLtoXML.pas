@@ -12,10 +12,10 @@ function SeparaAte(Chave, Texto : AnsiString; var Resto: AnsiString): String;
 var
   inicio : integer;
 begin
-   Chave      := Trim(Chave);
-   inicio     := pos(Chave, Texto);
+   Chave  := Trim(Chave);
+   inicio := pos(Chave, Texto);
    if inicio = 0 then
-     result   := ''
+     result := ''
    else
     begin
        Resto  := copy(Texto,inicio,length(Texto));
@@ -28,25 +28,25 @@ var
   ConteudoTag: string;
   inicio, fim: integer;
 begin
-  NomeCampo     := UpperCase(Trim(NomeCampo));
-  inicio        := pos(NomeCampo, UpperCase(Texto));
+  NomeCampo := UpperCase(Trim(NomeCampo));
+  inicio    := pos(NomeCampo, UpperCase(Texto));
   if inicio = 0 then
     ConteudoTag := ''
   else
   begin
-    inicio      := inicio + Length(NomeCampo);
+    inicio := inicio + Length(NomeCampo);
     if Tamanho > 0 then
-       fim      := Tamanho
+       fim := Tamanho
     else
      begin
-       Texto    := copy(Texto,inicio,length(Texto));
-       inicio   := 0;
-       fim      := pos('|&|',Texto)-1;
+       Texto  := copy(Texto,inicio,length(Texto));
+       inicio := 0;
+       fim    := pos('|&|',Texto)-1;
      end;
     ConteudoTag := trim(copy(Texto, inicio, fim));
   end;
   try
-     result     := ConteudoTag;
+     result := ConteudoTag;
   except
      raise Exception.Create('Conteúdo inválido. '+ConteudoTag);
   end;
@@ -159,8 +159,8 @@ begin
 
  while true do
   begin
-    ArquivoItensTemp   := copy(ArquivoItens,33,length(ArquivoItens));
-    Grupo              :=  SeparaAte('Dados dos Produtos e Serviços',ArquivoItensTemp,ArquivoItens);
+    ArquivoItensTemp := copy(ArquivoItens,33,length(ArquivoItens));
+    Grupo            :=  SeparaAte('Dados dos Produtos e Serviços',ArquivoItensTemp,ArquivoItens);
     if Grupo = '' then
      begin
        if pos('Num.',ArquivoItensTemp) > 0 then
@@ -173,22 +173,22 @@ begin
      end;
     with NFe.Det.Add do
      begin
-       Prod.nItem            := StrToIntDef(LerCampo(Grupo,'Num.'),0);
-       Prod.xProd            := LerCampo(Grupo,'Descrição');
-       Prod.qCom             := ConverteStrToNumero(LerCampo(Grupo,'Qtd.'));
-       Prod.uCom             := LerCampo(Grupo,'Unidade Comercial');
-       Prod.vProd            := ConverteStrToNumero(LerCampo(Grupo,'Valor(R$)'));
-       Prod.cProd            := LerCampo(Grupo,'Código do Produto');
-       Prod.NCM              := LerCampo(Grupo,'Código NCM');
-       Prod.CFOP             := LerCampo(Grupo,'CFOP');
-       Prod.vFrete           := ConverteStrToNumero(LerCampo(Grupo,'Valor Total do Frete'));
-       Prod.cEAN             := LerCampo(Grupo,'Código EAN Comercial');
-       Prod.qCom             := ConverteStrToNumero(LerCampo(Grupo,'Quantidade Comercial'));
-       Prod.cEANTrib         := LerCampo(Grupo,'Código EAN Tributável');
-       Prod.uTrib            := LerCampo(Grupo,'Unidade Tributável');
-       Prod.qTrib            := ConverteStrToNumero(LerCampo(Grupo,'Quantidade Tributável'));
-       Prod.vUnCom           := ConverteStrToNumero(LerCampo(Grupo,'Valor unitário de comercialização'));
-       Prod.vUnTrib          := ConverteStrToNumero(LerCampo(Grupo,'Valor unitário de tributação'));
+       Prod.nItem    := StrToIntDef(LerCampo(Grupo,'Num.'),0);
+       Prod.xProd    := LerCampo(Grupo,'Descrição');
+       Prod.qCom     := ConverteStrToNumero(LerCampo(Grupo,'Qtd.'));
+       Prod.uCom     := LerCampo(Grupo,'Unidade Comercial');
+       Prod.vProd    := ConverteStrToNumero(LerCampo(Grupo,'Valor(R$)'));
+       Prod.cProd    := LerCampo(Grupo,'Código do Produto');
+       Prod.NCM      := LerCampo(Grupo,'Código NCM');
+       Prod.CFOP     := LerCampo(Grupo,'CFOP');
+       Prod.vFrete   := ConverteStrToNumero(LerCampo(Grupo,'Valor Total do Frete'));
+       Prod.cEAN     := LerCampo(Grupo,'Código EAN Comercial');
+       Prod.qCom     := ConverteStrToNumero(LerCampo(Grupo,'Quantidade Comercial'));
+       Prod.cEANTrib := LerCampo(Grupo,'Código EAN Tributável');
+       Prod.uTrib    := LerCampo(Grupo,'Unidade Tributável');
+       Prod.qTrib    := ConverteStrToNumero(LerCampo(Grupo,'Quantidade Tributável'));
+       Prod.vUnCom   := ConverteStrToNumero(LerCampo(Grupo,'Valor unitário de comercialização'));
+       Prod.vUnTrib  := ConverteStrToNumero(LerCampo(Grupo,'Valor unitário de tributação'));
 
        if LerCampo(Grupo,'Chassi do veículo ') <> '' then
        begin
@@ -206,15 +206,15 @@ begin
 
        with Imposto.ICMS do
         begin
-          orig    := StrToOrig(ok,LerCampo(Grupo,'Origem da Mercadoria',1));
-          CST     := StrToCSTICMS(ok,LerCampo(Grupo,'Tributação do ICMS',2));
+          orig  := StrToOrig(ok,LerCampo(Grupo,'Origem da Mercadoria',1));
+          CST   := StrToCSTICMS(ok,LerCampo(Grupo,'Tributação do ICMS',2));
           //Modalidade Definição da BC ICMS NORMAL
-          vBC     := ConverteStrToNumero(LerCampo(Grupo,'Base de Cálculo do ICMS Normal'));
-          vBC     := ConverteStrToNumero(LerCampo(Grupo,'Base de Cálculo'));
-          pICMS   := ConverteStrToNumero(LerCampo(Grupo,'Alíquota do ICMS Normal'));
-          pICMS   := ConverteStrToNumero(LerCampo(Grupo,'Alíquota'));
-          vICMS   := ConverteStrToNumero(LerCampo(Grupo,'Valor do ICMS Normal'));
-          vICMS   := ConverteStrToNumero(LerCampo(Grupo,'Valor'));
+          vBC   := ConverteStrToNumero(LerCampo(Grupo,'Base de Cálculo do ICMS Normal'));
+          vBC   := ConverteStrToNumero(LerCampo(Grupo,'Base de Cálculo'));
+          pICMS := ConverteStrToNumero(LerCampo(Grupo,'Alíquota do ICMS Normal'));
+          pICMS := ConverteStrToNumero(LerCampo(Grupo,'Alíquota'));
+          vICMS := ConverteStrToNumero(LerCampo(Grupo,'Valor do ICMS Normal'));
+          vICMS := ConverteStrToNumero(LerCampo(Grupo,'Valor'));
 
           //Modalidade Definição da BC ICMS SUBSTITUTO
 
@@ -226,11 +226,11 @@ begin
 
        with Imposto.IPI do
         begin
-          cEnq  := LerCampo(Grupo,'Código de Enquadramento');
-          vBC   := ConverteStrToNumero(LerCampo(Grupo,'Base de Cálculo '));
-//        pIPI  := ConverteStrToNumero(LerCampo(Grupo,'Alíquota'));
-          vIPI  := ConverteStrToNumero(LerCampo(Grupo,'Valor'));
-          CST   := StrToCSTIPI(ok,LerCampo(Grupo,'CST',2));
+          cEnq := LerCampo(Grupo,'Código de Enquadramento');
+          vBC  := ConverteStrToNumero(LerCampo(Grupo,'Base de Cálculo '));
+//        pIPI := ConverteStrToNumero(LerCampo(Grupo,'Alíquota'));
+          vIPI := ConverteStrToNumero(LerCampo(Grupo,'Valor'));
+          CST  := StrToCSTIPI(ok,LerCampo(Grupo,'CST',2));
         end;
 
      end;
@@ -354,13 +354,13 @@ begin
      end;
   end;
 
- GeradorXML           := TNFeW.Create(NFe);
+ GeradorXML := TNFeW.Create(NFe);
  try
     GeradorXML.schema := TsPL005c;
     GeradorXML.GerarXml;
-    CaminhoXML        := PathWithDelim(ExtractFilePath('C:\siscom\SERVER\nfe\xml_entradas\'))+copy(NFe.infNFe.ID, (length(NFe.infNFe.ID)-44)+1, 44)+'-nfe.xml';
+    CaminhoXML := PathWithDelim(ExtractFilePath(Application.ExeName))+copy(NFe.infNFe.ID, (length(NFe.infNFe.ID)-44)+1, 44)+'-nfe.xml';
     GeradorXML.Gerador.SalvarArquivo(CaminhoXML);
-    Result            := CaminhoXML;
+    Result := CaminhoXML;
  finally
     GeradorXML.Free;
  end;

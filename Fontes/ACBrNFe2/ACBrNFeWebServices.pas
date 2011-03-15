@@ -1836,7 +1836,7 @@ begin
     {$ELSE}
       ReqResp.Free;
     {$ENDIF}
-    NFeRetorno.Free;
+    //NFeRetorno.Free; (se descomentar essa linha não será possível ler a propriedade ACBrNFe1.WebServices.Consulta.protNFe.nProt)
     Acao.Free;
     Stream.Free;
     NotaUtil.ConfAmbiente;

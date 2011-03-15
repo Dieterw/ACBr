@@ -2031,7 +2031,8 @@ begin
     FMsg       := CTeRetorno.XMotivo;
 
     Result := (CTeRetorno.cStat = 102); // 102 = Inutilização
-    CTeRetorno.Free;
+    // Alterado por Italo em 15/03/2011 
+    // CTeRetorno.Free;
 
     if FConfiguracoes.Geral.Salvar then
       FConfiguracoes.Geral.Save(FormatDateTime('yyyymmddhhnnss',Now)+FCTeChave+'-inu.xml', FRetWS);

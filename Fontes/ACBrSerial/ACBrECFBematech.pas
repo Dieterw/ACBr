@@ -612,9 +612,9 @@ TACBrECFBematech = class( TACBrECFClass )
        NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
 
     Procedure ArquivoMFD_DLL( DataInicial, DataFinal : TDateTime;
-       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
+       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]; Finalidade: TACBrECFFinalizaArqMFD = finArqMFD  ) ; override ;
     Procedure ArquivoMFD_DLL( COOInicial, COOFinal : Integer;
-       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
+       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]; Finalidade: TACBrECFFinalizaArqMFD = finArqMFD  ) ; override ;
  end ;
 
 implementation
@@ -3627,12 +3627,13 @@ begin
 end;
 
 procedure TACBrECFBematech.ArquivoMFD_DLL(DataInicial, DataFinal: TDateTime;
-  NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet);
+  NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet; Finalidade: TACBrECFFinalizaArqMFD);
 Var
   ClicheSL : TStringList ;
   Resp : Integer ;
   DiaIni, DiaFim, Prop, ArqTmp, cEndereco, cRazao : AnsiString ;
   OldAtivo : Boolean ;
+  Tipo: PAnsiChar;
   {$IFDEF LINUX} Cmd : String ; {$ENDIF}
 begin
   ArqTmp := ExtractFilePath( NomeArquivo ) +'ACBr';
@@ -3703,13 +3704,20 @@ begin
         raise Exception.Create( ACBrStr( 'Erro na execução de Bematech_FI_DownloadMFD.'+sLineBreak+
                                'Arquivo: "'+ArqTmp + '.mfd" não gerado' )) ;
 
+     // tipo do formato do arquivo se a emissão ocorreu por LMFC ou Arq.MFD
+     case Finalidade of
+       finLMFC: Tipo := '0';
+     else
+       Tipo := '2';
+     end;
+
      Resp := xBemaGeraRegistrosTipoE( PAnsiChar( ArqTmp + '.mfd'),
                                       PAnsichar( NomeArquivo ),
                                       PAnsiChar( DiaIni ),
                                       PAnsiChar( DiaFim ),
                                       PAnsichar( cRazao ),
                                       PAnsichar( cEndereco ),
-                                      '','2', '', '', '', '', '', '', '', '',
+                                      '',Tipo, '', '', '', '', '', '', '', '',
                                       '', '', '', '', '' );
 
      if (Resp < 0) or (Resp > 1) then
@@ -3733,12 +3741,13 @@ end;
 
 // Por: Luiz Arlindo
 procedure TACBrECFBematech.ArquivoMFD_DLL(COOInicial, COOFinal: Integer;
-  NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet);
+  NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet; Finalidade: TACBrECFFinalizaArqMFD);
 Var
   ClicheSL : TStringList ;
   Resp : Integer ;
   DiaIni, DiaFim, Prop, ArqTmp, cEndereco, cRazao, COOIni, CooFim : AnsiString ;
   OldAtivo : Boolean ;
+  Tipo: PAnsiChar;
 //iACK, iST1, iST2, iST3: Integer;
   cArqTemp, cArqTempTXT : TextFile;
   cLinha : string;
@@ -3872,13 +3881,20 @@ begin
 //   Resp := xBematech_FI_HabilitaDesabilitaRetornoEstendidoMFD('1');
 //   Resp := xBematech_FI_RetornoImpressoraMFD(iACK,iST1,iST2,iST3);
 
+     // tipo do formato do arquivo se a emissão ocorreu por LMFC ou Arq.MFD
+     case Finalidade of
+       finLMFC: Tipo := '0';
+     else
+       Tipo := '2'
+     end;
+
      Resp := xBemaGeraRegistrosTipoE( PAnsiChar( ArqTmp + '.mfd'),
                                       PAnsichar( NomeArquivo ),
                                       PAnsiChar( DiaIni ),
                                       PAnsiChar( DiaFim ),
                                       PAnsichar( cRazao ),
                                       PAnsichar( cEndereco ),
-                                      '','2','','','','','','','','','','','','','' );
+                                      '',Tipo,'','','','','','','','','','','','','' );
 
      if (Resp < 0) or (Resp > 1) then
         raise Exception.Create( ACBrStr( 'Erro ao executar BemaGeraRegistrosTipoE.'+sLineBreak+

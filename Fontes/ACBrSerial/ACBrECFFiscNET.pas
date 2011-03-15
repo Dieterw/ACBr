@@ -310,9 +310,11 @@ TACBrECFFiscNET = class( TACBrECFClass )
        NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
 
     Procedure ArquivoMFD_DLL( DataInicial, DataFinal : TDateTime;
-       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
+       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos];
+       Finalidade: TACBrECFFinalizaArqMFD = finArqMFD  ) ; override ;
     Procedure ArquivoMFD_DLL( COOInicial, COOFinal : Integer;
-       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
+       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos];
+       Finalidade: TACBrECFFinalizaArqMFD = finArqMFD  ) ; override ;
 
     Procedure ImprimeCheque(Banco : String; Valor : Double ; Favorecido,
        Cidade : String; Data : TDateTime ;Observacao : String = '') ; override ;
@@ -2789,7 +2791,8 @@ begin
 end;
 
 procedure TACBrECFFiscNET.ArquivoMFD_DLL(DataInicial, DataFinal: TDateTime;
-  NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet);
+  NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet;
+  Finalidade: TACBrECFFinalizaArqMFD);
 Var
   iRet      : Integer;
   PortaSerial, ModeloECF, Erro, NumFab, ArqTmp, Prop : String;
@@ -2865,7 +2868,8 @@ begin
 end;
 
 procedure TACBrECFFiscNET.ArquivoMFD_DLL(COOInicial, COOFinal: Integer; NomeArquivo: AnsiString;
-  Documentos: TACBrECFTipoDocumentoSet);
+  Documentos: TACBrECFTipoDocumentoSet;
+  Finalidade: TACBrECFFinalizaArqMFD);
 Var
   iRet : Integer;
   PortaSerial, ModeloECF, Erro, NumFab : String;

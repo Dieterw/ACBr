@@ -97,6 +97,13 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data:  15/03/2011
+-- ACBrECF --
+[*] - Adicionado novo parâmetro ao método ArquivoMFD_DLL para dizer a 
+      finalidade da geração do arquivo, se foi gerado pelo menu fiscal
+      LMFC ou pelo menu fiscal Arq.MFD.
+      Por: Regys Silveira
+
 Data:  13/03/2011
 -- ACBrETQ --
 [+] - Adicionado suporte a novo protocolo EPL2 (que é igual ao PPLB)

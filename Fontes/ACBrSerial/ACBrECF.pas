@@ -717,9 +717,11 @@ TACBrECF = class( TACBrComponent )
     Procedure EspelhoMFD_DLL( COOInicial, COOFinal : Integer;
        NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ;
     Procedure ArquivoMFD_DLL( DataInicial, DataFinal : TDateTime;
-       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ;
+       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos];
+       Finalidade: TACBrECFFinalizaArqMFD = finArqMFD ) ; overload ;
     Procedure ArquivoMFD_DLL( COOInicial, COOFinal : Integer;
-       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ;
+       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos];
+       Finalidade: TACBrECFFinalizaArqMFD = finArqMFD) ; overload ;
 
     Procedure IdentificaOperador( Nome : String) ;
     Procedure IdentificaPAF( Linha1, Linha2 : String) ;
@@ -3589,23 +3591,25 @@ begin
 end;
 
 procedure TACBrECF.ArquivoMFD_DLL(DataInicial, DataFinal: TDateTime;
-  NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet);
+  NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet;
+  Finalidade: TACBrECFFinalizaArqMFD);
 begin
   TestaSeE_MFD ;
 
   ComandoLOG := 'ArquivoMFD_DLL( '+DateToStr(DataInicial)+' , '+
                     DateToStr(DataFinal)+' , '+NomeArquivo+' ) ';
-  fsECF.ArquivoMFD_DLL( DataInicial, DataFinal, NomeArquivo, Documentos ) ;
+  fsECF.ArquivoMFD_DLL( DataInicial, DataFinal, NomeArquivo, Documentos, Finalidade ) ;
 end;
 
 procedure TACBrECF.ArquivoMFD_DLL(COOInicial, COOFinal: Integer;
-  NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet);
+  NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet;
+  Finalidade: TACBrECFFinalizaArqMFD);
 begin
   TestaSeE_MFD ;
 
   ComandoLOG := 'ArquivoMFD_DLL( '+IntToStr(COOInicial)+' , '+
                     IntToStr(COOFinal)+' , '+NomeArquivo+' ) ';
-  fsECF.ArquivoMFD_DLL( COOInicial, COOFinal, NomeArquivo, Documentos ) ;
+  fsECF.ArquivoMFD_DLL( COOInicial, COOFinal, NomeArquivo, Documentos, Finalidade ) ;
 end;
 
 procedure TACBrECF.ImprimeCheque(Banco: String; Valor: Double; Favorecido,

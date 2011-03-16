@@ -1902,7 +1902,8 @@ begin
     {$ENDIF}
     Acao.Free;
     Stream.Free;
-    CTeRetorno.Free;
+    // Alterado por Italo em 16/03/2011
+    // CTeRetorno.Free;
     CTeUtil.ConfAmbiente;
     TACBrCTe( FACBrCTe ).SetStatus( stCTeIdle );
   end;

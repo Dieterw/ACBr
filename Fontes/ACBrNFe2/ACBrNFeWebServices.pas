@@ -2026,7 +2026,7 @@ begin
     {$ENDIF}
     Acao.Free;
     Stream.Free;
-    NFeRetorno.Free;
+    //NFeRetorno.Free; (se descomentar essa linha não será possível ler a propriedade ACBrNFe1.WebServices.Consulta.protNFe)
     NotaUtil.ConfAmbiente;
     TACBrNFe( FACBrNFe ).SetStatus( stIdle );
   end;
@@ -2154,7 +2154,7 @@ begin
     Fprotocolo:= NFeRetorno.nProt;
     FMsg   := NFeRetorno.XMotivo;
     Result := (NFeRetorno.cStat = 102);
-    NFeRetorno.Free;
+    //NFeRetorno.Free; (se descomentar essa linha não será possível ler a propriedade ACBrNFe1.WebServices.Consulta.protNFe)
 
     if FConfiguracoes.Geral.Salvar then
       FConfiguracoes.Geral.Save(StringReplace(FID,'ID','',[rfIgnoreCase])+'-inu.xml', FRetWS);

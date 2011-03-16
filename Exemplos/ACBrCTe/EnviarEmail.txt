@@ -1,27 +1,181 @@
+procedure TfrmMovEmitirCNT.NaoEmitidos;
+var
+ i, j, Lote, CTeInicial, CTeFinal: Integer;
+begin
+ Mensagem:=TStringList.Create;
+ sCC:=TStringList.Create;
+// LeDadosEmpresa;
+
+ DM_CTA.TabHost.Close;
+ DM_CTA.TabHost.SQL.Clear;
+ DM_CTA.TabHost.SQL.Add('Select * From Sis_TabHost');
+ DM_CTA.TabHost.SQL.Add('Where Empresa = :xEmpresa');
+ DM_CTA.TabHost.SQL.Add('Order By Sequencia');
+ DM_CTA.TabHost.Params[0].AsString:=DM_CTA.xCodEmpresa;
+ DM_CTA.TabHost.Active:=True;
+ DM_CTA.TabHost.Open;
+
+ DMCTE.CTe.Conhecimentos.Clear;
+
+ // Lote de Conhecimentos
+ DM_CNT.LoteCTe.Close;
+ DM_CNT.LoteCTe.SQL.Clear;
+ DM_CNT.LoteCTe.SQL.Add('Select * From Cnt_LoteCTe');
+ DM_CNT.LoteCTe.SQL.Add('Order By Lote');
+ DM_CNT.LoteCTe.Active:=True;
+ DM_CNT.LoteCTe.Open;
+ DM_CNT.LoteCTe.Last;
+ if DM_CNT.LoteCTe.RecordCount>0
+  then begin
+   if (DM_CNT.LoteCTeCTInicial.AsInteger=0) and
+      (DM_CNT.LoteCTeCTFinal.AsInteger=0)
+    then Lote:=DM_CNT.LoteCTeLote.AsInteger
+    else begin
+     Lote:=(DM_CNT.LoteCTeLote.AsInteger+1);
+
+     DM_CNT.IncAltDel.SQL.Clear;
+     DM_CNT.IncAltDel.SQL.Add('Insert into Cnt_LoteCTe');
+     DM_CNT.IncAltDel.SQL.Add('(Lote, CTInicial, CTFinal, Data)');
+     DM_CNT.IncAltDel.SQL.Add('Values (:xLote, :xCTInicial, :xCTFinal, :xData)');
+     DM_CNT.IncAltDel.Params[0].AsInteger:=Lote;
+     DM_CNT.IncAltDel.Params[1].AsInteger:=0;
+     DM_CNT.IncAltDel.Params[2].AsInteger:=0;
+     DM_CNT.IncAltDel.Params[3].AsDateTime:=Date;
+     DM_CNT.IncAltDel.ExecSQL;
+   end;
+  end
+  else begin
+   Lote:=1;
+
+   DM_CNT.IncAltDel.SQL.Clear;
+   DM_CNT.IncAltDel.SQL.Add('Insert into Cnt_LoteCTe');
+   DM_CNT.IncAltDel.SQL.Add('(Lote, CTInicial, CTFinal, Data)');
+   DM_CNT.IncAltDel.SQL.Add('Values (:xLote, :xCTInicial, :xCTFinal, :xData)');
+   DM_CNT.IncAltDel.Params[0].AsInteger:=Lote;
+   DM_CNT.IncAltDel.Params[1].AsInteger:=0;
+   DM_CNT.IncAltDel.Params[2].AsInteger:=0;
+   DM_CNT.IncAltDel.Params[3].AsDateTime:=Date;
+   DM_CNT.IncAltDel.ExecSQL;
+  end;
+
+ if rgFaixa.ItemIndex=0
+  then begin
+   DM_CNT.Conhec2.Last;
+   j:=DM_CNT.Conhec2.RecordCount-1;
+
+   // Caso a quantidade de conhecimentos não impressos seja superior o
+   // limite estabelecido pelo SEFAZ (50 conhecimentos por lote) a
+   // geração dos CT-e ficara limitada nos 50 primeiros, portanto novos
+   // lotes deverão ser gerados até compreender todos os conhecimentos não
+   // impressos.
+   if DM_CNT.Conhec2.RecordCount>LimiteCte
+    then j:=LimiteCTe-1;
+
+   pbProgresso.Min:=0;
+   pbProgresso.Max:=j;
+   DM_CNT.Conhec2.First;
+   CTeInicial:=DM_CNT.Conhec2Numero.AsInteger;
+   CTeFinal:=DM_CNT.Conhec2Numero.AsInteger;
+
+   for i:=pbProgresso.Min to pbProgresso.Max do
+    begin
+     pbProgresso.Position:=i;
+     CTeFinal:=DM_CNT.Conhec2Numero.AsInteger;
+     GerarLoteCTe;
+     DM_CNT.Conhec2.Next;
+    end;
+
+   EnviarLote(Lote);
+
+   DM_CNT.IncAltDel.SQL.Clear;
+   DM_CNT.IncAltDel.SQL.Add('Update Cnt_LoteCTe Set');
+   DM_CNT.IncAltDel.SQL.Add('CTInicial = :xCTInicial,');
+   DM_CNT.IncAltDel.SQL.Add('CTFinal = :xCTFinal,');
+   DM_CNT.IncAltDel.SQL.Add('Data = :xData');
+   DM_CNT.IncAltDel.SQL.Add('Where Lote = :xLote');
+   DM_CNT.IncAltDel.Params[0].AsInteger:=CTeInicial;
+   DM_CNT.IncAltDel.Params[1].AsInteger:=CTeFinal;
+   DM_CNT.IncAltDel.Params[2].AsDateTime:=Date;
+   DM_CNT.IncAltDel.Params[3].AsInteger:=Lote;
+   DM_CNT.IncAltDel.ExecSQL;
+
+   pbProgresso.Min:=0;
+   pbProgresso.Max:=j;
+   DM_CNT.Conhec2.First;
+   Ok:=False;
+   MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
+   MemoStatus.Lines.Add(' =>  Enviando Conhecimento(s) por e-mail');
+   MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
+   for i:=pbProgresso.Min to pbProgresso.Max do
+    begin
+     pbProgresso.Position:=i;
+
+     DM_CTA.PessoaFJE.Close;
+     DM_CTA.PessoaFJE.SQL.Clear;
+     DM_CTA.PessoaFJE.SQL.Add('Select * From Sis_PessoaFJEmail');
+     DM_CTA.PessoaFJE.SQL.Add('Where CNPJ = :xCNPJ');
+     DM_CTA.PessoaFJE.SQL.Add('and Modulo = :xModulo');
+     DM_CTA.PessoaFJE.Params[0].AsString:=DM_CNT.Conhec2Pagador.AsString;
+     DM_CTA.PessoaFJE.Params[1].AsString:='DFE';
+     DM_CTA.PessoaFJE.Active:=True;
+     DM_CTA.PessoaFJE.Open;
+     if (DM_CTA.PessoaFJECNPJ.AsString=DM_CNT.Conhec2Pagador.AsString) and
+        (DM_CTA.PessoaFJEModulo.AsString='DFE')
+      then Endereco:=trim(DM_CTA.PessoaFJEEmail.AsString)
+      else Endereco:='';
+     {
+     DM_CNT.IncAltDel.SQL.Clear;
+     DM_CNT.IncAltDel.SQL.Add('Update Cnt_Conhecimento Set');
+     DM_CNT.IncAltDel.SQL.Add('Emissao = :xEmissao,');
+     DM_CNT.IncAltDel.SQL.Add('ChaveCTe = :xChave,');
+     DM_CNT.IncAltDel.SQL.Add('Impresso = :xImpresso');
+     DM_CNT.IncAltDel.SQL.Add('Where Codigo = :xCodigo');
+     DM_CNT.IncAltDel.SQL.Add('and Numero = :xNumero');
+     DM_CNT.IncAltDel.Params[0].AsDateTime:=DateOf(DMCTE.CTe.Conhecimentos.Items[i].CTe.Ide.dhEmi);
+     DM_CNT.IncAltDel.Params[1].AsString:=Copy(DMCTE.CTe.Conhecimentos.Items[i].CTe.inFCTe.ID,4,44);
+     DM_CNT.IncAltDel.Params[2].AsString:='S';
+     DM_CNT.IncAltDel.Params[3].AsInteger:=DM_CNT.Conhec2Codigo.AsInteger;
+     DM_CNT.IncAltDel.Params[4].AsInteger:=DM_CNT.Conhec2Numero.AsInteger;
+     DM_CNT.IncAltDel.ExecSQL;
+     }
      Ok:=False;
      if Endereco<>''
       then begin
        Mensagem.Clear;
        sCC.Clear;
-       Mensagem.Add('CT-e: '+Copy(CTe.Conhecimentos.Items[i].CTe.inFCTe.ID,4,44));
-       sCC.Add(Trim(DM_CTA.EmpresaEmail.AsString));
-       sCC.Add(CopiaPara);
+       Mensagem.Add('Comunicamos por este e-mail que o Conhecimento Eletrônico (Chave='+
+         Copy(DMCTE.CTe.Conhecimentos.Items[i].CTe.inFCTe.ID,4,44)+
+         ') obteve autorização de uso sob o protocolo: '+DMCTE.CTe.Conhecimentos.Items[i].CTe.procCTe.nProt);
+       Mensagem.Add(' ');
+       Mensagem.Add('Enviamos em anexo o arquivo XML do respectivo CT-e.');
+       Mensagem.Add(' ');
+       Mensagem.Add('Atenciosamente,');
+       Mensagem.Add(' ');
+       Mensagem.Add(DM_CTA.EmpresaNome.AsString);
+       Mensagem.Add(' ');
+       Mensagem.Add('>>> Sistema ERPJr <<<');
+
+       if Trim(DM_CTA.EmpresaEmail.AsString)<>''
+        then sCC.Add(Trim(DM_CTA.EmpresaEmail.AsString));
+       if CopiaPara<>''
+        then sCC.Add(CopiaPara);
 
        DM_CTA.TabHost.Last;
        jHost:=DM_CTA.TabHost.RecordCount;
        iHost:=1;
        DM_CTA.TabHost.First;
        Falha:=False;
+       MemoStatus.Lines.Add(' CT-e: '+Copy(DMCTE.CTe.Conhecimentos.Items[i].CTe.inFCTe.ID,4,44));
+       MemoStatus.Lines.Add(' Destinatário: ' + Endereco);
+
        repeat
-        MemoStatus.Lines.Add(' CT-e: '+Copy(CTe.Conhecimentos.Items[i].CTe.inFCTe.ID,4,44));
-        MemoStatus.Lines.Add(' Destinatário: ' + Endereco);
         MemoStatus.Lines.Add('  Aguarde... Enviando CT-e por e-mail. Host ['+
            IntToStr(iHost)+']  ');
         ConexaoSSL := (DM_CTA.TabHostPortaSMTP.AsInteger<>25);
 
         try
 
-         CTe.Conhecimentos.Items[i].EnviarEmail(DM_CTA.TabHostServidorSMTP.AsString,
+         DMCTE.CTe.Conhecimentos.Items[i].EnviarEmail(DM_CTA.TabHostServidorSMTP.AsString,
                                       DM_CTA.TabHostPortaSMTP.AsString,
                                       DM_CTA.TabHostUsuario.AsString,
                                       DM_CTA.TabHostSenha.AsString,
@@ -35,8 +189,8 @@
                                       nil,                         // Anexos
                                       PedeConfirmacao,             // Pede Confirmação de Recebimento
                                       AguardarEnvio,               // Aguarda o Envio
-                                      DM_CTA.EmpresaNome.AsString, // Nome do remetente
-                                      UsaIndy);
+                                      DM_CTA.EmpresaNome.AsString); // Nome do remetente
+                                      //UsaIndy);
          Ok:=True;
         except
          DM_CTA.TabHost.Next;
@@ -51,7 +205,137 @@
 
      DM_CNT.Conhec2.Next;
     end;
-   Mensagem.Free;
-   sCC.Free;
    if Ok
     then MessageDlg('e-mail enviado com Sucesso.', mtInformation, [mbOk], 0);
+  end
+  else begin
+   DM_CNT.Conhec2.Close;
+   DM_CNT.Conhec2.SQL.Clear;
+   DM_CNT.Conhec2.SQL.Add('Select Cnt_Conhecimento.*, Sis_PessoaFJ.*');
+   DM_CNT.Conhec2.SQL.Add('From Cnt_Conhecimento, Sis_PessoaFJ');
+   DM_CNT.Conhec2.SQL.Add('Where Cnt_Conhecimento.Destinatario = Sis_PessoaFJ.CGC');
+   DM_CNT.Conhec2.SQL.Add('and Cnt_Conhecimento.Codigo = :xCodigo');
+   DM_CNT.Conhec2.SQL.Add('and Cnt_Conhecimento.Numero = :xNumero');
+   DM_CNT.Conhec2.Params[0].AsInteger:=edtUnidade.ValueInt;
+   DM_CNT.Conhec2.Params[1].AsInteger:=edtNumero.ValueInt;
+   DM_CNT.Conhec2.Active:=True;
+   DM_CNT.Conhec2.Open;
+
+   CTeInicial:=DM_CNT.Conhec2Numero.AsInteger;
+   CTeFinal:=DM_CNT.Conhec2Numero.AsInteger;
+   GerarLoteCTe;
+
+   EnviarLote(Lote);
+
+   DM_CTA.PessoaFJE.Close;
+   DM_CTA.PessoaFJE.SQL.Clear;
+   DM_CTA.PessoaFJE.SQL.Add('Select * From Sis_PessoaFJEmail');
+   DM_CTA.PessoaFJE.SQL.Add('Where CNPJ = :xCNPJ');
+   DM_CTA.PessoaFJE.SQL.Add('and Modulo = :xModulo');
+   DM_CTA.PessoaFJE.Params[0].AsString:=DM_CNT.Conhec2Pagador.AsString;
+   DM_CTA.PessoaFJE.Params[1].AsString:='DFE';
+   DM_CTA.PessoaFJE.Active:=True;
+   DM_CTA.PessoaFJE.Open;
+   if (DM_CTA.PessoaFJECNPJ.AsString=DM_CNT.Conhec2Pagador.AsString) and
+      (DM_CTA.PessoaFJEModulo.AsString='DFE')
+    then Endereco:=trim(DM_CTA.PessoaFJEEmail.AsString)
+    else Endereco:='';
+
+   DM_CNT.IncAltDel.SQL.Clear;
+   DM_CNT.IncAltDel.SQL.Add('Update Cnt_LoteCTe Set');
+   DM_CNT.IncAltDel.SQL.Add('CTInicial = :xCTInicial,');
+   DM_CNT.IncAltDel.SQL.Add('CTFinal = :xCTFinal');
+   DM_CNT.IncAltDel.SQL.Add('Where Lote = :xLote');
+   DM_CNT.IncAltDel.Params[0].AsInteger:=CTeInicial;
+   DM_CNT.IncAltDel.Params[1].AsInteger:=CTeFinal;
+   DM_CNT.IncAltDel.Params[2].AsInteger:=Lote;
+   DM_CNT.IncAltDel.ExecSQL;
+
+   MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
+   MemoStatus.Lines.Add(' =>  Enviando Conhecimento(s) por e-mail');
+   MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
+   {
+   DM_CNT.IncAltDel.SQL.Clear;
+   DM_CNT.IncAltDel.SQL.Add('Update Cnt_Conhecimento Set');
+   DM_CNT.IncAltDel.SQL.Add('ChaveCTe = :xChave,');
+   DM_CNT.IncAltDel.SQL.Add('Impresso = :xImpresso');
+   DM_CNT.IncAltDel.SQL.Add('Where Codigo = :xCodigo');
+   DM_CNT.IncAltDel.SQL.Add('and Numero = :xNumero');
+   DM_CNT.IncAltDel.Params[0].AsString:=Copy(DMCTE.CTe.Conhecimentos.Items[0].CTe.infCTe.ID,4,44);
+   DM_CNT.IncAltDel.Params[1].AsString:='S';
+   DM_CNT.IncAltDel.Params[2].AsInteger:=edtUnidade.ValueInt;
+   DM_CNT.IncAltDel.Params[3].AsInteger:=edtNumero.ValueInt;
+   DM_CNT.IncAltDel.ExecSQL;
+   }
+   if Endereco<>''
+    then begin
+     Mensagem.Clear;
+     sCC.Clear;
+     Mensagem.Add('Comunicamos por este e-mail que o Conhecimento Eletrônico (Chave='+
+         Copy(DMCTE.CTe.Conhecimentos.Items[0].CTe.inFCTe.ID,4,44)+
+         ') obteve autorização de uso sob o protocolo: '+DMCTE.CTe.Conhecimentos.Items[0].CTe.procCTe.nProt);
+     Mensagem.Add(' ');
+     Mensagem.Add('Enviamos em anexo o arquivo XML do respectivo CT-e.');
+     Mensagem.Add(' ');
+     Mensagem.Add('Atenciosamente,');
+     Mensagem.Add(' ');
+     Mensagem.Add(DM_CTA.EmpresaNome.AsString);
+     Mensagem.Add(' ');
+     Mensagem.Add('>>> Sistema ERPJr <<<');
+
+     if Trim(DM_CTA.EmpresaEmail.AsString)<>''
+      then sCC.Add(Trim(DM_CTA.EmpresaEmail.AsString));
+     if CopiaPara<>''
+      then sCC.Add(CopiaPara);
+
+     DM_CTA.TabHost.Last;
+     jHost:=DM_CTA.TabHost.RecordCount;
+     iHost:=1;
+     DM_CTA.TabHost.First;
+     Ok:=False;
+     Falha:=False;
+     MemoStatus.Lines.Add(' CT-e: '+Copy(DMCTE.CTe.Conhecimentos.Items[0].CTe.inFCTe.ID,4,44));
+     MemoStatus.Lines.Add(' Destinatário: ' + Endereco);
+
+     repeat
+      MemoStatus.Lines.Add('  Aguarde... Enviando CT-e por e-mail. Host ['+
+         IntToStr(iHost)+']  ');
+      ConexaoSSL := (DM_CTA.TabHostPortaSMTP.AsInteger<>25);
+
+      try
+
+       DMCTE.CTe.Conhecimentos.Items[0].EnviarEmail(DM_CTA.TabHostServidorSMTP.AsString,
+                                  DM_CTA.TabHostPortaSMTP.AsString,
+                                  DM_CTA.TabHostUsuario.AsString,
+                                  DM_CTA.TabHostSenha.AsString,
+                                  DM_CTA.EmpresaEmail.AsString,
+                                  Endereco,
+                                  'CT-e',
+                                  Mensagem,
+                                  ConexaoSSL,                  // SSL
+                                  EnviaPDF,                    // Enviar em PDF
+                                  sCC,                         // sCC
+                                  nil,                         // Anexos
+                                  PedeConfirmacao,             // Pede Confirmação de Recebimento
+                                  AguardarEnvio,               // Aguarda o Envio
+                                  DM_CTA.EmpresaNome.AsString); // Nome do remetente
+                                  //UsaIndy);
+       Ok:=True;
+      except
+       DM_CTA.TabHost.Next;
+       Inc(iHost);
+       if iHost>jHost then Falha:=True;
+      end;
+     until Ok or Falha;
+     if Ok
+      then MessageDlg('e-mail enviado com Sucesso.', mtInformation, [mbOk], 0);
+     if Falha
+      then MessageDlg('e-mail não enviado por motivo de Falha.', mtError, [mbOk], 0);
+
+    end
+    else MessageDlg('Tomador do Serviço não possui, e-mail Cadastrado.', mtInformation, [mbOk], 0);
+  end;
+
+ Mensagem.Free;
+ sCC.Free;
+end;

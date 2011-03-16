@@ -1,0 +1,1631 @@
+unit Frm_MovEmitirCNT;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, Buttons, StdCtrls, EditNumber, Grids, DBGrids, ExtCtrls,
+  ComCtrls, jpeg;
+
+type
+  TfrmMovEmitirCNT = class(TForm)
+    pcDados: TPageControl;
+    Conhecimentos: TTabSheet;
+    WebServices: TTabSheet;
+    rgCondicao: TRadioGroup;
+    rgFaixa: TRadioGroup;
+    gbIdentificacao: TGroupBox;
+    Label1: TLabel;
+    Label2: TLabel;
+    edtNumero: TEditNumber;
+    edtUnidade: TEditNumber;
+    edtDescUnidade: TEdit;
+    Panel1: TPanel;
+    btnImprimir: TBitBtn;
+    btnLimpar: TBitBtn;
+    DBGrid1: TDBGrid;
+    MemoStatus: TMemo;
+    gbProgresso: TGroupBox;
+    pbProgresso: TProgressBar;
+    chkVisualizar: TCheckBox;
+    btnEmail: TBitBtn;
+    Image1: TImage;
+    Image2: TImage;
+    btnConsultaStatus: TBitBtn;
+    Label11: TLabel;
+    edtNumCopias: TEditNumber;
+    procedure LimpaCampos;
+    procedure LimpaCampos2;
+    procedure FormShow(Sender: TObject);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure rgCondicaoClick(Sender: TObject);
+    procedure AtivaBotao;
+    procedure DBGrid1DblClick(Sender: TObject);
+    procedure btnImprimirClick(Sender: TObject);
+    procedure btnLimparClick(Sender: TObject);
+    procedure rgFaixaClick(Sender: TObject);
+    procedure GerarLoteCTe;
+    procedure NaoEmitidos;
+    procedure Emitidos;
+    procedure EnviarLote(Lote: Integer);
+    procedure btnEmailClick(Sender: TObject);
+    procedure btnConsultaStatusClick(Sender: TObject);
+    procedure edtNumCopiasExit(Sender: TObject);
+  private
+    { Private declarations }
+    PathMensal, sDataHora, sStat, sMotivo, sRecibo,
+    sProtocolo, sConhecimento: String;
+    iHost, jHost: Integer;
+    Mensagem, sCC: TStrings;
+    Endereco, CopiaPara: String;
+    Ok, Falha, ConexaoSSL, PedeConfirmacao, AguardarEnvio, UsaIndy, EnviaPDF,
+    EnviaBoleto: Boolean;
+  public
+    { Public declarations }
+  end;
+
+var
+  frmMovEmitirCNT: TfrmMovEmitirCNT;
+
+Const
+  LimiteCTe = 50;
+
+implementation
+
+uses
+ DateUtils, Math, Printers,
+ pcnConversao,
+ CTA_DataModule, CNT_DataModule, BPM_DataModule, DMCTE_DataModule;
+
+{$R *.dfm}
+
+{ TfrmMovEmitirCNT }
+
+procedure TfrmMovEmitirCNT.LimpaCampos;
+begin
+ pcDados.ActivePageIndex:=0;
+ chkVisualizar.Visible:=False;
+ chkVisualizar.Checked:=False;
+
+ DM_CNT.Parametros.Close;
+ DM_CNT.Parametros.SQL.Clear;
+ DM_CNT.Parametros.SQL.Add('Select * From Cnt_Parametros');
+ DM_CNT.Parametros.SQL.Add('Where Empresa = :xEmpresa');
+ DM_CNT.Parametros.Params[0].AsString:=DM_CTA.xCodEmpresa;
+ DM_CNT.Parametros.Active:=True;
+ DM_CNT.Parametros.Open;
+
+ CopiaPara       := trim(DM_CNT.ParametrosCopiaPara.AsString);
+ PedeConfirmacao := (DM_CNT.ParametrosPedeConfirmacao.AsString='S');
+ AguardarEnvio   := (DM_CNT.ParametrosAguardarEnvio.AsString='S');
+ UsaIndy         := (DM_CNT.ParametrosUsaIndy.AsString='S');
+ EnviaPDF        := (DM_CNT.ParametrosEnviaPDF.AsString='S');
+ EnviaBoleto     := (DM_CNT.ParametrosEnviaBoleto.AsString='S');
+
+ chkVisualizar.Visible:=True;
+ chkVisualizar.Checked:=False;
+
+ // Configurações -> Arquivos
+ DMCTE.CTe.Configuracoes.Arquivos.AdicionarLiteral:=True;
+ DMCTE.CTe.Configuracoes.Arquivos.EmissaoPathCTe:=True;
+ DMCTE.CTe.Configuracoes.Arquivos.PastaMensal:=True;
+ DMCTE.CTe.Configuracoes.Arquivos.PathCan:=trim(DM_CNT.ParametrosCTeGeralPathSalvar.AsString);
+ DMCTE.CTe.Configuracoes.Arquivos.PathDPEC:=trim(DM_CNT.ParametrosCTeGeralPathSalvar.AsString);
+ DMCTE.CTe.Configuracoes.Arquivos.PathInu:=trim(DM_CNT.ParametrosCTeGeralPathSalvar.AsString);
+ DMCTE.CTe.Configuracoes.Arquivos.PathCTe:=trim(DM_CNT.ParametrosCTeGeralPathSalvar.AsString);
+ DMCTE.CTe.Configuracoes.Arquivos.Salvar:=True;
+ PathMensal:=DMCTE.CTe.Configuracoes.Arquivos.GetPathCTe(0);
+
+ // Configurações -> Certificados
+ DMCTE.CTe.Configuracoes.Certificados.NumeroSerie:=trim(DM_CNT.ParametrosCTeCertNumSerie.AsString);
+ DMCTE.CTe.Configuracoes.Certificados.Senha:=trim(DM_CNT.ParametrosCTeCertSenha.AsString);
+
+ // Configurações -> Geral
+ case DM_CNT.ParametrosCTeGeralFormaEm.AsInteger of
+  0: DMCTE.CTe.Configuracoes.Geral.FormaEmissao:=teNormal;
+  1: DMCTE.CTe.Configuracoes.Geral.FormaEmissao:=teContingencia;
+  2: DMCTE.CTe.Configuracoes.Geral.FormaEmissao:=teDPEC;
+  3: DMCTE.CTe.Configuracoes.Geral.FormaEmissao:=teFSDA;
+  4: DMCTE.CTe.Configuracoes.Geral.FormaEmissao:=teSCAN;
+ end;
+ DMCTE.CTe.Configuracoes.Geral.PathSalvar:=PathMensal;
+ DMCTE.CTe.Configuracoes.Geral.PathSchemas:=trim(DM_CNT.ParametrosCTeGeralPathSchema.AsString);
+ DMCTE.CTe.Configuracoes.Geral.Salvar:=True;
+
+ // Configurações -> WebServices
+ DMCTE.CTe.Configuracoes.WebServices.AguardarConsultaRet:=0;
+ DMCTE.CTe.Configuracoes.WebServices.AjustaAguardaConsultaRet:=False;
+ case DM_CNT.ParametrosCTeWebServAmbiente.AsInteger of
+  0: DMCTE.CTe.Configuracoes.WebServices.Ambiente:=taHomologacao;
+  1: DMCTE.CTe.Configuracoes.WebServices.Ambiente:=taProducao;
+ end;
+ DMCTE.CTe.Configuracoes.WebServices.IntervaloTentativas:=0;
+ DMCTE.CTe.Configuracoes.WebServices.ProxyHost:=trim(DM_CNT.ParametrosCTeProxyHost.AsString);
+ DMCTE.CTe.Configuracoes.WebServices.ProxyPass:=trim(DM_CNT.ParametrosCTeProxyPass.AsString);
+ DMCTE.CTe.Configuracoes.WebServices.ProxyPort:=trim(DM_CNT.ParametrosCTeProxyPorta.AsString);
+ DMCTE.CTe.Configuracoes.WebServices.ProxyUser:=trim(DM_CNT.ParametrosCTeProxyUser.AsString);
+ DMCTE.CTe.Configuracoes.WebServices.Tentativas:=5;
+ DMCTE.CTe.Configuracoes.WebServices.UF:=DM_CNT.ParametrosCTeWebServUF.AsString;
+ DMCTE.CTe.Configuracoes.WebServices.Visualizar:=(DM_CNT.ParametrosCTeWebServVisualizar.AsString='S');
+
+ // DACTe
+ DMCTE.DACTe.PathPDF:=PathMensal;
+ DMCTE.DACTe.ExpandirLogoMarca:=False;
+ DMCTE.DACTe.ImprimirDescPorc:=False;
+ DMCTE.DACTe.ImprimirHoraSaida:=True;
+ DMCTE.DACTe.ImprimirHoraSaida_Hora:=DateToStr(Date);
+ DMCTE.DACTe.Logo:=trim(DM_CNT.ParametrosCTeGeralLogoMarca.AsString);
+ DMCTE.DACTe.MostrarPreview:=chkVisualizar.Checked;
+ DMCTE.DACTe.Sistema:='Sistema: Controle de Conhecimentos '+
+                     'Versão: 4.0';
+ DMCTE.DACTe.Site:=trim(DM_CTA.EmpresaSite.AsString);
+ DMCTE.DACTe.TipoDACTE:=tiRetrato;
+ DMCTE.DACTe.Usuario:='Usuário: '+DM_CTA.xUserName;
+
+ MemoStatus.Clear;
+ edtUnidade.StoreValue(0);
+ edtDescUnidade.Text:='';
+ edtNumero.StoreValue(0);
+ edtNumCopias.StoreValue(DM_CNT.ParametrosVias.AsInteger);
+ pbProgresso.Position:=0;
+
+ DM_CNT.Conhec2.Close;
+ DM_CNT.Conhec2.SQL.Clear;
+ DM_CNT.Conhec2.SQL.Add('Select Cnt_Conhecimento.*, Sis_PessoaFJ.*');
+ DM_CNT.Conhec2.SQL.Add('From Cnt_Conhecimento, Sis_PessoaFJ');
+ DM_CNT.Conhec2.SQL.Add('Where Cnt_Conhecimento.Destinatario = Sis_PessoaFJ.CGC');
+ DM_CNT.Conhec2.SQL.Add('and Impresso = :xImpresso');
+ DM_CNT.Conhec2.SQL.Add('and Cancelado = :xCancelado');
+ DM_CNT.Conhec2.SQL.Add('and Gravado = :xGravado');
+ DM_CNT.Conhec2.SQL.Add('Order By Data, Cnt_Conhecimento.Codigo, Cnt_Conhecimento.Numero');
+ if rgCondicao.ItemIndex=0
+  then DM_CNT.Conhec2.Params[0].AsString:='N'
+  else DM_CNT.Conhec2.Params[0].AsString:='S';
+ DM_CNT.Conhec2.Params[1].AsString:='N';
+ DM_CNT.Conhec2.Params[2].AsString:='S';
+ DM_CNT.Conhec2.Active:=True;
+ DM_CNT.Conhec2.Open;
+ DM_CNT.Conhec2.First;
+
+ DM_CNT.Conhec2ValorTotal.DisplayFormat:='###,##0.00';
+
+ btnImprimir.Enabled:=(rgFaixa.ItemIndex=0) and (DM_CNT.Conhec2.RecordCount>0);
+ btnEmail.Visible:=(rgFaixa.ItemIndex=1) and (DM_CNT.Conhec2.RecordCount>0);
+ btnEmail.Enabled:=False;
+end;
+
+procedure TfrmMovEmitirCNT.LimpaCampos2;
+begin
+ Conhecimentos.Caption:='Conhecimentos não Emitidos';
+ rgCondicao.ItemIndex:=0;
+ rgFaixa.ItemIndex:=0;
+ rgFaixa.Enabled:=True;
+end;
+
+procedure TfrmMovEmitirCNT.FormShow(Sender: TObject);
+begin
+ LimpaCampos2;
+ LimpaCampos;
+end;
+
+procedure TfrmMovEmitirCNT.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+ if key=#13
+  then begin
+   Perform(CM_DialogKey, VK_TAB, 0);
+   Key:=#0;
+  end;
+end;
+
+procedure TfrmMovEmitirCNT.rgCondicaoClick(Sender: TObject);
+begin
+ if rgCondicao.ItemIndex=1
+  then begin
+   Conhecimentos.Caption:='Conhecimentos Emitidos';
+   rgFaixa.ItemIndex:=1;
+   rgFaixa.Enabled:=False;
+  end
+  else begin
+   Conhecimentos.Caption:='Conhecimentos não Emitidos';
+   rgFaixa.Enabled:=True;
+  end;
+ LimpaCampos;
+end;
+
+procedure TfrmMovEmitirCNT.AtivaBotao;
+var
+ Ok: Boolean;
+begin
+ if rgFaixa.ItemIndex=1
+  then Ok:=(edtUnidade.ValueInt>0) and (edtNumero.ValueInt>0)
+  else Ok:=True;
+
+ btnImprimir.Enabled:=Ok;
+ btnEmail.Enabled:=Ok;
+end;
+
+procedure TfrmMovEmitirCNT.DBGrid1DblClick(Sender: TObject);
+begin
+ rgFaixa.ItemIndex:=1;
+ edtUnidade.StoreValue(DM_CNT.Conhec2Codigo.AsInteger);
+ DM_BPM.Unidade.Close;
+ DM_BPM.Unidade.SQL.Clear;
+ DM_BPM.Unidade.SQL.Add('Select * From Bpm_Unidade');
+ DM_BPM.Unidade.SQL.Add('Where Empresa = :xEmpresa');
+ DM_BPM.Unidade.SQL.Add('and Codigo = :xCodigo');
+ DM_BPM.Unidade.Params[0].AsString:=DM_CTA.xCodEmpresa;
+ DM_BPM.Unidade.Params[1].AsInteger:=edtUnidade.ValueInt;
+ DM_BPM.Unidade.Active:=True;
+ DM_BPM.Unidade.Open;
+ edtDescUnidade.Text:=DM_BPM.UnidadeDescricao.AsString;
+ edtNumero.StoreValue(DM_CNT.Conhec2Numero.AsInteger);
+ AtivaBotao;
+end;
+
+procedure TfrmMovEmitirCNT.btnImprimirClick(Sender: TObject);
+begin
+ DMCTE.DACTe.NumCopias:=edtNumCopias.ValueInt;
+
+ pcDados.ActivePageIndex:=1;
+ DMCTE.DACTe.MostrarPreview:=chkVisualizar.Checked;
+
+ if rgCondicao.ItemIndex=0
+  then NaoEmitidos
+  else Emitidos;
+
+ LimpaCampos;
+end;
+
+procedure TfrmMovEmitirCNT.btnLimparClick(Sender: TObject);
+begin
+ LimpaCampos2;
+ LimpaCampos;
+end;
+
+procedure TfrmMovEmitirCNT.rgFaixaClick(Sender: TObject);
+begin
+ MemoStatus.Text:='';
+ edtUnidade.StoreValue(0);
+ edtDescUnidade.Text:='';
+ edtNumero.StoreValue(0);
+ pbProgresso.Position:=0;
+
+ btnImprimir.Enabled:=(rgFaixa.ItemIndex=0) and (DM_CNT.Conhec2.RecordCount>0);
+end;
+
+procedure TfrmMovEmitirCNT.GerarLoteCTe;
+var
+ i, j, CodigoMunicipio: Integer;
+ IE: String;
+ OkConversao: Boolean;
+begin
+ with DMCTE.CTe.Conhecimentos.Add.CTe do
+  begin
+   //
+   // Dados de Identificação do CT-e
+   //
+   Ide.cUF:=DM_CTA.EmpresaCodigoEstado.AsInteger;
+   Ide.cCT:=DM_CNT.Conhec2CTChave.AsInteger;  // Código Aleatório
+   Ide.CFOP:=DM_CNT.Conhec2CFOP.AsInteger;
+   Ide.natOp:='PRESTAÇÃO DE SERVIÇO';
+   if DM_CNT.Conhec2ForPag.AsInteger=0
+    then Ide.forPag:=fpPago
+    else Ide.forPag:=fpAPagar;
+   Ide.modelo:='57';
+   Ide.serie:=DM_CNT.Conhec2Serie.AsInteger;
+   Ide.nCT:=DM_CNT.Conhec2Numero.AsInteger;
+   Ide.dhEmi:=Now;
+   Ide.tpImp:=tiRetrato;
+
+   // TpcnTipoEmissao = (teNormal, teContingencia, teSCAN, teDPEC, teFSDA);
+   case DM_CNT.ParametrosCTeGeralFormaEm.AsInteger of
+    0: Ide.tpEmis:=teNormal;
+    1: Ide.tpEmis:=teContingencia;
+    2: Ide.tpEmis:=teSCAN;
+    3: Ide.tpEmis:=teDPEC;
+    4: Ide.tpEmis:=teFSDA;
+   end;
+
+   // TpcnTipoAmbiente = (taProducao, taHomologacao);
+   case DM_CNT.ParametrosCTeWebServAmbiente.AsInteger of
+    0: Ide.tpAmb:=taHomologacao;
+    1: Ide.tpAmb:=taProducao;
+   end;
+
+   // TpcteTipoCTe = (tcNormal, tcComplemento, tcAnulacao, tcSubstituto);
+   case DM_CNT.Conhec2TipoCTe.AsInteger of
+    0: Ide.tpCTe:=tcNormal;
+    1: Ide.tpCTe:=tcComplemento;
+    2: Ide.tpCTe:=tcAnulacao;
+    3: Ide.tpCTe:=tcSubstituto;
+   end;
+
+   // TpcnProcessoEmissao = (peAplicativoContribuinte, peAvulsaFisco, peAvulsaContribuinte, peContribuinteAplicativoFisco);
+   Ide.procEmi:=peAplicativoContribuinte;
+   Ide.verProc:='4.0';
+   // Ide.refCTE:=''; // Chave de Acesso do CT-e Referenciado
+   CodigoMunicipio:=DM_CTA.EmpresaCodigoEstado.AsInteger * 100000 +
+                    DM_CTA.EmpresaCodigoMunicipio.AsInteger;
+   Ide.cMunEmi:=CodigoMunicipio;
+   Ide.xMunEmi:=DM_CTA.EmpresaCidade.AsString;
+   Ide.UFEmi:=DM_CTA.EmpresaEstado.AsString;
+
+   // TpcteModal = (mdRodoviario, mdAereo, mdAquaviario, mdFerroviario, mdDutoviario);
+   Ide.modal:=mdRodoviario;
+
+   // TpcteTipoServico = (tsNormal, tsSubcontratacao, tsRedespacho, tsIntermediario);
+   case DM_CNT.Conhec2TipoServico.AsInteger of
+    0: Ide.tpServ:=tsNormal;
+    1: Ide.tpServ:=tsSubcontratacao;
+    2: Ide.tpServ:=tsRedespacho;
+    3: Ide.tpServ:=tsIntermediario;
+   end;
+
+   // Origem da Prestação
+   Ide.cMunIni:=DM_CNT.Conhec2CodCidadeColeta.AsInteger;
+   Ide.xMunIni:=DM_CNT.Conhec2NomeCidadeColeta.AsString;
+   Ide.UFIni:=DM_CNT.Conhec2EstadoColeta.AsString;
+
+   // Destino da Prestação
+   Ide.cMunFim:=DM_CNT.Conhec2CodCidadeEntrega.AsInteger;
+   Ide.xMunFim:=DM_CNT.Conhec2NomeCidadeEntrega.AsString;
+   Ide.UFFim:=DM_CNT.Conhec2EstadoEntrega.AsString;
+
+   // TpcteRetira = (rtSim, rtNao);
+   Ide.retira:=rtSim;
+   Ide.xdetretira:='';
+
+   case DM_CNT.Conhec2TomadorServico.AsInteger of
+    0: Ide.Toma03.Toma:=tmRemetente;
+    1: Ide.Toma03.Toma:=tmExpedidor;
+    2: Ide.Toma03.Toma:=tmRecebedor;
+    3: Ide.Toma03.Toma:=tmDestinatario;
+    4: Ide.Toma03.Toma:=tmRemetente;
+   end;
+
+   // Totamdor do Serviço no CTe 4 = Outros
+   if DM_CNT.Conhec2TomadorServico.AsInteger=4
+    then begin
+     DM_CTA.PessoaFJ.Close;
+     DM_CTA.PessoaFJ.SQL.Clear;
+     DM_CTA.PessoaFJ.SQL.Add('Select * From Sis_PessoaFJ');
+     DM_CTA.PessoaFJ.SQL.Add('Where CGC = :xCGC');
+     DM_CTA.PessoaFJ.Params[0].AsString:=DM_CNT.Conhec2Outros.AsString;
+     DM_CTA.PessoaFJ.Active:=True;
+     DM_CTA.PessoaFJ.Open;
+
+     Ide.Toma4.Toma:=tmOutros;
+     if copy(DM_CTA.PessoaFJCGC.AsString,10,4)<>'0000'
+          then begin
+           Ide.Toma4.CNPJCPF := Copy(DM_CTA.PessoaFJCGC.AsString, 2, 14);
+           IE := DM_CTA.PessoaFJIEstadual.AsString;
+          end
+          else begin
+           Ide.Toma4.CNPJCPF := Copy(DM_CTA.PessoaFJCGC.AsString, 1, 9) +
+                                   Copy(DM_CTA.PessoaFJCGC.AsString, 14, 2);
+           IE := 'ISENTO';
+          end;
+     Ide.Toma4.IE:=IE;
+     Ide.Toma4.xNome:=DM_CTA.PessoaFJRSocial.AsString;
+     Ide.Toma4.xFant:=DM_CTA.PessoaFJFantasia.AsString;
+     Ide.Toma4.fone:=DM_CTA.PessoaFJTelefone.AsString;
+     Ide.Toma4.EnderToma.xLgr:=DM_CTA.PessoaFJEndereco.AsString;
+     Ide.Toma4.EnderToma.xNum:=DM_CTA.PessoaFJNumero.AsString;
+     Ide.Toma4.EnderToma.xCpl:=DM_CTA.PessoaFJComplemento.AsString;
+     Ide.Toma4.EnderToma.xBairro:=DM_CTA.PessoaFJBairro.AsString;
+
+     CodigoMunicipio:=DM_CTA.PessoaFJCodigoEstado.AsInteger * 100000 +
+                      DM_CTA.PessoaFJCodigoMunicipio.AsInteger;
+     Ide.Toma4.EnderToma.cMun:=CodigoMunicipio;
+     Ide.Toma4.EnderToma.xMun:=DM_CTA.PessoaFJCidade.AsString;
+     Ide.Toma4.EnderToma.CEP:=StrToIntDef(DM_CTA.PessoaFJCEP.AsString, 0);
+     Ide.Toma4.EnderToma.UF:=DM_CTA.PessoaFJEstado.AsString;
+     Ide.Toma4.EnderToma.cPais:=DM_CTA.PessoaFJCodigoPais.AsInteger;
+     Ide.Toma4.EnderToma.xPais:=DM_CTA.PessoaFJPais.AsString;
+    end;
+
+   //
+   //  Informações Complementares do CTe
+   //
+   compl.xCaracAd := Trim(DM_CNT.Conhec2CaracAdTrans.AsString);
+   compl.xCaracSer := Trim(DM_CNT.Conhec2CaracAdServ.AsString);
+   compl.xEmi := Trim(DM_CNT.Conhec2FuncioEmissorCTe.AsString);
+
+   compl.fluxo.xOrig := Trim(DM_CNT.Conhec2FluxoOrigem.AsString);
+   if Trim(DM_CNT.Conhec2FluxoPassagem.AsString)<>''
+    then begin
+     with compl.fluxo.pass.Add do
+      begin
+       xPass := Trim(DM_CNT.Conhec2FluxoPassagem.AsString);
+      end;
+    end;
+   compl.fluxo.xDest := Trim(DM_CNT.Conhec2FluxoDestino.AsString);
+   compl.fluxo.xRota := Trim(DM_CNT.Conhec2FluxoRota.AsString);
+
+   compl.Entrega.TipoData:=StrToTpDataPeriodo(okConversao, IntToStr(DM_CNT.Conhec2EntregaTipoData.AsInteger));
+   case DM_CNT.Conhec2EntregaTipoData.AsInteger of
+        0: compl.Entrega.semData.tpPer:=tdSemData;
+    1,2,3: begin
+            compl.Entrega.comData.tpPer:=StrToTpDataPeriodo(okConversao, IntToStr(DM_CNT.Conhec2EntregaTipoData.AsInteger));
+            compl.Entrega.comData.dProg:=DM_CNT.Conhec2EntregaDataI.AsDateTime;
+           end;
+        4: begin
+            compl.Entrega.noPeriodo.tpPer:=tdNoPeriodo;
+            compl.Entrega.noPeriodo.dIni:=DM_CNT.Conhec2EntregaDataI.AsDateTime;
+            compl.Entrega.noPeriodo.dFim:=DM_CNT.Conhec2EntregaDataF.AsDateTime;
+           end;
+   end;
+
+   compl.Entrega.TipoHora:=StrToTpHorarioIntervalo(okConversao, IntToStr(DM_CNT.Conhec2EntregaTipoHora.AsInteger));
+   case DM_CNT.Conhec2EntregaTipoHora.AsInteger of
+        0: compl.Entrega.semHora.tpHor:=thSemHorario;
+    1,2,3: begin
+            compl.Entrega.comHora.tpHor:=StrToTpHorarioIntervalo(okConversao, IntToStr(DM_CNT.Conhec2EntregaTipoHora.AsInteger));
+            compl.Entrega.comHora.hProg:=StrToTime(DM_CNT.Conhec2EntregaHoraI.AsString);
+           end;
+        4: begin
+            compl.Entrega.noInter.tpHor:=thNoIntervalo;
+            compl.Entrega.noInter.hIni:=StrToTime(DM_CNT.Conhec2EntregaHoraI.AsString);
+            compl.Entrega.noInter.hFim:=StrToTime(DM_CNT.Conhec2EntregaHoraF.AsString);
+           end;
+   end;
+
+   compl.origCalc := DM_CNT.Conhec2NomeCidadeColeta.AsString;
+   compl.destCalc := DM_CNT.Conhec2NomeCidadeEntrega.AsString;
+   compl.xObs     := DM_CNT.Conhec2Mensagem.AsString;
+
+   DM_CNT.Tabelas.Close;
+   DM_CNT.Tabelas.SQL.Clear;
+   DM_CNT.Tabelas.SQL.Add('Select * From Cnt_Tabelas');
+   DM_CNT.Tabelas.SQL.Add('Where Codigo = :xTabela');
+   DM_CNT.Tabelas.Params[0].AsString:=DM_CNT.ParametrosTabela.AsString;
+   DM_CNT.Tabelas.Active:=True;
+   DM_CNT.Tabelas.Open;
+
+   if DM_CNT.TabelasCST.AsInteger=41
+    then compl.xObs := compl.xObs +
+           ';Documento emitido por ME ou EPP optante pelo Simples Nacional' +
+           ';Nao gera direito a credito fiscal de ICMS';
+
+   // Obs do Contribuinte
+   if (trim(DM_CNT.Conhec2ObsContCampo.AsString)<>'') and
+      (trim(DM_CNT.Conhec2ObsContTexto.AsString)<>'')
+    then begin
+     with compl.ObsCont.Add do
+      begin
+       xCampo:=DM_CNT.Conhec2ObsContCampo.AsString;
+       xTexto:=DM_CNT.Conhec2ObsContTexto.AsString;
+      end;
+    end;
+
+   // Obs para o Fisco
+   if (trim(DM_CNT.Conhec2ObsFiscoCampo.AsString)<>'') and
+      (trim(DM_CNT.Conhec2ObsFiscoTexto.AsString)<>'')
+    then begin
+     with compl.ObsFisco.Add do
+      begin
+       xCampo:=DM_CNT.Conhec2ObsFiscoCampo.AsString;
+       xTexto:=DM_CNT.Conhec2ObsFiscoTexto.AsString;
+      end;
+    end;
+
+   //
+   // Dados do Emitente
+   //
+   DM_CTA.Empresa.Close;
+   DM_CTA.Empresa.SQL.Clear;
+   DM_CTA.Empresa.SQL.Add('Select * From Sis_Empresa');
+   DM_CTA.Empresa.SQL.Add('Where Codigo = :xCodigo');
+   DM_CTA.Empresa.Params[0].AsString:=DM_CNT.ParametrosEmitente.AsString;
+   DM_CTA.Empresa.Active:=True;
+   DM_CTA.Empresa.Open;
+
+   if copy(DM_CTA.EmpresaCNPJ.AsString,10,4)<>'0000'
+    then Emit.CNPJ := Copy(DM_CTA.EmpresaCNPJ.AsString, 2, 14)
+    else Emit.CNPJ := Copy(DM_CTA.EmpresaCNPJ.AsString, 1, 9) +
+                      Copy(DM_CTA.EmpresaCNPJ.AsString, 14, 2);
+
+   if (trim(DM_CTA.EmpresaInscEstadual.AsString)='') or
+      (trim(DM_CTA.EmpresaInscEstadual.AsString)='ISENTO')
+    then Emit.IE:='1234567890'
+    else Emit.IE:=trim(DM_CTA.EmpresaInscEstadual.AsString);
+
+   Emit.xNome:=DM_CTA.EmpresaNome.AsString;
+   Emit.xFant:=DM_CTA.EmpresaFantasia.AsString;
+   Emit.EnderEmit.xLgr:=DM_CTA.EmpresaEndereco.AsString;
+   Emit.EnderEmit.nro:=DM_CTA.EmpresaNumero.AsString;
+   Emit.EnderEmit.xCpl:=DM_CTA.EmpresaComplemento.AsString;
+   Emit.EnderEmit.xBairro:=DM_CTA.EmpresaBairro.AsString;
+
+   CodigoMunicipio:=DM_CTA.EmpresaCodigoEstado.AsInteger * 100000 +
+                    DM_CTA.EmpresaCodigoMunicipio.AsInteger;
+   Emit.EnderEmit.cMun:=CodigoMunicipio;
+   Emit.EnderEmit.xMun:=DM_CTA.EmpresaCidade.AsString;
+   Emit.EnderEmit.CEP:=StrToIntDef(DM_CTA.EmpresaCEP.AsString, 0);
+   Emit.EnderEmit.UF:=DM_CTA.EmpresaEstado.AsString;
+   Emit.EnderEmit.cPais:=DM_CTA.EmpresaCodigoPais.AsInteger;
+   Emit.EnderEmit.xPais:=DM_CTA.EmpresaPais.AsString;
+   Emit.EnderEmit.fone:=DM_CTA.EmpresaTelefone.AsString;
+
+   //
+   //  Dados do Remetente
+   //
+   if trim(DM_CNT.Conhec2Remetente.AsString)<>''
+    then begin
+     DM_CTA.PessoaFJ.Close;
+     DM_CTA.PessoaFJ.SQL.Clear;
+     DM_CTA.PessoaFJ.SQL.Add('Select * From Sis_PessoaFJ');
+     DM_CTA.PessoaFJ.SQL.Add('Where CGC = :xCGC');
+     DM_CTA.PessoaFJ.Params[0].AsString:=DM_CNT.Conhec2Remetente.AsString;
+     DM_CTA.PessoaFJ.Active:=True;
+     DM_CTA.PessoaFJ.Open;
+
+     Rem.xNome:=DM_CTA.PessoaFJRSocial.AsString;
+     Rem.xFant:=DM_CTA.PessoaFJFantasia.AsString;
+     Rem.EnderReme.xLgr:=DM_CTA.PessoaFJEndereco.AsString;
+     Rem.EnderReme.nro:=DM_CTA.PessoaFJNumero.AsString;
+     Rem.EnderReme.xCpl:=DM_CTA.PessoaFJComplemento.AsString;
+     Rem.EnderReme.xBairro:=DM_CTA.PessoaFJBairro.AsString;
+
+     CodigoMunicipio:=DM_CTA.PessoaFJCodigoEstado.AsInteger * 100000 +
+                      DM_CTA.PessoaFJCodigoMunicipio.AsInteger;
+     Rem.EnderReme.cMun:=CodigoMunicipio;
+     Rem.EnderReme.xMun:=DM_CTA.PessoaFJCidade.AsString;
+     Rem.EnderReme.CEP:=StrToIntDef(DM_CTA.PessoaFJCEP.AsString, 0);
+     Rem.EnderReme.UF:=DM_CTA.PessoaFJEstado.AsString;
+     Rem.EnderReme.cPais:=DM_CTA.PessoaFJCodigoPais.AsInteger;
+     Rem.EnderReme.xPais:=DM_CTA.PessoaFJPais.AsString;
+
+     if copy(DM_CTA.PessoaFJCGC.AsString,10,4)<>'0000'
+      then begin
+       Rem.CNPJCPF := Copy(DM_CTA.PessoaFJCGC.AsString, 2, 14);
+       IE := DM_CTA.PessoaFJIEstadual.AsString;
+      end
+      else begin
+       Rem.CNPJCPF := Copy(DM_CTA.PessoaFJCGC.AsString, 1, 9) +
+                          Copy(DM_CTA.PessoaFJCGC.AsString, 14, 2);
+       IE := 'ISENTO';
+      end;
+
+     Rem.IE:=IE;
+     Rem.fone:=DM_CTA.PessoaFJTelefone.AsString;
+
+     //
+     // Relação das Notas Fiscais
+     //
+     DM_CNT.Notas.Close;
+     DM_CNT.Notas.SQL.Clear;
+     DM_CNT.Notas.SQL.Add('Select * From Cnt_Notas');
+     DM_CNT.Notas.SQL.Add('Where Codigo = :xCodigo');
+     DM_CNT.Notas.SQL.Add('and Numero = :xNumero');
+     DM_CNT.Notas.SQL.Add('Order By Tipo');
+     DM_CNT.Notas.Params[0].AsInteger:=DM_CNT.Conhec2Codigo.AsInteger;
+     DM_CNT.Notas.Params[1].AsInteger:=DM_CNT.Conhec2Numero.AsInteger;
+     DM_CNT.Notas.Active:=True;
+     DM_CNT.Notas.Open;
+     j:=DM_CNT.Notas.RecordCount;
+     if j>0
+      then begin
+       DM_CNT.Notas.First;
+       for i:=1 to j do
+        begin
+         case DM_CNT.NotasTipo.AsInteger of
+          0: begin
+              // Nota Fiscal
+              with Rem.InfNF.Add do
+               begin
+                nRoma := DM_CNT.NotasRomaneioNF.AsString;
+                nPed  := DM_CNT.NotasPedidoNF.AsString;
+                serie := DM_CNT.NotasSerieNF.AsString;
+                nDoc  := DM_CNT.NotasNumeroNF.AsString;
+                dEmi  := DM_CNT.NotasEmissaoNF.AsDateTime;
+                vBC   := RoundTo(DM_CNT.NotasValorBCICMS.AsFloat, -2);
+                vICMS := RoundTo(DM_CNT.NotasValorICMS.AsFloat, -2);
+                vBCST := RoundTo(DM_CNT.NotasValorBCICMSST.AsFloat, -2);
+                vST   := RoundTo(DM_CNT.NotasValorICMSST.AsFloat, -2);
+                vProd := RoundTo(DM_CNT.NotasValorProdutos.AsFloat, -2);
+                vNF   := RoundTo(DM_CNT.NotasValorNF.AsFloat, -2);
+                nCFOP := DM_CNT.NotasCFOPNF.AsInteger;
+                nPeso := RoundTo(DM_CNT.NotasPesoKg.AsFloat, -2);
+                PIN   := DM_CNT.NotasPinSuframa.AsString;
+
+                // Local de Retirada
+
+                if trim(DM_CNT.NotasCNPJRet.AsString)<>''
+                 then begin
+                  DM_CTA.PessoaFJ.Close;
+                  DM_CTA.PessoaFJ.SQL.Clear;
+                  DM_CTA.PessoaFJ.SQL.Add('Select * From Sis_PessoaFJ');
+                  DM_CTA.PessoaFJ.SQL.Add('Where CGC = :xCGC');
+                  DM_CTA.PessoaFJ.Params[0].AsString:=DM_CNT.NotasCNPJRet.AsString;
+                  DM_CTA.PessoaFJ.Active:=True;
+                  DM_CTA.PessoaFJ.Open;
+
+                  if copy(DM_CTA.PessoaFJCGC.AsString,10,4)<>'0000'
+                   then locRet.CNPJCPF := Copy(DM_CTA.PessoaFJCGC.AsString, 2, 14)
+                   else locRet.CNPJCPF := Copy(DM_CTA.PessoaFJCGC.AsString, 1, 9) +
+                          Copy(DM_CTA.PessoaFJCGC.AsString, 14, 2);
+
+                  locRet.xNome:=DM_CTA.PessoaFJRSocial.AsString;
+                  locRet.xLgr:=DM_CTA.PessoaFJEndereco.AsString;
+                  locRet.nro:=DM_CTA.PessoaFJNumero.AsString;
+                  locRet.xCpl:=DM_CTA.PessoaFJComplemento.AsString;
+                  locRet.xBairro:=DM_CTA.PessoaFJBairro.AsString;
+                  CodigoMunicipio:=DM_CTA.PessoaFJCodigoEstado.AsInteger * 100000 +
+                      DM_CTA.PessoaFJCodigoMunicipio.AsInteger;
+                  locRet.cMun:=CodigoMunicipio;
+                  locRet.xMun:=DM_CTA.PessoaFJCidade.AsString;
+                  locRet.UF:=DM_CTA.PessoaFJEstado.AsString;
+                 end;
+               end;
+             end;
+          1: begin
+              // Nota Fiscal Eletrônica
+              with Rem.InfNFe.Add do
+               begin
+                chave := DM_CNT.NotasChaveNFe.AsString;
+                PIN   := DM_CNT.NotasPinSuframa.AsString;
+               end;
+             end;
+          2: begin
+              // Outros Tipos de Documentos
+              with Rem.InfOutros.Add do
+               begin
+                if DM_CNT.NotasTipoOutros.AsInteger = 0
+                 then tpDoc := tdDeclaracao
+                 else begin
+                  tpDoc      := tdOutros;
+                  descOutros := DM_CNT.NotasDescricao.AsString;
+                 end;
+                nDoc     := DM_CNT.NotasNumeroNF.AsString;
+                dEmi     := DM_CNT.NotasEmissaoNF.AsDateTime;
+                vDocFisc := RoundTo(DM_CNT.NotasValorNF.AsFloat, -2);
+               end;
+             end;
+         end;
+         DM_CNT.Notas.Next;
+        end;
+      end;
+    end;
+
+   //
+   //  Dados do Destinatario
+   //
+   if trim(DM_CNT.Conhec2Destinatario.AsString)<>''
+    then begin
+     DM_CTA.PessoaFJ.Close;
+     DM_CTA.PessoaFJ.SQL.Clear;
+     DM_CTA.PessoaFJ.SQL.Add('Select * From Sis_PessoaFJ');
+     DM_CTA.PessoaFJ.SQL.Add('Where CGC = :xCGC');
+     DM_CTA.PessoaFJ.Params[0].AsString:=DM_CNT.Conhec2Destinatario.AsString;
+     DM_CTA.PessoaFJ.Active:=True;
+     DM_CTA.PessoaFJ.Open;
+
+     Dest.xNome:=DM_CTA.PessoaFJRSocial.AsString;
+     Dest.EnderDest.xLgr:=DM_CTA.PessoaFJEndereco.AsString;
+     Dest.EnderDest.nro:=DM_CTA.PessoaFJNumero.AsString;
+     Dest.EnderDest.xCpl:=DM_CTA.PessoaFJComplemento.AsString;
+     Dest.EnderDest.xBairro:=DM_CTA.PessoaFJBairro.AsString;
+
+     CodigoMunicipio:=DM_CTA.PessoaFJCodigoEstado.AsInteger * 100000 +
+                      DM_CTA.PessoaFJCodigoMunicipio.AsInteger;
+     Dest.EnderDest.cMun:=CodigoMunicipio;
+     Dest.EnderDest.xMun:=DM_CTA.PessoaFJCidade.AsString;
+     Dest.EnderDest.CEP:=StrToIntDef(DM_CTA.PessoaFJCEP.AsString, 0);
+     Dest.EnderDest.UF:=DM_CTA.PessoaFJEstado.AsString;
+     Dest.EnderDest.cPais:=DM_CTA.PessoaFJCodigoPais.AsInteger;
+     Dest.EnderDest.xPais:=DM_CTA.PessoaFJPais.AsString;
+
+     if copy(DM_CTA.PessoaFJCGC.AsString,10,4)<>'0000'
+      then begin
+       Dest.CNPJCPF := Copy(DM_CTA.PessoaFJCGC.AsString, 2, 14);
+       IE := DM_CTA.PessoaFJIEstadual.AsString;
+      end
+      else begin
+       Dest.CNPJCPF := Copy(DM_CTA.PessoaFJCGC.AsString, 1, 9) +
+                          Copy(DM_CTA.PessoaFJCGC.AsString, 14, 2);
+       IE := 'ISENTO';
+      end;
+
+     Dest.IE:=IE;
+
+     Dest.fone:=DM_CTA.PessoaFJTelefone.AsString;
+     Dest.ISUF:=Trim(DM_CTA.PessoaFJInscSUF.AsString);
+
+     // Local de Entrega
+     if trim(DM_CNT.Conhec2CNPJEnt.AsString)<>''
+      then begin
+       DM_CTA.PessoaFJ.Close;
+       DM_CTA.PessoaFJ.SQL.Clear;
+       DM_CTA.PessoaFJ.SQL.Add('Select * From Sis_PessoaFJ');
+       DM_CTA.PessoaFJ.SQL.Add('Where CGC = :xCGC');
+       DM_CTA.PessoaFJ.Params[0].AsString:=DM_CNT.Conhec2CNPJEnt.AsString;
+       DM_CTA.PessoaFJ.Active:=True;
+       DM_CTA.PessoaFJ.Open;
+
+       if copy(DM_CTA.PessoaFJCGC.AsString,10,4)<>'0000'
+        then Dest.locEnt.CNPJCPF := Copy(DM_CTA.PessoaFJCGC.AsString, 2, 14)
+        else Dest.locEnt.CNPJCPF := Copy(DM_CTA.PessoaFJCGC.AsString, 1, 9) +
+                          Copy(DM_CTA.PessoaFJCGC.AsString, 14, 2);
+
+       Dest.locEnt.xNome:=DM_CTA.PessoaFJRSocial.AsString;
+       Dest.locEnt.xLgr:=DM_CTA.PessoaFJEndereco.AsString;
+       Dest.locEnt.nro:=DM_CTA.PessoaFJNumero.AsString;
+       Dest.locEnt.xCpl:=DM_CTA.PessoaFJComplemento.AsString;
+       Dest.locEnt.xBairro:=DM_CTA.PessoaFJBairro.AsString;
+       CodigoMunicipio:=DM_CTA.PessoaFJCodigoEstado.AsInteger * 100000 +
+                      DM_CTA.PessoaFJCodigoMunicipio.AsInteger;
+       Dest.locEnt.cMun:=CodigoMunicipio;
+       Dest.locEnt.xMun:=DM_CTA.PessoaFJCidade.AsString;
+       Dest.locEnt.UF:=DM_CTA.PessoaFJEstado.AsString;
+      end;
+    end;
+
+   //
+   //  Dados do Expedidor
+   //
+   if trim(DM_CNT.Conhec2Expedidor.AsString)<>''
+    then begin
+     DM_CTA.PessoaFJ.Close;
+     DM_CTA.PessoaFJ.SQL.Clear;
+     DM_CTA.PessoaFJ.SQL.Add('Select * From Sis_PessoaFJ');
+     DM_CTA.PessoaFJ.SQL.Add('Where CGC = :xCGC');
+     DM_CTA.PessoaFJ.Params[0].AsString:=DM_CNT.Conhec2Expedidor.AsString;
+     DM_CTA.PessoaFJ.Active:=True;
+     DM_CTA.PessoaFJ.Open;
+
+     Exped.xNome:=DM_CTA.PessoaFJRSocial.AsString;
+     Exped.EnderExped.xLgr:=DM_CTA.PessoaFJEndereco.AsString;
+     Exped.EnderExped.nro:=DM_CTA.PessoaFJNumero.AsString;
+     Exped.EnderExped.xCpl:=DM_CTA.PessoaFJComplemento.AsString;
+     Exped.EnderExped.xBairro:=DM_CTA.PessoaFJBairro.AsString;
+
+     CodigoMunicipio:=DM_CTA.PessoaFJCodigoEstado.AsInteger * 100000 +
+                      DM_CTA.PessoaFJCodigoMunicipio.AsInteger;
+     Exped.EnderExped.cMun:=CodigoMunicipio;
+     Exped.EnderExped.xMun:=DM_CTA.PessoaFJCidade.AsString;
+     Exped.EnderExped.CEP:=StrToIntDef(DM_CTA.PessoaFJCEP.AsString, 0);
+     Exped.EnderExped.UF:=DM_CTA.PessoaFJEstado.AsString;
+     Exped.EnderExped.cPais:=DM_CTA.PessoaFJCodigoPais.AsInteger;
+     Exped.EnderExped.xPais:=DM_CTA.PessoaFJPais.AsString;
+
+     if copy(DM_CTA.PessoaFJCGC.AsString,10,4)<>'0000'
+      then begin
+       Exped.CNPJCPF := Copy(DM_CTA.PessoaFJCGC.AsString, 2, 14);
+       IE := DM_CTA.PessoaFJIEstadual.AsString;
+      end
+      else begin
+       Exped.CNPJCPF := Copy(DM_CTA.PessoaFJCGC.AsString, 1, 9) +
+                          Copy(DM_CTA.PessoaFJCGC.AsString, 14, 2);
+       IE := 'ISENTO';
+      end;
+
+     Exped.IE:=IE;
+     Exped.fone:=DM_CTA.PessoaFJTelefone.AsString;
+    end;
+
+   //
+   //  Dados do Recebedor
+   //
+   if trim(DM_CNT.Conhec2Expedidor.AsString)<>''
+    then begin
+     DM_CTA.PessoaFJ.Close;
+     DM_CTA.PessoaFJ.SQL.Clear;
+     DM_CTA.PessoaFJ.SQL.Add('Select * From Sis_PessoaFJ');
+     DM_CTA.PessoaFJ.SQL.Add('Where CGC = :xCGC');
+     DM_CTA.PessoaFJ.Params[0].AsString:=DM_CNT.Conhec2Expedidor.AsString;
+     DM_CTA.PessoaFJ.Active:=True;
+     DM_CTA.PessoaFJ.Open;
+
+     Receb.xNome:=DM_CTA.PessoaFJRSocial.AsString;
+     Receb.EnderReceb.xLgr:=DM_CTA.PessoaFJEndereco.AsString;
+     Receb.EnderReceb.nro:=DM_CTA.PessoaFJNumero.AsString;
+     Receb.EnderReceb.xCpl:=DM_CTA.PessoaFJComplemento.AsString;
+     Receb.EnderReceb.xBairro:=DM_CTA.PessoaFJBairro.AsString;
+
+     CodigoMunicipio:=DM_CTA.PessoaFJCodigoEstado.AsInteger * 100000 +
+                      DM_CTA.PessoaFJCodigoMunicipio.AsInteger;
+     Receb.EnderReceb.cMun:=CodigoMunicipio;
+     Receb.EnderReceb.xMun:=DM_CTA.PessoaFJCidade.AsString;
+     Receb.EnderReceb.CEP:=StrToIntDef(DM_CTA.PessoaFJCEP.AsString, 0);
+     Receb.EnderReceb.UF:=DM_CTA.PessoaFJEstado.AsString;
+     Receb.EnderReceb.cPais:=DM_CTA.PessoaFJCodigoPais.AsInteger;
+     Receb.EnderReceb.xPais:=DM_CTA.PessoaFJPais.AsString;
+
+     if copy(DM_CTA.PessoaFJCGC.AsString,10,4)<>'0000'
+      then begin
+       Receb.CNPJCPF := Copy(DM_CTA.PessoaFJCGC.AsString, 2, 14);
+       IE := DM_CTA.PessoaFJIEstadual.AsString;
+      end
+      else begin
+       Receb.CNPJCPF := Copy(DM_CTA.PessoaFJCGC.AsString, 1, 9) +
+                          Copy(DM_CTA.PessoaFJCGC.AsString, 14, 2);
+       IE := 'ISENTO';
+      end;
+
+     Receb.IE:=IE;
+     Receb.fone:=DM_CTA.PessoaFJTelefone.AsString;
+    end;
+    
+   //
+   //  Valores da Prestação de Serviço
+   //
+   vPrest.vTPrest := RoundTo(DM_CNT.Conhec2ValorTotal.AsFloat, -2);
+   vPrest.vRec    := RoundTo(DM_CNT.Conhec2ValorTotal.AsFloat, -2);
+
+   //
+   // Relação dos Componentes da Prestação de Serviço
+   //
+   DM_CNT.Componentes.Close;
+   DM_CNT.Componentes.SQL.Clear;
+   DM_CNT.Componentes.SQL.Add('Select * From Cnt_Componentes');
+   DM_CNT.Componentes.SQL.Add('Where Codigo = :xCodigo');
+   DM_CNT.Componentes.SQL.Add('and Numero = :xNumero');
+   DM_CNT.Componentes.SQL.Add('Order By Item');
+   DM_CNT.Componentes.Params[0].AsInteger:=DM_CNT.Conhec2Codigo.AsInteger;
+   DM_CNT.Componentes.Params[1].AsInteger:=DM_CNT.Conhec2Numero.AsInteger;
+   DM_CNT.Componentes.Active:=True;
+   DM_CNT.Componentes.Open;
+   j:=DM_CNT.Componentes.RecordCount;
+   if j>0
+    then begin
+     DM_CNT.Componentes.First;
+     for i:=1 to j do
+      begin
+       if DM_CNT.ComponentesValor.AsFloat>0.0
+        then begin
+         with vPrest.comp.Add do
+          begin
+           xNome:=DM_CNT.ComponentesDescricao.AsString;;
+           vComp:=RoundTo(DM_CNT.ComponentesValor.AsFloat, -2);
+          end;
+        end;
+       DM_CNT.Componentes.Next;
+      end;
+    end;
+
+   //
+   //  Valores dos Impostos
+   //
+   // TpcnCSTIcms = (cst00, cst10, cst20, cst30, cst40, cst41, cst45, cst50, cst51, cst60, cst70, cst80, cst81, cst90);
+   // 80 e 81 apenas para CTe
+
+   case DM_CNT.Conhec2CSTICMS.AsInteger of
+   00: begin
+        Imp.ICMS.SituTrib    := cst00;
+        Imp.ICMS.CST00.CST   := cst00; // Tributação Normal ICMS
+        Imp.ICMS.CST00.vBC   := RoundTo(DM_CNT.Conhec2BaseCalc.AsFloat, -2);
+        Imp.ICMS.CST00.pICMS := RoundTo(DM_CNT.Conhec2AliqICMS.AsFloat, -2);
+        Imp.ICMS.CST00.vICMS := RoundTo(DM_CNT.Conhec2ValorICMS.AsFloat, -2);
+       end;
+   20: begin
+        Imp.ICMS.SituTrib     := cst20;
+        Imp.ICMS.CST20.CST    := cst20; // Tributação com BC reduzida do ICMS
+        Imp.ICMS.CST20.pRedBC := RoundTo(DM_CNT.Conhec2ReducaoICMS.AsFloat, -2);
+        Imp.ICMS.CST20.vBC    := RoundTo(DM_CNT.Conhec2BaseCalc.AsFloat, -2);
+        Imp.ICMS.CST20.pICMS  := RoundTo(DM_CNT.Conhec2AliqICMS.AsFloat, -2);
+        Imp.ICMS.CST20.vICMS  := RoundTo(DM_CNT.Conhec2ValorICMS.AsFloat, -2);
+       end;
+   40: begin
+        Imp.ICMS.SituTrib  := cst40;
+        Imp.ICMS.CST45.CST := cst40; // ICMS Isento
+       end;
+   41: begin
+        Imp.ICMS.SituTrib  := cst41;
+        Imp.ICMS.CST45.CST := cst41; // ICMS não Tributada
+       end;
+   51: begin
+        Imp.ICMS.SituTrib  := cst51;
+        Imp.ICMS.CST45.CST := cst51; // ICMS diferido
+       end;
+   80: begin
+        Imp.ICMS.SituTrib    := cst80;
+        Imp.ICMS.CST80.CST   := cst90; // Tributação atribuida ao tomador ou 3. por ST
+        Imp.ICMS.CST80.vBC   := RoundTo(DM_CNT.Conhec2BaseCalc.AsFloat, -2);
+        Imp.ICMS.CST80.pICMS := RoundTo(DM_CNT.Conhec2AliqICMS.AsFloat, -2);
+        Imp.ICMS.CST80.vICMS := RoundTo(DM_CNT.Conhec2ValorICMS.AsFloat, -2);
+        Imp.ICMS.CST80.vCred := RoundTo(DM_CNT.Conhec2CreditoICMS.AsFloat, -2);
+       end;
+   81: begin
+        Imp.ICMS.SituTrib     := cst81;
+        Imp.ICMS.CST81.CST    := cst90; // Tributação devido a outra UF
+        Imp.ICMS.CST81.pRedBC := RoundTo(DM_CNT.Conhec2ReducaoICMS.AsFloat, -2);
+        Imp.ICMS.CST81.vBC    := RoundTo(DM_CNT.Conhec2BaseCalc.AsFloat, -2);
+        Imp.ICMS.CST81.pICMS  := RoundTo(DM_CNT.Conhec2AliqICMS.AsFloat, -2);
+        Imp.ICMS.CST81.vICMS  := RoundTo(DM_CNT.Conhec2ValorICMS.AsFloat, -2);
+       end;
+   90: begin
+        Imp.ICMS.SituTrib     := cst90;
+        Imp.ICMS.CST90.CST    := cst90; // ICMS Outros
+        Imp.ICMS.CST90.pRedBC := RoundTo(DM_CNT.Conhec2ReducaoICMS.AsFloat, -2);
+        Imp.ICMS.CST90.vBC    := RoundTo(DM_CNT.Conhec2BaseCalc.AsFloat, -2);
+        Imp.ICMS.CST90.pICMS  := RoundTo(DM_CNT.Conhec2AliqICMS.AsFloat, -2);
+        Imp.ICMS.CST90.vICMS  := RoundTo(DM_CNT.Conhec2ValorICMS.AsFloat, -2);
+        Imp.ICMS.CST90.vCred  := RoundTo(DM_CNT.Conhec2CreditoICMS.AsFloat, -2);
+       end;
+   end;
+
+   //
+   //  Informações da Carga
+   //
+   infCarga.vMerc   := RoundTo(DM_CNT.Conhec2ValorTotalNF.AsFloat, -2);
+   infCarga.proPred := DM_CNT.Conhec2Especie.AsString;
+   infCarga.xOutCat := DM_CNT.Conhec2Natureza.AsString;
+
+   // UnidMed = (uM3,uKG, uTON, uUNIDADE, uLITROS);
+   with infCarga.InfQ.Add do
+    begin
+     cUnid  := uKg;
+     tpMed  := 'Kg';
+     qCarga := RoundTo(DM_CNT.Conhec2PesoTotal.AsFloat, -2);
+    end;
+   with infCarga.InfQ.Add do
+    begin
+     cUnid  := uUnidade;
+     tpMed  := DM_CNT.Conhec2Especie.AsString;
+     qCarga := RoundTo(DM_CNT.Conhec2Volume.AsFloat, -2);
+    end;
+
+   //
+   //  Informações da Seguradora
+   //
+   if trim(DM_CNT.ParametrosSeguradora.AsString)<>''
+    then begin
+     with infseg.Add do
+      begin
+       case DM_CNT.Conhec2RespSeguro.AsInteger of
+        0: respSeg:=rsRemetente;
+        1: respSeg:=rsExpedidor;
+        2: respSeg:=rsRecebedor;
+        3: respSeg:=rsDestinatario;
+        4: respSeg:=rsEmitenteCTe;
+        5: respSeg:=rsTomadorServico;
+       end;
+
+       DM_CTA.PessoaFJ.Close;
+       DM_CTA.PessoaFJ.SQL.Clear;
+       DM_CTA.PessoaFJ.SQL.Add('Select * From Sis_PessoaFJ');
+       DM_CTA.PessoaFJ.SQL.Add('Where CGC = :xCGC');
+       DM_CTA.PessoaFJ.Params[0].AsString:=DM_CNT.ParametrosSeguradora.AsString;
+       DM_CTA.PessoaFJ.Active:=True;
+       DM_CTA.PessoaFJ.Open;
+       xSeg:=Copy(trim(DM_CTA.PessoaFJRSocial.AsString), 1, 30);
+
+       nApol:=Copy(trim(DM_CNT.ParametrosNumApolice.AsString), 1, 20);
+       nAver:=DM_CNT.ParametrosNumAverbacao.AsString;
+      end;
+    end;
+
+   //
+   //  Dados do Modal Rodoviário
+   //
+   Rodo.RNTRC:=DM_CNT.ParametrosRNTRC.AsString;
+   Rodo.dPrev:=(DM_CNT.Conhec2Data.AsDateTime+1);
+
+   // TpcteLocacao = (ltNao, ltsim);
+   Rodo.Lota:=ltNao;
+
+   //
+   //  Informações do Detalhamento do CTe do tipo Anulação de Valores
+   //
+
+   // infCTeAnuEnt.dEmi:=DM_CNT.Conhec2Data.AsDateTime;
+   // infCTeAnuEnt.chCTe:='';
+  end;
+end;
+
+procedure TfrmMovEmitirCNT.NaoEmitidos;
+var
+ i, j, Lote, CTeInicial, CTeFinal: Integer;
+begin
+ Mensagem:=TStringList.Create;
+ sCC:=TStringList.Create;
+// LeDadosEmpresa;
+
+ DM_CTA.TabHost.Close;
+ DM_CTA.TabHost.SQL.Clear;
+ DM_CTA.TabHost.SQL.Add('Select * From Sis_TabHost');
+ DM_CTA.TabHost.SQL.Add('Where Empresa = :xEmpresa');
+ DM_CTA.TabHost.SQL.Add('Order By Sequencia');
+ DM_CTA.TabHost.Params[0].AsString:=DM_CTA.xCodEmpresa;
+ DM_CTA.TabHost.Active:=True;
+ DM_CTA.TabHost.Open;
+
+ DMCTE.CTe.Conhecimentos.Clear;
+
+ // Lote de Conhecimentos
+ DM_CNT.LoteCTe.Close;
+ DM_CNT.LoteCTe.SQL.Clear;
+ DM_CNT.LoteCTe.SQL.Add('Select * From Cnt_LoteCTe');
+ DM_CNT.LoteCTe.SQL.Add('Order By Lote');
+ DM_CNT.LoteCTe.Active:=True;
+ DM_CNT.LoteCTe.Open;
+ DM_CNT.LoteCTe.Last;
+ if DM_CNT.LoteCTe.RecordCount>0
+  then begin
+   if (DM_CNT.LoteCTeCTInicial.AsInteger=0) and
+      (DM_CNT.LoteCTeCTFinal.AsInteger=0)
+    then Lote:=DM_CNT.LoteCTeLote.AsInteger
+    else begin
+     Lote:=(DM_CNT.LoteCTeLote.AsInteger+1);
+
+     DM_CNT.IncAltDel.SQL.Clear;
+     DM_CNT.IncAltDel.SQL.Add('Insert into Cnt_LoteCTe');
+     DM_CNT.IncAltDel.SQL.Add('(Lote, CTInicial, CTFinal, Data)');
+     DM_CNT.IncAltDel.SQL.Add('Values (:xLote, :xCTInicial, :xCTFinal, :xData)');
+     DM_CNT.IncAltDel.Params[0].AsInteger:=Lote;
+     DM_CNT.IncAltDel.Params[1].AsInteger:=0;
+     DM_CNT.IncAltDel.Params[2].AsInteger:=0;
+     DM_CNT.IncAltDel.Params[3].AsDateTime:=Date;
+     DM_CNT.IncAltDel.ExecSQL;
+   end;
+  end
+  else begin
+   Lote:=1;
+
+   DM_CNT.IncAltDel.SQL.Clear;
+   DM_CNT.IncAltDel.SQL.Add('Insert into Cnt_LoteCTe');
+   DM_CNT.IncAltDel.SQL.Add('(Lote, CTInicial, CTFinal, Data)');
+   DM_CNT.IncAltDel.SQL.Add('Values (:xLote, :xCTInicial, :xCTFinal, :xData)');
+   DM_CNT.IncAltDel.Params[0].AsInteger:=Lote;
+   DM_CNT.IncAltDel.Params[1].AsInteger:=0;
+   DM_CNT.IncAltDel.Params[2].AsInteger:=0;
+   DM_CNT.IncAltDel.Params[3].AsDateTime:=Date;
+   DM_CNT.IncAltDel.ExecSQL;
+  end;
+
+ if rgFaixa.ItemIndex=0
+  then begin
+   DM_CNT.Conhec2.Last;
+   j:=DM_CNT.Conhec2.RecordCount-1;
+
+   // Caso a quantidade de conhecimentos não impressos seja superior o
+   // limite estabelecido pelo SEFAZ (50 conhecimentos por lote) a
+   // geração dos CT-e ficara limitada nos 50 primeiros, portanto novos
+   // lotes deverão ser gerados até compreender todos os conhecimentos não
+   // impressos.
+   if DM_CNT.Conhec2.RecordCount>LimiteCte
+    then j:=LimiteCTe-1;
+
+   pbProgresso.Min:=0;
+   pbProgresso.Max:=j;
+   DM_CNT.Conhec2.First;
+   CTeInicial:=DM_CNT.Conhec2Numero.AsInteger;
+   CTeFinal:=DM_CNT.Conhec2Numero.AsInteger;
+
+   for i:=pbProgresso.Min to pbProgresso.Max do
+    begin
+     pbProgresso.Position:=i;
+     CTeFinal:=DM_CNT.Conhec2Numero.AsInteger;
+     GerarLoteCTe;
+     DM_CNT.Conhec2.Next;
+    end;
+
+   EnviarLote(Lote);
+
+   DM_CNT.IncAltDel.SQL.Clear;
+   DM_CNT.IncAltDel.SQL.Add('Update Cnt_LoteCTe Set');
+   DM_CNT.IncAltDel.SQL.Add('CTInicial = :xCTInicial,');
+   DM_CNT.IncAltDel.SQL.Add('CTFinal = :xCTFinal,');
+   DM_CNT.IncAltDel.SQL.Add('Data = :xData');
+   DM_CNT.IncAltDel.SQL.Add('Where Lote = :xLote');
+   DM_CNT.IncAltDel.Params[0].AsInteger:=CTeInicial;
+   DM_CNT.IncAltDel.Params[1].AsInteger:=CTeFinal;
+   DM_CNT.IncAltDel.Params[2].AsDateTime:=Date;
+   DM_CNT.IncAltDel.Params[3].AsInteger:=Lote;
+   DM_CNT.IncAltDel.ExecSQL;
+
+   pbProgresso.Min:=0;
+   pbProgresso.Max:=j;
+   DM_CNT.Conhec2.First;
+   Ok:=False;
+   MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
+   MemoStatus.Lines.Add(' =>  Enviando Conhecimento(s) por e-mail');
+   MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
+   for i:=pbProgresso.Min to pbProgresso.Max do
+    begin
+     pbProgresso.Position:=i;
+
+     DM_CTA.PessoaFJE.Close;
+     DM_CTA.PessoaFJE.SQL.Clear;
+     DM_CTA.PessoaFJE.SQL.Add('Select * From Sis_PessoaFJEmail');
+     DM_CTA.PessoaFJE.SQL.Add('Where CNPJ = :xCNPJ');
+     DM_CTA.PessoaFJE.SQL.Add('and Modulo = :xModulo');
+     DM_CTA.PessoaFJE.Params[0].AsString:=DM_CNT.Conhec2Pagador.AsString;
+     DM_CTA.PessoaFJE.Params[1].AsString:='DFE';
+     DM_CTA.PessoaFJE.Active:=True;
+     DM_CTA.PessoaFJE.Open;
+     if (DM_CTA.PessoaFJECNPJ.AsString=DM_CNT.Conhec2Pagador.AsString) and
+        (DM_CTA.PessoaFJEModulo.AsString='DFE')
+      then Endereco:=trim(DM_CTA.PessoaFJEEmail.AsString)
+      else Endereco:='';
+     {
+     DM_CNT.IncAltDel.SQL.Clear;
+     DM_CNT.IncAltDel.SQL.Add('Update Cnt_Conhecimento Set');
+     DM_CNT.IncAltDel.SQL.Add('Emissao = :xEmissao,');
+     DM_CNT.IncAltDel.SQL.Add('ChaveCTe = :xChave,');
+     DM_CNT.IncAltDel.SQL.Add('Impresso = :xImpresso');
+     DM_CNT.IncAltDel.SQL.Add('Where Codigo = :xCodigo');
+     DM_CNT.IncAltDel.SQL.Add('and Numero = :xNumero');
+     DM_CNT.IncAltDel.Params[0].AsDateTime:=DateOf(DMCTE.CTe.Conhecimentos.Items[i].CTe.Ide.dhEmi);
+     DM_CNT.IncAltDel.Params[1].AsString:=Copy(DMCTE.CTe.Conhecimentos.Items[i].CTe.inFCTe.ID,4,44);
+     DM_CNT.IncAltDel.Params[2].AsString:='S';
+     DM_CNT.IncAltDel.Params[3].AsInteger:=DM_CNT.Conhec2Codigo.AsInteger;
+     DM_CNT.IncAltDel.Params[4].AsInteger:=DM_CNT.Conhec2Numero.AsInteger;
+     DM_CNT.IncAltDel.ExecSQL;
+     }
+     Ok:=False;
+     if Endereco<>''
+      then begin
+       Mensagem.Clear;
+       sCC.Clear;
+       Mensagem.Add('Comunicamos por este e-mail que o Conhecimento Eletrônico (Chave='+
+         Copy(DMCTE.CTe.Conhecimentos.Items[i].CTe.inFCTe.ID,4,44)+
+         ') obteve autorização de uso sob o protocolo: '+DMCTE.CTe.Conhecimentos.Items[i].CTe.procCTe.nProt);
+       Mensagem.Add(' ');
+       Mensagem.Add('Enviamos em anexo o arquivo XML do respectivo CT-e.');
+       Mensagem.Add(' ');
+       Mensagem.Add('Atenciosamente,');
+       Mensagem.Add(' ');
+       Mensagem.Add(DM_CTA.EmpresaNome.AsString);
+       Mensagem.Add(' ');
+       Mensagem.Add('>>> Sistema ERPJr <<<');
+
+       if Trim(DM_CTA.EmpresaEmail.AsString)<>''
+        then sCC.Add(Trim(DM_CTA.EmpresaEmail.AsString));
+       if CopiaPara<>''
+        then sCC.Add(CopiaPara);
+
+       DM_CTA.TabHost.Last;
+       jHost:=DM_CTA.TabHost.RecordCount;
+       iHost:=1;
+       DM_CTA.TabHost.First;
+       Falha:=False;
+       MemoStatus.Lines.Add(' CT-e: '+Copy(DMCTE.CTe.Conhecimentos.Items[i].CTe.inFCTe.ID,4,44));
+       MemoStatus.Lines.Add(' Destinatário: ' + Endereco);
+
+       repeat
+        MemoStatus.Lines.Add('  Aguarde... Enviando CT-e por e-mail. Host ['+
+           IntToStr(iHost)+']  ');
+        ConexaoSSL := (DM_CTA.TabHostPortaSMTP.AsInteger<>25);
+
+        try
+
+         DMCTE.CTe.Conhecimentos.Items[i].EnviarEmail(DM_CTA.TabHostServidorSMTP.AsString,
+                                      DM_CTA.TabHostPortaSMTP.AsString,
+                                      DM_CTA.TabHostUsuario.AsString,
+                                      DM_CTA.TabHostSenha.AsString,
+                                      DM_CTA.EmpresaEmail.AsString,
+                                      Endereco,
+                                      'CT-e',
+                                      Mensagem,
+                                      ConexaoSSL,                  // SSL
+                                      EnviaPDF,                    // Enviar em PDF
+                                      sCC,                         // sCC
+                                      nil,                         // Anexos
+                                      PedeConfirmacao,             // Pede Confirmação de Recebimento
+                                      AguardarEnvio,               // Aguarda o Envio
+                                      DM_CTA.EmpresaNome.AsString); // Nome do remetente
+                                      //UsaIndy);
+         Ok:=True;
+        except
+         DM_CTA.TabHost.Next;
+         Inc(iHost);
+         if iHost>jHost then Falha:=True;
+        end;
+       until Ok or Falha;
+       if Falha
+        then MessageDlg('e-mail não enviado por motivo de Falha.', mtError, [mbOk], 0);
+      end
+      else MessageDlg('Tomador do Serviço não possui, e-mail Cadastrado.', mtInformation, [mbOk], 0);
+
+     DM_CNT.Conhec2.Next;
+    end;
+   if Ok
+    then MessageDlg('e-mail enviado com Sucesso.', mtInformation, [mbOk], 0);
+  end
+  else begin
+   DM_CNT.Conhec2.Close;
+   DM_CNT.Conhec2.SQL.Clear;
+   DM_CNT.Conhec2.SQL.Add('Select Cnt_Conhecimento.*, Sis_PessoaFJ.*');
+   DM_CNT.Conhec2.SQL.Add('From Cnt_Conhecimento, Sis_PessoaFJ');
+   DM_CNT.Conhec2.SQL.Add('Where Cnt_Conhecimento.Destinatario = Sis_PessoaFJ.CGC');
+   DM_CNT.Conhec2.SQL.Add('and Cnt_Conhecimento.Codigo = :xCodigo');
+   DM_CNT.Conhec2.SQL.Add('and Cnt_Conhecimento.Numero = :xNumero');
+   DM_CNT.Conhec2.Params[0].AsInteger:=edtUnidade.ValueInt;
+   DM_CNT.Conhec2.Params[1].AsInteger:=edtNumero.ValueInt;
+   DM_CNT.Conhec2.Active:=True;
+   DM_CNT.Conhec2.Open;
+
+   CTeInicial:=DM_CNT.Conhec2Numero.AsInteger;
+   CTeFinal:=DM_CNT.Conhec2Numero.AsInteger;
+   GerarLoteCTe;
+
+   EnviarLote(Lote);
+
+   DM_CTA.PessoaFJE.Close;
+   DM_CTA.PessoaFJE.SQL.Clear;
+   DM_CTA.PessoaFJE.SQL.Add('Select * From Sis_PessoaFJEmail');
+   DM_CTA.PessoaFJE.SQL.Add('Where CNPJ = :xCNPJ');
+   DM_CTA.PessoaFJE.SQL.Add('and Modulo = :xModulo');
+   DM_CTA.PessoaFJE.Params[0].AsString:=DM_CNT.Conhec2Pagador.AsString;
+   DM_CTA.PessoaFJE.Params[1].AsString:='DFE';
+   DM_CTA.PessoaFJE.Active:=True;
+   DM_CTA.PessoaFJE.Open;
+   if (DM_CTA.PessoaFJECNPJ.AsString=DM_CNT.Conhec2Pagador.AsString) and
+      (DM_CTA.PessoaFJEModulo.AsString='DFE')
+    then Endereco:=trim(DM_CTA.PessoaFJEEmail.AsString)
+    else Endereco:='';
+
+   DM_CNT.IncAltDel.SQL.Clear;
+   DM_CNT.IncAltDel.SQL.Add('Update Cnt_LoteCTe Set');
+   DM_CNT.IncAltDel.SQL.Add('CTInicial = :xCTInicial,');
+   DM_CNT.IncAltDel.SQL.Add('CTFinal = :xCTFinal');
+   DM_CNT.IncAltDel.SQL.Add('Where Lote = :xLote');
+   DM_CNT.IncAltDel.Params[0].AsInteger:=CTeInicial;
+   DM_CNT.IncAltDel.Params[1].AsInteger:=CTeFinal;
+   DM_CNT.IncAltDel.Params[2].AsInteger:=Lote;
+   DM_CNT.IncAltDel.ExecSQL;
+
+   MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
+   MemoStatus.Lines.Add(' =>  Enviando Conhecimento(s) por e-mail');
+   MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
+   {
+   DM_CNT.IncAltDel.SQL.Clear;
+   DM_CNT.IncAltDel.SQL.Add('Update Cnt_Conhecimento Set');
+   DM_CNT.IncAltDel.SQL.Add('ChaveCTe = :xChave,');
+   DM_CNT.IncAltDel.SQL.Add('Impresso = :xImpresso');
+   DM_CNT.IncAltDel.SQL.Add('Where Codigo = :xCodigo');
+   DM_CNT.IncAltDel.SQL.Add('and Numero = :xNumero');
+   DM_CNT.IncAltDel.Params[0].AsString:=Copy(DMCTE.CTe.Conhecimentos.Items[0].CTe.infCTe.ID,4,44);
+   DM_CNT.IncAltDel.Params[1].AsString:='S';
+   DM_CNT.IncAltDel.Params[2].AsInteger:=edtUnidade.ValueInt;
+   DM_CNT.IncAltDel.Params[3].AsInteger:=edtNumero.ValueInt;
+   DM_CNT.IncAltDel.ExecSQL;
+   }
+   if Endereco<>''
+    then begin
+     Mensagem.Clear;
+     sCC.Clear;
+     Mensagem.Add('Comunicamos por este e-mail que o Conhecimento Eletrônico (Chave='+
+         Copy(DMCTE.CTe.Conhecimentos.Items[0].CTe.inFCTe.ID,4,44)+
+         ') obteve autorização de uso sob o protocolo: '+DMCTE.CTe.Conhecimentos.Items[0].CTe.procCTe.nProt);
+     Mensagem.Add(' ');
+     Mensagem.Add('Enviamos em anexo o arquivo XML do respectivo CT-e.');
+     Mensagem.Add(' ');
+     Mensagem.Add('Atenciosamente,');
+     Mensagem.Add(' ');
+     Mensagem.Add(DM_CTA.EmpresaNome.AsString);
+     Mensagem.Add(' ');
+     Mensagem.Add('>>> Sistema ERPJr <<<');
+
+     if Trim(DM_CTA.EmpresaEmail.AsString)<>''
+      then sCC.Add(Trim(DM_CTA.EmpresaEmail.AsString));
+     if CopiaPara<>''
+      then sCC.Add(CopiaPara);
+
+     DM_CTA.TabHost.Last;
+     jHost:=DM_CTA.TabHost.RecordCount;
+     iHost:=1;
+     DM_CTA.TabHost.First;
+     Ok:=False;
+     Falha:=False;
+     MemoStatus.Lines.Add(' CT-e: '+Copy(DMCTE.CTe.Conhecimentos.Items[0].CTe.inFCTe.ID,4,44));
+     MemoStatus.Lines.Add(' Destinatário: ' + Endereco);
+
+     repeat
+      MemoStatus.Lines.Add('  Aguarde... Enviando CT-e por e-mail. Host ['+
+         IntToStr(iHost)+']  ');
+      ConexaoSSL := (DM_CTA.TabHostPortaSMTP.AsInteger<>25);
+
+      try
+
+       DMCTE.CTe.Conhecimentos.Items[0].EnviarEmail(DM_CTA.TabHostServidorSMTP.AsString,
+                                  DM_CTA.TabHostPortaSMTP.AsString,
+                                  DM_CTA.TabHostUsuario.AsString,
+                                  DM_CTA.TabHostSenha.AsString,
+                                  DM_CTA.EmpresaEmail.AsString,
+                                  Endereco,
+                                  'CT-e',
+                                  Mensagem,
+                                  ConexaoSSL,                  // SSL
+                                  EnviaPDF,                    // Enviar em PDF
+                                  sCC,                         // sCC
+                                  nil,                         // Anexos
+                                  PedeConfirmacao,             // Pede Confirmação de Recebimento
+                                  AguardarEnvio,               // Aguarda o Envio
+                                  DM_CTA.EmpresaNome.AsString); // Nome do remetente
+                                  //UsaIndy);
+       Ok:=True;
+      except
+       DM_CTA.TabHost.Next;
+       Inc(iHost);
+       if iHost>jHost then Falha:=True;
+      end;
+     until Ok or Falha;
+     if Ok
+      then MessageDlg('e-mail enviado com Sucesso.', mtInformation, [mbOk], 0);
+     if Falha
+      then MessageDlg('e-mail não enviado por motivo de Falha.', mtError, [mbOk], 0);
+
+    end
+    else MessageDlg('Tomador do Serviço não possui, e-mail Cadastrado.', mtInformation, [mbOk], 0);
+  end;
+
+ Mensagem.Free;
+ sCC.Free;
+end;
+
+procedure TfrmMovEmitirCNT.Emitidos;
+var
+ PathArquivo, NomeArquivo: String;
+begin
+ PathArquivo:=DMCTE.CTe.Configuracoes.Arquivos.GetPathCTe(DM_CNT.Conhec2Emissao.AsDateTime);
+ NomeArquivo:=PathArquivo+'\'+DM_CNT.Conhec2ChaveCTe.AsString+'-cte.xml';
+
+ // Carrega no Componente o CTe salvo em Arquivo XML
+ DMCTE.CTe.Conhecimentos.Clear;
+ DMCTE.CTe.Conhecimentos.LoadFromFile(NomeArquivo);
+ MemoStatus.Lines.Add('XML:');
+ MemoStatus.Lines.Add(' Carregado');
+ MemoStatus.Lines.Add(' CT-e: '+Copy(DMCTE.CTe.Conhecimentos.Items[0].CTe.inFCTe.ID,4,44));
+ MemoStatus.Lines.Add(' Aguarde a Impressão...');
+ // Somente imprime o CTe
+ DMCTE.CTe.Conhecimentos.Imprimir;
+ LimpaCampos;
+end;
+
+(*
+MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
+MemoStatus.Lines.Add(' =>  Consultando chave de acesso nº ' + sChave );
+MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
+if ACBrNFe1.NotasFiscais.Count > 0 then
+ begin
+  ACBrNFe1.WebServices.Consulta.NFeChave := sChave;
+  ACBrNFe1.WebServices.Consulta.Executar;
+  sProtocolo := ACBrNFe1.WebServices.Consulta.Protocolo;
+  sMotivo := ACBrNFe1.WebServices.Consulta.XMotivo;
+  sStat := IntToStr(ACBrNFe1.WebServices.Consulta.cStat);
+  sDataHora := DateTimeToStr(ACBrNFe1.WebServices.Consulta.DhRecbto);
+  MemoStatus.Lines.Add('  Protocolo: ' + sProtocolo + ' ' + sDataHora);
+  MemoStatus.Lines.Add('  Status...: ' + sStat + ' - ' + sMotivo);
+  MemoStatus.Lines.Add(' ');
+ end;
+*)
+
+procedure TfrmMovEmitirCNT.EnviarLote(Lote: Integer);
+var
+ i: integer;
+begin
+ MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
+ MemoStatus.Lines.Add(' =>  Enviando Lote de Conhecimento(s)');
+ MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
+ MemoStatus.Lines.Add('XMLs:');
+ MemoStatus.Lines.Add(' Gerado(s)');
+ MemoStatus.Lines.Add(' Salvo(s) em: '+PathMensal);
+
+ // Gera o XML, Assina e Salva o Arquivo
+ DMCTE.CTe.Conhecimentos.Assinar;
+ MemoStatus.Lines.Add(' Assinado(s)');
+
+ // Valida os dados do XML salvo
+ DMCTE.CTe.Conhecimentos.Valida;
+ MemoStatus.Lines.Add(' Validado(s)');
+
+ // EnviaSefaz = variável booleana
+ // Se False, apenas gera o XML, assina, valida e Imprime o DACTe não protocolado
+ // Se True, gera o XML, assina, valida, envia para o SEFAZ e Imprime o DACTe protocolado
+ if DM_CTA.EnviaSefaz
+  then begin
+   MemoStatus.Lines.Add(' Aguarde Enviando...');
+   // Envia o lote de Conhecimentos para o SEFAZ e Imprime o DACTe
+   // Lote = variável que contem o numero do lote (numero sequencial)
+   DMCTE.CTe.Enviar(Lote);
+
+   sRecibo   := DMCTE.CTe.WebServices.Enviar.Recibo;
+   sStat     := IntToStr(DMCTE.CTe.WebServices.Enviar.cStat);
+   sMotivo   := DMCTE.CTe.WebServices.Enviar.xMotivo;
+   sDataHora := DateTimeToStr(DMCTE.CTe.WebServices.Enviar.dhRecbto);
+   MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
+   MemoStatus.Lines.Add(' =>  Recibo nº ' + sRecibo);
+   MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
+   MemoStatus.Lines.Add('  Data / Hora      Status do CT-e');
+   MemoStatus.Lines.Add('  ---------------- ---------------------------------------');
+   MemoStatus.Lines.Add('  ' + sDataHora + '  ' + sStat + ' - ' + sMotivo);
+   MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
+   MemoStatus.Lines.Add('  ');
+   MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
+   MemoStatus.Lines.Add(' =>  Consultando Recibo nº ' + sRecibo);
+   MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
+   DMCTE.CTe.WebServices.Retorno.Recibo := sRecibo;
+   DMCTE.CTe.WebServices.Retorno.Executar;
+   MemoStatus.Lines.Add('  Conhecimento Número do protocolo                  Status do CT-e');
+   MemoStatus.Lines.Add('  ------------ -----------------------------------  ---------------------------------------');
+   for i := 0 to (DMCTE.Cte.WebServices.Retorno.CteRetorno.ProtCTe.Count - 1) do
+    begin
+     sDataHora     := DateTimeToStr(DMCTE.CTe.WebServices.Retorno.CteRetorno.ProtCTe.Items[i].dhRecbto);
+     sProtocolo    := DMCTE.CTe.WebServices.Retorno.CteRetorno.ProtCTe.Items[i].nProt;
+     sStat         := IntToStr(DMCTE.CTe.WebServices.Retorno.CteRetorno.ProtCTe.Items[i].cStat);
+     sMotivo       := DMCTE.CTe.WebServices.Retorno.CteRetorno.ProtCTe.Items[i].xMotivo;
+     sConhecimento := Copy(DMCTE.CTe.WebServices.Retorno.CteRetorno.ProtCTe.Items[i].chCTe, 26, 3)
+                      + '.' + Copy(DMCTE.CTe.WebServices.Retorno.CteRetorno.ProtCTe.Items[i].chCTe, 29, 3)
+                      + '.' + Copy(DMCTE.CTe.WebServices.Retorno.CteRetorno.ProtCTe.Items[i].chCTe, 32, 3);
+
+     MemoStatus.Lines.Add('  ' + sConhecimento + '  ' + sProtocolo + ' ' + sDataHora + '  ' + sStat + ' - ' + sMotivo);
+
+     if DMCTE.CTe.WebServices.Retorno.CTeRetorno.ProtCTe.Items[i].cStat=100
+      then begin
+       DM_CNT.IncAltDel.SQL.Clear;
+       DM_CNT.IncAltDel.SQL.Add('Update Cnt_Conhecimento Set');
+       DM_CNT.IncAltDel.SQL.Add('Emissao = :xEmissao,');
+       DM_CNT.IncAltDel.SQL.Add('ChaveCTe = :xChave,');
+       DM_CNT.IncAltDel.SQL.Add('Enviado = :xEnviado,');
+       DM_CNT.IncAltDel.SQL.Add('Protocolado = :xProtocolado,');
+       DM_CNT.IncAltDel.SQL.Add('Protocolo = :xProtocolo,');
+       DM_CNT.IncAltDel.SQL.Add('Impresso = :xImpresso');
+       DM_CNT.IncAltDel.SQL.Add('Where Serie = :xSerie');
+       DM_CNT.IncAltDel.SQL.Add('and Numero = :xNumero');
+       DM_CNT.IncAltDel.Params[0].AsDateTime:=DateOf(DMCTE.CTe.Conhecimentos.Items[i].CTe.Ide.dhEmi);
+       DM_CNT.IncAltDel.Params[1].AsString:=Copy(DMCTE.CTe.Conhecimentos.Items[i].CTe.inFCTe.ID,4,44);
+       DM_CNT.IncAltDel.Params[2].AsString:='S';
+       DM_CNT.IncAltDel.Params[3].AsString:='S';
+       DM_CNT.IncAltDel.Params[4].AsString:=sProtocolo;
+       DM_CNT.IncAltDel.Params[5].AsString:='S';
+       DM_CNT.IncAltDel.Params[6].AsInteger:=DMCTE.CTe.Conhecimentos.Items[i].CTe.Ide.serie;
+       DM_CNT.IncAltDel.Params[7].AsInteger:=DMCTE.CTe.Conhecimentos.Items[i].CTe.Ide.nCT;
+       DM_CNT.IncAltDel.ExecSQL;
+      end;
+    end;
+   MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
+  end
+  else begin
+   MemoStatus.Lines.Add(' Aguarde Imprimindo...');
+   // Somente imprime o CTe
+   DMCTE.CTe.Conhecimentos.Imprimir;
+  end;
+end;
+
+procedure TfrmMovEmitirCNT.btnEmailClick(Sender: TObject);
+var
+ PathArquivo, NomeArquivo: String;
+begin
+ Mensagem:=TStringList.Create;
+ sCC:=TStringList.Create;
+ pcDados.ActivePageIndex:=1;
+
+ DM_CTA.Empresa.Close;
+ DM_CTA.Empresa.SQL.Clear;
+ DM_CTA.Empresa.SQL.Add('Select * From Sis_Empresa');
+ DM_CTA.Empresa.SQL.Add('Where Codigo = :xCodigo');
+ DM_CTA.Empresa.Params[0].AsString:=DM_CNT.ParametrosEmitente.AsString;
+ DM_CTA.Empresa.Active:=True;
+ DM_CTA.Empresa.Open;
+
+
+ DM_CTA.TabHost.Close;
+ DM_CTA.TabHost.SQL.Clear;
+ DM_CTA.TabHost.SQL.Add('Select * From Sis_TabHost');
+ DM_CTA.TabHost.SQL.Add('Where Empresa = :xEmpresa');
+ DM_CTA.TabHost.SQL.Add('Order By Sequencia');
+ DM_CTA.TabHost.Params[0].AsString:=DM_CTA.xCodEmpresa;
+ DM_CTA.TabHost.Active:=True;
+ DM_CTA.TabHost.Open;
+
+ MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
+ MemoStatus.Lines.Add(' =>  Enviando Conhecimento(s) por e-mail');
+ MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
+ PathArquivo:=DMCTE.CTe.Configuracoes.Arquivos.GetPathCTe(DM_CNT.Conhec2Emissao.AsDateTime);
+ NomeArquivo:=PathArquivo+'\'+DM_CNT.Conhec2ChaveCTe.AsString+'-cte.xml';
+
+ DM_CTA.PessoaFJE.Close;
+ DM_CTA.PessoaFJE.SQL.Clear;
+ DM_CTA.PessoaFJE.SQL.Add('Select * From Sis_PessoaFJEmail');
+ DM_CTA.PessoaFJE.SQL.Add('Where CNPJ = :xCNPJ');
+ DM_CTA.PessoaFJE.SQL.Add('and Modulo = :xModulo');
+ DM_CTA.PessoaFJE.Params[0].AsString:=DM_CNT.Conhec2Pagador.AsString;
+ DM_CTA.PessoaFJE.Params[1].AsString:='DFE';
+ DM_CTA.PessoaFJE.Active:=True;
+ DM_CTA.PessoaFJE.Open;
+ if (DM_CTA.PessoaFJECNPJ.AsString=DM_CNT.Conhec2Pagador.AsString) and
+    (DM_CTA.PessoaFJEModulo.AsString='DFE')
+  then Endereco:=trim(DM_CTA.PessoaFJEEmail.AsString)
+  else Endereco:='';
+
+ if Endereco<>''
+  then begin
+   // Carrega no Componente o CTe salvo em Arquivo XML
+   DMCTE.CTe.Conhecimentos.Clear;
+   DMCTE.CTe.Conhecimentos.LoadFromFile(NomeArquivo);
+   MemoStatus.Lines.Add('XML:');
+   MemoStatus.Lines.Add(' Carregado');
+
+   Mensagem.Clear;
+   sCC.Clear;
+   Mensagem.Add('Comunicamos por este e-mail que o Conhecimento Eletrônico (Chave='+
+         Copy(DMCTE.CTe.Conhecimentos.Items[0].CTe.inFCTe.ID,4,44)+
+         ') obteve autorização de uso sob o protocolo: '+DMCTE.CTe.Conhecimentos.Items[0].CTe.procCTe.nProt);
+   Mensagem.Add(' ');
+   Mensagem.Add('Enviamos em anexo o arquivo XML do respectivo CT-e.');
+   Mensagem.Add(' ');
+   Mensagem.Add('Atenciosamente,');
+   Mensagem.Add(' ');
+   Mensagem.Add(DM_CTA.EmpresaNome.AsString);
+   Mensagem.Add(' ');
+   Mensagem.Add('>>> Sistema ERPJr <<<');
+
+   if Trim(DM_CTA.EmpresaEmail.AsString)<>''
+    then sCC.Add(Trim(DM_CTA.EmpresaEmail.AsString));
+   if CopiaPara<>''
+    then sCC.Add(CopiaPara);
+
+   DM_CTA.TabHost.Last;
+   jHost:=DM_CTA.TabHost.RecordCount;
+   iHost:=1;
+   DM_CTA.TabHost.First;
+   Ok:=False;
+   Falha:=False;
+   MemoStatus.Lines.Add(' CT-e: '+Copy(DMCTE.CTe.Conhecimentos.Items[0].CTe.inFCTe.ID,4,44));
+   MemoStatus.Lines.Add(' Destinatário: ' + Endereco);
+
+   repeat
+    MemoStatus.Lines.Add('  Aguarde... Enviando CT-e por e-mail. Host ['+
+        IntToStr(iHost)+']  ');
+    ConexaoSSL := (DM_CTA.TabHostPortaSMTP.AsInteger<>25);
+
+    try
+     DMCTE.CTe.Conhecimentos.Items[0].EnviarEmail(DM_CTA.TabHostServidorSMTP.AsString,
+                                    DM_CTA.TabHostPortaSMTP.AsString,
+                                    DM_CTA.TabHostUsuario.AsString,
+                                    DM_CTA.TabHostSenha.AsString,
+                                    DM_CTA.EmpresaEmail.AsString,
+                                    Endereco,
+                                    'CT-e',
+                                    Mensagem,
+                                    ConexaoSSL,                  // SSL
+                                    EnviaPDF,                    // Enviar em PDF
+                                    sCC,                         // sCC
+                                    nil,                         // Anexos
+                                    PedeConfirmacao,             // Pede Confirmação de Recebimento
+                                    AguardarEnvio,               // Aguarda o Envio
+                                    DM_CTA.EmpresaNome.AsString); // Nome do remetente
+                                    //UsaIndy);
+     Ok:=True;
+    except
+     DM_CTA.TabHost.Next;
+     Inc(iHost);
+     if iHost>jHost then Falha:=True;
+    end;
+   until Ok or Falha;
+   if Ok
+    then MessageDlg('e-mail enviado com Sucesso.', mtInformation, [mbOk], 0);
+   if Falha
+    then MessageDlg('e-mail não enviado por motivo de Falha.', mtError, [mbOk], 0);
+  end
+  else MessageDlg('Tomador do Serviço não possui, e-mail cadastrado.', mtInformation, [mbOk], 0);
+
+ Mensagem.Free;
+ sCC.Free;
+ LimpaCampos;
+end;
+
+procedure TfrmMovEmitirCNT.btnConsultaStatusClick(Sender: TObject);
+begin
+ pcDados.ActivePageIndex:=1;
+ MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
+ MemoStatus.Lines.Add(' =>  Consultando Status do Serviço');
+ MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
+ DMCTE.CTe.WebServices.StatusServico.Executar;
+ sDataHora:= DateTimeToStr(DMCTE.CTe.WebServices.StatusServico.dhRetorno);
+ sStat := IntToStr(DMCTE.CTe.WebServices.StatusServico.cStat);
+ sMotivo := DMCTE.CTe.WebServices.StatusServico.xMotivo;
+ MemoStatus.Lines.Add('  ' + sStat + ' - ' + sMotivo);
+ MemoStatus.Lines.Add(' ');
+end;
+
+procedure TfrmMovEmitirCNT.edtNumCopiasExit(Sender: TObject);
+begin
+ if (edtNumCopias.ValueInt=0) or (edtNumCopias.ValueInt>10)
+  then edtNumCopias.StoreValue(1);
+end;
+
+end.

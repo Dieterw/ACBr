@@ -2,8 +2,9 @@ procedure TfrmMovEmitirCNT.GerarLoteCTe;
 var
  i, j, CodigoMunicipio: Integer;
  IE: String;
+ OkConversao: Boolean;
 begin
- with CTe.Conhecimentos.Add.CTe do
+ with DMCTE.CTe.Conhecimentos.Add.CTe do
   begin
    //
    // Dados de Identificação do CT-e
@@ -146,29 +147,29 @@ begin
    compl.fluxo.xDest := Trim(DM_CNT.Conhec2FluxoDestino.AsString);
    compl.fluxo.xRota := Trim(DM_CNT.Conhec2FluxoRota.AsString);
 
-   compl.Entrega.TipoData:=DM_CNT.Conhec2EntregaTipoData.AsInteger;
+   compl.Entrega.TipoData:=StrToTpDataPeriodo(okConversao, IntToStr(DM_CNT.Conhec2EntregaTipoData.AsInteger));
    case DM_CNT.Conhec2EntregaTipoData.AsInteger of
-        0: compl.Entrega.semData.tpPer:=0;
+        0: compl.Entrega.semData.tpPer:=tdSemData;
     1,2,3: begin
-            compl.Entrega.comData.tpPer:=DM_CNT.Conhec2EntregaTipoData.AsInteger;
+            compl.Entrega.comData.tpPer:=StrToTpDataPeriodo(okConversao, IntToStr(DM_CNT.Conhec2EntregaTipoData.AsInteger));
             compl.Entrega.comData.dProg:=DM_CNT.Conhec2EntregaDataI.AsDateTime;
            end;
         4: begin
-            compl.Entrega.noPeriodo.tpPer:=4;
+            compl.Entrega.noPeriodo.tpPer:=tdNoPeriodo;
             compl.Entrega.noPeriodo.dIni:=DM_CNT.Conhec2EntregaDataI.AsDateTime;
             compl.Entrega.noPeriodo.dFim:=DM_CNT.Conhec2EntregaDataF.AsDateTime;
            end;
    end;
 
-   compl.Entrega.TipoHora:=DM_CNT.Conhec2EntregaTipoHora.AsInteger;
+   compl.Entrega.TipoHora:=StrToTpHorarioIntervalo(okConversao, IntToStr(DM_CNT.Conhec2EntregaTipoHora.AsInteger));
    case DM_CNT.Conhec2EntregaTipoHora.AsInteger of
-        0: compl.Entrega.semHora.tpHor:=0;
+        0: compl.Entrega.semHora.tpHor:=thSemHorario;
     1,2,3: begin
-            compl.Entrega.comHora.tpHor:=DM_CNT.Conhec2EntregaTipoHora.AsInteger;
+            compl.Entrega.comHora.tpHor:=StrToTpHorarioIntervalo(okConversao, IntToStr(DM_CNT.Conhec2EntregaTipoHora.AsInteger));
             compl.Entrega.comHora.hProg:=StrToTime(DM_CNT.Conhec2EntregaHoraI.AsString);
            end;
         4: begin
-            compl.Entrega.noInter.tpHor:=4;
+            compl.Entrega.noInter.tpHor:=thNoIntervalo;
             compl.Entrega.noInter.hIni:=StrToTime(DM_CNT.Conhec2EntregaHoraI.AsString);
             compl.Entrega.noInter.hFim:=StrToTime(DM_CNT.Conhec2EntregaHoraF.AsString);
            end;
@@ -177,9 +178,18 @@ begin
    compl.origCalc := DM_CNT.Conhec2NomeCidadeColeta.AsString;
    compl.destCalc := DM_CNT.Conhec2NomeCidadeEntrega.AsString;
    compl.xObs     := DM_CNT.Conhec2Mensagem.AsString;
-   if DM_CNT.ParametrosCST.AsInteger=41
+
+   DM_CNT.Tabelas.Close;
+   DM_CNT.Tabelas.SQL.Clear;
+   DM_CNT.Tabelas.SQL.Add('Select * From Cnt_Tabelas');
+   DM_CNT.Tabelas.SQL.Add('Where Codigo = :xTabela');
+   DM_CNT.Tabelas.Params[0].AsString:=DM_CNT.ParametrosTabela.AsString;
+   DM_CNT.Tabelas.Active:=True;
+   DM_CNT.Tabelas.Open;
+
+   if DM_CNT.TabelasCST.AsInteger=41
     then compl.xObs := compl.xObs +
-           ';Documento emitido por ME ou EPP opetante pelo Simples Nacional' +
+           ';Documento emitido por ME ou EPP optante pelo Simples Nacional' +
            ';Nao gera direito a credito fiscal de ICMS';
 
    // Obs do Contribuinte
@@ -367,9 +377,9 @@ begin
               with Rem.InfOutros.Add do
                begin
                 if DM_CNT.NotasTipoOutros.AsInteger = 0
-                 then tpDoc := '00'
+                 then tpDoc := tdDeclaracao
                  else begin
-                  tpDoc      := '99';
+                  tpDoc      := tdOutros;
                   descOutros := DM_CNT.NotasDescricao.AsString;
                  end;
                 nDoc     := DM_CNT.NotasNumeroNF.AsString;

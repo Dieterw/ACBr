@@ -10,31 +10,27 @@ begin
  MemoStatus.Lines.Add(' Salvo(s) em: '+PathMensal);
 
  // Gera o XML, Assina e Salva o Arquivo
- CTe.Conhecimentos.Assinar;
+ DMCTE.CTe.Conhecimentos.Assinar;
  MemoStatus.Lines.Add(' Assinado(s)');
 
  // Valida os dados do XML salvo
- CTe.Conhecimentos.Valida;
+ DMCTE.CTe.Conhecimentos.Valida;
  MemoStatus.Lines.Add(' Validado(s)');
 
+ // EnviaSefaz = variável booleana
  // Se False, apenas gera o XML, assina, valida e Imprime o DACTe não protocolado
  // Se True, gera o XML, assina, valida, envia para o SEFAZ e Imprime o DACTe protocolado
  if DM_CTA.EnviaSefaz
   then begin
-   // *************************************************************************
-   //
-   // trecho não testado por falta de um certificado válido.
-   //
-   // *************************************************************************
    MemoStatus.Lines.Add(' Aguarde Enviando...');
    // Envia o lote de Conhecimentos para o SEFAZ e Imprime o DACTe
    // Lote = variável que contem o numero do lote (numero sequencial)
-   CTe.Enviar(Lote);
+   DMCTE.CTe.Enviar(Lote);
 
-   sRecibo   := CTe.WebServices.Enviar.Recibo;
-   sStat     := IntToStr(CTe.WebServices.Enviar.cStat);
-   sMotivo   := CTe.WebServices.Enviar.xMotivo;
-   sDataHora := DateTimeToStr(CTe.WebServices.Enviar.dhRecbto);
+   sRecibo   := DMCTE.CTe.WebServices.Enviar.Recibo;
+   sStat     := IntToStr(DMCTE.CTe.WebServices.Enviar.cStat);
+   sMotivo   := DMCTE.CTe.WebServices.Enviar.xMotivo;
+   sDataHora := DateTimeToStr(DMCTE.CTe.WebServices.Enviar.dhRecbto);
    MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
    MemoStatus.Lines.Add(' =>  Recibo nº ' + sRecibo);
    MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
@@ -46,38 +42,42 @@ begin
    MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
    MemoStatus.Lines.Add(' =>  Consultando Recibo nº ' + sRecibo);
    MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
-   CTe.WebServices.Retorno.Recibo := sRecibo;
-   CTe.WebServices.Retorno.Executar;
+   DMCTE.CTe.WebServices.Retorno.Recibo := sRecibo;
+   DMCTE.CTe.WebServices.Retorno.Executar;
    MemoStatus.Lines.Add('  Conhecimento Número do protocolo                  Status do CT-e');
    MemoStatus.Lines.Add('  ------------ -----------------------------------  ---------------------------------------');
-   for i := 0 to (Cte.WebServices.Retorno.CteRetorno.ProtCTe.Count - 1) do
+   for i := 0 to (DMCTE.Cte.WebServices.Retorno.CteRetorno.ProtCTe.Count - 1) do
     begin
-     sDataHora     := DateTimeToStr(CTe.WebServices.Retorno.CteRetorno.ProtCTe.Items[i].dhRecbto);
-     sProtocolo    := CTe.WebServices.Retorno.CteRetorno.ProtCTe.Items[i].nProt;
-     sStat         := IntToStr(CTe.WebServices.Retorno.CteRetorno.ProtCTe.Items[i].cStat);
-     sMotivo       := CTe.WebServices.Retorno.CteRetorno.ProtCTe.Items[i].xMotivo;
-     sConhecimento := Copy(CTe.WebServices.Retorno.CteRetorno.ProtCTe.Items[i].chCTe, 26, 3)
-                      + '.' + Copy(CTe.WebServices.Retorno.CteRetorno.ProtCTe.Items[i].chCTe, 29, 3)
-                      + '.' + Copy(CTe.WebServices.Retorno.CteRetorno.ProtCTe.Items[i].chCTe, 32, 3);
+     sDataHora     := DateTimeToStr(DMCTE.CTe.WebServices.Retorno.CteRetorno.ProtCTe.Items[i].dhRecbto);
+     sProtocolo    := DMCTE.CTe.WebServices.Retorno.CteRetorno.ProtCTe.Items[i].nProt;
+     sStat         := IntToStr(DMCTE.CTe.WebServices.Retorno.CteRetorno.ProtCTe.Items[i].cStat);
+     sMotivo       := DMCTE.CTe.WebServices.Retorno.CteRetorno.ProtCTe.Items[i].xMotivo;
+     sConhecimento := Copy(DMCTE.CTe.WebServices.Retorno.CteRetorno.ProtCTe.Items[i].chCTe, 26, 3)
+                      + '.' + Copy(DMCTE.CTe.WebServices.Retorno.CteRetorno.ProtCTe.Items[i].chCTe, 29, 3)
+                      + '.' + Copy(DMCTE.CTe.WebServices.Retorno.CteRetorno.ProtCTe.Items[i].chCTe, 32, 3);
 
      MemoStatus.Lines.Add('  ' + sConhecimento + '  ' + sProtocolo + ' ' + sDataHora + '  ' + sStat + ' - ' + sMotivo);
 
-     if CTe.WebServices.Retorno.CTeRetorno.ProtCTe.Items[i].cStat=100
+     if DMCTE.CTe.WebServices.Retorno.CTeRetorno.ProtCTe.Items[i].cStat=100
       then begin
        DM_CNT.IncAltDel.SQL.Clear;
        DM_CNT.IncAltDel.SQL.Add('Update Cnt_Conhecimento Set');
+       DM_CNT.IncAltDel.SQL.Add('Emissao = :xEmissao,');
+       DM_CNT.IncAltDel.SQL.Add('ChaveCTe = :xChave,');
        DM_CNT.IncAltDel.SQL.Add('Enviado = :xEnviado,');
        DM_CNT.IncAltDel.SQL.Add('Protocolado = :xProtocolado,');
        DM_CNT.IncAltDel.SQL.Add('Protocolo = :xProtocolo,');
        DM_CNT.IncAltDel.SQL.Add('Impresso = :xImpresso');
        DM_CNT.IncAltDel.SQL.Add('Where Serie = :xSerie');
        DM_CNT.IncAltDel.SQL.Add('and Numero = :xNumero');
-       DM_CNT.IncAltDel.Params[0].AsString:='S';
-       DM_CNT.IncAltDel.Params[1].AsString:='S';
-       DM_CNT.IncAltDel.Params[2].AsString:=sProtocolo;
+       DM_CNT.IncAltDel.Params[0].AsDateTime:=DateOf(DMCTE.CTe.Conhecimentos.Items[i].CTe.Ide.dhEmi);
+       DM_CNT.IncAltDel.Params[1].AsString:=Copy(DMCTE.CTe.Conhecimentos.Items[i].CTe.inFCTe.ID,4,44);
+       DM_CNT.IncAltDel.Params[2].AsString:='S';
        DM_CNT.IncAltDel.Params[3].AsString:='S';
-       DM_CNT.IncAltDel.Params[4].AsInteger:=CTe.Conhecimentos.Items[i].CTe.Ide.serie;
-       DM_CNT.IncAltDel.Params[5].AsInteger:=CTe.Conhecimentos.Items[i].CTe.Ide.nCT;
+       DM_CNT.IncAltDel.Params[4].AsString:=sProtocolo;
+       DM_CNT.IncAltDel.Params[5].AsString:='S';
+       DM_CNT.IncAltDel.Params[6].AsInteger:=DMCTE.CTe.Conhecimentos.Items[i].CTe.Ide.serie;
+       DM_CNT.IncAltDel.Params[7].AsInteger:=DMCTE.CTe.Conhecimentos.Items[i].CTe.Ide.nCT;
        DM_CNT.IncAltDel.ExecSQL;
       end;
     end;
@@ -86,6 +86,6 @@ begin
   else begin
    MemoStatus.Lines.Add(' Aguarde Imprimindo...');
    // Somente imprime o CTe
-   CTe.Conhecimentos.Imprimir;
+   DMCTE.CTe.Conhecimentos.Imprimir;
   end;
 end;

@@ -425,6 +425,7 @@ TACBrECFBematech = class( TACBrECFClass )
     function GetTotalizadoresParciais : String ;
 
     Function PreparaCmd( cmd : AnsiString ) : AnsiString ;
+  protected
     procedure CRZToCOO(const ACRZIni, ACRZFim: Integer; var ACOOIni,
       ACOOFim: Integer);
 

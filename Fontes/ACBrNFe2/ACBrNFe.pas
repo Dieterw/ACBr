@@ -242,6 +242,14 @@ function TACBrNFe.Enviar(ALote: String; Imprimir: Boolean): Boolean;
 var
   i: Integer;
 begin
+  if NotasFiscais.Count <= 0 then
+   begin
+      if Assigned(Self.OnGerarLog) then
+         Self.OnGerarLog('ERRO: Nenhuma NF-e adicionada ao Lote');
+      raise EACBrNFeException.Create('ERRO: Nenhuma NF-e adicionada ao Lote');
+     exit;
+   end;
+
   if NotasFiscais.Count > 50 then
    begin
       if Assigned(Self.OnGerarLog) then

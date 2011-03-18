@@ -36,7 +36,7 @@ Agradecimentos:
 - Wemerson P. Souto - Doação do componente ao projeto ACBr
 
 {******************************************************************************
-|* ACBrCTePCN
+|* ACBrCTe
 |*
 |* PROPÓSITO: Registro de Alterações
 ******************************************************************************}

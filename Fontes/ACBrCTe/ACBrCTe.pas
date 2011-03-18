@@ -244,6 +244,14 @@ function TACBrCTe.Enviar(ALote: Integer; Imprimir:Boolean = True): Boolean;
 var
   i: Integer;
 begin
+  if Conhecimentos.Count <= 0 then
+   begin
+      if Assigned(Self.OnGerarLog) then
+         Self.OnGerarLog('ERRO: Nenhum CT-e adicionado ao Lote');
+      raise Exception.Create('ERRO: Nenhum CT-e adicionado ao Lote');
+     exit;
+   end;
+
   if Conhecimentos.Count > 50 then
    begin
       if Assigned(Self.OnGerarLog) then

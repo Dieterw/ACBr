@@ -67,7 +67,7 @@
 |*    um comando, (muito mais rápido) 
 |* 08/06/2006:  Daniel Simoes de Almeida
 |*  - Modificado EnviaComando para tolerar 3 falhas na recepção do ACK...Ou seja
-|*    o erro só será reportado se o ECF retornar ACK inválido 3 vezes consecutivas
+4|*    o erro só será reportado se o ECF retornar ACK inválido 3 vezes consecutivas
 |* 16/06/2006:  Daniel Simoes de Almeida
 |*  - Abertura de Cupom Vinculado as vezes falha na Bematech MP20/40 se usar
 |*    todos os parâmetros... nesses casos de erro, será tentada a abertura com
@@ -112,7 +112,7 @@ interface
 uses ACBrECFClass, ACBrDevice, ACBrUtil, ACBrCHQClass,
      Classes
      {$IFNDEF CONSOLE}
-       {$IFDEF VisualCLX}, QForms {$ELSE}, Forms {$ENDIF}
+       {$IFDEF VisualCLX}, QForms {$ELSE}, Windows, Forms {$ENDIF}
      {$ENDIF};
 
 const ErrosST1 : array[0..7] of string =
@@ -739,6 +739,8 @@ begin
   fsST1   := 0  ;
   fsST2   := 0  ;
   fsST3   := 0  ;
+  nSTL    := 0  ;
+  nSTH    := 0  ;
   Result  := '' ;
   ErroMsg := '' ;
   fpComandoEnviado     := '' ;
@@ -1105,7 +1107,6 @@ begin
 end;
 
 function TACBrECFBematech.GetNumSerieMFD: String;
-var wRetentar : Boolean ;
 begin
   Result := '' ;
   if fpMFD then

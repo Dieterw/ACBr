@@ -117,7 +117,7 @@
 Unit ACBrECF ;
 
 interface
-uses ACBrBase, ACBrDevice, ACBrECFClass, ACBrRFD, {Units da ACBr}
+uses ACBrBase, ACBrDevice, ACBrECFClass, ACBrRFD, ACBrEAD,{Units da ACBr}
      SysUtils , ACBrConsts, Classes
      {$IFNDEF CONSOLE}
         {$IFDEF VisualCLX}, QControls, QForms, QDialogs, QGraphics, QStdCtrls{$ENDIF}
@@ -180,6 +180,7 @@ TACBrECFOnChangeEstado = procedure( const EstadoAnterior, EstadoAtual :
 TACBrECF = class( TACBrComponent )
   private
     fsDevice  : TACBrDevice ;   { SubComponente ACBrDevice }
+    fsACBrEAD: TACBrEAD;       /// Classe usada para AssinarArquivo com assinatura EAD.
 
     { Propriedades do Componente ACBrECF }
     fsAtivo  : Boolean;
@@ -269,6 +270,7 @@ TACBrECF = class( TACBrComponent )
 
     fsGavetaSinalInvertido: Boolean;
     fsIdentificarOperador : Boolean;
+    fsOnPAFCalcEAD: TACBrEADCalc;
 
     function GetArredondaItemMFD : Boolean ;
     procedure SetArredondaItemMFD(const AValue : Boolean) ;
@@ -428,6 +430,8 @@ TACBrECF = class( TACBrComponent )
     procedure SetAbout(const Value: String);
     function GetParamDescontoISSQNClass: Boolean;
     function GetMFAdicional: String;
+    function GetOnPAFGetKeyRSA: TACBrEADGetChave;
+    procedure SetOnPAFGetKeyRSA(const Value: TACBrEADGetChave);
   protected
     fpUltimoEstadoObtido: TACBrECFEstado;
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
@@ -475,7 +479,7 @@ TACBrECF = class( TACBrComponent )
     Property DadosReducaoZ : AnsiString  read GetDadosReducaoZ ;
     Property DadosUltimaReducaoZ : AnsiString  read GetDadosUltimaReducaoZ ;
     Property DadosReducaoZClass: TACBrECFDadosRZ read fsDadosReducaoZClass;
-    
+
     { Retorna String com todos os valores no formato: Campo = Valor (1 por linha)}
     Property DataMovimento      : TDateTime  read GetDataMovimentoClass ;
     Property DataHoraSB         : TDateTime  read GetDataHoraSBClass ; //IMS 20/10/2009
@@ -757,6 +761,52 @@ TACBrECF = class( TACBrComponent )
      Procedure MemoLeParams ;
      Property MemoItens : Integer read fsMemoItens write fsMemoItens ;
     {$ENDIF}
+
+    procedure PafMF_LX_Impressao;
+
+    procedure PafMF_LMFC_Impressao(const CRZInicial, CRZFinal: Integer); overload;
+    procedure PafMF_LMFC_Impressao(const DataInicial, DataFinal: TDateTime); overload;
+    procedure PafMF_LMFC_Espelho(const CRZInicial, CRZFinal: Integer;
+      const PathArquivo: String); overload;
+    procedure PafMF_LMFC_Espelho(const DataInicial, DataFinal: TDateTime;
+      const PathArquivo: String); overload;
+    procedure PafMF_LMFC_Cotepe1704(const CRZInicial, CRZFinal: Integer;
+      const PathArquivo: String); overload;
+    procedure PafMF_LMFC_Cotepe1704(const DataInicial, DataFinal: TDateTime;
+      const PathArquivo: String); overload;
+
+    procedure PafMF_LMFS_Impressao(const CRZInicial, CRZFinal: Integer); overload;
+    procedure PafMF_LMFS_Impressao(const DataInicial, DataFinal: TDateTime); overload;
+    procedure PafMF_LMFS_Espelho(const CRZInicial, CRZFinal: Integer;
+      const PathArquivo: String); overload;
+    procedure PafMF_LMFS_Espelho(const DataInicial, DataFinal: TDateTime;
+      const PathArquivo: String); overload;
+
+    procedure PafMF_MFD_Espelho(const COOInicial, COOFinal: Integer;
+      const PathArquivo: String); overload;
+    procedure PafMF_MFD_Espelho(const DataInicial, DataFinal: TDateTime;
+      const PathArquivo: String); overload;
+    procedure PafMF_MFD_Cotepe1704(const COOInicial, COOFinal: Integer;
+      const PathArquivo: String); overload;
+    procedure PafMF_MFD_Cotepe1704(const DataInicial, DataFinal: TDateTime;
+      const PathArquivo: String); overload;
+
+    procedure PafMF_RelMeiosPagamento(
+      const FormasPagamento: TACBrECFFormasPagamento;
+      const TituloRelatorio: String = '';
+      const IndiceRelatorio: Integer = 0);
+
+    procedure PafMF_RelDAVEmitidos(const DAVsEmitidos: TACBrECFDAVs;
+      const TituloRelatorio: String = '';
+      const IndiceRelatorio: Integer = 0);
+
+    procedure PafMF_RelIdentificacaoPafECF(
+      const IdentificacaoPaf: TACBrECFIdentificacaoPAF;
+      const IndiceRelatorio: Integer = 0);
+
+
+    function AssinaArquivoComEAD(Arquivo: String): Boolean;
+
   published
      property About : String read GetAbout write SetAbout stored False ;
      property Modelo : TACBrECFModelo read fsModelo write SetModelo
@@ -931,6 +981,12 @@ TACBrECF = class( TACBrComponent )
        read FOnChangeEstado write FOnChangeEstado;
     // fim fhaut
 
+    // eventos para assinatura de arquivos do menu fiscl
+    property OnPAFCalcEAD: TACBrEADCalc
+      read fsOnPAFCalcEAD write fsOnPAFCalcEAD;
+    property OnPAFGetKeyRSA: TACBrEADGetChave
+      read GetOnPAFGetKeyRSA write SetOnPAFGetKeyRSA;
+
      property DecimaisPreco : Integer read GetDecimaisPreco
         write SetDecimaisPreco default 3 ;
      property DecimaisQtd : Integer read GetDecimaisQtd
@@ -970,6 +1026,8 @@ begin
   fsMensagemRodape  := '' ;
   fsRegistrouRFDCNF := False ;
   fsIdentificarOperador := True ;
+
+  fsACBrEAD := TACBrEAD.Create(Self);
 
   { Instanciando SubComponente TACBrDevice }
   fsDevice := TACBrDevice.Create( self ) ;  { O dono é o proprio componente }
@@ -1041,9 +1099,11 @@ end;
 destructor TACBrECF.Destroy;
 begin
   Ativo := false ;
+
   if Assigned( fsECF ) then
      FreeAndNil( fsECF ) ;
 
+  FreeAndNil( fsACBrEAD );
   FreeAndNil( fsDevice ) ;
   FreeAndNil( fsDadosReducaoZClass ) ;
 
@@ -1518,9 +1578,19 @@ begin
   Result := fsECF.OnMsgRetentar ;
 end;
 
+function TACBrECF.GetOnPAFGetKeyRSA: TACBrEADGetChave;
+begin
+  Result := fsACBrEAD.OnGetChavePrivada;
+end;
+
 procedure TACBrECF.SetOnMsgRetentar(const Value: TACBrECFMsgRetentar);
 begin
   fsECF.OnMsgRetentar := Value ;
+end;
+
+procedure TACBrECF.SetOnPAFGetKeyRSA(const Value: TACBrEADGetChave);
+begin
+  fsACBrEAD.OnGetChavePrivada := Value;
 end;
 
 procedure TACBrECF.SetOnAguardandoRespostaChange( const Value: TNotifyEvent);
@@ -4806,6 +4876,16 @@ begin
   end ;
 end;
 
+function TACBrECF.AssinaArquivoComEAD(Arquivo: String): Boolean;
+begin
+  if Assigned( fsOnPAFCalcEAD ) then
+     fsOnPAFCalcEAD( Arquivo )
+  else
+     fsACBrEAD.AssinarArquivoComEAD( Arquivo ) ;
+
+  Result := True;
+end;
+
 procedure TACBrECF.IdentificaOperador(Nome: String);
 begin
   ComandoLOG := 'IdentificaOperador('+Nome+')';
@@ -4887,6 +4967,282 @@ end;
 procedure TACBrECF.SetAbout(const Value: String);
 begin
    {}
+end;
+
+//*** Opcoes do menu fiscal do paf-ecf
+
+procedure TACBrECF.PafMF_LX_Impressao;
+begin
+  Self.LeituraX;
+end;
+
+procedure TACBrECF.PafMF_LMFC_Impressao(const CRZInicial, CRZFinal: Integer);
+begin
+  Self.LeituraMemoriaFiscal(CRZInicial, CRZFinal, False);
+end;
+
+procedure TACBrECF.PafMF_LMFC_Impressao(const DataInicial,
+  DataFinal: TDateTime);
+begin
+  Self.LeituraMemoriaFiscal(DataInicial, DataFinal, False);
+end;
+
+procedure TACBrECF.PafMF_LMFC_Espelho(const CRZInicial, CRZFinal: Integer;
+  const PathArquivo: String);
+begin
+  Self.LeituraMemoriaFiscalSerial(CRZInicial, CRZFinal, PathArquivo, False);
+  Self.AssinaArquivoComEAD(PathArquivo);
+end;
+
+procedure TACBrECF.PafMF_LMFC_Espelho(const DataInicial, DataFinal: TDateTime;
+  const PathArquivo: String);
+begin
+  Self.LeituraMemoriaFiscalSerial(DataInicial, DataFinal, PathArquivo, False);
+  Self.AssinaArquivoComEAD(PathArquivo);
+end;
+
+procedure TACBrECF.PafMF_LMFC_Cotepe1704(const CRZInicial, CRZFinal: Integer;
+  const PathArquivo: String);
+begin
+  Self.ArquivoMFD_DLL(CRZInicial, CRZFinal, PathArquivo, [docTodos], finLMFC);
+  Self.AssinaArquivoComEAD(PathArquivo);
+end;
+
+procedure TACBrECF.PafMF_LMFC_Cotepe1704(const DataInicial, DataFinal: TDateTime;
+  const PathArquivo: String);
+begin
+  Self.ArquivoMFD_DLL(DataInicial, DataFinal, PathArquivo, [docTodos], finLMFC);
+  Self.AssinaArquivoComEAD(PathArquivo);
+end;
+
+procedure TACBrECF.PafMF_LMFS_Impressao(const CRZInicial, CRZFinal: Integer);
+begin
+  Self.LeituraMemoriaFiscal(CRZInicial, CRZFinal, True);
+end;
+
+procedure TACBrECF.PafMF_LMFS_Impressao(const DataInicial,
+  DataFinal: TDateTime);
+begin
+  Self.LeituraMemoriaFiscal(DataInicial, DataFinal, True);
+end;
+
+procedure TACBrECF.PafMF_LMFS_Espelho(const CRZInicial, CRZFinal: Integer;
+  const PathArquivo: String);
+begin
+  Self.LeituraMemoriaFiscalSerial(CRZInicial, CRZFinal, PathArquivo, True);
+  Self.AssinaArquivoComEAD(PathArquivo);
+end;
+
+procedure TACBrECF.PafMF_LMFS_Espelho(const DataInicial, DataFinal: TDateTime;
+  const PathArquivo: String);
+begin
+  Self.LeituraMemoriaFiscalSerial(DataInicial, DataFinal, PathArquivo, True);
+  Self.AssinaArquivoComEAD(PathArquivo);
+end;
+
+procedure TACBrECF.PafMF_MFD_Espelho(const COOInicial, COOFinal: Integer;
+  const PathArquivo: String);
+begin
+  Self.EspelhoMFD_DLL(CooInicial, CooFinal, PathArquivo, [docTodos]);
+  Self.AssinaArquivoComEAD(PathArquivo);
+end;
+
+procedure TACBrECF.PafMF_MFD_Espelho(const DataInicial, DataFinal: TDateTime;
+  const PathArquivo: String);
+begin
+  Self.EspelhoMFD_DLL(DataInicial, DataFinal, PathArquivo, [docTodos]);
+  Self.AssinaArquivoComEAD(PathArquivo);
+end;
+
+procedure TACBrECF.PafMF_MFD_Cotepe1704(const COOInicial, COOFinal: Integer;
+  const PathArquivo: String);
+begin
+  Self.ArquivoMFD_DLL(CooInicial, CooFinal, PathArquivo, [docTodos], finArqMFD);
+  Self.AssinaArquivoComEAD(PathArquivo);
+end;
+
+procedure TACBrECF.PafMF_MFD_Cotepe1704(const DataInicial, DataFinal: TDateTime;
+  const PathArquivo: String);
+begin
+  Self.ArquivoMFD_DLL(DataInicial, DataFinal, PathArquivo, [docTodos], finArqMFD);
+  Self.AssinaArquivoComEAD(PathArquivo);
+end;
+
+procedure TACBrECF.PafMF_RelMeiosPagamento(
+  const FormasPagamento: TACBrECFFormasPagamento;
+  const TituloRelatorio: String;
+  const IndiceRelatorio: Integer);
+var
+  Relatorio: TStringList;
+  VlAcuFiscal: Double;
+  VlAcuNFiscal: Double;
+  I: Integer;
+  TamLin: Integer;
+  TamDescr: Integer;
+begin
+  // montagem do relatorio
+  Relatorio := TStringList.Create;
+  try
+    TamLin   := fsECF.Colunas;
+    TamDescr := TamLin - 28;
+
+    Relatorio.Clear;
+    Relatorio.Add('');
+    Relatorio.Add(padC('MEIOS DE PAGAMENTO', TamLin));
+    Relatorio.Add(LinhaDupla(TamLin));
+    if Trim(TituloRelatorio) <> '' then
+    begin
+      Relatorio.Add(padC(TituloRelatorio, TamLin));
+      Relatorio.Add(LinhaDupla(TamLin));
+    end;
+
+    Relatorio.Add(Format('%s %-13s %-13s', [padL('Identificacao', TamDescr), 'Fiscais', 'Nao Fiscais']));
+    Relatorio.Add(Format('%s %s %s', [LinhaSimples(TamDescr), LinhaSimples(13), LinhaSimples(13)]));
+
+    VlAcuFiscal  := 0.00;
+    VlAcuNFiscal := 0.00;
+    for I := 0 to FormasPagamento.Count - 1 do
+    begin
+      Relatorio.Add(Format('%s %13.2n %13.2n', [
+        padL(FormasPagamento[I].Descricao, TamDescr),
+        FormasPagamento[I].ValorFiscal,
+        FormasPagamento[I].ValorNaoFiscal
+      ]));
+      VlAcuFiscal  := VlAcuFiscal  + FormasPagamento[I].ValorFiscal;
+      VlAcuNFiscal := VlAcuNFiscal + FormasPagamento[I].ValorNaoFiscal;
+    end;
+
+    Relatorio.Add('');
+    Relatorio.Add(LinhaSimples(48));
+    Relatorio.Add(padR('Total fiscal....: ' + Format('%13.2n', [VlAcuFiscal]), TamLin));
+    Relatorio.Add(padR('Total nao fiscal: ' + Format('%13.2n', [VlAcuNFiscal]), TamLin));
+    Relatorio.Add(padR('Total geral.....: ' + Format('%13.2n', [VlAcuFiscal + VlAcuNFiscal]), TamLin));
+
+    // impressão do relatório
+    Self.RelatorioGerencial(Relatorio, 1, IndiceRelatorio);
+  finally
+    Relatorio.Free;
+  end;
+end;
+
+procedure TACBrECF.PafMF_RelDAVEmitidos(const DAVsEmitidos: TACBrECFDAVs;
+  const TituloRelatorio: String;
+  const IndiceRelatorio: Integer);
+var
+  Relatorio: TStringList;
+  TamanhoLinha: Integer;
+  TamanhoTitulo: Integer;
+  I: Integer;
+begin
+  // montagem do relatorio
+  Relatorio := TStringList.Create;
+  try
+    TamanhoLinha  := fsECF.Colunas;
+    TamanhoTitulo := TamanhoLinha - 34;
+
+    Relatorio.Add('');
+    Relatorio.Add(padC('DAV EMITIDOS', TamanhoLinha));
+    Relatorio.Add(LinhaDupla(TamanhoLinha));
+    if Trim(TituloRelatorio) <> '' then
+    begin
+      Relatorio.Add(padC(TituloRelatorio, TamanhoLinha));
+      Relatorio.Add(LinhaDupla(TamanhoLinha));
+    end;
+
+    Relatorio.Add(Format('%-10s %-8s %s %-13s', ['NUMERO', 'EMISSAO', padL('TITULO', TamanhoTitulo), 'VALOR']));
+    Relatorio.Add(Format('%s %s %s %s', [LinhaSimples(10), LinhaSimples(8), LinhaSimples(TamanhoTitulo), LinhaSimples(13)]));
+    for I := 0 to DAVsEmitidos.Count - 1 do
+    begin
+      Relatorio.Add(Format('%10.10d %-8s %s %13.2n', [
+        DAVsEmitidos[I].Numero,
+        FormatDateTime('dd/mm/yy', DAVsEmitidos[I].DtEmissao),
+        padL(DAVsEmitidos[I].Titulo, TamanhoTitulo),
+        DAVsEmitidos[I].Valor
+      ]));
+    end;
+
+    Relatorio.Add(LinhaSimples(TamanhoLinha - 14) + ' ' + LinhaSimples(13));
+    Relatorio.Add(padR('Valor Total: ', TamanhoLinha - 13) + Format('%13.2n', [DAVsEmitidos.ValorTotalAcumulado]));
+    Relatorio.Add('');
+    Relatorio.Add('');
+    Relatorio.Add('Quantidade DAV Emitido: ' + IntToStr(DAVsEmitidos.Count));
+
+    // impressão do relatório
+    Self.RelatorioGerencial(Relatorio, 1, IndiceRelatorio);
+  finally
+    Relatorio.Free;
+  end;
+end;
+
+procedure TACBrECF.PafMF_RelIdentificacaoPafECF(
+  const IdentificacaoPaf: TACBrECFIdentificacaoPAF;
+  const IndiceRelatorio: Integer);
+var
+  Relatorio: TStringList;
+  I: Integer;
+  TamLin: Integer;
+begin
+  Relatorio := TStringList.Create;
+  try
+    TamLin := ECF.Colunas;
+
+    Relatorio.Clear;
+    Relatorio.Add('');
+    Relatorio.Add(padC('IDENTIFICACAO DO PAF-ECF', TamLin));
+    Relatorio.Add(LinhaDupla(TamLin));
+    Relatorio.Add(padC('LAUDO NUMERO: ' + IdentificacaoPaf.NumeroLaudo, TamLin));
+    Relatorio.Add(LinhaDupla(TamLin));
+
+    Relatorio.Add('');
+    Relatorio.Add('');
+    Relatorio.Add(padC('EMPRESA DESENVOLVEDORA', TamLin));
+    Relatorio.Add(LinhaSimples(TamLin));
+    Relatorio.Add('CNPJ........: ' + IdentificacaoPaf.Empresa.CNPJ);
+    Relatorio.Add('Razao Social: ' + IdentificacaoPaf.Empresa.RazaoSocial);
+    Relatorio.Add('Telefone....: ' + IdentificacaoPaf.Empresa.Telefone);
+    Relatorio.Add('Contato.....: ' + IdentificacaoPaf.Empresa.Contato);
+    Relatorio.Add('Endereco....: ' + IdentificacaoPaf.Empresa.Endereco);
+
+    Relatorio.Add('');
+    Relatorio.Add('');
+    Relatorio.Add(padC('DADOS DO PAF-ECF', TamLin));
+    Relatorio.Add(LinhaSimples(TamLin));
+    Relatorio.Add('Nome Comerc.: ' + IdentificacaoPaf.Paf.Nome);
+    Relatorio.Add('Versao......: ' + IdentificacaoPaf.Paf.Versao);
+    Relatorio.Add('Princ. Exec.: ' + IdentificacaoPaf.Paf.PrincipalExe.Nome);
+    Relatorio.Add('MD5.........: ' + IdentificacaoPaf.Paf.PrincipalExe.MD5);
+
+    Relatorio.Add('');
+    Relatorio.Add('');
+    Relatorio.Add(padC('ARQ. LISTA AUTENTICADOS', TamLin));
+    Relatorio.Add(LinhaSimples(TamLin));
+    Relatorio.Add(ExtractFileName(IdentificacaoPaf.ArquivoListaAutenticados.Nome));
+    Relatorio.Add('MD5: ' + IdentificacaoPaf.ArquivoListaAutenticados.MD5);
+
+    Relatorio.Add('');
+    Relatorio.Add('');
+    Relatorio.Add(padC('OUTROS ARQUIVOS UTILIZADOS', TamLin));
+    Relatorio.Add(LinhaSimples(TamLin));
+    for I := 0 to IdentificacaoPaf.OutrosArquivos.Count - 1 do
+    begin
+      Relatorio.Add(ExtractFileName(IdentificacaoPaf.OutrosArquivos[I].Nome));
+      Relatorio.Add('MD5: ' + IdentificacaoPaf.OutrosArquivos[I].MD5);
+    end;
+
+    Relatorio.Add('');
+    Relatorio.Add('');
+    Relatorio.Add(padC('ECFS AUTORIZADOS', TamLin));
+    Relatorio.Add(LinhaSimples(TamLin));
+    for I := 0 to IdentificacaoPaf.ECFsAutorizados.Count - 1 do
+    begin
+      Relatorio.Add(IdentificacaoPaf.ECFsAutorizados.Strings[I]);
+    end;
+
+    // impressão do relatório
+    Self.RelatorioGerencial(Relatorio, 1, IndiceRelatorio);
+  finally
+    Relatorio.Free;
+  end;
 end;
 
 end.

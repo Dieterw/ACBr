@@ -242,6 +242,8 @@ Procedure WriteToTXT( const ArqTXT, AString : AnsiString;
 function TiraPontos(Str: string): string;
 function TBStrZero(const i: string; const Casas: byte): string;
 function Space(Tamanho: Integer): string;
+function LinhaSimples(Tamanho: Integer): string;
+function LinhaDupla(Tamanho: Integer): string;
 
 {$IFDEF MSWINDOWS}
 var xInp32 : function (wAddr: word): byte; stdcall;
@@ -441,10 +443,14 @@ end;
  ---------------------------------------------------------------------------- }
 function padL(const AString : AnsiString; const nLen : Integer;
    const Caracter : AnsiChar) : AnsiString ;
+var
+  Tam: Integer;
 begin
-  Result := copy(AString,1,nLen) ;
-  if Length(Result) < nLen then
-     Result := Result + StringOfChar(Caracter, (nLen - Length(Result))) ;
+  Tam := Length(AString);
+  if Tam < nLen then
+    Result := AString + StringOfChar(Caracter, (nLen - Tam))
+  else
+    Result := copy(AString,1,nLen) ;
 end ;
 
 {-----------------------------------------------------------------------------
@@ -453,10 +459,14 @@ end ;
  ---------------------------------------------------------------------------- }
 function padR(const AString : AnsiString; const nLen : Integer;
    const Caracter : AnsiChar) : AnsiString ;
+var
+  Tam: Integer;
 begin
-  Result := copy(AString,1,nLen) ;
-  if Length(Result) < nLen then
-     Result := StringOfChar(Caracter, (nLen - Length(Result))) + Result ;
+  Tam := Length(AString);
+  if Tam < nLen then
+    Result := StringOfChar(Caracter, (nLen - Tam)) + AString
+  else
+    Result := copy(AString,1,nLen) ;
 end ;
 
 {-----------------------------------------------------------------------------
@@ -464,13 +474,18 @@ end ;
  ---------------------------------------------------------------------------- }
 function padC(const AString : AnsiString; const nLen : Integer;
    const Caracter : AnsiChar) : AnsiString ;
-Var nCharLeft : Integer ;
-    D : Double ;
+var
+  nCharLeft: Integer;
+  Tam: integer;
 begin
-  Result    := copy(AString,1,nLen) ;
-  D         := (nLen - Length( Result )) / 2 ;
-  nCharLeft := Trunc( D ) ;
-  Result    := padL( StringOfChar(Caracter, nCharLeft)+Result, nLen, Caracter) ;
+  Tam := Length( AString );
+  if Tam < nLen then
+  begin
+    nCharLeft := Trunc( (nLen - Tam) / 2 ) ;
+    Result    := padL( StringOfChar(Caracter, nCharLeft) + AString, nLen, Caracter) ;
+  end
+  else
+    Result := copy(AString, 1, nLen) ;
 end ;
 
 {-----------------------------------------------------------------------------
@@ -1930,11 +1945,18 @@ begin
 end;
 
 function Space(Tamanho: Integer): string;
-var
-  i: Integer;
 begin
-Result:='';
-for i:=1 to Tamanho do Result:=Result+' ';
+  Result := StringOfChar(' ', Tamanho);
+end;
+
+function LinhaSimples(Tamanho: Integer): string;
+begin
+  Result := StringOfChar('-', Tamanho);
+end;
+
+function LinhaDupla(Tamanho: Integer): string;
+begin
+  Result := StringOfChar('=', Tamanho);
 end;
 
 

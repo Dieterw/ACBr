@@ -99,10 +99,32 @@ Símbolo : Significado
 
 Data:  15/03/2011
 -- ACBrECF --
+[*] - Adicionados novos métodos para auxiliar no menu fiscal do paf-ecf:
+        * PafMF_LX_Impressao;
+        * PafMF_LMFC_Impressao;
+        * PafMF_LMFC_Espelho;
+        * PafMF_LMFC_Cotepe1704;
+        * PafMF_LMFS_Impressao;
+        * PafMF_LMFS_Espelho;
+        * PafMF_MFD_Espelho;
+        * PafMF_MFD_Cotepe1704;
+        * PafMF_RelMeiosPagamento;
+        * PafMF_RelDAVEmitidos;
+        * PafMF_RelIdentificacaoPafECF.
+    - Novo método para assinar arquivos com EAD:
+        * AssinaArquivoComEAD.
+    - Adicionados novos eventos para assinatura de arquivos pelo ACBrECF, 
+      funcionam idênticos aos do componente ACBrPAF
+        * OnPAFCalcEAD;
+        * OnPAFGetKeyRSA.
+      Por: Régys Silveira     
+
+Data:  15/03/2011
+-- ACBrECF --
 [*] - Adicionado novo parâmetro ao método ArquivoMFD_DLL para dizer a 
       finalidade da geração do arquivo, se foi gerado pelo menu fiscal
       LMFC ou pelo menu fiscal Arq.MFD.
-      Por: Regys Silveira
+      Por: Régys Silveira
 
 Data:  13/03/2011
 -- ACBrETQ --

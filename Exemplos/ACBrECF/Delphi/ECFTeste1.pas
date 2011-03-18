@@ -308,6 +308,30 @@ type
     ParametroDescontoISSQN1: TMenuItem;
     N42: TMenuItem;
     mModeloStr: TMenuItem;
+    tbsMenuFiscal: TTabSheet;
+    grpMenuFiscalOpcoes: TGroupBox;
+    btnMenuFiscalLX: TButton;
+    btnMenuFiscalLMFC: TButton;
+    btnMenuFiscalLMFS: TButton;
+    btnMenuFiscalMFDEspelho: TButton;
+    btnMenuFiscalMFDArq: TButton;
+    btnMenuFiscalRelMeiosPagto: TButton;
+    btnMenuFiscalRelDAVEmitidos: TButton;
+    btnMenuFiscalRelIdentPAFECF: TButton;
+    dlgDialogoSalvar: TSaveDialog;
+    pgcMenuFiscalTipo: TPageControl;
+    tbsMenuFiscalTipoData: TTabSheet;
+    Label24: TLabel;
+    Label25: TLabel;
+    edtDtInicial: TDateTimePicker;
+    edtDtFinal: TDateTimePicker;
+    tbsMenuFiscalTipoCOO: TTabSheet;
+    Label26: TLabel;
+    Label30: TLabel;
+    edtCOOInicial: TSpinEdit;
+    edtCOOFinal: TSpinEdit;
+    chkMenuFiscalCotepe1704: TCheckBox;
+    chkMenuFiscalGerarArquivo: TCheckBox;
     procedure cbxModeloChange(Sender: TObject);
     procedure Sair1Click(Sender: TObject);
     procedure bAtivarClick(Sender: TObject);
@@ -490,6 +514,14 @@ type
     procedure NumSerieMFDClick(Sender: TObject);
     procedure ParametroDescontoISSQN1Click(Sender: TObject);
     procedure mModeloStrClick(Sender: TObject);
+    procedure btnMenuFiscalLXClick(Sender: TObject);
+    procedure btnMenuFiscalLMFCClick(Sender: TObject);
+    procedure btnMenuFiscalLMFSClick(Sender: TObject);
+    procedure btnMenuFiscalMFDEspelhoClick(Sender: TObject);
+    procedure btnMenuFiscalMFDArqClick(Sender: TObject);
+    procedure btnMenuFiscalRelMeiosPagtoClick(Sender: TObject);
+    procedure btnMenuFiscalRelDAVEmitidosClick(Sender: TObject);
+    procedure btnMenuFiscalRelIdentPAFECFClick(Sender: TObject);
   private
     { Private declarations }
     Function Converte( cmd : String) : String;
@@ -3411,5 +3443,198 @@ begin
   AtualizaMemos ;
 end;
 
-END.
+procedure TForm1.btnMenuFiscalLMFCClick(Sender: TObject);
+var
+  PathArquivo: string;
+begin
+  if chkMenuFiscalGerarArquivo.Checked then
+  begin
+    if dlgDialogoSalvar.Execute then
+    begin
+      PathArquivo := dlgDialogoSalvar.FileName;
+
+      if chkMenuFiscalCotepe1704.Checked then
+      begin
+        if pgcMenuFiscalTipo.ActivePageIndex = 0 then
+          ACBrECF1.PafMF_LMFC_Cotepe1704(edtDtInicial.Date, edtDtFinal.Date, PathArquivo)
+        else
+          ACBrECF1.PafMF_LMFC_Cotepe1704(edtCOOInicial.Value, edtCOOFinal.Value, PathArquivo);
+      end
+      else
+      begin
+        if pgcMenuFiscalTipo.ActivePageIndex = 0 then
+          ACBrECF1.PafMF_LMFC_Espelho(edtDtInicial.Date, edtDtFinal.Date, PathArquivo)
+        else
+          ACBrECF1.PafMF_LMFC_Espelho(edtCOOInicial.Value, edtCOOFinal.Value, PathArquivo);
+      end;
+
+      ShowMessage(Format('Arquivo gerado com sucesso em:'#13#10' "%s"', [PathArquivo]));
+    end;
+  end
+  else
+  begin
+    if pgcMenuFiscalTipo.ActivePageIndex = 0 then
+      ACBrECF1.PafMF_LMFC_Impressao(edtDtInicial.Date, edtDtFinal.Date)
+    else
+      ACBrECF1.PafMF_LMFC_Impressao(edtCOOInicial.Value, edtCOOFinal.Value);
+  end;
+end;
+
+procedure TForm1.btnMenuFiscalLMFSClick(Sender: TObject);
+var
+  PathArquivo: string;
+begin
+  if chkMenuFiscalGerarArquivo.Checked then
+  begin
+    if dlgDialogoSalvar.Execute then
+    begin
+      PathArquivo := dlgDialogoSalvar.FileName;
+      if pgcMenuFiscalTipo.ActivePageIndex = 0 then
+        ACBrECF1.PafMF_LMFS_Espelho(edtDtInicial.Date, edtDtFinal.Date, PathArquivo)
+      else
+        ACBrECF1.PafMF_LMFS_Espelho(edtCOOInicial.Value, edtCOOFinal.Value, PathArquivo);
+
+      ShowMessage(Format('Arquivo gerado com sucesso em:'#13#10' "%s"', [PathArquivo]));
+    end;
+  end
+  else
+  begin
+    if pgcMenuFiscalTipo.ActivePageIndex = 0 then
+      ACBrECF1.PafMF_LMFS_Impressao(edtDtInicial.Date, edtDtFinal.Date)
+    else
+      ACBrECF1.PafMF_LMFS_Impressao(edtCOOInicial.Value, edtCOOFinal.Value);
+  end;
+end;
+
+procedure TForm1.btnMenuFiscalLXClick(Sender: TObject);
+begin
+  ACBrECF1.PafMF_LX_Impressao;
+end;
+
+procedure TForm1.btnMenuFiscalMFDArqClick(Sender: TObject);
+var
+  PathArquivo: string;
+begin
+  if dlgDialogoSalvar.Execute then
+  begin
+    PathArquivo := dlgDialogoSalvar.FileName;
+
+    if pgcMenuFiscalTipo.ActivePageIndex = 0 then
+      ACBrECF1.PafMF_MFD_Cotepe1704(edtDtInicial.Date, edtDtFinal.Date, PathArquivo)
+    else
+      ACBrECF1.PafMF_MFD_Cotepe1704(edtCOOInicial.Value, edtCOOFinal.Value, PathArquivo);
+
+    ShowMessage(Format('Arquivo gerado com sucesso em:'#13#10' "%s"', [PathArquivo]));
+  end;
+end;
+
+procedure TForm1.btnMenuFiscalMFDEspelhoClick(Sender: TObject);
+var
+  PathArquivo: string;
+begin
+  if dlgDialogoSalvar.Execute then
+  begin
+    PathArquivo := dlgDialogoSalvar.FileName;
+
+    if pgcMenuFiscalTipo.ActivePageIndex = 0 then
+      ACBrECF1.PafMF_MFD_Espelho(edtDtInicial.Date, edtDtFinal.Date, PathArquivo)
+    else
+      ACBrECF1.PafMF_MFD_Espelho(edtCOOInicial.Value, edtCOOFinal.Value, PathArquivo);
+
+    ShowMessage(Format('Arquivo gerado com sucesso em:'#13#10' "%s"', [PathArquivo]));
+  end;
+end;
+
+procedure TForm1.btnMenuFiscalRelDAVEmitidosClick(Sender: TObject);
+var
+  DAVs: TACBrECFDAVs;
+  I: Integer;
+begin
+  DAVs := TACBrECFDAVs.Create;
+  try
+    for I := 1 to 10 do
+    begin
+      with DAVs.New do
+      begin
+        Numero    := I;
+        Titulo    := RandomFrom(['PEDIDO', 'ORCAMENTO']);
+        DtEmissao := Now;
+        Valor     := RandomFrom([1.00, 2.00, 3.50, 10.45])
+      end;
+    end;
+
+    ACBrECF1.PafMF_RelDAVEmitidos(DAVs, 'titulo personalizado', 0);
+  finally
+    DAVs.Free;
+  end;
+end;
+
+procedure TForm1.btnMenuFiscalRelIdentPAFECFClick(Sender: TObject);
+var
+  IdentPaf: TACBrECFIdentificacaoPAF;
+  I: Integer;
+begin
+  IdentPaf := TACBrECFIdentificacaoPAF.Create;
+  try
+    IdentPaf.NumeroLaudo := 'ABC1234567890';
+
+    IdentPaf.Empresa.RazaoSocial := 'Razao social Empresa';
+    IdentPaf.Empresa.CNPJ        := '012223330000199';
+    IdentPaf.Empresa.Telefone    := '9911112222';
+    IdentPaf.Empresa.Contato     := 'Nome do Contato';
+    IdentPaf.Empresa.Endereco    := 'Rua da Felicidade, 1, Campo Feliz/TT';
+
+    IdentPaf.Paf.Nome              := 'DemoECF';
+    IdentPaf.Paf.Versao            := 'v01.01.01';
+    IdentPaf.Paf.PrincipalExe.Nome := UpperCase(ExtractFileName(ParamStr(0)));
+    IdentPaf.Paf.PrincipalExe.MD5  := StringOfChar('X', 32);;
+
+    IdentPaf.ArquivoListaAutenticados.Nome := 'lista_arquivos.txt';
+    IdentPaf.ArquivoListaAutenticados.MD5  := 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA';
+
+    // acertar para a lista de arquivos autenticados
+    for I := 1 to 5 do
+    begin
+      with IdentPaf.OutrosArquivos.New do
+      begin
+        Nome := Format('Arquivo %3.3d', [I]);
+        MD5  := StringOfChar('X', 32);
+      end;
+    end;
+
+    IdentPaf.ECFsAutorizados.clear;
+    for I := 1 to 3 do
+      IdentPaf.ECFsAutorizados.Add(StringOfChar('A', 15));
+
+    ACBrECF1.PafMF_RelIdentificacaoPafECF(IdentPaf, 0);
+  finally
+    IdentPaf.Free;
+  end;
+end;
+
+procedure TForm1.btnMenuFiscalRelMeiosPagtoClick(Sender: TObject);
+var
+  FormasPagamento: TACBrECFFormasPagamento;
+  I: Integer;
+begin
+  FormasPagamento := TACBrECFFormasPagamento.Create;
+  try
+    for I := 1 to 10 do
+    begin
+      with FormasPagamento.New do
+      begin
+        Indice         := Format('%2.2d', [I]);
+        Descricao      := Format('Forma Pagto. %d', [I]);
+        ValorFiscal    := RandomRange(0, 10);
+        ValorNaoFiscal := RandomRange(0, 10);
+      end;
+    end;
+
+    ACBrECF1.PafMF_RelMeiosPagamento(FormasPagamento, 'titulo personalizado', 0);
+  finally
+    FormasPagamento.Free;
+  end;
+end;
+
+end.
 

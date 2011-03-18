@@ -91,6 +91,75 @@ EACBrECFSemResposta     = class(EACBrECFErro) ;
 EACBrECFNaoInicializado = class(EACBrECFErro) ;
 EACBrECFOcupado         = class(EACBrECFErro) ;
 
+
+  TACBrECFEmpresa = class
+  private
+    fsCNPJ: string;
+    fsRazaoSocial: string;
+    fsContato: string;
+    fsEndereco: string;
+    fsTelefone: string;
+  public
+    property RazaoSocial: string read fsRazaoSocial write fsRazaoSocial;
+    property CNPJ: string read fsCNPJ write fsCNPJ;
+    property Telefone: string read fsTelefone write fsTelefone;
+    property Contato: string read fsContato write fsContato;
+    property Endereco: string read fsEndereco write fsEndereco;
+  end;
+
+  TACBrECFArquivo = class
+  private
+    fsMD5: string;
+    fsNome: String;
+  public
+    property Nome: String read fsNome write fsNome;
+    property MD5: string read fsMD5 write fsMD5;
+  end;
+
+  TACBrECFArquivos = class(TObjectList)
+  protected
+    procedure SetObject (Index: Integer; Item: TACBrECFArquivo);
+    function GetObject (Index: Integer): TACBrECFArquivo;
+    procedure Insert (Index: Integer; Obj: TACBrECFArquivo);
+  public
+    function New: TACBrECFArquivo;
+    function Add (Obj: TACBrECFArquivo): Integer;
+    property Objects [Index: Integer]: TACBrECFArquivo
+      read GetObject write SetObject; default;
+  end;
+
+  TACBrECFInfoPaf = class
+  private
+    fsVersao: String;
+    fsPrincipalExe: TACBrECFArquivo;
+    fsNome: String;
+  public
+    constructor Create;
+    destructor Destroy; override;
+    property Nome: String read fsNome write fsNome;
+    property Versao: String read fsVersao write fsVersao;
+    property PrincipalExe: TACBrECFArquivo read fsPrincipalExe write fsPrincipalExe;
+  end;
+
+  TACBrECFIdentificacaoPAF = class
+  private
+    fsNumeroLaudo: String;
+    fsEmpresa: TACBrECFEmpresa;
+    fsPaf: TACBrECFInfoPaf;
+    fsOutrosArquivos: TACBrECFArquivos;
+    fsECFsAutorizados: TStringList;
+    fsArquivoListaAutenticados: TACBrECFArquivo;
+  public
+    constructor Create;
+    destructor Destroy; override;
+    property NumeroLaudo: String read fsNumeroLaudo write fsNumeroLaudo;
+    property Empresa: TACBrECFEmpresa read fsEmpresa write fsEmpresa;
+    property Paf: TACBrECFInfoPaf read fsPaf write fsPaf;
+    property ArquivoListaAutenticados: TACBrECFArquivo read fsArquivoListaAutenticados write fsArquivoListaAutenticados;
+    property OutrosArquivos: TACBrECFArquivos read fsOutrosArquivos write fsOutrosArquivos;
+    property ECFsAutorizados: TStringList read fsECFsAutorizados write fsECFsAutorizados;
+  end;
+
 { Definindo novo tipo para armazenar Aliquota de ICMS }
 TACBrECFAliquota = class
  private
@@ -118,8 +187,40 @@ TACBrECFAliquotas = class(TObjectList)
     function GetObject (Index: Integer): TACBrECFAliquota;
     procedure Insert (Index: Integer; Obj: TACBrECFAliquota);
   public
+    function New: TACBrECFAliquota;
     function Add (Obj: TACBrECFAliquota): Integer;
     property Objects [Index: Integer]: TACBrECFAliquota
+      read GetObject write SetObject; default;
+  end;
+
+  { Definindo novo tipo para armazenar DAV }
+  TACBrECFDAV = class
+  private
+    fsTitulo: String;
+    fsValor: Double;
+    fsNumero: Integer;
+    fsDtEmissao: TDateTime;
+  public
+    constructor Create;
+    procedure Assign(ADAV: TACBrECFDAV);
+
+    property Numero: Integer read fsNumero write fsNumero;
+    property Titulo: String read fsTitulo write fsTitulo;
+    property DtEmissao: TDateTime read fsDtEmissao write fsDtEmissao;
+    property Valor: Double read fsValor write fsValor;
+  end;
+
+  { Lista de Objetos do tipo TACBrECFDAV }
+  TACBrECFDAVs = class(TObjectList)
+  private
+    procedure SetObject (Index: Integer; Item: TACBrECFDAV);
+    function GetObject (Index: Integer): TACBrECFDAV;
+    procedure Insert (Index: Integer; Obj: TACBrECFDAV);
+  public
+    function New: TACBrECFDAV;
+    function Add (Obj: TACBrECFDAV): Integer;
+    function ValorTotalAcumulado: Double;  protected
+    property Objects [Index: Integer]: TACBrECFDAV
       read GetObject write SetObject; default;
   end;
 
@@ -130,6 +231,8 @@ TACBrECFFormaPagamento = class
     fsDescricao: String;
     fsPermiteVinculado: Boolean;
     fsTotal: Double;
+    fsValorFiscal: Currency;
+    fsValorNaoFiscal: Currency;
  public
     constructor create ;
     procedure Assign( AFormaPagamento : TACBrECFFormaPagamento ) ;
@@ -139,6 +242,8 @@ TACBrECFFormaPagamento = class
     property PermiteVinculado : Boolean read fsPermiteVinculado
                                        write fsPermiteVinculado ;
     property Total : Double read fsTotal write fsTotal ;
+    property ValorFiscal: Currency read fsValorFiscal write fsValorFiscal;
+    property ValorNaoFiscal: Currency read fsValorNaoFiscal write fsValorNaoFiscal;
 end;
 
 { Lista de Objetos do tipo TACBrECFFormaPagamento }
@@ -147,6 +252,7 @@ TACBrECFFormasPagamento = class(TObjectList)
     procedure SetObject (Index: Integer; Item: TACBrECFFormaPagamento);
     function GetObject (Index: Integer): TACBrECFFormaPagamento;
   public
+    function New: TACBrECFFormaPagamento;
     function Add (Obj: TACBrECFFormaPagamento): Integer;
     procedure Insert (Index: Integer; Obj: TACBrECFFormaPagamento);
     property Objects [Index: Integer]: TACBrECFFormaPagamento
@@ -1015,7 +1121,7 @@ begin
   NewVar := UpCase(Value) ;
   if NewVar = ' ' then
      NewVar := 'T' ;
-     
+
   if not (NewVar in ['T','S']) then
      raise Exception.create(ACBrStr(cACBrECFAliquotaSetTipoException));
   fsTipo := Value;
@@ -1037,7 +1143,68 @@ begin
   inherited Insert(Index, Obj);
 end;
 
+function TACBrECFAliquotas.New: TACBrECFAliquota;
+begin
+  Result := TACBrECFAliquota.create;
+  Add(Result);
+end;
+
 procedure TACBrECFAliquotas.SetObject(Index: Integer; Item: TACBrECFAliquota);
+begin
+  inherited SetItem (Index, Item) ;
+end;
+
+
+{ ---------------------------- TACBrECFDAVs -------------------------- }
+
+{ TACBrECFDAV }
+constructor TACBrECFDAV.create;
+begin
+  fsNumero    := 0;
+  fsTitulo    := '';
+  fsValor     := 0.00;
+  fsDtEmissao := 0.0;
+end;
+
+procedure TACBrECFDAV.Assign(ADAV: TACBrECFDAV);
+begin
+  fsNumero    := ADAV.Numero;
+  fsTitulo    := ADAV.Titulo;
+  fsValor     := ADAV.Valor;
+  fsDtEmissao := ADAV.DtEmissao;
+end;
+
+function TACBrECFDAVs.Add(Obj: TACBrECFDAV): Integer;
+begin
+  Result := inherited Add(Obj) ;
+end;
+
+function TACBrECFDAVs.GetObject(Index: Integer): TACBrECFDAV;
+begin
+  Result := inherited GetItem(Index) as TACBrECFDAV ;
+end;
+
+procedure TACBrECFDAVs.Insert(Index: Integer; Obj: TACBrECFDAV);
+begin
+  inherited Insert(Index, Obj);
+end;
+
+function TACBrECFDAVs.New: TACBrECFDAV;
+begin
+  Result := TACBrECFDAV.create;
+  Add(Result);
+end;
+
+function TACBrECFDAVs.ValorTotalAcumulado: Double;
+var
+  I: Integer;
+begin
+  Result := 0.00;
+  for I := 0 to Self.Count - 1 do
+    Result := Result + Self[I].Valor;
+end;
+
+procedure TACBrECFDAVs.SetObject(Index: Integer; Item: TACBrECFDAV);
 begin
   inherited SetItem (Index, Item) ;
 end;
@@ -1078,6 +1245,12 @@ procedure TACBrECFFormasPagamento.Insert(Index: Integer;
   Obj: TACBrECFFormaPagamento);
 begin
   inherited Insert(Index, Obj);
+end;
+
+function TACBrECFFormasPagamento.New: TACBrECFFormaPagamento;
+begin
+  Result := TACBrECFFormaPagamento.Create;
+  Add(Result);
 end;
 
 procedure TACBrECFFormasPagamento.SetObject(Index: Integer;
@@ -3740,6 +3913,70 @@ begin
    inherited Destroy ;
 end;
 
+{ TACBrECFIdentificacaoPAF }
+
+constructor TACBrECFIdentificacaoPAF.Create;
+begin
+  inherited;
+
+  fsPaf := TACBrECFInfoPaf.Create;
+  fsEmpresa := TACBrECFEmpresa.Create;
+  fsOutrosArquivos := TACBrECFArquivos.Create;
+  fsECFsAutorizados := TStringList.Create;
+  fsArquivoListaAutenticados := TACBrECFArquivo.Create;
+end;
+
+destructor TACBrECFIdentificacaoPAF.Destroy;
+begin
+  fsPaf.Free;
+  fsEmpresa.Free;
+  fsOutrosArquivos.Free;
+  fsECFsAutorizados.Free;
+  fsArquivoListaAutenticados.Free;
+
+  inherited;
+end;
+
+{ TACBrECFInfoPaf }
+
+constructor TACBrECFInfoPaf.Create;
+begin
+  inherited;
+  fsPrincipalExe := TACBrECFArquivo.Create;
+end;
+
+destructor TACBrECFInfoPaf.Destroy;
+begin
+  fsPrincipalExe.Free;
+  inherited;
+end;
+
+{ TACBrECFArquivos }
+
+function TACBrECFArquivos.Add(Obj: TACBrECFArquivo): Integer;
+begin
+  Result := inherited Add(Obj) ;
+end;
+
+function TACBrECFArquivos.GetObject(Index: Integer): TACBrECFArquivo;
+begin
+  Result := inherited GetItem(Index) as TACBrECFArquivo ;
+end;
+
+procedure TACBrECFArquivos.Insert(Index: Integer; Obj: TACBrECFArquivo);
+begin
+  inherited Insert(Index, Obj);
+end;
+
+function TACBrECFArquivos.New: TACBrECFArquivo;
+begin
+  Result := TACBrECFArquivo.Create;
+  Add(Result);
+end;
+
+procedure TACBrECFArquivos.SetObject(Index: Integer; Item: TACBrECFArquivo);
+begin
+  inherited SetItem (Index, Item) ;
+end;
+
 end.
-
-

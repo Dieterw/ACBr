@@ -425,7 +425,9 @@ TACBrECFBematech = class( TACBrECFClass )
     function GetTotalizadoresParciais : String ;
 
     Function PreparaCmd( cmd : AnsiString ) : AnsiString ;
- protected
+    procedure CRZToCOO(const ACRZIni, ACRZFim: Integer; var ACOOIni,
+      ACOOFim: Integer);
+
     property TotalizadoresParciais : String read GetTotalizadoresParciais ;
 
     function GetDataHora: TDateTime; override ;
@@ -3739,6 +3741,39 @@ begin
  {$ENDIF}
 end;
 
+procedure TACBrECFBematech.CRZToCOO(const ACRZIni, ACRZFim: Integer;
+  var ACOOIni, ACOOFim: Integer);
+var
+  Retorno: TStringList;
+  CRZi, CRZf: string;
+  Linha: string;
+  I: Integer;
+begin
+  Retorno := TStringList.Create;
+  try
+    Self.LeituraMemoriaFiscalSerial(ACRZIni, ACRZFim, Retorno);
+    Retorno.Text := Trim(Retorno.Text);
+
+    ACOOIni := 0;
+    ACOOFim := 0;
+    CRZi    := Format('%4.4d  ', [ACRZIni]);
+    CRZf    := Format('%4.4d  ', [ACRZFim]);
+
+    // desprezar o cabeçalho e o fim do arquivo
+    for I := 36 to Retorno.Count - 30 do
+    begin
+      Linha := Retorno.Strings[I];
+      if Copy(Linha, 1, 6) = CRZi then
+        ACOOIni := StrToIntDef(Copy(Linha, 13, 6), 0)
+      else
+      if Copy(Linha, 1, 6) = CRZf then
+        ACOOFim := StrToIntDef(Copy(Linha, 13, 6), 0)
+    end;
+  finally
+    Retorno.Free;
+  end;
+end;
+
 // Por: Luiz Arlindo
 procedure TACBrECFBematech.ArquivoMFD_DLL(COOInicial, COOFinal: Integer;
   NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet; Finalidade: TACBrECFFinalizaArqMFD);
@@ -3748,7 +3783,6 @@ Var
   DiaIni, DiaFim, Prop, ArqTmp, cEndereco, cRazao, COOIni, CooFim : AnsiString ;
   OldAtivo : Boolean ;
   Tipo: PAnsiChar;
-//iACK, iST1, iST2, iST3: Integer;
   cArqTemp, cArqTempTXT : TextFile;
   cLinha : string;
   Texto : TStringList;
@@ -3757,23 +3791,34 @@ begin
   ArqTmp := ExtractFilePath( NomeArquivo ) + 'ACBr';
   DeleteFile( ArqTmp + '.mfd' ) ;
 
+  // tipo do formato do arquivo se a emissão ocorreu por LMFC ou Arq.MFD
+  case Finalidade of
+    finLMFC:
+      begin
+        Tipo := '0';
+        CRZToCOO(CooInicial, CooFinal, CooInicial, CooFinal);
+      end
+  else
+    Tipo := '2'
+  end;
+
   Prop   := IntToStr( StrToIntDef( UsuarioAtual, 1) ) ;
   CooIni := IntToStrZero( COOInicial, 6 ) ;
   CooFim := IntToStrZero( COOFinal, 6 ) ;
 
   { Obtendo Dados do Usuário }
   ClicheSL  := TStringList.Create ;
-  cRazao    := '' ;
-  cEndereco := '' ;
   try
-     try
-        ClicheSL.Text := Cliche ;
-        cRazao        := ClicheSL[0] ;
-        cEndereco     := ClicheSL[1] ;
-     except
-     end ;
+    try
+      ClicheSL.Text := Cliche;
+      cRazao        := ClicheSL[0] ;
+      cEndereco     := ClicheSL[1] ;
+    except
+      cRazao    := '' ;
+      cEndereco := '' ;
+    end ;
   finally
-     ClicheSL.Free ;
+    ClicheSL.Free ;
   end ;
 
  {$IFDEF LINUX}
@@ -3834,37 +3879,41 @@ begin
 
      // Cria o arquivo EspelhoTMP.TXT para guardar a imagens dos cupons
      // capturados, retirando as linhas em branco.
-
      Sleep(2000);
      AssignFile( cArqTemp, ArqTmp+'_ESP_' + '.txt' );
-     Sleep(2000);
-     Reset( cArqTemp );
+     try
+       Sleep(2000);
+       Reset( cArqTemp );
 
-     AssignFile( cArqTempTXT, ArqTmp+'_ESP_TMP' + '.txt' );
-     Rewrite( cArqTempTXT );
+       AssignFile( cArqTempTXT, ArqTmp+'_ESP_TMP' + '.txt' );
+       try
+         Rewrite( cArqTempTXT );
 
-     cLinha := '';
-     while not EOF( cArqTemp ) do
-     begin
-        Readln( cArqTemp, cLinha );
-        if ( cLinha <> '' ) then
-           Writeln( cArqTempTXT, cLinha );
+         cLinha := '';
+         while not EOF( cArqTemp ) do
+         begin
+            Readln( cArqTemp, cLinha );
+            if ( cLinha <> '' ) then
+               Writeln( cArqTempTXT, cLinha );
+         end;
+       finally
+         CloseFile( cArqTempTXT );
+       end;
+     finally
+       CloseFile( cArqTemp );
      end;
-
-     CloseFile( cArqTemp );
-     CloseFile( cArqTempTXT );
 
      // Cria um objeto do tipo TStringList para Ler o arquivo gerado
      Texto := TStringList.Create;
      try
        Texto.LoadFromFile( ArqTmp+'_ESP_TMP' + '.txt' );
-
        Try
-          DiaIni := copy( Texto.Strings[ 6 ], 1, 10 );
-          StrtoDate(DiaIni);
+         DiaIni := copy( Texto.Strings[ 6 ], 1, 10 );
+         StrtoDate(DiaIni);
        Except
-          DiaIni := copy( Texto.Strings[ 7 ], 1, 10 );
+         DiaIni := copy( Texto.Strings[ 7 ], 1, 10 );
        end;
+
        DiaFim := copy( Texto.Strings[ Texto.Count - 2 ], 20, 10 );
 
        //Para modelos MP-2000 / MP-6000 TH FI, com a DLL BemaMFD;
@@ -3880,13 +3929,6 @@ begin
      // para o PAF-ECF, por intervalo de datas previamente capturadas.
 //   Resp := xBematech_FI_HabilitaDesabilitaRetornoEstendidoMFD('1');
 //   Resp := xBematech_FI_RetornoImpressoraMFD(iACK,iST1,iST2,iST3);
-
-     // tipo do formato do arquivo se a emissão ocorreu por LMFC ou Arq.MFD
-     case Finalidade of
-       finLMFC: Tipo := '0';
-     else
-       Tipo := '2'
-     end;
 
      Resp := xBemaGeraRegistrosTipoE( PAnsiChar( ArqTmp + '.mfd'),
                                       PAnsichar( NomeArquivo ),

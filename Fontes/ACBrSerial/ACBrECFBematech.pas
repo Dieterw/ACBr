@@ -112,7 +112,7 @@ interface
 uses ACBrECFClass, ACBrDevice, ACBrUtil, ACBrCHQClass,
      Classes
      {$IFNDEF CONSOLE}
-       {$IFDEF VisualCLX}, QForms {$ELSE}, Windows, Forms {$ENDIF}
+       {$IFDEF VisualCLX}, QForms {$ELSE}, {$IFNDEF FPC}Windows,{$ENDIF} Forms {$ENDIF}
      {$ENDIF};
 
 const ErrosST1 : array[0..7] of string =
@@ -623,7 +623,7 @@ TACBrECFBematech = class( TACBrECFClass )
 implementation
 Uses
    SysUtils, IniFiles,
-   {$IFDEF COMPILER6_UP} DateUtils, StrUtils, {$ELSE} ACBrD5, Windows,{$ENDIF}
+   {$IFDEF COMPILER6_UP} DateUtils, StrUtils, {$ELSE} ACBrD5,{$ENDIF}
    Math ;
 
 { ----------------------------- TACBrECFBematech ------------------------------ }

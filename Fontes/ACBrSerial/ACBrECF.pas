@@ -722,10 +722,10 @@ TACBrECF = class( TACBrComponent )
        NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ;
     Procedure ArquivoMFD_DLL( DataInicial, DataFinal : TDateTime;
        NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos];
-       Finalidade: TACBrECFFinalizaArqMFD = finArqMFD ) ; overload ;
+       Finalidade: TACBrECFFinalizaArqMFD = finMFD ) ; overload ;
     Procedure ArquivoMFD_DLL( COOInicial, COOFinal : Integer;
        NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos];
-       Finalidade: TACBrECFFinalizaArqMFD = finArqMFD) ; overload ;
+       Finalidade: TACBrECFFinalizaArqMFD = finMFD) ; overload ;
 
     Procedure IdentificaOperador( Nome : String) ;
     Procedure IdentificaPAF( Linha1, Linha2 : String) ;
@@ -5004,14 +5004,14 @@ end;
 procedure TACBrECF.PafMF_LMFC_Cotepe1704(const CRZInicial, CRZFinal: Integer;
   const PathArquivo: String);
 begin
-  Self.ArquivoMFD_DLL(CRZInicial, CRZFinal, PathArquivo, [docTodos], finLMFC);
+  Self.ArquivoMFD_DLL(CRZInicial, CRZFinal, PathArquivo, [docTodos], finMF);
   Self.AssinaArquivoComEAD(PathArquivo);
 end;
 
 procedure TACBrECF.PafMF_LMFC_Cotepe1704(const DataInicial, DataFinal: TDateTime;
   const PathArquivo: String);
 begin
-  Self.ArquivoMFD_DLL(DataInicial, DataFinal, PathArquivo, [docTodos], finLMFC);
+  Self.ArquivoMFD_DLL(DataInicial, DataFinal, PathArquivo, [docTodos], finMF);
   Self.AssinaArquivoComEAD(PathArquivo);
 end;
 
@@ -5057,14 +5057,14 @@ end;
 procedure TACBrECF.PafMF_MFD_Cotepe1704(const COOInicial, COOFinal: Integer;
   const PathArquivo: String);
 begin
-  Self.ArquivoMFD_DLL(CooInicial, CooFinal, PathArquivo, [docTodos], finArqMFD);
+  Self.ArquivoMFD_DLL(CooInicial, CooFinal, PathArquivo, [docTodos], finMFD);
   Self.AssinaArquivoComEAD(PathArquivo);
 end;
 
 procedure TACBrECF.PafMF_MFD_Cotepe1704(const DataInicial, DataFinal: TDateTime;
   const PathArquivo: String);
 begin
-  Self.ArquivoMFD_DLL(DataInicial, DataFinal, PathArquivo, [docTodos], finArqMFD);
+  Self.ArquivoMFD_DLL(DataInicial, DataFinal, PathArquivo, [docTodos], finMFD);
   Self.AssinaArquivoComEAD(PathArquivo);
 end;
 

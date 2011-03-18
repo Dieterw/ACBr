@@ -614,9 +614,9 @@ TACBrECFBematech = class( TACBrECFClass )
        NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
 
     Procedure ArquivoMFD_DLL( DataInicial, DataFinal : TDateTime;
-       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]; Finalidade: TACBrECFFinalizaArqMFD = finArqMFD  ) ; override ;
+       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]; Finalidade: TACBrECFFinalizaArqMFD = finMFD  ) ; override ;
     Procedure ArquivoMFD_DLL( COOInicial, COOFinal : Integer;
-       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]; Finalidade: TACBrECFFinalizaArqMFD = finArqMFD  ) ; override ;
+       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]; Finalidade: TACBrECFFinalizaArqMFD = finMFD  ) ; override ;
  end ;
 
 implementation
@@ -3647,18 +3647,28 @@ begin
 
   { Obtendo Dados do Usuário }
   ClicheSL  := TStringList.Create ;
-  cRazao    := '' ;
-  cEndereco := '' ;
   try
-     try
-        ClicheSL.Text := Cliche ;
-        cRazao        := ClicheSL[0] ;
-        cEndereco     := ClicheSL[1] ;
-     except
-     end ;
+    try
+      ClicheSL.Text := Cliche ;
+      cRazao        := ClicheSL[0] ;
+      cEndereco     := ClicheSL[1] ;
+    except
+      cRazao    := '' ;
+      cEndereco := '' ;
+    end ;
   finally
      ClicheSL.Free ;
   end ;
+
+  case Finalidade of
+    finMF:  Tipo := '0';
+    finMFD: Tipo := '1';
+    finTDM: Tipo := '2';
+    finRZ:  Tipo := '3';
+    finRFD: Tipo := '4';
+  else
+    Tipo := '2';
+  end;
 
  {$IFDEF LINUX}
   OldAtivo := Ativo ;
@@ -3707,12 +3717,6 @@ begin
                                'Arquivo: "'+ArqTmp + '.mfd" não gerado' )) ;
 
      // tipo do formato do arquivo se a emissão ocorreu por LMFC ou Arq.MFD
-     case Finalidade of
-       finLMFC: Tipo := '0';
-     else
-       Tipo := '2';
-     end;
-
      Resp := xBemaGeraRegistrosTipoE( PAnsiChar( ArqTmp + '.mfd'),
                                       PAnsichar( NomeArquivo ),
                                       PAnsiChar( DiaIni ),
@@ -3793,13 +3797,17 @@ begin
 
   // tipo do formato do arquivo se a emissão ocorreu por LMFC ou Arq.MFD
   case Finalidade of
-    finLMFC:
+    finMF:
       begin
         Tipo := '0';
         CRZToCOO(CooInicial, CooFinal, CooInicial, CooFinal);
-      end
+      end;
+    finMFD: Tipo := '1';
+    finTDM: Tipo := '2';
+    finRZ:  Tipo := '3';
+    finRFD: Tipo := '4';
   else
-    Tipo := '2'
+    Tipo := '2';
   end;
 
   Prop   := IntToStr( StrToIntDef( UsuarioAtual, 1) ) ;

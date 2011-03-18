@@ -97,7 +97,7 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
-Data:  15/03/2011
+Data:  18/03/2011
 -- ACBrECF --
 [*] - Adicionados novos métodos para auxiliar no menu fiscal do paf-ecf:
         * PafMF_LX_Impressao;

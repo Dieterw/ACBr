@@ -155,12 +155,14 @@ const
 
   CTecabMsg       = '1.02';//1.02
   CTeconsStatServ = '1.03';//1.01
-  CTeenvCte       = '1.03';//1.02
+  CTeenviCTe      = '1.03';//1.02  // Nome da constante corrigita por Italo em 18/03/2011
+  CTeconsReciCTe  = '1.03';//1.02
   CTeconsSitCTe   = '1.03';//1.02
   CTecancCTe      = '1.03';//1.01
   CTeinutCTe      = '1.03';//1.01
-  CTenviCTe       = '1.03';//1.02
-  CTeconsReciCTe  = '1.03';//1.02
+  CTeconsCad      = '1.01';        // Incluido por Italo em 18/03/2011
+//  CTeEnvDPEC      = '1.01';
+//  CTeConsDPEC     = '1.01';
 
   LineBreak = #13#10;
 

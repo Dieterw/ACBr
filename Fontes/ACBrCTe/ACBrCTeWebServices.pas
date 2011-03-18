@@ -573,8 +573,8 @@ var
   ConCadCTe: TConsCad;
 begin
   Cabecalho             := TCabecalho.Create;
-  Cabecalho.Versao      := NFecabMsg;
-  Cabecalho.VersaoDados := NFeconsCad;
+  Cabecalho.Versao      := CTecabMsg;  // Alterado de NFecabMsg por CTecabMsg por Italo em 18/03/2011
+  Cabecalho.VersaoDados := CTeconsCad; // Alterado de NFeconsCad por CTeconsCad por Italo em 18/03/2011
   Cabecalho.GerarXML;
 
   FCabMsg := Cabecalho.Gerador.ArquivoFormatoXML;
@@ -613,7 +613,7 @@ begin
   vCtes := StringReplace( vCtes, '<?xml version="1.0" encoding="UTF-8" ?>', '', [rfReplaceAll] );
   vCtes := StringReplace( vCtes, '<?xml version="1.0" encoding="UTF-8"?>' , '', [rfReplaceAll] );
 
-  FDadosMsg := '<enviCTe xmlns="http://www.portalfiscal.inf.br/cte" versao="'+CTenviCTe+'">'+
+  FDadosMsg := '<enviCTe xmlns="http://www.portalfiscal.inf.br/cte" versao="'+CTeenviCTe+'">'+
                '<idLote>'+IntToStr(TCTeRecepcao(Self).Lote)+'</idLote>'+vCtes+'</enviCTe>';
 
   if Length(FDadosMsg) > (500 * 1024) then
@@ -1038,7 +1038,7 @@ begin
   Texto := Texto +   '<soap12:Header>';
   Texto := Texto +     '<cteCabecMsg xmlns="http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcao">';
   Texto := Texto +       '<cUF>'+IntToStr(FConfiguracoes.WebServices.UFCodigo)+'</cUF>';
-  Texto := Texto +       '<versaoDados>'+CTeenvCte+'</versaoDados>';
+  Texto := Texto +       '<versaoDados>'+CTeenviCTe+'</versaoDados>';
   Texto := Texto +     '</cteCabecMsg>';
   Texto := Texto +   '</soap12:Header>';
   Texto := Texto +   '<soap12:Body>';

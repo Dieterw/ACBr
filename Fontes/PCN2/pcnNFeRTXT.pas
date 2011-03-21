@@ -461,7 +461,7 @@ begin
     (*J12*)NFe.Det[i].Prod.veicProd.nMotor := LerCampo(tcStr, 'nMotor');
     (*J13*)NFe.Det[i].Prod.veicProd.CMT    := LerCampo(tcStr, 'CMT');
     (*J14*)NFe.Det[i].Prod.veicProd.dist := LerCampo(tcStr, 'dist');
-    (*J15*)NFe.Det[i].Prod.veicProd.RENAVAM := LerCampo(tcEsp, 'RENAVAM');
+//    (*J15*)NFe.Det[i].Prod.veicProd.RENAVAM := LerCampo(tcEsp, 'RENAVAM');
     (*J16*)NFe.Det[i].Prod.veicProd.anoMod := LerCampo(tcInt, 'anoMod');
     (*J17*)NFe.Det[i].Prod.veicProd.anoFab := LerCampo(tcInt, 'anoFab');
     (*J18*)NFe.Det[i].Prod.veicProd.tpPint := LerCampo(tcStr, 'tpPint');

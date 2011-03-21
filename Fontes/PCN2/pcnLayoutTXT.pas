@@ -182,7 +182,7 @@ begin
     LoadLayout('<I01>     I|CProd¨|CEAN¨|XProd¨|NCM¨|EXTIPI¨|CFOP¨|UCom¨|QCom¨|VUnCom¨|VProd¨|CEANTrib¨|UTrib¨|QTrib¨|VUnTrib¨|VFrete¨|VSeg¨|VDesc¨|VOutro¨|indTot¨|xPed¨|nItemPed¨'); //ok
     LoadLayout('<I18>   I18|NDI¨|DDI¨|XLocDesemb¨|UFDesemb¨|DDesemb¨|CExportador¨'); //ok
     LoadLayout('<I25>   I25|NAdicao¨|NSeqAdic¨|CFabricante¨|VDescDI¨'); //ok
-    LoadLayout('<J01>     J|TpOp¨|Chassi¨|CCor¨|XCor¨|Pot¨|cilin¨|PesoL¨|PesoB¨|NSerie¨|TpComb¨|NMotor¨|CMT¨|Dist¨|RENAVAM¨|AnoMod¨|AnoFab¨|TpPint¨|TpVeic¨|EspVeic¨|VIN¨|CondVeic¨|CMod¨|cCorDENATRAN¨|lota¨|tpRest¨'); //ok
+    LoadLayout('<J01>     J|tpOp¨|chassi¨|cCor¨|xCor¨|pot¨|Cilin¨|pesoL¨|pesoB¨|NSerie¨|TpComb¨|NMotor¨|CMT¨|Dist¨|AnoMod¨|AnoFab¨|TpPint¨|TpVeic¨|EspVeic¨|VIN¨|CondVeic¨|CMod¨|cCorDENATRAN¨|lota¨|tpRest¨'); //NFe 2.0
     LoadLayout('<K01>     K|NLote¨|QLote¨|DFab¨|DVal¨|VPMC¨'); //ok
     LoadLayout('<L00>     L|TpArma¨|NSerie¨|NCano¨|Descr¨'); //ok
     LoadLayout('<L01>   L01|CProdANP¨|CODIF¨|QTemp¨|UFCons¨'); //ok

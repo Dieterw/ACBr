@@ -699,7 +699,7 @@ begin
     else
        Gerador.wCampo(tcStr, 'J13', 'CMKG    ', 09, 09, 1, nfe.Det[i].Prod.veicProd.CMT, DSC_CMT);
     Gerador.wCampo(tcStr, 'J14', 'dist    ', 00, 04, 1, nfe.Det[i].Prod.veicProd.dist, DSC_DIST);
-    Gerador.wCampo(tcStr, 'J15', 'RENAVAM ', 00, 09, 0, nfe.Det[i].Prod.veicProd.RENAVAM, DSC_RENAVAM);
+//    Gerador.wCampo(tcStr, 'J15', 'RENAVAM ', 00, 09, 0, nfe.Det[i].Prod.veicProd.RENAVAM, DSC_RENAVAM);
     Gerador.wCampo(tcInt, 'J16', 'anoMod  ', 00, 04, 1, nfe.Det[i].Prod.veicProd.anoMod, DSC_ANOMOD);
     Gerador.wCampo(tcInt, 'J17', 'anoFab  ', 00, 04, 1, nfe.Det[i].Prod.veicProd.anoFab, DSC_ANOFAB);
     Gerador.wCampo(tcStr, 'J18', 'tpPint  ', 00, 01, 1, nfe.Det[i].Prod.veicProd.tpPint, DSC_TPPINT);

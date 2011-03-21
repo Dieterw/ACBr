@@ -2556,7 +2556,6 @@ object Form1: TForm1
   end
   object ACBrRFD1: TACBrRFD
     ECF = ACBrECF1
-    IgnoraEcfMfd = False
     left = 352
     top = 328
   end

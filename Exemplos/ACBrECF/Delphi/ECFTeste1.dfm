@@ -5,6 +5,7 @@ object Form1: TForm1
   Height = 447
   VertScrollBar.Range = 59
   ActiveControl = PageControl1
+  AutoScroll = False
   Caption = 'Teste de Impressora Fiscal'
   Color = clBtnFace
   Constraints.MinHeight = 400
@@ -24,8 +25,8 @@ object Form1: TForm1
   TextHeight = 13
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 374
-    Width = 602
+    Top = 370
+    Width = 594
     Height = 19
     Panels = <
       item
@@ -38,17 +39,17 @@ object Form1: TForm1
   object PageControl1: TPageControl
     Left = 0
     Top = 0
-    Width = 602
-    Height = 334
-    ActivePage = TabSheet4
+    Width = 594
+    Height = 330
+    ActivePage = tbsMenuFiscal
     Align = alClient
     TabOrder = 1
     object TabSheet4: TTabSheet
       Caption = 'ECF'
       ImageIndex = 3
       DesignSize = (
-        594
-        306)
+        586
+        302)
       object SbArqLog: TSpeedButton
         Left = 563
         Top = 216
@@ -130,6 +131,7 @@ object Form1: TForm1
         Width = 105
         Height = 21
         Style = csDropDownList
+        ItemHeight = 13
         TabOrder = 0
         OnChange = cbxModeloChange
         Items.Strings = (
@@ -151,6 +153,7 @@ object Form1: TForm1
         Top = 25
         Width = 105
         Height = 21
+        ItemHeight = 13
         TabOrder = 1
         Text = 'Procurar'
         OnChange = cbxPortaChange
@@ -259,7 +262,9 @@ object Form1: TForm1
         Cancel = True
         Caption = 'Serial'
         Default = True
-        DoubleBuffered = True
+        ModalResult = 1
+        TabOrder = 11
+        OnClick = btSerialClick
         Glyph.Data = {
           36030000424D3603000000000000360000002800000010000000100000000100
           1800000000000003000000000000000000000000000000000000FFFFFFFFFFFF
@@ -287,10 +292,6 @@ object Form1: TForm1
           FFFFFFFFFFFFFFFFFFFFFFFF5050004A4A4A3232323232323232323232325032
           00FFFFFF6B8FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
           FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
-        ModalResult = 1
-        ParentDoubleBuffered = False
-        TabOrder = 11
-        OnClick = btSerialClick
       end
       object chDescricaoGrande: TCheckBox
         Left = 195
@@ -356,7 +357,6 @@ object Form1: TForm1
         AutoSize = False
         Caption = 'Resposta'
         Layout = tlBottom
-        ExplicitWidth = 586
       end
       object Label17: TLabel
         Left = 0
@@ -367,7 +367,6 @@ object Form1: TForm1
         AutoSize = False
         Caption = 'Comando Enviado'
         Layout = tlBottom
-        ExplicitWidth = 586
       end
       object mResp: TMemo
         Left = 0
@@ -433,8 +432,6 @@ object Form1: TForm1
           Height = 265
           Align = alClient
           TabOrder = 1
-          ExplicitWidth = 586
-          ExplicitHeight = 263
           ControlData = {
             4C000000643D0000631B00000000000000000000000000000000000000000000
             000000004C000000000000000000000001000000E0D057007335CF11AE690800
@@ -488,8 +485,8 @@ object Form1: TForm1
       object PageControl2: TPageControl
         Left = 0
         Top = 55
-        Width = 594
-        Height = 251
+        Width = 586
+        Height = 247
         ActivePage = TabSheet6
         Align = alClient
         TabOrder = 1
@@ -706,13 +703,13 @@ object Form1: TForm1
       object Panel3: TPanel
         Left = 0
         Top = 0
-        Width = 594
+        Width = 586
         Height = 55
         Align = alTop
         BevelOuter = bvNone
         TabOrder = 0
         DesignSize = (
-          594
+          586
           55)
         object sbDirRFD: TSpeedButton
           Left = 561
@@ -769,8 +766,8 @@ object Form1: TForm1
       Caption = 'C'#243'digo de Barras'
       ImageIndex = 5
       DesignSize = (
-        594
-        306)
+        586
+        302)
       object Label23: TLabel
         Left = 101
         Top = 0
@@ -939,9 +936,7 @@ object Form1: TForm1
         Cancel = True
         Caption = 'Enviar Linha Gerencial'
         Default = True
-        DoubleBuffered = True
         ModalResult = 1
-        ParentDoubleBuffered = False
         TabOrder = 6
         OnClick = BitBtn6Click
       end
@@ -954,9 +949,7 @@ object Form1: TForm1
         Cancel = True
         Caption = 'Fechar Cupom'
         Default = True
-        DoubleBuffered = True
         ModalResult = 1
-        ParentDoubleBuffered = False
         TabOrder = 7
         OnClick = BitBtn7Click
       end
@@ -976,18 +969,17 @@ object Form1: TForm1
       Caption = 'Dados RZ'
       ImageIndex = 6
       DesignSize = (
-        594
-        306)
+        586
+        302)
       object Label37: TLabel
         Left = 0
         Top = 0
-        Width = 594
+        Width = 586
         Height = 17
         Align = alTop
         AutoSize = False
         Caption = 'Resposta'
         Layout = tlBottom
-        ExplicitWidth = 586
       end
       object Button2: TButton
         Left = 19
@@ -1021,20 +1013,14 @@ object Form1: TForm1
     object tbsMenuFiscal: TTabSheet
       Caption = 'Menu Fiscal'
       ImageIndex = 6
-      ExplicitLeft = 7
-      ExplicitTop = 23
       object grpMenuFiscalOpcoes: TGroupBox
-        AlignWithMargins = True
-        Left = 3
-        Top = 3
-        Width = 588
-        Height = 180
+        Left = 0
+        Top = 0
+        Width = 586
+        Height = 234
         Align = alClient
         Caption = 'Op'#231#245'es do Menu fiscal'
         TabOrder = 0
-        ExplicitLeft = -4
-        ExplicitTop = -7
-        ExplicitHeight = 204
         object btnMenuFiscalLX: TButton
           Left = 10
           Top = 20
@@ -1109,20 +1095,15 @@ object Form1: TForm1
         end
       end
       object pgcMenuFiscalTipo: TPageControl
-        AlignWithMargins = True
-        Left = 3
-        Top = 235
-        Width = 588
+        Left = 0
+        Top = 234
+        Width = 586
         Height = 68
         ActivePage = tbsMenuFiscalTipoData
         Align = alBottom
         TabOrder = 1
         object tbsMenuFiscalTipoData: TTabSheet
           Caption = 'Emiss'#227'o por intervalo de data'
-          ExplicitLeft = 0
-          ExplicitTop = 25
-          ExplicitWidth = 448
-          ExplicitHeight = 43
           object Label24: TLabel
             Left = 16
             Top = 15
@@ -1198,38 +1179,29 @@ object Form1: TForm1
         end
       end
       object chkMenuFiscalCotepe1704: TCheckBox
-        AlignWithMargins = True
         Left = 20
         Top = 212
         Width = 571
         Height = 17
-        Margins.Left = 20
-        Align = alBottom
         Caption = 
           'Gerar o arquivo no formato do ato Cotepe 17/04 (Somente para os ' +
           'menus: LMFC, Arq.MFD)'
         TabOrder = 2
-        ExplicitLeft = 14
-        ExplicitTop = 206
       end
       object chkMenuFiscalGerarArquivo: TCheckBox
-        AlignWithMargins = True
         Left = 3
         Top = 189
         Width = 588
         Height = 17
-        Align = alBottom
         Caption = 'Efetuar a gera'#231#227'o de arquivo'
         TabOrder = 3
-        ExplicitLeft = -3
-        ExplicitTop = 183
       end
     end
   end
   object pBotoes: TPanel
     Left = 0
-    Top = 334
-    Width = 602
+    Top = 330
+    Width = 594
     Height = 40
     Cursor = crHelp
     Hint = 'Sobre o ACBrMonitor ?'
@@ -1237,12 +1209,12 @@ object Form1: TForm1
     TabOrder = 2
     TabStop = True
     DesignSize = (
-      602
+      594
       40)
     object Image1: TImage
       Left = 1
       Top = 1
-      Width = 600
+      Width = 592
       Height = 38
       Align = alClient
       Picture.Data = {
@@ -1446,7 +1418,6 @@ object Form1: TForm1
         FEF3FEB466C7FBCFFAD1450019B1FEF3FEB466C7FBCFFAD1450019B1FEF3FEB4
         66C7FBCFFAD145001BAC7D5FF5A3758FABFEB451401FFFD9}
       OnClick = Image1Click
-      ExplicitWidth = 592
     end
     object bAtivar: TBitBtn
       Left = 493
@@ -1457,7 +1428,9 @@ object Form1: TForm1
       Cancel = True
       Caption = 'Ativar'
       Default = True
-      DoubleBuffered = True
+      ModalResult = 1
+      TabOrder = 0
+      OnClick = bAtivarClick
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000120B0000120B00000000000000000000FFFFFFFFFFFF
@@ -1485,10 +1458,6 @@ object Form1: TForm1
         21218C3131943131943131943131943131943131943131943131943131943131
         94292994181884FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
         FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
-      ModalResult = 1
-      ParentDoubleBuffered = False
-      TabOrder = 0
-      OnClick = bAtivarClick
     end
   end
   object MainMenu1: TMainMenu

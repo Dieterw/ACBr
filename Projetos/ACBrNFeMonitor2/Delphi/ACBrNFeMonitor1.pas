@@ -446,7 +446,8 @@ begin
      mResp.Lines.Add('');
      mResp.Lines.Add('   * EFETUE AINDA HOJE A SUA DOAÇÃO. Acesse:') ;
      mResp.Lines.Add('     http://acbr.sourceforge.net/drupal/?q=node/14') ;
-
+     mResp.Lines.Add('');
+     mResp.Lines.Add('     http://www.djsystem.com.br/acbr/forum/') ;
   except
      on E : Exception do
         Erro := Erro + sLineBreak + E.Message ;

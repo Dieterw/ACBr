@@ -77,11 +77,7 @@ type
   private
     fMD5: string;
     fNOME_ARQUIVO: string;
-    fRegistroValido: boolean;
   public
-    constructor Create; virtual; /// Create
-
-    property RegistroValido: boolean read fRegistroValido  write fRegistroValido default True;
     property NOME_ARQUIVO : string read fNOME_ARQUIVO write fNOME_ARQUIVO;
     property MD5 : string read fMD5 write fMD5;
   end;
@@ -120,13 +116,6 @@ end;
 procedure TRegistroN3List.SetItem(Index: integer; const Value: TRegistroN3);
 begin
   Put(Index, Value);
-end;
-
-{ TRegistroT2 }
-
-constructor TRegistroN3.Create;
-begin
-  fRegistroValido := True;
 end;
 
 end.

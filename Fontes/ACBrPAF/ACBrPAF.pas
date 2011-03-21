@@ -648,9 +648,6 @@ begin
     Write(txtFile, WriteRegistroN9);
     ///
     CloseFile(txtFile);
-    /// Assinatura EAD
-    if FAssinar then
-      AssinaArquivoComEAD(fPath + Arquivo);
 
     /// Limpa de todos os Blocos as listas de todos os registros.
     LimpaRegistros;

@@ -332,6 +332,7 @@ type
     edtCOOFinal: TSpinEdit;
     chkMenuFiscalCotepe1704: TCheckBox;
     chkMenuFiscalGerarArquivo: TCheckBox;
+    Label31: TLabel;
     procedure cbxModeloChange(Sender: TObject);
     procedure Sair1Click(Sender: TObject);
     procedure bAtivarClick(Sender: TObject);
@@ -3549,6 +3550,9 @@ procedure TForm1.btnMenuFiscalRelDAVEmitidosClick(Sender: TObject);
 var
   DAVs: TACBrECFDAVs;
   I: Integer;
+const
+  TipoDAV: array[0..1] of string = ('PEDIDO', 'ORCAMENTO');
+  Valores: array[0..3] of Double = (1.00, 2.00, 3.50, 10.45);
 begin
   DAVs := TACBrECFDAVs.Create;
   try
@@ -3557,9 +3561,9 @@ begin
       with DAVs.New do
       begin
         Numero    := I;
-        Titulo    := RandomFrom(['PEDIDO', 'ORCAMENTO']);
+        Titulo    := RandomFrom(TipoDAV);
         DtEmissao := Now;
-        Valor     := RandomFrom([1.00, 2.00, 3.50, 10.45])
+        Valor     := RandomFrom(Valores)
       end;
     end;
 

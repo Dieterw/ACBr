@@ -90,7 +90,7 @@ type
     procedure SetItem(Index: integer; const Value: TRegistroN3);
   public
     function New: TRegistroN3;
-    property Items[Index: integer]: TRegistroN3 read GetItem write SetItem;
+    property Items[Index: integer]: TRegistroN3 read GetItem write SetItem; default;
   end;
 
   /// REGISTRO TIPO N9 - TOTALIZAÇÃO DO ARQUIVO

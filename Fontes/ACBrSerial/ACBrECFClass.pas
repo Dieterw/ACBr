@@ -95,16 +95,24 @@ EACBrECFOcupado         = class(EACBrECFErro) ;
   TACBrECFEmpresa = class
   private
     fsCNPJ: string;
+    fsUf: String;
+    fsCep: String;
     fsRazaoSocial: string;
     fsContato: string;
+    fsCidade: String;
     fsEndereco: string;
     fsTelefone: string;
+    fsEmail: String;
   public
-    property RazaoSocial: string read fsRazaoSocial write fsRazaoSocial;
     property CNPJ: string read fsCNPJ write fsCNPJ;
+    property RazaoSocial: string read fsRazaoSocial write fsRazaoSocial;
+    property Endereco: string read fsEndereco write fsEndereco;
+    property Cep: String read fsCep write fsCep;
+    property Cidade: String read fsCidade write fsCidade;
+    property Uf: String read fsUf write fsUf;
     property Telefone: string read fsTelefone write fsTelefone;
     property Contato: string read fsContato write fsContato;
-    property Endereco: string read fsEndereco write fsEndereco;
+    property Email: String read fsEmail write fsEmail;
   end;
 
   TACBrECFArquivo = class
@@ -149,10 +157,12 @@ EACBrECFOcupado         = class(EACBrECFErro) ;
     fsOutrosArquivos: TACBrECFArquivos;
     fsECFsAutorizados: TStringList;
     fsArquivoListaAutenticados: TACBrECFArquivo;
+    fsVersaoER: String;
   public
     constructor Create;
     destructor Destroy; override;
     property NumeroLaudo: String read fsNumeroLaudo write fsNumeroLaudo;
+    property VersaoER: String read fsVersaoER write fsVersaoER;
     property Empresa: TACBrECFEmpresa read fsEmpresa write fsEmpresa;
     property Paf: TACBrECFInfoPaf read fsPaf write fsPaf;
     property ArquivoListaAutenticados: TACBrECFArquivo read fsArquivoListaAutenticados write fsArquivoListaAutenticados;
@@ -200,12 +210,14 @@ TACBrECFAliquotas = class(TObjectList)
     fsValor: Double;
     fsNumero: Integer;
     fsDtEmissao: TDateTime;
+    fsCCF: integer;
   public
     constructor Create;
     procedure Assign(ADAV: TACBrECFDAV);
 
     property Numero: Integer read fsNumero write fsNumero;
     property Titulo: String read fsTitulo write fsTitulo;
+    property CCF: integer read fsCCF write fsCCF;
     property DtEmissao: TDateTime read fsDtEmissao write fsDtEmissao;
     property Valor: Double read fsValor write fsValor;
   end;
@@ -231,17 +243,19 @@ TACBrECFFormaPagamento = class
     fsDescricao: String;
     fsPermiteVinculado: Boolean;
     fsTotal: Double;
+    fsData: TDateTime;
     fsValorFiscal: Currency;
     fsValorNaoFiscal: Currency;
  public
     constructor create ;
     procedure Assign( AFormaPagamento : TACBrECFFormaPagamento ) ;
-    
+
     property Indice    : String read fsIndice    write fsIndice ;
     property Descricao : String read fsDescricao write fsDescricao ;
     property PermiteVinculado : Boolean read fsPermiteVinculado
                                        write fsPermiteVinculado ;
     property Total : Double read fsTotal write fsTotal ;
+    property Data: TDateTime read fsData write fsData;
     property ValorFiscal: Currency read fsValorFiscal write fsValorFiscal;
     property ValorNaoFiscal: Currency read fsValorNaoFiscal write fsValorNaoFiscal;
 end;

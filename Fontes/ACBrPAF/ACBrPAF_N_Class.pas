@@ -61,6 +61,8 @@ type
     constructor Create; /// Create
     destructor Destroy; override; /// Destroy
 
+    procedure LerDadosArquivo(const APathArquivo: String);
+
     function WriteRegistroN1: string;
     function WriteRegistroN2: string;
     function WriteRegistroN3: string;
@@ -95,6 +97,57 @@ begin
   FRegistroN3.Free;
   FRegistroN9.Free;
   inherited;
+end;
+
+procedure TPAF_N.LerDadosArquivo(const APathArquivo: String);
+var
+  Arquivo: TStringList;
+  I: Integer;
+  Linha: String;
+  IdLinha: String;
+begin
+  if not FileExists(APathArquivo) then
+    raise Exception.CreateFmt('Arquivo "%s" informado não existe.', [APathArquivo]);
+
+  // ler os dados de um arquivo já gravado
+  Arquivo := TStringList.Create;
+  try
+    Arquivo.Clear;
+    Arquivo.LoadFromFile(APathArquivo);
+
+    Self.RegistroN3.Clear;
+    for I := 0 to Arquivo.Count - 1 do
+    begin
+      Linha   := Arquivo.Strings[I];
+      IdLinha := Copy(Linha, 1, 2);
+
+      if IdLinha = 'N1' then
+      begin
+        Self.RegistroN1.CNPJ        := Trim(Copy(Linha, 03, 14));
+        Self.RegistroN1.IE          := Trim(Copy(Linha, 17, 14));
+        Self.RegistroN1.IM          := Trim(Copy(Linha, 31, 14));
+        Self.RegistroN1.RAZAOSOCIAL := Trim(Copy(Linha, 45, 14));
+      end
+      else
+      if IdLinha = 'N2' then
+      begin
+        Self.RegistroN2.LAUDO  := Trim(Copy(Linha, 03, 10));
+        Self.RegistroN2.NOME   := Trim(Copy(Linha, 13, 50));
+        Self.RegistroN2.VERSAO := Trim(Copy(Linha, 63, 10));
+      end
+      else
+      if IdLinha = 'N3' then
+      begin
+        with Self.RegistroN3.New do
+        begin
+          NOME_ARQUIVO := Trim(Copy(Linha, 03, 50));
+          MD5          := Trim(Copy(Linha, 53, 32));
+        end;
+      end;
+    end;
+  finally
+    Arquivo.Free;
+  end;
 end;
 
 function TPAF_N.WriteRegistroN1: string;

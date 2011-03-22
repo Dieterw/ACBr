@@ -5088,7 +5088,10 @@ begin
 
     Relatorio.Clear;
     Relatorio.Add('');
-    Relatorio.Add(padC('MEIOS DE PAGAMENTO', TamLin));
+
+    if IndiceRelatorio <= 0 then
+      Relatorio.Add(padC('MEIOS DE PAGAMENTO', TamLin));
+
     Relatorio.Add(LinhaDupla(TamLin));
     if Trim(TituloRelatorio) <> '' then
     begin
@@ -5131,17 +5134,19 @@ procedure TACBrECF.PafMF_RelDAVEmitidos(const DAVsEmitidos: TACBrECFDAVs;
 var
   Relatorio: TStringList;
   TamanhoLinha: Integer;
-  TamanhoTitulo: Integer;
   I: Integer;
 begin
   // montagem do relatorio
   Relatorio := TStringList.Create;
   try
     TamanhoLinha  := fsECF.Colunas;
-    TamanhoTitulo := TamanhoLinha - 34;
 
+    Relatorio.Clear;
     Relatorio.Add('');
-    Relatorio.Add(padC('DAV EMITIDOS', TamanhoLinha));
+
+    if IndiceRelatorio <= 0 then
+      Relatorio.Add(padC('DAV EMITIDOS', TamanhoLinha));
+
     Relatorio.Add(LinhaDupla(TamanhoLinha));
     if Trim(TituloRelatorio) <> '' then
     begin
@@ -5149,23 +5154,23 @@ begin
       Relatorio.Add(LinhaDupla(TamanhoLinha));
     end;
 
-    Relatorio.Add(Format('%-10s %-8s %s %-13s', ['NUMERO', 'EMISSAO', padL('TITULO', TamanhoTitulo), 'VALOR']));
-    Relatorio.Add(Format('%s %s %s %s', [LinhaSimples(10), LinhaSimples(8), LinhaSimples(TamanhoTitulo), LinhaSimples(13)]));
+    Relatorio.Add('TITULO   NUMERO   EMISSAO   CCF   VL.TOTAL');
+    Relatorio.Add(LinhaSimples(TamanhoLinha));
+
+
     for I := 0 to DAVsEmitidos.Count - 1 do
     begin
-      Relatorio.Add(Format('%10.10d %-8s %s %13.2n', [
+      Relatorio.Add(padL(DAVsEmitidos[I].Titulo, TamanhoLinha));
+      Relatorio.Add(Format('%10.10d %s %6.6d R$ %s', [
         DAVsEmitidos[I].Numero,
-        FormatDateTime('dd/mm/yy', DAVsEmitidos[I].DtEmissao),
-        padL(DAVsEmitidos[I].Titulo, TamanhoTitulo),
-        DAVsEmitidos[I].Valor
+        FormatDateTime('dd/mm/yyyy', DAVsEmitidos[I].DtEmissao),
+        DAVsEmitidos[I].CCF,
+        PadR(FormatFloat(',#0.00', DAVsEmitidos[I].Valor), TamanhoLinha - 32, ' ')
       ]));
     end;
 
-    Relatorio.Add(LinhaSimples(TamanhoLinha - 14) + ' ' + LinhaSimples(13));
-    Relatorio.Add(padR('Valor Total: ', TamanhoLinha - 13) + Format('%13.2n', [DAVsEmitidos.ValorTotalAcumulado]));
-    Relatorio.Add('');
-    Relatorio.Add('');
-    Relatorio.Add('Quantidade DAV Emitido: ' + IntToStr(DAVsEmitidos.Count));
+    Relatorio.Add(LinhaSimples(TamanhoLinha));
+    Relatorio.Add(Format('%d DAV listado(s)', [DAVsEmitidos.Count]));
 
     // impressão do relatório
     Self.RelatorioGerencial(Relatorio, 1, IndiceRelatorio);
@@ -5188,38 +5193,34 @@ begin
 
     Relatorio.Clear;
     Relatorio.Add('');
-    Relatorio.Add(padC('IDENTIFICACAO DO PAF-ECF', TamLin));
+
+    if IndiceRelatorio <= 0 then
+      Relatorio.Add(padC('IDENTIFICACAO DO PAF-ECF', TamLin));
+
     Relatorio.Add(LinhaDupla(TamLin));
     Relatorio.Add(padC('LAUDO NUMERO: ' + IdentificacaoPaf.NumeroLaudo, TamLin));
     Relatorio.Add(LinhaDupla(TamLin));
 
     Relatorio.Add('');
-    Relatorio.Add('');
     Relatorio.Add(padC('EMPRESA DESENVOLVEDORA', TamLin));
     Relatorio.Add(LinhaSimples(TamLin));
     Relatorio.Add('CNPJ........: ' + IdentificacaoPaf.Empresa.CNPJ);
     Relatorio.Add('Razao Social: ' + IdentificacaoPaf.Empresa.RazaoSocial);
+    Relatorio.Add('Endereco....: ' + IdentificacaoPaf.Empresa.Endereco);
+    Relatorio.Add('Cidade/UF...: ' + IdentificacaoPaf.Empresa.Cidade + '/' + IdentificacaoPaf.Empresa.Uf);
+    Relatorio.Add('CEP.........: ' + IdentificacaoPaf.Empresa.Cep);
     Relatorio.Add('Telefone....: ' + IdentificacaoPaf.Empresa.Telefone);
     Relatorio.Add('Contato.....: ' + IdentificacaoPaf.Empresa.Contato);
-    Relatorio.Add('Endereco....: ' + IdentificacaoPaf.Empresa.Endereco);
 
     Relatorio.Add('');
-    Relatorio.Add('');
-    Relatorio.Add(padC('DADOS DO PAF-ECF', TamLin));
+    Relatorio.Add(padC('IDENTIFICACAO DO PAF-ECF', TamLin));
     Relatorio.Add(LinhaSimples(TamLin));
     Relatorio.Add('Nome Comerc.: ' + IdentificacaoPaf.Paf.Nome);
     Relatorio.Add('Versao......: ' + IdentificacaoPaf.Paf.Versao);
+    Relatorio.Add('Versao ER...: ' + IdentificacaoPaf.VersaoER);
     Relatorio.Add('Princ. Exec.: ' + IdentificacaoPaf.Paf.PrincipalExe.Nome);
     Relatorio.Add('MD5.........: ' + IdentificacaoPaf.Paf.PrincipalExe.MD5);
 
-    Relatorio.Add('');
-    Relatorio.Add('');
-    Relatorio.Add(padC('ARQ. LISTA AUTENTICADOS', TamLin));
-    Relatorio.Add(LinhaSimples(TamLin));
-    Relatorio.Add(ExtractFileName(IdentificacaoPaf.ArquivoListaAutenticados.Nome));
-    Relatorio.Add('MD5: ' + IdentificacaoPaf.ArquivoListaAutenticados.MD5);
-
-    Relatorio.Add('');
     Relatorio.Add('');
     Relatorio.Add(padC('OUTROS ARQUIVOS UTILIZADOS', TamLin));
     Relatorio.Add(LinhaSimples(TamLin));
@@ -5230,13 +5231,16 @@ begin
     end;
 
     Relatorio.Add('');
+    Relatorio.Add(padC('ARQ. LISTA AUTENTICADOS', TamLin));
+    Relatorio.Add(LinhaSimples(TamLin));
+    Relatorio.Add(ExtractFileName(IdentificacaoPaf.ArquivoListaAutenticados.Nome));
+    Relatorio.Add('MD5: ' + IdentificacaoPaf.ArquivoListaAutenticados.MD5);
+
     Relatorio.Add('');
     Relatorio.Add(padC('ECFS AUTORIZADOS', TamLin));
     Relatorio.Add(LinhaSimples(TamLin));
     for I := 0 to IdentificacaoPaf.ECFsAutorizados.Count - 1 do
-    begin
       Relatorio.Add(IdentificacaoPaf.ECFsAutorizados.Strings[I]);
-    end;
 
     // impressão do relatório
     Self.RelatorioGerencial(Relatorio, 1, IndiceRelatorio);

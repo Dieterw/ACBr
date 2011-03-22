@@ -3561,13 +3561,14 @@ begin
       with DAVs.New do
       begin
         Numero    := I;
+        CCF       := 0;
         Titulo    := RandomFrom(TipoDAV);
         DtEmissao := Now;
         Valor     := RandomFrom(Valores)
       end;
     end;
 
-    ACBrECF1.PafMF_RelDAVEmitidos(DAVs, 'titulo personalizado', 0);
+    ACBrECF1.PafMF_RelDAVEmitidos(DAVs, 'REFERENCIA: 00/00/0000 A 00/00/0000', 0);
   finally
     DAVs.Free;
   end;
@@ -3580,23 +3581,28 @@ var
 begin
   IdentPaf := TACBrECFIdentificacaoPAF.Create;
   try
-    IdentPaf.NumeroLaudo := 'ABC1234567890';
+    IdentPaf.NumeroLaudo := 'ABC1234567890'; // retirar do laudo
+    IdentPaf.VersaoER    := '01.06'; // retirar do laudo
 
+    // preencher dados da empresa conforme o que foi informado no laudo de análise
     IdentPaf.Empresa.RazaoSocial := 'Razao social Empresa';
-    IdentPaf.Empresa.CNPJ        := '012223330000199';
-    IdentPaf.Empresa.Telefone    := '9911112222';
+    IdentPaf.Empresa.CNPJ        := '01.222.333/00001-99';
+    IdentPaf.Empresa.Endereco    := 'Rua da Felicidade, 1';
+    IdentPaf.Empresa.Cidade      := 'SAO PAULO';
+    IdentPaf.Empresa.Uf          := 'SP';
+    IdentPaf.Empresa.Cep         := '99.999-999';
+    IdentPaf.Empresa.Telefone    := '(99)1111.2222';
     IdentPaf.Empresa.Contato     := 'Nome do Contato';
-    IdentPaf.Empresa.Endereco    := 'Rua da Felicidade, 1, Campo Feliz/TT';
 
-    IdentPaf.Paf.Nome              := 'DemoECF';
-    IdentPaf.Paf.Versao            := 'v01.01.01';
+    IdentPaf.Paf.Nome              := 'DemoECF';// preencher conforme o laudo
+    IdentPaf.Paf.Versao            := 'v01.01.01'; // versão atual do aplicativo
     IdentPaf.Paf.PrincipalExe.Nome := UpperCase(ExtractFileName(ParamStr(0)));
-    IdentPaf.Paf.PrincipalExe.MD5  := StringOfChar('X', 32);;
+    IdentPaf.Paf.PrincipalExe.MD5  := StringOfChar('X', 32); // md5 atual do aplicativo
 
-    IdentPaf.ArquivoListaAutenticados.Nome := 'lista_arquivos.txt';
-    IdentPaf.ArquivoListaAutenticados.MD5  := 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA';
+    IdentPaf.ArquivoListaAutenticados.Nome := 'lista_arquivos.txt'; // nome do arquivo contendo a lista de autenticados
+    IdentPaf.ArquivoListaAutenticados.MD5  := 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'; // md5 do arquivo, mesmo que vai impresso nos cupons
 
-    // acertar para a lista de arquivos autenticados
+    // adicionar os arquivos adicionados ao arquivo da lista de autenticados
     for I := 1 to 5 do
     begin
       with IdentPaf.OutrosArquivos.New do
@@ -3606,6 +3612,7 @@ begin
       end;
     end;
 
+    // ecfs autorizados para funcionamento na máquina
     IdentPaf.ECFsAutorizados.clear;
     for I := 1 to 3 do
       IdentPaf.ECFsAutorizados.Add(StringOfChar('A', 15));

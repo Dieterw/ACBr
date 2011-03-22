@@ -931,22 +931,9 @@ begin
 
    qrlEmissao.Caption   := NotaUtil.FormatDate(DateToStr(FNFe.Ide.dEmi));
    qrlSaida.Caption     := IfThen( FNFe.Ide.DSaiEnt <> 0, NotaUtil.FormatDate(DateToStr(FNFe.Ide.dSaiEnt)));
-   qrlHoraSaida.Caption := '';
+   // Alterado por Italo em 22/03/2011
+   qrlHoraSaida.Caption := IfThen( FNFe.Ide.hSaiEnt <> 0, FormatDateTime('hh:mm:ss', FNFe.Ide.hSaiEnt));
 
-{    if FImprimeHoraSaida then
-    begin
-        if FHoraSaida = '' then
-        begin
-            qrlHoraSaida.Caption := FormatDateTime('hh:nn:ss',Now);
-        end else
-        begin
-            qrlHoraSaida.Caption := FHoraSaida;
-        end;
-    end else
-    begin
-        qrlHoraSaida.Caption := '';
-    end;
- }   
    // Faturas
 
    // Zera

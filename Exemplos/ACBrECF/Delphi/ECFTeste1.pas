@@ -3628,20 +3628,60 @@ var
   FormasPagamento: TACBrECFFormasPagamento;
   I: Integer;
 begin
+  {*****************************************************************************
+
+      OS VALORES DEVEM SER PASSADOS ACUMULADOS POR FORMA DE PAGAMENTO PARA
+      CADA DIA DE MOVIMENTO FISCAL OU NÃO FISCAL.
+
+  *****************************************************************************}
+
   FormasPagamento := TACBrECFFormasPagamento.Create;
   try
-    for I := 1 to 10 do
+    with FormasPagamento.New do
     begin
-      with FormasPagamento.New do
-      begin
-        Indice         := Format('%2.2d', [I]);
-        Descricao      := Format('Forma Pagto. %d', [I]);
-        ValorFiscal    := RandomRange(0, 10);
-        ValorNaoFiscal := RandomRange(0, 10);
-      end;
+      Descricao      := 'Dinheiro';
+      Data           := StrToDate('02/02/2000');
+      ValorFiscal    := 101.22;
+      ValorNaoFiscal := 0.00;
     end;
 
-    ACBrECF1.PafMF_RelMeiosPagamento(FormasPagamento, 'titulo personalizado', 0);
+    with FormasPagamento.New do
+    begin
+      Descricao      := 'Dinheiro';
+      Data           := StrtoDate('01/01/2000');
+      ValorFiscal    := 0.00;
+      ValorNaoFiscal := 100.00;
+    end;
+
+    with FormasPagamento.New do
+    begin
+      Descricao      := 'Dinheiro';
+      Data           := StrtoDate('01/05/2000');
+      ValorFiscal    := 100.23;
+      ValorNaoFiscal := 0.00;
+    end;
+
+    with FormasPagamento.New do
+    begin
+      Descricao      := 'Cartao';
+      Data           := StrtoDate('01/05/2000');
+      ValorFiscal    := 452.23;
+      ValorNaoFiscal := 0.00;
+    end;
+
+    with FormasPagamento.New do
+    begin
+      Descricao      := 'Cheque';
+      Data           := StrtoDate('01/01/2000');
+      ValorFiscal    := 123.56;
+      ValorNaoFiscal := 2.00;
+    end;
+
+    ACBrECF1.PafMF_RelMeiosPagamento(
+      FormasPagamento,
+      'PERIODO DE 01/01/2000 A 31/12/2000',
+      0
+    );
   finally
     FormasPagamento.Free;
   end;

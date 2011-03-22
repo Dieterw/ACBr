@@ -91,7 +91,6 @@ EACBrECFSemResposta     = class(EACBrECFErro) ;
 EACBrECFNaoInicializado = class(EACBrECFErro) ;
 EACBrECFOcupado         = class(EACBrECFErro) ;
 
-
   TACBrECFEmpresa = class
   private
     fsCNPJ: string;
@@ -266,6 +265,9 @@ TACBrECFFormasPagamento = class(TObjectList)
     procedure SetObject (Index: Integer; Item: TACBrECFFormaPagamento);
     function GetObject (Index: Integer): TACBrECFFormaPagamento;
   public
+    procedure OrdenarPorData;
+    function ProcurarPorDescricao(const Descricao: String): TACBrECFFormaPagamento;
+
     function New: TACBrECFFormaPagamento;
     function Add (Obj: TACBrECFFormaPagamento): Integer;
     procedure Insert (Index: Integer; Obj: TACBrECFFormaPagamento);
@@ -1226,6 +1228,19 @@ end;
 
 { --------------------------- TACBrECFFormasPagamento ---------------------- }
 
+// método de comparação utilizado para ordenar a lista por data
+function CompararDatas(FormaPagto1,
+  FormaPagto2: TACBrECFFormaPagamento): Integer;
+begin
+  if FormaPagto1.Data < FormaPagto2.Data then
+    Result := -1
+  else
+  if FormaPagto1.Data > FormaPagto2.Data then
+    Result := 1
+  else
+    Result := 0;
+end;
+
 { TACBrECFFormaPagamento }
 constructor TACBrECFFormaPagamento.create;
 begin
@@ -1265,6 +1280,27 @@ function TACBrECFFormasPagamento.New: TACBrECFFormaPagamento;
 begin
   Result := TACBrECFFormaPagamento.Create;
   Add(Result);
+end;
+
+procedure TACBrECFFormasPagamento.OrdenarPorData;
+begin
+  Self.Sort(@CompararDatas);
+end;
+
+function TACBrECFFormasPagamento.ProcurarPorDescricao(
+  const Descricao: String): TACBrECFFormaPagamento;
+var
+  I: Integer;
+begin
+  Result := nil;
+  for I := 0 to Self.Count - 1 do
+  begin
+    if AnsiCompareText(Descricao, Self[I].Descricao) = 0 then
+    begin
+      Result := Self[I];
+      Exit
+    end;
+  end;
 end;
 
 procedure TACBrECFFormasPagamento.SetObject(Index: Integer;

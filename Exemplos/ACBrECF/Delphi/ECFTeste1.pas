@@ -3553,17 +3553,18 @@ var
 const
   TipoDAV: array[0..1] of string = ('PEDIDO', 'ORCAMENTO');
   Valores: array[0..3] of Double = (1.00, 2.00, 3.50, 10.45);
+  Datas:   array[0..4] of string = ('30/12/2000', '01/01/2011', '25/02/2010', '04/02/2011', '13/04/2011');
 begin
   DAVs := TACBrECFDAVs.Create;
   try
-    for I := 1 to 10 do
+    for I := 1 to 25 do
     begin
       with DAVs.New do
       begin
         Numero    := I;
         CCF       := 0;
         Titulo    := RandomFrom(TipoDAV);
-        DtEmissao := Now;
+        DtEmissao := StrToDate(RandomFrom(Datas));
         Valor     := RandomFrom(Valores)
       end;
     end;
@@ -3627,54 +3628,22 @@ procedure TForm1.btnMenuFiscalRelMeiosPagtoClick(Sender: TObject);
 var
   FormasPagamento: TACBrECFFormasPagamento;
   I: Integer;
+const
+  arrayDescrFormaPagto: array[0..3] of string = ('Dinheiro', 'Cheque', 'Cartão', 'Ticket');
+  arrayDataLancamento: array[0..4] of String = ('01/01/2010', '31/12/2010', '04/05/2011', '02/01/2010', '03/05/2011');
+  arrayValores: array[0..4] of Double = (10.56, 14.23, 0.00, 12.00, 1.20);
 begin
-  {*****************************************************************************
-
-      OS VALORES DEVEM SER PASSADOS ACUMULADOS POR FORMA DE PAGAMENTO PARA
-      CADA DIA DE MOVIMENTO FISCAL OU NÃO FISCAL.
-
-  *****************************************************************************}
-
   FormasPagamento := TACBrECFFormasPagamento.Create;
   try
-    with FormasPagamento.New do
+    for I := 1 to 25 do
     begin
-      Descricao      := 'Dinheiro';
-      Data           := StrToDate('02/02/2000');
-      ValorFiscal    := 101.22;
-      ValorNaoFiscal := 0.00;
-    end;
-
-    with FormasPagamento.New do
-    begin
-      Descricao      := 'Dinheiro';
-      Data           := StrtoDate('01/01/2000');
-      ValorFiscal    := 0.00;
-      ValorNaoFiscal := 100.00;
-    end;
-
-    with FormasPagamento.New do
-    begin
-      Descricao      := 'Dinheiro';
-      Data           := StrtoDate('01/05/2000');
-      ValorFiscal    := 100.23;
-      ValorNaoFiscal := 0.00;
-    end;
-
-    with FormasPagamento.New do
-    begin
-      Descricao      := 'Cartao';
-      Data           := StrtoDate('01/05/2000');
-      ValorFiscal    := 452.23;
-      ValorNaoFiscal := 0.00;
-    end;
-
-    with FormasPagamento.New do
-    begin
-      Descricao      := 'Cheque';
-      Data           := StrtoDate('01/01/2000');
-      ValorFiscal    := 123.56;
-      ValorNaoFiscal := 2.00;
+      with FormasPagamento.New do
+      begin
+        Descricao      := RandomFrom(arrayDescrFormaPagto);
+        Data           := StrToDate(RandomFrom(arrayDataLancamento));
+        ValorFiscal    := RandomFrom(arrayValores);
+        ValorNaoFiscal := RandomFrom(arrayValores);
+      end;
     end;
 
     ACBrECF1.PafMF_RelMeiosPagamento(

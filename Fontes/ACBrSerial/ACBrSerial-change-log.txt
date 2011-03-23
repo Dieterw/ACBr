@@ -97,6 +97,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data:  23/03/2011
+-- ACBrECF --
+[*] - Alteração no relatório do menu fiscal meio de pagamento para acumular 
+      por data e descricao da finalizadora.
+      Por: Régys Silveira
+
 Data:  22/03/2011
 -- ACBrECF --
 [*] - Acertos nos relatórios do menu fiscal do paf-ecf para ficar conforme 

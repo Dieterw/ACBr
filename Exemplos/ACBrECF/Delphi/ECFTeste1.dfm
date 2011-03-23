@@ -987,7 +987,7 @@ object Form1: TForm1
       end
       object Button2: TButton
         Left = 19
-        Top = 213
+        Top = 53
         Width = 108
         Height = 25
         Anchors = [akLeft, akBottom]
@@ -999,7 +999,7 @@ object Form1: TForm1
         Left = 0
         Top = 17
         Width = 586
-        Height = 189
+        Height = 29
         Anchors = [akLeft, akTop, akRight, akBottom]
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack

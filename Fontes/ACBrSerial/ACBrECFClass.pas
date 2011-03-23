@@ -228,6 +228,7 @@ TACBrECFAliquotas = class(TObjectList)
     function GetObject (Index: Integer): TACBrECFDAV;
     procedure Insert (Index: Integer; Obj: TACBrECFDAV);
   public
+    procedure Ordenar;
     function New: TACBrECFDAV;
     function Add (Obj: TACBrECFDAV): Integer;
     function ValorTotalAcumulado: Double;  protected
@@ -265,9 +266,7 @@ TACBrECFFormasPagamento = class(TObjectList)
     procedure SetObject (Index: Integer; Item: TACBrECFFormaPagamento);
     function GetObject (Index: Integer): TACBrECFFormaPagamento;
   public
-    procedure OrdenarPorData;
-    function ProcurarPorDescricao(const Descricao: String): TACBrECFFormaPagamento;
-
+    procedure Ordenar;
     function New: TACBrECFFormaPagamento;
     function Add (Obj: TACBrECFFormaPagamento): Integer;
     procedure Insert (Index: Integer; Obj: TACBrECFFormaPagamento);
@@ -1174,6 +1173,18 @@ end;
 { ---------------------------- TACBrECFDAVs -------------------------- }
 
 { TACBrECFDAV }
+
+function OrdenarDAVs(const ADav1, ADav2: TACBrECFDAV): Integer;
+begin
+  if ADav1.DtEmissao < ADav2.DtEmissao then
+    Result := -1
+  else
+  if ADav1.DtEmissao > ADav2.DtEmissao then
+    Result := 1
+  else
+    Result := 0;
+end;
+
 constructor TACBrECFDAV.create;
 begin
   fsNumero    := 0;
@@ -1211,6 +1222,11 @@ begin
   Add(Result);
 end;
 
+procedure TACBrECFDAVs.Ordenar;
+begin
+  Self.Sort(@OrdenarDAVs);
+end;
+
 function TACBrECFDAVs.ValorTotalAcumulado: Double;
 var
   I: Integer;
@@ -1225,20 +1241,18 @@ begin
   inherited SetItem (Index, Item) ;
 end;
 
-
 { --------------------------- TACBrECFFormasPagamento ---------------------- }
 
 // método de comparação utilizado para ordenar a lista por data
-function CompararDatas(FormaPagto1,
+function CompararCamposOrdenacao(FormaPagto1,
   FormaPagto2: TACBrECFFormaPagamento): Integer;
+var
+  sCampo1, sCampo2: String;
 begin
-  if FormaPagto1.Data < FormaPagto2.Data then
-    Result := -1
-  else
-  if FormaPagto1.Data > FormaPagto2.Data then
-    Result := 1
-  else
-    Result := 0;
+  sCampo1 := FormatDateTime('YYYYMMDD', FormaPagto1.Data) + Trim(FormaPagto1.Descricao);
+  sCampo2 := FormatDateTime('YYYYMMDD', FormaPagto2.Data) + Trim(FormaPagto2.Descricao);
+
+  Result := AnsiCompareText(sCampo1, sCampo2);
 end;
 
 { TACBrECFFormaPagamento }
@@ -1261,6 +1275,9 @@ begin
   fsDescricao        := AFormaPagamento.Descricao ;
   fsPermiteVinculado := AFormaPagamento.PermiteVinculado ;
   fsTotal            := AFormaPagamento.Total ;
+  fsData             := AFormaPagamento.Data ;
+  fsValorFiscal      := AFormaPagamento.ValorFiscal ;
+  fsValorNaoFiscal   := AFormaPagamento.ValorNaoFiscal ;
 end;
 
 function TACBrECFFormasPagamento.Add(Obj: TACBrECFFormaPagamento): Integer;
@@ -1286,25 +1303,9 @@ begin
   Add(Result);
 end;
 
-procedure TACBrECFFormasPagamento.OrdenarPorData;
+procedure TACBrECFFormasPagamento.Ordenar;
 begin
-  Self.Sort(@CompararDatas);
-end;
-
-function TACBrECFFormasPagamento.ProcurarPorDescricao(
-  const Descricao: String): TACBrECFFormaPagamento;
-var
-  I: Integer;
-begin
-  Result := nil;
-  for I := 0 to Self.Count - 1 do
-  begin
-    if AnsiCompareText(Descricao, Self[I].Descricao) = 0 then
-    begin
-      Result := Self[I];
-      Exit
-    end;
-  end;
+  Self.Sort(@CompararCamposOrdenacao);
 end;
 
 procedure TACBrECFFormasPagamento.SetObject(Index: Integer;

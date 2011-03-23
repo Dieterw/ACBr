@@ -792,9 +792,9 @@ TACBrECF = class( TACBrComponent )
       const PathArquivo: String); overload;
 
     procedure PafMF_RelMeiosPagamento(
-      const FormasPagamento: TACBrECFFormasPagamento;
-      const TituloRelatorio: String = '';
-      const IndiceRelatorio: Integer = 0);
+      const AFormasPagamento: TACBrECFFormasPagamento;
+      const ATituloRelatorio: String = '';
+      const AIndiceRelatorio: Integer = 0);
 
     procedure PafMF_RelDAVEmitidos(const DAVsEmitidos: TACBrECFDAVs;
       const TituloRelatorio: String = '';
@@ -5069,9 +5069,9 @@ begin
 end;
 
 procedure TACBrECF.PafMF_RelMeiosPagamento(
-  const FormasPagamento: TACBrECFFormasPagamento;
-  const TituloRelatorio: String;
-  const IndiceRelatorio: Integer);
+  const AFormasPagamento: TACBrECFFormasPagamento;
+  const ATituloRelatorio: String;
+  const AIndiceRelatorio: Integer);
 var
   DataAtual: TDateTime;
   Relatorio: TStringList;
@@ -5079,44 +5079,75 @@ var
   TamLin: Integer;
   SubTTFiscal: Double;
   SubTTNFiscal: Double;
-  TotalMeiosPagamento: TACBrECFFormasPagamento;
+  FPAcumuladas: TACBrECFFormasPagamento;
+  FPTotalizado: TACBrECFFormasPagamento;
 
-  procedure AcumularValorFP(const FormaPagto: TACBrECFFormaPagamento);
+  function ProcurarDataDescricao(const AFormaPagto: TACBrECFFormaPagamento;
+    const AFormasPagamento: TACBrECFFormasPagamento) :TACBrECFFormaPagamento;
   var
-    FP: TACBrECFFormaPagamento;
+    I: Integer;
   begin
-    FP := TotalMeiosPagamento.ProcurarPorDescricao(FormaPagto.Descricao);
-    if FP <> nil then
+    Result := nil;
+    for I := 0 to AFormasPagamento.Count - 1 do
     begin
-      FP.ValorFiscal    := FP.ValorFiscal    + FormaPagto.ValorFiscal;
-      FP.ValorNaoFiscal := FP.ValorNaoFiscal + FormaPagto.ValorNaoFiscal;
-    end
-    else
-    begin
-      with TotalMeiosPagamento.New do
+      if (AFormaPagto.Data = AFormasPagamento[I].Data) and
+        (AnsiUpperCase(AFormasPagamento[I].Descricao) = AnsiUpperCase(AFormaPagto.Descricao)) then
       begin
-        Descricao      := FormaPagto.Descricao;
-        ValorFiscal    := FormaPagto.ValorFiscal;
-        ValorNaoFiscal := FormaPagto.ValorNaoFiscal;
+        Result := AFormasPagamento[I];
+        Exit;
       end;
     end;
   end;
 
-  procedure AddCabecalho;
+  procedure AcumularValorFP(const AFormaPagto: TACBrECFFormaPagamento;
+    var ALista: TACBrECFFormasPagamento);
+  var
+    FP: TACBrECFFormaPagamento;
   begin
+    FP := ProcurarDataDescricao(AFormaPagto, ALista);
+    if FP <> nil then
+    begin
+      FP.ValorFiscal    := FP.ValorFiscal    + AFormaPagto.ValorFiscal;
+      FP.ValorNaoFiscal := FP.ValorNaoFiscal + AFormaPagto.ValorNaoFiscal;
+    end
+    else
+    begin
+      with ALista.New do
+      begin
+        Data           := AFormaPagto.Data;
+        Descricao      := AFormaPagto.Descricao;
+        ValorFiscal    := AFormaPagto.ValorFiscal;
+        ValorNaoFiscal := AFormaPagto.ValorNaoFiscal;
+      end;
+    end;
+  end;
+
+  procedure AddCabecalho(const AData: TDateTime);
+  begin
+    if AData > 0 then
+    begin
+      Relatorio.Add('');
+      Relatorio.Add(padC('DATA DE ACUMULACAO: ' + FormatDateTime('dd/mm/yyyy', AData), TamLin));
+      Relatorio.Add('');
+    end;
+
     Relatorio.Add('Identificacao      Vl. Fiscal     Vl. Nao Fiscal');
     Relatorio.Add(LinhaSimples(TamLin));
   end;
 
-  procedure SubTotalizar;
+  procedure AddSubTotal;
   begin
     Relatorio.Add(LinhaSimples(TamLin));
     Relatorio.Add(Format('Sub-Total          R$%12.2n R$%12.2n', [SubTTFiscal, SubTTNFiscal]));
     Relatorio.Add('');
+    Relatorio.Add('');
+
+    SubTTFiscal  := 0.00;
+    SubTTNFiscal := 0.00;
   end;
 
 begin
-  TamLin := fsECF.Colunas;
+  TamLin := 48;//fsECF.Colunas;
 
   // montagem do relatorio
   Relatorio := TStringList.Create;
@@ -5124,69 +5155,85 @@ begin
     Relatorio.Clear;
     Relatorio.Add('');
 
-    if IndiceRelatorio <= 0 then
+    if AIndiceRelatorio <= 0 then
       Relatorio.Add(padC('MEIOS DE PAGAMENTO', TamLin));
-    if Trim(TituloRelatorio) <> '' then
-      Relatorio.Add(padC(TituloRelatorio, TamLin));
 
-    TotalMeiosPagamento := TACBrECFFormasPagamento.Create;
+    if Trim(ATituloRelatorio) <> '' then
+      Relatorio.Add(padC(ATituloRelatorio, TamLin));
+
+    // ********* impressão do relatório acumulando por data e descricao ********
+    FPAcumuladas := TACBrECFFormasPagamento.Create;
+    FPTotalizado := TACBrECFFormasPagamento.Create;
     try
-      FormasPagamento.OrdenarPorData;
+      // acumular as formas por data e descricao
+      FPAcumuladas.Clear;
+      AFormasPagamento.Ordenar;
+      for I := 0 to AFormasPagamento.Count - 1 do
+        AcumularValorFP(AFormasPagamento[I], FPAcumuladas);
+
+      // gerar o relatório
       DataAtual := 0.0;
-      for I := 0 to FormasPagamento.Count - 1 do
+      FPAcumuladas.Ordenar;
+      for I := 0 to FPAcumuladas.Count - 1 do
       begin
-        if DataAtual <> FormasPagamento[I].Data then
+        if DataAtual <> FPAcumuladas[I].Data then
         begin
           // SUB-TOTAL
           if (DataAtual > 0) then
-          begin
-            SubTotalizar;
-            SubTTFiscal  := 0.00;
-            SubTTNFiscal := 0.00;
-          end;
+            AddSubTotal;
 
           // cabecalho
-          DataAtual := FormasPagamento[I].Data;
-          Relatorio.Add('');
-          Relatorio.Add(padC('DATA DE ACUMULACAO: ' + FormatDateTime('dd/mm/yyyy', DataAtual), TamLin));
-          Relatorio.Add('');
-          AddCabecalho;
+          DataAtual := FPAcumuladas[I].Data;
+          AddCabecalho(DataAtual);
         end;
 
         // dados dos pagamentos
         Relatorio.Add(Format('%s %s %s', [
-          padL(FormasPagamento[I].Descricao, 18),
-          Format('R$%12.2n', [FormasPagamento[I].ValorFiscal]),
-          Format('R$%12.2n', [FormasPagamento[I].ValorNaoFiscal])
+          padL(FPAcumuladas[I].Descricao, 18),
+          Format('R$%12.2n', [FPAcumuladas[I].ValorFiscal]),
+          Format('R$%12.2n', [FPAcumuladas[I].ValorNaoFiscal])
         ]));
 
         // acumuladores
-        AcumularValorFP(FormasPagamento[I]);
-        SubTTFiscal  := SubTTFiscal  + FormasPagamento[I].ValorFiscal;
-        SubTTNFiscal := SubTTNFiscal + FormasPagamento[I].ValorNaoFiscal;
+        AcumularValorFP(FPAcumuladas[I], FPTotalizado);
+        SubTTFiscal  := SubTTFiscal  + FPAcumuladas[I].ValorFiscal;
+        SubTTNFiscal := SubTTNFiscal + FPAcumuladas[I].ValorNaoFiscal;
       end;
 
       // sub-total do ultimo dia
-      SubTotalizar;
+      AddSubTotal;
 
-      // total geral do relatório por forma de pagamento
+      // ************ impressão do total geral ************
       Relatorio.Add('');
       Relatorio.Add(padC('TOTAL GERAL', TamLin));
+      if Trim(ATituloRelatorio) <> '' then
+        Relatorio.Add(padC(ATituloRelatorio, TamLin));
+
       Relatorio.Add('');
+      AddCabecalho(0);
+
+      // acumular os valores totais das formas
+      FPAcumuladas.Clear;
+      FPTotalizado.Ordenar;
+      for I := 0 to FPTotalizado.Count - 1 do
+      begin
+        FPTotalizado[I].Data := 0;
+        AcumularValorFP(FPTotalizado[I], FPAcumuladas);
+      end;
+
       SubTTFiscal  := 0.00;
       SubTTNFiscal := 0.00;
-      AddCabecalho;
-      for I := 0 to TotalMeiosPagamento.Count - 1 do
+      FPAcumuladas.Ordenar;
+      for I := 0 to FPAcumuladas.Count - 1 do
       begin
-        // dados dos pagamentos
         Relatorio.Add(Format('%s %s %s', [
-          padL(TotalMeiosPagamento[I].Descricao, 18),
-          Format('R$%12.2n', [TotalMeiosPagamento[I].ValorFiscal]),
-          Format('R$%12.2n', [TotalMeiosPagamento[I].ValorNaoFiscal])
+          padL(FPAcumuladas[I].Descricao, 18),
+          Format('R$%12.2n', [FPAcumuladas[I].ValorFiscal]),
+          Format('R$%12.2n', [FPAcumuladas[I].ValorNaoFiscal])
         ]));
 
-        SubTTFiscal  := SubTTFiscal  + TotalMeiosPagamento[I].ValorFiscal;
-        SubTTNFiscal := SubTTNFiscal + TotalMeiosPagamento[I].ValorNaoFiscal;
+        SubTTFiscal  := SubTTFiscal  + FPAcumuladas[I].ValorFiscal;
+        SubTTNFiscal := SubTTNFiscal + FPAcumuladas[I].ValorNaoFiscal;
       end;
 
       // somatorio total
@@ -5194,11 +5241,11 @@ begin
       Relatorio.Add(Format('TOTAL              R$%12.2n R$%12.2n', [SubTTFiscal, SubTTNFiscal]));
       Relatorio.Add('');
     finally
-      TotalMeiosPagamento.Free;
+      FPTotalizado.Free;
     end;
 
     // impressão do relatório
-    Self.RelatorioGerencial(Relatorio, 1, IndiceRelatorio);
+    Self.RelatorioGerencial(Relatorio, 1, AIndiceRelatorio);
   finally
     Relatorio.Free;
   end;
@@ -5233,7 +5280,7 @@ begin
     Relatorio.Add('TITULO   NUMERO   EMISSAO   CCF   VL.TOTAL');
     Relatorio.Add(LinhaSimples(TamanhoLinha));
 
-
+    DAVsEmitidos.Ordenar;
     for I := 0 to DAVsEmitidos.Count - 1 do
     begin
       Relatorio.Add(padL(DAVsEmitidos[I].Titulo, TamanhoLinha));

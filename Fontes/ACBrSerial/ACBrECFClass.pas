@@ -1248,6 +1248,10 @@ begin
   fsDescricao        := '' ;
   fsPermiteVinculado := true ;
   fsTotal            := 0 ;
+
+  fsData             := 0.00;
+  fsValorFiscal      := 0.00;
+  fsValorNaoFiscal   := 0.0;
 end;
 
 procedure TACBrECFFormaPagamento.Assign(

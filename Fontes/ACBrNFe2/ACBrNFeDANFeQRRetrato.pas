@@ -1248,18 +1248,25 @@ begin
          with EnderEmit do
          begin
             qrmEndereco.Lines.Clear;
-            qrmEndereco.Lines.add ( XLgr + IfThen ( Nro = '0', '', ', ' + Nro ) + ' ' + XCpl + ' ' + XBairro );
-            qrmEndereco.Lines.add ( XMun + ' - ' + UF );
-            qrmEndereco.Lines.add ( 'CEP ' + NotaUtil.FormatarCEP( FormatFloat( '00000000', CEP ) ) );
+//            qrmEndereco.Lines.add ( XLgr + IfThen ( Nro = '0', '', ', ' + Nro ) + ' ' + XCpl + ' ' + XBairro );
+//            qrmEndereco.Lines.add ( XMun + ' - ' + UF );
+//            qrmEndereco.Lines.add ( 'CEP ' + NotaUtil.FormatarCEP( FormatFloat( '00000000', CEP ) ) );
+            // Alterado por Italo em 23/03/2011
+            qrmEndereco.Lines.Add(XLgr + IfThen(Nro = '0', '', ', ' + Nro));
+            if XCpl <> '' then qrmEndereco.Lines.Add(XCpl);
+            if XBairro <> '' then qrmEndereco.Lines.Add(XBairro);
+            qrmEndereco.Lines.Add(XMun + ' - ' + UF);
+            qrmEndereco.Lines.Add('CEP: ' + NotaUtil.FormatarCEP(FormatFloat( '00000000', CEP )));
 
+            // Alterado por Italo em 23/03/2011
             if Trim(FSite) <> '' then
             begin
-               qrmEndereco.Lines.Add (FSite);
+               qrmEndereco.Lines.Add ('SITE: ' + FSite);
             end;
 
             if Trim(FEmail) <> '' then
             begin
-               qrmEndereco.Lines.Add (FEmail);
+               qrmEndereco.Lines.Add ('E-MAIL: ' + FEmail);
             end;
 
             // telefone

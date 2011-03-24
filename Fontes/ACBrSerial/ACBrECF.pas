@@ -5270,11 +5270,10 @@ begin
     if IndiceRelatorio <= 0 then
       Relatorio.Add(padC('DAV EMITIDOS', TamanhoLinha));
 
-    Relatorio.Add(LinhaDupla(TamanhoLinha));
     if Trim(TituloRelatorio) <> '' then
     begin
       Relatorio.Add(padC(TituloRelatorio, TamanhoLinha));
-      Relatorio.Add(LinhaDupla(TamanhoLinha));
+      Relatorio.Add('');
     end;
 
     Relatorio.Add('TITULO   NUMERO   EMISSAO   CCF   VL.TOTAL');

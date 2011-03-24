@@ -524,7 +524,7 @@ Var
   md_ctx: EVP_MD_CTX;
   md_value_bin : array [0..EVP_MAX_MD_SIZE] of char;
   md_value_hex : array [0..1023] of char;
-  NameDgst : String ;
+  NameDgst : PAnsiChar;
 begin
   InitOpenSSL ;
   Result   := '';
@@ -540,7 +540,7 @@ begin
  end ;
 
   MS.Position := 0;
-  md := EVP_get_digestbyname( PAnsiChar( NameDgst ) );
+  md := EVP_get_digestbyname( NameDgst );
   EVP_DigestInit( @md_ctx, md );
   EVP_DigestUpdate( @md_ctx, MS.Memory, MS.Size );
   EVP_DigestFinal( @md_ctx, @md_value_bin, {$IFNDEF USE_libeay32}@{$ENDIF}md_len);

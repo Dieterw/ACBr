@@ -71,6 +71,7 @@ type
     btnR: TButton;
     btnT: TButton;
     btnC: TButton;
+    btnN: TButton;
     procedure btnDClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure PreencherHeader(Header: TRegistroX1);
@@ -82,6 +83,7 @@ type
     procedure ACBrPAFMsnError(const MsnError: String);
     procedure ACBrPAFPAFCalcEAD(Arquivo: String);
     procedure btnCClick(Sender: TObject);
+    procedure btnNClick(Sender: TObject);
   private
     { Private declarations }
     function QualquerNumero: Integer;
@@ -94,6 +96,9 @@ var
   Form6: TForm6;
 
 implementation
+
+uses
+  ACBrEAD;
 
 const
      NUM_FAB      = 'NUMFAB78901234567890';
@@ -237,6 +242,25 @@ begin
        E2.DT_EST   :=Date;
      end;
      ACBrPAF.SaveFileTXT_E('PAF_E.txt');
+end;
+
+procedure TForm6.btnNClick(Sender: TObject);
+begin
+  // registro P1
+  PreencherHeader(ACBrPAF.PAF_N.RegistroN1); // preencher header do arquivo
+
+  // registro P2
+  ACBrPAF.PAF_N.RegistroN2.LAUDO  := 'LAU1234567';
+  ACBrPAF.PAF_N.RegistroN2.NOME   := 'NOME APLICATIVO NO LAUDO';
+  ACBrPAF.PAF_N.RegistroN2.VERSAO := '1000';
+
+  with ACBrPAF.PAF_N.RegistroN3.New do
+  begin
+    NOME_ARQUIVO := ExtractFileName(ParamStr(0));
+    MD5          := ACBrEAD.MD5FromFile(ParamStr(0));
+  end;
+
+  ACBrPAF.SaveFileTXT_N('PAF_N.txt');
 end;
 
 procedure TForm6.btnPClick(Sender: TObject);

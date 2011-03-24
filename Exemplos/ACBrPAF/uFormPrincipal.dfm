@@ -108,7 +108,6 @@ object Form6: TForm6
     Align = alBottom
     Caption = 'Log de erros'
     TabOrder = 1
-    ExplicitTop = 156
     object logErros: TMemo
       Left = 2
       Top = 15
@@ -173,10 +172,18 @@ object Form6: TForm6
     TabOrder = 7
     OnClick = btnCClick
   end
+  object btnN: TButton
+    Left = 251
+    Top = 127
+    Width = 75
+    Height = 25
+    Caption = 'Tipo N'
+    TabOrder = 8
+    OnClick = btnNClick
+  end
   object ACBrPAF: TACBrPAF
     Path = '.\'
     Delimitador = '|'
-    TrimString = True
     CurMascara = '#0.00'
     OnPAFCalcEAD = ACBrPAFPAFCalcEAD
     Left = 272

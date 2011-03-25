@@ -148,7 +148,7 @@ begin
     (*B03*) NFe.ide.cNF := Leitor.rCampo(tcInt, 'cNF');
     (*B04*) NFe.ide.natOp := Leitor.rCampo(tcStr, 'natOp');
     (*B05*) NFe.ide.indPag := StrToIndpag(ok, Leitor.rCampo(tcStr, 'indPag'));
-    (*B06*) NFe.ide.modelo := Leitor.rCampo(tcStr, 'mod');
+    (*B06*) NFe.ide.modelo := Leitor.rCampo(tcInt, 'mod');
     (*B07*) NFe.ide.serie := Leitor.rCampo(tcInt, 'serie');
     (*B08*) NFe.ide.nNF := Leitor.rCampo(tcInt, 'nNF');
     (*B09*) NFe.ide.dEmi := Leitor.rCampo(tcDat, 'dEmi');

@@ -50,7 +50,6 @@ Símbolo : Significado
 Versão 0.06   22/03/11
 ---------------
 [*] Acertos nos registros Tipo N.
-[-] Remoção da assinatura EAD por não ser necessária.
 [+] Adicionado método para ler um arquivo Tipo N já gravado.
     por Régys Silveira
 

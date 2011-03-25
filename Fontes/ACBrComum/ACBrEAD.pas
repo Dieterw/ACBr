@@ -153,6 +153,7 @@ type
   end;
 
 function MD5FromFile(const APathArquivo: String): String;
+function MD5FromString(const AString: String): String;
 
 
 implementation
@@ -165,6 +166,18 @@ begin
   EAD := TACBrEAD.Create(nil);
   try
     Result := EAD.CalcularHashArquivo(APathArquivo, dgstMD5);
+  finally
+    FreeAndNil(EAD);
+  end;
+end;
+
+function MD5FromString(const AString: String): String;
+var
+  EAD: TACBrEAD;
+begin
+  EAD := TACBrEAD.Create(nil);
+  try
+    Result := EAD.CalcularHash(AString, dgstMD5);
   finally
     FreeAndNil(EAD);
   end;

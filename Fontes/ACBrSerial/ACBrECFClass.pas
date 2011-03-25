@@ -135,6 +135,28 @@ EACBrECFOcupado         = class(EACBrECFErro) ;
       read GetObject write SetObject; default;
   end;
 
+  TACBrECFImpressoraFiscal = class
+  private
+    FCRO: Integer;
+    FValorGT: Double;
+    FNumeroSerie: String;
+  public
+    property NumeroSerie: String read FNumeroSerie write FNumeroSerie;
+    property ValorGT: Double read FValorGT write FValorGT;
+    property CRO: Integer read FCRO write FCRO;
+  end;
+
+  TACBrECFImpressorasFiscais = class(TObjectList)
+  private
+    procedure SetObject(Index: Integer; Item: TACBrECFImpressoraFiscal);
+    function GetObject(Index: Integer): TACBrECFImpressoraFiscal;
+    procedure Insert(Index: Integer; Obj: TACBrECFImpressoraFiscal);
+  public
+    function New: TACBrECFImpressoraFiscal;
+    function Add(Obj: TACBrECFImpressoraFiscal): Integer;
+    property Objects[Index: Integer]: TACBrECFImpressoraFiscal read GetObject write SetObject; default;
+  end;
+
   TACBrECFInfoPaf = class
   private
     fsVersao: String;
@@ -4033,5 +4055,37 @@ procedure TACBrECFArquivos.SetObject(Index: Integer; Item: TACBrECFArquivo);
 begin
   inherited SetItem (Index, Item) ;
 end;
+
+{ TACBrECFImpressorasFiscais }
+
+function TACBrECFImpressorasFiscais.Add(Obj: TACBrECFImpressoraFiscal): Integer;
+begin
+  Result := inherited Add(Obj);
+end;
+
+function TACBrECFImpressorasFiscais.GetObject(
+  Index: Integer): TACBrECFImpressoraFiscal;
+begin
+  Result := inherited GetItem(Index) as TACBrECFImpressoraFiscal;
+end;
+
+procedure TACBrECFImpressorasFiscais.Insert(Index: Integer;
+  Obj: TACBrECFImpressoraFiscal);
+begin
+  inherited Insert(Index, Obj);
+end;
+
+function TACBrECFImpressorasFiscais.New: TACBrECFImpressoraFiscal;
+begin
+  Result := TACBrECFImpressoraFiscal.Create;
+  Add(Result);
+end;
+
+procedure TACBrECFImpressorasFiscais.SetObject(Index: Integer;
+  Item: TACBrECFImpressoraFiscal);
+begin
+  inherited SetItem(Index, Item);
+end;
+
 
 end.

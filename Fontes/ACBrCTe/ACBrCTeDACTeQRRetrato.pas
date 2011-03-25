@@ -861,6 +861,7 @@ begin
 
   // Imprime os Documentos Originários se o Tipo de CTe for Normal
   // Incluido / Alterado por Italo e Doni em 24/09/2010
+  // TpcteTipoCTe = (tcNormal, tcComplemento, tcAnulacao, tcSubstituto);
   qrbItens.Enabled:=(FCTe.Ide.tpCTe = tcNormal);
 
   for i := 1 to 2 do

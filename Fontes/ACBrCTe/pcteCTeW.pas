@@ -1823,7 +1823,7 @@ begin
   if (CTe.Ide.tpCTe = tcAnulacao) then
   begin
     Gerador.wGrupo('infCteAnu', 'V01');
-    Gerador.wCampo(tcEsp, 'V02', 'chCTe', 44, 44, 1, SomenteNumeros(CTe.InfCTeAnuEnt.chCTe), DSC_CHCTE);
+    Gerador.wCampo(tcEsp, 'V02', 'chCte', 44, 44, 1, SomenteNumeros(CTe.InfCTeAnuEnt.chCTe), DSC_CHCTE);
     Gerador.wCampo(tcDat, 'V03', 'dEmi  ', 10, 10, 1, CTe.InfCTeAnuEnt.dEmi, DSC_DEMI);
     Gerador.wGrupo('/infCteAnu');
   end;

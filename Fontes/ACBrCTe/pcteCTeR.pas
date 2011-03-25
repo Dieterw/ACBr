@@ -1062,8 +1062,8 @@ begin
     inc(i01);
   end;
 
-  (* Grupo da TAG <infCTeAnu> ************************************************)
-  if Leitor.rExtrai(1, 'infCTeAnu') <> '' then
+  (* Grupo da TAG <infCteAnu> ************************************************)
+  if Leitor.rExtrai(1, 'infCteAnu') <> '' then
   begin
     CTe.InfCTeAnuEnt.chCTe := Leitor.rCampo(tcStr,'chCte');
     CTe.InfCTeAnuEnt.dEmi  := Leitor.rCampo(tcDat,'dEmi');

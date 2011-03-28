@@ -57,6 +57,7 @@ type
     function VerificarECFCadastrado(const NumeroSerie: String): Boolean;
     function VerificarGTECF(const NumeroSerie: String; const ValorGT: Double;
       const CRO: Integer): Boolean;
+    procedure AtualizarMD5(const AMD5: String);
     procedure AtualizarGTECF(const NumeroSerie: String; const ValorGT: Double;
       const CRO: Integer);
 
@@ -309,6 +310,12 @@ begin
       end;
     end;
   end;
+end;
+
+procedure TACBrArqAuxCriptografado.AtualizarMD5(const AMD5: String);
+begin
+  Self.MD5 := AMD5;
+  Self.SalvarArquivo;
 end;
 
 procedure TACBrArqAuxCriptografado.AtualizarGTECF(const NumeroSerie: String;

@@ -38,6 +38,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+28/03/2011
+-- ACBrArqAuxCriptografado
+[+] Novo componente para controle do arquivo auxiliar criptografado do PAF-ECF
+    por: Régys Silveira
+
 22/02/2011
 -- ACBrEAD --
 [*] Métodos de MD5 modificados para permitir todos os mecanismos de Digest do

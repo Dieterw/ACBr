@@ -37,6 +37,7 @@ contains
   ACBrUtil in '..\..\Fontes\ACBrComum\ACBrUtil.pas',
   ACBrReg in '..\..\Fontes\ACBrComum\ACBrReg.pas',
   ACBrEAD in '..\..\Fontes\ACBrComum\ACBrEAD.pas',
-  libeay32 in '..\..\Fontes\ACBrComum\libeay32.pas';
+  libeay32 in '..\..\Fontes\ACBrComum\libeay32.pas',
+  ACBrArqAuxCriptografado in '..\..\Fontes\ACBrComum\ACBrArqAuxCriptografado.pas';
 
 end.

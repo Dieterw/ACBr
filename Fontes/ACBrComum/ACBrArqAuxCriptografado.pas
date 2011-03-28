@@ -14,13 +14,11 @@ type
 
   TACBrImpressoraFiscal = class
   private
-    FCRO: Integer;
     FValorGT: Double;
     FNumeroSerie: String;
   public
     property NumeroSerie: String read FNumeroSerie write FNumeroSerie;
     property ValorGT: Double read FValorGT write FValorGT;
-    property CRO: Integer read FCRO write FCRO;
   end;
 
   TACBrImpressorasFiscais = class(TObjectList)
@@ -55,11 +53,9 @@ type
     procedure SalvarArquivo;
 
     function VerificarECFCadastrado(const NumeroSerie: String): Boolean;
-    function VerificarGTECF(const NumeroSerie: String; const ValorGT: Double;
-      const CRO: Integer): Boolean;
+    function VerificarGTECF(const NumeroSerie: String; const ValorGT: Double): Boolean;
     procedure AtualizarMD5(const AMD5: String);
-    procedure AtualizarGTECF(const NumeroSerie: String; const ValorGT: Double;
-      const CRO: Integer);
+    procedure AtualizarGTECF(const NumeroSerie: String; const ValorGT: Double);
 
   published
     property OnPAFGetKeyRSA: TACBrEADGetChave
@@ -74,14 +70,6 @@ type
   procedure Register;
 
 implementation
-
-const
-  SEC_MD5             = 'MD5';
-  SEC_CRC             = 'CRC';
-  ID_CRC              = 'DigitoCRC';
-  ID_ARQ_AUTENTICADOS = 'ArqListaAutenticados';
-  SEC_GRANDES_TOTAIS  = 'GrandesTotais';
-  SEC_CRO             = 'CRO';
 
 procedure Register;
 begin
@@ -190,7 +178,7 @@ var
   Arquivo: TStringList;
   DadosECF: TStringList;
   PathArquivo: String;
-  sNumSerie, sValorGT, sCRO: String;
+  sNumSerie, sValorGT: String;
 begin
   PathArquivo := GetCaminhoArquivo;
   if not FilesExists(PathArquivo) then
@@ -215,11 +203,9 @@ begin
       DadosECF.DelimitedText := Arquivo.Strings[I];
       try
         sNumSerie := DeCryptTexto(Trim(DadosECF.Strings[0]));
-        sCRO      := DeCryptTexto(Trim(DadosECF.Strings[1]));
-        sValorGT  := DeCryptTexto(Trim(DadosECF.Strings[2]));
+        sValorGT  := DeCryptTexto(Trim(DadosECF.Strings[1]));
       except
         sNumSerie := '';
-        sCRO      := '';
         sValorGT  := '';
       end;
 
@@ -228,7 +214,6 @@ begin
         with Self.ECFsAutorizados.New do
         begin
           NumeroSerie := sNumSerie;
-          CRO         := StrToIntDef(sCRO, 0);
           ValorGT     := StrToFloatDef(sValorGT, 0.00);
         end;
       end;
@@ -251,13 +236,12 @@ begin
   // MD5 do arquivo com a lista de arquivos autenticados
   Dados := CryptTexto(Self.MD5) + sLineBreak;
 
-  // linha com dados do ECF sendo NumeroSerie|CRO|Valor GT (Criptografados)
+  // linha com dados do ECF ( NumeroSerie|Valor GT) (Criptografados)
   for I := 0 to Self.ECFsAutorizados.Count - 1 do
   begin
     Ecf := Self.ECFsAutorizados[I];
     Dados := Dados +
       CryptTexto(Ecf.NumeroSerie) + '|' +
-      CryptTexto(IntToStr(Ecf.CRO)) + '|' +
       CryptTexto(FormatFloat('#.##', Ecf.ValorGT)) + sLineBreak;
   end;
 
@@ -283,7 +267,7 @@ begin
 end;
 
 function TACBrArqAuxCriptografado.VerificarGTECF(const NumeroSerie: String;
-  const ValorGT: Double; const CRO: Integer): Boolean;
+  const ValorGT: Double): Boolean;
 var
   I: Integer;
 begin
@@ -295,13 +279,6 @@ begin
     begin
       if NumeroSerie = Self.ECFsAutorizados[I].NumeroSerie then
       begin
-        // atualizar o gt quando o CRO for menor conforme a lei permite
-        if CRO > Self.ECFsAutorizados[I].CRO then
-        begin
-          Self.ECFsAutorizados[I].ValorGT := ValorGT;
-          Self.SalvarArquivo;
-        end;
-
         if ValorGT = Self.ECFsAutorizados[I].ValorGT then
         begin
           Result := True;
@@ -319,7 +296,7 @@ begin
 end;
 
 procedure TACBrArqAuxCriptografado.AtualizarGTECF(const NumeroSerie: String;
-  const ValorGT: Double; const CRO: Integer);
+  const ValorGT: Double);
 var
   I: Integer;
 begin
@@ -330,8 +307,6 @@ begin
       if NumeroSerie = Self.ECFsAutorizados[I].NumeroSerie then
       begin
         Self.ECFsAutorizados[I].ValorGT := ValorGT;
-        Self.ECFsAutorizados[I].CRO     := CRO;
-
         Self.SalvarArquivo;
         Exit;
       end;

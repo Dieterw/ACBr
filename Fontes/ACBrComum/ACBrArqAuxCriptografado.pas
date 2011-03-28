@@ -37,7 +37,6 @@ type
   TACBrArqAuxCriptografado = class(TComponent)
   private
     FACBrEAD: TACBrEAD;
-    FDadosArquivo: TMemIniFile;
     FMD5: String;
     FArquivo: String;
     FECFsAutorizados: TACBrImpressorasFiscais;
@@ -139,42 +138,6 @@ begin
     raise EACBrArqAux_ChavePrivada.Create('Chave privada não informada');
 end;
 
-function TACBrArqAuxCriptografado.DeCryptTexto(const Texto: String): String;
-var
-  Chave: AnsiString;
-begin
-  Chave := GetChavePrivada;
-  Result := String(StrCrypt(HexToAscii(AnsiString(Texto)), Chave));
-end;
-
-function TACBrArqAuxCriptografado.CryptTexto(const Texto: String): String;
-var
-  Chave: AnsiString;
-begin
-  Chave := GetChavePrivada;
-  Result := String(AsciiToHex(StrCrypt(AnsiString(Texto), Chave)));
-end;
-
-constructor TACBrArqAuxCriptografado.Create(AOwner: TComponent);
-begin
-  inherited Create(AOwner);
-
-  FPAth            := EmptyStr;
-  FArquivo         := EmptyStr;
-  FACBrEAD         := TACBrEAD.Create(Self);
-  FDadosArquivo    := TMemIniFile.Create(EmptyStr);
-  FECFsAutorizados := TACBrImpressorasFiscais.Create;
-end;
-
-destructor TACBrArqAuxCriptografado.Destroy;
-begin
-  FACBrEAD.Free;
-  FDadosArquivo.Free;
-  FECFsAutorizados.Free;
-
-  Inherited;
-end;
-
 function TACBrArqAuxCriptografado.GetCaminhoArquivo: String;
 begin
   if Trim(FPAth) = EmptyStr then
@@ -188,106 +151,116 @@ begin
     ExtractFileName(FArquivo);
 end;
 
+function TACBrArqAuxCriptografado.DeCryptTexto(const Texto: String): String;
+var
+  Chave: AnsiString;
+begin
+  Chave  := GetChavePrivada;
+  Result := String(StrCrypt(HexToAscii(AnsiString(Texto)), Chave));
+end;
+
+function TACBrArqAuxCriptografado.CryptTexto(const Texto: String): String;
+var
+  Chave: AnsiString;
+begin
+  Chave  := GetChavePrivada;
+  Result := AsciiToHex(StrCrypt(AnsiString(Texto), Chave));
+end;
+
+constructor TACBrArqAuxCriptografado.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  FPAth            := EmptyStr;
+  FArquivo         := EmptyStr;
+  FACBrEAD         := TACBrEAD.Create(Self);
+  FECFsAutorizados := TACBrImpressorasFiscais.Create;
+end;
+
+destructor TACBrArqAuxCriptografado.Destroy;
+begin
+  FACBrEAD.Free;
+  FECFsAutorizados.Free;
+  Inherited;
+end;
+
 procedure TACBrArqAuxCriptografado.AbrirArquivo;
 var
   I: Integer;
-  Lista: TStringList;
-  SerieECF: String;
-  CRCArquivo: Integer;
+  Arquivo: TStringList;
+  DadosECF: TStringList;
   PathArquivo: String;
+  sNumSerie, sValorGT, sCRO: String;
 begin
   PathArquivo := GetCaminhoArquivo;
   if not FilesExists(PathArquivo) then
-    raise EACBrArqAux_ArqNaoEncontrado.CreateFmt('Arquivo "%s" não encontrado.', [Arquivo]);
+    raise EACBrArqAux_ArqNaoEncontrado.CreateFmt('Arquivo "%s" não encontrado.', [PathArquivo]);
 
-  Lista := TStringList.Create;
+  Arquivo  := TStringList.Create;
+  DadosECF := TStringList.Create;
   try
-    // abrir o arquivo e decriptar
-    Lista.LoadFromFile(PathArquivo);
-    Lista.Text := DeCryptTexto(Lista.Text);
+    // ler o conteudo do arquivo
+    Arquivo.LoadFromFile(PathArquivo);
 
-    // limpar os dados contidos na memória
-    Self.MD5 := EmptyStr;
+    // configurar o stringlist que será utilizado para ler os dados do ECF
+    DadosECF.Delimiter := '|';
+
+    // md5 sempre na primeira linha
+    Self.MD5 := DeCryptTexto(Arquivo.Strings[0]);
+
+    // lista de ecfs apartir da segunda linha
     Self.ECFsAutorizados.Clear;
-
-    // ler os dados para o meminifile
-    FDadosArquivo.SetStrings(Lista);
-
-    // Se o CRC do arquivo for igual a -1 então o arquivo pode estar corrompido
-    CRCArquivo := FDadosArquivo.ReadInteger(SEC_CRC, ID_CRC, -1);
-    if CRCArquivo = -1 then
+    for I := 1 to Arquivo.Count - 1 do
     begin
-      raise EACBrArqAux_CRC.Create(
-        'Não foi possível ler o conteúdo do arquivo auxiliar.' + sLineBreak +
-        'Arquivo provavelmente foi corrompido.'
-      );
-    end;
+      DadosECF.DelimitedText := Arquivo.Strings[I];
+      try
+        sNumSerie := DeCryptTexto(Trim(DadosECF.Strings[0]));
+        sCRO      := DeCryptTexto(Trim(DadosECF.Strings[1]));
+        sValorGT  := DeCryptTexto(Trim(DadosECF.Strings[2]));
+      except
+        sNumSerie := '';
+        sCRO      := '';
+        sValorGT  := '';
+      end;
 
-    // MD5 do arquivo texto da lista de arquivos autenticados
-    Self.MD5   := FDadosArquivo.ReadString(SEC_MD5, ID_ARQ_AUTENTICADOS, '');
-
-    // obter os numeros de série dos ecfs cadastrados
-    // efetuar a leitura dos dados de GT e CRO cadastrados
-    Lista.Clear;
-    Self.ECFsAutorizados.Clear;
-    FDadosArquivo.ReadSection(SEC_GRANDES_TOTAIS, Lista);
-    for I := 0 to Lista.Count - 1 do
-    begin
-      SerieECF := Lista.Strings[I];
-      with Self.ECFsAutorizados.New do
+      if sNumSerie <>EmptyStr then
       begin
-        NumeroSerie := SerieECF;
-        ValorGT     := FDadosArquivo.ReadFloat(SEC_GRANDES_TOTAIS, SerieECF, 0.00);
-        CRO         := FDadosArquivo.ReadInteger(SEC_CRO, SerieECF, 0);
+        with Self.ECFsAutorizados.New do
+        begin
+          NumeroSerie := sNumSerie;
+          CRO         := StrToIntDef(sCRO, 0);
+          ValorGT     := StrToFloatDef(sValorGT, 0.00);
+        end;
       end;
     end;
   finally
-    Lista.Free;
+    DadosECF.Free;
+    Arquivo.Free;
   end;
 end;
 
 procedure TACBrArqAuxCriptografado.SalvarArquivo;
 var
   I: integer;
-  F: TSTringList;
+  Dados: String;
   PathArquivo: String;
+  Ecf: TACBrImpressoraFiscal;
 begin
   PathArquivo := GetCaminhoArquivo;
 
   // MD5 do arquivo com a lista de arquivos autenticados
-  FDadosArquivo.WriteString(SEC_MD5, ID_ARQ_AUTENTICADOS, Self.MD5);
+  Dados := CryptTexto(Self.MD5) + sLineBreak;
 
-  // lista de ecfs autorizados, duas seçoes,
-  // uma para o grande total outra para o CRO
+  // linha com dados do ECF sendo NumeroSerie|CRO|Valor GT (Criptografados)
   for I := 0 to Self.ECFsAutorizados.Count - 1 do
   begin
-    // grande total
-    FDadosArquivo.WriteFloat(
-      SEC_GRANDES_TOTAIS,
-      Self.ECFsAutorizados[I].NumeroSerie,
-      Self.ECFsAutorizados[I].ValorGT
-    );
-    // CRO
-    FDadosArquivo.WriteInteger(
-      SEC_CRO,
-      Self.ECFsAutorizados[I].NumeroSerie,
-      Self.ECFsAutorizados[I].CRO
-    );
+    Ecf := Self.ECFsAutorizados[I];
+    Dados := Dados +
+      CryptTexto(Ecf.NumeroSerie) + '|' +
+      CryptTexto(IntToStr(Ecf.CRO)) + '|' +
+      CryptTexto(FormatFloat('#.##', Ecf.ValorGT)) + sLineBreak;
   end;
 
-  FDadosArquivo.WriteInteger(SEC_CRC, ID_CRC, 9);
-
-  // salvar o arquivo encriptado em disco
-  F := TSTringList.Create;
-  try
-    F.Clear;
-    FDadosArquivo.GetStrings(F);
-    F.Text := CryptTexto(F.Text);
-
-    WriteToTXT(AnsiString(PathArquivo), AnsiString(F.Text), False, False);
-  finally
-    F.Free;
-  end;
+  WriteToTXT(AnsiString(PathArquivo), AnsiString(Dados), False, False);
 end;
 
 function TACBrArqAuxCriptografado.VerificarECFCadastrado(

@@ -136,7 +136,7 @@ begin
     raise EACBrArqAux_NomeArquivo.Create('Nome do arquivo criptografado auxiliar não informado.');
 
   Result :=
-    IncludeTrailingPathDelimiter(FPath) +
+    IncludeTrailingPathDelimiter(ExtractFilePath(FPath)) +
     ExtractFileName(FArquivo);
 end;
 

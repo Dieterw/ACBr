@@ -200,7 +200,7 @@ begin
     LoadLayout('<N07>   N07|Orig¨|CST¨|ModBC¨|PRedBC¨|VBC¨|PICMS¨|VICMS¨'); //ok
     LoadLayout('<N08>   N08|Orig¨|CST¨|VBCSTRet¨|VICMSSTRet¨'); //ok
     LoadLayout('<N09>   N09|Orig¨|CST¨|ModBC¨|PRedBC¨|VBC¨|PICMS¨|VICMS¨|ModBCST¨|PMVAST¨|PRedBCST¨|VBCST¨|PICMSST¨|VICMSST¨'); //ok
-    LoadLayout('<N10>   N10|Orig¨|CST¨|ModBC¨|VBC¨|PRedBC¨|PICMS¨|VICMS¨|ModBCST¨|PMVAST¨|PRedBCST¨|VBCST¨|PICMSST¨|VICMSST¨'); //ok
+    LoadLayout('<N10>   N10|Orig¨|CST¨|ModBC¨|PRedBC¨|VBC¨|PICMS¨|VICMS¨|ModBCST¨|PMVAST¨|PRedBCST¨|VBCST¨|PICMSST¨|VICMSST¨'); //ok
     LoadLayout('<N10a> N10a|Orig¨|CST¨|ModBC¨|PRedBC¨|VBC¨|PICMS¨|VICMS¨|ModBCST¨|PMVAST¨|PRedBCST¨|VBCST¨|PICMSST¨|VICMSST¨|pBCOp¨|UFST¨');
     LoadLayout('<N10b> N10b|Orig¨|CST¨|vBCSTRet¨|vICMSSTRet¨|vBCSTDest¨|vICMSSTDest¨');
     LoadLayout('<N10c> N10c|Orig¨|CSOSN¨|pCredSN¨|vCredICMSSN¨');

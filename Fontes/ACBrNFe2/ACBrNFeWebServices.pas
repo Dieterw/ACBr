@@ -623,23 +623,10 @@ end;
 
 procedure TWebServicesBase.DoNFeConsultaCadastro;
 var
-  Cabecalho: TCabecalho;
   ConCadNFe: TConsCad;
 begin
-  Cabecalho := TCabecalho.Create;
-  Cabecalho.Versao       := '1.02';
-  Cabecalho.VersaoDados  := NFeconsCad;
-  Cabecalho.GerarXML;
-
-  FCabMsg := Cabecalho.Gerador.ArquivoFormatoXML;
-  Cabecalho.Free;
-
-  FCabMsg := StringReplace( FCabMsg, '<'+ENCODING_UTF8_STD+'>', '', [rfReplaceAll] ) ;
-  FCabMsg := StringReplace( FCabMsg, '<'+ENCODING_UTF8+'>', '', [rfReplaceAll] ) ;
-  FCabMsg := StringReplace( FCabMsg, '<?xml version="1.0"?>', '', [rfReplaceAll] ) ;
-
   ConCadNFe := TConsCad.Create;
-  ConCadNFe.schema := TsPL005c;
+  ConCadNFe.schema := TsPL006;
   ConCadNFe.UF     := TNFeConsultaCadastro(Self).UF;
   ConCadNFe.IE     := TNFeConsultaCadastro(Self).IE;
   ConCadNFe.CNPJ   := TNFeConsultaCadastro(Self).CNPJ;
@@ -2241,21 +2228,29 @@ begin
 
   Texto := '<?xml version="1.0" encoding="utf-8"?>';
   Texto := Texto + '<soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">';
+  Texto := Texto +   '<soap12:Header>';
+  Texto := Texto +     '<nfeCabecMsg xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro2">';
+  Texto := Texto +       '<cUF>'+IntToStr(UFparaCodigo(TNFeConsultaCadastro(Self).UF))+'</cUF>';
+  Texto := Texto +       '<versaoDados>'+NFeconsCad+'</versaoDados>';
+  Texto := Texto +     '</nfeCabecMsg>';
+  Texto := Texto +   '</soap12:Header>';
   Texto := Texto +   '<soap12:Body>';
-  Texto := Texto +     '<consultaCadastro xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro">';
-  Texto := Texto +       '<nfeCabecMsg>';
-
-  Texto := Texto + NotaUtil.ParseText(FCabMsg,False);
-
-  Texto := Texto +       '</nfeCabecMsg>';
-  Texto := Texto +       '<nfeDadosMsg>';
-
-  Texto := Texto + NotaUtil.ParseText(FDadosMsg,False);
-
-  Texto := Texto +       '</nfeDadosMsg>';
-  Texto := Texto +     '</consultaCadastro>';
+  if UFparaCodigo(TNFeConsultaCadastro(Self).UF) = 35 then
+   begin
+     Texto := Texto +   '<consultaCadastro2 xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro2">';
+     Texto := Texto +     '<nfeDadosMsg>';
+     Texto := Texto + FDadosMsg;
+     Texto := Texto +     '</nfeDadosMsg>';
+     Texto := Texto +   '</consultaCadastro2>';
+   end
+  else
+   begin
+     Texto := Texto +     '<nfeDadosMsg xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro2">';
+     Texto := Texto + FDadosMsg;
+     Texto := Texto +     '</nfeDadosMsg>';
+   end;
   Texto := Texto +   '</soap12:Body>';
-  Texto := Texto + '</soap12:Envelope>';
+  Texto := Texto +'</soap12:Envelope>';
 
   Acao.Text := Texto;
 
@@ -2267,37 +2262,36 @@ begin
      ConfiguraReqResp( ReqResp );
      ReqResp.URL := FURL;
      ReqResp.UseUTF8InHeader := True;
-     ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro/consultaCadastro';
+     ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro2' ;
   {$ENDIF}
   try
     TACBrNFe( FACBrNFe ).SetStatus( stNFeCadastro );
     if assigned(FRetConsCad) then
        FRetConsCad.Free;
+    FRetConsCad := TRetConsCad.Create;
 
     if FConfiguracoes.Geral.Salvar then
       FConfiguracoes.Geral.Save(FormatDateTime('yyyymmddhhnnss',Now)+'-ped-cad.xml', FDadosMsg);
     FRetWS := '';
     {$IFDEF ACBrNFeOpenSSL}
        HTTP.Document.LoadFromStream(Stream);
-       ConfiguraHTTP(HTTP,'SOAPAction: "http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro/consultaCadastro"');
+       ConfiguraHTTP(HTTP,'SOAPAction: "http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro2"');
        HTTP.HTTPMethod('POST', FURL);
 
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(HTTP.Document, 0);
        FRetornoWS := NotaUtil.ParseText(StrStream.DataString, True);
-       FRetWS := NotaUtil.SeparaDados( FRetornoWS,'consultaCadastroResult');
+       FRetWS := NotaUtil.SeparaDados( FRetornoWS,'consultaCadastro2Result');
        StrStream.Free;
     {$ELSE}
        ReqResp.Execute(Acao.Text, Stream);
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(Stream, 0);
        FRetornoWS := NotaUtil.ParseText(StrStream.DataString, True);
-       FRetWS := NotaUtil.SeparaDados( FRetornoWS,'consultaCadastroResult');
+       FRetWS := NotaUtil.SeparaDados( FRetornoWS,'consultaCadastro2Result');
        StrStream.Free;
     {$ENDIF}
 
-
-    FRetConsCad := TRetConsCad.Create;
     FRetConsCad.Leitor.Arquivo := FRetWS;
     FRetConsCad.LerXml;
 

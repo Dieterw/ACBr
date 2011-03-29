@@ -91,7 +91,8 @@ type
                                 Anexos:TStrings=nil;
                                 PedeConfirma: Boolean = False;
                                 AguardarEnvio: Boolean = False;
-                                NomeRemetente: String = '');
+                                NomeRemetente: String = '';
+                                TLS : Boolean = True);
     property NFe: TNFe  read FNFe write FNFe;
     property XML: AnsiString  read GetNFeXML write FXML;
     property Confirmada: Boolean  read FConfirmada write FConfirmada;
@@ -267,7 +268,8 @@ procedure NotaFiscal.EnviarEmail(const sSmtpHost,
                                       Anexos:TStrings=nil;
                                       PedeConfirma: Boolean = False;
                                       AguardarEnvio: Boolean = False;
-                                      NomeRemetente: String = '');
+                                      NomeRemetente: String = '';
+                                      TLS : Boolean = True);
 var
  ThreadSMTP : TSendMailThread;
  m:TMimemess;
@@ -330,7 +332,7 @@ begin
        ThreadSMTP.smtp.TargetPort := sSmtpPort;
 
     ThreadSMTP.smtp.FullSSL := SSL;
-    ThreadSMTP.smtp.AutoTLS := True;
+    ThreadSMTP.smtp.AutoTLS := TLS;
 
     TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).SetStatus( stNFeEmail );
     ThreadSMTP.Resume; // inicia a thread

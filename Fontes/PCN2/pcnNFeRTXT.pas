@@ -222,7 +222,7 @@ var
 begin
 
   FRegistro := Registro;
-  FID := copy(Registro, 2, pos('|', FRegistro) - 2);
+  FID := UpperCase(copy(Registro, 2, pos('|', FRegistro) - 2));
   if FID = '' then
     exit;
 
@@ -367,7 +367,7 @@ begin
   end;
   if ID = 'F02' then
     (*F02*)NFe.Retirada.CNPJCPF := LerCampo(tcStr, 'CNPJ');
-  if ID = 'F02a' then
+  if ID = 'F02A' then
     (*F02a*)NFe.Retirada.CNPJCPF := LerCampo(tcStr, 'CPF');
 
   if ID = 'G' then (* Grupo da TAG <entrega> **********************************)
@@ -382,7 +382,7 @@ begin
   end;
   if ID = 'G02' then
     (*G02*)NFe.Entrega.CNPJCPF := LerCampo(tcStr, 'CNPJ');
-  if ID = 'G02a' then
+  if ID = 'G02A' then
     (*G02a*)NFe.Entrega.CNPJCPF := LerCampo(tcStr, 'CPF');
 
   if ID = 'H' then (* Grupo da TAG <det> **************************************)
@@ -540,9 +540,9 @@ begin
 
   if (ID = 'N02') or (ID = 'N03') or (ID = 'N04') or (ID = 'N05') or
      (ID = 'N06') or (ID = 'N07') or (ID = 'N08') or (ID = 'N09') or
-     (ID = 'N10') or (ID = 'N10a') or (ID = 'N10b') or (ID = 'N10c') or
-     (ID = 'N10d') or (ID = 'N10e') or (ID = 'N10f') or (ID = 'N10g') or
-     (ID = 'N10h') then (* Grupo da TAG <det><imposto><ICMS> ********************)
+     (ID = 'N10') or (ID = 'N10A') or (ID = 'N10B') or (ID = 'N10C') or
+     (ID = 'N10D') or (ID = 'N10E') or (ID = 'N10F') or (ID = 'N10G') or
+     (ID = 'N10H') then (* Grupo da TAG <det><imposto><ICMS> ********************)
   begin
     i := NFe.Det.Count - 1;
     (*N11*)NFe.Det[i].Imposto.ICMS.orig := StrToOrig(ok, LerCampo(tcStr, 'orig'));

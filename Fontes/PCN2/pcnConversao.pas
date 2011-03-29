@@ -149,7 +149,7 @@ const
   NFeconsSitNFe   = '2.00';
   NFecancNFe      = '2.00';
   NFeinutNFe      = '2.00';
-  NFeconsCad      = '1.01';
+  NFeconsCad      = '2.00';
   NFeEnvDPEC      = '1.01';
   NFeConsDPEC     = '1.01';
 

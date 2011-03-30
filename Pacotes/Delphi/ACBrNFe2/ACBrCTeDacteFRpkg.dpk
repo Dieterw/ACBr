@@ -72,7 +72,6 @@ requires
   rtl,
   vclimg,
   designide,
-  ACBr_NFe2,
   fs14,
   frx14,
   frxe14,

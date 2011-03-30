@@ -48,6 +48,10 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   30/03/2011 (Jeickson Gobeti)
+---------------
+[+] Danfe CT-e em FastReport
+
 Alterações   25/01/11 (Italo Jurisato Junior)
 ---------------
 [+] Foi incluido novos tipos conforme solicitação no Mantis #613

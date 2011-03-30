@@ -779,7 +779,7 @@ end;
 procedure TGerador.gtAjustarRegistros(const ID: string);
 var
   i, j, k: integer;
-  s: string;
+  s, idLocal: string;
   ListArquivo: TstringList;
   ListCorrigido: TstringList;
   ListTAGs: TstringList;
@@ -822,7 +822,17 @@ begin
   // Elimina Bloco <ID>
   for i := 0 to ListCorrigido.count - 1 do
     if pos('>', ListCorrigido[i]) > 0 then
+     begin
       ListCorrigido[i] := Trim(copy(ListCorrigido[i], pos('>', ListCorrigido[i]) + 1, maxInt));
+      idLocal := copy(ListCorrigido[i],1,pos('|',ListCorrigido[i])-1);
+
+      if (length(idLocal) > 2) and
+         (copy(idLocal,length(idLocal),1) <> SomenteNumeros(copy(idLocal,length(idLocal),1))) then
+       begin
+         idLocal := copy(idLocal,1,length(idLocal)-1)+LowerCase(copy(idLocal,length(idLocal),1));
+         ListCorrigido[i] := StringReplace(ListCorrigido[i],idLocal,idLocal,[rfIgnoreCase]);
+       end;
+     end;
   FArquivoFormatoTXT := ListCorrigido.Text;
   //
   ListTAGs.Free;

@@ -504,6 +504,7 @@ begin
     (*L102*)NFe.Det[i].Prod.comb.cProdANP := LerCampo(tcInt, 'cProdANP');
     (*L103*)NFe.Det[i].Prod.comb.CODIF := LerCampo(tcEsp, 'CODIF');
     (*L104*)NFe.Det[i].Prod.comb.qTemp := LerCampo(tcDe4, 'qTemp');
+    (*L120*)NFe.Det[i].Prod.comb.UFcons:= LerCampo(tcStr, 'UFCons');
   end;
 
   if ID = 'L105' then (* Grupo da TAG <det><prod><comb><CIDE> *****************)

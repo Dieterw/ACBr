@@ -90,7 +90,8 @@ type
                                 Anexos:TStrings=nil;
                                 PedeConfirma: Boolean = False;
                                 AguardarEnvio: Boolean = False;
-                                NomeRemetente: String = '');
+                                NomeRemetente: String = '';
+                                TLS : Boolean = True);
     property CTe: TCTe  read FCTe write FCTe;
     property XML: AnsiString  read GetCTeXML write FXML;  // Alterada por Italo em 30/09/2010
     property Confirmada: Boolean  read FConfirmada write FConfirmada;
@@ -247,7 +248,8 @@ procedure Conhecimento.EnviarEmail(const sSmtpHost,
                                       Anexos:TStrings=nil;
                                       PedeConfirma: Boolean = False;
                                       AguardarEnvio: Boolean = False;
-                                      NomeRemetente: String = '');
+                                      NomeRemetente: String = '';
+                                      TLS : Boolean = True);
 var
  ThreadSMTP : TSendMailThread;
  m          : TMimemess;
@@ -308,21 +310,18 @@ begin
        ThreadSMTP.smtp.TargetPort := sSmtpPort;
 
     ThreadSMTP.smtp.FullSSL := SSL;
-    ThreadSMTP.smtp.AutoTLS := True;
+    ThreadSMTP.smtp.AutoTLS := TLS;
     TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).SetStatus( stCTeEmail );
 
-//    try
-      ThreadSMTP.Resume; // inicia a thread
-      if AguardarEnvio then
-      begin
-        repeat
-          Sleep(1000);
-          Application.ProcessMessages;
-        until ThreadSMTP.Terminado;
-      end;
-//    finally
-     TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).SetStatus( stCTeIdle );
-//    end;
+    ThreadSMTP.Resume; // inicia a thread
+    if AguardarEnvio then
+     begin
+      repeat
+       Sleep(1000);
+       Application.ProcessMessages;
+      until ThreadSMTP.Terminado;
+     end;
+    TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).SetStatus( stCTeIdle );
 
  finally
     m.free;

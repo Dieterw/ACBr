@@ -48,7 +48,7 @@ uses
 type
   TRegistro0100List = class;
   TRegistro0110 = class;
-  TRegistro0111List = class;
+  TRegistro0111 = class;
   TRegistro0140List = class;
   TRegistro0150List = class;
   TRegistro0190List = class;
@@ -64,19 +64,19 @@ type
   //REGISTRO 0000: ABERTURA DO ARQUIVO DIGITAL E IDENTIFICAÇÃO DA PESSOA JURÍDICA
   TRegistro0000 = class
   private
-    FIND_SIT_ESP: TACBrIndicadorSituacaoEspecial;
-    FNOME: string;
-    FSUFRAMA: string;
-    FTIPO_ESCRIT: TACBrTipoEscrituracao;
-    FCOD_MUN: string;
     FCOD_VER: TACBrVersaoLeiaute;
-    FIND_NAT_PJ: TACBrIndicadorNaturezaPJ;
-    FCNPJ: string;
+    FTIPO_ESCRIT: TACBrTipoEscrituracao;
+    FIND_SIT_ESP: TACBrIndicadorSituacaoEspecial;
     FNUM_REC_ANTERIOR: string;
-    FIND_ATIV: TACBrIndicadorAtividade;
-    FUF: string;
     FDT_INI: TDateTime;
     FDT_FIN: TDateTime;
+    FNOME: string;
+    FCNPJ: string;
+    FUF: string;
+    FCOD_MUN: string;
+    FSUFRAMA: string;
+    FIND_NAT_PJ: TACBrIndicadorNaturezaPJ;
+    FIND_ATIV: TACBrIndicadorAtividade;
   public
     property COD_VER: TACBrVersaoLeiaute read FCOD_VER write FCOD_VER;
     property TIPO_ESCRIT: TACBrTipoEscrituracao read FTIPO_ESCRIT write FTIPO_ESCRIT;
@@ -115,26 +115,26 @@ type
   //REGISTRO 0100: DADOS DO CONTABILISTA
   TRegistro0100 = class
   private
-    FCOMPL: string;
-    FCEP: string;
-    FCPF: string;
     FNOME: string;
-    FCOD_MUN: string;
-    FEND: string;
+    FCPF: string;
     FCRC: string;
-    FEMAIL: string;
     FCNPJ: string;
-    FFONE: string;
+    FCEP: string;
+    FEND: string;
     FNUM: string;
-    FFAX: string;
+    FCOMPL: string;
     FBAIRRO: string;
+    FFONE: string;
+    FFAX: string;
+    FEMAIL: string;
+    FCOD_MUN: string;
   public
     property NOME: string read FNOME write FNOME;
     property CPF: string read FCPF write FCPF;
     property CRC: string read FCRC write FCRC;
     property CNPJ: string read FCNPJ write FCNPJ;
     property CEP: string read FCEP write FCEP;
-    property _END: string read FEND write FEND;
+    property ENDERECO: string read FEND write FEND;
     property NUM: string read FNUM write FNUM;
     property COMPL: string read FCOMPL write FCOMPL;
     property BAIRRO: string read FBAIRRO write FBAIRRO;
@@ -152,15 +152,16 @@ type
   public
     function New: TRegistro0100;
     property Items[Index: Integer]: TRegistro0100 read GetItem write SetItem;
-  end; 
+  end;
 
   //REGISTRO 0110: REGIMES DE APURAÇÃO DA CONTRIBUIÇÃO SOCIAL E DE APROPRIAÇÃO DE CRÉDITO
   TRegistro0110 = class
   private
     FCOD_INC_TRIB: TACBrCodIndIncTributaria;
-    FCOD_TIPO_CONT: TACBrCodIndTipoCon;
-    FRegistro0111: TRegistro0111List;
     FIND_APRO_CRED: TACBrIndAproCred;
+    FCOD_TIPO_CONT: TACBrCodIndTipoCon;
+
+    FRegistro0111: TRegistro0111;
   public
     property COD_INC_TRIB: TACBrCodIndIncTributaria read FCOD_INC_TRIB write FCOD_INC_TRIB;
     property IND_APRO_CRED: TACBrIndAproCred read FIND_APRO_CRED write FIND_APRO_CRED;
@@ -172,11 +173,11 @@ type
   //REGISTRO 0111: DE RECEITA BRUTA MENSAL PARA FINS DE RATEIO DE CRÉDITOS COMUNS
   TRegistro0111 = class
   private
-    FREC_BRU_CUM: currency;
-    FREC_BRU_TOTAL: currency;
+    FREC_BRU_NCUM_TRIB_MI: currency;
     FREC_BRU_NCUM_NT_MI: currency;
     FREC_BRU_NCUM_EXP: currency;
-    FREC_BRU_NCUM_TRIB_MI: currency;
+    FREC_BRU_CUM: currency;
+    FREC_BRU_TOTAL: currency;
   public
     property REC_BRU_NCUM_TRIB_MI: currency read FREC_BRU_NCUM_TRIB_MI write FREC_BRU_NCUM_TRIB_MI;
     property REC_BRU_NCUM_NT_MI: currency read FREC_BRU_NCUM_NT_MI write FREC_BRU_NCUM_NT_MI;
@@ -185,27 +186,17 @@ type
     property REC_BRU_TOTAL: currency read FREC_BRU_TOTAL write FREC_BRU_TOTAL;
   end;
 
-  // Registro 0111 - Lista
-  TRegistro0111List = class(TObjectList)
-  private
-    function GetItem(Index: Integer): TRegistro0111;
-    procedure SetItem(Index: Integer; const Value: TRegistro0111);
-  public
-    function New: TRegistro0111;
-    property Items[Index: Integer]: TRegistro0111 read GetItem write SetItem;
-  end;
-
   //REGISTRO 0140: TABELA DE CADASTRO DE ESTABELECIMENTO
   TRegistro0140 = class
   private
-    FSUFRAMA: string;
     FCOD_EST: string;
     FNOME: string;
+    FCNPJ: string;
+    FUF: string;
+    FIE: string;
     FCOD_MUN: string;
     FIM: string;
-    FCNPJ: string;
-    FIE: string;
-    FUF: string;
+    FSUFRAMA: string;
 
     FRegistro0150: TRegistro0150List;
     FRegistro0190: TRegistro0190List;
@@ -245,18 +236,18 @@ type
   //REGISTRO 0150: TABELA DE CADASTRO DO PARTICIPANTE
   TRegistro0150 = class
   private
-    FEND: string;
-    FIE: string;
-    FCOMPL: string;
-    FNOME: string;
-    FCOD_MUN: string;
-    FSUFRAMA: string;
-    FBAIRRO: string;
     FCOD_PART: string;
+    FNOME: string;
+    FCOD_PAIS: string;
     FCNPJ: string;
     FCPF: string;
-    FCOD_PAIS: string;
+    FIE: string;
+    FCOD_MUN: string;
+    FSUFRAMA: string;
+    FEND: string;
     FNUM: string;
+    FCOMPL: string;
+    FBAIRRO: string;
   public
     property COD_PART: string read FCOD_PART write FCOD_PART;
     property NOME: string read FNOME write FNOME;
@@ -266,7 +257,7 @@ type
     property IE: string read FIE write FIE;
     property COD_MUN: string read FCOD_MUN write FCOD_MUN;
     property SUFRAMA: string read FSUFRAMA write FSUFRAMA;
-    property _END: string read FEND write FEND;
+    property ENDERECO: string read FEND write FEND;
     property NUM: string read FNUM write FNUM;
     property COMPL: string read FCOMPL write FCOMPL;
     property BAIRRO: string read FBAIRRO write FBAIRRO;
@@ -285,8 +276,8 @@ type
   //REGISTRO 0190: IDENTIFICAÇÃO DAS UNIDADES DE MEDIDA
   TRegistro0190 = class
   private
-    FDESCR: string;
     FUNID: string;
+    FDESCR: string;
   public
     property UNID: string read FUNID write FUNID;
     property DESCR: string read FDESCR write FDESCR;
@@ -305,14 +296,14 @@ type
   //REGISTRO 0200: TABELA DE IDENTIFICAÇÃO DO ITEM (PRODUTOS E SERVIÇOS)
   TRegistro0200 = class
   private
-    FCOD_BARRA: string;
-    FEX_IPI: string;
-    FCOD_ANT_ITEM: string;
-    FCOD_NCM: string;
-    FDESCR_ITEM: string;
-    FTIPO_ITEM: TACBrTipoItem;
     FCOD_ITEM: string;
+    FDESCR_ITEM: string;
+    FCOD_BARRA: string;
+    FCOD_ANT_ITEM: string;
     FUNID_INV: string;
+    FTIPO_ITEM: TACBrTipoItem;
+    FCOD_NCM: string;
+    FEX_IPI: string;
     FCOD_GEN: string;
     FCOD_LST: string;
     FALIQ_ICMS: currency;
@@ -355,9 +346,9 @@ type
   TRegistro0205 = class
   private
     FDESCR_ANT_ITEM: string;
-    FCOD_ANT_ITEM: string;
     FDT_INI: TDateTime;
     FDT_FIM: TDateTime;
+    FCOD_ANT_ITEM: string;
   public
     property DESCR_ANT_ITEM: string read FDESCR_ANT_ITEM write FDESCR_ANT_ITEM;
     property DT_INI: TDateTime read FDT_INI write FDT_INI;
@@ -375,7 +366,7 @@ type
     property Items[Index: Integer]: TRegistro0205 read GetItem write SetItem;
   end;
 
-  //REGISTRO 0206: CÓDIGO DE PRODUTO CONFORME TABELA ANP (COMBUSTÍVEIS)
+  // REGISTRO 0206: CÓDIGO DE PRODUTO CONFORME TABELA ANP (COMBUSTÍVEIS)
   TRegistro0206 = class
   private
     FCOD_COMB: string;
@@ -383,7 +374,7 @@ type
     property COD_COMB: string read FCOD_COMB write FCOD_COMB;
   end;
 
-  //REGISTRO 0208: CÓDIGO DE GRUPOS POR MARCA COMERCIAL - REFRI (BEBIDAS FRIAS).
+  // REGISTRO 0208: CÓDIGO DE GRUPOS POR MARCA COMERCIAL - REFRI (BEBIDAS FRIAS).
   TRegistro0208 = class
   private
     FMARCA_COM: string;
@@ -440,12 +431,12 @@ type
   private
     FDT_ALT: TDateTime;
     FCOD_NAT_CC: TACBrNaturezaConta;
-    FCNPJ_EST: string;
+    FIND_CTA: string;
+    FNIVEL: string;
     FCOD_CTA: TACBrIndCTA;
     FNOME_CTA: string;
     FCOD_CTA_REF: string;
-    FNIVEL: string;
-    FIND_CTA: string;
+    FCNPJ_EST: string;
   public
     property DT_ALT: TDateTime read FDT_ALT  write FDT_ALT;
     property COD_NAT_CC: TACBrNaturezaConta read FCOD_NAT_CC write FCOD_NAT_CC;
@@ -470,9 +461,9 @@ type
   //REGISTRO 0600: CENTRO DE CUSTOS
   TRegistro0600 = class
   private
+    FDT_ALT: TDateTime;
     FCOD_CCUS: string;
     FCCUS: string;
-    FDT_ALT: TDateTime;
   public
     property DT_ALT : TDateTime read FDT_ALT  write FDT_ALT ;
     property COD_CCUS : string read FCOD_CCUS  write FCOD_CCUS ;
@@ -520,7 +511,7 @@ begin
   inherited;
 end;
 
-{ TRegistro0100 }
+{ TRegistro0100List }
 
 function TRegistro0100List.GetItem(Index: Integer): TRegistro0100;
 begin
@@ -534,24 +525,6 @@ begin
 end;
 
 procedure TRegistro0100List.SetItem(Index: Integer; const Value: TRegistro0100);
-begin
-  Put(Index, Value);
-end;
-
-{TRegistro0111}
-
-function TRegistro0111List.GetItem(Index: Integer): TRegistro0111;
-begin
-  Result := TRegistro0111(Inherited Items[Index]);
-end;
-
-function TRegistro0111List.New: TRegistro0111;
-begin
-  Result := TRegistro0111.Create;
-  Add(Result);
-end;
-
-procedure TRegistro0111List.SetItem(Index: Integer; const Value: TRegistro0111);
 begin
   Put(Index, Value);
 end;

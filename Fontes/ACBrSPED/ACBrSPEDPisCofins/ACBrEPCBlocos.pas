@@ -441,64 +441,57 @@ type
                          opcImportacao           // 1 – Operação de Importação
                        );
   // Tipo de Escrituração
-  TACBrTipoEscrituracao = ( tpEscrOriginal,     //0 - Original
-                            tpEscrRetificadora  //1 - Retificadora
+  TACBrTipoEscrituracao = ( tpEscrOriginal,     // 0 - Original
+                            tpEscrRetificadora  // 1 - Retificadora
                           );
   // Indicador de situação especial
-  TACBrIndicadorSituacaoEspecial = (
-                                     indSitAbertura,      //0 - Abertura
-                                     IndSitCisao,         //1 - Cisão
-                                     IndSitFusao,         //2 - Fusão
-                                     IndSitIncorporacao,  //3 - Incorporação
-                                     IndSitEncerramento   //4 - Encerramento
+  TACBrIndicadorSituacaoEspecial = ( indSitAbertura,      // 0 - Abertura
+                                     indSitCisao,         // 1 - Cisão
+                                     indSitFusao,         // 2 - Fusão
+                                     indSitIncorporacao,  // 3 - Incorporação
+                                     indSitEncerramento   // 4 - Encerramento
                                      );
   // Indicador da natureza da pessoa juridica
-  TACBrIndicadorNaturezaPJ = (
-                                indNatPJSocEmpresariaGeral, //0 - Sociedade empresária geral
-                                indNatPJSocCooperativa,     //1 - Sociedade Cooperativa
-                                indNatPJEntExclusivaFolhaSal//2 - Entidade sujeita ao PIS/Pasep exclusivamente com base  na folha de salários
+  TACBrIndicadorNaturezaPJ = ( indNatPJSocEmpresariaGeral, // 0 - Sociedade empresária geral
+                               indNatPJSocCooperativa,     // 1 - Sociedade Cooperativa
+                               indNatPJEntExclusivaFolhaSal// 2 - Entidade sujeita ao PIS/Pasep exclusivamente com base  na folha de salários
                              );
 
   //Indicador de tipo de atividade prepoderante
-  TACBrIndicadorAtividade = (
-                               indAtivIndustrial,       //0 - Industrial ou equiparado a industrial
-                               indAtivPrestadorServico, //1 - Prestador de serviços
-                               indAtivComercio,         //2 - Atividade de comércios
-                               indAtivoFincanceira,     //3 - Atividade Financeira
-                               indAtivoImobiliaria,     //4 - Atividade Imobiliária
-                               indAtivoOutros = 9       //9 - Outros
+  TACBrIndicadorAtividade = ( indAtivIndustrial,       // 0 - Industrial ou equiparado a industrial
+                              indAtivPrestadorServico, // 1 - Prestador de serviços
+                              indAtivComercio,         // 2 - Atividade de comércios
+                              indAtivoFincanceira,     // 3 - Atividade Financeira
+                              indAtivoImobiliaria,     // 4 - Atividade Imobiliária
+                              indAtivoOutros           // 9 - Outros
                            );
 
   //Codigo indicador da incidencia tributária no período (0110)
-  TACBrCodIndIncTributaria = (
-                                codEscrOpIncNaoCumulativo, //0 - Escrituração de operações com incidencia exclusivamente no regime não cumulativo
-                                codEscrOpIncCumulativo,    //1 - Escrituração de operações com incidencia exclusivamente no regime cumulativo
-                                codEscrOpIncAmbos          //2 - Escrituração de operações com incidencia nos regimes cumulativo e não cumulativo
+  TACBrCodIndIncTributaria = ( codEscrOpIncNaoCumulativo, // 0 - Escrituração de operações com incidencia exclusivamente no regime não cumulativo
+                               codEscrOpIncCumulativo,    // 1 - Escrituração de operações com incidencia exclusivamente no regime cumulativo
+                               codEscrOpIncAmbos          // 2 - Escrituração de operações com incidencia nos regimes cumulativo e não cumulativo
                              );
   //Código indicador de  método  de apropriação de  créditos  comuns, no caso  de incidencia no regime não cumulativo(COD_INC_TRIB = 1 ou 3)(0110)
-  TACBrIndAproCred = (
-                        indMetodoApropriacaoDireta,   //0 - Método de apropriação direta
-                        indMetodoDeRateioProporcional //1 - Método de rateio proporcional(Receita Bruta);
+  TACBrIndAproCred = ( indMetodoApropriacaoDireta,   // 0 - Método de apropriação direta
+                       indMetodoDeRateioProporcional // 1 - Método de rateio proporcional(Receita Bruta);
                      );
   //Código indicador do Tipo de Contribuição Apurada no Período(0110)
-  TACBrCodIndTipoCon = (
-                          codIndTipoConExclAliqBasica, // 0 - Apuração da Contribuição Exclusivamente a Alíquota Básica
-                          codIndTipoAliqEspecificas   // 1 - Apuração da Contribuição a Alíquotas Específicas (Diferenciadas e/ou por Unidade de Medida de Produto)
+  TACBrCodIndTipoCon = ( codIndTipoConExclAliqBasica, // 0 - Apuração da Contribuição Exclusivamente a Alíquota Básica
+                         codIndTipoAliqEspecificas    // 1 - Apuração da Contribuição a Alíquotas Específicas (Diferenciadas e/ou por Unidade de Medida de Produto)
                        );
   //Código indicador da tabela de incidencia, conforme anexo III
-  TACBrIndCodIncidencia = (
-                             codIndTabI = 1, //Tabela I
-                             codIndTabII,    //Tabela II
-                             codIndTabIII,   //Tabela III
-                             codIndTabIV,    //Tabela IV
-                             codIndTabV,     //Tabela V
-                             codIndTabVI,    //Tabela VI
-                             codIndTabVII,   //Tabela VII
-                             codIndTabVIII,  //Tabela VIII
-                             codIndTabIX,    //Tabela IX
-                             codIndTabX,     //Tabela X
-                             codIndTabXI,    //Tabela XI
-                             codIndiTabXII   //Tabela XII
+  TACBrIndCodIncidencia = ( codIndTabI,     // 01 - Tabela I
+                            codIndTabII,    // 02 - Tabela II
+                            codIndTabIII,   // 03 - Tabela III
+                            codIndTabIV,    // 04 - Tabela IV
+                            codIndTabV,     // 05 - Tabela V
+                            codIndTabVI,    // 06 - Tabela VI
+                            codIndTabVII,   // 07 - Tabela VII
+                            codIndTabVIII,  // 08 - Tabela VIII
+                            codIndTabIX,    // 09 - Tabela IX
+                            codIndTabX,     // 10 - Tabela X
+                            codIndTabXI,    // 11 - Tabela XI
+                            codIndiTabXII   // 12 - Tabela XII
                           );
   //Indicador do tipo de conta (0500)
   TACBrIndCTA = (

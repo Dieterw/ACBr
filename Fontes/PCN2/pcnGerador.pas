@@ -826,7 +826,7 @@ begin
       ListCorrigido[i] := Trim(copy(ListCorrigido[i], pos('>', ListCorrigido[i]) + 1, maxInt));
       idLocal := copy(ListCorrigido[i],1,pos('|',ListCorrigido[i])-1);
 
-      if (length(idLocal) > 2) and
+      if (length(idLocal) > 2) and (UpperCase(idLocal) <> 'NOTA FISCAL') and
          (copy(idLocal,length(idLocal),1) <> SomenteNumeros(copy(idLocal,length(idLocal),1))) then
        begin
          idLocal := copy(idLocal,1,length(idLocal)-1)+LowerCase(copy(idLocal,length(idLocal),1));

@@ -1235,7 +1235,7 @@ begin
           if ImprimirDescPorc then
           begin
             if Prod.vDesc > 0 then
-               PrintTab(NotaUtil.FormatFloat(RoundTo(100-((((Prod.VUnCom*Prod.QCom)-Prod.vDesc)/(Prod.VUnCom*Prod.QCom))*100),-1))+'%')
+               PrintTab(NotaUtil.FormatFloat({RoundTo(}100-((((Prod.VUnCom*Prod.QCom)-Prod.vDesc)/(Prod.VUnCom*Prod.QCom))*100){,-1)})+'%')
             else
                PrintTab(NotaUtil.FormatFloat(Prod.vDesc));
           end

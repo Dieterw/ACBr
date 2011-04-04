@@ -242,7 +242,7 @@ begin
       with ACBrBoleto do
       begin
          Result:= '1'                                                     +  // ID Registro
-                  IfThen(Length(Cedente.CNPJCPF) > 12,'01','02')          +
+                  IfThen(Length(Cedente.CNPJCPF) > 12,'02','01')          +
                   padR(trim(OnlyNumber(Cedente.CNPJCPF)),14,'0')          +
                   padL(trim(Cedente.CodigoTransmissao),20,'0')            +
                   padL( SeuNumero ,25,' ')                    +

@@ -143,6 +143,9 @@ type
     function CalcularEAD( const MS : TMemoryStream): AnsiString ; overload ;
 
     property OpenSSL_Version : String read GetOpenSSL_Version ;
+
+    function MD5FromFile(const APathArquivo: String): String;
+    function MD5FromString(const AString: String): String;
   published
     property About: String read GetAbout stored False;
 
@@ -152,35 +155,17 @@ type
        write fsOnGetChavePublica;
   end;
 
-function MD5FromFile(const APathArquivo: String): String;
-function MD5FromString(const AString: String): String;
-
-
 implementation
 
 
-function MD5FromFile(const APathArquivo: String): String;
-var
-  EAD: TACBrEAD;
+function TACBrEAD.MD5FromFile(const APathArquivo: String): String;
 begin
-  EAD := TACBrEAD.Create(nil);
-  try
-    Result := EAD.CalcularHashArquivo(APathArquivo, dgstMD5);
-  finally
-    FreeAndNil(EAD);
-  end;
+  Result := CalcularHashArquivo(APathArquivo, dgstMD5);
 end;
 
-function MD5FromString(const AString: String): String;
-var
-  EAD: TACBrEAD;
+function TACBrEAD.MD5FromString(const AString: String): String;
 begin
-  EAD := TACBrEAD.Create(nil);
-  try
-    Result := EAD.CalcularHash(AString, dgstMD5);
-  finally
-    FreeAndNil(EAD);
-  end;
+  Result := CalcularHash(AString, dgstMD5);
 end;
 
 { ------------------------------ TACBrEAD ------------------------------ }
@@ -621,7 +606,7 @@ begin
     md := EVP_get_digestbyname('md5');
     EVP_DigestInit( @md_ctx, md ) ;
     EVP_DigestUpdate( @md_ctx, MS.Memory, MS.Size ) ;
-    EVP_SignFinal( @md_ctx, @md_value_bin, md_len, fsKey);
+    EVP_SignFinal( @md_ctx, @md_value_bin, {$IFNDEF USE_libeay32}@{$ENDIF}md_len, fsKey);
 
     //MS.Clear;
     //MS.Write( md_value_bin, md_len );

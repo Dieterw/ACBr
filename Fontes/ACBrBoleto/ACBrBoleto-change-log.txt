@@ -47,10 +47,27 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versao 0.0.25a 28/03/2011
+
+[+] Adicionado funcao LerRetorno240 para o Banco do Brasil.(JPedrosoJunior)
+
+[+] Adicionado funcao LerRetorno240 para a Caixa Economica.()
+
+[*] Substituido o "strtoint" para "strtoint64" das funcoes FormataNossoNumero 
+    e CalcularDigitoVerificador, para evitar erros na unit da Caixa Economica.
+    (Jeter) 
+
+[*] Alterado funcao LerRetorno de todos os bancos, para adicionar as propriedades
+    do cedente os dados da conta e da agencia, caso a propriedade LeCedente estiver 
+    habilitada.(Juliana Tamizou)
+
 Versao 0.0.24a 03/03/2011
 [+] Adicionado leitura do arquivo retorno para o Bancoob.(Douglas Tybel)
+
 [-] Corrigido Montagem do Campo Nosso Numero e do Código de Barras para a 
-    Carteira 18 quando o Convênio tiver 6 digitos.(Jeter Rabelo Ferreira)
+    Carteira 18 quando o Convênio tiver 6 digitos,para o BB.(Jeter Rabelo Ferreira)
+
+
 
 Versão 0.0.23a 19/02/2011
 

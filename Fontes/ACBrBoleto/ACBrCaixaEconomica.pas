@@ -61,6 +61,8 @@ type
     function GerarRegistroHeader240(NumeroRemessa : Integer): String; override;
     function GerarRegistroTransacao240(ACBrTitulo : TACBrTitulo): String; override;
     function GerarRegistroTrailler240(ARemessa : TStringList): String;  override;
+
+    procedure LerRetorno240(ARetorno:TStringList); override;
    end;
 
 implementation
@@ -87,7 +89,7 @@ begin
    else
       raise Exception.Create( ACBrStr('Carteira Inválida.'+sLineBreak+'Utilize "RG" ou "SR"') ) ;
 
-   ANossoNumero := Trim(IntToStr(StrToInt(ACBrTitulo.NossoNumero)));
+   ANossoNumero := Trim(IntToStr(StrToInt64(ACBrTitulo.NossoNumero)));
    Num := ACarteira + '4' + PadR(ANossoNumero, 15, '0');
 
    Modulo.CalculoPadrao;
@@ -131,7 +133,7 @@ begin
    with ACBrTitulo do
    begin
       AConvenio := ACBrBoleto.Cedente.Convenio;
-      ANossoNumero := trim(inttostr(strtoint(NossoNumero)));
+      ANossoNumero := trim(inttostr(StrToInt64(NossoNumero)));
 
       if (ACBrTitulo.Carteira = 'RG') then         {carterira registrada}
           ANossoNumero := '14' + padR(ANossoNumero, 15, '0')
@@ -450,4 +452,132 @@ begin
             padL('',6,' ')                                             + //Uso exclusivo FEBRABAN/CNAB}
             padL('',205,' ');                                            //Uso exclusivo FEBRABAN/CNAB}
 end;
+procedure TACBrCaixaEconomica.LerRetorno240(ARetorno: TStringList);
+var
+  ContLinha: Integer;
+  Titulo   : TACBrTitulo;
+
+  Linha,
+  rCedente,
+  rCNPJCPF,
+  DigitoNossoNumero: String;
+  i : Integer;
+  rAgencia, rConta,rDigitoConta: String;
+begin
+   ContLinha := 0;
+
+   if (copy(ARetorno.Strings[0],143,1) <> '2') then
+      raise Exception.Create(ACBrStr(ACBrBanco.ACBrBoleto.NomeArqRetorno + 'nao' +
+                             'é um arquivo de retorno do '+ Nome));
+
+   rCedente := trim(Copy(ARetorno[0],73,30));
+   rAgencia := trim(Copy(ARetorno[0],27,4));
+   rConta   := trim(Copy(ARetorno[0],33,5));
+   rDigitoConta := Copy(ARetorno[0],38,1);
+
+
+   ACBrBanco.ACBrBoleto.DataArquivo   := StringToDateTimeDef(Copy(ARetorno[1],192,2)+'/'+
+                                                             Copy(ARetorno[1],194,2)+'/'+
+                                                             Copy(ARetorno[1],198,2),0, 'DD/MM/YY' );
+
+   ACBrBanco.ACBrBoleto.DataCreditoLanc := StringToDateTimeDef(Copy(ARetorno[1],200,2)+'/'+
+                                                               Copy(ARetorno[1],202,2)+'/'+
+                                                               Copy(ARetorno[1],204,2),0, 'DD/MM/YY' );
+   rCNPJCPF := trim( Copy(ARetorno[0],19,14)) ;
+
+   case StrToIntDef(Copy(ARetorno[1],18,2),0) of
+      11 : rCNPJCPF:= Copy(ARetorno[1],04,14);
+      14 : rCNPJCPF:= Copy(ARetorno[1],07,11);
+   else
+      rCNPJCPF:= Copy(ARetorno[1],4,14);
+   end;
+
+
+   with ACBrBanco.ACBrBoleto do
+   begin
+
+      if (not LeCedenteRetorno) and (rCNPJCPF <> OnlyNumber(Cedente.CNPJCPF)) then
+         raise Exception.Create(ACBrStr('CNPJ\CPF do arquivo inválido'));
+
+      if (not LeCedenteRetorno) and ((rAgencia <> OnlyNumber(Cedente.Agencia)) or
+          (rConta <> OnlyNumber(Cedente.Conta))) then
+         raise Exception.Create(ACBrStr('Agencia\Conta do arquivo inválido'));
+
+      Cedente.Nome    := rCedente;
+      Cedente.CNPJCPF := rCNPJCPF;
+      Cedente.Agencia := rAgencia;
+      Cedente.AgenciaDigito:= '0';
+      Cedente.Conta   := rConta;
+      Cedente.ContaDigito:= rDigitoConta;
+
+      case StrToIntDef(Copy(ARetorno[1],18,2),0) of
+         11: Cedente.TipoInscricao:= pFisica;
+         14: Cedente.TipoInscricao:= pJuridica;
+         else
+            Cedente.TipoInscricao := pOutras;
+      end;
+
+      ACBrBanco.ACBrBoleto.ListadeBoletos.Clear;
+   end;
+
+   for ContLinha := 1 to ARetorno.Count - 2 do
+   begin
+      Linha := ARetorno[ContLinha] ;
+
+      if Copy(Linha,14,1)= 'T' then //segmento T - Só cria após passar pelo seguimento T depois U
+      Titulo := ACBrBanco.ACBrBoleto.CriarTituloNaLista;
+
+      with Titulo do
+      begin
+
+      if Copy(Linha,14,1)= 'T' then //segmento T
+        begin
+         SeuNumero                   := copy(Linha,59,11);
+         NumeroDocumento             := copy(Linha,48,9);
+         OcorrenciaOriginal.Tipo     := CodOcorrenciaToTipo(StrToIntDef(
+                                        copy(Linha,16,2),0));
+         //05 = Liquidação Sem Registro
+         Vencimento := StringToDateTimeDef( Copy(Linha,74,2)+'/'+
+                                            Copy(Linha,76,2)+'/'+
+                                            Copy(Linha,78,2),0, 'DD/MM/YY' );
+
+         ValorDocumento       := StrToFloatDef(Copy(Linha,82,15),0)/100;
+         ValorRecebido        := StrToFloatDef(Copy(Linha,82,15),0)/100;
+         NossoNumero          := copy( Copy(Linha,48,9),Length( Copy(Linha,48,9) )-TamanhoMaximoNossoNum  ,TamanhoMaximoNossoNum);
+         Carteira             := Copy(Linha,40,2);
+
+         end //if segmento
+         else
+      if Copy(Linha,14,1)= 'U' then //segmento U
+        begin
+
+         if StrToIntDef(Copy(Linha,138,6),0) <> 0 then
+            DataOcorrencia := StringToDateTimeDef( Copy(Linha,138,2)+'/'+
+                                                Copy(Linha,140,2)+'/'+
+                                                Copy(Linha,142,4),0, 'DD/MM/YYYY' );
+
+         if StrToIntDef(Copy(Linha,146,6),0) <> 0 then
+            DataCredito:= StringToDateTimeDef( Copy(Linha,146,2)+'/'+
+                                               Copy(Linha,148,2)+'/'+
+                                               Copy(Linha,150,4),0, 'DD/MM/YYYY' );
+
+
+         ValorIOF             := StrToFloatDef(Copy(Linha,63,15),0)/100;
+         ValorAbatimento      := StrToFloatDef(Copy(Linha,48,15),0)/100;
+         ValorDesconto        := StrToFloatDef(Copy(Linha,33,15),0)/100;
+         ValorMoraJuros       := StrToFloatDef(Copy(Linha,18,15),0)/100;
+         ValorOutrosCreditos  := StrToFloatDef(Copy(Linha,123,15),0)/100;
+         ValorDespesaCobranca := StrToFloatDef(Copy(Linha,108,15),0)/100;
+         ValorOutrasDespesas  := StrToFloatDef(Copy(Linha,108,15),0)/100;
+
+        end;//if Copy(Linha,14,1)= 'U' then //segmento U
+
+
+      end; //with
+
+
+   end; //for
+
+end;
+
 end.

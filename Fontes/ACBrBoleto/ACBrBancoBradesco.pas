@@ -288,6 +288,7 @@ var
   CodOcorrencia, CodMotivo : Integer;
   CodMotivo_19 : String;
   i, MotivoLinha : Integer;
+  rAgencia, rConta, rDigitoConta: String;
 begin
    ContLinha := 0;
 
@@ -296,6 +297,9 @@ begin
                              'é um arquivo de retorno do '+ Nome));
 
    rCedente := trim(Copy(ARetorno[0],47,30));
+   rAgencia := trim(Copy(ARetorno[1],25,5));
+   rConta   := trim(Copy(ARetorno[1],30,7));
+   rDigitoConta := Copy(ARetorno[1],37,1);
 
    ACBrBanco.ACBrBoleto.NumeroArquivo := StrToInt(Copy(ARetorno[0],109,5));//|Implementado por Carlos Fitl - 27/12/2010
 
@@ -307,15 +311,28 @@ begin
                                                                Copy(ARetorno[0],382,2)+'/'+            //|Implementado por Carlos Fitl - 27/12/2010
                                                                Copy(ARetorno[0],384,2),0, 'DD/MM/YY' );//|
 
-   rCNPJCPF := trim(IntToStr(StrToIntDef(Copy(ARetorno[1],04,14),0)));
+   case StrToIntDef(Copy(ARetorno[1],2,2),0) of
+      11: rCNPJCPF := Copy(ARetorno[1],7,11);
+      14: rCNPJCPF := Copy(ARetorno[1],4,14);
+      else
+        rCNPJCPF := Copy(ARetorno[1],4,14);
+   end;
 
    with ACBrBanco.ACBrBoleto do
    begin
       if (not LeCedenteRetorno) and (rCNPJCPF <> OnlyNumber(Cedente.CNPJCPF)) then
          raise Exception.Create(ACBrStr('CNPJ\CPF do arquivo inválido'));
 
+      if (not LeCedenteRetorno) and ((rAgencia <> OnlyNumber(Cedente.Agencia)) or
+          (rConta <> OnlyNumber(Cedente.Conta))) then
+         raise Exception.Create(ACBrStr('Agencia\Conta do arquivo inválido'));
+
       Cedente.Nome    := rCedente;
       Cedente.CNPJCPF := rCNPJCPF;
+      Cedente.Agencia := rAgencia;
+      Cedente.AgenciaDigito:= '0';
+      Cedente.Conta   := rConta;
+      Cedente.ContaDigito:= rDigitoConta;
 
       case StrToIntDef(Copy(ARetorno[1],2,2),0) of
          11: Cedente.TipoInscricao:= pFisica;

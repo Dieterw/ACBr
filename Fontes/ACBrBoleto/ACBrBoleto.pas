@@ -57,7 +57,7 @@ uses ACBrBase,  {Units da ACBr}
      Graphics, Contnrs, Classes;
 
 const
-  CACBrBoleto_Versao = '0.0.24a' ;
+  CACBrBoleto_Versao = '0.0.25a' ;
 
 type
   TACBrTitulo = class;
@@ -1625,8 +1625,6 @@ procedure TACBrBoleto.LerRetorno( ) ;
 var
   SlRetorno: TStringList;
   NomeArq  : String;
-  testedirarq: String;
-  testenomearq: String;
 begin
    SlRetorno:= TStringList.Create;
    Self.ListadeBoletos.Clear;
@@ -1634,8 +1632,6 @@ begin
    if NomeArqRetorno = '' then
       raise Exception.Create(ACBrStr('NomeArqRetorno deve ser informado.'));
 
-   testedirarq:= fDirArqRetorno;
-   testenomearq:= NomeArqRetorno;
    NomeArq := fDirArqRetorno + PathDelim + NomeArqRetorno;
 
    if not FilesExists( NomeArq ) then

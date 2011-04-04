@@ -1455,9 +1455,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         ParentFont = False
       end
       object txtNomeSacado2: TRLLabel
-        Left = 53
+        Left = 140
         Top = 284
-        Width = 512
+        Width = 428
         Height = 14
         AutoSize = False
         Caption = 'Nome do Sacado'
@@ -1469,9 +1469,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         ParentFont = False
       end
       object txtEnderecoSacado2: TRLLabel
-        Left = 53
+        Left = 140
         Top = 297
-        Width = 512
+        Width = 428
         Height = 14
         AutoSize = False
         Caption = 'Rua / Numero / Complemento'
@@ -1483,9 +1483,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         ParentFont = False
       end
       object txtCidadeSacado2: TRLLabel
-        Left = 53
+        Left = 140
         Top = 313
-        Width = 512
+        Width = 428
         Height = 14
         AutoSize = False
         Caption = 'Cep / Bairro / Cidade / Estado'
@@ -1624,9 +1624,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         ParentFont = False
       end
       object txtSacadorAvalista2: TRLLabel
-        Left = 108
+        Left = 140
         Top = 329
-        Width = 458
+        Width = 428
         Height = 14
         AutoSize = False
         Font.Charset = ANSI_CHARSET

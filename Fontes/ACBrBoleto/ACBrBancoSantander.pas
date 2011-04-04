@@ -322,6 +322,7 @@ var
   CodOcorrencia, CodMotivo : Integer;
   CodMotivo_19 : String;
   i, MotivoLinha : Integer;
+  rAgencia,rConta,rDigitoConta: String;
 begin
    ContLinha := 0;
 
@@ -330,6 +331,10 @@ begin
                              'é um arquivo de retorno do '+ Nome));
 
    rCedente := trim(Copy(ARetorno[0],47,30));
+   rAgencia := trim(Copy(ARetorno[1],18,4));
+   rConta   := trim(Copy(ARetorno[1],22,8))+ Copy(ARetorno[1],384,1);
+   rDigitoConta := Copy(ARetorno[1],385,1);
+
    rCNPJCPF := trim(IntToStr(StrToIntDef(Copy(ARetorno[1],04,14),0)));
 
    with ACBrBanco.ACBrBoleto do
@@ -337,8 +342,16 @@ begin
       if (not LeCedenteRetorno) and (rCNPJCPF <> Cedente.CNPJCPF) then
          raise Exception.Create(ACBrStr('CNPJ\CPF do arquivo inválido'));
 
+      if (not LeCedenteRetorno) and ((rAgencia <> OnlyNumber(Cedente.Agencia)) or
+          (rConta <> OnlyNumber(Cedente.Conta))) then
+         raise Exception.Create(ACBrStr('Agencia\Conta do arquivo inválido'));
+
       Cedente.Nome    := rCedente;
       Cedente.CNPJCPF := rCNPJCPF;
+      Cedente.Agencia := rAgencia;
+      Cedente.AgenciaDigito:= '0';
+      Cedente.Conta   := rConta;
+      Cedente.ContaDigito:= rDigitoConta;
 
       case StrToIntDef(Copy(ARetorno[1],2,2),0) of
          01: Cedente.TipoInscricao:= pFisica;

@@ -59,6 +59,7 @@ type
     function GerarRegistroHeader400(NumeroRemessa : Integer): String; override;
     function GerarRegistroTransacao400(ACBrTitulo : TACBrTitulo): String; override;
     function GerarRegistroTrailler400(ARemessa : TStringList): String;  override;
+    Procedure LerRetorno240(ARetorno:TStringList); override;
    end;
 
 implementation
@@ -691,6 +692,132 @@ begin
    Result:= '9' + Space(393)                     + // ID Registro
             IntToStrZero( (ARemessa.Count * 2), 6);  // Contador de Registros
    Result:= UpperCase(Result);
+end;
+
+procedure TACBrBancoBrasil.LerRetorno240(ARetorno: TStringList);
+var
+  ContLinha: Integer;
+  Titulo: TACBrTitulo;
+
+  Linha, rCedente: String;
+  rCNPJCPF: String;
+
+  CodOCorrencia: Integer;
+  i, MotivoLinha: Integer;
+begin
+   ContLinha := 0;
+
+   // informação do Header
+   // Verifica se o arquivo pertence ao banco
+   if strtoint(copy(ARetorno.Strings[0], 3, 3)) <> Numero then
+      raise Exception.create(ACBrStr(ACBrBanco.ACBrBoleto.NomeArqRetorno +
+            'não' + 'é um arquivo de retorno do ' + Nome));
+
+   rCedente := trim(copy(ARetorno[0], 73, 30));
+   rCNPJCPF := trim(IntToStr(StrToIntDef(copy(ARetorno[1], 19, 14), 0)));
+
+   with ACBrBanco.ACBrBoleto do
+   begin
+      if (not LeCedenteRetorno) and (rCNPJCPF <> Cedente.CNPJCPF) then
+        raise Exception.create(ACBrStr('CNPJ\CPF do arquivo inválido'));
+
+      Cedente.Nome := rCedente;
+      Cedente.CNPJCPF := rCNPJCPF;
+
+      case StrToIntDef(copy(ARetorno[0], 18, 1), 0) of
+        01:
+          Cedente.TipoInscricao := pFisica;
+        02:
+          Cedente.TipoInscricao := pJuridica;
+        else
+          Cedente.TipoInscricao := pOutras;
+      end;
+
+      ACBrBanco.ACBrBoleto.ListadeBoletos.Clear;
+   end;
+
+   for ContLinha := 1 to ARetorno.Count - 2 do
+   begin
+      Linha := ARetorno[ContLinha];
+
+      if copy(Linha, 8, 8) <> '3' then // verifica se o registro (linha) é um registro detalhe (segmento J)
+        Continue;
+
+      if copy(Linha, 14, 1) = 'T' then // se for segmento T cria um novo titulo
+         Titulo := ACBrBanco.ACBrBoleto.CriarTituloNaLista;
+
+      with Titulo do
+      begin
+
+         {OcorrenciaOriginal.Tipo := CodOcorrenciaToTipo
+         (StrToIntDef(copy(Linha, 214, 2), 0));
+
+         MotivoLinha := 214;
+         for i := 0 to 3 do
+         begin
+         MotivoRejeicaoComando.Add(IfThen(copy(Linha, MotivoLinha, 2) = '  ',
+         '00', copy(Linha, MotivoLinha, 2)));
+
+         if MotivoRejeicaoComando[i] <> '00' then
+         begin
+         CodOCorrencia := StrToIntDef(MotivoRejeicaoComando[i], 0);
+         DescricaoMotivoRejeicaoComando.Add(CodMotivoRejeicaoToDescricao
+         (OcorrenciaOriginal.Tipo, CodOCorrencia));
+         end;
+
+         MotivoLinha := MotivoLinha + 2;
+         end; }
+
+         { Espécie do documento }
+         { if Trim(Copy(Linha,174,2)) = '' then
+          EspecieDoc := '99'
+          else
+          case StrToInt(Copy(Linha,174,2)) of
+          01 : EspecieDoc := 'DM';
+          02 : EspecieDoc := 'NP';
+          03 : EspecieDoc := 'NS';
+          04 : EspecieDoc := 'ME';
+          05 : EspecieDoc := 'RC';
+          06 : EspecieDoc := 'CT';
+          07 : EspecieDoc := 'CS';
+          08 : EspecieDoc := 'DS';
+          09 : EspecieDoc := 'LC';
+          13 : EspecieDoc := 'ND';
+          15 : EspecieDoc := 'DD';
+          16 : EspecieDoc := 'EC';
+          17 : EspecieDoc := 'PS';
+          99 : EspecieDoc := 'DV';
+          else
+          EspecieDoc := 'DV';
+          end;
+          }
+         if copy(Linha, 14, 1) = 'T' then
+         begin
+           SeuNumero := copy(Linha, 106, 25);
+           NumeroDocumento := copy(Linha, 59, 15);
+           Carteira := copy(Linha, 58, 1);
+
+           Vencimento := StringToDateTimeDef(copy(Linha, 74, 8), 0, 'DDMMYY');
+
+           ValorDocumento := StrToFloatDef(copy(Linha, 82, 15), 0) / 100;
+
+           NossoNumero := copy(Linha, 38, 20);
+           ValorDespesaCobranca := StrToFloatDef(copy(Linha, 199, 15), 0) / 100;
+
+         end
+         else // segmento U
+         begin
+            ValorIOF := StrToFloatDef(copy(Linha, 63, 15), 0) / 100;
+            ValorAbatimento := StrToFloatDef(copy(Linha, 48, 15), 0) / 100;
+            ValorDesconto := StrToFloatDef(copy(Linha, 33, 15), 0) / 100;
+            ValorMoraJuros := StrToFloatDef(copy(Linha, 18, 15), 0) / 100;
+            ValorOutrosCreditos := StrToFloatDef(copy(Linha, 108, 15), 0) / 100;
+            ValorRecebido := StrToFloatDef(copy(Linha, 78, 15), 0) / 100;
+            DataOcorrencia := StringToDateTimeDef(copy(Linha, 138, 8), 0, 'DDMMYY');
+            DataCredito := StringToDateTimeDef(copy(Linha, 146, 8), 0, 'DDMMYY');
+         end;
+      end;
+   end;
 end;
 
 end.

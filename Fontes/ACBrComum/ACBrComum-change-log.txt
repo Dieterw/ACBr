@@ -38,6 +38,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+04/04/2011
+-- ACBrEAD
+[+] Métodos para geração do MD5 de arquivos e strings diretamente.
+    por: Régys Silveira
+
 28/03/2011
 -- ACBrArqAuxCriptografado
 [+] Novo componente para controle do arquivo auxiliar criptografado do PAF-ECF

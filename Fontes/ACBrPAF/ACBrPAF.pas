@@ -701,7 +701,7 @@ end;
 
 procedure TACBrPAF.ReordenarRegistroR(Arquivo: String);
 var
-objFile: TStringList;
+  objFile: TStringList;
 begin
   objFile := TStringList.Create;
   try

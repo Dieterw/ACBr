@@ -188,6 +188,13 @@ begin
       end;
 end;
 
+// função para comparação dos nomes de arquivo que serão utilizados para
+// ordenar os registros N3
+function CompararRegistroN3(const ARegN3_1, ARegN3_2: TRegistroN3): Integer;
+begin
+  Result := AnsiCompareText(ARegN3_1.NOME_ARQUIVO, ARegN3_2.NOME_ARQUIVO);
+end;
+
 function TPAF_N.WriteRegistroN3: string;
 var
   intFor: integer;
@@ -196,21 +203,25 @@ begin
   strRegistroN3 := '';
 
   if Assigned(FRegistroN3) then
-    begin
+  begin
+    FRegistroN3.Sort(@CompararRegistroN3);
+
     for intFor := 0 to FRegistroN3.Count - 1 do
-      begin
+    begin
       with FRegistroN3.Items[intFor] do
-        begin
-        strRegistroN3 := strRegistroN3 + LFill('N3') +
-                                         RFill(NOME_ARQUIVO, 50) +
-                                         LFill(MD5, 32) +
-                                         #13#10;
-        end;
-      ///
-      FRegistroN9.TOT_REG := FRegistroN9.TOT_REG +  1;
+      begin
+        strRegistroN3 := strRegistroN3 +
+          LFill('N3') +
+          RFill(NOME_ARQUIVO, 50) +
+          LFill(MD5, 32) +
+          sLineBreak;
       end;
-    Result := strRegistroN3;
+
+      FRegistroN9.TOT_REG := FRegistroN9.TOT_REG +  1;
     end;
+
+    Result := strRegistroN3;
+  end;
 end;
 
 

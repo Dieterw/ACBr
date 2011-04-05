@@ -47,6 +47,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.06   05/04/11
+---------------
+[*] Ordenação dos registros N3, conforme ato cotepe 06/08 anexo X.
+    por Régys Silveira
+
+
 Versão 0.06   22/03/11
 ---------------
 [*] Acertos nos registros Tipo N.

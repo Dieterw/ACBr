@@ -184,7 +184,7 @@ begin
 
   // criar um arquivo em branco quando não existir
   if not FilesExists(PathArquivo) then
-    WriteToTXT(PathArquivo, '', False, False);
+    WriteToTXT(AnsiString(PathArquivo), '', False, False);
 
   // ler o conteúdo do arquivo
   Arquivo  := TStringList.Create;

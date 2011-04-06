@@ -81,6 +81,12 @@ begin
         else if Cmd.Metodo = 'colunas' then
            Cmd.Resposta := IntToStr( Colunas )
 
+        else if Cmd.Metodo = 'paramdescontoissqn' then
+              Cmd.Resposta:= BoolToStr(ParamDescontoISSQN)
+
+        else if Cmd.Metodo = 'enviainfo' then
+            Cmd.Resposta :=   RetornaInfoECF(Cmd.Params(0))
+
         else if Cmd.Metodo = 'comandoenviado' then
            Cmd.Resposta := ComandoEnviado
 

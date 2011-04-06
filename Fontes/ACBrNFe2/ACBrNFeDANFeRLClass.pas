@@ -76,6 +76,8 @@
 |*  - Acréscimo da propriedade "ExibirEAN"
 |* 16/02/2011: Fernando Emiliano David Nunes
 |*  - Acrescentado ao Método ImprimeDANFEPDF a condição ELSE quando NFE <> NIL
+|* 01/03/2011: Fernando Emiliano David Nunes
+|*  - Quando DPEC, nao estava imprimindo o valor FProtocoloNFe, acrescentei o envio do Atributo: ProtocoloNFe
 ******************************************************************************}
 {$I ACBr.inc}
 unit ACBrNFeDANFeRLClass;
@@ -165,7 +167,7 @@ begin
           ExpandirLogoMarca, MostrarPreview, FonteDANFE, MargemSuperior,
           MargemInferior, MargemEsquerda, MargemDireita, CasasDecimais._qCom,
           CasasDecimais._vUnCom, ProdutosPorPagina, Impressora,
-          TamanhoFonte_RazaoSocial, ExibirEAN);
+          TamanhoFonte_RazaoSocial, ExibirEAN, ProtocoloNFe);
         end;
     end
   else
@@ -176,7 +178,7 @@ begin
       ExpandirLogoMarca, MostrarPreview, FonteDANFE, MargemSuperior,
       MargemInferior, MargemEsquerda, MargemDireita, CasasDecimais._qCom,
       CasasDecimais._vUnCom, ProdutosPorPagina, Impressora,
-      TamanhoFonte_RazaoSocial, ExibirEAN);
+      TamanhoFonte_RazaoSocial, ExibirEAN, ProtocoloNFe);
     end;
 
   frlDANFeRL.Free;
@@ -203,7 +205,7 @@ begin
           ExpandirLogoMarca, FonteDANFE, MargemSuperior,
           MargemInferior, MargemEsquerda, MargemDireita, CasasDecimais._qCom,
           CasasDecimais._vUnCom, ProdutosPorPagina, TamanhoFonte_RazaoSocial,
-          ExibirEAN);
+          ExibirEAN, ProtocoloNFe);
         end;
     end
   else
@@ -214,8 +216,9 @@ begin
       PosCanhoto, FormularioContinuo, ExpandirLogoMarca, FonteDANFE,
       MargemSuperior, MargemInferior, MargemEsquerda, MargemDireita,
       CasasDecimais._qCom, CasasDecimais._vUnCom, ProdutosPorPagina,
-      TamanhoFonte_RazaoSocial, ExibirEAN);
+      TamanhoFonte_RazaoSocial, ExibirEAN, ProtocoloNFe);
     end;
+   
 
   frlDANFeRL.Free;
 end;

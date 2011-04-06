@@ -104,6 +104,11 @@
 |*  - Tratamento do tamanho da fonte da razão social do emitente
 |* 25/11/2010: Peterson de Cerqueira Matos
 |*  - Acréscimo da coluna "EAN"
+|* 01/03/2011: Fernando Emiliano David Nunes
+|*  - Quando DPEC, nao estava imprimindo Data e Motivo da Contingência
+|*  - Quando DPEC, nao estava imprimindo o valor FProtocoloNFe
+|* 24/03/2011: Fernando Emiliano David Nunes
+|*  - Alterei a funcao FormatarFone para tratar casos onde o DDD vem com ZERO somando 3 digitos
 ******************************************************************************}
 {$I ACBr.inc}
 unit ACBrNFeDANFeRLPaisagem;
@@ -607,6 +612,8 @@ begin
   Result := AValue;
   if NotaUtil.NaoEstaVazio(AValue) then
   begin
+    if Length(NotaUtil.LimpaNumero(AValue)) > 10 then AValue := copy(NotaUtil.LimpaNumero(AValue),2,10); //Casos em que o DDD vem com ZERO antes somando 3 digitos
+
     AValue := NotaUtil.Poem_Zeros(NotaUtil.LimpaNumero(AValue), 10);
     Result := '('+copy(AValue,1,2) + ') ' + copy(AValue,3,4) + '-' + copy(AValue,7,4);
   end;
@@ -1153,10 +1160,23 @@ begin
         rlbCodigoBarras.Visible := True;
         rlbCodigoBarrasFS.Visible := False;
         rllDadosVariaveis3_Descricao.Caption := 'NÚMERO DE REGISTRO DPEC';
-        rllDadosVariaveis3.Caption := FNFe.procNFe.nProt + ' ' +
+
+        if FProtocoloNFe <> '' then
+          rllDadosVariaveis3.Caption := FProtocoloNFe
+        else
+          rllDadosVariaveis3.Caption := FNFe.procNFe.nProt + ' ' +
                                           DateTimeToStr(FNFe.procNFe.dhRecbto);
+
+
         rllAvisoContingencia.Caption := 'DANFE em Contingência - DPEC ' +
                         'regularmente recebida pela Receita Federal do Brasil';
+
+        if (dhCont > 0) and (xJust > '') then
+          rllContingencia.Caption :=
+                    'Data / Hora da entrada em contingência: ' +
+                    FormatDateTime('dd/mm/yyyy hh:nn:ss', dhCont) +
+                    '   Motivo: ' + xJust;
+
         rllAvisoContingencia.Visible := True;
         rlbAvisoContingencia.Visible := True;
       end;
@@ -1650,9 +1670,9 @@ begin
                         end
                       else if (CST = cst30) then
                         begin
-                          sBCICMS    := FormatFloat('###,###,###,##0.00', VBCST);
+                          {sBCICMS    := FormatFloat('###,###,###,##0.00', VBCST);
                           sALIQICMS  := FormatFloat('###,###,###,##0.00', PICMSST);
-                          sVALORICMS := FormatFloat('###,###,###,##0.00', VICMSST);
+                          sVALORICMS := FormatFloat('###,###,###,##0.00', VICMSST);}
                         end
                       else if (CST = cst40) or (CST = cst41) or (CST = cst50) then
                         begin

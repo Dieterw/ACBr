@@ -1,8 +1,8 @@
 object Form1: TForm1
-  Left = 265
-  Top = 119
-  Width = 879
-  Height = 592
+  Left = 250
+  Top = 97
+  Width = 878
+  Height = 623
   Caption = 'ACBrNFe'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -19,7 +19,7 @@ object Form1: TForm1
     Left = 0
     Top = 0
     Width = 297
-    Height = 556
+    Height = 587
     Align = alLeft
     TabOrder = 0
     object lblColaborador: TLabel
@@ -102,7 +102,7 @@ object Form1: TForm1
         Top = 15
         Width = 277
         Height = 360
-        ActivePage = TabSheet4
+        ActivePage = TabSheet1
         Align = alClient
         MultiLine = True
         TabOrder = 0
@@ -801,15 +801,15 @@ object Form1: TForm1
   object Panel2: TPanel
     Left = 297
     Top = 0
-    Width = 566
-    Height = 556
+    Width = 565
+    Height = 587
     Align = alClient
     TabOrder = 1
     object Panel3: TPanel
       Left = 1
       Top = 1
-      Width = 564
-      Height = 192
+      Width = 563
+      Height = 216
       Align = alTop
       TabOrder = 0
       object btnImprimir: TButton
@@ -974,13 +974,31 @@ object Form1: TForm1
         TabOrder = 17
         OnClick = btnGerarTXTClick
       end
+      object btnAdicionarProtNFe: TButton
+        Left = 8
+        Top = 186
+        Width = 177
+        Height = 25
+        Caption = 'Adicionar nfeProc ao XML'
+        TabOrder = 18
+        OnClick = btnAdicionarProtNFeClick
+      end
+      object Button1: TButton
+        Left = 192
+        Top = 184
+        Width = 177
+        Height = 25
+        Caption = 'Carregar XML e Enviar'
+        TabOrder = 19
+        OnClick = Button1Click
+      end
     end
     object PageControl2: TPageControl
       Left = 1
-      Top = 193
-      Width = 564
-      Height = 362
-      ActivePage = TabSheet10
+      Top = 217
+      Width = 563
+      Height = 369
+      ActivePage = TabSheet8
       Align = alClient
       TabOrder = 1
       object TabSheet5: TTabSheet
@@ -988,8 +1006,8 @@ object Form1: TForm1
         object MemoResp: TMemo
           Left = 0
           Top = 0
-          Width = 556
-          Height = 334
+          Width = 555
+          Height = 341
           Align = alClient
           ScrollBars = ssVertical
           TabOrder = 0
@@ -1001,12 +1019,12 @@ object Form1: TForm1
         object WBResposta: TWebBrowser
           Left = 0
           Top = 0
-          Width = 556
-          Height = 334
+          Width = 555
+          Height = 341
           Align = alClient
           TabOrder = 0
           ControlData = {
-            4C00000077390000852200000000000000000000000000000000000000000000
+            4C0000005C3900003E2300000000000000000000000000000000000000000000
             000000004C000000000000000000000001000000E0D057007335CF11AE690800
             2B2E126208000000000000004C0000000114020000000000C000000000000046
             8000000000000000000000000000000000000000000000000000000000000000
@@ -1019,8 +1037,8 @@ object Form1: TForm1
         object memoLog: TMemo
           Left = 0
           Top = 0
-          Width = 556
-          Height = 334
+          Width = 555
+          Height = 341
           Align = alClient
           ScrollBars = ssVertical
           TabOrder = 0
@@ -1032,8 +1050,8 @@ object Form1: TForm1
         object trvwNFe: TTreeView
           Left = 0
           Top = 0
-          Width = 556
-          Height = 334
+          Width = 555
+          Height = 341
           Align = alClient
           Indent = 19
           TabOrder = 0
@@ -1045,8 +1063,8 @@ object Form1: TForm1
         object memoRespWS: TMemo
           Left = 0
           Top = 0
-          Width = 556
-          Height = 334
+          Width = 555
+          Height = 341
           Align = alClient
           ScrollBars = ssVertical
           TabOrder = 0
@@ -1058,8 +1076,8 @@ object Form1: TForm1
         object MemoDados: TMemo
           Left = 0
           Top = 0
-          Width = 556
-          Height = 334
+          Width = 555
+          Height = 341
           Align = alClient
           ScrollBars = ssVertical
           TabOrder = 0
@@ -1097,7 +1115,7 @@ object Form1: TForm1
     TipoDANFE = tiRetrato
     NumCopias = 1
     ImprimirDescPorc = True
-    ImprimirTotalLiquido = False
+    ImprimirTotalLiquido = True
     MargemInferior = 0.800000000000000000
     MargemSuperior = 0.800000000000000000
     MargemEsquerda = 0.600000000000000000
@@ -1115,6 +1133,7 @@ object Form1: TForm1
       'letronica.rav'
     EspessuraBorda = 1
     TamanhoFonte_RazaoSocial = 12
+    TamanhoFonte_ANTT = 10
     Left = 758
     Top = 377
   end

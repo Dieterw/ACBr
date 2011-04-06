@@ -4,11 +4,11 @@ unit Unit1;
 
 interface
 
-uses IniFiles, ShellAPI,
+uses IniFiles, ShellAPI, pcnRetConsReciNFe,
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, Buttons, ComCtrls, OleCtrls, SHDocVw,
   ACBrNFe, pcnConversao, ACBrNFeDANFEClass, ACBrNFeDANFERave, ACBrUtil,
-  pcnNFeW, pcnNFeRTXT;
+  pcnNFeW, pcnNFeRTXT, pcnAuxiliar;
 
 type
   TForm1 = class(TForm)
@@ -133,6 +133,8 @@ type
     Dados: TTabSheet;
     MemoDados: TMemo;
     btnGerarTXT: TButton;
+    btnAdicionarProtNFe: TButton;
+    Button1: TButton;
     procedure sbtnCaminhoCertClick(Sender: TObject);
     procedure sbtnLogoMarcaClick(Sender: TObject);
     procedure sbtnPathSalvarClick(Sender: TObject);
@@ -164,6 +166,8 @@ type
     procedure btnConsultarChaveClick(Sender: TObject);
     procedure btnCancelarChaveClick(Sender: TObject);
     procedure btnGerarTXTClick(Sender: TObject);
+    procedure btnAdicionarProtNFeClick(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
     
   private
     { Private declarations }
@@ -343,8 +347,8 @@ end;
 
 procedure TForm1.LoadXML(MyMemo: TMemo; MyWebBrowser: TWebBrowser);
 begin
-  MyMemo.Lines.SaveToFile(ExtractFileDir(application.ExeName)+'temp.xml');
-  MyWebBrowser.Navigate(ExtractFileDir(application.ExeName)+'temp.xml');
+  MyMemo.Lines.SaveToFile(PathWithDelim(ExtractFileDir(application.ExeName))+'temp.xml');
+  MyWebBrowser.Navigate(PathWithDelim(ExtractFileDir(application.ExeName))+'temp.xml');
 end;
 
 procedure TForm1.sbtnCaminhoCertClick(Sender: TObject);
@@ -431,7 +435,7 @@ begin
     ACBrNFe1.Consultar;
     ShowMessage(ACBrNFe1.WebServices.Consulta.Protocolo);
     MemoResp.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.Consulta.RetWS);
-    memoRespWS.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.Consulta.RetornoWS);    
+    memoRespWS.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.Consulta.RetornoWS);
     LoadXML(MemoResp, WBResposta);
   end;
 end;
@@ -470,6 +474,8 @@ begin
     ACBrNFe1.NotasFiscais.Clear;
     ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
     ACBrNFe1.NotasFiscais.Valida;
+    if ACBrNFe1.NotasFiscais.Items[0].Alertas <> '' then
+      MemoDados.Lines.Add('Alertas: '+ACBrNFe1.NotasFiscais.Items[0].Alertas);
     showmessage('Nota Fiscal Eletrônica Valida');
   end;
 end;
@@ -516,7 +522,7 @@ begin
 
   GerarNFe(vAux);
 
-  ACBrNFe1.Enviar(vNumLote);
+  ACBrNFe1.Enviar(vNumLote,True);
 
   MemoResp.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.Retorno.RetWS);
   memoRespWS.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.Retorno.RetornoWS);
@@ -747,8 +753,6 @@ begin
   ACBrNFe1.NotasFiscais.Clear;
 
   GerarNFe(vAux);
-  GerarNFe(vAux);
-  GerarNFe(vAux);
 
   ACBrNFe1.NotasFiscais.SaveToTXT({caminho e nome do arquivo TXT});
 end;
@@ -780,13 +784,14 @@ begin
                                              , Para
                                              , edtEmailAssunto.Text
                                              , mmEmailMsg.Lines
-                                             , cbEmailSSL.Checked
+                                             , cbEmailSSL.Checked // SSL - Conexão Segura
                                              , True //Enviar PDF junto
                                              , nil //Lista com emails que serão enviado cópias - TStrings
                                              , nil // Lista de anexos - TStrings
                                              , False  //Pede confirmação de leitura do email
                                              , False  //Aguarda Envio do Email(não usa thread)
-                                             , 'ACBrNFe2' ); // Nome do Rementente
+                                             , 'ACBrNFe2' // Nome do Rementente
+                                             , cbEmailSSL.Checked ); // Auto TLS
     CC.Free;
   end;
 end;
@@ -1159,6 +1164,7 @@ begin
                     trvwNFe.Items.AddChild(NodePai,'cProdANP=' +IntToStr(cProdANP)) ;
                     trvwNFe.Items.AddChild(NodePai,'CODIF='    +CODIF) ;
                     trvwNFe.Items.AddChild(NodePai,'qTemp='    +FloatToStr(qTemp)) ;
+                    trvwNFe.Items.AddChild(NodePai,'UFcons='    +UFcons) ;                    
 
                     Node := trvwNFe.Items.AddChild(NodePai,'CIDE'+IntToStrZero(I+1,3));
                     trvwNFe.Items.AddChild(Node,'qBCprod='   +FloatToStr(CIDE.qBCprod)) ;
@@ -1195,97 +1201,23 @@ begin
                    with ICMS do
                     begin
                       trvwNFe.Items.AddChild(Node,'CST=' +CSTICMSToStr(CST));
-
-                      if CST = cst00 then
-                       begin
-                         trvwNFe.Items.AddChild(Node,'orig='  +OrigToStr(ICMS.orig));
-                         trvwNFe.Items.AddChild(Node,'modBC=' +modBCToStr(ICMS.modBC));
-                         trvwNFe.Items.AddChild(Node,'vBC='   +FloatToStr(ICMS.vBC));
-                         trvwNFe.Items.AddChild(Node,'pICMS=' +FloatToStr(ICMS.pICMS));
-                         trvwNFe.Items.AddChild(Node,'vICMS=' +FloatToStr(ICMS.vICMS));
-                       end
-                      else if CST = cst10 then
-                       begin
-                         trvwNFe.Items.AddChild(Node,'orig='     +OrigToStr(ICMS.orig));
-                         trvwNFe.Items.AddChild(Node,'modBC='    +modBCToStr(ICMS.modBC));
-                         trvwNFe.Items.AddChild(Node,'vBC='      +FloatToStr(ICMS.vBC));
-                         trvwNFe.Items.AddChild(Node,'pICMS='    +FloatToStr(ICMS.pICMS));
-                         trvwNFe.Items.AddChild(Node,'vICMS='    +FloatToStr(ICMS.vICMS));
-                         trvwNFe.Items.AddChild(Node,'modBCST='  +modBCSTToStr(ICMS.modBCST));
-                         trvwNFe.Items.AddChild(Node,'pMVAST='   +FloatToStr(ICMS.pMVAST));
-                         trvwNFe.Items.AddChild(Node,'pRedBCST=' +FloatToStr(ICMS.pRedBCST));
-                         trvwNFe.Items.AddChild(Node,'vBCST='    +FloatToStr(ICMS.vBCST));
-                         trvwNFe.Items.AddChild(Node,'pICMSST='  +FloatToStr(ICMS.pICMSST));
-                         trvwNFe.Items.AddChild(Node,'vICMSST='  +FloatToStr(ICMS.vICMSST));
-                       end
-                      else if CST = cst20 then
-                       begin
-                         trvwNFe.Items.AddChild(Node,'orig='   +OrigToStr(ICMS.orig));
-                         trvwNFe.Items.AddChild(Node,'modBC='  +modBCToStr(ICMS.modBC));
-                         trvwNFe.Items.AddChild(Node,'pRedBC=' +FloatToStr(ICMS.pRedBC));
-                         trvwNFe.Items.AddChild(Node,'vBC='    +FloatToStr(ICMS.vBC));
-                         trvwNFe.Items.AddChild(Node,'pICMS='  +FloatToStr(ICMS.pICMS));
-                         trvwNFe.Items.AddChild(Node,'vICMS='  +FloatToStr(ICMS.vICMS));
-                       end
-                      else if CST = cst30 then
-                       begin
-                         trvwNFe.Items.AddChild(Node,'orig='     +OrigToStr(ICMS.orig));
-                         trvwNFe.Items.AddChild(Node,'modBCST='  +modBCSTToStr(ICMS.modBCST));
-                         trvwNFe.Items.AddChild(Node,'pMVAST='   +FloatToStr(ICMS.pMVAST));
-                         trvwNFe.Items.AddChild(Node,'pRedBCST=' +FloatToStr(ICMS.pRedBCST));
-                         trvwNFe.Items.AddChild(Node,'vBCST='    +FloatToStr(ICMS.vBCST));
-                         trvwNFe.Items.AddChild(Node,'pICMSST='  +FloatToStr(ICMS.pICMSST));
-                         trvwNFe.Items.AddChild(Node,'vICMSST='  +FloatToStr(ICMS.vICMSST));
-                       end
-                      else if (CST = cst40) or (CST = cst41) or (CST = cst50) then
-                       begin
-                         trvwNFe.Items.AddChild(Node,'orig='    +OrigToStr(ICMS.orig));
-                       end
-                      else if CST = cst51 then
-                         begin
-                         trvwNFe.Items.AddChild(Node,'orig='    +OrigToStr(ICMS.orig));
-                         trvwNFe.Items.AddChild(Node,'modBC='   +modBCToStr(ICMS.modBC));
-                         trvwNFe.Items.AddChild(Node,'pRedBC='  +FloatToStr(ICMS.pRedBC));
-                         trvwNFe.Items.AddChild(Node,'vBC='     +FloatToStr(ICMS.vBC));
-                         trvwNFe.Items.AddChild(Node,'pICMS='   +FloatToStr(ICMS.pICMS));
-                         trvwNFe.Items.AddChild(Node,'vICMS='   +FloatToStr(ICMS.vICMS));
-                       end
-                      else if CST = cst60 then
-                       begin
-                         trvwNFe.Items.AddChild(Node,'orig='    +OrigToStr(ICMS.orig));
-                         trvwNFe.Items.AddChild(Node,'vBCST='   +FloatToStr(ICMS.vBCST));
-                         trvwNFe.Items.AddChild(Node,'vICMSST=' +FloatToStr(ICMS.vICMSST));
-                       end
-                      else if CST = cst70 then
-                       begin
-                         trvwNFe.Items.AddChild(Node,'orig='       +OrigToStr(ICMS.orig));
-                         trvwNFe.Items.AddChild(Node,'modBC='      +modBCToStr(ICMS.modBC));
-                         trvwNFe.Items.AddChild(Node,'pRedBC='     +FloatToStr(ICMS.pRedBC));
-                         trvwNFe.Items.AddChild(Node,'vBC='        +FloatToStr(ICMS.vBC));
-                         trvwNFe.Items.AddChild(Node,'pICMS='      +FloatToStr(ICMS.pICMS));
-                         trvwNFe.Items.AddChild(Node,'vICMS='      +FloatToStr(ICMS.vICMS));
-                         trvwNFe.Items.AddChild(Node,'modBCST='    +modBCSTToStr(ICMS.modBCST));
-                         trvwNFe.Items.AddChild(Node,'pMVAST='     +FloatToStr(ICMS.pMVAST));
-                         trvwNFe.Items.AddChild(Node,'pRedBCST='   +FloatToStr(ICMS.pRedBCST));
-                         trvwNFe.Items.AddChild(Node,'vBCST='      +FloatToStr(ICMS.vBCST));
-                         trvwNFe.Items.AddChild(Node,'pICMSST='    +FloatToStr(ICMS.pICMSST));
-                         trvwNFe.Items.AddChild(Node,'vICMSST='    +FloatToStr(ICMS.vICMSST));
-                       end
-                      else if CST = cst90 then
-                       begin
-                         trvwNFe.Items.AddChild(Node,'orig='       +OrigToStr(ICMS.orig));
-                         trvwNFe.Items.AddChild(Node,'modBC='      +modBCToStr(ICMS.modBC));
-                         trvwNFe.Items.AddChild(Node,'pRedBC='     +FloatToStr(ICMS.pRedBC));
-                         trvwNFe.Items.AddChild(Node,'vBC='        +FloatToStr(ICMS.vBC));
-                         trvwNFe.Items.AddChild(Node,'pICMS='      +FloatToStr(ICMS.pICMS));
-                         trvwNFe.Items.AddChild(Node,'vICMS='      +FloatToStr(ICMS.vICMS));
-                         trvwNFe.Items.AddChild(Node,'modBCST='    +modBCSTToStr(ICMS.modBCST));
-                         trvwNFe.Items.AddChild(Node,'pMVAST='     +FloatToStr(ICMS.pMVAST));
-                         trvwNFe.Items.AddChild(Node,'pRedBCST='   +FloatToStr(ICMS.pRedBCST));
-                         trvwNFe.Items.AddChild(Node,'vBCST='      +FloatToStr(ICMS.vBCST));
-                         trvwNFe.Items.AddChild(Node,'pICMSST='    +FloatToStr(ICMS.pICMSST));
-                         trvwNFe.Items.AddChild(Node,'vICMSST='    +FloatToStr(ICMS.vICMSST));
-                       end;
+                      trvwNFe.Items.AddChild(Node,'CSOSN=' +CSOSNIcmsToStr(CSOSN));
+                      trvwNFe.Items.AddChild(Node,'orig='  +OrigToStr(ICMS.orig));
+                      trvwNFe.Items.AddChild(Node,'modBC=' +modBCToStr(ICMS.modBC));
+                      trvwNFe.Items.AddChild(Node,'pRedBC=' +FloatToStr(ICMS.pRedBC));
+                      trvwNFe.Items.AddChild(Node,'vBC='   +FloatToStr(ICMS.vBC));
+                      trvwNFe.Items.AddChild(Node,'pICMS=' +FloatToStr(ICMS.pICMS));
+                      trvwNFe.Items.AddChild(Node,'vICMS=' +FloatToStr(ICMS.vICMS));
+                      trvwNFe.Items.AddChild(Node,'modBCST='  +modBCSTToStr(ICMS.modBCST));
+                      trvwNFe.Items.AddChild(Node,'pMVAST='   +FloatToStr(ICMS.pMVAST));
+                      trvwNFe.Items.AddChild(Node,'pRedBCST=' +FloatToStr(ICMS.pRedBCST));
+                      trvwNFe.Items.AddChild(Node,'vBCST='    +FloatToStr(ICMS.vBCST));
+                      trvwNFe.Items.AddChild(Node,'pICMSST='  +FloatToStr(ICMS.pICMSST));
+                      trvwNFe.Items.AddChild(Node,'vICMSST='  +FloatToStr(ICMS.vICMSST));
+                      trvwNFe.Items.AddChild(Node,'vBCSTRet='   +FloatToStr(ICMS.vBCSTRet));
+                      trvwNFe.Items.AddChild(Node,'vICMSSTRet=' +FloatToStr(ICMS.vICMSSTRet));
+                      trvwNFe.Items.AddChild(Node,'pCredSN='   +FloatToStr(ICMS.pCredSN));
+                      trvwNFe.Items.AddChild(Node,'vCredICMSSN='   +FloatToStr(ICMS.vCredICMSSN));
                     end;
 
                    if (IPI.vBC > 0) then
@@ -1625,6 +1557,9 @@ begin
      Ide.cMunFG    := StrToInt(edtEmitCodCidade.Text);
      Ide.finNFe    := fnNormal;
 
+//     Ide.dhCont := date;
+//     Ide.xJust  := 'Justificativa Contingencia';
+
 //Para NFe referenciada use os campos abaixo
 {     with Ide.NFref.Add do
       begin
@@ -1671,7 +1606,7 @@ begin
       Emit.IM                := ''; // Preencher no caso de existir serviços na nota
       Emit.CNAE              := ''; // Verifique na cidade do emissor da NFe se é permitido
                                     // a inclusão de serviços na NFe
-      Emit.CRT               := crtRegimeNormal;
+      Emit.CRT               := crtRegimeNormal;// (1-crtSimplesNacional, 2-crtSimplesExcessoReceita, 3-crtRegimeNormal)
 
 //Para NFe Avulsa preencha os campos abaixo
 {      Avulsa.CNPJ    := '';
@@ -1730,7 +1665,7 @@ begin
          Prod.cProd    := '123456';
          Prod.cEAN     := '1234567890123';
          Prod.xProd    := 'Descrição do Produto';
-         Prod.NCM      := '12345678'; // Tabela NCM disponível em
+         Prod.NCM      := '94051010'; // Tabela NCM disponível em  http://www.receita.fazenda.gov.br/Aliquotas/DownloadArqTIPI.htm
          Prod.EXTIPI   := '';
          Prod.CFOP     := '5101';
          Prod.uCom     := 'UN';
@@ -1818,6 +1753,7 @@ begin
             cProdANP := 0;
             CODIF    := '';
             qTemp    := 0;
+            UFcons   := '';
 
             CIDE.qBCprod   := 0 ;
             CIDE.vAliqProd := 0 ;
@@ -1858,19 +1794,19 @@ begin
             with IPI do
              begin
                CST      := ipi99 ;
-               clEnq    := '';
+               clEnq    := '999';
                CNPJProd := '';
                cSelo    := '';
                qSelo    := 0;
                cEnq     := '';
 
-               vBC    := 0;
+               vBC    := 100;
                qUnid  := 0;
                vUnid  := 0;
-               pIPI   := 0;
-               vIPI   := 0;
+               pIPI   := 5;
+               vIPI   := 5;
              end;
-
+{
             with II do
              begin
                vBc      := 0;
@@ -1919,6 +1855,7 @@ begin
                vAliqProd := 0;
                vCOFINS   := 0;
              end;
+}
 //Grupo para serviços
 {            with ISSQN do
              begin
@@ -1947,19 +1884,19 @@ begin
       Total.ICMSTot.vOutro  := 0;
       Total.ICMSTot.vNF     := 100;
 
-      Total.ISSQNtot.vServ   := 0;
+{      Total.ISSQNtot.vServ   := 0;
       Total.ISSQNTot.vBC     := 0;
       Total.ISSQNTot.vISS    := 0;
       Total.ISSQNTot.vPIS    := 0;
-      Total.ISSQNTot.vCOFINS := 0;
+      Total.ISSQNTot.vCOFINS := 0;}
 
-      Total.retTrib.vRetPIS    := 0;
+{      Total.retTrib.vRetPIS    := 0;
       Total.retTrib.vRetCOFINS := 0;
       Total.retTrib.vRetCSLL   := 0;
       Total.retTrib.vBCIRRF    := 0;
       Total.retTrib.vIRRF      := 0;
       Total.retTrib.vBCRetPrev := 0;
-      Total.retTrib.vRetPrev   := 0;
+      Total.retTrib.vRetPrev   := 0;}
 
       Transp.modFrete := mfContaEmitente;
       Transp.Transporta.CNPJCPF  := '';
@@ -1969,12 +1906,12 @@ begin
       Transp.Transporta.xMun     := '';
       Transp.Transporta.UF       := '';
 
-      Transp.retTransp.vServ    := 0;
+{      Transp.retTransp.vServ    := 0;
       Transp.retTransp.vBCRet   := 0;
       Transp.retTransp.pICMSRet := 0;
       Transp.retTransp.vICMSRet := 0;
       Transp.retTransp.CFOP     := '';
-      Transp.retTransp.cMunFG   := 0;
+      Transp.retTransp.cMunFG   := 0;         }
 
       Transp.veicTransp.placa := '';
       Transp.veicTransp.UF    := '';
@@ -2009,8 +1946,16 @@ begin
        begin
          nDup  := '1234';
          dVenc := now+10;
-         vDup  := 100;
+         vDup  := 50;
        end;
+
+      with Cobr.Dup.Add do
+       begin
+         nDup  := '1235';
+         dVenc := now+10;
+         vDup  := 50;
+       end;
+
 
       InfAdic.infCpl     :=  '';
       InfAdic.infAdFisco :=  '';
@@ -2078,4 +2023,91 @@ begin
   LoadXML(MemoResp, WBResposta);
 end;
 
+procedure TForm1.btnAdicionarProtNFeClick(Sender: TObject);
+var
+  NomeArq : String;
+begin
+  OpenDialog1.Title := 'Selecione a NFE';
+  OpenDialog1.DefaultExt := '*-nfe.XML';
+  OpenDialog1.Filter := 'Arquivos NFE (*-nfe.XML)|*-nfe.XML|Arquivos XML (*.XML)|*.XML|Todos os Arquivos (*.*)|*.*';
+  OpenDialog1.InitialDir := ACBrNFe1.Configuracoes.Geral.PathSalvar;
+  if OpenDialog1.Execute then
+  begin
+    ACBrNFe1.NotasFiscais.Clear;
+    ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
+    ACBrNFe1.Consultar;
+    ShowMessage(ACBrNFe1.WebServices.Consulta.Protocolo);
+    MemoResp.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.Consulta.RetWS);
+    memoRespWS.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.Consulta.RetornoWS);
+    LoadXML(MemoResp, WBResposta);
+    NomeArq := OpenDialog1.FileName;
+    if pos(UpperCase('-nfe.xml'),UpperCase(NomeArq)) > 0 then
+       NomeArq := StringReplace(NomeArq,'-nfe.xml','-procNfe.xml',[rfIgnoreCase]);
+    ACBrNFe1.NotasFiscais.Items[0].SaveToFile(NomeArq);
+    ShowMessage('Arquivo gravado em: '+NomeArq);
+    memoLog.Lines.Add('Arquivo gravado em: '+NomeArq);
+  end;
+end;
+
+procedure TForm1.Button1Click(Sender: TObject);
+begin
+  OpenDialog1.Title := 'Selecione a NFE';
+  OpenDialog1.DefaultExt := '*-nfe.XML';
+  OpenDialog1.Filter := 'Arquivos NFE (*-nfe.XML)|*-nfe.XML|Arquivos XML (*.XML)|*.XML|Todos os Arquivos (*.*)|*.*';
+  OpenDialog1.InitialDir := ACBrNFe1.Configuracoes.Geral.PathSalvar;
+  if OpenDialog1.Execute then
+  begin
+    ACBrNFe1.NotasFiscais.Clear;
+    ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
+
+with ACBrNFe1.NotasFiscais.Items[0].NFe do
+ begin
+      Emit.CNPJCPF           := edtEmitCNPJ.Text;
+      Emit.IE                := edtEmitIE.Text;
+      Emit.xNome             := edtEmitRazao.Text;
+      Emit.xFant             := edtEmitFantasia.Text;
+
+      Emit.EnderEmit.fone    := edtEmitFone.Text;
+      Emit.EnderEmit.CEP     := StrToInt(edtEmitCEP.Text);
+      Emit.EnderEmit.xLgr    := edtEmitLogradouro.Text;
+      Emit.EnderEmit.nro     := edtEmitNumero.Text;
+      Emit.EnderEmit.xCpl    := edtEmitComp.Text;
+      Emit.EnderEmit.xBairro := edtEmitBairro.Text;
+      Emit.EnderEmit.cMun    := StrToInt(edtEmitCodCidade.Text);
+      Emit.EnderEmit.xMun    := edtEmitCidade.Text;
+      Emit.EnderEmit.UF      := edtEmitUF.Text;
+      Emit.enderEmit.cPais   := 1058;
+      Emit.enderEmit.xPais   := 'BRASIL';
+
+      Emit.IEST              := '';
+      Emit.IM                := ''; // Preencher no caso de existir serviços na nota
+      Emit.CNAE              := ''; // Verifique na cidade do emissor da NFe se é permitido
+                                    // a inclusão de serviços na NFe
+      Emit.CRT               := crtRegimeNormal;// (1-crtSimplesNacional, 2-crtSimplesExcessoReceita, 3-crtRegimeNormal)
+end;
+  end;
+  ACBrNFe1.NotasFiscais.GerarNFe;
+  ACBrNFe1.Enviar(1,True);
+
+  MemoResp.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.Retorno.RetWS);
+  memoRespWS.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.Retorno.RetornoWS);
+  LoadXML(MemoResp, WBResposta);
+
+ MemoDados.Lines.Add('');
+ MemoDados.Lines.Add('Envio NFe');
+ MemoDados.Lines.Add('tpAmb: '+ TpAmbToStr(ACBrNFe1.WebServices.Retorno.TpAmb));
+ MemoDados.Lines.Add('verAplic: '+ ACBrNFe1.WebServices.Retorno.verAplic);
+ MemoDados.Lines.Add('cStat: '+ IntToStr(ACBrNFe1.WebServices.Retorno.cStat));
+ MemoDados.Lines.Add('cUF: '+ IntToStr(ACBrNFe1.WebServices.Retorno.cUF));
+ MemoDados.Lines.Add('xMotivo: '+ ACBrNFe1.WebServices.Retorno.xMotivo);
+ MemoDados.Lines.Add('cMsg: '+ IntToStr(ACBrNFe1.WebServices.Retorno.cMsg));
+ MemoDados.Lines.Add('xMsg: '+ ACBrNFe1.WebServices.Retorno.xMsg);
+ MemoDados.Lines.Add('Recibo: '+ ACBrNFe1.WebServices.Retorno.Recibo);
+ MemoDados.Lines.Add('Protocolo: '+ ACBrNFe1.WebServices.Retorno.Protocolo);  
+end;
+
 end.
+
+
+
+

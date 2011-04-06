@@ -627,7 +627,7 @@ begin
      raise Exception.Create( ACBrStr('Nome do arquivo não informado!') );
 
   if not FileExists( NomeArquivo ) then
-     raise Exception.Create( ACBrStr('Arquivo: '+NomeArquivo+'não encontrado!') );
+     raise Exception.Create( ACBrStr('Arquivo: ' + NomeArquivo + ' não encontrado!') );
 end ;
 
 

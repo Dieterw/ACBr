@@ -181,13 +181,15 @@ var
   sNumSerie, sValorGT: String;
 begin
   PathArquivo := GetCaminhoArquivo;
-  if not FilesExists(PathArquivo) then
-    raise EACBrArqAux_ArqNaoEncontrado.CreateFmt('Arquivo "%s" não encontrado.', [PathArquivo]);
 
+  // criar um arquivo em branco quando não existir
+  if not FilesExists(PathArquivo) then
+    WriteToTXT(PathArquivo, '', False, False);
+
+  // ler o conteúdo do arquivo
   Arquivo  := TStringList.Create;
   DadosECF := TStringList.Create;
   try
-    // ler o conteudo do arquivo
     Arquivo.LoadFromFile(PathArquivo);
 
     // configurar o stringlist que será utilizado para ler os dados do ECF

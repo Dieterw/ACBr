@@ -500,6 +500,7 @@ object frPrincipal: TfrPrincipal
     end
   end
   object ACBrCNIEE1: TACBrCNIEE
+    ProxyPort = '8080'
     URLDownload = 'http://www.fazenda.mg.gov.br/empresas/ecf/files/Tabela_CNIEE.bin'
     Left = 340
     Top = 255

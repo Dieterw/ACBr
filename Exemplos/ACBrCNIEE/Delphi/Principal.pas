@@ -6,7 +6,7 @@ uses
   httpsend,
 
   Windows, Forms, Classes, Controls, StdCtrls, ExtCtrls, Dialogs, Buttons,
-  DB, Grids, DBGrids, DBCtrls, DBClient, ACBrCNIEE;
+  DB, Grids, DBGrids, DBCtrls, DBClient, ACBrCNIEE, ACBrBase, ACBrSocket;
 
 type
   TfrPrincipal = class(TForm)
@@ -151,17 +151,17 @@ Var
 begin
   frProxyConfig := TfrProxyConfig.Create(self);
   try
-    frProxyConfig.edServidor.Text := ACBrCNIEE1.Proxy.Servidor;
-    frProxyConfig.edPorta.Text    := ACBrCNIEE1.Proxy.Porta;
-    frProxyConfig.edUser.Text     := ACBrCNIEE1.Proxy.Usuario;
-    frProxyConfig.edSenha.Text    := ACBrCNIEE1.Proxy.Senha;
+    frProxyConfig.edServidor.Text := ACBrCNIEE1.ProxyHost;
+    frProxyConfig.edPorta.Text    := ACBrCNIEE1.ProxyPort;
+    frProxyConfig.edUser.Text     := ACBrCNIEE1.ProxyUser;
+    frProxyConfig.edSenha.Text    := ACBrCNIEE1.ProxyPass;
 
     if frProxyConfig.ShowModal = mrOK then
     begin
-      ACBrCNIEE1.Proxy.Servidor := frProxyConfig.edServidor.Text;
-      ACBrCNIEE1.Proxy.Porta    := frProxyConfig.edPorta.Text;
-      ACBrCNIEE1.Proxy.Usuario  := frProxyConfig.edUser.Text;
-      ACBrCNIEE1.Proxy.Senha    := frProxyConfig.edSenha.Text;
+      ACBrCNIEE1.ProxyHost := frProxyConfig.edServidor.Text;
+      ACBrCNIEE1.ProxyPort := frProxyConfig.edPorta.Text;
+      ACBrCNIEE1.ProxyUser := frProxyConfig.edUser.Text;
+      ACBrCNIEE1.ProxyPass := frProxyConfig.edSenha.Text;
     end;
   finally
     frProxyConfig.Free;

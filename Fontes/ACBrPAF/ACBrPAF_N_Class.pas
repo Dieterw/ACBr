@@ -190,9 +190,12 @@ end;
 
 // função para comparação dos nomes de arquivo que serão utilizados para
 // ordenar os registros N3
-function CompararRegistroN3(const ARegN3_1, ARegN3_2: TRegistroN3): Integer;
+function CompararRegistroN3(ARegN3_1, ARegN3_2: Pointer): Integer;
 begin
-  Result := AnsiCompareText(ARegN3_1.NOME_ARQUIVO, ARegN3_2.NOME_ARQUIVO);
+  Result := AnsiCompareText(
+    AnsiUpperCase(TRegistroN3(ARegN3_1).NOME_ARQUIVO),
+    AnsiUpperCase(TRegistroN3(ARegN3_2).NOME_ARQUIVO)
+  );
 end;
 
 function TPAF_N.WriteRegistroN3: string;

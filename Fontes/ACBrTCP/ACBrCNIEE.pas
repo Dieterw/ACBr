@@ -27,19 +27,6 @@ type
     FormatoNumero: string[20];
   end;
 
-  TACBrProxyConfig = class
-  private
-    FServidor: String;
-    FPorta: String;
-    FUsuario: String;
-    FSenha: String;
-  published
-    property Servidor: String read FServidor write FServidor;
-    property Porta: String read FPorta write FPorta;
-    property Usuario: String read FUsuario write FUsuario;
-    property Senha: String read FSenha write FSenha;
-  end;
-
   TACBrCNIEERegistro = class
   private
     FDescrModelo: String;
@@ -88,7 +75,6 @@ type
     FArquivo: String;
     FURLDownload: String;
     FCadastros: TACBrCNIEERegistros;
-    FProxy: TACBrProxyConfig;
   public
     destructor Destroy; override;
     constructor Create(AOwner: TComponent); override;
@@ -99,7 +85,6 @@ type
   published
     property Arquivo: String read FArquivo write FArquivo;
     property URLDownload: String read FURLDownload write FURLDownload;
-    property Proxy: TACBrProxyConfig read FProxy write FProxy;
     property Cadastros: TACBrCNIEERegistros read FCadastros;
   end;
 
@@ -131,19 +116,17 @@ begin
   inherited;
 
   FHTTPSend    := THTTPSend.Create;
-  FProxy       := TACBrProxyConfig.Create;
   FCadastros   := TACBrCNIEERegistros.Create;
   FURLDownload := 'http://www.fazenda.mg.gov.br/empresas/ecf/files/Tabela_CNIEE.bin';
 
-  FHTTPSend.ProxyHost := Proxy.Servidor;
-  FHTTPSend.ProxyPort := Proxy.Porta;
-  FHTTPSend.ProxyUser := Proxy.Usuario;
-  FHTTPSend.ProxyPass := Proxy.Senha;
+  FHTTPSend.ProxyHost := ProxyHost;
+  FHTTPSend.ProxyPort := ProxyPort;
+  FHTTPSend.ProxyUser := ProxyUser;
+  FHTTPSend.ProxyPass := ProxyPass;
 end;
 
 destructor TACBrCNIEE.Destroy;
 begin
-  FProxy.Free;
   FCadastros.Free;
   FHTTPSend.Free;
   inherited;
@@ -222,10 +205,10 @@ begin
      end;
   end;
 
-  Proxy.Servidor := Server;
-  Proxy.Porta    := Port;
-  Proxy.Usuario  := User;
-  Proxy.Senha    := Password;
+  ProxyHost := Server;
+  ProxyPort := Port;
+  ProxyUser := User;
+  ProxyPass := Password;
 end;
 {$ELSE}
 Var

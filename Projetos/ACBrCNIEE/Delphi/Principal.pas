@@ -9,6 +9,23 @@ uses
   DB, Grids, DBGrids, DBCtrls, DBClient;
 
 type
+  TRegistro = packed record
+    Marca        : string[2];
+    Modelo       : string[2];
+    Versao       : string[2];
+    Tipo         : string[10];
+    MarcaDescr   : string[30];
+    ModeloDescr  : string[30];
+    VersaoSB     : string[20];
+    QtLacreSL    : string[3];
+    QTLacreFab   : string[3];
+    MFD          : string[3];
+    LacreMFD     : string[3];
+    AtoAprovacao : string[25];
+    AtoRegistroMG: string[25];
+    FormatoNumero: string[20];
+  end;
+
   TfrPrincipal = class(TForm)
     btExportar: TBitBtn;
     btListar: TBitBtn;
@@ -226,60 +243,71 @@ end;
 
 procedure TfrPrincipal.btAbrirClick(Sender: TObject);
 var
-  FS: TFileStream;
-  i, FieldSize, BufferSize: Integer;
-  Buffer: AnsiString;
-begin
-  if edArquivo.Text = '' then
-    raise Exception.Create('Nome do arquivo em Disco não especificado');
+  F: file of TRegistro;
+  Registro: TRegistro;
+  strVersaoSB: string;
+  FileName: String;
 
-  if not FileExists(edArquivo.Text) then
-    raise Exception.Create('Arquivo não encontrado' + sLineBreak + edArquivo.Text);
+  function ReplaceString(const AString: string;
+    const ANovo: string; const AAntigo: array of string;
+    const AOpcoes: TReplaceFlags): string;
+  var
+    I: Integer;
+  begin
+    Result := AString;
+    for I := 0 to High(AAntigo) do
+      Result := StringReplace(Result, AAntigo[I], ANovo, AOpcoes);
+  end;
+
+begin
+  FileName := Trim(edArquivo.Text);
+
+  if FileName = '' then
+    raise Exception.Create('Nome do arquivo em Disco não especificado.');
+
+  if not FileExists(FileName) then
+    raise Exception.Create('Arquivo não encontrado:' + sLineBreak + FileName);
 
   memECF.Close;
   memECF.CreateDataSet;
   memECF.DisableControls;
 
-  FS := TFileStream.Create(edArquivo.Text, fmOpenRead);
+  AssignFile(F, Filename);
   try
-    // Lendo Arquivo .BIN //
-    FS.Seek(0, soFromBeginning);
-    // vai para BOF
-
-    while FS.Position < FS.Size do
+    Reset(F);
+    while not Eof(F) do
     begin
+      Read(F, Registro);
+
+      strVersaoSB := Trim(string(Registro.VersaoSB));
+      strVersaoSB := ReplaceString(
+        strVersaoSB,
+        EmptyStr,
+        ['VER: ', 'V: ', 'VER:', 'V:', 'V.', 'VER.', 'VER', 'V'],
+        [rfIgnoreCase, rfReplaceAll]
+      );
+
       memECF.Append;
-
-      for i := 0 to memECF.FieldDefs.Count - 1 do
-      begin
-        FieldSize := memECF.FieldDefs[i].Size;
-        if memECF.FieldDefs[i].DataType = ftString then
-          FieldSize := FieldSize + 1;
-
-        Buffer := #0;
-        SetLength(Buffer, FieldSize);
-        FS.ReadBuffer(PWideChar(String(Buffer))^, FieldSize);
-
-        if FieldSize > 0 then
-          BufferSize := Ord(Buffer[1])
-        else
-          BufferSize := 0;
-
-        case memECF.FieldDefs[i].DataType of
-          ftString:  memECF.Fields[i].AsString  := Copy(String(Buffer), 2, BufferSize);
-          ftInteger: memECF.Fields[i].AsInteger := SomaAscII(Buffer);
-        else
-          raise Exception.Create('Campo não suportado');
-        end;
-      end;
-
+      memECFCodMarca.AsString                := Trim(string(Registro.Marca));
+      memECFCodCodModelo.AsString            := Trim(string(Registro.Modelo));
+      memECFCodCodVersao.AsString            := Trim(string(Registro.Versao));
+      memECFCodTipoECF.AsString              := string(Registro.Tipo);
+      memECFCodDescMarca.AsString            := string(Registro.MarcaDescr);
+      memECFCodDescModelo.AsString           := string(Registro.ModeloDescr);
+      memECFCodVersao.AsString               := strVersaoSB;
+      memECFCodLacresSL.AsInteger            := StrToIntDef(string(Registro.QtLacreSL), 0);
+      memECFCodLacresFab.AsInteger           := StrToIntDef(string(Registro.QTLacreFab), 0);
+      memECFCodTemMFD.AsString               := string(Registro.MFD);
+      memECFCodLacreMFD.AsString             := string(Registro.LacreMFD);
+      memECFCodAtoAprovacao.AsString         := string(Registro.AtoAprovacao);
+      memECFCodAtoRegistro.AsString          := string(Registro.AtoRegistroMG);
+      memECFCodFormatoNumFabricacao.AsString := string(Registro.FormatoNumero);
       memECF.Post;
     end;
   finally
     memECF.First;
     memECF.EnableControls;
-
-    FS.Free;
+    CloseFile(F);
   end;
 end;
 

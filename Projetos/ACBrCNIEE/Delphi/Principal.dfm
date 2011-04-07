@@ -2,8 +2,8 @@ object frPrincipal: TfrPrincipal
   Left = 370
   Top = 168
   Caption = 'Conversor da Tabela Nacional de ECFs '
-  ClientHeight = 440
-  ClientWidth = 555
+  ClientHeight = 500
+  ClientWidth = 700
   Color = clBtnFace
   Constraints.MinHeight = 440
   Constraints.MinWidth = 555
@@ -23,13 +23,14 @@ object frPrincipal: TfrPrincipal
     AlignWithMargins = True
     Left = 3
     Top = 3
-    Width = 549
+    Width = 694
     Height = 113
     Align = alTop
     Caption = 'Arquivo Tabela_CNIEE.bin'
     TabOrder = 0
+    ExplicitWidth = 549
     DesignSize = (
-      549
+      694
       113)
     object Label1: TLabel
       Left = 12
@@ -41,7 +42,7 @@ object frPrincipal: TfrPrincipal
       ParentColor = False
     end
     object sbArquivo: TSpeedButton
-      Left = 409
+      Left = 554
       Top = 79
       Width = 23
       Height = 22
@@ -82,6 +83,7 @@ object frPrincipal: TfrPrincipal
         FF00FF00FF00CBAF9EFED6A578FED6A978FED1AC8DFED0BFB7FEF0ECECFFFF00
         FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00}
       OnClick = sbArquivoClick
+      ExplicitLeft = 409
     end
     object Label2: TLabel
       Left = 12
@@ -95,23 +97,25 @@ object frPrincipal: TfrPrincipal
     object edArquivo: TEdit
       Left = 12
       Top = 80
-      Width = 391
+      Width = 536
       Height = 21
       Anchors = [akLeft, akTop, akRight]
       TabOrder = 0
       Text = 'Tabela_CNIEE.bin'
+      ExplicitWidth = 391
     end
     object edURLDownload: TEdit
       Left = 12
       Top = 37
-      Width = 420
+      Width = 565
       Height = 21
       Anchors = [akLeft, akTop, akRight]
       TabOrder = 1
       Text = 'http://www.fazenda.mg.gov.br/empresas/ecf/files/Tabela_CNIEE.bin'
+      ExplicitWidth = 420
     end
     object btAbrir: TBitBtn
-      Left = 438
+      Left = 583
       Top = 78
       Width = 99
       Height = 26
@@ -156,9 +160,10 @@ object frPrincipal: TfrPrincipal
       ParentDoubleBuffered = False
       TabOrder = 2
       OnClick = btAbrirClick
+      ExplicitLeft = 438
     end
     object btDownload: TBitBtn
-      Left = 438
+      Left = 583
       Top = 35
       Width = 99
       Height = 26
@@ -203,16 +208,19 @@ object frPrincipal: TfrPrincipal
       ParentDoubleBuffered = False
       TabOrder = 3
       OnClick = btDownloadClick
+      ExplicitLeft = 438
     end
   end
   object Panel1: TPanel
     Left = 0
-    Top = 406
-    Width = 555
+    Top = 466
+    Width = 700
     Height = 34
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
+    ExplicitTop = 406
+    ExplicitWidth = 555
     object DBNavigator1: TDBNavigator
       AlignWithMargins = True
       Left = 3
@@ -223,11 +231,10 @@ object frPrincipal: TfrPrincipal
       VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast, nbRefresh]
       Align = alLeft
       TabOrder = 0
-      ExplicitHeight = 29
     end
     object btExportar: TBitBtn
       AlignWithMargins = True
-      Left = 300
+      Left = 445
       Top = 3
       Width = 80
       Height = 28
@@ -272,12 +279,11 @@ object frPrincipal: TfrPrincipal
       ParentDoubleBuffered = False
       TabOrder = 1
       OnClick = btExportarClick
-      ExplicitLeft = 292
-      ExplicitHeight = 32
+      ExplicitLeft = 300
     end
     object btSair: TBitBtn
       AlignWithMargins = True
-      Left = 472
+      Left = 617
       Top = 3
       Width = 80
       Height = 28
@@ -314,12 +320,11 @@ object frPrincipal: TfrPrincipal
       ParentDoubleBuffered = False
       TabOrder = 2
       OnClick = btSairClick
-      ExplicitLeft = 462
-      ExplicitHeight = 32
+      ExplicitLeft = 472
     end
     object btListar: TBitBtn
       AlignWithMargins = True
-      Left = 386
+      Left = 531
       Top = 3
       Width = 80
       Height = 28
@@ -364,12 +369,11 @@ object frPrincipal: TfrPrincipal
       ParentDoubleBuffered = False
       TabOrder = 3
       OnClick = btListarClick
-      ExplicitLeft = 366
-      ExplicitHeight = 32
+      ExplicitLeft = 386
     end
     object btProxy: TBitBtn
       AlignWithMargins = True
-      Left = 214
+      Left = 359
       Top = 3
       Width = 80
       Height = 28
@@ -414,18 +418,18 @@ object frPrincipal: TfrPrincipal
       ParentDoubleBuffered = False
       TabOrder = 4
       OnClick = btProxyClick
-      ExplicitLeft = 176
-      ExplicitHeight = 32
+      ExplicitLeft = 214
     end
   end
   object DBGrid1: TDBGrid
     AlignWithMargins = True
     Left = 3
     Top = 122
-    Width = 549
-    Height = 281
+    Width = 694
+    Height = 341
     Align = alClient
     DataSource = Datasource1
+    Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
     ReadOnly = True
     TabOrder = 2
     TitleFont.Charset = DEFAULT_CHARSET

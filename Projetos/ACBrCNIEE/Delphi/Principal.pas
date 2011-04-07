@@ -14,21 +14,35 @@ type
     btListar: TBitBtn;
     btProxy: TBitBtn;
     btSair: TBitBtn;
-    btAbrir: TBitBtn;
-    btDownload: TBitBtn;
     Datasource1: TDatasource;
     DBGrid1: TDBGrid;
     DBNavigator1: TDBNavigator;
-    edArquivo: TEdit;
-    edURLDownload: TEdit;
     GroupBox1: TGroupBox;
-    Label1: TLabel;
-    Label2: TLabel;
     OpenDialog1: TOpenDialog;
     Panel1: TPanel;
     SaveDialog1: TSaveDialog;
-    sbArquivo: TSpeedButton;
     memECF: TClientDataSet;
+    memECFCodMarca: TStringField;
+    memECFCodCodModelo: TStringField;
+    memECFCodCodVersao: TStringField;
+    memECFCodTipoECF: TStringField;
+    memECFCodDescMarca: TStringField;
+    memECFCodDescModelo: TStringField;
+    memECFCodVersao: TStringField;
+    memECFCodLacresSL: TIntegerField;
+    memECFCodLacresFab: TIntegerField;
+    memECFCodTemMFD: TStringField;
+    memECFCodLacreMFD: TStringField;
+    memECFCodAtoAprovacao: TStringField;
+    memECFCodAtoRegistro: TStringField;
+    memECFCodFormatoNumFabricacao: TStringField;
+    Label1: TLabel;
+    sbArquivo: TSpeedButton;
+    Label2: TLabel;
+    edArquivo: TEdit;
+    edURLDownload: TEdit;
+    btAbrir: TBitBtn;
+    btDownload: TBitBtn;
     procedure btAbrirClick(Sender: TObject);
     procedure btDownloadClick(Sender: TObject);
     procedure btExportarClick(Sender: TObject);
@@ -78,7 +92,7 @@ var
           if InternetQueryOption(nil, INTERNET_OPTION_PROXY, ProxyInfo, Len) then
           begin
             if ProxyInfo^.dwAccessType = INTERNET_OPEN_TYPE_PROXY then
-              Result := ProxyInfo^.lpszProxy;
+              Result := String(ProxyInfo^.lpszProxy);
           end;
         finally
           FreeMem(ProxyInfo);
@@ -106,26 +120,26 @@ var
 
 begin
   Port   := '';
-  Server := GetProxyServer;
-  User   := GetOptionString(INTERNET_OPTION_PROXY_USERNAME);
-  Pass   := GetOptionString(INTERNET_OPTION_PROXY_PASSWORD);
+  Server := AnsiString(GetProxyServer);
+  User   := AnsiString(GetOptionString(INTERNET_OPTION_PROXY_USERNAME));
+  Pass   := AnsiString(GetOptionString(INTERNET_OPTION_PROXY_PASSWORD));
 
   if Server <> '' then
   begin
-    i := Pos('http=', Server);
+    i := Pos('http=', String(Server));
     if i > 0 then
     begin
       Delete(Server, 1, i + 5);
-      j := Pos(';', Server);
+      j := Pos(';', String(Server));
       if j > 0 then
-        Server := Copy(Server, 1, j - 1);
+        Server := AnsiString(Copy(String(Server), 1, j - 1));
     end;
 
-    i := Pos(':', Server);
+    i := Pos(':', String(Server));
     if i > 0 then
     begin
-      Port := Copy(Server, i + 1, MaxInt);
-      Server := Copy(Server, 1, i - 1);
+      Port   := AnsiString(Copy(String(Server), i + 1, MaxInt));
+      Server := AnsiString(Copy(String(Server), 1, i - 1));
     end;
   end;
 end;
@@ -142,10 +156,10 @@ begin
   GetProxySettings(Server, Port, User, Pass);
 
   fHTTPSend := THTTPSend.Create;
-  fHTTPSend.ProxyHost := Server;
-  fHTTPSend.ProxyPort := Port;
-  fHTTPSend.ProxyUser := User;
-  fHTTPSend.ProxyPass := Pass;
+  fHTTPSend.ProxyHost := String(Server);
+  fHTTPSend.ProxyPort := String(Port);
+  fHTTPSend.ProxyUser := String(User);
+  fHTTPSend.ProxyPass := String(Pass);
 
   edArquivo.Text := ExtractFilePath(Application.ExeName) + 'Tabela_CNIEE.bin';
 end;
@@ -224,9 +238,8 @@ begin
 
   memECF.Close;
   memECF.CreateDataSet;
-  Application.ProcessMessages;
-
   memECF.DisableControls;
+
   FS := TFileStream.Create(edArquivo.Text, fmOpenRead);
   try
     // Lendo Arquivo .BIN //
@@ -235,21 +248,25 @@ begin
 
     while FS.Position < FS.Size do
     begin
-      memECF.Insert;
+      memECF.Append;
 
-      For i := 0 to memECF.FieldDefs.Count - 1 do
+      for i := 0 to memECF.FieldDefs.Count - 1 do
       begin
         FieldSize := memECF.FieldDefs[i].Size;
         if memECF.FieldDefs[i].DataType = ftString then
           FieldSize := FieldSize + 1;
 
-        Buffer := '';
+        Buffer := #0;
         SetLength(Buffer, FieldSize);
-        FS.ReadBuffer(PChar(Buffer)^, FieldSize);
+        FS.ReadBuffer(PWideChar(String(Buffer))^, FieldSize);
 
-        BufferSize := Ord(Buffer[1]);
+        if FieldSize > 0 then
+          BufferSize := Ord(Buffer[1])
+        else
+          BufferSize := 0;
+
         case memECF.FieldDefs[i].DataType of
-          ftString:  memECF.Fields[i].AsString := Copy(Buffer, 2, BufferSize);
+          ftString:  memECF.Fields[i].AsString  := Copy(String(Buffer), 2, BufferSize);
           ftInteger: memECF.Fields[i].AsInteger := SomaAscII(Buffer);
         else
           raise Exception.Create('Campo não suportado');
@@ -258,11 +275,11 @@ begin
 
       memECF.Post;
     end;
-
-    memECF.First;
   finally
-    FS.Free;
+    memECF.First;
     memECF.EnableControls;
+
+    FS.Free;
   end;
 end;
 

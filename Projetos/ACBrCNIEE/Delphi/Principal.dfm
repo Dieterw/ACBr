@@ -20,31 +20,32 @@ object frPrincipal: TfrPrincipal
   PixelsPerInch = 96
   TextHeight = 13
   object GroupBox1: TGroupBox
-    Left = 0
-    Top = 0
-    Width = 555
-    Height = 128
+    AlignWithMargins = True
+    Left = 3
+    Top = 3
+    Width = 549
+    Height = 113
     Align = alTop
     Caption = 'Arquivo Tabela_CNIEE.bin'
     TabOrder = 0
     DesignSize = (
-      555
-      128)
+      549
+      113)
     object Label1: TLabel
       Left = 12
-      Top = 70
+      Top = 64
       Width = 126
       Height = 13
-      Anchors = [akLeft, akBottom]
       Caption = 'Nome do Arquivo em disco'
       Color = clBtnFace
       ParentColor = False
     end
     object sbArquivo: TSpeedButton
-      Left = 385
-      Top = 86
+      Left = 409
+      Top = 79
       Width = 23
       Height = 22
+      Anchors = [akTop, akRight]
       Glyph.Data = {
         36040000424D3604000000000000360000002800000010000000100000000100
         2000000000000004000000000000000000000000000000000000FF00FF00FF00
@@ -87,15 +88,14 @@ object frPrincipal: TfrPrincipal
       Top = 21
       Width = 94
       Height = 13
-      Anchors = [akLeft, akBottom]
       Caption = 'URL para Download'
       Color = clBtnFace
       ParentColor = False
     end
     object edArquivo: TEdit
       Left = 12
-      Top = 86
-      Width = 372
+      Top = 80
+      Width = 391
       Height = 21
       Anchors = [akLeft, akTop, akRight]
       TabOrder = 0
@@ -104,18 +104,18 @@ object frPrincipal: TfrPrincipal
     object edURLDownload: TEdit
       Left = 12
       Top = 37
-      Width = 396
+      Width = 420
       Height = 21
       Anchors = [akLeft, akTop, akRight]
       TabOrder = 1
       Text = 'http://www.fazenda.mg.gov.br/empresas/ecf/files/Tabela_CNIEE.bin'
     end
     object btAbrir: TBitBtn
-      Left = 423
-      Top = 84
+      Left = 438
+      Top = 78
       Width = 99
       Height = 26
-      Anchors = [akLeft, akTop, akRight]
+      Anchors = [akTop, akRight]
       Caption = 'Abrir'
       DoubleBuffered = True
       Glyph.Data = {
@@ -158,7 +158,7 @@ object frPrincipal: TfrPrincipal
       OnClick = btAbrirClick
     end
     object btDownload: TBitBtn
-      Left = 423
+      Left = 438
       Top = 35
       Width = 99
       Height = 26
@@ -207,29 +207,31 @@ object frPrincipal: TfrPrincipal
   end
   object Panel1: TPanel
     Left = 0
-    Top = 399
+    Top = 406
     Width = 555
-    Height = 41
+    Height = 34
     Align = alBottom
+    BevelOuter = bvNone
     TabOrder = 1
-    DesignSize = (
-      555
-      41)
     object DBNavigator1: TDBNavigator
-      Left = 21
-      Top = 6
+      AlignWithMargins = True
+      Left = 3
+      Top = 3
       Width = 160
-      Height = 29
+      Height = 28
       DataSource = Datasource1
       VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast, nbRefresh]
+      Align = alLeft
       TabOrder = 0
+      ExplicitHeight = 29
     end
     object btExportar: TBitBtn
-      Left = 279
-      Top = 7
-      Width = 88
-      Height = 26
-      Anchors = [akTop, akRight]
+      AlignWithMargins = True
+      Left = 300
+      Top = 3
+      Width = 80
+      Height = 28
+      Align = alRight
       Caption = 'Exportar'
       DoubleBuffered = True
       Glyph.Data = {
@@ -270,13 +272,16 @@ object frPrincipal: TfrPrincipal
       ParentDoubleBuffered = False
       TabOrder = 1
       OnClick = btExportarClick
+      ExplicitLeft = 292
+      ExplicitHeight = 32
     end
     object btSair: TBitBtn
-      Left = 470
-      Top = 7
-      Width = 64
-      Height = 26
-      Anchors = [akTop, akRight]
+      AlignWithMargins = True
+      Left = 472
+      Top = 3
+      Width = 80
+      Height = 28
+      Align = alRight
       Caption = 'Sair'
       DoubleBuffered = True
       Glyph.Data = {
@@ -309,13 +314,16 @@ object frPrincipal: TfrPrincipal
       ParentDoubleBuffered = False
       TabOrder = 2
       OnClick = btSairClick
+      ExplicitLeft = 462
+      ExplicitHeight = 32
     end
     object btListar: TBitBtn
-      Left = 377
-      Top = 7
-      Width = 73
-      Height = 26
-      Anchors = [akTop, akRight]
+      AlignWithMargins = True
+      Left = 386
+      Top = 3
+      Width = 80
+      Height = 28
+      Align = alRight
       Caption = 'Listar'
       DoubleBuffered = True
       Glyph.Data = {
@@ -356,13 +364,16 @@ object frPrincipal: TfrPrincipal
       ParentDoubleBuffered = False
       TabOrder = 3
       OnClick = btListarClick
+      ExplicitLeft = 366
+      ExplicitHeight = 32
     end
     object btProxy: TBitBtn
-      Left = 195
-      Top = 7
-      Width = 74
-      Height = 26
-      Anchors = [akTop, akRight]
+      AlignWithMargins = True
+      Left = 214
+      Top = 3
+      Width = 80
+      Height = 28
+      Align = alRight
       Caption = 'Proxy'
       DoubleBuffered = True
       Glyph.Data = {
@@ -403,13 +414,16 @@ object frPrincipal: TfrPrincipal
       ParentDoubleBuffered = False
       TabOrder = 4
       OnClick = btProxyClick
+      ExplicitLeft = 176
+      ExplicitHeight = 32
     end
   end
   object DBGrid1: TDBGrid
-    Left = 0
-    Top = 128
-    Width = 555
-    Height = 271
+    AlignWithMargins = True
+    Left = 3
+    Top = 122
+    Width = 549
+    Height = 281
     Align = alClient
     DataSource = Datasource1
     ReadOnly = True
@@ -440,5 +454,57 @@ object frPrincipal: TfrPrincipal
     Params = <>
     Left = 55
     Top = 175
+    object memECFCodMarca: TStringField
+      FieldName = 'Marca'
+      Size = 2
+    end
+    object memECFCodCodModelo: TStringField
+      FieldName = 'CodModelo'
+      Size = 2
+    end
+    object memECFCodCodVersao: TStringField
+      FieldName = 'CodVersao'
+      Size = 2
+    end
+    object memECFCodTipoECF: TStringField
+      FieldName = 'TipoECF'
+      Size = 10
+    end
+    object memECFCodDescMarca: TStringField
+      FieldName = 'DescMarca'
+      Size = 30
+    end
+    object memECFCodDescModelo: TStringField
+      FieldName = 'DescModelo'
+      Size = 30
+    end
+    object memECFCodVersao: TStringField
+      FieldName = 'Versao'
+    end
+    object memECFCodLacresSL: TIntegerField
+      FieldName = 'LacresSL'
+    end
+    object memECFCodLacresFab: TIntegerField
+      FieldName = 'LacresFab'
+    end
+    object memECFCodTemMFD: TStringField
+      FieldName = 'TemMFD'
+      Size = 3
+    end
+    object memECFCodLacreMFD: TStringField
+      FieldName = 'LacreMFD'
+      Size = 3
+    end
+    object memECFCodAtoAprovacao: TStringField
+      FieldName = 'AtoAprovacao'
+      Size = 25
+    end
+    object memECFCodAtoRegistro: TStringField
+      FieldName = 'AtoRegistro'
+      Size = 25
+    end
+    object memECFCodFormatoNumFabricacao: TStringField
+      FieldName = 'FormatoNumFabricacao'
+    end
   end
 end

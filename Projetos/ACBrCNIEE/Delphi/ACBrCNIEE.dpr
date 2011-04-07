@@ -2,8 +2,8 @@ program ACBrCNIEE;
 
 uses
   Forms,
-  ProxyConfig in 'ProxyConfig.pas' {frProxyConfig},
-  Principal in 'Principal.pas' {frPrincipal};
+  Principal in 'Principal.pas' {frPrincipal},
+  ProxyConfig in 'ProxyConfig.pas' {frProxyConfig};
 
 {$R *.res}
 

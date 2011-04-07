@@ -57,8 +57,11 @@ interface
 uses
  ACBrBase,
  Classes, SysUtils,
-{$IFDEF VisualCLX} QControls, QGraphics, QForms {$ENDIF}
-{$IFDEF VCL} Controls, Graphics, Forms {$ENDIF};
+ {$IFDEF VisualCLX}
+   QControls, QGraphics, QForms
+ {$ELSE}
+   Controls,  Graphics,  Forms
+ {$ENDIF};
 
 type
   TACBrCalculadoraDisplayChange = procedure(Sender: TObject; Valor : Double) of object;

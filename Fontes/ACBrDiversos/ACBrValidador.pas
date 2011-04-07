@@ -630,7 +630,7 @@ Const
        (0 ,2 ,3 ,4 ,5 ,6 ,7 ,8 ,9 ,10,2 ,3 ,0, 0 ) ) ;
 
 Var
-   vDigitos : array of AnsiString ;
+   vDigitos : array of {$IFDEF FPC}Variant{$ELSE} AnsiString{$ENDIF} ;
    xROT, yROT :  AnsiString ;
    Tamanho, FatorF, FatorG, I, xMD, xTP, yMD, yTP, DV, DVX, DVY : Integer ;
    SOMA, SOMAq, nD, M : Integer ;

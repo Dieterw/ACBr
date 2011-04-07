@@ -2464,7 +2464,7 @@ end;
 { Essa função DEVE ser override por cada Classe Filha criada }
 function TACBrECFClass.GetParamDescontoISSQN: Boolean;
 begin
-  Result := false ;
+  Result := (Trim(IM) <> '') ;
 end;
 
 function TACBrECFClass.GetDataMovimento: TDateTime;

@@ -252,6 +252,7 @@ TACBrECFDaruma = class( TACBrECFClass )
     function GetPoucoPapel : Boolean; override ;
     function GetHorarioVerao: Boolean; override ;
     function GetArredonda : Boolean; override ;
+    function GetParamDescontoISSQN: Boolean; override ;
 
     function GetCNPJ: String; override ;
     function GetIE: String; override ;
@@ -1749,6 +1750,19 @@ begin
 
   Result := (fsArredonda = 'S') ;
 end;
+
+function TACBrECFDaruma.GetParamDescontoISSQN : Boolean ;
+var
+   RetCmd : AnsiString ;
+begin
+  if fpMFD then
+   begin
+     RetCmd := RetornaInfoECF('109');
+     Result := (RetCmd = '1');
+   end
+  else
+     Result := False;
+end ;
 
 Procedure TACBrECFDaruma.LeituraX ;
 begin

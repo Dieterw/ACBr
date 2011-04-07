@@ -155,6 +155,7 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
     function GetHorarioVerao: Boolean; override ;
     function GetArredonda: Boolean; override ;
     function GetChequePronto: Boolean; override ;
+    function GetParamDescontoISSQN: Boolean; override ;
 
     function GetCNPJ: String; override ;
     function GetIE: String; override ;
@@ -1743,6 +1744,14 @@ begin
    Result := True;
 end;
 
+function TACBrECFSwedaSTX.GetParamDescontoISSQN : Boolean ;
+var
+   RetCmd : AnsiString ;
+begin
+  RetCmd := RetornaInfoECF( 'H2' ) ;
+  Result := (copy(RetCmd, 13, 1) = 'S') ;
+end ;
+
 procedure TACBrECFSwedaSTX.AbreRelatorioGerencial(Indice: Integer = 2 );
 var
    sDescricao:String;
@@ -1849,14 +1858,16 @@ procedure TACBrECFSwedaSTX.LeituraMemoriaFiscalSerial(ReducaoInicial,
 var
    sSimplificada:String;
    Espera:Integer;
+   RetCmd : AnsiString ;
 begin
    Espera := Trunc(30 + ((ReducaoFinal - ReducaoInicial)/2) );
    sSimplificada := 'C';
    if Simplificada then
       sSimplificada := 'S';
-   Linhas.Add(
-      EnviaComando('17|'+IntToStr(ReducaoInicial)+'|'+IntToStr(ReducaoFinal)+'|'
-      +sSimplificada+'|TXT|'+'CPWIN',Espera));
+
+   RetCmd := EnviaComando('17|'+IntToStr(ReducaoInicial)+'|'+IntToStr(ReducaoFinal)+'|'+
+                          sSimplificada+'|TXT|'+'CPWIN',Espera);
+   Linhas.Text := ExtraiRetornoLeituras( RetCmd ) ;
 end;
 
 procedure TACBrECFSwedaSTX.LeituraMFDSerial(DataInicial, DataFinal: TDateTime;
@@ -1865,22 +1876,26 @@ var
    sDataInicial:String;
    sDataFinal:String;
    Espera:Integer;
+   RetCmd : AnsiString ;
 begin
     Espera := Trunc(30 + (DaysBetween(DataInicial,DataFinal)/2) ) ;
    sDataInicial := FormatDateTime('dd"/"mm"/"yyyy',DataInicial);
    sDataFinal   := FormatDateTime('dd"/"mm"/"yyyy',DataFinal);
-   Linhas.Text  :=  EnviaComando('45|'+sDataInicial+'|'+sDataFinal+'|TXT|'
+   RetCmd       := EnviaComando('45|'+sDataInicial+'|'+sDataFinal+'|TXT|'
                                  +'CPWIN',Espera);
+   Linhas.Text  := ExtraiRetornoLeituras( RetCmd );
 end;
 
 procedure TACBrECFSwedaSTX.LeituraMFDSerial(COOInicial, COOFinal: Integer;
   Linhas: TStringList; Documentos: TACBrECFTipoDocumentoSet);
 var
    Espera:Integer;
+   RetCmd : AnsiString ;
 begin
    Espera := Trunc(30 + ((COOFinal - COOInicial)/2) );
-   Linhas.Text := EnviaComando('44|'+IntToStr(COOInicial)+'|'
-                  +IntToStr(COOFinal)+'||TXT|'+'CPWIN',Espera);
+   RetCmd := EnviaComando('44|'+IntToStr(COOInicial)+'|'+IntToStr(COOFinal)+
+                          '||TXT|'+'CPWIN',Espera);
+   Linhas.Text  := ExtraiRetornoLeituras( RetCmd );
 end;
 
 procedure TACBrECFSwedaSTX.LeituraMemoriaFiscalSerial(DataInicial,
@@ -1890,6 +1905,7 @@ var
    sDataInicial:String;
    sDataFinal:String;
    sSimplificada:String;
+   RetCmd : AnsiString ;
 begin
    sSimplificada := 'C';
    if Simplificada then
@@ -1897,10 +1913,10 @@ begin
 
    Espera := Trunc(30 + (DaysBetween(DataInicial,DataFinal)/2) );
    sDataInicial := FormatDateTime('dd"/"mm"/"yyyy',DataInicial);
-   sDataFinal := FormatDateTime('dd"/"mm"/"yyyy',DataFinal);
-   Linhas.Text:=
-      EnviaComando('18|'+sDataInicial+'|'+sDataFinal+'|'+sSimplificada+
-      '|TXT|'+'|CPWIN',Espera);
+   sDataFinal   := FormatDateTime('dd"/"mm"/"yyyy',DataFinal);
+   RetCmd       := EnviaComando('18|'+sDataInicial+'|'+sDataFinal+'|'+
+                                sSimplificada+'|TXT|'+'|CPWIN',Espera);
+   Linhas.Text := ExtraiRetornoLeituras( RetCmd ) ;
 end;
 
 function TACBrECFSwedaSTX.GetCNPJ: String;

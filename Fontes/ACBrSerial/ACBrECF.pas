@@ -1834,12 +1834,12 @@ end;
 
 function TACBrECF.GetMFAdicional: String;
 var
-  Letra: AnsiString;
+  Letra: Char;
 begin
   ComandoLOG := 'MF Adicional' ;
 
-  Letra := RightStr(fsECF.NumSerie, 1);
-  if CharIsAlpha(Letra[1]) then
+  Letra := PadL(RightStr(fsECF.NumSerie, 1),1)[1];
+  if CharIsAlpha(Letra) then
     Result := Letra
   else
     Result := '';
@@ -1882,7 +1882,7 @@ end;
 function TACBrECF.GetClicheClass: String;
 begin
   ComandoLOG := 'Cliche' ;
-  Result := fsECF.Cliche ;
+  Result := Trim(fsECF.Cliche) ;  // Trim remove eventuais #0
 end;
 //IMS 09/10/2009
 function TACBrECF.GetUsuarioAtualClass: String;

@@ -280,13 +280,14 @@ begin
       Read(F, Registro);
 
       strVersaoSB := Trim(string(Registro.VersaoSB));
+      {
       strVersaoSB := ReplaceString(
         strVersaoSB,
         EmptyStr,
         ['VER: ', 'V: ', 'VER:', 'V:', 'V.', 'VER.', 'VER', 'V'],
         [rfIgnoreCase, rfReplaceAll]
       );
-
+      }
       memECF.Append;
       memECFCodMarca.AsString                := Trim(string(Registro.Marca));
       memECFCodCodModelo.AsString            := Trim(string(Registro.Modelo));

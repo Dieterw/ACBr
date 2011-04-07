@@ -142,6 +142,8 @@ begin
       tmpCadastro.First;
       tmpCadastro.EnableControls;
     end;
+
+    MessageDlg('Tabela aberta com sucesso.', mtInformation, [mbOK], 0);
   end;
 end;
 

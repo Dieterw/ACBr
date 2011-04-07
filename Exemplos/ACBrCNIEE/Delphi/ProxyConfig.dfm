@@ -4,56 +4,49 @@ object frProxyConfig: TfrProxyConfig
   BorderIcons = [biSystemMenu]
   BorderStyle = bsDialog
   Caption = 'Configura'#195#167#195#163'o do Servidor Proxy'
-  ClientHeight = 223
-  ClientWidth = 422
+  ClientHeight = 218
+  ClientWidth = 320
   Color = clBtnFace
   ParentFont = True
   OldCreateOrder = True
   Position = poDesktopCenter
   OnShow = FormShow
-  DesignSize = (
-    422
-    223)
   PixelsPerInch = 96
   TextHeight = 13
   object lUser: TLabel
-    Left = 185
-    Top = 116
+    Left = 46
+    Top = 84
     Width = 40
     Height = 13
-    Anchors = [akRight, akBottom]
     Caption = 'Usu'#225'rio:'
     Color = clBtnFace
     ParentColor = False
     Transparent = False
   end
   object lSenha: TLabel
-    Left = 193
-    Top = 145
+    Left = 46
+    Top = 127
     Width = 34
     Height = 13
-    Anchors = [akRight, akBottom]
     Caption = 'Senha:'
     Color = clBtnFace
     ParentColor = False
   end
   object lUser1: TLabel
-    Left = 182
-    Top = 21
+    Left = 26
+    Top = 12
     Width = 44
     Height = 13
-    Anchors = [akRight, akBottom]
     Caption = 'Servidor:'
     Color = clBtnFace
     ParentColor = False
     Transparent = False
   end
   object lSenha1: TLabel
-    Left = 197
-    Top = 50
+    Left = 246
+    Top = 12
     Width = 30
     Height = 13
-    Anchors = [akRight, akBottom]
     Caption = 'Porta:'
     Color = clBtnFace
     ParentColor = False
@@ -61,12 +54,11 @@ object frProxyConfig: TfrProxyConfig
   end
   object Panel2: TPanel
     Left = 0
-    Top = 182
-    Width = 422
-    Height = 41
+    Top = 184
+    Width = 320
+    Height = 34
     Align = alBottom
-    BevelInner = bvRaised
-    BevelOuter = bvSpace
+    BevelOuter = bvNone
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
@@ -74,16 +66,16 @@ object frProxyConfig: TfrProxyConfig
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 5
-    DesignSize = (
-      422
-      41)
+    ExplicitTop = 189
+    ExplicitWidth = 311
     object bOk: TBitBtn
-      Left = 240
-      Top = 7
-      Width = 61
-      Height = 26
+      AlignWithMargins = True
+      Left = 111
+      Top = 3
+      Width = 100
+      Height = 28
       Hint = 'Iniciar Pesquisa'
-      Anchors = [akRight, akBottom]
+      Align = alRight
       Caption = 'OK'
       DoubleBuffered = True
       Glyph.Data = {
@@ -116,14 +108,18 @@ object frProxyConfig: TfrProxyConfig
       ModalResult = 1
       ParentDoubleBuffered = False
       TabOrder = 0
+      ExplicitLeft = 120
+      ExplicitTop = 5
+      ExplicitHeight = 31
     end
     object bCancelar: TBitBtn
-      Left = 313
-      Top = 7
-      Width = 92
-      Height = 26
+      AlignWithMargins = True
+      Left = 217
+      Top = 3
+      Width = 100
+      Height = 28
       Hint = 'ESC = Cancelar'
-      Anchors = [akRight, akBottom]
+      Align = alRight
       Cancel = True
       Caption = 'Cancelar'
       DoubleBuffered = True
@@ -157,76 +153,53 @@ object frProxyConfig: TfrProxyConfig
       ModalResult = 2
       ParentDoubleBuffered = False
       TabOrder = 1
-    end
-  end
-  object Panel1: TPanel
-    Left = 0
-    Top = 0
-    Width = 152
-    Height = 182
-    Align = alLeft
-    BevelOuter = bvNone
-    Color = clWhite
-    TabOrder = 6
-    object Image1: TImage
-      Left = 0
-      Top = 0
-      Width = 152
-      Height = 182
-      Align = alClient
-      Anchors = []
-      AutoSize = True
-      Center = True
-      Transparent = True
+      ExplicitLeft = 226
+      ExplicitTop = 5
+      ExplicitHeight = 31
     end
   end
   object edUser: TEdit
-    Left = 232
-    Top = 113
+    Left = 46
+    Top = 100
     Width = 172
     Height = 21
-    Anchors = [akLeft, akTop, akRight]
     Enabled = False
     TabOrder = 3
   end
   object edSenha: TEdit
-    Left = 232
-    Top = 142
+    Left = 46
+    Top = 143
     Width = 172
     Height = 21
-    Anchors = [akLeft, akTop, akRight]
     Enabled = False
     PasswordChar = '*'
     TabOrder = 4
   end
   object edServidor: TEdit
-    Left = 232
-    Top = 18
-    Width = 172
+    Left = 26
+    Top = 28
+    Width = 214
     Height = 21
-    Anchors = [akLeft, akTop, akRight]
     TabOrder = 0
   end
   object edPorta: TEdit
-    Left = 232
-    Top = 47
-    Width = 172
+    Left = 246
+    Top = 28
+    Width = 48
     Height = 21
-    Anchors = [akLeft, akTop, akRight]
     TabOrder = 1
   end
   object cbAutenticacao: TCheckBox
-    Left = 221
-    Top = 84
+    Left = 26
+    Top = 59
     Width = 183
     Height = 19
-    Anchors = [akTop, akRight]
     Caption = 'O Servidor requer autentica'#231#227'o'
     TabOrder = 2
   end
   object ACBrEnterTab1: TACBrEnterTab
     EnterAsTab = True
-    Left = 63
-    Top = 111
+    Left = 213
+    Top = 61
   end
 end

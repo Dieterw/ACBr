@@ -16,12 +16,10 @@ type
     edUser: TEdit;
     edSenha: TEdit;
     edServidor: TEdit;
-    Image1: TImage;
     lSenha1: TLabel;
     lUser: TLabel;
     lSenha: TLabel;
     lUser1: TLabel;
-    Panel1: TPanel;
     Panel2: TPanel;
     procedure cbAutenticacaoChange(Sender: TObject);
     procedure FormShow(Sender: TObject);

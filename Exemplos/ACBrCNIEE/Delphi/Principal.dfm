@@ -15,7 +15,6 @@ object frPrincipal: TfrPrincipal
   OldCreateOrder = True
   Position = poScreenCenter
   OnCreate = FormCreate
-  OnDestroy = FormDestroy
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
@@ -28,7 +27,6 @@ object frPrincipal: TfrPrincipal
     Align = alTop
     Caption = 'Arquivo Tabela_CNIEE.bin'
     TabOrder = 0
-    ExplicitWidth = 549
     DesignSize = (
       694
       113)
@@ -42,10 +40,10 @@ object frPrincipal: TfrPrincipal
       ParentColor = False
     end
     object sbArquivo: TSpeedButton
-      Left = 554
-      Top = 79
-      Width = 23
-      Height = 22
+      Left = 545
+      Top = 78
+      Width = 32
+      Height = 26
       Anchors = [akTop, akRight]
       Glyph.Data = {
         36040000424D3604000000000000360000002800000010000000100000000100
@@ -83,7 +81,6 @@ object frPrincipal: TfrPrincipal
         FF00FF00FF00CBAF9EFED6A578FED6A978FED1AC8DFED0BFB7FEF0ECECFFFF00
         FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00}
       OnClick = sbArquivoClick
-      ExplicitLeft = 409
     end
     object Label2: TLabel
       Left = 12
@@ -97,12 +94,12 @@ object frPrincipal: TfrPrincipal
     object edArquivo: TEdit
       Left = 12
       Top = 80
-      Width = 536
+      Width = 527
       Height = 21
       Anchors = [akLeft, akTop, akRight]
+      ReadOnly = True
       TabOrder = 0
       Text = 'Tabela_CNIEE.bin'
-      ExplicitWidth = 391
     end
     object edURLDownload: TEdit
       Left = 12
@@ -112,7 +109,6 @@ object frPrincipal: TfrPrincipal
       Anchors = [akLeft, akTop, akRight]
       TabOrder = 1
       Text = 'http://www.fazenda.mg.gov.br/empresas/ecf/files/Tabela_CNIEE.bin'
-      ExplicitWidth = 420
     end
     object btAbrir: TBitBtn
       Left = 583
@@ -160,7 +156,6 @@ object frPrincipal: TfrPrincipal
       ParentDoubleBuffered = False
       TabOrder = 2
       OnClick = btAbrirClick
-      ExplicitLeft = 438
     end
     object btDownload: TBitBtn
       Left = 583
@@ -208,7 +203,6 @@ object frPrincipal: TfrPrincipal
       ParentDoubleBuffered = False
       TabOrder = 3
       OnClick = btDownloadClick
-      ExplicitLeft = 438
     end
   end
   object Panel1: TPanel
@@ -219,15 +213,13 @@ object frPrincipal: TfrPrincipal
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitTop = 406
-    ExplicitWidth = 555
     object DBNavigator1: TDBNavigator
       AlignWithMargins = True
       Left = 3
       Top = 3
       Width = 160
       Height = 28
-      DataSource = Datasource1
+      DataSource = dtsCadastro
       VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast, nbRefresh]
       Align = alLeft
       TabOrder = 0
@@ -279,7 +271,6 @@ object frPrincipal: TfrPrincipal
       ParentDoubleBuffered = False
       TabOrder = 1
       OnClick = btExportarClick
-      ExplicitLeft = 300
     end
     object btSair: TBitBtn
       AlignWithMargins = True
@@ -320,7 +311,6 @@ object frPrincipal: TfrPrincipal
       ParentDoubleBuffered = False
       TabOrder = 2
       OnClick = btSairClick
-      ExplicitLeft = 472
     end
     object btListar: TBitBtn
       AlignWithMargins = True
@@ -369,7 +359,6 @@ object frPrincipal: TfrPrincipal
       ParentDoubleBuffered = False
       TabOrder = 3
       OnClick = btListarClick
-      ExplicitLeft = 386
     end
     object btProxy: TBitBtn
       AlignWithMargins = True
@@ -418,7 +407,6 @@ object frPrincipal: TfrPrincipal
       ParentDoubleBuffered = False
       TabOrder = 4
       OnClick = btProxyClick
-      ExplicitLeft = 214
     end
   end
   object DBGrid1: TDBGrid
@@ -428,7 +416,7 @@ object frPrincipal: TfrPrincipal
     Width = 694
     Height = 341
     Align = alClient
-    DataSource = Datasource1
+    DataSource = dtsCadastro
     Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
     ReadOnly = True
     TabOrder = 2
@@ -438,10 +426,10 @@ object frPrincipal: TfrPrincipal
     TitleFont.Name = 'Tahoma'
     TitleFont.Style = []
   end
-  object Datasource1: TDataSource
-    DataSet = memECF
-    Left = 104
-    Top = 189
+  object dtsCadastro: TDataSource
+    DataSet = tmpCadastro
+    Left = 79
+    Top = 284
   end
   object SaveDialog1: TSaveDialog
     Left = 62
@@ -453,62 +441,67 @@ object frPrincipal: TfrPrincipal
     Left = 138
     Top = 352
   end
-  object memECF: TClientDataSet
+  object ACBrTabelaCNIEE: TACBrTabelaCNIEE
+    URLDownload = 'http://www.fazenda.mg.gov.br/empresas/ecf/files/Tabela_CNIEE.bin'
+    Left = 225
+    Top = 350
+  end
+  object tmpCadastro: TClientDataSet
     Aggregates = <>
     Params = <>
-    Left = 55
-    Top = 175
-    object memECFCodMarca: TStringField
+    Left = 65
+    Top = 270
+    object tmpCadastroMarca: TStringField
       FieldName = 'Marca'
       Size = 2
     end
-    object memECFCodCodModelo: TStringField
-      FieldName = 'CodModelo'
+    object tmpCadastroModelo: TStringField
+      FieldName = 'Modelo'
       Size = 2
     end
-    object memECFCodCodVersao: TStringField
-      FieldName = 'CodVersao'
+    object tmpCadastroVersao: TStringField
+      FieldName = 'Versao'
       Size = 2
     end
-    object memECFCodTipoECF: TStringField
-      FieldName = 'TipoECF'
+    object tmpCadastroTipo: TStringField
+      FieldName = 'Tipo'
       Size = 10
     end
-    object memECFCodDescMarca: TStringField
-      FieldName = 'DescMarca'
+    object tmpCadastroMarcaDescr: TStringField
+      FieldName = 'MarcaDescr'
       Size = 30
     end
-    object memECFCodDescModelo: TStringField
-      FieldName = 'DescModelo'
+    object tmpCadastroModeloDescr: TStringField
+      FieldName = 'ModeloDescr'
       Size = 30
     end
-    object memECFCodVersao: TStringField
-      FieldName = 'Versao'
+    object tmpCadastroVersaoSB: TStringField
+      FieldName = 'VersaoSB'
     end
-    object memECFCodLacresSL: TIntegerField
-      FieldName = 'LacresSL'
+    object tmpCadastroQtLacreSL: TIntegerField
+      FieldName = 'QtLacreSL'
     end
-    object memECFCodLacresFab: TIntegerField
-      FieldName = 'LacresFab'
+    object tmpCadastroQTLacreFab: TIntegerField
+      FieldName = 'QtLacreFab'
     end
-    object memECFCodTemMFD: TStringField
-      FieldName = 'TemMFD'
-      Size = 3
+    object tmpCadastroMFD: TStringField
+      FieldName = 'MFD'
+      Size = 1
     end
-    object memECFCodLacreMFD: TStringField
+    object tmpCadastroLacreMFD: TStringField
       FieldName = 'LacreMFD'
-      Size = 3
+      Size = 1
     end
-    object memECFCodAtoAprovacao: TStringField
+    object tmpCadastroAtoAprovacao: TStringField
       FieldName = 'AtoAprovacao'
       Size = 25
     end
-    object memECFCodAtoRegistro: TStringField
-      FieldName = 'AtoRegistro'
+    object tmpCadastroAtoRegistroMG: TStringField
+      FieldName = 'AtoRegistroMG'
       Size = 25
     end
-    object memECFCodFormatoNumFabricacao: TStringField
-      FieldName = 'FormatoNumFabricacao'
+    object tmpCadastroFormatoNumero: TStringField
+      FieldName = 'FormatoNumero'
     end
   end
 end

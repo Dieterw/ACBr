@@ -1,11 +1,59 @@
+{******************************************************************************}
+{ Projeto: Componentes ACBr                                                    }
+{  Biblioteca multiplataforma de componentes Delphi para interação com equipa- }
+{ mentos de Automação Comercial utilizados no Brasil                           }
+{                                                                              }
+{ Direitos Autorais Reservados (c) 2004 Daniel Simoes de Almeida               }
+{                                       Régys Silveira                         }
+{                                                                              }
+{ Colaboradores nesse arquivo:                                                 }
+{                                                                              }
+{  Você pode obter a última versão desse arquivo na pagina do  Projeto ACBr    }
+{ Componentes localizado em      http://www.sourceforge.net/projects/acbr      }
+{                                                                              }
+{ Esse arquivo usa a classe  SynaSer   Copyright (c)2001-2003, Lukas Gebauer   }
+{  Project : Ararat Synapse     (Found at URL: http://www.ararat.cz/synapse/)  }
+{                                                                              }
+{  Esta biblioteca é software livre; você pode redistribuí-la e/ou modificá-la }
+{ sob os termos da Licença Pública Geral Menor do GNU conforme publicada pela  }
+{ Free Software Foundation; tanto a versão 2.1 da Licença, ou (a seu critério) }
+{ qualquer versão posterior.                                                   }
+{                                                                              }
+{  Esta biblioteca é distribuída na expectativa de que seja útil, porém, SEM   }
+{ NENHUMA GARANTIA; nem mesmo a garantia implícita de COMERCIABILIDADE OU      }
+{ ADEQUAÇÃO A UMA FINALIDADE ESPECÍFICA. Consulte a Licença Pública Geral Menor}
+{ do GNU para mais detalhes. (Arquivo LICENÇA.TXT ou LICENSE.TXT)              }
+{                                                                              }
+{  Você deve ter recebido uma cópia da Licença Pública Geral Menor do GNU junto}
+{ com esta biblioteca; se não, escreva para a Free Software Foundation, Inc.,  }
+{ no endereço 59 Temple Street, Suite 330, Boston, MA 02111-1307 USA.          }
+{ Você também pode obter uma copia da licença em:                              }
+{ http://www.opensource.org/licenses/lgpl-license.php                          }
+{                                                                              }
+{ Daniel Simões de Almeida  -  daniel@djsystem.com.br  -  www.djsystem.com.br  }
+{              Praça Anita Costa, 34 - Tatuí - SP - 18270-410                  }
+{                                                                              }
+{******************************************************************************}
+
+{******************************************************************************
+|* Historico
+|*
+|* 24/10/2008: Primeira Versao
+|*    Daniel Simoes de Almeida
+******************************************************************************}
+
+{$I ACBr.inc}
+
 unit ACBrCNIEE;
 
 interface
 
 uses
-  {$IFDEF MSWINDOWS} windows, wininet, {$ENDIF}
-  Contnrs, Messages, SysUtils, Variants, Classes, httpsend,
+  Contnrs,  SysUtils, Variants, Classes,
   ACBrUtil, ACBrSocket;
+
+const
+  CURL_Download_Tabela_CNIEE = 'http://www.fazenda.mg.gov.br/empresas/ecf/files/Tabela_CNIEE.bin' ;
 
 type
   EACBrCNIEE = class(Exception);
@@ -73,7 +121,6 @@ type
 
   TACBrCNIEE = class(TACBrHTTP)
   private
-    FHTTPSend: THTTPSend;
     FArquivo: String;
     FURLDownload: String;
     FCadastros: TACBrCNIEERegistros;
@@ -85,12 +132,13 @@ type
 
     function DownloadTabela: Boolean;
     function AbrirTabela: Boolean;
-    procedure LerConfiguracoesProxy;
     procedure Exportar(const AArquivo: String; ATipo: TACBrCNIEEExporta);
+
+    property Cadastros: TACBrCNIEERegistros read FCadastros;
+    
   published
     property Arquivo: String read FArquivo write FArquivo;
     property URLDownload: String read FURLDownload write FURLDownload;
-    property Cadastros: TACBrCNIEERegistros read FCadastros;
   end;
 
 implementation
@@ -120,149 +168,18 @@ constructor TACBrCNIEE.Create(AOwner: TComponent);
 begin
   inherited;
 
-  FHTTPSend    := THTTPSend.Create;
   FCadastros   := TACBrCNIEERegistros.Create;
-  FURLDownload := 'http://www.fazenda.mg.gov.br/empresas/ecf/files/Tabela_CNIEE.bin';
-
-  FHTTPSend.ProxyHost := ProxyHost;
-  FHTTPSend.ProxyPort := ProxyPort;
-  FHTTPSend.ProxyUser := ProxyUser;
-  FHTTPSend.ProxyPass := ProxyPass;
+  FURLDownload := CURL_Download_Tabela_CNIEE;
 end;
 
 destructor TACBrCNIEE.Destroy;
 begin
   FCadastros.Free;
-  FHTTPSend.Free;
   inherited;
 end;
 
-procedure TACBrCNIEE.LerConfiguracoesProxy;
-{$IFDEF MSWINDOWS}
-var
-  Len: DWORD;
-  i, j: Integer;
-
-  Server, Port, User, Password: String;
-
-  function GetProxyServer: String;
-  var
-     ProxyInfo: PInternetProxyInfo;
-  begin
-     Result := '';
-     Len    := 0;
-     if not InternetQueryOption(nil, INTERNET_OPTION_PROXY, nil, Len) then
-     begin
-        if GetLastError = ERROR_INSUFFICIENT_BUFFER then
-        begin
-           GetMem(ProxyInfo, Len);
-           try
-              if InternetQueryOption(nil, INTERNET_OPTION_PROXY, ProxyInfo, Len) then
-              begin
-                 if ProxyInfo^.dwAccessType = INTERNET_OPEN_TYPE_PROXY then
-                    Result := String(ProxyInfo^.lpszProxy);
-              end;
-           finally
-              FreeMem(ProxyInfo);
-           end;
-        end;
-     end;
-  end;
-
-  function GetOptionString(Option: DWORD): String;
-  begin
-     Len := 0;
-     if not InternetQueryOption(nil, Option, nil, Len) then
-     begin
-        if GetLastError = ERROR_INSUFFICIENT_BUFFER then
-        begin
-           SetLength(Result, Len);
-           if InternetQueryOption(nil, Option, Pointer(Result), Len) then
-              Exit;
-        end;
-     end;
-
-     Result := '';
-  end;
-
-begin
-  Port     := '';
-  Server   := GetProxyServer;
-  User     := GetOptionString(INTERNET_OPTION_PROXY_USERNAME);
-  Password := GetOptionString(INTERNET_OPTION_PROXY_PASSWORD);
-
-  if Server <> '' then
-  begin
-     i := Pos('http=', Server);
-     if i > 0 then
-     begin
-        Delete(Server, 1, i+5);
-        j := Pos(';', Server);
-        if j > 0 then
-           Server := Copy(Server, 1, j-1);
-     end;
-
-     i := Pos(':', Server);
-     if i > 0 then
-     begin
-        Port   := Copy(Server, i+1, MaxInt);
-        Server := Copy(Server, 1, i-1);
-     end;
-  end;
-
-  ProxyHost := Server;
-  ProxyPort := Port;
-  ProxyUser := User;
-  ProxyPass := Password;
-end;
-{$ELSE}
-Var
-  Arroba, DoisPontos, Barras : Integer ;
-  http_proxy : String ;
-begin
-{ http_proxy=http://user:password@proxy:port/
-  http_proxy=http://proxy:port/                    }
-
-  http_proxy := Trim(GetEnvironmentVariable( 'http_proxy' )) ;
-  if http_proxy = '' then exit ;
-
-  if RightStr(http_proxy,1) = '/' then
-     http_proxy := copy( http_proxy, 1, Length(http_proxy)-1 );
-
-  Barras := pos('//', http_proxy);
-  if Barras > 0 then
-     http_proxy := copy( http_proxy, Barras+2, Length(http_proxy) ) ;
-
-  Arroba     := pos('@', http_proxy) ;
-  DoisPontos := pos(':', http_proxy) ;
-
-  if (Arroba > 0) then
-  begin
-     if (DoisPontos < Arroba) then
-        Pass := copy( http_proxy, DoisPontos+1, Arroba-DoisPontos-1 )
-     else
-        DoisPontos := Arroba;
-
-     User := copy( http_proxy, 1, DoisPontos-1) ;
-
-     http_proxy := copy( http_proxy, Arroba+1, Length(http_proxy) );
-  end ;
-
-  DoisPontos := pos(':', http_proxy+':') ;
-
-  Server := copy( http_proxy, 1, DoisPontos-1) ;
-  Port   := copy( http_proxy, DoisPontos+1, Length(http_proxy) );
-
-  Proxy.Server   := Server;
-  Proxy.Port     := Port;
-  Proxy.User     := User;
-  Proxy.Password := Password;
-end ;
-{$ENDIF}
 
 function TACBrCNIEE.DownloadTabela: Boolean;
-var
-  OK: Boolean;
 begin
   if Trim(FURLDownload) = '' then
     raise EACBrCNIEE.Create('URL de Download não informada.');
@@ -270,19 +187,14 @@ begin
   if Trim(FArquivo) = '' then
     raise EACBrCNIEE.Create('Nome do arquivo em disco não especificado.');
 
-  with FHTTPSend do
-  begin
-    Clear;
-    OK := HTTPMethod('GET', FURLDownload);
-    if OK and (ResultCode = 200) then
-    begin
-      Document.Seek(0, soFromBeginning);
-      Document.SaveToFile(FArquivo);
-      Result := True;
-    end
-    else
-      Result := False;
-  end;
+  try
+     HTTPGet( FURLDownload );
+     HTTPSend.Document.Seek(0, soFromBeginning);
+     HTTPSend.Document.SaveToFile( FArquivo );
+     Result := True;
+  except
+     Result := False ;
+  end ;
 end;
 
 function TACBrCNIEE.AbrirTabela: Boolean;
@@ -290,18 +202,6 @@ var
   F: file of TRegistro;
   Registro: TRegistro;
   FileName: String;
-
-  function ReplaceString(const AString: string;
-    const ANovo: string; const AAntigo: array of string;
-    const AOpcoes: TReplaceFlags): string;
-  var
-    I: Integer;
-  begin
-    Result := AString;
-    for I := 0 to High(AAntigo) do
-      Result := StringReplace(Result, AAntigo[I], ANovo, AOpcoes);
-  end;
-
 begin
   FileName := Trim(FArquivo);
 
@@ -381,7 +281,7 @@ begin
   end;
 
   if Trim(Texto) <> '' then
-    WriteToTXT(AnsiString(AArquivo), AnsiString(Texto), False, True);
+    WriteToTXT(AnsiString(AArquivo), AnsiString(Texto), False, False);
 end;
 
 procedure TACBrCNIEE.ExportarDSV(const AArquivo: String);
@@ -417,7 +317,7 @@ begin
   end;
 
   if Trim(Texto) <> '' then
-    WriteToTXT(AnsiString(AArquivo), AnsiString(Texto), False, True);
+    WriteToTXT(AnsiString(AArquivo), AnsiString(Texto), False, False);
 end;
 
 end.

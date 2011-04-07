@@ -49,6 +49,7 @@ interface
 
 uses SysUtils, Classes,
      blcksock, synsock, httpsend,  {Units da Synapse}
+     {$IFDEF MSWINDOWS} windows, wininet, {$ENDIF}  { Units para a auto-detecção de Proxy }
      ACBrBase ;
 
 type
@@ -191,6 +192,8 @@ TACBrHTTP = class( TACBrComponent )
     function AjustaParam(AParam : String) : String ;
     procedure HTTPGet( AURL : String) ; virtual ;
     function GetHeaderValue( AValue : String ) : String ;
+
+    procedure LerConfiguracoesProxy; 
 
     property HTTPSend  : THTTPSend read fHTTPSend ;
     property RespHTTP  : TStringList read fRespHTTP ;
@@ -672,6 +675,129 @@ begin
      Inc( I ) ;
   end ;
 end ;
+
+procedure TACBrHTTP.LerConfiguracoesProxy;
+{$IFDEF MSWINDOWS}
+var
+  Len: DWORD;
+  i, j: Integer;
+
+  Server, Port, User, Password: String;
+
+  function GetProxyServer: String;
+  var
+     ProxyInfo: PInternetProxyInfo;
+  begin
+     Result := '';
+     Len    := 0;
+     if not InternetQueryOption(nil, INTERNET_OPTION_PROXY, nil, Len) then
+     begin
+        if GetLastError = ERROR_INSUFFICIENT_BUFFER then
+        begin
+           GetMem(ProxyInfo, Len);
+           try
+              if InternetQueryOption(nil, INTERNET_OPTION_PROXY, ProxyInfo, Len) then
+              begin
+                 if ProxyInfo^.dwAccessType = INTERNET_OPEN_TYPE_PROXY then
+                    Result := String(ProxyInfo^.lpszProxy);
+              end;
+           finally
+              FreeMem(ProxyInfo);
+           end;
+        end;
+     end;
+  end;
+
+  function GetOptionString(Option: DWORD): String;
+  begin
+     Len := 0;
+     if not InternetQueryOption(nil, Option, nil, Len) then
+     begin
+        if GetLastError = ERROR_INSUFFICIENT_BUFFER then
+        begin
+           SetLength(Result, Len);
+           if InternetQueryOption(nil, Option, Pointer(Result), Len) then
+              Exit;
+        end;
+     end;
+
+     Result := '';
+  end;
+
+begin
+  Port     := '';
+  Server   := GetProxyServer;
+  User     := GetOptionString(INTERNET_OPTION_PROXY_USERNAME);
+  Password := GetOptionString(INTERNET_OPTION_PROXY_PASSWORD);
+
+  if Server <> '' then
+  begin
+     i := Pos('http=', Server);
+     if i > 0 then
+     begin
+        Delete(Server, 1, i+5);
+        j := Pos(';', Server);
+        if j > 0 then
+           Server := Copy(Server, 1, j-1);
+     end;
+
+     i := Pos(':', Server);
+     if i > 0 then
+     begin
+        Port   := Copy(Server, i+1, MaxInt);
+        Server := Copy(Server, 1, i-1);
+     end;
+  end;
+
+  ProxyHost := Server;
+  ProxyPort := Port;
+  ProxyUser := User;
+  ProxyPass := Password;
+end;
+{$ELSE}
+Var
+  Arroba, DoisPontos, Barras : Integer ;
+  http_proxy : String ;
+begin
+{ http_proxy=http://user:password@proxy:port/
+  http_proxy=http://proxy:port/                    }
+
+  http_proxy := Trim(GetEnvironmentVariable( 'http_proxy' )) ;
+  if http_proxy = '' then exit ;
+
+  if RightStr(http_proxy,1) = '/' then
+     http_proxy := copy( http_proxy, 1, Length(http_proxy)-1 );
+
+  Barras := pos('//', http_proxy);
+  if Barras > 0 then
+     http_proxy := copy( http_proxy, Barras+2, Length(http_proxy) ) ;
+
+  Arroba     := pos('@', http_proxy) ;
+  DoisPontos := pos(':', http_proxy) ;
+
+  if (Arroba > 0) then
+  begin
+     if (DoisPontos < Arroba) then
+        Pass := copy( http_proxy, DoisPontos+1, Arroba-DoisPontos-1 )
+     else
+        DoisPontos := Arroba;
+
+     User := copy( http_proxy, 1, DoisPontos-1) ;
+
+     http_proxy := copy( http_proxy, Arroba+1, Length(http_proxy) );
+  end ;
+
+  DoisPontos := pos(':', http_proxy+':') ;
+
+  Server := copy( http_proxy, 1, DoisPontos-1) ;
+  Port   := copy( http_proxy, DoisPontos+1, Length(http_proxy) );
+
+  Proxy.Server   := Server;
+  Proxy.Port     := Port;
+  Proxy.User     := User;
+  Proxy.Password := Password;
+end ;
+{$ENDIF}
 
 function TACBrHTTP.GetProxyHost : string ;
 begin

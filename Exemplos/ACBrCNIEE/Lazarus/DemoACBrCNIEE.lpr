@@ -1,4 +1,4 @@
-program ACBrCNIEE;
+program DemoACBrCNIEE;
 
 {$mode objfpc}{$H+}
 
@@ -7,7 +7,7 @@ uses
   cthreads,
   {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, synapse, ACBrDiversos, memdslaz, dbflaz, sdflaz, Principal, ProxyConfig
+  Forms, ACBrDiversos, ACBrTCP, memdslaz, Principal, ProxyConfig
   { you can add units after this };
 
 {$R *.res}

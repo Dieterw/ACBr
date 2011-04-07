@@ -81,7 +81,7 @@ end;
 
 procedure TfrPrincipal.FormShow(Sender: TObject);
 begin
-  if FilesExists(edArquivo.Text) then
+  if FileExists(edArquivo.Text) then
     btAbrir.Click;
 end;
 
@@ -152,8 +152,8 @@ begin
       begin
         tmpCadastro.Append;
         tmpCadastroMarca.AsString         := ACBrCNIEE1.Cadastros[I].CodMarca;
-        tmpCadastroModelo.AsString        := ACBrCNIEE1.Cadastros[I].CodCodModelo;
-        tmpCadastroVersao.AsString        := ACBrCNIEE1.Cadastros[I].CodCodVersao;
+        tmpCadastroModelo.AsString        := ACBrCNIEE1.Cadastros[I].CodModelo;
+        tmpCadastroVersao.AsString        := ACBrCNIEE1.Cadastros[I].CodVersao;
         tmpCadastroTipo.AsString          := ACBrCNIEE1.Cadastros[I].TipoECF;
         tmpCadastroMarcaDescr.AsString    := ACBrCNIEE1.Cadastros[I].DescrMarca;
         tmpCadastroModeloDescr.AsString   := ACBrCNIEE1.Cadastros[I].DescrModelo;

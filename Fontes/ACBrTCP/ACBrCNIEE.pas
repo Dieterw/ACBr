@@ -10,6 +10,8 @@ uses
 type
   EACBrCNIEE = class(Exception);
 
+  TACBrCNIEEExporta = (exCSV, exDSV);
+
   TRegistro = packed record
     Marca        : string[2];
     Modelo       : string[2];
@@ -75,6 +77,8 @@ type
     FArquivo: String;
     FURLDownload: String;
     FCadastros: TACBrCNIEERegistros;
+    procedure ExportarCSV(const AArquivo: String);
+    procedure ExportarDSV(const AArquivo: String);
   public
     destructor Destroy; override;
     constructor Create(AOwner: TComponent); override;
@@ -82,6 +86,7 @@ type
     function DownloadTabela: Boolean;
     function AbrirTabela: Boolean;
     procedure LerConfiguracoesProxy;
+    procedure Exportar(const AArquivo: String; ATipo: TACBrCNIEEExporta);
   published
     property Arquivo: String read FArquivo write FArquivo;
     property URLDownload: String read FURLDownload write FURLDownload;
@@ -298,7 +303,6 @@ var
   end;
 
 begin
-  Result   := False;
   FileName := Trim(FArquivo);
 
   if FileName = '' then
@@ -337,6 +341,83 @@ begin
   finally
     CloseFile(F);
   end;
+end;
+
+procedure TACBrCNIEE.Exportar(const AArquivo: String; ATipo: TACBrCNIEEExporta);
+begin
+  if Cadastros.Count <= 0 then
+    Self.AbrirTabela;
+
+  case ATipo of
+    exCSV: ExportarCSV(AArquivo);
+    exDSV: ExportarDSV(AArquivo);
+  end;
+end;
+
+procedure TACBrCNIEE.ExportarCSV(const AArquivo: String);
+var
+  I: Integer;
+  Texto: String;
+begin
+  Texto := '';
+  for I := 0 to Cadastros.Count - 1 do
+  begin
+    Texto := Texto +
+      Cadastros[I].CodMarca + ',' +
+      Cadastros[I].CodCodModelo + ',' +
+      Cadastros[I].CodCodVersao + ',' +
+      Cadastros[I].TipoECF + ',' +
+      Cadastros[I].DescrMarca + ',' +
+      Cadastros[I].DescrModelo + ',' +
+      Cadastros[I].Versao + ',' +
+      IntToStr(Cadastros[I].QtLacresSL) + ',' +
+      IntToStr(Cadastros[I].QtLacresFab) + ',' +
+      Cadastros[I].TemMFD + ',' +
+      Cadastros[I].TemLacreMFD + ',' +
+      Cadastros[I].AtoAprovacao + ',' +
+      Cadastros[I].AtoRegistro + ',' +
+      Cadastros[I].FormatoNumFabricacao + ',' +
+      sLineBreak;
+  end;
+
+  if Trim(Texto) <> '' then
+    WriteToTXT(AnsiString(AArquivo), AnsiString(Texto), False, True);
+end;
+
+procedure TACBrCNIEE.ExportarDSV(const AArquivo: String);
+var
+  I: Integer;
+  Texto: String;
+
+  function AddAspasDuplas(const ATexto: String): String;
+  begin
+    Result := '"' + ATexto + '"';
+  end;
+
+begin
+  Texto := '';
+  for I := 0 to Cadastros.Count - 1 do
+  begin
+    Texto := Texto +
+      AddAspasDuplas(Cadastros[I].CodMarca) + ',' +
+      AddAspasDuplas(Cadastros[I].CodCodModelo) + ',' +
+      AddAspasDuplas(Cadastros[I].CodCodVersao) + ',' +
+      AddAspasDuplas(Cadastros[I].TipoECF) + ',' +
+      AddAspasDuplas(Cadastros[I].DescrMarca) + ',' +
+      AddAspasDuplas(Cadastros[I].DescrModelo) + ',' +
+      AddAspasDuplas(Cadastros[I].Versao) + ',' +
+      AddAspasDuplas(IntToStr(Cadastros[I].QtLacresSL)) + ',' +
+      AddAspasDuplas(IntToStr(Cadastros[I].QtLacresFab)) + ',' +
+      AddAspasDuplas(Cadastros[I].TemMFD) + ',' +
+      AddAspasDuplas(Cadastros[I].TemLacreMFD) + ',' +
+      AddAspasDuplas(Cadastros[I].AtoAprovacao) + ',' +
+      AddAspasDuplas(Cadastros[I].AtoRegistro) + ',' +
+      AddAspasDuplas(Cadastros[I].FormatoNumFabricacao) + ',' +
+      sLineBreak;
+  end;
+
+  if Trim(Texto) <> '' then
+    WriteToTXT(AnsiString(AArquivo), AnsiString(Texto), False, True);
 end;
 
 end.

@@ -44,15 +44,16 @@ type
     tmpCadastroAtoRegistroMG: TStringField;
     tmpCadastroFormatoNumero: TStringField;
     ACBrCNIEE1: TACBrCNIEE;
+    rgTipoExportacao: TRadioGroup;
     procedure btAbrirClick(Sender: TObject);
     procedure btDownloadClick(Sender: TObject);
-    procedure btExportarClick(Sender: TObject);
     procedure btListarClick(Sender: TObject);
     procedure btProxyClick(Sender: TObject);
     procedure btSairClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure sbArquivoClick(Sender: TObject);
+    procedure btExportarClick(Sender: TObject);
   private
     { private declarations }
   public
@@ -108,6 +109,33 @@ begin
     MessageDlg('Não foi possível efetuar o download da tabela.', mtError, [mbOK], 0);
 end;
 
+procedure TfrPrincipal.btExportarClick(Sender: TObject);
+begin
+  case rgTipoExportacao.ItemIndex of
+    0:
+      begin
+        SaveDialog1.Title      := 'Exportar arquivo CSV';
+        SaveDialog1.FileName   := 'TabelaCNIEE.CSV';
+        SaveDialog1.DefaultExt := '.csv';
+        SaveDialog1.Filter     := 'Arquivos CSV|*.csv';
+
+        if SaveDialog1.Execute then
+          ACBrCNIEE1.Exportar(SaveDialog1.FileName, exCSV);
+      end;
+
+    1:
+      begin
+        SaveDialog1.Title      := 'Exportar arquivo DSV';
+        SaveDialog1.FileName   := 'TabelaCNIEE.DSV';
+        SaveDialog1.DefaultExt := '.dsv';
+        SaveDialog1.Filter     := 'Arquivos DSV|*.dsv';
+
+        if SaveDialog1.Execute then
+          ACBrCNIEE1.Exportar(SaveDialog1.FileName, exDSV);
+      end;
+  end;
+end;
+
 procedure TfrPrincipal.btAbrirClick(Sender: TObject);
 var
   I: Integer;
@@ -142,8 +170,6 @@ begin
       tmpCadastro.First;
       tmpCadastro.EnableControls;
     end;
-
-    MessageDlg('Tabela aberta com sucesso.', mtInformation, [mbOK], 0);
   end;
 end;
 
@@ -168,11 +194,6 @@ begin
   finally
     frProxyConfig.Free;
   end;
-end;
-
-procedure TfrPrincipal.btExportarClick(Sender: TObject);
-begin
-  MessageDlg('Função ainda não Implementada', mtError, [mbOK], 0);
 end;
 
 procedure TfrPrincipal.btListarClick(Sender: TObject);

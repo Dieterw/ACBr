@@ -98,7 +98,7 @@ object frPrincipal: TfrPrincipal
       Height = 21
       Anchors = [akLeft, akTop, akRight]
       ReadOnly = True
-      TabOrder = 0
+      TabOrder = 2
       Text = 'Tabela_CNIEE.bin'
     end
     object edURLDownload: TEdit
@@ -107,7 +107,7 @@ object frPrincipal: TfrPrincipal
       Width = 565
       Height = 21
       Anchors = [akLeft, akTop, akRight]
-      TabOrder = 1
+      TabOrder = 0
       Text = 'http://www.fazenda.mg.gov.br/empresas/ecf/files/Tabela_CNIEE.bin'
     end
     object btAbrir: TBitBtn
@@ -154,7 +154,7 @@ object frPrincipal: TfrPrincipal
         FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
         FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00}
       ParentDoubleBuffered = False
-      TabOrder = 2
+      TabOrder = 3
       OnClick = btAbrirClick
     end
     object btDownload: TBitBtn
@@ -201,7 +201,7 @@ object frPrincipal: TfrPrincipal
         00000000000000000000000000000000000011A421FF11A421FF11A421FF11A4
         21FF000000000000000000000000000000000000000000000000}
       ParentDoubleBuffered = False
-      TabOrder = 3
+      TabOrder = 1
       OnClick = btDownloadClick
     end
   end
@@ -212,7 +212,7 @@ object frPrincipal: TfrPrincipal
     Height = 34
     Align = alBottom
     BevelOuter = bvNone
-    TabOrder = 1
+    TabOrder = 3
     object DBNavigator1: TDBNavigator
       AlignWithMargins = True
       Left = 3
@@ -269,7 +269,7 @@ object frPrincipal: TfrPrincipal
         84FFA38B84FFA38B84FFA38B84FFA38B84FFA38B84FFC5C2C1FFFF00FF00FF00
         FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00}
       ParentDoubleBuffered = False
-      TabOrder = 1
+      TabOrder = 2
       OnClick = btExportarClick
     end
     object btSair: TBitBtn
@@ -309,7 +309,7 @@ object frPrincipal: TfrPrincipal
         00404040FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000040404040
         40404040404040404040402020207F7F3F2B2B2BFFFFFFFFFFFF}
       ParentDoubleBuffered = False
-      TabOrder = 2
+      TabOrder = 4
       OnClick = btSairClick
     end
     object btListar: TBitBtn
@@ -405,7 +405,7 @@ object frPrincipal: TfrPrincipal
         00000000000000000000814E1C08A77F3E70969259B6BB9569D3B9A47ECBAD88
         5C9E767542450000000000000000000000000000000000000000}
       ParentDoubleBuffered = False
-      TabOrder = 4
+      TabOrder = 1
       OnClick = btProxyClick
     end
   end
@@ -414,17 +414,33 @@ object frPrincipal: TfrPrincipal
     Left = 3
     Top = 122
     Width = 694
-    Height = 341
+    Height = 296
     Align = alClient
     DataSource = dtsCadastro
     Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
     ReadOnly = True
-    TabOrder = 2
+    TabOrder = 1
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
     TitleFont.Height = -11
     TitleFont.Name = 'Tahoma'
     TitleFont.Style = []
+  end
+  object rgTipoExportacao: TRadioGroup
+    AlignWithMargins = True
+    Left = 3
+    Top = 424
+    Width = 694
+    Height = 39
+    Align = alBottom
+    Caption = 'Tipo de exporta'#231#227'o'
+    Columns = 2
+    ItemIndex = 0
+    Items.Strings = (
+      'Formato CSV'
+      'Formato DSV')
+    TabOrder = 2
+    ExplicitTop = 122
   end
   object dtsCadastro: TDataSource
     DataSet = tmpCadastro
@@ -432,6 +448,7 @@ object frPrincipal: TfrPrincipal
     Top = 284
   end
   object SaveDialog1: TSaveDialog
+    Options = [ofHideReadOnly, ofNoChangeDir, ofEnableSizing]
     Left = 62
     Top = 352
   end

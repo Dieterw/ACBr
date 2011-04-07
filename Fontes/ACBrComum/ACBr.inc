@@ -1357,6 +1357,7 @@
   {$ENDIF}
 
   {$IFDEF VisualCLX}
+    {$UNDEF VCL}
     {$DEFINE COMPLIB_CLX} { kept for backward compatibility, use VisualCLX instead }
   {$ENDIF}
 

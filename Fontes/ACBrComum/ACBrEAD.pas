@@ -606,7 +606,7 @@ begin
     md := EVP_get_digestbyname('md5');
     EVP_DigestInit( @md_ctx, md ) ;
     EVP_DigestUpdate( @md_ctx, MS.Memory, MS.Size ) ;
-    EVP_SignFinal( @md_ctx, @md_value_bin, {$IFNDEF USE_libeay32}@{$ENDIF}md_len, fsKey);
+    EVP_SignFinal( @md_ctx, @md_value_bin, md_len, fsKey);
 
     //MS.Clear;
     //MS.Write( md_value_bin, md_len );

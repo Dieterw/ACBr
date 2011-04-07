@@ -3,7 +3,7 @@ object frProxyConfig: TfrProxyConfig
   Top = 296
   BorderIcons = [biSystemMenu]
   BorderStyle = bsDialog
-  Caption = 'Configura'#195#167#195#163'o do Servidor Proxy'
+  Caption = 'Configura'#231#227'o do Servidor Proxy'
   ClientHeight = 218
   ClientWidth = 320
   Color = clBtnFace
@@ -16,7 +16,7 @@ object frProxyConfig: TfrProxyConfig
   object lUser: TLabel
     Left = 46
     Top = 84
-    Width = 40
+    Width = 39
     Height = 13
     Caption = 'Usu'#225'rio:'
     Color = clBtnFace
@@ -35,7 +35,7 @@ object frProxyConfig: TfrProxyConfig
   object lUser1: TLabel
     Left = 26
     Top = 12
-    Width = 44
+    Width = 42
     Height = 13
     Caption = 'Servidor:'
     Color = clBtnFace
@@ -45,7 +45,7 @@ object frProxyConfig: TfrProxyConfig
   object lSenha1: TLabel
     Left = 246
     Top = 12
-    Width = 30
+    Width = 28
     Height = 13
     Caption = 'Porta:'
     Color = clBtnFace
@@ -66,18 +66,15 @@ object frProxyConfig: TfrProxyConfig
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 5
-    ExplicitTop = 189
-    ExplicitWidth = 311
     object bOk: TBitBtn
-      AlignWithMargins = True
       Left = 111
       Top = 3
       Width = 100
       Height = 28
       Hint = 'Iniciar Pesquisa'
-      Align = alRight
       Caption = 'OK'
-      DoubleBuffered = True
+      ModalResult = 1
+      TabOrder = 0
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000120B0000120B00000000000000000000FF00FFFF00FF
@@ -105,24 +102,17 @@ object frProxyConfig: TfrProxyConfig
         FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF000C
         00000C00FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
         00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF}
-      ModalResult = 1
-      ParentDoubleBuffered = False
-      TabOrder = 0
-      ExplicitLeft = 120
-      ExplicitTop = 5
-      ExplicitHeight = 31
     end
     object bCancelar: TBitBtn
-      AlignWithMargins = True
       Left = 217
       Top = 3
       Width = 100
       Height = 28
       Hint = 'ESC = Cancelar'
-      Align = alRight
       Cancel = True
       Caption = 'Cancelar'
-      DoubleBuffered = True
+      ModalResult = 2
+      TabOrder = 1
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000120B0000120B00000000000000000000FF00FFFF00FF
@@ -150,12 +140,6 @@ object frProxyConfig: TfrProxyConfig
         BDBAFFBDBAFF393CBDFF00FFFF00FFFF00FFFF00FFFF00FF0000296B69E7CECB
         FFA5A6FF21248CFF00FFFF00FFFF00FF393CBD4241C6FF00FFFF00FFFF00FFFF
         00FFFF00FFFF00FFFF00FF0000295A59E7181C7BFF00FFFF00FF}
-      ModalResult = 2
-      ParentDoubleBuffered = False
-      TabOrder = 1
-      ExplicitLeft = 226
-      ExplicitTop = 5
-      ExplicitHeight = 31
     end
   end
   object edUser: TEdit
@@ -196,10 +180,5 @@ object frProxyConfig: TfrProxyConfig
     Height = 19
     Caption = 'O Servidor requer autentica'#231#227'o'
     TabOrder = 2
-  end
-  object ACBrEnterTab1: TACBrEnterTab
-    EnterAsTab = True
-    Left = 213
-    Top = 61
   end
 end

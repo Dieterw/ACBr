@@ -8,7 +8,6 @@ uses
 
 type
   TfrProxyConfig = class(TForm)
-    ACBrEnterTab1: TACBrEnterTab;
     bCancelar: TBitBtn;
     bOk: TBitBtn;
     cbAutenticacao: TCheckBox;

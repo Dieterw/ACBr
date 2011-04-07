@@ -1,4 +1,4 @@
-Ôªøunit Principal;
+unit Principal;
 
 interface
 
@@ -76,6 +76,7 @@ procedure TfrPrincipal.FormCreate(Sender: TObject);
 begin
   edArquivo.Text := ExtractFilePath(Application.ExeName) + 'Tabela_CNIEE.bin';
   ACBrCNIEE1.Arquivo := edArquivo.Text;
+  ACBrCNIEE1.LerConfiguracoesProxy ;
 end;
 
 procedure TfrPrincipal.FormShow(Sender: TObject);
@@ -102,11 +103,11 @@ begin
   begin
     MessageDlg('Download da tabela efetuado com sucesso.', mtInformation, [mbOK], 0);
 
-    if MessageDlg('Deseja abrir a tabela e mostrar os dados?', mtInformation, mbYesNo, 0) = mrYes then
+    if MessageDlg('Deseja abrir a tabela e mostrar os dados?', mtInformation, [mbYes,mbNo], 0) = mrYes then
       btAbrir.Click;
   end
   else
-    MessageDlg('N√£o foi poss√≠vel efetuar o download da tabela.', mtError, [mbOK], 0);
+    MessageDlg('N„o foi possÌvel efetuar o download da tabela.', mtError, [mbOK], 0);
 end;
 
 procedure TfrPrincipal.btExportarClick(Sender: TObject);
@@ -198,7 +199,7 @@ end;
 
 procedure TfrPrincipal.btListarClick(Sender: TObject);
 begin
-  MessageDlg('Fun√ß√£o ainda n√£o Implementada', mtError, [mbOK], 0);
+  MessageDlg('FunÁ„o ainda n„o Implementada', mtError, [mbOK], 0);
 end;
 
 procedure TfrPrincipal.btSairClick(Sender: TObject);

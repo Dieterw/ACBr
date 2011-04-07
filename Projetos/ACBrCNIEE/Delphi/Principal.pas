@@ -17,8 +17,8 @@ type
     MarcaDescr   : string[30];
     ModeloDescr  : string[30];
     VersaoSB     : string[20];
-    QtLacreSL    : string[3];
-    QTLacreFab   : string[3];
+    QtLacreSL    : Integer;//string[3];
+    QTLacreFab   : Integer;//string[3];
     MFD          : string[3];
     LacreMFD     : string[3];
     AtoAprovacao : string[25];
@@ -295,8 +295,8 @@ begin
       memECFCodDescMarca.AsString            := string(Registro.MarcaDescr);
       memECFCodDescModelo.AsString           := string(Registro.ModeloDescr);
       memECFCodVersao.AsString               := strVersaoSB;
-      memECFCodLacresSL.AsInteger            := StrToIntDef(string(Registro.QtLacreSL), 0);
-      memECFCodLacresFab.AsInteger           := StrToIntDef(string(Registro.QTLacreFab), 0);
+      memECFCodLacresSL.AsInteger            := Registro.QtLacreSL;
+      memECFCodLacresFab.AsInteger           := Registro.QTLacreFab;
       memECFCodTemMFD.AsString               := string(Registro.MFD);
       memECFCodLacreMFD.AsString             := string(Registro.LacreMFD);
       memECFCodAtoAprovacao.AsString         := string(Registro.AtoAprovacao);

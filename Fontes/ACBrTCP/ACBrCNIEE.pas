@@ -80,7 +80,7 @@ type
   TACBrCNIEERegistro = class
   private
     FDescrModelo: String;
-    FCodCodModelo: String;
+    FCodModelo: String;
     FAtoAprovacao: String;
     FVersao: String;
     FQtLacresFab: Integer;
@@ -90,13 +90,13 @@ type
     FAtoRegistro: String;
     FTemMFD: String;
     FCodMarca: String;
-    FCodCodVersao: String;
+    FCodVersao: String;
     FFormatoNumFabricacao: String;
     FTipoECF: String;
   public
     property CodMarca: String read FCodMarca write FCodMarca;
-    property CodCodModelo: String read FCodCodModelo write FCodCodModelo;
-    property CodCodVersao: String read FCodCodVersao write FCodCodVersao;
+    property CodModelo: String read FCodModelo write FCodModelo;
+    property CodVersao: String read FCodVersao write FCodVersao;
     property TipoECF: String read FTipoECF write FTipoECF;
     property DescrMarca: String read FDescrMarca write FDescrMarca;
     property DescrModelo: String read FDescrModelo write FDescrModelo;
@@ -222,8 +222,8 @@ begin
       with FCadastros.New do
       begin
         CodMarca             := Trim(string(Registro.Marca));
-        CodCodModelo         := Trim(string(Registro.Modelo));
-        CodCodVersao         := Trim(string(Registro.Versao));
+        CodModelo            := Trim(string(Registro.Modelo));
+        CodVersao            := Trim(string(Registro.Versao));
         TipoECF              := Trim(string(Registro.Tipo));
         DescrMarca           := Trim(string(Registro.MarcaDescr));
         DescrModelo          := Trim(string(Registro.ModeloDescr));
@@ -264,8 +264,8 @@ begin
   begin
     Texto := Texto +
       Cadastros[I].CodMarca + ',' +
-      Cadastros[I].CodCodModelo + ',' +
-      Cadastros[I].CodCodVersao + ',' +
+      Cadastros[I].CodModelo + ',' +
+      Cadastros[I].CodVersao + ',' +
       Cadastros[I].TipoECF + ',' +
       Cadastros[I].DescrMarca + ',' +
       Cadastros[I].DescrModelo + ',' +
@@ -300,8 +300,8 @@ begin
   begin
     Texto := Texto +
       AddAspasDuplas(Cadastros[I].CodMarca) + ',' +
-      AddAspasDuplas(Cadastros[I].CodCodModelo) + ',' +
-      AddAspasDuplas(Cadastros[I].CodCodVersao) + ',' +
+      AddAspasDuplas(Cadastros[I].CodModelo) + ',' +
+      AddAspasDuplas(Cadastros[I].CodVersao) + ',' +
       AddAspasDuplas(Cadastros[I].TipoECF) + ',' +
       AddAspasDuplas(Cadastros[I].DescrMarca) + ',' +
       AddAspasDuplas(Cadastros[I].DescrModelo) + ',' +

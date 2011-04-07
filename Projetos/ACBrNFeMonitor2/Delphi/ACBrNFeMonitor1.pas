@@ -289,6 +289,7 @@ type
     procedure ACBrNFe1GerarLog(const Mensagem: String);
     procedure Image1Click(Sender: TObject);
     procedure btnDoarClick(Sender: TObject);
+    procedure cbxSalvarArqsClick(Sender: TObject);
   private
     { Private declarations }
     ACBrNFeMonitorINI : string;
@@ -319,6 +320,7 @@ type
     procedure Processar ;
     procedure LerIni ;
     procedure SalvarIni ;
+    procedure VerificaDiretorios ;
   end;
 
 var
@@ -332,6 +334,83 @@ const
   SELDIRHELP = 1000;
 
 {$R *.dfm}
+function PasswordInputBox(const ACaption, APrompt:string): string;
+var
+  Form: TForm;
+  Prompt: TLabel;
+  Edit: TEdit;
+  DialogUnits: TPoint;
+  ButtonTop, ButtonWidth, ButtonHeight: Integer;
+  Value: string;
+  I: Integer;
+  Buffer: array[0..51] of Char;
+begin
+  Result := '';
+  Form := TForm.Create(Application);
+  with Form do
+  try
+    Canvas.Font := Font;
+    for I := 0 to 25 do Buffer[I] := Chr(I + Ord('A'));
+    for I := 0 to 25 do Buffer[I + 26] := Chr(I + Ord('a'));
+    GetTextExtentPoint(Canvas.Handle, Buffer, 52, TSize(DialogUnits));
+    DialogUnits.X := 260;
+    DialogUnits.Y := 16;
+    DialogUnits.X := DialogUnits.X div 52;
+    BorderStyle := bsDialog;
+    Caption := ACaption;
+    ClientWidth := MulDiv(180, DialogUnits.X, 4);
+    ClientHeight := MulDiv(63, DialogUnits.Y, 8);
+    Position := poScreenCenter;
+    Prompt := TLabel.Create(Form);
+    with Prompt do
+    begin
+      Parent := Form;
+      AutoSize := True;
+      Left := MulDiv(8, DialogUnits.X, 4);
+      Top := MulDiv(8, DialogUnits.Y, 8);
+      Caption := APrompt;
+    end;
+    Edit := TEdit.Create(Form);
+    with Edit do
+    begin
+      Parent := Form;
+      Left := Prompt.Left;
+      Top := MulDiv(19, DialogUnits.Y, 8);
+      Width := MulDiv(164, DialogUnits.X, 4);
+      MaxLength := 255;
+      PasswordChar := '*';
+      SelectAll;
+    end;
+    ButtonTop := MulDiv(41, DialogUnits.Y, 8);
+    ButtonWidth := MulDiv(50, DialogUnits.X, 4);
+    ButtonHeight := MulDiv(14, DialogUnits.Y, 8);
+    with TButton.Create(Form) do
+    begin
+      Parent := Form;
+      Caption := 'OK';
+      ModalResult := mrOk;
+      Default := True;
+      SetBounds(MulDiv(38, DialogUnits.X, 4),ButtonTop, ButtonWidth,ButtonHeight);
+    end;
+    with TButton.Create(Form) do
+    begin
+      Parent := Form;
+      Caption := 'Cancel';
+      ModalResult := mrCancel;
+      Cancel := True;
+      SetBounds(MulDiv(92, DialogUnits.X, 4),ButtonTop, ButtonWidth,ButtonHeight);
+    end;
+    if ShowModal = mrOk then
+    begin
+      Value := Edit.Text;
+      Result := Value;
+    end;
+  finally
+    Form.Free;
+    Form:=nil;  
+  end;
+end;
+
 procedure TfrmAcbrNfeMonitor.ExibeResp( Resposta : AnsiString );
 var
  StrLstResposta : TStringList;
@@ -533,13 +612,13 @@ begin
   SenhaOk := (fsHashSenha < 1)  ;
   if not SenhaOk then
   begin
-     Senha := '' ;
-     if InputQuery('Configuração','Digite a Senha de Configuração',Senha) then
-     begin
+     Senha := PasswordInputBox('Configuração','Digite a Senha de Configuração') ;
+//     if InputQuery('Configuração','Digite a Senha de Configuração',Senha) then
+//     begin
         Senha     := Trim(Senha) ;
         HashSenha := StringCrc16( Senha ) ;
         SenhaOk   := (HashSenha = fsHashSenha) ;
-     end ;
+//     end ;
   end ;
 
   if not SenhaOk then
@@ -756,6 +835,7 @@ begin
      StreamMemo.Free;
 
      cbxSalvarArqs.Checked      := Ini.ReadBool(   'Arquivos','Salvar'     ,false);
+     VerificaDiretorios;
      cbxPastaMensal.Checked     := Ini.ReadBool(   'Arquivos','PastaMensal',false);
      cbxAdicionaLiteral.Checked := Ini.ReadBool(   'Arquivos','AddLiteral' ,false);
      cbxEmissaoPathNFe.Checked  := Ini.ReadBool(   'Arquivos','EmissaoPathNFe',false);     
@@ -1566,6 +1646,43 @@ end;
 procedure TfrmAcbrNfeMonitor.btnDoarClick(Sender: TObject);
 begin
  OpenURL('http://acbr.sourceforge.net/drupal/?q=node/14');
+end;
+
+procedure TfrmAcbrNfeMonitor.VerificaDiretorios;
+begin
+  if cbxSalvarArqs.Checked then
+   begin
+     cbxPastaMensal.Enabled     := True;
+     cbxAdicionaLiteral.Enabled := True;
+     cbxEmissaoPathNFe.Enabled  := True;
+     edtPathNFe.Enabled   := True;
+     edtPathCan.Enabled   := True;
+     edtPathInu.Enabled   := True;
+     edtPathDPEC.Enabled  := True;
+     sbPathNFe.Enabled   := True;
+     sbPathCan.Enabled   := True;
+     sbPathInu.Enabled   := True;
+     sbPathDPEC.Enabled  := True;
+   end
+  else
+   begin
+     cbxPastaMensal.Enabled     := False;
+     cbxAdicionaLiteral.Enabled := False;
+     cbxEmissaoPathNFe.Enabled  := False;
+     edtPathNFe.Enabled   := False;
+     edtPathCan.Enabled   := False;
+     edtPathInu.Enabled   := False;
+     edtPathDPEC.Enabled  := False;
+     sbPathNFe.Enabled   := False;
+     sbPathCan.Enabled   := False;
+     sbPathInu.Enabled   := False;
+     sbPathDPEC.Enabled  := False;
+   end
+end;
+
+procedure TfrmAcbrNfeMonitor.cbxSalvarArqsClick(Sender: TObject);
+begin
+VerificaDiretorios;
 end;
 
 end.

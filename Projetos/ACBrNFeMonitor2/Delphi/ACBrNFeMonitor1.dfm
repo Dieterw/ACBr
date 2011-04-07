@@ -5021,7 +5021,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
               Top = 50
               Width = 219
               Height = 21
-              ItemHeight = 13
+              ItemHeight = 0
               TabOrder = 2
             end
             object cbxImpDescPorc: TCheckBox
@@ -5481,6 +5481,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           Height = 17
           Caption = 'Salvar Arquivos em Pastas Separadas'
           TabOrder = 0
+          OnClick = cbxSalvarArqsClick
         end
         object cbxPastaMensal: TCheckBox
           Left = 6

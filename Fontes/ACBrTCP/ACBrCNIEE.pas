@@ -1,13 +1,14 @@
-unit ACBrTabelaCNIEE;
+unit ACBrCNIEE;
 
 interface
 
 uses
   {$IFDEF MSWINDOWS} windows, wininet, {$ENDIF}
-  Contnrs, Messages, SysUtils, Variants, Classes, httpsend, ACBrUtil;
+  Contnrs, Messages, SysUtils, Variants, Classes, httpsend,
+  ACBrUtil, ACBrSocket;
 
 type
-  EACBrTabelaCNIEE = class(Exception);
+  EACBrCNIEE = class(Exception);
 
   TRegistro = packed record
     Marca        : string[2];
@@ -81,7 +82,7 @@ type
     property Items[Index: integer]: TACBrCNIEERegistro read GetItem write SetItem; default;
   end;
 
-  TACBrTabelaCNIEE = class(TComponent)
+  TACBrCNIEE = class(TACBrHTTP)
   private
     FHTTPSend: THTTPSend;
     FArquivo: String;
@@ -102,14 +103,7 @@ type
     property Cadastros: TACBrCNIEERegistros read FCadastros;
   end;
 
-  procedure Register;
-
 implementation
-
-procedure Register;
-begin
-  RegisterComponents('ACBr', [TACBrTabelaCNIEE]);
-end;
 
 { TACBrCNIEERegistros }
 
@@ -130,9 +124,9 @@ begin
   Put(Index, Value);
 end;
 
-{ TACBrTabelaCNIEE }
+{ TACBrCNIEE }
 
-constructor TACBrTabelaCNIEE.Create(AOwner: TComponent);
+constructor TACBrCNIEE.Create(AOwner: TComponent);
 begin
   inherited;
 
@@ -147,7 +141,7 @@ begin
   FHTTPSend.ProxyPass := Proxy.Senha;
 end;
 
-destructor TACBrTabelaCNIEE.Destroy;
+destructor TACBrCNIEE.Destroy;
 begin
   FProxy.Free;
   FCadastros.Free;
@@ -155,7 +149,7 @@ begin
   inherited;
 end;
 
-procedure TACBrTabelaCNIEE.LerConfiguracoesProxy;
+procedure TACBrCNIEE.LerConfiguracoesProxy;
 {$IFDEF MSWINDOWS}
 var
   Len: DWORD;
@@ -278,15 +272,15 @@ begin
 end ;
 {$ENDIF}
 
-function TACBrTabelaCNIEE.DownloadTabela: Boolean;
+function TACBrCNIEE.DownloadTabela: Boolean;
 var
   OK: Boolean;
 begin
   if Trim(FURLDownload) = '' then
-    raise EACBrTabelaCNIEE.Create('URL de Download não informada.');
+    raise EACBrCNIEE.Create('URL de Download não informada.');
 
   if Trim(FArquivo) = '' then
-    raise EACBrTabelaCNIEE.Create('Nome do arquivo em disco não especificado.');
+    raise EACBrCNIEE.Create('Nome do arquivo em disco não especificado.');
 
   with FHTTPSend do
   begin
@@ -303,7 +297,7 @@ begin
   end;
 end;
 
-function TACBrTabelaCNIEE.AbrirTabela: Boolean;
+function TACBrCNIEE.AbrirTabela: Boolean;
 var
   F: file of TRegistro;
   Registro: TRegistro;

@@ -36,6 +36,6 @@ contains
   ACBrCEP in '..\..\Fontes\ACBrTCP\ACBrCEP.pas',
   ACBrTCPReg in '..\..\Fontes\ACBrTCP\ACBrTCPReg.pas',
   ACBrIBGE in '..\..\Fontes\ACBrTCP\ACBrIBGE.pas',
-  ACBrTabelaCNIEE in '..\..\Fontes\ACBrTCP\ACBrTabelaCNIEE.pas';
+  ACBrCNIEE in '..\..\Fontes\ACBrTCP\ACBrCNIEE.pas';
 
 end.

@@ -441,11 +441,6 @@ object frPrincipal: TfrPrincipal
     Left = 138
     Top = 352
   end
-  object ACBrTabelaCNIEE: TACBrTabelaCNIEE
-    URLDownload = 'http://www.fazenda.mg.gov.br/empresas/ecf/files/Tabela_CNIEE.bin'
-    Left = 225
-    Top = 350
-  end
   object tmpCadastro: TClientDataSet
     Aggregates = <>
     Params = <>
@@ -503,5 +498,10 @@ object frPrincipal: TfrPrincipal
     object tmpCadastroFormatoNumero: TStringField
       FieldName = 'FormatoNumero'
     end
+  end
+  object ACBrCNIEE1: TACBrCNIEE
+    URLDownload = 'http://www.fazenda.mg.gov.br/empresas/ecf/files/Tabela_CNIEE.bin'
+    Left = 340
+    Top = 255
   end
 end

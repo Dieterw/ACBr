@@ -6,7 +6,7 @@ uses
   httpsend,
 
   Windows, Forms, Classes, Controls, StdCtrls, ExtCtrls, Dialogs, Buttons,
-  DB, Grids, DBGrids, DBCtrls, DBClient, ACBrTabelaCNIEE;
+  DB, Grids, DBGrids, DBCtrls, DBClient, ACBrCNIEE;
 
 type
   TfrPrincipal = class(TForm)
@@ -28,7 +28,6 @@ type
     edURLDownload: TEdit;
     btAbrir: TBitBtn;
     btDownload: TBitBtn;
-    ACBrTabelaCNIEE: TACBrTabelaCNIEE;
     tmpCadastro: TClientDataSet;
     tmpCadastroMarca: TStringField;
     tmpCadastroModelo: TStringField;
@@ -44,6 +43,7 @@ type
     tmpCadastroAtoAprovacao: TStringField;
     tmpCadastroAtoRegistroMG: TStringField;
     tmpCadastroFormatoNumero: TStringField;
+    ACBrCNIEE1: TACBrCNIEE;
     procedure btAbrirClick(Sender: TObject);
     procedure btDownloadClick(Sender: TObject);
     procedure btExportarClick(Sender: TObject);
@@ -74,7 +74,7 @@ uses
 procedure TfrPrincipal.FormCreate(Sender: TObject);
 begin
   edArquivo.Text := ExtractFilePath(Application.ExeName) + 'Tabela_CNIEE.bin';
-  ACBrTabelaCNIEE.Arquivo := edArquivo.Text;
+  ACBrCNIEE1.Arquivo := edArquivo.Text;
 end;
 
 procedure TfrPrincipal.FormShow(Sender: TObject);
@@ -96,8 +96,8 @@ procedure TfrPrincipal.btDownloadClick(Sender: TObject);
 begin
   tmpCadastro.Close;
 
-  ACBrTabelaCNIEE.URLDownload := edURLDownload.Text;
-  if ACBrTabelaCNIEE.DownloadTabela then
+  ACBrCNIEE1.URLDownload := edURLDownload.Text;
+  if ACBrCNIEE1.DownloadTabela then
   begin
     MessageDlg('Download da tabela efetuado com sucesso.', mtInformation, [mbOK], 0);
 
@@ -112,30 +112,30 @@ procedure TfrPrincipal.btAbrirClick(Sender: TObject);
 var
   I: Integer;
 begin
-  ACBrTabelaCNIEE.Arquivo := edArquivo.Text;
-  if ACBrTabelaCNIEE.AbrirTabela then
+  ACBrCNIEE1.Arquivo := edArquivo.Text;
+  if ACBrCNIEE1.AbrirTabela then
   begin
     tmpCadastro.Close;
     tmpCadastro.CreateDataSet;
     tmpCadastro.DisableControls;
     try
-      for I := 0 to ACBrTabelaCNIEE.Cadastros.Count - 1 do
+      for I := 0 to ACBrCNIEE1.Cadastros.Count - 1 do
       begin
         tmpCadastro.Append;
-        tmpCadastroMarca.AsString         := ACBrTabelaCNIEE.Cadastros[I].CodMarca;
-        tmpCadastroModelo.AsString        := ACBrTabelaCNIEE.Cadastros[I].CodCodModelo;
-        tmpCadastroVersao.AsString        := ACBrTabelaCNIEE.Cadastros[I].CodCodVersao;
-        tmpCadastroTipo.AsString          := ACBrTabelaCNIEE.Cadastros[I].TipoECF;
-        tmpCadastroMarcaDescr.AsString    := ACBrTabelaCNIEE.Cadastros[I].DescrMarca;
-        tmpCadastroModeloDescr.AsString   := ACBrTabelaCNIEE.Cadastros[I].DescrModelo;
-        tmpCadastroVersaoSB.AsString      := ACBrTabelaCNIEE.Cadastros[I].Versao;
-        tmpCadastroQtLacreSL.AsInteger    := ACBrTabelaCNIEE.Cadastros[I].QtLacresSL;
-        tmpCadastroQtLacreFab.AsInteger   := ACBrTabelaCNIEE.Cadastros[I].QtLacresFab;
-        tmpCadastroMFD.AsString           := ACBrTabelaCNIEE.Cadastros[I].TemMFD;
-        tmpCadastroLacreMFD.AsString      := ACBrTabelaCNIEE.Cadastros[I].TemLacreMFD;
-        tmpCadastroAtoAprovacao.AsString  := ACBrTabelaCNIEE.Cadastros[I].AtoAprovacao;
-        tmpCadastroAtoRegistroMG.AsString := ACBrTabelaCNIEE.Cadastros[I].AtoRegistro;
-        tmpCadastroFormatoNumero.AsString := ACBrTabelaCNIEE.Cadastros[I].FormatoNumFabricacao;
+        tmpCadastroMarca.AsString         := ACBrCNIEE1.Cadastros[I].CodMarca;
+        tmpCadastroModelo.AsString        := ACBrCNIEE1.Cadastros[I].CodCodModelo;
+        tmpCadastroVersao.AsString        := ACBrCNIEE1.Cadastros[I].CodCodVersao;
+        tmpCadastroTipo.AsString          := ACBrCNIEE1.Cadastros[I].TipoECF;
+        tmpCadastroMarcaDescr.AsString    := ACBrCNIEE1.Cadastros[I].DescrMarca;
+        tmpCadastroModeloDescr.AsString   := ACBrCNIEE1.Cadastros[I].DescrModelo;
+        tmpCadastroVersaoSB.AsString      := ACBrCNIEE1.Cadastros[I].Versao;
+        tmpCadastroQtLacreSL.AsInteger    := ACBrCNIEE1.Cadastros[I].QtLacresSL;
+        tmpCadastroQtLacreFab.AsInteger   := ACBrCNIEE1.Cadastros[I].QtLacresFab;
+        tmpCadastroMFD.AsString           := ACBrCNIEE1.Cadastros[I].TemMFD;
+        tmpCadastroLacreMFD.AsString      := ACBrCNIEE1.Cadastros[I].TemLacreMFD;
+        tmpCadastroAtoAprovacao.AsString  := ACBrCNIEE1.Cadastros[I].AtoAprovacao;
+        tmpCadastroAtoRegistroMG.AsString := ACBrCNIEE1.Cadastros[I].AtoRegistro;
+        tmpCadastroFormatoNumero.AsString := ACBrCNIEE1.Cadastros[I].FormatoNumFabricacao;
         tmpCadastro.Post;
       end;
     finally
@@ -151,17 +151,17 @@ Var
 begin
   frProxyConfig := TfrProxyConfig.Create(self);
   try
-    frProxyConfig.edServidor.Text := ACBrTabelaCNIEE.Proxy.Servidor;
-    frProxyConfig.edPorta.Text    := ACBrTabelaCNIEE.Proxy.Porta;
-    frProxyConfig.edUser.Text     := ACBrTabelaCNIEE.Proxy.Usuario;
-    frProxyConfig.edSenha.Text    := ACBrTabelaCNIEE.Proxy.Senha;
+    frProxyConfig.edServidor.Text := ACBrCNIEE1.Proxy.Servidor;
+    frProxyConfig.edPorta.Text    := ACBrCNIEE1.Proxy.Porta;
+    frProxyConfig.edUser.Text     := ACBrCNIEE1.Proxy.Usuario;
+    frProxyConfig.edSenha.Text    := ACBrCNIEE1.Proxy.Senha;
 
     if frProxyConfig.ShowModal = mrOK then
     begin
-      ACBrTabelaCNIEE.Proxy.Servidor := frProxyConfig.edServidor.Text;
-      ACBrTabelaCNIEE.Proxy.Porta    := frProxyConfig.edPorta.Text;
-      ACBrTabelaCNIEE.Proxy.Usuario  := frProxyConfig.edUser.Text;
-      ACBrTabelaCNIEE.Proxy.Senha    := frProxyConfig.edSenha.Text;
+      ACBrCNIEE1.Proxy.Servidor := frProxyConfig.edServidor.Text;
+      ACBrCNIEE1.Proxy.Porta    := frProxyConfig.edPorta.Text;
+      ACBrCNIEE1.Proxy.Usuario  := frProxyConfig.edUser.Text;
+      ACBrCNIEE1.Proxy.Senha    := frProxyConfig.edSenha.Text;
     end;
   finally
     frProxyConfig.Free;

@@ -478,14 +478,16 @@ object frPrincipal: TfrPrincipal
     ChildSizing.ShrinkHorizontal = crsScaleChilds
     ChildSizing.ShrinkVertical = crsScaleChilds
     ChildSizing.Layout = cclLeftToRightThenTopToBottom
-    ChildSizing.ControlsPerLine = 2
+    ChildSizing.ControlsPerLine = 6
     ClientHeight = 21
     ClientWidth = 551
-    Columns = 2
+    Columns = 6
     ItemIndex = 0
     Items.Strings = (
       'Formato CSV'
       'Formato DSV'
+      'Formato XML'
+      'Formato HTML'
     )
     TabOrder = 3
   end

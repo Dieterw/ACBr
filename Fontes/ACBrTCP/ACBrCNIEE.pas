@@ -264,6 +264,39 @@ begin
   end;
 end;
 
+procedure TACBrCNIEE.Exportar(const AArquivo: String; ADelimitador: String);
+var
+  I: Integer;
+  Texto: String;
+begin
+  if Cadastros.Count <= 0 then
+    Self.AbrirTabela;
+
+  Texto := '';
+  for I := 0 to Cadastros.Count - 1 do
+  begin
+    Texto := Texto +
+      Cadastros[I].CodMarca + ADelimitador +
+      Cadastros[I].CodModelo + ADelimitador +
+      Cadastros[I].CodVersao + ADelimitador +
+      Cadastros[I].TipoECF + ADelimitador +
+      Cadastros[I].DescrMarca + ADelimitador +
+      Cadastros[I].DescrModelo + ADelimitador +
+      Cadastros[I].Versao + ADelimitador +
+      IntToStr(Cadastros[I].QtLacresSL) + ADelimitador +
+      IntToStr(Cadastros[I].QtLacresFab) + ADelimitador +
+      Cadastros[I].TemMFD + ADelimitador +
+      Cadastros[I].TemLacreMFD + ADelimitador +
+      Cadastros[I].AtoAprovacao + ADelimitador +
+      Cadastros[I].AtoRegistro + ADelimitador +
+      Cadastros[I].FormatoNumFabricacao +
+      sLineBreak;
+  end;
+
+  if Trim(Texto) <> '' then
+    WriteToTXT(AnsiString(AArquivo), AnsiString(Texto), False, False);
+end;
+
 procedure TACBrCNIEE.ExportarTXT(const AArquivo: String);
 var
   I: Integer;
@@ -287,36 +320,6 @@ begin
       padL(Cadastros[I].AtoAprovacao, 25) +
       padL(Cadastros[I].AtoRegistro, 25) +
       padL(Cadastros[I].FormatoNumFabricacao, 20) +
-      sLineBreak;
-  end;
-
-  if Trim(Texto) <> '' then
-    WriteToTXT(AnsiString(AArquivo), AnsiString(Texto), False, False);
-end;
-
-procedure TACBrCNIEE.Exportar(const AArquivo: String; ADelimitador: String);
-var
-  I: Integer;
-  Texto: String;
-begin
-  Texto := '';
-  for I := 0 to Cadastros.Count - 1 do
-  begin
-    Texto := Texto +
-      Cadastros[I].CodMarca + ADelimitador +
-      Cadastros[I].CodModelo + ADelimitador +
-      Cadastros[I].CodVersao + ADelimitador +
-      Cadastros[I].TipoECF + ADelimitador +
-      Cadastros[I].DescrMarca + ADelimitador +
-      Cadastros[I].DescrModelo + ADelimitador +
-      Cadastros[I].Versao + ADelimitador +
-      IntToStr(Cadastros[I].QtLacresSL) + ADelimitador +
-      IntToStr(Cadastros[I].QtLacresFab) + ADelimitador +
-      Cadastros[I].TemMFD + ADelimitador +
-      Cadastros[I].TemLacreMFD + ADelimitador +
-      Cadastros[I].AtoAprovacao + ADelimitador +
-      Cadastros[I].AtoRegistro + ADelimitador +
-      Cadastros[I].FormatoNumFabricacao +
       sLineBreak;
   end;
 

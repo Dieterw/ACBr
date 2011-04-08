@@ -136,7 +136,8 @@ type
     function DownloadTabela: Boolean;
     function AbrirTabela: Boolean;
     procedure Exportar(const AArquivo: String; ATipo: TACBrCNIEEExporta); overload;
-    procedure Exportar(const AArquivo: String; ADelimitador: String); overload;
+    procedure Exportar(const AArquivo, ADelimitador: String); overload;
+    function BuscarECF(const AMarca, AModelo, AVersaoSB: String): TACBrCNIEERegistro;
 
     property Cadastros: TACBrCNIEERegistros read FCadastros;
 
@@ -250,6 +251,35 @@ begin
   end;
 end;
 
+function TACBrCNIEE.BuscarECF(const AMarca,
+  AModelo, AVersaoSB: String): TACBrCNIEERegistro;
+var
+  I: Integer;
+  MarcaAtual, ModeloAtual, VersaoAtual: String;
+begin
+  if Trim(AMarca) = '' then
+    raise EACBrCNIEE.Create('Marca não foi informada.');
+
+  if Trim(AModelo) = '' then
+    raise EACBrCNIEE.Create('Modelo não foi informado.');
+
+  Result := nil;
+  for I := 0 to Cadastros.Count - 1 do
+  begin
+    MarcaAtual  := AnsiUpperCase(Cadastros[I].DescrMarca);
+    ModeloAtual := AnsiUpperCase(Cadastros[I].DescrModelo);
+    VersaoAtual := AnsiUpperCase(Cadastros[I].Versao);
+
+    if (MarcaAtual = AnsiUpperCase(AMarca)) and
+       (ModeloAtual = AnsiUpperCase(AModelo)) and
+       (VersaoAtual = AnsiUpperCase(AVersaoSB)) then
+    begin
+      Result := Cadastros[I];
+      Exit;
+    end;
+  end;
+end;
+
 procedure TACBrCNIEE.Exportar(const AArquivo: String; ATipo: TACBrCNIEEExporta);
 begin
   if Cadastros.Count <= 0 then
@@ -264,7 +294,7 @@ begin
   end;
 end;
 
-procedure TACBrCNIEE.Exportar(const AArquivo: String; ADelimitador: String);
+procedure TACBrCNIEE.Exportar(const AArquivo, ADelimitador: String);
 var
   I: Integer;
   Texto: String;

@@ -45,6 +45,14 @@ type
     tmpCadastroFormatoNumero: TStringField;
     ACBrCNIEE1: TACBrCNIEE;
     rgTipoExportacao: TRadioGroup;
+    GroupBox2: TGroupBox;
+    edMarca: TEdit;
+    Label3: TLabel;
+    edModelo: TEdit;
+    Label4: TLabel;
+    btnPesquisar: TBitBtn;
+    edVersaoSB: TEdit;
+    Label5: TLabel;
     procedure btAbrirClick(Sender: TObject);
     procedure btDownloadClick(Sender: TObject);
     procedure btListarClick(Sender: TObject);
@@ -54,6 +62,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure sbArquivoClick(Sender: TObject);
     procedure btExportarClick(Sender: TObject);
+    procedure btnPesquisarClick(Sender: TObject);
   private
     { private declarations }
   public
@@ -77,6 +86,10 @@ begin
   edArquivo.Text := ExtractFilePath(Application.ExeName) + 'Tabela_CNIEE.bin';
   ACBrCNIEE1.Arquivo := edArquivo.Text;
   ACBrCNIEE1.LerConfiguracoesProxy ;
+
+  edMarca.Clear;
+  edModelo.Clear;
+  edVersaoSB.Clear;
 end;
 
 procedure TfrPrincipal.FormShow(Sender: TObject);
@@ -251,6 +264,18 @@ end;
 procedure TfrPrincipal.btListarClick(Sender: TObject);
 begin
   MessageDlg('Função ainda não Implementada', mtError, [mbOK], 0);
+end;
+
+procedure TfrPrincipal.btnPesquisarClick(Sender: TObject);
+var
+  ECF: TACBrCNIEERegistro;
+begin
+  ECF := ACBrCNIEE1.BuscarECF(edMarca.Text, edModelo.Text, edVersaoSB.Text);
+
+  if ECF <> nil then
+    ShowMessage(Format('Código do ECF: %s.%s.%s', [ECF.CodMarca, ECF.CodModelo, ECF.CodVersao]))
+  else
+    ShowMessage('Nenhum ECF encontrado para a marca e modelo informados.');
 end;
 
 procedure TfrPrincipal.btSairClick(Sender: TObject);

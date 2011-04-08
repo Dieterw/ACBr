@@ -212,7 +212,7 @@ object frPrincipal: TfrPrincipal
     Height = 34
     Align = alBottom
     BevelOuter = bvNone
-    TabOrder = 3
+    TabOrder = 4
     object DBNavigator1: TDBNavigator
       AlignWithMargins = True
       Left = 3
@@ -414,7 +414,7 @@ object frPrincipal: TfrPrincipal
     Left = 3
     Top = 122
     Width = 694
-    Height = 296
+    Height = 222
     Align = alClient
     DataSource = dtsCadastro
     Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
@@ -443,29 +443,103 @@ object frPrincipal: TfrPrincipal
       'Formato HTML'
       'Formato TXT'
       'Demilitado')
+    TabOrder = 3
+    ExplicitLeft = 8
+  end
+  object GroupBox2: TGroupBox
+    AlignWithMargins = True
+    Left = 3
+    Top = 350
+    Width = 694
+    Height = 68
+    Align = alBottom
+    Caption = 'Pesquisar no componente'
     TabOrder = 2
+    ExplicitLeft = -2
+    object Label3: TLabel
+      Left = 12
+      Top = 19
+      Width = 29
+      Height = 13
+      Caption = 'Marca'
+      Color = clBtnFace
+      ParentColor = False
+    end
+    object Label4: TLabel
+      Left = 192
+      Top = 19
+      Width = 34
+      Height = 13
+      Caption = 'Modelo'
+      Color = clBtnFace
+      ParentColor = False
+    end
+    object Label5: TLabel
+      Left = 372
+      Top = 19
+      Width = 48
+      Height = 13
+      Caption = 'Vers'#227'o SB'
+      Color = clBtnFace
+      ParentColor = False
+    end
+    object edMarca: TEdit
+      Left = 12
+      Top = 35
+      Width = 174
+      Height = 21
+      TabOrder = 0
+      Text = 'edMarca'
+    end
+    object edModelo: TEdit
+      Left = 192
+      Top = 35
+      Width = 174
+      Height = 21
+      TabOrder = 1
+      Text = 'Edit1'
+    end
+    object btnPesquisar: TBitBtn
+      Left = 528
+      Top = 33
+      Width = 99
+      Height = 26
+      Caption = 'Pesquisar...'
+      DoubleBuffered = True
+      ParentDoubleBuffered = False
+      TabOrder = 2
+      OnClick = btnPesquisarClick
+    end
+    object edVersaoSB: TEdit
+      Left = 372
+      Top = 35
+      Width = 150
+      Height = 21
+      TabOrder = 3
+      Text = 'edVersaoSB'
+    end
   end
   object dtsCadastro: TDataSource
     DataSet = tmpCadastro
-    Left = 79
-    Top = 284
+    Left = 59
+    Top = 204
   end
   object SaveDialog1: TSaveDialog
     Options = [ofHideReadOnly, ofNoChangeDir, ofEnableSizing]
-    Left = 62
-    Top = 352
+    Left = 127
+    Top = 190
   end
   object OpenDialog1: TOpenDialog
     FileName = 'Tabela_CNIEE.bin'
     Filter = 'Tabela Nacional de ECFs|Tabela_CNIEE.bin'
-    Left = 138
-    Top = 352
+    Left = 203
+    Top = 190
   end
   object tmpCadastro: TClientDataSet
     Aggregates = <>
     Params = <>
-    Left = 65
-    Top = 270
+    Left = 45
+    Top = 190
     object tmpCadastroMarca: TStringField
       FieldName = 'Marca'
       Size = 2
@@ -522,7 +596,7 @@ object frPrincipal: TfrPrincipal
   object ACBrCNIEE1: TACBrCNIEE
     ProxyPort = '8080'
     URLDownload = 'http://www.fazenda.mg.gov.br/empresas/ecf/files/Tabela_CNIEE.bin'
-    Left = 340
-    Top = 255
+    Left = 275
+    Top = 190
   end
 end

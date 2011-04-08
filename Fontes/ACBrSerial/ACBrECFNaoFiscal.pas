@@ -176,6 +176,9 @@ TACBrECFNaoFiscalCNFCupom = class
 end;
 
 { Classe filha de TACBrECFClass com implementaçao para NaoFiscal }
+
+{ TACBrECFNaoFiscal }
+
 TACBrECFNaoFiscal = class( TACBrECFClass )
  private
     fsNomeArqINI: String;
@@ -195,6 +198,8 @@ TACBrECFNaoFiscal = class( TACBrECFClass )
     fsCabecalhoItem : TStringList ;
     fsMascaraItem : String ;
     fsGavetaCmd : AnsiString ;
+    fsCortaPapelCompletoCmd  : AnsiString ;
+    fsCortaPapelParcialCmd  : AnsiString ;
     fsVERAO     : Boolean ;
     fsDia       : TDateTime ;
     fsReducoesZ : Integer ;
@@ -333,6 +338,10 @@ TACBrECFNaoFiscal = class( TACBrECFClass )
        write fsCmdImpFimExpandido ;
     property CmdImpZera : AnsiString read fsCmdImpZera write fsCmdImpZera ;
     property GavetaCmd  : AnsiString read fsGavetaCmd write fsGavetaCmd ;
+    property CortaPapelCompletoCmd  : AnsiString read fsCortaPapelCompletoCmd
+       write fsCortaPapelCompletoCmd ;
+    property CortaPapelParcialCmd  : AnsiString read fsCortaPapelParcialCmd
+       write fsCortaPapelParcialCmd ;
     property NomeArqINI : String read GetNomeArqINI write SetNomeArqINI ;
 
     procedure Ativar ; override ;
@@ -361,6 +370,7 @@ TACBrECFNaoFiscal = class( TACBrECFClass )
        String; Valor : Double) ; override ;
     Procedure LinhaCupomVinculado( Linha : AnsiString ) ; override ;
     Procedure FechaRelatorio ; override ;
+    Procedure CortaPapel( const CorteParcial : Boolean = false) ; override ;
 
     Procedure MudaHorarioVerao  ; overload ; override ;
     Procedure MudaHorarioVerao( EHorarioVerao : Boolean ) ; overload ; override ;
@@ -502,6 +512,8 @@ begin
   fsMascaraItem := 'III CCCCCCCCCCCCC DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD '+
                    'QQQQQQQQ UUxVVVVVVVVV AAAAAAA TTTTTTTTTTT' ;
   fsGavetaCmd := '' ;
+  fsCortaPapelParcialCmd  := '';
+  fsCortaPapelCompletoCmd := '';
   fsVERAO     := false ;
   fsDia       := now ;
   fsReducoesZ := 0 ;
@@ -1580,6 +1592,31 @@ begin
   end ;
 end;
 
+procedure TACBrECFNaoFiscal.CortaPapel(const CorteParcial : Boolean) ;
+var
+  Ini : TIniFile;
+begin
+  if (fsCortaPapelCompletoCmd = '') or (fsCortaPapelParcialCmd = '') then
+  begin
+     Ini := TIniFile.Create( fsArqINI ); //quando for vazio le o INI novamente;
+     try
+        fsCortaPapelCompletoCmd :=  AscToString( Ini.ReadString('Impressora',
+                                    'Comando_Corta_Papel_Completo', #027+#119) );
+        fsCortaPapelParcialCmd  :=  AscToString( Ini.ReadString('Impressora',
+                                    'Comando_Corta_Papel_Parcial', #027+#109) );
+     finally
+       Ini.Free;
+     end;
+  end ;
+
+  If CorteParcial Then
+     ImprimePorta( fsCortaPapelParcialCmd )
+  else
+     ImprimePorta( fsCortaPapelCompletoCmd ) ;
+
+  Sleep(100);
+end ;
+
 procedure TACBrECFNaoFiscal.AbreNaoFiscal(CPF_CNPJ: String);
 begin
   TestaPodeAbrirCupom ;
@@ -1721,6 +1758,10 @@ begin
         Ini.WriteInteger('Impressora','Colunas', fpColunas) ;
         Ini.WriteString('Impressora','Comando_Abrir_Gaveta',
            StringToAsc(fsGavetaCmd) ) ;
+        Ini.WriteString('Impressora','Comando_Corta_Papel_Completo',
+           StringToAsc(fsCortaPapelCompletoCmd) ) ;
+        Ini.WriteString('Impressora','Comando_Corta_Papel_Parcial',
+           StringToAsc(fsCortaPapelParcialCmd) ) ;
         Ini.WriteString('Impressora','Comando_Incializacao',
            StringToAsc(fsCmdImpZera) ) ;
         Ini.WriteString('Impressora','Comando_Ativar_Condensado',
@@ -1996,9 +2037,18 @@ begin
         fsMascaraItem) ;
 
      fpColunas   := Ini.ReadInteger('Impressora','Colunas', fpColunas) ;
+
      if fsGavetaCmd = '' then
         fsGavetaCmd := AscToString( Ini.ReadString('Impressora',
            'Comando_Abrir_Gaveta', #027+'v'+#150) ) ;
+
+     if fsCortaPapelCompletoCmd = '' then
+        fsCortaPapelCompletoCmd := AscToString( Ini.ReadString('Impressora',
+           'Comando_Corta_Papel_Completo', #027+#119) ) ;
+     if fsCortaPapelParcialCmd = '' then
+        fsCortaPapelParcialCmd := AscToString( Ini.ReadString('Impressora',
+           'Comando_Corta_Papel_Parcial', #027+#109) ) ;
+
      fsCmdImpZera := AscToString( Ini.ReadString('Impressora',
         'Comando_Incializacao', fsCmdImpZera) ) ;
      fsCmdImpCondensado := AscToString( Ini.ReadString('Impressora',
@@ -2130,6 +2180,8 @@ procedure TACBrECFNaoFiscal.SetNomeArqINI(const Value: String);
 begin
   fsNomeArqINI := Value;
   fsGavetaCmd  := '' ;
+  fsCortaPapelCompletoCmd := '';
+  fsCortaPapelParcialCmd  := '';
   fsNumSerie   := '' ;
   fsNumECF     := '' ;
 end;

@@ -440,9 +440,9 @@ object frPrincipal: TfrPrincipal
       'Formato CSV'
       'Formato DSV'
       'Formato XML'
-      'Formato HTML')
+      'Formato HTML'
+      'Formato TXT')
     TabOrder = 2
-    ExplicitLeft = 8
   end
   object dtsCadastro: TDataSource
     DataSet = tmpCadastro

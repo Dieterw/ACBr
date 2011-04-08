@@ -58,7 +58,7 @@ const
 type
   EACBrCNIEE = class(Exception);
 
-  TACBrCNIEEExporta = (exCSV, exDSV, exXML, exHTML);
+  TACBrCNIEEExporta = (exTXT, exCSV, exDSV, exXML, exHTML);
 
   TRegistro = packed record
     Marca        : string[2];
@@ -128,6 +128,7 @@ type
     procedure ExportarDSV(const AArquivo: String);
     procedure ExportarHTML(const AArquivo: String);
     procedure ExportarXML(const AArquivo: String);
+    procedure ExportarTXT(const AArquivo: String);
   public
     destructor Destroy; override;
     constructor Create(AOwner: TComponent); override;
@@ -254,11 +255,42 @@ begin
     Self.AbrirTabela;
 
   case ATipo of
+    exTXT:  ExportarTXT(AArquivo);
     exCSV:  ExportarCSV(AArquivo);
     exDSV:  ExportarDSV(AArquivo);
     exXML:  ExportarXML(AArquivo);
     exHTML: ExportarHTML(AArquivo);
   end;
+end;
+
+procedure TACBrCNIEE.ExportarTXT(const AArquivo: String);
+var
+  I: Integer;
+  Texto: String;
+begin
+  Texto := '';
+  for I := 0 to Cadastros.Count - 1 do
+  begin
+    Texto := Texto +
+      padL(Cadastros[I].CodMarca, 2) +
+      padL(Cadastros[I].CodModelo, 2) +
+      padL(Cadastros[I].CodVersao, 2) +
+      padL(Cadastros[I].TipoECF, 10) +
+      padL(Cadastros[I].DescrMarca, 30) +
+      padL(Cadastros[I].DescrModelo, 30) +
+      padL(Cadastros[I].Versao, 20) +
+      Format('%3.3d', [Cadastros[I].QtLacresSL]) +
+      Format('%3.3d', [Cadastros[I].QtLacresFab]) +
+      padL(Cadastros[I].TemMFD, 1) +
+      padL(Cadastros[I].TemLacreMFD, 1) +
+      padL(Cadastros[I].AtoAprovacao, 25) +
+      padL(Cadastros[I].AtoRegistro, 25) +
+      padL(Cadastros[I].FormatoNumFabricacao, 20) +
+      sLineBreak;
+  end;
+
+  if Trim(Texto) <> '' then
+    WriteToTXT(AnsiString(AArquivo), AnsiString(Texto), False, False);
 end;
 
 procedure TACBrCNIEE.ExportarCSV(const AArquivo: String);

@@ -23,3 +23,5 @@ regsvr32 %windir%\SysWOW64\msxml5.dll /s
 goto end
 
 :end
+
+pause

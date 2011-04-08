@@ -1,9 +1,9 @@
 object frPrincipal: TfrPrincipal
   Left = 363
   Top = 168
-  Width = 716
-  Height = 538
   Caption = 'Conversor da Tabela Nacional de ECFs '
+  ClientHeight = 500
+  ClientWidth = 700
   Color = clBtnFace
   Constraints.MinHeight = 440
   Constraints.MinWidth = 555
@@ -202,9 +202,9 @@ object frPrincipal: TfrPrincipal
   end
   object Panel1: TPanel
     Left = 0
-    Top = 466
+    Top = 470
     Width = 700
-    Height = 34
+    Height = 30
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 3
@@ -212,17 +212,18 @@ object frPrincipal: TfrPrincipal
       Left = 0
       Top = 0
       Width = 160
-      Height = 34
+      Height = 30
       DataSource = dtsCadastro
       VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast, nbRefresh]
       Align = alLeft
       TabOrder = 0
     end
     object btExportar: TBitBtn
-      Left = 445
-      Top = 3
+      Left = 380
+      Top = 0
       Width = 80
-      Height = 28
+      Height = 30
+      Align = alRight
       Caption = 'Exportar'
       TabOrder = 2
       OnClick = btExportarClick
@@ -263,10 +264,11 @@ object frPrincipal: TfrPrincipal
         FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00}
     end
     object btSair: TBitBtn
-      Left = 617
-      Top = 3
+      Left = 620
+      Top = 0
       Width = 80
-      Height = 28
+      Height = 30
+      Align = alRight
       Caption = 'Sair'
       TabOrder = 4
       OnClick = btSairClick
@@ -299,10 +301,11 @@ object frPrincipal: TfrPrincipal
         40404040404040404040402020207F7F3F2B2B2BFFFFFFFFFFFF}
     end
     object btListar: TBitBtn
-      Left = 531
-      Top = 3
+      Left = 540
+      Top = 0
       Width = 80
-      Height = 28
+      Height = 30
+      Align = alRight
       Caption = 'Listar'
       TabOrder = 3
       OnClick = btListarClick
@@ -343,10 +346,11 @@ object frPrincipal: TfrPrincipal
         00FF000000FF000000FF000000FF0000009A0000002700000001}
     end
     object btProxy: TBitBtn
-      Left = 359
-      Top = 3
+      Left = 460
+      Top = 0
       Width = 80
-      Height = 28
+      Height = 30
+      Align = alRight
       Caption = 'Proxy'
       TabOrder = 1
       OnClick = btProxyClick
@@ -391,7 +395,7 @@ object frPrincipal: TfrPrincipal
     Left = 0
     Top = 113
     Width = 700
-    Height = 314
+    Height = 318
     Align = alClient
     DataSource = dtsCadastro
     ReadOnly = True
@@ -404,7 +408,7 @@ object frPrincipal: TfrPrincipal
   end
   object rgTipoExportacao: TRadioGroup
     Left = 0
-    Top = 427
+    Top = 431
     Width = 700
     Height = 39
     Align = alBottom

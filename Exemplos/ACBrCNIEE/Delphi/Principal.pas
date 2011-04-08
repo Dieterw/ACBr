@@ -116,7 +116,7 @@ begin
     0:
       begin
         SaveDialog1.Title      := 'Exportar arquivo CSV';
-        SaveDialog1.FileName   := 'TabelaCNIEE.CSV';
+        SaveDialog1.FileName   := 'TabelaCNIEE.csv';
         SaveDialog1.DefaultExt := '.csv';
         SaveDialog1.Filter     := 'Arquivos CSV|*.csv';
 
@@ -127,14 +127,43 @@ begin
     1:
       begin
         SaveDialog1.Title      := 'Exportar arquivo DSV';
-        SaveDialog1.FileName   := 'TabelaCNIEE.DSV';
+        SaveDialog1.FileName   := 'TabelaCNIEE.dsv';
         SaveDialog1.DefaultExt := '.dsv';
         SaveDialog1.Filter     := 'Arquivos DSV|*.dsv';
 
         if SaveDialog1.Execute then
           ACBrCNIEE1.Exportar(SaveDialog1.FileName, exDSV);
       end;
+
+    2:
+      begin
+        SaveDialog1.Title      := 'Exportar arquivo XML';
+        SaveDialog1.FileName   := 'TabelaCNIEE.xml';
+        SaveDialog1.DefaultExt := '.xml';
+        SaveDialog1.Filter     := 'Arquivos XML|*.xml';
+
+        if SaveDialog1.Execute then
+          ACBrCNIEE1.Exportar(SaveDialog1.FileName, exXML);
+      end;
+
+    3:
+      begin
+        SaveDialog1.Title      := 'Exportar arquivo HTML';
+        SaveDialog1.FileName   := 'TabelaCNIEE.html';
+        SaveDialog1.DefaultExt := '.html';
+        SaveDialog1.Filter     := 'Arquivos HTML|*.html';
+
+        if SaveDialog1.Execute then
+          ACBrCNIEE1.Exportar(SaveDialog1.FileName, exHTML);
+      end;
   end;
+
+  MessageDlg(
+    Format('Tabela exportada com sucesso em "%s"'+ sLineBreak, [SaveDialog1.FileName]),
+    mtInformation,
+    [mbOK],
+    0
+  );
 end;
 
 procedure TfrPrincipal.btAbrirClick(Sender: TObject);

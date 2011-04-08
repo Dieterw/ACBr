@@ -58,7 +58,7 @@ const
 type
   EACBrCNIEE = class(Exception);
 
-  TACBrCNIEEExporta = (exCSV, exDSV);
+  TACBrCNIEEExporta = (exCSV, exDSV, exXML, exHTML);
 
   TRegistro = packed record
     Marca        : string[2];
@@ -126,6 +126,8 @@ type
     FCadastros: TACBrCNIEERegistros;
     procedure ExportarCSV(const AArquivo: String);
     procedure ExportarDSV(const AArquivo: String);
+    procedure ExportarHTML(const AArquivo: String);
+    procedure ExportarXML(const AArquivo: String);
   public
     destructor Destroy; override;
     constructor Create(AOwner: TComponent); override;
@@ -142,6 +144,9 @@ type
   end;
 
 implementation
+
+uses
+  Math, StrUtils;
 
 { TACBrCNIEERegistros }
 
@@ -249,8 +254,10 @@ begin
     Self.AbrirTabela;
 
   case ATipo of
-    exCSV: ExportarCSV(AArquivo);
-    exDSV: ExportarDSV(AArquivo);
+    exCSV:  ExportarCSV(AArquivo);
+    exDSV:  ExportarDSV(AArquivo);
+    exXML:  ExportarXML(AArquivo);
+    exHTML: ExportarHTML(AArquivo);
   end;
 end;
 
@@ -318,6 +325,103 @@ begin
 
   if Trim(Texto) <> '' then
     WriteToTXT(AnsiString(AArquivo), AnsiString(Texto), False, False);
+end;
+
+procedure TACBrCNIEE.ExportarXML(const AArquivo: String);
+var
+  I: Integer;
+  Texto: String;
+begin
+  Texto := '<?xml version="1.0" encoding="ISO-8859-1"?><tabelacniee>';
+  for I := 0 to Cadastros.Count - 1 do
+  begin
+    Texto := Texto +
+      '<ecf>' +
+      '<CodMarca>' + Cadastros[I].CodMarca + '</CodMarca>' +
+      '<CodCodModelo>' + Cadastros[I].CodModelo + '</CodCodModelo>' +
+      '<CodCodVersao>' + Cadastros[I].CodVersao + '</CodCodVersao>' +
+      '<TipoECF>' + Cadastros[I].TipoECF + '</TipoECF>' +
+      '<DescrMarca>' + Cadastros[I].DescrMarca + '</DescrMarca>' +
+      '<DescrModelo>' + Cadastros[I].DescrModelo + '</DescrModelo>' +
+      '<Versao>' + Cadastros[I].Versao + '</Versao>' +
+      '<QtLacresSL>' + IntToStr(Cadastros[I].QtLacresSL) + '</QtLacresSL>' +
+      '<QtLacresFab>' + IntToStr(Cadastros[I].QtLacresFab) + '</QtLacresFab>' +
+      '<TemMFD>' + Cadastros[I].TemMFD + '</TemMFD>' +
+      '<TemLacreMFD>' + Cadastros[I].TemLacreMFD + '</TemLacreMFD>' +
+      '<AtoAprovacao>' + Cadastros[I].AtoAprovacao + '</AtoAprovacao>' +
+      '<AtoRegistro>' + Cadastros[I].AtoRegistro + '</AtoRegistro>' +
+      '<FormatoNumFabricacao>' + Cadastros[I].FormatoNumFabricacao + '</FormatoNumFabricacao>' +
+      '</ecf>';
+  end;
+  Texto := Texto + '</tabelacniee>';
+
+  if Trim(Texto) <> '' then
+    WriteToTXT(AnsiString(AArquivo), AnsiString(Texto), False, True);
+end;
+
+procedure TACBrCNIEE.ExportarHTML(const AArquivo: String);
+var
+  I: Integer;
+  Texto: String;
+begin
+  Texto :=
+    '<html>' + slineBreak +
+    '<head>' + slineBreak +
+    '    <title>Tabela CNIEE</title>' + slineBreak +
+    '    <style type="text/css">' + slineBreak +
+    '        body{font-family: Arial;}' + slineBreak +
+    '        th{color:white; font-size:8pt; background-color: black;}' + slineBreak +
+		'        tr{font-size:8pt;}' + slineBreak +
+    '        tr:nth-child(2n+1) {background-color: #DCDCDC;}' + slineBreak +
+    '    </style>' + slineBreak +
+    '</head>' + slineBreak +
+    '<body>' + slineBreak +
+    '    <table>' + slineBreak +
+		'        <tr>' + slineBreak +
+    '            <th>Marca</th>' + slineBreak +
+    '            <th>Modelo</th>' + slineBreak +
+    '            <th>Versao</th>' + slineBreak +
+    '            <th>Tipo ECF</th>' + slineBreak +
+    '            <th>Descrição Marca</th>' + slineBreak +
+    '            <th>Descrição Modelo</th>' + slineBreak +
+    '            <th>Versão</th>' + slineBreak +
+    '            <th>Qt Lacres SL</th>' + slineBreak +
+    '            <th>Qt Lacres Fab</th>' + slineBreak +
+    '            <th>MFD</th>' + slineBreak +
+    '            <th>Lacre MFD</th>' + slineBreak +
+    '            <th>Ato Aprovação</th>' + slineBreak +
+    '            <th>Ato Registro</th>' + slineBreak +
+    '            <th>Formato Número Fabricação</th>' + slineBreak +
+		'        </tr>' + slineBreak;
+
+  for I := 0 to Cadastros.Count - 1 do
+  begin
+    Texto := Texto +
+      '        <tr>' + slineBreak +
+      '            <td>' + Cadastros[I].CodMarca + '</td>' + slineBreak +
+      '            <td>' + Cadastros[I].CodModelo + '</td>' + slineBreak +
+      '            <td>' + Cadastros[I].CodVersao + '</td>' + slineBreak +
+      '            <td>' + Cadastros[I].TipoECF + '</td>' + slineBreak +
+      '            <td>' + Cadastros[I].DescrMarca + '</td>' + slineBreak +
+      '            <td>' + Cadastros[I].DescrModelo + '</td>' + slineBreak +
+      '            <td>' + Cadastros[I].Versao + '</td>' + slineBreak +
+      '            <td>' + IntToStr(Cadastros[I].QtLacresSL) + '</td>' + slineBreak +
+      '            <td>' + IntToStr(Cadastros[I].QtLacresFab) + '</td>' + slineBreak +
+      '            <td>' + Cadastros[I].TemMFD + '</td>' + slineBreak +
+      '            <td>' + Cadastros[I].TemLacreMFD + '</td>' + slineBreak +
+      '            <td>' + Cadastros[I].AtoAprovacao + '</td>' + slineBreak +
+      '            <td>' + Cadastros[I].AtoRegistro + '</td>' + slineBreak +
+      '            <td>' + Cadastros[I].FormatoNumFabricacao + '</td>' + slineBreak +
+      '        </tr>' + slineBreak;
+  end;
+
+  Texto := Texto +
+    '    </table>' + slineBreak +
+    '</body>' + slineBreak +
+    '</html>' + slineBreak;
+
+  if Trim(Texto) <> '' then
+    WriteToTXT(AnsiString(AArquivo), AnsiString(Texto), False, True);
 end;
 
 end.

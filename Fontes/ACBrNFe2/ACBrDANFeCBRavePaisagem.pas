@@ -178,7 +178,9 @@ begin
         FontRotation:=33;
         Print('NFe Cancelada');
       end
-     else if (procNFe.cStat <> 100 ) then
+     else if ((procNFe.cStat <> 100 ) and
+              (Ide.tpEmis <> teFSDA) and
+              (Ide.tpEmis <> teCONTINGENCIA)) then
       begin //Não autorizada
         SetFont(FontNameUsed,28);
         FontColor:=clRed;

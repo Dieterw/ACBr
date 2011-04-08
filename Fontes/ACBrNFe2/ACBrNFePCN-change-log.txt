@@ -47,6 +47,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Alterações   08/04/2011
+---------------
+[-] Correção de impressão do DANFE com RAVE CODE BASE quando estiver imprimindo em Formulario de Segurança no Ambiente de Producao.
+
 Alterações   10/03/2011
 ---------------
 [-] Correção de impressão do NCM no DANFE com RAVE CODE BASE quando a fonte for COURIER

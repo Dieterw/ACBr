@@ -134,13 +134,7 @@ begin
                 PrintCenter(vEnd,PosX+(aWidthOutros/2));
                 NewLine;
                 if ExibirResumoCanhoto then
-                begin
-                  if NotaUtil.EstaVazio(ExibirResumoCanhoto_Texto) then
-                     PrintCenter('Emissão: '+NotaUtil.FormatDate(DateToStr(Ide.DEmi))+'  Dest/Reme: '+Dest.XNome+'  Valor Total: '+NotaUtil.FormatFloat(Total.ICMSTot.VNF),PosX+(aWidthOutros/2))
-                   else
-                      PrintCenter(ExibirResumoCanhoto_Texto,PosX+(aWidthOutros/2));
-                end;
-
+                   PrintCenter('Emissão: '+NotaUtil.FormatDate(DateToStr(Ide.DEmi))+'  Dest/Reme: '+Dest.XNome+'  Valor Total: '+NotaUtil.FormatFloat(Total.ICMSTot.VNF),PosX+(aWidthOutros/2));
              end;
           end;
         end;
@@ -194,7 +188,9 @@ begin
         FontRotation:=45;
         Print('NFe Cancelada');
       end
-     else if (procNFe.cStat <> 100 ) then
+     else if ((procNFe.cStat <> 100 ) and
+              (Ide.tpEmis <> teFSDA) and
+              (Ide.tpEmis <> teCONTINGENCIA)) then
       begin //Não autorizada
         SetFont(FontNameUsed,25);
         FontColor:=clRed;
@@ -1211,7 +1207,7 @@ begin
           if ImprimirDescPorc then
           begin
             if Prod.vDesc > 0 then
-               PrintTab(NotaUtil.FormatFloat({RoundTo(}100-((((Prod.VUnCom*Prod.QCom)-Prod.vDesc)/(Prod.VUnCom*Prod.QCom))*100){,-1)})+'%')
+               PrintTab(NotaUtil.FormatFloat(RoundTo(100-((((Prod.VUnCom*Prod.QCom)-Prod.vDesc)/(Prod.VUnCom*Prod.QCom))*100),-1))+'%')
             else
                PrintTab(NotaUtil.FormatFloat(Prod.vDesc));
           end

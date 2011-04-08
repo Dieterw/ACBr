@@ -135,10 +135,11 @@ type
 
     function DownloadTabela: Boolean;
     function AbrirTabela: Boolean;
-    procedure Exportar(const AArquivo: String; ATipo: TACBrCNIEEExporta);
+    procedure Exportar(const AArquivo: String; ATipo: TACBrCNIEEExporta); overload;
+    procedure Exportar(const AArquivo: String; ADelimitador: String); overload;
 
     property Cadastros: TACBrCNIEERegistros read FCadastros;
-    
+
   published
     property Arquivo: String read FArquivo write FArquivo;
     property URLDownload: String read FURLDownload write FURLDownload;
@@ -293,6 +294,36 @@ begin
     WriteToTXT(AnsiString(AArquivo), AnsiString(Texto), False, False);
 end;
 
+procedure TACBrCNIEE.Exportar(const AArquivo: String; ADelimitador: String);
+var
+  I: Integer;
+  Texto: String;
+begin
+  Texto := '';
+  for I := 0 to Cadastros.Count - 1 do
+  begin
+    Texto := Texto +
+      Cadastros[I].CodMarca + ADelimitador +
+      Cadastros[I].CodModelo + ADelimitador +
+      Cadastros[I].CodVersao + ADelimitador +
+      Cadastros[I].TipoECF + ADelimitador +
+      Cadastros[I].DescrMarca + ADelimitador +
+      Cadastros[I].DescrModelo + ADelimitador +
+      Cadastros[I].Versao + ADelimitador +
+      IntToStr(Cadastros[I].QtLacresSL) + ADelimitador +
+      IntToStr(Cadastros[I].QtLacresFab) + ADelimitador +
+      Cadastros[I].TemMFD + ADelimitador +
+      Cadastros[I].TemLacreMFD + ADelimitador +
+      Cadastros[I].AtoAprovacao + ADelimitador +
+      Cadastros[I].AtoRegistro + ADelimitador +
+      Cadastros[I].FormatoNumFabricacao +
+      sLineBreak;
+  end;
+
+  if Trim(Texto) <> '' then
+    WriteToTXT(AnsiString(AArquivo), AnsiString(Texto), False, False);
+end;
+
 procedure TACBrCNIEE.ExportarCSV(const AArquivo: String);
 var
   I: Integer;
@@ -315,7 +346,7 @@ begin
       Cadastros[I].TemLacreMFD + ',' +
       Cadastros[I].AtoAprovacao + ',' +
       Cadastros[I].AtoRegistro + ',' +
-      Cadastros[I].FormatoNumFabricacao + ',' +
+      Cadastros[I].FormatoNumFabricacao +
       sLineBreak;
   end;
 
@@ -351,7 +382,7 @@ begin
       AddAspasDuplas(Cadastros[I].TemLacreMFD) + ',' +
       AddAspasDuplas(Cadastros[I].AtoAprovacao) + ',' +
       AddAspasDuplas(Cadastros[I].AtoRegistro) + ',' +
-      AddAspasDuplas(Cadastros[I].FormatoNumFabricacao) + ',' +
+      AddAspasDuplas(Cadastros[I].FormatoNumFabricacao) +
       sLineBreak;
   end;
 

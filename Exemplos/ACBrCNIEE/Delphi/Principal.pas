@@ -157,7 +157,6 @@ begin
           ACBrCNIEE1.Exportar(SaveDialog1.FileName, exHTML);
       end;
 
-
     4:
       begin
         SaveDialog1.Title      := 'Exportar arquivo TXT';
@@ -167,6 +166,17 @@ begin
 
         if SaveDialog1.Execute then
           ACBrCNIEE1.Exportar(SaveDialog1.FileName, exTXT);
+      end;
+
+    5:
+      begin
+        SaveDialog1.Title      := 'Exportar arquivo delimitado';
+        SaveDialog1.FileName   := 'TabelaCNIEE.txt';
+        SaveDialog1.DefaultExt := '.txt';
+        SaveDialog1.Filter     := 'Arquivos TXT|*.txt';
+
+        if SaveDialog1.Execute then
+          ACBrCNIEE1.Exportar(SaveDialog1.FileName, '|');
       end;
   end;
 

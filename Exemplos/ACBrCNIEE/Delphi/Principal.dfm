@@ -441,7 +441,8 @@ object frPrincipal: TfrPrincipal
       'Formato DSV'
       'Formato XML'
       'Formato HTML'
-      'Formato TXT')
+      'Formato TXT'
+      'Demilitado')
     TabOrder = 2
   end
   object dtsCadastro: TDataSource

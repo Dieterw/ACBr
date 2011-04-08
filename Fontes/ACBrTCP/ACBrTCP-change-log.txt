@@ -39,6 +39,11 @@ Símbolo : Significado
 
 07/04/2011
 -- ACBrTabelaCNIEE
+[+] Liberados novos tipos de exportação para arquivo.
+    por: Régys Silveira
+
+07/04/2011
+-- ACBrTabelaCNIEE
 [+] Librado componente para download e leitura da tabela de CNIEE
     por: Régys Silveira / Daniel Simões
 

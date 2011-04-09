@@ -53,7 +53,7 @@ uses
   ACBrEPCBloco_F_Class, ACBrEPCBloco_M_Class;
 
 const
-  CACBrSpedPisCofins_Versao = '1.00';
+  CACBrSpedPisCofins_Versao = '1.00 Beta';
 
 type
   { TACBrSPEDPisCofins }

@@ -48,6 +48,13 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Versão 1.00 Beta 08/04/2011
+-- ACBrSPEDPisCofins --
+[+] Lançado a versão 1.0 Beta do ACBrSPEDPisCofins, colaboração de vários 
+    contribuintes, os quais não vou citar nomes para não cometer o pecado
+    de deixar alguem de fora, mas os créditos estão nos fontes.
+    Obrigado a todos e agora é acertarmos os bugs.
+
 Versão 1.00b   24/01/2011
 -- ACBrSPEDFiscal --
 [+] Implementação do Registro G126 por (Edilson Alves de Oliveira)

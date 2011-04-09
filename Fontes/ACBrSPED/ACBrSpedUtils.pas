@@ -104,19 +104,20 @@ end;
 
 function funChecaCST(const CST: String): Boolean;
 const
-  ListaCST: array[0..32] of String = (
+  ListaCST: array[0..42] of String = (
     '000', '010', '020', '030', '040', '041', '050', '051',
     '060', '070', '090', '100', '110', '120', '130', '140',
     '141', '150', '151', '160', '170', '190', '200', '210',
     '220', '230', '240', '241', '250', '251', '260', '270',
-    '290');
+    '290', '101', '102', '103', '201', '202', '203', '300',
+    '400', '500', '900');
 var
 intFor: integer;
 booFind: Boolean;
 begin
   intFor := 0;
   booFind := False;
-  while (not (booFind)) and (intFor <= 32) do
+  while (not (booFind)) and (intFor <= 42) do
   begin
     booFind := ListaCST[intFor] = CST;
     inc(intFor);

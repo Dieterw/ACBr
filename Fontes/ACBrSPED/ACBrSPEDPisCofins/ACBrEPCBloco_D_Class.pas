@@ -43,7 +43,7 @@ unit ACBrEPCBloco_D_Class;
 interface
 
 uses SysUtils, Classes, DateUtils, ACBrSped, ACBrEPCBloco_D, ACBrEPCBlocos,
-     ACBrTXTClass;
+     ACBrTXTClass, ACBrEPCBloco_0_Class;
 
 type
   /// TBloco_D -
@@ -52,110 +52,112 @@ type
 
   TBloco_D = class(TACBrSPED)
   private
-    FRegistroD001: TRegistroD001;      /// BLOCO D - RegistroD001
-    FRegistroD990: TRegistroD990;      /// BLOCO D - RegistroD990
+    FRegistroD001                       : TRegistroD001;      /// BLOCO D - RegistroD001
+    FRegistroD990                       : TRegistroD990;      /// BLOCO D - RegistroD990
 
-    FRegistroD010Count: integer;
-    FRegistroD100Count: integer;
-    FRegistroD101Count: integer;
-    FRegistroD105Count: integer;
-    FRegistroD111Count: integer;
-    FRegistroD200Count: integer;
-    FRegistroD201Count: integer;
-    FRegistroD205Count: integer;
-    FRegistroD209Count: integer;
-    FRegistroD300Count: integer;
-    FRegistroD309Count: integer;
-    FRegistroD350Count: integer;
-    FRegistroD359Count: integer;
-    FRegistroD500Count: integer;
-    FRegistroD501Count: integer;
-    FRegistroD505Count: integer;
-    FRegistroD509Count: integer;
-    FRegistroD600Count: integer;
-    FRegistroD601Count: integer;
-    FRegistroD605Count: integer;
-    FRegistroD609Count: integer;
+    FRegistroD010Count                  : integer;
+    FRegistroD100Count                  : integer;
+    FRegistroD101Count                  : integer;
+    FRegistroD105Count                  : integer;
+    FRegistroD111Count                  : integer;
+    FRegistroD200Count                  : integer;
+    FRegistroD201Count                  : integer;
+    FRegistroD205Count                  : integer;
+    FRegistroD209Count                  : integer;
+    FRegistroD300Count                  : integer;
+    FRegistroD309Count                  : integer;
+    FRegistroD350Count                  : integer;
+    FRegistroD359Count                  : integer;
+    FRegistroD500Count                  : integer;
+    FRegistroD501Count                  : integer;
+    FRegistroD505Count                  : integer;
+    FRegistroD509Count                  : integer;
+    FRegistroD600Count                  : integer;
+    FRegistroD601Count                  : integer;
+    FRegistroD605Count                  : integer;
+    FRegistroD609Count                  : integer;
+    FBloco_0                            : TBloco_0;
 
-    procedure WriteRegistroD010(RegD001: TRegistroD001);
-    procedure WriteRegistroD100(RegD010: TRegistroD010);
-    procedure WriteRegistroD101(RegD100: TRegistroD100);
-    procedure WriteRegistroD105(RegD100: TRegistroD100);
-    procedure WriteRegistroD111(RegD100: TRegistroD100);
-    procedure WriteRegistroD200(RegD010: TRegistroD010);
-    procedure WriteRegistroD201(RegD200: TRegistroD200);
-    procedure WriteRegistroD205(RegD200: TRegistroD200);
-    procedure WriteRegistroD209(RegD200: TRegistroD200);
-    procedure WriteRegistroD300(RegD010: TRegistroD010);
-    procedure WriteRegistroD309(RegD300: TRegistroD300);
-    procedure WriteRegistroD350(RegD010: TRegistroD010);
-    procedure WriteRegistroD359(RegD350: TRegistroD350);
-    procedure WriteRegistroD500(RegD010: TRegistroD010);
-    procedure WriteRegistroD501(RegD500: TRegistroD500);
-    procedure WriteRegistroD505(RegD500: TRegistroD500);
-    procedure WriteRegistroD509(RegD500: TRegistroD500);
-    procedure WriteRegistroD600(RegD010: TRegistroD010);
-    procedure WriteRegistroD601(RegD600: TRegistroD600);
-    procedure WriteRegistroD605(RegD600: TRegistroD600);
-    procedure WriteRegistroD609(RegD600: TRegistroD600);
+    procedure WriteRegistroD010(RegD001 : TRegistroD001);
+    procedure WriteRegistroD100(RegD010 : TRegistroD010);
+    procedure WriteRegistroD101(RegD100 : TRegistroD100);
+    procedure WriteRegistroD105(RegD100 : TRegistroD100);
+    procedure WriteRegistroD111(RegD100 : TRegistroD100);
+    procedure WriteRegistroD200(RegD010 : TRegistroD010);
+    procedure WriteRegistroD201(RegD200 : TRegistroD200);
+    procedure WriteRegistroD205(RegD200 : TRegistroD200);
+    procedure WriteRegistroD209(RegD200 : TRegistroD200);
+    procedure WriteRegistroD300(RegD010 : TRegistroD010);
+    procedure WriteRegistroD309(RegD300 : TRegistroD300);
+    procedure WriteRegistroD350(RegD010 : TRegistroD010);
+    procedure WriteRegistroD359(RegD350 : TRegistroD350);
+    procedure WriteRegistroD500(RegD010 : TRegistroD010);
+    procedure WriteRegistroD501(RegD500 : TRegistroD500);
+    procedure WriteRegistroD505(RegD500 : TRegistroD500);
+    procedure WriteRegistroD509(RegD500 : TRegistroD500);
+    procedure WriteRegistroD600(RegD010 : TRegistroD010);
+    procedure WriteRegistroD601(RegD600 : TRegistroD600);
+    procedure WriteRegistroD605(RegD600 : TRegistroD600);
+    procedure WriteRegistroD609(RegD600 : TRegistroD600);
 
     procedure CriaRegistros;
     procedure LiberaRegistros;
   public
-    constructor Create ;          /// Create
-    destructor Destroy; override; /// Destroy
-    procedure LimpaRegistros;
+    constructor Create ;           /// Create
+    destructor  Destroy; override; /// Destroy
+    procedure   LimpaRegistros;
 
-    function RegistroD001New: TRegistroD001;
-    function RegistroD010New: TRegistroD010;
-    function RegistroD100New: TRegistroD100;
-    function RegistroD101New: TRegistroD101;
-    function RegistroD105New: TRegistroD105;
-    function RegistroD111New: TRegistroD111;
-    function RegistroD200New: TRegistroD200;
-    function RegistroD201New: TRegistroD201;
-    function RegistroD205New: TRegistroD205;
-    function RegistroD209New: TRegistroD209;
-    function RegistroD300New: TRegistroD300;
-    function RegistroD309New: TRegistroD309;
-    function RegistroD350New: TRegistroD350;
-    function RegistroD359New: TRegistroD359;
-    function RegistroD500New: TRegistroD500;
-    function RegistroD501New: TRegistroD501;
-    function RegistroD505New: TRegistroD505;
-    function RegistroD509New: TRegistroD509;
-    function RegistroD600New: TRegistroD600;
-    function RegistroD601New: TRegistroD601;
-    function RegistroD605New: TRegistroD605;
-    function RegistroD609New: TRegistroD609;
+    function RegistroD001New            : TRegistroD001;
+    function RegistroD010New            : TRegistroD010;
+    function RegistroD100New            : TRegistroD100;
+    function RegistroD101New            : TRegistroD101;
+    function RegistroD105New            : TRegistroD105;
+    function RegistroD111New            : TRegistroD111;
+    function RegistroD200New            : TRegistroD200;
+    function RegistroD201New            : TRegistroD201;
+    function RegistroD205New            : TRegistroD205;
+    function RegistroD209New            : TRegistroD209;
+    function RegistroD300New            : TRegistroD300;
+    function RegistroD309New            : TRegistroD309;
+    function RegistroD350New            : TRegistroD350;
+    function RegistroD359New            : TRegistroD359;
+    function RegistroD500New            : TRegistroD500;
+    function RegistroD501New            : TRegistroD501;
+    function RegistroD505New            : TRegistroD505;
+    function RegistroD509New            : TRegistroD509;
+    function RegistroD600New            : TRegistroD600;
+    function RegistroD601New            : TRegistroD601;
+    function RegistroD605New            : TRegistroD605;
+    function RegistroD609New            : TRegistroD609;
 
     procedure WriteRegistroD001;
     procedure WriteRegistroD990;
 
-    property RegistroD001: TRegistroD001 read FRegistroD001 write FRegistroD001;
-    property RegistroD990: TRegistroD990 read FRegistroD990 write FRegistroD990;
+    property Bloco_0                    : TBloco_0      read FBloco_0           write FBloco_0;
+    property RegistroD001               : TRegistroD001 read FRegistroD001      write FRegistroD001;
+    property RegistroD990               : TRegistroD990 read FRegistroD990      write FRegistroD990;
 
-    property RegistroD010Count: integer read FRegistroD010Count write FRegistroD010Count;
-    property RegistroD100Count: integer read FRegistroD100Count write FRegistroD100Count;
-    property RegistroD101Count: integer read FRegistroD101Count write FRegistroD101Count;
-    property RegistroD105Count: integer read FRegistroD105Count write FRegistroD105Count;
-    property RegistroD111Count: integer read FRegistroD111Count write FRegistroD111Count;
-    property RegistroD200Count: integer read FRegistroD200Count write FRegistroD200Count;
-    property RegistroD201Count: integer read FRegistroD201Count write FRegistroD201Count;
-    property RegistroD205Count: integer read FRegistroD205Count write FRegistroD205Count;
-    property RegistroD209Count: integer read FRegistroD209Count write FRegistroD209Count;
-    property RegistroD300Count: integer read FRegistroD300Count write FRegistroD300Count;
-    property RegistroD309Count: integer read FRegistroD309Count write FRegistroD309Count;
-    property RegistroD350Count: integer read FRegistroD350Count write FRegistroD350Count;
-    property RegistroD359Count: integer read FRegistroD359Count write FRegistroD359Count;
-    property RegistroD500Count: integer read FRegistroD500Count write FRegistroD500Count;
-    property RegistroD501Count: integer read FRegistroD501Count write FRegistroD501Count;
-    property RegistroD505Count: integer read FRegistroD505Count write FRegistroD505Count;
-    property RegistroD509Count: integer read FRegistroD509Count write FRegistroD509Count;
-    property RegistroD600Count: integer read FRegistroD600Count write FRegistroD600Count;
-    property RegistroD601Count: integer read FRegistroD601Count write FRegistroD601Count;
-    property RegistroD605Count: integer read FRegistroD605Count write FRegistroD605Count;
-    property RegistroD609Count: integer read FRegistroD609Count write FRegistroD609Count;
+    property RegistroD010Count          : integer       read FRegistroD010Count write FRegistroD010Count;
+    property RegistroD100Count          : integer       read FRegistroD100Count write FRegistroD100Count;
+    property RegistroD101Count          : integer       read FRegistroD101Count write FRegistroD101Count;
+    property RegistroD105Count          : integer       read FRegistroD105Count write FRegistroD105Count;
+    property RegistroD111Count          : integer       read FRegistroD111Count write FRegistroD111Count;
+    property RegistroD200Count          : integer       read FRegistroD200Count write FRegistroD200Count;
+    property RegistroD201Count          : integer       read FRegistroD201Count write FRegistroD201Count;
+    property RegistroD205Count          : integer       read FRegistroD205Count write FRegistroD205Count;
+    property RegistroD209Count          : integer       read FRegistroD209Count write FRegistroD209Count;
+    property RegistroD300Count          : integer       read FRegistroD300Count write FRegistroD300Count;
+    property RegistroD309Count          : integer       read FRegistroD309Count write FRegistroD309Count;
+    property RegistroD350Count          : integer       read FRegistroD350Count write FRegistroD350Count;
+    property RegistroD359Count          : integer       read FRegistroD359Count write FRegistroD359Count;
+    property RegistroD500Count          : integer       read FRegistroD500Count write FRegistroD500Count;
+    property RegistroD501Count          : integer       read FRegistroD501Count write FRegistroD501Count;
+    property RegistroD505Count          : integer       read FRegistroD505Count write FRegistroD505Count;
+    property RegistroD509Count          : integer       read FRegistroD509Count write FRegistroD509Count;
+    property RegistroD600Count          : integer       read FRegistroD600Count write FRegistroD600Count;
+    property RegistroD601Count          : integer       read FRegistroD601Count write FRegistroD601Count;
+    property RegistroD605Count          : integer       read FRegistroD605Count write FRegistroD605Count;
+    property RegistroD609Count          : integer       read FRegistroD609Count write FRegistroD609Count;
   end;
 
 implementation
@@ -233,8 +235,8 @@ begin
 end;
 
 function TBloco_D.RegistroD100New: TRegistroD100;
-var
-D010Count: integer;
+  var
+    D010Count: integer;
 begin
    D010Count := FRegistroD001.RegistroD010.Count -1;
    //
@@ -242,9 +244,9 @@ begin
 end;
 
 function TBloco_D.RegistroD101New: TRegistroD101;
-var
-D010Count: integer;
-D100Count: integer;
+  var
+    D010Count: integer;
+    D100Count: integer;
 begin
    D010Count := FRegistroD001.RegistroD010.Count -1;
    D100Count := FRegistroD001.RegistroD010.Items[D010Count].RegistroD100.Count -1;
@@ -253,9 +255,9 @@ begin
 end;
 
 function TBloco_D.RegistroD105New: TRegistroD105;
-var
-D010Count: integer;
-D100Count: integer;
+  var
+    D010Count: integer;
+    D100Count: integer;
 begin
    D010Count := FRegistroD001.RegistroD010.Count -1;
    D100Count := FRegistroD001.RegistroD010.Items[D010Count].RegistroD100.Count -1;
@@ -264,9 +266,9 @@ begin
 end;
 
 function TBloco_D.RegistroD111New: TRegistroD111;
-var
-D010Count: integer;
-D100Count: integer;
+  var
+    D010Count: integer;
+    D100Count: integer;
 begin
    D010Count := FRegistroD001.RegistroD010.Count -1;
    D100Count := FRegistroD001.RegistroD010.Items[D010Count].RegistroD100.Count -1;
@@ -275,8 +277,8 @@ begin
 end;
 
 function TBloco_D.RegistroD200New: TRegistroD200;
-var
-D010Count: integer;
+  var
+    D010Count: integer;
 begin
    D010Count := FRegistroD001.RegistroD010.Count -1;
    //
@@ -284,9 +286,9 @@ begin
 end;
 
 function TBloco_D.RegistroD201New: TRegistroD201;
-var
-D010Count: integer;
-D200Count: integer;
+  var
+    D010Count: integer;
+    D200Count: integer;
 begin
    D010Count := FRegistroD001.RegistroD010.Count -1;
    D200Count := FRegistroD001.RegistroD010.Items[D010Count].RegistroD200.Count -1;
@@ -295,9 +297,9 @@ begin
 end;
 
 function TBloco_D.RegistroD205New: TRegistroD205;
-var
-D010Count: integer;
-D200Count: integer;
+  var
+    D010Count: integer;
+    D200Count: integer;
 begin
    D010Count := FRegistroD001.RegistroD010.Count -1;
    D200Count := FRegistroD001.RegistroD010.Items[D010Count].RegistroD200.Count -1;
@@ -306,9 +308,9 @@ begin
 end;
 
 function TBloco_D.RegistroD209New: TRegistroD209;
-var
-D010Count: integer;
-D200Count: integer;
+  var
+    D010Count: integer;
+    D200Count: integer;
 begin
    D010Count := FRegistroD001.RegistroD010.Count -1;
    D200Count := FRegistroD001.RegistroD010.Items[D010Count].RegistroD200.Count -1;
@@ -317,8 +319,8 @@ begin
 end;
 
 function TBloco_D.RegistroD300New: TRegistroD300;
-var
-D010Count: integer;
+  var
+    D010Count: integer;
 begin
    D010Count := FRegistroD001.RegistroD010.Count -1;
    //
@@ -326,9 +328,9 @@ begin
 end;
 
 function TBloco_D.RegistroD309New: TRegistroD309;
-var
-D010Count: integer;
-D300Count: integer;
+  var
+    D010Count: integer;
+    D300Count: integer;
 begin
    D010Count := FRegistroD001.RegistroD010.Count -1;
    D300Count := FRegistroD001.RegistroD010.Items[D010Count].RegistroD300.Count -1;
@@ -337,8 +339,8 @@ begin
 end;
 
 function TBloco_D.RegistroD350New: TRegistroD350;
-var
-D010Count: integer;
+  var
+    D010Count: integer;
 begin
    D010Count := FRegistroD001.RegistroD010.Count -1;
    //
@@ -346,9 +348,9 @@ begin
 end;
 
 function TBloco_D.RegistroD359New: TRegistroD359;
-var
-D010Count: integer;
-D350Count: integer;
+  var
+    D010Count: integer;
+    D350Count: integer;
 begin
    D010Count := FRegistroD001.RegistroD010.Count -1;
    D350Count := FRegistroD001.RegistroD010.Items[D010Count].RegistroD350.Count -1;
@@ -357,8 +359,8 @@ begin
 end;
 
 function TBloco_D.RegistroD500New: TRegistroD500;
-var
-D010Count: integer;
+  var
+    D010Count: integer;
 begin
    D010Count := FRegistroD001.RegistroD010.Count -1;
    //
@@ -366,9 +368,9 @@ begin
 end;
 
 function TBloco_D.RegistroD501New: TRegistroD501;
-var
-D010Count: integer;
-D500Count: integer;
+  var
+    D010Count: integer;
+    D500Count: integer;
 begin
    D010Count := FRegistroD001.RegistroD010.Count -1;
    D500Count := FRegistroD001.RegistroD010.Items[D010Count].RegistroD500.Count -1;
@@ -377,9 +379,9 @@ begin
 end;
 
 function TBloco_D.RegistroD505New: TRegistroD505;
-var
-D010Count: integer;
-D500Count: integer;
+  var
+    D010Count: integer;
+    D500Count: integer;
 begin
    D010Count := FRegistroD001.RegistroD010.Count -1;
    D500Count := FRegistroD001.RegistroD010.Items[D010Count].RegistroD500.Count -1;
@@ -388,9 +390,9 @@ begin
 end;
 
 function TBloco_D.RegistroD509New: TRegistroD509;
-var
-D010Count: integer;
-D500Count: integer;
+  var
+    D010Count: integer;
+    D500Count: integer;
 begin
    D010Count := FRegistroD001.RegistroD010.Count -1;
    D500Count := FRegistroD001.RegistroD010.Items[D010Count].RegistroD500.Count -1;
@@ -399,8 +401,8 @@ begin
 end;
 
 function TBloco_D.RegistroD600New: TRegistroD600;
-var
-D010Count: integer;
+  var
+    D010Count: integer;
 begin
    D010Count := FRegistroD001.RegistroD010.Count -1;
    //
@@ -408,9 +410,9 @@ begin
 end;
 
 function TBloco_D.RegistroD601New: TRegistroD601;
-var
-D010Count: integer;
-D600Count: integer;
+  var
+    D010Count: integer;
+    D600Count: integer;
 begin
    D010Count := FRegistroD001.RegistroD010.Count -1;
    D600Count := FRegistroD001.RegistroD010.Items[D010Count].RegistroD600.Count -1;
@@ -419,9 +421,9 @@ begin
 end;
 
 function TBloco_D.RegistroD605New: TRegistroD605;
-var
-D010Count: integer;
-D600Count: integer;
+  var
+    D010Count: integer;
+    D600Count: integer;
 begin
    D010Count := FRegistroD001.RegistroD010.Count -1;
    D600Count := FRegistroD001.RegistroD010.Items[D010Count].RegistroD600.Count -1;
@@ -430,9 +432,9 @@ begin
 end;
 
 function TBloco_D.RegistroD609New: TRegistroD609;
-var
-D010Count: integer;
-D600Count: integer;
+  var
+    D010Count: integer;
+    D600Count: integer;
 begin
    D010Count := FRegistroD001.RegistroD010.Count -1;
    D600Count := FRegistroD001.RegistroD010.Items[D010Count].RegistroD600.Count -1;
@@ -454,14 +456,13 @@ begin
           WriteRegistroD010(FRegistroD001) ;
         end;
      end;
-
      RegistroD990.QTD_LIN_D := RegistroD990.QTD_LIN_D + 1;
   end;
 end;
 
 procedure TBloco_D.WriteRegistroD010(RegD001: TRegistroD001) ;
-var
-intFor: Integer;
+  var
+    intFor: Integer;
 begin
   if Assigned(RegD001.RegistroD010) then
   begin
@@ -491,13 +492,13 @@ begin
 end;
 
 procedure TBloco_D.WriteRegistroD100(RegD010: TRegistroD010) ;
-var
-intFor: integer;
-strIND_OPER : AnsiString;
-strIND_EMIT : AnsiString;
-strCOD_SIT  : AnsiString;
-strCOD_MOD  : AnsiString;
-strIND_FRT  : AnsiString;
+  var
+    intFor      : integer;
+    strIND_OPER : AnsiString;
+    strIND_EMIT : AnsiString;
+    strCOD_SIT  : AnsiString;
+    strCOD_MOD  : AnsiString;
+    strIND_FRT  : AnsiString;
 begin
   if Assigned(RegD010.RegistroD100) then
   begin
@@ -505,6 +506,8 @@ begin
      begin
         with RegD010.RegistroD100.Items[intFor] do
         begin
+          Check(Pos(COD_MOD, '07 08 8B 09 10 11 26 27 57') > 0, '(D-100) O Modelo do Documento "%s" é inválido!', [COD_MOD]);
+
           case IND_OPER of
             itoContratado : strIND_OPER := '0';
             itoPrestado   : strIND_OPER := '1';
@@ -522,47 +525,37 @@ begin
             sdfExtComplementar : strCOD_SIT := '07';
             sdfInutilizado     : strCOD_SIT := '08';
           end;
-          case COD_MOD of
-            dfiNFSTransporte           : strCOD_MOD := '07';
-            dfiConhecimentoRodoviario  : strCOD_MOD := '08';
-            dfiConhecimentoAvulso      : strCOD_MOD := '8B';
-            dfiConhecimentoAquaviario  : strCOD_MOD := '09';
-            dfiConhecimentoAereo       : strCOD_MOD := '10';
-            dfiConhecimentoFerroviario : strCOD_MOD := '11';
-            dfiConhecimentoMultimodal  : strCOD_MOD := '26';
-            dfiNFTranspFerro           : strCOD_MOD := '27';
-            dfiCTE                     : strCOD_MOD := '57';
-          end;
+
           case IND_FRT of
-            tfPorContaTerceiros : strIND_FRT := '0';
-            tfPorContaEmitente : strIND_FRT := '1';
-            tfPorContaDestinatario : strIND_FRT := '2';
-            tfSemCobrancaFrete : strIND_FRT := '9';
-            tfNenhum : strIND_FRT := '';
+            tfPorContaTerceiros        : strIND_FRT := '0';
+            tfPorContaEmitente         : strIND_FRT := '1';
+            tfPorContaDestinatario     : strIND_FRT := '2';
+            tfSemCobrancaFrete         : strIND_FRT := '9';
+            tfNenhum : strIND_FRT      := '';
           end;
 
-          Add( LFill('D100') +
-               LFill( strIND_OPER ) +
-               LFill( strIND_EMIT ) +
-               LFill( COD_PART ) +
-               LFill( strCOD_MOD ) +
-               LFill( strCOD_SIT ) +
-               LFill( SER ) +
-               LFill( SUB ) +
-               LFill( NUM_DOC ) +
-               LFill( CHV_CTE ) +
-               LFill( DT_DOC ) +
-               LFill( DT_A_P ) +
-               LFill( TP_CTe ) +
-               LFill( CHV_CTE_REF ) +
-               LFill( VL_DOC,0,2 ) +
-               LFill( VL_DESC,0,2 ) +
-               LFill( strIND_FRT ) +
-               LFill( VL_SERV,0,2 ) +
+          Add( LFill('D100')           +
+               LFill( strIND_OPER )    +
+               LFill( strIND_EMIT )    +
+               LFill( COD_PART )       +
+               LFill( COD_MOD )        +
+               LFill( strCOD_SIT )     +
+               LFill( SER )            +
+               LFill( SUB )            +
+               LFill( NUM_DOC )        +
+               LFill( CHV_CTE )        +
+               LFill( DT_DOC )         +
+               LFill( DT_A_P )         +
+               LFill( TP_CT_e )        +
+               LFill( CHV_CTE_REF )    +
+               LFill( VL_DOC,0,2 )     +
+               LFill( VL_DESC,0,2 )    +
+               LFill( strIND_FRT )     +
+               LFill( VL_SERV,0,2 )    +
                LFill( VL_BC_ICMS,0,2 ) +
-               LFill( VL_ICMS,0,2 ) +
-               LFill( VL_NT,0,2 ) +
-               LFill( COD_INF ) +
+               LFill( VL_ICMS,0,2 )    +
+               LFill( VL_NT,0,2 )      +
+               LFill( COD_INF )        +
                LFill( COD_CTA ) ) ;
         end;
 
@@ -579,61 +572,191 @@ begin
 end;
 
 procedure TBloco_D.WriteRegistroD101(RegD100: TRegistroD100) ;
-var
-intFor: integer;
-strIND_NAT_FRT : AnsiString;
+  var
+    intFor         : integer;
+    strIND_NAT_FRT : AnsiString;
+    strCST_PIS     : AnsiString;
+    strNAT_BC_CRED : AnsiString;
 begin
-  if Assigned(RegD010.RegistroD101) then
+  if Assigned(RegD100.RegistroD101) then
   begin
-    for intFor := 0 to RegD010.RegistroD100.Count - 1 do
+    for intFor := 0 to RegD100.RegistroD101.Count - 1 do
     begin
       with RegD100.RegistroD101.Items[intFor] do
       begin
-        case IND_EMIT of
-          nfNegociavel    : strIND_NAT_FRT := '0';
-          nfNaoNegociavel : strIND_NAT_FRT := '1';
+        case IND_NAT_FRT of
+          nfcVendaOnusEstVendedor : strIND_NAT_FRT := '0';
+          nfcVendaOnusAdquirente  : strIND_NAT_FRT := '1';
+          nfcCompraGeraCred       : strIND_NAT_FRT := '2';
+          nfcCompraNaoGeraCred    : strIND_NAT_FRT := '3';
+          nfcTransfAcabadosPJ     : strIND_NAT_FRT := '4';
+          nfcTransfNaoAcabadosPJ  : strIND_NAT_FRT := '5';
+          nfcOutras               : strIND_NAT_FRT := '9';
         end;
-        Add( LFill('D101') +
+
+        case CST_PIS of
+          stpisValorAliquotaNormal                           : strCST_PIS := '01';
+          stpisValorAliquotaDiferenciada                     : strCST_PIS := '02';
+          stpisQtdeAliquotaUnidade                           : strCST_PIS := '03';
+          stpisMonofaticaAliquotaZero                        : strCST_PIS := '04';
+          stpisValorAliquotaPorST                            : strCST_PIS := '05';
+          stpisAliquotaZero                                  : strCST_PIS := '06';
+          stpisIsentaContribuicao                            : strCST_PIS := '07';
+          stpisSemIncidenciaContribuicao                     : strCST_PIS := '08';
+          stpisSuspensaoContribuicao                         : strCST_PIS := '09';
+          stpisOutrasOperacoesSaida                          : strCST_PIS := '49';
+          stpisOperCredExcRecTribMercInt                     : strCST_PIS := '50';
+          stpisOperCredExcRecNaoTribMercInt                  : strCST_PIS := '51';
+          stpisOperCredExcRecExportacao                      : strCST_PIS := '52';
+          stpisOperCredRecTribNaoTribMercInt                 : strCST_PIS := '53';
+          stpisOperCredRecTribMercIntEExportacao             : strCST_PIS := '54';
+          stpisOperCredRecNaoTribMercIntEExportacao          : strCST_PIS := '55';
+          stpisOperCredRecTribENaoTribMercIntEExportacao     : strCST_PIS := '56';
+          stpisCredPresAquiExcRecTribMercInt                 : strCST_PIS := '60';
+          stpisCredPresAquiExcRecNaoTribMercInt              : strCST_PIS := '61';
+          stpisCredPresAquiExcExcRecExportacao               : strCST_PIS := '62';
+          stpisCredPresAquiRecTribNaoTribMercInt             : strCST_PIS := '63';
+          stpisCredPresAquiRecTribMercIntEExportacao         : strCST_PIS := '64';
+          stpisCredPresAquiRecNaoTribMercIntEExportacao      : strCST_PIS := '65';
+          stpisCredPresAquiRecTribENaoTribMercIntEExportacao : strCST_PIS := '66';
+          stpisOutrasOperacoes_CredPresumido                 : strCST_PIS := '67';
+          stpisOperAquiSemDirCredito                         : strCST_PIS := '70';
+          stpisOperAquiComIsensao                            : strCST_PIS := '71';
+          stpisOperAquiComSuspensao                          : strCST_PIS := '72';
+          stpisOperAquiAliquotaZero                          : strCST_PIS := '73';
+          stpisOperAqui_SemIncidenciaContribuicao            : strCST_PIS := '74';
+          stpisOperAquiPorST                                 : strCST_PIS := '75';
+          stpisOutrasOperacoesEntrada                        : strCST_PIS := '98';
+          stpisOutrasOperacoes                               : strCST_PIS := '99';
+        end;
+
+        case NAT_BC_CRED of
+          bccAqBensRevenda                 : strNAT_BC_CRED := '01';
+          bccAqBensUtiComoInsumo           : strNAT_BC_CRED := '02';
+          bccAqServUtiComoInsumo           : strNAT_BC_CRED := '03';
+          bccEnergiaEletricaTermica        : strNAT_BC_CRED := '04';
+          bccAluguelPredios                : strNAT_BC_CRED := '05';
+          bccAluguelMaqEquipamentos        : strNAT_BC_CRED := '06';
+          bccArmazenagemMercadoria         : strNAT_BC_CRED := '07';
+          bccConArrendamentoMercantil      : strNAT_BC_CRED := '08';
+          bccMaqCredDepreciacao            : strNAT_BC_CRED := '09';
+          bccMaqCredAquisicao              : strNAT_BC_CRED := '10';
+          bccAmortizacaoDepreciacaoImoveis : strNAT_BC_CRED := '11';
+          bccDevolucaoSujeita              : strNAT_BC_CRED := '12';
+          bccOutrasOpeComDirCredito        : strNAT_BC_CRED := '13';
+          bccAtTransporteSubcontratacao    : strNAT_BC_CRED := '14';
+          bccAtImobCustoIncorrido          : strNAT_BC_CRED := '15';
+          bccAtImobCustoOrcado             : strNAT_BC_CRED := '16';
+          bccAtPresServ                    : strNAT_BC_CRED := '17';
+          bccEstoqueAberturaBens           : strNAT_BC_CRED := '18';
+        end;
+
+        Add( LFill('D101')           +
              LFill( strIND_NAT_FRT ) + //Verificar se essa opção é a mesma que já existia no ACBrEPCBlocos e se devo completar
-             LFill( VL_ITEM,0,2 ) +
-             LFill( CST_PIS ) +
-             LFill( NAT_BC_CRED ) + //Verificar criação da tabela no ACBrEPCBlocos
-             LFill( VL_BC_PIS,0,2 ) +
-             LFill( ALIQ_PIS,0,2 ) +
-             LFill( VL_PIS,0,2 ) +
+             LFill( VL_ITEM,0,2 )    +
+             LFill( strCST_PIS )     +
+             LFill( strNAT_BC_CRED ) +
+             LFill( VL_BC_PIS,0,2 )  +
+             LFill( ALIQ_PIS,0,2 )   +
+             LFill( VL_PIS,0,2 )     +
              LFill(COD_CTA) ) ;
         //
         RegistroD990.QTD_LIN_D := RegistroD990.QTD_LIN_D + 1;
       end;
-   end;
-   // Variavél para armazenar a quantidade de registro do tipo.
-   FRegistroD101Count := FRegistroD101Count + RegD100.RegistroD101.Count;
+    end;
+    // Variavél para armazenar a quantidade de registro do tipo.
+    FRegistroD101Count := FRegistroD101Count + RegD100.RegistroD101.Count;
   end;
 end;
 
 procedure TBloco_D.WriteRegistroD105(RegD100: TRegistroD100) ;
-var
-intFor: integer;
-strIND_NAT_FRT : AnsiString;
+  var
+    intFor         : integer;
+    strIND_NAT_FRT : AnsiString;
+    strCST_COFINS  : AnsiString;
+    strNAT_BC_CRED : AnsiString;
 begin
-  if Assigned(RegD010.RegistroD105) then
+  if Assigned(RegD100.RegistroD105) then
   begin
-    for intFor := 0 to RegD010.RegistroD100.Count - 1 do
+    for intFor := 0 to RegD100.RegistroD105.Count - 1 do
     begin
       with RegD100.RegistroD105.Items[intFor] do
       begin
-        case IND_EMIT of
-          nfNegociavel    : strIND_NAT_FRT := '0';
-          nfNaoNegociavel : strIND_NAT_FRT := '1';
+        case IND_NAT_FRT of
+            nfcVendaOnusEstVendedor : strIND_NAT_FRT := '0';
+            nfcVendaOnusAdquirente  : strIND_NAT_FRT := '1';
+            nfcCompraGeraCred       : strIND_NAT_FRT := '2';
+            nfcCompraNaoGeraCred    : strIND_NAT_FRT := '3';
+            nfcTransfAcabadosPJ     : strIND_NAT_FRT := '4';
+            nfcTransfNaoAcabadosPJ  : strIND_NAT_FRT := '5';
+            nfcOutras               : strIND_NAT_FRT := '9';
         end;
-        Add( LFill('D105') +
-             LFill( strIND_NAT_FRT ) + //Verificar se essa opção é a mesma que já existia no ACBrEPCBlocos e se devo completar
-             LFill( VL_ITEM,0,2 ) +
-             LFill( CST_COFINS ) +
-             LFill( NAT_BC_CRED ) + //Verificar criação da tabela no ACBrEPCBlocos
+
+        case CST_COFINS of
+          stcofinsValorAliquotaNormal                           : strCST_COFINS := '01';
+          stcofinsValorAliquotaDiferenciada                     : strCST_COFINS := '02';
+          stcofinsQtdeAliquotaUnidade                           : strCST_COFINS := '03';
+          stcofinsMonofaticaAliquotaZero                        : strCST_COFINS := '04';
+          stcofinsValorAliquotaPorST                            : strCST_COFINS := '05';
+          stcofinsAliquotaZero                                  : strCST_COFINS := '06';
+          stcofinsIsentaContribuicao                            : strCST_COFINS := '07';
+          stcofinsSemIncidenciaContribuicao                     : strCST_COFINS := '08';
+          stcofinsSuspensaoContribuicao                         : strCST_COFINS := '09';
+          stcofinsOutrasOperacoesSaida                          : strCST_COFINS := '49';
+          stcofinsOperCredExcRecTribMercInt                     : strCST_COFINS := '50';
+          stcofinsOperCredExcRecNaoTribMercInt                  : strCST_COFINS := '51';
+          stcofinsOperCredExcRecExportacao                      : strCST_COFINS := '52';
+          stcofinsOperCredRecTribNaoTribMercInt                 : strCST_COFINS := '53';
+          stcofinsOperCredRecTribMercIntEExportacao             : strCST_COFINS := '54';
+          stcofinsOperCredRecNaoTribMercIntEExportacao          : strCST_COFINS := '55';
+          stcofinsOperCredRecTribENaoTribMercIntEExportacao     : strCST_COFINS := '56';
+          stcofinsCredPresAquiExcRecTribMercInt                 : strCST_COFINS := '60';
+          stcofinsCredPresAquiExcRecNaoTribMercInt              : strCST_COFINS := '61';
+          stcofinsCredPresAquiExcExcRecExportacao               : strCST_COFINS := '62';
+          stcofinsCredPresAquiRecTribNaoTribMercInt             : strCST_COFINS := '63';
+          stcofinsCredPresAquiRecTribMercIntEExportacao         : strCST_COFINS := '64';
+          stcofinsCredPresAquiRecNaoTribMercIntEExportacao      : strCST_COFINS := '65';
+          stcofinsCredPresAquiRecTribENaoTribMercIntEExportacao : strCST_COFINS := '66';
+          stcofinsOutrasOperacoes_CredPresumido                 : strCST_COFINS := '67';
+          stcofinsOperAquiSemDirCredito                         : strCST_COFINS := '70';
+          stcofinsOperAquiComIsensao                            : strCST_COFINS := '71';
+          stcofinsOperAquiComSuspensao                          : strCST_COFINS := '72';
+          stcofinsOperAquiAliquotaZero                          : strCST_COFINS := '73';
+          stcofinsOperAqui_SemIncidenciaContribuicao            : strCST_COFINS := '74';
+          stcofinsOperAquiPorST                                 : strCST_COFINS := '75';
+          stcofinsOutrasOperacoesEntrada                        : strCST_COFINS := '98';
+          stcofinsOutrasOperacoes                               : strCST_COFINS := '99';
+        end;
+
+        case NAT_BC_CRED of
+          bccAqBensRevenda                 : strNAT_BC_CRED := '01';
+          bccAqBensUtiComoInsumo           : strNAT_BC_CRED := '02';
+          bccAqServUtiComoInsumo           : strNAT_BC_CRED := '03';
+          bccEnergiaEletricaTermica        : strNAT_BC_CRED := '04';
+          bccAluguelPredios                : strNAT_BC_CRED := '05';
+          bccAluguelMaqEquipamentos        : strNAT_BC_CRED := '06';
+          bccArmazenagemMercadoria         : strNAT_BC_CRED := '07';
+          bccConArrendamentoMercantil      : strNAT_BC_CRED := '08';
+          bccMaqCredDepreciacao            : strNAT_BC_CRED := '09';
+          bccMaqCredAquisicao              : strNAT_BC_CRED := '10';
+          bccAmortizacaoDepreciacaoImoveis : strNAT_BC_CRED := '11';
+          bccDevolucaoSujeita              : strNAT_BC_CRED := '12';
+          bccOutrasOpeComDirCredito        : strNAT_BC_CRED := '13';
+          bccAtTransporteSubcontratacao    : strNAT_BC_CRED := '14';
+          bccAtImobCustoIncorrido          : strNAT_BC_CRED := '15';
+          bccAtImobCustoOrcado             : strNAT_BC_CRED := '16';
+          bccAtPresServ                    : strNAT_BC_CRED := '17';
+          bccEstoqueAberturaBens           : strNAT_BC_CRED := '18';
+        end;
+
+        Add( LFill('D105')             +
+             LFill( strIND_NAT_FRT )   + //Verificar se essa opção é a mesma que já existia no ACBrEPCBlocos e se devo completar
+             LFill( VL_ITEM,0,2 )      +
+             LFill( strCST_COFINS )    +
+             LFill( strNAT_BC_CRED )   +
              LFill( VL_BC_COFINS,0,2 ) +
-             LFill( ALIQ_COFINS,0,2 ) +
-             LFill( VL_COFINS,0,2 ) +
+             LFill( ALIQ_COFINS,0,2 )  +
+             LFill( VL_COFINS,0,2 )    +
              LFill(COD_CTA) ) ;
         //
         RegistroD990.QTD_LIN_D := RegistroD990.QTD_LIN_D + 1;
@@ -645,9 +768,9 @@ begin
 end;
 
 procedure TBloco_D.WriteRegistroD111(RegD100: TRegistroD100) ;
-var
-intFor: integer;
-strIND_PROC : AnsiString;
+  var
+    intFor      : integer;
+    strIND_PROC : AnsiString;
 begin
   if Assigned(RegD100.RegistroD111) then
   begin
@@ -662,7 +785,7 @@ begin
           opNenhum         : strIND_PROC := '';
         end;
 
-        Add( LFill('D111') +
+        Add( LFill('D111')   +
              LFill(NUM_PROC) +
              LFill(strIND_PROC) ) ;
       end;
@@ -675,10 +798,10 @@ begin
 end;
 
 procedure TBloco_D.WriteRegistroD200(RegD010: TRegistroD010) ;
-var
-intFor: integer;
-strCOD_MOD  : AnsiString;
-strCOD_SIT  : AnsiString;
+  var
+    intFor     : integer;
+    strCOD_MOD : AnsiString;
+    strCOD_SIT : AnsiString;
 begin
   if Assigned(RegD010.RegistroD200) then
   begin
@@ -686,17 +809,8 @@ begin
      begin
         with RegD010.RegistroD200.Items[intFor] do
         begin
-          case COD_MOD of
-            dfiNFSTransporte           : strCOD_MOD := '07';
-            dfiConhecimentoRodoviario  : strCOD_MOD := '08';
-            dfiConhecimentoAvulso      : strCOD_MOD := '8B';
-            dfiConhecimentoAquaviario  : strCOD_MOD := '09';
-            dfiConhecimentoAereo       : strCOD_MOD := '10';
-            dfiConhecimentoFerroviario : strCOD_MOD := '11';
-            dfiConhecimentoMultimodal  : strCOD_MOD := '26';
-            dfiNFTranspFerro           : strCOD_MOD := '27';
-            dfiCTE                     : strCOD_MOD := '57';
-          end;
+          Check(Pos(COD_MOD, '07 08 8B 09 10 11 26 27 57') > 0, '(D-200) O Modelo do Documento "%s" é inválido!', [COD_MOD]);
+
           case COD_SIT of
             sdfRegular         : strCOD_SIT := '00';
             sdfExtRegular      : strCOD_SIT := '01';
@@ -705,16 +819,16 @@ begin
             sdfInutilizado     : strCOD_SIT := '08';
           end;
 
-          Add( LFill('D200') +
-               LFill( strCOD_MOD ) +
-               LFill( strCOD_SIT ) +
-               LFill( SER ) +
-               LFill( SUB ) +
+          Add( LFill('D200')        +
+               LFill( COD_MOD )     +
+               LFill( strCOD_SIT )  +
+               LFill( SER )         +
+               LFill( SUB )         +
                LFill( NUM_DOC_INI ) +
                LFill( NUM_DOC_FIN ) +
-               LFill( CFOP ) +
-               LFill( DT_REF ) +
-               LFill( VL_DOC,0,2 ) +
+               LFill( CFOP )        +
+               LFill( DT_REF )      +
+               LFill( VL_DOC,0,2 )  +
                LFill( VL_DESC,0,2 ) ) ;
         end;
 
@@ -731,61 +845,136 @@ begin
 end;
 
 procedure TBloco_D.WriteRegistroD201(RegD200: TRegistroD200) ;
-var
-intFor: integer;
+  var
+    intFor     : integer;
+    strCST_PIS :  AnsiString;
 begin
-  if Assigned(RegD010.RegistroD201) then
+  if Assigned(RegD200.RegistroD201) then
   begin
-    for intFor := 0 to RegD010.RegistroD200.Count - 1 do
+    for intFor := 0 to RegD200.RegistroD201.Count - 1 do
     begin
       with RegD200.RegistroD201.Items[intFor] do
       begin
-        Add( LFill('D201') +
-             LFill( CST_PIS ) +
-             LFill( VL_ITEM,0,2 ) +
+
+        case CST_PIS of
+          stpisValorAliquotaNormal                           : strCST_PIS := '01';
+          stpisValorAliquotaDiferenciada                     : strCST_PIS := '02';
+          stpisQtdeAliquotaUnidade                           : strCST_PIS := '03';
+          stpisMonofaticaAliquotaZero                        : strCST_PIS := '04';
+          stpisValorAliquotaPorST                            : strCST_PIS := '05';
+          stpisAliquotaZero                                  : strCST_PIS := '06';
+          stpisIsentaContribuicao                            : strCST_PIS := '07';
+          stpisSemIncidenciaContribuicao                     : strCST_PIS := '08';
+          stpisSuspensaoContribuicao                         : strCST_PIS := '09';
+          stpisOutrasOperacoesSaida                          : strCST_PIS := '49';
+          stpisOperCredExcRecTribMercInt                     : strCST_PIS := '50';
+          stpisOperCredExcRecNaoTribMercInt                  : strCST_PIS := '51';
+          stpisOperCredExcRecExportacao                      : strCST_PIS := '52';
+          stpisOperCredRecTribNaoTribMercInt                 : strCST_PIS := '53';
+          stpisOperCredRecTribMercIntEExportacao             : strCST_PIS := '54';
+          stpisOperCredRecNaoTribMercIntEExportacao          : strCST_PIS := '55';
+          stpisOperCredRecTribENaoTribMercIntEExportacao     : strCST_PIS := '56';
+          stpisCredPresAquiExcRecTribMercInt                 : strCST_PIS := '60';
+          stpisCredPresAquiExcRecNaoTribMercInt              : strCST_PIS := '61';
+          stpisCredPresAquiExcExcRecExportacao               : strCST_PIS := '62';
+          stpisCredPresAquiRecTribNaoTribMercInt             : strCST_PIS := '63';
+          stpisCredPresAquiRecTribMercIntEExportacao         : strCST_PIS := '64';
+          stpisCredPresAquiRecNaoTribMercIntEExportacao      : strCST_PIS := '65';
+          stpisCredPresAquiRecTribENaoTribMercIntEExportacao : strCST_PIS := '66';
+          stpisOutrasOperacoes_CredPresumido                 : strCST_PIS := '67';
+          stpisOperAquiSemDirCredito                         : strCST_PIS := '70';
+          stpisOperAquiComIsensao                            : strCST_PIS := '71';
+          stpisOperAquiComSuspensao                          : strCST_PIS := '72';
+          stpisOperAquiAliquotaZero                          : strCST_PIS := '73';
+          stpisOperAqui_SemIncidenciaContribuicao            : strCST_PIS := '74';
+          stpisOperAquiPorST                                 : strCST_PIS := '75';
+          stpisOutrasOperacoesEntrada                        : strCST_PIS := '98';
+          stpisOutrasOperacoes                               : strCST_PIS := '99';
+        end;
+
+        Add( LFill('D201')          +
+             LFill( strCST_PIS )    +
+             LFill( VL_ITEM,0,2 )   +
              LFill( VL_BC_PIS,0,2 ) +
-             LFill( ALIQ_PIS,0,2 ) +
-             LFill( VL_PIS,0,2 ) +
+             LFill( ALIQ_PIS,0,2 )  +
+             LFill( VL_PIS,0,2 )    +
              LFill(COD_CTA) ) ;
         //
         RegistroD990.QTD_LIN_D := RegistroD990.QTD_LIN_D + 1;
       end;
-   end;
-   // Variavél para armazenar a quantidade de registro do tipo.
-   FRegistroD201Count := FRegistroD201Count + RegD200.RegistroD201.Count;
+    end;
+    // Variavél para armazenar a quantidade de registro do tipo.
+    FRegistroD201Count := FRegistroD201Count + RegD200.RegistroD201.Count;
   end;
 end;
 
 procedure TBloco_D.WriteRegistroD205(RegD200: TRegistroD200) ;
-var
-intFor: integer;
+  var
+    intFor        : integer;
+    strCST_COFINS :  AnsiString;
 begin
-  if Assigned(RegD010.RegistroD205) then
+  if Assigned(RegD200.RegistroD205) then
   begin
-    for intFor := 0 to RegD010.RegistroD200.Count - 1 do
+    for intFor := 0 to RegD200.RegistroD205.Count - 1 do
     begin
       with RegD200.RegistroD205.Items[intFor] do
       begin
-        Add( LFill('D205') +
-             LFill( CST_COFINS ) +
-             LFill( VL_ITEM,0,2 ) +
+        case CST_COFINS of
+          stcofinsValorAliquotaNormal                           : strCST_COFINS := '01';
+          stcofinsValorAliquotaDiferenciada                     : strCST_COFINS := '02';
+          stcofinsQtdeAliquotaUnidade                           : strCST_COFINS := '03';
+          stcofinsMonofaticaAliquotaZero                        : strCST_COFINS := '04';
+          stcofinsValorAliquotaPorST                            : strCST_COFINS := '05';
+          stcofinsAliquotaZero                                  : strCST_COFINS := '06';
+          stcofinsIsentaContribuicao                            : strCST_COFINS := '07';
+          stcofinsSemIncidenciaContribuicao                     : strCST_COFINS := '08';
+          stcofinsSuspensaoContribuicao                         : strCST_COFINS := '09';
+          stcofinsOutrasOperacoesSaida                          : strCST_COFINS := '49';
+          stcofinsOperCredExcRecTribMercInt                     : strCST_COFINS := '50';
+          stcofinsOperCredExcRecNaoTribMercInt                  : strCST_COFINS := '51';
+          stcofinsOperCredExcRecExportacao                      : strCST_COFINS := '52';
+          stcofinsOperCredRecTribNaoTribMercInt                 : strCST_COFINS := '53';
+          stcofinsOperCredRecTribMercIntEExportacao             : strCST_COFINS := '54';
+          stcofinsOperCredRecNaoTribMercIntEExportacao          : strCST_COFINS := '55';
+          stcofinsOperCredRecTribENaoTribMercIntEExportacao     : strCST_COFINS := '56';
+          stcofinsCredPresAquiExcRecTribMercInt                 : strCST_COFINS := '60';
+          stcofinsCredPresAquiExcRecNaoTribMercInt              : strCST_COFINS := '61';
+          stcofinsCredPresAquiExcExcRecExportacao               : strCST_COFINS := '62';
+          stcofinsCredPresAquiRecTribNaoTribMercInt             : strCST_COFINS := '63';
+          stcofinsCredPresAquiRecTribMercIntEExportacao         : strCST_COFINS := '64';
+          stcofinsCredPresAquiRecNaoTribMercIntEExportacao      : strCST_COFINS := '65';
+          stcofinsCredPresAquiRecTribENaoTribMercIntEExportacao : strCST_COFINS := '66';
+          stcofinsOutrasOperacoes_CredPresumido                 : strCST_COFINS := '67';
+          stcofinsOperAquiSemDirCredito                         : strCST_COFINS := '70';
+          stcofinsOperAquiComIsensao                            : strCST_COFINS := '71';
+          stcofinsOperAquiComSuspensao                          : strCST_COFINS := '72';
+          stcofinsOperAquiAliquotaZero                          : strCST_COFINS := '73';
+          stcofinsOperAqui_SemIncidenciaContribuicao            : strCST_COFINS := '74';
+          stcofinsOperAquiPorST                                 : strCST_COFINS := '75';
+          stcofinsOutrasOperacoesEntrada                        : strCST_COFINS := '98';
+          stcofinsOutrasOperacoes                               : strCST_COFINS := '99';
+        end;
+
+        Add( LFill('D205')             +
+             LFill( strCST_COFINS )    +
+             LFill( VL_ITEM,0,2 )      +
              LFill( VL_BC_COFINS,0,2 ) +
-             LFill( ALIQ_COFINS,0,2 ) +
-             LFill( VL_COFINS,0,2 ) +
+             LFill( ALIQ_COFINS,0,2 )  +
+             LFill( VL_COFINS,0,2 )    +
              LFill(COD_CTA) ) ;
         //
         RegistroD990.QTD_LIN_D := RegistroD990.QTD_LIN_D + 1;
       end;
-   end;
-   // Variavél para armazenar a quantidade de registro do tipo.
-   FRegistroD205Count := FRegistroD205Count + RegD200.RegistroD205.Count;
+    end;
+    // Variavél para armazenar a quantidade de registro do tipo.
+    FRegistroD205Count := FRegistroD205Count + RegD200.RegistroD205.Count;
   end;
 end;
 
 procedure TBloco_D.WriteRegistroD209(RegD200: TRegistroD200) ;
-var
-intFor: integer;
-strIND_PROC : AnsiString;
+  var
+    intFor      : integer;
+    strIND_PROC : AnsiString;
 begin
   if Assigned(RegD200.RegistroD209) then
   begin
@@ -813,9 +1002,11 @@ begin
 end;
 
 procedure TBloco_D.WriteRegistroD300(RegD010: TRegistroD010) ;
-var
-intFor: integer;
-strCOD_MOD  : AnsiString;
+  var
+    intFor        : integer;
+    strCOD_MOD    : AnsiString;
+    strCST_PIS    :  AnsiString;
+    strCST_COFINS :  AnsiString;
 begin
   if Assigned(RegD010.RegistroD300) then
   begin
@@ -823,32 +1014,98 @@ begin
      begin
         with RegD010.RegistroD300.Items[intFor] do
         begin
-          case COD_MOD of
-            dfiBilheteRedoviario       : strCOD_MOD := '13';
-            dfiBilheteAquaviario       : strCOD_MOD := '14';
-            dfiBilheteBagagem          : strCOD_MOD := '15';
-            dfiBilheteFerroviario      : strCOD_MOD := '16';
-            dfiResumoMovimento         : strCOD_MOD := '18';
+          Check(Pos(COD_MOD, '13 14 15 16 18') > 0, '(D-300) O Modelo do Documento "%s" é inválido!', [COD_MOD]);
+
+          case CST_PIS of
+            stpisValorAliquotaNormal                           : strCST_PIS := '01';
+            stpisValorAliquotaDiferenciada                     : strCST_PIS := '02';
+            stpisQtdeAliquotaUnidade                           : strCST_PIS := '03';
+            stpisMonofaticaAliquotaZero                        : strCST_PIS := '04';
+            stpisValorAliquotaPorST                            : strCST_PIS := '05';
+            stpisAliquotaZero                                  : strCST_PIS := '06';
+            stpisIsentaContribuicao                            : strCST_PIS := '07';
+            stpisSemIncidenciaContribuicao                     : strCST_PIS := '08';
+            stpisSuspensaoContribuicao                         : strCST_PIS := '09';
+            stpisOutrasOperacoesSaida                          : strCST_PIS := '49';
+            stpisOperCredExcRecTribMercInt                     : strCST_PIS := '50';
+            stpisOperCredExcRecNaoTribMercInt                  : strCST_PIS := '51';
+            stpisOperCredExcRecExportacao                      : strCST_PIS := '52';
+            stpisOperCredRecTribNaoTribMercInt                 : strCST_PIS := '53';
+            stpisOperCredRecTribMercIntEExportacao             : strCST_PIS := '54';
+            stpisOperCredRecNaoTribMercIntEExportacao          : strCST_PIS := '55';
+            stpisOperCredRecTribENaoTribMercIntEExportacao     : strCST_PIS := '56';
+            stpisCredPresAquiExcRecTribMercInt                 : strCST_PIS := '60';
+            stpisCredPresAquiExcRecNaoTribMercInt              : strCST_PIS := '61';
+            stpisCredPresAquiExcExcRecExportacao               : strCST_PIS := '62';
+            stpisCredPresAquiRecTribNaoTribMercInt             : strCST_PIS := '63';
+            stpisCredPresAquiRecTribMercIntEExportacao         : strCST_PIS := '64';
+            stpisCredPresAquiRecNaoTribMercIntEExportacao      : strCST_PIS := '65';
+            stpisCredPresAquiRecTribENaoTribMercIntEExportacao : strCST_PIS := '66';
+            stpisOutrasOperacoes_CredPresumido                 : strCST_PIS := '67';
+            stpisOperAquiSemDirCredito                         : strCST_PIS := '70';
+            stpisOperAquiComIsensao                            : strCST_PIS := '71';
+            stpisOperAquiComSuspensao                          : strCST_PIS := '72';
+            stpisOperAquiAliquotaZero                          : strCST_PIS := '73';
+            stpisOperAqui_SemIncidenciaContribuicao            : strCST_PIS := '74';
+            stpisOperAquiPorST                                 : strCST_PIS := '75';
+            stpisOutrasOperacoesEntrada                        : strCST_PIS := '98';
+            stpisOutrasOperacoes                               : strCST_PIS := '99';
           end;
 
-          Add( LFill('D300') +
-               LFill( strCOD_MOD ) +
-               LFill( SER ) +
-               LFill( SUB ) +
-               LFill( NUM_DOC_INI ) +
-               LFill( NUM_DOC_FIN ) +
-               LFill( CFOP ) +
-               LFill( DT_REF ) +
-               LFill( VL_DOC,0,2 ) +
-               LFill( VL_DESC,0,2 ) +
-               LFill( CST_PIS ) +
-               LFill( VL_BC_PIS,0,2 ) +
-               LFill( ALIQ_PIS,0,2 ) +
-               LFill( VL_PIS,0,2 ) +
-               LFill( CST_COFINS ) +
+          case CST_COFINS of
+            stcofinsValorAliquotaNormal                           : strCST_COFINS := '01';
+            stcofinsValorAliquotaDiferenciada                     : strCST_COFINS := '02';
+            stcofinsQtdeAliquotaUnidade                           : strCST_COFINS := '03';
+            stcofinsMonofaticaAliquotaZero                        : strCST_COFINS := '04';
+            stcofinsValorAliquotaPorST                            : strCST_COFINS := '05';
+            stcofinsAliquotaZero                                  : strCST_COFINS := '06';
+            stcofinsIsentaContribuicao                            : strCST_COFINS := '07';
+            stcofinsSemIncidenciaContribuicao                     : strCST_COFINS := '08';
+            stcofinsSuspensaoContribuicao                         : strCST_COFINS := '09';
+            stcofinsOutrasOperacoesSaida                          : strCST_COFINS := '49';
+            stcofinsOperCredExcRecTribMercInt                     : strCST_COFINS := '50';
+            stcofinsOperCredExcRecNaoTribMercInt                  : strCST_COFINS := '51';
+            stcofinsOperCredExcRecExportacao                      : strCST_COFINS := '52';
+            stcofinsOperCredRecTribNaoTribMercInt                 : strCST_COFINS := '53';
+            stcofinsOperCredRecTribMercIntEExportacao             : strCST_COFINS := '54';
+            stcofinsOperCredRecNaoTribMercIntEExportacao          : strCST_COFINS := '55';
+            stcofinsOperCredRecTribENaoTribMercIntEExportacao     : strCST_COFINS := '56';
+            stcofinsCredPresAquiExcRecTribMercInt                 : strCST_COFINS := '60';
+            stcofinsCredPresAquiExcRecNaoTribMercInt              : strCST_COFINS := '61';
+            stcofinsCredPresAquiExcExcRecExportacao               : strCST_COFINS := '62';
+            stcofinsCredPresAquiRecTribNaoTribMercInt             : strCST_COFINS := '63';
+            stcofinsCredPresAquiRecTribMercIntEExportacao         : strCST_COFINS := '64';
+            stcofinsCredPresAquiRecNaoTribMercIntEExportacao      : strCST_COFINS := '65';
+            stcofinsCredPresAquiRecTribENaoTribMercIntEExportacao : strCST_COFINS := '66';
+            stcofinsOutrasOperacoes_CredPresumido                 : strCST_COFINS := '67';
+            stcofinsOperAquiSemDirCredito                         : strCST_COFINS := '70';
+            stcofinsOperAquiComIsensao                            : strCST_COFINS := '71';
+            stcofinsOperAquiComSuspensao                          : strCST_COFINS := '72';
+            stcofinsOperAquiAliquotaZero                          : strCST_COFINS := '73';
+            stcofinsOperAqui_SemIncidenciaContribuicao            : strCST_COFINS := '74';
+            stcofinsOperAquiPorST                                 : strCST_COFINS := '75';
+            stcofinsOutrasOperacoesEntrada                        : strCST_COFINS := '98';
+            stcofinsOutrasOperacoes                               : strCST_COFINS := '99';
+          end;
+
+          Add( LFill('D300')             +
+               LFill( COD_MOD )          +
+               LFill( SER )              +
+               LFill( SUB )              +
+               LFill( NUM_DOC_INI )      +
+               LFill( NUM_DOC_FIN )      +
+               LFill( CFOP )             +
+               LFill( DT_REF )           +
+               LFill( VL_DOC,0,2 )       +
+               LFill( VL_DESC,0,2 )      +
+               LFill( strCST_PIS )       +
+               LFill( VL_BC_PIS,0,2 )    +
+               LFill( ALIQ_PIS,0,2 )     +
+               LFill( VL_PIS,0,2 )       +
+               LFill( strCST_COFINS )    +
                LFill( VL_BC_COFINS,0,2 ) +
-               LFill( ALIQ_COFINS,0,2 ) +
-               LFill( VL_COFINS,0,2 ) +
+               LFill( ALIQ_COFINS,0,2 )  +
+               LFill( VL_COFINS,0,2 )    +
                LFill(COD_CTA) ) ;
         end;
 
@@ -863,9 +1120,9 @@ begin
 end;
 
 procedure TBloco_D.WriteRegistroD309(RegD300: TRegistroD300) ;
-var
-intFor: integer;
-strIND_PROC : AnsiString;
+  var
+    intFor      : integer;
+    strIND_PROC : AnsiString;
 begin
   if Assigned(RegD300.RegistroD309) then
   begin
@@ -880,7 +1137,7 @@ begin
           opNenhum         : strIND_PROC := '';
         end;
 
-        Add( LFill('D309') +
+        Add( LFill('D309')   +
              LFill(NUM_PROC) +
              LFill(strIND_PROC) ) ;
       end;
@@ -893,9 +1150,11 @@ begin
 end;
 
 procedure TBloco_D.WriteRegistroD350(RegD010: TRegistroD010) ;
-var
-intFor: integer;
-strCOD_MOD  : AnsiString;
+  var
+    intFor        : integer;
+    strCOD_MOD    : AnsiString;
+    strCST_PIS    :  AnsiString;
+    strCST_COFINS :  AnsiString;
 begin
   if Assigned(RegD010.RegistroD350) then
   begin
@@ -903,36 +1162,101 @@ begin
      begin
         with RegD010.RegistroD350.Items[intFor] do
         begin
-          case COD_MOD of
-            dfiCFBilhete               : strCOD_MOD := '2E';
-            dfiBilheteRedoviario       : strCOD_MOD := '13';
-            dfiBilheteAquaviario       : strCOD_MOD := '14';
-            dfiBilheteBagagem          : strCOD_MOD := '15';
-            dfiBilheteFerroviario      : strCOD_MOD := '16';
+          Check(Pos(COD_MOD, '2E 13 14 15 16') > 0, '(D-350) O Modelo do Documento "%s" é inválido!', [COD_MOD]);
+          case CST_PIS of
+            stpisValorAliquotaNormal                           : strCST_PIS := '01';
+            stpisValorAliquotaDiferenciada                     : strCST_PIS := '02';
+            stpisQtdeAliquotaUnidade                           : strCST_PIS := '03';
+            stpisMonofaticaAliquotaZero                        : strCST_PIS := '04';
+            stpisValorAliquotaPorST                            : strCST_PIS := '05';
+            stpisAliquotaZero                                  : strCST_PIS := '06';
+            stpisIsentaContribuicao                            : strCST_PIS := '07';
+            stpisSemIncidenciaContribuicao                     : strCST_PIS := '08';
+            stpisSuspensaoContribuicao                         : strCST_PIS := '09';
+            stpisOutrasOperacoesSaida                          : strCST_PIS := '49';
+            stpisOperCredExcRecTribMercInt                     : strCST_PIS := '50';
+            stpisOperCredExcRecNaoTribMercInt                  : strCST_PIS := '51';
+            stpisOperCredExcRecExportacao                      : strCST_PIS := '52';
+            stpisOperCredRecTribNaoTribMercInt                 : strCST_PIS := '53';
+            stpisOperCredRecTribMercIntEExportacao             : strCST_PIS := '54';
+            stpisOperCredRecNaoTribMercIntEExportacao          : strCST_PIS := '55';
+            stpisOperCredRecTribENaoTribMercIntEExportacao     : strCST_PIS := '56';
+            stpisCredPresAquiExcRecTribMercInt                 : strCST_PIS := '60';
+            stpisCredPresAquiExcRecNaoTribMercInt              : strCST_PIS := '61';
+            stpisCredPresAquiExcExcRecExportacao               : strCST_PIS := '62';
+            stpisCredPresAquiRecTribNaoTribMercInt             : strCST_PIS := '63';
+            stpisCredPresAquiRecTribMercIntEExportacao         : strCST_PIS := '64';
+            stpisCredPresAquiRecNaoTribMercIntEExportacao      : strCST_PIS := '65';
+            stpisCredPresAquiRecTribENaoTribMercIntEExportacao : strCST_PIS := '66';
+            stpisOutrasOperacoes_CredPresumido                 : strCST_PIS := '67';
+            stpisOperAquiSemDirCredito                         : strCST_PIS := '70';
+            stpisOperAquiComIsensao                            : strCST_PIS := '71';
+            stpisOperAquiComSuspensao                          : strCST_PIS := '72';
+            stpisOperAquiAliquotaZero                          : strCST_PIS := '73';
+            stpisOperAqui_SemIncidenciaContribuicao            : strCST_PIS := '74';
+            stpisOperAquiPorST                                 : strCST_PIS := '75';
+            stpisOutrasOperacoesEntrada                        : strCST_PIS := '98';
+            stpisOutrasOperacoes                               : strCST_PIS := '99';
           end;
 
-          Add( LFill('D350') +
-               LFill( strCOD_MOD ) +
-               LFill( ECF_MOD ) +
-               LFill( ECF_FAB ) +
-               LFill( DT_DOC ) +
-               LFill( CRO ) +
-               LFill( CRZ ) +
-               LFill( NUM_COO_FIN ) +
-               LFill( GT_FIN ) +
-               LFill( VL_BRT,0,2 ) +
-               LFill( CST_PIS ) +
-               LFill( VL_BC_PIS,0,2 ) +
-               LFill( ALIQ_PIS,0,4 ) +
-               LFill( QUANT_BC_PIS,0,3 ) +
-               LFill( ALIQ_PIS_QUANT,0,4 ) +
-               LFill( VL_PIS,0,2 ) +
-               LFill( CST_COFINS ) +
-               LFill( VL_BC_COFINS,0,2 ) +
-               LFill( ALIQ_COFINS,0,4 ) +
-               LFill( QUANT_BC_COFINS,0,3 ) +
+          case CST_COFINS of
+            stcofinsValorAliquotaNormal                           : strCST_COFINS := '01';
+            stcofinsValorAliquotaDiferenciada                     : strCST_COFINS := '02';
+            stcofinsQtdeAliquotaUnidade                           : strCST_COFINS := '03';
+            stcofinsMonofaticaAliquotaZero                        : strCST_COFINS := '04';
+            stcofinsValorAliquotaPorST                            : strCST_COFINS := '05';
+            stcofinsAliquotaZero                                  : strCST_COFINS := '06';
+            stcofinsIsentaContribuicao                            : strCST_COFINS := '07';
+            stcofinsSemIncidenciaContribuicao                     : strCST_COFINS := '08';
+            stcofinsSuspensaoContribuicao                         : strCST_COFINS := '09';
+            stcofinsOutrasOperacoesSaida                          : strCST_COFINS := '49';
+            stcofinsOperCredExcRecTribMercInt                     : strCST_COFINS := '50';
+            stcofinsOperCredExcRecNaoTribMercInt                  : strCST_COFINS := '51';
+            stcofinsOperCredExcRecExportacao                      : strCST_COFINS := '52';
+            stcofinsOperCredRecTribNaoTribMercInt                 : strCST_COFINS := '53';
+            stcofinsOperCredRecTribMercIntEExportacao             : strCST_COFINS := '54';
+            stcofinsOperCredRecNaoTribMercIntEExportacao          : strCST_COFINS := '55';
+            stcofinsOperCredRecTribENaoTribMercIntEExportacao     : strCST_COFINS := '56';
+            stcofinsCredPresAquiExcRecTribMercInt                 : strCST_COFINS := '60';
+            stcofinsCredPresAquiExcRecNaoTribMercInt              : strCST_COFINS := '61';
+            stcofinsCredPresAquiExcExcRecExportacao               : strCST_COFINS := '62';
+            stcofinsCredPresAquiRecTribNaoTribMercInt             : strCST_COFINS := '63';
+            stcofinsCredPresAquiRecTribMercIntEExportacao         : strCST_COFINS := '64';
+            stcofinsCredPresAquiRecNaoTribMercIntEExportacao      : strCST_COFINS := '65';
+            stcofinsCredPresAquiRecTribENaoTribMercIntEExportacao : strCST_COFINS := '66';
+            stcofinsOutrasOperacoes_CredPresumido                 : strCST_COFINS := '67';
+            stcofinsOperAquiSemDirCredito                         : strCST_COFINS := '70';
+            stcofinsOperAquiComIsensao                            : strCST_COFINS := '71';
+            stcofinsOperAquiComSuspensao                          : strCST_COFINS := '72';
+            stcofinsOperAquiAliquotaZero                          : strCST_COFINS := '73';
+            stcofinsOperAqui_SemIncidenciaContribuicao            : strCST_COFINS := '74';
+            stcofinsOperAquiPorST                                 : strCST_COFINS := '75';
+            stcofinsOutrasOperacoesEntrada                        : strCST_COFINS := '98';
+            stcofinsOutrasOperacoes                               : strCST_COFINS := '99';
+          end;
+
+          Add( LFill('D350')                  +
+               LFill( COD_MOD )               +
+               LFill( ECF_MOD )               +
+               LFill( ECF_FAB )               +
+               LFill( DT_DOC )                +
+               LFill( CRO )                   +
+               LFill( CRZ )                   +
+               LFill( NUM_COO_FIN )           +
+               LFill( GT_FIN )                +
+               LFill( VL_BRT,0,2 )            +
+               LFill( strCST_PIS )            +
+               LFill( VL_BC_PIS,0,2 )         +
+               LFill( ALIQ_PIS,0,4 )          +
+               LFill( QUANT_BC_PIS,0,3 )      +
+               LFill( ALIQ_PIS_QUANT,0,4 )    +
+               LFill( VL_PIS,0,2 )            +
+               LFill( strCST_COFINS )         +
+               LFill( VL_BC_COFINS,0,2 )      +
+               LFill( ALIQ_COFINS,0,4 )       +
+               LFill( QUANT_BC_COFINS,0,3 )   +
                LFill( ALIQ_COFINS_QUANT,0,4 ) +
-               LFill( VL_COFINS,0,2 ) +
+               LFill( VL_COFINS,0,2 )         +
                LFill(COD_CTA) ) ;
         end;
 
@@ -947,9 +1271,9 @@ begin
 end;
 
 procedure TBloco_D.WriteRegistroD359(RegD350: TRegistroD350) ;
-var
-intFor: integer;
-strIND_PROC : AnsiString;
+  var
+    intFor      : integer;
+    strIND_PROC : AnsiString;
 begin
   if Assigned(RegD350.RegistroD359) then
   begin
@@ -964,7 +1288,7 @@ begin
           opNenhum         : strIND_PROC := '';
         end;
 
-        Add( LFill('D359') +
+        Add( LFill('D359')   +
              LFill(NUM_PROC) +
              LFill(strIND_PROC) ) ;
       end;
@@ -977,12 +1301,12 @@ begin
 end;
 
 procedure TBloco_D.WriteRegistroD500(RegD010: TRegistroD010) ;
-var
-intFor: integer;
-strIND_OPER : AnsiString;
-strIND_EMIT : AnsiString;
-strCOD_MOD  : AnsiString;
-strCOD_SIT  : AnsiString;
+  var
+    intFor      : integer;
+    strIND_OPER : AnsiString;
+    strIND_EMIT : AnsiString;
+    strCOD_MOD  : AnsiString;
+    strCOD_SIT  : AnsiString;
 begin
   if Assigned(RegD010.RegistroD500) then
   begin
@@ -990,6 +1314,8 @@ begin
      begin
         with RegD010.RegistroD500.Items[intFor] do
         begin
+          Check(Pos(COD_MOD, '21 22') > 0, '(D-500) O Modelo do Documento "%s" é inválido!', [COD_MOD]);
+
           case IND_OPER of
             itoContratado : strIND_OPER := '0';
             itoPrestado   : strIND_OPER := '1';
@@ -998,10 +1324,7 @@ begin
             iedfProprio  : strIND_EMIT := '0';
             iedfTerceiro : strIND_EMIT := '1';
           end;
-          case COD_MOD of
-            dfiNFSComunicacao          : strCOD_MOD := '21';
-            dfiNFSTelecomunicacao      : strCOD_MOD := '22';
-          end;
+
           case COD_SIT of
             sdfRegular         : strCOD_SIT := '00';
             sdfExtRegular      : strCOD_SIT := '01';
@@ -1012,27 +1335,27 @@ begin
             sdfInutilizado     : strCOD_SIT := '08';
           end;
 
-          Add( LFill('D500') +
-               LFill( strIND_OPER ) +
-               LFill( strIND_EMIT ) +
-               LFill( COD_PART ) +
-               LFill( strCOD_MOD ) +
-               LFill( strCOD_SIT ) +
-               LFill( SER ) +
-               LFill( SUB ) +
-               LFill( NUM_DOC ) +
-               LFill( DT_DOC ) +
-               LFill( DT_A_P ) +
-               LFill( VL_DOC,0,2 ) +
-               LFill( VL_DESC,0,2 ) +
-               LFill( VL_SERV,0,2 ) +
+          Add( LFill('D500')           +
+               LFill( strIND_OPER )    +
+               LFill( strIND_EMIT )    +
+               LFill( COD_PART )       +
+               LFill( COD_MOD )        +
+               LFill( strCOD_SIT )     +
+               LFill( SER )            +
+               LFill( SUB )            +
+               LFill( NUM_DOC )        +
+               LFill( DT_DOC )         +
+               LFill( DT_A_P )         +
+               LFill( VL_DOC,0,2 )     +
+               LFill( VL_DESC,0,2 )    +
+               LFill( VL_SERV,0,2 )    +
                LFill( VL_SERV_NT,0,2 ) +
-               LFill( VL_TERC,0,2 ) +
-               LFill( VL_DA,0,2 ) +
+               LFill( VL_TERC,0,2 )    +
+               LFill( VL_DA,0,2 )      +
                LFill( VL_BC_ICMS,0,2 ) +
-               LFill( VL_ICMS,0,2 ) +
-               LFill( COD_INF ) +
-               LFill( VL_PIS,0,2 ) +
+               LFill( VL_ICMS,0,2 )    +
+               LFill( COD_INF )        +
+               LFill( VL_PIS,0,2 )     +
                LFill( VL_COFINS,0,2 ) );
         end;
 
@@ -1049,27 +1372,81 @@ begin
 end;
 
 procedure TBloco_D.WriteRegistroD501(RegD500: TRegistroD500) ;
-var
-intFor: integer;
-strIND_NAT_FRT : AnsiString;
+  var
+    intFor         : integer;
+    strCST_PIS     : AnsiString;
+    strNAT_BC_CRED : AnsiString;
 begin
-  if Assigned(RegD010.RegistroD501) then
+  if Assigned(RegD500.RegistroD501) then
   begin
-    for intFor := 0 to RegD010.RegistroD500.Count - 1 do
+    for intFor := 0 to RegD500.RegistroD501.Count - 1 do
     begin
       with RegD500.RegistroD501.Items[intFor] do
       begin
-        case IND_EMIT of
-          nfNegociavel    : strIND_NAT_FRT := '0';
-          nfNaoNegociavel : strIND_NAT_FRT := '1';
+        case CST_PIS of
+          stpisValorAliquotaNormal                           : strCST_PIS := '01';
+          stpisValorAliquotaDiferenciada                     : strCST_PIS := '02';
+          stpisQtdeAliquotaUnidade                           : strCST_PIS := '03';
+          stpisMonofaticaAliquotaZero                        : strCST_PIS := '04';
+          stpisValorAliquotaPorST                            : strCST_PIS := '05';
+          stpisAliquotaZero                                  : strCST_PIS := '06';
+          stpisIsentaContribuicao                            : strCST_PIS := '07';
+          stpisSemIncidenciaContribuicao                     : strCST_PIS := '08';
+          stpisSuspensaoContribuicao                         : strCST_PIS := '09';
+          stpisOutrasOperacoesSaida                          : strCST_PIS := '49';
+          stpisOperCredExcRecTribMercInt                     : strCST_PIS := '50';
+          stpisOperCredExcRecNaoTribMercInt                  : strCST_PIS := '51';
+          stpisOperCredExcRecExportacao                      : strCST_PIS := '52';
+          stpisOperCredRecTribNaoTribMercInt                 : strCST_PIS := '53';
+          stpisOperCredRecTribMercIntEExportacao             : strCST_PIS := '54';
+          stpisOperCredRecNaoTribMercIntEExportacao          : strCST_PIS := '55';
+          stpisOperCredRecTribENaoTribMercIntEExportacao     : strCST_PIS := '56';
+          stpisCredPresAquiExcRecTribMercInt                 : strCST_PIS := '60';
+          stpisCredPresAquiExcRecNaoTribMercInt              : strCST_PIS := '61';
+          stpisCredPresAquiExcExcRecExportacao               : strCST_PIS := '62';
+          stpisCredPresAquiRecTribNaoTribMercInt             : strCST_PIS := '63';
+          stpisCredPresAquiRecTribMercIntEExportacao         : strCST_PIS := '64';
+          stpisCredPresAquiRecNaoTribMercIntEExportacao      : strCST_PIS := '65';
+          stpisCredPresAquiRecTribENaoTribMercIntEExportacao : strCST_PIS := '66';
+          stpisOutrasOperacoes_CredPresumido                 : strCST_PIS := '67';
+          stpisOperAquiSemDirCredito                         : strCST_PIS := '70';
+          stpisOperAquiComIsensao                            : strCST_PIS := '71';
+          stpisOperAquiComSuspensao                          : strCST_PIS := '72';
+          stpisOperAquiAliquotaZero                          : strCST_PIS := '73';
+          stpisOperAqui_SemIncidenciaContribuicao            : strCST_PIS := '74';
+          stpisOperAquiPorST                                 : strCST_PIS := '75';
+          stpisOutrasOperacoesEntrada                        : strCST_PIS := '98';
+          stpisOutrasOperacoes                               : strCST_PIS := '99';
         end;
-        Add( LFill('D501') +
-             LFill( CST_PIS ) +
-             LFill( VL_ITEM,0,2 ) +
-             LFill( NAT_BC_CRED ) + //Verificar criação da tabela no ACBrEPCBlocos
-             LFill( VL_BC_PIS,0,2 ) +
-             LFill( ALIQ_PIS,0,2 ) +
-             LFill( VL_PIS,0,2 ) +
+
+        case NAT_BC_CRED of
+          bccAqBensRevenda                 : strNAT_BC_CRED := '01';
+          bccAqBensUtiComoInsumo           : strNAT_BC_CRED := '02';
+          bccAqServUtiComoInsumo           : strNAT_BC_CRED := '03';
+          bccEnergiaEletricaTermica        : strNAT_BC_CRED := '04';
+          bccAluguelPredios                : strNAT_BC_CRED := '05';
+          bccAluguelMaqEquipamentos        : strNAT_BC_CRED := '06';
+          bccArmazenagemMercadoria         : strNAT_BC_CRED := '07';
+          bccConArrendamentoMercantil      : strNAT_BC_CRED := '08';
+          bccMaqCredDepreciacao            : strNAT_BC_CRED := '09';
+          bccMaqCredAquisicao              : strNAT_BC_CRED := '10';
+          bccAmortizacaoDepreciacaoImoveis : strNAT_BC_CRED := '11';
+          bccDevolucaoSujeita              : strNAT_BC_CRED := '12';
+          bccOutrasOpeComDirCredito        : strNAT_BC_CRED := '13';
+          bccAtTransporteSubcontratacao    : strNAT_BC_CRED := '14';
+          bccAtImobCustoIncorrido          : strNAT_BC_CRED := '15';
+          bccAtImobCustoOrcado             : strNAT_BC_CRED := '16';
+          bccAtPresServ                    : strNAT_BC_CRED := '17';
+          bccEstoqueAberturaBens           : strNAT_BC_CRED := '18';
+        end;
+
+        Add( LFill('D501')           +
+             LFill( strCST_PIS )     +
+             LFill( VL_ITEM,0,2 )    +
+             LFill( strNAT_BC_CRED ) +
+             LFill( VL_BC_PIS,0,2 )  +
+             LFill( ALIQ_PIS,0,2 )   +
+             LFill( VL_PIS,0,2 )     +
              LFill(COD_CTA) ) ;
         //
         RegistroD990.QTD_LIN_D := RegistroD990.QTD_LIN_D + 1;
@@ -1081,34 +1458,88 @@ begin
 end;
 
 procedure TBloco_D.WriteRegistroD505(RegD500: TRegistroD500) ;
-var
-intFor: integer;
-strIND_NAT_FRT : AnsiString;
+  var
+    intFor         : integer;
+    strCST_COFINS  :  AnsiString;
+    strNAT_BC_CRED : AnsiString;
 begin
-  if Assigned(RegD010.RegistroD505) then
+  if Assigned(RegD500.RegistroD505) then
   begin
-    for intFor := 0 to RegD010.RegistroD500.Count - 1 do
+    for intFor := 0 to RegD500.RegistroD505.Count - 1 do
     begin
       with RegD500.RegistroD505.Items[intFor] do
       begin
-        case IND_EMIT of
-          nfNegociavel    : strIND_NAT_FRT := '0';
-          nfNaoNegociavel : strIND_NAT_FRT := '1';
+        case CST_COFINS of
+          stcofinsValorAliquotaNormal                           : strCST_COFINS := '01';
+          stcofinsValorAliquotaDiferenciada                     : strCST_COFINS := '02';
+          stcofinsQtdeAliquotaUnidade                           : strCST_COFINS := '03';
+          stcofinsMonofaticaAliquotaZero                        : strCST_COFINS := '04';
+          stcofinsValorAliquotaPorST                            : strCST_COFINS := '05';
+          stcofinsAliquotaZero                                  : strCST_COFINS := '06';
+          stcofinsIsentaContribuicao                            : strCST_COFINS := '07';
+          stcofinsSemIncidenciaContribuicao                     : strCST_COFINS := '08';
+          stcofinsSuspensaoContribuicao                         : strCST_COFINS := '09';
+          stcofinsOutrasOperacoesSaida                          : strCST_COFINS := '49';
+          stcofinsOperCredExcRecTribMercInt                     : strCST_COFINS := '50';
+          stcofinsOperCredExcRecNaoTribMercInt                  : strCST_COFINS := '51';
+          stcofinsOperCredExcRecExportacao                      : strCST_COFINS := '52';
+          stcofinsOperCredRecTribNaoTribMercInt                 : strCST_COFINS := '53';
+          stcofinsOperCredRecTribMercIntEExportacao             : strCST_COFINS := '54';
+          stcofinsOperCredRecNaoTribMercIntEExportacao          : strCST_COFINS := '55';
+          stcofinsOperCredRecTribENaoTribMercIntEExportacao     : strCST_COFINS := '56';
+          stcofinsCredPresAquiExcRecTribMercInt                 : strCST_COFINS := '60';
+          stcofinsCredPresAquiExcRecNaoTribMercInt              : strCST_COFINS := '61';
+          stcofinsCredPresAquiExcExcRecExportacao               : strCST_COFINS := '62';
+          stcofinsCredPresAquiRecTribNaoTribMercInt             : strCST_COFINS := '63';
+          stcofinsCredPresAquiRecTribMercIntEExportacao         : strCST_COFINS := '64';
+          stcofinsCredPresAquiRecNaoTribMercIntEExportacao      : strCST_COFINS := '65';
+          stcofinsCredPresAquiRecTribENaoTribMercIntEExportacao : strCST_COFINS := '66';
+          stcofinsOutrasOperacoes_CredPresumido                 : strCST_COFINS := '67';
+          stcofinsOperAquiSemDirCredito                         : strCST_COFINS := '70';
+          stcofinsOperAquiComIsensao                            : strCST_COFINS := '71';
+          stcofinsOperAquiComSuspensao                          : strCST_COFINS := '72';
+          stcofinsOperAquiAliquotaZero                          : strCST_COFINS := '73';
+          stcofinsOperAqui_SemIncidenciaContribuicao            : strCST_COFINS := '74';
+          stcofinsOperAquiPorST                                 : strCST_COFINS := '75';
+          stcofinsOutrasOperacoesEntrada                        : strCST_COFINS := '98';
+          stcofinsOutrasOperacoes                               : strCST_COFINS := '99';
         end;
-        Add( LFill('D505') +
-             LFill( CST_COFINS ) +
-             LFill( VL_ITEM,0,2 ) +
-             LFill( NAT_BC_CRED ) + //Verificar criação da tabela no ACBrEPCBlocos
+
+        case NAT_BC_CRED of
+          bccAqBensRevenda                 : strNAT_BC_CRED := '01';
+          bccAqBensUtiComoInsumo           : strNAT_BC_CRED := '02';
+          bccAqServUtiComoInsumo           : strNAT_BC_CRED := '03';
+          bccEnergiaEletricaTermica        : strNAT_BC_CRED := '04';
+          bccAluguelPredios                : strNAT_BC_CRED := '05';
+          bccAluguelMaqEquipamentos        : strNAT_BC_CRED := '06';
+          bccArmazenagemMercadoria         : strNAT_BC_CRED := '07';
+          bccConArrendamentoMercantil      : strNAT_BC_CRED := '08';
+          bccMaqCredDepreciacao            : strNAT_BC_CRED := '09';
+          bccMaqCredAquisicao              : strNAT_BC_CRED := '10';
+          bccAmortizacaoDepreciacaoImoveis : strNAT_BC_CRED := '11';
+          bccDevolucaoSujeita              : strNAT_BC_CRED := '12';
+          bccOutrasOpeComDirCredito        : strNAT_BC_CRED := '13';
+          bccAtTransporteSubcontratacao    : strNAT_BC_CRED := '14';
+          bccAtImobCustoIncorrido          : strNAT_BC_CRED := '15';
+          bccAtImobCustoOrcado             : strNAT_BC_CRED := '16';
+          bccAtPresServ                    : strNAT_BC_CRED := '17';
+          bccEstoqueAberturaBens           : strNAT_BC_CRED := '18';
+        end;
+
+        Add( LFill('D505')             +
+             LFill( strCST_COFINS )    +
+             LFill( VL_ITEM,0,2 )      +
+             LFill( strNAT_BC_CRED )   +
              LFill( VL_BC_COFINS,0,2 ) +
-             LFill( ALIQ_COFINS,0,2 ) +
-             LFill( VL_COFINS,0,2 ) +
+             LFill( ALIQ_COFINS,0,2 )  +
+             LFill( VL_COFINS,0,2 )    +
              LFill(COD_CTA) ) ;
         //
         RegistroD990.QTD_LIN_D := RegistroD990.QTD_LIN_D + 1;
       end;
-   end;
-   // Variavél para armazenar a quantidade de registro do tipo.
-   FRegistroD505Count := FRegistroD505Count + RegD500.RegistroD505.Count;
+    end;
+    // Variavél para armazenar a quantidade de registro do tipo.
+    FRegistroD505Count := FRegistroD505Count + RegD500.RegistroD505.Count;
   end;
 end;
 
@@ -1130,7 +1561,7 @@ begin
           opNenhum         : strIND_PROC := '';
         end;
 
-        Add( LFill('D509') +
+        Add( LFill('D509')   +
              LFill(NUM_PROC) +
              LFill(strIND_PROC) ) ;
       end;
@@ -1143,9 +1574,9 @@ begin
 end;
 
 procedure TBloco_D.WriteRegistroD600(RegD010: TRegistroD010) ;
-var
-intFor: integer;
-strCOD_MOD  : AnsiString;
+  var
+    intFor     : integer;
+    strCOD_MOD : AnsiString;
 begin
   if Assigned(RegD010.RegistroD600) then
   begin
@@ -1153,29 +1584,26 @@ begin
      begin
         with RegD010.RegistroD600.Items[intFor] do
         begin
-          case COD_MOD of
-            dfiNFSComunicacao          : strCOD_MOD := '21';
-            dfiNFSTelecomunicacao      : strCOD_MOD := '22';
-          end;
+          Check(Pos(COD_MOD, '21 22') > 0, '(D-600) O Modelo do Documento "%s" é inválido!', [COD_MOD]);
 
-          Add( LFill('D600') +
-               LFill( strCOD_MOD ) + 
-               LFill( COD_MUN ) +
-               LFill( SER ) +
-               LFill( SUB ) +
-               LFill( IND_REC ) + //Verificar se cria tabela no ACBrEPCBlocos
-               LFill( QTD_COFINS ) +
-               LFill( DT_DOC_INI ) +
-               LFill( DT_DOC_FIN ) +
-               LFill( VL_DOC,0,2 ) +
-               LFill( VL_DESC,0,2 ) +
-               LFill( VL_SERV,0,2 ) +
+          Add( LFill('D600')           +
+               LFill( COD_MOD )        +
+               LFill( COD_MUN )        +
+               LFill( SER )            +
+               LFill( SUB )            +
+               LFill( IND_REC )        + //Verificar se cria tabela no ACBrEPCBlocos
+               LFill( QTD_CONS )       +
+               LFill( DT_DOC_INI )     +
+               LFill( DT_DOC_FIN )     +
+               LFill( VL_DOC,0,2 )     +
+               LFill( VL_DESC,0,2 )    +
+               LFill( VL_SERV,0,2 )    +
                LFill( VL_SERV_NT,0,2 ) +
-               LFill( VL_TERC,0,2 ) +
-               LFill( VL_DA,0,2 ) +
+               LFill( VL_TERC,0,2 )    +
+               LFill( VL_DA,0,2 )      +
                LFill( VL_BC_ICMS,0,2 ) +
-               LFill( VL_ICMS,0,2 ) +
-               LFill( VL_PIS,0,2 ) +
+               LFill( VL_ICMS,0,2 )    +
+               LFill( VL_PIS,0,2 )     +
                LFill( VL_COFINS,0,2 ) );
         end;
 
@@ -1192,75 +1620,140 @@ begin
 end;
 
 procedure TBloco_D.WriteRegistroD601(RegD600: TRegistroD600) ;
-var
-intFor: integer;
-strIND_NAT_FRT : AnsiString;
+  var
+    intFor     : integer;
+    strCST_PIS :  AnsiString;
 begin
-  if Assigned(RegD010.RegistroD601) then
+  if Assigned(RegD600.RegistroD601) then
   begin
-    for intFor := 0 to RegD010.RegistroD600.Count - 1 do
+    for intFor := 0 to RegD600.RegistroD601.Count - 1 do
     begin
       with RegD600.RegistroD601.Items[intFor] do
       begin
-        case IND_EMIT of
-          nfNegociavel    : strIND_NAT_FRT := '0';
-          nfNaoNegociavel : strIND_NAT_FRT := '1';
+
+        case CST_PIS of
+          stpisValorAliquotaNormal                           : strCST_PIS := '01';
+          stpisValorAliquotaDiferenciada                     : strCST_PIS := '02';
+          stpisQtdeAliquotaUnidade                           : strCST_PIS := '03';
+          stpisMonofaticaAliquotaZero                        : strCST_PIS := '04';
+          stpisValorAliquotaPorST                            : strCST_PIS := '05';
+          stpisAliquotaZero                                  : strCST_PIS := '06';
+          stpisIsentaContribuicao                            : strCST_PIS := '07';
+          stpisSemIncidenciaContribuicao                     : strCST_PIS := '08';
+          stpisSuspensaoContribuicao                         : strCST_PIS := '09';
+          stpisOutrasOperacoesSaida                          : strCST_PIS := '49';
+          stpisOperCredExcRecTribMercInt                     : strCST_PIS := '50';
+          stpisOperCredExcRecNaoTribMercInt                  : strCST_PIS := '51';
+          stpisOperCredExcRecExportacao                      : strCST_PIS := '52';
+          stpisOperCredRecTribNaoTribMercInt                 : strCST_PIS := '53';
+          stpisOperCredRecTribMercIntEExportacao             : strCST_PIS := '54';
+          stpisOperCredRecNaoTribMercIntEExportacao          : strCST_PIS := '55';
+          stpisOperCredRecTribENaoTribMercIntEExportacao     : strCST_PIS := '56';
+          stpisCredPresAquiExcRecTribMercInt                 : strCST_PIS := '60';
+          stpisCredPresAquiExcRecNaoTribMercInt              : strCST_PIS := '61';
+          stpisCredPresAquiExcExcRecExportacao               : strCST_PIS := '62';
+          stpisCredPresAquiRecTribNaoTribMercInt             : strCST_PIS := '63';
+          stpisCredPresAquiRecTribMercIntEExportacao         : strCST_PIS := '64';
+          stpisCredPresAquiRecNaoTribMercIntEExportacao      : strCST_PIS := '65';
+          stpisCredPresAquiRecTribENaoTribMercIntEExportacao : strCST_PIS := '66';
+          stpisOutrasOperacoes_CredPresumido                 : strCST_PIS := '67';
+          stpisOperAquiSemDirCredito                         : strCST_PIS := '70';
+          stpisOperAquiComIsensao                            : strCST_PIS := '71';
+          stpisOperAquiComSuspensao                          : strCST_PIS := '72';
+          stpisOperAquiAliquotaZero                          : strCST_PIS := '73';
+          stpisOperAqui_SemIncidenciaContribuicao            : strCST_PIS := '74';
+          stpisOperAquiPorST                                 : strCST_PIS := '75';
+          stpisOutrasOperacoesEntrada                        : strCST_PIS := '98';
+          stpisOutrasOperacoes                               : strCST_PIS := '99';
         end;
-        Add( LFill('D601') +
-             LFill( COD_CLASS ) + //Verificar criação da tabela
-             LFill( VL_ITEM,0,2 ) +
-             LFill( VL_DESC,0,2 ) +
-             LFill( CST_PIS ) +
+
+        Add( LFill('D601')          +
+             LFill( COD_CLASS )     + //Verificar criação da tabela
+             LFill( VL_ITEM,0,2 )   +
+             LFill( VL_DESC,0,2 )   +
+             LFill( strCST_PIS )    +
              LFill( VL_BC_PIS,0,2 ) +
-             LFill( ALIQ_PIS,0,2 ) +
-             LFill( VL_PIS,0,2 ) +
+             LFill( ALIQ_PIS,0,2 )  +
+             LFill( VL_PIS,0,2 )    +
              LFill(COD_CTA) ) ;
         //
         RegistroD990.QTD_LIN_D := RegistroD990.QTD_LIN_D + 1;
       end;
-   end;
-   // Variavél para armazenar a quantidade de registro do tipo.
-   FRegistroD601Count := FRegistroD601Count + RegD600.RegistroD601.Count;
+    end;
+    // Variavél para armazenar a quantidade de registro do tipo.
+    FRegistroD601Count := FRegistroD601Count + RegD600.RegistroD601.Count;
   end;
 end;
 
 procedure TBloco_D.WriteRegistroD605(RegD600: TRegistroD600) ;
-var
-intFor: integer;
-strIND_NAT_FRT : AnsiString;
+  var
+    intFor        : integer;
+    strCST_COFINS :  AnsiString;
 begin
-  if Assigned(RegD010.RegistroD605) then
+  if Assigned(RegD600.RegistroD605) then
   begin
-    for intFor := 0 to RegD010.RegistroD600.Count - 1 do
+    for intFor := 0 to RegD600.RegistroD605.Count - 1 do
     begin
       with RegD600.RegistroD605.Items[intFor] do
       begin
-        case IND_EMIT of
-          nfNegociavel    : strIND_NAT_FRT := '0';
-          nfNaoNegociavel : strIND_NAT_FRT := '1';
+        case CST_COFINS of
+          stcofinsValorAliquotaNormal                           : strCST_COFINS := '01';
+          stcofinsValorAliquotaDiferenciada                     : strCST_COFINS := '02';
+          stcofinsQtdeAliquotaUnidade                           : strCST_COFINS := '03';
+          stcofinsMonofaticaAliquotaZero                        : strCST_COFINS := '04';
+          stcofinsValorAliquotaPorST                            : strCST_COFINS := '05';
+          stcofinsAliquotaZero                                  : strCST_COFINS := '06';
+          stcofinsIsentaContribuicao                            : strCST_COFINS := '07';
+          stcofinsSemIncidenciaContribuicao                     : strCST_COFINS := '08';
+          stcofinsSuspensaoContribuicao                         : strCST_COFINS := '09';
+          stcofinsOutrasOperacoesSaida                          : strCST_COFINS := '49';
+          stcofinsOperCredExcRecTribMercInt                     : strCST_COFINS := '50';
+          stcofinsOperCredExcRecNaoTribMercInt                  : strCST_COFINS := '51';
+          stcofinsOperCredExcRecExportacao                      : strCST_COFINS := '52';
+          stcofinsOperCredRecTribNaoTribMercInt                 : strCST_COFINS := '53';
+          stcofinsOperCredRecTribMercIntEExportacao             : strCST_COFINS := '54';
+          stcofinsOperCredRecNaoTribMercIntEExportacao          : strCST_COFINS := '55';
+          stcofinsOperCredRecTribENaoTribMercIntEExportacao     : strCST_COFINS := '56';
+          stcofinsCredPresAquiExcRecTribMercInt                 : strCST_COFINS := '60';
+          stcofinsCredPresAquiExcRecNaoTribMercInt              : strCST_COFINS := '61';
+          stcofinsCredPresAquiExcExcRecExportacao               : strCST_COFINS := '62';
+          stcofinsCredPresAquiRecTribNaoTribMercInt             : strCST_COFINS := '63';
+          stcofinsCredPresAquiRecTribMercIntEExportacao         : strCST_COFINS := '64';
+          stcofinsCredPresAquiRecNaoTribMercIntEExportacao      : strCST_COFINS := '65';
+          stcofinsCredPresAquiRecTribENaoTribMercIntEExportacao : strCST_COFINS := '66';
+          stcofinsOutrasOperacoes_CredPresumido                 : strCST_COFINS := '67';
+          stcofinsOperAquiSemDirCredito                         : strCST_COFINS := '70';
+          stcofinsOperAquiComIsensao                            : strCST_COFINS := '71';
+          stcofinsOperAquiComSuspensao                          : strCST_COFINS := '72';
+          stcofinsOperAquiAliquotaZero                          : strCST_COFINS := '73';
+          stcofinsOperAqui_SemIncidenciaContribuicao            : strCST_COFINS := '74';
+          stcofinsOperAquiPorST                                 : strCST_COFINS := '75';
+          stcofinsOutrasOperacoesEntrada                        : strCST_COFINS := '98';
+          stcofinsOutrasOperacoes                               : strCST_COFINS := '99';
         end;
-        Add( LFill('D605') +
-             LFill( COD_CLASS ) + //Verificar criação da tabela
-             LFill( VL_ITEM,0,2 ) +
-             LFill( VL_DESC,0,2 ) +
-             LFill( CST_COFINS ) +
+
+        Add( LFill('D605')             +
+             LFill( COD_CLASS )        + //Verificar criação da tabela
+             LFill( VL_ITEM,0,2 )      +
+             LFill( VL_DESC,0,2 )      +
+             LFill( strCST_COFINS )    +
              LFill( VL_BC_COFINS,0,2 ) +
-             LFill( ALIQ_COFINS,0,2 ) +
-             LFill( VL_COFINS,0,2 ) +
+             LFill( ALIQ_COFINS,0,2 )  +
+             LFill( VL_COFINS,0,2 )    +
              LFill(COD_CTA) ) ;
         //
         RegistroD990.QTD_LIN_D := RegistroD990.QTD_LIN_D + 1;
       end;
-   end;
-   // Variavél para armazenar a quantidade de registro do tipo.
-   FRegistroD605Count := FRegistroD605Count + RegD600.RegistroD605.Count;
+    end;
+    // Variavél para armazenar a quantidade de registro do tipo.
+    FRegistroD605Count := FRegistroD605Count + RegD600.RegistroD605.Count;
   end;
 end;
 
 procedure TBloco_D.WriteRegistroD609(RegD600: TRegistroD600) ;
-var
-intFor: integer;
-strIND_PROC : AnsiString;
+  var
+    intFor      : integer;
+    strIND_PROC : AnsiString;
 begin
   if Assigned(RegD600.RegistroD609) then
   begin
@@ -1269,13 +1762,13 @@ begin
       with RegD600.RegistroD609.Items[intFor] do
       begin
         case IND_PROC of
-          opJusticaFederal : strIND_PROC := '0';
-          opSecexRFB       : strIND_PROC := '1';
+          opJusticaFederal : strIND_PROC := '1';
+          opSecexRFB       : strIND_PROC := '3';
           opOutros         : strIND_PROC := '9';
           opNenhum         : strIND_PROC := '';
         end;
 
-        Add( LFill('D609') +
+        Add( LFill('D609')   +
              LFill(NUM_PROC) +
              LFill(strIND_PROC) ) ;
       end;

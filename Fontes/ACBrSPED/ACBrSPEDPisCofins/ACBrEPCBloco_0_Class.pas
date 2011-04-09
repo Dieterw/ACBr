@@ -316,8 +316,8 @@ begin
      with Registro0000 do
      begin
        case COD_VER of
-         vlVersao100: strCOD_VER := '001';
-         vlVersao101: strCOD_VER := '002';
+         vlVersao100: strCOD_VER := '001'; // Código 001 - Versão 100 ADE Cofis nº 31/2010 de 01/01/2011
+         vlVersao101: strCOD_VER := '002'; // Código 002 - Versão 101 ADE Cofis nº 34/2010 de 01/01/2011
        end;
        case TIPO_ESCRIT of
          tpEscrOriginal: strTIPO_ESCRIT := '0';
@@ -331,9 +331,9 @@ begin
          indSitEncerramento: strIND_SIT_ESP := '4';
        end;
        case IND_NAT_PJ of
-         indNatPJSocEmpresariaGeral: strIND_NAT_PJ := '00';
-         indNatPJSocCooperativa: strIND_NAT_PJ := '01';
-         indNatPJEntExclusivaFolhaSal: strIND_NAT_PJ := '02';
+         indNatPJSocEmpresariaGeral   : strIND_NAT_PJ := '00'; //0 - Sociedade empresária geral
+         indNatPJSocCooperativa       : strIND_NAT_PJ := '01'; //1 - Sociedade Cooperativa
+         indNatPJEntExclusivaFolhaSal : strIND_NAT_PJ := '02'; //2 - Entidade sujeita ao PIS/Pasep exclusivamente com base  na folha de salários
        end;
        case IND_ATIV of
          indAtivIndustrial: strIND_ATIV := '0';

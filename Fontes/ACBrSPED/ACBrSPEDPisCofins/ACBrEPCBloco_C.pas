@@ -88,7 +88,7 @@ type
   //REGISTRO C001: ABERTURA DO BLOCO C
   TRegistroC001 = class(TOpenBlocos)
   private
-    FRegistroC010 : TRegistroC010List;
+    FRegistroC010 : TRegistroC010List;  // NIVEL 2
   public
     constructor Create; virtual; // Create
     destructor Destroy; override; // Destroy
@@ -99,35 +99,34 @@ type
   //REGISTRO C010: IDENTIFICAÇÃO DO ESTABELECIMENTO
   TRegistroC010 = class
   private
-    fCNPJ: Integer;           //02	CNPJ	Número de inscrição do estabelecimento no CNPJ.	N	014*	-
-    { TODO : Criar tipos }
-    fIND_ESCRI: Integer;      //03	IND_ESCRI	Indicador da apuração das contribuições e créditos, na escrituração das operações por NF-e e ECF, no período:1 – Apuração com base nos registros de consolidação das operações por NF-e (C180 e C190) e por ECF (C490);2 – Apuração com base no registro individualizado de NF-e (C100 e C170) e de ECF (C400)	C	001*	-
+    fCNPJ                 : string;               //02	CNPJ	Número de inscrição do estabelecimento no CNPJ.	N	014*	-
+    fIND_ESCRI            : TACBrIndEscrituracao; //03	IND_ESCRI	Indicador da apuração das contribuições e créditos, na escrituração das operações por NF-e e ECF, no período:1 – IndEscriConsolidado     - Apuração com base nos registros de consolidação das operações por NF-e (C180 e C190) e por ECF (C490); 2 – IndEscriIndividualizado - Apuração com base no registro individualizado de NF-e (C100 e C170) e de ECF (C400)
 
-    FRegistroC100 : TRegistroC100List;
-    FRegistroC180 : TRegistroC180List;
-    FRegistroC190 : TRegistroC190List;
-    FRegistroC380 : TRegistroC380List;
-    FRegistroC395 : TRegistroC395List;
-    FRegistroC400 : TRegistroC400List;
-    FRegistroC490 : TRegistroC490List;
-    FRegistroC500 : TRegistroC500List;
-    FRegistroC600 : TRegistroC600List;
+    FRegistroC100         : TRegistroC100List; // NIVEL 3
+    FRegistroC180         : TRegistroC180List; // NIVEL 3
+    FRegistroC190         : TRegistroC190List; // NIVEL 3
+    FRegistroC380         : TRegistroC380List; // NIVEL 3
+    FRegistroC395         : TRegistroC395List; // NIVEL 3
+    FRegistroC400         : TRegistroC400List; // NIVEL 3
+    FRegistroC490         : TRegistroC490List; // NIVEL 3
+    FRegistroC500         : TRegistroC500List; // NIVEL 3
+    FRegistroC600         : TRegistroC600List; // NIVEL 3
   public
-    constructor Create; virtual; // Create
-    destructor Destroy; override; // Destroy
+    constructor Create;  virtual;                 // Create
+    destructor  Destroy; override;                // Destroy
 
-    property CNPJ: Integer read FCNPJ write FCNPJ;
-    property IND_ESCRI: Integer read FIND_ESCRI write FIND_ESCRI;
+    property CNPJ         : string               read FCNPJ         write FCNPJ;
+    property IND_ESCRI    : TACBrIndEscrituracao read FIND_ESCRI    write FIND_ESCRI;
 
-    property RegistroC100 : TRegistroC100List read FRegistroC100 write FRegistroC100;
-    property RegistroC180 : TRegistroC180List read FRegistroC180 write FRegistroC180;
-    property RegistroC190 : TRegistroC190List read FRegistroC190 write FRegistroC190;
-    property RegistroC380 : TRegistroC380List read FRegistroC380 write FRegistroC380;
-    property RegistroC395 : TRegistroC395List read FRegistroC395 write FRegistroC395;
-    property RegistroC400 : TRegistroC400List read FRegistroC400 write FRegistroC400;
-    property RegistroC490 : TRegistroC490List read FRegistroC490 write FRegistroC490;
-    property RegistroC500 : TRegistroC500List read FRegistroC500 write FRegistroC500;
-    property RegistroC600 : TRegistroC600List read FRegistroC600 write FRegistroC600;
+    property RegistroC100 : TRegistroC100List    read FRegistroC100 write FRegistroC100;
+    property RegistroC180 : TRegistroC180List    read FRegistroC180 write FRegistroC180;
+    property RegistroC190 : TRegistroC190List    read FRegistroC190 write FRegistroC190;
+    property RegistroC380 : TRegistroC380List    read FRegistroC380 write FRegistroC380;
+    property RegistroC395 : TRegistroC395List    read FRegistroC395 write FRegistroC395;
+    property RegistroC400 : TRegistroC400List    read FRegistroC400 write FRegistroC400;
+    property RegistroC490 : TRegistroC490List    read FRegistroC490 write FRegistroC490;
+    property RegistroC500 : TRegistroC500List    read FRegistroC500 write FRegistroC500;
+    property RegistroC600 : TRegistroC600List    read FRegistroC600 write FRegistroC600;
   end;
 
   // Registro C010 - Lista
@@ -172,10 +171,10 @@ type
     fVL_PIS_ST: currency;               /// Valor total do PIS retido por substituição tributária
     fVL_COFINS_ST: currency;            /// Valor total da COFINS retido por substituição tributária
 
-    FRegistroC110: TRegistroC110List;  /// BLOCO C - Lista de RegistroC110 (FILHO)
-    FRegistroC111: TRegistroC111List;
-    FRegistroC120: TRegistroC120List;  /// BLOCO C - Lista de RegistroC120 (FILHO)
-    FRegistroC170: TRegistroC170List;  /// BLOCO C - Lista de RegistroC170 (FILHO)
+    FRegistroC110: TRegistroC110List;  // NIVEL 4
+    FRegistroC111: TRegistroC111List;  // NIVEL 4
+    FRegistroC120: TRegistroC120List;  // NIVEL 4
+    FRegistroC170: TRegistroC170List;  // NIVEL 4
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
@@ -210,6 +209,7 @@ type
     property VL_COFINS_ST: currency read FVL_COFINS_ST write FVL_COFINS_ST;
     /// Registros FILHOS
     property RegistroC110: TRegistroC110List read FRegistroC110 write FRegistroC110;
+    property RegistroC111: TRegistroC111List read FRegistroC111 write FRegistroC111;
     property RegistroC120: TRegistroC120List read FRegistroC120 write FRegistroC120;
     property RegistroC170: TRegistroC170List read FRegistroC170 write FRegistroC170;
   end;
@@ -230,16 +230,12 @@ type
   private
     fCOD_INF: String;       /// Código da informação complementar do documento fiscal (campo 02 do Registro 0450)
     fTXT_COMPL: String;    /// Descrição complementar do código de referência.
-
-    FRegistroC111: TRegistroC111List;  /// BLOCO C - Lista de RegistroC111 (FILHO fo FILHO)
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
 
     property COD_INF: String read FCOD_INF write FCOD_INF;
     property TXT_COMPL: String read FTXT_COMPL write FTXT_COMPL;
-    /// Resgistro FILHO do FILHO
-    property RegistroC111: TRegistroC111List read FRegistroC111 write FRegistroC111;
   end;
 
   /// Registro C110 - Lista
@@ -398,9 +394,9 @@ type
     fEX_IPI: string;	               //07	EX_IPI	Código EX, conforme a TIPI	C	003	-
     fVL_TOT_ITEM: Currency;	       //08	VL_TOT_ITEM	Valor Total do Item	N	-	02
 
-    FRegistroC181: TRegistroC181List;
-    FRegistroC185: TRegistroC185List;
-    FRegistroC188: TRegistroC188List;
+    FRegistroC181: TRegistroC181List; // NIVEL 4
+    FRegistroC185: TRegistroC185List; // NIVEL 4
+    FRegistroC188: TRegistroC188List; // NIVEL 4
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
@@ -531,10 +527,10 @@ type
     fEX_IPI: string;	               //07	EX_IPI	Código EX, conforme a TIPI	C	003	-
     fVL_TOT_ITEM: Currency;          //08	VL_TOT_ITEM	Valor Total do Item	N	-	02
 
-    FRegistroC191: TRegistroC191List;  /// BLOCO C - Lista de RegistroC190 (FILHO)
-    FRegistroC195: TRegistroC195List;  /// BLOCO C - Lista de RegistroC195 (FILHO)
-    FRegistroC198: TRegistroC198List;  /// BLOCO C - Lista de RegistroC195 (FILHO)
-    FRegistroC199: TRegistroC199List;  /// BLOCO C - Lista de RegistroC195 (FILHO)
+    FRegistroC191: TRegistroC191List;  // NIVEL 4
+    FRegistroC195: TRegistroC195List;  // NIVEL 4
+    FRegistroC198: TRegistroC198List;  // NIVEL 4
+    FRegistroC199: TRegistroC199List;  // NIVEL 4
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
@@ -567,16 +563,16 @@ type
   TRegistroC191 = class
   private
     fCOD_PART: string;	             //02	COD_PART	Código do Participante (campo 02 do Registro 0150) do emitente dos documentos ou do remetente das mercadorias.	C	060	-
-    fCST_PIS: string;	               //03	CST_PIS	Código da Situação Tributária referente ao PIS/PASEP	N	002*	-
-    fCFOP: Integer;	                 //04	CFOP	Código fiscal de operação e prestação	N	004*	-
+    fCST_PIS: string;	             //03	CST_PIS	Código da Situação Tributária referente ao PIS/PASEP	N	002*	-
+    fCFOP: Integer;	                //04	CFOP	Código fiscal de operação e prestação	N	004*	-
     fVL_ITEM: Currency;	             //05	VL_ITEM	Valor do item	N	-	02
     fVL_DESC: Currency;	             //06	VL_DESC	Valor do desconto comercial	N	-	02
-    fVL_BC_PIS: Currency;	           //07	VL_BC_PIS	Valor da base de cálculo do PIS/PASEP	N	-	02
-    fALIQ_PIS: Currency;	           //08	ALIQ_PIS	Alíquota do PIS/PASEP (em percentual)	N	008	04
+    fVL_BC_PIS: Currency;	          //07	VL_BC_PIS	Valor da base de cálculo do PIS/PASEP	N	-	02
+    fALIQ_PIS: Currency;	          //08	ALIQ_PIS	Alíquota do PIS/PASEP (em percentual)	N	008	04
     fQUANT_BC_PIS: Currency;	       //09	QUANT_BC_PIS	Quantidade – Base de cálculo PIS/PASEP	N	-	03
     fALIQ_PIS_QUANT: Currency;       //10	ALIQ_PIS_QUANT	Alíquota do PIS/PASEP (em reais)	N	-	04
     fVL_PIS: Currency;	             //11	VL_PIS	Valor do PIS/PASEP	N	-	02
-    fCOD_CTA: string;	               //12	COD_CTA	Código da conta analítica contábil debitada/creditada	C	060	-
+    fCOD_CTA: string;	             //12	COD_CTA	Código da conta analítica contábil debitada/creditada	C	060	-
   public
     property COD_PART: string read FCOD_PART write FCOD_PART;
     property CST_PIS: string  read FCST_PIS write FCST_PIS;
@@ -696,8 +692,8 @@ type
     fVL_DOC: Currency;	               //07	VL_DOC	Valor total dos documentos emitidos	N	-	02
     fVL_DOC_CANC: Currency;           //08	VL_DOC_CANC	Valor total dos documentos cancelados	N	-	02
 
-    FRegistroC381: TRegistroC381List;
-    FRegistroC385: TRegistroC385List;
+    FRegistroC381: TRegistroC381List; // NIVEL 4
+    FRegistroC385: TRegistroC385List; // NIVEL 4
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
@@ -803,7 +799,7 @@ type
     fDT_DOC: TDateTime;	           //07	DT_DOC	Data da emissão do documento fiscal	N	008*	-
     fVL_DOC: Currency;	           //08	VL_DOC	Valor total do documento fiscal	N	-	02
 
-    FRegistroC396: TRegistroC396List;
+    FRegistroC396: TRegistroC396List;  // NIVEL 4
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
@@ -879,8 +875,8 @@ type
     fECF_FAB: string;          //04	ECF_FAB	Número de série de fabricação do ECF	C	020	-
     fECF_CX: Integer;          //05	ECF_CX	Número do caixa atribuído ao ECF	N	003	-
 
-    FRegistroC405: TRegistroC405List;
-    FRegistroC489: TRegistroC489List;
+    FRegistroC405: TRegistroC405List; // NIVEL 4
+    FRegistroC489: TRegistroC489List; // NIVEL 4
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
@@ -914,8 +910,8 @@ type
     fGT_FIN: Currency;	           //06	GT_FIN	Valor do Grande Total final	N	-	02
     fVL_BRT: Currency;	           //07	VL_BRT	Valor da venda bruta	N	-	02
 
-    FRegistroC481: TRegistroC481List;
-    FRegistroC485: TRegistroC485List;
+    FRegistroC481: TRegistroC481List; // NIVEL 5
+    FRegistroC485: TRegistroC485List; // NIVEL 5
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
@@ -1036,9 +1032,9 @@ type
     fDT_DOC_FIN: TDateTime;     //03	DT_DOC_FIN	Data de Emissão Final dos Documentos	N	008*	-
     fCOD_MOD: string;	          //04	COD_MOD	Código do modelo do documento fiscal, conforme a Tabela 4.1.1	C	002*	-
 
-    FRegistroC491: TRegistroC491List;
-    FRegistroC495: TRegistroC495List;
-    FRegistroC499: TRegistroC499List;
+    FRegistroC491: TRegistroC491List; // NIVEL 4
+    FRegistroC495: TRegistroC495List; // NIVEL 4
+    FRegistroC499: TRegistroC499List; // NIVEL 4
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
@@ -1171,9 +1167,9 @@ type
     fVL_PIS: Currency;	              //13	VL_PIS	Valor do PIS/PASEP	N	-	02
     fVL_COFINS: Currency;	            //14	VL_COFINS	Valor da COFINS	N	-	02
 
-    FRegistroC501: TRegistroC501List;
-    FRegistroC505: TRegistroC505List;
-    FRegistroC509: TRegistroC509List;
+    FRegistroC501: TRegistroC501List; // NIVEL 4
+    FRegistroC505: TRegistroC505List; // NIVEL 4
+    FRegistroC509: TRegistroC509List; // NIVEL 4
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
@@ -1312,9 +1308,9 @@ type
     fVL_PIS: Currency;	                 //21	VL_PIS	Valor acumulado do PIS/PASEP	N	-	02
     fVL_COFINS: Currency;	               //22	VL_COFINS	Valor acumulado da COFINS	N	-	02
 
-    FRegistroC601: TRegistroC601List;
-    FRegistroC605: TRegistroC605List;
-    FRegistroC609: TRegistroC609List;
+    FRegistroC601: TRegistroC601List; // NIVEL 4
+    FRegistroC605: TRegistroC605List; // NIVEL 4
+    FRegistroC609: TRegistroC609List; // NIVEL 4
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy

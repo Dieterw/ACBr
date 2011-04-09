@@ -73,15 +73,15 @@ type
   //REGISTRO M001: ABERTURA DO BLOCO M
   TRegistroM001 = class(TOpenBlocos)
   private
-    FRegistroM100: TRegistroM100List;
-    FRegistroM200: TRegistroM200;
-    FRegistroM300: TRegistroM300List;
-    FRegistroM350: TRegistroM350;
-    FRegistroM400: TRegistroM400List;
-    FRegistroM500: TRegistroM500List;
-    FRegistroM600: TRegistroM600;
-    FRegistroM700: TRegistroM700List;
-    FRegistroM800: TRegistroM800List;
+    FRegistroM100: TRegistroM100List; // NIVEL 2
+    FRegistroM200: TRegistroM200;     // NIVEL 2
+    FRegistroM300: TRegistroM300List; // NIVEL 2
+    FRegistroM350: TRegistroM350;     // NIVEL 2
+    FRegistroM400: TRegistroM400List; // NIVEL 2
+    FRegistroM500: TRegistroM500List; // NIVEL 2
+    FRegistroM600: TRegistroM600;     // NIVEL 2
+    FRegistroM700: TRegistroM700List; // NIVEL 2
+    FRegistroM800: TRegistroM800List; // NIVEL 2
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
@@ -116,8 +116,8 @@ type
     FCOD_CRED: string;
     FIND_DESC_CRED: string;
 
-    FRegistroM105: TRegistroM105List;
-    FRegistroM110: TRegistroM110List;
+    FRegistroM105: TRegistroM105List; // NIVEL 3
+    FRegistroM110: TRegistroM110List; // NIVEL 3
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
@@ -229,7 +229,7 @@ type
     FVL_TOT_CRED_DESC_ANT: currency;
     FVL_TOT_CONT_CUM_PER: currency;
 
-    FRegistroM210: TRegistroM210List;
+    FRegistroM210: TRegistroM210List; // NIVEL 3
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
@@ -266,9 +266,9 @@ type
     FQUANT_BC_PIS: currency;
     FCOD_CONT: string;
 
-    FRegistroM211: TRegistroM211;
-    FRegistroM220: TRegistroM220List;
-    FRegistroM230: TRegistroM230List;
+    FRegistroM211: TRegistroM211;     // NIVEL 4
+    FRegistroM220: TRegistroM220List; // NIVEL 4
+    FRegistroM230: TRegistroM230List; // NIVEL 4
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
@@ -425,7 +425,7 @@ type
     FCOD_CTA: string;
     FCST_PIS: string;
 
-    FRegistroM410: TRegistroM410List;
+    FRegistroM410: TRegistroM410List; // NIVEL 3
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
@@ -490,8 +490,8 @@ type
     FIND_CRED_ORI: integer;
     FCOD_CRED: string;
 
-    FRegistroM505: TRegistroM505List;
-    FRegistroM510: TRegistroM510List;
+    FRegistroM505: TRegistroM505List; // NIVEL 3
+    FRegistroM510: TRegistroM510List; // NIVEL 3
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
@@ -603,7 +603,7 @@ type
     FVL_TOT_CRED_DESC_ANT: currency;
     FVL_TOT_CONT_CUM_PER: currency;
 
-    FRegistroM610: TRegistroM610List;
+    FRegistroM610: TRegistroM610List; // NIVEL 3
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
@@ -640,9 +640,9 @@ type
     FQUANT_BC_COFINS: currency;
     FCOD_CONT: string;
 
-    FRegistroM611: TRegistroM611;
-    FRegistroM620: TRegistroM620List;
-    FRegistroM630: TRegistroM630List;
+    FRegistroM611: TRegistroM611;     // NIVEL 4
+    FRegistroM620: TRegistroM620List; // NIVEL 4
+    FRegistroM630: TRegistroM630List; // NIVEL 4
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
@@ -783,7 +783,7 @@ type
     FCOD_CTA: string;
     FCST_COFINS: string;
 
-    FRegistroM810: TRegistroM810List;
+    FRegistroM810: TRegistroM810List; // NIVEL 3
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy

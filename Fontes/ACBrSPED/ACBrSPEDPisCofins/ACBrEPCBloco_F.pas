@@ -65,7 +65,7 @@ type
   //REGISTRO F001: ABERTURA DO BLOCO C
   TRegistroF001 = class(TOpenBlocos)
   private
-    FRegistroF010: TRegistroF010List;
+    FRegistroF010: TRegistroF010List; // NIVEL 2
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
@@ -78,14 +78,14 @@ type
   private
     fCNPJ: Integer;           //02	CNPJ	Número de inscrição do estabelecimento no CNPJ.	N	014*	-
 
-    FRegistroF100: TRegistroF100List;
-    FRegistroF120: TRegistroF120List;
-    FRegistroF130: TRegistroF130List;
-    FRegistroF150: TRegistroF150List;
-    FRegistroF200: TRegistroF200List;
-    FRegistroF600: TRegistroF600List;
-    FRegistroF700: TRegistroF700List;
-    FRegistroF800: TRegistroF800List;
+    FRegistroF100: TRegistroF100List; // NIVEL 3
+    FRegistroF120: TRegistroF120List; // NIVEL 3
+    FRegistroF130: TRegistroF130List; // NIVEL 3
+    FRegistroF150: TRegistroF150List; // NIVEL 3
+    FRegistroF200: TRegistroF200List; // NIVEL 3
+    FRegistroF600: TRegistroF600List; // NIVEL 3
+    FRegistroF700: TRegistroF700List; // NIVEL 3
+    FRegistroF800: TRegistroF800List; // NIVEL 3
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
@@ -133,7 +133,7 @@ type
     FCOD_CCUS: string;           //Código do Centro de Custos
     FDESC_DOC_OPER: string;      //Descrição  do Documento/Operação
 
-    FRegistroF111: TRegistroF111List;
+    FRegistroF111: TRegistroF111List; // NIVEL 4
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
@@ -221,7 +221,7 @@ type
     fCOD_CCUS: string;	           //Código do Centro de Custos
     fDESC_BEM_IMOB: string;	       //Descrição complementar do bem ou grupo de bens, com crédito apurado com base nos encargos de depreciação ou amortização.
 
-    FRegistroF129: TRegistroF129List;
+    FRegistroF129: TRegistroF129List; // NIVEL 4
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
@@ -317,7 +317,7 @@ type
     fCOD_CCUS: string;	             //Código do Centro de Custos
     fDESC_BEM_IMOB: string;	       //Descrição complementar do bem ou grupo de bens, com crédito apurado com base no valor de aquisição.
 
-    FRegistroF139: TRegistroF139List;
+    FRegistroF139: TRegistroF139List; // NIVEL 4
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
@@ -465,9 +465,9 @@ type
     FIND_NAT_EMP: string;
     FDT_OPER: TDateTime;
 
-    FRegistroF205: TRegistroF205;
-    FRegistroF210: TRegistroF210List;
-    FRegistroF211: TRegistroF211List;
+    FRegistroF205: TRegistroF205;     // NIVEL 4
+    FRegistroF210: TRegistroF210List; // NIVEL 4
+    FRegistroF211: TRegistroF211List; // NIVEL 4
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy

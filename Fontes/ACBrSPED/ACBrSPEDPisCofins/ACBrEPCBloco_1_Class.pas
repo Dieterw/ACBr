@@ -364,7 +364,6 @@ begin
           WriteRegistro1800(FRegistro1001) ;
         end;
      end;
-
      RegistroF990.QTD_LIN_1 := RegistroF990.QTD_LIN_1 + 1;
   end;
 end;
@@ -379,7 +378,6 @@ begin
      begin
         with Reg1001.Registro1010.Items[intFor] do
         begin
-
           Add( LFill('1010') +
                LFill( NUM_PROC ) +
                LFill( ID_SEC_JUD ) +
@@ -388,7 +386,6 @@ begin
                LFill( DESC_DEC_JUD ) +
                LFill( DT_SENT_JUD ) ) ;
         end;
-
         ///
         Registro1990.QTD_LIN_1 := Registro1990.QTD_LIN_1 + 1;
      end;
@@ -413,7 +410,6 @@ begin
                LFill( IND_NAT_ACAO ) + //Verificar criação da tabela no ACBrEPCBlocos
                LFill( DT_DEC_ADM ) ) ;
         end;
-
         ///
         Registro1990.QTD_LIN_1 := Registro1990.QTD_LIN_1 + 1;
      end;
@@ -432,7 +428,6 @@ begin
      begin
         with Reg1001.Registro1100.Items[intFor] do
         begin
-
           Add( LFill('1100') +
                LFill( PER_APU_CRED ) +
                LFill( ORIG_CRED ) + //Verificar criação da tabela no ACBrEPCBlocos
@@ -452,7 +447,6 @@ begin
                LFill( VL_CRED_OUT,0,2 ) +
                LFill( SLD_CRED_FIM ) ) ;
         end;
-
         // Registros FILHOS
         WriteRegistro1101( Reg1001.Registro1100.Items[intFor] );
         ///
@@ -473,7 +467,6 @@ begin
      begin
         with Reg1100.Registro1101.Items[intFor] do
         begin
-
           Add( LFill('1101') +
                LFill( COD_PART ) +
                LFill( COD_ITEM ) +
@@ -497,7 +490,6 @@ begin
                LFill( PER_ESCRIT ) +
                LFill( CNPJ ) ) ;
         end;
-
         // Registros FILHOS
         WriteRegistro1102( Reg1100.Registro1101.Items[intFor] );
         ///
@@ -524,7 +516,6 @@ begin
                LFill( VL_CRED_PIS_NT_MI,0,2 ) + //Verificar criação da tabela no ACBrEPCBlocos
                LFill( VL_CRED_PIS_EXP,0,2 ) ) ;
         end;
-
         ///
         Registro1990.QTD_LIN_1 := Registro1990.QTD_LIN_1 + 1;
      end;
@@ -543,7 +534,6 @@ begin
      begin
         with Reg1001.Registro1200.Items[intFor] do
         begin
-
           Add( LFill('1200') +
                LFill( PER_APUR_ANT ) +
                LFill( NAT_CONT_REC ) +
@@ -556,7 +546,6 @@ begin
                LFill( VL_JUR,0,2 ) +
                LFill( DT_RECOL ) ) ;
         end;
-
         // Registros FILHOS
         WriteRegistro1210( Reg1001.Registro1200.Items[intFor] );
         WriteRegistro1220( Reg1001.Registro1200.Items[intFor] );
@@ -578,7 +567,6 @@ begin
      begin
         with Reg1200.Registro1210.Items[intFor] do
         begin
-
           Add( LFill('1210') +
                LFill( CNPJ ) +
                LFill( CST_PIS ) +
@@ -591,7 +579,6 @@ begin
                LFill( COD_CTA ) +
                LFill( DESC_COMPL ) ) ;
         end;
-
         ///
         Registro1990.QTD_LIN_1 := Registro1990.QTD_LIN_1 + 1;
      end;
@@ -610,14 +597,12 @@ begin
      begin
         with Reg1200.Registro1220.Items[intFor] do
         begin
-
           Add( LFill('1220') +
                LFill( PER_APU_CRED ) +
                LFill( ORIG_CRED ) +   //Verificar criação da tabela no ACBrEPCBlocos
                LFill( COD_CRED ) +    //Verificar criação da tabela no ACBrEPCBlocos
                LFill( VL_CRED,0,2 ) ) ;
         end;
-
         ///
         Registro1990.QTD_LIN_1 := Registro1990.QTD_LIN_1 + 1;
      end;
@@ -636,7 +621,6 @@ begin
      begin
         with Reg1001.Registro1300.Items[intFor] do
         begin
-
           Add( LFill('1300') +
                LFill( IND_NAT_RET ) +       //Verificar criação da tabela no ACBrEPCBlocos
                LFill( PR_REC_RET ) +
@@ -646,7 +630,6 @@ begin
                LFill( VL_RET_DCOMP,0,2 ) +
                LFill( SLD_RET,0,2 ) ) ;
         end;
-
         ///
         Registro1990.QTD_LIN_1 := Registro1990.QTD_LIN_1 + 1;
      end;
@@ -665,7 +648,6 @@ begin
      begin
         with Reg1001.Registro1500.Items[intFor] do
         begin
-
           Add( LFill('1500') +
                LFill( PER_APU_CRED ) +
                LFill( ORIG_CRED ) +          //Verificar criação da tabela no ACBrEPCBlocos
@@ -685,7 +667,6 @@ begin
                LFill( VL_CRED_OUT,0,2 ) +
                LFill( SLD_CRED_FIM,0,2 ) ) ;
         end;
-
         // Registros FILHOS
         WriteRegistro1501( Reg1001.Registro1500.Items[intFor] );
         ///
@@ -706,7 +687,6 @@ begin
      begin
         with Reg1500.Registro1501.Items[intFor] do
         begin
-
           Add( LFill('1501') +
                LFill( COD_PART ) +
                LFill( COD_ITEM ) +
@@ -730,7 +710,6 @@ begin
                LFill( PER_ESCRIT ) +
                LFill( CNPJ ) ) ;
         end;
-
         // Registros FILHOS
         WriteRegistro1502( Reg1500.Registro1501.Items[intFor] );
         ///
@@ -751,13 +730,11 @@ begin
      begin
         with Reg1501.Registro1502.Items[intFor] do
         begin
-
           Add( LFill('1502') +
                LFill( VL_CRED_COFINS_TRIB_MI,0,2 ) +
                LFill( VL_CRED_COFINS_NT_MI,0,2 ) + //Verificar criação da tabela no ACBrEPCBlocos
                LFill( VL_CRED_COFINS_EXP,0,2 ) ) ;
         end;
-
         ///
         Registro1990.QTD_LIN_1 := Registro1990.QTD_LIN_1 + 1;
      end;
@@ -776,7 +753,6 @@ begin
      begin
         with Reg1001.Registro1600.Items[intFor] do
         begin
-
           Add( LFill('1600') +
                LFill( PER_APUR_ANT ) +
                LFill( NAT_CONT_REC ) +
@@ -789,7 +765,6 @@ begin
                LFill( VL_JUR,0,2 ) +
                LFill( DT_RECOL ) ) ;
         end;
-
         // Registros FILHOS
         WriteRegistro1610( Reg1001.Registro1600.Items[intFor] );
         WriteRegistro1620( Reg1001.Registro1600.Items[intFor] );
@@ -811,7 +786,6 @@ begin
      begin
         with Reg1600.Registro1610.Items[intFor] do
         begin
-
           Add( LFill('1610') +
                LFill( CNPJ ) +
                LFill( CST_COFINS ) +
@@ -824,7 +798,6 @@ begin
                LFill( COD_CTA ) +
                LFill( DESC_COMPL ) ) ;
         end;
-
         ///
         Registro1990.QTD_LIN_1 := Registro1990.QTD_LIN_1 + 1;
      end;
@@ -843,14 +816,12 @@ begin
      begin
         with Reg1600.Registro1620.Items[intFor] do
         begin
-
           Add( LFill('1620') +
                LFill( PER_APU_CRED ) +
                LFill( ORIG_CRED ) +   //Verificar criação da tabela no ACBrEPCBlocos
                LFill( COD_CRED ) +    //Verificar criação da tabela no ACBrEPCBlocos
                LFill( VL_CRED,0,2 ) ) ;
         end;
-
         ///
         Registro1990.QTD_LIN_1 := Registro1990.QTD_LIN_1 + 1;
      end;
@@ -869,7 +840,6 @@ begin
      begin
         with Reg1001.Registro1700.Items[intFor] do
         begin
-
           Add( LFill('1700') +
                LFill( IND_NAT_RET ) +       //Verificar criação da tabela no ACBrEPCBlocos
                LFill( PR_REC_RET ) +
@@ -879,7 +849,6 @@ begin
                LFill( VL_RET_DCOMP,0,2 ) +
                LFill( SLD_RET,0,2 ) ) ;
         end;
-
         ///
         Registro1990.QTD_LIN_1 := Registro1990.QTD_LIN_1 + 1;
      end;
@@ -898,7 +867,6 @@ begin
      begin
         with Reg1001.Registro1800.Items[intFor] do
         begin
-
           Add( LFill('1800') +
                LFill( INC_IMOB ) +
                LFill( REC_RECEB_RET,0,2 ) +
@@ -936,12 +904,10 @@ begin
              opOutros         : strIND_PROC := '9';
              opNenhum         : strIND_PROC := '';
            end;
-
-          Add( LFill('1809') +
-             LFill(NUM_PROC) +
-             LFill(strIND_PROC) ) ;
+           Add( LFill('1809') +
+                LFill(NUM_PROC) +
+                LFill(strIND_PROC) ) ;
         end;
-
         ///
         Registro1990.QTD_LIN_1 := Registro1990.QTD_LIN_1 + 1;
      end;

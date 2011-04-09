@@ -69,15 +69,15 @@ type
   //REGISTRO 1001: ABERTURA DO BLOCO 1
   TRegistro1001 = class(TOpenBlocos)
   private
-    FRegistro1010: TRegistro1010List;
-    FRegistro1020: TRegistro1020List;
-    FRegistro1100: TRegistro1100List;
-    FRegistro1200: TRegistro1200List;
-    FRegistro1300: TRegistro1300List;
-    FRegistro1500: TRegistro1500List;
-    FRegistro1600: TRegistro1600List;
-    FRegistro1700: TRegistro1700List;
-    FRegistro1800: TRegistro1800List;
+    FRegistro1010: TRegistro1010List; // NIVEL 2
+    FRegistro1020: TRegistro1020List; // NIVEL 2
+    FRegistro1100: TRegistro1100List; // NIVEL 2
+    FRegistro1200: TRegistro1200List; // NIVEL 2
+    FRegistro1300: TRegistro1300List; // NIVEL 2
+    FRegistro1500: TRegistro1500List; // NIVEL 2
+    FRegistro1600: TRegistro1600List; // NIVEL 2
+    FRegistro1700: TRegistro1700List; // NIVEL 2
+    FRegistro1800: TRegistro1800List; // NIVEL 2
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
@@ -164,7 +164,7 @@ type
     fVL_CRED_OUT: Currency;	             //17	VL_CRED_OUT	Valor do crédito utilizado por outras formas.	N	-	02
     fSLD_CRED_FIM: Currency;	           //18	SLD_CRED_FIM	Saldo de créditos a utilizar em período de apuração futuro (12 – 13 – 14 – 15 – 16 - 17).	N	-	02
 
-    FRegistro1101: TRegistro1101List;
+    FRegistro1101: TRegistro1101List; // NIVEL 3
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
@@ -225,7 +225,7 @@ type
     fPER_ESCRIT: Integer;	          //21	PER_ESCRIT	Mês/Ano da Escrituração em que foi registrado o documento/operação (Crédito pelo método da Apropriação Direta).	N	006*	-
     fCNPJ: Integer;	                //22	CNPJ	CNPJ do estabelecimento gerador do crédito extemporâneo (Campo 04  do Registro 0140)	N	014*	-
 
-    FRegistro1102: TRegistro1102;
+    FRegistro1102: TRegistro1102; // NIVEL 4
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
@@ -291,8 +291,8 @@ type
     fVL_JUR: Currency;	               //10	VL_JUR	Valor dos Juros.	N	-	02
     fDT_RECOL: TDateTime;	             //11	DT_RECOL	Data do Recolhimento.	N	008*	-
 
-    FRegistro1210: TRegistro1210List;
-    FRegistro1220: TRegistro1220List;
+    FRegistro1210: TRegistro1210List; // NIVEL 3
+    FRegistro1220: TRegistro1220List; // NIVEL 3
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
@@ -433,7 +433,7 @@ type
     fVL_CRED_OUT: Currency;	            //17	VL_CRED_OUT	Valor do crédito utilizado por outras formas	N	-	02
     fSLD_CRED_FIM: Currency;	          //18	SLD_CRED_FIM	Saldo de créditos a utilizar em período de apuração futuro (12-13-14-15-16-17).	N	-	02
 
-    FRegistro1501: TRegistro1501List;
+    FRegistro1501: TRegistro1501List; // NIVEL 3
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
@@ -494,7 +494,7 @@ type
     fPER_ESCRIT: Integer;	          //21	PER_ESCRIT	Mês/Ano da Escrituração em que foi registrado o documento/operação (Crédito pelo método da Apropriação Direta).	N	006*	-
     fCNPJ: Integer;	                //22	CNPJ	CNPJ do estabelecimento gerador do crédito extemporâneo (Campo 04  do Registro 0140)	N	014*	-
 
-    FRegistro1502: TRegistro1502;
+    FRegistro1502: TRegistro1502; // NIVEL 4
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
@@ -560,8 +560,8 @@ type
     fVL_JUR: Currency;	                    //10	VL_JUR	Valor dos Juros.	N	-	02
     fDT_RECOL: TDateTime;	                  //11	DT_RECOL	Data do Recolhimento.	N	008*	-
 
-    FRegistro1610: TRegistro1610List;
-    FRegistro1620: TRegistro1620List;
+    FRegistro1610: TRegistro1610List; // NIVEL 3
+    FRegistro1620: TRegistro1620List; // NIVEL 3
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
@@ -693,7 +693,7 @@ type
     fDT_REC_UNI: TDateTime;	        //08	DT_REC_UNI	Data do recolhimento unificado	N	008*	-
     fCOD_REC: string;	              //09	COD_REC	Código da Receita	C	004	-
 
-    FRegistro1809: TRegistro1809List;
+    FRegistro1809: TRegistro1809List; // NIVEL 3
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy

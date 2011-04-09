@@ -71,7 +71,7 @@ type
   //REGISTRO D001: ABERTURA DO BLOCO D
   TRegistroD001 = class(TOpenBlocos)
   private
-    FRegistroD010: TRegistroD010List;
+    FRegistroD010: TRegistroD010List; // NIVEL 2
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
@@ -84,12 +84,12 @@ type
   private
     fCNPJ: Integer;        //02	CNPJ	Número de inscrição do estabelecimento no CNPJ.	N	014*	-
 
-    FRegistroD100: TRegistroD100List;
-    FRegistroD200: TRegistroD200List;
-    FRegistroD300: TRegistroD300List;
-    FRegistroD350: TRegistroD350List;
-    FRegistroD500: TRegistroD500List;
-    FRegistroD600: TRegistroD600List;
+    FRegistroD100: TRegistroD100List; // NIVEL 3
+    FRegistroD200: TRegistroD200List; // NIVEL 3
+    FRegistroD300: TRegistroD300List; // NIVEL 3
+    FRegistroD350: TRegistroD350List; // NIVEL 3
+    FRegistroD500: TRegistroD500List; // NIVEL 3
+    FRegistroD600: TRegistroD600List; // NIVEL 3
   public
     constructor Create; virtual; // Create
     destructor Destroy; override; // Destroy
@@ -140,9 +140,9 @@ type
     fCOD_INF: string;	           //22	COD_INF	Código da informação complementar do documento fiscal (campo 02 do Registro 0450)	C	006	-
     fCOD_CTA: string;	           //23	COD_CTA	Código da conta analítica contábil debitada/creditada	C	060	-
 
-    FRegistroD101: TRegistroD101List;
-    FRegistroD105: TRegistroD105List;
-    FRegistroD111: TRegistroD111List;
+    FRegistroD101: TRegistroD101List; // NIVEL 4
+    FRegistroD105: TRegistroD105List; // NIVEL 4
+    FRegistroD111: TRegistroD111List; // NIVEL 4
   public
     constructor Create; virtual; // Create
     destructor Destroy; override; // Destroy
@@ -283,9 +283,9 @@ type
     fVL_DOC: Currency;	         //10	VL_DOC	Valor total dos documentos fiscais	N	-	02
     fVL_DESC: Currency;	         //11	VL_DESC	Valor total dos descontos	N	-	02
 
-    FRegistroD201: TRegistroD201List;
-    FRegistroD205: TRegistroD205List;
-    FRegistroD209: TRegistroD209List;
+    FRegistroD201: TRegistroD201List; // NIVEL 4
+    FRegistroD205: TRegistroD205List; // NIVEL 4
+    FRegistroD209: TRegistroD209List; // NIVEL 4
   public
     constructor Create; virtual; // Create
     destructor Destroy; override; // Destroy
@@ -414,7 +414,7 @@ type
     fVL_COFINS: Currency;	        //18	VL_COFINS	Valor da COFINS	N	-	02
     fCOD_CTA: string;	            //19	COD_CTA	Código da conta analítica contábil debitada/creditada	C	060	-
 
-    FRegistroD309: TRegistroD309List;
+    FRegistroD309: TRegistroD309List; // NIVEL 4
   public
     constructor Create; virtual; // Create
     destructor Destroy; override; // Destroy
@@ -497,7 +497,7 @@ type
     fVL_COFINS: Currency;	         //22	VL_COFINS	Valor da COFINS	N	-	02
     fCOD_CTA: string;	             //23	COD_CTA	Código da conta analítica contábil debitada/creditada	C	060	-
 
-    FRegistroD359: TRegistroD359List;
+    FRegistroD359: TRegistroD359List; // NIVEL 4
   public
     constructor Create; virtual; // Create
     destructor Destroy; override; // Destroy
@@ -583,8 +583,9 @@ type
     fVL_PIS: Currency;                //21	VL_PIS	Valor do PIS/PASEP	N	-	02
     fVL_COFINS: Currency;             //22	VL_COFINS	Valor da COFINS	N	-	02
 
-    FRegistroD505: TRegistroD505List;
-    FRegistroD509: TRegistroD509List;
+    FRegistroD501: TRegistroD501List; // NIVEL 4
+    FRegistroD505: TRegistroD505List; // NIVEL 4
+    FRegistroD509: TRegistroD509List; // NIVEL 4
   public
     constructor Create; virtual; // Create
     destructor Destroy; override; // Destroy
@@ -611,6 +612,7 @@ type
     property VL_PIS: Currency read FVL_PIS write FVL_PIS;
     property VL_COFINS: Currency read FVL_COFINS write FVL_COFINS;
 
+    property RegistroD501: TRegistroD501List read FRegistroD501 write FRegistroD501;
     property RegistroD505: TRegistroD505List read FRegistroD505 write FRegistroD505;
     property RegistroD509: TRegistroD509List read FRegistroD509 write FRegistroD509;
   end;
@@ -727,9 +729,9 @@ type
     fVL_PIS: Currency;	          //18	VL_PIS	Valor do PIS/PASEP	N	-	02
     fVL_COFINS: Currency;	        //19	VL_COFINS	Valor da COFINS	N	-	02
 
-    FRegistroD601: TRegistroD601List;
-    FRegistroD605: TRegistroD605List;
-    FRegistroD609: TRegistroD609List;
+    FRegistroD601: TRegistroD601List; // NIVEL 4
+    FRegistroD605: TRegistroD605List; // NIVEL 4
+    FRegistroD609: TRegistroD609List; // NIVEL 4
   public
     constructor Create; virtual; // Create
     destructor Destroy; override; // Destroy
@@ -1212,12 +1214,14 @@ end;
 
 constructor TRegistroD500.Create;
 begin
+  FRegistroD501 := TRegistroD501List.Create;
   FRegistroD505 := TRegistroD505List.Create;
   FRegistroD509 := TRegistroD509List.Create;
 end;
 
 destructor TRegistroD500.Destroy;
 begin
+  FRegistroD501.Free;
   FRegistroD505.Free;
   FRegistroD509.Free;
   inherited;

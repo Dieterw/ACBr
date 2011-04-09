@@ -113,19 +113,19 @@ type
     /// BLOCO 1
     procedure WriteRegistro1001;
     procedure WriteRegistro1990;
-    /// BLOCO C
+    /// BLOCO A
     procedure WriteRegistroA001;
     procedure WriteRegistroA990;
-    /// BLOCO D
+    /// BLOCO C
     procedure WriteRegistroC001;
     procedure WriteRegistroC990;
-    /// BLOCO E
+    /// BLOCO D
     procedure WriteRegistroD001;
     procedure WriteRegistroD990;
-    /// BLOCO G
+    /// BLOCO F
     procedure WriteRegistroF001;
     procedure WriteRegistroF990;
-    /// BLOCO H
+    /// BLOCO M
     procedure WriteRegistroM001;
     procedure WriteRegistroM990;
     /// BLOCO 9
@@ -790,6 +790,22 @@ begin
    begin
       with Bloco_9.Registro9900 do
       begin
+         if Bloco_1.Registro1010Count > 0 then
+         begin
+            with New do
+            begin
+               REG_BLC := '1010';
+               QTD_REG_BLC := Bloco_1.Registro1010Count;
+            end;
+         end;
+         if Bloco_1.Registro1020Count > 0 then
+         begin
+            with New do
+            begin
+               REG_BLC := '1020';
+               QTD_REG_BLC := Bloco_1.Registro1020Count;
+            end;
+         end;
          if Bloco_1.Registro1100Count > 0 then
          begin
             with New do
@@ -798,20 +814,20 @@ begin
                QTD_REG_BLC := Bloco_1.Registro1100Count;
             end;
          end;
-         if Bloco_1.Registro1105Count > 0 then
+         if Bloco_1.Registro1101Count > 0 then
          begin
             with New do
             begin
-               REG_BLC := '1105';
-               QTD_REG_BLC := Bloco_1.Registro1105Count;
+               REG_BLC := '1101';
+               QTD_REG_BLC := Bloco_1.Registro1101Count;
             end;
          end;
-         if Bloco_1.Registro1110Count > 0 then
+         if Bloco_1.Registro1102Count > 0 then
          begin
             with New do
             begin
-               REG_BLC := '1110';
-               QTD_REG_BLC := Bloco_1.Registro1110Count;
+               REG_BLC := '1102';
+               QTD_REG_BLC := Bloco_1.Registro1102Count;
             end;
          end;
          if Bloco_1.Registro1200Count > 0 then
@@ -830,60 +846,20 @@ begin
                QTD_REG_BLC := Bloco_1.Registro1210Count;
             end;
          end;
+         if Bloco_1.Registro1220Count > 0 then
+         begin
+            with New do
+            begin
+               REG_BLC := '1220';
+               QTD_REG_BLC := Bloco_1.Registro1220Count;
+            end;
+         end;
          if Bloco_1.Registro1300Count > 0 then
          begin
             with New do
             begin
                REG_BLC := '1300';
                QTD_REG_BLC := Bloco_1.Registro1300Count;
-            end;
-         end;
-         if Bloco_1.Registro1310Count > 0 then
-         begin
-            with New do
-            begin
-               REG_BLC := '1310';
-               QTD_REG_BLC := Bloco_1.Registro1310Count;
-            end;
-         end;
-         if Bloco_1.Registro1320Count > 0 then
-         begin
-            with New do
-            begin
-               REG_BLC := '1320';
-               QTD_REG_BLC := Bloco_1.Registro1320Count;
-            end;
-         end;
-         if Bloco_1.Registro1350Count > 0 then
-         begin
-            with New do
-            begin
-               REG_BLC := '1350';
-               QTD_REG_BLC := Bloco_1.Registro1350Count;
-            end;
-         end;
-         if Bloco_1.Registro1360Count > 0 then
-         begin
-            with New do
-            begin
-               REG_BLC := '1360';
-               QTD_REG_BLC := Bloco_1.Registro1360Count;
-            end;
-         end;
-         if Bloco_1.Registro1370Count > 0 then
-         begin
-            with New do
-            begin
-               REG_BLC := '1370';
-               QTD_REG_BLC := Bloco_1.Registro1370Count;
-            end;
-         end;
-         if Bloco_1.Registro1400Count > 0 then
-         begin
-            with New do
-            begin
-               REG_BLC := '1400';
-               QTD_REG_BLC := Bloco_1.Registro1400Count;
             end;
          end;
          if Bloco_1.Registro1500Count > 0 then
@@ -894,12 +870,20 @@ begin
                QTD_REG_BLC := Bloco_1.Registro1500Count;
             end;
          end;
-         if Bloco_1.Registro1510Count > 0 then
+         if Bloco_1.Registro1501Count > 0 then
          begin
             with New do
             begin
-               REG_BLC := '1510';
-               QTD_REG_BLC := Bloco_1.Registro1510Count;
+               REG_BLC := '1501';
+               QTD_REG_BLC := Bloco_1.Registro1501Count;
+            end;
+         end;
+         if Bloco_1.Registro1502Count > 0 then
+         begin
+            with New do
+            begin
+               REG_BLC := '1502';
+               QTD_REG_BLC := Bloco_1.Registro1502Count;
             end;
          end;
          if Bloco_1.Registro1600Count > 0 then
@@ -910,6 +894,22 @@ begin
                QTD_REG_BLC := Bloco_1.Registro1600Count;
             end;
          end;
+         if Bloco_1.Registro1610Count > 0 then
+         begin
+            with New do
+            begin
+               REG_BLC := '1610';
+               QTD_REG_BLC := Bloco_1.Registro1610Count;
+            end;
+         end;
+         if Bloco_1.Registro1620Count > 0 then
+         begin
+            with New do
+            begin
+               REG_BLC := '1620';
+               QTD_REG_BLC := Bloco_1.Registro1620Count;
+            end;
+         end;
          if Bloco_1.Registro1700Count > 0 then
          begin
             with New do
@@ -918,20 +918,20 @@ begin
                QTD_REG_BLC := Bloco_1.Registro1700Count;
             end;
          end;
-         if Bloco_1.Registro1710Count > 0 then
-         begin
-            with New do
-            begin
-               REG_BLC := '1710';
-               QTD_REG_BLC := Bloco_1.Registro1710Count;
-            end;
-         end;
          if Bloco_1.Registro1800Count > 0 then
          begin
             with New do
             begin
                REG_BLC := '1800';
                QTD_REG_BLC := Bloco_1.Registro1800Count;
+            end;
+         end;
+         if Bloco_1.Registro1809Count > 0 then
+         begin
+            with New do
+            begin
+               REG_BLC := '1809';
+               QTD_REG_BLC := Bloco_1.Registro1809Count;
             end;
          end;
       end;
@@ -1076,14 +1076,6 @@ begin
          begin
            REG_BLC := 'C111';
            QTD_REG_BLC := Bloco_C.RegistroC111Count;
-         end;
-       end;
-       if Bloco_C.RegistroC112Count > 0 then
-       begin
-         with New do
-         begin
-           REG_BLC := 'C112';
-           QTD_REG_BLC := Bloco_C.RegistroC112Count;
          end;
        end;
        if Bloco_C.RegistroC120Count > 0 then
@@ -1759,6 +1751,14 @@ begin
             begin
                REG_BLC := 'M200';
                QTD_REG_BLC := Bloco_M.RegistroM200Count;
+            end;
+         end;
+         if Bloco_M.RegistroM210Count > 0 then
+         begin
+            with New do
+            begin
+               REG_BLC := 'M210';
+               QTD_REG_BLC := Bloco_M.RegistroM210Count;
             end;
          end;
          if Bloco_M.RegistroM211Count > 0 then

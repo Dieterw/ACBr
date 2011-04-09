@@ -97,6 +97,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data:  09/04/2011
+-- ACBrECF --
+[-] - Na funcão "TACBrECF.GetMFAdicional: String;", mudei a var "Letra: Char"
+      para "Letra: AnsiChar", por incompatibilidade com o D2010.
+
 Data:  23/03/2011
 -- ACBrECF --
 [*] - Alteração no relatório do menu fiscal meio de pagamento para acumular 

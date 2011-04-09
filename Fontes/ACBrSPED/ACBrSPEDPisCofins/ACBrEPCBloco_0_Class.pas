@@ -42,7 +42,7 @@ unit ACBrEPCBloco_0_Class;
 
 interface
 
-uses SysUtils, Classes, DateUtils, ACBrSped, ACBrEFDBloco_0, ACBrEPCBlocos,
+uses SysUtils, Classes, DateUtils, ACBrSped, ACBrEPCBloco_0, ACBrEPCBlocos,
      ACBrTXTClass;
 
 type
@@ -253,34 +253,34 @@ end;
 function TBloco_0.Registro0205New: TRegistro0205;
 var
 U0140Count: integer;
-U200Count: integer;
+U0200Count: integer;
 begin
-   U140Count := FRegistro0001.Registro0140.Count -1;
-   U200Count := FRegistro0001.Registro0140.Items[U140Count].Registro0200.Count -1;
+   U0140Count := FRegistro0001.Registro0140.Count -1;
+   U0200Count := FRegistro0001.Registro0140.Items[U0140Count].Registro0200.Count -1;
    //
-   Result := FRegistro0001.Registro0140.Items[U140Count].Registro0200.Items[U200Count].Registro0205.New;
+   Result := FRegistro0001.Registro0140.Items[U0140Count].Registro0200.Items[U0200Count].Registro0205.New;
 end;
 
 function TBloco_0.Registro0206New: TRegistro0206;
 var
 U0140Count: integer;
-U200Count: integer;
+U0200Count: integer;
 begin
-   U140Count := FRegistro0001.Registro0140.Count -1;
-   U200Count := FRegistro0001.Registro0140.Items[U140Count].Registro0200.Count -1;
+   U0140Count := FRegistro0001.Registro0140.Count -1;
+   U0200Count := FRegistro0001.Registro0140.Items[U0140Count].Registro0200.Count -1;
    //
-   Result := FRegistro0001.Registro0140.Items[U140Count].Registro0200.Items[U200Count].Registro0206.New;
+   Result := FRegistro0001.Registro0140.Items[U0140Count].Registro0200.Items[U0200Count].Registro0206;
 end;
 
 function TBloco_0.Registro0208New: TRegistro0208;
 var
 U0140Count: integer;
-U200Count: integer;
+U0200Count: integer;
 begin
-   U140Count := FRegistro0001.Registro0140.Count -1;
-   U200Count := FRegistro0001.Registro0140.Items[U140Count].Registro0200.Count -1;
+   U0140Count := FRegistro0001.Registro0140.Count -1;
+   U0200Count := FRegistro0001.Registro0140.Items[U0140Count].Registro0200.Count -1;
    //
-   Result := FRegistro0001.Registro0140.Items[U140Count].Registro0200.Items[U200Count].Registro0208.New;
+   Result := FRegistro0001.Registro0140.Items[U0140Count].Registro0200.Items[U0200Count].Registro0208;
 end;
 
 function TBloco_0.Registro0400New: TRegistro0400;
@@ -303,7 +303,7 @@ begin
    Result := FRegistro0001.Registro0600.New;
 end;
 
-procedure TBloco_0.WriteRegistro0000 ;
+procedure TBloco_0.WriteRegistro0000;
 var
 strCOD_VER: AnsiString;
 strTIPO_ESCRIT: AnsiString;
@@ -323,7 +323,7 @@ begin
          tpEscrOriginal: strTIPO_ESCRIT := '0';
          tpEscrRetificadora: strTIPO_ESCRIT := '1';
        end;
-       case strIND_SIT_ESP of
+       case IND_SIT_ESP of
          indSitAbertura: strIND_SIT_ESP := '0';
          indSitCisao: strIND_SIT_ESP := '1';
          indSitFusao: strIND_SIT_ESP := '2';
@@ -455,7 +455,7 @@ begin
             LFill( strIND_APRO_CRED ) +
             LFill( strCOD_TIPO_CONT ) ) ;
        ///
-       WriteRegistro0111(FRegistro110);
+       WriteRegistro0111(Reg0001.Registro0110);
      end;
      Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
 
@@ -487,6 +487,8 @@ begin
 end;
 
 procedure TBloco_0.WriteRegistro0140(Reg0001: TRegistro0001) ;
+var
+intFor: Integer;
 begin
   if Assigned(Reg0001.Registro0140) then
   begin
@@ -675,7 +677,7 @@ strCOD_TAB: string;
 begin
   if Assigned( Reg0200.Registro0208 ) then
   begin
-     with Reg0200.Registro0208.Items[intFor] do
+     with Reg0200.Registro0208 do
      begin
        case COD_TAB of
          codIndTabI: strCOD_TAB := '01';
@@ -733,7 +735,7 @@ begin
   begin
      for intFor := 0 to Reg0140.Registro0450.Count - 1 do
      begin
-        with Reg0001.Registro0450.Items[intFor] do
+        with Reg0140.Registro0450.Items[intFor] do
         begin
           Add( LFill('0450') +
                LFill( COD_INF ) +
@@ -750,6 +752,7 @@ procedure TBloco_0.WriteRegistro0500(Reg0001: TRegistro0001) ;
 var
 intFor: integer;
 strCOD_NAT_CC: string;
+strIND_CTA: string;
 begin
   if Assigned( Reg0001.Registro0500 ) then
   begin
@@ -765,14 +768,18 @@ begin
              ncgCompensacao: strCOD_NAT_CC := '05';
              ncgOutras: strCOD_NAT_CC := '09';
            end;
+           case IND_CTA of
+             indCTASintetica: strIND_CTA := 'S';
+             IndACTAnalitica: strIND_CTA := 'A';
+           end;
 
-           Check(Pos(COD_NAT_CC, '01,02,03,04,05,09,10,99') > 0, '(0-0500) O código da natureza da conta/grupo de contas "%s" digitado é inválido!', [COD_NAT_CC]);
-           Check(((IND_CTA = 'S') or (IND_CTA = 'A')), '(0-0500) O indicador "%s" do tipo de conta, deve ser informado  S ou A!', [IND_CTA]);
+           Check(Pos(strCOD_NAT_CC, '01,02,03,04,05,09,10,99') > 0, '(0-0500) O código da natureza da conta/grupo de contas "%s" digitado é inválido!', [strCOD_NAT_CC]);
+           Check(((strIND_CTA = 'S') or (strIND_CTA = 'A')), '(0-0500) O indicador "%s" do tipo de conta, deve ser informado  S ou A!', [strIND_CTA]);
 
            Add( LFill('0500') +
                 LFill( DT_ALT ) +
                 LFill( strCOD_NAT_CC ) +
-                LFill( IND_CTA, 1) +
+                LFill( strIND_CTA, 1) +
                 LFill( NIVEL ) +
                 LFill( COD_CTA ) +
                 LFill( NOME_CTA ) ) ;

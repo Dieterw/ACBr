@@ -65,10 +65,10 @@ type
 
   TRegistroA001 = class(TOpenBlocos)
   private
-    FRegistroA010: TRegistroA010List; // NIVEL 2
+    FRegistroA010: TRegistroA010List;
   public
-    constructor Create; virtual; /// Create
-    destructor Destroy; override; /// Destroy
+    constructor Create;  virtual;   /// Create
+    destructor  Destroy; override;  /// Destroy
 
     property RegistroA010: TRegistroA010List read FRegistroA010 write FRegistroA010;
   end;
@@ -76,22 +76,22 @@ type
   // REGISTRO A010: IDENTIFICAÇÃO DO ESTABELECIMENTO
   TRegistroA010 = class
   private
-    fCNPJ:string;    //02	Número de inscrição do estabelecimento no CNPJ.	N	014*	-
+    fCNPJ         : string; //02	Número de inscrição do estabelecimento no CNPJ.	N	014*	-
 
-    FRegistroA100: TRegistroA100List; // NIVEL 3
+    FRegistroA100 : TRegistroA100List;
   public
-    constructor Create; virtual; /// Create
-    destructor Destroy; override; /// Destroy
+    constructor Create;  virtual;  /// Create
+    destructor  Destroy; override; /// Destroy
 
-    property RegistroA100: TRegistroA100List read FRegistroA100 write FRegistroA100;
-    property CNPJ: string read FCNPJ write FCNPJ;
+    property RegistroA100 : TRegistroA100List read FRegistroA100 write FRegistroA100;
+    property CNPJ         : string            read FCNPJ         write FCNPJ;
   end;
 
   /// Registro A010 - Lista
 
   TRegistroA010List = class(TObjectList)
   private
-    function GetItem(Index: Integer): TRegistroA010;
+    function  GetItem(Index: Integer): TRegistroA010;
     procedure SetItem(Index: Integer; const Value: TRegistroA010);
   public
     function New: TRegistroA010;
@@ -123,13 +123,13 @@ type
     fVL_COFINS_RET : currency;                   //20	Valor total da COFINS retido na fonte.	N	-	02
     fVL_ISS        : currency;                   //21	Valor do ISS	N	-	02
 
-    FRegistroA110: TRegistroA110List;            // NIVEL 4
-    FRegistroA111: TRegistroA111List;            // NIVEL 4
-    FRegistroA120: TRegistroA120List;            // NIVEL 4
-    FRegistroA170: TRegistroA170List;            // NIVEL 4
+    FRegistroA110: TRegistroA110List;                  
+    FRegistroA111: TRegistroA111List;
+    FRegistroA120: TRegistroA120List;
+    FRegistroA170: TRegistroA170List;
   public
-    constructor Create; virtual; /// Create
-    destructor Destroy; override; /// Destroy
+    constructor Create;  virtual;  /// Create
+    destructor  Destroy; override; /// Destroy
 
     property IND_OPER      : TACBrIndicadorTpOperacao read FIND_OPER      write FIND_OPER;
     property IND_EMIT      : TACBrIndicadorEmitenteDF read FIND_EMIT      write FIND_EMIT;
@@ -162,7 +162,7 @@ type
 
   TRegistroA100List = class(TObjectList)
   private
-    function GetItem(Index: Integer): TRegistroA100;
+    function  GetItem(Index: Integer): TRegistroA100;
     procedure SetItem(Index: Integer; const Value: TRegistroA100);
   public
     function New: TRegistroA100;
@@ -173,18 +173,18 @@ type
 
   TRegistroA110 = class
   private
-    fCOD_INF: integer;    //02	Código da informação complementar do documento fiscal (Campo 02 do Registro 0450)	C	006
-    fTXT_COMPL: integer;  //03	Informação Complementar do Documento Fiscal	C	-
+    fCOD_INF   : String;    //02	Código da informação complementar do documento fiscal (Campo 02 do Registro 0450)	C	006
+    fTXT_COMPL : String;    //03	Informação Complementar do Documento Fiscal	C	-
   public
-    property COD_INF: integer read FCOD_INF write FCOD_INF;
-    property TXT_COMPL: integer read FTXT_COMPL write FTXT_COMPL;
+    property COD_INF   : String read FCOD_INF   write FCOD_INF;
+    property TXT_COMPL : String read FTXT_COMPL write FTXT_COMPL;
   end;
 
   /// Registro A110 - Lista
 
   TRegistroA110List = class(TObjectList)
   private
-    function GetItem(Index: Integer): TRegistroA110;
+    function  GetItem(Index: Integer): TRegistroA110;
     procedure SetItem(Index: Integer; const Value: TRegistroA110);
   public
     function New: TRegistroA110;
@@ -197,15 +197,15 @@ type
     fNUM_PROC: String;                //02	Identificação do processo ou ato concessório	C	020
     fIND_PROC: TACBrOrigemProcesso;	  //03	Indicador da origem do processo: 1 - Justiça Federal; 3 – Secretaria da Receita Federal do Brasil; 9 - Outros.	C	001*
   public
-    property NUM_PROC: string read FNUM_PROC write FNUM_PROC;
-    property IND_PROC: TACBrOrigemProcesso read FIND_PROC write FIND_PROC;
+    property NUM_PROC : string              read FNUM_PROC write FNUM_PROC;
+    property IND_PROC : TACBrOrigemProcesso read FIND_PROC write FIND_PROC;
   end;
 
   /// Registro A111 - Lista
 
   TRegistroA111List = class(TObjectList)
   private
-    function GetItem(Index: Integer): TRegistroA111;
+    function  GetItem(Index: Integer): TRegistroA111;
     procedure SetItem(Index: Integer; const Value: TRegistroA111);
   public
     function New: TRegistroA111;
@@ -216,30 +216,30 @@ type
 
   TRegistroA120 = class
   private
-    fVL_TOT_SERV: Currency;	      //02	Valor total do serviço, prestado por pessoa física ou jurídica domiciliada no exterior.	N	-	02
-    fVL_BC_PIS: Currency;	      //03	Valor da base de cálculo da Operação – PIS/PASEP – Importação	N	-	02
-    fVL_PIS_IMP: Currency;	      //04	Valor pago/recolhido de PIS/PASEP – Importação	N	-	02
-    fDT_PAG_PIS: TDateTime;	      //05	Data de pagamento do PIS/PASEP – Importação	N	008*	-
-    fVL_BC_COFINS: Currency;      //06	Valor da base de cálculo da Operação – COFINS – Importação	N	-	02
-    fVL_COFINS_IMP: Currency;     //07	Valor pago/recolhido de COFINS – Importação	N	-	02
-    fDT_PAG_COFINS: TDateTime;    //08	Data de pagamento do COFINS – Importação	N	008*
-    fLOC_EXE_SERV: TACBrLocalExecServico; //09	Local da execução do serviço: 0 – Executado no País; 1 – Executado no Exterior, cujo resultado se verifique no País.	C	001*	-
+    fVL_TOT_SERV   : Currency;              //02	Valor total do serviço, prestado por pessoa física ou jurídica domiciliada no exterior.	N	-	02
+    fVL_BC_PIS     : Currency;              //03	Valor da base de cálculo da Operação – PIS/PASEP – Importação	N	-	02
+    fVL_PIS_IMP    : Currency;              //04	Valor pago/recolhido de PIS/PASEP – Importação	N	-	02
+    fDT_PAG_PIS    : TDateTime;             //05	Data de pagamento do PIS/PASEP – Importação	N	008*	-
+    fVL_BC_COFINS  : Currency;              //06	Valor da base de cálculo da Operação – COFINS – Importação	N	-	02
+    fVL_COFINS_IMP : Currency;              //07	Valor pago/recolhido de COFINS – Importação	N	-	02
+    fDT_PAG_COFINS : TDateTime;             //08	Data de pagamento do COFINS – Importação	N	008*
+    fLOC_EXE_SERV  : TACBrLocalExecServico; //09	Local da execução do serviço: 0 – Executado no País; 1 – Executado no Exterior, cujo resultado se verifique no País.	C	001*	-
   public
-    property VL_TOT_SERV: Currency read FVL_TOT_SERV write FVL_TOT_SERV;
-    property VL_BC_PIS: Currency read FVL_BC_PIS write FVL_BC_PIS;
-    property VL_PIS_IMP: Currency read FVL_PIS_IMP write FVL_PIS_IMP;
-    property DT_PAG_PIS: TDateTime read FDT_PAG_PIS write FDT_PAG_PIS;
-    property VL_BC_COFINS: Currency read FVL_BC_COFINS write FVL_BC_COFINS;
-    property VL_COFINS_IMP: Currency read FVL_COFINS_IMP write FVL_COFINS_IMP;
-    property DT_PAG_COFINS: TDateTime read FDT_PAG_COFINS write FDT_PAG_COFINS;
-    property LOC_EXE_SERV: TACBrLocalExecServico read FLOC_EXE_SERV write FLOC_EXE_SERV;
+    property VL_TOT_SERV   : Currency              read FVL_TOT_SERV   write FVL_TOT_SERV;
+    property VL_BC_PIS     : Currency              read FVL_BC_PIS     write FVL_BC_PIS;
+    property VL_PIS_IMP    : Currency              read FVL_PIS_IMP    write FVL_PIS_IMP;
+    property DT_PAG_PIS    : TDateTime             read FDT_PAG_PIS    write FDT_PAG_PIS;
+    property VL_BC_COFINS  : Currency              read FVL_BC_COFINS  write FVL_BC_COFINS;
+    property VL_COFINS_IMP : Currency              read FVL_COFINS_IMP write FVL_COFINS_IMP;
+    property DT_PAG_COFINS : TDateTime             read FDT_PAG_COFINS write FDT_PAG_COFINS;
+    property LOC_EXE_SERV  : TACBrLocalExecServico read FLOC_EXE_SERV  write FLOC_EXE_SERV;
   end;
 
   /// Registro A120 - Lista
 
   TRegistroA120List = class(TObjectList)
   private
-    function GetItem(Index: Integer): TRegistroA120;
+    function  GetItem(Index: Integer): TRegistroA120;
     procedure SetItem(Index: Integer; const Value: TRegistroA120);
   public
     function New: TRegistroA120;
@@ -291,7 +291,7 @@ type
 
   TRegistroA170List = class(TObjectList)
   private
-    function GetItem(Index: Integer): TRegistroA170;
+    function  GetItem(Index: Integer): TRegistroA170;
     procedure SetItem(Index: Integer; const Value: TRegistroA170);
   public
     function New: TRegistroA170;
@@ -302,7 +302,7 @@ type
 
   TRegistroA990 = class
   private
-    fQTD_LIN_A: integer;          //02	Quantidade total de linhas do Bloco A	N	-	-
+    fQTD_LIN_A : integer;          //02	Quantidade total de linhas do Bloco A	N	-	-
   public
     property QTD_LIN_A: integer read FQTD_LIN_A write FQTD_LIN_A;
   end;
@@ -390,6 +390,7 @@ begin
   Put(Index, Value);
 end;
 
+
 {TRegistroA111}
 
 function TRegistroA111List.GetItem(Index: Integer): TRegistroA111;
@@ -408,6 +409,7 @@ begin
   Put(Index, Value);
 end;
 
+
 {TRegistroA120}
 
 function TRegistroA120List.GetItem(Index: Integer): TRegistroA120;
@@ -425,6 +427,7 @@ procedure TRegistroA120List.SetItem(Index: Integer; const Value: TRegistroA120);
 begin
   Put(Index, Value);
 end;
+
 
 {TRegistroA170}
 

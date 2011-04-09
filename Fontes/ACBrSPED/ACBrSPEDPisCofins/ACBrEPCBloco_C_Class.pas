@@ -44,7 +44,7 @@ unit ACBrEPCBloco_C_Class;
 interface
 
 uses SysUtils, Classes, DateUtils, ACBrSped, ACBrEPCBloco_C, ACBrEPCBlocos,
-     ACBrTXTClass;
+     ACBrTXTClass, ACBrEPCBloco_0_Class;
 
 type
   /// TBloco_C - Abertura, Identificação e Referências
@@ -93,6 +93,7 @@ type
     FRegistroC601Count: Integer;
     FRegistroC605Count: Integer;
     FRegistroC609Count: Integer;
+    FBloco_0: TBloco_0;
 
     procedure WriteRegistroC010(RegC001: TRegistroC001);
     procedure WriteRegistroC100(RegC010: TRegistroC010);
@@ -181,6 +182,7 @@ type
     procedure WriteRegistroC001 ;
     procedure WriteRegistroC990 ;
 
+    property Bloco_0: TBloco_0 read FBloco_0 write FBloco_0;
     property RegistroC001: TRegistroC001 read FRegistroC001 write FRegistroC001;
     property RegistroC990: TRegistroC990 read FRegistroC990 write FRegistroC990;
 
@@ -891,8 +893,8 @@ begin
              LFill(strCOD_DOC_IMP) +
              LFill(NUM_DOC__IMP)   +
              LFill(PIS_IMP,0,2)    +
-             LFill(COFINS_IMP,0,2) +
-             LFill(NUM_ACDRAW)) ;
+             LFill(COFINS_IMP,0,2) );
+//             LFill(NUM_ACDRAW)) ;
         //
         RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
       end;
@@ -927,7 +929,6 @@ begin
             iaMensal    : intIND_APUR := 0;
             iaDecendial : intIND_APUR := 1;
           end;
-
           case CST_ICMS of
             sticmsTributadaIntegralmente                              : strCST_ICMS :=  '000' ;
             sticmsTributadaComCobracaPorST                            : strCST_ICMS :=  '010' ;

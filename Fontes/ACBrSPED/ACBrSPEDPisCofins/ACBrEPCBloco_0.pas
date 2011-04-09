@@ -73,7 +73,7 @@ type
     FNOME             : string;                         //Nome empresarial da pessoa jurídica
     FCNPJ             : string;                         //Número de inscrição do estabelecimento matriz da pessoa jurídica no CNPJ
     FUF               : string;                         //Sigla da Unidade da Federação da pessoa jurídica
-    FCOD_MUN          : string;                         //Código do município do domicílio fiscal da pessoa jurídica, conforme a tabela IBGE
+    FCOD_MUN          : integer;                        //Código do município do domicílio fiscal da pessoa jurídica, conforme a tabela IBGE
     FSUFRAMA          : string;                         //Inscrição da pessoa jurídica na Suframa
     FIND_NAT_PJ       : TACBrIndicadorNaturezaPJ;       //Indicador da natureza da pessoa jurídica: 00 – Sociedade empresária em geral 01 – Sociedade cooperativa 02 – Entidade sujeita ao PIS/Pasep exclusivamente com base na Folha de Salários
     FIND_ATIV         : TACBrIndicadorAtividade;        //Indicador de tipo de atividade preponderante: 0 – Industrial ou equiparado a industrial; 1 – Prestador de serviços; 2 - Atividade de comércio; 3 – Atividade financeira; 4 – Atividade imobiliária; 9 – Outros.
@@ -87,7 +87,7 @@ type
     property NOME             : string                         read FNOME             write FNOME;
     property CNPJ             : string                         read FCNPJ             write FCNPJ;
     property UF               : string                         read FUF               write FUF;
-    property COD_MUN          : string                         read FCOD_MUN          write FCOD_MUN;
+    property COD_MUN          : integer                        read FCOD_MUN          write FCOD_MUN;
     property SUFRAMA          : string                         read FSUFRAMA          write FSUFRAMA;
     property IND_NAT_PJ       : TACBrIndicadorNaturezaPJ       read FIND_NAT_PJ       write FIND_NAT_PJ;
     property IND_ATIV         : TACBrIndicadorAtividade        read FIND_ATIV         write FIND_ATIV;
@@ -127,21 +127,21 @@ type
     FFONE    : string; //Número do telefone
     FFAX     : string; //Número do fax
     FEMAIL   : string; //Endereço do correio eletrônico
-    FCOD_MUN : string; //Código do município, conforme tabela IBGE
+    FCOD_MUN : integer; //Código do município, conforme tabela IBGE
   public
     property NOME    : string read FNOME    write FNOME;
     property CPF     : string read FCPF     write FCPF;
     property CRC     : string read FCRC     write FCRC;
     property CNPJ    : string read FCNPJ    write FCNPJ;
     property CEP     : string read FCEP     write FCEP;
-    property END_    : string read FEND     write FEND;
+    property ENDERECO: string read FEND     write FEND;
     property NUM     : string read FNUM     write FNUM;
     property COMPL   : string read FCOMPL   write FCOMPL;
     property BAIRRO  : string read FBAIRRO  write FBAIRRO;
     property FONE    : string read FFONE    write FFONE;
     property FAX     : string read FFAX     write FFAX;
     property EMAIL   : string read FEMAIL   write FEMAIL;
-    property COD_MUN : string read FCOD_MUN write FCOD_MUN;
+    property COD_MUN : integer read FCOD_MUN write FCOD_MUN;
   end;
 
   // Registro 0100 - Lista
@@ -167,7 +167,7 @@ type
     property IND_APRO_CRED : TACBrIndAproCred         read FIND_APRO_CRED write FIND_APRO_CRED;
     property COD_TIPO_CONT : TACBrCodIndTipoCon       read FCOD_TIPO_CONT write FCOD_TIPO_CONT;
 
-    property Registro0111: TRegistro0111List read FRegistro0111 write FRegistro0111;
+    property Registro0111: TRegistro0111 read FRegistro0111 write FRegistro0111;
   end;
 
   //REGISTRO 0111: DE RECEITA BRUTA MENSAL PARA FINS DE RATEIO DE CRÉDITOS COMUNS
@@ -186,7 +186,6 @@ type
     property REC_BRU_TOTAL        : currency read FREC_BRU_TOTAL        write FREC_BRU_TOTAL;
   end;
 
-  
   //REGISTRO 0140: TABELA DE CADASTRO DE ESTABELECIMENTO
   TRegistro0140 = class
   private
@@ -258,7 +257,7 @@ type
     property IE       : string read FIE       write FIE;
     property COD_MUN  : string read FCOD_MUN  write FCOD_MUN;
     property SUFRAMA  : string read FSUFRAMA  write FSUFRAMA;
-    property END_     : string read FEND      write FEND;
+    property ENDERECO : string read FEND      write FEND;
     property NUM      : string read FNUM      write FNUM;
     property COMPL    : string read FCOMPL    write FCOMPL;
     property BAIRRO   : string read FBAIRRO   write FBAIRRO;

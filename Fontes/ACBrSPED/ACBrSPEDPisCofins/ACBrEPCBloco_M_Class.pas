@@ -43,7 +43,7 @@ unit ACBrEPCBloco_M_Class;
 interface
 
 uses SysUtils, Classes, DateUtils, ACBrSped, ACBrEPCBloco_M, ACBrEPCBlocos,
-     ACBrTXTClass;
+     ACBrTXTClass, ACBrEPCBloco_0_Class;
 
 type
   /// TBloco_M -
@@ -78,6 +78,7 @@ type
     FRegistroM700Count: integer;
     FRegistroM800Count: integer;
     FRegistroM810Count: integer;
+    FBloco_0: TBloco_0;
 
     procedure WriteRegistroM100(RegM001: TRegistroM001);
     procedure WriteRegistroM105(RegM100: TRegistroM100);
@@ -138,6 +139,7 @@ type
     procedure WriteRegistroM001;
     procedure WriteRegistroM990;
 
+    property Bloco_0: TBloco_0 read FBloco_0 write FBloco_0;
     property RegistroM001: TRegistroM001 read FRegistroM001 write FRegistroM001;
     property RegistroM990: TRegistroM990 read FRegistroM990 write FRegistroM990;
 
@@ -262,27 +264,21 @@ end;
 
 function TBloco_M.RegistroM200New: TRegistroM200;
 begin
-   Result := FRegistroM001.RegistroM200.New;
+   Result := FRegistroM001.RegistroM200;
 end;
 
 function TBloco_M.RegistroM210New: TRegistroM210;
-var
-M200Count: integer;
 begin
-   M200Count := FRegistroM001.RegistroM200.Count -1;
-   //
-   Result := FRegistroM001.RegistroM200.Items[M200Count].RegistroM210.New;
+   Result := FRegistroM001.RegistroM200.RegistroM210.New;
 end;
 
 function TBloco_M.RegistroM211New: TRegistroM211;
 var
-M200Count: integer;
 M210Count: integer;
 begin
-   M200Count := FRegistroM001.RegistroM200.Count -1;
-   M210Count := FRegistroM001.RegistroM200.Items[M200Count].RegistroM210.Count -1;
+   M210Count := FRegistroM001.RegistroM200.RegistroM210.Count -1;
    //
-   Result := FRegistroM001.RegistroM200.Items[M200Count].RegistroM210.Items[M210Count].RegistroM211.New;
+   Result := FRegistroM001.RegistroM200.RegistroM210.Items[M210Count].RegistroM211;
 end;
 
 function TBloco_M.RegistroM220New: TRegistroM220;
@@ -290,21 +286,18 @@ var
 M200Count: integer;
 M210Count: integer;
 begin
-   M200Count := FRegistroM001.RegistroM200.Count -1;
-   M210Count := FRegistroM001.RegistroM200.Items[M200Count].RegistroM210.Count -1;
+   M210Count := FRegistroM001.RegistroM200.RegistroM210.Count -1;
    //
-   Result := FRegistroM001.RegistroM200.Items[M200Count].RegistroM210.Items[M210Count].RegistroM220.New;
+   Result := FRegistroM001.RegistroM200.RegistroM210.Items[M210Count].RegistroM220.New;
 end;
 
 function TBloco_M.RegistroM230New: TRegistroM230;
 var
-M200Count: integer;
 M210Count: integer;
 begin
-   M200Count := FRegistroM001.RegistroM200.Count -1;
-   M210Count := FRegistroM001.RegistroM200.Items[M200Count].RegistroM210.Count -1;
+   M210Count := FRegistroM001.RegistroM200.RegistroM210.Count -1;
    //
-   Result := FRegistroM001.RegistroM200.Items[M200Count].RegistroM210.Items[M210Count].RegistroM230.New;
+   Result := FRegistroM001.RegistroM200.RegistroM210.Items[M210Count].RegistroM230.New;
 end;
 
 function TBloco_M.RegistroM300New: TRegistroM300;
@@ -314,7 +307,7 @@ end;
 
 function TBloco_M.RegistroM350New: TRegistroM350;
 begin
-   Result := FRegistroM001.RegistroM350.New;
+   Result := FRegistroM001.RegistroM350;
 end;
 
 function TBloco_M.RegistroM400New: TRegistroM400;
@@ -356,49 +349,39 @@ end;
 
 function TBloco_M.RegistroM600New: TRegistroM600;
 begin
-   Result := FRegistroM001.RegistroM600.New;
+   Result := FRegistroM001.RegistroM600;
 end;
 
 function TBloco_M.RegistroM610New: TRegistroM610;
-var
-M600Count: integer;
 begin
-   M600Count := FRegistroM001.RegistroM600.Count -1;
-   //
-   Result := FRegistroM001.RegistroM600.Items[M600Count].RegistroM610.New;
+   Result := FRegistroM001.RegistroM600.RegistroM610.New;
 end;
 
 function TBloco_M.RegistroM611New: TRegistroM611;
 var
-M600Count: integer;
 M610Count: integer;
 begin
-   M600Count := FRegistroM001.RegistroM600.Count -1;
-   M610Count := FRegistroM001.RegistroM600.Items[M600Count].RegistroM610.Count -1;
+   M610Count := FRegistroM001.RegistroM600.RegistroM610.Count -1;
    //
-   Result := FRegistroM001.RegistroM600.Items[M600Count].RegistroM610.Items[M610Count].RegistroM611.New;
+   Result := FRegistroM001.RegistroM600.RegistroM610.Items[M610Count].RegistroM611;
 end;
 
 function TBloco_M.RegistroM620New: TRegistroM620;
 var
-M600Count: integer;
 M610Count: integer;
 begin
-   M600Count := FRegistroM001.RegistroM600.Count -1;
-   M610Count := FRegistroM001.RegistroM600.Items[M600Count].RegistroM610.Count -1;
+   M610Count := FRegistroM001.RegistroM600.RegistroM610.Count -1;
    //
-   Result := FRegistroM001.RegistroM600.Items[M600Count].RegistroM610.Items[M610Count].RegistroM620.New;
+   Result := FRegistroM001.RegistroM600.RegistroM610.Items[M610Count].RegistroM620.New;
 end;
 
 function TBloco_M.RegistroM630New: TRegistroM630;
 var
-M600Count: integer;
 M610Count: integer;
 begin
-   M600Count := FRegistroM001.RegistroM600.Count -1;
-   M610Count := FRegistroM001.RegistroM600.Items[M600Count].RegistroM610.Count -1;
+   M610Count := FRegistroM001.RegistroM600.RegistroM610.Count -1;
    //
-   Result := FRegistroM001.RegistroM600.Items[M600Count].RegistroM610.Items[M610Count].RegistroM630.New;
+   Result := FRegistroM001.RegistroM600.RegistroM610.Items[M610Count].RegistroM630.New;
 end;
 
 function TBloco_M.RegistroM700New: TRegistroM700;
@@ -476,8 +459,8 @@ begin
         end;
 
         // Registros FILHOS
-        WriteRegistroF105( RegM001.RegistroM100.Items[intFor] );
-        WriteRegistroF110( RegM001.RegistroM100.Items[intFor] );
+        WriteRegistroM105( RegM001.RegistroM100.Items[intFor] );
+        WriteRegistroM110( RegM001.RegistroM100.Items[intFor] );
         ///
         RegistroM990.QTD_LIN_M := RegistroM990.QTD_LIN_M + 1;
      end;
@@ -551,33 +534,28 @@ intFor: integer;
 begin
   if Assigned(RegM001.RegistroM200) then
   begin
-     for intFor := 0 to RegM001.RegistroM200.Count - 1 do
+     with RegM001.RegistroM200 do
      begin
-        with RegM001.RegistroM200.Items[intFor] do
-        begin
-
-          Add( LFill('M200') +
-               LFill( VL_TOT_CONT_NC_PER,0,2 ) +
-               LFill( VL_TOT_CRED_DESC,0,2 ) +
-               LFill( VL_TOT_CRED_DESC_ANT,0,2 ) +
-               LFill( VL_TOT_CONT_NC_DEV,0,2 ) +
-               LFill( VL_RET_NC,0,2 ) +
-               LFill( VL_OUT_DED_NC,0,2 ) +
-               LFill( VL_CONT_NC_REC,0,2 ) +
-               LFill( VL_TOT_CONT_CUM_PER,0,2 ) +
-               LFill( VL_RET_CUM,0,2 ) +
-               LFill( VL_OUT_DED_CUM,0,2 ) +
-               LFill( VL_CONT_CUM_REC,0,2 ) +
-               LFill( VL_TOT_CONT_REC,0,2 ) ) ;
-        end;
-
-        // Registros FILHOS
-        WriteRegistroF210( RegM001.RegistroM200.Items[intFor] );
-        ///
-        RegistroM990.QTD_LIN_M := RegistroM990.QTD_LIN_M + 1;
+       Add( LFill('M200') +
+            LFill( VL_TOT_CONT_NC_PER,0,2 ) +
+            LFill( VL_TOT_CRED_DESC,0,2 ) +
+            LFill( VL_TOT_CRED_DESC_ANT,0,2 ) +
+            LFill( VL_TOT_CONT_NC_DEV,0,2 ) +
+            LFill( VL_RET_NC,0,2 ) +
+            LFill( VL_OUT_DED_NC,0,2 ) +
+            LFill( VL_CONT_NC_REC,0,2 ) +
+            LFill( VL_TOT_CONT_CUM_PER,0,2 ) +
+            LFill( VL_RET_CUM,0,2 ) +
+            LFill( VL_OUT_DED_CUM,0,2 ) +
+            LFill( VL_CONT_CUM_REC,0,2 ) +
+            LFill( VL_TOT_CONT_REC,0,2 ) ) ;
      end;
+     // Registros FILHOS
+     WriteRegistroM210( RegM001.RegistroM200 );
+     ///
+     RegistroM990.QTD_LIN_M := RegistroM990.QTD_LIN_M + 1;
      /// Variavél para armazenar a quantidade de registro do tipo.
-     FRegistroM200Count := FRegistroM200Count + RegM001.RegistroM200.Count;
+     FRegistroM200Count := FRegistroM200Count + 1;
   end;
 end;
 
@@ -608,9 +586,9 @@ begin
         end;
 
         // Registros FILHOS
-        WriteRegistroF211( RegM200.RegistroM210.Items[intFor] );
-        WriteRegistroF220( RegM200.RegistroM210.Items[intFor] );
-        WriteRegistroF230( RegM200.RegistroM210.Items[intFor] );
+        WriteRegistroM211( RegM200.RegistroM210.Items[intFor] );
+        WriteRegistroM220( RegM200.RegistroM210.Items[intFor] );
+        WriteRegistroM230( RegM200.RegistroM210.Items[intFor] );
         ///
         RegistroM990.QTD_LIN_M := RegistroM990.QTD_LIN_M + 1;
      end;
@@ -625,24 +603,21 @@ intFor: integer;
 begin
   if Assigned(RegM210.RegistroM211) then
   begin
-     for intFor := 0 to RegM210.RegistroM211.Count - 1 do
+     with RegM210.RegistroM211 do
      begin
-        with RegM210.RegistroM211.Items[intFor] do
-        begin
 
-          Add( LFill('M211') +
-               LFill( IND_TIP_COOP ) +        //Verificar criação da tabela no ACBrEPCBlocos
-               LFill( VL_BC_CONT_ANT_EXC_COOP,0,2 ) +
-               LFill( VL_EXC_COOP_GER,0,2 ) +
-               LFill( VL_EXC_ESP_COOP,0,2 ) +
-               LFill( VL_BC_CONT,0,2 ) ) ;
-        end;
-
-        ///
-        RegistroM990.QTD_LIN_M := RegistroM990.QTD_LIN_M + 1;
+       Add( LFill('M211') +
+            LFill( IND_TIP_COOP ) +        //Verificar criação da tabela no ACBrEPCBlocos
+            LFill( VL_BC_CONT_ANT_EXC_COOP,0,2 ) +
+            LFill( VL_EXC_COOP_GER,0,2 ) +
+            LFill( VL_EXC_ESP_COOP,0,2 ) +
+            LFill( VL_BC_CONT,0,2 ) ) ;
      end;
+
+     ///
+     RegistroM990.QTD_LIN_M := RegistroM990.QTD_LIN_M + 1;
      /// Variavél para armazenar a quantidade de registro do tipo.
-     FRegistroM211Count := FRegistroM211Count + RegM210.RegistroM211.Count;
+     FRegistroM211Count := FRegistroM211Count + 1;
   end;
 end;
 
@@ -715,10 +690,10 @@ begin
 
           Add( LFill('M300') +
                LFill( COD_CONT ) +              //Verificar criação da tabela no ACBrEPCBlocos
-               LFill( VL_CONT_APUR_DIFER,0,2 ) +
+//               LFill( VL_CONT_APUR_DIFER,0,2 ) +
                LFill( NAT_CRED_DESC ) +         //Verificar criação da tabela no ACBrEPCBlocos
-               LFill( VL_CRED_DESC_DIFER,0,2 ) +
-               LFill( VL_CONT_DIFER_ANT,0,2 ) +
+//               LFill( VL_CRED_DESC_DIFER,0,2 ) +
+//               LFill( VL_CONT_DIFER_ANT,0,2 ) +
                LFill( PER_APUR ) +
                LFill( DT_RECEB ) ) ;
         end;
@@ -737,24 +712,19 @@ intFor: integer;
 begin
   if Assigned(RegM001.RegistroM350) then
   begin
-     for intFor := 0 to RegM001.RegistroM350.Count - 1 do
+     with RegM001.RegistroM350 do
      begin
-        with RegM001.RegistroM350.Items[intFor] do
-        begin
-
-          Add( LFill('M350') +
-               LFill( VL_TOT_FOL,0,2 ) +
-               LFill( VL_EXC_BC,0,2 ) +
-               LFill( VL_TOT_BC,0,2 ) +
-               LFill( ALIQ_PIS_FOL,0,2 ) +
-               LFill( VL_TOT_CONT_FOL,0,2 ) ) ;
-        end;
-
-        ///
-        RegistroM990.QTD_LIN_M := RegistroM990.QTD_LIN_M + 1;
+       Add( LFill('M350') +
+            LFill( VL_TOT_FOL,0,2 ) +
+            LFill( VL_EXC_BC,0,2 ) +
+            LFill( VL_TOT_BC,0,2 ) +
+            LFill( ALIQ_PIS_FOL,0,2 ) +
+            LFill( VL_TOT_CONT_FOL,0,2 ) ) ;
      end;
+     ///
+     RegistroM990.QTD_LIN_M := RegistroM990.QTD_LIN_M + 1;
      /// Variavél para armazenar a quantidade de registro do tipo.
-     FRegistroM350Count := FRegistroM350Count + RegM001.RegistroM350.Count;
+     FRegistroM350Count := FRegistroM350Count + 1;
   end;
 end;
 
@@ -839,8 +809,8 @@ begin
         end;
 
         // Registros FILHOS
-        WriteRegistroF505( RegM001.RegistroM500.Items[intFor] );
-        WriteRegistroF510( RegM001.RegistroM500.Items[intFor] );
+        WriteRegistroM505( RegM001.RegistroM500.Items[intFor] );
+        WriteRegistroM510( RegM001.RegistroM500.Items[intFor] );
         ///
         RegistroM990.QTD_LIN_M := RegistroM990.QTD_LIN_M + 1;
      end;
@@ -904,7 +874,7 @@ begin
         RegistroM990.QTD_LIN_M := RegistroM990.QTD_LIN_M + 1;
      end;
      /// Variavél para armazenar a quantidade de registro do tipo.
-     FRegistroM10Count := FRegistroM510Count + RegM500.RegistroM510.Count;
+     FRegistroM510Count := FRegistroM510Count + RegM500.RegistroM510.Count;
   end;
 end;
 
@@ -914,33 +884,28 @@ intFor: integer;
 begin
   if Assigned(RegM001.RegistroM600) then
   begin
-     for intFor := 0 to RegM001.RegistroM600.Count - 1 do
+     with RegM001.RegistroM600 do
      begin
-        with RegM001.RegistroM600.Items[intFor] do
-        begin
-
-          Add( LFill('M600') +
-               LFill( VL_TOT_CONT_NC_PER,0,2 ) +
-               LFill( VL_TOT_CRED_DESC,0,2 ) +
-               LFill( VL_TOT_CRED_DESC_ANT,0,2 ) +
-               LFill( VL_TOT_CONT_NC_DEV,0,2 ) +
-               LFill( VL_RET_NC,0,2 ) +
-               LFill( VL_OUT_DED_NC,0,2 ) +
-               LFill( VL_CONT_NC_REC,0,2 ) +
-               LFill( VL_TOT_CONT_CUM_PER,0,2 ) +
-               LFill( VL_RET_CUM,0,2 ) +
-               LFill( VL_OUT_DED_CUM,0,2 ) +
-               LFill( VL_CONT_CUM_REC,0,2 ) +
-               LFill( VL_TOT_CONT_REC,0,2 ) ) ;
-        end;
-
-        // Registros FILHOS
-        WriteRegistroF610( RegM001.RegistroM600.Items[intFor] );
-        ///
-        RegistroM990.QTD_LIN_M := RegistroM990.QTD_LIN_M + 1;
+       Add( LFill('M600') +
+            LFill( VL_TOT_CONT_NC_PER,0,2 ) +
+            LFill( VL_TOT_CRED_DESC,0,2 ) +
+            LFill( VL_TOT_CRED_DESC_ANT,0,2 ) +
+            LFill( VL_TOT_CONT_NC_DEV,0,2 ) +
+            LFill( VL_RET_NC,0,2 ) +
+            LFill( VL_OUT_DED_NC,0,2 ) +
+            LFill( VL_CONT_NC_REC,0,2 ) +
+            LFill( VL_TOT_CONT_CUM_PER,0,2 ) +
+            LFill( VL_RET_CUM,0,2 ) +
+            LFill( VL_OUT_DED_CUM,0,2 ) +
+            LFill( VL_CONT_CUM_REC,0,2 ) +
+            LFill( VL_TOT_CONT_REC,0,2 ) ) ;
      end;
+     // Registros FILHOS
+     WriteRegistroM610( RegM001.RegistroM600 );
+     ///
+     RegistroM990.QTD_LIN_M := RegistroM990.QTD_LIN_M + 1;
      /// Variavél para armazenar a quantidade de registro do tipo.
-     FRegistroM600Count := FRegistroM600Count + RegM001.RegistroM600.Count;
+     FRegistroM600Count := FRegistroM600Count + 1;
   end;
 end;
 
@@ -971,9 +936,9 @@ begin
         end;
 
         // Registros FILHOS
-        WriteRegistroF611( RegM600.RegistroM610.Items[intFor] );
-        WriteRegistroF620( RegM600.RegistroM610.Items[intFor] );
-        WriteRegistroF630( RegM600.RegistroM610.Items[intFor] );
+        WriteRegistroM611( RegM600.RegistroM610.Items[intFor] );
+        WriteRegistroM620( RegM600.RegistroM610.Items[intFor] );
+        WriteRegistroM630( RegM600.RegistroM610.Items[intFor] );
         ///
         RegistroM990.QTD_LIN_M := RegistroM990.QTD_LIN_M + 1;
      end;
@@ -988,24 +953,21 @@ intFor: integer;
 begin
   if Assigned(RegM610.RegistroM611) then
   begin
-     for intFor := 0 to RegM610.RegistroM611.Count - 1 do
+     with RegM610.RegistroM611 do
      begin
-        with RegM610.RegistroM611.Items[intFor] do
-        begin
 
-          Add( LFill('M611') +
-               LFill( IND_TIP_COOP ) +        //Verificar criação da tabela no ACBrEPCBlocos
-               LFill( VL_BC_CONT_ANT_EXC_COOP,0,2 ) +
-               LFill( VL_EXC_COOP_GER,0,2 ) +
-               LFill( VL_EXC_ESP_COOP,0,2 ) +
-               LFill( VL_BC_CONT,0,2 ) ) ;
-        end;
-
-        ///
-        RegistroM990.QTD_LIN_M := RegistroM990.QTD_LIN_M + 1;
+       Add( LFill('M611') +
+            LFill( IND_TIP_COOP ) +        //Verificar criação da tabela no ACBrEPCBlocos
+            LFill( VL_BC_CONT_ANT_EXC_COOP,0,2 ) +
+            LFill( VL_EXC_COOP_GER,0,2 ) +
+            LFill( VL_EXC_ESP_COOP,0,2 ) +
+            LFill( VL_BC_CONT,0,2 ) ) ;
      end;
+
+     ///
+     RegistroM990.QTD_LIN_M := RegistroM990.QTD_LIN_M + 1;
      /// Variavél para armazenar a quantidade de registro do tipo.
-     FRegistroM611Count := FRegistroM611Count + RegM610.RegistroM611.Count;
+     FRegistroM611Count := FRegistroM611Count + 1;
   end;
 end;
 
@@ -1078,10 +1040,10 @@ begin
 
           Add( LFill('M700') +
                LFill( COD_CONT ) +            //Verificar criação da tabela no ACBrEPCBlocos
-               LFill( VL_CONT_APUR_DIFER,0,2 ) +
+//               LFill( VL_CONT_APUR_DIFER,0,2 ) +
                LFill( NAT_CRED_DESC ) +       //Verificar criação da tabela no ACBrEPCBlocos
-               LFill( VL_CRED_DESC_DIFER,0,2 ) +
-               LFill( VL_CONT_DIFER_ANT,0,2 ) +
+//               LFill( VL_CRED_DESC_DIFER,0,2 ) +
+//               LFill( VL_CONT_DIFER_ANT,0,2 ) +
                LFill( PER_APUR ) +
                LFill( DT_RECEB ) ) ;
         end;
@@ -1113,7 +1075,7 @@ begin
         end;
 
         // Registros FILHOS
-        WriteRegistroF810( RegM001.RegistroM800.Items[intFor] );
+        WriteRegistroM810( RegM001.RegistroM800.Items[intFor] );
         ///
         RegistroM990.QTD_LIN_M := RegistroM990.QTD_LIN_M + 1;
      end;

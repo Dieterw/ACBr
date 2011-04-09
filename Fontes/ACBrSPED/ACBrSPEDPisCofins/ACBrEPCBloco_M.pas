@@ -831,7 +831,7 @@ type
   end;
 
   //REGISTRO M900: ENCERRAMENTO DO BLOCO M
-  TRegistroM900 = class
+  TRegistroM990 = class
   private
     FQTD_LIN_M: integer;
   public

@@ -724,10 +724,10 @@ type
   TRegistro1809 = class
   private
     fNUM_PROC: string;         //02	NUM_PROC	Identificação do processo ou ato concessório	C	020	-
-    fIND_PROC: Integer;        //03	IND_PROC	Indicador da origem do processo:1 - Justiça Federal;3 – Secretaria da Receita Federal do Brasil;9 – Outros.	C	001*	-
+    fIND_PROC: TACBrOrigemProcesso;        //03	IND_PROC	Indicador da origem do processo:1 - Justiça Federal;3 – Secretaria da Receita Federal do Brasil;9 – Outros.	C	001*	-
   public
     property NUM_PROC: string read FNUM_PROC write FNUM_PROC;
-    property IND_PROC: Integer read FIND_PROC write FIND_PROC;
+    property IND_PROC: TACBrOrigemProcesso read FIND_PROC write FIND_PROC;
   end;
 
   // Registro 1809 - Lista

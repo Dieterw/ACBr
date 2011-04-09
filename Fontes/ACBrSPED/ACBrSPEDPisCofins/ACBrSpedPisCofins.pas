@@ -160,8 +160,8 @@ type
     property Bloco_A: TBloco_A read FBloco_A write FBloco_A;
     property Bloco_C: TBloco_C read FBloco_C write FBloco_C;
     property Bloco_D: TBloco_D read FBloco_D write FBloco_D;
-    property Bloco_E: TBloco_F read FBloco_F write FBloco_F;
-    property Bloco_G: TBloco_M read FBloco_M write FBloco_M;
+    property Bloco_F: TBloco_F read FBloco_F write FBloco_F;
+    property Bloco_M: TBloco_M read FBloco_M write FBloco_M;
   published
     property About: ansistring read GetAbout stored False;
     property Path: ansistring read FPath write SetPath;
@@ -1961,11 +1961,11 @@ procedure TACBrSPEDPisCofins.WriteRegistro9999;
 begin
   Bloco_9.Registro9999.QTD_LIN := Bloco_9.Registro9999.QTD_LIN + Bloco_0.Registro0990.QTD_LIN_0 +
                                                                  Bloco_1.Registro1990.QTD_LIN_1 +
+                                                                 Bloco_A.RegistroA990.QTD_LIN_A +
                                                                  Bloco_C.RegistroC990.QTD_LIN_C +
                                                                  Bloco_D.RegistroD990.QTD_LIN_D +
-                                                                 Bloco_E.RegistroE990.QTD_LIN_E +
-                                                                 Bloco_G.RegistroG990.QTD_LIN_G +
-                                                                 Bloco_H.RegistroH990.QTD_LIN_H +
+                                                                 Bloco_F.RegistroF990.QTD_LIN_F +
+                                                                 Bloco_M.RegistroM990.QTD_LIN_M +
                                                                  Bloco_9.Registro9990.QTD_LIN_9;
   Bloco_9.WriteRegistro9999;
 end;

@@ -43,7 +43,7 @@ unit ACBrEPCBloco_1_Class;
 interface
 
 uses SysUtils, Classes, DateUtils, ACBrSped, ACBrEPCBloco_1, ACBrEPCBlocos,
-     ACBrTXTClass;
+     ACBrTXTClass, ACBrEPCBloco_0_Class;
 
 type
   /// TBloco_1 -
@@ -73,6 +73,7 @@ type
     FRegistro1700Count: integer;
     FRegistro1800Count: integer;
     FRegistro1809Count: integer;
+    FBloco_0: TBloco_0;
 
     procedure WriteRegistro1010(Reg1001: TRegistro1001);
     procedure WriteRegistro1020(Reg1001: TRegistro1001);
@@ -123,6 +124,7 @@ type
     procedure WriteRegistro1001;
     procedure WriteRegistro1990;
 
+    property Bloco_0: TBloco_0 read FBloco_0 write FBloco_0;
     property Registro1001: TRegistro1001 read FRegistro1001 write FRegistro1001;
     property Registro1990: TRegistro1990 read FRegistro1990 write FRegistro1990;
 
@@ -244,7 +246,7 @@ begin
    U100Count := FRegistro1001.Registro1100.Count -1;
    U101Count := FRegistro1001.Registro1100.Items[U100Count].Registro1101.Count -1;
    //
-   Result := FRegistro1001.Registro1100.Items[U100Count].Registro1101.Items[U101Count].Registro1102.New;
+   Result := FRegistro1001.Registro1100.Items[U100Count].Registro1101.Items[U101Count].Registro1102;
 end;
 
 function TBloco_1.Registro1200New: TRegistro1200;
@@ -297,7 +299,7 @@ begin
    U500Count := FRegistro1001.Registro1500.Count -1;
    U501Count := FRegistro1001.Registro1500.Items[U500Count].Registro1501.Count -1;
    //
-   Result := FRegistro1001.Registro1500.Items[U500Count].Registro1501.Items[U501Count].Registro1502.New;
+   Result := FRegistro1001.Registro1500.Items[U500Count].Registro1501.Items[U501Count].Registro1502;
 end;
 
 function TBloco_1.Registro1600New: TRegistro1600;
@@ -364,7 +366,7 @@ begin
           WriteRegistro1800(FRegistro1001) ;
         end;
      end;
-     RegistroF990.QTD_LIN_1 := RegistroF990.QTD_LIN_1 + 1;
+     Registro1990.QTD_LIN_1 := Registro1990.QTD_LIN_1 + 1;
   end;
 end;
 
@@ -506,21 +508,18 @@ intFor: integer;
 begin
   if Assigned(Reg1101.Registro1102) then
   begin
-     for intFor := 0 to Reg1101.Registro1102.Count - 1 do
+     with Reg1101.Registro1102 do
      begin
-        with Reg1101.Registro1102.Items[intFor] do
-        begin
 
-          Add( LFill('1102') +
-               LFill( VL_CRED_PIS_TRIB_MI,0,2 ) +
-               LFill( VL_CRED_PIS_NT_MI,0,2 ) + //Verificar criação da tabela no ACBrEPCBlocos
-               LFill( VL_CRED_PIS_EXP,0,2 ) ) ;
-        end;
-        ///
-        Registro1990.QTD_LIN_1 := Registro1990.QTD_LIN_1 + 1;
+       Add( LFill('1102') +
+            LFill( VL_CRED_PIS_TRIB_MI,0,2 ) +
+            LFill( VL_CRED_PIS_NT_MI,0,2 ) + //Verificar criação da tabela no ACBrEPCBlocos
+            LFill( VL_CRED_PIS_EXP,0,2 ) ) ;
      end;
+     ///
+     Registro1990.QTD_LIN_1 := Registro1990.QTD_LIN_1 + 1;
      /// Variavél para armazenar a quantidade de registro do tipo.
-     FRegistro1102Count := FRegistro1102Count + Reg1101.Registro1102.Count;
+     FRegistro1102Count := FRegistro1102Count + 1;
   end;
 end;
 
@@ -726,20 +725,17 @@ intFor: integer;
 begin
   if Assigned(Reg1501.Registro1502) then
   begin
-     for intFor := 0 to Reg1501.Registro1502.Count - 1 do
+     with Reg1501.Registro1502 do
      begin
-        with Reg1501.Registro1502.Items[intFor] do
-        begin
-          Add( LFill('1502') +
-               LFill( VL_CRED_COFINS_TRIB_MI,0,2 ) +
-               LFill( VL_CRED_COFINS_NT_MI,0,2 ) + //Verificar criação da tabela no ACBrEPCBlocos
-               LFill( VL_CRED_COFINS_EXP,0,2 ) ) ;
-        end;
-        ///
-        Registro1990.QTD_LIN_1 := Registro1990.QTD_LIN_1 + 1;
+       Add( LFill('1502') +
+            LFill( VL_CRED_COFINS_TRIB_MI,0,2 ) +
+            LFill( VL_CRED_COFINS_NT_MI,0,2 ) + //Verificar criação da tabela no ACBrEPCBlocos
+            LFill( VL_CRED_COFINS_EXP,0,2 ) ) ;
      end;
+     ///
+     Registro1990.QTD_LIN_1 := Registro1990.QTD_LIN_1 + 1;
      /// Variavél para armazenar a quantidade de registro do tipo.
-     FRegistro1502Count := FRegistro1502Count + Reg1501.Registro1502.Count;
+     FRegistro1502Count := FRegistro1502Count + 1;
   end;
 end;
 
@@ -899,8 +895,8 @@ begin
         with Reg1800.Registro1809.Items[intFor] do
         begin
            case IND_PROC of
-             opJusticaFederal : strIND_PROC := '0';
-             opSecexRFB       : strIND_PROC := '1';
+             opJusticaFederal : strIND_PROC := '1';
+             opSecexRFB       : strIND_PROC := '3';
              opOutros         : strIND_PROC := '9';
              opNenhum         : strIND_PROC := '';
            end;

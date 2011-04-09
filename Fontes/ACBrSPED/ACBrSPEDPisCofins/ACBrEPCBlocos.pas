@@ -51,45 +51,6 @@ interface
 uses
   SysUtils, Classes, DateUtils, ACBrTXTClass;
 
-Const
-  /// Código da Situação Tributária referente ao IPI.
-  ipiEntradaRecuperacaoCredito = '00' ; // Entrada com recuperação de crédito
-  ipiEntradaTributradaZero     = '01' ; // Entrada tributada com alíquota zero
-  ipiEntradaIsenta             = '02' ; // Entrada isenta
-  ipiEntradaNaoTributada       = '03' ; // Entrada não-tributada
-  ipiEntradaImune              = '04' ; // Entrada imune
-  ipiEntradaComSuspensao       = '05' ; // Entrada com suspensão
-  ipiOutrasEntradas            = '49' ; // Outras entradas
-  ipiSaidaTributada            = '50' ; // Saída tributada
-  ipiSaidaTributadaZero        = '51' ; // Saída tributada com alíquota zero
-  ipiSaidaIsenta               = '52' ; // Saída isenta
-  ipiSaidaNaoTributada         = '53' ; // Saída não-tributada
-  ipiSaidaImune                = '54' ; // Saída imune
-  ipiSaidaComSuspensao         = '55' ; // Saída com suspensão
-  ipiOutrasSaidas              = '99' ; // Outras saídas
-
-  /// Código da Situação Tributária referente ao PIS.
-  pisValorAliquotaNormal        = '01' ; // Operação Tributável (base de cálculo = valor da operação alíquota normal (cumulativo/não cumulativo)).
-  pisValorAliquotaDiferenciada  = '02' ; // Operação Tributável (base de cálculo = valor da operação (alíquota diferenciada)).
-  pisQtdeAliquotaUnidade        = '03' ; // Operação Tributável (base de cálculo = quantidade vendida x alíquota por unidade de produto).
-  pisMonofaticaAliquotaZero     = '04' ; // Operação Tributável (tributação monofásica (alíquota zero)).
-  pisAliquotaZero               = '06' ; // Operação Tributável (alíquota zero).
-  pisIsentaContribuicao         = '07' ; // Operação Isenta da Contribuição.
-  pisSemIncidenciaContribuicao  = '08' ; // Operação Sem Incidência da Contribuição.
-  pisSuspensaoContribuicao      = '09' ; // Operação com Suspensão da Contribuição.
-  pisOutrasOperacoes            = '99' ; // Outras Operações,
-
-  /// Código da Situação Tributária referente ao COFINS.
-  cofinsValorAliquotaNormal       = '01' ; // Operação Tributável (base de cálculo = valor da operação alíquota normal (cumulativo/não cumulativo)).
-  cofinsValorAliquotaDiferenciada = '02' ; // Operação Tributável (base de cálculo = valor da operação (alíquota diferenciada)).
-  cofinsQtdeAliquotaUnidade       = '03' ; // Operação Tributável (base de cálculo = quantidade vendida x alíquota por unidade de produto).
-  cofinsMonofaticaAliquotaZero    = '04' ; // Operação Tributável (tributação monofásica (alíquota zero)).
-  cofinsAliquotaZero              = '06' ; // Operação Tributável (alíquota zero).
-  cofinsIsentaContribuicao        = '07' ; // Operação Isenta da Contribuição.
-  cofinsSemIncidenciaContribuicao = '08' ; // Operação Sem Incidência da Contribuição.
-  cofinsSuspensaoContribuicao     = '09' ; // Operação com Suspensão da Contribuição.
-  cofinsOutrasOperacoes           = '99' ; // Outras Operações,
-
 type
   /// Indicador de movimento - TOpenBlocos
   TACBrIndicadorMovimento = (imComDados, // 0- Bloco com dados informados;
@@ -255,6 +216,17 @@ type
   TACBrNaturezaFrete = (nfNegociavel,      // 0 - Negociavel
                         nfNaoNegociavel    // 1 - Não Negociavel
                         );
+
+  //INDICADOR DE NATUREZA DE FRETE CONTRATADO
+  TACBrNaturezaFrtContratado = (nfcVendaOnusEstVendedor,    //0 - Operações de vendas, com ônus suportado pelo estabelecimento vendedor
+                                nfcVendaOnusAdquirente,     //1 - Operações de vendas, com ônus suportado pelo adquirente
+                                nfcCompraGeraCred,          //2 - Operações de compras (bens para revenda, matériasprima e outros produtos, geradores de crédito)
+                                nfcCompraNaoGeraCred,       //3 - Operações de compras (bens para revenda, matériasprima e outros produtos, não geradores de crédito)
+                                nfcTransfAcabadosPJ,        //4 - Transferência de produtos acabados entre estabelecimentos da pessoa jurídica
+                                nfcTransfNaoAcabadosPJ,     //5 - Transferência de produtos em elaboração entre estabelecimentos da pessoa jurídica
+                                nfcOutras                   //9 - Outras.
+                         );
+
   /// Indicador do tipo de receita
   TACBrIndTipoReceita = (recServicoPrestado,          // 0 - Receita própria - serviços prestados;
                          recCobrancaDebitos,          // 1 - Receita própria - cobrança de débitos;
@@ -416,20 +388,165 @@ type
                      sdfEspecial                 // 08 Documento Fiscal emitido com base em Regime Especial ou Norma Específica
                      );
 
-  // Código da Situação Tributária referente ao IPI
-  TACBrSituacaoTribIPI = (tipo1,//ver o que por
-                          tipo2 //ver o que por
-                          );
+  /// Código da tabela de modelo de documento fiscais:
+  TACBrCodModeloDoc = (
+                       dfiNFSTransporte,          // 07 - Nota Fiscal de Serviço de Transporte
+                       dfiConhecimentoRodoviario, // 08 - Conhecimento de Transporte Rodoviário de Cargas
+                       dfiConhecimentoAvulso,     // 8B - Conhecimento de Transporte de Cargas Avulso
+                       dfiConhecimentoAquaviario, // 09 - Conhecimento de Transporte Aquaviário de Cargas
+                       dfiConhecimentoAereo,      // 10 - Conhecimento Aério
+                       dfiConhecimentoFerroviario,// 11 - Conhecimento de Transporte Ferroviário de Cargas
+                       dfiConhecimentoMultimodal, // 26 - Conhecimento de Transporte Multimodal de Cargas
+                       dfiNFTranspFerro,          // 27 - Nota Fiscal de Transporte Ferroviário de Cargas
+                       dfiCTE,                    // 57 - Conhecimento de Transporte Eletrônico - CT-e
+                       dfiBilheteRedoviario,      // 13 - Bilhete de passagem Rodoviário
+                       dfiBilheteAquaviario,      // 14 - Bilhete de passagem Aquaviário
+                       dfiBilheteBagagem,         // 15 - Bilhete de passagem e Nota de Bagagem
+                       dfiBilheteFerroviario,     // 16 - Bilhete de passagem Ferrroviário
+                       dfiResumoMovimento,        // 18 - Resumo de Movimento Diário
+                       dfiCFBilhete,              // 2E - Cupom Fiscal Bilhete de Passagem
+                       dfiNFSComunicacao,         // 21 - Nota Fiscal de Serviço de Comunicação
+                       dfiNFSTelecomunicacao      // 22 - Nota Fiscal de Serviço de Telecomunicação
+                      );					 
 
-  // Código da Situação Tributária referente ao PIS
-  TACBrSituacaoTribPIS = (tipo3, //ver o que por
-                          tipo4  //ver o que por
-                          );
+  ///Código da Situação Tributária referente ao ICMS.
+  TACBrSituacaoTribICMS = (
+                            sticmsTributadaIntegralmente                              , // '000' //	Tributada integralmente
+                            sticmsTributadaComCobracaPorST                            , // '010' //	Tributada e com cobrança do ICMS por substituição tributária
+                            sticmsComReducao                                          , // '020' //	Com redução de base de cálculo
+                            sticmsIsentaComCobracaPorST                               , // '030' //	Isenta ou não tributada e com cobrança do ICMS por substituição tributária
+                            sticmsIsenta                                              , // '040' //	Isenta
+                            sticmsNaoTributada                                        , // '041' //	Não tributada
+                            sticmsSuspensao                                           , // '050' //	Suspensão
+                            sticmsDiferimento                                         , // '051' //	Diferimento
+                            sticmsCobradoAnteriormentePorST                           , // '060' //	ICMS cobrado anteriormente por substituição tributária
+                            sticmsComReducaoPorST                                     , // '070' //	Com redução de base de cálculo e cobrança do ICMS por substituição tributária
+                            sticmsOutros                                              , // '090' //	Outros
+                            sticmsEstrangeiraImportacaoDiretaTributadaIntegralmente   , // '100' // Estrangeira - Importação direta - Tributada integralmente
+                            sticmsEstrangeiraImportacaoDiretaTributadaComCobracaPorST , // '110' // Estrangeira - Importação direta - Tributada e com cobrança do ICMS por substituição tributária
+                            sticmsEstrangeiraImportacaoDiretaComReducao               , // '120' // Estrangeira - Importação direta - Com redução de base de cálculo
+                            sticmsEstrangeiraImportacaoDiretaIsentaComCobracaPorST    , // '130' // Estrangeira - Importação direta - Isenta ou não tributada e com cobrança do ICMS por substituição tributária
+                            sticmsEstrangeiraImportacaoDiretaIsenta                   , // '140' // Estrangeira - Importação direta - Isenta
+                            sticmsEstrangeiraImportacaoDiretaNaoTributada             , // '141' // Estrangeira - Importação direta - Não tributada
+                            sticmsEstrangeiraImportacaoDiretaSuspensao                , // '150' // Estrangeira - Importação direta - Suspensão
+                            sticmsEstrangeiraImportacaoDiretaDiferimento              , // '151' // Estrangeira - Importação direta - Diferimento
+                            sticmsEstrangeiraImportacaoDiretaCobradoAnteriormentePorST, // '160' // Estrangeira - Importação direta - ICMS cobrado anteriormente por substituição tributária
+                            sticmsEstrangeiraImportacaoDiretaComReducaoPorST          , // '170' // Estrangeira - Importação direta - Com redução de base de cálculo e cobrança do ICMS por substituição tributária
+                            sticmsEstrangeiraImportacaoDiretaOutros                   , // '190' // Estrangeira - Importação direta - Outras
+                            sticmsEstrangeiraAdqMercIntTributadaIntegralmente         , // '200' // Estrangeira - Adquirida no mercado interno - Tributada integralmente
+                            sticmsEstrangeiraAdqMercIntTributadaComCobracaPorST       , // '210' // Estrangeira - Adquirida no mercado interno - Tributada e com cobrança do ICMS por substituição tributária
+                            sticmsEstrangeiraAdqMercIntComReducao                     , // '220' // Estrangeira - Adquirida no mercado interno - Com redução de base de cálculo
+                            sticmsEstrangeiraAdqMercIntIsentaComCobracaPorST          , // '230' // Estrangeira - Adquirida no mercado interno - Isenta ou não tributada e com cobrança do ICMS por substituição tributária
+                            sticmsEstrangeiraAdqMercIntIsenta                         , // '240' // Estrangeira - Adquirida no mercado interno - Isenta
+                            sticmsEstrangeiraAdqMercIntNaoTributada                   , // '241' // Estrangeira - Adquirida no mercado interno - Não tributada
+                            sticmsEstrangeiraAdqMercIntSuspensao                      , // '250' // Estrangeira - Adquirida no mercado interno - Suspensão
+                            sticmsEstrangeiraAdqMercIntDiferimento                    , // '251' // Estrangeira - Adquirida no mercado interno - Diferimento
+                            sticmsEstrangeiraAdqMercIntCobradoAnteriormentePorST      , // '260' // Estrangeira - Adquirida no mercado interno - ICMS cobrado anteriormente por substituição tributária
+                            sticmsEstrangeiraAdqMercIntComReducaoPorST                , // '270' // Estrangeira - Adquirida no mercado interno - Com redução de base de cálculo e cobrança do ICMS por substituição tributária
+                            sticmsEstrangeiraAdqMercIntOutros                         , // '290' // Estrangeira - Adquirida no mercado interno - Outras
+                            sticmsSimplesNacionalTributadaComPermissaoCredito         , // '101' // Simples Nacional - Tributada pelo Simples Nacional com permissão de crédito
+                            sticmsSimplesNacionalTributadaSemPermissaoCredito         , // '102' // Simples Nacional - Tributada pelo Simples Nacional sem permissão de crédito
+                            sticmsSimplesNacionalIsencaoPorFaixaReceitaBruta          , // '103' // Simples Nacional - Isenção do ICMS no Simples Nacional para faixa de receita bruta
+                            sticmsSimplesNacionalTributadaComPermissaoCreditoComST    , // '201' // Simples Nacional - Tributada pelo Simples Nacional com permissão de crédito e com cobrança do ICMS por substituição tributária
+                            sticmsSimplesNacionalTributadaSemPermissaoCreditoComST    , // '202' // Simples Nacional - Tributada pelo Simples Nacional sem permissão de crédito e com cobrança do ICMS por substituição tributária
+                            sticmsSimplesNacionalIsencaoPorFaixaReceitaBrutaComST     , // '203' // Simples Nacional - Isenção do ICMS no Simples Nacional para faixa de receita bruta e com cobrança do ICMS por substituição tributária
+                            sticmsSimplesNacionalImune                                , // '300' // Simples Nacional - Imune
+                            sticmsSimplesNacionalNaoTributada                         , // '400' // Simples Nacional - Não tributada pelo Simples Nacional
+                            sticmsSimplesNacionalCobradoAnteriormentePorST            , // '500' // Simples Nacional - ICMS cobrado anteriormente por substituição tributária (substituído) ou por antecipação
+                            sticmsSimplesNacionalOutros                                 // '900' // Simples Nacional - Outros
+                         );
 
-  // Código da Situação Tributária referente ao COFINS
-  TACBrSituacaoTribCOFINS = (tipo5, //ver o que por
-                             tipo6  //ver o que por
-                             );
+  /// Código da Situação Tributária referente ao IPI.
+  TACBrSituacaoTribIPI = (
+                          stipiEntradaRecuperacaoCredito ,// '00' // Entrada com recuperação de crédito
+                          stipiEntradaTributradaZero     ,// '01' // Entrada tributada com alíquota zero
+                          stipiEntradaIsenta             ,// '02' // Entrada isenta
+                          stipiEntradaNaoTributada       ,// '03' // Entrada não-tributada
+                          stipiEntradaImune              ,// '04' // Entrada imune
+                          stipiEntradaComSuspensao       ,// '05' // Entrada com suspensão
+                          stipiOutrasEntradas            ,// '49' // Outras entradas
+                          stipiSaidaTributada            ,// '50' // Saída tributada
+                          stipiSaidaTributadaZero        ,// '51' // Saída tributada com alíquota zero
+                          stipiSaidaIsenta               ,// '52' // Saída isenta
+                          stipiSaidaNaoTributada         ,// '53' // Saída não-tributada
+                          stipiSaidaImune                ,// '54' // Saída imune
+                          stipiSaidaComSuspensao         ,// '55' // Saída com suspensão
+                          stipiOutrasSaidas               // '99' // Outras saídas
+                         );
+
+  /// Código da Situação Tributária referente ao PIS.
+  TACBrSituacaoTribPIS = (
+                          stpisValorAliquotaNormal,                            // '01' // Operação Tributável com Alíquota Básica   // valor da operação alíquota normal (cumulativo/não cumulativo)).
+                          stpisValorAliquotaDiferenciada,                      // '02' // Operação Tributável com Alíquota Diferenciada // valor da operação (alíquota diferenciada)).
+                          stpisQtdeAliquotaUnidade,                            // '03' // Operação Tributável com Alíquota por Unidade de Medida de Produto // quantidade vendida x alíquota por unidade de produto).
+                          stpisMonofaticaAliquotaZero,                         // '04' // Operação Tributável Monofásica - Revenda a Alíquota Zero
+                          stpisValorAliquotaPorST,                             // '05' // Operação Tributável por Substituição Tributária
+                          stpisAliquotaZero,                                   // '06' // Operação Tributável a Alíquota Zero
+                          stpisIsentaContribuicao,                             // '07' // Operação Isenta da Contribuição
+                          stpisSemIncidenciaContribuicao,                      // '08' // Operação sem Incidência da Contribuição
+                          stpisSuspensaoContribuicao,                          // '09' // Operação com Suspensão da Contribuição
+                          stpisOutrasOperacoesSaida,                           // '49' // Outras Operações de Saída
+                          stpisOperCredExcRecTribMercInt,                      // '50' // Operação com Direito a Crédito - Vinculada Exclusivamente a Receita Tributada no Mercado Interno
+                          stpisOperCredExcRecNaoTribMercInt,                   // '51' // Operação com Direito a Crédito – Vinculada Exclusivamente a Receita Não Tributada no Mercado Interno
+                          stpisOperCredExcRecExportacao ,                      // '52' // Operação com Direito a Crédito - Vinculada Exclusivamente a Receita de Exportação
+                          stpisOperCredRecTribNaoTribMercInt,                  // '53' // Operação com Direito a Crédito - Vinculada a Receitas Tributadas e Não-Tributadas no Mercado Interno
+                          stpisOperCredRecTribMercIntEExportacao,              // '54' // Operação com Direito a Crédito - Vinculada a Receitas Tributadas no Mercado Interno e de Exportação
+                          stpisOperCredRecNaoTribMercIntEExportacao,           // '55' // Operação com Direito a Crédito - Vinculada a Receitas Não-Tributadas no Mercado Interno e de Exportação
+                          stpisOperCredRecTribENaoTribMercIntEExportacao,      // '56' // Operação com Direito a Crédito - Vinculada a Receitas Tributadas e Não-Tributadas no Mercado Interno, e de Exportação
+                          stpisCredPresAquiExcRecTribMercInt,                  // '60' // Crédito Presumido - Operação de Aquisição Vinculada Exclusivamente a Receita Tributada no Mercado Interno
+                          stpisCredPresAquiExcRecNaoTribMercInt,               // '61' // Crédito Presumido - Operação de Aquisição Vinculada Exclusivamente a Receita Não-Tributada no Mercado Interno
+                          stpisCredPresAquiExcExcRecExportacao,                // '62' // Crédito Presumido - Operação de Aquisição Vinculada Exclusivamente a Receita de Exportação
+                          stpisCredPresAquiRecTribNaoTribMercInt,              // '63' // Crédito Presumido - Operação de Aquisição Vinculada a Receitas Tributadas e Não-Tributadas no Mercado Interno
+                          stpisCredPresAquiRecTribMercIntEExportacao,          // '64' // Crédito Presumido - Operação de Aquisição Vinculada a Receitas Tributadas no Mercado Interno e de Exportação
+                          stpisCredPresAquiRecNaoTribMercIntEExportacao,       // '65' // Crédito Presumido - Operação de Aquisição Vinculada a Receitas Não-Tributadas no Mercado Interno e de Exportação
+                          stpisCredPresAquiRecTribENaoTribMercIntEExportacao,  // '66' // Crédito Presumido - Operação de Aquisição Vinculada a Receitas Tributadas e Não-Tributadas no Mercado Interno, e de Exportação
+                          stpisOutrasOperacoes_CredPresumido,                  // '67' // Crédito Presumido - Outras Operações
+                          stpisOperAquiSemDirCredito,                          // '70' // Operação de Aquisição sem Direito a Crédito
+                          stpisOperAquiComIsensao,                             // '71' // Operação de Aquisição com Isenção
+                          stpisOperAquiComSuspensao,                           // '72' // Operação de Aquisição com Suspensão
+                          stpisOperAquiAliquotaZero,                           // '73' // Operação de Aquisição a Alíquota Zero
+                          stpisOperAqui_SemIncidenciaContribuicao,             // '74' // Operação de Aquisição sem Incidência da Contribuição
+                          stpisOperAquiPorST,                                  // '75' // Operação de Aquisição por Substituição Tributária
+                          stpisOutrasOperacoesEntrada,                         // '98' // Outras Operações de Entrada
+                          stpisOutrasOperacoes                                 // '99' // Outras Operações
+                         );
+
+  /// Código da Situação Tributária referente ao COFINS.
+  TACBrSituacaoTribCOFINS = (
+                              stcofinsValorAliquotaNormal,                           // '01' // Operação Tributável com Alíquota Básica                           // valor da operação alíquota normal (cumulativo/não cumulativo)).
+                              stcofinsValorAliquotaDiferenciada,                     // '02' // Operação Tributável com Alíquota Diferenciada                     // valor da operação (alíquota diferenciada)).
+                              stcofinsQtdeAliquotaUnidade,                           // '03' // Operação Tributável com Alíquota por Unidade de Medida de Produto // quantidade vendida x alíquota por unidade de produto).
+                              stcofinsMonofaticaAliquotaZero,                        // '04' // Operação Tributável Monofásica - Revenda a Alíquota Zero
+                              stcofinsValorAliquotaPorST,                            // '05' // Operação Tributável por Substituição Tributária
+                              stcofinsAliquotaZero,                                  // '06' // Operação Tributável a Alíquota Zero
+                              stcofinsIsentaContribuicao,                            // '07' // Operação Isenta da Contribuição
+                              stcofinsSemIncidenciaContribuicao,                     // '08' // Operação sem Incidência da Contribuição
+                              stcofinsSuspensaoContribuicao,                         // '09' // Operação com Suspensão da Contribuição
+                              stcofinsOutrasOperacoesSaida,                          // '49' // Outras Operações de Saída
+                              stcofinsOperCredExcRecTribMercInt,                     // '50' // Operação com Direito a Crédito - Vinculada Exclusivamente a Receita Tributada no Mercado Interno
+                              stcofinsOperCredExcRecNaoTribMercInt,                  // '51' // Operação com Direito a Crédito - Vinculada Exclusivamente a Receita Não-Tributada no Mercado Interno
+                              stcofinsOperCredExcRecExportacao ,                     // '52' // Operação com Direito a Crédito - Vinculada Exclusivamente a Receita de Exportação
+                              stcofinsOperCredRecTribNaoTribMercInt,                 // '53' // Operação com Direito a Crédito - Vinculada a Receitas Tributadas e Não-Tributadas no Mercado Interno
+                              stcofinsOperCredRecTribMercIntEExportacao,             // '54' // Operação com Direito a Crédito - Vinculada a Receitas Tributadas no Mercado Interno e de Exportação
+                              stcofinsOperCredRecNaoTribMercIntEExportacao,          // '55' // Operação com Direito a Crédito - Vinculada a Receitas Não Tributadas no Mercado Interno e de Exportação
+                              stcofinsOperCredRecTribENaoTribMercIntEExportacao,     // '56' // Operação com Direito a Crédito - Vinculada a Receitas Tributadas e Não-Tributadas no Mercado Interno e de Exportação
+                              stcofinsCredPresAquiExcRecTribMercInt,                 // '60' // Crédito Presumido - Operação de Aquisição Vinculada Exclusivamente a Receita Tributada no Mercado Interno
+                              stcofinsCredPresAquiExcRecNaoTribMercInt,              // '61' // Crédito Presumido - Operação de Aquisição Vinculada Exclusivamente a Receita Não-Tributada no Mercado Interno
+                              stcofinsCredPresAquiExcExcRecExportacao,               // '62' // Crédito Presumido - Operação de Aquisição Vinculada Exclusivamente a Receita de Exportação
+                              stcofinsCredPresAquiRecTribNaoTribMercInt,             // '63' // Crédito Presumido - Operação de Aquisição Vinculada a Receitas Tributadas e Não-Tributadas no Mercado Interno
+                              stcofinsCredPresAquiRecTribMercIntEExportacao,         // '64' // Crédito Presumido - Operação de Aquisição Vinculada a Receitas Tributadas no Mercado Interno e de Exportação
+                              stcofinsCredPresAquiRecNaoTribMercIntEExportacao,      // '65' // Crédito Presumido - Operação de Aquisição Vinculada a Receitas Não-Tributadas no Mercado Interno e de Exportação
+                              stcofinsCredPresAquiRecTribENaoTribMercIntEExportacao, // '66' // Crédito Presumido - Operação de Aquisição Vinculada a Receitas Tributadas e Não-Tributadas no Mercado Interno e de Exportação
+                              stcofinsOutrasOperacoes_CredPresumido,                 // '67' // Crédito Presumido - Outras Operações
+                              stcofinsOperAquiSemDirCredito,                         // '70' // Operação de Aquisição sem Direito a Crédito
+                              stcofinsOperAquiComIsensao,                            // '71' // Operação de Aquisição com Isenção
+                              stcofinsOperAquiComSuspensao,                          // '72' // Operação de Aquisição com Suspensão
+                              stcofinsOperAquiAliquotaZero,                          // '73' // Operação de Aquisição a Alíquota Zero
+                              stcofinsOperAqui_SemIncidenciaContribuicao,            // '74' // Operação de Aquisição sem Incidência da Contribuição
+                              stcofinsOperAquiPorST,                                 // '75' // Operação de Aquisição por Substituição Tributária
+                              stcofinsOutrasOperacoesEntrada,                        // '98' // Outras Operações de Entrada
+                              stcofinsOutrasOperacoes                                // '99' // Outras Operações
+                            );
 
   // Local da Execução do Serviço
   TACBrLocalExecServico = ( lesExecutPais,     // 0 – Executado no País;
@@ -494,10 +611,39 @@ type
                             codIndiTabXII   // 12 - Tabela XII
                           );
   //Indicador do tipo de conta (0500)
-  TACBrIndCTA = (
-                   IndCTASintetica,  //S Sintética
-                   IndACTAnalitica   //A Analitica
+  TACBrIndCTA = (  indCTASintetica,  //S Sintética
+                   indACTAnalitica   //A Analitica
                 );
+  //Indicador da apuração das contribuições e créditos, na escrituração das operações por NF-e e ECF (C010)
+  TACBrIndEscrituracao = (
+                   IndEscriConsolidado,     //1 – Apuração com base nos registros de consolidação das operações por NF-e (C180 e C190) e por ECF (C490);
+                   IndEscriIndividualizado  //2 – Apuração com base no registro individualizado de NF-e (C100 e C170) e de ECF (C400)
+                );
+  //Código da Base de Cálculo do Crédito - {NAT_BC_CRED} - 4.3.7 - Tabela Base de Cálculo do Crédito
+  TACBrBaseCalculoCredito = (
+                              bccAqBensRevenda,                 // '01' // Aquisição de bens para revenda
+                              bccAqBensUtiComoInsumo,           // '02' // Aquisição de bens utilizados como insumo
+                              bccAqServUtiComoInsumo,           // '03' // Aquisição de serviços utilizados como insumo
+                              bccEnergiaEletricaTermica,        // '04' // Energia elétrica e térmica, inclusive sob a forma de vapor
+                              bccAluguelPredios,                // '05' // Aluguéis de prédios
+                              bccAluguelMaqEquipamentos,        // '06' // Aluguéis de máquinas e equipamentos
+                              bccArmazenagemMercadoria,         // '07' // Armazenagem de mercadoria e frete na operação de venda
+                              bccConArrendamentoMercantil,      // '08' // Contraprestações de arrendamento mercantil
+                              bccMaqCredDepreciacao,            // '09' // Máquinas, equipamentos e outros bens incorporados ao ativo imobilizado (crédito sobre encargos de depreciação).
+                              bccMaqCredAquisicao,              // '10' // Máquinas, equipamentos e outros bens incorporados ao ativo imobilizado (crédito com base no valor de aquisição).
+                              bccAmortizacaoDepreciacaoImoveis, // '11' // Amortização e Depreciação de edificações e benfeitorias em imóveis
+                              bccDevolucaoSujeita,              // '12' // Devolução de Vendas Sujeitas à Incidência Não-Cumulativa
+                              bccOutrasOpeComDirCredito,        // '13' // Outras Operações com Direito a Crédito
+                              bccAtTransporteSubcontratacao,    // '14' // Atividade de Transporte de Cargas – Subcontratação
+                              bccAtImobCustoIncorrido,          // '15' // Atividade Imobiliária – Custo Incorrido de Unidade Imobiliária
+                              bccAtImobCustoOrcado,             // '16' // Atividade Imobiliária – Custo Orçado de unidade não concluída
+                              bccAtPresServ,                    // '17' // Atividade de Prestação de Serviços de Limpeza, Conservação e Manutenção – vale-transporte, vale-refeição ou vale-alimentação, fardamento ou uniforme.
+                              bccEstoqueAberturaBens            // '18' // Estoque de abertura de bens
+                            );
+
+
+
+
   TOpenBlocos = class
   private
     FIND_MOV: TACBrIndicadorMovimento;    /// Indicador de movimento: 0- Bloco com dados informados, 1- Bloco sem dados informados.

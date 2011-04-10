@@ -198,10 +198,10 @@ Var
   URLVersao, ArquivoVersao : String ;
 begin
   if Trim(FURLDownload) = '' then
-    raise EACBrCNIEE.Create('URL de Download não informada.');
+    raise EACBrCNIEE.Create( ACBrStr('URL de Download não informada.') );
 
   if Trim(FArquivo) = '' then
-    raise EACBrCNIEE.Create('Nome do arquivo em disco não especificado.');
+    raise EACBrCNIEE.Create( ACBrStr('Nome do arquivo em disco não especificado.') );
 
   try
      HTTPGet( FURLDownload );
@@ -234,10 +234,10 @@ begin
   FileName := Trim(FArquivo);
 
   if FileName = '' then
-    raise Exception.Create('Nome do arquivo em Disco não especificado.');
+    raise Exception.Create( ACBrStr('Nome do arquivo em Disco não especificado.') );
 
   if not FileExists(FileName) then
-    raise Exception.Create('Arquivo não encontrado:' + sLineBreak + FileName);
+    raise Exception.Create( ACBrStr('Arquivo não encontrado:' + sLineBreak + FileName) );
 
   FCadastros.Clear;
   AssignFile(F, Filename);
@@ -297,10 +297,10 @@ var
   MarcaAtual, ModeloAtual, VersaoAtual: String;
 begin
   if Trim(AMarca) = '' then
-    raise EACBrCNIEE.Create('Marca não foi informada.');
+    raise EACBrCNIEE.Create( ACBrStr('Marca não foi informada.') );
 
   if Trim(AModelo) = '' then
-    raise EACBrCNIEE.Create('Modelo não foi informado.');
+    raise EACBrCNIEE.Create( ACBrStr('Modelo não foi informado.') );
 
   Result := nil;
   for I := 0 to Cadastros.Count - 1 do

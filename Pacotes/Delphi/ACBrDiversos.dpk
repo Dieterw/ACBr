@@ -1,5 +1,7 @@
 package ACBrDiversos;
 
+{$I ACBr.inc}
+
 {$R *.res}
 {$ALIGN 8}
 {$ASSERTIONS ON}
@@ -27,8 +29,12 @@ package ACBrDiversos;
 
 requires
   rtl,
+  {$IFDEF VisualCLX}
+   visualclx,
+  {$ELSE}
+   vcl,
+  {$ENDIF}   
   designide,
-  vcl,
   ACBrComum;
 
 contains
@@ -36,7 +42,6 @@ contains
   ACBrCalculadora in '..\..\Fontes\ACBrDiversos\ACBrCalculadora.pas',
   ACBrExtenso in '..\..\Fontes\ACBrDiversos\ACBrExtenso.pas',
   ACBrValidador in '..\..\Fontes\ACBrDiversos\ACBrValidador.pas',
-  Calculadora in '..\..\Fontes\ACBrDiversos\Calculadora.pas' {FrCalculadora},
   ACBrTroco in '..\..\Fontes\ACBrDiversos\ACBrTroco.pas',
   ACBrCMC7 in '..\..\Fontes\ACBrDiversos\ACBrCMC7.pas',
   ACBrFala in '..\..\Fontes\ACBrDiversos\ACBrFala.pas',

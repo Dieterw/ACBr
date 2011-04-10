@@ -5,13 +5,13 @@
     <Name Value="ACBrTCP"/>
     <Author Value="Daniel Simoes de Almeida"/>
     <CompilerOptions>
-      <Version Value="9"/>
+      <Version Value="10"/>
       <PathDelim Value="\"/>
       <SearchPaths>
-        <IncludeFiles Value="..\..\Fontes\ACBrTCP\;..\..\Fontes\ACBrComum\"/>
-        <OtherUnitFiles Value="..\..\Fontes\ACBrTCP\;..\..\Fontes\ACBrComum\"/>
+        <IncludeFiles Value="..\..\Fontes\ACBrTCP;..\..\Fontes\ACBrComum"/>
+        <OtherUnitFiles Value="..\..\Fontes\ACBrTCP;..\..\Fontes\ACBrComum"/>
         <UnitOutputDirectory Value="..\..\lib\$(TargetCPU)-$(TargetOS)"/>
-        <SrcPath Value="..\..\Fontes\ACBrTCP\;..\..\Fontes\ACBrComum\"/>
+        <SrcPath Value="..\..\Fontes\ACBrTCP;..\..\Fontes\ACBrComum"/>
       </SearchPaths>
       <Parsing>
         <SyntaxOptions>
@@ -27,7 +27,7 @@
     <License Value="LGPL
 "/>
     <Version Minor="9"/>
-    <Files Count="4">
+    <Files Count="5">
       <Item1>
         <Filename Value="..\..\Fontes\ACBrTCP\ACBrSocket.pas"/>
         <UnitName Value="ACBrSocket"/>
@@ -45,6 +45,10 @@
         <Filename Value="..\..\Fontes\ACBrTCP\ACBrIBGE.pas"/>
         <UnitName Value="ACBrIBGE"/>
       </Item4>
+      <Item5>
+        <Filename Value="..\..\Fontes\ACBrTCP\ACBrCNIEE.pas"/>
+        <UnitName Value="ACBrCNIEE"/>
+      </Item5>
     </Files>
     <Type Value="RunAndDesignTime"/>
     <RequiredPkgs Count="5">

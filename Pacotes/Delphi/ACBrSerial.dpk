@@ -1,5 +1,7 @@
 package ACBrSerial;
 
+{$I ACBr.inc}
+
 {$R *.res}
 {$ALIGN 8}
 {$ASSERTIONS ON}
@@ -27,8 +29,12 @@ package ACBrSerial;
 
 requires
   rtl,
+  {$IFDEF VisualCLX}
+   visualclx,
+  {$ELSE}
+   vcl,
+  {$ENDIF}
   designide,
-  vcl,
   ACBrDiversos,
   synapse;
 

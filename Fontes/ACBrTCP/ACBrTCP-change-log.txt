@@ -37,15 +37,20 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+10/04/2011
+-- ACBrCNIEE --
+[+] Implementada a propriedade VersaoArquivo: String, que contem o Numero da
+    versão do aquivo no Site (no formato YYYYMMDD).  por: DSA
+
 07/04/2011
--- ACBrTabelaCNIEE
+-- ACBrCNIEE --
 [+] Liberados novos tipos de exportação para arquivo.
 [+] Método de busca do ECF, utiliza Marca, Modelo e versão do SB, retorn
     classe com os dados do ECF.
     por: Régys Silveira
 
 07/04/2011
--- ACBrTabelaCNIEE
+-- ACBrCNIEE --
 [+] Librado componente para download e leitura da tabela de CNIEE
     por: Régys Silveira / Daniel Simões
 

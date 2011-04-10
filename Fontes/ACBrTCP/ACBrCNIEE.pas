@@ -119,9 +119,12 @@ type
     property Items[Index: integer]: TACBrCNIEERegistro read GetItem write SetItem; default;
   end;
 
-  TACBrCNIEE = class(TACBrHTTP)
+  { TACBrCNIEE }
+
+TACBrCNIEE = class(TACBrHTTP)
   private
     FArquivo: String;
+    FVersaoArquivo: String;
     FURLDownload: String;
     FCadastros: TACBrCNIEERegistros;
     procedure ExportarCSV(const AArquivo: String);
@@ -143,6 +146,7 @@ type
 
   published
     property Arquivo: String read FArquivo write FArquivo;
+    property VersaoArquivo : String read FVersaoArquivo ;
     property URLDownload: String read FURLDownload write FURLDownload;
   end;
 
@@ -176,8 +180,10 @@ constructor TACBrCNIEE.Create(AOwner: TComponent);
 begin
   inherited;
 
-  FCadastros   := TACBrCNIEERegistros.Create;
-  FURLDownload := CURL_Download_Tabela_CNIEE;
+  FCadastros     := TACBrCNIEERegistros.Create( True );
+  FURLDownload   := CURL_Download_Tabela_CNIEE;
+  FArquivo       := '';
+  FVersaoArquivo := '';
 end;
 
 destructor TACBrCNIEE.Destroy;
@@ -188,6 +194,8 @@ end;
 
 
 function TACBrCNIEE.DownloadTabela: Boolean;
+Var
+  URLVersao, ArquivoVersao : String ;
 begin
   if Trim(FURLDownload) = '' then
     raise EACBrCNIEE.Create('URL de Download não informada.');
@@ -200,6 +208,16 @@ begin
      HTTPSend.Document.Seek(0, soFromBeginning);
      HTTPSend.Document.SaveToFile( FArquivo );
      Result := True;
+
+     // Baixando o arquivo de Versao //
+     try
+        URLVersao     := StringReplace( FURLDownload, 'Tabela_CNIEE.bin', 'versao.txt', [] ) ;
+        ArquivoVersao := ExtractFilePath( FArquivo ) + 'versao.txt';
+        HTTPGet( URLVersao );
+        HTTPSend.Document.Seek(0, soFromBeginning);
+        HTTPSend.Document.SaveToFile( ArquivoVersao );
+     except
+     end ;
   except
      Result := False ;
   end ;
@@ -210,6 +228,8 @@ var
   F: file of TRegistro;
   Registro: TRegistro;
   FileName: String;
+  SL : TStringList ;
+  I, P : Integer ;
 begin
   FileName := Trim(FArquivo);
 
@@ -246,6 +266,25 @@ begin
       end;
     end;
     Result := True;
+
+    FileName := ExtractFilePath( FileName ) + 'versao.txt';
+    if FileExists( FileName ) then
+    begin
+       SL := TStringList.Create;
+       try
+         SL.LoadFromFile( FileName );
+         I := 0 ;
+         while (FVersaoArquivo = '') and (I < SL.Count) do
+         begin
+           P := pos( 'Tabela_CNIEE.bin', SL[I] ) ;
+           if P > 0 then
+              FVersaoArquivo := Trim( copy( SL[1], 1, P-1) ) ;
+           Inc( I ) ;
+         end ;
+       finally
+         SL.Free ;
+       end ;
+    end ;
   finally
     CloseFile(F);
   end;

@@ -219,6 +219,19 @@ object frPrincipal: TfrPrincipal
       OnClick = btDownloadClick
       TabOrder = 3
     end
+    object lVersao: TLabel
+      AnchorSideTop.Control = edArquivo
+      AnchorSideTop.Side = asrBottom
+      AnchorSideRight.Control = edArquivo
+      AnchorSideRight.Side = asrBottom
+      Left = 342
+      Height = 16
+      Top = 94
+      Width = 42
+      Anchors = [akTop, akRight]
+      Caption = 'Vers√£o: '
+      ParentColor = False
+    end
   end
   object Panel1: TPanel
     Left = 0
@@ -470,7 +483,7 @@ object frPrincipal: TfrPrincipal
     Width = 555
     Align = alBottom
     AutoFill = True
-    Caption = 'Tipo de exportaÁ„o'
+    Caption = 'Tipo de exporta√ß√£o'
     ChildSizing.LeftRightSpacing = 6
     ChildSizing.TopBottomSpacing = 6
     ChildSizing.EnlargeHorizontal = crsHomogenousChildResize

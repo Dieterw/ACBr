@@ -29,6 +29,8 @@ type
      GroupBox1 : TGroupBox ;
      Label1 : TLabel ;
      Label2 : TLabel ;
+     Label3 : TLabel ;
+     lVersao : TLabel ;
      rgTipoExportacao : TRadioGroup ;
      tmpCadastro : TMemDataset ;
      OpenDialog1 : TOpenDialog ;
@@ -167,6 +169,7 @@ begin
   ACBrCNIEE1.Arquivo := edArquivo.Text;
   if ACBrCNIEE1.AbrirTabela then
   begin
+    lVersao.Caption := 'Versão: '+ACBrCNIEE1.VersaoArquivo;
     tmpCadastro.DisableControls;
 
     tmpCadastro.Open;

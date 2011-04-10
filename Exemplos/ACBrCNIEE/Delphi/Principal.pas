@@ -53,6 +53,7 @@ type
     btnPesquisar: TBitBtn;
     edVersaoSB: TEdit;
     Label5: TLabel;
+    lVersao: TLabel;
     procedure btAbrirClick(Sender: TObject);
     procedure btDownloadClick(Sender: TObject);
     procedure btListarClick(Sender: TObject);
@@ -208,6 +209,8 @@ begin
   ACBrCNIEE1.Arquivo := edArquivo.Text;
   if ACBrCNIEE1.AbrirTabela then
   begin
+    lVersao.Caption := 'Versão: '+ACBrCNIEE1.VersaoArquivo;
+
     tmpCadastro.Close;
     tmpCadastro.CreateDataSet;
     tmpCadastro.DisableControls;

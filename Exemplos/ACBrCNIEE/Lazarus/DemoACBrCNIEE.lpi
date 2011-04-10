@@ -57,7 +57,7 @@
         <PackageName Value="LCL"/>
       </Item6>
     </RequiredPackages>
-    <Units Count="20">
+    <Units Count="21">
       <Unit0>
         <Filename Value="DemoACBrCNIEE.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -73,11 +73,10 @@
         <ComponentName Value="frPrincipal"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Principal"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
-        <CursorPos X="25" Y="15"/>
+        <TopLine Value="151"/>
+        <CursorPos X="35" Y="172"/>
         <UsageCount Value="26"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -225,7 +224,6 @@
         <TopLine Value="62"/>
         <CursorPos X="65" Y="70"/>
         <UsageCount Value="10"/>
-        <LoadedDesigner Value="True"/>
       </Unit18>
       <Unit19>
         <Filename Value="C:\lazarus\lcl\include\control.inc"/>
@@ -234,127 +232,138 @@
         <CursorPos X="37" Y="2282"/>
         <UsageCount Value="10"/>
       </Unit19>
+      <Unit20>
+        <Filename Value="..\..\..\Fontes\ACBrTCP\ACBrCNIEE.pas"/>
+        <UnitName Value="ACBrCNIEE"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="200"/>
+        <CursorPos X="24" Y="215"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit20>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="Principal.pas"/>
-        <Caret Line="301" Column="1" TopLine="280"/>
+        <Caret Line="300" Column="1" TopLine="293"/>
       </Position1>
       <Position2>
         <Filename Value="Principal.pas"/>
-        <Caret Line="302" Column="1" TopLine="281"/>
+        <Caret Line="301" Column="1" TopLine="299"/>
       </Position2>
       <Position3>
         <Filename Value="Principal.pas"/>
-        <Caret Line="292" Column="1" TopLine="281"/>
+        <Caret Line="302" Column="1" TopLine="297"/>
       </Position3>
       <Position4>
         <Filename Value="Principal.pas"/>
-        <Caret Line="293" Column="1" TopLine="281"/>
+        <Caret Line="292" Column="1" TopLine="279"/>
       </Position4>
       <Position5>
         <Filename Value="Principal.pas"/>
-        <Caret Line="294" Column="1" TopLine="281"/>
+        <Caret Line="293" Column="1" TopLine="291"/>
       </Position5>
       <Position6>
         <Filename Value="Principal.pas"/>
-        <Caret Line="296" Column="1" TopLine="281"/>
+        <Caret Line="290" Column="1" TopLine="277"/>
       </Position6>
       <Position7>
         <Filename Value="Principal.pas"/>
-        <Caret Line="297" Column="1" TopLine="281"/>
+        <Caret Line="312" Column="1" TopLine="299"/>
       </Position7>
       <Position8>
         <Filename Value="Principal.pas"/>
-        <Caret Line="298" Column="1" TopLine="281"/>
+        <Caret Line="313" Column="1" TopLine="299"/>
       </Position8>
       <Position9>
         <Filename Value="Principal.pas"/>
-        <Caret Line="300" Column="1" TopLine="293"/>
+        <Caret Line="315" Column="1" TopLine="299"/>
       </Position9>
       <Position10>
         <Filename Value="Principal.pas"/>
-        <Caret Line="301" Column="1" TopLine="299"/>
+        <Caret Line="304" Column="13" TopLine="299"/>
       </Position10>
       <Position11>
         <Filename Value="Principal.pas"/>
-        <Caret Line="302" Column="1" TopLine="297"/>
+        <Caret Line="313" Column="67" TopLine="299"/>
       </Position11>
       <Position12>
         <Filename Value="Principal.pas"/>
-        <Caret Line="292" Column="1" TopLine="279"/>
+        <Caret Line="214" Column="21" TopLine="209"/>
       </Position12>
       <Position13>
         <Filename Value="Principal.pas"/>
-        <Caret Line="293" Column="1" TopLine="291"/>
+        <Caret Line="215" Column="21" TopLine="210"/>
       </Position13>
       <Position14>
         <Filename Value="Principal.pas"/>
-        <Caret Line="290" Column="1" TopLine="277"/>
+        <Caret Line="223" Column="4" TopLine="219"/>
       </Position14>
       <Position15>
         <Filename Value="Principal.pas"/>
-        <Caret Line="312" Column="1" TopLine="299"/>
+        <Caret Line="222" Column="4" TopLine="218"/>
       </Position15>
       <Position16>
         <Filename Value="Principal.pas"/>
-        <Caret Line="313" Column="1" TopLine="299"/>
+        <Caret Line="221" Column="4" TopLine="217"/>
       </Position16>
       <Position17>
         <Filename Value="Principal.pas"/>
-        <Caret Line="315" Column="1" TopLine="299"/>
+        <Caret Line="101" Column="38" TopLine="84"/>
       </Position17>
       <Position18>
         <Filename Value="Principal.pas"/>
-        <Caret Line="304" Column="13" TopLine="299"/>
+        <Caret Line="120" Column="28" TopLine="120"/>
       </Position18>
       <Position19>
         <Filename Value="Principal.pas"/>
-        <Caret Line="313" Column="67" TopLine="299"/>
+        <Caret Line="192" Column="1" TopLine="112"/>
       </Position19>
       <Position20>
         <Filename Value="Principal.pas"/>
-        <Caret Line="214" Column="21" TopLine="209"/>
+        <Caret Line="73" Column="10" TopLine="60"/>
       </Position20>
       <Position21>
         <Filename Value="Principal.pas"/>
-        <Caret Line="215" Column="21" TopLine="210"/>
+        <Caret Line="142" Column="1" TopLine="138"/>
       </Position21>
       <Position22>
         <Filename Value="Principal.pas"/>
-        <Caret Line="223" Column="4" TopLine="219"/>
+        <Caret Line="159" Column="1" TopLine="144"/>
       </Position22>
       <Position23>
         <Filename Value="Principal.pas"/>
-        <Caret Line="222" Column="4" TopLine="218"/>
+        <Caret Line="13" Column="16" TopLine="1"/>
       </Position23>
       <Position24>
-        <Filename Value="Principal.pas"/>
-        <Caret Line="221" Column="4" TopLine="217"/>
+        <Filename Value="..\..\..\Fontes\ACBrTCP\ACBrCNIEE.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position24>
       <Position25>
         <Filename Value="Principal.pas"/>
-        <Caret Line="101" Column="38" TopLine="84"/>
+        <Caret Line="171" Column="13" TopLine="158"/>
       </Position25>
       <Position26>
         <Filename Value="Principal.pas"/>
-        <Caret Line="120" Column="28" TopLine="120"/>
+        <Caret Line="164" Column="58" TopLine="158"/>
       </Position26>
       <Position27>
         <Filename Value="Principal.pas"/>
-        <Caret Line="192" Column="1" TopLine="112"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position27>
       <Position28>
         <Filename Value="Principal.pas"/>
-        <Caret Line="73" Column="10" TopLine="60"/>
+        <Caret Line="38" Column="34" TopLine="27"/>
       </Position28>
       <Position29>
         <Filename Value="Principal.pas"/>
-        <Caret Line="142" Column="1" TopLine="138"/>
+        <Caret Line="13" Column="18" TopLine="9"/>
       </Position29>
       <Position30>
         <Filename Value="Principal.pas"/>
-        <Caret Line="159" Column="1" TopLine="144"/>
+        <Caret Line="33" Column="11" TopLine="12"/>
       </Position30>
     </JumpHistory>
   </ProjectOptions>
@@ -383,6 +392,12 @@
     </Other>
   </CompilerOptions>
   <Debugging>
+    <BreakPoints Count="1">
+      <Item1>
+        <Source Value="..\..\..\Fontes\ACBrTCP\ACBrCNIEE.pas"/>
+        <Line Value="207"/>
+      </Item1>
+    </BreakPoints>
     <Exceptions Count="3">
       <Item1>
         <Name Value="EAbort"/>

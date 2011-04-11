@@ -1,9 +1,9 @@
 object frPrincipal: TfrPrincipal
   Left = 370
   Top = 168
-  Width = 716
-  Height = 538
   Caption = 'Conversor da Tabela Nacional de ECFs '
+  ClientHeight = 504
+  ClientWidth = 708
   Color = clBtnFace
   Constraints.MinHeight = 440
   Constraints.MinWidth = 555
@@ -21,13 +21,13 @@ object frPrincipal: TfrPrincipal
   object GroupBox1: TGroupBox
     Left = 0
     Top = 0
-    Width = 700
+    Width = 708
     Height = 121
     Align = alTop
     Caption = 'Arquivo Tabela_CNIEE.bin'
     TabOrder = 0
     DesignSize = (
-      700
+      708
       121)
     object Label1: TLabel
       Left = 12
@@ -123,8 +123,7 @@ object frPrincipal: TfrPrincipal
       Height = 26
       Anchors = [akTop, akRight]
       Caption = 'Abrir'
-      TabOrder = 3
-      OnClick = btAbrirClick
+      DoubleBuffered = True
       Glyph.Data = {
         36040000424D3604000000000000360000002800000010000000100000000100
         2000000000000004000000000000000000000000000000000000FF00FF00FF00
@@ -160,6 +159,9 @@ object frPrincipal: TfrPrincipal
         FF00FF00FF00FF00FF00000C00FF000C00FFFF00FF00FF00FF00FF00FF00FF00
         FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
         FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00}
+      ParentDoubleBuffered = False
+      TabOrder = 3
+      OnClick = btAbrirClick
     end
     object btDownload: TBitBtn
       Left = 583
@@ -168,8 +170,7 @@ object frPrincipal: TfrPrincipal
       Height = 26
       Anchors = [akTop, akRight]
       Caption = 'Download'
-      TabOrder = 1
-      OnClick = btDownloadClick
+      DoubleBuffered = True
       Glyph.Data = {
         36040000424D3604000000000000360000002800000010000000100000000100
         20000000000000040000640000006400000000000000000000007C7C7CEF7878
@@ -205,16 +206,22 @@ object frPrincipal: TfrPrincipal
         29FF000000000000000000000000000000000000000000000000000000000000
         00000000000000000000000000000000000011A421FF11A421FF11A421FF11A4
         21FF000000000000000000000000000000000000000000000000}
+      ParentDoubleBuffered = False
+      TabOrder = 1
+      OnClick = btDownloadClick
     end
   end
   object Panel1: TPanel
     Left = 0
-    Top = 466
-    Width = 700
+    Top = 470
+    Width = 708
     Height = 34
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 4
+    DesignSize = (
+      708
+      34)
     object DBNavigator1: TDBNavigator
       Left = 0
       Top = 0
@@ -230,9 +237,9 @@ object frPrincipal: TfrPrincipal
       Top = 3
       Width = 80
       Height = 28
+      Anchors = [akTop, akRight]
       Caption = 'Exportar'
-      TabOrder = 2
-      OnClick = btExportarClick
+      DoubleBuffered = True
       Glyph.Data = {
         36040000424D3604000000000000360000002800000010000000100000000100
         2000000000000004000000000000000000000000000000000000FF00FF00FF00
@@ -268,15 +275,18 @@ object frPrincipal: TfrPrincipal
         84FFA38B84FFA38B84FFA38B84FFD7D6D5FFFF00FF00FF00FF00C3BEBCFFA38B
         84FFA38B84FFA38B84FFA38B84FFA38B84FFA38B84FFC5C2C1FFFF00FF00FF00
         FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00}
+      ParentDoubleBuffered = False
+      TabOrder = 2
+      OnClick = btExportarClick
     end
     object btSair: TBitBtn
       Left = 617
       Top = 3
       Width = 80
       Height = 28
+      Anchors = [akTop, akRight]
       Caption = 'Sair'
-      TabOrder = 4
-      OnClick = btSairClick
+      DoubleBuffered = True
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000120B0000120B000000000000000000003F00007F0000
@@ -304,15 +314,18 @@ object frPrincipal: TfrPrincipal
         FFFFFFFFFFFFFFFFFF000000808080808080808080808080606060BFBF7F9F9F
         00404040FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000040404040
         40404040404040404040402020207F7F3F2B2B2BFFFFFFFFFFFF}
+      ParentDoubleBuffered = False
+      TabOrder = 4
+      OnClick = btSairClick
     end
     object btListar: TBitBtn
       Left = 531
       Top = 3
       Width = 80
       Height = 28
+      Anchors = [akTop, akRight]
       Caption = 'Listar'
-      TabOrder = 3
-      OnClick = btListarClick
+      DoubleBuffered = True
       Glyph.Data = {
         36040000424D3604000000000000360000002800000010000000100000000100
         2000000000000004000000000000000000000000000000000000000000010000
@@ -348,15 +361,18 @@ object frPrincipal: TfrPrincipal
         EAFFEBEBEBFFEDEDEDFFEEEEEEFFEDEDEDFF000000FF0000000E000000170000
         00FF000000FF000000FF000000FF000000FF000000FF000000FF000000FF0000
         00FF000000FF000000FF000000FF0000009A0000002700000001}
+      ParentDoubleBuffered = False
+      TabOrder = 3
+      OnClick = btListarClick
     end
     object btProxy: TBitBtn
       Left = 359
       Top = 3
       Width = 80
       Height = 28
+      Anchors = [akTop, akRight]
       Caption = 'Proxy'
-      TabOrder = 1
-      OnClick = btProxyClick
+      DoubleBuffered = True
       Glyph.Data = {
         36040000424D3604000000000000360000002800000010000000100000000100
         2000000000000004000064000000640000000000000000000000000000000000
@@ -392,13 +408,16 @@ object frPrincipal: TfrPrincipal
         75FF488F55FF4A773AD257542117000000000000000000000000000000000000
         00000000000000000000814E1C08A77F3E70969259B6BB9569D3B9A47ECBAD88
         5C9E767542450000000000000000000000000000000000000000}
+      ParentDoubleBuffered = False
+      TabOrder = 1
+      OnClick = btProxyClick
     end
   end
   object DBGrid1: TDBGrid
     Left = 0
     Top = 121
-    Width = 700
-    Height = 238
+    Width = 708
+    Height = 242
     Align = alClient
     DataSource = dtsCadastro
     ReadOnly = True
@@ -411,8 +430,8 @@ object frPrincipal: TfrPrincipal
   end
   object rgTipoExportacao: TRadioGroup
     Left = 0
-    Top = 427
-    Width = 700
+    Top = 431
+    Width = 708
     Height = 39
     Align = alBottom
     Caption = 'Tipo de exporta'#231#227'o'
@@ -429,8 +448,8 @@ object frPrincipal: TfrPrincipal
   end
   object GroupBox2: TGroupBox
     Left = 0
-    Top = 359
-    Width = 700
+    Top = 363
+    Width = 708
     Height = 68
     Align = alBottom
     Caption = 'Pesquisar no componente'
@@ -484,6 +503,8 @@ object frPrincipal: TfrPrincipal
       Width = 99
       Height = 26
       Caption = 'Pesquisar...'
+      DoubleBuffered = True
+      ParentDoubleBuffered = False
       TabOrder = 2
       OnClick = btnPesquisarClick
     end

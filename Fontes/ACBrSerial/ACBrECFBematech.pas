@@ -656,7 +656,7 @@ begin
 
   fsModelosCheque := TACBrCHQModelos.create( true );
 
-  fpModeloStr := 'Bematech' ;
+  fpModeloStr := 'BEMATECH' ;
   fpRFDID     := 'BE' ;
 end;
 

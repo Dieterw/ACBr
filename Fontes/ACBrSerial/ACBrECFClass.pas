@@ -2703,8 +2703,8 @@ end;
 function TACBrECFClass.GetModeloStr: String;
 begin
   Result := fpModeloStr ;
-  if fpMFD then
-     Result := Result + ' MFD' ;
+  //if fpMFD then
+  //   Result := Result + ' MFD' ;
 end;
 
 procedure TACBrECFClass.DoOnMsgPoucoPapel( Mensagem : String ) ;

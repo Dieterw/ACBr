@@ -143,7 +143,7 @@ type
     procedure WriteBloco_0;
     procedure WriteBloco_1;
     procedure WriteBloco_9;
-    procedure WriteBloco_A;
+    procedure WriteBloco_A( FechaBloco: Boolean );
     procedure WriteBloco_C( FechaBloco: Boolean );
     procedure WriteBloco_D;
     procedure WriteBloco_F;
@@ -485,7 +485,7 @@ begin
     IniciaGeracao;
 
     WriteBloco_0;
-    WriteBloco_A;
+    WriteBloco_A( True );
     WriteBloco_C( True );    // True = Fecha o Bloco
     WriteBloco_D;
     WriteBloco_F;
@@ -517,19 +517,25 @@ begin
   Bloco_0.Gravado := True ;
 end;
 
-procedure TACBrSPEDPisCofins.WriteBloco_A;
+procedure TACBrSPEDPisCofins.WriteBloco_A( FechaBloco : Boolean );
 begin
    if Bloco_A.Gravado then exit ;
 
    if not Bloco_0.Gravado then
       WriteBloco_0;
 
-   /// BLOCO H
+   /// BLOCO A
    WriteRegistroA001;
-   WriteRegistroA990;
+
+   if Bloco_A.RegistroA001.IND_MOV = imSemDados then
+      FechaBloco := True ;
+
+   if FechaBloco then
+      WriteRegistroA990;
+
    Bloco_A.WriteBuffer;
    Bloco_A.Conteudo.Clear;
-   Bloco_A.Gravado := True ;
+   Bloco_A.Gravado := FechaBloco;
 end;
 
 procedure TACBrSPEDPisCofins.WriteBloco_C( FechaBloco : Boolean );
@@ -537,7 +543,7 @@ begin
    if Bloco_C.Gravado then exit ;
 
    if not Bloco_A.Gravado then
-      WriteBloco_A;
+      WriteBloco_A(True);
 
    /// BLOCO C
    WriteRegistroC001;

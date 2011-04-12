@@ -103,7 +103,7 @@ begin
                   RFill(IE, 14) +
                   RFill(IM, 14) +
                   RFill(RAZAOSOCIAL, 50) +
-                  #13#10;
+                  sLineBreak;
       end;
    end;
 end;
@@ -133,7 +133,7 @@ begin
                                            RFill(ST, 1) +
                                            LFill(ALIQ, 4) +
                                            LFill(VL_UNIT, 12, 2) +
-                                           #13#10;
+                                           sLineBreak;
         end;
         ///
         FRegistroP9.TOT_REG := FRegistroP9.TOT_REG + 1;
@@ -153,9 +153,9 @@ begin
         ///
         Result := LFill('P9') +
                   LFill(FRegistroP1.CNPJ, 14) +
-                  LFill(FRegistroP1.IE, 14) +
+                  RFill(FRegistroP1.IE, 14) +
                   LFill(TOT_REG, 6, 0) +
-                  #13#10;
+                  sLineBreak;
       end;
    end;
 end;

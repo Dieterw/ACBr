@@ -49,9 +49,14 @@ Símbolo : Significado
 
 Versão 0.06   05/04/11
 ---------------
-[*] Ordenação dos registros N3, conforme ato cotepe 06/08 anexo X.
+[-] Alteração no registro P9, a IE estava sendo gerada como númerico, o correto
+    e ser gerada como alfa alinhada a esquerda.
     por Régys Silveira
 
+Versão 0.06   05/04/11
+---------------
+[*] Ordenação dos registros N3, conforme ato cotepe 06/08 anexo X.
+    por Régys Silveira
 
 Versão 0.06   22/03/11
 ---------------

@@ -53,6 +53,7 @@ type
   TRegistroC113List = class;
   TRegistroC114List = class;
   TRegistroC115List = class;
+  TRegistroC116List = class; {Alteração Versão 2.0.4 03Mar2011}
   TRegistroC120List = class;
   TRegistroC130List = class;
   TRegistroC140List = class; {Márcio Lopes 30Nov2009}
@@ -98,6 +99,10 @@ type
   TRegistroC700List = class;
   TRegistroC790List = class;
   TRegistroC791List = class;
+  TRegistroC800List = class; {Alteração Versão 2.0.4 03Mar2011}
+  TRegistroC850List = class; {Alteração Versão 2.0.4 03Mar2011}
+  TRegistroC860List = class; {Alteração Versão 2.0.4 03Mar2011}
+  TRegistroC890List = class; {Alteração Versão 2.0.4 03Mar2011}
 
   /// Registro C001 - ABERTURA DO BLOCO C
 
@@ -111,6 +116,8 @@ type
     FRegistroC500: TRegistroC500List;
     FRegistroC600: TRegistroC600List;
     FRegistroC700: TRegistroC700List;
+    FRegistroC800: TRegistroC800List; {Alteração Versão 2.0.4 03Mar2011}
+    FRegistroC860: TRegistroC860List; {Alteração Versão 2.0.4 03Mar2011}    
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
@@ -123,6 +130,8 @@ type
     property RegistroC500: TRegistroC500List read FRegistroC500 write FRegistroC500;
     property RegistroC600: TRegistroC600List read FRegistroC600 write FRegistroC600;
     property RegistroC700: TRegistroC700List read FRegistroC700 write FRegistroC700;
+    property RegistroC800: TRegistroC800List read FRegistroC800 write FRegistroC800; {Alteração Versão 2.0.4 03Mar2011}
+    property RegistroC860: TRegistroC860List read FRegistroC860 write FRegistroC860; {Alteração Versão 2.0.4 03Mar2011}    
   end;
 
   /// Registro C100 - NOTA FISCAL (CÓDIGO 01), NOTA FISCAL AVULSA (CÓDIGO 1B), NOTA FISCAL DE PRODUTOR (CÓDIGO 04) E NFE (CÓDIGO 55)
@@ -234,6 +243,7 @@ type
     FRegistroC113: TRegistroC113List;  /// BLOCO C - Lista de RegistroC111 (FILHO fo FILHO)
     FRegistroC114: TRegistroC114List;  /// BLOCO C - Lista de RegistroC111 (FILHO fo FILHO)
     FRegistroC115: TRegistroC115List;  /// BLOCO C - Lista de RegistroC111 (FILHO fo FILHO)
+    FRegistroC116: TRegistroC116List;  /// BLOCO C - Lista de RegistroC111 (FILHO fo FILHO) {Alteração Versão 2.0.4 03Mar2011}
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
@@ -246,6 +256,7 @@ type
     property RegistroC113: TRegistroC113List read FRegistroC113 write FRegistroC113;
     property RegistroC114: TRegistroC114List read FRegistroC114 write FRegistroC114;
     property RegistroC115: TRegistroC115List read FRegistroC115 write FRegistroC115;
+    property RegistroC116: TRegistroC116List read FRegistroC116 write FRegistroC116; {Alteração Versão 2.0.4 03Mar2011}
   end;
 
   /// Registro C110 - Lista
@@ -409,6 +420,34 @@ type
   public
     function New: TRegistroC115;
     property Items[Index: Integer]: TRegistroC115 read GetItem write SetItem;
+  end;
+
+  /// Registro C116 - CUPOM FISCAL ELETRÔNICO REFERENCIADO {Alteração Versão 2.0.4 03Mar2011}
+
+  TRegistroC116 = class
+  private
+    fCOD_MOD: String;                   /// Código do modelo do documento fiscal, conforme a Tabela 4.1.1
+    fNR_SAT: String;                    /// Número de Série do equipamento SAT
+    fCHV_CFE: String;                   /// Chave do Cupom Fiscal Eletrônico
+    fNUM_CFE: String;                   /// Número do cupom fiscal eletrônico
+    fDT_DOC: TDateTime;                 /// Data da emissão do documento fiscal
+  public
+    property COD_MOD: String read FCOD_MOD write FCOD_MOD;
+    property NR_SAT: String read FNR_SAT write FNR_SAT;
+    property CHV_CFE: String read FCHV_CFE write FCHV_CFE;
+    property NUM_CFE: String read FNUM_CFE write FNUM_CFE;
+    property DT_DOC: TDateTime read FDT_DOC write FDT_DOC;
+  end;
+
+  /// Registro C116 - Lista
+
+  TRegistroC116List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroC116; /// GetItem
+    procedure SetItem(Index: Integer; const Value: TRegistroC116); /// SetItem
+  public
+    function New: TRegistroC116;
+    property Items[Index: Integer]: TRegistroC116 read GetItem write SetItem;
   end;
 
   /// Registro C120 - OPERAÇÕES DE IMPORTAÇÃO (CÓDIGO 01)
@@ -2100,6 +2139,163 @@ type
     property Items[Index: Integer]: TRegistroC791 read GetItem write SetItem;
   end;
 
+  /// Registro C800 - CUPOM FISCAL ELETRÔNICO (CÓDIGO 59) (somente notas de saída)
+
+  TRegistroC800 = class
+  private
+    fCOD_MOD: String;                   /// Código do modelo do documento fiscal, conforme a Tabela 4.1.1
+    fCOD_SIT: TACBrSituacaoDocto;       /// Código da situação do documento fiscal, conforme a Tabela 4.1.2
+    fNUM_CFE: String;                   /// Número do Cupom Fiscal Eletrônico
+    fDT_DOC: TDateTime;                 /// Data da emissão do documento fiscal Eletrônico
+    fVL_CFE: currency;                  /// Valor total do Cupom Fiscal Eletrônico
+    fVL_PIS: currency;                  /// Valor total do PIS
+    fVL_COFINS: currency;               /// Valor total da COFINS
+    fCNPJ_CPF: String;                  /// CNPJ ou CPF do destinatário
+    fNR_SAT: String;                    /// Número de Série do equipamento SAT
+    fCHV_CFE: String;                   /// Chave do Cupom Fiscal Eletrônico
+    fVL_DESC: currency;                 /// Valor total do desconto sobre item
+    fVL_MERC: currency;                 /// Valor das mercadorias e serviço
+    fVL_OUT_DA: currency;               /// Valor de outras desp. acessórias (acréscimo)
+    fVL_ICMS: currency;                 /// Valor do ICMS
+    fVL_PIS_ST: currency;               /// Valor total do PIS retido por substituição tributária
+    fVL_COFINS_ST: currency;            /// Valor total da COFINS retido por substituição tributária
+
+    FRegistroC850: TRegistroC850List;   /// BLOCO C - Lista de RegistroC850 (FILHO)
+  public
+    constructor Create; virtual;  /// Create
+    destructor Destroy; override; /// Destroy
+
+    property COD_MOD: String read FCOD_MOD write FCOD_MOD;
+    property COD_SIT: TACBrSituacaoDocto read FCOD_SIT write FCOD_SIT;
+    property NUM_CFE: String read FNUM_CFE write FNUM_CFE;
+    property DT_DOC: TDateTime read FDT_DOC write FDT_DOC;
+    property VL_CFE: currency read FVL_CFE write FVL_CFE;
+    property VL_PIS: currency read FVL_PIS write FVL_PIS;
+    property VL_COFINS: currency read FVL_COFINS write FVL_COFINS;
+    property CNPJ_CPF: String read FCNPJ_CPF write FCNPJ_CPF;
+    property NR_SAT: String read FNR_SAT write FNR_SAT;
+    property CHV_CFE: String read FCHV_CFE write FCHV_CFE;
+    property VL_DESC: currency read FVL_DESC write FVL_DESC;
+    property VL_MERC: currency read FVL_MERC write FVL_MERC;
+    property VL_OUT_DA: currency read FVL_OUT_DA write FVL_OUT_DA;
+    property VL_ICMS: currency read FVL_ICMS write FVL_ICMS;
+    property VL_PIS_ST: currency read FVL_PIS_ST write FVL_PIS_ST;
+    property VL_COFINS_ST: currency read FVL_COFINS_ST write FVL_COFINS_ST;
+    /// Registros FILHOS
+    property RegistroC850: TRegistroC850List read FRegistroC850 write FRegistroC850;
+  end;
+
+  /// Registro C800 - Lista
+
+  TRegistroC800List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroC800; /// GetItem
+    procedure SetItem(Index: Integer; const Value: TRegistroC800); /// SetItem
+  public
+    function New: TRegistroC800;
+    property Items[Index: Integer]: TRegistroC800 read GetItem write SetItem;
+  end;
+
+  /// Registro C850 - REGISTRO ANALÍTICO DO CF-E (CODIGO 59)
+
+  TRegistroC850 = class
+  private
+    fCST_ICMS: String;            /// Código da Situação Tributária, conforme a tabela indicada no item 4.3.1
+    fCFOP: String;                /// Código Fiscal de Operação e Prestação do agrupamento de itens
+    fALIQ_ICMS: currency;         /// Alíquota do ICMS
+    fVL_OPR: currency;            /// “Valor total do CF-e” na combinação de CST_ICMS, CFOP e alíquota do ICMS, correspondente ao somatório do valor líquido dos itens.
+    fVL_BC_ICMS: currency;        /// Parcela correspondente ao "Valor da base de cálculo do ICMS" referente à combinação CST_ICMS, CFOP, e alíquota do ICMS
+    fVL_ICMS: currency;           /// Parcela correspondente ao "Valor do ICMS" referente à combinação CST_ICMS, CFOP e alíquota do ICMS
+    fCOD_OBS: String;
+  public
+
+    property CST_ICMS: String read FCST_ICMS write FCST_ICMS;
+    property CFOP: String read FCFOP write FCFOP;
+    property ALIQ_ICMS: currency read FALIQ_ICMS write FALIQ_ICMS;
+    property VL_OPR: currency read FVL_OPR write FVL_OPR;
+    property VL_BC_ICMS: currency read FVL_BC_ICMS write FVL_BC_ICMS;
+    property VL_ICMS: currency read FVL_ICMS write FVL_ICMS;
+    property COD_OBS: String read FCOD_OBS write FCOD_OBS;
+  end;
+
+  /// Registro C850 - Lista
+
+  TRegistroC850List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroC850; /// GetItem
+    procedure SetItem(Index: Integer; const Value: TRegistroC850); /// SetItem
+  public
+    function New: TRegistroC850;
+    property Items[Index: Integer]: TRegistroC850 read GetItem write SetItem;
+  end;
+
+  /// Registro C860 - IDENTIFICAÇÃO DO EQUIPAMENTO SAT-CF-E
+
+  TRegistroC860 = class
+  private
+    fCOD_MOD: String;                   /// Código do modelo do documento fiscal, conforme a Tabela 4.1.1
+    fNR_SAT: String;                    /// Número de Série do equipamento SAT
+    fDT_DOC: TDateTime;                 /// Data de emissão dos documentos fiscais
+    fDOC_INI: String;                   /// Número do documento inicial
+    fDOC_FIN: String;                   /// Número do documento final
+    FRegistroC890: TRegistroC890List;   /// BLOCO C - Lista de RegistroC890 (FILHO)
+  public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
+    property COD_MOD: String read FCOD_MOD write FCOD_MOD;
+    property NR_SAT: String read FNR_SAT write FNR_SAT;
+    property DT_DOC: TDateTime read FDT_DOC write FDT_DOC;
+    property DOC_INI: String read fDOC_INI write fDOC_INI;
+    property DOC_FIN: String read fDOC_FIN write fDOC_FIN;
+    /// Registros FILHOS
+    property RegistroC890: TRegistroC890List read FRegistroC890 write FRegistroC890;
+  end;
+
+  /// Registro C860 - Lista
+
+  TRegistroC860List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroC860; /// GetItem
+    procedure SetItem(Index: Integer; const Value: TRegistroC860); /// SetItem
+  public
+    function New: TRegistroC860;
+    property Items[Index: Integer]: TRegistroC860 read GetItem write SetItem;
+  end;
+
+  /// Registro C890 - RESUMO DIÁRIO DO CF-E (CÓDIGO 59) POR EQUIPAMENTO SAT-CF-E
+
+  TRegistroC890 = class
+  private
+    fCST_ICMS: String;            /// Código da Situação Tributária, conforme a tabela indicada no item 4.3.1
+    fCFOP: String;                /// Código Fiscal de Operação e Prestação do agrupamento de itens
+    fALIQ_ICMS: currency;         /// Alíquota do ICMS
+    fVL_OPR: currency;            /// “Valor total do CF-e” na combinação de CST_ICMS, CFOP e alíquota do ICMS, correspondente ao somatório do valor líquido dos itens.
+    fVL_BC_ICMS: currency;        /// Parcela correspondente ao "Valor da base de cálculo do ICMS" referente à combinação CST_ICMS, CFOP, e alíquota do ICMS
+    fVL_ICMS: currency;           /// Parcela correspondente ao "Valor do ICMS" referente à combinação CST_ICMS, CFOP e alíquota do ICMS
+    fCOD_OBS: String;             /// Código da observação do lançamento fiscal (campo 02 do registro 0460)
+  public
+
+    property CST_ICMS: String read FCST_ICMS write FCST_ICMS;
+    property CFOP: String read FCFOP write FCFOP;
+    property ALIQ_ICMS: currency read FALIQ_ICMS write FALIQ_ICMS;
+    property VL_OPR: currency read FVL_OPR write FVL_OPR;
+    property VL_BC_ICMS: currency read FVL_BC_ICMS write FVL_BC_ICMS;
+    property VL_ICMS: currency read FVL_ICMS write FVL_ICMS;
+    property COD_OBS: String read FCOD_OBS write FCOD_OBS;
+  end;
+
+  /// Registro C890 - Lista
+
+  TRegistroC890List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroC890; /// GetItem
+    procedure SetItem(Index: Integer; const Value: TRegistroC890); /// SetItem
+  public
+    function New: TRegistroC890;
+    property Items[Index: Integer]: TRegistroC890 read GetItem write SetItem;
+  end;
+
   /// Registro C990 - ENCERRAMENTO DO BLOCO C
 
   TRegistroC990 = class
@@ -2235,6 +2431,24 @@ begin
 end;
 
 procedure TRegistroC115List.SetItem(Index: Integer; const Value: TRegistroC115);
+begin
+  Put(Index, Value);
+end;
+
+{ TRegistroC116List } {Alteração Versão 2.0.4 03Mar2011}
+
+function TRegistroC116List.GetItem(Index: Integer): TRegistroC116;
+begin
+  Result := TRegistroC116(Inherited Items[Index]);
+end;
+
+function TRegistroC116List.New: TRegistroC116;
+begin
+  Result := TRegistroC116.Create;
+  Add(Result);
+end;
+
+procedure TRegistroC116List.SetItem(Index: Integer; const Value: TRegistroC116);
 begin
   Put(Index, Value);
 end;
@@ -3049,6 +3263,78 @@ begin
   Put(Index, Value);
 end;
 
+{ TRegistroC800List }
+
+function TRegistroC800List.GetItem(Index: Integer): TRegistroC800;
+begin
+  Result := TRegistroC800(Inherited Items[Index]);
+end;
+
+function TRegistroC800List.New: TRegistroC800;
+begin
+  Result := TRegistroC800.Create;
+  Add(Result);
+end;
+
+procedure TRegistroC800List.SetItem(Index: Integer; const Value: TRegistroC800);
+begin
+  Put(Index, Value);
+end;
+
+{ TRegistroC850List }
+
+function TRegistroC850List.GetItem(Index: Integer): TRegistroC850;
+begin
+  Result := TRegistroC850(Inherited Items[Index]);
+end;
+
+function TRegistroC850List.New: TRegistroC850;
+begin
+  Result := TRegistroC850.Create;
+  Add(Result);
+end;
+
+procedure TRegistroC850List.SetItem(Index: Integer; const Value: TRegistroC850);
+begin
+  Put(Index, Value);
+end;
+
+{ TRegistroC860List }
+
+function TRegistroC860List.GetItem(Index: Integer): TRegistroC860;
+begin
+  Result := TRegistroC860(Inherited Items[Index]);
+end;
+
+function TRegistroC860List.New: TRegistroC860;
+begin
+  Result := TRegistroC860.Create;
+  Add(Result);
+end;
+
+procedure TRegistroC860List.SetItem(Index: Integer; const Value: TRegistroC860);
+begin
+  Put(Index, Value);
+end;
+
+{ TRegistroC890List }
+
+function TRegistroC890List.GetItem(Index: Integer): TRegistroC890;
+begin
+  Result := TRegistroC890(Inherited Items[Index]);
+end;
+
+function TRegistroC890List.New: TRegistroC890;
+begin
+  Result := TRegistroC890.Create;
+  Add(Result);
+end;
+
+procedure TRegistroC890List.SetItem(Index: Integer; const Value: TRegistroC890);
+begin
+  Put(Index, Value);
+end;
+
 { TRegistroC100 }
 
 constructor TRegistroC100.Create;
@@ -3087,6 +3373,7 @@ begin
   FRegistroC113 := TRegistroC113List.Create;  /// BLOCO C - Lista de RegistroC111 (FILHO fo FILHO)
   FRegistroC114 := TRegistroC114List.Create;  /// BLOCO C - Lista de RegistroC111 (FILHO fo FILHO)
   FRegistroC115 := TRegistroC115List.Create;  /// BLOCO C - Lista de RegistroC111 (FILHO fo FILHO)
+  FRegistroC116 := TRegistroC116List.Create;  /// BLOCO C - Lista de RegistroC111 (FILHO fo FILHO) {Alteração Versão 2.0.4 03Mar2011}
 end;
 
 destructor TRegistroC110.Destroy;
@@ -3096,6 +3383,7 @@ begin
   FRegistroC113.Free;
   FRegistroC114.Free;
   FRegistroC115.Free;
+  FRegistroC116.Free;  {Alteração Versão 2.0.4 03Mar2011}
   inherited;
 end;
 
@@ -3239,6 +3527,8 @@ begin
    FRegistroC500 := TRegistroC500List.Create;
    FRegistroC600 := TRegistroC600List.Create;
    FRegistroC700 := TRegistroC700List.Create;
+   FRegistroC800 := TRegistroC800List.Create;
+   FRegistroC860 := TRegistroC860List.Create;
    //
    IND_MOV := imSemDados;
 end;
@@ -3253,6 +3543,8 @@ begin
   FRegistroC500.Free;
   FRegistroC600.Free;
   FRegistroC700.Free;
+  FRegistroC800.Free;
+  FRegistroC860.Free;
   inherited;
 end;
 
@@ -3337,6 +3629,32 @@ end;
 destructor TRegistroC790.Destroy;
 begin
   FRegistroC791.Free;
+  inherited;
+end;
+
+{ TRegistroC800 }
+
+constructor TRegistroC800.Create;
+begin
+  FRegistroC850 := TRegistroC850List.Create;
+end;
+
+destructor TRegistroC800.Destroy;
+begin
+  FRegistroC850.Free;
+  inherited;
+end;
+
+{ TRegistroC860 }
+
+constructor TRegistroC860.Create;
+begin
+  FRegistroC890 := TRegistroC890List.Create;
+end;
+
+destructor TRegistroC860.Destroy;
+begin
+  FRegistroC890.Free;
   inherited;
 end;
 

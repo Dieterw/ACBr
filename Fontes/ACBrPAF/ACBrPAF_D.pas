@@ -112,21 +112,21 @@ type
 
   TRegistroD3 = class
   private
-    fRegistroValido: boolean;
-    fDT_INCLUSAO: TDateTime;
-    fNUM_ITEM: integer;
     fCOD_ITEM: string;
-    fDESC_ITEM: string;
-    fQTDE_ITEM: Currency;
-    fUNI_ITEM: string;
-    fVL_ITEM: Currency;
-    fVL_DESCTO: Currency;
-    fVL_ACRES: Currency;
+    fRegistroValido: Boolean;
     fVL_TOTAL: Currency;
-    fCOD_TCTP: string;
+    fDESC_ITEM: string;
     fIND_CANC: string;
+    fVL_ACRES: Currency;
+    fCOD_TCTP: string;
+    fUNI_ITEM: string;
+    fNUM_ITEM: Integer;
+    fVL_DESCTO: Currency;
+    fVL_UNIT: Currency;
+    fDT_INCLUSAO: TDateTime;
+    fQTDE_ITEM: Currency;
   public
-    constructor Create; virtual; /// Create
+    constructor Create; virtual;
 
     property RegistroValido: Boolean read fRegistroValido write fRegistroValido default True;
     property DT_INCLUSAO: TDateTime read fDT_INCLUSAO write fDT_INCLUSAO;
@@ -135,7 +135,7 @@ type
     property DESC_ITEM: string read fDESC_ITEM write fDESC_ITEM;
     property QTDE_ITEM: Currency read fQTDE_ITEM write fQTDE_ITEM;
     property UNI_ITEM: string read fUNI_ITEM write fUNI_ITEM;
-    property VL_ITEM: Currency read fVL_ITEM write fVL_ITEM;
+    property VL_UNIT: Currency read fVL_UNIT write fVL_UNIT;
     property VL_DESCTO: Currency read fVL_DESCTO write fVL_DESCTO;
     property VL_ACRES: Currency read fVL_ACRES write fVL_ACRES;
     property VL_TOTAL: Currency read fVL_TOTAL write fVL_TOTAL;

@@ -174,7 +174,7 @@ begin
                                            RFill(DESC_ITEM, 100) +
                                            LFill(QTDE_ITEM, 7, 3) +
                                            RFill(UNI_ITEM, 3) +
-                                           LFill(VL_ITEM, 8, 2) +
+                                           LFill(VL_UNIT, 8, 2) +
                                            LFill(VL_DESCTO, 8, 2) +
                                            LFill(VL_ACRES, 8, 2) +
                                            LFill(VL_TOTAL, 14, 2) +

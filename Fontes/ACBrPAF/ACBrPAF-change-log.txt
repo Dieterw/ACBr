@@ -51,7 +51,8 @@ Versão 0.07   12/04/11
 ---------------
 [*] Adicionado novas propriedades no Registro D2, para atender a 
     versão 01.07 do PAF-ECF.
-    por Isaque Pinheiro
+    por Isaque Pinheiro / Régys Silveira
+
 [+] Adicionado Registros Tipo D3 REGISTRO TIPO D3 - DETALHE DO 
     DOCUMENTO AUXILIAR DE VENDA - DAV, versão 01.07 do PAF-ECF
     por Isaque Pinheiro

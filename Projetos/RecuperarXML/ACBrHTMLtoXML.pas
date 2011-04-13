@@ -77,6 +77,7 @@ var
  sDataEmissao, Versao, sTexto : String;
  CaminhoXML, Grupo, ArquivoTXT, ArquivoRestante : AnsiString;
  ArquivoItens, ArquivoItensTemp, ArquivoDuplicatas, ArquivoVolumes : AnsiString;
+  produtos: Integer;
 begin
  NFe := TNFe.Create;
 
@@ -87,20 +88,15 @@ begin
  NFe.infNFe.ID := OnlyNumber(LerCampo(Grupo,'Chave de acesso'));
  NFe.Ide.nNF   := StrToIntDef(OnlyNumber(LerCampo(Grupo,'Número NF-e')),0);
 
- { Incluido campo que recebe qual a Versão do XML que o arquivo está.
-     (OBS: Não Utilizei o NFe.infNFe.Versao porque aparentemente ele foi removido
-           da unit pcnNFe)
-   Desenvolvedor : Higor Machado em 11/02/2011 }
- Versao         := LerCampo(Grupo,'Versão XML');
-
- NFe.Ide.cNF := RetornarCodigoNumerico(NFe.infNFe.ID,NFe.infNFe.Versao);
+ { Incluido campo que recebe qual a Versão do XML que o arquivo está. }
+ Versao        := LerCampo(Grupo,'Versão XML');
+ NFe.Ide.cNF   := RetornarCodigoNumerico(NFe.infNFe.ID,NFe.infNFe.Versao);
 
  Grupo :=  SeparaAte('EMITENTE',ArquivoRestante,ArquivoRestante);
 
  { Alterado forma de atribuição do campo Data de emissão pois devido a
      diferença de versões (1.10 e 2.00) da NF-e a formatação de Datas estava
-     com problemas.
-   Desenvolvedor : Higor Machado em 11/02/2011 }
+     com problemas. }
  sDataEmissao := LerCampo(Grupo,'Data de emissão');
 
  if Length(sDataEmissao) > 0 then
@@ -115,15 +111,12 @@ begin
      dData := EncodeDate(StrToInt(copy(sDataEmissao, 07, 4)), StrToInt(copy(sDataEmissao, 04, 2)),
                     StrToInt(copy(sDataEmissao, 01, 2)));
    end;
-
  end
  else
    dData := 0;
 
  NFe.Ide.dEmi := dData;
-
  NFe.Total.ICMSTot.vNF := ConverteStrToNumero(LerCampo(Grupo,'Valor Total da Nota Fiscal'));
-
  NFe.Ide.modelo := StrToInt(copy(SomenteNumeros(NFe.infNFe.ID), 21, 2));
  NFe.Ide.serie := StrToInt(copy(SomenteNumeros(NFe.infNFe.ID), 23, 3));
 
@@ -150,9 +143,12 @@ begin
  NFe.Ide.natOp   := LerCampo(Grupo, 'Natureza da Operação');
  NFe.ide.tpNF    := StrToTpNF(ok, LerCampo(Grupo, 'Tipo da Operação',1));
  NFe.ide.indPag  := StrToIndpag(ok, LerCampo(Grupo, 'Forma de Pagamento',1));
+ NFE.procNFe.digVal   := LerCampo(Grupo, 'Digest Value da NF-e');
+ NFe.procNFe.nProt    := LerCampo(Grupo, 'Protocolo');
+ NFe.procNFe.dhRecbto := StrToDateDef(LerCampo(Grupo,'Data/Hora'),0);
 
  //SITUAÇÃO ATUAL:
-{ NFE.procNFe.digVal   := LerCampo(Grupo, 'Digest Value da NF-e');
+ {NFE.procNFe.digVal   := LerCampo(Grupo, 'Digest Value da NF-e');
  NFe.procNFe.xMotivo  := LerCampo(Grupo, 'Ocorrência');
  NFe.procNFe.nProt    := LerCampo(Grupo, 'Protocolo');
  NFe.procNFe.dhRecbto := StrToDateDef(LerCampo(Grupo,'Data/Hora'),0);}
@@ -167,9 +163,7 @@ begin
  NFe.Emit.EnderEmit.xBairro := LerCampo(Grupo,'Bairro/Distrito');
  NFe.Emit.EnderEmit.CEP := StrToIntDef(OnlyNumber(LerCampo(Grupo,'CEP')),0);
  NFe.Emit.EnderEmit.cMun := StrToIntDef(LerCampo(Grupo,'Município',7),0);
-
  NFe.Ide.cUF := StrToIntDef(LerCampo(Grupo,'Município',2),0);
-
  NFe.Emit.EnderEmit.xMun := copy(LerCampo(Grupo,'Município'),10,60);
  NFe.Emit.EnderEmit.fone := OnlyAlphaNum(LerCampo(Grupo,' Fone/Fax'));
  NFe.Emit.EnderEmit.UF := LerCampo(Grupo,'UF');
@@ -182,6 +176,7 @@ begin
 
  NFe.Dest.xNome   := LerCampo(Grupo,'Nome / Razão social');
  NFe.Dest.CNPJCPF := OnlyNumber(LerCampo(Grupo,'CNPJ/CPF'));
+ NFe.Dest.CNPJCPF := OnlyNumber(LerCampo(Grupo,'CNPJ'));
  NFe.Dest.EnderDest.xLgr := LerCampo(Grupo,'Endereço');
  NFe.Dest.EnderDest.xBairro := LerCampo(Grupo,'Bairro/Distrito');
  NFe.Dest.EnderDest.CEP := StrToIntDef(OnlyNumber(LerCampo(Grupo,'CEP')),0);
@@ -195,61 +190,162 @@ begin
 
  ArquivoItens :=  SeparaAte('Dados do Transporte',ArquivoRestante,ArquivoItens);
 
- while true do
-  begin
-    ArquivoItensTemp := copy(ArquivoItens,33,length(ArquivoItens));
-    Grupo :=  SeparaAte('Dados dos Produtos e Serviços',ArquivoItensTemp,ArquivoItens);
-    if Grupo = '' then
-     begin
-       if pos('Num.',ArquivoItensTemp) > 0 then
+ { Alterado a forma de leitura dos itens devido aos layouts das versões (1.10 e 2.00) da NF-e
+    no site da receita apresentarem diferenças. }
+ if Trim(Versao) <> '2.00' then
+    begin
+      while true do
         begin
-          Grupo :=  ArquivoItensTemp;
-          ArquivoItens := '';
-        end;
-       if Grupo = '' then
-          Break;
-     end;
-    with NFe.Det.Add do
-     begin
-       Prod.nItem  := StrToIntDef(LerCampo(Grupo,'Num.'),0);
-       Prod.xProd  := LerCampo(Grupo,'Descrição');
-       Prod.qCom   := ConverteStrToNumero(LerCampo(Grupo,'Qtd.'));
-       Prod.uCom   := LerCampo(Grupo,'Unidade Comercial');
-       Prod.vProd   := ConverteStrToNumero(LerCampo(Grupo,'Valor(R$)'));
-       Prod.cProd  := LerCampo(Grupo,'Código do Produto');
-       Prod.NCM    := LerCampo(Grupo,'Código NCM');
-       Prod.CFOP   := LerCampo(Grupo,'CFOP');
-//       Prod.genero := StrToIntDef(LerCampo(Grupo,'Gênero'),0);
-       Prod.vFrete  := ConverteStrToNumero(LerCampo(Grupo,'Valor Total do Frete'));
-       Prod.cEAN   := LerCampo(Grupo,'Código EAN Comercial');
-       Prod.qCom   := ConverteStrToNumero(LerCampo(Grupo,'Quantidade Comercial'));
-       Prod.cEANTrib  := LerCampo(Grupo,'Código EAN Tributável');
-       Prod.uTrib     := LerCampo(Grupo,'Unidade Tributável');
-       Prod.qTrib     := ConverteStrToNumero(LerCampo(Grupo,'Quantidade Tributável'));
-       Prod.vUnCom  := ConverteStrToNumero(LerCampo(Grupo,'Valor unitário de comercialização'));
-       Prod.vUnTrib := ConverteStrToNumero(LerCampo(Grupo,'Valor unitário de tributação'));
+          ArquivoItensTemp := copy(ArquivoItens, 33, length(ArquivoItens));
+           if Grupo = '' then
+            begin
+              if pos('Num.', ArquivoItensTemp) > 0 then
+                begin
+                  Grupo := ArquivoItensTemp;
+                  ArquivoItens := '';
+                end;
+              if Grupo = '' then
+                Break;
+            end;
+          with NFe.Det.Add do
+            begin
+              Prod.nItem := StrToIntDef(LerCampo(Grupo, 'Num.'), 0);
+              Prod.xProd := LerCampo(Grupo, 'Descrição');
+              Prod.qCom := ConverteStrToNumero(LerCampo(Grupo, 'Qtd.'));
+              Prod.uCom := LerCampo(Grupo, 'Unidade Comercial');
+              Prod.vProd := ConverteStrToNumero(LerCampo(Grupo, 'Valor(R$)'));
+              Prod.cProd := LerCampo(Grupo, 'Código do Produto');
+              Prod.NCM := LerCampo(Grupo, 'Código NCM');
+              Prod.CFOP := LerCampo(Grupo, 'CFOP');
+//              Prod.genero := StrToIntDef(LerCampo(Grupo,'Gênero'),0);
+              Prod.vFrete := ConverteStrToNumero(LerCampo(Grupo, 'Valor Total do Frete'));
+              Prod.cEAN := LerCampo(Grupo, 'Código EAN Comercial');
+              Prod.qCom := ConverteStrToNumero(LerCampo(Grupo, 'Quantidade Comercial'));
+              Prod.cEANTrib := LerCampo(Grupo, 'Código EAN Tributável');
+              Prod.uTrib := LerCampo(Grupo, 'Unidade Tributável');
+              Prod.qTrib := ConverteStrToNumero(LerCampo(Grupo, 'Quantidade Tributável'));
+              Prod.vUnCom := ConverteStrToNumero(LerCampo(Grupo, 'Valor unitário de comercialização'));
+              Prod.vUnTrib := ConverteStrToNumero(LerCampo(Grupo, 'Valor unitário de tributação'));
 
-       with Imposto.ICMS do
+              with Imposto.ICMS do
+                begin
+                  orig := StrToOrig(ok, LerCampo(Grupo, 'Origem da Mercadoria', 1));
+                  CST := StrToCSTICMS(ok, LerCampo(Grupo, 'Tributação do ICMS', 2));
+                  //Modalidade Definição da BC ICMS NOR
+                  vBC := ConverteStrToNumero(LerCampo(Grupo, 'Base de Cálculo do ICMS Normal'));
+                  pICMS := ConverteStrToNumero(LerCampo(Grupo, 'Alíquota do ICMS Normal'));
+                  vICMS := ConverteStrToNumero(LerCampo(Grupo, 'Valor do ICMS Normal'));
+                end;
+
+              with Imposto.IPI do
+                begin
+                  cEnq := LerCampo(Grupo, 'Código de Enquadramento');
+                  vBC := ConverteStrToNumero(LerCampo(Grupo, 'Base de Cálculo'));
+                  pIPI := ConverteStrToNumero(LerCampo(Grupo, 'Alíquota'));
+                  vIPI := ConverteStrToNumero(LerCampo(Grupo, 'Valor'));
+                  CST := StrToCSTIPI(ok, LerCampo(Grupo, 'CST', 2));
+                end;
+
+            end;
+        end;
+
+    end
+  else
+    begin
+      //Faz tratamento alternativo para NFE 2.0
+      produtos := 0;
+      while true do
         begin
-          orig  := StrToOrig(ok,LerCampo(Grupo,'Origem da Mercadoria',1));
-          CST   := StrToCSTICMS(ok,LerCampo(Grupo,'Tributação do ICMS',2));
-          //Modalidade Definição da BC ICMS NOR
-          vBC   := ConverteStrToNumero(LerCampo(Grupo,'Base de Cálculo do ICMS Normal'));
-          pICMS := ConverteStrToNumero(LerCampo(Grupo,'Alíquota do ICMS Normal'));
-          vICMS := ConverteStrToNumero(LerCampo(Grupo,'Valor do ICMS Normal'));
-        end;
+          ArquivoItensTemp := copy(ArquivoItens, 88, length(ArquivoItens));
 
-       with Imposto.IPI do
-        begin
-          cEnq := LerCampo(Grupo,'Código de Enquadramento');
-          vBC   := ConverteStrToNumero(LerCampo(Grupo,'Base de Cálculo'));
-          pIPI  := ConverteStrToNumero(LerCampo(Grupo,'Alíquota'));
-          vIPI  := ConverteStrToNumero(LerCampo(Grupo,'Valor'));
-          CST   := StrToCSTIPI(ok,LerCampo(Grupo,'CST',2));
-        end;
+          //aki faz o teste com o inteiro para achar quantidade de produtos
+          for I := 1 to 990 do
+            begin
+              if pos('|&|' + intTostr(i) + '|&|', ArquivoItensTemp) > 0 then Inc(produtos);
+            end;
 
-     end;
-  end;
+          for I := 1 to produtos do
+            begin
+
+              if i < produtos then
+                Grupo := SeparaAte('|&|' + intTostr(i + 1) + '|&|', ArquivoItensTemp, ArquivoItensTemp)
+              else
+                Grupo := ArquivoItensTemp;
+
+              with NFe.Det.Add do
+                begin
+                  //Prod.nItem := StrToIntDef(LerCampo(Grupo, 'Num.'), 0);
+                  Prod.nItem := i;
+                  Prod.xProd := LerCampo(Grupo, '|&|' + intTostr(i) + '|&|');
+
+                  //retira o código '|&|1|&|'
+                  grupo := copy(grupo, 8, length(grupo));
+                  //separa até a próxima tag |&|
+
+                  Prod.qCom := ConverteStrToNumero(LerCampo(Grupo, '|&|'));
+                   //separa até a próxima tag |&|
+                  grupo := copy(grupo, pos('|&|', grupo) + 3, length(grupo));
+
+                  Prod.uCom := LerCampo(Grupo, '|&|');
+                    //separa até a próxima tag |&|
+                  grupo := copy(grupo, pos('|&|', grupo) + 3, length(grupo));
+
+                  Prod.vProd := ConverteStrToNumero(LerCampo(Grupo, '|&|'));
+                    //separa até a próxima tag |&|
+                  grupo := copy(grupo, pos('|&|', grupo) + 3, length(grupo));
+
+                  //Daqui em diante continua mesmo layout
+
+                  Prod.cProd := LerCampo(Grupo, 'Código do Produto');
+                  Prod.NCM := LerCampo(Grupo, 'Código NCM');
+                  Prod.CFOP := LerCampo(Grupo, 'CFOP');
+//                  Prod.genero := StrToIntDef(LerCampo(Grupo,'Gênero'),0);
+                  Prod.vFrete := ConverteStrToNumero(LerCampo(Grupo, 'Valor Total do Frete'));
+                  Prod.cEAN := LerCampo(Grupo, 'Código EAN Comercial');
+                  Prod.qCom := ConverteStrToNumero(LerCampo(Grupo, 'Quantidade Comercial'));
+                  Prod.cEANTrib := LerCampo(Grupo, 'Código EAN Tributável');
+                  Prod.uTrib := LerCampo(Grupo, 'Unidade Tributável');
+                  Prod.qTrib := ConverteStrToNumero(LerCampo(Grupo, 'Quantidade Tributável'));
+                  Prod.vUnCom := ConverteStrToNumero(LerCampo(Grupo, 'Valor unitário de comercialização'));
+                  Prod.vUnTrib := ConverteStrToNumero(LerCampo(Grupo, 'Valor unitário de tributação'));
+
+                  if LerCampo(Grupo,'Chassi do veículo ') <> '' then
+                  begin
+                   // preencher as tags referente a veículo
+                   Prod.veicProd.chassi  := LerCampo(Grupo,'Chassi do veículo ');
+                   Prod.veicProd.cCor    := LerCampo(Grupo,'Cor ');
+                   Prod.veicProd.xCor    := LerCampo(Grupo,'Descrição da cor ');
+                   Prod.veicProd.nSerie  := LerCampo(Grupo,'Serial (Série) ');
+                   Prod.veicProd.tpComb  := LerCampo(Grupo,'Tipo de Combustível ');
+                   Prod.veicProd.nMotor  := LerCampo(Grupo,'Número de Motor ');
+                   Prod.veicProd.RENAVAM := LerCampo(Grupo,'RENAVAM');
+                   Prod.veicProd.anoMod  := StrToInt(LerCampo(Grupo,'Ano Modelo de Fabricação '));
+                   Prod.veicProd.anoFab  := StrToInt(LerCampo(Grupo,'Ano de Fabricação '));
+                 end;
+
+                  with Imposto.ICMS do
+                    begin
+                      orig := StrToOrig(ok, LerCampo(Grupo, 'Origem da Mercadoria', 1));
+                      CST := StrToCSTICMS(ok, LerCampo(Grupo, 'Tributação do ICMS', 2));
+                      //Modalidade Definição da BC ICMS NOR
+                      vBC := ConverteStrToNumero(LerCampo(Grupo, 'Base de Cálculo do ICMS Normal'));
+                      pICMS := ConverteStrToNumero(LerCampo(Grupo, 'Alíquota do ICMS Normal'));
+                      vICMS := ConverteStrToNumero(LerCampo(Grupo, 'Valor do ICMS Normal'));
+                    end;
+
+                  with Imposto.IPI do
+                    begin
+                      cEnq := LerCampo(Grupo, 'Código de Enquadramento');
+                      vBC := ConverteStrToNumero(LerCampo(Grupo, 'Base de Cálculo'));
+                      pIPI := ConverteStrToNumero(LerCampo(Grupo, 'Alíquota'));
+                      vIPI := ConverteStrToNumero(LerCampo(Grupo, 'Valor'));
+                      CST := StrToCSTIPI(ok, LerCampo(Grupo, 'CST', 2));
+                    end;
+                end;
+            end;
+            break;
+        end;
+    end;
 
  ArquivoRestante := copy(ArquivoRestante,pos(UpperCase('Dados do Transporte'),UpperCase(ArquivoRestante)),length(ArquivoRestante));
  Grupo :=  SeparaAte('Totais',ArquivoRestante,ArquivoItens);
@@ -262,36 +358,35 @@ begin
  NFe.Transp.Transporta.xEnder  := LerCampo(Grupo,'Endereço Completo');
  NFe.Transp.Transporta.xMun    := LerCampo(Grupo,'Município');
  NFe.Transp.Transporta.UF      := LerCampo(Grupo,'UF');
-
+ NFe.Transp.veicTransp.placa   := LerCampo(Grupo,'Placa');
+ NFe.Transp.veicTransp.UF      := LerCampo(Grupo,'UF');
  // Volumes
  if pos('VOLUMES',UpperCase(Grupo)) > 0 then
-  begin
-    i := 0;
-    posIni := pos('VOLUMES',UpperCase(Grupo)) + Length('VOLUMES') + 3;
-    ArquivoVolumes := copy(Grupo,posIni,length(Grupo));
-    while True do
-     begin
-       NFe.Transp.Vol.Add;
-       NFe.Transp.Vol[i].qVol  := StrToIntDef(LerCampo(Grupo,'Quantidade'),0);
-       NFe.Transp.vol[i].esp   := LerCampo(Grupo,'Espécie');
-       NFe.Transp.Vol[i].marca := LerCampo(Grupo,'Marca');
-       NFe.Transp.Vol[i].nVol  := LerCampo(Grupo,'Numeração');
-       NFe.Transp.Vol[i].pesoL := ConverteStrToNumero(LerCampo(Grupo,'Peso Líquido'));
-       NFe.Transp.Vol[i].pesoB := ConverteStrToNumero(LerCampo(Grupo,'Peso Bruto'));
-       Inc(i);
-       break;
-       // Falta rotina para pegar vários volumes
-     end;
-  end;
+ begin
+   i := 0;
+   posIni := pos('VOLUMES',UpperCase(Grupo)) + Length('VOLUMES') + 3;
+   ArquivoVolumes := copy(Grupo,posIni,length(Grupo));
+   while True do
+   begin
+     NFe.Transp.Vol.Add;
+     NFe.Transp.Vol[i].qVol  := StrToIntDef(LerCampo(Grupo,'Quantidade'),0);
+     NFe.Transp.vol[i].esp   := LerCampo(Grupo,'Espécie');
+     NFe.Transp.Vol[i].marca := LerCampo(Grupo,'Marca');
+     NFe.Transp.Vol[i].nVol  := LerCampo(Grupo,'Numeração');
+     NFe.Transp.Vol[i].pesoL := ConverteStrToNumero(LerCampo(Grupo,'Peso Líquido'));
+     NFe.Transp.Vol[i].pesoB := ConverteStrToNumero(LerCampo(Grupo,'Peso Bruto'));
+     Inc(i);
+     break;
+     // Falta rotina para pegar vários volumes
+   end;
+ end;
 
  Grupo :=  SeparaAte('Dados de Cobrança',ArquivoRestante,ArquivoItens);
 
  { Após tentativa de Separar a informação até a parte de 'Dados de Cobrança', em
      algumas NFe's que não possuiam este "node" não estava sendo possivel
      armazenar os dados referente aos 'Totais'. Então caso a NFe não possua este
-     "node" automaticamente irá ignorar as informações relacionadas.
-   Vide post ---> http://www.forumweb.com.br/foruns/topic/81272-captura-do-xml-do-site-da-nfe/page__view__findpost__p__358898
-   Desenvolvedor : Higor Machado em 11/02/2011 }
+     "node" automaticamente irá ignorar as informações relacionadas. }
 
  if Trim(Grupo) = '' then
  begin
@@ -305,11 +400,9 @@ begin
  NFe.Total.ICMSTot.vST   := ConverteStrToNumero(LerCampo(Grupo,'Valor ICMS Substituição'));
 
  { Incluida condicional que Verifica a versão do XML e então atribui qual o
-     texto de busca que deverá ser procurado no arquivo.
-   Desenvolvedor : Higor Machado em 11/02/2011 }
+     texto de busca que deverá ser procurado no arquivo. }
  sTexto := IfThen(Trim(Versao) = '2.00', 'Valor Total dos Produtos', 'Valor dos Produtos');
  NFe.Total.ICMSTot.vProd   := ConverteStrToNumero(LerCampo(Grupo, sTexto));
- 
  NFe.Total.ICMSTot.vFrete:= ConverteStrToNumero(LerCampo(Grupo,'Valor do Frete'));
  NFe.Total.ICMSTot.vSeg  := ConverteStrToNumero(LerCampo(Grupo,'Valor do Seguro'));
  NFe.Total.ICMSTot.vOutro := ConverteStrToNumero(LerCampo(Grupo,'Outras Despesas Acessórias'));
@@ -317,11 +410,9 @@ begin
  NFe.Total.ICMSTot.vNF   := ConverteStrToNumero(LerCampo(Grupo,'Valor Total da NFe'));
 
  { Incluida condicional que Verifica a versão do XML e então atribui qual o
-     texto de busca que deverá ser procurado no arquivo.
-   Desenvolvedor : Higor Machado em 11/02/2011 }
+     texto de busca que deverá ser procurado no arquivo. }
  sTexto := IfThen(Trim(Versao) = '2.00', 'Valor Total dos Descontos', 'Valor dos Descontos');
  NFe.Total.ICMSTot.vDesc   := ConverteStrToNumero(LerCampo(Grupo, sTexto));
-
  NFe.Total.ICMSTot.vII   := ConverteStrToNumero(LerCampo(Grupo,'Valor do II'));
  NFe.Total.ICMSTot.vPIS  := ConverteStrToNumero(LerCampo(Grupo,'Valor do PIS'));
  NFe.Total.ICMSTot.vCOFINS := ConverteStrToNumero(LerCampo(Grupo,'Valor da COFINS'));
@@ -407,6 +498,5 @@ begin
  end;
  NFe.Free;
 end;
-
 
 end.

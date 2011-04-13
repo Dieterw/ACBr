@@ -60,7 +60,7 @@ uses
    ACBrPAF_N, ACBrPAF_N_Class;
 
 const
-   CACBrPAF_Versao = '0.06' ;
+   CACBrPAF_Versao = '0.07' ;
 
 type
 
@@ -701,7 +701,7 @@ end;
 
 procedure TACBrPAF.ReordenarRegistroR(Arquivo: String);
 var
-  objFile: TStringList;
+bjFile: TStringList;
 begin
   objFile := TStringList.Create;
   try

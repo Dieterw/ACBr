@@ -1163,6 +1163,7 @@ function TACBrECFSwedaSTX.GetEstado: TACBrECFEstado;
 Var RetCmd : AnsiString ;
     Estado, Docto : AnsiChar ;
     Sinalizadores : AnsiString ;
+    B : Integer ;
 begin
   Result := fpEstado ;  // Suprimir Warning
   try
@@ -1194,9 +1195,10 @@ begin
              
              'C' :
                begin
-                 if TestBit( Ord(Sinalizadores[2]), 5 )  then
+                 B := Ord( Sinalizadores[2] ) ;
+                 if TestBit( B, 5 )  then
                    fpEstado := estPagamento
-                 else if TestBit( Ord(Sinalizadores[2]), 4 )  then
+                 else if TestBit( B, 4 )  then
                    fpEstado := estVenda ;
                end ;
 
@@ -1217,20 +1219,28 @@ end;
 
 function TACBrECFSwedaSTX.GetGavetaAberta: Boolean;
 Var RetCmd : AnsiString ;
+   B : Integer ;
 begin
   Result := False ;
   RetCmd := EnviaComando( '34' ) ;
-  if (copy(RetCmd,3,2) <> '34') or (Length(RetCmd) < 18) then
-     Result := TestBit( Ord(RetCmd[12]), 2 ) ;
+  if (copy(RetCmd,3,2) = '34') and (Length(RetCmd) >= 12) then
+  begin
+     B := Ord(RetCmd[12]) ;
+     Result := TestBit( B , 2 ) ;
+  end ;
 end;
 
 function TACBrECFSwedaSTX.GetPoucoPapel: Boolean;
 Var RetCmd : AnsiString ;
+   B : Integer ;
 begin
   Result := False ;
   RetCmd := EnviaComando( '34' ) ;
-  if (copy(RetCmd,3,2) <> '34') or (Length(RetCmd) < 18) then
-     Result := TestBit( Ord(RetCmd[12]), 5 ) ;
+  if (copy(RetCmd,3,2) = '34') and (Length(RetCmd) >= 12) then
+  begin
+     B := Ord(RetCmd[12]) ;
+     Result := TestBit( B , 5 ) ;
+  end ;
 end;
 
 function TACBrECFSwedaSTX.GetHorarioVerao: Boolean;

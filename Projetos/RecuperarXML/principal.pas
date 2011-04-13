@@ -181,7 +181,7 @@ begin
 
   Memo2.Lines.Clear;
 
-
+  Button1.Enabled         := False;
   btnPegarHTML.Enabled    := False;
   btnNovaConsulta.Enabled := False;
   btnGerarXML.Enabled     := False;
@@ -244,6 +244,27 @@ begin
         Memo2.Lines.Delete(i);
         i := i - 1;
       end;
+      if pos('function',Memo2.lines[i])>0 then
+      begin
+        Memo2.Lines.Delete(i);
+        i := i - 1;
+      end;
+      if pos('document',Memo2.lines[i])>0 then
+      begin
+        Memo2.Lines.Delete(i);
+        i := i - 1;
+      end;
+      if pos('{',Memo2.lines[i])>0 then
+      begin
+        Memo2.Lines.Delete(i);
+        i := i - 1;
+      end;
+      if pos('}',Memo2.lines[i])>0 then
+      begin
+        Memo2.Lines.Delete(i);
+        i := i - 1;
+      end;
+
       i := i + 1;
     end;
     Image1.Picture      := nil;
@@ -304,6 +325,8 @@ procedure TfrmPrincipal.NovaConsulta;
 begin
   btnNovaConsulta.Enabled := False;
   btnGerarXML.Enabled     := False;
+  edtcaptcha.Text:='';
+  Button1.Enabled         := True;
   DeleteIECache;
   Memo2.Lines.Clear;
   WebBrowser1.Navigate('https://www.nfe.fazenda.gov.br/portal/FormularioDePesquisa.aspx?tipoconsulta=completa');

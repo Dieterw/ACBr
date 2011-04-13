@@ -55,7 +55,6 @@ type
 
   TRegistroD2 = class
   private
-    fRegistroValido: boolean;
     fNUM_FAB: string;      /// Nº de fabricação do ECF
     fMF_ADICIONAL: string; /// Letra indicativa de MF adicional
     fTIPO_ECF: string;     /// Tipo do ECF
@@ -67,6 +66,12 @@ type
     fTIT_DAV: string;      /// Título atribuído ao DAV de acordo com sua função. Ex: Orçamento, Pedido, etc.
     fVLT_DAV: currency;    /// Valor total do DAV emitido, com duas casas decimais
     fCOO_DFV: string;      /// Contador de Ordem de Operação do Documento Fiscal Vinculado
+    /// Versão 01.07
+    fNUMERO_ECF: string;   /// Número sequencial do ECF emissor do documento fiscal vinculado
+    fNOME_CLIENTE: string; /// Nome do Cliente
+    fCPF_CNPJ: string;     /// CPF ou CNPJ do adquirente
+
+    fRegistroValido: boolean;
   public
     constructor Create; virtual; /// Create
 
@@ -82,6 +87,9 @@ type
     property TIT_DAV: string read FTIT_DAV write FTIT_DAV;
     property VLT_DAV: currency read FVLT_DAV write FVLT_DAV;
     property COO_DFV: string read FCOO_DFV write FCOO_DFV;
+    property NUMERO_ECF: string read FNUMERO_ECF write FNUMERO_ECF;
+    property NOME_CLIENTE: string read FNOME_CLIENTE write FNOME_CLIENTE;
+    property CPF_CNPJ: string read FCPF_CNPJ write FCPF_CNPJ;
   end;
 
   /// REGISTRO D2 - Lista
@@ -93,6 +101,50 @@ type
   public
     function New: TRegistroD2;
     property Items[Index: Integer]: TRegistroD2 read GetItem write SetItem;
+  end;
+
+  TRegistroD3 = class
+  private
+    fRegistroValido: boolean;
+    fNUM_DAV: string;
+    fDAT_DAV: TDateTime;
+    fNUM_ITEM: integer;
+    fCOD_ITEM: string;
+    fDESC_ITEM: string;
+    fQTDE_ITEM: Double;
+    fVL_ITEM: Double;
+    fVL_DESCTO: Double;
+    fVL_ACRES: Double;
+    fVL_TOTAL: Double;
+    fCOD_TCTP: string;
+    fIND_CANC: string;
+  public
+    constructor Create; virtual; /// Create
+
+    property RegistroValido: Boolean read fRegistroValido write fRegistroValido default True;
+    property NUM_DAV: string read fNUM_DAV write fNUM_DAV;
+    property DAT_DAV: TDateTime read fDAT_DAV write fDAT_DAV;
+    property NUM_ITEM: Integer read fNUM_ITEM write fNUM_ITEM;
+    property COD_ITEM: string read fCOD_ITEM write fCOD_ITEM;
+    property DESC_ITEM: string read fDESC_ITEM write fDESC_ITEM;
+    property QTDE_ITEM: Double read fQTDE_ITEM write fQTDE_ITEM;
+    property VL_ITEM: Double read fVL_ITEM write fVL_ITEM;
+    property VL_DESCTO: Double read fVL_DESCTO write fVL_DESCTO;
+    property VL_ACRES: Double read fVL_ACRES write fVL_ACRES;
+    property VL_TOTAL: Double read fVL_TOTAL write fVL_TOTAL;
+    property COD_TCTP: string read fCOD_TCTP write fCOD_TCTP;
+    property IND_CANC: string read fIND_CANC write fIND_CANC;
+  end;
+
+  /// REGISTRO D3 - Lista
+
+  TRegistroD3List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroD3;
+    procedure SetItem(Index: Integer; const Value: TRegistroD3);
+  public
+    function New: TRegistroD3;
+    property Items[Index: Integer]: TRegistroD3 read GetItem write SetItem;
   end;
 
   /// REGISTRO TIPO D9 - TOTALIZAÇÃO DO ARQUIVO
@@ -125,6 +177,31 @@ end;
 constructor TRegistroD2.Create;
 begin
    fRegistroValido := True;
+end;
+
+{ TRegistroD3 }
+
+constructor TRegistroD3.Create;
+begin
+   fRegistroValido := True;
+end;
+
+{ TRegistroD3List }
+
+function TRegistroD3List.GetItem(Index: Integer): TRegistroD3;
+begin
+  Result := TRegistroD3(inherited Items[Index]);
+end;
+
+function TRegistroD3List.New: TRegistroD3;
+begin
+  Result := TRegistroD3.Create;
+  Add(Result);
+end;
+
+procedure TRegistroD3List.SetItem(Index: Integer; const Value: TRegistroD3);
+begin
+  Put(Index, Value);
 end;
 
 end.

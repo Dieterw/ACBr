@@ -110,6 +110,7 @@ type
     // REGISTROS D
     function WriteRegistroD1: String;
     function WriteRegistroD2: String;
+    function WriteRegistroD3: String;
     function WriteRegistroD9: String;
     // REGISTROS E
     function WriteRegistroE1: String;
@@ -325,6 +326,11 @@ begin
   Result := FPAF_D.WriteRegistroD2;
 end;
 
+function TACBrPAF.WriteRegistroD3: String;
+begin
+  Result := FPAF_D.WriteRegistroD2;
+end;
+
 function TACBrPAF.WriteRegistroD9: String;
 begin
   Result := FPAF_D.WriteRegistroD9;
@@ -446,7 +452,10 @@ begin
       Write(txtFile, WriteRegistroD1);
 
       if FPAF_D.RegistroD2.Count > 0 then
-        Write(txtFile, WriteRegistroD2);
+         Write(txtFile, WriteRegistroD2);
+
+      if FPAF_D.RegistroD3.Count > 0 then
+         Write(txtFile, WriteRegistroD3);
 
       Write(txtFile, WriteRegistroD9);
     finally
@@ -455,7 +464,7 @@ begin
 
     // Assinatura EAD
     if FAssinar then
-      AssinaArquivoComEAD(fPath + Arquivo);
+       AssinaArquivoComEAD(fPath + Arquivo);
 
     // Limpa de todos os Blocos as listas de todos os registros.
     LimpaRegistros;

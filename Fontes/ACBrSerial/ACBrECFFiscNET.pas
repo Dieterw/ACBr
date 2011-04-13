@@ -195,6 +195,7 @@ TACBrECFFiscNET = class( TACBrECFClass )
     function GetGavetaAberta: Boolean; override ;
     function GetPoucoPapel : Boolean; override ;
     function GetHorarioVerao: Boolean; override ;
+    function GetParamDescontoISSQN: Boolean; override ;
     function GetChequePronto: Boolean; override ;
     function GetArredonda: Boolean; override ;
 
@@ -2603,6 +2604,21 @@ begin
   Result := fsPAf ;
 end;
 
+function TACBrECFFiscNET.GetParamDescontoISSQN: Boolean;
+Var
+  RetCmd : AnsiString ;
+  B : Byte ;
+begin
+  FiscNETComando.NomeComando := 'LeInteiro' ;
+  FiscNETComando.AddParamString('NomeInteiro','PermiteISS') ;
+  EnviaComando ;
+  try
+    Result  := StrToIntDef(FiscNETResposta.Params.Values['ValorInteiro'], 0) = 15 ;
+  except
+     Result := False;
+  end;
+
+end;
 
 procedure TACBrECFFiscNET.LoadDLLFunctions;
 Var

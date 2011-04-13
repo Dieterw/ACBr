@@ -373,6 +373,7 @@ begin
          FieldByName('NotaFiscal').AsString := nDoc;
          FieldByName('TextoImpressao').AsString := 'NF   '+FCTe.Rem.CNPJCPF+'      '+serie+'  /  '+nDoc;
       end;
+      Post;
     end;
     for i := 0 to CTe.Rem.InfNFE.Count - 1 do
     begin
@@ -387,9 +388,8 @@ begin
          FieldByName('NotaFiscal').AsString := '';
          FieldByName('TextoImpressao').AsString := 'NFe   '+chave;
       end;
+      Post;
     end;
-    //
-    Post;
   end;
 
 end;

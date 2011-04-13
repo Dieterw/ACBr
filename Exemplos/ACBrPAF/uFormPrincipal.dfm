@@ -183,8 +183,6 @@ object Form6: TForm6
   end
   object ACBrPAF: TACBrPAF
     Path = '.\'
-    Delimitador = '|'
-    CurMascara = '#0.00'
     OnPAFCalcEAD = ACBrPAFPAFCalcEAD
     Left = 272
     Top = 184

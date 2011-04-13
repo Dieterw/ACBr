@@ -113,9 +113,11 @@ begin
 //     ACBrPAF.CurMascara :='';
 //     ACBrPAF.Delimitador:='';
 
-     edtCNPJ.Text:=GerarDados('I',14);
-     edtIE.Text:=GerarDados('I',14);
-     edtIM.Text:=GerarDados('I',14);
+  edtUF.Text:='SP';
+  edtRAZAO.Text:='DEMO PAF';
+  edtCNPJ.Text:=GerarDados('I',14);
+  edtIE.Text:=GerarDados('I',14);
+  edtIM.Text:=GerarDados('I',14);
 end;
 
 function TForm6.GerarDados(Tipo: Char; Tam: integer): Variant;

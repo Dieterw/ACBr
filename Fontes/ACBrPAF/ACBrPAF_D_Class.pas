@@ -51,6 +51,7 @@ type
   private
     FRegistroD1: TRegistroD1;       /// FRegistroD1
     FRegistroD2: TRegistroD2List;   /// Lista de FRegistroD2
+    FRegistroD3: TRegistroD3List;   /// Lista de FRegistroD3
     FRegistroD9: TRegistroD9;       /// FRegistroD9
   protected
   public
@@ -59,11 +60,13 @@ type
 
     function WriteRegistroD1: String;
     function WriteRegistroD2: String;
+    function WriteRegistroD3: String;
     function WriteRegistroD9: String;
 
-    property RegistroD1: TRegistroD1 read FRegistroD1 write FRegistroD1;
+    property RegistroD1: TRegistroD1     read FRegistroD1 write FRegistroD1;
     property RegistroD2: TRegistroD2List read FRegistroD2 write FRegistroD2;
-    property RegistroD9: TRegistroD9 read FRegistroD9 write FRegistroD9;
+    property RegistroD3: TRegistroD3List read FRegistroD3 write FRegistroD3;
+    property RegistroD9: TRegistroD9     read FRegistroD9 write FRegistroD9;
   end;
 
 implementation
@@ -76,15 +79,19 @@ constructor TPAF_D.Create;
 begin
   FRegistroD1  := TRegistroD1.Create;
   FRegistroD2  := TRegistroD2List.Create;
+  FRegistroD3  := TRegistroD3List.Create;
   FRegistroD9  := TRegistroD9.Create;
 
-  FRegistroD9.TOT_REG := 0;
+  FRegistroD9.TOT_REG_D2 := 0;
+  FRegistroD9.TOT_REG_D3 := 0;
+  FRegistroD9.TOT_REG    := 0;
 end;
 
 destructor TPAF_D.Destroy;
 begin
   FRegistroD1.Free;
   FRegistroD2.Free;
+  FRegistroD3.Free;
   FRegistroD9.Free;
   inherited;
 end;
@@ -139,9 +146,47 @@ begin
                                            #13#10;
         end;
         ///
-        FRegistroD9.TOT_REG := FRegistroD9.TOT_REG + 1;
+        FRegistroD9.TOT_REG_D2 := FRegistroD9.TOT_REG_D2 + 1;
+        FRegistroD9.TOT_REG    := FRegistroD9.TOT_REG + 1;
      end;
      Result := strRegistroD2;
+  end;
+end;
+
+function TPAF_D.WriteRegistroD3: String;
+var
+intFor: integer;
+strRegistroD3: String;
+begin
+  strRegistroD3 := '';
+
+  if Assigned(FRegistroD3) then
+  begin
+     for intFor := 0 to FRegistroD3.Count - 1 do
+     begin
+        with FRegistroD3.Items[intFor] do
+        begin
+          ///
+          strRegistroD3 := strRegistroD3 + LFill('D3') +
+                                           LFill(NUM_DAV, 13, 0) +
+                                           LFill(DT_DAV, 'yyyymmdd') +
+                                           LFill(NUM_ITEM, 3, 0) +
+                                           LFill(COD_ITEM, 14) +
+                                           LFill(DESC_ITEM, 100) +
+                                           LFill(UNI_ITEM, 3) +
+                                           LFill(VL_ITEM, 8, 0) +
+                                           LFill(VL_DESCTO, 8, 0) +
+                                           LFill(VL_ACRES, 8, 0) +
+                                           LFill(VL_TOTAL, 14, 0) +
+                                           LFill(COD_TCTP, 7) +
+                                           LFill(IND_CANC) +
+                                           #13#10;
+        end;
+        ///
+        FRegistroD9.TOT_REG_D3 := FRegistroD9.TOT_REG_D3 + 1;
+        FRegistroD9.TOT_REG    := FRegistroD9.TOT_REG + 1;
+     end;
+     Result := strRegistroD3;
   end;
 end;
 
@@ -157,7 +202,8 @@ begin
         Result := LFill('D9') +
                   LFill(FRegistroD1.CNPJ, 14) +
                   LFill(FRegistroD1.IE, 14) +
-                  LFill(TOT_REG, 6, 0) +
+                  LFill(TOT_REG_D2, 6, 0) +
+                  LFill(TOT_REG_D3, 6, 0) +
                   #13#10;
       end;
    end;

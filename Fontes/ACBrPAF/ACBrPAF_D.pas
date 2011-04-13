@@ -107,15 +107,16 @@ type
   private
     fRegistroValido: boolean;
     fNUM_DAV: string;
-    fDAT_DAV: TDateTime;
+    fDT_DAV: TDateTime;
     fNUM_ITEM: integer;
     fCOD_ITEM: string;
     fDESC_ITEM: string;
-    fQTDE_ITEM: Double;
-    fVL_ITEM: Double;
-    fVL_DESCTO: Double;
-    fVL_ACRES: Double;
-    fVL_TOTAL: Double;
+    fQTDE_ITEM: Currency;
+    fUNI_ITEM: string;
+    fVL_ITEM: Currency;
+    fVL_DESCTO: Currency;
+    fVL_ACRES: Currency;
+    fVL_TOTAL: Currency;
     fCOD_TCTP: string;
     fIND_CANC: string;
   public
@@ -123,15 +124,16 @@ type
 
     property RegistroValido: Boolean read fRegistroValido write fRegistroValido default True;
     property NUM_DAV: string read fNUM_DAV write fNUM_DAV;
-    property DAT_DAV: TDateTime read fDAT_DAV write fDAT_DAV;
+    property DT_DAV: TDateTime read fDT_DAV write fDT_DAV;
     property NUM_ITEM: Integer read fNUM_ITEM write fNUM_ITEM;
     property COD_ITEM: string read fCOD_ITEM write fCOD_ITEM;
     property DESC_ITEM: string read fDESC_ITEM write fDESC_ITEM;
-    property QTDE_ITEM: Double read fQTDE_ITEM write fQTDE_ITEM;
-    property VL_ITEM: Double read fVL_ITEM write fVL_ITEM;
-    property VL_DESCTO: Double read fVL_DESCTO write fVL_DESCTO;
-    property VL_ACRES: Double read fVL_ACRES write fVL_ACRES;
-    property VL_TOTAL: Double read fVL_TOTAL write fVL_TOTAL;
+    property QTDE_ITEM: Currency read fQTDE_ITEM write fQTDE_ITEM;
+    property UNI_ITEM: string read fUNI_ITEM write fUNI_ITEM;
+    property VL_ITEM: Currency read fVL_ITEM write fVL_ITEM;
+    property VL_DESCTO: Currency read fVL_DESCTO write fVL_DESCTO;
+    property VL_ACRES: Currency read fVL_ACRES write fVL_ACRES;
+    property VL_TOTAL: Currency read fVL_TOTAL write fVL_TOTAL;
     property COD_TCTP: string read fCOD_TCTP write fCOD_TCTP;
     property IND_CANC: string read fIND_CANC write fIND_CANC;
   end;
@@ -150,6 +152,12 @@ type
   /// REGISTRO TIPO D9 - TOTALIZAÇÃO DO ARQUIVO
 
   TRegistroD9 = class(TRegistroX9)
+  private
+    FTOT_REG_D2: integer;  /// Total de registros
+    FTOT_REG_D3: integer;  /// Total de registros
+  public
+    property TOT_REG_D2: integer read FTOT_REG_D2 write FTOT_REG_D2;
+    property TOT_REG_D3: integer read FTOT_REG_D3 write FTOT_REG_D3;
   end;
 
 implementation

@@ -97,6 +97,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data:  13/04/2011
+-- ACBrECF --
+[*] - Alteração no relatório de "DAV Emitidos" para o novo roteiro de testes
+      Por: Régys Silveira
+
 Data:  09/04/2011
 -- ACBrECF --
 [-] - Na funcão "TACBrECF.GetMFAdicional: String;", mudei a var "Letra: Char"

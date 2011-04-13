@@ -207,16 +207,18 @@ TACBrECFAliquotas = class(TObjectList)
   private
     fsTitulo: String;
     fsValor: Double;
+    fsCOO_Cupom: integer;
+    fsCOO_Dav: integer;
     fsNumero: Integer;
     fsDtEmissao: TDateTime;
-    fsCCF: integer;
   public
     constructor Create;
     procedure Assign(ADAV: TACBrECFDAV);
 
     property Numero: Integer read fsNumero write fsNumero;
     property Titulo: String read fsTitulo write fsTitulo;
-    property CCF: integer read fsCCF write fsCCF;
+    property COO_Dav: integer read fsCOO_Dav write fsCOO_Dav;
+    property COO_Cupom: integer read fsCOO_Cupom write fsCOO_Cupom;
     property DtEmissao: TDateTime read fsDtEmissao write fsDtEmissao;
     property Valor: Double read fsValor write fsValor;
   end;
@@ -1174,12 +1176,12 @@ end;
 
 { TACBrECFDAV }
 
-function OrdenarDAVs(const ADav1, ADav2: TACBrECFDAV): Integer;
+function OrdenarDAVs(const ADav1, ADav2: Pointer): Integer;
 begin
-  if ADav1.DtEmissao < ADav2.DtEmissao then
+  if TACBrECFDAV(ADav1).DtEmissao < TACBrECFDAV(ADav2).DtEmissao then
     Result := -1
   else
-  if ADav1.DtEmissao > ADav2.DtEmissao then
+  if TACBrECFDAV(ADav1).DtEmissao > TACBrECFDAV(ADav2).DtEmissao then
     Result := 1
   else
     Result := 0;
@@ -1188,6 +1190,8 @@ end;
 constructor TACBrECFDAV.create;
 begin
   fsNumero    := 0;
+  fsCOO_Cupom := 0;
+  fsCOO_Dav   := 0;
   fsTitulo    := '';
   fsValor     := 0.00;
   fsDtEmissao := 0.0;
@@ -1199,6 +1203,8 @@ begin
   fsTitulo    := ADAV.Titulo;
   fsValor     := ADAV.Valor;
   fsDtEmissao := ADAV.DtEmissao;
+  fsCOO_Dav   := ADAV.COO_Dav;
+  fsCOO_Cupom := ADAV.COO_Cupom;
 end;
 
 function TACBrECFDAVs.Add(Obj: TACBrECFDAV): Integer;

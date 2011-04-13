@@ -5276,19 +5276,20 @@ begin
       Relatorio.Add('');
     end;
 
-    Relatorio.Add('TITULO   NUMERO   EMISSAO   CCF   VL.TOTAL');
+    Relatorio.Add('NUMERO  TITULO  EMISSAO  COO  CCF  VL.TOTAL');
     Relatorio.Add(LinhaSimples(TamanhoLinha));
 
     DAVsEmitidos.Ordenar;
     for I := 0 to DAVsEmitidos.Count - 1 do
     begin
-      Relatorio.Add(padL(DAVsEmitidos[I].Titulo, TamanhoLinha));
-      Relatorio.Add(Format('%10.10d %s %6.6d R$ %s', [
-        DAVsEmitidos[I].Numero,
+      Relatorio.Add(Format('%10.10d %s', [DAVsEmitidos[I].Numero, PadL(DAVsEmitidos[I].Titulo, TamanhoLinha - 11)]));
+      Relatorio.Add(Format('%s %6.6d %6.6d R$ %s', [
         FormatDateTime('dd/mm/yyyy', DAVsEmitidos[I].DtEmissao),
-        DAVsEmitidos[I].CCF,
-        PadR(FormatFloat(',#0.00', DAVsEmitidos[I].Valor), TamanhoLinha - 32, ' ')
+        DAVsEmitidos[I].COO_Dav,
+        DAVsEmitidos[I].COO_Cupom,
+        PadR(FormatFloat(',#0.00', DAVsEmitidos[I].Valor), TamanhoLinha - 28, ' ')
       ]));
+      Relatorio.Add('');
     end;
 
     Relatorio.Add(LinhaSimples(TamanhoLinha));

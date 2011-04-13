@@ -3562,7 +3562,8 @@ begin
       with DAVs.New do
       begin
         Numero    := I;
-        CCF       := 0;
+        COO_Dav   := RandomRange(0, 999999);
+        COO_Cupom := RandomRange(0, 999999);
         Titulo    := RandomFrom(TipoDAV);
         DtEmissao := StrToDate(RandomFrom(Datas));
         Valor     := RandomFrom(Valores)

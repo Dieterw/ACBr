@@ -5282,7 +5282,7 @@ begin
     DAVsEmitidos.Ordenar;
     for I := 0 to DAVsEmitidos.Count - 1 do
     begin
-      Relatorio.Add(Format('%10.10d %s', [DAVsEmitidos[I].Numero, PadL(DAVsEmitidos[I].Titulo, TamanhoLinha - 11)]));
+      Relatorio.Add(Format('%13.13d %s', [DAVsEmitidos[I].Numero, PadL(DAVsEmitidos[I].Titulo, TamanhoLinha - 14)]));
       Relatorio.Add(Format('%s %6.6d %6.6d R$ %s', [
         FormatDateTime('dd/mm/yyyy', DAVsEmitidos[I].DtEmissao),
         DAVsEmitidos[I].COO_Dav,

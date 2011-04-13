@@ -113,8 +113,7 @@ type
   TRegistroD3 = class
   private
     fRegistroValido: boolean;
-    fNUM_DAV: string;
-    fDT_DAV: TDateTime;
+    fDT_INCLUSAO: TDateTime;
     fNUM_ITEM: integer;
     fCOD_ITEM: string;
     fDESC_ITEM: string;
@@ -130,8 +129,7 @@ type
     constructor Create; virtual; /// Create
 
     property RegistroValido: Boolean read fRegistroValido write fRegistroValido default True;
-    property NUM_DAV: string read fNUM_DAV write fNUM_DAV;
-    property DT_DAV: TDateTime read fDT_DAV write fDT_DAV;
+    property DT_INCLUSAO: TDateTime read fDT_INCLUSAO write fDT_INCLUSAO;
     property NUM_ITEM: Integer read fNUM_ITEM write fNUM_ITEM;
     property COD_ITEM: string read fCOD_ITEM write fCOD_ITEM;
     property DESC_ITEM: string read fDESC_ITEM write fDESC_ITEM;

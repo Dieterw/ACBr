@@ -106,7 +106,7 @@ begin
                   RFill(IE, 14) +
                   RFill(IM, 14) +
                   RFill(RAZAOSOCIAL, 50) +
-                  #13#10;
+                  sLineBreak;
       end;
    end;
 end;
@@ -139,7 +139,7 @@ begin
                                            RFill(TIT_DAV, 30) +
                                            LFill(VLT_DAV, 8, 2) +
                                            RFill(COO_DFV, 6) +
-                                           #13#10;
+                                           sLineBreak;
         end;
         /// Registro FILHOS
         strRegistroD2 := strRegistroD2 +
@@ -167,19 +167,20 @@ begin
         begin
           ///
           strRegistroD3 := strRegistroD3 + LFill('D3') +
-                                           LFill(NUM_DAV, 13) +
-                                           LFill(DT_DAV, 'yyyymmdd') +
+                                           LFill(RegD2.NUM_DAV, 13) +
+                                           LFill(DT_INCLUSAO, 'yyyymmdd') +
                                            LFill(NUM_ITEM, 3, 0) +
-                                           LFill(COD_ITEM, 14) +
-                                           LFill(DESC_ITEM, 100) +
-                                           LFill(UNI_ITEM, 3) +
-                                           LFill(VL_ITEM, 8, 0) +
-                                           LFill(VL_DESCTO, 8, 0) +
-                                           LFill(VL_ACRES, 8, 0) +
-                                           LFill(VL_TOTAL, 14, 0) +
-                                           LFill(COD_TCTP, 7) +
+                                           RFill(COD_ITEM, 14) +
+                                           RFill(DESC_ITEM, 100) +
+                                           LFill(QTDE_ITEM, 7, 3) +
+                                           RFill(UNI_ITEM, 3) +
+                                           LFill(VL_ITEM, 8, 2) +
+                                           LFill(VL_DESCTO, 8, 2) +
+                                           LFill(VL_ACRES, 8, 2) +
+                                           LFill(VL_TOTAL, 14, 2) +
+                                           RFill(COD_TCTP, 7) +
                                            LFill(IND_CANC) +
-                                           #13#10;
+                                           sLineBreak;
         end;
         ///
         FRegistroD9.TOT_REG_D3 := FRegistroD9.TOT_REG_D3 + 1;
@@ -203,7 +204,7 @@ begin
                   LFill(FRegistroD1.IE, 14) +
                   LFill(TOT_REG_D2, 6, 0) +
                   LFill(TOT_REG_D3, 6, 0) +
-                  #13#10;
+                  sLineBreak;
       end;
    end;
 end;

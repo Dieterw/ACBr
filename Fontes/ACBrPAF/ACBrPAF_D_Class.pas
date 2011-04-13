@@ -138,7 +138,11 @@ begin
                                            LFill(DT_DAV, 'yyyymmdd') +
                                            RFill(TIT_DAV, 30) +
                                            LFill(VLT_DAV, 8, 2) +
-                                           RFill(COO_DFV, 6) +
+                                           LFill(COO_DFV, 6) +
+                                           LFill(NUMERO_ECF, 3) +
+                                           RFill(NOME_CLIENTE, 40) +
+                                           RFill(CPF_CNPJ, 14) +
+
                                            sLineBreak;
         end;
         /// Registro FILHOS

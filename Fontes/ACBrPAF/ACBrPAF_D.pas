@@ -46,6 +46,8 @@ uses
   SysUtils, Classes, Contnrs, DateUtils, ACBrPAFRegistros;
 
 type
+  TRegistroD3List = class;
+
   /// REGISTRO TIPO D1 - IDENTIFICAÇÃO DO ESTABELECIMENTO USUÁRIO DO PAF-ECF
 
   TRegistroD1 = class(TRegistroX1)
@@ -72,8 +74,11 @@ type
     fCPF_CNPJ: string;     /// CPF ou CNPJ do adquirente
 
     fRegistroValido: boolean;
+
+    fRegistroD3: TRegistroD3List; /// Registro FILHO
   public
     constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
 
     property RegistroValido: Boolean read fRegistroValido write fRegistroValido default True;
     property NUM_FAB: string read FNUM_FAB write FNUM_FAB;
@@ -90,6 +95,8 @@ type
     property NUMERO_ECF: string read FNUMERO_ECF write FNUMERO_ECF;
     property NOME_CLIENTE: string read FNOME_CLIENTE write FNOME_CLIENTE;
     property CPF_CNPJ: string read FCPF_CNPJ write FCPF_CNPJ;
+
+    property RegistroD3: TRegistroD3List read FRegistroD3 write FRegistroD3;
   end;
 
   /// REGISTRO D2 - Lista
@@ -184,7 +191,14 @@ end;
 
 constructor TRegistroD2.Create;
 begin
-   fRegistroValido := True;
+  fRegistroD3 := TRegistroD3List.Create;
+  fRegistroValido := True;
+end;
+
+destructor TRegistroD2.Destroy;
+begin
+  fRegistroD3.Free;
+  inherited;
 end;
 
 { TRegistroD3 }

@@ -105,7 +105,7 @@ type
     procedure SetOnPAFGetKeyRSA (const Value: TACBrEADGetChave);
 
     procedure LimpaRegistros;
-    procedure ReordenarRegistroR(Arquivo: String);
+    procedure ReordenarRegistros(Arquivo: String);
   protected
     // REGISTROS D
     function WriteRegistroD1: String;
@@ -453,6 +453,9 @@ begin
       CloseFile(txtFile);
     end;
 
+    // Coloca os registros R em ordem crescente
+    ReordenarRegistros(Arquivo);
+
     // Assinatura EAD
     if FAssinar then
        AssinaArquivoComEAD(fPath + Arquivo);
@@ -569,7 +572,7 @@ begin
     end;
 
     // Coloca os registros R em ordem crescente
-    ReordenarRegistroR(Arquivo);
+    ReordenarRegistros(Arquivo);
 
     // Assinatura EAD
     if FAssinar then
@@ -699,7 +702,7 @@ begin
   end;
 end;
 
-procedure TACBrPAF.ReordenarRegistroR(Arquivo: String);
+procedure TACBrPAF.ReordenarRegistros(Arquivo: String);
 var
 objFile: TStringList;
 begin

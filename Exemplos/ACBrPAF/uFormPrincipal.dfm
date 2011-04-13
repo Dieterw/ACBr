@@ -189,4 +189,8 @@ object Form6: TForm6
     Left = 272
     Top = 184
   end
+  object ACBrEAD: TACBrEAD
+    Left = 270
+    Top = 250
+  end
 end

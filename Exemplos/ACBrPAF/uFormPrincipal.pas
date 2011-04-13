@@ -47,7 +47,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ACBrPAF, ACBrPAF_D, ACBrPAF_E, ACBrPAF_P,
-  ACBrPAF_R, ACBrPAF_T, ACBrPAFRegistros, Math;
+  ACBrPAF_R, ACBrPAF_T, ACBrPAFRegistros, Math, ACBrEAD;
 
 type
   TForm6 = class(TForm)
@@ -72,6 +72,7 @@ type
     btnT: TButton;
     btnC: TButton;
     btnN: TButton;
+    ACBrEAD: TACBrEAD;
     procedure btnDClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure PreencherHeader(Header: TRegistroX1);
@@ -96,9 +97,6 @@ var
   Form6: TForm6;
 
 implementation
-
-uses
-  ACBrEAD;
 
 const
      NUM_FAB      = 'NUMFAB78901234567890';
@@ -197,7 +195,7 @@ end;
 procedure TForm6.btnDClick(Sender: TObject);
 var
      D2: TRegistroD2;
-     i: integer;
+     I, X: integer;
 begin
      // registro D1
      PreencherHeader(ACBrPAF.PAF_D.RegistroD1); // preencher header do arquivo
@@ -206,17 +204,45 @@ begin
      for I := 1 to 15 do
      begin
        D2:=ACBrPAF.PAF_D.RegistroD2.New;
-       D2.NUM_FAB     :=NUM_FAB;
-       D2.MF_ADICIONAL:=MF_ADICIONAL;
-       D2.TIPO_ECF    :=TIPO_ECF;
-       D2.MARCA_ECF   :=MARCA_ECF;
-       D2.MODELO_ECF  :=MODELO_ECF;
-       D2.COO         :=IntToStr(I*QualquerNumero);
-       D2.NUM_DAV     :=IntToStr(I*QualquerNumero);
-       D2.DT_DAV      :=Date-QualquerNumero;
-       D2.TIT_DAV     :='Pedido';
-       D2.VLT_DAV     :=GerarDados('I',2);
+       D2.NUM_FAB      := NUM_FAB;
+       D2.MF_ADICIONAL := MF_ADICIONAL;
+       D2.TIPO_ECF     := TIPO_ECF;
+       D2.MARCA_ECF    := MARCA_ECF;
+       D2.MODELO_ECF   := MODELO_ECF;
+       D2.COO          := IntToStr(I * QualquerNumero);
+       D2.NUM_DAV      := IntToStr(I * QualquerNumero);
+       D2.DT_DAV       := Date - QualquerNumero;
+       D2.TIT_DAV      := 'Pedido';
+       D2.VLT_DAV      := GerarDados('I', 2);
+       D2.COO_DFV      := '0';
+       D2.NUMERO_ECF   := '1';
+       D2.NOME_CLIENTE := 'NOME CLIENTE';
+       D2.CPF_CNPJ     := '12345678921';
+
+       D2.RegistroValido := True; // diz quando o registro foi modificado no banco
+
 //       D2.CCF         :=''; // não está no layout do ato/cotepe
+       for X := 1 to 5 do
+       begin
+         with D2.RegistroD3.New do
+         begin
+           DT_INCLUSAO := DATE;
+           NUM_ITEM    := X;
+           COD_ITEM    := '10';
+           DESC_ITEM   := 'descricao do item';
+           QTDE_ITEM   := 10.00;
+           UNI_ITEM    := 'UN';
+           VL_UNIT     := 1.00;
+           VL_DESCTO   := 0.00;
+           VL_ACRES    := 0.00;
+           VL_TOTAL    := 10.00;
+           COD_TCTP    := '01T0700';
+           IND_CANC    := 'N';
+
+           RegistroValido := True;
+         end;
+       end;
+
      end;
      ACBrPAF.SaveFileTXT_D('PAF_D.txt');
 end;

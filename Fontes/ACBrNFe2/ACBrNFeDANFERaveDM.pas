@@ -734,6 +734,27 @@ begin
                   Connection.WriteFloatData('', PICMS);
                   Connection.WriteFloatData('', VICMS);
                 end
+                else if (CST = cstPart10) then
+                begin
+                  Connection.WriteStrData('', CSTICMSToStr(cstPart10));
+                  Connection.WriteFloatData('', VBC);
+                  Connection.WriteFloatData('', PICMS);
+                  Connection.WriteFloatData('', VICMS);
+                end
+                else if (CST = cstPart90) then
+                begin
+                  Connection.WriteStrData('', CSTICMSToStr(cstPart90));
+                  Connection.WriteFloatData('', VBC);
+                  Connection.WriteFloatData('', PICMS);
+                  Connection.WriteFloatData('', VICMS);
+                end
+                else if (CST = cstRep41) then
+                begin
+                  Connection.WriteStrData('', CSTICMSToStr(cstRep41));
+                  Connection.WriteFloatData('', VBC);
+                  Connection.WriteFloatData('', PICMS);
+                  Connection.WriteFloatData('', VICMS);
+                end
                 else if (CST = cstVazio) then
                 begin
                   Connection.WriteStrData('', ' ');

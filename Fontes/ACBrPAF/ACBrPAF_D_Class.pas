@@ -141,7 +141,7 @@ begin
                                            LFill(COO_DFV, 6) +
                                            LFill(NUMERO_ECF, 3) +
                                            RFill(NOME_CLIENTE, 40) +
-                                           RFill(CPF_CNPJ, 14) +
+                                           LFill(CPF_CNPJ, 14) +
 
                                            sLineBreak;
         end;

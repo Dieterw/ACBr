@@ -167,7 +167,7 @@ begin
  NFe.Emit.EnderEmit.xMun := copy(LerCampo(Grupo,'Município'),10,60);
  NFe.Emit.EnderEmit.fone := OnlyAlphaNum(LerCampo(Grupo,' Fone/Fax'));
  NFe.Emit.EnderEmit.UF := LerCampo(Grupo,'UF');
- NFe.Emit.EnderEmit.cPais := StrToIntDef(LerCampo(Grupo,'País',4),0);
+ NFe.Emit.EnderEmit.cPais := StrToIntDef(LerCampo(Grupo,'País',4),1058);
  NFe.Emit.EnderEmit.xPais := copy(LerCampo(Grupo,'País'),8,60);
  NFe.Emit.IE      := OnlyAlphaNum(LerCampo(Grupo,'Inscrição Estadual'));
  NFe.Ide.cMunFG := StrToIntDef(LerCampo(Grupo,'Município da Ocorrência do Fato Gerador do ICMS'),0);
@@ -184,7 +184,7 @@ begin
  NFe.Dest.EnderDest.xMun := copy(LerCampo(Grupo,'Município'),10,60);
  NFe.Dest.EnderDest.fone := OnlyAlphaNum(LerCampo(Grupo,' Fone/Fax'));
  NFe.Dest.EnderDest.UF := LerCampo(Grupo,'UF');
- NFe.Dest.EnderDest.cPais := StrToIntDef(LerCampo(Grupo,'País',4),0);
+ NFe.Dest.EnderDest.cPais := StrToIntDef(LerCampo(Grupo,'País',4),1058);
  NFe.Dest.EnderDest.xPais := copy(LerCampo(Grupo,'País'),8,60);
  NFe.Dest.IE      := OnlyAlphaNum(LerCampo(Grupo,'Inscrição estadual'));
 

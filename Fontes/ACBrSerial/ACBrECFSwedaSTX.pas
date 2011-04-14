@@ -1974,7 +1974,7 @@ begin
    RetCmd := Trim(RetornaInfoECF('A2'));
    OldShortDateFormat := ShortDateFormat ;
    try
-      sData := Copy(RetCmd,1,10);
+      sData := Copy(RetCmd,22,10);
       ShortDateFormat := 'dd/mm/yy' ;
       Result := StrToDate(sData);
    finally

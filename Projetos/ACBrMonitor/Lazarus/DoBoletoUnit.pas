@@ -197,6 +197,10 @@ begin
         begin
            MudouDados := True;
            Banco.Numero := IniBoletos.ReadInteger('BANCO','Numero',0);
+           if (Banco.BancoClass is TACBrBancoClass) then
+              raise exception.Create('Banco não definido ou não '+
+                                     'implementado no ACBrBoleto!');
+
            FrmACBrMonitor.cbxBOLBanco.Text  := IntToStrZero(Banco.Numero,3);
            FrmACBrMonitor.cbxCNAB.ItemIndex := IniBoletos.ReadInteger('BANCO','CNAB',0);
            if FrmACBrMonitor.cbxCNAB.ItemIndex = 0 then
@@ -234,6 +238,9 @@ var
 begin
    with FrmACBrMonitor.ACBrBoleto1 do
    begin
+      if (Banco.BancoClass is TACBrBancoClass) then
+              raise exception.Create('Banco não definido ou não '+
+                                     'implementado no ACBrBoleto!');
       Titulo := CriarTituloNaLista;
 
       MemFormatada := aIni.ReadString(Sessao,'Mensagem','') ;

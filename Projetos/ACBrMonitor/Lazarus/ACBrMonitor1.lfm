@@ -984,10 +984,10 @@ object FrmACBrMonitor: TFrmACBrMonitor
       Height = 209
       Top = 1
       Width = 592
-      ActivePage = tsACBrBoleto
+      ActivePage = tsECF
       Align = alClient
       Images = ImageList1
-      TabIndex = 10
+      TabIndex = 1
       TabOrder = 0
       object tsMonitor: TTabSheet
         Caption = '&Monitor'
@@ -1352,13 +1352,13 @@ object FrmACBrMonitor: TFrmACBrMonitor
       end
       object tsECF: TTabSheet
         Caption = '&ECF'
-        ClientHeight = 182
-        ClientWidth = 590
+        ClientHeight = 179
+        ClientWidth = 584
         ImageIndex = 1
         object sbECFLog: TSpeedButton
           AnchorSideTop.Control = edECFLog
           AnchorSideTop.Side = asrCenter
-          Left = 544
+          Left = 538
           Height = 23
           Top = 92
           Width = 23
@@ -1670,7 +1670,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
           Left = 272
           Height = 25
           Top = 91
-          Width = 273
+          Width = 267
           Anchors = [akTop, akLeft, akRight]
           OnChange = edECFLogChange
           TabOrder = 6
@@ -2172,14 +2172,14 @@ object FrmACBrMonitor: TFrmACBrMonitor
       end
       object tsDIS: TTabSheet
         Caption = '&Display'
-        ClientHeight = 182
-        ClientWidth = 590
+        ClientHeight = 179
+        ClientWidth = 584
         ImageIndex = 4
         object Label17: TLabel
           Left = 192
-          Height = 16
+          Height = 18
           Top = 16
-          Width = 31
+          Width = 32
           Caption = '&Porta'
           FocusControl = cbDISPorta
           ParentColor = False
@@ -2189,7 +2189,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
           AnchorSideTop.Side = asrCenter
           Left = 192
           Height = 25
-          Top = 34
+          Top = 32
           Width = 134
           ItemHeight = 17
           ItemIndex = 0
@@ -2207,9 +2207,9 @@ object FrmACBrMonitor: TFrmACBrMonitor
         end
         object Label18: TLabel
           Left = 16
-          Height = 16
+          Height = 18
           Top = 16
-          Width = 46
+          Width = 47
           Caption = '&Modelo'
           FocusControl = cbDISModelo
           ParentColor = False
@@ -2307,15 +2307,15 @@ object FrmACBrMonitor: TFrmACBrMonitor
         end
         object Label31: TLabel
           Left = 16
-          Height = 16
+          Height = 18
           Top = 67
-          Width = 91
+          Width = 85
           Caption = '&Intervalo Bytes'
           ParentColor = False
         end
         object seDISIntByte: TSpinEdit
           Left = 16
-          Height = 23
+          Height = 25
           Hint = 'Defina o Tempo em Milisegundos para intervalo entre o envio de'#10'cada Bytes a porta de Teclado'#10#10'(aumente esse valor se as informações não aparecem corretamente)'
           Top = 84
           Width = 57
@@ -2336,15 +2336,15 @@ object FrmACBrMonitor: TFrmACBrMonitor
           TabOrder = 5
           object Label19: TLabel
             Left = 21
-            Height = 16
+            Height = 18
             Top = 5
-            Width = 53
+            Width = 51
             Caption = '&Intervalo'
             ParentColor = False
           end
           object seDISIntervalo: TSpinEdit
             Left = 20
-            Height = 23
+            Height = 25
             Hint = 'Defina o Tempo em Milisegundos para o envio de informações ao Display'
             Top = 22
             Width = 57
@@ -2356,15 +2356,15 @@ object FrmACBrMonitor: TFrmACBrMonitor
           end
           object Label20: TLabel
             Left = 101
-            Height = 16
+            Height = 18
             Top = 5
-            Width = 42
+            Width = 41
             Caption = 'P&assos'
             ParentColor = False
           end
           object seDISPassos: TSpinEdit
             Left = 100
-            Height = 23
+            Height = 25
             Hint = 'Numero de posições a pular a cada Animação '
             Top = 22
             Width = 57
@@ -2415,15 +2415,15 @@ object FrmACBrMonitor: TFrmACBrMonitor
       object tsLCB: TTabSheet
         Hint = 'SE NAO LEU O CÓDIGO DE BARRAS:'#13#10#13#10'1 - Verifique se a Porta está correta'#13#10'2 - Experimente deixar o SUFIXO vazio. Após uma leitura '#13#10'verifique o Sufixo correto no final de "Ultima Leitura"'
         Caption = 'Leitor Serial'
-        ClientHeight = 182
-        ClientWidth = 590
+        ClientHeight = 179
+        ClientWidth = 584
         ImageIndex = 10
         OnShow = tsLCBShow
         object Bevel2: TBevel
           Left = 331
           Height = 127
           Top = 4
-          Width = 236
+          Width = 230
           Anchors = [akTop, akLeft, akRight]
           Shape = bsFrame
         end
@@ -2470,8 +2470,8 @@ object FrmACBrMonitor: TFrmACBrMonitor
           AnchorSideTop.Side = asrBottom
           Left = 347
           Height = 21
-          Top = 54
-          Width = 111
+          Top = 52
+          Width = 96
           Caption = 'Excluir Sufixo'
           OnClick = chLCBExcluirSufixoClick
           ParentShowHint = False
@@ -2481,7 +2481,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
           Left = 8
           Height = 18
           Top = 2
-          Width = 38
+          Width = 32
           Caption = 'Porta'
           ParentColor = False
         end
@@ -2490,7 +2490,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
           Left = 347
           Height = 18
           Top = 9
-          Width = 178
+          Width = 156
           Alignment = taRightJustify
           BorderSpacing.Top = 5
           Caption = 'Sufixo enviado pelo Leitor:'
@@ -2500,7 +2500,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
           Left = 12
           Height = 18
           Top = 87
-          Width = 113
+          Width = 94
           Caption = 'Intervalo Leitura'
           ParentColor = False
         end
@@ -2519,8 +2519,8 @@ object FrmACBrMonitor: TFrmACBrMonitor
           AnchorSideTop.Side = asrBottom
           Left = 347
           Height = 18
-          Top = 78
-          Width = 177
+          Top = 76
+          Width = 153
           Alignment = taRightJustify
           BorderSpacing.Top = 3
           Caption = 'Prefixo do Leitor a Excluir:'
@@ -2532,8 +2532,8 @@ object FrmACBrMonitor: TFrmACBrMonitor
           Cursor = crIBeam
           Left = 347
           Height = 25
-          Top = 96
-          Width = 207
+          Top = 94
+          Width = 201
           Anchors = [akTop, akLeft, akRight]
           OnChange = edLCBPreExcluirChange
           ParentShowHint = False
@@ -2546,7 +2546,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
           Height = 25
           Hint = 'IMPORTANTE: Informar o sufixo correto é importante '#13#10'para ler corretamente um código de cada vez.'#13#10#13#10'Passe um produto pelo leitor e verifique o código '#13#10'do Sufixo no Final do campo "Ultima Leitura"'
           Top = 27
-          Width = 207
+          Width = 201
           Anchors = [akTop, akLeft, akRight]
           ItemHeight = 17
           ItemIndex = 0
@@ -2578,11 +2578,11 @@ object FrmACBrMonitor: TFrmACBrMonitor
           AnchorSideLeft.Side = asrCenter
           AnchorSideTop.Control = cbLCBPorta
           AnchorSideTop.Side = asrBottom
-          Left = 31
+          Left = 25
           Height = 27
           Hint = 'Configura os parâmetros da Porta Serial '#13#10'Exemplo: 9600, 8, N, 1'
-          Top = 47
-          Width = 65
+          Top = 45
+          Width = 77
           AutoSize = True
           BorderSpacing.Top = 1
           Caption = 'Serial'
@@ -2651,7 +2651,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
           Height = 21
           Hint = 'Envia Código lidos para o Buffer de Teclado'
           Top = 15
-          Width = 73
+          Width = 66
           Caption = 'Teclado'
           Checked = True
           OnClick = rbLCBTecladoClick
@@ -2663,7 +2663,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
           Height = 21
           Hint = 'Acumula códigos lidos em Fila Interna.'#13#10'Use "LCB.LerFila" para ler os códigos'
           Top = 15
-          Width = 44
+          Width = 39
           Caption = 'Fila'
           OnClick = rbLCBTecladoClick
           TabOrder = 5
@@ -2692,7 +2692,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
           Height = 34
           Hint = 'Ultima Leitura'
           Top = 136
-          Width = 433
+          Width = 427
           Anchors = [akTop, akLeft, akRight]
           BevelInner = bvLowered
           Caption = 'Ultima leitura'
@@ -3744,14 +3744,14 @@ object FrmACBrMonitor: TFrmACBrMonitor
       end
       object tsETQ: TTabSheet
         Caption = 'Etiqueta'
-        ClientHeight = 182
-        ClientWidth = 590
+        ClientHeight = 179
+        ClientWidth = 584
         ImageIndex = 15
         object Label60: TLabel
           Left = 15
           Height = 18
           Top = 8
-          Width = 54
+          Width = 50
           Caption = 'Modelo:'
           ParentColor = False
         end
@@ -3798,7 +3798,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
           Left = 231
           Height = 18
           Top = 8
-          Width = 43
+          Width = 35
           Caption = 'Porta:'
           ParentColor = False
         end
@@ -4011,9 +4011,9 @@ object FrmACBrMonitor: TFrmACBrMonitor
           Height = 179
           Top = 0
           Width = 584
-          ActivePage = tsBoleto
+          ActivePage = tsCedente
           Align = alClient
-          TabIndex = 2
+          TabIndex = 0
           TabOrder = 0
           object tsCedente: TTabSheet
             Caption = 'Cedente'

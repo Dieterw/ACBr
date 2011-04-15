@@ -124,12 +124,12 @@ type
     fCOD_SIT      : TACBrSituacaoDF;                   //06	COD_SIT	Código da situação do documento fiscal, conforme a Tabela 4.1.2	N	002*	-
     fSER          : string;                            //07	SER	Série do documento fiscal	C	004	-
     fSUB          : string;                            //08	SUB	Subsérie do documento fiscal	C	003	-
-    fNUM_DOC      : Integer;                           //09	NUM_DOC	Número do documento fiscal	N	009	-
-    fCHV_CTE      : Integer;                           //10	CHV_CTE	Chave do Conhecimento de Transporte Eletrônico	N	044*	-
+    fNUM_DOC      : string;                            //09	NUM_DOC	Número do documento fiscal	N	009	-
+    fCHV_CTE      : string;                            //10	CHV_CTE	Chave do Conhecimento de Transporte Eletrônico	N	044*	-
     fDT_DOC       : TDateTime;                         //11	DT_DOC	Data de referência/emissão dos documentos fiscais	N	008*	-
     fDT_A_P       : TDateTime;                         //12	DT_A_P	Data da aquisição ou da prestação do serviço	N	008*	-
-    fTP_CT_e      : Integer;                           //13	TP_CT-e	Tipo de Conhecimento de Transporte Eletrônico conforme definido no Manual de Integração do CT-e	N	001*	-
-    fCHV_CTE_REF  : Integer;                           //14	CHV_CTE_REF	Chave do CT-e de referência cujos valores foram complementados (opção “1” do campo anterior) ou cujo débito foi anulado (opção “2” do campo anterior). 	N	044*	-
+    fTP_CT_e      : string;                            //13	TP_CT-e	Tipo de Conhecimento de Transporte Eletrônico conforme definido no Manual de Integração do CT-e	N	001*	-
+    fCHV_CTE_REF  : string;                           //14	CHV_CTE_REF	Chave do CT-e de referência cujos valores foram complementados (opção “1” do campo anterior) ou cujo débito foi anulado (opção “2” do campo anterior). 	N	044*	-
     fVL_DOC       : Currency;                          //15	VL_DOC	Valor total do documento fiscal	N	-	02
     fVL_DESC      : Currency;                          //16	VL_DESC	Valor total do desconto	N	-	02
     fIND_FRT      : TACBrTipoFrete;                    //17	IND_FRT	Indicador do tipo do frete:0- Por conta de terceiros;1- Por conta do emitente;2- Por conta do destinatário;9- Sem cobrança de frete.	C	001*	-
@@ -154,12 +154,12 @@ type
     property COD_SIT      : TACBrSituacaoDF          read FCOD_SIT      write FCOD_SIT;
     property SER          : string                   read FSER          write FSER;
     property SUB          : string                   read FSUB          write FSUB;
-    property NUM_DOC      : Integer                  read FNUM_DOC      write FNUM_DOC;
-    property CHV_CTE      : Integer                  read FCHV_CTE      write FCHV_CTE;
+    property NUM_DOC      : string                   read FNUM_DOC      write FNUM_DOC;
+    property CHV_CTE      : string                   read FCHV_CTE      write FCHV_CTE;
     property DT_DOC       : TDateTime                read FDT_DOC       write FDT_DOC;
     property DT_A_P       : TDateTime                read FDT_A_P       write FDT_A_P;
-    property TP_CT_e      : Integer                  read FTP_CT_e      write FTP_CT_e;
-    property CHV_CTE_REF  : Integer                  read FCHV_CTE_REF  write FCHV_CTE_REF;
+    property TP_CT_e      : string                  read FTP_CT_e      write FTP_CT_e;
+    property CHV_CTE_REF  : string                  read FCHV_CTE_REF  write FCHV_CTE_REF;
     property VL_DOC       : Currency                 read FVL_DOC       write FVL_DOC;
     property VL_DESC      : Currency                 read FVL_DESC      write FVL_DESC;
     property IND_FRT      : TACBrTipoFrete           read FIND_FRT      write FIND_FRT;

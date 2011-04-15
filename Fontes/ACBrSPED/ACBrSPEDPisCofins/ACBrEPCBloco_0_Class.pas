@@ -354,6 +354,7 @@ begin
             LFill( NUM_REC_ANTERIOR, 41 ) +
             LFill( DT_INI ) +
             LFill( DT_FIN ) +
+            LFill( NOME ) +
             LFill( CNPJ ) +
             LFill( UF ) +
             LFill( COD_MUN, 7 ) +

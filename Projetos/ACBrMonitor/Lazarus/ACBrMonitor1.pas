@@ -623,6 +623,7 @@ var
   iDIS: TACBrDISModelo;
   iBAL: TACBrBALModelo;
   iCEP: TACBrCEPWebService;
+  IBanco: Integer;
 begin
   {$IFDEF LINUX}
    FpUmask(0);
@@ -663,6 +664,17 @@ begin
   FalseBoolStrs[0] := 'False';
   FalseBoolStrs[1] := 'F';
   FalseBoolStrs[2] := 'Falso';
+
+
+  { Criando lista de Bancos disponiveis }
+  cbxBOLBanco.Items.Clear;
+  for IBanco:=1 to 999 do
+  begin
+    ACBrBoleto1.Banco.Numero:= IBanco;
+    if not ( ACBrBoleto1.Banco.Nome = 'Não definido') then
+       cbxBOLBanco.Items.Add(IntToStrZero(IBanco,3)+' - '+
+                             ACBrBoleto1.Banco.Nome);
+  end;
 
   { Criando lista modelos de ECFs disponiveis }
   cbECFModelo.Items.Clear;

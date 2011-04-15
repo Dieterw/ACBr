@@ -197,7 +197,7 @@ begin
         begin
            MudouDados := True;
            Banco.Numero := IniBoletos.ReadInteger('BANCO','Numero',0);
-           if (Banco.BancoClass is TACBrBancoClass) then
+           if (trim(Banco.Nome) = 'Não definido') then
               raise exception.Create('Banco não definido ou não '+
                                      'implementado no ACBrBoleto!');
 
@@ -238,7 +238,7 @@ var
 begin
    with FrmACBrMonitor.ACBrBoleto1 do
    begin
-      if (Banco.BancoClass is TACBrBancoClass) then
+      if (trim(Banco.Nome) = 'Não definido') then
               raise exception.Create('Banco não definido ou não '+
                                      'implementado no ACBrBoleto!');
       Titulo := CriarTituloNaLista;

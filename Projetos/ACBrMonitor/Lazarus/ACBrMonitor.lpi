@@ -191,6 +191,7 @@
     </SearchPaths>
     <Linking>
       <Debugging>
+        <UseLineInfoUnit Value="False"/>
         <StripSymbols Value="True"/>
       </Debugging>
       <Options>

@@ -149,7 +149,7 @@ object FrmSPEDPisCofins: TFrmSPEDPisCofins
     object edtFile: TEdit
       Left = 22
       Top = 28
-      Width = 292
+      Width = 288
       Height = 21
       Anchors = [akLeft, akTop, akRight]
       TabOrder = 0
@@ -157,7 +157,7 @@ object FrmSPEDPisCofins: TFrmSPEDPisCofins
       OnChange = edtFileChange
     end
     object cbConcomitante: TCheckBox
-      Left = 338
+      Left = 334
       Top = 30
       Width = 134
       Height = 19

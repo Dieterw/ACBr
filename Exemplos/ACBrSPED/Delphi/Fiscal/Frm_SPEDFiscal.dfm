@@ -148,7 +148,7 @@ object FrmSPEDFiscal: TFrmSPEDFiscal
     object edtFile: TEdit
       Left = 22
       Top = 28
-      Width = 296
+      Width = 292
       Height = 21
       Anchors = [akLeft, akTop, akRight]
       TabOrder = 0
@@ -156,7 +156,7 @@ object FrmSPEDFiscal: TFrmSPEDFiscal
       OnChange = edtFileChange
     end
     object cbConcomitante: TCheckBox
-      Left = 342
+      Left = 338
       Top = 30
       Width = 134
       Height = 19
@@ -307,13 +307,12 @@ object FrmSPEDFiscal: TFrmSPEDFiscal
     Visible = False
   end
   object ACBrSPEDFiscal1: TACBrSPEDFiscal
-    Path = '.\'
-    Arquivo = 'ACBrSpedFiscal.txt'
+    Path = 'C:\Program Files (x86)\Embarcadero\RAD Studio\7.0\bin\'
     Delimitador = '|'
     TrimString = True
     CurMascara = '#0.00'
     OnError = ACBrSPEDFiscal1Error
-    Left = 256
-    Top = 278
+    Left = 332
+    Top = 256
   end
 end

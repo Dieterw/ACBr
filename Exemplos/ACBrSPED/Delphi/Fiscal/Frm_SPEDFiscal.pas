@@ -40,12 +40,12 @@ type
     Label2: TLabel;
     memoTXT: TMemo;
     Label3: TLabel;
-    ACBrSPEDFiscal1: TACBrSPEDFiscal;
     Label4: TLabel;
     Label5: TLabel;
     Panel1: TPanel;
     Panel2: TPanel;
     ProgressBar1: TProgressBar;
+    ACBrSPEDFiscal1: TACBrSPEDFiscal;
     procedure btnB_0Click(Sender: TObject);
     procedure btnB_9Click(Sender: TObject);
     procedure btnTXTClick(Sender: TObject);

@@ -47,6 +47,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 1.00 Beta 15/04/2011
+[*] Reestruturado as pastas dos Demos do SPED, agora cada demo tem sua pastas
+    ACBrSPED\Delphi\Contabil 
+    ACBrSPED\Delphi\Fiscal
+    ACBrSPED\Delphi\PisCofins
 
 Versão 1.00 Beta 08/04/2011
 -- ACBrSPEDPisCofins --

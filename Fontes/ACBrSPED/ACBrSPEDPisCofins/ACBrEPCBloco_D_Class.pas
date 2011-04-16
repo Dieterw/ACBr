@@ -1577,6 +1577,7 @@ procedure TBloco_D.WriteRegistroD600(RegD010: TRegistroD010) ;
   var
     intFor     : integer;
     strCOD_MOD : AnsiString;
+    strIND_REC : AnsiString;
 begin
   if Assigned(RegD010.RegistroD600) then
   begin
@@ -1586,12 +1587,25 @@ begin
         begin
           Check(Pos(COD_MOD, '21 22') > 0, '(D-600) O Modelo do Documento "%s" é inválido!', [COD_MOD]);
 
+          case IND_REC of
+            irPropServPrestados         : strIND_REC :='0' ;// Receita própria - serviços prestados;
+            irPropCobDebitos            : strIND_REC :='1' ;// Receita própria - cobrança de débitos;
+            irPropServPrePagAnterior    : strIND_REC :='2' ;// Receita própria - venda de serviço pré-pago – faturamento de períodos anteriores;
+            irPropServPrePagAtual       : strIND_REC :='3' ;// Receita própria - venda de serviço pré-pago – faturamento no período;
+            irPropServOutrosComunicacao : strIND_REC :='4' ;// Outras receitas próprias de serviços de comunicação e telecomunicação;
+            irCFaturamento              : strIND_REC :='5' ;// Receita própria - co-faturamento;
+            irServAFaturar              : strIND_REC :='6' ;// Receita própria – serviços a faturar em período futuro;
+            irNaoAcumulativa            : strIND_REC :='7' ;// Outras receitas próprias de natureza não-cumulativa;
+            irTerceiros                 : strIND_REC :='8' ;// Outras receitas de terceiros
+            irOutras                    : strIND_REC :='9' ;// Outras receitas
+          end;
+
           Add( LFill('D600')           +
                LFill( COD_MOD )        +
                LFill( COD_MUN )        +
                LFill( SER )            +
                LFill( SUB )            +
-               LFill( IND_REC )        + //Verificar se cria tabela no ACBrEPCBlocos
+               LFill( strIND_REC )     + 
                LFill( QTD_CONS )       +
                LFill( DT_DOC_INI )     +
                LFill( DT_DOC_FIN )     +

@@ -596,20 +596,20 @@ type
     FCOD_REC               : string;
     FIND_NAT_RET           : string;
     FCNPJ                  : string;
-    FIND_NAT_REC           : string;
+    FIND_NAT_REC           : TACBrIndNatRec;
     FIND_DEC               : string;
     FDT_RET                : TDateTime;
   public
-    property IND_NAT_RET   : string    read FIND_NAT_RET   write FIND_NAT_RET;
-    property DT_RET        : TDateTime read FDT_RET        write FDT_RET;
-    property VL_BC_RET     : currency  read FVL_BC_RET     write FVL_BC_RET;
-    property VL_RET        : currency  read FVL_RET        write FVL_RET;
-    property COD_REC       : string    read FCOD_REC       write FCOD_REC;
-    property IND_NAT_REC   : string    read FIND_NAT_REC   write FIND_NAT_REC;
-    property CNPJ          : string    read FCNPJ          write FCNPJ;
-    property VL_RET_PIS    : currency  read FVL_RET_PIS    write FVL_RET_PIS;
-    property VL_RET_COFINS : currency  read FVL_RET_COFINS write FVL_RET_COFINS;
-    property IND_DEC       : string    read FIND_DEC       write FIND_DEC;
+    property IND_NAT_RET   : string         read FIND_NAT_RET   write FIND_NAT_RET;
+    property DT_RET        : TDateTime      read FDT_RET        write FDT_RET;
+    property VL_BC_RET     : currency       read FVL_BC_RET     write FVL_BC_RET;
+    property VL_RET        : currency       read FVL_RET        write FVL_RET;
+    property COD_REC       : string         read FCOD_REC       write FCOD_REC;
+    property IND_NAT_REC   : TACBrIndNatRec read FIND_NAT_REC   write FIND_NAT_REC;
+    property CNPJ          : string         read FCNPJ          write FCNPJ;
+    property VL_RET_PIS    : currency       read FVL_RET_PIS    write FVL_RET_PIS;
+    property VL_RET_COFINS : currency       read FVL_RET_COFINS write FVL_RET_COFINS;
+    property IND_DEC       : string         read FIND_DEC       write FIND_DEC;
   end;
 
   // Registro F600 - Lista
@@ -660,19 +660,19 @@ type
     FVL_CRED_PIS            : currency;
     FPER_CRED_CIS           : currency;
     FIND_NAT_EVEN           : string;
-    FCOD_CRED               : string;
+    FCOD_CRED               : TACBrCodCred;
     FCNPJ_SUCED             : string;
     FPA_CONT_CRED           : string;
     FDT_EVEN                : TDateTime;
   public
-    property IND_NAT_EVEN   : string    read FIND_NAT_EVEN   write FIND_NAT_EVEN;
-    property DT_EVEN        : TDateTime read FDT_EVEN        write FDT_EVEN;
-    property CNPJ_SUCED     : string    read FCNPJ_SUCED     write FCNPJ_SUCED;
-    property PA_CONT_CRED   : string    read FPA_CONT_CRED   write FPA_CONT_CRED;
-    property COD_CRED       : string    read FCOD_CRED       write FCOD_CRED;
-    property VL_CRED_PIS    : currency  read FVL_CRED_PIS    write FVL_CRED_PIS;
-    property VL_CRED_COFINS : currency  read FVL_CRED_COFINS write FVL_CRED_COFINS;
-    property PER_CRED_CIS   : currency  read FPER_CRED_CIS   write FPER_CRED_CIS;
+    property IND_NAT_EVEN   : string       read FIND_NAT_EVEN   write FIND_NAT_EVEN;
+    property DT_EVEN        : TDateTime    read FDT_EVEN        write FDT_EVEN;
+    property CNPJ_SUCED     : string       read FCNPJ_SUCED     write FCNPJ_SUCED;
+    property PA_CONT_CRED   : string       read FPA_CONT_CRED   write FPA_CONT_CRED;
+    property COD_CRED       : TACBrCodCred read FCOD_CRED       write FCOD_CRED;
+    property VL_CRED_PIS    : currency     read FVL_CRED_PIS    write FVL_CRED_PIS;
+    property VL_CRED_COFINS : currency     read FVL_CRED_COFINS write FVL_CRED_COFINS;
+    property PER_CRED_CIS   : currency     read FPER_CRED_CIS   write FPER_CRED_CIS;
   end;
 
   // Registro F800 - Lista

@@ -714,7 +714,7 @@ type
     fCOD_MUN              : Integer;            //03	COD_MUN	Código do município dos terminais faturados, conforme a tabela IBGE	N	007*	-
     fSER                  : string;             //04	SER	Série do documento fiscal	C	004	-
     fSUB                  : Integer;            //05	SUB	Subsérie do documento fiscal	N	003	-
-    fIND_REC              : Integer;            //06	IND_REC	Indicador do tipo de receita:0- Receita própria - serviços prestados;1- Receita própria - cobrança de débitos;2- Receita própria - venda de serviço pré-pago – faturamento de períodos anteriores;3- Receita própria - venda de serviço pré-pago – faturamento no período;4- Outras receitas próprias de serviços de comunicação e telecomunicação;5- Receita própria - co-faturamento;6- Receita própria – serviços a faturar em período futuro;7– Outras receitas próprias de natureza não-cumulativa;8 - Outras receitas de terceiros;9 – Outras receitas	N	001*	-
+    fIND_REC              : TACBrIndRec;        //06	IND_REC	Indicador do tipo de receita:0- Receita própria - serviços prestados;1- Receita própria - cobrança de débitos;2- Receita própria - venda de serviço pré-pago – faturamento de períodos anteriores;3- Receita própria - venda de serviço pré-pago – faturamento no período;4- Outras receitas próprias de serviços de comunicação e telecomunicação;5- Receita própria - co-faturamento;6- Receita própria – serviços a faturar em período futuro;7– Outras receitas próprias de natureza não-cumulativa;8 - Outras receitas de terceiros;9 – Outras receitas	N	001*	-
     fQTD_CONS             : Integer;            //07	QTD_CONS	Quantidade de documentos consolidados neste registro	N	-	-
     fDT_DOC_INI           : TDateTime;          //08	DT_DOC_INI	Data Inicial dos documentos consolidados no período	N	008*	-
     fDT_DOC_FIN           : TDateTime;          //09	DT_DOC_FIN	Data Final dos documentos consolidados no período	N	008*	-
@@ -740,7 +740,7 @@ type
     property COD_MUN      : Integer           read FCOD_MUN      write FCOD_MUN;
     property SER          : string            read FSER          write FSER;
     property SUB          : Integer           read FSUB          write FSUB;
-    property IND_REC      : Integer           read FIND_REC      write FIND_REC;
+    property IND_REC      : TACBrIndRec       read FIND_REC      write FIND_REC;
     property QTD_CONS     : Integer           read FQTD_CONS     write FQTD_CONS;
     property DT_DOC_INI   : TDateTime         read FDT_DOC_INI   write FDT_DOC_INI;
     property DT_DOC_FIN   : TDateTime         read FDT_DOC_FIN   write FDT_DOC_FIN;

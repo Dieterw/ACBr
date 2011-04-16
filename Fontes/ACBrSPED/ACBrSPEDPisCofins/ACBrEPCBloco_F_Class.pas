@@ -1412,7 +1412,8 @@ end;
 
 procedure TBloco_F.WriteRegistroF600(RegF010: TRegistroF010) ;
   var
-    intFor: integer;
+    intFor         : integer;
+    strIND_NAT_REC : AnsiString;
 begin
   if Assigned(RegF010.RegistroF600) then
   begin
@@ -1420,13 +1421,19 @@ begin
      begin
         with RegF010.RegistroF600.Items[intFor] do
         begin
+
+          case IND_NAT_REC of
+            inrNaoCumulativa   : strIND_NAT_REC := '0' ; // Receita de Natureza Não Cumulativa
+            inrCumulativa      : strIND_NAT_REC := '1' ; // Receita de Natureza Cumulativa
+          end;
+
           Add( LFill('F600')               +
                LFill( IND_NAT_RET )        +   //Verificar criação da tabela no ACBrEPCBlocos
                LFill( DT_RET )             +
                LFill( VL_BC_RET ,0,2 )     +
                LFill( VL_RET ,0,2 )        +
                LFill( COD_REC )            +
-               LFill( IND_NAT_REC )        +   //Verificar criação da tabela no ACBrEPCBlocos
+               LFill( strIND_NAT_REC )     +  
                LFill( CNPJ )               +
                LFill( VL_RET_PIS ,0,2 )    +
                LFill( VL_RET_COFINS ,0,2 ) +
@@ -1471,7 +1478,8 @@ end;
 
 procedure TBloco_F.WriteRegistroF800(RegF010: TRegistroF010) ;
   var
-    intFor: integer;
+    intFor      : integer;
+    strCOD_CRED : AnsiString;
 begin
   if Assigned(RegF010.RegistroF800) then
   begin
@@ -1479,12 +1487,44 @@ begin
      begin
         with RegF010.RegistroF800.Items[intFor] do
         begin
+
+          case COD_CRED of
+                  //CÓDIGOS VINCULADOS À RECEITA TRIBUTADA NO MERCADO INTERNO - Grupo 100
+                    ccRTMIAliqBasica         : strCOD_CRED := '101' ; // Crédito vinculado à receita tributada no mercado interno - Alíquota Básica
+                    ccRTMIAliqDiferenciada   : strCOD_CRED := '102' ; // Crédito vinculado à receita tributada no mercado interno - Alíquotas Diferenciadas
+                    ccRTMIAliqUnidProduto    : strCOD_CRED := '103' ; // Crédito vinculado à receita tributada no mercado interno - Alíquota por Unidade de Produto
+                    ccRTMIEstAbertura        : strCOD_CRED := '104' ; // Crédito vinculado à receita tributada no mercado interno - Estoque de Abertura
+                    ccRTMIAquiEmbalagem      : strCOD_CRED := '105' ; // Crédito vinculado à receita tributada no mercado interno - Aquisição Embalagens para revenda
+                    ccRTMIPreAgroindustria   : strCOD_CRED := '106' ; // Crédito vinculado à receita tributada no mercado interno - Presumido da Agroindústria
+                    ccRTMIImportacao         : strCOD_CRED := '108' ; // Crédito vinculado à receita tributada no mercado interno - Importação
+                    ccRTMIAtivImobiliaria    : strCOD_CRED := '109' ; // Crédito vinculado à receita tributada no mercado interno - Atividade Imobiliária
+                    ccRTMIOutros             : strCOD_CRED := '199' ; // Crédito vinculado à receita tributada no mercado interno - Outros
+                  //CÓDIGOS VINCULADOS À RECEITA NÃO TRIBUTADA NO MERCADO INTERNO - Grupo 200
+                    ccRNTMIAliqBasica        : strCOD_CRED := '201' ; // Crédito vinculado à receita não tributada no mercado interno - Alíquota Básica
+                    ccRNTMIAliqDiferenciada  : strCOD_CRED := '202' ; // Crédito vinculado à receita não tributada no mercado interno - Alíquotas Diferenciadas
+                    ccRNTMIAliqUnidProduto   : strCOD_CRED := '203' ; // Crédito vinculado à receita não tributada no mercado interno - Alíquota por Unidade de Produto
+                    ccRNTMIEstAbertura       : strCOD_CRED := '204' ; // Crédito vinculado à receita não tributada no mercado interno - Estoque de Abertura
+                    ccRNTMIAquiEmbalagem     : strCOD_CRED := '205' ; // Crédito vinculado à receita não tributada no mercado interno - Aquisição Embalagens para revenda
+                    ccRNTMIPreAgroindustria  : strCOD_CRED := '206' ; // Crédito vinculado à receita não tributada no mercado interno - Presumido da Agroindústria
+                    ccRNTMIImportacao        : strCOD_CRED := '208' ; // Crédito vinculado à receita não tributada no mercado interno - Importação
+                    ccRNTMIOutros            : strCOD_CRED := '299' ; // Crédito vinculado à receita não tributada no mercado interno - Outros
+                  //CÓDIGOS VINCULADOS À RECEITA DE EXPORTAÇÃO - Grupo 300
+                    ccREAliqBasica           : strCOD_CRED := '301' ; // Crédito vinculado à receita de exportação - Alíquota Básica
+                    ccREAliqDiferenciada     : strCOD_CRED := '302' ; // Crédito vinculado à receita de exportação - Alíquotas Diferenciadas
+                    ccREAliqUnidProduto      : strCOD_CRED := '303' ; // Crédito vinculado à receita de exportação - Alíquota por Unidade de Produto
+                    ccREEstAbertura          : strCOD_CRED := '304' ; // Crédito vinculado à receita de exportação - Estoque de Abertura
+                    ccREAquiEmbalagem        : strCOD_CRED := '305' ; // Crédito vinculado à receita de exportação - Aquisição Embalagens para revenda
+                    ccREPreAgroindustria     : strCOD_CRED := '306' ; // Crédito vinculado à receita de exportação - Presumido da Agroindústria
+                    ccREImportacao           : strCOD_CRED := '308' ; // Crédito vinculado à receita de exportação - Importação
+                    ccREOutros               : strCOD_CRED := '399' ; // Crédito vinculado à receita de exportação - Outros
+          end;
+
           Add( LFill('F800')                +
                LFill( IND_NAT_EVEN )        +   //Verificar criação da tabela no ACBrEPCBlocos
                LFill( DT_EVEN )             +
                LFill( CNPJ_SUCED )          +
                LFill( PA_CONT_CRED )        +
-               LFill( COD_CRED )            +   //Verificar criação da tabela no ACBrEPCBlocos
+               LFill( strCOD_CRED )         +   
                LFill( VL_CRED_PIS ,0,2 )    +
                LFill( VL_CRED_COFINS ,0,2 ) +
                LFill( VL_CRED_COFINS ,0,2 ) ) ;

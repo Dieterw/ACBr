@@ -49,21 +49,21 @@ type
   TRegistroM100List = class;
   TRegistroM105List = class;
   TRegistroM110List = class;
-  TRegistroM200 = class;
+  TRegistroM200     = class;
   TRegistroM210List = class;
-  TRegistroM211 = class;
+  TRegistroM211     = class;
   TRegistroM220List = class;
   TRegistroM230List = class;
   TRegistroM300List = class;
-  TRegistroM350 = class;
+  TRegistroM350     = class;
   TRegistroM400List = class;
   TRegistroM410List = class;
   TRegistroM500List = class;
   TRegistroM505List = class;
   TRegistroM510List = class;
-  TRegistroM600 = class;
+  TRegistroM600     = class;
   TRegistroM610List = class;
-  TRegistroM611 = class;
+  TRegistroM611     = class;
   TRegistroM620List = class;
   TRegistroM630List = class;
   TRegistroM700List = class;
@@ -73,78 +73,78 @@ type
   //REGISTRO M001: ABERTURA DO BLOCO M
   TRegistroM001 = class(TOpenBlocos)
   private
-    FRegistroM100: TRegistroM100List; // NIVEL 2
-    FRegistroM200: TRegistroM200;     // NIVEL 2
-    FRegistroM300: TRegistroM300List; // NIVEL 2
-    FRegistroM350: TRegistroM350;     // NIVEL 2
-    FRegistroM400: TRegistroM400List; // NIVEL 2
-    FRegistroM500: TRegistroM500List; // NIVEL 2
-    FRegistroM600: TRegistroM600;     // NIVEL 2
-    FRegistroM700: TRegistroM700List; // NIVEL 2
-    FRegistroM800: TRegistroM800List; // NIVEL 2
+    FRegistroM100         : TRegistroM100List; // NIVEL 2
+    FRegistroM200         : TRegistroM200;     // NIVEL 2
+    FRegistroM300         : TRegistroM300List; // NIVEL 2
+    FRegistroM350         : TRegistroM350;     // NIVEL 2
+    FRegistroM400         : TRegistroM400List; // NIVEL 2
+    FRegistroM500         : TRegistroM500List; // NIVEL 2
+    FRegistroM600         : TRegistroM600;     // NIVEL 2
+    FRegistroM700         : TRegistroM700List; // NIVEL 2
+    FRegistroM800         : TRegistroM800List; // NIVEL 2
   public
-    constructor Create; virtual; /// Create
-    destructor Destroy; override; /// Destroy
+    constructor Create;  virtual;              /// Create
+    destructor  Destroy; override;             /// Destroy
 
-    property RegistroM100: TRegistroM100List read FRegistroM100 write FRegistroM100;
-    property RegistroM200: TRegistroM200 read FRegistroM200 write FRegistroM200;
-    property RegistroM300: TRegistroM300List read FRegistroM300 write FRegistroM300;
-    property RegistroM350: TRegistroM350 read FRegistroM350 write FRegistroM350;
-    property RegistroM400: TRegistroM400List read FRegistroM400 write FRegistroM400;
-    property RegistroM500: TRegistroM500List read FRegistroM500 write FRegistroM500;
-    property RegistroM600: TRegistroM600 read FRegistroM600 write FRegistroM600;
-    property RegistroM700: TRegistroM700List read FRegistroM700 write FRegistroM700;
-    property RegistroM800: TRegistroM800List read FRegistroM800 write FRegistroM800;
+    property RegistroM100 : TRegistroM100List read FRegistroM100 write FRegistroM100;
+    property RegistroM200 : TRegistroM200     read FRegistroM200 write FRegistroM200;
+    property RegistroM300 : TRegistroM300List read FRegistroM300 write FRegistroM300;
+    property RegistroM350 : TRegistroM350     read FRegistroM350 write FRegistroM350;
+    property RegistroM400 : TRegistroM400List read FRegistroM400 write FRegistroM400;
+    property RegistroM500 : TRegistroM500List read FRegistroM500 write FRegistroM500;
+    property RegistroM600 : TRegistroM600     read FRegistroM600 write FRegistroM600;
+    property RegistroM700 : TRegistroM700List read FRegistroM700 write FRegistroM700;
+    property RegistroM800 : TRegistroM800List read FRegistroM800 write FRegistroM800;
   end;
 
 
   //REGISTRO M100: ABERTURA DO BLOCO M
   TRegistroM100 = class
   private
-    FALIQ_PIS: currency;
-    FVL_CRED_DESC: currency;
-    FVL_AJUS_ACRES: currency;
-    FVL_CRED_DIF: currency;
-    FSLD_CRED: currency;
-    FVL_CRED: currency;
-    FALIQ_PIS_QUANT: currency;
-    FVL_AJUS_REDUC: currency;
-    FVL_CRED_DISP: currency;
-    FQUANT_BC_PIS: currency;
-    FVL_BC_PIS: currency;
-    FIND_CRED_ORI: integer;
-    FCOD_CRED: string;
-    FIND_DESC_CRED: string;
+    FALIQ_PIS               : currency;
+    FVL_CRED_DESC           : currency;
+    FVL_AJUS_ACRES          : currency;
+    FVL_CRED_DIF            : currency;
+    FSLD_CRED               : currency;
+    FVL_CRED                : currency;
+    FALIQ_PIS_QUANT         : currency;
+    FVL_AJUS_REDUC          : currency;
+    FVL_CRED_DISP           : currency;
+    FQUANT_BC_PIS           : currency;
+    FVL_BC_PIS              : currency;
+    FIND_CRED_ORI           : TACBrIndCredOri;
+    FCOD_CRED               : string;
+    FIND_DESC_CRED          : TACBrIndDescCred;
 
-    FRegistroM105: TRegistroM105List; // NIVEL 3
-    FRegistroM110: TRegistroM110List; // NIVEL 3
+    FRegistroM105           : TRegistroM105List; // NIVEL 3
+    FRegistroM110           : TRegistroM110List; // NIVEL 3
   public
-    constructor Create; virtual; /// Create
-    destructor Destroy; override; /// Destroy
+    constructor Create;  virtual;                /// Create
+    destructor  Destroy; override;               /// Destroy
 
-    property COD_CRED: string read FCOD_CRED write FCOD_CRED;
-    property IND_CRED_ORI: integer read FIND_CRED_ORI write FIND_CRED_ORI;
-    property VL_BC_PIS: currency read FVL_BC_PIS write FVL_BC_PIS;
-    property ALIQ_PIS: currency read FALIQ_PIS write FALIQ_PIS;
-    property QUANT_BC_PIS: currency read FQUANT_BC_PIS write FQUANT_BC_PIS;
-    property ALIQ_PIS_QUANT: currency read FALIQ_PIS_QUANT write FALIQ_PIS_QUANT;
-    property VL_CRED: currency read FVL_CRED write FVL_CRED;
-    property VL_AJUS_ACRES: currency read FVL_AJUS_ACRES write FVL_AJUS_ACRES;
-    property VL_AJUS_REDUC: currency read FVL_AJUS_REDUC write FVL_AJUS_REDUC;
-    property VL_CRED_DIF: currency read FVL_CRED_DIF write FVL_CRED_DIF;
-    property VL_CRED_DISP: currency read FVL_CRED_DISP write FVL_CRED_DISP;
-    property IND_DESC_CRED: string read FIND_DESC_CRED write FIND_DESC_CRED;
-    property VL_CRED_DESC: currency read FVL_CRED_DESC write FVL_CRED_DESC;
-    property SLD_CRED: currency read FSLD_CRED write FSLD_CRED;
+    property COD_CRED       : String            read FCOD_CRED       write FCOD_CRED;
+    property IND_CRED_ORI   : TACBrIndCredOri   read FIND_CRED_ORI   write FIND_CRED_ORI;
+    property VL_BC_PIS      : currency          read FVL_BC_PIS      write FVL_BC_PIS;
+    property ALIQ_PIS       : currency          read FALIQ_PIS       write FALIQ_PIS;
+    property QUANT_BC_PIS   : currency          read FQUANT_BC_PIS   write FQUANT_BC_PIS;
+    property ALIQ_PIS_QUANT : currency          read FALIQ_PIS_QUANT write FALIQ_PIS_QUANT;
+    property VL_CRED        : currency          read FVL_CRED        write FVL_CRED;
+    property VL_AJUS_ACRES  : currency          read FVL_AJUS_ACRES  write FVL_AJUS_ACRES;
+    property VL_AJUS_REDUC  : currency          read FVL_AJUS_REDUC  write FVL_AJUS_REDUC;
+    property VL_CRED_DIF    : currency          read FVL_CRED_DIF    write FVL_CRED_DIF;
+    property VL_CRED_DISP   : currency          read FVL_CRED_DISP   write FVL_CRED_DISP;
+    property IND_DESC_CRED  : TACBrIndDescCred  read FIND_DESC_CRED  write FIND_DESC_CRED;
+    property VL_CRED_DESC   : currency          read FVL_CRED_DESC   write FVL_CRED_DESC;
+    property SLD_CRED       : currency          read FSLD_CRED       write FSLD_CRED;
 
-    property RegistroM105: TRegistroM105List read FRegistroM105 write FRegistroM105;
-    property RegistroM110: TRegistroM110List read FRegistroM110 write FRegistroM110;
+    property RegistroM105   : TRegistroM105List read FRegistroM105   write FRegistroM105;
+    property RegistroM110   : TRegistroM110List read FRegistroM110   write FRegistroM110;
   end;
 
   // Registro M100 - Lista
   TRegistroM100List = class(TObjectList)
   private
-    function GetItem(Index: Integer): TRegistroM100;
+    function  GetItem(Index: Integer): TRegistroM100;
     procedure SetItem(Index: Integer; const Value: TRegistroM100);
   public
     function New: TRegistroM100;
@@ -154,31 +154,31 @@ type
   //REGISTRO M105: DETALHAMENTO DA BASE DE CALCULO DO CRÉDITO APURADO NO PERÍODO - PIS/PASEP
   TRegistroM105 = class
   private
-    FQUANT_BC_PIS: currency;
-    FVL_BC_PIS_CUM: currency;
-    FQUANT_BC_PIS_TOT: currency;
-    FVL_BC_PIS_TOT: currency;
-    FVL_BC_PIS_NC: currency;
-    FVL_BC_PIS: currency;
-    FCST_PIS: string;
-    FDESC_CRED: string;
-    FNAT_BC_CRED: string;
+    FQUANT_BC_PIS             : currency;
+    FVL_BC_PIS_CUM            : currency;
+    FQUANT_BC_PIS_TOT         : currency;
+    FVL_BC_PIS_TOT            : currency;
+    FVL_BC_PIS_NC             : currency;
+    FVL_BC_PIS                : currency;
+    FCST_PIS                  : TACBrSituacaoTribPIS;
+    FDESC_CRED                : string;
+    FNAT_BC_CRED              : TACBrBaseCalculoCredito;
   public
-    property NAT_BC_CRED: string read FNAT_BC_CRED write FNAT_BC_CRED;
-    property CST_PIS: string read FCST_PIS write FCST_PIS;
-    property VL_BC_PIS_TOT: currency read FVL_BC_PIS_TOT write FVL_BC_PIS_TOT;
-    property VL_BC_PIS_CUM: currency read FVL_BC_PIS_CUM write FVL_BC_PIS_CUM;
-    property VL_BC_PIS_NC: currency read FVL_BC_PIS_NC write FVL_BC_PIS_NC;
-    property VL_BC_PIS: currency read FVL_BC_PIS write FVL_BC_PIS;
-    property QUANT_BC_PIS_TOT: currency read FQUANT_BC_PIS_TOT write FQUANT_BC_PIS_TOT;
-    property QUANT_BC_PIS: currency read FQUANT_BC_PIS write FQUANT_BC_PIS;
-    property DESC_CRED: string read FDESC_CRED write FDESC_CRED;
+    property NAT_BC_CRED      : TACBrBaseCalculoCredito read FNAT_BC_CRED      write FNAT_BC_CRED;
+    property CST_PIS          : TACBrSituacaoTribPIS    read FCST_PIS          write FCST_PIS;
+    property VL_BC_PIS_TOT    : currency                read FVL_BC_PIS_TOT    write FVL_BC_PIS_TOT;
+    property VL_BC_PIS_CUM    : currency                read FVL_BC_PIS_CUM    write FVL_BC_PIS_CUM;
+    property VL_BC_PIS_NC     : currency                read FVL_BC_PIS_NC     write FVL_BC_PIS_NC;
+    property VL_BC_PIS        : currency                read FVL_BC_PIS        write FVL_BC_PIS;
+    property QUANT_BC_PIS_TOT : currency                read FQUANT_BC_PIS_TOT write FQUANT_BC_PIS_TOT;
+    property QUANT_BC_PIS     : currency                read FQUANT_BC_PIS     write FQUANT_BC_PIS;
+    property DESC_CRED        : string                  read FDESC_CRED        write FDESC_CRED;
   end;
 
   // Registro M105 - Lista
   TRegistroM105List = class(TObjectList)
   private
-    function GetItem(Index: Integer): TRegistroM105;
+    function  GetItem(Index: Integer): TRegistroM105;
     procedure SetItem(Index: Integer; const Value: TRegistroM105);
   public
     function New: TRegistroM105;
@@ -188,25 +188,25 @@ type
   //REGISTRO M110: AJUSTES DO CRÉDITO DE PIS/PASEP APURADO
   TRegistroM110 = class
   private
-    FVL_AJ: currency;
-    FNUM_DOC: string;
-    FCOD_AJ: string;
-    FDESCR_AJ: string;
-    FIND_AJ: string;
-    FDT_REF: TDateTime;
+    FVL_AJ            : currency;
+    FNUM_DOC          : string;
+    FCOD_AJ           : TACBrCodAj;
+    FDESCR_AJ         : string;
+    FIND_AJ           : TACBrIndAJ;
+    FDT_REF           : TDateTime;
   public
-    property IND_AJ: string read FIND_AJ write FIND_AJ;
-    property VL_AJ: currency read FVL_AJ write FVL_AJ;
-    property COD_AJ: string read FCOD_AJ write FCOD_AJ;
-    property NUM_DOC: string read FNUM_DOC write FNUM_DOC;
-    property DESCR_AJ: string read FDESCR_AJ write FDESCR_AJ;
-    property DT_REF: TDateTime read FDT_REF write FDT_REF;
+    property IND_AJ   : TACBrIndAJ    read FIND_AJ   write FIND_AJ;
+    property VL_AJ    : currency      read FVL_AJ    write FVL_AJ;
+    property COD_AJ   : TACBrCodAj    read FCOD_AJ   write FCOD_AJ;
+    property NUM_DOC  : string        read FNUM_DOC  write FNUM_DOC;
+    property DESCR_AJ : string        read FDESCR_AJ write FDESCR_AJ;
+    property DT_REF   : TDateTime     read FDT_REF   write FDT_REF;
   end;
 
   // Registro M110 - Lista
   TRegistroM110List = class(TObjectList)
   private
-    function GetItem(Index: Integer): TRegistroM110;
+    function  GetItem(Index: Integer): TRegistroM110;
     procedure SetItem(Index: Integer; const Value: TRegistroM110);
   public
     function New: TRegistroM110;
@@ -216,85 +216,85 @@ type
   //REGISTRO M200: CONSOLIDAÇÃO DA CONTRIBUIÇÃO PARA O PIS/PASEP DO PERÍODO
   TRegistroM200 = class
   private
-    FVL_TOT_CONT_REC: currency;
-    FVL_TOT_CRED_DESC: currency;
-    FVL_OUT_DED_CUM: currency;
-    FVL_TOT_CONT_NC_DEV: currency;
-    FVL_RET_CUM: currency;
-    FVL_RET_NC: currency;
-    FVL_TOT_CONT_NC_PER: currency;
-    FVL_CONT_CUM_REC: currency;
-    FVL_CONT_NC_REC: currency;
-    FVL_OUT_DED_NC: currency;
-    FVL_TOT_CRED_DESC_ANT: currency;
-    FVL_TOT_CONT_CUM_PER: currency;
+    FVL_TOT_CONT_REC              : currency;
+    FVL_TOT_CRED_DESC             : currency;
+    FVL_OUT_DED_CUM               : currency;
+    FVL_TOT_CONT_NC_DEV           : currency;
+    FVL_RET_CUM                   : currency;
+    FVL_RET_NC                    : currency;
+    FVL_TOT_CONT_NC_PER           : currency;
+    FVL_CONT_CUM_REC              : currency;
+    FVL_CONT_NC_REC               : currency;
+    FVL_OUT_DED_NC                : currency;
+    FVL_TOT_CRED_DESC_ANT         : currency;
+    FVL_TOT_CONT_CUM_PER          : currency;
 
-    FRegistroM210: TRegistroM210List; // NIVEL 3
+    FRegistroM210                 : TRegistroM210List; // NIVEL 3
   public
-    constructor Create; virtual; /// Create
-    destructor Destroy; override; /// Destroy
+    constructor Create;  virtual;                      /// Create
+    destructor  Destroy; override;                     /// Destroy
 
-    property VL_TOT_CONT_NC_PER: currency read FVL_TOT_CONT_NC_PER write FVL_TOT_CONT_NC_PER;
-    property VL_TOT_CRED_DESC: currency read FVL_TOT_CRED_DESC write FVL_TOT_CRED_DESC;
-    property VL_TOT_CRED_DESC_ANT: currency read FVL_TOT_CRED_DESC_ANT write FVL_TOT_CRED_DESC_ANT;
-    property VL_TOT_CONT_NC_DEV: currency read FVL_TOT_CONT_NC_DEV write FVL_TOT_CONT_NC_DEV;
-    property VL_RET_NC: currency read FVL_RET_NC write FVL_RET_NC;
-    property VL_OUT_DED_NC: currency read FVL_OUT_DED_NC write FVL_OUT_DED_NC;
-    property VL_CONT_NC_REC: currency read FVL_CONT_NC_REC write FVL_CONT_NC_REC;
-    property VL_TOT_CONT_CUM_PER: currency read FVL_TOT_CONT_CUM_PER write FVL_TOT_CONT_CUM_PER;
-    property VL_RET_CUM: currency read FVL_RET_CUM write FVL_RET_CUM;
-    property VL_OUT_DED_CUM: currency read FVL_OUT_DED_CUM write FVL_OUT_DED_CUM;
-    property VL_CONT_CUM_REC: currency read FVL_CONT_CUM_REC write FVL_CONT_CUM_REC;
-    property VL_TOT_CONT_REC: currency read FVL_TOT_CONT_REC write FVL_TOT_CONT_REC;
+    property VL_TOT_CONT_NC_PER   : currency          read FVL_TOT_CONT_NC_PER   write FVL_TOT_CONT_NC_PER;
+    property VL_TOT_CRED_DESC     : currency          read FVL_TOT_CRED_DESC     write FVL_TOT_CRED_DESC;
+    property VL_TOT_CRED_DESC_ANT : currency          read FVL_TOT_CRED_DESC_ANT write FVL_TOT_CRED_DESC_ANT;
+    property VL_TOT_CONT_NC_DEV   : currency          read FVL_TOT_CONT_NC_DEV   write FVL_TOT_CONT_NC_DEV;
+    property VL_RET_NC            : currency          read FVL_RET_NC            write FVL_RET_NC;
+    property VL_OUT_DED_NC        : currency          read FVL_OUT_DED_NC        write FVL_OUT_DED_NC;
+    property VL_CONT_NC_REC       : currency          read FVL_CONT_NC_REC       write FVL_CONT_NC_REC;
+    property VL_TOT_CONT_CUM_PER  : currency          read FVL_TOT_CONT_CUM_PER  write FVL_TOT_CONT_CUM_PER;
+    property VL_RET_CUM           : currency          read FVL_RET_CUM           write FVL_RET_CUM;
+    property VL_OUT_DED_CUM       : currency          read FVL_OUT_DED_CUM       write FVL_OUT_DED_CUM;
+    property VL_CONT_CUM_REC      : currency          read FVL_CONT_CUM_REC      write FVL_CONT_CUM_REC;
+    property VL_TOT_CONT_REC      : currency          read FVL_TOT_CONT_REC      write FVL_TOT_CONT_REC;
 
-    property RegistroM210: TRegistroM210List read FRegistroM210 write FRegistroM210;
+    property RegistroM210         : TRegistroM210List read FRegistroM210         write FRegistroM210;
   end;
 
   //REGISTRO M210: DETALHAMENTO DA CONTRIBUIÇÃO PARA O PIS/PASEP DO PERÍODO
   TRegistroM210 = class
   private
-    FALIQ_PIS: currency;
-    FVL_CONT_PER: currency;
-    FVL_CONT_DIFER: currency;
-    FVL_AJUS_REDUC: currency;
-    FVL_AJUS_ACRES: currency;
-    FVL_CONT_DIFER_ANT: currency;
-    FALIQ_PIS_QUANT: currency;
-    FVL_BC_CONT: currency;
-    FVL_CONT_APUR: currency;
-    FVL_REC_BRT: currency;
-    FQUANT_BC_PIS: currency;
-    FCOD_CONT: string;
+    FALIQ_PIS                  : currency;
+    FVL_CONT_PER               : currency;
+    FVL_CONT_DIFER             : currency;
+    FVL_AJUS_REDUC             : currency;
+    FVL_AJUS_ACRES             : currency;
+    FVL_CONT_DIFER_ANT         : currency;
+    FALIQ_PIS_QUANT            : currency;
+    FVL_BC_CONT                : currency;
+    FVL_CONT_APUR              : currency;
+    FVL_REC_BRT                : currency;
+    FQUANT_BC_PIS              : currency;
+    FCOD_CONT                  : TACBrCodCont;
 
-    FRegistroM211: TRegistroM211;     // NIVEL 4
-    FRegistroM220: TRegistroM220List; // NIVEL 4
-    FRegistroM230: TRegistroM230List; // NIVEL 4
+    FRegistroM211              : TRegistroM211;     // NIVEL 4
+    FRegistroM220              : TRegistroM220List; // NIVEL 4
+    FRegistroM230              : TRegistroM230List; // NIVEL 4
   public
-    constructor Create; virtual; /// Create
-    destructor Destroy; override; /// Destroy
+    constructor Create; virtual;                    /// Create
+    destructor Destroy; override;                   /// Destroy
 
-    property COD_CONT: string read FCOD_CONT write FCOD_CONT;
-    property VL_REC_BRT: currency read FVL_REC_BRT write FVL_REC_BRT;
-    property VL_BC_CONT: currency read FVL_BC_CONT write FVL_BC_CONT;
-    property ALIQ_PIS: currency read FALIQ_PIS write FALIQ_PIS;
-    property QUANT_BC_PIS: currency read FQUANT_BC_PIS write FQUANT_BC_PIS;
-    property ALIQ_PIS_QUANT: currency read FALIQ_PIS_QUANT write FALIQ_PIS_QUANT;
-    property VL_CONT_APUR: currency read FVL_CONT_APUR write FVL_CONT_APUR;
-    property VL_AJUS_ACRES: currency read FVL_AJUS_ACRES write FVL_AJUS_ACRES;
-    property VL_AJUS_REDUC: currency read FVL_AJUS_REDUC write FVL_AJUS_REDUC;
-    property VL_CONT_DIFER: currency read FVL_CONT_DIFER write FVL_CONT_DIFER;
-    property VL_CONT_DIFER_ANT: currency read FVL_CONT_DIFER_ANT write FVL_CONT_DIFER_ANT;
-    property VL_CONT_PER: currency read FVL_CONT_PER write FVL_CONT_PER;
+    property COD_CONT          : TACBrCodCont      read FCOD_CONT          write FCOD_CONT;
+    property VL_REC_BRT        : currency          read FVL_REC_BRT        write FVL_REC_BRT;
+    property VL_BC_CONT        : currency          read FVL_BC_CONT        write FVL_BC_CONT;
+    property ALIQ_PIS          : currency          read FALIQ_PIS          write FALIQ_PIS;
+    property QUANT_BC_PIS      : currency          read FQUANT_BC_PIS      write FQUANT_BC_PIS;
+    property ALIQ_PIS_QUANT    : currency          read FALIQ_PIS_QUANT    write FALIQ_PIS_QUANT;
+    property VL_CONT_APUR      : currency          read FVL_CONT_APUR      write FVL_CONT_APUR;
+    property VL_AJUS_ACRES     : currency          read FVL_AJUS_ACRES     write FVL_AJUS_ACRES;
+    property VL_AJUS_REDUC     : currency          read FVL_AJUS_REDUC     write FVL_AJUS_REDUC;
+    property VL_CONT_DIFER     : currency          read FVL_CONT_DIFER     write FVL_CONT_DIFER;
+    property VL_CONT_DIFER_ANT : currency          read FVL_CONT_DIFER_ANT write FVL_CONT_DIFER_ANT;
+    property VL_CONT_PER       : currency          read FVL_CONT_PER       write FVL_CONT_PER;
 
-    property RegistroM211: TRegistroM211 read FRegistroM211 write FRegistroM211;
-    property RegistroM220: TRegistroM220List read FRegistroM220 write FRegistroM220;
-    property RegistroM230: TRegistroM230List read FRegistroM230 write FRegistroM230;
+    property RegistroM211      : TRegistroM211     read FRegistroM211      write FRegistroM211;
+    property RegistroM220      : TRegistroM220List read FRegistroM220      write FRegistroM220;
+    property RegistroM230      : TRegistroM230List read FRegistroM230      write FRegistroM230;
   end;
 
   // Registro M210 - Lista
   TRegistroM210List = class(TObjectList)
   private
-    function GetItem(Index: Integer): TRegistroM210;
+    function  GetItem(Index: Integer): TRegistroM210;
     procedure SetItem(Index: Integer; const Value: TRegistroM210);
   public
     function New: TRegistroM210;
@@ -304,41 +304,41 @@ type
   //REGISTRO M211: SOCIEDADES COOPERATIVAS - COMPOSIÇÃO DA BASE DE CALCULO - PIS/PASEP
   TRegistroM211 = class
   private
-    FVL_BC_CONT_ANT_EXC_COOP: currency;
-    FVL_EXC_COOP_GER: currency;
-    FVL_BC_CONT: currency;
-    FVL_EXC_ESP_COOP: currency;
-    FIND_TIP_COOP: string;
+    FVL_BC_CONT_ANT_EXC_COOP         : currency;
+    FVL_EXC_COOP_GER                 : currency;
+    FVL_BC_CONT                      : currency;
+    FVL_EXC_ESP_COOP                 : currency;
+    FIND_TIP_COOP                    : TACBrIndTipCoop;
   public
-    property IND_TIP_COOP: string read FIND_TIP_COOP write FIND_TIP_COOP;
-    property VL_BC_CONT_ANT_EXC_COOP: currency read FVL_BC_CONT_ANT_EXC_COOP write FVL_BC_CONT_ANT_EXC_COOP;
-    property VL_EXC_COOP_GER: currency read FVL_EXC_COOP_GER write FVL_EXC_COOP_GER;
-    property VL_EXC_ESP_COOP: currency read FVL_EXC_ESP_COOP write FVL_EXC_ESP_COOP;
-    property VL_BC_CONT: currency read FVL_BC_CONT write FVL_BC_CONT;
+    property IND_TIP_COOP            : TACBrIndTipCoop   read FIND_TIP_COOP            write FIND_TIP_COOP;
+    property VL_BC_CONT_ANT_EXC_COOP : currency          read FVL_BC_CONT_ANT_EXC_COOP write FVL_BC_CONT_ANT_EXC_COOP;
+    property VL_EXC_COOP_GER         : currency          read FVL_EXC_COOP_GER         write FVL_EXC_COOP_GER;
+    property VL_EXC_ESP_COOP         : currency          read FVL_EXC_ESP_COOP         write FVL_EXC_ESP_COOP;
+    property VL_BC_CONT              : currency          read FVL_BC_CONT              write FVL_BC_CONT;
   end;
 
   //REGISTRO M220: AJUSTES DA CONTRIBUIÇÃO PARA O PIS/PASEP APURADA
   TRegistroM220 = class
   private
-    FVL_AJ: currency;
-    FNUM_DOC: string;
-    FCOD_AJ: string;
-    FDESCR_AJ: string;
-    FIND_AJ: string;
-    FDT_REF: TDateTime;
+    FVL_AJ            : currency;
+    FNUM_DOC          : string;
+    FCOD_AJ           : TACBrCodAj;
+    FDESCR_AJ         : string;
+    FIND_AJ           : TACBrIndAJ;
+    FDT_REF           : TDateTime;
   public
-    property IND_AJ: string read FIND_AJ write FIND_AJ;
-    property VL_AJ: currency read FVL_AJ write FVL_AJ;
-    property COD_AJ: string read FCOD_AJ write FCOD_AJ;
-    property NUM_DOC: string read FNUM_DOC write FNUM_DOC;
-    property DESCR_AJ: string read FDESCR_AJ write FDESCR_AJ;
-    property DT_REF: TDateTime read FDT_REF write FDT_REF;
+    property IND_AJ   : TACBrIndAJ    read FIND_AJ   write FIND_AJ;
+    property VL_AJ    : currency      read FVL_AJ    write FVL_AJ;
+    property COD_AJ   : TACBrCodAj    read FCOD_AJ   write FCOD_AJ;
+    property NUM_DOC  : string        read FNUM_DOC  write FNUM_DOC;
+    property DESCR_AJ : string        read FDESCR_AJ write FDESCR_AJ;
+    property DT_REF   : TDateTime     read FDT_REF   write FDT_REF;
   end;
 
   // Registro M220 - Lista
   TRegistroM220List = class(TObjectList)
   private
-    function GetItem(Index: Integer): TRegistroM220;
+    function  GetItem(Index: Integer): TRegistroM220;
     procedure SetItem(Index: Integer; const Value: TRegistroM220);
   public
     function New: TRegistroM220;
@@ -348,25 +348,25 @@ type
   //REGISTRO M230: INFORMAÇÕES ADICIONAIS DE DIFERIMENTO
   TRegistroM230 = class
   private
-    FVL_CONT_DIF: currency;
-    FVL_NAO_RECEB: currency;
-    FVL_CRED_DIF: currency;
-    FVL_VEND: currency;
-    FCNPJ: string;
-    FCOD_CRED: string;
+    FVL_CONT_DIF          : currency;
+    FVL_NAO_RECEB         : currency;
+    FVL_CRED_DIF          : currency;
+    FVL_VEND              : currency;
+    FCNPJ                 : string;
+    FCOD_CRED             : string;
   public
-    property CNPJ: string read FCNPJ write FCNPJ;
-    property VL_VEND: currency read FVL_VEND write FVL_VEND;
-    property VL_NAO_RECEB: currency read FVL_NAO_RECEB write FVL_NAO_RECEB;
-    property VL_CONT_DIF: currency read FVL_CONT_DIF write FVL_CONT_DIF;
-    property VL_CRED_DIF: currency read FVL_CRED_DIF write FVL_CRED_DIF;
-    property COD_CRED: string read FCOD_CRED write FCOD_CRED;
+    property CNPJ         : string       read FCNPJ         write FCNPJ;
+    property VL_VEND      : currency     read FVL_VEND      write FVL_VEND;
+    property VL_NAO_RECEB : currency     read FVL_NAO_RECEB write FVL_NAO_RECEB;
+    property VL_CONT_DIF  : currency     read FVL_CONT_DIF  write FVL_CONT_DIF;
+    property VL_CRED_DIF  : currency     read FVL_CRED_DIF  write FVL_CRED_DIF;
+    property COD_CRED     : string       read FCOD_CRED     write FCOD_CRED;
   end;
 
   // Registro M230 - Lista
   TRegistroM230List = class(TObjectList)
   private
-    function GetItem(Index: Integer): TRegistroM230;
+    function  GetItem(Index: Integer): TRegistroM230;
     procedure SetItem(Index: Integer; const Value: TRegistroM230);
   public
     function New: TRegistroM230;
@@ -376,72 +376,74 @@ type
   //REGISTRO M300: CONTRIBUIÇÃO DE PIS/PASEP DIFERIDA EM PERÍODOS ANTERIORES - VALORES A PAGAR NO PERÍODO
   TRegistroM300 = class
   private
-    FCOD_CONT: string;
-    FVL_CONT_REC: currency;
-    FNAT_CRED_DESC: string;
-    FVL_CRED_DESC: currency;
-    FPER_APUR: string;
-    FDT_RECEB: TDateTime;
+    FCOD_CONT                   : TACBrCodCont;           {COD_CONT}
+    FVL_CONT_APUR_DIFER         : currency;               {VL_CONT_APUR_DIFER}
+    FNAT_CRED_DESC              : TACBrNatCredDesc;       {NAT_CRED_DESC}
+    FVL_CRED_DESC_DIFER         : currency;               {VL_CRED_DESC_DIFER}
+    FVL_CONT_DIFER_ANT          : currency;               {VL_CONT_DIFER_ANT}
+    FPER_APUR                   : string;                 {PER_APUR}
+    FDT_RECEB                   : TDateTime;              {DT_RECEB}
   public
-    property COD_CONT: string read FCOD_CONT write FCOD_CONT;
-    property VL_CONT_REC: currency read FVL_CONT_REC write FVL_CONT_REC;
-    property NAT_CRED_DESC: string read FNAT_CRED_DESC write FNAT_CRED_DESC;
-    property VL_CRED_DESC: currency read FVL_CRED_DESC write FVL_CRED_DESC;
-    property PER_APUR: string read FPER_APUR write FPER_APUR;
-    property DT_RECEB: TDateTime read FDT_RECEB write FDT_RECEB;
+    property COD_CONT           : TACBrCodCont     read FCOD_CONT             write FCOD_CONT;
+    property VL_CONT_APUR_DIFER : currency         read FVL_CONT_APUR_DIFER   write FVL_CONT_APUR_DIFER;
+    property NAT_CRED_DESC      : TACBrNatCredDesc read FNAT_CRED_DESC        write FNAT_CRED_DESC;
+    property VL_CRED_DESC_DIFER : currency         read FVL_CRED_DESC_DIFER   write FVL_CRED_DESC_DIFER;
+    property VL_CONT_DIFER_ANT  : currency         read FVL_CONT_DIFER_ANT    write FVL_CONT_DIFER_ANT;
+    property PER_APUR           : string           read FPER_APUR             write FPER_APUR;
+    property DT_RECEB           : TDateTime        read FDT_RECEB             write FDT_RECEB;
   end;
 
   // Registro M300 - Lista
   TRegistroM300List = class(TObjectList)
   private
-    function GetItem(Index: Integer): TRegistroM300;
-    procedure SetItem(Index: Integer; const Value: TRegistroM300);
+    function  GetItem(Index  : Integer): TRegistroM300;
+    procedure SetItem(Index : Integer; const Value: TRegistroM300);
   public
-    function New: TRegistroM300;
-    property Items[Index: Integer]: TRegistroM300 read GetItem write SetItem;
+    function New            : TRegistroM300;
+    property Items[Index    : Integer]: TRegistroM300 read GetItem write SetItem;
   end;
 
   //REGISTRO M350: CONTRIBUIÇÃO DE PIS/PASEP DIFERIDA EM PERÍODOS ANTERIORES - VALORES A PAGAR NO PERÍODO
   TRegistroM350 = class
   private
-    FVL_TOT_FOL: currency;
-    FVL_EXC_BC: currency;
-    FALIQ_PIS_FOL: currency;
-    FVL_TOT_BC: currency;
-    FVL_TOT_CONT_FOL: currency;
+    FVL_TOT_FOL              : currency;
+    FVL_EXC_BC               : currency;
+    FALIQ_PIS_FOL            : currency;
+    FVL_TOT_BC               : currency;
+    FVL_TOT_CONT_FOL         : currency;
   public
-    property VL_TOT_FOL: currency read FVL_TOT_FOL write FVL_TOT_FOL;
-    property VL_EXC_BC: currency read FVL_EXC_BC write FVL_EXC_BC;
-    property VL_TOT_BC: currency read FVL_TOT_BC write FVL_TOT_BC;
-    property ALIQ_PIS_FOL: currency read FALIQ_PIS_FOL write FALIQ_PIS_FOL;
-    property VL_TOT_CONT_FOL: currency read FVL_TOT_CONT_FOL write FVL_TOT_CONT_FOL;
+    property VL_TOT_FOL      : currency read FVL_TOT_FOL      write FVL_TOT_FOL;
+    property VL_EXC_BC       : currency read FVL_EXC_BC       write FVL_EXC_BC;
+    property VL_TOT_BC       : currency read FVL_TOT_BC       write FVL_TOT_BC;
+    property ALIQ_PIS_FOL    : currency read FALIQ_PIS_FOL    write FALIQ_PIS_FOL;
+    property VL_TOT_CONT_FOL : currency read FVL_TOT_CONT_FOL write FVL_TOT_CONT_FOL;
   end;
 
   //REGISTRO M400: RECEITAS ISENTAS, NÃO ALCANÇADAS PELA INCIDÊNCIA DA CONTRIBUIÇÃO, SUJEITAS A ALÍQUOTA ZERO OU DE VENDAS COM SUSPENSÃO - PIS/PASEP
   TRegistroM400 = class
   private
-    FVL_TOT_REC: currency;
-    FDESC_COMPL: string;
-    FCOD_CTA: string;
-    FCST_PIS: string;
+    FVL_TOT_REC           : currency;
+    FDESC_COMPL           : string;
+    FCOD_CTA              : string;
+    FCST_PIS              : TACBrSituacaoTribPIS;
 
-    FRegistroM410: TRegistroM410List; // NIVEL 3
+    FRegistroM410         : TRegistroM410List; // NIVEL 3
   public
-    constructor Create; virtual; /// Create
-    destructor Destroy; override; /// Destroy
+    constructor Create;  virtual;              /// Create
+    destructor  Destroy; override;             /// Destroy
 
-    property CST_PIS: string read FCST_PIS write FCST_PIS;
-    property VL_TOT_REC: currency read FVL_TOT_REC write FVL_TOT_REC;
-    property COD_CTA: string read FCOD_CTA write FCOD_CTA;
-    property DESC_COMPL: string read FDESC_COMPL write FDESC_COMPL;
+    property CST_PIS      : TACBrSituacaoTribPIS read FCST_PIS      write FCST_PIS;
+    property VL_TOT_REC   : currency             read FVL_TOT_REC   write FVL_TOT_REC;
+    property COD_CTA      : string               read FCOD_CTA      write FCOD_CTA;
+    property DESC_COMPL   : string               read FDESC_COMPL   write FDESC_COMPL;
 
-    property RegistroM410: TRegistroM410List read FRegistroM410 write FRegistroM410;
+    property RegistroM410 : TRegistroM410List    read FRegistroM410 write FRegistroM410;
   end;
 
   // Registro M400 - Lista
   TRegistroM400List = class(TObjectList)
   private
-    function GetItem(Index: Integer): TRegistroM400;
+    function  GetItem(Index: Integer): TRegistroM400;
     procedure SetItem(Index: Integer; const Value: TRegistroM400);
   public
     function New: TRegistroM400;
@@ -451,21 +453,21 @@ type
   //REGISTRO M410: DETALHAMENTO DAS RECEITAS ISENTAS, NÃO ALCANÇADAS PELA INCIDÊNCIA DA CONTRIBUIÇÃO, SUJEITAS A ALÍQUOTA ZERO OU DE VENDAS COM SUSPENSÃO - PIS/PASEP
   TRegistroM410 = class
   private
-    FVL_REC: currency;
-    FDESC_COMPL: string;
-    FCOD_CTA: string;
-    FNAT_REC: string;
+    FVL_REC             : currency;
+    FDESC_COMPL         : string;
+    FCOD_CTA            : string;
+    FNAT_REC            : string;
   public
-    property NAT_REC: string read FNAT_REC write FNAT_REC;
-    property VL_REC: currency read FVL_REC write FVL_REC;
-    property COD_CTA: string read FCOD_CTA write FCOD_CTA;
-    property DESC_COMPL: string read FDESC_COMPL write FDESC_COMPL;
+    property NAT_REC    : string   read FNAT_REC    write FNAT_REC;
+    property VL_REC     : currency read FVL_REC     write FVL_REC;
+    property COD_CTA    : string   read FCOD_CTA    write FCOD_CTA;
+    property DESC_COMPL : string   read FDESC_COMPL write FDESC_COMPL;
   end;
 
   // Registro M410 - Lista
   TRegistroM410List = class(TObjectList)
   private
-    function GetItem(Index: Integer): TRegistroM410;
+    function  GetItem(Index: Integer): TRegistroM410;
     procedure SetItem(Index: Integer; const Value: TRegistroM410);
   public
     function New: TRegistroM410;
@@ -475,50 +477,50 @@ type
   //REGISTRO M500: CRÉDITO DE COFINS RELATIVO AO PERÍODO
   TRegistroM500 = class
   private
-    FVL_AJUS_ACRES: currency;
-    FALIQ_COFINS: currency;
-    FVL_CRED: currency;
-    FVL_AJUS_REDUC: currency;
-    FVL_CRED_DESC: currency;
-    FSLD_CRED: currency;
-    FALIQ_COFINS_QUANT: currency;
-    FVL_CRED_DISP: currency;
-    FVL_CRED_DIFER: currency;
-    FVL_BC_COFINS: currency;
-    FQUANT_BC_COFINS: currency;
-    FIND_DESC_CRED: integer;
-    FIND_CRED_ORI: integer;
-    FCOD_CRED: string;
+    FVL_AJUS_ACRES             : currency;
+    FALIQ_COFINS               : currency;
+    FVL_CRED                   : currency;
+    FVL_AJUS_REDUC             : currency;
+    FVL_CRED_DESC              : currency;
+    FSLD_CRED                  : currency;
+    FALIQ_COFINS_QUANT         : currency;
+    FVL_CRED_DISP              : currency;
+    FVL_CRED_DIFER             : currency;
+    FVL_BC_COFINS              : currency;
+    FQUANT_BC_COFINS           : currency;
+    FIND_DESC_CRED             : TACBrIndDescCred;
+    FIND_CRED_ORI              : TACBrIndCredOri;
+    FCOD_CRED                  : string;
 
-    FRegistroM505: TRegistroM505List; // NIVEL 3
-    FRegistroM510: TRegistroM510List; // NIVEL 3
+    FRegistroM505              : TRegistroM505List; // NIVEL 3
+    FRegistroM510              : TRegistroM510List; // NIVEL 3
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
 
-    property COD_CRED: string read FCOD_CRED write FCOD_CRED;
-    property IND_CRED_ORI: integer read FIND_CRED_ORI write FIND_CRED_ORI;
-    property VL_BC_COFINS: currency read FVL_BC_COFINS write FVL_BC_COFINS;
-    property ALIQ_COFINS: currency read FALIQ_COFINS write FALIQ_COFINS;
-    property QUANT_BC_COFINS: currency read FQUANT_BC_COFINS write FQUANT_BC_COFINS;
-    property ALIQ_COFINS_QUANT: currency read FALIQ_COFINS_QUANT write FALIQ_COFINS_QUANT;
-    property VL_CRED: currency read FVL_CRED write FVL_CRED;
-    property VL_AJUS_ACRES: currency read FVL_AJUS_ACRES write FVL_AJUS_ACRES;
-    property VL_AJUS_REDUC: currency read FVL_AJUS_REDUC write FVL_AJUS_REDUC;
-    property VL_CRED_DIFER: currency read FVL_CRED_DIFER write FVL_CRED_DIFER;
-    property VL_CRED_DISP: currency read FVL_CRED_DISP write FVL_CRED_DISP;
-    property IND_DESC_CRED: integer read FIND_DESC_CRED write FIND_DESC_CRED;
-    property VL_CRED_DESC: currency read FVL_CRED_DESC write FVL_CRED_DESC;
-    property SLD_CRED: currency read FSLD_CRED write FSLD_CRED;
+    property COD_CRED          : string            read FCOD_CRED          write FCOD_CRED;
+    property IND_CRED_ORI      : TACBrIndCredOri   read FIND_CRED_ORI      write FIND_CRED_ORI;
+    property VL_BC_COFINS      : currency          read FVL_BC_COFINS      write FVL_BC_COFINS;
+    property ALIQ_COFINS       : currency          read FALIQ_COFINS       write FALIQ_COFINS;
+    property QUANT_BC_COFINS   : currency          read FQUANT_BC_COFINS   write FQUANT_BC_COFINS;
+    property ALIQ_COFINS_QUANT : currency          read FALIQ_COFINS_QUANT write FALIQ_COFINS_QUANT;
+    property VL_CRED           : currency          read FVL_CRED           write FVL_CRED;
+    property VL_AJUS_ACRES     : currency          read FVL_AJUS_ACRES     write FVL_AJUS_ACRES;
+    property VL_AJUS_REDUC     : currency          read FVL_AJUS_REDUC     write FVL_AJUS_REDUC;
+    property VL_CRED_DIFER     : currency          read FVL_CRED_DIFER     write FVL_CRED_DIFER;
+    property VL_CRED_DISP      : currency          read FVL_CRED_DISP      write FVL_CRED_DISP;
+    property IND_DESC_CRED     : TACBrIndDescCred  read FIND_DESC_CRED     write FIND_DESC_CRED;
+    property VL_CRED_DESC      : currency          read FVL_CRED_DESC      write FVL_CRED_DESC;
+    property SLD_CRED          : currency          read FSLD_CRED          write FSLD_CRED;
 
-    property RegistroM505: TRegistroM505List read FRegistroM505 write FRegistroM505;
-    property RegistroM510: TRegistroM510List read FRegistroM510 write FRegistroM510;
+    property RegistroM505      : TRegistroM505List read FRegistroM505      write FRegistroM505;
+    property RegistroM510      : TRegistroM510List read FRegistroM510      write FRegistroM510;
   end;
 
   // Registro M500 - Lista
   TRegistroM500List = class(TObjectList)
   private
-    function GetItem(Index: Integer): TRegistroM500;
+    function  GetItem(Index: Integer): TRegistroM500;
     procedure SetItem(Index: Integer; const Value: TRegistroM500);
   public
     function New: TRegistroM500;
@@ -528,31 +530,31 @@ type
   //REGISTRO M505: DETALHAMENTO DA BASE DE CALCULO DO CRÉDITO APURADO NO PERÍODO - COFINS
   TRegistroM505 = class
   private
-    FQUANT_BC_COFINS: currency;
-    FVL_BC_COFINS_CUM: currency;
-    FQUANT_BC_COFINS_TOT: currency;
-    FVL_BC_COFINS_TOT: currency;
-    FVL_BC_COFINS_NC: currency;
-    FVL_BC_COFINS: currency;
-    FCST_COFINS: string;
-    FDESC_CRED: string;
-    FNAT_BC_CRED: string;
+    FQUANT_BC_COFINS             : currency;
+    FVL_BC_COFINS_CUM            : currency;
+    FQUANT_BC_COFINS_TOT         : currency;
+    FVL_BC_COFINS_TOT            : currency;
+    FVL_BC_COFINS_NC             : currency;
+    FVL_BC_COFINS                : currency;
+    FCST_COFINS                  : TACBrSituacaoTribCOFINS;
+    FDESC_CRED                   : string;
+    FNAT_BC_CRED                 : TACBrBaseCalculoCredito;
   public
-    property NAT_BC_CRED: string read FNAT_BC_CRED write FNAT_BC_CRED;
-    property CST_COFINS: string read FCST_COFINS write FCST_COFINS;
-    property VL_BC_COFINS_TOT: currency read FVL_BC_COFINS_TOT write FVL_BC_COFINS_TOT;
-    property VL_BC_COFINS_CUM: currency read FVL_BC_COFINS_CUM write FVL_BC_COFINS_CUM;
-    property VL_BC_COFINS_NC: currency read FVL_BC_COFINS_NC write FVL_BC_COFINS_NC;
-    property VL_BC_COFINS: currency read FVL_BC_COFINS write FVL_BC_COFINS;
-    property QUANT_BC_COFINS_TOT: currency read FQUANT_BC_COFINS_TOT write FQUANT_BC_COFINS_TOT;
-    property QUANT_BC_COFINS: currency read FQUANT_BC_COFINS write FQUANT_BC_COFINS;
-    property DESC_CRED: string read FDESC_CRED write FDESC_CRED;
+    property NAT_BC_CRED         : TACBrBaseCalculoCredito read FNAT_BC_CRED         write FNAT_BC_CRED;
+    property CST_COFINS          : TACBrSituacaoTribCOFINS read FCST_COFINS          write FCST_COFINS;
+    property VL_BC_COFINS_TOT    : currency                read FVL_BC_COFINS_TOT    write FVL_BC_COFINS_TOT;
+    property VL_BC_COFINS_CUM    : currency                read FVL_BC_COFINS_CUM    write FVL_BC_COFINS_CUM;
+    property VL_BC_COFINS_NC     : currency                read FVL_BC_COFINS_NC     write FVL_BC_COFINS_NC;
+    property VL_BC_COFINS        : currency                read FVL_BC_COFINS        write FVL_BC_COFINS;
+    property QUANT_BC_COFINS_TOT : currency                read FQUANT_BC_COFINS_TOT write FQUANT_BC_COFINS_TOT;
+    property QUANT_BC_COFINS     : currency                read FQUANT_BC_COFINS     write FQUANT_BC_COFINS;
+    property DESC_CRED           : string                  read FDESC_CRED           write FDESC_CRED;
   end;
 
   // Registro M505 - Lista
   TRegistroM505List = class(TObjectList)
   private
-    function GetItem(Index: Integer): TRegistroM505;
+    function  GetItem(Index: Integer): TRegistroM505;
     procedure SetItem(Index: Integer; const Value: TRegistroM505);
   public
     function New: TRegistroM505;
@@ -562,25 +564,25 @@ type
   //REGISTRO M510: AJUSTES DO CRÉDITO DE COFINS APURADO
   TRegistroM510 = class
   private
-    FVL_AJ: currency;
-    FNUM_DOC: string;
-    FCOD_AJ: string;
-    FDESCR_AJ: string;
-    FIND_AJ: string;
-    FDT_REF: TDateTime;
+    FVL_AJ            : currency;
+    FNUM_DOC          : string;
+    FCOD_AJ           : TACBrCodAj;
+    FDESCR_AJ         : string;
+    FIND_AJ           : TACBrIndAJ;
+    FDT_REF           : TDateTime;
   public
-    property IND_AJ: string read FIND_AJ write FIND_AJ;
-    property VL_AJ: currency read FVL_AJ write FVL_AJ;
-    property COD_AJ: string read FCOD_AJ write FCOD_AJ;
-    property NUM_DOC: string read FNUM_DOC write FNUM_DOC;
-    property DESCR_AJ: string read FDESCR_AJ write FDESCR_AJ;
-    property DT_REF: TDateTime read FDT_REF write FDT_REF;
+    property IND_AJ   : TACBrIndAJ    read FIND_AJ   write FIND_AJ;
+    property VL_AJ    : currency      read FVL_AJ    write FVL_AJ;
+    property COD_AJ   : TACBrCodAj    read FCOD_AJ   write FCOD_AJ;
+    property NUM_DOC  : string        read FNUM_DOC  write FNUM_DOC;
+    property DESCR_AJ : string        read FDESCR_AJ write FDESCR_AJ;
+    property DT_REF   : TDateTime     read FDT_REF   write FDT_REF;
   end;
 
   // Registro M510 - Lista
   TRegistroM510List = class(TObjectList)
   private
-    function GetItem(Index: Integer): TRegistroM510;
+    function  GetItem(Index: Integer): TRegistroM510;
     procedure SetItem(Index: Integer; const Value: TRegistroM510);
   public
     function New: TRegistroM510;
@@ -590,85 +592,85 @@ type
   //REGISTRO M600: CONSOLIDAÇÃO DA CONTRIBUIÇÃO PARA A SEGURIDADE SOCIAL - COFINS DO PERÍODO
   TRegistroM600 = class
   private
-    FVL_TOT_CONT_REC: currency;
-    FVL_TOT_CRED_DESC: currency;
-    FVL_OUT_DED_CUM: currency;
-    FVL_TOT_CONT_NC_DEV: currency;
-    FVL_RET_CUM: currency;
-    FVL_RET_NC: currency;
-    FVL_TOT_CONT_NC_PER: currency;
-    FVL_CONT_CUM_REC: currency;
-    FVL_CONT_NC_REC: currency;
-    FVL_OUT_DED_NC: currency;
-    FVL_TOT_CRED_DESC_ANT: currency;
-    FVL_TOT_CONT_CUM_PER: currency;
+    FVL_TOT_CONT_REC              : currency;
+    FVL_TOT_CRED_DESC             : currency;
+    FVL_OUT_DED_CUM               : currency;
+    FVL_TOT_CONT_NC_DEV           : currency;
+    FVL_RET_CUM                   : currency;
+    FVL_RET_NC                    : currency;
+    FVL_TOT_CONT_NC_PER           : currency;
+    FVL_CONT_CUM_REC              : currency;
+    FVL_CONT_NC_REC               : currency;
+    FVL_OUT_DED_NC                : currency;
+    FVL_TOT_CRED_DESC_ANT         : currency;
+    FVL_TOT_CONT_CUM_PER          : currency;
 
-    FRegistroM610: TRegistroM610List; // NIVEL 3
+    FRegistroM610                 : TRegistroM610List; // NIVEL 3
   public
-    constructor Create; virtual; /// Create
-    destructor Destroy; override; /// Destroy
+    constructor Create; virtual;                       /// Create
+    destructor Destroy; override;                      /// Destroy
 
-    property VL_TOT_CONT_NC_PER: currency read FVL_TOT_CONT_NC_PER write FVL_TOT_CONT_NC_PER;
-    property VL_TOT_CRED_DESC: currency read FVL_TOT_CRED_DESC write FVL_TOT_CRED_DESC;
-    property VL_TOT_CRED_DESC_ANT: currency read FVL_TOT_CRED_DESC_ANT write FVL_TOT_CRED_DESC_ANT;
-    property VL_TOT_CONT_NC_DEV: currency read FVL_TOT_CONT_NC_DEV write FVL_TOT_CONT_NC_DEV;
-    property VL_RET_NC: currency read FVL_RET_NC write FVL_RET_NC;
-    property VL_OUT_DED_NC: currency read FVL_OUT_DED_NC write FVL_OUT_DED_NC;
-    property VL_CONT_NC_REC: currency read FVL_CONT_NC_REC write FVL_CONT_NC_REC;
-    property VL_TOT_CONT_CUM_PER: currency read FVL_TOT_CONT_CUM_PER write FVL_TOT_CONT_CUM_PER;
-    property VL_RET_CUM: currency read FVL_RET_CUM write FVL_RET_CUM;
-    property VL_OUT_DED_CUM: currency read FVL_OUT_DED_CUM write FVL_OUT_DED_CUM;
-    property VL_CONT_CUM_REC: currency read FVL_CONT_CUM_REC write FVL_CONT_CUM_REC;
-    property VL_TOT_CONT_REC: currency read FVL_TOT_CONT_REC write FVL_TOT_CONT_REC;
+    property VL_TOT_CONT_NC_PER   : currency          read FVL_TOT_CONT_NC_PER   write FVL_TOT_CONT_NC_PER;
+    property VL_TOT_CRED_DESC     : currency          read FVL_TOT_CRED_DESC     write FVL_TOT_CRED_DESC;
+    property VL_TOT_CRED_DESC_ANT : currency          read FVL_TOT_CRED_DESC_ANT write FVL_TOT_CRED_DESC_ANT;
+    property VL_TOT_CONT_NC_DEV   : currency          read FVL_TOT_CONT_NC_DEV   write FVL_TOT_CONT_NC_DEV;
+    property VL_RET_NC            : currency          read FVL_RET_NC            write FVL_RET_NC;
+    property VL_OUT_DED_NC        : currency          read FVL_OUT_DED_NC        write FVL_OUT_DED_NC;
+    property VL_CONT_NC_REC       : currency          read FVL_CONT_NC_REC       write FVL_CONT_NC_REC;
+    property VL_TOT_CONT_CUM_PER  : currency          read FVL_TOT_CONT_CUM_PER  write FVL_TOT_CONT_CUM_PER;
+    property VL_RET_CUM           : currency          read FVL_RET_CUM           write FVL_RET_CUM;
+    property VL_OUT_DED_CUM       : currency          read FVL_OUT_DED_CUM       write FVL_OUT_DED_CUM;
+    property VL_CONT_CUM_REC      : currency          read FVL_CONT_CUM_REC      write FVL_CONT_CUM_REC;
+    property VL_TOT_CONT_REC      : currency          read FVL_TOT_CONT_REC      write FVL_TOT_CONT_REC;
 
-    property RegistroM610: TRegistroM610List read FRegistroM610 write FRegistroM610;
+    property RegistroM610         : TRegistroM610List read FRegistroM610         write FRegistroM610;
   end;
 
   //REGISTRO M610: DETALHAMENTO DA CONTRIBUIÇÃO PARA A SEGURIDADE SOCIAL - COFINS DO PERÍODO
   TRegistroM610 = class
   private
-    FVL_CONT_DIFER: currency;
-    FVL_CONT_PER: currency;
-    FALIQ_COFINS: currency;
-    FVL_AJUS_REDUC: currency;
-    FVL_AJUS_ACRES: currency;
-    FVL_CONT_DIFER_ANT: currency;
-    FALIQ_COFINS_QUANT: currency;
-    FVL_BC_CONT: currency;
-    FVL_CONT_APUR: currency;
-    FVL_REC_BRT: currency;
-    FQUANT_BC_COFINS: currency;
-    FCOD_CONT: string;
+    FVL_CONT_DIFER             : currency;
+    FVL_CONT_PER               : currency;
+    FALIQ_COFINS               : currency;
+    FVL_AJUS_REDUC             : currency;
+    FVL_AJUS_ACRES             : currency;
+    FVL_CONT_DIFER_ANT         : currency;
+    FALIQ_COFINS_QUANT         : currency;
+    FVL_BC_CONT                : currency;
+    FVL_CONT_APUR              : currency;
+    FVL_REC_BRT                : currency;
+    FQUANT_BC_COFINS           : currency;
+    FCOD_CONT                  : TACBrCodCont;
 
-    FRegistroM611: TRegistroM611;     // NIVEL 4
-    FRegistroM620: TRegistroM620List; // NIVEL 4
-    FRegistroM630: TRegistroM630List; // NIVEL 4
+    FRegistroM611              : TRegistroM611;     // NIVEL 4
+    FRegistroM620              : TRegistroM620List; // NIVEL 4
+    FRegistroM630              : TRegistroM630List; // NIVEL 4
   public
-    constructor Create; virtual; /// Create
-    destructor Destroy; override; /// Destroy
+    constructor Create;  virtual;                   /// Create
+    destructor  Destroy; override;                  /// Destroy
 
-    property COD_CONT: string read FCOD_CONT write FCOD_CONT;
-    property VL_REC_BRT: currency read FVL_REC_BRT write FVL_REC_BRT;
-    property VL_BC_CONT: currency read FVL_BC_CONT write FVL_BC_CONT;
-    property ALIQ_COFINS: currency read FALIQ_COFINS write FALIQ_COFINS;
-    property QUANT_BC_COFINS: currency read FQUANT_BC_COFINS write FQUANT_BC_COFINS;
-    property ALIQ_COFINS_QUANT: currency read FALIQ_COFINS_QUANT write FALIQ_COFINS_QUANT;
-    property VL_CONT_APUR: currency read FVL_CONT_APUR write FVL_CONT_APUR;
-    property VL_AJUS_ACRES: currency read FVL_AJUS_ACRES write FVL_AJUS_ACRES;
-    property VL_AJUS_REDUC: currency read FVL_AJUS_REDUC write FVL_AJUS_REDUC;
-    property VL_CONT_DIFER: currency read FVL_CONT_DIFER write FVL_CONT_DIFER;
-    property VL_CONT_DIFER_ANT: currency read FVL_CONT_DIFER_ANT write FVL_CONT_DIFER_ANT;
-    property VL_CONT_PER: currency read FVL_CONT_PER write FVL_CONT_PER;
+    property COD_CONT          : TACBrCodCont      read FCOD_CONT          write FCOD_CONT;
+    property VL_REC_BRT        : currency          read FVL_REC_BRT        write FVL_REC_BRT;
+    property VL_BC_CONT        : currency          read FVL_BC_CONT        write FVL_BC_CONT;
+    property ALIQ_COFINS       : currency          read FALIQ_COFINS       write FALIQ_COFINS;
+    property QUANT_BC_COFINS   : currency          read FQUANT_BC_COFINS   write FQUANT_BC_COFINS;
+    property ALIQ_COFINS_QUANT : currency          read FALIQ_COFINS_QUANT write FALIQ_COFINS_QUANT;
+    property VL_CONT_APUR      : currency          read FVL_CONT_APUR      write FVL_CONT_APUR;
+    property VL_AJUS_ACRES     : currency          read FVL_AJUS_ACRES     write FVL_AJUS_ACRES;
+    property VL_AJUS_REDUC     : currency          read FVL_AJUS_REDUC     write FVL_AJUS_REDUC;
+    property VL_CONT_DIFER     : currency          read FVL_CONT_DIFER     write FVL_CONT_DIFER;
+    property VL_CONT_DIFER_ANT : currency          read FVL_CONT_DIFER_ANT write FVL_CONT_DIFER_ANT;
+    property VL_CONT_PER       : currency          read FVL_CONT_PER       write FVL_CONT_PER;
 
-    property RegistroM611: TRegistroM611 read FRegistroM611 write FRegistroM611;
-    property RegistroM620: TRegistroM620List read FRegistroM620 write FRegistroM620;
-    property RegistroM630: TRegistroM630List read FRegistroM630 write FRegistroM630;
+    property RegistroM611      : TRegistroM611     read FRegistroM611      write FRegistroM611;
+    property RegistroM620      : TRegistroM620List read FRegistroM620      write FRegistroM620;
+    property RegistroM630      : TRegistroM630List read FRegistroM630      write FRegistroM630;
   end;
 
   // Registro M610 - Lista
   TRegistroM610List = class(TObjectList)
   private
-    function GetItem(Index: Integer): TRegistroM610;
+    function  GetItem(Index: Integer): TRegistroM610;
     procedure SetItem(Index: Integer; const Value: TRegistroM610);
   public
     function New: TRegistroM610;
@@ -678,41 +680,41 @@ type
   //REGISTRO M611: SOCIEDADES COOPERATIVAS - COMPOSIÇÃO DA BASE DE CALCULO - COFINS
   TRegistroM611 = class
   private
-    FVL_BC_CONT_ANT_EXC_COOP: currency;
-    FVL_EXC_COOP_GER: currency;
-    FVL_BC_CONT: currency;
-    FVL_EXC_ESP_COOP: currency;
-    FIND_TIP_COOP: string;
+    FVL_BC_CONT_ANT_EXC_COOP         : currency;
+    FVL_EXC_COOP_GER                 : currency;
+    FVL_BC_CONT                      : currency;
+    FVL_EXC_ESP_COOP                 : currency;
+    FIND_TIP_COOP                    : TACBrIndTipCoop;
   public
-    property IND_TIP_COOP: string read FIND_TIP_COOP write FIND_TIP_COOP;
-    property VL_BC_CONT_ANT_EXC_COOP: currency read FVL_BC_CONT_ANT_EXC_COOP write FVL_BC_CONT_ANT_EXC_COOP;
-    property VL_EXC_COOP_GER: currency read FVL_EXC_COOP_GER write FVL_EXC_COOP_GER;
-    property VL_EXC_ESP_COOP: currency read FVL_EXC_ESP_COOP write FVL_EXC_ESP_COOP;
-    property VL_BC_CONT: currency read FVL_BC_CONT write FVL_BC_CONT;
+    property IND_TIP_COOP            : TACBrIndTipCoop   read FIND_TIP_COOP            write FIND_TIP_COOP;
+    property VL_BC_CONT_ANT_EXC_COOP : currency          read FVL_BC_CONT_ANT_EXC_COOP write FVL_BC_CONT_ANT_EXC_COOP;
+    property VL_EXC_COOP_GER         : currency          read FVL_EXC_COOP_GER         write FVL_EXC_COOP_GER;
+    property VL_EXC_ESP_COOP         : currency          read FVL_EXC_ESP_COOP         write FVL_EXC_ESP_COOP;
+    property VL_BC_CONT              : currency          read FVL_BC_CONT              write FVL_BC_CONT;
   end;
 
   //REGISTRO M620: AJUSTES DA COFINS APURADA
   TRegistroM620 = class
   private
-    FVL_AJ: currency;
-    FNUM_DOC: string;
-    FCOD_AJ: string;
-    FDESCR_AJ: string;
-    FIND_AJ: string;
-    FDT_REF: TDateTime;
+    FVL_AJ            : currency;
+    FNUM_DOC          : string;
+    FCOD_AJ           : TACBrCodAj;
+    FDESCR_AJ         : string;
+    FIND_AJ           : TACBrIndAJ;
+    FDT_REF           : TDateTime;
   public
-    property IND_AJ: string read FIND_AJ write FIND_AJ;
-    property VL_AJ: currency read FVL_AJ write FVL_AJ;
-    property COD_AJ: string read FCOD_AJ write FCOD_AJ;
-    property NUM_DOC: string read FNUM_DOC write FNUM_DOC;
-    property DESCR_AJ: string read FDESCR_AJ write FDESCR_AJ;
-    property DT_REF: TDateTime read FDT_REF write FDT_REF;
+    property IND_AJ   : TACBrIndAJ    read FIND_AJ   write FIND_AJ;
+    property VL_AJ    : currency      read FVL_AJ    write FVL_AJ;
+    property COD_AJ   : TACBrCodAj    read FCOD_AJ   write FCOD_AJ;
+    property NUM_DOC  : string        read FNUM_DOC  write FNUM_DOC;
+    property DESCR_AJ : string        read FDESCR_AJ write FDESCR_AJ;
+    property DT_REF   : TDateTime     read FDT_REF   write FDT_REF;
   end;
 
   // Registro M620 - Lista
   TRegistroM620List = class(TObjectList)
   private
-    function GetItem(Index: Integer): TRegistroM620;
+    function  GetItem(Index: Integer): TRegistroM620;
     procedure SetItem(Index: Integer; const Value: TRegistroM620);
   public
     function New: TRegistroM620;
@@ -722,53 +724,56 @@ type
   //REGISTRO M630: INFORMAÇÕES ADICIONAIS DE DIFERIMENTO
   TRegistroM630 = class
   private
-    FVL_CONT_DIF: currency;
-    FVL_NAO_RECEB: currency;
-    FVL_CRED_DIF: currency;
-    FVL_VEND: currency;
-    FCNPJ: string;
-    FCOD_CRED: string;
+    FVL_CONT_DIF          : currency;
+    FVL_NAO_RECEB         : currency;
+    FVL_CRED_DIF          : currency;
+    FVL_VEND              : currency;
+    FCNPJ                 : string;
+    FCOD_CRED             : string;
   public
-    property CNPJ: string read FCNPJ write FCNPJ;
-    property VL_VEND: currency read FVL_VEND write FVL_VEND;
-    property VL_NAO_RECEB: currency read FVL_NAO_RECEB write FVL_NAO_RECEB;
-    property VL_CONT_DIF: currency read FVL_CONT_DIF write FVL_CONT_DIF;
-    property VL_CRED_DIF: currency read FVL_CRED_DIF write FVL_CRED_DIF;
-    property COD_CRED: string read FCOD_CRED write FCOD_CRED;
+    property CNPJ         : string       read FCNPJ         write FCNPJ;
+    property VL_VEND      : currency     read FVL_VEND      write FVL_VEND;
+    property VL_NAO_RECEB : currency     read FVL_NAO_RECEB write FVL_NAO_RECEB;
+    property VL_CONT_DIF  : currency     read FVL_CONT_DIF  write FVL_CONT_DIF;
+    property VL_CRED_DIF  : currency     read FVL_CRED_DIF  write FVL_CRED_DIF;
+    property COD_CRED     : string       read FCOD_CRED     write FCOD_CRED;
   end;
 
   // Registro M630 - Lista
   TRegistroM630List = class(TObjectList)
   private
-    function GetItem(Index: Integer): TRegistroM630;
+    function  GetItem(Index: Integer): TRegistroM630;
     procedure SetItem(Index: Integer; const Value: TRegistroM630);
   public
     function New: TRegistroM630;
     property Items[Index: Integer]: TRegistroM630 read GetItem write SetItem;
   end;
 
+
   //REGISTRO M700: COFINS DIFERIDA EM PERÍODOS ANTERIORES - VALORES A PAGAR NO PERÍODO
   TRegistroM700 = class
   private
-    FPER_APUR: currency;
-    FVL_CONT_REC: currency;
-    FVL_CRED_DESC: currency;
-    FCOD_CONT: string;
-    FNAT_CRED_DESC: string;
-    FDT_RECEB: TDateTime;
+    FCOD_CONT                   : TACBrCodCont;           {COD_CONT}
+    FVL_CONT_APUR_DIFER         : currency;               {VL_CONT_APUR_DIFER}
+    FNAT_CRED_DESC              : TACBrNatCredDesc;       {NAT_CRED_DESC}
+    FVL_CRED_DESC_DIFER         : currency;               {VL_CRED_DESC_DIFER}
+    FVL_CONT_DIFER_ANT          : currency;               {VL_CONT_DIFER_ANT}
+    FPER_APUR                   : string;                 {PER_APUR}
+    FDT_RECEB                   : TDateTime;              {DT_RECEB}
   public
-    property COD_CONT: string read FCOD_CONT write FCOD_CONT;
-    property VL_CONT_REC: currency read FVL_CONT_REC write FVL_CONT_REC;
-    property NAT_CRED_DESC: string read FNAT_CRED_DESC write FNAT_CRED_DESC;
-    property VL_CRED_DESC: currency read FVL_CRED_DESC write FVL_CRED_DESC;
-    property PER_APUR: currency read FPER_APUR write FPER_APUR;
-    property DT_RECEB: TDateTime read FDT_RECEB write FDT_RECEB;
+    property COD_CONT           : TACBrCodCont     read FCOD_CONT             write FCOD_CONT;
+    property VL_CONT_APUR_DIFER : currency         read FVL_CONT_APUR_DIFER   write FVL_CONT_APUR_DIFER;
+    property NAT_CRED_DESC      : TACBrNatCredDesc read FNAT_CRED_DESC        write FNAT_CRED_DESC;
+    property VL_CRED_DESC_DIFER : currency         read FVL_CRED_DESC_DIFER   write FVL_CRED_DESC_DIFER;
+    property VL_CONT_DIFER_ANT  : currency         read FVL_CONT_DIFER_ANT    write FVL_CONT_DIFER_ANT;
+    property PER_APUR           : string           read FPER_APUR             write FPER_APUR;
+    property DT_RECEB           : TDateTime        read FDT_RECEB             write FDT_RECEB;
   end;
 
   // Registro M700 - Lista
   TRegistroM700List = class(TObjectList)
   private
-    function GetItem(Index: Integer): TRegistroM700;
+    function  GetItem(Index: Integer): TRegistroM700;
     procedure SetItem(Index: Integer; const Value: TRegistroM700);
   public
     function New: TRegistroM700;
@@ -778,28 +783,28 @@ type
   //REGISTRO M800: RECEITAS ISENTAS, NÃO ALCANÇADAS PELA INCIDÊNCIA DA CONTRIBUIÇÃO, SUJEITAS A ALÍQUOTA ZERO OU DE VENDAS COM SUSPENSÃO - COFINS
   TRegistroM800 = class
   private
-    FVL_TOT_REC: currency;
-    FDESC_COMPL: string;
-    FCOD_CTA: string;
-    FCST_COFINS: string;
+    FVL_TOT_REC           : currency;
+    FDESC_COMPL           : string;
+    FCOD_CTA              : string;
+    FCST_COFINS           : TACBrSituacaoTribCOFINS;
 
-    FRegistroM810: TRegistroM810List; // NIVEL 3
+    FRegistroM810         : TRegistroM810List; // NIVEL 3
   public
-    constructor Create; virtual; /// Create
-    destructor Destroy; override; /// Destroy
+    constructor Create; virtual;               /// Create
+    destructor Destroy; override;              /// Destroy
 
-    property CST_COFINS: string read FCST_COFINS write FCST_COFINS;
-    property VL_TOT_REC: currency read FVL_TOT_REC write FVL_TOT_REC;
-    property COD_CTA: string read FCOD_CTA write FCOD_CTA;
-    property DESC_COMPL: string read FDESC_COMPL write FDESC_COMPL;
+    property CST_COFINS   : TACBrSituacaoTribCOFINS read FCST_COFINS   write FCST_COFINS;
+    property VL_TOT_REC   : currency                read FVL_TOT_REC   write FVL_TOT_REC;
+    property COD_CTA      : string                  read FCOD_CTA      write FCOD_CTA;
+    property DESC_COMPL   : string                  read FDESC_COMPL   write FDESC_COMPL;
 
-    property RegistroM810: TRegistroM810List read FRegistroM810 write FRegistroM810;
+    property RegistroM810 : TRegistroM810List       read FRegistroM810 write FRegistroM810;
   end;
 
   // Registro M800 - Lista
   TRegistroM800List = class(TObjectList)
   private
-    function GetItem(Index: Integer): TRegistroM800;
+    function  GetItem(Index: Integer): TRegistroM800;
     procedure SetItem(Index: Integer; const Value: TRegistroM800);
   public
     function New: TRegistroM800;
@@ -809,21 +814,21 @@ type
   //REGISTRO M810: DETALHAMENTO DAS RECEITAS ISENTAS, NÃO ALCANÇADAS PELA INCIDÊNCIA DA CONTRIBUIÇÃO, SUJEITAS A ALÍQUOTA ZERO OU DE VENDAS COM SUSPENSÃO - COFINS
   TRegistroM810 = class
   private
-    FVL_REC: currency;
-    FDESC_COMPL: string;
-    FCOD_CTA: string;
-    FNAT_REC: string;
+    FVL_REC             : currency;
+    FDESC_COMPL         : string;
+    FCOD_CTA            : string;
+    FNAT_REC            : string;
   public
-    property NAT_REC: string read FNAT_REC write FNAT_REC;
-    property VL_REC: currency read FVL_REC write FVL_REC;
-    property COD_CTA: string read FCOD_CTA write FCOD_CTA;
-    property DESC_COMPL: string read FDESC_COMPL write FDESC_COMPL;
+    property NAT_REC    : string   read FNAT_REC    write FNAT_REC;
+    property VL_REC     : currency read FVL_REC     write FVL_REC;
+    property COD_CTA    : string   read FCOD_CTA    write FCOD_CTA;
+    property DESC_COMPL : string   read FDESC_COMPL write FDESC_COMPL;
   end;
 
   // Registro M810 - Lista
   TRegistroM810List = class(TObjectList)
   private
-    function GetItem(Index: Integer): TRegistroM810;
+    function  GetItem(Index: Integer): TRegistroM810;
     procedure SetItem(Index: Integer; const Value: TRegistroM810);
   public
     function New: TRegistroM810;
@@ -1282,7 +1287,6 @@ procedure TRegistroM810List.SetItem(Index: Integer; const Value: TRegistroM810);
 begin
   Put(Index, Value);
 end;
-
 
 { TRegistroM200 }
 

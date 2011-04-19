@@ -1413,7 +1413,7 @@ end;
 procedure TBloco_F.WriteRegistroF600(RegF010: TRegistroF010) ;
   var
     intFor         : integer;
-    strIND_NAT_REC : AnsiString;
+    strIND_NAT_REC, strIND_NAT_RET : AnsiString;
 begin
   if Assigned(RegF010.RegistroF600) then
   begin
@@ -1423,12 +1423,21 @@ begin
         begin
 
           case IND_NAT_REC of
-            inrNaoCumulativa   : strIND_NAT_REC := '0' ; // Receita de Natureza Não Cumulativa
-            inrCumulativa      : strIND_NAT_REC := '1' ; // Receita de Natureza Cumulativa
+            inrNaoCumulativa : strIND_NAT_REC := '0' ; // 0 // Receita de Natureza Não Cumulativa
+            inrCumulativa    : strIND_NAT_REC := '1' ; // 1 // Receita de Natureza Cumulativa
+          end;
+
+          case IND_NAT_RET of
+            indRetOrgAutarquiasFundFederais : strIND_NAT_RET := '01' ; // 01 - Retenção por Órgãos, Autarquias e Fundações Federais
+            indRetEntAdmPublicaFederal      : strIND_NAT_RET := '02' ; // 02 - Retenção por outras Entidades da Administração Pública Federal
+            indRetPesJuridicasDireitoPri    : strIND_NAT_RET := '03' ; // 03 - Retenção por Pessoas Jurídicas de Direito Privado
+            indRecolhimentoSociedadeCoop    : strIND_NAT_RET := '04' ; // 04 - Recolhimento por Sociedade Cooperativa
+            indRetFabricanteMaqVeiculos     : strIND_NAT_RET := '05' ; // 05 - Retenção por Fabricante de Máquinas e Veículos
+            indOutrasRetencoes              : strIND_NAT_RET := '99' ; // 99 - Outras Retenções
           end;
 
           Add( LFill('F600')               +
-               LFill( IND_NAT_RET )        +   //Verificar criação da tabela no ACBrEPCBlocos
+               LFill( strIND_NAT_RET )     +
                LFill( DT_RET )             +
                LFill( VL_BC_RET ,0,2 )     +
                LFill( VL_RET ,0,2 )        +
@@ -1451,6 +1460,7 @@ end;
 procedure TBloco_F.WriteRegistroF700(RegF010: TRegistroF010) ;
   var
     intFor: integer;
+    strIND_ORI_DED, strIND_NAT_DED: AnsiString;
 begin
   if Assigned(RegF010.RegistroF700) then
   begin
@@ -1458,9 +1468,23 @@ begin
      begin
         with RegF010.RegistroF700.Items[intFor] do
         begin
+        
+          case IND_ORI_DED of
+             indCredPreMed              : strIND_ORI_DED := '01' ; // 01 – Créditos Presumidos - Medicamentos
+             indCredAdmRegCumulativoBeb : strIND_ORI_DED := '02' ; // 02 – Créditos Admitidos no Regime Cumulativo – Bebidas Frias
+             indContribSTZFM            : strIND_ORI_DED := '03' ; // 03 – Contribuição Paga pelo Substituto Tributário - ZFM
+             indSTNaoOCFatoGeradorPres  : strIND_ORI_DED := '04' ; // 04 – Substituição Tributária – Não Ocorrência do Fato Gerador Presumido
+             indOutrasDeducoes          : strIND_ORI_DED := '99' ; // 99 - Outras Deduções
+          end;
+
+          case IND_NAT_DED of
+            indNaoAcumulativa  : strIND_NAT_DED := '0' ;  // 0 – Dedução de Natureza Não Cumulativa
+            indAcumulativa     : strIND_NAT_DED := '1' ;  // 1 – Dedução de Natureza Cumulativa
+          end;
+
           Add( LFill('F700')               +
-               LFill( IND_ORI_DED )        +   //Verificar criação da tabela no ACBrEPCBlocos
-               LFill( IND_NAT_DED )        +
+               LFill( strIND_ORI_DED )     +
+               LFill( strIND_NAT_DED )     +
                LFill( VL_DED_PIS ,0,2 )    +
                LFill( VL_DED_COFINS ,0,2 ) +
                LFill( VL_BC_OPER ,0,2 )    +

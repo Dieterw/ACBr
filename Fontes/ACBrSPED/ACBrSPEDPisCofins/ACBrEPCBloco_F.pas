@@ -594,22 +594,22 @@ type
     FVL_RET_COFINS         : currency;
     FVL_RET_PIS            : currency;
     FCOD_REC               : string;
-    FIND_NAT_RET           : string;
+    FIND_NAT_RET           : TACBrIndNatRetFonte;
     FCNPJ                  : string;
     FIND_NAT_REC           : TACBrIndNatRec;
     FIND_DEC               : string;
     FDT_RET                : TDateTime;
   public
-    property IND_NAT_RET   : string         read FIND_NAT_RET   write FIND_NAT_RET;
-    property DT_RET        : TDateTime      read FDT_RET        write FDT_RET;
-    property VL_BC_RET     : currency       read FVL_BC_RET     write FVL_BC_RET;
-    property VL_RET        : currency       read FVL_RET        write FVL_RET;
-    property COD_REC       : string         read FCOD_REC       write FCOD_REC;
-    property IND_NAT_REC   : TACBrIndNatRec read FIND_NAT_REC   write FIND_NAT_REC;
-    property CNPJ          : string         read FCNPJ          write FCNPJ;
-    property VL_RET_PIS    : currency       read FVL_RET_PIS    write FVL_RET_PIS;
-    property VL_RET_COFINS : currency       read FVL_RET_COFINS write FVL_RET_COFINS;
-    property IND_DEC       : string         read FIND_DEC       write FIND_DEC;
+    property IND_NAT_RET   : TACBrIndNatRetFonte read FIND_NAT_RET   write FIND_NAT_RET;
+    property DT_RET        : TDateTime           read FDT_RET        write FDT_RET;
+    property VL_BC_RET     : currency            read FVL_BC_RET     write FVL_BC_RET;
+    property VL_RET        : currency            read FVL_RET        write FVL_RET;
+    property COD_REC       : string              read FCOD_REC       write FCOD_REC;
+    property IND_NAT_REC   : TACBrIndNatRec      read FIND_NAT_REC   write FIND_NAT_REC;
+    property CNPJ          : string              read FCNPJ          write FCNPJ;
+    property VL_RET_PIS    : currency            read FVL_RET_PIS    write FVL_RET_PIS;
+    property VL_RET_COFINS : currency            read FVL_RET_COFINS write FVL_RET_COFINS;
+    property IND_DEC       : string              read FIND_DEC       write FIND_DEC;
   end;
 
   // Registro F600 - Lista
@@ -627,20 +627,20 @@ type
   private
     FVL_DED_COFINS         : currency;
     FVL_DED_PIS            : currency;
-    FIND_ORI_DED           : string;
-    FIND_NAT_DED           : string;
+    FIND_ORI_DED           : TACBrIndOrigemDiversas;
+    FIND_NAT_DED           : TACBrIndNatDeducao;
     FVL_BC_OPER            : Currency;
     FCNPJ                  : string;
     FINF_COMP              : string;
 
   public
-    property IND_ORI_DED   : string   read FIND_ORI_DED   write FIND_ORI_DED;
-    property IND_NAT_DED   : string   read FIND_NAT_DED   write FIND_NAT_DED;
-    property VL_DED_PIS    : currency read FVL_DED_PIS    write FVL_DED_PIS;
-    property VL_DED_COFINS : currency read FVL_DED_COFINS write FVL_DED_COFINS;
-    property VL_BC_OPER    : currency read FVL_BC_OPER    write FVL_BC_OPER;
-    property CNPJ          : string   read FCNPJ          write FCNPJ;
-    property INF_COMP      : string   read FINF_COMP      write FINF_COMP;
+    property IND_ORI_DED   : TACBrIndOrigemDiversas read FIND_ORI_DED   write FIND_ORI_DED;
+    property IND_NAT_DED   : TACBrIndNatDeducao     read FIND_NAT_DED   write FIND_NAT_DED;
+    property VL_DED_PIS    : currency               read FVL_DED_PIS    write FVL_DED_PIS;
+    property VL_DED_COFINS : currency               read FVL_DED_COFINS write FVL_DED_COFINS;
+    property VL_BC_OPER    : currency               read FVL_BC_OPER    write FVL_BC_OPER;
+    property CNPJ          : string                 read FCNPJ          write FCNPJ;
+    property INF_COMP      : string                 read FINF_COMP      write FINF_COMP;
   end;
 
   // Registro F700 - Lista

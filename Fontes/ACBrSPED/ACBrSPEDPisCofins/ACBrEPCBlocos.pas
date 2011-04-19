@@ -812,6 +812,33 @@ type
                     ccPISPasepSalarios                   // 99 // Contribuição para o PIS/Pasep - Folha de Salários
                  );
 
+   //Indicador de Natureza da Retenção na Fonte:
+   TACBrIndNatRetFonte = (
+                           indRetOrgAutarquiasFundFederais, // 01 - Retenção por Órgãos, Autarquias e Fundações Federais
+                           indRetEntAdmPublicaFederal,      // 02 - Retenção por outras Entidades da Administração Pública Federal
+                           indRetPesJuridicasDireitoPri,    // 03 - Retenção por Pessoas Jurídicas de Direito Privado
+                           indRecolhimentoSociedadeCoop,    // 04 - Recolhimento por Sociedade Cooperativa
+                           indRetFabricanteMaqVeiculos,     // 05 - Retenção por Fabricante de Máquinas e Veículos
+                           indOutrasRetencoes               // 99 - Outras Retenções
+                          );
+
+   //Indicador de Origem de Deduções Diversas:
+   TACBrIndOrigemDiversas = (
+
+                              indCredPreMed,              // 01 – Créditos Presumidos - Medicamentos
+                              indCredAdmRegCumulativoBeb, // 02 – Créditos Admitidos no Regime Cumulativo – Bebidas Frias
+                              indContribSTZFM,            // 03 – Contribuição Paga pelo Substituto Tributário - ZFM
+                              indSTNaoOCFatoGeradorPres,  // 04 – Substituição Tributária – Não Ocorrência do Fato Gerador Presumido
+                              indOutrasDeducoes           // 99 - Outras Deduções
+
+                             );
+
+   //Indicador da Natureza da Dedução:
+   TACBrIndNatDeducao = (
+                          indNaoAcumulativa,  // 0 – Dedução de Natureza Não Cumulativa
+                          indAcumulativa // 1 – Dedução de Natureza Cumulativa
+                        );
+
 
 
   TOpenBlocos = class

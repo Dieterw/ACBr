@@ -512,6 +512,8 @@ begin
         WriteRegistro0150( Reg0001.Registro0140.Items[intFor] ) ;
         WriteRegistro0190( Reg0001.Registro0140.Items[intFor] ) ;
         WriteRegistro0200( Reg0001.Registro0140.Items[intFor] ) ;
+        WriteRegistro0400( Reg0001.Registro0140.Items[intFor] ) ;
+        WriteRegistro0450( Reg0001.Registro0140.Items[intFor] ) ;
 
         Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
      end;

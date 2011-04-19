@@ -181,7 +181,8 @@ begin
   fsTimer.OnTimer  := AtualizaImagem ;
   fsTimer.Enabled  := False ;
 
-  ControlStyle := ControlStyle - [csAcceptsControls] + [csOpaque];
+  ControlStyle := ControlStyle - [csAcceptsControls] ;
+  ControlStyle := ControlStyle + [csOpaque];
   Height:= 100 ;
   Width := 100 ;
 end;
@@ -205,6 +206,13 @@ begin
      fsTimer.Enabled := False ;
      Exit ;
   end ;
+
+  if not Parent.Visible then
+     exit ;
+
+  if Parent is TControl then
+     if not TControl(Parent).IsVisible then
+        exit ;
 
   OldFrame     := fsGIF.CurrentFrame ;
   OldIteration := fsGIF.CurrentIteration ;

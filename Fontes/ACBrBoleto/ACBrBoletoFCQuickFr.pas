@@ -292,7 +292,7 @@ begin
                   HTMLFilter.Free ;
                end ;
                *)
-               raise Exception.Create( 'Exportação para HTML não implementada no QuickReport') ;
+               raise Exception.Create( ACBrStr('Exportação para HTML não implementada no QuickReport') ) ;
             end ;
         else
           begin

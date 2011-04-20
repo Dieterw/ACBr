@@ -277,31 +277,22 @@ end;
 
 Procedure TACBrBancoBradesco.LerRetorno400 ( ARetorno: TStringList );
 var
-  ContLinha: Integer;
-  Titulo   : TACBrTitulo;
-
-  Linha,
-  rCedente,
-  rCNPJCPF,
-  DigitoNossoNumero: String;
-
-  CodOcorrencia, CodMotivo : Integer;
-  CodMotivo_19 : String;
-  i, MotivoLinha : Integer;
-  rAgencia, rConta, rDigitoConta: String;
+  Titulo : TACBrTitulo;
+  ContLinha, CodOcorrencia, CodMotivo, i, MotivoLinha : Integer;
+  CodMotivo_19, rAgencia, rConta, rDigitoConta, Linha, rCedente, rCNPJCPF: String;
 begin
    ContLinha := 0;
 
-   if StrToInt(copy(ARetorno.Strings[0],77,3)) <> Numero then
-      raise Exception.Create(ACBrStr(ACBrBanco.ACBrBoleto.NomeArqRetorno + 'nao' +
-                             'é um arquivo de retorno do '+ Nome));
+   if StrToIntDef(copy(ARetorno.Strings[0],77,3),-1) <> Numero then
+      raise Exception.Create(ACBrStr(ACBrBanco.ACBrBoleto.NomeArqRetorno +
+                             'não é um arquivo de retorno do '+ Nome));
 
    rCedente := trim(Copy(ARetorno[0],47,30));
    rAgencia := trim(Copy(ARetorno[1],25,5));
    rConta   := trim(Copy(ARetorno[1],30,7));
    rDigitoConta := Copy(ARetorno[1],37,1);
 
-   ACBrBanco.ACBrBoleto.NumeroArquivo := StrToInt(Copy(ARetorno[0],109,5));//|Implementado por Carlos Fitl - 27/12/2010
+   ACBrBanco.ACBrBoleto.NumeroArquivo := StrToIntDef(Copy(ARetorno[0],109,5),0);
 
    ACBrBanco.ACBrBoleto.DataArquivo   := StringToDateTimeDef(Copy(ARetorno[0],95,2)+'/'+            //|
                                                              Copy(ARetorno[0],97,2)+'/'+            //|Implementado por Carlos Fitl - 27/12/2010
@@ -314,8 +305,8 @@ begin
    case StrToIntDef(Copy(ARetorno[1],2,2),0) of
       11: rCNPJCPF := Copy(ARetorno[1],7,11);
       14: rCNPJCPF := Copy(ARetorno[1],4,14);
-      else
-        rCNPJCPF := Copy(ARetorno[1],4,14);
+   else
+     rCNPJCPF := Copy(ARetorno[1],4,14);
    end;
 
    with ACBrBanco.ACBrBoleto do

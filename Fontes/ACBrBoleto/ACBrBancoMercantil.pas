@@ -139,7 +139,7 @@ begin
    Result := Copy(FormataNossoNumero(ACBrTitulo),5,11);
 end;
 
-// usado no carne
+// usado no carnê
 function TACBrBancoMercantil.MontarCampoCodigoCedente (
    const ACBrTitulo: TACBrTitulo ) : String;
 begin

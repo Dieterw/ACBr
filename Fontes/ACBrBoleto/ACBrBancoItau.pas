@@ -631,16 +631,16 @@ var
 begin
    ContLinha := 0;
 
-   if StrToInt(copy(ARetorno.Strings[0],77,3)) <> Numero then
-      raise Exception.Create(ACBrStr(ACBrBanco.ACBrBoleto.NomeArqRetorno + 'nao' +
-                             'é um arquivo de retorno do '+ Nome));
+   if StrToIntDef(copy(ARetorno.Strings[0],77,3),-1) <> Numero then
+      raise Exception.Create(ACBrStr(ACBrBanco.ACBrBoleto.NomeArqRetorno +
+                             'não é um arquivo de retorno do '+ Nome));
 
    rCedente := trim(Copy(ARetorno[0],47,30));
    rAgencia := trim(Copy(ARetorno[0],27,4));
    rConta   := trim(Copy(ARetorno[0],33,5));
    rDigitoConta := Copy(ARetorno[0],38,1);
 
-   ACBrBanco.ACBrBoleto.NumeroArquivo := StrToInt(Copy(ARetorno[0],109,5)); //|Implementado por Carlos Fitl - 27/12/2010
+   ACBrBanco.ACBrBoleto.NumeroArquivo := StrToIntDef(Copy(ARetorno[0],109,5),0);
 
    ACBrBanco.ACBrBoleto.DataArquivo   := StringToDateTimeDef(Copy(ARetorno[0],95,2)+'/'+            //|
                                                              Copy(ARetorno[0],97,2)+'/'+            //|Implementado por Carlos Fitl - 27/12/2010
@@ -725,7 +725,7 @@ begin
          if Trim(Copy(Linha,174,2)) = '' then
             EspecieDoc := '99'
          else
-            case StrToInt(Copy(Linha,174,2)) of
+            case StrToIntDef(Copy(Linha,174,2),0) of
                01 : EspecieDoc := 'DM';
                02 : EspecieDoc := 'NP';
                03 : EspecieDoc := 'NS';

@@ -78,8 +78,8 @@ end;
 
 function TACBrBancoob.CalcularDigitoVerificador(const ACBrTitulo: TACBrTitulo ): String;
 var
-  Num, ANossoNumero, Res :String;
-  i,base,digito          : Integer;
+  Num, Res :String;
+  i, base, digito : Integer;
 const
   indice = '319731973197319731973';
 begin
@@ -191,7 +191,6 @@ begin
 end;
 
 function TACBrBancoob.MontarCampoNossoNumero (const ACBrTitulo: TACBrTitulo ) : String;
-var ANossoNumero : string;
 begin
     Result := ACBrTitulo.NossoNumero + '-' + CalcularDigitoVerificador(ACBrTitulo);
 end;
@@ -385,18 +384,13 @@ procedure TACBrBancoob.LerRetorno400(ARetorno: TStringList);
 var
   ContLinha: Integer;
   Titulo   : TACBrTitulo;
-
-  Linha,
-  rCedente,
-  rCNPJCPF,
-  DigitoNossoNumero: String;
-  i : Integer;
+  Linha, rCedente, rCNPJCPF : String;
 begin
    ContLinha := 0;
 
    if (copy(ARetorno.Strings[0],1,9) <> '02RETORNO') then
-      raise Exception.Create(ACBrStr(ACBrBanco.ACBrBoleto.NomeArqRetorno + 'nao' +
-                             'é um arquivo de retorno do '+ Nome));
+      raise Exception.Create(ACBrStr(ACBrBanco.ACBrBoleto.NomeArqRetorno +
+                             'não é um arquivo de retorno do '+ Nome));
 
    rCedente := trim(Copy(ARetorno[0],32,8));
 

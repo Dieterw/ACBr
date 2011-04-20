@@ -120,7 +120,7 @@ function TACBrBancoSantander.MontarCampoNossoNumero (
 begin
    with ACBrTitulo do
    begin
-      case StrToInt(Carteira) of
+      case StrToIntDef(Carteira,0) of
          5: Carteira := '101';
          6: Carteira := '201';
       end;
@@ -166,11 +166,9 @@ var
   Protesto, aAgencia,
   TipoSacado: String;
   TipoBoleto: Char;
-  MensagemCedente: String;
-  I: Integer;
   aCarteira: Integer;
 begin
-   aCarteira := StrToInt(ACBrTitulo.Carteira );
+   aCarteira := StrToIntDef(ACBrTitulo.Carteira, 0 );
 
    if aCarteira = 101  then
       aCarteira:= 5
@@ -311,31 +309,22 @@ end;
 
 Procedure TACBrBancoSantander.LerRetorno400 ( ARetorno: TStringList );
 var
-  ContLinha: Integer;
-  Titulo   : TACBrTitulo;
-
-  Linha,
-  rCedente,
-  rCNPJCPF,
-  DigitoNossoNumero: String;
-
-  CodOcorrencia, CodMotivo : Integer;
-  CodMotivo_19 : String;
-  i, MotivoLinha : Integer;
-  rAgencia,rConta,rDigitoConta: String;
+  Titulo : TACBrTitulo;
+  ContLinha, CodOcorrencia, CodMotivo : Integer;
+  Linha, rCedente, rAgencia, rConta, rDigitoConta, rCNPJCPF : String;
 begin
    ContLinha := 0;
 
-   if StrToInt(copy(ARetorno.Strings[0],77,3)) <> Numero then
-      raise Exception.Create(ACBrStr(ACBrBanco.ACBrBoleto.NomeArqRetorno + 'nao' +
-                             'é um arquivo de retorno do '+ Nome));
+   if StrToIntDef(copy(ARetorno.Strings[0],77,3),-1) <> Numero then
+      raise Exception.Create(ACBrStr(ACBrBanco.ACBrBoleto.NomeArqRetorno +
+                             'não é um arquivo de retorno do '+ Nome));
 
    rCedente := trim(Copy(ARetorno[0],47,30));
    rAgencia := trim(Copy(ARetorno[1],18,4));
    rConta   := trim(Copy(ARetorno[1],22,8))+ Copy(ARetorno[1],384,1);
    rDigitoConta := Copy(ARetorno[1],385,1);
 
-   rCNPJCPF := trim(IntToStr(StrToIntDef(Copy(ARetorno[1],04,14),0)));
+   rCNPJCPF := OnlyNumber( Copy(ARetorno[1],04,14) );
 
    with ACBrBanco.ACBrBoleto do
    begin
@@ -394,7 +383,7 @@ begin
          begin
             if copy(Linha,137,3) <> '   ' then
             begin
-               CodMotivo:= StrToInt(copy(Linha,137,3));
+               CodMotivo:= StrToIntDef(copy(Linha,137,3),0);
                MotivoRejeicaoComando.Add(copy(Linha,137,3));
                DescricaoMotivoRejeicaoComando.Add(CodMotivoRejeicaoToDescricao(
                                                   OcorrenciaOriginal.Tipo,CodMotivo));
@@ -402,7 +391,7 @@ begin
 
             if copy(Linha,140,3) <> '   ' then
             begin
-               CodMotivo:= strtoint(copy(Linha,140,3));
+               CodMotivo:= StrToIntDef(copy(Linha,140,3),0);
                MotivoRejeicaoComando.Add(copy(Linha,137,3));
                DescricaoMotivoRejeicaoComando.Add(CodMotivoRejeicaoToDescricao(
                                                   OcorrenciaOriginal.Tipo,CodMotivo));
@@ -410,7 +399,7 @@ begin
 
             if copy(Linha,143,3) <> '   ' then
             begin
-               CodMotivo:= strtoint(copy(Linha,143,3));
+               CodMotivo:= StrToIntDef(copy(Linha,143,3),0);
                MotivoRejeicaoComando.Add(copy(Linha,137,3));
                DescricaoMotivoRejeicaoComando.Add(CodMotivoRejeicaoToDescricao(
                                                   OcorrenciaOriginal.Tipo,CodMotivo));
@@ -423,7 +412,7 @@ begin
 
          ValorDocumento       := StrToFloatDef(Copy(Linha,153,13),0)/100;
 
-         case StrToInt(Copy(Linha,174,2)) of
+         case StrToIntDef(Copy(Linha,174,2),0) of
             1: EspecieDoc:= 'DM';
             2: EspecieDoc:= 'NP';
             3: EspecieDoc:= 'NS';

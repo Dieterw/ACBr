@@ -102,7 +102,7 @@ begin
    with ACBrTitulo do
    begin
       AConvenio := ACBrBoleto.Cedente.Convenio;
-      ANossoNumero := trim(inttostr(strtoint(NossoNumero)));
+      ANossoNumero := OnlyNumber(NossoNumero);
       aCarteira    := StrToIntDef(Carteira,0);
       if (aCarteira = 16) or (aCarteira = 17) or (aCarteira = 18) then
        begin
@@ -696,25 +696,20 @@ end;
 
 procedure TACBrBancoBrasil.LerRetorno240(ARetorno: TStringList);
 var
-  ContLinha: Integer;
   Titulo: TACBrTitulo;
-
-  Linha, rCedente: String;
-  rCNPJCPF: String;
-
-  CodOCorrencia: Integer;
-  i, MotivoLinha: Integer;
+  Linha, rCedente, rCNPJCPF: String;
+  ContLinha : Integer;
 begin
    ContLinha := 0;
 
    // informação do Header
    // Verifica se o arquivo pertence ao banco
-   if strtoint(copy(ARetorno.Strings[0], 3, 3)) <> Numero then
+   if StrToIntDef(copy(ARetorno.Strings[0], 3, 3),-1) <> Numero then
       raise Exception.create(ACBrStr(ACBrBanco.ACBrBoleto.NomeArqRetorno +
             'não' + 'é um arquivo de retorno do ' + Nome));
 
    rCedente := trim(copy(ARetorno[0], 73, 30));
-   rCNPJCPF := trim(IntToStr(StrToIntDef(copy(ARetorno[1], 19, 14), 0)));
+   rCNPJCPF := OnlyNumber( copy(ARetorno[1], 19, 14) );
 
    with ACBrBanco.ACBrBoleto do
    begin

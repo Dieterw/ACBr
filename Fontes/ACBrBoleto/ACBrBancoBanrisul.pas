@@ -287,6 +287,7 @@ var
   TipoBoleto: Char;
 begin
   aTotal:=0;
+  Protesto := '';
   with ACBrTitulo do
   begin
 
@@ -486,8 +487,8 @@ end;
 
 function TACBrBanrisul.GerarRegistroTransacao240(
   ACBrTitulo: TACBrTitulo): String;
-var Aux, aAceite, DiasProt, Juros, TipoInscSacado, Ocorrencia: String;
-    Ps: Integer;
+var
+    aAceite, DiasProt, Juros, TipoInscSacado, Ocorrencia: String;
 begin
    with ACBrTitulo do begin
       case Aceite of

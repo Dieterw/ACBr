@@ -89,7 +89,7 @@ begin
    else
       raise Exception.Create( ACBrStr('Carteira Inválida.'+sLineBreak+'Utilize "RG" ou "SR"') ) ;
 
-   ANossoNumero := Trim(IntToStr(StrToInt64(ACBrTitulo.NossoNumero)));
+   ANossoNumero := OnlyNumber(ACBrTitulo.NossoNumero);
    Num := ACarteira + '4' + PadR(ANossoNumero, 15, '0');
 
    Modulo.CalculoPadrao;
@@ -133,7 +133,7 @@ begin
    with ACBrTitulo do
    begin
       AConvenio := ACBrBoleto.Cedente.Convenio;
-      ANossoNumero := trim(inttostr(StrToInt64(NossoNumero)));
+      ANossoNumero := OnlyNumber(NossoNumero);
 
       if (ACBrTitulo.Carteira = 'RG') then         {carterira registrada}
           ANossoNumero := '14' + padR(ANossoNumero, 15, '0')
@@ -456,19 +456,16 @@ procedure TACBrCaixaEconomica.LerRetorno240(ARetorno: TStringList);
 var
   ContLinha: Integer;
   Titulo   : TACBrTitulo;
-
   Linha,
   rCedente,
   rCNPJCPF,
-  DigitoNossoNumero: String;
-  i : Integer;
   rAgencia, rConta,rDigitoConta: String;
 begin
    ContLinha := 0;
 
    if (copy(ARetorno.Strings[0],143,1) <> '2') then
-      raise Exception.Create(ACBrStr(ACBrBanco.ACBrBoleto.NomeArqRetorno + 'nao' +
-                             'é um arquivo de retorno do '+ Nome));
+      raise Exception.Create(ACBrStr(ACBrBanco.ACBrBoleto.NomeArqRetorno +
+                             'não é um arquivo de retorno do '+ Nome));
 
    rCedente := trim(Copy(ARetorno[0],73,30));
    rAgencia := trim(Copy(ARetorno[0],27,4));

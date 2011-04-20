@@ -812,7 +812,7 @@ begin
    with ACBrBoleto.Banco do
    begin
       if Length(trim(AValue)) > TamanhoMaximoNossoNum then
-         raise Exception.Create('Tamanho Máximo do Nosso Número é '+ IntToStr(TamanhoMaximoNossoNum)+ '.');
+         raise Exception.Create( ACBrStr('Tamanho Máximo do Nosso Número é: '+ IntToStr(TamanhoMaximoNossoNum) ));
 
       fNossoNumero := padR(trim(AValue),TamanhoMaximoNossoNum,'0');
    end;
@@ -842,16 +842,16 @@ end;
 procedure TACBrTitulo.SetParcela ( const AValue: Integer ) ;
 begin
    if (AValue > TotalParcelas) and (ACBrBoleto.ACBrBoletoFC.LayOut = lCarne) then
-      raise Exception.Create('Numero da Parcela Atual deve ser menor ' +
-                             'que o Total de Parcelas do Carne');
+      raise Exception.Create( ACBrStr('Numero da Parcela Atual deve ser menor ' +
+                             'que o Total de Parcelas do Carnê') );
    fParcela := AValue;
 end;
 
 procedure TACBrTitulo.SetTotalParcelas ( const AValue: Integer ) ;
 begin
    if (AValue < Parcela) and (ACBrBoleto.ACBrBoletoFC.LayOut = lCarne) then
-      raise Exception.Create('Numero da Parcela Atual deve ser menor ou igual ' +
-                             'o Total de Parcelas do Carne');
+      raise Exception.Create( ACBrStr('Numero da Parcela Atual deve ser menor ou igual ' +
+                             'o Total de Parcelas do Carnê') );
    fTotalParcelas := AValue;
 end;
 
@@ -1070,10 +1070,10 @@ end;
 Procedure TACBrBoleto.Imprimir;
 begin
   if not Assigned(ACBrBoletoFC) then
-     raise Exception.Create( 'Nenhum componente "ACBrBoletoFC" associado' ) ;
+     raise Exception.Create( ACBrStr('Nenhum componente "ACBrBoletoFC" associado' ) ) ;
 
   if Banco.Numero = 0 then
-     raise Exception.Create('Banco nao definido, impossivel listar boleto');
+     raise Exception.Create( ACBrStr('Banco não definido, impossivel listar boleto') );
 
   ChecarDadosObrigatorios;
 
@@ -1083,7 +1083,7 @@ end;
 procedure TACBrBoleto.GerarPDF;
 begin
    if not Assigned(ACBrBoletoFC) then
-     raise Exception.Create( 'Nenhum componente "ACBrBoletoFC" associado' ) ;
+     raise Exception.Create( ACBrStr('Nenhum componente "ACBrBoletoFC" associado' ) ) ;
 
   ChecarDadosObrigatorios;
 
@@ -1093,7 +1093,7 @@ end;
 procedure TACBrBoleto.GerarHTML;
 begin
    if not Assigned(ACBrBoletoFC) then
-     raise Exception.Create( 'Nenhum componente "ACBrBoletoFC" associado' ) ;
+     raise Exception.Create( ACBrStr('Nenhum componente "ACBrBoletoFC" associado' ) );
 
    ChecarDadosObrigatorios;
 
@@ -1184,7 +1184,7 @@ begin
    inherited Create ( AOwner ) ;
 
    if not (AOwner is TACBrBoleto) then
-      raise Exception.Create('Aowner deve ser do tipo TACBrBoleto');
+      raise Exception.Create(ACBrStr('Aowner deve ser do tipo TACBrBoleto'));
 
    fACBrBoleto  := TACBrBoleto(AOwner);
    fNumeroBanco := 0;
@@ -1676,7 +1676,7 @@ procedure TACBrBoleto.ChecarDadosObrigatorios;
 begin
    if (Cedente.Nome= '') or (cedente.Conta = '') or (Cedente.ContaDigito ='') or
       (Cedente.Agencia = '') or (Cedente.AgenciaDigito = '') then
-     raise Exception.Create('Informações do Cedente Imcompletas');
+     raise Exception.Create(ACBrStr('Informações do Cedente Imcompletas'));
 end;
 
 { TACBrBoletoFCClass }

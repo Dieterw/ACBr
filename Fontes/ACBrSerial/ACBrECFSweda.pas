@@ -234,11 +234,11 @@ TACBrECFSweda = class( TACBrECFClass )
 
     function GetCNPJ: String; override ;
     function GetIE: String; override ;
-    function GetIM: String; override ;  //IMS 28/09/2009
-    function GetCliche: String; override ;  //IMS 28/09/2009
-    function GetUsuarioAtual: String; override ;  //IMS 09/10/2009
-    function GetDataHoraSB: TDateTime; override ; //IMS 20/10/2009    
-    function GetSubModeloECF: String; override ;  //IMS 20/10/2009
+    function GetIM: String; override ;
+    function GetCliche: AnsiString; override ;
+    function GetUsuarioAtual: String; override ;
+    function GetDataHoraSB: TDateTime; override ;
+    function GetSubModeloECF: String; override ;
     function GetDataMovimento: TDateTime; override ;
     function GetGrandeTotal: Double; override ;
     function GetNumCRZ: String; override ;
@@ -334,12 +334,10 @@ TACBrECFSweda = class( TACBrECFClass )
        Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
     Procedure LeituraMemoriaFiscalSerial( ReducaoInicial, ReducaoFinal : Integer;
        Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
-//IMS 09/10/2009
     Procedure LeituraMFDSerial(DataInicial, DataFinal : TDateTime;
        Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
     Procedure LeituraMFDSerial( COOInicial, COOFinal : Integer;
        Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
-//IMS
 
     procedure IdentificaPAF(Linha1, Linha2: String); override ;
 
@@ -1719,7 +1717,6 @@ begin
 end;
 
 procedure TACBrECFSweda.LerTotaisAliquota;
-// Autor: wpsouto
  Var A, Posicao : Integer;
      RetCmd , AliquotasStr : AnsiString;
 begin
@@ -2596,7 +2593,6 @@ begin
   Sleep(300) ;
 
 end;
-//IMS
 
 procedure TACBrECFSweda.CancelaImpressaoCheque;
 begin
@@ -2711,7 +2707,7 @@ begin
   while I < 5 do
   begin
      wretorno := EnviaComando('29'+ AnsiChar( chr(72+I) ));   // 72 = H em ASCII
-     if (copy(wretorno,1,3) = '.+T') and (copy(wretorno,8,22) <> Space(22) ) then //IMS 10/10/2009
+     if (copy(wretorno,1,3) = '.+T') and (copy(wretorno,8,22) <> Space(22) ) then
         Result := Copy(wretorno,8,22);
      I := I + 1 ;
   end ;
@@ -2727,13 +2723,12 @@ begin
   while I < 5 do
   begin
      wretorno := EnviaComando('29'+ AnsiChar( chr(72+I) ));   // 72 = H em ASCII
-     if (copy(wretorno,1,3) = '.+T') and (copy(wretorno,8,22) <> Space(22) ) then   //IMS 10/10/2009
+     if (copy(wretorno,1,3) = '.+T') and (copy(wretorno,8,22) <> Space(22) ) then
         Result := Copy(wretorno,30,21);
      I := I + 1 ;
   end ;
 end;
 
-//IMS 28/09/2009
 function TACBrECFSweda.GetIM: String;
  var
   wretorno: Ansistring;
@@ -2744,19 +2739,15 @@ begin
   while I < 5 do
   begin
      wretorno := EnviaComando('29'+ AnsiChar( chr(72+I) ));   // 72 = H em ASCII
-     if (copy(wretorno,1,3) = '.+T') and (copy(wretorno,8,22) <> Space(22) ) then   //IMS 10/10/2009
+     if (copy(wretorno,1,3) = '.+T') and (copy(wretorno,8,22) <> Space(22) ) then
         Result := Copy(wretorno,51,16);
      I := I + 1 ;
   end ;
 end;
 
-function TACBrECFSweda.GetCliche: String;
- var
-  wretorno: Ansistring;
-  Tipo1: String;
-  Tipo2: String;
-  Tipo3: String;
-
+function TACBrECFSweda.GetCliche: AnsiString;
+var
+  wretorno, Tipo1, Tipo2, Tipo3 : Ansistring;
 begin
   Result   := '';
   Tipo1    := '';
@@ -2787,7 +2778,6 @@ begin
   end ;
 end;
 
-//IMS 09/10/2009
 function TACBrECFSweda.GetUsuarioAtual: String;
  var
   wretorno: Ansistring;
@@ -2800,7 +2790,7 @@ begin
   while I < 5 do
   begin
      wretorno := EnviaComando('29'+ AnsiChar( chr(72+I) ));   // 72 = H em ASCII
-     if (copy(wretorno,1,3) = '.+T') and (copy(wretorno,8,22) <> Space(22) ) then   //IMS 10/10/2009
+     if (copy(wretorno,1,3) = '.+T') and (copy(wretorno,8,22) <> Space(22) ) then
         if copy(wretorno,7,1) = 'H' then
            Result := '0001'
         else if copy(wretorno,7,1) = 'I' then
@@ -2815,7 +2805,7 @@ begin
      I := I + 1 ;
   end ;
 end;
-//IMS 20/10/2009
+
 function TACBrECFSweda.GetDataHoraSB: TDateTime;
 Var RetCmd : AnsiString ;
     OldShortDateFormat : String ;
@@ -2862,10 +2852,8 @@ function TACBrECFSweda.GetSubModeloECF: String; //Tem que aprimorar esta rotina,
 begin
   Result := fsSubModeloECF ;
 end;
-//IMS
 
 function TACBrECFSweda.GetDataMovimento: TDateTime;
-// Autor: Ederson Selvati, Daniel Simões
 var
   wretorno, OldShortDateFormat: AnsiString;
 begin
@@ -2886,7 +2874,6 @@ begin
 end;
 
 function TACBrECFSweda.GetGrandeTotal: Double;
-// Autor: Ederson Selvati, 
 var
   wretorno: AnsiString;
 begin
@@ -2897,7 +2884,6 @@ begin
 end;
 
 function TACBrECFSweda.GetNumCOOInicial: String;
-// Autor: Ederson Selvati, José Nilton Pace
 var
   wretorno: AnsiString;
 begin
@@ -2925,7 +2911,6 @@ begin
 end;
 
 function TACBrECFSweda.GetNumCRZ: String;
-// Autor: Ederson Selvati,
 var
   wretorno: AnsiString;
 begin
@@ -2936,7 +2921,6 @@ begin
 end;
 
 function TACBrECFSweda.GetNumUltimoItem: Integer;
-// Autor: Alan Lucas
 var
   wretorno: AnsiString;
 begin
@@ -2947,7 +2931,6 @@ begin
 end;
 
 function TACBrECFSweda.GetTotalAcrescimos: Double;
-// Autor: Alan Lucas
 var
   wretorno: AnsiString;
 begin
@@ -2968,7 +2951,6 @@ begin
 end;
 
 function TACBrECFSweda.GetTotalCancelamentos: Double;
-// Autor: Ederson Selvati,
 var
   wretorno: AnsiString;
 begin
@@ -2992,7 +2974,6 @@ begin
 end;
 
 function TACBrECFSweda.GetTotalDescontos: Double;
-// Autor: Ederson Selvati,
 var
   wretorno: AnsiString;
 begin
@@ -3023,7 +3004,6 @@ begin
 end;
 
 function TACBrECFSweda.GetTotalIsencao: Double;
-// Autor: Ederson Selvati
 var
   wretorno: AnsiString;
 begin
@@ -3047,7 +3027,6 @@ begin
 end;
 
 function TACBrECFSweda.GetTotalNaoTributado: Double;
-// Autor: Ederson Selvati
 var
   wretorno: AnsiString;
 begin
@@ -3071,7 +3050,6 @@ begin
 end;
 
 function TACBrECFSweda.GetTotalSubstituicaoTributaria: Double;
-// Autor: Ederson Selvati
 var
   wretorno: AnsiString;
 begin
@@ -3095,7 +3073,6 @@ begin
 end;
 
 function TACBrECFSweda.GetVendaBruta: Double;
-// Autor: Ederson Selvati
 var
   wretorno: AnsiString;
 begin

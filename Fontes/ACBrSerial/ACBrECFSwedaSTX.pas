@@ -159,10 +159,8 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
 
     function GetCNPJ: String; override ;
     function GetIE: String; override ;
-//IMS
     function GetIM: String; override ;
-    function GetCliche: String; override ;    
-//IMS    
+    function GetCliche: AnsiString; override ;
     function GetPAF: String; override ;
     function GetDataMovimento: TDateTime; override ;
     function GetGrandeTotal: Double; override ;
@@ -1946,7 +1944,6 @@ begin
    Result := Copy(RetCMD,21,21);
 end;
 
-//IMS
 function TACBrECFSwedaSTX.GetIM: String;
 var
    RetCMD:String;
@@ -1955,14 +1952,13 @@ begin
    Result := Copy(RemoveNulos(RetCMD),42,21);
 end;
 
-function TACBrECFSwedaSTX.GetCliche: String;
+function TACBrECFSwedaSTX.GetCliche: AnsiString;
 var
-   RetCMD:String;
+   RetCMD : AnsiString;
 begin
    RetCMD := RetornaInfoECF('H4');
    Result := RemoveNulos(RetCMD);
 end;
-//IMS
 
 function TACBrECFSwedaSTX.GetDataMovimento: TDateTime;
  Var

@@ -1569,7 +1569,6 @@ begin
 end;
 
 function TACBrECFSchalter.GetNumUltimoItem: Integer;
-// Autor: Alan Lucas
 Var RetCmd : AnsiString;
 begin
   Result := 0;
@@ -1581,7 +1580,6 @@ begin
 end;
 
 function TACBrECFSchalter.GetGrandeTotal: Double;
-// Autor: Alan Lucas
 Var RetCmd : AnsiString;
 begin
   BytesResp := 73;

@@ -141,11 +141,11 @@ TACBrECFEpson = class( TACBrECFClass )
     fsNumLoja   : String ;
     fsCNPJ      : String ;
     fsIE        : String ;
-    fsIM        : String ;  //IMS 28/09/2009
-    fsCliche    : String ;  //IMS 28/09/2009
-    fsUsuarioAtual       : String ;  //IMS 09/10/2009
-    fsDataHoraSB         : TDateTime ;  //IMS 20/10/2009
-    fsSubModeloECF       : String ; //IMS 20/10/2009
+    fsIM        : String ;
+    fsCliche    : AnsiString ;
+    fsUsuarioAtual       : String ;
+    fsDataHoraSB         : TDateTime ;
+    fsSubModeloECF       : String ;
     fsRet0906   : AnsiString ;
     fsRet0907   : AnsiString ;
     fsEpsonComando: TACBrECFEpsonComando;
@@ -204,11 +204,11 @@ TACBrECFEpson = class( TACBrECFClass )
 
     function GetCNPJ: String; override ;
     function GetIE: String; override ;
-    function GetIM: String; override ;  //IMS 28/09/2009
-    function GetCliche: String; override ;  //IMS 28/09/2009
-    function GetUsuarioAtual: String; override ;  //IMS 09/10/2009
-    function GetDataHoraSB: TDateTime; override ; //IMS 20/10/2009
-    function GetSubModeloECF: String ; override ; //IMS 20/10/2009
+    function GetIM: String; override ;
+    function GetCliche: AnsiString; override ;
+    function GetUsuarioAtual: String; override ;
+    function GetDataHoraSB: TDateTime; override ;
+    function GetSubModeloECF: String ; override ;
     
     function GetPAF: String; override ;
     function GetDataMovimento: TDateTime; override ;
@@ -905,11 +905,11 @@ begin
   fsNumLoja   := '' ;
   fsCNPJ      := '' ;
   fsIE        := '' ;
-  fsIM        := '' ;  //IMS 28/09/2009
-  fsCliche    := '' ;  //IMS 28/09/2009
-  fsUsuarioAtual    := '' ;  //IMS 09/10/2009
-  fsDataHoraSB      := now ;  //IMS 20/10/2009
-  fsSubModeloECF    := '' ; //IMS 20/10/2009
+  fsIM        := '' ;
+  fsCliche    := '' ;
+  fsUsuarioAtual    := '' ;
+  fsDataHoraSB      := now ;
+  fsSubModeloECF    := '' ;
   fpModeloStr := 'Epson' ;
   fpMFD       := True ;
   fpTermica   := True ;
@@ -950,11 +950,11 @@ begin
   fsNumLoja   := '' ;
   fsCNPJ      := '' ;
   fsIE        := '' ;
-  fsIM        := '' ;  //IMS 28/09/2009
-  fsCliche    := '' ;  //IMS 28/09/2009
-  fsUsuarioAtual    := '' ;  //IMS 09/10/2009
-  fsDataHoraSB      := now ;  //IMS 20/10/2009
-  fsSubModeloECF    := '' ; //IMS 20/10/2009
+  fsIM        := '' ;
+  fsCliche    := '' ;
+  fsUsuarioAtual    := '' ;
+  fsDataHoraSB      := now ;
+  fsSubModeloECF    := '' ;
   fsRet0906   := '' ;
   fsRet0907   := '' ;
 
@@ -1283,9 +1283,9 @@ begin
 
      fsCNPJ    := Trim(EpsonResposta.Params[5]) ;
      fsIE      := Trim(EpsonResposta.Params[6]) ;
-     fsCliche  := Trim(EpsonResposta.Params[0]) ;  //IMS 28/09/2009
-     fsIM      := Trim(EpsonResposta.Params[7]) ;  //IMS 28/09/2009
-     fsUsuarioAtual    := Trim(EpsonResposta.Params[11]) ;  //IMS 09/10/2009
+     fsCliche  := Trim(EpsonResposta.Params[0]) ;
+     fsIM      := Trim(EpsonResposta.Params[7]) ;
+     fsUsuarioAtual    := Trim(EpsonResposta.Params[11]) ;
      fsNumECF  := EpsonResposta.Params[8] ;
      fsNumLoja := OnlyNumber( EpsonResposta.Params[9] ) ;
   end ;
@@ -2335,7 +2335,6 @@ begin
   Result := fsIE ;
 end;
 
-//IMS 28/09/2009
 function TACBrECFEpson.GetIM: String;
 begin
   if fsIM = '' then
@@ -2344,14 +2343,14 @@ begin
   Result := fsIM ;
 end;
 
-function TACBrECFEpson.GetCliche: String;
+function TACBrECFEpson.GetCliche: AnsiString;
 begin
   if fsCliche = '' then
      GetNumLoja ;
 
   Result := fsCliche ;
 end;
-//IMS 09/10/2009
+
 function TACBrECFEpson.GetUsuarioAtual: String;
 begin
   if fsUsuarioAtual = '' then
@@ -2359,7 +2358,7 @@ begin
 
   Result := fsUsuarioAtual ;
 end;
-//IMS 20/10/2009
+
 function TACBrECFEpson.GetDataHoraSB: TDateTime;
 Var RetCmd : AnsiString ;
     OldShortDateFormat : String ;
@@ -2392,8 +2391,6 @@ begin
 
   Result := EpsonResposta.Params[3] ;
 end;
-
-//IMS
 
 function TACBrECFEpson.GetDataMovimento: TDateTime;
 Var RetCmd : AnsiString ;

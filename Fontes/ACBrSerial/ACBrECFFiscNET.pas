@@ -201,11 +201,11 @@ TACBrECFFiscNET = class( TACBrECFClass )
 
     function GetCNPJ: String; override ;
     function GetIE: String; override ;
-    function GetIM: String; override ;  //IMS 28/09/2009
-    function GetCliche: String; override ;  //IMS 28/09/2009
-    function GetUsuarioAtual: String; override ;  //IMS 09/10/2009
-    function GetDataHoraSB: TDateTime; override ; //IMS 20/10/2009
-    function GetSubModeloECF: String ; override ; //IMS 20/10/2009
+    function GetIM: String; override ;
+    function GetCliche: AnsiString; override ;
+    function GetUsuarioAtual: String; override ;
+    function GetDataHoraSB: TDateTime; override ;
+    function GetSubModeloECF: String ; override ;
     
     function GetDataMovimento: TDateTime; override ;
     function GetGrandeTotal: Double; override ;
@@ -1847,8 +1847,6 @@ procedure TACBrECFFiscNET.CortaPapel(const CorteParcial: Boolean);
 var
   TipoCorte: Integer;
 begin
-// Autor: Nei José Van Lare Junior
-
   if CorteParcial then
      TipoCorte := 1
   else
@@ -2144,7 +2142,6 @@ begin
   Result := FiscNETResposta.Params.Values['ValorTexto'] ;
 end;
 
-//IMS 28/09/2009
 function TACBrECFFiscNET.GetIM: String;
 begin
   FiscNETComando.NomeComando := 'LeTexto' ;
@@ -2154,7 +2151,7 @@ begin
   Result := FiscNETResposta.Params.Values['ValorTexto'] ;
 end;
 
-function TACBrECFFiscNET.GetCliche: String;
+function TACBrECFFiscNET.GetCliche: AnsiString;
 begin
   FiscNETComando.NomeComando := 'LeTexto' ;
   FiscNETComando.AddParamString('NomeTexto','Cliche') ;
@@ -2162,7 +2159,7 @@ begin
 
   Result := FiscNETResposta.Params.Values['ValorTexto'] ;
 end;
-//IMS 09/10/2009
+
 function TACBrECFFiscNET.GetUsuarioAtual: String;
 begin
   FiscNETComando.NomeComando := 'LeInteiro' ;
@@ -2171,7 +2168,7 @@ begin
 
   Result := FiscNETResposta.Params.Values['ValorInteiro'] ;
 end;
-//IMS 20/10/2009
+
 function TACBrECFFiscNET.GetDataHoraSB: TDateTime;
  {Atualmente não tem informações de como pegar a hora por comando direto,
 tem que utilizar a mesma forma que a Bemateh realizar a partir da LMF  a
@@ -2187,10 +2184,8 @@ begin
 
   Result := FiscNETResposta.Params.Values['ValorTexto'] ;
 end;
-//IMS
 
 function TACBrECFFiscNET.GetDataMovimento: TDateTime;
-// Autor: Nei José Van Lare Junior
 var
   RetCmd: AnsiString;
   OldShortDateFormat : String ;
@@ -2228,7 +2223,6 @@ begin
 end;
 
 function TACBrECFFiscNET.GetGrandeTotal: Double;
-// Autor: Nei José Van Lare Junior
 begin
   FiscNETComando.NomeComando := 'LeMoeda' ;
   FiscNETComando.AddParamString('NomeDadoMonetario','GT') ;
@@ -2239,7 +2233,6 @@ begin
 end;
 
 function TACBrECFFiscNET.GetNumCRZ: String;
-// Autor: Nei José Van Lare Junior
 begin
   FiscNETComando.NomeComando := 'LeInteiro' ;
   FiscNETComando.AddParamString('NomeInteiro','CRZ') ;
@@ -2272,7 +2265,6 @@ end;
 
 
 function TACBrECFFiscNET.GetTotalCancelamentos: Double;
-// Autor: Nei José Van Lare Junior
 begin
   FiscNETComando.NomeComando := 'LeMoeda' ;
   FiscNETComando.AddParamString('NomeDadoMonetario','TotalDiaCancelamentosIcms') ;
@@ -2295,7 +2287,6 @@ end;
 
 
 function TACBrECFFiscNET.GetTotalDescontos: Double;
-// Autor: Nei José Van Lare Junior
 begin
   FiscNETComando.NomeComando := 'LeMoeda' ;
   FiscNETComando.AddParamString('NomeDadoMonetario','TotalDiaDescontos') ;
@@ -2327,7 +2318,6 @@ begin
 end;
 
 function TACBrECFFiscNET.GetTotalSubstituicaoTributaria: Double;
-// Autor: Nei José Van Lare Junior
 begin
   FiscNETComando.NomeComando := 'LeMoeda' ;
   FiscNETComando.AddParamString('NomeDadoMonetario','TotalDiaSubstituicaoTributariaICMS') ;
@@ -2348,7 +2338,6 @@ begin
 end;
 
 function TACBrECFFiscNET.GetTotalIsencao: Double;
-// Autor: Nei José Van Lare Junior
 begin
   FiscNETComando.NomeComando := 'LeMoeda' ;
   FiscNETComando.AddParamString('NomeDadoMonetario','TotalDiaIsencaoICMS') ;
@@ -2369,7 +2358,6 @@ begin
 end;
 
 function TACBrECFFiscNET.GetTotalNaoTributado: Double;
-// Autor: Nei José Van Lare Junior
 begin
   FiscNETComando.NomeComando := 'LeMoeda' ;
   FiscNETComando.AddParamString('NomeDadoMonetario','TotalDiaNaoTributadoICMS') ;

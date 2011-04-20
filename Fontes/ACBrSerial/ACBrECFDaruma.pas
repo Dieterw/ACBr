@@ -256,11 +256,11 @@ TACBrECFDaruma = class( TACBrECFClass )
 
     function GetCNPJ: String; override ;
     function GetIE: String; override ;
-    function GetIM: String; override ;  //IMS 09/10/2009
-    function GetCliche: String; override ;  //IMS 09/10/2009
-    function GetUsuarioAtual: String; override ;  //IMS 09/10/2009
-    function GetDataHoraSB: TDateTime; override ; //IMS 20/10/2009
-    function GetSubModeloECF: String ; override ; //IMS 20/10/2009
+    function GetIM: String; override ;
+    function GetCliche: AnsiString; override ;
+    function GetUsuarioAtual: String; override ;
+    function GetDataHoraSB: TDateTime; override ;
+    function GetSubModeloECF: String ; override ;
 
     function GetPAF: String; override ;
     function GetDataMovimento: TDateTime; override ;
@@ -3135,7 +3135,7 @@ begin
 
   AguardaImpressao := True ;
   if fpMFD then
-    EnviaComando( FS + 'F' + #233 + IfThen(Simplificada, '2', '3') + IntToStrZero(ReducaoInicial,6)+  //IMS 12/10/2009
+    EnviaComando( FS + 'F' + #233 + IfThen(Simplificada, '2', '3') + IntToStrZero(ReducaoInicial,6)+
                      IntToStrZero(ReducaoFinal  ,6), Espera )
   else if fsNumVersao = '2000' then
     EnviaComando( ESC + #251 + Flag + IntToStrZero(ReducaoInicial,6)+
@@ -3157,7 +3157,7 @@ begin
 
   AguardaImpressao := True ;
   if fpMFD then
-    EnviaComando( FS + 'F' + #233 + IfThen(Simplificada, '2', '3') + FormatDateTime('ddmmyy',DataInicial) + //IMS 12/10/2009
+    EnviaComando( FS + 'F' + #233 + IfThen(Simplificada, '2', '3') + FormatDateTime('ddmmyy',DataInicial) +
                      FormatDateTime('ddmmyy',DataFinal), Espera )
   else if fsNumVersao = '2000' then
      EnviaComando(ESC + #251 + Flag + FormatDateTime('ddmmyy',DataInicial)+
@@ -3348,7 +3348,6 @@ begin
 end;
 
 function TACBrECFDaruma.GetNumCRZ: String;
-// Autor: Jhony Alceu Pereira
 Var RetCmd : AnsiString ;
 begin
   Result := '' ;
@@ -3366,7 +3365,6 @@ begin
 end;
 
 function TACBrECFDaruma.GetGrandeTotal: Double;
-// Autor: Jhony Alceu Pereira
 Var RetCmd : AnsiString ;
 begin
   Result:=0;
@@ -3390,7 +3388,6 @@ begin
 end;
 
 function TACBrECFDaruma.GetNumCOOInicial: String;
-// Autor: Jhony Alceu Pereira
 Var RetCmd : AnsiString ;
 begin
   Result := '' ;
@@ -3409,7 +3406,6 @@ begin
 end;
 
 function TACBrECFDaruma.GetVendaBruta: Double;
-// Autor: Jhony Alceu Pereira
 Var RetCmd : AnsiString ;
 begin
   Result := 0 ;
@@ -3534,9 +3530,9 @@ var
 begin
    Result := 0;
 
-  if fpMFD then  // Autor: Ederson Selvati
+  if fpMFD then
     Result := (StrToFloatDef(RetornaInfoECF('012'),0)/100)
-  else if fsNumVersao = '2000' then //Autor: Maicon da Silva Evangelista
+  else if fsNumVersao = '2000' then
   begin
      //Falta Implementar
   end
@@ -3556,9 +3552,9 @@ function TACBrECFDaruma.GetTotalCancelamentos: Double;
 begin
   Result := 0;
 
-  if fpMFD then   // Autor: Ederson Selvati
+  if fpMFD then
     Result := (StrToFloatDef(RetornaInfoECF('013'),0)/100)
-  else if fsNumVersao = '2000' then  //Autor: Maicon da Silva Evangelista
+  else if fsNumVersao = '2000' then
   begin
     //Falta Implementar
   end
@@ -3578,9 +3574,9 @@ function TACBrECFDaruma.GetTotalDescontos: Double;
 begin
   Result := 0;
 
-  if fpMFD then // Autor: Ederson Selvati
+  if fpMFD then
     Result := (StrToFloatDef(RetornaInfoECF('011'),0)/100)
-  else if fsNumVersao = '2000' then //Autor: Maicon da Silva Evangelista
+  else if fsNumVersao = '2000' then
   begin
     //Falta Implementar
   end
@@ -3604,7 +3600,6 @@ begin
   Result := RoundTo( Result, -2);
 end;
 
-//ISS---------------------------------------
 function TACBrECFDaruma.GetTotalAcrescimosISSQN: Double;
 begin
   Result := 0;
@@ -3667,18 +3662,15 @@ begin
   Result := RoundTo( Result, -2);
 end;
 
-
-//------------------------------------------
-
 function TACBrECFDaruma.GetTotalIsencao: Double;
 var
   RetCmd: AnsiString;
 begin
   Result := 0;
 
-  if fpMFD then  // Autor: Ederson Selvati
+  if fpMFD then
     Result := (StrToFloatDef(Copy(RetornaInfoECF('003'), 235, 13),0)/100)
-  else if fsNumVersao = '2000' then  //Autor: Maicon da Silva Evangelista
+  else if fsNumVersao = '2000' then
   begin
     //Falta Implementar
   end
@@ -3699,9 +3691,9 @@ function TACBrECFDaruma.GetTotalNaoTributado: Double;
 begin
   Result := 0;
 
-  if fpMFD then   // Autor: Ederson Selvati
+  if fpMFD then
     Result := (StrToFloatDef(Copy(RetornaInfoECF('003'), 261, 13),0)/100)
-  else if fsNumVersao = '2000' then //Autor: Maicon da Silva Evangelista
+  else if fsNumVersao = '2000' then
   begin
     //Falta Implementar
   end
@@ -3721,9 +3713,9 @@ function TACBrECFDaruma.GetTotalSubstituicaoTributaria: Double;
 begin
   Result := 0;
 
-  if fpMFD then  // Autor: Ederson Selvati
+  if fpMFD then
     Result := (StrToFloatDef(Copy(RetornaInfoECF('003'), 209, 13),0)/100)
-  else if fsNumVersao = '2000' then //Autor: Maicon da Silva Evangelista
+  else if fsNumVersao = '2000' then
   begin
     //Falta Implementar
   end
@@ -3743,9 +3735,9 @@ function TACBrECFDaruma.GetCNPJ: String;
 begin
   Result := '';
 
-  if fpMFD then   // Autor: Ederson Selvatin
+  if fpMFD then
     Result := Trim(RetornaInfoECF('090'))
-  else if fsNumVersao = '2000' then  //Autor Maicon da Silva Evangelista
+  else if fsNumVersao = '2000' then
   begin
     //Falta Implementar
   end
@@ -3765,7 +3757,7 @@ begin
 
   if fpMFD then
     Result := Trim(RetornaInfoECF('091'))
-  else if fsNumVersao = '2000' then  //Autor: Maicon da Silva Evangelista
+  else if fsNumVersao = '2000' then
   begin
     //Falta Implementar
   end
@@ -3777,7 +3769,6 @@ begin
   end;
 end;
 
-//IMS 09/10/2009
 function TACBrECFDaruma.GetIM: String;
 var
    RetCmd: AnsiString;
@@ -3798,7 +3789,7 @@ begin
   end;
 end;
 
-function TACBrECFDaruma.GetCliche: String;
+function TACBrECFDaruma.GetCliche: AnsiString;
 var
    RetCmd: AnsiString;
 begin
@@ -3852,7 +3843,6 @@ begin
   Result := fsUsuarioAtual;
 end;
 
-//IMS 20/10/2009
 function TACBrECFDaruma.GetDataHoraSB: TDateTime;
 Var RetCmd : AnsiString ;
     OldShortDateFormat : String ;
@@ -3896,8 +3886,6 @@ function TACBrECFDaruma.GetSubModeloECF: String;
 begin
    Result := Trim(RetornaInfoECF('81'))
 end;
-//IMS
-
 
 function TACBrECFDaruma.GetDataMovimento: TDateTime;
  var
@@ -3906,7 +3894,7 @@ function TACBrECFDaruma.GetDataMovimento: TDateTime;
 begin
   Result := 0;
 
-  if fpMFD then  // Autor: Ederson Selvati
+  if fpMFD then
   begin
     RetCmd := RetornaInfoECF('070');
     OldShortDateFormat := ShortDateFormat;
@@ -3919,7 +3907,7 @@ begin
       ShortDateFormat := OldShortDateFormat;
     end;
   end
-  else if fsNumVersao = '2000' then //Autor Maicon da Silva Evangelista
+  else if fsNumVersao = '2000' then
   begin
     Result := Date; // Falta Implementar
   end
@@ -3952,7 +3940,7 @@ procedure TACBrECFDaruma.LerTotaisAliquota;
 begin
   CarregaAliquotas;
 
-  if fpMFD then  // Autor: Ederson Selvati
+  if fpMFD then
   begin
     RetCmd := RetornaInfoECF('003');
     for A := 0 to fpAliquotas.Count-1 do
@@ -3961,7 +3949,7 @@ begin
                                          / 100, -2 );
     end;
   end
-  else if fsNumVersao = '2000' then  //Autor Maicon da Silva Evangelista
+  else if fsNumVersao = '2000' then
   begin
       // Falta Implementar
   end
@@ -3979,7 +3967,6 @@ begin
 end;
 
 procedure TACBrECFDaruma.LerTotaisFormaPagamento;
-//Autor: Maicon da Silva Evangelista
 var
    A: Integer;
    RetCmd, RetCmdAux,
@@ -4031,7 +4018,6 @@ begin
    
   if fpMFD then
   begin
-    // Autor: Andre Bohn
     for A := 0 to fpComprovantesNaoFiscais.Count -1 do
     begin
       RetCmd := EnviaComando( FS + 'R' + #201 + '010'+ IntToStrZero(A+1,2) );
@@ -4041,7 +4027,6 @@ begin
                                           / 100, -2 );
     end;
       
-    // Autor: Maicon da Silva e Gustava Montagoli
     for A := 0 to fpComprovantesNaoFiscais.Count -1 do
     begin
       RetCmd := EnviaComando( FS + 'R' + #201 + '011'+ IntToStrZero(A+1,2) );
@@ -4092,7 +4077,6 @@ begin
 end;
 
 function TACBrECFDaruma.GetTotalNaoFiscal: Double;
-//Autor: Maicon da Silva Evangelista
 var
    Cont        :  Integer;
    TotalCNFVinc,

@@ -1713,7 +1713,6 @@ begin
 end;
 
 function TACBrECFQuattro.GetDataMovimento: TDateTime;
-// Autor: João victor maia fernandes
 var
   wretorno, OldShortDateFormat: AnsiString;
 begin
@@ -1734,7 +1733,6 @@ begin
 end;
 
 function TACBrECFQuattro.GetGrandeTotal: Double;
-// Autor: joao victor maia fernandes
 var
   wretorno: AnsiString;
 begin
@@ -1745,7 +1743,6 @@ begin
 end;
 
 function TACBrECFQuattro.GetTotalAcrescimos: Double;
-// Autor: joao victor maia fernandes
 var
   wretorno: AnsiString;
 begin
@@ -1756,7 +1753,6 @@ begin
 end;
 
 function TACBrECFQuattro.GetTotalCancelamentos: Double;
-// Autor: joao victor maia fernandes
 var
   wretorno: AnsiString;
 begin
@@ -1770,7 +1766,6 @@ begin
 end;
 
 function TACBrECFQuattro.GetTotalDescontos: Double;
-// Autor: joao victor maia fernandes
 var
   wretorno: AnsiString;
 begin
@@ -1781,7 +1776,6 @@ begin
 end;
 
 function TACBrECFQuattro.GetVendaBruta: Double;
-// Autor: joao victor maia fernandes
 var
   wretorno: AnsiString;
 begin
@@ -1792,7 +1786,6 @@ begin
 end;
 
 function TACBrECFQuattro.GetNumCOOInicial: String;
-// Autor: joao victor maia fernandes
 var
   wretorno: AnsiString;
 begin
@@ -1803,7 +1796,6 @@ begin
 end;
 
 function TACBrECFQuattro.GetNumUltimoItem: Integer;
-// Autor: joao victor maia fernandes
 var
   wretorno: AnsiString;
 begin
@@ -1814,7 +1806,6 @@ begin
 end;
 
 function TACBrECFQuattro.GetTotalIsencao: Double;
-// Autor: joao victor maia fernandes
 var
   wretorno: AnsiString;
 begin
@@ -1825,7 +1816,6 @@ begin
 end;
 
 function TACBrECFQuattro.GetTotalNaoTributado: Double;
-// Autor: joao victor maia fernandes
 var
   wretorno: AnsiString;
 begin

@@ -451,11 +451,11 @@ TACBrECFBematech = class( TACBrECFClass )
 
     function GetCNPJ: String; override ;
     function GetIE: String; override ;
-    function GetIM: String; override ;  //IMS 28/09/2009
-    function GetCliche: String; override ;  //IMS 28/09/2009
-    function GetUsuarioAtual: String; override ;  //IMS 09/10/2009
-    function GetDataHoraSB: TDateTime; override ; //IMS 20/10/2009
-    function GetSubModeloECF: String ; override ; //IMS 20/10/2009
+    function GetIM: String; override ;
+    function GetCliche: AnsiString; override ;
+    function GetUsuarioAtual: String; override ;
+    function GetDataHoraSB: TDateTime; override ;
+    function GetSubModeloECF: String ; override ;
 
     function GetPAF: String; override ;
     function GetDataMovimento: TDateTime; override ;
@@ -571,12 +571,10 @@ TACBrECFBematech = class( TACBrECFClass )
        Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
     Procedure LeituraMemoriaFiscalSerial( ReducaoInicial, ReducaoFinal : Integer;
        Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
-//IMS 28/09/2009
     Procedure LeituraMFDSerial(DataInicial, DataFinal : TDateTime;
        Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
     Procedure LeituraMFDSerial( COOInicial, COOFinal : Integer;
        Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
-//IMS
     Procedure IdentificaPAF( Linha1, Linha2 : String) ; override ;
     Function RetornaInfoECF( Registrador: String) : AnsiString; override ;
 
@@ -1130,7 +1128,7 @@ begin
            fs25MFD     := True ;
            try
               RetCmd    := Trim( RetornaInfoECF( '60' )) ;
-              fsSubModeloECF := copy(RetCmd,16,20) ; //IMS 20/10/2009
+              fsSubModeloECF := copy(RetCmd,16,20) ;
               fpTermica := (Pos('TH ',RetCmd) > 0) ;
               fpMFD     := fpTermica ;
            except
@@ -1161,10 +1159,26 @@ end;
 function TACBrECFBematech.GetSubTotal: Double;
 Var
   RetCmd : AnsiString ;
+  B2 : Integer ;
+  ENaoFiscal : Boolean ;
 begin
-  BytesResp := 7 ;
-  RetCmd    := EnviaComando( #29 ) ;
-  Result    := StrToFloatDef( BcdToAsc( RetCmd ), 0) / 100 ;
+  ENaoFiscal := False;
+  if fpMFD then
+  begin
+     RetCmd     := RetornaInfoECF( '65' ) ;
+     B2         := ord( RetCmd[1] )  ;
+     ENaoFiscal := TestBit( B2 ,0) ;
+  end ;
+
+  if not ENaoFiscal then
+   begin
+     BytesResp := 7 ;
+     RetCmd    := BcdToAsc( EnviaComando( #29 ) ) ;
+   end
+  else
+     RetCmd := RetornaInfoECF('66') ;
+
+  Result := StrToFloatDef(  RetCmd, 0) / 100 ;
 end;
 
 {  Ordem de Retorno do Estado da Impressora
@@ -2319,7 +2333,6 @@ begin
                                FormatDateTime('ddmmyy',DataFinal)  ,Espera);
 //WriteToTXT('d:\temp\mfd_limpo.txt',Linhas.Text, False);
 end;
-//IMS
 
 function TACBrECFBematech.GetCNPJ: String;
 begin
@@ -2337,7 +2350,6 @@ begin
      Result  := copy(Trim( RetornaInfoECF( '02' ) ),19,18) ;
 end;
 
-//IMS 28/09/2009
 function TACBrECFBematech.GetIM: String;
 begin
   if fs25MFD then
@@ -2346,12 +2358,11 @@ begin
      Result := copy(Trim( RetornaInfoECF( '02' ) ),37,18) ;
 end;
 
-function TACBrECFBematech.GetCliche: String;
+function TACBrECFBematech.GetCliche: AnsiString;
 begin
   Result := RetornaInfoECF( '13' ) ;
 end;
 
-//IMS 09/10/2009
 function TACBrECFBematech.GetUsuarioAtual: String;
 begin
   Result := RetornaInfoECF( '11' ) ;
@@ -2425,8 +2436,6 @@ begin
 
     Result  := fsSubModeloECF ;
 end;
-
-//IMS
 
 function TACBrECFBematech.GetDataMovimento: TDateTime;
 Var RetCmd : AnsiString ;

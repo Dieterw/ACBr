@@ -390,11 +390,11 @@ TACBrECF = class( TACBrComponent )
     procedure SetComandoLOGClass(const Value: AnsiString);
     function GetCNPJClass: String;
     function GetIEClass: String;
-    function GetIMClass: String;  //IMS 28/09/2009
-    function GetClicheClass: String;  //IMS 28/09/2009
-    function GetUsuarioAtualClass: String;  //IMS 09/10/2009
-    function GetDataHoraSBClass: TDateTime; //IMS 20/10/2009
-    function GetSubModeloECFClass: String ; //IMS 20/10/2009
+    function GetIMClass: String;
+    function GetClicheClass: AnsiString;
+    function GetUsuarioAtualClass: String;
+    function GetDataHoraSBClass: TDateTime;
+    function GetSubModeloECFClass: String ;
 
     function GetPAFClass: String;
     function GetDadosReducaoZ: AnsiString;
@@ -482,13 +482,13 @@ TACBrECF = class( TACBrComponent )
 
     { Retorna String com todos os valores no formato: Campo = Valor (1 por linha)}
     Property DataMovimento      : TDateTime  read GetDataMovimentoClass ;
-    Property DataHoraSB         : TDateTime  read GetDataHoraSBClass ; //IMS 20/10/2009
+    Property DataHoraSB         : TDateTime  read GetDataHoraSBClass ;
     Property CNPJ               : String     read GetCNPJClass ;
     Property IE                 : String     read GetIEClass ;
-    Property IM                 : String     read GetIMClass ;  //IMS 28/09/2009
-    Property Cliche             : String     read GetClicheClass ;  //IMS 28/09/2009
-    Property UsuarioAtual       : String     read GetUsuarioAtualClass ;  //IMS 09/10/2009
-    Property SubModeloECF       : String     read GetSubModeloECFClass ; //IMS 20/10/2009
+    Property IM                 : String     read GetIMClass ;
+    Property Cliche             : AnsiString read GetClicheClass ;
+    Property UsuarioAtual       : String     read GetUsuarioAtualClass ;
+    Property SubModeloECF       : String     read GetSubModeloECFClass ;
     Property MFAdicional        : String     read GetMFAdicional ;
 
     Property PAF                : String     read GetPAFClass ;
@@ -1873,35 +1873,34 @@ begin
   Result := Trim(fsECF.IE) ;
 end;
 
-//IMS 28/09/2009
 function TACBrECF.GetIMClass: String;
 begin
   ComandoLOG := 'IM' ;
   Result := Trim(fsECF.IM) ;
 end;
-function TACBrECF.GetClicheClass: String;
+function TACBrECF.GetClicheClass: AnsiString;
 begin
   ComandoLOG := 'Cliche' ;
-  Result := Trim(fsECF.Cliche) ;  // Trim remove eventuais #0
+  Result := StringReplace(fsECF.Cliche,#0,'',[rfReplaceAll]) ;  // remove eventuais #0
 end;
-//IMS 09/10/2009
+
 function TACBrECF.GetUsuarioAtualClass: String;
 begin
   ComandoLOG := 'UsuarioAtual' ;
   Result := fsECF.UsuarioAtual ;
 end;
-//IMS 20/10/2009
+
 function TACBrECF.GetDataHoraSBClass: TDateTime;
 begin
   ComandoLOG := 'DataHoraSB' ;
   Result := fsECF.DataHoraSB ;
 end;
+
 function TACBrECF.GetSubModeloECFClass: String;
 begin
   ComandoLOG := 'SubModeloECF' ;
   Result := fsECF.SubModeloECF ;
 end;
-//IMS
 
 function TACBrECF.GetPAFClass: String;
 begin

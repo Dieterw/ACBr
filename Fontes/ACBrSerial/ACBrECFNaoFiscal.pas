@@ -187,12 +187,10 @@ TACBrECFNaoFiscal = class( TACBrECFClass )
     fsArqINI    : String ;
     fsNumSerie  : String ;
     fsNumECF    : String ;
-//IMS
     fsIE        : String ;
     fsCNPJ      : String ;
     fsPAF       : String ;
     fsIM        : String ;
-//IMS    
     fsCRO       : Integer ;
     fsCabecalho : TStringList ;
     fsCabecalhoItem : TStringList ;
@@ -208,12 +206,12 @@ TACBrECFNaoFiscal = class( TACBrECFClass )
     fsCOOInicial : Integer ;
     fsCOOFinal   : Integer ;
     fsNumCupom   : Integer ;
-    fsNumGNF     : Integer ;  //IMS 22/10/2009
-    fsNumGRG     : Integer ;  //IMS 22/10/2009
-    fsNumCDC     : Integer ;  //IMS 22/10/2009
-    fsNumCER     : Integer ;  //IMS 22/10/2009
-    fsGrandeTotal : Double ;  //IMS 22/10/2009
-    fsVendaBruta  : Double ;  //IMS 22/10/2009
+    fsNumGNF     : Integer ;
+    fsNumGRG     : Integer ;
+    fsNumCDC     : Integer ;
+    fsNumCER     : Integer ;
+    fsGrandeTotal : Double ;
+    fsVendaBruta  : Double ;
     fsNumCCF     : Integer ;
     fsSubTotal   : Double ;
     fsTotalPago  : Double ;
@@ -237,12 +235,12 @@ TACBrECFNaoFiscal = class( TACBrECFClass )
     fswCOOInicial : Integer ;
     fswCOOFinal   : Integer ;
     fswNumCupom   : Integer ;
-    fswNumGNF     : Integer ; //IMS 22/10/2009
-    fswNumGRG     : Integer ; //IMS 22/10/2009
-    fswNumCDC     : Integer ; //IMS 22/10/2009
-    fswNumCER     : Integer ; //IMS 22/10/2009
-    fswGrandeTotal  : Double ;  //IMS 22/10/2009
-    fswVendaBruta   : Double ;  //IMS 22/10/2009
+    fswNumGNF     : Integer ;
+    fswNumGRG     : Integer ;
+    fswNumCDC     : Integer ;
+    fswNumCER     : Integer ;
+    fswGrandeTotal  : Double ;
+    fswVendaBruta   : Double ;
     fswNumCCF     : Integer ;
     fswSubTotal   : Double ;
     fswTotalPago  : Double ;
@@ -292,28 +290,25 @@ TACBrECFNaoFiscal = class( TACBrECFClass )
 
  protected
     function GetNumCupom: String; override ;
-    function GetNumGNF: String; override ;  //IMS 22/10/2009
-    function GetNumGRG: String; override ;  //IMS 22/10/2009
-    function GetNumCDC: String; override ;  //IMS 22/10/2009
-    function GetGrandeTotal: Double; override ;  //IMS 22/10/2009
-    function GetVendaBruta: Double; override ;  //IMS 22/10/2009
-    function GetTotalSubstituicaoTributaria: Double; override ; //IMS 22/10/2009
-    function GetTotalNaoTributado: Double; override ; //IMS 22/10/2009
-    function GetTotalIsencao: Double; override ;  //IMS 22/10/2009
+    function GetNumGNF: String; override ;
+    function GetNumGRG: String; override ;
+    function GetNumCDC: String; override ;
+    function GetGrandeTotal: Double; override ;
+    function GetVendaBruta: Double; override ;
+    function GetTotalSubstituicaoTributaria: Double; override ;
+    function GetTotalNaoTributado: Double; override ;
+    function GetTotalIsencao: Double; override ;
 
     function GetNumCCF: String; override ;
     function GetNumECF: String; override ;
-//IMS
     function GetIE: String; override ;
     function GetCNPJ: String; override ;
     function GetPAF: String; override ;
     function GetUsuarioAtual: String; override ;
     function GetIM: String; override ;
-    function GetCliche: String ; override ;
+    function GetCliche: AnsiString ; override ;
     function GetDataHoraSB: TDateTime; override ;
     function GetSubModeloECF: String ; override ;
-
-//IMS
     function GetNumCRO: String; override ;
     function GetNumSerie: String; override ;
     function GetNumVersao: String; override ;
@@ -482,12 +477,10 @@ begin
   fsArqINI    := '' ;
   fsNumSerie  := '' ;
   fsNumECF    := '' ;
-//IMS
   fsIE        := '012.345.678.90' ;
   fsCNPJ      := '01.234.567/0001-22' ;
   fsPAF       := 'ACBrMonitor' ;
   fsIM        := '1234-0' ;
-//IMS  
   fsCRO       := 1 ;
   fpModeloStr := 'NaoFiscal' ;
   fsBuffer    := TStringList.create ;
@@ -521,12 +514,12 @@ begin
   fsCOOInicial:= 0 ;
   fsCOOFinal  := 0 ;
   fsNumCupom  := 0 ;
-  fsNumGNF    := 0 ;  //IMS 22/10/2009
-  fsNumGRG    := 0 ;  //IMS 22/10/2009
-  fsNumCDC    := 0 ;  //IMS 22/10/2009
-  fsNumCER    := 0 ;  //IMS 22/10/2009
-  fsGrandeTotal    := 0 ;  //IMS 22/10/2009
-  fsVendaBruta     := 0 ;  //IMS 22/10/2009
+  fsNumGNF    := 0 ;
+  fsNumGRG    := 0 ;
+  fsNumCDC    := 0 ;
+  fsNumCER    := 0 ;
+  fsGrandeTotal    := 0 ;
+  fsVendaBruta     := 0 ;
   fsNumCCF    := 0 ;
   fsSubTotal  := 0 ;
   fsTotalPago := 0 ;
@@ -643,7 +636,7 @@ function TACBrECFNaoFiscal.GetNumCupom: String;
 begin
   Result := IntToStrZero( fsNumCupom, 6 ) ;
 end;
-//IMS 22/10/2009
+
 function TACBrECFNaoFiscal.GetNumGNF: String;
 begin
   Result := IntToStrZero( fsNumGNF, 6 ) ;
@@ -684,7 +677,6 @@ begin
   Result := RoundTo( TACBrECFNaoFiscalAliquota(fsAliquotas[2]).TotalDia,-2 ) ;
 end;
 
-//IMS
 function TACBrECFNaoFiscal.GetNumCCF: String;
 begin
   Result := IntToStrZero( fsNumCCF, 6 ) ;
@@ -695,7 +687,6 @@ begin
   Result := fsNumECF ;
 end;
 
-//IMS
 function TACBrECFNaoFiscal.GetIE: String;
 begin
   Result := fsIE ;
@@ -721,7 +712,7 @@ begin
   Result := fsIM ;
 end;
 
-function TACBrECFNaoFiscal.GetCliche: String ;
+function TACBrECFNaoFiscal.GetCliche: AnsiString ;
 Var A : Integer ;
 begin
   Result := '' ;
@@ -756,7 +747,6 @@ function TACBrECFNaoFiscal.GetSubModeloECF: String;
 begin
   Result := 'BETA' ;
 end;
-//IMS
 
 function TACBrECFNaoFiscal.GetNumSerie: String;
 begin
@@ -1417,8 +1407,8 @@ begin
      fsItensCupom.Add( ItemCupom ) ;
      fsItensCount := fsItensCupom.Count ;
 
-     fsGrandeTotal := RoundTo( (Qtd * ValorUnitario) + fsGrandeTotal,-2) ;  //IMS 22/10/2009
-     fsVendaBruta  := fsGrandeTotal ; //IMS 22/10/2009
+     fsGrandeTotal := RoundTo( (Qtd * ValorUnitario) + fsGrandeTotal,-2) ;
+     fsVendaBruta  := fsGrandeTotal ;
      Aliq.TotalDia := RoundTo( Aliq.TotalDia + Total,-2) ; { Soma na aliquota }
      fsSubTotal    := RoundTo( SubTotal + Total,-2) ;      { Soma no Subtotal }
 
@@ -1453,12 +1443,12 @@ begin
   if not (Estado in [estLivre,estRequerZ,estRequerX])  then
      raise Exception.Create(ACBrStr('O Estado da Impressora não é "LIVRE"'));
 
-  fsNumGNF := fsNumGNF + 1 ;  //IMS 22/10/2009
-  fsNumGRG := fsNumGRG + 1 ;  //IMS 22/10/2009
-  fsNumCER := fsNumCER + 1 ;  //IMS 22/10/2009
+  fsNumGNF := fsNumGNF + 1 ;
+  fsNumGRG := fsNumGRG + 1 ;
+  fsNumCER := fsNumCER + 1 ;
   ZeraBuffer ;
   fsBuffer.Add( padC('GNF:'+IntToStrZero(fsNumGNF,6) +'         '+
-                'GRG:'+IntToStrZero(fsNumGRG,6),Colunas) ) ;  //IMS 22/10/2009
+                'GRG:'+IntToStrZero(fsNumGRG,6),Colunas) ) ;
   fsBuffer.Add( StringOfChar('-',Colunas) ) ;
   fsBuffer.Add( padC('NAO E DOCUMENTO FISCAL',Colunas) ) ;
 
@@ -1535,12 +1525,12 @@ begin
      raise Exception.create(ACBrStr('Forma de Pagamento: '+FPG.Descricao+
                             ' não foi utilizada no Cupom anterior')) ;
 
-  fsNumGNF := fsNumGNF + 1 ;  //IMS 22/10/2009
-  fsNumCDC := fsNumCDC + 1 ;  //IMS 22/10/2009
+  fsNumGNF := fsNumGNF + 1 ;
+  fsNumCDC := fsNumCDC + 1 ;
   ZeraBuffer ;
   fsBuffer.Add( padC('GNF:'+IntToStrZero(fsNumGNF,6) +'         '+
-                'CDC:'+IntToStrZero(fsNumCDC,6),Colunas) ) ;  //IMS 22/10/2009
-  fsBuffer.Add( '' ) ;  //IMS 22/10/2009
+                'CDC:'+IntToStrZero(fsNumCDC,6),Colunas) ) ;
+  fsBuffer.Add( '' ) ;
   fsBuffer.Add( padC('COMPROVANTE NAO FISCAL VINCULADO',Colunas) ) ;
   fsBuffer.Add( '' ) ;
   fsBuffer.Add( 'COO do documento de compra: '+COO ) ;
@@ -1716,21 +1706,19 @@ begin
      Ini.WriteInteger('Variaveis','Estado',Integer( fpEstado) ) ;
      Ini.WriteString('Variaveis','Aviso_Legal',Aviso) ;
      Ini.WriteString('Variaveis','NumECF',fsNumECF) ;
-//IMS
      Ini.WriteString('Variaveis','IE',fsIE) ;
      Ini.WriteString('Variaveis','CNPJ',fsCNPJ) ;
      Ini.WriteString('Variaveis','PAF',fsPAF) ;
      Ini.WriteString('Variaveis','IM',fsIM) ;          
-//IMS     
      Ini.WriteString('Variaveis','NumSerie',fsNumSerie) ;
      Ini.WriteInteger('Variaveis','CRO',fsCRO) ;
      Ini.WriteInteger('Variaveis','NumCupom',fsNumCupom) ;
-     Ini.WriteInteger('Variaveis','NumGNF',fsNumGNF) ;  //IMS 22/10/2009
-     Ini.WriteInteger('Variaveis','NumGRG',fsNumGRG) ;  //IMS 22/10/2009
-     Ini.WriteInteger('Variaveis','NumCDC',fsNumCDC) ;  //IMS 22/10/2009
-     Ini.WriteInteger('Variaveis','NumCER',fsNumCER) ;  //IMS 22/10/2009
-     Ini.WriteFloat('Variaveis','GrandeTotal',fsGrandeTotal) ;  //IMS 22/10/2009
-     Ini.WriteFloat('Variaveis','VendaBruta',fsVendaBruta) ;  //IMS 22/10/2009
+     Ini.WriteInteger('Variaveis','NumGNF',fsNumGNF) ;
+     Ini.WriteInteger('Variaveis','NumGRG',fsNumGRG) ;
+     Ini.WriteInteger('Variaveis','NumCDC',fsNumCDC) ;
+     Ini.WriteInteger('Variaveis','NumCER',fsNumCER) ;
+     Ini.WriteFloat('Variaveis','GrandeTotal',fsGrandeTotal) ;
+     Ini.WriteFloat('Variaveis','VendaBruta',fsVendaBruta) ;
      Ini.WriteInteger('Variaveis','NumCCF',fsNumCCF) ;
      Ini.WriteDate('Variaveis','DiaMovimento',fsDia) ;
      Ini.WriteBool('Variaveis','HorarioVerao',fsVERAO) ;
@@ -1976,24 +1964,21 @@ begin
      if fsNumECF = '' then
         fsNumECF := Ini.ReadString('Variaveis','NumECF',fsNumECF) ;
 
-//IMS
      fsIE        := Ini.ReadString('Variaveis','IE',fsIE) ;
      fsCNPJ      := Ini.ReadString('Variaveis','CNPJ',fsCNPJ) ;
      fsPAF       := Ini.ReadString('Variaveis','PAF',fsPAF) ;
      fsIM        := Ini.ReadString('Variaveis','IM',fsIM) ;
-
-//IMS
      fpEstado    := TACBrECFEstado( Ini.ReadInteger('Variaveis','Estado',
                        Integer( fpEstado) ) ) ;
      fsNumSerie  := Ini.ReadString('Variaveis','NumSerie',fsNumSerie) ;
      fsCRO       := Ini.ReadInteger('Variaveis','CRO',fsCRO) ;
      fsNumCupom  := Ini.ReadInteger('Variaveis','NumCupom',fsNumCupom) ;
-     fsNumGNF    := Ini.ReadInteger('Variaveis','NumGNF',fsNumGNF) ;  //IMS 22/10/2009
-     fsNumGRG    := Ini.ReadInteger('Variaveis','NumGRG',fsNumGRG) ;  //IMS 22/10/2009
-     fsNumCDC    := Ini.ReadInteger('Variaveis','NumCDC',fsNumCDC) ;  //IMS 22/10/2009
-     fsNumCER    := Ini.ReadInteger('Variaveis','NumCER',fsNumCER) ;  //IMS 22/10/2009
-     fsGrandeTotal  := Ini.ReadFloat('Variaveis','GrandeTotal',fsGrandeTotal) ;  //IMS 22/10/2009
-     fsVendaBruta   := Ini.ReadFloat('Variaveis','VendaBruta',fsVendaBruta) ;  //IMS 22/10/2009
+     fsNumGNF    := Ini.ReadInteger('Variaveis','NumGNF',fsNumGNF) ;
+     fsNumGRG    := Ini.ReadInteger('Variaveis','NumGRG',fsNumGRG) ;
+     fsNumCDC    := Ini.ReadInteger('Variaveis','NumCDC',fsNumCDC) ;
+     fsNumCER    := Ini.ReadInteger('Variaveis','NumCER',fsNumCER) ;
+     fsGrandeTotal  := Ini.ReadFloat('Variaveis','GrandeTotal',fsGrandeTotal) ;
+     fsVendaBruta   := Ini.ReadFloat('Variaveis','VendaBruta',fsVendaBruta) ;
      fsNumCCF    := Ini.ReadInteger('Variaveis','NumCCF',fsNumCCF) ;
      fsDia       := Ini.ReadDate('Variaveis','DiaMovimento',fsDia) ;
      fsVERAO     := Ini.ReadBool('Variaveis','HorarioVerao',fsVERAO) ;
@@ -2409,7 +2394,7 @@ begin
 
   AStringList.Insert( fsCabecalho.Count,
                       padS( DateToStr(now)+' '+TimeToStr(now)+V+'|COO:'+
-                      IntToStrZero(fsNumCupom,6), Colunas, '|' ) ) ;  //IMS***
+                      IntToStrZero(fsNumCupom,6), Colunas, '|' ) ) ;
 end;
 
 procedure TACBrECFNaoFiscal.AddBufferCabecalho_Item;
@@ -2459,12 +2444,12 @@ begin
   fsCOOInicial := fswCOOInicial ;
   fsCOOFinal   := fswCOOFinal ;
   fsNumCupom   := fswNumCupom ;
-  fsNumGNF     := fswNumGNF ; //IMS 22/10/2009
-  fsNumGRG     := fswNumGRG ; //IMS 22/10/2009
-  fsNumCDC     := fswNumCDC ; //IMS 22/10/2009
-  fsNumCER     := fswNumCER ; //IMS 22/10/2009
-  fsGrandeTotal := fswGrandeTotal ; //IMS 22/10/2009
-  fsVendaBruta  := fswVendaBruta ; //IMS 22/10/2009
+  fsNumGNF     := fswNumGNF ;
+  fsNumGRG     := fswNumGRG ;
+  fsNumCDC     := fswNumCDC ;
+  fsNumCER     := fswNumCER ;
+  fsGrandeTotal := fswGrandeTotal ;
+  fsVendaBruta  := fswVendaBruta ;
   fsNumCCF     := fswNumCCF ;
   fsSubTotal   := fswSubTotal ;
   fsTotalPago  := fswTotalPago;
@@ -2487,12 +2472,12 @@ begin
   fswCOOInicial := fsCOOInicial ;
   fswCOOFinal   := fsCOOFinal ;
   fswNumCupom   := fsNumCupom ;
-  fswNumGNF     := fsNumGNF ; //IMS 22/10/2009
-  fswNumGRG     := fsNumGRG ; //IMS 22/10/2009
-  fswNumCDC     := fsNumCDC ; //IMS 22/10/2009
-  fswNumCER     := fsNumCER ; //IMS 22/10/2009
-  fswGrandeTotal  := fsGrandeTotal ; //IMS 22/10/2009
-  fswVendaBruta   := fsVendaBruta ; //IMS 22/10/2009
+  fswNumGNF     := fsNumGNF ;
+  fswNumGRG     := fsNumGRG ;
+  fswNumCDC     := fsNumCDC ;
+  fswNumCER     := fsNumCER ;
+  fswGrandeTotal  := fsGrandeTotal ;
+  fswVendaBruta   := fsVendaBruta ;
   fswNumCCF     := fsNumCCF ;
   fswSubTotal   := fsSubTotal ;
   fswTotalPago  := fsTotalPago;

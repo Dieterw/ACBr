@@ -683,11 +683,11 @@ TACBrECFClass = class
 
     function GetCNPJ: String; virtual ;
     function GetIE: String; virtual ;
-    function GetIM: String; virtual ;  //IMS 28/09/2009
-    function GetCliche: String; virtual ;  //IMS 28/09/2009
-    function GetUsuarioAtual: String; virtual ;  //IMS 09/10/2009
-    function GetDataHoraSB: TDateTime; virtual ; //IMS 20/10/2009
-    function GetSubModeloECF: String ; virtual ; //IMS 20/10/2009
+    function GetIM: String; virtual ;
+    function GetCliche: AnsiString; virtual ;
+    function GetUsuarioAtual: String; virtual ;
+    function GetDataHoraSB: TDateTime; virtual ;
+    function GetSubModeloECF: String ; virtual ;
 
     function GetPAF: String; virtual ;
     function GetDataMovimento: TDateTime; virtual ;
@@ -852,11 +852,11 @@ TACBrECFClass = class
     Property DataMovimento      : TDateTime  read GetDataMovimento ;
     Property CNPJ               : String     read GetCNPJ ;
     Property IE                 : String     read GetIE ;
-    Property IM                 : String     read GetIM ;  //IMS 28/09/2009
-    Property Cliche             : String     read GetCliche ;  //IMS 28/09/2009
-    Property UsuarioAtual       : String     read GetUsuarioAtual ;  //IMS 09/10/2009
-    Property DataHoraSB         : TDateTime  read GetDataHoraSB ; //IMS 20/10/2009
-    Property SubModeloECF       : String     read GetSubModeloECF ; //IMS 20/10/2009
+    Property IM                 : String     read GetIM ;
+    Property Cliche             : AnsiString read GetCliche ;
+    Property UsuarioAtual       : String     read GetUsuarioAtual ;
+    Property DataHoraSB         : TDateTime  read GetDataHoraSB ;
+    Property SubModeloECF       : String     read GetSubModeloECF ;
     
     Property PAF                : String     read GetPAF ;
     Property NumCRZ             : String     read GetNumCRZ ;
@@ -2437,21 +2437,20 @@ begin
   Result := '' ;
 end;
 
-//IMS 28/09/2009
 function TACBrECFClass.GetIM: String;
 begin
   Result := '' ;
 end;
-function TACBrECFClass.GetCliche: String;
+function TACBrECFClass.GetCliche: AnsiString;
 begin
   Result := '' ;
 end;
-//IMS 09/10/2009
+
 function TACBrECFClass.GetUsuarioAtual: String;
 begin
   Result := '' ;
 end;
-//IMS 20/10/2009
+
 function TACBrECFClass.GetDataHoraSB: TDateTime;
 begin
   Result := now ;
@@ -2460,7 +2459,6 @@ function TACBrECFClass.GetSubModeloECF: String;
 begin
   Result := '' ;
 end;
-//IMS
 
 function TACBrECFClass.GetPAF: String;
 begin

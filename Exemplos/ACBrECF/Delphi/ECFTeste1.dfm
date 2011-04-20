@@ -259,7 +259,6 @@ object Form1: TForm1
         Cancel = True
         Caption = 'Serial'
         Default = True
-        DoubleBuffered = True
         Glyph.Data = {
           36030000424D3603000000000000360000002800000010000000100000000100
           1800000000000003000000000000000000000000000000000000FFFFFFFFFFFF
@@ -288,7 +287,6 @@ object Form1: TForm1
           00FFFFFF6B8FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
           FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
         ModalResult = 1
-        ParentDoubleBuffered = False
         TabOrder = 11
         OnClick = btSerialClick
       end
@@ -935,9 +933,7 @@ object Form1: TForm1
         Cancel = True
         Caption = 'Enviar Linha Gerencial'
         Default = True
-        DoubleBuffered = True
         ModalResult = 1
-        ParentDoubleBuffered = False
         TabOrder = 6
         OnClick = BitBtn6Click
       end
@@ -950,9 +946,7 @@ object Form1: TForm1
         Cancel = True
         Caption = 'Fechar Cupom'
         Default = True
-        DoubleBuffered = True
         ModalResult = 1
-        ParentDoubleBuffered = False
         TabOrder = 7
         OnClick = BitBtn7Click
       end
@@ -986,8 +980,8 @@ object Form1: TForm1
         ExplicitWidth = 586
       end
       object Button2: TButton
-        Left = 19
-        Top = 33
+        Left = 59
+        Top = 3
         Width = 108
         Height = 25
         Anchors = [akLeft, akBottom]
@@ -996,10 +990,10 @@ object Form1: TForm1
         OnClick = Button2Click
       end
       object mRZ: TMemo
-        Left = 0
-        Top = 17
+        Left = 5
+        Top = 34
         Width = 586
-        Height = 9
+        Height = 269
         Anchors = [akLeft, akTop, akRight, akBottom]
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -1454,7 +1448,6 @@ object Form1: TForm1
       Cancel = True
       Caption = 'Ativar'
       Default = True
-      DoubleBuffered = True
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000120B0000120B00000000000000000000FFFFFFFFFFFF
@@ -1483,7 +1476,6 @@ object Form1: TForm1
         94292994181884FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
         FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
       ModalResult = 1
-      ParentDoubleBuffered = False
       TabOrder = 0
       OnClick = bAtivarClick
     end

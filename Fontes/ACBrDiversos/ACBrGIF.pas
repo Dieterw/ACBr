@@ -207,7 +207,7 @@ begin
      Exit ;
   end ;
 
-  if not Parent.Visible then
+  if (not Assigned(Parent)) or (not Parent.Visible) then
      exit ;
 
   if Parent is TControl then

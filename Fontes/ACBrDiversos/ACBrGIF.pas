@@ -210,9 +210,11 @@ begin
   if (not Assigned(Parent)) or (not Parent.Visible) then
      exit ;
 
+  {$IFDEF FPC}
   if Parent is TControl then
      if not TControl(Parent).IsVisible then
         exit ;
+  {$ENDIF}      
 
   OldFrame     := fsGIF.CurrentFrame ;
   OldIteration := fsGIF.CurrentIteration ;

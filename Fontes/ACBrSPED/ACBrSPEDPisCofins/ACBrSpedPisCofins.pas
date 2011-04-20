@@ -702,6 +702,14 @@ begin
                QTD_REG_BLC := Bloco_0.Registro0150Count;
             end;
          end;
+         if Bloco_0.Registro0190Count > 0 then
+         begin
+            with New do
+            begin
+               REG_BLC := '0190';
+               QTD_REG_BLC := Bloco_0.Registro0190Count;
+            end;
+         end;
          if Bloco_0.Registro0200Count > 0 then
          begin
             with New do

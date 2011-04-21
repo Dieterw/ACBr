@@ -422,6 +422,10 @@ type
       var PrintBand: Boolean);
     procedure qrbSistemaBeforePrint(Sender: TQRCustomBand;
       var PrintBand: Boolean);
+    procedure qrbReciboBeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure qrbValorPrestacaoBeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
   private
     FTotalPages: integer;
     procedure Itens;
@@ -625,6 +629,9 @@ var
   i: integer;
 begin
   inherited;
+  // Incluido por Italo em 20/04/2011
+  PrintBand := QRCTe.PageNumber = 1;
+
   // Incluido / Alterado por Italo em 29/12/2010 e 30/12/2010
   qrlNumRegEsp.Caption := FCTe.Rodo.valePed.nroRE;
   case FCTe.Rodo.valePed.respPg of
@@ -684,6 +691,9 @@ procedure TfrmDACTeQRRetrato.qrbModRodFracionadoBeforePrint(Sender: TQRCustomBan
   var PrintBand: Boolean);
 begin
   inherited;
+  // Incluido por Italo em 20/04/2011
+  PrintBand := QRCTe.PageNumber = 1;
+
   // Imprime as Informações Especificas do Modal se o Tipo de CTe for Normal
   // Incluido / Alterado por Italo e Doni em 24/09/2010
   qrbModRodFracionado.Enabled:=(FCTe.Ide.tpCTe = tcNormal);
@@ -715,16 +725,28 @@ end;
 
 procedure TfrmDACTeQRRetrato.QRCTeBeforePrint(Sender: TCustomQuickRep; var PrintReport: Boolean);
 var
-  nRestItens : Integer;
+  nRestItens, nTotalItens : Integer;
 begin
   inherited;
   Itens;
   nItemControle := 0;
   FTotalPages := 1;
+  // Incluido por Italo em 20/04/2011
+  if (FCTe.Rem.InfNF.Count > 0)
+   then nTotalItens := FCTe.Rem.InfNF.Count
+   else begin
+    if (FCTe.Rem.InfNFE.Count > 0)
+     then nTotalItens := FCTe.Rem.InfNFE.Count
+     else begin
+      if (FCTe.Rem.InfOutros.Count > 0)
+       then nTotalItens := FCTe.Rem.InfOutros.Count;
+     end;
+   end;
 
-  if (FCTe.Rem.InfNF.Count > _NUM_ITEMS_PAGE1) then
+  // Alterado por Italo em 20/04/2011
+  if (nTotalItens > _NUM_ITEMS_PAGE1) then
   begin
-    nRestItens := FCTe.Rem.InfNF.Count - _NUM_ITEMS_PAGE1;
+    nRestItens := nTotalItens - _NUM_ITEMS_PAGE1;
     if nRestItens <= _NUM_ITEMS_OTHERPAGES then
       Inc(FTotalPages)
     else
@@ -748,7 +770,8 @@ var
     strChaveContingencia: string;
 begin
   inherited;
-  PrintBand := QRCTe.PageNumber = 1;
+  // Comentado por Italo em 20/04/2011
+//  PrintBand := QRCTe.PageNumber = 1;
 
   if Trim(FLogo) <> '' then
    begin
@@ -892,6 +915,9 @@ var
   i : integer;
 begin
   inherited;
+  // Incluido por Italo em 20/04/2011
+  PrintBand := QRCTe.PageNumber = 1;
+
   qrlNatOperacao.Caption := FormatFloat('0000', FCTe.Ide.CFOP) + ' - ' + FCTe.Ide.natOp;
   qrlOrigPrestacao.Caption := FCTe.Ide.xMunIni + ' - ' + FCTe.Ide.UFIni + ' - ' + FormatFloat('000', FCTe.Ide.cMunIni);
   qrlDestPrestacao.Caption := FCTe.Ide.xMunFim + ' - ' + FCTe.Ide.UFFim + ' - ' + FormatFloat('000', FCTe.Ide.cMunFim);
@@ -1164,6 +1190,8 @@ var
  i: integer;
 begin
   inherited;
+  // Incluido por Italo em 20/04/2011
+  PrintBand := QRCTe.PageNumber = 1;
 
   qrmObs.Lines.BeginUpdate; // Linha inserida por Italo em 31/08/2010
   qrmObs.Lines.Clear;
@@ -1249,6 +1277,9 @@ procedure TfrmDACTeQRRetrato.qrbDadosExcEmitenteBeforePrint(Sender: TQRCustomBan
   var PrintBand: Boolean);
 begin
   inherited;
+  // Incluido por Italo em 20/04/2011
+  PrintBand := QRCTe.PageNumber = 1;
+
   qrmObsExcEmitente.Lines.Clear;
 //  qrmObsExcEmitente.Lines.Text := FCTe.Compl.xObs;
 end;
@@ -1257,6 +1288,8 @@ procedure TfrmDACTeQRRetrato.qrbDadosNotaFiscalBeforePrint(
   Sender: TQRCustomBand; var PrintBand: Boolean);
 begin
   inherited;
+  // Incluido por Italo em 20/04/2011
+  PrintBand := QRCTe.PageNumber = 1;
 
   // Imprime os dados da da Nota Fiscal se o Tipo de CTe for Normal
   // Incluido / Alterado por Italo e Doni em 24/09/2010
@@ -1269,6 +1302,8 @@ var
  i: Integer;  
 begin
   inherited;
+  // Incluido por Italo em 20/04/2011
+  PrintBand := QRCTe.PageNumber = 1;
 
   // Imprime a lista dos CT-e Complementados se o Tipo de CTe for Complemento
   // Incluido / Alterado por Italo e Doni em 24/09/2010
@@ -1308,7 +1343,28 @@ procedure TfrmDACTeQRRetrato.qrbSistemaBeforePrint(Sender: TQRCustomBand;
   var PrintBand: Boolean);
 begin
   inherited;
+  // Incluido por Italo em 20/04/2011
+  PrintBand := QRCTe.PageNumber = 1;
+
   qrlblSistema.Caption := FSistema + ' - ' + FUsuario;
+end;
+
+procedure TfrmDACTeQRRetrato.qrbReciboBeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+  inherited;
+  // Incluido por Italo em 20/04/2011
+  PrintBand := QRCTe.PageNumber = 1;
+
+end;
+
+procedure TfrmDACTeQRRetrato.qrbValorPrestacaoBeforePrint(
+  Sender: TQRCustomBand; var PrintBand: Boolean);
+begin
+  inherited;
+  // Incluido por Italo em 20/04/2011
+  PrintBand := QRCTe.PageNumber = 1;
+
 end;
 
 end.

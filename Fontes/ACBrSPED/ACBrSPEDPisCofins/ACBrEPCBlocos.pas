@@ -755,6 +755,7 @@ type
                     ccREEstAbertura,         // '304' // Crédito vinculado à receita de exportação - Estoque de Abertura
                     ccREAquiEmbalagem,       // '305' // Crédito vinculado à receita de exportação - Aquisição Embalagens para revenda
                     ccREPreAgroindustria,    // '306' // Crédito vinculado à receita de exportação - Presumido da Agroindústria
+                    ccREPreAgroindustriaPCR, // '307' // Crédito vinculado à receita de exportação - Presumido da Agroindústria – Passível de Compensação e/ou Ressarcimento
                     ccREImportacao,          // '308' // Crédito vinculado à receita de exportação - Importação
                     ccREOutros               // '399' // Crédito vinculado à receita de exportação - Outros
                  );

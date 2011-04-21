@@ -42,7 +42,7 @@ unit ACBrEPCBloco_9_Class;
 
 interface
 
-uses SysUtils, Classes, DateUtils, ACBrSped, ACBrEFDBloco_9;
+uses SysUtils, Classes, DateUtils, ACBrSped, ACBrEPCBloco_9;
 
 type
   /// TBloco_9 -

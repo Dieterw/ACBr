@@ -399,9 +399,17 @@ begin
      begin
         with Reg0001.Registro0100.Items[intFor] do
         begin
+          //VERIFICA SE NÃO SÃO OS DOIS VAZIOS, SE SÃO MOSTRA MENSAGEM DE QUE PELO MENOS 1
+          //É OBRIGATÓRIO
+          if (Trim(CPF) = '') and (Trim(CNPJ) = '') then
+            Check(False, '(0-0100) CONTADOR: %s, o CNPJ/CPF é obrigatório!', [NOME]);
+
+          //CRC É DE PREENCHIMENTO OBRIGATÓRIO DE ACORDO COM O VALIDADOR
+          Check(CRC <> '', '(0-0100) CONTADOR: %s, o CRC é obrigatório!', [NOME]););
+
           Check(funChecaCPF(CPF),     '(0-0100) CONTADOR: %s, o CPF "%s" digitado é inválido!', [NOME, CPF]);
           Check(funChecaCNPJ(CNPJ),   '(0-0100) CONTADOR: %s, o CNPJ "%s" digitado é inválido!', [NOME, CNPJ]);
-   //       Check(funChecaCEP(CEP, Registro0000.UF), '(0-0100) CONTADOR: %s, o CEP "%s" digitada é inválido para a unidade de federação "%s"!', [NOME, CEP, Registro0000.UF]);
+          //Check(funChecaCEP(CEP, Registro0000.UF), '(0-0100) CONTADOR: %s, o CEP "%s" digitada é inválido para a unidade de federação "%s"!', [NOME, CEP, Registro0000.UF]);
           Check(funChecaMUN(COD_MUN), '(0-0100) CONTADOR: %s, o código do município "%s" digitado é inválido!', [NOME, IntToStr(COD_MUN)]);
           Check(NOME <> '', '(0-0100) CONTADOR: O nome do contabilista/escritório é obrigatório!');
           ///
@@ -506,7 +514,7 @@ begin
                 LFill( IE ) +
                 LFill( COD_MUN, 7 ) +
                 LFill( IM ) +
-                LFill( SUFRAMA, 7 ) ) ;
+                LFill( SUFRAMA, 9 ) ) ;
         end;
         /// Registros FILHOS
         WriteRegistro0150( Reg0001.Registro0140.Items[intFor] ) ;
@@ -664,6 +672,9 @@ begin
   begin
      with Reg0200.Registro0206 do
      begin
+       //O CODIGO PRODUTO (COMBUSTIVEL) É DE PREENCHIMENTO OBRIGATORIO
+       Check(COD_COMB <> '', '(0-0206) O Código do Produto (Combustível) é obrigatório!');
+
        Add( LFill('0206') +
             LFill( COD_COMB ) ) ;
      end;

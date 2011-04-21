@@ -251,7 +251,7 @@ begin
     begin
       with RegA001.RegistroA010.Items[intFor] do
       begin
-        Check(funChecaCNPJ(CNPJ), '(0-010) ESTABELECIMENTO: O CNPJ "%s" digitado é inválido!', [CNPJ]);
+        Check(funChecaCNPJ(CNPJ), '(A-010) ESTABELECIMENTO: O CNPJ "%s" digitado é inválido!', [CNPJ]);
 
         Add( LFill('A010') +
              LFill(CNPJ, 14) ) ;

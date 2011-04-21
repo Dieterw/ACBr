@@ -691,7 +691,7 @@ begin
     begin
       with RegC001.RegistroC010.Items[intFor] do
       begin
-        Check(funChecaCNPJ(CNPJ), '(0-010) ESTABELECIMENTO: O CNPJ "%s" digitado é inválido!', [CNPJ]);
+        Check(funChecaCNPJ(CNPJ), '(C-010) ESTABELECIMENTO: O CNPJ "%s" digitado é inválido!', [CNPJ]);
 
         Add( LFill('C010')   +
              LFill(CNPJ, 14) +
@@ -793,6 +793,7 @@ begin
                LFill( strIND_PGTO )                        +
                LFill( VL_DESC,0,2, booNFCancelada  )       +
                LFill( VL_ABAT_NT,0,2, booNFCancelada  )    +
+               LFill( VL_MERC,0,2 )                        +
                LFill( strIND_FRT )                         +
                LFill( VL_FRT,0,2, booNFCancelada  )        +
                LFill( VL_SEG,0,2, booNFCancelada  )        +
@@ -869,7 +870,7 @@ begin
       end;
     end;
     // Variavél para armazenar a quantidade de registro do tipo.
-    FRegistroC110Count := FRegistroC110Count + RegC100.RegistroC110.Count;
+    FRegistroC111Count := FRegistroC111Count + RegC100.RegistroC111.Count;
   end;
 end;
 
@@ -889,18 +890,18 @@ begin
           diSimplificadaImport :    strCOD_DOC_IMP := '1';
         end;
 
-        Add( LFill('C120')         +
-             LFill(strCOD_DOC_IMP) +
-             LFill(NUM_DOC__IMP)   +
-             LFill(PIS_IMP,0,2)    +
-             LFill(COFINS_IMP,0,2) );
-//             LFill(NUM_ACDRAW)) ;
+        Add( LFill('C120')          +
+             LFill(strCOD_DOC_IMP)  +
+             LFill(NUM_DOC__IMP)    +
+             LFill(PIS_IMP,0,2)     +
+             LFill(COFINS_IMP,0,2) +
+             LFill(NUM_ACDRAW, 20)) ;
         //
         RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
       end;
     end;
     // Variavél para armazenar a quantidade de registro do tipo.
-    FRegistroC110Count := FRegistroC110Count + RegC100.RegistroC110.Count;
+    FRegistroC120Count := FRegistroC120Count + RegC100.RegistroC120.Count;
   end;
 end;
 
@@ -1335,7 +1336,7 @@ begin
       RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
     end;
     // Variavél para armazenar a quantidade de registro do tipo.
-    FRegistroC180Count := FRegistroC180Count + RegC010.RegistroC180.Count;
+    FRegistroC190Count := FRegistroC190Count + RegC010.RegistroC190.Count;
   end;
 end;
 
@@ -1389,7 +1390,7 @@ begin
         Add( LFill('C191')             +
              LFill(CNPJ_CPF_PART)      +
              LFill(strCST_PIS)         +
-             LFill(CFOP)               +
+             LFill(CFOP,4)             +
              LFill(VL_ITEM,0,2)        +
              LFill(VL_DESC,0,2)        +
              LFill(VL_BC_PIS,0,2)      +
@@ -1457,7 +1458,7 @@ begin
         Add( LFill('C195')                +
              LFill(CNPJ_CPF_PART)         +
              LFill(strCST_COFINS)         +
-             LFill(CFOP)                  +
+             LFill(CFOP,4)                +
              LFill(VL_ITEM,0,2)           +
              LFill(VL_DESC,0,2)           +
              LFill(VL_BC_COFINS,0,2)      +
@@ -1532,7 +1533,7 @@ begin
       end;
     end;
     // Variavél para armazenar a quantidade de registro do tipo.
-    FRegistroC190Count := FRegistroC190Count + RegC190.RegistroC199.Count;
+    FRegistroC199Count := FRegistroC199Count + RegC190.RegistroC199.Count;
   end;
 end;
 

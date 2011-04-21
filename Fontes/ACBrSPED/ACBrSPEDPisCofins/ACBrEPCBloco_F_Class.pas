@@ -371,7 +371,7 @@ begin
     begin
       with RegF001.RegistroF010.Items[intFor] do
       begin
-        Check(funChecaCNPJ(CNPJ), '(0-010) ESTABELECIMENTO: O CNPJ "%s" digitado é inválido!', [CNPJ]);
+        Check(funChecaCNPJ(CNPJ), '(F-010) ESTABELECIMENTO: O CNPJ "%s" digitado é inválido!', [CNPJ]);
 
         Add( LFill('F010') +
              LFill(CNPJ, 14) ) ;
@@ -1513,7 +1513,7 @@ begin
         begin
 
           case COD_CRED of
-                  //CÓDIGOS VINCULADOS À RECEITA TRIBUTADA NO MERCADO INTERNO - Grupo 100
+                    //CÓDIGOS VINCULADOS À RECEITA TRIBUTADA NO MERCADO INTERNO - Grupo 100
                     ccRTMIAliqBasica         : strCOD_CRED := '101' ; // Crédito vinculado à receita tributada no mercado interno - Alíquota Básica
                     ccRTMIAliqDiferenciada   : strCOD_CRED := '102' ; // Crédito vinculado à receita tributada no mercado interno - Alíquotas Diferenciadas
                     ccRTMIAliqUnidProduto    : strCOD_CRED := '103' ; // Crédito vinculado à receita tributada no mercado interno - Alíquota por Unidade de Produto
@@ -1523,7 +1523,7 @@ begin
                     ccRTMIImportacao         : strCOD_CRED := '108' ; // Crédito vinculado à receita tributada no mercado interno - Importação
                     ccRTMIAtivImobiliaria    : strCOD_CRED := '109' ; // Crédito vinculado à receita tributada no mercado interno - Atividade Imobiliária
                     ccRTMIOutros             : strCOD_CRED := '199' ; // Crédito vinculado à receita tributada no mercado interno - Outros
-                  //CÓDIGOS VINCULADOS À RECEITA NÃO TRIBUTADA NO MERCADO INTERNO - Grupo 200
+                    //CÓDIGOS VINCULADOS À RECEITA NÃO TRIBUTADA NO MERCADO INTERNO - Grupo 200
                     ccRNTMIAliqBasica        : strCOD_CRED := '201' ; // Crédito vinculado à receita não tributada no mercado interno - Alíquota Básica
                     ccRNTMIAliqDiferenciada  : strCOD_CRED := '202' ; // Crédito vinculado à receita não tributada no mercado interno - Alíquotas Diferenciadas
                     ccRNTMIAliqUnidProduto   : strCOD_CRED := '203' ; // Crédito vinculado à receita não tributada no mercado interno - Alíquota por Unidade de Produto
@@ -1532,13 +1532,14 @@ begin
                     ccRNTMIPreAgroindustria  : strCOD_CRED := '206' ; // Crédito vinculado à receita não tributada no mercado interno - Presumido da Agroindústria
                     ccRNTMIImportacao        : strCOD_CRED := '208' ; // Crédito vinculado à receita não tributada no mercado interno - Importação
                     ccRNTMIOutros            : strCOD_CRED := '299' ; // Crédito vinculado à receita não tributada no mercado interno - Outros
-                  //CÓDIGOS VINCULADOS À RECEITA DE EXPORTAÇÃO - Grupo 300
+                    //CÓDIGOS VINCULADOS À RECEITA DE EXPORTAÇÃO - Grupo 300
                     ccREAliqBasica           : strCOD_CRED := '301' ; // Crédito vinculado à receita de exportação - Alíquota Básica
                     ccREAliqDiferenciada     : strCOD_CRED := '302' ; // Crédito vinculado à receita de exportação - Alíquotas Diferenciadas
                     ccREAliqUnidProduto      : strCOD_CRED := '303' ; // Crédito vinculado à receita de exportação - Alíquota por Unidade de Produto
                     ccREEstAbertura          : strCOD_CRED := '304' ; // Crédito vinculado à receita de exportação - Estoque de Abertura
                     ccREAquiEmbalagem        : strCOD_CRED := '305' ; // Crédito vinculado à receita de exportação - Aquisição Embalagens para revenda
                     ccREPreAgroindustria     : strCOD_CRED := '306' ; // Crédito vinculado à receita de exportação - Presumido da Agroindústria
+                    ccREPreAgroindustriaPCR  : strCOD_CRED := '307' ; // Crédito vinculado à receita de exportação - Presumido da Agroindústria – Passível de Compensação e/ou Ressarcimento
                     ccREImportacao           : strCOD_CRED := '308' ; // Crédito vinculado à receita de exportação - Importação
                     ccREOutros               : strCOD_CRED := '399' ; // Crédito vinculado à receita de exportação - Outros
           end;

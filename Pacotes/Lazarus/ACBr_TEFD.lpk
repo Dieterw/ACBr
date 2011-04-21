@@ -8,10 +8,10 @@
       <Version Value="9"/>
       <PathDelim Value="\"/>
       <SearchPaths>
-        <IncludeFiles Value="..\..\Fontes\ACBrTEFD\;..\..\Fontes\ACBrComum\"/>
-        <OtherUnitFiles Value="..\..\Fontes\ACBrTEFD\;..\..\Fontes\ACBrComum\"/>
+        <IncludeFiles Value="..\..\Fontes\ACBrTEFD;..\..\Fontes\ACBrComum"/>
+        <OtherUnitFiles Value="..\..\Fontes\ACBrTEFD;..\..\Fontes\ACBrComum"/>
         <UnitOutputDirectory Value="..\..\lib\$(TargetCPU)-$(TargetOS)"/>
-        <SrcPath Value="..\..\Fontes\ACBrTEFD\;..\..\Fontes\ACBrComum\"/>
+        <SrcPath Value="..\..\Fontes\ACBrTEFD;..\..\Fontes\ACBrComum"/>
       </SearchPaths>
       <Parsing>
         <SyntaxOptions>
@@ -25,7 +25,7 @@
     <Description Value="Componente para TEF Discado e Dedicado com suporte a Multiplos Cartões"/>
     <License Value="LGPL"/>
     <Version Major="1" Minor="20"/>
-    <Files Count="7">
+    <Files Count="8">
       <Item1>
         <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFDClass.pas"/>
         <UnitName Value="ACBrTEFDClass"/>
@@ -55,6 +55,10 @@
         <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFDVeSPague.pas"/>
         <UnitName Value="ACBrTEFDVeSPague"/>
       </Item7>
+      <Item8>
+        <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFDBanese.pas"/>
+        <UnitName Value="ACBrTEFDBanese"/>
+      </Item8>
     </Files>
     <Type Value="RunAndDesignTime"/>
     <RequiredPkgs Count="3">

@@ -10,7 +10,7 @@ uses
   Classes, SysUtils,
   Forms, Controls, Graphics, Dialogs,
   StdCtrls, ExtCtrls, Buttons, ComCtrls, ACBrECF, ACBrDevice, ACBrTEFD,
-  ACBrTEFDClass, ACBrUtil , ACBrTEFDCliSiTef, ACBrTEFDVeSPague, ACBrBase;
+  ACBrTEFDClass, ACBrUtil , ACBrTEFDCliSiTef, ACBrTEFDVeSPague, ACBrBase, ACBrTEFDBanese;
 
 type
 
@@ -130,6 +130,7 @@ type
      procedure bAbreVendeSubTotaliza2Click(Sender : TObject);
      procedure bAbreVendeSubTotaliza3Click(Sender : TObject);
      procedure bAbreVendeSubTotaliza4Click(Sender : TObject);
+     procedure BaneseObtemInformacao(var ItemSelecionado : Integer);
      procedure bCancelarRespClick(Sender : TObject);
      procedure cbxGPChange(Sender : TObject);
      procedure ckCliSiTefChange(Sender : TObject);
@@ -185,6 +186,8 @@ type
       Opcoes: TStringList; Memo: TStringList; var ItemSelecionado: Integer);
     procedure ACBrTEFD1VeSPagueObtemCampo(Titulo, Mascara: String;
       Tipo: Char; var Resposta: String; var Digitado: Boolean);
+    procedure ACBrTEFD1BaneseObtemOpcaoAdm(var opcao: Integer);
+    procedure ACBrTEFD1BaneseObtemInformacao(var ItemSelecionado: Integer);
   private
      fCancelado : Boolean ;
 
@@ -201,7 +204,8 @@ var
 
 implementation
 
-Uses typinfo, dateutils, strutils, ConfiguraSerial, Unit2, Unit3, Unit4, Unit5;
+Uses typinfo, dateutils, strutils, ConfiguraSerial, Unit2, Unit3, Unit4, Unit5,
+     Unit6;
 
 {$IFNDEF FPC}
  {$R *.dfm}
@@ -958,6 +962,26 @@ begin
    Memo1.Lines.Add('Enviando: '+Req.Header+' ID: '+IntToStr( Req.ID ) );
 end;
 
+procedure TForm1.ACBrTEFD1BaneseObtemInformacao(var ItemSelecionado: Integer);
+begin
+  Form6 := TForm6.Create(Self);
+  Form6.ShowModal;
+
+  if Form6.RadioButton1.Checked then
+    ItemSelecionado := 1;
+  if Form6.RadioButton2.Checked then
+    ItemSelecionado := 2;
+  if Form6.RadioButton3.Checked then
+    ItemSelecionado := 3;
+
+  Form6.Free;
+end;
+
+procedure TForm1.ACBrTEFD1BaneseObtemOpcaoAdm(var opcao: Integer);
+begin
+  opcao := 2;
+end;
+
 procedure TForm1.ACBrTEFD1BloqueiaMouseTeclado(Bloqueia : Boolean;
    var Tratado : Boolean);
 begin
@@ -1197,6 +1221,29 @@ begin
 
     if Digitado then
        Resposta := AForm.Edit1.Text;
+  finally
+    AForm.Free;
+  end;
+end;
+
+procedure TForm1.BaneseObtemInformacao(var ItemSelecionado : Integer);
+Var
+  AForm : TForm6 ;
+  MR    : TModalResult ;
+begin
+  AForm := TForm6.Create(self);
+  try
+    MR := AForm.ShowModal ;
+
+    if MR = mrOK then
+      begin
+        if AForm.RadioButton1.Checked then
+          ItemSelecionado := 1;
+        if AForm.RadioButton2.Checked then
+          ItemSelecionado := 2;
+        if AForm.RadioButton3.Checked then
+          ItemSelecionado := 3;
+      end;
   finally
     AForm.Free;
   end;

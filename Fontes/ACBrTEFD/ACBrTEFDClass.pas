@@ -65,7 +65,7 @@ type
   { Tipos de TEF Existente. Cado novo Tipo de Tef precisa de uma NOVA Classe,
     filha de  TACBrTEFDClass }
   TACBrTEFDTipo = ( gpNenhum, gpTefDial, gpTefDisc, gpHiperTef, gpCliSiTef,
-                    gpTefGpu, gpVeSPague {, gpGoodCard, gpFoxWin} ) ;
+                    gpTefGpu, gpVeSPague, gpBanese {, gpGoodCard, gpFoxWin} ) ;
 
   TACBrTEFDReqEstado = ( reqNenhum,             // Nennhuma Requisição em andamento
                          reqIniciando,          // Iniciando uma nova Requisicao

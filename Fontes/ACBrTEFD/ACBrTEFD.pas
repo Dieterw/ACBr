@@ -47,7 +47,7 @@ interface
 uses
   Classes, SysUtils, ACBrTEFDClass,
   ACBrTEFDDial, ACBrTEFDDisc, ACBrTEFDHiper, ACBrTEFDCliSiTef, ACBrTEFDGpu,
-  ACBrTEFDVeSPague
+  ACBrTEFDVeSPague, ACBrTEFDBanese
   {, ACBrTEFDGoodCard, ACBrTEFDFoxWin}
   {$IFDEF FPC}
     ,LResources
@@ -105,6 +105,7 @@ type
      fTefVeSPague  : TACBrTEFDVeSPague;
      fTefDisc      : TACBrTEFDDisc ;
      fTefHiper     : TACBrTEFDHiper ;
+	 fTefBanese    : TACBrTEFDBanese ;
 //   fTefGood      : TACBrTEFDGoodCard ;
 //   fTefFW        : TACBrTEFDFoxWin ;
      fEsperaSTS    : Integer;
@@ -238,6 +239,7 @@ type
      property TEFCliSiTef: TACBrTEFDCliSiTef read fTefCliSiTef ;
      property TEFVeSPague: TACBrTEFDVeSPague read fTefVeSPague ;
      property TEFGPU     : TACBrTEFDGpu      read fTefGPU ;
+	 property TEFBanese  : TACBrTEFDBanese   read fTefBanese ;
 //   property TEFGood    : TACBrTEFDGoodCard read fTefGood ;
 //   property TEFFoxWin  : TACBrTEFDFoxWin   read fTefFW ;
 
@@ -420,6 +422,13 @@ begin
    fTefGPU.SetSubComponent(True);   // Ajustando como SubComponente para aparecer no ObjectInspector
   {$ENDIF}
 
+  { Criando Classe CliBanese }
+  fTefBanese := TACBrTEFDBanese.Create(self);
+  fTEFList.Add(fTefBanese);     // Adicionando "fTefBanese" na Lista Objetos de Classes de TEF
+  {$IFDEF COMPILER6_UP}
+   fTefBanese.SetSubComponent(True);   // Ajustando como SubComponente para aparecer no ObjectInspector
+  {$ENDIF}
+
 (*
 { Criando Classe GOOD CARD }
   fTefGood := TACBrTEFDGoodCard.Create(self);
@@ -458,8 +467,8 @@ begin
   if not Assigned( OnComandaECF )  then
      raise Exception.Create( ACBrStr('Evento "OnComandaECF" não programado' ) ) ;
 
-  if not Assigned( OnComandaECFPagamento )  then
-     raise Exception.Create( ACBrStr('Evento "OnComandaECFPagamento" não programado' ) ) ;
+  //if not Assigned( OnComandaECFPagamento )  then
+  //   raise Exception.Create( ACBrStr('Evento "OnComandaECFPagamento" não programado' ) ) ;
 
   if not Assigned( OnComandaECFAbreVinculado )  then
      raise Exception.Create( ACBrStr('Evento "OnComandaECFAbreVinculado" não programado' ) ) ;
@@ -542,6 +551,7 @@ begin
     gpCliSiTef : fTefClass := fTefCliSiTef;
     gpVeSPague : fTefClass := fTefVeSPague;
     gpTefGpu   : fTefClass := fTefGPU;
+	gpBanese   : fTefClass := fTefBanese ;
 //  gpGoodCard : fTefClass := fTefGood ;
 //  gpFoxWin   : fTefClass := fTefFW ;
   end;

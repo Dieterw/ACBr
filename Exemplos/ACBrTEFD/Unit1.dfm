@@ -957,6 +957,12 @@ object Form1: TForm1
     TEFGPU.ArqSTS = 'C:\TEF_GPU\resp\intpos.sts'
     TEFGPU.ArqResp = 'C:\TEF_GPU\resp\intpos.001'
     TEFGPU.GPExeName = 'C:\TEF_GPU\GPU.exe'
+    TEFBanese.ArqTemp = 'C:\bcard\req\pergunta.tmp'
+    TEFBanese.ArqReq = 'C:\bcard\req\pergunta.txt'
+    TEFBanese.ArqSTS = 'C:\bcard\resp\status.txt'
+    TEFBanese.ArqResp = 'C:\bcard\resp\resposta.txt'
+    TEFBanese.ArqRespBkp = 'C:\bcard\resposta.txt'
+    TEFBanese.OnObtemInformacao = ACBrTEFD1BaneseObtemInformacao
     OnAguardaResp = ACBrTEFD1AguardaResp
     OnExibeMsg = ACBrTEFD1ExibeMsg
     OnBloqueiaMouseTeclado = ACBrTEFD1BloqueiaMouseTeclado

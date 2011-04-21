@@ -7,8 +7,8 @@ unit ACBr_TEFD ;
 interface
 
 uses
-    ACBrTEFDClass, ACBrTEFD, ACBrTEFDHiper, ACBrTEFDCliSiTef, ACBrTEFDDial, 
-  ACBrTEFDDisc, ACBrTEFDVeSPague, LazarusPackageIntf;
+   ACBrTEFDClass, ACBrTEFD, ACBrTEFDHiper, ACBrTEFDCliSiTef, ACBrTEFDDial, 
+   ACBrTEFDDisc, ACBrTEFDVeSPague, ACBrTEFDBanese, LazarusPackageIntf;
 
 implementation
 

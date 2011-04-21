@@ -40,6 +40,7 @@ contains
   ACBrTEFDDisc in '..\..\Fontes\ACBrTEFD\ACBrTEFDDisc.pas',
   ACBrTEFDGpu in '..\..\Fontes\ACBrTEFD\ACBrTEFDGpu.pas',
   ACBrTEFDHiper in '..\..\Fontes\ACBrTEFD\ACBrTEFDHiper.pas',
-  ACBrTEFDVeSPague in '..\..\Fontes\ACBrTEFD\ACBrTEFDVeSPague.pas';
+  ACBrTEFDVeSPague in '..\..\Fontes\ACBrTEFD\ACBrTEFDVeSPague.pas',
+  ACBrTEFDBanese in '..\..\Fontes\ACBrTEFD\ACBrTEFDBanese.pas';
 
 end.

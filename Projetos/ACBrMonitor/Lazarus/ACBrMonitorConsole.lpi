@@ -37,6 +37,7 @@
         <Filename Value="ACBrMonitorConsole.lpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="ACBrMonitorConsole"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
         <TopLine Value="127"/>
@@ -87,12 +88,10 @@
         <Filename Value="DoETQUnit.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="DoETQUnit"/>
-        <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
         <TopLine Value="31"/>
         <CursorPos X="22" Y="45"/>
         <UsageCount Value="26"/>
-        <Loaded Value="True"/>
       </Unit5>
       <Unit6>
         <Filename Value="DoACBrUnit.pas"/>
@@ -251,13 +250,10 @@
       <Unit27>
         <Filename Value="..\..\..\Fontes\ACBrSerial\ACBrETQ.pas"/>
         <UnitName Value="ACBrETQ"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
         <TopLine Value="129"/>
         <CursorPos X="29" Y="137"/>
         <UsageCount Value="10"/>
-        <Loaded Value="True"/>
       </Unit27>
       <Unit28>
         <Filename Value="..\..\..\Fontes\ACBrSerial\ACBrETQPpla.pas"/>
@@ -409,15 +405,13 @@
       <Unit47>
         <Filename Value="..\..\..\Fontes\ACBrSerial\ACBrETQPplb.pas"/>
         <UnitName Value="ACBrETQPplb"/>
-        <EditorIndex Value="3"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
         <UsageCount Value="10"/>
-        <Loaded Value="True"/>
       </Unit47>
     </Units>
-    <JumpHistory Count="19" HistoryIndex="18">
+    <JumpHistory Count="14" HistoryIndex="13">
       <Position1>
         <Filename Value="ACBrMonitorConsole.lpr"/>
         <Caret Line="289" Column="19" TopLine="270"/>
@@ -474,26 +468,6 @@
         <Filename Value="ACBrMonitorConsole.lpr"/>
         <Caret Line="140" Column="50" TopLine="127"/>
       </Position14>
-      <Position15>
-        <Filename Value="..\..\..\Fontes\ACBrSerial\ACBrETQPplb.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
-      </Position15>
-      <Position16>
-        <Filename Value="..\..\..\Fontes\ACBrSerial\ACBrETQPplb.pas"/>
-        <Caret Line="47" Column="53" TopLine="20"/>
-      </Position16>
-      <Position17>
-        <Filename Value="DoETQUnit.pas"/>
-        <Caret Line="45" Column="22" TopLine="31"/>
-      </Position17>
-      <Position18>
-        <Filename Value="..\..\..\Fontes\ACBrSerial\ACBrETQ.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
-      </Position18>
-      <Position19>
-        <Filename Value="..\..\..\Fontes\ACBrSerial\ACBrETQ.pas"/>
-        <Caret Line="64" Column="54" TopLine="51"/>
-      </Position19>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

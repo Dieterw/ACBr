@@ -1148,12 +1148,9 @@ end;
 
 function TACBrECFBematech.GetTotalPago: Double;
 begin
- { O Bug no comando 35 + 22 ainda persiste na versao 010101... Enquanto nao
-   obter uma correção da Bematech vou ignorar o uso do 35+22 na MPTH e MP25 }
-  if fs25MFD then   //  if NumVersao = '010000' then
-     Result := fsTotalPago
-  else
-     Result := StrToFloatDef( RetornaInfoECF( '22' ),0 ) / 100 ;
+   Result := RoundTo( StrToFloatDef( RetornaInfoECF( '22' ), -1 ) / 100, -2) ;
+   if Result < 0 then
+      Result := fsTotalPago ;
 end;
 
 function TACBrECFBematech.GetSubTotal: Double;

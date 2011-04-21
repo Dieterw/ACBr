@@ -97,6 +97,18 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data:  21/04/2011
+-- ACBrECF --
+[*] - Remoção de comentários desnecessários dos fontes (limpeza)
+[*] - Propriedade Cliche passou a ser AnsiString para suportar os caracteres de
+      controle (expandido, negrito, etc)
+
+-- ACBrECFBematech --
+[-] - Corrigido retorno de GetSubTotal, quando documento é Comprovante NAO
+      fiscal
+[-] - Corrigido retorno de GetTotalPago, quando o documento é Comprovante NAO
+      fiscal para ECFs MFD ou MP25
+
 Data:  13/04/2011
 -- ACBrECF --
 [*] - Alteração no relatório de "DAV Emitidos" para o novo roteiro de testes

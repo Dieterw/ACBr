@@ -97,6 +97,13 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data:  25/04/2011
+-- ACBrECF --
+[-] - Acerto no método de retorno da data e hora do SB, segunda a bematech
+      este comando só deve ser utilizado quando a impressora estiver livre
+      em outras situações causa erro.
+      Por: Régys Silveira
+
 Data:  21/04/2011
 -- ACBrECF --
 [*] - Remoção de comentários desnecessários dos fontes (limpeza)

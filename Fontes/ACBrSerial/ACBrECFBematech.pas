@@ -2376,53 +2376,59 @@ Var RetCmd : AnsiString ;
     Linhas : TStringList;
     i,x,nLinha, CRZ :Integer;
 begin
-  nLinha := -1;
-  Result := 0 ;
-  Linhas := TStringList.Create;
+  Result := 0.0;
 
-  try
-    CRZ := StrToIntDef(NumCRZ, 0) ;
-    LeituraMemoriaFiscalSerial(CRZ, CRZ, Linhas);
+  // verificar se a redução Z está pendente e não fazer se estiver
+  // porque acontecerá erro, conforme consulta ao atendimento da bematech
+  if Estado in [estLivre] then
+  begin
+    nLinha := -1;
+    Linhas := TStringList.Create;
 
-    for i := 0 to Linhas.Count-1 do
-    begin
-      if pos('SOFTWARE B', Linhas[i]) > 0 then
+    try
+      CRZ := StrToIntDef(NumCRZ, 0) ;
+      LeituraMemoriaFiscalSerial(CRZ, CRZ, Linhas);
+
+      for i := 0 to Linhas.Count-1 do
       begin
-        for x := i+1 to Linhas.Count-1 do
+        if pos('SOFTWARE B', Linhas[i]) > 0 then
         begin
-          if StrToIntDef(StringReplace(Copy(Linhas[x], 1, 8), '.', '', [rfReplaceAll]), 0) = 0 then
+          for x := i+1 to Linhas.Count-1 do
           begin
-             nLinha := x-1;
-             break;
+            if StrToIntDef(StringReplace(Copy(Linhas[x], 1, 8), '.', '', [rfReplaceAll]), 0) = 0 then
+            begin
+               nLinha := x-1;
+               break;
+            end;
           end;
+          Break;
         end;
-        Break;
       end;
-    end;
 
-    if nLinha >= 0 then
-    begin
-      // 01.00.01                    25/06/2009 21:07:40
-      RetCmd := Linhas[nLinha] ;
-      x := pos('/', RetCmd ) ;
+      if nLinha >= 0 then
+      begin
+        // 01.00.01                    25/06/2009 21:07:40
+        RetCmd := Linhas[nLinha] ;
+        x := pos('/', RetCmd ) ;
 
-      OldShortDateFormat := ShortDateFormat ;
-      try
-        ShortDateFormat := 'dd/mm/yyyy' ;
-        Result := StrToDate( StringReplace( copy(RetCmd, x-2, 10 ),
-                                         '/', DateSeparator, [rfReplaceAll] ) ) ;
+        OldShortDateFormat := ShortDateFormat ;
+        try
+          ShortDateFormat := 'dd/mm/yyyy' ;
+          Result := StrToDate( StringReplace( copy(RetCmd, x-2, 10 ),
+                                           '/', DateSeparator, [rfReplaceAll] ) ) ;
 
-        x := pos(':', RetCmd ) ;
-        Result := RecodeHour(  result,StrToInt(copy(RetCmd, x-2,2))) ;
-        Result := RecodeMinute(result,StrToInt(copy(RetCmd, x+1,2))) ;
-        Result := RecodeSecond(result,StrToInt(copy(RetCmd, x+4,2))) ;
-      finally
-        ShortDateFormat := OldShortDateFormat ;
-      end ;
-    end
-  finally
-    Linhas.Free ;
-  end ;
+          x := pos(':', RetCmd ) ;
+          Result := RecodeHour(  result,StrToInt(copy(RetCmd, x-2,2))) ;
+          Result := RecodeMinute(result,StrToInt(copy(RetCmd, x+1,2))) ;
+          Result := RecodeSecond(result,StrToInt(copy(RetCmd, x+4,2))) ;
+        finally
+          ShortDateFormat := OldShortDateFormat ;
+        end ;
+      end
+    finally
+      Linhas.Free ;
+    end ;
+  end;
 end;
 
 function TACBrECFBematech.GetSubModeloECF: String;

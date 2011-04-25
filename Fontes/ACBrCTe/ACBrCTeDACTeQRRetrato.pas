@@ -441,7 +441,7 @@ uses StrUtils, ACBrCTeUtil, DateUtils;
 
 const
   _NUM_ITEMS_PAGE1  = 18; //esse valor eh dobrado por ter 2 NF por linha
-  _NUM_ITEMS_OTHERPAGES = 50;
+  _NUM_ITEMS_OTHERPAGES = 80;
 
 var
   FProtocoloCTe : string;
@@ -1299,7 +1299,7 @@ end;
 procedure TfrmDACTeQRRetrato.qrbComplementadoBeforePrint(
   Sender: TQRCustomBand; var PrintBand: Boolean);
 var
- i: Integer;  
+ i: Integer;
 begin
   inherited;
   // Incluido por Italo em 20/04/2011

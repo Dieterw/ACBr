@@ -440,7 +440,7 @@ uses StrUtils, ACBrCTeUtil, DateUtils;
 {$R *.dfm}
 
 const
-  _NUM_ITEMS_PAGE1  = 26; //esse valor eh dobrado por ter 2 NF por linha
+  _NUM_ITEMS_PAGE1  = 18; //esse valor eh dobrado por ter 2 NF por linha
   _NUM_ITEMS_OTHERPAGES = 50;
 
 var

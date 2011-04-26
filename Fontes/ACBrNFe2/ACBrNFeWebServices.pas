@@ -87,6 +87,8 @@ type
     FURL: WideString;
     FConfiguracoes: TConfiguracoes;
     FACBrNFe : TComponent;
+    FPathArqEnv: AnsiString;
+    FPathArqResp: AnsiString;
     procedure LoadMsgEntrada;
     procedure LoadURL;
   public
@@ -97,6 +99,8 @@ type
     property RetornoWS: AnsiString read FRetornoWS;
     property RetWS: AnsiString read FRetWS;
     property Msg: AnsiString read FMsg;
+    property PathArqEnv: AnsiString read FPathArqEnv;
+    property PathArqResp: AnsiString read FPathArqResp;
   end;
 
   TNFeStatusServico = Class(TWebServicesBase)
@@ -515,6 +519,7 @@ begin
      HttpAddRequestHeaders(Data, PChar(ContentHeader), Length(ContentHeader), HTTP_ADDREQ_FLAG_REPLACE);
    end;
   HTTPReqResp.CheckContentType;
+//  HTTPReqResp.ConnectTimeout := 20000;
 end;
 {$ENDIF}
 
@@ -1039,7 +1044,10 @@ begin
   try
     TACBrNFe( FACBrNFe ).SetStatus( stNFeStatusServico );
     if FConfiguracoes.Geral.Salvar then
-      FConfiguracoes.Geral.Save(FormatDateTime('yyyymmddhhnnss',Now)+'-ped-sta.xml', FDadosMsg);
+     begin
+       FPathArqEnv := FormatDateTime('yyyymmddhhnnss',Now)+'-ped-sta.xml';
+       FConfiguracoes.Geral.Save(FPathArqEnv, FDadosMsg);
+     end;
 
     try
       {$IFDEF ACBrNFeOpenSSL}
@@ -1099,7 +1107,10 @@ begin
       NFeRetorno.Free;
 
       if FConfiguracoes.Geral.Salvar then
-        FConfiguracoes.Geral.Save(FormatDateTime('yyyymmddhhnnss',Now)+'-sta.xml', FRetWS);
+       begin
+         FPathArqResp := FormatDateTime('yyyymmddhhnnss',Now)+'-sta.xml';
+         FConfiguracoes.Geral.Save(FPathArqResp, FRetWS);
+       end;
 
     except on E: Exception do
       begin
@@ -1170,8 +1181,11 @@ begin
 
   Acao.Text := Texto;
 
+  if assigned(TACBrNFe( FACBrNFe ).WebServices.Retorno.FNFeRetorno) then
+     TACBrNFe( FACBrNFe ).WebServices.Retorno.FNFeRetorno.Free;
+
   {$IFDEF ACBrNFeOpenSSL}
-     Acao.SaveToStream(Stream);  
+     Acao.SaveToStream(Stream);
      HTTP := THTTPSend.Create;
   {$ELSE}
      ReqResp := THTTPReqResp.Create(nil);
@@ -1184,7 +1198,10 @@ begin
   try
     TACBrNFe( FACBrNFe ).SetStatus( stNFeRecepcao );
     if FConfiguracoes.Geral.Salvar then
-      FConfiguracoes.Geral.Save(Lote+'-env-lot.xml', FDadosMsg);
+     begin
+       FPathArqEnv := Lote+'-env-lot.xml';
+       FConfiguracoes.Geral.Save(FPathArqEnv, FDadosMsg);
+     end;
     {$IFDEF ACBrNFeOpenSSL}
        HTTP.Document.LoadFromStream(Stream);
        ConfiguraHTTP(HTTP,'SOAPAction: "http://www.portalfiscal.inf.br/nfe/wsdl/NfeRecepcao2"');
@@ -1238,8 +1255,10 @@ begin
     NFeRetorno.Free;
 
     if FConfiguracoes.Geral.Salvar then
-      FConfiguracoes.Geral.Save(Lote+'-rec.xml', FRetWS);
-
+     begin
+       FPathArqResp := Lote+'-rec.xml';
+       FConfiguracoes.Geral.Save(FPathArqResp, FRetWS);
+     end;
   finally
     {$IFDEF ACBrNFeOpenSSL}
        HTTP.Free;
@@ -1405,8 +1424,10 @@ function TNFeRetRecepcao.Executar: Boolean;
       TACBrNFe( FACBrNFe ).SetStatus( stNfeRetRecepcao );
 
       if FConfiguracoes.Geral.Salvar then
-        FConfiguracoes.Geral.Save(Recibo+'-ped-rec.xml', FDadosMsg);
-
+       begin
+         FPathArqEnv := Recibo+'-ped-rec.xml';
+         FConfiguracoes.Geral.Save(FPathArqEnv, FDadosMsg);
+       end;
       {$IFDEF ACBrNFeOpenSSL}
          HTTP.Document.LoadFromStream(Stream);
          ConfiguraHTTP(HTTP,'SOAPAction: "http://www.portalfiscal.inf.br/nfe/wsdl/NfeStatusServico2"');
@@ -1426,8 +1447,10 @@ function TNFeRetRecepcao.Executar: Boolean;
          StrStream.Free;
       {$ENDIF}
       if FConfiguracoes.Geral.Salvar then
-         FConfiguracoes.Geral.Save(Recibo+'-pro-rec.xml', FRetWS);
-
+       begin
+         FPathArqResp := Recibo+'-pro-rec.xml';
+         FConfiguracoes.Geral.Save(FPathArqResp, FRetWS);
+       end;
       FNFeRetorno.Leitor.Arquivo := FRetWS;
       FNFeRetorno.LerXML;
 
@@ -1573,8 +1596,10 @@ begin
    TACBrNFe( FACBrNFe ).SetStatus( stNfeRetRecepcao );
 
    if FConfiguracoes.Geral.Salvar then
-     FConfiguracoes.Geral.Save(Recibo+'-ped-rec.xml', FDadosMsg);
-
+    begin
+      FPathArqEnv := Recibo+'-ped-rec.xml';
+      FConfiguracoes.Geral.Save(FPathArqEnv, FDadosMsg);
+    end;
    {$IFDEF ACBrNFeOpenSSL}
       HTTP.Document.LoadFromStream(Stream);
       ConfiguraHTTP(HTTP,'SOAPAction: "http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetRecepcao2"');
@@ -1593,6 +1618,11 @@ begin
       FRetWS := NotaUtil.SeparaDados( FRetornoWS,'nfeRetRecepcao2Result');
       StrStream.Free;
    {$ENDIF}
+   if FConfiguracoes.Geral.Salvar then
+    begin
+      FPathArqResp := Recibo+'-pro-rec.xml';
+      FConfiguracoes.Geral.Save(FPathArqResp, FRetWS);
+    end;
    FNFeRetorno.Leitor.Arquivo := FRetWS;
    FNFeRetorno.LerXML;
 
@@ -1689,7 +1719,10 @@ begin
   try
     TACBrNFe( FACBrNFe ).SetStatus( stNfeConsulta );
     if FConfiguracoes.Geral.Salvar then
-      FConfiguracoes.Geral.Save(FNFeChave+'-ped-sit.xml', FDadosMsg);
+     begin
+       FPathArqEnv := FNFeChave+'-ped-sit.xml';
+       FConfiguracoes.Geral.Save(FPathArqEnv, FDadosMsg);
+     end;
 
     {$IFDEF ACBrNFeOpenSSL}
        HTTP.Document.LoadFromStream(Stream);
@@ -1709,6 +1742,12 @@ begin
        FRetWS := NotaUtil.SeparaDados( FRetornoWS,'nfeConsultaNF2Result');
        StrStream.Free;
     {$ENDIF}
+    if FConfiguracoes.Geral.Salvar  then
+     begin
+       FPathArqResp := FNFeChave+'-sit.xml';
+       FConfiguracoes.Geral.Save(FPathArqResp, FRetWS);
+     end;
+
     NFeRetorno.Leitor.Arquivo := FRetWS;
     NFeRetorno.LerXML;
 
@@ -1744,10 +1783,6 @@ begin
        TACBrNFe( FACBrNFe ).OnGerarLog(aMsg);
 
     Result := (NFeRetorno.CStat in [100,101,110]);
-
-    if FConfiguracoes.Geral.Salvar  then
-      FConfiguracoes.Geral.Save(FNFeChave+'-sit.xml', FRetWS);
-
 
     for i:= 0 to TACBrNFe( FACBrNFe ).NotasFiscais.Count-1 do
      begin
@@ -1886,7 +1921,10 @@ begin
     TACBrNFe( FACBrNFe ).SetStatus( stNfeCancelamento );
 
     if FConfiguracoes.Geral.Salvar then
-      FConfiguracoes.Geral.Save(FNFeChave+'-ped-can.xml', FDadosMsg);
+     begin
+       FPathArqEnv := FNFeChave+'-ped-can.xml';
+       FConfiguracoes.Geral.Save(FPathArqEnv, FDadosMsg);
+     end;
 
     if FConfiguracoes.Arquivos.Salvar then
       FConfiguracoes.Geral.Save(FNFeChave+'-ped-can.xml', FDadosMsg, FConfiguracoes.Arquivos.GetPathCan );
@@ -1909,6 +1947,15 @@ begin
        FRetWS := NotaUtil.SeparaDados( FRetornoWS,'nfeCancelamentoNF2Result');
        StrStream.Free;
     {$ENDIF}
+
+    if FConfiguracoes.Geral.Salvar then
+     begin
+       FPathArqResp := FNFeChave+'-can.xml';
+       FConfiguracoes.Geral.Save(FPathArqResp, FRetWS);
+     end;
+
+    if FConfiguracoes.Arquivos.Salvar then
+      FConfiguracoes.Geral.Save(FNFeChave+'-can.xml', FRetWS, FConfiguracoes.Arquivos.GetPathCan );
 
     NFeRetorno.Leitor.Arquivo := FRetWS;
     NFeRetorno.LerXml;
@@ -1980,12 +2027,6 @@ begin
      end;
 
     //NFeRetorno.Free;
-
-    if FConfiguracoes.Geral.Salvar then
-      FConfiguracoes.Geral.Save(FNFeChave+'-can.xml', FRetWS);
-
-    if FConfiguracoes.Arquivos.Salvar then
-      FConfiguracoes.Geral.Save(FNFeChave+'-can.xml', FRetWS, FConfiguracoes.Arquivos.GetPathCan );
 
     //gerar arquivo proc de cancelamento
     if NFeRetorno.cStat=101 then
@@ -2091,7 +2132,10 @@ begin
   try
     TACBrNFe( FACBrNFe ).SetStatus( stNfeInutilizacao );
     if FConfiguracoes.Geral.Salvar then
-      FConfiguracoes.Geral.Save(StringReplace(FID,'ID','',[rfIgnoreCase])+'-ped-inu.xml', FDadosMsg);
+     begin
+       FPathArqEnv := StringReplace(FID,'ID','',[rfIgnoreCase])+'-ped-inu.xml';
+       FConfiguracoes.Geral.Save(FPathArqEnv, FDadosMsg);
+     end;
 
     if FConfiguracoes.Arquivos.Salvar then
       FConfiguracoes.Geral.Save(StringReplace(FID,'ID','',[rfIgnoreCase])+'-ped-inu.xml', FDadosMsg, FConfiguracoes.Arquivos.GetPathInu);
@@ -2114,6 +2158,15 @@ begin
        FRetWS := NotaUtil.SeparaDados( FRetornoWS,'nfeInutilizacaoNF2Result');
        StrStream.Free;
     {$ENDIF}
+
+    if FConfiguracoes.Geral.Salvar then
+     begin
+       FPathArqResp := StringReplace(FID,'ID','',[rfIgnoreCase])+'-inu.xml';
+       FConfiguracoes.Geral.Save(FPathArqResp, FRetWS);
+     end;
+
+    if FConfiguracoes.Arquivos.Salvar then
+      FConfiguracoes.Geral.Save(StringReplace(FID,'ID','',[rfIgnoreCase])+'-inu.xml', FRetWS, FConfiguracoes.Arquivos.GetPathInu);
 
     NFeRetorno := TRetInutNFe.Create;
     NFeRetorno.Leitor.Arquivo := FRetWS;
@@ -2142,12 +2195,6 @@ begin
     FMsg   := NFeRetorno.XMotivo;
     Result := (NFeRetorno.cStat = 102);
     //NFeRetorno.Free; (se descomentar essa linha não será possível ler a propriedade ACBrNFe1.WebServices.Consulta.protNFe)
-
-    if FConfiguracoes.Geral.Salvar then
-      FConfiguracoes.Geral.Save(StringReplace(FID,'ID','',[rfIgnoreCase])+'-inu.xml', FRetWS);
-
-    if FConfiguracoes.Arquivos.Salvar then
-      FConfiguracoes.Geral.Save(StringReplace(FID,'ID','',[rfIgnoreCase])+'-inu.xml', FRetWS, FConfiguracoes.Arquivos.GetPathInu);
 
     //gerar arquivo proc de inutilizacao
     if NFeRetorno.cStat=102 then
@@ -2271,7 +2318,10 @@ begin
     FRetConsCad := TRetConsCad.Create;
 
     if FConfiguracoes.Geral.Salvar then
-      FConfiguracoes.Geral.Save(FormatDateTime('yyyymmddhhnnss',Now)+'-ped-cad.xml', FDadosMsg);
+     begin
+       FPathArqEnv := FormatDateTime('yyyymmddhhnnss',Now)+'-ped-cad.xml';
+       FConfiguracoes.Geral.Save(FPathArqEnv, FDadosMsg);
+     end;
     FRetWS := '';
     {$IFDEF ACBrNFeOpenSSL}
        HTTP.Document.LoadFromStream(Stream);
@@ -2291,6 +2341,12 @@ begin
        FRetWS := NotaUtil.SeparaDados( FRetornoWS,'consultaCadastro2Result');
        StrStream.Free;
     {$ENDIF}
+
+    if FConfiguracoes.Geral.Salvar then
+     begin
+       FPathArqResp := FormatDateTime('yyyymmddhhnnss',Now)+'-cad.xml';
+       FConfiguracoes.Geral.Save(FPathArqResp, FRetWS);
+     end;
 
     FRetConsCad.Leitor.Arquivo := FRetWS;
     FRetConsCad.LerXml;
@@ -2317,9 +2373,6 @@ begin
     FMsg      := FRetConsCad.XMotivo;
 
    Result := (FRetConsCad.cStat in [111,112]);
-
-    if FConfiguracoes.Geral.Salvar then
-      FConfiguracoes.Geral.Save(FormatDateTime('yyyymmddhhnnss',Now)+'-cad.xml', FRetWS);
   finally
     {$IFDEF ACBrNFeOpenSSL}
        HTTP.Free;
@@ -2413,7 +2466,10 @@ begin
   try
     TACBrNFe( FACBrNFe ).SetStatus( stNFeEnvDPEC );
     if FConfiguracoes.Geral.Salvar then
-      FConfiguracoes.Geral.Save(FormatDateTime('yyyymmddhhnnss',Now)+'-env-dpec.xml', FDadosMsg);
+     begin
+       FPathArqEnv := FormatDateTime('yyyymmddhhnnss',Now)+'-env-dpec.xml';
+       FConfiguracoes.Geral.Save(FPathArqEnv, FDadosMsg);
+     end;
 
     if FConfiguracoes.Arquivos.Salvar then
       FConfiguracoes.Geral.Save(FormatDateTime('yyyymmddhhnnss',Now)+'-env-dpec.xml', FDadosMsg, FConfiguracoes.Arquivos.GetPathDPEC);
@@ -2469,7 +2525,10 @@ begin
     Result := (RetDPEC.cStat = 124);
 
     if FConfiguracoes.Geral.Salvar then
-      FConfiguracoes.Geral.Save(FormatDateTime('yyyymmddhhnnss',Now)+'-ret-dpec.xml', FRetWS);
+     begin
+       FPathArqResp := FormatDateTime('yyyymmddhhnnss',Now)+'-ret-dpec.xml';
+       FConfiguracoes.Geral.Save(FPathArqResp, FRetWS);
+     end;
 
     if FConfiguracoes.Arquivos.Salvar then
       FConfiguracoes.Geral.Save(FormatDateTime('yyyymmddhhnnss',Now)+'-ret-dpec.xml', FRetWS, FConfiguracoes.Arquivos.GetPathDPEC);
@@ -2555,7 +2614,10 @@ begin
        FretDPEC.Free;
 
     if FConfiguracoes.Geral.Salvar then
-      FConfiguracoes.Geral.Save(FormatDateTime('yyyymmddhhnnss',Now)+'-cons-dpec.xml', FDadosMsg);
+     begin
+       FPathArqEnv := FormatDateTime('yyyymmddhhnnss',Now)+'-cons-dpec.xml';
+       FConfiguracoes.Geral.Save(FPathArqEnv, FDadosMsg);
+     end;
     FRetWS := '';
     {$IFDEF ACBrNFeOpenSSL}
        HTTP.Document.LoadFromStream(Stream);
@@ -2575,6 +2637,11 @@ begin
        FRetWS := NotaUtil.SeparaDados( FRetornoWS,'sceConsultaDPECResult',True);
        StrStream.Free;
     {$ENDIF}
+    if FConfiguracoes.Geral.Salvar then
+     begin
+       FPathArqResp := FormatDateTime('yyyymmddhhnnss',Now)+'-sit-dpec.xml';
+       FConfiguracoes.Geral.Save(FPathArqResp, FRetWS);
+     end;
 
     FretDPEC := TRetDPEC.Create;
     FretDPEC.Leitor.Arquivo := FRetWS;
@@ -2605,8 +2672,6 @@ begin
     FMsg      := RetDPEC.XMotivo;
     Result := (RetDPEC.cStat = 125);
 
-    if FConfiguracoes.Geral.Salvar then
-      FConfiguracoes.Geral.Save(FormatDateTime('yyyymmddhhnnss',Now)+'-sit-dpec.xml', FRetWS);
   finally
     {$IFDEF ACBrNFeOpenSSL}
        HTTP.Free;

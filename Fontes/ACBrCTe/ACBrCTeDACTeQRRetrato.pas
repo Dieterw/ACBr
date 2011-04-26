@@ -426,6 +426,8 @@ type
       var PrintBand: Boolean);
     procedure qrbValorPrestacaoBeforePrint(Sender: TQRCustomBand;
       var PrintBand: Boolean);
+    procedure qrbObsAfterPrint(Sender: TQRCustomBand;
+      BandPrinted: Boolean);
   private
     FTotalPages: integer;
     procedure Itens;
@@ -440,12 +442,13 @@ uses StrUtils, ACBrCTeUtil, DateUtils;
 {$R *.dfm}
 
 const
-  _NUM_ITEMS_PAGE1  = 18; //esse valor eh dobrado por ter 2 NF por linha
-  _NUM_ITEMS_OTHERPAGES = 80;
+  _NUM_ITEMS_PAGE1  = 26; //esse valor eh dobrado por ter 2 NF por linha
+  _NUM_ITEMS_OTHERPAGES = 88;
 
 var
   FProtocoloCTe : string;
   nItemControle : Integer;
+  Fracionado    : Integer;
 
 procedure TfrmDACTeQRRetrato.Itens;
 var
@@ -730,7 +733,9 @@ begin
   inherited;
   Itens;
   nItemControle := 0;
-  FTotalPages := 1;
+  FTotalPages   := 1;
+  nTotalItens   := 0;
+
   // Incluido por Italo em 20/04/2011
   if (FCTe.Rem.InfNF.Count > 0)
    then nTotalItens := FCTe.Rem.InfNF.Count
@@ -743,16 +748,30 @@ begin
      end;
    end;
 
+  // Incluido por Italo em 26/04/2011
+  if FCTe.Rodo.Lota = ltNao
+   then begin
+    qrbModRodFracionado.Height := 44;
+    qrbLotacaoSim.Height       := 0;
+    Fracionado                 := 10
+   end
+   else begin
+    qrbModRodFracionado.Height := 0;
+    qrbLotacaoSim.Height       := 108;
+    Fracionado                 := 0;
+   end;
+
+
   // Alterado por Italo em 20/04/2011
-  if (nTotalItens > _NUM_ITEMS_PAGE1) then
+  if (nTotalItens > (_NUM_ITEMS_PAGE1 + Fracionado)) then
   begin
-    nRestItens := nTotalItens - _NUM_ITEMS_PAGE1;
-    if nRestItens <= _NUM_ITEMS_OTHERPAGES then
+    nRestItens := nTotalItens - (_NUM_ITEMS_PAGE1 + Fracionado);
+    if nRestItens <= (_NUM_ITEMS_OTHERPAGES + Fracionado) then
       Inc(FTotalPages)
     else
     begin
-      Inc(FTotalPages, nRestItens div _NUM_ITEMS_OTHERPAGES);
-      if (nRestItens mod _NUM_ITEMS_OTHERPAGES) > 0 then
+      Inc(FTotalPages, nRestItens div (_NUM_ITEMS_OTHERPAGES + Fracionado));
+      if (nRestItens mod (_NUM_ITEMS_OTHERPAGES + Fracionado)) > 0 then
         Inc(FTotalPages)
     end;
   end;
@@ -763,6 +782,13 @@ begin
   QRCTe.Page.BottomMargin := FMargemInferior * 100;
   QRCTe.Page.LeftMargin   := FMargemEsquerda * 100;
   QRCTe.Page.RightMargin  := FMargemDireita  * 100;
+
+  // Incluido por Italo em 26/04/2011
+//  qrbObs.Height              := 72;
+//  qrbRecibo.Height           := 68;
+//  qrbSistema.Height          := 16;
+//  qrbDadosExcEmitente.Height := 40;
+
 end;
 
 procedure TfrmDACTeQRRetrato.qrbCabecalhoBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
@@ -894,14 +920,15 @@ begin
       TQRDBText(FindComponent('qrdbtCnpjEmitente' + intToStr(i))).Width := 128;
 
   Inc(nItemControle);
+
   if QRCTe.PageNumber = 1 then
-    if QRCTe.RecordCount < _NUM_ITEMS_PAGE1 then
+    if QRCTe.RecordCount < (_NUM_ITEMS_PAGE1 + Fracionado) then
       qrsFimItens.Enabled := (nItemControle = QRCTe.RecordCount)
     else
-      qrsFimItens.Enabled := (nItemControle = _NUM_ITEMS_PAGE1)
+      qrsFimItens.Enabled := (nItemControle = (_NUM_ITEMS_PAGE1 + Fracionado))
   else
   begin
-    qrsFimItens.Enabled := (nItemControle = _NUM_ITEMS_OTHERPAGES) or
+    qrsFimItens.Enabled := (nItemControle = (_NUM_ITEMS_OTHERPAGES + Fracionado)) or
       (QRCTe.RecordNumber = QRCTe.RecordCount) or
       (cdsDocumentos.Eof);
   end;
@@ -1364,6 +1391,34 @@ begin
   inherited;
   // Incluido por Italo em 20/04/2011
   PrintBand := QRCTe.PageNumber = 1;
+
+end;
+
+procedure TfrmDACTeQRRetrato.qrbObsAfterPrint(Sender: TQRCustomBand;
+  BandPrinted: Boolean);
+begin
+  inherited;
+
+//  if QRCTe.PageNumber > 1
+//   then begin
+//    qrbObs.Enabled := False;
+//    QRCTe.ResetPageFooterSize;
+//   end; 
+{
+    qrbObs.Height              := 72;
+//    qrbRecibo.Height           := 68;
+//    qrbSistema.Height          := 16;
+//    qrbDadosExcEmitente.Height := 40;
+   end
+   else begin
+    qrbObs.Height              := 0;
+//    qrbRecibo.Height           := 0;
+//    qrbSistema.Height          := 0;
+//    qrbDadosExcEmitente.Height := 0;
+//    qrbModRodFracionado.Height := 0;
+//    qrbLotacaoSim.Height       := 0;
+   end;
+}
 
 end;
 

@@ -906,14 +906,14 @@ begin
 end;
 
 procedure TBloco_C.WriteRegistroC170(RegC100: TRegistroC100);
-  var
-    intFor        : integer;
-    intIND_MOV    : Integer;
-    intIND_APUR   : Integer;
-    strCST_ICMS   : string;
-    strCST_PIS    : String;
-    strCST_IPI    : String;
-    strCST_COFINS : String;
+var
+  intFor        : integer;
+  strIND_MOV    : string;
+  strIND_APUR   : string;
+  strCST_ICMS   : string;
+  strCST_PIS    : String;
+  strCST_IPI    : String;
+  strCST_COFINS : String;
 begin
   if Assigned( RegC100.RegistroC170 ) then
   begin
@@ -922,13 +922,13 @@ begin
         with RegC100.RegistroC170.Items[intFor] do
         begin
           case IND_MOV of
-            mfSim       : intIND_MOV := 0;
-            mfNao       : intIND_MOV := 1;
+            mfSim       : strIND_MOV := '0';
+            mfNao       : strIND_MOV := '1';
           end;
 
           case IND_APUR of
-            iaMensal    : intIND_APUR := 0;
-            iaDecendial : intIND_APUR := 1;
+            iaMensal    : strIND_APUR := '0';
+            iaDecendial : strIND_APUR := '1';
           end;
           case CST_ICMS of
             sticmsTributadaIntegralmente                              : strCST_ICMS :=  '000' ;
@@ -1074,7 +1074,7 @@ begin
               {06} LFill( UNID )                 +
               {07} LFill( VL_ITEM,0,2 )          +
               {08} LFill( VL_DESC,0,2 )          +
-              {09} LFill( intIND_MOV )           +
+              {09} LFill( strIND_MOV )           +
               {10} LFill( strCST_ICMS)           +
               {11} LFill( CFOP,4 )               +
               {12} LFill( COD_NAT )              +
@@ -1084,7 +1084,7 @@ begin
               {16} LFill( VL_BC_ICMS_ST,0,2 )    +
               {17} LFill( ALIQ_ST,0,2 )          +
               {18} LFill( VL_ICMS_ST,0,2 )       +
-              {19} LFill( intIND_APUR )          +
+              {19} LFill( strIND_APUR )          +
               {20} LFill( strCST_IPI )           +
               {21} LFill( COD_ENQ )              +
               {22} LFill( VL_BC_IPI,0,2 )        +

@@ -402,15 +402,15 @@ begin
           //VERIFICA SE NÃO SÃO OS DOIS VAZIOS, SE SÃO MOSTRA MENSAGEM DE QUE PELO MENOS 1
           //É OBRIGATÓRIO
           if (Trim(CPF) = '') and (Trim(CNPJ) = '') then
-            Check(False, '(0-0100) CONTADOR: %s, o CNPJ/CPF é obrigatório!', [NOME]);
+            Check(False, '(0-0100) CONTADOR %s: O CNPJ/CPF é obrigatório!', [NOME]);
 
           //CRC É DE PREENCHIMENTO OBRIGATÓRIO DE ACORDO COM O VALIDADOR
-          Check(CRC <> '', '(0-0100) CONTADOR: %s, o CRC é obrigatório!', [NOME]););
+          Check(CRC <> '', '(0-0100) CONTADOR %s: O CRC é obrigatório!', [NOME]);
 
-          Check(funChecaCPF(CPF),     '(0-0100) CONTADOR: %s, o CPF "%s" digitado é inválido!', [NOME, CPF]);
-          Check(funChecaCNPJ(CNPJ),   '(0-0100) CONTADOR: %s, o CNPJ "%s" digitado é inválido!', [NOME, CNPJ]);
+          Check(funChecaCPF(CPF),     '(0-0100) CONTADOR %s: O CPF "%s" digitado é inválido!', [NOME, CPF]);
+          Check(funChecaCNPJ(CNPJ),   '(0-0100) CONTADOR %s: O CNPJ "%s" digitado é inválido!', [NOME, CNPJ]);
           //Check(funChecaCEP(CEP, Registro0000.UF), '(0-0100) CONTADOR: %s, o CEP "%s" digitada é inválido para a unidade de federação "%s"!', [NOME, CEP, Registro0000.UF]);
-          Check(funChecaMUN(COD_MUN), '(0-0100) CONTADOR: %s, o código do município "%s" digitado é inválido!', [NOME, IntToStr(COD_MUN)]);
+          Check(funChecaMUN(COD_MUN), '(0-0100) CONTADOR %s: O código do município "%s" digitado é inválido!', [NOME, IntToStr(COD_MUN)]);
           Check(NOME <> '', '(0-0100) CONTADOR: O nome do contabilista/escritório é obrigatório!');
           ///
           Add( LFill('0100') +
@@ -670,18 +670,18 @@ procedure TBloco_0.WriteRegistro0206(Reg0200: TRegistro0200) ;
 begin
   if Assigned( Reg0200.Registro0206 ) then
   begin
-     with Reg0200.Registro0206 do
+     if Trim(Reg0200.Registro0206.COD_COMB) <> '' then
      begin
-       //O CODIGO PRODUTO (COMBUSTIVEL) É DE PREENCHIMENTO OBRIGATORIO
-       Check(COD_COMB <> '', '(0-0206) O Código do Produto (Combustível) é obrigatório!');
+        with Reg0200.Registro0206 do
+        begin
+           Add( LFill('0206') +
+                LFill( COD_COMB ) ) ;
+        end;
+        Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
 
-       Add( LFill('0206') +
-            LFill( COD_COMB ) ) ;
+        /// Variavél para armazenar a quantidade de registro do tipo.
+        FRegistro0206Count := FRegistro0206Count + 1;
      end;
-     Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
-
-     /// Variavél para armazenar a quantidade de registro do tipo.
-     FRegistro0206Count := FRegistro0206Count + 1;
   end;
 end;
 
@@ -691,31 +691,34 @@ strCOD_TAB: string;
 begin
   if Assigned( Reg0200.Registro0208 ) then
   begin
-     with Reg0200.Registro0208 do
+     if Reg0200.Registro0208.COD_TAB <> codIndiTabNaoTem then
      begin
-       case COD_TAB of
-         codIndTabI: strCOD_TAB := '01';
-         codIndTabII: strCOD_TAB := '02';
-         codIndTabIII: strCOD_TAB := '03';
-         codIndTabIV: strCOD_TAB := '04';
-         codIndTabV: strCOD_TAB := '05';
-         codIndTabVI: strCOD_TAB := '06';
-         codIndTabVII: strCOD_TAB := '07';
-         codIndTabVIII: strCOD_TAB := '08';
-         codIndTabIX: strCOD_TAB := '09';
-         codIndTabX: strCOD_TAB := '10';
-         codIndTabXI: strCOD_TAB := '11';
-         codIndiTabXII: strCOD_TAB := '12';
-       end;
-       Add( LFill('0208') +
-            LFill( strCOD_TAB ) +
-            LFill( COD_GRU ) +
-            LFill( MARCA_COM ) ) ;
-     end;
-     Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
+        with Reg0200.Registro0208 do
+        begin
+          case COD_TAB of
+             codIndTabI: strCOD_TAB := '01';
+             codIndTabII: strCOD_TAB := '02';
+             codIndTabIII: strCOD_TAB := '03';
+             codIndTabIV: strCOD_TAB := '04';
+             codIndTabV: strCOD_TAB := '05';
+             codIndTabVI: strCOD_TAB := '06';
+             codIndTabVII: strCOD_TAB := '07';
+             codIndTabVIII: strCOD_TAB := '08';
+             codIndTabIX: strCOD_TAB := '09';
+             codIndTabX: strCOD_TAB := '10';
+             codIndTabXI: strCOD_TAB := '11';
+             codIndiTabXII: strCOD_TAB := '12';
+          end;
+          Add( LFill('0208') +
+               LFill( strCOD_TAB ) +
+               LFill( COD_GRU ) +
+               LFill( MARCA_COM ) ) ;
+        end;
+        Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
 
-     /// Variavél para armazenar a quantidade de registro do tipo.
-     FRegistro0208Count := FRegistro0208Count + 1;
+        /// Variavél para armazenar a quantidade de registro do tipo.
+        FRegistro0208Count := FRegistro0208Count + 1;
+     end;
   end;
 end;
 

@@ -683,6 +683,7 @@ end;
 
 procedure TBloco_C.WriteRegistroC010(RegC001: TRegistroC001) ;
   var
+    strIND_ESCRI: string;
     intFor: Integer;
 begin
   if Assigned(RegC001.RegistroC010) then
@@ -693,9 +694,14 @@ begin
       begin
         Check(funChecaCNPJ(CNPJ), '(C-010) ESTABELECIMENTO: O CNPJ "%s" digitado é inválido!', [CNPJ]);
 
+        case IND_ESCRI of
+           IndEscriConsolidado       : strIND_ESCRI := '1';
+           IndEscriIndividualizado   : strIND_ESCRI := '2';
+        end;
+
         Add( LFill('C010')   +
              LFill(CNPJ, 14) +
-             LFill(Integer(IND_ESCRI), 1) ) ;
+             LFill(strIND_ESCRI) ) ;
       end;
       // Registros FILHOS
       WriteRegistroC100( RegC001.RegistroC010.Items[intFor] );
@@ -1195,10 +1201,10 @@ begin
              LFill(CFOP)               +
              LFill(VL_ITEM,0,2)        +
              LFill(VL_DESC,0,2)        +
-             LFill(VL_BC_PIS,0,2)      +
-             LFill(ALIQ_PIS,8,4)       +
-             LFill(QUANT_BC_PIS,0,3)   +
-             LFill(ALIQ_PIS_QUANT,0,4) +
+             LFill(VL_BC_PIS,0,2,True)      +
+             LFill(ALIQ_PIS,8,4,True)       +
+             LFill(QUANT_BC_PIS,0,3,True)   +
+             LFill(ALIQ_PIS_QUANT,0,4,True) +
              LFill(VL_PIS,0,2)         +
              LFill(COD_CTA) ) ;
         //
@@ -1258,16 +1264,16 @@ begin
           stcofinsOutrasOperacoes                               : strCST_COFINS := '99';
         end;
 
-        Add( LFill('C185')                +
-             LFill(strCST_COFINS)         +
-             LFill(CFOP)                  +
-             LFill(VL_ITEM,0,2)           +
-             LFill(VL_DESC,0,2)           +
-             LFill(VL_BC_COFINS,0,2)      +
-             LFill(ALIQ_COFINS,8,4)       +
-             LFill(QUANT_BC_COFINS,0,3)   +
-             LFill(ALIQ_COFINS_QUANT,0,4) +
-             LFill(VL_COFINS,0,2)         +
+        Add( LFill('C185')                     +
+             LFill(strCST_COFINS)              +
+             LFill(CFOP)                       +
+             LFill(VL_ITEM,0,2)                +
+             LFill(VL_DESC,0,2)                +
+             LFill(VL_BC_COFINS,0,2,True)      +
+             LFill(ALIQ_COFINS,8,4,True)       +
+             LFill(QUANT_BC_COFINS,0,3,True)   +
+             LFill(ALIQ_COFINS_QUANT,0,4,True) +
+             LFill(VL_COFINS,0,2)              +
              LFill(COD_CTA) ) ;
         //
         RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;

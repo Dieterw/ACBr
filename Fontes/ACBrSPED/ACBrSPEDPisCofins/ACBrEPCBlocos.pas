@@ -667,7 +667,8 @@ type
                             codIndTabIX,    // 09 - Tabela IX
                             codIndTabX,     // 10 - Tabela X
                             codIndTabXI,    // 11 - Tabela XI
-                            codIndiTabXII   // 12 - Tabela XII
+                            codIndiTabXII,  // 12 - Tabela XII
+                            codIndiTabNaoTem
                           );
   //Indicador do tipo de conta (0500)
   TACBrIndCTA = (

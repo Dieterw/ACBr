@@ -4624,7 +4624,7 @@ begin
   finally
      xDaruma_FI_FechaPortaSerial();
      DeleteFile(PathDest + PathDelim + 'ATOCOTEPE_DARUMA.TXT') ;
-     DeleteFile(PathDest + PathDelim + 'AtocotepeMF_Data.TXT') ;
+     DeleteFile(PathDest + PathDelim + 'AtocotepeMF_CRZ.TXT') ;
      Ativo := OldAtivo ;
   end;
 end;

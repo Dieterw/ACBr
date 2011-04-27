@@ -97,6 +97,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data:  26/04/2011
+-- ACBrECF --
+[-] - Acerto no método de geração do menu fiscal LMFC Ato Cotepe 17/04
+      Por: Régys Silveira
+
 Data:  25/04/2011
 -- ACBrECF --
 [-] - Acerto no método de retorno da data e hora do SB, segunda a bematech

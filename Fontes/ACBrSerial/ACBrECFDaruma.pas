@@ -218,6 +218,11 @@ TACBrECFDaruma = class( TACBrECFClass )
     xDaruma_FIMFD_GerarAtoCotepePafCOO : function (COOIni: AnsiString;
        COOFim: AnsiString): Integer; StdCall;
 
+    xDaruma_FIMFD_GerarMFPAF_Data: function (DataIni: AnsiString;
+       DataFim: AnsiString): Integer; StdCall;
+    xDaruma_FIMFD_GerarMFPAF_CRZ: function (CRZIni: AnsiString;
+       CRZFim: AnsiString): Integer; StdCall;
+
     procedure LoadDLLFunctions;
     procedure AbrePortaSerialDLL(const Path : AnsiString );
 
@@ -4443,6 +4448,8 @@ begin
    DarumaFunctionDetect('Daruma_FIMFD_GerarAtoCotepePafData', @xDaruma_FIMFD_GerarAtoCotepePafData);
    DarumaFunctionDetect('Daruma_FIMFD_GerarAtoCotepePafCOO', @xDaruma_FIMFD_GerarAtoCotepePafCOO);
    DarumaFunctionDetect('Daruma_FIMFD_DownloadDaMFD', @xDaruma_FIMFD_DownloadDaMFD);
+   DarumaFunctionDetect('Daruma_FIMFD_GerarMFPAF_Data', @xDaruma_FIMFD_GerarMFPAF_Data);
+   DarumaFunctionDetect('Daruma_FIMFD_GerarMFPAF_CRZ', @xDaruma_FIMFD_GerarMFPAF_CRZ);
 end;
 
 procedure TACBrECFDaruma.AbrePortaSerialDLL(const Path : AnsiString );
@@ -4482,12 +4489,12 @@ begin
   if Resp <> 1 then
      raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar:'+sLineBreak+
      'Daruma_Registry_AlterarRegistry( "ECF", "Path", "'+Path+'" ) ') );
-
+  {
   Resp := xDaruma_Registry_Porta( Porta );
   if Resp <> 1 then
      raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar:'+sLineBreak+
         'xDaruma_Registry_Porta( "'+Porta+'" ) ') );
-
+  }
 end;
 
 procedure TACBrECFDaruma.EspelhoMFD_DLL(COOInicial, COOFinal: Integer;
@@ -4584,19 +4591,40 @@ begin
      Ativo := False;
 
      AbrePortaSerialDLL( PathDest ) ;
-     Resp := xDaruma_FIMFD_GerarAtoCotepePAFCoo( CooIni, CooFim ) ;
-     if (Resp <> 1) then
-        raise Exception.Create( ACBrStr( 'Erro ao executar Daruma_FIMFD_GerarAtoCotepePAFCoo.'+sLineBreak+
-                                         'Cod.: '+IntToStr(Resp) ) ) ;
 
-     if not FileExists( PathDest + PathDelim + 'ATOCOTEPE_DARUMA.TXT') then
-        raise Exception.Create( ACBrStr( 'Erro na execução de Daruma_FIMFD_GerarAtoCotepePAFCoo.'+sLineBreak+
-                               'Arquivo: "ATOCOTEPE_DARUMA.TXT" não gerado' )) ;
+     case Finalidade of
+       finMF:
+        begin
+           Resp := xDaruma_FIMFD_GerarMFPAF_CRZ( CooIni, CooFim ) ;
+           if (Resp <> 1) then
+              raise Exception.Create( ACBrStr( 'Erro ao executar Daruma_FIMFD_GerarMFPAF_CRZ.'+sLineBreak+
+                                               'Cod.: '+IntToStr(Resp) ) ) ;
 
-     CopyFileTo(PathDest + PathDelim + 'ATOCOTEPE_DARUMA.TXT', NomeArquivo );
+           if not FileExists( PathDest + PathDelim + 'AtocotepeMF_Data.TXT') then
+              raise Exception.Create( ACBrStr( 'Erro na execução de Daruma_FIMFD_GerarMFPAF_CRZ.'+sLineBreak+
+                                     'Arquivo: "AtocotepeMF_Data.TXT" não gerado' )) ;
+
+           CopyFileTo(PathDest + PathDelim + 'AtocotepeMF_Data.TXT', NomeArquivo );
+        end;
+
+       finMFD, finRZ, finRFD, finTDM:
+        begin
+           Resp := xDaruma_FIMFD_GerarAtoCotepePAFCoo( CooIni, CooFim ) ;
+           if (Resp <> 1) then
+              raise Exception.Create( ACBrStr( 'Erro ao executar Daruma_FIMFD_GerarAtoCotepePAFCoo.'+sLineBreak+
+                                               'Cod.: '+IntToStr(Resp) ) ) ;
+
+           if not FileExists( PathDest + PathDelim + 'ATOCOTEPE_DARUMA.TXT') then
+              raise Exception.Create( ACBrStr( 'Erro na execução de Daruma_FIMFD_GerarAtoCotepePAFCoo.'+sLineBreak+
+                                     'Arquivo: "ATOCOTEPE_DARUMA.TXT" não gerado' )) ;
+
+           CopyFileTo(PathDest + PathDelim + 'ATOCOTEPE_DARUMA.TXT', NomeArquivo );
+        end;
+     end; 
   finally
      xDaruma_FI_FechaPortaSerial();
      DeleteFile(PathDest + PathDelim + 'ATOCOTEPE_DARUMA.TXT') ;
+     DeleteFile(PathDest + PathDelim + 'AtocotepeMF_Data.TXT') ;
      Ativo := OldAtivo ;
   end;
 end;
@@ -4622,19 +4650,39 @@ begin
 
      AbrePortaSerialDLL( PathDest ) ;
 
-     Resp := xDaruma_FIMFD_GerarAtoCotepePAFData( DiaIni, DiaFim ) ;
-     if (Resp <> 1) then
-        raise Exception.Create( ACBrStr( 'Erro ao executar Daruma_FIMFD_GerarAtoCotepeData.'+sLineBreak+
-                                         'Cod.: '+IntToStr(Resp) )) ;
+     case Finalidade of
+       finMF:
+        begin
+           Resp := xDaruma_FIMFD_GerarMFPAF_Data( DiaIni, DiaFim ) ;
+           if (Resp <> 1) then
+              raise Exception.Create( ACBrStr( 'Erro ao executar Daruma_FIMFD_GerarMFPAF_Data.'+sLineBreak+
+                                               'Cod.: '+IntToStr(Resp) )) ;
 
-     if not FileExists( PathDest + PathDelim + 'ATOCOTEPE_DARUMA.TXT') then
-        raise Exception.Create( ACBrStr( 'Erro na execução de Daruma_FIMFD_GerarAtoCotepeData.'+sLineBreak+
-                               'Arquivo: "ATOCOTEPE_DARUMA.TXT" não gerado' )) ;
+           if not FileExists( PathDest + PathDelim + 'AtocotepeMF_Data.TXT') then
+              raise Exception.Create( ACBrStr( 'Erro na execução de Daruma_FIMFD_GerarMFPAF_Data.'+sLineBreak+
+                                     'Arquivo: "AtocotepeMF_Data.TXT" não gerado' )) ;
 
-     CopyFileTo(PathDest + PathDelim + 'ATOCOTEPE_DARUMA.TXT', NomeArquivo );
+           CopyFileTo(PathDest + PathDelim + 'AtocotepeMF_Data.TXT', NomeArquivo );
+        end;
+
+       finMFD, finTDM, finRZ, finRFD:
+        begin
+           Resp := xDaruma_FIMFD_GerarAtoCotepePAFData( DiaIni, DiaFim ) ;
+           if (Resp <> 1) then
+              raise Exception.Create( ACBrStr( 'Erro ao executar Daruma_FIMFD_GerarAtoCotepeData.'+sLineBreak+
+                                               'Cod.: '+IntToStr(Resp) )) ;
+
+           if not FileExists( PathDest + PathDelim + 'ATOCOTEPE_DARUMA.TXT') then
+              raise Exception.Create( ACBrStr( 'Erro na execução de Daruma_FIMFD_GerarAtoCotepeData.'+sLineBreak+
+                                     'Arquivo: "ATOCOTEPE_DARUMA.TXT" não gerado' )) ;
+
+           CopyFileTo(PathDest + PathDelim + 'ATOCOTEPE_DARUMA.TXT', NomeArquivo );
+        end;
+     end;
   finally
      xDaruma_FI_FechaPortaSerial();
      DeleteFile( PathDest + PathDelim + 'ATOCOTEPE_DARUMA.TXT' ) ;
+     DeleteFile( PathDest + PathDelim + 'AtocotepeMF_Data.TXT') ;
      Ativo := OldAtivo ;
   end;
 end;

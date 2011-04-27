@@ -65,6 +65,8 @@ uses
   ACBrCTeQRCodeBar, pcteCTe, ACBrCTe, ACBrCTeUtil, Printers;
 
 type
+  TPosRecibo = (prCabecalho, prRodape);
+
   TfrmDACTeQR = class(TForm)
     QRCTe: TQuickRep;
   private
@@ -92,6 +94,7 @@ type
     FMargemEsquerda     : double;
     FMargemDireita      : double;
     FImpressora         : String;  // Incluido por Italo em 27/12/2010
+    FPosRecibo          : TPosRecibo;   // Incluido por Italo em 27/04/2011
 
     procedure qrlSemValorFiscalPrint(sender: TObject; var Value: string);
     procedure SetBarCodeImage(ACode: string; QRImage: TQRImage);
@@ -113,7 +116,8 @@ type
                              AMargemInferior     : Double    = 0.8;
                              AMargemEsquerda     : Double    = 0.6;
                              AMargemDireita      : Double    = 0.51;
-                             AImpressora         : String    = '');
+                             AImpressora         : String    = '';
+                             APosRecibo          : TPosRecibo = prCabecalho);
 
     class procedure SavePDF(AFile: String;
                             ACTe                : TCTe;
@@ -131,7 +135,8 @@ type
                             AMargemSuperior     : Double    = 0.8;
                             AMargemInferior     : Double    = 0.8;
                             AMargemEsquerda     : Double    = 0.6;
-                            AMargemDireita      : Double    = 0.51);
+                            AMargemDireita      : Double    = 0.51;
+                            APosRecibo          : TPosRecibo = prCabecalho);
 
   end;
 
@@ -161,7 +166,8 @@ class procedure TfrmDACTeQR.Imprimir(ACTe               : TCTe;
                                     AMargemInferior     : Double    = 0.8;
                                     AMargemEsquerda     : Double    = 0.6;
                                     AMargemDireita      : Double    = 0.51;
-                                    AImpressora         : String    = '');
+                                    AImpressora         : String    = '';
+                                    APosRecibo          : TPosRecibo = prCabecalho);
 begin
   with Create ( nil ) do
      try
@@ -182,6 +188,7 @@ begin
         FMargemEsquerda     := AMargemEsquerda;
         FMargemDireita      := AMargemDireita;
         FImpressora         := AImpressora;
+        FPosRecibo          := APosRecibo;
 
         Printer := TPrinter.Create;
 
@@ -230,7 +237,8 @@ class procedure TfrmDACTeQR.SavePDF(AFile               : String;
                                     AMargemSuperior     : Double    = 0.8;
                                     AMargemInferior     : Double    = 0.8;
                                     AMargemEsquerda     : Double    = 0.6;
-                                    AMargemDireita      : Double    = 0.51);
+                                    AMargemDireita      : Double    = 0.51;
+                                    APosRecibo          : TPosRecibo = prCabecalho);
 {$IFDEF QReport_PDF}
  var
   qf : TQRPDFDocumentFilter;
@@ -256,6 +264,7 @@ begin
         FMargemEsquerda     := AMargemEsquerda;
         FMargemDireita      := AMargemDireita;
         FExpandirLogoMarca  := AExpandirLogoMarca;
+        FPosRecibo          := APosRecibo;
 
         for i := 0 to ComponentCount -1 do
           begin

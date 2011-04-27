@@ -48,6 +48,13 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   27/04/11 (Italo Jurisato Junior)
+---------------
+[+] Foi incluido a propriedade PosRecibo no componente ACBrCTeDACTeQR,
+    desta forma é possivel escolher a posição do Recibo (prCabecalho ou prRodape) 
+[*] Foram feitas varias modificações no fonte ACBrCTeDACTeQRRetrato.
+
+
 Alterações   30/03/2011 (Jeickson Gobeti)
 ---------------
 [+] Dacte CT-e em FastReport

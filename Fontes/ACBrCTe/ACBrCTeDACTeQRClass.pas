@@ -50,22 +50,26 @@ unit ACBrCTeDACTeQRClass;
 
 interface
 
-uses Forms, SysUtils, Classes,
-  ACBrCTeDACTeClass, ACBrCTeDACTeQRRetrato, pcteCTe;
+uses
+ Forms, SysUtils, Classes,
+ pcteCTe, ACBrCTeDACTeQR, ACBrCTeDACTeClass, ACBrCTeDACTeQRRetrato;
 
 type
   TACBrCTeDACTeQR = class(TACBrCTeDACTeClass)
   private
+    FPosRecibo: TPosRecibo;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure ImprimirDACTe(CTe: TCTe = nil); override;
     procedure ImprimirDACTePDF(CTe: TCTe = nil); override;
+  published
+    property PosRecibo: TPosRecibo read FPosRecibo write FPosRecibo default prCabecalho;
   end;
 
 implementation
 
-uses ACBrCTe, ACBrCteUtil, ACBrUtil, StrUtils, Dialogs;
+uses StrUtils, Dialogs, ACBrUtil, ACBrCTe, ACBrCteUtil;
 
 constructor TACBrCTeDACTeQR.Create(AOwner: TComponent);
 begin
@@ -79,10 +83,12 @@ end;
 
 procedure TACBrCTeDACTeQR.ImprimirDACTe(CTe: TCTe = nil);
 var
-  i                 : Integer;
+  i     : Integer;
+  sProt : string;
+
   frmDACTeQRRetrato : TfrmDACTeQRRetrato;
-  sProt             : string;
 begin
+
   frmDACTeQRRetrato := TfrmDACTeQRRetrato.Create(Self);
   sProt := TACBrCTe(ACBrCTe).DACTe.ProtocoloCTe;
   frmDACTeQRRetrato.ProtocoloCTe(sProt);
@@ -107,7 +113,8 @@ begin
                                     , MargemInferior
                                     , MargemEsquerda
                                     , MargemDireita
-                                    , Impressora);
+                                    , Impressora
+                                    , PosRecibo);
   end
   else
     frmDACTeQRRetrato.Imprimir(CTe
@@ -127,18 +134,21 @@ begin
                                 , MargemInferior
                                 , MargemEsquerda
                                 , MargemDireita
-                                , Impressora);
+                                , Impressora
+                                , PosRecibo);
 
   frmDACTeQRRetrato.Free;
 end;
 
 procedure TACBrCTeDACTeQR.ImprimirDACTePDF(CTe: TCTe = nil);
 var
-  NomeArq: string;
-  i : Integer;
+  i       : Integer;
+  sProt   : String;
+  NomeArq : string;
+
   frmDACTeQRRetrato : TfrmDACTeQRRetrato;
-  sProt     : String ;
 begin
+
   frmDACTeQRRetrato := TfrmDACTeQRRetrato.Create(Self);
   sProt := TACBrCTe(ACBrCTe).DACTe.ProtocoloCTe ;
   frmDACTeQRRetrato.ProtocoloCTe( sProt ) ;
@@ -166,7 +176,8 @@ begin
                                     , MargemSuperior
                                     , MargemInferior
                                     , MargemEsquerda
-                                    , MargemDireita);
+                                    , MargemDireita
+                                    , PosRecibo);
       end;
    end
   else
@@ -189,7 +200,8 @@ begin
                                 , MargemSuperior
                                 , MargemInferior
                                 , MargemEsquerda
-                                , MargemDireita);
+                                , MargemDireita
+                                , PosRecibo);
   end;
 
   frmDACTeQRRetrato.Free;

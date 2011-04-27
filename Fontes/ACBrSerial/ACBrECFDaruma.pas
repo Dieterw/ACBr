@@ -4600,11 +4600,11 @@ begin
               raise Exception.Create( ACBrStr( 'Erro ao executar Daruma_FIMFD_GerarMFPAF_CRZ.'+sLineBreak+
                                                'Cod.: '+IntToStr(Resp) ) ) ;
 
-           if not FileExists( PathDest + PathDelim + 'AtocotepeMF_Data.TXT') then
+           if not FileExists( PathDest + PathDelim + 'AtocotepeMF_CRZ.TXT') then
               raise Exception.Create( ACBrStr( 'Erro na execução de Daruma_FIMFD_GerarMFPAF_CRZ.'+sLineBreak+
-                                     'Arquivo: "AtocotepeMF_Data.TXT" não gerado' )) ;
+                                     'Arquivo: "AtocotepeMF_CRZ.TXT" não gerado' )) ;
 
-           CopyFileTo(PathDest + PathDelim + 'AtocotepeMF_Data.TXT', NomeArquivo );
+           CopyFileTo(PathDest + PathDelim + 'AtocotepeMF_CRZ.TXT', NomeArquivo );
         end;
 
        finMFD, finRZ, finRFD, finTDM:

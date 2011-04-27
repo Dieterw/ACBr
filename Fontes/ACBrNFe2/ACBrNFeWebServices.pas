@@ -1181,8 +1181,8 @@ begin
 
   Acao.Text := Texto;
 
-  if assigned(TACBrNFe( FACBrNFe ).WebServices.Retorno.FNFeRetorno) then
-     TACBrNFe( FACBrNFe ).WebServices.Retorno.FNFeRetorno.Free;
+//  if assigned(TACBrNFe( FACBrNFe ).WebServices.Retorno.NFeRetorno) then
+//     TACBrNFe( FACBrNFe ).WebServices.Retorno.NFeRetorno.Free;
 
   {$IFDEF ACBrNFeOpenSSL}
      Acao.SaveToStream(Stream);

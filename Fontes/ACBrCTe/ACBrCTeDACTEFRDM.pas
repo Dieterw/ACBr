@@ -356,29 +356,26 @@ begin
     FieldDefs.Add('ChaveAcesso', ftString, 44); // Chave Acesso
     FieldDefs.Add('NotaFiscal', ftString, 9); // Numero Nota Fiscal
     FieldDefs.Add('TextoImpressao', ftString,100); // Texto Impressao no Relatorio
-
-    //
     CreateDataSet;
 
     for i := 0 to CTe.Rem.InfNF.Count - 1 do
     begin
-      Append;
-
-      with FCTe.Rem.InfNF.Items[i] do
-      begin
-         FieldByName('tpDoc').AsString := 'NF';
-         FieldByName('CNPJCPF').AsString := FCTe.Rem.CNPJCPF;
-         FieldByName('Serie').AsString := serie;
-         FieldByName('ChaveAcesso').AsString := '';
-         FieldByName('NotaFiscal').AsString := nDoc;
-         FieldByName('TextoImpressao').AsString := 'NF   '+FCTe.Rem.CNPJCPF+'      '+serie+'  /  '+nDoc;
-      end;
+       Append;
+       with FCTe.Rem.InfNF.Items[i] do
+       begin
+          FieldByName('tpDoc').AsString := 'NF';
+          FieldByName('CNPJCPF').AsString := FCTe.Rem.CNPJCPF;
+          FieldByName('Serie').AsString := serie;
+          FieldByName('ChaveAcesso').AsString := '';
+          FieldByName('NotaFiscal').AsString := nDoc;
+          FieldByName('TextoImpressao').AsString := 'NF   '+FCTe.Rem.CNPJCPF+'      '+serie+'  /  '+nDoc;
+       end;
       Post;
     end;
+
     for i := 0 to CTe.Rem.InfNFE.Count - 1 do
     begin
       Append;
-
       with FCTe.Rem.InfNFE.Items[i] do
       begin
          FieldByName('tpDoc').AsString := 'NFe';
@@ -390,6 +387,8 @@ begin
       end;
       Post;
     end;
+    //
+    cdsDadosNotasFiscais.RecordCount;
   end;
 
 end;
@@ -655,13 +654,19 @@ begin
       FieldByName('TpAmb').AsString := CTeUtil.SeSenao(TpAmb = taHomologacao, '2', '1');
       FieldByName('ProcEmi').AsString := CTeUtil.SeSenao(ProcEmi = peAplicativoContribuinte, '0', '');
       FieldByName('VerProc').AsString := VerProc;
+
       case Toma03.Toma of
-      tmRemetente    : FieldByName('Toma').AsString := 'REMETENTE';
-      tmDestinatario : FieldByName('Toma').AsString := 'DESTINATARIO';
-      tmExpedidor    : FieldByName('Toma').AsString := 'EXPEDIDOR';
-      tmRecebedor    : FieldByName('Toma').AsString := 'RECEBEDOR';
-      tmOutros       : FieldByName('Toma').AsString := 'OUTROS';
+       tmRemetente    : FieldByName('Toma').AsString := 'REMETENTE';
+       tmDestinatario : FieldByName('Toma').AsString := 'DESTINATARIO';
+       tmExpedidor    : FieldByName('Toma').AsString := 'EXPEDIDOR';
+       tmRecebedor    : FieldByName('Toma').AsString := 'RECEBEDOR';
       end;
+
+      case Toma4.Toma of
+       tmOutros       : FieldByName('Toma').AsString := 'OUTROS';
+      end;
+
+
 
     end;
 
@@ -1081,7 +1086,6 @@ begin
     CreateDataSet;
     Append;
 
-
    case FCTe.Ide.Toma03.Toma of
      tmRemetente :
      begin
@@ -1100,7 +1104,8 @@ begin
         FieldByName('CPais').AsString := IntToStr(FCTe.Rem.EnderReme.cPais);
         FieldByName('XPais').AsString := FCTe.Rem.EnderReme.xPais;
         FieldByName('Fone').AsString := '';
-      end;
+     end;
+
      tmDestinatario :
      begin
         FieldByName('CNPJ').AsString := FCTe.Dest.CNPJCPF;
@@ -1117,7 +1122,8 @@ begin
         FieldByName('CPais').AsString := IntToStr(FCTe.Dest.EnderDest.cPais);
         FieldByName('XPais').AsString := FCTe.Dest.EnderDest.xPais;
         FieldByName('Fone').AsString := '';
-      end;
+     end;
+
      tmExpedidor :
      begin
         FieldByName('CNPJ').AsString := FCTe.Exped.CNPJCPF;
@@ -1134,7 +1140,8 @@ begin
         FieldByName('CPais').AsString := IntToStr(FCTe.Exped.EnderExped.cPais);
         FieldByName('XPais').AsString := FCTe.Exped.EnderExped.xPais;
         FieldByName('Fone').AsString := '';
-      end;
+     end;
+
      tmRecebedor :
      begin
         FieldByName('CNPJ').AsString := FCTe.Receb.CNPJCPF;
@@ -1151,9 +1158,27 @@ begin
         FieldByName('CPais').AsString := IntToStr(FCTe.Receb.EnderReceb.cPais);
         FieldByName('XPais').AsString := FCTe.Receb.EnderReceb.xPais;
         FieldByName('Fone').AsString := '';
-      end;
+     end;
+   end;
 
-
+   case FCTe.Ide.Toma4.Toma of
+     tmOutros :
+     begin
+        FieldByName('CNPJ').AsString := FCTe.Ide.Toma4.CNPJCPF;
+        FieldByName('XNome').AsString := FCTe.Ide.Toma4.xNome;
+        FieldByName('IE').AsString := FCTe.Ide.Toma4.IE;
+        //
+        FieldByName('Xlgr').AsString := FCTe.Ide.Toma4.EnderToma.xLgr;
+        FieldByName('XCpl').AsString := FCTe.Ide.Toma4.EnderToma.xCpl;
+        FieldByName('XBairro').AsString := FCTe.Ide.Toma4.EnderToma.xBairro;
+        FieldByName('CMun').AsString := IntToStr(FCTe.Ide.Toma4.EnderToma.cMun);
+        FieldByName('XMun').AsString := FCTe.Ide.Toma4.EnderToma.xMun;
+        FieldByName('UF').AsString := FCTe.Ide.Toma4.EnderToma.UF;
+        FieldByName('CEP').AsString := IntToStr(FCTe.Ide.Toma4.EnderToma.CEP);
+        FieldByName('CPais').AsString := IntToStr(FCTe.Ide.Toma4.EnderToma.cPais);
+        FieldByName('XPais').AsString := FCTe.Ide.Toma4.EnderToma.xPais;
+        FieldByName('Fone').AsString := '';
+     end;
     end;
     Post;
   end;

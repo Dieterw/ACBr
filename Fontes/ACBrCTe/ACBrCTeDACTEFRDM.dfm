@@ -132,7 +132,7 @@ object dmACBrCTeFR: TdmACBrCTeFR
     Top = 148
   end
   object frxReport: TfrxReport
-    Version = '4.10.5'
+    Version = '4.9.64'
     DotMatrixReport = False
     IniFile = '\Software\Fast Reports'
     PreviewOptions.AllowEdit = False

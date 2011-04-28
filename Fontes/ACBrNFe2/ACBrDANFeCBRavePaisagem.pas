@@ -1162,7 +1162,7 @@ begin
                                 '  COMBUSTÍVEL: '+tpComb+#13+
                                 '  COR: '+xCor+#13+
                                 '  FAB./MOD.: '+IntToStr(anoFab)+'/'+IntToStr(anoMod)+#13+
-                                '  RENAVAM: '+RENAVAM+#13+
+//                                '  RENAVAM: '+RENAVAM+#13+
                                 '  Nº DO MOTOR: '+nMotor;
                  end;
                 QtdeMin:=QtdeMin+6;

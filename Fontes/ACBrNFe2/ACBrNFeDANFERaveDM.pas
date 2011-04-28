@@ -544,7 +544,7 @@ begin
                   vTemp2.Add(' COMBUSTÍVEL: '+Prod.veicProd.tpComb);
                   vTemp2.Add(' COR: '+Prod.veicProd.xCor);
                   vTemp2.Add(' FAB./MOD.: '+IntToStr(Prod.veicProd.anoFab)+'/'+IntToStr(Prod.veicProd.anoMod));
-                  vTemp2.Add(' RENAVAM: '+Prod.veicProd.RENAVAM);
+//                  vTemp2.Add(' RENAVAM: '+Prod.veicProd.RENAVAM);
                   vTemp2.Add(' Nº DO MOTOR: '+Prod.veicProd.nMotor);
 
                   if (trim(wInfAdProd) <> '') then

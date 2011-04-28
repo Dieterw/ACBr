@@ -1159,7 +1159,7 @@ begin
                  begin
                   aDescProduto:=aDescProduto+#13+
                                 '  CHASSI: '+Prod.veicProd.chassi+#13+
-                                '  COMBUSTÍVEL: '+tpComb+#13+
+                                '  COMBUSTÍVEL: '+CombDescricao+#13+
                                 '  COR: '+xCor+#13+
                                 '  FAB./MOD.: '+IntToStr(anoFab)+'/'+IntToStr(anoMod)+#13+
 //                                '  RENAVAM: '+RENAVAM+#13+

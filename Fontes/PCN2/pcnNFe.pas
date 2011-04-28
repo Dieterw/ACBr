@@ -603,7 +603,7 @@ type
     FnMotor: string;
     FCMT: string;
     Fdist: string;
-    FRENAVAM: string;
+    //FRENAVAM: string;
     FanoMod: integer;
     FanoFab: integer;
     FtpPint: string;
@@ -615,6 +615,7 @@ type
     FcCorDENATRAN: string;
     Flota: integer;
     FtpRest: integer;
+    function getCombDescricao: string;
   published
     property tpOP: TpcnTipoOperacao read FtpOP write FtpOP;
     property chassi: string read Fchassi write Fchassi;
@@ -626,10 +627,11 @@ type
     property pesoB: string read FpesoB write FpesoB;
     property nSerie: string read FnSerie write FnSerie;
     property tpComb: string read FtpComb write FtpComb;
+    property CombDescricao: string read getCombDescricao;
     property nMotor: string read FnMotor write FnMotor;
     property CMT: string read FCMT write FCMT;
     property dist: string read Fdist write Fdist;
-    property RENAVAM: string read FRENAVAM write FRENAVAM;
+    //property RENAVAM: string read FRENAVAM write FRENAVAM;
     property anoMod: integer read FanoMod write FanoMod;
     property anoFab: integer read FanoFab write FanoFab;
     property tpPint: string read FtpPint write FtpPint;
@@ -2251,6 +2253,38 @@ begin
      Result := V2_00
   else
      Result := 'versao="'+FormatFloat_Aux(FVersao,'#0.00')+'"';
+end;
+
+{ TveicProd }
+
+function TveicProd.getCombDescricao: string;
+var
+  wTpComb: integer;
+begin
+  wTpComb := StrToIntDef(FtpComb,0);
+
+  case wTpComb of
+     1: Result:='01 - ALCOOL';
+     2: Result:='02 - GASOLINA';
+     3: Result:='03 - DIESEL';
+     4: Result:='04 - GASOGENIO';
+     5: Result:='05 - GAS METANO';
+     6: Result:='06 - ELETRICO/FONTE INTERNA';
+     7: Result:='07 - ELETRICO/FONTE EXTERNA';
+     8: Result:='08 - GASOL/GAS NATURAL COMBUSTIVEL';
+     9: Result:='09 - ALCOOL/GAS NATURAL COMBUSTIVEL';
+    10: Result:='10 - DIESEL/GAS NATURAL COMBUSTIVEL';
+    11: Result:='11 - VIDE/CAMPO/OBSERVACAO';
+    12: Result:='12 - ALCOOL/GAS NATURAL VEICULAR';
+    13: Result:='13 - GASOLINA/GAS NATURAL VEICULAR';
+    14: Result:='14 - DIESEL/GAS NATURAL VEICULAR';
+    15: Result:='15 - GAS NATURAL VEICULAR';
+    16: Result:='16 - ALCOOL/GASOLINA';
+    17: Result:='17 - GASOLINA/ALCOOL/GAS NATURAL';
+    18: Result:='18 - GASOLINA/ELETRICO';
+    else
+      Result:=FtpComb;
+  end;
 end;
 
 end.

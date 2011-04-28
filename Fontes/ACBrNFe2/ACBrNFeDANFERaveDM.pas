@@ -541,7 +541,7 @@ begin
                if (trim(Prod.veicProd.chassi)<>'') then
                begin
                   vTemp2.Add(' CHASSI: '+Prod.veicProd.chassi);
-                  vTemp2.Add(' COMBUSTÍVEL: '+Prod.veicProd.tpComb);
+                  vTemp2.Add(' COMBUSTÍVEL: '+Prod.veicProd.CombDescricao);
                   vTemp2.Add(' COR: '+Prod.veicProd.xCor);
                   vTemp2.Add(' FAB./MOD.: '+IntToStr(Prod.veicProd.anoFab)+'/'+IntToStr(Prod.veicProd.anoMod));
 //                  vTemp2.Add(' RENAVAM: '+Prod.veicProd.RENAVAM);

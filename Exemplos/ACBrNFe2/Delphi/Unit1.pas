@@ -1119,7 +1119,7 @@ begin
                     trvwNFe.Items.AddChild(Node,'nMotor='   +nMotor);
                     trvwNFe.Items.AddChild(Node,'CMT='     +CMT);
                     trvwNFe.Items.AddChild(Node,'dist='     +dist);
-                    trvwNFe.Items.AddChild(Node,'RENAVAM='  +RENAVAM);
+                    //trvwNFe.Items.AddChild(Node,'RENAVAM='  +RENAVAM);
                     trvwNFe.Items.AddChild(Node,'anoMod='   +IntToStr(anoMod));
                     trvwNFe.Items.AddChild(Node,'anoFab='   +IntToStr(anoFab));
                     trvwNFe.Items.AddChild(Node,'tpPint='   +tpPint);

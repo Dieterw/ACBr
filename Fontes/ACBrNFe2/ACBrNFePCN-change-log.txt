@@ -47,6 +47,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Alterações   28/04/2011
+---------------
+[-] Correção do Layout da NFe. Retirada a propriedade RENAVAM, pois a mesma não contempla mais o Layout 2.0
+[+] Impressão da descrição do tipo de combustível no Danfe em Rave Arquivo e Code Base.
+
 Alterações   08/04/2011
 ---------------
 [-] Correção de impressão do DANFE com RAVE CODE BASE quando estiver imprimindo em Formulario de Segurança no Ambiente de Producao.

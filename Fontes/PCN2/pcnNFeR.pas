@@ -400,7 +400,7 @@ begin
       (*J12*)NFe.Det[i].Prod.veicProd.nMotor := Leitor.rCampo(tcStr, 'nMotor');
       (*J13*)NFe.Det[i].Prod.veicProd.CMT := Leitor.rCampo(tcStr, 'CMT');
       (*J14*)NFe.Det[i].Prod.veicProd.dist := Leitor.rCampo(tcStr, 'dist');
-      (*J15*)NFe.Det[i].Prod.veicProd.RENAVAM := Leitor.rCampo(tcEsp, 'RENAVAM');
+      //(*J15*)NFe.Det[i].Prod.veicProd.RENAVAM := Leitor.rCampo(tcEsp, 'RENAVAM');
       (*J16*)NFe.Det[i].Prod.veicProd.anoMod := Leitor.rCampo(tcInt, 'anoMod');
       (*J17*)NFe.Det[i].Prod.veicProd.anoFab := Leitor.rCampo(tcInt, 'anoFab');
       (*J18*)NFe.Det[i].Prod.veicProd.tpPint := Leitor.rCampo(tcStr, 'tpPint');

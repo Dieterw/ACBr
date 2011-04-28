@@ -181,6 +181,10 @@ TACBrValidador = class( TACBrComponent )
 
 end ;
 
+function ACBrValidadorValidarCPF( const Documento : AnsiString ) : String ;
+function ACBrValidadorValidarCNPJ( const Documento : AnsiString ) : String ;
+function ACBrValidadorValidarCNPJouCPF( const Documento : AnsiString ) : String ;
+
 function ACBrValidadorValidarDocumento( const TipoDocto : TACBrValTipoDocto;
   const Documento : AnsiString; const Complemento : AnsiString = '') : String ;
 function ACBrValidadorFormatarDocumento( const TipoDocto : TACBrValTipoDocto;
@@ -188,6 +192,27 @@ function ACBrValidadorFormatarDocumento( const TipoDocto : TACBrValTipoDocto;
 
 implementation
 {$IFDEF COMPILER6_UP} uses Variants , Math, StrUtils;
+
+function ACBrValidadorValidarCPF(const Documento : AnsiString) : String ;
+begin
+   Result := ACBrValidadorValidarDocumento( docCPF, Documento );
+end;
+
+function ACBrValidadorValidarCNPJ(const Documento : AnsiString) : String ;
+begin
+  Result := ACBrValidadorValidarDocumento( docCNPJ, Documento );
+end;
+
+function ACBrValidadorValidarCNPJouCPF(const Documento : AnsiString) : String ;
+Var
+  NumDocto : String ;
+begin
+   NumDocto := OnlyNumber(Documento) ;
+   if Length(NumDocto) < 12 then
+      Result := ACBrValidadorValidarCPF( Documento )
+   else
+      Result := ACBrValidadorValidarCNPJ( Documento ) ;
+end;
 
 function ACBrValidadorValidarDocumento(const TipoDocto : TACBrValTipoDocto ;
   const Documento: AnsiString; const Complemento : AnsiString = '') : String ;

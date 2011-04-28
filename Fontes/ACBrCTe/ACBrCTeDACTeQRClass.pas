@@ -52,7 +52,7 @@ interface
 
 uses
  Forms, SysUtils, Classes,
- pcteCTe, ACBrCTeDACTeQR, ACBrCTeDACTeClass, ACBrCTeDACTeQRRetrato;
+ pcteCTe, ACBrCTeDACTeQR, ACBrCTeDACTeClass, ACBrCTeDACTeQRRetrato, pcnConversao;
 
 type
   TACBrCTeDACTeQR = class(TACBrCTeDACTeClass)

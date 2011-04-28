@@ -62,10 +62,9 @@ uses
      // Incluido por Italo em 13/01/2011
      QRPrntr,
   {$ENDIF}
-  ACBrCTeQRCodeBar, pcteCTe, ACBrCTe, ACBrCTeUtil, Printers;
+  ACBrCTeQRCodeBar, pcteCTe, ACBrCTe, ACBrCTeUtil, Printers, pcnConversao;
 
 type
-  TPosRecibo = (prCabecalho, prRodape);
 
   TfrmDACTeQR = class(TForm)
     QRCTe: TQuickRep;

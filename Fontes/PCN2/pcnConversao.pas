@@ -133,6 +133,8 @@ type
   TpcteTipoVeiculo = (tvTracao, tvReboque);
   TpcteTipoRodado = (trNaoAplicavel, trTruck, trToco, trCavaloMecanico, trVAN, trUtilitario, trOutros);
   TpcteTipoCarroceria = (tcNaoAplicavel, tcAberta, tcFechada, tcGraneleira, tcPortaContainer, tcSider);
+  // Incluido por Italo em 28/04/2011
+  TPosRecibo = (prCabecalho, prRodape);
 
 const
   NFeUF: array[0..26] of String =

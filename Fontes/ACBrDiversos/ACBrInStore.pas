@@ -3,7 +3,8 @@
 {  Biblioteca multiplataforma de componentes Delphi para interação com equipa- }
 { mentos de Automação Comercial utilizados no Brasil                           }
 {                                                                              }
-{ Direitos Autorais Reservados (c) 2004 Daniel Simoes de Almeida               }
+{ Direitos Autorais Reservados (c) 2004 André Ferreira de Moraes               }
+{                                       Daniel Simoes de Almeida               }
 {                                                                              }
 { Colaboradores nesse arquivo:                                                 }
 {                                                                              }
@@ -34,122 +35,128 @@
 {******************************************************************************
 |* Historico
 |*
-|* 27/05/2004: Primeira Versao
-|*    Daniel Simoes de Almeida
-|*    Criaçao de um arquivo unico para registro dos Componentes
+|* 02/05/2011 Isaque Pinheiro
+|*  - Primeira Versao ACBrInStore
 ******************************************************************************}
 
 {$I ACBr.inc}
-unit ACBrDiversosReg;
+
+unit ACBrInStore;
 
 interface
-Uses Classes ,
-    {$IFDEF VisualCLX}
-      QDialogs
-    {$ELSE}
-      Dialogs
-      {$IFNDEF FPC}
-        {$WARN UNIT_PLATFORM OFF}, FileCtrl {$WARN UNIT_PLATFORM ON}
-      {$ENDIF}
-    {$ENDIF},
-    {$IFDEF FPC}
-       LResources, LazarusPackageIntf, PropEdits, componenteditors
-    {$ELSE}
-       {$IFNDEF COMPILER6_UP}
-          DsgnIntf
-       {$ELSE}
-          DesignIntf,
-          DesignEditors
-       {$ENDIF}
-    {$ENDIF} ;
+
+uses
+  SysUtils, Classes, ACBrBase;
 
 type
-  { Editor de Componente para mostrar a Calculadora}
-  TACBrCalculadoraEditor = class( TComponentEditor )
+  TACBrInStore = class(TACBrComponent)
+  private
+    { Private declarations }
+    fPrefixo: String;
+    fPeso: Double;
+    fTotal: Double;
+    fCodigo: String;
+    fDV: String;
   public
-    procedure Edit; override;
-  end;
+    { Public declarations }
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
 
-  { Editor de Componente para ACBrFala falar em Design }
-  TACBrFalaEditor = class( TComponentEditor )
-  public
-    procedure Edit; override;
-  end;
+    procedure Desmembrar(sCodificacao, sCodigoEtiqueta: string);
 
-  { Editor de Proriedades de Componente para chamar OpenDialog }
-  TACBrDirProperty = class( TStringProperty )
-  public
-    procedure Edit; override;
-    function GetAttributes: TPropertyAttributes; override;
+    property Prefixo: String read fPrefixo;
+    property Codigo: String read fCodigo;
+    property Peso: Double read fPeso;
+    property Total: Double read fTotal;
+    property DV: String read fDV;
+  published
+    { Published declarations }
   end;
-
-procedure Register;
 
 implementation
-Uses ACBrEnterTab, ACBrUtil, ACBrGIF,
-     ACBrCalculadora, ACBrExtenso, ACBrTroco, ACBrValidador,
-     ACBrCMC7, ACBrFala, ACBrBarCode, ACBrInStore, SysUtils;
 
-{$IFNDEF FPC}
-   {$R ACBrDiversos.dcr}
-{$ENDIF}
+{ TACBrInStore }
 
-procedure Register;
+constructor TACBrInStore.Create(AOwner: TComponent);
 begin
-  RegisterComponents('ACBr', [TACBrCalculadora, TACBrCMC7, TACBrExtenso, TACBrTroco,
-     TACBrValidador, TACBrFala, TACBrEnterTab, TACBrGIF, TACBrBarCode, TACBrInStore]);
-
-  { Registrando os Editores de Propriedade }
-  RegisterPropertyEditor(TypeInfo(String), TACBrFala, 'OrigemArquivos',
-     TACBrDirProperty);
-
-  { Registrando os Editores de Componente }
-  RegisterComponentEditor(TACBrCalculadora, TACBrCalculadoraEditor);
-  RegisterComponentEditor(TACBrFala, TACBrFalaEditor);
+   inherited Create( AOwner );
 end;
 
-
-{ TACBrCalculadoraEditor }
-
-procedure TACBrCalculadoraEditor.Edit;
+destructor TACBrInStore.Destroy;
 begin
-  with Component as TACBrCalculadora do
-     Execute ;
+
+  inherited;
 end;
 
-{ TACBrFalaEditor }
-
-procedure TACBrFalaEditor.Edit;
+procedure TACBrInStore.Desmembrar(sCodificacao, sCodigoEtiqueta: string);
+var
+// Variáveis de posição
+pCodigo: Integer;
+pTotal: Integer;
+pPeso: Integer;
+// Variáveis de tamanho
+tCodigo: Integer;
+tTotal: Integer;
+tPeso: Integer;
+// Digito verificador
+iFor: Integer;
 begin
-  with Component as TACBrFala do
-     Falar ;
+   if Length(sCodificacao) < 13 then
+      raise Exception.Create('Estrutura inválida!');
+
+   if Length(sCodigoEtiqueta) < 13 then
+      raise Exception.Create('Código inválido!');
+
+   // Limpa fields
+   fPrefixo := '';
+   fCodigo  := '';
+   fPeso    := 0;
+   fTotal   := 0;
+   fDV      := '';
+
+   // Variáveis de posição
+   pCodigo := Pos('C', sCodificacao);
+   pPeso   := Pos('P', sCodificacao);
+   pTotal  := Pos('T', sCodificacao);
+   // Variáveis de tamanho
+   tCodigo := 0;
+   tTotal  := 0;
+   tPeso   := 0;
+
+   for iFor := 1 to Length(sCodificacao) do
+   begin
+      if sCodificacao[iFor] = 'C' then
+         Inc(tCodigo)
+      else
+      if sCodificacao[iFor] = 'P' then
+         Inc(tPeso)
+      else
+      if sCodificacao[iFor] = 'T' then
+         Inc(tTotal);
+   end;
+   // Desmembrar os campos
+   // Profixo
+   fPrefixo := Copy(sCodigoEtiqueta, 1, pCodigo -1);
+
+   // Código
+   if pCodigo > 0 then
+      fCodigo := Copy(sCodigoEtiqueta, pCodigo, tCodigo);
+
+   // Peso
+   if pPeso > 0 then
+   begin
+      fPeso := StrToCurrDef( Copy(sCodigoEtiqueta, pPeso, tPeso), 0);
+      fPeso := fPeso / 100;
+   end;
+
+   // Código
+   if pTotal > 0 then
+   begin
+      fTotal := StrToCurrDef( Copy(sCodigoEtiqueta, pTotal, tTotal), 0);
+      fTotal := fTotal / 100;
+   end;
+
+   fDV := Copy(sCodigoEtiqueta, Length(sCodigoEtiqueta), 1);
 end;
-
-{ TACBrDirProperty }
-
-procedure TACBrDirProperty.Edit;
-Var
-{$IFNDEF VisualCLX} Dir : String ; {$ELSE} Dir : WideString ; {$ENDIF}
-begin
-  {$IFNDEF VisualCLX}
-  Dir := GetValue ;
-  if SelectDirectory(Dir,[],0) then
-     SetValue( Dir ) ;
-  {$ELSE}
-  Dir := '' ;
-  if SelectDirectory('Selecione o Diretório','',Dir) then
-     SetValue( Dir ) ;
-  {$ENDIF}
-end;
-
-function TACBrDirProperty.GetAttributes: TPropertyAttributes;
-begin
-  Result := [paDialog];
-end;
-
-{$IFDEF FPC}
-initialization
-   {$i ACBrDiversos.lrs}
-{$ENDIF}
 
 end.

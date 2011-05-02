@@ -40,7 +40,9 @@ implementation
 
 procedure TForm2.Button1Click(Sender: TObject);
 begin
-  ACBrInStore1.Desmembrar(edtCodificacao.Text, edtCodigoEtiqueta.Text);
+  ACBrInStore1.Codificacao := edtCodificacao.Text;
+  
+  ACBrInStore1.Desmembrar(edtCodigoEtiqueta.Text);
 
   edtPrefixo.Text := ACBrInStore1.Prefixo;
   edtCodigo.Text  := ACBrInStore1.Codigo;

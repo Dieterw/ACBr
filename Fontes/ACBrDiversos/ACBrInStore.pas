@@ -51,26 +51,26 @@ uses
 type
   TACBrInStore = class(TACBrComponent)
   private
-    { Private declarations }
     fPrefixo: String;
     fPeso: Double;
     fTotal: Double;
     fCodigo: String;
     fDV: String;
+    FCodificacao: String;
   public
-    { Public declarations }
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
-    procedure Desmembrar(sCodificacao, sCodigoEtiqueta: string);
+    procedure Desmembrar(ACodigoEtiqueta: string);
 
+    property Codificacao: String read FCodificacao write FCodificacao;
     property Prefixo: String read fPrefixo;
     property Codigo: String read fCodigo;
     property Peso: Double read fPeso;
     property Total: Double read fTotal;
     property DV: String read fDV;
   published
-    { Published declarations }
+
   end;
 
 implementation
@@ -79,7 +79,7 @@ implementation
 
 constructor TACBrInStore.Create(AOwner: TComponent);
 begin
-   inherited Create( AOwner );
+  inherited Create( AOwner );
 end;
 
 destructor TACBrInStore.Destroy;
@@ -88,75 +88,77 @@ begin
   inherited;
 end;
 
-procedure TACBrInStore.Desmembrar(sCodificacao, sCodigoEtiqueta: string);
+procedure TACBrInStore.Desmembrar(ACodigoEtiqueta: string);
 var
-// Variáveis de posição
-pCodigo: Integer;
-pTotal: Integer;
-pPeso: Integer;
-// Variáveis de tamanho
-tCodigo: Integer;
-tTotal: Integer;
-tPeso: Integer;
-// Digito verificador
-iFor: Integer;
+  // Variáveis de posição
+  pCodigo: Integer;
+  pTotal: Integer;
+  pPeso: Integer;
+  // Variáveis de tamanho
+  tCodigo: Integer;
+  tTotal: Integer;
+  tPeso: Integer;
+  // Digito verificador
+  iFor: Integer;
 begin
-   if Length(sCodificacao) < 13 then
-      raise Exception.Create('Estrutura inválida!');
+  if Length(FCodificacao) < 13 then
+    raise Exception.Create('Estrutura inválida!');
 
-   if Length(sCodigoEtiqueta) < 13 then
-      raise Exception.Create('Código inválido!');
+  if Length(ACodigoEtiqueta) < 13 then
+    raise Exception.Create('Código inválido!');
 
-   // Limpa fields
-   fPrefixo := '';
-   fCodigo  := '';
-   fPeso    := 0;
-   fTotal   := 0;
-   fDV      := '';
+  // Limpa fields
+  fPrefixo := EmptyStr;
+  fCodigo  := EmptyStr;
+  fDV      := EmptyStr;
+  fPeso    := 0.00;
+  fTotal   := 0.00;
 
-   // Variáveis de posição
-   pCodigo := Pos('C', sCodificacao);
-   pPeso   := Pos('P', sCodificacao);
-   pTotal  := Pos('T', sCodificacao);
-   // Variáveis de tamanho
-   tCodigo := 0;
-   tTotal  := 0;
-   tPeso   := 0;
+  // Variáveis de posição
+  pCodigo := Pos('C', FCodificacao);
+  pPeso   := Pos('P', FCodificacao);
+  pTotal  := Pos('T', FCodificacao);
 
-   for iFor := 1 to Length(sCodificacao) do
-   begin
-      if sCodificacao[iFor] = 'C' then
-         Inc(tCodigo)
-      else
-      if sCodificacao[iFor] = 'P' then
-         Inc(tPeso)
-      else
-      if sCodificacao[iFor] = 'T' then
-         Inc(tTotal);
-   end;
-   // Desmembrar os campos
-   // Profixo
-   fPrefixo := Copy(sCodigoEtiqueta, 1, pCodigo -1);
+  // Variáveis de tamanho
+  tCodigo := 0;
+  tTotal  := 0;
+  tPeso   := 0;
 
-   // Código
-   if pCodigo > 0 then
-      fCodigo := Copy(sCodigoEtiqueta, pCodigo, tCodigo);
+  for iFor := 1 to Length(FCodificacao) do
+  begin
+    if FCodificacao[iFor] = 'C' then
+      Inc(tCodigo)
+    else
+    if FCodificacao[iFor] = 'P' then
+      Inc(tPeso)
+    else
+    if FCodificacao[iFor] = 'T' then
+      Inc(tTotal);
+  end;
 
-   // Peso
-   if pPeso > 0 then
-   begin
-      fPeso := StrToCurrDef( Copy(sCodigoEtiqueta, pPeso, tPeso), 0);
-      fPeso := fPeso / 100;
-   end;
+  // Desmembrar os campos
+  // Profixo
+  fPrefixo := Copy(ACodigoEtiqueta, 1, pCodigo -1);
 
-   // Código
-   if pTotal > 0 then
-   begin
-      fTotal := StrToCurrDef( Copy(sCodigoEtiqueta, pTotal, tTotal), 0);
-      fTotal := fTotal / 100;
-   end;
+  // Código
+  if pCodigo > 0 then
+    fCodigo := Copy(ACodigoEtiqueta, pCodigo, tCodigo);
 
-   fDV := Copy(sCodigoEtiqueta, Length(sCodigoEtiqueta), 1);
+  // Peso
+  if pPeso > 0 then
+  begin
+    fPeso := StrToCurrDef( Copy(ACodigoEtiqueta, pPeso, tPeso), 0);
+    fPeso := fPeso / 1000;
+  end;
+
+  // Código
+  if pTotal > 0 then
+  begin
+    fTotal := StrToCurrDef( Copy(ACodigoEtiqueta, pTotal, tTotal), 0);
+    fTotal := fTotal / 100;
+  end;
+
+  fDV := Copy(ACodigoEtiqueta, Length(ACodigoEtiqueta), 1);
 end;
 
 end.

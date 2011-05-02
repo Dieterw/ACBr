@@ -49,6 +49,11 @@ Símbolo : Significado
 
 Versão 0.07   12/04/11
 ---------------
+[-] Acertado a quantidade de casas decimais da quantidade em estoque.
+    por Régys Silveira
+
+Versão 0.07   12/04/11
+---------------
 [*] Adicionado novas propriedades no Registro D2, para atender a 
     versão 01.07 do PAF-ECF.
     por Isaque Pinheiro / Régys Silveira

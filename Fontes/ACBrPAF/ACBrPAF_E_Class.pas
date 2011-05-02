@@ -129,7 +129,7 @@ begin
                                            RFill(DESC_MERC, 50) +
                                            RFill(UN_MED, 6, ifThen(RegistroValido, ' ', '?')) +
                                            LFill(ifThen(QTDE_EST < 0, '-', '+')) +
-                                           LFill(ifThen(QTDE_EST < 0, (QTDE_EST * (-1)), QTDE_EST), 9, 2) +
+                                           LFill(ifThen(QTDE_EST < 0, (QTDE_EST * (-1)), QTDE_EST), 9, 3) +
                                            LFill(DT_EST, 'yyyymmdd') +
                                            #13#10;
         end;

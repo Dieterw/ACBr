@@ -58,7 +58,7 @@ Agradecimentos:
 - Joao Victor Maia Fernandes     ECFQuattro
 - Sauli Bueno                    ECFYanco
 - Ivan Moreira                   ECFs
-- Isaque Pinheiro		 TACBrSPEDFiscal, TACBrSPEDContabil, TACBrPAF
+- Isaque Pinheiro		 TACBrSPEDFiscal, TACBrSPEDContabil, TACBrSPEDPisCofins, TACBrPAF, ACBrInStore
 - Luiz Arlindo                   ECFs
 
 * Colaboradores:
@@ -95,6 +95,11 @@ Símbolo : Significado
 [+]     : Novo recurso
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
+
+-- ACBrInStore -- 02/05/2011
+[+]    Criado um novo componente ACBrInStore, para desmembrar código de barra
+       gerado por balança por (Isaque Pinheiro)
+
 
 Versão 0.9.0b  21/04/10
 -- ACBrECF --

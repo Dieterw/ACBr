@@ -25,6 +25,8 @@ type
     edtDV: TEdit;
     ACBrInStore1: TACBrInStore;
     procedure Button1Click(Sender: TObject);
+    procedure ACBrInStore1GetPrecoUnitario(const Codigo: string;
+      var PrecoUnitario: Double);
   private
     { Private declarations }
   public
@@ -37,6 +39,13 @@ var
 implementation
 
 {$R *.dfm}
+
+procedure TForm2.ACBrInStore1GetPrecoUnitario(const Codigo: string;
+  var PrecoUnitario: Double);
+begin
+  // Faça a pesquisa do código no seu DB, e pegue o preço unitário.
+  PrecoUnitario := 10.00;
+end;
 
 procedure TForm2.Button1Click(Sender: TObject);
 begin

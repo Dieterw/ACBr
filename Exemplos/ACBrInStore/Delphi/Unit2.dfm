@@ -139,6 +139,7 @@ object Form2: TForm2
     TabOrder = 7
   end
   object ACBrInStore1: TACBrInStore
+    OnGetPrecoUnitario = ACBrInStore1GetPrecoUnitario
     Left = 272
     Top = 156
   end

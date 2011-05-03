@@ -39,8 +39,6 @@
 |*  - Primeira Versao ACBrInStore
 ******************************************************************************}
 
-{$I ACBr.inc}
-
 unit ACBrInStore;
 
 interface
@@ -173,7 +171,7 @@ begin
      fsOnGetPrecoUnitario( fCodigo, fPrecoUnitario );
 
      // Se o valor unitário for maior que zero, será calculado o preço total
-     if fPrecoUnitario > 0 then
+     if (fPrecoUnitario > 0) and (fPeso > 0) then
         fTotal := fPrecoUnitario * fPeso;
   end;
 

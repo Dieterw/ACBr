@@ -49,6 +49,9 @@ uses
   SysUtils, Classes, ACBrBase;
 
 type
+  TACBrPrecoUnitario = procedure(const Codigo: string;
+                                 var PrecoUnitario: Double) of object;
+
   TACBrInStore = class(TACBrComponent)
   private
     fPrefixo: String;
@@ -57,11 +60,13 @@ type
     fCodigo: String;
     fDV: String;
     FCodificacao: String;
+    fsOnGetPrecoUnitario: TACBrPrecoUnitario;
+
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
-    procedure Desmembrar(ACodigoEtiqueta: string);
+    procedure Desmembrar(pCodigoEtiqueta: string);
 
     property Codificacao: String read FCodificacao write FCodificacao;
     property Prefixo: String read fPrefixo;
@@ -70,7 +75,8 @@ type
     property Total: Double read fTotal;
     property DV: String read fDV;
   published
-
+    property OnGetPrecoUnitario: TACBrPrecoUnitario read fsOnGetPrecoUnitario
+                                                   write fsOnGetPrecoUnitario;
   end;
 
 implementation
@@ -88,7 +94,7 @@ begin
   inherited;
 end;
 
-procedure TACBrInStore.Desmembrar(ACodigoEtiqueta: string);
+procedure TACBrInStore.Desmembrar(pCodigoEtiqueta: string);
 var
   // Variáveis de posição
   pCodigo: Integer;
@@ -100,11 +106,12 @@ var
   tPeso: Integer;
   // Digito verificador
   iFor: Integer;
+  fPrecoUnitario: Double;
 begin
   if Length(FCodificacao) < 13 then
     raise Exception.Create('Estrutura inválida!');
 
-  if Length(ACodigoEtiqueta) < 13 then
+  if Length(pCodigoEtiqueta) < 13 then
     raise Exception.Create('Código inválido!');
 
   // Limpa fields
@@ -113,6 +120,7 @@ begin
   fDV      := EmptyStr;
   fPeso    := 0.00;
   fTotal   := 0.00;
+  fPrecoUnitario := 0.00;
 
   // Variáveis de posição
   pCodigo := Pos('C', FCodificacao);
@@ -138,27 +146,38 @@ begin
 
   // Desmembrar os campos
   // Profixo
-  fPrefixo := Copy(ACodigoEtiqueta, 1, pCodigo -1);
+  fPrefixo := Copy(pCodigoEtiqueta, 1, pCodigo -1);
 
   // Código
   if pCodigo > 0 then
-    fCodigo := Copy(ACodigoEtiqueta, pCodigo, tCodigo);
+     fCodigo := Copy(pCodigoEtiqueta, pCodigo, tCodigo);
 
   // Peso
   if pPeso > 0 then
   begin
-    fPeso := StrToCurrDef( Copy(ACodigoEtiqueta, pPeso, tPeso), 0);
+    fPeso := StrToCurrDef( Copy(pCodigoEtiqueta, pPeso, tPeso), 0);
     fPeso := fPeso / 1000;
   end;
 
   // Código
   if pTotal > 0 then
   begin
-    fTotal := StrToCurrDef( Copy(ACodigoEtiqueta, pTotal, tTotal), 0);
+    fTotal := StrToCurrDef( Copy(pCodigoEtiqueta, pTotal, tTotal), 0);
     fTotal := fTotal / 100;
   end;
 
-  fDV := Copy(ACodigoEtiqueta, Length(ACodigoEtiqueta), 1);
+  // Caso use somente o peso, poderá ser buscado o preço unitário para achar
+  // o valor total
+  if Assigned( fsOnGetPrecoUnitario ) then
+  begin
+     fsOnGetPrecoUnitario( fCodigo, fPrecoUnitario );
+
+     // Se o valor unitário for maior que zero, será calculado o preço total
+     if fPrecoUnitario > 0 then
+        fTotal := fPrecoUnitario * fPeso;
+  end;
+
+  fDV := Copy(pCodigoEtiqueta, Length(pCodigoEtiqueta), 1);
 end;
 
 end.

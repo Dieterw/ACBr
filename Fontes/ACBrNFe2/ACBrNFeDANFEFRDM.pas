@@ -388,7 +388,7 @@ begin
               vTemp2.Add(' COMBUSTÍVEL: ' + veicProd.tpComb);
               vTemp2.Add(' COR: ' + veicProd.xCor);
               vTemp2.Add(' FAB./MOD.: ' + IntToStr(veicProd.anoFab) + '/' + IntToStr(veicProd.anoMod));
-              vTemp2.Add(' RENAVAM: ' + veicProd.RENAVAM);
+//              vTemp2.Add(' RENAVAM: ' + veicProd.RENAVAM); // Essa propriedade foi comentada na class, por isso comentei aqui tambem.
               vTemp2.Add(' Nº DO MOTOR: ' + veicProd.nMotor);
 
               if Trim(wInfAdProd) <> '' then

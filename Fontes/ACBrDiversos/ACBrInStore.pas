@@ -63,7 +63,7 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-    procedure LimpaDados;
+    procedure ZerarDados;
     procedure Desmembrar(pCodigoEtiqueta: string);
 
     property Codificacao: String read FCodificacao write FCodificacao;
@@ -92,7 +92,7 @@ begin
   inherited;
 end;
 
-procedure TACBrInStore.LimpaDados;
+procedure TACBrInStore.ZerarDados;
 begin
   fPrefixo := '';
   fCodigo  := '';
@@ -122,7 +122,7 @@ begin
     raise Exception.Create('Código inválido!');
 
   // Limpa fields
-  LimpaDados;
+  ZerarDados;
   //
   fPrecoUnitario := 0.00;
 

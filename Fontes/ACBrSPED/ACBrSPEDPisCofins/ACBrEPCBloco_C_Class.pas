@@ -2096,6 +2096,11 @@ begin
              LFill(DT_DOC_INI,'ddmmyyyy') +
              LFill(DT_DOC_FIN,'ddmmyyyy') +
              LFill(COD_MOD) ) ;
+
+        /// Registros FILHOS
+        WriteRegistroC491( RegC010.RegistroC490.Items[intFor] ) ;
+        WriteRegistroC495( RegC010.RegistroC490.Items[intFor] ) ;
+        WriteRegistroC499( RegC010.RegistroC490.Items[intFor] ) ;
         //
         RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
       end;
@@ -2155,7 +2160,7 @@ begin
         Add( LFill('C491')             +
              LFill(COD_ITEM)           +
              LFill(strCST_PIS)         +
-             LFill(CFOP)               +
+             LFill(CFOP,4)             +
              LFill(VL_ITEM,0,2)        +
              LFill(VL_BC_PIS,0,2)      +
              LFill(ALIQ_PIS,8,4)       +
@@ -2222,7 +2227,7 @@ begin
         Add( LFill('C495')                +
              LFill(COD_ITEM)              +
              LFill(strCST_COFINS)         +
-             LFill(CFOP)                  +
+             LFill(CFOP,4)                +
              LFill(VL_ITEM,0,2)           +
              LFill(VL_BC_COFINS,0,2)      +
              LFill(ALIQ_COFINS,8,4)       +

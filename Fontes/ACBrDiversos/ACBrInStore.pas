@@ -115,9 +115,9 @@ begin
     raise Exception.Create('Código inválido!');
 
   // Limpa fields
-  fPrefixo := EmptyStr;
-  fCodigo  := EmptyStr;
-  fDV      := EmptyStr;
+  fPrefixo := '';
+  fCodigo  := '';
+  fDV      := '';
   fPeso    := 0.00;
   fTotal   := 0.00;
   fPrecoUnitario := 0.00;

@@ -63,7 +63,7 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-
+    procedure LimpaDados;
     procedure Desmembrar(pCodigoEtiqueta: string);
 
     property Codificacao: String read FCodificacao write FCodificacao;
@@ -92,6 +92,15 @@ begin
   inherited;
 end;
 
+procedure TACBrInStore.LimpaDados;
+begin
+  fPrefixo := '';
+  fCodigo  := '';
+  fDV      := '';
+  fPeso    := 0.00;
+  fTotal   := 0.00;
+end;
+
 procedure TACBrInStore.Desmembrar(pCodigoEtiqueta: string);
 var
   // Variáveis de posição
@@ -113,11 +122,8 @@ begin
     raise Exception.Create('Código inválido!');
 
   // Limpa fields
-  fPrefixo := '';
-  fCodigo  := '';
-  fDV      := '';
-  fPeso    := 0.00;
-  fTotal   := 0.00;
+  LimpaDados;
+  //
   fPrecoUnitario := 0.00;
 
   // Variáveis de posição
@@ -170,9 +176,20 @@ begin
   begin
      fsOnGetPrecoUnitario( fCodigo, fPrecoUnitario );
 
-     // Se o valor unitário for maior que zero, será calculado o preço total
+     // Se:
+     // Valor unitário maior que zero
+     // Peso maior que sero
+     // Será calculado o preço total
      if (fPrecoUnitario > 0) and (fPeso > 0) then
         fTotal := fPrecoUnitario * fPeso;
+
+     // Se:
+     // Valor unitário maior que zero
+     // Valor total maior que sero
+     // Peso igual a zero
+     // Será calculado o peso do produto
+     if (fPrecoUnitario > 0) and (fTotal > 0) and (fPeso = 0) then
+        fPeso := fTotal / fPrecoUnitario;
   end;
 
   fDV := Copy(pCodigoEtiqueta, Length(pCodigoEtiqueta), 1);

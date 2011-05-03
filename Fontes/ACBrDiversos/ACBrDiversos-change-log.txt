@@ -98,7 +98,8 @@ Símbolo : Significado
 
 -- ACBrInStore -- 03/05/2011
 [+]    Adicionado evento OnGetPrecoUnitario, para capturar o preço unitário do 
-       produto, quando a etiqueta vier com peso ao invés de preço total.
+       produto, este se vier na etiqueta valot total o componente acha o peso,
+       se vier peso o componente achar o valor totral.
        idéia de DSA e criado por (Isaque Pinheiro)
 
 -- ACBrInStore -- 02/05/2011

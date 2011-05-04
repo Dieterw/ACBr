@@ -245,6 +245,9 @@ function Space(Tamanho: Integer): string;
 function LinhaSimples(Tamanho: Integer): string;
 function LinhaDupla(Tamanho: Integer): string;
 
+function EAN13Valido( CodEAN13 : String ) : Boolean ;
+function EAN13_DV( CodEAN13 : String ) : String ;
+
 {$IFDEF MSWINDOWS}
 var xInp32 : function (wAddr: word): byte; stdcall;
 var xOut32 : function (wAddr: word; bOut: byte): byte; stdcall;
@@ -1959,6 +1962,36 @@ begin
   Result := StringOfChar('=', Tamanho);
 end;
 
+{------------------------------------------------------------------------------
+ Calcula e Retorna o Digito verificador do EAN-13 de acordo com 12 primeiros
+  caracteres de <CodEAN13>
+ ------------------------------------------------------------------------------}
+function EAN13_DV(CodEAN13: String): String;
+Var A,DV : Integer ;
+begin
+   Result   := '' ;
+   CodEAN13 := PadR(Trim(CodEAN13),12,'0') ;
+   if not StrIsNumber( CodEAN13 ) then
+      exit ;
+
+   DV := 0;
+   For A := 12 downto 1 do
+      DV := DV + (StrToInt( CodEAN13[A] ) * IfThen(odd(A),1,3));
+
+   DV := (Ceil( DV / 10 ) * 10) - DV ;
+
+   Result := IntToStr( DV );
+end;
+
+{------------------------------------------------------------------------------
+ Retorna True se o <CodEAN13> informado for válido
+ ------------------------------------------------------------------------------}
+function EAN13Valido(CodEAN13: String): Boolean;
+begin
+  Result := false ;
+  if Length(CodEAN13) = 13 then
+     Result := ( CodEAN13[13] =  EAN13_DV(CodEAN13) ) ;
+end;
 
 //*****************************************************************************************
 

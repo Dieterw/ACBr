@@ -97,8 +97,8 @@ begin
   fPrefixo := '';
   fCodigo  := '';
   fDV      := '';
-  fPeso    := 0.00;
-  fTotal   := 0.00;
+  fPeso    := 0;
+  fTotal   := 0;
 end;
 
 procedure TACBrInStore.Desmembrar(pCodigoEtiqueta: string);
@@ -124,7 +124,7 @@ begin
   // Limpa fields
   ZerarDados;
   //
-  fPrecoUnitario := 0.00;
+  fPrecoUnitario := 0;
 
   // Variáveis de posição
   pCodigo := Pos('C', FCodificacao);

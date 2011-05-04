@@ -44,7 +44,7 @@ unit ACBrInStore;
 interface
 
 uses
-  SysUtils, Classes, ACBrBase;
+  SysUtils, Classes, ACBrBase, ACBrUtil;
 
 type
   TACBrPrecoUnitario = procedure(const Codigo: string;
@@ -116,10 +116,13 @@ var
   fPrecoUnitario: Double;
 begin
   if Length(FCodificacao) < 13 then
-    raise Exception.Create('Estrutura inválida!');
+     raise Exception.Create('Codificação inválida!');
 
   if Length(pCodigoEtiqueta) < 13 then
-    raise Exception.Create('Código inválido!');
+     raise Exception.Create('Código EAN13 inválido!');
+
+  if not ACBrUtil.EAN13Valido(pCodigoEtiqueta) then
+     raise Exception.Create('Digito verificador do código EAN13 inválido!');
 
   // Limpa fields
   ZerarDados;

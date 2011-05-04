@@ -178,7 +178,7 @@ begin
 
      // Se:
      // Valor unitário maior que zero
-     // Peso maior que sero
+     // Peso maior que zero
      // Será calculado o preço total
      if (fPrecoUnitario > 0) and (fPeso > 0) then
         fTotal := fPrecoUnitario * fPeso;

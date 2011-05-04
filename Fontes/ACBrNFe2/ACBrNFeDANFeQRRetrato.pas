@@ -735,8 +735,11 @@ begin
                   cdsItens.FieldByName('UNIDADE').AsString := UCom;
                   cdsItens.FieldByName('TOTAL').AsString :=
                                       FormatFloat('###,###,###,##0.00', vProd);
-
-                  if FNFe.Emit.CRT in [crtRegimeNormal] then
+                  //==============================================================================
+                  // Em contato com o pessoal da Receita Estadual, foi informado que Ambos os regimes
+                  // trabalham de mesma forma, deferenciando-se apensa em seus códigos
+                  //==============================================================================
+                  if FNFe.Emit.CRT in [crtRegimeNormal, crtSimplesExcessoReceita] then
                     begin
                       if CSTICMSToStr(CST) > '' then
                         sCST := OrigToStr(orig) + CSTICMSToStr(CST)
@@ -810,22 +813,41 @@ begin
 
                   if FNFe.Emit.CRT = crtSimplesNacional then
                     begin
-                      if CSOSNIcmsToStr(Imposto.ICMS.CSOSN) > '' then
-                        cdsItens.FieldByName('CSOSN').AsString :=
-                            OrigToStr(orig) + CSOSNIcmsToStr(Imposto.ICMS.CSOSN)
-                      else
-                        cdsItens.FieldByName('CSOSN').AsString := '';
-                      cdsItens.FieldByName('BICMS').AsString := '0,00';
-                      cdsItens.FieldByName('ALIQICMS').AsString := '0,00';
-                      cdsItens.FieldByName('VALORICMS').AsString := '0,00';
-                      lblCST.Caption := 'CSOSN';
-                      lblCST.Font.Size := 4;
-                      lblCST.Top := 22;
-                      qrmProdutoCST.DataField := 'CSOSN';
+                        //==============================================================================
+                        // Adicionado para imprimir alíquotas
+                        //==============================================================================
+                        if CSOSNIcmsToStr(Imposto.ICMS.CSOSN) > '' then
+                           cdsItens.FieldByName('CSOSN').AsString := OrigToStr(orig) + CSOSNIcmsToStr(Imposto.ICMS.CSOSN)
+                        else
+                           cdsItens.FieldByName('CSOSN').AsString := '';
+
+                        //==============================================================================
+                        // Resetando valores das qlíquotas
+                        //==============================================================================
+                        sBCICMS    := '0,00';
+                        sALIQICMS  := '0,00';
+                        sVALORICMS := '0,00';
+
+                        case CSOSN of
+                           csosn900:
+                           begin
+                              sBCICMS    := FormatFloat('#,##0.00', VBC);
+                              sALIQICMS  := FormatFloat('#,##0.00', PICMS);
+                              sVALORICMS := FormatFloat('#,##0.00', VICMS);
+                           end;
+                        end;
+
+                        cdsItens.FieldByName('BICMS').AsString       := sBCICMS;
+                        cdsItens.FieldByName('ALIQICMS').AsString    := sALIQICMS;
+                        cdsItens.FieldByName('VALORICMS').AsString   := sVALORICMS;
+                        lblCST.Caption          := 'CSOSN';
+                        lblCST.Font.Size        := 4;
+                        lblCST.Top              := 22;
+                        qrmProdutoCST.DataField := 'CSOSN';
                     end; //FNFe.Emit.CRT = crtSimplesNacional
                 end; // with Imposto.ICMS do
 
-              with Imposto.IPI do
+               with Imposto.IPI do
                 begin
                   if (CST = ipi00) or (CST = ipi49) or
                      (CST = ipi50) or (CST = ipi99) then
@@ -862,6 +884,7 @@ begin
    //Fim alteracao infoaxel 01/09/2010
    Itens;
    nItemControle := 0;
+
    FTotalPages   := 1;
    if ( FNFe.Det.Count > _NUM_ITEMS_PAGE1 ) then
    begin
@@ -1202,7 +1225,7 @@ begin
       qrmDadosAdicionais.Lines.EndUpdate;
 
         // imprime data e hora da impressao
-        QrlDataHoraImpressao.Caption:= 'DATA E HORA DA IMPRESSÃO: ' + FormatDateTime('d/m/yyyy hh:nn',Now);
+        QrlDataHoraImpressao.Caption:= 'DATA E HORA DA IMPRESSÃO: ' + FormatDateTime('dd/mm/yyyy hh:nn',Now);
 
         // imprime usuario
         if FUsuario <> '' then

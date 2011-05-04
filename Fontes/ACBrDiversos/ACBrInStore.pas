@@ -185,7 +185,7 @@ begin
 
      // Se:
      // Valor unitário maior que zero
-     // Valor total maior que sero
+     // Valor total maior que zero
      // Peso igual a zero
      // Será calculado o peso do produto
      if (fPrecoUnitario > 0) and (fTotal > 0) and (fPeso = 0) then

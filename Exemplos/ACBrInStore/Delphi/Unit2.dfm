@@ -69,7 +69,7 @@ object Form2: TForm2
     Width = 350
     Height = 21
     TabOrder = 0
-    Text = '2123400123459'
+    Text = '2123400123457'
   end
   object Button1: TButton
     Left = 387

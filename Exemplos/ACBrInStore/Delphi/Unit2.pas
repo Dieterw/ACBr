@@ -50,7 +50,7 @@ end;
 procedure TForm2.Button1Click(Sender: TObject);
 begin
   ACBrInStore1.Codificacao := edtCodificacao.Text;
-  
+
   ACBrInStore1.Desmembrar(edtCodigoEtiqueta.Text);
 
   edtPrefixo.Text := ACBrInStore1.Prefixo;

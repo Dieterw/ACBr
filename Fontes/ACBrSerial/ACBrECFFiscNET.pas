@@ -2113,7 +2113,7 @@ begin
  {14;ImprimeCheque;Cidade="Tatui" Data=#01/03/07# Favorecido="Daniel Simoes de Almeida" HPosAno=1 HPosCidade=2 HPosDia=3 HPosExtensoLinha1=4 HPosExtensoLinha2=5 HPosFavorecido=6 HPosMes=7 HPosMsgLinha1=8 HPosMsgLinha2=9 HPosMsgLinha3=10 HPosValor=11 MensagemDocLinha1="Msg DOC Linha 1" MensagemDocLinha2="Msg DOC Linha 1" MensagemDocLinha3="Msg DOC Linha 1" TempoEspera=10 Valor=100,00 VPosCidade=12 VPosExtensoLinha1=13 VPosExtensoLinha2=14 VPosFavorecido=15 VPosMsgLinha1=16 VPosMsgLinha2=17 VPosMsgLinha3=18 VPosValor=19;522}
 end;
 
-Function TACBrECFFiscNET.LeituraCMC7 : AnsiString ;      // Por: José Edvandro Máximo
+Function TACBrECFFiscNET.LeituraCMC7 : AnsiString ;     
 begin
   FiscNETComando.NomeComando := 'LeTexto' ;
   FiscNETComando.AddParamString('NomeTexto', 'CMC7Documento') ;
@@ -2573,7 +2573,7 @@ begin
   end ;
 end;
 
-procedure TACBrECFFiscNET.IdentificaPAF(Linha1, Linha2: String);  // Por: rodrigosd
+procedure TACBrECFFiscNET.IdentificaPAF(Linha1, Linha2: String);  
 begin
    fsPAF := Linha1 + #10 + Linha2 ;
    FiscNETComando.NomeComando := 'EscreveTexto' ;
@@ -2582,9 +2582,8 @@ begin
    EnviaComando ;
 end;
 
-function TACBrECFFiscNET.GetPAF: String;   // Por: rodrigosd
+function TACBrECFFiscNET.GetPAF: String;   
 begin
-
   FiscNETComando.NomeComando := 'LeTexto' ;
   FiscNETComando.AddParamString('NomeTexto','TextoLivre') ;
   EnviaComando ;
@@ -2593,9 +2592,6 @@ begin
 end;
 
 function TACBrECFFiscNET.GetParamDescontoISSQN: Boolean;
-Var
-  RetCmd : AnsiString ;
-  B : Byte ;
 begin
   FiscNETComando.NomeComando := 'LeInteiro' ;
   FiscNETComando.AddParamString('NomeInteiro','PermiteISS') ;
@@ -2605,7 +2601,6 @@ begin
   except
      Result := False;
   end;
-
 end;
 
 procedure TACBrECFFiscNET.LoadDLLFunctions;
@@ -2945,11 +2940,9 @@ end;
 
 function TACBrECFFiscNET.GetDadosUltimaReducaoZ: AnsiString;
 var
-   RetCmd, sAux, sIcms, sInd : AnsiString ;
+   RetCmd, sAux, sIcms : AnsiString ;
    nAux, nAux2 : Integer ;
-   VBruta, TOPNF, nVal, nIcms, nAliq : Double ;
-   aIcms    : array of Double ;
-   aValIcms : array of Double ;
+   VBruta, TOPNF, nVal, nIcms : Double ;
 begin
    try
       FiscNETComando.NomeComando := 'LeTexto' ;
@@ -3128,9 +3121,6 @@ begin
           RoundTo( StrToFloatDef( copy( RetCmd, 3, 18 ), 0 ) / 100, -2 ) )  + sLineBreak ;
    except
    end ;
-
 end;
-
-
 
 end.

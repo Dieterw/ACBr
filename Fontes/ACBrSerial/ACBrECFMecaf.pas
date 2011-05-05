@@ -802,7 +802,7 @@ begin
   if IsOldMecaf then
    begin
      QtdStr   := IntToStrZero( Round( Qtd*1000 ) ,6) ;
-     if DescricaoGrande then   // Modificado por: Marcello Cainelli
+     if DescricaoGrande then  
         Fmt   := ''
      else
         Fmt   := '-' ;

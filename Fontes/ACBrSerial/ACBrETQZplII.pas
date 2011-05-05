@@ -168,10 +168,11 @@ begin
   Alt := IntToStr(AlturaCodBarras);
 
   case Orientacao of
-    orNormal: wOrientacao := 'N'; //normal
     or270   : wOrientacao := 'B'; //270
     or180   : wOrientacao := 'I'; //180
     or90    : wOrientacao := 'R'; //90
+  else
+    wOrientacao := 'N'; //normal
   end;
 
   ListaCmd.Add('^FO'+EixoX+','+EixoY);

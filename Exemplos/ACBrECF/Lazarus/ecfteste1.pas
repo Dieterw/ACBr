@@ -5,10 +5,10 @@ unit ECFTeste1;
 interface
 
 uses
-  ACBrECF, ACBrECFClass, ACBrBase, ACBrRFD, ACBrDevice, ACBrConsts, LCLIntf,
-  Classes, SysUtils, Forms, Controls, Graphics, LCLType,
-  Dialogs, DateUtils, IpHtml, Menus, Buttons, StdCtrls, ExtCtrls, ComCtrls,
-  Spin, strutils;
+  ACBrECF, ACBrECFClass, ACBrBase, ACBrRFD, ACBrDevice, ACBrAAC, ACBrConsts,
+  LCLIntf, Classes, SysUtils, Forms, Controls, Graphics, LCLType, Dialogs,
+  DateUtils, IpHtml, Menus, Buttons, StdCtrls, ExtCtrls, ComCtrls, Spin,
+  EditBtn, DBGrids, DbCtrls, strutils, memds, db;
 
 type
   TSimpleIpHtml = class(TIpHtml)
@@ -24,6 +24,7 @@ type
     AbreNoFiscal1: TMenuItem;
     AbreRelatorioGerencial1: TMenuItem;
     AbrirCupom1: TMenuItem;
+    ACBrAAC1 : TACBrAAC ;
     ACBrECF1: TACBrECF;
     ACBrRFD1: TACBrRFD;
     Aliquotas1: TMenuItem;
@@ -37,8 +38,20 @@ type
     BitBtn7 : TBitBtn ;
     bRFDLer: TButton;
     bRFDSalvar: TButton;
+    btnMenuFiscalLMFC : TButton ;
+    btnMenuFiscalLMFS : TButton ;
+    btnMenuFiscalLX : TButton ;
+    btnMenuFiscalMFDArq : TButton ;
+    btnMenuFiscalMFDEspelho : TButton ;
+    btnMenuFiscalRelDAVEmitidos : TButton ;
+    btnMenuFiscalRelIdentPAFECF : TButton ;
+    btnMenuFiscalRelMeiosPagto : TButton ;
     btSerial: TBitBtn;
     bLerDadosRedZ : TButton ;
+    bAACGravarArquivo : TButton ;
+    bAACAbrirArquivo : TButton ;
+    bACCVerificarGT : TButton ;
+    bAACAtualizarGT : TButton ;
     CancelaCupom1: TMenuItem;
     CancelaImpressoCheque1: TMenuItem;
     CancelaNoFiscal1: TMenuItem;
@@ -54,12 +67,15 @@ type
     chBloqueia: TCheckBox;
     chDescricaoGrande : TCheckBox ;
     chArredondamentoItemMFD : TCheckBox ;
+    chAACUsar : TCheckBox ;
     Cheque1: TMenuItem;
     ChequePronto1: TMenuItem;
     chExibeMsg: TCheckBox;
     chGavetaSinalInvertido: TCheckBox;
     ChImpTextoAbaixoBarras : TCheckBox ;
     ChImpTextoVertical : TCheckBox ;
+    chkMenuFiscalCotepe1704 : TCheckBox ;
+    chkMenuFiscalGerarArquivo : TCheckBox ;
     chRFD: TCheckBox;
     chTentar: TCheckBox;
     CNPJIE1: TMenuItem;
@@ -72,8 +88,25 @@ type
     DadosUltimaReduoZ1: TMenuItem;
     DataHora1: TMenuItem;
     DataMovimento1: TMenuItem;
+    DBGrid1 : TDBGrid ;
+    dsAACECF : TDatasource ;
+    edAACNomeArq : TEdit ;
+    edAACLog : TEdit ;
+    edAAC_ECF_CRO : TDBEdit ;
+    edAAC_ECF_NumSerie : TDBEdit ;
+    edAAC_PAF_Aplicativo : TEdit ;
+    edAAC_PAF_MD5 : TEdit ;
+    edAAC_PAF_Versao : TEdit ;
+    edAAC_SH_CNPJ : TEdit ;
+    edAAC_SH_IE : TEdit ;
+    edAAC_SH_IM : TEdit ;
+    edAAC_ECF_GT : TDBEdit ;
+    edAAC_SH_RazaoSocial : TEdit ;
+    edtDtInicial : TDateEdit ;
+    edtDtFinal : TDateEdit ;
     Desativar1: TMenuItem;
     Dispositivos1: TMenuItem;
+    dlgDialogoSalvar : TSaveDialog ;
     edDirRFD: TEdit;
     edLog: TEdit;
     edOperador : TEdit ;
@@ -88,6 +121,8 @@ type
     edSH_RazaoSocial: TEdit;
     edSH_VersaoAP: TEdit;
     EdtCodBarras : TEdit ;
+    edtCOOFinal : TSpinEdit ;
+    edtCOOInicial : TSpinEdit ;
     EfetuaPagamentoNaoFiscal1: TMenuItem;
     EfetuarPagamento1: TMenuItem;
     EnviaComando1: TMenuItem;
@@ -101,7 +136,10 @@ type
     FormasdePagamento2: TMenuItem;
     Gaveta1: TMenuItem;
     GavetaAberta1: TMenuItem;
+    gbAAC_PAF : TGroupBox ;
+    gbAAC_SH : TGroupBox ;
     GrandeTotal1: TMenuItem;
+    grpMenuFiscalOpcoes : TGroupBox ;
     HorarioVerao1: TMenuItem;
     HorarioVerao2: TMenuItem;
     IdentificaConsumidor1: TMenuItem;
@@ -114,14 +152,33 @@ type
     ImprimeporNReduaoZ1: TMenuItem;
     ImprimeporPeriodo1: TMenuItem;
     Label20 : TLabel ;
+    Label21 : TLabel ;
     Label22 : TLabel ;
     Label23 : TLabel ;
     Label24 : TLabel ;
+    Label25 : TLabel ;
+    Label26 : TLabel ;
     Label27 : TLabel ;
     Label28 : TLabel ;
     Label29 : TLabel ;
+    Label30 : TLabel ;
+    Label31 : TLabel ;
+    Label32 : TLabel ;
+    Label33 : TLabel ;
+    Label34 : TLabel ;
+    Label35 : TLabel ;
+    Label36 : TLabel ;
     Label37 : TLabel ;
+    Label38 : TLabel ;
+    Label39 : TLabel ;
+    Label40 : TLabel ;
+    Label41 : TLabel ;
+    Label42 : TLabel ;
+    Label43 : TLabel ;
+    Label44 : TLabel ;
     mDataHoraSwBasico : TMenuItem ;
+    mdsAACECF : TMemDataset ;
+    mAACParams : TMemo ;
     MenTextoBarras : TMemo ;
     MenuItem1 : TMenuItem ;
     mCortaPapel : TMenuItem ;
@@ -196,11 +253,23 @@ type
     mCliche : TMenuItem ;
     mUsuarioAtual : TMenuItem ;
     mIM : TMenuItem ;
+    pgAAC : TPageControl ;
+    pgcMenuFiscalTipo : TPageControl ;
     RdgTipoBarra : TRadioGroup ;
+    SbAACNomeArq : TSpeedButton ;
+    SbAACArqLog : TSpeedButton ;
+    SbAACMD5Atualizar : TSpeedButton ;
     seBandWidth : TSpinEdit ;
     seMaxLinhasBuffer : TSpinEdit ;
     SpEdAlturaBarra : TSpinEdit ;
     SpEdtLarguraBarra : TSpinEdit ;
+    tsAACParams : TTabSheet ;
+    tsAACECFs : TTabSheet ;
+    tsAACDados : TTabSheet ;
+    tsArqAuxCript : TTabSheet ;
+    tsMenuFiscal : TTabSheet ;
+    tbsMenuFiscalTipoCOO : TTabSheet ;
+    tbsMenuFiscalTipoData : TTabSheet ;
     tsDadosRedZ : TTabSheet ;
     tsCodBarras : TTabSheet ;
     wbBobina: TIpHtmlPanel;
@@ -327,9 +396,25 @@ type
     Variveis1: TMenuItem;
     VendaBruta1: TMenuItem;
     VenderItem1: TMenuItem;
+    procedure ACBrAAC1AntesAbrirArquivo(var Continua : Boolean) ;
+    procedure ACBrAAC1DepoisAbrirArquivo(Sender : TObject) ;
+    procedure ACBrAAC1GetChave(var Chave : AnsiString) ;
+    procedure bAACAtualizarGTClick(Sender : TObject) ;
+    procedure bAACGravarArquivoClick(Sender : TObject) ;
+    procedure bAACAbrirArquivoClick(Sender : TObject) ;
+    procedure bACCVerificarGTClick(Sender : TObject) ;
     procedure BitBtn6Click(Sender : TObject) ;
     procedure BitBtn7Click(Sender : TObject) ;
     procedure bLerDadosRedZClick(Sender : TObject) ;
+    procedure btnMenuFiscalLMFCClick(Sender : TObject) ;
+    procedure btnMenuFiscalLMFSClick(Sender : TObject) ;
+    procedure btnMenuFiscalLXClick(Sender : TObject) ;
+    procedure btnMenuFiscalMFDArqClick(Sender : TObject) ;
+    procedure btnMenuFiscalMFDEspelhoClick(Sender : TObject) ;
+    procedure btnMenuFiscalRelDAVEmitidosClick(Sender : TObject) ;
+    procedure btnMenuFiscalRelIdentPAFECFClick(Sender : TObject) ;
+    procedure btnMenuFiscalRelMeiosPagtoClick(Sender : TObject) ;
+    procedure chAACUsarChange(Sender : TObject) ;
     procedure cbxModeloChange(Sender: TObject);
     procedure chArredondamentoItemMFDChange(Sender : TObject) ;
     procedure chArredondaPorQtdChange(Sender : TObject) ;
@@ -352,6 +437,7 @@ type
     procedure mARQMFDDLLPeriodoClick(Sender : TObject) ;
     procedure mCancNaoFiscalClick(Sender : TObject) ;
     procedure mDescNaoFiscalClick(Sender : TObject) ;
+    procedure mdsAACECFAfterOpen(DataSet : TDataSet) ;
     procedure MenuItem20Click(Sender : TObject) ;
     procedure mFontesECFClick(Sender : TObject) ;
     procedure mLerTotaisRelatoriosGerenciaisClick(Sender : TObject) ;
@@ -402,6 +488,9 @@ type
     procedure Ativcar1Click(Sender: TObject);
     procedure Desativar1Click(Sender: TObject);
     procedure mMsgChange(Sender: TObject);
+    procedure SbAACArqLogClick(Sender : TObject) ;
+    procedure SbAACMD5AtualizarClick(Sender : TObject) ;
+    procedure SbAACNomeArqClick(Sender : TObject) ;
     procedure seMaxLinhasBufferChange(Sender : TObject) ;
     procedure seBandWidthChange(Sender : TObject) ;
     procedure Testar1Click(Sender: TObject);
@@ -430,6 +519,7 @@ type
     procedure TotalPago1Click(Sender: TObject);
     procedure AbrirCupom1Click(Sender: TObject);
     procedure CancelaCupom1Click(Sender: TObject);
+    procedure tsArqAuxCriptShow(Sender : TObject) ;
     procedure VenderItem1Click(Sender: TObject);
     procedure CancelarItemVendido1Click(Sender: TObject);
     procedure Sub1Click(Sender: TObject);
@@ -467,7 +557,6 @@ type
     procedure LerTodasasVariveis1Click(Sender: TObject);
     procedure MFD1Click(Sender: TObject);
     procedure Termica1Click(Sender: TObject);
-    procedure edLogChange(Sender: TObject);
     procedure SbArqLogClick(Sender: TObject);
     procedure cbMemoHTMLClick(Sender: TObject);
     procedure bBobinaLimparClick(Sender: TObject);
@@ -538,7 +627,7 @@ type
   end;
   
 const
-  ECFTeste_VERSAO = '2.01' ;
+  ECFTeste_VERSAO = '3.00' ;
   Estados : array[TACBrECFEstado] of string =
     ('Não Inicializada', 'Desconhecido', 'Livre', 'Venda',
     'Pagamento', 'Relatório', 'Bloqueada', 'Requer Z', 'Requer X', 'Nao Fiscal' );
@@ -766,6 +855,244 @@ begin
   end;
 end;
 
+procedure TForm1.btnMenuFiscalLMFCClick(Sender : TObject) ;
+var
+  PathArquivo: string;
+begin
+  if chkMenuFiscalGerarArquivo.Checked then
+  begin
+    if dlgDialogoSalvar.Execute then
+    begin
+      PathArquivo := dlgDialogoSalvar.FileName;
+
+      if chkMenuFiscalCotepe1704.Checked then
+      begin
+        if pgcMenuFiscalTipo.ActivePageIndex = 0 then
+          ACBrECF1.PafMF_LMFC_Cotepe1704(edtDtInicial.Date, edtDtFinal.Date, PathArquivo)
+        else
+          ACBrECF1.PafMF_LMFC_Cotepe1704(edtCOOInicial.Value, edtCOOFinal.Value, PathArquivo);
+      end
+      else
+      begin
+        if pgcMenuFiscalTipo.ActivePageIndex = 0 then
+          ACBrECF1.PafMF_LMFC_Espelho(edtDtInicial.Date, edtDtFinal.Date, PathArquivo)
+        else
+          ACBrECF1.PafMF_LMFC_Espelho(edtCOOInicial.Value, edtCOOFinal.Value, PathArquivo);
+      end;
+
+      ShowMessage(Format('Arquivo gerado com sucesso em:'#13#10' "%s"', [PathArquivo]));
+    end;
+  end
+  else
+  begin
+    if pgcMenuFiscalTipo.ActivePageIndex = 0 then
+      ACBrECF1.PafMF_LMFC_Impressao(edtDtInicial.Date, edtDtFinal.Date)
+    else
+      ACBrECF1.PafMF_LMFC_Impressao(edtCOOInicial.Value, edtCOOFinal.Value);
+  end;
+end;
+
+procedure TForm1.btnMenuFiscalLMFSClick(Sender : TObject) ;
+var
+  PathArquivo: string;
+begin
+  if chkMenuFiscalGerarArquivo.Checked then
+  begin
+    if dlgDialogoSalvar.Execute then
+    begin
+      PathArquivo := dlgDialogoSalvar.FileName;
+      if pgcMenuFiscalTipo.ActivePageIndex = 0 then
+        ACBrECF1.PafMF_LMFS_Espelho(edtDtInicial.Date, edtDtFinal.Date, PathArquivo)
+      else
+        ACBrECF1.PafMF_LMFS_Espelho(edtCOOInicial.Value, edtCOOFinal.Value, PathArquivo);
+
+      ShowMessage(Format('Arquivo gerado com sucesso em:'#13#10' "%s"', [PathArquivo]));
+    end;
+  end
+  else
+  begin
+    if pgcMenuFiscalTipo.ActivePageIndex = 0 then
+      ACBrECF1.PafMF_LMFS_Impressao(edtDtInicial.Date, edtDtFinal.Date)
+    else
+      ACBrECF1.PafMF_LMFS_Impressao(edtCOOInicial.Value, edtCOOFinal.Value);
+  end;
+end;
+
+procedure TForm1.btnMenuFiscalLXClick(Sender : TObject) ;
+begin
+  ACBrECF1.PafMF_LX_Impressao;
+end;
+
+procedure TForm1.btnMenuFiscalMFDArqClick(Sender : TObject) ;
+var
+  PathArquivo: string;
+begin
+  if dlgDialogoSalvar.Execute then
+  begin
+    PathArquivo := dlgDialogoSalvar.FileName;
+
+    if pgcMenuFiscalTipo.ActivePageIndex = 0 then
+      ACBrECF1.PafMF_MFD_Cotepe1704(edtDtInicial.Date, edtDtFinal.Date, PathArquivo)
+    else
+      ACBrECF1.PafMF_MFD_Cotepe1704(edtCOOInicial.Value, edtCOOFinal.Value, PathArquivo);
+
+    ShowMessage(Format('Arquivo gerado com sucesso em:'#13#10' "%s"', [PathArquivo]));
+  end;
+end;
+
+procedure TForm1.btnMenuFiscalMFDEspelhoClick(Sender : TObject) ;
+var
+  PathArquivo: string;
+begin
+  if dlgDialogoSalvar.Execute then
+  begin
+    PathArquivo := dlgDialogoSalvar.FileName;
+
+    if pgcMenuFiscalTipo.ActivePageIndex = 0 then
+      ACBrECF1.PafMF_MFD_Espelho(edtDtInicial.Date, edtDtFinal.Date, PathArquivo)
+    else
+      ACBrECF1.PafMF_MFD_Espelho(edtCOOInicial.Value, edtCOOFinal.Value, PathArquivo);
+
+    ShowMessage(Format('Arquivo gerado com sucesso em:'#13#10' "%s"', [PathArquivo]));
+  end;
+end;
+
+procedure TForm1.btnMenuFiscalRelDAVEmitidosClick(Sender : TObject) ;
+var
+  DAVs: TACBrECFDAVs;
+  I: Integer;
+const
+  TipoDAV: array[0..1] of string = ('PEDIDO', 'ORCAMENTO');
+  Valores: array[0..3] of Double = (1.00, 2.00, 3.50, 10.45);
+  Datas:   array[0..4] of string = ('30/12/2000', '01/01/2011', '25/02/2010', '04/02/2011', '13/04/2011');
+begin
+  DAVs := TACBrECFDAVs.Create;
+  try
+    for I := 1 to 25 do
+    begin
+      with DAVs.New do
+      begin
+        Numero    := I;
+        COO_Dav   := RandomRange(0, 999999);
+        COO_Cupom := RandomRange(0, 999999);
+        Titulo    := RandomFrom(TipoDAV);
+        DtEmissao := StrToDate(RandomFrom(Datas));
+        Valor     := RandomFrom(Valores)
+      end;
+    end;
+
+    ACBrECF1.PafMF_RelDAVEmitidos(DAVs, 'REFERENCIA: 00/00/0000 A 00/00/0000', 0);
+  finally
+    DAVs.Free;
+  end;
+end;
+
+procedure TForm1.btnMenuFiscalRelIdentPAFECFClick(Sender : TObject) ;
+var
+  IdentPaf: TACBrECFIdentificacaoPAF;
+  I: Integer;
+begin
+  IdentPaf := TACBrECFIdentificacaoPAF.Create;
+  try
+    IdentPaf.NumeroLaudo := 'ABC1234567890'; // retirar do laudo
+    IdentPaf.VersaoER    := '01.06'; // retirar do laudo
+
+    // preencher dados da empresa conforme o que foi informado no laudo de análise
+    IdentPaf.Empresa.RazaoSocial := 'Razao social Empresa';
+    IdentPaf.Empresa.CNPJ        := '01.222.333/00001-99';
+    IdentPaf.Empresa.Endereco    := 'Rua da Felicidade, 1';
+    IdentPaf.Empresa.Cidade      := 'SAO PAULO';
+    IdentPaf.Empresa.Uf          := 'SP';
+    IdentPaf.Empresa.Cep         := '99.999-999';
+    IdentPaf.Empresa.Telefone    := '(99)1111.2222';
+    IdentPaf.Empresa.Contato     := 'Nome do Contato';
+
+    IdentPaf.Paf.Nome              := 'DemoECF';// preencher conforme o laudo
+    IdentPaf.Paf.Versao            := 'v01.01.01'; // versão atual do aplicativo
+    IdentPaf.Paf.PrincipalExe.Nome := UpperCase(ExtractFileName(ParamStr(0)));
+    IdentPaf.Paf.PrincipalExe.MD5  := StringOfChar('X', 32); // md5 atual do aplicativo
+
+    IdentPaf.ArquivoListaAutenticados.Nome := 'lista_arquivos.txt'; // nome do arquivo contendo a lista de autenticados
+    IdentPaf.ArquivoListaAutenticados.MD5  := 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'; // md5 do arquivo, mesmo que vai impresso nos cupons
+
+    // adicionar os arquivos adicionados ao arquivo da lista de autenticados
+    for I := 1 to 5 do
+    begin
+      with IdentPaf.OutrosArquivos.New do
+      begin
+        Nome := Format('Arquivo %3.3d', [I]);
+        MD5  := StringOfChar('X', 32);
+      end;
+    end;
+
+    // tsAACECFs autorizados para funcionamento na máquina
+    IdentPaf.ECFsAutorizados.clear;
+    for I := 1 to 3 do
+      IdentPaf.ECFsAutorizados.Add(StringOfChar('A', 15));
+
+    ACBrECF1.PafMF_RelIdentificacaoPafECF(IdentPaf, 0);
+  finally
+    IdentPaf.Free;
+  end;
+end;
+
+procedure TForm1.btnMenuFiscalRelMeiosPagtoClick(Sender : TObject) ;
+var
+  FormasPagamento: TACBrECFFormasPagamento;
+  I: Integer;
+const
+  arrayDescrFormaPagto: array[0..3] of string = ('Dinheiro', 'Cheque', 'Cartão', 'Ticket');
+  arrayDataLancamento: array[0..4] of String = ('01/01/2010', '31/12/2010', '04/05/2011', '02/01/2010', '03/05/2011');
+  arrayValores: array[0..4] of Double = (10.56, 14.23, 0.00, 12.00, 1.20);
+begin
+  FormasPagamento := TACBrECFFormasPagamento.Create;
+  try
+    for I := 1 to 25 do
+    begin
+      with FormasPagamento.New do
+      begin
+        Descricao      := RandomFrom(arrayDescrFormaPagto);
+        Data           := StrToDate(RandomFrom(arrayDataLancamento));
+        ValorFiscal    := RandomFrom(arrayValores);
+        ValorNaoFiscal := RandomFrom(arrayValores);
+      end;
+    end;
+
+    ACBrECF1.PafMF_RelMeiosPagamento(
+      FormasPagamento,
+      'PERIODO DE 01/01/2000 A 31/12/2000',
+      0
+    );
+  finally
+    FormasPagamento.Free;
+  end;
+end;
+
+procedure TForm1.chAACUsarChange(Sender : TObject) ;
+Var
+  OldAtivo : Boolean ;
+begin
+  OldAtivo := ACBrECF1.Ativo ;
+  try
+     try
+        ACBrECF1.Desativar ;
+
+        if chAACUsar.Checked then
+           ACBrECF1.AAC := ACBrAAC1
+        else
+           ACBrECF1.AAC := nil ;
+     except
+        chAACUsar.OnChange := nil ;
+        chAACUsar.Checked := Assigned( ACBrECF1.AAC )  ;
+        chAACUsar.OnChange := @chAACUsarChange ;
+
+        raise ;
+     end ;
+  finally
+     ACBrECF1.Ativo := OldAtivo ;
+  end ;
+end;
+
 procedure TForm1.BitBtn7Click(Sender : TObject) ;
 begin
   ACBrECF1.CodigodeBarras.AdicionarCodBarra(TACBrECFTipoCodBarra(RdgTipoBarra.ItemIndex),
@@ -782,6 +1109,120 @@ begin
     ChImpTextoAbaixoBarras.Checked, ChImpTextoVertical.Checked);
 
   ACBrECF1.LinhaRelatorioGerencial( MenTextoBarras.Text );
+end;
+
+procedure TForm1.ACBrAAC1DepoisAbrirArquivo(Sender : TObject) ;
+var
+   I : Integer ;
+begin
+   edAAC_SH_RazaoSocial.Text := ACBrAAC1.SH_RazaoSocial;
+   edAAC_SH_CNPJ.Text        := ACBrAAC1.SH_CNPJ;
+   edAAC_SH_IM.Text          := ACBrAAC1.SH_IM;
+   edAAC_SH_IE.Text          := ACBrAAC1.SH_IE;
+   edAAC_PAF_Aplicativo.Text := ACBrAAC1.PAF_Nome;
+   edAAC_PAF_Versao.Text     := ACBrAAC1.PAF_Versao;
+   edAAC_PAF_MD5.Text        := ACBrAAC1.PAF_MD5;
+
+   with mdsAACECF do
+   begin
+     Open;
+     // Zera Tabela em memoria //
+     First;
+     while not EOF do
+        Delete;
+
+     // Insere Itens da Lista de ECFS //
+     For I := 0 to ACBrAAC1.ECFsAutorizados.Count-1 do
+     begin
+       Insert;
+       FieldByName('Indice').AsInteger  := I;
+       FieldByName('NumSerie').AsString := ACBrAAC1.ECFsAutorizados[I].NumeroSerie;
+       FieldByName('CRO').AsInteger     := ACBrAAC1.ECFsAutorizados[I].CRO;
+       FieldByName('ValorGT').AsFloat   := ACBrAAC1.ECFsAutorizados[I].ValorGT;
+       FieldByName('DtHrAtualizado').AsDateTime := ACBrAAC1.ECFsAutorizados[I].DtHrAtualizado;
+       Post;
+     end ;
+   end ;
+
+   mAACParams.Lines.Clear;
+   mAACParams.Lines.Assign( ACBrAAC1.Params );
+end;
+
+procedure TForm1.ACBrAAC1GetChave(var Chave : AnsiString) ;
+begin
+   Chave := 'Informe aqui a SUA CHAVE' ;
+   // Dicas: Evite Strings fixas.. prefira uma Constante
+   // Use Chr(nn) ou outra função para compor a chave
+end;
+
+procedure TForm1.bAACAtualizarGTClick(Sender : TObject) ;
+begin
+  ACBrAAC1.AtualizarValorGT( mdsAACECF.FieldByName('NumSerie').AsString,
+                             mdsAACECF.FieldByName('ValorGT').AsFloat ) ;
+end;
+
+procedure TForm1.ACBrAAC1AntesAbrirArquivo(var Continua : Boolean) ;
+begin
+   ACBrAAC1.NomeArquivoAux := ExtractFilePath(Application.ExeName) + edAACNomeArq.Text;
+   ACBrAAC1.ArqLOG         := ExtractFilePath(Application.ExeName) + edAACLog.Text;
+   Continua := True;
+end;
+
+procedure TForm1.bAACGravarArquivoClick(Sender : TObject) ;
+begin
+  ACBrAAC1.SH_RazaoSocial := edAAC_SH_RazaoSocial.Text;
+  ACBrAAC1.SH_CNPJ        := edAAC_SH_CNPJ.Text;
+  ACBrAAC1.SH_IM          := edAAC_SH_IM.Text;
+  ACBrAAC1.SH_IE          := edAAC_SH_IE.Text;
+  ACBrAAC1.PAF_Nome       := edAAC_PAF_Aplicativo.Text;
+  ACBrAAC1.PAF_Versao     := edAAC_PAF_Versao.Text;
+  ACBrAAC1.PAF_MD5        := edAAC_PAF_MD5.Text;
+
+  ACBrAAC1.ECFsAutorizados.Clear;
+  with mdsAACECF do
+  begin
+    // Zera Tabela em memoria //
+    First;
+    while not EOF do
+    begin
+       with ACBrAAC1.ECFsAutorizados.New do
+       begin
+         NumeroSerie    := FieldByName('NumSerie').AsString;
+         CRO            := FieldByName('CRO').AsInteger;
+         ValorGT        := FieldByName('ValorGT').AsFloat;
+         DtHrAtualizado := FieldByName('DtHrAtualizado').AsDateTime;
+       end ;
+       Next;
+    end ;
+  end ;
+
+  ACBrAAC1.Params.Assign( mAACParams.Lines );
+
+  ACBrAAC1.SalvarArquivo;
+end;
+
+procedure TForm1.bAACAbrirArquivoClick(Sender : TObject) ;
+begin
+  ACBrAAC1.AbrirArquivo;
+end;
+
+procedure TForm1.bACCVerificarGTClick(Sender : TObject) ;
+var
+   Erro : LongInt ;
+   Msg : String ;
+begin
+  Erro := ACBrAAC1.VerificarGTECF( mdsAACECF.FieldByName('NumSerie').AsString,
+                                   mdsAACECF.FieldByName('ValorGT').AsFloat ) ;
+
+  case Erro of
+     0  : Msg := 'G.T. OK' ;
+     -1 : Msg := 'Num.Serie não encontrado';
+     -2 : Msg := 'GT diferente';
+  else
+     Msg := 'Erro não definido';
+  end ;
+
+  ShowMessage(Msg) ;
 end;
 
 procedure TForm1.chArredondamentoItemMFDChange(Sender : TObject) ;
@@ -1115,6 +1556,12 @@ procedure TForm1.mDescNaoFiscalClick(Sender : TObject) ;
 begin
   mResp.Lines.Add( 'TotalDescontosOPNF: ('+ FloatToStr(ACBrECF1.TotalDescontosOPNF)+')' );
   AtualizaMemos ;
+end;
+
+procedure TForm1.mdsAACECFAfterOpen(DataSet : TDataSet) ;
+begin
+   TFloatField( mdsAACECF.FieldByName('ValorGT') ).DisplayFormat := '###,###,##0.00';
+   TDateTimeField( mdsAACECF.FieldByName('DtHrAtualizado') ).DisplayFormat := 'dd/mm/yy hh:nn:ss';
 end;
 
 procedure TForm1.MenuItem20Click(Sender : TObject) ;
@@ -1714,6 +2161,21 @@ begin
   ACBrECF1.MsgAguarde := copy(Msg, 1, Length(Msg)-1 ) ;
 end;
 
+procedure TForm1.SbAACArqLogClick(Sender : TObject) ;
+begin
+  OpenURL( ExtractFilePath( Application.ExeName ) + edAACLog.Text);
+end;
+
+procedure TForm1.SbAACMD5AtualizarClick(Sender : TObject) ;
+begin
+   ACBrAAC1.AtualizarMD5( edAAC_PAF_MD5.Text ) ;
+end;
+
+procedure TForm1.SbAACNomeArqClick(Sender : TObject) ;
+begin
+  OpenURL( ExtractFilePath( Application.ExeName ) + edAACNomeArq.Text);
+end;
+
 procedure TForm1.seMaxLinhasBufferChange(Sender : TObject) ;
 begin
    ACBrECF1.MaxLinhasBuffer := seMaxLinhasBuffer.Value;
@@ -2014,6 +2476,11 @@ begin
   ACBrECF1.CancelaCupom ;
   mResp.Lines.Add( 'CancelaCupom' );
   AtualizaMemos ;
+end;
+
+procedure TForm1.tsArqAuxCriptShow(Sender : TObject) ;
+begin
+  mdsAACECF.Open;
 end;
 
 procedure TForm1.VenderItem1Click(Sender: TObject);
@@ -2788,11 +3255,6 @@ begin
   AtualizaMemos ;
 end;
 
-procedure TForm1.edLogChange(Sender: TObject);
-begin
-  ACBrECF1.ArqLOG := edLog.Text ;
-end;
-
 procedure TForm1.SbArqLogClick(Sender: TObject);
 begin
   OpenURL( ExtractFilePath( Application.ExeName ) + edLog.Text);
@@ -3258,6 +3720,10 @@ begin
      INI.WriteString('RFD','SH_VersaoAplicativo',edSH_VersaoAP.Text);
      INI.WriteString('RFD','SH_Linha1',edSH_Linha1.Text);
      INI.WriteString('RFD','SH_Linha2',edSH_Linha2.Text);
+
+     INI.WriteBool('AAC','GerarAAC',chAACUsar.Checked);
+     INI.WriteString('AAC','NomeArquivo',edAACNomeArq.Text);
+     INI.WriteString('AAC','ArqLog',edAACLog.Text);
   finally
      INI.Free ;
   end ;
@@ -3301,6 +3767,10 @@ begin
      edSH_VersaoAP.Text := INI.ReadString('RFD','SH_VersaoAplicativo',edSH_VersaoAP.Text);
      edSH_Linha1.Text := INI.ReadString('RFD','SH_Linha1',edSH_Linha1.Text);
      edSH_Linha2.Text := INI.ReadString('RFD','SH_Linha2',edSH_Linha2.Text);
+
+     chAACUsar.Checked := INI.ReadBool('AAC','GerarAAC',False);
+     edAACNomeArq.Text := INI.ReadString('AAC','NomeArquivo',edAACNomeArq.Text);
+     edAACLog.Text     := INI.ReadString('AAC','ArqLog',edAACLog.Text);
   finally
      INI.Free ;
   end ;

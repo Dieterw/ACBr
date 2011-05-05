@@ -39,6 +39,7 @@ requires
   synapse;
 
 contains
+  ACBrAAC in '..\..\Fontes\ACBrSerial\ACBrAAC.pas',
   ACBrBAL in '..\..\Fontes\ACBrSerial\ACBrBAL.pas',
   ACBrBALClass in '..\..\Fontes\ACBrSerial\ACBrBALClass.pas',
   ACBrBALFilizola in '..\..\Fontes\ACBrSerial\ACBrBALFilizola.pas',

@@ -3430,7 +3430,6 @@ begin
       Result := StrToFloatDef(copy(RetCmd,4,18),0)/100 ;
   end;
 
-  //Alterado por: Maicon da Silva Evangelista
   Result := RoundTo( ( GrandeTotal - Result), -2 );
 end;
 

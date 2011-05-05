@@ -3415,20 +3415,18 @@ Var
   OldDateSeparator: Char;
   OldShortDateFormat : String;
 begin
-  // Por: Magno System
   LoadDLLFunctions ;
 
   OldAtivo := Ativo ;
+  OldShortDateFormat := ShortDateFormat ;
+  OldDateSeparator   := DateSeparator;
   try
     Ativo := False ;
 
     AbrePortaSerialDLL ;
 
-    OldShortDateFormat := ShortDateFormat ;
-    OldDateSeparator   := DateSeparator;
-    DateSeparator	   :='/';
-    ShortDateFormat    := 'dd/mm/yy' ;
-
+    DateSeparator   := '/';
+    ShortDateFormat := 'dd/mm/yy' ;
     DiaIni := FormatDateTime('DD/MM/YY',DataInicial) ;
     DiaFim := FormatDateTime('DD/MM/YY',DataFinal) ;
 
@@ -3457,7 +3455,6 @@ Var
   CooIni, CooFim : String ;
   OldAtivo : Boolean ;
 begin
-  // Por: Magno System
   LoadDLLFunctions ;
 
   OldAtivo := Ativo ;
@@ -3493,7 +3490,6 @@ Var
   OldAtivo : Boolean ;
   PathBin:AnsiString;
 begin
-  // Por: Magno System
   LoadDLLFunctions ;
 
   OldAtivo := Ativo ;
@@ -3538,7 +3534,6 @@ Var
   OldAtivo : Boolean ;
   PathBin:AnsiString;
 begin
-  // Por: Magno System
   LoadDLLFunctions ;
 
   OldAtivo := Ativo ;

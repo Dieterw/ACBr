@@ -2366,7 +2366,6 @@ begin
 end;
 
 function TACBrECFBematech.GetDataHoraSB: TDateTime;
-// Por: Cristian Custodio
 {Segundo a Bematech esta informação tem que se colhida a partir da
 Leitura da Memória Fiscal, só para não retornar erro coloquei esta
 informação abaixo, temos que criar uma rotina que leia a LMF serial
@@ -3792,7 +3791,6 @@ begin
   end;
 end;
 
-// Por: Luiz Arlindo
 procedure TACBrECFBematech.ArquivoMFD_DLL(COOInicial, COOFinal: Integer;
   NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet; Finalidade: TACBrECFFinalizaArqMFD);
 Var

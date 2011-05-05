@@ -117,7 +117,7 @@
 Unit ACBrECF ;
 
 interface
-uses ACBrBase, ACBrDevice, ACBrECFClass, ACBrRFD, ACBrEAD,{Units da ACBr}
+uses ACBrBase, ACBrDevice, ACBrECFClass, ACBrRFD, ACBrAAC, ACBrEAD,{Units da ACBr}
      SysUtils , ACBrConsts, Classes
      {$IFNDEF CONSOLE}
         {$IFDEF VisualCLX}, QControls, QForms, QDialogs, QGraphics, QStdCtrls{$ENDIF}
@@ -208,6 +208,7 @@ TACBrECF = class( TACBrComponent )
 
     fsECF : TACBrECFClass ;  { Classe com instancia do ECF de fsModelo }
     fsRFD : TACBrRFD ;
+    fsAAC : TACBrAAC ;
     fsDadosReducaoZClass: TACBrECFDadosRZ; {Class com instacia para guadar dados da RZ.}
     fOnAntesAbreCupom : TACBrECFOnAbreCupom;
     fOnDepoisAbreCupom  : TACBrECFOnAbreCupom;
@@ -267,32 +268,33 @@ TACBrECF = class( TACBrComponent )
     fOnDepoisFechaRelatorio  : TNotifyEvent;
     fOnErrorFechaRelatorio  : TACBrECFEventoOnError;
     fOnChangeEstado : TACBrECFOnChangeEstado;
+    fsOnPAFCalcEAD  : TACBrEADCalc;
 
     fsGavetaSinalInvertido: Boolean;
     fsIdentificarOperador : Boolean;
-    fsOnPAFCalcEAD: TACBrEADCalc;
+    fsNumSerieCache       : String ;
 
     function GetArredondaItemMFD : Boolean ;
     procedure SetArredondaItemMFD(const AValue : Boolean) ;
-    procedure SetAtivo(const Value: Boolean);
-    procedure SetModelo(const Value: TACBrECFModelo);
-    procedure SetPorta(const Value: String);
-    procedure SetRetentar(const Value: Boolean);
-    procedure SetTimeOut(const Value: Integer);
-    procedure SetIntervaloAposComando(const Value: Integer);
-    procedure SetMsgAguarde(const Value: String);
-    procedure SetMsgTrabalhando(const Value: String);
-    procedure SetMsgRelatorio(const Value: String);
-    procedure SetPausaRelatorio(const Value: Integer);
-    procedure SetTempoInicioMsg(const Value: Integer);
-    procedure SetBloqueiaMouseTeclado(const Value: Boolean);
-    procedure SetExibeMensagem(const Value: Boolean);
-    procedure SetMsgPoucoPapel(const Value: Integer);
-    procedure SetDescricaoGrande(const Value: Boolean);
-    procedure SetOnMsgAguarde(const Value: TACBrECFMsgAguarde);
-    procedure SetOnAguardandoRespostaChange(const Value: TNotifyEvent);
-    procedure SetOnMsgPoucoPapel(const Value: TNotifyEvent);
-    procedure SetOnMsgRetentar(const Value: TACBrECFMsgRetentar);
+    procedure SetAtivo(const AValue: Boolean);
+    procedure SetModelo(const AValue: TACBrECFModelo);
+    procedure SetPorta(const AValue: String);
+    procedure SetRetentar(const AValue: Boolean);
+    procedure SetTimeOut(const AValue: Integer);
+    procedure SetIntervaloAposComando(const AValue: Integer);
+    procedure SetMsgAguarde(const AValue: String);
+    procedure SetMsgTrabalhando(const AValue: String);
+    procedure SetMsgRelatorio(const AValue: String);
+    procedure SetPausaRelatorio(const AValue: Integer);
+    procedure SetTempoInicioMsg(const AValue: Integer);
+    procedure SetBloqueiaMouseTeclado(const AValue: Boolean);
+    procedure SetExibeMensagem(const AValue: Boolean);
+    procedure SetMsgPoucoPapel(const AValue: Integer);
+    procedure SetDescricaoGrande(const AValue: Boolean);
+    procedure SetOnMsgAguarde(const AValue: TACBrECFMsgAguarde);
+    procedure SetOnAguardandoRespostaChange(const AValue: TNotifyEvent);
+    procedure SetOnMsgPoucoPapel(const AValue: TNotifyEvent);
+    procedure SetOnMsgRetentar(const AValue: TACBrECFMsgRetentar);
 
     function GetPorta: String;
     function GetRetentar: Boolean;
@@ -335,15 +337,15 @@ TACBrECF = class( TACBrComponent )
     function GetRFDIDClass: String;
     function GetDescricaoGrande: Boolean;
     function GetMsgPausaRelatorio: String;
-    procedure SetMsgPausaRelatorio(const Value: String);
+    procedure SetMsgPausaRelatorio(const AValue: String);
     function GetLinhasEntreCupons: Integer;
-    procedure SetLinhasEntreCupons(const Value: Integer);
+    procedure SetLinhasEntreCupons(const AValue: Integer);
     function GetMaxLinhasBuffer: Integer;
-    procedure SetMaxLinhasBuffer(const Value: Integer);
+    procedure SetMaxLinhasBuffer(const AValue: Integer);
     {$IFNDEF CONSOLE}
-      procedure SetFormMsgFonte(const Value: TFont);
-      procedure SetMemoBobina(const Value: TMemo);
-      procedure SetMemoParams(const Value: TStrings);
+      procedure SetFormMsgFonte(const AValue: TFont);
+      procedure SetMemoBobina(const AValue: TMemo);
+      procedure SetMemoParams(const AValue: TStrings);
       procedure MemoAdicionaLinha( Linhas : String ) ;
 
       Function MemoAssigned : Boolean ;
@@ -355,7 +357,7 @@ TACBrECF = class( TACBrComponent )
           Observacao: String) ;
     {$ENDIF}
     function GetOperador: String;
-    procedure SetOperador(const Value: String);
+    procedure SetOperador(const AValue: String);
     function GetHorarioVeraoClass: Boolean;
     function GetArredondaClass: Boolean;
     function GetMFDClass: Boolean;
@@ -373,21 +375,21 @@ TACBrECF = class( TACBrComponent )
     function GetNumNCNClass: String;
     function GetNumCCDCClass: String;
     function GetArredondaPorQtd: Boolean;
-    procedure SetArredondaPorQtd(const Value: Boolean);
+    procedure SetArredondaPorQtd(const AValue: Boolean);
     function GetDecimaisPreco: Integer;
-    procedure SetDecimaisPreco(const Value: Integer);
+    procedure SetDecimaisPreco(const AValue: Integer);
     function GetDecimaisQtd: Integer;
-    procedure SetDecimaisQtd(const Value: Integer);
+    procedure SetDecimaisQtd(const AValue: Integer);
     function GetAguardaImpressao: Boolean;
-    procedure SetAguardaImpressao(const Value: Boolean);
+    procedure SetAguardaImpressao(const AValue: Boolean);
     function GetUnidadesMedidaClass: TACBrECFUnidadesMedida;
 
     procedure DoAcharPorta ;
 
     function GetArqLOG: String;
-    procedure SetArqLOG(const Value: String);
+    procedure SetArqLOG(const AValue: String);
     function GetComandoLOGClass: AnsiString;
-    procedure SetComandoLOGClass(const Value: AnsiString);
+    procedure SetComandoLOGClass(const AValue: AnsiString);
     function GetCNPJClass: String;
     function GetIEClass: String;
     function GetIMClass: String;
@@ -424,18 +426,21 @@ TACBrECF = class( TACBrComponent )
     function GetNumUltimoItemClass: Integer;
     function GetConsumidorClass: TACBrECFConsumidor;
     function GetCodBarrasClass: TACBrECFCodBarras;
-    procedure SetRFD(const Value: TACBrRFD);
+    procedure SetRFD(const AValue: TACBrRFD);
+    procedure SetAAC(const AValue: TACBrAAC);
     Function RFDAtivo : Boolean ;
     function GetAbout: String;
-    procedure SetAbout(const Value: String);
+    procedure SetAbout(const AValue: String);
     function GetParamDescontoISSQNClass: Boolean;
     function GetMFAdicional: String;
     function GetOnPAFGetKeyRSA: TACBrEADGetChave;
-    procedure SetOnPAFGetKeyRSA(const Value: TACBrEADGetChave);
+    procedure SetOnPAFGetKeyRSA(const AValue: TACBrEADGetChave);
   protected
     fpUltimoEstadoObtido: TACBrECFEstado;
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
 
+    procedure VerificarAAC_GT ;
+    procedure AtualizarAAC_GT ;
   public
     constructor Create(AOwner: TComponent); override;
     Destructor Destroy  ; override ;
@@ -1001,6 +1006,7 @@ TACBrECF = class( TACBrComponent )
      { Instancia do Componente ACBrDevice, será passada para fsECF.create }
      property Device : TACBrDevice read fsDevice ;
      property RFD    : TACBrRFD    read fsRFD write SetRFD ;
+     property AAC    : TACBrAAC    read fsAAC write SetAAC ;
      property ArqLOG : String read GetArqLOG write SetArqLOG ;
 end ;
 
@@ -1026,6 +1032,7 @@ begin
   fsMensagemRodape  := '' ;
   fsRegistrouRFDCNF := False ;
   fsIdentificarOperador := True ;
+  fsNumSerieCache   := '';
 
   fsACBrEAD := TACBrEAD.Create(Self);
 
@@ -1115,7 +1122,7 @@ begin
   inherited Destroy;
 end;
 
-procedure TACBrECF.SetModelo(const Value: TACBrECFModelo);
+procedure TACBrECF.SetModelo(const AValue: TACBrECFModelo);
 var wRetentar : Boolean ;   { Variaveis de Trabalho, usadas para transportar }
     wTimeOut  : Integer ;   { as informações de uma Classe ECF antiga para a }
     wMsgAguarde : String ;  { do novo modelo que será instanciada }
@@ -1134,7 +1141,6 @@ var wRetentar : Boolean ;   { Variaveis de Trabalho, usadas para transportar }
     wTempoInicioMsg : Integer ;
     wBloqueiaMouseTeclado : Boolean ;
     wMsgPoucoPapel : Integer ;
-//  wOnMsgErro : TACBrECFExibeErroEvent ;
     wOnMsgAguarde : TACBrECFMsgAguarde ;
     wOnMsgPoucoPapel : TNotifyEvent ;
     wOnMsgRetentar : TACBrECFMsgRetentar ;
@@ -1142,7 +1148,7 @@ var wRetentar : Boolean ;   { Variaveis de Trabalho, usadas para transportar }
     wDescricaoGrande : Boolean ;
     wIntervaloAposComando : Integer ;
 begin
-  if fsModelo = Value then exit ;
+  if fsModelo = AValue then exit ;
 
   if fsAtivo then
      raise Exception.Create(ACBrStr(cACBrECFSetModeloException));
@@ -1166,7 +1172,6 @@ begin
   wExibeMensagem        := ExibeMensagem ;
   wTempoInicioMsg       := TempoInicioMsg ;
   wMsgPoucoPapel        := MsgPoucoPapel ;
-//  wOnMsgErro          := OnMsgErro ;
   wOnMsgAguarde         := OnMsgAguarde ;
   wOnMsgPoucoPapel      := OnMsgPoucoPapel ;
   wOnMsgRetentar        := OnMsgRetentar ;
@@ -1176,7 +1181,7 @@ begin
   FreeAndNil( fsECF ) ;
 
   { Instanciando uma nova classe de acordo com fsModelo }
-  case Value of
+  case AValue of
     ecfBematech  : fsECF := TACBrECFBematech.create( Self ) ;
     ecfDaruma    : fsECF := TACBrECFDaruma.create( Self ) ;
     ecfSchalter  : fsECF := TACBrECFSchalter.create( Self ) ;
@@ -1216,19 +1221,18 @@ begin
   ExibeMensagem        := wExibeMensagem ;
   BloqueiaMouseTeclado := wBloqueiaMouseTeclado ;
   MsgPoucoPapel        := wMsgPoucoPapel ;
-//OnMsgErro            := wOnMsgErro ;
   OnMsgAguarde         := wOnMsgAguarde ;
   OnMsgPoucoPapel      := wOnMsgPoucoPapel ;
   OnMsgRetentar        := wOnMsgRetentar ;
   OnAguardandoRespostaChange := wOnAguardandoRespostaChange ;
   DescricaoGrande      := wDescricaoGrande ;
 
-  fsModelo := Value;
+  fsModelo := AValue;
 end;
 
-procedure TACBrECF.SetAtivo(const Value: Boolean);
+procedure TACBrECF.SetAtivo(const AValue: Boolean);
 begin
-  if Value then
+  if AValue then
      Ativar
   else
      Desativar ;
@@ -1247,6 +1251,7 @@ begin
   ComandoLOG := DateToStr(now)+ ' Ativar' ;
   fsECF.Ativar ;
   fsAtivo := true ;
+  fsNumSerieCache := '';
 
   //Se o ecf foi desligado durante o cupom, continua do ultimo
   if (Estado in [estVenda, estPagamento]) then
@@ -1277,6 +1282,19 @@ begin
      end ;
   end ;
 
+  if Assigned( fsAAC ) then
+  begin
+     if (Modelo <> ecfNaoFiscal) then
+     begin
+        try
+          fsAAC.AbrirArquivo ;
+        except
+          Desativar ;
+          raise ;
+        end ;
+     end ;
+  end ;
+
   if fsIdentificarOperador then
   begin
      try
@@ -1303,9 +1321,9 @@ begin
   result := fsDevice.Porta ;
 end;
 
-procedure TACBrECF.SetPorta(const Value: String);
+procedure TACBrECF.SetPorta(const AValue: String);
 begin
-  fsDevice.Porta := Value ;
+  fsDevice.Porta := AValue ;
 end;
 
 function TACBrECF.GetRetentar: Boolean;
@@ -1313,9 +1331,9 @@ begin
   result := fsECF.Retentar ;
 end;
 
-procedure TACBrECF.SetRetentar(const Value: Boolean);
+procedure TACBrECF.SetRetentar(const AValue: Boolean);
 begin
-   fsECF.Retentar := Value ;
+   fsECF.Retentar := AValue ;
 end;
 
 function TACBrECF.GetTimeOut: Integer;
@@ -1323,9 +1341,9 @@ begin
   Result := fsDevice.TimeOut ;
 end;
 
-procedure TACBrECF.SetTimeOut(const Value: Integer);
+procedure TACBrECF.SetTimeOut(const AValue: Integer);
 begin
-   fsDevice.TimeOut := Value ;
+   fsDevice.TimeOut := AValue ;
 end;
 
 function TACBrECF.GetIntervaloAposComando: Integer;
@@ -1333,9 +1351,9 @@ begin
   Result := fsECF.IntervaloAposComando ;
 end;
 
-procedure TACBrECF.SetIntervaloAposComando(const Value: Integer);
+procedure TACBrECF.SetIntervaloAposComando(const AValue: Integer);
 begin
-  fsECF.IntervaloAposComando := Value ;
+  fsECF.IntervaloAposComando := AValue ;
 end;
 
 function TACBrECF.GetOperador: String;
@@ -1343,11 +1361,11 @@ begin
   Result := fsECF.Operador ;
 end;
 
-procedure TACBrECF.SetOperador(const Value: String);
+procedure TACBrECF.SetOperador(const AValue: String);
 begin
-  if Operador = Value then exit ;
+  if Operador = AValue then exit ;
 
-  fsECF.Operador := Value ;
+  fsECF.Operador        := AValue ;
   fsIdentificarOperador := True ;
 end;
 
@@ -1356,9 +1374,9 @@ begin
   Result := fsECF.MsgAguarde ;
 end;
 
-procedure TACBrECF.SetMsgAguarde(const Value: String);
+procedure TACBrECF.SetMsgAguarde(const AValue: String);
 begin
-  fsECF.MsgAguarde := Value ;
+  fsECF.MsgAguarde := AValue ;
 end;
 
 function TACBrECF.GetMsgTrabalhando: String;
@@ -1366,9 +1384,9 @@ begin
   Result := fsECF.MsgTrabalhando
 end;
 
-procedure TACBrECF.SetMsgTrabalhando(const Value: String);
+procedure TACBrECF.SetMsgTrabalhando(const AValue: String);
 begin
-  fsECF.MsgTrabalhando := Value ;
+  fsECF.MsgTrabalhando := AValue ;
 end;
 
 function TACBrECF.GetMsgRelatorio: String;
@@ -1376,9 +1394,9 @@ begin
   result := fsECF.MsgRelatorio ;
 end;
 
-procedure TACBrECF.SetMsgRelatorio(const Value: String);
+procedure TACBrECF.SetMsgRelatorio(const AValue: String);
 begin
-  fsECF.MsgRelatorio := Value ;
+  fsECF.MsgRelatorio := AValue ;
 end;
 
 function TACBrECF.GetPausaRelatorio: Integer;
@@ -1386,9 +1404,9 @@ begin
   result := fsECF.PausaRelatorio ;
 end;
 
-procedure TACBrECF.SetPausaRelatorio(const Value: Integer);
+procedure TACBrECF.SetPausaRelatorio(const AValue: Integer);
 begin
-  fsECF.PausaRelatorio := Value ;
+  fsECF.PausaRelatorio := AValue ;
 end;
 
 function TACBrECF.GetLinhasEntreCupons: Integer;
@@ -1396,9 +1414,9 @@ begin
   result := fsECF.LinhasEntreCupons ;
 end;
 
-procedure TACBrECF.SetLinhasEntreCupons(const Value: Integer);
+procedure TACBrECF.SetLinhasEntreCupons(const AValue: Integer);
 begin
-  fsECF.LinhasEntreCupons := Value ;
+  fsECF.LinhasEntreCupons := AValue ;
 end;
 
 function TACBrECF.GetMaxLinhasBuffer: Integer;
@@ -1406,9 +1424,9 @@ begin
   result := fsECF.MaxLinhasBuffer ;
 end;
 
-procedure TACBrECF.SetMaxLinhasBuffer(const Value: Integer);
+procedure TACBrECF.SetMaxLinhasBuffer(const AValue: Integer);
 begin
-  fsECF.MaxLinhasBuffer := Value ;
+  fsECF.MaxLinhasBuffer := AValue ;
 end;
 
 function TACBrECF.GetMsgPausaRelatorio: String;
@@ -1416,9 +1434,9 @@ begin
   result := fsECF.MsgPausaRelatorio ;
 end;
 
-procedure TACBrECF.SetMsgPausaRelatorio(const Value: String);
+procedure TACBrECF.SetMsgPausaRelatorio(const AValue: String);
 begin
-  fsECF.MsgPausaRelatorio := Value ;
+  fsECF.MsgPausaRelatorio := AValue ;
 end;
 
 function TACBrECF.GetTempoInicioMsg: Integer;
@@ -1426,12 +1444,12 @@ begin
   Result := fsECF.TempoInicioMsg ;
 end;
 
-procedure TACBrECF.SetTempoInicioMsg(const Value: Integer);
+procedure TACBrECF.SetTempoInicioMsg(const AValue: Integer);
 begin
-  if Value > TimeOut then
+  if AValue > TimeOut then
      fsECF.TempoInicioMsg := TimeOut
   else
-     fsECF.TempoInicioMsg := Value ;
+     fsECF.TempoInicioMsg := AValue ;
 end;
 
 function TACBrECF.GetArredondaPorQtd: Boolean;
@@ -1439,9 +1457,9 @@ begin
   Result := fsECF.ArredondaPorQtd ;
 end;
 
-procedure TACBrECF.SetArredondaPorQtd(const Value: Boolean);
+procedure TACBrECF.SetArredondaPorQtd(const AValue: Boolean);
 begin
-  fsECF.ArredondaPorQtd := Value ;
+  fsECF.ArredondaPorQtd := AValue ;
 end;
 
 function TACBrECF.GetArredondaItemMFD : Boolean ;
@@ -1459,12 +1477,12 @@ begin
   Result := fsECF.DecimaisPreco ;
 end;
 
-procedure TACBrECF.SetDecimaisPreco(const Value: Integer);
+procedure TACBrECF.SetDecimaisPreco(const AValue: Integer);
 begin
-  if (Value < 0) or (Value > 3) then
+  if (AValue < 0) or (AValue > 3) then
      raise Exception.Create(ACBrStr(cACBrECFSetDecimaisPrecoException));
 
-  fsECF.DecimaisPreco := Value ;
+  fsECF.DecimaisPreco := AValue ;
 end;
 
 function TACBrECF.GetDecimaisQtd: Integer;
@@ -1472,12 +1490,12 @@ begin
   Result := fsECF.DecimaisQtd ;
 end;
 
-procedure TACBrECF.SetDecimaisQtd(const Value: Integer);
+procedure TACBrECF.SetDecimaisQtd(const AValue: Integer);
 begin
-  if (Value < 0) or (Value > 4) then
+  if (AValue < 0) or (AValue > 4) then
      raise Exception.Create(ACBrStr(cACBrECFSetDecimaisQtdException));
 
-  fsECF.DecimaisQtd := Value ;
+  fsECF.DecimaisQtd := AValue ;
 end;
 
 function TACBrECF.GetArqLOG: String;
@@ -1485,9 +1503,9 @@ begin
   Result := fsECF.ArqLOG ;
 end;
 
-procedure TACBrECF.SetArqLOG(const Value: String);
+procedure TACBrECF.SetArqLOG(const AValue: String);
 begin
-  fsECF.ArqLOG := Value ;
+  fsECF.ArqLOG := AValue ;
 end;
 
 function TACBrECF.GetAguardaImpressao: Boolean;
@@ -1495,9 +1513,9 @@ begin
   Result := fsECF.AguardaImpressao ;
 end;
 
-procedure TACBrECF.SetAguardaImpressao(const Value: Boolean);
+procedure TACBrECF.SetAguardaImpressao(const AValue: Boolean);
 begin
-  fsECF.AguardaImpressao := Value ;
+  fsECF.AguardaImpressao := AValue ;
 end;
 
 function TACBrECF.GetExibeMensagem: Boolean;
@@ -1505,9 +1523,9 @@ begin
   Result := fsECF.ExibeMensagem ;
 end;
 
-procedure TACBrECF.SetExibeMensagem(const Value: Boolean);
+procedure TACBrECF.SetExibeMensagem(const AValue: Boolean);
 begin
-  fsECF.ExibeMensagem := Value;
+  fsECF.ExibeMensagem := AValue;
 end;
 
 function TACBrECF.GetBloqueiaMouseTeclado: Boolean;
@@ -1515,9 +1533,9 @@ begin
   Result := fsECf.BloqueiaMouseTeclado ;
 end;
 
-procedure TACBrECF.SetBloqueiaMouseTeclado(const Value: Boolean);
+procedure TACBrECF.SetBloqueiaMouseTeclado(const AValue: Boolean);
 begin
-  fsECF.BloqueiaMouseTeclado := Value;
+  fsECF.BloqueiaMouseTeclado := AValue;
 end;
 
 function TACBrECF.GetMsgPoucoPapel: Integer;
@@ -1525,9 +1543,9 @@ begin
   Result := fsECf.MsgPoucoPapel ;
 end;
 
-procedure TACBrECF.SetMsgPoucoPapel(const Value: Integer);
+procedure TACBrECF.SetMsgPoucoPapel(const AValue: Integer);
 begin
-  fsECF.MsgPoucoPapel := Value;
+  fsECF.MsgPoucoPapel := AValue;
 end;
 
 function TACBrECF.GetParamDescontoISSQNClass: Boolean;
@@ -1541,15 +1559,15 @@ begin
   Result := fsECF.DescricaoGrande ;
 end;
 
-procedure TACBrECF.SetDescricaoGrande(const Value: Boolean);
+procedure TACBrECF.SetDescricaoGrande(const AValue: Boolean);
 begin
-  fsECF.DescricaoGrande := Value ;
+  fsECF.DescricaoGrande := AValue ;
 end;
 
 {$IFNDEF CONSOLE}
-  procedure TACBrECF.SetFormMsgFonte(const Value: TFont);
+  procedure TACBrECF.SetFormMsgFonte(const AValue: TFont);
   begin
-    fsFormMsgFont.Assign( Value ) ;
+    fsFormMsgFont.Assign( AValue ) ;
   end;
 {$ENDIF}
 
@@ -1558,9 +1576,9 @@ begin
   Result := fsECF.OnMsgAguarde ;
 end;
 
-procedure TACBrECF.SetOnMsgAguarde(const Value: TACBrECFMsgAguarde);
+procedure TACBrECF.SetOnMsgAguarde(const AValue: TACBrECFMsgAguarde);
 begin
-  fsECF.OnMsgAguarde := Value ;
+  fsECF.OnMsgAguarde := AValue ;
 end;
 
 function TACBrECF.GetOnMsgPoucoPapel: TNotifyEvent;
@@ -1568,9 +1586,9 @@ begin
   Result := fsECF.OnMsgPoucoPapel ;
 end;
 
-procedure TACBrECF.SetOnMsgPoucoPapel(const Value: TNotifyEvent);
+procedure TACBrECF.SetOnMsgPoucoPapel(const AValue: TNotifyEvent);
 begin
-  fsECF.OnMsgPoucoPapel := Value ;
+  fsECF.OnMsgPoucoPapel := AValue ;
 end;
 
 function TACBrECF.GetOnMsgRetentar: TACBrECFMsgRetentar;
@@ -1583,35 +1601,25 @@ begin
   Result := fsACBrEAD.OnGetChavePrivada;
 end;
 
-procedure TACBrECF.SetOnMsgRetentar(const Value: TACBrECFMsgRetentar);
+procedure TACBrECF.SetOnMsgRetentar(const AValue: TACBrECFMsgRetentar);
 begin
-  fsECF.OnMsgRetentar := Value ;
+  fsECF.OnMsgRetentar := AValue ;
 end;
 
-procedure TACBrECF.SetOnPAFGetKeyRSA(const Value: TACBrEADGetChave);
+procedure TACBrECF.SetOnPAFGetKeyRSA(const AValue: TACBrEADGetChave);
 begin
-  fsACBrEAD.OnGetChavePrivada := Value;
+  fsACBrEAD.OnGetChavePrivada := AValue;
 end;
 
-procedure TACBrECF.SetOnAguardandoRespostaChange( const Value: TNotifyEvent);
+procedure TACBrECF.SetOnAguardandoRespostaChange( const AValue: TNotifyEvent);
 begin
-  fsECF.OnAguardandoRespostaChange := Value ;
+  fsECF.OnAguardandoRespostaChange := AValue ;
 end;
 
 function TACBrECF.GetOnAguardandoRespostaChange: TNotifyEvent;
 begin
   Result := fsECF.OnAguardandoRespostaChange ;
 end;
-
-{function TACBrECF.GetOnMsgErro: TACBrECFExibeErroEvent;
-begin
-  Result := fsECF.OnMsgErro ;
-end;
-
-procedure TACBrECF.SetOnMsgErro(const Value: TACBrECFExibeErroEvent);
-begin
-  fsECF.OnMsgErro := Value ;
-end;}
 
 function TACBrECF.TestarDialog: Boolean;
 var wAtivo : Boolean ;
@@ -1674,9 +1682,9 @@ begin
   Result := fsECF.ComandoLOG ;
 end;
 
-procedure TACBrECF.SetComandoLOGClass(const Value: AnsiString);
+procedure TACBrECF.SetComandoLOGClass(const AValue: AnsiString);
 begin
-  fsECF.ComandoLOG := Value ;
+  fsECF.ComandoLOG      := AValue ;
   fsECF.ComandoEnviado  := '' ;
   fsECF.RespostaComando := '' ;
 end;
@@ -2398,10 +2406,13 @@ end ;
 procedure TACBrECF.AbreCupom(CPF_CNPJ: String = ''; Nome : String = '';
    Endereco : String = '') ;
 var
-  Tratado : Boolean;
+  Tratado   : Boolean;
 begin
   if RFDAtivo then
      fsRFD.VerificaParametros ;
+
+  fsNumSerieCache := '' ;  // Isso força a Leitura do Numero de Série
+  VerificarAAC_GT ;
 
   if Assigned( fOnAntesAbreCupom ) then
      fOnAntesAbreCupom( CPF_CNPJ, Nome, Endereco);
@@ -2506,6 +2517,8 @@ begin
         raise;
   end;
 
+  AtualizarAAC_GT;
+
   if RFDAtivo then
      fsRFD.CancelaCupom( StrToInt(Docto) ) ;
 
@@ -2569,12 +2582,13 @@ end;
 procedure TACBrECF.VendeItem(Codigo, Descricao: String; AliquotaICMS : String ;
   Qtd: Double; ValorUnitario: Double; ValorDescontoAcrescimo: Double;
   Unidade: String; TipoDescontoAcrescimo : String; DescontoAcrescimo : String);
- Var AliquotaECF : String ;
-     Aliquota    : TACBrECFAliquota ;
-     Tratado : Boolean;
+Var
+  AliquotaECF : String ;
+  Aliquota    : TACBrECFAliquota ;
+  Tratado     : Boolean;
 {$IFNDEF CONSOLE}
-     Linha, Buffer, StrQtd, StrPreco, StrDescAcre : String ;
-     Total, PorcDesc, ValDesc : Double ;
+  Linha, Buffer, StrQtd, StrPreco, StrDescAcre : String ;
+  Total, PorcDesc, ValDesc : Double ;
 {$ENDIF}
 begin
   Qtd           := RoundTo( Qtd, -DecimaisQtd) ;
@@ -2597,6 +2611,9 @@ begin
   if DescontoAcrescimo = '' then
      DescontoAcrescimo := 'D' ;
 
+  // VerificarAAC_GT;
+  // É realmente necessário verificar o NumSerie e GT a cada Item ?? Isso é muito lento
+
   { Retorna em "AliquotaECF" (por referencia) a String de aliquota que deve
     ser enviada para o ECF }
   AliquotaECF := AliquotaICMS ;
@@ -2609,7 +2626,7 @@ begin
   else if copy(AliquotaICMS,1,2) = 'IS' then
      AliquotaECF := 'SI' ;
 
-  Aliquota    := AchaICMSAliquota( AliquotaECF ) ;
+  Aliquota := AchaICMSAliquota( AliquotaECF ) ;
 
   { Verificando se precisa Arredondar por Qtd }
   if ArredondaPorQtd and (not Arredonda) then
@@ -2631,10 +2648,10 @@ begin
                      DescontoAcrescimo);
 
   try
-    Tratado := False;
-    fsECF.VendeItem( Codigo, Descricao, AliquotaECF, Qtd, ValorUnitario,
-                     ValorDescontoAcrescimo, Unidade, TipoDescontoAcrescimo,
-                     DescontoAcrescimo );
+     Tratado := False;
+     fsECF.VendeItem( Codigo, Descricao, AliquotaECF, Qtd, ValorUnitario,
+                      ValorDescontoAcrescimo, Unidade, TipoDescontoAcrescimo,
+                      DescontoAcrescimo );
   except
      if Assigned( FOnErrorVendeItem ) then
         FOnErrorVendeItem(Tratado);
@@ -2643,6 +2660,7 @@ begin
         raise;
   end;
 
+  AtualizarAAC_GT;
 
   {$IFNDEF CONSOLE}
    if MemoAssigned then
@@ -2773,6 +2791,9 @@ begin
 
   fsECF.DescontoAcrescimoItemAnterior(ValorDescontoAcrescimo, DescontoAcrescimo );
 
+  if DescontoAcrescimo <> 'D' then
+     AtualizarAAC_GT ;
+
   {$IFNDEF CONSOLE}
    if MemoAssigned then
    begin
@@ -2790,7 +2811,6 @@ begin
   {$ENDIF}
 
   { TODO: inserir Desconto no RFD }
-
 end;
 
 
@@ -2876,6 +2896,9 @@ begin
      if not Tratado then
         raise;
   end;
+
+  if DescontoAcrescimo > 0 then
+     AtualizarAAC_GT ;
 
   {$IFNDEF CONSOLE}
    if MemoAssigned then
@@ -3099,6 +3122,9 @@ begin
   if RFDAtivo then
      fsRFD.VerificaParametros ;
 
+  fsNumSerieCache := '' ;  // Isso força a Leitura do Numero de Série
+  VerificarAAC_GT ;
+
   { Ajustando valores acima de 2 Decimais }
   Valor := RoundTo( Valor, -2) ;
 
@@ -3118,6 +3144,9 @@ Var
 begin
   if RFDAtivo then
      fsRFD.VerificaParametros ;
+
+  fsNumSerieCache := '' ;  // Isso força a Leitura do Numero de Série
+  VerificarAAC_GT ;
 
   ComandoLOG := 'AbreNaoFiscal( '+CPF_CNPJ+' )' ;
 
@@ -3178,6 +3207,8 @@ begin
   ComandoLOG := 'RegistraItemNaoFiscal( '+CodCNF+' , '+ FloatToStr( Valor )+
                 ' , '+Obs + ' )';
   fsECF.RegistraItemNaoFiscal(CodCNF, Valor, Obs);
+
+  AtualizarAAC_GT ;
 
   {$IFNDEF CONSOLE}
    if MemoAssigned then
@@ -3315,6 +3346,9 @@ begin
      if not Tratado then
         raise;
   end;
+
+  if DescontoAcrescimo > 0 then
+     AtualizarAAC_GT ;
 
   {$IFNDEF CONSOLE}
    if MemoAssigned then
@@ -4068,6 +4102,9 @@ begin
   if RFDAtivo then
      fsRFD.VerificaParametros ;
 
+  fsNumSerieCache := '' ;  // Isso força a Leitura do Numero de Série
+  VerificarAAC_GT ;
+
   fsIndiceGerencial := Indice;
   ComandoLOG := 'AbreRelatorioGerencial' ;
 
@@ -4142,7 +4179,7 @@ Var
 begin
   if MaxLinhasBuffer < 1 then
    begin
-     ComandoLOG := 'LinhaRelatorioGerencial( "'+Texto+'", '+IntToStr(IndiceBMP)+' )';
+     ComandoLOG := 'LinhaRelatorioGerencial( "'+Linha+'", '+IntToStr(IndiceBMP)+' )';
      fsECF.LinhaRelatorioGerencial( Linha, IndiceBMP ) ;
    end
   else
@@ -4213,6 +4250,9 @@ Var
 begin
   Valor := RoundTo( Valor, -2) ;  { Ajustando valores acima de 2 Decimais }
 
+  fsNumSerieCache := '' ;  // Isso força a Leitura do Numero de Série
+  VerificarAAC_GT ;
+
   if Assigned( fOnAntesAbreCupomVinculado ) then
      fOnAntesAbreCupomVinculado(Self);
 
@@ -4229,7 +4269,6 @@ begin
      if not Tratado then
         raise;
   end;
-
 
   {$IFNDEF CONSOLE}
    if MemoAssigned then
@@ -4489,23 +4528,23 @@ begin
 end;
 
 {$IFNDEF CONSOLE}
- procedure TACBrECF.SetMemoBobina(const Value: TMemo);
+ procedure TACBrECF.SetMemoBobina(const AValue: TMemo);
  begin
-   if Value <> fsMemoBobina then
+   if AValue <> fsMemoBobina then
    begin
       if Assigned(fsMemoBobina) then
          fsMemoBobina.RemoveFreeNotification(Self);
 
-      fsMemoBobina := Value;
+      fsMemoBobina := AValue;
 
-      if Value <> nil then
-         Value.FreeNotification(self);
+      if AValue <> nil then
+         AValue.FreeNotification(self);
    end ;
  end;
 
- procedure TACBrECF.SetMemoParams(const Value: TStrings);
+ procedure TACBrECF.SetMemoParams(const AValue: TStrings);
  begin
-   fsMemoParams.Assign(Value);
+   fsMemoParams.Assign( AValue );
  end;
 
  procedure TACBrECF.MemoAdicionaCabecalho;
@@ -4815,31 +4854,88 @@ begin
      fsRFD := nil ;
 end;
 
-procedure TACBrECF.SetRFD(const Value: TACBrRFD);
- Var OldValue: TACBrRFD ;
+procedure TACBrECF.VerificarAAC_GT ;
+var
+   ValorGT : Double ;
+   AACECF  : TACBrAACECF ;
+begin
+  if not Assigned( fsAAC ) then
+     exit ;
+
+  if fsNumSerieCache = '' then
+     fsNumSerieCache := NumSerie;
+
+  AACECF := fsAAC.AchaECF( fsNumSerieCache );
+  if AACECF = nil then
+     raise EACBrAAC_NumSerieNaoEncontrado.Create( Format( ACBrStr(
+           cACBrAACNumSerieNaoEncontardoException ), [ fsNumSerieCache ] ) );
+
+  ValorGT := GrandeTotal ;
+  if AACECF.ValorGT <> ValorGT then
+     raise EACBrAAC_ValorGTInvalido.Create( ACBrStr(
+           cACBrAACValorGTInvalidoException ) );
+end ;
+
+procedure TACBrECF.AtualizarAAC_GT ;
+Var
+  ValorGT  : Double ;
+begin
+  if not Assigned( fsAAC ) then
+     exit ;
+
+  if fsNumSerieCache = '' then
+     fsNumSerieCache := NumSerie;
+
+  try
+     ValorGT := GrandeTotal;
+     fsAAC.AtualizarValorGT( fsNumSerieCache, ValorGT );
+  except
+  end ;
+end ;
+
+procedure TACBrECF.SetRFD(const AValue: TACBrRFD);
+Var
+  OldValue: TACBrRFD ;
 begin
   if fsAtivo then
      raise Exception.Create(ACBrStr(cACBrECFSetRFDException));
 
-  if Value <> fsRFD then
+  if AValue <> fsRFD then
   begin
      if Assigned(fsRFD) then
         fsRFD.RemoveFreeNotification(Self);
 
      OldValue := fsRFD ;   // Usa outra variavel para evitar Loop Infinito
-     fsRFD    := Value;    // na remoção da associação dos componentes
+     fsRFD    := AValue;   // na remoção da associação dos componentes
 
      if Assigned(OldValue) then
         if Assigned(OldValue.ECF) then
            OldValue.ECF := nil ;
 
-     if Value <> nil then
+     if AValue <> nil then
      begin
-        Value.FreeNotification(self);
-        Value.ECF := self ;
+        AValue.FreeNotification(self);
+        AValue.ECF := self ;
      end ;
   end ;
 end;
+
+procedure TACBrECF.SetAAC(const AValue : TACBrAAC) ;
+begin
+  if fsAtivo then
+     raise Exception.Create(ACBrStr(cACBrECFSetAACException));
+
+  if AValue <> fsAAC then
+  begin
+     if Assigned(fsAAC) then
+        fsAAC.RemoveFreeNotification(Self);
+
+     fsAAC := AValue;
+
+     if AValue <> nil then
+        AValue.FreeNotification(self);
+  end ;
+end ;
 
 function TACBrECF.RFDAtivo: Boolean;
 begin
@@ -4963,7 +5059,7 @@ begin
    Result := 'ACBrECF Ver: '+CACBrECF_Versao;
 end;
 
-procedure TACBrECF.SetAbout(const Value: String);
+procedure TACBrECF.SetAbout(const AValue: String);
 begin
    {}
 end;

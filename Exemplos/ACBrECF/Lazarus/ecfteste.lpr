@@ -7,9 +7,9 @@ uses
   cthreads,
   {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms
-  { you can add units after this }, ECFTeste1, ConfiguraSerial,
-EfetuaPagamento, Relatorio, Sobre, VendeItem, TurboPowerIPro, ACBrSerial;
+  Forms, zcomponent
+  { you can add units after this }, ECFTeste1, ConfiguraSerial, EfetuaPagamento,
+  Relatorio, Sobre, VendeItem, TurboPowerIPro, memdslaz, ACBrSerial;
 
 {$R *.res}
 

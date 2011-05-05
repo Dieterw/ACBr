@@ -2845,10 +2845,6 @@ var
   CRZ  : String ;
   I, J : Integer ;
 begin
-//ASSEINFO - Sistemas de Informação (Desen.: Ronaldo)
-//15/09/2010
-
-
 //Esta função utiliza o comando "Obter Totais da Jornada (09 0D)", que aceita
 //como parâmetro um CRZ. Então para obter os totais da última redução, passamos o
 //CRZ atual, que guarda o número da última redução Z. Os campos retornados pelo
@@ -2886,9 +2882,9 @@ begin
   try
      // Seção ECF
      Result := '[ECF]'+ sLineBreak ;
-     Result := Result + 'NumSerie = ' + numSerie + sLineBreak;
-     Result := Result + 'NumLoja = ' + numLoja + sLineBreak;
-     Result := Result + 'NumECF = ' + numECF + sLineBreak;
+     Result := Result + 'NumSerie = ' + NumSerie + sLineBreak;
+     Result := Result + 'NumLoja = ' + NumLoja + sLineBreak;
+     Result := Result + 'NumECF = ' + NumECF + sLineBreak;
      CRZ    := NumCRZ;
 
      EpsonComando.Comando := '090D';
@@ -2943,7 +2939,6 @@ begin
   Total  := RoundTo( StrToFloatDef(EpsonResposta.Params[24],0)/100, -2);
   Result := Result + 'GrandeTotal = ' + FloatToStr(Total) + sLineBreak;
 
-  // Aliquotas de ICMS, por: DSA //
   Result := Result + sLineBreak + '[Aliquotas]'+sLineBreak ;
   I := 25 ;
   J := 1 ;
@@ -3259,7 +3254,7 @@ begin
   Result := RoundTo( StrToFloatDef(EpsonResposta.Params[18],0) /100, -2) ;
 end;
 
-procedure TACBrECFEpson.CarregaRelatoriosGerenciais;   // Por: WagnerPV
+procedure TACBrECFEpson.CarregaRelatoriosGerenciais;  
 var
   i, QtdeRG: integer ;
   RG: TACBrECFRelatorioGerencial;
@@ -3305,7 +3300,6 @@ begin
 end ;
 
 procedure TACBrECFEpson.ProgramaRelatorioGerencial( var Descricao: String; Posicao: String);
-// Por: WagnerPV
 const
    MaxRG = 30; //Falta saber qual a qtde máxima de RGs na EPSON
 begin
@@ -3325,8 +3319,8 @@ end;
 
 
 function TACBrECFEpson.AchaCNFDescricao( Descricao: String;
-       BuscaExata : Boolean; IgnorarCase : Boolean  ):
-  TACBrECFComprovanteNaoFiscal;   // Por: WagnerPV
+       BuscaExata : Boolean; IgnorarCase : Boolean  ): 
+  TACBrECFComprovanteNaoFiscal;
 begin
   if UpperCase(Trim(Descricao)) = 'SUPRIMENTO' then
      Descricao := 'FUNDO DE TROCO' ;

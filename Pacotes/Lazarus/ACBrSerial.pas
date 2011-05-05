@@ -19,7 +19,7 @@ uses
    ACBrETQ, ACBrETQClass, ACBrETQPpla, ACBrGAV, ACBrGAVClass, 
    ACBrGAVImpressoraComum, ACBrGAVImpressoraECF, ACBrGAVSerialGerbo, 
    ACBrGAVSerialMenno, ACBrLCB, ACBrRFD, ACBrTER, ACBrTERClass, ACBrSerialReg, 
-   ACBrETQZplII, LazarusPackageIntf;
+   ACBrETQZplII, ACBrAAC, LazarusPackageIntf;
 
 implementation
 

@@ -38,16 +38,32 @@
         <LaunchingApplication PathPlusParams="\usr\X11R6\bin\xterm -T 'Lazarus Run Output' -e $(LazarusDir)\tools\runwait.sh $(TargetCmdLine)"/>
       </local>
     </RunParams>
-    <RequiredPackages Count="3">
+    <RequiredPackages Count="7">
       <Item1>
-        <PackageName Value="ACBrSerial"/>
+        <PackageName Value="FCL"/>
+        <MinVersion Major="1" Release="1" Valid="True"/>
       </Item1>
       <Item2>
-        <PackageName Value="LCL"/>
+        <PackageName Value="MemDSLaz"/>
+        <MinVersion Major="1" Minor="2" Release="1" Valid="True"/>
       </Item2>
       <Item3>
-        <PackageName Value="TurboPowerIPro"/>
+        <PackageName Value="zcomponent"/>
+        <MinVersion Major="6" Minor="6" Release="6" Valid="True"/>
       </Item3>
+      <Item4>
+        <PackageName Value="LCLBase"/>
+        <MinVersion Major="1" Release="1" Valid="True"/>
+      </Item4>
+      <Item5>
+        <PackageName Value="ACBrSerial"/>
+      </Item5>
+      <Item6>
+        <PackageName Value="LCL"/>
+      </Item6>
+      <Item7>
+        <PackageName Value="TurboPowerIPro"/>
+      </Item7>
     </RequiredPackages>
     <Units Count="7">
       <Unit0>
@@ -57,7 +73,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="11" Y="12"/>
-        <UsageCount Value="150"/>
+        <UsageCount Value="193"/>
       </Unit0>
       <Unit1>
         <Filename Value="ecfteste1.pas"/>
@@ -68,8 +84,8 @@
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
-        <CursorPos X="1" Y="1"/>
-        <UsageCount Value="150"/>
+        <CursorPos X="59" Y="8"/>
+        <UsageCount Value="193"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit1>
@@ -82,7 +98,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="19"/>
         <CursorPos X="21" Y="40"/>
-        <UsageCount Value="150"/>
+        <UsageCount Value="193"/>
       </Unit2>
       <Unit3>
         <Filename Value="efetuapagamento.pas"/>
@@ -93,7 +109,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="95"/>
         <CursorPos X="37" Y="107"/>
-        <UsageCount Value="150"/>
+        <UsageCount Value="193"/>
       </Unit3>
       <Unit4>
         <Filename Value="relatorio.pas"/>
@@ -104,7 +120,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="59"/>
         <CursorPos X="1" Y="73"/>
-        <UsageCount Value="150"/>
+        <UsageCount Value="193"/>
       </Unit4>
       <Unit5>
         <Filename Value="sobre.pas"/>
@@ -115,7 +131,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="20"/>
         <CursorPos X="65" Y="45"/>
-        <UsageCount Value="150"/>
+        <UsageCount Value="193"/>
       </Unit5>
       <Unit6>
         <Filename Value="vendeitem.pas"/>
@@ -126,7 +142,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="82"/>
         <CursorPos X="1" Y="108"/>
-        <UsageCount Value="150"/>
+        <UsageCount Value="193"/>
       </Unit6>
     </Units>
   </ProjectOptions>

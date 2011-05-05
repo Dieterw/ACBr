@@ -97,6 +97,20 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+
+Data:  05/05/2011
+-- ACBrAAC --
+[+] - Novo componente ACBrAAC (Arquivo Auxiliar Criptografado), que permite
+      criar e manter o Arquivo.Auxiliar de acordo com as exigências do PAF-ECF,
+      deve ser usado em conjunto com o componente ACBrECF.
+[*] Demo: ECFTeste.lpi (Lazarus) modificado para demonstrar o funcionamento do
+    componente ACBrAAC... (versão em Delphi a fazer)
+
+-- ACBrECF --
+[+] - Nova Propriedade AAC, que permite interligar o componente ACBrECF com o
+      componente ACBrAAC
+[*] - Limpeza e ajuste de código
+
 Data:  26/04/2011
 -- ACBrECF --
 [-] - Acerto no método de geração do menu fiscal LMFC Ato Cotepe 17/04

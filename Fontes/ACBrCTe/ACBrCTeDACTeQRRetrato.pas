@@ -204,7 +204,7 @@ type
     qrlPaisToma: TQRLabel;
     qrlMunToma: TQRLabel;
     qrb_10_ModRodFracionado: TQRChildBand;
-    qrb_11_LotacaoSim: TQRChildBand;
+    qrb_11_ModRodLotacao: TQRChildBand;
     QRLabel10: TQRLabel;
     QRShape1: TQRShape;
     qrmObs: TQRMemo;
@@ -333,8 +333,8 @@ type
     QRShape60: TQRShape;
     QRShape61: TQRShape;
     QRShape62: TQRShape;
-    qrb_13_Sistema: TQRChildBand;
-    qrb_12_Recibo: TQRChildBand;
+    qrb_17_Sistema: TQRChildBand;
+    qrb_18_Recibo: TQRChildBand;
     QRShape10: TQRShape;
     QRLabel65: TQRLabel;
     QRShape2: TQRShape;
@@ -382,7 +382,7 @@ type
     QRShape42: TQRShape;
     QRShape43: TQRShape;
     QRShape44: TQRShape;
-    qrb_14_DadosExcEmitente: TQRChildBand;
+    qrb_16_DadosExcEmitente: TQRChildBand;
     QRLabel15: TQRLabel;
     QRSysData1: TQRSysData;
     qrlblSistema: TQRLabel;
@@ -425,6 +425,49 @@ type
     qrlSerie2: TQRLabel;
     qrlNumCTe2: TQRLabel;
     QRLabel143: TQRLabel;
+    qrb_12_ModAereo: TQRChildBand;
+    qrb_13_ModAquaviario: TQRChildBand;
+    qrb_14_ModFerroviario: TQRChildBand;
+    qrb_15_ModDutoviario: TQRChildBand;
+    QRShape47: TQRShape;
+    QRShape54: TQRShape;
+    QRShape63: TQRShape;
+    QRShape64: TQRShape;
+    QRShape65: TQRShape;
+    QRShape66: TQRShape;
+    QRShape67: TQRShape;
+    QRShape68: TQRShape;
+    QRShape69: TQRShape;
+    QRLabel141: TQRLabel;
+    QRLabel142: TQRLabel;
+    QRLabel144: TQRLabel;
+    QRLabel145: TQRLabel;
+    QRLabel146: TQRLabel;
+    QRLabel147: TQRLabel;
+    QRLabel148: TQRLabel;
+    QRLabel149: TQRLabel;
+    QRLabel150: TQRLabel;
+    QRLabel153: TQRLabel;
+    qrlTrecho: TQRLabel;
+    qrlTarifaValor: TQRLabel;
+    qrlTarifaCodigo: TQRLabel;
+    qrlTarifaCL: TQRLabel;
+    qrlMinuta: TQRLabel;
+    qrlDadosRetira: TQRLabel;
+    qrlAWB: TQRLabel;
+    QRLabel154: TQRLabel;
+    QRLabel155: TQRLabel;
+    qrlCaracAdServico: TQRLabel;
+    qrlCaracAdTransporte: TQRLabel;
+    QRShape57: TQRShape;
+    QRShape72: TQRShape;
+    QRLabel156: TQRLabel;
+    qrlContaCorrente: TQRLabel;
+    QRLabel157: TQRLabel;
+    qrlLojaAgenteEmissor: TQRLabel;
+    qrlRetira: TQRLabel;
+    QRShape70: TQRShape;
+    QRShape71: TQRShape;
     procedure QRCTeBeforePrint(Sender: TCustomQuickRep; var PrintReport: Boolean);
     procedure qrb_01_ReciboBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
     procedure qrb_02_CabecalhoBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
@@ -443,12 +486,20 @@ type
       BandPrinted: Boolean);
     procedure qrb_09_ObsBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
     procedure qrb_10_ModRodFracionadoBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
-    procedure qrb_11_LotacaoSimBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
-    procedure qrb_12_ReciboBeforePrint(Sender: TQRCustomBand;
+    procedure qrb_11_ModRodLotacaoBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
+    procedure qrb_18_ReciboBeforePrint(Sender: TQRCustomBand;
       var PrintBand: Boolean);
-    procedure qrb_13_SistemaBeforePrint(Sender: TQRCustomBand;
+    procedure qrb_17_SistemaBeforePrint(Sender: TQRCustomBand;
       var PrintBand: Boolean);
-    procedure qrb_14_DadosExcEmitenteBeforePrint(Sender: TQRCustomBand;
+    procedure qrb_16_DadosExcEmitenteBeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure qrb_12_ModAereoBeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure qrb_13_ModAquaviarioBeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure qrb_14_ModFerroviarioBeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure qrb_15_ModDutoviarioBeforePrint(Sender: TQRCustomBand;
       var PrintBand: Boolean);
   private
     FTotalPages: integer;
@@ -670,18 +721,42 @@ begin
      end;
    end;
 
-  // Incluido por Italo em 26/04/2011
-  if FCTe.Rodo.Lota = ltNao
-   then begin
-    qrb_10_ModRodFracionado.Height := 44;
-    qrb_11_LotacaoSim.Height       := 0;
-    Fracionado                 := 10
-   end
-   else begin
-    qrb_10_ModRodFracionado.Height := 0;
-    qrb_11_LotacaoSim.Height       := 108;
-    Fracionado                 := 0;
-   end;
+  // Incluido por Italo em 06/05/2011
+  qrb_10_ModRodFracionado.Height := 0;
+  qrb_11_ModRodLotacao.Height    := 0;
+  qrb_12_ModAereo.Height         := 0;
+  qrb_13_ModAquaviario.Height    := 0;
+  qrb_14_ModFerroviario.Height   := 0;
+  qrb_15_ModDutoviario.Height    := 0;
+
+  case FCTe.Ide.modal of
+   mdRodoviario: begin
+                  // Incluido por Italo em 26/04/2011
+                  if FCTe.Rodo.Lota = ltNao
+                   then begin
+                    qrb_10_ModRodFracionado.Height := 44;
+                    //    qrb_11_ModRodLotacao.Height    := 0;
+                    Fracionado                     := 10
+                   end
+                   else begin
+                    qrb_10_ModRodFracionado.Height := 44;
+                    qrb_11_ModRodLotacao.Height    := 108;
+                    Fracionado                     := 0;
+                   end;
+                 end;
+   mdAereo: begin
+             qrb_12_ModAereo.Height := 97;
+            end;
+   mdAquaviario: begin
+                  qrb_13_ModAquaviario.Height    := 0;
+                 end;
+   mdFerroviario: begin
+                   qrb_14_ModFerroviario.Height   := 0;
+                  end;
+   mdDutoviario: begin
+                  qrb_15_ModDutoviario.Height    := 0;
+                 end;
+  end;
 
   // Alterado por Italo em 20/04/2011
   if (nTotalItens > (_NUM_ITEMS_PAGE1 + Fracionado)) then
@@ -1336,10 +1411,16 @@ begin
 
   // Imprime as Informações Especificas do Modal se o Tipo de CTe for Normal
   // Incluido / Alterado por Italo e Doni em 24/09/2010
-  qrb_10_ModRodFracionado.Enabled:=(FCTe.Ide.tpCTe = tcNormal);
+  {*
+  ** Alterado por: Brian Collo Gonçalves e Eric Helfenstens
+  ** Data: 17/03/2011
+  ** Descrição: Incluida banda para os dados especificos do Modal Aéreo
+  ** e carregamento de suas respectivas informações.
+  *}
+  qrb_10_ModRodFracionado.Enabled := (FCTe.Ide.tpCTe = tcNormal) and (FCTe.Ide.modal = mdRodoviario);
 
   // Incluido / Alterado por Italo em 29/12/2010
-  qrb_11_LotacaoSim.Enabled := False;
+  qrb_11_ModRodLotacao.Enabled := False;
 
   with FCTe.Rodo do
   begin
@@ -1348,14 +1429,14 @@ begin
   // Incluido / Alterado por Italo em 29/12/2010
     case Lota of
       ltNao: begin
-              qrlTituloLotacao.Caption := 'DADOS ESPECÍFICOS DO MODAL RODOVIÁRIO - CARGA FRACIONADA';
-              qrlLotacao.Caption       := 'NÃO';
-              qrb_11_LotacaoSim.Enabled    := False;
+              qrlTituloLotacao.Caption     := 'DADOS ESPECÍFICOS DO MODAL RODOVIÁRIO - CARGA FRACIONADA';
+              qrlLotacao.Caption           := 'NÃO';
+              qrb_11_ModRodLotacao.Enabled := False;
              end;
       ltsim: begin
-              qrlTituloLotacao.Caption := 'DADOS ESPECÍFICOS DO MODAL RODOVIÁRIO - LOTAÇÃO';
-              qrlLotacao.Caption       := 'SIM';
-              qrb_11_LotacaoSim.Enabled    := True;
+              qrlTituloLotacao.Caption     := 'DADOS ESPECÍFICOS DO MODAL RODOVIÁRIO - LOTAÇÃO';
+              qrlLotacao.Caption           := 'SIM';
+              qrb_11_ModRodLotacao.Enabled := True;
              end;
     end;
 
@@ -1363,7 +1444,7 @@ begin
   end;
 end;
 
-procedure TfrmDACTeQRRetrato.qrb_11_LotacaoSimBeforePrint(
+procedure TfrmDACTeQRRetrato.qrb_11_ModRodLotacaoBeforePrint(
   Sender: TQRCustomBand; var PrintBand: Boolean);
 var
   i: integer;
@@ -1427,7 +1508,7 @@ begin
   end;
 end;
 
-procedure TfrmDACTeQRRetrato.qrb_12_ReciboBeforePrint(Sender: TQRCustomBand;
+procedure TfrmDACTeQRRetrato.qrb_18_ReciboBeforePrint(Sender: TQRCustomBand;
   var PrintBand: Boolean);
 begin
   inherited;
@@ -1438,16 +1519,16 @@ begin
   // TpcteTipoCTe = (tcNormal, tcComplemento, tcAnulacao, tcSubstituto);
   if (FCTe.Ide.tpCTe = tcNormal) and PrintBand
    then begin
-    qrb_12_Recibo.Height  := 68;
-    qrb_12_Recibo.Enabled := True;
+    qrb_18_Recibo.Height  := 68;
+    qrb_18_Recibo.Enabled := True;
    end
    else begin
-    qrb_12_Recibo.Height  := 0;
-    qrb_12_Recibo.Enabled := False;
+    qrb_18_Recibo.Height  := 0;
+    qrb_18_Recibo.Enabled := False;
    end;
 end;
 
-procedure TfrmDACTeQRRetrato.qrb_13_SistemaBeforePrint(Sender: TQRCustomBand;
+procedure TfrmDACTeQRRetrato.qrb_17_SistemaBeforePrint(Sender: TQRCustomBand;
   var PrintBand: Boolean);
 begin
   inherited;
@@ -1457,15 +1538,91 @@ begin
   qrlblSistema.Caption := FSistema + ' - ' + FUsuario;
 end;
 
-procedure TfrmDACTeQRRetrato.qrb_14_DadosExcEmitenteBeforePrint(Sender: TQRCustomBand;
+procedure TfrmDACTeQRRetrato.qrb_16_DadosExcEmitenteBeforePrint(Sender: TQRCustomBand;
   var PrintBand: Boolean);
+var
+ xTexto: String;
 begin
   inherited;
   // Incluido por Italo em 20/04/2011
   PrintBand := QRCTe.PageNumber = 1;
-
   qrmObsExcEmitente.Lines.Clear;
-//  qrmObsExcEmitente.Lines.Text := FCTe.Compl.xObs;
+
+  // Linhas Alteradas por Italo em 06/05/2011
+  if FCTe.Ide.modal = mdAereo
+   then begin
+    qrmObsExcEmitente.Lines.Add( 'O transporte coberto por este conhecimento se rege pelo código brasileiro de aeronáutica. '+
+                  'O expedidor/remetente aceita como corretas todas as especificações impressas neste conhecimento,' );
+    qrmObsExcEmitente.Lines.Add( 'certificando que os artigos perigosos descritos pela regulamentação da ICAO foram devidamente '+
+                  'informados e acondicionados para transporte aéreo.' );
+   end;
+end;
+
+procedure TfrmDACTeQRRetrato.qrb_12_ModAereoBeforePrint(
+  Sender: TQRCustomBand; var PrintBand: Boolean);
+begin
+  inherited;
+  // Incluido por Italo em 06/05/2011
+  PrintBand := QRCTe.PageNumber = 1;
+  {*
+  ** Alterado por: Brian Collo Gonçalves e Eric Helfenstens
+  ** Data: 17/03/2011
+  ** Descrição: Incluida banda para os dados especificos do Modal Aéreo
+  ** e carregamento de suas respectivas informações.
+  *}
+  qrb_12_ModAereo.Enabled := (FCTe.Ide.tpCTe = tcNormal) and (FCTe.Ide.modal = mdAereo);
+
+  qrlCaracAdServico.Caption    := FCTe.Compl.xCaracSer;
+  qrlCaracAdTransporte.Caption := FCTe.Compl.xCaracAd;
+
+  with FCTe.Aereo do
+  begin
+    qrlAWB.Caption           := nOCA;
+    qrlTrecho.Caption        := tarifa.trecho;
+    qrlTarifaCL.Caption      := tarifa.CL;
+    qrlTarifaCodigo.Caption  := tarifa.cTar;
+    qrlTarifaValor.Caption   := FormatCurr('###,###,##0.00', tarifa.vTar);
+    qrlContaCorrente.Caption := cIATA; // ??? Conta Corrente ???
+    qrlMinuta.Caption        := FormatFloat('0000000000', nMinu);
+
+    qrlLojaAgenteEmissor.Caption := xLAgEmi;
+  end;
+
+  if FCte.Ide.retira = rtSim
+   then qrlRetira.Caption := 'SIM'
+   else qrlRetira.Caption := 'NÃO';
+  qrlDadosRetira.Caption  := FCte.Ide.xdetretira;
+
+end;
+
+procedure TfrmDACTeQRRetrato.qrb_13_ModAquaviarioBeforePrint(
+  Sender: TQRCustomBand; var PrintBand: Boolean);
+begin
+  inherited;
+  // Incluido por Italo em 06/05/2011
+  PrintBand := QRCTe.PageNumber = 1;
+  qrb_13_ModAquaviario.Enabled := (FCTe.Ide.tpCTe = tcNormal) and (FCTe.Ide.modal = mdAquaviario);
+
+end;
+
+procedure TfrmDACTeQRRetrato.qrb_14_ModFerroviarioBeforePrint(
+  Sender: TQRCustomBand; var PrintBand: Boolean);
+begin
+  inherited;
+  // Incluido por Italo em 06/05/2011
+  PrintBand := QRCTe.PageNumber = 1;
+  qrb_14_ModFerroviario.Enabled := (FCTe.Ide.tpCTe = tcNormal) and (FCTe.Ide.modal = mdFerroviario);
+
+end;
+
+procedure TfrmDACTeQRRetrato.qrb_15_ModDutoviarioBeforePrint(
+  Sender: TQRCustomBand; var PrintBand: Boolean);
+begin
+  inherited;
+  // Incluido por Italo em 06/05/2011
+  PrintBand := QRCTe.PageNumber = 1;
+  qrb_15_ModDutoviario.Enabled := (FCTe.Ide.tpCTe = tcNormal) and (FCTe.Ide.modal = mdDutoviario);
+
 end;
 
 end.

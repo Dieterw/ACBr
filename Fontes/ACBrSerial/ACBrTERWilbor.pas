@@ -81,7 +81,7 @@ Begin
         Packet := fpDevice.Serial.RecvPacket( MillisecTimeOut );
 
         If TACBrTER( fpOwner ).Comutadora Then Begin //Possui Comutadora gerenciando vários Terminais? 
-            While Length( Packet ) > 3 Do Begin
+            While Length( Packet ) >= 3 Do Begin
                 TACBrTER( fpOwner ).DoRecebeChar( StrToIntDef( Copy( Packet, 1, 2 ), 0 ), Packet[3] );
                 Delete( Packet, 1, 3 );
             End;

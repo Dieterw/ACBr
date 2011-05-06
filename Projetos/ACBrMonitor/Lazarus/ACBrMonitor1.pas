@@ -70,6 +70,7 @@ type
     cbxBOLUF: TComboBox;
     cbxBOLBanco: TComboBox;
     cbxBOLEmissao: TComboBox;
+    chECFArredondaMFD: TCheckBox;
     ckgBOLMostrar: TCheckGroup;
     cbxBOLLayout: TComboBox;
     cbxBOLFiltro: TComboBox;
@@ -414,6 +415,7 @@ type
     procedure cbxBOLFiltroChange ( Sender: TObject ) ;
     procedure cbxBOLF_JChange ( Sender: TObject ) ;
     procedure cbCEPWebServiceChange(Sender : TObject) ;
+    procedure chECFArredondaMFDClick(Sender: TObject);
     procedure chRFDChange(Sender : TObject) ;
     procedure deBOLDirArquivoExit ( Sender: TObject ) ;
     procedure deBOLDirLogoExit ( Sender: TObject ) ;
@@ -926,6 +928,12 @@ begin
   edCEPChaveBuscarCEP.Enabled := (ACBrCEP1.WebService = wsBuscarCep) ;
 end;
 
+procedure TFrmACBrMonitor.chECFArredondaMFDClick(Sender: TObject);
+begin
+   ACBrECF1.ArredondaItemMFD := ((chECFArredondaMFD.Enabled) and
+                                 (chECFArredondaMFD.Checked))
+end;
+
 procedure TFrmACBrMonitor.chRFDChange(Sender : TObject) ;
 begin
   ACBrECF1.Desativar;
@@ -1330,6 +1338,7 @@ begin
     sedECFTimeout.Value := Ini.ReadInteger('ECF', 'Timeout', 3);
     sedECFIntervalo.Value := Ini.ReadInteger('ECF', 'IntervaloAposComando', 100);
     chECFArredondaPorQtd.Checked := Ini.ReadBool('ECF', 'ArredondamentoPorQtd', False);
+    chECFArredondaMFD.Checked := Ini.ReadBool('ECF', 'ArredondamentoItemMFD', False);
     chECFDescrGrande.Checked := Ini.ReadBool('ECF', 'DescricaoGrande', True);
     chECFSinalGavetaInvertido.Checked :=
       Ini.ReadBool('ECF', 'GavetaSinalInvertido', False);
@@ -1459,6 +1468,8 @@ begin
     TimeOut := sedECFTimeout.Value;
     IntervaloAposComando := sedECFIntervalo.Value;
     ArredondaPorQtd := chECFArredondaPorQtd.Checked;
+    ArredondaItemMFD := ((chECFArredondaMFD.Enabled) and
+                         (chECFArredondaMFD.Checked));
     DescricaoGrande := chECFDescrGrande.Checked;
     GavetaSinalInvertido := chECFSinalGavetaInvertido.Checked;
     BloqueiaMouseTeclado := False;
@@ -1762,6 +1773,7 @@ begin
     Ini.WriteInteger('ECF', 'Timeout', sedECFTimeout.Value);
     Ini.WriteInteger('ECF', 'IntervaloAposComando', sedECFIntervalo.Value);
     Ini.WriteBool(   'ECF', 'ArredondamentoPorQtd', chECFArredondaPorQtd.Checked);
+    Ini.WriteBool(   'ECF', 'ArredondamentoItemMFD', chECFArredondaMFD.Checked);
     Ini.WriteBool(   'ECF', 'DescricaoGrande', chECFDescrGrande.Checked);
     Ini.WriteBool(   'ECF', 'GavetaSinalInvertido', chECFSinalGavetaInvertido.Checked);
     Ini.WriteString( 'ECF', 'ArqLog', edECFLog.Text);
@@ -2421,6 +2433,8 @@ begin
     ((ACBrECF1.Modelo <> ecfNenhum) or
     (cbECFModelo.Text = 'Procurar'));
   chECFArredondaPorQtd.Enabled := bECFAtivar.Enabled;
+  chECFArredondaMFD.Enabled := ((bECFAtivar.Enabled) and
+                                (cbECFModelo.Text = 'ecfDaruma'));
   chECFDescrGrande.Enabled := bECFAtivar.Enabled;
   cbECFPorta.Enabled := bECFAtivar.Enabled;
   sedECFTimeout.Enabled := bECFAtivar.Enabled;

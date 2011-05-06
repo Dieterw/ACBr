@@ -439,8 +439,8 @@ TACBrECF = class( TACBrComponent )
     fpUltimoEstadoObtido: TACBrECFEstado;
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
 
-    procedure VerificarAAC_GT ;
-    procedure AtualizarAAC_GT ;
+    procedure DoVerificaValorGT ;
+    procedure DoAtualizarValorGT ;
   public
     constructor Create(AOwner: TComponent); override;
     Destructor Destroy  ; override ;
@@ -867,7 +867,6 @@ TACBrECF = class( TACBrComponent )
      property OnMsgRetentar : TACBrECFMsgRetentar read  GetOnMsgRetentar
                                                   write SetOnMsgRetentar ;
 
-    // fhaut 2010-09-11
     property OnAntesAbreCupom : TACBrECFOnAbreCupom
        read FOnAntesAbreCupom write FOnAntesAbreCupom;
     property OnDepoisAbreCupom : TACBrECFOnAbreCupom
@@ -984,7 +983,6 @@ TACBrECF = class( TACBrComponent )
        read FOnErrorFechaRelatorio write FOnErrorFechaRelatorio;
     property OnChangeEstado : TACBrECFOnChangeEstado
        read FOnChangeEstado write FOnChangeEstado;
-    // fim fhaut
 
     // eventos para assinatura de arquivos do menu fiscl
     property OnPAFCalcEAD: TACBrEADCalc
@@ -2412,7 +2410,7 @@ begin
      fsRFD.VerificaParametros ;
 
   fsNumSerieCache := '' ;  // Isso força a Leitura do Numero de Série
-  VerificarAAC_GT ;
+  DoVerificaValorGT ;
 
   if Assigned( fOnAntesAbreCupom ) then
      fOnAntesAbreCupom( CPF_CNPJ, Nome, Endereco);
@@ -2517,7 +2515,7 @@ begin
         raise;
   end;
 
-  AtualizarAAC_GT;
+  DoAtualizarValorGT;
 
   if RFDAtivo then
      fsRFD.CancelaCupom( StrToInt(Docto) ) ;
@@ -2660,7 +2658,7 @@ begin
         raise;
   end;
 
-  AtualizarAAC_GT;
+  DoAtualizarValorGT;
 
   {$IFNDEF CONSOLE}
    if MemoAssigned then
@@ -2792,7 +2790,7 @@ begin
   fsECF.DescontoAcrescimoItemAnterior(ValorDescontoAcrescimo, DescontoAcrescimo );
 
   if DescontoAcrescimo <> 'D' then
-     AtualizarAAC_GT ;
+     DoAtualizarValorGT ;
 
   {$IFNDEF CONSOLE}
    if MemoAssigned then
@@ -2898,7 +2896,7 @@ begin
   end;
 
   if DescontoAcrescimo > 0 then
-     AtualizarAAC_GT ;
+     DoAtualizarValorGT ;
 
   {$IFNDEF CONSOLE}
    if MemoAssigned then
@@ -3123,7 +3121,7 @@ begin
      fsRFD.VerificaParametros ;
 
   fsNumSerieCache := '' ;  // Isso força a Leitura do Numero de Série
-  VerificarAAC_GT ;
+  DoVerificaValorGT ;
 
   { Ajustando valores acima de 2 Decimais }
   Valor := RoundTo( Valor, -2) ;
@@ -3146,7 +3144,7 @@ begin
      fsRFD.VerificaParametros ;
 
   fsNumSerieCache := '' ;  // Isso força a Leitura do Numero de Série
-  VerificarAAC_GT ;
+  DoVerificaValorGT ;
 
   ComandoLOG := 'AbreNaoFiscal( '+CPF_CNPJ+' )' ;
 
@@ -3208,7 +3206,7 @@ begin
                 ' , '+Obs + ' )';
   fsECF.RegistraItemNaoFiscal(CodCNF, Valor, Obs);
 
-  AtualizarAAC_GT ;
+  DoAtualizarValorGT ;
 
   {$IFNDEF CONSOLE}
    if MemoAssigned then
@@ -3348,7 +3346,7 @@ begin
   end;
 
   if DescontoAcrescimo > 0 then
-     AtualizarAAC_GT ;
+     DoAtualizarValorGT ;
 
   {$IFNDEF CONSOLE}
    if MemoAssigned then
@@ -4103,7 +4101,7 @@ begin
      fsRFD.VerificaParametros ;
 
   fsNumSerieCache := '' ;  // Isso força a Leitura do Numero de Série
-  VerificarAAC_GT ;
+  DoVerificaValorGT ;
 
   fsIndiceGerencial := Indice;
   ComandoLOG := 'AbreRelatorioGerencial' ;
@@ -4251,7 +4249,7 @@ begin
   Valor := RoundTo( Valor, -2) ;  { Ajustando valores acima de 2 Decimais }
 
   fsNumSerieCache := '' ;  // Isso força a Leitura do Numero de Série
-  VerificarAAC_GT ;
+  DoVerificaValorGT ;
 
   if Assigned( fOnAntesAbreCupomVinculado ) then
      fOnAntesAbreCupomVinculado(Self);
@@ -4854,7 +4852,7 @@ begin
      fsRFD := nil ;
 end;
 
-procedure TACBrECF.VerificarAAC_GT ;
+procedure TACBrECF.DoVerificaValorGT ;
 var
    ValorGT : Double ;
    AACECF  : TACBrAACECF ;
@@ -4876,7 +4874,7 @@ begin
            cACBrAACValorGTInvalidoException ) );
 end ;
 
-procedure TACBrECF.AtualizarAAC_GT ;
+procedure TACBrECF.DoAtualizarValorGT ;
 Var
   ValorGT  : Double ;
 begin

@@ -520,6 +520,8 @@ end;
 
 Procedure TACBrECFUrano.AbreGaveta ;
 begin
+  BytesResp := 0;
+  EnviaComando( '19' + R, 5 );
 end;
 
 Procedure TACBrECFUrano.ReducaoZ(DataHora: TDateTime) ;

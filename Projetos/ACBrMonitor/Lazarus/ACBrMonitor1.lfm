@@ -991,8 +991,8 @@ object FrmACBrMonitor: TFrmACBrMonitor
       TabOrder = 0
       object tsMonitor: TTabSheet
         Caption = '&Monitor'
-        ClientHeight = 182
-        ClientWidth = 590
+        ClientHeight = 179
+        ClientWidth = 584
         object gbTCP: TGroupBox
           Left = 16
           Height = 81
@@ -1073,10 +1073,10 @@ object FrmACBrMonitor: TFrmACBrMonitor
           Left = 208
           Height = 81
           Top = 12
-          Width = 353
+          Width = 347
           Anchors = [akTop, akLeft, akRight]
           ClientHeight = 63
-          ClientWidth = 349
+          ClientWidth = 343
           TabOrder = 3
           object Label6: TLabel
             AnchorSideTop.Control = edEntTXT
@@ -1116,7 +1116,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
             Height = 25
             Hint = 'Nome do arquivo de Entrada que será monitorado pelo ACBrMonitor'#13#10'Especifique o caminho completo. '#13#10'Tenha certeza que a pasta especificada permite acesso de Leitura e Escrita'
             Top = 4
-            Width = 197
+            Width = 191
             Anchors = [akLeft, akRight, akBottom]
             BorderSpacing.Bottom = 4
             TabOrder = 0
@@ -1131,7 +1131,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
             Height = 25
             Hint = 'Nome do arquivo de Saída que será criado pelo ACBrMonitor com as respostas'#13#10'Especifique o caminho completo.  '#13#10'Tenha certeza que a pasta especificada permite acesso de Leitura e Escrita'
             Top = 33
-            Width = 197
+            Width = 191
             Anchors = [akLeft, akRight, akBottom]
             BorderSpacing.Top = 3
             BorderSpacing.Bottom = 5
@@ -1142,7 +1142,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
             AnchorSideRight.Control = sedIntervalo
             AnchorSideRight.Side = asrCenter
             AnchorSideBottom.Control = sedIntervalo
-            Left = 284
+            Left = 278
             Height = 18
             Top = 1
             Width = 51
@@ -1155,7 +1155,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
           object sedIntervalo: TSpinEdit
             AnchorSideTop.Control = gbTXT
             AnchorSideTop.Side = asrCenter
-            Left = 286
+            Left = 280
             Height = 25
             Hint = 'Intervalo de Tempo em Milissegundos que o ACBrMonitor'#10'verifica a presença do arquivo de Entrada'
             Top = 19
@@ -1246,16 +1246,16 @@ object FrmACBrMonitor: TFrmACBrMonitor
           Height = 80
           Hint = 'Registra em arquivo todas as respostas do ACBrMonitor'
           Top = 100
-          Width = 307
+          Width = 301
           Anchors = [akTop, akLeft, akRight]
           ClientHeight = 62
-          ClientWidth = 303
+          ClientWidth = 297
           Enabled = False
           TabOrder = 7
           object sbLog: TSpeedButton
             AnchorSideTop.Control = edLogArq
             AnchorSideTop.Side = asrCenter
-            Left = 274
+            Left = 268
             Height = 23
             Top = 4
             Width = 23
@@ -1270,7 +1270,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
             Left = 94
             Height = 25
             Top = 3
-            Width = 181
+            Width = 175
             Anchors = [akLeft, akRight, akBottom]
             BorderSpacing.Top = 8
             BorderSpacing.Bottom = 4
@@ -1360,7 +1360,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
           AnchorSideTop.Side = asrCenter
           Left = 538
           Height = 23
-          Top = 92
+          Top = 108
           Width = 23
           Anchors = [akTop, akRight]
           Caption = '...'
@@ -1480,7 +1480,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
         object chECFArredondaPorQtd: TCheckBox
           Left = 24
           Height = 21
-          Top = 61
+          Top = 58
           Width = 217
           Caption = 'Arredondamento por Quantidade'
           OnClick = chECFArredondaPorQtdClick
@@ -1489,7 +1489,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
         object bECFTestar: TBitBtn
           Left = 127
           Height = 27
-          Top = 134
+          Top = 144
           Width = 81
           AutoSize = True
           Caption = '&Testar'
@@ -1527,7 +1527,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
         object bECFLeituraX: TBitBtn
           Left = 231
           Height = 27
-          Top = 134
+          Top = 144
           Width = 96
           AutoSize = True
           Caption = 'Leitura &X'
@@ -1565,7 +1565,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
         object bECFAtivar: TBitBtn
           Left = 23
           Height = 27
-          Top = 134
+          Top = 144
           Width = 59
           AutoSize = True
           Caption = '&Ativar'
@@ -1575,7 +1575,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
         object chECFDescrGrande: TCheckBox
           Left = 24
           Height = 21
-          Top = 95
+          Top = 111
           Width = 124
           Caption = 'Descrição Grande'
           Checked = True
@@ -1586,7 +1586,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
         object bExecECFTeste: TBitBtn
           Left = 355
           Height = 27
-          Top = 134
+          Top = 144
           Width = 150
           AutoSize = True
           Caption = 'Executar ECFTeste'
@@ -1609,9 +1609,9 @@ object FrmACBrMonitor: TFrmACBrMonitor
           TabOrder = 9
         end
         object chECFSinalGavetaInvertido: TCheckBox
-          Left = 318
+          Left = 395
           Height = 21
-          Top = 61
+          Top = 58
           Width = 165
           Caption = 'Sinal da Gaveta Invertido'
           OnClick = chECFSinalGavetaInvertidoClick
@@ -1656,7 +1656,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
           AnchorSideRight.Control = edECFLog
           Left = 219
           Height = 18
-          Top = 94
+          Top = 110
           Width = 50
           Alignment = taRightJustify
           Anchors = [akTop, akRight]
@@ -1669,11 +1669,20 @@ object FrmACBrMonitor: TFrmACBrMonitor
           Cursor = crIBeam
           Left = 272
           Height = 25
-          Top = 91
+          Top = 107
           Width = 267
           Anchors = [akTop, akLeft, akRight]
           OnChange = edECFLogChange
           TabOrder = 6
+        end
+        object chECFArredondaMFD: TCheckBox
+          Left = 24
+          Height = 21
+          Top = 85
+          Width = 151
+          Caption = 'Arredondamento MFD'
+          OnClick = chECFArredondaMFDClick
+          TabOrder = 12
         end
       end
       object tsCHQ: TTabSheet

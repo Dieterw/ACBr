@@ -2199,10 +2199,12 @@ begin
                              '0,00' + sLineBreak ;
        end;
     end;
-
+    {Leitura das legendas - As legendas tem 5 caracteres + 18 de valores acumulados}
+    {Exemplo: GT no arquivo está como 'GT   000000000000000000' Dúvidas consulte
+    o manual da sweda stx pág 69 - Fernando Gutierres Damaceno}
     Result  := Result + sLineBreak + '[OutrasICMS]'+sLineBreak ;
     {Verifica se existe F1}
-    PosI := Pos('F1',RetCMD);
+    PosI := Pos('F1   ',RetCMD);
     V := 0;
     if PosI > 0 then
     begin
@@ -2210,14 +2212,14 @@ begin
        V  := StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
     end;
     {Verifica se existe F2}
-    PosI := Pos('F2',RetCMD);
+    PosI := Pos('F2   ',RetCMD);
     if PosI > 0 then
     begin
        PosI := PosI + 5 ; {F2     }
        V  := V + StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
     end;
     {Verifica se existe F3}
-    PosI := Pos('F3',RetCMD);
+    PosI := Pos('F3   ',RetCMD);
     if PosI > 0 then
     begin
        PosI := PosI + 5 ; {F3     }
@@ -2227,21 +2229,21 @@ begin
     V := 0;
 
     {Verifica se existe não tributado}
-    PosI := Pos('N1',RetCMD);
+    PosI := Pos('N1   ',RetCMD);
     if PosI > 0 then
     begin
        PosI := PosI + 5 ; {N1     }
        V  :=  StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
     end;
 
-    PosI := Pos('N2',RetCMD);
+    PosI := Pos('N2   ',RetCMD);
     if PosI > 0 then
     begin
        PosI := PosI + 5 ; {N2     }
        V  := V + StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
     end;
 
-    PosI := Pos('N3',RetCMD);
+    PosI := Pos('N3   ',RetCMD);
     if PosI > 0 then
     begin
        PosI := PosI + 5 ; {N3     }
@@ -2250,21 +2252,21 @@ begin
     Result := Result + 'TotalNaoTributado = '+FormatFloat('#0.00',V)+ sLineBreak;
     V:= 0;
    {Isentos}
-    PosI := Pos('I1',RetCMD);
+    PosI := Pos('I1   ',RetCMD);
     if PosI > 0 then
     begin
        PosI := PosI + 5 ; {N1     }
        V  := StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
     end;
 
-    PosI := Pos('I2',RetCMD);
+    PosI := Pos('I2   ',RetCMD);
     if PosI > 0 then
     begin
        PosI := PosI + 5 ; {N1     }
        V  := V + StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
     end;
 
-    PosI := Pos('N3',RetCMD);
+    PosI := Pos('N3   ',RetCMD);
     if PosI > 0 then
     begin
        PosI := PosI + 5 ; {N1     }
@@ -2274,34 +2276,34 @@ begin
 
     { A impressora não retorna as informações descriminadas }
     Result := Result + sLineBreak + '[Totalizadores]'+sLineBreak;
+    V := 0 ;
 
     {Descontos ICMS}
-    PosI := Pos('DT',RetCMD);
+    PosI := Pos('DT   ',RetCMD);
     if PosI > 0 then
     begin
        PosI := PosI + 5 ; {DT     }
        V  := StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
     end;
-
     {Descontos ISS}
-    PosI := Pos('DT',RetCMD);
+    PosI := Pos('DS   ',RetCMD);
     if PosI > 0 then
     begin
        PosI := PosI + 5 ; {DS    }
        V  := V + StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
     end;
     Result := Result +'TotalDescontos = '+FormatFloat('#0.00',V)+ sLineBreak;
+    V := 0 ;
 
     {Cancelamento  ISS}
-    PosI := Pos('CS',RetCMD);
+    PosI := Pos('CS   ',RetCMD);
     if PosI > 0 then
     begin
        PosI := PosI + 5 ;
        V  := StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
     end;
-
     {Cancelamento  ICMS}
-    PosI := Pos('CT',RetCMD);
+    PosI := Pos('CT   ',RetCMD);
     if PosI > 0 then
     begin
        PosI := PosI + 5 ;
@@ -2311,49 +2313,50 @@ begin
     V := 0;
 
     {Acrescimo  ICMS}
-    PosI := Pos('AT',RetCMD);
+    PosI := Pos('AT   ',RetCMD);
     if PosI > 0 then
     begin
        PosI := PosI + 5 ;
        V  := StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
     end;
-
     {Acrescimo  ISS}
-    PosI := Pos('AS',RetCMD);
+    PosI := Pos('AS   ',RetCMD);
     if PosI > 0 then
     begin
        PosI := PosI + 5 ;
        V  := V + StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
     end;
     Result := Result + 'TotalAcrescimos = '+FormatFloat('#0.00',V)+ sLineBreak;
-    v := 0;
+    V := 0;
+
     {Venda Bruta não fiscal}
-    PosI := Pos('ON',RetCMD);
+    PosI := Pos('ON   ',RetCMD);
     if PosI > 0 then
     begin
        PosI := PosI + 5 ;
        V  := StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
     end;
     Result := Result + 'TotalNaoFiscal = ' + FormatFloat('#0.00',V)+ sLineBreak;
-    v := 0;
+    V := 0;
+
     {Venda Bruta Diaria}
-    PosI := Pos('VB',RetCMD);
+    PosI := Pos('VB   ',RetCMD);
     if PosI > 0 then
     begin
        PosI := PosI + 5 ;
        V  := StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
     end;
     Result := Result + 'VendaBruta = ' + FormatFloat('#0.00',V)+ sLineBreak;
-    v := 0;
-    {GT}
-    PosI := Pos('GT',RetCMD);
+    V := 0;
+
+    {Grande Total}
+    PosI := Pos('GT   ',RetCMD);
     if PosI > 0 then
     begin
        PosI := PosI + 5 ;
        V  := StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
     end;
     Result := Result + 'GrandeTotal = '+FormatFloat('#0.00',V)+ sLineBreak;
-
 end;
 
 procedure TACBrECFSwedaSTX.CortaPapel(const CorteParcial: Boolean);

@@ -209,12 +209,12 @@ var
   textoNFe : IHTMLDocument2;
 begin
   Application.ProcessMessages;
-  if WebBrowser1.LocationURL = 'https://www.nfe.fazenda.gov.br/portal/FormularioDePesquisa.aspx?tipoconsulta=completa' then
+  if WebBrowser1.LocationURL = 'http://www.nfe.fazenda.gov.br/portal/consulta.aspx?tipoConsulta=completa&tipoConteudo=XbSeqxE8pl8=' then
   begin
     for k := 0 to WebBrowser1.OleObject.Document.Images.Length - 1 do
      begin
        Source := WebBrowser1.OleObject.Document.Images.Item(k).Src;
-       if (Source = 'https://www.nfe.fazenda.gov.br/scripts/srf/intercepta/captcha.aspx?opt=image') then
+       if (Source = 'http://www.nfe.fazenda.gov.br/scripts/srf/intercepta/captcha.aspx?opt=image') then
        begin
          dest := ExtractFilePath(ParamStr(0)) + 'captcha.gif';
          DownloadFile(Source, dest);
@@ -329,7 +329,7 @@ begin
   Button1.Enabled         := True;
   DeleteIECache;
   Memo2.Lines.Clear;
-  WebBrowser1.Navigate('https://www.nfe.fazenda.gov.br/portal/FormularioDePesquisa.aspx?tipoconsulta=completa');
+  WebBrowser1.Navigate('http://www.nfe.fazenda.gov.br/portal/consulta.aspx?tipoConsulta=completa&tipoConteudo=XbSeqxE8pl8=');
 end;
 
 procedure TfrmPrincipal.btnGerarXMLClick(Sender: TObject);

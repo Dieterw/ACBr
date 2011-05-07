@@ -318,7 +318,7 @@ begin
                    Prod.veicProd.nSerie  := LerCampo(Grupo,'Serial (Série) ');
                    Prod.veicProd.tpComb  := LerCampo(Grupo,'Tipo de Combustível ');
                    Prod.veicProd.nMotor  := LerCampo(Grupo,'Número de Motor ');
-                   Prod.veicProd.RENAVAM := LerCampo(Grupo,'RENAVAM');
+                   //Prod.veicProd.RENAVAM := LerCampo(Grupo,'RENAVAM');
                    Prod.veicProd.anoMod  := StrToInt(LerCampo(Grupo,'Ano Modelo de Fabricação '));
                    Prod.veicProd.anoFab  := StrToInt(LerCampo(Grupo,'Ano de Fabricação '));
                  end;

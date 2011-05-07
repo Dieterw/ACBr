@@ -47,6 +47,13 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.07   07/05/11
+---------------
+[+] Adicionada a propriedade EAD, que permite ligar o componente ACBrPAF a
+    um componente ACBrEAD já existente. Isso evita a necessidade de programação
+	dos eventos de Captura das Chaves em vários componentes, além de carregar 
+	apenas uma vez o OpenSSL na memória (por: DSA)
+	
 Versão 0.07   12/04/11
 ---------------
 [-] Acertado a quantidade de casas decimais da quantidade em estoque.

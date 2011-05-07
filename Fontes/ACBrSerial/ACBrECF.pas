@@ -179,8 +179,7 @@ TACBrECFOnChangeEstado = procedure( const EstadoAnterior, EstadoAtual :
 
 TACBrECF = class( TACBrComponent )
   private
-    fsDevice  : TACBrDevice ;   { SubComponente ACBrDevice }
-    fsACBrEAD: TACBrEAD;       /// Classe usada para AssinarArquivo com assinatura EAD.
+    fsDevice : TACBrDevice ;   { SubComponente ACBrDevice }
 
     { Propriedades do Componente ACBrECF }
     fsAtivo  : Boolean;
@@ -209,6 +208,9 @@ TACBrECF = class( TACBrComponent )
     fsECF : TACBrECFClass ;  { Classe com instancia do ECF de fsModelo }
     fsRFD : TACBrRFD ;
     fsAAC : TACBrAAC ;
+    fsEADInterno : TACBrEAD ;
+    fsEAD : TACBrEAD ;       /// Classe usada para AssinarArquivo com assinatura EAD.
+
     fsDadosReducaoZClass: TACBrECFDadosRZ; {Class com instacia para guadar dados da RZ.}
     fOnAntesAbreCupom : TACBrECFOnAbreCupom;
     fOnDepoisAbreCupom  : TACBrECFOnAbreCupom;
@@ -269,6 +271,7 @@ TACBrECF = class( TACBrComponent )
     fOnErrorFechaRelatorio  : TACBrECFEventoOnError;
     fOnChangeEstado : TACBrECFOnChangeEstado;
     fsOnPAFCalcEAD  : TACBrEADCalc;
+    fsOnPAFGetKeyRSA : TACBrEADGetChave ;
 
     fsGavetaSinalInvertido: Boolean;
     fsIdentificarOperador : Boolean;
@@ -428,19 +431,19 @@ TACBrECF = class( TACBrComponent )
     function GetCodBarrasClass: TACBrECFCodBarras;
     procedure SetRFD(const AValue: TACBrRFD);
     procedure SetAAC(const AValue: TACBrAAC);
+    procedure SetEAD(const AValue: TACBrEAD);
     Function RFDAtivo : Boolean ;
     function GetAbout: String;
     procedure SetAbout(const AValue: String);
     function GetParamDescontoISSQNClass: Boolean;
     function GetMFAdicional: String;
-    function GetOnPAFGetKeyRSA: TACBrEADGetChave;
-    procedure SetOnPAFGetKeyRSA(const AValue: TACBrEADGetChave);
   protected
     fpUltimoEstadoObtido: TACBrECFEstado;
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
 
     procedure DoVerificaValorGT ;
     procedure DoAtualizarValorGT ;
+    Function GetACBrEAD : TACBrEAD ;
   public
     constructor Create(AOwner: TComponent); override;
     Destructor Destroy  ; override ;
@@ -988,7 +991,7 @@ TACBrECF = class( TACBrComponent )
     property OnPAFCalcEAD: TACBrEADCalc
       read fsOnPAFCalcEAD write fsOnPAFCalcEAD;
     property OnPAFGetKeyRSA: TACBrEADGetChave
-      read GetOnPAFGetKeyRSA write SetOnPAFGetKeyRSA;
+      read fsOnPAFGetKeyRSA write fsOnPAFGetKeyRSA;
 
      property DecimaisPreco : Integer read GetDecimaisPreco
         write SetDecimaisPreco default 3 ;
@@ -1005,6 +1008,7 @@ TACBrECF = class( TACBrComponent )
      property Device : TACBrDevice read fsDevice ;
      property RFD    : TACBrRFD    read fsRFD write SetRFD ;
      property AAC    : TACBrAAC    read fsAAC write SetAAC ;
+     property EAD    : TACBrEAD    read fsEAD write SetEAD ;
      property ArqLOG : String read GetArqLOG write SetArqLOG ;
 end ;
 
@@ -1032,7 +1036,12 @@ begin
   fsIdentificarOperador := True ;
   fsNumSerieCache   := '';
 
-  fsACBrEAD := TACBrEAD.Create(Self);
+  fsEADInterno     := nil;
+  fsEAD            := nil;
+  fsAAC            := nil;
+  fsRFD            := nil;
+  fsOnPAFGetKeyRSA := nil;
+  fsOnPAFCalcEAD   := nil;
 
   { Instanciando SubComponente TACBrDevice }
   fsDevice := TACBrDevice.Create( self ) ;  { O dono é o proprio componente }
@@ -1108,7 +1117,9 @@ begin
   if Assigned( fsECF ) then
      FreeAndNil( fsECF ) ;
 
-  FreeAndNil( fsACBrEAD );
+  if Assigned( fsEADInterno ) then
+     FreeAndNil( fsEADInterno );
+
   FreeAndNil( fsDevice ) ;
   FreeAndNil( fsDadosReducaoZClass ) ;
 
@@ -1594,19 +1605,9 @@ begin
   Result := fsECF.OnMsgRetentar ;
 end;
 
-function TACBrECF.GetOnPAFGetKeyRSA: TACBrEADGetChave;
-begin
-  Result := fsACBrEAD.OnGetChavePrivada;
-end;
-
 procedure TACBrECF.SetOnMsgRetentar(const AValue: TACBrECFMsgRetentar);
 begin
   fsECF.OnMsgRetentar := AValue ;
-end;
-
-procedure TACBrECF.SetOnPAFGetKeyRSA(const AValue: TACBrEADGetChave);
-begin
-  fsACBrEAD.OnGetChavePrivada := AValue;
 end;
 
 procedure TACBrECF.SetOnAguardandoRespostaChange( const AValue: TNotifyEvent);
@@ -4891,6 +4892,21 @@ begin
   end ;
 end ;
 
+function TACBrECF.GetACBrEAD : TACBrEAD ;
+begin
+  if Assigned(fsEAD) then
+     Result := fsEAD
+  else
+   begin
+     if not Assigned( fsEADInterno ) then
+     begin
+        fsEADInterno := TACBrEAD.Create(Self);
+        fsEADInterno.OnGetChavePrivada := fsOnPAFGetKeyRSA;
+     end ;
+     Result := fsEADInterno;
+   end ;
+end ;
+
 procedure TACBrECF.SetRFD(const AValue: TACBrRFD);
 Var
   OldValue: TACBrRFD ;
@@ -4935,6 +4951,25 @@ begin
   end ;
 end ;
 
+procedure TACBrECF.SetEAD(const AValue : TACBrEAD) ;
+begin
+  if AValue <> fsEAD then
+  begin
+     if Assigned(fsEAD) then
+        fsEAD.RemoveFreeNotification(Self);
+
+     fsEAD := AValue;
+
+     if AValue <> nil then
+     begin
+        AValue.FreeNotification(self);
+
+        if Assigned( fsEADInterno ) then
+           FreeAndNil( fsEADInterno );
+     end ;
+  end ;
+end ;
+
 function TACBrECF.RFDAtivo: Boolean;
 begin
   Result := False ;
@@ -4974,7 +5009,7 @@ begin
   if Assigned( fsOnPAFCalcEAD ) then
      fsOnPAFCalcEAD( Arquivo )
   else
-     fsACBrEAD.AssinarArquivoComEAD( Arquivo ) ;
+     GetACBrEAD.AssinarArquivoComEAD( Arquivo ) ;
 
   Result := True;
 end;
@@ -5369,7 +5404,7 @@ begin
       Relatorio.Add('');
     end;
 
-    Relatorio.Add('NUMERO  TITULO  EMISSAO  COO  CCF  VL.TOTAL');
+    Relatorio.Add('NUMERO  TITULO  EMISSAO COO_DAV COO_CUP VL.TOTAL');
     Relatorio.Add(LinhaSimples(TamanhoLinha));
 
     DAVsEmitidos.Ordenar;

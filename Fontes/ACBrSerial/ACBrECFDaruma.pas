@@ -4488,12 +4488,13 @@ begin
   if Resp <> 1 then
      raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar:'+sLineBreak+
      'Daruma_Registry_AlterarRegistry( "ECF", "Path", "'+Path+'" ) ') );
-  {
+
+  Resp := xDaruma_Registry_AlterarRegistry( 'AtoCotepe', 'Beep', '1' );
+
   Resp := xDaruma_Registry_Porta( Porta );
   if Resp <> 1 then
      raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar:'+sLineBreak+
         'xDaruma_Registry_Porta( "'+Porta+'" ) ') );
-  }
 end;
 
 procedure TACBrECFDaruma.EspelhoMFD_DLL(COOInicial, COOFinal: Integer;
@@ -4668,11 +4669,11 @@ begin
         begin
            Resp := xDaruma_FIMFD_GerarAtoCotepePAFData( DiaIni, DiaFim ) ;
            if (Resp <> 1) then
-              raise Exception.Create( ACBrStr( 'Erro ao executar Daruma_FIMFD_GerarAtoCotepeData.'+sLineBreak+
+              raise Exception.Create( ACBrStr( 'Erro ao executar Daruma_FIMFD_GerarAtoCotepePAFData.'+sLineBreak+
                                                'Cod.: '+IntToStr(Resp) )) ;
 
            if not FileExists( PathDest + PathDelim + 'ATOCOTEPE_DARUMA.TXT') then
-              raise Exception.Create( ACBrStr( 'Erro na execução de Daruma_FIMFD_GerarAtoCotepeData.'+sLineBreak+
+              raise Exception.Create( ACBrStr( 'Erro na execução de Daruma_FIMFD_GerarAtoCotepePAFData.'+sLineBreak+
                                      'Arquivo: "ATOCOTEPE_DARUMA.TXT" não gerado' )) ;
 
            CopyFileTo(PathDest + PathDelim + 'ATOCOTEPE_DARUMA.TXT', NomeArquivo );

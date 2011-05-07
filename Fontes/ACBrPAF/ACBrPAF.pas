@@ -73,7 +73,8 @@ type
     FACBrTXT: TACBrTXTClass;
     FOnError: TErrorEvent;
 
-    FACBrEAD: TACBrEAD;       // Classe usada para AssinarArquivo com assinatura EAD.
+    fsEADInterno : TACBrEAD ;
+    fsEAD : TACBrEAD ;       /// Classe usada para AssinarArquivo com assinatura EAD.
 
     FPath: String;            // Path do arquivo a ser gerado
     FDelimitador: String;     // Caracter delimitador de campos
@@ -89,6 +90,7 @@ type
     FPAF_C: TPAF_C;
     FPAF_N: TPAF_N;
     fsOnPAFCalcEAD: TACBrEADCalc;
+    fsOnPAFGetKeyRSA : TACBrEADGetChave ;
 
     function GetAbout: String;
     function GetDelimitador: String;
@@ -101,12 +103,13 @@ type
     function GetOnError: TErrorEvent; // Método do evento OnError
     procedure SetOnError(const Value: TErrorEvent); // Método SetError
 
-    function GetOnPAFGetKeyRSA: TACBrEADGetChave;
-    procedure SetOnPAFGetKeyRSA (const Value: TACBrEADGetChave);
+    procedure SetEAD(const AValue: TACBrEAD);
 
     procedure LimpaRegistros;
     procedure ReordenarRegistros(Arquivo: String);
   protected
+    Function GetACBrEAD : TACBrEAD ;
+
     // REGISTROS D
     function WriteRegistroD1: String;
     function WriteRegistroD2: String;
@@ -159,8 +162,9 @@ type
 
     function AssinaArquivoComEAD(Arquivo: String): Boolean;
   published
-    property About: String read GetAbout stored False ;
-    property Path: String read FPath write FPath;
+    property About : String   read GetAbout stored False ;
+    property Path  : String   read FPath write FPath;
+    property EAD   : TACBrEAD read fsEAD write SetEAD ;
 
     property Delimitador: String read GetDelimitador write SetDelimitador;
     property TrimString: Boolean read GetTrimString write SetTrimString
@@ -170,8 +174,10 @@ type
       default True ;
 
     property OnError: TErrorEvent  read GetOnError write SetOnError;
-    property OnPAFCalcEAD: TACBrEADCalc read fsOnPAFCalcEAD write fsOnPAFCalcEAD;
-    property OnPAFGetKeyRSA: TACBrEADGetChave read GetOnPAFGetKeyRSA write SetOnPAFGetKeyRSA;
+    property OnPAFCalcEAD: TACBrEADCalc read fsOnPAFCalcEAD
+       write fsOnPAFCalcEAD;
+    property OnPAFGetKeyRSA: TACBrEADGetChave read fsOnPAFGetKeyRSA
+       write fsOnPAFGetKeyRSA;
   end;
 
   procedure Register;
@@ -192,7 +198,6 @@ begin
   inherited Create(AOwner);
 
   FACBrTXT := TACBrTXTClass.Create;
-  FACBrEAD := TACBrEAD.Create(Self);
   FPAF_D := TPAF_D.Create;
   FPAF_E := TPAF_E.Create;
   FPAF_P := TPAF_P.Create;
@@ -200,6 +205,11 @@ begin
   FPAF_T := TPAF_T.Create;
   FPAF_C := TPAF_C.Create;
   FPAF_N := TPAF_N.Create;
+
+  fsEADInterno     := nil;
+  fsEAD            := nil;
+  fsOnPAFGetKeyRSA := nil;
+  fsOnPAFCalcEAD   := nil;
 
   FPath := ExtractFilePath( ParamStr(0) );
   FDelimitador := '';
@@ -211,7 +221,6 @@ end;
 destructor TACBrPAF.Destroy;
 begin
   FACBrTXT.Free;
-  FACBrEAD.Free;
   FPAF_D.Free;
   FPAF_E.Free;
   FPAF_P.Free;
@@ -219,6 +228,9 @@ begin
   FPAF_T.Free;
   FPAF_C.Free;
   FPAF_N.Free;
+
+  if Assigned( fsEADInterno ) then
+     FreeAndNil( fsEADInterno );
 
   inherited;
 end;
@@ -292,11 +304,6 @@ begin
   Result := FOnError;
 end;
 
-function TACBrPAF.GetOnPAFGetKeyRSA: TACBrEADGetChave;
-begin
-  Result := FACBrEAD.OnGetChavePrivada;
-end;
-
 procedure TACBrPAF.SetOnError(const Value: TErrorEvent);
 begin
   FOnError := Value;
@@ -310,10 +317,24 @@ begin
   FPAF_N.OnError := Value;
 end;
 
-procedure TACBrPAF.SetOnPAFGetKeyRSA(const Value: TACBrEADGetChave);
+procedure TACBrPAF.SetEAD(const AValue : TACBrEAD) ;
 begin
-  FACBrEAD.OnGetChavePrivada := Value;
-end;
+  if AValue <> fsEAD then
+  begin
+     if Assigned(fsEAD) then
+        fsEAD.RemoveFreeNotification(Self);
+
+     fsEAD := AValue;
+
+     if AValue <> nil then
+     begin
+        AValue.FreeNotification(self);
+
+        if Assigned( fsEADInterno ) then
+           FreeAndNil( fsEADInterno );
+     end ;
+  end ;
+end ;
 
 function TACBrPAF.WriteRegistroD1: String;
 begin
@@ -716,12 +737,27 @@ begin
   end;
 end;
 
+function TACBrPAF.GetACBrEAD : TACBrEAD ;
+begin
+  if Assigned(fsEAD) then
+     Result := fsEAD
+  else
+   begin
+     if not Assigned( fsEADInterno ) then
+     begin
+        fsEADInterno := TACBrEAD.Create(Self);
+        fsEADInterno.OnGetChavePrivada := fsOnPAFGetKeyRSA;
+     end ;
+     Result := fsEADInterno;
+   end ;
+end ;
+
 function TACBrPAF.AssinaArquivoComEAD(Arquivo: String): Boolean;
 begin
   if Assigned( fsOnPAFCalcEAD ) then
-    fsOnPAFCalcEAD( Arquivo )
+     fsOnPAFCalcEAD( Arquivo )
   else
-    FACBrEAD.AssinarArquivoComEAD( Arquivo ) ;
+     GetACBrEAD.AssinarArquivoComEAD( Arquivo ) ;
 
   Result := True;
 end;

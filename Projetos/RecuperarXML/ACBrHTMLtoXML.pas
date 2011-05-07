@@ -89,7 +89,7 @@ begin
  NFe.Ide.nNF   := StrToIntDef(OnlyNumber(LerCampo(Grupo,'Número NF-e')),0);
 
  { Incluido campo que recebe qual a Versão do XML que o arquivo está. }
- Versao        := LerCampo(Grupo,'Versão XML');
+ Versao        := LerCampo(Grupo,'Versão');
  NFe.Ide.cNF   := RetornarCodigoNumerico(NFe.infNFe.ID,NFe.infNFe.Versao);
 
  Grupo :=  SeparaAte('EMITENTE',ArquivoRestante,ArquivoRestante);

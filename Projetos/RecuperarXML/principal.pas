@@ -186,9 +186,9 @@ begin
   btnNovaConsulta.Enabled := False;
   btnGerarXML.Enabled     := False;
   try
-     WebBrowser1.OleObject.Document.all.Item('ctl00$ContentPlaceHolder3$chaveAcesso', 0).value := edtChaveNFe.Text;
-     WebBrowser1.OleObject.Document.all.Item('ctl00$ContentPlaceHolder3$intercepta', 0).value := edtCaptcha.Text;
-     WebBrowser1.OleObject.Document.all.Item('ctl00$ContentPlaceHolder3$btcontinuar', 0).click;
+     WebBrowser1.OleObject.Document.all.Item('ctl00$ContentPlaceHolder1$txtChaveAcessoCompleta', 0).value := edtChaveNFe.Text;
+     WebBrowser1.OleObject.Document.all.Item('ctl00$ContentPlaceHolder1$txtCaptcha', 0).value := edtCaptcha.Text;
+     WebBrowser1.OleObject.Document.all.Item('ctl00$ContentPlaceHolder1$btnConsultar', 0).click;
   except
      btnNovaConsulta.Enabled := True;
      raise;
@@ -227,7 +227,7 @@ begin
   begin
     WebBrowser1.Navigate('https://www.nfe.fazenda.gov.br/PORTAL/visualizacaoNFe/completa/impressao.aspx');
   end
-  else if WebBrowser1.LocationURL = 'https://www.nfe.fazenda.gov.br/PORTAL/visualizacaoNFe/completa/impressao.aspx' then
+  else if WebBrowser1.LocationURL = 'http://www.nfe.fazenda.gov.br/portal/consultaCompleta.aspx?tipoConteudo=XbSeqxE8pl8=' then
   begin
     textoNFe := WebBrowser1.Document as IHTMLDocument2;
     repeat

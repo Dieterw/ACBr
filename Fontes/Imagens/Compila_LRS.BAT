@@ -55,8 +55,10 @@ echo.
 :SPED
 %1\tools\lazres.exe ACBrSpedFiscal.lrs TACBrSpedFiscal.bmp
 %1\tools\lazres.exe ACBrSpedContabil.lrs TACBrSpedContabil.bmp
+%1\tools\lazres.exe ACBrSpedPisCofins.lrs TACBrSpedPisCofins.bmp
 move ACBrSpedFiscal.lrs ..\ACBrSPED\ACBrSPEDFiscal
 move ACBrSpedContabil.lrs ..\ACBrSPED\ACBrSPEDContabil
+move ACBrSpedPisCofins.lrs ..\ACBrSPED\ACBrSpedPisCofins
 echo.
 echo "****************************************"
 echo "* Arquivo  ACBrSpedFiscal.lrs   gerado *"

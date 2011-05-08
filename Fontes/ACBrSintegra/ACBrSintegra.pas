@@ -2684,7 +2684,9 @@ function TRegistros75.Add(Obj: TRegistro75): Integer;
 begin
   Result := GetRegistroExiste(Obj.Codigo) ;
   if Result < 0 then
-     Result := inherited Add(Obj) ;
+     Result := inherited Add(Obj)
+  else
+     Obj.Free;
 end;
 
 function TRegistros75.GetObject(Index: Integer): TRegistro75;
@@ -2697,20 +2699,20 @@ var
   i: Integer;
 begin
   Result := -1 ;
-  for i:=0 to Self.Count-1 do
-  begin
-    if (Self[i].Codigo=FCodigo) then
-    begin
-      Result := i ;
-      break ;
-    end ;
-  end;
+  I      := 0 ;
+  while (I < Self.Count) and (Self[I].Codigo <> FCodigo) do
+     Inc( I ) ;
+
+  if I < Self.Count then
+     Result := I;
 end;
 
 procedure TRegistros75.Insert(Index: Integer; Obj: TRegistro75);
 begin
   if GetRegistroExiste(Obj.Codigo) < 0 then
-    inherited Insert(Index, Obj);
+     inherited Insert(Index, Obj)
+  else
+     Obj.Free;
 end;
 
 procedure TRegistros75.SetObject(Index: Integer; Item: TRegistro75);
@@ -3326,7 +3328,9 @@ function TRegistros88Ean.Add(Obj: TRegistro88Ean): Integer;
 begin
   Result := GetRegistroExiste(Obj.Codigo) ;
   if Result < 0 then
-     Result := inherited Add(Obj) ;
+     Result := inherited Add(Obj)
+  else
+     Obj.Free ;
 end;
 
 function TRegistros88Ean.GetObject(Index: Integer): TRegistro88Ean;
@@ -3337,7 +3341,9 @@ end;
 procedure TRegistros88Ean.Insert(Index: Integer; Obj: TRegistro88Ean);
 begin
  if GetRegistroExiste(Obj.Codigo) < 0 then
-    inherited Insert(Index, Obj);
+    inherited Insert(Index, Obj)
+ else
+    Obj.Free;
 end;
 
 function TRegistros88Ean.GetRegistroExiste(FCodigo: Integer): Integer;
@@ -3345,14 +3351,12 @@ var
   i: Integer;
 begin
   Result := -1 ;
-  for i:=0 to Self.Count-1 do
-  begin
-    if (Self[i].Codigo=FCodigo) then
-    begin
-      Result := i ;
-      break ;
-    end ;
-  end;
+  I      := 0 ;
+  while (I < Self.Count) and (Self[I].Codigo <> FCodigo) do
+    Inc( I ) ;
+
+  if I < Self.Count then
+     Result := I;
 end;
 
 procedure TRegistros88Ean.SetObject(Index: Integer; Item: TRegistro88Ean);

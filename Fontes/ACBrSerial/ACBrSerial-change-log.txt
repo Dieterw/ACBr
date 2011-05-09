@@ -98,13 +98,19 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Data:  09/05/2011
+-- ACBrAAC --
+[*] Componente ACBrAAC volta para o Package ACBrComum, para poder ser usado por
+    ACBrECF e ACBrPAF.. (por: DSA)   
+    ** NOTA: Isso exige a completa re-instalação dos Packages ACBrComum e ACBrSerial
+
 Data:  07/05/2011
 -- ACBrECF --
 [+] Adicionada a propriedade EAD, que permite ligar o componente ACBrECF a
     um componente ACBrEAD já existente. Isso evita a necessidade de programação
-	dos eventos de Captura das Chaves em vários componentes, além de carregar 
-	apenas uma vez o OpenSSL na memória (por: DSA)
-	
+    dos eventos de Captura das Chaves em vários componentes, além de carregar 
+    apenas uma vez o OpenSSL na memória (por: DSA)
+
 -- ACBrECFDaruma --
 [-] Corrigido método de abertura de Porta Serial pela DLL (por: DSA)
 

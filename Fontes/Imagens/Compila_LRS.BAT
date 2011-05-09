@@ -8,7 +8,7 @@ if NOT EXIST %1\lazarus.exe goto erro_param
 if NOT EXIST %1\tools\lazres.exe GOTO erro_lazres
 
 :Comum
-%1\tools\lazres.exe ACBrComum.lrs TACBrEAD.bmp
+%1\tools\lazres.exe ACBrComum.lrs TACBrEAD.bmp TACBrAAC.bmp
 move ACBrComum.lrs ..\ACBrComum
 echo.
 echo "****************************************"
@@ -26,7 +26,7 @@ echo "****************************************"
 echo.
 
 :Serial
-%1\tools\lazres.exe ACBrSerial.lrs TACBrECF.bmp TACBrGAV.bmp TACBrCHQ.bmp TACBrLCB.bmp TACBrDIS.bmp TACBrBAL.bmp TACBrTER.bmp TACBrETQ.bmp TACBrRFD.bmp TACBrAAC.bmp
+%1\tools\lazres.exe ACBrSerial.lrs TACBrECF.bmp TACBrGAV.bmp TACBrCHQ.bmp TACBrLCB.bmp TACBrDIS.bmp TACBrBAL.bmp TACBrTER.bmp TACBrETQ.bmp TACBrRFD.bmp
 move ACBrSerial.lrs ..\ACBrSerial
 echo.
 echo "****************************************"

@@ -2249,7 +2249,7 @@ begin
      estNaoFiscal : CancelaNaoFiscal ;
 
      estBloqueada : GeraErro( EACBrECFCMDInvalido.Create(
-                               cACBrECFPodeAbrirCupomBloqueada ) );
+                               ACBrStr(cACBrECFPodeAbrirCupomBloqueada) ) );
   end;
 
   if Estado <> estLivre then

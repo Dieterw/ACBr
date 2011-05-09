@@ -36,7 +36,7 @@ Agradecimentos:
 - Isaque Pinheiro - Doação do componente ao projeto ACBr
 
 {******************************************************************************
-|* ACBrSPEDContabil
+|* ACBrPAF
 |*
 |* PROPÓSITO: Registro de Alterações
 ******************************************************************************}
@@ -47,13 +47,27 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.07   09/05/11
+---------------
+[*] Registro N, modificado para permitir o calculo do MD5 de cada arquivo da 
+    Lista, de forma dinâmica, basta não informar o MD5 no registro, que o mesmo
+    será calculado no momento da geração  (por: DSA)
+[+] Adiconada a propriedade AAC, que permite ligar o componente ACBrPAF com o 
+    componente ACBrAAC (Arquivo Auxiliar Criptografado)    (Por: DSA)
+[*] Após o arquivo PAF_N ser gerado, se o ACBrPAF estiver associado ao componente 
+    ACBrAAC, ele irá chamar o método do componente ACBrAAC para atualizar o arquivo 
+    auxiliar cripotografado com o MD5 final da Lista Gerada pelo PAF_N   (Por: DSA)
+**  NOTA: As recentes mudanças exigem a completa re-instalação dos Packages 
+          ACBrComum e ACBrSerial e ACBrPAF
+
+
 Versão 0.07   07/05/11
 ---------------
 [+] Adicionada a propriedade EAD, que permite ligar o componente ACBrPAF a
     um componente ACBrEAD já existente. Isso evita a necessidade de programação
-	dos eventos de Captura das Chaves em vários componentes, além de carregar 
-	apenas uma vez o OpenSSL na memória (por: DSA)
-	
+    dos eventos de Captura das Chaves em vários componentes, além de carregar 
+    apenas uma vez o OpenSSL na memória (por: DSA)
+
 Versão 0.07   12/04/11
 ---------------
 [-] Acertado a quantidade de casas decimais da quantidade em estoque.

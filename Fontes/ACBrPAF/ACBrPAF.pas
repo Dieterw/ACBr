@@ -50,7 +50,7 @@ uses
       LResources,
    {$ENDIF}
    {$IFDEF CLX}QForms, {$ELSE} Forms, {$ENDIF}
-   ACBrTXTClass, ACBrUtil, ACBrEAD,
+   ACBrTXTClass, ACBrUtil, ACBrEAD, ACBrAAC,
    ACBrPAF_D, ACBrPAF_D_Class,
    ACBrPAF_E, ACBrPAF_E_Class,
    ACBrPAF_P, ACBrPAF_P_Class,
@@ -74,7 +74,8 @@ type
     FOnError: TErrorEvent;
 
     fsEADInterno : TACBrEAD ;
-    fsEAD : TACBrEAD ;       /// Classe usada para AssinarArquivo com assinatura EAD.
+    fsEAD : TACBrEAD ;       /// Componente usado para AssinarArquivo com assinatura EAD.
+    fsAAC : TACBrAAC ;       /// Componente usado para manter o Arq.Auxiliar Criptografado
 
     FPath: String;            // Path do arquivo a ser gerado
     FDelimitador: String;     // Caracter delimitador de campos
@@ -104,11 +105,12 @@ type
     procedure SetOnError(const Value: TErrorEvent); // Método SetError
 
     procedure SetEAD(const AValue: TACBrEAD);
+    procedure SetAAC(const AValue: TACBrAAC);
 
     procedure LimpaRegistros;
     procedure ReordenarRegistros(Arquivo: String);
   protected
-    Function GetACBrEAD : TACBrEAD ;
+    procedure Notification(AComponent: TComponent; Operation: TOperation); override;
 
     // REGISTROS D
     function WriteRegistroD1: String;
@@ -160,11 +162,13 @@ type
     property PAF_C: TPAF_C read FPAF_C write FPAF_C;
     property PAF_N: TPAF_N read FPAF_N write FPAF_N;
 
+    Function GetACBrEAD : TACBrEAD ;
     function AssinaArquivoComEAD(Arquivo: String): Boolean;
   published
     property About : String   read GetAbout stored False ;
-    property Path  : String   read FPath write FPath;
+    property Path  : String   read FPath write FPath ;
     property EAD   : TACBrEAD read fsEAD write SetEAD ;
+    property AAC   : TACBrAAC read fsAAC write SetAAC ;
 
     property Delimitador: String read GetDelimitador write SetDelimitador;
     property TrimString: Boolean read GetTrimString write SetTrimString
@@ -204,7 +208,7 @@ begin
   FPAF_R := TPAF_R.Create;
   FPAF_T := TPAF_T.Create;
   FPAF_C := TPAF_C.Create;
-  FPAF_N := TPAF_N.Create;
+  FPAF_N := TPAF_N.Create( Self );
 
   fsEADInterno     := nil;
   fsEAD            := nil;
@@ -333,6 +337,20 @@ begin
         if Assigned( fsEADInterno ) then
            FreeAndNil( fsEADInterno );
      end ;
+  end ;
+end ;
+
+procedure TACBrPAF.SetAAC(const AValue : TACBrAAC) ;
+begin
+  if AValue <> fsAAC then
+  begin
+     if Assigned(fsAAC) then
+        fsAAC.RemoveFreeNotification( Self );
+
+     fsAAC := AValue;
+
+     if AValue <> nil then
+        AValue.FreeNotification(self);
   end ;
 end ;
 
@@ -687,40 +705,40 @@ end;
 
 function TACBrPAF.SaveFileTXT_N(Arquivo: String): Boolean;
 var
-txtFile: TextFile;
+  txtFile: TextFile;
+  PAF_MD5 : String ;
 begin
   Result := True;
 
   if (Trim(Arquivo) = '') or (Trim(fPath) = '') then
     raise Exception.Create('Caminho ou nome do arquivo não informado!');
 
+  AssignFile(txtFile, fPath + Arquivo);
   try
-    AssignFile(txtFile, fPath + Arquivo);
-    try
-      Rewrite(txtFile);
-      Write(txtFile, WriteRegistroN1);
-      Write(txtFile, WriteRegistroN2);
+    Rewrite(txtFile);
+    Write(txtFile, WriteRegistroN1);
+    Write(txtFile, WriteRegistroN2);
 
-      if FPAF_N.RegistroN3.Count > 0 then
-        Write(txtFile, WriteRegistroN3);
+    if FPAF_N.RegistroN3.Count > 0 then
+      Write(txtFile, WriteRegistroN3);
 
-      Write(txtFile, WriteRegistroN9);
-    finally
-      CloseFile(txtFile);
-    end;
-
-    // Assinatura EAD
-    if FAssinar then
-      AssinaArquivoComEAD(fPath + Arquivo);
-
-    // Limpa de todos os Blocos as listas de todos os registros.
-    LimpaRegistros;
-  except
-    on E: Exception do
-    begin
-      raise Exception.Create(E.Message);
-    end;
+    Write(txtFile, WriteRegistroN9);
+  finally
+    CloseFile(txtFile);
   end;
+
+  // Assinatura EAD
+  if FAssinar then
+    AssinaArquivoComEAD(fPath + Arquivo);
+
+  // Não chama LimpaRegistros, pois o programador pode querer consultar os dados
+  // do Registro N direto no componente.
+
+  if Assigned( AAC ) then
+  begin
+    PAF_MD5 := GetACBrEAD.MD5FromFile( fPath + Arquivo );
+    AAC.AtualizarMD5( PAF_MD5 );
+  end ;
 end;
 
 procedure TACBrPAF.ReordenarRegistros(Arquivo: String);
@@ -736,6 +754,18 @@ begin
     objFile.Free;
   end;
 end;
+
+procedure TACBrPAF.Notification(AComponent : TComponent ; Operation : TOperation
+   ) ;
+begin
+   inherited Notification(AComponent, Operation) ;
+
+  if (Operation = opRemove) and (AComponent is TACBrEAD) and (fsEAD <> nil) then
+     fsEAD := nil ;
+
+  if (Operation = opRemove) and (AComponent is TACBrAAC) and (fsAAC <> nil) then
+     fsAAC := nil ;
+end ;
 
 function TACBrPAF.GetACBrEAD : TACBrEAD ;
 begin

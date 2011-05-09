@@ -56,9 +56,10 @@ type
     FRegistroN2: TRegistroN2;       /// FRegistroN2
     FRegistroN3: TRegistroN3List;   /// FRegistroN3
     FRegistroN9: TRegistroN9;       /// FRegistroN9
+    FOwner     : TObject;
   protected
   public
-    constructor Create; /// Create
+    constructor Create( AOwner : TObject); /// Create
     destructor Destroy; override; /// Destroy
 
     procedure LerDadosArquivo(const APathArquivo: String);
@@ -76,12 +77,16 @@ type
 
 implementation
 
-uses ACBrSPEDUtils, ACBrUtil;
+uses ACBrSPEDUtils, ACBrUtil, ACBrPAF;
 
 { TPAF_N }
 
-constructor TPAF_N.Create;
+constructor TPAF_N.Create( AOwner : TObject);
 begin
+  if not (AOwner is TACBrPAF) then
+     raise Exception.Create( 'Dono de TPAF_N deve ser do tipo TACBrPAF' );
+
+  FOwner      := AOwner;
   FRegistroN1 := TRegistroN1.Create;
   FRegistroN2 := TRegistroN2.Create;
   FRegistroN3 := TRegistroN3List.Create;
@@ -202,9 +207,10 @@ end;
 function TPAF_N.WriteRegistroN3: string;
 var
   intFor: integer;
-  strRegistroN3: string;
+  strRegistroN3, NomeArquivoCompleto, ApplicationDir : String ;
 begin
   strRegistroN3 := '';
+  ApplicationDir := ExtractFilePath( ParamStr(0) );
 
   if Assigned(FRegistroN3) then
   begin
@@ -214,10 +220,24 @@ begin
     begin
       with FRegistroN3.Items[intFor] do
       begin
+        // Não informou o MD5 ? Vamos calcula-lo...
+        if Trim(MD5) = '' then
+        begin
+          NomeArquivoCompleto := NOME_ARQUIVO ;
+          if pos( PathDelim, NomeArquivoCompleto ) = 0 then  // Nao informou Path ?
+             NomeArquivoCompleto := ApplicationDir + NOME_ARQUIVO;
+
+          try
+             MD5 := TACBrPAF(FOwner).GetACBrEAD.MD5FromFile( NomeArquivoCompleto );
+          except
+             { Ignora Provavel erro de arquivo não encontrado }
+          end ;
+        end ;
+
         strRegistroN3 := strRegistroN3 +
           LFill('N3') +
-          RFill(NOME_ARQUIVO, 50) +
-          LFill(MD5, 32) +
+          RFill( UpperCase( ExtractFileName( NOME_ARQUIVO ) ), 50) +
+          LFill( UpperCase( MD5 ), 32) +
           sLineBreak;
       end;
 

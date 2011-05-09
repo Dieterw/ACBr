@@ -441,8 +441,6 @@ TACBrECF = class( TACBrComponent )
     fpUltimoEstadoObtido: TACBrECFEstado;
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
 
-    procedure DoVerificaValorGT ;
-    procedure DoAtualizarValorGT ;
     Function GetACBrEAD : TACBrEAD ;
   public
     constructor Create(AOwner: TComponent); override;
@@ -812,7 +810,8 @@ TACBrECF = class( TACBrComponent )
       const IdentificacaoPaf: TACBrECFIdentificacaoPAF;
       const IndiceRelatorio: Integer = 0);
 
-
+    procedure DoVerificaValorGT ;
+    procedure DoAtualizarValorGT ;
     function AssinaArquivoComEAD(Arquivo: String): Boolean;
 
   published
@@ -4849,8 +4848,15 @@ begin
    end ;
   {$ENDIF}
 
-  if (Operation = opRemove) and (fsRFD <> nil) and (AComponent is TACBrRFD) then
+  if (Operation = opRemove) and (AComponent is TACBrRFD) and (fsRFD <> nil) then
      fsRFD := nil ;
+
+  if (Operation = opRemove) and (AComponent is TACBrEAD) and (fsEAD <> nil) then
+     fsEAD := nil ;
+
+  if (Operation = opRemove) and (AComponent is TACBrAAC) and (fsAAC <> nil) then
+     fsAAC := nil ;
+
 end;
 
 procedure TACBrECF.DoVerificaValorGT ;
@@ -4871,8 +4877,8 @@ begin
 
   ValorGT := GrandeTotal ;
   if AACECF.ValorGT <> ValorGT then
-     raise EACBrAAC_ValorGTInvalido.Create( ACBrStr(
-           cACBrAACValorGTInvalidoException ) );
+     raise EACBrAAC_ValorGTInvalido.Create( Format( ACBrStr(
+           cACBrAACValorGTInvalidoException ), [ValorGT, AACECF.ValorGT] ) );
 end ;
 
 procedure TACBrECF.DoAtualizarValorGT ;

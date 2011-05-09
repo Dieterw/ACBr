@@ -141,8 +141,10 @@ const
   cACBrECFSetRFDException                = 'Não é possível mudar ACBrECF.RFD com o componente ativo' ;
   cACBrECFSetAACException                = 'Não é possível mudar ACBrECF.AAC com o componente ativo' ;
 
-  cACBrAACNumSerieNaoEncontardoException = 'Número de série %s não encontrado no Arquivo Auxiliar Criptografado.' ;
-  cACBrAACValorGTInvalidoException       = 'Divergência no Valor do Grande Total lido no ECF com o do Arquivo Auxiliar Criptografado' ;
+  cACBrAACNumSerieNaoEncontardoException = 'ECF de Número de série %s não encontrado no Arquivo Auxiliar Criptografado.' ;
+  cACBrAACValorGTInvalidoException       = 'Há divergência no Valor do Grande Total'+sLineBreak+
+                                           'Valor do ECF....: %m'+sLineBreak+
+                                           'Valor do Arquivo: %m' ;
 
 implementation
 

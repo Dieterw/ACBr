@@ -43,6 +43,7 @@ contains
   ACBrUtil in '..\..\Fontes\ACBrComum\ACBrUtil.pas',
   ACBrReg in '..\..\Fontes\ACBrComum\ACBrReg.pas',
   ACBrEAD in '..\..\Fontes\ACBrComum\ACBrEAD.pas',
+  ACBrAAC in '..\..\Fontes\ACBrComum\ACBrAAC.pas',
   libeay32 in '..\..\Fontes\ACBrComum\libeay32.pas';
 
 end.

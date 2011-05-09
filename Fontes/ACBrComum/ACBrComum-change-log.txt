@@ -38,7 +38,13 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
-05/05/2011
+09/05/2011
+-- ACBrAAC --
+[*] Componente ACBrAAC volta para o Package ACBrComum, para poder ser usado por
+    ACBrECF e ACBrPAF.. (por: DSA)   
+	** NOTA: Isso exige a completa re-instalação dos Packages ACBrComum e ACBrSerial
+
+	05/05/2011
 -- ACBrArqAuxCriptografado
 [+] Componente movido para ACBrSerial, por favor leia ACBrSerial-change-log.txt
 

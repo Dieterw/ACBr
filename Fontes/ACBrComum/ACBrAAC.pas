@@ -41,14 +41,15 @@ uses ACBrBase,
      SysUtils, Classes, Contnrs ;
 
 type
-  EACBrAAC_CRC = class(Exception);
-  EACBrAAC_ArqNaoEncontrado = class(Exception);
-  EACBrAAC_SemNomeArquivo = class(Exception);
-  EACBrAAC_SemChave = class(Exception);
-  EACBrAAC_SemResposta = class(Exception);
-  EACBrAAC_ArquivoInvalido = class(Exception);
-  EACBrAAC_NumSerieNaoEncontrado = class(Exception);
-  EACBrAAC_ValorGTInvalido = class(Exception);
+  EACBrAAC                       = class(Exception);
+  EACBrAAC_CRC                   = class(EACBrAAC);
+  EACBrAAC_ArqNaoEncontrado      = class(EACBrAAC);
+  EACBrAAC_SemNomeArquivo        = class(EACBrAAC);
+  EACBrAAC_SemChave              = class(EACBrAAC);
+  EACBrAAC_SemResposta           = class(EACBrAAC);
+  EACBrAAC_ArquivoInvalido       = class(EACBrAAC);
+  EACBrAAC_NumSerieNaoEncontrado = class(EACBrAAC);
+  EACBrAAC_ValorGTInvalido       = class(EACBrAAC);
 
   TACBrAACOnCrypt   = procedure( ConteudoArquivo : AnsiString;
      var Resposta : AnsiString ) of object ;
@@ -96,7 +97,11 @@ type
      fsCriarBAK : Boolean ;
      fsDtHrArquivo : TDateTime ;
      fsECFsAutorizados : TACBrAACECFs ;
+     fsGravarDadosPAF : Boolean ;
+     fsGravarDadosSH : Boolean ;
+     fsGravarTodosECFs : Boolean ;
      fsNomeArquivoAux : String ;
+     fsNomeCompleto : String ;
      fsOnAntesAbrirArquivo : TACBrAACAntesArquivo ;
      fsOnAntesGravarArquivo : TACBrAACAntesArquivo ;
      fsOnCrypt : TACBrAACOnCrypt ;
@@ -113,6 +118,7 @@ type
      fsSH_IM : String ;
      fsSH_RazaoSocial : String ;
      function GetChave : AnsiString ;
+     procedure SetNomeArquivoAux(const AValue : String) ;
      procedure SetPAF_MD5(const AValue : String) ;
      procedure SetPAF_Nome(const AValue : String) ;
      procedure SetPAF_Versao(const AValue : String) ;
@@ -126,6 +132,7 @@ type
      function Criptografar( const Dados: AnsiString ) : AnsiString ;
      function DesCriptografar( const Dados: AnsiString ) : AnsiString ;
      Procedure GravaLog( const AString: AnsiString );
+     procedure VerificaReCarregarArquivo;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -139,7 +146,6 @@ type
 
     procedure AbrirArquivo;
     procedure SalvarArquivo;
-    procedure VerificaReCarregarArquivo;
 
     function VerificarGTECF(const NumeroSerie: String;
       const ValorGT: Double): Integer ;
@@ -151,9 +157,15 @@ type
 
   published
     property NomeArquivoAux : String  read fsNomeArquivoAux
-       write fsNomeArquivoAux ;
-    property CriarBAK       : Boolean read fsCriarBAK write fsCriarBAK default True;
-    property ArqLOG         : String  read fsArqLOG write fsArqLOG ;
+       write SetNomeArquivoAux ;
+    property CriarBAK : Boolean read fsCriarBAK write fsCriarBAK default True;
+    property GravarDadosSH  : Boolean read fsGravarDadosSH
+       write fsGravarDadosSH default True;
+    property GravarDadosPAF : Boolean read fsGravarDadosPAF
+       write fsGravarDadosPAF default True;
+    property GravarTodosECFs : Boolean read fsGravarTodosECFs
+       write fsGravarTodosECFs default True;
+    property ArqLOG : String  read fsArqLOG write fsArqLOG ;
 
     { Dados da Sw.House }
     property SH_RazaoSocial : String read fsSH_RazaoSocial write SetSH_RazaoSocial ;
@@ -268,6 +280,9 @@ begin
 
   fsNomeArquivoAux := '' ;
   fsCriarBAK       := True;
+  fsGravarDadosSH  := True;
+  fsGravarDadosPAF := True;
+  fsGravarTodosECFs:= True;
   fsPAF_MD5        := '' ;
   fsPAF_Nome       := '' ;
   fsPAF_Versao     := '' ;
@@ -330,15 +345,18 @@ begin
   if NomeArquivoAux = '' then
      raise EACBrAAC_SemNomeArquivo.Create( ACBrStr('Nome do Arquivo não Informado em: ACBrAAC.NomeArquivoAux') ) ;
 
-  if not FileExists( NomeArquivoAux ) then
-     raise EACBrAAC_ArqNaoEncontrado.Create( ACBrStr('Arquivo não encontrado') );
+  if not FileExists( fsNomeCompleto ) then
+     raise EACBrAAC_ArqNaoEncontrado.Create(
+        ACBrStr( 'Arquivo Auxiliar Criptografado'+sLineBreak+
+                 '"'+NomeArquivoAux+'"'+sLineBreak+
+                 'não encontrado') );
 
-  fsDtHrArquivo := FileDateToDateTime( FileAge( NomeArquivoAux ) );
+  fsDtHrArquivo := FileDateToDateTime( FileAge( fsNomeCompleto ) );
 
   // Lê arquivo de modo binário e transfere para a AnsiString = S //
   MS := TMemoryStream.Create;
   try
-    MS.LoadFromFile( NomeArquivoAux );
+    MS.LoadFromFile( fsNomeCompleto );
     MS.Position := 0;
     SetLength(S, MS.Size);
     MS.ReadBuffer(PChar(S)^, MS.Size);
@@ -358,21 +376,30 @@ begin
      SL.Text := R;
      Ini.SetStrings( SL );
 
-     SH_RazaoSocial := Ini.ReadString('SH','Nome','');
-     SH_CNPJ        := Ini.ReadString('SH','CNPJ','');
-     SH_IE          := Ini.ReadString('SH','IE','');
-     SH_IM          := Ini.ReadString('SH','IM','');
+     if GravarDadosSH then
+     begin
+       SH_RazaoSocial := Ini.ReadString('SH','Nome','');
+       SH_CNPJ        := Ini.ReadString('SH','CNPJ','');
+       SH_IE          := Ini.ReadString('SH','IE','');
+       SH_IM          := Ini.ReadString('SH','IM','');
+     end ;
 
-     PAF_Nome   := Ini.ReadString('PAF','Nome','');
-     PAF_MD5    := Ini.ReadString('PAF','MD5','');
-     PAF_Versao := Ini.ReadString('PAF','Versao','');
+     if GravarDadosPAF then
+     begin
+       PAF_Nome   := Ini.ReadString('PAF','Nome','');
+       PAF_Versao := Ini.ReadString('PAF','Versao','');
+     end ;
+     PAF_MD5 := Ini.ReadString('PAF','MD5','');
 
-     // Verificando o Calculando do CRC //
-     CRC := StringCrc16( SH_RazaoSocial + SH_CNPJ + SH_IE + SH_IM +
-                         PAF_Nome + PAF_Versao + PAF_MD5 );
-     if Ini.ReadInteger('CHK','CRC16',0) <> CRC then
-        raise EACBrAAC_ArquivoInvalido.Create(
-           ACBrStr('Arquivo: '+NomeArquivoAux+' inválido') );
+     if GravarDadosPAF and GravarDadosSH then
+     begin
+       // Verificando o Calculando do CRC //
+       CRC := StringCrc16( SH_RazaoSocial + SH_CNPJ + SH_IE + SH_IM +
+                           PAF_Nome + PAF_Versao + PAF_MD5 );
+       if Ini.ReadInteger('CHK','CRC16',0) <> CRC then
+          raise EACBrAAC_ArquivoInvalido.Create(
+             ACBrStr('Arquivo: '+NomeArquivoAux+' inválido') );
+     end ;
 
      ECFsAutorizados.Clear;
      I := 0 ;
@@ -433,32 +460,48 @@ begin
 
   Continua := True;
   if Assigned( fsOnAntesGravarArquivo ) then
-     fsOnAntesGravarArquivo( Continua );
+    fsOnAntesGravarArquivo( Continua );
 
   if not Continua then
   begin
-     GravaLog( 'GravarArqRegistro abortado' );
-     exit;
+    GravaLog( 'GravarArqRegistro abortado' );
+    exit;
   end ;
 
   if NomeArquivoAux = '' then
-     raise EACBrAAC_SemNomeArquivo.Create( ACBrStr('Nome do Arquivo não Informado em: ACBrAAC.NomeArquivoAux') ) ;
+    raise EACBrAAC_SemNomeArquivo.Create( ACBrStr('Nome do Arquivo não Informado em: ACBrAAC.NomeArquivoAux') ) ;
 
-  if (SH_RazaoSocial = '') or (SH_CNPJ = '') or (PAF_Nome = '') then
-     raise EACBrAAC_ArquivoInvalido.Create(
-        ACBrStr('Informe ao menos os campos SH_RazaoSocial, SH_CNPJ e PAF_Nome ') );
+  if GravarDadosSH then
+  begin
+    if (SH_RazaoSocial = '') or (SH_CNPJ = '') then
+      raise EACBrAAC_ArquivoInvalido.Create(
+         ACBrStr('SH_RazaoSocial e/ou SH_CNPJ não informados') );
+  end ;
+
+  if GravarDadosPAF then
+  begin
+    if (PAF_Nome = '') or (PAF_Versao = '')then
+      raise EACBrAAC_ArquivoInvalido.Create(
+         ACBrStr('PAF_Nome e/ou PAF_Versao não informados') );
+  end ;
 
   SL  := TStringList.Create ;
   Ini := TMemIniFile.Create( '' ) ;
   try
-     Ini.WriteString('SH','Nome',SH_RazaoSocial);
-     Ini.WriteString('SH','CNPJ',SH_CNPJ);
-     Ini.WriteString('SH','IE',SH_IE);
-     Ini.WriteString('SH','IM',SH_IM);
+     if GravarDadosSH then
+     begin
+       Ini.WriteString('SH','Nome',SH_RazaoSocial);
+       Ini.WriteString('SH','CNPJ',SH_CNPJ);
+       Ini.WriteString('SH','IE',SH_IE);
+       Ini.WriteString('SH','IM',SH_IM);
+     end ;
 
-     Ini.WriteString('PAF','Nome',PAF_Nome);
+     if GravarDadosPAF then
+     begin
+       Ini.WriteString('PAF','Nome',PAF_Nome);
+       Ini.WriteString('PAF','Versao',PAF_Versao);
+     end ;
      Ini.WriteString('PAF','MD5',PAF_MD5);
-     Ini.WriteString('PAF','Versao',PAF_Versao);
 
      For I := 0 to ECFsAutorizados.Count-1 do
      begin
@@ -472,10 +515,13 @@ begin
         Ini.WriteString( 'Params', Ident, Params[I] );
      end ;
 
-     // Calculando o CRC //
-     CRC := StringCrc16( SH_RazaoSocial + SH_CNPJ + SH_IE + SH_IM +
-                         PAF_Nome + PAF_Versao + PAF_MD5 );
-     Ini.WriteInteger('CHK','CRC16',CRC);
+     if GravarDadosPAF and GravarDadosSH then
+     begin
+       // Calculando o CRC //
+       CRC := StringCrc16( SH_RazaoSocial + SH_CNPJ + SH_IE + SH_IM +
+                           PAF_Nome + PAF_Versao + PAF_MD5 );
+       Ini.WriteInteger('CHK','CRC16',CRC);
+     end ;
 
      Ini.GetStrings( SL );
 
@@ -487,13 +533,13 @@ begin
 
      if fsCriarBAK then
      begin
-        ArqBak := ChangeFileExt( NomeArquivoAux, '.bak');
+        ArqBak := ChangeFileExt( fsNomeCompleto, '.bak');
         DeleteFile( ArqBak );
-        RenameFile( NomeArquivoAux, ArqBak );
+        RenameFile( fsNomeCompleto, ArqBak );
      end ;
 
-     WriteToTXT( NomeArquivoAux, R, False, False );
-     fsDtHrArquivo := FileDateToDateTime( FileAge( NomeArquivoAux ) );
+     WriteToTXT( fsNomeCompleto, R, False, False );
+     fsDtHrArquivo := FileDateToDateTime( FileAge( fsNomeCompleto ) );
 
      if Assigned( fsOnDepoisGravarArquivo ) then
         fsOnDepoisGravarArquivo( Self );
@@ -508,7 +554,7 @@ var
    NewDtHrArquivo : TDateTime;
 begin
   // Data/Hora do arquivo é diferente ?
-  NewDtHrArquivo := FileDateToDateTime( FileAge( NomeArquivoAux ) ) ;
+  NewDtHrArquivo := FileDateToDateTime( FileAge( fsNomeCompleto ) ) ;
 
   if fsDtHrArquivo <> NewDtHrArquivo then
      AbrirArquivo ;
@@ -555,6 +601,9 @@ procedure TACBrAAC.AtualizarMD5(const AMD5 : String) ;
 begin
   GravaLog( 'AtualizarMD5 - De: '+PAF_MD5+' Para: '+AMD5 );
 
+  if fsDtHrArquivo = 0 then
+     AbrirArquivo;
+
   if AMD5 = PAF_MD5 then exit ;
 
   PAF_MD5 := AMD5;
@@ -564,29 +613,45 @@ end ;
 procedure TACBrAAC.AtualizarValorGT(const NumeroSerie : String ;
    const ValorGT : Double) ;
 var
-  AECF  : TACBrAACECF ;
+  AECF, NewECF : TACBrAACECF ;
   LogTXT: String;
 begin
   LogTXT := 'AtualizarGTECF - NumSerie: '+NumeroSerie ;
 
+  if fsDtHrArquivo = 0 then
+     AbrirArquivo;
+
   AECF := AchaECF( NumeroSerie );
-  if Assigned( AECF ) then
-  begin
-     LogTXT := LogTXT + ' - De:' +FormatFloat('###,###,##0.00',AECF.ValorGT)+
-                        ' Para:'+FormatFloat('###,###,##0.00',ValorGT) ;
-     GravaLog( LogTXT );
-
-     if RoundTo( ValorGT, -2) = AECF.ValorGT then exit ;
-
-     AECF.ValorGT        := ValorGT ;
-     AECF.DtHrAtualizado := Now;
-     SalvarArquivo;
-  end
-  else
+  if not Assigned( AECF ) then
   begin
      LogTXT := LogTXT +' - nao encontrado';
      GravaLog( LogTXT );
+     raise EACBrAAC_NumSerieNaoEncontrado.Create( ACBrStr(
+        'Erro ao atualivar Valor do G.T.'+sLineBreak+
+        ' ECF: '+NumeroSerie+' não encontrado') );
   end ;
+
+  LogTXT := LogTXT + ' - De:' +FormatFloat('###,###,##0.00',AECF.ValorGT)+
+                     ' Para:'+FormatFloat('###,###,##0.00',ValorGT) ;
+  GravaLog( LogTXT );
+
+  if RoundTo( ValorGT, -2) = AECF.ValorGT then exit ;
+
+  AECF.ValorGT        := ValorGT ;
+  AECF.DtHrAtualizado := Now;
+
+  if (not GravarTodosECFs) and (ECFsAutorizados.Count > 1) then
+  begin
+    NewECF := TACBrAACECF.Create;
+    NewECF.NumeroSerie    := AECF.NumeroSerie;
+    NewECF.CRO            := AECF.CRO;
+    NewECF.DtHrAtualizado := AECF.DtHrAtualizado;
+
+    ECFsAutorizados.Clear;
+    ECFsAutorizados.Add( NewECF );
+  end ;
+
+  SalvarArquivo;
 end ;
 
 procedure TACBrAAC.GravaLog( const AString : AnsiString) ;
@@ -619,6 +684,18 @@ begin
 
   Result := AChave;
 end;
+
+procedure TACBrAAC.SetNomeArquivoAux(const AValue : String) ;
+begin
+  if fsNomeArquivoAux = AValue then exit ;
+
+  fsNomeArquivoAux := AValue ;
+
+  fsNomeCompleto := fsNomeArquivoAux;
+  // Tem Path no Nome do Arquivo ?
+  if (fsNomeCompleto <> '') and (pos(PathDelim, fsNomeCompleto) = 0) then
+     fsNomeCompleto := ExtractFilePath( ParamStr(0) ) + fsNomeCompleto;
+end ;
 
 procedure TACBrAAC.SetPAF_Nome(const AValue : String) ;
 begin

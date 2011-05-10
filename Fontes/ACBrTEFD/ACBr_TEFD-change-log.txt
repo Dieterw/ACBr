@@ -47,6 +47,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data:  10/05/2011
+-- ACBrTEFDCliSiTEF --
+[+] Padronização de código usando função "PathWithDelim", alertado 
+    (por Vanderlei).
+
+Data:  09/05/2011
 -- ACBrTEFDCliSiTEF --
 [+] Adicionada a propriedade PathDLL, que permite informar o caminho das DLLs
     (por Isaque Pinheiro)

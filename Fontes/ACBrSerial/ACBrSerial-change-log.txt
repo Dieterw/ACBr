@@ -97,6 +97,23 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data:  09/05/2011
+-- ACBrECF --
+[+] Adicionada a propriedade PathDLL, que permite informar o caminho das DLL
+    de cada fabricante (por Isaque Pinheiro)
+    ex:
+
+    case ACBrECF.Modelo of
+       ecfNenhum:    ACBrECF.ECF.PathDLL := '';
+       ecfBematech:  ACBrECF.ECF.PathDLL := '.\DLLs\Bematech';
+       ecfSweda:     ACBrECF.ECF.PathDLL := '.\DLLs\Sweda';
+       ecfDaruma:    ACBrECF.ECF.PathDLL := '.\DLLs\Daruma';
+       ecfFiscNET:   ACBrECF.ECF.PathDLL := '';
+       ecfYanco:     ACBrECF.ECF.PathDLL := '';
+       ecfDataRegis: ACBrECF.ECF.PathDLL := '';
+       ecfUrano:     ACBrECF.ECF.PathDLL := '';
+       ecfEpson:     ACBrECF.ECF.PathDLL := '';
+    end;
 
 Data:  09/05/2011
 -- ACBrAAC --

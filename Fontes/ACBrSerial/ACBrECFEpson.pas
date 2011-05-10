@@ -2960,10 +2960,20 @@ end;
 
 procedure TACBrECFEpson.LoadDLLFunctions ;
  procedure EpsonFunctionDetect( FuncName: String; var LibPointer: Pointer ) ;
+ var
+ sLibName: string;
  begin
    if not Assigned( LibPointer )  then
    begin
-     if not FunctionDetect( cLIB_Epson, FuncName, LibPointer) then
+     // Verifica se exite o caminho das DLLs
+     if Length(PathDLL) > 0 then
+        sLibName := PathDLL + '\';
+     // Caso o path já venha cno final '\' é retirado o que foi adicionado acima
+     sLibName := StringReplace(sLibName, '\\', '\', [rfReplaceAll]);
+     // Concatena o caminho se exitir mais o nome da DLL.
+     sLibName := sLibName + cLIB_Epson;
+
+     if not FunctionDetect( sLibName, FuncName, LibPointer) then
      begin
         LibPointer := NIL ;
         raise Exception.Create( ACBrStr( 'Erro ao carregar a função:'+FuncName+' de: '+cLIB_Epson ) ) ;

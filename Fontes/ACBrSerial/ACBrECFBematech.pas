@@ -3407,10 +3407,20 @@ end;
 procedure TACBrECFBematech.LoadDLLFunctions;
  procedure BematechFunctionDetect( FuncName: String; var LibPointer: Pointer;
     LibName : String = cLIB_Bema ) ;
+ var
+ sLibName: string;
  begin
    if not Assigned( LibPointer )  then
    begin
-     if not FunctionDetect( LibName, FuncName, LibPointer) then
+     // Verifica se exite o caminho das DLLs
+     if Length(PathDLL) > 0 then
+        sLibName := PathDLL + '\';
+     // Caso o path já venha cno final '\' é retirado o que foi adicionado acima
+     sLibName := StringReplace(sLibName, '\\', '\', [rfReplaceAll]);
+     // Concatena o caminho se exitir mais o nome da DLL.
+     sLibName := sLibName + LibName;
+
+     if not FunctionDetect( sLibName, FuncName, LibPointer) then
      begin
         LibPointer := NIL ;
         raise Exception.Create( ACBrStr( 'Erro ao carregar a função:'+FuncName+' de: '+LibName ) ) ;

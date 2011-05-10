@@ -415,109 +415,109 @@ TACBrECFComprovantesNaoFiscais = class(TObjectList)
 { Dados da atual ou última redução Z }
 TACBrECFDadosRZ = class
   private
-    FCOO: integer;
-    FCFD: integer;
-    FCancelamentoISSQN: double;
-    FGNFC: integer;
-    FCRO: integer;
-    FValorVendaBruta: double;
-    FTotalizadoresNaoFiscais: TACBrECFComprovantesNaoFiscais;
-    FICMS: TACBrECFAliquotas;
-    FAcrescimoICMS: double;
-    FDescontoICMS: double;
-    FNaoTributadoICMS: double;
-    FRelatorioGerencial: TACBrECFRelatoriosGerenciais;
-    FCRZ: integer;
-    FISSQN: TACBrECFAliquotas;
-    FGRG: integer;
-    FValorGrandeTotal: double;
-    FAcrescimoISSQN: double;
-    FNaoTributadoISSQN: double;
-    FIsentoICMS: double;
-    FSubstituicaoTributariaICMS: double;
-    FDataDaImpressora: TDateTime;
-    FTotalOperacaoNaoFiscal: double;
-    FDescontoISSQN: double;
-    FCancelamentoOPNF: double;
-    FAcrescimoOPNF: double;
-    FDescontoOPNF: double;
-    FCancelamentoICMS: double;
-    FGNF: integer;
-    FIsentoISSQN: double;
-    FSubstituicaoTributariaISSQN: double;
-    FVendaLiquida: double;
-    FCFC: integer;
-    FCCF: integer;
-    FTotalISSQN: double;
-    FCDC: integer;
-    FCCDC: integer;
-    FNCN: integer;
-    FDataDoMovimento: TDateTime;
-    FMeiosDePagamento: TACBrECFFormasPagamento;
-    FNumeroCOOInicial: AnsiString;
-    FNumeroDoECF: AnsiString;
-    FNumeroDeSerie: AnsiString;
-    FNumeroDeSerieMFD: AnsiString;
-    FNumeroDaLoja: AnsiString;
-    fTotalTroco: Double;
+    fsCOO: integer;
+    fsCFD: integer;
+    fsCancelamentoISSQN: double;
+    fsGNFC: integer;
+    fsCRO: integer;
+    fsValorVendaBruta: double;
+    fsTotalizadoresNaoFiscais: TACBrECFComprovantesNaoFiscais;
+    fsICMS: TACBrECFAliquotas;
+    fsAcrescimoICMS: double;
+    fsDescontoICMS: double;
+    fsNaoTributadoICMS: double;
+    fsRelatorioGerencial: TACBrECFRelatoriosGerenciais;
+    fsCRZ: integer;
+    fsISSQN: TACBrECFAliquotas;
+    fsGRG: integer;
+    fsValorGrandeTotal: double;
+    fsAcrescimoISSQN: double;
+    fsNaoTributadoISSQN: double;
+    fsIsentoICMS: double;
+    fsSubstituicaoTributariaICMS: double;
+    fsDataDaImpressora: TDateTime;
+    fsTotalOperacaoNaoFiscal: double;
+    fsDescontoISSQN: double;
+    fsCancelamentoOPNF: double;
+    fsAcrescimoOPNF: double;
+    fsDescontoOPNF: double;
+    fsCancelamentoICMS: double;
+    fsGNF: integer;
+    fsIsentoISSQN: double;
+    fsSubstituicaoTributariaISSQN: double;
+    fsVendaLiquida: double;
+    fsCFC: integer;
+    fsCCF: integer;
+    fsTotalISSQN: double;
+    fsCDC: integer;
+    fsCCDC: integer;
+    fsNCN: integer;
+    fsDataDoMovimento: TDateTime;
+    fsMeiosDePagamento: TACBrECFFormasPagamento;
+    fsNumeroCOOInicial: AnsiString;
+    fsNumeroDoECF: AnsiString;
+    fsNumeroDeSerie: AnsiString;
+    fsNumeroDeSerieMFD: AnsiString;
+    fsNumeroDaLoja: AnsiString;
+    fsTotalTroco: Double;
   public
     constructor Create;
     destructor Destroy; override ;
     procedure Clear;
     //
-    property DataDaImpressora: TDateTime read FDataDaImpressora write FDataDaImpressora;
-    property NumeroDeSerie: AnsiString read FNumeroDeSerie write FNumeroDeSerie;
-    property NumeroDeSerieMFD: AnsiString read FNumeroDeSerieMFD write FNumeroDeSerieMFD;
-    property NumeroDoECF: AnsiString read FNumeroDoECF write FNumeroDoECF;
-    property NumeroDaLoja: AnsiString read FNumeroDaLoja write FNumeroDaLoja;
-    property NumeroCOOInicial: AnsiString read FNumeroCOOInicial write FNumeroCOOInicial;
+    property DataDaImpressora: TDateTime read fsDataDaImpressora write fsDataDaImpressora;
+    property NumeroDeSerie: AnsiString read fsNumeroDeSerie write fsNumeroDeSerie;
+    property NumeroDeSerieMFD: AnsiString read fsNumeroDeSerieMFD write fsNumeroDeSerieMFD;
+    property NumeroDoECF: AnsiString read fsNumeroDoECF write fsNumeroDoECF;
+    property NumeroDaLoja: AnsiString read fsNumeroDaLoja write fsNumeroDaLoja;
+    property NumeroCOOInicial: AnsiString read fsNumeroCOOInicial write fsNumeroCOOInicial;
     // REDUÇÃO Z
-    property DataDoMovimento: TDateTime read FDataDoMovimento write FDataDoMovimento;
+    property DataDoMovimento: TDateTime read fsDataDoMovimento write fsDataDoMovimento;
     // CONTADORES
-    property COO: integer read FCOO write FCOO;
-    property GNF: integer read FGNF write FGNF;
-    property CRO: integer read FCRO write FCRO;
-    property CRZ: integer read FCRZ write FCRZ;
-    property CCF: integer read FCCF write FCCF;
-    property CFD: integer read FCFD write FCFD;   //Contador Fita Detalhe
-    property CDC: integer read FCDC write FCDC;
-    property NCN: integer read FNCN write FNCN;
-    property GRG: integer read FGRG write FGRG;
-    property GNFC: integer read FGNFC write FGNFC;
-    property CCDC: integer read FCCDC write FCCDC;
-    property CFC: integer read FCFC write FCFC;
+    property COO: integer read fsCOO write fsCOO;
+    property GNF: integer read fsGNF write fsGNF;
+    property CRO: integer read fsCRO write fsCRO;
+    property CRZ: integer read fsCRZ write fsCRZ;
+    property CCF: integer read fsCCF write fsCCF;
+    property CFD: integer read fsCFD write fsCFD;   //Contador Fita Detalhe
+    property CDC: integer read fsCDC write fsCDC;
+    property NCN: integer read fsNCN write fsNCN;
+    property GRG: integer read fsGRG write fsGRG;
+    property GNFC: integer read fsGNFC write fsGNFC;
+    property CCDC: integer read fsCCDC write fsCCDC;
+    property CFC: integer read fsCFC write fsCFC;
     // TOTALIZADORES
-    property ValorGrandeTotal: double read FValorGrandeTotal write FValorGrandeTotal;
-    property ValorVendaBruta: double read FValorVendaBruta write FValorVendaBruta;
-    property CancelamentoICMS: double read FCancelamentoICMS write FCancelamentoICMS;
-    property DescontoICMS: double read FDescontoICMS write FDescontoICMS;
-    property TotalISSQN: double read FTotalISSQN write FTotalISSQN;
-    property CancelamentoISSQN: double read FCancelamentoISSQN write FCancelamentoISSQN;
-    property CancelamentoOPNF: double read FCancelamentoOPNF write FCancelamentoOPNF;
-    property DescontoISSQN: double read FDescontoISSQN write FDescontoISSQN;
-    property DescontoOPNF: double read FDescontoOPNF write FDescontoOPNF;
-    property VendaLiquida: double read FVendaLiquida write FVendaLiquida;
-    property AcrescimoICMS: double read FAcrescimoICMS write FAcrescimoICMS;
-    property AcrescimoISSQN: double read FAcrescimoISSQN write FAcrescimoISSQN;
-    property AcrescimoOPNF: double read FAcrescimoOPNF write FAcrescimoOPNF;
+    property ValorGrandeTotal: double read fsValorGrandeTotal write fsValorGrandeTotal;
+    property ValorVendaBruta: double read fsValorVendaBruta write fsValorVendaBruta;
+    property CancelamentoICMS: double read fsCancelamentoICMS write fsCancelamentoICMS;
+    property DescontoICMS: double read fsDescontoICMS write fsDescontoICMS;
+    property TotalISSQN: double read fsTotalISSQN write fsTotalISSQN;
+    property CancelamentoISSQN: double read fsCancelamentoISSQN write fsCancelamentoISSQN;
+    property CancelamentoOPNF: double read fsCancelamentoOPNF write fsCancelamentoOPNF;
+    property DescontoISSQN: double read fsDescontoISSQN write fsDescontoISSQN;
+    property DescontoOPNF: double read fsDescontoOPNF write fsDescontoOPNF;
+    property VendaLiquida: double read fsVendaLiquida write fsVendaLiquida;
+    property AcrescimoICMS: double read fsAcrescimoICMS write fsAcrescimoICMS;
+    property AcrescimoISSQN: double read fsAcrescimoISSQN write fsAcrescimoISSQN;
+    property AcrescimoOPNF: double read fsAcrescimoOPNF write fsAcrescimoOPNF;
     // ICMS
-    property ICMS: TACBrECFAliquotas read FICMS;
-    property SubstituicaoTributariaICMS: double read FSubstituicaoTributariaICMS write FSubstituicaoTributariaICMS;
-    property IsentoICMS: double read FIsentoICMS write FIsentoICMS;
-    property NaoTributadoICMS: double read FNaoTributadoICMS write FNaoTributadoICMS;
+    property ICMS: TACBrECFAliquotas read fsICMS;
+    property SubstituicaoTributariaICMS: double read fsSubstituicaoTributariaICMS write fsSubstituicaoTributariaICMS;
+    property IsentoICMS: double read fsIsentoICMS write fsIsentoICMS;
+    property NaoTributadoICMS: double read fsNaoTributadoICMS write fsNaoTributadoICMS;
     // ISSQN
-    property ISSQN: TACBrECFAliquotas read FISSQN;
-    property SubstituicaoTributariaISSQN: double read FSubstituicaoTributariaISSQN write FSubstituicaoTributariaISSQN;
-    property IsentoISSQN: double read FIsentoISSQN write FIsentoISSQN;
-    property NaoTributadoISSQN: double read FNaoTributadoISSQN write FNaoTributadoISSQN;
+    property ISSQN: TACBrECFAliquotas read fsISSQN;
+    property SubstituicaoTributariaISSQN: double read fsSubstituicaoTributariaISSQN write fsSubstituicaoTributariaISSQN;
+    property IsentoISSQN: double read fsIsentoISSQN write fsIsentoISSQN;
+    property NaoTributadoISSQN: double read fsNaoTributadoISSQN write fsNaoTributadoISSQN;
     // TOTALIZADORES NÃO FISCAIS
-    property TotalizadoresNaoFiscais: TACBrECFComprovantesNaoFiscais read FTotalizadoresNaoFiscais ;
-    property TotalOperacaoNaoFiscal: double read FTotalOperacaoNaoFiscal write FTotalOperacaoNaoFiscal;
+    property TotalizadoresNaoFiscais: TACBrECFComprovantesNaoFiscais read fsTotalizadoresNaoFiscais ;
+    property TotalOperacaoNaoFiscal: double read fsTotalOperacaoNaoFiscal write fsTotalOperacaoNaoFiscal;
     // RELATÓRIO GERENCIAL
-    property RelatorioGerencial: TACBrECFRelatoriosGerenciais read FRelatorioGerencial;
+    property RelatorioGerencial: TACBrECFRelatoriosGerenciais read fsRelatorioGerencial;
     // MEIOS DE PAGAMENTO
-    property MeiosDePagamento: TACBrECFFormasPagamento read FMeiosDePagamento;
-    property TotalTroco: double read FTotalTroco write FTotalTroco;
+    property MeiosDePagamento: TACBrECFFormasPagamento read fsMeiosDePagamento;
+    property TotalTroco: double read fsTotalTroco write fsTotalTroco;
   end;
 
 { Evento para o usuário exibir os erros encontrados pela classe TACBrECFClass.
@@ -594,6 +594,8 @@ TACBrECFClass = class
     fsRelatorio : TStrings ;
     fsVias      : Word ;
     fsIndiceRG  : Integer;
+
+    fsPathDLL: string;
 
     procedure SetAtivo(const Value: Boolean);
     procedure SetTimeOut(const Value: Integer);
@@ -857,7 +859,7 @@ TACBrECFClass = class
     Property UsuarioAtual       : String     read GetUsuarioAtual ;
     Property DataHoraSB         : TDateTime  read GetDataHoraSB ;
     Property SubModeloECF       : String     read GetSubModeloECF ;
-    
+
     Property PAF                : String     read GetPAF ;
     Property NumCRZ             : String     read GetNumCRZ ;
     Property NumCRO             : String     read GetNumCRO ;
@@ -973,7 +975,7 @@ TACBrECFClass = class
     { Procedimentos de Cupom Fiscal }
     property Consumidor : TACBrECFConsumidor read fpConsumidor ;
     Procedure AbreCupom ; virtual ;
-    procedure LegendaInmetroProximoItem ; Virtual ; 
+    procedure LegendaInmetroProximoItem ; Virtual ;
     Procedure VendeItem( Codigo, Descricao : String; AliquotaECF : String;
        Qtd : Double ; ValorUnitario : Double; ValorDescontoAcrescimo : Double = 0;
        Unidade : String = ''; TipoDescontoAcrescimo : String = '%';
@@ -1104,6 +1106,8 @@ TACBrECFClass = class
 
     { priedade que acessa as informações do codbarras }
     property CodBarras : TACBrECFCodBarras read fpCodBarras ;
+
+    property PathDLL: string read fsPathDLL write fsPathDLL;
 end ;
 
 implementation
@@ -3907,67 +3911,67 @@ end;
 
 constructor TACBrECFDadosRZ.Create;
 begin
-   FTotalizadoresNaoFiscais := TACBrECFComprovantesNaoFiscais.Create;
-   FRelatorioGerencial      := TACBrECFRelatoriosGerenciais.Create;
-   FMeiosDePagamento        := TACBrECFFormasPagamento.Create;
-   FICMS                    := TACBrECFAliquotas.Create;
-   FISSQN                   := TACBrECFAliquotas.Create;
+   fsTotalizadoresNaoFiscais := TACBrECFComprovantesNaoFiscais.Create;
+   fsRelatorioGerencial      := TACBrECFRelatoriosGerenciais.Create;
+   fsMeiosDePagamento        := TACBrECFFormasPagamento.Create;
+   fsICMS                    := TACBrECFAliquotas.Create;
+   fsISSQN                   := TACBrECFAliquotas.Create;
    
    Clear ;
 end;
 
 procedure TACBrECFDadosRZ.Clear;
 begin
-   FTotalizadoresNaoFiscais.Clear ;
-   FRelatorioGerencial.Clear ;
-   FMeiosDePagamento.Clear ;
-   FICMS.Clear ;
-   FISSQN.Clear ;
+   fsTotalizadoresNaoFiscais.Clear ;
+   fsRelatorioGerencial.Clear ;
+   fsMeiosDePagamento.Clear ;
+   fsICMS.Clear ;
+   fsISSQN.Clear ;
 
-   FCOO                         := 0 ;
-   FCFD                         := 0 ;
-   FCancelamentoISSQN           := 0 ;
-   FGNFC                        := 0 ;
-   FCRO                         := 0 ;
-   FValorVendaBruta             := 0 ;
-   FAcrescimoICMS               := 0 ;
-   FDescontoICMS                := 0 ;
-   FNaoTributadoICMS            := 0 ;
-   FCRZ                         := 0 ;
-   FGRG                         := 0 ;
-   FValorGrandeTotal            := 0 ;
-   FAcrescimoISSQN              := 0 ;
-   FNaoTributadoISSQN           := 0 ;
-   FIsentoICMS                  := 0 ;
-   FSubstituicaoTributariaICMS  := 0 ;
-   FDataDaImpressora            := 0 ;
-   FTotalOperacaoNaoFiscal      := 0 ;
-   FDescontoISSQN               := 0 ;
-   FCancelamentoICMS            := 0 ;
-   FGNF                         := 0 ;
-   FIsentoISSQN                 := 0 ;
-   FSubstituicaoTributariaISSQN := 0 ;
-   FVendaLiquida                := 0 ;
-   FCFC                         := 0 ;
-   FCCF                         := 0 ;
-   FTotalISSQN                  := 0 ;
-   FCDC                         := 0 ;
-   FCFC                         := 0 ;
-   FDataDoMovimento             := 0 ;
-   FNumeroCOOInicial            := '' ;
-   FNumeroDoECF                 := '' ;
-   FNumeroDeSerie               := '' ;
-   FNumeroDeSerieMFD            := '' ;
-   FNumeroDaLoja                := '' ;
+   fsCOO                         := 0 ;
+   fsCFD                         := 0 ;
+   fsCancelamentoISSQN           := 0 ;
+   fsGNFC                        := 0 ;
+   fsCRO                         := 0 ;
+   fsValorVendaBruta             := 0 ;
+   fsAcrescimoICMS               := 0 ;
+   fsDescontoICMS                := 0 ;
+   fsNaoTributadoICMS            := 0 ;
+   fsCRZ                         := 0 ;
+   fsGRG                         := 0 ;
+   fsValorGrandeTotal            := 0 ;
+   fsAcrescimoISSQN              := 0 ;
+   fsNaoTributadoISSQN           := 0 ;
+   fsIsentoICMS                  := 0 ;
+   fsSubstituicaoTributariaICMS  := 0 ;
+   fsDataDaImpressora            := 0 ;
+   fsTotalOperacaoNaoFiscal      := 0 ;
+   fsDescontoISSQN               := 0 ;
+   fsCancelamentoICMS            := 0 ;
+   fsGNF                         := 0 ;
+   fsIsentoISSQN                 := 0 ;
+   fsSubstituicaoTributariaISSQN := 0 ;
+   fsVendaLiquida                := 0 ;
+   fsCFC                         := 0 ;
+   fsCCF                         := 0 ;
+   fsTotalISSQN                  := 0 ;
+   fsCDC                         := 0 ;
+   fsCFC                         := 0 ;
+   fsDataDoMovimento             := 0 ;
+   fsNumeroCOOInicial            := '' ;
+   fsNumeroDoECF                 := '' ;
+   fsNumeroDeSerie               := '' ;
+   fsNumeroDeSerieMFD            := '' ;
+   fsNumeroDaLoja                := '' ;
 end ;
 
 destructor TACBrECFDadosRZ.Destroy;
 begin
-   FTotalizadoresNaoFiscais.Free;
-   FRelatorioGerencial.Free;
-   FMeiosDePagamento.Free;
-   FICMS.Free;
-   FISSQN.Free;
+   fsTotalizadoresNaoFiscais.Free;
+   fsRelatorioGerencial.Free;
+   fsMeiosDePagamento.Free;
+   fsICMS.Free;
+   fsISSQN.Free;
 
    inherited Destroy ;
 end;

@@ -3414,9 +3414,8 @@ procedure TACBrECFBematech.LoadDLLFunctions;
    begin
      // Verifica se exite o caminho das DLLs
      if Length(PathDLL) > 0 then
-        sLibName := PathDLL + '\';
-     // Caso o path já venha cno final '\' é retirado o que foi adicionado acima
-     sLibName := StringReplace(sLibName, '\\', '\', [rfReplaceAll]);
+        sLibName := PathWithDelim(PathDLL);
+
      // Concatena o caminho se exitir mais o nome da DLL.
      sLibName := sLibName + LibName;
 

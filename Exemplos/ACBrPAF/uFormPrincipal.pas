@@ -47,7 +47,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ACBrPAF, ACBrPAF_D, ACBrPAF_E, ACBrPAF_P,
-  ACBrPAF_R, ACBrPAF_T, ACBrPAFRegistros, Math, ACBrEAD;
+  ACBrPAF_R, ACBrPAF_T, ACBrPAFRegistros, Math, ACBrEAD, jpeg, ExtCtrls;
 
 type
   TForm6 = class(TForm)
@@ -73,6 +73,7 @@ type
     btnC: TButton;
     btnN: TButton;
     ACBrEAD: TACBrEAD;
+    Image1: TImage;
     procedure btnDClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure PreencherHeader(Header: TRegistroX1);

@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ACBrBase, ACBrInStore;
+  Dialogs, StdCtrls, ACBrBase, ACBrInStore, jpeg, ExtCtrls;
 
 type
   TForm2 = class(TForm)
@@ -24,6 +24,7 @@ type
     Label7: TLabel;
     edtDV: TEdit;
     ACBrInStore1: TACBrInStore;
+    Image1: TImage;
     procedure Button1Click(Sender: TObject);
     procedure ACBrInStore1GetPrecoUnitario(const Codigo: string;
       var PrecoUnitario: Double);

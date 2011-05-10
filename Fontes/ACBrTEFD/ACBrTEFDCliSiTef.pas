@@ -106,6 +106,7 @@ type
       fRespostas: TStringList;
       fRestricoes : AnsiString;
       fDocumentosProcessados : AnsiString ;
+      fPathDLL: string;
 
      xConfiguraIntSiTefInterativoEx : function (
                 pEnderecoIP: PAnsiChar;
@@ -170,6 +171,7 @@ type
 
    public
      property Respostas : TStringList read fRespostas ;
+     property PathDLL: string read fPathDLL write fPathDLL;
 
      constructor Create( AOwner : TComponent ) ; override;
      destructor Destroy ; override;
@@ -419,10 +421,20 @@ end;
 
 procedure TACBrTEFDCliSiTef.LoadDLLFunctions ;
  procedure CliSiTefFunctionDetect( FuncName: AnsiString; var LibPointer: Pointer ) ;
+ var
+ sLibName: string;
  begin
    if not Assigned( LibPointer )  then
    begin
-     if not FunctionDetect( CACBrTEFD_CliSiTef_Lib, FuncName, LibPointer) then
+     // Verifica se exite o caminho das DLLs
+     if Length(PathDLL) > 0 then
+        sLibName := PathDLL + '\';
+     // Caso o path já venha cno final '\' é retirado o que foi adicionado acima
+     sLibName := StringReplace(sLibName, '\\', '\', [rfReplaceAll]);
+     // Concatena o caminho se exitir mais o nome da DLL.
+     sLibName := sLibName + CACBrTEFD_CliSiTef_Lib;
+
+     if not FunctionDetect( sLibName, FuncName, LibPointer) then
      begin
         LibPointer := NIL ;
         raise Exception.Create( ACBrStr( 'Erro ao carregar a função:'+FuncName+

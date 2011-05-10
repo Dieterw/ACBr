@@ -47,6 +47,16 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+-- ACBrTEFDCliSiTEF --
+[+] Adicionada a propriedade PathDLL, que permite informar o caminho das DLLs
+    (por Isaque Pinheiro)
+    ex:
+
+    case TACBrTEFDTipo( ACBrTEF.GPAtual ) of
+       gpCliSiTef: ACBrTEF.TEFCliSiTef.PathDLL := '.\DLLs\TEF\SiTef';
+    end;
+
+
 Versão 1.30    13/03/11
 [+] Adicionado suporte ao tratamento de Cupons Não Fiscais. Porém, é necessário
     modificar a aplicação Host para que a mesma distingua entre a necessidade de

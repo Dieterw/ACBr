@@ -2223,15 +2223,24 @@ begin
         CarregaAliquotas;
         LerTotaisAliquota;
 
+        TotalISSQN  := 0;
+        TotalICMS   := 0;
+
         for I := 0 to Self.Aliquotas.Count - 1 do
         begin
            Aliq := TACBrECFAliquota.Create ;
            Aliq.Assign( Self.Aliquotas[I] );
 
            if Self.Aliquotas[I].Tipo = 'S' then
-              ISSQN.Add( Aliq )
+           begin
+              ISSQN.Add(Aliq);
+              try TotalISSQN := TotalISSQN + Self.Aliquotas[I].Total; except end;
+           end
            else
-              ICMS.Add( Aliq )
+           begin
+              ICMS.Add(Aliq);
+              try TotalICMS  := TotalICMS + Self.Aliquotas[I].Total; except end;
+           end;
         end;
      except
      end;
@@ -2266,6 +2275,7 @@ begin
         NaoTributadoISSQN := Self.TotalNaoTributadoISSQN;
      except
      end ;
+
 
      VendaLiquida :=
       VendaBruta -
@@ -2373,6 +2383,10 @@ begin
   end ;
 
   Result := Result + sLineBreak + '[OutrasICMS]'+sLineBreak ;
+  Result := Result + 'TotalICMS = ' +
+            FloatToStr(fsDadosReducaoZClass.TotalICMS) + sLineBreak;
+  Result := Result + 'TotalISSQN = ' +
+            FloatToStr(fsDadosReducaoZClass.TotalISSQN) + sLineBreak;
   Result := Result + 'TotalSubstituicaoTributaria = ' +
             FloatToStr(fsDadosReducaoZClass.SubstituicaoTributariaICMS) + sLineBreak ;
   Result := Result + 'TotalNaoTributado = ' +

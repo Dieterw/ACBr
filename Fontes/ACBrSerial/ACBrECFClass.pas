@@ -449,6 +449,7 @@ TACBrECFDadosRZ = class
     fsCFC: integer;
     fsCCF: integer;
     fsTotalISSQN: double;
+    fsTotalICMS: double;
     fsCDC: integer;
     fsCCDC: integer;
     fsNCN: integer;
@@ -492,6 +493,7 @@ TACBrECFDadosRZ = class
     property CancelamentoICMS: double read fsCancelamentoICMS write fsCancelamentoICMS;
     property DescontoICMS: double read fsDescontoICMS write fsDescontoICMS;
     property TotalISSQN: double read fsTotalISSQN write fsTotalISSQN;
+    property TotalICMS: double read fsTotalICMS write fsTotalICMS;
     property CancelamentoISSQN: double read fsCancelamentoISSQN write fsCancelamentoISSQN;
     property CancelamentoOPNF: double read fsCancelamentoOPNF write fsCancelamentoOPNF;
     property DescontoISSQN: double read fsDescontoISSQN write fsDescontoISSQN;
@@ -3955,6 +3957,7 @@ begin
    fsCFC                         := 0 ;
    fsCCF                         := 0 ;
    fsTotalISSQN                  := 0 ;
+   fsTotalICMS                   := 0 ;
    fsCDC                         := 0 ;
    fsCFC                         := 0 ;
    fsDataDoMovimento             := 0 ;

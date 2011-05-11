@@ -99,6 +99,10 @@ Símbolo : Significado
 
 Data:  10/05/2011
 -- ACBrECF --
+[+] Adicionado TotalICMS e TotalISSQN nos dados da Redução Z. Mantis #945 (sugestão de Allan Wolski)
+
+Data:  10/05/2011
+-- ACBrECF --
 [+] Padronização de código usando função "PathWithDelim", alertado 
     (por Vanderlei).
 

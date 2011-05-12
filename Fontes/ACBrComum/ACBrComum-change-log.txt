@@ -38,6 +38,15 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+12/05/2011
+-- ACBrAAC --
+[+] Adicionado o Evento "VerificarRecomporValorGT", que será chamado sempre que
+    o ACBrAAC detectar que o Valor do G.T. não confere com o do arquivo... Nesse 
+    caso, programe o Evento, e caso a recuperação do GT seja permitida (de acordo 
+    com as regras do PAF-ECF), informe na variável ValorGT o valor correto. O 
+    componente ACBrAAC irá atualizar o GT no arquivo e NAO informará o Erro -2
+    (por: DSA)
+
 09/05/2011
 -- ACBrAAC --
 [*] Componente ACBrAAC volta para o Package ACBrComum, para poder ser usado por

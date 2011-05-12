@@ -97,6 +97,13 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data:  12/05/2011
+-- ACBrECF --
+[*] Modificada a rotina de Verificação de Valor do GT que trabalha em conjunto 
+    com o componente ACBrAAC, para suportar a Recuperação do valor do GT (por: DSA)
+[*] Cabeçalho padrão dos Itens desenhados na Bobina, com 14 caracteres, para 
+    suportar a exigência do PAF-ECF (por: DSA)
+
 Data:  10/05/2011
 -- ACBrECF --
 [+] Adicionado TotalICMS e TotalISSQN nos dados da Redução Z. Mantis #945 (sugestão de Allan Wolski)

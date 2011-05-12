@@ -1025,7 +1025,7 @@ begin
   inherited create( AOwner );
 
   { Inicializando as Variaveis Internas }
-  fsSubTotalPagto   := 0;//lampada
+  fsSubTotalPagto   := 0;
   fsIndiceGerencial := 0;
   fsAtivo           := false ;
   fsProcurandoECF   := false ;
@@ -1069,9 +1069,9 @@ begin
     fsMemoHTML      := True ;
     fsMemoHTMLTitleSise:= 2 ;
                        {....+....1....+....2....+....3....+....4....+....5
-                        ITEM   CODIGO     DESCRICAO
+                        ITEM   CODIGO      DESCRICAO
                         QTD         x UNITARIO       Aliq     VALOR (R$) }
-    fsMemoMascItens := 'III CCCCCCCCCCCCC DDDDDDDDDDDDDDDDDDDDDDDDDDDDDD'+
+    fsMemoMascItens := 'III CCCCCCCCCCCCCC DDDDDDDDDDDDDDDDDDDDDDDDDDDDD'+
                        'QQQQQQQQ UU x VVVVVVVVVVVVV AAAAAA TTTTTTTTTTTTT' ;
                  
     fsMemoParams := TStringList.Create ;
@@ -1084,7 +1084,7 @@ begin
     fsMemoParams.Add( 'LIN005=<hr>' ) ;
     fsMemoParams.Add( ' ' ) ;
     fsMemoParams.Add( '[Cabecalho_Item]' );
-    fsMemoParams.Add( 'LIN000=ITEM   CODIGO     DESCRICAO' ) ;
+    fsMemoParams.Add( 'LIN000=ITEM   CODIGO      DESCRICAO' ) ;
     fsMemoParams.Add( 'LIN001=QTD         x UNITARIO       Aliq     VALOR (R$)' );
     fsMemoParams.Add( 'LIN002=<hr>' ) ;
     fsMemoParams.Add( 'MascaraItem='+fsMemoMascItens );
@@ -2622,9 +2622,6 @@ begin
   DescontoAcrescimo := UpperCase(DescontoAcrescimo) ;
   if DescontoAcrescimo = '' then
      DescontoAcrescimo := 'D' ;
-
-  // VerificarAAC_GT;
-  // É realmente necessário verificar o NumSerie e GT a cada Item ?? Isso é muito lento
 
   { Retorna em "AliquotaECF" (por referencia) a String de aliquota que deve
     ser enviada para o ECF }
@@ -4564,7 +4561,7 @@ end;
    MemoLeParams ;
    MemoAdicionaLinha( fsMemoCabecalho ) ;
    fsMemoItens     := 0 ;  { Zera contador de Itens }
-   fsSubTotalPagto := 0;   {Zera o total pago verificador da bobina} //lampada 
+   fsSubTotalPagto := 0;   {Zera o total pago verificador da bobina}
  end;
 
  procedure TACBrECF.MemoTitulo(ATitulo: String) ;
@@ -4875,8 +4872,8 @@ end;
 
 procedure TACBrECF.DoVerificaValorGT ;
 var
-   ValorGT : Double ;
-   AACECF  : TACBrAACECF ;
+   ValorGT_AAC, ValorGT_ECF : Double ;
+   Erro : Integer ;
 begin
   if not Assigned( fsAAC ) then
      exit ;
@@ -4884,15 +4881,17 @@ begin
   if fsNumSerieCache = '' then
      fsNumSerieCache := NumSerie;
 
-  AACECF := fsAAC.AchaECF( fsNumSerieCache );
-  if AACECF = nil then
+  ValorGT_ECF := GrandeTotal ;
+  ValorGT_AAC := ValorGT_ECF;
+  Erro := fsAAC.VerificarGTECF( fsNumSerieCache, ValorGT_AAC );
+
+  if Erro = -1 then
      raise EACBrAAC_NumSerieNaoEncontrado.Create( Format( ACBrStr(
            cACBrAACNumSerieNaoEncontardoException ), [ fsNumSerieCache ] ) );
 
-  ValorGT := GrandeTotal ;
-  if AACECF.ValorGT <> ValorGT then
+  if Erro = -2 then
      raise EACBrAAC_ValorGTInvalido.Create( Format( ACBrStr(
-           cACBrAACValorGTInvalidoException ), [ValorGT, AACECF.ValorGT] ) );
+           cACBrAACValorGTInvalidoException ), [ValorGT_ECF, ValorGT_AAC] ) );
 end ;
 
 procedure TACBrECF.DoAtualizarValorGT ;

@@ -57,6 +57,8 @@ type
      var Resposta : AnsiString ) of object ;
   TACBrAACGetChave = procedure(var Chave: AnsiString) of object ;
   TACBrAACAntesArquivo = procedure( var Continua: Boolean) of object ;
+  TACBrAACOnVerificarRecomporValorGT = procedure(const NumSerie: String;
+     var ValorGT : Double) of object ;
 
   { TACBrAACECF }
 
@@ -109,6 +111,7 @@ type
      fsOnDepoisAbrirArquivo : TNotifyEvent ;
      fsOnDepoisGravarArquivo : TNotifyEvent ;
      fsOnGetChave : TACBrAACGetChave ;
+     fsOnVerificarRecomporValorGT : TACBrAACOnVerificarRecomporValorGT ;
      fsPAF_MD5 : String ;
      fsPAF_Nome : String ;
      fsPAF_Versao : String ;
@@ -148,7 +151,7 @@ type
     procedure SalvarArquivo;
 
     function VerificarGTECF(const NumeroSerie: String;
-      const ValorGT: Double): Integer ;
+      var ValorGT: Double): Integer ;
     procedure AtualizarMD5(const AMD5: String);
     procedure AtualizarValorGT(const NumeroSerie: String;
       const ValorGT: Double);
@@ -192,6 +195,8 @@ type
       write fsOnAntesGravarArquivo ;
     property OnDepoisGravarArquivo : TNotifyEvent
       read fsOnDepoisGravarArquivo write fsOnDepoisGravarArquivo ;
+    property VerificarRecomporValorGT : TACBrAACOnVerificarRecomporValorGT
+      read fsOnVerificarRecomporValorGT write fsOnVerificarRecomporValorGT;
   end;
 
 implementation
@@ -578,13 +583,14 @@ begin
 end ;
 
 function TACBrAAC.VerificarGTECF(const NumeroSerie : String ;
-   const ValorGT : Double) : Integer ;
+   var ValorGT : Double) : Integer ;
 // Retornos:
 //   0 = Tudo OK
 //  -1 = NumSerie não encontrado
 //  -2 = GT não confere
 var
    AECF : TACBrAACECF ;
+   ValorGTNovo : Double ;
 begin
   Result := 0;
   VerificaReCarregarArquivo;
@@ -594,7 +600,22 @@ begin
      Result := -1
   else
     if AECF.ValorGT <> RoundTo( ValorGT, -2 ) then
-       Result := -2;
+    begin
+       ValorGT := AECF.ValorGT;
+       Result  := -2;
+
+       if Assigned( fsOnVerificarRecomporValorGT ) then
+       begin
+          ValorGTNovo := AECF.ValorGT;
+          fsOnVerificarRecomporValorGT( NumeroSerie, ValorGTNovo );
+
+          if ValorGTNovo <> AECF.ValorGT then
+          begin
+             AtualizarValorGT( NumeroSerie, ValorGTNovo );
+             Result := 0;
+          end ;
+       end ;
+    end ;
 end ;
 
 procedure TACBrAAC.AtualizarMD5(const AMD5 : String) ;
@@ -646,6 +667,7 @@ begin
     NewECF.NumeroSerie    := AECF.NumeroSerie;
     NewECF.CRO            := AECF.CRO;
     NewECF.DtHrAtualizado := AECF.DtHrAtualizado;
+    NewECF.ValorGT        := AECF.ValorGT;
 
     ECFsAutorizados.Clear;
     ECFsAutorizados.Add( NewECF );

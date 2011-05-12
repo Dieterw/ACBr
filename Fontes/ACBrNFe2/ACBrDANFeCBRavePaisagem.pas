@@ -180,7 +180,8 @@ begin
       end
      else if ((procNFe.cStat <> 100 ) and
               (Ide.tpEmis <> teFSDA) and
-              (Ide.tpEmis <> teCONTINGENCIA)) then
+              (Ide.tpEmis <> teCONTINGENCIA) and
+              (Length(Trim(ProtocoloNFe)) < 15)) then
       begin //Não autorizada
         SetFont(FontNameUsed,28);
         FontColor:=clRed;

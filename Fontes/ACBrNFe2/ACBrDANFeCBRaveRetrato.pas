@@ -190,7 +190,8 @@ begin
       end
      else if ((procNFe.cStat <> 100 ) and
               (Ide.tpEmis <> teFSDA) and
-              (Ide.tpEmis <> teCONTINGENCIA)) then
+              (Ide.tpEmis <> teCONTINGENCIA) and
+              (Length(Trim(ProtocoloNFe)) < 15)) then
       begin //Não autorizada
         SetFont(FontNameUsed,25);
         FontColor:=clRed;
@@ -202,7 +203,7 @@ begin
            Print('NFe não autorizada pela SEFAZ(SEM VALIDADE FISCAL)')
         else
            Print(IntToStr(procNFe.cStat) + '-' +procNFe.xMotivo);
-      end;      
+      end;
 
      SetFont(FontNameUsed,22);
      FontColor:=clSilver;

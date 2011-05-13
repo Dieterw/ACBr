@@ -1,11 +1,6 @@
 program RecuperarXML;
 
 uses
-  madExcept,
-  madLinkDisAsm,
-  madListHardware,
-  madListProcesses,
-  madListModules,
   Forms,
   principal in 'principal.pas' {frmPrincipal},
   ACBrHTMLtoXML in 'ACBrHTMLtoXML.pas';

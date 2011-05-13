@@ -2,7 +2,8 @@ unit ACBrHTMLtoXML;
 
 interface
 
-uses Forms, SysUtils, Math, pcnNFe, pcnNFeW, pcnAuxiliar, pcnConversao, ACBrUtil;
+uses Forms, SysUtils, Math, pcnNFe, pcnNFeW, pcnAuxiliar, pcnConversao, ACBrUtil,
+  Classes;
 
 function GerarXML(Arquivo : AnsiString) : String;
 
@@ -78,10 +79,15 @@ var
  CaminhoXML, Grupo, ArquivoTXT, ArquivoRestante : AnsiString;
  ArquivoItens, ArquivoItensTemp, ArquivoDuplicatas, ArquivoVolumes : AnsiString;
   produtos: Integer;
+ Lista: TStringList;
 begin
+ Lista:=TStringList.Create;
  NFe := TNFe.Create;
 
  ArquivoTXT := StringReplace(Arquivo,#$D#$A,'|&|',[rfReplaceAll]);
+ Lista.Text:=ArquivoTXT;
+ Lista.SaveToFile('c:\teste.txt');
+
 
  Grupo :=  SeparaAte('Dados da NF-e',ArquivoTXT,ArquivoRestante);
 
@@ -333,7 +339,8 @@ begin
                       vICMS := ConverteStrToNumero(LerCampo(Grupo, 'Valor do ICMS Normal'));
                     end;
 
-                  with Imposto.IPI do
+                    Grupo := copy(Grupo,pos('Imposto sobre produtos industrializados',grupo),length(grupo));
+                    with Imposto.IPI do
                     begin
                       cEnq := LerCampo(Grupo, 'Código de Enquadramento');
                       vBC := ConverteStrToNumero(LerCampo(Grupo, 'Base de Cálculo'));
@@ -347,8 +354,32 @@ begin
         end;
     end;
 
+   NFe.Total.ICMSTot.vBC   := ConverteStrToNumero(LerCampo(Grupo,'Base de Cálculo ICMS'));
+   NFe.Total.ICMSTot.vICMS := ConverteStrToNumero(LerCampo(Grupo,'Valor do ICMS'));
+   NFe.Total.ICMSTot.vBCST := ConverteStrToNumero(LerCampo(Grupo,'Base de Cálculo ICMS ST'));
+   NFe.Total.ICMSTot.vST   := ConverteStrToNumero(LerCampo(Grupo,'Valor ICMS Substituição'));
+
+   { Incluida condicional que Verifica a versão do XML e então atribui qual o
+       texto de busca que deverá ser procurado no arquivo. }
+   sTexto := IfThen(Trim(Versao) = '2.00', 'Valor Total dos Produtos', 'Valor dos Produtos');
+   NFe.Total.ICMSTot.vProd   := ConverteStrToNumero(LerCampo(Grupo, sTexto));
+   NFe.Total.ICMSTot.vFrete:= ConverteStrToNumero(LerCampo(Grupo,'Valor do Frete'));
+   NFe.Total.ICMSTot.vSeg  := ConverteStrToNumero(LerCampo(Grupo,'Valor do Seguro'));
+   NFe.Total.ICMSTot.vOutro := ConverteStrToNumero(LerCampo(Grupo,'Outras Despesas Acessórias'));
+   NFe.Total.ICMSTot.vIPI  := ConverteStrToNumero(LerCampo(Grupo,'Valor do IPI'));
+   NFe.Total.ICMSTot.vNF   := ConverteStrToNumero(LerCampo(Grupo,'Valor Total da NFe'));
+
+   { Incluida condicional que Verifica a versão do XML e então atribui qual o
+       texto de busca que deverá ser procurado no arquivo. }
+   sTexto := IfThen(Trim(Versao) = '2.00', 'Valor Total dos Descontos', 'Valor dos Descontos');
+   NFe.Total.ICMSTot.vDesc   := ConverteStrToNumero(LerCampo(Grupo, sTexto));
+   NFe.Total.ICMSTot.vII   := ConverteStrToNumero(LerCampo(Grupo,'Valor do II'));
+   NFe.Total.ICMSTot.vPIS  := ConverteStrToNumero(LerCampo(Grupo,'Valor do PIS'));
+   NFe.Total.ICMSTot.vCOFINS := ConverteStrToNumero(LerCampo(Grupo,'Valor da COFINS'));
+
+
  ArquivoRestante := copy(ArquivoRestante,pos(UpperCase('Dados do Transporte'),UpperCase(ArquivoRestante)),length(ArquivoRestante));
- Grupo :=  SeparaAte('Totais',ArquivoRestante,ArquivoItens);
+ Grupo :=  SeparaAte('Dados de Cobrança',ArquivoRestante,ArquivoItens);
 
  NFe.Transp.modFrete := StrTomodFrete( ok, LerCampo(Grupo,'Modalidade do Frete',1) );
 
@@ -381,8 +412,6 @@ begin
    end;
  end;
 
- Grupo :=  SeparaAte('Dados de Cobrança',ArquivoRestante,ArquivoItens);
-
  { Após tentativa de Separar a informação até a parte de 'Dados de Cobrança', em
      algumas NFe's que não possuiam este "node" não estava sendo possivel
      armazenar os dados referente aos 'Totais'. Então caso a NFe não possua este
@@ -393,29 +422,6 @@ begin
    Grupo :=  SeparaAte('Informações Adicionais',ArquivoRestante,ArquivoItens);
    bIgnoraDuplicata := True;
  end;
-
- NFe.Total.ICMSTot.vBC   := ConverteStrToNumero(LerCampo(Grupo,'Base de Cálculo ICMS'));
- NFe.Total.ICMSTot.vICMS := ConverteStrToNumero(LerCampo(Grupo,'Valor do ICMS'));
- NFe.Total.ICMSTot.vBCST := ConverteStrToNumero(LerCampo(Grupo,'Base de Cálculo ICMS ST'));
- NFe.Total.ICMSTot.vST   := ConverteStrToNumero(LerCampo(Grupo,'Valor ICMS Substituição'));
-
- { Incluida condicional que Verifica a versão do XML e então atribui qual o
-     texto de busca que deverá ser procurado no arquivo. }
- sTexto := IfThen(Trim(Versao) = '2.00', 'Valor Total dos Produtos', 'Valor dos Produtos');
- NFe.Total.ICMSTot.vProd   := ConverteStrToNumero(LerCampo(Grupo, sTexto));
- NFe.Total.ICMSTot.vFrete:= ConverteStrToNumero(LerCampo(Grupo,'Valor do Frete'));
- NFe.Total.ICMSTot.vSeg  := ConverteStrToNumero(LerCampo(Grupo,'Valor do Seguro'));
- NFe.Total.ICMSTot.vOutro := ConverteStrToNumero(LerCampo(Grupo,'Outras Despesas Acessórias'));
- NFe.Total.ICMSTot.vIPI  := ConverteStrToNumero(LerCampo(Grupo,'Valor do IPI'));
- NFe.Total.ICMSTot.vNF   := ConverteStrToNumero(LerCampo(Grupo,'Valor Total da NFe'));
-
- { Incluida condicional que Verifica a versão do XML e então atribui qual o
-     texto de busca que deverá ser procurado no arquivo. }
- sTexto := IfThen(Trim(Versao) = '2.00', 'Valor Total dos Descontos', 'Valor dos Descontos');
- NFe.Total.ICMSTot.vDesc   := ConverteStrToNumero(LerCampo(Grupo, sTexto));
- NFe.Total.ICMSTot.vII   := ConverteStrToNumero(LerCampo(Grupo,'Valor do II'));
- NFe.Total.ICMSTot.vPIS  := ConverteStrToNumero(LerCampo(Grupo,'Valor do PIS'));
- NFe.Total.ICMSTot.vCOFINS := ConverteStrToNumero(LerCampo(Grupo,'Valor da COFINS'));
 
  Grupo :=  SeparaAte('Informações Adicionais',ArquivoRestante,ArquivoItens);
 

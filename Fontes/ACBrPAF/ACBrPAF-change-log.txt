@@ -47,6 +47,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.07   13/05/11
+---------------
+[-] Acerto no contador de itens do arquivo de estoque.
+    por Régys Silveira
+
 Versão 0.07   09/05/11
 ---------------
 [*] Registro N, modificado para permitir o calculo do MD5 de cada arquivo da 

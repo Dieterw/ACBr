@@ -29,7 +29,11 @@ requires
   rtl,
   vcl,
   ACBrDiversos,
-  designide;
+  designide,
+  ACBrComum,
+  vclactnband,
+  vclx,
+  visualclx;
 
 contains
   ACBrBancoBradesco in '..\..\Fontes\ACBrBoleto\ACBrBancoBradesco.pas',
@@ -40,6 +44,7 @@ contains
   ACBrCaixaEconomica in '..\..\Fontes\ACBrBoleto\ACBrCaixaEconomica.pas',
   ACBrBancoBanrisul in '..\..\Fontes\ACBrBoleto\ACBrBancoBanrisul.pas',
   ACBrBancoob in '..\..\Fontes\ACBrBoleto\ACBrBancoob.pas',
-  ACBrBancoMercantil in '..\..\Fontes\ACBrBoleto\ACBrBancoMercantil.pas';
+  ACBrBancoMercantil in '..\..\Fontes\ACBrBoleto\ACBrBancoMercantil.pas',
+  ACBrBancoSantander in '..\..\Fontes\ACBrBoleto\ACBrBancoSantander.pas';
 
 end.

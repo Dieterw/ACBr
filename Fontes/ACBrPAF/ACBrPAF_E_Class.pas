@@ -138,7 +138,6 @@ begin
 
   if Assigned(FRegistroE2) then
   begin
-
      for intFor := 0 to FRegistroE2.Count - 1 do
      begin
         with FRegistroE2.Items[intFor] do

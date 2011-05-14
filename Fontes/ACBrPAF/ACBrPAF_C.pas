@@ -48,12 +48,12 @@ uses
   SysUtils, Classes, Contnrs, DateUtils, ACBrPAFRegistros;
 
 type
-  /// REGISTRO TIPO P1 - IDENTIFICAÇÃO DO ESTABELECIMENTO USUÁRIO DO PAF-ECF
+  /// REGISTRO TIPO C1 - IDENTIFICAÇÃO DO ESTABELECIMENTO USUÁRIO DO PAF-ECF
 
   TRegistroC1 = class(TRegistroX1)
   end;
 
-  /// REGISTRO TIPO P2 - RELAÇÃO DE MERCADORIAS E SERVIÇOS
+  /// REGISTRO TIPO C2 - RELAÇÃO DE MERCADORIAS E SERVIÇOS
 
   TRegistroC2 = class
   private
@@ -93,7 +93,7 @@ type
 
   end;
 
-  /// REGISTRO P2 - Lista
+  /// REGISTRO C2 - Lista
 
   TRegistroC2List = class(TObjectList)
   private
@@ -104,7 +104,7 @@ type
     property Items[Index: Integer]: TRegistroC2 read GetItem write SetItem;
   end;
 
-  /// REGISTRO TIPO E9 - TOTALIZAÇÃO DO ARQUIVO
+  /// REGISTRO TIPO C9 - TOTALIZAÇÃO DO ARQUIVO
 
   TRegistroC9 = class(TRegistroX9)
   end;

@@ -107,7 +107,13 @@ type
     procedure SetEAD(const AValue: TACBrEAD);
     procedure SetAAC(const AValue: TACBrAAC);
 
-    procedure LimpaRegistros;
+    procedure LimpaRegistros_C;
+    procedure LimpaRegistros_D;
+    procedure LimpaRegistros_E;
+    procedure LimpaRegistros_N;
+    procedure LimpaRegistros_P;
+    procedure LimpaRegistros_R;
+    procedure LimpaRegistros_T;
     procedure ReordenarRegistros(Arquivo: String);
   protected
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
@@ -146,21 +152,21 @@ type
     constructor Create(AOwner: TComponent); override; // Create
     destructor Destroy; override; // Destroy
 
+    function SaveFileTXT_C(Arquivo: String): Boolean; // Método que escreve o arquivo texto no caminho passado como parâmetro
     function SaveFileTXT_D(Arquivo: String): Boolean; // Método que escreve o arquivo texto no caminho passado como parâmetro
     function SaveFileTXT_E(Arquivo: String): Boolean; // Método que escreve o arquivo texto no caminho passado como parâmetro
+    function SaveFileTXT_N(Arquivo: String): Boolean; // Método que escreve o arquivo texto no caminho passado como parâmetro
     function SaveFileTXT_P(Arquivo: String): Boolean; // Método que escreve o arquivo texto no caminho passado como parâmetro
     function SaveFileTXT_R(Arquivo: String): Boolean; // Método que escreve o arquivo texto no caminho passado como parâmetro
     function SaveFileTXT_T(Arquivo: String): Boolean; // Método que escreve o arquivo texto no caminho passado como parâmetro
-    function SaveFileTXT_C(Arquivo: String): Boolean; // Método que escreve o arquivo texto no caminho passado como parâmetro
-    function SaveFileTXT_N(Arquivo: String): Boolean; // Método que escreve o arquivo texto no caminho passado como parâmetro
 
+    property PAF_C: TPAF_C read FPAF_C write FPAF_C;
     property PAF_D: TPAF_D read FPAF_D write FPAF_D;
     property PAF_E: TPAF_E read FPAF_E write FPAF_E;
+    property PAF_N: TPAF_N read FPAF_N write FPAF_N;
     property PAF_P: TPAF_P read FPAF_P write FPAF_P;
     property PAF_R: TPAF_R read FPAF_R write FPAF_R;
     property PAF_T: TPAF_T read FPAF_T write FPAF_T;
-    property PAF_C: TPAF_C read FPAF_C write FPAF_C;
-    property PAF_N: TPAF_N read FPAF_N write FPAF_N;
 
     Function GetACBrEAD : TACBrEAD ;
     function AssinaArquivoComEAD(Arquivo: String): Boolean;
@@ -244,9 +250,39 @@ begin
   Result := 'ACBrPAF Ver: ' + CACBrPAF_Versao;
 end;
 
-procedure TACBrPAF.LimpaRegistros;
+procedure TACBrPAF.LimpaRegistros_R;
 begin
   FPAF_R.LimpaRegistros;
+end;
+
+procedure TACBrPAF.LimpaRegistros_T;
+begin
+  FPAF_T.LimpaRegistros;
+end;
+
+procedure TACBrPAF.LimpaRegistros_C;
+begin
+  FPAF_C.LimpaRegistros;
+end;
+
+procedure TACBrPAF.LimpaRegistros_D;
+begin
+  FPAF_D.LimpaRegistros;
+end;
+
+procedure TACBrPAF.LimpaRegistros_E;
+begin
+  FPAF_E.LimpaRegistros;
+end;
+
+procedure TACBrPAF.LimpaRegistros_N;
+begin
+  FPAF_N.LimpaRegistros;
+end;
+
+procedure TACBrPAF.LimpaRegistros_P;
+begin
+  FPAF_P.LimpaRegistros;
 end;
 
 function TACBrPAF.GetDelimitador: String;
@@ -500,7 +536,7 @@ begin
        AssinaArquivoComEAD(fPath + Arquivo);
 
     // Limpa de todos os Blocos as listas de todos os registros.
-    LimpaRegistros;
+    LimpaRegistros_D;
   except
     on E: Exception do
     begin
@@ -537,7 +573,7 @@ begin
       AssinaArquivoComEAD(fPath + Arquivo);
 
     // Limpa de todos os Blocos as listas de todos os registros.
-    LimpaRegistros;
+    LimpaRegistros_E;
   except
     on E: Exception do
     begin
@@ -574,7 +610,7 @@ begin
       AssinaArquivoComEAD(fPath + Arquivo);
 
     // Limpa de todos os Blocos as listas de todos os registros.
-    LimpaRegistros;
+    LimpaRegistros_P;
   except
     on E: Exception do
     begin
@@ -618,7 +654,7 @@ begin
       AssinaArquivoComEAD(fPath + Arquivo);
 
     // Limpa de todos os Blocos as listas de todos os registros.
-    LimpaRegistros;
+    LimpaRegistros_R;
   except
     on E: Exception do
     begin
@@ -655,7 +691,7 @@ begin
       AssinaArquivoComEAD(fPath + Arquivo);
 
     // Limpa de todos os Blocos as listas de todos os registros.
-    LimpaRegistros;
+    LimpaRegistros_T;
   except
     on E: Exception do
     begin
@@ -694,7 +730,7 @@ begin
       AssinaArquivoComEAD(fPath + Arquivo);
 
     // Limpa de todos os Blocos as listas de todos os registros.
-    LimpaRegistros;
+    LimpaRegistros_C;
   except
     on E: Exception do
     begin
@@ -713,32 +749,40 @@ begin
   if (Trim(Arquivo) = '') or (Trim(fPath) = '') then
     raise Exception.Create('Caminho ou nome do arquivo não informado!');
 
-  AssignFile(txtFile, fPath + Arquivo);
   try
-    Rewrite(txtFile);
-    Write(txtFile, WriteRegistroN1);
-    Write(txtFile, WriteRegistroN2);
+    AssignFile(txtFile, fPath + Arquivo);
+    try
+      Rewrite(txtFile);
+      Write(txtFile, WriteRegistroN1);
+      Write(txtFile, WriteRegistroN2);
 
-    if FPAF_N.RegistroN3.Count > 0 then
-      Write(txtFile, WriteRegistroN3);
+      if FPAF_N.RegistroN3.Count > 0 then
+        Write(txtFile, WriteRegistroN3);
 
-    Write(txtFile, WriteRegistroN9);
-  finally
-    CloseFile(txtFile);
+      Write(txtFile, WriteRegistroN9);
+    finally
+      CloseFile(txtFile);
+    end;
+
+    // Assinatura EAD
+    if FAssinar then
+      AssinaArquivoComEAD(fPath + Arquivo);
+
+    // Não chama LimpaRegistros_N, pois o programador pode querer consultar os dados
+    // do Registro N direto no componente.
+    // LimpaRegistros_N;
+
+    if Assigned( AAC ) then
+    begin
+      PAF_MD5 := GetACBrEAD.MD5FromFile( fPath + Arquivo );
+      AAC.AtualizarMD5( PAF_MD5 );
+    end ;
+  except
+    on E: Exception do
+    begin
+      raise Exception.Create(E.Message);
+    end;
   end;
-
-  // Assinatura EAD
-  if FAssinar then
-    AssinaArquivoComEAD(fPath + Arquivo);
-
-  // Não chama LimpaRegistros, pois o programador pode querer consultar os dados
-  // do Registro N direto no componente.
-
-  if Assigned( AAC ) then
-  begin
-    PAF_MD5 := GetACBrEAD.MD5FromFile( fPath + Arquivo );
-    AAC.AtualizarMD5( PAF_MD5 );
-  end ;
 end;
 
 procedure TACBrPAF.ReordenarRegistros(Arquivo: String);

@@ -54,9 +54,12 @@ type
     FRegistroD9: TRegistroD9;       /// FRegistroD9
 
     function WriteRegistroD3(RegD2: TRegistroD2): String;
+    procedure CriaRegistros;
+    procedure LiberaRegistros;
   public
     constructor Create; /// Create
     destructor Destroy; override; /// Destroy
+    procedure LimpaRegistros;
 
     function WriteRegistroD1: String;
     function WriteRegistroD2: String;
@@ -75,6 +78,11 @@ uses ACBrSpedUtils;
 
 constructor TPAF_D.Create;
 begin
+   CriaRegistros;
+end;
+
+procedure TPAF_D.CriaRegistros;
+begin
   FRegistroD1  := TRegistroD1.Create;
   FRegistroD2  := TRegistroD2List.Create;
   FRegistroD9  := TRegistroD9.Create;
@@ -86,10 +94,23 @@ end;
 
 destructor TPAF_D.Destroy;
 begin
+  LiberaRegistros;
+  inherited;
+end;
+
+procedure TPAF_D.LiberaRegistros;
+begin
   FRegistroD1.Free;
   FRegistroD2.Free;
   FRegistroD9.Free;
-  inherited;
+end;
+
+procedure TPAF_D.LimpaRegistros;
+begin
+  /// Limpa os Registros
+  LiberaRegistros;
+  /// Recriar os Registros Limpos
+  CriaRegistros;
 end;
 
 function TPAF_D.WriteRegistroD1: String;

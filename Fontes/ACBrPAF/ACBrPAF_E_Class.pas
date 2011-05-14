@@ -52,10 +52,13 @@ type
     FRegistroE1: TRegistroE1;       /// FRegistroE1
     FRegistroE2: TRegistroE2List;   /// Lista de FRegistroE2
     FRegistroE9: TRegistroE9;       /// FRegistroE9
-  protected
+
+    procedure CriaRegistros;
+    procedure LiberaRegistros;
   public
     constructor Create; /// Create
     destructor Destroy; override; /// Destroy
+    procedure LimpaRegistros;
 
     function WriteRegistroE1: string;
     function WriteRegistroE2: string;
@@ -74,6 +77,11 @@ uses ACBrSPEDUtils;
 
 constructor TPAF_E.Create;
 begin
+   CriaRegistros;
+end;
+
+procedure TPAF_E.CriaRegistros;
+begin
   FRegistroE1 := TRegistroE1.Create;
   FRegistroE2 := TRegistroE2List.Create;
   FRegistroE9 := TRegistroE9.Create;
@@ -83,10 +91,23 @@ end;
 
 destructor TPAF_E.Destroy;
 begin
+  LiberaRegistros;
+  inherited;
+end;
+
+procedure TPAF_E.LiberaRegistros;
+begin
   FRegistroE1.Free;
   FRegistroE2.Free;
   FRegistroE9.Free;
-  inherited;
+end;
+
+procedure TPAF_E.LimpaRegistros;
+begin
+  /// Limpa os Registros
+  LiberaRegistros;
+  /// Recriar os Registros Limpos
+  CriaRegistros;
 end;
 
 function TPAF_E.WriteRegistroE1: string;
@@ -117,7 +138,6 @@ begin
 
   if Assigned(FRegistroE2) then
   begin
-    FRegistroE9.TOT_REG := 0;
 
      for intFor := 0 to FRegistroE2.Count - 1 do
      begin

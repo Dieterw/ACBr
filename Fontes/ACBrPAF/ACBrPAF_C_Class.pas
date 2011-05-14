@@ -54,10 +54,13 @@ type
     FRegistroC1: TRegistroC1;       /// FRegistroC1
     FRegistroC2: TRegistroC2List;   /// Lista de FRegistroC2
     FRegistroC9: TRegistroC9;       /// FRegistroC9
-  protected
+
+    procedure CriaRegistros;
+    procedure LiberaRegistros;
   public
     constructor Create; /// Create
     destructor Destroy; override; /// Destroy
+    procedure LimpaRegistros;
 
     function WriteRegistroC1: string;
     function WriteRegistroC2: string;
@@ -76,6 +79,11 @@ uses ACBrSPEDUtils;
 
 constructor TPAF_C.Create;
 begin
+   CriaRegistros;
+end;
+
+procedure TPAF_C.CriaRegistros;
+begin
   FRegistroC1 := TRegistroC1.Create;
   FRegistroC2 := TRegistroC2List.Create;
   FRegistroC9 := TRegistroC9.Create;
@@ -85,10 +93,23 @@ end;
 
 destructor TPAF_C.Destroy;
 begin
+  LiberaRegistros;
+  inherited;
+end;
+
+procedure TPAF_C.LiberaRegistros;
+begin
   FRegistroC1.Free;
   FRegistroC2.Free;
   FRegistroC9.Free;
-  inherited;
+end;
+
+procedure TPAF_C.LimpaRegistros;
+begin
+  /// Limpa os Registros
+  LiberaRegistros;
+  /// Recriar os Registros Limpos
+  CriaRegistros;
 end;
 
 function TPAF_C.WriteRegistroC1: string;

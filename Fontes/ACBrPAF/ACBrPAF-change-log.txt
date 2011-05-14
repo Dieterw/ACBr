@@ -47,6 +47,13 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.08   14/05/11
+---------------
+[-] Correção de bug, do qual as rotinas "SaveFileTXT_?", eram chamadas, mas 
+    ao terminar, não limpava a lista de registros, nem zerava os totalizadores.
+    (por Isaque Pinheiro)
+
+
 Versão 0.07   13/05/11
 ---------------
 [-] Acerto no contador de itens do arquivo de estoque.

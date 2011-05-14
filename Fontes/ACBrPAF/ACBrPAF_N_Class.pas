@@ -57,10 +57,13 @@ type
     FRegistroN3: TRegistroN3List;   /// FRegistroN3
     FRegistroN9: TRegistroN9;       /// FRegistroN9
     FOwner     : TObject;
-  protected
+
+    procedure CriaRegistros;
+    procedure LiberaRegistros;
   public
     constructor Create( AOwner : TObject); /// Create
     destructor Destroy; override; /// Destroy
+    procedure LimpaRegistros;
 
     procedure LerDadosArquivo(const APathArquivo: String);
 
@@ -87,6 +90,12 @@ begin
      raise Exception.Create( 'Dono de TPAF_N deve ser do tipo TACBrPAF' );
 
   FOwner      := AOwner;
+
+  CriaRegistros;
+end;
+
+procedure TPAF_N.CriaRegistros;
+begin
   FRegistroN1 := TRegistroN1.Create;
   FRegistroN2 := TRegistroN2.Create;
   FRegistroN3 := TRegistroN3List.Create;
@@ -97,10 +106,7 @@ end;
 
 destructor TPAF_N.Destroy;
 begin
-  FRegistroN1.Free;
-  FRegistroN2.Free;
-  FRegistroN3.Free;
-  FRegistroN9.Free;
+  LiberaRegistros;
   inherited;
 end;
 
@@ -154,6 +160,22 @@ begin
   finally
     Arquivo.Free;
   end;
+end;
+
+procedure TPAF_N.LiberaRegistros;
+begin
+  FRegistroN1.Free;
+  FRegistroN2.Free;
+  FRegistroN3.Free;
+  FRegistroN9.Free;
+end;
+
+procedure TPAF_N.LimpaRegistros;
+begin
+  /// Limpa os Registros
+  LiberaRegistros;
+  /// Recriar os Registros Limpos
+  CriaRegistros;
 end;
 
 function TPAF_N.WriteRegistroN1: string;

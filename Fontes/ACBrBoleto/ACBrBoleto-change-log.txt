@@ -47,6 +47,25 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+
+Versao 0.0.26a 14/05/2011
+
+[+] Implementado impressão dos boletos no padrão SICOB, para a Caixa Econômica,
+    caso o convênio seja menor que 7 digitos  o boleto será impresso de acordo
+    com o manual SIGCB, caso seja maior que isso será impresso como SICOB.
+    (Juliana Tamizou e Diego Campos)
+
+[-] Efetuado correções nas rotinas de remessa e retorno do Banrisul.
+    (Felipe Sortica)
+
+[-] Ajustado tamanhos dos campos Carteira,agência, conta e Nosso Número.
+    (Juliana Tamizou)
+
+[-] Adicionado ao package do Delphi a unit do Santander que estava faltando.
+    (Juliana Tamizou)
+
+   
+
 Versao 0.0.25a 28/03/2011
 
 [+] Adicionado funcao LerRetorno240 para o Banco do Brasil.(JPedrosoJunior)

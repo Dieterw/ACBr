@@ -109,7 +109,7 @@
             <Left Value="584"/>
             <Top Value="237"/>
             <Width Value="146"/>
-            <Height Value="18"/>
+            <Height Value="20"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -195,7 +195,7 @@
             <Left Value="20"/>
             <Top Value="272"/>
             <Width Value="567"/>
-            <Height Value="14"/>
+            <Height Value="15"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -238,7 +238,7 @@
             <Left Value="598"/>
             <Top Value="260"/>
             <Width Value="96"/>
-            <Height Value="9"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -324,7 +324,7 @@
             <Left Value="24"/>
             <Top Value="288"/>
             <Width Value="55"/>
-            <Height Value="10"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -367,7 +367,7 @@
             <Left Value="22"/>
             <Top Value="313"/>
             <Width Value="569"/>
-            <Height Value="13"/>
+            <Height Value="15"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -410,7 +410,7 @@
             <Left Value="21"/>
             <Top Value="298"/>
             <Width Value="569"/>
-            <Height Value="13"/>
+            <Height Value="15"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -579,7 +579,7 @@
             <Left Value="23"/>
             <Top Value="331"/>
             <Width Value="74"/>
-            <Height Value="10"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -665,7 +665,7 @@
             <Left Value="152"/>
             <Top Value="332"/>
             <Width Value="85"/>
-            <Height Value="11"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -751,7 +751,7 @@
             <Left Value="294"/>
             <Top Value="331"/>
             <Width Value="59"/>
-            <Height Value="10"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -923,7 +923,7 @@
             <Left Value="445"/>
             <Top Value="332"/>
             <Width Value="139"/>
-            <Height Value="11"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -1095,7 +1095,7 @@
             <Left Value="23"/>
             <Top Value="365"/>
             <Width Value="87"/>
-            <Height Value="10"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -1138,7 +1138,7 @@
             <Left Value="152"/>
             <Top Value="364"/>
             <Width Value="43"/>
-            <Height Value="11"/>
+            <Height Value="13"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -1396,7 +1396,7 @@
             <Left Value="597"/>
             <Top Value="364"/>
             <Width Value="144"/>
-            <Height Value="10"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -1482,7 +1482,7 @@
             <Left Value="23"/>
             <Top Value="398"/>
             <Width Value="477"/>
-            <Height Value="11"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -1740,7 +1740,7 @@
             <Left Value="124"/>
             <Top Value="523"/>
             <Width Value="463"/>
-            <Height Value="14"/>
+            <Height Value="15"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -1783,7 +1783,7 @@
             <Left Value="603"/>
             <Top Value="504"/>
             <Width Value="70"/>
-            <Height Value="9"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -1869,7 +1869,7 @@
             <Left Value="605"/>
             <Top Value="533"/>
             <Width Value="106"/>
-            <Height Value="11"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -1912,7 +1912,7 @@
             <Left Value="17"/>
             <Top Value="541"/>
             <Width Value="90"/>
-            <Height Value="9"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -1955,7 +1955,7 @@
             <Left Value="607"/>
             <Top Value="560"/>
             <Width Value="128"/>
-            <Height Value="11"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -2237,7 +2237,7 @@
             <Left Value="597"/>
             <Top Value="663"/>
             <Width Value="50"/>
-            <Height Value="11"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -2323,7 +2323,7 @@
             <Left Value="19"/>
             <Top Value="695"/>
             <Width Value="37"/>
-            <Height Value="10"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -2409,7 +2409,7 @@
             <Left Value="598"/>
             <Top Value="695"/>
             <Width Value="95"/>
-            <Height Value="11"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -2495,7 +2495,7 @@
             <Left Value="20"/>
             <Top Value="727"/>
             <Width Value="75"/>
-            <Height Value="11"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -2581,7 +2581,7 @@
             <Left Value="135"/>
             <Top Value="728"/>
             <Width Value="89"/>
-            <Height Value="11"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -2753,7 +2753,7 @@
             <Left Value="359"/>
             <Top Value="727"/>
             <Width Value="29"/>
-            <Height Value="11"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -2839,7 +2839,7 @@
             <Left Value="411"/>
             <Top Value="727"/>
             <Width Value="89"/>
-            <Height Value="11"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -2925,7 +2925,7 @@
             <Left Value="598"/>
             <Top Value="726"/>
             <Width Value="66"/>
-            <Height Value="11"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -3011,7 +3011,7 @@
             <Left Value="21"/>
             <Top Value="758"/>
             <Width Value="60"/>
-            <Height Value="11"/>
+            <Height Value="13"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -3398,7 +3398,7 @@
             <Left Value="21"/>
             <Top Value="794"/>
             <Width Value="477"/>
-            <Height Value="11"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -3484,7 +3484,7 @@
             <Left Value="596"/>
             <Top Value="828"/>
             <Width Value="145"/>
-            <Height Value="11"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -3570,7 +3570,7 @@
             <Left Value="111"/>
             <Top Value="910"/>
             <Width Value="37"/>
-            <Height Value="11"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -3656,7 +3656,7 @@
             <Left Value="156"/>
             <Top Value="925"/>
             <Width Value="435"/>
-            <Height Value="14"/>
+            <Height Value="15"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -3699,7 +3699,7 @@
             <Left Value="601"/>
             <Top Value="907"/>
             <Width Value="50"/>
-            <Height Value="11"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -3828,7 +3828,7 @@
             <Left Value="18"/>
             <Top Value="948"/>
             <Width Value="77"/>
-            <Height Value="10"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -3871,7 +3871,7 @@
             <Left Value="484"/>
             <Top Value="964"/>
             <Width Value="255"/>
-            <Height Value="11"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -4806,9 +4806,9 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="21"/>
-            <Top Value="893"/>
+            <Top Value="892"/>
             <Width Value="292"/>
-            <Height Value="10"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="15"/>
           <FillColor Value="clNone"/>
@@ -4894,7 +4894,7 @@
             <Left Value="528"/>
             <Top Value="47"/>
             <Width Value="212"/>
-            <Height Value="19"/>
+            <Height Value="20"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -5023,8 +5023,8 @@
           <Size>
             <Left Value="12"/>
             <Top Value="71"/>
-            <Width Value="55"/>
-            <Height Value="9"/>
+            <Width Value="58"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -5066,8 +5066,8 @@
           <Size>
             <Left Value="12"/>
             <Top Value="82"/>
-            <Width Value="295"/>
-            <Height Value="14"/>
+            <Width Value="294"/>
+            <Height Value="15"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -5110,7 +5110,7 @@
             <Left Value="315"/>
             <Top Value="72"/>
             <Width Value="95"/>
-            <Height Value="11"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -5153,7 +5153,7 @@
             <Left Value="316"/>
             <Top Value="83"/>
             <Width Value="102"/>
-            <Height Value="13"/>
+            <Height Value="15"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -5236,7 +5236,7 @@
             <Left Value="14"/>
             <Top Value="99"/>
             <Width Value="34"/>
-            <Height Value="9"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -5279,7 +5279,7 @@
             <Left Value="14"/>
             <Top Value="110"/>
             <Width Value="294"/>
-            <Height Value="13"/>
+            <Height Value="15"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -5322,7 +5322,7 @@
             <Left Value="316"/>
             <Top Value="100"/>
             <Width Value="68"/>
-            <Height Value="9"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -5429,7 +5429,7 @@
             <Left Value="14"/>
             <Top Value="126"/>
             <Width Value="48"/>
-            <Height Value="9"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -5515,7 +5515,7 @@
             <Left Value="103"/>
             <Top Value="126"/>
             <Width Value="85"/>
-            <Height Value="10"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -5601,7 +5601,7 @@
             <Left Value="229"/>
             <Top Value="127"/>
             <Width Value="52"/>
-            <Height Value="11"/>
+            <Height Value="13"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -5644,7 +5644,7 @@
             <Left Value="231"/>
             <Top Value="139"/>
             <Width Value="52"/>
-            <Height Value="13"/>
+            <Height Value="18"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -5765,7 +5765,7 @@
             <Left Value="316"/>
             <Top Value="126"/>
             <Width Value="105"/>
-            <Height Value="9"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -5937,7 +5937,7 @@
             <Left Value="15"/>
             <Top Value="155"/>
             <Width Value="76"/>
-            <Height Value="9"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -5980,7 +5980,7 @@
             <Left Value="17"/>
             <Top Value="169"/>
             <Width Value="109"/>
-            <Height Value="9"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -6023,7 +6023,7 @@
             <Left Value="137"/>
             <Top Value="156"/>
             <Width Value="76"/>
-            <Height Value="9"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -6066,7 +6066,7 @@
             <Left Value="228"/>
             <Top Value="155"/>
             <Width Value="73"/>
-            <Height Value="9"/>
+            <Height Value="13"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -6149,7 +6149,7 @@
             <Left Value="428"/>
             <Top Value="156"/>
             <Width Value="76"/>
-            <Height Value="9"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -6192,7 +6192,7 @@
             <Left Value="534"/>
             <Top Value="156"/>
             <Width Value="73"/>
-            <Height Value="9"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -6254,7 +6254,7 @@
             <Left Value="16"/>
             <Top Value="185"/>
             <Width Value="131"/>
-            <Height Value="11"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -6297,7 +6297,7 @@
             <Left Value="16"/>
             <Top Value="199"/>
             <Width Value="462"/>
-            <Height Value="14"/>
+            <Height Value="15"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -6340,7 +6340,7 @@
             <Left Value="493"/>
             <Top Value="185"/>
             <Width Value="139"/>
-            <Height Value="11"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>

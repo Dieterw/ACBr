@@ -63,10 +63,10 @@
           <Typ Value="gtMemo"/>
           <StreamMode Value="0"/>
           <Size>
-            <Left Value="181"/>
+            <Left Value="179"/>
             <Top Value="39"/>
-            <Width Value="62"/>
-            <Height Value="22"/>
+            <Width Value="69"/>
+            <Height Value="24"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -2062,9 +2062,9 @@
           <Typ Value="gtMemo"/>
           <StreamMode Value="0"/>
           <Size>
-            <Left Value="181"/>
+            <Left Value="179"/>
             <Top Value="440"/>
-            <Width Value="62"/>
+            <Width Value="65"/>
             <Height Value="22"/>
           </Size>
           <Flags Value="3"/>

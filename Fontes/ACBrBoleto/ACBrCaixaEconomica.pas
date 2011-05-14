@@ -90,8 +90,12 @@ begin
       raise Exception.Create( ACBrStr('Carteira Inválida.'+sLineBreak+'Utilize "RG" ou "SR"') ) ;
 
    ANossoNumero := OnlyNumber(ACBrTitulo.NossoNumero);
-   Num := ACarteira + '4' + PadR(ANossoNumero, 15, '0');
-
+   
+   if Length(trim(ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente)) < 7 then
+      Num := ACarteira + '4' + PadR(ANossoNumero, 15, '0')
+   else
+      Num := ANossoNumero;
+   
    Modulo.CalculoPadrao;
    Modulo.MultiplicadorFinal   := 2;
    Modulo.MultiplicadorInicial := 9;
@@ -110,9 +114,12 @@ end;
 function TACBrCaixaEconomica.CalcularDVCedente(const ACBrTitulo: TACBrTitulo): String;
 var
   Num, Res: string;
-begin
+begin 
+    if Length(trim(ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente)) < 7 then
+       Num := ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente
+    else
+       Num := ACBrTitulo.ACBrBoleto.Cedente.Agencia + ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente;
 
-    Num := ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente;
     Modulo.CalculoPadrao;
     Modulo.MultiplicadorFinal   := 2;
     Modulo.MultiplicadorInicial := 9;
@@ -135,12 +142,17 @@ begin
       AConvenio := ACBrBoleto.Cedente.Convenio;
       ANossoNumero := OnlyNumber(NossoNumero);
 
-      if (ACBrTitulo.Carteira = 'RG') then         {carterira registrada}
-          ANossoNumero := '14' + padR(ANossoNumero, 15, '0')
-      else if (ACBrTitulo.Carteira = 'SR')then     {carteira 2 sem registro}
-          ANossoNumero := '24'+padR(ANossoNumero, 15, '0')
+      if Length(trim(ACBrTitulo.ACBrBoleto.Cedente.Agencia + ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente)) < 7 then
+       begin
+         if (ACBrTitulo.Carteira = 'RG') then         {carterira registrada}
+             ANossoNumero := '14' + padR(ANossoNumero, 15, '0')
+         else if (ACBrTitulo.Carteira = 'SR')then     {carteira 2 sem registro}
+             ANossoNumero := '24'+padR(ANossoNumero, 15, '0')
+         else
+            raise Exception.Create( ACBrStr('Carteira Inválida.'+sLineBreak+'Utilize "RG" ou "SR"') ) ;
+       end
       else
-         raise Exception.Create( ACBrStr('Carteira Inválida.'+sLineBreak+'Utilize "RG" ou "SR"') ) ;
+         ANossoNumero:= Copy(ANossoNumero,Length(ANossoNumero)-9,15);
    end;
 
     Result := ANossoNumero;
@@ -157,21 +169,28 @@ begin
     ANossoNumero := FormataNossoNumero(ACBrTitulo);
 
     {Montando Campo Livre}
-    CampoLivre   := ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente + CalcularDVCedente(ACBrTitulo)
-              	  + Copy(ANossoNumero,3,3) + Copy(ANossoNumero,1,1) +	Copy(ANossoNumero,6,3)
-				  + '4' + Copy(ANossoNumero,9,9);
+    if Length(trim(ACBrTitulo.ACBrBoleto.Cedente.Agencia + ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente)) < 7 then
+     begin
+       CampoLivre   := ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente + CalcularDVCedente(ACBrTitulo) +
+                 	   Copy(ANossoNumero,3,3) + Copy(ANossoNumero,1,1) +	Copy(ANossoNumero,6,3) +
+                          '4' + Copy(ANossoNumero,9,9);
 
-    Modulo.CalculoPadrao;
-    Modulo.MultiplicadorFinal   := 2;
-    Modulo.MultiplicadorInicial := 9;
-    Modulo.Documento := CampoLivre;
-    Modulo.Calcular;
-    DVCampoLivre := intTostr(Modulo.ModuloFinal);
+       Modulo.CalculoPadrao;
+       Modulo.MultiplicadorFinal   := 2;
+       Modulo.MultiplicadorInicial := 9;
+       Modulo.Documento := CampoLivre;
+       Modulo.Calcular;
+       DVCampoLivre := intTostr(Modulo.ModuloFinal);
 
-    if Length(DVCampoLivre) > 1 then
-     DVCampoLivre := '0';
+       if Length(DVCampoLivre) > 1 then
+        DVCampoLivre := '0';
 
-    CampoLivre := CampoLivre + DVCampoLivre;
+       CampoLivre := CampoLivre + DVCampoLivre;
+     end
+    else
+       CampoLivre   := ANossoNumero + ACBrTitulo.ACBrBoleto.Cedente.Agencia + ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente;
+
+
 
     {Codigo de Barras}
     with ACBrTitulo.ACBrBoleto do

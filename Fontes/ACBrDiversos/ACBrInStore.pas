@@ -60,13 +60,14 @@ type
     FCodificacao: String;
     fsOnGetPrecoUnitario: TACBrPrecoUnitario;
 
+    procedure SetCodificacao(Value: string);
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure ZerarDados;
     procedure Desmembrar(pCodigoEtiqueta: string);
 
-    property Codificacao: String read FCodificacao write FCodificacao;
+    property Codificacao: String read FCodificacao write SetCodificacao;
     property Prefixo: String read fPrefixo;
     property Codigo: String read fCodigo;
     property Peso: Double read fPeso;
@@ -84,6 +85,7 @@ implementation
 constructor TACBrInStore.Create(AOwner: TComponent);
 begin
   inherited Create( AOwner );
+  fPrefixo := '';
 end;
 
 destructor TACBrInStore.Destroy;
@@ -92,9 +94,20 @@ begin
   inherited;
 end;
 
+procedure TACBrInStore.SetCodificacao(Value: string);
+var
+pCodigo: Integer;
+begin
+   FCodificacao := Value;
+   // Variáveis de posição
+   pCodigo  := Pos('C', FCodificacao);
+   // Desmembrar os campos
+   // Profixo
+   fPrefixo := Copy(FCodificacao, 1, pCodigo -1);
+end;
+
 procedure TACBrInStore.ZerarDados;
 begin
-  fPrefixo := '';
   fCodigo  := '';
   fDV      := '';
   fPeso    := 0;
@@ -150,10 +163,6 @@ begin
     if FCodificacao[iFor] = 'T' then
       Inc(tTotal);
   end;
-
-  // Desmembrar os campos
-  // Profixo
-  fPrefixo := Copy(pCodigoEtiqueta, 1, pCodigo -1);
 
   // Código
   if pCodigo > 0 then

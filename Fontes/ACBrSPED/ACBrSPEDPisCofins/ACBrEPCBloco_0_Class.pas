@@ -514,7 +514,7 @@ begin
                 LFill( IE ) +
                 LFill( COD_MUN, 7 ) +
                 LFill( IM ) +
-                LFill( SUFRAMA, 9 ) ) ;
+                LFill( SUFRAMA ) ) ;
         end;
         /// Registros FILHOS
         WriteRegistro0150( Reg0001.Registro0140.Items[intFor] ) ;

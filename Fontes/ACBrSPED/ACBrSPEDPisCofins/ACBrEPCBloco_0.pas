@@ -163,6 +163,9 @@ type
 
     FRegistro0111: TRegistro0111;
   public
+    constructor Create; virtual;   // Create
+    destructor  Destroy; override; // Destroy
+
     property COD_INC_TRIB  : TACBrCodIndIncTributaria read FCOD_INC_TRIB  write FCOD_INC_TRIB;
     property IND_APRO_CRED : TACBrIndAproCred         read FIND_APRO_CRED write FIND_APRO_CRED;
     property COD_TIPO_CONT : TACBrCodIndTipoCon       read FCOD_TIPO_CONT write FCOD_TIPO_CONT;
@@ -727,6 +730,19 @@ end;
 procedure TRegistro0600List.SetItem(Index: Integer; const Value: TRegistro0600);
 begin
   Put(Index, Value);
+end;
+
+{ TRegistro0110 }
+
+constructor TRegistro0110.Create;
+begin
+  FRegistro0111 := TRegistro0111.Create;
+end;
+
+destructor TRegistro0110.Destroy;
+begin
+  FRegistro0111.Free;
+  inherited;
 end;
 
 end.

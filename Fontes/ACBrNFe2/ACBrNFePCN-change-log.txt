@@ -47,6 +47,13 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Alterações   16/05/2011
+---------------
+[-] Correção nos arquivos ACBrNFeUtil, libxml2 e libxmlsec para conseguir assinar e validar uma NFe utilizando OpenSSL.
+    No Delphi XE isso não era possível. Para solucionar o problema foi alterado todos os valores PChar para PAnsiChar nos
+    arquivos libxml2 e libxmlsec. Isso levou a necessidade de alteração na unit ACBRNFeUtil da variavel schema_filename para AnsiString
+    "juaumkiko"
+
 Alterações   28/04/2011
 ---------------
 [-] Correção do Layout da NFe. Retirada a propriedade RENAVAM, pois a mesma não contempla mais o Layout 2.0

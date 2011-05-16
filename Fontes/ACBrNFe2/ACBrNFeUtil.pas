@@ -1048,7 +1048,7 @@ var
  schema : xmlSchemaPtr;
  valid_ctxt : xmlSchemaValidCtxtPtr;
  schemError : xmlErrorPtr;
- schema_filename : PChar;
+ schema_filename : AnsiString;
 
  Tipo, I : Integer;
 begin
@@ -1119,7 +1119,7 @@ begin
     exit;
   end;
 
- schema_doc  := xmlReadFile(schema_filename, nil, XML_DETECT_IDS);
+ schema_doc  := xmlReadFile(PAnsiChar(schema_filename), nil, XML_DETECT_IDS);
 //  the schema cannot be loaded or is not well-formed
  if (schema_doc = nil) then
   begin

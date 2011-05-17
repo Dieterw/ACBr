@@ -144,7 +144,8 @@ type
     class function TamanhoMenor(const AValue: string; const ATamanho: Integer): Boolean;
     class function ValidaUFCidade(const UF, Cidade: Integer): Boolean; overload;
     class procedure ValidaUFCidade(const UF, Cidade: Integer; const AMensagem: string); overload;
-    class function FormatarChaveAcesso(AValue : String ): String;
+    // Alterado por Italo em 17/05/2011
+    class function FormatarChaveAcesso(AValue : String; Mascara: Boolean = False ): String;
     class function FormatarNumCTe(const AValue: Integer): string;
     class function FormatarValor(mask: TpcteMask; const AValue: real): string;
     // Incluido por Italo em 28/01/2011
@@ -653,15 +654,26 @@ begin
     raise Exception.Create(AMensagem);
 end;
 
-class function CTeUtil.FormatarChaveAcesso(AValue: String): String;
+class function CTeUtil.FormatarChaveAcesso(AValue: String; Mascara: Boolean = False ): String;
 begin
   AValue := CTeUtil.LimpaNumero(AValue);
-  Result := copy(AValue,1,4)  + ' ' + copy(AValue,5,4)  + ' ' +
-            copy(AValue,9,4)  + ' ' + copy(AValue,13,4) + ' ' +
-            copy(AValue,17,4) + ' ' + copy(AValue,21,4) + ' ' +
-            copy(AValue,25,4) + ' ' + copy(AValue,29,4) + ' ' +
-            copy(AValue,33,4) + ' ' + copy(AValue,37,4) + ' ' +
-            copy(AValue,41,4) ;
+  // Alterado por Italo em 17/05/2011
+  if Mascara
+   then Result := copy(AValue,1,2)  + '-' + copy(AValue,3,2) + '/' +
+                  copy(AValue,5,2)  + '-' + copy(AValue,7,2) + '.' +
+                  copy(AValue,9,3)  + '.' + copy(AValue,12,3)+ '/' +
+                  copy(AValue,15,4) + '-' + copy(AValue,19,2)+ '-' +
+                  copy(AValue,21,2) + '-' + copy(AValue,23,3)+ '-' +
+                  copy(AValue,26,3) + '.' + copy(AValue,29,3)+ '.' +
+                  copy(AValue,32,3) + '-' + copy(AValue,35,3)+ '.' +
+                  copy(AValue,38,3) + '.' + copy(AValue,41,3)+ '-' +
+                  copy(AValue,44,1)
+   else Result := copy(AValue,1,4)  + ' ' + copy(AValue,5,4)  + ' ' +
+                  copy(AValue,9,4)  + ' ' + copy(AValue,13,4) + ' ' +
+                  copy(AValue,17,4) + ' ' + copy(AValue,21,4) + ' ' +
+                  copy(AValue,25,4) + ' ' + copy(AValue,29,4) + ' ' +
+                  copy(AValue,33,4) + ' ' + copy(AValue,37,4) + ' ' +
+                  copy(AValue,41,4) ;
 end;
 
 class function CTeUtil.PadD(const AString: string; const nLen: Integer; const Caracter: Char): string;

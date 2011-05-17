@@ -229,14 +229,14 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
         Left = 56
         Top = 2
         Width = 50
-        Height = 24
+        Height = 13
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          63.500000000000000000
+          34.395833333333340000
           148.166666666666700000
           5.291666666666667000
           132.291666666666700000)
@@ -788,14 +788,14 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
         Left = 638
         Top = 33
         Width = 86
-        Height = 15
+        Height = 16
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          39.687500000000000000
+          42.333333333333340000
           1688.041666666667000000
           87.312500000000000000
           227.541666666666700000)
@@ -807,13 +807,13 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
         Color = clWhite
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -11
+        Font.Height = -13
         Font.Name = 'Times New Roman'
         Font.Style = [fsBold]
         ParentFont = False
         Transparent = False
         WordWrap = True
-        FontSize = 8
+        FontSize = 10
       end
       object QRLabel143: TQRLabel
         Left = 480
@@ -1730,14 +1730,14 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
         Left = 472
         Top = 43
         Width = 86
-        Height = 15
+        Height = 16
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          39.687500000000000000
+          42.333333333333340000
           1248.833333333333000000
           113.770833333333300000
           227.541666666666700000)
@@ -1749,13 +1749,13 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
         Color = clWhite
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -11
+        Font.Height = -13
         Font.Name = 'Times New Roman'
         Font.Style = [fsBold]
         ParentFont = False
         Transparent = False
         WordWrap = True
-        FontSize = 8
+        FontSize = 10
       end
       object qrlPageNumber: TQRLabel
         Left = 568
@@ -9036,14 +9036,14 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
         Left = 638
         Top = 33
         Width = 86
-        Height = 15
+        Height = 16
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          39.687500000000000000
+          42.333333333333340000
           1688.041666666667000000
           87.312500000000000000
           227.541666666666700000)
@@ -9055,13 +9055,13 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
         Color = clWhite
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -11
+        Font.Height = -13
         Font.Name = 'Times New Roman'
         Font.Style = [fsBold]
         ParentFont = False
         Transparent = False
         WordWrap = True
-        FontSize = 8
+        FontSize = 10
       end
     end
     object qrb_16_DadosExcEmitente: TQRChildBand
@@ -11513,8 +11513,9 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
       Size = 6
     end
     object cdsDocumentosCNPJCPF_1: TStringField
+      DisplayWidth = 60
       FieldName = 'CNPJCPF_1'
-      Size = 50
+      Size = 60
     end
     object cdsDocumentosDOCUMENTO_1: TStringField
       FieldName = 'DOCUMENTO_1'
@@ -11526,8 +11527,9 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
       Size = 6
     end
     object cdsDocumentosCNPJCPF_2: TStringField
+      DisplayWidth = 60
       FieldName = 'CNPJCPF_2'
-      Size = 50
+      Size = 60
     end
     object cdsDocumentosDOCUMENTO_2: TStringField
       FieldName = 'DOCUMENTO_2'

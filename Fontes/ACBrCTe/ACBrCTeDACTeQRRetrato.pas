@@ -566,12 +566,14 @@ begin
       begin
         cdsDocumentos.Append;
         cdsDocumentosTIPO_1.AsString := 'NF-E';
-        cdsDocumentosCNPJCPF_1.AsString := chave;
+        // Alterado por Italo em 17/05/2011
+        cdsDocumentosCNPJCPF_1.AsString := CTeUtil.FormatarChaveAcesso(chave, True);
       end
       else
       begin
         cdsDocumentosTIPO_2.AsString := 'NF-E';
-        cdsDocumentosCNPJCPF_2.AsString := chave;
+        // Alterado por Italo em 17/05/2011
+        cdsDocumentosCNPJCPF_2.AsString := CTeUtil.FormatarChaveAcesso(chave, True);
         cdsDocumentos.Post;
       end;
       inc(Item);
@@ -675,12 +677,14 @@ begin
             cdsDocumentos.Append;
 
             cdsDocumentosTIPO_1.AsString := 'CT-E';
-            cdsDocumentosCNPJCPF_1.AsString := chave;
+            // Alterado por Italo em 17/05/2011
+            cdsDocumentosCNPJCPF_1.AsString := CTeUtil.FormatarChaveAcesso(chave, True);
           end
           else
           begin
             cdsDocumentosTIPO_2.AsString := 'CT-E';
-            cdsDocumentosCNPJCPF_2.AsString := chave;
+            // Alterado por Italo em 17/05/2011
+            cdsDocumentosCNPJCPF_2.AsString := CTeUtil.FormatarChaveAcesso(chave, True);
 
             cdsDocumentos.Post;
           end;

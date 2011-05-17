@@ -464,7 +464,8 @@ begin
             LFill( strIND_APRO_CRED ) +
             LFill( strCOD_TIPO_CONT ) ) ;
        ///
-       WriteRegistro0111(Reg0001.Registro0110);
+       if IND_APRO_CRED = indMetodoDeRateioProporcional then
+         WriteRegistro0111(Reg0001.Registro0110);
      end;
      Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
 

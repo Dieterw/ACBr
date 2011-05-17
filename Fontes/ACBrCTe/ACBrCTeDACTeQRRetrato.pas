@@ -468,6 +468,31 @@ type
     qrlRetira: TQRLabel;
     QRShape70: TQRShape;
     QRShape71: TQRShape;
+    QRShape73: TQRShape;
+    QRLabel151: TQRLabel;
+    QRShape74: TQRShape;
+    QRLabel152: TQRLabel;
+    qrlPortoEmbarque: TQRLabel;
+    QRLabel158: TQRLabel;
+    qrlPortoDestino: TQRLabel;
+    QRShape75: TQRShape;
+    QRLabel159: TQRLabel;
+    qrlIndNavioRebocador: TQRLabel;
+    QRShape76: TQRShape;
+    QRLabel160: TQRLabel;
+    qrlIndConteiners: TQRLabel;
+    QRShape77: TQRShape;
+    QRLabel162: TQRLabel;
+    qrlBCAFRMM: TQRLabel;
+    QRLabel164: TQRLabel;
+    qrlValorAFRMM: TQRLabel;
+    QRLabel166: TQRLabel;
+    qrlTipoNav: TQRLabel;
+    QRLabel168: TQRLabel;
+    qrlDirecao: TQRLabel;
+    QRShape78: TQRShape;
+    QRShape79: TQRShape;
+    QRShape80: TQRShape;
     procedure QRCTeBeforePrint(Sender: TCustomQuickRep; var PrintReport: Boolean);
     procedure qrb_01_ReciboBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
     procedure qrb_02_CabecalhoBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
@@ -1611,12 +1636,40 @@ end;
 
 procedure TfrmDACTeQRRetrato.qrb_14_ModFerroviarioBeforePrint(
   Sender: TQRCustomBand; var PrintBand: Boolean);
+var
+ i: Integer;
 begin
   inherited;
   // Incluido por Italo em 06/05/2011
   PrintBand := QRCTe.PageNumber = 1;
   qrb_14_ModFerroviario.Enabled := (FCTe.Ide.tpCTe = tcNormal) and (FCTe.Ide.modal = mdFerroviario);
 
+  qrlPortoEmbarque.Caption     := FCTe.Aquav.prtEmb;
+  qrlPortoDestino.Caption      := FCTe.Aquav.prtDest;
+  qrlIndNavioRebocador.Caption := FCTe.Aquav.xNavio;
+
+  qrlBCAFRMM.Caption    := FormatCurr('###,###,##0.00', FCTe.Aquav.vPrest);
+  qrlValorAFRMM.Caption := FormatCurr('###,###,##0.00', FCTe.Aquav.vAFRMM);
+
+  case FCTe.Aquav.tpNav of
+   tnInterior:  qrlTipoNav.Caption := 'INTERIOR';
+   tnCabotagem: qrlTipoNav.Caption := 'CABOTAGEM';
+  end;
+
+  case FCTe.Aquav.direc of
+   drNorte: qrlDirecao.Caption := 'NORTE';
+   drLeste: qrlDirecao.Caption := 'LESTE';
+   drSul:   qrlDirecao.Caption := 'SUL';
+   drOeste: qrlDirecao.Caption := 'OESTE';
+  end;
+
+  qrlIndConteiners.Caption := '';
+  for i := 0 to FCTe.Aquav.Lacre.Count - 1 do
+   begin
+    if i = 0
+     then qrlIndConteiners.Caption := FCTe.Aquav.Lacre.Items[i].nLacre
+     else qrlIndConteiners.Caption := qrlIndConteiners.Caption + '/' + FCTe.Aquav.Lacre.Items[i].nLacre;
+   end;
 end;
 
 procedure TfrmDACTeQRRetrato.qrb_15_ModDutoviarioBeforePrint(

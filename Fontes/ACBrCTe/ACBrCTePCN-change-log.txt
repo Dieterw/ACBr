@@ -50,6 +50,11 @@ Símbolo : Significado
 
 Alterações   17/05/11 (Italo Jurisato Junior)
 ---------------
+[-] As funções: TpDispositivoToStr e StrToTpDispositivo o dominio de valores eram
+    [0, 1 e 2] sendo que o correto é [1, 2 e 3] conforme Schema.
+
+Alterações   17/05/11 (Italo Jurisato Junior)
+---------------
 [*] Foi incluido o parametro Mascara: Boolean a função FormatarChaveAcesso, quando
     for False (default) divide a chave em segmentos de 4 digitos separados por espaco,
     se True utiliza a seguente mascara:

@@ -891,12 +891,12 @@ end;
 
 function TpDispositivoToStr(const t: TpcteTipoDispositivo): string;
 begin
-  result := EnumeradoToStr(t, ['0','1','2'], [tdCartaoMagnetico, tdTAG, tdTicket]);
+  result := EnumeradoToStr(t, ['1','2','3'], [tdCartaoMagnetico, tdTAG, tdTicket]);
 end;
 
 function StrToTpDispositivo(var ok: boolean; const s: string): TpcteTipoDispositivo;
 begin
-  result := StrToEnumerado(ok, s, ['0','1','2'], [tdCartaoMagnetico, tdTAG, tdTicket]);
+  result := StrToEnumerado(ok, s, ['1','2','3'], [tdCartaoMagnetico, tdTAG, tdTicket]);
 end;
 
 function TpPropriedadeToStr(const t: TpcteTipoPropriedade): string;

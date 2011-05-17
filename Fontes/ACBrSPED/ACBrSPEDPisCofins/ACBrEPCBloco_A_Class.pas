@@ -538,7 +538,7 @@ begin
         end;
 
         Add( LFill('A170')             +
-             LFill(NUM_ITEM)           +
+             LFill(NUM_ITEM, 0)        +
              LFill(COD_ITEM)           +
              LFill(DESCR_COMPL)        +
              LFill( VL_ITEM,0,2 )      +

@@ -411,8 +411,10 @@ begin
         begin
 
           case IND_OPER of
-            itoContratado : strIND_OPER := '0';
-            itoPrestado   : strIND_OPER := '1';
+            indRepCustosDespesasEncargos : strIND_OPER := '0'; //0 – Operação Representativa de Aquisição, Custos, Despesa ou Encargos, Sujeita à Incidência de Crédito de PIS/Pasep ou Cofins (CST 50 a 66).
+            indRepReceitaAuferida        : strIND_OPER := '1'; //1 – Operação Representativa de Receita Auferida Sujeita ao Pagamento da Contribuição para o PIS/Pasep e da Cofins (CST 01, 02, 03 ou 05).
+            indRepReceitaNaoAuferida     : strIND_OPER := '2'; //2 - Operação Representativa de Receita Auferida Não Sujeita ao Pagamento da Contribuição para o PIS/Pasep e da Cofins (CST 04, 06, 07, 08, 09, 49 ou 99).
+
           end;
 
           case IND_ORIG_CRED of

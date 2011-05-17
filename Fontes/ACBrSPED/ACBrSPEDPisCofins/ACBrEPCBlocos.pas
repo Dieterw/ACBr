@@ -841,7 +841,12 @@ type
                           indAcumulativa // 1 – Dedução de Natureza Cumulativa
                         );
 
-
+   //Indicador do Tipo da Operação (RegsitroF100 - IND_OPER):
+   TACBrIndTpOperacaoReceita = (
+                          indRepCustosDespesasEncargos, //0 – Operação Representativa de Aquisição, Custos, Despesa ou Encargos, Sujeita à Incidência de Crédito de PIS/Pasep ou Cofins (CST 50 a 66).
+                          indRepReceitaAuferida,        //1 – Operação Representativa de Receita Auferida Sujeita ao Pagamento da Contribuição para o PIS/Pasep e da Cofins (CST 01, 02, 03 ou 05).
+                          indRepReceitaNaoAuferida      //2 - Operação Representativa de Receita Auferida Não Sujeita ao Pagamento da Contribuição para o PIS/Pasep e da Cofins (CST 04, 06, 07, 08, 09, 49 ou 99).
+                        );
 
   TOpenBlocos = class
   private

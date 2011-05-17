@@ -115,7 +115,7 @@ type
   //REGISTRO F100: COMPLEMENTO DO DOCUMENTO - INFORMAÇÃO COMPLEMENTAR DA NOTA FISCAL
   TRegistroF100 = class
   private
-    FIND_OPER              : TACBrIndicadorTpOperacao;
+    FIND_OPER              : TACBrIndTpOperacaoReceita;
     FCOD_PART              : string;                  //Código do participante (Campo 02 do Registro 0150)
     FCOD_ITEM              : string;                  //Código do item (campo 02 do Registro 0200)
     FDT_OPER               : TDateTime;
@@ -139,7 +139,7 @@ type
     constructor Create;  virtual;                     /// Create
     destructor  Destroy; override;                    /// Destroy
 
-    property IND_OPER      : TACBrIndicadorTpOperacao read FIND_OPER      write FIND_OPER;
+    property IND_OPER      : TACBrIndTpOperacaoReceita read FIND_OPER      write FIND_OPER;
     property COD_PART      : string                   read FCOD_PART      write FCOD_PART;
     property COD_ITEM      : string                   read FCOD_ITEM      write FCOD_ITEM;
     property DT_OPER       : TDateTime                read FDT_OPER       write FDT_OPER;

@@ -1214,12 +1214,14 @@ end;
 
 constructor TRegistroD500.Create;
 begin
+  FRegistroD501 := TRegistroD501List.Create;
   FRegistroD505 := TRegistroD505List.Create;
   FRegistroD509 := TRegistroD509List.Create;
 end;
 
 destructor TRegistroD500.Destroy;
 begin
+  FRegistroD501.Free;
   FRegistroD505.Free;
   FRegistroD509.Free;
   inherited;

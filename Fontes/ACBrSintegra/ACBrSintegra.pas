@@ -2242,7 +2242,7 @@ begin
   with Registros61R[i] do
   begin
     wregistro:='61R';
-    wregistro:=wregistro+MesAno;
+    wregistro:=wregistro+PadR(MesAno,6,'0');
     wregistro:=wregistro+Padl(Codigo,14);
     wregistro:=wregistro+TBStrZero(TiraPontos(FormatFloat('#,###0.000',Qtd)),13);
     wregistro:=wregistro+TBStrZero(TiraPontos(FormatFloat('#,##0.00',Valor)),16);
@@ -2292,7 +2292,7 @@ begin
     with Registros60R[i] do
     begin
       wregistro:='60R';
-      wregistro:=wregistro+MesAno;
+      wregistro:=wregistro+PadR(MesAno,6,'0');
       wregistro:=wregistro+Padl(Codigo,14);
       wregistro:=wregistro+TBStrZero(TiraPontos(FormatFloat('#,###0.000',Qtd)),13);
       wregistro:=wregistro+TBStrZero(TiraPontos(FormatFloat('#,##0.00',Valor)),16);
@@ -2322,7 +2322,7 @@ begin
   wregistro:=wregistro+Padl(Registros55[i].Numero,20);
   wregistro:=wregistro+TBStrZero(TiraPontos(FormatFloat('#,##0.00',Registros55[i].Valor)),13);
   wregistro:=wregistro+FormatDateTime('yyyymmdd',Registros55[i].Vencimento);
-  wregistro:=wregistro+Padl(Registros55[i].MesAno,6);
+  wregistro:=wregistro+PadR(Registros55[i].MesAno,6,'0');
   wregistro:=wregistro+Padl(Registros55[i].NumeroConvenio,30);
   WriteRecord(wregistro);
 end;

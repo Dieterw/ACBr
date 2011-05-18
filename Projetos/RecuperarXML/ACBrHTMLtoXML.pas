@@ -78,16 +78,11 @@ var
  sDataEmissao, Versao, sTexto : String;
  CaminhoXML, Grupo, ArquivoTXT, ArquivoRestante : AnsiString;
  ArquivoItens, ArquivoItensTemp, ArquivoDuplicatas, ArquivoVolumes : AnsiString;
-  produtos: Integer;
- Lista: TStringList;
+ produtos: Integer;
 begin
- Lista:=TStringList.Create;
  NFe := TNFe.Create;
 
  ArquivoTXT := StringReplace(Arquivo,#$D#$A,'|&|',[rfReplaceAll]);
- Lista.Text:=ArquivoTXT;
- Lista.SaveToFile('c:\teste.txt');
-
 
  Grupo :=  SeparaAte('Dados da NF-e',ArquivoTXT,ArquivoRestante);
 

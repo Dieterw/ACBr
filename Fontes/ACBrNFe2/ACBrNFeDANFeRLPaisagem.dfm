@@ -1,5 +1,5 @@
 inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
-  Left = 197
+  Left = 223
   Width = 1149
   Height = 732
   VertScrollBar.Position = 0
@@ -1830,7 +1830,7 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
       Width = 998
       Height = 54
       BandType = btTitle
-      object RLDraw25: TRLDraw
+      object rliFatura: TRLDraw
         Left = 0
         Top = 0
         Width = 997
@@ -1850,13 +1850,13 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
         Font.Style = []
         ParentFont = False
       end
-      object rllFatNum2: TRLLabel
+      object rllFatNum6: TRLLabel
         Left = 35
         Top = 27
         Width = 70
         Height = 10
         AutoSize = False
-        Caption = '02'
+        Caption = '06'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -9
@@ -1864,13 +1864,13 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
         Font.Style = []
         ParentFont = False
       end
-      object rllFatNum3: TRLLabel
+      object rllFatNum11: TRLLabel
         Left = 35
         Top = 39
         Width = 70
         Height = 10
         AutoSize = False
-        Caption = '03'
+        Caption = '11'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -9
@@ -1893,7 +1893,7 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
         Font.Style = []
         ParentFont = False
       end
-      object rllFatData2: TRLLabel
+      object rllFatData6: TRLLabel
         Left = 106
         Top = 27
         Width = 57
@@ -1908,7 +1908,7 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
         Font.Style = []
         ParentFont = False
       end
-      object rllFatData3: TRLLabel
+      object rllFatData11: TRLLabel
         Left = 106
         Top = 39
         Width = 57
@@ -1938,161 +1938,43 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
         Font.Style = []
         ParentFont = False
       end
-      object rllFatValor2: TRLLabel
-        Left = 162
-        Top = 27
-        Width = 60
-        Height = 10
-        Alignment = taRightJustify
-        AutoSize = False
-        Caption = '9.999.999,99'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -9
-        Font.Name = 'Arial'
-        Font.Style = []
-        ParentFont = False
-      end
-      object rllFatValor3: TRLLabel
-        Left = 162
-        Top = 39
-        Width = 60
-        Height = 10
-        Alignment = taRightJustify
-        AutoSize = False
-        Caption = '9.999.999,99'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -9
-        Font.Name = 'Arial'
-        Font.Style = []
-        ParentFont = False
-      end
-      object rllFatNum4: TRLLabel
-        Left = 228
-        Top = 15
-        Width = 70
-        Height = 10
-        AutoSize = False
-        Caption = '04'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -9
-        Font.Name = 'Arial'
-        Font.Style = []
-        ParentFont = False
-      end
-      object rllFatNum5: TRLLabel
-        Left = 228
-        Top = 27
-        Width = 70
-        Height = 10
-        AutoSize = False
-        Caption = '05'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -9
-        Font.Name = 'Arial'
-        Font.Style = []
-        ParentFont = False
-      end
-      object rllFatNum6: TRLLabel
-        Left = 228
-        Top = 39
-        Width = 70
-        Height = 10
-        AutoSize = False
-        Caption = '06'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -9
-        Font.Name = 'Arial'
-        Font.Style = []
-        ParentFont = False
-      end
-      object rllFatData4: TRLLabel
-        Left = 299
-        Top = 15
-        Width = 57
-        Height = 10
-        Alignment = taRightJustify
-        AutoSize = False
-        Caption = 'XX/XX/XXXX'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -9
-        Font.Name = 'Arial'
-        Font.Style = []
-        ParentFont = False
-      end
-      object rllFatData5: TRLLabel
-        Left = 299
-        Top = 27
-        Width = 57
-        Height = 10
-        Alignment = taRightJustify
-        AutoSize = False
-        Caption = 'XX/XX/XXXX'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -9
-        Font.Name = 'Arial'
-        Font.Style = []
-        ParentFont = False
-      end
-      object rllFatData6: TRLLabel
-        Left = 299
-        Top = 39
-        Width = 57
-        Height = 10
-        Alignment = taRightJustify
-        AutoSize = False
-        Caption = 'XX/XX/XXXX'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -9
-        Font.Name = 'Arial'
-        Font.Style = []
-        ParentFont = False
-      end
-      object rllFatValor4: TRLLabel
-        Left = 355
-        Top = 15
-        Width = 60
-        Height = 10
-        Alignment = taRightJustify
-        AutoSize = False
-        Caption = '9.999.999,99'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -9
-        Font.Name = 'Arial'
-        Font.Style = []
-        ParentFont = False
-      end
-      object rllFatValor5: TRLLabel
-        Left = 355
-        Top = 27
-        Width = 60
-        Height = 10
-        Alignment = taRightJustify
-        AutoSize = False
-        Caption = '9.999.999,99'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -9
-        Font.Name = 'Arial'
-        Font.Style = []
-        ParentFont = False
-      end
       object rllFatValor6: TRLLabel
-        Left = 355
+        Left = 162
+        Top = 27
+        Width = 60
+        Height = 10
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = '9.999.999,99'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -9
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object rllFatValor11: TRLLabel
+        Left = 162
         Top = 39
         Width = 60
         Height = 10
         Alignment = taRightJustify
         AutoSize = False
         Caption = '9.999.999,99'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -9
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object rllFatNum2: TRLLabel
+        Left = 228
+        Top = 15
+        Width = 70
+        Height = 10
+        AutoSize = False
+        Caption = '02'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -9
@@ -2101,12 +1983,130 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
         ParentFont = False
       end
       object rllFatNum7: TRLLabel
+        Left = 228
+        Top = 27
+        Width = 70
+        Height = 10
+        AutoSize = False
+        Caption = '07'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -9
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object rllFatNum12: TRLLabel
+        Left = 228
+        Top = 39
+        Width = 70
+        Height = 10
+        AutoSize = False
+        Caption = '12'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -9
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object rllFatData2: TRLLabel
+        Left = 299
+        Top = 15
+        Width = 57
+        Height = 10
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'XX/XX/XXXX'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -9
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object rllFatData7: TRLLabel
+        Left = 299
+        Top = 27
+        Width = 57
+        Height = 10
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'XX/XX/XXXX'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -9
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object rllFatData12: TRLLabel
+        Left = 299
+        Top = 39
+        Width = 57
+        Height = 10
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'XX/XX/XXXX'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -9
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object rllFatValor2: TRLLabel
+        Left = 355
+        Top = 15
+        Width = 60
+        Height = 10
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = '9.999.999,99'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -9
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object rllFatValor7: TRLLabel
+        Left = 355
+        Top = 27
+        Width = 60
+        Height = 10
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = '9.999.999,99'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -9
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object rllFatValor12: TRLLabel
+        Left = 355
+        Top = 39
+        Width = 60
+        Height = 10
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = '9.999.999,99'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -9
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object rllFatNum3: TRLLabel
         Left = 421
         Top = 15
         Width = 70
         Height = 10
         AutoSize = False
-        Caption = '07'
+        Caption = '03'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -9
@@ -2128,13 +2128,13 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
         Font.Style = []
         ParentFont = False
       end
-      object rllFatNum9: TRLLabel
+      object rllFatNum13: TRLLabel
         Left = 421
         Top = 39
         Width = 70
         Height = 10
         AutoSize = False
-        Caption = '09'
+        Caption = '13'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -9
@@ -2142,7 +2142,7 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
         Font.Style = []
         ParentFont = False
       end
-      object rllFatData7: TRLLabel
+      object rllFatData3: TRLLabel
         Left = 492
         Top = 15
         Width = 57
@@ -2172,7 +2172,7 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
         Font.Style = []
         ParentFont = False
       end
-      object rllFatData9: TRLLabel
+      object rllFatData13: TRLLabel
         Left = 492
         Top = 39
         Width = 57
@@ -2187,7 +2187,7 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
         Font.Style = []
         ParentFont = False
       end
-      object rllFatValor7: TRLLabel
+      object rllFatValor3: TRLLabel
         Left = 548
         Top = 15
         Width = 60
@@ -2217,7 +2217,7 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
         Font.Style = []
         ParentFont = False
       end
-      object rllFatValor9: TRLLabel
+      object rllFatValor13: TRLLabel
         Left = 548
         Top = 39
         Width = 60
@@ -2232,9 +2232,155 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
         Font.Style = []
         ParentFont = False
       end
-      object rllFatNum10: TRLLabel
+      object rllFatNum4: TRLLabel
         Left = 614
         Top = 15
+        Width = 70
+        Height = 10
+        AutoSize = False
+        Caption = '04'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -9
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object rllFatNum9: TRLLabel
+        Left = 614
+        Top = 27
+        Width = 70
+        Height = 10
+        AutoSize = False
+        Caption = '09'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -9
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object rllFatNum14: TRLLabel
+        Left = 614
+        Top = 39
+        Width = 70
+        Height = 10
+        AutoSize = False
+        Caption = '14'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -9
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object rllFatData4: TRLLabel
+        Left = 685
+        Top = 15
+        Width = 57
+        Height = 10
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'XX/XX/XXXX'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -9
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object rllFatData9: TRLLabel
+        Left = 685
+        Top = 27
+        Width = 57
+        Height = 10
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'XX/XX/XXXX'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -9
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object rllFatData14: TRLLabel
+        Left = 685
+        Top = 39
+        Width = 57
+        Height = 10
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'XX/XX/XXXX'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -9
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object rllFatValor4: TRLLabel
+        Left = 741
+        Top = 15
+        Width = 60
+        Height = 10
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = '9.999.999,99'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -9
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object rllFatValor9: TRLLabel
+        Left = 741
+        Top = 27
+        Width = 60
+        Height = 10
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = '9.999.999,99'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -9
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object rllFatValor14: TRLLabel
+        Left = 741
+        Top = 39
+        Width = 60
+        Height = 10
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = '9.999.999,99'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -9
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object rllFatNum5: TRLLabel
+        Left = 807
+        Top = 15
+        Width = 70
+        Height = 10
+        AutoSize = False
+        Caption = '05'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -9
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object rllFatNum10: TRLLabel
+        Left = 807
+        Top = 27
         Width = 70
         Height = 10
         AutoSize = False
@@ -2246,13 +2392,13 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
         Font.Style = []
         ParentFont = False
       end
-      object rllFatNum11: TRLLabel
-        Left = 614
-        Top = 27
+      object rllFatNum15: TRLLabel
+        Left = 807
+        Top = 39
         Width = 70
         Height = 10
         AutoSize = False
-        Caption = '11'
+        Caption = '15'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -9
@@ -2260,13 +2406,14 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
         Font.Style = []
         ParentFont = False
       end
-      object rllFatNum12: TRLLabel
-        Left = 614
+      object rllFatData15: TRLLabel
+        Left = 878
         Top = 39
-        Width = 70
+        Width = 57
         Height = 10
+        Alignment = taRightJustify
         AutoSize = False
-        Caption = '12'
+        Caption = 'XX/XX/XXXX'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -9
@@ -2275,22 +2422,7 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
         ParentFont = False
       end
       object rllFatData10: TRLLabel
-        Left = 685
-        Top = 15
-        Width = 57
-        Height = 10
-        Alignment = taRightJustify
-        AutoSize = False
-        Caption = 'XX/XX/XXXX'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -9
-        Font.Name = 'Arial'
-        Font.Style = []
-        ParentFont = False
-      end
-      object rllFatData11: TRLLabel
-        Left = 685
+        Left = 878
         Top = 27
         Width = 57
         Height = 10
@@ -2304,14 +2436,29 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
         Font.Style = []
         ParentFont = False
       end
-      object rllFatData12: TRLLabel
-        Left = 685
-        Top = 39
+      object rllFatData5: TRLLabel
+        Left = 878
+        Top = 15
         Width = 57
         Height = 10
         Alignment = taRightJustify
         AutoSize = False
         Caption = 'XX/XX/XXXX'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -9
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object rllFatValor5: TRLLabel
+        Left = 934
+        Top = 15
+        Width = 60
+        Height = 10
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = '9.999.999,99'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -9
@@ -2320,22 +2467,7 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
         ParentFont = False
       end
       object rllFatValor10: TRLLabel
-        Left = 741
-        Top = 15
-        Width = 60
-        Height = 10
-        Alignment = taRightJustify
-        AutoSize = False
-        Caption = '9.999.999,99'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -9
-        Font.Name = 'Arial'
-        Font.Style = []
-        ParentFont = False
-      end
-      object rllFatValor11: TRLLabel
-        Left = 741
+        Left = 934
         Top = 27
         Width = 60
         Height = 10
@@ -2349,8 +2481,8 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
         Font.Style = []
         ParentFont = False
       end
-      object rllFatValor12: TRLLabel
-        Left = 741
+      object rllFatValor15: TRLLabel
+        Left = 934
         Top = 39
         Width = 60
         Height = 10
@@ -2364,7 +2496,27 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
         Font.Style = []
         ParentFont = False
       end
-      object RLDraw26: TRLDraw
+      object RLLabel12: TRLLabel
+        Left = 33
+        Top = 1
+        Width = 962
+        Height = 11
+        AutoSize = False
+        Caption = '  '
+        Color = 14540253
+        ParentColor = False
+        Transparent = False
+      end
+      object rliFatura1: TRLDraw
+        Left = 32
+        Top = 0
+        Width = 1
+        Height = 53
+        Angle = 90.000000000000000000
+        DrawKind = dkLine
+        HoldStyle = hsVertically
+      end
+      object rliFatura2: TRLDraw
         Left = 225
         Top = 0
         Width = 1
@@ -2373,7 +2525,7 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
         DrawKind = dkLine
         HoldStyle = hsVertically
       end
-      object RLDraw27: TRLDraw
+      object rliFatura3: TRLDraw
         Left = 418
         Top = 0
         Width = 1
@@ -2382,7 +2534,7 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
         DrawKind = dkLine
         HoldStyle = hsVertically
       end
-      object RLDraw28: TRLDraw
+      object rliFatura4: TRLDraw
         Left = 611
         Top = 0
         Width = 1
@@ -2391,14 +2543,31 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
         DrawKind = dkLine
         HoldStyle = hsVertically
       end
+      object rliFatura5: TRLDraw
+        Left = 804
+        Top = 0
+        Width = 1
+        Height = 53
+        Angle = 90.000000000000000000
+        DrawKind = dkLine
+        HoldStyle = hsVertically
+      end
+      object RLDraw69: TRLDraw
+        Left = 32
+        Top = 12
+        Width = 965
+        Height = 1
+        DrawKind = dkLine
+        HoldStyle = hsRelatively
+      end
       object rllCabFatura1: TRLLabel
         Tag = 10
-        Left = 50
+        Left = 39
         Top = 3
-        Width = 32
+        Width = 54
         Height = 7
         Alignment = taCenter
-        Caption = 'N'#218'MERO'
+        Caption = 'N'#186' DUPLICATA'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -7
@@ -2436,22 +2605,14 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
         Font.Style = []
         ParentFont = False
       end
-      object RLDraw69: TRLDraw
-        Left = 32
-        Top = 12
-        Width = 965
-        Height = 1
-        DrawKind = dkLine
-        HoldStyle = hsRelatively
-      end
       object RLLabel1: TRLLabel
         Tag = 10
-        Left = 243
+        Left = 232
         Top = 3
-        Width = 32
+        Width = 54
         Height = 7
         Alignment = taCenter
-        Caption = 'N'#218'MERO'
+        Caption = 'N'#186' DUPLICATA'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -7
@@ -2491,12 +2652,12 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
       end
       object RLLabel4: TRLLabel
         Tag = 10
-        Left = 436
+        Left = 425
         Top = 3
-        Width = 32
+        Width = 54
         Height = 7
         Alignment = taCenter
-        Caption = 'N'#218'MERO'
+        Caption = 'N'#186' DUPLICATA'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -7
@@ -2536,12 +2697,12 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
       end
       object RLLabel7: TRLLabel
         Tag = 10
-        Left = 629
+        Left = 618
         Top = 3
-        Width = 32
+        Width = 54
         Height = 7
         Alignment = taCenter
-        Caption = 'N'#218'MERO'
+        Caption = 'N'#186' DUPLICATA'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -7
@@ -2579,180 +2740,14 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
         Font.Style = []
         ParentFont = False
       end
-      object RLDraw14: TRLDraw
-        Left = 32
-        Top = 0
-        Width = 1
-        Height = 53
-        Angle = 90.000000000000000000
-        DrawKind = dkLine
-        HoldStyle = hsVertically
-      end
-      object RLAngleLabel3: TRLAngleLabel
-        Left = 13
-        Top = 9
-        Width = 10
-        Height = 34
-        Angle = 90.000000000000000000
-        AngleBorders = True
-        Caption = 'FATURA'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -8
-        Font.Name = 'Arial'
-        Font.Style = [fsBold]
-        Layout = tlCenter
-        ParentFont = False
-      end
-      object RLDraw43: TRLDraw
-        Left = 804
-        Top = 0
-        Width = 1
-        Height = 53
-        Angle = 90.000000000000000000
-        DrawKind = dkLine
-        HoldStyle = hsVertically
-      end
-      object rllFatNum13: TRLLabel
-        Left = 807
-        Top = 15
-        Width = 70
-        Height = 10
-        AutoSize = False
-        Caption = '13'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -9
-        Font.Name = 'Arial'
-        Font.Style = []
-        ParentFont = False
-      end
-      object rllFatNum14: TRLLabel
-        Left = 807
-        Top = 27
-        Width = 70
-        Height = 10
-        AutoSize = False
-        Caption = '14'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -9
-        Font.Name = 'Arial'
-        Font.Style = []
-        ParentFont = False
-      end
-      object rllFatNum15: TRLLabel
-        Left = 807
-        Top = 39
-        Width = 70
-        Height = 10
-        AutoSize = False
-        Caption = '15'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -9
-        Font.Name = 'Arial'
-        Font.Style = []
-        ParentFont = False
-      end
-      object rllFatData15: TRLLabel
-        Left = 878
-        Top = 39
-        Width = 57
-        Height = 10
-        Alignment = taRightJustify
-        AutoSize = False
-        Caption = 'XX/XX/XXXX'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -9
-        Font.Name = 'Arial'
-        Font.Style = []
-        ParentFont = False
-      end
-      object rllFatData14: TRLLabel
-        Left = 878
-        Top = 27
-        Width = 57
-        Height = 10
-        Alignment = taRightJustify
-        AutoSize = False
-        Caption = 'XX/XX/XXXX'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -9
-        Font.Name = 'Arial'
-        Font.Style = []
-        ParentFont = False
-      end
-      object rllFatData13: TRLLabel
-        Left = 878
-        Top = 15
-        Width = 57
-        Height = 10
-        Alignment = taRightJustify
-        AutoSize = False
-        Caption = 'XX/XX/XXXX'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -9
-        Font.Name = 'Arial'
-        Font.Style = []
-        ParentFont = False
-      end
-      object rllFatValor13: TRLLabel
-        Left = 934
-        Top = 15
-        Width = 60
-        Height = 10
-        Alignment = taRightJustify
-        AutoSize = False
-        Caption = '9.999.999,99'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -9
-        Font.Name = 'Arial'
-        Font.Style = []
-        ParentFont = False
-      end
-      object rllFatValor14: TRLLabel
-        Left = 934
-        Top = 27
-        Width = 60
-        Height = 10
-        Alignment = taRightJustify
-        AutoSize = False
-        Caption = '9.999.999,99'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -9
-        Font.Name = 'Arial'
-        Font.Style = []
-        ParentFont = False
-      end
-      object rllFatValor15: TRLLabel
-        Left = 934
-        Top = 39
-        Width = 60
-        Height = 10
-        Alignment = taRightJustify
-        AutoSize = False
-        Caption = '9.999.999,99'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -9
-        Font.Name = 'Arial'
-        Font.Style = []
-        ParentFont = False
-      end
       object RLLabel57: TRLLabel
         Tag = 10
-        Left = 822
+        Left = 811
         Top = 3
-        Width = 32
+        Width = 54
         Height = 7
         Alignment = taCenter
-        Caption = 'N'#218'MERO'
+        Caption = 'N'#186' DUPLICATA'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -7
@@ -2788,6 +2783,22 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
         Font.Height = -7
         Font.Name = 'Arial'
         Font.Style = []
+        ParentFont = False
+      end
+      object rllFatura: TRLAngleLabel
+        Left = 13
+        Top = 9
+        Width = 10
+        Height = 34
+        Angle = 90.000000000000000000
+        AngleBorders = True
+        Caption = 'FATURA'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        Layout = tlCenter
         ParentFont = False
       end
     end

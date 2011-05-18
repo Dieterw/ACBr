@@ -1,9 +1,9 @@
 object frlDANFeRL: TfrlDANFeRL
-  Left = 201
-  Top = 108
+  Left = 225
+  Top = 112
   Width = 810
   Height = 634
-  VertScrollBar.Position = 540
+  VertScrollBar.Position = 279
   Caption = 'frlDANFeLR'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -17,7 +17,7 @@ object frlDANFeRL: TfrlDANFeRL
   TextHeight = 13
   object RLNFe: TRLReport
     Left = 0
-    Top = -540
+    Top = -279
     Width = 794
     Height = 1123
     Font.Charset = DEFAULT_CHARSET

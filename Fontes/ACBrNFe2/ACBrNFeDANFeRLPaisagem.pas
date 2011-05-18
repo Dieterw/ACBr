@@ -109,6 +109,12 @@
 |*  - Quando DPEC, nao estava imprimindo o valor FProtocoloNFe
 |* 24/03/2011: Fernando Emiliano David Nunes
 |*  - Alterei a funcao FormatarFone para tratar casos onde o DDD vem com ZERO somando 3 digitos
+|* 18/05/2011: Peterson de Cerqueira Matos
+|*  - Correção da exibição das duplicatas. As duplicatas são exibidas da direita
+|*    para a esquerda, até o limite de 15 duplicatas. Desta forma a altura do
+|*    quadro duplicatas fica variável, de acordo com a quantidade de linhas. O
+|*    limite de duplicatas não foi aumentado para preservar o pouco espaço
+|*    disponível para os itens da nota
 ******************************************************************************}
 {$I ACBr.inc}
 unit ACBrNFeDANFeRLPaisagem;
@@ -212,45 +218,45 @@ type
     RLDraw15: TRLDraw;
     rlbFatura: TRLBand;
     rllFatNum1: TRLLabel;
-    rllFatNum2: TRLLabel;
-    rllFatNum3: TRLLabel;
-    rllFatData1: TRLLabel;
-    rllFatData2: TRLLabel;
-    rllFatData3: TRLLabel;
-    rllFatValor1: TRLLabel;
-    rllFatValor2: TRLLabel;
-    rllFatValor3: TRLLabel;
-    rllFatNum4: TRLLabel;
-    rllFatNum5: TRLLabel;
     rllFatNum6: TRLLabel;
-    rllFatData4: TRLLabel;
-    rllFatData5: TRLLabel;
-    rllFatData6: TRLLabel;
-    rllFatValor4: TRLLabel;
-    rllFatValor5: TRLLabel;
-    rllFatValor6: TRLLabel;
-    rllFatNum7: TRLLabel;
-    rllFatNum8: TRLLabel;
-    rllFatNum9: TRLLabel;
-    rllFatData7: TRLLabel;
-    rllFatData8: TRLLabel;
-    rllFatData9: TRLLabel;
-    rllFatValor7: TRLLabel;
-    rllFatValor8: TRLLabel;
-    rllFatValor9: TRLLabel;
-    rllFatNum10: TRLLabel;
     rllFatNum11: TRLLabel;
-    rllFatNum12: TRLLabel;
-    rllFatData10: TRLLabel;
+    rllFatData1: TRLLabel;
+    rllFatData6: TRLLabel;
     rllFatData11: TRLLabel;
-    rllFatData12: TRLLabel;
-    rllFatValor10: TRLLabel;
+    rllFatValor1: TRLLabel;
+    rllFatValor6: TRLLabel;
     rllFatValor11: TRLLabel;
+    rllFatNum2: TRLLabel;
+    rllFatNum7: TRLLabel;
+    rllFatNum12: TRLLabel;
+    rllFatData2: TRLLabel;
+    rllFatData7: TRLLabel;
+    rllFatData12: TRLLabel;
+    rllFatValor2: TRLLabel;
+    rllFatValor7: TRLLabel;
     rllFatValor12: TRLLabel;
-    RLDraw26: TRLDraw;
-    RLDraw27: TRLDraw;
-    RLDraw28: TRLDraw;
-    RLDraw25: TRLDraw;
+    rllFatNum3: TRLLabel;
+    rllFatNum8: TRLLabel;
+    rllFatNum13: TRLLabel;
+    rllFatData3: TRLLabel;
+    rllFatData8: TRLLabel;
+    rllFatData13: TRLLabel;
+    rllFatValor3: TRLLabel;
+    rllFatValor8: TRLLabel;
+    rllFatValor13: TRLLabel;
+    rllFatNum4: TRLLabel;
+    rllFatNum9: TRLLabel;
+    rllFatNum14: TRLLabel;
+    rllFatData4: TRLLabel;
+    rllFatData9: TRLLabel;
+    rllFatData14: TRLLabel;
+    rllFatValor4: TRLLabel;
+    rllFatValor9: TRLLabel;
+    rllFatValor14: TRLLabel;
+    rliFatura2: TRLDraw;
+    rliFatura3: TRLDraw;
+    rliFatura4: TRLDraw;
+    rliFatura: TRLDraw;
     rlbImposto: TRLBand;
     RLLabel44: TRLLabel;
     rllBaseICMS: TRLLabel;
@@ -397,17 +403,17 @@ type
     RLAngleLabel1: TRLAngleLabel;
     RLAngleLabel2: TRLAngleLabel;
     RLDraw13: TRLDraw;
-    RLDraw14: TRLDraw;
-    RLAngleLabel3: TRLAngleLabel;
-    RLDraw43: TRLDraw;
-    rllFatNum13: TRLLabel;
-    rllFatNum14: TRLLabel;
+    rliFatura1: TRLDraw;
+    rllFatura: TRLAngleLabel;
+    rliFatura5: TRLDraw;
+    rllFatNum5: TRLLabel;
+    rllFatNum10: TRLLabel;
     rllFatNum15: TRLLabel;
     rllFatData15: TRLLabel;
-    rllFatData14: TRLLabel;
-    rllFatData13: TRLLabel;
-    rllFatValor13: TRLLabel;
-    rllFatValor14: TRLLabel;
+    rllFatData10: TRLLabel;
+    rllFatData5: TRLLabel;
+    rllFatValor5: TRLLabel;
+    rllFatValor10: TRLLabel;
     rllFatValor15: TRLLabel;
     RLLabel57: TRLLabel;
     RLLabel58: TRLLabel;
@@ -525,6 +531,7 @@ type
     txtEAN: TRLDBText;
     LinhaProdEAN: TRLDraw;
     rlsDivProdEAN: TRLDraw;
+    RLLabel12: TRLLabel;
     procedure RLNFeBeforePrint(Sender: TObject; var PrintIt: Boolean);
     procedure rlbEmitenteBeforePrint(Sender: TObject;
       var PrintIt: Boolean);
@@ -1773,10 +1780,12 @@ begin
 end;
 
 procedure TfrlDANFeRLPaisagem.AddFatura;
-var x : integer;
+var x, iQuantDup, iLinhas, iColunas, iPosQuadro, iAltLinha,
+    iAltQuadro1Linha, iAltQuadro, iAltBand, iFolga: Integer;
 begin
 
   //zera
+  iQuantDup := 0;
   for x := 1 to 15 do
     begin
       TRLLabel (FindComponent ('rllFatNum'   + intToStr (x))).Caption := '';
@@ -1786,8 +1795,13 @@ begin
 
   if FNFe.Cobr.Dup.Count > 0 then
     begin
-     //adiciona
-     for x := 0 to FNFe.Cobr.Dup.Count - 1 do
+      if FNFe.Cobr.Dup.Count > 15 then
+        iQuantDup := 15
+      else
+        iQuantDup := FNFe.Cobr.Dup.Count;
+
+      //adiciona
+      for x := 0 to (iQuantDup - 1) do
         with FNFe.Cobr.Dup[ x ] do
          begin
            TRLLabel (FindComponent ('rllFatNum'   + intToStr (x + 1))).Caption :=
@@ -1797,7 +1811,39 @@ begin
            TRLLabel (FindComponent ('rllFatValor' + intToStr (x + 1))).Caption :=
                                                     NotaUtil.FormatFloat(VDup);
          end;
-    end;
+
+     {=============== Ajusta o tamanho do quadro das faturas ===============}
+
+      iColunas := 5; // Quantidade de colunas
+      iAltLinha := 12;  // Altura de cada linha
+      iPosQuadro := 0; // Posição (Top) do Quadro
+      iAltQuadro1Linha := 27; // Altura do quadro com 1 linha
+      iFolga := 1; // Distância entre o final da Band e o final do quadro
+
+      if (iQuantDup mod iColunas) = 0 then // Quantidade de linhas
+        iLinhas := iQuantDup div iColunas
+      else
+        iLinhas := (iQuantDup div iColunas) + 1;
+
+      if iLinhas = 1 then
+        iAltQuadro := iAltQuadro1Linha
+      else
+        iAltQuadro := iAltQuadro1Linha + ((iLinhas - 1) * iAltLinha);
+
+      iAltBand := iPosQuadro + iAltQuadro + iFolga;
+
+      rlbFatura.Height := iAltBand;
+      rliFatura.Height := iAltQuadro;
+      rliFatura1.Height := iAltQuadro;
+      rliFatura2.Height := iAltQuadro;
+      rliFatura3.Height := iAltQuadro;
+      rliFatura4.Height := iAltQuadro;
+      rliFatura5.Height := iAltQuadro;
+
+     {=============== Centraliza o label "FATURA" ===============}
+     rllFatura.Top := (rlbFatura.Height - rllFatura.Height) div 2;
+
+    end; // if FNFe.Cobr.Dup.Count > 0
 end;
 
 procedure TfrlDANFeRLPaisagem.rlbItensAfterPrint(Sender: TObject);

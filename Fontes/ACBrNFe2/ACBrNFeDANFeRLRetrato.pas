@@ -105,6 +105,10 @@
 |*  - Quando DPEC, nao estava imprimindo o valor FProtocoloNFe
 |* 24/03/2011: Fernando Emiliano David Nunes
 |*  - Alterei a funcao FormatarFone para tratar casos onde o DDD vem com ZERO somando 3 digitos
+|* 18/05/2011: Peterson de Cerqueira Matos
+|*  - Correção da exibição das duplicatas. As duplicatas são exibidas da direita
+|*    para a esquerda, até o limite de 60 duplicatas. Desta forma a altura do
+|*    quadro duplicatas fica variável, de acordo com a quantidade de linhas
 ******************************************************************************}
 
 
@@ -248,45 +252,45 @@ type
     rlbFatura: TRLBand;
     RLLabel19: TRLLabel;
     rllFatNum1: TRLLabel;
-    rllFatNum2: TRLLabel;
-    rllFatNum3: TRLLabel;
-    rllFatData1: TRLLabel;
-    rllFatData2: TRLLabel;
-    rllFatData3: TRLLabel;
-    rllFatValor1: TRLLabel;
-    rllFatValor2: TRLLabel;
-    rllFatValor3: TRLLabel;
-    rllFatNum4: TRLLabel;
     rllFatNum5: TRLLabel;
-    rllFatNum6: TRLLabel;
-    rllFatData4: TRLLabel;
-    rllFatData5: TRLLabel;
-    rllFatData6: TRLLabel;
-    rllFatValor4: TRLLabel;
-    rllFatValor5: TRLLabel;
-    rllFatValor6: TRLLabel;
-    rllFatNum7: TRLLabel;
-    rllFatNum8: TRLLabel;
     rllFatNum9: TRLLabel;
-    rllFatData7: TRLLabel;
-    rllFatData8: TRLLabel;
+    rllFatData1: TRLLabel;
+    rllFatData5: TRLLabel;
     rllFatData9: TRLLabel;
-    rllFatValor7: TRLLabel;
-    rllFatValor8: TRLLabel;
+    rllFatValor1: TRLLabel;
+    rllFatValor5: TRLLabel;
     rllFatValor9: TRLLabel;
+    rllFatNum2: TRLLabel;
+    rllFatNum6: TRLLabel;
     rllFatNum10: TRLLabel;
-    rllFatNum11: TRLLabel;
-    rllFatNum12: TRLLabel;
+    rllFatData2: TRLLabel;
+    rllFatData6: TRLLabel;
     rllFatData10: TRLLabel;
-    rllFatData11: TRLLabel;
-    rllFatData12: TRLLabel;
+    rllFatValor2: TRLLabel;
+    rllFatValor6: TRLLabel;
     rllFatValor10: TRLLabel;
+    rllFatNum3: TRLLabel;
+    rllFatNum7: TRLLabel;
+    rllFatNum11: TRLLabel;
+    rllFatData3: TRLLabel;
+    rllFatData7: TRLLabel;
+    rllFatData11: TRLLabel;
+    rllFatValor3: TRLLabel;
+    rllFatValor7: TRLLabel;
     rllFatValor11: TRLLabel;
+    rllFatNum4: TRLLabel;
+    rllFatNum8: TRLLabel;
+    rllFatNum12: TRLLabel;
+    rllFatData4: TRLLabel;
+    rllFatData8: TRLLabel;
+    rllFatData12: TRLLabel;
+    rllFatValor4: TRLLabel;
+    rllFatValor8: TRLLabel;
     rllFatValor12: TRLLabel;
-    RLDraw26: TRLDraw;
-    RLDraw27: TRLDraw;
-    RLDraw28: TRLDraw;
-    RLDraw25: TRLDraw;
+    rliFatura1: TRLDraw;
+    rliFatura2: TRLDraw;
+    rliFatura3: TRLDraw;
+    rliFatura: TRLDraw;
     rlbImposto: TRLBand;
     RLLabel20: TRLLabel;
     RLLabel44: TRLLabel;
@@ -492,6 +496,151 @@ type
     cdsItensCST2: TStringField;
     rllContingencia: TRLLabel;
     RLDraw4: TRLDraw;
+    rllFatNum13: TRLLabel;
+    rllFatData13: TRLLabel;
+    rllFatValor13: TRLLabel;
+    rllFatNum14: TRLLabel;
+    rllFatData14: TRLLabel;
+    rllFatValor14: TRLLabel;
+    rllFatNum15: TRLLabel;
+    rllFatData15: TRLLabel;
+    rllFatValor15: TRLLabel;
+    rllFatNum16: TRLLabel;
+    rllFatData16: TRLLabel;
+    rllFatValor16: TRLLabel;
+    rllFatNum17: TRLLabel;
+    rllFatData17: TRLLabel;
+    rllFatValor17: TRLLabel;
+    rllFatNum18: TRLLabel;
+    rllFatData18: TRLLabel;
+    rllFatValor18: TRLLabel;
+    rllFatNum19: TRLLabel;
+    rllFatData19: TRLLabel;
+    rllFatValor19: TRLLabel;
+    rllFatNum20: TRLLabel;
+    rllFatData20: TRLLabel;
+    rllFatValor20: TRLLabel;
+    rllFatNum21: TRLLabel;
+    rllFatData21: TRLLabel;
+    rllFatValor21: TRLLabel;
+    rllFatNum22: TRLLabel;
+    rllFatData22: TRLLabel;
+    rllFatValor22: TRLLabel;
+    rllFatNum23: TRLLabel;
+    rllFatData23: TRLLabel;
+    rllFatValor23: TRLLabel;
+    rllFatNum24: TRLLabel;
+    rllFatData24: TRLLabel;
+    rllFatValor24: TRLLabel;
+    rllFatNum25: TRLLabel;
+    rllFatData25: TRLLabel;
+    rllFatValor25: TRLLabel;
+    rllFatNum26: TRLLabel;
+    rllFatData26: TRLLabel;
+    rllFatValor26: TRLLabel;
+    rllFatNum27: TRLLabel;
+    rllFatData27: TRLLabel;
+    rllFatValor27: TRLLabel;
+    rllFatNum28: TRLLabel;
+    rllFatData28: TRLLabel;
+    rllFatValor28: TRLLabel;
+    rllFatNum29: TRLLabel;
+    rllFatData29: TRLLabel;
+    rllFatValor29: TRLLabel;
+    rllFatNum30: TRLLabel;
+    rllFatData30: TRLLabel;
+    rllFatValor30: TRLLabel;
+    rllFatNum31: TRLLabel;
+    rllFatData31: TRLLabel;
+    rllFatValor31: TRLLabel;
+    rllFatNum32: TRLLabel;
+    rllFatData32: TRLLabel;
+    rllFatValor32: TRLLabel;
+    rllFatNum33: TRLLabel;
+    rllFatData33: TRLLabel;
+    rllFatValor33: TRLLabel;
+    rllFatNum34: TRLLabel;
+    rllFatData34: TRLLabel;
+    rllFatValor34: TRLLabel;
+    rllFatNum35: TRLLabel;
+    rllFatData35: TRLLabel;
+    rllFatValor35: TRLLabel;
+    rllFatNum36: TRLLabel;
+    rllFatData36: TRLLabel;
+    rllFatValor36: TRLLabel;
+    rllFatNum37: TRLLabel;
+    rllFatData37: TRLLabel;
+    rllFatValor37: TRLLabel;
+    rllFatNum38: TRLLabel;
+    rllFatData38: TRLLabel;
+    rllFatValor38: TRLLabel;
+    rllFatNum39: TRLLabel;
+    rllFatData39: TRLLabel;
+    rllFatValor39: TRLLabel;
+    rllFatNum40: TRLLabel;
+    rllFatData40: TRLLabel;
+    rllFatValor40: TRLLabel;
+    rllFatNum41: TRLLabel;
+    rllFatData41: TRLLabel;
+    rllFatValor41: TRLLabel;
+    rllFatNum42: TRLLabel;
+    rllFatData42: TRLLabel;
+    rllFatValor42: TRLLabel;
+    rllFatNum43: TRLLabel;
+    rllFatData43: TRLLabel;
+    rllFatValor43: TRLLabel;
+    rllFatNum44: TRLLabel;
+    rllFatData44: TRLLabel;
+    rllFatValor44: TRLLabel;
+    rllFatNum45: TRLLabel;
+    rllFatData45: TRLLabel;
+    rllFatValor45: TRLLabel;
+    rllFatNum46: TRLLabel;
+    rllFatData46: TRLLabel;
+    rllFatValor46: TRLLabel;
+    rllFatNum47: TRLLabel;
+    rllFatData47: TRLLabel;
+    rllFatValor47: TRLLabel;
+    rllFatNum48: TRLLabel;
+    rllFatData48: TRLLabel;
+    rllFatValor48: TRLLabel;
+    rllFatNum49: TRLLabel;
+    rllFatData49: TRLLabel;
+    rllFatValor49: TRLLabel;
+    rllFatNum50: TRLLabel;
+    rllFatData50: TRLLabel;
+    rllFatValor50: TRLLabel;
+    rllFatNum51: TRLLabel;
+    rllFatData51: TRLLabel;
+    rllFatValor51: TRLLabel;
+    rllFatNum52: TRLLabel;
+    rllFatData52: TRLLabel;
+    rllFatValor52: TRLLabel;
+    rllFatNum53: TRLLabel;
+    rllFatData53: TRLLabel;
+    rllFatValor53: TRLLabel;
+    rllFatNum54: TRLLabel;
+    rllFatData54: TRLLabel;
+    rllFatValor54: TRLLabel;
+    rllFatNum55: TRLLabel;
+    rllFatData55: TRLLabel;
+    rllFatValor55: TRLLabel;
+    rllFatNum56: TRLLabel;
+    rllFatData56: TRLLabel;
+    rllFatValor56: TRLLabel;
+    rllFatNum57: TRLLabel;
+    rllFatData57: TRLLabel;
+    rllFatValor57: TRLLabel;
+    rllFatNum58: TRLLabel;
+    rllFatData58: TRLLabel;
+    rllFatValor58: TRLLabel;
+    rllFatNum59: TRLLabel;
+    rllFatData59: TRLLabel;
+    rllFatValor59: TRLLabel;
+    rllFatNum60: TRLLabel;
+    rllFatData60: TRLLabel;
+    rllFatValor60: TRLLabel;
+    RLLabel12: TRLLabel;
     procedure RLNFeBeforePrint(Sender: TObject; var PrintIt: Boolean);
     procedure rlbEmitenteBeforePrint(Sender: TObject;
       var PrintIt: Boolean);
@@ -1702,11 +1851,13 @@ begin
 end;
 
 procedure TfrlDANFeRLRetrato.AddFatura;
-var x : integer;
+var x, iQuantDup, iLinhas, iColunas, iPosQuadro, iAltLinha,
+    iAltQuadro1Linha, iAltQuadro, iAltBand, iFolga: Integer;
 begin
 
   //zera
-  for x := 1 to 12 do
+  iQuantDup := 0;
+  for x := 1 to 60 do
     begin
       TRLLabel (FindComponent ('rllFatNum'   + intToStr (x))).Caption := '';
       TRLLabel (FindComponent ('rllFatData'  + intToStr (x))).Caption := '';
@@ -1715,8 +1866,13 @@ begin
 
   if FNFe.Cobr.Dup.Count > 0 then
     begin
-     //adiciona
-     for x := 0 to FNFe.Cobr.Dup.Count - 1 do
+      //adiciona
+      if FNFe.Cobr.Dup.Count > 60 then
+        iQuantDup := 60
+      else
+        iQuantDup := FNFe.Cobr.Dup.Count;
+
+      for x := 0 to (iQuantDup - 1) do
         with FNFe.Cobr.Dup[ x ] do
          begin
            TRLLabel (FindComponent ('rllFatNum'   + intToStr (x + 1))).Caption :=
@@ -1726,7 +1882,33 @@ begin
            TRLLabel (FindComponent ('rllFatValor' + intToStr (x + 1))).Caption :=
                                                     NotaUtil.FormatFloat(VDup);
          end;
-    end;
+
+     {=============== Ajusta o tamanho do quadro das faturas ===============}
+
+      iColunas := 4; // Quantidade de colunas
+      iAltLinha := 13;  // Altura de cada linha
+      iPosQuadro := 12; // Posição (Top) do Quadro
+      iAltQuadro1Linha := 27; // Altura do quadro com 1 linha
+      iFolga := 5; // Distância entre o final da Band e o final do quadro
+
+      if (iQuantDup mod iColunas) = 0 then // Quantidade de linhas
+        iLinhas := iQuantDup div iColunas
+      else
+        iLinhas := (iQuantDup div iColunas) + 1;
+
+      if iLinhas = 1 then
+        iAltQuadro := iAltQuadro1Linha
+      else
+        iAltQuadro := iAltQuadro1Linha + ((iLinhas - 1) * iAltLinha);
+
+      iAltBand := iPosQuadro + iAltQuadro + iFolga;
+
+      rlbFatura.Height := iAltBand;
+      rliFatura.Height := iAltQuadro;
+      rliFatura1.Height := iAltQuadro;
+      rliFatura2.Height := iAltQuadro;
+      rliFatura3.Height := iAltQuadro;
+    end; // if FNFe.Cobr.Dup.Count > 0
 end;
 
 procedure TfrlDANFeRLRetrato.rlbItensAfterPrint(Sender: TObject);

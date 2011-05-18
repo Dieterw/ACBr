@@ -154,10 +154,12 @@ end;
 
 function TPAF_D.WriteRegistroD2: String;
 var
-intFor: integer;
-strRegistroD2: String;
+  intFor: integer;
+  strRegistroD2: String;
+  strRegistroD3: String;
 begin
   strRegistroD2 := '';
+  strRegistroD3 := '';
 
   if Assigned(FRegistroD2) then
   begin
@@ -188,14 +190,16 @@ begin
 
                                            sLineBreak;
         end;
-        /// Registro FILHOS
-        strRegistroD2 := strRegistroD2 +
+
+        // Registro FILHOS
+        strRegistroD3 := strRegistroD3 +
                          WriteRegistroD3( FRegistroD2.Items[intFor] );
-        ///
+
         FRegistroD9.TOT_REG_D2 := FRegistroD9.TOT_REG_D2 + 1;
         FRegistroD9.TOT_REG    := FRegistroD9.TOT_REG + 1;
      end;
-     Result := strRegistroD2;
+
+     Result := strRegistroD2 + strRegistroD3;
   end;
 end;
 

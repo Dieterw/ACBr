@@ -31,9 +31,7 @@ requires
   ACBrDiversos,
   designide,
   ACBrComum,
-  vclactnband,
-  vclx,
-  visualclx;
+  vclactnband;
 
 contains
   ACBrBancoBradesco in '..\..\Fontes\ACBrBoleto\ACBrBancoBradesco.pas',

@@ -1,0 +1,216 @@
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<ProjectGuid>{636FFD27-DCC2-4A13-97C8-3B532931B25F}</ProjectGuid>
+		</PropertyGroup>
+		<ItemGroup>
+			<Projects Include="ACBrComum.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="ACBrDiversos.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="ACBrSerial.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="ACBr_SPED.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="ACBr_PAF.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="ACBr_Sintegra.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="ACBr_TEFD.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="ACBrTCP.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="ACBr_Boleto.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="ACBrCapicom.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="ACBrOpenSSL.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="ACBrNFe2\PCN2.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="ACBrNFe2\ACBr_NFe2.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="ACBrNFe2\ACBr_CTe.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="ACBrNFe2\ACBrNFeDanfeRV.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="ACBrNFe2\ACBrNFeDanfeRVCodeBase.dproj">
+				<Dependencies/>
+			</Projects>
+		</ItemGroup>
+		<ProjectExtensions>
+			<Borland.Personality>Default.Personality.12</Borland.Personality>
+			<Borland.ProjectType/>
+			<BorlandProject>
+				<Default.Personality/>
+			</BorlandProject>
+		</ProjectExtensions>
+		<Target Name="ACBrComum">
+			<MSBuild Projects="ACBrComum.dproj"/>
+		</Target>
+		<Target Name="ACBrComum:Clean">
+			<MSBuild Targets="Clean" Projects="ACBrComum.dproj"/>
+		</Target>
+		<Target Name="ACBrComum:Make">
+			<MSBuild Targets="Make" Projects="ACBrComum.dproj"/>
+		</Target>
+		<Target Name="ACBrDiversos">
+			<MSBuild Projects="ACBrDiversos.dproj"/>
+		</Target>
+		<Target Name="ACBrDiversos:Clean">
+			<MSBuild Targets="Clean" Projects="ACBrDiversos.dproj"/>
+		</Target>
+		<Target Name="ACBrDiversos:Make">
+			<MSBuild Targets="Make" Projects="ACBrDiversos.dproj"/>
+		</Target>
+		<Target Name="ACBrSerial">
+			<MSBuild Projects="ACBrSerial.dproj"/>
+		</Target>
+		<Target Name="ACBrSerial:Clean">
+			<MSBuild Targets="Clean" Projects="ACBrSerial.dproj"/>
+		</Target>
+		<Target Name="ACBrSerial:Make">
+			<MSBuild Targets="Make" Projects="ACBrSerial.dproj"/>
+		</Target>
+		<Target Name="ACBr_SPED">
+			<MSBuild Projects="ACBr_SPED.dproj"/>
+		</Target>
+		<Target Name="ACBr_SPED:Clean">
+			<MSBuild Targets="Clean" Projects="ACBr_SPED.dproj"/>
+		</Target>
+		<Target Name="ACBr_SPED:Make">
+			<MSBuild Targets="Make" Projects="ACBr_SPED.dproj"/>
+		</Target>
+		<Target Name="ACBr_PAF">
+			<MSBuild Projects="ACBr_PAF.dproj"/>
+		</Target>
+		<Target Name="ACBr_PAF:Clean">
+			<MSBuild Targets="Clean" Projects="ACBr_PAF.dproj"/>
+		</Target>
+		<Target Name="ACBr_PAF:Make">
+			<MSBuild Targets="Make" Projects="ACBr_PAF.dproj"/>
+		</Target>
+		<Target Name="ACBr_Sintegra">
+			<MSBuild Projects="ACBr_Sintegra.dproj"/>
+		</Target>
+		<Target Name="ACBr_Sintegra:Clean">
+			<MSBuild Targets="Clean" Projects="ACBr_Sintegra.dproj"/>
+		</Target>
+		<Target Name="ACBr_Sintegra:Make">
+			<MSBuild Targets="Make" Projects="ACBr_Sintegra.dproj"/>
+		</Target>
+		<Target Name="ACBr_TEFD">
+			<MSBuild Projects="ACBr_TEFD.dproj"/>
+		</Target>
+		<Target Name="ACBr_TEFD:Clean">
+			<MSBuild Targets="Clean" Projects="ACBr_TEFD.dproj"/>
+		</Target>
+		<Target Name="ACBr_TEFD:Make">
+			<MSBuild Targets="Make" Projects="ACBr_TEFD.dproj"/>
+		</Target>
+		<Target Name="ACBrTCP">
+			<MSBuild Projects="ACBrTCP.dproj"/>
+		</Target>
+		<Target Name="ACBrTCP:Clean">
+			<MSBuild Targets="Clean" Projects="ACBrTCP.dproj"/>
+		</Target>
+		<Target Name="ACBrTCP:Make">
+			<MSBuild Targets="Make" Projects="ACBrTCP.dproj"/>
+		</Target>
+		<Target Name="ACBr_Boleto">
+			<MSBuild Projects="ACBr_Boleto.dproj"/>
+		</Target>
+		<Target Name="ACBr_Boleto:Clean">
+			<MSBuild Targets="Clean" Projects="ACBr_Boleto.dproj"/>
+		</Target>
+		<Target Name="ACBr_Boleto:Make">
+			<MSBuild Targets="Make" Projects="ACBr_Boleto.dproj"/>
+		</Target>
+		<Target Name="ACBrCapicom">
+			<MSBuild Projects="ACBrCapicom.dproj"/>
+		</Target>
+		<Target Name="ACBrCapicom:Clean">
+			<MSBuild Targets="Clean" Projects="ACBrCapicom.dproj"/>
+		</Target>
+		<Target Name="ACBrCapicom:Make">
+			<MSBuild Targets="Make" Projects="ACBrCapicom.dproj"/>
+		</Target>
+		<Target Name="ACBrOpenSSL">
+			<MSBuild Projects="ACBrOpenSSL.dproj"/>
+		</Target>
+		<Target Name="ACBrOpenSSL:Clean">
+			<MSBuild Targets="Clean" Projects="ACBrOpenSSL.dproj"/>
+		</Target>
+		<Target Name="ACBrOpenSSL:Make">
+			<MSBuild Targets="Make" Projects="ACBrOpenSSL.dproj"/>
+		</Target>
+		<Target Name="PCN2">
+			<MSBuild Projects="ACBrNFe2\PCN2.dproj"/>
+		</Target>
+		<Target Name="PCN2:Clean">
+			<MSBuild Targets="Clean" Projects="ACBrNFe2\PCN2.dproj"/>
+		</Target>
+		<Target Name="PCN2:Make">
+			<MSBuild Targets="Make" Projects="ACBrNFe2\PCN2.dproj"/>
+		</Target>
+		<Target Name="ACBr_NFe2">
+			<MSBuild Projects="ACBrNFe2\ACBr_NFe2.dproj"/>
+		</Target>
+		<Target Name="ACBr_NFe2:Clean">
+			<MSBuild Targets="Clean" Projects="ACBrNFe2\ACBr_NFe2.dproj"/>
+		</Target>
+		<Target Name="ACBr_NFe2:Make">
+			<MSBuild Targets="Make" Projects="ACBrNFe2\ACBr_NFe2.dproj"/>
+		</Target>
+		<Target Name="ACBr_CTe">
+			<MSBuild Projects="ACBrNFe2\ACBr_CTe.dproj"/>
+		</Target>
+		<Target Name="ACBr_CTe:Clean">
+			<MSBuild Targets="Clean" Projects="ACBrNFe2\ACBr_CTe.dproj"/>
+		</Target>
+		<Target Name="ACBr_CTe:Make">
+			<MSBuild Targets="Make" Projects="ACBrNFe2\ACBr_CTe.dproj"/>
+		</Target>
+		<Target Name="ACBrNFeDanfeRV">
+			<MSBuild Projects="ACBrNFe2\ACBrNFeDanfeRV.dproj"/>
+		</Target>
+		<Target Name="ACBrNFeDanfeRV:Clean">
+			<MSBuild Targets="Clean" Projects="ACBrNFe2\ACBrNFeDanfeRV.dproj"/>
+		</Target>
+		<Target Name="ACBrNFeDanfeRV:Make">
+			<MSBuild Targets="Make" Projects="ACBrNFe2\ACBrNFeDanfeRV.dproj"/>
+		</Target>
+		<Target Name="ACBrNFeDanfeRVCodeBase">
+			<MSBuild Projects="ACBrNFe2\ACBrNFeDanfeRVCodeBase.dproj"/>
+		</Target>
+		<Target Name="ACBrNFeDanfeRVCodeBase:Clean">
+			<MSBuild Targets="Clean" Projects="ACBrNFe2\ACBrNFeDanfeRVCodeBase.dproj"/>
+		</Target>
+		<Target Name="ACBrNFeDanfeRVCodeBase:Make">
+			<MSBuild Targets="Make" Projects="ACBrNFe2\ACBrNFeDanfeRVCodeBase.dproj"/>
+		</Target>
+		<Target Name="Build">
+			<CallTarget Targets="ACBrComum;ACBrDiversos;ACBrSerial;ACBr_SPED;ACBr_PAF;ACBr_Sintegra;ACBr_TEFD;ACBrTCP;ACBr_Boleto;ACBrCapicom;ACBrOpenSSL;PCN2;ACBr_NFe2;ACBr_CTe;ACBrNFeDanfeRV;ACBrNFeDanfeRVCodeBase"/>
+		</Target>
+		<Target Name="Clean">
+			<CallTarget Targets="ACBrComum:Clean;ACBrDiversos:Clean;ACBrSerial:Clean;ACBr_SPED:Clean;ACBr_PAF:Clean;ACBr_Sintegra:Clean;ACBr_TEFD:Clean;ACBrTCP:Clean;ACBr_Boleto:Clean;ACBrCapicom:Clean;ACBrOpenSSL:Clean;PCN2:Clean;ACBr_NFe2:Clean;ACBr_CTe:Clean;ACBrNFeDanfeRV:Clean;ACBrNFeDanfeRVCodeBase:Clean"/>
+		</Target>
+		<Target Name="Make">
+			<CallTarget Targets="ACBrComum:Make;ACBrDiversos:Make;ACBrSerial:Make;ACBr_SPED:Make;ACBr_PAF:Make;ACBr_Sintegra:Make;ACBr_TEFD:Make;ACBrTCP:Make;ACBr_Boleto:Make;ACBrCapicom:Make;ACBrOpenSSL:Make;PCN2:Make;ACBr_NFe2:Make;ACBr_CTe:Make;ACBrNFeDanfeRV:Make;ACBrNFeDanfeRVCodeBase:Make"/>
+		</Target>
+		<Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+	</Project>

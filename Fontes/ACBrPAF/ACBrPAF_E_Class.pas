@@ -129,6 +129,14 @@ begin
    end;
 end;
 
+function OrdenarE2(AProd1, AProd2: Pointer): Integer;
+begin
+  Result := AnsiCompareText(
+    TRegistroE2(AProd1).COD_MERC,
+    TRegistroE2(AProd2).COD_MERC
+  );
+end;
+
 function TPAF_E.WriteRegistroE2: string;
 var
 intFor: integer;
@@ -138,6 +146,8 @@ begin
 
   if Assigned(FRegistroE2) then
   begin
+     FRegistroE2.Sort(@OrdenarE2);
+
      for intFor := 0 to FRegistroE2.Count - 1 do
      begin
         with FRegistroE2.Items[intFor] do

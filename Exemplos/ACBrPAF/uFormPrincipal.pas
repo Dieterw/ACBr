@@ -344,7 +344,7 @@ begin
         IM_SH       :=edtIM.Text;
         NOME_SH     :=edtRAZAO.Text;
         NOME_PAF    :='PAFECF';
-        VER_PAF     :='0100';
+        VER_PAF     :='0107';
         COD_MD5     :=GerarDados('S',32);
         DT_INI      :=Date;
         DT_FIN      :=date;

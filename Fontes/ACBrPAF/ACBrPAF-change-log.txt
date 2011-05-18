@@ -49,7 +49,10 @@ Símbolo : Significado
 
 Versão 0.08   18/05/11
 ---------------
-[-] Acerto na ordenação do arquivo de DAVs (Registros D);
+[-] Acerto na ordenação do arquivo de DAV (Registros D);
+    Acerto na ordenação do arquivo de Movimento (Registros R);
+    Acerto na ordenação do arquivo de Estoque (Registros E);
+    Acerto na ordenação do arquivo de Produtos (Registros P);
     por Régys Silveira
 
 Versão 0.08   14/05/11

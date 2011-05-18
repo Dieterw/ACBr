@@ -114,7 +114,6 @@ type
     procedure LimpaRegistros_P;
     procedure LimpaRegistros_R;
     procedure LimpaRegistros_T;
-    procedure ReordenarRegistros(Arquivo: String);
   protected
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
 
@@ -639,12 +638,12 @@ begin
 
       if FPAF_R.RegistroR06.Count > 0 then
         Write(txtFile, WriteRegistroR06);
+
+      if Trim(FPAF_R.RegistroR07) <> EmptyStr then
+        Write(txtFile, FPAF_R.RegistroR07);
     finally
       CloseFile(txtFile);
     end;
-
-    // Coloca os registros R em ordem crescente
-    ReordenarRegistros(Arquivo);
 
     // Assinatura EAD
     if FAssinar then
@@ -779,20 +778,6 @@ begin
     begin
       raise Exception.Create(E.Message);
     end;
-  end;
-end;
-
-procedure TACBrPAF.ReordenarRegistros(Arquivo: String);
-var
-objFile: TStringList;
-begin
-  objFile := TStringList.Create;
-  try
-    objFile.LoadFromFile(fPath + Arquivo);
-    objFile.Sort;
-    objFile.SaveToFile(fPath + Arquivo);
-  finally
-    objFile.Free;
   end;
 end;
 

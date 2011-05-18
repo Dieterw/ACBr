@@ -43,16 +43,18 @@ unit ACBrPAF_R_Class;
 interface
 
 uses SysUtils, StrUtils, Classes, DateUtils, ACBrTXTClass, ACBrPAFRegistros,
-     ACBrPAF_R;
+     ACBrPAF_R, ACBrUtil;
 
 type
-  /// TPAF_R -
+  // TPAF_R -
   TPAF_R = class(TACBrTXTClass)
   private
-    FRegistroR01: TRegistroR01;       /// RegistroR01
-    FRegistroR02: TRegistroR02List;   /// Lista de RegistroR02
-    FRegistroR04: TRegistroR04List;   /// Lista de RegistroR04
-    FRegistroR06: TRegistroR06List;   /// Lista de RegistroR06
+    FRegistroR07: String;
+
+    FRegistroR01: TRegistroR01;       // RegistroR01
+    FRegistroR02: TRegistroR02List;   // Lista de RegistroR02
+    FRegistroR04: TRegistroR04List;   // Lista de RegistroR04
+    FRegistroR06: TRegistroR06List;   // Lista de RegistroR06
 
     FRegistroR03Count: Integer;
     FRegistroR05Count: Integer;
@@ -66,8 +68,8 @@ type
     procedure CriaRegistros;
     procedure LiberaRegistros;
   public
-    constructor Create; /// Create
-    destructor Destroy; override; /// Destroy
+    constructor Create; // Create
+    destructor Destroy; override; // Destroy
     procedure LimpaRegistros;
 
     function WriteRegistroR01: String;
@@ -83,11 +85,104 @@ type
     property RegistroR03Count: Integer read FRegistroR03Count write FRegistroR03Count;
     property RegistroR05Count: Integer read FRegistroR05Count write FRegistroR05Count;
     property RegistroR07Count: Integer read FRegistroR07Count write FRegistroR07Count;
+    property RegistroR07: String read FRegistroR07;
   end;
 
 implementation
 
 uses ACBrSPEDUtils;
+
+{ ordenações de registros }
+
+function OrdenarR02(const ARegistro1, ARegistro2: Pointer): Integer;
+var
+  Reducao1, Reducao2: String;
+begin
+  Reducao1 :=
+    Format('%2.2d', [TRegistroR02(ARegistro1).NUM_USU]) +
+    Format('%6.6d', [TRegistroR02(ARegistro1).CRZ]) +
+    Format('%6.6d', [TRegistroR02(ARegistro1).CRO]);
+
+  Reducao2 :=
+    Format('%2.2d', [TRegistroR02(ARegistro2).NUM_USU]) +
+    Format('%6.6d', [TRegistroR02(ARegistro2).CRZ]) +
+    Format('%6.6d', [TRegistroR02(ARegistro2).CRO]);
+
+  Result := AnsiCompareText(Reducao1, Reducao2);
+end;
+
+function OrdenarR03(const ARegistro1, ARegistro2: Pointer): Integer;
+var
+  Detalhe1, Detalhe2: String;
+begin
+  Detalhe1 := Format('%-7s', [TRegistroR03(ARegistro1).TOT_PARCIAL]);
+  Detalhe2 := Format('%-7s', [TRegistroR03(ARegistro2).TOT_PARCIAL]);
+
+  Result := AnsiCompareText(Detalhe1, Detalhe2);
+end;
+
+function OrdenarR04(const ARegistro1, ARegistro2: Pointer): Integer;
+var
+  Cupom1, Cupom2: String;
+begin
+  Cupom1 :=
+    Format('%2.2d', [TRegistroR04(ARegistro1).NUM_USU]) +
+    Format('%6.6d', [TRegistroR04(ARegistro1).COO]);
+
+  Cupom2 :=
+    Format('%2.2d', [TRegistroR04(ARegistro2).NUM_USU]) +
+    Format('%6.6d', [TRegistroR04(ARegistro2).COO]);
+
+  Result := AnsiCompareText(Cupom1, Cupom2);
+end;
+
+function OrdenarR05(const ARegistro1, ARegistro2: Pointer): Integer;
+var
+  Detalhe1, Detalhe2: Integer;
+begin
+  Detalhe1 := TRegistroR05(ARegistro1).NUM_ITEM;
+  Detalhe2 := TRegistroR05(ARegistro2).NUM_ITEM;
+
+  if Detalhe1 < Detalhe2 then
+    Result := -1
+  else
+  if Detalhe1 > Detalhe2 then
+    Result := 1
+  else
+    Result := 0;
+end;
+
+function OrdenarR06(const ARegistro1, ARegistro2: Pointer): Integer;
+var
+  Doc1, Doc2: String;
+begin
+  Doc1 :=
+    Format('%2.2d', [TRegistroR06(ARegistro1).NUM_USU]) +
+    Format('%6.6d', [TRegistroR06(ARegistro1).COO]);
+
+  Doc2 :=
+    Format('%2.2d', [TRegistroR06(ARegistro2).NUM_USU]) +
+    Format('%6.6d', [TRegistroR06(ARegistro2).COO]);
+
+  Result := AnsiCompareText(Doc1, Doc2);
+end;
+
+function OrdenarR07(const ARegistro1, ARegistro2: Pointer): Integer;
+var
+  Pagto1, Pagto2: String;
+begin
+  Pagto1 :=
+    Format('%6.6d', [TRegistroR07(ARegistro1).GNF]) +
+    Format('%6.6d', [TRegistroR07(ARegistro1).CCF]) +
+    Format('%-15s', [TRegistroR07(ARegistro1).MP]);
+
+  Pagto2 :=
+    Format('%6.6d', [TRegistroR07(ARegistro2).GNF]) +
+    Format('%6.6d', [TRegistroR07(ARegistro2).CCF]) +
+    Format('%-15s', [TRegistroR07(ARegistro2).MP]);
+
+  Result := AnsiCompareText(Pagto1, Pagto2);
+end;
 
 { TPAF_R }
 
@@ -109,6 +204,7 @@ begin
   FRegistroR04 := TRegistroR04List.Create;
   FRegistroR06 := TRegistroR06List.Create;
 
+  FRegistroR07      := EmptyStr;
   FRegistroR03Count := 0;
   FRegistroR05Count := 0;
   FRegistroR07Count := 0;
@@ -124,9 +220,9 @@ end;
 
 procedure TPAF_R.LimpaRegistros;
 begin
-  /// Limpa os Registros
+  // Limpa os Registros
   LiberaRegistros;
-  /// Recriar os Registros Limpos
+  // Recriar os Registros Limpos
   CriaRegistros;
 end;
 
@@ -140,7 +236,7 @@ begin
       begin
         Check(funChecaCNPJ(CNPJ), '(R01) ESTABELECIMENTO: O CNPJ "%s" digitado é inválido!', [CNPJ]);
         Check(funChecaCNPJ(CNPJ), '(R01) SOFTHOUSE: O CNPJ "%s" digitado é inválido!', [CNPJ]);
-        ///
+        //
         Result := LFill('R01') +
                   RFill(NUM_FAB, 20) +
                   RFill(MF_ADICIONAL, 1) +
@@ -158,27 +254,31 @@ begin
                   LFill(IM_SH, 14) +
                   RFill(NOME_SH, 40) ;
 
-        Result := Result +   /// mudança compatibilidade FPC/Linux
+        Result := Result +   // mudança compatibilidade FPC/Linux
                   RFill(NOME_PAF, 40) +  // emsoft
                   RFill(VER_PAF, 10) +
                   RFill(COD_MD5, 32) +
                   LFill(DT_INI, 'yyyymmdd') +
                   LFill(DT_FIN, 'yyyymmdd') +
                   RFill(ER_PAF_ECF, 4) +
-                  #13#10;
+                  sLineBreak;
       end;
    end;
 end;
 
 function TPAF_R.WriteRegistroR02: String;
 var
-intFor: integer;
-strRegistroR02: string;
+  intFor: integer;
+  strRegistroR02: string;
+  strRegistroR03: string;
 begin
-  strRegistroR02 := '';
+  strRegistroR02 := EmptyStr;
+  strRegistroR03 := EmptyStr;
 
   if Assigned(FRegistroR02) then
   begin
+     FRegistroR02.Sort(@OrdenarR02);
+
      for intFor := 0 to FRegistroR02.Count - 1 do
      begin
         with FRegistroR02.Items[intFor] do
@@ -196,14 +296,16 @@ begin
                                              LFill(HR_EMI, 'hhmmss') +
                                              LFill(VL_VBD, 14, 2) +
                                              RFill(PAR_ECF, 1) +
-                                             #13#10;
+                                             sLineBreak;
         end;
-        /// Registro FILHOS
-        strRegistroR02 := strRegistroR02 +
+
+        // Registro FILHOS
+        strRegistroR03 := strRegistroR03 +
                           WriteRegistroR03( FRegistroR02.Items[intFor] );
      end;
   end;
-  Result := strRegistroR02;
+
+  Result := strRegistroR02 + strRegistroR03;
 end;
 
 function TPAF_R.WriteRegistroR03(RegR02: TRegistroR02): String;
@@ -215,6 +317,8 @@ begin
 
   if Assigned(RegR02.RegistroR03) then
   begin
+     RegR02.RegistroR03.Sort(@OrdenarR03);
+
      for intFor := 0 to RegR02.RegistroR03.Count - 1 do
      begin
         with RegR02.RegistroR03.Items[intFor] do
@@ -227,10 +331,10 @@ begin
                                              LFill(RegR02.CRZ, 6) +
                                              RFill(TOT_PARCIAL, 7) +
                                              LFill(VL_ACUM, 13, 2) +
-                                             #13#10;
+                                             sLineBreak;
         end;
      end;
-     /// Variavél para armazenar a quantidade de registro do tipo.
+     // Variavél para armazenar a quantidade de registro do tipo.
      FRegistroR03Count := FRegistroR03Count + RegR02.RegistroR03.Count;
   end;
   Result := strRegistroR03;
@@ -238,13 +342,17 @@ end;
 
 function TPAF_R.WriteRegistroR04: String;
 var
-intFor: integer;
-strRegistroR04: string;
+  intFor: integer;
+  strRegistroR04: string;
+  strRegistroR05: string;
 begin
-  strRegistroR04 := '';
+  strRegistroR04 := EmptyStr;
+  strRegistroR05 := EmptyStr;
 
   if Assigned(FRegistroR04) then
   begin
+     FRegistroR04.Sort(@OrdenarR04);
+
      for intFor := 0 to FRegistroR04.Count - 1 do
      begin
         with FRegistroR04.Items[intFor] do
@@ -268,26 +376,30 @@ begin
                                              RFill(ORDEM_DA, 1) +
                                              RFill(NOME_CLI, 40) +
                                              LFill(CNPJ_CPF, 14) +
-                                             #13#10;
+                                             sLineBreak;
         end;
-        /// Registro FILHOS
-        strRegistroR04 := strRegistroR04 +
-                          WriteRegistroR05  ( FRegistroR04.Items[intFor] ) +
-                          WriteRegistroR07_4( FRegistroR04.Items[intFor] );
+        // Registro FILHOS
+        strRegistroR05 := strRegistroR05 +
+                          WriteRegistroR05(FRegistroR04.Items[intFor]);
+
+        FRegistroR07 := FRegistroR07 +
+                        WriteRegistroR07_4(FRegistroR04.Items[intFor]);
      end;
   end;
-  Result := strRegistroR04;
+  Result := strRegistroR04 + strRegistroR05;
 end;
 
 function TPAF_R.WriteRegistroR05(RegR04: TRegistroR04): String;
 var
-intFor: integer;
-strRegistroR05: string;
+  intFor: integer;
+  strRegistroR05: string;
 begin
   strRegistroR05 := '';
 
   if Assigned(RegR04.RegistroR05) then
   begin
+     RegR04.RegistroR05.Sort(@OrdenarR05);
+
      for intFor := 0 to RegR04.RegistroR05.Count - 1 do
      begin
         with RegR04.RegistroR05.Items[intFor] do
@@ -317,10 +429,10 @@ begin
                                              RFill(IPPT, 1) +
                                              LFill(QTDE_DECIMAL, 1) +
                                              LFill(VL_DECIMAL, 1) +
-                                             #13#10;
+                                             sLineBreak;
         end;
      end;
-     /// Variavél para armazenar a quantidade de registro do tipo.
+     // Variavél para armazenar a quantidade de registro do tipo.
      FRegistroR05Count := FRegistroR05Count + RegR04.RegistroR05.Count;
   end;
   Result := strRegistroR05;
@@ -328,13 +440,15 @@ end;
 
 function TPAF_R.WriteRegistroR06: String;
 var
-intFor: integer;
-strRegistroR06: string;
+  intFor: integer;
+  strRegistroR06: string;
 begin
   strRegistroR06 := '';
 
   if Assigned(FRegistroR06) then
   begin
+     FRegistroR06.Sort(@OrdenarR06);
+
      for intFor := 0 to FRegistroR06.Count - 1 do
      begin
         with FRegistroR06.Items[intFor] do
@@ -351,11 +465,12 @@ begin
                                              RFill(DENOM, 2) +
                                              LFill(DT_FIN, 'yyyymmdd') +
                                              LFill(HR_FIN, 'hhmmss') +
-                                             #13#10;
+                                             sLineBreak;
         end;
-        /// Registro FILHOS
-        strRegistroR06 := strRegistroR06 +
-                          WriteRegistroR07_6( FRegistroR06.Items[intFor] );
+
+        // Registro FILHOS
+        FRegistroR07 := FRegistroR07 +
+                        WriteRegistroR07_6(FRegistroR06.Items[intFor]);
      end;
   end;
   Result := strRegistroR06;
@@ -370,6 +485,8 @@ begin
 
   if Assigned(RegR04.RegistroR07) then
   begin
+     RegR04.RegistroR07.Sort(@OrdenarR07);
+
      for intFor := 0 to RegR04.RegistroR07.Count - 1 do
      begin
         with RegR04.RegistroR07.Items[intFor] do
@@ -386,24 +503,27 @@ begin
                                              LFill(VL_PAGTO, 13, 2) +
                                              RFill(IND_EST, 1) +
                                              LFill(VL_EST, 13, 2) +
-                                             #13#10;
+                                             sLineBreak;
         end;
      end;
-     /// Variavél para armazenar a quantidade de registro do tipo.
+     // Variavél para armazenar a quantidade de registro do tipo.
      FRegistroR07Count := FRegistroR07Count + RegR04.RegistroR07.Count;
   end;
+
   Result := strRegistroR07;
 end;
 
 function TPAF_R.WriteRegistroR07_6(RegR06: TRegistroR06): String;
 var
-intFor: integer;
-strRegistroR07: string;
+  intFor: integer;
+  strRegistroR07: string;
 begin
   strRegistroR07 := '';
 
   if Assigned(RegR06.RegistroR07) then
   begin
+     RegR06.RegistroR07.Sort(@OrdenarR07);
+
      for intFor := 0 to RegR06.RegistroR07.Count - 1 do
      begin
         with RegR06.RegistroR07.Items[intFor] do
@@ -420,12 +540,13 @@ begin
                                              LFill(VL_PAGTO, 13, 2) +
                                              RFill(IND_EST, 1) +
                                              LFill(VL_EST, 13, 2) +
-                                             #13#10;
+                                             sLineBreak;
         end;
      end;
-     /// Variavél para armazenar a quantidade de registro do tipo.
+     // Variavél para armazenar a quantidade de registro do tipo.
      FRegistroR07Count := FRegistroR07Count + RegR06.RegistroR07.Count;
   end;
+
   Result := strRegistroR07;
 end;
 

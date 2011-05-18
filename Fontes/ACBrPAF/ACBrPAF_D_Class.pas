@@ -115,6 +115,10 @@ end;
 
 function TPAF_D.WriteRegistroD1: String;
 begin
+  FRegistroD9.TOT_REG_D2 := 0;
+  FRegistroD9.TOT_REG_D3 := 0;
+  FRegistroD9.TOT_REG    := 0;
+
    if Assigned(FRegistroD1) then
    begin
       with FRegistroD1 do
@@ -132,6 +136,22 @@ begin
    end;
 end;
 
+function OrdenarD2(const ARegistro1, ARegistro2: Pointer): Integer;
+var
+  Dav1, Dav2: LongInt;
+begin
+  Dav1 := StrToIntDef(TRegistroD2(ARegistro1).NUM_DAV, 0);
+  Dav2 := StrToIntDef(TRegistroD2(ARegistro2).NUM_DAV, 0);
+
+  if Dav1 < Dav2 then
+    Result := -1
+  else
+  if Dav1 > Dav2 then
+    Result := 1
+  else
+    Result := 0;
+end;
+
 function TPAF_D.WriteRegistroD2: String;
 var
 intFor: integer;
@@ -141,12 +161,14 @@ begin
 
   if Assigned(FRegistroD2) then
   begin
+    FRegistroD2.Sort(@OrdenarD2);
+
      for intFor := 0 to FRegistroD2.Count - 1 do
      begin
         with FRegistroD2.Items[intFor] do
         begin
           Check(funChecaCNPJ(FRegistroD1.CNPJ), '(D2) DAV EMITIDOS: O CNPJ "%s" digitado é inválido!', [FRegistroD1.CNPJ]);
-          ///
+
           strRegistroD2 := strRegistroD2 + LFill('D2') +
                                            LFill(FRegistroD1.CNPJ, 14) +
                                            RFill(NUM_FAB, 20) +
@@ -177,6 +199,22 @@ begin
   end;
 end;
 
+function OrdenarD3(const ARegistro1, ARegistro2: Pointer): Integer;
+var
+  Item1, Item2: LongInt;
+begin
+  Item1 := TRegistroD3(ARegistro1).NUM_ITEM;
+  Item2 := TRegistroD3(ARegistro2).NUM_ITEM;
+
+  if Item1 < Item2 then
+    Result := -1
+  else
+  if Item1 > Item2 then
+    Result := 1
+  else
+    Result := 0;
+end;
+
 function TPAF_D.WriteRegistroD3(RegD2: TRegistroD2): String;
 var
 intFor: integer;
@@ -186,6 +224,7 @@ begin
 
   if Assigned(RegD2.RegistroD3) then
   begin
+    RegD2.RegistroD3.Sort(@OrdenarD3);
      for intFor := 0 to RegD2.RegistroD3.Count - 1 do
      begin
         with RegD2.RegistroD3.Items[intFor] do

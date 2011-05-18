@@ -528,9 +528,6 @@ begin
       CloseFile(txtFile);
     end;
 
-    // Coloca os registros R em ordem crescente
-    ReordenarRegistros(Arquivo);
-
     // Assinatura EAD
     if FAssinar then
        AssinaArquivoComEAD(fPath + Arquivo);

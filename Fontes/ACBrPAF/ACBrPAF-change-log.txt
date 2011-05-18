@@ -47,6 +47,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.08   18/05/11
+---------------
+[-] Acerto na ordenação do arquivo de DAVs (Registros D);
+    por Régys Silveira
+
 Versão 0.08   14/05/11
 ---------------
 [-] Correção de bug, do qual as rotinas "SaveFileTXT_?", eram chamadas, mas 

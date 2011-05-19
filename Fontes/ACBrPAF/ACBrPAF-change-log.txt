@@ -53,6 +53,8 @@ Versão 0.08   18/05/11
     Acerto na ordenação do arquivo de Movimento (Registros R);
     Acerto na ordenação do arquivo de Estoque (Registros E);
     Acerto na ordenação do arquivo de Produtos (Registros P);
+    Acerto na ordenação do arquivo de Tranportes (Registros T);
+    Acerto na ordenação do arquivo de Combustiveis (Registros C);
     por Régys Silveira
 
 Versão 0.08   14/05/11

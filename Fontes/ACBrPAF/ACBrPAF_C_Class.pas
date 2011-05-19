@@ -137,10 +137,10 @@ var
 begin
   Campo1 := TRegistroC2(ACampo1).BOMBA +
             TRegistroC2(ACampo1).BICO +
-            Format('%15.15d', [TRegistroC2(ACampo1).ENCERRANTE_INICIAL * 100]);
+            Format('%.15d', [Trunc(TRegistroC2(ACampo1).ENCERRANTE_INICIAL * 100)]);
   Campo2 := TRegistroC2(ACampo1).BOMBA +
             TRegistroC2(ACampo1).BICO +
-            Format('%15.15d', [TRegistroC2(ACampo1).ENCERRANTE_INICIAL * 100]);
+            Format('%.15d', [Trunc(TRegistroC2(ACampo1).ENCERRANTE_INICIAL * 100)]);
 
   Result := AnsiCompareText(Campo1, Campo2);
 end;

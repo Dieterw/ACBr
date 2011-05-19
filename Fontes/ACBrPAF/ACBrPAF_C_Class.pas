@@ -131,6 +131,20 @@ begin
    end;
 end;
 
+function OrdenarC2(ACampo1, ACampo2: Pointer): Integer;
+var
+  Campo1, Campo2: String;
+begin
+  Campo1 := TRegistroC2(ACampo1).BOMBA +
+            TRegistroC2(ACampo1).BICO +
+            Format('%15.15d', [TRegistroC2(ACampo1).ENCERRANTE_INICIAL * 100]);
+  Campo2 := TRegistroC2(ACampo1).BOMBA +
+            TRegistroC2(ACampo1).BICO +
+            Format('%15.15d', [TRegistroC2(ACampo1).ENCERRANTE_INICIAL * 100]);
+
+  Result := AnsiCompareText(Campo1, Campo2);
+end;
+
 function TPAF_C.WriteRegistroC2: string;
 var
 intFor: integer;
@@ -140,6 +154,8 @@ begin
 
   if Assigned(FRegistroC2) then
   begin
+     FRegistroC2.Sort(@OrdenarC2);
+
      for intFor := 0 to FRegistroC2.Count - 1 do
      begin
         with FRegistroC2.Items[intFor] do

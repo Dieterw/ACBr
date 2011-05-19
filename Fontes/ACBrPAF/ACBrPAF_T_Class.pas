@@ -129,6 +129,22 @@ begin
    end;
 end;
 
+function OrdenarT2(ACampo1, ACampo2: Pointer): Integer;
+var
+  Campo1, Campo2: String;
+begin
+  Campo1 := FormatDateTime('YYYYMMDD', TRegistroT2(ACampo1).DT_MOV) +
+            TRegistroT2(ACampo1).TP_DOCTO +
+            TRegistroT2(ACampo1).SERIE +
+            TRegistroT2(ACampo1).NUM_ECF;
+  Campo2 := FormatDateTime('YYYYMMDD', TRegistroT2(ACampo1).DT_MOV) +
+            TRegistroT2(ACampo1).TP_DOCTO +
+            TRegistroT2(ACampo1).SERIE +
+            TRegistroT2(ACampo1).NUM_ECF;
+
+  Result := AnsiCompareText(Campo1, Campo2);
+end;
+
 function TPAF_T.WriteRegistroT2: string;
 var
 intFor: integer;
@@ -138,6 +154,8 @@ begin
 
   if Assigned(FRegistroT2) then
   begin
+     FRegistroT2.Sort(@OrdenarT2);
+
      for intFor := 0 to FRegistroT2.Count - 1 do
      begin
         with FRegistroT2.Items[intFor] do

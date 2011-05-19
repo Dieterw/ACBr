@@ -127,11 +127,11 @@ var
 begin
   Cupom1 :=
     Format('%2.2d', [TRegistroR04(ARegistro1).NUM_USU]) +
-    Format('%6.6d', [TRegistroR04(ARegistro1).COO]);
+    Format('%6.6d', [TRegistroR04(ARegistro1).NUM_CONT]);
 
   Cupom2 :=
     Format('%2.2d', [TRegistroR04(ARegistro2).NUM_USU]) +
-    Format('%6.6d', [TRegistroR04(ARegistro2).COO]);
+    Format('%6.6d', [TRegistroR04(ARegistro2).NUM_CONT]);
 
   Result := AnsiCompareText(Cupom1, Cupom2);
 end;

@@ -1,8 +1,9 @@
 inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
   Left = 193
   Top = 115
-  Width = 836
+  Width = 839
   Height = 755
+  VertScrollBar.Position = 122
   Caption = 'DANFe - Retrato'
   Font.Height = -8
   Font.Name = 'Arial'
@@ -13,7 +14,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
   inherited QRNFe: TQuickRep
     Tag = 1
     Left = 8
-    Top = 8
+    Top = -114
     BeforePrint = QRNFeBeforePrint
     DataSet = cdsItens
     Font.Height = -8
@@ -45,11 +46,14 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       AlignToBottom = False
       BeforePrint = qrbReciboBeforePrint
       Color = clWhite
+      TransparentBand = False
       ForceNewColumn = False
       ForceNewPage = False
       Size.Values = (
         161.395833333333300000
         1989.666666666667000000)
+      PreCaluculateBandHeight = False
+      KeepOnOnePage = False
       BandType = rbPageHeader
       object QRShape1: TQRShape
         Left = 0
@@ -68,6 +72,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1981.729166666667000000)
         Brush.Style = bsClear
         Shape = qrsRectangle
+        VertAdjust = 0
       end
       object QRLabel10: TQRLabel
         Left = 2
@@ -98,6 +103,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object QRShape3: TQRShape
@@ -116,6 +122,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           2.645833333333333000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape2: TQRShape
         Left = 1
@@ -133,6 +140,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           74.083333333333320000
           1608.666666666667000000)
         Shape = qrsHorLine
+        VertAdjust = 0
       end
       object QRShape101: TQRShape
         Left = 118
@@ -150,6 +158,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           74.083333333333320000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object qrlRecebemosDe1: TQRLabel
         Left = 4
@@ -182,6 +191,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlNumNF0: TQRLabel
@@ -213,6 +223,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 10
       end
       object qrlSERIE0: TQRLabel
@@ -228,7 +239,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Size.Values = (
           52.916666666666670000
           1830.916666666667000000
-          89.958333333333320000
+          89.958333333333340000
           21.166666666666670000)
         Alignment = taLeftJustify
         AlignToBand = False
@@ -244,6 +255,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 10
       end
       object QRLabel14: TQRLabel
@@ -259,7 +271,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Size.Values = (
           52.916666666666670000
           1709.208333333333000000
-          89.958333333333320000
+          89.958333333333340000
           95.250000000000000000)
         Alignment = taLeftJustify
         AlignToBand = False
@@ -275,6 +287,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 10
       end
       object QRLabel13: TQRLabel
@@ -306,6 +319,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 10
       end
       object QRLabel12: TQRLabel
@@ -337,6 +351,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 10
       end
       object QRLabel11: TQRLabel
@@ -368,6 +383,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
     end
@@ -384,12 +400,16 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       AlignToBottom = False
       BeforePrint = qrbDadosDanfeBeforePrint
       Color = clWhite
+      TransparentBand = False
       ForceNewColumn = False
       ForceNewPage = False
       Size.Values = (
         494.770833333333400000
         1989.666666666667000000)
+      PreCaluculateBandHeight = False
+      KeepOnOnePage = False
       ParentBand = qrbRecibo
+      PrintOrder = cboAfterParent
       object QRShape5: TQRShape
         Left = 0
         Top = 11
@@ -407,6 +427,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           762.000000000000000000)
         Brush.Style = bsClear
         Shape = qrsRectangle
+        VertAdjust = 0
       end
       object QRShape6: TQRShape
         Left = 424
@@ -425,6 +446,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           859.895833333333400000)
         Brush.Style = bsClear
         Shape = qrsRectangle
+        VertAdjust = 0
       end
       object QRShape7: TQRShape
         Left = 0
@@ -443,6 +465,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1981.729166666667000000)
         Brush.Style = bsClear
         Shape = qrsRectangle
+        VertAdjust = 0
       end
       object QRLabel17: TQRLabel
         Left = 320
@@ -456,7 +479,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           63.500000000000000000
-          846.666666666666800000
+          846.666666666666600000
           29.104166666666670000
           177.270833333333300000)
         Alignment = taCenter
@@ -473,6 +496,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 14
       end
       object QRShape8: TQRShape
@@ -491,6 +515,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           412.750000000000000000
           1981.729166666667000000)
         Shape = qrsHorLine
+        VertAdjust = 0
       end
       object QRShape9: TQRShape
         Left = 221
@@ -508,6 +533,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           412.750000000000100000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape11: TQRShape
         Left = 423
@@ -525,6 +551,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           333.375000000000000000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRLabel29: TQRLabel
         Left = 7
@@ -555,6 +582,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel30: TQRLabel
@@ -586,6 +614,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel31: TQRLabel
@@ -617,6 +646,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel32: TQRLabel
@@ -648,6 +678,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object qrlNatOperacao: TQRLabel
@@ -679,6 +710,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlInscricaoEstadual: TQRLabel
@@ -710,6 +742,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlInscrEstSubst: TQRLabel
@@ -741,6 +774,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlCNPJ: TQRLabel
@@ -772,6 +806,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlFone: TQRLabel
@@ -803,11 +838,12 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrmEmitente: TQRMemo
         Left = 9
-        Top = 12
+        Top = 13
         Width = 271
         Height = 21
         Frame.Color = clBlack
@@ -818,8 +854,8 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Size.Values = (
           55.562500000000000000
           23.812500000000000000
-          31.750000000000000000
-          717.020833333333200000)
+          34.395833333333340000
+          717.020833333333400000)
         Alignment = taCenter
         AlignToBand = False
         AutoSize = False
@@ -1279,6 +1315,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object qrlChave: TQRLabel
@@ -1310,6 +1347,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object QRLabel9: TQRLabel
@@ -1343,6 +1381,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlDescricao: TQRLabel
@@ -1374,6 +1413,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object qrlProtocolo: TQRLabel
@@ -1405,6 +1445,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlSERIE1: TQRLabel
@@ -1436,6 +1477,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 9
       end
       object QRLabel22: TQRLabel
@@ -1467,6 +1509,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 9
       end
       object QRLabel18: TQRLabel
@@ -1498,6 +1541,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object QRLabel19: TQRLabel
@@ -1529,6 +1573,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object QRLabel20: TQRLabel
@@ -1560,6 +1605,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 10
       end
       object qrlNumNF1: TQRLabel
@@ -1591,6 +1637,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 10
       end
       object QRLabel24: TQRLabel
@@ -1622,6 +1669,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 9
       end
       object qrlPageNumber: TQRLabel
@@ -1653,6 +1701,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 9
       end
       object QRLabel26: TQRLabel
@@ -1684,6 +1733,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 7
       end
       object QRLabel27: TQRLabel
@@ -1715,6 +1765,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 7
       end
       object QRShape102: TQRShape
@@ -1733,6 +1784,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           142.875000000000000000
           58.208333333333320000)
         Shape = qrsRectangle
+        VertAdjust = 0
       end
       object qrlEntradaSaida: TQRLabel
         Left = 390
@@ -1763,6 +1815,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object QRShape4: TQRShape
@@ -1781,6 +1834,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           137.583333333333300000
           859.895833333333200000)
         Shape = qrsHorLine
+        VertAdjust = 0
       end
       object QRShape66: TQRShape
         Left = 424
@@ -1798,6 +1852,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           224.895833333333300000
           859.895833333333400000)
         Shape = qrsHorLine
+        VertAdjust = 0
       end
       object qriBarCodeContingencia: TQRImage
         Left = 428
@@ -1833,6 +1888,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           2000.250000000000000000)
         Pen.Style = psDot
         Shape = qrsHorLine
+        VertAdjust = 0
       end
     end
     object qrbEmitenteDestinatario: TQRChildBand
@@ -1848,12 +1904,16 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       AlignToBottom = False
       BeforePrint = qrbEmitenteDestinatarioBeforePrint
       Color = clWhite
+      TransparentBand = False
       ForceNewColumn = False
       ForceNewPage = False
       Size.Values = (
-        886.354166666666800000
+        886.354166666666900000
         1989.666666666667000000)
+      PreCaluculateBandHeight = False
+      KeepOnOnePage = False
       ParentBand = qrbDadosDanfe
+      PrintOrder = cboAfterParent
       object QRShape36: TQRShape
         Left = 0
         Top = 243
@@ -1871,6 +1931,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1981.729166666667000000)
         Brush.Style = bsClear
         Shape = qrsRectangle
+        VertAdjust = 0
       end
       object QRLabel1: TQRLabel
         Left = 0
@@ -1901,6 +1962,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlblFatura: TQRLabel
@@ -1932,6 +1994,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object QRLabel5: TQRLabel
@@ -1963,6 +2026,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object QRLabel4: TQRLabel
@@ -1994,6 +2058,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object QRShape12: TQRShape
@@ -2013,6 +2078,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1568.391203703704000000)
         Brush.Style = bsClear
         Shape = qrsRectangle
+        VertAdjust = 0
       end
       object QRShape15: TQRShape
         Left = 450
@@ -2030,6 +2096,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           34.395833333333340000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape16: TQRShape
         Left = 370
@@ -2047,6 +2114,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           113.770833333333300000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape17: TQRShape
         Left = 518
@@ -2064,6 +2132,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           113.770833333333300000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape18: TQRShape
         Left = 181
@@ -2081,6 +2150,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           193.145833333333300000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape19: TQRShape
         Left = 329
@@ -2098,6 +2168,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           193.145833333333300000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape20: TQRShape
         Left = 395
@@ -2115,6 +2186,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           193.145833333333300000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape13: TQRShape
         Left = 0
@@ -2132,6 +2204,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           111.712962962963000000
           1568.391203703704000000)
         Shape = qrsHorLine
+        VertAdjust = 0
       end
       object QRShape14: TQRShape
         Left = 0
@@ -2149,6 +2222,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           191.087962962963000000
           1568.391203703704000000)
         Shape = qrsHorLine
+        VertAdjust = 0
       end
       object QRShape21: TQRShape
         Left = 601
@@ -2167,6 +2241,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           391.583333333333400000)
         Brush.Style = bsClear
         Shape = qrsRectangle
+        VertAdjust = 0
       end
       object QRShape22: TQRShape
         Left = 601
@@ -2184,6 +2259,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           111.125000000000000000
           391.583333333333400000)
         Shape = qrsHorLine
+        VertAdjust = 0
       end
       object QRShape23: TQRShape
         Left = 601
@@ -2201,6 +2277,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           190.500000000000000000
           391.583333333333400000)
         Shape = qrsHorLine
+        VertAdjust = 0
       end
       object qrshpFatura: TQRShape
         Left = 0
@@ -2219,6 +2296,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1981.729166666667000000)
         Brush.Style = bsClear
         Shape = qrsRectangle
+        VertAdjust = 0
       end
       object QRShape25: TQRShape
         Left = 0
@@ -2237,6 +2315,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1981.729166666667000000)
         Brush.Style = bsClear
         Shape = qrsRectangle
+        VertAdjust = 0
       end
       object QRShape26: TQRShape
         Left = 0
@@ -2254,6 +2333,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           529.166666666666700000
           1981.729166666667000000)
         Shape = qrsHorLine
+        VertAdjust = 0
       end
       object QRShape27: TQRShape
         Left = 146
@@ -2271,6 +2351,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           449.791666666666700000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape28: TQRShape
         Left = 106
@@ -2288,6 +2369,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           531.812500000000000000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape29: TQRShape
         Left = 268
@@ -2305,6 +2387,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           449.791666666666700000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape30: TQRShape
         Left = 424
@@ -2322,6 +2405,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           449.791666666666700000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape31: TQRShape
         Left = 573
@@ -2339,6 +2423,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           449.791666666666700000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape32: TQRShape
         Left = 215
@@ -2356,6 +2441,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           531.812500000000000000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape33: TQRShape
         Left = 306
@@ -2373,6 +2459,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           531.812500000000000000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape34: TQRShape
         Left = 424
@@ -2390,6 +2477,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           529.166666666666700000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape35: TQRShape
         Left = 573
@@ -2407,6 +2495,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           529.166666666666700000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape37: TQRShape
         Left = 1
@@ -2424,6 +2513,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           722.312500000000000000
           1979.083333333333000000)
         Shape = qrsHorLine
+        VertAdjust = 0
       end
       object QRShape38: TQRShape
         Left = 1
@@ -2441,6 +2531,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           801.687500000000100000
           1979.083333333333000000)
         Shape = qrsHorLine
+        VertAdjust = 0
       end
       object QRShape39: TQRShape
         Left = 308
@@ -2458,6 +2549,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           642.349537037037100000
           2.939814814814815000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape42: TQRShape
         Left = 400
@@ -2475,6 +2567,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           645.583333333333400000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape43: TQRShape
         Left = 472
@@ -2492,6 +2585,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           645.583333333333400000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape44: TQRShape
         Left = 570
@@ -2509,6 +2603,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           645.583333333333400000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape45: TQRShape
         Left = 610
@@ -2526,6 +2621,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           645.583333333333400000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape46: TQRShape
         Left = 535
@@ -2543,6 +2639,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           724.958333333333400000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape47: TQRShape
         Left = 574
@@ -2560,6 +2657,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           722.312500000000000000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape48: TQRShape
         Left = 91
@@ -2577,6 +2675,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           804.333333333333200000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape49: TQRShape
         Left = 210
@@ -2594,6 +2693,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           804.333333333333200000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape50: TQRShape
         Left = 420
@@ -2611,6 +2711,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           804.039351851851800000
           2.939814814814815000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape51: TQRShape
         Left = 574
@@ -2628,6 +2729,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           801.099537037037100000
           2.939814814814815000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRLabel34: TQRLabel
         Left = 4
@@ -2658,6 +2760,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel35: TQRLabel
@@ -2674,7 +2777,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           26.458333333333330000
           1201.208333333333000000
           39.687500000000000000
-          97.895833333333320000)
+          97.895833333333340000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -2689,6 +2792,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel36: TQRLabel
@@ -2720,6 +2824,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel37: TQRLabel
@@ -2751,6 +2856,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel38: TQRLabel
@@ -2782,6 +2888,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel39: TQRLabel
@@ -2813,6 +2920,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel40: TQRLabel
@@ -2844,6 +2952,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel41: TQRLabel
@@ -2860,7 +2969,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           26.458333333333330000
           10.583333333333330000
           198.437500000000000000
-          97.895833333333320000)
+          97.895833333333340000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -2875,6 +2984,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel42: TQRLabel
@@ -2906,6 +3016,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel43: TQRLabel
@@ -2937,6 +3048,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel44: TQRLabel
@@ -2968,6 +3080,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel45: TQRLabel
@@ -2999,6 +3112,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel46: TQRLabel
@@ -3030,6 +3144,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel47: TQRLabel
@@ -3061,6 +3176,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel48: TQRLabel
@@ -3075,7 +3191,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           23.812500000000000000
-          724.958333333333200000
+          724.958333333333400000
           457.729166666666700000
           388.937500000000000000)
         Alignment = taLeftJustify
@@ -3092,6 +3208,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel49: TQRLabel
@@ -3123,6 +3240,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel50: TQRLabel
@@ -3154,6 +3272,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel51: TQRLabel
@@ -3185,6 +3304,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel52: TQRLabel
@@ -3216,6 +3336,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel53: TQRLabel
@@ -3247,6 +3368,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel54: TQRLabel
@@ -3278,6 +3400,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel55: TQRLabel
@@ -3309,6 +3432,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel56: TQRLabel
@@ -3340,6 +3464,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel57: TQRLabel
@@ -3371,6 +3496,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel58: TQRLabel
@@ -3402,6 +3528,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel59: TQRLabel
@@ -3433,6 +3560,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel60: TQRLabel
@@ -3464,6 +3592,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel61: TQRLabel
@@ -3495,6 +3624,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel62: TQRLabel
@@ -3511,7 +3641,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           26.458333333333330000
           1624.541666666667000000
           648.229166666666800000
-          97.895833333333320000)
+          97.895833333333340000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -3526,6 +3656,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel63: TQRLabel
@@ -3557,6 +3688,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel64: TQRLabel
@@ -3573,7 +3705,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           26.458333333333330000
           830.791666666666800000
           727.604166666666800000
-          97.895833333333320000)
+          97.895833333333340000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -3588,6 +3720,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel65: TQRLabel
@@ -3619,6 +3752,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel66: TQRLabel
@@ -3650,6 +3784,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel67: TQRLabel
@@ -3681,6 +3816,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel68: TQRLabel
@@ -3712,6 +3848,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel69: TQRLabel
@@ -3743,6 +3880,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel70: TQRLabel
@@ -3774,6 +3912,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel71: TQRLabel
@@ -3805,6 +3944,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel72: TQRLabel
@@ -3836,12 +3976,13 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object qrlFatData1: TQRLabel
-        Left = 33
+        Left = 60
         Top = 117
-        Width = 53
+        Width = 37
         Height = 12
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -3850,14 +3991,14 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           31.750000000000000000
-          87.312500000000000000
+          158.750000000000000000
           309.562500000000000000
-          140.229166666666700000)
+          97.895833333333340000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
         AutoStretch = False
-        Caption = 'XX/XX/XXXX'
+        Caption = '99/99/9999'
         Color = clWhite
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -3867,12 +4008,13 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatData2: TQRLabel
-        Left = 33
+        Left = 60
         Top = 130
-        Width = 53
+        Width = 37
         Height = 12
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -3881,14 +4023,14 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           31.750000000000000000
-          87.312500000000000000
+          158.750000000000000000
           343.958333333333400000
-          140.229166666666700000)
+          97.895833333333340000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
         AutoStretch = False
-        Caption = 'XX/XX/XXXX'
+        Caption = '99/99/9999'
         Color = clWhite
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -3898,12 +4040,13 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatData3: TQRLabel
-        Left = 33
+        Left = 60
         Top = 143
-        Width = 53
+        Width = 37
         Height = 12
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -3912,14 +4055,14 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           31.750000000000000000
-          87.312500000000000000
+          158.750000000000000000
           378.354166666666700000
-          140.229166666666700000)
+          97.895833333333340000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
         AutoStretch = False
-        Caption = 'XX/XX/XXXX'
+        Caption = '99/99/9999'
         Color = clWhite
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -3929,12 +4072,13 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatValor1: TQRLabel
-        Left = 87
+        Left = 98
         Top = 117
-        Width = 61
+        Width = 50
         Height = 12
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -3943,9 +4087,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           31.750000000000000000
-          230.187500000000000000
+          259.291666666666700000
           309.562500000000000000
-          161.395833333333300000)
+          132.291666666666700000)
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -3960,12 +4104,13 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatValor2: TQRLabel
-        Left = 87
+        Left = 98
         Top = 130
-        Width = 61
+        Width = 50
         Height = 12
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -3974,9 +4119,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           31.750000000000000000
-          230.187500000000000000
+          259.291666666666700000
           343.958333333333400000
-          161.395833333333300000)
+          132.291666666666700000)
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -3991,12 +4136,13 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatValor3: TQRLabel
-        Left = 87
+        Left = 98
         Top = 143
-        Width = 61
+        Width = 50
         Height = 12
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -4005,9 +4151,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           31.750000000000000000
-          230.187500000000000000
+          259.291666666666700000
           378.354166666666700000
-          161.395833333333300000)
+          132.291666666666700000)
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -4022,6 +4168,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatNum1: TQRLabel
@@ -4053,6 +4200,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatNum2: TQRLabel
@@ -4084,6 +4232,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatNum3: TQRLabel
@@ -4115,10 +4264,11 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object QRShape106: TQRShape
-        Left = 151
+        Left = 150
         Top = 114
         Width = 1
         Height = 43
@@ -4129,13 +4279,14 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           113.770833333333300000
-          399.520833333333400000
+          396.875000000000000000
           301.625000000000000000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape107: TQRShape
-        Left = 302
+        Left = 300
         Top = 114
         Width = 1
         Height = 43
@@ -4146,30 +4297,14 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           113.770833333333300000
-          799.041666666666800000
+          793.750000000000000000
           301.625000000000000000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape108: TQRShape
-        Left = 451
-        Top = 115
-        Width = 1
-        Height = 43
-        Frame.Color = clBlack
-        Frame.DrawTop = False
-        Frame.DrawBottom = False
-        Frame.DrawLeft = False
-        Frame.DrawRight = False
-        Size.Values = (
-          113.770833333333300000
-          1193.270833333333000000
-          304.270833333333400000
-          2.645833333333333000)
-        Shape = qrsVertLine
-      end
-      object QRShape109: TQRShape
-        Left = 604
+        Left = 450
         Top = 114
         Width = 1
         Height = 43
@@ -4180,13 +4315,32 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           113.770833333333300000
-          1598.083333333333000000
+          1190.625000000000000000
           301.625000000000000000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
+      end
+      object QRShape109: TQRShape
+        Left = 600
+        Top = 114
+        Width = 1
+        Height = 43
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          113.770833333333300000
+          1587.500000000000000000
+          301.625000000000000000
+          2.645833333333333000)
+        Shape = qrsVertLine
+        VertAdjust = 0
       end
       object qrlFatNum6: TQRLabel
-        Left = 155
+        Left = 153
         Top = 143
         Width = 9
         Height = 12
@@ -4197,7 +4351,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           31.750000000000000000
-          410.104166666666700000
+          404.812500000000000000
           378.354166666666700000
           23.812500000000000000)
         Alignment = taLeftJustify
@@ -4214,10 +4368,11 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatNum5: TQRLabel
-        Left = 155
+        Left = 153
         Top = 130
         Width = 9
         Height = 12
@@ -4228,7 +4383,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           31.750000000000000000
-          410.104166666666700000
+          404.812500000000000000
           343.958333333333400000
           23.812500000000000000)
         Alignment = taLeftJustify
@@ -4245,10 +4400,11 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatNum4: TQRLabel
-        Left = 155
+        Left = 153
         Top = 117
         Width = 9
         Height = 12
@@ -4259,7 +4415,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           31.750000000000000000
-          410.104166666666700000
+          404.812500000000000000
           309.562500000000000000
           23.812500000000000000)
         Alignment = taLeftJustify
@@ -4276,12 +4432,13 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatData4: TQRLabel
-        Left = 183
+        Left = 210
         Top = 117
-        Width = 53
+        Width = 37
         Height = 12
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -4290,14 +4447,14 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           31.750000000000000000
-          484.187500000000000000
+          555.625000000000000000
           309.562500000000000000
-          140.229166666666700000)
+          97.895833333333340000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
         AutoStretch = False
-        Caption = 'XX/XX/XXXX'
+        Caption = '99/99/9999'
         Color = clWhite
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -4307,12 +4464,13 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatData5: TQRLabel
-        Left = 183
+        Left = 210
         Top = 130
-        Width = 53
+        Width = 37
         Height = 12
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -4321,14 +4479,14 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           31.750000000000000000
-          484.187500000000000000
+          555.625000000000000000
           343.958333333333400000
-          140.229166666666700000)
+          97.895833333333340000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
         AutoStretch = False
-        Caption = 'XX/XX/XXXX'
+        Caption = '99/99/9999'
         Color = clWhite
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -4338,12 +4496,13 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatData6: TQRLabel
-        Left = 183
+        Left = 210
         Top = 143
-        Width = 53
+        Width = 37
         Height = 12
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -4352,14 +4511,14 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           31.750000000000000000
-          484.187500000000000000
+          555.625000000000000000
           378.354166666666700000
-          140.229166666666700000)
+          97.895833333333340000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
         AutoStretch = False
-        Caption = 'XX/XX/XXXX'
+        Caption = '99/99/9999'
         Color = clWhite
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -4369,12 +4528,13 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatValor6: TQRLabel
-        Left = 237
+        Left = 248
         Top = 143
-        Width = 61
+        Width = 50
         Height = 12
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -4383,9 +4543,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           31.750000000000000000
-          627.062500000000000000
+          656.166666666666800000
           378.354166666666700000
-          161.395833333333300000)
+          132.291666666666700000)
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -4400,12 +4560,13 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatValor5: TQRLabel
-        Left = 237
+        Left = 248
         Top = 130
-        Width = 61
+        Width = 50
         Height = 12
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -4414,9 +4575,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           31.750000000000000000
-          627.062500000000000000
+          656.166666666666800000
           343.958333333333400000
-          161.395833333333300000)
+          132.291666666666700000)
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -4431,12 +4592,13 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatValor4: TQRLabel
-        Left = 237
+        Left = 248
         Top = 117
-        Width = 61
+        Width = 50
         Height = 12
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -4445,9 +4607,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           31.750000000000000000
-          627.062500000000000000
+          656.166666666666800000
           309.562500000000000000
-          161.395833333333300000)
+          132.291666666666700000)
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -4462,10 +4624,11 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatNum9: TQRLabel
-        Left = 306
+        Left = 303
         Top = 142
         Width = 9
         Height = 13
@@ -4476,7 +4639,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           34.395833333333340000
-          809.625000000000000000
+          801.687500000000100000
           375.708333333333400000
           23.812500000000000000)
         Alignment = taLeftJustify
@@ -4493,10 +4656,11 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatNum8: TQRLabel
-        Left = 306
+        Left = 303
         Top = 129
         Width = 9
         Height = 13
@@ -4507,7 +4671,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           34.395833333333340000
-          809.625000000000000000
+          801.687500000000100000
           341.312500000000000000
           23.812500000000000000)
         Alignment = taLeftJustify
@@ -4524,10 +4688,11 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatNum7: TQRLabel
-        Left = 306
+        Left = 303
         Top = 116
         Width = 9
         Height = 13
@@ -4538,7 +4703,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           34.395833333333340000
-          809.625000000000000000
+          801.687500000000100000
           306.916666666666700000
           23.812500000000000000)
         Alignment = taLeftJustify
@@ -4555,12 +4720,13 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatData7: TQRLabel
-        Left = 335
+        Left = 360
         Top = 117
-        Width = 53
+        Width = 37
         Height = 12
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -4569,14 +4735,14 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           31.750000000000000000
-          886.354166666666800000
+          952.500000000000000000
           309.562500000000000000
-          140.229166666666700000)
+          97.895833333333340000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
         AutoStretch = False
-        Caption = 'XX/XX/XXXX'
+        Caption = '99/99/9999'
         Color = clWhite
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -4586,12 +4752,13 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatData8: TQRLabel
-        Left = 335
+        Left = 360
         Top = 130
-        Width = 53
+        Width = 37
         Height = 12
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -4600,14 +4767,14 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           31.750000000000000000
-          886.354166666666800000
+          952.500000000000000000
           343.958333333333400000
-          140.229166666666700000)
+          97.895833333333340000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
         AutoStretch = False
-        Caption = 'XX/XX/XXXX'
+        Caption = '99/99/9999'
         Color = clWhite
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -4617,12 +4784,13 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatData9: TQRLabel
-        Left = 335
+        Left = 360
         Top = 143
-        Width = 53
+        Width = 37
         Height = 12
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -4631,14 +4799,14 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           31.750000000000000000
-          886.354166666666800000
+          952.500000000000000000
           378.354166666666700000
-          140.229166666666700000)
+          97.895833333333340000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
         AutoStretch = False
-        Caption = 'XX/XX/XXXX'
+        Caption = '99/99/9999'
         Color = clWhite
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -4648,12 +4816,13 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatValor9: TQRLabel
-        Left = 389
+        Left = 398
         Top = 143
-        Width = 61
+        Width = 50
         Height = 12
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -4662,9 +4831,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           31.750000000000000000
-          1029.229166666667000000
+          1053.041666666667000000
           378.354166666666700000
-          161.395833333333300000)
+          132.291666666666700000)
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -4679,12 +4848,13 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatValor8: TQRLabel
-        Left = 389
+        Left = 398
         Top = 130
-        Width = 61
+        Width = 50
         Height = 12
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -4693,9 +4863,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           31.750000000000000000
-          1029.229166666667000000
+          1053.041666666667000000
           343.958333333333400000
-          161.395833333333300000)
+          132.291666666666700000)
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -4710,12 +4880,13 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatValor7: TQRLabel
-        Left = 389
+        Left = 398
         Top = 117
-        Width = 61
+        Width = 50
         Height = 12
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -4724,9 +4895,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           31.750000000000000000
-          1029.229166666667000000
+          1053.041666666667000000
           309.562500000000000000
-          161.395833333333300000)
+          132.291666666666700000)
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -4741,10 +4912,11 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatNum12: TQRLabel
-        Left = 455
+        Left = 453
         Top = 143
         Width = 9
         Height = 12
@@ -4755,7 +4927,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           31.750000000000000000
-          1203.854166666667000000
+          1198.562500000000000000
           378.354166666666700000
           23.812500000000000000)
         Alignment = taLeftJustify
@@ -4772,10 +4944,11 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatNum11: TQRLabel
-        Left = 455
+        Left = 453
         Top = 130
         Width = 9
         Height = 12
@@ -4786,7 +4959,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           31.750000000000000000
-          1203.854166666667000000
+          1198.562500000000000000
           343.958333333333400000
           23.812500000000000000)
         Alignment = taLeftJustify
@@ -4803,10 +4976,11 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatNum10: TQRLabel
-        Left = 455
+        Left = 453
         Top = 117
         Width = 9
         Height = 12
@@ -4817,7 +4991,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           31.750000000000000000
-          1203.854166666667000000
+          1198.562500000000000000
           309.562500000000000000
           23.812500000000000000)
         Alignment = taLeftJustify
@@ -4834,12 +5008,13 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatData10: TQRLabel
-        Left = 485
+        Left = 510
         Top = 117
-        Width = 53
+        Width = 37
         Height = 12
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -4848,14 +5023,14 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           31.750000000000000000
-          1283.229166666667000000
+          1349.375000000000000000
           309.562500000000000000
-          140.229166666666700000)
+          97.895833333333340000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
         AutoStretch = False
-        Caption = 'XX/XX/XXXX'
+        Caption = '99/99/9999'
         Color = clWhite
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -4865,12 +5040,13 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatData11: TQRLabel
-        Left = 485
+        Left = 510
         Top = 130
-        Width = 53
+        Width = 37
         Height = 12
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -4879,14 +5055,14 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           31.750000000000000000
-          1283.229166666667000000
+          1349.375000000000000000
           343.958333333333400000
-          140.229166666666700000)
+          97.895833333333340000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
         AutoStretch = False
-        Caption = 'XX/XX/XXXX'
+        Caption = '99/99/9999'
         Color = clWhite
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -4896,12 +5072,13 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatData12: TQRLabel
-        Left = 485
+        Left = 510
         Top = 143
-        Width = 53
+        Width = 37
         Height = 12
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -4910,14 +5087,14 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           31.750000000000000000
-          1283.229166666667000000
+          1349.375000000000000000
           378.354166666666700000
-          140.229166666666700000)
+          97.895833333333340000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
         AutoStretch = False
-        Caption = 'XX/XX/XXXX'
+        Caption = '99/99/9999'
         Color = clWhite
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -4927,12 +5104,13 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatValor12: TQRLabel
-        Left = 539
+        Left = 548
         Top = 143
-        Width = 61
+        Width = 50
         Height = 12
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -4941,9 +5119,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           31.750000000000000000
-          1426.104166666667000000
+          1449.916666666667000000
           378.354166666666700000
-          161.395833333333300000)
+          132.291666666666700000)
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -4958,12 +5136,13 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatValor11: TQRLabel
-        Left = 539
+        Left = 548
         Top = 130
-        Width = 61
+        Width = 50
         Height = 12
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -4972,9 +5151,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           31.750000000000000000
-          1426.104166666667000000
+          1449.916666666667000000
           343.958333333333400000
-          161.395833333333300000)
+          132.291666666666700000)
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -4989,12 +5168,13 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatValor10: TQRLabel
-        Left = 539
+        Left = 548
         Top = 117
-        Width = 61
+        Width = 50
         Height = 12
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -5003,9 +5183,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           31.750000000000000000
-          1426.104166666667000000
+          1449.916666666667000000
           309.562500000000000000
-          161.395833333333300000)
+          132.291666666666700000)
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -5020,10 +5200,11 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatNum15: TQRLabel
-        Left = 608
+        Left = 603
         Top = 143
         Width = 9
         Height = 12
@@ -5034,7 +5215,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           31.750000000000000000
-          1608.666666666667000000
+          1595.437500000000000000
           378.354166666666700000
           23.812500000000000000)
         Alignment = taLeftJustify
@@ -5051,10 +5232,11 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatNum14: TQRLabel
-        Left = 608
+        Left = 603
         Top = 130
         Width = 9
         Height = 12
@@ -5065,7 +5247,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           31.750000000000000000
-          1608.666666666667000000
+          1595.437500000000000000
           343.958333333333400000
           23.812500000000000000)
         Alignment = taLeftJustify
@@ -5082,10 +5264,11 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatNum13: TQRLabel
-        Left = 608
+        Left = 603
         Top = 117
         Width = 9
         Height = 12
@@ -5096,7 +5279,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           31.750000000000000000
-          1608.666666666667000000
+          1595.437500000000000000
           309.562500000000000000
           23.812500000000000000)
         Alignment = taLeftJustify
@@ -5113,12 +5296,13 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatData13: TQRLabel
-        Left = 631
+        Left = 658
         Top = 117
-        Width = 53
+        Width = 37
         Height = 12
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -5127,14 +5311,14 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           31.750000000000000000
-          1669.520833333333000000
+          1740.958333333333000000
           309.562500000000000000
-          140.229166666666700000)
+          97.895833333333340000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
         AutoStretch = False
-        Caption = 'XX/XX/XXXX'
+        Caption = '99/99/9999'
         Color = clWhite
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -5144,12 +5328,13 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatData14: TQRLabel
-        Left = 631
+        Left = 658
         Top = 130
-        Width = 53
+        Width = 37
         Height = 12
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -5158,14 +5343,14 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           31.750000000000000000
-          1669.520833333333000000
+          1740.958333333333000000
           343.958333333333400000
-          140.229166666666700000)
+          97.895833333333340000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
         AutoStretch = False
-        Caption = 'XX/XX/XXXX'
+        Caption = '99/99/9999'
         Color = clWhite
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -5175,12 +5360,13 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatData15: TQRLabel
-        Left = 631
+        Left = 658
         Top = 143
-        Width = 53
+        Width = 37
         Height = 12
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -5189,14 +5375,14 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           31.750000000000000000
-          1669.520833333333000000
+          1740.958333333333000000
           378.354166666666700000
-          140.229166666666700000)
+          97.895833333333340000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
         AutoStretch = False
-        Caption = 'XX/XX/XXXX'
+        Caption = '99/99/9999'
         Color = clWhite
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -5206,12 +5392,13 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatValor15: TQRLabel
-        Left = 685
+        Left = 696
         Top = 143
-        Width = 61
+        Width = 50
         Height = 12
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -5220,9 +5407,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           31.750000000000000000
-          1812.395833333333000000
+          1841.500000000000000000
           378.354166666666700000
-          161.395833333333300000)
+          132.291666666666700000)
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -5237,12 +5424,13 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatValor14: TQRLabel
-        Left = 685
+        Left = 696
         Top = 130
-        Width = 61
+        Width = 50
         Height = 12
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -5251,9 +5439,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           31.750000000000000000
-          1812.395833333333000000
+          1841.500000000000000000
           343.958333333333400000
-          161.395833333333300000)
+          132.291666666666700000)
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -5268,12 +5456,13 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatValor13: TQRLabel
-        Left = 685
+        Left = 696
         Top = 117
-        Width = 61
+        Width = 50
         Height = 12
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -5282,9 +5471,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           31.750000000000000000
-          1812.395833333333000000
+          1841.500000000000000000
           309.562500000000000000
-          161.395833333333300000)
+          132.291666666666700000)
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -5299,6 +5488,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlDestNome: TQRLabel
@@ -5330,6 +5520,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlDestCNPJ: TQRLabel
@@ -5361,6 +5552,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlDestEndereco: TQRLabel
@@ -5392,6 +5584,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlDestBairro: TQRLabel
@@ -5423,6 +5616,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlDestCEP: TQRLabel
@@ -5454,6 +5648,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlDestCidade: TQRLabel
@@ -5485,6 +5680,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlDestFone: TQRLabel
@@ -5516,6 +5712,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlDestUF: TQRLabel
@@ -5547,6 +5744,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlDestIE: TQRLabel
@@ -5578,6 +5776,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlEmissao: TQRLabel
@@ -5609,6 +5808,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlSaida: TQRLabel
@@ -5640,6 +5840,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlBaseICMS: TQRLabel
@@ -5671,6 +5872,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlValorICMS: TQRLabel
@@ -5702,6 +5904,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlBaseICMST: TQRLabel
@@ -5733,6 +5936,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlValorICMST: TQRLabel
@@ -5764,6 +5968,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlTotalProdutos: TQRLabel
@@ -5795,6 +6000,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlValorFrete: TQRLabel
@@ -5826,6 +6032,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlValorSeguro: TQRLabel
@@ -5857,6 +6064,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlDescontos: TQRLabel
@@ -5888,6 +6096,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlAcessorias: TQRLabel
@@ -5919,6 +6128,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlValorIPI: TQRLabel
@@ -5950,6 +6160,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlTotalNF: TQRLabel
@@ -5981,6 +6192,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlTransNome: TQRLabel
@@ -6012,6 +6224,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlTransModFrete: TQRLabel
@@ -6043,6 +6256,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlTransCodigoANTT: TQRLabel
@@ -6074,6 +6288,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlTransPlaca: TQRLabel
@@ -6105,6 +6320,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlTransUFPlaca: TQRLabel
@@ -6136,6 +6352,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlTransCNPJ: TQRLabel
@@ -6167,6 +6384,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlTransEndereco: TQRLabel
@@ -6198,6 +6416,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlTransCidade: TQRLabel
@@ -6229,6 +6448,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlTransUF: TQRLabel
@@ -6260,6 +6480,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlTransIE: TQRLabel
@@ -6291,6 +6512,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlTransQTDE: TQRLabel
@@ -6322,6 +6544,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlTransEspecie: TQRLabel
@@ -6353,6 +6576,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlTransMarca: TQRLabel
@@ -6384,6 +6608,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlTransNumeracao: TQRLabel
@@ -6415,6 +6640,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlTransPesoBruto: TQRLabel
@@ -6446,6 +6672,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlTransPesoLiq: TQRLabel
@@ -6477,6 +6704,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlHoraSaida: TQRLabel
@@ -6508,6 +6736,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
     end
@@ -6523,11 +6752,14 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       Frame.DrawRight = False
       AlignToBottom = False
       Color = clWhite
+      TransparentBand = False
       ForceNewColumn = False
       ForceNewPage = False
       Size.Values = (
         92.604166666666680000
         1989.666666666667000000)
+      PreCaluculateBandHeight = False
+      KeepOnOnePage = False
       BandType = rbColumnHeader
       object qrsRectProdutos: TQRShape
         Left = 0
@@ -6546,6 +6778,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1981.729166666667000000)
         Brush.Style = bsClear
         Shape = qrsRectangle
+        VertAdjust = 0
       end
       object QRLabel141: TQRLabel
         Left = 0
@@ -6576,6 +6809,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object QRLabel142: TQRLabel
@@ -6607,6 +6841,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel143: TQRLabel
@@ -6638,6 +6873,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel144: TQRLabel
@@ -6669,6 +6905,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object lblCST: TQRLabel
@@ -6700,6 +6937,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel146: TQRLabel
@@ -6731,6 +6969,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel147: TQRLabel
@@ -6762,6 +7001,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel148: TQRLabel
@@ -6793,6 +7033,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel149: TQRLabel
@@ -6824,6 +7065,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel150: TQRLabel
@@ -6855,6 +7097,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel151: TQRLabel
@@ -6886,6 +7129,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel152: TQRLabel
@@ -6917,6 +7161,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel153: TQRLabel
@@ -6948,6 +7193,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel156: TQRLabel
@@ -6979,6 +7225,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel154: TQRLabel
@@ -7010,6 +7257,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel157: TQRLabel
@@ -7041,6 +7289,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRShape10: TQRShape
@@ -7059,6 +7308,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           34.395833333333330000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape24: TQRShape
         Left = 236
@@ -7076,6 +7326,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           34.395833333333330000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape40: TQRShape
         Left = 290
@@ -7093,6 +7344,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           34.395833333333330000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape41: TQRShape
         Left = 316
@@ -7110,6 +7362,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           34.395833333333330000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape57: TQRShape
         Left = 346
@@ -7127,6 +7380,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           34.395833333333330000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape58: TQRShape
         Left = 376
@@ -7144,6 +7398,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           34.395833333333330000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape59: TQRShape
         Left = 424
@@ -7161,6 +7416,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           34.395833333333330000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape60: TQRShape
         Left = 478
@@ -7178,6 +7434,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           34.395833333333330000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape61: TQRShape
         Left = 542
@@ -7195,6 +7452,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           34.395833333333330000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape62: TQRShape
         Left = 604
@@ -7212,6 +7470,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           34.395833333333330000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape63: TQRShape
         Left = 648
@@ -7229,6 +7488,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           34.395833333333330000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape64: TQRShape
         Left = 685
@@ -7246,6 +7506,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           33.807870370370370000
           2.939814814814815000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape65: TQRShape
         Left = 717
@@ -7263,6 +7524,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           63.500000000000000000
           5.291666666666667000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape67: TQRShape
         Left = 686
@@ -7280,6 +7542,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           60.854166666666680000
           166.687500000000000000)
         Shape = qrsHorLine
+        VertAdjust = 0
       end
     end
     object qrbISSQN: TQRBand
@@ -7295,11 +7558,14 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       AlignToBottom = True
       BeforePrint = qrbISSQNBeforePrint
       Color = clWhite
+      TransparentBand = False
       ForceNewColumn = False
       ForceNewPage = False
       Size.Values = (
         121.708333333333300000
         1989.666666666667000000)
+      PreCaluculateBandHeight = False
+      KeepOnOnePage = False
       BandType = rbPageFooter
       object QRLabel3: TQRLabel
         Left = 0
@@ -7330,6 +7596,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object QRShape52: TQRShape
@@ -7348,6 +7615,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           39.687500000000000000
           1981.729166666667000000)
         Shape = qrsRectangle
+        VertAdjust = 0
       end
       object QRShape53: TQRShape
         Left = 169
@@ -7365,6 +7633,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           42.333333333333340000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape54: TQRShape
         Left = 361
@@ -7382,6 +7651,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           42.333333333333340000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape55: TQRShape
         Left = 554
@@ -7399,6 +7669,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           42.333333333333340000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRLabel137: TQRLabel
         Left = 4
@@ -7429,6 +7700,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel138: TQRLabel
@@ -7460,6 +7732,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel139: TQRLabel
@@ -7474,7 +7747,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           26.458333333333330000
-          973.666666666666800000
+          973.666666666666900000
           42.333333333333340000
           261.937500000000000000)
         Alignment = taLeftJustify
@@ -7491,6 +7764,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel140: TQRLabel
@@ -7522,6 +7796,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object qrlInscMunicipal: TQRLabel
@@ -7553,6 +7828,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlTotalServicos: TQRLabel
@@ -7584,6 +7860,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlBaseISSQN: TQRLabel
@@ -7615,6 +7892,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlValorISSQN: TQRLabel
@@ -7646,6 +7924,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
     end
@@ -7662,12 +7941,16 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       AlignToBottom = True
       BeforePrint = qrbDadosAdicionaisBeforePrint
       Color = clWhite
+      TransparentBand = False
       ForceNewColumn = False
       ForceNewPage = False
       Size.Values = (
         357.187500000000000000
         1989.666666666667000000)
+      PreCaluculateBandHeight = False
+      KeepOnOnePage = False
       ParentBand = qrbISSQN
+      PrintOrder = cboAfterParent
       object QRShape56: TQRShape
         Left = 0
         Top = 12
@@ -7685,6 +7968,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1982.485119047619000000)
         Brush.Style = bsClear
         Shape = qrsRectangle
+        VertAdjust = 0
       end
       object QRLabel100: TQRLabel
         Left = 418
@@ -7715,6 +7999,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel7: TQRLabel
@@ -7746,6 +8031,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrmDadosAdicionais: TQRMemo
@@ -7796,6 +8082,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           31.750000000000000000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object qrlMsgTeste: TQRLabel
         Left = 15
@@ -7827,6 +8114,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 20
       end
       object QRLabel6: TQRLabel
@@ -7858,6 +8146,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object qrlDataHoraImpressao: TQRLabel
@@ -7889,6 +8178,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlSistema: TQRLabel
@@ -7920,6 +8210,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
     end
@@ -7937,6 +8228,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       AlignToBottom = False
       BeforePrint = qrbItensBeforePrint
       Color = clWhite
+      TransparentBand = False
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -8
@@ -7948,6 +8240,8 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       Size.Values = (
         29.104166666666670000
         1989.666666666667000000)
+      PreCaluculateBandHeight = False
+      KeepOnOnePage = False
       BandType = rbDetail
       object qrmProdutoCodigo: TQRDBText
         Left = 3
@@ -7979,6 +8273,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrmProdutoDescricao: TQRDBText
@@ -8011,6 +8306,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrmProdutoNCM: TQRDBText
@@ -8043,6 +8339,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrmProdutoCST: TQRDBText
@@ -8075,6 +8372,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrmProdutoCFOP: TQRDBText
@@ -8107,6 +8405,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrmProdutoUnidade: TQRDBText
@@ -8139,6 +8438,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrmProdutoQTDE: TQRDBText
@@ -8171,6 +8471,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrmProdutoValor: TQRDBText
@@ -8203,6 +8504,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrmProdutoTotal: TQRDBText
@@ -8235,6 +8537,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrmProdutoBCICMS: TQRDBText
@@ -8267,6 +8570,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrmProdutoVALORICMS: TQRDBText
@@ -8299,6 +8603,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrmProdutoALIQICMS: TQRDBText
@@ -8331,6 +8636,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrmProdutoVALORIPI: TQRDBText
@@ -8363,6 +8669,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrmProdutoALIQIPI: TQRDBText
@@ -8395,6 +8702,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrs2: TQRShape
@@ -8413,6 +8721,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           0.000000000000000000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object qrs1: TQRShape
         Left = 0
@@ -8430,6 +8739,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           0.000000000000000000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object qrs3: TQRShape
         Left = 236
@@ -8447,6 +8757,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           0.000000000000000000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object qrs4: TQRShape
         Left = 290
@@ -8464,6 +8775,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           0.000000000000000000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object qrs5: TQRShape
         Left = 316
@@ -8481,6 +8793,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           -2.645833333333333000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object qrs6: TQRShape
         Left = 346
@@ -8498,6 +8811,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           0.000000000000000000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object qrs7: TQRShape
         Left = 376
@@ -8515,6 +8829,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           0.000000000000000000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object qrs8: TQRShape
         Left = 424
@@ -8532,6 +8847,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           0.000000000000000000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object qrs9: TQRShape
         Left = 478
@@ -8549,6 +8865,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           0.000000000000000000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object qrs10: TQRShape
         Left = 542
@@ -8566,6 +8883,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           0.000000000000000000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object qrs11: TQRShape
         Left = 604
@@ -8583,6 +8901,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           0.000000000000000000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object qrs12: TQRShape
         Left = 648
@@ -8600,6 +8919,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           0.000000000000000000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object qrs13: TQRShape
         Left = 685
@@ -8617,6 +8937,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           0.000000000000000000
           3.527777777777778000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object qrs14: TQRShape
         Left = 718
@@ -8634,6 +8955,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           0.000000000000000000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object qrs15: TQRShape
         Left = 748
@@ -8651,6 +8973,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           0.000000000000000000
           2.645833333333333000)
         Shape = qrsVertLine
+        VertAdjust = 0
       end
     end
     object qrbItensLine: TQRChildBand
@@ -8665,12 +8988,16 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       Frame.DrawRight = False
       AlignToBottom = False
       Color = clWhite
+      TransparentBand = False
       ForceNewColumn = False
       ForceNewPage = False
       Size.Values = (
         2.645833333333333000
         1989.666666666667000000)
+      PreCaluculateBandHeight = False
+      KeepOnOnePage = False
       ParentBand = qrbItens
+      PrintOrder = cboAfterParent
       object QRShape68: TQRShape
         Left = 0
         Top = -1
@@ -8687,6 +9014,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           -2.645833333333333000
           1981.729166666667000000)
         Shape = qrsHorLine
+        VertAdjust = 0
       end
     end
   end

@@ -78,6 +78,10 @@
 |   - Formatação das casas decimais da "Quantidade" e do "Valor Unitário"
 |   - Correção na exibição da coluna CST. Quando o emitente for "Simples
 |     Nacional - CRT=1", será exibida a informação CSOSN ao invés do CST
+|  20/05/2011: Peterson de Cerqueira Matos
+|   - Ajuste de layout quadro "duplicatas"
+|   - Ajuste no procedimento de exibição das duplicatas limitando-as em 15
+      para evitar Acess Violation em NF-e's com mais de 15 duplicatas
 ******************************************************************************}
 
 {$I ACBr.inc}
@@ -924,10 +928,11 @@ end;
 procedure TfqrDANFeQRRetrato.qrbEmitenteDestinatarioBeforePrint(Sender: TQRCustomBand;
   var PrintBand: Boolean);
 var
-   x : integer;
+   x, iQuantDup: integer;
 begin
   inherited;
    PrintBand := QRNFe.PageNumber = 1;
+   iQuantDup := 0;
 
    // Destinatario
 
@@ -967,7 +972,12 @@ begin
       TQRLabel( FindComponent( 'qrlFatValor' + intToStr( x ) ) ).Caption := '';
    end;
    // Adiciona
-   for x := 0 to FNFe.Cobr.Dup.Count - 1 do with FNFe.Cobr.Dup[ x ] do
+   if FNFe.Cobr.Dup.Count > 15 then
+    iQuantDup := 15
+   else
+    iQuantDup := FNFe.Cobr.Dup.Count;
+
+   for x := 0 to (iQuantDup - 1) do with FNFe.Cobr.Dup[ x ] do
    begin
       TQRLabel( FindComponent( 'qrlFatNum'   + intToStr ( x + 1 ) ) ).Caption := NDup;
       TQRLabel( FindComponent( 'qrlFatData'  + intToStr ( x + 1 ) ) ).Caption := NotaUtil.FormatDate( DateToStr(DVenc) );

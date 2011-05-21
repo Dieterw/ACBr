@@ -799,7 +799,7 @@ begin
                LFill( strIND_PGTO )                        +
                LFill( VL_DESC,0,2, booNFCancelada  )       +
                LFill( VL_ABAT_NT,0,2, booNFCancelada  )    +
-               LFill( VL_MERC,0,2 )                        +
+               LFill( VL_MERC,0,2, booNFCancelada )        +
                LFill( strIND_FRT )                         +
                LFill( VL_FRT,0,2, booNFCancelada  )        +
                LFill( VL_SEG,0,2, booNFCancelada  )        +
@@ -1099,14 +1099,14 @@ begin
               {25} LFill( strCST_PIS )           +
               {26} LFill( VL_BC_PIS,0,2 )        +
               {27} LFill( ALIQ_PIS_PERC,0,2 )    +
-              {28} DFill( QUANT_BC_PIS,3 )       +
-              {29} DFill( ALIQ_PIS_R,4 )         +
+              {28} DFill( QUANT_BC_PIS,3,true )  +
+              {29} DFill( ALIQ_PIS_R,4,true )    +
               {30} LFill( VL_PIS,0,2 )           +
               {31} LFill( strCST_COFINS )        +
               {32} LFill( VL_BC_COFINS,0,2 )     +
               {33} LFill( ALIQ_COFINS_PERC,0,2 ) +
-              {34} DFill( QUANT_BC_COFINS,3 )    +
-              {35} DFill( ALIQ_COFINS_R,4 )      +
+              {34} DFill( QUANT_BC_COFINS,3,true )+
+              {35} DFill( ALIQ_COFINS_R,4,true ) +
               {36} LFill( VL_COFINS,0,2 )        +
               {37} LFill( COD_CTA ) ) ;
         end;

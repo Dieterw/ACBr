@@ -40,6 +40,8 @@
 |*  - Implementado Registro Tipo C "Controle de Abastecimento e Encerrante"
 *******************************************************************************}
 
+{$I ACBr.inc}
+
 unit ACBrPAF_C_Class;
 
 interface

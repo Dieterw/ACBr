@@ -38,6 +38,8 @@
 |*  - Criação e distribuição da Primeira Versao
 *******************************************************************************}
 
+{$I ACBr.inc}
+
 unit ACBrPAF_D_Class;
 
 interface
@@ -277,4 +279,4 @@ begin
    end;
 end;
 
-end.
+end.

@@ -38,6 +38,8 @@
 |*  - Criação e distribuição da Primeira Versao
 *******************************************************************************}
 
+{$I ACBr.inc}
+
 unit ACBrPAF_T_Class;
 
 interface

@@ -175,7 +175,7 @@ begin
     fPeso := fPeso / 1000;
   end;
 
-  // Código
+  // Total
   if pTotal > 0 then
   begin
     fTotal := StrToCurrDef( Copy(pCodigoEtiqueta, pTotal, tTotal), 0);

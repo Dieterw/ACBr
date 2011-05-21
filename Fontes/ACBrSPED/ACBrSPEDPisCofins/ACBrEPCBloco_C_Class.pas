@@ -709,6 +709,7 @@ begin
       WriteRegistroC190( RegC001.RegistroC010.Items[intFor] );
       WriteRegistroC380( RegC001.RegistroC010.Items[intFor] );
       WriteRegistroC395( RegC001.RegistroC010.Items[intFor] );
+      WriteRegistroC400( RegC001.RegistroC010.Items[intFor] );
       WriteRegistroC490( RegC001.RegistroC010.Items[intFor] );
       WriteRegistroC500( RegC001.RegistroC010.Items[intFor] );
       WriteRegistroC600( RegC001.RegistroC010.Items[intFor] );

@@ -78,6 +78,7 @@ begin
    fpDigito := 7;
    fpNome   := 'Santander';
    fpTamanhoMaximoNossoNum := 12;
+   fpTamanhoConta:= 8;
    fpTamanhoCarteira:= 3;
 end;
 

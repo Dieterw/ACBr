@@ -2538,7 +2538,7 @@
             <Left Value="13"/>
             <Top Value="549"/>
             <Width Value="88"/>
-            <Height Value="14"/>
+            <Height Value="16"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -2622,9 +2622,9 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="128"/>
-            <Top Value="550"/>
+            <Top Value="549"/>
             <Width Value="118"/>
-            <Height Value="13"/>
+            <Height Value="16"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -2708,9 +2708,9 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="268"/>
-            <Top Value="551"/>
+            <Top Value="550"/>
             <Width Value="63"/>
-            <Height Value="13"/>
+            <Height Value="15"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -2796,7 +2796,7 @@
             <Left Value="348"/>
             <Top Value="549"/>
             <Width Value="44"/>
-            <Height Value="16"/>
+            <Height Value="17"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -2882,7 +2882,7 @@
             <Left Value="409"/>
             <Top Value="550"/>
             <Width Value="127"/>
-            <Height Value="13"/>
+            <Height Value="15"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -2923,7 +2923,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="590"/>
-            <Top Value="536"/>
+            <Top Value="534"/>
             <Width Value="66"/>
             <Height Value="12"/>
           </Size>
@@ -2966,9 +2966,9 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="594"/>
-            <Top Value="546"/>
+            <Top Value="544"/>
             <Width Value="150"/>
-            <Height Value="19"/>
+            <Height Value="21"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>

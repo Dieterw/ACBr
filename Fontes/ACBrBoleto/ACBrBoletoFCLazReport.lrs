@@ -1397,7 +1397,7 @@ LazarusResources.Add('FCLazReport_Padrao','LRF',[
   +'ew"/>'#13#10'          <Visible Value="1"/>'#13#10'          <Typ Value="gt'
   +'Memo"/>'#13#10'          <StreamMode Value="0"/>'#13#10'          <Size>'#13
   +#10'            <Left Value="13"/>'#13#10'            <Top Value="549"/>'#13
-  +#10'            <Width Value="88"/>'#13#10'            <Height Value="14"/>'
+  +#10'            <Width Value="88"/>'#13#10'            <Height Value="16"/>'
   +#13#10'          </Size>'#13#10'          <Flags Value="3"/>'#13#10'        '
   +'  <FillColor Value="clNone"/>'#13#10'          <Frames>'#13#10'            '
   +'<FrameColor Value="clBlack"/>'#13#10'            <FrameStyle Value="frsDot"'
@@ -1440,8 +1440,8 @@ LazarusResources.Add('FCLazReport_Padrao','LRF',[
   +'       <ClassName Value="TfrMemoView"/>'#13#10'          <Visible Value="1"'
   +'/>'#13#10'          <Typ Value="gtMemo"/>'#13#10'          <StreamMode Valu'
   +'e="0"/>'#13#10'          <Size>'#13#10'            <Left Value="128"/>'#13
-  +#10'            <Top Value="550"/>'#13#10'            <Width Value="118"/>'
-  +#13#10'            <Height Value="13"/>'#13#10'          </Size>'#13#10'    '
+  +#10'            <Top Value="549"/>'#13#10'            <Width Value="118"/>'
+  +#13#10'            <Height Value="16"/>'#13#10'          </Size>'#13#10'    '
   +'      <Flags Value="3"/>'#13#10'          <FillColor Value="clNone"/>'#13#10
   +'          <Frames>'#13#10'            <FrameColor Value="clBlack"/>'#13#10
   +'            <FrameStyle Value="frsDot"/>'#13#10'            <FrameWidth Val'
@@ -1483,8 +1483,8 @@ LazarusResources.Add('FCLazReport_Padrao','LRF',[
   +'"Memo61"/>'#13#10'          <ClassName Value="TfrMemoView"/>'#13#10'       '
   +'   <Visible Value="1"/>'#13#10'          <Typ Value="gtMemo"/>'#13#10'     '
   +'     <StreamMode Value="0"/>'#13#10'          <Size>'#13#10'            <Le'
-  +'ft Value="268"/>'#13#10'            <Top Value="551"/>'#13#10'            <'
-  +'Width Value="63"/>'#13#10'            <Height Value="13"/>'#13#10'         '
+  +'ft Value="268"/>'#13#10'            <Top Value="550"/>'#13#10'            <'
+  +'Width Value="63"/>'#13#10'            <Height Value="15"/>'#13#10'         '
   +' </Size>'#13#10'          <Flags Value="3"/>'#13#10'          <FillColor Va'
   +'lue="clNone"/>'#13#10'          <Frames>'#13#10'            <FrameColor Val'
   +'ue="clBlack"/>'#13#10'            <FrameStyle Value="frsDot"/>'#13#10'     '
@@ -1527,7 +1527,7 @@ LazarusResources.Add('FCLazReport_Padrao','LRF',[
   +#10'          <Visible Value="1"/>'#13#10'          <Typ Value="gtMemo"/>'#13
   +#10'          <StreamMode Value="0"/>'#13#10'          <Size>'#13#10'       '
   +'     <Left Value="348"/>'#13#10'            <Top Value="549"/>'#13#10'     '
-  +'       <Width Value="44"/>'#13#10'            <Height Value="16"/>'#13#10' '
+  +'       <Width Value="44"/>'#13#10'            <Height Value="17"/>'#13#10' '
   +'         </Size>'#13#10'          <Flags Value="3"/>'#13#10'          <Fill'
   +'Color Value="clNone"/>'#13#10'          <Frames>'#13#10'            <FrameC'
   +'olor Value="clBlack"/>'#13#10'            <FrameStyle Value="frsDot"/>'#13
@@ -1571,7 +1571,7 @@ LazarusResources.Add('FCLazReport_Padrao','LRF',[
   +'yp Value="gtMemo"/>'#13#10'          <StreamMode Value="0"/>'#13#10'       '
   +'   <Size>'#13#10'            <Left Value="409"/>'#13#10'            <Top Va'
   +'lue="550"/>'#13#10'            <Width Value="127"/>'#13#10'            <Hei'
-  +'ght Value="13"/>'#13#10'          </Size>'#13#10'          <Flags Value="3"'
+  +'ght Value="15"/>'#13#10'          </Size>'#13#10'          <Flags Value="3"'
   +'/>'#13#10'          <FillColor Value="clNone"/>'#13#10'          <Frames>'
   +#13#10'            <FrameColor Value="clBlack"/>'#13#10'            <FrameSt'
   +'yle Value="frsDot"/>'#13#10'            <FrameWidth Value="1"/>'#13#10'    '
@@ -1591,7 +1591,7 @@ LazarusResources.Add('FCLazReport_Padrao','LRF',[
   +'    <Name Value="Memo66"/>'#13#10'          <ClassName Value="TfrMemoView"/'
   +'>'#13#10'          <Visible Value="1"/>'#13#10'          <Typ Value="gtMemo'
   +'"/>'#13#10'          <StreamMode Value="0"/>'#13#10'          <Size>'#13#10
-  +'            <Left Value="590"/>'#13#10'            <Top Value="536"/>'#13#10
+  +'            <Left Value="590"/>'#13#10'            <Top Value="534"/>'#13#10
   +'            <Width Value="66"/>'#13#10'            <Height Value="12"/>'#13
   +#10'          </Size>'#13#10'          <Flags Value="3"/>'#13#10'          <'
   +'FillColor Value="clNone"/>'#13#10'          <Frames>'#13#10'            <Fr'
@@ -1613,8 +1613,8 @@ LazarusResources.Add('FCLazReport_Padrao','LRF',[
   +'67"/>'#13#10'          <ClassName Value="TfrMemoView"/>'#13#10'          <V'
   +'isible Value="1"/>'#13#10'          <Typ Value="gtMemo"/>'#13#10'          '
   +'<StreamMode Value="0"/>'#13#10'          <Size>'#13#10'            <Left Va'
-  +'lue="594"/>'#13#10'            <Top Value="546"/>'#13#10'            <Width'
-  +' Value="150"/>'#13#10'            <Height Value="19"/>'#13#10'          </S'
+  +'lue="594"/>'#13#10'            <Top Value="544"/>'#13#10'            <Width'
+  +' Value="150"/>'#13#10'            <Height Value="21"/>'#13#10'          </S'
   +'ize>'#13#10'          <Flags Value="3"/>'#13#10'          <FillColor Value='
   +'"clNone"/>'#13#10'          <Frames>'#13#10'            <FrameColor Value="'
   +'clBlack"/>'#13#10'            <FrameStyle Value="frsDot"/>'#13#10'         '

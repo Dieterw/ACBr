@@ -77,7 +77,15 @@
 |* 16/02/2011: Fernando Emiliano David Nunes
 |*  - Acrescentado ao Método ImprimeDANFEPDF a condição ELSE quando NFE <> NIL
 |* 01/03/2011: Fernando Emiliano David Nunes
-|*  - Quando DPEC, nao estava imprimindo o valor FProtocoloNFe, acrescentei o envio do Atributo: ProtocoloNFe
+|*  - Quando DPEC, nao estava imprimindo o valor FProtocoloNFe, acrescentei o
+|*    envio do Atributo: ProtocoloNFe
+|* 20/05/2010: Peterson de Cerqueira Matos
+|*  - Tratamento da propriedade "ExibirResumoCanhoto_Texto"
+|* 23/05/2011: Waldir Paim
+|*  - Início da preparação para Lazarus: Somente utiliza TClientDataSet quando
+|*    estiver no Delphi. Obrigatória a utilização da versão 3.70B ou superior
+|*    do Fortes Report. Download disponível em
+|*    http://sourceforge.net/projects/fortesreport/files/
 ******************************************************************************}
 {$I ACBr.inc}
 unit ACBrNFeDANFeRLClass;
@@ -90,7 +98,7 @@ uses SysUtils, Classes,
   {$ELSE}
   Forms, Dialogs,
   {$ENDIF}
-  ACBrNFeDANFEClass, ACBrNFeDANFeRL, ACBrNFeDANFeRLRetrato,
+  ACBrNFeDANFEClass, ACBrNFeDANFeRL,RLConsts, ACBrNFeDANFeRLRetrato,
   ACBrNFeDANFeRLPaisagem, pcnNFe, pcnConversao, StrUtils;
 
 type
@@ -132,6 +140,7 @@ var
 
 constructor TACBrNFeDANFeRL.Create(AOwner: TComponent);
 begin
+  SetVersion(CommercialVersion,ReleaseVersion,CommentVersion);
   inherited create( AOwner );
   FLarguraCodProd := 54;
   FMargemSuperior := 0.70;
@@ -140,7 +149,7 @@ begin
   FMargemDireita := 0.70;
   FCasasDecimais._qCom := 4;
   FCasasDecimais._vUnCom := 4;
-  FProdutosPorPagina := 10;
+  FProdutosPorPagina := 0;
   FTamanhoFonte_RazaoSocial := 8;
   FExibirEAN := False;
 end;
@@ -167,7 +176,8 @@ begin
           ExpandirLogoMarca, MostrarPreview, FonteDANFE, MargemSuperior,
           MargemInferior, MargemEsquerda, MargemDireita, CasasDecimais._qCom,
           CasasDecimais._vUnCom, ProdutosPorPagina, Impressora,
-          TamanhoFonte_RazaoSocial, ExibirEAN, ProtocoloNFe);
+          TamanhoFonte_RazaoSocial, ExibirEAN, ProtocoloNFe,
+          ExibirResumoCanhoto_Texto);
         end;
     end
   else
@@ -178,7 +188,8 @@ begin
       ExpandirLogoMarca, MostrarPreview, FonteDANFE, MargemSuperior,
       MargemInferior, MargemEsquerda, MargemDireita, CasasDecimais._qCom,
       CasasDecimais._vUnCom, ProdutosPorPagina, Impressora,
-      TamanhoFonte_RazaoSocial, ExibirEAN, ProtocoloNFe);
+      TamanhoFonte_RazaoSocial, ExibirEAN, ProtocoloNFe,
+      ExibirResumoCanhoto_Texto);
     end;
 
   frlDANFeRL.Free;
@@ -205,7 +216,7 @@ begin
           ExpandirLogoMarca, FonteDANFE, MargemSuperior,
           MargemInferior, MargemEsquerda, MargemDireita, CasasDecimais._qCom,
           CasasDecimais._vUnCom, ProdutosPorPagina, TamanhoFonte_RazaoSocial,
-          ExibirEAN, ProtocoloNFe);
+          ExibirEAN, ProtocoloNFe, ExibirResumoCanhoto_Texto);
         end;
     end
   else
@@ -216,7 +227,8 @@ begin
       PosCanhoto, FormularioContinuo, ExpandirLogoMarca, FonteDANFE,
       MargemSuperior, MargemInferior, MargemEsquerda, MargemDireita,
       CasasDecimais._qCom, CasasDecimais._vUnCom, ProdutosPorPagina,
-      TamanhoFonte_RazaoSocial, ExibirEAN, ProtocoloNFe);
+      TamanhoFonte_RazaoSocial, ExibirEAN, ProtocoloNFe,
+      ExibirResumoCanhoto_Texto);
     end;
    
 

@@ -3,7 +3,6 @@ object frlDANFeRL: TfrlDANFeRL
   Top = 112
   Width = 810
   Height = 634
-  VertScrollBar.Position = 279
   Caption = 'frlDANFeLR'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -12,12 +11,15 @@ object frlDANFeRL: TfrlDANFeRL
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
+  Position = poMainFormCenter
   Scaled = False
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
   PixelsPerInch = 96
   TextHeight = 13
   object RLNFe: TRLReport
     Left = 0
-    Top = -279
+    Top = 0
     Width = 794
     Height = 1123
     Font.Charset = DEFAULT_CHARSET
@@ -28,5 +30,15 @@ object frlDANFeRL: TfrlDANFeRL
     PreviewOptions.ShowModal = True
     PreviewOptions.Caption = 'DANFe'
     ShowProgress = False
+  end
+  object RLPDFFilter1: TRLPDFFilter
+    DocumentInfo.Creator = 'FortesReport v3.23 \251 Copyright '#169' 1999-2004 Fortes Inform'#225'tica'
+    DisplayName = 'Documento PDF'
+    Left = 363
+    Top = 157
+  end
+  object DataSource1: TDataSource
+    Left = 403
+    Top = 154
   end
 end

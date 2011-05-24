@@ -1,20 +1,18 @@
 inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
-  Left = 223
+  Left = 61
+  Top = 8
   Width = 1149
   Height = 732
-  VertScrollBar.Position = 0
   Caption = 'frlDANFeRLPaisagem'
   OldCreateOrder = True
   PixelsPerInch = 96
   TextHeight = 13
   inherited RLNFe: TRLReport
-    Top = 0
     Width = 1123
     Height = 794
     Background.Arrange = baDistributed
     Background.Height = 96
     Background.Width = 175
-    DataSource = DataSource1
     Margins.LeftMargin = 7.000000000000000000
     Margins.TopMargin = 7.000000000000000000
     Margins.RightMargin = 7.000000000000000000
@@ -46,6 +44,7 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
         Top = 24
         Width = 1018
         Height = 8
+        Behavior = [beSiteExpander]
         Borders.Style = bsClear
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -162,6 +161,7 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
           Height = 14
           Alignment = taCenter
           AutoSize = False
+          Behavior = [beSiteExpander]
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -7
@@ -188,6 +188,7 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
           Height = 7
           Alignment = taCenter
           AutoSize = False
+          Behavior = [beSiteExpander]
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -7
@@ -707,6 +708,7 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
         Width = 342
         Height = 22
         AutoSize = False
+        Behavior = [beSiteExpander]
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -11
@@ -1021,6 +1023,7 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
         Width = 342
         Height = 26
         AutoSize = False
+        Behavior = [beSiteExpander]
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -13
@@ -1035,6 +1038,7 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
         Width = 342
         Height = 24
         AutoSize = False
+        Behavior = [beSiteExpander]
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -11
@@ -1270,6 +1274,7 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
         Width = 706
         Height = 92
         AutoSize = False
+        Behavior = [beSiteExpander]
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -8
@@ -3905,7 +3910,6 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
           Height = 11
           AutoSize = False
           DataField = 'CODIGO'
-          DataSource = DataSource1
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -8
@@ -3938,8 +3942,8 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
           Top = 1
           Width = 337
           Height = 10
+          Behavior = [beSiteExpander]
           DataField = 'DESCRICAO'
-          DataSource = DataSource1
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -8
@@ -3954,7 +3958,6 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
           Height = 10
           AutoSize = False
           DataField = 'EAN'
-          DataSource = DataSource1
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -8
@@ -3983,9 +3986,9 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
           Top = 1
           Width = 42
           Height = 11
+          Alignment = taCenter
           AutoSize = False
           DataField = 'NCM'
-          DataSource = DataSource1
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -8
@@ -4001,7 +4004,6 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
           Alignment = taCenter
           AutoSize = False
           DataField = 'CST'
-          DataSource = DataSource1
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -8
@@ -4016,7 +4018,6 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
           Height = 11
           AutoSize = False
           DataField = 'CFOP'
-          DataSource = DataSource1
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -8
@@ -4031,7 +4032,6 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
           Height = 11
           AutoSize = False
           DataField = 'UNIDADE'
-          DataSource = DataSource1
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -8
@@ -4047,7 +4047,6 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
           Alignment = taRightJustify
           AutoSize = False
           DataField = 'QTDE'
-          DataSource = DataSource1
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -8
@@ -4063,7 +4062,6 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
           Alignment = taRightJustify
           AutoSize = False
           DataField = 'VALOR'
-          DataSource = DataSource1
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -8
@@ -4079,7 +4077,6 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
           Alignment = taRightJustify
           AutoSize = False
           DataField = 'TOTAL'
-          DataSource = DataSource1
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -8
@@ -4095,7 +4092,6 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
           Alignment = taRightJustify
           AutoSize = False
           DataField = 'VALORDESC'
-          DataSource = DataSource1
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -8
@@ -4111,7 +4107,6 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
           Alignment = taRightJustify
           AutoSize = False
           DataField = 'BICMS'
-          DataSource = DataSource1
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -8
@@ -4127,7 +4122,6 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
           Alignment = taRightJustify
           AutoSize = False
           DataField = 'VALORICMS'
-          DataSource = DataSource1
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -8
@@ -4143,7 +4137,6 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
           Alignment = taRightJustify
           AutoSize = False
           DataField = 'VALORIPI'
-          DataSource = DataSource1
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -8
@@ -4159,7 +4152,6 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
           Alignment = taRightJustify
           AutoSize = False
           DataField = 'ALIQICMS'
-          DataSource = DataSource1
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -8
@@ -4175,7 +4167,6 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
           Alignment = taRightJustify
           AutoSize = False
           DataField = 'ALIQIPI'
-          DataSource = DataSource1
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -8
@@ -4549,6 +4540,7 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
       Top = 704
       Width = 681
       Height = 12
+      Behavior = [beSiteExpander]
       Color = clSkyBlue
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
@@ -4779,6 +4771,7 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
         Top = 1
         Width = 952
         Height = 8
+        Behavior = [beSiteExpander]
         Borders.Style = bsClear
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -4788,94 +4781,5 @@ inherited frlDANFeRLPaisagem: TfrlDANFeRLPaisagem
         ParentFont = False
       end
     end
-  end
-  object RLPDFFilter1: TRLPDFFilter
-    DocumentInfo.Creator = 'FortesReport v3.23 \251 Copyright '#169' 1999-2004 Fortes Inform'#225'tica'
-    ViewerOptions = []
-    FontEncoding = feNoEncoding
-    DisplayName = 'Documento PDF'
-    ShowProgress = False
-    Left = 923
-    Top = 45
-  end
-  object cdsItens: TClientDataSet
-    Aggregates = <>
-    Params = <>
-    Left = 952
-    Top = 45
-    object cdsItensCODIGO: TStringField
-      FieldName = 'CODIGO'
-      Size = 60
-    end
-    object cdsItensEAN: TStringField
-      FieldName = 'EAN'
-      Size = 14
-    end
-    object cdsItensDESCRICAO: TStringField
-      FieldName = 'DESCRICAO'
-      Size = 120
-    end
-    object cdsItensNCM: TStringField
-      FieldName = 'NCM'
-      Size = 8
-    end
-    object cdsItensCFOP: TStringField
-      FieldName = 'CFOP'
-      Size = 4
-    end
-    object cdsItensUNIDADE: TStringField
-      FieldName = 'UNIDADE'
-      Size = 6
-    end
-    object cdsItensQTDE: TStringField
-      FieldName = 'QTDE'
-      Size = 18
-    end
-    object cdsItensVALOR: TStringField
-      FieldName = 'VALOR'
-      Size = 18
-    end
-    object cdsItensVALORDESC: TStringField
-      DisplayWidth = 18
-      FieldName = 'VALORDESC'
-    end
-    object cdsItensTOTAL: TStringField
-      FieldName = 'TOTAL'
-      Size = 18
-    end
-    object cdsItensCSOSN: TStringField
-      FieldName = 'CST'
-      Size = 3
-    end
-    object cdsItensCST2: TStringField
-      DisplayWidth = 4
-      FieldName = 'CSOSN'
-      Size = 4
-    end
-    object cdsItensBICMS: TStringField
-      FieldName = 'BICMS'
-      Size = 18
-    end
-    object cdsItensALIQICMS: TStringField
-      FieldName = 'ALIQICMS'
-      Size = 6
-    end
-    object cdsItensVALORICMS: TStringField
-      FieldName = 'VALORICMS'
-      Size = 18
-    end
-    object cdsItensALIQIPI: TStringField
-      FieldName = 'ALIQIPI'
-      Size = 6
-    end
-    object cdsItensVALORIPI: TStringField
-      FieldName = 'VALORIPI'
-      Size = 18
-    end
-  end
-  object DataSource1: TDataSource
-    DataSet = cdsItens
-    Left = 987
-    Top = 44
   end
 end

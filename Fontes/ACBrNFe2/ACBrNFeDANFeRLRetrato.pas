@@ -109,6 +109,13 @@
 |*  - Correção da exibição das duplicatas. As duplicatas são exibidas da direita
 |*    para a esquerda, até o limite de 60 duplicatas. Desta forma a altura do
 |*    quadro duplicatas fica variável, de acordo com a quantidade de linhas
+|* 20/05/2011: Peterson de Cerqueira Matos
+|*  - Tratamento da propriedade "ExibirResumoCanhoto_Texto"
+|* 23/05/2011: Waldir Paim
+|*  - Início da preparação para Lazarus: Somente utiliza TClientDataSet quando
+|*    estiver no Delphi. Obrigatória a utilização da versão 3.70B ou superior
+|*    do Fortes Report. Download disponível em
+|*    http://sourceforge.net/projects/fortesreport/files/
 ******************************************************************************}
 
 
@@ -125,7 +132,7 @@ uses
   Windows, Messages, Graphics, Controls, Forms, Dialogs, ExtCtrls, MaskUtils, StdCtrls,
   {$ENDIF}
   RLReport, RLFilters, RLPDFFilter, XMLIntf, XMLDoc,
-  ACBrNFeDANFeRL, pcnConversao, RLBarcode, jpeg, DB, DBClient, StrUtils;
+  ACBrNFeDANFeRL, pcnConversao, RLBarcode, jpeg, DB, StrUtils;
 
 type
   TfrlDANFeRLRetrato = class(TfrlDANFeRL)
@@ -212,7 +219,6 @@ type
     rlbCodigoBarrasFS: TRLBarcode;
     rllXmotivo: TRLLabel;
     rllDadosVariaveis1c: TRLLabel;
-    RLPDFFilter1: TRLPDFFilter;
     rlbDestinatario: TRLBand;
     RLLabel18: TRLLabel;
     RLLabel32: TRLLabel;
@@ -371,21 +377,6 @@ type
     RLDraw40: TRLDraw;
     RLLabel25: TRLLabel;
     RLLabel26: TRLLabel;
-    cdsItens: TClientDataSet;
-    cdsItensCODIGO: TStringField;
-    cdsItensDESCRICAO: TStringField;
-    cdsItensNCM: TStringField;
-    cdsItensCFOP: TStringField;
-    cdsItensUNIDADE: TStringField;
-    cdsItensQTDE: TStringField;
-    cdsItensVALOR: TStringField;
-    cdsItensTOTAL: TStringField;
-    cdsItensCSOSN: TStringField;
-    cdsItensBICMS: TStringField;
-    cdsItensALIQICMS: TStringField;
-    cdsItensVALORICMS: TStringField;
-    cdsItensALIQIPI: TStringField;
-    cdsItensVALORIPI: TStringField;
     rlbItens: TRLBand;
     rlbISSQN: TRLBand;
     RLLabel24: TRLLabel;
@@ -397,7 +388,6 @@ type
     RLDraw57: TRLDraw;
     RLDraw58: TRLDraw;
     RLDraw52: TRLDraw;
-    DataSource1: TDataSource;
     LinhaDescricao: TRLDraw;
     LinhaNCM: TRLDraw;
     LinhaCST: TRLDraw;
@@ -487,13 +477,11 @@ type
     RLLabel7: TRLLabel;
     RLLabel8: TRLLabel;
     RLLabel9: TRLLabel;
-    cdsItensVALORDESC: TStringField;
     RLLabel10: TRLLabel;
     RLLabel11: TRLLabel;
     RLDraw1: TRLDraw;
     txtValorDesconto: TRLDBText;
     RLDraw2: TRLDraw;
-    cdsItensCST2: TStringField;
     rllContingencia: TRLLabel;
     RLDraw4: TRLDraw;
     rllFatNum13: TRLLabel;
@@ -668,6 +656,7 @@ type
     function FormatarCEP(AValue: String): String;
     function FormatarFone(AValue: String): String;
     procedure InsereLinhas(sTexto: String; iLimCaracteres: Integer; rMemo: TRLMemo);
+    procedure ConfigureDataSource;
   public
 
   end;
@@ -805,6 +794,8 @@ begin
       LeftMargin := FMargemEsquerda * 10;
       RightMargin := FMargemDireita * 10;
     end;
+
+  ConfigureDataSource;
   InitDados;
 
   if FNFe.Cobr.Dup.Count > 0 then
@@ -852,16 +843,21 @@ begin
   // Exibe o resumo da NF-e no canhoto
   if FResumoCanhoto = True then
     begin
-      rllResumo.Caption := 'EMISSÃO: ' +
+      if FResumoCanhoto_Texto <> '' then
+        rllResumo.Caption := FResumoCanhoto_Texto
+      else
+        begin
+          rllResumo.Caption := 'EMISSÃO: ' +
                            FormatDateTime('DD/MM/YYYY', FNFe.Ide.dEmi) +
                            '  -  ' +
                            'DEST. / REM.: ' + FNFe.Dest.xNome + '  -  ' +
                            'VALOR TOTAL: R$ ' +
                            NotaUtil.FormatFloat(FNFe.Total.ICMSTot.vNF,
                            '###,###,###,##0.00');
+        end; // if FResumoCanhoto_Texto <> ''
       rllResumo.Visible := True;
       iAlturaCanhoto := 25;
-    end
+    end // if FResumoCanhoto = True
   else
     begin
       rllResumo.Visible := False;
@@ -1026,11 +1022,6 @@ begin
         rlbReciboHeader.Top := rlbDivisaoRecibo.Top + rlbDivisaoRecibo.Height;
       end;
   end;
-
-  // Posiciona a Marca D'água
-  rliMarcaDagua1.Top := rlbCabecalhoItens.Top +
-                     ((rlbDadosAdicionais.Top - rlbCabecalhoItens.Top) div 2) -
-                     (rliMarcaDagua1.Height div 2);
 
   // Oculta alguns itens do DANFE
   if FFormularioContinuo = True then
@@ -1490,7 +1481,7 @@ end;
 procedure TfrlDANFeRLRetrato.DadosAdicionais;
 var sInfCompl, sInfAdFisco, sInfContr, sObsFisco, sObsProcRef, sInfInteira,
     sProtocolo, sSuframa : WideString;
-    sLinhaProvisoria, sLinha, sIndProc: String;
+    sLinha, sIndProc: String;
 iTotalCaracteres, iTotalLinhas, iUltimoEspacoLinha, i: Integer;
 begin
   rlmDadosAdicionaisAuxiliar.Lines.BeginUpdate;
@@ -1660,11 +1651,8 @@ end;
 
 procedure TfrlDANFeRLRetrato.Itens;
 var nItem : Integer ;
-sCST, sBCICMS, sALIQICMS, sVALORICMS, sALIQIPI, sVALORIPI : String ;
+sCST, sBCICMS, sALIQICMS, sVALORICMS, sALIQIPI, sVALORIPI  : String ;
 begin
-  cdsItens.Close;
-  cdsItens.CreateDataSet ;
-  cdsItens.Open ;
 
   for nItem := 0 to (FNFe.Det.Count - 1) do
     begin
@@ -1678,41 +1666,15 @@ begin
                   sVALORIPI  := '0,00' ;
 
                   cdsItens.Append ;
-                  cdsItens.FieldByName('CODIGO').AsString := CProd;
+                  cdsItens.FieldByName('CODIGO').AsString    := CProd;
                   cdsItens.FieldByName('DESCRICAO').AsString := XProd;
-                  cdsItens.FieldByName('NCM').AsString := NCM;
-                  cdsItens.FieldByName('CFOP').AsString := CFOP;
+                  cdsItens.FieldByName('NCM').AsString       := NCM;
+                  cdsItens.FieldByName('CFOP').AsString      := CFOP;
+                  cdsItens.FieldByName('QTDE').AsString      := FormatFloat(format( sDisplayFormat ,[FCasasDecimaisqCom,0]),qCom);
+                  cdsItens.FieldByName('VALOR').AsString     := FormatFloat(format( sDisplayFormat ,[FCasasDecimaisvUnCom,0]),vUnCom);
 
-                  case FCasasDecimaisqCom of
-                    0: cdsItens.FieldByName('QTDE').AsString := FormatFloat('###,###,###,##0', QCom);
-                    1: cdsItens.FieldByName('QTDE').AsString := FormatFloat('###,###,###,##0.0', QCom);
-                    2: cdsItens.FieldByName('QTDE').AsString := FormatFloat('###,###,###,##0.00', QCom);
-                    3: cdsItens.FieldByName('QTDE').AsString := FormatFloat('###,###,###,##0.000', QCom);
-                    4: cdsItens.FieldByName('QTDE').AsString := FormatFloat('###,###,###,##0.0000', QCom);
-                    5: cdsItens.FieldByName('QTDE').AsString := FormatFloat('###,###,###,##0.00000', QCom);
-                    6: cdsItens.FieldByName('QTDE').AsString := FormatFloat('###,###,###,##0.000000', QCom);
-                    7: cdsItens.FieldByName('QTDE').AsString := FormatFloat('###,###,###,##0.0000000', QCom);
-                    8: cdsItens.FieldByName('QTDE').AsString := FormatFloat('###,###,###,##0.00000000', QCom);
-                    9: cdsItens.FieldByName('QTDE').AsString := FormatFloat('###,###,###,##0.000000000', QCom);
-                   10: cdsItens.FieldByName('QTDE').AsString := FormatFloat('###,###,###,##0.0000000000', QCom);
-                  end;
-
-                  case FCasasDecimaisvUnCom of
-                    0: cdsItens.FieldByName('VALOR').AsString := FormatFloat('###,###,###,##0', vUnCom);
-                    1: cdsItens.FieldByName('VALOR').AsString := FormatFloat('###,###,###,##0.0', vUnCom);
-                    2: cdsItens.FieldByName('VALOR').AsString := FormatFloat('###,###,###,##0.00', vUnCom);
-                    3: cdsItens.FieldByName('VALOR').AsString := FormatFloat('###,###,###,##0.000', vUnCom);
-                    4: cdsItens.FieldByName('VALOR').AsString := FormatFloat('###,###,###,##0.0000', vUnCom);
-                    5: cdsItens.FieldByName('VALOR').AsString := FormatFloat('###,###,###,##0.00000', vUnCom);
-                    6: cdsItens.FieldByName('VALOR').AsString := FormatFloat('###,###,###,##0.000000', vUnCom);
-                    7: cdsItens.FieldByName('VALOR').AsString := FormatFloat('###,###,###,##0.0000000', vUnCom);
-                    8: cdsItens.FieldByName('VALOR').AsString := FormatFloat('###,###,###,##0.00000000', vUnCom);
-                    9: cdsItens.FieldByName('VALOR').AsString := FormatFloat('###,###,###,##0.000000000', vUnCom);
-                   10: cdsItens.FieldByName('VALOR').AsString := FormatFloat('###,###,###,##0.0000000000', vUnCom);
-                  end;
-
-                  cdsItens.FieldByName('UNIDADE').AsString := UCom;
-                  cdsItens.FieldByName('TOTAL').AsString :=
+                  cdsItens.FieldByName('UNIDADE').AsString   := UCom;
+                  cdsItens.FieldByName('TOTAL').AsString     :=
                                       FormatFloat('###,###,###,##0.00', vProd);
                   cdsItens.FieldByName('VALORDESC').AsString :=
                                       FormatFloat('###,###,###,##0.00', vDesc);
@@ -1909,6 +1871,7 @@ begin
       rliFatura2.Height := iAltQuadro;
       rliFatura3.Height := iAltQuadro;
     end; // if FNFe.Cobr.Dup.Count > 0
+
 end;
 
 procedure TfrlDANFeRLRetrato.rlbItensAfterPrint(Sender: TObject);
@@ -1949,6 +1912,12 @@ begin
       rlbReciboHeader.Visible := False;
       rlbDivisaoRecibo.Visible := False;
     end;
+
+  // Posiciona a Marca D'água
+  rliMarcaDagua1.Top := rlbCabecalhoItens.Top +
+                     ((rlbDadosAdicionais.Top - rlbCabecalhoItens.Top) div 2) -
+                     (rliMarcaDagua1.Height div 2);
+    
 end;
 
 procedure TfrlDANFeRLRetrato.rlbItensBeforePrint(Sender: TObject;
@@ -1977,6 +1946,26 @@ end;
 procedure TfrlDANFeRLRetrato.rlbEmitenteAfterPrint(Sender: TObject);
 begin
   iItemAtual := 0;
+end;
+
+procedure TfrlDANFeRLRetrato.ConfigureDataSource;
+begin
+  self.rlmDescricao.DataSource := DataSource1;
+  self.RLNFe.DataSource := DataSource1;
+  self.txtCodigo.DataSource := DataSource1;
+  self.txtNCM.DataSource := DataSource1;
+  self.txtCST.DataSource := DataSource1;
+  self.txtCFOP.DataSource := DataSource1;
+  self.txtUnidade.DataSource := DataSource1;
+  self.txtQuantidade.DataSource := DataSource1;
+  self.txtValorUnitario.DataSource := DataSource1;
+  self.txtValorTotal.DataSource := DataSource1;
+  self.txtBaseICMS.DataSource := DataSource1;
+  self.txtValorICMS.DataSource := DataSource1;
+  self.txtValorIPI.DataSource := DataSource1;
+  self.txtAliqICMS.DataSource := DataSource1;
+  self.txtAliqIPI.DataSource := DataSource1;
+  self.txtValorDesconto.DataSource := DataSource1;
 end;
 
 end.

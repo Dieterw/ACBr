@@ -81,7 +81,9 @@
 |  20/05/2011: Peterson de Cerqueira Matos
 |   - Ajuste de layout quadro "duplicatas"
 |   - Ajuste no procedimento de exibição das duplicatas limitando-as em 15
-      para evitar Acess Violation em NF-e's com mais de 15 duplicatas
+|     para evitar Acess Violation em NF-e's com mais de 15 duplicatas
+|   - Tratamento da propriedade "ExibirResumoCanhoto"
+|   - Tratamento da propriedade "ExibirResumoCanhoto_Texto"
 ******************************************************************************}
 
 {$I ACBr.inc}
@@ -430,6 +432,7 @@ type
     qrs14: TQRShape;
     qrs15: TQRShape;
     cdsItensCSOSN: TStringField;
+    qrlResumo: TQRLabel;
     procedure QRNFeBeforePrint(Sender: TCustomQuickRep;
       var PrintReport: Boolean);
     procedure qrbReciboBeforePrint(Sender: TQRCustomBand;
@@ -488,7 +491,7 @@ begin
     end else
     begin
         intTamanhoLinha:= (11 * intDivisao);
-    end;                            
+    end;
 
 
     if (intTamanhoDescricao <= 35) AND (cdsItens.FieldByName('INFADIPROD').AsString = '') then
@@ -534,7 +537,7 @@ begin
         qrs14.Visible:= False;
         qrs15.Visible:= False;
     end;
-    
+
     qrs1.Repaint;
     qrs2.Repaint;
     qrs3.Repaint;
@@ -918,6 +921,25 @@ end;
 procedure TfqrDANFeQRRetrato.qrbReciboBeforePrint(Sender: TQRCustomBand;
   var PrintBand: Boolean);
 begin
+
+  if FResumoCanhoto = True then
+    begin
+      if FResumoCanhoto_Texto <> '' then
+        qrlResumo.Caption := FResumoCanhoto_Texto
+      else
+        begin
+          qrlResumo.Caption := 'EMISSÃO: ' +
+                           FormatDateTime('DD/MM/YYYY', FNFe.Ide.dEmi) +
+                           '  -  ' +
+                           'DEST. / REM.: ' + FNFe.Dest.xNome + '  -  ' +
+                           'VALOR TOTAL: R$ ' +
+                           NotaUtil.FormatFloat(FNFe.Total.ICMSTot.vNF,
+                           '###,###,###,##0.00');
+        end; // if FResumoCanhoto_Texto <> ''
+    end // if FResumoCanhoto = True
+  else
+    qrlResumo.Caption := '';
+
   inherited;
    PrintBand := QRNFe.PageNumber = 1;
    qrlNumNF0.Caption := FormatFloat( '000,000,000', FNFe.Ide.nNF );

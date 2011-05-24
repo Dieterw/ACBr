@@ -85,6 +85,13 @@
 |*  - Acréscimo do parâmetro "AExibirEAN"
 |* 01/03/2011: Fernando Emiliano David Nunes
 |*  - Acréscimo do parâmetro "AProtocoloNFe"
+|* 20/05/2011: Peterson de Cerqueira Matos
+|*  - Acréscimo do parâmetro "AResumoCanhoto_Texto"
+|* 23/05/2011: Waldir Paim
+|*  - Início da preparação para Lazarus: Somente utiliza TClientDataSet quando
+|*    estiver no Delphi. Obrigatória a utilização da versão 3.70B ou superior
+|*    do Fortes Report. Download disponível em
+|*    http://sourceforge.net/projects/fortesreport/files/
 ******************************************************************************}
 {$I ACBr.inc}
 unit ACBrNFeDANFeRL;
@@ -98,7 +105,8 @@ uses
   {$ELSE}
   Windows, Messages, Graphics, Controls, Forms, Dialogs, ExtCtrls,
   {$ENDIF}
-  RLReport, pcnNFe, pcnConversao, ACBrNFe, RLFilters, MaskUtils, RLPrinters;
+  RLReport, pcnNFe, pcnConversao, ACBrNFe, RLFilters, MaskUtils, RLPrinters,
+  RLPDFFilter, DB, {$IFDEF BORLAND} DBClient{$ELSE} DBClient{$ENDIF},RLConsts;
 
 type
   TPosCanhoto = (pcCabecalho, pcRodape);
@@ -106,7 +114,10 @@ type
 type
   TfrlDANFeRL = class(TForm)
     RLNFe: TRLReport;
-
+    RLPDFFilter1: TRLPDFFilter;
+    DataSource1: TDataSource;
+    procedure FormDestroy(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
   protected
@@ -138,7 +149,9 @@ type
     FTamanhoFonte_RazaoSocial: Integer;
     FExibirEAN: Boolean;
     FProtocoloNFe : String;
-
+    FResumoCanhoto_Texto: String;
+    cdsItens: TClientDataSet;
+    procedure ConfigDataSet;
   public
     { Public declarations }
     class procedure Imprimir(ANFe: TNFe; ALogo: String = '';
@@ -158,11 +171,12 @@ type
                     AMargemDireita: Double = 0.7;
                     ACasasDecimaisqCom: Integer = 4;
                     ACasasDecimaisvUncCom: Integer = 4;
-                    AProdutosPorPagina: Integer = 20;
+                    AProdutosPorPagina: Integer = 0;
                     AImpressora: String = '';
                     ATamanhoFonte_RazaoSocial: Integer = 8;
                     AExibirEAN: Boolean = False;
-                    AProtocoloNFe : String = '');
+                    AProtocoloNFe: String = '';
+                    AResumoCanhoto_Texto: String = '');
 
     class procedure SavePDF(ANFe: TNFe; ALogo: String = '';
                     AMarcaDagua: String = ''; ALarguraCodProd: Integer = 54;
@@ -180,17 +194,95 @@ type
                     AMargemDireita: Double = 0.7;
                     ACasasDecimaisqCom: Integer = 4;
                     ACasasDecimaisvUncCom: Integer = 4;
-                    AProdutosPorPagina: Integer = 20;
+                    AProdutosPorPagina: Integer = 0;
                     ATamanhoFonte_RazaoSocial: Integer = 8;
                     AExibirEAN: Boolean = False;
-                    AProtocoloNFe : String = '');
+                    AProtocoloNFe: String = '';
+                    AResumoCanhoto_Texto: String = '');
   end;
+
+   const
+    sDisplayFormat = '###,###,###,##0.%.*d';
 
 implementation
 
-var iCopias: Integer;
 
 {$R *.dfm}
+
+procedure TfrlDANFeRL.ConfigDataSet;
+begin
+ if not Assigned( cdsItens ) then
+ cdsItens:=  {$IFDEF BORLAND}  TClientDataSet.create(nil)  {$ELSE}  TClientDataSet.create(nil) {$ENDIF};
+
+  if cdsItens.Active then
+ begin
+ {$IFDEF BORLAND}
+  if cdsItens is TClientDataSet then
+  TClientDataSet(cdsItens).EmptyDataSet;
+ {$ENDIF}
+  cdsItens.Active := False;
+ end;
+
+ {$IFDEF BORLAND}
+ if cdsItens is TClientDataSet then
+  begin
+  TClientDataSet(cdsItens).StoreDefs := False;
+  TClientDataSet(cdsItens).IndexDefs.Clear;
+  TClientDataSet(cdsItens).IndexFieldNames := '';
+  TClientDataSet(cdsItens).IndexName := '';
+  TClientDataSet(cdsItens).Aggregates.Clear;
+  TClientDataSet(cdsItens).AggFields.Clear;
+  end;
+ {$ENDIF}
+
+
+ with cdsItens do
+  if FieldCount = 0 then
+  begin
+    FieldDefs.Clear;
+    Fields.Clear;
+    FieldDefs.Add('CODIGO',ftString,60);
+    FieldDefs.Add('EAN',ftString,14);
+    FieldDefs.Add('DESCRICAO',ftString,120);
+    FieldDefs.Add('NCM',ftString,8);
+    FieldDefs.Add('CFOP',ftString,4);
+    FieldDefs.Add('UNIDADE',ftString,6);
+    FieldDefs.Add('QTDE',ftString,18);
+    FieldDefs.Add('VALOR',ftString,18);
+    FieldDefs.Add('VALORDESC',ftString,18);
+    FieldDefs.Add('TOTAL',ftString,18);
+    FieldDefs.Add('CST',ftString,3);
+    FieldDefs.Add('CSOSN',ftString,4);
+    FieldDefs.Add('BICMS',ftString,18);
+    FieldDefs.Add('ALIQICMS',ftString,6);
+    FieldDefs.Add('VALORICMS',ftString,18);
+    FieldDefs.Add('ALIQIPI',ftString,6);
+    FieldDefs.Add('VALORIPI',ftString,18);
+
+   {$IFDEF BORLAND}
+    if cdsItens is TClientDataSet then
+    TClientDataSet(cdsItens).CreateDataSet;
+   {$ENDIF}
+
+   end;
+
+ {$IFDEF BORLAND}
+  if cdsItens is TClientDataSet then
+  TClientDataSet(cdsItens).StoreDefs := False;
+ {$ENDIF}
+
+   if not cdsItens.Active then
+   cdsItens.Active := True;
+
+  {$IFDEF BORLAND}
+   if cdsItens is TClientDataSet then
+   if cdsItens.Active then
+   TClientDataSet(cdsItens).LogChanges := False;
+ {$ENDIF}
+
+ DataSource1.dataset := cdsItens;
+ 
+end;
 
 class procedure TfrlDANFeRL.Imprimir(ANFe: TNFe; ALogo: String = '';
                 AMarcaDagua: String = ''; ALarguraCodProd: Integer = 54;
@@ -209,12 +301,13 @@ class procedure TfrlDANFeRL.Imprimir(ANFe: TNFe; ALogo: String = '';
                 AMargemDireita: Double = 0.7;
                 ACasasDecimaisqCom: Integer = 4;
                 ACasasDecimaisvUncCom: Integer = 4;
-                AProdutosPorPagina: Integer = 20;
+                AProdutosPorPagina: Integer = 0;
                 AImpressora: String = '';
                 ATamanhoFonte_RazaoSocial: Integer = 8;
                 AExibirEAN: Boolean = False;
-                AProtocoloNFe : String = '');
-var sImpressoraAtual: String;
+                AProtocoloNFe: String = '';
+                AResumoCanhoto_Texto: String = '');
+
 begin
   with Create ( nil ) do
     try
@@ -245,7 +338,7 @@ begin
       FTamanhoFonte_RazaoSocial := ATamanhoFonte_RazaoSocial;
       FExibirEAN := AExibirEAN;
       FProtocoloNFe := AProtocoloNFe;
-
+      FResumoCanhoto_Texto := AResumoCanhoto_Texto;
 
 
       if FImpressora > '' then
@@ -282,10 +375,11 @@ class procedure TfrlDANFeRL.SavePDF(ANFe: TNFe; ALogo: String = '';
                     AMargemDireita: Double = 0.7;
                     ACasasDecimaisqCom: Integer = 4;
                     ACasasDecimaisvUncCom: Integer = 4;
-                    AProdutosPorPagina: Integer = 20;
+                    AProdutosPorPagina: Integer = 0;
                     ATamanhoFonte_RazaoSocial: Integer = 8;
                     AExibirEAN: Boolean = False;
-                    AProtocoloNFe : String = '');
+                    AProtocoloNFe: String = '';
+                    AResumoCanhoto_Texto: String = '');
 begin
   with Create ( nil ) do
     try
@@ -314,11 +408,22 @@ begin
       FTamanhoFonte_RazaoSocial := ATamanhoFonte_RazaoSocial;
       FExibirEAN := AExibirEAN;
       FProtocoloNFe := AProtocoloNFe;
+      FResumoCanhoto_Texto := AResumoCanhoto_Texto;
 
       RLNFe.SaveToFile(AFile);
     finally
       Free ;
     end ;
+end;
+
+procedure TfrlDANFeRL.FormDestroy(Sender: TObject);
+begin
+  FreeAndNil( cdsItens );
+end;
+
+procedure TfrlDANFeRL.FormCreate(Sender: TObject);
+begin
+  ConfigDataSet;
 end;
 
 end.

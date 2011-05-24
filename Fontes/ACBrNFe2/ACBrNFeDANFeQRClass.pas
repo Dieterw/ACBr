@@ -45,6 +45,8 @@
 |* 23/11/2010: Peterson de Cerqueira Matos
 |*  - Tratamento das propriedades "CasasDecimais._qCom", "CasasDecimais._vUnCom",
 |*    "Impressora"
+|* 20/05/2011: Peterson de Cerqueira Matos
+|*  - Tratamento da propriedade "ExibirResumoCanhoto_Texto"
 ******************************************************************************}
 {$I ACBr.inc}
 unit ACBrNFeDANFeQRClass;
@@ -97,7 +99,7 @@ begin
         fqrDANFeQRRetrato.Imprimir(   TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe
                                     , Logo
                                     , Email
-                                    , false
+                                    , ExibirResumoCanhoto
                                     , Fax
                                     , NumCopias
                                     , Sistema
@@ -110,14 +112,15 @@ begin
                                     , MargemDireita
                                     , CasasDecimais._qCom
                                     , CasasDecimais._vUnCom
-                                    , Impressora);
+                                    , Impressora
+                                    , ExibirResumoCanhoto_Texto);
       end;
    end
   else
      fqrDANFeQRRetrato.Imprimir(  NFe
                                 , Logo
                                 , Email
-                                , False
+                                , ExibirResumoCanhoto
                                 , Fax
                                 , NumCopias
                                 , Sistema
@@ -130,7 +133,8 @@ begin
                                 , MargemDireita
                                 , CasasDecimais._qCom
                                 , CasasDecimais._vUnCom
-                                , Impressora);
+                                , Impressora
+                                , ExibirResumoCanhoto_Texto);
 
   fqrDANFeQRRetrato.Free;
 end;
@@ -157,7 +161,7 @@ begin
                                     ,TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe
                                     , Logo
                                     , Email
-                                    , false
+                                    , ExibirResumoCanhoto
                                     , Fax
                                     , NumCopias
                                     , Sistema
@@ -168,7 +172,8 @@ begin
                                     , MargemEsquerda
                                     , MargemDireita
                                     , CasasDecimais._qCom
-                                    , CasasDecimais._vUnCom);
+                                    , CasasDecimais._vUnCom
+                                    , ExibirResumoCanhoto_Texto);
       end;
    end
   else
@@ -179,7 +184,7 @@ begin
                                 , NFe
                                 , Logo
                                 , Email
-                                , False
+                                , ExibirResumoCanhoto
                                 , Fax
                                 , NumCopias
                                 , Sistema
@@ -190,7 +195,8 @@ begin
                                 , MargemEsquerda
                                 , MargemDireita
                                 , CasasDecimais._qCom
-                                , CasasDecimais._vUnCom);
+                                , CasasDecimais._vUnCom
+                                , ExibirResumoCanhoto_Texto);
   end;
 
   fqrDANFeQRRetrato.Free;

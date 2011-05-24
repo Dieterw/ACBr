@@ -1,9 +1,8 @@
 inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
   Left = 193
   Top = 115
-  Width = 839
+  Width = 838
   Height = 755
-  VertScrollBar.Position = 122
   Caption = 'DANFe - Retrato'
   Font.Height = -8
   Font.Name = 'Arial'
@@ -14,7 +13,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
   inherited QRNFe: TQuickRep
     Tag = 1
     Left = 8
-    Top = -114
+    Top = 8
     BeforePrint = QRNFeBeforePrint
     DataSet = cdsItens
     Font.Height = -8
@@ -374,6 +373,40 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         AutoSize = True
         AutoStretch = False
         Caption = 'IDENTIFICA'#199#195'O E ASSINATURA DO RECEBEDOR'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -8
+        Font.Name = 'Times New Roman'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        ExportAs = exptText
+        FontSize = 6
+      end
+      object qrlResumo: TQRLabel
+        Left = 39
+        Top = 14
+        Width = 529
+        Height = 13
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          34.395833333333340000
+          103.187500000000000000
+          37.041666666666670000
+          1399.645833333333000000)
+        Alignment = taCenter
+        AlignToBand = False
+        AutoSize = True
+        AutoStretch = False
+        Caption = 
+          'DATA DE EMISS'#195'O: 00/00/0000  -  DEST./REM.: XXXXXXXXXXXXXXXXXXXX' +
+          'XXXXXXXXXXXXXXXXXXXXX  -  VALOR TOTAL: R$ 0.000,00'
         Color = clWhite
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -1513,9 +1546,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         FontSize = 9
       end
       object QRLabel18: TQRLabel
-        Left = 313
+        Left = 292
         Top = 28
-        Width = 80
+        Width = 122
         Height = 14
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -1524,9 +1557,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           37.041666666666670000
-          828.145833333333200000
+          772.583333333333400000
           74.083333333333340000
-          211.666666666666700000)
+          322.791666666666700000)
         Alignment = taCenter
         AlignToBand = False
         AutoSize = True
@@ -1535,19 +1568,19 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Color = clWhite
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -8
+        Font.Height = -11
         Font.Name = 'Times New Roman'
         Font.Style = [fsBold]
         ParentFont = False
         Transparent = True
         WordWrap = True
         ExportAs = exptText
-        FontSize = 6
+        FontSize = 8
       end
       object QRLabel19: TQRLabel
-        Left = 317
+        Left = 299
         Top = 39
-        Width = 78
+        Width = 114
         Height = 14
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -1556,9 +1589,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           37.041666666666670000
-          838.729166666666800000
+          791.104166666666800000
           103.187500000000000000
-          206.375000000000000000)
+          301.625000000000000000)
         Alignment = taCenter
         AlignToBand = False
         AutoSize = True
@@ -1567,14 +1600,14 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Color = clWhite
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -8
+        Font.Height = -11
         Font.Name = 'Times New Roman'
         Font.Style = [fsBold]
         ParentFont = False
         Transparent = True
         WordWrap = True
         ExportAs = exptText
-        FontSize = 6
+        FontSize = 8
       end
       object QRLabel20: TQRLabel
         Left = 300
@@ -9022,7 +9055,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
     Aggregates = <>
     Params = <>
     AfterScroll = cdsItensAfterScroll
-    Left = 424
+    Left = 488
     Top = 114
     object cdsItensCODIGO: TStringField
       FieldName = 'CODIGO'

@@ -1,19 +1,16 @@
 inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
-  Left = 229
-  Top = 113
+  Left = 202
+  Top = 108
   Width = 820
   Height = 655
-  VertScrollBar.Position = 0
   Caption = 'frlDANFeRLRetrato'
   OldCreateOrder = True
   PixelsPerInch = 96
   TextHeight = 13
   inherited RLNFe: TRLReport
-    Top = 0
     Background.Arrange = baDistributed
     Background.Height = 96
     Background.Width = 175
-    DataSource = DataSource1
     Margins.LeftMargin = 7.000000000000000000
     Margins.TopMargin = 7.000000000000000000
     Margins.RightMargin = 7.000000000000000000
@@ -44,6 +41,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Top = 24
         Width = 673
         Height = 12
+        Behavior = [beSiteExpander]
         Borders.Style = bsClear
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -566,6 +564,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Height = 7
         Alignment = taCenter
         AutoSize = False
+        Behavior = [beSiteExpander]
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -7
@@ -583,6 +582,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Height = 14
         Alignment = taCenter
         AutoSize = False
+        Behavior = [beSiteExpander]
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -7
@@ -657,6 +657,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Width = 185
         Height = 18
         AutoSize = False
+        Behavior = [beSiteExpander]
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -9
@@ -981,6 +982,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Height = 32
         Alignment = taCenter
         AutoSize = False
+        Behavior = [beSiteExpander]
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -11
@@ -995,6 +997,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Width = 185
         Height = 33
         AutoSize = False
+        Behavior = [beSiteExpander]
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -9
@@ -1262,6 +1265,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Width = 417
         Height = 119
         AutoSize = False
+        Behavior = [beSiteExpander]
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -9
@@ -5706,7 +5710,6 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Height = 11
         AutoSize = False
         DataField = 'CODIGO'
-        DataSource = DataSource1
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -8
@@ -5719,9 +5722,9 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Top = 1
         Width = 38
         Height = 11
+        Alignment = taCenter
         AutoSize = False
         DataField = 'NCM'
-        DataSource = DataSource1
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -8
@@ -5737,7 +5740,6 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Alignment = taCenter
         AutoSize = False
         DataField = 'CST'
-        DataSource = DataSource1
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -8
@@ -5752,7 +5754,6 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Height = 11
         AutoSize = False
         DataField = 'CFOP'
-        DataSource = DataSource1
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -8
@@ -5767,7 +5768,6 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Height = 11
         AutoSize = False
         DataField = 'UNIDADE'
-        DataSource = DataSource1
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -8
@@ -5783,7 +5783,6 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Alignment = taRightJustify
         AutoSize = False
         DataField = 'QTDE'
-        DataSource = DataSource1
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -8
@@ -5799,7 +5798,6 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Alignment = taRightJustify
         AutoSize = False
         DataField = 'VALOR'
-        DataSource = DataSource1
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -8
@@ -5815,7 +5813,6 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Alignment = taRightJustify
         AutoSize = False
         DataField = 'TOTAL'
-        DataSource = DataSource1
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -8
@@ -5831,7 +5828,6 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Alignment = taRightJustify
         AutoSize = False
         DataField = 'VALORIPI'
-        DataSource = DataSource1
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -8
@@ -5847,7 +5843,6 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Alignment = taRightJustify
         AutoSize = False
         DataField = 'ALIQICMS'
-        DataSource = DataSource1
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -8
@@ -5863,7 +5858,6 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Alignment = taRightJustify
         AutoSize = False
         DataField = 'ALIQIPI'
-        DataSource = DataSource1
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -8
@@ -6024,10 +6018,10 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       object rlmDescricao: TRLDBMemo
         Left = 56
         Top = 1
-        Width = 177
+        Width = 185
         Height = 10
+        Behavior = [beSiteExpander]
         DataField = 'DESCRICAO'
-        DataSource = DataSource1
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -8
@@ -6058,7 +6052,6 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Alignment = taRightJustify
         AutoSize = False
         DataField = 'BICMS'
-        DataSource = DataSource1
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -8
@@ -6074,7 +6067,6 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Alignment = taRightJustify
         AutoSize = False
         DataField = 'VALORICMS'
-        DataSource = DataSource1
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -8
@@ -6090,7 +6082,6 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Alignment = taRightJustify
         AutoSize = False
         DataField = 'VALORDESC'
-        DataSource = DataSource1
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -8
@@ -6349,6 +6340,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Top = 1
         Width = 664
         Height = 8
+        Behavior = [beSiteExpander]
         Borders.Style = bsClear
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -6528,6 +6520,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       Top = 64
       Width = 457
       Height = 12
+      Behavior = [beSiteExpander]
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
       Font.Height = -9
@@ -6537,90 +6530,5 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       ParentFont = False
       Visible = False
     end
-  end
-  object RLPDFFilter1: TRLPDFFilter
-    DocumentInfo.Creator = 'FortesReport v3.23 \251 Copyright '#169' 1999-2004 Fortes Inform'#225'tica'
-    ViewerOptions = []
-    FontEncoding = feNoEncoding
-    DisplayName = 'Documento PDF'
-    ShowProgress = False
-    Left = 539
-    Top = 51
-  end
-  object cdsItens: TClientDataSet
-    Aggregates = <>
-    Params = <>
-    Left = 568
-    Top = 51
-    object cdsItensCODIGO: TStringField
-      FieldName = 'CODIGO'
-      Size = 60
-    end
-    object cdsItensDESCRICAO: TStringField
-      FieldName = 'DESCRICAO'
-      Size = 120
-    end
-    object cdsItensNCM: TStringField
-      FieldName = 'NCM'
-      Size = 8
-    end
-    object cdsItensCFOP: TStringField
-      FieldName = 'CFOP'
-      Size = 4
-    end
-    object cdsItensUNIDADE: TStringField
-      FieldName = 'UNIDADE'
-      Size = 6
-    end
-    object cdsItensQTDE: TStringField
-      FieldName = 'QTDE'
-      Size = 18
-    end
-    object cdsItensVALOR: TStringField
-      FieldName = 'VALOR'
-      Size = 18
-    end
-    object cdsItensVALORDESC: TStringField
-      DisplayWidth = 18
-      FieldName = 'VALORDESC'
-    end
-    object cdsItensTOTAL: TStringField
-      FieldName = 'TOTAL'
-      Size = 18
-    end
-    object cdsItensCSOSN: TStringField
-      FieldName = 'CST'
-      Size = 3
-    end
-    object cdsItensCST2: TStringField
-      DisplayWidth = 4
-      FieldName = 'CSOSN'
-      Size = 4
-    end
-    object cdsItensBICMS: TStringField
-      FieldName = 'BICMS'
-      Size = 18
-    end
-    object cdsItensALIQICMS: TStringField
-      FieldName = 'ALIQICMS'
-      Size = 6
-    end
-    object cdsItensVALORICMS: TStringField
-      FieldName = 'VALORICMS'
-      Size = 18
-    end
-    object cdsItensALIQIPI: TStringField
-      FieldName = 'ALIQIPI'
-      Size = 6
-    end
-    object cdsItensVALORIPI: TStringField
-      FieldName = 'VALORIPI'
-      Size = 18
-    end
-  end
-  object DataSource1: TDataSource
-    DataSet = cdsItens
-    Left = 603
-    Top = 50
   end
 end

@@ -49,6 +49,8 @@
 |* 23/11/2010: Peterson de Cerqueira Matos
 |*  - Acréscimo dos parâmetros "FCasasDecimaisqCom", "FCasasDecimaisvUnCom",
 |*    "FImpressora" nas Class procedures "Imprimir" e "SavePDF"
+|* 20/05/2011: Peterson de Cerqueira Matos
+|*  - Acréscimo do parâmetro "FResumoCanhoto_Texto"
 ******************************************************************************}
 {$I ACBr.inc}
 unit ACBrNFeDANFeQR;
@@ -92,6 +94,7 @@ type
     FCasasDecimaisqCom  : Integer;
     FCasasDecimaisvUnCom: Integer;
     FImpressora         : String;
+    FResumoCanhoto_Texto: String;
 
     procedure qrlSemValorFiscalPrint(sender: TObject; var Value: String);
     procedure SetBarCodeImage ( ACode : String ; QRImage : TQRImage ) ;
@@ -114,7 +117,8 @@ type
                              AMargemDireita      : Double    = 0.51;
                              ACasasDecimaisqCom  : Integer = 4;
                              ACasasDecimaisvUncCom: Integer = 4;
-                             AImpressora         : String    = '');
+                             AImpressora         : String    = '';
+                             AResumoCanhoto_Texto: String    = '');
 
     class procedure SavePDF(AFile: String;
                             ANFe                : TNFe;
@@ -131,7 +135,8 @@ type
                             AMargemEsquerda     : Double    = 0.6;
                             AMargemDireita      : Double    = 0.51;
                             ACasasDecimaisqCom  : Integer = 4;
-                            ACasasDecimaisvUncCom: Integer = 4);
+                            ACasasDecimaisvUncCom: Integer = 4;
+                            AResumoCanhoto_Texto: String   = '');
 
   end;
 
@@ -158,7 +163,8 @@ class procedure TfqrDANFeQR.Imprimir(ANFe               : TNFe;
                                     AMargemDireita      : Double    = 0.51;
                                     ACasasDecimaisqCom  : Integer   = 4;
                                     ACasasDecimaisvUncCom: Integer  = 4;
-                                    AImpressora         : String    = '');
+                                    AImpressora         : String    = '';
+                                    AResumoCanhoto_Texto: String    = '');
 begin
   with Create ( nil ) do
      try
@@ -178,6 +184,7 @@ begin
         FCasasDecimaisqCom  := ACasasDecimaisqCom;
         FCasasDecimaisvUnCom := ACasasDecimaisvUncCom;
         FImpressora         := AImpressora;
+        FResumoCanhoto_Texto:= AResumoCanhoto_Texto;
 
         Printer := TPrinter.Create;
 
@@ -228,7 +235,8 @@ class procedure TfqrDANFeQR.SavePDF(AFile               : String;
                                     AMargemEsquerda     : Double    = 0.6;
                                     AMargemDireita      : Double    = 0.51;
                                     ACasasDecimaisqCom  : Integer   = 4;
-                                    ACasasDecimaisvUncCom: Integer  = 4);
+                                    ACasasDecimaisvUncCom: Integer  = 4;
+                                    AResumoCanhoto_Texto: String = '');
 {$IFDEF QReport_PDF}
 var
   qf : TQRPDFDocumentFilter;
@@ -253,6 +261,7 @@ begin
         FMargemDireita      := AMargemDireita;
         FCasasDecimaisqCom  := ACasasDecimaisqCom;
         FCasasDecimaisvUnCom := ACasasDecimaisvUncCom;
+        FResumoCanhoto_Texto:= AResumoCanhoto_Texto;
 
         for i := 0 to ComponentCount -1 do
           begin

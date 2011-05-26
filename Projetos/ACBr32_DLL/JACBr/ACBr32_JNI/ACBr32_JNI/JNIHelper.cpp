@@ -185,7 +185,7 @@ void CheckResult(JNIEnv *env, const ACBR_HANDLE handle, const int ret)
 void ThrowJavaException(JNIEnv *env, const ACBR_HANDLE handle)
 {
 	PCHAR buff = (PCHAR)malloc(BUFF_SIZE);
-	GetUltimoErro(handle, buff, BUFF_SIZE);
+	ECF_GetUltimoErro(handle, buff, BUFF_SIZE);
 
 	jclass clazz = env->FindClass("jACBr/ACBrException");
 	env->ThrowNew(clazz, buff);

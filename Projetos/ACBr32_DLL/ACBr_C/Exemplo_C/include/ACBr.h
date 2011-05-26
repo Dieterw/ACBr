@@ -67,7 +67,12 @@ typedef struct
 #define ECF_ESTADO_RequerX 8
 #define ECF_ESTADO_NaoFiscal 9
 
-DllImport int GetUltimoErro(const ACBR_HANDLE handle, PCHAR buffer, const int bufferLen);
+#define BAL_MODELO_Nenhum 0
+#define BAL_MODELO_Filizola 1
+#define BAL_MODELO_Toledo 2
+#define BAL_MODELO_Urano 3
+
+/*ECF*/
 
 DllImport int ECF_Create(const ACBR_HANDLE* ecfHandle);
 DllImport int ECF_Destroy(const ACBR_HANDLE* ecfHandle);
@@ -196,5 +201,23 @@ DllImport int ECF_ProgramaComprovanteNaoFiscal(const ACBR_HANDLE ecfHandle, cons
 DllImport int ECF_Sangria(const ACBR_HANDLE ecfHandle, const double valor, const PCHAR obs);
 DllImport int ECF_Suprimento(const ACBR_HANDLE ecfHandle, const double valor, const PCHAR obs);
 DllImport int ECF_AbreGaveta(const ACBR_HANDLE ecfHandle);
+
+/*BALANÇA*/
+
+DllImport int BAL_Create(const ACBR_HANDLE* balHandle);
+DllImport int BAL_Destroy(const ACBR_HANDLE* balHandle);
+
+DllImport int BAL_GetUltimoErro(const ACBR_HANDLE balHandle, PCHAR buffer, const int bufferLen);
+DllImport int BAL_Ativar(const ACBR_HANDLE balHandle);
+DllImport int BAL_Desativar(const ACBR_HANDLE balHandle);
+DllImport int BAL_GetModelo(const ACBR_HANDLE balHandle);
+DllImport int BAL_SetModelo(const ACBR_HANDLE balHandle, const int modelo);
+DllImport int BAL_GetModeloStr(const ACBR_HANDLE balHandle, PCHAR buffer, const int bufferLen);
+DllImport int BAL_GetPorta(const ACBR_HANDLE balHandle, PCHAR buffer, const int bufferLen);
+DllImport int BAL_SetPorta(const ACBR_HANDLE balHandle, const PCHAR porta);
+DllImport int BAL_GetAtivo(const ACBR_HANDLE balHandle);
+DllImport int BAL_GetUltimoPesoLido(const ACBR_HANDLE balHandle, double* value);
+DllImport int BAL_GetUltimaResposta(const ACBR_HANDLE balHandle, PCHAR buffer, const int bufferLen);
+DllImport int BAL_LePeso(const ACBR_HANDLE balHandle, const int timeout, double* value);
 
 #endif

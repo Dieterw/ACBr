@@ -993,23 +993,26 @@ begin
       TQRLabel( FindComponent( 'qrlFatData'  + intToStr( x ) ) ).Caption := '';
       TQRLabel( FindComponent( 'qrlFatValor' + intToStr( x ) ) ).Caption := '';
    end;
-   // Adiciona
-   if FNFe.Cobr.Dup.Count > 15 then
-    iQuantDup := 15
-   else
-    iQuantDup := FNFe.Cobr.Dup.Count;
 
-   for x := 0 to (iQuantDup - 1) do with FNFe.Cobr.Dup[ x ] do
-   begin
-      TQRLabel( FindComponent( 'qrlFatNum'   + intToStr ( x + 1 ) ) ).Caption := NDup;
-      TQRLabel( FindComponent( 'qrlFatData'  + intToStr ( x + 1 ) ) ).Caption := NotaUtil.FormatDate( DateToStr(DVenc) );
-      TQRLabel( FindComponent( 'qrlFatValor' + intToStr ( x + 1 ) ) ).Caption := NotaUtil.FormatFloat(VDup);
-   end;
+   // Alterado por Italo em 27/05/2011
+   // TpcnIndicadorPagamento = (ipVista, ipPrazo, ipOutras);
+   if FNFe.Ide.indPag = ipVista
+    then
+      TQRLabel( FindComponent( 'qrlFatNum1' ) ).Caption := 'PAGAMENTO À VISTA'
+    else begin
+     // Adiciona
+     if FNFe.Cobr.Dup.Count > 15 then
+      iQuantDup := 15
+     else
+      iQuantDup := FNFe.Cobr.Dup.Count;
 
-//    if qrlFatNum1.Caption = '' then
-//    begin
-//        qrlFatNum2.Caption := '   PAGAMENTO À VISTA'
-//    end;
+     for x := 0 to (iQuantDup - 1) do with FNFe.Cobr.Dup[ x ] do
+     begin
+        TQRLabel( FindComponent( 'qrlFatNum'   + intToStr ( x + 1 ) ) ).Caption := NDup;
+        TQRLabel( FindComponent( 'qrlFatData'  + intToStr ( x + 1 ) ) ).Caption := NotaUtil.FormatDate( DateToStr(DVenc) );
+        TQRLabel( FindComponent( 'qrlFatValor' + intToStr ( x + 1 ) ) ).Caption := NotaUtil.FormatFloat(VDup);
+     end;
+    end;
 
    // Impostos
 

@@ -41,7 +41,6 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Top = 24
         Width = 673
         Height = 12
-        Behavior = [beSiteExpander]
         Borders.Style = bsClear
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -564,7 +563,6 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Height = 7
         Alignment = taCenter
         AutoSize = False
-        Behavior = [beSiteExpander]
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -7
@@ -582,7 +580,6 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Height = 14
         Alignment = taCenter
         AutoSize = False
-        Behavior = [beSiteExpander]
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -7
@@ -657,7 +654,6 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Width = 185
         Height = 18
         AutoSize = False
-        Behavior = [beSiteExpander]
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -9
@@ -982,7 +978,6 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Height = 32
         Alignment = taCenter
         AutoSize = False
-        Behavior = [beSiteExpander]
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -11
@@ -997,7 +992,6 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Width = 185
         Height = 33
         AutoSize = False
-        Behavior = [beSiteExpander]
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -9
@@ -1265,7 +1259,6 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Width = 417
         Height = 119
         AutoSize = False
-        Behavior = [beSiteExpander]
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -9
@@ -6020,7 +6013,6 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Top = 1
         Width = 185
         Height = 10
-        Behavior = [beSiteExpander]
         DataField = 'DESCRICAO'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -6340,7 +6332,6 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Top = 1
         Width = 664
         Height = 8
-        Behavior = [beSiteExpander]
         Borders.Style = bsClear
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -6520,7 +6511,6 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       Top = 64
       Width = 457
       Height = 12
-      Behavior = [beSiteExpander]
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
       Font.Height = -9

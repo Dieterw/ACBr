@@ -107,7 +107,7 @@ uses
   {$ENDIF}
   RLReport, pcnNFe, pcnConversao, ACBrNFe, RLFilters, MaskUtils, RLPrinters,
   RLPDFFilter, DB, {$IFDEF BORLAND} DBClient{$ELSE} DBClient{$ENDIF},RLConsts;
-
+    
 type
   TPosCanhoto = (pcCabecalho, pcRodape);
   TFonteDANFE = (fdTimesNewRoman, fdCourierNew, fdArial);
@@ -339,7 +339,6 @@ begin
       FExibirEAN := AExibirEAN;
       FProtocoloNFe := AProtocoloNFe;
       FResumoCanhoto_Texto := AResumoCanhoto_Texto;
-
 
       if FImpressora > '' then
         RLPrinter.PrinterName := FImpressora;

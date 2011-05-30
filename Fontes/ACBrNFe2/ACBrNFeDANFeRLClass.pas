@@ -140,7 +140,7 @@ var
 
 constructor TACBrNFeDANFeRL.Create(AOwner: TComponent);
 begin
-  SetVersion(CommercialVersion,ReleaseVersion,CommentVersion);
+  //SetVersion(CommercialVersion,ReleaseVersion,CommentVersion);
   inherited create( AOwner );
   FLarguraCodProd := 54;
   FMargemSuperior := 0.70;

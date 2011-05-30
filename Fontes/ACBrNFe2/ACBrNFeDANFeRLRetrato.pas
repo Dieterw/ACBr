@@ -1011,14 +1011,14 @@ begin
       begin
         rlbReciboHeader.BandType := btHeader;
         rlbDivisaoRecibo.BandType := btHeader;
-        rlbReciboHeader.Top := 26;
-        rlbDivisaoRecibo.Top := rlbReciboHeader.Top + rlbReciboHeader.Height;
-      end;
+        rlbReciboHeader.Top := 0;
+        rlbDivisaoRecibo.Top := rlbReciboHeader.Top + rlbDivisaoRecibo.Height;
+      end;                                                                     
     pcRodape:
       begin
         rlbReciboHeader.BandType := btFooter;
         rlbDivisaoRecibo.BandType := btFooter;
-        rlbDivisaoRecibo.Top := 925;
+        rlbDivisaoRecibo.Top := rlbDadosAdicionais.Top + rlbDadosAdicionais.Height;
         rlbReciboHeader.Top := rlbDivisaoRecibo.Top + rlbDivisaoRecibo.Height;
       end;
   end;

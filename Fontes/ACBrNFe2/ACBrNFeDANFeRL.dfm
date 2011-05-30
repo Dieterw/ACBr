@@ -1,6 +1,6 @@
 object frlDANFeRL: TfrlDANFeRL
-  Left = 225
-  Top = 112
+  Left = 283
+  Top = 181
   Width = 810
   Height = 634
   Caption = 'frlDANFeLR'

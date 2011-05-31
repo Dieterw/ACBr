@@ -1099,13 +1099,13 @@ begin
               {24} LFill( VL_IPI,0,2 )           +
               {25} LFill( strCST_PIS )           +
               {26} LFill( VL_BC_PIS,0,2 )        +
-              {27} LFill( ALIQ_PIS_PERC,0,2 )    +
+              {27} LFill( ALIQ_PIS_PERC,8,4 )    +
               {28} DFill( QUANT_BC_PIS,3,true )  +
               {29} DFill( ALIQ_PIS_R,4,true )    +
               {30} LFill( VL_PIS,0,2 )           +
               {31} LFill( strCST_COFINS )        +
               {32} LFill( VL_BC_COFINS,0,2 )     +
-              {33} LFill( ALIQ_COFINS_PERC,0,2 ) +
+              {33} LFill( ALIQ_COFINS_PERC,8,4 ) +
               {34} DFill( QUANT_BC_COFINS,3,true )+
               {35} DFill( ALIQ_COFINS_R,4,true ) +
               {36} LFill( VL_COFINS,0,2 )        +
@@ -1973,7 +1973,7 @@ begin
              LFill(VL_ITEM,0,2)        +
              LFill(VL_BC_PIS,0,2)      +
              LFill(ALIQ_PIS,8,4)       +
-             LFill(QUANT_BC_PIS,0,3)   +
+             LFill(QUANT_BC_PIS,0,3, True)   +
              LFill(ALIQ_PIS_QUANT,0,4) +
              LFill(VL_PIS,0,2)         +
              LFill(COD_ITEM)           +

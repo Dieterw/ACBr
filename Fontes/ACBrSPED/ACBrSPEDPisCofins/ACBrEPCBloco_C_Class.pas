@@ -1877,7 +1877,7 @@ begin
                LFill(COD_MOD ) +
                LFill(ECF_MOD)  +
                LFill(ECF_FAB)  +
-               LFill(ECF_CX ) ) ;
+               LFill(ECF_CX, 3) ) ;
         end;
         /// Registros FILHOS
         WriteRegistroC405( RegC010.RegistroC400.Items[intFor] );

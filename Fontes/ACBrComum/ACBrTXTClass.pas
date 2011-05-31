@@ -87,7 +87,8 @@ type
                    Size: Integer;
                    Decimal: Integer = 2;
                    Nulo: Boolean = false;
-                   Caracter: Char = '0'): String; overload;
+                   Caracter: Char = '0';
+                   Mascara: String = ''): String; overload;
     function LFill(Value: Integer; Size: Integer; Nulo: Boolean = false; Caracter: Char = '0'): String; overload;
     function LFill(Value: TDateTime; Mask: String = 'ddmmyyyy'): String; overload;
     ///
@@ -230,10 +231,17 @@ function TACBrTXTClass.LFill(Value: Currency;
                         Size: Integer;
                         Decimal: Integer = 2;
                         Nulo: Boolean = false;
-                        Caracter: Char = '0'): String;
+                        Caracter: Char = '0';
+                        Mascara: String = ''): String;
 var
 intFor, intP: Integer;
+strCurMascara: string;
 begin
+  strCurMascara := FCurMascara;
+  // Se recebeu uma mascara como parametro substitue a principal
+  if Mascara <> '' then
+     strCurMascara := Mascara;
+
   /// Se o parametro Nulo = true e Value = 0, será retornado '|'
   if (Nulo) and (Value = 0) then
   begin
@@ -245,8 +253,8 @@ begin
   begin
      intP := intP * 10;
   end;
-  if FCurMascara <> '' then
-     Result := FDelimitador + FormatCurr(FCurMascara, Value)
+  if strCurMascara <> '' then
+     Result := FDelimitador + FormatCurr(strCurMascara, Value)
   else
      Result := LFill(Trunc(Value * intP), Size, Nulo, Caracter);
 end;

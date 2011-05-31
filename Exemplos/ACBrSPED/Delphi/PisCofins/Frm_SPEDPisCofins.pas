@@ -552,7 +552,7 @@ begin
            CNPJ := '123456789';
            with RegistroF100New do
            begin
-              IND_OPER      := itoContratado;
+              IND_OPER      := indRepCustosDespesasEncargos;
               COD_PART      := '001';
               COD_ITEM      := '000'; //Codigo do Item no registro 0200
               DT_OPER       := Date();
@@ -595,7 +595,7 @@ begin
          with RegistroM100New do
          begin
             COD_CRED       := '';
-            IND_CRED_ORI   := 0;
+            IND_CRED_ORI   := TACBrIndCredOri(0);
             VL_BC_PIS      := 0;
             ALIQ_PIS       := 0;
             QUANT_BC_PIS   := 0;
@@ -605,7 +605,7 @@ begin
             VL_AJUS_REDUC  := 0;
             VL_CRED_DIF    := 0;
             VL_CRED_DISP   := 0;
-            IND_DESC_CRED  := '';
+            IND_DESC_CRED  := TACBrIndDescCred(0);
             VL_CRED_DESC   := 0;
             SLD_CRED       := 0;
          end;

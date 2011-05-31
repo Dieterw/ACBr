@@ -2039,7 +2039,7 @@ begin
              LFill(VL_ITEM,0,2)           +
              LFill(VL_BC_COFINS,0,2)      +
              LFill(ALIQ_COFINS,8,4)       +
-             LFill(QUANT_BC_COFINS,0,3)   +
+             LFill(QUANT_BC_COFINS,0,3, True)   +
              LFill(ALIQ_COFINS_QUANT,0,4) +
              LFill(VL_COFINS,0,2)         +
              LFill(COD_ITEM)              +

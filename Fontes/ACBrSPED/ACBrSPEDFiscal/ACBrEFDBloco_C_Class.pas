@@ -1053,7 +1053,9 @@ begin
                LFill( UF ) +
                LFill( NUM_DA ) +
                LFill( COD_AUT ) +
-               LFill( VL_DA,0,2 ) ) ;
+               LFill( VL_DA,0,2 ) +
+               LFill( DT_VCTO ) +
+               LFill( DT_PGTO ) ) ;
         end;
         RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
      end;

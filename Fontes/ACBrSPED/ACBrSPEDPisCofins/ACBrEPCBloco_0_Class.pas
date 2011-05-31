@@ -556,7 +556,7 @@ begin
                LFill(CPF) +
                LFill(IE) +
                LFill(COD_MUN, 7) +
-               LFill(SUFRAMA, 9) +
+               LFill(SUFRAMA) +
                LFill(ENDERECO) +
                LFill(NUM) +
                LFill(COMPL) +

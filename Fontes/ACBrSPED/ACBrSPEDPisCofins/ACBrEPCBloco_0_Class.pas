@@ -800,7 +800,9 @@ begin
                 LFill( strIND_CTA, 1) +
                 LFill( NIVEL ) +
                 LFill( COD_CTA ) +
-                LFill( NOME_CTA ) ) ;
+                LFill( NOME_CTA ) +
+                LFill( COD_CTA_REF ) +
+                LFill( CNPJ_EST ) ) ;
         end;
         Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
      end;

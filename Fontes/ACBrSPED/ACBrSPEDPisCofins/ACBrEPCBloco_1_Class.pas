@@ -431,10 +431,10 @@ begin
         with Reg1001.Registro1100.Items[intFor] do
         begin
           Add( LFill('1100') +
-               LFill( PER_APU_CRED ) +
-               LFill( ORIG_CRED ) + //Verificar criação da tabela no ACBrEPCBlocos
+               LFill( PER_APU_CRED, 6) +
+               LFill( ORIG_CRED, 2) + //Verificar criação da tabela no ACBrEPCBlocos
                LFill( CNPJ_SUC ) +
-               LFill( COD_CRED ) + //Verificar criação da tabela no ACBrEPCBlocos
+               LFill( COD_CRED, 3) + //Verificar criação da tabela no ACBrEPCBlocos
                LFill( VL_CRED_APU,0,2 ) +
                LFill( VL_CRED_EXT_APU,0,2 ) +
                LFill( VL_TOT_CRED_APU,0,2 ) +
@@ -447,7 +447,7 @@ begin
                LFill( VL_CRED_DCOMP_EFD,0,2 ) +
                LFill( VL_CRED_TRANS,0,2 ) +
                LFill( VL_CRED_OUT,0,2 ) +
-               LFill( SLD_CRED_FIM ) ) ;
+               LFill( SLD_CRED_FIM, 0,2 ) ) ;
         end;
         // Registros FILHOS
         WriteRegistro1101( Reg1001.Registro1100.Items[intFor] );
@@ -648,10 +648,10 @@ begin
         with Reg1001.Registro1500.Items[intFor] do
         begin
           Add( LFill('1500') +
-               LFill( PER_APU_CRED ) +
-               LFill( ORIG_CRED ) +          //Verificar criação da tabela no ACBrEPCBlocos
+               LFill( PER_APU_CRED, 6 ) +
+               LFill( ORIG_CRED, 2 ) +          //Verificar criação da tabela no ACBrEPCBlocos
                LFill( CNPJ_SUC ) +           //Verificar criação da tabela no ACBrEPCBlocos
-               LFill( COD_CRED ) +
+               LFill( COD_CRED, 3 ) +
                LFill( VL_CRED_APU,0,2 ) +
                LFill( VL_CRED_EXT_APU,0,2 ) +
                LFill( VL_TOT_CRED_APU,0,2 ) +

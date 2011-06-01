@@ -830,9 +830,7 @@ begin
     AAC.AtualizarMD5( PAF_MD5 );
   end ;
 
-  // Não chama LimpaRegistros_N, pois o programador pode querer consultar os dados
-  // do Registro N direto no componente.
-  // LimpaRegistros_N;
+  LimpaRegistros_N;
 end;
 
 procedure TACBrPAF.Notification(AComponent : TComponent ; Operation : TOperation

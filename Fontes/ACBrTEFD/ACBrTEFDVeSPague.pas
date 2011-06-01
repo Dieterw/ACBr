@@ -127,6 +127,8 @@ type
    private
       fAplicacao       : String;
       fAplicacaoVersao : String;
+      fTemPendencias   : Boolean;
+      fCancelandoTransacao: Boolean;
       fGPExeParams : String ;
 
       fTerminador : AnsiString ;
@@ -149,6 +151,7 @@ type
       fTransacaoReImpressao: String;
 
      procedure ExecutarTranscaoPendente(NSU : String ; Valor : Double) ;
+     procedure FinalizarTranscaoPendente;
      procedure SeTimeOut(const AValue : Integer) ;
      procedure TransmiteCmd ;
 
@@ -217,6 +220,7 @@ type
      property EnderecoIP : AnsiString read fEnderecoIP  write fEnderecoIP ;
      property Porta      : AnsiString read fPorta       write fPorta ;
      property TimeOut    : Integer    read fTimeOut     write SeTimeOut default 1000 ;
+     Property TemPendencias: Boolean read fTemPendencias write fTemPendencias;
 
      property TransacaoADM   : String read fTransacaoADM   write fTransacaoADM ;
      property TransacaoCRT   : String read fTransacaoCRT   write fTransacaoCRT ;
@@ -650,6 +654,7 @@ begin
   fPorta      := '60906' ;
   fTimeOut    := 1000 ;
   fTerminador := CACBrTEFD_VeSPague_Terminador ;
+  fTemPendencias := False;
 
   fAplicacao       := '' ;
   fAplicacaoVersao := '' ;
@@ -860,6 +865,11 @@ begin
 
      ProcessarResposta ;         { Faz a Impressão e / ou exibe Mensagem ao Operador }
   end ;
+
+  ReqVS.Params.Clear;
+  RespVS.Params.Clear;
+  ReqVS.Clear;
+  RespVS.Clear;  
 end;
 
 Function TACBrTEFDVeSPague.CRT( Valor : Double; IndiceFPG_ECF : String;
@@ -990,12 +1000,21 @@ begin
   if NSU <> '' then
      ListaParams := 'transacao_nsu="'+Trim(NSU)+'"';
 
+  if fTemPendencias then
+    TransacaoOpcao := 'Confirmar';
+
   Retorno := FazerRequisicao( fTransacaoPendente, 'ADM', Valor, '', ListaParams  ) ;
 
   if Retorno = 0 then
      Retorno := ContinuarRequisicao( True ) ;  { True = Imprimir Comprovantes agora }
 
-  ProcessarResposta ;         { Faz a Impressão e / ou exibe Mensagem ao Operador }
+  if fTemPendencias then
+  begin
+    fTemPendencias := False;
+    FinalizarTranscaoPendente;
+  end
+  else
+    ProcessarResposta ;         { Faz a Impressão e / ou exibe Mensagem ao Operador }
 end;
 
 procedure TACBrTEFDVeSPague.ServicoIniciar ;
@@ -1031,6 +1050,8 @@ begin
       raise Exception.Create( ACBrStr( 'Requisição anterior não concluida' ) ) ;
 
    Result := 0 ;
+
+   fCancelandoTransacao := (AnsiUpperCase(Transacao) = 'ADMINISTRACAO CANCELAR');
 
    ServicoIniciar ;
 
@@ -1163,41 +1184,96 @@ begin
      TACBrTEFD(Owner).DoExibeMsg( opmOK, Mensagem ) ;
 end ;
 
+procedure TACBrTEFDVeSPague.FinalizarTranscaoPendente;
+var
+  Mensagem : String ;
+  Retorno : Integer;
+begin
+  Retorno := RespVS.Retorno;
+
+  if (RespVS.Retorno = 0) and RespVS.IsColeta then
+     ProcessarColeta;
+
+  if RespVS.IsColeta then
+     Mensagem := RespVS.GetParamString('automacao_coleta_mensagem')
+  else
+     Mensagem := RespVS.GetParamString('mensagem');
+
+  repeat
+    try
+      ServicoFinalizar;
+    except
+    end ;
+  until (RespVS.Retorno = 1) ;
+
+  if Mensagem <> '' then
+     TACBrTEFD(Owner).DoExibeMsg( opmOK, Mensagem ) ;
+
+  if Retorno = 9 then
+    raise Exception.Create('A operação de desfazimento será reiniciada.');
+end;
+
 procedure TACBrTEFDVeSPague.ProcessarColeta ;
 var
-  Mensagem, Mascara, Resposta : AnsiString ;
+  Mensagem, Mascara, Resposta, Msg : AnsiString ;
   Tipo : AnsiChar ;
   OpcoesMenu, Video_Mensagem : TStringList ;
   ItemSelecionado, OldSeq : Integer ;
   Cancelar, Digitado : Boolean ;
   MR : TModalResult ;
+  MostraMsgDebito, MostraMsgCredito, MostrouMsgConfirmacao: Boolean;
+  Respostas: TStringList;
 begin
   with TACBrTEFD(Owner) do
   begin
      OldSeq         := ReqVS.Sequencial;
      OpcoesMenu     := TStringList.Create;
      Video_Mensagem := TStringList.Create;
+     Respostas      := TStringList.Create;
+     MostrouMsgConfirmacao   := False;
 
      try
         while RespVS.IsColeta and (RespVS.Retorno = 0) do
         begin
            Cancelar := False ;
-           Resposta := '' ;
+           Resposta := '';
            Mensagem := RespVS.GetParamString('automacao_coleta_mensagem');
            Mascara  := RespVS.GetParamString('automacao_coleta_mascara');
            Tipo     := padL(RespVS.GetParamString('automacao_coleta_tipo'),1)[1] ;
            RespVS.GetParamStrings('automacao_coleta_opcao', OpcoesMenu);
            Video_Mensagem.Text := RespVS.GetParamString('automacao_coleta_video_mensagem');
 
+           MostraMsgDebito := fCancelandoTransacao and
+                          (AnsiContainsText(AnsiUpperCase(Mensagem), 'SOLICITANDO'));
+           MostraMsgCredito := fCancelandoTransacao and
+                          (AnsiUpperCase(Mensagem) = 'VALOR CANCELAMENTO');
+
+           if MostraMsgDebito and not MostrouMsgConfirmacao then // transacao de débito
+           begin
+             MostrouMsgConfirmacao := True;
+             Msg := 'Data da Venda: '+ Respostas.Values['3'] +sLineBreak+
+                    'Valor da Venda: '+ Respostas.Values['5'] +SLineBreak+
+                    //'Valor a Cancelar: '+ Respostas.Values['7'] +SLineBreak+
+                    'Docto: '+ Respostas.Values['4'] +SLineBreak+SLineBreak+
+                    'Confirma o cancelamento desta transação?';
+
+             if DoExibeMsg( opmYesNo, Msg) = mrNo then
+             begin
+               Mensagem := '';
+               Cancelar := True;
+             end 
+             else
+               fpSalvarArquivoBackup := False;
+           end;
+
            if OpcoesMenu.Count > 0 then            // Tem Menu ?
-            begin
+           begin
               if OpcoesMenu.Count = 1 then
-               begin
+              begin
                  Resposta := OpcoesMenu[0]
-               end
-              else if (OpcoesMenu.Count = 2) and
-                 (OpcoesMenu[0] = 'Sim') and (OpcoesMenu[1] = ACBrStr('Não') ) then
-               begin
+              end
+              else if (OpcoesMenu.Count = 2) and (OpcoesMenu[0] = 'Sim') and (OpcoesMenu[1] = ACBrStr('Não') ) then
+              begin
                  MR := DoExibeMsg( opmYesNo, Mensagem ) ;
 
                  if MR = mrYes then
@@ -1206,36 +1282,33 @@ begin
                     Resposta := OpcoesMenu[1]
                  else
                     Cancelar := True ;
-               end
+              end
               else
-               begin
+              begin
                  ItemSelecionado := -1 ;
                  BloquearMouseTeclado(False);
                  OnExibeMenu( ACBrStr(Mensagem), OpcoesMenu, Video_Mensagem, ItemSelecionado ) ;
                  BloquearMouseTeclado(True);
 
-                 if (ItemSelecionado >= 0) and
-                    (ItemSelecionado < OpcoesMenu.Count) then
+                 if (ItemSelecionado >= 0) and (ItemSelecionado < OpcoesMenu.Count) then
                     Resposta := OpcoesMenu[ ItemSelecionado ]
                  else
                     Cancelar := True ;
-               end ;
-            end
-
+              end ;
+           end
            else if Tipo <> ' ' then                // Tem Pergunta ?
-            begin
-              BloquearMouseTeclado(False);
-              Digitado := False ;
-              OnObtemCampo( ACBrStr(Mensagem), Mascara, Tipo, Resposta, Digitado) ;
-              BloquearMouseTeclado(True);
+           begin
+             BloquearMouseTeclado(False);
+             Digitado := False ;
+             OnObtemCampo( ACBrStr(Mensagem), Mascara, Tipo, Resposta, Digitado) ;
+             BloquearMouseTeclado(True);
 
-              Cancelar := not Digitado;
-            end
-
+             Cancelar := not Digitado;
+           end
            else if Mensagem <> '' then             // Tem Mensagem ?
-            begin
-              DoExibeMsg( opmExibirMsgOperador, Mensagem ) ;
-            end ;
+           begin
+             DoExibeMsg( opmExibirMsgOperador, Mensagem ) ;
+           end ;
 
            // Respondendo a Coleta //
            ReqVS.Clear;
@@ -1245,9 +1318,26 @@ begin
            if Resposta <> '' then
            begin
              if Tipo = 'N' then
-               ReqVS.AddParamDouble( 'automacao_coleta_informacao', StrToFloatDef(Resposta, 0) )
+               ReqVS.AddParamDouble( 'automacao_coleta_informacao', StrToFloatDef(Resposta, 0))
              else
                ReqVS.AddParamString( 'automacao_coleta_informacao', Resposta ) ;
+
+             Respostas.Add(Format('%d=%s', [ReqVS.Sequencial, Resposta]));
+           end;
+
+           if MostraMsgCredito and not MostrouMsgConfirmacao then // transacao de credito
+           begin
+             MostrouMsgConfirmacao := True;
+             Msg := 'Data da Venda: '+ Respostas.Values['3'] +sLineBreak+
+                    'Valor da Venda: '+ Respostas.Values['5'] +SLineBreak+
+                    'Valor a Cancelar: '+ Respostas.Values['7'] +SLineBreak+
+                    'Docto: '+ Respostas.Values['4'] +SLineBreak+SLineBreak+
+                    'Confirma o cancelamento desta transação?';
+
+             if DoExibeMsg( opmYesNo, Msg) = mrNo then
+               Cancelar := True
+             else
+               fpSalvarArquivoBackup := False;
            end;
 
            ReqVS.Retorno := ifthen( Cancelar, 9, 0) ;
@@ -1261,6 +1351,7 @@ begin
 
         OpcoesMenu.Free;
         Video_Mensagem.Free;
+        Respostas.Free;
      end ;
   end ;
 end ;
@@ -1385,7 +1476,7 @@ var
 begin
   // 0, 1 : Tudo Ok
   // 9   : Interrompido, deve ser tratado pela função chamadora, (chame ExibirMensagens)
-  if Retorno in [0,1,9] then
+  if Retorno in [0,1,3,9] then
      exit ;
 
   if RespVS.IsColeta then
@@ -1425,27 +1516,34 @@ begin
      EstadoResp := respProcessando;
 
      if Resp.QtdLinhasComprovante > 0 then
-      begin
-         { Cria cópia do Objeto Resp, e salva no ObjectList "RespostasPendentes" }
-         RespostaPendente := TACBrTEFDRespVeSPague.Create ;
+     begin
+       { Cria cópia do Objeto Resp, e salva no ObjectList "RespostasPendentes" }
+       RespostaPendente := TACBrTEFDRespVeSPague.Create ;
+       try
+         RespostaPendente.Assign( Resp );
+         RespostasPendentes.Add( RespostaPendente );
+
+         if fCancelandoTransacao then
+           CNF(Resp.Rede, Resp.NSU, Resp.Finalizacao, Resp.DocumentoVinculado);
+
          try
-            RespostaPendente.Assign( Resp );
-            RespostasPendentes.Add( RespostaPendente );
-
-            ImprimirRelatorio ;
-
-            if Assigned( OnDepoisConfirmarTransacoes ) then
-               OnDepoisConfirmarTransacoes( RespostasPendentes );
+           ImprimirRelatorio ;
          finally
-            RespostasPendentes.Clear;
+           fpSalvarArquivoBackup := True;
          end;
-      end
+
+         if Assigned( OnDepoisConfirmarTransacoes ) then
+           OnDepoisConfirmarTransacoes( RespostasPendentes );
+       finally
+         RespostasPendentes.Clear;
+       end;
+     end
      else
-      begin
-        if Resp.TextoEspecialOperador <> '' then
-           DoExibeMsg( opmOK, Resp.TextoEspecialOperador ) ;
-        FinalizarRequisicao;
-      end ;
+     begin
+       if Resp.TextoEspecialOperador <> '' then
+         DoExibeMsg( opmOK, Resp.TextoEspecialOperador ) ;
+       FinalizarRequisicao;
+     end ;
   end ;
 end;
 

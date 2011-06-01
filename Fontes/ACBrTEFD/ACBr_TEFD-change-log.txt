@@ -47,7 +47,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
-Data:  01/06/2011  - Ver: 1.31
+Data:  01/06/2011  - Ver: 1.32
+-- ACBrTEFDVeSPague --
+[*] Diversas correções implementadas na conclusão do processo de homologação
+    realizado por: Itamar Bermond
+    http://www.djsystem.com.br/acbr/forum/viewtopic.php?p=9687#p9687
+
 -- ACBrTEFDBanese --
 [+] Finalizada a doação dos fontes da implementação do G.P. do Banese:
      (por: Moacir Ezequiel Lamego e Márcio D. Carvalho)

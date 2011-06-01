@@ -55,7 +55,7 @@ uses
   {$ENDIF} ;
 
 const
-   CACBrTEFD_Versao      = '1.31' ;
+   CACBrTEFD_Versao      = '1.32' ;
    CACBrTEFD_EsperaSTS   = 7 ;
    CACBrTEFD_EsperaSleep = 250 ;
    CACBrTEFD_NumVias     = 2 ;
@@ -566,6 +566,7 @@ type
      fpIDSeq: Integer ;
      fpNumVias : Integer;
      fpAguardandoResposta : Boolean ;
+     fpSalvarArquivoBackup: Boolean;
 
      procedure SetNumVias(const AValue : Integer); virtual;
 
@@ -1534,6 +1535,7 @@ begin
   fpNumVias     := CACBrTEFD_NumVias ;
 
   fpAguardandoResposta := False ;
+  fpSalvarArquivoBackup := True;
 
   fEsperaSTS := CACBrTEFD_EsperaSTS ;
 
@@ -2211,7 +2213,8 @@ begin
 
   GravaLog( Name +' ImprimirRelatorio: '+Req.Header );
 
-  CopiarResposta ;
+  if fpSalvarArquivoBackup then
+    CopiarResposta ;
 
   ImpressaoOk     := False ;
   RemoverMsg      := False ;

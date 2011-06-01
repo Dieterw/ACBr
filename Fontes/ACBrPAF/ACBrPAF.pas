@@ -780,7 +780,7 @@ begin
          with FPAF_N.RegistroN3.New do
          begin
             NOME_ARQUIVO := fsAAC.IdentPAF.OutrosArquivos[iFor].Nome;
-	    MD5 := '' ; // MD5 será calculado em WriteRegistroN3
+	         MD5 := '' ; // MD5 será calculado em WriteRegistroN3
          end ;
       end;
     end;
@@ -830,6 +830,7 @@ begin
     AAC.AtualizarMD5( PAF_MD5 );
   end ;
 
+  // Limpa de todos os Blocos as listas de todos os registros.
   LimpaRegistros_N;
 end;
 

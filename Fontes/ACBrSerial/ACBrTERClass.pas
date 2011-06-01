@@ -36,6 +36,9 @@
 |*
 |* 25/10/2005: Gabriel Rodrigo Frones
 |*  - Primeira Versao ACBrTERClass
+|
+|* 11/05/2011: Marcelo Ferreira (Marcelo-sp)
+|*  - Implemento - Função LeBalança
 ******************************************************************************}
 
 {$I ACBr.inc}
@@ -70,6 +73,7 @@ Type
             Procedure Ativar; Virtual;
             Procedure Desativar; Virtual;
 
+            Procedure LeBalanca( Terminal : Word = 0  ); Virtual;  
             Procedure LeSerial( MillisecTimeOut : Integer = 500 ); Virtual;
             Procedure EnviaString( Texto : String; Terminal : Word = 0 ); Virtual;
             Procedure EnviaRotacao( Texto : String; Linha : Word = 0; Terminal : Word = 0 ); Virtual;
@@ -173,6 +177,13 @@ Procedure TACBrTERClass.EnviaRotacao( Texto : String; Linha : Word = 0; Terminal
 Begin
     { Deve ser implementada na Classe Filha }
     Raise Exception.Create(ACBrStr('Procedure EnviaRotacao não implementada em: ') + ModeloStr );
+End;
+
+
+Procedure TACBrTERClass.LeBalanca( Terminal : Word = 0  );
+Begin
+    { Deve ser implementada na Classe Filha }
+    Raise Exception.Create(ACBrStr('Procedure LeBalanca não implementada em: ') + ModeloStr );
 End;
 
 End.

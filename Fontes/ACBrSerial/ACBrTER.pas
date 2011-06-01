@@ -39,6 +39,9 @@
 |*
 |* 25/10/2005: Gabriel Rodrigo Frones
 |*  - Primeira Versao ACBrTER
+|
+|* 11/05/2011: Marcelo Ferreira (Marcelo-sp)
+|*  - Implemento - Função LeBalanca
 ******************************************************************************}
 
 {$I ACBr.inc}
@@ -114,6 +117,9 @@ Type
             Procedure DoRecebeChar( Terminal : Word; Char : Char );
 
             {Métodos do fsTER}
+
+            Procedure LeBalanca( Terminal : Word = 0  );
+
             Procedure EnviaString( Texto : String; Terminal : Word = 0 );
             Procedure EnviaRotacao( Texto : String; Linha : Word = 1; Terminal : Word = 0 );
             Procedure LimpaTela( Terminal : Word = 0 );
@@ -262,7 +268,7 @@ End;
 Procedure TACBrTer.DoRecebeChar( Terminal : Word; Char : Char );
 Begin
     If Assigned( fsOnRecebeChar ) Then
-        fsOnRecebeChar( Terminal, Char );
+       fsOnRecebeChar( Terminal, Char );
 End;
 
 Procedure TACBrTER.LeSerial(Sender: TObject);  { Chamado pelo Timer interno }
@@ -320,6 +326,11 @@ Begin
 End;
 
 {Métodos do fsTER}
+Procedure TACBrTER.LeBalanca( Terminal : Word = 0 );
+Begin
+    fsTER.LeBalanca(  Terminal  );
+End;                                        
+
 Procedure TACBrTER.EnviaString( Texto : String; Terminal : Word = 0 );
 Begin
     fsTER.EnviaString( Texto, Terminal );

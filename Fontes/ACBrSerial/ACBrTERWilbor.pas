@@ -36,6 +36,10 @@
 |*
 |* 31/10/2005: Gabriel Rodrigo Frones
 |*  - Primeira Versao ACBrTERWilbor
+|
+|* 11/05/2011: Marcelo Ferreira (Marcelo-sp)
+|*  - Correção   - LeSerial  
+|*  - Implemento - Função LeBalanca
 ******************************************************************************}
 
 {$I ACBr.inc}
@@ -49,15 +53,17 @@ Uses ACBrTERClass,
 
 Type
     TACBrTERWilbor = Class( TACBrTERClass )
-        Public
-            Constructor Create( AOwner: TComponent );
-            Procedure LeSerial( MillisecTimeOut : Integer = 500 ); Override;
-            Procedure EnviaString( Texto : String; Terminal : Word = 0 ); Override;
-            Procedure EnviaRotacao( Texto : String; Linha : Word = 1; Terminal : Word = 0 ); Override;
-            Procedure LimpaTela( Terminal : Word = 0 ); Override;
-            Procedure PosicionaCursor( Linha, Coluna : Word; Terminal : Word = 0 ); Override;
-            Procedure BackSpace( Terminal : Word = 0 ); Override;
-        End;
+      Public
+        Constructor Create( AOwner: TComponent );
+
+        Procedure LeBalanca(  Terminal : Word = 0  ); Override;
+        Procedure LeSerial( MillisecTimeOut : Integer = 500 ); Override;
+        Procedure EnviaString( Texto : String; Terminal : Word = 0 ); Override;
+        Procedure EnviaRotacao( Texto : String; Linha : Word = 1; Terminal : Word = 0 ); Override;
+        Procedure LimpaTela( Terminal : Word = 0 ); Override;
+        Procedure PosicionaCursor( Linha, Coluna : Word; Terminal : Word = 0 ); Override;
+        Procedure BackSpace( Terminal : Word = 0 ); Override;
+    End;
 
 Implementation
 
@@ -74,40 +80,59 @@ Begin
     fpModeloStr := 'Wilbor';
 End;
 
+Procedure TACBrTERWilbor.LeBalanca(  Terminal : Word = 0 );
+  var PesoOk : string ;
+Begin
+    if TACBrTER( fpOwner ).Comutadora Then
+     begin
+       fpDevice.EnviaString( 'S'+Format('%2.2d', [Terminal]) + #5  );
+       PesoOk := fpDevice.Serial.RecvPacket( 500 );
+     end
+    else
+     begin
+       // Não implementado
+     end ;
+End;
+
 Procedure TACBrTERWilbor.LeSerial( MillisecTimeOut: Integer );
 Var Packet : String;
 Begin
-    Try
-        Packet := fpDevice.Serial.RecvPacket( MillisecTimeOut );
-
-        If TACBrTER( fpOwner ).Comutadora Then Begin //Possui Comutadora gerenciando vários Terminais? 
-            While Length( Packet ) >= 3 Do Begin
-                TACBrTER( fpOwner ).DoRecebeChar( StrToIntDef( Copy( Packet, 1, 2 ), 0 ), Packet[3] );
-                Delete( Packet, 1, 3 );
-            End;
-        End
-        Else Begin
-            While Length( Packet ) > 1 Do Begin
-                TACBrTER( fpOwner ).DoRecebeChar( 0, Packet[1] );
-                Delete( Packet, 1, 1 );
-            End;
-        End;
-    Except
-     { String não foi recebida (TimeOut) }
-    End;
+  Try
+     Packet := fpDevice.Serial.RecvPacket( MillisecTimeOut );
+     If TACBrTER( fpOwner ).Comutadora Then
+      begin   //Possui Comutadora gerenciando vários Terminais?
+        While Length( Packet ) >= 3 Do
+        begin
+           TACBrTER( fpOwner ).DoRecebeChar( StrToIntDef( Copy( Packet, 1, 2 ), 0 ), Packet[3] );
+           Delete( Packet, 1, 3 );
+        end;
+      end
+     else
+      begin
+        while Length( Packet ) > 1 Do
+        begin
+           TACBrTER( fpOwner ).DoRecebeChar( 0, Packet[1] );
+           Delete( Packet, 1, 1 );
+        end;
+      end;
+  Except
+    { String não foi recebida (TimeOut) }
+  End;
 End;
 
 Procedure TACBrTERWilbor.EnviaString( Texto : String; Terminal : Word = 0 );
 Var I : Integer;
 Begin
-    If TACBrTER( fpOwner ).Comutadora Then Begin
-        For I := 1 To Length( Texto ) Do Begin
-            fpDevice.EnviaString( 'D' + FormatFloat( '00', Terminal ) + Texto[I] + StringOfChar( ' ', 4 ) );
-            fpDevice.EnviaString( 'A' + FormatFloat( '00', Terminal ) + StringOfChar( ' ', 12 ) ); //Comando fora do protocolo. Serve para, conforme o Manual, preencher o tempo de espera que o Terminal precisa para Processar esse comando antes de receber o próximo. Veja Apendice A (pag. 13) no Manual da Comutadora.
-        End;
-    End
-    Else
-        fpDevice.EnviaString( Texto );
+    If TACBrTER( fpOwner ).Comutadora Then
+     begin
+       For I := 1 To Length( Texto ) Do
+       begin
+          fpDevice.EnviaString( 'D' + FormatFloat( '00', Terminal ) + Texto[I] + StringOfChar( ' ', 4 ) );
+          fpDevice.EnviaString( 'A' + FormatFloat( '00', Terminal ) + StringOfChar( ' ', 12 ) ); //Comando fora do protocolo. Serve para, conforme o Manual, preencher o tempo de espera que o Terminal precisa para Processar esse comando antes de receber o próximo. Veja Apendice A (pag. 13) no Manual da Comutadora.
+       end;
+     end
+    else
+       fpDevice.EnviaString( Texto );
 End;
 
 Procedure TACBrTERWilbor.EnviaRotacao( Texto : String; Linha : Word = 1; Terminal : Word = 0 );
@@ -123,12 +148,13 @@ End;
 
 Procedure TACBrTERWilbor.LimpaTela( Terminal : Word = 0 );
 Begin
-    If TACBrTER( fpOwner ).Comutadora Then Begin
-        fpDevice.EnviaString( 'L' + FormatFloat( '00', Terminal ) + StringOfChar( ' ', 12 ) );
-        fpDevice.EnviaString( 'A' + FormatFloat( '00', Terminal ) + StringOfChar( ' ', 12 ) ); //Comando fora do protocolo. Serve para, conforme o Manual, preencher o tempo de espera que o Terminal precisa para Processar esse comando antes de receber o próximo. Veja Apendice A (pag. 13) no Manual da Comutadora.
-    End
-    Else
-        fpDevice.EnviaString( #27'[H'#27'[J' );
+    If TACBrTER( fpOwner ).Comutadora Then
+     begin
+       fpDevice.EnviaString( 'L' + FormatFloat( '00', Terminal ) + StringOfChar( ' ', 12 ) );
+       fpDevice.EnviaString( 'A' + FormatFloat( '00', Terminal ) + StringOfChar( ' ', 12 ) ); //Comando fora do protocolo. Serve para, conforme o Manual, preencher o tempo de espera que o Terminal precisa para Processar esse comando antes de receber o próximo. Veja Apendice A (pag. 13) no Manual da Comutadora.
+     end
+    else
+       fpDevice.EnviaString( #27'[H'#27'[J' );
 End;
 
 Procedure TACBrTERWilbor.PosicionaCursor( Linha, Coluna : Word; Terminal : Word = 0 );
@@ -141,25 +167,27 @@ Begin
     Linha  := min( max(Linha,  0 ),  1) ;
     Coluna := min( max(Coluna, 0 ), 39) ;
 
-    If TACBrTER( fpOwner ).Comutadora Then Begin
-        fpDevice.EnviaString( 'C' + FormatFloat( '00', Terminal ) + IntToStr( Linha ) + FormatFloat( '00', Coluna ) + StringOfChar( ' ', 12 ) );
-        fpDevice.EnviaString( 'A' + FormatFloat( '00', Terminal ) + StringOfChar( ' ', 12 ) ); //Comando fora do protocolo. Serve para, conforme o Manual, preencher o tempo de espera que o Terminal precisa para Processar esse comando antes de receber o próximo. Veja Apendice A (pag. 13) no Manual da Comutadora.
-    End
-    Else
-        fpDevice.EnviaString( #27'[' + IntToStr( Linha ) + ';' + IntToStr( Coluna ) + 'H' );
+    If TACBrTER( fpOwner ).Comutadora Then
+     begin
+       fpDevice.EnviaString( 'C' + FormatFloat( '00', Terminal ) + IntToStr( Linha ) + FormatFloat( '00', Coluna ) + StringOfChar( ' ', 12 ) );
+       fpDevice.EnviaString( 'A' + FormatFloat( '00', Terminal ) + StringOfChar( ' ', 12 ) ); //Comando fora do protocolo. Serve para, conforme o Manual, preencher o tempo de espera que o Terminal precisa para Processar esse comando antes de receber o próximo. Veja Apendice A (pag. 13) no Manual da Comutadora.
+     end
+    else
+       fpDevice.EnviaString( #27'[' + IntToStr( Linha ) + ';' + IntToStr( Coluna ) + 'H' );
 End;
 
 Procedure TACBrTERWilbor.BackSpace( Terminal : Word = 0 );
 Begin
-    If TACBrTER( fpOwner ).Comutadora Then Begin
-        fpDevice.EnviaString( 'O' + FormatFloat( '00', Terminal ) + Chr(16) + StringOfChar( ' ', 12 ) );
-        fpDevice.EnviaString( 'A' + FormatFloat( '00', Terminal ) + StringOfChar( ' ', 12 ) ); //Comando fora do protocolo. Serve para, conforme o Manual, preencher o tempo de espera que o Terminal precisa para Processar esse comando antes de receber o próximo. Veja Apendice A (pag. 13) no Manual da Comutadora.
-        EnviaString( ' ', Terminal );
-        fpDevice.EnviaString( 'O' + FormatFloat( '00', Terminal ) + Chr(16) + StringOfChar( ' ', 12 ) );
-        fpDevice.EnviaString( 'A' + FormatFloat( '00', Terminal ) + StringOfChar( ' ', 12 ) ); //Comando fora do protocolo. Serve para, conforme o Manual, preencher o tempo de espera que o Terminal precisa para Processar esse comando antes de receber o próximo. Veja Apendice A (pag. 13) no Manual da Comutadora.
-    End
-    Else
-        fpDevice.EnviaString( #8'[K' );
+    If TACBrTER( fpOwner ).Comutadora Then
+     begin
+       fpDevice.EnviaString( 'O' + FormatFloat( '00', Terminal ) + Chr(16) + StringOfChar( ' ', 12 ) );
+       fpDevice.EnviaString( 'A' + FormatFloat( '00', Terminal ) + StringOfChar( ' ', 12 ) ); //Comando fora do protocolo. Serve para, conforme o Manual, preencher o tempo de espera que o Terminal precisa para Processar esse comando antes de receber o próximo. Veja Apendice A (pag. 13) no Manual da Comutadora.
+       EnviaString( ' ', Terminal );
+       fpDevice.EnviaString( 'O' + FormatFloat( '00', Terminal ) + Chr(16) + StringOfChar( ' ', 12 ) );
+       fpDevice.EnviaString( 'A' + FormatFloat( '00', Terminal ) + StringOfChar( ' ', 12 ) ); //Comando fora do protocolo. Serve para, conforme o Manual, preencher o tempo de espera que o Terminal precisa para Processar esse comando antes de receber o próximo. Veja Apendice A (pag. 13) no Manual da Comutadora.
+     end
+    else
+       fpDevice.EnviaString( #8'[K' );
 End;
 
 End.

@@ -1,8 +1,8 @@
 object Form1: TForm1
   Left = 230
   Top = 118
-  Width = 532
-  Height = 597
+  Width = 547
+  Height = 612
   Caption = 'Demo ACBrTer'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -58,8 +58,8 @@ object Form1: TForm1
   end
   object Image1: TImage
     Left = 0
-    Top = 525
-    Width = 524
+    Top = 534
+    Width = 531
     Height = 40
     Align = alBottom
     Picture.Data = {

@@ -656,6 +656,7 @@ type
                        );
   //Código indicador da tabela de incidencia, conforme anexo III
   TACBrIndCodIncidencia = (
+                            codIndiTabNaoTem,
                             codIndTabI,     // 01 - Tabela I
                             codIndTabII,    // 02 - Tabela II
                             codIndTabIII,   // 03 - Tabela III
@@ -667,8 +668,7 @@ type
                             codIndTabIX,    // 09 - Tabela IX
                             codIndTabX,     // 10 - Tabela X
                             codIndTabXI,    // 11 - Tabela XI
-                            codIndiTabXII,  // 12 - Tabela XII
-                            codIndiTabNaoTem
+                            codIndiTabXII   // 12 - Tabela XII
                           );
   //Indicador do tipo de conta (0500)
   TACBrIndCTA = (

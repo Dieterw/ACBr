@@ -384,6 +384,9 @@ type
     FCOD_GRU   : string;                //Código do grupo, conforme Anexo III do Decreto nº 6.707/08
     FMARCA_COM : string;                //Marca Comercial
   public
+    constructor Create; virtual;   // Create
+    destructor  Destroy; override; // Destroy
+
     property COD_TAB   : TACBrIndCodIncidencia read FCOD_TAB   write FCOD_TAB;
     property COD_GRU   : string                read FCOD_GRU   write FCOD_GRU;
     property MARCA_COM : string                read FMARCA_COM write FMARCA_COM;
@@ -742,6 +745,19 @@ end;
 destructor TRegistro0110.Destroy;
 begin
   FRegistro0111.Free;
+  inherited;
+end;
+
+{ TRegistro0208 }
+
+constructor TRegistro0208.Create;
+begin
+   FCOD_TAB := codIndiTabNaoTem;
+end;
+
+destructor TRegistro0208.Destroy;
+begin
+
   inherited;
 end;
 

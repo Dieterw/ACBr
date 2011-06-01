@@ -2611,9 +2611,9 @@ begin
   ErroAbstract('VendeItem');
 end;
 
-Procedure TACBrECFClass.DescontoAcrescimoItemAnterior( ValorDescontoAcrescimo : Double = 0;
-   DescontoAcrescimo : String = 'D'; TipoDescontoAcrescimo : String = '%';
-   NumItem : Integer = 0 ) ;
+Procedure TACBrECFClass.DescontoAcrescimoItemAnterior(
+   ValorDescontoAcrescimo : Double; DescontoAcrescimo : String;
+   TipoDescontoAcrescimo : String; NumItem : Integer) ;
 begin
   ErroAbstract('DescontoAcrescimoItemAnterior');
 end ;

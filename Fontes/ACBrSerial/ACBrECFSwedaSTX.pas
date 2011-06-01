@@ -1541,14 +1541,14 @@ begin
     'I' : AliquotaStr  := 'I1' ;
     'N' : AliquotaStr  := 'N1' ;
     'F' : AliquotaStr  := 'F1' ;
-    'T' : AliquotaICMS := 'T'+padR(copy(AliquotaICMS,2,2),2,'0') ; {Indice}
-    'S' :{ISSQN}
+    'T' : AliquotaICMS := 'T'+AliquotaICMS; {Indice}
+    'S' : {ISSQN}
         begin
            case AliquotaICMS[2] of
               'I':AliquotaStr := 'IS1';
               'N':AliquotaStr := 'NS1';
               'F':AliquotaStr := 'FS1';
-              else AliquotaStr  := AliquotaICMS;
+           else AliquotaICMS  := 'T'+AliquotaICMS;
            end
         end;
   end;
@@ -1559,7 +1559,6 @@ begin
      AliquotaICMS := AliquotaStr ;
 
 end;
-
 
 procedure TACBrECFSwedaSTX.CarregaFormasPagamento;  { funçao Lenta +- 3 sec. }
 var

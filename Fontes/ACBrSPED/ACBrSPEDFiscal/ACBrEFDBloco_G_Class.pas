@@ -282,7 +282,7 @@ begin
                    LFill( VL_IMOB_ICMS_ST, 0, 2 ) +
                    LFill( VL_IMOB_ICMS_FRT, 0, 2 ) +
                    LFill( VL_IMOB_ICMS_DIF, 0, 2 ) +
-                   LFill( NUM_PARC, 3, 0 ) +
+                   LFill( NUM_PARC, 3 ) +
                    LFill( VL_PARC_PASS, 0, 2 ) +
                    LFill( VL_PARC_APROP, 0, 2 ) );
            end
@@ -403,7 +403,7 @@ begin
           Add( LFill('G126') +
                LFill( DT_INI) +
                LFill( DT_FIN) +
-               LFill( NUM_PARC ,0 ) +
+               LFill( NUM_PARC, 3 ) +
                LFill( VL_PARC_PASS, 0, 2 )+
                LFill( VL_TRIB_OC, 0, 2 ) +
                LFill( VL_TOTAL, 0, 2 ) +

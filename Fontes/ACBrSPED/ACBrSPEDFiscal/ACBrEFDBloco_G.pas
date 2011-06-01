@@ -121,7 +121,7 @@ type
     fVL_IMOB_ICMS_ST: Currency;    /// Valor ICMS Operacao Subst.Trib. na entrada do bem ou componente
     fVL_IMOB_ICMS_FRT: Currency;   /// Valor ICMS Frete CTC na entrada do bem ou componente
     fVL_IMOB_ICMS_DIF: Currency;   /// Valor ICMS Diferencial de Aliquota cfe. Doc. arrecadacao na entrada do bem ou componente
-    fNUM_PARC: Currency;           /// Numero da Parcela do ICMS
+    fNUM_PARC: Integer;            /// Numero da Parcela do ICMS
     fVL_PARC_PASS: Currency;       /// Valor parcela icms passivel de apropriacao
     fVL_PARC_APROP: Currency;      /// Valor da parcela apropriada do ICMS
 
@@ -134,13 +134,13 @@ type
     property COD_IND_BEM: String read fCOD_IND_BEM write fCOD_IND_BEM;
     property DT_MOV: TDateTime  read fDT_MOV write fDT_MOV;
     property TIPO_MOV: TACBrMovimentoBens read fTIPO_MOV write fTIPO_MOV;
-    property VL_IMOB_ICMS_OP: Currency   read fVL_IMOB_ICMS_OP write fVL_IMOB_ICMS_OP;
-    property VL_IMOB_ICMS_ST: Currency   read fVL_IMOB_ICMS_ST write fVL_IMOB_ICMS_ST;
+    property VL_IMOB_ICMS_OP: Currency    read fVL_IMOB_ICMS_OP write fVL_IMOB_ICMS_OP;
+    property VL_IMOB_ICMS_ST: Currency    read fVL_IMOB_ICMS_ST write fVL_IMOB_ICMS_ST;
     property VL_IMOB_ICMS_FRT: Currency   read fVL_IMOB_ICMS_FRT write fVL_IMOB_ICMS_FRT;
     property VL_IMOB_ICMS_DIF: Currency   read fVL_IMOB_ICMS_DIF write fVL_IMOB_ICMS_DIF;
-    property NUM_PARC: Currency   read fNUM_PARC write fNUM_PARC;
-    property VL_PARC_PASS: Currency   read fVL_PARC_PASS write fVL_PARC_PASS;
-    property VL_PARC_APROP: Currency   read fVL_PARC_APROP write fVL_PARC_APROP;   /// Até versão 102
+    property NUM_PARC: Integer            read fNUM_PARC write fNUM_PARC;
+    property VL_PARC_PASS: Currency       read fVL_PARC_PASS write fVL_PARC_PASS;
+    property VL_PARC_APROP: Currency      read fVL_PARC_APROP write fVL_PARC_APROP;   /// Até versão 102
 
     property RegistroG130: TRegistroG130List read FRegistroG130 write FRegistroG130;
     property RegistroG126: TRegistroG126List read FRegistroG126 write FRegistroG126;
@@ -163,21 +163,21 @@ type
   private
     FDT_INI       : TDateTime;
     FDT_FIM       : TDateTime;
-    FNUM_PARC     : WORD;
+    FNUM_PARC     : Integer;
     FVL_PARC_PASS : Currency;
     FVL_TRIB_OC   : Currency;
     FVL_TOTAL     : Currency;
     FIND_PER_SAI  : Double;
     FVL_PARC_APROP: Currency;
   public
-    property DT_INI: TDateTime       read fDT_INI        write fDT_INI;
-    property DT_FIM: TDateTime       read FDT_FIM        write FDT_FIM;
-    property NUM_PARC:word           read FNUM_PARC      write FNUM_PARC;
-    property VL_PARC_PASS:Currency   read FVL_PARC_PASS  write FVL_PARC_PASS;
-    property VL_TRIB_OC:Currency     read FVL_TRIB_OC    write FVL_TRIB_OC;
-    property VL_TOTAL:Currency       read FVL_TOTAL      write FVL_TOTAL;
-    property IND_PER_SAI:Double      read FIND_PER_SAI   write FIND_PER_SAI;
-    property VL_PARC_APROP:Currency  read FVL_PARC_APROP write FVL_PARC_APROP;
+    property DT_INI: TDateTime        read fDT_INI        write fDT_INI;
+    property DT_FIM: TDateTime        read FDT_FIM        write FDT_FIM;
+    property NUM_PARC: Integer        read FNUM_PARC      write FNUM_PARC;
+    property VL_PARC_PASS: Currency   read FVL_PARC_PASS  write FVL_PARC_PASS;
+    property VL_TRIB_OC: Currency     read FVL_TRIB_OC    write FVL_TRIB_OC;
+    property VL_TOTAL: Currency       read FVL_TOTAL      write FVL_TOTAL;
+    property IND_PER_SAI: Double      read FIND_PER_SAI   write FIND_PER_SAI;
+    property VL_PARC_APROP: Currency  read FVL_PARC_APROP write FVL_PARC_APROP;
   end;
 
   /// Registro G126 - Lista

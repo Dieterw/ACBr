@@ -66,6 +66,7 @@ Unit ACBrECFClass ;
 
 interface
 uses ACBrDevice,
+     ACBrPAFClass,
      SysUtils ,
      Classes,
      ACBrConsts,
@@ -90,84 +91,6 @@ EACBrECFCMDInvalido     = class(EACBrECFErro) ;
 EACBrECFSemResposta     = class(EACBrECFErro) ;
 EACBrECFNaoInicializado = class(EACBrECFErro) ;
 EACBrECFOcupado         = class(EACBrECFErro) ;
-
-  TACBrECFEmpresa = class
-  private
-    fsCNPJ: string;
-    fsUf: String;
-    fsCep: String;
-    fsRazaoSocial: string;
-    fsContato: string;
-    fsCidade: String;
-    fsEndereco: string;
-    fsTelefone: string;
-    fsEmail: String;
-  public
-    property CNPJ: string read fsCNPJ write fsCNPJ;
-    property RazaoSocial: string read fsRazaoSocial write fsRazaoSocial;
-    property Endereco: string read fsEndereco write fsEndereco;
-    property Cep: String read fsCep write fsCep;
-    property Cidade: String read fsCidade write fsCidade;
-    property Uf: String read fsUf write fsUf;
-    property Telefone: string read fsTelefone write fsTelefone;
-    property Contato: string read fsContato write fsContato;
-    property Email: String read fsEmail write fsEmail;
-  end;
-
-  TACBrECFArquivo = class
-  private
-    fsMD5: string;
-    fsNome: String;
-  public
-    property Nome: String read fsNome write fsNome;
-    property MD5: string read fsMD5 write fsMD5;
-  end;
-
-  TACBrECFArquivos = class(TObjectList)
-  protected
-    procedure SetObject (Index: Integer; Item: TACBrECFArquivo);
-    function GetObject (Index: Integer): TACBrECFArquivo;
-    procedure Insert (Index: Integer; Obj: TACBrECFArquivo);
-  public
-    function New: TACBrECFArquivo;
-    function Add (Obj: TACBrECFArquivo): Integer;
-    property Objects [Index: Integer]: TACBrECFArquivo
-      read GetObject write SetObject; default;
-  end;
-
-  TACBrECFInfoPaf = class
-  private
-    fsVersao: String;
-    fsPrincipalExe: TACBrECFArquivo;
-    fsNome: String;
-  public
-    constructor Create;
-    destructor Destroy; override;
-    property Nome: String read fsNome write fsNome;
-    property Versao: String read fsVersao write fsVersao;
-    property PrincipalExe: TACBrECFArquivo read fsPrincipalExe write fsPrincipalExe;
-  end;
-
-  TACBrECFIdentificacaoPAF = class
-  private
-    fsNumeroLaudo: String;
-    fsEmpresa: TACBrECFEmpresa;
-    fsPaf: TACBrECFInfoPaf;
-    fsOutrosArquivos: TACBrECFArquivos;
-    fsECFsAutorizados: TStringList;
-    fsArquivoListaAutenticados: TACBrECFArquivo;
-    fsVersaoER: String;
-  public
-    constructor Create;
-    destructor Destroy; override;
-    property NumeroLaudo: String read fsNumeroLaudo write fsNumeroLaudo;
-    property VersaoER: String read fsVersaoER write fsVersaoER;
-    property Empresa: TACBrECFEmpresa read fsEmpresa write fsEmpresa;
-    property Paf: TACBrECFInfoPaf read fsPaf write fsPaf;
-    property ArquivoListaAutenticados: TACBrECFArquivo read fsArquivoListaAutenticados write fsArquivoListaAutenticados;
-    property OutrosArquivos: TACBrECFArquivos read fsOutrosArquivos write fsOutrosArquivos;
-    property ECFsAutorizados: TStringList read fsECFsAutorizados write fsECFsAutorizados;
-  end;
 
 { Definindo novo tipo para armazenar Aliquota de ICMS }
 TACBrECFAliquota = class
@@ -983,7 +906,8 @@ TACBrECFClass = class
        Unidade : String = ''; TipoDescontoAcrescimo : String = '%';
        DescontoAcrescimo : String = 'D' ) ; virtual ;
     Procedure DescontoAcrescimoItemAnterior( ValorDescontoAcrescimo : Double = 0;
-       DescontoAcrescimo : String = 'D' ) ;  virtual ;
+       DescontoAcrescimo : String = 'D'; TipoDescontoAcrescimo : String = '%';
+       NumItem : Integer = 0 ) ;  virtual ;
     Procedure SubtotalizaCupom( DescontoAcrescimo : Double = 0;
        MensagemRodape : AnsiString = '' ) ;  virtual ;
     procedure CancelaDescontoAcrescimoSubTotal(TipoAcrescimoDesconto: Char) ;
@@ -2688,7 +2612,8 @@ begin
 end;
 
 Procedure TACBrECFClass.DescontoAcrescimoItemAnterior(
-   ValorDescontoAcrescimo : Double = 0; DescontoAcrescimo : String = 'D' ) ;
+   ValorDescontoAcrescimo : Double; DescontoAcrescimo : String;
+   TipoDescontoAcrescimo : String; NumItem : Integer = 0) ;
 begin
   ErroAbstract('DescontoAcrescimoItemAnterior');
 end ;
@@ -3977,72 +3902,6 @@ begin
    fsISSQN.Free;
 
    inherited Destroy ;
-end;
-
-{ TACBrECFIdentificacaoPAF }
-
-constructor TACBrECFIdentificacaoPAF.Create;
-begin
-  inherited;
-
-  fsPaf := TACBrECFInfoPaf.Create;
-  fsEmpresa := TACBrECFEmpresa.Create;
-  fsOutrosArquivos := TACBrECFArquivos.Create;
-  fsECFsAutorizados := TStringList.Create;
-  fsArquivoListaAutenticados := TACBrECFArquivo.Create;
-end;
-
-destructor TACBrECFIdentificacaoPAF.Destroy;
-begin
-  fsPaf.Free;
-  fsEmpresa.Free;
-  fsOutrosArquivos.Free;
-  fsECFsAutorizados.Free;
-  fsArquivoListaAutenticados.Free;
-
-  inherited;
-end;
-
-{ TACBrECFInfoPaf }
-
-constructor TACBrECFInfoPaf.Create;
-begin
-  inherited;
-  fsPrincipalExe := TACBrECFArquivo.Create;
-end;
-
-destructor TACBrECFInfoPaf.Destroy;
-begin
-  fsPrincipalExe.Free;
-  inherited;
-end;
-
-{ TACBrECFArquivos }
-
-function TACBrECFArquivos.Add(Obj: TACBrECFArquivo): Integer;
-begin
-  Result := inherited Add(Obj) ;
-end;
-
-function TACBrECFArquivos.GetObject(Index: Integer): TACBrECFArquivo;
-begin
-  Result := inherited GetItem(Index) as TACBrECFArquivo ;
-end;
-
-procedure TACBrECFArquivos.Insert(Index: Integer; Obj: TACBrECFArquivo);
-begin
-  inherited Insert(Index, Obj);
-end;
-
-function TACBrECFArquivos.New: TACBrECFArquivo;
-begin
-  Result := TACBrECFArquivo.Create;
-  Add(Result);
-end;
-
-procedure TACBrECFArquivos.SetObject(Index: Integer; Item: TACBrECFArquivo);
-begin
-  inherited SetItem (Index, Item) ;
 end;
 
 end.

@@ -132,7 +132,9 @@ const
   cACBrECFSetDecimaisQtdException        = 'Valor de DecimaisQtd deve estar entre 0-4' ;
   cACBrECFVendeItemQtdeException         = 'Quantidade deve ser superior a 0.' ;
   cACBrECFVendeItemValorUnitException    = 'Valor Unitario deve ser superior a 0.' ;
-  cACBrECFVendeItemDescAcreException     = 'ValorDescontoAcrescimo não pode ser negativo' ;
+  cACBrECFVendeItemValDescAcreException  = 'ValorDescontoAcrescimo deve ser positivo' ;
+  cACBrECFVendeItemDescAcreException     = 'DescontoAcrescimo deve ser "A"-Acrescimo, ou "D"-Desconto' ;
+  cACBrECFVendeItemTipoDescAcreException = 'TipoDescontoAcrescimo deve ser "%"-Porcentagem, ou "$"-Valor' ;
   cACBrECFVendeItemAliqICMSException     = 'Aliquota de ICMS não pode ser vazia.' ;
   cACBrECFAchaFPGIndiceException         = 'Forma de Pagamento: %s inválida' ;
   cACBrECFFPGPermiteVinculadoException   = 'Forma de Pagamento: %s '+#10+

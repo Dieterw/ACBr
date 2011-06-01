@@ -641,7 +641,7 @@ implementation
 
 uses ACBrUtil, ACBrECFBematech, VendeItem, EfetuaPagamento,
      Relatorio, Sobre, TypInfo, Math, IniFiles,
-     ConfiguraSerial;
+     ConfiguraSerial, ACBrPAFClass;
      
 procedure TForm1.FormCreate(Sender: TObject);
 Var I : TACBrECFModelo ;
@@ -992,6 +992,14 @@ var
   IdentPaf: TACBrECFIdentificacaoPAF;
   I: Integer;
 begin
+  // Se está usando o AAC, basta informar o Objeto IdentPAF //
+  if Assigned( ACBrECF1.AAC ) then
+  begin
+     ACBrECF1.PafMF_RelIdentificacaoPafECF( ACBrECF1.AAC.IdentPAF, 0);
+     exit ;
+  end ;
+
+  // Se NAO está usando o AAC, o Objeto IdentPAF deve ser instânciado e populado //
   IdentPaf := TACBrECFIdentificacaoPAF.Create;
   try
     IdentPaf.NumeroLaudo := 'ABC1234567890'; // retirar do laudo
@@ -1028,7 +1036,8 @@ begin
     // tsAACECFs autorizados para funcionamento na máquina
     IdentPaf.ECFsAutorizados.clear;
     for I := 1 to 3 do
-      IdentPaf.ECFsAutorizados.Add(StringOfChar('A', 15));
+      with IdentPaf.ECFsAutorizados.New do
+        NumeroSerie := StringOfChar('A', 15) ;
 
     ACBrECF1.PafMF_RelIdentificacaoPafECF(IdentPaf, 0);
   finally
@@ -1115,13 +1124,13 @@ procedure TForm1.ACBrAAC1DepoisAbrirArquivo(Sender : TObject) ;
 var
    I : Integer ;
 begin
-   edAAC_SH_RazaoSocial.Text := ACBrAAC1.SH_RazaoSocial;
-   edAAC_SH_CNPJ.Text        := ACBrAAC1.SH_CNPJ;
-   edAAC_SH_IM.Text          := ACBrAAC1.SH_IM;
-   edAAC_SH_IE.Text          := ACBrAAC1.SH_IE;
-   edAAC_PAF_Aplicativo.Text := ACBrAAC1.PAF_Nome;
-   edAAC_PAF_Versao.Text     := ACBrAAC1.PAF_Versao;
-   edAAC_PAF_MD5.Text        := ACBrAAC1.PAF_MD5;
+   edAAC_SH_RazaoSocial.Text := ACBrAAC1.IdentPAF.Empresa.RazaoSocial;
+   edAAC_SH_CNPJ.Text        := ACBrAAC1.IdentPAF.Empresa.CNPJ;
+   edAAC_SH_IM.Text          := ACBrAAC1.IdentPAF.Empresa.IM;
+   edAAC_SH_IE.Text          := ACBrAAC1.IdentPAF.Empresa.IE;
+   edAAC_PAF_Aplicativo.Text := ACBrAAC1.IdentPAF.Paf.Nome;
+   edAAC_PAF_Versao.Text     := ACBrAAC1.IdentPAF.Paf.Versao;
+   edAAC_PAF_MD5.Text        := ACBrAAC1.IdentPAF.ArquivoListaAutenticados.MD5;
 
    with mdsAACECF do
    begin
@@ -1132,14 +1141,14 @@ begin
         Delete;
 
      // Insere Itens da Lista de ECFS //
-     For I := 0 to ACBrAAC1.ECFsAutorizados.Count-1 do
+     For I := 0 to ACBrAAC1.IdentPAF.ECFsAutorizados.Count-1 do
      begin
        Insert;
        FieldByName('Indice').AsInteger  := I;
-       FieldByName('NumSerie').AsString := ACBrAAC1.ECFsAutorizados[I].NumeroSerie;
-       FieldByName('CRO').AsInteger     := ACBrAAC1.ECFsAutorizados[I].CRO;
-       FieldByName('ValorGT').AsFloat   := ACBrAAC1.ECFsAutorizados[I].ValorGT;
-       FieldByName('DtHrAtualizado').AsDateTime := ACBrAAC1.ECFsAutorizados[I].DtHrAtualizado;
+       FieldByName('NumSerie').AsString := ACBrAAC1.IdentPAF.ECFsAutorizados[I].NumeroSerie;
+       FieldByName('CRO').AsInteger     := ACBrAAC1.IdentPAF.ECFsAutorizados[I].CRO;
+       FieldByName('ValorGT').AsFloat   := ACBrAAC1.IdentPAF.ECFsAutorizados[I].ValorGT;
+       FieldByName('DtHrAtualizado').AsDateTime := ACBrAAC1.IdentPAF.ECFsAutorizados[I].DtHrAtualizado;
        Post;
      end ;
    end ;
@@ -1170,22 +1179,22 @@ end;
 
 procedure TForm1.bAACGravarArquivoClick(Sender : TObject) ;
 begin
-  ACBrAAC1.SH_RazaoSocial := edAAC_SH_RazaoSocial.Text;
-  ACBrAAC1.SH_CNPJ        := edAAC_SH_CNPJ.Text;
-  ACBrAAC1.SH_IM          := edAAC_SH_IM.Text;
-  ACBrAAC1.SH_IE          := edAAC_SH_IE.Text;
-  ACBrAAC1.PAF_Nome       := edAAC_PAF_Aplicativo.Text;
-  ACBrAAC1.PAF_Versao     := edAAC_PAF_Versao.Text;
-  ACBrAAC1.PAF_MD5        := edAAC_PAF_MD5.Text;
+  ACBrAAC1.IdentPAF.Empresa.RazaoSocial := edAAC_SH_RazaoSocial.Text;
+  ACBrAAC1.IdentPAF.Empresa.CNPJ        := edAAC_SH_CNPJ.Text;
+  ACBrAAC1.IdentPAF.Empresa.IM          := edAAC_SH_IM.Text;
+  ACBrAAC1.IdentPAF.Empresa.IE          := edAAC_SH_IE.Text;
+  ACBrAAC1.IdentPAF.Paf.Nome            := edAAC_PAF_Aplicativo.Text;
+  ACBrAAC1.IdentPAF.PAF.Versao          := edAAC_PAF_Versao.Text;
+  ACBrAAC1.IdentPAF.ArquivoListaAutenticados.MD5 := edAAC_PAF_MD5.Text;
 
-  ACBrAAC1.ECFsAutorizados.Clear;
+  ACBrAAC1.IdentPAF.ECFsAutorizados.Clear;
   with mdsAACECF do
   begin
     // Zera Tabela em memoria //
     First;
     while not EOF do
     begin
-       with ACBrAAC1.ECFsAutorizados.New do
+       with ACBrAAC1.IdentPAF.ECFsAutorizados.New do
        begin
          NumeroSerie    := FieldByName('NumSerie').AsString;
          CRO            := FieldByName('CRO').AsInteger;
@@ -1208,11 +1217,12 @@ end;
 
 procedure TForm1.bACCVerificarGTClick(Sender : TObject) ;
 var
-   Erro : LongInt ;
+   Erro : Integer ;
    Msg : String ;
+   ValorGT : Double ;
 begin
-  Erro := ACBrAAC1.VerificarGTECF( mdsAACECF.FieldByName('NumSerie').AsString,
-                                   mdsAACECF.FieldByName('ValorGT').AsFloat ) ;
+  ValorGT := mdsAACECF.FieldByName('ValorGT').AsFloat ;
+  Erro    := ACBrAAC1.VerificarGTECF( mdsAACECF.FieldByName('NumSerie').AsString, ValorGT ) ;
 
   case Erro of
      0  : Msg := 'G.T. OK' ;

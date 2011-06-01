@@ -196,6 +196,9 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
        Qtd : Double ; ValorUnitario : Double; ValorDescontoAcrescimo : Double = 0;
        Unidade : String = ''; TipoDescontoAcrescimo : String = '%';
        DescontoAcrescimo : String = 'D' ) ; override ;
+    Procedure DescontoAcrescimoItemAnterior( ValorDescontoAcrescimo : Double = 0;
+       DescontoAcrescimo : String = 'D'; TipoDescontoAcrescimo : String = '%';
+       NumItem : Integer = 0 ) ;  override ;
     Procedure SubtotalizaCupom( DescontoAcrescimo : Double = 0;
        MensagemRodape : AnsiString  = '') ; override ;
     Procedure EfetuaPagamento( CodFormaPagto : String; Valor : Double;
@@ -1435,22 +1438,28 @@ begin
                        AliquotaECF                                 +'|'+
                        Trim(LeftStr(Descricao,33)));
 
-
   if ValorDescontoAcrescimo > 0 then
-  begin
-     if DescontoAcrescimo = 'A' then
-        Cmd := '03'
-     else
-        Cmd := '04' ;
-
-     Cmd := Cmd + '|' + AjustaValor(ValorDescontoAcrescimo) ;
-     
-     if TipoDescontoAcrescimo = '%' then
-        Cmd := Cmd + '%' ;
-
-     EnviaComando( Cmd )
-  end ;
+     DescontoAcrescimoItemAnterior( ValorDescontoAcrescimo, DescontoAcrescimo,
+        TipoDescontoAcrescimo );
 end;
+
+procedure TACBrECFSwedaSTX.DescontoAcrescimoItemAnterior(
+   ValorDescontoAcrescimo : Double ; DescontoAcrescimo : String;
+   TipoDescontoAcrescimo : String; NumItem : Integer) ;
+var
+   CMD : String ;
+begin
+  CMD := ifthen(DescontoAcrescimo = 'A','03','04') + '|' +
+         AjustaValor(ValorDescontoAcrescimo) ;
+
+  if TipoDescontoAcrescimo = '%' then
+     CMD := CMD + '%' ;
+
+  if NumItem > 0 then
+     CMD := CMD + '|' +IntToStr(NumItem);
+
+  EnviaComando( CMD ) ;
+end ;
 
 procedure TACBrECFSwedaSTX.CarregaAliquotas;
 var

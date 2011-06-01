@@ -258,6 +258,9 @@ TACBrECFEpson = class( TACBrECFClass )
        Qtd : Double ; ValorUnitario : Double; ValorDescontoAcrescimo : Double = 0;
        Unidade : String = ''; TipoDescontoAcrescimo : String = '%';
        DescontoAcrescimo : String = 'D' ) ; override ;
+    Procedure DescontoAcrescimoItemAnterior( ValorDescontoAcrescimo : Double = 0;
+       DescontoAcrescimo : String = 'D'; TipoDescontoAcrescimo : String = '%';
+       NumItem : Integer = 0 ) ;  override ;
     Procedure SubtotalizaCupom( DescontoAcrescimo : Double = 0;
        MensagemRodape : AnsiString  = '' ) ; override ;
     Procedure EfetuaPagamento( CodFormaPagto : String; Valor : Double;
@@ -1780,31 +1783,43 @@ begin
 
   { Se o desconto é maior que zero dá o comando de desconto de item }
   if ValorDescontoAcrescimo > 0 then
-  begin
-     EpsonComando.Comando  := '0A04' ;
-     if TipoDescontoAcrescimo = '%' then
-      begin
-        if DescontoAcrescimo = 'D' then
-           EpsonComando.Extensao := '0000'
-        else
-           EpsonComando.Extensao := '0001' ;
-      end
-     else
-      begin
-        if DescontoAcrescimo = 'D' then
-           EpsonComando.Extensao := '0004'
-        else
-           EpsonComando.Extensao := '0005' ;
-      end ;
-      
-     EpsonComando.AddParam( IntToStrZero(Round(ValorDescontoAcrescimo * 100) ,11)  );
-     EnviaComando ;
-  end;
+     DescontoAcrescimoItemAnterior( ValorDescontoAcrescimo, DescontoAcrescimo,
+        TipoDescontoAcrescimo);
 
   fsRet0906 := '' ;
   fsRet0907 := '' ;
   fsEmPagamento := false ;
 end;
+
+procedure TACBrECFEpson.DescontoAcrescimoItemAnterior(
+   ValorDescontoAcrescimo : Double ; DescontoAcrescimo : String ;
+   TipoDescontoAcrescimo : String ; NumItem : Integer) ;
+begin
+  // NOTA: Epson não permite usar o parâmetro NumItem
+
+  EpsonComando.Comando  := '0A04' ;
+  if TipoDescontoAcrescimo = '%' then
+   begin
+     if DescontoAcrescimo = 'D' then
+        EpsonComando.Extensao := '0000'
+     else
+        EpsonComando.Extensao := '0001' ;
+   end
+  else
+   begin
+     if DescontoAcrescimo = 'D' then
+        EpsonComando.Extensao := '0004'
+     else
+        EpsonComando.Extensao := '0005' ;
+   end ;
+
+  EpsonComando.AddParam( IntToStrZero(Round(ValorDescontoAcrescimo * 100) ,11)  );
+  EnviaComando ;
+
+  fsRet0906 := '' ;
+  fsRet0907 := '' ;
+  fsEmPagamento := false ;
+end ;
 
 procedure TACBrECFEpson.CarregaAliquotas;
 var

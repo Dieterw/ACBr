@@ -378,6 +378,7 @@ TACBrECFBematech = class( TACBrECFClass )
       usa um Sufixo padrão no fim da resposta da Impressora. }
     fs25MFD     : Boolean ;  // True se for MP25 ou Superior (MFD)
     fsPAF       : String ;
+    fsVendeItemExtendido : Boolean ;
     fsBytesResp : Integer ;
     fsFalhasFimImpressao : Integer ;
     fsNumVersao : String ;
@@ -522,6 +523,9 @@ TACBrECFBematech = class( TACBrECFClass )
        Qtd : Double ; ValorUnitario : Double; ValorDescontoAcrescimo : Double = 0;
        Unidade : String = ''; TipoDescontoAcrescimo : String = '%';
        DescontoAcrescimo : String = 'D' ) ; override ;
+    Procedure DescontoAcrescimoItemAnterior( ValorDescontoAcrescimo : Double = 0;
+       DescontoAcrescimo : String = 'D'; TipoDescontoAcrescimo : String = '%';
+       NumItem : Integer = 0 ) ;  override ;
     Procedure SubtotalizaCupom( DescontoAcrescimo : Double = 0;
        MensagemRodape : AnsiString  = '') ; override ;
     Procedure EfetuaPagamento( CodFormaPagto : String; Valor : Double;
@@ -690,6 +694,7 @@ begin
   fsNFCodFPG := '' ;
   fsNFValor  := 0 ;
   fs25MFD    := false ;
+  fsVendeItemExtendido := True;
 
   try
      { Testando a comunicaçao com a porta }
@@ -1519,56 +1524,64 @@ begin
   Descricao := trim(Descricao) ;
   Unidade   := padL(Unidade,2) ;
 
-  if fpMFD and (Pos(Trim(GetSubModeloECF), 'MP-7000 TH FI') > 0) then
+  if fpMFD and fsVendeItemExtendido then
    begin
      BytesResp   := 0 ;
      Codigo      := padL(Codigo,14) ;
      QtdStr      := IntToStrZero( Round( Qtd * 1000), 7) ;
      ValorStr    := IntToStrZero( Round( ValorUnitario * 1000), 8) ;
+     AcrescimoStr:= StringOfChar('0',4) + #0;
+     DescontoStr := AcrescimoStr;
 
-     if DescontoAcrescimo = 'D' then
-      begin
-       AcrescimoStr := StringOfChar('0',8) + #0;
+     try
+        if ValorDescontoAcrescimo <> 0 then
+        begin
+             if DescontoAcrescimo = 'A' then
+                AcrescimoStr := IntToStrZero( Round(ValorDescontoAcrescimo * 100),
+                     ifthen(TipoDescontoAcrescimo = '%', 4, 8) ) + #0
+             else
+                DescontoStr := IntToStrZero( Round(ValorDescontoAcrescimo * 100),
+                     ifthen(TipoDescontoAcrescimo = '%', 4, 8) ) + #0
+        end ;
 
-       if TipoDescontoAcrescimo='%' then
-          DescontoStr := IntToStrZero( Round( RoundTo(ValorUnitario*Qtd,-2) *
-                                       ValorDescontoAcrescimo), 8 ) + #0
-       else
-          DescontoStr := IntToStrZero(Round(ValorDescontoAcrescimo*100), 8) + #0;
-
-      end
-     else
-      begin
-       DescontoStr := StringOfChar('0',8) + #0 ;
-
-       if TipoDescontoAcrescimo='%' then
-          AcrescimoStr := IntToStrZero( Round( RoundTo(ValorUnitario*Qtd,-2) *
-                                       ValorDescontoAcrescimo), 8 ) + #0
-       else
-          AcrescimoStr := IntToStrZero(Round(ValorDescontoAcrescimo*100),8) + #0;
-
-      end;
-
-     Descricao := Descricao + #0 ;
-
-     EnviaComando(#62 + #73 +
-                        Codigo + AliquotaECF + Unidade + QtdStr + ValorStr +
-                        DescontoStr + AcrescimoStr + Descricao);
-
+        EnviaComando(#62 + #73 +
+                           Codigo + AliquotaECF + Unidade + QtdStr + ValorStr +
+                           DescontoStr + AcrescimoStr + Descricao + #0 );
+     except
+       On E : Exception do
+       begin
+          if TestBit(ST1,2) then  // Comando inexistente ?
+           begin
+             fsVendeItemExtendido := False;
+             VendeItem( Codigo, Descricao, AliquotaECF, Qtd, ValorUnitario,
+                        ValorDescontoAcrescimo, Unidade, TipoDescontoAcrescimo,
+                        DescontoAcrescimo );
+             exit ;
+           end
+          else
+             raise ;
+       end ;
+     end ;
    end
   else if fs25MFD or
      ((DescontoAcrescimo <> 'D') and (ValorDescontoAcrescimo > 0)) then   // Tem acrescimo ?
    begin
      BytesResp   := 0 ;
-     Codigo      := Trim(Codigo) + #0 ;
-     Descricao   := Descricao + #0 ;
+     Codigo      := Trim(Codigo) ;
      ValorStr    := IntToStrZero( Round( ValorUnitario * 1000), 9) ;
      QtdStr      := IntToStrZero( Round( Qtd * 1000), 7) ;
      AcrescimoStr:= StringOfChar('0',10) ;
+     DescontoStr := AcrescimoStr;
 
-     if TipoDescontoAcrescimo='%' then
-        DescontoStr := IntToStrZero( Round( RoundTo(ValorUnitario*Qtd,-2) *
-                                     ValorDescontoAcrescimo), 10 )
+     if TipoDescontoAcrescimo = '%' then
+      begin
+        if Arredonda then
+           DescontoStr := IntToStrZero( Round( RoundTo(ValorUnitario*Qtd,-2) *
+                                        ValorDescontoAcrescimo), 10 )
+        else
+           DescontoStr := IntToStrZero( TruncFix( RoundTo(ValorUnitario*Qtd,-2) *
+                                        ValorDescontoAcrescimo), 10 )
+      end
      else
         DescontoStr := IntToStrZero(Round(ValorDescontoAcrescimo*100),10);
 
@@ -1579,8 +1592,8 @@ begin
      end ;
 
      EnviaComando(#63 + AliquotaECF + ValorStr + QtdStr + DescontoStr +
-                        AcrescimoStr + StringofChar('0',22) + Unidade + Codigo +
-                        Descricao ) ;
+                        AcrescimoStr + StringofChar('0',22) + Unidade +
+                        Codigo + #0 + Descricao  + #0) ;
    end
   else
    begin
@@ -1590,7 +1603,7 @@ begin
      else
         QtdStr := IntToStrZero( Round(Qtd * 1000), 7) ;
 
-     if RoundTo( ValorUnitario, -2 ) = ValorUnitario then
+     if (RoundTo( ValorUnitario, -2 ) = ValorUnitario) then
       begin
         ValorStr := IntToStrZero( Round(ValorUnitario * 100), 8) ;
         CMD := 09 ;
@@ -1626,6 +1639,28 @@ begin
   fsTotalPago := 0 ;
   fsTotalizadoresParciais := '' ;
 end;
+
+procedure TACBrECFBematech.DescontoAcrescimoItemAnterior(
+   ValorDescontoAcrescimo : Double ; DescontoAcrescimo : String;
+   TipoDescontoAcrescimo : String; NumItem : Integer) ;
+Var
+  ValDescAcresStr: String ;
+begin
+  if not fs25MFD then
+     exit ;
+
+  if NumItem = 0 then
+     NumItem := NumUltItem;
+
+  if DescontoAcrescimo <> 'A' then
+     DescontoAcrescimo := 'D' ;
+
+  ValDescAcresStr := IntToStrZero( Round(ValorDescontoAcrescimo * 100),
+     ifthen(TipoDescontoAcrescimo = '%', 4, 8) ) ;
+
+  EnviaComando( #93 + DescontoAcrescimo +
+                IntToStrZero( NumItem, 3) + ValDescAcresStr ) ;
+end ;
 
 procedure TACBrECFBematech.CarregaAliquotas;
 Var StrRet : AnsiString ;

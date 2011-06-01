@@ -316,6 +316,9 @@ TACBrECFDaruma = class( TACBrECFClass )
        Qtd : Double ; ValorUnitario : Double; ValorDescontoAcrescimo : Double = 0;
        Unidade : String = ''; TipoDescontoAcrescimo : String = '%';
        DescontoAcrescimo : String = 'D' ) ; override ;
+    Procedure DescontoAcrescimoItemAnterior( ValorDescontoAcrescimo : Double = 0;
+       DescontoAcrescimo : String = 'D'; TipoDescontoAcrescimo : String = '%';
+       NumItem : Integer = 0 ) ;  override ;
     Procedure SubtotalizaCupom( DescontoAcrescimo : Double = 0;
        MensagemRodape : AnsiString  = '' ) ; override ;
     procedure CancelaDescontoAcrescimoSubTotal(TipoAcrescimoDesconto: Char) ;
@@ -2144,7 +2147,8 @@ begin
      DescontoStr := StringOfChar('0',12) ;
 
 
-     if ( (fsModeloDaruma >= fs700L) and (StrToInt(fsNumVersao) > 10000) ) then
+     if  ( fsModeloDaruma > fs700L) or
+        ( (fsModeloDaruma = fs700L) and (StrToInt(fsNumVersao) > 10000) ) then
       begin
           ModoCalculo :=  ifthen(fpArredondaItemMFD, 'A', 'T' );
           RetCmd := EnviaComando(FS + 'F' + #207 + AliquotaECF + QtdStr + ValorStr +
@@ -2167,31 +2171,10 @@ begin
       end ;
 
      if ValorDescontoAcrescimo > 0 then
-     begin
-        if TipoDescontoAcrescimo = '%' then
-         begin
-           if DescontoAcrescimo = 'D' then
-              DescontoStr := '0'
-           else
-              DescontoStr := '2' ;
-           DescontoStr := DescontoStr +
-                          IntToStrZero( Round(ValorDescontoAcrescimo * 100), 4) +
-                          StringOfChar('0',7) ;
-         end
-        else
-         begin
-           if DescontoAcrescimo = 'D' then
-              DescontoStr := '1'
-           else
-              DescontoStr := '3' ;
-           DescontoStr := DescontoStr +
-                          IntToStrZero( Round(ValorDescontoAcrescimo * 100), 11) ;
-         end ;
-
-        NumItem := copy(RetCmd,10,3) ;
-        EnviaComando(FS + 'F' + #202 + NumItem + DescontoStr ) ;
-     end ;
+        DescontoAcrescimoItemAnterior( ValorDescontoAcrescimo, DescontoAcrescimo,
+           TipoDescontoAcrescimo, StrToIntDef(copy(RetCmd,10,3),0) ) ;
    end
+
   else if fsNumVersao = '2000' then
    begin
      Codigo      := padL(Codigo,18) ;    { Ajustando Tamanhos }
@@ -2284,6 +2267,38 @@ begin
 
   ZeraTotalApagar;
 end;
+
+procedure TACBrECFDaruma.DescontoAcrescimoItemAnterior(
+   ValorDescontoAcrescimo : Double ; DescontoAcrescimo : String ;
+   TipoDescontoAcrescimo : String ; NumItem : Integer) ;
+var
+   DescontoStr : String ;
+begin
+  if not fpMFD then
+     exit ;
+
+  if TipoDescontoAcrescimo = '%' then
+   begin
+     if DescontoAcrescimo = 'D' then
+        DescontoStr := '0'
+     else
+        DescontoStr := '2' ;
+     DescontoStr := DescontoStr +
+                    IntToStrZero( Round(ValorDescontoAcrescimo * 100), 4) +
+                    StringOfChar('0',7) ;
+   end
+  else
+   begin
+     if DescontoAcrescimo = 'D' then
+        DescontoStr := '1'
+     else
+        DescontoStr := '3' ;
+     DescontoStr := DescontoStr +
+                    IntToStrZero( Round(ValorDescontoAcrescimo * 100), 11) ;
+   end ;
+
+  EnviaComando(FS + 'F' + #202 + IntToStrZero(NumItem,3) + DescontoStr ) ;
+end ;
 
 procedure TACBrECFDaruma.ImprimeCheque(Banco: String; Valor: Double;
   Favorecido, Cidade: String; Data: TDateTime; Observacao: String);

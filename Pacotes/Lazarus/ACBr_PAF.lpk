@@ -5,25 +5,20 @@
     <Name Value="ACBr_PAF"/>
     <Author Value="Isaque Pinheiro"/>
     <CompilerOptions>
-      <Version Value="8"/>
+      <Version Value="10"/>
       <PathDelim Value="\"/>
       <SearchPaths>
-        <IncludeFiles Value="..\..\Fontes\ACBrPAF\;..\..\Fontes\ACBrComum\"/>
-        <OtherUnitFiles Value="..\..\Fontes\ACBrPAF\;..\..\Fontes\ACBrComum\"/>
+        <IncludeFiles Value="..\..\Fontes\ACBrPAF;..\..\Fontes\ACBrComum"/>
+        <OtherUnitFiles Value="..\..\Fontes\ACBrPAF;..\..\Fontes\ACBrComum"/>
         <UnitOutputDirectory Value="..\..\lib\$(TargetCPU)-$(TargetOS)"/>
-        <SrcPath Value="..\..\Fontes\ACBrPAF\;..\..\Fontes\ACBrComum\"/>
+        <SrcPath Value="..\..\Fontes\ACBrPAF;..\..\Fontes\ACBrComum"/>
       </SearchPaths>
-      <Parsing>
-        <SyntaxOptions>
-          <UseAnsiStrings Value="True"/>
-        </SyntaxOptions>
-      </Parsing>
       <Other>
         <CompilerPath Value="$(CompPath)"/>
       </Other>
     </CompilerOptions>
     <Description Value="Componentes para geração de arquivos exigidos pelo PAF-ECF"/>
-    <Files Count="12">
+    <Files Count="16">
       <Item1>
         <Filename Value="..\..\Fontes\ACBrPAF\ACBrPAFRegistros.pas"/>
         <UnitName Value="ACBrPAFRegistros"/>
@@ -73,6 +68,22 @@
         <Filename Value="..\..\Fontes\ACBrPAF\ACBrPAF_T_Class.pas"/>
         <UnitName Value="ACBrPAF_T_Class"/>
       </Item12>
+      <Item13>
+        <Filename Value="..\..\Fontes\ACBrPAF\ACBrPAF_C.pas"/>
+        <UnitName Value="ACBrPAF_C"/>
+      </Item13>
+      <Item14>
+        <Filename Value="..\..\Fontes\ACBrPAF\ACBrPAF_C_Class.pas"/>
+        <UnitName Value="ACBrPAF_C_Class"/>
+      </Item14>
+      <Item15>
+        <Filename Value="..\..\Fontes\ACBrPAF\ACBrPAF_N.pas"/>
+        <UnitName Value="ACBrPAF_N"/>
+      </Item15>
+      <Item16>
+        <Filename Value="..\..\Fontes\ACBrPAF\ACBrPAF_N_Class.pas"/>
+        <UnitName Value="ACBrPAF_N_Class"/>
+      </Item16>
     </Files>
     <Type Value="RunAndDesignTime"/>
     <RequiredPkgs Count="3">

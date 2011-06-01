@@ -9,7 +9,7 @@ uses ACBrECF, ACBrRFD, ACBrBase, ACBrDevice, ACBrECFClass, ACBrConsts,
   SysUtils, Classes, Graphics,
   Controls, Forms, Dialogs, StdCtrls,  ComCtrls, Buttons, ExtCtrls,
   Menus, Spin, jpeg, OleCtrls, SHDocVw
-  {$IFDEF Delphi7},XPMan{$ENDIF};
+  {$IFDEF Delphi7},XPMan{$ENDIF}, ACBrAAC;
 
 type
   TForm1 = class(TForm)
@@ -554,7 +554,7 @@ implementation
 
 uses ACBrUtil, ACBrECFBematech, VendeItem, EfetuaPagamento,
      Relatorio, Sobre, TypInfo, Math, ActiveX, MSHTML, IniFiles,
-  ConfiguraSerial;
+  ConfiguraSerial, ACBrPAFClass;
 
 {$R *.dfm}
 
@@ -3582,6 +3582,14 @@ var
   IdentPaf: TACBrECFIdentificacaoPAF;
   I: Integer;
 begin
+  // Se está usando o AAC, basta informar o Objeto IdentPAF //
+  if Assigned( ACBrECF1.AAC ) then
+  begin
+     ACBrECF1.PafMF_RelIdentificacaoPafECF( ACBrECF1.AAC.IdentPAF, 0);
+     exit ;
+  end ;
+
+  // Se NAO está usando o AAC, o Objeto IdentPAF deve ser instânciado e populado //
   IdentPaf := TACBrECFIdentificacaoPAF.Create;
   try
     IdentPaf.NumeroLaudo := 'ABC1234567890'; // retirar do laudo
@@ -3618,7 +3626,8 @@ begin
     // ecfs autorizados para funcionamento na máquina
     IdentPaf.ECFsAutorizados.clear;
     for I := 1 to 3 do
-      IdentPaf.ECFsAutorizados.Add(StringOfChar('A', 15));
+      with IdentPaf.ECFsAutorizados.New do
+        NumeroSerie := StringOfChar('A', 15) ;
 
     ACBrECF1.PafMF_RelIdentificacaoPafECF(IdentPaf, 0);
   finally

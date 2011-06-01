@@ -97,6 +97,16 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 01/06/2011
+-- ACBrECF --
+[+] Implementado método: DescontoAcrescimoItemAnterior nos modelos:
+    ACBrECFBematech, ACBrECFDaruma, ACBrECFFiscNet, ACBrECFEpson,
+    ACBrECFSwedaSTX
+
+-- ACBrECFBematech --
+[-] Corrigido calculo do Valor do Desconto, em VendeItem, quando o mesmo era
+    informado em Porcentagem
+
 Data:  12/05/2011
 -- ACBrECF --
 [*] Modificada a rotina de Verificação de Valor do GT que trabalha em conjunto 

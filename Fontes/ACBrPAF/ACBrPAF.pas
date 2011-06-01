@@ -40,6 +40,8 @@
 |*  - Implementado Registro Tipo C "Controle de Abastecimento e Encerrante"
 *******************************************************************************}
 
+{$I ACBr.inc}
+
 unit ACBrPAF;
 
 interface
@@ -192,6 +194,9 @@ type
   procedure Register;
 
 implementation
+
+Uses
+  {$IFDEF COMPILER6_UP} StrUtils {$ELSE} ACBrD5 {$ENDIF} ;
 
 {$IFNDEF FPC}
  {$R ACBrPAF.dcr}
@@ -739,46 +744,95 @@ function TACBrPAF.SaveFileTXT_N(Arquivo: String): Boolean;
 var
   txtFile: TextFile;
   PAF_MD5 : String ;
+  iFor: Integer;
 begin
   Result := True;
 
   if (Trim(Arquivo) = '') or (Trim(fPath) = '') then
     raise Exception.Create('Caminho ou nome do arquivo não informado!');
 
+  if Assigned( fsAAC ) then
+  begin
+     // Copie do AAC campos não informados do N1 //
+    with FPAF_N.RegistroN1 do
+    begin
+      CNPJ        := ifthen( CNPJ = '', fsAAC.IdentPAF.Empresa.CNPJ, CNPJ ) ;
+      IE          := ifthen( IE = '', fsAAC.IdentPAF.Empresa.IE, IE ) ;
+      IM          := ifthen( IM = '', fsAAC.IdentPAF.Empresa.IM, IM ) ;
+      RAZAOSOCIAL := ifthen( RAZAOSOCIAL = '', fsAAC.IdentPAF.Empresa.RazaoSocial,
+                             RAZAOSOCIAL ) ;
+    end;
+
+    // Copie do AAC campos não informados do N2 //
+    with FPAF_N.RegistroN2 do
+    begin
+       LAUDO  := ifthen( LAUDO = '', fsAAC.IdentPAF.NumeroLaudo, LAUDO ) ;
+       NOME   := ifthen( NOME = '', fsAAC.IdentPAF.paf.Nome, NOME ) ;
+       VERSAO := ifthen( VERSAO = '', fsAAC.IdentPAF.Paf.Versao, VERSAO ) ;
+    end;
+
+    // Se informou os arquivos no ACBrAAC copie-os para o N3 //
+    if fsAAC.IdentPAF.OutrosArquivos.Count > 0 then
+    begin
+      FPAF_N.RegistroN3.Clear;
+      For iFor := 0 to fsAAC.IdentPAF.OutrosArquivos.Count-1 do
+      begin
+         with FPAF_N.RegistroN3.New do
+         begin
+            NOME_ARQUIVO := fsAAC.IdentPAF.OutrosArquivos[iFor].Nome;
+	    MD5 := '' ; // MD5 será calculado em WriteRegistroN3
+         end ;
+      end;
+    end;
+  end ;
+
+  // Gravando arquivo N //
+  AssignFile(txtFile, fPath + Arquivo);
   try
-    AssignFile(txtFile, fPath + Arquivo);
-    try
-      Rewrite(txtFile);
-      Write(txtFile, WriteRegistroN1);
-      Write(txtFile, WriteRegistroN2);
+    Rewrite(txtFile);
+    Write(txtFile, WriteRegistroN1);
+    Write(txtFile, WriteRegistroN2);
 
-      if FPAF_N.RegistroN3.Count > 0 then
-        Write(txtFile, WriteRegistroN3);
+    if FPAF_N.RegistroN3.Count > 0 then
+      Write(txtFile, WriteRegistroN3);
 
-      Write(txtFile, WriteRegistroN9);
-    finally
-      CloseFile(txtFile);
-    end;
-
-    // Assinatura EAD
-    if FAssinar then
-      AssinaArquivoComEAD(fPath + Arquivo);
-
-    // Não chama LimpaRegistros_N, pois o programador pode querer consultar os dados
-    // do Registro N direto no componente.
-    // LimpaRegistros_N;
-
-    if Assigned( AAC ) then
-    begin
-      PAF_MD5 := GetACBrEAD.MD5FromFile( fPath + Arquivo );
-      AAC.AtualizarMD5( PAF_MD5 );
-    end ;
-  except
-    on E: Exception do
-    begin
-      raise Exception.Create(E.Message);
-    end;
+    Write(txtFile, WriteRegistroN9);
+  finally
+    CloseFile(txtFile);
   end;
+
+  // Assinatura EAD
+  if FAssinar then
+    AssinaArquivoComEAD(fPath + Arquivo);
+
+  // Sincronizando arquivos e MD5 do ACBrPAF com ACBrAAC //
+  if Assigned( AAC ) then
+  begin
+    AAC.IdentPAF.OutrosArquivos.Clear ;
+
+    // Alimenta a lista de arquivos autenticados no AAC, para que essa lista
+    // possa ser usada na impressão do relatório "Identificação do PAF-ECF"
+    for iFor := 0 to FPAF_N.RegistroN3.Count - 1 do
+    begin
+       with AAC.IdentPAF.OutrosArquivos.New do
+       begin
+          Nome := FPAF_N.RegistroN3.Items[iFor].NOME_ARQUIVO;
+          MD5  := FPAF_N.RegistroN3.Items[iFor].MD5;
+       end;
+    end;
+
+    // Gera o MD5 do arquivo
+    PAF_MD5 := GetACBrEAD.MD5FromFile( fPath + Arquivo );
+
+    // Informações do arquivo com a lista de arquivos autenticados
+    AAC.IdentPAF.ArquivoListaAutenticados.Nome := Arquivo;
+    // Atualiza AAC.IdentPAF.ArquivoListaAutenticados.MD5
+    AAC.AtualizarMD5( PAF_MD5 );
+  end ;
+
+  // Não chama LimpaRegistros_N, pois o programador pode querer consultar os dados
+  // do Registro N direto no componente.
+  // LimpaRegistros_N;
 end;
 
 procedure TACBrPAF.Notification(AComponent : TComponent ; Operation : TOperation

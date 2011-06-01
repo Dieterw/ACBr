@@ -2,22 +2,23 @@
   This source is only used to compile and install the package.
  }
 
-unit ACBr_PAF; 
+unit ACBr_PAF ; 
 
 interface
 
 uses
-      ACBrPAFRegistros, ACBrPAF, ACBrPAF_D, ACBrPAF_D_Class, ACBrPAF_E, 
+   ACBrPAFRegistros, ACBrPAF, ACBrPAF_D, ACBrPAF_D_Class, ACBrPAF_E, 
    ACBrPAF_E_Class, ACBrPAF_P, ACBrPAF_P_Class, ACBrPAF_R, ACBrPAF_R_Class, 
-   ACBrPAF_T, ACBrPAF_T_Class, LazarusPackageIntf;
+   ACBrPAF_T, ACBrPAF_T_Class, ACBrPAF_C, ACBrPAF_C_Class, ACBrPAF_N, 
+   ACBrPAF_N_Class, LazarusPackageIntf;
 
 implementation
 
-procedure Register; 
+procedure Register ; 
 begin
-  RegisterUnit('ACBrPAF', @ACBrPAF.Register); 
-end; 
+  RegisterUnit('ACBrPAF', @ACBrPAF.Register) ; 
+end ; 
 
 initialization
-  RegisterPackage('ACBr_PAF', @Register); 
+  RegisterPackage('ACBr_PAF', @Register) ; 
 end.

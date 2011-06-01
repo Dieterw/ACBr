@@ -44,6 +44,7 @@ contains
   ACBrReg in '..\..\Fontes\ACBrComum\ACBrReg.pas',
   ACBrEAD in '..\..\Fontes\ACBrComum\ACBrEAD.pas',
   ACBrAAC in '..\..\Fontes\ACBrComum\ACBrAAC.pas',
-  libeay32 in '..\..\Fontes\ACBrComum\libeay32.pas';
+  libeay32 in '..\..\Fontes\ACBrComum\libeay32.pas',
+  ACBrPAFClass in '..\..\Fontes\ACBrComum\ACBrPAFClass.pas';
 
 end.

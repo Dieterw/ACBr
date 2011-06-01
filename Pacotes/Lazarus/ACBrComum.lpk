@@ -31,7 +31,7 @@
     <License Value="LGPL
 "/>
     <Version Minor="9"/>
-    <Files Count="7">
+    <Files Count="8">
       <Item1>
         <Filename Value="..\..\Fontes\ACBrComum\ACBrBase.pas"/>
         <UnitName Value="ACBrBase"/>
@@ -61,6 +61,10 @@
         <Filename Value="..\..\Fontes\ACBrComum\ACBrAAC.pas"/>
         <UnitName Value="ACBrAAC"/>
       </Item7>
+      <Item8>
+        <Filename Value="..\..\Fontes\ACBrComum\ACBrPAFClass.pas"/>
+        <UnitName Value="ACBrPAFClass"/>
+      </Item8>
     </Files>
     <Type Value="RunAndDesignTime"/>
     <RequiredPkgs Count="3">

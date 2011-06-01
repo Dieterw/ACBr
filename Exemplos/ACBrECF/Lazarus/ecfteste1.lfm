@@ -3257,12 +3257,13 @@ object Form1: TForm1
   end
   object ACBrAAC1: TACBrAAC
     CriarBAK = False
+    IdentPAF.VersaoER = '01.07'
     OnGetChave = ACBrAAC1GetChave
     OnAntesAbrirArquivo = ACBrAAC1AntesAbrirArquivo
     OnDepoisAbrirArquivo = ACBrAAC1DepoisAbrirArquivo
     OnAntesGravarArquivo = ACBrAAC1AntesAbrirArquivo
     left = 280
-    top = 328
+    top = 329
   end
   object mdsAACECF: TMemDataset
     FieldDefs = <    

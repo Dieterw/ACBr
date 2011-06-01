@@ -72,7 +72,7 @@ type
     fNOME_SH: string;        /// Denominação da empresa desenvolvedora do PAF-ECF
     fNOME_PAF: string;       /// Nome Comercial do PAF-ECF
     fVER_PAF: string;        /// Versão atual do PAF-ECF
-    fCOD_MD5: string;        /// Código MD-5 do principal arquivo executável do PAF-ECF
+    fCOD_MD5: string;        /// Código MD-5 da Lista de Arquivos Autenticados do PAF-ECF
     fDT_INI: TDateTime;      /// Data do início do período informado no arquivo
     fDT_FIN: TDateTime;      /// Data do fim do período informado no arquivo
     fER_PAF_ECF: string;     /// Versão da Especificação de Requisitos do PAF-ECF

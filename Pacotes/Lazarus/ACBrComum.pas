@@ -8,7 +8,7 @@ interface
 
 uses
    ACBrBase, ACBrConsts, ACBrTXTClass, ACBrUtil, ACBrReg, ACBrEAD, ACBrAAC, 
-   LazarusPackageIntf;
+   ACBrPAFClass, LazarusPackageIntf;
 
 implementation
 

@@ -1368,7 +1368,7 @@ begin
   Linha := StuffMascaraItem( Linha, fsMascaraItem, 'I', IntToStrZero(fsItensCupom.Count+1,3)) ;
   Linha := StuffMascaraItem( Linha, fsMascaraItem, 'C', Codigo ) ;
   Linha := StuffMascaraItem( Linha, fsMascaraItem, 'D', Descricao ) ;
-  Linha := StuffMascaraItem( Linha, fsMascaraItem, 'Q', StrQtd, True ) ;
+  Linha := StuffMascaraItem( Linha, fsMascaraItem, 'Q', StrQtd ) ;
   Linha := StuffMascaraItem( Linha, fsMascaraItem, 'U', Unidade ) ;
   Linha := StuffMascaraItem( Linha, fsMascaraItem, 'V', StrPreco ) ;
   Linha := StuffMascaraItem( Linha, fsMascaraItem, 'A', AliquotaECF ) ;

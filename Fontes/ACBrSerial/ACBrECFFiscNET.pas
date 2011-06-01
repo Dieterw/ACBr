@@ -259,6 +259,9 @@ TACBrECFFiscNET = class( TACBrECFClass )
        Qtd : Double ; ValorUnitario : Double; ValorDescontoAcrescimo : Double = 0;
        Unidade : String = ''; TipoDescontoAcrescimo : String = '%';
        DescontoAcrescimo : String = 'D' ) ; override ;
+    Procedure DescontoAcrescimoItemAnterior( ValorDescontoAcrescimo : Double = 0;
+       DescontoAcrescimo : String = 'D'; TipoDescontoAcrescimo : String = '%';
+       NumItem : Integer = 0 ) ;  override ;
     Procedure SubtotalizaCupom( DescontoAcrescimo : Double = 0;
        MensagemRodape : AnsiString  = '' ) ; override ;
     Procedure EfetuaPagamento( CodFormaPagto : String; Valor : Double;
@@ -1340,21 +1343,32 @@ begin
 
   { Se o desconto é maior que zero dá o comando de desconto de item }
   if ValorDescontoAcrescimo > 0 then
-  begin
-     if DescontoAcrescimo = 'D' then
-        ValorDescontoAcrescimo := -ValorDescontoAcrescimo ;
-
-     FiscNETComando.NomeComando := 'AcresceItemFiscal' ;
-     if TipoDescontoAcrescimo = '%' then
-        FiscNETComando.AddParamDouble('ValorPercentual',ValorDescontoAcrescimo)
-     else
-        FiscNETComando.AddParamDouble('ValorAcrescimo',ValorDescontoAcrescimo);
-     FiscNETComando.AddParamBool('Cancelar',False);
-     EnviaComando ;
-  end;
+     DescontoAcrescimoItemAnterior( ValorDescontoAcrescimo, DescontoAcrescimo,
+        TipoDescontoAcrescimo );
 
   fsEmPagamento := false ;
 end;
+
+procedure TACBrECFFiscNET.DescontoAcrescimoItemAnterior(
+   ValorDescontoAcrescimo : Double ; DescontoAcrescimo : String ;
+   TipoDescontoAcrescimo : String ; NumItem : Integer) ;
+begin
+  if DescontoAcrescimo = 'D' then
+     ValorDescontoAcrescimo := -ValorDescontoAcrescimo ;
+
+  FiscNETComando.NomeComando := 'AcresceItemFiscal' ;
+  if TipoDescontoAcrescimo = '%' then
+     FiscNETComando.AddParamDouble('ValorPercentual',ValorDescontoAcrescimo)
+  else
+     FiscNETComando.AddParamDouble('ValorAcrescimo',ValorDescontoAcrescimo);
+
+  if NumItem > 0 then
+     FiscNETComando.AddParamInteger('NumItem',NumItem) ;
+
+  FiscNETComando.AddParamBool('Cancelar',False);
+
+  EnviaComando ;
+end ;
 
 procedure TACBrECFFiscNET.CarregaAliquotas;
 var
@@ -2170,12 +2184,64 @@ begin
 end;
 
 function TACBrECFFiscNET.GetDataHoraSB: TDateTime;
- {Atualmente não tem informações de como pegar a hora por comando direto,
-tem que utilizar a mesma forma que a Bemateh realizar a partir da LMF  a
-ser implementado.}
+Var RetCmd : AnsiString ;
+    OldShortDateFormat : String ;
+    Linhas : TStringList;
+    i,x,nLinha, CRZ :Integer;
 begin
-  Result := now ; //'01/01/95 00:00:00' ;
+  Result := 0.0;
+
+  if Estado in [estLivre] then
+  begin
+    nLinha := -1;
+    Linhas := TStringList.Create;
+
+    try
+      CRZ := StrToIntDef(NumCRZ, 0) ;
+      LeituraMemoriaFiscalSerial(CRZ, CRZ, Linhas);
+
+      for i := 0 to Linhas.Count-1 do
+      begin
+        if pos('SOFTWARE B', Linhas[i]) > 0 then
+        begin
+          for x := i+1 to Linhas.Count-1 do
+          begin
+            if StrToIntDef(StringReplace(Copy(Linhas[x], 1, 8), '.', '', [rfReplaceAll]), 0) = 0 then
+            begin
+               nLinha := x-1;
+               break;
+            end;
+          end;
+          Break;
+        end;
+      end;
+
+      if nLinha >= 0 then
+      begin
+        // 01.00.01                    25/06/2009 21:07:40
+        RetCmd := Linhas[nLinha] ;
+        x := pos('/', RetCmd ) ;
+
+        OldShortDateFormat := ShortDateFormat ;
+        try
+          ShortDateFormat := 'dd/mm/yyyy' ;
+          Result := StrToDate( StringReplace( copy(RetCmd, x-2, 10 ),
+                                           '/', DateSeparator, [rfReplaceAll] ) ) ;
+
+          x := pos(':', RetCmd ) ;
+          Result := RecodeHour(  result,StrToInt(copy(RetCmd, x-2,2))) ;
+          Result := RecodeMinute(result,StrToInt(copy(RetCmd, x+1,2))) ;
+          Result := RecodeSecond(result,StrToInt(copy(RetCmd, x+4,2))) ;
+        finally
+          ShortDateFormat := OldShortDateFormat ;
+        end ;
+      end
+    finally
+      Linhas.Free ;
+    end ;
+  end;
 end;
+
 function TACBrECFFiscNET.GetSubModeloECF: String;
 begin
   FiscNETComando.NomeComando := 'LeTexto' ;

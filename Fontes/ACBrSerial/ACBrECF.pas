@@ -117,7 +117,7 @@
 Unit ACBrECF ;
 
 interface
-uses ACBrBase, ACBrDevice, ACBrECFClass, ACBrRFD, ACBrAAC, ACBrEAD,{Units da ACBr}
+uses ACBrBase, ACBrDevice, ACBrECFClass, ACBrPAFClass, ACBrRFD, ACBrAAC, ACBrEAD,{Units da ACBr}
      SysUtils , ACBrConsts, Classes
      {$IFNDEF CONSOLE}
         {$IFDEF VisualCLX}, QControls, QForms, QDialogs, QGraphics, QStdCtrls{$ENDIF}
@@ -616,7 +616,8 @@ TACBrECF = class( TACBrComponent )
        Unidade : String = ''; TipoDescontoAcrescimo : String = '%';
        DescontoAcrescimo : String = 'D' ) ;
     Procedure DescontoAcrescimoItemAnterior( ValorDescontoAcrescimo : Double = 0;
-       DescontoAcrescimo : String = 'D' ) ;
+       DescontoAcrescimo : String = 'D'; TipoDescontoAcrescimo : String = '%';
+       NumItem : Integer = 0 ) ;
     Procedure SubtotalizaCupom( DescontoAcrescimo : Double = 0;
        MensagemRodape : AnsiString = '') ;
     Procedure EfetuaPagamento( CodFormaPagto : String; Valor : Double;
@@ -807,7 +808,7 @@ TACBrECF = class( TACBrComponent )
       const IndiceRelatorio: Integer = 0);
 
     procedure PafMF_RelIdentificacaoPafECF(
-      const IdentificacaoPaf: TACBrECFIdentificacaoPAF;
+      IdentificacaoPaf: TACBrECFIdentificacaoPAF = nil;
       const IndiceRelatorio: Integer = 0);
 
     procedure DoVerificaValorGT ;
@@ -2613,7 +2614,7 @@ begin
      raise EACBrECFCMDInvalido.Create( ACBrStr(cACBrECFVendeItemValorUnitException) );
 
   if ValorDescontoAcrescimo < 0 then
-     raise EACBrECFCMDInvalido.Create( ACBrStr(cACBrECFVendeItemDescAcreException) );
+     raise EACBrECFCMDInvalido.Create( ACBrStr(cACBrECFVendeItemValDescAcreException) );
 
   AliquotaICMS := UpperCase( Trim(AliquotaICMS) ) ;
   if AliquotaICMS = '' then
@@ -2622,6 +2623,15 @@ begin
   DescontoAcrescimo := UpperCase(DescontoAcrescimo) ;
   if DescontoAcrescimo = '' then
      DescontoAcrescimo := 'D' ;
+
+  if not (DescontoAcrescimo[1] in ['A','D']) then
+     raise EACBrECFCMDInvalido.Create( ACBrStr(cACBrECFVendeItemDescAcreException) );
+
+  if TipoDescontoAcrescimo = '' then
+     TipoDescontoAcrescimo := '%' ;
+
+  if not (TipoDescontoAcrescimo[1] in ['%','$']) then
+     raise  EACBrECFCMDInvalido.Create( ACBrStr(cACBrECFVendeItemTipoDescAcreException) );
 
   { Retorna em "AliquotaECF" (por referencia) a String de aliquota que deve
     ser enviada para o ECF }
@@ -2785,20 +2795,35 @@ begin
 end;
 
 procedure TACBrECF.DescontoAcrescimoItemAnterior( ValorDescontoAcrescimo: Double;
-  DescontoAcrescimo: String);
+  DescontoAcrescimo: String; TipoDescontoAcrescimo : String; NumItem : Integer);
 {$IFNDEF CONSOLE}
 Var
   StrDescAcre : String ;
 {$ENDIF}
 begin
-  if ValorDescontoAcrescimo < 0 then
-     raise EACBrECFCMDInvalido.Create( ACBrStr(cACBrECFVendeItemDescAcreException) );
+  if ValorDescontoAcrescimo <= 0 then
+     raise EACBrECFCMDInvalido.Create( ACBrStr(cACBrECFVendeItemValDescAcreException) );
 
   DescontoAcrescimo := UpperCase(DescontoAcrescimo) ;
   if DescontoAcrescimo = '' then
      DescontoAcrescimo := 'D' ;
 
-  fsECF.DescontoAcrescimoItemAnterior(ValorDescontoAcrescimo, DescontoAcrescimo );
+  if not (DescontoAcrescimo[1] in ['A','D']) then
+     raise  EACBrECFCMDInvalido.Create( ACBrStr(cACBrECFVendeItemDescAcreException) );
+
+  if TipoDescontoAcrescimo = '' then
+     TipoDescontoAcrescimo := '%' ;
+
+  if not (TipoDescontoAcrescimo[1] in ['%','$']) then
+     raise  EACBrECFCMDInvalido.Create( ACBrStr(cACBrECFVendeItemTipoDescAcreException) );
+
+  ComandoLOG := 'DescontoAcrescimoItemAnterior( '+
+                     FloatToStr(ValorDescontoAcrescimo)+' , '+
+                     DescontoAcrescimo+' , '+TipoDescontoAcrescimo+' , '+
+                     IntToStr(NumItem)+' )';
+
+  fsECF.DescontoAcrescimoItemAnterior(ValorDescontoAcrescimo, DescontoAcrescimo,
+     TipoDescontoAcrescimo, NumItem );
 
   if DescontoAcrescimo <> 'D' then
      DoAtualizarValorGT ;
@@ -5450,13 +5475,21 @@ begin
 end;
 
 procedure TACBrECF.PafMF_RelIdentificacaoPafECF(
-  const IdentificacaoPaf: TACBrECFIdentificacaoPAF;
+  IdentificacaoPaf: TACBrECFIdentificacaoPAF;
   const IndiceRelatorio: Integer);
 var
   Relatorio: TStringList;
   I: Integer;
   TamLin: Integer;
 begin
+  if (not Assigned(IdentificacaoPaf)) then
+  begin
+     if Assigned(fsAAC) then
+        IdentificacaoPaf := fsAAC.IdentPAF
+     else
+        raise Exception.Create( ACBrStr('IdentificacaoPaf não informado') ) ;
+  end ;
+
   Relatorio := TStringList.Create;
   try
     TamLin := ECF.Colunas;
@@ -5510,7 +5543,7 @@ begin
     Relatorio.Add(padC('ECFS AUTORIZADOS', TamLin));
     Relatorio.Add(LinhaSimples(TamLin));
     for I := 0 to IdentificacaoPaf.ECFsAutorizados.Count - 1 do
-      Relatorio.Add(IdentificacaoPaf.ECFsAutorizados.Strings[I]);
+      Relatorio.Add(IdentificacaoPaf.ECFsAutorizados[I].NumeroSerie);
 
     // impressão do relatório
     Self.RelatorioGerencial(Relatorio, 1, IndiceRelatorio);

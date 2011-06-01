@@ -38,6 +38,29 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+01/06/2011
+-- ACBrAAC --
+[*] Ampla reforma nas propriedades de Identificação da S.H. e PAF, que foram
+    substiuidas por tipos já existente no ABCrECF, mais completos e organizados
+  ACBrAAC1.SH_RazaoSocial -> ACBrAAC1.IdentPAF.Empresa.RazaoSocial
+  ACBrAAC1.SH_CNPJ        -> ACBrAAC1.IdentPAF.Empresa.CNPJ
+  ACBrAAC1.SH_IM          -> ACBrAAC1.IdentPAF.Empresa.IM
+  ACBrAAC1.SH_IE          -> ACBrAAC1.IdentPAF.Empresa.IE
+  ACBrAAC1.PAF_Nome       -> ACBrAAC1.IdentPAF.Paf.Nome
+  ACBrAAC1.PAF_Versao     -> ACBrAAC1.IdentPAF.Paf.Versao
+  ACBrAAC1.PAF_MD5        -> ACBrAAC1.IdentPAF.ArquivoListaAutenticados.MD5
+
+  Nota: Apesar da modificação os arquivos AAC gerados continuam compatíveis.
+
+[*] Melhor integrado com ACBrPAF. Quando inteligados o ACBrAAC irá fazer a
+    "alimentação" do componente ACBrPAF.PAF_N. Ou seja, preencha corretamente o
+    ACBrAAC e apenas chame:
+     ACBrPAF.SaveFileTXT_N( NomeArquivo );
+
+[*] Melhor integrado com o ACBrECF. Quando interligados o ACBrECF usará as
+    informações do ACBrAAC no método: ACBrECF.PafMF_RelIdentificacaoPafECF.
+    dispensando o envio de parâmetros no método.
+
 12/05/2011
 -- ACBrAAC --
 [+] Adicionado o Evento "VerificarRecomporValorGT", que será chamado sempre que

@@ -60,6 +60,7 @@ Const
   CACBrTEFDBanese_ArqReq     = 'C:\bcard\req\pergunta.txt' ;
   CACBrTEFDBanese_ArqResp    = 'C:\bcard\resp\resposta.txt' ;
   CACBrTEFDBanese_ArqRespBkp = 'C:\bcard\resposta.txt' ;
+  CACBrTEFDBanese_ArqRespMovBkp = 'C:\bcard\copiamovimento.txt' ;
   CACBrTEFDBanese_ArqSTS     = 'C:\bcard\resp\status.txt' ;
 
 type
@@ -93,6 +94,7 @@ type
      fRespostas: TStringList;
      fDocumentosProcessados : AnsiString ;
      fOnObtemInformacao : TACBrTEFDBaneseObtemInformacao;
+     fArqRespMovBkp: String;
      procedure SetArqTmp(const AValue : String);
      procedure SetArqReq(const AValue : String);
      procedure SetArqResp(const AValue : String);
@@ -103,6 +105,7 @@ type
      procedure ImprimirComprovantes(SL : TStringList);
      function  RealizaTransacao(operacao : TOperacaoTEFBanese; Valor : Double): Boolean;
      function  ProcessaRespostaRequisicao(operacao: TOperacaoTEFBanese) : Boolean;
+     procedure SetArqRespMovBkp(const Value: String);
    protected
      Function  FazerRequisicao(AHeader : AnsiString = ''; Valor : Double = 0;
        IndiceFPG_ECF : String = '') : Boolean ;
@@ -142,6 +145,7 @@ type
      property ArqSTS   : String read fArqSTS    write SetArqSTS  ;
      property ArqResp  : String read fArqResp   write SetArqResp ;
      property ArqRespBkp  : String read fArqRespBkp   write SetArqRespBkp ;
+     property ArqRespMovBkp  : String read fArqRespMovBkp   write SetArqRespMovBkp ;
      property OnObtemInformacao : TACBrTEFDBaneseObtemInformacao read fOnObtemInformacao write fOnObtemInformacao ;
    end;
 
@@ -261,7 +265,8 @@ begin
   ArqResp   := CACBrTEFDBanese_ArqResp ;
   ArqSTS    := CACBrTEFDBanese_ArqSTS ;
   ArqTemp   := CACBrTEFDBanese_ArqTemp ;
-  ArqRespBkp  := CACBrTEFDBanese_ArqRespBkp ;  
+  ArqRespBkp  := CACBrTEFDBanese_ArqRespBkp ;
+  ArqRespMovBkp := CACBrTEFDBanese_ArqRespMovBkp ;  
   GPExeName := '' ;
   fpTipo    := gpBanese;
   Name      := 'Banese' ;
@@ -455,7 +460,7 @@ begin
 
   if AHeader = 'CRT' then
     begin
-      ApagaEVerifica( ArqRespBkp );  // Apagando Arquivo de Backup da Resposta anterior //
+      //ApagaEVerifica( ArqRespBkp );  // Apagando Arquivo de Backup da Resposta anterior //
       Result := RealizaTransacao(operCRT, Valor);
     end;
 
@@ -471,7 +476,7 @@ begin
   if ((AHeader = 'ADM') and (ItemSelecionado = 2)) then
     begin
       {Apagando o Arquivo de Backup da Resposta anterior}
-      ApagaEVerifica( ArqRespBkp );
+      //ApagaEVerifica( ArqRespBkp );
       Result := RealizaTransacao(operCancelamento, 0);
     end;
 
@@ -483,7 +488,8 @@ begin
   Erro := '';
 
   if not Result then
-     raise EACBrTEFDErro.Create( ACBrStr( Erro ) )
+    Exit
+     //raise EACBrTEFDErro.Create( ACBrStr( Erro ) )
   else
     begin
       Resp.Clear;
@@ -500,7 +506,10 @@ begin
           end
         else
           begin
-            ArquivoResposta.LoadFromFile(CACBrTEFDBanese_ArqRespBkp);
+            if ((AHeader = 'ADM') and (ItemSelecionado = 3)) then
+              ArquivoResposta.LoadFromFile(ArqRespMovBkp)
+            else
+              ArquivoResposta.LoadFromFile(ArqRespBkp);
 
             if ((AHeader = 'ADM') and ((ItemSelecionado = 2) or (ItemSelecionado = 3))) then
               begin
@@ -550,7 +559,7 @@ begin
            {Aguarda o arquivo de status}
            repeat
               Sleep( TACBrTEFD(Owner).EsperaSleep );  // Necessário Para não sobrecarregar a CPU //
-
+  
               with TACBrTEFD(Owner) do
               begin
                  if Assigned( OnAguardaResp ) then
@@ -603,8 +612,13 @@ begin
           end
         else
           begin
+            if (operacao = operFechamento) then
+              RespostaRequisicao.SaveToFile(ArqRespMovBkp)
+            else
+              RespostaRequisicao.SaveToFile(ArqRespBkp);
+
             RespostaRequisicao.Free;
-            CopyFileTo(ArqResp, CACBrTEFDBanese_ArqRespBkp, True);
+            //CopyFileTo(ArqResp, CACBrTEFDBanese_ArqRespBkp, True);
             DeleteFile(ArqSTS);
             DeleteFile(ArqResp);
 
@@ -709,7 +723,7 @@ begin
     end
   else
     aResposta.Text := imgCupom.Text;
-    
+
   aRetorno.Text := aResposta.Text;
   aResposta.Clear;
 end;
@@ -810,7 +824,13 @@ begin
 
   RenameFile('C:\bcard\req\pergunta.tmp', 'C:\bcard\req\pergunta.txt');
 
-  Result := ProcessaRespostaRequisicao(operCRT);
+//  Result := ProcessaRespostaRequisicao(operCRT);
+  Result := ProcessaRespostaRequisicao(operacao);
+end;
+
+procedure TACBrTEFDBanese.SetArqRespMovBkp(const Value: String);
+begin
+  fArqRespMovBkp := Value;
 end;
 
 end.

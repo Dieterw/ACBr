@@ -47,6 +47,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data:  01/06/2011  - Ver: 1.31
+-- ACBrTEFDBanese --
+[+] Finalizada a doação dos fontes da implementação do G.P. do Banese:
+     (por: Moacir Ezequiel Lamego e Márcio D. Carvalho)
+     http://www.djsystem.com.br/acbr/forum/viewtopic.php?f=16&t=1110
+
 Data:  10/05/2011
 -- ACBrTEFDCliSiTEF --
 [+] Padronização de código usando função "PathWithDelim", alertado 

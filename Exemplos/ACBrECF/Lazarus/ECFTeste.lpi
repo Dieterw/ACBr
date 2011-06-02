@@ -84,7 +84,7 @@
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
-        <CursorPos X="20" Y="6"/>
+        <CursorPos X="9" Y="8"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -178,6 +178,13 @@
     </Other>
   </CompilerOptions>
   <Debugging>
+    <BreakPoints Count="1">
+      <Item1>
+        <Kind Value="bpkSource"/>
+        <Source Value="..\..\..\Fontes\ACBrSerial\ACBrECFDaruma.pas"/>
+        <Line Value="949"/>
+      </Item1>
+    </BreakPoints>
     <Exceptions Count="8" IgnoreAll="True">
       <Item1>
         <Name Value="ESynaSerError"/>

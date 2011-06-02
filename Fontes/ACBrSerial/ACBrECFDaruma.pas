@@ -203,7 +203,7 @@ TACBrECFDaruma = class( TACBrECFClass )
 
     fsRet244: AnsiString ;
     fsNumCRO: String ;
-    fsErro, fsErroSTD : Integer ;
+    fsErro, fsErroSTD, fsCodAviso : Integer ;
 
     xDaruma_FIMFD_DownloadDaMFD : function (Data_COO_Inicial: AnsiString;
        Data_COO_Final: AnsiString ): Integer; StdCall;
@@ -892,13 +892,16 @@ end ;
 Function TACBrECFDaruma.EnviaComando_ECF_Daruma( cmd : AnsiString ) : AnsiString ;
 Var
   ErroMsg : String ;
+  PoucoPapel : Boolean ;
 begin
   result  := '' ;
   ErroMsg := '' ;
   fsErro    := 0 ;
   fsErroSTD := 0 ;
+  fsCodAviso:= 0 ;
   fpComandoEnviado   := '' ;
   fpRespostaComando  := '' ;
+  PoucoPapel         := False;
 
   try
      { Codificando CMD de acordo com o protocolo da Daruma }
@@ -939,10 +942,13 @@ begin
         if (copy(result,3,2) <>  '00') then
            fsErro := StrToIntDef(copy(result,3,2),0);
            
-     if fpComandoEnviado[1] = FS then
+     if (Length(fpComandoEnviado) > 2) and
+        (fpComandoEnviado[1] = FS)     and
+        (fpComandoEnviado[2] <> 'R') then
      begin
         fsErro    := StrToIntDef(copy(Result,2,2),0) ;
         fsErroSTD := StrToIntDef(copy(Result,4,3),0) ;
+        fsCodAviso:= StrToIntDef(copy(Result,7,2),0) ;
      end ;
         
      if (copy(result,1,2) = ':'+#200 ) then
@@ -993,13 +999,19 @@ begin
         else
            ErroMsg := 'Erro retornado pelo ECF: '+IntToStrZero(fsErro,2) ;
         end ;
-
-        if fsErro = 21 then       { Verifica se possui erro "Pouco Papel" }
-        begin
-           DoOnMsgPoucoPapel ;
-           ErroMsg := '' ;   { Apaga Msg de Erro para nao gerar Exceção }
-        end ;
      end ;
+
+     if fsErro = 21 then       { Verifica se possui erro "Pouco Papel" }
+     begin
+        PoucoPapel := True;
+        ErroMsg    := '' ;   { Apaga Msg de Erro para nao gerar Exceção }
+     end ;
+
+     if ( TestBit(fsCodAviso,0) ) and (ErroMsg = '') then  { Verifica se possui Aviso de "Pouco Papel" }
+        PoucoPapel := True;
+
+     if PoucoPapel then
+        DoOnMsgPoucoPapel ;
 
      if ErroMsg <> '' then
       begin

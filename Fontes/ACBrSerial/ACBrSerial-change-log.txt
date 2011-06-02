@@ -97,6 +97,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 02/06/2011
+-- ACBrECFDaruma --
+[-] Corrigida interpretação de Flag de Pouco Papel em Daruma MFD (por: DSA)
+
 Data: 01/06/2011
 -- ACBrECF --
 [+] Implementado método: DescontoAcrescimoItemAnterior nos modelos:

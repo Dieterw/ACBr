@@ -152,7 +152,7 @@ TACBrECFFiscNET = class( TACBrECFClass )
          bAguardaConcluirLeitura : String) : Integer; stdcall;
 
     xDLLATO17GeraArquivo : function (szArquivoBinario, szArquivoTexto, szPeriodoIni, szPeriodoFIM,
-         TipoPeriodo, szUsuario, szTipoLeitura : PChar) : Integer; stdcall;
+         TipoPeriodo, szUsuario, szTipoLeitura : PAnsiChar) : Integer; stdcall;
 
 
 

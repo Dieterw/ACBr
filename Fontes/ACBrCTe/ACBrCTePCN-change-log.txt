@@ -48,6 +48,13 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   02/06/11 (Italo Jurisato Junior)
+---------------
+[-] Alterada a Procedure GerarEmit, ao gerar a tag CNPJ a função wCampoCNPJ, 
+    recebia os valores contidos nos campos CNPJ e cPais, se cPais fosse 
+    diferente de 1058 a tag CNPJ ficava em branco, agora a função recebe o 
+    valor contido no campo CNPJ e o valor da constante CODIGO_BRASIL.
+
 Alterações   17/05/11 (Italo Jurisato Junior)
 ---------------
 [-] As funções: TpDispositivoToStr e StrToTpDispositivo o dominio de valores eram

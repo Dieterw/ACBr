@@ -549,7 +549,7 @@ end;
 procedure TCTeW.GerarEmit;
 begin
   Gerador.wGrupo('emit', 'D01');
-  Gerador.wCampoCNPJ('D02', CTe.Emit.CNPJ, CTe.Emit.enderEmit.cPais, True);
+  Gerador.wCampoCNPJ('D02', CTe.Emit.CNPJ, CODIGO_BRASIL, True);
   Gerador.wCampo(tcStr, 'D03', 'IE     ', 02, 14, 1, SomenteNumeros(CTe.Emit.IE), DSC_IE);
   Gerador.wCampo(tcStr, 'D04', 'xNome  ', 01, 60, 1, CTe.Emit.xNome, DSC_XNOME);
   Gerador.wCampo(tcStr, 'D05', 'xFant  ', 01, 60, 0, CTe.Emit.xFant, DSC_XFANT);

@@ -569,8 +569,8 @@ type
     fVL_DESC                : Currency;             //06	VL_DESC	Valor do desconto comercial	N	-	02
     fVL_BC_PIS              : Currency;             //07	VL_BC_PIS	Valor da base de cálculo do PIS/PASEP	N	-	02
     fALIQ_PIS               : Currency;             //08	ALIQ_PIS	Alíquota do PIS/PASEP (em percentual)	N	008	04
-    fQUANT_BC_PIS           : Currency;             //09	QUANT_BC_PIS	Quantidade – Base de cálculo PIS/PASEP	N	-	03
-    fALIQ_PIS_QUANT         : Currency;             //10	ALIQ_PIS_QUANT	Alíquota do PIS/PASEP (em reais)	N	-	04
+    fQUANT_BC_PIS           : Double;               //09	QUANT_BC_PIS	Quantidade – Base de cálculo PIS/PASEP	N	-	03
+    fALIQ_PIS_QUANT         : Double;             //10	ALIQ_PIS_QUANT	Alíquota do PIS/PASEP (em reais)	N	-	04
     fVL_PIS                 : Currency;             //11	VL_PIS	Valor do PIS/PASEP	N	-	02
     fCOD_CTA                : string;               //12	COD_CTA	Código da conta analítica contábil debitada/creditada	C	060	-
   public
@@ -581,8 +581,8 @@ type
     property VL_DESC        : Currency             read FVL_DESC        write FVL_DESC;
     property VL_BC_PIS      : Currency             read FVL_BC_PIS      write FVL_BC_PIS;
     property ALIQ_PIS       : Currency             read FALIQ_PIS       write FALIQ_PIS;
-    property QUANT_BC_PIS   : Currency             read FQUANT_BC_PIS   write FQUANT_BC_PIS;
-    property ALIQ_PIS_QUANT : Currency             read FALIQ_PIS_QUANT write FALIQ_PIS_QUANT;
+    property QUANT_BC_PIS   : Double               read FQUANT_BC_PIS   write FQUANT_BC_PIS;
+    property ALIQ_PIS_QUANT : Double               read FALIQ_PIS_QUANT write FALIQ_PIS_QUANT;
     property VL_PIS         : Currency             read FVL_PIS         write FVL_PIS;
     property COD_CTA        : string               read FCOD_CTA        write FCOD_CTA;
   end;
@@ -607,8 +607,8 @@ type
     fVL_DESC                   : Currency;                //06	VL_DESC	Valor do desconto comercial	N	-	02
     fVL_BC_COFINS              : Currency;                //07	VL_BC_COFINS	Valor da base de cálculo da COFINS	N	-	02
     fALIQ_COFINS               : Currency;                //08	ALIQ_COFINS	Alíquota da COFINS (em percentual)	N	008	04
-    fQUANT_BC_COFINS           : Currency;                //09	QUANT_BC_COFINS	Quantidade – Base de cálculo da COFINS	N	-	03
-    fALIQ_COFINS_QUANT         : Currency;                //10	ALIQ_COFINS_QUANT	Alíquota da COFINS (em reais)	N	-	04
+    fQUANT_BC_COFINS           : Double;                  //09	QUANT_BC_COFINS	Quantidade – Base de cálculo da COFINS	N	-	03
+    fALIQ_COFINS_QUANT         : Double;                  //10	ALIQ_COFINS_QUANT	Alíquota da COFINS (em reais)	N	-	04
     fVL_COFINS                 : Currency;                //11	VL_COFINS	Valor da COFINS	N	-	02
     fCOD_CTA                   : string;                  //12	COD_CTA	Código da conta analítica contábil debitada/creditada	C	060	-
   public
@@ -619,8 +619,8 @@ type
     property VL_DESC           : Currency                read FVL_DESC           write FVL_DESC;
     property VL_BC_COFINS      : Currency                read FVL_BC_COFINS      write FVL_BC_COFINS;
     property ALIQ_COFINS       : Currency                read FALIQ_COFINS       write FALIQ_COFINS;
-    property QUANT_BC_COFINS   : Currency                read FQUANT_BC_COFINS   write FQUANT_BC_COFINS;
-    property ALIQ_COFINS_QUANT : Currency                read FALIQ_COFINS_QUANT write FALIQ_COFINS_QUANT;
+    property QUANT_BC_COFINS   : Double                  read FQUANT_BC_COFINS   write FQUANT_BC_COFINS;
+    property ALIQ_COFINS_QUANT : Double                  read FALIQ_COFINS_QUANT write FALIQ_COFINS_QUANT;
     property VL_COFINS         : Currency                read FVL_COFINS         write FVL_COFINS;
     property COD_CTA           : string                  read FCOD_CTA           write FCOD_CTA;
   end;

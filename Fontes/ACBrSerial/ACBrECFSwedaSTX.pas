@@ -1410,7 +1410,6 @@ Procedure TACBrECFSwedaSTX.VendeItem( Codigo, Descricao : String;
   ValorDescontoAcrescimo : Double; Unidade : String;
   TipoDescontoAcrescimo : String; DescontoAcrescimo : String) ;
 var
-   CMD:String;
    Aliquota : TACBrECFAliquota;
 begin
   if Qtd > 9999 then

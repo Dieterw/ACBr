@@ -147,6 +147,15 @@ TACBrECFFiscNET = class( TACBrECFClass )
                                                  RegFileName        : PAnsiChar;
                                                  DataReducaoInicial : PAnsiChar;
                                                  DataReducaoFinal   : PAnsiChar) : integer; stdcall;
+
+    xDLLReadLeMemorias : function (szPortaSerial, szNomeArquivo, szSerieECF,
+         bAguardaConcluirLeitura : String) : Integer; stdcall;
+
+    xDLLATO17GeraArquivo : function (szArquivoBinario, szArquivoTexto, szPeriodoIni, szPeriodoFIM,
+         TipoPeriodo, szUsuario, szTipoLeitura : PChar) : Integer; stdcall;
+
+
+
     //Elgin
     xElgin_AbrePortaSerial  : function : Integer; StdCall;
     XElgin_FechaPortaSerial : function : Integer; StdCall;
@@ -179,6 +188,8 @@ TACBrECFFiscNET = class( TACBrECFClass )
     Procedure PreparaCmd( cmd : AnsiString ) ;
     Function AjustaLeitura( AString : AnsiString ) : AnsiString ;
     function DocumentosToStr(Documentos: TACBrECFTipoDocumentoSet): String;
+    function GetErroAtoCotepe1704(pRet: Integer): string;
+
  protected
     function GetDataHora: TDateTime; override ;
     function GetNumCupom: String; override ;
@@ -352,28 +363,6 @@ TACBrECFFiscNET = class( TACBrECFClass )
     procedure IdentificaPAF( Linha1, Linha2 : String) ; override ;
 
  end ;
-
-//Constantes usada para DLL do Ato Cotepe 1704 DataRegis/TermoPrinter
-CONST
-  ERROS_DLLG2 : Array[1..17] of String =
-    ( 'Erro ao executar comando EmiteLeituraX.',
-      'Erro ao executar comando EmiteLeituraMF.',
-      'Erro ao executar comando EmiteLeituraFitaDetalhe.',
-      'Comando Inexistente.',
-      'Erro ao obter dados de impressão.',
-      'Erro ao acessar o arquivo.',
-      'Erro ao executar comando.Data inválida.',
-      'Não existe redução executada na data informada.',
-      'Modelo não permitido.',
-      'Comando inválido.',
-      'Biblioteca não foi encontrada.',
-      'Sem Sinal de CTS.',
-      'Nome do arquivo inválido',
-      'Intervalo de data não permitido',
-      'Caminho de origem não permitido.',
-      'Caminho de destino não permitido.',
-      'Erro Desconhecido.' ) ;
-
 
 implementation
 Uses ACBrECF,
@@ -1989,20 +1978,20 @@ begin
   EnviaComando ;
   Sleep(500);
 
-//WriteToTXT('d:\temp\mfd_ret.txt','', False);
+  //WriteToTXT('d:\temp\mfd_ret.txt','', False);
   Leitura := '' ;
   repeat
      FiscNETComando.NomeComando := 'LeImpressao' ;
      EnviaComando ;
 
      RetCmd := FiscNETResposta.Params.Values['TextoImpressao'] ;
-//   WriteToTXT('d:\temp\mfd_ret.txt',RetCmd, True);
+     //WriteToTXT('d:\temp\mfd_ret.txt',RetCmd, True);
      Leitura := Leitura + RetCmd ;
      sleep(100) ;
   until (RetCmd = '') ;
 
   Linhas.Text := AjustaLeitura( Leitura );
-//WriteToTXT('d:\temp\mfd_limpo.txt',Linhas.Text, False);
+  //WriteToTXT('d:\temp\mfd_limpo.txt',Linhas.Text, False);
 end;
 
 procedure TACBrECFFiscNET.LeituraMFDSerial(COOInicial,
@@ -2719,7 +2708,10 @@ begin
      FiscNetFunctionDetect(LIB_FiscNet, 'Elgin_GeraArquivoATO17Binario', @xElgin_GeraArquivoATO17Binario  );
    end
   else
-     raise Exception.Create( ACBrStr( 'Interface ACBrECF -> '+fsMarcaECF+' ainda não Implementada') ) ;
+   begin
+     FiscNetFunctionDetect('Leitura.dll', 'DLLReadLeMemorias',  @xDLLReadLeMemorias );
+     FiscNetFunctionDetect('ATO17.dll',   'DLLATO17GeraArquivo', @xDLLATO17GeraArquivo );
+   end ;
 end;
 
 procedure TACBrECFFiscNET.AbrePortaSerialDLL(const Porta, Path: String);
@@ -2769,6 +2761,12 @@ Var
   DiaIni, DiaFim, ArqTmp : String ;
   OldAtivo : Boolean ;
 begin
+  if (fsMarcaECF <> 'elgin') then
+  begin
+     TACBrECF(fpOwner).LeituraMFDSerial( DataInicial, DataFinal, NomeArquivo, Documentos );
+     exit ;
+  end ;
+
   LoadDLLFunctions;
 
   DiaIni := FormatDateTime('ddmmyy', DataInicial) ;
@@ -2779,33 +2777,28 @@ begin
   try
      Ativo := False ;
 
-     if (fsMarcaECF = 'elgin') then
-     begin
-        AbrePortaSerialDLL( PortaSerial, ExtractFilePath( NomeArquivo ) ) ;
+     AbrePortaSerialDLL( PortaSerial, ExtractFilePath( NomeArquivo ) ) ;
 
-        ArqTmp := ExtractFilePath( NomeArquivo ) ;
-        DeleteFile( ArqTmp + '.mfd' ) ;
+     ArqTmp := ExtractFilePath( NomeArquivo ) ;
+     DeleteFile( ArqTmp + '.mfd' ) ;
 
-        iRet := xElgin_DownloadMFD(ArqTmp + '.mfd', '1', DiaIni, DiaFim, '');
-        if (iRet <> 1) then
-           raise Exception.Create( ACBrStr( 'Erro ao executar Elgin_DownloadMFD.'+sLineBreak+
-                                            'Cod.: ' + IntToStr(iRet) )) ;
-        if not FileExists( ArqTmp + '.mfd' ) then
-           raise Exception.Create( ACBrStr( 'Erro na execução de Elgin_DownloadMFD.'+sLineBreak+
-                                            'Arquivo: "' + ArqTmp + '.mfd" não gerado' )) ;
+     iRet := xElgin_DownloadMFD(ArqTmp + '.mfd', '1', DiaIni, DiaFim, '');
+     if (iRet <> 1) then
+        raise Exception.Create( ACBrStr( 'Erro ao executar Elgin_DownloadMFD.'+sLineBreak+
+                                         'Cod.: ' + IntToStr(iRet) )) ;
+     if not FileExists( ArqTmp + '.mfd' ) then
+        raise Exception.Create( ACBrStr( 'Erro na execução de Elgin_DownloadMFD.'+sLineBreak+
+                                         'Arquivo: "' + ArqTmp + '.mfd" não gerado' )) ;
 
-        iRet := xElgin_FormatoDadosMFD(ArqTmp + '.mfd', nomeArquivo, '0', '1', DiaIni, DiaFim, '');
-        if (iRet <> 1) then
-           raise Exception.Create( ACBrStr( 'Erro ao executar Elgin_FormatoDadosMFD.'+sLineBreak+
-                                            'Cod.: ' + IntToStr(iRet) )) ;
-        if not FileExists( NomeArquivo ) then
-           raise Exception.Create( ACBrStr( 'Erro na execução de Elgin_FormatoDadosMFD.'+sLineBreak+
-                                            'Arquivo: "' + NomeArquivo + '" não gerado' )) ;
-        xElgin_FechaPortaSerial();
-        DeleteFile( ArqTmp + '.mfd' ) ;
-     end
-     else
-        raise Exception.Create( ACBrStr( 'EspelhoMFD_DLL por período ainda não Implementado para: '+fsMarcaECF ) ) ;
+     iRet := xElgin_FormatoDadosMFD(ArqTmp + '.mfd', nomeArquivo, '0', '1', DiaIni, DiaFim, '');
+     if (iRet <> 1) then
+        raise Exception.Create( ACBrStr( 'Erro ao executar Elgin_FormatoDadosMFD.'+sLineBreak+
+                                         'Cod.: ' + IntToStr(iRet) )) ;
+     if not FileExists( NomeArquivo ) then
+        raise Exception.Create( ACBrStr( 'Erro na execução de Elgin_FormatoDadosMFD.'+sLineBreak+
+                                         'Arquivo: "' + NomeArquivo + '" não gerado' )) ;
+     xElgin_FechaPortaSerial();
+     DeleteFile( ArqTmp + '.mfd' ) ;
   finally
     Ativo := OldAtivo ;
   end;
@@ -2819,6 +2812,12 @@ Var
   CooIni, CooFim, Prop, ArqTmp : String ;
   OldAtivo : Boolean ;
 begin
+  if (fsMarcaECF <> 'elgin') then
+  begin
+     TACBrECF(fpOwner).LeituraMFDSerial( COOInicial, COOFinal, NomeArquivo, Documentos );
+     exit ;
+  end ;
+
   LoadDLLFunctions;
 
   CooIni := IntToStrZero( COOInicial, 6 ) ;
@@ -2831,34 +2830,28 @@ begin
   try
      Ativo := False ;
 
-     if (fsMarcaECF = 'elgin') then
-     begin
-        AbrePortaSerialDLL( PortaSerial, ExtractFilePath( NomeArquivo ) ) ;
+     AbrePortaSerialDLL( PortaSerial, ExtractFilePath( NomeArquivo ) ) ;
 
-        ArqTmp := ExtractFilePath( NomeArquivo ) ;
-        DeleteFile( ArqTmp + '.mfd' ) ;
+     ArqTmp := ExtractFilePath( NomeArquivo ) ;
+     DeleteFile( ArqTmp + '.mfd' ) ;
 
-        iRet := xElgin_DownloadMFD(ArqTmp + '.mfd', '2', CooIni, CooFim, Prop);
-        if (iRet <> 1) then
-           raise Exception.Create( ACBrStr( 'Erro ao executar Elgin_DownloadMFD.'+sLineBreak+
-                                            'Cod.: ' + IntToStr(iRet) )) ;
-        if not FileExists( ArqTmp + '.mfd' ) then
-           raise Exception.Create( ACBrStr( 'Erro na execução de Elgin_DownloadMFD.'+sLineBreak+
-                                            'Arquivo: "' + ArqTmp + '.mfd" não gerado' )) ;
+     iRet := xElgin_DownloadMFD(ArqTmp + '.mfd', '2', CooIni, CooFim, Prop);
+     if (iRet <> 1) then
+        raise Exception.Create( ACBrStr( 'Erro ao executar Elgin_DownloadMFD.'+sLineBreak+
+                                         'Cod.: ' + IntToStr(iRet) )) ;
+     if not FileExists( ArqTmp + '.mfd' ) then
+        raise Exception.Create( ACBrStr( 'Erro na execução de Elgin_DownloadMFD.'+sLineBreak+
+                                         'Arquivo: "' + ArqTmp + '.mfd" não gerado' )) ;
 
-        iRet := xElgin_FormatoDadosMFD(ArqTmp + '.mfd', nomeArquivo, '0', '2', CooIni, CooFim, Prop);
-        if (iRet <> 1) then
-           raise Exception.Create( ACBrStr( 'Erro ao executar Elgin_FormatoDadosMFD.'+sLineBreak+
-                                            'Cod.: ' + IntToStr(iRet) )) ;
-        if not FileExists( NomeArquivo ) then
-           raise Exception.Create( ACBrStr( 'Erro na execução de Elgin_FormatoDadosMFD.'+sLineBreak+
-                                            'Arquivo: "' + NomeArquivo + '" não gerado' )) ;
-        xElgin_FechaPortaSerial();
-        DeleteFile( ArqTmp + '.mfd' ) ;
-     end
-     else
-        raise Exception.Create( ACBrStr( 'EspelhoMFD_DLL por COO ainda não Implementado para: '+fsMarcaECF ) ) ;
-
+     iRet := xElgin_FormatoDadosMFD(ArqTmp + '.mfd', nomeArquivo, '0', '2', CooIni, CooFim, Prop);
+     if (iRet <> 1) then
+        raise Exception.Create( ACBrStr( 'Erro ao executar Elgin_FormatoDadosMFD.'+sLineBreak+
+                                         'Cod.: ' + IntToStr(iRet) )) ;
+     if not FileExists( NomeArquivo ) then
+        raise Exception.Create( ACBrStr( 'Erro na execução de Elgin_FormatoDadosMFD.'+sLineBreak+
+                                         'Arquivo: "' + NomeArquivo + '" não gerado' )) ;
+     xElgin_FechaPortaSerial();
+     DeleteFile( ArqTmp + '.mfd' ) ;
   finally
     Ativo := OldAtivo ;
   end;
@@ -2869,22 +2862,59 @@ procedure TACBrECFFiscNET.ArquivoMFD_DLL(DataInicial, DataFinal: TDateTime;
   Finalidade: TACBrECFFinalizaArqMFD);
 Var
   iRet      : Integer;
-  PortaSerial, ModeloECF, Erro, NumFab, ArqTmp, Prop : String;
+  PortaSerial, ModeloECF, NumFab, ArqTmp, Prop : String;
   DiaIni, DiaFim : AnsiString;
   OldAtivo  : Boolean;
+  cFinalidade:String;
 begin
-  LoadDLLFunctions;
-
   NumFab      := NumSerie;
   ModeloECF   := SubModeloECF;
   PortaSerial := fpDevice.Porta;
   Prop        := IntToStr( StrToIntDef( UsuarioAtual, 1) ) ;
 
+  LoadDLLFunctions;
   OldAtivo := Ativo;
   try
      Ativo := False;
 
-     if pos(fsMarcaECF, 'dataregis|termoprinter') > 0 then
+     if pos(fsMarcaECF, 'urano') > 0 then
+      begin
+        if (Finalidade = finMF) then
+           cFinalidade := 'MF'
+        else if (Finalidade = finTDM) then
+           cFinalidade := 'TDM'
+        else
+           cFinalidade := 'MFD';
+
+        ArqTmp := ExtractFilePath( NomeArquivo ) + 'ACBr.TDM' ;
+        if FileExists( NomeArquivo ) then
+           DeleteFile( NomeArquivo ) ;
+        
+        DiaIni := FormatDateTime('yyyymmdd', DataInicial);
+        DiaFim := FormatDateTime('yyyymmdd', DataFinal);
+
+        iRet := xDLLReadLeMemorias( PAnsiChar( PortaSerial ),
+                                    PAnsiChar( ArqTmp ),
+                                    PAnsiChar( NumFab ), '1');
+
+        if iRet <> 0 then
+           raise Exception.Create( ACBrStr( 'Erro ao executar DLLReadLeMemorias.' + sLineBreak +
+                                            'Cod.: '+ IntToStr(iRet) + ' - ' +
+                                            GetErroAtoCotepe1704(iRet) )) ;
+
+        iRet := xDLLATO17GeraArquivo( PAnsiChar( ArqTmp ),
+                                      PAnsiChar( NomeArquivo ),
+                                      PAnsiChar( DiaIni ),
+                                      PAnsiChar( DiaFim ),
+                                      'M', '1',
+                                      PAnsiChar( cFinalidade ) );
+
+        if iRet <> 0 then
+           raise Exception.Create( ACBrStr( 'Erro ao executar DLLATO17GeraArquivo.' + sLineBreak +
+                                            'Cod.: '+ IntToStr(iRet) + ' - ' +
+                                            GetErroAtoCotepe1704(iRet) )) ;
+      end
+     else if pos(fsMarcaECF, 'dataregis|termoprinter') > 0 then
       begin
         DiaIni := FormatDateTime('dd/mm/yyyy', DataInicial);
         DiaFim := FormatDateTime('dd/mm/yyyy', DataFinal);
@@ -2895,16 +2925,15 @@ begin
                                                  PAnsiChar( DiaIni ),
                                                  PAnsiChar( DiaFim ) );
 
-        if (-iRet >= Low(ERROS_DLLG2)) and (-iRet <= High(ERROS_DLLG2)) then
-           Erro := ERROS_DLLG2[ -iRet ] ;
         if iRet <> 0 then
            raise Exception.Create( ACBrStr( 'Erro ao executar Gera_AtoCotepe1704_Periodo_MFD.'+sLineBreak+
-                                            'Cod.: '+IntToStr(iRet) + ' - ' + Erro )) ;
+                                            'Cod.: '+IntToStr(iRet) + ' - ' +
+                                            GetErroAtoCotepe1704(iRet) )) ;
+
         if not FileExists( NomeArquivo ) then
            raise Exception.Create( ACBrStr( 'Erro na execução de Gera_AtoCotepe1704_Periodo_MFD.'+sLineBreak+
                                             'Arquivo: "'+NomeArquivo + '" não gerado' ))
       end
-
      else if (fsMarcaECF = 'elgin') then
       begin
         DiaIni := FormatDateTime('yyyymmdd', DataInicial);
@@ -2913,26 +2942,29 @@ begin
         AbrePortaSerialDLL( PortaSerial, ExtractFilePath(NomeArquivo) );
 
         ArqTmp := ExtractFilePath( NomeArquivo ) + 'Memoria.tdm' ;
-        DeleteFile( ArqTmp ) ;
 
-        iRet:=xElgin_LeMemoriasBinario( ArqTmp , NumFab, true );
+        iRet := xElgin_LeMemoriasBinario( PAnsiChar( ArqTmp ),
+                                          PAnsiChar( NumFab ), true );
 
         if (iRet <> 1) then
            raise Exception.Create(ACBrStr('Erro ao executar Elgin_LeMemoriasBinario.'+sLineBreak+
-                                                   'Cod.: ' + IntToStr(iRet))) ;
+                                          'Cod.: ' + IntToStr(iRet))) ;
+
         if not FilesExists( ArqTmp ) then
            raise Exception.Create(ACBrStr('Erro na execução de Elgin_LeMemoriasBinario.'+sLineBreak+
-                                                    'Arquivo binário não gerado!'));
+                                          'Arquivo binário não gerado!'));
 
-
-        iRet := xElgin_GeraArquivoATO17Binario(ArqTmp , NomeArquivo, DiaIni, DiaFim, 'D', Prop, 'TDM');
+        iRet := xElgin_GeraArquivoATO17Binario( PAnsiChar( ArqTmp ),
+                                                PAnsiChar( NomeArquivo ),
+                                                PAnsiChar( DiaIni ),
+                                                PAnsiChar( DiaFim ),
+                                                'D', PAnsiChar( Prop ), 'TDM');
 
         if (iRet <> 1) then
            raise Exception.Create(ACBrStr('Erro ao executar Elgin_GeraArquivoATO17Binario.'+sLineBreak+
-                                                'Cod.: ' + IntToStr(iRet))) ;
+                                          'Cod.: ' + IntToStr(iRet))) ;
 
         xElgin_FechaPortaSerial();
-
       end
      else
         raise Exception.Create( ACBrStr( 'ArquivoMFD_DLL por período ainda não Implementado para: '+fsMarcaECF ) ) ;
@@ -2946,12 +2978,11 @@ procedure TACBrECFFiscNET.ArquivoMFD_DLL(COOInicial, COOFinal: Integer; NomeArqu
   Finalidade: TACBrECFFinalizaArqMFD);
 Var
   iRet : Integer;
-  PortaSerial, ModeloECF, Erro, NumFab : String;
+  PortaSerial, ModeloECF, NumFab : String;
   CooIni, CooFim, Prop, ArqTmp : String ;
   OldAtivo : Boolean ;
+  cFinalidade:String;
 begin
-  LoadDLLFunctions;
-
   NumFab      := NumSerie;
   ModeloECF   := SubModeloECF;
   CooIni      := IntToStrZero( COOInicial, 6 ) ;
@@ -2959,11 +2990,45 @@ begin
   Prop        := IntToStr( StrToIntDef( UsuarioAtual, 1) ) ;
   PortaSerial := fpDevice.Porta ;
 
-  OldAtivo := Ativo ;
+  LoadDLLFunctions;
+  OldAtivo := Ativo;
   try
-     Ativo := False ;
+     Ativo := False;
 
-     if pos(fsMarcaECF, 'dataregis|termoprinter') > 0 then
+     if pos(fsMarcaECF, 'urano') > 0 then
+      begin
+        if (Finalidade = finMF) then
+           cFinalidade := 'MF'
+        else if (Finalidade = finTDM) then
+           cFinalidade := 'TDM'
+        else
+           cFinalidade := 'MFD';
+
+        ArqTmp := ExtractFilePath( NomeArquivo ) + 'ACBr.TDM' ;
+        if FileExists( NomeArquivo ) then
+           DeleteFile( NomeArquivo ) ;
+
+        iRet := xDLLReadLeMemorias( PAnsiChar(PortaSerial),
+                                    PAnsiChar(ArqTmp),
+                                    PAnsiChar(NumFab), '1');
+
+        if iRet <> 0 then
+           raise Exception.Create( ACBrStr( 'Erro ao executar DLLReadLeMemorias.' + sLineBreak +
+                                            'Cod.: '+ IntToStr(iRet) + ' - ' +
+                                            GetErroAtoCotepe1704(iRet) )) ;
+
+        iRet := xDLLATO17GeraArquivo( PAnsiChar( ArqTmp ),
+                                      PAnsiChar( NomeArquivo ),
+                                      PAnsiChar( CooIni ),
+                                      PAnsiChar( CooFim ), 'C', '1',
+                                      PAnsiChar( cFinalidade ) );
+
+        if iRet <> 0 then
+           raise Exception.Create( ACBrStr( 'Erro ao executar DLLATO17GeraArquivo.' + sLineBreak +
+                                            'Cod.: '+ IntToStr(iRet) + ' - ' +
+                                            GetErroAtoCotepe1704(iRet) )) ;
+      end
+     else if pos(fsMarcaECF, 'dataregis|termoprinter') > 0 then
       begin
         iRet := xGera_PAF( PAnsiChar( PortaSerial ) ,
                            PAnsiChar( ModeloECF ),
@@ -2971,11 +3036,11 @@ begin
                            PAnsiChar( CooIni ),
                            PAnsiChar( CooFim ) );
 
-        if (-iRet >= Low(ERROS_DLLG2)) and (-iRet <= High(ERROS_DLLG2)) then
-           Erro := ERROS_DLLG2[ -iRet ] ;
         if iRet <> 0 then
            raise Exception.Create( ACBrStr( 'Erro ao executar Gera_PAF.'+sLineBreak+
-                                            'Cod.: '+IntToStr(iRet) + ' - ' + Erro )) ;
+                                            'Cod.: '+IntToStr(iRet) + ' - ' +
+                                            GetErroAtoCotepe1704(iRet) )) ;
+
         if not FileExists( NomeArquivo ) then
            raise Exception.Create( ACBrStr( 'Erro na execução de Gera_PAF.'+sLineBreak+
                                             ': "'+NomeArquivo + '" não gerado' ))
@@ -2986,19 +3051,23 @@ begin
         AbrePortaSerialDLL(fpDevice.Porta, ExtractFilePath(NomeArquivo));
 
         ArqTmp := ExtractFilePath( NomeArquivo ) + 'Memoria.tdm' ;
-        DeleteFile( ArqTmp ) ;
 
-        iRet:=xElgin_LeMemoriasBinario( ArqTmp , NumFab, true );
+        iRet := xElgin_LeMemoriasBinario( PAnsiChar( ArqTmp ),
+                                          PAnsiChar( NumFab ), true );
 
         if (iRet <> 1) then
            raise Exception.Create(ACBrStr('Erro ao executar Elgin_LeMemoriasBinario.'+sLineBreak+
                                                    'Cod.: ' + IntToStr(iRet))) ;
+
         if not FilesExists( ArqTmp ) then
            raise Exception.Create(ACBrStr('Erro na execução de Elgin_LeMemoriasBinario.'+sLineBreak+
                                           'Arquivo binário não gerado!'));
 
-
-        iRet := xElgin_GeraArquivoATO17Binario(ArqTmp , NomeArquivo, CooIni, CooFim, 'C', Prop, 'TDM');
+        iRet := xElgin_GeraArquivoATO17Binario( PAnsiChar( ArqTmp ),
+                                                PAnsiChar( NomeArquivo ),
+                                                PAnsiChar( CooIni ),
+                                                PAnsiChar( CooFim ),
+                                                'C', PAnsiChar( Prop ), 'TDM');
 
         if (iRet <> 1) then
            raise Exception.Create(ACBrStr('Erro ao executar Elgin_GeraArquivoATO17Binario.'+sLineBreak+
@@ -3196,6 +3265,35 @@ begin
           RoundTo( StrToFloatDef( copy( RetCmd, 3, 18 ), 0 ) / 100, -2 ) )  + sLineBreak ;
    except
    end ;
+end;
+
+//Constantes usada para DLL do Ato Cotepe 1704
+function TACBrECFFiscNET.GetErroAtoCotepe1704(pRet: Integer): string;
+const
+  ERROS_DLL : Array[1..17] of String =
+    ( 'Erro ao executar comando EmiteLeituraX.',
+      'Erro ao executar comando EmiteLeituraMF.',
+      'Erro ao executar comando EmiteLeituraFitaDetalhe.',
+      'Comando Inexistente.',
+      'Erro ao obter dados de impressão.',
+      'Erro ao acessar o arquivo.',
+      'Erro ao executar comando.Data inválida.',
+      'Não existe redução executada na data informada.',
+      'Modelo não permitido.',
+      'Comando inválido.',
+      'Biblioteca não foi encontrada.',
+      'Sem Sinal de CTS.',
+      'Nome do arquivo inválido',
+      'Intervalo de data não permitido',
+      'Caminho de origem não permitido.',
+      'Caminho de destino não permitido.',
+      'Erro Desconhecido.' ) ;
+begin
+  if (-pRet >= Low(ERROS_DLL)) and (-pRet <= High(ERROS_DLL)) then begin
+     Result := ERROS_DLL[ -pRet ] ;
+  end else begin
+     Result := '';
+  end;
 end;
 
 end.

@@ -148,13 +148,12 @@ TACBrECFFiscNET = class( TACBrECFClass )
                                                  DataReducaoInicial : PAnsiChar;
                                                  DataReducaoFinal   : PAnsiChar) : integer; stdcall;
 
+    // urano e demais
     xDLLReadLeMemorias : function (szPortaSerial, szNomeArquivo, szSerieECF,
-         bAguardaConcluirLeitura : String) : Integer; stdcall;
+         bAguardaConcluirLeitura : PAnsiChar) : Integer; stdcall;
 
     xDLLATO17GeraArquivo : function (szArquivoBinario, szArquivoTexto, szPeriodoIni, szPeriodoFIM,
          TipoPeriodo, szUsuario, szTipoLeitura : PAnsiChar) : Integer; stdcall;
-
-
 
     //Elgin
     xElgin_AbrePortaSerial  : function : Integer; StdCall;
@@ -2943,8 +2942,7 @@ begin
 
         ArqTmp := ExtractFilePath( NomeArquivo ) + 'Memoria.tdm' ;
 
-        iRet := xElgin_LeMemoriasBinario( PAnsiChar( ArqTmp ),
-                                          PAnsiChar( NumFab ), true );
+        iRet := xElgin_LeMemoriasBinario( ArqTmp, NumFab, true );
 
         if (iRet <> 1) then
            raise Exception.Create(ACBrStr('Erro ao executar Elgin_LeMemoriasBinario.'+sLineBreak+
@@ -2954,11 +2952,8 @@ begin
            raise Exception.Create(ACBrStr('Erro na execução de Elgin_LeMemoriasBinario.'+sLineBreak+
                                           'Arquivo binário não gerado!'));
 
-        iRet := xElgin_GeraArquivoATO17Binario( PAnsiChar( ArqTmp ),
-                                                PAnsiChar( NomeArquivo ),
-                                                PAnsiChar( DiaIni ),
-                                                PAnsiChar( DiaFim ),
-                                                'D', PAnsiChar( Prop ), 'TDM');
+        iRet := xElgin_GeraArquivoATO17Binario( ArqTmp, NomeArquivo, DiaIni,
+                                                DiaFim, 'D', Prop, 'TDM');
 
         if (iRet <> 1) then
            raise Exception.Create(ACBrStr('Erro ao executar Elgin_GeraArquivoATO17Binario.'+sLineBreak+
@@ -3052,8 +3047,7 @@ begin
 
         ArqTmp := ExtractFilePath( NomeArquivo ) + 'Memoria.tdm' ;
 
-        iRet := xElgin_LeMemoriasBinario( PAnsiChar( ArqTmp ),
-                                          PAnsiChar( NumFab ), true );
+        iRet := xElgin_LeMemoriasBinario( ArqTmp, NumFab, true );
 
         if (iRet <> 1) then
            raise Exception.Create(ACBrStr('Erro ao executar Elgin_LeMemoriasBinario.'+sLineBreak+
@@ -3063,11 +3057,8 @@ begin
            raise Exception.Create(ACBrStr('Erro na execução de Elgin_LeMemoriasBinario.'+sLineBreak+
                                           'Arquivo binário não gerado!'));
 
-        iRet := xElgin_GeraArquivoATO17Binario( PAnsiChar( ArqTmp ),
-                                                PAnsiChar( NomeArquivo ),
-                                                PAnsiChar( CooIni ),
-                                                PAnsiChar( CooFim ),
-                                                'C', PAnsiChar( Prop ), 'TDM');
+        iRet := xElgin_GeraArquivoATO17Binario( ArqTmp, NomeArquivo, CooIni,
+                                                CooFim, 'C', Prop, 'TDM');
 
         if (iRet <> 1) then
            raise Exception.Create(ACBrStr('Erro ao executar Elgin_GeraArquivoATO17Binario.'+sLineBreak+

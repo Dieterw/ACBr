@@ -97,6 +97,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 03/06/2011
+-- ACBrECFClass --
+[*] A class "TACBrECFDAV" e "TACBrECFDAVs" foi movida para ACBrPAFClass 
+    (por: Isaque Pinheiro)
+
 Data: 02/06/2011
 -- ACBrECFDaruma --
 [-] Corrigida interpretação de Flag de Pouco Papel em Daruma MFD (por: DSA)

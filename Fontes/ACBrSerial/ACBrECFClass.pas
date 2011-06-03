@@ -81,7 +81,7 @@ uses ACBrDevice,
        {$ENDIF}
        {$IFDEF MSWINDOWS}
          , Messages, Windows
-       {$ENDIF}  
+       {$ENDIF}
      {$ENDIF} ;
 
 type
@@ -125,41 +125,6 @@ TACBrECFAliquotas = class(TObjectList)
       read GetObject write SetObject; default;
   end;
 
-  { Definindo novo tipo para armazenar DAV }
-  TACBrECFDAV = class
-  private
-    fsTitulo: String;
-    fsValor: Double;
-    fsCOO_Cupom: integer;
-    fsCOO_Dav: integer;
-    fsNumero: Integer;
-    fsDtEmissao: TDateTime;
-  public
-    constructor Create;
-    procedure Assign(ADAV: TACBrECFDAV);
-
-    property Numero: Integer read fsNumero write fsNumero;
-    property Titulo: String read fsTitulo write fsTitulo;
-    property COO_Dav: integer read fsCOO_Dav write fsCOO_Dav;
-    property COO_Cupom: integer read fsCOO_Cupom write fsCOO_Cupom;
-    property DtEmissao: TDateTime read fsDtEmissao write fsDtEmissao;
-    property Valor: Double read fsValor write fsValor;
-  end;
-
-  { Lista de Objetos do tipo TACBrECFDAV }
-  TACBrECFDAVs = class(TObjectList)
-  private
-    procedure SetObject (Index: Integer; Item: TACBrECFDAV);
-    function GetObject (Index: Integer): TACBrECFDAV;
-    procedure Insert (Index: Integer; Obj: TACBrECFDAV);
-  public
-    procedure Ordenar;
-    function New: TACBrECFDAV;
-    function Add (Obj: TACBrECFDAV): Integer;
-    function ValorTotalAcumulado: Double;  protected
-    property Objects [Index: Integer]: TACBrECFDAV
-      read GetObject write SetObject; default;
-  end;
 
 { Definindo novo tipo para armazenar as Formas de Pagamento }
 TACBrECFFormaPagamento = class
@@ -1097,82 +1062,6 @@ begin
 end;
 
 procedure TACBrECFAliquotas.SetObject(Index: Integer; Item: TACBrECFAliquota);
-begin
-  inherited SetItem (Index, Item) ;
-end;
-
-
-{ ---------------------------- TACBrECFDAVs -------------------------- }
-
-{ TACBrECFDAV }
-
-function OrdenarDAVs(const ADav1, ADav2: Pointer): Integer;
-begin
-  if TACBrECFDAV(ADav1).DtEmissao < TACBrECFDAV(ADav2).DtEmissao then
-    Result := -1
-  else
-  if TACBrECFDAV(ADav1).DtEmissao > TACBrECFDAV(ADav2).DtEmissao then
-    Result := 1
-  else
-    Result := 0;
-end;
-
-constructor TACBrECFDAV.create;
-begin
-  fsNumero    := 0;
-  fsCOO_Cupom := 0;
-  fsCOO_Dav   := 0;
-  fsTitulo    := '';
-  fsValor     := 0.00;
-  fsDtEmissao := 0.0;
-end;
-
-procedure TACBrECFDAV.Assign(ADAV: TACBrECFDAV);
-begin
-  fsNumero    := ADAV.Numero;
-  fsTitulo    := ADAV.Titulo;
-  fsValor     := ADAV.Valor;
-  fsDtEmissao := ADAV.DtEmissao;
-  fsCOO_Dav   := ADAV.COO_Dav;
-  fsCOO_Cupom := ADAV.COO_Cupom;
-end;
-
-function TACBrECFDAVs.Add(Obj: TACBrECFDAV): Integer;
-begin
-  Result := inherited Add(Obj) ;
-end;
-
-function TACBrECFDAVs.GetObject(Index: Integer): TACBrECFDAV;
-begin
-  Result := inherited GetItem(Index) as TACBrECFDAV ;
-end;
-
-procedure TACBrECFDAVs.Insert(Index: Integer; Obj: TACBrECFDAV);
-begin
-  inherited Insert(Index, Obj);
-end;
-
-function TACBrECFDAVs.New: TACBrECFDAV;
-begin
-  Result := TACBrECFDAV.create;
-  Add(Result);
-end;
-
-procedure TACBrECFDAVs.Ordenar;
-begin
-  Self.Sort(@OrdenarDAVs);
-end;
-
-function TACBrECFDAVs.ValorTotalAcumulado: Double;
-var
-  I: Integer;
-begin
-  Result := 0.00;
-  for I := 0 to Self.Count - 1 do
-    Result := Result + Self[I].Valor;
-end;
-
-procedure TACBrECFDAVs.SetObject(Index: Integer; Item: TACBrECFDAV);
 begin
   inherited SetItem (Index, Item) ;
 end;

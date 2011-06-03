@@ -38,6 +38,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 03/06/2011
+-- ACBPAFClass --
+[*] Recebeu as class "TACBrECFDAV" e "TACBrECFDAVs" que estavam em ACBrECFClass 
+    (por: Isaque Pinheiro)
+
 01/06/2011
 -- ACBrAAC --
 [*] Ampla reforma nas propriedades de Identificação da S.H. e PAF, que foram
@@ -52,14 +57,30 @@ Símbolo : Significado
 
   Nota: Apesar da modificação os arquivos AAC gerados continuam compatíveis.
 
-[*] Melhor integrado com ACBrPAF. Quando inteligados o ACBrAAC irá fazer a
-    "alimentação" do componente ACBrPAF.PAF_N. Ou seja, preencha corretamente o
-    ACBrAAC e apenas chame:
-     ACBrPAF.SaveFileTXT_N( NomeArquivo );
+[*] A Class "TACBrECFIdentificacaoPAF", que era instanciada avulsa, para guardar 
+    informações, passou a fazer parte do componente ACBrAAC, basta agora alimentar
+    a propriedade IdentPAF do ACBrAAC, la estão todas as informações necessárias
+    (por Isaque Pinheiro)
 
-[*] Melhor integrado com o ACBrECF. Quando interligados o ACBrECF usará as
-    informações do ACBrAAC no método: ACBrECF.PafMF_RelIdentificacaoPafECF.
-    dispensando o envio de parâmetros no método.
+[*] Melhor integrado com ACBrPAF. Quando inteligados com o ACBrPAF, se o ACBrAAC 
+    tiver nele todos os dados, os registros N1, N2 e N3, serão automaticamente 
+    preenchidos necessitando apenas chamar o método ACBrPAF.SaveFileTXT_N(NomeArquivo), 
+    para que o arquivo seja gerado e o MD5 seja atualizado no arquivo auxiliar.
+
+   Nota: Caso não tenha todos os dados no ACBrAAC, poderá alimentar as informações
+         manualmente antes de chamar o método ACBrPAF.SaveFileTXT_N(NomeArquivo);
+
+[*] Melhor integrado com o ACBrECF. Quando interligados o ACBrECF e a 
+    propriedade ACBrAAC.IdentPAF, recebe todas as informações que antes era 
+    armazenadas em uma class "TACBrECFIdentificacaoPAF", essa proprieade será 
+    usada como parametro para a impressão da identificação do PAF-ECF pelo método 
+    do MF(PafMF_RelIdentificacaoPafECF;) bastando chamar o método sem parametro.
+
+   Nota: Caso não esteja interligado ao ACBrECF, mas queira usar a propriedade
+         ACBrAAC.IdentPAF, para não ter que instanciar uma class 
+         "TACBrECFIdentificacaoPAF", poderá chamar o método do MF passando a 
+         propriedade como parametro:
+         PafMF_RelIdentificacaoPafECF(ACBrAAC.IdentPAF);
 
 12/05/2011
 -- ACBrAAC --

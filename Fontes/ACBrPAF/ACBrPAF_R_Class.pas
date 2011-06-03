@@ -237,7 +237,7 @@ begin
       with FRegistroR01 do
       begin
         Check(funChecaCNPJ(CNPJ), '(R01) ESTABELECIMENTO: O CNPJ "%s" digitado é inválido!', [CNPJ]);
-        Check(funChecaCNPJ(CNPJ_SH), '(R01) SOFTHOUSE: O CNPJ "%s" digitado é inválido!', [CNPJ]);
+        Check(funChecaCNPJ(CNPJ_SH), '(R01) SOFTHOUSE: O CNPJ "%s" digitado é inválido!', [CNPJ_SH]);
         //
         Result := LFill('R01') +
                   RFill(NUM_FAB, 20) +

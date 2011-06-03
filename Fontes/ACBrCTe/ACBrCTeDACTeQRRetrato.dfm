@@ -2,7 +2,6 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
   Left = 196
   Width = 835
   Height = 780
-  VertScrollBar.Position = 385
   Caption = 'DACTe - Retrato'
   Font.Height = -8
   Font.Name = 'Arial'
@@ -11,7 +10,6 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
   PixelsPerInch = 96
   TextHeight = 10
   inherited QRCTe: TQuickRep
-    Top = -377
     BeforePrint = QRCTeBeforePrint
     DataSet = cdsDocumentos
     Font.Height = -8
@@ -7195,7 +7193,7 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
         Shape = qrsRectangle
       end
       object QRShape8: TQRShape
-        Left = 634
+        Left = 632
         Top = 50
         Width = 1
         Height = 30
@@ -7206,14 +7204,14 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           79.375000000000000000
-          1677.458333333333000000
+          1672.166666666667000000
           132.291666666666700000
           2.645833333333333000)
         Brush.Style = bsClear
         Shape = qrsRectangle
       end
       object QRShape7: TQRShape
-        Left = 530
+        Left = 526
         Top = 50
         Width = 1
         Height = 30
@@ -7224,7 +7222,7 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           79.375000000000000000
-          1402.291666666667000000
+          1391.708333333333000000
           132.291666666666700000
           2.645833333333333000)
         Brush.Style = bsClear
@@ -7524,9 +7522,9 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
         FontSize = 7
       end
       object qrlNroApolice: TQRLabel
-        Left = 534
+        Left = 528
         Top = 64
-        Width = 98
+        Width = 102
         Height = 13
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -7535,9 +7533,9 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           34.395833333333340000
-          1412.875000000000000000
+          1397.000000000000000000
           169.333333333333300000
-          259.291666666666700000)
+          269.875000000000000000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = False
@@ -7555,9 +7553,9 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
         FontSize = 7
       end
       object qrlNroAverbacao: TQRLabel
-        Left = 640
+        Left = 634
         Top = 64
-        Width = 96
+        Width = 102
         Height = 13
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -7566,9 +7564,9 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           34.395833333333340000
-          1693.333333333333000000
+          1677.458333333333000000
           169.333333333333300000
-          254.000000000000000000)
+          269.875000000000000000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = False
@@ -7648,9 +7646,9 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
         FontSize = 7
       end
       object qrlRespSeguroMerc: TQRLabel
-        Left = 420
+        Left = 416
         Top = 64
-        Width = 104
+        Width = 108
         Height = 13
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -7659,9 +7657,9 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           34.395833333333340000
-          1111.250000000000000000
+          1100.666666666667000000
           169.333333333333300000
-          275.166666666666700000)
+          285.750000000000000000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = False
@@ -7834,7 +7832,7 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
         FontSize = 5
       end
       object QRLabel37: TQRLabel
-        Left = 420
+        Left = 416
         Top = 54
         Width = 50
         Height = 9
@@ -7845,7 +7843,7 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           23.812500000000000000
-          1111.250000000000000000
+          1100.666666666667000000
           142.875000000000000000
           132.291666666666700000)
         Alignment = taLeftJustify
@@ -7865,7 +7863,7 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
         FontSize = 5
       end
       object QRLabel39: TQRLabel
-        Left = 534
+        Left = 528
         Top = 54
         Width = 74
         Height = 9
@@ -7876,7 +7874,7 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           23.812500000000000000
-          1412.875000000000000000
+          1397.000000000000000000
           142.875000000000000000
           195.791666666666700000)
         Alignment = taLeftJustify
@@ -7927,7 +7925,7 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
         FontSize = 5
       end
       object QRLabel40: TQRLabel
-        Left = 640
+        Left = 634
         Top = 54
         Width = 89
         Height = 9
@@ -7938,7 +7936,7 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           23.812500000000000000
-          1693.333333333333000000
+          1677.458333333333000000
           142.875000000000000000
           235.479166666666700000)
         Alignment = taLeftJustify

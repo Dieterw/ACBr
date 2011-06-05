@@ -202,7 +202,7 @@ begin
   /// Se a propriedade TrimString = true, Result retorna sem espaços em branco
   /// iniciais e finais.
   if FTrimString then
-     Result := Trim(Result);
+     Result := Trim(Value);
 
   if (Size > 0) and (Length(Value) > Size) then
      Result := Copy(Value, 1, Size)
@@ -217,7 +217,7 @@ begin
   /// Se a propriedade TrimString = true, Result retorna sem espaços em branco
   /// iniciais e finais.
   if FTrimString then
-     Result := Trim(Result);
+     Result := Trim(Value);
 
   if (Size > 0) and (Length(Value) > Size) then
      Result := Copy(Value, 1, Size)

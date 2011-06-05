@@ -154,7 +154,7 @@ end;
 procedure TACBrTXTClass.LoadFromFile ;
 begin
    if NomeArquivo = '' then
-      raise Exception.Create( ACBrStr('"NomeArquivo" não especificado') ) ;
+      raise Exception.Create( ACBrStr('"Nome do Arquivo" não especificado') ) ;
 
    FConteudo.LoadFromFile( NomeArquivo );
 end;
@@ -269,7 +269,7 @@ begin
      Result := FDelimitador;
      Exit;
   end;
-  Result := FDelimitador + CurrToStr(RoundTo(Value, -1 * Decimal));
+  Result := FDelimitador + FormatCurr('#0.' + StringOfChar('0', Decimal), Value);
 end;
 
 function TACBrTXTClass.LFill(Value: Integer; Size: Integer; Nulo: Boolean = false; Caracter: Char = '0'): String;

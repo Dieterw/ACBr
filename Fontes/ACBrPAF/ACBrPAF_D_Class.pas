@@ -117,10 +117,6 @@ end;
 
 function TPAF_D.WriteRegistroD1: String;
 begin
-  FRegistroD9.TOT_REG_D2 := 0;
-  FRegistroD9.TOT_REG_D3 := 0;
-  FRegistroD9.TOT_REG    := 0;
-
    if Assigned(FRegistroD1) then
    begin
       with FRegistroD1 do

@@ -206,7 +206,7 @@ begin
   FRegistroR04 := TRegistroR04List.Create;
   FRegistroR06 := TRegistroR06List.Create;
 
-  FRegistroR07      := EmptyStr;
+  FRegistroR07      := '';
   FRegistroR03Count := 0;
   FRegistroR05Count := 0;
   FRegistroR07Count := 0;

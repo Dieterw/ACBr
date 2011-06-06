@@ -67,17 +67,11 @@ type
     constructor create ;
     destructor destroy ; override ;
 
-    property NomeArquivo : String read FNomeArquivo write SetNomeArquivo ;
-    property LinhasBuffer : Integer read FLinhasBuffer write SetLinhasBuffer ;
-
     procedure WriteBuffer ;
-
     procedure SaveToFile ;
     procedure LoadFromFile ;
     procedure Reset ;
-
-    Function Add( const AString : AnsiString; AddDelimiter : Boolean = True ) : Integer;
-
+    function Add( const AString : AnsiString; AddDelimiter : Boolean = True ) : Integer;
     function RFill(Value: String; Size: Integer = 0; Caracter: Char = ' '): String; overload;
     function LFill(Value: String; Size: Integer = 0; Caracter: Char = '0'): String; overload;
     function DFill(Value: Double;
@@ -95,6 +89,8 @@ type
     procedure Check(Condicao: Boolean; const Msg: String); overload;
     procedure Check(Condicao: Boolean; Msg: String; Fmt: array of const); overload;
     ///
+    property NomeArquivo : String read FNomeArquivo write SetNomeArquivo ;
+    property LinhasBuffer : Integer read FLinhasBuffer write SetLinhasBuffer ;
     property Delimitador: String read FDelimitador write FDelimitador;
     property TrimString: boolean read FTrimString write FTrimString;
     property CurMascara: String read FCurMascara write FCurMascara;

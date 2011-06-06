@@ -1056,7 +1056,8 @@ end;
 procedure TCTeW.GerarInfCTeNorm;
 begin
   // A checagem da condição abaixo incluida por Italo em 22/09/2010
-  if (CTe.Ide.tpCTe = tcNormal) then
+  // Alterada por Italo em 06/06/2011
+  if (CTe.Ide.tpCTe = tcNormal) or (CTe.Ide.tpCTe = tcSubstituto) then
   begin
     Gerador.wGrupo('infCTeNorm', 'K01');
     (**)GerarinfCarga;

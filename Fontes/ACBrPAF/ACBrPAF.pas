@@ -72,7 +72,6 @@ type
 
   TACBrPAF = class(TComponent)
   private
-    FACBrTXT: TACBrTXTClass;
     FOnError: TErrorEvent;
 
     fsEADInterno : TACBrEAD ;
@@ -108,47 +107,8 @@ type
 
     procedure SetEAD(const AValue: TACBrEAD);
     procedure SetAAC(const AValue: TACBrAAC);
-
-    procedure LimpaRegistros_C;
-    procedure LimpaRegistros_D;
-    procedure LimpaRegistros_E;
-    procedure LimpaRegistros_N;
-    procedure LimpaRegistros_P;
-    procedure LimpaRegistros_R;
-    procedure LimpaRegistros_T;
   protected
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
-
-    // REGISTROS D
-    function WriteRegistroD1: String;
-    function WriteRegistroD2: String;
-    function WriteRegistroD9: String;
-    // REGISTROS E
-    function WriteRegistroE1: String;
-    function WriteRegistroE2: String;
-    function WriteRegistroE9: String;
-    // REGISTROS P
-    function WriteRegistroP1: String;
-    function WriteRegistroP2: String;
-    function WriteRegistroP9: String;
-    // REGISTROS R
-    function WriteRegistroR01: String;
-    function WriteRegistroR02: String;
-    function WriteRegistroR04: String;
-    function WriteRegistroR06: String;
-    // REGISTROS T
-    function WriteRegistroT1: String;
-    function WriteRegistroT2: String;
-    function WriteRegistroT9: String;
-    // REGISTROS C
-    function WriteRegistroC1: String;
-    function WriteRegistroC2: String;
-    function WriteRegistroC9: String;
-    // REGISTROS N
-    function WriteRegistroN1: String;
-    function WriteRegistroN2: String;
-    function WriteRegistroN3: String;
-    function WriteRegistroN9: String;
   public
     constructor Create(AOwner: TComponent); override; // Create
     destructor Destroy; override; // Destroy
@@ -211,7 +171,6 @@ constructor TACBrPAF.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
 
-  FACBrTXT := TACBrTXTClass.Create;
   FPAF_D := TPAF_D.Create;
   FPAF_E := TPAF_E.Create;
   FPAF_P := TPAF_P.Create;
@@ -234,7 +193,6 @@ end;
 
 destructor TACBrPAF.Destroy;
 begin
-  FACBrTXT.Free;
   FPAF_D.Free;
   FPAF_E.Free;
   FPAF_P.Free;
@@ -252,41 +210,6 @@ end;
 function TACBrPAF.GetAbout: String;
 begin
   Result := 'ACBrPAF Ver: ' + CACBrPAF_Versao;
-end;
-
-procedure TACBrPAF.LimpaRegistros_R;
-begin
-  FPAF_R.LimpaRegistros;
-end;
-
-procedure TACBrPAF.LimpaRegistros_T;
-begin
-  FPAF_T.LimpaRegistros;
-end;
-
-procedure TACBrPAF.LimpaRegistros_C;
-begin
-  FPAF_C.LimpaRegistros;
-end;
-
-procedure TACBrPAF.LimpaRegistros_D;
-begin
-  FPAF_D.LimpaRegistros;
-end;
-
-procedure TACBrPAF.LimpaRegistros_E;
-begin
-  FPAF_E.LimpaRegistros;
-end;
-
-procedure TACBrPAF.LimpaRegistros_N;
-begin
-  FPAF_N.LimpaRegistros;
-end;
-
-procedure TACBrPAF.LimpaRegistros_P;
-begin
-  FPAF_P.LimpaRegistros;
 end;
 
 function TACBrPAF.GetDelimitador: String;
@@ -316,13 +239,13 @@ procedure TACBrPAF.SetCurMascara(const Value: String);
 begin
   FCurMascara := Value;
 
+  FPAF_C.CurMascara := Value;
   FPAF_D.CurMascara := Value;
   FPAF_E.CurMascara := Value;
+  FPAF_N.CurMascara := Value;
   FPAF_P.CurMascara := Value;
   FPAF_R.CurMascara := Value;
   FPAF_T.CurMascara := Value;
-  FPAF_C.CurMascara := Value;
-  FPAF_N.CurMascara := Value;
 end;
 
 function TACBrPAF.GetTrimString: boolean;
@@ -334,13 +257,13 @@ procedure TACBrPAF.SetTrimString(const Value: boolean);
 begin
   FTrimString := Value;
 
+  FPAF_C.TrimString := Value;
   FPAF_D.TrimString := Value;
   FPAF_E.TrimString := Value;
+  FPAF_N.TrimString := Value;
   FPAF_P.TrimString := Value;
   FPAF_R.TrimString := Value;
   FPAF_T.TrimString := Value;
-  FPAF_C.TrimString := Value;
-  FPAF_N.TrimString := Value;
 end;
 
 function TACBrPAF.GetOnError: TErrorEvent;
@@ -352,13 +275,13 @@ procedure TACBrPAF.SetOnError(const Value: TErrorEvent);
 begin
   FOnError := Value;
 
+  FPAF_C.OnError := Value;
   FPAF_D.OnError := Value;
   FPAF_E.OnError := Value;
+  FPAF_N.OnError := Value;
   FPAF_P.OnError := Value;
   FPAF_R.OnError := Value;
   FPAF_T.OnError := Value;
-  FPAF_C.OnError := Value;
-  FPAF_N.OnError := Value;
 end;
 
 procedure TACBrPAF.SetEAD(const AValue : TACBrEAD) ;
@@ -394,121 +317,6 @@ begin
   end ;
 end ;
 
-function TACBrPAF.WriteRegistroD1: String;
-begin
-  Result := FPAF_D.WriteRegistroD1;
-end;
-
-function TACBrPAF.WriteRegistroD2: String;
-begin
-  Result := FPAF_D.WriteRegistroD2;
-end;
-
-function TACBrPAF.WriteRegistroD9: String;
-begin
-  Result := FPAF_D.WriteRegistroD9;
-end;
-
-function TACBrPAF.WriteRegistroE1: String;
-begin
-  Result := FPAF_E.WriteRegistroE1;
-end;
-
-function TACBrPAF.WriteRegistroE2: String;
-begin
-  Result := FPAF_E.WriteRegistroE2;
-end;
-
-function TACBrPAF.WriteRegistroE9: String;
-begin
-  Result := FPAF_E.WriteRegistroE9;
-end;
-
-function TACBrPAF.WriteRegistroP1: String;
-begin
-  Result := FPAF_P.WriteRegistroP1;
-end;
-
-function TACBrPAF.WriteRegistroP2: String;
-begin
-  Result := FPAF_P.WriteRegistroP2;
-end;
-
-function TACBrPAF.WriteRegistroP9: String;
-begin
-  Result := FPAF_P.WriteRegistroP9;
-end;
-
-function TACBrPAF.WriteRegistroR01: String;
-begin
-  Result := FPAF_R.WriteRegistroR01;
-end;
-
-function TACBrPAF.WriteRegistroR02: String;
-begin
-  Result := FPAF_R.WriteRegistroR02;
-end;
-
-function TACBrPAF.WriteRegistroR04: String;
-begin
-  Result := FPAF_R.WriteRegistroR04;
-end;
-
-function TACBrPAF.WriteRegistroR06: String;
-begin
-  Result := FPAF_R.WriteRegistroR06;
-end;
-
-function TACBrPAF.WriteRegistroT1: String;
-begin
-  Result := FPAF_T.WriteRegistroT1;
-end;
-
-function TACBrPAF.WriteRegistroT2: String;
-begin
-  Result := FPAF_T.WriteRegistroT2;
-end;
-
-function TACBrPAF.WriteRegistroT9: String;
-begin
-  Result := FPAF_T.WriteRegistroT9;
-end;
-
-function TACBrPAF.WriteRegistroC1: String;
-begin
-  Result := FPAF_C.WriteRegistroC1;
-end;
-
-function TACBrPAF.WriteRegistroC2: String;
-begin
-  Result := FPAF_C.WriteRegistroC2;
-end;
-
-function TACBrPAF.WriteRegistroC9: String;
-begin
-  Result := FPAF_C.WriteRegistroC9;
-end;
-
-function TACBrPAF.WriteRegistroN1: String;
-begin
-  Result := FPAF_N.WriteRegistroN1;
-end;
-
-function TACBrPAF.WriteRegistroN2: String;
-begin
-  Result := FPAF_N.WriteRegistroN2;
-end;
-
-function TACBrPAF.WriteRegistroN3: String;
-begin
-  Result := FPAF_N.WriteRegistroN3;
-end;
-
-function TACBrPAF.WriteRegistroN9: String;
-begin
-  Result := FPAF_N.WriteRegistroN9;
-end;
-
 function TACBrPAF.SaveFileTXT_D(Arquivo: String): Boolean;
 var
   txtFile: TextFile;
@@ -522,12 +330,12 @@ begin
     AssignFile(txtFile, fPath + Arquivo);
     try
       Rewrite(txtFile);
-      Write(txtFile, WriteRegistroD1);
+      Write(txtFile, FPAF_D.WriteRegistroD1);
 
       if FPAF_D.RegistroD2.Count > 0 then
-         Write(txtFile, WriteRegistroD2);
+         Write(txtFile, FPAF_D.WriteRegistroD2);
 
-      Write(txtFile, WriteRegistroD9);
+      Write(txtFile, FPAF_D.WriteRegistroD9);
     finally
       CloseFile(txtFile);
     end;
@@ -537,7 +345,7 @@ begin
        AssinaArquivoComEAD(fPath + Arquivo);
 
     // Limpa de todos os Blocos as listas de todos os registros.
-    LimpaRegistros_D;
+    FPAF_D.LimpaRegistros;
   except
     on E: Exception do
     begin
@@ -559,12 +367,12 @@ begin
     AssignFile(txtFile, fPath + Arquivo);
     try
       Rewrite(txtFile);
-      Write(txtFile, WriteRegistroE1);
+      Write(txtFile, FPAF_E.WriteRegistroE1);
 
       if FPAF_E.RegistroE2.Count > 0 then
-        Write(txtFile, WriteRegistroE2);
+        Write(txtFile, FPAF_E.WriteRegistroE2);
 
-      Write(txtFile, WriteRegistroE9);
+      Write(txtFile, FPAF_E.WriteRegistroE9);
     finally
       CloseFile(txtFile);
     end;
@@ -574,7 +382,7 @@ begin
       AssinaArquivoComEAD(fPath + Arquivo);
 
     // Limpa de todos os Blocos as listas de todos os registros.
-    LimpaRegistros_E;
+    FPAF_E.LimpaRegistros;
   except
     on E: Exception do
     begin
@@ -597,11 +405,11 @@ begin
     try
       Rewrite(txtFile);
 
-      Write(txtFile, WriteRegistroP1);
+      Write(txtFile, FPAF_P.WriteRegistroP1);
       if FPAF_P.RegistroP2.Count > 0 then
-        Write(txtFile, WriteRegistroP2);
+        Write(txtFile, FPAF_P.WriteRegistroP2);
 
-      Write(txtFile, WriteRegistroP9);
+      Write(txtFile, FPAF_P.WriteRegistroP9);
     finally
       CloseFile(txtFile);
     end;
@@ -611,7 +419,7 @@ begin
       AssinaArquivoComEAD(fPath + Arquivo);
 
     // Limpa de todos os Blocos as listas de todos os registros.
-    LimpaRegistros_P;
+    FPAF_P.LimpaRegistros;
   except
     on E: Exception do
     begin
@@ -634,15 +442,15 @@ begin
     try
       Rewrite(txtFile);
 
-      Write(txtFile, WriteRegistroR01);
+      Write(txtFile, FPAF_R.WriteRegistroR01);
       if FPAF_R.RegistroR02.Count > 0 then
-        Write(txtFile, WriteRegistroR02);
+        Write(txtFile, FPAF_R.WriteRegistroR02);
 
       if FPAF_R.RegistroR04.Count > 0 then
-        Write(txtFile, WriteRegistroR04);
+        Write(txtFile, FPAF_R.WriteRegistroR04);
 
       if FPAF_R.RegistroR06.Count > 0 then
-        Write(txtFile, WriteRegistroR06);
+        Write(txtFile, FPAF_R.WriteRegistroR06);
 
       if Trim(FPAF_R.RegistroR07) <> EmptyStr then
         Write(txtFile, FPAF_R.RegistroR07);
@@ -655,7 +463,7 @@ begin
       AssinaArquivoComEAD(fPath + Arquivo);
 
     // Limpa de todos os Blocos as listas de todos os registros.
-    LimpaRegistros_R;
+    FPAF_R.LimpaRegistros;
   except
     on E: Exception do
     begin
@@ -677,12 +485,12 @@ begin
     AssignFile(txtFile, fPath + Arquivo);
     try
       Rewrite(txtFile);
-      Write(txtFile, WriteRegistroT1);
+      Write(txtFile, FPAF_T.WriteRegistroT1);
 
       if FPAF_T.RegistroT2.Count > 0 then
-        Write(txtFile, WriteRegistroT2);
+        Write(txtFile, FPAF_T.WriteRegistroT2);
 
-      Write(txtFile, WriteRegistroT9);
+      Write(txtFile, FPAF_T.WriteRegistroT9);
     finally
       CloseFile(txtFile);
     end;
@@ -692,7 +500,7 @@ begin
       AssinaArquivoComEAD(fPath + Arquivo);
 
     // Limpa de todos os Blocos as listas de todos os registros.
-    LimpaRegistros_T;
+    FPAF_T.LimpaRegistros;
   except
     on E: Exception do
     begin
@@ -716,12 +524,12 @@ begin
     try
       Rewrite(txtFile);
 
-      Write(txtFile, WriteRegistroC1);
+      Write(txtFile, FPAF_C.WriteRegistroC1);
 
       if FPAF_C.RegistroC2.Count > 0 then
-        Write(txtFile, WriteRegistroC2);
+        Write(txtFile, FPAF_C.WriteRegistroC2);
 
-      Write(txtFile, WriteRegistroC9);
+      Write(txtFile, FPAF_C.WriteRegistroC9);
     finally
       CloseFile(txtFile);
     end;
@@ -731,7 +539,7 @@ begin
       AssinaArquivoComEAD(fPath + Arquivo);
 
     // Limpa de todos os Blocos as listas de todos os registros.
-    LimpaRegistros_C;
+    FPAF_C.LimpaRegistros;
   except
     on E: Exception do
     begin
@@ -790,13 +598,13 @@ begin
   AssignFile(txtFile, fPath + Arquivo);
   try
     Rewrite(txtFile);
-    Write(txtFile, WriteRegistroN1);
-    Write(txtFile, WriteRegistroN2);
+    Write(txtFile, FPAF_N.WriteRegistroN1);
+    Write(txtFile, FPAF_N.WriteRegistroN2);
 
     if FPAF_N.RegistroN3.Count > 0 then
-      Write(txtFile, WriteRegistroN3);
+      Write(txtFile, FPAF_N.WriteRegistroN3);
 
-    Write(txtFile, WriteRegistroN9);
+    Write(txtFile, FPAF_N.WriteRegistroN9);
   finally
     CloseFile(txtFile);
   end;
@@ -831,7 +639,7 @@ begin
   end ;
 
   // Limpa de todos os Blocos as listas de todos os registros.
-  LimpaRegistros_N;
+  FPAF_N.LimpaRegistros;
 end;
 
 procedure TACBrPAF.Notification(AComponent : TComponent ; Operation : TOperation

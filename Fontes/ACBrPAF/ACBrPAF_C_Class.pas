@@ -200,7 +200,7 @@ begin
         ///
         Result := LFill('C9') +
                   LFill(FRegistroC1.CNPJ, 14) +
-                  LFill(FRegistroC1.IE, 14) +
+                  RFill(FRegistroC1.IE, 14) +
                   LFill(TOT_REG, 6, 0) +
                   #13#10;
       end;

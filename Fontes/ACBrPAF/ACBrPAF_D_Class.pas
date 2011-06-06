@@ -267,7 +267,7 @@ begin
         ///
         Result := LFill('D9') +
                   LFill(FRegistroD1.CNPJ, 14) +
-                  LFill(FRegistroD1.IE, 14) +
+                  RFill(FRegistroD1.IE, 14) +
                   LFill(TOT_REG_D2, 6, 0) +
                   LFill(TOT_REG_D3, 6, 0) +
                   sLineBreak;

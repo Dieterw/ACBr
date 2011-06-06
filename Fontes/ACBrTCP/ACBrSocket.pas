@@ -757,7 +757,7 @@ end;
 {$ELSE}
 Var
   Arroba, DoisPontos, Barras : Integer ;
-  http_proxy : String ;
+  http_proxy, Password, User, Server, Port : String ;
 begin
 { http_proxy=http://user:password@proxy:port/
   http_proxy=http://proxy:port/                    }
@@ -774,11 +774,13 @@ begin
 
   Arroba     := pos('@', http_proxy) ;
   DoisPontos := pos(':', http_proxy) ;
+  Password   := '' ;
+  User       := '' ;
 
   if (Arroba > 0) then
   begin
      if (DoisPontos < Arroba) then
-        Pass := copy( http_proxy, DoisPontos+1, Arroba-DoisPontos-1 )
+        Password := copy( http_proxy, DoisPontos+1, Arroba-DoisPontos-1 )
      else
         DoisPontos := Arroba;
 
@@ -792,10 +794,10 @@ begin
   Server := copy( http_proxy, 1, DoisPontos-1) ;
   Port   := copy( http_proxy, DoisPontos+1, Length(http_proxy) );
 
-  Proxy.Server   := Server;
-  Proxy.Port     := Port;
-  Proxy.User     := User;
-  Proxy.Password := Password;
+  ProxyHost := Server;
+  ProxyPort := Port;
+  ProxyUser := User;
+  ProxyPass := Password;
 end ;
 {$ENDIF}
 
@@ -839,4 +841,4 @@ begin
   fHTTPSend.ProxyUser := AValue;
 end;
 
-end.
+end.

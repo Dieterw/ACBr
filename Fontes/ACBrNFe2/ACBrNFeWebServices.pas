@@ -225,6 +225,9 @@ type
     FprotNFe: TProcNFe;
     FretCancNFe: TRetCancNFe;
   public
+    constructor Create(AOwner : TComponent); reintroduce;
+    destructor Destroy; override;
+
     function Executar: Boolean;override;
     property NFeChave: WideString read FNFeChave write FNFeChave;
     property Protocolo: WideString read FProtocolo write FProtocolo;
@@ -801,7 +804,7 @@ begin
 
   FDadosMsg := StringReplace( FDadosMsg, '<'+ENCODING_UTF8_STD+'>', '', [rfReplaceAll] ) ;
   FDadosMsg := StringReplace( FDadosMsg, '<'+ENCODING_UTF8+'>', '', [rfReplaceAll] ) ;
-  FDadosMsg := StringReplace( FDadosMsg, '<?xml version="1.0"?>', '', [rfReplaceAll] ) ;  
+  FDadosMsg := StringReplace( FDadosMsg, '<?xml version="1.0"?>', '', [rfReplaceAll] ) ;
 end;
 
 function TWebServicesBase.Executar: Boolean;
@@ -1665,6 +1668,21 @@ begin
 end;
 
 { TNFeConsulta }
+constructor TNFeConsulta.Create(AOwner: TComponent);
+begin
+  FConfiguracoes := TConfiguracoes( TACBrNFe( AOwner ).Configuracoes );
+  FACBrNFe       := TACBrNFe( AOwner );
+
+  FprotNFe:= TProcNFe.Create;
+  FretCancNFe:= TRetCancNFe.Create;
+end;
+
+destructor TNFeConsulta.Destroy;
+begin
+  FprotNFe.Free;
+  FretCancNFe.Free;
+end;
+
 function TNFeConsulta.Executar: Boolean;
 var
   NFeRetorno: TRetConsSitNFe;
@@ -1706,7 +1724,7 @@ begin
   Acao.Text := Texto;
 
   {$IFDEF ACBrNFeOpenSSL}
-     Acao.SaveToStream(Stream);  
+     Acao.SaveToStream(Stream);
      HTTP := THTTPSend.Create;
   {$ELSE}
      ReqResp := THTTPReqResp.Create(nil);
@@ -1757,8 +1775,29 @@ begin
     FxMotivo    := NFeRetorno.xMotivo;
     FcUF        := NFeRetorno.cUF;
     FNFeChave   := NFeRetorno.chNFe;
-    FprotNFe    := NFeRetorno.protNFe;    //Arrumar
-    FretCancNFe := NFeRetorno.retCancNFe; //Arrumar
+
+    FprotNFe.Schema    := NFeRetorno.protNFe.Schema;
+    FprotNFe.PathNFe    := NFeRetorno.protNFe.PathNFe;
+    FprotNFe.PathRetConsReciNFe    := NFeRetorno.protNFe.PathRetConsReciNFe;
+    FprotNFe.PathRetConsSitNFe    := NFeRetorno.protNFe.PathRetConsSitNFe;
+    FprotNFe.PathRetConsSitNFe    := NFeRetorno.protNFe.PathRetConsSitNFe;
+    FprotNFe.tpAmb    := NFeRetorno.protNFe.tpAmb;
+    FprotNFe.verAplic    := NFeRetorno.protNFe.verAplic;
+    FprotNFe.chNFe    := NFeRetorno.protNFe.chNFe;
+    FprotNFe.dhRecbto    := NFeRetorno.protNFe.dhRecbto;
+    FprotNFe.nProt    := NFeRetorno.protNFe.nProt;
+    FprotNFe.digVal    := NFeRetorno.protNFe.digVal;
+    FprotNFe.cStat    := NFeRetorno.protNFe.cStat;
+    FprotNFe.xMotivo    := NFeRetorno.protNFe.xMotivo;
+
+    FretCancNFe.tpAmb := NFeRetorno.retCancNFe.tpAmb;
+    FretCancNFe.verAplic := NFeRetorno.retCancNFe.verAplic;
+    FretCancNFe.cStat := NFeRetorno.retCancNFe.cStat;
+    FretCancNFe.xMotivo := NFeRetorno.retCancNFe.xMotivo;
+    FretCancNFe.cUF := NFeRetorno.retCancNFe.cUF;
+    FretCancNFe.chNFE := NFeRetorno.retCancNFe.chNFE;
+    FretCancNFe.dhRecbto := NFeRetorno.retCancNFe.dhRecbto;
+    FretCancNFe.nProt := NFeRetorno.retCancNFe.nProt;
 
     FProtocolo  := NotaUtil.SeSenao(NotaUtil.NaoEstaVazio(NFeRetorno.retCancNFe.nProt),NFeRetorno.retCancNFe.nProt,NFeRetorno.protNFe.nProt);
     FDhRecbto   := NotaUtil.SeSenao(NFeRetorno.retCancNFe.dhRecbto <> 0,NFeRetorno.retCancNFe.dhRecbto,NFeRetorno.protNFe.dhRecbto);
@@ -1858,7 +1897,7 @@ begin
     {$ELSE}
       ReqResp.Free;
     {$ENDIF}
-    //NFeRetorno.Free; (se descomentar essa linha não será possível ler a propriedade ACBrNFe1.WebServices.Consulta.protNFe.nProt)
+    NFeRetorno.Free; //(se descomentar essa linha não será possível ler a propriedade ACBrNFe1.WebServices.Consulta.protNFe.nProt)
     Acao.Free;
     Stream.Free;
     NotaUtil.ConfAmbiente;
@@ -2026,8 +2065,6 @@ begin
          end;
      end;
 
-    //NFeRetorno.Free;
-
     //gerar arquivo proc de cancelamento
     if NFeRetorno.cStat=101 then
     begin
@@ -2054,7 +2091,7 @@ begin
     {$ENDIF}
     Acao.Free;
     Stream.Free;
-    //NFeRetorno.Free; (se descomentar essa linha não será possível ler a propriedade ACBrNFe1.WebServices.Consulta.protNFe)
+    NFeRetorno.Free; //(se descomentar essa linha não será possível ler a propriedade ACBrNFe1.WebServices.Consulta.protNFe)
     NotaUtil.ConfAmbiente;
     TACBrNFe( FACBrNFe ).SetStatus( stIdle );
   end;
@@ -2120,7 +2157,7 @@ begin
   Acao.Text := Texto;
 
   {$IFDEF ACBrNFeOpenSSL}
-     Acao.SaveToStream(Stream);  
+     Acao.SaveToStream(Stream);
      HTTP := THTTPSend.Create;
   {$ELSE}
      ReqResp := THTTPReqResp.Create(nil);
@@ -2129,6 +2166,7 @@ begin
      ReqResp.UseUTF8InHeader := True;
      ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/nfe/wsdl/NfeInutilizacao2';
   {$ENDIF}
+  NFeRetorno := TRetInutNFe.Create;
   try
     TACBrNFe( FACBrNFe ).SetStatus( stNfeInutilizacao );
     if FConfiguracoes.Geral.Salvar then
@@ -2168,7 +2206,6 @@ begin
     if FConfiguracoes.Arquivos.Salvar then
       FConfiguracoes.Geral.Save(StringReplace(FID,'ID','',[rfIgnoreCase])+'-inu.xml', FRetWS, FConfiguracoes.Arquivos.GetPathInu);
 
-    NFeRetorno := TRetInutNFe.Create;
     NFeRetorno.Leitor.Arquivo := FRetWS;
     NFeRetorno.LerXml;
 
@@ -2194,7 +2231,6 @@ begin
     Fprotocolo:= NFeRetorno.nProt;
     FMsg   := NFeRetorno.XMotivo;
     Result := (NFeRetorno.cStat = 102);
-    //NFeRetorno.Free; (se descomentar essa linha não será possível ler a propriedade ACBrNFe1.WebServices.Consulta.protNFe)
 
     //gerar arquivo proc de inutilizacao
     if NFeRetorno.cStat=102 then
@@ -2219,6 +2255,7 @@ begin
     {$ELSE}
       ReqResp.Free;
     {$ENDIF}
+    NFeRetorno.Free; //(se descomentar essa linha não será possível ler a propriedade ACBrNFe1.WebServices.Consulta.protNFe)
     Acao.Free;
     Stream.Free;
     NotaUtil.ConfAmbiente;

@@ -47,6 +47,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Alterações   07/06/2011
+---------------
+[-] Ajustado vazamento de memoria no arquivo ACBrNFeWebservices (NFeRetorno.Free) - juaumkiko
+
 Alterações   16/05/2011
 ---------------
 [-] Correção nos arquivos ACBrNFeUtil, libxml2 e libxmlsec para conseguir assinar e validar uma NFe utilizando OpenSSL.

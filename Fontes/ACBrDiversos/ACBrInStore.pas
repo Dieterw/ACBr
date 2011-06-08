@@ -203,7 +203,7 @@ begin
      if (fPrecoUnitario > 0) and (fTotal > 0) and (fPeso = 0) then
         fPeso := fTotal / fPrecoUnitario;
   end;
-
+  // Captura digito verificador
   fDV := Copy(pCodigoEtiqueta, Length(pCodigoEtiqueta), 1);
 end;
 

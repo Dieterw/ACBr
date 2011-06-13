@@ -101,18 +101,8 @@ begin
  sDataEmissao := LerCampo(Grupo,'Data de emissão');
 
  if Length(sDataEmissao) > 0 then
- begin
-   if Trim(Versao) = '2.00' then
-   begin
-     dData := EncodeDate(StrToInt(copy(sDataEmissao, 01, 4)), StrToInt(copy(sDataEmissao, 06, 2)),
-                   StrToInt(copy(sDataEmissao, 09, 2)));
-   end
-   else
-   begin
-     dData := EncodeDate(StrToInt(copy(sDataEmissao, 07, 4)), StrToInt(copy(sDataEmissao, 04, 2)),
-                    StrToInt(copy(sDataEmissao, 01, 2)));
-   end;
- end
+   dData := EncodeDate(StrToInt(copy(sDataEmissao, 07, 4)), StrToInt(copy(sDataEmissao, 04, 2)),
+              StrToInt(copy(sDataEmissao, 01, 2)))
  else
    dData := 0;
 

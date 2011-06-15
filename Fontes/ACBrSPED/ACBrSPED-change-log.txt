@@ -47,6 +47,9 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 1.00 Beta 15/06/2011
+[+] Lançado Versão Beta do SPEDFCont
+
 Versão 1.00 Beta 15/04/2011
 [*] Reestruturado as pastas dos Demos do SPED, agora cada demo tem sua pastas
     ACBrSPED\Delphi\Contabil 

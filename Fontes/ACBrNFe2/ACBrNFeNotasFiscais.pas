@@ -588,7 +588,6 @@ var
   loSTR: TStringList;
   loNFeW : TNFeW;
   I,J: integer;
-  CaminhoArquivo: string;
 begin
   Result:=False;
   loSTR := TStringList.Create;
@@ -611,6 +610,7 @@ begin
     begin
       loSTR.Strings[0]:='NOTA FISCAL|'+IntToStr(Self.Count);
       J:=loSTR.Count;
+      i:=0;
       while (I <= J-1) do
       begin
         if loSTR.Strings[I] = '' then

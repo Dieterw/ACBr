@@ -192,7 +192,7 @@ var
 label done;
 begin
     doc := nil;
-    node := nil;
+    //node := nil;
     dsigCtx := nil;
     result := '';
 
@@ -255,7 +255,7 @@ var
 label done;
 begin
     doc := nil;
-    node := nil;
+    //node := nil;
     dsigCtx := nil;
     result := '';
 
@@ -1105,11 +1105,11 @@ begin
  if not FilesExists(schema_filename) then
     raise EACBrNFeException.Create('Arquivo '+schema_filename+' não encontrado');
 
- doc         := nil;
- schema_doc  := nil;
- parser_ctxt := nil;
- schema      := nil;
- valid_ctxt  := nil;
+ //doc         := nil;
+ //schema_doc  := nil;
+ //parser_ctxt := nil;
+ //schema      := nil;
+ //valid_ctxt  := nil;
 
  doc := xmlParseDoc(PAnsiChar(Axml));
  if ((doc = nil) or (xmlDocGetRootElement(doc) = nil)) then

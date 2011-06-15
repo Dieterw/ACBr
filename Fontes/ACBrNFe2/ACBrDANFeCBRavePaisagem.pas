@@ -289,7 +289,6 @@ begin
          GotoXY(PosX,YPos+2);
 
          aWidthLogo:=0;
-         aHeigthLogo:=0;
          aWidthTexto:=64;
          if Assigned(LogoMarca) then
          begin
@@ -807,7 +806,9 @@ begin
 
         if FontNameUsed = 'Courier New' then
            FontSizeText:=wtemp_FontSizeText;
-     end;
+     end
+     else
+      aHeight := 0;
 
      Result:=YPos;
      if ((aHeight+YY2) < 9) then

@@ -699,6 +699,7 @@ begin
          wDataText[2] := FindRaveComponent('DataText2',wPage[1]) as TRaveDataText;
          wPage[2] := FindRaveComponent('GlobalDadosAdicionais',nil) as TRavePage;
          wSection := FindRaveComponent('Section_DadosAdicionais',wPage[2]) as TRaveSection;
+         wBand := nil;
          if (wSection = nil) then
             wBand:=FindRaveComponent('Band_ISSQNDadosAdicionais',wPage[1]) as TRaveBand;
          if (wDataText[1] <> nil) then

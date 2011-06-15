@@ -73,7 +73,8 @@ requires
   rtl,
   designide,
   ACBrComum,
-  ACBr_NFe2;
+  ACBr_NFe2,
+  rave90vcl;
 
 contains
   ACBrDANFeCBRave in '..\..\..\Fontes\ACBrNFe2\ACBrDANFeCBRave.pas',

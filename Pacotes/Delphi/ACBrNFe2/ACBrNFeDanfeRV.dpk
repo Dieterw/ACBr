@@ -72,7 +72,8 @@ package ACBrNFeDanfeRV;
 requires
   rtl,
   ACBr_NFe2,
-  designide;
+  designide,
+  rave90vcl;
 
 contains
   ACBrNFeDANFERVReg in '..\..\..\Fontes\ACBrNFe2\ACBrNFeDANFERVReg.pas',

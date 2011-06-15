@@ -97,10 +97,10 @@ var
  LogoMarcaEmpresa:TJPEGImage;
  vStringStream: TStringStream;
 begin
+    LogoMarcaEmpresa:=TJPEGImage.Create;
     try
       if NotaUtil.NaoEstaVazio(Logo) then
        begin
-          LogoMarcaEmpresa:=TJPEGImage.Create;
          if FileExists(Logo) then
             LogoMarcaEmpresa.LoadFromFile(Logo)
          else
@@ -160,10 +160,10 @@ var
  NomeArq : String;
  vStringStream: TStringStream;
 begin
+    LogoMarcaEmpresa:=TJPEGImage.Create;
     try
       if NotaUtil.NaoEstaVazio(Logo) then
        begin
-          LogoMarcaEmpresa:=TJPEGImage.Create;
          if FileExists(Logo) then
             LogoMarcaEmpresa.LoadFromFile(Logo)
          else

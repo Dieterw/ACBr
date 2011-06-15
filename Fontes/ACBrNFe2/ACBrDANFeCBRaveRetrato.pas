@@ -298,7 +298,6 @@ begin
          GotoXY(PosX,YPos+2);
 
          aWidthLogo:=0;
-         aHeigthLogo:=0;
          aWidthTexto:=48;
          if Assigned(LogoMarca) then
          begin

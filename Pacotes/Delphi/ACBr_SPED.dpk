@@ -24,6 +24,7 @@ package ACBr_SPED;
 {$IMAGEBASE $400000}
 {$DESCRIPTION 'ACBr Automação Comercial Brasil Sped Fiscal e Contabil (http://acbr.sourceforge.net/)'}
 {$IMPLICITBUILD ON}
+{$DEFINE DEBUG}
 
 requires
   rtl,
@@ -79,6 +80,18 @@ contains
   ACBrEPCBloco_M in '..\..\Fontes\ACBrSPED\ACBrSPEDPisCofins\ACBrEPCBloco_M.pas',
   ACBrEPCBloco_M_Class in '..\..\Fontes\ACBrSPED\ACBrSPEDPisCofins\ACBrEPCBloco_M_Class.pas',
   ACBrEPCBlocos in '..\..\Fontes\ACBrSPED\ACBrSPEDPisCofins\ACBrEPCBlocos.pas',
-  ACBrSpedPisCofins in '..\..\Fontes\ACBrSPED\ACBrSPEDPisCofins\ACBrSpedPisCofins.pas';
+  ACBrSpedPisCofins in '..\..\Fontes\ACBrSPED\ACBrSPEDPisCofins\ACBrSpedPisCofins.pas',
+  ACBrFContBloco_0 in '..\..\Fontes\ACBrSPED\ACBrSPEDFCont\ACBrFContBloco_0.pas',
+  ACBrFContBloco_0_Class in '..\..\Fontes\ACBrSPED\ACBrSPEDFCont\ACBrFContBloco_0_Class.pas',
+  ACBrFContBloco_9 in '..\..\Fontes\ACBrSPED\ACBrSPEDFCont\ACBrFContBloco_9.pas',
+  ACBrFContBloco_9_Class in '..\..\Fontes\ACBrSPED\ACBrSPEDFCont\ACBrFContBloco_9_Class.pas',
+  ACBrFContBloco_I in '..\..\Fontes\ACBrSPED\ACBrSPEDFCont\ACBrFContBloco_I.pas',
+  ACBrFContBloco_I_Class in '..\..\Fontes\ACBrSPED\ACBrSPEDFCont\ACBrFContBloco_I_Class.pas',
+  ACBrFContBloco_J in '..\..\Fontes\ACBrSPED\ACBrSPEDFCont\ACBrFContBloco_J.pas',
+  ACBrFContBloco_J_Class in '..\..\Fontes\ACBrSPED\ACBrSPEDFCont\ACBrFContBloco_J_Class.pas',
+  ACBrFContBloco_M in '..\..\Fontes\ACBrSPED\ACBrSPEDFCont\ACBrFContBloco_M.pas',
+  ACBrFContBloco_M_Class in '..\..\Fontes\ACBrSPED\ACBrSPEDFCont\ACBrFContBloco_M_Class.pas',
+  ACBrFContBlocos in '..\..\Fontes\ACBrSPED\ACBrSPEDFCont\ACBrFContBlocos.pas',
+  ACBrSpedFCont in '..\..\Fontes\ACBrSPED\ACBrSPEDFCont\ACBrSpedFCont.pas';
 
 end.

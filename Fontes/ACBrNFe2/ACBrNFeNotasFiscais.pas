@@ -610,7 +610,7 @@ begin
     begin
       loSTR.Strings[0]:='NOTA FISCAL|'+IntToStr(Self.Count);
       J:=loSTR.Count;
-      {$WARNINGS OFF}
+      i:=0;
       while (I <= J-1) do
       begin
         if loSTR.Strings[I] = '' then
@@ -621,7 +621,6 @@ begin
         else
           I:=I+1;
       end;
-      {$WARNINGS ON}
 
       if NotaUtil.EstaVazio(PathArquivo) then
         PathArquivo := PathWithDelim(TACBrNFe( FACBrNFe ).Configuracoes.Geral.PathSalvar)+'NFe.TXT';

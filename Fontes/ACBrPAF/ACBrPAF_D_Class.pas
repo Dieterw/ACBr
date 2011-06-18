@@ -176,7 +176,7 @@ begin
                                            RFill(TIPO_ECF, 7) +
                                            RFill(MARCA_ECF, 20) +
                                            RFill(MODELO_ECF, 20, ifThen(RegistroValido, ' ', '?')) +
-                                           RFill(COO, 6, '0') +
+                                           LFill(COO, 6) +
                                            RFill(NUM_DAV, 13) +
                                            LFill(DT_DAV, 'yyyymmdd') +
                                            RFill(TIT_DAV, 30) +
@@ -185,7 +185,6 @@ begin
                                            LFill(NUMERO_ECF, 3) +
                                            RFill(NOME_CLIENTE, 40) +
                                            LFill(CPF_CNPJ, 14) +
-
                                            sLineBreak;
         end;
 

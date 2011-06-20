@@ -2468,10 +2468,12 @@ end;
 function TACBrECFBematech.GetSubModeloECF: String;
 
 begin
-    if fsSubModeloECF = '' then
-      fsSubModeloECF := Trim( RetornaInfoECF( '60' )) ;
+  if MFD and (fsSubModeloECF = '') then
+    fsSubModeloECF := Trim( RetornaInfoECF( '60' ))
+  else
+    fsSubModeloECF := '';
 
-    Result  := fsSubModeloECF ;
+  Result := fsSubModeloECF ;
 end;
 
 function TACBrECFBematech.GetDataMovimento: TDateTime;
@@ -3338,10 +3340,19 @@ Var
   RetCmd : AnsiString ;
   B : Byte ;
 begin
-   RetCmd := RetornaInfoECF( '76' ) ;
-   try B := ord( RetCmd[1] ) except B := 0 end ;
+  if MFD then
+  begin
+    RetCmd := RetornaInfoECF( '76' );
+    try
+      B := ord( RetCmd[1] )
+    except
+      B := 0
+    end;
 
-   Result := TestBit( B ,4)
+    Result := TestBit( B ,4)
+  end
+  else
+    Result := False;
 end;
 
 function TACBrECFBematech.GetNumCDC: String;

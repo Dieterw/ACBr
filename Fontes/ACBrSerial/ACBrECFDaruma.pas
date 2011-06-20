@@ -223,6 +223,9 @@ TACBrECFDaruma = class( TACBrECFClass )
     xDaruma_FIMFD_GerarMFPAF_CRZ: function (CRZIni: AnsiString;
        CRZFim: AnsiString): Integer; StdCall;
 
+    xDaruma_Registry_AplMensagem1: function ( Mensagem: AnsiString ): Integer; StdCall;
+    xDaruma_Registry_AplMensagem2: function ( Mensagem: AnsiString ): Integer; StdCall;
+
     procedure LoadDLLFunctions;
     procedure AbrePortaSerialDLL(const Path : AnsiString );
 
@@ -4160,9 +4163,26 @@ begin
 end;
 
 procedure TACBrECFDaruma.IdentificaPAF(Linha1, Linha2: String);
+var
+  Resp: Integer;
 begin
   if fpMFD then
+  begin
     EnviaComando( FS + 'C' + #214 + PadL(Linha1,42) + PadL(Linha2,42) );
+
+    LoadDLLFunctions;
+
+    // gravar no registro para evitar a perda, algumas funções da dll leem dessas chaves
+    Resp := xDaruma_Registry_AplMensagem1( Linha1 );
+    if Resp <> 1 then
+       raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar:'+sLineBreak+
+       'Daruma_Registry_AplMensagem1( "'+Linha1+'" )') );
+
+    Resp := xDaruma_Registry_AplMensagem2( Linha2 );
+    if Resp <> 1 then
+       raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar:'+sLineBreak+
+       'Daruma_Registry_AplMensagem2( "'+Linha2+'" )') );
+  end;
 end;
 
 Function TACBrECFDaruma.RetornaInfoECF( Registrador: String) : AnsiString;
@@ -4485,6 +4505,8 @@ begin
    DarumaFunctionDetect('Daruma_FIMFD_DownloadDaMFD', @xDaruma_FIMFD_DownloadDaMFD);
    DarumaFunctionDetect('Daruma_FIMFD_GerarMFPAF_Data', @xDaruma_FIMFD_GerarMFPAF_Data);
    DarumaFunctionDetect('Daruma_FIMFD_GerarMFPAF_CRZ', @xDaruma_FIMFD_GerarMFPAF_CRZ);
+   DarumaFunctionDetect('Daruma_Registry_AplMensagem1', @xDaruma_Registry_AplMensagem1);
+   DarumaFunctionDetect('Daruma_Registry_AplMensagem2', @xDaruma_Registry_AplMensagem2);
 end;
 
 procedure TACBrECFDaruma.AbrePortaSerialDLL(const Path : AnsiString );

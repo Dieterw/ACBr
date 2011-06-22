@@ -2468,12 +2468,14 @@ end;
 function TACBrECFBematech.GetSubModeloECF: String;
 
 begin
-  if MFD and (fsSubModeloECF = '') then
-    fsSubModeloECF := Trim( RetornaInfoECF( '60' ))
-  else
-    fsSubModeloECF := '';
+  if MFD then
+  begin
+    if (fsSubModeloECF = '') then
+      fsSubModeloECF := Trim( RetornaInfoECF( '60' ));
+  end
+  else fsSubModeloECF := '';
 
-  Result := fsSubModeloECF ;
+  Result := fsSubModeloECF;
 end;
 
 function TACBrECFBematech.GetDataMovimento: TDateTime;

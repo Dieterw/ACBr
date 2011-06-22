@@ -368,7 +368,7 @@ begin
           FieldByName('Serie').AsString := serie;
           FieldByName('ChaveAcesso').AsString := '';
           FieldByName('NotaFiscal').AsString := nDoc;
-          FieldByName('TextoImpressao').AsString := 'NF   '+FCTe.Rem.CNPJCPF+'      '+serie+'  /  '+nDoc;
+          FieldByName('TextoImpressao').AsString := 'NF                   '+FCTe.Rem.CNPJCPF+'                                                 '+serie+'  /  '+nDoc;
        end;
       Post;
     end;
@@ -616,6 +616,7 @@ begin
     begin
       FieldByName('CUF').AsString := IntToStr(CUF);
       FieldByName('CCT').AsString := IntToStr(CCT);
+      FieldByName('CFOP').AsString := IntToStr(CFOP);
       FieldByName('NatOp').AsString := NatOp;
       case forPag of
         fpPago: FieldByName('forPag').AsString := 'PAGO';
@@ -1047,7 +1048,7 @@ begin
         FieldByName('NUMEROAPOLICE').AsString    := CTe.InfSeg.Items[I].nApol;
         FieldByName('NUMEROAVERBACAO').AsString  := CTe.InfSeg.Items[I].nAver;
         Post;
-       end;
+     end;
    end
    else
    begin
@@ -1208,13 +1209,12 @@ begin
 
     CreateDataSet;
     Append;
-
-    FieldByName('Produto').AsString :=             CTe.InfCarga.proPred;
-    FieldByName('CaracteristicaCarga').AsString := CTe.InfCarga.xOutCat;
-    FieldByName('ValorServico').AsFloat :=  CTe.InfCarga.vMerc;
-
     for I := 0 to CTe.InfCarga.InfQ.Count - 1 do
     begin
+       FieldByName('Produto').AsString :=             CTe.InfCarga.proPred;
+       FieldByName('CaracteristicaCarga').AsString := CTe.InfCarga.xOutCat;
+       FieldByName('ValorServico').AsFloat :=  CTe.InfCarga.vMerc;
+
        case CTe.InfCarga.InfQ.Items[I].cUnid of
           uM3   : begin
                      FieldByName('Esp').AsString := 'M3';
@@ -1226,7 +1226,6 @@ begin
                      FieldByName('Esp').AsString := '';
                      FieldByName('ValorEsp').AsFloat  := 0;
                      //
-                     FieldByName('QVol').AsFloat  := 0;
                      FieldByName('PesoA').AsFloat := CTe.InfCarga.InfQ.Items[I].qCarga;
                      FieldByName('PesoB').AsFloat := CTe.InfCarga.InfQ.Items[I].qCarga
                   end;
@@ -1243,8 +1242,6 @@ begin
                         FieldByName('ValorEsp').AsFloat  := 0;
                         //
                         FieldByName('QVol').AsFloat  := CTe.InfCarga.InfQ.Items[I].qCarga;
-                        FieldByName('PesoA').AsFloat := 0;
-                        FieldByName('PesoB').AsFloat := 0;
                      end;
           uLITROS  : begin
                         FieldByName('Esp').AsString := 'LT';
@@ -1255,8 +1252,8 @@ begin
                         FieldByName('PesoB').AsFloat := 0;
                      end;
         end;
-       Post;
     end;
+    Post;
   end;
 
 end;

@@ -635,7 +635,7 @@ function TACBrEAD.AssinarArquivoComEAD( const NomeArquivo: String) : AnsiString 
 begin
   Result := CalcularEADArquivo( NomeArquivo );
   if Result <> '' then
-     WriteToTXT( NomeArquivo, 'EAD' + Result, True, True );
+     WriteToTXT( NomeArquivo, 'EAD' + Result, True, False );  // Compatiblidade Linux
 end;
 
 function TACBrEAD.VerificarEADArquivo(const NomeArquivo : String) : Boolean ;

@@ -50,7 +50,7 @@ uses ACBrDISClass,
 
 const
    PortAtOut = 96 ;       // Hexadecimal = 60
-   PortAtIn  = 100 ;      //  Hexadecimal = 64
+   PortAtIn  = 100 ;      // Hexadecimal = 64
 
 { Nota: - A comunicação com a Porta AT não é tão rápida quando a Porta Serial,
           por isso, evite o uso excessivo de textos "animados"

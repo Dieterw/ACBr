@@ -97,11 +97,13 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
-Data: 03/06/2011
+Data: 20/06/2011
 -- ACBrECFDaruma --
 [-] Acerto no método de identificação do ECF, para guardar os valores também
     no registro do windows, algumas funções da dll Daruma buscam desse local
     a identificação do ECF.
+    (por: Régys Silveira)
+-- ACBrECFBematech --
 [-] Acerto no flag de desconto do issqn para impressoras matriciais.
 [-] Acerto no subModelo do ECF para impressoras matriciais, esse retorno 
     não existe nelas.

@@ -4170,18 +4170,22 @@ begin
   begin
     EnviaComando( FS + 'C' + #214 + PadL(Linha1,42) + PadL(Linha2,42) );
 
-    LoadDLLFunctions;
+    try
+       LoadDLLFunctions;
 
-    // gravar no registro para evitar a perda, algumas funções da dll leem dessas chaves
-    Resp := xDaruma_Registry_AplMensagem1( Linha1 );
-    if Resp <> 1 then
-       raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar:'+sLineBreak+
-       'Daruma_Registry_AplMensagem1( "'+Linha1+'" )') );
+       // gravar no registro para evitar a perda, algumas funções da dll leem dessas chaves
+       Resp := xDaruma_Registry_AplMensagem1( Linha1 );
+       if Resp <> 1 then
+          raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar:'+sLineBreak+
+          'Daruma_Registry_AplMensagem1( "'+Linha1+'" )') );
 
-    Resp := xDaruma_Registry_AplMensagem2( Linha2 );
-    if Resp <> 1 then
-       raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar:'+sLineBreak+
-       'Daruma_Registry_AplMensagem2( "'+Linha2+'" )') );
+       Resp := xDaruma_Registry_AplMensagem2( Linha2 );
+       if Resp <> 1 then
+          raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar:'+sLineBreak+
+          'Daruma_Registry_AplMensagem2( "'+Linha2+'" )') );
+    except
+      { Exceção muda... pode falhar se não achar a DLL }
+    end ;
   end;
 end;
 
@@ -4218,7 +4222,7 @@ begin
      RetCmd    := RetornaInfoECF('113');
      FlagCorte := '' ;
    
-     if (RetCmd = '1') and (fsModeloDaruma <> fs700L) then    // Tem Guilhotina ? // verifico se o modelo permite o acionamento da guilhotina
+     if (RetCmd >= '1') and (fsModeloDaruma <> fs700L) then    // Tem Guilhotina ? // verifico se o modelo permite o acionamento da guilhotina
       begin
         if fsModeloDaruma > fs700L then
            FlagCorte := ifthen(CorteParcial, #0, #1);

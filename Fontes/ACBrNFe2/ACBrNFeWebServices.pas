@@ -368,9 +368,10 @@ type
     FcStat: Integer;
     FTpAmb: TpcnTipoAmbiente;
     FxMotivo: String;
-    FretDPEC: TRetDPEC;
+    //FretDPEC: TRetDPEC;
     FnRegDPEC: String;
     FNFeChave: String;
+    FdhRegDPEC: TDateTime;
     procedure SetNFeChave(const Value: String);
     procedure SetnRegDPEC(const Value: String);
   public
@@ -379,7 +380,8 @@ type
     property cStat: Integer read FcStat;
     property TpAmb: TpcnTipoAmbiente read FTpAmb;
     property xMotivo: String read FxMotivo;
-    property retDPEC: TRetDPEC read FretDPEC;
+    property dhRegDPEC: TDateTime read FdhRegDPEC;
+    //property retDPEC: TRetDPEC read FretDPEC;
 
     property nRegDPEC: String read FnRegDPEC write SetnRegDPEC;
     property NFeChave: String read FNFeChave write SetNFeChave;
@@ -2613,6 +2615,7 @@ var
   {$ELSE}
      ReqResp: THTTPReqResp;
   {$ENDIF}
+  FretDPEC: TRetDPEC;
 begin
   inherited Executar;
 
@@ -2635,7 +2638,7 @@ begin
   Acao.Text := Texto;
 
   {$IFDEF ACBrNFeOpenSSL}
-     Acao.SaveToStream(Stream);  
+     Acao.SaveToStream(Stream);
      HTTP := THTTPSend.Create;
   {$ELSE}
      ReqResp := THTTPReqResp.Create(nil);
@@ -2645,10 +2648,11 @@ begin
      ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/nfe/wsdl/SCEConsultaRFB/sceConsultaDPEC';
   {$ENDIF}
 
+  FretDPEC:= TRetDPEC.Create;
   try
     TACBrNFe( FACBrNFe ).SetStatus( stNFeConsultaDPEC );
-    if Assigned(FretDPEC) then
-       FretDPEC.Free;
+    //if Assigned(FretDPEC) then
+    //   FretDPEC.Free;
 
     if FConfiguracoes.Geral.Salvar then
      begin
@@ -2680,17 +2684,17 @@ begin
        FConfiguracoes.Geral.Save(FPathArqResp, FRetWS);
      end;
 
-    FretDPEC := TRetDPEC.Create;
+    //FretDPEC := TRetDPEC.Create;
     FretDPEC.Leitor.Arquivo := FRetWS;
     FretDPEC.LerXml;
 
-    aMsg := 'Versão Aplicativo : '+RetDPEC.verAplic+LineBreak+
-            'ID : '+RetDPEC.Id+LineBreak+
-            'Status Código : '+IntToStr(RetDPEC.cStat)+LineBreak+
-            'Status Descrição : '+RetDPEC.xMotivo+LineBreak+
-            'Data Registro : '+DateTimeToStr(RetDPEC.dhRegDPEC)+LineBreak+
-            'nRegDPEC : '+RetDPEC.nRegDPEC+LineBreak+
-            'ChaveNFe : '+RetDPEC.chNFE;
+    aMsg := 'Versão Aplicativo : '+{RetDPEC}FretDPEC.verAplic+LineBreak+
+            'ID : '+{RetDPEC}FretDPEC.Id+LineBreak+
+            'Status Código : '+IntToStr({RetDPEC}FretDPEC.cStat)+LineBreak+
+            'Status Descrição : '+{RetDPEC}FretDPEC.xMotivo+LineBreak+
+            'Data Registro : '+DateTimeToStr({RetDPEC}FretDPEC.dhRegDPEC)+LineBreak+
+            'nRegDPEC : '+{RetDPEC}FretDPEC.nRegDPEC+LineBreak+
+            'ChaveNFe : '+{RetDPEC}FretDPEC.chNFE;
 
     TACBrNFe( FACBrNFe ).SetStatus( stIdle );
     if FConfiguracoes.WebServices.Visualizar then
@@ -2699,15 +2703,16 @@ begin
     if Assigned(TACBrNFe( FACBrNFe ).OnGerarLog) then
        TACBrNFe( FACBrNFe ).OnGerarLog(aMsg);
 
-    FverAplic := RetDPEC.verAplic;
-    FcStat    := RetDPEC.cStat;
-    FxMotivo  := RetDPEC.xMotivo;
-    FTpAmb    := RetDPEC.tpAmb;
-    FnRegDPEC  := RetDPEC.nRegDPEC;
-    FNFeChave  := RetDPEC.chNFE;
+    FverAplic := {RetDPEC}FretDPEC.verAplic;
+    FcStat    := {RetDPEC}FretDPEC.cStat;
+    FxMotivo  := {RetDPEC}FretDPEC.xMotivo;
+    FTpAmb    := {RetDPEC}FretDPEC.tpAmb;
+    FnRegDPEC  := {RetDPEC}FretDPEC.nRegDPEC;
+    FNFeChave  := {RetDPEC}FretDPEC.chNFE;
+    FdhRegDPEC := {RetDPEC}FretDPEC.dhRegDPEC;
 
-    FMsg      := RetDPEC.XMotivo;
-    Result := (RetDPEC.cStat = 125);
+    FMsg      := {RetDPEC}FretDPEC.XMotivo;
+    Result := ({RetDPEC}FretDPEC.cStat = 125);
 
   finally
     {$IFDEF ACBrNFeOpenSSL}
@@ -2719,6 +2724,7 @@ begin
     Stream.Free;
     NotaUtil.ConfAmbiente;
     TACBrNFe( FACBrNFe ).SetStatus( stIdle );
+    FretDPEC.Free;
   end;
 end;
 

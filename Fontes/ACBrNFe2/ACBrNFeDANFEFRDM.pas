@@ -992,7 +992,7 @@ begin
     begin
       Append;
 
-      with FNFe.Retirada do
+      with FNFe.Entrega do
       begin
         if NotaUtil.NaoEstaVazio(CNPJCPF) then
         begin

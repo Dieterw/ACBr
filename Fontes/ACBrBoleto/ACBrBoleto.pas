@@ -57,7 +57,7 @@ uses ACBrBase,  {Units da ACBr}
      Graphics, Contnrs, Classes;
 
 const
-  CACBrBoleto_Versao = '0.0.26a' ;
+  CACBrBoleto_Versao = '0.0.27a' ;
 
 type
   TACBrTitulo = class;
@@ -1371,7 +1371,7 @@ begin
    fpNome   := 'Não definido';
    fpTamanhoMaximoNossoNum := 10;
    fpTamanhoAgencia        := 4;
-   fpTamanhoConta          := 5;
+   fpTamanhoConta          := 10;
    fpModulo := TACBrCalcDigito.Create;
 end;
 

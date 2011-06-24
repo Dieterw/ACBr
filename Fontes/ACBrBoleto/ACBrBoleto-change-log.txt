@@ -48,6 +48,24 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Versao 0.0.27a 24/06/2011
+[+] Alterado classe do Itau para gerar o arquivo de remessa apenas para 
+    impressão dos boletos, sem registro no banco. (Jeter Rabelo)
+
+[*] Adicionado a leitura do arquivo retorno do Itau, a leitura da data de
+    baixa do boleto.(Thiago Gabotti)
+
+[*] Adicionado a impressão do logo da loja ao componente de impressão dos
+    boletos em Fortes. (Thiago Gabotti)
+[*] Efetuado ajustes na imppressão do carnê no Fortes Report. (Thiago Gabotti)
+
+[-] Corrigido propriedade do componente de Codigo de Barras doFortes Report.
+    (Juliana Tamizou).
+
+[+] Adicionado ao componengte de impressão dos boletos em QuickReport, a 
+    impressão de carnês. (Alessandro Del Ri)
+    
+
 Versao 0.0.26a 14/05/2011
 
 [+] Implementado impressão dos boletos no padrão SICOB, para a Caixa Econômica,

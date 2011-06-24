@@ -6,7 +6,7 @@
 { Direitos Autorais Reservados (c) 2009   http://acbr.sf.net                   }
 {                                                                              }
 { Colaboradores nesse arquivo: Juliana Rodrigues Prado,                        }
-{                              Paulo Hfaenrique M. Gurgel, Daniel Simoes Almeida }
+{                              Paulo Henrique M. Gurgel, Daniel Simoes Almeida }
 {                                                                              }
 {  Você pode obter a última versão desse arquivo na pagina do  Projeto ACBr    }
 { Componentes localizado em      http://www.sourceforge.net/projects/acbr      }
@@ -46,8 +46,8 @@ interface
 
 uses
   SysUtils, StdCtrls, Classes, Graphics, Controls, Forms, Dialogs, ACBrBoleto,
-  QRMultiExport, QRCtrls, QuickRpt, ExtCtrls, QRExport, ACBrBarCode;
-  //QRWebFilt ;
+  QRMultiExport, QRCtrls, QuickRpt, ExtCtrls, QRExport, ACBrBarCode,
+  QRWebFilt ;
 
 const
   CACBrBoletoFCQuick_Versao = '0.0.8a' ;
@@ -203,11 +203,117 @@ type
     imgBarra: TQRImage;
     imgBanco3: TQRImage;
     QRHTMLFilter1: TQRHTMLFilter;
+    BoletoCarne: TQuickRep;
+    rbLCDetail: TQRBand;
+    QRLabel2: TQRLabel;
+    txtNumeroDocumento4: TQRLabel;
+    txtLinhaDigitavel4: TQRLabel;
+    txtInstrucoes4: TQRMemo;
+    txtAceite4: TQRLabel;
+    QRLabel7: TQRLabel;
+    QRLabel8: TQRLabel;
+    QRLabel9: TQRLabel;
+    QRLabel10: TQRLabel;
+    QRShape20: TQRShape;
+    QRShape21: TQRShape;
+    QRShape23: TQRShape;
+    QRShape24: TQRShape;
+    QRShape25: TQRShape;
+    QRShape26: TQRShape;
+    QRShape29: TQRShape;
+    QRShape30: TQRShape;
+    imgBarra4: TQRImage;
+    imgBanco4: TQRImage;
+    txtLocalPagamento4: TQRLabel;
+    QRLabel13: TQRLabel;
+    QRLabel14: TQRLabel;
+    txtDataVencimento4: TQRLabel;
+    QRLabel16: TQRLabel;
+    txtNomeCedente4: TQRLabel;
+    QRLabel18: TQRLabel;
+    txtDataDocumento4: TQRLabel;
+    QRLabel20: TQRLabel;
+    txtEspecie4: TQRLabel;
+    QRLabel22: TQRLabel;
+    txtDataProcessamento4: TQRLabel;
+    QRLabel24: TQRLabel;
+    txtNossoNumero4: TQRLabel;
+    QRLabel26: TQRLabel;
+    QRLabel27: TQRLabel;
+    txtCodigoCedente4: TQRLabel;
+    QRLabel29: TQRLabel;
+    QRLabel30: TQRLabel;
+    QRLabel31: TQRLabel;
+    txtEspecieDoc4: TQRLabel;
+    QRLabel33: TQRLabel;
+    txtCarteira4: TQRLabel;
+    QRLabel35: TQRLabel;
+    txtUsoBanco4: TQRLabel;
+    QRLabel37: TQRLabel;
+    txtValorDocumento4: TQRLabel;
+    txtNumeroBanco4: TQRLabel;
+    QRShape31: TQRShape;
+    QRLabel40: TQRLabel;
+    txtCpfCnpjSacado4: TQRLabel;
+    QRLabel42: TQRLabel;
+    QRLabel43: TQRLabel;
+    QRLabel44: TQRLabel;
+    QRLabel45: TQRLabel;
+    txtNomeSacado4: TQRLabel;
+    txtEnderecoSacado4: TQRLabel;
+    QRLabel48: TQRLabel;
+    QRLabel49: TQRLabel;
+    txtCidadeSacado4: TQRLabel;
+    QRShape19: TQRShape;
+    QRShape22: TQRShape;
+    QRShape18: TQRShape;
+    QRShape27: TQRShape;
+    QRShape28: TQRShape;
+    QRShape33: TQRShape;
+    QRShape34: TQRShape;
+    QRShape35: TQRShape;
+    QRShape32: TQRShape;
+    QRShape36: TQRShape;
+    QRShape37: TQRShape;
+    QRShape38: TQRShape;
+    QRShape39: TQRShape;
+    QRShape40: TQRShape;
+    QRShape41: TQRShape;
+    QRShape42: TQRShape;
+    QRShape43: TQRShape;
+    QRLabel5: TQRLabel;
+    QRLabel6: TQRLabel;
+    QRLabel11: TQRLabel;
+    QRLabel12: TQRLabel;
+    QRLabel15: TQRLabel;
+    QRLabel17: TQRLabel;
+    QRLabel19: TQRLabel;
+    QRLabel21: TQRLabel;
+    QRLabel23: TQRLabel;
+    QRLabel25: TQRLabel;
+    QRLabel28: TQRLabel;
+    QRLabel32: TQRLabel;
+    QRLabel3: TQRLabel;
+    QRLabel4: TQRLabel;
+    QRShape44: TQRShape;
+    QRShape45: TQRShape;
+    txtDataVencimento5: TQRLabel;
+    txtParcela: TQRLabel;
+    txtCodigoCedente5: TQRLabel;
+    txtValorDocumento5: TQRLabel;
+    txtNumeroDocumento5: TQRLabel;
+    txtNossoNumero5: TQRLabel;
+    Label1: TLabel;
+    txtNomeSacado5: TQRLabel;
+    txtEspecie5: TQRLabel;
     procedure FormCreate(Sender: TObject);
     procedure LayoutBoletoNeedData(Sender: TObject; var MoreData: Boolean);
     procedure RLBandDatailBeforePrint(Sender: TQRCustomBand;
       var PrintBand: Boolean);
     procedure LayoutBoletoStartPage(Sender: TCustomQuickRep);
+    procedure BoletoCarneNeedData(Sender: TObject; var MoreData: Boolean);
+    procedure rbLCDetailBeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
   private
      fBoletoFC: TACBrBoletoFCQuick;
      fIndice: Integer;
@@ -259,7 +365,7 @@ begin
      begin
         case LayOut of
            lPadrao : RLLayout:= LayoutBoleto;
-//         lCarne  : RLLayout:= BoletoCarne;
+           lCarne  : RLLayout:= BoletoCarne;
         else
            RLLayout := LayoutBoleto;
         end;
@@ -410,6 +516,7 @@ begin
         ACBrBarCode1.DrawBarcode(BMP.Canvas);
 
         imgBarra.Picture.Bitmap := BMP ;
+      imgBarra4.Picture.Bitmap := BMP;
      finally
         BMP.Free ;
      end ;
@@ -422,59 +529,83 @@ begin
   Inc( fIndice ) ;
 end;
 
-end.
+procedure TACBrBoletoFCQuickFr.BoletoCarneNeedData(Sender: TObject;
+  var MoreData: Boolean);
+begin
+  MoreData := (fIndice < fBoletoFC.ACBrBoleto.ListadeBoletos.Count);
+end;
 
-
-(*
-procedure TACBRBoletoFCQuickFr.RLBand3BeforePrint ( Sender: TObject;
-   var PrintIt: boolean ) ;
+procedure TACBrBoletoFCQuickFr.rbLCDetailBeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
 Var
-   NossoNum,LinhaDigitavel,CodBarras,CodCedente: String;
+  NossoNum, CodCedente : String;
+  CodBarras, LinhaDigitavel : String;
+  BMP : TBitmap ;
+  viPar, viPla: String;
 begin
    with fBoletoFC.ACBrBoleto do
    begin
+    viPar       := IntToStr(fIndice+1);
+    viPla       := IntToStr(ListadeBoletos.Count);
       NossoNum       := Banco.MontarCampoNossoNumero( Titulo );
+    CodCedente  := Banco.MontarCampoCodigoCedente(titulo);
+
+    fBoletoFC.CarregaLogo( imgBanco4.Picture, Banco.Numero );
+
       CodBarras      := Banco.MontarCodigoBarras( Titulo );
       LinhaDigitavel := Banco.MontarLinhaDigitavel( CodBarras );
-      CodCedente     := Banco.MontarCampoCodigoCedente(Titulo);
 
-      fBoletoFC.CarregaLogo( imgBanco2.Picture, Banco.Numero );
-      txtNumeroBanco2.Caption         := IntToStrZero(Banco.Numero, 3)+ '-' +
+    txtNumeroBanco4.Caption         := IntToStrZero(Banco.Numero, 3)+ '-' +
                                         ifthen(Banco.Digito >= 10,'X',IntToStrZero(Banco.Digito, 1));
-      txtVencCanhoto.Caption          := FormatDateTime('dd/mm/yyyy',Titulo.Vencimento);
-      txtVencCarne2.Caption           := txtVencCanhoto.Caption;
-      txtCodCedenteCarne.Caption      := CodCedente;
-      txtCodCedenteCarne2.Caption     := txtCodCedenteCarne.Caption;
-      txtValorCarne.Caption           := FormatFloat('###,###,##0.00',Titulo.ValorDocumento);
-      txtValorCar.Caption             := txtValorCarne.Caption;
-      txtNossoNumeroCarne.Caption     := NossoNum;
-      txtNossoNumCan.Caption          := NossoNum;
-      txtNomeSacado.Caption           := Titulo.Sacado.NomeSacado;
-      txtNomeSacadoCarne.Caption      := txtNomeSacado.Caption;
-      txtLocal.Caption                := Titulo.LocalPagamento;
-      txtNomeCedente.Caption          := Cedente.Nome;
-      txtDataDocto.Caption            := FormatDateTime('dd/mm/yyyy', Titulo.DataDocumento);
-      txtNumeroDocto.Caption          := Titulo.NumeroDocumento;
-      txtEspecieDoc.Caption           := Titulo.EspecieDoc;
-      txtAceite.Caption               := IfThen((atSim = Titulo.Aceite), 'S', 'N');
-      txtDataProces.Caption           := FormatDateTime('dd/mm/yyyy',Now);
-      txtUsoBanco2.Caption            := Titulo.UsoBanco;
-      txtCarteira.Caption             := Titulo.Carteira;
-      txtEspecie2.Caption             := 'R$';
-      txtParcela.Caption              := IntToStrZero(Titulo.Parcela,2)+' /';
-      txtTotPar.Caption               := IntToStrZero(Titulo.TotalParcelas,2);
-      txtEndSacado.Caption            := Titulo.Sacado.Logradouro + ' '+
-                                         Titulo.Sacado.Numero + Titulo.Sacado.Complemento;
-      txtCidadeSacado.Caption         := Titulo.Sacado.CEP + ' '+Titulo.Sacado.Cidade +
+    lblLocalPagto.Caption           := Titulo.LocalPagamento;
+    txtDataVencimento4.Caption      := FormatDateTime('dd/mm/yyyy', Titulo.Vencimento);
+    txtNomeCedente4.Caption         := Cedente.Nome;
+    txtCodigoCedente4.Caption       := CodCedente;
+    txtDataDocumento4.Caption       := FormatDateTime('dd/mm/yyyy', Titulo.DataDocumento);
+    txtNumeroDocumento4.Caption     := Titulo.NumeroDocumento;
+    txtEspecieDoc4.Caption          := Titulo.EspecieDoc;
+    txtAceite4.Caption              := ifThen(Titulo.Aceite = atSim,'S','N');
+    txtDataProcessamento4.Caption   := FormatDateTime('dd/mm/yyyy',Now);
+    txtNossoNumero4.Caption         := NossoNum;
+    txtUsoBanco4.Caption            := Titulo.UsoBanco;
+    txtCarteira4.Caption            := Titulo.Carteira;
+    txtEspecie4.Caption             := 'R$';
+    txtValorDocumento4.Caption      := FormatFloat('###,###,##0.00',Titulo.ValorDocumento);
+    txtNomeSacado4.Caption          := Titulo.Sacado.NomeSacado;
+    txtEnderecoSacado4.Caption      := Titulo.Sacado.Logradouro + ' '+
+                                       Titulo.Sacado.Numero + ' ' + Titulo.Sacado.Complemento;
+    txtCidadeSacado4.Caption        := Titulo.Sacado.CEP + ' '+Titulo.Sacado.Cidade +
                                          ' '+Titulo.Sacado.UF;
-      txtCPF.Caption                  := Titulo.Sacado.CNPJCPF;
-      txtCPFCarne2.Caption            := txtCPF.Caption;
-      mIntrucoes.Lines.Text           := Titulo.Mensagem.Text;
-      txtLinhaDigitavelCarne.Caption := LinhaDigitavel;
-      imgBarrasCarne.Caption := CodBarras;
+    txtCpfCnpjSacado4.Caption       := Titulo.Sacado.CNPJCPF;
+    txtInstrucoes4.Lines.Text       := Titulo.Mensagem.Text;
+    txtLinhaDigitavel4.Caption      := LinhaDigitavel;
+
+    txtDataVencimento5.Caption      := txtDataVencimento4.Caption;
+    txtCodigoCedente5.Caption       := txtCodigoCedente4.Caption;
+    txtNumeroDocumento5.Caption     := txtNumeroDocumento4.Caption;
+    txtNossoNumero5.Caption         := txtNossoNumero4.Caption;
+    txtEspecie5.Caption             := txtEspecie4.Caption;
+    txtValorDocumento5.Caption      := txtValorDocumento4.Caption;
+    txtNomeSacado5.Caption          := txtNomeSacado4.Caption;
+    txtParcela.Caption              := viPar + ' / ' + viPla;
+
+    ACBrBarCode1.Typ  := bcCode_2_5_interleaved ;
+    ACBrBarCode1.Text := CodBarras;
+    BMP := TBitmap.Create ;
+    try
+      BMP.Width  := imgBarra.Width ;
+      BMP.Height := imgBarra.Height ;
+      ACBrBarCode1.DrawBarcode(BMP.Canvas);
+
+      imgBarra4.Picture.Bitmap := BMP;
+    finally
+      BMP.Free ;
    end;
 end;
+  Inc(fIndice);
+end;
 
-*)
+end.
+
 
 

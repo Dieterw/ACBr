@@ -697,19 +697,19 @@ end;
 procedure TACBrBancoBrasil.LerRetorno240(ARetorno: TStringList);
 var
   Titulo: TACBrTitulo;
-  Linha, rCedente, rCNPJCPF: String;
+  TempData, Linha, rCedente, rCNPJCPF: String;
   ContLinha : Integer;
 begin
    ContLinha := 0;
 
    // informação do Header
    // Verifica se o arquivo pertence ao banco
-   if StrToIntDef(copy(ARetorno.Strings[0], 3, 3),-1) <> Numero then
+   if StrToIntDef(copy(ARetorno.Strings[0], 1, 3),-1) <> Numero then
       raise Exception.create(ACBrStr(ACBrBanco.ACBrBoleto.NomeArqRetorno +
             'não' + 'é um arquivo de retorno do ' + Nome));
 
    rCedente := trim(copy(ARetorno[0], 73, 30));
-   rCNPJCPF := OnlyNumber( copy(ARetorno[1], 19, 14) );
+   rCNPJCPF := OnlyNumber( copy(ARetorno[0], 19, 14) );
 
    with ACBrBanco.ACBrBoleto do
    begin
@@ -735,7 +735,7 @@ begin
    begin
       Linha := ARetorno[ContLinha];
 
-      if copy(Linha, 8, 8) <> '3' then // verifica se o registro (linha) é um registro detalhe (segmento J)
+      if copy(Linha, 8, 1) <> '3' then // verifica se o registro (linha) é um registro detalhe (segmento J)
         Continue;
 
       if copy(Linha, 14, 1) = 'T' then // se for segmento T cria um novo titulo
@@ -792,7 +792,9 @@ begin
            NumeroDocumento := copy(Linha, 59, 15);
            Carteira := copy(Linha, 58, 1);
 
-           Vencimento := StringToDateTimeDef(copy(Linha, 74, 8), 0, 'DDMMYY');
+           TempData := copy(Linha, 74, 2) + '/'+copy(Linha, 76, 2)+'/'+copy(Linha, 78, 4);
+           if TempData<>'00/00/0000' then
+               Vencimento := StringToDateTimeDef(TempData, 0, 'DDMMYY');
 
            ValorDocumento := StrToFloatDef(copy(Linha, 82, 15), 0) / 100;
 
@@ -808,8 +810,12 @@ begin
             ValorMoraJuros := StrToFloatDef(copy(Linha, 18, 15), 0) / 100;
             ValorOutrosCreditos := StrToFloatDef(copy(Linha, 108, 15), 0) / 100;
             ValorRecebido := StrToFloatDef(copy(Linha, 78, 15), 0) / 100;
-            DataOcorrencia := StringToDateTimeDef(copy(Linha, 138, 8), 0, 'DDMMYY');
-            DataCredito := StringToDateTimeDef(copy(Linha, 146, 8), 0, 'DDMMYY');
+            TempData := copy(Linha, 138, 2)+'/'+copy(Linha, 140, 2)+'/'+copy(Linha, 142, 4);
+            if TempData<>'00/00/0000' then
+                DataOcorrencia := StringToDateTimeDef(TempData, 0, 'DDMMYY');
+            TempData := copy(Linha, 146, 2)+'/'+copy(Linha, 148, 2)+'/'+copy(Linha, 150, 4);
+            if TempData<>'00/00/0000' then            
+                DataCredito := StringToDateTimeDef(TempData, 0, 'DDMMYYYY');
          end;
       end;
    end;

@@ -438,11 +438,106 @@ var
 ATipoCedente,
 ATipoSacado,
 ATipoOcorrencia,
-ATipoBoleto,
+ATipoBoleto ,
 ADataMoraJuros,
 ADataDesconto,
 ATipoAceite,
 ATipoEspecieDoc : string;
+ANossoNumero: String;
+  function DoMontaInstrucoes1(const AStr: string): string;
+  begin
+    Result := '';
+    with ACBrTitulo, ACBrBoleto do
+    begin
+      if Mensagem.Count = 0 then
+        Exit; // Nenhum mensagem especificada. Registro não será necessário gerar o registro
+
+      Result := AStr + #13#10 +
+                '6'                                     +                 // IDENTIFICAÇÃO DO REGISTRO
+                '2'                                     +                 // IDENTIFICAÇÃO DO LAYOUT PARA O REGISTRO
+                Copy(padL(Mensagem[0], 69, ' '), 1, 69);                  // CONTEÚDO DA 1ª LINHA DE IMPRESSÃO DA ÁREA "INSTRUÇÕES” DO BOLETO
+
+      if Mensagem.Count >= 2 then
+        Result := Result +
+                  Copy(padL(Mensagem[1], 69, ' '), 1, 69)                 // CONTEÚDO DA 2ª LINHA DE IMPRESSÃO DA ÁREA "INSTRUÇÕES” DO BOLETO
+      else
+        Result := Result +
+                  padL('', 69, ' ');                                      // CONTEÚDO DO RESTANTE DAS LINHAS
+
+      if Mensagem.Count >= 3 then
+        Result := Result +
+                  Copy(padL(Mensagem[2], 69, ' '), 1, 69)                 // CONTEÚDO DA 3ª LINHA DE IMPRESSÃO DA ÁREA "INSTRUÇÕES” DO BOLETO
+      else
+        Result := Result +
+                  padL('', 69, ' ');                                      // CONTEÚDO DO RESTANTE DAS LINHAS
+
+      if Mensagem.Count >= 4 then
+        Result := Result +
+                  Copy(padL(Mensagem[3], 69, ' '), 1, 69)                 // CONTEÚDO DA 4ª LINHA DE IMPRESSÃO DA ÁREA "INSTRUÇÕES” DO BOLETO
+      else
+        Result := Result +
+                  padL('', 69, ' ');                                      // CONTEÚDO DO RESTANTE DAS LINHAS
+
+      if Mensagem.Count >= 5 then
+        Result := Result +
+                  Copy(padL(Mensagem[4], 69, ' '), 1, 69)                 // CONTEÚDO DA 5ª LINHA DE IMPRESSÃO DA ÁREA "INSTRUÇÕES” DO BOLETO
+      else
+        Result := Result +
+                  padL('', 69, ' ');                                      // CONTEÚDO DO RESTANTE DAS LINHAS
+
+      Result := Result +
+                space(47) +                                               // COMPLEMENTO DO REGISTRO
+                IntToStrZero(ListadeBoletos.IndexOf(ACBrTitulo)+
+                             ListadeBoletos.IndexOf(ACBrTitulo)+ 3, 6);   // Nº SEQÜENCIAL DO REGISTRO NO ARQUIVO
+    end;              
+  end;
+
+  function DoMontaInstrucoes2(const AStr: string): string;
+  begin
+    // Implementado, mas opcional.
+    // Ao utilizarmos a impressão do boleto pelo componente, apenas 5 linhas
+    // são impressas.
+    // Por padrão, essa rotina não será chamada
+    
+    Result := '';
+    with ACBrTitulo, ACBrBoleto do
+    begin
+      if Mensagem.Count <= 5 then
+        Exit; // Nenhum mensagem especificada. Registro não será necessário gerar o registro
+
+      Result := AStr + #13#10 +
+                '6'                                     +                 // IDENTIFICAÇÃO DO REGISTRO
+                '3'                                     +                 // IDENTIFICAÇÃO DO LAYOUT PARA O REGISTRO
+                Copy(padL(Mensagem[5], 69, ' '), 1, 69);                  // CONTEÚDO DA 6ª LINHA DE IMPRESSÃO DA ÁREA "INSTRUÇÕES” DO BOLETO
+
+      if Mensagem.Count >= 7 then
+        Result := Result +
+                  Copy(padL(Mensagem[6], 69, ' '), 1, 69)                 // CONTEÚDO DA 7ª LINHA DE IMPRESSÃO DA ÁREA "INSTRUÇÕES” DO BOLETO
+      else
+        Result := Result +
+                  padL('', 69, ' ');                                      // CONTEÚDO DO RESTANTE DAS LINHAS
+
+      if Mensagem.Count >= 8 then
+        Result := Result +
+                  Copy(padL(Mensagem[7], 69, ' '), 1, 69)                 // CONTEÚDO DA 8ª LINHA DE IMPRESSÃO DA ÁREA "INSTRUÇÕES” DO BOLETO
+      else
+        Result := Result +
+                  padL('', 69, ' ');                                      // CONTEÚDO DO RESTANTE DAS LINHAS
+
+      if Mensagem.Count >= 9 then
+        Result := Result +
+                  Copy(padL(Mensagem[8], 69, ' '), 1, 69)                 // CONTEÚDO DA 9ª LINHA DE IMPRESSÃO DA ÁREA "INSTRUÇÕES” DO BOLETO
+      else
+        Result := Result +
+                  padL('', 69, ' ');                                      // CONTEÚDO DO RESTANTE DAS LINHAS
+
+      Result := Result +
+                space(116)                               +                 // COMPLEMENTO DO REGISTRO
+                IntToStrZero(ListadeBoletos.IndexOf(ACBrTitulo)+
+                             ListadeBoletos.IndexOf(ACBrTitulo)+ 4, 6);   // Nº SEQÜENCIAL DO REGISTRO NO ARQUIVO
+    end;
+  end;
+
 begin
   with ACBrTitulo do
   begin
@@ -549,7 +644,58 @@ begin
     end;
     
     with ACBrBoleto do
-    begin
+    begin // Cobrança sem registro com opção de envio de arquivo remessa
+      if (Trim(Carteira) = '102') or
+         (Trim(Carteira) = '103') or
+         (Trim(Carteira) = '107') or
+         (Trim(Carteira) = '172') or
+         (Trim(Carteira) = '173') or
+         (Trim(Carteira) = '196') then
+      begin // by Jéter Rabelo Ferreira (27/05/2011)
+        ANossoNumero := MontarCampoNossoNumero(ACBrTitulo);
+        Result:= '6'                                                                          + // 6 - FIXO
+               '1'                                                                            + // 1 - FIXO
+               padR(OnlyNumber(Cedente.Agencia), 4, '0')                                      + // AGÊNCIA MANTENEDORA DA CONTA
+               '00'                                                                           + // COMPLEMENTO DE REGISTRO
+               padR(Cedente.Conta, 5, '0')                                                    + // NÚMERO DA CONTA CORRENTE DA EMPRESA
+               padL(Cedente.ContaDigito, 1)                                                   + // DÍGITO DE AUTO CONFERÊNCIA AG/CONTA EMPRESA
+               Carteira                                                                       + // NÚMERO DA CARTEIRA NO BANCO
+               padR(NossoNumero, 8, '0')                                                      + // IDENTIFICAÇÃO DO TÍTULO NO BANCO
+               Copy(ANossoNumero, Length(ANossoNumero), 1)                                    + // DAC DO NOSSO NÚMERO
+               '0'                                                                            + // 0 - R$
+               padL('R$', 4, ' ')                                                             + // LITERAL DE MOEDA
+               IntToStrZero( round( ValorDocumento * 100), 13)                                + // VALOR NOMINAL DO TÍTULO
+               padL(SeuNumero, 10, ' ')                                                       + // IDENTIFICAÇÃO DO TÍTULO NA EMPRESA
+               FormatDateTime('ddmmyy', Vencimento)                                           + // DATA DE VENCIMENTO DO TÍTULO
+               padR(ATipoEspecieDoc, 2, '0')                                                  + // ESPÉCIE DO TÍTULO
+               ATipoAceite                                                                    + // IDENTIFICAÇÃO DE TITILO ACEITO OU NÃO ACEITO
+               FormatDateTime('ddmmyy', DataDocumento)                                        + // DATA DE EMISSÃO
+               {Dados do sacado}
+               ATipoSacado                                                                    + // IDENTIFICAÇÃO DO TIPO DE INSCRIÇÃO/SACADO
+               padR(OnlyNumber(Sacado.CNPJCPF), 15, '0')                                      + // Nº DE INSCRIÇÃO DO SACADO  (CPF/CGC)
+               padL(Sacado.NomeSacado, 30, ' ')                                               + // NOME DO SACADO
+               space(9)                                                                       + // BRANCOS(COMPLEMENTO DE REGISTRO)
+               padL(Sacado.Logradouro +' '+ Sacado.Numero +' '+ Sacado.Complemento , 40, ' ') + // RUA, NÚMERO E COMPLEMENTO DO SACADO
+               padL(Sacado.Bairro, 12, ' ')                                                   + // BAIRRO DO SACADO
+               padR(OnlyNumber(Sacado.CEP), 8, '0')                                           + // CEP DO SACADO
+               padL(Sacado.Cidade, 15, ' ')                                                   + // CIDADE DO SACADO
+               padL(Sacado.UF, 2, ' ')                                                        + // UF DO SACADO
+               {Dados do sacador/avalista}
+               padL('', 30, ' ')                                                              + // NOME DO SACADOR/AVALISTA
+               space(4)                                                                       + // COMPLEMENTO DO REGISTRO
+               padL(LocalPagamento, 55, ' ')                                                  + // LOCAL PAGAMENTO
+               padL('', 55, ' ')                                                              + // LOCAL PAGAMENTO 2
+               '01'                                                                           + // IDENTIF. TIPO DE INSCRIÇÃO DO SACADOR/AVALISTA
+               padL('0', 15, '0')                                                             + // NÚMERO DE INSCRIÇÃO DO SACADOR/AVALISTA
+               space(31)                                                                      + // COMPLEMENTO DO REGISTRO
+               IntToStrZero(ListadeBoletos.IndexOf(ACBrTitulo) +
+                            ListadeBoletos.IndexOf(ACBrTitulo) + 2, 6);                         // Nº SEQÜENCIAL DO REGISTRO NO ARQUIVO
+
+        Result := DoMontaInstrucoes1(Result);
+        //Result := DoMontaInstrucoes2(Result);               // opcional
+      end
+      else
+      begin // Carteira com registro
       Result:= '1'                                                                            + // 1 a 1 - IDENTIFICAÇÃO DO REGISTRO TRANSAÇÃO
                ATipoCedente                                                                   + // TIPO DE INSCRIÇÃO DA EMPRESA
                padR(OnlyNumber(Cedente.CNPJCPF),14,'0')                                                   + // Nº DE INSCRIÇÃO DA EMPRESA (CPF/CGC)
@@ -590,7 +736,7 @@ begin
                space(10)                                                                      + // BRANCOS(COMPLEMENTO DE REGISTRO)
                padL(Sacado.Logradouro +' '+ Sacado.Numero +' '+ Sacado.Complemento , 40, ' ') + // RUA, NÚMERO E COMPLEMENTO DO SACADO
                padL(Sacado.Bairro, 12, ' ')                                                   + // BAIRRO DO SACADO
-               padR(Sacado.CEP, 8, '0')                                                       + // CEP DO SACADO
+               padR(OnlyNumber(Sacado.CEP), 8, '0')                                           + // CEP DO SACADO
                padL(Sacado.Cidade, 15, ' ')                                                   + // CIDADE DO SACADO
                padL(Sacado.UF, 2, ' ')                                                        + // UF DO SACADO
 
@@ -602,13 +748,13 @@ begin
                     padR(IntToStr(DaysBetween(DataProtesto, Vencimento)), 2, '0'), '00')      + // PRAZO
                space(1)                                                                       + // BRANCOS
                IntToStrZero(ListadeBoletos.IndexOf(ACBrTitulo)+ 2, 6);                          // Nº SEQÜENCIAL DO REGISTRO NO ARQUIVO
+      end;
 
       Result:= UpperCase(Result);
     end;
   end;
 end;
 
-//Implementado por Carlos Fitl - 22/12/2010
 function TACBrBancoItau.GerarRegistroTrailler400(
   ARemessa: TStringList): String;
 begin
@@ -763,6 +909,12 @@ begin
             DataCredito:= StringToDateTimeDef( Copy(Linha,296,2)+'/'+
                                                Copy(Linha,298,2)+'/'+
                                                Copy(Linha,300,2),0, 'DD/MM/YY' );
+
+         if StrToIntDef(Copy(Linha,111,6),0) <> 0 then
+            DataBaixa := StrToDateDef (Copy(Linha,111,2)+'/'+
+                         Copy(Linha,113,2)+'/'+
+                         Copy(Linha,115,2),0,'/');
+
       end;
    end;
 end;

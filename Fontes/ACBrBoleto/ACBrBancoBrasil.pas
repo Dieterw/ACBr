@@ -135,7 +135,8 @@ begin
     begin
       FatorVencimento := CalcularFatorVencimento(ACBrTitulo.Vencimento);
 
-      if (ACBrTitulo.Carteira = '18') and (Length(AConvenio) = 6) then
+      if ((ACBrTitulo.Carteira = '18') or (ACBrTitulo.Carteira = '16')) and
+         (Length(AConvenio) = 6) then
        begin
         CodigoBarras := IntToStrZero(Banco.Numero, 3) +
                         '9' +
@@ -176,7 +177,11 @@ function TACBrBancoBrasil.MontarCampoNossoNumero (const ACBrTitulo: TACBrTitulo 
 var ANossoNumero : string;
 begin
     ANossoNumero := FormataNossoNumero(ACBrTitulo);
-    if Length(ACBrBanco.ACBrBoleto.Cedente.Convenio) = 7 then
+    if (Length(ACBrBanco.ACBrBoleto.Cedente.Convenio) = 7) or
+       ((Length(ACBrBanco.ACBrBoleto.Cedente.Convenio) = 6) and
+        (Length(ANossoNumero) = 17) and
+        ((StrToInt(ACBrTitulo.Carteira)= 16) or
+        (StrToInt(ACBrTitulo.Carteira)= 18))) then
        Result:= ANossoNumero
     else
        Result := ANossoNumero + '-' + CalcularDigitoVerificador(ACBrTitulo);

@@ -67,7 +67,13 @@ Versao 0.0.27a 24/06/2011
 
 [-] Corrigido rotina de leitura de arquivo retorno 240 colunas da Caixa 
     Econômica.(Douglas Tybel)
-    
+
+[*] Alterado função MontarCampoNossoNúmero do Banco do Brasil e para imprimir
+    corretamente este campo Nosso Número para as carteiras 16 e 18 (Sem registro), 
+    com convenio de 6 posições. (Juliana Tamizou)    
+
+[*] Alterado função MontarCodigoBarras do Banco do Brasil para imprimir corretamente
+    quando na Carteira 16 com Convenio de 6 digitosl(Juliana Tamizou.)
 
 Versao 0.0.26a 14/05/2011
 

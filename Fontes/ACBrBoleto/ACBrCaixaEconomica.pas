@@ -487,9 +487,9 @@ begin
                              'não é um arquivo de retorno do '+ Nome));
 
    rCedente := trim(Copy(ARetorno[0],73,30));
-   rAgencia := trim(Copy(ARetorno[0],27,4));
-   rConta   := trim(Copy(ARetorno[0],33,5));
-   rDigitoConta := Copy(ARetorno[0],38,1);
+   rAgencia := trim(Copy(ARetorno[0],53,5));
+   rConta   := trim(Copy(ARetorno[0],59,5));
+   rDigitoConta := Copy(ARetorno[0],64,1);
 
 
    ACBrBanco.ACBrBoleto.DataArquivo   := StringToDateTimeDef(Copy(ARetorno[1],192,2)+'/'+
@@ -501,11 +501,11 @@ begin
                                                                Copy(ARetorno[1],204,2),0, 'DD/MM/YY' );
    rCNPJCPF := trim( Copy(ARetorno[0],19,14)) ;
 
-   case StrToIntDef(Copy(ARetorno[1],18,2),0) of
-      11 : rCNPJCPF:= Copy(ARetorno[1],04,14);
-      14 : rCNPJCPF:= Copy(ARetorno[1],07,11);
+   case StrToIntDef(Copy(ARetorno[1],18,1),0) of
+      1 : rCNPJCPF:= trim( Copy(ARetorno[1],19,14));
+      2 : rCNPJCPF:= trim( Copy(ARetorno[0],19,14));
    else
-      rCNPJCPF:= Copy(ARetorno[1],4,14);
+      rCNPJCPF:= trim( Copy(ARetorno[0],19,14));
    end;
 
 
@@ -526,9 +526,9 @@ begin
       Cedente.Conta   := rConta;
       Cedente.ContaDigito:= rDigitoConta;
 
-      case StrToIntDef(Copy(ARetorno[1],18,2),0) of
-         11: Cedente.TipoInscricao:= pFisica;
-         14: Cedente.TipoInscricao:= pJuridica;
+      case StrToIntDef(Copy(ARetorno[1],18,1),0) of
+         1: Cedente.TipoInscricao:= pFisica;
+         2: Cedente.TipoInscricao:= pJuridica;
          else
             Cedente.TipoInscricao := pOutras;
       end;

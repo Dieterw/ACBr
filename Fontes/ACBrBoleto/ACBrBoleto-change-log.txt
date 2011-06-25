@@ -64,6 +64,9 @@ Versao 0.0.27a 24/06/2011
 
 [+] Adicionado ao componengte de impressão dos boletos em QuickReport, a 
     impressão de carnês. (Alessandro Del Ri)
+
+[-] Corrigido rotina de leitura de arquivo retorno 240 colunas da Caixa 
+    Econômica.(Douglas Tybel)
     
 
 Versao 0.0.26a 14/05/2011

@@ -124,6 +124,7 @@ begin
       case StrToIntDef(Carteira,0) of
          5: Carteira := '101';
          6: Carteira := '201';
+         4: Carteira := '102';
       end;
    end;
 
@@ -174,7 +175,9 @@ begin
    if aCarteira = 101  then
       aCarteira:= 5
    else if aCarteira = 201 then
-      aCarteira:= 6;
+      aCarteira:= 6
+   else if aCarteira = 102 then
+      aCarteira:= 4;
 
    if aCarteira = 5 then
       aAgencia := padR(ACBrTitulo.ACBrBoleto.Cedente.Agencia +

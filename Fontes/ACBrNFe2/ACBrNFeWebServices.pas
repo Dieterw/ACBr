@@ -739,7 +739,7 @@ var
 begin
   vNotas := '';
   for i := 0 to TNFeRecepcao(Self).FNotasFiscais.Count-1 do
-    vNotas := vNotas + TNFeRecepcao(Self).FNotasFiscais.Items[I].XML;
+    vNotas := vNotas + '<NFe'+RetornarConteudoEntre(TNFeRecepcao(Self).FNotasFiscais.Items[I].XML,'<NFe','</NFe>')+'</NFe>';
 
 //'<?xml version="1.0" encoding="UTF-8" standalone="no"?>'+
   FDadosMsg := '<enviNFe xmlns="http://www.portalfiscal.inf.br/nfe" versao="'+NFenviNFe+'">'+

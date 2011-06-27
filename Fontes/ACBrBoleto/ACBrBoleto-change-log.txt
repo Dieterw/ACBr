@@ -86,6 +86,9 @@ Versao 0.0.27a 24/06/2011
 [-] Corrigido problema na classe do Banrisul, ao gerar a remessa o valor total
     dos titulos estava sendo calculado errado.(Juliana Tamizou)
 
+[-] Corrigido rotina de geração do arquivo remessa 240 colunas para o Banco do
+    Brasil.(Argus)
+
 
 Versao 0.0.26a 14/05/2011
 

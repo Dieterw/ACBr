@@ -226,7 +226,7 @@ begin
                padL(ContaDigito, 1, '0')               + //71 - Dígito da conta do cedente
                ' '                                     + //72 - Dígito verificador da agência / conta
                padR(Nome, 30, ' ')                     + //73 a 102 - Nome do cedente
-               padR('BANCO DO BRASIL', 30, ' ')        + //103 a 132 - Nome do banco
+               padL('BANCO DO BRASIL', 30, ' ')        + //103 a 132 - Nome do banco
                padL('', 10, ' ')                       + //133 a 142 - Uso exclusivo FEBRABAN/CNAB
                '1'                                     + //143 - Código de Remessa (1) / Retorno (2)
                FormatDateTime('ddmmyyyy', Now)         + //144 a 151 - Data do de geração do arquivo
@@ -234,9 +234,9 @@ begin
                padL(IntToStr(NumeroRemessa), 6, '0')   + //158 a 163 - Número seqüencial do arquivo
                '030'                                   + //164 a 166 - Número da versão do layout do arquivo
                padL('',  5, '0')                       + //167 a 171 - Densidade de gravação do arquivo (BPI)
-               padL('', 20, '0')                       + // 172 a 191 - Uso reservado do banco
+               padL('', 20, ' ')                       + // 172 a 191 - Uso reservado do banco
                padL('', 20, '0')                       + // 192 a 211 - Uso reservado da empresa
-               padL('', 11, '0')                       + // 212 a 222 - 11 brancos
+               padL('', 11, ' ')                       + // 212 a 222 - 11 brancos
                'CSP'                                   + // 223 a 225 - 'CSP'
                padL('',  3, '0')                       + // 226 a 228 - Uso exclusivo de Vans
                padL('',  2, ' ')                       + // 229 a 230 - Tipo de servico
@@ -391,7 +391,7 @@ begin
                '2'                                                        + //224 - Campo não tratado pelo BB [ Alterado conforme instruções da CSO Brasília ] {27-07-09}
                '000'                                                      + //225 a 227 - Campo não tratado pelo BB [ Alterado conforme instruções da CSO Brasília ] {27-07-09}
                '09'                                                       + //228 a 229 - Código da moeda: Real 
-               padL('', 10 , ' ')                                         + //230 a 239 - Uso exclusivo FEBRABAN/CNAB
+               padL('', 10 , '0')                                         + //230 a 239 - Uso exclusivo FEBRABAN/CNAB
                ' ';                                                         //240 - Uso exclusivo FEBRABAN/CNAB
 
       {SEGMENTO Q}
@@ -399,8 +399,7 @@ begin
                IntToStrZero(ACBrBanco.Numero, 3)                          + //Código do banco
                '0001'                                                     + //Número do lote
                '3'                                                        + //Tipo do registro: Registro detalhe
-               //IntToStrZero((2 * ACBrBoleto.ListadeBoletos.IndexOf(ACBrTitulo))+ 2 ,5) + //Número seqüencial do registro no lote - Cada título tem 2 registros (P e Q)
-               IntToStrZero(ACBrBoleto.ListadeBoletos.IndexOf(ACBrTitulo)+1 ,5) + //Número seqüencial do registro no lote - Cada título tem 2 registros (P e Q)
+               IntToStrZero((2 * ACBrBoleto.ListadeBoletos.IndexOf(ACBrTitulo))+ 2 ,5) + //Número seqüencial do registro no lote - Cada título tem 2 registros (P e Q)
                'Q'                                                        + //Código do segmento do registro detalhe
                ' '                                                        + //Uso exclusivo FEBRABAN/CNAB: Branco
                ATipoOcorrencia                                            + //Tipo Ocorrencia
@@ -410,14 +409,16 @@ begin
                padL(Sacado.NomeSacado, 40, ' ')                                 +
                padL(Sacado.Logradouro +' '+ Sacado.Numero +' '+ Sacado.Complemento , 40, ' ') +
                padL(Sacado.Bairro, 15, ' ')                               +
-               padR(Sacado.CEP, 8, '0')                                   +
-               padR(Sacado.Cidade, 15, ' ')                               +
+               //padR(Sacado.CEP, 8, '0')                                   +
+               padR(OnlyNumber(Sacado.CEP), 8, '0')                                   +
+               //padR(Sacado.Cidade, 15, ' ')                               +
+               padL(Sacado.Cidade, 15, ' ')                               +
                padL(Sacado.UF, 2, ' ')                                    +
                         {Dados do sacador/avalista}
                '0'                                                        + //Tipo de inscrição: Não informado
                padL('', 15, '0')                                          + //Número de inscrição
                padL('', 40, ' ')                                          + //Nome do sacador/avalista
-               padL('', 3, ' ')                                           + //Uso exclusivo FEBRABAN/CNAB
+               padL('', 3, '0')                                           + //Uso exclusivo FEBRABAN/CNAB
                padL('',20, ' ')                                           + //Uso exclusivo FEBRABAN/CNAB
                padL('', 8, ' ');                                            //Uso exclusivo FEBRABAN/CNAB
       end; 
@@ -430,7 +431,8 @@ begin
             '0001'                                                     + //Número do lote
             '5'                                                        + //Tipo do registro: Registro trailer do lote
             Space(9)                                                   + //Uso exclusivo FEBRABAN/CNAB
-            IntToStrZero(ARemessa.Count-1, 6)                          + //Quantidade de Registro da Remessa
+            //IntToStrZero(ARemessa.Count-1, 6)                        + //Quantidade de Registro da Remessa
+            IntToStrZero(((2 * ARemessa.Count-1) + 1), 6)              + //Quantidade de Registro da Remessa
             padL('', 6, '0')                                           + //Quantidade títulos em cobrança
             padL('',17, '0')                                           + //Valor dos títulos em carteiras}
             padL('', 6, '0')                                           + //Quantidade títulos em cobrança

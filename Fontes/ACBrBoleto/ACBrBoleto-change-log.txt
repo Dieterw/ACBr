@@ -83,6 +83,9 @@ Versao 0.0.27a 24/06/2011
 [-] Corrigido rotina de leitura de arquivo retorno 240 colunas da Caixa 
     Econômica.(Douglas Tybel)
 
+[-] Corrigido problema na classe do Banrisul, ao gerar a remessa o valor total
+    dos titulos estava sendo calculado errado.(Juliana Tamizou)
+
 
 Versao 0.0.26a 14/05/2011
 

@@ -790,7 +790,7 @@ begin
                                          ' '+Titulo.Sacado.UF;
       txtCPF.Caption                  := Titulo.Sacado.CNPJCPF;
       txtCPFCarne2.Caption            := txtCPF.Caption;
-      mIntrucoes.Lines.Text           := Titulo.Mensagem.Text;
+      mIntrucoes.Lines.Text           := MensagemPadrao.Text;
 
       txtLinhaDigitavelCarne.Caption := LinhaDigitavel;
       imgBarrasCarne.Caption := CodBarras;

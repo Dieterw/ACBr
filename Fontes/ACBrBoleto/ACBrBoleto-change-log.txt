@@ -89,6 +89,9 @@ Versao 0.0.27a 24/06/2011
 [-] Corrigido rotina de geração do arquivo remessa 240 colunas para o Banco do
     Brasil.(Argus)
 
+[-] Corrigido impressão das mensagens no boleto impresso em Carnê, para o Fortes.
+    (Dionatan)
+
 
 Versao 0.0.26a 14/05/2011
 

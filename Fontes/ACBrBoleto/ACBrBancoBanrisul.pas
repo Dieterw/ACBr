@@ -258,6 +258,7 @@ function TACBrBanrisul.GerarRegistroHeader400(NumeroRemessa: Integer): string;
 var
   cd: string;
 begin
+  aTotal:=0;
   with ACBrBanco.ACBrBoleto.Cedente do
   begin
     cd:= OnlyNumber(CodigoCedente);
@@ -292,7 +293,6 @@ var
   TipoSacado, aTipoAceite: string;
   TipoBoleto: Char;
 begin
-  aTotal:=0;
   Protesto := '';
   with ACBrTitulo do
   begin

@@ -112,7 +112,10 @@ begin
                vStringStream.Free;
             end;
          end;
-       end;
+       end
+       else
+        LogoMarcaEmpresa := nil;
+
       ImprimirDANFeRave(TACBrNFe(ACBrNFe),
                        Site,
                        Email,
@@ -175,7 +178,10 @@ begin
                vStringStream.Free;
             end;
          end;
-       end;
+       end
+       else
+        LogoMarcaEmpresa := nil;
+
       if NFE = nil then
          NomeArq := StringReplace(TACBrNFe(ACBrNFe).NotasFiscais.Items[0].NFe.infNFe.ID,'NFe', '', [rfIgnoreCase])
       else

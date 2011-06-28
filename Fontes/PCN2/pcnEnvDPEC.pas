@@ -168,6 +168,7 @@ begin
   FGerador.Free;
   FinfDPEC.Free;
   Fsignature.Free;
+  FOpcoes.Free;
   inherited Destroy;
 end;
 

@@ -1368,10 +1368,13 @@ begin
    begin
     Cert := TMemoryStream.Create;
     Cert2 := TStringStream.Create(ArqPFX);
-
-    Cert.LoadFromStream(Cert2);
-
-    XmlAss := NotaUtil.sign_memory(PAnsiChar(AStr), PAnsiChar(ArqPFX), PAnsiChar(PFXSenha), Cert.Size, Cert.Memory) ;
+    try
+      Cert.LoadFromStream(Cert2);
+      XmlAss := NotaUtil.sign_memory(PAnsiChar(AStr), PAnsiChar(ArqPFX), PAnsiChar(PFXSenha), Cert.Size, Cert.Memory) ;
+    finally
+      Cert2.Free;
+      Cert.Free;
+    end;
   end;
 
   // Removendo quebras de linha //

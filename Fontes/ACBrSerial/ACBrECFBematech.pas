@@ -618,8 +618,11 @@ TACBrECFBematech = class( TACBrECFClass )
 
     Procedure ArquivoMFD_DLL( DataInicial, DataFinal : TDateTime;
        NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]; Finalidade: TACBrECFFinalizaArqMFD = finMFD  ) ; override ;
-    Procedure ArquivoMFD_DLL( COOInicial, COOFinal : Integer;
-       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]; Finalidade: TACBrECFFinalizaArqMFD = finMFD  ) ; override ;
+    Procedure ArquivoMFD_DLL( ContInicial, ContFinal : Integer;
+       NomeArquivo : AnsiString;
+       Documentos : TACBrECFTipoDocumentoSet = [docTodos];
+       Finalidade: TACBrECFFinalizaArqMFD = finMFD;
+       TipoContador: TACBrECFTipoContador = tpcCOO ) ; override ;
  end ;
 
 implementation
@@ -3699,7 +3702,8 @@ begin
 end;
 
 procedure TACBrECFBematech.ArquivoMFD_DLL(DataInicial, DataFinal: TDateTime;
-  NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet; Finalidade: TACBrECFFinalizaArqMFD);
+  NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet;
+  Finalidade: TACBrECFFinalizaArqMFD);
 Var
   ClicheSL : TStringList ;
   Resp : Integer ;
@@ -3848,8 +3852,12 @@ begin
   end;
 end;
 
-procedure TACBrECFBematech.ArquivoMFD_DLL(COOInicial, COOFinal: Integer;
-  NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet; Finalidade: TACBrECFFinalizaArqMFD);
+procedure TACBrECFBematech.ArquivoMFD_DLL(
+  ContInicial, ContFinal : Integer;
+  NomeArquivo : AnsiString;
+  Documentos : TACBrECFTipoDocumentoSet;
+  Finalidade: TACBrECFFinalizaArqMFD;
+  TipoContador: TACBrECFTipoContador);
 Var
   ClicheSL : TStringList ;
   Resp : Integer ;
@@ -3869,7 +3877,7 @@ begin
     finMF:
       begin
         Tipo := '0';
-        CRZToCOO(CooInicial, CooFinal, CooInicial, CooFinal);
+        CRZToCOO(ContInicial, ContFinal, ContInicial, ContFinal);
       end;
     finMFD: Tipo := '1';
     finTDM: Tipo := '2';
@@ -3880,8 +3888,8 @@ begin
   end;
 
   Prop   := IntToStr( StrToIntDef( UsuarioAtual, 1) ) ;
-  CooIni := IntToStrZero( COOInicial, 6 ) ;
-  CooFim := IntToStrZero( COOFinal, 6 ) ;
+  CooIni := IntToStrZero( ContInicial, 6 ) ;
+  CooFim := IntToStrZero( ContFinal, 6 ) ;
 
   { Obtendo Dados do Usuário }
   ClicheSL  := TStringList.Create ;
@@ -3947,8 +3955,8 @@ begin
      Resp := xGeraTxtPorCOO( PAnsiChar( ArqTmp + '.mfd'),
                              PAnsiChar( ArqTmp+'_ESP_' + '.txt'),
                              StrToInt(Prop),
-                             COOInicial,
-                             COOFinal);
+                             ContInicial,
+                             ContFinal);
 
      if (Resp < 0) or (Resp > 1) then
         raise Exception.Create( ACBrStr( 'Erro ao executar GeraTxtPorCOO.'+sLineBreak+

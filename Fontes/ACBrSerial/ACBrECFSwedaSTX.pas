@@ -286,9 +286,10 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
     Procedure ArquivoMFD_DLL( DataInicial, DataFinal : TDateTime;
        NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos];
        Finalidade: TACBrECFFinalizaArqMFD = finMFD  ) ; override ;
-    Procedure ArquivoMFD_DLL( COOInicial, COOFinal : Integer;
+    Procedure ArquivoMFD_DLL( ContInicial, ContFinal : Integer;
        NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos];
-       Finalidade: TACBrECFFinalizaArqMFD = finMFD  ) ; override ;
+       Finalidade: TACBrECFFinalizaArqMFD = finMFD;
+       TipoContador: TACBrECFTipoContador = tpcCOO  ) ; override ;
 
  end ;
 
@@ -987,9 +988,10 @@ begin
   Result := Trim(StringReplace(Result,DecimalSeparator,',',[])) ;
 end;
 
-procedure TACBrECFSwedaSTX.ArquivoMFD_DLL(COOInicial, COOFinal: Integer;
+procedure TACBrECFSwedaSTX.ArquivoMFD_DLL(ContInicial, ContFinal: Integer;
   NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet;
-  Finalidade: TACBrECFFinalizaArqMFD);
+  Finalidade: TACBrECFFinalizaArqMFD;
+  TipoContador: TACBrECFTipoContador);
 Var
   Resp : Integer ;
   CooIni, CooFim : AnsiString ;
@@ -1003,18 +1005,22 @@ begin
     Ativo := False ;
     AbrePortaSerialDLL ;
 
-    if Documentos = [docRZ] then
+    if TipoContador = tpcCRZ then
     begin
        {Por CRZ}
-       CooIni := IntToStrZero( COOInicial, 4 ) ;
-       CooFim := IntToStrZero( COOFinal, 4 ) ;
+       CooIni := IntToStrZero( ContInicial, 4 ) ;
+       CooFim := IntToStrZero( ContFinal, 4 ) ;
     end
     else
+    if TipoContador = tpcCOO then
     begin
        {POr COO}
-       CooIni := IntToStrZero(COOInicial, 7);
-       CooFim := IntToStrZero( COOFinal, 7 ) ;
-    end;
+       CooIni := IntToStrZero( ContInicial, 7);
+       CooFim := IntToStrZero( ContFinal, 7 ) ;
+    end
+    else
+      raise Exception.Create('Tipo de contador desconhecido, tipos válidos: CRZ, COO');
+
     PathBin := ExtractFilePath(NomeArquivo);
     PathBin:= PathBin + 'MF.BIN';
     Resp := xECF_DownloadMF(PAnsiChar(pathBin));

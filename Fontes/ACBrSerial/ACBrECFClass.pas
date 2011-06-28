@@ -973,9 +973,12 @@ TACBrECFClass = class
     Procedure EspelhoMFD_DLL( COOInicial, COOFinal : Integer;
        NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ; virtual ;
     Procedure ArquivoMFD_DLL( DataInicial, DataFinal : TDateTime;
-       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]; Finalidade: TACBrECFFinalizaArqMFD = finMFD  ) ; overload ; virtual ;
-    Procedure ArquivoMFD_DLL( COOInicial, COOFinal : Integer;
-       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]; Finalidade: TACBrECFFinalizaArqMFD = finMFD  ) ; overload ; virtual ;
+       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos];
+       Finalidade: TACBrECFFinalizaArqMFD = finMFD  ) ; overload ; virtual ;
+    Procedure ArquivoMFD_DLL( ContInicial, ContFinal : Integer;
+       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos];
+       Finalidade: TACBrECFFinalizaArqMFD = finMFD;
+       TipoContador: TACBrECFTipoContador = tpcCOO ) ; overload ; virtual ;
 
     Procedure IdentificaOperador(Nome : String); virtual;
     Procedure IdentificaPAF( Linha1, Linha2 : String) ; virtual ;
@@ -2005,13 +2008,15 @@ begin
 end;
 
 procedure TACBrECFClass.ArquivoMFD_DLL(DataInicial, DataFinal: TDateTime;
-  NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet; Finalidade: TACBrECFFinalizaArqMFD);
+  NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet;
+  Finalidade: TACBrECFFinalizaArqMFD);
 begin
   ErroAbstract('ArquivoMFD_DLL');
 end;
 
-procedure TACBrECFClass.ArquivoMFD_DLL(COOInicial, COOFinal: Integer;
-  NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet; Finalidade: TACBrECFFinalizaArqMFD);
+procedure TACBrECFClass.ArquivoMFD_DLL(ContInicial, ContFinal: Integer;
+  NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet;
+  Finalidade: TACBrECFFinalizaArqMFD; TipoContador: TACBrECFTipoContador);
 begin
   ErroAbstract('ArquivoMFD_DLL');
 end;

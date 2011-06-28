@@ -333,6 +333,7 @@ type
     chkMenuFiscalCotepe1704: TCheckBox;
     chkMenuFiscalGerarArquivo: TCheckBox;
     Label31: TLabel;
+    btnIdentificaPafECF: TButton;
     procedure cbxModeloChange(Sender: TObject);
     procedure Sair1Click(Sender: TObject);
     procedure bAtivarClick(Sender: TObject);
@@ -523,6 +524,7 @@ type
     procedure btnMenuFiscalRelMeiosPagtoClick(Sender: TObject);
     procedure btnMenuFiscalRelDAVEmitidosClick(Sender: TObject);
     procedure btnMenuFiscalRelIdentPAFECFClick(Sender: TObject);
+    procedure btnIdentificaPafECFClick(Sender: TObject);
   private
     { Private declarations }
     Function Converte( cmd : String) : String;
@@ -3443,6 +3445,12 @@ procedure TForm1.mModeloStrClick(Sender: TObject);
 begin
   mResp.Lines.Add( 'ModeloStr: ('+ ACBrECF1.ModeloStr+')' );
   AtualizaMemos ;
+end;
+
+procedure TForm1.btnIdentificaPafECFClick(Sender: TObject);
+begin
+  ACBrECF1.IdentificaPAF('MD5: AXAXAXAXAXAXAXAXAXAXAXAXAXAXAXAX', 'Demo ACBrECF');
+  ShowMessage('Identificação feita com sucesso.');
 end;
 
 procedure TForm1.btnMenuFiscalLMFCClick(Sender: TObject);

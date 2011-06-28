@@ -326,9 +326,10 @@ TACBrECFFiscNET = class( TACBrECFClass )
     Procedure ArquivoMFD_DLL( DataInicial, DataFinal : TDateTime;
        NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos];
        Finalidade: TACBrECFFinalizaArqMFD = finMFD  ) ; override ;
-    Procedure ArquivoMFD_DLL( COOInicial, COOFinal : Integer;
+    Procedure ArquivoMFD_DLL( ContInicial, ContFinal : Integer;
        NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos];
-       Finalidade: TACBrECFFinalizaArqMFD = finMFD  ) ; override ;
+       Finalidade: TACBrECFFinalizaArqMFD = finMFD;
+       TipoContador: TACBrECFTipoContador = tpcCOO  ) ; override ;
 
     Procedure ImprimeCheque(Banco : String; Valor : Double ; Favorecido,
        Cidade : String; Data : TDateTime ;Observacao : String = '') ; override ;
@@ -2968,9 +2969,9 @@ begin
   end ;
 end;
 
-procedure TACBrECFFiscNET.ArquivoMFD_DLL(COOInicial, COOFinal: Integer; NomeArquivo: AnsiString;
+procedure TACBrECFFiscNET.ArquivoMFD_DLL(ContInicial, ContFinal: Integer; NomeArquivo: AnsiString;
   Documentos: TACBrECFTipoDocumentoSet;
-  Finalidade: TACBrECFFinalizaArqMFD);
+  Finalidade: TACBrECFFinalizaArqMFD; TipoContador: TACBrECFTipoContador);
 Var
   iRet : Integer;
   PortaSerial, ModeloECF, NumFab : String;
@@ -2980,8 +2981,8 @@ Var
 begin
   NumFab      := NumSerie;
   ModeloECF   := SubModeloECF;
-  CooIni      := IntToStrZero( COOInicial, 6 ) ;
-  CooFim      := IntToStrZero( COOFinal, 6 ) ;
+  CooIni      := IntToStrZero( ContInicial, 6 ) ;
+  CooFim      := IntToStrZero( ContFinal, 6 ) ;
   Prop        := IntToStr( StrToIntDef( UsuarioAtual, 1) ) ;
   PortaSerial := fpDevice.Porta ;
 

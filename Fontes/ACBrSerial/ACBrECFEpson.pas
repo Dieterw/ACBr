@@ -301,9 +301,10 @@ TACBrECFEpson = class( TACBrECFClass )
     Procedure ArquivoMFD_DLL( DataInicial, DataFinal : TDateTime;
        NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos];
        Finalidade: TACBrECFFinalizaArqMFD = finMFD  ) ; override ;
-    Procedure ArquivoMFD_DLL( COOInicial, COOFinal : Integer;
+    Procedure ArquivoMFD_DLL( ContInicial, ContFinal : Integer;
        NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos];
-       Finalidade: TACBrECFFinalizaArqMFD = finMFD  ) ; override ;
+       Finalidade: TACBrECFFinalizaArqMFD = finMFD;
+       TipoContador: TACBrECFTipoContador = tpcCOO ) ; override ;
 
     Procedure AbreGaveta ; override ;
 
@@ -3156,9 +3157,10 @@ begin
                             'Arquivo: '+ArqTmp + '_CTP.txt não gerado' ))
 end;
 
-procedure TACBrECFEpson.ArquivoMFD_DLL(COOInicial, COOFinal: Integer;
+procedure TACBrECFEpson.ArquivoMFD_DLL(ContInicial, ContFinal: Integer;
   NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet;
-  Finalidade: TACBrECFFinalizaArqMFD);
+  Finalidade: TACBrECFFinalizaArqMFD;
+  TipoContador: TACBrECFTipoContador);
 Var
   Resp : Integer ;
   ArqTmp, CooIni, CooFim : AnsiString ;
@@ -3175,8 +3177,8 @@ begin
 
     AbrePortaSerialDLL ;
 
-    CooIni := IntToStr( COOInicial ) ;
-    CooFim := IntToStr( COOFinal ) ;
+    CooIni := IntToStr( ContInicial ) ;
+    CooFim := IntToStr( ContFinal ) ;
 
     Resp := xEPSON_Obter_Dados_MF_MFD(  PAnsiChar(COOIni), PAnsiChar(CooFim),
                                         2,                // Faixa em COO

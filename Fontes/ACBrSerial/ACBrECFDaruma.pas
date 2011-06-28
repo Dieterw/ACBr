@@ -169,11 +169,12 @@ const  NUL = #00 ;
        FS  = #28  ;
        GS  = #29  ;
        FF  = #255 ;
+       ARQ_MFD_DLL = 'Espelho_MFD.txt';
 
   {$IFDEF LINUX}
-   cLIB_Daruma = 'Daruma32.so';
+   cLIB_Daruma = 'libDarumaFramework.so';
   {$ELSE}
-   cLIB_Daruma = 'Daruma32.dll';
+   cLIB_Daruma = 'DarumaFrameWork.dll';
   {$ENDIF}
 type
 
@@ -204,30 +205,18 @@ TACBrECFDaruma = class( TACBrECFClass )
     fsRet244: AnsiString ;
     fsNumCRO: String ;
     fsErro, fsErroSTD, fsCodAviso : Integer ;
-
-    xDaruma_FIMFD_DownloadDaMFD : function (Data_COO_Inicial: AnsiString;
-       Data_COO_Final: AnsiString ): Integer; StdCall;
-    xDaruma_Registry_AlterarRegistry : function ( Produto: AnsiString;
-       Chave: AnsiString; Valor: AnsiString ): Integer; StdCall;
-    xDaruma_Registry_Porta : function ( Porta: AnsiString ): Integer; StdCall;
-    xDaruma_FI_AbrePortaSerial  : function (): Integer; StdCall;
-    xDaruma_FI_FechaPortaSerial  : function (): Integer; StdCall;
-
-    xDaruma_FIMFD_GerarAtoCotepePafData : function (DataIni: AnsiString;
-       DataFim: AnsiString): Integer; StdCall;
-    xDaruma_FIMFD_GerarAtoCotepePafCOO : function (COOIni: AnsiString;
-       COOFim: AnsiString): Integer; StdCall;
-
-    xDaruma_FIMFD_GerarMFPAF_Data: function (DataIni: AnsiString;
-       DataFim: AnsiString): Integer; StdCall;
-    xDaruma_FIMFD_GerarMFPAF_CRZ: function (CRZIni: AnsiString;
-       CRZFim: AnsiString): Integer; StdCall;
-
-    xDaruma_Registry_AplMensagem1: function ( Mensagem: AnsiString ): Integer; StdCall;
-    xDaruma_Registry_AplMensagem2: function ( Mensagem: AnsiString ): Integer; StdCall;
+    
+    xeDefinirModoRegistro_Daruma: function(Local: AnsiString): Integer; StdCall;
+    xeDefinirProduto: function(Tipo: AnsiString): Integer; StdCall;
+    xregAlterarValor_Daruma: function(Chave: AnsiString; Valor: AnsiString): Integer; StdCall;
+    xrGerarEspelhoMFD_ECF_Daruma: function(ATipo , AInicial, AFinal: AnsiString): Integer; StdCall;
+    xrGerarRelatorio_ECF_Daruma: function(ARelatorio, ATipo , AInicial, AFinal: AnsiString): Integer; StdCall;
+    xrGerarRelatorioOffline_ECF_Daruma: function (ARelatorio, ATipo,
+      AInicial, AFinal, AArquivo_MF, AArquivo_MFD, AArquivo_INF: AnsiString): Integer; StdCall;
 
     procedure LoadDLLFunctions;
-    procedure AbrePortaSerialDLL(const Path : AnsiString );
+    procedure UnloadDLLFunctions;
+    procedure ConfigurarDLL(const Path : AnsiString );
 
     Function PreparaCmd( cmd : AnsiString ) : AnsiString ;
     function GetComprovantesNaoFiscaisVinculado: TACBrECFComprovantesNaoFiscais;
@@ -239,6 +228,7 @@ TACBrECFDaruma = class( TACBrECFClass )
     function LimpaChr0(const AString: AnsiString): AnsiString;
     function EnviaComando_ECF_Daruma(cmd: AnsiString): AnsiString;
     Function DocumentosToStr(Documentos : TACBrECFTipoDocumentoSet) : String ;
+    function GetDescricaoErroDLL(const ACodigo: Integer): String;
  protected
     function GetDataHora: TDateTime; override ;
     function GetNumCupom: String; override ;
@@ -375,8 +365,10 @@ TACBrECFDaruma = class( TACBrECFClass )
        NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
     Procedure ArquivoMFD_DLL( DataInicial, DataFinal : TDateTime;
        NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]; Finalidade: TACBrECFFinalizaArqMFD = finMFD  ) ; override ;
-    Procedure ArquivoMFD_DLL( COOInicial, COOFinal : Integer;
-       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]; Finalidade: TACBrECFFinalizaArqMFD = finMFD  ) ; override ;
+    Procedure ArquivoMFD_DLL( ContInicial, ContFinal : Integer;
+       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos];
+       Finalidade: TACBrECFFinalizaArqMFD = finMFD;
+       TipoContador: TACBrECFTipoContador = tpcCOO  ) ; override ;
 
     Procedure IdentificaOperador ( Nome: String); override;
     Procedure IdentificaPAF( Linha1, Linha2 : String) ; override ;
@@ -756,6 +748,8 @@ const
 
 
 constructor TACBrECFDaruma.create( AOwner : TComponent ) ;
+var
+  Resp: Integer;
 begin
   inherited create( AOwner ) ;
 
@@ -4171,21 +4165,26 @@ begin
     EnviaComando( FS + 'C' + #214 + PadL(Linha1,42) + PadL(Linha2,42) );
 
     try
-       LoadDLLFunctions;
+      LoadDLLFunctions;
+      try
+        ConfigurarDLL('C:\');
 
-       // gravar no registro para evitar a perda, algumas funções da dll leem dessas chaves
-       Resp := xDaruma_Registry_AplMensagem1( Linha1 );
-       if Resp <> 1 then
-          raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar:'+sLineBreak+
-          'Daruma_Registry_AplMensagem1( "'+Linha1+'" )') );
+        // gravar no registro para evitar a perda, algumas funções da dll leem dessas chaves
+        Resp := xregAlterarValor_Daruma('ECF\MensagemApl1', Linha1 );
+        if Resp <> 1 then
+           raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar: '+sLineBreak+
+           'xregAlterarValor_Daruma( "ECF\MensagemApl1",  "'+Linha1+'" )') );
 
-       Resp := xDaruma_Registry_AplMensagem2( Linha2 );
-       if Resp <> 1 then
-          raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar:'+sLineBreak+
-          'Daruma_Registry_AplMensagem2( "'+Linha2+'" )') );
+        Resp := xregAlterarValor_Daruma('ECF\MensagemApl2', Linha2 );
+        if Resp <> 1 then
+           raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar: '+sLineBreak+
+           'xregAlterarValor_Daruma( "ECF\MensagemApl2",  "'+Linha1+'" )') );
+      finally
+        UnloadDLLFunctions;
+      end;
     except
-      { Exceção muda... pode falhar se não achar a DLL }
-    end ;
+      // Exceção muda... pode falhar se não achar a DLL
+    end;
   end;
 end;
 
@@ -4479,215 +4478,288 @@ begin
 end ;
 
 procedure TACBrECFDaruma.LoadDLLFunctions;
- procedure DarumaFunctionDetect( FuncName: String; var LibPointer: Pointer ) ;
- var
- sLibName: string;
- begin
-   if not Assigned( LibPointer )  then
-   begin
-     // Verifica se exite o caminho das DLLs
-     if Length(PathDLL) > 0 then
+
+  procedure DarumaFunctionDetect( FuncName: String; var LibPointer: Pointer ) ;
+  var
+    sLibName: string;
+  begin
+    if not Assigned( LibPointer )  then
+    begin
+      // Verifica se existe o caminho das DLLs
+      if Length(PathDLL) > 0 then
         sLibName := PathWithDelim(PathDLL);
 
-     // Concatena o caminho se exitir mais o nome da DLL.
-     sLibName := sLibName + cLIB_Daruma;
+      // Concatena o caminho se exitir mais o nome da DLL.
+      sLibName := sLibName + cLIB_Daruma;
 
-     if not FunctionDetect( sLibName, FuncName, LibPointer) then
-     begin
+      if not FunctionDetect( sLibName, FuncName, LibPointer) then
+      begin
         LibPointer := NIL ;
-        raise Exception.Create( ACBrStr( 'Erro ao carregar a função:'+FuncName+' de: '+cLIB_Daruma ) ) ;
-     end ;
-   end ;
- end ;
+        raise Exception.Create( ACBrStr( 'Erro ao carregar a função: '+FuncName+' de: '+cLIB_Daruma ) ) ;
+      end ;
+    end ;
+  end ;
+
 begin
-   DarumaFunctionDetect('Daruma_FI_AbrePortaSerial', @xDaruma_FI_AbrePortaSerial);
-   DarumaFunctionDetect('Daruma_FI_FechaPortaSerial', @xDaruma_FI_FechaPortaSerial);
-   DarumaFunctionDetect('Daruma_Registry_AlterarRegistry', @xDaruma_Registry_AlterarRegistry);
-   DarumaFunctionDetect('Daruma_Registry_Porta', @xDaruma_Registry_Porta);
-   DarumaFunctionDetect('Daruma_FIMFD_GerarAtoCotepePafData', @xDaruma_FIMFD_GerarAtoCotepePafData);
-   DarumaFunctionDetect('Daruma_FIMFD_GerarAtoCotepePafCOO', @xDaruma_FIMFD_GerarAtoCotepePafCOO);
-   DarumaFunctionDetect('Daruma_FIMFD_DownloadDaMFD', @xDaruma_FIMFD_DownloadDaMFD);
-   DarumaFunctionDetect('Daruma_FIMFD_GerarMFPAF_Data', @xDaruma_FIMFD_GerarMFPAF_Data);
-   DarumaFunctionDetect('Daruma_FIMFD_GerarMFPAF_CRZ', @xDaruma_FIMFD_GerarMFPAF_CRZ);
-   DarumaFunctionDetect('Daruma_Registry_AplMensagem1', @xDaruma_Registry_AplMensagem1);
-   DarumaFunctionDetect('Daruma_Registry_AplMensagem2', @xDaruma_Registry_AplMensagem2);
+  DarumaFunctionDetect('eDefinirModoRegistro_Daruma', @xeDefinirModoRegistro_Daruma);
+  DarumaFunctionDetect('eDefinirProduto', @xeDefinirProduto);
+  DarumaFunctionDetect('regAlterarValor_Daruma', @xregAlterarValor_Daruma);
+  DarumaFunctionDetect('rGerarEspelhoMFD_ECF_Daruma', @xrGerarEspelhoMFD_ECF_Daruma);
+  DarumaFunctionDetect('rGerarRelatorio_ECF_Daruma', @xrGerarRelatorio_ECF_Daruma);
+  DarumaFunctionDetect('rGerarRelatorioOffline_ECF_Daruma', @xrGerarRelatorioOffline_ECF_Daruma);
+
 end;
 
-procedure TACBrECFDaruma.AbrePortaSerialDLL(const Path : AnsiString );
+procedure TACBrECFDaruma.UnloadDLLFunctions;
+begin
+  xeDefinirModoRegistro_Daruma := NIL;
+  xeDefinirProduto := NIL;
+  xregAlterarValor_Daruma := NIL;
+  xrGerarEspelhoMFD_ECF_Daruma := NIL;
+  xrGerarRelatorio_ECF_Daruma := NIL;
+  xrGerarRelatorioOffline_ECF_Daruma := NIL;
+end;
+
+procedure TACBrECFDaruma.ConfigurarDLL(const Path : AnsiString );
 Var
   Resp : Integer ;
   Porta, Velocidade : AnsiString ;
 begin
+  if Trim(Path) = '' then
+    raise Exception.Create(ACBrStr('ConfigurarDLL: Caminho do arquivo não informado'));
+
   Porta      := fpDevice.Porta ;
   Velocidade := IntToStr(fpDevice.Baud) ;
 
-  Resp := xDaruma_Registry_AlterarRegistry( 'ECF', 'BuscarPorta', '0' );
+  // configurar a daruma para gravar somente no XML
+  Resp := xeDefinirModoRegistro_Daruma('2');
+  if Resp <> 1 then
+     raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar: '+sLineBreak+
+     'xeDefinirModoRegistro_Daruma( "2" )') );
+
+  // Configurar o tipo de impressora na DLL
+  Resp := xeDefinirProduto('FISCAL');
+  if Resp <> 1 then
+     raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar: '+sLineBreak+
+     'xeDefinirProduto( "FISCAL" )') );
+
+  // Configurações gerais de funcionamento da DLL
+  Resp := xregAlterarValor_Daruma( 'ECF\ControleAutomatico', '1' );
+  if Resp <> 1 then
+     raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar: '+sLineBreak+
+     'xregAlterarValor_Daruma( "ECF\ControleAutomatico", "1" ) ') );
+
+  Resp := xregAlterarValor_Daruma( 'ECF\PortaSerial', Porta );
+  if Resp <> 1 then
+     raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar: '+sLineBreak+
+     'xregAlterarValor_Daruma( "ECF\PortaSerial", "'+Porta+'" ) ') );
+
+  Resp := xregAlterarValor_Daruma( 'ECF\Velocidade', Velocidade );
+  if Resp <> 1 then
+     raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar: '+sLineBreak+
+     'xregAlterarValor_Daruma( "ECF\Velocidade", "'+Velocidade+'" ) ') );
+
+  Resp := xregAlterarValor_Daruma( 'START\LocalArquivos', Path );
   if Resp <> 1 then
      raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar:'+sLineBreak+
-     'Daruma_Registry_AlterarRegistry( "ECF", "BuscaPorta", "0" ) ') );
+     'xregAlterarValor_Daruma( "START\LocalArquivos",  "'+Path+'" ) ') );
 
-  Resp := xDaruma_Registry_AlterarRegistry( 'ECF', 'ControlePorta', '0' );
+  Resp := xregAlterarValor_Daruma( 'START\LocalArquivosRelatorios', Path );
   if Resp <> 1 then
      raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar:'+sLineBreak+
-     'Daruma_Registry_AlterarRegistry( "ECF", "ControlePorta", "0" ) ') );
+     'xregAlterarValor_Daruma( "START\LocalArquivos", "'+Path+'" ) ') );
+end;
 
-  Resp := xDaruma_Registry_AlterarRegistry('ECF', 'ThreadNoStartup', '0');
-  if Resp <> 1 then
-     raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar:'+sLineBreak+
-     'Daruma_Registry_AlterarRegistry( "ECF", "ThreadNoStartup", "0" ) ') );
-
-  Resp := xDaruma_Registry_AlterarRegistry( 'ECF', 'Velocidade', Velocidade );
-  if Resp <> 1 then
-     raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar:'+sLineBreak+
-     'Daruma_Registry_AlterarRegistry( "ECF", "Velocidade", "'+Velocidade+'" ) ') );
-
-  Resp := xDaruma_Registry_AlterarRegistry( 'AtoCotepe', 'Path', Path );
-  if Resp <> 1 then
-     raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar:'+sLineBreak+
-     'Daruma_Registry_AlterarRegistry( "AtoCotepe", "Path", "'+Path+'" ) ') );
-
-  Resp := xDaruma_Registry_AlterarRegistry( 'ECF', 'Path', Path );
-  if Resp <> 1 then
-     raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar:'+sLineBreak+
-     'Daruma_Registry_AlterarRegistry( "ECF", "Path", "'+Path+'" ) ') );
-
-  Resp := xDaruma_Registry_AlterarRegistry( 'AtoCotepe', 'Beep', '1' );
-
-  Resp := xDaruma_Registry_Porta( Porta );
-  if Resp <> 1 then
-     raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar:'+sLineBreak+
-        'xDaruma_Registry_Porta( "'+Porta+'" ) ') );
+function TACBrECFDaruma.GetDescricaoErroDLL(const ACodigo: Integer): String;
+begin
+  case ACodigo of
+     0:   Result := 'Erro durante a execução.';
+//     1:   Result := 'Operação realizada com sucesso.
+    -1:   Result := 'Erro do Método.';
+    -2:   Result := 'Parâmetro incorreto.';
+    -3:   Result := 'Alíquota (Situação tributária) não programada.';
+    -4:   Result := 'Chave do Registry não encontrada.';
+    -5:   Result := 'Erro ao Abrir a porta de Comunicação.';
+    -6:   Result := 'Impressora Desligada.';
+    -7:   Result := 'Erro no Número do Banco.';
+    -8:   Result := 'Erro ao Gravar as informações no arquivo de Status ou de Retorno de Info.';
+    -9:   Result := 'Erro ao Fechar a porta de Comunicação.';
+    -10:  Result := 'O ECF não tem a forma de pagamento e não permite cadastrar esta forma.';
+    -12:  Result := 'A função executou o comando porém o ECF sinalizou Erro, chame a rStatusUltimoCmdInt_ECF_Daruma para identificar o Erro.';
+    -24:  Result := 'Forma de Pagamento não Programada.';
+    -25:  Result := 'Totalizador nao ECF Não Vinculado não Programado.';
+    -27:  Result := 'Foi Detectado Erro ou Warning na Impressora.';
+    -28:  Result := 'Time-Out.';
+    -40:  Result := 'Tag XML Inválida.';
+    -50:  Result := 'Problemas ao Criar Chave no Registry.';
+    -51:  Result := 'Erro ao Gravar LOG.';
+    -52:  Result := 'Erro ao abrir arquivo.';
+    -53:  Result := 'Fim de arquivo.';
+    -60:  Result := 'Erro na tag de formatação DHTML.';
+    -90:  Result := 'Erro Configurar a Porta de Comunicação.';
+    -99:  Result := 'Parâmetro inválido ou ponteiro nulo de parâmetro.';
+    -101: Result := 'Erro ao LER ou ESCREVER arquivo.';
+    -102: Result := 'Erro ao LER ou ESCREVER arquivo.';
+    -103: Result := 'Não foram encontradas as DLLs auxiliares (lebin.dll e LeituraMFDBin.dll)';
+    -104: Result := 'Data informada é inferior ao primeiro documento emitido';
+    -105: Result := 'Data informada é maior que a ultima redução Z impressa';
+  else
+    Result := 'Erro desconhecido.';
+  end;
 end;
 
 procedure TACBrECFDaruma.EspelhoMFD_DLL(COOInicial, COOFinal: Integer;
   NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet);
 var
-  Resp  : Integer ;
-  CooIni, CooFim, PathDest : AnsiString ;
-  OldAtivo : Boolean ;
+  Resp: Integer ;
+  Tipo, CooIni, CooFim, DirDest, PathDest: AnsiString ;
+  OldAtivo: Boolean ;
 begin
-  PathDest := ExtractFilePath( NomeArquivo ) ;
-
-  CooIni := IntToStrZero( COOInicial, 6 ) ;
-  CooFim := IntToStrZero( COOFinal, 6 ) ;
-
-  LoadDLLFunctions;
-
-  OldAtivo := Ativo ;
+  OldAtivo := Ativo;
   try
-     Ativo := False;
+    DirDest  := IncludeTrailingPathDelimiter(ExtractFilePath(NomeArquivo));
+    PathDest := DirDest + ARQ_MFD_DLL;
 
-     AbrePortaSerialDLL( PathDest ) ;
+    LoadDLLFunctions;
+    ConfigurarDLL(DirDest);
 
-     Resp := xDaruma_FIMFD_DownloadDaMFD( CooIni, CooFim ) ;
-     if (Resp <> 1) then
-        raise Exception.Create( ACBrStr( 'Erro ao executar Daruma_FIMFD_DownloadDaMFD.'+sLineBreak+
-                                         'Cod.: '+IntToStr(Resp) )) ;
+    Ativo  := False;
+    Tipo   := '2';
+    CooIni := IntToStrZero(COOInicial, 6);
+    CooFim := IntToStrZero(COOFinal,   6);
 
-     if not FileExists( PathDest + PathDelim + 'Retorno.txt') then
-        raise Exception.Create( ACBrStr( 'Erro na execução de Daruma_FIMFD_DownloadDaMFD.'+sLineBreak+
-                               'Arquivo: "Retorno.txt" não gerado' )) ;
+    Resp := xrGerarEspelhoMFD_ECF_Daruma(Tipo, CooIni, CooFim);
+    if (Resp <> 1) then
+      raise Exception.Create( ACBrStr( 'Erro ao executar rGerarEspelhoMFD_ECF_Daruma.'+sLineBreak+
+                                       'Cod.: '+IntToStr(Resp)+' '+GetDescricaoErroDLL(Resp) )) ;
 
-     CopyFileTo(PathDest + PathDelim +'Retorno.txt',NomeArquivo ) ;
+    if not FileExists( PathDest ) then
+      raise Exception.Create( ACBrStr( 'Erro na execução de rGerarEspelhoMFD_ECF_Daruma.'+sLineBreak+
+                                       'Arquivo: "'+ ARQ_MFD_DLL +'" não gerado' )) ;
+
+    if PathDest <> NomeArquivo then
+      CopyFileTo(PathDest, NomeArquivo) ;
   finally
-     xDaruma_FI_FechaPortaSerial();
-     DeleteFile(PathDest + PathDelim + 'Retorno.txt' ) ;
-     Ativo := OldAtivo ;
+    Ativo := OldAtivo;
+    UnloadDLLFunctions;
+
+    if PathDest <> NomeArquivo then
+      DeleteFile(PathDest);
   end;
 end;
 
 procedure TACBrECFDaruma.EspelhoMFD_DLL(DataInicial, DataFinal: TDateTime;
   NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet);
 var
-  Resp : Integer ;
-  DiaIni, DiaFim, PathDest : AnsiString ;
-  OldAtivo : Boolean ;
+  Resp: Integer ;
+  Tipo, DiaIni, DiaFim, DirDest, PathDest: AnsiString ;
+  OldAtivo: Boolean ;
 begin
-  PathDest := ExtractFilePath( NomeArquivo ) ;
-
-  DiaIni := FormatDateTime('dd/mm/yy',DataInicial) ;
-  DiaFim := FormatDateTime('dd/mm/yy',DataFinal) ;
-
-  LoadDLLFunctions;
-
-  OldAtivo := Ativo ;
+  OldAtivo := Ativo;
   try
-     Ativo := False;
+    DirDest  := IncludeTrailingPathDelimiter(ExtractFilePath(NomeArquivo));
+    PathDest := DirDest + ARQ_MFD_DLL;
 
-     AbrePortaSerialDLL( PathDest ) ;
+    LoadDLLFunctions;
+    ConfigurarDLL(DirDest);
 
-     Resp := xDaruma_FIMFD_DownloadDaMFD( DiaIni, DiaFim ) ;
-     if (Resp <> 1) then
-        raise Exception.Create( ACBrStr( 'Erro ao executar Daruma_FIMFD_DownloadDaMFD.'+sLineBreak+
-                                         'Cod.: '+IntToStr(Resp) )) ;
+    Ativo  := False;
+    Tipo   := '1';
+    DiaIni := FormatDateTime('ddmmyy', DataInicial);
+    DiaFim := FormatDateTime('ddmmyy', DataFinal);
 
-     if not FileExists( PathDest + PathDelim + 'Retorno.txt') then
-        raise Exception.Create( ACBrStr( 'Erro na execução de Daruma_FIMFD_DownloadDaMFD.'+sLineBreak+
-                               'Arquivo: "Retorno.txt" não gerado' )) ;
+    Resp := xrGerarEspelhoMFD_ECF_Daruma(Tipo, DiaIni, DiaFim );
+    if (Resp <> 1) then
+      raise Exception.Create( ACBrStr( 'Erro ao executar rGerarEspelhoMFD_ECF_Daruma.'+sLineBreak+
+                                        'Cod.: '+IntToStr(Resp)+' '+GetDescricaoErroDLL(Resp) )) ;
 
-     CopyFileTo(PathDest + PathDelim +'Retorno.txt',NomeArquivo ) ;
+    if not FileExists(PathDest) then
+      raise Exception.Create( ACBrStr( 'Erro na execução de rGerarEspelhoMFD_ECF_Daruma.'+sLineBreak+
+                              'Arquivo: "'+ ARQ_MFD_DLL +'" não gerado' )) ;
+
+    if PathDest <> NomeArquivo then
+      CopyFileTo(PathDest, NomeArquivo);
   finally
-     xDaruma_FI_FechaPortaSerial();
-     DeleteFile(PathDest + PathDelim + 'Retorno.txt' ) ;
-     Ativo := OldAtivo ;
+    Ativo := OldAtivo;
+    UnloadDLLFunctions;
+
+    if PathDest <> NomeArquivo then
+      DeleteFile(PathDest);
   end;
 end;
 
-procedure TACBrECFDaruma.ArquivoMFD_DLL(COOInicial, COOFinal: Integer;
+procedure TACBrECFDaruma.ArquivoMFD_DLL(ContInicial, ContFinal: Integer;
   NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet;
-  Finalidade: TACBrECFFinalizaArqMFD);
+  Finalidade: TACBrECFFinalizaArqMFD;
+  TipoContador: TACBrECFTipoContador);
 var
-  Resp : Integer ;
-  CooIni, CooFim, PathDest : AnsiString ;
-  OldAtivo : Boolean ;
+  Resp: Integer ;
+  NomeArq, Relatorio, Tipo, Inicio, Fim, DirDest, PathDest: AnsiString ;
+  OldAtivo: Boolean ;
 begin
-  PathDest := ExtractFilePath( NomeArquivo ) ;
-
-  CooIni := IntToStrZero( COOInicial, 6 ) ;
-  CooFim := IntToStrZero( COOFinal, 6 ) ;
-
-  LoadDLLFunctions;
-
-  OldAtivo := Ativo ;
+  OldAtivo := Ativo;
   try
-     Ativo := False;
+    if Finalidade in [finSintegra, finSPED] then
+      raise Exception.Create(ACBrStr('Finalidades SINTEGRA e SPED somente podem ser utilizadas por DATA DE MOVIMENTO'));
 
-     AbrePortaSerialDLL( PathDest ) ;
+    case Finalidade of
+      finMF: Relatorio := 'MF';
+      finMFD: Relatorio := 'MFD';
+      finTDM: Relatorio := 'TDM';
+      finNFP: Relatorio := 'NFP';
+      finNFPTDM: Relatorio := 'NFPTDM';
+    else
+      raise Exception.Create(ACBrStr('Finalidade não reconhecida, finalidades válidas: MF, MFD, TDM, NFP, NFPTDM'));
+    end;
 
-     case Finalidade of
-       finMF:
-        begin
-           Resp := xDaruma_FIMFD_GerarMFPAF_CRZ( CooIni, CooFim ) ;
-           if (Resp <> 1) then
-              raise Exception.Create( ACBrStr( 'Erro ao executar Daruma_FIMFD_GerarMFPAF_CRZ.'+sLineBreak+
-                                               'Cod.: '+IntToStr(Resp) ) ) ;
+    case TipoContador of
+      tpcCRZ: Tipo := 'CRZ';
+      tpcCOO: Tipo := 'COO';
+    else
+      raise Exception.Create(ACBrStr('Tipo de contador desconhecido, tipos válidos: CRZ, COO'));
+    end;
 
-           if not FileExists( PathDest + PathDelim + 'AtocotepeMF_CRZ.TXT') then
-              raise Exception.Create( ACBrStr( 'Erro na execução de Daruma_FIMFD_GerarMFPAF_CRZ.'+sLineBreak+
-                                     'Arquivo: "AtocotepeMF_CRZ.TXT" não gerado' )) ;
+    NomeArq  := 'ATO_' + Relatorio + '_' + Tipo + '.TXT';
+    DirDest  := IncludeTrailingPathDelimiter(ExtractFilePath(NomeArquivo));
+    PathDest := DirDest + NomeArq;
 
-           CopyFileTo(PathDest + PathDelim + 'AtocotepeMF_CRZ.TXT', NomeArquivo );
-        end;
+    LoadDLLFunctions;
+    ConfigurarDLL(DirDest);
 
-       finMFD, finRZ, finRFD, finTDM:
-        begin
-           Resp := xDaruma_FIMFD_GerarAtoCotepePAFCoo( CooIni, CooFim ) ;
-           if (Resp <> 1) then
-              raise Exception.Create( ACBrStr( 'Erro ao executar Daruma_FIMFD_GerarAtoCotepePAFCoo.'+sLineBreak+
-                                               'Cod.: '+IntToStr(Resp) ) ) ;
+    Ativo  := False;
+    Inicio := IntToStrZero(ContInicial, 6);
+    Fim    := IntToStrZero(ContFinal,   6);
 
-           if not FileExists( PathDest + PathDelim + 'ATOCOTEPE_DARUMA.TXT') then
-              raise Exception.Create( ACBrStr( 'Erro na execução de Daruma_FIMFD_GerarAtoCotepePAFCoo.'+sLineBreak+
-                                     'Arquivo: "ATOCOTEPE_DARUMA.TXT" não gerado' )) ;
+    if OldAtivo then
+    begin
+      Resp := xrGerarRelatorio_ECF_Daruma(Relatorio, Tipo, Inicio, Fim);
+      if (Resp <> 1) then
+        raise Exception.Create( ACBrStr( 'Erro ao executar rGerarEspelhoMFD_ECF_Daruma.'+sLineBreak+
+                                         'Cod.: '+IntToStr(Resp)+' '+GetDescricaoErroDLL(Resp) )) ;
+    end
+    else
+    begin
+      Resp := xrGerarRelatorioOffline_ECF_Daruma(Relatorio, Tipo, Inicio, Fim,
+                                                 PathDest+'Daruma.mf',
+                                                 PathDest+'Daruma.mfd',
+                                                 PathDest+'Daruma.inf');
+      if (Resp <> 1) then
+        raise Exception.Create( ACBrStr( 'Erro ao executar rGerarRelatorioOffline_ECF_Daruma.'+sLineBreak+
+                                         'Cod.: '+IntToStr(Resp)+' '+GetDescricaoErroDLL(Resp) )) ;
+    end;
 
-           CopyFileTo(PathDest + PathDelim + 'ATOCOTEPE_DARUMA.TXT', NomeArquivo );
-        end;
-     end; 
+    if not FileExists( PathDest ) then
+      raise Exception.Create( ACBrStr( 'Erro na execução de rGerarEspelhoMFD_ECF_Daruma.'+sLineBreak+
+                                       'Arquivo: "'+ NomeArq +'" não gerado' )) ;
+
+    if PathDest <> NomeArquivo then
+      CopyFileTo(PathDest, NomeArquivo) ;
   finally
-     xDaruma_FI_FechaPortaSerial();
-     DeleteFile(PathDest + PathDelim + 'ATOCOTEPE_DARUMA.TXT') ;
-     DeleteFile(PathDest + PathDelim + 'AtocotepeMF_CRZ.TXT') ;
-     Ativo := OldAtivo ;
+    Ativo := OldAtivo;
+    UnloadDLLFunctions;
+
+    if PathDest <> NomeArquivo then
+      DeleteFile(PathDest);
   end;
 end;
 
@@ -4695,57 +4767,67 @@ procedure TACBrECFDaruma.ArquivoMFD_DLL(DataInicial, DataFinal: TDateTime;
   NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet;
   Finalidade: TACBrECFFinalizaArqMFD);
 var
-  Resp : Integer ;
-  DiaIni, DiaFim, PathDest : AnsiString ;
-  OldAtivo : Boolean ;
+  Resp: Integer ;
+  NomeArq, Relatorio, Tipo, DtInicial, DtFinal, DirDest, PathDest: AnsiString ;
+  OldAtivo: Boolean ;
 begin
-  PathDest := ExtractFilePath( NomeArquivo );
-
-  DiaIni := FormatDateTime('ddmmyyyy',DataInicial) ;
-  DiaFim := FormatDateTime('ddmmyyyy',DataFinal) ;
-
-  LoadDLLFunctions;
-
-  OldAtivo := Ativo ;
+  OldAtivo := Ativo;
   try
-     Ativo := False;
+    case Finalidade of
+      finMF: Relatorio := 'MF';
+      finMFD: Relatorio := 'MFD';
+      finTDM: Relatorio := 'TDM';
+      finNFP: Relatorio := 'NFP';
+      finNFPTDM: Relatorio := 'NFPTDM';
+      finSintegra: Relatorio := 'SINTEGRA';
+      finSPED: Relatorio := 'SPED';
+    else
+      raise Exception.Create(ACBrStr('Finalidade não reconhecida, finalidades válidas: MF, MFD, TDM, NFP, NFPTDM, SINTEGRA, SPED'));
+    end;
 
-     AbrePortaSerialDLL( PathDest ) ;
+    NomeArq  := 'ATO_' + Relatorio + '_DATA.TXT';
+    DirDest  := IncludeTrailingPathDelimiter(ExtractFilePath(NomeArquivo));
+    PathDest := DirDest + NomeArq;
 
-     case Finalidade of
-       finMF:
-        begin
-           Resp := xDaruma_FIMFD_GerarMFPAF_Data( DiaIni, DiaFim ) ;
-           if (Resp <> 1) then
-              raise Exception.Create( ACBrStr( 'Erro ao executar Daruma_FIMFD_GerarMFPAF_Data.'+sLineBreak+
-                                               'Cod.: '+IntToStr(Resp) )) ;
+    LoadDLLFunctions;
+    ConfigurarDLL(DirDest);
 
-           if not FileExists( PathDest + PathDelim + 'AtocotepeMF_Data.TXT') then
-              raise Exception.Create( ACBrStr( 'Erro na execução de Daruma_FIMFD_GerarMFPAF_Data.'+sLineBreak+
-                                     'Arquivo: "AtocotepeMF_Data.TXT" não gerado' )) ;
+    Ativo     := False;
+    Tipo      := 'DATAM';
+    DtInicial := FormatDateTime('ddmmyyyy', DataInicial);
+    DtFinal   := FormatDateTime('ddmmyyyy', DataFinal);
 
-           CopyFileTo(PathDest + PathDelim + 'AtocotepeMF_Data.TXT', NomeArquivo );
-        end;
+    // utilizar o modo on-line quando a impressora estiver ativa e o off-line quando não estiver
+    if OldAtivo then
+    begin
+      Resp := xrGerarRelatorio_ECF_Daruma(Relatorio, Tipo, DtInicial, DtFinal);
+      if (Resp <> 1) then
+        raise Exception.Create( ACBrStr( 'Erro ao executar rGerarEspelhoMFD_ECF_Daruma.'+sLineBreak+
+                                         'Cod.: '+IntToStr(Resp)+' '+GetDescricaoErroDLL(Resp) )) ;
+    end
+    else
+    begin
+      Resp := xrGerarRelatorioOffline_ECF_Daruma(Relatorio, Tipo, DtInicial, DtFinal,
+                                                 PathDest+'Daruma.mf',
+                                                 PathDest+'Daruma.mfd',
+                                                 PathDest+'Daruma.inf');
+      if (Resp <> 1) then
+        raise Exception.Create( ACBrStr( 'Erro ao executar rGerarRelatorioOffline_ECF_Daruma.'+sLineBreak+
+                                         'Cod.: '+IntToStr(Resp)+' '+GetDescricaoErroDLL(Resp) )) ;
+    end;
 
-       finMFD, finTDM, finRZ, finRFD:
-        begin
-           Resp := xDaruma_FIMFD_GerarAtoCotepePAFData( DiaIni, DiaFim ) ;
-           if (Resp <> 1) then
-              raise Exception.Create( ACBrStr( 'Erro ao executar Daruma_FIMFD_GerarAtoCotepePAFData.'+sLineBreak+
-                                               'Cod.: '+IntToStr(Resp) )) ;
+    if not FileExists( PathDest ) then
+      raise Exception.Create( ACBrStr( 'Erro na execução de rGerarEspelhoMFD_ECF_Daruma.'+sLineBreak+
+                                       'Arquivo: "'+ NomeArq +'" não gerado' )) ;
 
-           if not FileExists( PathDest + PathDelim + 'ATOCOTEPE_DARUMA.TXT') then
-              raise Exception.Create( ACBrStr( 'Erro na execução de Daruma_FIMFD_GerarAtoCotepePAFData.'+sLineBreak+
-                                     'Arquivo: "ATOCOTEPE_DARUMA.TXT" não gerado' )) ;
-
-           CopyFileTo(PathDest + PathDelim + 'ATOCOTEPE_DARUMA.TXT', NomeArquivo );
-        end;
-     end;
+    if PathDest <> NomeArquivo then
+      CopyFileTo(PathDest, NomeArquivo) ;
   finally
-     xDaruma_FI_FechaPortaSerial();
-     DeleteFile( PathDest + PathDelim + 'ATOCOTEPE_DARUMA.TXT' ) ;
-     DeleteFile( PathDest + PathDelim + 'AtocotepeMF_Data.TXT') ;
-     Ativo := OldAtivo ;
+    Ativo := OldAtivo;
+    UnloadDLLFunctions;
+
+    if PathDest <> NomeArquivo then
+      DeleteFile(PathDest);
   end;
 end;
 

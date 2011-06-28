@@ -730,9 +730,9 @@ TACBrECF = class( TACBrComponent )
     Procedure ArquivoMFD_DLL( DataInicial, DataFinal : TDateTime;
        NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos];
        Finalidade: TACBrECFFinalizaArqMFD = finMFD ) ; overload ;
-    Procedure ArquivoMFD_DLL( COOInicial, COOFinal : Integer;
+    Procedure ArquivoMFD_DLL( ContInicial, ContFinal : Integer;
        NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos];
-       Finalidade: TACBrECFFinalizaArqMFD = finMFD) ; overload ;
+       Finalidade: TACBrECFFinalizaArqMFD = finMFD; TipoContador: TACBrECFTipoContador = tpcCOO) ; overload ;
 
     Procedure IdentificaOperador( Nome : String) ;
     Procedure IdentificaPAF( Linha1, Linha2 : String) ;
@@ -3738,15 +3738,15 @@ begin
   fsECF.ArquivoMFD_DLL( DataInicial, DataFinal, NomeArquivo, Documentos, Finalidade ) ;
 end;
 
-procedure TACBrECF.ArquivoMFD_DLL(COOInicial, COOFinal: Integer;
+procedure TACBrECF.ArquivoMFD_DLL(ContInicial, ContFinal: Integer;
   NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet;
-  Finalidade: TACBrECFFinalizaArqMFD);
+  Finalidade: TACBrECFFinalizaArqMFD; TipoContador: TACBrECFTipoContador);
 begin
   TestaSeE_MFD ;
 
-  ComandoLOG := 'ArquivoMFD_DLL( '+IntToStr(COOInicial)+' , '+
-                    IntToStr(COOFinal)+' , '+NomeArquivo+' ) ';
-  fsECF.ArquivoMFD_DLL( COOInicial, COOFinal, NomeArquivo, Documentos, Finalidade ) ;
+  ComandoLOG := 'ArquivoMFD_DLL( '+IntToStr(ContInicial)+' , '+
+                    IntToStr(ContFinal)+' , '+NomeArquivo+' ) ';
+  fsECF.ArquivoMFD_DLL( ContInicial, ContFinal, NomeArquivo, Documentos, Finalidade, TipoContador ) ;
 end;
 
 procedure TACBrECF.ImprimeCheque(Banco: String; Valor: Double; Favorecido,
@@ -5176,7 +5176,7 @@ end;
 procedure TACBrECF.PafMF_LMFC_Cotepe1704(const CRZInicial, CRZFinal: Integer;
   const PathArquivo: String);
 begin
-  Self.ArquivoMFD_DLL(CRZInicial, CRZFinal, PathArquivo, [docTodos], finMF);
+  Self.ArquivoMFD_DLL(CRZInicial, CRZFinal, PathArquivo, [docTodos], finMF, tpcCRZ);
   Self.AssinaArquivoComEAD(PathArquivo);
 end;
 
@@ -5229,7 +5229,7 @@ end;
 procedure TACBrECF.PafMF_MFD_Cotepe1704(const COOInicial, COOFinal: Integer;
   const PathArquivo: String);
 begin
-  Self.ArquivoMFD_DLL(CooInicial, CooFinal, PathArquivo, [docTodos], finMFD);
+  Self.ArquivoMFD_DLL(CooInicial, CooFinal, PathArquivo, [docTodos], finMFD, tpcCOO);
   Self.AssinaArquivoComEAD(PathArquivo);
 end;
 

@@ -117,7 +117,11 @@ TACBrECFTipoCodBarra =  ( barEAN13, barEAN8, barSTANDARD, barINTERLEAVED,
                          barCODABAR, barMSI, barCODE11 );
 
 {Criando tipo enumerado para a finalidade do arquivo MFD}
-TACBrECFFinalizaArqMFD = (finMF, finMFD, finTDM, finRZ, finRFD);
+TACBrECFFinalizaArqMFD = (finMF, finMFD, finTDM, finRZ, finRFD, finNFP,
+                          finNFPTDM, finSintegra, finSPED);
+
+{ Criando tipo enumerado para o tipo do contador }
+TACBrECFTipoContador = (tpcCOO, tpcCRZ);
 
 {Criando o tipo enumerado para tipo de documentos em Leitura da MFD }
 TACBrECFTipoDocumento = ( docRZ, docLX, docCF, docCFBP, docCupomAdicional,

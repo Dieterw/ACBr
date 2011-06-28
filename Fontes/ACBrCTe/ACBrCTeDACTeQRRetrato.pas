@@ -1358,13 +1358,13 @@ begin
 
   // Linha abaixo alterada por Italo em 27/08/2010
   // para substituir os ponto e virgula por quebra de linha no quadro Observações
-  qrmObs.Lines.Add(StringReplace( FCTe.Compl.xObs, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
-  for i := 0 to FCTe.Compl.ObsCont.Count-1 do
-   with FCTe.Compl.ObsCont.Items[i] do
-    begin
-     qrmObs.Lines.Add( StringReplace( xCampo, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] )+': '+
-                       StringReplace( xTexto, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
-    end;
+//  qrmObs.Lines.Add(StringReplace( FCTe.Compl.xObs, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
+//  for i := 0 to FCTe.Compl.ObsCont.Count-1 do
+//   with FCTe.Compl.ObsCont.Items[i] do
+//    begin
+//     qrmObs.Lines.Add( StringReplace( xCampo, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] )+': '+
+//                       StringReplace( xTexto, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
+//    end;
   if FCTe.Compl.ObsFisco.Count>0
    then qrmObs.Lines.Add('INFORMAÇÕES ADICIONAIS DE INTERESSE DO FISCO:');
   for i := 0 to FCTe.Compl.ObsFisco.Count-1 do
@@ -1571,10 +1571,13 @@ procedure TfrmDACTeQRRetrato.qrb_16_DadosExcEmitenteBeforePrint(Sender: TQRCusto
   var PrintBand: Boolean);
 var
  xTexto: String;
+ i: Integer;
 begin
   inherited;
   // Incluido por Italo em 20/04/2011
   PrintBand := QRCTe.PageNumber = 1;
+
+  qrmObsExcEmitente.Lines.BeginUpdate; // Linha inserida por Italo em 28/06/2011
   qrmObsExcEmitente.Lines.Clear;
 
   // Linhas Alteradas por Italo em 06/05/2011
@@ -1585,6 +1588,22 @@ begin
     qrmObsExcEmitente.Lines.Add( 'certificando que os artigos perigosos descritos pela regulamentação da ICAO foram devidamente '+
                   'informados e acondicionados para transporte aéreo.' );
    end;
+
+  // Incluido por Italo em 28/06/2011
+  if FCTe.Ide.modal <> mdAereo
+   then begin
+    qrmObsExcEmitente.Lines.Add( StringReplace( FCTe.Compl.xObs, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
+    for i := 0 to FCTe.Compl.ObsCont.Count-1 do
+     with FCTe.Compl.ObsCont.Items[i] do
+      begin
+       qrmObsExcEmitente.Lines.Add( StringReplace( xCampo, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] )+': '+
+                                    StringReplace( xTexto, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
+      end;
+   end;
+
+  // Linhas inseridas por Italo em 28/06/2011
+  qrmObsExcEmitente.Lines.Text := StringReplace( qrmObsExcEmitente.Lines.Text, ';', #13, [rfReplaceAll] );
+  qrmObsExcEmitente.Lines.EndUpdate;
 end;
 
 procedure TfrmDACTeQRRetrato.qrb_12_ModAereoBeforePrint(

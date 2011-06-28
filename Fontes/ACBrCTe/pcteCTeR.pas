@@ -253,10 +253,10 @@ begin
     while Leitor.rExtrai(2, 'ObsCont', '', i01 + 1) <> '' do
     begin
       I := 0;
-      I := RetornarPosEx('ObsCont xCampo=', Leitor.Arquivo, I + 15);
-      J := RetornarPosEx('"', Leitor.Arquivo, I + 1);
+      I := RetornarPosEx('ObsCont xCampo=', Leitor.Arquivo, I + 1);
+      J := RetornarPosEx('"', Leitor.Arquivo, I + 16);
       CTe.Compl.ObsCont.Add;
-      CTe.Compl.ObsCont[i01].xCampo := copy(Leitor.Arquivo, I + 1, J - I -1);
+      CTe.Compl.ObsCont[i01].xCampo := copy(Leitor.Arquivo, I + 16, J - (I + 16) - 1);
       CTe.Compl.ObsCont[i01].xTexto := Leitor.rCampo(tcstr,'xTexto');
       inc(i01);
     end;
@@ -265,10 +265,10 @@ begin
     while Leitor.rExtrai(2, 'ObsFisco', '', i01 + 1) <> '' do
     begin
       I := 0;
-      I := RetornarPosEx('ObsFisco xCampo=', Leitor.Arquivo, I + 15);
-      J := RetornarPosEx('"', Leitor.Arquivo, I + 1);
+      I := RetornarPosEx('ObsFisco xCampo=', Leitor.Arquivo, I + 1);
+      J := RetornarPosEx('"', Leitor.Arquivo, I + 17);
       CTe.Compl.ObsFisco.Add;
-      CTe.Compl.ObsFisco[i01].xCampo := copy(Leitor.Arquivo, I + 1, J - I -1);
+      CTe.Compl.ObsFisco[i01].xCampo := copy(Leitor.Arquivo, I + 17, J - (I + 17) - 1);
       CTe.Compl.ObsFisco[i01].xTexto := Leitor.rCampo(tcstr,'xTexto');
       inc(i01);
     end;

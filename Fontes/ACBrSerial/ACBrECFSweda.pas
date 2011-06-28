@@ -193,14 +193,14 @@ TACBrECFSweda = class( TACBrECFClass )
     fsEsperaMinima : TDateTime ;
     fsEmVinculado  : Boolean;
 
-    xECF_AbrePortaSerial : Function: Integer; stdcall;
+    xECF_AbrePortaSerial : Function: Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
     xECF_DownloadMFD : Function (Arquivo: PAnsichar; TipoDownload: PAnsichar;
       ParametroInicial: PAnsichar; ParametroFinal: PAnsichar; UsuarioECF: PAnsichar ):
-      Integer; stdcall;
+      Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
     xECF_ReproduzirMemoriaFiscalMFD : Function (tipo: PAnsichar; fxai: PAnsichar;
-      fxaf:  PAnsichar; asc: PAnsichar; bin: PAnsichar): Integer; stdcall;
-    xECF_FechaPortaSerial : Function: Integer; stdcall;
-    xECF_DownloadMF : Function(Arquivo:PAnsiChar):Integer; stdcall;
+      fxaf:  PAnsichar; asc: PAnsichar; bin: PAnsichar): Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
+    xECF_FechaPortaSerial : Function: Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
+    xECF_DownloadMF : Function(Arquivo:PAnsiChar):Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
 
     procedure LoadDLLFunctions;
     procedure AbrePortaSerialDLL;
@@ -290,6 +290,10 @@ TACBrECFSweda = class( TACBrECFClass )
        DescontoAcrescimo : String = 'D' ) ; override ;
     Procedure SubtotalizaCupom( DescontoAcrescimo : Double = 0;
        MensagemRodape : AnsiString  = '' ) ; override ;
+
+    procedure CancelaDescontoAcrescimoSubTotal(TipoAcrescimoDesconto: Char) ;
+       override ;//A -> Acrescimo D -> Desconto  // Função implementada até o momento apenas para Daruma
+
     Procedure EfetuaPagamento( CodFormaPagto : String; Valor : Double;
        Observacao : AnsiString = ''; ImprimeVinculado : Boolean = false) ;
        override ;
@@ -1544,6 +1548,20 @@ begin
   fsVinculado := 0;
   fsTotalPago := 0; // 0 define estado em estPagamento
 end;
+
+
+procedure TACBrECFSweda.CancelaDescontoAcrescimoSubTotal(
+  TipoAcrescimoDesconto: Char);
+begin
+    if TipoAcrescimoDesconto = 'D' then
+      TipoAcrescimoDesconto:= '2'
+    else if TipoAcrescimoDesconto = 'A' then
+      TipoAcrescimoDesconto:= '1';
+
+//    EnviaComando('63'+  TipoAcrescimoDesconto);
+    EnviaComando('63'+ '0');
+end;
+
 
 Procedure TACBrECFSweda.DescontoAcrescimoItemAnterior(ValorDescontoAcrescimo :
    Double; DescontoAcrescimo : String; TipoDescontoAcrescimo : String;
@@ -3501,12 +3519,20 @@ Var
   DiaIni, DiaFim : AnsiString ;
   OldAtivo : Boolean ;
   PathBin:AnsiString;
+  oldDateSeparator: Char;
+  OldShortDateFormat : String;
 begin
   LoadDLLFunctions ;
 
   OldAtivo := Ativo ;
+  OldShortDateFormat := ShortDateFormat ;
+  OldDateSeparator   := DateSeparator;
+
   try
     Ativo := False ;
+
+    DateSeparator      :='/';
+    ShortDateFormat    := 'dd/mm/yy' ;
 
     AbrePortaSerialDLL ;
 
@@ -3529,6 +3555,8 @@ begin
                                        'Cod.: '+IntToStr(Resp) ))
   finally
     xECF_FechaPortaSerial ;
+    DateSeparator   := OldDateSeparator;
+    ShortDateFormat := OldShortDateFormat;
     Ativo := OldAtivo ;
   end ;
 

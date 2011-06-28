@@ -156,12 +156,12 @@ TACBrECFEpson = class( TACBrECFClass )
     fsPAF1, fsPAF2 : String ;
     fsEmPagamento : Boolean ;
 
-    xEPSON_Serial_Abrir_Porta : function (dwVelocidade:Integer; wPorta:Integer):Integer; StdCall;
-    xEPSON_Serial_Fechar_Porta : function : Integer; StdCall;
-    xEPSON_Serial_Obter_Estado_Com : function : Integer; StdCall;
+    xEPSON_Serial_Abrir_Porta : function (dwVelocidade:Integer; wPorta:Integer):Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
+    xEPSON_Serial_Fechar_Porta : function : Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
+    xEPSON_Serial_Obter_Estado_Com : function : Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
     xEPSON_Obter_Dados_MF_MFD : function (pszInicio:PAnsiChar; pszFinal:PAnsiChar;
        dwTipoEntrada:Integer; dwEspelhos:Integer; dwAtoCotepe:Integer;
-       dwSintegra:Integer; pszArquivoSaida:PAnsiChar) : Integer; StdCall;
+       dwSintegra:Integer; pszArquivoSaida:PAnsiChar) : Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
 
     procedure LoadDLLFunctions;
     procedure AbrePortaSerialDLL;

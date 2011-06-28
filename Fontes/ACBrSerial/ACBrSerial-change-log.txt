@@ -99,6 +99,15 @@ Símbolo : Significado
 
 Data: 28/06/2011
 -- ACBrECFDaruma --
+-- ACBrECF --
+-- ACBrECFSwedaSTX --
+-- ACBrECFSweda --
+-- ACBrECFEpson --
+[*] Acerto para funcionamento em Linux.
+    (por: Carlos Nascimento Filho)
+
+Data: 28/06/2011
+-- ACBrECFDaruma --
 [*] Alteração para utilizar a nova DLL da Daruma, testes realizados junto ao 
     pessoal da Daruma utilizando a DLL disponibilizada no site.
     (por: Régys Silveira)

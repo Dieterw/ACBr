@@ -118,14 +118,14 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
     fsRespostasComando : String ;
     fsFalhasRX : Byte ;
 
-    xECF_AbrePortaSerial : Function: Integer; stdcall;
+    xECF_AbrePortaSerial : Function: Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
     xECF_DownloadMFD : Function (Arquivo: PAnsichar; TipoDownload: PAnsichar;
       ParametroInicial: PAnsichar; ParametroFinal: PAnsichar; UsuarioECF: PAnsichar ):
-      Integer; stdcall;
+      Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
     xECF_ReproduzirMemoriaFiscalMFD : Function (tipo: PAnsichar; fxai: PAnsichar;
-      fxaf:  PAnsichar; asc: PAnsichar; bin: PAnsichar): Integer; stdcall;
-    xECF_FechaPortaSerial : Function: Integer; stdcall;
-    xECF_DownloadMF : Function(Arquivo:PAnsiChar):Integer; stdcall;
+      fxaf:  PAnsichar; asc: PAnsichar; bin: PAnsichar): Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
+    xECF_FechaPortaSerial : Function: Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
+    xECF_DownloadMF : Function(Arquivo:PAnsiChar):Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
 
 
     procedure AbrePortaSerialDLL;
@@ -994,7 +994,7 @@ procedure TACBrECFSwedaSTX.ArquivoMFD_DLL(ContInicial, ContFinal: Integer;
   TipoContador: TACBrECFTipoContador);
 Var
   Resp : Integer ;
-  CooIni, CooFim : AnsiString ;
+  CooIni, CooFim, respm : AnsiString ;
   OldAtivo : Boolean ;
   PathBin:AnsiString;
 begin
@@ -1024,9 +1024,17 @@ begin
     PathBin := ExtractFilePath(NomeArquivo);
     PathBin:= PathBin + 'MF.BIN';
     Resp := xECF_DownloadMF(PAnsiChar(pathBin));
+    case resp of
+      -3: respm:='Não existe movimento';
+      -2: respm:='Parâmetro inválido na função.';
+       0: respm:='Erro de comunicação.';
+     -27: respm:='Status do ECF diferente de 6,0,0,0 (Ack,St1,St2,St3).';
+      -1: respm:='Falta movimento em um dos arquivos binários.';
+      end;
+
     if Resp <> 1 then
       raise Exception.Create( ACBrStr( 'Erro ao executar xECFDownloadMF'+sLineBreak+
-                                       'Cod.: '+IntToStr(Resp) ));
+                                       'Cod.: '+IntToStr(Resp)+' '+respm ));
 
     Resp := xECF_ReproduzirMemoriaFiscalMFD('2', PAnsiChar(CooIni), PAnsiChar(CooFim),PAnsichar(NomeArquivo),PansiChar(PathBin));
     DeleteFile(IncludeTrailingPathDelimiter(ExtractFilePath(
@@ -1050,23 +1058,36 @@ procedure TACBrECFSwedaSTX.ArquivoMFD_DLL(DataInicial, DataFinal: TDateTime;
   Finalidade: TACBrECFFinalizaArqMFD);
 Var
   Resp : Integer ;
-  DiaIni, DiaFim : AnsiString ;
+  DiaIni, DiaFim, respm : AnsiString ;
   OldAtivo : Boolean ;
   PathBin:AnsiString;
+  oldDateSeparator: Char;
+  OldShortDateFormat : String;
 begin
   LoadDLLFunctions ;
 
   OldAtivo := Ativo ;
+  OldShortDateFormat := ShortDateFormat ;
+  OldDateSeparator   := DateSeparator;
   try
     Ativo := False ;
     AbrePortaSerialDLL ;
 
+    DateSeparator      :='/';
+    ShortDateFormat    := 'dd/mm/yy' ;
     PathBin := ExtractFilePath(NomeArquivo);
     PathBin:= PathBin + 'MF.BIN';
     Resp := xECF_DownloadMF(PAnsiChar(pathBin));
+    case resp of
+      -3: respm:='Não existe movimento';
+      -2: respm:='Parâmetro inválido na função.';
+       0: respm:='Erro de comunicação.';
+     -27: respm:='Status do ECF diferente de 6,0,0,0 (Ack,St1,St2,St3).';
+      -1: respm:='Falta movimento em um dos arquivos binários.';
+      end;
     if Resp <> 1 then
       raise Exception.Create( ACBrStr( 'Erro ao executar xECFDownloadMF'+sLineBreak+
-                                       'Cod.: '+IntToStr(Resp) ));
+                                       'Cod.: '+IntToStr(Resp)+' '+respm ));
 
     DiaIni := FormatDateTime('DD/MM/YY',DataInicial) ;
     DiaFim := FormatDateTime('DD/MM/YY',DataFinal) ;
@@ -1080,6 +1101,8 @@ begin
                                        'Cod.: '+IntToStr(Resp) ))
   finally
     xECF_FechaPortaSerial ;
+    DateSeparator   := OldDateSeparator;
+    ShortDateFormat := OldShortDateFormat;
     Ativo := OldAtivo ;
   end ;
 

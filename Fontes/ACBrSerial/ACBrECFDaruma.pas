@@ -206,13 +206,13 @@ TACBrECFDaruma = class( TACBrECFClass )
     fsNumCRO: String ;
     fsErro, fsErroSTD, fsCodAviso : Integer ;
     
-    xeDefinirModoRegistro_Daruma: function(Local: AnsiString): Integer; StdCall;
-    xeDefinirProduto: function(Tipo: AnsiString): Integer; StdCall;
-    xregAlterarValor_Daruma: function(Chave: AnsiString; Valor: AnsiString): Integer; StdCall;
-    xrGerarEspelhoMFD_ECF_Daruma: function(ATipo , AInicial, AFinal: AnsiString): Integer; StdCall;
-    xrGerarRelatorio_ECF_Daruma: function(ARelatorio, ATipo , AInicial, AFinal: AnsiString): Integer; StdCall;
+    xeDefinirModoRegistro_Daruma: function(Local: AnsiString): Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
+    xeDefinirProduto: function(Tipo: AnsiString): Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
+    xregAlterarValor_Daruma: function(Chave: AnsiString; Valor: AnsiString): Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
+    xrGerarEspelhoMFD_ECF_Daruma: function(ATipo , AInicial, AFinal: AnsiString): Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
+    xrGerarRelatorio_ECF_Daruma: function(ARelatorio, ATipo , AInicial, AFinal: AnsiString): Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
     xrGerarRelatorioOffline_ECF_Daruma: function (ARelatorio, ATipo,
-      AInicial, AFinal, AArquivo_MF, AArquivo_MFD, AArquivo_INF: AnsiString): Integer; StdCall;
+      AInicial, AFinal, AArquivo_MF, AArquivo_MFD, AArquivo_INF: AnsiString): Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
 
     procedure LoadDLLFunctions;
     procedure UnloadDLLFunctions;

@@ -3749,7 +3749,7 @@ begin
   try
      Ativo := False;
 
-     Cmd := fpDevice.Porta + ' ' + ArqTmp+'.mfd 1 ' + DiaIni + ' ' + DiaFim + ' ' + Prop;
+     Cmd := fpDevice.Porta + ' ' + ArqTmp+'.mfd 3 ' + DiaIni + ' ' + DiaFim + ' ' + Prop;
      RunCommand('./linuxmfd',Cmd,True) ;
 
      if not FileExists( ArqTmp + '.mfd' ) then
@@ -3757,7 +3757,7 @@ begin
                                         'Arquivo: '+ArqTmp+'.mfd não foi criado' ) ) ;
 
      SysUtils.DeleteFile( NomeArquivo ) ;
-     Cmd := NomeArquivo + ' ' + ArqTmp + '.mfd 1 ' + DiaIni + ' ' + DiaFim + ' ' + Prop ;
+     Cmd := NomeArquivo + ' ' + ArqTmp + '.mfd 3 ' + DiaIni + ' ' + DiaFim + ' ' + Prop ;
      RunCommand('./bemamfd2',Cmd,True) ;
 
      if not FileExists( NomeArquivo ) then
@@ -3911,7 +3911,7 @@ begin
   try
      Ativo := False;
 
-     Cmd := fpDevice.Porta + ' ' + ArqTmp+'.mfd 1 ' + DiaIni + ' ' + DiaFim + ' ' + Prop;
+     Cmd := fpDevice.Porta + ' ' + ArqTmp+'.mfd 3 ' + COOIni + ' ' + CooFim + ' ' + Prop;
      RunCommand('./linuxmfd',Cmd,True) ;
 
      if not FileExists( ArqTmp + '.mfd' ) then
@@ -3919,7 +3919,7 @@ begin
                                         'Arquivo: '+ArqTmp+'.mfd não foi criado' ) ) ;
 
      SysUtils.DeleteFile( NomeArquivo ) ;
-     Cmd := NomeArquivo + ' ' + ArqTmp + '.mfd 1 ' + DiaIni + ' ' + DiaFim + ' ' + Prop ;
+     Cmd := NomeArquivo + ' ' + ArqTmp + '.mfd 3 ' + ContInicial + ' ' + ContFinal + ' ' + Prop ;
      RunCommand('./bemamfd2',Cmd,True) ;
 
      if not FileExists( NomeArquivo ) then

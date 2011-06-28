@@ -1358,7 +1358,7 @@ begin
 
   // Linha abaixo alterada por Italo em 27/08/2010
   // para substituir os ponto e virgula por quebra de linha no quadro Observações
-//  qrmObs.Lines.Add(StringReplace( FCTe.Compl.xObs, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
+  qrmObs.Lines.Add(StringReplace( FCTe.Compl.xObs, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
 //  for i := 0 to FCTe.Compl.ObsCont.Count-1 do
 //   with FCTe.Compl.ObsCont.Items[i] do
 //    begin
@@ -1592,7 +1592,7 @@ begin
   // Incluido por Italo em 28/06/2011
   if FCTe.Ide.modal <> mdAereo
    then begin
-    qrmObsExcEmitente.Lines.Add( StringReplace( FCTe.Compl.xObs, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
+//    qrmObsExcEmitente.Lines.Add( StringReplace( FCTe.Compl.xObs, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
     for i := 0 to FCTe.Compl.ObsCont.Count-1 do
      with FCTe.Compl.ObsCont.Items[i] do
       begin

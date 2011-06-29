@@ -4734,7 +4734,7 @@ begin
     begin
       Resp := xrGerarRelatorio_ECF_Daruma(Relatorio, Tipo, Inicio, Fim);
       if (Resp <> 1) then
-        raise Exception.Create( ACBrStr( 'Erro ao executar rGerarEspelhoMFD_ECF_Daruma.'+sLineBreak+
+        raise Exception.Create( ACBrStr( 'Erro ao executar xrGerarRelatorio_ECF_Daruma.'+sLineBreak+
                                          'Cod.: '+IntToStr(Resp)+' '+GetDescricaoErroDLL(Resp) )) ;
     end
     else
@@ -4749,7 +4749,8 @@ begin
     end;
 
     if not FileExists( PathDest ) then
-      raise Exception.Create( ACBrStr( 'Erro na execução de rGerarEspelhoMFD_ECF_Daruma.'+sLineBreak+
+      raise Exception.Create( ACBrStr( 'Erro na execução de xrGerarRelatorio_ECF_Daruma.'+sLineBreak+
+                                       'Modo: ' + IfThen(OldAtivo, 'On-Line', 'Off-Line') + sLineBreak +
                                        'Arquivo: "'+ NomeArq +'" não gerado' )) ;
 
     if PathDest <> NomeArquivo then
@@ -4802,7 +4803,7 @@ begin
     begin
       Resp := xrGerarRelatorio_ECF_Daruma(Relatorio, Tipo, DtInicial, DtFinal);
       if (Resp <> 1) then
-        raise Exception.Create( ACBrStr( 'Erro ao executar rGerarEspelhoMFD_ECF_Daruma.'+sLineBreak+
+        raise Exception.Create( ACBrStr( 'Erro ao executar xrGerarRelatorio_ECF_Daruma.'+sLineBreak+
                                          'Cod.: '+IntToStr(Resp)+' '+GetDescricaoErroDLL(Resp) )) ;
     end
     else
@@ -4817,7 +4818,8 @@ begin
     end;
 
     if not FileExists( PathDest ) then
-      raise Exception.Create( ACBrStr( 'Erro na execução de rGerarEspelhoMFD_ECF_Daruma.'+sLineBreak+
+      raise Exception.Create( ACBrStr( 'Erro na execução de xrGerarRelatorio_ECF_Daruma.'+sLineBreak+
+                                       'Modo: ' + IfThen(OldAtivo, 'On-Line', 'Off-Line') + sLineBreak +
                                        'Arquivo: "'+ NomeArq +'" não gerado' )) ;
 
     if PathDest <> NomeArquivo then

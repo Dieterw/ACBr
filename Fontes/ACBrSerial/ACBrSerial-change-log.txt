@@ -97,6 +97,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+
+Data: 29/06/2011
+-- ACBrECFDaruma --
+[-] Acerto nas mensagens de erro do método ArquivoMFD_DLL.
+    (por: Régys Silveira)
+
 Data: 28/06/2011
 -- ACBrECFDaruma --
 -- ACBrECF --

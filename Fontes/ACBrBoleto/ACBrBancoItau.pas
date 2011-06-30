@@ -911,9 +911,9 @@ begin
                                                Copy(Linha,300,2),0, 'DD/MM/YY' );
 
          if StrToIntDef(Copy(Linha,111,6),0) <> 0 then
-            DataBaixa := StrToDateDef (Copy(Linha,111,2)+'/'+
+            DataBaixa := StringToDateTimeDef(Copy(Linha,111,2)+'/'+
                          Copy(Linha,113,2)+'/'+
-                         Copy(Linha,115,2),0,'/');
+                         Copy(Linha,115,2),0,'DD/MM/YY');
 
       end;
    end;

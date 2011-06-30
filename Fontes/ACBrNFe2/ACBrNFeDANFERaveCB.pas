@@ -61,6 +61,8 @@ type
      FTamanhoFonte_ANTT: integer;
      FFonte : TFont;
      FEspessuraBorda: Integer;
+
+     function SeSenaoJPEG(ACondicao: Boolean; ATrue, AFalse: TJPEGImage): TJPEGImage;
    public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -95,8 +97,10 @@ end;
 procedure TACBrNFeDANFERaveCB.ImprimirDANFE(NFE : TNFe = nil);
 var
  LogoMarcaEmpresa:TJPEGImage;
+ ExisteLogoMarca: Boolean;
  vStringStream: TStringStream;
 begin
+    ExisteLogoMarca:=True;
     LogoMarcaEmpresa:=TJPEGImage.Create;
     try
       if NotaUtil.NaoEstaVazio(Logo) then
@@ -114,7 +118,7 @@ begin
          end;
        end
        else
-        LogoMarcaEmpresa := nil;
+        ExisteLogoMarca:=False;
 
       ImprimirDANFeRave(TACBrNFe(ACBrNFe),
                        Site,
@@ -123,7 +127,7 @@ begin
                        Sistema,
                        Usuario,
                        ProtocoloNFe,
-                       LogoMarcaEmpresa,
+                       SeSenaoJPEG(ExisteLogoMarca,LogoMarcaEmpresa,nil),
                        NotaUtil.SeSenao((TipoDANFE=tiRetrato),poPortrait,poLandScape),
                        NotaUtil.SeSenao(MostrarPreview,tsPreview,tsPrint),
                        MostrarStatus,
@@ -160,9 +164,11 @@ end;
 procedure TACBrNFeDANFERaveCB.ImprimirDANFEPDF(NFE : TNFe = nil);
 var
  LogoMarcaEmpresa:TJPEGImage;
+ ExisteLogoMarca: Boolean;
  NomeArq : String;
  vStringStream: TStringStream;
 begin
+    ExisteLogoMarca:=True;
     LogoMarcaEmpresa:=TJPEGImage.Create;
     try
       if NotaUtil.NaoEstaVazio(Logo) then
@@ -180,7 +186,7 @@ begin
          end;
        end
        else
-        LogoMarcaEmpresa := nil;
+         ExisteLogoMarca:=False;
 
       if NFE = nil then
          NomeArq := StringReplace(TACBrNFe(ACBrNFe).NotasFiscais.Items[0].NFe.infNFe.ID,'NFe', '', [rfIgnoreCase])
@@ -196,7 +202,7 @@ begin
                        Sistema,
                        Usuario,
                        ProtocoloNFe,
-                       LogoMarcaEmpresa,
+                       SeSenaoJPEG(ExisteLogoMarca,LogoMarcaEmpresa,nil),
                        NotaUtil.SeSenao((TipoDANFE=tiRetrato),poPortrait,poLandScape),
                        tsPDF,
                        MostrarStatus,
@@ -230,5 +236,13 @@ begin
     end;
 end;
 
+
+function TACBrNFeDANFERaveCB.SeSenaoJPEG(ACondicao: Boolean; ATrue,
+  AFalse: TJPEGImage): TJPEGImage;
+begin
+  Result := AFalse;
+  if ACondicao then
+    Result := ATrue;
+end;
 
 end.

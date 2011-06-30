@@ -189,7 +189,8 @@ TACBrECFSchalter = class( TACBrECFClass )
        Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
 
     { Procedimentos de Cupom Não Fiscal }
-    Procedure AbreNaoFiscal( CPF_CNPJ : String = '') ; override ;
+    Procedure AbreNaoFiscal( CPF_CNPJ: String = ''; Nome: String = '';
+       Endereco: String = '' ) ; override ;
     Procedure RegistraItemNaoFiscal( CodCNF : String; Valor : Double;
        Obs : AnsiString = '') ; override ;
     Procedure SubtotalizaNaoFiscal( DescontoAcrescimo : Double = 0;
@@ -1589,7 +1590,7 @@ begin
   Result    := StringToFloatDef( RetCmd, 0 );
 end;
 
-procedure TACBrECFSchalter.AbreNaoFiscal(CPF_CNPJ: String);
+procedure TACBrECFSchalter.AbreNaoFiscal( CPF_CNPJ, Nome, Endereco: String );
   Var TamDoc : Integer ;
 begin
   fpUltimaMsgPoucoPapel := 0 ;  { Zera tempo pra msg de pouco papel }

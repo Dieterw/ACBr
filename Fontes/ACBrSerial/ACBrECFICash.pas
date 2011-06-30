@@ -178,7 +178,8 @@ TACBrECFICash = class( TACBrECFClass )
     Procedure IdentificaOperador ( Nome: String); override;
 
     { Procedimentos de Cupom Não Fiscal }
-    Procedure AbreNaoFiscal( CPF_CNPJ : String = '') ; override ;
+    Procedure AbreNaoFiscal( CPF_CNPJ: String = ''; Nome: String = '';
+       Endereco: String = '' ) ; override ;
     Procedure RegistraItemNaoFiscal( CodCNF : String; Valor : Double;
        Obs : AnsiString = '') ; override ;
     Procedure SubtotalizaNaoFiscal( DescontoAcrescimo : Double = 0;
@@ -189,9 +190,9 @@ TACBrECFICash = class( TACBrECFClass )
     Procedure CancelaNaoFiscal ; override ;
 
     procedure Sangria(const Valor: Double; Obs: AnsiString; DescricaoCNF,
-      DescricaoFPG: String); override ;
+      DescricaoFPG: String; IndiceBMP: Integer); override ;
     procedure Suprimento( const Valor: Double; Obs : AnsiString;
-       DescricaoCNF: String; DescricaoFPG: String) ; override ;
+       DescricaoCNF: String; DescricaoFPG: String; IndiceBMP: Integer) ; override ;
  end ;
 
 implementation
@@ -1224,7 +1225,7 @@ begin
   Result := Result + StrToFloatDef( copy(RetCmd,8,13), 0 ) / 100 ;
 end;
 
-procedure TACBrECFICash.AbreNaoFiscal(CPF_CNPJ: String);
+procedure TACBrECFICash.AbreNaoFiscal( CPF_CNPJ, Nome, Endereco: String );
 begin
   CPF_CNPJ := Trim(CPF_CNPJ) ;
   if CPF_CNPJ <> '' then
@@ -1314,7 +1315,7 @@ begin
 end;
 
 procedure TACBrECFICash.Sangria( const Valor: Double; Obs: AnsiString;
-   DescricaoCNF, DescricaoFPG: String ) ;
+   DescricaoCNF, DescricaoFPG: String; IndiceBMP: Integer ) ;
  Var CNF : TACBrECFComprovanteNaoFiscal ;
      FPG : TACBrECFFormaPagamento ;
      Linhas    : TStringList ;
@@ -1352,12 +1353,12 @@ begin
                       IntToStrZero(Round(Valor*100),13) + ObsStr, 15 ) ;
 end;
 procedure TACBrECFICash.Suprimento(const Valor: Double; Obs: AnsiString;
-  DescricaoCNF, DescricaoFPG: String);
+  DescricaoCNF, DescricaoFPG: String; IndiceBMP: Integer);
 begin
   if UpperCase(Trim(DescricaoCNF)) = 'SUPRIMENTO' then
      DescricaoCNF := 'FUNDO DE CAIXA' ;
 
-  Sangria(Valor, Obs, DescricaoCNF, DescricaoFPG);
+  Sangria(Valor, Obs, DescricaoCNF, DescricaoFPG, IndiceBMP);
 end;
 
 

@@ -202,7 +202,8 @@ TACBrECFNCR = class( TACBrECFClass )
     Procedure AbreGaveta ; override ;
 
     { Procedimentos de Cupom Não Fiscal }
-    Procedure AbreNaoFiscal( CPF_CNPJ : String = '') ; override ;
+    Procedure AbreNaoFiscal( CPF_CNPJ: String = ''; Nome: String = '';
+       Endereco: String = '' ) ; override ;
     Procedure RegistraItemNaoFiscal( CodCNF : String; Valor : Double;
        Obs : AnsiString = '' ) ; override ;
     Procedure SubtotalizaNaoFiscal( DescontoAcrescimo : Double = 0;
@@ -2141,7 +2142,7 @@ begin
   Result := NCRResposta.Params[0] ;
 end;
 
-procedure TACBrECFNCR.AbreNaoFiscal(CPF_CNPJ: String);
+procedure TACBrECFNCR.AbreNaoFiscal( CPF_CNPJ, Nome, Endereco: String );
 begin
   if Trim(CPF_CNPJ) <> '' then
      Consumidor.AtribuiConsumidor(CPF_CNPJ,'','');

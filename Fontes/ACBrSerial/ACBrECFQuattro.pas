@@ -191,7 +191,8 @@ TACBrECFQuattro = class( TACBrECFClass )
     procedure ProgramaComprovanteNaoFiscal(var Descricao: string;
       Tipo: string = ''; Posicao: string = ''); override;
 
-    procedure AbreNaoFiscal(CPF_CNPJ: string);override;
+    procedure AbreNaoFiscal( CPF_CNPJ: String = ''; Nome: String = '';
+       Endereco: String = '' ); override;
     procedure RegistraItemNaoFiscal(CodCNF: string;Valor: Double;
        Obs: AnsiString); override;
     procedure EfetuaPagamentoNaoFiscal(CodFormaPagto: string; Valor: Double;
@@ -1585,7 +1586,7 @@ begin
   CarregaFormato_ChequeTXT ;
 end;
 
-procedure TACBrECFQuattro.AbreNaoFiscal(CPF_CNPJ: string);
+procedure TACBrECFQuattro.AbreNaoFiscal( CPF_CNPJ, Nome, Endereco: String );
 begin
   EnviaComando('19',5);
 end;

@@ -307,7 +307,8 @@ TACBrECFSweda = class( TACBrECFClass )
        TACBrECFComprovanteNaoFiscal ; override ;
     Procedure NaoFiscalCompleto( CodCNF : String; Valor : Double;
        CodFormaPagto  : String; Obs : AnsiString; IndiceBMP : Integer = 0 ) ; override ;
-    Procedure AbreNaoFiscal( CPF_CNPJ : String = '') ; override ;
+    Procedure AbreNaoFiscal( CPF_CNPJ: String = ''; Nome: String = '';
+       Endereco: String = '' ) ; override ;
     Procedure RegistraItemNaoFiscal( CodCNF : String; Valor : Double;
        Obs : AnsiString = '') ; override ;
 
@@ -3195,7 +3196,7 @@ begin
   end;
 end;
 
-procedure TACBrECFSweda.AbreNaoFiscal(CPF_CNPJ: String);
+procedure TACBrECFSweda.AbreNaoFiscal( CPF_CNPJ, Nome, Endereco: String );
 begin
   { Nao abre ainda... Precisa saber o CodCNF que será registrado para achar o
     Título... veja abaixo }

@@ -151,7 +151,8 @@ TACBrECFUrano = class( TACBrECFClass )
     { Procedimentos de Cupom Não Fiscal }
     Procedure NaoFiscalCompleto( CodCNF : String; Valor : Double;
        CodFormaPagto  : String; Obs : AnsiString; IndiceBMP : Integer = 0 ) ; override ;
-    Procedure AbreNaoFiscal( CPF_CNPJ : String = '') ; override ;
+    Procedure AbreNaoFiscal( CPF_CNPJ: String = ''; Nome: String = '';
+       Endereco: String = '' ) ; override ;
     Procedure RegistraItemNaoFiscal( CodCNF : String; Valor : Double;
        Obs : AnsiString = '') ; override ;
 
@@ -971,7 +972,7 @@ begin
                            IntToStrZero(0,8) + R, Espera ) ;
 end;
 
-procedure TACBrECFUrano.AbreNaoFiscal(CPF_CNPJ: String);
+procedure TACBrECFUrano.AbreNaoFiscal( CPF_CNPJ, Nome, Endereco: String );
 begin
   { nada a fazer, o Cupom Não Fiscal será aberto no RegistraItemNaoFiscal }
 end;

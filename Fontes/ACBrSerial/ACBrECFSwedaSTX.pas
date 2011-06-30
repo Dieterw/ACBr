@@ -209,7 +209,8 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
     Procedure CancelaItemVendido( NumItem : Integer ) ; override ;
 
     { Procedimentos de Cupom Não Fiscal }
-    Procedure AbreNaoFiscal( CPF_CNPJ : String = '') ; override ;
+    Procedure AbreNaoFiscal( CPF_CNPJ: String = ''; Nome: String = '';
+       Endereco: String = '' ) ; override ;
     Procedure RegistraItemNaoFiscal( CodCNF : String; Valor : Double;
        Obs : AnsiString = '') ; override ;
     Procedure SubtotalizaNaoFiscal( DescontoAcrescimo : Double = 0;
@@ -2129,7 +2130,7 @@ begin
    Result := Copy(RetCMD,210,6);
 end ;
 
-procedure TACBrECFSwedaSTX.AbreNaoFiscal(CPF_CNPJ: String);
+procedure TACBrECFSwedaSTX.AbreNaoFiscal( CPF_CNPJ, Nome, Endereco: String );
 begin
    EnviaComando('20');
 end;

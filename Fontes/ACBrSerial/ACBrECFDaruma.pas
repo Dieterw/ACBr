@@ -378,7 +378,8 @@ TACBrECFDaruma = class( TACBrECFClass )
     { Procedimentos de Cupom Não Fiscal }
     procedure NaoFiscalCompleto(CodCNF: String; Valor: Double;
       CodFormaPagto: String; Obs: AnsiString; IndiceBMP : Integer = 0); override ;
-    Procedure AbreNaoFiscal( CPF_CNPJ : String = '') ; override ;
+    Procedure AbreNaoFiscal( CPF_CNPJ: String = ''; Nome: String = '';
+       Endereco: String = '' ); override ;
     Procedure RegistraItemNaoFiscal( CodCNF : String; Valor : Double;
        Obs : AnsiString = '') ; override ;
     Procedure SubtotalizaNaoFiscal( DescontoAcrescimo : Double = 0;
@@ -389,9 +390,9 @@ TACBrECFDaruma = class( TACBrECFClass )
     Procedure CancelaNaoFiscal ; override ;
 
     procedure Sangria( const Valor: Double;  Obs: AnsiString; DescricaoCNF,
-       DescricaoFPG: String ) ; override ;
+       DescricaoFPG: String; IndiceBMP: Integer ) ; override ;
     procedure Suprimento( const Valor: Double; Obs: AnsiString; DescricaoCNF,
-       DescricaoFPG: String) ; override ;
+       DescricaoFPG: String; IndiceBMP: Integer ) ; override ;
 
     Procedure AbreGaveta ; override ;
 
@@ -427,10 +428,15 @@ TACBrECFDaruma = class( TACBrECFClass )
     Procedure CortaPapel( const CorteParcial : Boolean = false) ; override ;
     // Função para mudar inpressora para modo online automaticamente
     procedure ComutaOnLine;
+
+    procedure ProgramarBitmapPromocional(const AIndice: Integer;
+      const APathArquivo: AnsiString;
+      const AAlinhamento: TACBrAlinhamento = alCentro); override;
+
  end ;
 
 implementation
-Uses SysUtils, ACBrECF,
+Uses SysUtils, ACBrECF, Graphics,
     {$IFDEF COMPILER6_UP} DateUtils, StrUtils {$ELSE} ACBrD5, Windows{$ENDIF},
     Math ;
 
@@ -2016,68 +2022,70 @@ begin
   Obs := Observacao ;
   if (not Consumidor.Enviado) then
   begin
-     { Removendo o Consumidor da Observação, pois vai usar comando próprio }
-     Obs := StringReplace(Obs,#10+'CPF/CNPJ consumidor: '+Consumidor.Documento,'',[]) ;
-     Obs := StringReplace(Obs,#10+'Nome: '+Consumidor.Nome,'',[]) ;
-     Obs := StringReplace(Obs,#10+'Endereco: '+Consumidor.Endereco,'',[]) ;
-     try
-        AguardaImpressao := True ;
-        if fsNumVersao = '2000' then
-         begin
-           StrConsumidor := PadL( PadL(Consumidor.Documento,27) +
-                                  PadL(Consumidor.Nome,42)   +
-                                  PadL(Consumidor.Endereco,42), 153) ;
+    // Removendo o Consumidor da Observação, pois vai usar comando próprio
+    Obs := StringReplace(Obs, #10 + 'CPF/CNPJ consumidor: ' + Consumidor.Documento,'',[]) ;
+    Obs := StringReplace(Obs, #10 + 'Nome: ' + Consumidor.Nome,'',[]) ;
+    Obs := StringReplace(Obs, #10 + 'Endereco: ' + Consumidor.Endereco,'',[]) ;
+    try
+      AguardaImpressao := True ;
+      if fsNumVersao = '2000' then
+      begin
+        StrConsumidor := PadL( PadL(Consumidor.Documento,27) +
+                               PadL(Consumidor.Nome,42)+
+                               PadL(Consumidor.Endereco,42), 153) ;
 
-           EnviaComando( ESC + #208 + StrConsumidor ) ;
-         end 
-        else
-         begin
-           StrConsumidor := PadL(Consumidor.Nome,84)     +
-                            PadL(Consumidor.Endereco,84) +
-                            PadL(Consumidor.Documento,84) ;
+        EnviaComando( ESC + #208 + StrConsumidor ) ;
+      end
+      else
+      begin
+        StrConsumidor := PadL(Consumidor.Nome,84) +
+                         PadL(Consumidor.Endereco,84) +
+                         PadL(Consumidor.Documento,84) ;
 
-           EnviaComando( ESC + #201 + StrConsumidor ) ;
-         end ;
+        EnviaComando( ESC + #201 + StrConsumidor ) ;
+      end ;
 
-        Consumidor.Enviado := True ;
-     except
-        Obs := Observacao ;
-     end ;
+      Consumidor.Enviado := True ;
+    except
+      Obs := Observacao;
+    end ;
   end ;
 
-  Obs := StringReplace(Obs,#10,CR+LF,[rfReplaceAll]) + FF ;
+  Obs := StringReplace(Obs, #10, CR+LF, [rfReplaceAll]) + FF ;
 
   AguardaImpressao := True ;
   if fpMFD then
-   begin
-     { Verifico se tenho que mandar o indice de alguma imagem ou um código de barras }
-     { e permitido apenas um BMP ou um Código de barras }
-     if (IndiceBMP > 0) and (Not CodBarras.Adicionado) then
-        Obs :=  ESC + 'B' + IntToStrZero(IndiceBMP,1) + Obs
-     else if (CodBarras.Adicionado) then
+  begin
+    // Verifico se tenho que mandar o indice de alguma imagem ou um código de barras
+    // e permitido apenas um BMP ou um Código de barras }
+    if (IndiceBMP > 0) and (Not CodBarras.Adicionado) then
+      Obs :=  ESC + 'B' + IntToStrZero(IndiceBMP, 1) + Obs
+    else
+    if (CodBarras.Adicionado) then
+    begin
+      if CodBarras.ImpVertical then
       begin
-       if CodBarras.ImpVertical then
-        begin
-         Obs :=  ESC + 'a' + IntToStrZero((Integer (CodBarras.Tipo) + 1), 2) +
-                 IntToStrZero(CodBarras.Largura, 1) + IntToStrZero(CodBarras.Altura, 3) +
-                 IfThen(CodBarras.ImpCodEmbaixo, '1', '0') + CodBarras.Codigo +
-                 NUL + #022 + #018 + Obs;
-        end
-       else
-        begin
-         Obs :=  ESC + 'b' + IntToStrZero((Integer (CodBarras.Tipo) + 1), 2) +
-                 IntToStrZero(CodBarras.Largura, 1) + IntToStrZero(CodBarras.Altura, 3) +
-                 IfThen(CodBarras.ImpCodEmbaixo, '1', '0') + CodBarras.Codigo +
-                 NUL + Obs;
-        end;
+        Obs :=  ESC + 'a' + IntToStrZero((Integer (CodBarras.Tipo) + 1), 2) +
+                IntToStrZero(CodBarras.Largura, 1) + IntToStrZero(CodBarras.Altura, 3) +
+                IfThen(CodBarras.ImpCodEmbaixo, '1', '0') + CodBarras.Codigo +
+                NUL + #022 + #018 + Obs;
+      end
+      else
+      begin
+        Obs :=  ESC + 'b' + IntToStrZero((Integer (CodBarras.Tipo) + 1), 2) +
+                IntToStrZero(CodBarras.Largura, 1) + IntToStrZero(CodBarras.Altura, 3) +
+                IfThen(CodBarras.ImpCodEmbaixo, '1', '0') + CodBarras.Codigo +
+                NUL + Obs;
       end;
-      
-     EnviaComando( FS + 'F' + #210 + '0' + Obs, 5 );
-   end
-  else if fsNumVersao = '2000' then
-     EnviaComando( ESC + #209 + Obs, 10)
+    end;
+
+    EnviaComando( FS + 'F' + #210 + '0' + Obs, 5 );
+  end
   else
-     EnviaComando( ESC + #243 + Obs, 10) ;
+  if fsNumVersao = '2000' then
+    EnviaComando( ESC + #209 + Obs, 10)
+  else
+    EnviaComando( ESC + #243 + Obs, 10) ;
 
   ZeraTotalApagar;
 end;
@@ -2138,141 +2146,145 @@ Var
   Cmd : AnsiChar ;
 begin
   if Qtd > 99999 then
-     raise EACBrECFCMDInvalido.Create( ACBrStr(
-           'Quantidade deve ser inferior a 99999.'));
+    raise EACBrECFCMDInvalido.Create( ACBrStr('Quantidade deve ser inferior a 99999.'));
 
   if fpMFD then
-   begin
-     Codigo    := padL(Codigo,14) ;
-     Unidade   := padL(Unidade,3) ;
-     Descricao := TrimRight(LeftStr(Descricao,233)) + FF ;
-     if DescricaoGrande then
-        FlagDesc := '00'
-     else
-        FlagDesc := '18' ;
+  begin
+    Codigo    := padL(Codigo,14) ;
+    Unidade   := padL(Unidade,3) ;
+    Descricao := TrimRight(LeftStr(Descricao,233)) + FF ;
 
-     QtdStr      := IntToStrZero( Round(Qtd * power(10,fpDecimaisQtd)), 7) ;
-     ValorStr    := IntToStrZero( Round( ValorUnitario * power(10,fpDecimaisPreco)),8 ) ;
-     DescontoStr := StringOfChar('0',12) ;
+    if DescricaoGrande then
+      FlagDesc := '00'
+    else
+      FlagDesc := '18' ;
 
+    QtdStr      := IntToStrZero( Round(Qtd * power(10,fpDecimaisQtd)), 7) ;
+    ValorStr    := IntToStrZero( Round( ValorUnitario * power(10,fpDecimaisPreco)),8 ) ;
+    DescontoStr := StringOfChar('0',12) ;
 
-     if  ( fsModeloDaruma > fs700L) or
-        ( (fsModeloDaruma = fs700L) and (StrToInt(fsNumVersao) > 10000) ) then
+    if ( fsModeloDaruma > fs700L) or
+       ( (fsModeloDaruma = fs700L) and (StrToInt(fsNumVersao) > 10000) ) then
+    begin
+      ModoCalculo :=  ifthen(fpArredondaItemMFD, 'A', 'T' );
+      RetCmd := EnviaComando(FS + 'F' + #207 + AliquotaECF + QtdStr + ValorStr +
+                DescontoStr + FlagDesc + Codigo + Unidade + ModoCalculo + Descricao ) ;
+    end
+    else
+    begin
+      if fpArredondaItemMFD and (fsArredonda <> 'N') then
       begin
-          ModoCalculo :=  ifthen(fpArredondaItemMFD, 'A', 'T' );
-          RetCmd := EnviaComando(FS + 'F' + #207 + AliquotaECF + QtdStr + ValorStr +
-                      DescontoStr + FlagDesc + Codigo + Unidade + ModoCalculo + Descricao ) ;
-      end
-     else
-      begin
-        if fpArredondaItemMFD and (fsArredonda <> 'N') then
-        begin
-          try
-             // Tenta enviar o comando, se o ECF não reconhecer (except), desativa o Arredondamento
-             EnviaComando(FS + 'C' + #219 + 'A'); // A = Arredondamento / T = Truncamento
-          except
-             fsArredonda := 'N' ;
-          end ;
+        try
+          // Tenta enviar o comando, se o ECF não reconhecer (except), desativa o Arredondamento
+          EnviaComando(FS + 'C' + #219 + 'A'); // A = Arredondamento / T = Truncamento
+        except
+          fsArredonda := 'N' ;
         end ;
-
-        RetCmd := EnviaComando(FS + 'F' + #201 + AliquotaECF + QtdStr + ValorStr +
-                     DescontoStr + FlagDesc + Codigo + Unidade + Descricao ) ;
       end ;
 
-     if ValorDescontoAcrescimo > 0 then
-        DescontoAcrescimoItemAnterior( ValorDescontoAcrescimo, DescontoAcrescimo,
-           TipoDescontoAcrescimo, StrToIntDef(copy(RetCmd,10,3),0) ) ;
-   end
+      RetCmd := EnviaComando(FS + 'F' + #201 + AliquotaECF + QtdStr + ValorStr +
+                DescontoStr + FlagDesc + Codigo + Unidade + Descricao ) ;
+    end ;
 
-  else if fsNumVersao = '2000' then
-   begin
-     Codigo      := padL(Codigo,18) ;    { Ajustando Tamanhos }
-     Descricao   := TrimRight(LeftStr(Descricao,200)) + FF ;
-     ValorStr    := IntToStrZero( Round(ValorUnitario * 1000), 10) ;
-     QtdStr      := IntToStrZero( Round(Qtd * 1000), 8) ;
-     Unidade     := padL(Unidade,2) ;
-     DescontoStr := StringOfChar('0',10) ;
-
-     if ValorDescontoAcrescimo > 0 then
-     begin
-        if TipoDescontoAcrescimo = '%' then
-         begin
-           if DescontoAcrescimo = 'D' then
-              DescontoStr := '0'
-           else
-              DescontoStr := '2' ;
-           DescontoStr := DescontoStr + '00000'+
-                          IntToStrZero( Round(ValorDescontoAcrescimo * 100), 4) ;
-         end
-        else
-         begin
-           if DescontoAcrescimo = 'D' then
-              DescontoStr := '1'
-           else
-              DescontoStr := '3' ;
-           DescontoStr := DescontoStr +
-                          IntToStrZero( Round(ValorDescontoAcrescimo * 100), 9) ;
-         end ;
-     end ;
-
-     EnviaComando(ESC + #202 + AliquotaECF + Codigo + DescontoStr +
-                  ValorStr + QtdStr + Unidade + Descricao ) ;
-   end
+    if ValorDescontoAcrescimo > 0 then
+      DescontoAcrescimoItemAnterior(
+        ValorDescontoAcrescimo, DescontoAcrescimo,
+        TipoDescontoAcrescimo, StrToIntDef(copy(RetCmd,10,3),0)
+      ) ;
+  end
   else
-   begin
-     Codigo  := padL(Codigo,13) ;    { Ajustando Tamanhos }
-     Unidade := padL(Unidade,2) ;
-     if TipoDescontoAcrescimo = '%' then
-        DescontoStr := IntToStrZero( Round(ValorDescontoAcrescimo * 100), 4)
-     else
-        { FS345 não tem Desconto por Valor, calculando a Percentagem }
-        DescontoStr := IntToStrZero( Round( ValorDescontoAcrescimo/(ValorUnitario*Qtd) * 100 * 100), 4) ;
+  if fsNumVersao = '2000' then
+  begin
+    Codigo      := padL(Codigo,18) ;    { Ajustando Tamanhos }
+    Descricao   := TrimRight(LeftStr(Descricao,200)) + FF ;
+    ValorStr    := IntToStrZero( Round(ValorUnitario * 1000), 10) ;
+    QtdStr      := IntToStrZero( Round(Qtd * 1000), 8) ;
+    Unidade     := padL(Unidade,2) ;
+    DescontoStr := StringOfChar('0',10) ;
 
-     if DescontoAcrescimo = 'D' then   // Desconto ou Acrescimo ?
-        DescontoStr := '0' + DescontoStr
-     else
-        DescontoStr := '1' + DescontoStr ;
-        
-     if StrToInt(NumVersao) >= 345 then
+    if ValorDescontoAcrescimo > 0 then
+    begin
+      if TipoDescontoAcrescimo = '%' then
       begin
-        Descricao := TrimRight(LeftStr(Descricao,174)) + FF ;
-
-        if RoundTo(Qtd,-2) <> Qtd then {Tem mais de 2 casas dec na QTD ?}
-         begin
-           LenQtd   := 8 ;
-           Cmd      := #223 ;
-           Qtd      := RoundTo(Qtd,-3) ;   // Venda fixa com 3 decimais
-           Qtd      := (Qtd * 1000) ; 
-           SepDec   := '';
-           ValorStr := IntToStrZero( Round(ValorUnitario * 1000), 10);
-         end
+        if DescontoAcrescimo = 'D' then
+          DescontoStr := '0'
         else
-         begin
-           LenQtd   := 6 ;                 // Venda com Posicao decimal variavel
-           Cmd      := #225 ;
-           SepDec   := ',';
-           ValorStr := IntToStrZero( Round(ValorUnitario * 1000), 9);
-           Codigo   := Codigo + '000'  // Reserva, compatib. modelos anteriores
-         end ;
+          DescontoStr := '2' ;
+
+        DescontoStr := DescontoStr + '00000'+
+                       IntToStrZero( Round(ValorDescontoAcrescimo * 100), 4) ;
       end
-     else
+      else
       begin
-        LenQtd    := 5 ;
-        Cmd       := #215 ;
-        Descricao := PadL(Descricao,30) ;
-        ValorStr  := IntToStrZero( Round(ValorUnitario * 100), 9) ;
-        Codigo    := Codigo + '000'  // Reserva, compatib. modelos anteriores
+        if DescontoAcrescimo = 'D' then
+          DescontoStr := '1'
+        else
+          DescontoStr := '3' ;
+
+        DescontoStr := DescontoStr +
+                       IntToStrZero( Round(ValorDescontoAcrescimo * 100), 9) ;
       end ;
+    end ;
 
-     QtdStr := FloatToStr(Qtd) ;
-     if Length(QtdStr) > LenQtd then
-        QtdStr := FloatToStr(RoundTo(Qtd,-(LenQtd-pos(DecimalSeparator,QtdStr)))) ;
+    EnviaComando(ESC + #202 + AliquotaECF + Codigo + DescontoStr +
+                 ValorStr + QtdStr + Unidade + Descricao ) ;
+  end
+  else
+  begin
+    Codigo  := padL(Codigo,13) ;    // Ajustando Tamanhos
+    Unidade := padL(Unidade,2) ;
 
-     QtdStr := PadR(StringReplace(QtdStr,DecimalSeparator,SepDec,[rfReplaceAll]), LenQtd,'0');
+    if TipoDescontoAcrescimo = '%' then
+      DescontoStr := IntToStrZero( Round(ValorDescontoAcrescimo * 100), 4)
+    else
+      // FS345 não tem Desconto por Valor, calculando a Percentagem
+      DescontoStr := IntToStrZero( Round( ValorDescontoAcrescimo/(ValorUnitario*Qtd) * 100 * 100), 4) ;
 
-     EnviaComando( ESC + Cmd + AliquotaECF + Codigo + DescontoStr +
+    if DescontoAcrescimo = 'D' then   // Desconto ou Acrescimo ?
+      DescontoStr := '0' + DescontoStr
+    else
+      DescontoStr := '1' + DescontoStr ;
+
+    if StrToInt(NumVersao) >= 345 then
+    begin
+      Descricao := TrimRight(LeftStr(Descricao,174)) + FF ;
+
+      if RoundTo(Qtd,-2) <> Qtd then //Tem mais de 2 casas dec na QTD ?
+      begin
+        LenQtd   := 8 ;
+        Cmd      := #223 ;
+        Qtd      := RoundTo(Qtd,-3) ;   // Venda fixa com 3 decimais
+        Qtd      := (Qtd * 1000) ;
+        SepDec   := '';
+        ValorStr := IntToStrZero( Round(ValorUnitario * 1000), 10);
+      end
+      else
+      begin
+        LenQtd   := 6 ;                 // Venda com Posicao decimal variavel
+        Cmd      := #225 ;
+        SepDec   := ',';
+        ValorStr := IntToStrZero( Round(ValorUnitario * 1000), 9);
+        Codigo   := Codigo + '000'  // Reserva, compatib. modelos anteriores
+      end ;
+    end
+    else
+    begin
+      LenQtd    := 5 ;
+      Cmd       := #215 ;
+      Descricao := PadL(Descricao,30) ;
+      ValorStr  := IntToStrZero( Round(ValorUnitario * 100), 9) ;
+      Codigo    := Codigo + '000'  // Reserva, compatib. modelos anteriores
+    end ;
+
+    QtdStr := FloatToStr(Qtd) ;
+    if Length(QtdStr) > LenQtd then
+      QtdStr := FloatToStr(RoundTo(Qtd,-(LenQtd-pos(DecimalSeparator,QtdStr)))) ;
+
+    QtdStr := PadR(StringReplace(QtdStr,DecimalSeparator,SepDec,[rfReplaceAll]), LenQtd,'0');
+
+    EnviaComando( ESC + Cmd + AliquotaECF + Codigo + DescontoStr +
                    ValorStr + QtdStr + Unidade + Descricao) ;
-   end ;
+  end ;
 
   ZeraTotalApagar;
 end;
@@ -3041,9 +3053,10 @@ end;
 
 procedure TACBrECFDaruma.AbreCupomVinculado(COO, CodFormaPagto,
   CodComprovanteNaoFiscal: String; Valor: Double);
-Var FPG : TACBrECFFormaPagamento ;
-    CNF : TACBrECFComprovanteNaoFiscal ;
-    StrValor, StrConsumidor : String ;
+var
+  FPG: TACBrECFFormaPagamento ;
+  CNF: TACBrECFComprovanteNaoFiscal ;
+  StrValor, StrConsumidor: String ;
 begin
   COO      := Poem_Zeros( trim(COO) ,6) ;
   StrValor := IntToStrZero( Round(Valor * 100) ,12) ;
@@ -3065,7 +3078,8 @@ begin
     Consumidor.Enviado := True ;
     fsTipoRel := 'V'
   end
-  else if fsNumVersao = '2000' then
+  else
+  if fsNumVersao = '2000' then
     EnviaComando(ESC + #213 +CodFormaPagto+ COO + StrValor, 8)
   else
   begin
@@ -3474,10 +3488,11 @@ begin
   end ;
 end;
 
-procedure TACBrECFDaruma.AbreNaoFiscal(CPF_CNPJ: String);
+procedure TACBrECFDaruma.AbreNaoFiscal( CPF_CNPJ, Nome, Endereco: String );
 begin
   if fpMFD then
-     EnviaComando( FS + 'F' + #219 + Trim(CPF_CNPJ) + FF + FF + FF) ;
+    EnviaComando( FS + 'F' + #219 + Trim(CPF_CNPJ) + FF + Trim(Nome) + FF + Trim(Endereco) + FF) ;
+
   fsRet244 := '' ;
 end;
 
@@ -3524,22 +3539,21 @@ begin
 end;
 
 procedure TACBrECFDaruma.FechaNaoFiscal(Observacao: AnsiString; IndiceBMP : Integer);
-Var
-  Obs : String;
+var
+  Obs: String;
 begin
-  Obs :=  LeftStr(Observacao,619);
-
-  Obs := StringReplace(Obs,#10,CR+LF,[rfReplaceAll]) + FF ;
-
   if fpMFD then
   begin
-     if IndiceBMP > 0 then
-        Obs :=  ESC + 'B' + IntToStrZero(IndiceBMP,1) + Obs;
+    Obs := StringReplace(Observacao, #10, CR+LF, [rfReplaceAll]) ;
+    Obs := LeftStr(Trim(Obs), 619);
 
-     EnviaComando( FS + 'F' + #226 + Obs ) ;
+    if IndiceBMP > 0 then
+      Obs :=  ESC + 'B' + IntToStrZero(IndiceBMP, 1) + Obs;
+
+    EnviaComando( FS + 'F' + #226 + Obs + FF ) ;
   end;
 
-  fsEmPagamento := false;   { Linha adicionada por Marciano Lizzoni }
+  fsEmPagamento := False;   { Linha adicionada por Marciano Lizzoni }
   fsRet244      := '' ;
 end;
 
@@ -4234,23 +4248,49 @@ begin
 end;
 
 procedure TACBrECFDaruma.Sangria(const Valor: Double; Obs: AnsiString;
-  DescricaoCNF, DescricaoFPG: String);
+  DescricaoCNF, DescricaoFPG: String; IndiceBMP: Integer );
+var
+  CmdBitmap: AnsiString;
 begin
   if fpMFD then
-     EnviaComando( FS + 'F' + #227 + IntToStrZero(Round(Valor * 100), 11) +
-                   LeftStr(Obs,619) + FF )
+  begin
+    if IndiceBMP > 5 then
+      raise Exception.Create( ACBrStr('Indice do bitmap deve ser um valor entre 1 e 5, ou 0 para nenhum.') );
+
+    if IndiceBMP > 0 then
+      CmdBitmap := ESC + 'B' + IntToStr(IndiceBMP)
+    else
+      CmdBitmap := EmptyStr;
+
+    EnviaComando( FS + 'F' + #227 +
+      IntToStrZero(Round(Valor * 100), 11) + LeftStr( CmdBitmap + Obs, 619) + FF
+    );
+  end
   else
-     Inherited Sangria(Valor, Obs, DescricaoCNF, DescricaoFPG);
+    Inherited Sangria(Valor, Obs, DescricaoCNF, DescricaoFPG, IndiceBMP);
 end;
 
 procedure TACBrECFDaruma.Suprimento(const Valor: Double; Obs: AnsiString;
-  DescricaoCNF, DescricaoFPG: String);
+  DescricaoCNF, DescricaoFPG: String; IndiceBMP: Integer );
+var
+  CmdBitmap: AnsiString;
 begin
   if fpMFD then
-     EnviaComando( FS + 'F' + #236 + IntToStrZero(Round(Valor * 100), 11) +
-                   LeftStr(Obs,619) + FF )
+  begin
+    if IndiceBMP > 5 then
+      raise Exception.Create( ACBrStr('Indice do bitmap deve ser um valor entre 1 e 5, ou 0 para nenhum.') );
+
+    if IndiceBMP > 0 then
+      CmdBitmap := ESC + 'B' + IntToStr(IndiceBMP)
+    else
+      CmdBitmap := EmptyStr;
+
+    EnviaComando( FS + 'F' + #236 +
+      IntToStrZero(Round(Valor * 100), 11) + LeftStr( CmdBitmap + Obs, 619) + FF
+    );
+  end
   else
-     Inherited Suprimento(Valor, Obs, DescricaoCNF, DescricaoFPG);
+     Inherited Suprimento(Valor, Obs, DescricaoCNF, DescricaoFPG, IndiceBMP);
 end;
 
 procedure TACBrECFDaruma.NaoFiscalCompleto(CodCNF: String; Valor: Double;
@@ -4830,6 +4870,75 @@ begin
 
     if PathDest <> NomeArquivo then
       DeleteFile(PathDest);
+  end;
+end;
+
+procedure TACBrECFDaruma.ProgramarBitmapPromocional(const AIndice: Integer;
+  const APathArquivo: AnsiString; const AAlinhamento: TACBrAlinhamento);
+var
+  Posicao: String;
+  Tamanho: Integer;
+  Comando: AnsiString;
+  BmpCod: AnsiString;
+  Arquivo: TMemoryStream;
+  Imagem: TBitmap;
+  I: Integer;
+  Buffer: Byte;
+  BMaisHoriz: Byte;
+  BMaisVert: Byte;
+begin
+  if fpMFD then
+  begin
+    if AIndice > 5 then
+      raise Exception.Create( ACBrStr('Posição do Bitmap dever ser um número entre 1 e 5.') );
+
+    if Trim(APathArquivo) = EmptyStr then
+      raise Exception.Create( ACBrStr('Caminho para o arquivo de imagem não foi informado.') );
+
+    if not FileExists(APathArquivo) then
+      raise Exception.Create( ACBrStr( 'Arquivo "'+APathArquivo+'", não foi encontrado.') );
+
+    if AAlinhamento = alCentro then
+      Posicao := '000'
+    else
+      Posicao := '001';
+
+    Imagem := TBitmap.Create;
+    Arquivo := TMemoryStream.Create;
+    try
+      Imagem.LoadFromFile(APathArquivo);
+      Imagem.Monochrome := True;
+      Imagem.SaveToStream(Arquivo);
+
+      BmpCod     := EmptyStr;
+      Tamanho    := Arquivo.Size;
+      BMaisHoriz := Imagem.Width;
+      BMaisVert  := Imagem.Height;
+
+      Arquivo.Position := 0;
+      for I := 0 to Arquivo.Size - 1 do
+      begin
+        Arquivo.Read(Buffer, SizeOf(Buffer));
+        BmpCod := BmpCod + IntToStrZero(Buffer, 3);
+      end;
+
+      Comando := FS + 'C' + #216 +
+        IntToStrZero(AIndice, 2) +
+        IntToStrZero(Tamanho, 4) +
+        IntToStrZero(BMaisHoriz, 3) +
+        IntToStrZero(0, 3) +
+        IntToStrZero(BMaisVert, 3) +
+        IntToStrZero(0, 3) +
+        Posicao +
+        BmpCod;
+
+      //WriteToTXT(ExtractFilePath(APathArquivo) + 'teste.txt', Comando, False);
+      EnviaComando(Comando);
+
+    finally
+      Imagem.Free;
+      Arquivo.Free;
+    end;
   end;
 end;
 

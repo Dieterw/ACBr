@@ -154,7 +154,7 @@ TACBrECFOnEfetuaPagamento = procedure( const CodFormaPagto: String;
 TACBrECFOnFechaCupom = procedure( const Observacao: AnsiString;
   const IndiceBMP : Integer) of object ;
 TACBrECFOnCancelaItemVendido = procedure( const NumItem: Integer) of object ;
-TACBrECFOnAbreNaoFiscal = procedure( const CPF_CNPJ: String ) of object ;
+TACBrECFOnAbreNaoFiscal = procedure( const CPF_CNPJ, Nome, Endereco : String ) of object ;
 TACBrECFOnSubtotalizaNaoFiscal = procedure( const DescontoAcrescimo: Double;
   const MensagemRodape: AnsiString ) of object ;
 TACBrECFOnEfetuaPagamentoNaoFiscal = procedure(const CodFormaPagto: String;
@@ -640,7 +640,9 @@ TACBrECF = class( TACBrComponent )
     { Procedimentos de Cupom Não Fiscal }
     Procedure NaoFiscalCompleto( CodCNF : String; Valor : Double;
        CodFormaPagto  : String; Obs : AnsiString = ''; IndiceBMP : Integer = 0 ) ;
-    Procedure AbreNaoFiscal( CPF_CNPJ : String = '') ;
+    Procedure AbreNaoFiscal( CPF_CNPJ: String = ''; Nome: String = '';
+       Endereco: String = '' ) ;
+
     Procedure RegistraItemNaoFiscal( CodCNF : String; Valor : Double;
        Obs : AnsiString = '' ) ;
     Procedure SubtotalizaNaoFiscal( DescontoAcrescimo : Double = 0;
@@ -651,9 +653,11 @@ TACBrECF = class( TACBrComponent )
     Procedure CancelaNaoFiscal ;
 
     procedure Sangria( const Valor: Double; Obs: AnsiString;
-       DescricaoCNF: String = 'SANGRIA'; DescricaoFPG: String = 'DINHEIRO') ;
+       DescricaoCNF: String = 'SANGRIA'; DescricaoFPG: String = 'DINHEIRO';
+       IndiceBMP: Integer = 0) ;
     procedure Suprimento( const Valor: Double; Obs: AnsiString;
-       DescricaoCNF: String = 'SUPRIMENTO'; DescricaoFPG: String = 'DINHEIRO') ;
+       DescricaoCNF: String = 'SUPRIMENTO'; DescricaoFPG: String = 'DINHEIRO';
+       IndiceBMP: Integer = 0) ;
 
     { Gaveta de dinheiro }
     Procedure AbreGaveta  ;
@@ -814,6 +818,10 @@ TACBrECF = class( TACBrComponent )
     procedure DoVerificaValorGT ;
     procedure DoAtualizarValorGT ;
     function AssinaArquivoComEAD(Arquivo: String): Boolean;
+
+    procedure ProgramarBitmapPromocional(const AIndice: Integer;
+      const APathArquivo: AnsiString;
+      const AAlinhamento: TACBrAlinhamento = alCentro);
 
   published
      property About : String read GetAbout write SetAbout stored False ;
@@ -3089,7 +3097,7 @@ end;
 
 
 procedure TACBrECF.Sangria(const Valor: Double; Obs: AnsiString;
-   DescricaoCNF: String; DescricaoFPG: String ) ;
+   DescricaoCNF: String; DescricaoFPG: String; IndiceBMP: Integer ) ;
 Var
   Tratado : Boolean;
 begin
@@ -3105,7 +3113,7 @@ begin
   ComandoLOG := 'Sangria( '+FloatToStr(Valor)+', '+Obs+', '+DescricaoCNF+', '+DescricaoFPG+' )' ;
   try
     Tratado := False;
-    fsECF.Sangria( Valor, Obs, DescricaoCNF, DescricaoFPG );
+    fsECF.Sangria( Valor, Obs, DescricaoCNF, DescricaoFPG, IndiceBMP );
   except
      if Assigned( FOnErrorSangria ) then
         FOnErrorSangria(Tratado);
@@ -3120,7 +3128,7 @@ begin
 end;
 
 procedure TACBrECF.Suprimento(const Valor: Double; Obs: AnsiString;
-   DescricaoCNF: String; DescricaoFPG: String ) ;
+   DescricaoCNF: String; DescricaoFPG: String; IndiceBMP: Integer ) ;
 Var
   Tratado : Boolean;
 begin
@@ -3136,7 +3144,7 @@ begin
   ComandoLOG := 'Suprimento( '+FloatToStr(Valor)+', '+Obs+', '+DescricaoCNF+', '+DescricaoFPG+' )' ;
   try
     Tratado := False;
-    fsECF.Suprimento( Valor, Obs, DescricaoCNF, DescricaoFPG );
+    fsECF.Suprimento( Valor, Obs, DescricaoCNF, DescricaoFPG, IndiceBMP );
   except
      if Assigned( fOnErrorSuprimento ) then
         fOnErrorSuprimento(Tratado);
@@ -3172,7 +3180,7 @@ begin
   fsRegistrouRFDCNF := False ;
 end;
 
-procedure TACBrECF.AbreNaoFiscal(CPF_CNPJ: String);
+procedure TACBrECF.AbreNaoFiscal( CPF_CNPJ, Nome, Endereco: String );
 Var
   Tratado : Boolean;
 begin
@@ -3182,14 +3190,14 @@ begin
   fsNumSerieCache := '' ;  // Isso força a Leitura do Numero de Série
   DoVerificaValorGT ;
 
-  ComandoLOG := 'AbreNaoFiscal( '+CPF_CNPJ+' )' ;
+  ComandoLOG := 'AbreNaoFiscal( '+CPF_CNPJ+','+Nome+','+Endereco+' )' ;
 
   if Assigned( fOnAntesAbreNaoFiscal ) then
-     fOnAntesAbreNaoFiscal(CPF_CNPJ);
+     fOnAntesAbreNaoFiscal(CPF_CNPJ, Nome, Endereco);
 
   try
     Tratado := False;
-    fsECF.AbreNaoFiscal( CPF_CNPJ );
+    fsECF.AbreNaoFiscal( CPF_CNPJ, Nome, Endereco );
   except
      if Assigned( fOnErrorAbreNaoFiscal ) then
         fOnErrorAbreNaoFiscal(Tratado);
@@ -3221,7 +3229,7 @@ begin
   end ;
 
   if Assigned( fOnDepoisAbreNaoFiscal ) then
-     fOnDepoisAbreNaoFiscal( CPF_CNPJ);
+     fOnDepoisAbreNaoFiscal( CPF_CNPJ, Nome, Endereco);
 
 end;
 
@@ -5550,6 +5558,26 @@ begin
   finally
     Relatorio.Free;
   end;
+end;
+
+procedure TACBrECF.ProgramarBitmapPromocional(const AIndice: Integer;
+  const APathArquivo: AnsiString; const AAlinhamento: TACBrAlinhamento);
+var
+  Alinhamento: String;
+begin
+  case AAlinhamento of
+    alDireita: Alinhamento := 'Direita';
+    alEsquerda: Alinhamento := 'Esquerda';
+    alCentro: Alinhamento := 'Centro';
+  end;
+
+  ComandoLOG := 'ProgramarBitmapPromocional('+
+    IntToStr(AIndice)+','+
+    APathArquivo+','+
+    Alinhamento+
+    ')';
+
+  fsECF.ProgramarBitmapPromocional(AIndice, APathArquivo, AAlinhamento);
 end;
 
 end.

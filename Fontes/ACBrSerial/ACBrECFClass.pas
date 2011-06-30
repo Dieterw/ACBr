@@ -898,7 +898,8 @@ TACBrECFClass = class
     { Procedimentos de Cupom Não Fiscal }
     Procedure NaoFiscalCompleto( CodCNF : String; Valor : Double;
        CodFormaPagto  : String; Obs : AnsiString = ''; IndiceBMP : Integer = 0 ) ; virtual ;
-    Procedure AbreNaoFiscal( CPF_CNPJ : String = '') ; virtual ;
+    Procedure AbreNaoFiscal( CPF_CNPJ: String = ''; Nome: String = '';
+       Endereco: String = '' ) ; virtual ;
     Procedure RegistraItemNaoFiscal( CodCNF : String; Valor : Double;
        Obs : AnsiString = '') ; virtual ;
     Procedure SubtotalizaNaoFiscal( DescontoAcrescimo : Double = 0;
@@ -909,9 +910,9 @@ TACBrECFClass = class
     Procedure CancelaNaoFiscal ; virtual ;
 
     procedure Sangria( const Valor: Double;  Obs : AnsiString;
-       DescricaoCNF: String; DescricaoFPG: String ) ; virtual ;
+       DescricaoCNF: String; DescricaoFPG: String; IndiceBMP: Integer ) ; virtual ;
     procedure Suprimento( const Valor: Double; Obs : AnsiString;
-       DescricaoCNF: String; DescricaoFPG: String) ; virtual ;
+       DescricaoCNF: String; DescricaoFPG: String; IndiceBMP: Integer ) ; virtual ;
 
     { Gaveta de dinheiro }
     Procedure AbreGaveta  ; virtual ;
@@ -1002,6 +1003,11 @@ TACBrECFClass = class
     property CodBarras : TACBrECFCodBarras read fpCodBarras ;
 
     property PathDLL: string read fsPathDLL write fsPathDLL;
+
+
+    procedure ProgramarBitmapPromocional(const AIndice: Integer;
+      const APathArquivo: AnsiString;
+      const AAlinhamento: TACBrAlinhamento = alCentro); virtual;
 end ;
 
 implementation
@@ -2137,7 +2143,7 @@ begin
   ErroAbstract('FechaRelatorio');
 end;
 
-procedure TACBrECFClass.AbreNaoFiscal(CPF_CNPJ: String);
+procedure TACBrECFClass.AbreNaoFiscal( CPF_CNPJ, Nome, Endereco: String );
 begin
   ErroAbstract('AbreNaoFiscal');
 end;
@@ -2194,7 +2200,7 @@ begin
 end;
 
 procedure TACBrECFClass.Sangria(const Valor : Double ; Obs : AnsiString ;
-  DescricaoCNF : String ; DescricaoFPG : String) ;
+  DescricaoCNF : String ; DescricaoFPG : String; IndiceBMP: Integer) ;
 Var
   CNF : TACBrECFComprovanteNaoFiscal ;
   FPG : TACBrECFFormaPagamento ;
@@ -2213,9 +2219,9 @@ begin
 end;
 
 procedure TACBrECFClass.Suprimento(const Valor : Double ; Obs : AnsiString ;
-  DescricaoCNF : String ; DescricaoFPG : String) ;
+  DescricaoCNF : String ; DescricaoFPG : String; IndiceBMP: Integer) ;
 begin
-  Sangria( Valor, Obs, DescricaoCNF, DescricaoFPG);
+  Sangria( Valor, Obs, DescricaoCNF, DescricaoFPG, IndiceBMP);
 end;
 
 procedure TACBrECFClass.PulaLinhas(NumLinhas: Integer);
@@ -3727,6 +3733,12 @@ end;
    {$ENDIF}
   {$ENDIF}
 {$ENDIF}
+
+procedure TACBrECFClass.ProgramarBitmapPromocional(const AIndice: Integer;
+  const APathArquivo: AnsiString; const AAlinhamento: TACBrAlinhamento);
+begin
+  ErroAbstract('ProgramarBitmapPromocional');
+end;
 
 { TACBrECFDadosRZ }
 

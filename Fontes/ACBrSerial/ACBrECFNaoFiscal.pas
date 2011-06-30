@@ -371,7 +371,8 @@ TACBrECFNaoFiscal = class( TACBrECFClass )
     Procedure MudaHorarioVerao( EHorarioVerao : Boolean ) ; overload ; override ;
 
     { Procedimentos de Cupom Não Fiscal }
-    Procedure AbreNaoFiscal( CPF_CNPJ : String = '') ; override ;
+    Procedure AbreNaoFiscal( CPF_CNPJ: String = ''; Nome: String = '';
+       Endereco: String = '' ) ; override ;
     Procedure RegistraItemNaoFiscal( CodCNF : String; Valor : Double;
        Obs : AnsiString = '') ; override ;
 
@@ -1607,7 +1608,7 @@ begin
   Sleep(100);
 end ;
 
-procedure TACBrECFNaoFiscal.AbreNaoFiscal(CPF_CNPJ: String);
+procedure TACBrECFNaoFiscal.AbreNaoFiscal( CPF_CNPJ, Nome, Endereco: String );
 begin
   TestaPodeAbrirCupom ;
 

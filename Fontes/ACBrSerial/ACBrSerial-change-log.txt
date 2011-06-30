@@ -97,6 +97,13 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 30/06/2011
+-- ACBrECFDaruma --
+[+] Indice do bitmap promocional em todos os comprovantes fiscais e não fiscais
+    já funcionando na Daruma.
+[+] Dados do cliente no comprovante não fiscal.
+[-] Acertos gerais da Daruma.
+    (por: Régys Silveira)
 
 Data: 29/06/2011
 -- ACBrECFDaruma --

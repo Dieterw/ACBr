@@ -282,7 +282,8 @@ TACBrECFFiscNET = class( TACBrECFClass )
     Procedure CancelaItemVendido( NumItem : Integer ) ; override ;
 
     { Procedimentos de Cupom Não Fiscal }
-    Procedure AbreNaoFiscal( CPF_CNPJ : String = '') ; override ;
+    Procedure AbreNaoFiscal( CPF_CNPJ: String = ''; Nome: String = '';
+       Endereco: String = '' ) ; override ;
     Procedure RegistraItemNaoFiscal( CodCNF : String; Valor : Double;
        Obs : AnsiString = '') ; override ;
     procedure NaoFiscalCompleto(CodCNF: String; Valor: Double;
@@ -2461,7 +2462,7 @@ begin
   Result := StrToIntDef( FiscNETResposta.Params.Values['ValorInteiro'],0 ) ;
 end;
 
-procedure TACBrECFFiscNET.AbreNaoFiscal(CPF_CNPJ: String);
+procedure TACBrECFFiscNET.AbreNaoFiscal( CPF_CNPJ, Nome, Endereco: String );
 begin
   FiscNETComando.NomeComando := 'AbreCupomNaoFiscal' ;
   FiscNETComando.TimeOut     := 5 ;

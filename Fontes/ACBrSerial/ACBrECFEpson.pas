@@ -309,7 +309,8 @@ TACBrECFEpson = class( TACBrECFClass )
     Procedure AbreGaveta ; override ;
 
     { Procedimentos de Cupom Não Fiscal }
-    Procedure AbreNaoFiscal( CPF_CNPJ : String = '') ; override ;
+    Procedure AbreNaoFiscal( CPF_CNPJ: String = ''; Nome: String = '';
+       Endereco: String = '' ) ; override ;
     Procedure RegistraItemNaoFiscal( CodCNF : String; Valor : Double;
        Obs : AnsiString = '' ) ; override ;
     Procedure SubtotalizaNaoFiscal( DescontoAcrescimo : Double = 0;
@@ -346,7 +347,7 @@ TACBrECFEpson = class( TACBrECFClass )
     Procedure IdentificaPAF( Linha1, Linha2 : String) ; override ;
     Procedure CortaPapel( const CorteParcial : Boolean = false) ; override ;
     procedure Suprimento( const Valor: Double; Obs : AnsiString;
-       DescricaoCNF: String; DescricaoFPG: String) ; override ;
+       DescricaoCNF: String; DescricaoFPG: String; IndiceBMP: Integer) ; override ;
 
     procedure CarregaRelatoriosGerenciais; override;
     procedure LerTotaisRelatoriosGerenciais ; override ;
@@ -2511,7 +2512,7 @@ begin
   end ;
 end;
 
-procedure TACBrECFEpson.AbreNaoFiscal(CPF_CNPJ: String);
+procedure TACBrECFEpson.AbreNaoFiscal( CPF_CNPJ, Nome, Endereco: String );
 begin
   if Trim(CPF_CNPJ) <> '' then
      Consumidor.AtribuiConsumidor(CPF_CNPJ,'','');
@@ -2821,12 +2822,12 @@ begin
 end;
 
 procedure TACBrECFEpson.Suprimento(const Valor : Double ; Obs : AnsiString ;
-  DescricaoCNF : String ; DescricaoFPG : String) ;
+  DescricaoCNF : String ; DescricaoFPG : String; IndiceBMP: Integer) ;
 begin
   if UpperCase(Trim(DescricaoCNF)) = 'SUPRIMENTO' then
      DescricaoCNF := 'FUNDO DE TROCO' ;
 
-  inherited Suprimento(Valor, Obs, DescricaoCNF, DescricaoFPG);
+  inherited Suprimento(Valor, Obs, DescricaoCNF, DescricaoFPG, IndiceBMP);
 end;
 
 function TACBrECFEpson.GetPAF: String;

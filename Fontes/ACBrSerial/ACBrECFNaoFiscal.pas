@@ -1618,6 +1618,10 @@ begin
   begin
      fsBuffer.Add( StringofChar('-',Colunas) ) ;
      fsBuffer.Add(padL('CPF/CNPJ Consumidor: '+CPF_CNPJ,Colunas)) ;
+     if Nome <> '' then
+        fsBuffer.Add(padL('Nome: '+Nome,Colunas)) ;
+     if Endereco <> '' then
+        fsBuffer.Add(padL('Endereco: '+Endereco,Colunas)) ;
      fsBuffer.Add( StringofChar('-',Colunas) ) ;
   end ;
 

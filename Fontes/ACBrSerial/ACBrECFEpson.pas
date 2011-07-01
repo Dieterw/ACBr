@@ -2515,7 +2515,7 @@ end;
 procedure TACBrECFEpson.AbreNaoFiscal( CPF_CNPJ, Nome, Endereco: String );
 begin
   if Trim(CPF_CNPJ) <> '' then
-     Consumidor.AtribuiConsumidor(CPF_CNPJ,'','');
+     Consumidor.AtribuiConsumidor(CPF_CNPJ,Nome,Endereco);
      
   if Consumidor.Atribuido then
   begin

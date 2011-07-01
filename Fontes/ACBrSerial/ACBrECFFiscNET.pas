@@ -1139,7 +1139,7 @@ begin
   FiscNETComando.AddParamString('IdConsumidor',LeftStr(Consumidor.Documento,29)) ;
   if Consumidor.Nome <> '' then
      FiscNETComando.AddParamString('NomeConsumidor',LeftStr(Consumidor.Nome,30)) ;
-  if Consumidor.Nome <> '' then
+  if Consumidor.Endereco <> '' then
      FiscNETComando.AddParamString('EnderecoConsumidor',LeftStr(Consumidor.Endereco,80)) ;
   EnviaComando ;
   Consumidor.Enviado := True ;
@@ -2466,7 +2466,12 @@ procedure TACBrECFFiscNET.AbreNaoFiscal( CPF_CNPJ, Nome, Endereco: String );
 begin
   FiscNETComando.NomeComando := 'AbreCupomNaoFiscal' ;
   FiscNETComando.TimeOut     := 5 ;
-  FiscNETComando.AddParamString('IdConsumidor',CPF_CNPJ) ;
+  FiscNETComando.AddParamString('IdConsumidor',LeftStr(CPF_CNPJ,29)) ;
+  if Nome <> '' then
+     FiscNETComando.AddParamString('NomeConsumidor',LeftStr(Nome,30)) ;
+  if Endereco <> '' then
+     FiscNETComando.AddParamString('EnderecoConsumidor',LeftStr(Endereco,80)) ;
+
   EnviaComando ;
 end;
 

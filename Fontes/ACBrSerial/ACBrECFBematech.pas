@@ -1396,7 +1396,6 @@ begin
      end ;
   end ;
 
-
   fpUltimaMsgPoucoPapel := 0 ;  { Zera tempo pra msg de pouco papel }
   BytesResp := 0 ;
   AguardaImpressao := True ;
@@ -2707,9 +2706,19 @@ begin
      AguardaImpressao := True ;
      CPF_CNPJ := TrimRight(CPF_CNPJ) ;
      if CPF_CNPJ <> '' then
-        padL(CPF_CNPJ,28) ;
-        
-     EnviaComando( #77 + CPF_CNPJ , 5 ) ;
+     begin
+        CPF_CNPJ := padL(CPF_CNPJ,29) ;
+
+        if Nome <> '' then
+        begin
+           Nome := padL(Nome,30) ;
+
+           if Endereco <> '' then
+              Nome := padL(Endereco,80) ;
+        end ;
+     end ;
+
+     EnviaComando( #77 + CPF_CNPJ + Nome + Endereco , 5 ) ;
   end ;
 
   { Linhas acrescentadas por Marciano Lizzoni }

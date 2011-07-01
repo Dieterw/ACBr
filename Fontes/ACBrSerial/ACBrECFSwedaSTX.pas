@@ -373,6 +373,8 @@ begin
   fpDevice.HandShake := hsDTR_DSR ;
   inherited Ativar ; { Abre porta serial }
 
+  GravaLog( 'Ativar' ) ;
+
   fsVerProtocolo := '' ;
   fpMFD       := True ;
   fpTermica   := True ;
@@ -382,20 +384,20 @@ begin
 
   try
      { Testando a comunicaçao com a porta }
-     fsVerProtocolo := Trim(copy( RetornaInfoECF( 'I1' ), 82, 1)) ;
+     fsVerProtocolo := Trim(copy( TACBrECF(fpOwner).RetornaInfoECF( 'I1' ), 82, 1)) ;
 
      if fsVerProtocolo = '' then
         raise EACBrECFNaoInicializado.Create( ACBrStr(
                  'Erro inicializando a impressora '+fpModeloStr ));
 
      fpDecimaisPreco := 0 ;
-     RetCmd := RetornaInfoECF( 'H2' ) ;
+     RetCmd := TACBrECF(fpOwner).RetornaInfoECF( 'H2' ) ;
      if copy(RetCmd,10,1) = 'S' then
         fpDecimaisPreco := 2 ;
      if copy(RetCmd,11,1) = 'S' then
         fpDecimaisPreco := fpDecimaisPreco + 1 ;
 
-     fpDecimaisQtd   := StrToIntDef(copy( RetornaInfoECF( 'U2' ),  1, 1), 2 ) ;
+     fpDecimaisQtd   := StrToIntDef(copy( TACBrECF(fpOwner).RetornaInfoECF( 'U2' ),  1, 1), 2 ) ;
   except
      Desativar ;
      raise ;
@@ -747,11 +749,11 @@ begin
   Tarefa    := copy(Bloco,3,2) ;
   Tipo      := Bloco[5] ;
 
-  GravaLog( 'SwedaSTX VerificaFimLeitura: Verificando Bloco: '+Bloco) ;
+  GravaLog( 'SwedaSTX VerificaFimLeitura: Verificando Bloco: '+Bloco, True) ;
 
   if Tipo = '!' then  // Bloco de Satus não solicitado, Descartando
    begin
-     GravaLog( 'SwedaSTX VerificaFimLeitura: Bloco (!) Descartado: '+Bloco) ;
+     GravaLog( 'SwedaSTX VerificaFimLeitura: Bloco (!) Descartado: '+Bloco, True) ;
      Result := False ;
    end
   else
@@ -797,9 +799,9 @@ begin
 
   if not Result then
   begin
-     GravaLog('Retorno Antes do ajuste: '+Retorno);
+     //GravaLog('Retorno Antes do ajuste: '+Retorno, True);
      Retorno := copy(Retorno, PosETX+2, Length(Retorno) ) ;
-     GravaLog('Retorno APOS o ajuste: '+Retorno);
+     //GravaLog('Retorno APOS o ajuste: '+Retorno, True);
   end ;
 end;
 

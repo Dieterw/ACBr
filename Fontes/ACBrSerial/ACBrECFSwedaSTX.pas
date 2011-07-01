@@ -710,6 +710,9 @@ begin
     129,137,138,145..147,150,152..155,158,173..183,185,186,188..191,199,210,
     219,221,225,230,235..237,241,242,244..248
         : Result := 'Chamar Assistência Técnica' ;
+    243 : Result := 'Redução não encontrada!' ;
+    249 : Result := 'Totalizadores de ISSQN desabilitados, Inscrição Municipal não programada!' ;
+    250 : Result := 'Totalizadores de ICMS desabilitados, CNPJ não programado!' ;
   else
     Result := 'Consulte o manual' ;
   end ;

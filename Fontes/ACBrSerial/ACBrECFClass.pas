@@ -908,6 +908,7 @@ TACBrECFClass = class
        Observacao : AnsiString = ''; ImprimeVinculado : Boolean = false) ; virtual ;
     Procedure FechaNaoFiscal( Observacao : AnsiString = ''; IndiceBMP : Integer = 0) ; virtual ;
     Procedure CancelaNaoFiscal ; virtual ;
+    Procedure CancelaItemNaoFiscal(const AItem: Integer); virtual;
 
     procedure Sangria( const Valor: Double;  Obs : AnsiString;
        DescricaoCNF: String; DescricaoFPG: String; IndiceBMP: Integer ) ; virtual ;
@@ -932,6 +933,8 @@ TACBrECFClass = class
     Procedure AbreCupomVinculado(COO, CodFormaPagto, CodComprovanteNaoFiscal :
        String; Valor : Double) ; virtual ; 
     Procedure LinhaCupomVinculado( Linha : AnsiString ) ; virtual ;
+
+    Procedure SegundaViaVinculado; virtual;
 
     Procedure FechaRelatorio ; virtual ;
     Procedure PulaLinhas( NumLinhas : Integer = 0 ) ; virtual ;
@@ -2153,6 +2156,11 @@ begin
   CancelaCupom ;
 end;
 
+Procedure TACBrECFClass.CancelaItemNaoFiscal(const AItem: Integer);
+begin
+  ErroAbstract('AbreNaoFiscal');
+end;
+
 procedure TACBrECFClass.EfetuaPagamentoNaoFiscal(CodFormaPagto: String;
   Valor: Double; Observacao: AnsiString; ImprimeVinculado: Boolean);
 begin
@@ -3174,6 +3182,11 @@ end;
 procedure TACBrECFClass.LinhaCupomVinculado(Linha: AnsiString);
 begin
   ErroAbstract('LinhaCupomVinculado');
+end;
+
+procedure TACBrECFClass.SegundaViaVinculado;
+begin
+  ErroAbstract('SegundaViaVinculado');
 end;
 
 procedure TACBrECFClass.ListaCupomVinculado( Relatorio: TStrings;

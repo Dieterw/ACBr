@@ -154,6 +154,7 @@ TACBrECFOnEfetuaPagamento = procedure( const CodFormaPagto: String;
 TACBrECFOnFechaCupom = procedure( const Observacao: AnsiString;
   const IndiceBMP : Integer) of object ;
 TACBrECFOnCancelaItemVendido = procedure( const NumItem: Integer) of object ;
+TACBrECFOnCancelaItemNaoFiscal = procedure( const NumItem: Integer) of object ;
 TACBrECFOnAbreNaoFiscal = procedure( const CPF_CNPJ, Nome, Endereco : String ) of object ;
 TACBrECFOnSubtotalizaNaoFiscal = procedure( const DescontoAcrescimo: Double;
   const MensagemRodape: AnsiString ) of object ;
@@ -248,6 +249,9 @@ TACBrECF = class( TACBrComponent )
     fOnAntesCancelaNaoFiscal : TNotifyEvent;
     fOnDepoisCancelaNaoFiscal  : TNotifyEvent;
     fOnErrorCancelaNaoFiscal  : TACBrECFEventoOnError;
+    fOnAntesCancelaItemNaoFiscal : TACBrECFOnCancelaItemNaoFiscal;
+    fOnDepoisCancelaItemNaoFiscal  : TACBrECFOnCancelaItemNaoFiscal;
+    fOnErrorCancelaItemNaoFiscal  : TACBrECFEventoOnError;
     fOnAntesSangria : TACBrECFOnSangria;
     fOnDepoisSangria  : TACBrECFOnSangria;
     fOnErrorSangria  : TACBrECFEventoOnError;
@@ -651,6 +655,7 @@ TACBrECF = class( TACBrComponent )
        Observacao : AnsiString = ''; ImprimeVinculado : Boolean = false) ;
     Procedure FechaNaoFiscal( Observacao : AnsiString = ''; IndiceBMP : Integer = 0) ;
     Procedure CancelaNaoFiscal ;
+    Procedure CancelaItemNaoFiscal(const AItem: Integer);
 
     procedure Sangria( const Valor: Double; Obs: AnsiString;
        DescricaoCNF: String = 'SANGRIA'; DescricaoFPG: String = 'DINHEIRO';
@@ -683,6 +688,7 @@ TACBrECF = class( TACBrComponent )
     Procedure AbreCupomVinculado(COO, CodFormaPagto, CodComprovanteNaoFiscal :
        String; Valor : Double) ; overload ;
     Procedure LinhaCupomVinculado( const Linha : AnsiString ) ;
+    Procedure SegundaViaVinculado;
     Procedure FechaRelatorio ;
     Procedure PulaLinhas( const NumLinhas : Integer = 0 ) ;
     Procedure CortaPapel( const CorteParcial : Boolean = false) ;
@@ -950,6 +956,12 @@ TACBrECF = class( TACBrComponent )
        read FOnDepoisCancelaNaoFiscal write FOnDepoisCancelaNaoFiscal;
     property OnErrorCancelaNaoFiscal : TACBrECFEventoOnError
        read FOnErrorCancelaNaoFiscal write FOnErrorCancelaNaoFiscal;
+    property OnAntesCancelaItemNaoFiscal : TACBrECFOnCancelaItemNaoFiscal
+       read FOnAntesCancelaItemNaoFiscal write FOnAntesCancelaItemNaoFiscal;
+    property OnDepoisCancelaItemNaoFiscal : TACBrECFOnCancelaItemNaoFiscal
+       read FOnDepoisCancelaItemNaoFiscal write FOnDepoisCancelaItemNaoFiscal;
+    property OnErrorCancelaItemNaoFiscal : TACBrECFEventoOnError
+       read FOnErrorCancelaItemNaoFiscal write FOnErrorCancelaItemNaoFiscal;
     property OnAntesSangria : TACBrECFOnSangria
        read FOnAntesSangria write FOnAntesSangria;
     property OnDepoisSangria : TACBrECFOnSangria
@@ -3300,6 +3312,36 @@ begin
      FOnDepoisCancelaNaoFiscal(Self);
 end;
 
+Procedure TACBrECF.CancelaItemNaoFiscal(const AItem: Integer);
+var
+  Tratado: Boolean;
+begin
+  ComandoLOG := 'CancelaItemNaoFiscal';
+
+  if Assigned( fOnAntesCancelaItemNaoFiscal ) then
+    fOnAntesCancelaItemNaoFiscal(AItem);
+
+  try
+    Tratado := False;
+    fsECF.CancelaItemNaoFiscal(AItem);
+  except
+    if Assigned( FOnErrorCancelaItemNaoFiscal ) then
+      FOnErrorCancelaItemNaoFiscal(Tratado);
+
+    if not Tratado then
+      raise;
+  end;
+
+  if MemoAssigned then
+  begin
+    fsMemoOperacao := 'CancelaItemNaoFiscal' ;
+    MemoAdicionaLinha( '<b>CANCELADO ITEM:</b> '+IntToStrZero(AItem, 3) ) ;
+  end ;
+
+  if Assigned( FOnDepoisCancelaItemNaoFiscal ) then
+    FOnDepoisCancelaItemNaoFiscal(AItem);
+end;
+
 procedure TACBrECF.EfetuaPagamentoNaoFiscal(CodFormaPagto: String;
   Valor: Double; Observacao: AnsiString; ImprimeVinculado: Boolean);
 Var
@@ -4283,6 +4325,12 @@ begin
                     IntToStr(Vias)+' )';
   fsECF.CupomVinculado( COO, CodFormaPagto, CodComprovanteNaoFiscal, Valor,
                         Relatorio, Vias );
+end;
+
+procedure TACBrECF.SegundaViaVinculado;
+begin
+  ComandoLOG := 'SegundaViaVinculado()';
+  fsECF.SegundaViaVinculado;
 end;
 
 procedure TACBrECF.AbreCupomVinculado(COO, CodFormaPagto: String;

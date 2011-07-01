@@ -99,6 +99,8 @@ Símbolo : Significado
 
 Data: 30/06/2011
 -- ACBrECFDaruma --
+[+] Método para cancelamento de item não fiscal
+[+] Método para impressão da segunda via do Comprovante não fiscal
 [+] Indice do bitmap promocional em todos os comprovantes fiscais e não fiscais
     já funcionando na Daruma.
 [+] Dados do cliente no comprovante não fiscal.

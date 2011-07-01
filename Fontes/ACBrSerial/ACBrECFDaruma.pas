@@ -337,6 +337,8 @@ TACBrECFDaruma = class( TACBrECFClass )
        String; Valor : Double) ; override ;
     Procedure LinhaCupomVinculado( Linha : AnsiString ) ; override ;
     Procedure FechaRelatorio ; override ;
+    procedure SegundaViaVinculado; override;
+
    //Cheque
     Procedure ImprimeCheque(Banco : String; Valor : Double ; Favorecido,
        Cidade : String; Data : TDateTime ;Observacao : String = '') ; override ;
@@ -388,6 +390,7 @@ TACBrECFDaruma = class( TACBrECFClass )
        Observacao : AnsiString = ''; ImprimeVinculado : Boolean = false) ; override ;
     Procedure FechaNaoFiscal( Observacao : AnsiString = ''; IndiceBMP : Integer = 0) ; override ;
     Procedure CancelaNaoFiscal ; override ;
+    Procedure CancelaItemNaoFiscal(const AItem: Integer); override;
 
     procedure Sangria( const Valor: Double;  Obs: AnsiString; DescricaoCNF,
        DescricaoFPG: String; IndiceBMP: Integer ) ; override ;
@@ -3566,6 +3569,11 @@ begin
   fsRet244 := '' ;
 end;
 
+procedure TACBrECFDaruma.CancelaItemNaoFiscal(const AItem: Integer);
+begin
+  EnviaComando( FS + 'F' + #221 + IntToStrZero(AItem, 3) );
+end;
+
 function TACBrECFDaruma.GetTotalAcrescimos: Double;
 var
    RetCmd: AnsiString;
@@ -4940,6 +4948,11 @@ begin
       Arquivo.Free;
     end;
   end;
+end;
+
+procedure TACBrECFDaruma.SegundaViaVinculado;
+begin
+  EnviaComando( FS + 'F' + #216);
 end;
 
 end.

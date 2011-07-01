@@ -197,7 +197,7 @@ function OnlyAlpha(const AValue: AnsiString): String;
 function OnlyAlphaNum(const AValue: AnsiString): String;
 function StrIsIP(const AValue: string): Boolean;
 
-function TiraAcentos( const AString : AnsiString ) : AnsiString ;
+function TiraAcentos( const AString : String ) : String ;
 function TiraAcento( const AChar : AnsiChar ) : AnsiChar ;
 function AjustaLinhas(Texto: AnsiString; Colunas: Integer ;
    NumMaxLinhas: Integer = 0; PadLinhas: Boolean = False): AnsiString;
@@ -285,7 +285,11 @@ begin
  {$IFDEF USE_LConvEncoding}
    Result := UTF8ToCP1252( AString ) ;
  {$ELSE}
-   Result := Utf8ToAnsi( AString ) ;
+   {$IFDEF FPC}
+    Result := Utf8ToAnsi( AString ) ;
+   {$ELSE}
+    Result := AnsiString( AString ) ;
+   {$ENDIF}
  {$ENDIF}
 {$ELSE}
   Result := AString
@@ -1074,18 +1078,23 @@ end;
 {-----------------------------------------------------------------------------
   Substitui todos os caracteres acentuados por compativeis.  
  ---------------------------------------------------------------------------- }
-function TiraAcentos( const AString : AnsiString ) : AnsiString ;
+function TiraAcentos( const AString : String ) : String ;
 Var A : Integer ;
     Letra : AnsiChar ;
+    AnsiStr, Ret : AnsiString ;
 begin
-  Result := '' ;
-  For A := 1 to Length( AString ) do
+  Result  := '' ;
+  Ret     := '' ;
+  AnsiStr := ACBrStrToAnsi( AString );
+  For A := 1 to Length( AnsiStr ) do
   begin
-     Letra := TiraAcento( AString[A] ) ;
+     Letra := TiraAcento( AnsiStr[A] ) ;
      if not (Letra in [#32..#126,#13,#10,#8]) then    {Letras / numeros / pontos / sinais}
         Letra := ' ' ;
-     Result := Result + Letra ;
-  end
+     Ret := Ret + Letra ;
+  end ;
+
+  Result := ACBrStr(Ret)
 end ;
 
 {-----------------------------------------------------------------------------

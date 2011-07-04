@@ -48,6 +48,13 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   04/07/11 (Italo Jurisato Junior)
+---------------
+[-] Alterações na rotina para assinar usando o ACBrCTeOpenSSL, conforme
+    correções realizadas por Gilberto Ximenes.
+[-] Alterações na rotina para imprimir o canhoto no rodapé conforme
+    correções realizadas por Clever - BSoft Sistemas.
+
 Alterações   02/06/11 (Italo Jurisato Junior)
 ---------------
 [-] Alterada a Procedure GerarEmit, ao gerar a tag CNPJ a função wCampoCNPJ, 

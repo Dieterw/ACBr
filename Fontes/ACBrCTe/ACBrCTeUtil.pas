@@ -69,7 +69,7 @@ uses{$IFNDEF ACBrCTeOpenSSL}ACBrCAPICOM_TLB, ACBrMSXML2_TLB, JwaWinCrypt, {$ENDI
 
 {$IFDEF ACBrCTeOpenSSL}
 const
-  cDTD         = '<!DOCTYPE test [<!ATTLIST infCTe Id ID #IMPLIED>]>';
+  cDTD         = '<!DOCTYPE test [<!ATTLIST infCte Id ID #IMPLIED>]>';
   cDTDCanc     = '<!DOCTYPE test [<!ATTLIST infCanc Id ID #IMPLIED>]>';
   cDTDInut     = '<!DOCTYPE test [<!ATTLIST infInut Id ID #IMPLIED>]>';
 {$ELSE}
@@ -1443,8 +1443,8 @@ begin
       raise Exception.Create('Error: failed to set key name for key from "' + key_file + '"');
 
     { sign the template }
-//       if (xmlSecDSigCtxSign(dsigCtx, node) < 0) then
-//         raise Exception.Create('Error: signature failed');
+    if (xmlSecDSigCtxSign(dsigCtx, node) < 0) then
+      raise Exception.Create('Error: signature failed');
 
     { print signed document to stdout }
     // xmlDocDump(stdout, doc);

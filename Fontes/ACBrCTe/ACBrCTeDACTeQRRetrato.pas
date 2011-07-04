@@ -1541,19 +1541,19 @@ procedure TfrmDACTeQRRetrato.qrb_18_ReciboBeforePrint(Sender: TQRCustomBand;
   var PrintBand: Boolean);
 begin
   inherited;
-  // Incluido/Alterado por Italo em 20/04/2011 / 27/04/2011
-  PrintBand := (QRCTe.PageNumber = 1) and (FPosRecibo = prRodape);
+  // Última alteração realizada por base nas correções de Clever - BSoft Sistemas
 
-  // Incluido por Italo em 27/04/2011
+  // Incluido/Alterado por Italo em 20/04/2011 / 27/04/2011 / 04/07/2011
+  PrintBand := (QRCTe.PageNumber = 1);
+
+  // Incluido por Italo em 27/04/2011 / 04/07/2011
   // TpcteTipoCTe = (tcNormal, tcComplemento, tcAnulacao, tcSubstituto);
   if (FCTe.Ide.tpCTe = tcNormal) and PrintBand
    then begin
-    qrb_18_Recibo.Height  := 68;
-    qrb_18_Recibo.Enabled := True;
-   end
-   else begin
-    qrb_18_Recibo.Height  := 0;
-    qrb_18_Recibo.Enabled := False;
+    qrb_18_Recibo.Enabled := (FPosRecibo = prRodape);
+    if qrb_18_Recibo.Enabled
+     then qrb_18_Recibo.Height  := 68
+     else qrb_18_Recibo.Height  := 0;
    end;
 end;
 

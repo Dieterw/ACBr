@@ -2836,7 +2836,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       object txtInstrucoes3: TRLMemo
         Left = 5
         Height = 82
-        Top = 201
+        Top = 202
         Width = 529
         AutoSize = False
         Font.Color = clBlack
@@ -3172,9 +3172,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
     end
   end
   object BoletoCarne: TRLReport
-    Left = 816
+    Left = 56
     Height = 1123
-    Top = 50
+    Top = 88
     Width = 794
     Font.Color = clBlack
     Font.Height = -13
@@ -4611,7 +4611,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       object imgBarrasCarne: TRLBarcode
         Left = 154
         Height = 66
-        Top = 287
+        Top = 286
         Width = 465
         AutoSize = False
         Caption = '23790-3571000000100120'

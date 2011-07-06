@@ -52,7 +52,7 @@ uses
   ACBrBoleto ;
 
 const
-  CACBrBoletoFCFortes_Versao = '0.0.9a' ;
+  CACBrBoletoFCFortes_Versao = '0.0.10a' ;
 
 type
 
@@ -384,60 +384,6 @@ type
     txtReferencia3: TRLLabel;
     txtSwHouse: TRLAngleLabel;
     txtVencCarne2: TRLLabel;
-    RLBand5: TRLBand;
-    RLDraw1: TRLDraw;
-    RLDraw75: TRLDraw;
-    RLDraw76: TRLDraw;
-    RLDraw77: TRLDraw;
-    RLDraw79: TRLDraw;
-    RLDraw80: TRLDraw;
-    RLDraw84: TRLDraw;
-    RLDraw85: TRLDraw;
-    RLDraw86: TRLDraw;
-    RLDraw87: TRLDraw;
-    RLDraw88: TRLDraw;
-    RLDraw89: TRLDraw;
-    RLLabel7: TRLLabel;
-    txtNomeCedente1: TRLLabel;
-    RLLabel12: TRLLabel;
-    txtCodCedenteCarne3: TRLLabel;
-    RLLabel24: TRLLabel;
-    RLLabel26: TRLLabel;
-    RLLabel34: TRLLabel;
-    txtEspecieDoc1: TRLLabel;
-    RLLabel58: TRLLabel;
-    RLLabel59: TRLLabel;
-    RLLabel60: TRLLabel;
-    txtValorCar1: TRLLabel;
-    ImgLoja1: TRLImage;
-    txtNumeroBanco1: TRLLabel;
-    RLLabel63: TRLLabel;
-    RLLabel64: TRLLabel;
-    RLLabel65: TRLLabel;
-    txtLocal1: TRLLabel;
-    RLLabel92: TRLLabel;
-    txtVencCarne3: TRLLabel;
-    RLLabel100: TRLLabel;
-    RLLabel104: TRLLabel;
-    RLLabel106: TRLLabel;
-    txtNomeSacado1: TRLLabel;
-    RLLabel112: TRLLabel;
-    RLLabel114: TRLLabel;
-    RLLabel116: TRLLabel;
-    RLLabel118: TRLLabel;
-    RLLabel120: TRLLabel;
-    RLLabel122: TRLLabel;
-    RLLabel125: TRLLabel;
-    RLLabel127: TRLLabel;
-    RLLabel129: TRLLabel;
-    RLLabel131: TRLLabel;
-    RLLabel133: TRLLabel;
-    RLLabel134: TRLLabel;
-    RLDraw90: TRLDraw;
-    RLDraw91: TRLDraw;
-    RLLabel136: TRLLabel;
-    txtDataProces1: TRLLabel;
-    txtTotPar1: TRLLabel;
     procedure BoletoCarneBeforePrint ( Sender: TObject; var PrintIt: boolean ) ;
     procedure BoletoCarneDataCount ( Sender: TObject; var DataCount: integer ) ;
     procedure BoletoCarneDataRecord ( Sender: TObject; RecNo: integer;
@@ -743,47 +689,29 @@ begin
       ACBrBoletoFC.ACBrBoleto.AdicionarMensagensPadroes(Titulo,MensagemPadrao);
 
       fBoletoFC.CarregaLogo( ImgLoja.Picture, Banco.Numero );
-      fBoletoFC.CarregaLogo( ImgLoja1.Picture, Banco.Numero );
       fBoletoFC.CarregaLogo( imgBancoCarne.Picture, Banco.Numero );
       txtNumeroBanco.Caption         := IntToStrZero(Banco.Numero, 3)+ '-' +
                                         ifthen(Banco.Digito >= 10,'X',IntToStrZero(Banco.Digito, 1));
-      txtNumeroBanco1.Caption         :=IntToStrZero(Banco.Numero, 3)+ '-' +
-                                        ifthen(Banco.Digito >= 10,'X',IntToStrZero(Banco.Digito, 1));
       txtVencCanhoto.Caption          := FormatDateTime('dd/mm/yyyy',Titulo.Vencimento);
       txtVencCarne2.Caption           := txtVencCanhoto.Caption;
-      txtVencCarne3.Caption           := txtVencCanhoto.Caption;
       txtCodCedenteCarne.Caption      := CodCedente;
       txtCodCedenteCarne2.Caption     := txtCodCedenteCarne.Caption;
-      txtCodCedenteCarne3.Caption     := txtCodCedenteCarne.Caption;
       txtValorCarne.Caption           := FormatFloat('###,###,##0.00',Titulo.ValorDocumento);
       txtValorCar.Caption             := txtValorCarne.Caption;
-      txtValorCar1.Caption             := txtValorCarne.Caption;
       txtNossoNumeroCarne.Caption     := NossoNum;
       txtNossoNumCan.Caption          := NossoNum;
       txtNomeSacado.Caption           := Titulo.Sacado.NomeSacado;
-      txtNomeSacado1.Caption          := Titulo.Sacado.NomeSacado;
       txtNomeSacadoCarne.Caption      := txtNomeSacado.Caption;
-
       txtLocal.Caption                := Titulo.LocalPagamento;
-      txtLocal1.Caption               := Titulo.LocalPagamento;
       txtNomeCedente.Caption          := Cedente.Nome;
-      txtNomeCedente1.Caption         := Cedente.Nome;
-
       txtDataDocto.Caption            := FormatDateTime('dd/mm/yyyy', Titulo.DataDocumento);
       txtNumeroDocto.Caption          := Titulo.NumeroDocumento;
       txtEspecieDoc.Caption           := Titulo.EspecieDoc;
-      txtEspecieDoc1.Caption          := Titulo.EspecieDoc;
       txtAceite.Caption               := IfThen((atSim = Titulo.Aceite), 'S', 'N');
       txtDataProces.Caption           := FormatDateTime('dd/mm/yyyy',Now);
-      txtDataProces1.Caption          := FormatDateTime('dd/mm/yyyy',Now);
-
-      txtUsoBanco2.Caption            := Titulo.UsoBanco;
       txtCarteira.Caption             := Titulo.Carteira;
-      txtEspecie2.Caption             := 'R$';
       txtParcela.Caption              := IntToStrZero(Titulo.Parcela,2)+' /';
       txtTotPar.Caption               := IntToStrZero(Titulo.TotalParcelas,2);
-      txtTotPar1.Caption              := IntToStrZero(Titulo.TotalParcelas,2) + ' Parcelas, com sujeito a protesto automático.';
-
       txtEndSacado.Caption            := Titulo.Sacado.Logradouro + ' '+
                                          Titulo.Sacado.Numero + Titulo.Sacado.Complemento;
       txtCidadeSacado.Caption         := Titulo.Sacado.CEP + ' '+Titulo.Sacado.Cidade +

@@ -47,6 +47,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versao 0.0.10a do FortesReport 06/07/11
+[-] Corrigido problema com componentes não encontrados no dfm do Fortes.
+    (Juliana Tamizou)
+
 
 Versao 0.0.27a 24/06/2011
 [+] Alterado classe do Itau para gerar o arquivo de remessa apenas para 

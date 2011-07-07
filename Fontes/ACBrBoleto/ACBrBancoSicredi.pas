@@ -71,6 +71,9 @@ begin
    fpDigito := 10;
    fpNome   := 'Sicredi';
    fpTamanhoMaximoNossoNum := 8;
+   fpTamanhoAgencia := 4;
+   fpTamanhoConta   := 5;
+   fpTamanhoCarteira:= 1;
 end;
 
 function TACBrBancoSicredi.CalcularDigitoVerificador(const ACBrTitulo: TACBrTitulo ): String;

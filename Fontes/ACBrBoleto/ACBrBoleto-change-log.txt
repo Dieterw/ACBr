@@ -47,9 +47,17 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Verso 0.0.9a do QuickReport 07/07/11
+[-] Corrigido problema ao imprimir apartir da tela do preview.
+    (Rick Nelson)
+
 Versao 0.0.10a do FortesReport 06/07/11
 [-] Corrigido problema com componentes não encontrados no dfm do Fortes.
     (Juliana Tamizou)
+
+Versao 0.0.28a 07/07/2011
+[-] Efetuado correções na unit do Sicred, configurados popriedades do
+    tamanho máximo da Agência, Carteira e Conta.(Marko Sistemas)
 
 
 Versao 0.0.27a 24/06/2011

@@ -50,7 +50,7 @@ uses
   QRWebFilt ;
 
 const
-  CACBrBoletoFCQuick_Versao = '0.0.8a' ;
+  CACBrBoletoFCQuick_Versao = '0.0.9a' ;
 
 type
 
@@ -314,6 +314,10 @@ type
     procedure BoletoCarneNeedData(Sender: TObject; var MoreData: Boolean);
     procedure rbLCDetailBeforePrint(Sender: TQRCustomBand;
       var PrintBand: Boolean);
+    procedure LayoutBoletoBeforePrint(Sender: TCustomQuickRep;
+      var PrintReport: Boolean);
+    procedure BoletoCarneBeforePrint(Sender: TCustomQuickRep;
+      var PrintReport: Boolean);
   private
      fBoletoFC: TACBrBoletoFCQuick;
      fIndice: Integer;
@@ -425,7 +429,6 @@ end;
 
 procedure TACBrBoletoFCQuickFr.FormCreate(Sender: TObject);
 begin
-   fIndice   := 0 ;
    fBoletoFC := TACBrBoletoFCQuick(Owner) ;  // Link para o Pai
    txtSwHouse.Caption := BoletoFC.SoftwareHouse ;
    ACBrBarCode1.Width := imgBarra.Width ;
@@ -603,6 +606,18 @@ begin
    end;
 end;
   Inc(fIndice);
+end;
+
+procedure TACBrBoletoFCQuickFr.LayoutBoletoBeforePrint(
+  Sender: TCustomQuickRep; var PrintReport: Boolean);
+begin
+   fIndice:= 0;
+end;
+
+procedure TACBrBoletoFCQuickFr.BoletoCarneBeforePrint(
+  Sender: TCustomQuickRep; var PrintReport: Boolean);
+begin
+   fIndice:= 0;
 end;
 
 end.

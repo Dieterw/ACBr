@@ -1,6 +1,6 @@
 object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
-  Left = 207
-  Top = 145
+  Left = 231
+  Top = 283
   Width = 1007
   Height = 738
   Caption = 'ACBRBoletoFCQuickFr'
@@ -40,6 +40,7 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
     Frame.DrawBottom = False
     Frame.DrawLeft = False
     Frame.DrawRight = False
+    BeforePrint = LayoutBoletoBeforePrint
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
@@ -68,29 +69,15 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
       50.000000000000000000
       0.000000000000000000)
     PrinterSettings.Copies = 1
-    PrinterSettings.OutputBin = Auto
     PrinterSettings.Duplex = False
     PrinterSettings.FirstPage = 0
     PrinterSettings.LastPage = 0
-    PrinterSettings.UseStandardprinter = False
-    PrinterSettings.UseCustomBinCode = False
-    PrinterSettings.CustomBinCode = 0
-    PrinterSettings.ExtendedDuplex = 0
-    PrinterSettings.UseCustomPaperCode = False
-    PrinterSettings.CustomPaperCode = 0
-    PrinterSettings.PrintMetaFile = False
-    PrinterSettings.PrintQuality = 0
-    PrinterSettings.Collate = 0
-    PrinterSettings.ColorOption = 0
+    PrinterSettings.OutputBin = Auto
     PrintIfEmpty = True
     ShowProgress = False
     SnapToGrid = True
     Units = MM
     Zoom = 100
-    PrevFormStyle = fsNormal
-    PreviewInitialState = wsNormal
-    PrevInitialZoom = qrZoomToFit
-    PreviewDefaultSaveType = stQRP
     object RLBandDatail: TQRBand
       Left = 19
       Top = 19
@@ -104,14 +91,11 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
       AlignToBottom = False
       BeforePrint = RLBandDatailBeforePrint
       Color = clWhite
-      TransparentBand = False
       ForceNewColumn = False
       ForceNewPage = False
       Size.Values = (
         2428.875000000000000000
         2000.250000000000000000)
-      PreCaluculateBandHeight = False
-      KeepOnOnePage = False
       BandType = rbDetail
       object QRShape2: TQRShape
         Left = 0
@@ -130,7 +114,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           1997.604166666667000000)
         Pen.Style = psDot
         Shape = qrsHorLine
-        VertAdjust = 0
       end
       object RLDraw19: TQRShape
         Left = 0
@@ -148,7 +131,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           277.812500000000000000
           1997.604166666667000000)
         Shape = qrsTopAndBottom
-        VertAdjust = 0
       end
       object QRShape1: TQRShape
         Left = 316
@@ -167,7 +149,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           203.729166666666700000)
         Brush.Style = bsClear
         Shape = qrsRightAndLeft
-        VertAdjust = 0
       end
       object RLDraw22: TQRShape
         Left = 0
@@ -185,7 +166,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           365.125000000000000000
           1997.604166666667000000)
         Shape = qrsTopAndBottom
-        VertAdjust = 0
       end
       object RLDraw20: TQRShape
         Left = 0
@@ -203,7 +183,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           190.500000000000000000
           1997.604166666667000000)
         Shape = qrsTopAndBottom
-        VertAdjust = 0
       end
       object RLDraw18: TQRShape
         Left = 0
@@ -221,7 +200,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           103.187500000000000000
           1997.604166666667000000)
         Shape = qrsTopAndBottom
-        VertAdjust = 0
       end
       object RLDraw38: TQRShape
         Left = 0
@@ -238,7 +216,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           706.437500000000000000
           1997.604166666667000000)
         Shape = qrsTopAndBottom
-        VertAdjust = 0
       end
       object RLDraw37: TQRShape
         Left = 569
@@ -256,7 +233,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           619.125000000000000000
           492.125000000000000000)
         Shape = qrsTopAndBottom
-        VertAdjust = 0
       end
       object RLDraw34: TQRShape
         Left = 569
@@ -274,7 +250,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           452.437500000000000000
           492.125000000000000000)
         Shape = qrsTopAndBottom
-        VertAdjust = 0
       end
       object RLDraw28: TQRShape
         Left = 568
@@ -292,7 +267,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           103.187500000000000000
           2.645833333333333000)
         Shape = qrsVertLine
-        VertAdjust = 0
       end
       object RLDraw27: TQRShape
         Left = 119
@@ -311,7 +285,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           333.375000000000000000)
         Brush.Style = bsClear
         Shape = qrsRightAndLeft
-        VertAdjust = 0
       end
       object RLDraw25: TQRShape
         Left = 390
@@ -329,7 +302,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           367.770833333333300000
           10.583333333333330000)
         Shape = qrsVertLine
-        VertAdjust = 0
       end
       object RLDraw24: TQRShape
         Left = 119
@@ -346,7 +318,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           367.770833333333300000
           171.979166666666700000)
         Shape = qrsRightAndLeft
-        VertAdjust = 0
       end
       object RLDraw23: TQRShape
         Left = 183
@@ -364,7 +335,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           367.770833333333300000
           164.041666666666700000)
         Shape = qrsRightAndLeft
-        VertAdjust = 0
       end
       object RLDraw16: TQRShape
         Left = 180
@@ -382,7 +352,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           2.645833333333333000
           261.937500000000000000)
         Shape = qrsRightAndLeft
-        VertAdjust = 0
       end
       object imgBanco2: TQRImage
         Left = 4
@@ -429,7 +398,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 18
       end
       object RLLabel67: TQRLabel
@@ -455,13 +423,12 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         Color = clWhite
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
-        Font.Height = -9
+        Font.Height = -16
         Font.Name = 'Arial'
         Font.Style = []
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 12
       end
       object RLLabel68: TQRLabel
@@ -493,7 +460,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object lblLocalPagto: TQRLabel
@@ -525,7 +491,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 9
       end
       object RLLabel69: TQRLabel
@@ -542,7 +507,7 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           29.104166666666670000
           7.937500000000000000
           198.437500000000000000
-          76.729166666666680000)
+          76.729166666666670000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -557,7 +522,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object txtNomeCedente2: TQRLabel
@@ -589,7 +553,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 9
       end
       object RLLabel70: TQRLabel
@@ -621,7 +584,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object txtDataDocumento2: TQRLabel
@@ -653,7 +615,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 9
       end
       object RLLabel71: TQRLabel
@@ -685,7 +646,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object txtNumeroDocumento2: TQRLabel
@@ -717,7 +677,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 9
       end
       object RLLabel72: TQRLabel
@@ -732,7 +691,7 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         Frame.DrawRight = False
         Size.Values = (
           29.104166666666670000
-          653.520833333333400000
+          653.520833333333300000
           283.104166666666700000
           121.708333333333300000)
         Alignment = taLeftJustify
@@ -749,7 +708,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object txtEspecieDoc2: TQRLabel
@@ -781,7 +739,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 9
       end
       object RLLabel73: TQRLabel
@@ -796,9 +753,9 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         Frame.DrawRight = False
         Size.Values = (
           29.104166666666670000
-          846.666666666666600000
+          846.666666666666700000
           283.104166666666700000
-          58.208333333333340000)
+          58.208333333333330000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -813,7 +770,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object txtAceite2: TQRLabel
@@ -845,7 +801,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 9
       end
       object RLLabel74: TQRLabel
@@ -877,7 +832,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object txtDataProcessamento2: TQRLabel
@@ -909,7 +863,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 9
       end
       object txtUsoBanco2: TQRLabel
@@ -941,7 +894,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 9
       end
       object RLLabel75: TQRLabel
@@ -973,7 +925,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object txtCarteira2: TQRLabel
@@ -1005,7 +956,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 9
       end
       object RLLabel76: TQRLabel
@@ -1020,9 +970,9 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         Frame.DrawRight = False
         Size.Values = (
           29.104166666666670000
-          320.145833333333400000
+          320.145833333333300000
           370.416666666666700000
-          76.729166666666680000)
+          76.729166666666670000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -1037,7 +987,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object RLLabel77: TQRLabel
@@ -1054,7 +1003,7 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           29.104166666666670000
           492.125000000000000000
           370.416666666666700000
-          74.083333333333340000)
+          74.083333333333330000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -1069,7 +1018,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object txtEspecie2: TQRLabel
@@ -1101,7 +1049,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 9
       end
       object RLLabel78: TQRLabel
@@ -1116,7 +1063,7 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         Frame.DrawRight = False
         Size.Values = (
           29.104166666666670000
-          653.520833333333400000
+          653.520833333333300000
           373.062500000000000000
           103.187500000000000000)
         Alignment = taLeftJustify
@@ -1133,7 +1080,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object RLLabel79: TQRLabel
@@ -1165,7 +1111,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object RLLabel80: TQRLabel
@@ -1199,7 +1144,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object txtInstrucoes2: TQRMemo
@@ -1268,7 +1212,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object txtDataVencimento2: TQRLabel
@@ -1300,7 +1243,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 9
       end
       object RLLabel82: TQRLabel
@@ -1332,7 +1274,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object txtCodigoCedente2: TQRLabel
@@ -1364,7 +1305,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 9
       end
       object RLLabel83: TQRLabel
@@ -1396,7 +1336,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object txtNossoNumero2: TQRLabel
@@ -1428,7 +1367,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 9
       end
       object RLLabel84: TQRLabel
@@ -1444,7 +1382,7 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         Size.Values = (
           29.104166666666670000
           1513.416666666667000000
-          375.708333333333400000
+          375.708333333333300000
           227.541666666666700000)
         Alignment = taLeftJustify
         AlignToBand = False
@@ -1460,7 +1398,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object txtValorDocumento2: TQRLabel
@@ -1492,7 +1429,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 9
       end
       object RLLabel85: TQRLabel
@@ -1508,7 +1444,7 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         Size.Values = (
           29.104166666666670000
           1513.416666666667000000
-          463.020833333333400000
+          463.020833333333300000
           240.770833333333300000)
         Alignment = taLeftJustify
         AlignToBand = False
@@ -1524,7 +1460,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object RLLabel86: TQRLabel
@@ -1556,7 +1491,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object RLLabel87: TQRLabel
@@ -1572,7 +1506,7 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         Size.Values = (
           29.104166666666670000
           1513.416666666667000000
-          629.708333333333400000
+          629.708333333333300000
           177.270833333333300000)
         Alignment = taLeftJustify
         AlignToBand = False
@@ -1588,7 +1522,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object RLLabel88: TQRLabel
@@ -1620,7 +1553,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 8
       end
       object txtNomeSacado2: TQRLabel
@@ -1652,7 +1584,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 8
       end
       object txtEnderecoSacado2: TQRLabel
@@ -1684,7 +1615,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 8
       end
       object txtCidadeSacado2: TQRLabel
@@ -1716,7 +1646,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 8
       end
       object RLLabel89: TQRLabel
@@ -1748,7 +1677,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object txtCpfCnpjSacado2: TQRLabel
@@ -1780,7 +1708,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 9
       end
       object RLLabel90: TQRLabel
@@ -1796,7 +1723,7 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         Size.Values = (
           29.104166666666670000
           1513.416666666667000000
-          791.104166666666800000
+          791.104166666666700000
           148.166666666666700000)
         Alignment = taLeftJustify
         AlignToBand = False
@@ -1812,7 +1739,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object RLMemo2: TQRMemo
@@ -1864,7 +1790,7 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         Size.Values = (
           29.104166666666670000
           1320.270833333333000000
-          883.708333333333400000
+          883.708333333333300000
           209.020833333333300000)
         Alignment = taLeftJustify
         AlignToBand = False
@@ -1880,7 +1806,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object RLLabel93: TQRLabel
@@ -1912,7 +1837,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object RLLabel98: TQRLabel
@@ -1944,7 +1868,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 9
       end
       object RLLabel102: TQRLabel
@@ -1960,7 +1883,7 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         Size.Values = (
           39.687500000000000000
           2.645833333333333000
-          836.083333333333400000
+          836.083333333333300000
           230.187500000000000000)
         Alignment = taLeftJustify
         AlignToBand = False
@@ -1976,7 +1899,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 8
       end
       object txtSacadorAvalista2: TQRLabel
@@ -2008,7 +1930,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 8
       end
       object txtSwHouse: TQRLabel
@@ -2040,7 +1961,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object txtNumeroDocumento3: TQRLabel
@@ -2072,7 +1992,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 9
       end
       object txtLinhaDigitavel: TQRLabel
@@ -2104,7 +2023,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 12
       end
       object txtInstrucoes3: TQRMemo
@@ -2173,7 +2091,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 9
       end
       object RLLabel170: TQRLabel
@@ -2205,7 +2122,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object RLLabel163: TQRLabel
@@ -2237,7 +2153,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object RLLabel161: TQRLabel
@@ -2271,7 +2186,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object RLLabel152: TQRLabel
@@ -2286,9 +2200,9 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         Frame.DrawRight = False
         Size.Values = (
           29.104166666666670000
-          862.541666666666900000
+          862.541666666666700000
           1418.166666666667000000
-          58.208333333333340000)
+          58.208333333333330000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -2303,7 +2217,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object RLLabel150: TQRLabel
@@ -2318,7 +2231,7 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         Frame.DrawRight = False
         Size.Values = (
           29.104166666666670000
-          320.145833333333400000
+          320.145833333333300000
           1418.166666666667000000
           206.375000000000000000)
         Alignment = taLeftJustify
@@ -2335,7 +2248,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object QRShape9: TQRShape
@@ -2354,7 +2266,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           1762.125000000000000000
           486.833333333333300000)
         Shape = qrsTopAndBottom
-        VertAdjust = 0
       end
       object QRShape8: TQRShape
         Left = 0
@@ -2372,7 +2283,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           1418.166666666667000000
           1997.604166666667000000)
         Shape = qrsTopAndBottom
-        VertAdjust = 0
       end
       object QRShape7: TQRShape
         Left = 0
@@ -2390,7 +2300,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           1502.833333333333000000
           1997.604166666667000000)
         Shape = qrsTopAndBottom
-        VertAdjust = 0
       end
       object QRShape6: TQRShape
         Left = 0
@@ -2408,7 +2317,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           1322.916666666667000000
           1997.604166666667000000)
         Shape = qrsTopAndBottom
-        VertAdjust = 0
       end
       object QRShape5: TQRShape
         Left = 3
@@ -2426,7 +2334,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           1235.604166666667000000
           1997.604166666667000000)
         Shape = qrsTopAndBottom
-        VertAdjust = 0
       end
       object QRShape4: TQRShape
         Left = 568
@@ -2444,7 +2351,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           1240.895833333333000000
           2.645833333333333000)
         Shape = qrsVertLine
-        VertAdjust = 0
       end
       object QRShape3: TQRShape
         Left = 8
@@ -2463,7 +2369,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           1997.604166666667000000)
         Pen.Style = psDot
         Shape = qrsHorLine
-        VertAdjust = 0
       end
       object QRShape17: TQRShape
         Left = 390
@@ -2481,7 +2386,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           1505.479166666667000000
           10.583333333333330000)
         Shape = qrsVertLine
-        VertAdjust = 0
       end
       object QRShape16: TQRShape
         Left = 183
@@ -2499,7 +2403,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           1505.479166666667000000
           164.041666666666700000)
         Shape = qrsRightAndLeft
-        VertAdjust = 0
       end
       object QRShape15: TQRShape
         Left = 119
@@ -2516,7 +2419,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           1505.479166666667000000
           171.979166666666700000)
         Shape = qrsRightAndLeft
-        VertAdjust = 0
       end
       object QRShape14: TQRShape
         Left = 308
@@ -2535,7 +2437,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           203.729166666666700000)
         Brush.Style = bsClear
         Shape = qrsRightAndLeft
-        VertAdjust = 0
       end
       object QRShape13: TQRShape
         Left = 122
@@ -2554,7 +2455,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           320.145833333333300000)
         Brush.Style = bsClear
         Shape = qrsRightAndLeft
-        VertAdjust = 0
       end
       object QRShape12: TQRShape
         Left = 180
@@ -2572,7 +2472,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           1129.770833333333000000
           261.937500000000000000)
         Shape = qrsRightAndLeft
-        VertAdjust = 0
       end
       object QRShape10: TQRShape
         Left = 571
@@ -2590,7 +2489,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           1590.145833333333000000
           486.833333333333300000)
         Shape = qrsTopAndBottom
-        VertAdjust = 0
       end
       object QRLabel1: TQRLabel
         Left = 2
@@ -2621,7 +2519,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 9
       end
       object imgBarra: TQRImage
@@ -2685,7 +2582,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 9
       end
       object RLLabel145: TQRLabel
@@ -2717,7 +2613,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object RLLabel146: TQRLabel
@@ -2749,7 +2644,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object txtDataVencimento3: TQRLabel
@@ -2781,7 +2675,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 9
       end
       object RLLabel147: TQRLabel
@@ -2798,7 +2691,7 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           29.104166666666670000
           18.520833333333330000
           1330.854166666667000000
-          76.729166666666680000)
+          76.729166666666670000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -2813,7 +2706,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object txtNomeCedente3: TQRLabel
@@ -2845,7 +2737,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 9
       end
       object RLLabel149: TQRLabel
@@ -2877,7 +2768,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object txtDataDocumento3: TQRLabel
@@ -2909,7 +2799,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 9
       end
       object RLLabel151: TQRLabel
@@ -2924,7 +2813,7 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         Frame.DrawRight = False
         Size.Values = (
           29.104166666666670000
-          653.520833333333400000
+          653.520833333333300000
           1426.104166666667000000
           121.708333333333300000)
         Alignment = taLeftJustify
@@ -2941,7 +2830,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object txtEspecieDoc3: TQRLabel
@@ -2973,7 +2861,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 9
       end
       object RLLabel153: TQRLabel
@@ -3005,7 +2892,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object txtDataProcessamento3: TQRLabel
@@ -3037,7 +2923,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 9
       end
       object RLLabel154: TQRLabel
@@ -3069,7 +2954,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object txtNossoNumero3: TQRLabel
@@ -3101,7 +2985,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 9
       end
       object RLLabel162: TQRLabel
@@ -3133,7 +3016,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object RLLabel148: TQRLabel
@@ -3165,7 +3047,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object txtCodigoCedente3: TQRLabel
@@ -3197,7 +3078,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 9
       end
       object RLLabel159: TQRLabel
@@ -3229,7 +3109,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object RLLabel158: TQRLabel
@@ -3244,7 +3123,7 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         Frame.DrawRight = False
         Size.Values = (
           29.104166666666670000
-          653.520833333333400000
+          653.520833333333300000
           1505.479166666667000000
           103.187500000000000000)
         Alignment = taLeftJustify
@@ -3261,7 +3140,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object RLLabel157: TQRLabel
@@ -3278,7 +3156,7 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           29.104166666666670000
           492.125000000000000000
           1505.479166666667000000
-          74.083333333333340000)
+          74.083333333333330000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -3293,7 +3171,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object txtEspecie3: TQRLabel
@@ -3325,7 +3202,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 9
       end
       object RLLabel156: TQRLabel
@@ -3340,9 +3216,9 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         Frame.DrawRight = False
         Size.Values = (
           29.104166666666670000
-          320.145833333333400000
+          320.145833333333300000
           1505.479166666667000000
-          76.729166666666680000)
+          76.729166666666670000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -3357,7 +3233,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object txtCarteira3: TQRLabel
@@ -3389,7 +3264,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 9
       end
       object RLLabel155: TQRLabel
@@ -3421,7 +3295,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object txtUsoBanco3: TQRLabel
@@ -3453,7 +3326,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 9
       end
       object RLLabel160: TQRLabel
@@ -3485,7 +3357,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object txtValorDocumento3: TQRLabel
@@ -3517,7 +3388,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 9
       end
       object txtNumeroBanco3: TQRLabel
@@ -3549,7 +3419,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 18
       end
       object QRShape11: TQRShape
@@ -3568,7 +3437,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           1862.666666666667000000
           1997.604166666667000000)
         Shape = qrsTopAndBottom
-        VertAdjust = 0
       end
       object RLLabel166: TQRLabel
         Left = 608
@@ -3599,7 +3467,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object txtCpfCnpjSacado3: TQRLabel
@@ -3631,7 +3498,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 9
       end
       object RLLabel167: TQRLabel
@@ -3663,7 +3529,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object RLLabel168: TQRLabel
@@ -3695,7 +3560,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object RLLabel164: TQRLabel
@@ -3727,7 +3591,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object RLLabel165: TQRLabel
@@ -3759,7 +3622,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 8
       end
       object txtNomeSacado3: TQRLabel
@@ -3791,7 +3653,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 8
       end
       object txtEnderecoSacado3: TQRLabel
@@ -3823,7 +3684,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 8
       end
       object RLLabel175: TQRLabel
@@ -3855,7 +3715,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 8
       end
       object txtSacadorAvalista3: TQRLabel
@@ -3887,7 +3746,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 8
       end
       object txtCidadeSacado3: TQRLabel
@@ -3919,7 +3777,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 8
       end
     end
@@ -3934,6 +3791,7 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
     Frame.DrawBottom = False
     Frame.DrawLeft = False
     Frame.DrawRight = False
+    BeforePrint = BoletoCarneBeforePrint
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
@@ -3961,28 +3819,14 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
       80.000000000000000000
       0.000000000000000000)
     PrinterSettings.Copies = 1
-    PrinterSettings.OutputBin = Auto
     PrinterSettings.Duplex = False
     PrinterSettings.FirstPage = 1
     PrinterSettings.LastPage = 1
-    PrinterSettings.UseStandardprinter = True
-    PrinterSettings.UseCustomBinCode = True
-    PrinterSettings.CustomBinCode = 15
-    PrinterSettings.ExtendedDuplex = 1
-    PrinterSettings.UseCustomPaperCode = True
-    PrinterSettings.CustomPaperCode = 1
-    PrinterSettings.PrintMetaFile = False
-    PrinterSettings.PrintQuality = 0
-    PrinterSettings.Collate = 0
-    PrinterSettings.ColorOption = 2
+    PrinterSettings.OutputBin = Auto
     PrintIfEmpty = True
     SnapToGrid = True
     Units = MM
     Zoom = 100
-    PrevFormStyle = fsNormal
-    PreviewInitialState = wsMaximized
-    PrevInitialZoom = qrZoomToWidth
-    PreviewDefaultSaveType = stQRP
     object rbLCDetail: TQRBand
       Left = 45
       Top = 19
@@ -3996,14 +3840,11 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
       AlignToBottom = False
       BeforePrint = rbLCDetailBeforePrint
       Color = clWhite
-      TransparentBand = False
       ForceNewColumn = False
       ForceNewPage = False
       Size.Values = (
-        939.270833333333400000
+        939.270833333333300000
         1899.708333333333000000)
-      PreCaluculateBandHeight = False
-      KeepOnOnePage = False
       BandType = rbDetail
       object Label1: TLabel
         Left = 6
@@ -4048,7 +3889,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = True
         WordWrap = True
-        ExportAs = exptText
         FontSize = 7
       end
       object txtNumeroDocumento5: TQRLabel
@@ -4080,7 +3920,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = True
         WordWrap = True
-        ExportAs = exptText
         FontSize = 7
       end
       object txtNossoNumero5: TQRLabel
@@ -4112,7 +3951,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = True
         WordWrap = True
-        ExportAs = exptText
         FontSize = 7
       end
       object txtValorDocumento5: TQRLabel
@@ -4144,7 +3982,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = True
         WordWrap = True
-        ExportAs = exptText
         FontSize = 7
       end
       object txtEspecie5: TQRLabel
@@ -4176,7 +4013,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = True
         WordWrap = True
-        ExportAs = exptText
         FontSize = 7
       end
       object txtCodigoCedente5: TQRLabel
@@ -4208,7 +4044,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = True
         WordWrap = True
-        ExportAs = exptText
         FontSize = 7
       end
       object txtParcela: TQRLabel
@@ -4240,7 +4075,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = True
         WordWrap = True
-        ExportAs = exptText
         FontSize = 7
       end
       object txtDataVencimento5: TQRLabel
@@ -4272,7 +4106,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = True
         WordWrap = True
-        ExportAs = exptText
         FontSize = 7
       end
       object QRShape20: TQRShape
@@ -4291,7 +4124,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           328.083333333333400000
           1476.375000000000000000)
         Shape = qrsTopAndBottom
-        VertAdjust = 0
       end
       object QRShape30: TQRShape
         Left = 596
@@ -4309,7 +4141,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           473.604166666666700000
           328.083333333333400000)
         Shape = qrsTopAndBottom
-        VertAdjust = 0
       end
       object QRLabel2: TQRLabel
         Left = 488
@@ -4325,7 +4156,7 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           29.104166666666670000
           1291.166666666667000000
           587.375000000000000000
-          280.458333333333400000)
+          280.458333333333300000)
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = True
@@ -4340,7 +4171,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object txtNumeroDocumento4: TQRLabel
@@ -4372,7 +4202,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 8
       end
       object txtLinhaDigitavel4: TQRLabel
@@ -4404,7 +4233,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 12
       end
       object txtInstrucoes4: TQRMemo
@@ -4472,7 +4300,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 8
       end
       object QRLabel7: TQRLabel
@@ -4504,7 +4331,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = True
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object QRLabel8: TQRLabel
@@ -4520,7 +4346,7 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         Size.Values = (
           29.104166666666670000
           449.791666666666700000
-          402.166666666666600000
+          402.166666666666700000
           857.250000000000000000)
         Alignment = taLeftJustify
         AlignToBand = False
@@ -4538,7 +4364,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = True
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object QRLabel9: TQRLabel
@@ -4555,7 +4380,7 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           29.104166666666670000
           1153.583333333333000000
           259.291666666666700000
-          58.208333333333340000)
+          58.208333333333330000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -4570,7 +4395,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = True
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object QRLabel10: TQRLabel
@@ -4585,7 +4409,7 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         Frame.DrawRight = False
         Size.Values = (
           29.104166666666670000
-          703.791666666666800000
+          703.791666666666700000
           259.291666666666700000
           206.375000000000000000)
         Alignment = taLeftJustify
@@ -4602,7 +4426,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = True
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object QRShape21: TQRShape
@@ -4621,7 +4444,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           179.916666666666700000
           1476.375000000000000000)
         Shape = qrsTopAndBottom
-        VertAdjust = 0
       end
       object QRShape23: TQRShape
         Left = 595
@@ -4639,7 +4461,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           103.187500000000000000
           2.645833333333333000)
         Shape = qrsVertLine
-        VertAdjust = 0
       end
       object QRShape24: TQRShape
         Left = 433
@@ -4657,7 +4478,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           259.291666666666700000
           2.645833333333333000)
         Shape = qrsVertLine
-        VertAdjust = 0
       end
       object QRShape25: TQRShape
         Left = 382
@@ -4675,7 +4495,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           256.645833333333400000
           2.645833333333333000)
         Shape = qrsVertLine
-        VertAdjust = 0
       end
       object QRShape26: TQRShape
         Left = 263
@@ -4693,7 +4512,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           259.291666666666700000
           2.645833333333333000)
         Shape = qrsVertLine
-        VertAdjust = 0
       end
       object QRShape29: TQRShape
         Left = 164
@@ -4713,7 +4531,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         Pen.Style = psInsideFrame
         Pen.Width = 3
         Shape = qrsRightAndLeft
-        VertAdjust = 0
       end
       object imgBarra4: TQRImage
         Left = 173
@@ -4776,7 +4593,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 8
       end
       object QRLabel13: TQRLabel
@@ -4808,7 +4624,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object QRLabel14: TQRLabel
@@ -4840,7 +4655,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = True
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object txtDataVencimento4: TQRLabel
@@ -4872,7 +4686,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = True
         WordWrap = True
-        ExportAs = exptText
         FontSize = 8
       end
       object QRLabel16: TQRLabel
@@ -4889,7 +4702,7 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           29.104166666666670000
           449.791666666666700000
           182.562500000000000000
-          76.729166666666680000)
+          76.729166666666670000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -4904,7 +4717,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object txtNomeCedente4: TQRLabel
@@ -4936,7 +4748,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 8
       end
       object QRLabel18: TQRLabel
@@ -4968,7 +4779,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = True
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object txtDataDocumento4: TQRLabel
@@ -5000,7 +4810,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 8
       end
       object QRLabel20: TQRLabel
@@ -5032,7 +4841,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = True
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object txtEspecie4: TQRLabel
@@ -5064,7 +4872,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 8
       end
       object QRLabel22: TQRLabel
@@ -5096,7 +4903,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = True
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object txtDataProcessamento4: TQRLabel
@@ -5128,7 +4934,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 8
       end
       object QRLabel24: TQRLabel
@@ -5160,7 +4965,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = True
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object txtNossoNumero4: TQRLabel
@@ -5192,7 +4996,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = True
         WordWrap = True
-        ExportAs = exptText
         FontSize = 8
       end
       object QRLabel26: TQRLabel
@@ -5208,7 +5011,7 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         Size.Values = (
           29.104166666666670000
           1582.208333333333000000
-          402.166666666666600000
+          402.166666666666700000
           240.770833333333300000)
         Alignment = taLeftJustify
         AlignToBand = False
@@ -5224,7 +5027,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = True
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object QRLabel27: TQRLabel
@@ -5256,7 +5058,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = True
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object txtCodigoCedente4: TQRLabel
@@ -5288,7 +5089,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = True
         WordWrap = True
-        ExportAs = exptText
         FontSize = 8
       end
       object QRLabel29: TQRLabel
@@ -5320,7 +5120,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object QRLabel30: TQRLabel
@@ -5352,7 +5151,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object QRLabel31: TQRLabel
@@ -5367,9 +5165,9 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         Frame.DrawRight = False
         Size.Values = (
           29.104166666666670000
-          851.958333333333400000
+          851.958333333333300000
           330.729166666666700000
-          74.083333333333340000)
+          74.083333333333330000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -5384,7 +5182,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object txtEspecieDoc4: TQRLabel
@@ -5416,7 +5213,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 8
       end
       object QRLabel33: TQRLabel
@@ -5431,9 +5227,9 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         Frame.DrawRight = False
         Size.Values = (
           29.104166666666670000
-          703.791666666666800000
+          703.791666666666700000
           330.729166666666700000
-          76.729166666666680000)
+          76.729166666666670000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -5448,7 +5244,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object txtCarteira4: TQRLabel
@@ -5480,7 +5275,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 8
       end
       object QRLabel35: TQRLabel
@@ -5512,7 +5306,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object txtUsoBanco4: TQRLabel
@@ -5544,7 +5337,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 8
       end
       object QRLabel37: TQRLabel
@@ -5576,7 +5368,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = True
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object txtValorDocumento4: TQRLabel
@@ -5608,7 +5399,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = True
         WordWrap = True
-        ExportAs = exptText
         FontSize = 8
       end
       object txtNumeroBanco4: TQRLabel
@@ -5640,7 +5430,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 18
       end
       object QRShape31: TQRShape
@@ -5659,7 +5448,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           613.833333333333400000
           1476.375000000000000000)
         Shape = qrsTopAndBottom
-        VertAdjust = 0
       end
       object QRLabel40: TQRLabel
         Left = 598
@@ -5674,7 +5462,7 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         Size.Values = (
           29.104166666666670000
           1582.208333333333000000
-          616.479166666666800000
+          616.479166666666700000
           116.416666666666700000)
         Alignment = taLeftJustify
         AlignToBand = False
@@ -5690,7 +5478,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = True
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object txtCpfCnpjSacado4: TQRLabel
@@ -5722,7 +5509,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = True
         WordWrap = True
-        ExportAs = exptText
         FontSize = 8
       end
       object QRLabel42: TQRLabel
@@ -5754,7 +5540,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = True
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object QRLabel43: TQRLabel
@@ -5786,7 +5571,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = True
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object QRLabel44: TQRLabel
@@ -5818,7 +5602,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = True
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object QRLabel45: TQRLabel
@@ -5834,8 +5617,8 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         Size.Values = (
           29.104166666666670000
           449.791666666666700000
-          616.479166666666800000
-          74.083333333333340000)
+          616.479166666666700000
+          74.083333333333330000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -5850,7 +5633,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object txtNomeSacado4: TQRLabel
@@ -5882,7 +5664,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = True
         WordWrap = True
-        ExportAs = exptText
         FontSize = 8
       end
       object txtEnderecoSacado4: TQRLabel
@@ -5914,7 +5695,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = True
         WordWrap = True
-        ExportAs = exptText
         FontSize = 8
       end
       object QRLabel48: TQRLabel
@@ -5930,7 +5710,7 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         Size.Values = (
           29.104166666666670000
           449.791666666666700000
-          740.833333333333400000
+          740.833333333333300000
           156.104166666666700000)
         Alignment = taLeftJustify
         AlignToBand = False
@@ -5946,7 +5726,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object QRLabel49: TQRLabel
@@ -5978,7 +5757,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = True
         WordWrap = True
-        ExportAs = exptText
         FontSize = 8
       end
       object txtCidadeSacado4: TQRLabel
@@ -6010,7 +5788,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = True
         WordWrap = True
-        ExportAs = exptText
         FontSize = 8
       end
       object QRShape19: TQRShape
@@ -6029,7 +5806,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           259.291666666666700000
           2.645833333333333000)
         Shape = qrsVertLine
-        VertAdjust = 0
       end
       object QRShape22: TQRShape
         Left = 158
@@ -6048,7 +5824,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           2.645833333333333000)
         Pen.Style = psDot
         Shape = qrsVertLine
-        VertAdjust = 0
       end
       object QRShape18: TQRShape
         Left = 319
@@ -6066,7 +5841,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           329.847222222222300000
           1.763888888888889000)
         Shape = qrsVertLine
-        VertAdjust = 0
       end
       object QRShape27: TQRShape
         Left = 1
@@ -6085,7 +5859,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           1955.270833333333000000)
         Pen.Style = psDot
         Shape = qrsHorLine
-        VertAdjust = 0
       end
       object QRShape28: TQRShape
         Left = 164
@@ -6103,7 +5876,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           103.187500000000000000
           1476.375000000000000000)
         Shape = qrsHorLine
-        VertAdjust = 0
       end
       object QRShape33: TQRShape
         Left = 0
@@ -6121,7 +5893,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           711.729166666666800000
           404.812500000000000000)
         Shape = qrsHorLine
-        VertAdjust = 0
       end
       object QRShape34: TQRShape
         Left = 0
@@ -6139,7 +5910,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           653.520833333333400000
           404.812500000000000000)
         Shape = qrsHorLine
-        VertAdjust = 0
       end
       object QRShape35: TQRShape
         Left = 0
@@ -6157,7 +5927,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           772.583333333333400000
           404.812500000000000000)
         Shape = qrsHorLine
-        VertAdjust = 0
       end
       object QRShape32: TQRShape
         Left = 0
@@ -6175,7 +5944,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           124.354166666666700000
           404.812500000000000000)
         Shape = qrsHorLine
-        VertAdjust = 0
       end
       object QRShape36: TQRShape
         Left = 0
@@ -6193,7 +5961,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           595.312500000000000000
           404.812500000000000000)
         Shape = qrsHorLine
-        VertAdjust = 0
       end
       object QRShape37: TQRShape
         Left = 0
@@ -6211,7 +5978,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           418.041666666666700000
           404.812500000000000000)
         Shape = qrsHorLine
-        VertAdjust = 0
       end
       object QRShape38: TQRShape
         Left = 0
@@ -6229,7 +5995,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           476.250000000000000000
           404.812500000000000000)
         Shape = qrsHorLine
-        VertAdjust = 0
       end
       object QRShape39: TQRShape
         Left = 0
@@ -6247,7 +6012,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           534.458333333333400000
           404.812500000000000000)
         Shape = qrsHorLine
-        VertAdjust = 0
       end
       object QRShape40: TQRShape
         Left = 0
@@ -6265,7 +6029,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           182.562500000000000000
           404.812500000000000000)
         Shape = qrsHorLine
-        VertAdjust = 0
       end
       object QRShape41: TQRShape
         Left = 0
@@ -6283,7 +6046,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           240.770833333333300000
           404.812500000000000000)
         Shape = qrsHorLine
-        VertAdjust = 0
       end
       object QRShape42: TQRShape
         Left = 0
@@ -6301,7 +6063,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           359.833333333333400000
           404.812500000000000000)
         Shape = qrsHorLine
-        VertAdjust = 0
       end
       object QRShape43: TQRShape
         Left = 0
@@ -6319,7 +6080,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           298.979166666666700000
           404.812500000000000000)
         Shape = qrsHorLine
-        VertAdjust = 0
       end
       object QRLabel5: TQRLabel
         Left = 6
@@ -6350,7 +6110,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = True
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object QRLabel6: TQRLabel
@@ -6382,7 +6141,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = True
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object QRLabel11: TQRLabel
@@ -6398,7 +6156,7 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         Size.Values = (
           29.104166666666670000
           15.875000000000000000
-          656.166666666666800000
+          656.166666666666700000
           137.583333333333300000)
         Alignment = taLeftJustify
         AlignToBand = False
@@ -6414,7 +6172,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = True
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object QRLabel12: TQRLabel
@@ -6430,7 +6187,7 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         Size.Values = (
           29.104166666666670000
           15.875000000000000000
-          597.958333333333400000
+          597.958333333333300000
           193.145833333333300000)
         Alignment = taLeftJustify
         AlignToBand = False
@@ -6446,7 +6203,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object QRLabel15: TQRLabel
@@ -6478,7 +6234,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object QRLabel17: TQRLabel
@@ -6494,7 +6249,7 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         Size.Values = (
           29.104166666666670000
           15.875000000000000000
-          478.895833333333400000
+          478.895833333333300000
           177.270833333333300000)
         Alignment = taLeftJustify
         AlignToBand = False
@@ -6510,7 +6265,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object QRLabel19: TQRLabel
@@ -6527,7 +6281,7 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           29.104166666666670000
           15.875000000000000000
           362.479166666666700000
-          256.645833333333400000)
+          256.645833333333300000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -6542,7 +6296,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object QRLabel21: TQRLabel
@@ -6574,7 +6327,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = True
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object QRLabel23: TQRLabel
@@ -6606,7 +6358,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = True
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object QRLabel25: TQRLabel
@@ -6622,8 +6373,8 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         Size.Values = (
           29.104166666666670000
           15.875000000000000000
-          775.229166666666800000
-          68.791666666666680000)
+          775.229166666666700000
+          68.791666666666670000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -6638,7 +6389,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = True
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object QRLabel28: TQRLabel
@@ -6670,7 +6420,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object QRLabel32: TQRLabel
@@ -6702,7 +6451,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = True
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object QRLabel3: TQRLabel
@@ -6734,7 +6482,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = True
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object QRLabel4: TQRLabel
@@ -6766,7 +6513,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         ParentFont = False
         Transparent = False
         WordWrap = True
-        ExportAs = exptText
         FontSize = 6
       end
       object QRShape44: TQRShape
@@ -6785,7 +6531,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           127.000000000000000000
           1.763888888888889000)
         Shape = qrsVertLine
-        VertAdjust = 0
       end
       object QRShape45: TQRShape
         Left = 62
@@ -6803,7 +6548,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           241.652777777777800000
           1.763888888888889000)
         Shape = qrsVertLine
-        VertAdjust = 0
       end
     end
   end

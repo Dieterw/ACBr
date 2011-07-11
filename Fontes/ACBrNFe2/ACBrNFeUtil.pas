@@ -1073,7 +1073,7 @@ begin
            Tipo := 3
         else
          begin
-          I := Pos('<infEvento', XML);
+          I := Pos('<infEvento', AXML);
           if I > 0 then
             Tipo := 5
           else

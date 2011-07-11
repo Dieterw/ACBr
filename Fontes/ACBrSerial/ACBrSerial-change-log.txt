@@ -97,6 +97,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 11/07/2011
+-- ACBrECF --
+[*] Acerto para que o cancelamento parcial seja mostrado na bobina do ACBrECF
+    (por: Régys Silveira)
+
 Data: 30/06/2011
 -- ACBrECFDaruma --
 [+] Método para cancelamento de item não fiscal

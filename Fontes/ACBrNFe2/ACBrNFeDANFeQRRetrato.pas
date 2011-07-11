@@ -996,7 +996,7 @@ begin
 
    // Alterado por Italo em 27/05/2011
    // TpcnIndicadorPagamento = (ipVista, ipPrazo, ipOutras);
-   if FNFe.Ide.indPag = ipVista
+   if (FNFe.Ide.indPag = ipVista) and (FNFe.Ide.dEmi = FNFe.Cobr.Dup[0].dVenc)
     then
       TQRLabel( FindComponent( 'qrlFatNum1' ) ).Caption := 'PAGAMENTO À VISTA'
     else begin

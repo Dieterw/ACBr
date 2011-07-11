@@ -2981,6 +2981,14 @@ procedure TACBrECF.CancelaItemVendidoParcial(NumItem: Integer;
 begin
   ComandoLOG := 'CancelaItemVendidoParcial' ;
   fsECF.CancelaItemVendidoParcial(NumItem,Quantidade);
+
+  {$IFNDEF CONSOLE}
+   if MemoAssigned then
+   begin
+      fsMemoOperacao := 'cancelaitemvendidoparcial' ;
+      MemoAdicionaLinha( '<b>CANC PARCIAL DE ITEM:</b> '+IntToStrZero( NumItem,3) ) ;
+   end ;
+  {$ENDIF}
 end;
 
 procedure TACBrECF.EfetuaPagamento(CodFormaPagto: String; Valor: Double;

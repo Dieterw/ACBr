@@ -868,6 +868,7 @@ begin
     LayNfeConsulta      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefazvirtual.rs.gov.br/ws/NfeConsulta/NfeConsulta2.asmx', 'https://homologacao.nfe.sefazvirtual.rs.gov.br/ws/NfeConsulta/NfeConsulta2.asmx');
     LayNfeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefazvirtual.rs.gov.br/ws/NfeStatusServico/NfeStatusServico2.asmx', 'https://homologacao.nfe.sefazvirtual.rs.gov.br/ws/NfeStatusServico/NfeStatusServico2.asmx');
 //    LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, '', '');
+    LayNFeCCe           : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefazvirtual.rs.gov.br/ws/recepcaoevento/recepcaoevento.asmx', 'https://homologacao.nfe.sefazvirtual.rs.gov.br/ws/recepcaoevento/recepcaoevento.asmx');
   end;
 end;
 
@@ -882,6 +883,7 @@ begin
     LayNfeConsulta      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.sefazvirtual.fazenda.gov.br/nfeconsulta2/nfeconsulta2.asmx', 'https://hom.sefazvirtual.fazenda.gov.br/NfeConsulta2/NfeConsulta2.asmx');
     LayNfeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.sefazvirtual.fazenda.gov.br/NFeStatusServico2/NFeStatusServico2.asmx', 'https://hom.sefazvirtual.fazenda.gov.br/NfeStatusServico2/NfeStatusServico2.asmx');
 //    LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, '', '');
+    LayNFeCCe           : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://sefazvirtual.fazenda.gov.br/RecepcaoEvento/RecepcaoEvento.asmx', 'https://hom.sefazvirtual.fazenda.gov.br/RecepcaoEvento/RecepcaoEvento.asmx');
   end;
 end;
 
@@ -910,6 +912,7 @@ begin
     LayNfeConsulta      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.ba.gov.br/webservices/nfenw/NfeConsulta2.asmx', 'https://hnfe.sefaz.ba.gov.br/webservices/nfenw/NfeConsulta2.asmx');
     LayNfeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.ba.gov.br/webservices/nfenw/NfeStatusServico2.asmx', 'https://hnfe.sefaz.ba.gov.br/webservices/nfenw/NfeStatusServico2.asmx');
     LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.ba.gov.br/webservices/nfenw/CadConsultaCadastro2.asmx', 'https://hnfe.sefaz.ba.gov.br/webservices/nfenw/CadConsultaCadastro2.asmx');
+    LayNFeCCe           : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.ba.gov.br/webservices/sre/nferecepcaoevento.asmx', 'https://hnfe.sefaz.ba.gov.br/webservices/sre/nferecepcaoevento.asmx');
   end;
 end;
 
@@ -938,6 +941,7 @@ begin
     LayNfeConsulta      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeConsulta2', 'https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeConsulta2');
     LayNfeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeStatusServico2', 'https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeStatusServico2');
     LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.go.gov.br/nfe/services/v2/CadConsultaCadastro2', 'https://homolog.sefaz.go.gov.br/nfe/services/v2/CadConsultaCadastro2');
+    LayNFeCCe           : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeRecepcaoEvento', 'https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeRecepcaoEvento');
   end;
 end;
 
@@ -980,6 +984,7 @@ begin
     LayNfeConsulta      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.mg.gov.br/nfe2/services/NfeConsulta2', 'https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeConsulta2');
     LayNfeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.mg.gov.br/nfe2/services/NfeStatus2', 'https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeStatus2');
     LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.mg.gov.br/nfe2/services/cadconsultacadastro2', 'https://hnfe.fazenda.mg.gov.br/nfe2/services/cadconsultacadastro2');
+    LayNFeCCe           : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.mg.gov.br/nfe2/services/NfeRecepcaoEvento', 'https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeRecepcaoEvento');
   end;
 end;
 
@@ -1022,6 +1027,7 @@ begin
     LayNfeConsulta      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.rs.gov.br/ws/NfeConsulta/NfeConsulta2.asmx', 'https://homologacao.nfe.sefaz.rs.gov.br/ws/NfeConsulta/NfeConsulta2.asmx');
     LayNfeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.rs.gov.br/ws/NfeStatusServico/NfeStatusServico2.asmx', 'https://homologacao.nfe.sefaz.rs.gov.br/ws/NfeStatusServico/NfeStatusServico2.asmx');
     LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://sef.sefaz.rs.gov.br/ws/cadconsultacadastro/cadconsultacadastro2.asmx', 'https://sef.sefaz.rs.gov.br/ws/cadconsultacadastro/cadconsultacadastro2.asmx');
+    LayNFeCCe           : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.rs.gov.br/ws/recepcaoevento/recepcaoevento.asmx', 'https://homologacao.nfe.sefaz.rs.gov.br/ws/recepcaoevento/recepcaoevento.asmx');
   end;
 end;
 
@@ -1036,6 +1042,7 @@ begin
     LayNfeConsulta      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.sp.gov.br/nfeweb/services/nfeconsulta2.asmx', 'https://homologacao.nfe.fazenda.sp.gov.br/nfeweb/services/NfeConsulta2.asmx');
     LayNfeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.sp.gov.br/nfeweb/services/nfestatusservico2.asmx', 'https://homologacao.nfe.fazenda.sp.gov.br/nfeweb/services/NfeStatusServico2.asmx');
     LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.sp.gov.br/nfeweb/services/cadconsultacadastro2.asmx', 'https://homologacao.nfe.fazenda.sp.gov.br/nfeWEB/services/cadconsultacadastro2.asmx');
+    LayNFeCCe           : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.sp.gov.br/eventosWEB/services/RecepcaoEvento.asmx', 'https://homologacao.nfe.fazenda.sp.gov.br/eventosWEB/services/RecepcaoEvento.asmx');
   end;
 end;
 
@@ -1065,8 +1072,14 @@ begin
         if I > 0 then
            Tipo := 3
         else
-           Tipo := 4;
-      end;
+         begin
+          I := Pos('<infEvento', XML);
+          if I > 0 then
+            Tipo := 5
+          else
+            Tipo := 4;
+         end;
+     end;
    end;
 
  if not DirectoryExists(NotaUtil.SeSenao(NotaUtil.EstaVazio(APathSchemas),PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas',PathWithDelim(APathSchemas))) then
@@ -1074,33 +1087,40 @@ begin
                            NotaUtil.SeSenao(NotaUtil.EstaVazio(APathSchemas),PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas',PathWithDelim(APathSchemas)));
 
  if Tipo = 1 then
- begin
+  begin
     if NotaUtil.EstaVazio(APathSchemas) then
        schema_filename := pchar(PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\nfe_v2.00.xsd')
     else
        schema_filename := pchar(PathWithDelim(APathSchemas)+'nfe_v2.00.xsd');
- end
+  end
  else if Tipo = 2 then
- begin
+  begin
     if NotaUtil.EstaVazio(APathSchemas) then
        schema_filename := pchar(PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\cancNFe_v2.00.xsd')
     else
        schema_filename := pchar(PathWithDelim(APathSchemas)+'cancNFe_v2.00.xsd');
- end
+  end
  else if Tipo = 3 then
- begin
+  begin
     if NotaUtil.EstaVazio(APathSchemas) then
        schema_filename := pchar(PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\inutNFe_v2.00.xsd')
     else
        schema_filename := pchar(PathWithDelim(APathSchemas)+'inutNFe_v2.00.xsd');
- end
+  end
  else if Tipo = 4 then
- begin
+  begin
     if NotaUtil.EstaVazio(APathSchemas) then
        schema_filename := pchar(PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\envDPEC_v1.01.xsd')
     else
        schema_filename := pchar(PathWithDelim(APathSchemas)+'envDPEC_v1.01.xsd');
- end;
+  end
+ else if Tipo = 5 then
+  begin
+    if NotaUtil.EstaVazio(APathSchemas) then
+       schema_filename := pchar(PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\envCCe_v1.00.xsd')
+    else
+       schema_filename := pchar(PathWithDelim(APathSchemas)+'envCCe_v1.00.xsd');
+  end;
 
  if not FilesExists(schema_filename) then
     raise EACBrNFeException.Create('Arquivo '+schema_filename+' não encontrado');
@@ -1197,7 +1217,13 @@ begin
         if I > 0 then
            Tipo := 3
         else
-           Tipo := 4;
+        begin
+          I := Pos('<infEvento', XML);
+          if I > 0 then
+            Tipo := 5
+          else
+            Tipo := 4;
+        end;
       end;
    end;
 
@@ -1219,7 +1245,9 @@ begin
   else if Tipo = 3 then
      schema_filename := NotaUtil.SeSenao(NotaUtil.EstaVazio(APathSchemas),PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',PathWithDelim(APathSchemas))+'inutNFe_v2.00.xsd'
   else if Tipo = 4 then
-     schema_filename := NotaUtil.SeSenao(NotaUtil.EstaVazio(APathSchemas),PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',PathWithDelim(APathSchemas))+'envDPEC_v1.01.xsd';
+     schema_filename := NotaUtil.SeSenao(NotaUtil.EstaVazio(APathSchemas),PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',PathWithDelim(APathSchemas))+'envDPEC_v1.01.xsd'
+  else if Tipo = 5 then
+     schema_filename := NotaUtil.SeSenao(NotaUtil.EstaVazio(APathSchemas),PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',PathWithDelim(APathSchemas))+'envCCe_v1.00.xsd';
 
  if not FilesExists(schema_filename) then
     raise EACBrNFeException.Create('Arquivo '+schema_filename+' não encontrado');
@@ -1273,8 +1301,14 @@ begin
         if I > 0 then
            Tipo := 3
         else
-           Tipo := 4;
-      end;
+         begin
+          I := Pos('<infEvento', XML);
+          if I > 0 then
+            Tipo := 5
+          else
+            Tipo := 4;
+         end;
+     end;
    end;
 
   I := NotaUtil.PosEx('Id=',AStr,I+6) ;
@@ -1300,6 +1334,8 @@ begin
      AStr := copy(AStr,1,StrToInt(VarToStr(NotaUtil.SeSenao(I>0,I+1,I)))) + cDTDInut + Copy(AStr,StrToInt(VarToStr(NotaUtil.SeSenao(I>0,I+2,I))),Length(AStr))
   else if Tipo = 4 then
      AStr := copy(AStr,1,StrToInt(VarToStr(NotaUtil.SeSenao(I>0,I+1,I)))) + cDTDDpec + Copy(AStr,StrToInt(VarToStr(NotaUtil.SeSenao(I>0,I+2,I))),Length(AStr));
+  else if Tipo = 5 then
+     AStr := copy(AStr,1,StrToInt(VarToStr(NotaUtil.SeSenao(I>0,I+1,I)))) + cDTDCCe  + Copy(AStr,StrToInt(VarToStr(NotaUtil.SeSenao(I>0,I+2,I))),Length(AStr));
 
   //// Inserindo Template da Assinatura digital ////
   if Tipo = 1 then
@@ -1325,6 +1361,12 @@ begin
      I := pos('</envDPEC>',AStr) ;
      if I = 0 then
         raise EACBrNFeException.Create('Não encontrei final do XML: </envDPEC>') ;
+   end
+  else if Tipo = 5 then
+   begin
+     I := pos('</evento>',AStr) ;
+     if I = 0 then
+        raise EACBrNFeException.Create('Não encontrei final do XML: </evento>') ;
    end;
 
 
@@ -1359,8 +1401,9 @@ begin
   else if Tipo = 3 then
      AStr := AStr + '</inutNFe>'
   else if Tipo = 4 then
-     AStr := AStr + '</envDPEC>';
-
+     AStr := AStr + '</envDPEC>'
+  else if Tipo = 5 then
+     AStr := AStr + '</evento></envEvento>';
 
   if FileExists(ArqPFX) then
     XmlAss := NotaUtil.sign_file(PAnsiChar(AStr), PAnsiChar(ArqPFX), PAnsiChar(PFXSenha))
@@ -1389,7 +1432,9 @@ begin
   else if Tipo = 3 then
      XmlAss := StringReplace( XmlAss, cDTDInut, '', [] )
   else if Tipo = 4 then
-     XmlAss := StringReplace( XmlAss, cDTDDpec, '', [] );
+     XmlAss := StringReplace( XmlAss, cDTDDpec, '', [] )
+  else if Tipo = 5 then
+     XmlAss := StringReplace( XmlAss, cDTDCCe, '', [] );
 
   PosIni := Pos('<X509Certificate>',XmlAss)-1;
   PosFim := NotaUtil.PosLast('<X509Certificate>',XmlAss);
@@ -1429,7 +1474,13 @@ begin
             if I > 0 then
                Tipo := 3
             else
-               Tipo := 4;
+             begin
+               I := Pos('<infEvento', XML);
+               if I > 0 then
+                 Tipo := 5
+               else
+                 Tipo := 4;
+             end;
           end;
        end;
 
@@ -1452,7 +1503,9 @@ begin
       else if Tipo = 3 then
          XML := copy(XML,1,pos('</inutNFe>',XML)-1)
       else if Tipo = 4 then
-         XML := copy(XML,1,pos('</envDPEC>',XML)-1);
+         XML := copy(XML,1,pos('</envDPEC>',XML)-1)
+      else if Tipo = 5 then
+         XML := copy(XML,1,pos('</evento>',XML)-1);
 
       XML := XML + '<Signature xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />';
       XML := XML + '<Reference URI="#'+URI+'">';
@@ -1466,7 +1519,9 @@ begin
       else if Tipo = 3 then
          XML := XML + '</inutNFe>'
       else if Tipo = 4 then
-         XML := XML + '</envDPEC>';
+         XML := XML + '</envDPEC>'
+      else if Tipo = 5 then
+         XML := XML + '</evento></envEvento>';
    end;
 
    // Lendo Header antes de assinar //

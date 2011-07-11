@@ -376,6 +376,8 @@ begin
       Result := '1.01';
     if Layout = tlConsDPEC then
       Result := '1.01';
+    if Layout = tlCCeNFe then
+      Result := '2.00';
 
     // Tipos de LayOut para CT-e
 
@@ -442,6 +444,8 @@ begin
       Result := '2.00';
     if Layout = tlConsDPEC then
       Result := '2.00';
+    if Layout = tlCCeNFe then
+      Result := '2.00'; 
   end;
 end;
 

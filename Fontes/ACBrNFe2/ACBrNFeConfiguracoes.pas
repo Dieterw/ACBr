@@ -154,12 +154,14 @@ type
     FPathCan  : String;
     FPathInu  : String;
     FPathDPEC : String;
+    FPathCCe  : String;
   public
     constructor Create(AOwner: TComponent); override ;
     function GetPathCan: String;
     function GetPathDPEC: String;
     function GetPathInu: String;
     function GetPathNFe(Data : TDateTime = 0): String;
+    function GetPathCCe: String;
   published
     property Salvar     : Boolean read FSalvar  write FSalvar  default False ;
     property PastaMensal: Boolean read FMensal  write FMensal  default False ;
@@ -169,6 +171,7 @@ type
     property PathCan : String read FPathCan  write FPathCan;
     property PathInu : String read FPathInu  write FPathInu;
     property PathDPEC: String read FPathDPEC write FPathDPEC;
+    property PathCCe : String read FPathCCe  write FPathCCe;
   end;
 
   TConfiguracoes = class(TComponent)
@@ -516,6 +519,35 @@ begin
    begin
      if copy(Dir,length(Dir)-2,3) <> 'Can' then
         Dir := PathWithDelim(Dir)+'Can';
+   end;
+
+  if not DirectoryExists(Dir) then
+     ForceDirectories(Dir);
+
+  Result  := Dir;
+end;
+
+function TArquivosConf.GetPathCCe: String;
+var
+  wDia, wMes, wAno : Word;
+  Dir : String;
+begin
+  if NotaUtil.EstaVazio(FPathCCe) then
+     Dir := TConfiguracoes( Self.Owner ).Geral.PathSalvar
+  else
+     Dir := FPathCCe;
+
+  if FMensal then
+   begin
+     DecodeDate(Now, wAno, wMes, wDia);
+     if Pos(IntToStr(wAno)+IntToStrZero(wMes,2),Dir) <= 0 then
+        Dir := PathWithDelim(Dir)+IntToStr(wAno)+IntToStrZero(wMes,2);
+   end;
+
+  if FLiteral then
+   begin
+     if copy(Dir,length(Dir)-2,3) <> 'CCe' then
+        Dir := PathWithDelim(Dir)+'CCe';
    end;
 
   if not DirectoryExists(Dir) then

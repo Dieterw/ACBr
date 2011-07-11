@@ -48,7 +48,7 @@ interface
 
 uses
   Classes, Sysutils,
-  pcnNFe, pcnConversao,
+  pcnNFe, pcnConversao, pcnCCeNFe, pcnRetCCeNFe,
   {$IFDEF CLX} QDialogs,{$ELSE} Dialogs,{$ENDIF}
   ACBrNFeNotasFiscais,
   ACBrNFeConfiguracoes,
@@ -66,11 +66,23 @@ type
   // Evento para gerar log das mensagens do Componente
   TACBrNFeLog = procedure(const Mensagem : String) of object ;
 
+  {Carta de Correção}
+  TCartaCorrecao = Class(TComponent)
+  private
+    FCCe : TCCeNFe;
+  public
+    constructor Create(AOwner: TComponent); override;
+
+    property CCe   : TCCeNFe  read FCCe      write FCCe;
+  end;
+
+
   TACBrNFe = class(TComponent)
   private
     fsAbout: TACBrNFeAboutInfo;
     FDANFE : TACBrNFeDANFEClass;
     FNotasFiscais: TNotasFiscais;
+    FCartaCorrecao: TCartaCorrecao;
     FWebServices: TWebServices;
     FConfiguracoes: TConfiguracoes;
     FStatus : TStatusACBrNFe;
@@ -86,8 +98,10 @@ type
     function Enviar(ALote: String; Imprimir:Boolean = True): Boolean; overload;
     function Cancelamento(AJustificativa:WideString): Boolean;
     function Consultar: Boolean;
+    function EnviarCartaCorrecao(idLote : Integer): Boolean;
     property WebServices: TWebServices read FWebServices write FWebServices;
     property NotasFiscais: TNotasFiscais read FNotasFiscais write FNotasFiscais;
+    property CartaCorrecao: TCartaCorrecao read FCartaCorrecao write FCartaCorrecao;
     property Status: TStatusACBrNFe read FStatus;
     procedure SetStatus( const stNewStatus : TStatusACBrNFe );
   published
@@ -96,7 +110,7 @@ type
     property DANFE: TACBrNFeDANFEClass read FDANFE write SetDANFE ;
     property AboutACBrNFe : TACBrNFeAboutInfo read fsAbout write fsAbout
                           stored false ;
-    property OnGerarLog : TACBrNFeLog read FOnGerarLog write FOnGerarLog ;                          
+    property OnGerarLog : TACBrNFeLog read FOnGerarLog write FOnGerarLog ;
   end;
 
 procedure ACBrAboutDialog ;
@@ -129,6 +143,7 @@ begin
 
   FNotasFiscais      := TNotasFiscais.Create(Self,NotaFiscal);
   FNotasFiscais.Configuracoes := FConfiguracoes;
+  FCartaCorrecao     := TCartaCorrecao.Create(Self);
   FWebServices       := TWebServices.Create(Self);
 
   if FConfiguracoes.WebServices.Tentativas <= 0 then
@@ -143,6 +158,7 @@ destructor TACBrNFe.Destroy;
 begin
   FConfiguracoes.Free;
   FNotasFiscais.Free;
+  FCartaCorrecao.Free;
   FWebServices.Free;
   {$IFDEF ACBrNFeOpenSSL}
      NotaUtil.ShutDownXmlSec ;
@@ -275,4 +291,39 @@ begin
      end;
   end;
 end;
+
+function TACBrNFe.EnviarCartaCorrecao(idLote: Integer): Boolean;
+begin
+  if CartaCorrecao.CCe.Evento.Count <= 0 then
+   begin
+      if Assigned(Self.OnGerarLog) then
+         Self.OnGerarLog('ERRO: Nenhuma CC-e adicionada ao Lote');
+      raise EACBrNFeException.Create('ERRO: Nenhuma CC-e adicionada ao Lote');
+     exit;
+   end;
+
+  if CartaCorrecao.CCe.Evento.Count > 20 then
+   begin
+      if Assigned(Self.OnGerarLog) then
+         Self.OnGerarLog('ERRO: Conjunto de Eventos transmitidos (máximo de 20) excedido. Quantidade atual: '+IntToStr(CartaCorrecao.CCe.Evento.Count));
+      raise EACBrNFeException.Create('ERRO: Conjunto de Eventos transmitidos (máximo de 20) excedido. Quantidade atual: '+IntToStr(CartaCorrecao.CCe.Evento.Count));
+     exit;
+   end;
+
+  WebServices.CartaCorrecao.idLote := idLote; 
+  if not(WebServices.CartaCorrecao.Executar) then
+  begin
+    if Assigned(Self.OnGerarLog) then
+      Self.OnGerarLog(WebServices.CartaCorrecao.Msg);
+    raise EACBrNFeException.Create(WebServices.CartaCorrecao.Msg);
+  end;
+end;
+
+{ TCartaCorrecao }
+constructor TCartaCorrecao.Create(AOwner: TComponent);
+begin
+  inherited;
+  FCCe := TCCeNFe.Create;
+end;
+
 end.

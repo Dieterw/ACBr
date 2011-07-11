@@ -864,10 +864,10 @@ begin
      begin
         if TestBit( ST1, B) then
            if (not PediuStatus) or ((B <> 1) and (B <> 6)) then
-              ErroMsg := ErroMsg + ErrosST1[ B ] + sLineBreak ;
+              ErroMsg := ErroMsg + ACBrStr(ErrosST1[ B ]) + sLineBreak ;
 
         if TestBit( ST2, B) then
-           ErroMsg := ErroMsg + ErrosST2[ B ] + sLineBreak ;
+           ErroMsg := ErroMsg + ACBrStr(ErrosST2[ B ]) + sLineBreak ;
      end ;
 
      { Verifica se possui erro "Pouco Papel" = ErrosST1[ 6 ] }
@@ -882,7 +882,7 @@ begin
      // Alguns erros estendidos não impedem de continuar a 'conversa' com o ECF
      // por isso só busca o erro estendido se realmente tiver algum erro grave!
      if (ErroMsg <> '') and (fsST3 > 0) and (fsST3 < 218) then
-       ErroMsg := ErroMsg + ErrosST3[fsST3] + sLineBreak;
+       ErroMsg := ErroMsg + ACBrStr(ErrosST3[fsST3]) + sLineBreak;
 
      if ErroMsg <> '' then
       begin

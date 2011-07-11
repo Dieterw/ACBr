@@ -495,7 +495,11 @@ begin
   else
   begin
     // conforme nota técnica 2011/02
-    Gerador.wCampoCNPJCPF('E02', 'E03', HOM_CNPJ, nfe.Dest.enderDest.cPais);
+    if nfe.Dest.enderDest.UF = 'EX' Then
+      Gerador.wCampoCNPJCPF('E02', 'E03', nfe.Dest.CNPJCPF, nfe.Dest.enderDest.cPais)
+    else
+      Gerador.wCampoCNPJCPF('E02', 'E03', HOM_CNPJ, nfe.Dest.enderDest.cPais);
+      
     Gerador.wCampo(tcStr, 'E04', 'xNome  ', 02, 60, 1, HOM_NOME_DEST, DSC_XNOME);
   end;
   (**)GerarDestEnderDest(UF);

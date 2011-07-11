@@ -19,7 +19,7 @@ object Form1: TForm1
     Left = 0
     Top = 0
     Width = 297
-    Height = 587
+    Height = 585
     Align = alLeft
     TabOrder = 0
     object lblColaborador: TLabel
@@ -802,7 +802,7 @@ object Form1: TForm1
     Left = 297
     Top = 0
     Width = 565
-    Height = 587
+    Height = 585
     Align = alClient
     TabOrder = 1
     object Panel3: TPanel
@@ -831,7 +831,7 @@ object Form1: TForm1
         OnClick = btnConsultarClick
       end
       object btnValidarXML: TButton
-        Left = 377
+        Left = 376
         Top = 126
         Width = 177
         Height = 25
@@ -903,7 +903,7 @@ object Form1: TForm1
         OnClick = btnGerarPDFClick
       end
       object btnEnviarEmail: TButton
-        Left = 377
+        Left = 376
         Top = 156
         Width = 177
         Height = 25
@@ -921,7 +921,7 @@ object Form1: TForm1
         OnClick = btnConsultarReciboClick
       end
       object btnEnvDPEC: TButton
-        Left = 377
+        Left = 376
         Top = 6
         Width = 177
         Height = 25
@@ -930,7 +930,7 @@ object Form1: TForm1
         OnClick = btnEnvDPECClick
       end
       object btnConsultarDPEC: TButton
-        Left = 377
+        Left = 376
         Top = 36
         Width = 177
         Height = 25
@@ -939,7 +939,7 @@ object Form1: TForm1
         OnClick = btnConsultarDPECClick
       end
       object btnImportarXML: TButton
-        Left = 377
+        Left = 376
         Top = 96
         Width = 177
         Height = 25
@@ -966,7 +966,7 @@ object Form1: TForm1
         OnClick = btnCancelarChaveClick
       end
       object btnGerarTXT: TButton
-        Left = 377
+        Left = 376
         Top = 66
         Width = 177
         Height = 25
@@ -983,21 +983,30 @@ object Form1: TForm1
         TabOrder = 18
         OnClick = btnAdicionarProtNFeClick
       end
-      object Button1: TButton
+      object btnCarregarXMLEnviar: TButton
         Left = 192
         Top = 184
         Width = 177
         Height = 25
         Caption = 'Carregar XML e Enviar'
         TabOrder = 19
-        OnClick = Button1Click
+        OnClick = btnCarregarXMLEnviarClick
+      end
+      object btnCartadeCorrecao: TButton
+        Left = 376
+        Top = 184
+        Width = 177
+        Height = 25
+        Caption = 'Carta de Corre'#231#227'o'
+        TabOrder = 20
+        OnClick = btnCartadeCorrecaoClick
       end
     end
     object PageControl2: TPageControl
       Left = 1
       Top = 217
       Width = 563
-      Height = 369
+      Height = 367
       ActivePage = TabSheet8
       Align = alClient
       TabOrder = 1
@@ -1038,7 +1047,7 @@ object Form1: TForm1
           Left = 0
           Top = 0
           Width = 555
-          Height = 341
+          Height = 339
           Align = alClient
           ScrollBars = ssVertical
           TabOrder = 0
@@ -1051,7 +1060,7 @@ object Form1: TForm1
           Left = 0
           Top = 0
           Width = 555
-          Height = 341
+          Height = 339
           Align = alClient
           Indent = 19
           TabOrder = 0

@@ -134,7 +134,8 @@ type
     MemoDados: TMemo;
     btnGerarTXT: TButton;
     btnAdicionarProtNFe: TButton;
-    Button1: TButton;
+    btnCarregarXMLEnviar: TButton;
+    btnCartadeCorrecao: TButton;
     procedure sbtnCaminhoCertClick(Sender: TObject);
     procedure sbtnLogoMarcaClick(Sender: TObject);
     procedure sbtnPathSalvarClick(Sender: TObject);
@@ -167,7 +168,8 @@ type
     procedure btnCancelarChaveClick(Sender: TObject);
     procedure btnGerarTXTClick(Sender: TObject);
     procedure btnAdicionarProtNFeClick(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
+    procedure btnCarregarXMLEnviarClick(Sender: TObject);
+    procedure btnCartadeCorrecaoClick(Sender: TObject);
     
   private
     { Private declarations }
@@ -494,7 +496,7 @@ begin
      begin
        ACBrNFe1.WebServices.ConsultaDPEC.NFeChave := ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID;
        ACBrNFe1.WebServices.ConsultaDPEC.Executar;
-       ACBrNFe1.DANFE.ProtocoloNFe := ACBrNFe1.WebServices.ConsultaDPEC.nRegDPEC +' '+ DateTimeToStr(ACBrNFe1.WebServices.ConsultaDPEC.retDPEC.dhRegDPEC);
+       ACBrNFe1.DANFE.ProtocoloNFe := ACBrNFe1.WebServices.ConsultaDPEC.nRegDPEC +' '+ DateTimeToStr(ACBrNFe1.WebServices.ConsultaDPEC.dhRegDPEC);
      end;
     ACBrNFe1.NotasFiscais.Imprimir;
   end;
@@ -662,6 +664,14 @@ begin
       frmStatus.Show;
       frmStatus.BringToFront;
     end;
+    stNFeCCe :
+    begin
+      if ( frmStatus = nil ) then
+        frmStatus := TfrmStatus.Create(Application);
+      frmStatus.lblStatus.Caption := 'Enviando Carta de Correção...';
+      frmStatus.Show;
+      frmStatus.BringToFront;
+    end;
   end;
   Application.ProcessMessages;
 end;
@@ -774,8 +784,8 @@ begin
     ACBrNFe1.NotasFiscais.Clear;
     ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
     CC:=TstringList.Create;
-    CC.Add('email_1@provedor.com'); //especifique um email válido
-    CC.Add('email_2@provedor.com'); //especifique um email válido
+    CC.Add('andrefmoraes@gmail.com'); //especifique um email válido
+    CC.Add('anfm@zipmail.com.br');    //especifique um email válido
     ACBrNFe1.NotasFiscais.Items[0].EnviarEmail(edtSmtpHost.Text
                                              , edtSmtpPort.Text
                                              , edtSmtpUser.Text
@@ -786,7 +796,7 @@ begin
                                              , mmEmailMsg.Lines
                                              , cbEmailSSL.Checked // SSL - Conexão Segura
                                              , True //Enviar PDF junto
-                                             , nil //Lista com emails que serão enviado cópias - TStrings
+                                             , CC //Lista com emails que serão enviado cópias - TStrings
                                              , nil // Lista de anexos - TStrings
                                              , False  //Pede confirmação de leitura do email
                                              , False  //Aguarda Envio do Email(não usa thread)
@@ -2049,7 +2059,7 @@ begin
   end;
 end;
 
-procedure TForm1.Button1Click(Sender: TObject);
+procedure TForm1.btnCarregarXMLEnviarClick(Sender: TObject);
 begin
   OpenDialog1.Title := 'Selecione a NFE';
   OpenDialog1.DefaultExt := '*-nfe.XML';
@@ -2060,50 +2070,99 @@ begin
     ACBrNFe1.NotasFiscais.Clear;
     ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
 
-with ACBrNFe1.NotasFiscais.Items[0].NFe do
- begin
-      Emit.CNPJCPF           := edtEmitCNPJ.Text;
-      Emit.IE                := edtEmitIE.Text;
-      Emit.xNome             := edtEmitRazao.Text;
-      Emit.xFant             := edtEmitFantasia.Text;
+ {   with ACBrNFe1.NotasFiscais.Items[0].NFe do
+     begin
+       Emit.CNPJCPF           := edtEmitCNPJ.Text;
+       Emit.IE                := edtEmitIE.Text;
+       Emit.xNome             := edtEmitRazao.Text;
+       Emit.xFant             := edtEmitFantasia.Text;
 
-      Emit.EnderEmit.fone    := edtEmitFone.Text;
-      Emit.EnderEmit.CEP     := StrToInt(edtEmitCEP.Text);
-      Emit.EnderEmit.xLgr    := edtEmitLogradouro.Text;
-      Emit.EnderEmit.nro     := edtEmitNumero.Text;
-      Emit.EnderEmit.xCpl    := edtEmitComp.Text;
-      Emit.EnderEmit.xBairro := edtEmitBairro.Text;
-      Emit.EnderEmit.cMun    := StrToInt(edtEmitCodCidade.Text);
-      Emit.EnderEmit.xMun    := edtEmitCidade.Text;
-      Emit.EnderEmit.UF      := edtEmitUF.Text;
-      Emit.enderEmit.cPais   := 1058;
-      Emit.enderEmit.xPais   := 'BRASIL';
+       Emit.EnderEmit.fone    := edtEmitFone.Text;
+       Emit.EnderEmit.CEP     := StrToInt(edtEmitCEP.Text);
+       Emit.EnderEmit.xLgr    := edtEmitLogradouro.Text;
+       Emit.EnderEmit.nro     := edtEmitNumero.Text;
+       Emit.EnderEmit.xCpl    := edtEmitComp.Text;
+       Emit.EnderEmit.xBairro := edtEmitBairro.Text;
+       Emit.EnderEmit.cMun    := StrToInt(edtEmitCodCidade.Text);
+       Emit.EnderEmit.xMun    := edtEmitCidade.Text;
+       Emit.EnderEmit.UF      := edtEmitUF.Text;
+       Emit.enderEmit.cPais   := 1058;
+       Emit.enderEmit.xPais   := 'BRASIL';
 
-      Emit.IEST              := '';
-      Emit.IM                := ''; // Preencher no caso de existir serviços na nota
-      Emit.CNAE              := ''; // Verifique na cidade do emissor da NFe se é permitido
+       Emit.IEST              := '';
+       Emit.IM                := ''; // Preencher no caso de existir serviços na nota
+       Emit.CNAE              := ''; // Verifique na cidade do emissor da NFe se é permitido
                                     // a inclusão de serviços na NFe
-      Emit.CRT               := crtRegimeNormal;// (1-crtSimplesNacional, 2-crtSimplesExcessoReceita, 3-crtRegimeNormal)
-end;
+       Emit.CRT               := crtRegimeNormal;// (1-crtSimplesNacional, 2-crtSimplesExcessoReceita, 3-crtRegimeNormal)
+    end;}
+    ACBrNFe1.NotasFiscais.GerarNFe;
+    ACBrNFe1.Enviar(1,True);
+
+    MemoResp.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.Retorno.RetWS);
+    memoRespWS.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.Retorno.RetornoWS);
+    LoadXML(MemoResp, WBResposta);
+
+   MemoDados.Lines.Add('');
+   MemoDados.Lines.Add('Envio NFe');
+   MemoDados.Lines.Add('tpAmb: '+ TpAmbToStr(ACBrNFe1.WebServices.Retorno.TpAmb));
+   MemoDados.Lines.Add('verAplic: '+ ACBrNFe1.WebServices.Retorno.verAplic);
+   MemoDados.Lines.Add('cStat: '+ IntToStr(ACBrNFe1.WebServices.Retorno.cStat));
+   MemoDados.Lines.Add('cUF: '+ IntToStr(ACBrNFe1.WebServices.Retorno.cUF));
+   MemoDados.Lines.Add('xMotivo: '+ ACBrNFe1.WebServices.Retorno.xMotivo);
+   MemoDados.Lines.Add('cMsg: '+ IntToStr(ACBrNFe1.WebServices.Retorno.cMsg));
+   MemoDados.Lines.Add('xMsg: '+ ACBrNFe1.WebServices.Retorno.xMsg);
+   MemoDados.Lines.Add('Recibo: '+ ACBrNFe1.WebServices.Retorno.Recibo);
+   MemoDados.Lines.Add('Protocolo: '+ ACBrNFe1.WebServices.Retorno.Protocolo);
   end;
-  ACBrNFe1.NotasFiscais.GerarNFe;
-  ACBrNFe1.Enviar(1,True);
+end;
 
-  MemoResp.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.Retorno.RetWS);
-  memoRespWS.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.Retorno.RetornoWS);
+procedure TForm1.btnCartadeCorrecaoClick(Sender: TObject);
+var
+ Chave, idLote, codOrgao, CNPJ, nSeqEvento, Correcao : string;
+begin
+  if not(InputQuery('WebServices Carta de Correção', 'Chave da NF-e', Chave)) then
+     exit;
+  Chave := Trim(OnlyNumber(Chave));
+{  if not ValidarChave(Chave) then
+   begin
+     MessageDlg('Chave Inválida.',mtError,[mbok],0);
+     exit;
+   end;   }
+  idLote := '1';
+  if not(InputQuery('WebServices Carta de Correção', 'Identificador de controle do Lote de envio do Evento', idLote)) then
+     exit;
+  codOrgao := copy(Chave,1,2);
+  if not(InputQuery('WebServices Carta de Correção', 'Código do órgão de recepção do Evento', codOrgao)) then
+     exit;
+  CNPJ := copy(Chave,7,14);
+  if not(InputQuery('WebServices Carta de Correção', 'CNPJ ou o CPF do autor do Evento', CNPJ)) then
+     exit;
+  nSeqEvento := '1';
+  if not(InputQuery('WebServices Carta de Correção', 'Sequencial do evento para o mesmo tipo de evento', nSeqEvento)) then
+     exit;
+  Correcao := 'Correção a ser considerada, texto livre. A correção mais recente substitui as anteriores.';
+  if not(InputQuery('WebServices Carta de Correção', 'Correção a ser considerada', Correcao)) then
+     exit;
+  ACBrNFe1.CartaCorrecao.CCe.Evento.Clear;
+  with ACBrNFe1.CartaCorrecao.CCe.Evento.Add do
+   begin
+     idLote           := idLote;
+     infEvento.chNFe := Chave;
+     infEvento.cOrgao := StrToInt(codOrgao);
+     infEvento.CNPJ   := CNPJ;
+     infEvento.dhEvento := now;
+     infEvento.tpEvento := 110110;
+     infEvento.nSeqEvento := StrToInt(nSeqEvento);
+     infEvento.versaoEvento := '1.00';
+     infEvento.detEvento.descEvento := 'Carta de Correção';
+     infEvento.detEvento.xCorrecao := Correcao;
+     infEvento.detEvento.xCondUso := ''; //Texto fixo conforme NT 2011.003 -  http://www.nfe.fazenda.gov.br/portal/exibirArquivo.aspx?conteudo=tsiloeZ6vBw=
+   end;
+  ACBrNFe1.EnviarCartaCorrecao(StrToInt(idLote));
+
+  MemoResp.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.CartaCorrecao.RetWS);
+  memoRespWS.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.CartaCorrecao.RetornoWS);
   LoadXML(MemoResp, WBResposta);
-
- MemoDados.Lines.Add('');
- MemoDados.Lines.Add('Envio NFe');
- MemoDados.Lines.Add('tpAmb: '+ TpAmbToStr(ACBrNFe1.WebServices.Retorno.TpAmb));
- MemoDados.Lines.Add('verAplic: '+ ACBrNFe1.WebServices.Retorno.verAplic);
- MemoDados.Lines.Add('cStat: '+ IntToStr(ACBrNFe1.WebServices.Retorno.cStat));
- MemoDados.Lines.Add('cUF: '+ IntToStr(ACBrNFe1.WebServices.Retorno.cUF));
- MemoDados.Lines.Add('xMotivo: '+ ACBrNFe1.WebServices.Retorno.xMotivo);
- MemoDados.Lines.Add('cMsg: '+ IntToStr(ACBrNFe1.WebServices.Retorno.cMsg));
- MemoDados.Lines.Add('xMsg: '+ ACBrNFe1.WebServices.Retorno.xMsg);
- MemoDados.Lines.Add('Recibo: '+ ACBrNFe1.WebServices.Retorno.Recibo);
- MemoDados.Lines.Add('Protocolo: '+ ACBrNFe1.WebServices.Retorno.Protocolo);  
 end;
 
 end.

@@ -145,7 +145,9 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
     function GetNumECF: String; override ;
     function GetNumLoja: String; override ;
     function GetNumSerie: String; override ;
+    function GetNumSerieMFD: String; override ;    
     function GetNumVersao: String; override ;
+    function GetSubModeloECF: String; override ;    
     function GetSubTotal: Double; override ;
     function GetTotalPago: Double; override ;
 
@@ -161,6 +163,7 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
     function GetIE: String; override ;
     function GetIM: String; override ;
     function GetCliche: AnsiString; override ;
+    function GetUsuarioAtual: String; override ;
     function GetPAF: String; override ;
     function GetDataMovimento: TDateTime; override ;
     function GetGrandeTotal: Double; override ;
@@ -424,9 +427,10 @@ begin
    ACK_ECF  := 0 ;
    FalhasTX := 0 ;
 
+   fpDevice.Serial.DeadlockTimeout := 2000 ; { Timeout p/ Envio }
+
    while (ACK_ECF <> ACK) do
    begin
-      fpDevice.Serial.DeadlockTimeout := 2000 ; { Timeout p/ Envio }
       fpDevice.Serial.Purge ;                   { Limpa a Porta }
 
       if not TransmiteComando( cmd ) then
@@ -849,7 +853,7 @@ begin
            begin
               TempoLimite := IncSecond(now, TimeOut);
               try
-                 Ret := fpDevice.Serial.RecvPacket(100) ;
+                 Ret := fpDevice.Serial.RecvPacket(200) ;
               except
               end ;
 
@@ -1164,6 +1168,14 @@ begin
   Result := Trim(copy( RetornaInfoECF( 'I1' ), 51, 22)) ;
 end;
 
+function TACBrECFSwedaSTX.GetNumSerieMFD: String;
+begin
+  Result := '' ;
+  if fpMFD then
+     Result := trim(copy(RetornaInfoECF( 'I32' ),3,21));
+end;
+
+
 function TACBrECFSwedaSTX.GetNumVersao: String ;
 begin
   Result := Trim(copy( RetornaInfoECF( 'I1' ), 73, 9)) ;
@@ -1173,6 +1185,12 @@ function TACBrECFSwedaSTX.GetTotalPago: Double;
 begin
   Result := StrToFloatDef( Trim(copy( RetornaInfoECF( 'L1' ), 52, 13)),0)/100 ;
 end;
+
+function TACBrECFSwedaSTX.GetSubModeloECF: String;
+begin
+ Result :=trim(copy(RetornaInfoECF( 'I1' ),22,21));
+end;
+
 
 function TACBrECFSwedaSTX.GetSubTotal: Double;
 begin
@@ -1224,7 +1242,7 @@ begin
 //               else
                    fpEstado := estLivre ;
                end ;
-             
+
              'C' :
                begin
                  B := Ord( Sinalizadores[2] ) ;
@@ -1241,7 +1259,7 @@ begin
         end ;
 
       'B' : fpEstado := estBloqueada ;
-        
+
       'C' : fpEstado := estRequerZ ;
     end ;
   finally
@@ -1397,7 +1415,7 @@ begin
            {garante o fechamento do cdc}
            FechaCupom;
         except
-        end;
+        end;               
         EnviaComando('52',30);
         FechaCupom();
      end;
@@ -1808,17 +1826,50 @@ begin
    if ( Indice = 0 ) or ( Indice = 1 ) then
       Indice := 2;
 
+
    RG := AchaRGIndice(FormatFloat('00',Indice));
    if RG = nil then
      raise Exception.create( ACBrStr('Relatório Gerencial: '+IntToStr(Indice)+
                                  ' não foi cadastrado.' ));
    sDescricao := PadL(RG.Descricao,15);
+   AguardaImpressao := True;
    EnviaComando('43|'+sDescricao);
 end;
 
 procedure TACBrECFSwedaSTX.LinhaRelatorioGerencial(Linha: AnsiString; IndiceBMP: Integer);
+Var P, Espera : Integer ;
+    Buffer : AnsiString ;
+    MaxChars : Integer ;
 begin
-  EnviaComando( '25|' + Linha );
+
+  Linha := AjustaLinhas( Linha, Colunas );  { Formata as Linhas de acordo com "Coluna" }
+  MaxChars := 1190 ;  { Sweda aceita no máximo 1190 caract. por comando }
+
+  if not fpTermica then   { Se não é Termica, Imprime Linha a Linha }
+     ImprimirLinhaALinha( Linha, '25|' )
+  else
+     while Length( Linha ) > 0 do
+     begin
+        P := Length( Linha ) ;
+        if P > MaxChars then    { Acha o fim de Linha mais próximo do limite máximo }
+           P := PosLast(#10, LeftStr(Linha,MaxChars) ) ;
+
+        if P = 0 then
+           P := Colunas ;
+
+        Buffer := copy( Linha, 1, P)  ;
+        Espera := Trunc( CountStr( Buffer, #10 ) / 4) ;
+
+        AguardaImpressao := (Espera > 3) ;
+        EnviaComando( '25|' + Buffer, Espera ) ;
+
+        { ficou apenas um LF sozinho ? }
+        if (P = Colunas) and (RightStr( Buffer, 1) <> #10) and
+           (copy( Linha, P+1, 1) = #10) then
+           P := P + 1 ;
+
+        Linha  := copy( Linha, P+1, Length(Linha) ) ;   // O Restante
+     end ;
 end;
 
 procedure TACBrECFSwedaSTX.LoadDLLFunctions;
@@ -2006,6 +2057,16 @@ begin
    RetCMD := RetornaInfoECF('H4');
    Result := RemoveNulos(RetCMD);
 end;
+
+function TACBrECFSwedaSTX.GetUsuarioAtual: String;
+ var
+   RetCMD : AnsiString;
+begin
+  Result := '';
+   RetCMD := RetornaInfoECF('I32');
+   Result := copy(RemoveNulos(RetCMD),1,2);
+end;
+
 
 function TACBrECFSwedaSTX.GetDataMovimento: TDateTime;
  Var

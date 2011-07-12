@@ -97,6 +97,13 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 12/07/2011
+-- ACBrSwedaSTX --
+[+] Numero de série do MFD
+[+] Submodelo do ECF
+[*] Melhoria na impressão da linha do gerencial
+    (por: Régys Silveira)
+
 Data: 11/07/2011
 -- ACBrECF --
 [*] Acerto para que o cancelamento parcial seja mostrado na bobina do ACBrECF

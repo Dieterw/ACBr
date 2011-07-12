@@ -67,6 +67,7 @@ const
  cDTDCanc = '<!DOCTYPE test [<!ATTLIST infCanc Id ID #IMPLIED>]>' ;
  cDTDInut = '<!DOCTYPE test [<!ATTLIST infInut Id ID #IMPLIED>]>' ;
  cDTDDpec = '<!DOCTYPE test [<!ATTLIST infDPEC Id ID #IMPLIED>]>' ;
+ cDTDCCe  = '<!DOCTYPE test [<!ATTLIST infEvento Id ID #IMPLIED>]>' ;
 {$ELSE}
 const
   DSIGNS = 'xmlns:ds="http://www.w3.org/2000/09/xmldsig#"';
@@ -1302,7 +1303,7 @@ begin
            Tipo := 3
         else
          begin
-          I := Pos('<infEvento', XML);
+          I := Pos('<infEvento', AStr);
           if I > 0 then
             Tipo := 5
           else
@@ -1333,7 +1334,7 @@ begin
   else if Tipo = 3 then
      AStr := copy(AStr,1,StrToInt(VarToStr(NotaUtil.SeSenao(I>0,I+1,I)))) + cDTDInut + Copy(AStr,StrToInt(VarToStr(NotaUtil.SeSenao(I>0,I+2,I))),Length(AStr))
   else if Tipo = 4 then
-     AStr := copy(AStr,1,StrToInt(VarToStr(NotaUtil.SeSenao(I>0,I+1,I)))) + cDTDDpec + Copy(AStr,StrToInt(VarToStr(NotaUtil.SeSenao(I>0,I+2,I))),Length(AStr));
+     AStr := copy(AStr,1,StrToInt(VarToStr(NotaUtil.SeSenao(I>0,I+1,I)))) + cDTDDpec + Copy(AStr,StrToInt(VarToStr(NotaUtil.SeSenao(I>0,I+2,I))),Length(AStr))
   else if Tipo = 5 then
      AStr := copy(AStr,1,StrToInt(VarToStr(NotaUtil.SeSenao(I>0,I+1,I)))) + cDTDCCe  + Copy(AStr,StrToInt(VarToStr(NotaUtil.SeSenao(I>0,I+2,I))),Length(AStr));
 

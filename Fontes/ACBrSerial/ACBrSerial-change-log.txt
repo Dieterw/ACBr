@@ -98,11 +98,16 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 Data: 12/07/2011
+-- ACBrECFDaruma --
+[+] Carga do bitmap promocional
+    (por: Régys Silveira)
+
+Data: 12/07/2011
 -- ACBrSwedaSTX --
 [+] Numero de série do MFD
 [+] Submodelo do ECF
 [*] Melhoria na impressão da linha do gerencial
-    (por: Régys Silveira)
+    (por: Carlos Nascimento)
 
 Data: 11/07/2011
 -- ACBrECF --

@@ -205,7 +205,8 @@ TACBrECFDaruma = class( TACBrECFClass )
     fsRet244: AnsiString ;
     fsNumCRO: String ;
     fsErro, fsErroSTD, fsCodAviso : Integer ;
-    
+
+    xeCarregarBitmapPromocional_ECF_Daruma: function(APathArquivo, ANumBitmap, AOrientacao: AnsiString): Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
     xeDefinirModoRegistro_Daruma: function(Local: AnsiString): Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
     xeDefinirProduto: function(Tipo: AnsiString): Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
     xregAlterarValor_Daruma: function(Chave: AnsiString; Valor: AnsiString): Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
@@ -216,7 +217,7 @@ TACBrECFDaruma = class( TACBrECFClass )
 
     procedure LoadDLLFunctions;
     procedure UnloadDLLFunctions;
-    procedure ConfigurarDLL(const Path : AnsiString );
+    procedure ConfigurarDLL(Path : AnsiString );
 
     Function PreparaCmd( cmd : AnsiString ) : AnsiString ;
     function GetComprovantesNaoFiscaisVinculado: TACBrECFComprovantesNaoFiscais;
@@ -4189,7 +4190,7 @@ begin
     try
       LoadDLLFunctions;
       try
-        ConfigurarDLL('C:\');
+        ConfigurarDLL('');
 
         // gravar no registro para evitar a perda, algumas funções da dll leem dessas chaves
         Resp := xregAlterarValor_Daruma('ECF\MensagemApl1', Linha1 );
@@ -4549,17 +4550,18 @@ procedure TACBrECFDaruma.LoadDLLFunctions;
   end ;
 
 begin
+  DarumaFunctionDetect('eCarregarBitmapPromocional_ECF_Daruma', @xeCarregarBitmapPromocional_ECF_Daruma);
   DarumaFunctionDetect('eDefinirModoRegistro_Daruma', @xeDefinirModoRegistro_Daruma);
   DarumaFunctionDetect('eDefinirProduto', @xeDefinirProduto);
   DarumaFunctionDetect('regAlterarValor_Daruma', @xregAlterarValor_Daruma);
   DarumaFunctionDetect('rGerarEspelhoMFD_ECF_Daruma', @xrGerarEspelhoMFD_ECF_Daruma);
   DarumaFunctionDetect('rGerarRelatorio_ECF_Daruma', @xrGerarRelatorio_ECF_Daruma);
   DarumaFunctionDetect('rGerarRelatorioOffline_ECF_Daruma', @xrGerarRelatorioOffline_ECF_Daruma);
-
 end;
 
 procedure TACBrECFDaruma.UnloadDLLFunctions;
 begin
+  xeCarregarBitmapPromocional_ECF_Daruma := NIL;
   xeDefinirModoRegistro_Daruma := NIL;
   xeDefinirProduto := NIL;
   xregAlterarValor_Daruma := NIL;
@@ -4568,13 +4570,13 @@ begin
   xrGerarRelatorioOffline_ECF_Daruma := NIL;
 end;
 
-procedure TACBrECFDaruma.ConfigurarDLL(const Path : AnsiString );
+procedure TACBrECFDaruma.ConfigurarDLL(Path : AnsiString );
 Var
   Resp : Integer ;
   Porta, Velocidade : AnsiString ;
 begin
   if Trim(Path) = '' then
-    raise Exception.Create(ACBrStr('ConfigurarDLL: Caminho do arquivo não informado'));
+    Path := ExtractFilePath(ParamStr(0));
 
   Porta      := fpDevice.Porta ;
   Velocidade := IntToStr(fpDevice.Baud) ;
@@ -4582,40 +4584,47 @@ begin
   // configurar a daruma para gravar somente no XML
   Resp := xeDefinirModoRegistro_Daruma('2');
   if Resp <> 1 then
-     raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar: '+sLineBreak+
-     'xeDefinirModoRegistro_Daruma( "2" )') );
+     raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' '+GetDescricaoErroDLL(Resp)+sLineBreak+
+       'ao chamar: '+sLineBreak+
+       'xeDefinirModoRegistro_Daruma( "2" )') );
 
   // Configurar o tipo de impressora na DLL
   Resp := xeDefinirProduto('FISCAL');
   if Resp <> 1 then
-     raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar: '+sLineBreak+
-     'xeDefinirProduto( "FISCAL" )') );
+     raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' '+GetDescricaoErroDLL(Resp)+sLineBreak+
+       'ao chamar: '+sLineBreak+
+       'xeDefinirProduto( "FISCAL" )') );
 
   // Configurações gerais de funcionamento da DLL
   Resp := xregAlterarValor_Daruma( 'ECF\ControleAutomatico', '1' );
   if Resp <> 1 then
-     raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar: '+sLineBreak+
-     'xregAlterarValor_Daruma( "ECF\ControleAutomatico", "1" ) ') );
+     raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' '+GetDescricaoErroDLL(Resp)+sLineBreak+
+       'ao chamar: '+sLineBreak+
+       'xregAlterarValor_Daruma( "ECF\ControleAutomatico", "1" ) ') );
 
   Resp := xregAlterarValor_Daruma( 'ECF\PortaSerial', Porta );
   if Resp <> 1 then
-     raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar: '+sLineBreak+
-     'xregAlterarValor_Daruma( "ECF\PortaSerial", "'+Porta+'" ) ') );
+     raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' '+GetDescricaoErroDLL(Resp)+sLineBreak+
+       'ao chamar: '+sLineBreak+
+       'xregAlterarValor_Daruma( "ECF\PortaSerial", "'+Porta+'" ) ') );
 
   Resp := xregAlterarValor_Daruma( 'ECF\Velocidade', Velocidade );
   if Resp <> 1 then
-     raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar: '+sLineBreak+
-     'xregAlterarValor_Daruma( "ECF\Velocidade", "'+Velocidade+'" ) ') );
+     raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' '+GetDescricaoErroDLL(Resp)+sLineBreak+
+       'ao chamar: '+sLineBreak+
+       'xregAlterarValor_Daruma( "ECF\Velocidade", "'+Velocidade+'" ) ') );
 
   Resp := xregAlterarValor_Daruma( 'START\LocalArquivos', Path );
   if Resp <> 1 then
-     raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar:'+sLineBreak+
-     'xregAlterarValor_Daruma( "START\LocalArquivos",  "'+Path+'" ) ') );
+     raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' '+GetDescricaoErroDLL(Resp)+sLineBreak+
+       'ao chamar:'+sLineBreak+
+       'xregAlterarValor_Daruma( "START\LocalArquivos",  "'+Path+'" ) ') );
 
   Resp := xregAlterarValor_Daruma( 'START\LocalArquivosRelatorios', Path );
   if Resp <> 1 then
-     raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar:'+sLineBreak+
-     'xregAlterarValor_Daruma( "START\LocalArquivos", "'+Path+'" ) ') );
+     raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' '+GetDescricaoErroDLL(Resp)+sLineBreak+
+       'ao chamar:'+sLineBreak+
+       'xregAlterarValor_Daruma( "START\LocalArquivos", "'+Path+'" ) ') );
 end;
 
 function TACBrECFDaruma.GetDescricaoErroDLL(const ACodigo: Integer): String;
@@ -4885,6 +4894,7 @@ procedure TACBrECFDaruma.ProgramarBitmapPromocional(const AIndice: Integer;
   const APathArquivo: AnsiString; const AAlinhamento: TACBrAlinhamento);
 var
   Posicao: String;
+  Indice: String;
   Tamanho: Integer;
   Comando: AnsiString;
   BmpCod: AnsiString;
@@ -4894,6 +4904,9 @@ var
   Buffer: Byte;
   BMaisHoriz: Byte;
   BMaisVert: Byte;
+
+  Resp: Integer;
+  OldAtivo: Boolean;
 begin
   if fpMFD then
   begin
@@ -4906,46 +4919,30 @@ begin
     if not FileExists(APathArquivo) then
       raise Exception.Create( ACBrStr( 'Arquivo "'+APathArquivo+'", não foi encontrado.') );
 
+    if AnsiUpperCase(ExtractFileExt(APathArquivo)) <> '.BMP' then
+      raise Exception.Create( ACBrStr( 'Arquivo "'+APathArquivo+'", deve ser um arquivo do tipo bitmap.') );
+
+    Indice := Format('%2.2d', [AIndice]);
+
     if AAlinhamento = alCentro then
       Posicao := '000'
     else
       Posicao := '001';
 
-    Imagem := TBitmap.Create;
-    Arquivo := TMemoryStream.Create;
+    OldAtivo := Ativo;
     try
-      Imagem.LoadFromFile(APathArquivo);
-      Imagem.Monochrome := True;
-      Imagem.SaveToStream(Arquivo);
+      LoadDLLFunctions;
+      ConfigurarDLL('');
 
-      BmpCod     := EmptyStr;
-      Tamanho    := Arquivo.Size;
-      BMaisHoriz := Imagem.Width;
-      BMaisVert  := Imagem.Height;
+      Ativo  := False;
 
-      Arquivo.Position := 0;
-      for I := 0 to Arquivo.Size - 1 do
-      begin
-        Arquivo.Read(Buffer, SizeOf(Buffer));
-        BmpCod := BmpCod + IntToStrZero(Buffer, 3);
-      end;
-
-      Comando := FS + 'C' + #216 +
-        IntToStrZero(AIndice, 2) +
-        IntToStrZero(Tamanho, 4) +
-        IntToStrZero(BMaisHoriz, 3) +
-        IntToStrZero(0, 3) +
-        IntToStrZero(BMaisVert, 3) +
-        IntToStrZero(0, 3) +
-        Posicao +
-        BmpCod;
-
-      //WriteToTXT(ExtractFilePath(APathArquivo) + 'teste.txt', Comando, False);
-      EnviaComando(Comando);
-
+      Resp := xeCarregarBitmapPromocional_ECF_Daruma(APathArquivo, Indice, Posicao);
+      if (Resp <> 1) then
+        raise Exception.Create( ACBrStr( 'Erro ao executar eCarregarBitmapPromocional_ECF_Daruma.'+sLineBreak+
+                                         'Cod.: '+IntToStr(Resp)+' '+GetDescricaoErroDLL(Resp) )) ;
     finally
-      Imagem.Free;
-      Arquivo.Free;
+      Ativo := OldAtivo;
+      UnloadDLLFunctions;
     end;
   end;
 end;

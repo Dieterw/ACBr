@@ -150,7 +150,7 @@ type
     class function FormatarValor(mask: TpcteMask; const AValue: real): string;
     // Incluido por Italo em 28/01/2011
     class function GerarChaveContingencia(FCTe:TCTe): String;
-    class function FormatarChaveContigencia(AValue: String): String;
+    class function FormatarChaveContingencia(AValue: String): String;
 
 
 {$IFDEF ACBrCTeOpenSSL}
@@ -1559,7 +1559,7 @@ end;
 
 class function CTeUtil.GerarChaveContingencia(FCTe:TCTe): string;
 
-   function GerarDigito_Contigencia(var Digito: integer; chave: string): boolean;
+   function GerarDigito_Contingencia(var Digito: integer; chave: string): boolean;
    var
      i, j: integer;
    const
@@ -1626,14 +1626,14 @@ begin
    wchave := wchave + CTeUtil.Poem_Zeros(inttostr(wd), 2);
 
    //DIGITO VERIFICADOR
-   GerarDigito_Contigencia(Digito, wchave);
+   GerarDigito_Contingencia(Digito, wchave);
    wchave := wchave + inttostr(digito);
 
    //RETORNA A CHAVE DE CONTINGENCIA
    result:=wchave;
 end;
 
-class function CTeUtil.FormatarChaveContigencia(AValue: String): String;
+class function CTeUtil.FormatarChaveContingencia(AValue: String): String;
 begin
   AValue := CTeUtil.LimpaNumero(AValue);
   Result := copy(AValue,1,4)  + ' ' + copy(AValue,5,4)  + ' ' +

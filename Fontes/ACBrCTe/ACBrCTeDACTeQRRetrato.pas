@@ -928,7 +928,7 @@ begin
     strChaveContingencia := CTeUtil.GerarChaveContingencia(FCTe);
     SetBarCodeImage(strChaveContingencia,qriBarCode);
     qrlDescricao.Caption := 'DADOS DO CT-E';
-    qrlProtocolo.Caption := CTeUtil.FormatarChaveContigencia(strChaveContingencia);
+    qrlProtocolo.Caption := CTeUtil.FormatarChaveContingencia(strChaveContingencia);
    end;
   // DPEC ****************************************************************
   if FCTe.Ide.tpEmis = teDPEC then

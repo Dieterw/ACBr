@@ -951,6 +951,7 @@ procedure TfqrDANFeQRRetrato.qrbEmitenteDestinatarioBeforePrint(Sender: TQRCusto
   var PrintBand: Boolean);
 var
    x, iQuantDup: integer;
+   Ok: Boolean;
 begin
   inherited;
    PrintBand := QRNFe.PageNumber = 1;
@@ -994,9 +995,14 @@ begin
       TQRLabel( FindComponent( 'qrlFatValor' + intToStr( x ) ) ).Caption := '';
    end;
 
+   // Incluido por Italo em 13/07/2011
+   if FNFe.Cobr.Dup.Count > 0
+    then Ok := (FNFe.Ide.dEmi = FNFe.Cobr.Dup[0].dVenc)
+    else Ok := True;
+
    // Alterado por Italo em 27/05/2011
    // TpcnIndicadorPagamento = (ipVista, ipPrazo, ipOutras);
-   if (FNFe.Ide.indPag = ipVista) and (FNFe.Ide.dEmi = FNFe.Cobr.Dup[0].dVenc)
+   if (FNFe.Ide.indPag = ipVista) and Ok
     then
       TQRLabel( FindComponent( 'qrlFatNum1' ) ).Caption := 'PAGAMENTO À VISTA'
     else begin

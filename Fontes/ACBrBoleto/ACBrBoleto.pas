@@ -264,7 +264,6 @@ type
      function GetNumero: Integer;
   protected
     fpDigito: Integer;
-    fpTipoCobranca: TACBrTipoCobranca;
     fpNome:   String;
     fpNumero: Integer;
     fpModulo: TACBrCalcDigito;
@@ -283,7 +282,6 @@ type
     property Numero    : Integer         read fpNumero;
     property Digito    : Integer         read fpDigito;
     property Nome      : String          read fpNome;
-    property TipoCobranca : TACBrTipoCobranca read fpTipoCobranca;
     Property Modulo    : TACBrCalcDigito read fpModulo;
     property TamanhoMaximoNossoNum: Integer    read fpTamanhoMaximoNossoNum;
     property TamanhoAgencia  :Integer read fpTamanhoAgencia;
@@ -1265,6 +1263,11 @@ begin
   {Apenas para aparecer no ObjectInspector do D7}
 end;
 
+procedure TACBrBanco.SetNumero(const AValue: Integer);
+begin
+  {Apenas para aparecer no ObjectInspector do D7}
+end;
+
 procedure TACBrBanco.SetTipoCobranca(const AValue: TACBrTipoCobranca);
 begin
   if fTipoCobranca = AValue then
@@ -1288,31 +1291,6 @@ begin
   end;
 
    fTipoCobranca := AValue;
-end;
-
-procedure TACBrBanco.SetNumero(const AValue: Integer);
-begin
-   {if fNumeroBanco = AValue then
-      exit;
-
-   fBancoClass.Free;
-
-   case AValue of
-      001 : fBancoClass := TACBrBancoBrasil.create(Self);
-      033,353,008 : fBancoClass := TACBrBancoSantander.create(Self);
-      041 : fBancoClass := TACBrBanrisul.create(Self);
-      104 : fBancoClass := TACBrCaixaEconomica.create(Self);
-      237 : fBancoClass := TACBrBancoBradesco.create(Self);
-      341 : fBancoClass := TACBrBancoItau.Create(self);
-      389 : fBancoClass := TACBrBancoMercantil.create(Self);
-      748 : fBancoClass := TACBrBancoSicredi.Create(self);
-      756 : fBancoClass := TACBrBancoob.create(self)
-
-   else
-      fBancoClass := TACBrBancoClass.create(Self);
-   end;
-
-   fNumeroBanco := AValue;}
 end;
 
 function TACBrBanco.TipoOcorrenciaToDescricao( const TipoOcorrencia: TACBrTipoOcorrencia
@@ -1422,7 +1400,6 @@ begin
    fpDigito := 0;
    fpNome   := 'Não definido';
    fpNumero := 0;
-   fpTipoCobranca := cobNenhum;
    fpTamanhoMaximoNossoNum := 10;
    fpTamanhoAgencia        := 4;
    fpTamanhoConta          := 10;

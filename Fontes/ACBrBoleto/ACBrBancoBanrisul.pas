@@ -80,6 +80,7 @@ begin
   inherited create(AOwner);
   fpDigito:=8;
   fpNome:='Banrisul';
+  fpNumero:= 041;
   fpTamanhoMaximoNossoNum:=8;
 
   fpTamanhoAgencia:= 4;
@@ -428,7 +429,7 @@ begin
                ContaDigito +                                      //  71 -  71   Dígito da conta (Não considerado)
                Space(1) +                                         //  72 -  72   Dígito verificador da agência/conta (Não considerado)
                padL(Nome, 30) +                                   //  73 - 102   Nome do cedente
-               padL(UpperCase(ACBrBanco.Nome), 30) +              // 103 - 132   Nome do banco
+               padL(UpperCase(ACBrBanco.Nome), 30) +           // 103 - 132   Nome do banco
                Space(10) +                                        // 133 - 142   Uso exclusivo FEBRABAN/CNAB
                '1'+                                               // 143 - 143   Código remessa
                FormatDateTime('ddmmyyyyhhnnss', Now) +            // 144 - 157   Data e hora da geração do arquivo

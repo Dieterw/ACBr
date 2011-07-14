@@ -75,7 +75,8 @@ constructor TACBrBancoBradesco.create(AOwner: TACBrBanco);
 begin
    inherited create(AOwner);
    fpDigito := 2;
-   fpNome   := 'Bradesco';
+   fpNome:= 'Bradesco';
+   fpNumero := 237;
    fpTamanhoMaximoNossoNum := 11;
    fpTamanhoAgencia := 4;
    fpTamanhoConta   := 6;

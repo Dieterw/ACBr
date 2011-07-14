@@ -77,6 +77,7 @@ begin
    inherited create(AOwner);
    fpDigito := 7;
    fpNome   := 'Santander';
+   fpNumero:= 033;
    fpTamanhoMaximoNossoNum := 12;
    fpTamanhoConta:= 8;
    fpTamanhoCarteira:= 3;

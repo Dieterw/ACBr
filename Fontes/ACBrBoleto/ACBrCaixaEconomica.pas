@@ -31,7 +31,7 @@
 {                                                                              }
 {******************************************************************************}
 
-{Somente é aceito o Convênio SIGCB Carteira 1 ou 2 Registrada ou Sem Registro} 
+{Convênio SIGCB Carteira 1 ou 2 Registrada ou Sem Registro} 
 
 {$I ACBr.inc}
 
@@ -74,6 +74,7 @@ begin
    inherited create(AOwner);
    fpDigito := 9;
    fpNome   := 'Caixa Economica Federal';
+   fpNumero:= 104;
    fpTamanhoMaximoNossoNum := 15;
 end;
 
@@ -91,10 +92,8 @@ begin
 
    ANossoNumero := OnlyNumber(ACBrTitulo.NossoNumero);
    
-   if Length(trim(ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente)) > 5 then
-      Num := ACarteira + '4' + PadR(ANossoNumero, 15, '0')
-   else
-      Num := ANossoNumero;
+   Num := ACarteira + '4' + PadR(ANossoNumero, 15, '0');
+   
    
    Modulo.CalculoPadrao;
    Modulo.MultiplicadorFinal   := 2;
@@ -115,11 +114,6 @@ function TACBrCaixaEconomica.CalcularDVCedente(const ACBrTitulo: TACBrTitulo): S
 var
   Num, Res: string;
 begin 
-    {if Length(trim(ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente)) < 7 then
-       Num := ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente
-    else
-       Num := ACBrTitulo.ACBrBoleto.Cedente.Agencia + ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente;}
-
     Num := ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente;
     Modulo.CalculoPadrao;
     Modulo.MultiplicadorFinal   := 2;
@@ -143,17 +137,14 @@ begin
       AConvenio := ACBrBoleto.Cedente.Convenio;
       ANossoNumero := OnlyNumber(NossoNumero);
 
-      if Length(trim(ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente)) > 5 then
-       begin
-         if (ACBrTitulo.Carteira = 'RG') then         {carterira registrada}
-             ANossoNumero := '14' + padR(ANossoNumero, 15, '0')
-         else if (ACBrTitulo.Carteira = 'SR')then     {carteira 2 sem registro}
-             ANossoNumero := '24'+padR(ANossoNumero, 15, '0')
-         else
-            raise Exception.Create( ACBrStr('Carteira Inválida.'+sLineBreak+'Utilize "RG" ou "SR"') ) ;
-       end
+      if (ACBrTitulo.Carteira = 'RG') then         {carterira registrada}
+          ANossoNumero := '14' + padR(ANossoNumero, 15, '0')
+      else if (ACBrTitulo.Carteira = 'SR')then     {carteira 2 sem registro}
+          ANossoNumero := '24'+padR(ANossoNumero, 15, '0')
       else
-         ANossoNumero:= Copy(ANossoNumero,Length(ANossoNumero)-9,15);
+        raise Exception.Create( ACBrStr('Carteira Inválida.'+sLineBreak+'Utilize "RG" ou "SR"') ) ;
+      
+      
    end;
 
     Result := ANossoNumero;
@@ -170,27 +161,21 @@ begin
     ANossoNumero := FormataNossoNumero(ACBrTitulo);
 
     {Montando Campo Livre}
-    if Length(trim(ACBrTitulo.ACBrBoleto.Cedente.Agencia + ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente)) > 5 then
-     begin
-       CampoLivre   := ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente + CalcularDVCedente(ACBrTitulo) +
-                 	   Copy(ANossoNumero,3,3) + Copy(ANossoNumero,1,1) +	Copy(ANossoNumero,6,3) +
-                          '4' + Copy(ANossoNumero,9,9);
+    CampoLivre   := ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente + CalcularDVCedente(ACBrTitulo) +
+                	Copy(ANossoNumero,3,3) + Copy(ANossoNumero,1,1) +	Copy(ANossoNumero,6,3) +
+                    '4' + Copy(ANossoNumero,9,9);
+    Modulo.CalculoPadrao;
+    Modulo.MultiplicadorFinal   := 2;
+    Modulo.MultiplicadorInicial := 9;
+    Modulo.Documento := CampoLivre;
+    Modulo.Calcular;
+    DVCampoLivre := intTostr(Modulo.ModuloFinal);
 
-       Modulo.CalculoPadrao;
-       Modulo.MultiplicadorFinal   := 2;
-       Modulo.MultiplicadorInicial := 9;
-       Modulo.Documento := CampoLivre;
-       Modulo.Calcular;
-       DVCampoLivre := intTostr(Modulo.ModuloFinal);
+    if Length(DVCampoLivre) > 1 then
+       DVCampoLivre := '0';
 
-       if Length(DVCampoLivre) > 1 then
-        DVCampoLivre := '0';
-
-       CampoLivre := CampoLivre + DVCampoLivre;
-     end
-    else
-       CampoLivre   := ANossoNumero + ACBrTitulo.ACBrBoleto.Cedente.Agencia + ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente;
-
+    CampoLivre := CampoLivre + DVCampoLivre;
+    
 
 
     {Codigo de Barras}
@@ -210,7 +195,8 @@ end;
 function TACBrCaixaEconomica.MontarCampoCodigoCedente (
    const ACBrTitulo: TACBrTitulo ) : String;
 begin
-      Result := ACBrTitulo.ACBrBoleto.Cedente.Agencia + '/'+ ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente+'-'+
+  Result := ACBrTitulo.ACBrBoleto.Cedente.Agencia + '/'+
+            ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente+'-'+
                 CalcularDVCedente(ACBrTitulo);
 end;
 

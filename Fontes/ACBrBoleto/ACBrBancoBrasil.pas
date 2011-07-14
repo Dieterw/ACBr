@@ -70,7 +70,8 @@ constructor TACBrBancoBrasil.create(AOwner: TACBrBanco);
 begin
    inherited create(AOwner);
    fpDigito := 9;
-   fpNome   := 'Banco Brasil';
+   fpNome   := 'Banco do Brasil';
+   fpNumero := 001;
    fpTamanhoMaximoNossoNum := 10;
    fpTamanhoConta   := 5;
    fpTamanhoAgencia := 4;

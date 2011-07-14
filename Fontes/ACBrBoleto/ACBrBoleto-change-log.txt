@@ -55,6 +55,35 @@ Versao 0.0.10a do FortesReport 06/07/11
 [-] Corrigido problema com componentes não encontrados no dfm do Fortes.
     (Juliana Tamizou)
 
+
+Versao 0.0.29a 13/07/2011
+[-] Corrigido problema ao montar o código de barras do banco Bancoob.
+    (Douglas Tybel)
+
+[*] Setado a propriedade ftamanhocarteira para o banco Bancoob.
+    (Jeter Rabelo)
+
+[*] Alterado forma de setar qual classe de banco será utilizada.
+    Necessidade surgiu pois, a Caixa Econômica Federal, possui dois
+    manuais de geração de arquivos e também de impressão de boletos,
+    um para o convênio SICOB e outro para o SIGCB.
+    Conforme o Jeter Rabelo levantou diretamente com o suporte da
+    Caixa, não é possivel definir qual layout deve ser usado com base
+    no número do convênio e nem em qualquer outra informação, por isso,
+    foi necessário a utilização de duas classes para a Caixa, uma para
+    cada convênio.
+    Como o número do banco permanece o mesmo, não é mais possivel  
+    selecionar a classe a ser instanciada atraves desta propriedade,
+    então foram feitas as seguintes alterações:
+    1-) Criado o Tipo Enumerado TACBrTipoCobranca, para todos os bancos, 
+        nesta lista temos o tipo cobCaixaEcomica e cobCaixaSICOB.
+    2-) Criado a propriedade TipoCobranca para a classe banco, com esta
+        propriedade será definida qual classe deverá ser instanciada.
+    3-) Com as mudanças acima, foi alterada a propriedade número para 
+        ser Ready Only.
+
+
+
 Versao 0.0.28a 07/07/2011
 [-] Efetuado correções na unit do Sicred, configurados popriedades do
     tamanho máximo da Agência, Carteira e Conta.(Marko Sistemas)

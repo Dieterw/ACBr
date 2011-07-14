@@ -71,6 +71,7 @@ begin
    inherited create(AOwner);
    fpDigito := 1;
    fpNome   := 'Banco Mercantil';
+   fpNumero:= 389;
    fpTamanhoMaximoNossoNum := 6;
 end;
 

@@ -73,7 +73,9 @@ begin
    inherited create(AOwner);
    fpDigito := 0;
    fpNome   := 'BANCO COOPERATIVO DO BRASIL S.A.';
+   fpNumero:= 756;
    fpTamanhoMaximoNossoNum := 7;
+   fpTamanhoCarteira := 1;
 end;
 
 function TACBrBancoob.CalcularDigitoVerificador(const ACBrTitulo: TACBrTitulo ): String;
@@ -157,7 +159,7 @@ begin
     ANossoNumero := ACBrTitulo.NossoNumero+CalcularDigitoVerificador(ACBrTitulo);
 
     if (Length(ACBrTitulo.Carteira) > 0 )then
-      ACarteira := ACBrTitulo.Carteira
+       ACarteira := '1'
     else
        raise Exception.Create( ACBrStr('Carteira Inválida.'+sLineBreak) ) ;
 
@@ -175,7 +177,7 @@ begin
                       '9' +
                       FatorVencimento +
                       IntToStrZero(Round(ACBrTitulo.ValorDocumento * 100), 10) +
-                      padR(ACBrTitulo.Carteira, 1, '0') +
+                      padR(ACarteira, 1, '0') +
                       padR(Cedente.Agencia,4,'0') +
                       CampoLivre;
     end;
@@ -187,7 +189,8 @@ end;
 function TACBrBancoob.MontarCampoCodigoCedente (
    const ACBrTitulo: TACBrTitulo ) : String;
 begin
-      Result := ACBrTitulo.ACBrBoleto.Cedente.Agencia+'/'+ ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente ;
+  Result := ACBrTitulo.ACBrBoleto.Cedente.Agencia + '/'+
+            ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente;
 end;
 
 function TACBrBancoob.MontarCampoNossoNumero (const ACBrTitulo: TACBrTitulo ) : String;
@@ -233,7 +236,7 @@ var
 begin
 
     if (Length(ACBrTitulo.Carteira) > 0 )then
-      ACarteira := ACBrTitulo.Carteira
+       ACarteira := '1'
     else
        raise Exception.Create( ACBrStr('Carteira Inválida.'+sLineBreak) ) ;
 

@@ -57,9 +57,23 @@ uses ACBrBase,  {Units da ACBr}
      Graphics, Contnrs, Classes;
 
 const
-  CACBrBoleto_Versao = '0.0.28a' ;
+  CACBrBoleto_Versao = '0.0.29a' ;
 
 type
+  TACBrTipoCobranca =
+   (cobNenhum,
+    cobBancoDoBrasil,
+    cobSantander,
+    cobCaixaEconomica,
+    cobCaixaSicob,
+    cobBradesco,
+    cobItau,
+    cobBancoMercantil,
+    cobSicred,
+    cobBancoob,
+    cobBanrisul
+    );
+
   TACBrTitulo = class;
   TACBrBoletoFCClass = class;
   TACBrCedente = class;
@@ -250,7 +264,9 @@ type
      function GetNumero: Integer;
   protected
     fpDigito: Integer;
+    fpTipoCobranca: TACBrTipoCobranca;
     fpNome:   String;
+    fpNumero: Integer;
     fpModulo: TACBrCalcDigito;
     fpTamanhoAgencia: Integer;
     fpTamanhoCarteira: Integer;
@@ -264,9 +280,10 @@ type
     Destructor Destroy; override ;
 
     property ACBrBanco : TACBrBanco      read fpAOwner;
-    property Numero    : Integer         read GetNumero;
+    property Numero    : Integer         read fpNumero;
     property Digito    : Integer         read fpDigito;
     property Nome      : String          read fpNome;
+    property TipoCobranca : TACBrTipoCobranca read fpTipoCobranca;
     Property Modulo    : TACBrCalcDigito read fpModulo;
     property TamanhoMaximoNossoNum: Integer    read fpTamanhoMaximoNossoNum;
     property TamanhoAgencia  :Integer read fpTamanhoAgencia;
@@ -304,15 +321,18 @@ type
   private
     fACBrBoleto        : TACBrBoleto;
     fNumeroBanco       : Integer;
+    fTipoCobranca      : TACBrTipoCobranca;
     fBancoClass        : TACBrBancoClass;
     function GetNome   : String;
     function GetDigito : Integer;
+    function GetNumero : Integer;
     function GetTamanhoAgencia: Integer;
     function GetTamanhoCarteira: Integer;
     function GetTamanhoConta: Integer;
     function GetTamanhoMaximoNossoNum : Integer;
     procedure SetDigito(const AValue: Integer);
     procedure SetNome(const AValue: String);
+    procedure SetTipoCobranca(const AValue: TACBrTipoCobranca);
     procedure SetNumero(const AValue: Integer);
   public
     constructor Create( AOwner : TComponent); override;
@@ -343,14 +363,16 @@ type
     function GerarRegistroTransacao240(ACBrTitulo : TACBrTitulo): String;
     function GerarRegistroTrailler400(ARemessa:TStringList): String;
     function GerarRegistroTrailler240(ARemessa:TStringList): String;
+
     procedure LerRetorno400(ARetorno:TStringList);
     procedure LerRetorno240(ARetorno:TStringList);
 
     function CalcularNomeArquivoRemessa : String;
   published
-    property Numero    : Integer        read fNumeroBanco    write SetNumero default 0;
+    property Numero    : Integer        read GetNumero  write SetNumero default 0;
     property Digito    : Integer        read GetDigito  write SetDigito stored false;
     property Nome      : String         read GetNome    write SetNome   stored false;
+    property TipoCobranca : TACBrTipoCobranca read fTipoCobranca   write SetTipoCobranca;
   end;
 
   TACBrResponEmissao = (tbCliEmite,tbBancoEmite,tbBancoReemite,tbBancoNaoReemite);
@@ -694,7 +716,7 @@ implementation
 
 Uses ACBrUtil, ACBrBancoBradesco, ACBrBancoBrasil, ACBrBancoItau, ACBrBancoSicredi,
      ACBrBancoMercantil, ACBrCaixaEconomica, ACBrBancoBanrisul, ACBrBancoSantander,
-     ACBrBancoob, Forms,
+     ACBrBancoob, ACBrCaixaEconomicaSICOB ,Forms,
      {$IFDEF COMPILER6_UP} StrUtils {$ELSE} ACBrD5 {$ENDIF}, Math;
 
 {$IFNDEF FPC}
@@ -1200,12 +1222,17 @@ end ;
 
 function TACBrBanco.GetNome: String;
 begin
-   Result := ACBrStr(fBancoClass.Nome);
+  Result:= ACBrStr(fBancoClass.Nome);
 end;
 
 function TACBrBanco.GetDigito: Integer;
 begin
    Result := fBancoClass.Digito;
+end;
+
+function TACBrBanco.GetNumero: Integer;
+begin
+  Result:=  BancoClass.Numero ;
 end;
 
 function TACBrBanco.GetTamanhoAgencia: Integer;
@@ -1238,9 +1265,34 @@ begin
   {Apenas para aparecer no ObjectInspector do D7}
 end;
 
+procedure TACBrBanco.SetTipoCobranca(const AValue: TACBrTipoCobranca);
+begin
+  if fTipoCobranca = AValue then
+     exit;
+
+  fBancoClass.Free;
+
+  case AValue of
+    cobBancoDoBrasil : fBancoClass := TACBrBancoBrasil.create(Self);         {001}
+    cobSantander     : fBancoClass := TACBrBancoSantander.create(Self);      {033,353,008}
+    cobBanrisul      : fBancoClass := TACBrBanrisul.create(Self);            {041}
+    cobCaixaEconomica: fBancoClass := TACBrCaixaEconomica.create(Self);      {104}
+    cobCaixaSicob    : fBancoClass := TACBrCaixaEconomicaSICOB.create(Self); {104}
+    cobBradesco      : fBancoClass := TACBrBancoBradesco.create(Self);       {237}
+    cobItau          : fBancoClass := TACBrBancoItau.Create(self);           {341}
+    cobBancoMercantil: fBancoClass := TACBrBancoMercantil.create(Self);      {389}
+    cobSicred        : fBancoClass := TACBrBancoSicredi.Create(self);        {748}
+    cobBancoob       : fBancoClass := TACBrBancoob.create(self)              {756}
+  else
+    fBancoClass := TACBrBancoClass.create(Self);
+  end;
+
+   fTipoCobranca := AValue;
+end;
+
 procedure TACBrBanco.SetNumero(const AValue: Integer);
 begin
-   if fNumeroBanco = AValue then
+   {if fNumeroBanco = AValue then
       exit;
 
    fBancoClass.Free;
@@ -1260,7 +1312,7 @@ begin
       fBancoClass := TACBrBancoClass.create(Self);
    end;
 
-   fNumeroBanco := AValue;
+   fNumeroBanco := AValue;}
 end;
 
 function TACBrBanco.TipoOcorrenciaToDescricao( const TipoOcorrencia: TACBrTipoOcorrencia
@@ -1338,12 +1390,12 @@ begin
  Result :=  BancoClass.GerarRegistroTrailler240( ARemessa );
 end;
 
-Procedure TACBrBanco.LerRetorno400 ( ARetorno: TStringList );
+procedure TACBrBanco.LerRetorno400(ARetorno: TStringList);
 begin
    BancoClass.LerRetorno400(ARetorno);
 end;
 
-Procedure TACBrBanco.LerRetorno240 ( ARetorno: TStringList );
+procedure TACBrBanco.LerRetorno240(ARetorno: TStringList);
 begin
    BancoClass.LerRetorno240(ARetorno);
 end;
@@ -1369,6 +1421,8 @@ begin
    fpAOwner := AOwner;
    fpDigito := 0;
    fpNome   := 'Não definido';
+   fpNumero := 0;
+   fpTipoCobranca := cobNenhum;
    fpTamanhoMaximoNossoNum := 10;
    fpTamanhoAgencia        := 4;
    fpTamanhoConta          := 10;

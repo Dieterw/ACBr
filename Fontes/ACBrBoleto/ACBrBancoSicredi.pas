@@ -70,6 +70,7 @@ begin
    inherited create(AOwner);
    fpDigito := 10;
    fpNome   := 'Sicredi';
+   fpNumero:= 748;
    fpTamanhoMaximoNossoNum := 8;
    fpTamanhoAgencia := 4;
    fpTamanhoConta   := 5;

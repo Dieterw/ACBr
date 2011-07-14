@@ -1,8 +1,9 @@
 <?xml version="1.0"?>
 <CONFIG>
-  <Package Version="3">
+  <Package Version="4">
     <PathDelim Value="\"/>
     <Name Value="ACBr_Boleto"/>
+    <AddToProjectUsesSection Value="True"/>
     <Author Value="Daniel Simoes de Almeida"/>
     <CompilerOptions>
       <Version Value="10"/>
@@ -20,7 +21,7 @@
     <Description Value="ACBrBoleto"/>
     <License Value="LGPL"/>
     <Version Minor="1"/>
-    <Files Count="10">
+    <Files Count="11">
       <Item1>
         <Filename Value="..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
         <HasRegisterProc Value="True"/>
@@ -62,6 +63,10 @@
         <Filename Value="..\..\Fontes\ACBrBoleto\ACBrBancoob.pas"/>
         <UnitName Value="ACBrBancoob"/>
       </Item10>
+      <Item11>
+        <Filename Value="..\..\Fontes\ACBrBoleto\ACBrCaixaEconomicaSICOB.pas"/>
+        <UnitName Value="ACBrCaixaEconomicaSICOB"/>
+      </Item11>
     </Files>
     <Type Value="RunAndDesignTime"/>
     <RequiredPkgs Count="2">

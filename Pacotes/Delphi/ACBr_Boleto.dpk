@@ -43,6 +43,7 @@ contains
   ACBrBancoBanrisul in '..\..\Fontes\ACBrBoleto\ACBrBancoBanrisul.pas',
   ACBrBancoob in '..\..\Fontes\ACBrBoleto\ACBrBancoob.pas',
   ACBrBancoMercantil in '..\..\Fontes\ACBrBoleto\ACBrBancoMercantil.pas',
-  ACBrBancoSantander in '..\..\Fontes\ACBrBoleto\ACBrBancoSantander.pas';
+  ACBrBancoSantander in '..\..\Fontes\ACBrBoleto\ACBrBancoSantander.pas',
+  ACBrCaixaEconomicaSICOB in '..\..\Fontes\ACBrBoleto\ACBrCaixaEconomicaSICOB.pas';
 
 end.

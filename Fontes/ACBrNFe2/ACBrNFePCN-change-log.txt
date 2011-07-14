@@ -47,6 +47,14 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+
+Alterações   14/07/2011
+---------------
+[+] Incluído recurso para imprimir informações do FISCO no respectivo quadro e não no quadro informaçõs complementares (juaumkiko)
+    Para usar o recurso basta descomentar as linhas: 1247 e 1248 do arquivo ACBrNFeDANFeRaveDM.pas e compilar o projeto ou monitor novamente
+    Não esqueça de atualizar os arquivos .RAV
+    IMPORTANTE: Esse recurso deverá ser utilizado por sua conta e risco, pois isso esta em desacordo com o que orienta o MANUAL DE INTEGRAÇÃO
+
 Alterações   07/06/2011
 ---------------
 [-] Ajustado vazamento de memoria no arquivo ACBrNFeWebservices (NFeRetorno.Free) - juaumkiko

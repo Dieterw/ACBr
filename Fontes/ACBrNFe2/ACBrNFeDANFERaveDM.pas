@@ -1175,6 +1175,7 @@ procedure TdmACBrNFeRave.CustomInformacoesAdicionaisCXNGetCols(
 begin
   Connection.WriteField('OBS', dtMemo,6900,'','');
   Connection.WriteField('LinhasOBS', dtInteger,0,'','');
+  Connection.WriteField('OBSFisco', dtMemo,6900,'','');
 end;
 
 procedure TdmACBrNFeRave.CustomInformacoesAdicionaisCXNGetRow(
@@ -1208,21 +1209,24 @@ procedure TdmACBrNFeRave.CustomInformacoesAdicionaisCXNGetRow(
    end;
 var
   i: Integer;
-  vTemp: TStringList;
-  IndexCampo:Integer;
-  Campos: ArrOfStr;
+  vTemp, vTempFisco: TStringList;
+  IndexCampo, IndexCampoFisco:Integer;
+  Campos, CamposFisco: ArrOfStr;
   {$IFDEF UNICODE}
   BufferInfCpl: PWideChar;
+  BufferInfFisco: PWideChar;
   {$ELSE}
   BufferInfCpl: PAnsiChar;
+  BufferInfFisco: PAnsiChar;
   {$ENDIF}
-  size: integer;
-  TmpStr: String;
+  size, sizeFisco: integer;
+  TmpStr, TmpStrFisco: String;
   wContingencia: string;
-  wObs:string;
+  wObs,wObsFisco:string;
   wLinhasObs: integer;
 begin
   wLinhasObs := 0;
+  wObsFisco:='';
   with FNFe.InfAdic do
   begin
     TmpStr:='';
@@ -1236,6 +1240,12 @@ begin
     end;
     wObs:=TmpStr+InfAdFisco;
     TmpStr:='';
+
+    (*DESCOMENTE AS DUAS LINHAS A SEGUIR PARA IMPRIMIR O FISCO NO SEU
+      RESPECTIVO CAMPO
+      USE POR SUA CONTA E RISCO POIS ISSO NÃO ESTA PREVISTO NO MANUAL DE INTEGRAÇÃO*)
+    //wObsFisco:=wObs;
+    //wObs:='';
 
     //Inf. Complementar
     if (Length(InfCpl)=0) then
@@ -1270,7 +1280,9 @@ begin
     wObs:=wObs+wContingencia;
 
     vTemp := TStringList.Create;
+    vTempFisco := TStringList.Create;
     try
+      //Inf. Complementar
       if (trim(wObs) <> '') then
       begin
          Campos := explode(';',wObs);
@@ -1292,10 +1304,34 @@ begin
          Size:=0;
          BufferInfCpl:=#0;
       end;
+
+      //Fisco
+      if (trim(wObsFisco) <> '') then
+      begin
+         CamposFisco := explode(';',wObsFisco);
+         for indexCampoFisco:=0 to Length(CamposFisco)-1 do
+            vTempFisco.Add(CamposFisco[indexCampoFisco]);
+         TmpStrFisco := vTempFisco.Text;
+         {$IFDEF UNICODE} //Igual ou Superior ao Delphi2009
+            SizeFisco := Length(TmpStrFisco) * 2;
+            BufferInfFisco := PWideChar(TmpStrFisco);
+         {$ELSE}
+            SizeFisco := Length(TmpStrFisco);
+            BufferInfFisco := PAnsiChar(TmpStrFisco);
+         {$ENDIF}
+         //BufferInfCpl:=PAnsiChar(TmpStr);
+      end
+      else
+      begin
+         SizeFisco:=0;
+         BufferInfFisco:=#0;
+      end;
       Connection.WriteBlobData(BufferInfCpl^, Size);
       Connection.WriteIntData('', wLinhasObs);
+      Connection.WriteBlobData(BufferInfFisco^, SizeFisco);
     finally
       vTemp.Free;
+      vTempFisco.Free;
     end;
   end;
 end;

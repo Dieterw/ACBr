@@ -199,8 +199,11 @@ end;
 procedure TfrmDemo.btnIncluiBoletoClick ( Sender: TObject ) ;
 var
   Titulo : TACBrTitulo;
+  teste: String;
+  teste2: String;
 begin
      Titulo := ACBrBoleto1.CriarTituloNaLista;
+     teste2 := edtCarteira.Text;
 
      with Titulo do
      begin
@@ -214,7 +217,7 @@ begin
            Aceite := atNao;
         DataProcessamento := Now;
         NossoNumero       := padR(edtNossoNro.Text,ACBrBoleto.Banco.TamanhoMaximoNossoNum);
-        Carteira          := edtCarteira.Text;
+        Carteira          :=  teste2; //edtCarteira.Text;
         ValorDocumento    := StrToCurr(edtValorDoc.Text);
         Sacado.NomeSacado := edtNome.Text;
         Sacado.CNPJCPF    := RemoveStrings(edtCPFCNPJ.Text,AString);
@@ -235,11 +238,14 @@ begin
         DataProtesto      := edtDataProtesto.Date;
         PercentualMulta   := StrToCurrDef(edtMulta.Text,0);
         Mensagem.Text     := memMensagem.Text;
-        OcorrenciaOriginal.Tipo  := toRemessaBaixar;
+        OcorrenciaOriginal.Tipo  := toRemessaRegistrar;
         Instrucao1        := padL(trim(edtInstrucoes1.Text),2,'0');
         Instrucao2        := padL(trim(edtInstrucoes2.Text),2,'0');
-        Parcela := 2;
-        TotalParcelas := 1;
+        {Parcela := 1;
+        TotalParcelas := 1};
+
+        teste2:= edtCarteira.Text;
+        teste:= Carteira;
 
        // ACBrBoleto1.AdicionarMensagensPadroes(Titulo,Mensagem);
      end;

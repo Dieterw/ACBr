@@ -1,14 +1,14 @@
 object frmDemo: TfrmDemo
-  Left = 276
-  Height = 595
-  Top = 127
+  Left = 181
+  Height = 619
+  Top = 35
   Width = 813
   Caption = 'Demo ACBrBoleto'
-  ClientHeight = 595
+  ClientHeight = 619
   ClientWidth = 813
   OnCreate = FormCreate
   Position = poScreenCenter
-  LCLVersion = '0.9.29'
+  LCLVersion = '0.9.31'
   object GroupBox2: TGroupBox
     Left = 6
     Height = 72
@@ -182,7 +182,7 @@ object frmDemo: TfrmDemo
   object Panel2: TPanel
     Left = 0
     Height = 50
-    Top = 545
+    Top = 569
     Width = 813
     Align = alBottom
     ClientHeight = 50
@@ -897,11 +897,12 @@ object frmDemo: TfrmDemo
   end
   object ACBrBoleto1: TACBrBoleto
     Cedente.Nome = 'TodaObra Materias p/ Construcao'
-    Cedente.CodigoCedente = '000193'
-    Cedente.Agencia = '0741'
-    Cedente.AgenciaDigito = '2'
-    Cedente.Conta = '1934'
+    Cedente.CodigoCedente = '403005'
+    Cedente.Agencia = '1172'
+    Cedente.AgenciaDigito = '0'
+    Cedente.Conta = '0000403005'
     Cedente.ContaDigito = '5'
+    Cedente.CNPJCPF = '87864237000137'
     Cedente.TipoInscricao = pOutras
     Cedente.Logradouro = 'Rua  XI de Agosto'
     Cedente.NumeroRes = '100'
@@ -909,16 +910,17 @@ object frmDemo: TfrmDemo
     Cedente.Cidade = 'Tatui'
     Cedente.UF = 'SP'
     Cedente.CEP = '18270000'
-    Banco.Numero = 41
-    NomeArqRemessa = '.'
-    LayoutRemessa = c240
+    Banco.Numero = 237
+    Banco.TipoCobranca = cobBradesco
+    NumeroArquivo = 0
+    DataArquivo = 0
+    DataCreditoLanc = 0
     ComprovanteEntrega = True
-    ACBrBoletoFC = ACBrBoletoFCLazReport1
+    ACBrBoletoFC = ACBrBoletoFCFortes1
     left = 200
     top = 264
   end
   object ACBrBoletoFCLazReport1: TACBrBoletoFCLazReport
-    ACBrBoleto = ACBrBoleto1
     DirLogo = '..\..\..\Fontes\ACBrBoleto\Logos\Colorido'
     NomeArquivo = 'boleto'
     SoftwareHouse = 'Projeto ACBr - http://acbr.sf.net'
@@ -926,6 +928,8 @@ object frmDemo: TfrmDemo
     top = 264
   end
   object ACBrBoletoFCFortes1: TACBrBoletoFCFortes
+    ACBrBoleto = ACBrBoleto1
+    LayOut = lCarne
     DirLogo = '..\..\..\Fontes\ACBrBoleto\Logos\Colorido'
     SoftwareHouse = 'Projeto ACBr - http://acbr.sf.net'
     left = 80

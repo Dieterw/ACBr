@@ -51,15 +51,15 @@
         <PackageName Value="LCL"/>
       </Item5>
     </RequiredPackages>
-    <Units Count="98">
+    <Units Count="105">
       <Unit0>
         <Filename Value="AcbrBoletoDemo.lpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="AcbrBoletoDemo"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
-        <CursorPos X="90" Y="16"/>
-        <UsageCount Value="143"/>
+        <CursorPos X="11" Y="10"/>
+        <UsageCount Value="158"/>
       </Unit0>
       <Unit1>
         <Filename Value="uDemo.pas"/>
@@ -70,9 +70,9 @@
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="76"/>
-        <CursorPos X="17" Y="83"/>
-        <UsageCount Value="143"/>
+        <TopLine Value="226"/>
+        <CursorPos X="57" Y="231"/>
+        <UsageCount Value="158"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit1>
@@ -82,32 +82,29 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ACBrBoletoFCFortesFr"/>
-        <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
-        <CursorPos X="17" Y="5"/>
-        <UsageCount Value="23"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
+        <TopLine Value="722"/>
+        <CursorPos X="1" Y="759"/>
+        <UsageCount Value="25"/>
       </Unit2>
       <Unit3>
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
         <UnitName Value="ACBrBoleto"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="42"/>
-        <CursorPos X="31" Y="60"/>
-        <UsageCount Value="54"/>
+        <TopLine Value="701"/>
+        <CursorPos X="31" Y="719"/>
+        <UsageCount Value="62"/>
         <Loaded Value="True"/>
       </Unit3>
       <Unit4>
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBancoBradesco.pas"/>
         <UnitName Value="ACBrBancoBradesco"/>
-        <EditorIndex Value="4"/>
+        <EditorIndex Value="11"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="330"/>
-        <CursorPos X="28" Y="340"/>
-        <UsageCount Value="38"/>
+        <TopLine Value="74"/>
+        <CursorPos X="9" Y="78"/>
+        <UsageCount Value="41"/>
         <Loaded Value="True"/>
       </Unit4>
       <Unit5>
@@ -455,27 +452,29 @@
         <Filename Value="..\..\..\Fontes\ACBrDiversos\ACBrValidador.pas"/>
         <UnitName Value="ACBrValidador"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="305"/>
-        <CursorPos X="3" Y="307"/>
-        <UsageCount Value="20"/>
+        <TopLine Value="1209"/>
+        <CursorPos X="1" Y="1225"/>
+        <UsageCount Value="22"/>
       </Unit47>
       <Unit48>
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBancoBrasil.pas"/>
         <UnitName Value="ACBrBancoBrasil"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="10"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="225"/>
-        <CursorPos X="28" Y="246"/>
-        <UsageCount Value="11"/>
+        <TopLine Value="69"/>
+        <CursorPos X="26" Y="73"/>
+        <UsageCount Value="12"/>
         <Loaded Value="True"/>
       </Unit48>
       <Unit49>
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBancoItau.pas"/>
         <UnitName Value="ACBrBancoItau"/>
+        <EditorIndex Value="9"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="148"/>
-        <CursorPos X="39" Y="152"/>
-        <UsageCount Value="9"/>
+        <TopLine Value="72"/>
+        <CursorPos X="4" Y="76"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
       </Unit49>
       <Unit50>
         <Filename Value="C:\Users\JULIANA TAMIZOU\Downloads\ACBrBoletoItau\ACBrBoleto.pas"/>
@@ -538,10 +537,12 @@
       <Unit57>
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBancoMercantil.pas"/>
         <UnitName Value="ACBrBancoMercantil"/>
+        <EditorIndex Value="7"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="240"/>
-        <CursorPos X="4" Y="183"/>
-        <UsageCount Value="15"/>
+        <TopLine Value="69"/>
+        <CursorPos X="4" Y="73"/>
+        <UsageCount Value="16"/>
+        <Loaded Value="True"/>
       </Unit57>
       <Unit58>
         <Filename Value="C:\temp\Boletos\freeboleto\uFreeBoleto.pas"/>
@@ -554,8 +555,8 @@
       <Unit59>
         <Filename Value="uDemo.lfm"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
-        <CursorPos X="1" Y="1"/>
+        <TopLine Value="919"/>
+        <CursorPos X="1" Y="917"/>
         <UsageCount Value="10"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit59>
@@ -619,10 +620,12 @@
       <Unit67>
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrCaixaEconomica.pas"/>
         <UnitName Value="ACBrCaixaEconomica"/>
+        <EditorIndex Value="6"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="423"/>
-        <CursorPos X="109" Y="440"/>
-        <UsageCount Value="10"/>
+        <TopLine Value="72"/>
+        <CursorPos X="4" Y="76"/>
+        <UsageCount Value="16"/>
+        <Loaded Value="True"/>
       </Unit67>
       <Unit68>
         <Filename Value="C:\Users\JULIANA TAMIZOU\Downloads\ACBrBoleto\ACBrBoleto.pas"/>
@@ -715,13 +718,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
         <UnitName Value="ACBrBoletoFCLazReportDm"/>
-        <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
         <TopLine Value="30"/>
         <CursorPos X="9" Y="48"/>
-        <UsageCount Value="14"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
+        <UsageCount Value="15"/>
       </Unit78>
       <Unit79>
         <Filename Value="..\..\..\Pacotes\Lazarus\ACBr_PAF.pas"/>
@@ -871,132 +871,141 @@
         <CursorPos X="24" Y="1255"/>
         <UsageCount Value="12"/>
       </Unit97>
+      <Unit98>
+        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBancoSicredi.pas"/>
+        <UnitName Value="ACBrBancoSicredi"/>
+        <EditorIndex Value="8"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="68"/>
+        <CursorPos X="4" Y="72"/>
+        <UsageCount Value="12"/>
+        <Loaded Value="True"/>
+      </Unit98>
+      <Unit99>
+        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBancoBanrisul.pas"/>
+        <UnitName Value="ACBrBancoBanrisul"/>
+        <EditorIndex Value="5"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="78"/>
+        <CursorPos X="3" Y="82"/>
+        <UsageCount Value="12"/>
+        <Loaded Value="True"/>
+      </Unit99>
+      <Unit100>
+        <Filename Value="..\..\..\..\..\lazaruan\fortes4lazarus\trunk\rlreport.pas"/>
+        <UnitName Value="RLReport"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="6864"/>
+        <CursorPos X="45" Y="6864"/>
+        <UsageCount Value="11"/>
+      </Unit100>
+      <Unit101>
+        <Filename Value="..\..\..\..\..\lazaruan\TOOLS\DJ_Registro.pas"/>
+        <ComponentName Value="DJRegForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="DJ_Registro"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1768"/>
+        <CursorPos X="51" Y="1783"/>
+        <UsageCount Value="10"/>
+      </Unit101>
+      <Unit102>
+        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBancoob.pas"/>
+        <UnitName Value="ACBrBancoob"/>
+        <EditorIndex Value="3"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="71"/>
+        <CursorPos X="4" Y="75"/>
+        <UsageCount Value="11"/>
+        <Loaded Value="True"/>
+      </Unit102>
+      <Unit103>
+        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBancoSantander.pas"/>
+        <UnitName Value="ACBrBancoSantander"/>
+        <EditorIndex Value="4"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="75"/>
+        <CursorPos X="4" Y="79"/>
+        <UsageCount Value="11"/>
+        <Loaded Value="True"/>
+      </Unit103>
+      <Unit104>
+        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrCaixaEconomicaSICOB.pas"/>
+        <UnitName Value="ACBrCaixaEconomicaSICOB"/>
+        <EditorIndex Value="2"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="80"/>
+        <CursorPos X="4" Y="84"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit104>
     </Units>
-    <JumpHistory Count="30" HistoryIndex="29">
+    <JumpHistory Count="15" HistoryIndex="14">
       <Position1>
-        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
-        <Caret Line="51" Column="5" TopLine="33"/>
+        <Filename Value="uDemo.pas"/>
+        <Caret Line="147" Column="79" TopLine="137"/>
       </Position1>
       <Position2>
-        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
-        <Caret Line="624" Column="39" TopLine="606"/>
+        <Filename Value="uDemo.pas"/>
+        <Caret Line="18" Column="23" TopLine="8"/>
       </Position2>
       <Position3>
-        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBancoBrasil.pas"/>
-        <Caret Line="15" Column="27" TopLine="1"/>
+        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
+        <Caret Line="596" Column="1" TopLine="244"/>
       </Position3>
       <Position4>
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
-        <Caret Line="105" Column="21" TopLine="100"/>
+        <Caret Line="716" Column="24" TopLine="700"/>
       </Position4>
       <Position5>
-        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
-        <Caret Line="435" Column="10" TopLine="417"/>
+        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBancoBradesco.pas"/>
+        <Caret Line="78" Column="9" TopLine="74"/>
       </Position5>
       <Position6>
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
-        <Caret Line="489" Column="72" TopLine="471"/>
+        <Caret Line="371" Column="55" TopLine="361"/>
       </Position6>
       <Position7>
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
-        <Caret Line="784" Column="8" TopLine="766"/>
+        <Caret Line="372" Column="51" TopLine="361"/>
       </Position7>
       <Position8>
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
-        <Caret Line="822" Column="47" TopLine="804"/>
+        <Caret Line="328" Column="17" TopLine="317"/>
       </Position8>
       <Position9>
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Caret Line="1235" Column="30" TopLine="1233"/>
       </Position9>
       <Position10>
-        <Filename Value="uDemo.pas"/>
-        <Caret Line="9" Column="64" TopLine="1"/>
+        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position10>
       <Position11>
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
-        <Caret Line="47" Column="41" TopLine="42"/>
+        <Caret Line="51" Column="5" TopLine="35"/>
       </Position11>
       <Position12>
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
-        <Caret Line="153" Column="52" TopLine="142"/>
+        <Caret Line="717" Column="71" TopLine="701"/>
       </Position12>
       <Position13>
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Caret Line="718" Column="70" TopLine="701"/>
       </Position13>
       <Position14>
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
-        <Caret Line="140" Column="52" TopLine="122"/>
+        <Caret Line="719" Column="31" TopLine="701"/>
       </Position14>
       <Position15>
-        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBancoBradesco.pas"/>
-        <Caret Line="300" Column="14" TopLine="295"/>
+        <Filename Value="uDemo.pas"/>
+        <Caret Line="18" Column="23" TopLine="92"/>
       </Position15>
-      <Position16>
-        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBancoBradesco.pas"/>
-        <Caret Line="340" Column="28" TopLine="330"/>
-      </Position16>
-      <Position17>
-        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
-        <Caret Line="526" Column="37" TopLine="520"/>
-      </Position17>
-      <Position18>
-        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
-        <Caret Line="1129" Column="25" TopLine="1119"/>
-      </Position18>
-      <Position19>
-        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
-      </Position19>
-      <Position20>
-        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
-        <Caret Line="51" Column="5" TopLine="33"/>
-      </Position20>
-      <Position21>
-        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
-        <Caret Line="668" Column="63" TopLine="649"/>
-      </Position21>
-      <Position22>
-        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
-        <Caret Line="694" Column="42" TopLine="691"/>
-      </Position22>
-      <Position23>
-        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
-        <Caret Line="723" Column="32" TopLine="705"/>
-      </Position23>
-      <Position24>
-        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
-      </Position24>
-      <Position25>
-        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
-        <Caret Line="1151" Column="36" TopLine="1144"/>
-      </Position25>
-      <Position26>
-        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
-      </Position26>
-      <Position27>
-        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
-        <Caret Line="11" Column="35" TopLine="1"/>
-      </Position27>
-      <Position28>
-        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
-        <Caret Line="16" Column="41" TopLine="1"/>
-      </Position28>
-      <Position29>
-        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
-        <Caret Line="17" Column="16" TopLine="1"/>
-      </Position29>
-      <Position30>
-        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
-        <Caret Line="42" Column="20" TopLine="24"/>
-      </Position30>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>
-    <Version Value="9"/>
+    <Version Value="10"/>
     <PathDelim Value="\"/>
     <Target>
       <Filename Value="AcbrBoletoDemo"/>
@@ -1017,6 +1026,13 @@
     </Other>
   </CompilerOptions>
   <Debugging>
+    <BreakPoints Count="1">
+      <Item1>
+        <Kind Value="bpkSource"/>
+        <Source Value="..\..\..\Fontes\ACBrBoleto\ACBrBoletoFCFortesFr.pas"/>
+        <Line Value="637"/>
+      </Item1>
+    </BreakPoints>
     <Exceptions Count="8">
       <Item1>
         <Name Value="EAbort"/>

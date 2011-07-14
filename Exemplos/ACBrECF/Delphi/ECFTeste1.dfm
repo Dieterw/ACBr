@@ -989,7 +989,7 @@ object Form1: TForm1
       end
       object Button2: TButton
         Left = 59
-        Top = 3
+        Top = -17
         Width = 108
         Height = 25
         Anchors = [akLeft, akBottom]
@@ -1001,7 +1001,7 @@ object Form1: TForm1
         Left = 3
         Top = 34
         Width = 580
-        Height = 265
+        Height = 245
         Anchors = [akLeft, akTop, akRight, akBottom]
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -1859,6 +1859,10 @@ object Form1: TForm1
           Caption = 'Relatorio Gerencial Completo'
           OnClick = ListaRelatorioGerencial1Click
         end
+        object RelatorioGerencialcomformatacao1: TMenuItem
+          Caption = 'Relatorio Gerencial com formatacao'
+          OnClick = RelatorioGerencialcomformatacao1Click
+        end
         object N17: TMenuItem
           Caption = '-'
         end
@@ -2267,6 +2271,9 @@ object Form1: TForm1
       'HTML_Font=<font size="5" face="Lucida Console">')
     OnBobinaAdicionaLinhas = ACBrECF1BobinaAdicionaLinhas
     ArqLOG = 'acbrlog.txt'
+    ConfigBarras.MostrarCodigo = True
+    ConfigBarras.LarguraLinha = 3
+    ConfigBarras.Altura = 10
     Left = 128
     Top = 317
   end

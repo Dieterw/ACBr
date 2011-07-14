@@ -158,7 +158,7 @@ interface
 uses ACBrECFClass, ACBrDevice, ACBrUtil,
      Classes ;
 
-const  NUL = #00 ;
+const  NUL = #00  ;
        ENQ = #05  ;
        ACK = #06  ;
        BELL= #07  ;
@@ -169,6 +169,9 @@ const  NUL = #00 ;
        FS  = #28  ;
        GS  = #29  ;
        FF  = #255 ;
+       SI  = #15  ;
+       DC2 = #18  ;
+
        ARQ_MFD_DLL = 'Espelho_MFD.txt';
 
   {$IFDEF LINUX}
@@ -176,6 +179,7 @@ const  NUL = #00 ;
   {$ELSE}
    cLIB_Daruma = 'DarumaFrameWork.dll';
   {$ENDIF}
+
 type
 
 { Tipo enumerado para separar os modelos daruma }
@@ -295,7 +299,6 @@ TACBrECFDaruma = class( TACBrECFClass )
     function VerificaFimImpressao(var TempoLimite: TDateTime) : Boolean ; override ;
 
     function ErroEstendidoTexto(AErro: integer): string;
-
  public
     Constructor create( AOwner : TComponent  )  ;
     Destructor Destroy  ; override ;
@@ -437,10 +440,12 @@ TACBrECFDaruma = class( TACBrECFClass )
       const APathArquivo: AnsiString;
       const AAlinhamento: TACBrAlinhamento = alCentro); override;
 
+    function GetFormatacao(const ATag: string): AnsiString; override;
+
  end ;
 
 implementation
-Uses SysUtils, ACBrECF, Graphics,
+Uses SysUtils, ACBrECF, ACBrConsts, Graphics,
     {$IFDEF COMPILER6_UP} DateUtils, StrUtils {$ELSE} ACBrD5, Windows{$ENDIF},
     Math ;
 
@@ -4895,16 +4900,6 @@ procedure TACBrECFDaruma.ProgramarBitmapPromocional(const AIndice: Integer;
 var
   Posicao: String;
   Indice: String;
-  Tamanho: Integer;
-  Comando: AnsiString;
-  BmpCod: AnsiString;
-  Arquivo: TMemoryStream;
-  Imagem: TBitmap;
-  I: Integer;
-  Buffer: Byte;
-  BMaisHoriz: Byte;
-  BMaisVert: Byte;
-
   Resp: Integer;
   OldAtivo: Boolean;
 begin
@@ -4950,6 +4945,104 @@ end;
 procedure TACBrECFDaruma.SegundaViaVinculado;
 begin
   EnviaComando( FS + 'F' + #216);
+end;
+
+function TACBrECFDaruma.GetFormatacao(const ATag: string): AnsiString;
+const
+  C_ON  = #1;
+  C_OFF = #0;
+
+  // <e></e>
+  cExpandidoOn   = ESC + 'W' + C_ON;
+  cExpandidoOff  = ESC + 'W' + C_OFF;
+
+  // <n></n>
+  cNegritoOn     = ESC + 'G' + C_ON;
+  cNegritoOff    = ESC + 'G' + C_OFF;
+
+  // <s></s>
+  cSublinhadoOn  = ESC + '-' + C_ON;
+  cSublinhadoOff = ESC + '-' + C_OFF;
+
+  // <c></c>
+  cCondensadoOn  = SI;
+  cCondensadoOff = DC2;
+
+  // bAABCCDDEEEEEEEEEEEEE..EE
+  // --------
+  // b = Comando para impressão das barras
+  // A = Tipo de codigo FIXO
+  // B = Largura 1..5
+  // C = Altura 50..200
+  // D = imprimir ou não codigo abaixo da barra
+  //     00 - Não imprime
+  //     01 - Imprime
+  // E = Codigo de barra
+  // termina o comando com null
+  cEAN8     = ESC + 'b02'; // <ean8></ean8>
+  cEAN13    = ESC + 'b01'; // <ean13></ean13>
+  cSTD25    = ESC + 'b03'; // <std></std>
+  cINTER25  = ESC + 'b04'; // <inter></inter>
+  cCODE11   = ESC + 'b11'; // <code11></code11>
+  cCODE39   = ESC + 'b06'; // <code39></code39>
+  cCODE93   = ESC + 'b07'; // <code93></code93>
+  cCODE128  = ESC + 'b05'; // <code128></code128>
+  cUPCA     = ESC + 'b08'; // <upca></upca>
+  cCODABAR  = ESC + 'b09'; // <codabar></codabar>
+  cMSI      = ESC + 'b10'; // <msi></msi>
+  cBarraFim = NUL;
+
+  function ConfigurarBarras(const ACodigo: AnsiString): AnsiString;
+  var
+    Largura: AnsiString;
+    Altura: AnsiString;
+    Mostrar: AnsiString;
+  begin
+    Largura := IntToStrZero(ConfigBarras.LarguraLinha, 1);
+    Altura  := IntToStrZero(ConfigBarras.Altura, 2);
+
+    if ConfigBarras.MostrarCodigo then
+      Mostrar := '01'
+    else
+      Mostrar := '00';
+
+    Result := ACodigo + Largura + Altura + Mostrar;
+  end;
+begin
+
+  case AnsiIndexText(AnsiLowerCase(ATag), ARRAY_TAGS) of
+     0: Result := cExpandidoOn;
+     1: Result := cExpandidoOff;
+     2: Result := cNegritoOn;
+     3: Result := cNegritoOff;
+     4: Result := cSublinhadoOn;
+     5: Result := cSublinhadoOff;
+     6: Result := cCondensadoOn;
+     7: Result := cCondensadoOff;
+     8: Result := ConfigurarBarras(cEAN8);
+     9: Result := cBarraFim;
+    10: Result := ConfigurarBarras(cEAN13);
+    11: Result := cBarraFim;
+    12: Result := ConfigurarBarras(cSTD25);
+    13: Result := cBarraFim;
+    14: Result := ConfigurarBarras(cINTER25);
+    15: Result := cBarraFim;
+    16: Result := ConfigurarBarras(cCODE11);
+    17: Result := cBarraFim;
+    18: Result := ConfigurarBarras(cCODE39);
+    19: Result := cBarraFim;
+    20: Result := ConfigurarBarras(cCODE93);
+    21: Result := cBarraFim;
+    22: Result := ConfigurarBarras(cCODE128);
+    23: Result := cBarraFim;
+    24: Result := ConfigurarBarras(cUPCA);
+    25: Result := cBarraFim;
+    26: Result := ConfigurarBarras(cCODABAR);
+    27: Result := cBarraFim;
+    28: Result := ConfigurarBarras(cMSI);
+    29: Result := cBarraFim;
+  end;
+
 end;
 
 end.

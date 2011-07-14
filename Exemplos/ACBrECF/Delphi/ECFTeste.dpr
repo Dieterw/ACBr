@@ -7,7 +7,8 @@ uses
   Relatorio in 'Relatorio.pas' {frRelatorio},
   EfetuaPagamento in 'EfetuaPagamento.pas' {frPagamento},
   Sobre in 'Sobre.pas' {frSobre},
-  ConfiguraSerial in 'ConfiguraSerial.pas' {frConfiguraSerial};
+  ConfiguraSerial in 'ConfiguraSerial.pas' {frConfiguraSerial},
+  RelatorioGerencialFormatado in 'RelatorioGerencialFormatado.pas' {frmGerencialFormatado};
 
 {$R *.res}
 

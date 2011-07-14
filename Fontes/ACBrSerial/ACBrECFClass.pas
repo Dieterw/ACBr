@@ -410,6 +410,17 @@ TACBrECFDadosRZ = class
     property TotalTroco: double read fsTotalTroco write fsTotalTroco;
   end;
 
+TACBrECFConfigBarras = class(TPersistent)
+  private
+    FMostrarCodigo: Boolean;
+    FAltura: Integer;
+    FLarguraLinha: Integer;
+  published
+    property MostrarCodigo: Boolean read FMostrarCodigo write FMostrarCodigo;
+    property LarguraLinha: Integer read FLarguraLinha write FLarguraLinha;
+    property Altura: Integer read FAltura write FAltura;
+end;
+
 { Evento para o usuário exibir os erros encontrados pela classe TACBrECFClass.
   Se o evento OnMsgErro NAO for programado a Classe TACBrECFClass exibirá as
   Msg de erro através de Exceçoes. Se o evento OnMsgErro for programado a Classe
@@ -438,7 +449,7 @@ TACBrFormMsgEstado = (fmsNenhum, fmsProcessando, fmsConcluido, fmsAbortado) ;
 { Nota sobre procimentos e funções VIRTUAL. Essas funçoes/procedimentos PODEM
   ou NAO ser implementados nas Classes filhas com a clausula OVERRIDE. Se não
   forem implementadas nas classes filhas, a funçao/procedimento definida aqui
-  nessa classe (TACBrECFClass) e que será execuada }
+  nessa classe (TACBrECFClass) e que será executada }
 
 { TACBrECFClass }
 
@@ -647,6 +658,8 @@ TACBrECFClass = class
 
     procedure ImprimirLinhaALinha( Texto, Cmd : AnsiString ) ;
     procedure GravaLog(AString: AnsiString; Traduz :Boolean = False);
+
+    function ConfigBarras: TACBrECFConfigBarras;
  public
     Constructor create( AOwner : TComponent ) ;
     Destructor Destroy  ; override ;
@@ -1011,6 +1024,8 @@ TACBrECFClass = class
     procedure ProgramarBitmapPromocional(const AIndice: Integer;
       const APathArquivo: AnsiString;
       const AAlinhamento: TACBrAlinhamento = alCentro); virtual;
+
+    function GetFormatacao(const ATag: String): AnsiString; virtual;
 end ;
 
 implementation
@@ -1496,7 +1511,6 @@ begin
   end ;
 end;
 
-
 function TACBrECFClass.EnviaComando(cmd: AnsiString = ''): AnsiString;
 begin
   try
@@ -1513,7 +1527,7 @@ begin
        AguardandoResposta := True ;
        try
           GravaLog('-- '+FormatDateTime('hh:nn:ss',now)+' '+fpComandoLOG,True );
-          Result := EnviaComando_ECF( Cmd ) ;
+          Result := EnviaComando_ECF( Cmd  ) ;
        finally
           GravaLog('            TX -> '+fpComandoEnviado, True);
           GravaLog('   '+FormatDateTime('hh:nn:ss',now)+' RX <- '+fpRespostaComando, True);
@@ -2056,6 +2070,11 @@ end;
 function TACBrECFClass.GetChequePronto: Boolean;
 begin
   result := True ;
+end;
+
+function TACBrECFClass.ConfigBarras: TACBrECFConfigBarras;
+begin
+  Result := TACBrECF(fpOwner).ConfigBarras;
 end;
 
 procedure TACBrECFClass.CorrigeEstadoErro( Reducao: Boolean );
@@ -3360,7 +3379,6 @@ begin
   Result := fsEnviado or (not Adicionado) ;
 end;
 
-
 procedure TACBrECFClass.ListaRelatorioGerencial(Relatorio: TStrings;
   Vias: Integer; Indice: Integer);
 Var
@@ -3371,30 +3389,31 @@ begin
 
   while Imp < Vias do
   begin
-     try
-        Texto := Format(MsgRelatorio,['Relatório Gerêncial',Imp+1 ]) ;
-     except
-        Texto := MsgRelatorio ;
-     end ;
+    try
+      Texto := Format(MsgRelatorio,['Relatório Gerêncial',Imp+1 ]) ;
+    except
+      Texto := MsgRelatorio ;
+    end ;
 
-     {$IFNDEF CONSOLE}
-       FormMsgPinta( Texto );
-     {$ENDIF}
+    {$IFNDEF CONSOLE}
+      FormMsgPinta( Texto );
+    {$ENDIF}
 
-     TACBrECF(fpOwner).LinhaRelatorioGerencial( Relatorio.Text ) ;
+    TACBrECF(fpOwner).LinhaRelatorioGerencial( Relatorio.Text ) ;
 
-     Inc(Imp) ;
-     if Imp < Vias then
-     begin
-        TACBrECF(fpOwner).PulaLinhas ;
-        TACBrECF(fpOwner).CortaPapel ;
-        PausarRelatorio( Imp ) ;
-     end ;
+    Inc(Imp) ;
+    if Imp < Vias then
+    begin
+      TACBrECF(fpOwner).PulaLinhas ;
+      TACBrECF(fpOwner).CortaPapel ;
+      PausarRelatorio( Imp ) ;
+    end ;
   end ;
 
   {$IFNDEF CONSOLE}
     FormMsgPinta( cACBrECFFechandoRelatorioGerencial );
   {$ENDIF}
+
   TACBrECF(fpOwner).FechaRelatorio ;
 end;
 
@@ -3751,6 +3770,36 @@ procedure TACBrECFClass.ProgramarBitmapPromocional(const AIndice: Integer;
   const APathArquivo: AnsiString; const AAlinhamento: TACBrAlinhamento);
 begin
   ErroAbstract('ProgramarBitmapPromocional');
+end;
+
+function TACBrECFClass.GetFormatacao(const ATag: String): AnsiString;
+begin
+  {*************************************************
+
+    TAGS ACEITAS
+    ============
+      <e></e>             - Expandido
+      <n></n>             - Negrito
+      <s></s>             - Sublinhado
+      <c></c>             - Condensado
+
+      <ean8></ean8>       - ean 8
+      <ean13></ean13>     - ean 13
+      <std></std>         - standart
+      <inter></inter>     - interleave
+      <code11></code11>   - code 11
+      <code39></code39>   - code 39
+      <code93></code93>   - code 93
+      <code128></code128> - code 128
+      <upca></upca>       - upca
+      <codabar></codabar> - codabar
+      <msi></msi>         - msi
+
+  *************************************************}
+
+  // retornar vazio para que não de problema nas
+  // impressoras que não implementaram ainda
+  Result := EmptyStr;
 end;
 
 { TACBrECFDadosRZ }

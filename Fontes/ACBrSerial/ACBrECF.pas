@@ -177,10 +177,10 @@ TACBrECFOnChangeEstado = procedure( const EstadoAnterior, EstadoAtual :
 { Componente ACBrECF }
 
 { TACBrECF }
-
 TACBrECF = class( TACBrComponent )
   private
     fsDevice : TACBrDevice ;   { SubComponente ACBrDevice }
+    fsConfigBarras: TACBrECFConfigBarras;
 
     { Propriedades do Componente ACBrECF }
     fsAtivo  : Boolean;
@@ -441,6 +441,7 @@ TACBrECF = class( TACBrComponent )
     procedure SetAbout(const AValue: String);
     function GetParamDescontoISSQNClass: Boolean;
     function GetMFAdicional: String;
+    function DecodificarTagFormatacao(cmd: AnsiString): AnsiString;
   protected
     fpUltimoEstadoObtido: TACBrECFEstado;
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
@@ -1026,10 +1027,11 @@ TACBrECF = class( TACBrComponent )
     {$ENDIF}
      { Instancia do Componente ACBrDevice, será passada para fsECF.create }
      property Device : TACBrDevice read fsDevice ;
-     property RFD    : TACBrRFD    read fsRFD write SetRFD ;
-     property AAC    : TACBrAAC    read fsAAC write SetAAC ;
-     property EAD    : TACBrEAD    read fsEAD write SetEAD ;
-     property ArqLOG : String read GetArqLOG write SetArqLOG ;
+     property RFD    : TACBrRFD    read fsRFD     write SetRFD ;
+     property AAC    : TACBrAAC    read fsAAC     write SetAAC ;
+     property EAD    : TACBrEAD    read fsEAD     write SetEAD ;
+     property ArqLOG : String      read GetArqLOG write SetArqLOG ;
+     property ConfigBarras: TACBrECFConfigBarras read fsConfigBarras write fsConfigBarras;
 end ;
 
 implementation
@@ -1128,6 +1130,13 @@ begin
 
   { Instanciando fsDadosReducaoZClass para armazenar dados da redução Z}
   fsDadosReducaoZClass := TACBrECFDadosRZ.Create;
+
+  // configurações de codigos de barras impressos por tags
+  fsConfigBarras := TACBrECFConfigBarras.Create;
+  fsConfigBarras.LarguraLinha := 3;
+  fsConfigBarras.Altura := 10;
+  fsConfigBarras.MostrarCodigo := True;
+
 end;
 
 destructor TACBrECF.Destroy;
@@ -1147,6 +1156,8 @@ begin
     fsFormMsgFont.Free ;
     fsMemoParams.Free ;
   {$ENDIF}
+
+  FreeAndNil(fsConfigBarras);
 
   inherited Destroy;
 end;
@@ -2513,7 +2524,6 @@ begin
   Result := fsECF.Consumidor ;
 end;
 
-
 procedure TACBrECF.CancelaCupom;
   Var Docto     : String ;
       OldEstado : TACBrECFEstado ;
@@ -3084,7 +3094,7 @@ begin
 
   try
     Tratado := False;
-    fsECF.FechaCupom( Observacao, IndiceBMP ) ;
+    fsECF.FechaCupom( DecodificarTagFormatacao( Observacao ), IndiceBMP ) ;
   except
      if Assigned( fOnErrorFechaCupom ) then
         fOnErrorFechaCupom(Tratado);
@@ -4231,6 +4241,44 @@ begin
 
 end;
 
+function TACBrECF.DecodificarTagFormatacao(cmd: AnsiString): AnsiString;
+begin
+  Result := cmd;
+  Result := ReplaceStr(Result, '<e>',        fsECF.GetFormatacao('<e>'));
+  Result := ReplaceStr(Result, '</e>',       fsECF.GetFormatacao('</e>'));
+  Result := ReplaceStr(Result, '<n>',        fsECF.GetFormatacao('<n>'));
+  Result := ReplaceStr(Result, '</n>',       fsECF.GetFormatacao('</n>'));
+  Result := ReplaceStr(Result, '<s>',        fsECF.GetFormatacao('<s>'));
+  Result := ReplaceStr(Result, '</s>',       fsECF.GetFormatacao('</s>'));
+  Result := ReplaceStr(Result, '<c>',        fsECF.GetFormatacao('<c>'));
+  Result := ReplaceStr(Result, '</c>',       fsECF.GetFormatacao('</c>'));
+  Result := ReplaceStr(Result, '<ean8>',     fsECF.GetFormatacao('<ean8>'));
+  Result := ReplaceStr(Result, '</ean8>',    fsECF.GetFormatacao('</ean8>'));
+  Result := ReplaceStr(Result, '<ean13>',    fsECF.GetFormatacao('<ean13>'));
+  Result := ReplaceStr(Result, '</ean13>',   fsECF.GetFormatacao('</ean13>'));
+  Result := ReplaceStr(Result, '<std>',      fsECF.GetFormatacao('<std>'));
+  Result := ReplaceStr(Result, '</std>',     fsECF.GetFormatacao('</std>'));
+  Result := ReplaceStr(Result, '<inter>',    fsECF.GetFormatacao('<inter>'));
+  Result := ReplaceStr(Result, '</inter>',   fsECF.GetFormatacao('</inter>'));
+  Result := ReplaceStr(Result, '<code11>',   fsECF.GetFormatacao('<code11>'));
+  Result := ReplaceStr(Result, '</code11>',  fsECF.GetFormatacao('</code11>'));
+  Result := ReplaceStr(Result, '<code39>',   fsECF.GetFormatacao('<code39>'));
+  Result := ReplaceStr(Result, '</code39>',  fsECF.GetFormatacao('</code39>'));
+  Result := ReplaceStr(Result, '<code93>',   fsECF.GetFormatacao('<code93>'));
+  Result := ReplaceStr(Result, '</code93>',  fsECF.GetFormatacao('</code93>'));
+  Result := ReplaceStr(Result, '<code128>',  fsECF.GetFormatacao('<code128>'));
+  Result := ReplaceStr(Result, '</code128>', fsECF.GetFormatacao('</code128>'));
+  Result := ReplaceStr(Result, '<upca>',     fsECF.GetFormatacao('<upca>'));
+  Result := ReplaceStr(Result, '</upca>',    fsECF.GetFormatacao('</upca>'));
+  Result := ReplaceStr(Result, '<codabar>',  fsECF.GetFormatacao('<codabar>'));
+  Result := ReplaceStr(Result, '</codabar>', fsECF.GetFormatacao('</codabar>'));
+  Result := ReplaceStr(Result, '<msi>',      fsECF.GetFormatacao('<msi>'));
+  Result := ReplaceStr(Result, '</msi>',     fsECF.GetFormatacao('</msi>'));
+
+  Result := ReplaceStr(Result, '</linha_simples>', StringOfChar('-', Colunas));
+  Result := ReplaceStr(Result, '</linha_dupla>',   StringOfChar('=', Colunas));
+end;
+
 procedure TACBrECF.LinhaRelatorioGerencial(const Linha: AnsiString;
   const IndiceBMP: Integer);
 Var
@@ -4244,6 +4292,8 @@ Var
      OldTimeOut : LongInt ;
   begin
      ComandoLOG := 'LinhaRelatorioGerencial( "'+Texto+'", '+IntToStr(IndiceBMP)+' )';
+
+     Texto := DecodificarTagFormatacao( Texto );
      try
         fsECF.LinhaRelatorioGerencial( Texto, IndiceBMP ) ;
      except
@@ -4272,7 +4322,7 @@ begin
   if MaxLinhasBuffer < 1 then
    begin
      ComandoLOG := 'LinhaRelatorioGerencial( "'+Linha+'", '+IntToStr(IndiceBMP)+' )';
-     fsECF.LinhaRelatorioGerencial( Linha, IndiceBMP ) ;
+     fsECF.LinhaRelatorioGerencial( DecodificarTagFormatacao( Linha ), IndiceBMP ) ;
    end
   else
    begin

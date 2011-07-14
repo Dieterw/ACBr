@@ -334,6 +334,7 @@ type
     chkMenuFiscalGerarArquivo: TCheckBox;
     Label31: TLabel;
     btnIdentificaPafECF: TButton;
+    RelatorioGerencialcomformatacao1: TMenuItem;
     procedure cbxModeloChange(Sender: TObject);
     procedure Sair1Click(Sender: TObject);
     procedure bAtivarClick(Sender: TObject);
@@ -525,6 +526,7 @@ type
     procedure btnMenuFiscalRelDAVEmitidosClick(Sender: TObject);
     procedure btnMenuFiscalRelIdentPAFECFClick(Sender: TObject);
     procedure btnIdentificaPafECFClick(Sender: TObject);
+    procedure RelatorioGerencialcomformatacao1Click(Sender: TObject);
   private
     { Private declarations }
     Function Converte( cmd : String) : String;
@@ -556,7 +558,7 @@ implementation
 
 uses ACBrUtil, ACBrECFBematech, VendeItem, EfetuaPagamento,
      Relatorio, Sobre, TypInfo, Math, ActiveX, MSHTML, IniFiles,
-  ConfiguraSerial, ACBrPAFClass;
+  ConfiguraSerial, ACBrPAFClass, RelatorioGerencialFormatado;
 
 {$R *.dfm}
 
@@ -1867,6 +1869,16 @@ procedure TForm1.ListaRelatorioGerencial1Click(Sender: TObject);
 begin
   frRelatorio.TipoRelatorio := 'G' ;
   frRelatorio.ShowModal ;
+end;
+
+procedure TForm1.RelatorioGerencialcomformatacao1Click(Sender: TObject);
+begin
+  frmGerencialFormatado := TfrmGerencialFormatado.Create(Self);
+  try
+    frmGerencialFormatado.ShowModal;
+  finally
+    FreeAndNil(frmGerencialFormatado);
+  end;
 end;
 
 procedure TForm1.ListaCupomVinculado1Click(Sender: TObject);

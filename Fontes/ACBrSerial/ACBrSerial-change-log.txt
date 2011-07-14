@@ -97,6 +97,13 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 14/07/2011
+-- ACBrECFDaruma --
+[+] Formatação de fontes do relatório gerencial e rodapé do cupom fiscal
+    ver no Demo do ACBrECF como utilizar as tags
+    - já funcionando para Daruma
+    (por: Régys Silveira)
+
 Data: 12/07/2011
 -- ACBrECFDaruma --
 [+] Carga do bitmap promocional

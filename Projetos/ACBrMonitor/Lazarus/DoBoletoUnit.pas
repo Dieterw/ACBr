@@ -106,6 +106,8 @@ var
    ContTitulos: Integer;
    NomeSessao: String;
    MudouDados: boolean;
+   NumeroBanco: LongInt;
+   IndiceACBr: LongInt;
 begin
   MudouDados := False;
   IniBoletos := TMemIniFile.Create('boletos.ini');
@@ -196,12 +198,34 @@ begin
         if IniBoletos.SectionExists('Banco') then
         begin
            MudouDados := True;
-           Banco.Numero := IniBoletos.ReadInteger('BANCO','Numero',0);
+
+           NumeroBanco := IniBoletos.ReadInteger('BANCO','Numero',0);
+           IndiceACBr  := IniBoletos.ReadInteger('BANCO','IndiceACBr',0);
+
+           if NumeroBanco > 0 then
+            begin
+              case NumeroBanco of
+                001: Banco.TipoCobranca:= cobBancoDoBrasil;
+                008,033,353: banco.TipoCobranca:= cobSantander;
+                041: Banco.TipoCobranca:= cobBanrisul;
+                104: Banco.TipoCobranca:= cobCaixaEconomica;
+                237: Banco.TipoCobranca:= cobBradesco;
+                341: Banco.TipoCobranca:= cobItau;
+                389: Banco.TipoCobranca:= cobBancoMercantil;
+                748: Banco.TipoCobranca:= cobSicred;
+                756: Banco.TipoCobranca:= cobBancoob;
+              end;
+            end
+           else if IndiceACBr > 0 then
+              Banco.TipoCobranca:= TACBrTipoCobranca(IndiceACBr);
+
+           {Banco.Numero := IniBoletos.ReadInteger('BANCO','Numero',0);}
            if (trim(Banco.Nome) = 'Não definido') then
               raise exception.Create('Banco não definido ou não '+
                                      'implementado no ACBrBoleto!');
 
-           FrmACBrMonitor.cbxBOLBanco.Text  := IntToStrZero(Banco.Numero,3);
+           FrmACBrMonitor.cbxBOLBanco.ItemIndex    :=  Integer(Banco.TipoCobranca);
+           {FrmACBrMonitor.cbxBOLBanco.Text  := IntToStrZero(Banco.Numero,3);}
            FrmACBrMonitor.cbxCNAB.ItemIndex := IniBoletos.ReadInteger('BANCO','CNAB',0);
            if FrmACBrMonitor.cbxCNAB.ItemIndex = 0 then
               LayoutRemessa := c240

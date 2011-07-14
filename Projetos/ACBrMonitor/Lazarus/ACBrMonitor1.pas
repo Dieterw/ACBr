@@ -625,7 +625,7 @@ var
   iDIS: TACBrDISModelo;
   iBAL: TACBrBALModelo;
   iCEP: TACBrCEPWebService;
-  IBanco: Integer;
+  IBanco: TACBrTipoCobranca;
 begin
   {$IFDEF LINUX}
    FpUmask(0);
@@ -670,12 +670,11 @@ begin
 
   { Criando lista de Bancos disponiveis }
   cbxBOLBanco.Items.Clear;
-  for IBanco:=1 to 999 do
+  IBanco:= Low(TACBrTipoCobranca);
+  while IBanco <= High(TACBrTipoCobranca) do
   begin
-    ACBrBoleto1.Banco.Numero:= IBanco;
-    if not ( ACBrBoleto1.Banco.Nome = 'Não definido') then
-       cbxBOLBanco.Items.Add(IntToStrZero(IBanco,3)+' - '+
-                             ACBrBoleto1.Banco.Nome);
+    cbxBOLBanco.Items.Add(GetEnumName(TypeInfo(TACBrTipoCobranca), Integer(IBanco)));
+    Inc(IBanco);
   end;
 
   { Criando lista modelos de ECFs disponiveis }
@@ -1435,7 +1434,8 @@ begin
     edtConvenio.Text        := ini.ReadString('BOLETO','Cedente.Convenio','');
 
     {Parametros do Boleto - Banco}
-    cbxBOLBanco.Text         := IntToStrZero(ini.ReadInteger('BOLETO', 'Banco', 1), 3);
+    cbxBOLBanco.ItemIndex    := Ini.ReadInteger('BOLETO', 'Banco', 0);
+    //cbxBOLBanco.Text         := IntToStrZero(ini.ReadInteger('BOLETO', 'Banco', 1), 3);
     edtBOLConta.Text         := ini.ReadString('BOLETO', 'Conta', '');
     edtBOLDigitoConta.Text   := ini.ReadString('BOLETO', 'DigitoConta', '');
     edtBOLAgencia.Text       := ini.ReadString('BOLETO', 'Agencia', '');
@@ -1945,7 +1945,7 @@ begin
      ini.WriteString('BOLETO', 'Cedente.Modalidade', edtModalidade.Text);
 
      {Parametros do Boleto - Banco}
-     ini.WriteInteger('BOLETO','Banco', StrToIntDef(Copy(cbxBOLBanco.Text, 1, 3), 0));
+     Ini.WriteInteger('BOLETO','Banco', max(cbxBOLBanco.ItemIndex, 0));
      ini.WriteString('BOLETO', 'Conta', edtBOLConta.Text);
      ini.WriteString('BOLETO', 'DigitoConta', edtBOLDigitoConta.Text);
      ini.WriteString('BOLETO', 'Agencia', edtBOLAgencia.Text);

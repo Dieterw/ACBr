@@ -984,10 +984,10 @@ object FrmACBrMonitor: TFrmACBrMonitor
       Height = 209
       Top = 1
       Width = 592
-      ActivePage = tsECF
+      ActivePage = tsACBrBoleto
       Align = alClient
       Images = ImageList1
-      TabIndex = 1
+      TabIndex = 10
       TabOrder = 0
       object tsMonitor: TTabSheet
         Caption = '&Monitor'
@@ -4020,9 +4020,9 @@ object FrmACBrMonitor: TFrmACBrMonitor
           Height = 179
           Top = 0
           Width = 584
-          ActivePage = tsCedente
+          ActivePage = TabSheet2
           Align = alClient
-          TabIndex = 0
+          TabIndex = 1
           TabOrder = 0
           object tsCedente: TTabSheet
             Caption = 'Cedente'
@@ -4307,15 +4307,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
               Width = 184
               AutoSelect = False
               ItemHeight = 17
-              Items.Strings = (
-                '001-Banco do Brasil'
-                '237-Bradesco'
-                '341-Itau'
-                '389-Mercantil'
-                '748-Sicred'
-              )
               ParentShowHint = False
-              Sorted = True
               TabOrder = 0
             end
             object lblBOLBanco: TLabel
@@ -5888,6 +5880,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
   end
   object ACBrBoleto1: TACBrBoleto
     Cedente.TipoInscricao = pOutras
+    Banco.TipoCobranca = cobNenhum
     NumeroArquivo = 0
     DataArquivo = 0
     DataCreditoLanc = 0

@@ -38,32 +38,35 @@
         <LaunchingApplication PathPlusParams="\usr\X11R6\bin\xterm -T 'Lazarus Run Output' -e $(LazarusDir)\tools\runwait.sh $(TargetCmdLine)"/>
       </local>
     </RunParams>
-    <RequiredPackages Count="7">
+    <RequiredPackages Count="8">
       <Item1>
-        <PackageName Value="FCL"/>
-        <MinVersion Major="1" Release="1" Valid="True"/>
+        <PackageName Value="ACBrComum"/>
       </Item1>
       <Item2>
-        <PackageName Value="MemDSLaz"/>
-        <MinVersion Major="1" Minor="2" Release="1" Valid="True"/>
+        <PackageName Value="FCL"/>
+        <MinVersion Major="1" Release="1" Valid="True"/>
       </Item2>
       <Item3>
-        <PackageName Value="zcomponent"/>
-        <MinVersion Major="6" Minor="6" Release="6" Valid="True"/>
+        <PackageName Value="MemDSLaz"/>
+        <MinVersion Major="1" Minor="2" Release="1" Valid="True"/>
       </Item3>
       <Item4>
-        <PackageName Value="LCLBase"/>
-        <MinVersion Major="1" Release="1" Valid="True"/>
+        <PackageName Value="zcomponent"/>
+        <MinVersion Major="6" Minor="6" Release="6" Valid="True"/>
       </Item4>
       <Item5>
-        <PackageName Value="ACBrSerial"/>
+        <PackageName Value="LCLBase"/>
+        <MinVersion Major="1" Release="1" Valid="True"/>
       </Item5>
       <Item6>
-        <PackageName Value="LCL"/>
+        <PackageName Value="ACBrSerial"/>
       </Item6>
       <Item7>
-        <PackageName Value="TurboPowerIPro"/>
+        <PackageName Value="LCL"/>
       </Item7>
+      <Item8>
+        <PackageName Value="TurboPowerIPro"/>
+      </Item8>
     </RequiredPackages>
     <Units Count="7">
       <Unit0>
@@ -81,11 +84,15 @@
         <ComponentName Value="Form1"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ECFTeste1"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
-        <CursorPos X="9" Y="8"/>
+        <TopLine Value="406"/>
+        <CursorPos X="1" Y="418"/>
         <UsageCount Value="201"/>
+        <Bookmarks Count="1">
+          <Item0 X="19" Y="3334" ID="1"/>
+        </Bookmarks>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit1>
@@ -178,13 +185,6 @@
     </Other>
   </CompilerOptions>
   <Debugging>
-    <BreakPoints Count="1">
-      <Item1>
-        <Kind Value="bpkSource"/>
-        <Source Value="..\..\..\Fontes\ACBrSerial\ACBrECFDaruma.pas"/>
-        <Line Value="949"/>
-      </Item1>
-    </BreakPoints>
     <Exceptions Count="8" IgnoreAll="True">
       <Item1>
         <Name Value="ESynaSerError"/>

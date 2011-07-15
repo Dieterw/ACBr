@@ -830,6 +830,8 @@ TACBrECF = class( TACBrComponent )
       const APathArquivo: AnsiString;
       const AAlinhamento: TACBrAlinhamento = alCentro);
 
+    function GetFormatacao(const ATag: String): AnsiString;
+
   published
      property About : String read GetAbout write SetAbout stored False ;
      property Modelo : TACBrECFModelo read fsModelo write SetModelo
@@ -3210,7 +3212,8 @@ begin
   fsRegistrouRFDCNF := False ;
 end;
 
-procedure TACBrECF.AbreNaoFiscal( CPF_CNPJ, Nome, Endereco: String );
+procedure TACBrECF.AbreNaoFiscal(CPF_CNPJ : String ; Nome : String ;
+   Endereco : String) ;
 Var
   Tratado : Boolean;
 begin
@@ -4242,44 +4245,31 @@ begin
 end;
 
 function TACBrECF.DecodificarTagFormatacao(cmd: AnsiString): AnsiString;
+Var
+  I : Integer ;
+  ATag : String ;
 begin
   Result := cmd;
-  Result := ReplaceStr(Result, '<e>',        fsECF.GetFormatacao('<e>'));
-  Result := ReplaceStr(Result, '</e>',       fsECF.GetFormatacao('</e>'));
-  Result := ReplaceStr(Result, '<n>',        fsECF.GetFormatacao('<n>'));
-  Result := ReplaceStr(Result, '</n>',       fsECF.GetFormatacao('</n>'));
-  Result := ReplaceStr(Result, '<s>',        fsECF.GetFormatacao('<s>'));
-  Result := ReplaceStr(Result, '</s>',       fsECF.GetFormatacao('</s>'));
-  Result := ReplaceStr(Result, '<c>',        fsECF.GetFormatacao('<c>'));
-  Result := ReplaceStr(Result, '</c>',       fsECF.GetFormatacao('</c>'));
-  Result := ReplaceStr(Result, '<i>',        fsECF.GetFormatacao('<i>'));
-  Result := ReplaceStr(Result, '</i>',       fsECF.GetFormatacao('</i>'));
-  Result := ReplaceStr(Result, '<ean8>',     fsECF.GetFormatacao('<ean8>'));
-  Result := ReplaceStr(Result, '</ean8>',    fsECF.GetFormatacao('</ean8>'));
-  Result := ReplaceStr(Result, '<ean13>',    fsECF.GetFormatacao('<ean13>'));
-  Result := ReplaceStr(Result, '</ean13>',   fsECF.GetFormatacao('</ean13>'));
-  Result := ReplaceStr(Result, '<std>',      fsECF.GetFormatacao('<std>'));
-  Result := ReplaceStr(Result, '</std>',     fsECF.GetFormatacao('</std>'));
-  Result := ReplaceStr(Result, '<inter>',    fsECF.GetFormatacao('<inter>'));
-  Result := ReplaceStr(Result, '</inter>',   fsECF.GetFormatacao('</inter>'));
-  Result := ReplaceStr(Result, '<code11>',   fsECF.GetFormatacao('<code11>'));
-  Result := ReplaceStr(Result, '</code11>',  fsECF.GetFormatacao('</code11>'));
-  Result := ReplaceStr(Result, '<code39>',   fsECF.GetFormatacao('<code39>'));
-  Result := ReplaceStr(Result, '</code39>',  fsECF.GetFormatacao('</code39>'));
-  Result := ReplaceStr(Result, '<code93>',   fsECF.GetFormatacao('<code93>'));
-  Result := ReplaceStr(Result, '</code93>',  fsECF.GetFormatacao('</code93>'));
-  Result := ReplaceStr(Result, '<code128>',  fsECF.GetFormatacao('<code128>'));
-  Result := ReplaceStr(Result, '</code128>', fsECF.GetFormatacao('</code128>'));
-  Result := ReplaceStr(Result, '<upca>',     fsECF.GetFormatacao('<upca>'));
-  Result := ReplaceStr(Result, '</upca>',    fsECF.GetFormatacao('</upca>'));
-  Result := ReplaceStr(Result, '<codabar>',  fsECF.GetFormatacao('<codabar>'));
-  Result := ReplaceStr(Result, '</codabar>', fsECF.GetFormatacao('</codabar>'));
-  Result := ReplaceStr(Result, '<msi>',      fsECF.GetFormatacao('<msi>'));
-  Result := ReplaceStr(Result, '</msi>',     fsECF.GetFormatacao('</msi>'));
 
-  Result := ReplaceStr(Result, '</linha_simples>', StringOfChar('-', Colunas));
-  Result := ReplaceStr(Result, '</linha_dupla>',   StringOfChar('=', Colunas));
+  For I := low(ARRAY_TAGS) to High(ARRAY_TAGS) do
+  begin
+     ATag   := ARRAY_TAGS[I] ;
+     Result := StringReplace(Result, ATag, GetFormatacao(ATag), [rfReplaceAll] );
+  end ;
 end;
+
+function TACBrECF.GetFormatacao(const ATag : String) : AnsiString ;
+begin
+   Result := fsECF.GetFormatacao( ATag );
+
+   if Result = '' then
+   begin
+     if LowerCase(ATag) = '</linha_simples>' then
+        Result := StringOfChar('-', Colunas)
+     else if LowerCase(ATag) = '</linha_dupla>' then
+        Result := StringOfChar('=', Colunas);
+   end ;
+end ;
 
 procedure TACBrECF.LinhaRelatorioGerencial(const Linha: AnsiString;
   const IndiceBMP: Integer);

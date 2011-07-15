@@ -1527,7 +1527,7 @@ begin
        AguardandoResposta := True ;
        try
           GravaLog('-- '+FormatDateTime('hh:nn:ss',now)+' '+fpComandoLOG,True );
-          Result := EnviaComando_ECF( Cmd  ) ;
+          Result := EnviaComando_ECF( Cmd ) ;
        finally
           GravaLog('            TX -> '+fpComandoEnviado, True);
           GravaLog('   '+FormatDateTime('hh:nn:ss',now)+' RX <- '+fpRespostaComando, True);
@@ -3799,6 +3799,7 @@ begin
 
   // retornar vazio para que não de problema nas
   // impressoras que não implementaram ainda
+
   Result := EmptyStr;
 end;
 

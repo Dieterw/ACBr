@@ -4087,17 +4087,19 @@ const
   cITalicoOff = ESC + '5';
 begin
 
-  case AnsiIndexText(AnsiLowerCase(ATag), ARRAY_TAGS) of
-     0: Result := cExpandidoOn;
-     1: Result := cExpandidoOff;
-     2: Result := cNegritoOn;
-     3: Result := cNegritoOff;
-     4: Result := cSublinhadoOn;
-     5: Result := cSublinhadoOff;
-     6: Result := cCondensadoOn;
-     7: Result := cCondensadoOff;
-     8: Result := cItalicoOn;
-     9: Result := cITalicoOff;
+  case AnsiIndexText( LowerCase(ATag), ARRAY_TAGS) of
+     2 : Result := cExpandidoOn;
+     3 : Result := cExpandidoOff;
+     4 : Result := cNegritoOn;
+     5 : Result := cNegritoOff;
+     6 : Result := cSublinhadoOn;
+     7 : Result := cSublinhadoOff;
+     8 : Result := cCondensadoOn;
+     9 : Result := cCondensadoOff;
+     10: Result := cItalicoOn;
+     11: Result := cITalicoOff;
+  else
+     Result := '' ;
   end;
 
 end;

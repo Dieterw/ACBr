@@ -9,7 +9,7 @@ uses
   Interfaces, // this includes the LCL widgetset
   Forms, zcomponent
   { you can add units after this }, ECFTeste1, ConfiguraSerial, EfetuaPagamento,
-  Relatorio, Sobre, VendeItem, TurboPowerIPro, memdslaz, ACBrSerial;
+  Relatorio, Sobre, VendeItem, TurboPowerIPro, memdslaz, ACBrSerial, ACBrComum;
 
 {$R *.res}
 

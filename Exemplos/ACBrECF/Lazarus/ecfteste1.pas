@@ -52,6 +52,7 @@ type
     bAACAbrirArquivo : TButton ;
     bACCVerificarGT : TButton ;
     bAACAtualizarGT : TButton ;
+    Button1 : TButton ;
     CancelaCupom1: TMenuItem;
     CancelaImpressoCheque1: TMenuItem;
     CancelaNoFiscal1: TMenuItem;

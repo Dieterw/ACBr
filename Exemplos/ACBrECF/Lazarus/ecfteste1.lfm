@@ -173,9 +173,9 @@ object Form1: TForm1
     Height = 317
     Top = 0
     Width = 547
-    ActivePage = tsArqAuxCript
+    ActivePage = TabSheet4
     Align = alClient
-    TabIndex = 7
+    TabIndex = 0
     TabOrder = 0
     object TabSheet4: TTabSheet
       Caption = 'ECF'
@@ -496,6 +496,14 @@ object Form1: TForm1
         ParentFont = False
         TabOrder = 17
       end
+      object Button1: TButton
+        Left = 444
+        Height = 25
+        Top = 250
+        Width = 75
+        Caption = 'Button1'
+        TabOrder = 18
+      end
     end
     object TabSheet1: TTabSheet
       Caption = 'Cmd/Resp'
@@ -552,23 +560,23 @@ object Form1: TForm1
     object TabSheet2: TTabSheet
       Caption = 'Cupom'
       ClientHeight = 291
-      ClientWidth = 507
+      ClientWidth = 539
       ImageIndex = 1
       object Panel1: TPanel
         Left = 0
         Height = 250
         Top = 41
-        Width = 507
+        Width = 539
         Align = alClient
         BevelOuter = bvNone
         ClientHeight = 250
-        ClientWidth = 507
+        ClientWidth = 539
         TabOrder = 0
         object mBobina: TMemo
           Left = 0
           Height = 250
           Top = 0
-          Width = 507
+          Width = 539
           Align = alClient
           Font.CharSet = ANSI_CHARSET
           Font.Color = clBlack
@@ -585,7 +593,7 @@ object Form1: TForm1
           Left = 0
           Height = 250
           Top = 0
-          Width = 507
+          Width = 539
           Align = alClient
           FixedTypeface = 'Courier New'
           DefaultTypeFace = 'default'
@@ -602,11 +610,11 @@ object Form1: TForm1
         Left = 0
         Height = 41
         Top = 0
-        Width = 507
+        Width = 539
         Align = alTop
         BevelOuter = bvNone
         ClientHeight = 41
-        ClientWidth = 507
+        ClientWidth = 539
         TabOrder = 1
         object cbMemoHTML: TCheckBox
           Left = 272
@@ -939,8 +947,8 @@ object Form1: TForm1
     end
     object tsCodBarras: TTabSheet
       Caption = 'Código de Barras'
-      ClientHeight = 298
-      ClientWidth = 507
+      ClientHeight = 291
+      ClientWidth = 539
       object SpEdtLarguraBarra: TSpinEdit
         Left = 230
         Height = 22
@@ -954,7 +962,7 @@ object Form1: TForm1
         Value = 2
       end
       object BitBtn7: TBitBtn
-        Left = 253
+        Left = 285
         Height = 23
         Top = 258
         Width = 95
@@ -966,7 +974,7 @@ object Form1: TForm1
         TabOrder = 1
       end
       object BitBtn6: TBitBtn
-        Left = 365
+        Left = 397
         Height = 23
         Top = 258
         Width = 133
@@ -1159,13 +1167,13 @@ object Form1: TForm1
     end
     object tsDadosRedZ: TTabSheet
       Caption = 'Dados Redução Z'
-      ClientHeight = 298
-      ClientWidth = 507
+      ClientHeight = 291
+      ClientWidth = 539
       object mRZ: TMemo
         Left = 0
-        Height = 248
+        Height = 241
         Top = 17
-        Width = 507
+        Width = 539
         Align = alTop
         Anchors = [akLeft, akRight, akBottom]
         Font.Color = clBlack
@@ -1181,7 +1189,7 @@ object Form1: TForm1
       object bLerDadosRedZ: TButton
         Left = 7
         Height = 25
-        Top = 271
+        Top = 264
         Width = 108
         Anchors = [akLeft, akBottom]
         Caption = 'Ler Dados RZ'
@@ -1192,7 +1200,7 @@ object Form1: TForm1
         Left = 0
         Height = 17
         Top = 0
-        Width = 507
+        Width = 539
         Align = alTop
         AutoSize = False
         Caption = 'Resposta'
@@ -3209,6 +3217,7 @@ object Form1: TForm1
     OnMsgAguarde = ACBrECF1MsgAguarde
     OnAguardandoRespostaChange = ACBrECF1AguardandoRespostaChange
     OnMsgPoucoPapel = ACBrECF1MsgPoucoPapel
+    MemoBobina = mBobina
     MemoParams.Strings = (
       '[Cabecalho]'
       'LIN000=<center><b>Nome da Empresa</b></center>'

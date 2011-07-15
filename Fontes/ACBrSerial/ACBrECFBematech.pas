@@ -4075,8 +4075,8 @@ const
   cNegritoOff    = ESC + 'F';
 
   // <s></s>
-  cSublinhadoOn  = '';
-  cSublinhadoOff = '';
+  cSublinhadoOn  = ESC + '-' + C_ON;
+  cSublinhadoOff = ESC + '-' + C_OFF;
 
   // <c></c>
   cCondensadoOn  = ESC + SI;
@@ -4085,49 +4085,6 @@ const
   //<i></i>
   cItalicoOn  = ESC + '4';
   cITalicoOff = ESC + '5';
-
-  // bAABCCDDEEEEEEEEEEEEE..EE
-  // --------
-  // b = Comando para impressão das barras
-  // A = Tipo de codigo FIXO
-  // B = Largura 1..5
-  // C = Altura 50..200
-  // D = imprimir ou não codigo abaixo da barra
-  //     00 - Não imprime
-  //     01 - Imprime
-  // E = Codigo de barra
-  // termina o comando com null
-  {
-  cEAN8     = ESC + 'b02'; // <ean8></ean8>
-  cEAN13    = ESC + 'b01'; // <ean13></ean13>
-  cSTD25    = ESC + 'b03'; // <std></std>
-  cINTER25  = ESC + 'b04'; // <inter></inter>
-  cCODE11   = ESC + 'b11'; // <code11></code11>
-  cCODE39   = ESC + 'b06'; // <code39></code39>
-  cCODE93   = ESC + 'b07'; // <code93></code93>
-  cCODE128  = ESC + 'b05'; // <code128></code128>
-  cUPCA     = ESC + 'b08'; // <upca></upca>
-  cCODABAR  = ESC + 'b09'; // <codabar></codabar>
-  cMSI      = ESC + 'b10'; // <msi></msi>
-  cBarraFim = NUL;
-
-  function ConfigurarBarras(const ACodigo: AnsiString): AnsiString;
-  var
-    Largura: AnsiString;
-    Altura: AnsiString;
-    Mostrar: AnsiString;
-  begin
-    Largura := IntToStrZero(ConfigBarras.LarguraLinha, 1);
-    Altura  := IntToStrZero(ConfigBarras.Altura, 2);
-
-    if ConfigBarras.MostrarCodigo then
-      Mostrar := '01'
-    else
-      Mostrar := '00';
-
-    Result := ACodigo + Largura + Altura + Mostrar;
-  end;
-  }
 begin
 
   case AnsiIndexText(AnsiLowerCase(ATag), ARRAY_TAGS) of
@@ -4141,30 +4098,6 @@ begin
      7: Result := cCondensadoOff;
      8: Result := cItalicoOn;
      9: Result := cITalicoOff;
-{
-     8: Result := ConfigurarBarras(cEAN8);
-     9: Result := cBarraFim;
-    10: Result := ConfigurarBarras(cEAN13);
-    11: Result := cBarraFim;
-    12: Result := ConfigurarBarras(cSTD25);
-    13: Result := cBarraFim;
-    14: Result := ConfigurarBarras(cINTER25);
-    15: Result := cBarraFim;
-    16: Result := ConfigurarBarras(cCODE11);
-    17: Result := cBarraFim;
-    18: Result := ConfigurarBarras(cCODE39);
-    19: Result := cBarraFim;
-    20: Result := ConfigurarBarras(cCODE93);
-    21: Result := cBarraFim;
-    22: Result := ConfigurarBarras(cCODE128);
-    23: Result := cBarraFim;
-    24: Result := ConfigurarBarras(cUPCA);
-    25: Result := cBarraFim;
-    26: Result := ConfigurarBarras(cCODABAR);
-    27: Result := cBarraFim;
-    28: Result := ConfigurarBarras(cMSI);
-    29: Result := cBarraFim;
-}
   end;
 
 end;

@@ -4968,6 +4968,10 @@ const
   cCondensadoOn  = SI;
   cCondensadoOff = DC2;
 
+  //<i></i>
+  cItalicoOn  = '';
+  cITalicoOff = '';
+
   // bAABCCDDEEEEEEEEEEEEE..EE
   // --------
   // b = Comando para impressão das barras
@@ -5019,28 +5023,30 @@ begin
      5: Result := cSublinhadoOff;
      6: Result := cCondensadoOn;
      7: Result := cCondensadoOff;
-     8: Result := ConfigurarBarras(cEAN8);
-     9: Result := cBarraFim;
-    10: Result := ConfigurarBarras(cEAN13);
+     8: Result := cItalicoOn;
+     9: Result := cItalicoOff;
+    10: Result := ConfigurarBarras(cEAN8);
     11: Result := cBarraFim;
-    12: Result := ConfigurarBarras(cSTD25);
+    12: Result := ConfigurarBarras(cEAN13);
     13: Result := cBarraFim;
-    14: Result := ConfigurarBarras(cINTER25);
+    14: Result := ConfigurarBarras(cSTD25);
     15: Result := cBarraFim;
-    16: Result := ConfigurarBarras(cCODE11);
+    16: Result := ConfigurarBarras(cINTER25);
     17: Result := cBarraFim;
-    18: Result := ConfigurarBarras(cCODE39);
+    18: Result := ConfigurarBarras(cCODE11);
     19: Result := cBarraFim;
-    20: Result := ConfigurarBarras(cCODE93);
+    20: Result := ConfigurarBarras(cCODE39);
     21: Result := cBarraFim;
-    22: Result := ConfigurarBarras(cCODE128);
+    22: Result := ConfigurarBarras(cCODE93);
     23: Result := cBarraFim;
-    24: Result := ConfigurarBarras(cUPCA);
+    24: Result := ConfigurarBarras(cCODE128);
     25: Result := cBarraFim;
-    26: Result := ConfigurarBarras(cCODABAR);
+    26: Result := ConfigurarBarras(cUPCA);
     27: Result := cBarraFim;
-    28: Result := ConfigurarBarras(cMSI);
+    28: Result := ConfigurarBarras(cCODABAR);
     29: Result := cBarraFim;
+    30: Result := ConfigurarBarras(cMSI);
+    31: Result := cBarraFim;
   end;
 
 end;

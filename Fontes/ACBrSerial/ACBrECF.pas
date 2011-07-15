@@ -4252,6 +4252,8 @@ begin
   Result := ReplaceStr(Result, '</s>',       fsECF.GetFormatacao('</s>'));
   Result := ReplaceStr(Result, '<c>',        fsECF.GetFormatacao('<c>'));
   Result := ReplaceStr(Result, '</c>',       fsECF.GetFormatacao('</c>'));
+  Result := ReplaceStr(Result, '<i>',        fsECF.GetFormatacao('<i>'));
+  Result := ReplaceStr(Result, '</i>',       fsECF.GetFormatacao('</i>'));
   Result := ReplaceStr(Result, '<ean8>',     fsECF.GetFormatacao('<ean8>'));
   Result := ReplaceStr(Result, '</ean8>',    fsECF.GetFormatacao('</ean8>'));
   Result := ReplaceStr(Result, '<ean13>',    fsECF.GetFormatacao('<ean13>'));

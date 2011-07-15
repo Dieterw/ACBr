@@ -101,7 +101,7 @@ Data: 14/07/2011
 -- ACBrECFDaruma --
 [+] Formatação de fontes do relatório gerencial e rodapé do cupom fiscal
     ver no Demo do ACBrECF como utilizar as tags
-    - já funcionando para Daruma
+    - já funcionando para Daruma completo e Bematech somente a formatação
     (por: Régys Silveira)
 
 Data: 12/07/2011

@@ -56,8 +56,8 @@ const
   FF = #12 ;      { Form Feed, Pulo de Pagina }
   cTimeout = 3 ;  { Tempo PADRAO para msg de falha de comunicacao }
 
-  ARRAY_TAGS: array[0..29] of String = (
-    '<e>', '</e>', '<n>', '</n>', '<s>', '</s>', '<c>', '</c>',
+  ARRAY_TAGS: array[0..31] of String = (
+    '<e>', '</e>', '<n>', '</n>', '<s>', '</s>', '<c>', '</c>', '<i>', '</i>',
     '<ean8>', '</ean8>', '<ean13>', '</ean13>',
     '<std>', '</std>', '<inter>', '</inter>',
     '<code11>', '</code11>', '<code39>', '</code39>',

@@ -72,6 +72,7 @@ type
     FCCe : TCCeNFe;
   public
     constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
 
     property CCe   : TCCeNFe  read FCCe      write FCCe;
   end;
@@ -149,7 +150,8 @@ begin
   if FConfiguracoes.WebServices.Tentativas <= 0 then
      FConfiguracoes.WebServices.Tentativas := 5;
   {$IFDEF ACBrNFeOpenSSL}
-     NotaUtil.InitXmlSec ;
+    if FConfiguracoes.Geral.IniFinXMLSECAutomatico then
+      NotaUtil.InitXmlSec ;
   {$ENDIF}
   FOnGerarLog := nil ;
 end;
@@ -161,7 +163,8 @@ begin
   FCartaCorrecao.Free;
   FWebServices.Free;
   {$IFDEF ACBrNFeOpenSSL}
-     NotaUtil.ShutDownXmlSec ;
+    if FConfiguracoes.Geral.IniFinXMLSECAutomatico then
+      NotaUtil.ShutDownXmlSec ;
   {$ENDIF}
   inherited;
 end;
@@ -324,6 +327,12 @@ constructor TCartaCorrecao.Create(AOwner: TComponent);
 begin
   inherited;
   FCCe := TCCeNFe.Create;
+end;
+
+destructor TCartaCorrecao.Destroy;
+begin
+  FCCe.Free;
+  inherited;
 end;
 
 end.

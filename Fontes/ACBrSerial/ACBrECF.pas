@@ -441,7 +441,6 @@ TACBrECF = class( TACBrComponent )
     procedure SetAbout(const AValue: String);
     function GetParamDescontoISSQNClass: Boolean;
     function GetMFAdicional: String;
-    function DecodificarTagFormatacao(cmd: AnsiString): AnsiString;
   protected
     fpUltimoEstadoObtido: TACBrECFEstado;
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
@@ -830,7 +829,9 @@ TACBrECF = class( TACBrComponent )
       const APathArquivo: AnsiString;
       const AAlinhamento: TACBrAlinhamento = alCentro);
 
+    function DecodificarTagFormatacao(cmd: AnsiString): AnsiString;
     function GetFormatacao(const ATag: String): AnsiString;
+    function TraduzPaginaDeCodigo(ATexto: String): AnsiString;
 
   published
      property About : String read GetAbout write SetAbout stored False ;
@@ -4249,7 +4250,7 @@ Var
   I : Integer ;
   ATag : String ;
 begin
-  Result := cmd;
+  Result := TraduzPaginaDeCodigo( cmd );
 
   For I := low(ARRAY_TAGS) to High(ARRAY_TAGS) do
   begin
@@ -4264,12 +4265,17 @@ begin
 
    if Result = '' then
    begin
-     if LowerCase(ATag) = '</linha_simples>' then
-        Result := StringOfChar('-', Colunas)
-     else if LowerCase(ATag) = '</linha_dupla>' then
-        Result := StringOfChar('=', Colunas);
+     case AnsiIndexText( LowerCase(ATag), ARRAY_TAGS) of
+       0 : Result := StringOfChar('-', Colunas);
+       1 : Result := StringOfChar('=', Colunas);
+     end ;
    end ;
 end ;
+
+function TACBrECF.TraduzPaginaDeCodigo(ATexto: String): AnsiString;
+begin
+   Result := fsECF.TraduzPaginaDeCodigo(ATexto)
+end;
 
 procedure TACBrECF.LinhaRelatorioGerencial(const Linha: AnsiString;
   const IndiceBMP: Integer);

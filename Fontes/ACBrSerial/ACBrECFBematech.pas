@@ -428,6 +428,7 @@ TACBrECFBematech = class( TACBrECFClass )
     Function PreparaCmd( cmd : AnsiString ) : AnsiString ;
  protected
     function GetFormatacao(const ATag: string): AnsiString; override;
+    function TraduzPaginaDeCodigo(ATexto: String): AnsiString; override;
 
     procedure CRZToCOO(const ACRZIni, ACRZFim: Integer; var ACOOIni,
       ACOOFim: Integer);
@@ -4103,6 +4104,11 @@ begin
   end;
 
 end;
+
+function TACBrECFBematech.TraduzPaginaDeCodigo(ATexto: String): AnsiString;
+begin
+  Result := TranslateString( ACBrStrToAnsi( ATexto ), 850 ) ;
+end ;
 
 end.
 

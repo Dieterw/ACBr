@@ -248,6 +248,8 @@ function LinhaDupla(Tamanho: Integer): string;
 function EAN13Valido( CodEAN13 : String ) : Boolean ;
 function EAN13_DV( CodEAN13 : String ) : String ;
 
+function TranslateString(const S: String; CP_Destino: Word; CP_Atual: Word = 0): String;
+
 {$IFDEF MSWINDOWS}
 var xInp32 : function (wAddr: word): byte; stdcall;
 var xOut32 : function (wAddr: word; bOut: byte): byte; stdcall;
@@ -2001,6 +2003,33 @@ begin
   if Length(CodEAN13) = 13 then
      Result := ( CodEAN13[13] =  EAN13_DV(CodEAN13) ) ;
 end;
+
+{------------------------------------------------------------------------------
+  Traduz uma String de uma página de código para outra
+http://www.experts-exchange.com/Programming/Languages/Pascal/Delphi/Q_10147769.html
+ ------------------------------------------------------------------------------}
+function TranslateString(const S: String; CP_Destino: Word; CP_Atual: Word = 0): String;
+  function WideStringToStringEx(const WS: WideString; CodePage: Word): String;
+  var
+    L: Integer;
+  begin
+    L := WideCharToMultiByte(CodePage, 0, PWideChar(WS), -1, nil, 0, nil, nil);
+    SetLength(Result, L - 1);
+    WideCharToMultiByte(CodePage, 0, PWideChar(WS), -1, PChar(Result), L - 1, nil, nil);
+  end;
+
+  function StringToWideStringEx(const S: String; CodePage: Word): WideString;
+  var
+    L: Integer;
+  begin
+    L:= MultiByteToWideChar(CodePage, 0, PChar(S), -1, nil, 0);
+    SetLength(Result, L - 1);
+    MultiByteToWideChar(CodePage, 0, PChar(S), -1, PWideChar(Result), L - 1);
+  end;
+begin
+  Result := WideStringToStringEx( StringToWideStringEx(S, CP_Atual), CP_Destino);
+end;
+
 
 //*****************************************************************************************
 

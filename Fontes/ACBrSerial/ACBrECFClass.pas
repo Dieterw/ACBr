@@ -1026,6 +1026,7 @@ TACBrECFClass = class
       const AAlinhamento: TACBrAlinhamento = alCentro); virtual;
 
     function GetFormatacao(const ATag: String): AnsiString; virtual;
+    function TraduzPaginaDeCodigo(ATexto: String): AnsiString; virtual;
 end ;
 
 implementation
@@ -3802,6 +3803,11 @@ begin
 
   Result := EmptyStr;
 end;
+
+function TACBrECFClass.TraduzPaginaDeCodigo(ATexto: String): AnsiString;
+begin
+  Result := ACBrStrToAnsi( ATexto ) ;
+end ;
 
 { TACBrECFDadosRZ }
 

@@ -84,11 +84,10 @@
         <ComponentName Value="Form1"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ECFTeste1"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="406"/>
-        <CursorPos X="1" Y="418"/>
+        <TopLine Value="1"/>
+        <CursorPos X="10" Y="8"/>
         <UsageCount Value="201"/>
         <Bookmarks Count="1">
           <Item0 X="19" Y="3334" ID="1"/>

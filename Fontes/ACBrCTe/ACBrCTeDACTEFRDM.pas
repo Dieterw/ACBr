@@ -889,7 +889,7 @@ begin
       if ((FCTe.Ide.tpEmis = teContingencia) or (FCTe.Ide.tpEmis = teFSDA)) then
       begin
         FieldByName('Contingencia_Descricao').AsString := 'DADOS DA CT-E';
-        FieldByName('Contingencia_Valor').AsString := CTeUtil.FormatarChaveContigencia(vChave_Contingencia);
+        FieldByName('Contingencia_Valor').AsString := CTeUtil.FormatarChaveContingencia(vChave_Contingencia);
       end
       else
       if (FCTe.Ide.tpEmis = teDPEC) then

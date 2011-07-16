@@ -614,7 +614,7 @@ begin
     AssinaArquivoComEAD(fPath + Arquivo);
 
   // Sincronizando arquivos e MD5 do ACBrPAF com ACBrAAC //
-  if Assigned( AAC ) then
+  if Assigned( fsAAC ) then
   begin
     AAC.IdentPAF.OutrosArquivos.Clear ;
 

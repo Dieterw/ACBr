@@ -3809,7 +3809,10 @@ begin
   // retornar vazio para que não de problema nas
   // impressoras que não implementaram ainda
 
-  Result := EmptyStr;
+  if AnsiIndexText( ATag, ARRAY_TAGS) < 0 then  // Não é uma TAG conhecida ?
+     Result := ATag
+  else
+     Result := '' ;
 end;
 
 function TACBrECFClass.CodificarPaginaDeCodigoECF(ATexto: String): AnsiString;

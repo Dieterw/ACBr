@@ -427,8 +427,7 @@ TACBrECFBematech = class( TACBrECFClass )
 
     Function PreparaCmd( cmd : AnsiString ) : AnsiString ;
  protected
-    function GetFormatacao(const ATag: string): AnsiString; override;
-    function TraduzPaginaDeCodigo(ATexto: String): AnsiString; override;
+    function TraduzirTag(const ATag: string): AnsiString; override;
 
     procedure CRZToCOO(const ACRZIni, ACRZFim: Integer; var ACOOIni,
       ACOOFim: Integer);
@@ -665,8 +664,10 @@ begin
 
   fsModelosCheque := TACBrCHQModelos.create( true );
 
-  fpModeloStr := 'BEMATECH' ;
+  fpModeloStr := 'Bematech' ;
   fpRFDID     := 'BE' ;
+  fpPaginaDeCodigo := 850 ;
+
 end;
 
 destructor TACBrECFBematech.Destroy;
@@ -701,7 +702,7 @@ begin
   fsNFCodFPG := '' ;
   fsNFValor  := 0 ;
   fs25MFD    := false ;
-  fsVendeItemExtendido := True;
+  fsVendeItemExtendido := fpArredondaItemMFD;
 
   try
      { Testando a comunicaçao com a porta }
@@ -1889,11 +1890,6 @@ Var StrRet : AnsiString ;
 begin
   { Impressora Bematech não usa o parâmetro Posicao }
 
-//{ Bematech recomenda programar 1ª Maiuscula e restante Minusculas }
-//  Descricao := UpperCase(copy(Descricao,1,1)) + LowerCase(copy(Descricao,2,16));
-  { Bematech recomenda nao haver espaços em Branco na Descricao }
-//  Descricao := StringReplace(Descricao,' ','',[rfReplaceAll,rfIgnoreCase]) ;
-
   Descricao := padL(Descricao,16) ;         { Ajustando tamanho final }
   VincStr   := '' ;
   if fs25MFD then
@@ -2197,7 +2193,7 @@ begin
                              ' não foi cadastrada.') ) ;
 
   COO       := Poem_Zeros( trim(COO) ,6) ;
-  FPGDesc   := padL( FPG.Descricao, 16 ) ;
+  FPGDesc   := padL( CodificarPaginaDeCodigoECF(FPG.Descricao), 16 ) ;
 //FPGDesc   := UpperCase(copy(FPGDesc,1,1))+LowerCase(copy(FPGDesc,2,16)) ;
   BytesResp := 0 ;
   ComandoCompleto  := ((Valor > 0) and (fs25MFD or (StrToIntDef( NumVersao,0 ) >= 310) )) ;
@@ -4058,12 +4054,8 @@ begin
  {$ENDIF}
 end;
 
-function TACBrECFBematech.GetFormatacao(const ATag: string): AnsiString;
+function TACBrECFBematech.TraduzirTag(const ATag: string): AnsiString;
 const
-  ESC = #27;
-  SI  = #15;
-  DC2 = #18;
-
   C_ON  = #1;
   C_OFF = #0;
 
@@ -4088,7 +4080,8 @@ const
   cITalicoOff = ESC + '5';
 begin
 
-  case AnsiIndexText( LowerCase(ATag), ARRAY_TAGS) of
+  case AnsiIndexText( ATag, ARRAY_TAGS) of
+     -1: Result := ATag;
      2 : Result := cExpandidoOn;
      3 : Result := cExpandidoOff;
      4 : Result := cNegritoOn;
@@ -4104,11 +4097,6 @@ begin
   end;
 
 end;
-
-function TACBrECFBematech.TraduzPaginaDeCodigo(ATexto: String): AnsiString;
-begin
-  Result := TranslateString( ACBrStrToAnsi( ATexto ), 850 ) ;
-end ;
 
 end.
 

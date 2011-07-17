@@ -86,12 +86,9 @@
         <UnitName Value="ECFTeste1"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
-        <CursorPos X="10" Y="8"/>
+        <TopLine Value="623"/>
+        <CursorPos X="38" Y="634"/>
         <UsageCount Value="201"/>
-        <Bookmarks Count="1">
-          <Item0 X="19" Y="3334" ID="1"/>
-        </Bookmarks>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit1>

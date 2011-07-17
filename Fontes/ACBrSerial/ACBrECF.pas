@@ -282,8 +282,10 @@ TACBrECF = class( TACBrComponent )
     fsNumSerieCache       : String ;
 
     function GetArredondaItemMFD : Boolean ;
+    function GetPaginaDeCodigoClass : Word ;
     procedure SetArredondaItemMFD(const AValue : Boolean) ;
     procedure SetAtivo(const AValue: Boolean);
+    procedure SetPaginaDeCodigoClass(const AValue : Word) ;
     procedure SetModelo(const AValue: TACBrECFModelo);
     procedure SetPorta(const AValue: String);
     procedure SetRetentar(const AValue: Boolean);
@@ -829,9 +831,10 @@ TACBrECF = class( TACBrComponent )
       const APathArquivo: AnsiString;
       const AAlinhamento: TACBrAlinhamento = alCentro);
 
-    function DecodificarTagFormatacao(cmd: AnsiString): AnsiString;
-    function GetFormatacao(const ATag: String): AnsiString;
-    function TraduzPaginaDeCodigo(ATexto: String): AnsiString;
+    function DecodificarTagsFormatacao(AString: AnsiString): AnsiString;
+    function TraduzirTag(const ATag: String): AnsiString;
+    function CodificarPaginaDeCodigoECF(ATexto: String): AnsiString;
+    function DecodificarPaginaDeCodigoECF(ATexto: AnsiString): String;
 
   published
      property About : String read GetAbout write SetAbout stored False ;
@@ -874,6 +877,9 @@ TACBrECF = class( TACBrComponent )
                  write SetLinhasEntreCupons default cACBrLinhasEntreCupons ;
      property MaxLinhasBuffer : Integer read  GetMaxLinhasBuffer
                  write SetMaxLinhasBuffer default cACBrMaxLinhasBuffer ;
+     property PaginaDeCodigo : Word read GetPaginaDeCodigoClass
+                 write SetPaginaDeCodigoClass;
+
     {$IFNDEF CONSOLE}
        property FormMsgFonte : TFont read  fsFormMsgFont  write SetFormMsgFonte ;
        property FormMsgColor: TColor read  fsFormMsgColor write fsFormMsgColor ;
@@ -1281,6 +1287,11 @@ begin
      Desativar ;
 end;
 
+procedure TACBrECF.SetPaginaDeCodigoClass(const AValue : Word) ;
+begin
+   fsECF.PaginaDeCodigo := AValue;
+end;
+
 procedure TACBrECF.Ativar;
 begin
   if fsAtivo then exit ;
@@ -1508,6 +1519,11 @@ end;
 function TACBrECF.GetArredondaItemMFD : Boolean ;
 begin
   Result := fsECF.ArredondaItemMFD;
+end;
+
+function TACBrECF.GetPaginaDeCodigoClass : Word ;
+begin
+   Result := fsECF.PaginaDeCodigo;
 end;
 
 procedure TACBrECF.SetArredondaItemMFD(const AValue : Boolean) ;
@@ -2701,7 +2717,8 @@ begin
 
   try
      Tratado := False;
-     fsECF.VendeItem( Codigo, Descricao, AliquotaECF, Qtd, ValorUnitario,
+     fsECF.VendeItem( Codigo, CodificarPaginaDeCodigoECF( Descricao ),
+                      AliquotaECF, Qtd, ValorUnitario,
                       ValorDescontoAcrescimo, Unidade, TipoDescontoAcrescimo,
                       DescontoAcrescimo );
   except
@@ -3097,7 +3114,7 @@ begin
 
   try
     Tratado := False;
-    fsECF.FechaCupom( DecodificarTagFormatacao( Observacao ), IndiceBMP ) ;
+    fsECF.FechaCupom( DecodificarTagsFormatacao( Observacao ), IndiceBMP ) ;
   except
      if Assigned( fOnErrorFechaCupom ) then
         fOnErrorFechaCupom(Tratado);
@@ -3664,20 +3681,26 @@ end;
 procedure TACBrECF.LeituraMemoriaFiscalSerial(ReducaoInicial,
    ReducaoFinal: Integer; Linhas : TStringList; Simplificada : Boolean );
 begin
-  ComandoLOG := 'LeituraMemoriaFiscalSerial( '+IntToStr(ReducaoInicial)+' , '+
-                    IntToStr(ReducaoFinal)+' , Linhas ,'+
-                    BoolToStr(Simplificada)+' )';
-  fsECF.LeituraMemoriaFiscalSerial( ReducaoInicial, ReducaoFinal, Linhas,
+  if ComandoLOG = '' then
+     ComandoLOG := 'LeituraMemoriaFiscalSerial( '+IntToStr(ReducaoInicial)+' , '+
+                       IntToStr(ReducaoFinal)+' , Linhas ,'+
+                       BoolToStr(Simplificada)+' )';
+  LeituraMemoriaFiscalSerial( ReducaoInicial, ReducaoFinal, Linhas,
                                     Simplificada ) ;
+
+  Linhas.Text := DecodificarPaginaDeCodigoECF( Linhas.Text );
 end;
 
 procedure TACBrECF.LeituraMemoriaFiscalSerial(DataInicial,
    DataFinal: TDateTime; Linhas : TStringList; Simplificada : Boolean );
 begin
-  ComandoLOG := 'LeituraMemoriaFiscalSerial( '+DateToStr(DataInicial)+' , '+
-                    DateToStr(DataFinal)+' , Linhas ,'+BoolToStr(Simplificada)+' )';
+  if ComandoLOG = '' then
+     ComandoLOG := 'LeituraMemoriaFiscalSerial( '+DateToStr(DataInicial)+' , '+
+                       DateToStr(DataFinal)+' , Linhas ,'+BoolToStr(Simplificada)+' )';
   fsECF.LeituraMemoriaFiscalSerial( DataInicial, DataFinal, Linhas,
                                     Simplificada) ;
+
+  Linhas.Text := DecodificarPaginaDeCodigoECF( Linhas.Text );
 end;
 
 procedure TACBrECF.LeituraMemoriaFiscalSerial(ReducaoInicial,
@@ -3689,8 +3712,8 @@ begin
                     BoolToStr(Simplificada)+' )';
   AStringList := TStringList.Create ;
   try
-     fsECF.LeituraMemoriaFiscalSerial( ReducaoInicial, ReducaoFinal, AStringList,
-                                       Simplificada ) ;
+     LeituraMemoriaFiscalSerial( ReducaoInicial, ReducaoFinal, AStringList,
+                                 Simplificada ) ;
 
      AStringList.SaveToFile(NomeArquivo);
   finally
@@ -3707,15 +3730,14 @@ begin
                     BoolToStr(Simplificada)+' )';
   AStringList := TStringList.Create ;
   try
-     fsECF.LeituraMemoriaFiscalSerial( DataInicial, DataFinal, AStringList,
-                                       Simplificada ) ;
+     LeituraMemoriaFiscalSerial( DataInicial, DataFinal, AStringList,
+                                 Simplificada ) ;
 
      AStringList.SaveToFile(NomeArquivo);
   finally
      AStringList.Free ;
   end ;
 end;
-
 
 procedure TACBrECF.TestaSeE_MFD ;
 begin
@@ -3728,9 +3750,12 @@ procedure TACBrECF.LeituraMFDSerial(DataInicial, DataFinal: TDateTime;
 begin
   TestaSeE_MFD ;
 
-  ComandoLOG := 'LeituraMFDSerial( '+DateToStr(DataInicial)+' , '+
-                    DateToStr(DataFinal)+' , Linhas) ';
+  if ComandoLOG = '' then
+     ComandoLOG := 'LeituraMFDSerial( '+DateToStr(DataInicial)+' , '+
+                       DateToStr(DataFinal)+' , Linhas) ';
   fsECF.LeituraMFDSerial( DataInicial, DataFinal, Linhas, Documentos ) ;
+
+  Linhas.Text := DecodificarPaginaDeCodigoECF( Linhas.Text );
 end;
 
 procedure TACBrECF.LeituraMFDSerial(COOInicial, COOFinal: Integer;
@@ -3738,9 +3763,12 @@ procedure TACBrECF.LeituraMFDSerial(COOInicial, COOFinal: Integer;
 begin
   TestaSeE_MFD ;
 
-  ComandoLOG := 'LeituraMFDSerial( '+IntToStr(COOInicial)+' , '+
-                    IntToStr(COOFinal)+' , Linhas) ';
+  if ComandoLOG = '' then
+     ComandoLOG := 'LeituraMFDSerial( '+IntToStr(COOInicial)+' , '+
+                       IntToStr(COOFinal)+' , Linhas) ';
   fsECF.LeituraMFDSerial( COOInicial, COOFinal, Linhas, Documentos ) ;
+
+  Linhas.Text := DecodificarPaginaDeCodigoECF( Linhas.Text );
 end;
 
 procedure TACBrECF.LeituraMFDSerial(DataInicial, DataFinal: TDateTime;
@@ -3753,7 +3781,7 @@ begin
                     DateToStr(DataFinal)+' , '+NomeArquivo+' ) ';
   AStringList := TStringList.Create ;
   try
-     fsECF.LeituraMFDSerial( DataInicial, DataFinal, AStringList, Documentos ) ;
+     LeituraMFDSerial( DataInicial, DataFinal, AStringList, Documentos ) ;
 
      AStringList.SaveToFile(NomeArquivo);
   finally
@@ -3771,7 +3799,7 @@ begin
                     IntToStr(COOFinal)+' , '+NomeArquivo+' ) ';
   AStringList := TStringList.Create ;
   try
-     fsECF.LeituraMFDSerial( COOInicial, COOFinal, AStringList, Documentos ) ;
+     LeituraMFDSerial( COOInicial, COOFinal, AStringList, Documentos ) ;
 
      AStringList.SaveToFile(NomeArquivo);
   finally
@@ -3893,6 +3921,8 @@ procedure TACBrECF.LeituraXSerial(Linhas: TStringList);
 begin
   ComandoLOG := 'LeituraXSerial( Linhas )' ;
   fsECF.LeituraXSerial( Linhas ) ;
+
+  Linhas.Text := DecodificarPaginaDeCodigoECF( Linhas.Text );
 end;
 
 procedure TACBrECF.LeituraXSerial(NomeArquivo: String);
@@ -3901,9 +3931,8 @@ begin
   ComandoLOG := 'LeituraXSerial( '+NomeArquivo+' )' ;
   AStringList := TStringList.Create ;
   try
-     fsECF.LeituraXSerial(AStringList);
-
-     AStringList.SaveToFile(NomeArquivo);
+     LeituraXSerial( AStringList );
+     AStringList.SaveToFile( NomeArquivo );
   finally
      AStringList.Free ;
   end ;
@@ -4038,9 +4067,15 @@ begin
 end;
 
 procedure TACBrECF.CarregaFormasPagamento;
+var
+   I : Integer ;
 begin
   ComandoLOG := 'CarregaFormasPagamento' ;
   fsECF.CarregaFormasPagamento ;
+
+  For I := 0 to FormasPagamento.Count-1 do
+    FormasPagamento[I].Descricao := DecodificarPaginaDeCodigoECF(
+      FormasPagamento[I].Descricao );
 end;
 
 procedure TACBrECF.LerTotaisFormaPagamento;
@@ -4068,7 +4103,9 @@ procedure TACBrECF.ProgramaFormaPagamento(var Descricao: String;
 begin
   ComandoLOG := 'ProgramaFormaPagamento( '+Descricao+' , '+
                     BoolToStr(PermiteVinculado)+' , '+Posicao+' )' ;
-  fsECF.ProgramaFormaPagamento(Descricao, PermiteVinculado, Posicao);
+
+  Descricao := CodificarPaginaDeCodigoECF( Descricao );
+  fsECF.ProgramaFormaPagamento( Descricao, PermiteVinculado, Posicao);
 end;
 
 function TACBrECF.GetRelatoriosGerenciaisClass: TACBrECFRelatoriosGerenciais;
@@ -4078,9 +4115,15 @@ begin
 end;
 
 procedure TACBrECF.CarregaRelatoriosGerenciais;
+var
+   I : Integer ;
 begin
   ComandoLOG := 'CarregaRelatoriosGerenciais' ;
   fsECF.CarregaRelatoriosGerenciais ;
+
+  For I := 0 to RelatoriosGerenciais.Count-1 do
+    RelatoriosGerenciais[I].Descricao := DecodificarPaginaDeCodigoECF(
+      RelatoriosGerenciais[I].Descricao );
 end;
 
 procedure TACBrECF.LerTotaisRelatoriosGerenciais ;
@@ -4109,7 +4152,8 @@ procedure TACBrECF.ProgramaRelatoriosGerenciais(var Descricao: String;
   Posicao: String);
 begin
   ComandoLOG := 'ProgramaRelatoriosGerenciais( '+Descricao+' , '+ Posicao+' )';
-  fsECF.ProgramaRelatorioGerencial(Descricao, Posicao);
+  Descricao := CodificarPaginaDeCodigoECF( Descricao ) ;
+  fsECF.ProgramaRelatorioGerencial( Descricao, Posicao);
 end;
 
 
@@ -4120,9 +4164,15 @@ begin
 end;
 
 procedure TACBrECF.CarregaComprovantesNaoFiscais;
+var
+   I : Integer ;
 begin
   ComandoLOG := 'CarregaComprovantesNaoFiscais' ;
   fsECF.CarregaComprovantesNaoFiscais ;
+
+  For I := 0 to ComprovantesNaoFiscais.Count-1 do
+    ComprovantesNaoFiscais[I].Descricao := DecodificarPaginaDeCodigoECF(
+       ComprovantesNaoFiscais[I].Descricao );
 end;
 
 procedure TACBrECF.LerTotaisComprovanteNaoFiscal;
@@ -4158,7 +4208,8 @@ procedure TACBrECF.ProgramaComprovanteNaoFiscal(var Descricao: String;
 begin
   ComandoLOG := 'ProgramaComprovanteNaoFiscal( '+Descricao+' , '+Tipo+' , '+
                     Posicao+' )';
-  fsECF.ProgramaComprovanteNaoFiscal(Descricao, Tipo, Posicao);
+  Descricao := CodificarPaginaDeCodigoECF( Descricao ) ;
+  fsECF.ProgramaComprovanteNaoFiscal( Descricao, Tipo, Posicao);
 end;
 
 
@@ -4176,9 +4227,15 @@ begin
 end;
 
 procedure TACBrECF.CarregaUnidadesMedida;
+var
+   I : Integer ;
 begin
   ComandoLOG := 'CarregaUnidadesMedida' ;
   fsECF.CarregaUnidadesMedida ;
+
+  For I := 0 to UnidadesMedida.Count-1 do
+    UnidadesMedida[I].Descricao := DecodificarPaginaDeCodigoECF(
+      UnidadesMedida[I].Descricao );
 end;
 
 function TACBrECF.GetUnidadesMedidaClass: TACBrECFUnidadesMedida;
@@ -4190,7 +4247,8 @@ end;
 procedure TACBrECF.ProgramaUnidadeMedida(var Descricao: String);
 begin
   ComandoLOG := 'ProgramaUnidadeMedida( '+Descricao+' )';
-  fsECF.ProgramaUnidadeMedida(Descricao);
+  Descricao := CodificarPaginaDeCodigoECF(Descricao) ;
+  fsECF.ProgramaUnidadeMedida( Descricao );
 end;
 
 procedure TACBrECF.RelatorioGerencial(Relatorio: TStrings; const Vias: Integer;
@@ -4245,42 +4303,65 @@ begin
 
 end;
 
-function TACBrECF.DecodificarTagFormatacao(cmd: AnsiString): AnsiString;
+function TACBrECF.DecodificarTagsFormatacao(AString: AnsiString): AnsiString;
 Var
-  I : Integer ;
+  IniTag, FimTag, LenTag : Integer ;
   ATag : String ;
+  Cmd  : AnsiString ;
 begin
-  Result := TraduzPaginaDeCodigo( cmd );
+  Result := CodificarPaginaDeCodigoECF( AString );
 
-  For I := low(ARRAY_TAGS) to High(ARRAY_TAGS) do
+  IniTag := 0;
+  FimTag := 0;
+  while True do
   begin
-     ATag   := ARRAY_TAGS[I] ;
-     Result := StringReplace(Result, ATag, GetFormatacao(ATag), [rfReplaceAll] );
+    IniTag := PosEx( '<', Result, FimTag + 1);
+    if IniTag = 0 then
+       break ;
+
+    FimTag := PosEx( '>', Result, IniTag + 1);
+    if FimTag < IniTag then
+       break;
+
+    LenTag := FimTag - IniTag + 1 ;
+    ATag   := LowerCase( copy( Result, IniTag, LenTag ) ) ;
+    Cmd    := TraduzirTag( ATag );
+
+    if Cmd <> ATag then
+    begin
+       Result := StuffString( Result, IniTag, LenTag, Cmd );
+       FimTag := FimTag + (Length(Cmd) - LenTag);
+    end ;
   end ;
 end;
 
-function TACBrECF.GetFormatacao(const ATag : String) : AnsiString ;
+function TACBrECF.TraduzirTag(const ATag : String) : AnsiString ;
 begin
-   Result := fsECF.GetFormatacao( ATag );
+   Result := fsECF.TraduzirTag( ATag );
 
    if Result = '' then
    begin
-     case AnsiIndexText( LowerCase(ATag), ARRAY_TAGS) of
+     case AnsiIndexText( ATag, ARRAY_TAGS) of
        0 : Result := StringOfChar('-', Colunas);
        1 : Result := StringOfChar('=', Colunas);
      end ;
    end ;
 end ;
 
-function TACBrECF.TraduzPaginaDeCodigo(ATexto: String): AnsiString;
+function TACBrECF.CodificarPaginaDeCodigoECF(ATexto: String): AnsiString;
 begin
-   Result := fsECF.TraduzPaginaDeCodigo(ATexto)
+   Result := fsECF.CodificarPaginaDeCodigoECF( ATexto )
 end;
+
+function TACBrECF.DecodificarPaginaDeCodigoECF(ATexto : AnsiString) : String ;
+begin
+  Result := fsECF.DecodificarPaginaDeCodigoECF( ATexto )
+end ;
 
 procedure TACBrECF.LinhaRelatorioGerencial(const Linha: AnsiString;
   const IndiceBMP: Integer);
 Var
-  Texto, Buffer : String ;
+  Texto, Buffer : AnsiString ;
   Lin   : Integer ;
   SL    : TStringList ;
 
@@ -4291,7 +4372,7 @@ Var
   begin
      ComandoLOG := 'LinhaRelatorioGerencial( "'+Texto+'", '+IntToStr(IndiceBMP)+' )';
 
-     Texto := DecodificarTagFormatacao( Texto );
+     Texto := DecodificarTagsFormatacao( Texto );
      try
         fsECF.LinhaRelatorioGerencial( Texto, IndiceBMP ) ;
      except
@@ -4320,7 +4401,7 @@ begin
   if MaxLinhasBuffer < 1 then
    begin
      ComandoLOG := 'LinhaRelatorioGerencial( "'+Linha+'", '+IntToStr(IndiceBMP)+' )';
-     fsECF.LinhaRelatorioGerencial( DecodificarTagFormatacao( Linha ), IndiceBMP ) ;
+     fsECF.LinhaRelatorioGerencial( DecodificarTagsFormatacao( Linha ), IndiceBMP ) ;
    end
   else
    begin

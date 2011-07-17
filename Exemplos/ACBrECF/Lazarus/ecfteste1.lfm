@@ -991,17 +991,20 @@ object Form1: TForm1
         Height = 137
         Top = 104
         Width = 241
-        Enabled = False
         Lines.Strings = (
           'TEXTO LIVRE'
           'Até 600 caracteres'
           'LINHA 3'
-          ''
           'LINHA 4'
-          ''
-          'LINHA 5'
-          ''
+          '</linha_simples>'
           'ÁÉÚÍÓÚáéíóúÇçÃÕãõ'
+          '</linha_dupla>'
+          '<e>EXPANDIDO</e>'
+          '<N>Negrito</n>'
+          '<S>Sublinhado</s>'
+          '<C>CONDENSADO</C>'
+          '<i>ITALICO</I>'
+          '<ean13>1234567890123</ean13>'
         )
         ScrollBars = ssAutoBoth
         TabOrder = 3

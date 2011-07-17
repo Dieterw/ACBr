@@ -540,6 +540,7 @@ TACBrECFClass = class
     fpOwner  : TComponent ;   { Componente ACBrECF }
     fpAtivo  : Boolean ;
     fpColunas: Integer;
+    fpPaginaDeCodigo : Word ;
     fpRFDID  : String;
     fpModeloStr: String;
     fpComandoEnviado: AnsiString;
@@ -729,6 +730,8 @@ TACBrECFClass = class
                                      write fsMsgPoucoPapel  ;
     property DescricaoGrande : Boolean read fsDescricaoGrande
                                       write fsDescricaoGrande ;
+
+    property PaginaDeCodigo : Word read fpPaginaDeCodigo write fpPaginaDeCodigo ;
 
     { Proriedades ReadOnly }
     Property Colunas  : Integer read fpColunas  ;
@@ -1025,8 +1028,9 @@ TACBrECFClass = class
       const APathArquivo: AnsiString;
       const AAlinhamento: TACBrAlinhamento = alCentro); virtual;
 
-    function GetFormatacao(const ATag: String): AnsiString; virtual;
-    function TraduzPaginaDeCodigo(ATexto: String): AnsiString; virtual;
+    function TraduzirTag(const ATag: String): AnsiString; virtual;
+    function CodificarPaginaDeCodigoECF(ATexto: String): AnsiString; virtual;
+    function DecodificarPaginaDeCodigoECF(ATexto: AnsiString): String; virtual;
 end ;
 
 implementation
@@ -1386,6 +1390,7 @@ begin
   { Variaveis Protected fp___ acessiveis pelas Classes filhas }
   fpAtivo                 := false ;
   fpEstado                := estNaoInicializada ;
+  fpPaginaDeCodigo        := 0 ;
   fpColunas               := 48 ;
   fpRFDID                 := '' ;
   fpModeloStr             := 'Não Definido' ;
@@ -2166,7 +2171,8 @@ begin
   ErroAbstract('FechaRelatorio');
 end;
 
-procedure TACBrECFClass.AbreNaoFiscal( CPF_CNPJ, Nome, Endereco: String );
+procedure TACBrECFClass.AbreNaoFiscal(CPF_CNPJ : String ; Nome : String ;
+   Endereco : String) ;
 begin
   ErroAbstract('AbreNaoFiscal');
 end;
@@ -3773,12 +3779,14 @@ begin
   ErroAbstract('ProgramarBitmapPromocional');
 end;
 
-function TACBrECFClass.GetFormatacao(const ATag: String): AnsiString;
+function TACBrECFClass.TraduzirTag(const ATag: String): AnsiString;
 begin
   {*************************************************
 
     TAGS ACEITAS
     ============
+      </linha_simples>    - ------------------...
+      </linha_dupla>      - ==================...
       <e></e>             - Expandido
       <n></n>             - Negrito
       <s></s>             - Sublinhado
@@ -3804,9 +3812,21 @@ begin
   Result := EmptyStr;
 end;
 
-function TACBrECFClass.TraduzPaginaDeCodigo(ATexto: String): AnsiString;
+function TACBrECFClass.CodificarPaginaDeCodigoECF(ATexto: String): AnsiString;
 begin
-  Result := ACBrStrToAnsi( ATexto ) ;
+  if fpPaginaDeCodigo > 0 then
+     Result := TranslateString( ACBrStrToAnsi( ATexto ), fpPaginaDeCodigo )
+  else
+     Result := TiraAcentos( ATexto );
+end ;
+
+function TACBrECFClass.DecodificarPaginaDeCodigoECF(ATexto : AnsiString
+   ) : String ;
+begin
+  if fpPaginaDeCodigo > 0 then
+     Result := ACBrStr( TranslateString( ATexto, 0, fpPaginaDeCodigo ) )
+  else
+     Result := ACBrStr( ATexto ) ;
 end ;
 
 { TACBrECFDadosRZ }

@@ -190,6 +190,8 @@ TACBrECFFiscNET = class( TACBrECFClass )
     function GetErroAtoCotepe1704(pRet: Integer): string;
 
  protected
+    function TraduzirTag(const ATag: string): AnsiString; override;
+
     function GetDataHora: TDateTime; override ;
     function GetNumCupom: String; override ;
     function GetNumCCF: String; override ;
@@ -366,7 +368,7 @@ TACBrECFFiscNET = class( TACBrECFClass )
  end ;
 
 implementation
-Uses ACBrECF,
+Uses ACBrECF, ACBrConsts,
      {$IFDEF COMPILER6_UP} DateUtils, StrUtils{$ELSE} ACBrD5, SysUtils, Windows{$ENDIF},
      SysUtils, Math, IniFiles ;
 
@@ -611,6 +613,7 @@ begin
   fsMarcaECF := '';
   
   fpModeloStr := 'FiscNET' ;
+  fpPaginaDeCodigo := 850 ;
   fpColunas   := 57 ;
   fpMFD       := True ;
   fpTermica   := True ;
@@ -2462,7 +2465,8 @@ begin
   Result := StrToIntDef( FiscNETResposta.Params.Values['ValorInteiro'],0 ) ;
 end;
 
-procedure TACBrECFFiscNET.AbreNaoFiscal( CPF_CNPJ, Nome, Endereco: String );
+procedure TACBrECFFiscNET.AbreNaoFiscal(CPF_CNPJ : String ; Nome : String ;
+   Endereco : String) ;
 begin
   FiscNETComando.NomeComando := 'AbreCupomNaoFiscal' ;
   FiscNETComando.TimeOut     := 5 ;
@@ -3293,5 +3297,27 @@ begin
      Result := '';
   end;
 end;
+
+function TACBrECFFiscNET.TraduzirTag(const ATag : string) : AnsiString ;
+const
+  cOff = ESC + '!' + #0 ;
+
+  // <e></e>
+  cExpandido   = ESC + '!' + #32 ;
+
+  // <n></n>
+  cNegrito     = ESC + '!' + #8 ;
+begin
+
+  case AnsiIndexText( ATag, ARRAY_TAGS) of
+     -1: Result := ATag;
+     2 : Result := cExpandido;
+     3 : Result := cOff;
+     4 : Result := cNegrito;
+     5 : Result := cOff;
+  else
+     Result := '' ;
+  end;
+end ;
 
 end.

@@ -51,9 +51,20 @@ Uses ACBrD5, Windows ;
 const
   {* Unit ACBrBase *}
   ACBR_VERSAO = '0.9.0a';
-  CR = #13 ;      { Carriage Return, retorno de carro }
-  LF = #10 ;      { Line Feed, Pulo de Linha }
-  FF = #12 ;      { Form Feed, Pulo de Pagina }
+  NUL = #00  ;
+  ENQ = #05  ;
+  ACK = #06  ;
+  BELL= #07  ;
+  BS  = #08  ;
+  LF  = #10  ;
+  FF  = #12  ;
+  CR  = #13  ;
+  ESC = #27  ;
+  FS  = #28  ;
+  GS  = #29  ;
+  SI  = #15  ;
+  DC2 = #18  ;
+
   cTimeout = 3 ;  { Tempo PADRAO para msg de falha de comunicacao }
 
   ARRAY_TAGS: array[0..33] of String = ( '</linha_simples>', '</linha_dupla>',

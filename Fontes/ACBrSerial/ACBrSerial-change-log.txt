@@ -97,6 +97,18 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 17/07/2011
+-- ACBrECF --
+[+] Adicionada a propriedade PaginaDeCodigo. Se o seu valor for diferente de 0
+    o componente sempre fará a tradução para a página de código do ECF (por DSA)
+
+[+] Adicionado suporte a página de código do ECF. O componente agora aceita
+    caracteres acentuados e os traduz para a página de código nativa do ECF.
+    A leitura da resposta também é interpretada e traduzida para o comando de
+    String nativo do Delphi/Lazarus (Ansi ou UTF8)   (por DSA)
+
+[+] Adiconado suporte as TAGs de formatação em: Epson e FiscNet  (por DSA)
+
 Data: 14/07/2011
 -- ACBrECFDaruma --
 [+] Formatação de fontes do relatório gerencial e rodapé do cupom fiscal

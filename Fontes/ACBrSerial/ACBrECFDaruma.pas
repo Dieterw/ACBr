@@ -158,21 +158,9 @@ interface
 uses ACBrECFClass, ACBrDevice, ACBrUtil,
      Classes ;
 
-const  NUL = #00  ;
-       ENQ = #05  ;
-       ACK = #06  ;
-       BELL= #07  ;
-       BS  = #08  ;
-       LF  = #10  ;
-       CR  = #13  ;
-       ESC = #27  ;
-       FS  = #28  ;
-       GS  = #29  ;
-       FF  = #255 ;
-       SI  = #15  ;
-       DC2 = #18  ;
-
-       ARQ_MFD_DLL = 'Espelho_MFD.txt';
+const
+   ARQ_MFD_DLL = 'Espelho_MFD.txt';
+   cDELIMTADOR = #255 ;
 
   {$IFDEF LINUX}
    cLIB_Daruma = 'libDarumaFramework.so';
@@ -440,7 +428,7 @@ TACBrECFDaruma = class( TACBrECFClass )
       const APathArquivo: AnsiString;
       const AAlinhamento: TACBrAlinhamento = alCentro); override;
 
-    function GetFormatacao(const ATag: string): AnsiString; override;
+    function TraduzirTag(const ATag: string): AnsiString; override;
 
  end ;
 
@@ -1111,9 +1099,9 @@ begin
         Result := (LimpaRetorno(Retorno) <> '') 
      else
       begin
-        // Na Leitura da Memoria Fiscal, aguarda até chegar FF+CR
+        // Na Leitura da Memoria Fiscal, aguarda até chegar cDELIMTADOR+CR
         EndStr := RightStr(Retorno,5) ;
-        Result := (pos( FF+CR, EndStr ) > 0) ;
+        Result := (pos( cDELIMTADOR+CR, EndStr ) > 0) ;
       end ;
   end ;
 
@@ -1153,7 +1141,7 @@ begin
      else if fpMFD then
         Cmd := PreparaCmd( GS + ACK )
      else
-        Cmd := PreparaCmd( GS + FF ) ;   { Palavra de Status }
+        Cmd := PreparaCmd( GS + cDELIMTADOR ) ;   { Palavra de Status }
 
      try
         Sleep(100) ;
@@ -1691,7 +1679,7 @@ begin
 
       if fpEstado = estLivre then
       begin
-        RetCmd1 := EnviaComando( GS + FF ) ;
+        RetCmd1 := EnviaComando( GS + cDELIMTADOR ) ;
 
         if TestBit(StrToInt('$'+RetCmd1[5]),2) then
           fpEstado := estVenda
@@ -1714,7 +1702,7 @@ begin
   if fsNumVersao = '2000' then
      RetCmd := EnviaComando( GS + ENQ ) 
   else
-     RetCmd := EnviaComando( GS + FF ) ;
+     RetCmd := EnviaComando( GS + cDELIMTADOR ) ;
      
   Result := TestBit(StrToInt('$'+RetCmd[2]),3) ;
 end;
@@ -1730,7 +1718,7 @@ begin
    end
   else
    begin
-     RetCmd := EnviaComando( GS + FF ) ;
+     RetCmd := EnviaComando( GS + cDELIMTADOR ) ;
      Result := TestBit(StrToInt('$'+RetCmd[3]),0) or
                TestBit(StrToInt('$'+RetCmd[2]),0)  ;
    end
@@ -1906,9 +1894,9 @@ begin
 
   if fpMFD then
    begin
-     StrConsumidor := LeftStr(Consumidor.Documento,20) + FF +
-                      LeftStr(Consumidor.Nome,30) + FF +
-                      LeftStr(Consumidor.Endereco,79) + FF ;
+     StrConsumidor := LeftStr(Consumidor.Documento,20) + cDELIMTADOR +
+                      LeftStr(Consumidor.Nome,30) + cDELIMTADOR +
+                      LeftStr(Consumidor.Endereco,79) + cDELIMTADOR ;
 
      EnviaComando(FS + 'F' + #200 + StrConsumidor ) ;
      Consumidor.Enviado := True ;
@@ -1988,14 +1976,14 @@ Var RetCmd : AnsiString ;
 begin
   if fpMFD then
    begin
-     Observacao := LeftStr(Observacao,84) + FF ;
+     Observacao := LeftStr(Observacao,84) + cDELIMTADOR ;
      RetCmd := EnviaComando( FS + 'F' + #209 + CodFormaPagto +
                  IntToStrZero( Round( Valor * 100),12) + Observacao, 2) ;
      fsTotalAPagar := RoundTo( StrToFloatDef( copy(RetCmd,10,13),0 ) / 100, -2) ;
    end
   else
    begin
-     Observacao := LeftStr(Observacao,48) + FF ;
+     Observacao := LeftStr(Observacao,48) + cDELIMTADOR ;
 
      if fsNumVersao = '2000' then
         RetCmd := EnviaComando( ESC + #207 + CodFormaPagto +
@@ -2020,7 +2008,7 @@ begin
   begin
     EnviaComando(FS + 'F' + #228 +  CodFormaPagtoEstornar +
             CodFormaPagtoEfetivar + IntToStrZero( Round( Valor * 100),12) +
-            LeftStr( Observacao, 619 ) + FF);
+            LeftStr( Observacao, 619 ) + cDELIMTADOR);
   end ;
 end;
 
@@ -2060,7 +2048,7 @@ begin
     end ;
   end ;
 
-  Obs := StringReplace(Obs, #10, CR+LF, [rfReplaceAll]) + FF ;
+  Obs := StringReplace(Obs, #10, CR+LF, [rfReplaceAll]) + cDELIMTADOR ;
 
   AguardaImpressao := True ;
   if fpMFD then
@@ -2161,7 +2149,7 @@ begin
   begin
     Codigo    := padL(Codigo,14) ;
     Unidade   := padL(Unidade,3) ;
-    Descricao := TrimRight(LeftStr(Descricao,233)) + FF ;
+    Descricao := TrimRight(LeftStr(Descricao,233)) + cDELIMTADOR ;
 
     if DescricaoGrande then
       FlagDesc := '00'
@@ -2205,7 +2193,7 @@ begin
   if fsNumVersao = '2000' then
   begin
     Codigo      := padL(Codigo,18) ;    { Ajustando Tamanhos }
-    Descricao   := TrimRight(LeftStr(Descricao,200)) + FF ;
+    Descricao   := TrimRight(LeftStr(Descricao,200)) + cDELIMTADOR ;
     ValorStr    := IntToStrZero( Round(ValorUnitario * 1000), 10) ;
     QtdStr      := IntToStrZero( Round(Qtd * 1000), 8) ;
     Unidade     := padL(Unidade,2) ;
@@ -2256,7 +2244,7 @@ begin
 
     if StrToInt(NumVersao) >= 345 then
     begin
-      Descricao := TrimRight(LeftStr(Descricao,174)) + FF ;
+      Descricao := TrimRight(LeftStr(Descricao,174)) + cDELIMTADOR ;
 
       if RoundTo(Qtd,-2) <> Qtd then //Tem mais de 2 casas dec na QTD ?
       begin
@@ -2342,14 +2330,14 @@ begin
   ValStr     := IntToStrZero( Round(abs(Valor)*100),12 ) ;
 
   EnviaComando(ESC + 'b' + Banco) ;
-  EnviaComando(ESC + 'c' + Cidade + FF) ;
+  EnviaComando(ESC + 'c' + Cidade + cDELIMTADOR) ;
   EnviaComando(ESC + 'd' + DataStr ) ;
-  EnviaComando(ESC + 'f' + Favorecido + FF ) ;
+  EnviaComando(ESC + 'f' + Favorecido + cDELIMTADOR ) ;
   AguardaImpressao := True ;
   EnviaComando(ESC + 'v' + ValStr ) ;
 
   AguardaImpressao := True ;
-  EnviaComando(ESC + 't' + Observacao + FF ) ;
+  EnviaComando(ESC + 't' + Observacao + cDELIMTADOR ) ;
 end;
 
 procedure TACBrECFDaruma.CancelaImpressaoCheque;
@@ -3046,9 +3034,9 @@ begin
 
       AguardaImpressao := (Espera > 3) ;
       if fsTipoRel = 'V' then
-        EnviaComando( FS + 'F' + #213 + Buffer + FF, Espera )
+        EnviaComando( FS + 'F' + #213 + Buffer + cDELIMTADOR, Espera )
       else
-        EnviaComando( FS + 'F' + #231 + Buffer + FF, Espera ) ;
+        EnviaComando( FS + 'F' + #231 + Buffer + cDELIMTADOR, Espera ) ;
 
       { ficou apenas um LF sozinho ? }
       if (P = Colunas) and (RightStr( Buffer, 1) <> #10) and
@@ -3077,9 +3065,9 @@ begin
     if StrIsAlpha( Trim(CodFormaPagto) ) then
       CodFormaPagto := IntToStrZero(Ord(CodFormaPagto[1]) - 64,2) ;
 
-    StrConsumidor := LeftStr(Consumidor.Documento,20) + FF +
-                     LeftStr(Consumidor.Nome,30)      + FF +
-                     LeftStr(Consumidor.Endereco,79)  + FF ;
+    StrConsumidor := LeftStr(Consumidor.Documento,20) + cDELIMTADOR +
+                     LeftStr(Consumidor.Nome,30)      + cDELIMTADOR +
+                     LeftStr(Consumidor.Endereco,79)  + cDELIMTADOR ;
 
     EnviaComando(FS + 'F' + #212 + CodFormaPagto + '01' + COO + StrValor +
                    StrConsumidor ) ;
@@ -3500,7 +3488,9 @@ end;
 procedure TACBrECFDaruma.AbreNaoFiscal( CPF_CNPJ, Nome, Endereco: String );
 begin
   if fpMFD then
-    EnviaComando( FS + 'F' + #219 + Trim(CPF_CNPJ) + FF + Trim(Nome) + FF + Trim(Endereco) + FF) ;
+    EnviaComando( FS + 'F' + #219 + Trim(CPF_CNPJ) + cDELIMTADOR +
+                                    Trim(Nome)     + cDELIMTADOR +
+                                    Trim(Endereco) + cDELIMTADOR) ;
 
   fsRet244 := '' ;
 end;
@@ -3514,7 +3504,7 @@ begin
   else
      EnviaComando( ESC + #217 + CodCNF + StringOfChar('0',13) +
                    IntToStrZero( Round(Valor*100),12) +
-                   LeftStr(Obs,40) + FF ) ;
+                   LeftStr(Obs,40) + cDELIMTADOR ) ;
   fsRet244 := '' ;
 end;
 
@@ -3541,7 +3531,7 @@ begin
   if fpMFD then
      EnviaComando( FS + 'F' + #225 + CodFormaPagto +
                  IntToStrZero( Round( Valor * 100),12) +
-                 LeftStr(Observacao,84) + FF )
+                 LeftStr(Observacao,84) + cDELIMTADOR )
   else
      EfetuaPagamento(CodFormaPagto, Valor, Observacao, ImprimeVinculado);
   fsRet244 := '' ;
@@ -3559,7 +3549,7 @@ begin
     if IndiceBMP > 0 then
       Obs :=  ESC + 'B' + IntToStrZero(IndiceBMP, 1) + Obs;
 
-    EnviaComando( FS + 'F' + #226 + Obs + FF ) ;
+    EnviaComando( FS + 'F' + #226 + Obs + cDELIMTADOR ) ;
   end;
 
   fsEmPagamento := False;   { Linha adicionada por Marciano Lizzoni }
@@ -4277,8 +4267,8 @@ begin
       CmdBitmap := EmptyStr;
 
     EnviaComando( FS + 'F' + #227 +
-      IntToStrZero(Round(Valor * 100), 11) + LeftStr( CmdBitmap + Obs, 619) + FF
-    );
+      IntToStrZero(Round(Valor * 100), 11) + LeftStr( CmdBitmap + Obs, 619) +
+      cDELIMTADOR );
   end
   else
     Inherited Sangria(Valor, Obs, DescricaoCNF, DescricaoFPG, IndiceBMP);
@@ -4300,8 +4290,8 @@ begin
       CmdBitmap := EmptyStr;
 
     EnviaComando( FS + 'F' + #236 +
-      IntToStrZero(Round(Valor * 100), 11) + LeftStr( CmdBitmap + Obs, 619) + FF
-    );
+      IntToStrZero(Round(Valor * 100), 11) + LeftStr( CmdBitmap + Obs, 619) +
+      cDELIMTADOR );
   end
   else
      Inherited Suprimento(Valor, Obs, DescricaoCNF, DescricaoFPG, IndiceBMP);
@@ -4350,7 +4340,7 @@ begin
       if ( (fsModeloDaruma in [fs600, fs600USB]) and (StrToInt(fsNumVersao) > 10400) ) or
          ( (fsModeloDaruma in [fs700L, fs700H, fs700M]) and (StrToInt(fsNumVersao) > 10000) ) then
        begin
-         RetCmd   := EnviaComando(FS + 'F' + #244 + Operacao + Texto + FF, 10);
+         RetCmd   := EnviaComando(FS + 'F' + #244 + Operacao + Texto + cDELIMTADOR, 10);
          Resposta := copy(RetCmd, 10, Length(RetCmd) - 12);
          Result   := True;
          if (Operacao = 'V') then
@@ -4947,7 +4937,7 @@ begin
   EnviaComando( FS + 'F' + #216);
 end;
 
-function TACBrECFDaruma.GetFormatacao(const ATag: string): AnsiString;
+function TACBrECFDaruma.TraduzirTag(const ATag: string): AnsiString;
 const
   C_ON  = #1;
   C_OFF = #0;
@@ -5014,7 +5004,8 @@ const
   end;
 begin
 
-  case AnsiIndexText(AnsiLowerCase(ATag), ARRAY_TAGS) of
+  case AnsiIndexText( ATag, ARRAY_TAGS) of
+     -1: Result := ATag;
      2 : Result := cExpandidoOn;
      3 : Result := cExpandidoOff;
      4 : Result := cNegritoOn;

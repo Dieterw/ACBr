@@ -176,6 +176,8 @@ TACBrECFEpson = class( TACBrECFClass )
     property  Ret0907 : AnsiString read GetRet0907 ;
     procedure EnviaPAF;
  protected
+    function TraduzirTag(const ATag: string): AnsiString; override;
+
     function GetDataHora: TDateTime; override ;
     function GetNumCupom: String; override ;
     function GetNumCCF: String; override ;
@@ -363,7 +365,7 @@ TACBrECFEpson = class( TACBrECFClass )
 function EpsonCheckSum(Dados: AnsiString): AnsiString;
 
 implementation
-Uses ACBrECF,
+Uses ACBrECF, ACBrConsts,
      {$IFDEF COMPILER6_UP}
        DateUtils, StrUtils
      {$ELSE}
@@ -915,10 +917,6 @@ begin
   fsUsuarioAtual    := '' ;
   fsDataHoraSB      := now ;
   fsSubModeloECF    := '' ;
-  fpModeloStr := 'Epson' ;
-  fpMFD       := True ;
-  fpTermica   := True ;
-  fpIdentificaConsumidorRodape := True ;
   fsRet0906   := '' ;
   fsRet0907   := '' ;
   fsPAF1      := '' ;
@@ -927,6 +925,14 @@ begin
   fsLeituraCMC7   := False ;
   fsVerificaChecksum := True ;
   fsEmPagamento := false ;
+
+  fpMFD       := True ;
+  fpTermica   := True ;
+  fpIdentificaConsumidorRodape := True ;
+
+  fpModeloStr := 'Epson' ;
+  fpRFDID     := 'EP' ;
+  fpPaginaDeCodigo := 850 ;
 
   xEPSON_Obter_Dados_MF_MFD := NIL ;
   xEPSON_Serial_Abrir_Porta := NIL ;
@@ -2512,7 +2518,8 @@ begin
   end ;
 end;
 
-procedure TACBrECFEpson.AbreNaoFiscal( CPF_CNPJ, Nome, Endereco: String );
+procedure TACBrECFEpson.AbreNaoFiscal(CPF_CNPJ : String ; Nome : String ;
+   Endereco : String) ;
 begin
   if Trim(CPF_CNPJ) <> '' then
      Consumidor.AtribuiConsumidor(CPF_CNPJ,Nome,Endereco);
@@ -3354,6 +3361,33 @@ begin
 
   Result := inherited AchaCNFDescricao( Descricao, BuscaExata, IgnorarCase );
 end;
+
+function TACBrECFEpson.TraduzirTag(const ATag : string) : AnsiString ;
+const
+  cOff = ESC + #0 ;
+
+  // <e></e>
+  cExpandido   = ESC + #4 ;
+
+  // <n></n>
+  cNegrito     = ESC + #1 ;
+
+  // <s></s>
+  cSublinhado  = ESC + #2 ;
+begin
+
+  case AnsiIndexText( ATag, ARRAY_TAGS) of
+     -1: Result := ATag;
+     2 : Result := cExpandido;
+     3 : Result := cOff;
+     4 : Result := cNegrito;
+     5 : Result := cOff;
+     6 : Result := cSublinhado;
+     7 : Result := cOff;
+  else
+     Result := '' ;
+  end;
+end ;
 
 end.
 

@@ -2015,16 +2015,16 @@ function TranslateString(const S: String; CP_Destino: Word; CP_Atual: Word = 0):
   begin
     L := WideCharToMultiByte(CodePage, 0, PWideChar(WS), -1, nil, 0, nil, nil);
     SetLength(Result, L - 1);
-    WideCharToMultiByte(CodePage, 0, PWideChar(WS), -1, PChar(Result), L - 1, nil, nil);
+    WideCharToMultiByte(CodePage, 0, PWideChar(WS), -1, PAnsiChar(Result), L - 1, nil, nil);
   end;
 
   function StringToWideStringEx(const S: String; CodePage: Word): WideString;
   var
     L: Integer;
   begin
-    L:= MultiByteToWideChar(CodePage, 0, PChar(S), -1, nil, 0);
+    L:= MultiByteToWideChar(CodePage, 0, PAnsiChar(S), -1, nil, 0);
     SetLength(Result, L - 1);
-    MultiByteToWideChar(CodePage, 0, PChar(S), -1, PWideChar(Result), L - 1);
+    MultiByteToWideChar(CodePage, 0, PAnsiChar(S), -1, PWideChar(Result), L - 1);
   end;
 begin
   Result := WideStringToStringEx( StringToWideStringEx(S, CP_Atual), CP_Destino);

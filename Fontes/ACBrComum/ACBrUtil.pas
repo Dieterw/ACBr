@@ -2009,7 +2009,7 @@ end;
 http://www.experts-exchange.com/Programming/Languages/Pascal/Delphi/Q_10147769.html
  ------------------------------------------------------------------------------}
 function TranslateString(const S: String; CP_Destino: Word; CP_Atual: Word = 0): String;
-  function WideStringToStringEx(const WS: WideString; CodePage: Word): String;
+  function WideStringToStringEx(const WS: WideString; CodePage: Word): AnsiString;
   var
     L: Integer;
   begin

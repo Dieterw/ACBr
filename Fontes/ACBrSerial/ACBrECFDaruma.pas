@@ -2561,7 +2561,7 @@ begin
             Indice := Indice + 34 ;
 
           FPagto.Indice    := IntToStrZero(Indice,2) ;
-          FPagto.Descricao := DecodificarPaginaDeCodigoECF( Descricao ) ;
+          FPagto.Descricao := Descricao ;
           FPagto.PermiteVinculado := (Token[1] = 'V');
 
           fpFormasPagamentos.Add( FPagto ) ;

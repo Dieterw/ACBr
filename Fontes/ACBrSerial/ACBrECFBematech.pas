@@ -1799,7 +1799,7 @@ begin
        FPagto := TACBrECFFormaPagamento.create ;
 
        FPagto.Indice    := IntToStrZero(Cont,2) ;
-       FPagto.Descricao := DecodificarPaginaDeCodigoECF( Descr );
+       FPagto.Descricao := Descr;
        FPagto.PermiteVinculado := (Cont > 1); {Apenas 1-Dinheiro nao permite}
        FPagto.Total := RoundTo( StrToFloatDef( BcdToAsc(
                            copy(StrRet,(Cont*10) - 9 + 833,10) ),0) / 10000, -4) ;

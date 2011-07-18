@@ -774,6 +774,7 @@ begin
 
   fpModeloStr := 'Daruma' ;
   fpRFDID     := 'DR' ;
+  fpPaginaDeCodigo := 1252 ;
 
   { Criando Lista de String com comandos de Impressao a Remover de Leituras }
   fsComandosImpressao[0]  := #0 ;

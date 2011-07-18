@@ -4058,6 +4058,7 @@ function TACBrECFBematech.TraduzirTag(const ATag: string): AnsiString;
 const
   C_ON  = #1;
   C_OFF = #0;
+  C_BARRA = #107;
 
   // <e></e>
   cExpandidoOn   = ESC + 'W' + C_ON;
@@ -4078,6 +4079,35 @@ const
   //<i></i>
   cItalicoOn  = ESC + '4';
   cITalicoOff = ESC + '5';
+
+  cEAN8     = GS + C_BARRA + #3; // <ean8></ean8>
+  cEAN13    = GS + C_BARRA + #2; // <ean13></ean13>
+  cSTD25    = ''; // <std></std>
+  cINTER25  = ''; // <inter></inter>
+  cCODE11   = ''; // <code11></code11>
+  cCODE39   = GS + C_BARRA + #4; // <code39></code39>
+  cCODE93   = GS + C_BARRA + #72; // <code93></code93>
+  cCODE128  = GS + C_BARRA + #73; // <code128></code128>
+  cUPCA     = GS + C_BARRA + #0; // <upca></upca>
+  cCODABAR  = GS + C_BARRA + #6; // <codabar></codabar>
+  cMSI      = GS + C_BARRA + #22; // <msi></msi>
+  cBarraFim = NUL;
+
+  function ConfigurarBarras(const ACodigo: AnsiString): AnsiString;
+  var
+    Largura: AnsiString;
+    Altura: AnsiString;
+    Mostrar: AnsiString;
+  begin
+    Largura := GS + #119 + IntToStr(ConfigBarras.Altura);
+    Altura  := GS + #104 + IntToStr(ConfigBarras.LarguraLinha);
+
+    if ConfigBarras.MostrarCodigo then
+      Mostrar := GS + #72 + '1'
+    else
+      Mostrar := GS + #72 + '0';
+    Result := Largura + Altura + Mostrar + ACodigo;
+  end;
 begin
 
   case AnsiIndexText( ATag, ARRAY_TAGS) of
@@ -4092,6 +4122,28 @@ begin
      9 : Result := cCondensadoOff;
      10: Result := cItalicoOn;
      11: Result := cITalicoOff;
+     12: Result := ConfigurarBarras(cEAN8);
+     13: Result := cBarraFim;
+     14: Result := ConfigurarBarras(cEAN13);
+     15: Result := cBarraFim;
+     16: Result := ConfigurarBarras(cSTD25);
+     17: Result := cBarraFim;
+     18: Result := ConfigurarBarras(cINTER25);
+     19: Result := cBarraFim;
+     20: Result := ConfigurarBarras(cCODE11);
+     21: Result := cBarraFim;
+     22: Result := ConfigurarBarras(cCODE39);
+     23: Result := cBarraFim;
+     24: Result := ConfigurarBarras(cCODE93);
+     25: Result := cBarraFim;
+     26: Result := ConfigurarBarras(cCODE128);
+     27: Result := cBarraFim;
+     28: Result := ConfigurarBarras(cUPCA);
+     29: Result := cBarraFim;
+     30: Result := ConfigurarBarras(cCODABAR);
+     31: Result := cBarraFim;
+     32: Result := ConfigurarBarras(cMSI);
+     33: Result := cBarraFim;
   else
      Result := '' ;
   end;

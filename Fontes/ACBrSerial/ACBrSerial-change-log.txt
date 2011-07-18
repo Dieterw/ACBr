@@ -99,7 +99,9 @@ Símbolo : Significado
 
 Data: 18/07/2011
 -- ACBrECF --
+-- ACBrECFBematech --
 [+] Adicionado o suporte a tags de formatação ao rodapé do comprovante não fiscal
+[+] Adicionado o suporte a códigos de barras por tags para a bematech
     (por: Régys Silveira)
 
 Data: 17/07/2011

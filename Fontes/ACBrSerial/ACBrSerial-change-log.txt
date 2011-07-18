@@ -97,6 +97,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 18/07/2011
+-- ACBrECF --
+[+] Adicionado o suporte a tags de formatação ao rodapé do comprovante não fiscal
+    (por: Régys Silveira)
+
 Data: 17/07/2011
 -- ACBrECF --
 [+] Adicionada a propriedade PaginaDeCodigo. Se o seu valor for diferente de 0

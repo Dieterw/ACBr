@@ -3502,7 +3502,7 @@ begin
 
   try
     Tratado := False;
-    fsECF.FechaNaoFiscal( Observacao, IndiceBMP ) ;
+    fsECF.FechaNaoFiscal( DecodificarTagsFormatacao( Observacao ), IndiceBMP ) ;
   except
      if Assigned( FOnErrorFechaNaoFiscal ) then
         FOnErrorFechaNaoFiscal(Tratado);

@@ -3544,7 +3544,7 @@ begin
   if fpMFD then
   begin
     Obs := StringReplace(Observacao, #10, CR+LF, [rfReplaceAll]) ;
-    Obs := LeftStr(Trim(Obs), 619);
+    Obs := LeftStr(Obs, 619);
 
     if IndiceBMP > 0 then
       Obs :=  ESC + 'B' + IntToStrZero(IndiceBMP, 1) + Obs;

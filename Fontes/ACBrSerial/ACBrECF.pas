@@ -5493,17 +5493,16 @@ var
     if AData > 0 then
     begin
       Relatorio.Add('');
-      Relatorio.Add(padC('DATA DE ACUMULACAO: ' + FormatDateTime('dd/mm/yyyy', AData), TamLin));
-      Relatorio.Add('');
+      Relatorio.Add('<n>DATA DE ACUMULACAO: ' + FormatDateTime('dd/mm/yyyy', AData) + '</n>');
     end;
 
     Relatorio.Add('Identificacao      Vl. Fiscal     Vl. Nao Fiscal');
-    Relatorio.Add(LinhaSimples(TamLin));
+    Relatorio.Add('</linha_simples>');
   end;
 
   procedure AddSubTotal;
   begin
-    Relatorio.Add(LinhaSimples(TamLin));
+    Relatorio.Add('</linha_simples>');
     Relatorio.Add(Format('Sub-Total          R$%12.2n R$%12.2n', [SubTTFiscal, SubTTNFiscal]));
     Relatorio.Add('');
     Relatorio.Add('');
@@ -5513,7 +5512,7 @@ var
   end;
 
 begin
-  TamLin := 48;//fsECF.Colunas;
+  TamLin := ECF.Colunas;
 
   // montagem do relatorio
   Relatorio := TStringList.Create;
@@ -5522,10 +5521,10 @@ begin
     Relatorio.Add('');
 
     if AIndiceRelatorio <= 0 then
-      Relatorio.Add(padC('MEIOS DE PAGAMENTO', TamLin));
+      Relatorio.Add('<e>   MEIOS DE PAGAMENTO</e>');
 
     if Trim(ATituloRelatorio) <> '' then
-      Relatorio.Add(padC(ATituloRelatorio, TamLin));
+      Relatorio.Add(PadC(ATituloRelatorio, TamLin));
 
     // ********* impressão do relatório acumulando por data e descricao ********
     FPAcumuladas := TACBrECFFormasPagamento.Create;
@@ -5603,7 +5602,7 @@ begin
       end;
 
       // somatorio total
-      Relatorio.Add(LinhaSimples(TamLin));
+      Relatorio.Add('</linha_simples>');
       Relatorio.Add(Format('TOTAL              R$%12.2n R$%12.2n', [SubTTFiscal, SubTTNFiscal]));
       Relatorio.Add('');
     finally
@@ -5643,7 +5642,7 @@ begin
     end;
 
     Relatorio.Add('NUMERO  TITULO  EMISSAO COO_DAV COO_CUP VL.TOTAL');
-    Relatorio.Add(LinhaSimples(TamanhoLinha));
+    Relatorio.Add('</linha_simples>');
 
     DAVsEmitidos.Ordenar;
     for I := 0 to DAVsEmitidos.Count - 1 do
@@ -5658,7 +5657,7 @@ begin
       Relatorio.Add('');
     end;
 
-    Relatorio.Add(LinhaSimples(TamanhoLinha));
+    Relatorio.Add('</linha_simples>');
     Relatorio.Add(Format('%d DAV listado(s)', [DAVsEmitidos.Count]));
 
     // impressão do relatório

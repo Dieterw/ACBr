@@ -1939,6 +1939,7 @@ function TACBrECF.GetClicheClass: AnsiString;
 begin
   ComandoLOG := 'Cliche' ;
   Result := StringReplace(fsECF.Cliche,#0,'',[rfReplaceAll]) ;  // remove eventuais #0
+  Result := DecodificarPaginaDeCodigoECF( Result );
 end;
 
 function TACBrECF.GetUsuarioAtualClass: String;

@@ -203,6 +203,7 @@ TACBrECFNaoFiscal = class( TACBrECFClass )
     fsReducoesZ : Integer ;
     fsLeiturasX : Integer ;
     fsCuponsCancelados : Integer ;
+    fsCuponsCanceladosTotal : Double;
     fsCOOInicial : Integer ;
     fsCOOFinal   : Integer ;
     fsNumCupom   : Integer ;
@@ -232,6 +233,7 @@ TACBrECFNaoFiscal = class( TACBrECFClass )
     fswReducoesZ : Integer ;
     fswLeiturasX : Integer ;
     fswCuponsCancelados : Integer ;
+    fswCuponsCanceladosTotal : Double;
     fswCOOInicial : Integer ;
     fswCOOFinal   : Integer ;
     fswNumCupom   : Integer ;
@@ -525,6 +527,7 @@ begin
   fsSubTotal  := 0 ;
   fsTotalPago := 0 ;
   fsCuponsCancelados := 0 ;
+  fsCuponsCanceladosTotal := 0;
 
   fsCmdImpCondensado        := cCmdImpCondensado ;
   fsCmdImpExpandidoUmaLinha := cCmdImpExpandidoUmaLinha ;
@@ -868,6 +871,7 @@ begin
   fsTotalPago := 0 ;
   fsSubTotal  := 0 ;
   fsCuponsCancelados := 0 ;
+  fsCuponsCanceladosTotal := 0;
   fsVendaBruta := 0 ;
   fsNumCER := 0 ;
 
@@ -997,6 +1001,7 @@ begin
   end;
 
   fsCuponsCancelados := fsCuponsCancelados + 1 ;
+  fsCuponsCanceladosTotal := fsCuponsCanceladosTotal + Subtotal;
   { Removendo do TotalDiario por Aliquotas }
   For A := 0 to fsItensCupom.Count - 1 do
      with TACBrECFNaoFiscalItemCupom( fsItensCupom[A] ) do
@@ -1210,7 +1215,7 @@ begin
 
   try
      fpEstado    := estLivre ;
-     fsSubTotal  := 0.0;
+     //fsSubTotal  := 0.0;comentado para poder saber o valor do cancelado depois
      fsTotalPago := 0.0;
 
      GravaArqINI ;
@@ -1734,6 +1739,7 @@ begin
      Ini.WriteFloat('Variaveis','SubTotal',SubTotal) ;
      Ini.WriteFloat('Variaveis','TotalPago',TotalPago) ;
      Ini.WriteInteger('Variaveis','CuponsCancelados',fsCuponsCancelados) ;
+     Ini.WriteFloat('Variaveis', 'CuponsCanceladosTotal', fsCuponsCanceladosTotal);
      Ini.WriteString('Variaveis','Operador',Operador) ;
 
      if PrimeiraVez then
@@ -1995,6 +2001,7 @@ begin
      fsTotalPago := Ini.ReadFloat('Variaveis','TotalPago',fsTotalPago) ;
      fsCuponsCancelados := Ini.ReadInteger('Variaveis','CuponsCancelados',
         fsCuponsCancelados) ;
+     fsCuponsCanceladosTotal := Ini.ReadFloat('Variaveis', 'CuponsCanceladosTotal', fsCuponsCanceladosTotal);
      Operador    := Ini.ReadString('Variaveis','Operador',Operador) ;
 
      fsCabecalho.Clear ;
@@ -2354,6 +2361,9 @@ begin
         Total := RoundTo(Total + TotalDia,-2) ;
      end ;
 
+     Add( padS('Total Cancelado R$|'+FormatFloat('###,###,##0.00', fsCuponsCanceladosTotal),
+        Colunas,'|') ) ;
+
      Add( padS('T O T A L   R$|'+FormatFloat('###,###,##0.00',Total),
         Colunas,'|') ) ;
 
@@ -2446,6 +2456,7 @@ begin
   fsReducoesZ  := fswReducoesZ ;
   fsLeiturasX  := fswLeiturasX ;
   fsCuponsCancelados := fswCuponsCancelados ;
+  fsCuponsCanceladosTotal := fswCuponsCanceladosTotal;
   fsCOOInicial := fswCOOInicial ;
   fsCOOFinal   := fswCOOFinal ;
   fsNumCupom   := fswNumCupom ;
@@ -2474,6 +2485,7 @@ begin
   fswReducoesZ  := fsReducoesZ ;
   fswLeiturasX  := fsLeiturasX ;
   fswCuponsCancelados := fsCuponsCancelados ;
+  fswCuponsCanceladosTotal := fsCuponsCanceladosTotal;
   fswCOOInicial := fsCOOInicial ;
   fswCOOFinal   := fsCOOFinal ;
   fswNumCupom   := fsNumCupom ;

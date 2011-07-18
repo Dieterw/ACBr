@@ -2015,16 +2015,28 @@ function TranslateString(const S: String; CP_Destino: Word; CP_Atual: Word = 0):
   begin
     L := WideCharToMultiByte(CodePage, 0, PWideChar(WS), -1, nil, 0, nil, nil);
     SetLength(Result, L - 1);
-    WideCharToMultiByte(CodePage, 0, PWideChar(WS), -1, PAnsiChar(Result), L - 1, nil, nil);
+    {$IFDEF UNICODE}
+     WideCharToMultiByte(CodePage, 0, PWideChar(WS), -1, PAnsiChar(AnsiString(Result)), L - 1, nil, nil);
+    {$ELSE}
+     WideCharToMultiByte(CodePage, 0, PWideChar(WS), -1, PChar(Result), L - 1, nil, nil);
+    {$ENDIF}
   end;
 
   function StringToWideStringEx(const S: String; CodePage: Word): WideString;
   var
     L: Integer;
   begin
-    L:= MultiByteToWideChar(CodePage, 0, PAnsiChar(S), -1, nil, 0);
+    {$IFDEF UNICODE}
+     L:= MultiByteToWideChar(CodePage, 0, PAnsiChar(AnsiString(S)), -1, nil, 0);
+    {$ELSE}
+     L:= MultiByteToWideChar(CodePage, 0, PChar(S), -1, nil, 0);
+    {$ENDIF}
     SetLength(Result, L - 1);
-    MultiByteToWideChar(CodePage, 0, PAnsiChar(S), -1, PWideChar(Result), L - 1);
+    {$IFDEF UNICODE}
+     MultiByteToWideChar(CodePage, 0, PAnsiChar(AnsiString(S)), -1, PWideChar(Result), L - 1);
+    {$ELSE}
+     MultiByteToWideChar(CodePage, 0, PChar(S), -1, PWideChar(Result), L - 1);
+    {$ENDIF}
   end;
 begin
   Result := WideStringToStringEx( StringToWideStringEx(S, CP_Atual), CP_Destino);

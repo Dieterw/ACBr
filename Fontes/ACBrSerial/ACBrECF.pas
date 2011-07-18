@@ -5694,31 +5694,31 @@ begin
       Relatorio.Add('<e>IDENTIFICACAO DO PAF-ECF</e>');
 
     Relatorio.Add('</linha_dupla>');
-    Relatorio.Add(padC('LAUDO NUMERO: <n>' + IdentificacaoPaf.NumeroLaudo + '</n>', TamLin));
+    Relatorio.Add('LAUDO NUMERO: <n>' + IdentificacaoPaf.NumeroLaudo + '</n>');
     Relatorio.Add('</linha_dupla>');
 
     Relatorio.Add('');
-    Relatorio.Add(padC('<n>EMPRESA DESENVOLVEDORA</n>', TamLin));
+    Relatorio.Add('<n>EMPRESA DESENVOLVEDORA</n>');
     Relatorio.Add('</linha_simples>');
-    Relatorio.Add('<n>CNPJ........:</n> ' + IdentificacaoPaf.Empresa.CNPJ);
-    Relatorio.Add('<n>Razao Social:</n> ' + IdentificacaoPaf.Empresa.RazaoSocial);
-    Relatorio.Add('<n>Endereco....:</n> ' + IdentificacaoPaf.Empresa.Endereco);
-    Relatorio.Add('<n>Cidade/UF...:</n> ' + IdentificacaoPaf.Empresa.Cidade + '/' + IdentificacaoPaf.Empresa.Uf);
-    Relatorio.Add('<n>CEP.........:</n> ' + IdentificacaoPaf.Empresa.Cep);
-    Relatorio.Add('<n>Telefone....:</n> ' + IdentificacaoPaf.Empresa.Telefone);
-    Relatorio.Add('<n>Contato.....:</n> ' + IdentificacaoPaf.Empresa.Contato);
+    Relatorio.Add('CNPJ........: ' + IdentificacaoPaf.Empresa.CNPJ);
+    Relatorio.Add('Razao Social: ' + IdentificacaoPaf.Empresa.RazaoSocial);
+    Relatorio.Add('Endereco....: ' + IdentificacaoPaf.Empresa.Endereco);
+    Relatorio.Add('Cidade/UF...: ' + IdentificacaoPaf.Empresa.Cidade + '/' + IdentificacaoPaf.Empresa.Uf);
+    Relatorio.Add('CEP.........: ' + IdentificacaoPaf.Empresa.Cep);
+    Relatorio.Add('Telefone....: ' + IdentificacaoPaf.Empresa.Telefone);
+    Relatorio.Add('Contato.....: ' + IdentificacaoPaf.Empresa.Contato);
 
     Relatorio.Add('');
-    Relatorio.Add(padC('<n>IDENTIFICACAO DO PAF-ECF</n>', TamLin));
+    Relatorio.Add('<n>IDENTIFICACAO DO PAF-ECF</n>');
     Relatorio.Add('</linha_simples>');
-    Relatorio.Add('<n>Nome Comerc.:</n> ' + IdentificacaoPaf.Paf.Nome);
-    Relatorio.Add('<n>Versao......:</n> ' + IdentificacaoPaf.Paf.Versao);
-    Relatorio.Add('<n>Versao ER...:</n> ' + IdentificacaoPaf.VersaoER);
-    Relatorio.Add('<n>Princ. Exec.:</n> ' + IdentificacaoPaf.Paf.PrincipalExe.Nome);
-    Relatorio.Add('<n>MD5.........:</n> ' + IdentificacaoPaf.Paf.PrincipalExe.MD5);
+    Relatorio.Add('Nome Comerc.: ' + IdentificacaoPaf.Paf.Nome);
+    Relatorio.Add('Versao......: ' + IdentificacaoPaf.Paf.Versao);
+    Relatorio.Add('Versao ER...: ' + IdentificacaoPaf.VersaoER);
+    Relatorio.Add('Princ. Exec.: ' + IdentificacaoPaf.Paf.PrincipalExe.Nome);
+    Relatorio.Add('MD5.........: ' + IdentificacaoPaf.Paf.PrincipalExe.MD5);
 
     Relatorio.Add('');
-    Relatorio.Add(padC('<n>OUTROS ARQUIVOS UTILIZADOS</n>', TamLin));
+    Relatorio.Add('<n>OUTROS ARQUIVOS UTILIZADOS</n>');
     Relatorio.Add('</linha_simples>');
     for I := 0 to IdentificacaoPaf.OutrosArquivos.Count - 1 do
     begin
@@ -5727,13 +5727,13 @@ begin
     end;
 
     Relatorio.Add('');
-    Relatorio.Add(padC('<n>ARQ. LISTA AUTENTICADOS</n>', TamLin));
+    Relatorio.Add('<n>ARQ. LISTA AUTENTICADOS</n>');
     Relatorio.Add('</linha_simples>');
     Relatorio.Add(ExtractFileName(IdentificacaoPaf.ArquivoListaAutenticados.Nome));
     Relatorio.Add('MD5: ' + IdentificacaoPaf.ArquivoListaAutenticados.MD5);
 
     Relatorio.Add('');
-    Relatorio.Add(padC('<n>ECFS AUTORIZADOS</n>', TamLin));
+    Relatorio.Add('<n>ECFS AUTORIZADOS</n>');
     Relatorio.Add('</linha_simples>');
     for I := 0 to IdentificacaoPaf.ECFsAutorizados.Count - 1 do
       Relatorio.Add(IdentificacaoPaf.ECFsAutorizados[I].NumeroSerie);

@@ -5633,7 +5633,7 @@ begin
     Relatorio.Add('');
 
     if IndiceRelatorio <= 0 then
-      Relatorio.Add(padC('DAV EMITIDOS', TamanhoLinha));
+      Relatorio.Add('<e>      DAV EMITIDOS</e>');
 
     if Trim(TituloRelatorio) <> '' then
     begin

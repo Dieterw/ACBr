@@ -1040,6 +1040,7 @@ type
     procedure SetItem(Index: Integer; const Value: IRegistro75);
   public
     function New: IRegistro75;
+    function ExisteProduto(const AProduto: IRegistro75): Integer;
     property Items[Index: Integer]: IRegistro75 read GetItem write SetItem;
   end;
 
@@ -2280,7 +2281,7 @@ begin
             LFill(Registro60I[intFor60X].NumItem, 3) +
             RFill(Registro60I[intFor60X].CodProduto, 14) +
             LFill(Registro60I[intFor60X].Quantidade, 13, 3) +
-            LFill(Registro60I[intFor60X].ValorUnitario, 13, 3) +
+            LFill(Registro60I[intFor60X].ValorUnitario, 13) +
             LFill(Registro60I[intFor60X].BaseICMS, 12) +
             RFill(Registro60I[intFor60X].SitTributaria, 4) +
             LFill(Registro60I[intFor60X].ValorICMS, 12) +
@@ -4677,6 +4678,23 @@ function TRegistro75Lista.New: IRegistro75;
 begin
   Result := TRegistro75.Create;
   Add(Result);
+end;
+
+function TRegistro75Lista.ExisteProduto(
+  const AProduto: IRegistro75): Integer;
+var
+  I: Integer;
+begin
+  Result := -1;
+
+  for I := 0 to Count - 1 do
+  begin
+    if AProduto.CodProduto = Items[I].CodProduto then
+    begin
+      Result := I;
+      Exit;
+    end;
+  end;
 end;
 
 function TRegistro75Lista.GetItem(Index: Integer): IRegistro75;

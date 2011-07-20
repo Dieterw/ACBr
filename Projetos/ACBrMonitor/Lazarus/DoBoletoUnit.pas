@@ -174,26 +174,6 @@ begin
            end;
         end;
 
-        if IniBoletos.SectionExists('Conta') then
-        begin
-           MudouDados := True;
-           with Cedente do
-           begin
-             Conta         := IniBoletos.ReadString('CONTA','Conta','');
-             ContaDigito   := IniBoletos.ReadString('CONTA','DigitoConta','');
-             Agencia       := IniBoletos.ReadString('CONTA','Agencia','');
-             AgenciaDigito := IniBoletos.ReadString('CONTA','DigitoAgencia','');
-           end;
-
-           with FrmACBrMonitor do
-           begin
-              edtBOLConta.Text         := Cedente.Conta;
-              edtBOLDigitoConta.Text   := Cedente.ContaDigito;
-              edtBOLAgencia.Text       := Cedente.Agencia;
-              edtBOLDigitoAgencia.Text := Cedente.AgenciaDigito;
-              edtCodCliente.Text       := Cedente.CodigoCedente;
-           end;
-        end;
 
         if IniBoletos.SectionExists('Banco') then
         begin
@@ -230,6 +210,28 @@ begin
            else
               LayoutRemessa := c400;
         end;
+
+        if IniBoletos.SectionExists('Conta') then
+        begin
+           MudouDados := True;
+           with Cedente do
+           begin
+             Conta         := IniBoletos.ReadString('CONTA','Conta','');
+             ContaDigito   := IniBoletos.ReadString('CONTA','DigitoConta','');
+             Agencia       := IniBoletos.ReadString('CONTA','Agencia','');
+             AgenciaDigito := IniBoletos.ReadString('CONTA','DigitoAgencia','');
+           end;
+
+           with FrmACBrMonitor do
+           begin
+              edtBOLConta.Text         := Cedente.Conta;
+              edtBOLDigitoConta.Text   := Cedente.ContaDigito;
+              edtBOLAgencia.Text       := Cedente.Agencia;
+              edtBOLDigitoAgencia.Text := Cedente.AgenciaDigito;
+              edtCodCliente.Text       := Cedente.CodigoCedente;
+           end;
+        end;
+
 
         if MudouDados then
            FrmACBrMonitor.SalvarConfBoletos;

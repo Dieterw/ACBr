@@ -248,7 +248,7 @@ function LinhaDupla(Tamanho: Integer): string;
 function EAN13Valido( CodEAN13 : String ) : Boolean ;
 function EAN13_DV( CodEAN13 : String ) : String ;
 
-function TranslateString(const S: String; CP_Destino: Word; CP_Atual: Word = 0): String;
+function TranslateString(const S: AnsiString; CP_Destino: Word; CP_Atual: Word = 0): AnsiString;
 
 {$IFDEF MSWINDOWS}
 var xInp32 : function (wAddr: word): byte; stdcall;

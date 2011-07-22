@@ -188,6 +188,8 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
     Function VerificaFimLeitura(var Retorno: AnsiString;
        var TempoLimite: TDateTime) : Boolean ; override ;
     function VerificaFimImpressao(var TempoLimite: TDateTime) : Boolean ; override ;
+
+    function TraduzirTag(const ATag: string): AnsiString; override;
  public
     Constructor create( AOwner : TComponent  )  ;
     Destructor Destroy  ; override ;
@@ -294,11 +296,10 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
        NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos];
        Finalidade: TACBrECFFinalizaArqMFD = finMFD;
        TipoContador: TACBrECFTipoContador = tpcCOO  ) ; override ;
-
  end ;
 
 implementation
-Uses ACBrECF,
+Uses ACBrECF, ACBrConsts,
      SysUtils,
    {$IFDEF COMPILER6_UP} DateUtils, StrUtils, {$ELSE} ACBrD5, Windows,{$ENDIF}
      Math;
@@ -2545,6 +2546,51 @@ begin
   Info.Secao := Registrador ;
   Info.Dados := Result ;
   fsCache34.Add( Info ) ;
+end;
+
+function TACBrECFSwedaSTX.TraduzirTag(const ATag: string): AnsiString;
+const
+  INI = #22;
+  OFF = INI + #175;
+
+  // <e></e>
+  cExpandidoOn   = INI + #171;
+  cExpandidoOff  = OFF;
+
+  // <n></n>
+  cNegritoOn     = INI + #167;
+  cNegritoOff    = OFF;
+
+  // <s></s>
+  cSublinhadoOn  = INI + #163;
+  cSublinhadoOff = OFF;
+
+  // <c></c>
+  cCondensadoOn  = INI + #65;
+  cCondensadoOff = OFF;
+
+  //<i></i>
+  cItalicoOn  = '';
+  cITalicoOff = '';
+
+begin
+
+  case AnsiIndexText( ATag, ARRAY_TAGS) of
+     -1: Result := ATag;
+     2 : Result := cExpandidoOn;
+     3 : Result := cExpandidoOff;
+     4 : Result := cNegritoOn;
+     5 : Result := cNegritoOff;
+     6 : Result := cSublinhadoOn;
+     7 : Result := cSublinhadoOff;
+     8 : Result := cCondensadoOn;
+     9 : Result := cCondensadoOff;
+     10: Result := cItalicoOn;
+     11: Result := cITalicoOff;
+  else
+     Result := '' ;
+  end;
+
 end;
 
 { TACBrECFSwedaInfo34A1 }

@@ -97,6 +97,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 22/07/2011
+-- ACBrSwedaSTX --
+[+] Adicionado o suporte a tags de formatação para a sweda
+    (por: Carlos Nascimento / Régys Silveira)
+
 Data: 18/07/2011
 -- ACBrECF --
 -- ACBrECFBematech --

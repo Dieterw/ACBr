@@ -1235,10 +1235,18 @@ begin
 
   (**)GerarCTRB;
   (**)GerarOCC;
-  (**)GerarValePed;
-  (**)GerarVeic;
+
+  // Alterado por Italo em 22/07/2011
+  if CTe.Rodo.Lota = ltSim
+   then begin
+    (**)GerarValePed;
+    (**)GerarVeic;
+   end;
   (**)GerarLacre;
-  (**)GerarMoto;
+
+  // Alterado por Italo em 22/07/2011
+  if CTe.Rodo.Lota = ltSim then
+   (**)GerarMoto;
 
   Gerador.wGrupo('/rodo');
 end;
@@ -1295,13 +1303,14 @@ procedure TCTeW.GerarValePed;
 var
  i: Integer;
 begin
-  if (CTe.Rodo.valePed.nroRE<>'')
-   then begin
-    Gerador.wGrupo('valePed', 'L23');
-    Gerador.wCampo(tcStr, 'L24', 'nroRE     ', 05, 09, 0, CTe.Rodo.valePed.nroRE, '');
-    Gerador.wCampo(tcDe2, 'L25', 'vTValePed ', 01, 15, 0, CTe.Rodo.valePed.vTValePed, '');
-    Gerador.wCampo(tcStr, 'L26', 'respPg    ', 01, 01, 1, RspPagPedagioToStr(CTe.Rodo.valePed.respPg), '');
+  Gerador.wGrupo('valePed', 'L23');
+  Gerador.wCampo(tcStr, 'L24', 'nroRE     ', 05, 09, 0, CTe.Rodo.valePed.nroRE, '');
+  Gerador.wCampo(tcDe2, 'L25', 'vTValePed ', 01, 15, 0, CTe.Rodo.valePed.vTValePed, '');
+  Gerador.wCampo(tcStr, 'L26', 'respPg    ', 01, 01, 1, RspPagPedagioToStr(CTe.Rodo.valePed.respPg), '');
 
+  // Alterado por Italo em 22/07/2011
+  if (CTe.Rodo.valePed.nroRE='')
+   then begin
     for i := 0 to CTe.Rodo.valePed.disp.Count - 1 do
     begin
       Gerador.wGrupo('disp', 'L27');
@@ -1314,8 +1323,9 @@ begin
     end;
     if CTe.Rodo.valePed.disp.Count > 990 then
       Gerador.wAlerta('L27', 'disp', '', ERR_MSG_MAIOR_MAXIMO + '990');
-    Gerador.wGrupo('/valePed');
    end;
+
+  Gerador.wGrupo('/valePed');
 end;
 
 procedure TCTeW.GerarVeic;

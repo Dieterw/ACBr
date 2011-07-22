@@ -394,12 +394,18 @@ type
     FidLote: Integer;
     Fversao: String;
     FCCe   : TCCeNFe;
+    FcStat: Integer;
+    FxMotivo: String;
+    FTpAmb: TpcnTipoAmbiente;
   public
     constructor Create(AOwner : TComponent; ACCe : TCCeNFe);reintroduce;
     function Executar: Boolean; override;
 
     property idLote: Integer               read FidLote      write FidLote;
     property versao: String                read Fversao      write Fversao;
+    property cStat: Integer                read FcStat;
+    property xMotivo: String               read FxMotivo;
+    property TpAmb: TpcnTipoAmbiente       read FTpAmb;
   end;
 
   TWebServices = Class(TWebServicesBase)
@@ -2935,8 +2941,12 @@ begin
     if Assigned(TACBrNFe( FACBrNFe ).OnGerarLog) then
        TACBrNFe( FACBrNFe ).OnGerarLog(aMsg);
 
-    FMsg   := CCeRetorno.xMotivo;
-    Result := (CCeRetorno.cStat = 128) or (CCeRetorno.cStat = 135) or (CCeRetorno.cStat = 136);
+    FcStat   := CCeRetorno.cStat;
+    FxMotivo := CCeRetorno.xMotivo;
+    FMsg     := CCeRetorno.xMotivo;
+    FTpAmb   := CCeRetorno.tpAmb;
+
+    Result   := (CCeRetorno.cStat = 128) or (CCeRetorno.cStat = 135) or (CCeRetorno.cStat = 136);
 
     FPathArqResp := IntToStr(FCCe.idLote) + '-cce.xml';
     if FConfiguracoes.Geral.Salvar then

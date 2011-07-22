@@ -2008,39 +2008,86 @@ end;
   Traduz uma String de uma página de código para outra
 http://www.experts-exchange.com/Programming/Languages/Pascal/Delphi/Q_10147769.html
  ------------------------------------------------------------------------------}
-function TranslateString(const S: String; CP_Destino: Word; CP_Atual: Word = 0): String;
-  function WideStringToStringEx(const WS: WideString; CodePage: Word): AnsiString;
-  var
-    L: Integer;
-  begin
-    L := WideCharToMultiByte(CodePage, 0, PWideChar(WS), -1, nil, 0, nil, nil);
-    SetLength(Result, L - 1);
-    {$IFDEF UNICODE}
-     WideCharToMultiByte(CodePage, 0, PWideChar(WS), -1, PAnsiChar(AnsiString(Result)), L - 1, nil, nil);
-    {$ELSE}
-     WideCharToMultiByte(CodePage, 0, PWideChar(WS), -1, PChar(Result), L - 1, nil, nil);
-    {$ENDIF}
-  end;
+function TranslateString(const S: AnsiString; CP_Destino: Word; CP_Atual: Word = 0): AnsiString;
+{$IFDEF USE_LConvEncoding}
+ Var
+   AnsiStr : AnsiString ;
+   UTF8Str : String ;
+ begin
+   if CP_Atual = 0 then
+   begin
+     UTF8Str := AnsiToUtf8( S );
 
-  function StringToWideStringEx(const S: String; CodePage: Word): WideString;
-  var
-    L: Integer;
-  begin
-    {$IFDEF UNICODE}
-     L:= MultiByteToWideChar(CodePage, 0, PAnsiChar(AnsiString(S)), -1, nil, 0);
-    {$ELSE}
-     L:= MultiByteToWideChar(CodePage, 0, PChar(S), -1, nil, 0);
-    {$ENDIF}
-    SetLength(Result, L - 1);
-    {$IFDEF UNICODE}
-     MultiByteToWideChar(CodePage, 0, PAnsiChar(AnsiString(S)), -1, PWideChar(Result), L - 1);
-    {$ELSE}
-     MultiByteToWideChar(CodePage, 0, PChar(S), -1, PWideChar(Result), L - 1);
-    {$ENDIF}
-  end;
-begin
-  Result := WideStringToStringEx( StringToWideStringEx(S, CP_Atual), CP_Destino);
-end;
+     case CP_Destino of
+       437   : Result := UTF8ToCP437( UTF8Str ) ;
+       850   : Result := UTF8ToCP850( UTF8Str ) ;
+       852   : Result := UTF8ToCP852( UTF8Str ) ;
+       866   : Result := UTF8ToCP866( UTF8Str ) ;
+       874   : Result := UTF8ToCP874( UTF8Str ) ;
+       1250  : Result := UTF8ToCP1250( UTF8Str ) ;
+       1251  : Result := UTF8ToCP1251( UTF8Str ) ;
+       1252  : Result := UTF8ToCP1252( UTF8Str ) ;
+       1253  : Result := UTF8ToCP1253( UTF8Str ) ;
+       1254  : Result := UTF8ToCP1254( UTF8Str ) ;
+       1255  : Result := UTF8ToCP1255( UTF8Str ) ;
+       1256  : Result := UTF8ToCP1256( UTF8Str ) ;
+       1257  : Result := UTF8ToCP1257( UTF8Str ) ;
+       1258  : Result := UTF8ToCP1258( UTF8Str ) ;
+       28591 : Result := UTF8ToISO_8859_1( UTF8Str ) ;
+       28592 : Result := UTF8ToISO_8859_2( UTF8Str ) ;
+     else
+       Result := S;
+     end ;
+   end
+   else
+   begin
+     case CP_Atual of
+       437   : UTF8Str := CP437ToUTF8( S ) ;
+       850   : UTF8Str := CP850ToUTF8( S ) ;
+       852   : UTF8Str := CP852ToUTF8( S ) ;
+       866   : UTF8Str := CP866ToUTF8( S ) ;
+       874   : UTF8Str := CP874ToUTF8( S ) ;
+       1250  : UTF8Str := CP1250ToUTF8( S ) ;
+       1251  : UTF8Str := CP1251ToUTF8( S ) ;
+       1252  : UTF8Str := CP1252ToUTF8( S ) ;
+       1253  : UTF8Str := CP1253ToUTF8( S ) ;
+       1254  : UTF8Str := CP1254ToUTF8( S ) ;
+       1255  : UTF8Str := CP1255ToUTF8( S ) ;
+       1256  : UTF8Str := CP1256ToUTF8( S ) ;
+       1257  : UTF8Str := CP1257ToUTF8( S ) ;
+       1258  : UTF8Str := CP1258ToUTF8( S ) ;
+       28591 : UTF8Str := ISO_8859_1ToUTF8( S ) ;
+       28592 : UTF8Str := ISO_8859_2ToUTF8( S ) ;
+     else
+        UTF8Str := AnsiToUtf8( S );
+     end ;
+
+     Result := ACBrStrToAnsi( UTF8Str ) ;
+   end ;
+
+ end ;
+{$ELSE}
+   function WideStringToStringEx(const WS: WideString; CodePage: Word): AnsiString;
+   var
+     L: Integer;
+   begin
+     L := WideCharToMultiByte(CodePage, 0, PWideChar(WS), -1, nil, 0, nil, nil);
+     SetLength(Result, L - 1);
+     WideCharToMultiByte(CodePage, 0, PWideChar(WS), -1, PAnsiChar(Result), L - 1, nil, nil);
+   end;
+
+   function StringToWideStringEx(const S: AnsiString; CodePage: Word): WideString;
+   var
+     L: Integer;
+   begin
+     L:= MultiByteToWideChar(CodePage, 0, PAnsiChar(S), -1, nil, 0);
+     SetLength(Result, L - 1);
+     MultiByteToWideChar(CodePage, 0, PAnsiChar(S), -1, PWideChar(Result), L - 1);
+   end;
+ begin
+   Result := WideStringToStringEx( StringToWideStringEx(S, CP_Atual), CP_Destino);
+ end;
+{$ENDIF}
 
 
 //*****************************************************************************************

@@ -2433,8 +2433,7 @@ begin
     ((ACBrECF1.Modelo <> ecfNenhum) or
     (cbECFModelo.Text = 'Procurar'));
   chECFArredondaPorQtd.Enabled := bECFAtivar.Enabled;
-  chECFArredondaMFD.Enabled := ((bECFAtivar.Enabled) and
-                                (cbECFModelo.Text = 'ecfDaruma'));
+  chECFArredondaMFD.Enabled := bECFAtivar.Enabled;
   chECFDescrGrande.Enabled := bECFAtivar.Enabled;
   cbECFPorta.Enabled := bECFAtivar.Enabled;
   sedECFTimeout.Enabled := bECFAtivar.Enabled;

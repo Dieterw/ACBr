@@ -47,6 +47,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data:  26/07/2011  - Ver: 1.32
+[+] Implementado recurso para que os TEF Discados, indentifique se o tipo
+    da transação é Débito ou Crédito.
+    por (Isaque Pinheiro)
+
 Data:  01/06/2011  - Ver: 1.32
 -- ACBrTEFDVeSPague --
 [*] Diversas correções implementadas na conclusão do processo de homologação

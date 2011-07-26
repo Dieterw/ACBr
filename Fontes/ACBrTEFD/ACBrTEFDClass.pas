@@ -1455,6 +1455,10 @@ begin
 
       fpParcelas.Add(Parc);
    end;
+
+   // Tipo da transação se foi Crédito ou Débito
+   fpDebito  := (fpTipoTransacao >= 20) and (fpTipoTransacao <= 25) ;
+   fpCredito := (fpTipoTransacao >= 10) and (fpTipoTransacao <= 12) ;
 end;
 
 function TACBrTEFDRespTXT.GetTransacaoAprovada : Boolean;

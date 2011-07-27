@@ -1151,6 +1151,10 @@ begin
      if P = 0 then
         P := min( Length( Texto ), Colunas ) + 1 ;
 
+     // somar 2 quando encontrar uma tag para não quebrar ela
+     if (Copy(Texto, P-1, 1) = '<') or (Copy(Texto, P-2, 2) = '</') then
+        inc(P, 2);
+
      I := 0 ;
      if copy(Texto,P,1) = #10 then   // Pula #10 ?
         I := 1 ;

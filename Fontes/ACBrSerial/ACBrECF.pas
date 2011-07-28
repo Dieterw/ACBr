@@ -3686,7 +3686,7 @@ begin
      ComandoLOG := 'LeituraMemoriaFiscalSerial( '+IntToStr(ReducaoInicial)+' , '+
                        IntToStr(ReducaoFinal)+' , Linhas ,'+
                        BoolToStr(Simplificada)+' )';
-  LeituraMemoriaFiscalSerial( ReducaoInicial, ReducaoFinal, Linhas,
+  fsECF.LeituraMemoriaFiscalSerial( ReducaoInicial, ReducaoFinal, Linhas,
                                     Simplificada ) ;
 
   Linhas.Text := DecodificarPaginaDeCodigoECF( Linhas.Text );

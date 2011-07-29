@@ -158,13 +158,15 @@ type
     FFinalidade: TCodFinalidade;
     FRegistro1X: IRegistro1X;
     FRegistro5X: IRegistro5XLista;
+    FRegistro55: IRegistro55Lista;
     FRegistro60M: IRegistro60MList;
-    FRegistro75: IRegistro75Lista;
     FRegistro60R: IRegistro60RLista;
     FRegistro61: IRegistro61Lista;
     FRegistro61R: IRegistro61RLista;
-    FRegistro55: IRegistro55Lista;
     FRegistro74: IRegistro74Lista;
+    FRegistro75: IRegistro75Lista;
+    FRegistro85: IRegistro85Lista;
+    FRegistro86: IRegistro86Lista;
     FArquivoMagnetico: TArquivoMagnetico;
     function GetRegistro60M: IRegistro60MList;
     function GetRegistro60R: IRegistro60RLista;
@@ -180,6 +182,8 @@ type
     function GetRegistro61: IRegistro61Lista;
     function GetRegistro61R: IRegistro61RLista;
     function GetRegistro75: IRegistro75Lista;
+    function GetRegistro85: IRegistro85Lista;
+    function GetRegistro86: IRegistro86Lista;
     function GetVersao: string;
     procedure SetRegistro60M(const Valor: IRegistro60MList);
     procedure SetRegistro60R(const Valor: IRegistro60RLista);
@@ -194,6 +198,8 @@ type
     procedure SetRegistro61(const Valor: IRegistro61Lista);
     procedure SetRegistro61R(const Valor: IRegistro61RLista);
     procedure SetRegistro75(const Valor: IRegistro75Lista);
+    procedure SetRegistro85(const Valor: IRegistro85Lista);
+    procedure SetRegistro86(const Valor: IRegistro86Lista);
     function GetOnErro: TErrorEvent;
     procedure SetOnErro(const Value: TErrorEvent);
     procedure GerarErro(MensagemErro: String);
@@ -208,6 +214,7 @@ type
     function Registro_71: string;
     function Registro_74: string;
     function Registro_75: string;
+    function Registro_85: string;
     function Registro_90: string;
     function VerificaCorrespondente(aProduto: string): Boolean;
   public
@@ -237,6 +244,8 @@ type
     property Registro61R: IRegistro61RLista read GetRegistro61R write SetRegistro61R;
     property Registro55: IRegistro55Lista read GetRegistro55 write SetRegistro55;
     property Registro75: IRegistro75Lista read GetRegistro75 write SetRegistro75;
+    property Registro85: IRegistro85Lista read GetRegistro85 write SetRegistro85;
+    property Registro86: IRegistro86Lista read GetRegistro86 write SetRegistro86;
     property Registro74: IRegistro74Lista read GetRegistro74 write SetRegistro74;
   end;
 
@@ -1044,6 +1053,146 @@ type
     property Items[Index: Integer]: IRegistro75 read GetItem write SetItem;
   end;
 
+  TRegistro85 = class(TSintegraObject, IRegistro85)
+  private
+    fDeclaracao: string;
+    fDataDeclaracao: TDateTime;
+    fNaturezaExportacao: string;
+    fRegistroExportacao: String;
+    fDataRegistro: TDateTime;
+    fConhecimento:string;
+    fDataConhecimento:TDateTime;
+    fTipoConhecimento: String;
+    fPais:string;
+    fDataAverbacao:TDateTime;
+    fNumeroNotaFiscal:String;
+    fDataNotaFiscal:TDateTime;
+    fModelo: string;
+    fSerie: string;
+    function GetConhecimento: string;
+    function GetDataAverbacao: TDateTime;
+    function GetDataConhecimento: TDateTime;
+    function GetDataDeclaracao: TDateTime;
+    function GetDataNotaFiscal: TDateTime;
+    function GetDataRegistro: TDateTime;
+    function GetDeclaracao: String;
+    function GetModelo: string;
+    function GetNaturezaExportacao: string;
+    function GetNumeroNotaFiscal: string;
+    function GetPais: string;
+    function GetRegistroExportacao: String;
+    function GetSerie: string;
+    function GetTipoConhecimento: String;
+    procedure SetConhecimento(const Value: string);
+    procedure SetDataAverbacao(const Value: TDateTime);
+    procedure SetDataConhecimento(const Value: TDateTime);
+    procedure SetDataDeclaracao(const Value: TDateTime);
+    procedure SetDataNotaFiscal(const Value: TDateTime);
+    procedure SetDataRegistro(const Value: TDateTime);
+    procedure SetDeclaracao(const Value: String);
+    procedure SetModelo(const Value: string);
+    procedure SetNaturezaExportacao(const Value: string);
+    procedure SetNumeroNotaFiscal(const Value: string);
+    procedure SetPais(const Value: string);
+    procedure SetRegistroExportacao(const Value: String);
+    procedure SetSerie(const Value: string);
+    procedure SetTipoConhecimento(const Value: String);
+  public
+    property Declaracao: String read GetDeclaracao write SetDeclaracao;
+    property DataDeclaracao: TDateTime read GetDataDeclaracao write SetDataDeclaracao;
+    property NaturezaExportacao: string read GetNaturezaExportacao write SetNaturezaExportacao;
+    property RegistroExportacao: String read GetRegistroExportacao write SetRegistroExportacao;
+    property DataRegistro: TDateTime read GetDataRegistro write SetDataRegistro;
+    property Conhecimento: string read GetConhecimento write SetConhecimento;
+    property DataConhecimento: TDateTime read GetDataConhecimento write SetDataConhecimento;
+    property TipoConhecimento: String read GetTipoConhecimento write SetTipoConhecimento;
+    property Pais: string read GetPais write SetPais;
+    property DataAverbacao: TDateTime read GetDataAverbacao write SetDataAverbacao;
+    property NumeroNotaFiscal: string read GetNumeroNotaFiscal write SetNumeroNotaFiscal;
+    property DataNotaFiscal: TDateTime read GetDataNotaFiscal write SetDataNotaFiscal;
+    property Modelo: string read GetModelo write SetModelo;
+    property Serie: string read GetSerie write SetSerie;
+  end;
+
+  TRegistro85Lista = class(TInterfaceList, IRegistro85Lista)
+  private
+    function GetItem(Index: Integer): IRegistro85;
+    procedure SetItem(Index: Integer; const Value: IRegistro85);
+  public
+    function New: IRegistro85;
+    property Items[Index: Integer]: IRegistro85 read GetItem write SetItem;
+  end;
+
+  TRegistro86 = class(TSintegraObject, IRegistro86)
+  private
+    fRegistroExportacao:string;
+    fDataRegistro:TDateTime;
+    fCPFCNPJ: string;
+    fInscricao: string;
+    fUF: string;
+    fNumeroNotaFiscal: string;
+    fDataDocumento: TDateTime;
+    fModelo: string;
+    fSerie: string;
+    fCodigo: string;
+    fQuantidade: Currency;
+    fValorUnitario :Currency;
+    fValorTotalProduto: Currency;
+    fRelacionamento: string;
+    function GetCodigo: string;
+    function GetCPFCNPJ: string;
+    function GetDataDocumento: TDateTime;
+    function GetDataRegistro: TDateTime;
+    function GetInscricao: string;
+    function GetModelo: string;
+    function GetNumeroNotaFiscal: string;
+    function GetQuantidade: Currency;
+    function GetRegistroExportacao: string;
+    function GetRelacionamento: string;
+    function GetSerie: string;
+    function GetUF: string;
+    function GetValorTotalProduto: Currency;
+    function GetValorUnitario: Currency;
+    procedure SetCodigo(const Value: string);
+    procedure SetCPFCNPJ(const Value: string);
+    procedure SetDataDocumento(const Value: TDateTime);
+    procedure SetDataRegistro(const Value: TDateTime);
+    procedure SetInscricao(const Value: string);
+    procedure SetModelo(const Value: string);
+    procedure SetNumeroNotaFiscal(const Value: string);
+    procedure SetQuantidade(const Value: Currency);
+    procedure SetRegistroExportacao(const Value: string);
+    procedure SetRelacionamento(const Value: string);
+    procedure SetSerie(const Value: string);
+    procedure SetUF(const Value: string);
+    procedure SetValorTotalProduto(const Value: Currency);
+    procedure SetValorUnitario(const Value: Currency);
+  public
+    property RegistroExportacao: string read GetRegistroExportacao write SetRegistroExportacao;
+    property DataRegistro: TDateTime read GetDataRegistro write SetDataRegistro;
+    property CPFCNPJ: string read GetCPFCNPJ write SetCPFCNPJ;
+    property Inscricao: string read GetInscricao write SetInscricao;
+    property UF: string read GetUF write SetUF;
+    property NumeroNotaFiscal: string read GetNumeroNotaFiscal write SetNumeroNotaFiscal;
+    property DataDocumento: TDateTime read GetDataDocumento write SetDataDocumento;
+    property Modelo: string read GetModelo write SetModelo;
+    property Serie: string read GetSerie write SetSerie;
+    property Codigo: string read GetCodigo write SetCodigo;
+    property Quantidade: Currency read GetQuantidade write SetQuantidade;
+    property ValorUnitario: Currency read GetValorUnitario write SetValorUnitario;
+    property ValorTotalProduto: Currency read GetValorTotalProduto write SetValorTotalProduto;
+    property Relacionamento: string read GetRelacionamento write SetRelacionamento;
+  end;
+
+  TRegistro86Lista = class(TInterfaceList, IRegistro86Lista)
+  private
+    function GetItem(Index: Integer): IRegistro86;
+    procedure SetItem(Index: Integer; const Value: IRegistro86);
+  public
+    function New: IRegistro86;
+    property Items[Index: Integer]: IRegistro86 read GetItem write SetItem;
+  end;
+
 { TSintegraObject }
 
 function TSintegraObject.RFIll(Str: string; Tamanho: Integer = 0; Caracter: Char = ' '): string;
@@ -1434,15 +1583,17 @@ begin
   FDataInicial := 0;
   FDataFinal := 0;
 
-  FRegistro5X := TRegistro5XLista.Create;
   FRegistro1X := TRegistro1X.Create;
+  FRegistro5X := TRegistro5XLista.Create;
+  FRegistro55 := TRegistro55Lista.Create;
   FRegistro60M := TRegistro60MLista.Create;
   FRegistro60R := TRegistro60RLista.Create;
   FRegistro61 := TRegistro61Lista.Create;
   FRegistro61R := TRegistro61RLista.Create;
-  FRegistro75 := TRegistro75Lista.Create;
-  FRegistro55 := TRegistro55Lista.Create;
   FRegistro74 := TRegistro74Lista.Create;
+  FRegistro75 := TRegistro75Lista.Create;
+  FRegistro85 := TRegistro85Lista.Create;
+  FRegistro86 := TRegistro86Lista.Create;
 end;
 
 destructor TSintegra.Destroy;
@@ -1578,9 +1729,29 @@ begin
   Result := FRegistro75;
 end;
 
+function TSintegra.GetRegistro85: IRegistro85Lista;
+begin
+  Result := FRegistro85;
+end;
+
+function TSintegra.GetRegistro86: IRegistro86Lista;
+begin
+  Result := FRegistro86;
+end;
+
 procedure TSintegra.SetRegistro75(const Valor: IRegistro75Lista);
 begin
   FRegistro75 := Valor;
+end;
+
+procedure TSintegra.SetRegistro85(const Valor: IRegistro85Lista);
+begin
+  FRegistro85 := Valor;
+end;
+
+procedure TSintegra.SetRegistro86(const Valor: IRegistro86Lista);
+begin
+  FRegistro86 := Valor;
 end;
 
 function TSintegra.GetRegistro60R: IRegistro60RLista;
@@ -1736,6 +1907,10 @@ begin
     { Geração dos registros de produtos }
     if Registro75.Count > 0 then
        Write(txtFile, Registro_75);
+
+    { Geração dos registros de exportação }
+    if Registro85.Count > 0 then
+       Write(txtFile, Registro_85);
 
     { Geração do Fim do arquivo }
     Write(txtFile, Registro_90);
@@ -2699,6 +2874,73 @@ begin
   Result := sRegistro75;
 end;
 
+function TSintegra.Registro_85: string;
+var
+sRegistro85: string;
+intFor85: integer;
+sRegistro86: string;
+intFor86: integer;
+begin
+  sRegistro85 := '';
+
+  { Cadastro dos produtos }
+  for intFor85 := 0 to Registro85.Count - 1 do
+  begin
+      with Registro85[intFor85] do
+      begin
+        sRegistro85 := sRegistro85 + '85' +
+          LFill(Declaracao, 11) +
+          LFill(DataDeclaracao) +
+          LFill(NaturezaExportacao) +
+          LFill(RegistroExportacao, 12) +
+          LFill(DataRegistro) +
+          LFill(Conhecimento) +
+          LFill(DataConhecimento) +
+          LFill(TipoConhecimento, 2) +
+          LFill(Pais, 4) +
+          LFill(DataAverbacao) +
+          LFill(NumeroNotaFiscal, 6) +
+          LFill(DataNotaFiscal) +
+          LFill(Modelo, 2) +
+          LFill(Serie, 3) +
+          LFill('', 19) +
+          #13#10;
+      end;
+  end;
+
+  sRegistro86 := '';
+
+  { Cadastro dos produtos }
+  for intFor86 := 0 to Registro86.Count - 1 do
+  begin
+      with Registro86[intFor86] do
+      begin
+        Check(Codigo, 'Registro86: informe o Código do Produto!');
+        Check(UF, 'Registro86: Informe a UF para o produto "%s"!', [Codigo]);
+
+        sRegistro86 := sRegistro86 + '86' +
+          LFill(RegistroExportacao, 12) +
+          LFill(DataRegistro) +
+          LFill(CPFCNPJ) +
+          LFill(Inscricao) +
+          LFill(UF) +
+          LFill(NumeroNotaFiscal, 6) +
+          LFill(DataDocumento) +
+          LFill(Modelo, 2) +
+          LFill(Serie, 3) +
+          LFill(Codigo) +
+          LFill(Quantidade, 11, 3) +
+          LFill(ValorUnitario, 12, 2) +
+          LFill(ValorTotalProduto, 12, 2) +
+          LFill(Relacionamento) +
+          LFill('', 5) +
+          #13#10;
+      end;
+  end;
+
+  Result := sRegistro85 + sRegistro86;
+end;
+
 { *******************************************************************************
   *  A quantidade de registros 90 deve ser informada usando as 6 ultimas
      posicoes do registro alinhado a direita Ex: '     1';
@@ -2718,7 +2960,7 @@ var
   TotReg50, TotReg51, TotReg53, TotReg54, TotReg56, TotReg55,
   TotReg60, TotReg61,
   TotReg70, TotReg71, TotReg74, TotReg75, TotReg76, TotReg77,
-  TotReg88: Integer;
+  TotReg85, TotReg86, TotReg88: Integer;
 
   strInicio, strLinha: string;
 
@@ -2744,6 +2986,8 @@ begin
   TotReg75 := 0;
   TotReg76 := 0;
   TotReg77 := 0;
+  TotReg85 := 0;
+  TotReg86 := 0;
   TotReg88 := 0;
 
   strInicio := '90' + LFill(Registro1X.CNPJ, 14) + RFill(Registro1X.InscEstadual, 14);
@@ -2852,11 +3096,19 @@ begin
     if Assigned(Registro75) and (Registro75.Count > 0) then
        TotReg75 := Registro75.Count;
 
+    { total de registros 85 }
+    if Assigned(Registro85) and (Registro85.Count > 0) then
+       TotReg85 := Registro85.Count;
+
+    { total de registros 86 }
+    if Assigned(Registro86) and (Registro86.Count > 0) then
+       TotReg86 := Registro86.Count;
+
     ToTReg90 := ToTReg90 +
                 TotReg50 + TotReg51 + TotReg53 + TotReg54 + TotReg55 + TotReg56 +
                 TotReg60 + TotReg61 +
                 TotReg70 + TotReg71 + TotReg74 + TotReg75 + TotReg76 + TotReg77 +
-                TotReg88;
+                TotReg85 + TotReg86 + TotReg88;
 
     if TotReg50 > 0 then
     begin
@@ -2939,6 +3191,18 @@ begin
     if TotReg77 > 0 then
     begin
       strLinha := strLinha + '77' + LFill(TotReg77, 8);
+      VerificaLinha;
+    end;
+
+    if TotReg85 > 0 then
+    begin
+      strLinha := strLinha + '85' + LFill(TotReg85, 8);
+      VerificaLinha;
+    end;
+
+    if TotReg86 > 0 then
+    begin
+      strLinha := strLinha + '86' + LFill(TotReg86, 8);
       VerificaLinha;
     end;
 
@@ -5423,6 +5687,328 @@ begin
 end;
 
 procedure TRegistro71Lista.SetItem(Index: Integer; const Value: IRegistro71);
+begin
+  Put(Index, Value);
+end;
+
+{ TRegistro85 }
+
+function TRegistro85.GetConhecimento: string;
+begin
+  Result := fConhecimento;
+end;
+
+function TRegistro85.GetDataAverbacao: TDateTime;
+begin
+  Result := fDataAverbacao;
+end;
+
+function TRegistro85.GetDataConhecimento: TDateTime;
+begin
+  Result := fDataConhecimento;
+end;
+
+function TRegistro85.GetDataDeclaracao: TDateTime;
+begin
+  Result := fDataDeclaracao;
+end;
+
+function TRegistro85.GetDataNotaFiscal: TDateTime;
+begin
+  Result := fDataNotaFiscal;
+end;
+
+function TRegistro85.GetDataRegistro: TDateTime;
+begin
+  Result := fDataRegistro;
+end;
+
+function TRegistro85.GetDeclaracao: String;
+begin
+  Result := fDeclaracao;
+end;
+
+function TRegistro85.GetModelo: string;
+begin
+  Result := fModelo;
+end;
+
+function TRegistro85.GetNaturezaExportacao: string;
+begin
+  Result := fNaturezaExportacao;
+end;
+
+function TRegistro85.GetNumeroNotaFiscal: string;
+begin
+  Result := fNumeroNotaFiscal;
+end;
+
+function TRegistro85.GetPais: string;
+begin
+  Result := fPais;
+end;
+
+function TRegistro85.GetRegistroExportacao: String;
+begin
+  Result := fRegistroExportacao;
+end;
+
+function TRegistro85.GetSerie: string;
+begin
+  Result := fSerie;
+end;
+
+function TRegistro85.GetTipoConhecimento: String;
+begin
+  Result := fTipoConhecimento;
+end;
+
+procedure TRegistro85.SetConhecimento(const Value: string);
+begin
+   fConhecimento := Value;
+end;
+
+procedure TRegistro85.SetDataAverbacao(const Value: TDateTime);
+begin
+  fDataAverbacao := Value;
+end;
+
+procedure TRegistro85.SetDataConhecimento(const Value: TDateTime);
+begin
+  fDataConhecimento := Value;
+end;
+
+procedure TRegistro85.SetDataDeclaracao(const Value: TDateTime);
+begin
+  fDataDeclaracao := Value;
+end;
+
+procedure TRegistro85.SetDataNotaFiscal(const Value: TDateTime);
+begin
+  fDataNotaFiscal := Value;
+end;
+
+procedure TRegistro85.SetDataRegistro(const Value: TDateTime);
+begin
+  fDataRegistro := Value;
+end;
+
+procedure TRegistro85.SetDeclaracao(const Value: String);
+begin
+  fDeclaracao := Value;
+end;
+
+procedure TRegistro85.SetModelo(const Value: string);
+begin
+  fModelo := Value;
+end;
+
+procedure TRegistro85.SetNaturezaExportacao(const Value: string);
+begin
+  fNaturezaExportacao := Value;
+end;
+
+procedure TRegistro85.SetNumeroNotaFiscal(const Value: string);
+begin
+  fNumeroNotaFiscal := Value;
+end;
+
+procedure TRegistro85.SetPais(const Value: string);
+begin
+  fPais := Value;
+end;
+
+procedure TRegistro85.SetRegistroExportacao(const Value: String);
+begin
+  fRegistroExportacao := Value;
+end;
+
+procedure TRegistro85.SetSerie(const Value: string);
+begin
+  fSerie := Value;
+end;
+
+procedure TRegistro85.SetTipoConhecimento(const Value: String);
+begin
+  fTipoConhecimento := Value;
+end;
+
+{ TRegistro86 }
+
+function TRegistro86.GetCodigo: string;
+begin
+  Result := fCodigo;
+end;
+
+function TRegistro86.GetCPFCNPJ: string;
+begin
+  Result := fCPFCNPJ;
+end;
+
+function TRegistro86.GetDataDocumento: TDateTime;
+begin
+  Result := fDataDocumento;
+end;
+
+function TRegistro86.GetDataRegistro: TDateTime;
+begin
+  Result := fDataRegistro;
+end;
+
+function TRegistro86.GetInscricao: string;
+begin
+  Result := fInscricao;
+end;
+
+function TRegistro86.GetModelo: string;
+begin
+  Result := fModelo;
+end;
+
+function TRegistro86.GetNumeroNotaFiscal: string;
+begin
+  Result := fNumeroNotaFiscal;
+end;
+
+function TRegistro86.GetQuantidade: Currency;
+begin
+  Result := fQuantidade;
+end;
+
+function TRegistro86.GetRegistroExportacao: string;
+begin
+  Result := fRegistroExportacao;
+end;
+
+function TRegistro86.GetRelacionamento: string;
+begin
+  Result := fRelacionamento;
+end;
+
+function TRegistro86.GetSerie: string;
+begin
+  Result := fSerie;
+end;
+
+function TRegistro86.GetUF: string;
+begin
+  Result := fUF;
+end;
+
+function TRegistro86.GetValorTotalProduto: Currency;
+begin
+  Result := fValorTotalProduto;
+end;
+
+function TRegistro86.GetValorUnitario: Currency;
+begin
+  Result := fValorUnitario;
+end;
+
+procedure TRegistro86.SetCodigo(const Value: string);
+begin
+  fCodigo := Value;
+end;
+
+procedure TRegistro86.SetCPFCNPJ(const Value: string);
+begin
+  fCPFCNPJ := Value;
+end;
+
+procedure TRegistro86.SetDataDocumento(const Value: TDateTime);
+begin
+  fDataDocumento := Value;
+end;
+
+procedure TRegistro86.SetDataRegistro(const Value: TDateTime);
+begin
+  fDataRegistro := Value;
+end;
+
+procedure TRegistro86.SetInscricao(const Value: string);
+begin
+  fInscricao := Value;
+end;
+
+procedure TRegistro86.SetModelo(const Value: string);
+begin
+  fModelo := Value;
+end;
+
+procedure TRegistro86.SetNumeroNotaFiscal(const Value: string);
+begin
+  fNumeroNotaFiscal := Value;
+end;
+
+procedure TRegistro86.SetQuantidade(const Value: Currency);
+begin
+  fQuantidade := Value;
+end;
+
+procedure TRegistro86.SetRegistroExportacao(const Value: string);
+begin
+  fRegistroExportacao := Value;
+end;
+
+procedure TRegistro86.SetRelacionamento(const Value: string);
+begin
+  fRelacionamento := Value;
+end;
+
+procedure TRegistro86.SetSerie(const Value: string);
+begin
+  fSerie := Value;
+end;
+
+procedure TRegistro86.SetUF(const Value: string);
+begin
+  fUF := Value;
+end;
+
+procedure TRegistro86.SetValorTotalProduto(const Value: Currency);
+begin
+  fValorTotalProduto := Value;
+end;
+
+procedure TRegistro86.SetValorUnitario(const Value: Currency);
+begin
+  fValorUnitario := Value;
+end;
+
+{ TRegistro85Lista }
+
+function TRegistro85Lista.GetItem(Index: Integer): IRegistro85;
+begin
+  Result := Get(Index) as IRegistro85;
+end;
+
+function TRegistro85Lista.New: IRegistro85;
+begin
+  Result := TRegistro85.Create;
+  Add(Result);
+end;
+
+procedure TRegistro85Lista.SetItem(Index: Integer;
+  const Value: IRegistro85);
+begin
+  Put(Index, Value);
+end;
+
+{ TRegistro86Lista }
+
+function TRegistro86Lista.GetItem(Index: Integer): IRegistro86;
+begin
+  Result := Get(Index) as IRegistro86;
+end;
+
+function TRegistro86Lista.New: IRegistro86;
+begin
+  Result := TRegistro86.Create;
+  Add(Result);
+end;
+
+procedure TRegistro86Lista.SetItem(Index: Integer;
+  const Value: IRegistro86);
 begin
   Put(Index, Value);
 end;

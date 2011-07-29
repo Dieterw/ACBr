@@ -729,6 +729,114 @@ type
     property Items[Index: Integer]: IRegistro75 read GetItem write SetItem; default;
   end;
 
+  IRegistro85 = interface(IInterface)
+    ['{66D12132-65D1-41B6-99F8-B9B7E567E16C}']
+    function GetConhecimento: string;
+    function GetDataAverbacao: TDateTime;
+    function GetDataConhecimento: TDateTime;
+    function GetDataDeclaracao: TDateTime;
+    function GetDataNotaFiscal: TDateTime;
+    function GetDataRegistro: TDateTime;
+    function GetDeclaracao: String;
+    function GetModelo: string;
+    function GetNaturezaExportacao: string;
+    function GetNumeroNotaFiscal: string;
+    function GetPais: string;
+    function GetRegistroExportacao: String;
+    function GetSerie: string;
+    function GetTipoConhecimento: String;
+    procedure SetConhecimento(const Value: string);
+    procedure SetDataAverbacao(const Value: TDateTime);
+    procedure SetDataConhecimento(const Value: TDateTime);
+    procedure SetDataDeclaracao(const Value: TDateTime);
+    procedure SetDataNotaFiscal(const Value: TDateTime);
+    procedure SetDataRegistro(const Value: TDateTime);
+    procedure SetDeclaracao(const Value: String);
+    procedure SetModelo(const Value: string);
+    procedure SetNaturezaExportacao(const Value: string);
+    procedure SetNumeroNotaFiscal(const Value: string);
+    procedure SetPais(const Value: string);
+    procedure SetRegistroExportacao(const Value: String);
+    procedure SetSerie(const Value: string);
+    procedure SetTipoConhecimento(const Value: String);
+    property Declaracao: String read GetDeclaracao write SetDeclaracao;
+    property DataDeclaracao: TDateTime read GetDataDeclaracao write SetDataDeclaracao;
+    property NaturezaExportacao: string read GetNaturezaExportacao write SetNaturezaExportacao;
+    property RegistroExportacao: String read GetRegistroExportacao write SetRegistroExportacao;
+    property DataRegistro: TDateTime read GetDataRegistro write SetDataRegistro;
+    property Conhecimento: string read GetConhecimento write SetConhecimento;
+    property DataConhecimento: TDateTime read GetDataConhecimento write SetDataConhecimento;
+    property TipoConhecimento: String read GetTipoConhecimento write SetTipoConhecimento;
+    property Pais: string read GetPais write SetPais;
+    property DataAverbacao: TDateTime read GetDataAverbacao write SetDataAverbacao;
+    property NumeroNotaFiscal: string read GetNumeroNotaFiscal write SetNumeroNotaFiscal;
+    property DataNotaFiscal: TDateTime read GetDataNotaFiscal write SetDataNotaFiscal;
+    property Modelo: string read GetModelo write SetModelo;
+    property Serie: string read GetSerie write SetSerie;
+  end;
+
+  IRegistro85Lista = interface(IInterfaceList)
+    ['{B7EACE6D-4E66-4ADB-BE6E-BEE8A6A05685}']
+    function GetItem(Index: Integer): IRegistro85;
+    procedure SetItem(Index: Integer; const Value: IRegistro85);
+    function New: IRegistro85;
+    property Items[Index: Integer]: IRegistro85 read GetItem write SetItem; default;
+  end;
+
+  IRegistro86 = interface(IInterface)
+    ['{3181B862-AF9A-44E8-AF08-5AC2892BC91A}']
+    function GetCodigo: string;
+    function GetCPFCNPJ: string;
+    function GetDataDocumento: TDateTime;
+    function GetDataRegistro: TDateTime;
+    function GetInscricao: string;
+    function GetModelo: string;
+    function GetNumeroNotaFiscal: string;
+    function GetQuantidade: Currency;
+    function GetRegistroExportacao: string;
+    function GetRelacionamento: string;
+    function GetSerie: string;
+    function GetUF: string;
+    function GetValorTotalProduto: Currency;
+    function GetValorUnitario: Currency;
+    procedure SetCodigo(const Value: string);
+    procedure SetCPFCNPJ(const Value: string);
+    procedure SetDataDocumento(const Value: TDateTime);
+    procedure SetDataRegistro(const Value: TDateTime);
+    procedure SetInscricao(const Value: string);
+    procedure SetModelo(const Value: string);
+    procedure SetNumeroNotaFiscal(const Value: string);
+    procedure SetQuantidade(const Value: Currency);
+    procedure SetRegistroExportacao(const Value: string);
+    procedure SetRelacionamento(const Value: string);
+    procedure SetSerie(const Value: string);
+    procedure SetUF(const Value: string);
+    procedure SetValorTotalProduto(const Value: Currency);
+    procedure SetValorUnitario(const Value: Currency);
+    property RegistroExportacao: string read GetRegistroExportacao write SetRegistroExportacao;
+    property DataRegistro: TDateTime read GetDataRegistro write SetDataRegistro;
+    property CPFCNPJ: string read GetCPFCNPJ write SetCPFCNPJ;
+    property Inscricao: string read GetInscricao write SetInscricao;
+    property UF: string read GetUF write SetUF;
+    property NumeroNotaFiscal: string read GetNumeroNotaFiscal write SetNumeroNotaFiscal;
+    property DataDocumento: TDateTime read GetDataDocumento write SetDataDocumento;
+    property Modelo: string read GetModelo write SetModelo;
+    property Serie: string read GetSerie write SetSerie;
+    property Codigo: string read GetCodigo write SetCodigo;
+    property Quantidade: Currency read GetQuantidade write SetQuantidade;
+    property ValorUnitario: Currency read GetValorUnitario write SetValorUnitario;
+    property ValorTotalProduto: Currency read GetValorTotalProduto write SetValorTotalProduto;
+    property Relacionamento: string read GetRelacionamento write SetRelacionamento;
+  end;
+
+  IRegistro86Lista = interface(IInterfaceList)
+    ['{856DC714-1BAB-48A2-A8E6-0EF8B40DE15A}']
+    function GetItem(Index: Integer): IRegistro86;
+    procedure SetItem(Index: Integer; const Value: IRegistro86);
+    function New: IRegistro86;
+    property Items[Index: Integer]: IRegistro86 read GetItem write SetItem; default;
+  end;
+
   ISintegra = interface(IInterface)
     ['{FE7CCEC6-64BB-4CB7-9F50-EEC8B35147D2}']
     function GetRegistro60M: IRegistro60MList;

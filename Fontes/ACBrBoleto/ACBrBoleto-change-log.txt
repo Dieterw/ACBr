@@ -47,14 +47,31 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
-Verso 0.0.9a do QuickReport 07/07/11
+Versao 0.0.9a do QuickReport 07/07/11
 [-] Corrigido problema ao imprimir apartir da tela do preview.
     (Rick Nelson)
+
+Versao 0.1.1a do LazReport 02/08/11
+[+] Adicionado campos Outras Deduções e Outros Acréscimos ao boleto, conforme
+    solicitação da Caixa Econômica Federal(Juliana Tamizou)
+
+Versao 0.0.11a do FortesReport 02/08/11
+[+] Adicionado campos Outras Deduções e Outros Acréscimos ao boleto, conforme
+    solicitação da Caixa Econômica Federal(Giuliano Naspolini Ribeiro)
+
+[*] Alterado propriedade Scaled para True, para evitar problemas com  as 
+    imagens dos logos dos bancos.(Juliana Tamizou
 
 Versao 0.0.10a do FortesReport 06/07/11
 [-] Corrigido problema com componentes não encontrados no dfm do Fortes.
     (Juliana Tamizou)
 
+Versao 0.0.30a 02/08/2011
+[+] Adicionado opção para informar o diretório onde os boletos em PDF ou html 
+    serão gerados.(Juliana Tamizou) 
+
+[*] Alterado a propriedade TamNossoNumero  para poder ser informado o valor.
+    (Juliana Tamizou)
 
 Versao 0.0.29a 13/07/2011
 [-] Corrigido problema ao montar o código de barras do banco Bancoob.

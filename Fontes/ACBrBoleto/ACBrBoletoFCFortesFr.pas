@@ -73,7 +73,15 @@ type
     imgCodigoBarra: TRLBarcode;
     ImgLoja: TRLImage;
     LayoutBoleto: TRLReport;
+    RLDraw78: TRLDraw;
+    RLLabel169: TRLLabel;
+    RLLabel171: TRLLabel;
+    RLLabel9: TRLLabel;
+    RLLabel92: TRLLabel;
+    RLLabel96: TRLLabel;
+    txtDesconto5: TRLLabel;
     txtEndCedente: TRLLabel;
+    txtMoraMulta4: TRLLabel;
     txtNumeroBanco: TRLLabel;
     txtTotPar: TRLLabel;
     mIntrucoes: TRLMemo;
@@ -384,6 +392,11 @@ type
     txtReferencia3: TRLLabel;
     txtSwHouse: TRLAngleLabel;
     txtVencCarne2: TRLLabel;
+    RLLabel7: TRLLabel;
+    RLDraw74: TRLDraw;
+    RLDraw75: TRLDraw;
+    RLDraw76: TRLDraw;
+    RLDraw77: TRLDraw;
     procedure BoletoCarneBeforePrint ( Sender: TObject; var PrintIt: boolean ) ;
     procedure BoletoCarneDataCount ( Sender: TObject; var DataCount: integer ) ;
     procedure BoletoCarneDataRecord ( Sender: TObject; RecNo: integer;
@@ -492,7 +505,9 @@ begin
               {$IFDEF FPC}
                 RLFiltro.Copies := NumCopias ;
               {$ENDIF}
-              RLFiltro.FileName := NomeArquivo ;
+              RLFiltro.FileName := DirArqPDF_HTML +
+                                   PathDelim +
+                                   NomeArquivo ;
 
               {$IFDEF FPC}
                 RLFiltro.Pages := RLLayout.Pages ;
@@ -702,16 +717,22 @@ begin
       txtNossoNumCan.Caption          := NossoNum;
       txtNomeSacado.Caption           := Titulo.Sacado.NomeSacado;
       txtNomeSacadoCarne.Caption      := txtNomeSacado.Caption;
+
       txtLocal.Caption                := Titulo.LocalPagamento;
       txtNomeCedente.Caption          := Cedente.Nome;
+
       txtDataDocto.Caption            := FormatDateTime('dd/mm/yyyy', Titulo.DataDocumento);
       txtNumeroDocto.Caption          := Titulo.NumeroDocumento;
       txtEspecieDoc.Caption           := Titulo.EspecieDoc;
       txtAceite.Caption               := IfThen((atSim = Titulo.Aceite), 'S', 'N');
       txtDataProces.Caption           := FormatDateTime('dd/mm/yyyy',Now);
+
+      txtUsoBanco2.Caption            := Titulo.UsoBanco;
       txtCarteira.Caption             := Titulo.Carteira;
+      txtEspecie2.Caption             := 'R$';
       txtParcela.Caption              := IntToStrZero(Titulo.Parcela,2)+' /';
       txtTotPar.Caption               := IntToStrZero(Titulo.TotalParcelas,2);
+
       txtEndSacado.Caption            := Titulo.Sacado.Logradouro + ' '+
                                          Titulo.Sacado.Numero + Titulo.Sacado.Complemento;
       txtCidadeSacado.Caption         := Titulo.Sacado.CEP + ' '+Titulo.Sacado.Cidade +

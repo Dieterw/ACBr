@@ -49,7 +49,7 @@ uses
   lr_e_pdf, PrintersDlgs, Printers, strutils, LResources, PReport ;
 
 const
-  CACBrBoletoFCLazReport_Versao = '0.1.0a';
+  CACBrBoletoFCLazReport_Versao = '0.1.1a';
 
 type
 
@@ -204,8 +204,13 @@ begin
               end;
             end ;
 
+
           fiPDF :
-              frReport1.ExportTo(TfrTNPDFExportFilter, NomeArquivo) ;
+            begin
+              frReport1.ExportTo(TfrTNPDFExportFilter, DirArqPDF_HTML +
+                                                       PathDelim +
+                                                       NomeArquivo) ;
+            end;
 
           fiHTML :
               raise Exception.Create('Geração de arquivo HTML ainda não implementada no LazReport.');

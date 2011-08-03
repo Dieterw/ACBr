@@ -57,7 +57,7 @@ uses ACBrBase,  {Units da ACBr}
      Graphics, Contnrs, Classes;
 
 const
-  CACBrBoleto_Versao = '0.0.29a' ;
+  CACBrBoleto_Versao = '0.0.30a' ;
 
 type
   TACBrTipoCobranca =
@@ -319,6 +319,7 @@ type
   private
     fACBrBoleto        : TACBrBoleto;
     fNumeroBanco       : Integer;
+    FTamanhoMaximoNossoNum: Integer;
     fTipoCobranca      : TACBrTipoCobranca;
     fBancoClass        : TACBrBancoClass;
     function GetNome   : String;
@@ -332,13 +333,14 @@ type
     procedure SetNome(const AValue: String);
     procedure SetTipoCobranca(const AValue: TACBrTipoCobranca);
     procedure SetNumero(const AValue: Integer);
+    procedure SetTamMaximoNossoNumero(Const Avalue:Integer);
   public
     constructor Create( AOwner : TComponent); override;
     destructor Destroy ; override ;
 
     property ACBrBoleto : TACBrBoleto     read fACBrBoleto;
     property BancoClass : TACBrBancoClass read fBancoClass ;
-    property TamanhoMaximoNossoNum :Integer read GetTamanhoMaximoNossoNum;
+    //property TamanhoMaximoNossoNum :Integer read GetTamanhoMaximoNossoNum;
     property TamanhoAgencia        :Integer read GetTamanhoAgencia;
     property TamanhoConta          :Integer read GetTamanhoConta;
     property TamanhoCarteira       :Integer read GetTamanhoCarteira;
@@ -370,6 +372,7 @@ type
     property Numero    : Integer        read GetNumero  write SetNumero default 0;
     property Digito    : Integer        read GetDigito  write SetDigito stored false;
     property Nome      : String         read GetNome    write SetNome   stored false;
+    property TamanhoMaximoNossoNum :Integer read GetTamanhoMaximoNossoNum  write SetTamMaximoNossoNumero;
     property TipoCobranca : TACBrTipoCobranca read fTipoCobranca   write SetTipoCobranca;
   end;
 
@@ -663,6 +666,7 @@ TACBrBoletoFCOnObterLogo = procedure( const PictureLogo : TPicture; const Numero
 TACBrBoletoFCClass = class(TACBrComponent)
   private
     fDirLogo        : String;
+    fDirArqPDF_HTML : String;
     fFiltro: TACBrBoletoFCFiltro;
     fLayOut         : TACBrBolLayOut;
     fMostrarPreview : Boolean;
@@ -673,9 +677,11 @@ TACBrBoletoFCClass = class(TACBrComponent)
     fSoftwareHouse  : String;
     function GetAbout: String;
     function GetArqLogo: String;
+    function GetDirArqPDF_HTML: String;
     function GetDirLogo: String;
     procedure SetAbout(const AValue: String);
     procedure SetACBrBoleto(const Value: TACBrBoleto);
+    procedure SetDirArqPDF_HTML(const AValue: String);
     procedure SetDirLogo(const AValue: String);
   protected
     fpAbout : String ;
@@ -706,6 +712,7 @@ TACBrBoletoFCClass = class(TACBrComponent)
     property Filtro         : TACBrBoletoFCFiltro read fFiltro     write fFiltro         default fiNenhum ;
     property NomeArquivo    : String          read fNomeArquivo    write fNomeArquivo ;
     property SoftwareHouse  : String          read fSoftwareHouse  write fSoftwareHouse;
+    property DirArqPDF_HTML : String          read GetDirArqPDF_HTML write SetDirArqPDF_HTML;
   end;
 
 procedure Register;
@@ -1268,6 +1275,11 @@ begin
   {Apenas para aparecer no ObjectInspector do D7}
 end;
 
+procedure TACBrBanco.SetTamMaximoNossoNumero(const Avalue: Integer);
+begin
+  {Apenas para aparecer no ObjectInspector do D7}
+end;
+
 procedure TACBrBanco.SetTipoCobranca(const AValue: TACBrTipoCobranca);
 begin
   if fTipoCobranca = AValue then
@@ -1770,6 +1782,11 @@ begin
 
 end;
 
+procedure TACBrBoletoFCClass.SetDirArqPDF_HTML(const AValue: String);
+begin
+  fDirArqPDF_HTML:= PathWithoutDelim(AValue);
+end;
+
 procedure TACBrBoletoFCClass.SetDirLogo(const AValue: String);
 begin
   fDirLogo := PathWithoutDelim( AValue );
@@ -1778,6 +1795,17 @@ end;
 function TACBrBoletoFCClass.GetArqLogo: String;
 begin
    Result := DirLogo + PathDelim + IntToStrZero( ACBrBoleto.Banco.Numero, 3)+'.bmp';
+end;
+
+function TACBrBoletoFCClass.GetDirArqPDF_HTML: String;
+begin
+   if fDirArqPDF_HTML = '' then
+     if not (csDesigning in Self.ComponentState) then
+        fDirArqPDF_HTML := ExtractFilePath(
+        {$IFNDEF CONSOLE} Application.ExeName {$ELSE} ParamStr(0) {$ENDIF}
+                                      );
+
+   Result := fDirArqPDF_HTML ;
 end;
 
 function TACBrBoletoFCClass.GetAbout: String;
@@ -1820,6 +1848,7 @@ var
    FiltroAntigo         : TACBrBoletoFCFiltro;
    MostrarPreviewAntigo : Boolean;
    MostrarSetupAntigo   : Boolean;
+   teste: String;
 begin
    if NomeArquivo = '' then
       raise Exception.Create( ACBrStr('NomeArquivo não especificado')) ;

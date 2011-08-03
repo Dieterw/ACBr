@@ -35,7 +35,7 @@
         <ColCount Value="1"/>
         <ColGap Value="0"/>
         <LayoutOrder Value="loColumns"/>
-        <ObjectCount Value="138"/>
+        <ObjectCount Value="146"/>
         <Object1>
           <Name Value="MasterData1"/>
           <ClassName Value="TfrBandView"/>
@@ -152,7 +152,7 @@
             <Left Value="11"/>
             <Top Value="66"/>
             <Width Value="131"/>
-            <Height Value="14"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -193,7 +193,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="12"/>
-            <Top Value="81"/>
+            <Top Value="77"/>
             <Width Value="567"/>
             <Height Value="15"/>
           </Size>
@@ -236,7 +236,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="602"/>
-            <Top Value="67"/>
+            <Top Value="64"/>
             <Width Value="97"/>
             <Height Value="12"/>
           </Size>
@@ -279,9 +279,9 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="651"/>
-            <Top Value="81"/>
+            <Top Value="77"/>
             <Width Value="91"/>
-            <Height Value="14"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -322,9 +322,9 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="13"/>
-            <Top Value="100"/>
-            <Width Value="54"/>
-            <Height Value="13"/>
+            <Top Value="93"/>
+            <Width Value="34"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -365,7 +365,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="14"/>
-            <Top Value="126"/>
+            <Top Value="107"/>
             <Width Value="569"/>
             <Height Value="15"/>
           </Size>
@@ -407,10 +407,10 @@
           <Typ Value="gtMemo"/>
           <StreamMode Value="0"/>
           <Size>
-            <Left Value="13"/>
-            <Top Value="112"/>
-            <Width Value="569"/>
-            <Height Value="16"/>
+            <Left Value="49"/>
+            <Top Value="91"/>
+            <Width Value="543"/>
+            <Height Value="15"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -470,7 +470,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="9"/>
-            <Top Value="97"/>
+            <Top Value="91"/>
             <Width Value="739"/>
             <Height Value="0"/>
           </Size>
@@ -491,7 +491,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="602"/>
-            <Top Value="101"/>
+            <Top Value="92"/>
             <Width Value="100"/>
             <Height Value="13"/>
           </Size>
@@ -534,9 +534,9 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="603"/>
-            <Top Value="123"/>
+            <Top Value="106"/>
             <Width Value="139"/>
-            <Height Value="17"/>
+            <Height Value="15"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -577,9 +577,9 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="16"/>
-            <Top Value="146"/>
+            <Top Value="125"/>
             <Width Value="74"/>
-            <Height Value="13"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -620,9 +620,9 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="16"/>
-            <Top Value="162"/>
+            <Top Value="138"/>
             <Width Value="99"/>
-            <Height Value="15"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -663,9 +663,9 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="145"/>
-            <Top Value="147"/>
+            <Top Value="125"/>
             <Width Value="85"/>
-            <Height Value="13"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -706,9 +706,9 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="144"/>
-            <Top Value="163"/>
+            <Top Value="138"/>
             <Width Value="126"/>
-            <Height Value="14"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -749,7 +749,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="293"/>
-            <Top Value="148"/>
+            <Top Value="125"/>
             <Width Value="59"/>
             <Height Value="12"/>
           </Size>
@@ -792,9 +792,9 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="291"/>
-            <Top Value="163"/>
+            <Top Value="138"/>
             <Width Value="68"/>
-            <Height Value="14"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -835,7 +835,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="377"/>
-            <Top Value="148"/>
+            <Top Value="125"/>
             <Width Value="31"/>
             <Height Value="12"/>
           </Size>
@@ -878,9 +878,9 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="378"/>
-            <Top Value="165"/>
+            <Top Value="138"/>
             <Width Value="52"/>
-            <Height Value="13"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -921,9 +921,9 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="444"/>
-            <Top Value="148"/>
+            <Top Value="125"/>
             <Width Value="139"/>
-            <Height Value="13"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -964,9 +964,9 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="449"/>
-            <Top Value="164"/>
+            <Top Value="138"/>
             <Width Value="128"/>
-            <Height Value="16"/>
+            <Height Value="14"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -1007,7 +1007,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="603"/>
-            <Top Value="148"/>
+            <Top Value="125"/>
             <Width Value="90"/>
             <Height Value="12"/>
           </Size>
@@ -1050,9 +1050,9 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="603"/>
-            <Top Value="162"/>
+            <Top Value="138"/>
             <Width Value="140"/>
-            <Height Value="15"/>
+            <Height Value="13"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -1093,7 +1093,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="16"/>
-            <Top Value="184"/>
+            <Top Value="152"/>
             <Width Value="87"/>
             <Height Value="12"/>
           </Size>
@@ -1136,7 +1136,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="145"/>
-            <Top Value="185"/>
+            <Top Value="153"/>
             <Width Value="43"/>
             <Height Value="12"/>
           </Size>
@@ -1179,7 +1179,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="221"/>
-            <Top Value="186"/>
+            <Top Value="152"/>
             <Width Value="52"/>
             <Height Value="12"/>
           </Size>
@@ -1222,7 +1222,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="223"/>
-            <Top Value="201"/>
+            <Top Value="165"/>
             <Width Value="52"/>
             <Height Value="15"/>
           </Size>
@@ -1265,9 +1265,9 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="146"/>
-            <Top Value="199"/>
+            <Top Value="167"/>
             <Width Value="52"/>
-            <Height Value="15"/>
+            <Height Value="13"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -1308,7 +1308,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="287"/>
-            <Top Value="185"/>
+            <Top Value="152"/>
             <Width Value="76"/>
             <Height Value="13"/>
           </Size>
@@ -1351,7 +1351,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="378"/>
-            <Top Value="186"/>
+            <Top Value="154"/>
             <Width Value="36"/>
             <Height Value="15"/>
           </Size>
@@ -1394,7 +1394,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="602"/>
-            <Top Value="184"/>
+            <Top Value="153"/>
             <Width Value="134"/>
             <Height Value="12"/>
           </Size>
@@ -1437,9 +1437,9 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="600"/>
-            <Top Value="198"/>
+            <Top Value="167"/>
             <Width Value="143"/>
-            <Height Value="17"/>
+            <Height Value="13"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -1480,7 +1480,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="12"/>
-            <Top Value="218"/>
+            <Top Value="184"/>
             <Width Value="477"/>
             <Height Value="12"/>
           </Size>
@@ -1523,7 +1523,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="601"/>
-            <Top Value="221"/>
+            <Top Value="184"/>
             <Width Value="139"/>
             <Height Value="12"/>
           </Size>
@@ -1566,7 +1566,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="601"/>
-            <Top Value="251"/>
+            <Top Value="240"/>
             <Width Value="130"/>
             <Height Value="12"/>
           </Size>
@@ -1609,7 +1609,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="602"/>
-            <Top Value="277"/>
+            <Top Value="292"/>
             <Width Value="130"/>
             <Height Value="12"/>
           </Size>
@@ -2192,9 +2192,9 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="10"/>
-            <Top Value="480"/>
+            <Top Value="478"/>
             <Width Value="566"/>
-            <Height Value="15"/>
+            <Height Value="13"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -2234,8 +2234,8 @@
           <Typ Value="gtMemo"/>
           <StreamMode Value="0"/>
           <Size>
-            <Left Value="590"/>
-            <Top Value="470"/>
+            <Left Value="587"/>
+            <Top Value="468"/>
             <Width Value="50"/>
             <Height Value="12"/>
           </Size>
@@ -2278,7 +2278,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="642"/>
-            <Top Value="482"/>
+            <Top Value="477"/>
             <Width Value="91"/>
             <Height Value="14"/>
           </Size>
@@ -2321,7 +2321,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="12"/>
-            <Top Value="501"/>
+            <Top Value="494"/>
             <Width Value="37"/>
             <Height Value="12"/>
           </Size>
@@ -2364,7 +2364,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="11"/>
-            <Top Value="513"/>
+            <Top Value="507"/>
             <Width Value="565"/>
             <Height Value="15"/>
           </Size>
@@ -2406,8 +2406,8 @@
           <Typ Value="gtMemo"/>
           <StreamMode Value="0"/>
           <Size>
-            <Left Value="591"/>
-            <Top Value="501"/>
+            <Left Value="587"/>
+            <Top Value="494"/>
             <Width Value="95"/>
             <Height Value="12"/>
           </Size>
@@ -2449,10 +2449,10 @@
           <Typ Value="gtMemo"/>
           <StreamMode Value="0"/>
           <Size>
-            <Left Value="594"/>
-            <Top Value="515"/>
+            <Left Value="590"/>
+            <Top Value="508"/>
             <Width Value="135"/>
-            <Height Value="15"/>
+            <Height Value="14"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -2493,7 +2493,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="12"/>
-            <Top Value="534"/>
+            <Top Value="524"/>
             <Width Value="75"/>
             <Height Value="12"/>
           </Size>
@@ -2536,9 +2536,9 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="13"/>
-            <Top Value="549"/>
+            <Top Value="537"/>
             <Width Value="88"/>
-            <Height Value="16"/>
+            <Height Value="14"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -2579,7 +2579,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="127"/>
-            <Top Value="534"/>
+            <Top Value="524"/>
             <Width Value="89"/>
             <Height Value="12"/>
           </Size>
@@ -2622,9 +2622,9 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="128"/>
-            <Top Value="549"/>
+            <Top Value="537"/>
             <Width Value="118"/>
-            <Height Value="16"/>
+            <Height Value="15"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -2665,7 +2665,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="267"/>
-            <Top Value="535"/>
+            <Top Value="524"/>
             <Width Value="50"/>
             <Height Value="12"/>
           </Size>
@@ -2708,9 +2708,9 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="268"/>
-            <Top Value="550"/>
+            <Top Value="536"/>
             <Width Value="63"/>
-            <Height Value="15"/>
+            <Height Value="14"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -2751,7 +2751,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="351"/>
-            <Top Value="535"/>
+            <Top Value="525"/>
             <Width Value="29"/>
             <Height Value="12"/>
           </Size>
@@ -2794,9 +2794,9 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="348"/>
-            <Top Value="549"/>
+            <Top Value="536"/>
             <Width Value="44"/>
-            <Height Value="17"/>
+            <Height Value="16"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -2837,7 +2837,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="403"/>
-            <Top Value="536"/>
+            <Top Value="524"/>
             <Width Value="89"/>
             <Height Value="12"/>
           </Size>
@@ -2880,9 +2880,9 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="409"/>
-            <Top Value="550"/>
+            <Top Value="537"/>
             <Width Value="127"/>
-            <Height Value="15"/>
+            <Height Value="14"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -2923,7 +2923,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="590"/>
-            <Top Value="534"/>
+            <Top Value="524"/>
             <Width Value="66"/>
             <Height Value="12"/>
           </Size>
@@ -2966,9 +2966,9 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="594"/>
-            <Top Value="544"/>
+            <Top Value="535"/>
             <Width Value="150"/>
-            <Height Value="21"/>
+            <Height Value="19"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -3009,7 +3009,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="13"/>
-            <Top Value="569"/>
+            <Top Value="554"/>
             <Width Value="60"/>
             <Height Value="12"/>
           </Size>
@@ -3052,7 +3052,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="127"/>
-            <Top Value="569"/>
+            <Top Value="554"/>
             <Width Value="37"/>
             <Height Value="12"/>
           </Size>
@@ -3095,7 +3095,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="189"/>
-            <Top Value="569"/>
+            <Top Value="555"/>
             <Width Value="44"/>
             <Height Value="12"/>
           </Size>
@@ -3138,7 +3138,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="189"/>
-            <Top Value="583"/>
+            <Top Value="565"/>
             <Width Value="46"/>
             <Height Value="15"/>
           </Size>
@@ -3181,7 +3181,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="127"/>
-            <Top Value="586"/>
+            <Top Value="567"/>
             <Width Value="52"/>
             <Height Value="12"/>
           </Size>
@@ -3224,7 +3224,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="261"/>
-            <Top Value="570"/>
+            <Top Value="555"/>
             <Width Value="76"/>
             <Height Value="12"/>
           </Size>
@@ -3267,7 +3267,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="405"/>
-            <Top Value="571"/>
+            <Top Value="555"/>
             <Width Value="36"/>
             <Height Value="14"/>
           </Size>
@@ -3310,7 +3310,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="591"/>
-            <Top Value="569"/>
+            <Top Value="554"/>
             <Width Value="143"/>
             <Height Value="12"/>
           </Size>
@@ -3353,9 +3353,9 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="594"/>
-            <Top Value="583"/>
+            <Top Value="567"/>
             <Width Value="141"/>
-            <Height Value="15"/>
+            <Height Value="14"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -3396,7 +3396,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="9"/>
-            <Top Value="603"/>
+            <Top Value="583"/>
             <Width Value="477"/>
             <Height Value="12"/>
           </Size>
@@ -3439,7 +3439,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="592"/>
-            <Top Value="604"/>
+            <Top Value="583"/>
             <Width Value="149"/>
             <Height Value="12"/>
           </Size>
@@ -3482,7 +3482,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="592"/>
-            <Top Value="633"/>
+            <Top Value="638"/>
             <Width Value="145"/>
             <Height Value="12"/>
           </Size>
@@ -3524,8 +3524,8 @@
           <Typ Value="gtMemo"/>
           <StreamMode Value="0"/>
           <Size>
-            <Left Value="584"/>
-            <Top Value="670"/>
+            <Left Value="592"/>
+            <Top Value="686"/>
             <Width Value="147"/>
             <Height Value="12"/>
           </Size>
@@ -3911,8 +3911,8 @@
           <Typ Value="gtMemo"/>
           <StreamMode Value="0"/>
           <Size>
-            <Left Value="12"/>
-            <Top Value="231"/>
+            <Left Value="11"/>
+            <Top Value="197"/>
             <Width Value="576"/>
             <Height Value="85"/>
           </Size>
@@ -3955,7 +3955,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="8"/>
-            <Top Value="615"/>
+            <Top Value="595"/>
             <Width Value="568"/>
             <Height Value="81"/>
           </Size>
@@ -4236,7 +4236,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="10"/>
-            <Top Value="499"/>
+            <Top Value="492"/>
             <Width Value="736"/>
             <Height Value="0"/>
           </Size>
@@ -4255,7 +4255,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="10"/>
-            <Top Value="532"/>
+            <Top Value="523"/>
             <Width Value="736"/>
             <Height Value="0"/>
           </Size>
@@ -4274,7 +4274,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="10"/>
-            <Top Value="566"/>
+            <Top Value="553"/>
             <Width Value="734"/>
             <Height Value="0"/>
           </Size>
@@ -4293,7 +4293,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="8"/>
-            <Top Value="600"/>
+            <Top Value="581"/>
             <Width Value="740"/>
             <Height Value="0"/>
           </Size>
@@ -4350,9 +4350,9 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="119"/>
-            <Top Value="533"/>
+            <Top Value="524"/>
             <Width Value="0"/>
-            <Height Value="67"/>
+            <Height Value="57"/>
           </Size>
           <Flags Value="1"/>
           <Frames>
@@ -4369,9 +4369,9 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="256"/>
-            <Top Value="533"/>
+            <Top Value="524"/>
             <Width Value="0"/>
-            <Height Value="67"/>
+            <Height Value="57"/>
           </Size>
           <Flags Value="1"/>
           <Frames>
@@ -4388,9 +4388,9 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="184"/>
-            <Top Value="567"/>
+            <Top Value="554"/>
             <Width Value="0"/>
-            <Height Value="32"/>
+            <Height Value="26"/>
           </Size>
           <Flags Value="1"/>
           <Frames>
@@ -4407,9 +4407,9 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="341"/>
-            <Top Value="532"/>
+            <Top Value="523"/>
             <Width Value="0"/>
-            <Height Value="34"/>
+            <Height Value="30"/>
           </Size>
           <Flags Value="1"/>
           <Frames>
@@ -4426,9 +4426,9 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="398"/>
-            <Top Value="532"/>
+            <Top Value="524"/>
             <Width Value="0"/>
-            <Height Value="68"/>
+            <Height Value="57"/>
           </Size>
           <Flags Value="1"/>
           <Frames>
@@ -4445,7 +4445,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="582"/>
-            <Top Value="630"/>
+            <Top Value="609"/>
             <Width Value="164"/>
             <Height Value="0"/>
           </Size>
@@ -4464,7 +4464,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="583"/>
-            <Top Value="666"/>
+            <Top Value="662"/>
             <Width Value="163"/>
             <Height Value="0"/>
           </Size>
@@ -4521,7 +4521,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="9"/>
-            <Top Value="217"/>
+            <Top Value="182"/>
             <Width Value="736"/>
             <Height Value="0"/>
           </Size>
@@ -4540,7 +4540,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="9"/>
-            <Top Value="180"/>
+            <Top Value="151"/>
             <Width Value="736"/>
             <Height Value="0"/>
           </Size>
@@ -4559,7 +4559,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="9"/>
-            <Top Value="144"/>
+            <Top Value="123"/>
             <Width Value="737"/>
             <Height Value="0"/>
           </Size>
@@ -4673,7 +4673,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="596"/>
-            <Top Value="248"/>
+            <Top Value="238"/>
             <Width Value="149"/>
             <Height Value="0"/>
           </Size>
@@ -4692,7 +4692,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="596"/>
-            <Top Value="274"/>
+            <Top Value="264"/>
             <Width Value="149"/>
             <Height Value="0"/>
           </Size>
@@ -4711,9 +4711,9 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="131"/>
-            <Top Value="145"/>
+            <Top Value="124"/>
             <Width Value="0"/>
-            <Height Value="72"/>
+            <Height Value="58"/>
           </Size>
           <Flags Value="1"/>
           <Frames>
@@ -4730,9 +4730,9 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="282"/>
-            <Top Value="145"/>
+            <Top Value="124"/>
             <Width Value="0"/>
-            <Height Value="71"/>
+            <Height Value="58"/>
           </Size>
           <Flags Value="1"/>
           <Frames>
@@ -4749,9 +4749,9 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="368"/>
-            <Top Value="144"/>
+            <Top Value="123"/>
             <Width Value="0"/>
-            <Height Value="73"/>
+            <Height Value="59"/>
           </Size>
           <Flags Value="1"/>
           <Frames>
@@ -4768,9 +4768,9 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="440"/>
-            <Top Value="145"/>
+            <Top Value="124"/>
             <Width Value="0"/>
-            <Height Value="35"/>
+            <Height Value="27"/>
           </Size>
           <Flags Value="1"/>
           <Frames>
@@ -4787,9 +4787,9 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="210"/>
-            <Top Value="181"/>
+            <Top Value="151"/>
             <Width Value="0"/>
-            <Height Value="36"/>
+            <Height Value="30"/>
           </Size>
           <Flags Value="1"/>
           <Frames>
@@ -4806,7 +4806,7 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="9"/>
-            <Top Value="698"/>
+            <Top Value="677"/>
             <Width Value="292"/>
             <Height Value="12"/>
           </Size>
@@ -4849,9 +4849,9 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="15"/>
-            <Top Value="199"/>
+            <Top Value="166"/>
             <Width Value="99"/>
-            <Height Value="15"/>
+            <Height Value="13"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -4892,9 +4892,9 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="12"/>
-            <Top Value="582"/>
+            <Top Value="566"/>
             <Width Value="99"/>
-            <Height Value="15"/>
+            <Height Value="13"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -4927,6 +4927,254 @@
           <Layout Value="tlBottom"/>
           <Angle Value="0"/>
         </Object138>
+        <Object139>
+          <Name Value="Line37"/>
+          <ClassName Value="TfrLineView"/>
+          <Visible Value="1"/>
+          <Typ Value="gtLine"/>
+          <StreamMode Value="0"/>
+          <Size>
+            <Left Value="596"/>
+            <Top Value="211"/>
+            <Width Value="149"/>
+            <Height Value="0"/>
+          </Size>
+          <Flags Value="1"/>
+          <Frames>
+            <FrameColor Value="clBlack"/>
+            <FrameStyle Value="frsSolid"/>
+            <FrameWidth Value="1"/>
+          </Frames>
+        </Object139>
+        <Object140>
+          <Name Value="Memo92"/>
+          <ClassName Value="TfrMemoView"/>
+          <Visible Value="1"/>
+          <Typ Value="gtMemo"/>
+          <StreamMode Value="0"/>
+          <Size>
+            <Left Value="601"/>
+            <Top Value="214"/>
+            <Width Value="139"/>
+            <Height Value="12"/>
+          </Size>
+          <Flags Value="3"/>
+          <FillColor Value="clNone"/>
+          <Frames>
+            <FrameColor Value="clBlack"/>
+            <FrameStyle Value="frsDot"/>
+            <FrameWidth Value="1"/>
+            <FrameBorders Value=""/>
+          </Frames>
+          <Data>
+            <Format Value="556"/>
+            <FormatStr Value=""/>
+            <Memo Value="( - ) Outras Deduções&#xD;&#xA;"/>
+            <Script Value=""/>
+          </Data>
+          <Font>
+            <Name Value="Arial"/>
+            <Size Value="6"/>
+            <Color Value="clBlack"/>
+            <Charset Value="0"/>
+            <Style Value=""/>
+          </Font>
+          <Highlight>
+            <FontStyle Value="2"/>
+            <FontColor Value="clBlack"/>
+            <FillColor Value="clWhite"/>
+            <HighlightStr Value=""/>
+          </Highlight>
+          <Alignment Value="taLeftJustify"/>
+          <Layout Value="tlTop"/>
+          <Angle Value="0"/>
+        </Object140>
+        <Object141>
+          <Name Value="Memo93"/>
+          <ClassName Value="TfrMemoView"/>
+          <Visible Value="1"/>
+          <Typ Value="gtMemo"/>
+          <StreamMode Value="0"/>
+          <Size>
+            <Left Value="602"/>
+            <Top Value="266"/>
+            <Width Value="130"/>
+            <Height Value="12"/>
+          </Size>
+          <Flags Value="3"/>
+          <FillColor Value="clNone"/>
+          <Frames>
+            <FrameColor Value="clBlack"/>
+            <FrameStyle Value="frsDot"/>
+            <FrameWidth Value="1"/>
+            <FrameBorders Value=""/>
+          </Frames>
+          <Data>
+            <Format Value="556"/>
+            <FormatStr Value=""/>
+            <Memo Value="( + ) Outros Acrescimos&#xD;&#xA;"/>
+            <Script Value=""/>
+          </Data>
+          <Font>
+            <Name Value="Arial"/>
+            <Size Value="6"/>
+            <Color Value="clBlack"/>
+            <Charset Value="0"/>
+            <Style Value=""/>
+          </Font>
+          <Highlight>
+            <FontStyle Value="2"/>
+            <FontColor Value="clBlack"/>
+            <FillColor Value="clWhite"/>
+            <HighlightStr Value=""/>
+          </Highlight>
+          <Alignment Value="taLeftJustify"/>
+          <Layout Value="tlTop"/>
+          <Angle Value="0"/>
+        </Object141>
+        <Object142>
+          <Name Value="Line41"/>
+          <ClassName Value="TfrLineView"/>
+          <Visible Value="1"/>
+          <Typ Value="gtLine"/>
+          <StreamMode Value="0"/>
+          <Size>
+            <Left Value="596"/>
+            <Top Value="290"/>
+            <Width Value="149"/>
+            <Height Value="0"/>
+          </Size>
+          <Flags Value="1"/>
+          <Frames>
+            <FrameColor Value="clBlack"/>
+            <FrameStyle Value="frsSolid"/>
+            <FrameWidth Value="1"/>
+          </Frames>
+        </Object142>
+        <Object143>
+          <Name Value="Memo94"/>
+          <ClassName Value="TfrMemoView"/>
+          <Visible Value="1"/>
+          <Typ Value="gtMemo"/>
+          <StreamMode Value="0"/>
+          <Size>
+            <Left Value="592"/>
+            <Top Value="611"/>
+            <Width Value="149"/>
+            <Height Value="12"/>
+          </Size>
+          <Flags Value="3"/>
+          <FillColor Value="clNone"/>
+          <Frames>
+            <FrameColor Value="clBlack"/>
+            <FrameStyle Value="frsDot"/>
+            <FrameWidth Value="2"/>
+            <FrameBorders Value=""/>
+          </Frames>
+          <Data>
+            <Format Value="556"/>
+            <FormatStr Value=""/>
+            <Memo Value="( - ) Outras Deduções&#xD;&#xA;"/>
+            <Script Value=""/>
+          </Data>
+          <Font>
+            <Name Value="Arial"/>
+            <Size Value="6"/>
+            <Color Value="clBlack"/>
+            <Charset Value="0"/>
+            <Style Value=""/>
+          </Font>
+          <Highlight>
+            <FontStyle Value="2"/>
+            <FontColor Value="clBlack"/>
+            <FillColor Value="clWhite"/>
+            <HighlightStr Value=""/>
+          </Highlight>
+          <Alignment Value="taLeftJustify"/>
+          <Layout Value="tlTop"/>
+          <Angle Value="0"/>
+        </Object143>
+        <Object144>
+          <Name Value="Line42"/>
+          <ClassName Value="TfrLineView"/>
+          <Visible Value="1"/>
+          <Typ Value="gtLine"/>
+          <StreamMode Value="0"/>
+          <Size>
+            <Left Value="582"/>
+            <Top Value="635"/>
+            <Width Value="163"/>
+            <Height Value="0"/>
+          </Size>
+          <Flags Value="1"/>
+          <Frames>
+            <FrameColor Value="clBlack"/>
+            <FrameStyle Value="frsSolid"/>
+            <FrameWidth Value="1"/>
+          </Frames>
+        </Object144>
+        <Object145>
+          <Name Value="Memo95"/>
+          <ClassName Value="TfrMemoView"/>
+          <Visible Value="1"/>
+          <Typ Value="gtMemo"/>
+          <StreamMode Value="0"/>
+          <Size>
+            <Left Value="592"/>
+            <Top Value="663"/>
+            <Width Value="145"/>
+            <Height Value="12"/>
+          </Size>
+          <Flags Value="3"/>
+          <FillColor Value="clNone"/>
+          <Frames>
+            <FrameColor Value="clBlack"/>
+            <FrameStyle Value="frsDot"/>
+            <FrameWidth Value="1"/>
+            <FrameBorders Value=""/>
+          </Frames>
+          <Data>
+            <Format Value="556"/>
+            <FormatStr Value=""/>
+            <Memo Value="( + ) Outros Acrescimos&#xD;&#xA;"/>
+            <Script Value=""/>
+          </Data>
+          <Font>
+            <Name Value="Arial"/>
+            <Size Value="6"/>
+            <Color Value="clBlack"/>
+            <Charset Value="0"/>
+            <Style Value=""/>
+          </Font>
+          <Highlight>
+            <FontStyle Value="2"/>
+            <FontColor Value="clBlack"/>
+            <FillColor Value="clWhite"/>
+            <HighlightStr Value=""/>
+          </Highlight>
+          <Alignment Value="taLeftJustify"/>
+          <Layout Value="tlTop"/>
+          <Angle Value="0"/>
+        </Object145>
+        <Object146>
+          <Name Value="Line43"/>
+          <ClassName Value="TfrLineView"/>
+          <Visible Value="1"/>
+          <Typ Value="gtLine"/>
+          <StreamMode Value="0"/>
+          <Size>
+            <Left Value="583"/>
+            <Top Value="684"/>
+            <Width Value="163"/>
+            <Height Value="0"/>
+          </Size>
+          <Flags Value="1"/>
+          <Frames>
+            <FrameColor Value="clBlack"/>
+            <FrameStyle Value="frsSolid"/>
+            <FrameWidth Value="1"/>
+          </Frames>
+        </Object146>
       </Page1>
       <FVal>
         <Count Value="24"/>

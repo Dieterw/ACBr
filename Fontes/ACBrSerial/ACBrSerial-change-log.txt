@@ -97,6 +97,13 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 18/07/2011
+-- ACBrECFBematech --
+[-] Acerto de bug no vendeitem para a impressora bematech mp20f1-II, estava 
+    sendo enviado o comando com departamento "00", o que ocasiona erro de CMD
+    inválido.
+    (por: Régys Silveira)
+
 Data: 22/07/2011
 -- ACBrSwedaSTX --
 [+] Adicionado o suporte a tags de formatação para a sweda

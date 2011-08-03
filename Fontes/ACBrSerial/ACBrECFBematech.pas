@@ -1599,7 +1599,7 @@ begin
      end ;
 
      EnviaComando(#63 + AliquotaECF + ValorStr + QtdStr + DescontoStr +
-                        AcrescimoStr + StringofChar('0',22) + Unidade +
+                        AcrescimoStr + '01' + StringofChar('0',20) + Unidade +
                         Codigo + #0 + Descricao  + #0) ;
    end
   else

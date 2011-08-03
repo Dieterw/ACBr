@@ -258,7 +258,7 @@ end;
 
 procedure TfrmDemo.Button1Click ( Sender: TObject ) ;
 begin
-   ACBrBoletoFCLazReport1.NomeArquivo := './teste.pdf' ;
+   //ACBrBoletoFCLazReport1.NomeArquivo := './teste.pdf' ;
    ACBrBoleto1.GerarPDF;
 end;
 

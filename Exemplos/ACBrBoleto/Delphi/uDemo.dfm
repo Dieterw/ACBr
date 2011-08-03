@@ -620,6 +620,7 @@ object frmDemo: TfrmDemo
     Cedente.ContaDigito = '9'
     Cedente.TipoInscricao = pOutras
     Banco.Numero = 237
+    Banco.TamanhoMaximoNossoNum = 11
     Banco.TipoCobranca = cobBradesco
     NomeArqRemessa = '.'
     NumeroArquivo = 0

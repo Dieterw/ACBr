@@ -1,11 +1,11 @@
 object frmDemo: TfrmDemo
-  Left = 181
-  Height = 619
-  Top = 35
-  Width = 813
+  Left = 112
+  Height = 601
+  Top = 70
+  Width = 811
   Caption = 'Demo ACBrBoleto'
-  ClientHeight = 619
-  ClientWidth = 813
+  ClientHeight = 601
+  ClientWidth = 811
   OnCreate = FormCreate
   Position = poScreenCenter
   LCLVersion = '0.9.31'
@@ -182,11 +182,11 @@ object frmDemo: TfrmDemo
   object Panel2: TPanel
     Left = 0
     Height = 50
-    Top = 569
-    Width = 813
+    Top = 551
+    Width = 811
     Align = alBottom
     ClientHeight = 50
-    ClientWidth = 813
+    ClientWidth = 811
     TabOrder = 5
     object btnIncluiBoleto: TButton
       Left = 360
@@ -910,8 +910,9 @@ object frmDemo: TfrmDemo
     Cedente.Cidade = 'Tatui'
     Cedente.UF = 'SP'
     Cedente.CEP = '18270000'
-    Banco.Numero = 237
-    Banco.TipoCobranca = cobBradesco
+    Banco.Numero = 104
+    Banco.TamanhoMaximoNossoNum = 15
+    Banco.TipoCobranca = cobCaixaEconomica
     NumeroArquivo = 0
     DataArquivo = 0
     DataCreditoLanc = 0
@@ -922,16 +923,18 @@ object frmDemo: TfrmDemo
   end
   object ACBrBoletoFCLazReport1: TACBrBoletoFCLazReport
     DirLogo = '..\..\..\Fontes\ACBrBoleto\Logos\Colorido'
-    NomeArquivo = 'boleto'
+    NomeArquivo = 'boleto.pdf'
     SoftwareHouse = 'Projeto ACBr - http://acbr.sf.net'
+    DirArqPDF_HTML = 'c:'
     left = 80
     top = 264
   end
   object ACBrBoletoFCFortes1: TACBrBoletoFCFortes
     ACBrBoleto = ACBrBoleto1
-    LayOut = lCarne
     DirLogo = '..\..\..\Fontes\ACBrBoleto\Logos\Colorido'
+    NomeArquivo = 'boleto.pdf'
     SoftwareHouse = 'Projeto ACBr - http://acbr.sf.net'
+    DirArqPDF_HTML = 'c:\temp'
     left = 80
     top = 224
   end

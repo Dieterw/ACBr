@@ -657,8 +657,6 @@ begin
   fsBaseTotalDiaMeioPagamento := 99;
   fsBaseTotalDiaNaoFiscal     := 99;
 
-  GetPAF ;
-
   { FiscNET sempre aceita até 3 decimais na QTD e PrecoUnit }
   fpDecimaisQtd   := 3 ;
   fpDecimaisPreco := 3 ;
@@ -667,6 +665,8 @@ begin
      if NumVersao = '' then
         raise EACBrECFNaoInicializado.Create( ACBrStr(
                  'Erro inicializando a impressora '+fpModeloStr ));
+
+     GetPAF ;
 
      FiscNETComando.NomeComando := 'LeTexto' ;
      FiscNETComando.AddParamString('NomeTexto','Marca') ;

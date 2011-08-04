@@ -570,7 +570,8 @@ begin
      if ExibeMsg then
         TACBrTEFD(Owner).DoExibeMsg( opmOK,
                                'Transação TEF efetuada.'+sLineBreak+
-                               'Favor Re-Imprimir Ultimo Cupom ' + NSUs ) ;
+                               'Favor Re-Imprimir Ultimo Cupom ' + NSUs + sLineBreak +
+                               '(Para Cielo utilizar os 6 últimos dígitos.)') ;
 
   finally
      ArquivosVerficar.Free;

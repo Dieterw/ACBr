@@ -1435,7 +1435,6 @@ begin
 
     {Parametros do Boleto - Banco}
     cbxBOLBanco.ItemIndex    := Ini.ReadInteger('BOLETO', 'Banco', 0);
-    //cbxBOLBanco.Text         := IntToStrZero(ini.ReadInteger('BOLETO', 'Banco', 1), 3);
     edtBOLConta.Text         := ini.ReadString('BOLETO', 'Conta', '');
     edtBOLDigitoConta.Text   := ini.ReadString('BOLETO', 'DigitoConta', '');
     edtBOLAgencia.Text       := ini.ReadString('BOLETO', 'Agencia', '');
@@ -1626,7 +1625,7 @@ begin
     else
        LayoutRemessa := c400;
 
-    Banco.Numero := StrToIntDef(Copy(cbxBOLBanco.Text, 1, 3), 0);
+    Banco.TipoCobranca := TACBrTipoCobranca( cbxBOLBanco.ItemIndex );
     DirArqRemessa := deBolDirRemessa.Text;
     DirArqRetorno := deBolDirRetorno.Text;
   end;

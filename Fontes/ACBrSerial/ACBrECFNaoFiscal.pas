@@ -1135,7 +1135,7 @@ begin
   if RoundTo(TotalPago + Valor,-2) >= SubTotal then   { Ultrapassou o Valor do Cupom }
   begin
      if fsPagamentosCupom.Count > 0 then
-        UltLin := padS('S O M A  R$|'+FormatFloat('#,###,##0.00',
+        UltLin := padS('SOMA  R$|'+FormatFloat('#,###,##0.00',
                     RoundTo(TotalPago + Valor,-2)),Colunas,'|')
      else
         UltLin := '' ;
@@ -1151,7 +1151,7 @@ begin
 		     NumeroColunas() ,'|' ) + fsCmdImpFimExpandido ;
      end ;
 
-     UltLin := StringReplace( UltLin,' ','_',[rfReplaceAll]) ;
+    // UltLin := StringReplace( UltLin,' ','_',[rfReplaceAll]) ;
      if UltLin <> '' then
         fsBuffer.Add( UltLin ) ;
   end ;
@@ -1539,10 +1539,10 @@ begin
   fsBuffer.Add( '' ) ;
   fsBuffer.Add( padC('COMPROVANTE NAO FISCAL VINCULADO',Colunas) ) ;
   fsBuffer.Add( '' ) ;
-  fsBuffer.Add( 'COO do documento de compra: '+COO ) ;
-  fsBuffer.Add( padS('VALOR TOTAL DA COMPRA  R$:|'+
-                FormatFloat('##,###,##0.00',SubTotal),Colunas,'|') ) ;
-  fsBuffer.Add( padS(padL(FPG.Descricao,22)+' R$:|'+
+  fsBuffer.Add( padS('COO do documento de compra:|' + COO, Colunas,'|') ) ;
+  fsBuffer.Add( padS('VALOR TOTAL DA COMPRA   R$:|'+
+                FormatFloat('##,###,##0.00',fswSubTotal),Colunas,'|') ) ;
+  fsBuffer.Add( padS(padL(FPG.Descricao,23)+' R$:|'+
                 FormatFloat('##,###,##0.00',Valor),Colunas,'|') ) ;
   fsBuffer.Add( '' ) ;
 

@@ -150,7 +150,12 @@ begin
  NFe.Emit.xNome   := LerCampo(Grupo,'Nome / Razão Social');
  NFe.Emit.xFant   := LerCampo(Grupo,'Nome Fantasia');
  NFe.Emit.CNPJCPF := OnlyNumber(LerCampo(Grupo,'CNPJ'));
+
+ // alteração: separar numero do endereço
  NFe.Emit.EnderEmit.xLgr := LerCampo(Grupo,'Endereço');
+ NFe.Emit.EnderEmit.xLgr := Copy(NFe.Emit.EnderEmit.xLgr,1, pos(',',NFe.Emit.EnderEmit.xLgr)-1 );
+ NFe.Emit.EnderEmit.nro  := copy( LerCampo(Grupo,'Endereço'), pos(',',LerCampo(Grupo,'Endereço'))+1, 10 );
+
  NFe.Emit.EnderEmit.xBairro := LerCampo(Grupo,'Bairro/Distrito');
  NFe.Emit.EnderEmit.CEP := StrToIntDef(OnlyNumber(LerCampo(Grupo,'CEP')),0);
  NFe.Emit.EnderEmit.cMun := StrToIntDef(LerCampo(Grupo,'Município',7),0);
@@ -168,8 +173,14 @@ begin
  NFe.Dest.xNome   := LerCampo(Grupo,'Nome / Razão social');
  NFe.Dest.CNPJCPF := OnlyNumber(LerCampo(Grupo,'CNPJ/CPF'));
  NFe.Dest.CNPJCPF := OnlyNumber(LerCampo(Grupo,'CNPJ'));
+
+ // alteração: separar numero do endereço
  NFe.Dest.EnderDest.xLgr := LerCampo(Grupo,'Endereço');
- NFe.Dest.EnderDest.xBairro := LerCampo(Grupo,'Bairro/Distrito');
+ NFe.Dest.EnderDest.xLgr := Copy(NFe.Dest.EnderDest.xLgr,1, pos(',',NFe.Dest.EnderDest.xLgr)-1 );
+ NFe.Dest.EnderDest.nro  := copy( LerCampo(Grupo,'Endereço'), pos(',',LerCampo(Grupo,'Endereço'))+1, 10 );
+
+ // correção, bairro tem espaço entre as barras
+ NFe.Dest.EnderDest.xBairro := LerCampo(Grupo,'Bairro / Distrito');
  NFe.Dest.EnderDest.CEP := StrToIntDef(OnlyNumber(LerCampo(Grupo,'CEP')),0);
  NFe.Dest.EnderDest.cMun := StrToIntDef(LerCampo(Grupo,'Município',7),0);
  NFe.Dest.EnderDest.xMun := copy(LerCampo(Grupo,'Município'),10,60);

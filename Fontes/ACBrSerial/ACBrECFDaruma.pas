@@ -875,11 +875,13 @@ begin
         Result := EnviaComando_ECF_Daruma( cmd ) ; // Envia o comando
         Break ;                                    // Tudo OK, saindo..
      except
-        if (fsCodAviso >= 40) then                 // Está compactando MFD ?
+        GravaLog('Daruma: Falha no Envio do CMD. Tentativa: '+IntToStr(Tentativas+1)+
+                 ' - Erro: '+IntToStr(fsErro)+' - Estendido: '+IntToStr(fsErroSTD) +
+                 ' -> ' + ErroEstendidoTexto(fsErro) +
+                 ' Cod.Aviso: '+IntToStr(fsCodAviso) );
+        if (fsCodAviso = 40) or (fsErro = 35) or (fsErro = 99) then  // Está compactando MFD ?
          begin
-           GravaLog('Daruma: Falha no Envio do CMD. Tentativa: '+IntToStr(Tentativas+1)+
-                    ' - Erro: '+IntToStr(fsErro)+' - Estendido: '+IntToStr(fsErroSTD) +
-                    ' -> ' + ErroEstendidoTexto(fsErro) );
+           GravaLog('        Tentando novamente');
            Sleep(100) ;
          end
         else

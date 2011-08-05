@@ -619,7 +619,8 @@ type
                                      indSitCisao,         // 1 - Cisão
                                      indSitFusao,         // 2 - Fusão
                                      indSitIncorporacao,  // 3 - Incorporação
-                                     indSitEncerramento   // 4 - Encerramento
+                                     indSitEncerramento,  // 4 - Encerramento
+                                     indNenhum            // 5 - Vazio
                                    );
   // Indicador da natureza da pessoa juridica
   TACBrIndicadorNaturezaPJ = (

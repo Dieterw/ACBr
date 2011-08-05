@@ -329,6 +329,7 @@ begin
          indSitFusao: strIND_SIT_ESP := '2';
          indSitIncorporacao: strIND_SIT_ESP := '3';
          indSitEncerramento: strIND_SIT_ESP := '4';
+         indNenhum: strIND_SIT_ESP := ' ';
        end;
        case IND_NAT_PJ of
          indNatPJSocEmpresariaGeral   : strIND_NAT_PJ := '00'; //0 - Sociedade empresária geral

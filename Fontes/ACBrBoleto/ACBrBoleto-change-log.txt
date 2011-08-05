@@ -47,6 +47,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versao 0.0.1 do FastReport 05/08/11
+[-] Lançado a 1a versão para impressão dos boletos em FastReport.
+    (por: Isaque Pinheiro)
+
 Versao 0.0.9a do QuickReport 07/07/11
 [-] Corrigido problema ao imprimir apartir da tela do preview.
     (Rick Nelson)

@@ -212,7 +212,6 @@ TACBrECF = class( TACBrComponent )
     fsEADInterno : TACBrEAD ;
     fsEAD : TACBrEAD ;       /// Classe usada para AssinarArquivo com assinatura EAD.
 
-    fsDadosReducaoZClass: TACBrECFDadosRZ; {Class com instacia para guadar dados da RZ.}
     fOnAntesAbreCupom : TACBrECFOnAbreCupom;
     fOnDepoisAbreCupom  : TACBrECFOnAbreCupom;
     fOnErrorAbreCupom  : TACBrECFEventoOnError;
@@ -435,6 +434,7 @@ TACBrECF = class( TACBrComponent )
     function GetNumUltimoItemClass: Integer;
     function GetConsumidorClass: TACBrECFConsumidor;
     function GetCodBarrasClass: TACBrECFCodBarras;
+    function GetDadosReducaoZClass: TACBrECFDadosRZ;
     procedure SetRFD(const AValue: TACBrRFD);
     procedure SetAAC(const AValue: TACBrAAC);
     procedure SetEAD(const AValue: TACBrEAD);
@@ -490,7 +490,7 @@ TACBrECF = class( TACBrComponent )
     { Dados da Reducao Z - Registro 60M }
     Property DadosReducaoZ : AnsiString  read GetDadosReducaoZ ;
     Property DadosUltimaReducaoZ : AnsiString  read GetDadosUltimaReducaoZ ;
-    Property DadosReducaoZClass: TACBrECFDadosRZ read fsDadosReducaoZClass;
+    Property DadosReducaoZClass: TACBrECFDadosRZ read GetDadosReducaoZClass;
 
     { Retorna String com todos os valores no formato: Campo = Valor (1 por linha)}
     Property DataMovimento      : TDateTime  read GetDataMovimentoClass ;
@@ -836,6 +836,8 @@ TACBrECF = class( TACBrComponent )
     function CodificarPaginaDeCodigoECF(ATexto: String): AnsiString;
     function DecodificarPaginaDeCodigoECF(ATexto: AnsiString): String;
 
+    function MontaDadosReducaoZ: AnsiString;
+
   published
      property About : String read GetAbout write SetAbout stored False ;
      property Modelo : TACBrECFModelo read fsModelo write SetModelo
@@ -1137,9 +1139,6 @@ begin
   { Instanciando fsECF com modelo Generico (ECFClass) }
   fsECF := TACBrECFClass.create( self ) ;
 
-  { Instanciando fsDadosReducaoZClass para armazenar dados da redução Z}
-  fsDadosReducaoZClass := TACBrECFDadosRZ.Create;
-
   // configurações de codigos de barras impressos por tags
   fsConfigBarras := TACBrECFConfigBarras.Create;
   fsConfigBarras.LarguraLinha := 3;
@@ -1159,7 +1158,6 @@ begin
      FreeAndNil( fsEADInterno );
 
   FreeAndNil( fsDevice ) ;
-  FreeAndNil( fsDadosReducaoZClass ) ;
 
   {$IFNDEF CONSOLE}
     fsFormMsgFont.Free ;
@@ -1769,7 +1767,7 @@ end;
 function TACBrECF.GetNumCROClass: String;
 begin
   ComandoLOG := 'NumCRO' ;
-  Result := fsECF.NumCRO ;
+   Result := fsECF.NumCRO ;
 end;
 
 function TACBrECF.GetNumCCFClass: String;
@@ -1910,6 +1908,12 @@ end;
 function TACBrECF.GetTermicaClass: Boolean;
 begin
   Result := fsECF.Termica ;
+end;
+
+function TACBrECF.MontaDadosReducaoZ: AnsiString;
+begin
+  ComandoLOG := 'MontaDadosReducaoZ' ;
+  fsECF.MontaDadosReducaoZ;
 end;
 
 function TACBrECF.GetIdentificaConsumidorRodapeClass: Boolean;
@@ -2113,170 +2117,55 @@ Var
   RG   : TACBrECFRelatorioGerencial ;
 begin
   { Alimenta a class com os dados atuais do ECF }
-  with fsDadosReducaoZClass do
+  with fsECF.DadosReducaoZClass do
   begin
+     // Zerar variaveis
      Clear ;
-     
-     DataDaImpressora  := Self.DataHora;
 
      { REDUÇÃO Z }
-     try
-        DataDoMovimento := Self.DataMovimento;
-     except
-     end ;
-
-     try
-        NumeroDeSerie := Self.NumSerie;
-     except
-     end ;
-
-     try
-        NumeroDeSerieMFD := Self.NumSerieMFD;
-     except
-     end ;
-
-     try
-        NumeroDoECF  := Self.NumECF;
-        NumeroDaLoja := Self.NumLoja;
-     except
-     end ;
-
-     try
-        NumeroCOOInicial := Self.NumCOOInicial;
-     except
-     end ;
+     try DataDoMovimento  := Self.DataMovimento; except end ;
+     try DataDaImpressora := Self.DataHora;      except end ;
+     try NumeroDeSerie    := Self.NumSerie;      except end ;
+     try NumeroDeSerieMFD := Self.NumSerieMFD;   except end ;
+     try NumeroDoECF      := Self.NumECF;        except end ;
+     try NumeroDaLoja     := Self.NumLoja;       except end ;
+     try NumeroCOOInicial := Self.NumCOOInicial; except end ;
 
      { CONTADORES }
-     try
-        COO := StrToIntDef(Self.NumCOO,0);
-     except
-     end ;
-
-     try
-        GNF := StrToIntDef(Self.NumGNF,0);
-     except
-     end ;
-
-     try
-        CRO := StrToIntDef(Self.NumCRO,0);
-     except
-     end ;
-
-     try
-        CRZ := StrToIntDef(Self.NumCRZ,0);
-     except
-     end ;
-
-     try
-        CCF := StrToIntDef(Self.NumCCF,0);
-     except
-     end ;
-
-     try
-        CDC := StrToIntDef(Self.NumCDC,0);
-     except
-     end ;
-
-     try
-        CFC := StrToIntDef(Self.NumCFC,0);
-     except
-     end ;
-
-     try
-        GRG := StrToIntDef(Self.NumGRG,0);
-     except
-     end ;
-
-     try
-        GNFC := StrToIntDef(Self.NumGNFC,0);
-     except
-     end ;
-
-     try
-        CFD := StrToIntDef(Self.NumCFD,0);
-     except
-     end ;
-
-     try
-        NCN := StrToIntDef(Self.NumNCN,0);
-     except
-     end ;
-
-     try
-        CCDC := StrToIntDef(Self.NumCCDC,0);
-     except
-     end ;
-
-
+     try COO  := StrToIntDef(Self.NumCOO,0);  except end ;
+     try GNF  := StrToIntDef(Self.NumGNF,0);  except end ;
+     try CRO  := StrToIntDef(Self.NumCRO,0);  except end ;
+     try CRZ  := StrToIntDef(Self.NumCRZ,0);  except end ;
+     try CCF  := StrToIntDef(Self.NumCCF,0);  except end ;
+     try CDC  := StrToIntDef(Self.NumCDC,0);  except end ;
+     try CFC  := StrToIntDef(Self.NumCFC,0);  except end ;
+     try GRG  := StrToIntDef(Self.NumGRG,0);  except end ;
+     try GNFC := StrToIntDef(Self.NumGNFC,0); except end ;
+     try CFD  := StrToIntDef(Self.NumCFD,0);  except end ;
+     try NCN  := StrToIntDef(Self.NumNCN,0);  except end ;
+     try CCDC := StrToIntDef(Self.NumCCDC,0); except end ;
 
      { TOTALIZADORES }
-     try
-        ValorGrandeTotal  := Self.GrandeTotal;
-     except
-     end ;
-
-     try
-        ValorVendaBruta := Self.VendaBruta;
-     except
-     end ;
-
-     try
-        CancelamentoICMS := Self.TotalCancelamentos;
-     except
-     end ;
-
-     try
-        DescontoICMS := Self.TotalDescontos;
-     except
-     end ;
-
-//     try
-//        TotalISSQN := Self.TotalNaoTributadoISSQN; //Total ISSQN e Total Não tributado são coisas diferentes... ???
-//     except
-//     end ;
-
-     try
-        CancelamentoISSQN := Self.TotalCancelamentosISSQN;
-     except
-     end ;
-
-     try
-        DescontoISSQN := Self.TotalDescontosISSQN;
-     except
-     end ;
-
-     try
-        AcrescimoICMS := Self.TotalAcrescimos;
-     except
-     end ;
-
-     try
-        AcrescimoISSQN := Self.TotalAcrescimosISSQN;
-     except
-     end ;
-
-     try
-        CancelamentoOPNF := Self.TotalCancelamentosOPNF;
-     except
-     end ;
-
-     try
-        DescontoOPNF := Self.TotalDescontosOPNF;
-     except
-     end ;
-
-     try
-        AcrescimoOPNF := Self.TotalAcrescimosOPNF;
-     except
-     end ;
+     try ValorGrandeTotal  := Self.GrandeTotal;             except end ;
+     try ValorVendaBruta   := Self.VendaBruta;              except end ;
+     try CancelamentoICMS  := Self.TotalCancelamentos;      except end ;
+     try DescontoICMS      := Self.TotalDescontos;          except end ;
+     try CancelamentoISSQN := Self.TotalCancelamentosISSQN; except end ;
+     try DescontoISSQN     := Self.TotalDescontosISSQN;     except end ;
+     try AcrescimoICMS     := Self.TotalAcrescimos;         except end ;
+     try AcrescimoISSQN    := Self.TotalAcrescimosISSQN;    except end ;
+     try CancelamentoOPNF  := Self.TotalCancelamentosOPNF;  except end ;
+     try DescontoOPNF      := Self.TotalDescontosOPNF;      except end ;
+     try AcrescimoOPNF     := Self.TotalAcrescimosOPNF;     except end ;
+//   try TotalISSQN        := Self.TotalNaoTributadoISSQN; //Total ISSQN e Total Não tributado são coisas diferentes... ??? except end ;
 
      { Copiando objetos de ICMS e ISS}
      try
         CarregaAliquotas;
         LerTotaisAliquota;
 
-        TotalISSQN  := 0;
-        TotalICMS   := 0;
+        TotalISSQN := 0;
+        TotalICMS  := 0;
 
         for I := 0 to Self.Aliquotas.Count - 1 do
         begin
@@ -2297,45 +2186,22 @@ begin
      except
      end;
 
-     try
-        SubstituicaoTributariaICMS  := Self.TotalSubstituicaoTributaria;
-     except
-     end ;
-
-     try
-        IsentoICMS := Self.TotalIsencao;
-     except
-     end ;
-
-     try
-        NaoTributadoICMS := Self.TotalNaoTributado;
-     except
-     end ;
+     { ICMS }
+     try SubstituicaoTributariaICMS  := Self.TotalSubstituicaoTributaria; except end ;
+     try IsentoICMS                  := Self.TotalIsencao;                except end ;
+     try NaoTributadoICMS            := Self.TotalNaoTributado;           except end ;
 
      { ISSQN }
-     try
-        SubstituicaoTributariaISSQN := Self.TotalSubstituicaoTributariaISSQN;
-     except
-     end ;
+     try SubstituicaoTributariaISSQN := Self.TotalSubstituicaoTributariaISSQN; except end ;
+     try IsentoISSQN                 := Self.TotalIsencaoISSQN;                except end ;
+     try NaoTributadoISSQN           := Self.TotalNaoTributadoISSQN;           except end ;
 
-     try
-        IsentoISSQN := Self.TotalIsencaoISSQN;
-     except
-     end ;
-
-     try
-        NaoTributadoISSQN := Self.TotalNaoTributadoISSQN;
-     except
-     end ;
-
-
-     VendaLiquida :=
-      VendaBruta -
-      CancelamentoICMS -
-      DescontoICMS -
-      TotalISSQN -
-      CancelamentoISSQN -
-      DescontoISSQN;
+     VendaLiquida := VendaBruta -
+                     CancelamentoICMS -
+                     DescontoICMS -
+                     TotalISSQN -
+                     CancelamentoISSQN -
+                     DescontoISSQN;
 
      { TOTALIZADORES NÃO FISCAIS }
      try
@@ -2345,8 +2211,8 @@ begin
         For I := 0 to Self.ComprovantesNaoFiscais.Count-1 do
         begin
            CNF := TACBrECFComprovanteNaoFiscal.Create ;
-
            CNF.Assign( Self.ComprovantesNaoFiscais[I] );
+
            TotalizadoresNaoFiscais.Add( CNF ) ;
         end ;
 
@@ -2361,8 +2227,8 @@ begin
         For I := 0 to Self.RelatoriosGerenciais.Count-1 do
         begin
            RG := TACBrECFRelatorioGerencial.Create ;
-
            RG.Assign( Self.RelatoriosGerenciais[I] );
+
            RelatorioGerencial.Add( RG ) ;
         end ;
      except
@@ -2376,8 +2242,8 @@ begin
         For I := 0 to Self.FormasPagamento.Count-1 do
         begin
            FPG := TACBrECFFormaPagamento.Create ;
-
            FPG.Assign( Self.FormasPagamento[I] );
+
            MeiosDePagamento.Add( FPG ) ;
         end ;
 
@@ -2387,79 +2253,12 @@ begin
   end;
 
   ///// Montando o INI com as informações /////
+  Result := MontaDadosReducaoZ;
+end;
 
-  Result := '[ECF]'+sLineBreak ;
-  Result := Result + 'DataMovimento = ' +
-               FormatDateTime('dd/mm/yy', fsDadosReducaoZClass.DataDoMovimento) + sLineBreak ;
-  Result := Result + 'NumSerie = ' + fsDadosReducaoZClass.NumeroDeSerie + sLineBreak ;
-  Result := Result + 'NumSerieMFD = ' + fsDadosReducaoZClass.NumeroDeSerieMFD + sLineBreak ;
-  Result := Result + 'NumECF = ' + fsDadosReducaoZClass.NumeroDoECF + sLineBreak ;
-  Result := Result + 'NumLoja = ' + fsDadosReducaoZClass.NumeroDaLoja + sLineBreak ;
-  Result := Result + 'NumCOOInicial = ' + fsDadosReducaoZClass.NumeroCOOInicial + sLineBreak ;
-  Result := Result + 'NumCOO = ' + FormatFloat('000000', fsDadosReducaoZClass.COO) + sLineBreak ;
-  Result := Result + 'NumCRZ = ' + FormatFloat('000000', fsDadosReducaoZClass.CRZ) + sLineBreak ;
-  Result := Result + 'NumCRO = ' + FormatFloat('000000', fsDadosReducaoZClass.CRO) + sLineBreak ;
-  Result := Result + 'NumGNF = ' + FormatFloat('000000', fsDadosReducaoZClass.GNF) + sLineBreak ;
-  Result := Result + 'NumCCF = ' + FormatFloat('000000', fsDadosReducaoZClass.CCF) + sLineBreak ;
-  Result := Result + 'NumCFD = ' + FormatFloat('000000', fsDadosReducaoZClass.CFD) + sLineBreak ;
-  Result := Result + 'NumCDC = ' + FormatFloat('000000', fsDadosReducaoZClass.CDC) + sLineBreak ;
-  Result := Result + 'NumGRG = ' + FormatFloat('000000', fsDadosReducaoZClass.GRG) + sLineBreak ;
-  Result := Result + 'NumGNFC = ' + FormatFloat('000000', fsDadosReducaoZClass.GNFC) + sLineBreak ;
-  Result := Result + 'NumCFC = ' + FormatFloat('000000', fsDadosReducaoZClass.CFC) + sLineBreak ;
-  Result := Result + 'NumNCN = ' + FormatFloat('000000', fsDadosReducaoZClass.NCN) + sLineBreak ;
-  Result := Result + 'NumCCDC = ' + FormatFloat('000000', fsDadosReducaoZClass.CCDC) + sLineBreak ;
-
-  Result := Result + sLineBreak + '[Totalizadores]'+sLineBreak;
-  Result := Result + 'VendaBruta = ' + FloatToStr(fsDadosReducaoZClass.ValorVendaBruta) + sLineBreak ;
-  Result := Result + 'GrandeTotal = ' + FloatToStr(fsDadosReducaoZClass.ValorGrandeTotal) + sLineBreak ;
-  Result := Result + 'TotalDescontos = ' + FloatToStr(fsDadosReducaoZClass.DescontoICMS) + sLineBreak ;
-  Result := Result + 'TotalCancelamentos = ' + FloatToStr(fsDadosReducaoZClass.CancelamentoICMS) + sLineBreak ;
-  Result := Result + 'TotalAcrescimos = ' + FloatToStr(fsDadosReducaoZClass.AcrescimoICMS) + sLineBreak ;
-  Result := Result + 'TotalDescontosISSQN = ' + FloatToStr(fsDadosReducaoZClass.DescontoISSQN) + sLineBreak;
-  Result := Result + 'TotalCancelamentosISSQN = ' + FloatToStr(fsDadosReducaoZClass.CancelamentoISSQN) + sLineBreak;
-  Result := Result + 'TotalAcrescimosISSQN = ' + FloatToStr(fsDadosReducaoZClass.AcrescimoISSQN) + sLineBreak;
-  Result := Result + 'TotalNaoFiscal = ' + FloatToStr(fsDadosReducaoZClass.TotalOperacaoNaoFiscal) + sLineBreak ;
-  Result := Result + 'TotalDescontosOPNF = ' + FloatToStr(fsDadosReducaoZClass.DescontoOPNF) + sLineBreak;
-  Result := Result + 'TotalCancelamentosOPNF = ' + FloatToStr(fsDadosReducaoZClass.CancelamentoOPNF) + sLineBreak;
-  Result := Result + 'TotalAcrescimosOPNF = ' + FloatToStr(fsDadosReducaoZClass.AcrescimoOPNF) + sLineBreak;
-
-  Result := Result + sLineBreak + '[Aliquotas]'+sLineBreak ;
-
-  For I := 0 to Aliquotas.Count-1 do
-  begin
-     Result := Result +
-               FormatFloat('00', I+1 )+
-               Aliquotas[I].Tipo +
-               IntToStrZero(Round(Aliquotas[I].Aliquota*100),4) + ' = '+
-               FloatToStr(Aliquotas[I].Total) + sLineBreak ;
-  end ;
-
-  Result := Result + sLineBreak + '[OutrasICMS]'+sLineBreak ;
-  Result := Result + 'TotalICMS = ' +
-            FloatToStr(fsDadosReducaoZClass.TotalICMS) + sLineBreak;
-  Result := Result + 'TotalISSQN = ' +
-            FloatToStr(fsDadosReducaoZClass.TotalISSQN) + sLineBreak;
-  Result := Result + 'TotalSubstituicaoTributaria = ' +
-            FloatToStr(fsDadosReducaoZClass.SubstituicaoTributariaICMS) + sLineBreak ;
-  Result := Result + 'TotalNaoTributado = ' +
-            FloatToStr(fsDadosReducaoZClass.NaoTributadoICMS) + sLineBreak ;
-  Result := Result + 'TotalIsencao = ' +
-            FloatToStr(fsDadosReducaoZClass.IsentoICMS) + sLineBreak ;
-  Result := Result + 'TotalSubstituicaoTributariaISSQN = ' +
-            FloatToStr(fsDadosReducaoZClass.SubstituicaoTributariaISSQN) + sLineBreak;
-  Result := Result + 'TotalNaoTributadoISSQN = ' +
-            FloatToStr(fsDadosReducaoZClass.NaoTributadoISSQN) + sLineBreak;
-  Result := Result + 'TotalIsencaoISSQN = ' +
-            FloatToStr(fsDadosReducaoZClass.IsentoISSQN) + sLineBreak;
-
-  Result := Result + sLineBreak + '[NaoFiscais]'+sLineBreak ;
-  with fsDadosReducaoZClass do
-  begin
-     For I := 0 to TotalizadoresNaoFiscais.Count-1 do
-        Result := Result + padL(TotalizadoresNaoFiscais[I].Indice,2) + '_' +
-                           TotalizadoresNaoFiscais[I].Descricao +' = '+
-                           FloatToStr(TotalizadoresNaoFiscais[I].Total) + sLineBreak ;
-  end;
+function TACBrECF.GetDadosReducaoZClass: TACBrECFDadosRZ;
+begin
+   Result := fsECF.DadosReducaoZClass;
 end;
 
 function TACBrECF.GetDadosUltimaReducaoZ: AnsiString;

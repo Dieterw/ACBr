@@ -97,6 +97,17 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 05/08/2011
+-- ACBrECFDaruma --
+[+] Implementado recurso para que os dados da ultima redução Z, alimente a 
+    propriedade "DadosReducaoZClass", essa propriedade antes só conseguia ser 
+    ultilizada para armazenar dados antes da emissão da redução Z, esse recusor 
+    só foi implementado para o ECF Daruma. (por: Isaque Pinheiro)
+
+Nota: Após a implementação desse recurso nos demais ECFs, o arquivo .INI 
+      continua sendo gerado, mas de maneira bem mais eficaz, porque terá todos os 
+      dados da class nele, o que já esta acontencedo com a Daruma.
+
 Data: 18/07/2011
 -- ACBrECFBematech --
 [-] Acerto de bug no vendeitem para a impressora bematech mp20f1-II, estava 

@@ -571,6 +571,8 @@ TACBrECFClass = class
     fpConsumidor : TACBrECFConsumidor ;
 
     fpCodBarras  : TACBrECFCodBarras ;
+    { Class com instacia para armazenar dados da RZ }
+    fpDadosReducaoZClass: TACBrECFDadosRZ;
 
     procedure GeraErro( E : Exception ) ;
 
@@ -805,6 +807,7 @@ TACBrECFClass = class
     Property TotalNaoFiscal     : Double     read GetTotalNaoFiscal ;
 
     Property DadosUltimaReducaoZ : AnsiString read GetDadosUltimaReducaoZ ;
+    Property DadosReducaoZClass: TACBrECFDadosRZ read fpDadosReducaoZClass;
 
     { Aliquotas de ICMS }
     procedure CarregaAliquotas ; virtual ;
@@ -1031,6 +1034,7 @@ TACBrECFClass = class
     function TraduzirTag(const ATag: String): AnsiString; virtual;
     function CodificarPaginaDeCodigoECF(ATexto: String): AnsiString; virtual;
     function DecodificarPaginaDeCodigoECF(ATexto: AnsiString): String; virtual;
+    function MontaDadosReducaoZ: AnsiString; virtual;
 end ;
 
 implementation
@@ -1411,6 +1415,8 @@ begin
   fpArqLOG                := '' ;
   fpComandoLOG            := '' ;
 
+  fpDadosReducaoZClass    := TACBrECFDadosRZ.Create ;
+
   fpConsumidor  :=  TACBrECFConsumidor.create ;
 
   fpCodBarras   :=  TACBrECFCodBarras.create;
@@ -1442,7 +1448,9 @@ begin
      fpComprovantesNaoFiscais.Free ;
 
  if Assigned( fpUnidadesMedida ) then
-    fpUnidadesMedida.Free; 
+    fpUnidadesMedida.Free;
+
+  fpDadosReducaoZClass.Free;
 
   fpConsumidor.Free ;
 
@@ -2481,6 +2489,79 @@ end;
 procedure TACBrECFClass.MudaHorarioVerao(EHorarioVerao: Boolean);
 begin
   ErroAbstract('MudaHorarioVerao(EHorarioVerao: Boolean)');
+end;
+
+function TACBrECFClass.MontaDadosReducaoZ: AnsiString;
+Var
+  I: Integer ;
+begin
+  with fpDadosReducaoZClass do
+  begin
+     Result := '[ECF]' + sLineBreak ;
+
+     Result := Result + 'DataMovimento = ' + FormatDateTime('dd/mm/yy', DataDoMovimento) + sLineBreak ;
+     Result := Result + 'NumSerie = '      + NumeroDeSerie               + sLineBreak ;
+     Result := Result + 'NumSerieMFD = '   + NumeroDeSerieMFD            + sLineBreak ;
+     Result := Result + 'NumECF = '        + NumeroDoECF                 + sLineBreak ;
+     Result := Result + 'NumLoja = '       + NumeroDaLoja                + sLineBreak ;
+     Result := Result + 'NumCOOInicial = ' + NumeroCOOInicial            + sLineBreak ;
+     Result := Result + 'NumCOO = '        + FormatFloat('000000', COO)  + sLineBreak ;
+     Result := Result + 'NumCRZ = '        + FormatFloat('000000', CRZ)  + sLineBreak ;
+     Result := Result + 'NumCRO = '        + FormatFloat('000000', CRO)  + sLineBreak ;
+     Result := Result + 'NumGNF = '        + FormatFloat('000000', GNF)  + sLineBreak ;
+     Result := Result + 'NumCCF = '        + FormatFloat('000000', CCF)  + sLineBreak ;
+     Result := Result + 'NumCFD = '        + FormatFloat('000000', CFD)  + sLineBreak ;
+     Result := Result + 'NumCDC = '        + FormatFloat('000000', CDC)  + sLineBreak ;
+     Result := Result + 'NumGRG = '        + FormatFloat('000000', GRG)  + sLineBreak ;
+     Result := Result + 'NumGNFC = '       + FormatFloat('000000', GNFC) + sLineBreak ;
+     Result := Result + 'NumCFC = '        + FormatFloat('000000', CFC)  + sLineBreak ;
+     Result := Result + 'NumNCN = '        + FormatFloat('000000', NCN)  + sLineBreak ;
+     Result := Result + 'NumCCDC = '       + FormatFloat('000000', CCDC) + sLineBreak ;
+
+     Result := Result + sLineBreak + '[Totalizadores]' + sLineBreak ;
+
+     Result := Result + 'VendaBruta = '              + FloatToStr(ValorVendaBruta)        + sLineBreak ;
+     Result := Result + 'GrandeTotal = '             + FloatToStr(ValorGrandeTotal)       + sLineBreak ;
+     Result := Result + 'TotalDescontos = '          + FloatToStr(DescontoICMS)           + sLineBreak ;
+     Result := Result + 'TotalCancelamentos = '      + FloatToStr(CancelamentoICMS)       + sLineBreak ;
+     Result := Result + 'TotalAcrescimos = '         + FloatToStr(AcrescimoICMS)          + sLineBreak ;
+     Result := Result + 'TotalDescontosISSQN = '     + FloatToStr(DescontoISSQN)          + sLineBreak ;
+     Result := Result + 'TotalCancelamentosISSQN = ' + FloatToStr(CancelamentoISSQN)      + sLineBreak ;
+     Result := Result + 'TotalAcrescimosISSQN = '    + FloatToStr(AcrescimoISSQN)         + sLineBreak ;
+     Result := Result + 'TotalNaoFiscal = '          + FloatToStr(TotalOperacaoNaoFiscal) + sLineBreak ;
+     Result := Result + 'TotalDescontosOPNF = '      + FloatToStr(DescontoOPNF)           + sLineBreak ;
+     Result := Result + 'TotalCancelamentosOPNF = '  + FloatToStr(CancelamentoOPNF)       + sLineBreak ;
+     Result := Result + 'TotalAcrescimosOPNF = '     + FloatToStr(AcrescimoOPNF)          + sLineBreak ;
+
+     Result := Result + sLineBreak + '[Aliquotas]' + sLineBreak ;
+
+     For I := 0 to Aliquotas.Count-1 do
+     begin
+        Result := Result +
+                  FormatFloat('00', I+1 ) +
+                  Aliquotas[I].Tipo +
+                  IntToStrZero(Round(Aliquotas[I].Aliquota*100),4) + ' = ' +
+                  FloatToStr(Aliquotas[I].Total) + sLineBreak ;
+     end ;
+
+     Result := Result + sLineBreak + '[OutrasICMS]' + sLineBreak ;
+
+     Result := Result + 'TotalICMS = '                        + FloatToStr(TotalICMS)                   + sLineBreak ;
+     Result := Result + 'TotalISSQN = '                       + FloatToStr(TotalISSQN)                  + sLineBreak ;
+     Result := Result + 'TotalSubstituicaoTributaria = '      + FloatToStr(SubstituicaoTributariaICMS)  + sLineBreak ;
+     Result := Result + 'TotalNaoTributado = '                + FloatToStr(NaoTributadoICMS)            + sLineBreak ;
+     Result := Result + 'TotalIsencao = '                     + FloatToStr(IsentoICMS)                  + sLineBreak ;
+     Result := Result + 'TotalSubstituicaoTributariaISSQN = ' + FloatToStr(SubstituicaoTributariaISSQN) + sLineBreak ;
+     Result := Result + 'TotalNaoTributadoISSQN = '           + FloatToStr(NaoTributadoISSQN)           + sLineBreak ;
+     Result := Result + 'TotalIsencaoISSQN = '                + FloatToStr(IsentoISSQN)                 + sLineBreak ;
+
+     Result := Result + sLineBreak + '[NaoFiscais]' + sLineBreak ;
+
+     For I := 0 to TotalizadoresNaoFiscais.Count-1 do
+        Result := Result + padL(TotalizadoresNaoFiscais[I].Indice,2) + '_' +
+                           TotalizadoresNaoFiscais[I].Descricao + ' = ' +
+                           FloatToStr(TotalizadoresNaoFiscais[I].Total) + sLineBreak ;
+  end;
 end;
 
 procedure TACBrECFClass.MudaArredondamento(Arredondar: Boolean);

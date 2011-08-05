@@ -3011,15 +3011,16 @@ end;
 constructor TRegistro60M.Create;
 begin
   inherited Create;
-FRegs60A:=TRegistros60A.Create(True);
-FRegs60D:=TRegistros60D.Create(True);
-FRegs60I:=TRegistros60I.Create(True);
+FRegs60A:=TRegistros60A.Create(False);
+FRegs60D:=TRegistros60D.Create(False);
+FRegs60I:=TRegistros60I.Create(False);
 end;
 
 destructor TRegistro60M.Destroy;
 begin
-//  FreeAndNil(FRegs60A);
-//  FreeAndNil(FRegs60D);
+  FreeAndNil(FRegs60A);
+  FreeAndNil(FRegs60D);
+  FreeAndNil(FRegs60I);
   inherited;
 end;
 

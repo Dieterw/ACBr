@@ -1913,7 +1913,7 @@ end;
 function TACBrECF.MontaDadosReducaoZ: AnsiString;
 begin
   ComandoLOG := 'MontaDadosReducaoZ' ;
-  fsECF.MontaDadosReducaoZ;
+  Result := fsECF.MontaDadosReducaoZ;
 end;
 
 function TACBrECF.GetIdentificaConsumidorRodapeClass: Boolean;

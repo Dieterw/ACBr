@@ -37,11 +37,10 @@
         <Filename Value="ACBrMonitorConsole.lpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="ACBrMonitorConsole"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
         <TopLine Value="126"/>
-        <CursorPos X="18" Y="129"/>
+        <CursorPos X="14" Y="135"/>
         <UsageCount Value="27"/>
         <Loaded Value="True"/>
       </Unit0>
@@ -218,10 +217,13 @@
       <Unit23>
         <Filename Value="..\..\..\Fontes\ACBrSerial\ACBrECF.pas"/>
         <UnitName Value="ACBrECF"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
-        <CursorPos X="1" Y="1"/>
+        <TopLine Value="3164"/>
+        <CursorPos X="3" Y="3181"/>
         <UsageCount Value="10"/>
+        <Loaded Value="True"/>
       </Unit23>
       <Unit24>
         <Filename Value="..\..\..\Fontes\ACBrComum\ACBrEAD.pas"/>
@@ -328,10 +330,12 @@
       <Unit37>
         <Filename Value="..\..\..\Fontes\ACBrSerial\ACBrECFDaruma.pas"/>
         <UnitName Value="ACBrECFDaruma"/>
+        <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="184"/>
-        <CursorPos X="5" Y="198"/>
+        <TopLine Value="413"/>
+        <CursorPos X="36" Y="437"/>
         <UsageCount Value="10"/>
+        <Loaded Value="True"/>
       </Unit37>
       <Unit38>
         <Filename Value="..\..\..\Fontes\ACBrSerial\ACBrECFFiscNET.pas"/>
@@ -411,7 +415,7 @@
         <UsageCount Value="10"/>
       </Unit47>
     </Units>
-    <JumpHistory Count="21" HistoryIndex="20">
+    <JumpHistory Count="26" HistoryIndex="25">
       <Position1>
         <Filename Value="ACBrMonitorConsole.lpr"/>
         <Caret Line="289" Column="19" TopLine="270"/>
@@ -474,28 +478,48 @@
       </Position15>
       <Position16>
         <Filename Value="ACBrMonitorConsole.lpr"/>
-        <Caret Line="47" Column="14" TopLine="82"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position16>
       <Position17>
         <Filename Value="ACBrMonitorConsole.lpr"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Caret Line="10" Column="35" TopLine="1"/>
       </Position17>
       <Position18>
         <Filename Value="ACBrMonitorConsole.lpr"/>
-        <Caret Line="10" Column="35" TopLine="1"/>
+        <Caret Line="15" Column="36" TopLine="1"/>
       </Position18>
       <Position19>
         <Filename Value="ACBrMonitorConsole.lpr"/>
-        <Caret Line="15" Column="36" TopLine="1"/>
+        <Caret Line="16" Column="16" TopLine="1"/>
       </Position19>
       <Position20>
         <Filename Value="ACBrMonitorConsole.lpr"/>
-        <Caret Line="16" Column="16" TopLine="1"/>
+        <Caret Line="140" Column="50" TopLine="126"/>
       </Position20>
       <Position21>
-        <Filename Value="ACBrMonitorConsole.lpr"/>
-        <Caret Line="140" Column="50" TopLine="126"/>
+        <Filename Value="..\..\..\Fontes\ACBrSerial\ACBrECFDaruma.pas"/>
+        <Caret Line="198" Column="5" TopLine="184"/>
       </Position21>
+      <Position22>
+        <Filename Value="..\..\..\Fontes\ACBrSerial\ACBrECFDaruma.pas"/>
+        <Caret Line="1288" Column="19" TopLine="1274"/>
+      </Position22>
+      <Position23>
+        <Filename Value="..\..\..\Fontes\ACBrSerial\ACBrECFDaruma.pas"/>
+        <Caret Line="1292" Column="33" TopLine="1274"/>
+      </Position23>
+      <Position24>
+        <Filename Value="..\..\..\Fontes\ACBrSerial\ACBrECFDaruma.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
+      </Position24>
+      <Position25>
+        <Filename Value="..\..\..\Fontes\ACBrSerial\ACBrECF.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
+      </Position25>
+      <Position26>
+        <Filename Value="..\..\..\Fontes\ACBrSerial\ACBrECF.pas"/>
+        <Caret Line="3180" Column="40" TopLine="3154"/>
+      </Position26>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

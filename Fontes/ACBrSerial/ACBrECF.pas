@@ -3171,11 +3171,13 @@ begin
       raise;
   end;
 
-  if MemoAssigned then
-  begin
-    fsMemoOperacao := 'CancelaItemNaoFiscal' ;
-    MemoAdicionaLinha( '<b>CANCELADO ITEM:</b> '+IntToStrZero(AItem, 3) ) ;
-  end ;
+  {$IFNDEF CONSOLE}
+   if MemoAssigned then
+   begin
+     fsMemoOperacao := 'CancelaItemNaoFiscal' ;
+     MemoAdicionaLinha( '<b>CANCELADO ITEM:</b> '+IntToStrZero(AItem, 3) ) ;
+   end ;
+  {$ENDIF}
 
   if Assigned( FOnDepoisCancelaItemNaoFiscal ) then
     FOnDepoisCancelaItemNaoFiscal(AItem);

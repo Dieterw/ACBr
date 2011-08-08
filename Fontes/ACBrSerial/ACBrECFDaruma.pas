@@ -434,7 +434,7 @@ TACBrECFDaruma = class( TACBrECFClass )
  end ;
 
 implementation
-Uses SysUtils, ACBrECF, ACBrConsts, Graphics,
+Uses SysUtils, ACBrECF, ACBrConsts,
     {$IFDEF COMPILER6_UP} DateUtils, StrUtils {$ELSE} ACBrD5, Windows{$ENDIF},
     Math ;
 

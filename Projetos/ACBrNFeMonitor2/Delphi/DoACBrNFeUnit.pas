@@ -66,7 +66,7 @@ Uses IniFiles, StrUtils, DateUtils,
 Procedure DoACBrNFe( Cmd : TACBrNFeCmd ) ;
 var
   I,J : Integer;
-  ArqNFe, ArqPDF : String;
+  ArqNFe, ArqPDF, Chave : String;
   Salva, EnviadoDPEC, OK : Boolean;
   SL     : TStringList;
   Alertas : AnsiString;
@@ -828,6 +828,20 @@ begin
         else if Cmd.Metodo = 'lerini' then // Recarrega configurações do arquivo INI
            frmAcbrNfeMonitor.LerIni
 
+        else if Cmd.Metodo = 'gerarchave' then
+         begin
+           GerarChave(Chave,
+                      StrToInt(Cmd.Params(0)), //codigoUF
+                      StrToInt(Cmd.Params(1)), //codigoNumerico
+                      StrToInt(Cmd.Params(2)), //modelo
+                      StrToInt(Cmd.Params(3)), //serie
+                      StrToInt(Cmd.Params(4)), //numero
+                      StrToInt(Cmd.Params(5)), //tpemi
+                      NotaUtil.StringToDate(Cmd.Params(6)), //emissao
+                      Cmd.Params(7)); //CNPJ
+           Cmd.Resposta := Chave;
+         end
+
         else if Cmd.Metodo = 'restaurar' then
            Restaurar1Click( frmAcbrNfeMonitor )
 
@@ -1207,7 +1221,7 @@ begin
                        CMT     := INIRec.ReadString( sSecao,'CMT'    ,''); //NFe2
 
                     dist    := INIRec.ReadString( sSecao,'dist'   ,'');
-                    RENAVAM := INIRec.ReadString( sSecao,'RENAVAM','');
+//                    RENAVAM := INIRec.ReadString( sSecao,'RENAVAM','');
                     anoMod  := INIRec.ReadInteger(sSecao,'anoMod' ,0);
                     anoFab  := INIRec.ReadInteger(sSecao,'anoFab' ,0);
                     tpPint  := INIRec.ReadString( sSecao,'tpPint' ,'');
@@ -1968,7 +1982,7 @@ begin
                     INIRec.WriteString( sSecao,'CMKG'   ,CMT);    //Mantido por compatibilidade com NFe 1.1
                     INIRec.WriteString( sSecao,'CMT'    ,CMT);
                     INIRec.WriteString( sSecao,'dist'   ,dist);
-                    INIRec.WriteString( sSecao,'RENAVAM',RENAVAM);
+//                    INIRec.WriteString( sSecao,'RENAVAM',RENAVAM);
                     INIRec.WriteInteger(sSecao,'anoMod' ,anoMod);
                     INIRec.WriteInteger(sSecao,'anoFab' ,anoFab);
                     INIRec.WriteString( sSecao,'tpPint' ,tpPint);

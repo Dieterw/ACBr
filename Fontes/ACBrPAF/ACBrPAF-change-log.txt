@@ -57,6 +57,11 @@ Versão 0.08   18/05/11
     Acerto na ordenação do arquivo de Combustiveis (Registros C);
     por Régys Silveira
 
+Versão 0.08   08/08/11
+---------------
+[*] Mudado para no método create do componente as propriedades Delimitador e 
+    CurMascara, sejam iniciadas em branco (por: Isaque Pinheiro)
+
 Versão 0.08   14/05/11
 ---------------
 [-] Correção de bug, do qual as rotinas "SaveFileTXT_?", eram chamadas, mas 

@@ -178,6 +178,10 @@ begin
   FPAF_T := TPAF_T.Create;
   FPAF_C := TPAF_C.Create;
   FPAF_N := TPAF_N.Create( Self );
+  // Define o delimitador com o padrão PAF
+  SetDelimitador('');
+  // Define a mascara dos campos numéricos com o padrão PAF
+  SetCurMascara('');
 
   fsEADInterno     := nil;
   fsEAD            := nil;

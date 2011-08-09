@@ -229,10 +229,17 @@ begin
          aEspecie := EspecieDoc;
 
       {Pegando campo Intruções}
-      if (DataProtesto > 0) and (DataProtesto > Vencimento)  and (Instrucao1 = '06') then
-         Protesto :=  IntToStrZero(DaysBetween(DataProtesto,Vencimento),2)
+      if (DataProtesto > 0) and (DataProtesto > Vencimento) then //and (Instrucao1 = '06') then
+       begin
+         Protesto :=  IntToStrZero(DaysBetween(DataProtesto,Vencimento),2);
+         if (trim(Instrucao1) <> '06' )  and (trim(Instrucao2) <> '06' ) then
+            If Trim(Instrucao1) = '' then
+               Instrucao1 := '06'
+            else
+               Instrucao2 := '06';
+       end
       else
-         Protesto:= '00';
+         Protesto:=  '00';
 
       {Pegando Tipo de Sacado}
       case Sacado.Pessoa of

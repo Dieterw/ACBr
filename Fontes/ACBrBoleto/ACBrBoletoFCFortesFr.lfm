@@ -1,11 +1,11 @@
 object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
-  Left = 18
-  Height = 744
-  Top = -14
-  Width = 970
+  Left = -8
+  Height = 718
+  Top = -8
+  Width = 1024
   Caption = 'ACBRBoletoFCFortesFr'
-  ClientHeight = 744
-  ClientWidth = 970
+  ClientHeight = 718
+  ClientWidth = 1024
   Color = clBtnFace
   Font.Color = clWindowText
   Font.Height = -11
@@ -13,9 +13,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
   OnCreate = FormCreate
   LCLVersion = '0.9.31'
   object LayoutBoleto: TRLReport
-    Left = 96
+    Left = 128
     Height = 1123
-    Top = 24
+    Top = -192
     Width = 794
     Margins.LeftMargin = 4
     Margins.TopMargin = 5

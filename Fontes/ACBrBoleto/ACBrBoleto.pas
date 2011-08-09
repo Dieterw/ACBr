@@ -57,7 +57,7 @@ uses ACBrBase,  {Units da ACBr}
      Graphics, Contnrs, Classes;
 
 const
-  CACBrBoleto_Versao = '0.0.30a' ;
+  CACBrBoleto_Versao = '0.0.31a' ;
 
 type
   TACBrTipoCobranca =
@@ -1154,7 +1154,7 @@ begin
          if DataDesconto <> 0 then
             AStringList.Add(ACBrStr('Conceder desconto de '                       +
                              FormatCurr('R$ #,##0.00',ValorDesconto)       +
-                             'para pagamento até ' +
+                             ' para pagamento até ' +
                              FormatDateTime('dd/mm/yyyy',DataDesconto)))
          else
             AStringList.Add(ACBrStr('Conceder desconto de '                 +

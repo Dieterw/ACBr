@@ -70,6 +70,11 @@ Versao 0.0.10a do FortesReport 06/07/11
 [-] Corrigido problema com componentes não encontrados no dfm do Fortes.
     (Juliana Tamizou)
 
+Versao 0.0.31a 09/09/2011
+[*]	Adicionado a geração do arquivo remessa do Santander, a checagem da instrução
+    de protesto, caso seja informado a data de protesto e a intrução de protesto não 
+	tenha sido informada, a instrução 1 ficará com o código para protesto.
+	
 Versao 0.0.30a 02/08/2011
 [+] Adicionado opção para informar o diretório onde os boletos em PDF ou html 
     serão gerados.(Juliana Tamizou) 

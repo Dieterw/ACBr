@@ -63,14 +63,13 @@ type
     procedure recriarArquivoAuxiliar();
     function  removePonto(Text : string) : string;
 
-    procedure ACBrAAC1GetChave(var Chave: String);
     procedure SpeedButton4Click(Sender: TObject);
     procedure SpeedButton1Click(Sender: TObject);
     procedure SpeedButton2Click(Sender: TObject);
     procedure SpeedButton5Click(Sender: TObject);
     procedure SpeedButton3Click(Sender: TObject);
     Function  getPastaSistemaWindows : String;
-    procedure cbxModeloChange(Sender: TObject);
+    procedure ACBrAAC1GetChave(var Chave: AnsiString);
 
   private
     { Private declarations }
@@ -152,6 +151,11 @@ begin
 end;
 
 
+procedure TForm1.ACBrAAC1GetChave(var Chave: AnsiString);
+begin
+  chave:='1234';
+end;
+
 procedure Tform1.buscaInformacoesArquivoAuxiliar();
 var
  ct : integer;
@@ -180,13 +184,6 @@ begin
    end;
 end;
 
-
-procedure Tform1.ACBrAAC1GetChave(var Chave: String);
-begin
-  inherited;
-  chave:='1234';
-end;
-
 procedure Tform1.SpeedButton4Click(Sender: TObject);
 begin
   inherited;
@@ -196,13 +193,23 @@ end;
 procedure Tform1.SpeedButton1Click(Sender: TObject);
 begin
   inherited;
-  ecf.Porta := cbPorta.Text;
-
   try
+    ecf.Porta := cbPorta.Text;
+
+    try
+       ECF.Modelo := TACBrECFModelo( cbxModelo.ItemIndex+2 ) ;
+    except
+       cbxModelo.ItemIndex := Integer( ECF.Modelo ) ;
+       raise ;
+    end ;
+
     ECF.Ativar;
   except
+   on E: Exception do
    begin
-     ShowMessage('Erro ao conectar à porta do ECF');
+     ShowMessage(
+      'Erro ao conectar à porta do ECF' + sLineBreak + E.Message
+     );
      exit;
    end;
   end;
@@ -307,16 +314,5 @@ GetSystemDirectory(Buffer,144);
 Result := StrPas(Buffer);
 End;
 
-
-procedure TForm1.cbxModeloChange(Sender: TObject);
-begin
-  try
-     ECF.Modelo := TACBrECFModelo( cbxModelo.ItemIndex+2 ) ;
-  except
-     cbxModelo.ItemIndex := Integer( ECF.Modelo ) ;
-     raise ;
-  end ;
-
-end;
 
 end.

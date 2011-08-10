@@ -1,9 +1,9 @@
 object Form1: TForm1
   Left = 192
   Top = 194
-  Width = 841
-  Height = 416
   Caption = 'Configura'#231#227'o do Arquivo Auxiliar Criptografado (AAC)'
+  ClientHeight = 382
+  ClientWidth = 833
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -42,7 +42,7 @@ object Form1: TForm1
   end
   object Image1: TImage
     Left = 0
-    Top = 349
+    Top = 342
     Width = 833
     Height = 40
     Align = alBottom
@@ -246,6 +246,7 @@ object Form1: TForm1
       450019B1FEF3FEB466C7FBCFFAD1450019B1FEF3FEB466C7FBCFFAD1450019B1
       FEF3FEB466C7FBCFFAD1450019B1FEF3FEB466C7FBCFFAD1450019B1FEF3FEB4
       66C7FBCFFAD145001BAC7D5FF5A3758FABFEB451401FFFD9}
+    ExplicitTop = 349
   end
   object Edit1: TEdit
     Left = 16
@@ -260,7 +261,7 @@ object Form1: TForm1
     Left = 0
     Top = 0
     Width = 833
-    Height = 349
+    Height = 342
     Align = alClient
     TabOrder = 1
     object Label9: TLabel
@@ -1215,7 +1216,6 @@ object Form1: TForm1
         Font.Height = -13
         Font.Name = 'MS Sans Serif'
         Font.Style = []
-        ItemHeight = 16
         ItemIndex = 0
         ParentFont = False
         TabOrder = 0
@@ -1242,7 +1242,7 @@ object Form1: TForm1
           '')
       end
       object cbxModelo: TComboBox
-        Left = 10
+        Left = 13
         Top = 14
         Width = 141
         Height = 24
@@ -1252,12 +1252,10 @@ object Form1: TForm1
         Font.Height = -13
         Font.Name = 'MS Sans Serif'
         Font.Style = []
-        ItemHeight = 16
         ItemIndex = 0
         ParentFont = False
         TabOrder = 1
         Text = 'ecfBematech'
-        OnChange = cbxModeloChange
         Items.Strings = (
           'ecfBematech'
           'ecfSweda'

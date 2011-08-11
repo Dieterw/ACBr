@@ -1146,7 +1146,7 @@ begin
    begin
       if FNFE.Total.ISSQNtot.vISS > 0 then
       begin
-         qrlInscMunicipal.Caption := '';
+         qrlInscMunicipal.Caption := FNFE.Emit.IM;
          qrlTotalServicos.Caption := NotaUtil.FormatFloat( FNFE.Total.ISSQNtot.vServ );
          qrlBaseISSQN.Caption     := NotaUtil.FormatFloat( FNFE.Total.ISSQNtot.vBC );
          qrlValorISSQN.Caption    := NotaUtil.FormatFloat( FNFE.Total.ISSQNtot.vISS );

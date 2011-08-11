@@ -45,11 +45,14 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       AlignToBottom = False
       BeforePrint = qrbReciboBeforePrint
       Color = clWhite
+      TransparentBand = False
       ForceNewColumn = False
       ForceNewPage = False
       Size.Values = (
         161.395833333333300000
         1989.666666666667000000)
+      PreCaluculateBandHeight = False
+      KeepOnOnePage = False
       BandType = rbPageHeader
       object QRShape1: TQRShape
         Left = 0
@@ -66,8 +69,10 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           0.000000000000000000
           0.000000000000000000
           1981.729166666667000000)
+        XLColumn = 0
         Brush.Style = bsClear
         Shape = qrsRectangle
+        VertAdjust = 0
       end
       object QRLabel10: TQRLabel
         Left = 2
@@ -84,6 +89,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           5.291666666666667000
           79.375000000000000000
           254.000000000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -98,6 +104,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object QRShape3: TQRShape
@@ -115,7 +122,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1613.958333333333000000
           2.645833333333333000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape2: TQRShape
         Left = 1
@@ -132,7 +141,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           2.645833333333333000
           74.083333333333320000
           1608.666666666667000000)
+        XLColumn = 0
         Shape = qrsHorLine
+        VertAdjust = 0
       end
       object QRShape101: TQRShape
         Left = 118
@@ -149,7 +160,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           312.208333333333300000
           74.083333333333320000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object qrlRecebemosDe1: TQRLabel
         Left = 4
@@ -166,6 +179,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           10.583333333333330000
           7.937500000000000000
           1587.500000000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = False
@@ -182,6 +196,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlNumNF0: TQRLabel
@@ -199,6 +214,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1703.916666666667000000
           52.916666666666670000
           246.062500000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = False
@@ -213,6 +229,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 10
       end
       object qrlSERIE0: TQRLabel
@@ -230,6 +247,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1830.916666666667000000
           89.958333333333340000
           21.166666666666670000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -244,6 +262,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 10
       end
       object QRLabel14: TQRLabel
@@ -261,6 +280,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1709.208333333333000000
           89.958333333333340000
           95.250000000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -275,6 +295,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 10
       end
       object QRLabel13: TQRLabel
@@ -292,6 +313,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1643.062500000000000000
           52.916666666666670000
           37.041666666666670000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -306,6 +328,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 10
       end
       object QRLabel12: TQRLabel
@@ -323,6 +346,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1762.125000000000000000
           5.291666666666667000
           71.437500000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -337,6 +361,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 10
       end
       object QRLabel11: TQRLabel
@@ -354,6 +379,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           328.083333333333400000
           79.375000000000000000
           494.770833333333400000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -368,6 +394,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlResumo: TQRLabel
@@ -385,6 +412,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           103.187500000000000000
           37.041666666666670000
           1399.645833333333000000)
+        XLColumn = 0
         Alignment = taCenter
         AlignToBand = False
         AutoSize = True
@@ -401,6 +429,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
     end
@@ -417,12 +446,16 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       AlignToBottom = False
       BeforePrint = qrbDadosDanfeBeforePrint
       Color = clWhite
+      TransparentBand = False
       ForceNewColumn = False
       ForceNewPage = False
       Size.Values = (
         494.770833333333400000
         1989.666666666667000000)
+      PreCaluculateBandHeight = False
+      KeepOnOnePage = False
       ParentBand = qrbRecibo
+      PrintOrder = cboAfterParent
       object QRShape5: TQRShape
         Left = 0
         Top = 11
@@ -438,8 +471,10 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           0.000000000000000000
           29.104166666666670000
           762.000000000000000000)
+        XLColumn = 0
         Brush.Style = bsClear
         Shape = qrsRectangle
+        VertAdjust = 0
       end
       object QRShape6: TQRShape
         Left = 424
@@ -456,8 +491,10 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1121.833333333333000000
           29.104166666666670000
           859.895833333333400000)
+        XLColumn = 0
         Brush.Style = bsClear
         Shape = qrsRectangle
+        VertAdjust = 0
       end
       object QRShape7: TQRShape
         Left = 0
@@ -474,8 +511,10 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           0.000000000000000000
           333.375000000000000000
           1981.729166666667000000)
+        XLColumn = 0
         Brush.Style = bsClear
         Shape = qrsRectangle
+        VertAdjust = 0
       end
       object QRLabel17: TQRLabel
         Left = 320
@@ -492,6 +531,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           846.666666666666600000
           29.104166666666670000
           177.270833333333300000)
+        XLColumn = 0
         Alignment = taCenter
         AlignToBand = False
         AutoSize = True
@@ -506,6 +546,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 14
       end
       object QRShape8: TQRShape
@@ -523,7 +564,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           0.000000000000000000
           412.750000000000000000
           1981.729166666667000000)
+        XLColumn = 0
         Shape = qrsHorLine
+        VertAdjust = 0
       end
       object QRShape9: TQRShape
         Left = 221
@@ -540,7 +583,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           584.729166666666800000
           412.750000000000100000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape11: TQRShape
         Left = 423
@@ -557,7 +602,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1119.187500000000000000
           333.375000000000000000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRLabel29: TQRLabel
         Left = 7
@@ -574,6 +621,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           18.520833333333330000
           338.666666666666700000
           238.125000000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -588,6 +636,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel30: TQRLabel
@@ -605,6 +654,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           15.875000000000000000
           418.041666666666700000
           203.729166666666700000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -619,6 +669,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel31: TQRLabel
@@ -636,6 +687,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           595.312500000000000000
           418.041666666666700000
           367.770833333333400000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -650,6 +702,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel32: TQRLabel
@@ -667,6 +720,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1140.354166666667000000
           418.041666666666700000
           47.625000000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -681,6 +735,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object qrlNatOperacao: TQRLabel
@@ -698,6 +753,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           15.875000000000000000
           359.833333333333400000
           195.791666666666700000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -712,6 +768,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlInscricaoEstadual: TQRLabel
@@ -729,6 +786,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           15.875000000000000000
           439.208333333333400000
           246.062500000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -743,6 +801,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlInscrEstSubst: TQRLabel
@@ -760,6 +819,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           597.958333333333400000
           439.208333333333400000
           195.791666666666700000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -774,6 +834,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlCNPJ: TQRLabel
@@ -791,6 +852,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1148.291666666667000000
           439.208333333333400000
           103.187500000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -805,6 +867,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlFone: TQRLabel
@@ -822,6 +885,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           211.666666666666700000
           264.583333333333300000
           531.812500000000000000)
+        XLColumn = 0
         Alignment = taCenter
         AlignToBand = False
         AutoSize = False
@@ -836,6 +900,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrmEmitente: TQRMemo
@@ -853,6 +918,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           23.812500000000000000
           34.395833333333340000
           717.020833333333400000)
+        XLColumn = 0
         Alignment = taCenter
         AlignToBand = False
         AutoSize = False
@@ -866,6 +932,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        FullJustify = False
         FontSize = 8
       end
       object qrmEndereco: TQRMemo
@@ -883,6 +950,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           211.666666666666700000
           87.312500000000000000
           531.812500000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = False
@@ -896,6 +964,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        FullJustify = False
         FontSize = 6
       end
       object qriLogo: TQRImage
@@ -913,6 +982,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           23.812500000000000000
           129.645833333333300000
           171.979166666666700000)
+        XLColumn = 0
         Center = True
         Picture.Data = {
           07544269746D61708A2B0000424D8A2B00000000000036000000280000003E00
@@ -1281,6 +1351,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1132.416666666667000000
           39.687500000000000000
           838.729166666666800000)
+        XLColumn = 0
         Center = True
       end
       object QRLabel2: TQRLabel
@@ -1298,6 +1369,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1129.770833333333000000
           148.166666666666700000
           171.979166666666700000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -1312,6 +1384,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object qrlChave: TQRLabel
@@ -1329,6 +1402,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1137.708333333333000000
           177.270833333333300000
           833.437500000000000000)
+        XLColumn = 0
         Alignment = taCenter
         AlignToBand = False
         AutoSize = False
@@ -1343,6 +1417,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object QRLabel9: TQRLabel
@@ -1360,6 +1435,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1137.708333333333000000
           248.708333333333300000
           828.145833333333200000)
+        XLColumn = 0
         Alignment = taCenter
         AlignToBand = False
         AutoSize = False
@@ -1376,6 +1452,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlDescricao: TQRLabel
@@ -1393,6 +1470,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1137.708333333333000000
           338.666666666666700000
           351.895833333333400000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -1407,6 +1485,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object qrlProtocolo: TQRLabel
@@ -1424,6 +1503,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1129.770833333333000000
           365.125000000000000000
           841.375000000000000000)
+        XLColumn = 0
         Alignment = taCenter
         AlignToBand = False
         AutoSize = False
@@ -1438,6 +1518,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlSERIE1: TQRLabel
@@ -1455,6 +1536,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           926.041666666666800000
           246.062500000000000000
           50.270833333333330000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -1469,6 +1551,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 9
       end
       object QRLabel22: TQRLabel
@@ -1486,6 +1569,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           793.750000000000000000
           246.062500000000000000
           92.604166666666680000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -1500,6 +1584,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 9
       end
       object QRLabel18: TQRLabel
@@ -1517,6 +1602,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           772.583333333333400000
           74.083333333333340000
           322.791666666666700000)
+        XLColumn = 0
         Alignment = taCenter
         AlignToBand = False
         AutoSize = True
@@ -1531,6 +1617,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object QRLabel19: TQRLabel
@@ -1548,6 +1635,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           791.104166666666800000
           103.187500000000000000
           301.625000000000000000)
+        XLColumn = 0
         Alignment = taCenter
         AlignToBand = False
         AutoSize = True
@@ -1562,6 +1650,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object QRLabel20: TQRLabel
@@ -1579,6 +1668,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           793.750000000000000000
           203.729166666666700000
           37.041666666666670000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -1593,6 +1683,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 10
       end
       object qrlNumNF1: TQRLabel
@@ -1610,6 +1701,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           851.958333333333200000
           203.729166666666700000
           246.062500000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = False
@@ -1624,6 +1716,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 10
       end
       object QRLabel24: TQRLabel
@@ -1641,6 +1734,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           793.750000000000000000
           288.395833333333400000
           111.125000000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -1655,6 +1749,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 9
       end
       object qrlPageNumber: TQRLabel
@@ -1672,6 +1767,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           926.041666666666800000
           288.395833333333400000
           74.083333333333340000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -1686,6 +1782,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 9
       end
       object QRLabel26: TQRLabel
@@ -1703,6 +1800,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           783.166666666666800000
           171.979166666666700000
           111.125000000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -1717,6 +1815,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 7
       end
       object QRLabel27: TQRLabel
@@ -1734,6 +1833,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           783.166666666666800000
           140.229166666666700000
           153.458333333333300000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -1748,6 +1848,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 7
       end
       object QRShape102: TQRShape
@@ -1765,7 +1866,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1018.645833333333000000
           142.875000000000000000
           58.208333333333320000)
+        XLColumn = 0
         Shape = qrsRectangle
+        VertAdjust = 0
       end
       object qrlEntradaSaida: TQRLabel
         Left = 390
@@ -1782,6 +1885,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1031.875000000000000000
           153.458333333333300000
           34.395833333333330000)
+        XLColumn = 0
         Alignment = taCenter
         AlignToBand = False
         AutoSize = False
@@ -1796,6 +1900,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object QRShape4: TQRShape
@@ -1813,7 +1918,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1121.833333333333000000
           137.583333333333300000
           859.895833333333200000)
+        XLColumn = 0
         Shape = qrsHorLine
+        VertAdjust = 0
       end
       object QRShape66: TQRShape
         Left = 424
@@ -1830,7 +1937,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1121.833333333333000000
           224.895833333333300000
           859.895833333333400000)
+        XLColumn = 0
         Shape = qrsHorLine
+        VertAdjust = 0
       end
       object qriBarCodeContingencia: TQRImage
         Left = 428
@@ -1847,6 +1956,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1132.416666666667000000
           235.479166666666700000
           838.729166666666800000)
+        XLColumn = 0
         Center = True
       end
       object QRShape69: TQRShape
@@ -1864,8 +1974,10 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           0.000000000000000000
           5.291666666666667000
           2000.250000000000000000)
+        XLColumn = 0
         Pen.Style = psDot
         Shape = qrsHorLine
+        VertAdjust = 0
       end
     end
     object qrbEmitenteDestinatario: TQRChildBand
@@ -1881,12 +1993,16 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       AlignToBottom = False
       BeforePrint = qrbEmitenteDestinatarioBeforePrint
       Color = clWhite
+      TransparentBand = False
       ForceNewColumn = False
       ForceNewPage = False
       Size.Values = (
         886.354166666666900000
         1989.666666666667000000)
+      PreCaluculateBandHeight = False
+      KeepOnOnePage = False
       ParentBand = qrbDadosDanfe
+      PrintOrder = cboAfterParent
       object QRShape36: TQRShape
         Left = 0
         Top = 243
@@ -1902,8 +2018,10 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           0.000000000000000000
           642.937500000000000000
           1981.729166666667000000)
+        XLColumn = 0
         Brush.Style = bsClear
         Shape = qrsRectangle
+        VertAdjust = 0
       end
       object QRLabel1: TQRLabel
         Left = 0
@@ -1920,6 +2038,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           0.000000000000000000
           0.000000000000000000
           312.208333333333400000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -1934,6 +2053,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlblFatura: TQRLabel
@@ -1951,6 +2071,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           0.000000000000000000
           272.520833333333400000
           246.062500000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -1965,6 +2086,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object QRLabel5: TQRLabel
@@ -1982,6 +2104,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           0.000000000000000000
           611.187500000000000000
           510.645833333333300000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -1996,6 +2119,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object QRLabel4: TQRLabel
@@ -2013,6 +2137,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           0.000000000000000000
           420.687500000000000000
           248.708333333333300000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -2027,6 +2152,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object QRShape12: TQRShape
@@ -2044,8 +2170,10 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           0.000000000000000000
           33.807870370370370000
           1568.391203703704000000)
+        XLColumn = 0
         Brush.Style = bsClear
         Shape = qrsRectangle
+        VertAdjust = 0
       end
       object QRShape15: TQRShape
         Left = 450
@@ -2062,7 +2190,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1190.625000000000000000
           34.395833333333340000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape16: TQRShape
         Left = 370
@@ -2079,7 +2209,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           978.958333333333200000
           113.770833333333300000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape17: TQRShape
         Left = 518
@@ -2096,7 +2228,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1370.541666666667000000
           113.770833333333300000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape18: TQRShape
         Left = 181
@@ -2113,7 +2247,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           478.895833333333400000
           193.145833333333300000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape19: TQRShape
         Left = 329
@@ -2130,7 +2266,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           870.479166666666800000
           193.145833333333300000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape20: TQRShape
         Left = 395
@@ -2147,7 +2285,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1045.104166666667000000
           193.145833333333300000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape13: TQRShape
         Left = 0
@@ -2164,7 +2304,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           0.000000000000000000
           111.712962962963000000
           1568.391203703704000000)
+        XLColumn = 0
         Shape = qrsHorLine
+        VertAdjust = 0
       end
       object QRShape14: TQRShape
         Left = 0
@@ -2181,7 +2323,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           0.000000000000000000
           191.087962962963000000
           1568.391203703704000000)
+        XLColumn = 0
         Shape = qrsHorLine
+        VertAdjust = 0
       end
       object QRShape21: TQRShape
         Left = 601
@@ -2198,8 +2342,10 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1590.145833333333000000
           31.750000000000000000
           391.583333333333400000)
+        XLColumn = 0
         Brush.Style = bsClear
         Shape = qrsRectangle
+        VertAdjust = 0
       end
       object QRShape22: TQRShape
         Left = 601
@@ -2216,7 +2362,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1590.145833333333000000
           111.125000000000000000
           391.583333333333400000)
+        XLColumn = 0
         Shape = qrsHorLine
+        VertAdjust = 0
       end
       object QRShape23: TQRShape
         Left = 601
@@ -2233,7 +2381,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1590.145833333333000000
           190.500000000000000000
           391.583333333333400000)
+        XLColumn = 0
         Shape = qrsHorLine
+        VertAdjust = 0
       end
       object qrshpFatura: TQRShape
         Left = 0
@@ -2250,8 +2400,10 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           0.000000000000000000
           301.625000000000000000
           1981.729166666667000000)
+        XLColumn = 0
         Brush.Style = bsClear
         Shape = qrsRectangle
+        VertAdjust = 0
       end
       object QRShape25: TQRShape
         Left = 0
@@ -2268,8 +2420,10 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           0.000000000000000000
           449.791666666666700000
           1981.729166666667000000)
+        XLColumn = 0
         Brush.Style = bsClear
         Shape = qrsRectangle
+        VertAdjust = 0
       end
       object QRShape26: TQRShape
         Left = 0
@@ -2286,7 +2440,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           0.000000000000000000
           529.166666666666700000
           1981.729166666667000000)
+        XLColumn = 0
         Shape = qrsHorLine
+        VertAdjust = 0
       end
       object QRShape27: TQRShape
         Left = 146
@@ -2303,7 +2459,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           386.291666666666700000
           449.791666666666700000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape28: TQRShape
         Left = 106
@@ -2320,7 +2478,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           280.458333333333400000
           531.812500000000000000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape29: TQRShape
         Left = 268
@@ -2337,7 +2497,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           709.083333333333400000
           449.791666666666700000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape30: TQRShape
         Left = 424
@@ -2354,7 +2516,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1121.833333333333000000
           449.791666666666700000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape31: TQRShape
         Left = 573
@@ -2371,7 +2535,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1516.062500000000000000
           449.791666666666700000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape32: TQRShape
         Left = 215
@@ -2388,7 +2554,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           568.854166666666700000
           531.812500000000000000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape33: TQRShape
         Left = 306
@@ -2405,7 +2573,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           809.625000000000000000
           531.812500000000000000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape34: TQRShape
         Left = 424
@@ -2422,7 +2592,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1121.833333333333000000
           529.166666666666700000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape35: TQRShape
         Left = 573
@@ -2439,7 +2611,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1516.062500000000000000
           529.166666666666700000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape37: TQRShape
         Left = 1
@@ -2456,7 +2630,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           2.645833333333333000
           722.312500000000000000
           1979.083333333333000000)
+        XLColumn = 0
         Shape = qrsHorLine
+        VertAdjust = 0
       end
       object QRShape38: TQRShape
         Left = 1
@@ -2473,7 +2649,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           2.645833333333333000
           801.687500000000100000
           1979.083333333333000000)
+        XLColumn = 0
         Shape = qrsHorLine
+        VertAdjust = 0
       end
       object QRShape39: TQRShape
         Left = 308
@@ -2490,7 +2668,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           814.328703703703700000
           642.349537037037100000
           2.939814814814815000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape42: TQRShape
         Left = 400
@@ -2507,7 +2687,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1058.333333333333000000
           645.583333333333400000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape43: TQRShape
         Left = 472
@@ -2524,7 +2706,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1248.833333333333000000
           645.583333333333400000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape44: TQRShape
         Left = 570
@@ -2541,7 +2725,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1508.125000000000000000
           645.583333333333400000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape45: TQRShape
         Left = 610
@@ -2558,7 +2744,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1613.958333333333000000
           645.583333333333400000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape46: TQRShape
         Left = 535
@@ -2575,7 +2763,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1415.520833333333000000
           724.958333333333400000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape47: TQRShape
         Left = 574
@@ -2592,7 +2782,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1518.708333333333000000
           722.312500000000000000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape48: TQRShape
         Left = 91
@@ -2609,7 +2801,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           240.770833333333300000
           804.333333333333200000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape49: TQRShape
         Left = 210
@@ -2626,7 +2820,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           555.625000000000000000
           804.333333333333200000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape50: TQRShape
         Left = 420
@@ -2643,7 +2839,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1111.250000000000000000
           804.039351851851800000
           2.939814814814815000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape51: TQRShape
         Left = 574
@@ -2660,7 +2858,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1518.414351851852000000
           801.099537037037100000
           2.939814814814815000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRLabel34: TQRLabel
         Left = 4
@@ -2677,6 +2877,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           10.583333333333330000
           39.687500000000000000
           206.375000000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -2691,6 +2892,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel35: TQRLabel
@@ -2708,6 +2910,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1201.208333333333000000
           39.687500000000000000
           97.895833333333340000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -2722,6 +2925,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel36: TQRLabel
@@ -2739,6 +2943,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1603.375000000000000000
           39.687500000000000000
           169.333333333333300000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -2753,6 +2958,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel37: TQRLabel
@@ -2770,6 +2976,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           10.583333333333330000
           119.062500000000000000
           100.541666666666700000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -2784,6 +2991,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel38: TQRLabel
@@ -2801,6 +3009,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           984.250000000000000000
           119.062500000000000000
           171.979166666666700000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -2815,6 +3024,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel39: TQRLabel
@@ -2832,6 +3042,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1375.833333333333000000
           119.062500000000000000
           37.041666666666670000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -2846,6 +3057,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel40: TQRLabel
@@ -2863,6 +3075,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1603.375000000000000000
           119.062500000000000000
           248.708333333333300000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -2877,6 +3090,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel41: TQRLabel
@@ -2894,6 +3108,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           10.583333333333330000
           198.437500000000000000
           97.895833333333340000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -2908,6 +3123,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel42: TQRLabel
@@ -2925,6 +3141,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           494.770833333333400000
           198.437500000000000000
           103.187500000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -2939,6 +3156,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel43: TQRLabel
@@ -2956,6 +3174,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           881.062500000000000000
           198.437500000000000000
           26.458333333333330000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -2970,6 +3189,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel44: TQRLabel
@@ -2987,6 +3207,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1058.333333333333000000
           198.437500000000000000
           203.729166666666700000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -3001,6 +3222,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel45: TQRLabel
@@ -3018,6 +3240,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1603.375000000000000000
           198.437500000000000000
           145.520833333333300000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -3032,6 +3255,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel46: TQRLabel
@@ -3049,6 +3273,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           15.875000000000000000
           452.437500000000000000
           254.000000000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -3063,6 +3288,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel47: TQRLabel
@@ -3080,6 +3306,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           396.875000000000000000
           452.437500000000000000
           148.166666666666700000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -3094,6 +3321,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel48: TQRLabel
@@ -3111,6 +3339,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           724.958333333333400000
           457.729166666666700000
           388.937500000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -3125,6 +3354,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel49: TQRLabel
@@ -3142,6 +3372,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1143.000000000000000000
           452.437500000000000000
           285.750000000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -3156,6 +3387,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel50: TQRLabel
@@ -3173,6 +3405,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1529.291666666667000000
           452.437500000000000000
           275.166666666666700000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -3187,6 +3420,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel51: TQRLabel
@@ -3204,6 +3438,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           15.875000000000000000
           534.458333333333400000
           158.750000000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -3218,6 +3453,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel52: TQRLabel
@@ -3235,6 +3471,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           296.333333333333400000
           534.458333333333400000
           177.270833333333300000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -3249,6 +3486,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel53: TQRLabel
@@ -3266,6 +3504,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           582.083333333333400000
           534.458333333333400000
           100.541666666666700000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -3280,6 +3519,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel54: TQRLabel
@@ -3297,6 +3537,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           820.208333333333500000
           534.458333333333400000
           291.041666666666700000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -3311,6 +3552,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel55: TQRLabel
@@ -3328,6 +3570,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1143.000000000000000000
           534.458333333333400000
           124.354166666666700000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -3342,6 +3585,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel56: TQRLabel
@@ -3359,6 +3603,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1529.291666666667000000
           534.458333333333400000
           216.958333333333400000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -3373,6 +3618,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel57: TQRLabel
@@ -3390,6 +3636,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           10.583333333333330000
           648.229166666666800000
           206.375000000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -3404,6 +3651,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel58: TQRLabel
@@ -3421,6 +3669,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           822.854166666666600000
           648.229166666666800000
           195.791666666666700000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = False
@@ -3435,6 +3684,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel59: TQRLabel
@@ -3452,6 +3702,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1074.208333333333000000
           648.229166666666800000
           127.000000000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -3466,6 +3717,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel60: TQRLabel
@@ -3483,6 +3735,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1259.416666666667000000
           648.229166666666800000
           179.916666666666700000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -3497,6 +3750,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel61: TQRLabel
@@ -3514,6 +3768,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1524.000000000000000000
           648.229166666666800000
           26.458333333333330000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -3528,6 +3783,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel62: TQRLabel
@@ -3545,6 +3801,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1624.541666666667000000
           648.229166666666800000
           97.895833333333340000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -3559,6 +3816,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel63: TQRLabel
@@ -3576,6 +3834,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           10.583333333333330000
           727.604166666666800000
           100.541666666666700000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -3590,6 +3849,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel64: TQRLabel
@@ -3607,6 +3867,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           830.791666666666800000
           727.604166666666800000
           97.895833333333340000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -3621,6 +3882,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel65: TQRLabel
@@ -3638,6 +3900,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1428.750000000000000000
           727.604166666666800000
           26.458333333333330000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -3652,6 +3915,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel66: TQRLabel
@@ -3669,6 +3933,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1534.583333333333000000
           727.604166666666800000
           203.729166666666700000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -3683,6 +3948,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel67: TQRLabel
@@ -3700,6 +3966,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           10.583333333333330000
           806.979166666666800000
           121.708333333333300000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -3714,6 +3981,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel68: TQRLabel
@@ -3731,6 +3999,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           251.354166666666700000
           806.979166666666800000
           74.083333333333340000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -3745,6 +4014,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel69: TQRLabel
@@ -3762,6 +4032,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           568.854166666666700000
           806.979166666666800000
           71.437500000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -3776,6 +4047,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel70: TQRLabel
@@ -3793,6 +4065,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           833.437500000000000000
           806.979166666666800000
           121.708333333333300000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -3807,6 +4080,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel71: TQRLabel
@@ -3824,6 +4098,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1124.479166666667000000
           806.979166666666800000
           116.416666666666700000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -3838,6 +4113,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel72: TQRLabel
@@ -3855,6 +4131,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1531.937500000000000000
           806.979166666666800000
           127.000000000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -3869,6 +4146,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object qrlFatData1: TQRLabel
@@ -3886,6 +4164,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           158.750000000000000000
           309.562500000000000000
           97.895833333333340000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -3900,6 +4179,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatData2: TQRLabel
@@ -3917,6 +4197,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           158.750000000000000000
           343.958333333333400000
           97.895833333333340000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -3931,6 +4212,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatData3: TQRLabel
@@ -3948,6 +4230,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           158.750000000000000000
           378.354166666666700000
           97.895833333333340000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -3962,6 +4245,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatValor1: TQRLabel
@@ -3979,6 +4263,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           259.291666666666700000
           309.562500000000000000
           132.291666666666700000)
+        XLColumn = 0
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -3993,6 +4278,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatValor2: TQRLabel
@@ -4010,6 +4296,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           259.291666666666700000
           343.958333333333400000
           132.291666666666700000)
+        XLColumn = 0
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -4024,6 +4311,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatValor3: TQRLabel
@@ -4041,6 +4329,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           259.291666666666700000
           378.354166666666700000
           132.291666666666700000)
+        XLColumn = 0
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -4055,6 +4344,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatNum1: TQRLabel
@@ -4072,6 +4362,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           10.583333333333330000
           309.562500000000000000
           23.812500000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -4086,6 +4377,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatNum2: TQRLabel
@@ -4103,6 +4395,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           10.583333333333330000
           343.958333333333400000
           23.812500000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -4117,6 +4410,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatNum3: TQRLabel
@@ -4134,6 +4428,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           10.583333333333330000
           378.354166666666700000
           23.812500000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -4148,6 +4443,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object QRShape106: TQRShape
@@ -4165,7 +4461,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           396.875000000000000000
           301.625000000000000000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape107: TQRShape
         Left = 300
@@ -4182,7 +4480,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           793.750000000000000000
           301.625000000000000000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape108: TQRShape
         Left = 450
@@ -4199,7 +4499,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1190.625000000000000000
           301.625000000000000000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape109: TQRShape
         Left = 600
@@ -4216,7 +4518,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1587.500000000000000000
           301.625000000000000000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object qrlFatNum6: TQRLabel
         Left = 153
@@ -4233,6 +4537,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           404.812500000000000000
           378.354166666666700000
           23.812500000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -4247,6 +4552,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatNum5: TQRLabel
@@ -4264,6 +4570,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           404.812500000000000000
           343.958333333333400000
           23.812500000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -4278,6 +4585,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatNum4: TQRLabel
@@ -4295,6 +4603,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           404.812500000000000000
           309.562500000000000000
           23.812500000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -4309,6 +4618,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatData4: TQRLabel
@@ -4326,6 +4636,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           555.625000000000000000
           309.562500000000000000
           97.895833333333340000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -4340,6 +4651,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatData5: TQRLabel
@@ -4357,6 +4669,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           555.625000000000000000
           343.958333333333400000
           97.895833333333340000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -4371,6 +4684,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatData6: TQRLabel
@@ -4388,6 +4702,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           555.625000000000000000
           378.354166666666700000
           97.895833333333340000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -4402,6 +4717,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatValor6: TQRLabel
@@ -4419,6 +4735,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           656.166666666666800000
           378.354166666666700000
           132.291666666666700000)
+        XLColumn = 0
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -4433,6 +4750,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatValor5: TQRLabel
@@ -4450,6 +4768,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           656.166666666666800000
           343.958333333333400000
           132.291666666666700000)
+        XLColumn = 0
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -4464,6 +4783,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatValor4: TQRLabel
@@ -4481,6 +4801,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           656.166666666666800000
           309.562500000000000000
           132.291666666666700000)
+        XLColumn = 0
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -4495,6 +4816,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatNum9: TQRLabel
@@ -4512,6 +4834,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           801.687500000000100000
           375.708333333333400000
           23.812500000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -4526,6 +4849,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatNum8: TQRLabel
@@ -4543,6 +4867,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           801.687500000000100000
           341.312500000000000000
           23.812500000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -4557,6 +4882,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatNum7: TQRLabel
@@ -4574,6 +4900,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           801.687500000000100000
           306.916666666666700000
           23.812500000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -4588,6 +4915,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatData7: TQRLabel
@@ -4605,6 +4933,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           952.500000000000000000
           309.562500000000000000
           97.895833333333340000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -4619,6 +4948,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatData8: TQRLabel
@@ -4636,6 +4966,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           952.500000000000000000
           343.958333333333400000
           97.895833333333340000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -4650,6 +4981,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatData9: TQRLabel
@@ -4667,6 +4999,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           952.500000000000000000
           378.354166666666700000
           97.895833333333340000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -4681,6 +5014,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatValor9: TQRLabel
@@ -4698,6 +5032,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1053.041666666667000000
           378.354166666666700000
           132.291666666666700000)
+        XLColumn = 0
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -4712,6 +5047,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatValor8: TQRLabel
@@ -4729,6 +5065,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1053.041666666667000000
           343.958333333333400000
           132.291666666666700000)
+        XLColumn = 0
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -4743,6 +5080,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatValor7: TQRLabel
@@ -4760,6 +5098,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1053.041666666667000000
           309.562500000000000000
           132.291666666666700000)
+        XLColumn = 0
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -4774,6 +5113,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatNum12: TQRLabel
@@ -4791,6 +5131,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1198.562500000000000000
           378.354166666666700000
           23.812500000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -4805,6 +5146,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatNum11: TQRLabel
@@ -4822,6 +5164,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1198.562500000000000000
           343.958333333333400000
           23.812500000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -4836,6 +5179,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatNum10: TQRLabel
@@ -4853,6 +5197,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1198.562500000000000000
           309.562500000000000000
           23.812500000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -4867,6 +5212,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatData10: TQRLabel
@@ -4884,6 +5230,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1349.375000000000000000
           309.562500000000000000
           97.895833333333340000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -4898,6 +5245,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatData11: TQRLabel
@@ -4915,6 +5263,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1349.375000000000000000
           343.958333333333400000
           97.895833333333340000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -4929,6 +5278,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatData12: TQRLabel
@@ -4946,6 +5296,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1349.375000000000000000
           378.354166666666700000
           97.895833333333340000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -4960,6 +5311,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatValor12: TQRLabel
@@ -4977,6 +5329,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1449.916666666667000000
           378.354166666666700000
           132.291666666666700000)
+        XLColumn = 0
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -4991,6 +5344,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatValor11: TQRLabel
@@ -5008,6 +5362,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1449.916666666667000000
           343.958333333333400000
           132.291666666666700000)
+        XLColumn = 0
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -5022,6 +5377,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatValor10: TQRLabel
@@ -5039,6 +5395,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1449.916666666667000000
           309.562500000000000000
           132.291666666666700000)
+        XLColumn = 0
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -5053,6 +5410,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatNum15: TQRLabel
@@ -5070,6 +5428,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1595.437500000000000000
           378.354166666666700000
           23.812500000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -5084,6 +5443,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatNum14: TQRLabel
@@ -5101,6 +5461,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1595.437500000000000000
           343.958333333333400000
           23.812500000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -5115,6 +5476,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatNum13: TQRLabel
@@ -5132,6 +5494,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1595.437500000000000000
           309.562500000000000000
           23.812500000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -5146,6 +5509,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatData13: TQRLabel
@@ -5163,6 +5527,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1740.958333333333000000
           309.562500000000000000
           97.895833333333340000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -5177,6 +5542,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatData14: TQRLabel
@@ -5194,6 +5560,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1740.958333333333000000
           343.958333333333400000
           97.895833333333340000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -5208,6 +5575,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatData15: TQRLabel
@@ -5225,6 +5593,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1740.958333333333000000
           378.354166666666700000
           97.895833333333340000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -5239,6 +5608,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatValor15: TQRLabel
@@ -5256,6 +5626,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1841.500000000000000000
           378.354166666666700000
           132.291666666666700000)
+        XLColumn = 0
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -5270,6 +5641,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatValor14: TQRLabel
@@ -5287,6 +5659,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1841.500000000000000000
           343.958333333333400000
           132.291666666666700000)
+        XLColumn = 0
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -5301,6 +5674,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlFatValor13: TQRLabel
@@ -5318,6 +5692,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1841.500000000000000000
           309.562500000000000000
           132.291666666666700000)
+        XLColumn = 0
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -5332,6 +5707,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlDestNome: TQRLabel
@@ -5349,6 +5725,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           15.875000000000000000
           63.500000000000000000
           164.041666666666700000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -5363,6 +5740,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlDestCNPJ: TQRLabel
@@ -5380,6 +5758,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1217.083333333333000000
           63.500000000000000000
           158.750000000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -5394,6 +5773,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlDestEndereco: TQRLabel
@@ -5411,6 +5791,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           15.875000000000000000
           142.875000000000000000
           203.729166666666700000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -5425,6 +5806,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlDestBairro: TQRLabel
@@ -5442,6 +5824,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           989.541666666666800000
           142.875000000000000000
           166.687500000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -5456,6 +5839,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlDestCEP: TQRLabel
@@ -5473,6 +5857,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1381.712962962963000000
           144.050925925926000000
           177.858796296296300000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = False
@@ -5487,6 +5872,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlDestCidade: TQRLabel
@@ -5504,6 +5890,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           15.875000000000000000
           224.895833333333300000
           169.333333333333300000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -5518,6 +5905,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlDestFone: TQRLabel
@@ -5535,6 +5923,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           494.770833333333400000
           224.895833333333300000
           150.812500000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -5549,6 +5938,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlDestUF: TQRLabel
@@ -5566,6 +5956,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           894.291666666666800000
           224.895833333333300000
           127.000000000000000000)
+        XLColumn = 0
         Alignment = taCenter
         AlignToBand = False
         AutoSize = True
@@ -5580,6 +5971,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlDestIE: TQRLabel
@@ -5597,6 +5989,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1058.333333333333000000
           224.895833333333300000
           119.062500000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -5611,6 +6004,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlEmissao: TQRLabel
@@ -5628,6 +6022,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1621.895833333333000000
           63.500000000000000000
           338.666666666666700000)
+        XLColumn = 0
         Alignment = taCenter
         AlignToBand = False
         AutoSize = False
@@ -5642,6 +6037,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlSaida: TQRLabel
@@ -5659,6 +6055,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1621.895833333333000000
           142.875000000000000000
           338.666666666666700000)
+        XLColumn = 0
         Alignment = taCenter
         AlignToBand = False
         AutoSize = False
@@ -5673,6 +6070,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlBaseICMS: TQRLabel
@@ -5690,6 +6088,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           105.833333333333300000
           476.250000000000000000
           264.583333333333400000)
+        XLColumn = 0
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -5704,6 +6103,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlValorICMS: TQRLabel
@@ -5721,6 +6121,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           463.020833333333400000
           476.250000000000000000
           230.187500000000000000)
+        XLColumn = 0
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -5735,6 +6136,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlBaseICMST: TQRLabel
@@ -5752,6 +6154,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           849.312499999999900000
           476.250000000000000000
           246.062500000000000000)
+        XLColumn = 0
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -5766,6 +6169,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlValorICMST: TQRLabel
@@ -5783,6 +6187,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1217.083333333333000000
           476.250000000000000000
           283.104166666666700000)
+        XLColumn = 0
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -5797,6 +6202,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlTotalProdutos: TQRLabel
@@ -5814,6 +6220,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1643.062500000000000000
           476.250000000000000000
           317.500000000000000000)
+        XLColumn = 0
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -5828,6 +6235,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlValorFrete: TQRLabel
@@ -5845,6 +6253,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           35.277777777777780000
           562.239583333333300000
           229.305555555555600000)
+        XLColumn = 0
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -5859,6 +6268,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlValorSeguro: TQRLabel
@@ -5876,6 +6286,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           299.861111111111100000
           562.239583333333300000
           246.944444444444400000)
+        XLColumn = 0
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -5890,6 +6301,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlDescontos: TQRLabel
@@ -5907,6 +6319,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           576.791666666666800000
           560.916666666666700000
           211.666666666666700000)
+        XLColumn = 0
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -5921,6 +6334,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlAcessorias: TQRLabel
@@ -5938,6 +6352,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           849.312499999999900000
           560.916666666666700000
           246.062500000000000000)
+        XLColumn = 0
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -5952,6 +6367,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlValorIPI: TQRLabel
@@ -5969,6 +6385,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1217.083333333333000000
           562.239583333333300000
           282.222222222222200000)
+        XLColumn = 0
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -5983,6 +6400,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlTotalNF: TQRLabel
@@ -6000,6 +6418,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1643.062500000000000000
           560.916666666666700000
           317.500000000000000000)
+        XLColumn = 0
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -6014,6 +6433,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlTransNome: TQRLabel
@@ -6031,6 +6451,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           15.875000000000000000
           679.979166666666800000
           132.291666666666700000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -6045,6 +6466,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlTransModFrete: TQRLabel
@@ -6062,6 +6484,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           822.854166666666600000
           677.333333333333400000
           227.541666666666700000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = False
@@ -6076,6 +6499,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlTransCodigoANTT: TQRLabel
@@ -6093,6 +6517,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1068.916666666667000000
           677.333333333333400000
           177.270833333333300000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = False
@@ -6107,6 +6532,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlTransPlaca: TQRLabel
@@ -6124,6 +6550,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1259.416666666667000000
           677.333333333333400000
           171.979166666666700000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -6138,6 +6565,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlTransUFPlaca: TQRLabel
@@ -6155,6 +6583,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1524.000000000000000000
           677.333333333333400000
           71.437500000000000000)
+        XLColumn = 0
         Alignment = taCenter
         AlignToBand = False
         AutoSize = False
@@ -6169,6 +6598,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlTransCNPJ: TQRLabel
@@ -6186,6 +6616,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1624.541666666667000000
           677.333333333333400000
           174.625000000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -6200,6 +6631,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlTransEndereco: TQRLabel
@@ -6217,6 +6649,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           15.875000000000000000
           759.354166666666800000
           161.395833333333300000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -6231,6 +6664,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlTransCidade: TQRLabel
@@ -6248,6 +6682,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           830.791666666666800000
           756.708333333333400000
           185.208333333333300000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -6262,6 +6697,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlTransUF: TQRLabel
@@ -6279,6 +6715,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1428.750000000000000000
           756.708333333333400000
           71.437500000000000000)
+        XLColumn = 0
         Alignment = taCenter
         AlignToBand = False
         AutoSize = False
@@ -6293,6 +6730,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlTransIE: TQRLabel
@@ -6310,6 +6748,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1534.583333333333000000
           756.708333333333400000
           134.937500000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -6324,6 +6763,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlTransQTDE: TQRLabel
@@ -6341,6 +6781,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           17.638888888888890000
           835.642361111111000000
           194.027777777777800000)
+        XLColumn = 0
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -6355,6 +6796,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlTransEspecie: TQRLabel
@@ -6372,6 +6814,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           246.944444444444400000
           835.642361111111000000
           299.861111111111100000)
+        XLColumn = 0
         Alignment = taCenter
         AlignToBand = False
         AutoSize = False
@@ -6386,6 +6829,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlTransMarca: TQRLabel
@@ -6403,6 +6847,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           564.444444444444400000
           835.642361111111000000
           229.305555555555600000)
+        XLColumn = 0
         Alignment = taCenter
         AlignToBand = False
         AutoSize = False
@@ -6417,6 +6862,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlTransNumeracao: TQRLabel
@@ -6434,6 +6880,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           829.027777777777800000
           835.642361111111000000
           264.583333333333300000)
+        XLColumn = 0
         Alignment = taCenter
         AlignToBand = False
         AutoSize = False
@@ -6448,6 +6895,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlTransPesoBruto: TQRLabel
@@ -6465,6 +6913,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1124.479166666667000000
           836.083333333333400000
           232.833333333333400000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -6479,6 +6928,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlTransPesoLiq: TQRLabel
@@ -6496,6 +6946,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1531.937500000000000000
           836.083333333333400000
           203.729166666666700000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -6510,6 +6961,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlHoraSaida: TQRLabel
@@ -6527,6 +6979,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1621.895833333333000000
           224.895833333333300000
           338.666666666666700000)
+        XLColumn = 0
         Alignment = taCenter
         AlignToBand = False
         AutoSize = False
@@ -6541,6 +6994,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
     end
@@ -6556,11 +7010,14 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       Frame.DrawRight = False
       AlignToBottom = False
       Color = clWhite
+      TransparentBand = False
       ForceNewColumn = False
       ForceNewPage = False
       Size.Values = (
         92.604166666666680000
         1989.666666666667000000)
+      PreCaluculateBandHeight = False
+      KeepOnOnePage = False
       BandType = rbColumnHeader
       object qrsRectProdutos: TQRShape
         Left = 0
@@ -6577,8 +7034,10 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           0.000000000000000000
           34.395833333333330000
           1981.729166666667000000)
+        XLColumn = 0
         Brush.Style = bsClear
         Shape = qrsRectangle
+        VertAdjust = 0
       end
       object QRLabel141: TQRLabel
         Left = 0
@@ -6595,6 +7054,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           0.000000000000000000
           2.645833333333333000
           346.604166666666700000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -6609,6 +7069,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object QRLabel142: TQRLabel
@@ -6626,6 +7087,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           15.875000000000000000
           52.916666666666670000
           108.479166666666700000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -6640,6 +7102,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel143: TQRLabel
@@ -6657,6 +7120,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           174.625000000000000000
           52.916666666666670000
           338.666666666666700000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -6671,6 +7135,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel144: TQRLabel
@@ -6688,6 +7153,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           645.583333333333400000
           52.916666666666670000
           84.666666666666680000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -6702,6 +7168,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object lblCST: TQRLabel
@@ -6719,6 +7186,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           772.583333333333400000
           52.916666666666670000
           60.854166666666680000)
+        XLColumn = 0
         Alignment = taCenter
         AlignToBand = False
         AutoSize = False
@@ -6733,6 +7201,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel146: TQRLabel
@@ -6750,6 +7219,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           851.958333333333400000
           52.916666666666670000
           50.270833333333330000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -6764,6 +7234,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel147: TQRLabel
@@ -6781,6 +7252,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           926.041666666666800000
           52.916666666666670000
           52.916666666666670000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -6795,6 +7267,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel148: TQRLabel
@@ -6812,6 +7285,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1005.416666666667000000
           52.916666666666670000
           121.708333333333300000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -6826,6 +7300,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel149: TQRLabel
@@ -6843,6 +7318,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1137.708333333333000000
           52.916666666666670000
           113.770833333333300000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -6857,6 +7333,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel150: TQRLabel
@@ -6874,6 +7351,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1338.791666666667000000
           52.916666666666670000
           84.666666666666680000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -6888,6 +7366,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel151: TQRLabel
@@ -6905,6 +7384,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1513.416666666667000000
           52.916666666666670000
           79.375000000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -6919,6 +7399,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel152: TQRLabel
@@ -6936,6 +7417,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1629.833333333333000000
           52.916666666666670000
           71.437500000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -6950,6 +7432,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel153: TQRLabel
@@ -6967,6 +7450,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1738.312500000000000000
           52.916666666666670000
           47.625000000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -6981,6 +7465,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel156: TQRLabel
@@ -6998,6 +7483,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1830.916666666667000000
           63.500000000000000000
           47.625000000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -7012,6 +7498,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel154: TQRLabel
@@ -7029,6 +7516,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1830.916666666667000000
           39.687500000000000000
           132.291666666666700000)
+        XLColumn = 0
         Alignment = taCenter
         AlignToBand = False
         AutoSize = False
@@ -7043,6 +7531,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel157: TQRLabel
@@ -7060,6 +7549,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1926.166666666667000000
           63.500000000000000000
           23.812500000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -7074,6 +7564,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRShape10: TQRShape
@@ -7091,7 +7582,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           132.291666666666700000
           34.395833333333330000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape24: TQRShape
         Left = 236
@@ -7108,7 +7601,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           624.416666666666800000
           34.395833333333330000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape40: TQRShape
         Left = 290
@@ -7125,7 +7620,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           767.291666666666800000
           34.395833333333330000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape41: TQRShape
         Left = 316
@@ -7142,7 +7639,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           836.083333333333200000
           34.395833333333330000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape57: TQRShape
         Left = 346
@@ -7159,7 +7658,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           915.458333333333200000
           34.395833333333330000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape58: TQRShape
         Left = 376
@@ -7176,7 +7677,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           994.833333333333200000
           34.395833333333330000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape59: TQRShape
         Left = 424
@@ -7193,7 +7696,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1121.833333333333000000
           34.395833333333330000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape60: TQRShape
         Left = 478
@@ -7210,7 +7715,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1264.708333333333000000
           34.395833333333330000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape61: TQRShape
         Left = 542
@@ -7227,7 +7734,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1434.041666666667000000
           34.395833333333330000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape62: TQRShape
         Left = 604
@@ -7244,7 +7753,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1598.083333333333000000
           34.395833333333330000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape63: TQRShape
         Left = 648
@@ -7261,7 +7772,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1714.500000000000000000
           34.395833333333330000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape64: TQRShape
         Left = 685
@@ -7278,7 +7791,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1812.395833333333000000
           33.807870370370370000
           2.939814814814815000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape65: TQRShape
         Left = 717
@@ -7295,7 +7810,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1897.062500000000000000
           63.500000000000000000
           5.291666666666667000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape67: TQRShape
         Left = 686
@@ -7312,7 +7829,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1815.041666666667000000
           60.854166666666680000
           166.687500000000000000)
+        XLColumn = 0
         Shape = qrsHorLine
+        VertAdjust = 0
       end
     end
     object qrbISSQN: TQRBand
@@ -7328,11 +7847,14 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       AlignToBottom = True
       BeforePrint = qrbISSQNBeforePrint
       Color = clWhite
+      TransparentBand = False
       ForceNewColumn = False
       ForceNewPage = False
       Size.Values = (
         121.708333333333300000
         1989.666666666667000000)
+      PreCaluculateBandHeight = False
+      KeepOnOnePage = False
       BandType = rbPageFooter
       object QRLabel3: TQRLabel
         Left = 0
@@ -7349,6 +7871,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           0.000000000000000000
           10.583333333333330000
           216.958333333333400000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -7363,6 +7886,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object QRShape52: TQRShape
@@ -7380,7 +7904,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           0.000000000000000000
           39.687500000000000000
           1981.729166666667000000)
+        XLColumn = 0
         Shape = qrsRectangle
+        VertAdjust = 0
       end
       object QRShape53: TQRShape
         Left = 169
@@ -7397,7 +7923,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           447.145833333333400000
           42.333333333333340000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape54: TQRShape
         Left = 361
@@ -7414,7 +7942,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           955.145833333333500000
           42.333333333333340000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRShape55: TQRShape
         Left = 554
@@ -7431,7 +7961,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1465.791666666667000000
           42.333333333333340000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object QRLabel137: TQRLabel
         Left = 4
@@ -7448,6 +7980,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           10.583333333333330000
           42.333333333333340000
           209.020833333333300000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -7462,6 +7995,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel138: TQRLabel
@@ -7479,6 +8013,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           465.666666666666700000
           42.333333333333340000
           267.229166666666700000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -7493,6 +8028,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel139: TQRLabel
@@ -7510,6 +8046,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           973.666666666666900000
           42.333333333333340000
           261.937500000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -7524,6 +8061,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel140: TQRLabel
@@ -7541,6 +8079,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1489.604166666667000000
           42.333333333333340000
           156.104166666666700000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -7555,6 +8094,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object qrlInscMunicipal: TQRLabel
@@ -7572,6 +8112,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           10.583333333333330000
           68.791666666666680000
           206.375000000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -7586,6 +8127,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlTotalServicos: TQRLabel
@@ -7603,6 +8145,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           465.666666666666700000
           68.791666666666680000
           476.250000000000000000)
+        XLColumn = 0
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -7617,6 +8160,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlBaseISSQN: TQRLabel
@@ -7634,6 +8178,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           973.666666666666900000
           68.791666666666680000
           476.250000000000000000)
+        XLColumn = 0
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -7648,6 +8193,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
       object qrlValorISSQN: TQRLabel
@@ -7665,6 +8211,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1489.604166666667000000
           68.791666666666680000
           476.250000000000000000)
+        XLColumn = 0
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -7679,6 +8226,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 8
       end
     end
@@ -7695,12 +8243,16 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       AlignToBottom = True
       BeforePrint = qrbDadosAdicionaisBeforePrint
       Color = clWhite
+      TransparentBand = False
       ForceNewColumn = False
       ForceNewPage = False
       Size.Values = (
         357.187500000000000000
         1989.666666666667000000)
+      PreCaluculateBandHeight = False
+      KeepOnOnePage = False
       ParentBand = qrbISSQN
+      PrintOrder = cboAfterParent
       object QRShape56: TQRShape
         Left = 0
         Top = 12
@@ -7716,8 +8268,10 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           0.000000000000000000
           32.127976190476190000
           1982.485119047619000000)
+        XLColumn = 0
         Brush.Style = bsClear
         Shape = qrsRectangle
+        VertAdjust = 0
       end
       object QRLabel100: TQRLabel
         Left = 418
@@ -7734,6 +8288,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1105.958333333333000000
           39.687500000000000000
           209.020833333333300000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -7748,6 +8303,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object QRLabel7: TQRLabel
@@ -7765,6 +8321,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           0.000000000000000000
           0.000000000000000000
           211.666666666666700000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -7779,6 +8336,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrmDadosAdicionais: TQRMemo
@@ -7796,6 +8354,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           5.291666666666667000
           68.791666666666680000
           1060.979166666667000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = False
@@ -7811,6 +8370,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        FullJustify = False
         FontSize = 5
       end
       object rbDadosAdicionais: TQRShape
@@ -7828,7 +8388,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1092.729166666667000000
           31.750000000000000000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object qrlMsgTeste: TQRLabel
         Left = 15
@@ -7846,6 +8408,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           39.687500000000000000
           209.020833333333300000
           1897.062500000000000000)
+        XLColumn = 0
         Alignment = taCenter
         AlignToBand = False
         AutoSize = True
@@ -7860,6 +8423,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
         FontSize = 20
       end
       object QRLabel6: TQRLabel
@@ -7877,6 +8441,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           5.291666666666667000
           37.041666666666670000
           325.437500000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -7891,6 +8456,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 5
       end
       object qrlDataHoraImpressao: TQRLabel
@@ -7908,6 +8474,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           5.291666666666667000
           322.791666666666700000
           206.375000000000000000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -7922,6 +8489,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
       object qrlSistema: TQRLabel
@@ -7939,6 +8507,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           941.916666666666800000
           325.437500000000000000
           1037.166666666667000000)
+        XLColumn = 0
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -7953,6 +8522,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = False
         WordWrap = True
+        ExportAs = exptText
         FontSize = 6
       end
     end
@@ -7970,6 +8540,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       AlignToBottom = False
       BeforePrint = qrbItensBeforePrint
       Color = clWhite
+      TransparentBand = False
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -8
@@ -7981,6 +8552,8 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       Size.Values = (
         29.104166666666670000
         1989.666666666667000000)
+      PreCaluculateBandHeight = False
+      KeepOnOnePage = False
       BandType = rbDetail
       object qrmProdutoCodigo: TQRDBText
         Left = 3
@@ -7997,6 +8570,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           7.937500000000000000
           0.000000000000000000
           116.416666666666700000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = False
@@ -8012,6 +8586,8 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
+        FullJustify = False
         FontSize = 6
       end
       object qrmProdutoDescricao: TQRDBText
@@ -8029,6 +8605,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           142.875000000000000000
           0.000000000000000000
           470.958333333333300000)
+        XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = False
@@ -8044,6 +8621,8 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
+        FullJustify = False
         FontSize = 6
       end
       object qrmProdutoNCM: TQRDBText
@@ -8061,6 +8640,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           635.000000000000000000
           0.000000000000000000
           121.708333333333300000)
+        XLColumn = 0
         Alignment = taCenter
         AlignToBand = False
         AutoSize = False
@@ -8076,6 +8656,8 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
+        FullJustify = False
         FontSize = 6
       end
       object qrmProdutoCST: TQRDBText
@@ -8093,6 +8675,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           772.583333333333400000
           0.000000000000000000
           60.854166666666680000)
+        XLColumn = 0
         Alignment = taCenter
         AlignToBand = False
         AutoSize = False
@@ -8108,6 +8691,8 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
+        FullJustify = False
         FontSize = 6
       end
       object qrmProdutoCFOP: TQRDBText
@@ -8125,6 +8710,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           846.666666666666800000
           0.000000000000000000
           60.854166666666680000)
+        XLColumn = 0
         Alignment = taCenter
         AlignToBand = False
         AutoSize = False
@@ -8140,6 +8726,8 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
+        FullJustify = False
         FontSize = 6
       end
       object qrmProdutoUnidade: TQRDBText
@@ -8157,6 +8745,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           926.041666666666800000
           0.000000000000000000
           60.854166666666680000)
+        XLColumn = 0
         Alignment = taCenter
         AlignToBand = False
         AutoSize = False
@@ -8172,6 +8761,8 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
+        FullJustify = False
         FontSize = 6
       end
       object qrmProdutoQTDE: TQRDBText
@@ -8189,6 +8780,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1005.416666666667000000
           0.000000000000000000
           108.479166666666700000)
+        XLColumn = 0
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -8204,6 +8796,8 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
+        FullJustify = False
         FontSize = 6
       end
       object qrmProdutoValor: TQRDBText
@@ -8221,6 +8815,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1132.416666666667000000
           0.000000000000000000
           127.000000000000000000)
+        XLColumn = 0
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -8236,6 +8831,8 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
+        FullJustify = False
         FontSize = 6
       end
       object qrmProdutoTotal: TQRDBText
@@ -8253,6 +8850,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1275.291666666667000000
           0.000000000000000000
           150.812500000000000000)
+        XLColumn = 0
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -8268,6 +8866,8 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
+        FullJustify = False
         FontSize = 6
       end
       object qrmProdutoBCICMS: TQRDBText
@@ -8285,6 +8885,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1444.625000000000000000
           0.000000000000000000
           145.520833333333300000)
+        XLColumn = 0
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -8300,6 +8901,8 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
+        FullJustify = False
         FontSize = 6
       end
       object qrmProdutoVALORICMS: TQRDBText
@@ -8317,6 +8920,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1608.666666666667000000
           0.000000000000000000
           100.541666666666700000)
+        XLColumn = 0
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -8332,6 +8936,8 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
+        FullJustify = False
         FontSize = 6
       end
       object qrmProdutoALIQICMS: TQRDBText
@@ -8349,6 +8955,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1820.333333333333000000
           0.000000000000000000
           74.083333333333320000)
+        XLColumn = 0
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -8364,6 +8971,8 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
+        FullJustify = False
         FontSize = 6
       end
       object qrmProdutoVALORIPI: TQRDBText
@@ -8381,6 +8990,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1719.791666666667000000
           2.645833333333333000
           87.312500000000000000)
+        XLColumn = 0
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -8396,6 +9006,8 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
+        FullJustify = False
         FontSize = 6
       end
       object qrmProdutoALIQIPI: TQRDBText
@@ -8413,6 +9025,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1910.291666666667000000
           0.000000000000000000
           63.500000000000000000)
+        XLColumn = 0
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = False
@@ -8428,6 +9041,8 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         ParentFont = False
         Transparent = True
         WordWrap = True
+        ExportAs = exptText
+        FullJustify = False
         FontSize = 6
       end
       object qrs2: TQRShape
@@ -8445,7 +9060,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           132.291666666666700000
           0.000000000000000000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object qrs1: TQRShape
         Left = 0
@@ -8462,7 +9079,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           0.000000000000000000
           0.000000000000000000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object qrs3: TQRShape
         Left = 236
@@ -8479,7 +9098,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           624.416666666666800000
           0.000000000000000000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object qrs4: TQRShape
         Left = 290
@@ -8496,7 +9117,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           767.291666666666800000
           0.000000000000000000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object qrs5: TQRShape
         Left = 316
@@ -8513,7 +9136,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           836.083333333333200000
           -2.645833333333333000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object qrs6: TQRShape
         Left = 346
@@ -8530,7 +9155,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           915.458333333333200000
           0.000000000000000000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object qrs7: TQRShape
         Left = 376
@@ -8547,7 +9174,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           994.833333333333200000
           0.000000000000000000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object qrs8: TQRShape
         Left = 424
@@ -8564,7 +9193,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1121.833333333333000000
           0.000000000000000000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object qrs9: TQRShape
         Left = 478
@@ -8581,7 +9212,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1264.708333333333000000
           0.000000000000000000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object qrs10: TQRShape
         Left = 542
@@ -8598,7 +9231,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1434.041666666667000000
           0.000000000000000000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object qrs11: TQRShape
         Left = 604
@@ -8615,7 +9250,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1598.083333333333000000
           0.000000000000000000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object qrs12: TQRShape
         Left = 648
@@ -8632,7 +9269,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1714.500000000000000000
           0.000000000000000000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object qrs13: TQRShape
         Left = 685
@@ -8649,7 +9288,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1813.277777777778000000
           0.000000000000000000
           3.527777777777778000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object qrs14: TQRShape
         Left = 718
@@ -8666,7 +9307,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1899.708333333333000000
           0.000000000000000000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
       object qrs15: TQRShape
         Left = 748
@@ -8683,7 +9326,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           1979.083333333333000000
           0.000000000000000000
           2.645833333333333000)
+        XLColumn = 0
         Shape = qrsVertLine
+        VertAdjust = 0
       end
     end
     object qrbItensLine: TQRChildBand
@@ -8698,12 +9343,16 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       Frame.DrawRight = False
       AlignToBottom = False
       Color = clWhite
+      TransparentBand = False
       ForceNewColumn = False
       ForceNewPage = False
       Size.Values = (
         2.645833333333333000
         1989.666666666667000000)
+      PreCaluculateBandHeight = False
+      KeepOnOnePage = False
       ParentBand = qrbItens
+      PrintOrder = cboAfterParent
       object QRShape68: TQRShape
         Left = 0
         Top = -1
@@ -8719,7 +9368,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           0.000000000000000000
           -2.645833333333333000
           1981.729166666667000000)
+        XLColumn = 0
         Shape = qrsHorLine
+        VertAdjust = 0
       end
     end
   end

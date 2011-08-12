@@ -52,7 +52,6 @@ type
     bAACAbrirArquivo : TButton ;
     bACCVerificarGT : TButton ;
     bAACAtualizarGT : TButton ;
-    Button1 : TButton ;
     CancelaCupom1: TMenuItem;
     CancelaImpressoCheque1: TMenuItem;
     CancelaNoFiscal1: TMenuItem;
@@ -64,6 +63,7 @@ type
     cbMemoHTML: TCheckBox;
     cbxModelo: TComboBox;
     cbxPorta: TComboBox;
+    chAACFlush : TCheckBox ;
     chArredondaPorQtd: TCheckBox;
     chBloqueia: TCheckBox;
     chDescricaoGrande : TCheckBox ;
@@ -415,6 +415,7 @@ type
     procedure btnMenuFiscalRelDAVEmitidosClick(Sender : TObject) ;
     procedure btnMenuFiscalRelIdentPAFECFClick(Sender : TObject) ;
     procedure btnMenuFiscalRelMeiosPagtoClick(Sender : TObject) ;
+    procedure chAACFlushChange(Sender : TObject) ;
     procedure chAACUsarChange(Sender : TObject) ;
     procedure cbxModeloChange(Sender: TObject);
     procedure chArredondamentoItemMFDChange(Sender : TObject) ;
@@ -1076,6 +1077,11 @@ begin
   finally
     FormasPagamento.Free;
   end;
+end;
+
+procedure TForm1.chAACFlushChange(Sender : TObject) ;
+begin
+   ACBrAAC1.EfetuarFlush := chAACFlush.Checked;
 end;
 
 procedure TForm1.chAACUsarChange(Sender : TObject) ;

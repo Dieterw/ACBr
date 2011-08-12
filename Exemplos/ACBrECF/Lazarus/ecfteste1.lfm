@@ -173,9 +173,9 @@ object Form1: TForm1
     Height = 317
     Top = 0
     Width = 547
-    ActivePage = tsCodBarras
+    ActivePage = TabSheet4
     Align = alClient
-    TabIndex = 4
+    TabIndex = 0
     TabOrder = 0
     object TabSheet4: TTabSheet
       Caption = 'ECF'
@@ -481,7 +481,7 @@ object Form1: TForm1
         TabOrder = 16
       end
       object chAACUsar: TCheckBox
-        Left = 228
+        Left = 212
         Height = 19
         Top = 258
         Width = 194
@@ -496,12 +496,22 @@ object Form1: TForm1
         ParentFont = False
         TabOrder = 17
       end
-      object Button1: TButton
-        Left = 444
-        Height = 25
-        Top = 250
-        Width = 75
-        Caption = 'Button1'
+      object chAACFlush: TCheckBox
+        Left = 436
+        Height = 19
+        Top = 258
+        Width = 50
+        Caption = 'Flush'
+        Checked = True
+        Font.CharSet = ANSI_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Pitch = fpVariable
+        Font.Style = [fsBold]
+        OnChange = chAACFlushChange
+        ParentFont = False
+        State = cbChecked
         TabOrder = 18
       end
     end
@@ -3214,6 +3224,7 @@ object Form1: TForm1
     MsgTrabalhando = 'Impressora está trabalhando'
     MsgRelatorio = 'Imprimindo %s  %dª Via '
     MsgPausaRelatorio = 'Destaque a %dª via, <ENTER> proxima, %d seg.'
+    PaginaDeCodigo = 0
     FormMsgFonte.Color = clWhite
     FormMsgFonte.Height = 11
     FormMsgFonte.Name = 'MS Sans Serif'
@@ -3253,6 +3264,9 @@ object Form1: TForm1
     OnBobinaAdicionaLinhas = ACBrECF1BobinaAdicionaLinhas
     RFD = ACBrRFD1
     ArqLOG = 'acbrlog.txt'
+    ConfigBarras.MostrarCodigo = True
+    ConfigBarras.LarguraLinha = 3
+    ConfigBarras.Altura = 10
     left = 312
     top = 328
   end

@@ -57,6 +57,7 @@ Data: 05/06/2011
 -- ACBTXTClass --
 [-] Corrigido o método DFill, que ao receber o parametro DFill(15.00, 3)
     retornava 15 e o correto pelo Guia Pratico deveria voltar 15,000
+    (por Isaque Pinheiro)
 
 Data: 03/06/2011
 -- ACBPAFClass --

@@ -1685,7 +1685,8 @@ type
     fCOD_SIT: TACBrSituacaoDocto;        /// Código da situação do documento fiscal, conforme a Tabela 4.1.2
     fSER: String;                        /// Série do documento fiscal
     fSUB: String;                        /// Subsérie do documento fiscal
-    fCOD_CONS: TACBrClasseConsumo;       /// Código de classe de consumo de energia elétrica, conforme a Tabela 4.4.5 ou Código da classe de consumo de gás canalizado conforme Tabela 4.4.3.
+//    fCOD_CONS: TACBrClasseConsumo;       /// Código de classe de consumo de energia elétrica, conforme a Tabela 4.4.5 ou Código da classe de consumo de gás canalizado conforme Tabela 4.4.3.
+    fCOD_CONS: String;                   /// Código de classe de consumo de energia elétrica, conforme a Tabela 4.4.5 ou Código da classe de consumo de gás canalizado conforme Tabela 4.4.3.
     fNUM_DOC: String;                    /// Número do documento fiscal
     fDT_DOC: TDateTime;                  /// Data da emissão do documento fiscal
     fDT_E_S: TDateTime;                  /// Data da entrada ou da saída
@@ -1719,7 +1720,8 @@ type
     property COD_SIT: TACBrSituacaoDocto read fCOD_SIT write fCOD_SIT;
     property SER: String read fSER write fSER;
     property SUB: String read fSUB write fSUB;
-    property COD_CONS: TACBrClasseConsumo read fCOD_CONS write fCOD_CONS;
+//    property COD_CONS: TACBrClasseConsumo read fCOD_CONS write fCOD_CONS;
+    property COD_CONS: String read fCOD_CONS write fCOD_CONS;
     property NUM_DOC: String read fNUM_DOC write fNUM_DOC;
     property DT_DOC: TDateTime read fDT_DOC write fDT_DOC;
     property DT_E_S: TDateTime read fDT_E_S write fDT_E_S;

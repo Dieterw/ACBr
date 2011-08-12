@@ -42,7 +42,7 @@ unit ACBrEFDBloco_C_Class;
 
 interface
 
-uses SysUtils, Classes, DateUtils, ACBrSped, ACBrEFDBloco_C,
+uses SysUtils, Classes, DateUtils, AnsiStrings, ACBrSped, ACBrEFDBloco_C,
      ACBrEFDBloco_0_Class, ACBrEFDBlocos;
 
 type
@@ -2296,7 +2296,7 @@ var
   intTP_LIGACAO: integer;
   strCOD_SIT: AnsiString;
   strCOD_GRUPO_TENSAO: AnsiString;
-  strCOD_CONS: AnsiString;
+//  strCOD_CONS: AnsiString;
 begin
   if Assigned( RegC001.RegistroC500 ) then
   begin
@@ -2304,6 +2304,15 @@ begin
      begin
         with RegC001.RegistroC500.Items[intFor] do
         begin
+           // COD_MOD
+           Check(MatchText(COD_MOD, ['06', '28', '29']), 'Registro C500 : O código do modelo "%s" não está na lista de valores válidos "%s" !',
+                                                         [COD_MOD, '[06, 28, 29]']);
+           // COD_CONS
+           Check(funChecaCOD_CONS(COD_MOD, COD_CONS), 'Registro C500 : Se o modelo for 06 (energia elétrica) ou 28 (gás canalizado), ' +
+                                                      'os valores válidos são "%s". Se o modelo for 29 (água canalizada), o valor deve ' +
+                                                      'constar da Tabela 4.4.2 do Ato COTEPE/ICMS nº 09, de 18 de abril de 2008. !',
+                                                      ['[01, 02, 03, 04, 05, 06, 07, 08]', COD_MOD]);
+
            case COD_SIT of
             sdRegular:               strCOD_SIT := '00';
             sdExtempRegular:         strCOD_SIT := '01';
@@ -2331,6 +2340,7 @@ begin
             gtB4a:          strCOD_GRUPO_TENSAO := '13';
             gtB4b:          strCOD_GRUPO_TENSAO := '14';
            end;
+{
            case COD_CONS of
             ccComercial:         strCOD_CONS := '01';
             ccConsumoProprio:    strCOD_CONS := '02';
@@ -2341,6 +2351,7 @@ begin
             ccRural:             strCOD_CONS := '07';
             ccServicoPublico:    strCOD_CONS := '08';
            end;
+}
            case TP_LIGACAO of
             tlMonofasico: intTP_LIGACAO := 1;
             tlBifasico:   intTP_LIGACAO := 2;
@@ -2355,7 +2366,8 @@ begin
                 LFill( strCOD_SIT ) +
                 LFill( SER ) +
                 LFill( SUB ) +
-                LFill( strCOD_CONS ) +
+//                LFill( strCOD_SIT ) +
+                LFill( COD_CONS ) +
                 LFill( NUM_DOC,9 ) +
                 LFill( DT_DOC ) +
                 LFill( DT_E_S ) +

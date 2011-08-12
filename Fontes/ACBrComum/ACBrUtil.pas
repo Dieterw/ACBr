@@ -234,6 +234,8 @@ function FunctionDetect (LibName, FuncName: String; var LibPointer: Pointer)
 function FunctionDetect (LibName, FuncName: String; var LibPointer: Pointer;
    var LibHandle: THandle ): boolean; overload ;
 
+function FlushToDisk(sDriveLetter: string): boolean;
+
 Procedure DesligarMaquina(Reboot: Boolean = False; Forcar: Boolean = False) ;
 Procedure WriteToTXT( const ArqTXT, AString : AnsiString;
    const AppendIfExists : Boolean = True; AddLineBreak : Boolean = True );
@@ -1799,6 +1801,40 @@ begin
    {$ENDIF}
  {$ENDIF}
 end ;
+
+{$IFDEF MSWINDOWS}
+ { Fonte: http://stackoverflow.com/questions/1635947/how-to-make-sure-that-a-file-was-permanently-saved-on-usb-when-user-doesnt-use }
+ function FlushToDisk(sDriveLetter: string): boolean;
+ var
+   hDrive: THandle;
+   S:      string;
+   OSFlushed: boolean;
+   bResult: boolean;
+ begin
+   bResult := False;
+   S := '\\.\' + sDriveLetter[1] + ':';
+
+   //NOTE: this may only work for the SYSTEM user
+   hDrive    := CreateFile(PChar(S), GENERIC_READ or
+     GENERIC_WRITE, FILE_SHARE_READ or FILE_SHARE_WRITE, nil,
+     OPEN_EXISTING, 0, 0);
+   OSFlushed := FlushFileBuffers(hDrive);
+
+   CloseHandle(hDrive);
+
+   if OSFlushed then
+   begin
+     bResult := True;
+   end;
+
+   Result := bResult;
+ end;
+{$ELSE}
+ function FlushToDisk(sDriveLetter: string): boolean;
+ begin
+   Result := False ;
+ end ;
+{$ENDIF}
 
 {-----------------------------------------------------------------------------
  - Tenta desligar a Maquina.

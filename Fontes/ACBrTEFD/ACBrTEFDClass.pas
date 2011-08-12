@@ -55,7 +55,7 @@ uses
   {$ENDIF} ;
 
 const
-   CACBrTEFD_Versao      = '1.32' ;
+   CACBrTEFD_Versao      = '1.33' ;
    CACBrTEFD_EsperaSTS   = 7 ;
    CACBrTEFD_EsperaSleep = 250 ;
    CACBrTEFD_NumVias     = 2 ;
@@ -2379,8 +2379,7 @@ end;
 Function TACBrTEFDClass.ProcessarRespostaPagamento( const IndiceFPG_ECF : String;
    const Valor : Double) : Boolean ;
 var
-  UltimaTransacao : Boolean ;
-  ImpressaoOk : Boolean;
+  UltimaTransacao, ImpressaoOk, TecladoEstavaLivre : Boolean;
   ArqBack : String ;
   RespostaPendente : TACBrTEFDRespTXT;
 begin
@@ -2444,13 +2443,20 @@ begin
            while not ImpressaoOk do
            begin
               try
-                 BloquearMouseTeclado( True ); //
-                 ECFPagamento( IndiceFPG_ECF, Valor );
-                 RespostasPendentes.SaldoAPagar  := RoundTo( RespostasPendentes.SaldoAPagar - Valor, -2 ) ;
-                 RespostaPendente.OrdemPagamento := RespostasPendentes.Count + 1 ;
-                 ImpressaoOk := True ;
+                 try
+                    TecladoEstavaLivre := not TecladoBloqueado;
+                    BloquearMouseTeclado( True );
+                    ECFPagamento( IndiceFPG_ECF, Valor );
+                    RespostasPendentes.SaldoAPagar  := RoundTo( RespostasPendentes.SaldoAPagar - Valor, -2 ) ;
+                    RespostaPendente.OrdemPagamento := RespostasPendentes.Count + 1 ;
+                    ImpressaoOk := True ;
+                 finally
+                    if TecladoEstavaLivre then
+                       BloquearMouseTeclado( False );
+                  end ;
               except
-                 on EACBrTEFDECF do ImpressaoOk := False ;
+                 on EACBrTEFDECF do
+                    ImpressaoOk := False ;
                  else
                     raise ;
               end;
@@ -2470,6 +2476,8 @@ begin
               CancelarTransacoesPendentes;
         end; //end do "if AutoEfetuarPagamento try ..."
      end;
+
+     if not ImpressaoOk then exit ;
 
      { Se é Multiplos Cartoes, e ainda Resta SALDO deve enviar um CNF }
      if MultiplosCartoes and (RespostasPendentes.SaldoRestante > 0) then

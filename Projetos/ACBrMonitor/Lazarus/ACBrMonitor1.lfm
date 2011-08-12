@@ -5884,6 +5884,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
   end
   object ACBrBoleto1: TACBrBoleto
     Cedente.TipoInscricao = pOutras
+    Banco.TamanhoMaximoNossoNum = 10
     Banco.TipoCobranca = cobNenhum
     NumeroArquivo = 0
     DataArquivo = 0

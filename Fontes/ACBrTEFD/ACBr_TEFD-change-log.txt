@@ -47,6 +47,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data:  11/08/2011  - Ver: 1.33
+[-] Correção de Bug descrito em:
+    http://www.djsystem.com.br/acbr/forum/viewtopic.php?f=16&p=12735
+
 Data:  26/07/2011  - Ver: 1.32
 [+] Implementado recurso para que os TEF Discados, indentifique se o tipo
     da transação é Débito ou Crédito.

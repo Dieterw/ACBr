@@ -67,6 +67,7 @@ type
      fsArqLOG : String ;
      fsCriarBAK : Boolean ;
      fsDtHrArquivo : TDateTime ;
+     fsEfetuarFlush : Boolean ;
      fsGravarDadosPAF : Boolean ;
      fsGravarDadosSH : Boolean ;
      fsGravarTodosECFs : Boolean ;
@@ -115,6 +116,7 @@ type
     property NomeArquivoAux : String  read fsNomeArquivoAux
        write SetNomeArquivoAux ;
     property CriarBAK : Boolean read fsCriarBAK write fsCriarBAK default True;
+    property EfetuarFlush : Boolean read fsEfetuarFlush write fsEfetuarFlush default True;
     property GravarDadosSH  : Boolean read fsGravarDadosSH
        write fsGravarDadosSH default True;
     property GravarDadosPAF : Boolean read fsGravarDadosPAF
@@ -167,6 +169,7 @@ begin
 
   fsNomeArquivoAux    := '' ;
   fsCriarBAK          := True;
+  fsEfetuarFlush      := True;
   fsGravarDadosSH     := True;
   fsGravarDadosPAF    := True;
   fsGravarTodosECFs   := True;
@@ -448,6 +451,10 @@ begin
      end ;
 
      WriteToTXT( fsNomeCompleto, R, False, False );
+
+     if fsEfetuarFlush then
+        FlushToDisk( ExtractFileDrive( fsNomeCompleto )  );
+
      fsDtHrArquivo := FileDateToDateTime( FileAge( fsNomeCompleto ) );
 
      if Assigned( fsOnDepoisGravarArquivo ) then

@@ -38,6 +38,15 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+11/08/2011
+-- ACBrAAC --
+[+] Adicionada a propriedade EfetuarFlush : Boolean = True
+    Se True, chama rotina que descarrega Cache de memória no disco, para
+    garantir a gravação do arquivo.
+
+-- ACBrUtil --
+[+] Adicionada a função: FlushToDisk(sDriveLetter: string): boolean;
+
 Data: 27/07/2011
 -- ACBrUtil --
 [-] Corrigido o método AjustaLinhas para considerar as tags de formatação

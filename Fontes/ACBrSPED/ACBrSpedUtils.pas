@@ -42,7 +42,7 @@ unit ACBrSpedUtils;
 
 interface
 
-uses SysUtils, Variants, Classes, AnsiStrings;
+uses SysUtils, Variants, Classes, ACBrUtil;
 
 // Funções de checagem de dados
 function funChecaUF(const UF: String): boolean;

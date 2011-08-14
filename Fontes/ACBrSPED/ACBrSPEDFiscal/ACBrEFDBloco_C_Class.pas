@@ -42,7 +42,7 @@ unit ACBrEFDBloco_C_Class;
 
 interface
 
-uses SysUtils, Classes, DateUtils, AnsiStrings, ACBrSped, ACBrEFDBloco_C,
+uses SysUtils, Classes, DateUtils, ACBrSped, ACBrEFDBloco_C,
      ACBrEFDBloco_0_Class, ACBrEFDBlocos;
 
 type

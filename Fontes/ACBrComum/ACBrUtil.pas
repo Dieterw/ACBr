@@ -251,7 +251,6 @@ function EAN13Valido( CodEAN13 : String ) : Boolean ;
 function EAN13_DV( CodEAN13 : String ) : String ;
 
 function TranslateString(const S: AnsiString; CP_Destino: Word; CP_Atual: Word = 0): AnsiString;
-function MatchText(const AText: AnsiString; const AValues: array of AnsiString): Boolean;
 
 {$IFDEF MSWINDOWS}
 var xInp32 : function (wAddr: word): byte; stdcall;
@@ -2129,21 +2128,6 @@ function TranslateString(const S: AnsiString; CP_Destino: Word; CP_Atual: Word =
    Result := WideStringToStringEx( StringToWideStringEx(S, CP_Atual), CP_Destino);
  end;
 {$ENDIF}
-
-function MatchText(const AText: AnsiString; const AValues: array of AnsiString): Boolean;
-var
-  I: Integer;
-begin
-  Result := False;
-  for I := Low(AValues) to High(AValues) do
-  begin
-    if AText = AValues[I] then
-    begin
-      Result := True;
-      Break;
-    end;
-  end;
-end;
 
 //*****************************************************************************************
 

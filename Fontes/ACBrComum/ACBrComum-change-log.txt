@@ -44,12 +44,6 @@ Símbolo : Significado
     Se True, chama rotina que descarrega Cache de memória no disco, para
     garantir a gravação do arquivo.
 
--- ACBrUtil
-[+] Adicionada a função: function MatchText(const AText: AnsiString; 
-                                  const AValues: array of AnsiString): Boolean;
-    Essa função checa se o caracter "AText", existe no array "AValues",
-    o nome foi baseado na função com o mesmo nome no D2010.
-
 -- ACBrUtil --
 [+] Adicionada a função: FlushToDisk(sDriveLetter: string): boolean;
 

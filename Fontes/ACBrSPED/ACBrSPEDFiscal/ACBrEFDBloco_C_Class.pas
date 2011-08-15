@@ -2296,7 +2296,6 @@ var
   intTP_LIGACAO: integer;
   strCOD_SIT: AnsiString;
   strCOD_GRUPO_TENSAO: AnsiString;
-//  strCOD_CONS: AnsiString;
 begin
   if Assigned( RegC001.RegistroC500 ) then
   begin
@@ -2340,18 +2339,6 @@ begin
             gtB4a:          strCOD_GRUPO_TENSAO := '13';
             gtB4b:          strCOD_GRUPO_TENSAO := '14';
            end;
-{
-           case COD_CONS of
-            ccComercial:         strCOD_CONS := '01';
-            ccConsumoProprio:    strCOD_CONS := '02';
-            ccIluminacaoPublica: strCOD_CONS := '03';
-            ccIndustrial:        strCOD_CONS := '04';
-            ccPoderPublico:      strCOD_CONS := '05';
-            ccResidencial:       strCOD_CONS := '06';
-            ccRural:             strCOD_CONS := '07';
-            ccServicoPublico:    strCOD_CONS := '08';
-           end;
-}
            case TP_LIGACAO of
             tlMonofasico: intTP_LIGACAO := 1;
             tlBifasico:   intTP_LIGACAO := 2;
@@ -2366,7 +2353,6 @@ begin
                 LFill( strCOD_SIT ) +
                 LFill( SER ) +
                 LFill( SUB ) +
-//                LFill( strCOD_SIT ) +
                 LFill( COD_CONS ) +
                 LFill( NUM_DOC,9 ) +
                 LFill( DT_DOC ) +

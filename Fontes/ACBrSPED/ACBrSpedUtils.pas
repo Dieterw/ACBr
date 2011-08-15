@@ -121,15 +121,15 @@ const
 begin
    Result := False;
    // Se o modelo for 06 (energia elétrica) ou 28 (gás canalizado), os valores válidos são [01, 02, 03, 04, 05, 06, 07, 08]
-   if MatchText(COD_MOD, ['06', '28']) then
+   if AnsiMatchText(COD_MOD, ['06', '28']) then
    begin
-      Result := MatchText(COD_CONS, ListaEnergia);
+      Result := AnsiMatchText(COD_CONS, ListaEnergia);
    end
    else
    // Se o modelo for 29 (água  canalizada), o valor deve constar da Tabela 4.4.2
-   if MatchText(COD_MOD, ['29']) then
+   if AnsiMatchText(COD_MOD, ['29']) then
    begin
-      Result := MatchText(COD_CONS, ListaAgua);
+      Result := AnsiMatchText(COD_CONS, ListaAgua);
    end;
 end;
 

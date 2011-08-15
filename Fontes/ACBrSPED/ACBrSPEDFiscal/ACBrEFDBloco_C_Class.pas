@@ -2310,7 +2310,7 @@ begin
            Check(funChecaCOD_CONS(COD_MOD, COD_CONS), 'Registro C500 : Se o modelo for 06 (energia elétrica) ou 28 (gás canalizado), ' +
                                                       'os valores válidos são "%s". Se o modelo for 29 (água canalizada), o valor deve ' +
                                                       'constar da Tabela 4.4.2 do Ato COTEPE/ICMS nº 09, de 18 de abril de 2008. !',
-                                                      ['[01, 02, 03, 04, 05, 06, 07, 08]', COD_CONS]);
+                                                      ['[01, 02, 03, 04, 05, 06, 07, 08]']);
 
            case COD_SIT of
             sdRegular:               strCOD_SIT := '00';

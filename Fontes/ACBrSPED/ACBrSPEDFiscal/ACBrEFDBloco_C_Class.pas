@@ -2305,8 +2305,8 @@ begin
         with RegC001.RegistroC500.Items[intFor] do
         begin
            // COD_MOD
-           Check(MatchText(COD_MOD, ['06', '28', '29']), 'Registro C500 : O código do modelo "%s" não está na lista de valores válidos "%s" !',
-                                                         [COD_MOD, '[06, 28, 29]']);
+           Check(AnsiMatchText(COD_MOD, ['06', '28', '29']), 'Registro C500 : O código do modelo "%s" não está na lista de valores válidos "%s" !',
+                                                             [COD_MOD, '[06, 28, 29]']);
            // COD_CONS
            Check(funChecaCOD_CONS(COD_MOD, COD_CONS), 'Registro C500 : Se o modelo for 06 (energia elétrica) ou 28 (gás canalizado), ' +
                                                       'os valores válidos são "%s". Se o modelo for 29 (água canalizada), o valor deve ' +

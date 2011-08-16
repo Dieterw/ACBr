@@ -50,6 +50,18 @@ namespace ACBr.Net
                 SetString(ACBrDll.ECF_SetPorta, value);
             }
         }
+		
+        public int Velocidade
+        {
+            get
+            {
+                return GetInt32(ACBrDll.ECF_GetVelocidade);
+            }
+            set
+            {
+                SetInt32(ACBrDll.ECF_SetVelocidade, value);
+            }
+        }		
 
         public int TimeOut
         {

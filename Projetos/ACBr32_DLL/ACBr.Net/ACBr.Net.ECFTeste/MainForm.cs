@@ -53,6 +53,11 @@ namespace ACBr.Net.ECFTeste
             portaComboBox.Items.Add("ecf.txt");
             portaComboBox.SelectedIndex = 0;
 
+            velocidadeComboBox.Items.Clear();
+            velocidadeComboBox.Items.Add("9600");
+            velocidadeComboBox.Items.Add("115200");
+            velocidadeComboBox.SelectedIndex = 0;
+
             ativarCheckButton.Checked = false;
         }
 
@@ -62,6 +67,7 @@ namespace ACBr.Net.ECFTeste
             {
                 acbrECF.Modelo = (ModeloECF)modeloComboBox.SelectedItem;
                 acbrECF.Porta = (string)portaComboBox.SelectedItem;
+                acbrECF.Velocidade = (int)velocidadeComboBox.SelectedIndex;
                 acbrECF.TimeOut = (int)timeOutNumericUpDown.Value;
 
                 acbrECF.GavetaSinalInvertido = gavetaCheckBox.Checked;

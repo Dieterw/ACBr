@@ -294,6 +294,49 @@ begin
 
 end;
 
+Function ECF_GetVelocidade(const ecfHandle: PECFHandle) : Integer; {$IFDEF STDCALL} stdcall; {$ELSE} cdecl; {$ENDIF}  export;
+begin
+
+  if (ecfHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+  try
+     Result := ecfHandle^.ECF.Device.Baud;
+  except
+     on exception : Exception do
+     begin
+        ecfHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end;
+
+end;
+
+Function ECF_SetVelocidade(const ecfHandle: PECFHandle; const Velocidade : Integer) : Integer; {$IFDEF STDCALL} stdcall; {$ELSE} cdecl; {$ENDIF}  export;
+begin
+
+  if (ecfHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+  try
+     ecfHandle^.ECF.Device.Baud := Velocidade;
+     Result := 0;
+  except
+     on exception : Exception do
+     begin
+        ecfHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end;
+
+end;
+
 Function ECF_GetTimeOut(const ecfHandle: PECFHandle) : Integer; {$IFDEF STDCALL} stdcall; {$ELSE} cdecl; {$ENDIF}  export;
 begin
 
@@ -3857,7 +3900,7 @@ ECF_Ativar, ECF_Desativar,
 
 { Propriedades do Componente }
 
-ECF_GetModelo, ECF_SetModelo, ECF_GetPorta, ECF_SetPorta, ECF_GetTimeOut, ECF_SetTimeOut, ECF_GetAtivo,
+ECF_GetModelo, ECF_SetModelo, ECF_GetPorta, ECF_SetPorta, ECF_GetVelocidade, ECF_SetVelocidade, ECF_GetTimeOut, ECF_SetTimeOut, ECF_GetAtivo,
 
 ECF_GetColunas, ECF_GetAguardandoResposta, ECF_GetComandoEnviado, ECF_GetRespostaComando, ECF_GetComandoLOG, ECF_SetComandoLOG,
 ECF_GetAguardaImpressao, ECF_SetAguardaImpressao,

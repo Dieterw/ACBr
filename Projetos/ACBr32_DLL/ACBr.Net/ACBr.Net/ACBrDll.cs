@@ -97,6 +97,12 @@ namespace ACBr.Net
 
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern int ECF_SetPorta(IntPtr ecfHandle, string porta);
+        
+        [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int ECF_GetVelocidade(IntPtr ecfHandle);
+
+        [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int ECF_SetVelocidade(IntPtr ecfHandle, int Velocidade);
 
         [DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern int ECF_GetTimeOut(IntPtr ecfHandle);

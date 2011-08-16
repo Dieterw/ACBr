@@ -51,8 +51,12 @@
             this.cNPJToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.iEToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pAFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lerTodasAsVariáveisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.relatóriosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.leituraXToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.reToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cupomFiscalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.testaCupomFiscalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.ecfTabPage = new System.Windows.Forms.TabPage();
             this.descricaoCheckBox = new System.Windows.Forms.CheckBox();
@@ -66,12 +70,10 @@
             this.portaLabel = new System.Windows.Forms.Label();
             this.modeloLabel = new System.Windows.Forms.Label();
             this.cmdTabPage = new System.Windows.Forms.TabPage();
-            this.ativarCheckButton = new System.Windows.Forms.CheckBox();
             this.respListBox = new System.Windows.Forms.ListBox();
-            this.lerTodasAsVariáveisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.testaCupomFiscalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.leituraXToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.reToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ativarCheckButton = new System.Windows.Forms.CheckBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.velocidadeComboBox = new System.Windows.Forms.ComboBox();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.tabControl.SuspendLayout();
@@ -138,50 +140,50 @@
             this.toolStripMenuItem2,
             this.sairToolStripMenuItem});
             this.principalToolStripMenuItem.Name = "principalToolStripMenuItem";
-            this.principalToolStripMenuItem.Size = new System.Drawing.Size(65, 20);
+            this.principalToolStripMenuItem.Size = new System.Drawing.Size(58, 20);
             this.principalToolStripMenuItem.Text = "&Principal";
             // 
             // ativarToolStripMenuItem
             // 
             this.ativarToolStripMenuItem.Name = "ativarToolStripMenuItem";
-            this.ativarToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.ativarToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
             this.ativarToolStripMenuItem.Text = "&Ativar";
             this.ativarToolStripMenuItem.Click += new System.EventHandler(this.ativarToolStripMenuItem_Click);
             // 
             // desativarToolStripMenuItem
             // 
             this.desativarToolStripMenuItem.Name = "desativarToolStripMenuItem";
-            this.desativarToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.desativarToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
             this.desativarToolStripMenuItem.Text = "&Desativar";
             this.desativarToolStripMenuItem.Click += new System.EventHandler(this.desativarToolStripMenuItem_Click);
             // 
             // testarToolStripMenuItem
             // 
             this.testarToolStripMenuItem.Name = "testarToolStripMenuItem";
-            this.testarToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.testarToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
             this.testarToolStripMenuItem.Text = "&Testar";
             this.testarToolStripMenuItem.Click += new System.EventHandler(this.testarToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(156, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(160, 6);
             // 
             // sobreACBrNETToolStripMenuItem
             // 
             this.sobreACBrNETToolStripMenuItem.Name = "sobreACBrNETToolStripMenuItem";
-            this.sobreACBrNETToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.sobreACBrNETToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
             this.sobreACBrNETToolStripMenuItem.Text = "Sobre ACBr.NET";
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(156, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(160, 6);
             // 
             // sairToolStripMenuItem
             // 
             this.sairToolStripMenuItem.Name = "sairToolStripMenuItem";
-            this.sairToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.sairToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
             this.sairToolStripMenuItem.Text = "&Sair";
             this.sairToolStripMenuItem.Click += new System.EventHandler(this.sairToolStripMenuItem_Click);
             // 
@@ -191,7 +193,7 @@
             this.equipamentoToolStripMenuItem,
             this.lerTodasAsVariáveisToolStripMenuItem});
             this.variáveisToolStripMenuItem.Name = "variáveisToolStripMenuItem";
-            this.variáveisToolStripMenuItem.Size = new System.Drawing.Size(65, 20);
+            this.variáveisToolStripMenuItem.Size = new System.Drawing.Size(62, 20);
             this.variáveisToolStripMenuItem.Text = "Variáveis";
             // 
             // equipamentoToolStripMenuItem
@@ -207,71 +209,78 @@
             this.iEToolStripMenuItem,
             this.pAFToolStripMenuItem});
             this.equipamentoToolStripMenuItem.Name = "equipamentoToolStripMenuItem";
-            this.equipamentoToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
+            this.equipamentoToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
             this.equipamentoToolStripMenuItem.Text = "Equipamento";
             // 
             // estadoToolStripMenuItem
             // 
             this.estadoToolStripMenuItem.Name = "estadoToolStripMenuItem";
-            this.estadoToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            this.estadoToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.estadoToolStripMenuItem.Text = "Estado";
             this.estadoToolStripMenuItem.Click += new System.EventHandler(this.estadoToolStripMenuItem_Click);
             // 
             // dataHoraToolStripMenuItem
             // 
             this.dataHoraToolStripMenuItem.Name = "dataHoraToolStripMenuItem";
-            this.dataHoraToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            this.dataHoraToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.dataHoraToolStripMenuItem.Text = "Data / Hora";
             this.dataHoraToolStripMenuItem.Click += new System.EventHandler(this.dataHoraToolStripMenuItem_Click);
             // 
             // numECFToolStripMenuItem
             // 
             this.numECFToolStripMenuItem.Name = "numECFToolStripMenuItem";
-            this.numECFToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            this.numECFToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.numECFToolStripMenuItem.Text = "Num ECF";
             this.numECFToolStripMenuItem.Click += new System.EventHandler(this.numECFToolStripMenuItem_Click);
             // 
             // numLojaToolStripMenuItem
             // 
             this.numLojaToolStripMenuItem.Name = "numLojaToolStripMenuItem";
-            this.numLojaToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.numLojaToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.numLojaToolStripMenuItem.Text = "Num Loja";
             this.numLojaToolStripMenuItem.Click += new System.EventHandler(this.numLojaToolStripMenuItem_Click);
             // 
             // numSérieToolStripMenuItem
             // 
             this.numSérieToolStripMenuItem.Name = "numSérieToolStripMenuItem";
-            this.numSérieToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.numSérieToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.numSérieToolStripMenuItem.Text = "Num Série";
             this.numSérieToolStripMenuItem.Click += new System.EventHandler(this.numSérieToolStripMenuItem_Click);
             // 
             // numVersãoToolStripMenuItem
             // 
             this.numVersãoToolStripMenuItem.Name = "numVersãoToolStripMenuItem";
-            this.numVersãoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.numVersãoToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.numVersãoToolStripMenuItem.Text = "Num Versão";
             this.numVersãoToolStripMenuItem.Click += new System.EventHandler(this.numVersãoToolStripMenuItem_Click);
             // 
             // cNPJToolStripMenuItem
             // 
             this.cNPJToolStripMenuItem.Name = "cNPJToolStripMenuItem";
-            this.cNPJToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.cNPJToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.cNPJToolStripMenuItem.Text = "CNPJ";
             this.cNPJToolStripMenuItem.Click += new System.EventHandler(this.cNPJToolStripMenuItem_Click);
             // 
             // iEToolStripMenuItem
             // 
             this.iEToolStripMenuItem.Name = "iEToolStripMenuItem";
-            this.iEToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.iEToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.iEToolStripMenuItem.Text = "IE";
             this.iEToolStripMenuItem.Click += new System.EventHandler(this.iEToolStripMenuItem_Click);
             // 
             // pAFToolStripMenuItem
             // 
             this.pAFToolStripMenuItem.Name = "pAFToolStripMenuItem";
-            this.pAFToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.pAFToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.pAFToolStripMenuItem.Text = "PAF";
             this.pAFToolStripMenuItem.Click += new System.EventHandler(this.pAFToolStripMenuItem_Click);
+            // 
+            // lerTodasAsVariáveisToolStripMenuItem
+            // 
+            this.lerTodasAsVariáveisToolStripMenuItem.Name = "lerTodasAsVariáveisToolStripMenuItem";
+            this.lerTodasAsVariáveisToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.lerTodasAsVariáveisToolStripMenuItem.Text = "Ler Todas as Variáveis";
+            this.lerTodasAsVariáveisToolStripMenuItem.Click += new System.EventHandler(this.lerTodasAsVariáveisToolStripMenuItem_Click);
             // 
             // relatóriosToolStripMenuItem
             // 
@@ -279,16 +288,37 @@
             this.leituraXToolStripMenuItem,
             this.reToolStripMenuItem});
             this.relatóriosToolStripMenuItem.Name = "relatóriosToolStripMenuItem";
-            this.relatóriosToolStripMenuItem.Size = new System.Drawing.Size(71, 20);
+            this.relatóriosToolStripMenuItem.Size = new System.Drawing.Size(67, 20);
             this.relatóriosToolStripMenuItem.Text = "Relatórios";
+            // 
+            // leituraXToolStripMenuItem
+            // 
+            this.leituraXToolStripMenuItem.Name = "leituraXToolStripMenuItem";
+            this.leituraXToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.leituraXToolStripMenuItem.Text = "Leitura X";
+            this.leituraXToolStripMenuItem.Click += new System.EventHandler(this.leituraXToolStripMenuItem_Click);
+            // 
+            // reToolStripMenuItem
+            // 
+            this.reToolStripMenuItem.Name = "reToolStripMenuItem";
+            this.reToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.reToolStripMenuItem.Text = "Redução Z";
+            this.reToolStripMenuItem.Click += new System.EventHandler(this.reToolStripMenuItem_Click);
             // 
             // cupomFiscalToolStripMenuItem
             // 
             this.cupomFiscalToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.testaCupomFiscalToolStripMenuItem});
             this.cupomFiscalToolStripMenuItem.Name = "cupomFiscalToolStripMenuItem";
-            this.cupomFiscalToolStripMenuItem.Size = new System.Drawing.Size(91, 20);
+            this.cupomFiscalToolStripMenuItem.Size = new System.Drawing.Size(81, 20);
             this.cupomFiscalToolStripMenuItem.Text = "Cupom Fiscal";
+            // 
+            // testaCupomFiscalToolStripMenuItem
+            // 
+            this.testaCupomFiscalToolStripMenuItem.Name = "testaCupomFiscalToolStripMenuItem";
+            this.testaCupomFiscalToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.testaCupomFiscalToolStripMenuItem.Text = "Testa Cupom Fiscal";
+            this.testaCupomFiscalToolStripMenuItem.Click += new System.EventHandler(this.testaCupomFiscalToolStripMenuItem_Click);
             // 
             // tabControl
             // 
@@ -305,6 +335,8 @@
             // 
             // ecfTabPage
             // 
+            this.ecfTabPage.Controls.Add(this.label1);
+            this.ecfTabPage.Controls.Add(this.velocidadeComboBox);
             this.ecfTabPage.Controls.Add(this.descricaoCheckBox);
             this.ecfTabPage.Controls.Add(this.gavetaCheckBox);
             this.ecfTabPage.Controls.Add(this.intervaloNumericUpDown);
@@ -345,7 +377,7 @@
             // 
             // intervaloNumericUpDown
             // 
-            this.intervaloNumericUpDown.Location = new System.Drawing.Point(389, 29);
+            this.intervaloNumericUpDown.Location = new System.Drawing.Point(378, 30);
             this.intervaloNumericUpDown.Name = "intervaloNumericUpDown";
             this.intervaloNumericUpDown.Size = new System.Drawing.Size(72, 20);
             this.intervaloNumericUpDown.TabIndex = 7;
@@ -358,7 +390,7 @@
             // intervaloLabel
             // 
             this.intervaloLabel.AutoSize = true;
-            this.intervaloLabel.Location = new System.Drawing.Point(386, 13);
+            this.intervaloLabel.Location = new System.Drawing.Point(375, 14);
             this.intervaloLabel.Name = "intervaloLabel";
             this.intervaloLabel.Size = new System.Drawing.Size(51, 13);
             this.intervaloLabel.TabIndex = 6;
@@ -366,9 +398,9 @@
             // 
             // timeOutNumericUpDown
             // 
-            this.timeOutNumericUpDown.Location = new System.Drawing.Point(300, 29);
+            this.timeOutNumericUpDown.Location = new System.Drawing.Point(325, 30);
             this.timeOutNumericUpDown.Name = "timeOutNumericUpDown";
-            this.timeOutNumericUpDown.Size = new System.Drawing.Size(72, 20);
+            this.timeOutNumericUpDown.Size = new System.Drawing.Size(47, 20);
             this.timeOutNumericUpDown.TabIndex = 5;
             this.timeOutNumericUpDown.Value = new decimal(new int[] {
             3,
@@ -380,9 +412,9 @@
             // 
             this.portaComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.portaComboBox.FormattingEnabled = true;
-            this.portaComboBox.Location = new System.Drawing.Point(174, 29);
+            this.portaComboBox.Location = new System.Drawing.Point(163, 29);
             this.portaComboBox.Name = "portaComboBox";
-            this.portaComboBox.Size = new System.Drawing.Size(109, 21);
+            this.portaComboBox.Size = new System.Drawing.Size(67, 21);
             this.portaComboBox.TabIndex = 3;
             // 
             // modeloComboBox
@@ -397,7 +429,7 @@
             // timeOutLabel
             // 
             this.timeOutLabel.AutoSize = true;
-            this.timeOutLabel.Location = new System.Drawing.Point(297, 13);
+            this.timeOutLabel.Location = new System.Drawing.Point(322, 14);
             this.timeOutLabel.Name = "timeOutLabel";
             this.timeOutLabel.Size = new System.Drawing.Size(50, 13);
             this.timeOutLabel.TabIndex = 4;
@@ -406,7 +438,7 @@
             // portaLabel
             // 
             this.portaLabel.AutoSize = true;
-            this.portaLabel.Location = new System.Drawing.Point(171, 13);
+            this.portaLabel.Location = new System.Drawing.Point(160, 13);
             this.portaLabel.Name = "portaLabel";
             this.portaLabel.Size = new System.Drawing.Size(35, 13);
             this.portaLabel.TabIndex = 2;
@@ -432,6 +464,17 @@
             this.cmdTabPage.Text = "Cmd/Resp";
             this.cmdTabPage.UseVisualStyleBackColor = true;
             // 
+            // respListBox
+            // 
+            this.respListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.respListBox.FormattingEnabled = true;
+            this.respListBox.Location = new System.Drawing.Point(6, 6);
+            this.respListBox.Name = "respListBox";
+            this.respListBox.Size = new System.Drawing.Size(493, 212);
+            this.respListBox.TabIndex = 0;
+            // 
             // ativarCheckButton
             // 
             this.ativarCheckButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -446,44 +489,23 @@
             this.ativarCheckButton.UseVisualStyleBackColor = true;
             this.ativarCheckButton.CheckedChanged += new System.EventHandler(this.ativarCheckButton_CheckedChanged);
             // 
-            // respListBox
+            // label1
             // 
-            this.respListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.respListBox.FormattingEnabled = true;
-            this.respListBox.Location = new System.Drawing.Point(6, 6);
-            this.respListBox.Name = "respListBox";
-            this.respListBox.Size = new System.Drawing.Size(493, 212);
-            this.respListBox.TabIndex = 0;
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(233, 14);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.TabIndex = 12;
+            this.label1.Text = "Porta:";
             // 
-            // lerTodasAsVariáveisToolStripMenuItem
+            // velocidadeComboBox
             // 
-            this.lerTodasAsVariáveisToolStripMenuItem.Name = "lerTodasAsVariáveisToolStripMenuItem";
-            this.lerTodasAsVariáveisToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
-            this.lerTodasAsVariáveisToolStripMenuItem.Text = "Ler Todas as Variáveis";
-            this.lerTodasAsVariáveisToolStripMenuItem.Click += new System.EventHandler(this.lerTodasAsVariáveisToolStripMenuItem_Click);
-            // 
-            // testaCupomFiscalToolStripMenuItem
-            // 
-            this.testaCupomFiscalToolStripMenuItem.Name = "testaCupomFiscalToolStripMenuItem";
-            this.testaCupomFiscalToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
-            this.testaCupomFiscalToolStripMenuItem.Text = "Testa Cupom Fiscal";
-            this.testaCupomFiscalToolStripMenuItem.Click += new System.EventHandler(this.testaCupomFiscalToolStripMenuItem_Click);
-            // 
-            // leituraXToolStripMenuItem
-            // 
-            this.leituraXToolStripMenuItem.Name = "leituraXToolStripMenuItem";
-            this.leituraXToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.leituraXToolStripMenuItem.Text = "Leitura X";
-            this.leituraXToolStripMenuItem.Click += new System.EventHandler(this.leituraXToolStripMenuItem_Click);
-            // 
-            // reToolStripMenuItem
-            // 
-            this.reToolStripMenuItem.Name = "reToolStripMenuItem";
-            this.reToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.reToolStripMenuItem.Text = "Redução Z";
-            this.reToolStripMenuItem.Click += new System.EventHandler(this.reToolStripMenuItem_Click);
+            this.velocidadeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.velocidadeComboBox.FormattingEnabled = true;
+            this.velocidadeComboBox.Location = new System.Drawing.Point(236, 29);
+            this.velocidadeComboBox.Name = "velocidadeComboBox";
+            this.velocidadeComboBox.Size = new System.Drawing.Size(83, 21);
+            this.velocidadeComboBox.TabIndex = 11;
             // 
             // MainForm
             // 
@@ -558,6 +580,8 @@
         private System.Windows.Forms.ToolStripMenuItem testaCupomFiscalToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem leituraXToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem reToolStripMenuItem;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ComboBox velocidadeComboBox;
     }
 }
 

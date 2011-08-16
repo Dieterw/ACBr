@@ -691,6 +691,7 @@ TACBrECF = class( TACBrComponent )
        String; Valor : Double) ; overload ;
     Procedure LinhaCupomVinculado( const Linha : AnsiString ) ;
     Procedure SegundaViaVinculado;
+    procedure ReimpressaoVinculado;
     Procedure FechaRelatorio ;
     Procedure PulaLinhas( const NumLinhas : Integer = 0 ) ;
     Procedure CortaPapel( const CorteParcial : Boolean = false) ;
@@ -4270,6 +4271,12 @@ procedure TACBrECF.SegundaViaVinculado;
 begin
   ComandoLOG := 'SegundaViaVinculado()';
   fsECF.SegundaViaVinculado;
+end;
+
+procedure TACBrECF.ReimpressaoVinculado;
+begin
+  ComandoLOG := 'ReimpressaoVinculado()';
+  fsECF.ReimpressaoVinculado;
 end;
 
 procedure TACBrECF.AbreCupomVinculado(COO, CodFormaPagto: String;

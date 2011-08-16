@@ -217,6 +217,7 @@ TACBrECFDaruma = class( TACBrECFClass )
 
     function GetRet244: AnsiString;
     procedure ZeraTotalApagar ;
+    procedure VerificarBmpTexto(var IndiceBMP: Integer; const ATexto: String);
     property Ret244 : AnsiString read GetRet244 ;
     function LimpaChr0(const AString: AnsiString): AnsiString;
     function EnviaComando_ECF_Daruma(cmd: AnsiString): AnsiString;
@@ -330,6 +331,7 @@ TACBrECFDaruma = class( TACBrECFClass )
     Procedure LinhaCupomVinculado( Linha : AnsiString ) ; override ;
     Procedure FechaRelatorio ; override ;
     procedure SegundaViaVinculado; override;
+    procedure ReimpressaoVinculado; override;
 
    //Cheque
     Procedure ImprimeCheque(Banco : String; Valor : Double ; Favorecido,
@@ -817,6 +819,18 @@ begin
   fsEmPagamento := false ;
   fsRet244      := '' ;
 end ;
+
+procedure TACBrECFDaruma.VerificarBmpTexto(var IndiceBMP: Integer;
+  const ATexto: String);
+begin
+  if IndiceBMP > 5 then
+    raise Exception.Create( ACBrStr('Indice do bitmap deve ser um valor entre 1 e 5, ou 0 para nenhum.') );
+
+  // Se possui código de barras e Bitmap no texto remover o bitmap,
+  // porque a Daruma imprime um em cima do outro
+  if TACBrECF(fpOwner).ECF.PossuiTagCodBarra(ATexto) and (IndiceBMP > 0) then
+    IndiceBMP := 0;
+end;
 
 procedure TACBrECFDaruma.Ativar;
 begin
@@ -2062,6 +2076,8 @@ begin
   AguardaImpressao := True ;
   if fpMFD then
   begin
+    VerificarBmpTexto(IndiceBMP, Observacao);
+
     // Verifico se tenho que mandar o indice de alguma imagem ou um código de barras
     // e permitido apenas um BMP ou um Código de barras }
     if (IndiceBMP > 0) and (Not CodBarras.Adicionado) then
@@ -2997,6 +3013,8 @@ begin
   end
   else
   begin
+    VerificarBmpTexto(IndiceBMP, Linha);
+
     if not (fsTipoRel in ['G','V']) then   // Achando o Tipo de Relatorio //
     begin
       RetCmd := RetornaInfoECF('056') ;
@@ -3552,6 +3570,8 @@ var
 begin
   if fpMFD then
   begin
+    VerificarBmpTexto(IndiceBMP, Observacao);
+
     Obs := StringReplace(Observacao, #10, CR+LF, [rfReplaceAll]) ;
     Obs := LeftStr(Obs, 619);
 
@@ -4265,11 +4285,10 @@ procedure TACBrECFDaruma.Sangria(const Valor: Double; Obs: AnsiString;
 var
   CmdBitmap: AnsiString;
 begin
+  VerificarBmpTexto(IndiceBMP, Obs);
+
   if fpMFD then
   begin
-    if IndiceBMP > 5 then
-      raise Exception.Create( ACBrStr('Indice do bitmap deve ser um valor entre 1 e 5, ou 0 para nenhum.') );
-
     if IndiceBMP > 0 then
       CmdBitmap := ESC + 'B' + IntToStr(IndiceBMP)
     else
@@ -4288,11 +4307,10 @@ procedure TACBrECFDaruma.Suprimento(const Valor: Double; Obs: AnsiString;
 var
   CmdBitmap: AnsiString;
 begin
+  VerificarBmpTexto(IndiceBMP, Obs);
+
   if fpMFD then
   begin
-    if IndiceBMP > 5 then
-      raise Exception.Create( ACBrStr('Indice do bitmap deve ser um valor entre 1 e 5, ou 0 para nenhum.') );
-
     if IndiceBMP > 0 then
       CmdBitmap := ESC + 'B' + IntToStr(IndiceBMP)
     else
@@ -4309,6 +4327,8 @@ end;
 procedure TACBrECFDaruma.NaoFiscalCompleto(CodCNF: String; Valor: Double;
   CodFormaPagto: String; Obs: AnsiString; IndiceBMP : Integer);
 begin
+  VerificarBmpTexto(IndiceBMP, Obs);
+
   { Chama rotinas da classe Pai (fpOwner) para atualizar os Memos }
   with TACBrECF(fpOwner) do
   begin
@@ -5105,6 +5125,11 @@ end;
 procedure TACBrECFDaruma.SegundaViaVinculado;
 begin
   EnviaComando( FS + 'F' + #216);
+end;
+
+procedure TACBrECFDaruma.ReimpressaoVinculado;
+begin
+  EnviaComando( FS + 'F' + #217);
 end;
 
 function TACBrECFDaruma.TraduzirTag(const ATag: string): AnsiString;

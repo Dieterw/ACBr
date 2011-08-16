@@ -97,6 +97,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 16/08/2011
+-- ACBrECFDaruma --
+[+] Adicionado a reimpressão do vinculado
+[-] Corrigida a sobreposição do BMP promocional quando existe código de barras.
+    (por: Régys Silveira)
+
 Data: 05/08/2011
 -- ACBrECFDaruma --
 [+] Implementado recurso para que os dados da ultima redução Z, alimente a 

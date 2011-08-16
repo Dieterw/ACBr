@@ -954,6 +954,7 @@ TACBrECFClass = class
     Procedure LinhaCupomVinculado( Linha : AnsiString ) ; virtual ;
 
     Procedure SegundaViaVinculado; virtual;
+    procedure ReimpressaoVinculado; virtual;
 
     Procedure FechaRelatorio ; virtual ;
     Procedure PulaLinhas( NumLinhas : Integer = 0 ) ; virtual ;
@@ -1032,6 +1033,7 @@ TACBrECFClass = class
       const AAlinhamento: TACBrAlinhamento = alCentro); virtual;
 
     function TraduzirTag(const ATag: String): AnsiString; virtual;
+    function PossuiTagCodBarra(const ATexto: String): Boolean; virtual;
     function CodificarPaginaDeCodigoECF(ATexto: String): AnsiString; virtual;
     function DecodificarPaginaDeCodigoECF(ATexto: AnsiString): String; virtual;
     function MontaDadosReducaoZ: AnsiString; virtual;
@@ -3296,6 +3298,11 @@ begin
   ErroAbstract('SegundaViaVinculado');
 end;
 
+procedure TACBrECFClass.ReimpressaoVinculado;
+begin
+  ErroAbstract('ReimpressãoVinculado');
+end;
+
 procedure TACBrECFClass.ListaCupomVinculado( Relatorio: TStrings;
   Vias: Integer);
 Var
@@ -3860,6 +3867,18 @@ begin
   ErroAbstract('ProgramarBitmapPromocional');
 end;
 
+function TACBrECFClass.PossuiTagCodBarra(const ATexto: String): Boolean;
+var
+  I: Integer;
+begin
+  for I := 12 to High(ARRAY_TAGS) do
+  begin
+    Result := pos(ARRAY_TAGS[I], ATexto) > 0;
+    if Result then
+      Exit;
+  end;
+end;
+
 function TACBrECFClass.TraduzirTag(const ATag: String): AnsiString;
 begin
   {*************************************************
@@ -3872,6 +3891,7 @@ begin
       <n></n>             - Negrito
       <s></s>             - Sublinhado
       <c></c>             - Condensado
+      <i></i>             - Itálico
 
       <ean8></ean8>       - ean 8
       <ean13></ean13>     - ean 13

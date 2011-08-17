@@ -38,6 +38,7 @@ type
     Label11: TLabel;
     Label12: TLabel;
     Label13: TLabel;
+    ckInmetro: TCheckBox;
     procedure edQtdKeyPress(Sender: TObject; var Key: Char);
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
@@ -74,11 +75,15 @@ begin
      Desc := '$' ;
 
   try
+     if ckInmetro.Checked then
+        Form1.ACBrECF1.LegendaInmetroProximoItem;
+
      Form1.ACBrECF1.VendeItem( edCodigo.Text, edDescricao.Text,
                                edICMS.Text, StrToFloatDef( edQtd.Text, 0 ),
                                StrToFloatDef( edPrecoUnita.Text,0 ),
                                StrToFloatDef( edDesconto.Text,0 ), edUN.Text,
                                Desc );
+
      Form1.mResp.Lines.Add( 'Vende Item: Cod:'+ edCodigo.Text+
                             ' Desc'+ edDescricao.Text+
                             ' Aliq:'+edICMS.Text +

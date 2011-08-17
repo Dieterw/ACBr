@@ -142,13 +142,11 @@ inherited frmMenuFiscal: TfrmMenuFiscal
       Top = 346
       Width = 465
       Height = 68
-      ActivePage = tbsMenuFiscalTipoCOO
+      ActivePage = tbsMenuFiscalTipoData
       Align = alBottom
       TabOrder = 1
-      ExplicitTop = 298
-      ExplicitWidth = 326
       object tbsMenuFiscalTipoData: TTabSheet
-        Caption = 'Po data'
+        Caption = 'Por data'
         ExplicitLeft = 0
         ExplicitTop = 0
         ExplicitWidth = 0

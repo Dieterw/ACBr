@@ -22,9 +22,9 @@ inherited frmMenuFiscal: TfrmMenuFiscal
       ExplicitTop = 0
       ExplicitHeight = 345
       object Label31: TLabel
-        Left = 59
-        Top = 280
-        Width = 348
+        Left = 64
+        Top = 275
+        Width = 327
         Height = 26
         AutoSize = False
         Caption = 
@@ -40,8 +40,8 @@ inherited frmMenuFiscal: TfrmMenuFiscal
         WordWrap = True
       end
       object btnMenuFiscalLX: TButton
-        Left = 59
-        Top = 55
+        Left = 44
+        Top = 45
         Width = 171
         Height = 25
         Caption = 'LX'
@@ -49,8 +49,8 @@ inherited frmMenuFiscal: TfrmMenuFiscal
         OnClick = btnMenuFiscalLXClick
       end
       object btnMenuFiscalLMFC: TButton
-        Left = 59
-        Top = 86
+        Left = 44
+        Top = 76
         Width = 171
         Height = 25
         Caption = 'LMFC'
@@ -58,8 +58,8 @@ inherited frmMenuFiscal: TfrmMenuFiscal
         OnClick = btnMenuFiscalLMFCClick
       end
       object btnMenuFiscalLMFS: TButton
-        Left = 59
-        Top = 117
+        Left = 44
+        Top = 107
         Width = 171
         Height = 25
         Caption = 'LMFS'
@@ -67,8 +67,8 @@ inherited frmMenuFiscal: TfrmMenuFiscal
         OnClick = btnMenuFiscalLMFSClick
       end
       object btnMenuFiscalMFDEspelho: TButton
-        Left = 59
-        Top = 148
+        Left = 44
+        Top = 138
         Width = 171
         Height = 25
         Caption = 'Espelho MFD'
@@ -76,8 +76,8 @@ inherited frmMenuFiscal: TfrmMenuFiscal
         OnClick = btnMenuFiscalMFDEspelhoClick
       end
       object btnMenuFiscalMFDArq: TButton
-        Left = 236
-        Top = 55
+        Left = 251
+        Top = 45
         Width = 171
         Height = 25
         Caption = 'Arq. MFD'
@@ -85,8 +85,8 @@ inherited frmMenuFiscal: TfrmMenuFiscal
         OnClick = btnMenuFiscalMFDArqClick
       end
       object btnMenuFiscalRelMeiosPagto: TButton
-        Left = 236
-        Top = 86
+        Left = 251
+        Top = 76
         Width = 171
         Height = 25
         Caption = 'Meios Pagto.'
@@ -94,8 +94,8 @@ inherited frmMenuFiscal: TfrmMenuFiscal
         OnClick = btnMenuFiscalRelMeiosPagtoClick
       end
       object btnMenuFiscalRelDAVEmitidos: TButton
-        Left = 236
-        Top = 117
+        Left = 251
+        Top = 107
         Width = 171
         Height = 25
         Caption = 'DAV Emitidos'
@@ -103,8 +103,8 @@ inherited frmMenuFiscal: TfrmMenuFiscal
         OnClick = btnMenuFiscalRelDAVEmitidosClick
       end
       object btnMenuFiscalRelIdentPAFECF: TButton
-        Left = 236
-        Top = 148
+        Left = 251
+        Top = 138
         Width = 171
         Height = 25
         Caption = 'Identifica'#231#227'o PAF-ECF'

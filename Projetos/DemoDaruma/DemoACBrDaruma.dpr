@@ -16,7 +16,8 @@ uses
   uCupomFiscalCancelParcial in 'uCupomFiscalCancelParcial.pas' {frmCupomFiscalCancelParcial},
   uCupomFiscalDescAcresAnterior in 'uCupomFiscalDescAcresAnterior.pas' {frmCupomFiscalDescAcresAnterior},
   uRelatorioGerencialFormatado in 'uRelatorioGerencialFormatado.pas' {frmRelatorioGerencialFormatado},
-  uLeituraXArquivo in 'uLeituraXArquivo.pas' {frmLeituraXArquivo};
+  uLeituraXArquivo in 'uLeituraXArquivo.pas' {frmLeituraXArquivo},
+  uMenuFiscal in 'uMenuFiscal.pas' {frmMenuFiscal};
 
 {$R *.res}
 

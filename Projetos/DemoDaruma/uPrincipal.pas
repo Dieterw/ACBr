@@ -67,6 +67,7 @@ type
     procedure ACBrECF1AntesAbreCupom(const CPF_CNPJ, Nome, Endereco: string);
     procedure Gerencialcomformatao1Click(Sender: TObject);
     procedure LeituraXparaarquivo1Click(Sender: TObject);
+    procedure MenuFiscal1Click(Sender: TObject);
   private
     FBobinaCupom: TStringList;
     function GetIniFileName: String;
@@ -94,7 +95,7 @@ uses
   IniFiles, uGeracaoArquivos, uIdentificacaoPafECF, uProgramarBitmap,
   uSuprimento, uSangria, uRelatorioGerencial, uComprNaoFiscalCompleto,
   uComprNaoFiscal, uCupomFiscal, uRelatorioGerencialFormatado,
-  uLeituraXArquivo, uBasicoModal;
+  uLeituraXArquivo, uBasicoModal, uMenuFiscal;
 
 procedure TfrmPrincipal.AtivarMenus(const ALigar: Boolean);
 var
@@ -271,6 +272,11 @@ begin
   begin
     ACBrECF1.ReducaoZ(Now);
   end;
+end;
+
+procedure TfrmPrincipal.MenuFiscal1Click(Sender: TObject);
+begin
+  AbrirFormularioModal(TfrmMenuFiscal);
 end;
 
 procedure TfrmPrincipal.RelatrioGerencial1Click(Sender: TObject);

@@ -953,6 +953,7 @@ object frmPrincipal: TfrmPrincipal
     MsgTrabalhando = 'Impressora est'#225' trabalhando'
     MsgRelatorio = 'Imprimindo %s  %d'#170' Via '
     MsgPausaRelatorio = 'Destaque a %d'#170' via, <ENTER> proxima, %d seg.'
+    PaginaDeCodigo = 28591
     FormMsgFonte.Charset = DEFAULT_CHARSET
     FormMsgFonte.Color = clWindowText
     FormMsgFonte.Height = -11
@@ -1023,6 +1024,7 @@ object frmPrincipal: TfrmPrincipal
     end
     object MenuFiscal1: TMenuItem
       Caption = 'Menu Fiscal'
+      OnClick = MenuFiscal1Click
     end
     object RelatriosGerais1: TMenuItem
       Caption = 'Relat'#243'rios'

@@ -47,6 +47,9 @@ namespace ACBr.Net.ECFTeste
             portaComboBox.Items.Add("COM4");
             portaComboBox.Items.Add("COM5");
             portaComboBox.Items.Add("COM6");
+            portaComboBox.Items.Add("COM7");
+            portaComboBox.Items.Add("COM8");
+            portaComboBox.Items.Add("COM9");
             portaComboBox.Items.Add("LPT1");
             portaComboBox.Items.Add("LPT2");
             portaComboBox.Items.Add("LPT3");
@@ -67,7 +70,7 @@ namespace ACBr.Net.ECFTeste
             {
                 acbrECF.Modelo = (ModeloECF)modeloComboBox.SelectedItem;
                 acbrECF.Porta = (string)portaComboBox.SelectedItem;
-                acbrECF.Velocidade = (int)velocidadeComboBox.SelectedIndex;
+                acbrECF.Velocidade = Convert.ToInt32(velocidadeComboBox.SelectedItem);
                 acbrECF.TimeOut = (int)timeOutNumericUpDown.Value;
 
                 acbrECF.GavetaSinalInvertido = gavetaCheckBox.Checked;

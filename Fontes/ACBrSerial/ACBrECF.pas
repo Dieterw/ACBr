@@ -443,6 +443,8 @@ TACBrECF = class( TACBrComponent )
     procedure SetAbout(const AValue: String);
     function GetParamDescontoISSQNClass: Boolean;
     function GetMFAdicional: String;
+    function GetInfoRodapeCupom: TACBrECFRodape;
+    procedure SetInfoRodapeCupom(const Value: TACBrECFRodape);
   protected
     fpUltimoEstadoObtido: TACBrECFEstado;
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
@@ -1044,6 +1046,8 @@ TACBrECF = class( TACBrComponent )
      property EAD    : TACBrEAD    read fsEAD     write SetEAD ;
      property ArqLOG : String      read GetArqLOG write SetArqLOG ;
      property ConfigBarras: TACBrECFConfigBarras read fsConfigBarras write fsConfigBarras;
+
+     property InfoRodapeCupom: TACBrECFRodape read GetInfoRodapeCupom write SetInfoRodapeCupom;
 end ;
 
 implementation
@@ -1399,9 +1403,19 @@ begin
    fsDevice.TimeOut := AValue ;
 end;
 
+function TACBrECF.GetInfoRodapeCupom: TACBrECFRodape;
+begin
+  Result := fsECF.InfoRodapeCupom;
+end;
+
 function TACBrECF.GetIntervaloAposComando: Integer;
 begin
   Result := fsECF.IntervaloAposComando ;
+end;
+
+procedure TACBrECF.SetInfoRodapeCupom(const Value: TACBrECFRodape);
+begin
+  fsECF.InfoRodapeCupom := Value;
 end;
 
 procedure TACBrECF.SetIntervaloAposComando(const AValue: Integer);
@@ -2888,6 +2902,7 @@ end;
 procedure TACBrECF.FechaCupom(Observacao: AnsiString; IndiceBMP : Integer);
 var
   Tratado : Boolean;
+  RodapePafECF: String;
 begin
   if (Observacao = '') then
      Observacao := fsMensagemRodape ;
@@ -2907,6 +2922,41 @@ begin
   { Tirando os Acentos e trocando todos os #13+#10 por #10 }
   Observacao := TiraAcentos( StringReplace(Observacao,CR+LF,#10,[rfReplaceAll]) );
   Observacao := StringReplace(Observacao,'|',#10,[rfReplaceAll]) ;
+
+  { montar o rodape quando as informações de rodapé forem passadas }
+  RodapePafECF := EmptyStr;
+  // atende ao requisito do paf-ECF
+  if Trim(InfoRodapeCupom.MD5) <> EmptyStr then
+    RodapePafECF := RodapePafECF + #10 + 'MD5:' + Trim(InfoRodapeCupom.MD5);
+
+  // atende ao requisito do paf-ECF VI item 5
+  if Trim(InfoRodapeCupom.Dav) <> EmptyStr then
+    RodapePafECF := RodapePafECF + #10 + 'DAV' + Trim(InfoRodapeCupom.Dav);
+
+  // atende ao requisito do paf-ECF V item 2
+  if Trim(InfoRodapeCupom.PreVenda) <> EmptyStr then
+    RodapePafECF := RodapePafECF + #10 + 'PV' + Trim(InfoRodapeCupom.PreVenda);
+
+  // atende ao requisito do paf-ECF XLI item 1
+  if Trim(InfoRodapeCupom.DavOs) <> EmptyStr then
+    RodapePafECF := RodapePafECF + #10 + 'DAV-OS' + Trim(InfoRodapeCupom.DavOs);
+
+  // atende ao cupom mania do RJ
+  if Trim(InfoRodapeCupom.CupomMania) <> EmptyStr then
+    RodapePafECF := RodapePafECF + #10 + Trim(InfoRodapeCupom.CupomMania);
+
+  if InfoRodapeCupom.MinasLegal then
+  begin
+    // atende ao requisito do paf-ecf VIII-A itens 1,2 e 3
+    RodapePafECF := RodapePafECF + #10 + 'MINAS LEGAL: ' +
+      Copy(RemoveStrings(CNPJ, ['.', '/', '-']), 1, 8) + // 8 primeiros digitos do cnpj
+      FormatDateTime('ddmmyyyy', Date) + // data atual
+      IntToStr(Trunc(Subtotal)); // Valor total sem casas decimais
+  end;
+
+  RodapePafECF := Trim(RodapePafECF);
+  if RodapePafECF <> EmptyStr then
+    Observacao := RodapePafECF + #10 + Observacao;
 
   ComandoLOG := 'FechaCupom( '+Observacao+' )' ;
 
@@ -2943,6 +2993,7 @@ begin
   fsMensagemRodape := '' ;
   Consumidor.Zera ;
   CodigodeBarras.Zera ;
+  InfoRodapeCupom.Clear;
 
 end;
 
@@ -5481,7 +5532,6 @@ procedure TACBrECF.PafMF_RelIdentificacaoPafECF(
 var
   Relatorio: TStringList;
   I: Integer;
-  TamLin: Integer;
 begin
   if (not Assigned(IdentificacaoPaf)) then
   begin
@@ -5493,8 +5543,6 @@ begin
 
   Relatorio := TStringList.Create;
   try
-    TamLin := ECF.Colunas;
-
     Relatorio.Clear;
     Relatorio.Add('');
 

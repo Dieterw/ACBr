@@ -1193,7 +1193,18 @@ begin
                   'Digite o Indice do BMP que deseja utilizar' ,
                    IndiceBMP ) then
         Exit;
-        
+
+     // informações que devem ir no rodapé do cupom obrigatoriamente
+     // conforme a legislação do paf-ecf
+     // preencha somente as informações que for utilizar, o que não foi informado
+     // não será impresso
+     ACBrECF1.InfoRodapeCupom.MD5 := '12345678901234567890123456789012';
+     ACBrECF1.InfoRodapeCupom.Dav := '0000000001';
+     ACBrECF1.InfoRodapeCupom.DavOs := '0000000002';
+     ACBrECF1.InfoRodapeCupom.PreVenda := '0000000003';
+     ACBrECF1.InfoRodapeCupom.CupomMania := 'Total ICMS: R$1,23 VÁLIDO PARA O CUPOM MANIA';
+     ACBrECF1.InfoRodapeCupom.MinasLegal := True;
+
      Obs := StringReplace(Obs,'|',#10,[rfReplaceAll,rfIgnoreCase]) ;
      ACBrECF1.FechaCupom( Obs, StrToIntDef(IndiceBMP, 0) );
      mResp.Lines.Add( 'Fecha Cupom: '+#10+Obs );

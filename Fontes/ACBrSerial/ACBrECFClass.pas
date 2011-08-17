@@ -92,6 +92,27 @@ EACBrECFSemResposta     = class(EACBrECFErro) ;
 EACBrECFNaoInicializado = class(EACBrECFErro) ;
 EACBrECFOcupado         = class(EACBrECFErro) ;
 
+{ Definindo novo tipo para armazenar os dados que irão compor o rodapé }
+TACBrECFRodape = class
+  private
+    fsPreVenda: String;
+    fsDavOs: String;
+    fsMD5: String;
+    fsDav: String;
+    fsMinasLegal: Boolean;
+    fsCupomMania: String;
+  public
+    constructor Create;
+    procedure Clear;
+  published
+    property MD5        : String read fsMD5      write fsMD5;
+    property Dav        : String read fsDav      write fsDav;
+    property DavOs      : String read fsDavOs    write fsDavOs;
+    property PreVenda   : String read fsPreVenda write fsPreVenda;
+    property CupomMania : String read fsCupomMania write fsCupomMania;
+    property MinasLegal : Boolean read fsMinasLegal write fsMinasLegal;
+end;
+
 { Definindo novo tipo para armazenar Aliquota de ICMS }
 TACBrECFAliquota = class
  private
@@ -497,6 +518,7 @@ TACBrECFClass = class
     fsIndiceRG  : Integer;
 
     fsPathDLL: string;
+    fpInfoRodapeCupom: TACBrECFRodape;
 
     procedure SetAtivo(const Value: Boolean);
     procedure SetTimeOut(const Value: Integer);
@@ -734,6 +756,8 @@ TACBrECFClass = class
                                       write fsDescricaoGrande ;
 
     property PaginaDeCodigo : Word read fpPaginaDeCodigo write fpPaginaDeCodigo ;
+
+    property InfoRodapeCupom: TACBrECFRodape read fpInfoRodapeCupom write fpInfoRodapeCupom;
 
     { Proriedades ReadOnly }
     Property Colunas  : Integer read fpColunas  ;
@@ -1423,6 +1447,8 @@ begin
 
   fpCodBarras   :=  TACBrECFCodBarras.create;
 
+  fpInfoRodapeCupom := TACBrECFRodape.Create;
+
   {$IFNDEF CONSOLE}
     fsFormMsg                   := nil ;
     fsFormMsgProcedureAExecutar := nil ;
@@ -1457,6 +1483,8 @@ begin
   fpConsumidor.Free ;
 
   fpCodBarras.Free ;
+
+  fpInfoRodapeCupom.Free ;
 
   {$IFNDEF CONSOLE}
     if Assigned( fsFormMsg ) then
@@ -4001,6 +4029,23 @@ begin
    fsISSQN.Free;
 
    inherited Destroy ;
+end;
+
+{ TACBrECFRodape }
+
+constructor TACBrECFRodape.Create;
+begin
+  Self.Clear;
+end;
+
+procedure TACBrECFRodape.Clear;
+begin
+  fsMD5        := EmptyStr;
+  fsDav        := EmptyStr;
+  fsDavOs      := EmptyStr;
+  fsPreVenda   := EmptyStr;
+  fsCupomMania := EmptyStr;
+  fsMinasLegal := False;
 end;
 
 end.

@@ -97,6 +97,15 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 17/08/2011
+-- ACBrECF --
+[+] Adicionada propriedade no ACBrECF que permite montar o rodapé do cupom 
+    fiscal conforme a legislação do Paf-ECF, ver no DemoECF como proceder
+    Obs.: O MD5 informado ficou a cargo da aplicação para que o usuário 
+          tenha a liberdade de preenche-lo como quiser.
+    (por: Régys Silveira)
+
+
 Data: 16/08/2011
 -- ACBrECFDaruma --
 [+] Adicionado a reimpressão do vinculado

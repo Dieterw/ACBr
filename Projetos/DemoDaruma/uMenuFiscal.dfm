@@ -14,17 +14,18 @@ inherited frmMenuFiscal: TfrmMenuFiscal
       Left = 1
       Top = 1
       Width = 465
-      Height = 345
+      Height = 329
       Align = alClient
       Caption = 'Op'#231#245'es do Menu fiscal'
       TabOrder = 0
       ExplicitLeft = -2
       ExplicitTop = 0
+      ExplicitHeight = 345
       object Label31: TLabel
         Left = 59
-        Top = 270
-        Width = 292
-        Height = 41
+        Top = 280
+        Width = 348
+        Height = 26
         AutoSize = False
         Caption = 
           'Para a gera'#231#227'o de arquivos que n'#227'o dependem da impressora fiscal' +
@@ -40,7 +41,7 @@ inherited frmMenuFiscal: TfrmMenuFiscal
       end
       object btnMenuFiscalLX: TButton
         Left = 59
-        Top = 45
+        Top = 55
         Width = 171
         Height = 25
         Caption = 'LX'
@@ -49,7 +50,7 @@ inherited frmMenuFiscal: TfrmMenuFiscal
       end
       object btnMenuFiscalLMFC: TButton
         Left = 59
-        Top = 76
+        Top = 86
         Width = 171
         Height = 25
         Caption = 'LMFC'
@@ -58,7 +59,7 @@ inherited frmMenuFiscal: TfrmMenuFiscal
       end
       object btnMenuFiscalLMFS: TButton
         Left = 59
-        Top = 107
+        Top = 117
         Width = 171
         Height = 25
         Caption = 'LMFS'
@@ -67,7 +68,7 @@ inherited frmMenuFiscal: TfrmMenuFiscal
       end
       object btnMenuFiscalMFDEspelho: TButton
         Left = 59
-        Top = 138
+        Top = 148
         Width = 171
         Height = 25
         Caption = 'Espelho MFD'
@@ -76,7 +77,7 @@ inherited frmMenuFiscal: TfrmMenuFiscal
       end
       object btnMenuFiscalMFDArq: TButton
         Left = 236
-        Top = 45
+        Top = 55
         Width = 171
         Height = 25
         Caption = 'Arq. MFD'
@@ -85,7 +86,7 @@ inherited frmMenuFiscal: TfrmMenuFiscal
       end
       object btnMenuFiscalRelMeiosPagto: TButton
         Left = 236
-        Top = 76
+        Top = 86
         Width = 171
         Height = 25
         Caption = 'Meios Pagto.'
@@ -94,7 +95,7 @@ inherited frmMenuFiscal: TfrmMenuFiscal
       end
       object btnMenuFiscalRelDAVEmitidos: TButton
         Left = 236
-        Top = 107
+        Top = 117
         Width = 171
         Height = 25
         Caption = 'DAV Emitidos'
@@ -103,7 +104,7 @@ inherited frmMenuFiscal: TfrmMenuFiscal
       end
       object btnMenuFiscalRelIdentPAFECF: TButton
         Left = 236
-        Top = 138
+        Top = 148
         Width = 171
         Height = 25
         Caption = 'Identifica'#231#227'o PAF-ECF'
@@ -139,9 +140,9 @@ inherited frmMenuFiscal: TfrmMenuFiscal
     end
     object pgcMenuFiscalTipo: TPageControl
       Left = 1
-      Top = 346
+      Top = 330
       Width = 465
-      Height = 68
+      Height = 84
       ActivePage = tbsMenuFiscalTipoData
       Align = alBottom
       TabOrder = 1
@@ -153,7 +154,7 @@ inherited frmMenuFiscal: TfrmMenuFiscal
         ExplicitHeight = 0
         object Label24: TLabel
           Left = 15
-          Top = 15
+          Top = 20
           Width = 19
           Height = 13
           Alignment = taRightJustify
@@ -161,14 +162,14 @@ inherited frmMenuFiscal: TfrmMenuFiscal
         end
         object Label25: TLabel
           Left = 142
-          Top = 15
+          Top = 20
           Width = 16
           Height = 13
           Caption = 'at'#233
         end
         object edtDtInicial: TDateTimePicker
           Left = 40
-          Top = 10
+          Top = 15
           Width = 96
           Height = 21
           Date = 40620.448168067130000000
@@ -177,7 +178,7 @@ inherited frmMenuFiscal: TfrmMenuFiscal
         end
         object edtDtFinal: TDateTimePicker
           Left = 163
-          Top = 10
+          Top = 15
           Width = 96
           Height = 21
           Date = 40620.448168067130000000
@@ -191,9 +192,10 @@ inherited frmMenuFiscal: TfrmMenuFiscal
         ExplicitLeft = 0
         ExplicitTop = 23
         ExplicitWidth = 318
+        ExplicitHeight = 40
         object Label26: TLabel
           Left = 15
-          Top = 15
+          Top = 20
           Width = 19
           Height = 13
           Alignment = taRightJustify
@@ -201,14 +203,14 @@ inherited frmMenuFiscal: TfrmMenuFiscal
         end
         object Label30: TLabel
           Left = 142
-          Top = 15
+          Top = 20
           Width = 16
           Height = 13
           Caption = 'at'#233
         end
         object edtNumInicial: TSpinEdit
           Left = 40
-          Top = 10
+          Top = 15
           Width = 96
           Height = 22
           MaxValue = 0
@@ -218,7 +220,7 @@ inherited frmMenuFiscal: TfrmMenuFiscal
         end
         object edtNumFinal: TSpinEdit
           Left = 163
-          Top = 10
+          Top = 15
           Width = 96
           Height = 22
           MaxValue = 0
@@ -244,7 +246,7 @@ inherited frmMenuFiscal: TfrmMenuFiscal
     Filter = 'Arquivos texto|*.txt'
     Options = [ofHideReadOnly, ofNoChangeDir, ofEnableSizing]
     Title = 'Salvar arquivo texto'
-    Left = 365
-    Top = 285
+    Left = 380
+    Top = 205
   end
 end

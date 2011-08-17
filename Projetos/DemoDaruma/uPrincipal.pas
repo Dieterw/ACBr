@@ -1,0 +1,327 @@
+unit uPrincipal;
+
+interface
+
+uses
+  ACBrDevice, Synaser, ACBrECFDaruma,
+
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ACBrBase, ACBrECF, StdCtrls, ComCtrls, ExtCtrls, Spin, jpeg, Menus,
+  ACBrECFClass;
+
+type
+  TfrmPrincipal = class(TForm)
+    ACBrECF1: TACBrECF;
+    StatusBar1: TStatusBar;
+    Image1: TImage;
+    MainMenu1: TMainMenu;
+    Relatrios1: TMenuItem;
+    LeituraX1: TMenuItem;
+    ReduoZ1: TMenuItem;
+    Arquivos1: TMenuItem;
+    Geraodearquivos1: TMenuItem;
+    GroupBox1: TGroupBox;
+    Label3: TLabel;
+    Label1: TLabel;
+    cbxVelocidade: TComboBox;
+    cbxPortaComunicacao: TComboBox;
+    btnAtivarDesativar: TButton;
+    N1: TMenuItem;
+    IdentificaodoPafECF1: TMenuItem;
+    Image2: TImage;
+    ProgramarBitmap1: TMenuItem;
+    Programao1: TMenuItem;
+    Sangria1: TMenuItem;
+    Suprimento1: TMenuItem;
+    RelatriosGerais1: TMenuItem;
+    RelatrioGerencial1: TMenuItem;
+    Gerais1: TMenuItem;
+    CupomFiscal1: TMenuItem;
+    ComprNoFiscal1: TMenuItem;
+    Completo1: TMenuItem;
+    Normal1: TMenuItem;
+    CupomFiscal2: TMenuItem;
+    Gerencialcomformatao1: TMenuItem;
+    LeituraXparaarquivo1: TMenuItem;
+    Label2: TLabel;
+    MenuFiscal1: TMenuItem;
+    procedure btnAtivarDesativarClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure cbxPortaComunicacaoChange(Sender: TObject);
+    procedure ACBrECF1ChangeEstado(const EstadoAnterior,
+      EstadoAtual: TACBrECFEstado);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure cbxVelocidadeChange(Sender: TObject);
+    procedure LeituraX1Click(Sender: TObject);
+    procedure ReduoZ1Click(Sender: TObject);
+    procedure IdentificaodoPafECF1Click(Sender: TObject);
+    procedure Geraodearquivos1Click(Sender: TObject);
+    procedure ProgramarBitmap1Click(Sender: TObject);
+    procedure Sangria1Click(Sender: TObject);
+    procedure Suprimento1Click(Sender: TObject);
+    procedure RelatrioGerencial1Click(Sender: TObject);
+    procedure Completo1Click(Sender: TObject);
+    procedure Normal1Click(Sender: TObject);
+    procedure CupomFiscal2Click(Sender: TObject);
+    procedure ACBrECF1BobinaAdicionaLinhas(const Linhas, Operacao: string);
+    procedure ACBrECF1AntesAbreCupom(const CPF_CNPJ, Nome, Endereco: string);
+    procedure Gerencialcomformatao1Click(Sender: TObject);
+    procedure LeituraXparaarquivo1Click(Sender: TObject);
+  private
+    FBobinaCupom: TStringList;
+    function GetIniFileName: String;
+    function LerIni(const ASessao, AIdentif: String): String;
+    procedure GravarIni(const ASessao, AIdentif, AValor: String);
+    procedure AtivarMenus(const ALigar: Boolean);
+  public
+    function GetDirApp: String;
+    function GetDirArquivos: String;
+    function AbrirFormularioModal(AFormulario: TFormClass): TModalResult;
+
+    property BobinaCupom: TStringList read FBobinaCupom write FBobinaCupom;
+  end;
+
+var
+  frmPrincipal: TfrmPrincipal;
+
+implementation
+
+{$R *.dfm}
+
+uses
+  ACBrPAFClass, ACBrUtil, Math, StrUtils,
+
+  IniFiles, uGeracaoArquivos, uIdentificacaoPafECF, uProgramarBitmap,
+  uSuprimento, uSangria, uRelatorioGerencial, uComprNaoFiscalCompleto,
+  uComprNaoFiscal, uCupomFiscal, uRelatorioGerencialFormatado,
+  uLeituraXArquivo, uBasicoModal;
+
+procedure TfrmPrincipal.AtivarMenus(const ALigar: Boolean);
+var
+  I: Integer;
+begin
+  for I := 0 to MainMenu1.Items.Count - 1 do
+    MainMenu1.Items[I].Enabled := ALigar;
+end;
+
+function TfrmPrincipal.AbrirFormularioModal(AFormulario: TFormClass): TModalResult;
+var
+  Form: TForm;
+begin
+  Form := AFormulario.Create(Self);
+  try
+    Result := Form.ShowModal;
+  finally
+    FreeAndNil(Form);
+  end;
+end;
+
+function TfrmPrincipal.GetDirApp: String;
+begin
+  Result := IncludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0)));
+end;
+
+function TfrmPrincipal.GetIniFileName: String;
+begin
+  Result := GetDirApp + 'config.ini';
+end;
+
+function TfrmPrincipal.GetDirArquivos: String;
+begin
+  Result := IncludeTrailingPathDelimiter(GetDirApp + 'arquivos');
+end;
+
+function TfrmPrincipal.LerIni(const ASessao, AIdentif: String): String;
+var
+  IniFile: TIniFile;
+begin
+  IniFile := TIniFile.Create(GetIniFileName);
+  try
+    Result := IniFile.ReadString(ASessao, AIdentif, '');
+  finally
+    IniFile.Free;
+  end;
+end;
+
+procedure TfrmPrincipal.GravarIni(const ASessao, AIdentif, AValor: String);
+var
+  IniFile: TIniFile;
+begin
+  IniFile := TIniFile.Create(GetIniFileName);
+  try
+    IniFile.WriteString(ASessao, AIdentif, AValor);
+  finally
+    IniFile.Free;
+  end;
+end;
+
+//******************************************************************************
+
+procedure TfrmPrincipal.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  FBobinaCupom.Free;
+  ACBrECF1.Desativar;
+end;
+
+procedure TfrmPrincipal.FormCreate(Sender: TObject);
+begin
+  FBobinaCupom := TStringList.Create;
+
+  ForceDirectories(GetDirArquivos);
+
+  // Configurações do ECF
+  cbxPortaComunicacao.Text := LerIni('CONFIG', 'Porta');
+  cbxVelocidade.Text       := LerIni('CONFIG', 'Velocidade');
+
+  AtivarMenus(False);
+end;
+
+//******************************************************************************
+
+procedure TfrmPrincipal.cbxPortaComunicacaoChange(Sender: TObject);
+begin
+  GravarIni('CONFIG', 'Porta', cbxPortaComunicacao.Text);
+end;
+
+procedure TfrmPrincipal.cbxVelocidadeChange(Sender: TObject);
+begin
+  GravarIni('CONFIG', 'Velocidade', cbxVelocidade.Text);
+end;
+
+procedure TfrmPrincipal.btnAtivarDesativarClick(Sender: TObject);
+begin
+  if btnAtivarDesativar.Tag = 0 then
+  begin
+    ACBrECF1.Device.Baud := StrToInt(cbxVelocidade.Text);
+    ACBrECF1.Porta       := cbxPortaComunicacao.Text;
+
+    ACBrECF1.Ativar;
+    btnAtivarDesativar.Caption := 'Desativar';
+    btnAtivarDesativar.Tag     := 99;
+
+    ACBrECF1.IdentificaOperador(NOME_OPERADOR);
+
+    AtivarMenus(True);
+  end
+  else
+  begin
+    ACBrECF1.Desativar;
+    btnAtivarDesativar.Caption := 'Ativar';
+    btnAtivarDesativar.Tag     := 0;
+
+    AtivarMenus(False);
+    StatusBar1.Panels[1].Text := '';
+  end;
+end;
+
+//******************************************************************************
+
+procedure TfrmPrincipal.ACBrECF1AntesAbreCupom(const CPF_CNPJ, Nome,
+  Endereco: string);
+begin
+  FBobinaCupom.Clear;
+end;
+
+procedure TfrmPrincipal.ACBrECF1BobinaAdicionaLinhas(const Linhas,
+  Operacao: string);
+begin
+  FBobinaCupom.Add(Linhas);
+end;
+
+procedure TfrmPrincipal.ACBrECF1ChangeEstado(const EstadoAnterior,
+  EstadoAtual: TACBrECFEstado);
+var
+  Estado: String;
+begin
+  case EstadoAtual of
+    estNaoInicializada: Estado := 'Impressora inicializada';
+    estDesconhecido:    Estado := 'Estado desconhecido';
+    estLivre:           Estado := 'Impressora livre';
+    estVenda:           Estado := 'Venda iniciada';
+    estPagamento:       Estado := 'Formas de pagamento iniciadas';
+    estRelatorio:       Estado := 'Relatório aberto';
+    estBloqueada:       Estado := 'Impressora bloqueada';
+    estRequerZ:         Estado := 'Requer Z';
+    estRequerX:         Estado := 'Requer X';
+    estNaoFiscal:       Estado := 'Não fiscal aberto';
+  end;
+
+  StatusBar1.Panels[1].Text := Estado;
+end;
+
+//******************************************************************************
+
+procedure TfrmPrincipal.LeituraX1Click(Sender: TObject);
+begin
+  ACBrECF1.LeituraX;
+end;
+
+procedure TfrmPrincipal.LeituraXparaarquivo1Click(Sender: TObject);
+begin
+  AbrirFormularioModal(TfrmLeituraXArquivo)
+end;
+
+procedure TfrmPrincipal.ReduoZ1Click(Sender: TObject);
+begin
+  if Application.MessageBox(
+    'Será emitido a redução Z, deseja continuar?',
+    'Redução Z',
+    MB_ICONQUESTION + MB_YESNO
+  ) = ID_YES then
+  begin
+    ACBrECF1.ReducaoZ(Now);
+  end;
+end;
+
+procedure TfrmPrincipal.RelatrioGerencial1Click(Sender: TObject);
+begin
+  AbrirFormularioModal(TfrmRelatorioGerencial);
+end;
+
+procedure TfrmPrincipal.Sangria1Click(Sender: TObject);
+begin
+  AbrirFormularioModal(TfrmSangria);
+end;
+
+procedure TfrmPrincipal.Suprimento1Click(Sender: TObject);
+begin
+  AbrirFormularioModal(TfrmSuprimento);
+end;
+
+procedure TfrmPrincipal.IdentificaodoPafECF1Click(Sender: TObject);
+begin
+  AbrirFormularioModal(TfrmIdentificacaoPafECF);
+end;
+
+procedure TfrmPrincipal.Geraodearquivos1Click(Sender: TObject);
+begin
+  AbrirFormularioModal(TfrmGeracaoArquivos);
+end;
+
+procedure TfrmPrincipal.Gerencialcomformatao1Click(Sender: TObject);
+begin
+  AbrirFormularioModal(TfrmRelatorioGerencialFormatado);
+end;
+
+procedure TfrmPrincipal.ProgramarBitmap1Click(Sender: TObject);
+begin
+  AbrirFormularioModal(TfrmProgramarBitmap);
+end;
+
+procedure TfrmPrincipal.Completo1Click(Sender: TObject);
+begin
+  AbrirFormularioModal(TfrmComprNaoFiscalCompleto);
+end;
+
+procedure TfrmPrincipal.CupomFiscal2Click(Sender: TObject);
+begin
+  AbrirFormularioModal(TfrmCupomFiscal);
+end;
+
+procedure TfrmPrincipal.Normal1Click(Sender: TObject);
+begin
+  AbrirFormularioModal(TfrmComprNaoFiscal);
+end;
+
+end.
+

@@ -16,7 +16,7 @@ inherited frmCupomFiscal: TfrmCupomFiscal
       Top = 1
       Width = 344
       Height = 392
-      ActivePage = TabSheet1
+      ActivePage = TabSheet2
       Align = alClient
       TabOrder = 0
       object TabSheet1: TTabSheet
@@ -410,6 +410,53 @@ inherited frmCupomFiscal: TfrmCupomFiscal
           Height = 13
           Caption = 'Indice BMP'
         end
+        object Label4: TLabel
+          Left = 25
+          Top = 187
+          Width = 166
+          Height = 13
+          Caption = 'Informa'#231#245'es adicionais do Paf-ECF'
+        end
+        object Label5: TLabel
+          Left = 81
+          Top = 211
+          Width = 28
+          Height = 13
+          Alignment = taRightJustify
+          Caption = 'MD5 :'
+        end
+        object Label11: TLabel
+          Left = 82
+          Top = 238
+          Width = 27
+          Height = 13
+          Alignment = taRightJustify
+          Caption = 'DAV :'
+        end
+        object Label12: TLabel
+          Left = 64
+          Top = 265
+          Width = 45
+          Height = 13
+          Alignment = taRightJustify
+          Caption = 'DAV-OS :'
+        end
+        object Label28: TLabel
+          Left = 52
+          Top = 292
+          Width = 57
+          Height = 13
+          Alignment = taRightJustify
+          Caption = 'Pr'#233'-Venda :'
+        end
+        object Label29: TLabel
+          Left = 38
+          Top = 319
+          Width = 71
+          Height = 13
+          Alignment = taRightJustify
+          Caption = 'Cupom Mania :'
+        end
         object edtFechamentoObs1: TEdit
           Left = 25
           Top = 68
@@ -460,6 +507,49 @@ inherited frmCupomFiscal: TfrmCupomFiscal
           Height = 21
           TabOrder = 3
           Text = '<ean13>123456789012</ean13>'
+        end
+        object edtMD5App: TEdit
+          Left = 115
+          Top = 208
+          Width = 201
+          Height = 21
+          TabOrder = 5
+        end
+        object edtIdDAV: TEdit
+          Left = 115
+          Top = 235
+          Width = 201
+          Height = 21
+          TabOrder = 6
+        end
+        object edtIdDAVOS: TEdit
+          Left = 115
+          Top = 262
+          Width = 201
+          Height = 21
+          TabOrder = 7
+        end
+        object edtCupomMania: TEdit
+          Left = 115
+          Top = 316
+          Width = 201
+          Height = 21
+          TabOrder = 8
+        end
+        object edtIdPrevenda: TEdit
+          Left = 115
+          Top = 289
+          Width = 201
+          Height = 21
+          TabOrder = 9
+        end
+        object ckbMinasLegal: TCheckBox
+          Left = 115
+          Top = 343
+          Width = 97
+          Height = 17
+          Caption = 'Minas Legal'
+          TabOrder = 10
         end
       end
     end

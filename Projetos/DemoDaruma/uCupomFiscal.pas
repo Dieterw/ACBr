@@ -78,6 +78,18 @@ type
     edtClienteCpfCnpj: TEdit;
     edtClienteEndereco: TEdit;
     btnIdentificaCliente: TButton;
+    edtMD5App: TEdit;
+    edtIdDAV: TEdit;
+    edtIdDAVOS: TEdit;
+    Label4: TLabel;
+    edtCupomMania: TEdit;
+    edtIdPrevenda: TEdit;
+    Label5: TLabel;
+    Label11: TLabel;
+    Label12: TLabel;
+    Label28: TLabel;
+    Label29: TLabel;
+    ckbMinasLegal: TCheckBox;
     procedure btnAbrirCupomClick(Sender: TObject);
     procedure btnSubtotalizarClick(Sender: TObject);
     procedure btnRegistrarPagtoClick(Sender: TObject);
@@ -197,36 +209,41 @@ var
   TipoDescAcresc: String;
   ModoDescAcresc: String;
 begin
-  // modo (desconto ou acréscimo)
-  if edtItemDescAcreModo.ItemIndex = 0 then
-    ModoDescAcresc := 'D'
-  else
-    ModoDescAcresc := 'A';
+  btnItemRegistrar.Enabled := False;
+  try
+    // modo (desconto ou acréscimo)
+    if edtItemDescAcreModo.ItemIndex = 0 then
+      ModoDescAcresc := 'D'
+    else
+      ModoDescAcresc := 'A';
 
-  // Tipo (percentual ou valor)
-  if edtItemDescAcresTipo.ItemIndex = 0 then
-    TipoDescAcresc := '%'
-  else
-    TipoDescAcresc := '$';
+    // Tipo (percentual ou valor)
+    if edtItemDescAcresTipo.ItemIndex = 0 then
+      TipoDescAcresc := '%'
+    else
+      TipoDescAcresc := '$';
 
-  // utilizar ou não legenda do inmetro
-  if ckbLegendaInmetro.Checked then
-    frmPrincipal.ACBrECF1.LegendaInmetroProximoItem;
+    // utilizar ou não legenda do inmetro
+    if ckbLegendaInmetro.Checked then
+      frmPrincipal.ACBrECF1.LegendaInmetroProximoItem;
 
-  // venda do item
-  frmPrincipal.ACBrECF1.VendeItem(
-    edtItemCodigo.Text,
-    edtItemDescricao.Text,
-    edtItemAliquota.Text,
-    StrToFloat(edtItemQuantidade.Text),
-    StrToFloat(edtItemVlUnitario.Text),
-    StrToFloat(edtItemDescAcreValor.Text),
-    edtItemUnidade.Text,
-    TipoDescAcresc,
-    ModoDescAcresc
-  );
+    // venda do item
+    frmPrincipal.ACBrECF1.VendeItem(
+      edtItemCodigo.Text,
+      edtItemDescricao.Text,
+      edtItemAliquota.Text,
+      StrToFloat(edtItemQuantidade.Text),
+      StrToFloat(edtItemVlUnitario.Text),
+      StrToFloat(edtItemDescAcreValor.Text),
+      edtItemUnidade.Text,
+      TipoDescAcresc,
+      ModoDescAcresc
+    );
 
-  AtualizarTela;
+    AtualizarTela;
+  finally
+    btnItemRegistrar.Enabled := True;
+  end;
 end;
 
 procedure TfrmCupomFiscal.btnItemCancelarParcialClick(Sender: TObject);
@@ -289,6 +306,14 @@ procedure TfrmCupomFiscal.btnFechamentoClick(Sender: TObject);
 var
   Observacao: String;
 begin
+  frmPrincipal.ACBrECF1.InfoRodapeCupom.MD5 := edtMD5App.Text;
+  frmPrincipal.ACBrECF1.InfoRodapeCupom.Dav := edtIdDAV.Text;
+  frmPrincipal.ACBrECF1.InfoRodapeCupom.DavOs := edtIdDAVOS.Text;
+  frmPrincipal.ACBrECF1.InfoRodapeCupom.PreVenda := edtIdPrevenda.Text;
+  frmPrincipal.ACBrECF1.InfoRodapeCupom.CupomMania := edtCupomMania.Text;
+  frmPrincipal.ACBrECF1.InfoRodapeCupom.MinasLegal := ckbMinasLegal.Checked;
+
+
   Observacao :=
     edtFechamentoObs1.Text + sLineBreak +
     edtFechamentoObs2.Text + sLineBreak +
@@ -302,30 +327,5 @@ end;
 
 end.
 
-//******************************************************
-// cupom fiscal com vinculado
-
-  // cupom fiscal
-  ACBrECF1.AbreCupom('111.111.111-11', 'NOME DO CLIENTE', 'ENDERECO DE TESTE, 111, ARAXA/MG');
-  ACBrECF1.VendeItem('1', 'DESCR.ITEM 1', 'FF', 1, 0.01, 0.00, 'UN');
-  ACBrECF1.SubtotalizaCupom;
-  ACBrECF1.EfetuaPagamento('02', 1.00, 'OBSERVACAO PAGAMENTO');
-  ACBrECF1.FechaCupom('OBSERVACAO CUPOM FISCAL', 1);
-
-  // vinculado
-  ACBrECF1.Consumidor.AtribuiConsumidor('111.111.111-11', 'NOME DO CLIENTE', 'ENDERECO DE TESTE, 111, ARAXA/MG');
-  ACBrECF1.AbreCupomVinculado(ACBrECF1.NumCOO, '02', 1.00);
-  ACBrECF1.LinhaCupomVinculado('teste vinculado');
-  ACBrECF1.LinhaCupomVinculado('teste vinculado');
-  ACBrECF1.LinhaCupomVinculado('teste vinculado');
-  ACBrECF1.LinhaCupomVinculado('teste vinculado');
-  ACBrECF1.FechaRelatorio;
-
-  // segunda via do vinculado
-  ACBrECF1.SegundaViaVinculado;
-
-//******************************************************
-// cancelamento de item parcial
-  ACBrECF1.CancelaItemVendidoParcial(1, 6);
 
 

@@ -3,8 +3,6 @@ inherited frmMenuFiscal: TfrmMenuFiscal
   ClientHeight = 450
   ClientWidth = 467
   OnCreate = FormCreate
-  ExplicitWidth = 473
-  ExplicitHeight = 482
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnlCliente: TPanel
@@ -18,9 +16,6 @@ inherited frmMenuFiscal: TfrmMenuFiscal
       Align = alClient
       Caption = 'Op'#231#245'es do Menu fiscal'
       TabOrder = 0
-      ExplicitLeft = -2
-      ExplicitTop = 0
-      ExplicitHeight = 345
       object Label31: TLabel
         Left = 64
         Top = 275
@@ -114,9 +109,9 @@ inherited frmMenuFiscal: TfrmMenuFiscal
       object chkMenuFiscalGerarArquivo: TCheckBox
         Left = 64
         Top = 194
-        Width = 162
+        Width = 242
         Height = 17
-        Caption = 'Efetuar a gera'#231#227'o de arquivo'
+        Caption = 'Efetuar a gera'#231#227'o de arquivo (LMFC, LMFS)'
         Font.Charset = ANSI_CHARSET
         Font.Color = clBlack
         Font.Height = -11
@@ -148,10 +143,6 @@ inherited frmMenuFiscal: TfrmMenuFiscal
       TabOrder = 1
       object tbsMenuFiscalTipoData: TTabSheet
         Caption = 'Por data'
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object Label24: TLabel
           Left = 15
           Top = 20
@@ -189,10 +180,6 @@ inherited frmMenuFiscal: TfrmMenuFiscal
       object tbsMenuFiscalTipoCOO: TTabSheet
         Caption = 'Por n'#250'mero'
         ImageIndex = 1
-        ExplicitLeft = 0
-        ExplicitTop = 23
-        ExplicitWidth = 318
-        ExplicitHeight = 40
         object Label26: TLabel
           Left = 15
           Top = 20
@@ -236,6 +223,7 @@ inherited frmMenuFiscal: TfrmMenuFiscal
     Width = 467
     inherited btnExecutar: TButton
       Left = 257
+      Visible = False
     end
     inherited btnCancelar: TButton
       Left = 363

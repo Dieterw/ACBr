@@ -857,12 +857,12 @@ object frmPrincipal: TfrmPrincipal
   end
   object Label2: TLabel
     Left = 8
-    Top = 222
-    Width = 255
-    Height = 26
+    Top = 217
+    Width = 121
+    Height = 39
     Caption = 
-      'Desenvolvido por: '#13#10'R'#233'gys Borges da Silveira  -  regys.silveira@' +
-      'gmail.com'
+      'Desenvolvido por: '#13#10'R'#233'gys Borges da Silveira'#13#10'regys.silveira@gma' +
+      'il.com'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clGreen
     Font.Height = -11
@@ -1024,7 +1024,14 @@ object frmPrincipal: TfrmPrincipal
     end
     object MenuFiscal1: TMenuItem
       Caption = 'Menu Fiscal'
-      OnClick = MenuFiscal1Click
+      object MenuFiscalPafECF1: TMenuItem
+        Caption = 'Menu Fiscal Paf-ECF'
+        OnClick = MenuFiscalPafECF1Click
+      end
+      object Geraodearquivos1: TMenuItem
+        Caption = 'Gera'#231#227'o de arquivos'
+        OnClick = Geraodearquivos1Click
+      end
     end
     object RelatriosGerais1: TMenuItem
       Caption = 'Relat'#243'rios'
@@ -1066,18 +1073,15 @@ object frmPrincipal: TfrmPrincipal
         end
       end
     end
-    object Arquivos1: TMenuItem
-      Caption = 'Arquivos'
-      object Geraodearquivos1: TMenuItem
-        Caption = 'Gera'#231#227'o de arquivos'
-        OnClick = Geraodearquivos1Click
-      end
-    end
     object CupomFiscal1: TMenuItem
       Caption = 'Cupom Fiscal'
       object CupomFiscal2: TMenuItem
         Caption = 'Cupom Fiscal'
         OnClick = CupomFiscal2Click
+      end
+      object Cancelarcupomfiscal1: TMenuItem
+        Caption = 'Cancelar cupom fiscal'
+        OnClick = Cancelarcupomfiscal1Click
       end
     end
     object ComprNoFiscal1: TMenuItem
@@ -1089,6 +1093,10 @@ object frmPrincipal: TfrmPrincipal
       object Completo1: TMenuItem
         Caption = 'Completo'
         OnClick = Completo1Click
+      end
+      object Cancelarcomprovantenofiscal1: TMenuItem
+        Caption = 'Cancelar comprovante n'#227'o fiscal'
+        OnClick = Cancelarcomprovantenofiscal1Click
       end
     end
   end

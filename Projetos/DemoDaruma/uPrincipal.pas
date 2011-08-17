@@ -18,7 +18,6 @@ type
     Relatrios1: TMenuItem;
     LeituraX1: TMenuItem;
     ReduoZ1: TMenuItem;
-    Arquivos1: TMenuItem;
     Geraodearquivos1: TMenuItem;
     GroupBox1: TGroupBox;
     Label3: TLabel;
@@ -45,6 +44,9 @@ type
     LeituraXparaarquivo1: TMenuItem;
     Label2: TLabel;
     MenuFiscal1: TMenuItem;
+    MenuFiscalPafECF1: TMenuItem;
+    Cancelarcupomfiscal1: TMenuItem;
+    Cancelarcomprovantenofiscal1: TMenuItem;
     procedure btnAtivarDesativarClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure cbxPortaComunicacaoChange(Sender: TObject);
@@ -67,7 +69,9 @@ type
     procedure ACBrECF1AntesAbreCupom(const CPF_CNPJ, Nome, Endereco: string);
     procedure Gerencialcomformatao1Click(Sender: TObject);
     procedure LeituraXparaarquivo1Click(Sender: TObject);
-    procedure MenuFiscal1Click(Sender: TObject);
+    procedure MenuFiscalPafECF1Click(Sender: TObject);
+    procedure Cancelarcupomfiscal1Click(Sender: TObject);
+    procedure Cancelarcomprovantenofiscal1Click(Sender: TObject);
   private
     FBobinaCupom: TStringList;
     function GetIniFileName: String;
@@ -144,6 +148,11 @@ begin
   end;
 end;
 
+procedure TfrmPrincipal.MenuFiscalPafECF1Click(Sender: TObject);
+begin
+  AbrirFormularioModal(TfrmMenuFiscal);
+end;
+
 procedure TfrmPrincipal.GravarIni(const ASessao, AIdentif, AValor: String);
 var
   IniFile: TIniFile;
@@ -191,27 +200,45 @@ end;
 
 procedure TfrmPrincipal.btnAtivarDesativarClick(Sender: TObject);
 begin
-  if btnAtivarDesativar.Tag = 0 then
-  begin
-    ACBrECF1.Device.Baud := StrToInt(cbxVelocidade.Text);
-    ACBrECF1.Porta       := cbxPortaComunicacao.Text;
+  btnAtivarDesativar.Enabled := False;
+  try
+    if btnAtivarDesativar.Tag = 0 then
+    begin
+      ACBrECF1.Device.Baud := StrToInt(cbxVelocidade.Text);
+      ACBrECF1.Porta       := cbxPortaComunicacao.Text;
+      ACBrECF1.Ativar;
 
-    ACBrECF1.Ativar;
-    btnAtivarDesativar.Caption := 'Desativar';
-    btnAtivarDesativar.Tag     := 99;
+      AtivarMenus(True);
+      btnAtivarDesativar.Caption := 'Desativar';
+      btnAtivarDesativar.Tag     := 99;
 
-    ACBrECF1.IdentificaOperador(NOME_OPERADOR);
+      case ACBrECF1.Estado of
+        estVenda, estPagamento:
+          begin
+            ShowMessage('Cupom fiscal aberto, o cupom será cancelado!');
+            ACBrECF1.CancelaCupom;
+          end;
 
-    AtivarMenus(True);
-  end
-  else
-  begin
-    ACBrECF1.Desativar;
-    btnAtivarDesativar.Caption := 'Ativar';
-    btnAtivarDesativar.Tag     := 0;
+        estNaoFiscal:
+          begin
+            ShowMessage('Comprovante não fiscal aberto, o comprovante será cancelado!');
+            ACBrECF1.CancelaNaoFiscal;
+          end;
+      end;
 
-    AtivarMenus(False);
-    StatusBar1.Panels[1].Text := '';
+      ACBrECF1.IdentificaOperador(NOME_OPERADOR);
+    end
+    else
+    begin
+      ACBrECF1.Desativar;
+      btnAtivarDesativar.Caption := 'Ativar';
+      btnAtivarDesativar.Tag     := 0;
+
+      AtivarMenus(False);
+      StatusBar1.Panels[1].Text := '';
+    end;
+  finally
+    btnAtivarDesativar.Enabled := True;
   end;
 end;
 
@@ -274,9 +301,14 @@ begin
   end;
 end;
 
-procedure TfrmPrincipal.MenuFiscal1Click(Sender: TObject);
+procedure TfrmPrincipal.Cancelarcomprovantenofiscal1Click(Sender: TObject);
 begin
-  AbrirFormularioModal(TfrmMenuFiscal);
+  ACBrECF1.CancelaNaoFiscal;
+end;
+
+procedure TfrmPrincipal.Cancelarcupomfiscal1Click(Sender: TObject);
+begin
+  ACBrECF1.CancelaCupom;
 end;
 
 procedure TfrmPrincipal.RelatrioGerencial1Click(Sender: TObject);

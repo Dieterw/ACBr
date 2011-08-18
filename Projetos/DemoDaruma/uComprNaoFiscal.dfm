@@ -20,7 +20,6 @@ inherited frmComprNaoFiscal: TfrmComprNaoFiscal
       object TabSheet1: TTabSheet
         Caption = '1. Abertura'
         object btnAbrirComprovante: TButton
-          AlignWithMargins = True
           Left = 17
           Top = 18
           Width = 125
@@ -65,7 +64,6 @@ inherited frmComprNaoFiscal: TfrmComprNaoFiscal
           Text = '0,00'
         end
         object btnItemRegistrar: TButton
-          AlignWithMargins = True
           Left = 219
           Top = 63
           Width = 100
@@ -75,7 +73,6 @@ inherited frmComprNaoFiscal: TfrmComprNaoFiscal
           OnClick = btnItemRegistrarClick
         end
         object btnItemCancelar: TButton
-          AlignWithMargins = True
           Left = 219
           Top = 96
           Width = 100
@@ -125,7 +122,6 @@ inherited frmComprNaoFiscal: TfrmComprNaoFiscal
           Text = '0,00'
         end
         object btnSubtotalizar: TButton
-          AlignWithMargins = True
           Left = 221
           Top = 98
           Width = 100
@@ -184,7 +180,6 @@ inherited frmComprNaoFiscal: TfrmComprNaoFiscal
           Text = '0,00'
         end
         object btnRegistrarPagto: TButton
-          AlignWithMargins = True
           Left = 180
           Top = 93
           Width = 146
@@ -236,7 +231,6 @@ inherited frmComprNaoFiscal: TfrmComprNaoFiscal
             '5')
         end
         object btnFechamento: TButton
-          AlignWithMargins = True
           Left = 171
           Top = 148
           Width = 150
@@ -324,7 +318,6 @@ inherited frmComprNaoFiscal: TfrmComprNaoFiscal
         TabOrder = 3
       end
       object btnIdentificaCliente: TButton
-        AlignWithMargins = True
         Left = 672
         Top = 32
         Width = 105

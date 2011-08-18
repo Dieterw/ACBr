@@ -31,7 +31,6 @@ object frmBasicoModal: TfrmBasicoModal
     Align = alBottom
     TabOrder = 1
     object btnExecutar: TButton
-      AlignWithMargins = True
       Left = 354
       Top = 4
       Width = 100
@@ -42,7 +41,6 @@ object frmBasicoModal: TfrmBasicoModal
       OnClick = btnExecutarClick
     end
     object btnCancelar: TButton
-      AlignWithMargins = True
       Left = 460
       Top = 4
       Width = 100

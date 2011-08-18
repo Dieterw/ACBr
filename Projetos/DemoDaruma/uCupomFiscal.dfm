@@ -22,7 +22,6 @@ inherited frmCupomFiscal: TfrmCupomFiscal
       object TabSheet1: TTabSheet
         Caption = '1. Abertura'
         object btnAbrirCupom: TButton
-          AlignWithMargins = True
           Left = 10
           Top = 23
           Width = 139
@@ -43,7 +42,6 @@ inherited frmCupomFiscal: TfrmCupomFiscal
           Shape = bsTopLine
         end
         object btnItemRegistrar: TButton
-          AlignWithMargins = True
           Left = 97
           Top = 241
           Width = 150
@@ -118,7 +116,6 @@ inherited frmCupomFiscal: TfrmCupomFiscal
           end
         end
         object btnItemCancelarParcial: TButton
-          AlignWithMargins = True
           Left = 6
           Top = 326
           Width = 126
@@ -129,7 +126,6 @@ inherited frmCupomFiscal: TfrmCupomFiscal
           OnClick = btnItemCancelarParcialClick
         end
         object btnItemCancelarTotal: TButton
-          AlignWithMargins = True
           Left = 200
           Top = 326
           Width = 126
@@ -267,7 +263,6 @@ inherited frmCupomFiscal: TfrmCupomFiscal
           end
         end
         object btnItemDescAcrescAnterior: TButton
-          AlignWithMargins = True
           Left = 97
           Top = 274
           Width = 150
@@ -317,7 +312,6 @@ inherited frmCupomFiscal: TfrmCupomFiscal
           Text = '0,00'
         end
         object btnSubtotalizar: TButton
-          AlignWithMargins = True
           Left = 154
           Top = 95
           Width = 150
@@ -376,7 +370,6 @@ inherited frmCupomFiscal: TfrmCupomFiscal
           Text = '0,00'
         end
         object btnRegistrarPagto: TButton
-          AlignWithMargins = True
           Left = 166
           Top = 95
           Width = 150
@@ -483,7 +476,6 @@ inherited frmCupomFiscal: TfrmCupomFiscal
             '5')
         end
         object btnFechamento: TButton
-          AlignWithMargins = True
           Left = 166
           Top = 149
           Width = 150
@@ -745,7 +737,6 @@ inherited frmCupomFiscal: TfrmCupomFiscal
       TabOrder = 2
     end
     object btnIdentificaCliente: TButton
-      AlignWithMargins = True
       Left = 672
       Top = 32
       Width = 105

@@ -47,6 +47,8 @@ type
     MenuFiscalPafECF1: TMenuItem;
     Cancelarcupomfiscal1: TMenuItem;
     Cancelarcomprovantenofiscal1: TMenuItem;
+    N2: TMenuItem;
+    N3: TMenuItem;
     procedure btnAtivarDesativarClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure cbxPortaComunicacaoChange(Sender: TObject);

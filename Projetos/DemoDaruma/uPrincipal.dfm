@@ -1079,6 +1079,9 @@ object frmPrincipal: TfrmPrincipal
         Caption = 'Cupom Fiscal'
         OnClick = CupomFiscal2Click
       end
+      object N3: TMenuItem
+        Caption = '-'
+      end
       object Cancelarcupomfiscal1: TMenuItem
         Caption = 'Cancelar cupom fiscal'
         OnClick = Cancelarcupomfiscal1Click
@@ -1093,6 +1096,9 @@ object frmPrincipal: TfrmPrincipal
       object Completo1: TMenuItem
         Caption = 'Completo'
         OnClick = Completo1Click
+      end
+      object N2: TMenuItem
+        Caption = '-'
       end
       object Cancelarcomprovantenofiscal1: TMenuItem
         Caption = 'Cancelar comprovante n'#227'o fiscal'

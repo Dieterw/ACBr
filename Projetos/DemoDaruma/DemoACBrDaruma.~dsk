@@ -13,26 +13,31 @@ File_10=TSourceModule,'D:\DELPHI\ACBr\Fontes\ACBrComum\ACBrUtil.pas',0,1,2014,26
 File_11=TSourceModule,'c:\program files\embarcadero\rad studio\7.0\source\Win32\rtl\win\Windows.pas',0,1,28012,35,28046,0,0,,
 File_12=TSourceModule,'D:\daruma\uRelatorioGerencialFormatado.pas',0,1,9,1,28,0,0,,
 File_13=TSourceModule,'D:\daruma\uPrincipal.dfm',0,1,1,1,1,0,0,,
-File_14=TSourceModule,'c:\program files\embarcadero\rad studio\7.0\SOURCE\WIN32\VCL\Graphics.pas',0,1,457,32,479,0,0,,
 
 [Modules]
-Module0=D:\DELPHI\AcBr\Projetos\DemoDaruma\uMenuFiscal.pas
-Module1=D:\DELPHI\AcBr\Projetos\DemoDaruma\uPrincipal.pas
-Module2=D:\DELPHI\ACBr\Fontes\ACBrSerial\ACBrECF.pas
-Module3=D:\DELPHI\ACBr\Fontes\ACBrSerial\ACBrECFClass.pas
-Module4=D:\DELPHI\ACBr\Fontes\ACBrSerial\ACBrECFDaruma.pas
-Count=5
+Module0=D:\DELPHI\AcBr\Projetos\DemoDaruma\uPrincipal.pas
+Module1=D:\DELPHI\ACBr\Projetos\DemoDaruma\uMenuFiscal.pas
+Module2=D:\DELPHI\ACBr\Projetos\DemoDaruma\uCupomFiscal.pas
+Module3=D:\DELPHI\ACBr\Fontes\ACBrSerial\ACBrECF.pas
+Module4=D:\DELPHI\ACBr\Fontes\ACBrSerial\ACBrECFClass.pas
+Module5=D:\DELPHI\ACBr\Fontes\ACBrSerial\ACBrECFDaruma.pas
+Count=6
 EditWindowCount=1
-
-[D:\DELPHI\AcBr\Projetos\DemoDaruma\uMenuFiscal.pas]
-ModuleType=TSourceModule
-FormState=1
-FormOnTop=0
 
 [D:\DELPHI\AcBr\Projetos\DemoDaruma\uPrincipal.pas]
 ModuleType=TSourceModule
 FormState=1
 FormOnTop=0
+
+[D:\DELPHI\ACBr\Projetos\DemoDaruma\uMenuFiscal.pas]
+ModuleType=TSourceModule
+FormState=1
+FormOnTop=0
+
+[D:\DELPHI\ACBr\Projetos\DemoDaruma\uCupomFiscal.pas]
+ModuleType=TSourceModule
+FormState=1
+FormOnTop=1
 
 [D:\DELPHI\ACBr\Fontes\ACBrSerial\ACBrECF.pas]
 ModuleType=TSourceModule
@@ -54,13 +59,14 @@ FormState=1
 FormOnTop=0
 
 [EditWindow0]
-ViewCount=5
-CurrentEditView=D:\DELPHI\AcBr\Projetos\DemoDaruma\uMenuFiscal.pas
+ViewCount=6
+CurrentEditView=D:\DELPHI\AcBr\Projetos\DemoDaruma\uPrincipal.pas
 View0=0
 View1=1
 View2=2
 View3=3
 View4=4
+View5=5
 PercentageSizes=1
 Create=1
 Visible=1
@@ -77,13 +83,15 @@ ClientHeight=9248
 DockedToMainForm=1
 BorlandEditorCodeExplorer=BorlandEditorCodeExplorer@EditWindow0
 TopPanelSize=0
-LeftPanelSize=0
+LeftPanelSize=1685
+LeftPanelClients=DockSite4
+LeftPanelData=00000800010000000000BF2200000000000000D50B0000000000000100000000BF22000009000000446F636B5369746534FFFFFFFF
 RightPanelSize=1196
 RightPanelClients=DockSite3
-RightPanelData=00000800010100000000B81500000000000001AC040000000000000100000000BF22000009000000446F636B5369746533FFFFFFFF
-BottomPanelSize=0
+RightPanelData=00000800010100000000F31100000000000001AC040000000000000100000000B81C000009000000446F636B5369746533FFFFFFFF
+BottomPanelSize=1514
 BottomPanelClients=DockSite1,MessageView
-BottomPanelData=0000080001020200000009000000446F636B53697465310F0000004D65737361676556696577466F726D803E00000000000002EA050000000000000100000000803E00000F0000004D65737361676556696577466F726DFFFFFFFF
+BottomPanelData=0000080001020100000009000000446F636B5369746531803E00000000000002EA050000000000000100000000803E00000F0000004D65737361676556696577466F726DFFFFFFFF
 BottomMiddlePanelSize=0
 BottomMiddlePanelClients=DockSite0
 BottomMiddelPanelData=0000080001000100000009000000446F636B5369746530261900000000000000751B000000000000FFFFFFFF
@@ -91,9 +99,9 @@ BottomMiddelPanelData=0000080001000100000009000000446F636B5369746530261900000000
 [View0]
 CustomEditViewType=TEditView
 Module=D:\DELPHI\AcBr\Projetos\DemoDaruma\uPrincipal.pas
-CursorX=15
-CursorY=10
-TopLine=1
+CursorX=29
+CursorY=306
+TopLine=304
 LeftCol=1
 Elisions=
 Bookmarks=
@@ -101,16 +109,27 @@ EditViewName=D:\DELPHI\AcBr\Projetos\DemoDaruma\uPrincipal.pas
 
 [View1]
 CustomEditViewType=TEditView
-Module=D:\DELPHI\AcBr\Projetos\DemoDaruma\uMenuFiscal.pas
-CursorX=24
-CursorY=84
-TopLine=39
+Module=D:\DELPHI\ACBr\Projetos\DemoDaruma\uCupomFiscal.pas
+CursorX=3
+CursorY=281
+TopLine=260
 LeftCol=1
 Elisions=
 Bookmarks=
-EditViewName=D:\DELPHI\AcBr\Projetos\DemoDaruma\uMenuFiscal.pas
+EditViewName=Borland.FormDesignerView
 
 [View2]
+CustomEditViewType=TEditView
+Module=D:\DELPHI\ACBr\Projetos\DemoDaruma\uMenuFiscal.pas
+CursorX=6
+CursorY=112
+TopLine=100
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=D:\DELPHI\ACBr\Projetos\DemoDaruma\uMenuFiscal.pas
+
+[View3]
 CustomEditViewType=TEditView
 Module=D:\DELPHI\ACBr\Fontes\ACBrSerial\ACBrECF.pas
 CursorX=21
@@ -121,7 +140,7 @@ Elisions=
 Bookmarks=
 EditViewName=D:\DELPHI\ACBr\Fontes\ACBrSerial\ACBrECF.pas
 
-[View3]
+[View4]
 CustomEditViewType=TEditView
 Module=D:\DELPHI\ACBr\Fontes\ACBrSerial\ACBrECFClass.pas
 CursorX=1
@@ -132,7 +151,7 @@ Elisions=
 Bookmarks=
 EditViewName=D:\DELPHI\ACBr\Fontes\ACBrSerial\ACBrECFClass.pas
 
-[View4]
+[View5]
 CustomEditViewType=TEditView
 Module=D:\DELPHI\ACBr\Fontes\ACBrSerial\ACBrECFDaruma.pas
 CursorX=32
@@ -217,7 +236,7 @@ StayOnTop=0
 [MessageView]
 PercentageSizes=1
 Create=1
-Visible=0
+Visible=1
 Docked=1
 State=0
 Left=0
@@ -242,11 +261,11 @@ State=0
 Left=0
 Top=0
 Width=1196
-Height=8772
+Height=7168
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=1196
-ClientHeight=8772
+ClientHeight=7168
 TBDockHeight=7158
 LRDockWidth=2000
 Dockable=1
@@ -503,17 +522,22 @@ Docked=1
 State=0
 Left=0
 Top=0
-Width=1589
-Height=8436
+Width=1685
+Height=7168
 MaxLeft=-1
 MaxTop=-1
-ClientWidth=1589
-ClientHeight=8436
+ClientWidth=1685
+ClientHeight=7168
 TBDockHeight=9000
 LRDockWidth=1893
 Dockable=1
 StayOnTop=0
-SplitPos=110
+SplitPos=117
+
+[PropInspDesignerSelection]
+ArrangeBy=Name
+SelectedItem=Name,Action
+ExpandedItems=Anchors=0,BorderIcons=0,Constraints=0,Font=0,GlassFrame=0,HorzScrollBar=0,Margins=0,Padding=0,ImageMargins=0
 
 [BreakpointWindow]
 PercentageSizes=1
@@ -683,11 +707,11 @@ State=0
 Left=0
 Top=23
 Width=1196
-Height=9020
+Height=7416
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=1196
-ClientHeight=9020
+ClientHeight=7416
 TBDockHeight=9000
 LRDockWidth=1196
 Dockable=1
@@ -697,20 +721,21 @@ ActiveTabID=ToolForm
 TabDockClients=ToolForm,ProjectManager,TemplateView
 
 [DockSite4]
+HostDockSite=DockLeftPanel
 DockSiteType=1
 PercentageSizes=1
 Create=1
 Visible=1
-Docked=0
+Docked=1
 State=0
 Left=0
-Top=644
+Top=23
 Width=1685
-Height=9020
-MaxLeft=-6
-MaxTop=-10
-ClientWidth=1589
-ClientHeight=8683
+Height=7416
+MaxLeft=-1
+MaxTop=-1
+ClientWidth=1685
+ClientHeight=7416
 TBDockHeight=5366
 LRDockWidth=1685
 Dockable=1

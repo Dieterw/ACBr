@@ -905,6 +905,13 @@ object frmPrincipal: TfrmPrincipal
       Height = 13
       Caption = 'Porta'
     end
+    object Label4: TLabel
+      Left = 213
+      Top = 20
+      Width = 38
+      Height = 13
+      Caption = 'Timeout'
+    end
     object cbxVelocidade: TComboBox
       Left = 123
       Top = 36
@@ -937,13 +944,24 @@ object frmPrincipal: TfrmPrincipal
         'COM9')
     end
     object btnAtivarDesativar: TButton
-      Left = 213
+      Left = 272
       Top = 34
       Width = 90
       Height = 25
       Caption = 'Ativar'
       TabOrder = 2
       OnClick = btnAtivarDesativarClick
+    end
+    object edtTimeout: TSpinEdit
+      Left = 213
+      Top = 36
+      Width = 53
+      Height = 22
+      MaxValue = 100
+      MinValue = 3
+      TabOrder = 3
+      Value = 3
+      OnChange = edtTimeoutChange
     end
   end
   object ACBrECF1: TACBrECF
@@ -953,7 +971,7 @@ object frmPrincipal: TfrmPrincipal
     MsgTrabalhando = 'Impressora est'#225' trabalhando'
     MsgRelatorio = 'Imprimindo %s  %d'#170' Via '
     MsgPausaRelatorio = 'Destaque a %d'#170' via, <ENTER> proxima, %d seg.'
-    PaginaDeCodigo = 28591
+    PaginaDeCodigo = 0
     FormMsgFonte.Charset = DEFAULT_CHARSET
     FormMsgFonte.Color = clWindowText
     FormMsgFonte.Height = -11
@@ -999,18 +1017,16 @@ object frmPrincipal: TfrmPrincipal
       'HTML_Title_Size=2'
       'HTML_Font=<font size="2" face="COURIER NEW">')
     OnBobinaAdicionaLinhas = ACBrECF1BobinaAdicionaLinhas
-    Device.HandShake = hsRTS_CTS
-    Device.HardFlow = True
     ArqLOG = 'log.txt'
     ConfigBarras.MostrarCodigo = False
     ConfigBarras.LarguraLinha = 3
     ConfigBarras.Altura = 10
-    Left = 410
-    Top = 15
+    Left = 350
+    Top = 130
   end
   object MainMenu1: TMainMenu
-    Left = 470
-    Top = 15
+    Left = 410
+    Top = 130
     object Programao1: TMenuItem
       Caption = 'Programa'#231#227'o'
       object IdentificaodoPafECF1: TMenuItem

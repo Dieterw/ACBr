@@ -49,6 +49,8 @@ type
     Cancelarcomprovantenofiscal1: TMenuItem;
     N2: TMenuItem;
     N3: TMenuItem;
+    edtTimeout: TSpinEdit;
+    Label4: TLabel;
     procedure btnAtivarDesativarClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure cbxPortaComunicacaoChange(Sender: TObject);
@@ -74,6 +76,7 @@ type
     procedure MenuFiscalPafECF1Click(Sender: TObject);
     procedure Cancelarcupomfiscal1Click(Sender: TObject);
     procedure Cancelarcomprovantenofiscal1Click(Sender: TObject);
+    procedure edtTimeoutChange(Sender: TObject);
   private
     FBobinaCupom: TStringList;
     function GetIniFileName: String;
@@ -184,6 +187,7 @@ begin
   // Configurações do ECF
   cbxPortaComunicacao.Text := LerIni('CONFIG', 'Porta');
   cbxVelocidade.Text       := LerIni('CONFIG', 'Velocidade');
+  edtTimeout.Text          := LerIni('CONFIG', 'Timeout');
 
   AtivarMenus(False);
 end;
@@ -200,6 +204,11 @@ begin
   GravarIni('CONFIG', 'Velocidade', cbxVelocidade.Text);
 end;
 
+procedure TfrmPrincipal.edtTimeoutChange(Sender: TObject);
+begin
+  GravarIni('CONFIG', 'Timeout', edtTimeout.Text);
+end;
+
 procedure TfrmPrincipal.btnAtivarDesativarClick(Sender: TObject);
 begin
   btnAtivarDesativar.Enabled := False;
@@ -208,6 +217,7 @@ begin
     begin
       ACBrECF1.Device.Baud := StrToInt(cbxVelocidade.Text);
       ACBrECF1.Porta       := cbxPortaComunicacao.Text;
+      ACBrECF1.TimeOut     := edtTimeout.Value;
       ACBrECF1.Ativar;
 
       AtivarMenus(True);

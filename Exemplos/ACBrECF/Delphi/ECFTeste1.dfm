@@ -354,6 +354,10 @@ object Form1: TForm1
     end
     object TabSheet1: TTabSheet
       Caption = 'Cmd/Resp'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label2: TLabel
         Left = 0
         Top = 54
@@ -407,6 +411,10 @@ object Form1: TForm1
     object TabSheet2: TTabSheet
       Caption = 'Cupom'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel1: TPanel
         Left = 0
         Top = 41
@@ -492,17 +500,26 @@ object Form1: TForm1
     object TabSheet3: TTabSheet
       Caption = 'RFD'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object PageControl2: TPageControl
         Left = 0
         Top = 55
         Width = 594
-        Height = 251
+        Height = 271
         ActivePage = TabSheet6
         Align = alClient
         TabOrder = 1
+        ExplicitHeight = 251
         object TabSheet6: TTabSheet
           Caption = 'Sw.House'
           ImageIndex = 1
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object Label8: TLabel
             Left = 12
             Top = 10
@@ -666,6 +683,10 @@ object Form1: TForm1
         end
         object TabSheet5: TTabSheet
           Caption = 'ACBrRFD.INI'
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object Panel4: TPanel
             Left = 0
             Top = 189
@@ -775,6 +796,10 @@ object Form1: TForm1
     object TabSheet8: TTabSheet
       Caption = 'C'#243'digo de Barras'
       ImageIndex = 5
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       DesignSize = (
         594
         306)
@@ -980,6 +1005,10 @@ object Form1: TForm1
     object TabSheet9: TTabSheet
       Caption = 'Dados RZ'
       ImageIndex = 6
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       DesignSize = (
         594
         306)
@@ -996,19 +1025,20 @@ object Form1: TForm1
       end
       object Button2: TButton
         Left = 11
-        Top = 33
+        Top = 13
         Width = 108
         Height = 25
         Anchors = [akLeft, akBottom]
         Caption = 'Ler Dados RZ'
         TabOrder = 0
         OnClick = Button2Click
+        ExplicitTop = 33
       end
       object mRZ: TMemo
         Left = 11
         Top = 64
         Width = 570
-        Height = 225
+        Height = 205
         Anchors = [akLeft, akTop, akRight, akBottom]
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -1021,19 +1051,25 @@ object Form1: TForm1
         TabOrder = 1
         WantReturns = False
         WordWrap = False
+        ExplicitHeight = 225
       end
     end
     object tbsMenuFiscal: TTabSheet
       Caption = 'Menu Fiscal'
       ImageIndex = 6
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object grpMenuFiscalOpcoes: TGroupBox
         Left = 0
         Top = 0
         Width = 594
-        Height = 238
+        Height = 258
         Align = alClient
         Caption = 'Op'#231#245'es do Menu fiscal'
         TabOrder = 0
+        ExplicitHeight = 238
         object Label31: TLabel
           Left = 10
           Top = 140
@@ -1123,14 +1159,19 @@ object Form1: TForm1
       end
       object pgcMenuFiscalTipo: TPageControl
         Left = 0
-        Top = 238
+        Top = 258
         Width = 594
         Height = 68
         ActivePage = tbsMenuFiscalTipoData
         Align = alBottom
         TabOrder = 1
+        ExplicitTop = 238
         object tbsMenuFiscalTipoData: TTabSheet
           Caption = 'Emiss'#227'o por intervalo de data'
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object Label24: TLabel
             Left = 16
             Top = 15
@@ -1168,6 +1209,10 @@ object Form1: TForm1
         object tbsMenuFiscalTipoCOO: TTabSheet
           Caption = 'Emiss'#227'o por intervalo de COO'
           ImageIndex = 1
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object Label26: TLabel
             Left = 16
             Top = 15

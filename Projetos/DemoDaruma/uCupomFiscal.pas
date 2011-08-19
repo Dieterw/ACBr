@@ -90,6 +90,7 @@ type
     Label28: TLabel;
     Label29: TLabel;
     ckbMinasLegal: TCheckBox;
+    Label30: TLabel;
     procedure btnAbrirCupomClick(Sender: TObject);
     procedure btnSubtotalizarClick(Sender: TObject);
     procedure btnRegistrarPagtoClick(Sender: TObject);
@@ -168,6 +169,8 @@ begin
   edtValorPago.Text := '0,00';
   edtValorTroco.Text := '0,00';
   pgcInfo.ActivePageIndex := 0;
+
+  edtCupomMania.Text := '0,00';
 
   edtFechamentoObs1.Text := '<e>ACBrECF</e>';
   edtFechamentoObs2.Text := '<n>Demonstração ACBr com Daruma</n>';
@@ -306,11 +309,11 @@ procedure TfrmCupomFiscal.btnFechamentoClick(Sender: TObject);
 var
   Observacao: String;
 begin
-  frmPrincipal.ACBrECF1.InfoRodapeCupom.MD5 := edtMD5App.Text;
-  frmPrincipal.ACBrECF1.InfoRodapeCupom.Dav := edtIdDAV.Text;
-  frmPrincipal.ACBrECF1.InfoRodapeCupom.DavOs := edtIdDAVOS.Text;
-  frmPrincipal.ACBrECF1.InfoRodapeCupom.PreVenda := edtIdPrevenda.Text;
-  frmPrincipal.ACBrECF1.InfoRodapeCupom.CupomMania := edtCupomMania.Text;
+  frmPrincipal.ACBrECF1.InfoRodapeCupom.MD5        := edtMD5App.Text;
+  frmPrincipal.ACBrECF1.InfoRodapeCupom.Dav        := edtIdDAV.Text;
+  frmPrincipal.ACBrECF1.InfoRodapeCupom.DavOs      := edtIdDAVOS.Text;
+  frmPrincipal.ACBrECF1.InfoRodapeCupom.PreVenda   := edtIdPrevenda.Text;
+  frmPrincipal.ACBrECF1.InfoRodapeCupom.CupomMania := StrToFloat(edtCupomMania.Text);
   frmPrincipal.ACBrECF1.InfoRodapeCupom.MinasLegal := ckbMinasLegal.Checked;
 
 

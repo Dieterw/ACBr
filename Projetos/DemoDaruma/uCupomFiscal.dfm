@@ -4,6 +4,8 @@ inherited frmCupomFiscal: TfrmCupomFiscal
   ClientWidth = 790
   OnClose = FormClose
   OnCreate = FormCreate
+  ExplicitWidth = 796
+  ExplicitHeight = 532
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnlCliente: TPanel
@@ -11,12 +13,15 @@ inherited frmCupomFiscal: TfrmCupomFiscal
     Width = 790
     Height = 394
     TabOrder = 1
+    ExplicitTop = 71
+    ExplicitWidth = 790
+    ExplicitHeight = 394
     object pgcInfo: TPageControl
       Left = 1
       Top = 1
       Width = 344
       Height = 392
-      ActivePage = TabSheet2
+      ActivePage = TabSheet1
       Align = alClient
       TabOrder = 0
       object TabSheet1: TTabSheet
@@ -450,6 +455,19 @@ inherited frmCupomFiscal: TfrmCupomFiscal
           Alignment = taRightJustify
           Caption = 'Cupom Mania :'
         end
+        object Label30: TLabel
+          Left = 187
+          Top = 319
+          Width = 67
+          Height = 13
+          Caption = 'Valor do ICMS'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clGreen
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          ParentFont = False
+        end
         object edtFechamentoObs1: TEdit
           Left = 25
           Top = 68
@@ -524,9 +542,10 @@ inherited frmCupomFiscal: TfrmCupomFiscal
         object edtCupomMania: TEdit
           Left = 115
           Top = 316
-          Width = 201
+          Width = 66
           Height = 21
           TabOrder = 8
+          Text = '0,00'
         end
         object edtIdPrevenda: TEdit
           Left = 115
@@ -676,12 +695,24 @@ inherited frmCupomFiscal: TfrmCupomFiscal
     Top = 465
     Width = 790
     TabOrder = 2
+    ExplicitTop = 465
+    ExplicitWidth = 790
     inherited btnExecutar: TButton
-      Left = 580
+      Left = 589
+      Top = 1
+      Height = 33
       Visible = False
+      ExplicitLeft = 589
+      ExplicitTop = 1
+      ExplicitHeight = 33
     end
     inherited btnCancelar: TButton
-      Left = 686
+      Left = 689
+      Top = 1
+      Height = 33
+      ExplicitLeft = 689
+      ExplicitTop = 1
+      ExplicitHeight = 33
     end
   end
   object GroupBox1: TGroupBox

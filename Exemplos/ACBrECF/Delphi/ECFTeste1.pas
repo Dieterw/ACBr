@@ -1202,7 +1202,7 @@ begin
      ACBrECF1.InfoRodapeCupom.Dav := '0000000001';
      ACBrECF1.InfoRodapeCupom.DavOs := '0000000002';
      ACBrECF1.InfoRodapeCupom.PreVenda := '0000000003';
-     ACBrECF1.InfoRodapeCupom.CupomMania := 'Total ICMS: R$1,23 VÁLIDO PARA O CUPOM MANIA';
+     ACBrECF1.InfoRodapeCupom.CupomMania := 123456.78;
      ACBrECF1.InfoRodapeCupom.MinasLegal := True;
 
      Obs := StringReplace(Obs,'|',#10,[rfReplaceAll,rfIgnoreCase]) ;

@@ -100,16 +100,16 @@ TACBrECFRodape = class
     fsMD5: String;
     fsDav: String;
     fsMinasLegal: Boolean;
-    fsCupomMania: String;
+    fsCupomMania: Double;
   public
     constructor Create;
     procedure Clear;
   published
-    property MD5        : String read fsMD5      write fsMD5;
-    property Dav        : String read fsDav      write fsDav;
-    property DavOs      : String read fsDavOs    write fsDavOs;
-    property PreVenda   : String read fsPreVenda write fsPreVenda;
-    property CupomMania : String read fsCupomMania write fsCupomMania;
+    property MD5        : String  read fsMD5        write fsMD5;
+    property Dav        : String  read fsDav        write fsDav;
+    property DavOs      : String  read fsDavOs      write fsDavOs;
+    property PreVenda   : String  read fsPreVenda   write fsPreVenda;
+    property CupomMania : Double  read fsCupomMania write fsCupomMania;
     property MinasLegal : Boolean read fsMinasLegal write fsMinasLegal;
 end;
 
@@ -4035,16 +4035,16 @@ end;
 
 constructor TACBrECFRodape.Create;
 begin
+  fsMD5 := EmptyStr;
   Self.Clear;
 end;
 
 procedure TACBrECFRodape.Clear;
 begin
-  fsMD5        := EmptyStr;
   fsDav        := EmptyStr;
   fsDavOs      := EmptyStr;
   fsPreVenda   := EmptyStr;
-  fsCupomMania := EmptyStr;
+  fsCupomMania := 0.00;
   fsMinasLegal := False;
 end;
 

@@ -2942,8 +2942,11 @@ begin
     RodapePafECF := RodapePafECF + #10 + 'DAV-OS' + Trim(InfoRodapeCupom.DavOs);
 
   // atende ao cupom mania do RJ
-  if Trim(InfoRodapeCupom.CupomMania) <> EmptyStr then
-    RodapePafECF := RodapePafECF + #10 + Trim(InfoRodapeCupom.CupomMania);
+  if InfoRodapeCupom.CupomMania > 0 then
+  begin
+    RodapePafECF := RodapePafECF + #10 +
+      Format('Total ICMS: R$%.2f VÁLIDO PARA O CUPOM MANIA', [InfoRodapeCupom.CupomMania]);
+  end;
 
   if InfoRodapeCupom.MinasLegal then
   begin

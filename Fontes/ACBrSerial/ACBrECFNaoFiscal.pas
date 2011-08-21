@@ -97,7 +97,7 @@ uses ACBrECFClass, ACBrDevice, ACBrUtil, ACBrConsts,
 const CRLF = #13+#10 ;
       cCmdImpCondensado = #15 ;
       cCmdImpExpandidoUmaLinha = #14 ;
-      cCmdImpFimExpandido = '';
+      cCmdImpFimExpandido = '#20';
       cCmdImpZera = #27+'@' ;
 
 type
@@ -2327,11 +2327,11 @@ begin
      Add( padC(' Contadores ',Colunas,'-') ) ;
      Add( padS('Reducoes Z:|'+IntToStrZero(fsReducoesZ,4),Colunas,'|') ) ;
      Add( padS('Leitura  X:|'+IntToStrZero(fsLeiturasX,6),Colunas,'|') ) ;
-     Add( padS('Cancelamentos de Cupom:|'+IntToStrZero(fsCuponsCancelados,4),
+     Add( padS('Cancelamentos de Cupom:|'+IntToStrZero(fsCuponsCancelados,6),
         Colunas,'|') ) ;
-     Add( padS('COO do Primeiro Cupom:|'+IntToStrZero(fsCOOInicial,4),
+     Add( padS('COO do Primeiro Cupom:|'+IntToStrZero(fsCOOInicial,6),
         Colunas,'|') ) ;
-     Add( padS('COO do Ultimo Cupom:|'+IntToStrZero(fsCOOFinal,4),Colunas,'|'));
+     Add( padS('COO do Ultimo Cupom:|'+IntToStrZero(fsCOOFinal,6),Colunas,'|'));
      Add( padC(' Totalizadores ',Colunas,'-') ) ;
      Add( padS('Totalizador Geral:|'+FormatFloat('###,###,##0.00',
         fsGrandeTotal ),Colunas,'|') ) ;
@@ -2368,7 +2368,7 @@ begin
         Colunas,'|') ) ;
 
      Add( padC(' Relatorio Gerencial ',Colunas,'-') ) ;
-     Add( padS(' Relatorio Geral:|'+IntToStrZero(fsNumCER,4),Colunas,'|') ) ;
+     Add( padS(' Relatorio Geral:|'+IntToStrZero(fsNumCER,6),Colunas,'|') ) ;
 
      Add( padC('Formas de Pagamento',Colunas,'-') ) ;
      For A := 0 to fsFormasPagamento.Count - 1 do

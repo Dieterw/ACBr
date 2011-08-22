@@ -274,6 +274,7 @@ procedure TBloco_A.WriteRegistroA100(RegA010: TRegistroA010) ;
     strIND_EMIT : AnsiString;
     strCOD_SIT  : AnsiString;
     strIND_PGTO : AnsiString;
+    booNFCancelada : Boolean;
 begin
   if Assigned(RegA010.RegistroA100) then
   begin
@@ -295,6 +296,21 @@ begin
             sdfRegular     : strCOD_SIT  := '00';
             sdfCancelado   : strCOD_SIT  := '02';
           end;
+
+          /// Tratamento NFs canceladas 02 - 19-ago-2011
+          if Pos(strCOD_SIT,'02') > 0 then
+          begin
+            COD_PART       := '';
+            CHV_NFSE       := '';
+            DT_DOC         := 0;
+            DT_EXE_SERV    := 0;
+            IND_PGTO       := tpNenhum;
+            booNFCancelada := true
+          end
+          else
+            booNFCancelada := false;
+
+
           case IND_PGTO of
             tpVista        : strIND_PGTO := '0';
             tpPrazo        : strIND_PGTO := '1';
@@ -302,27 +318,27 @@ begin
             tpNenhum       : strIND_PGTO := '';
           end;
 
-          Add( LFill('A100')              +
-               LFill( strIND_OPER )       +
-               LFill( strIND_EMIT )       +
-               LFill( COD_PART )          +
-               LFill( strCOD_SIT )        +
-               LFill( SER )               +
-               LFill( SUB )               +
-               LFill( NUM_DOC )           +
-               LFill( CHV_NFSE )          +
-               LFill( DT_DOC )            +
-               LFill( DT_EXE_SERV )       +
-               LFill( VL_DOC,0,2 )        +
-               LFill( strIND_PGTO )       +
-               LFill( VL_DESC,0,2 )       +
-               LFill( VL_BC_PIS,0,2 )     +
-               LFill( VL_PIS,0,2 )        +
-               LFill( VL_BC_COFINS,0,2 )  +
-               LFill( VL_COFINS,0,2 )     +
-               LFill( VL_PIS_RET,0,2 )    +
-               LFill( VL_COFINS_RET,0,2 ) +
-               LFill( VL_ISS,0,2 ) ) ;
+          Add( LFill('A100')                             +
+               LFill( strIND_OPER )                      +
+               LFill( strIND_EMIT )                      +
+               LFill( COD_PART )                         +
+               LFill( strCOD_SIT )                       +
+               LFill( SER )                              +
+               LFill( SUB )                              +
+               LFill( NUM_DOC )                          +
+               LFill( CHV_NFSE )                         +
+               LFill( DT_DOC )                           +
+               LFill( DT_EXE_SERV )                      +
+               LFill( VL_DOC,0,2,booNFCancelada )        +
+               LFill( strIND_PGTO )                      +
+               LFill( VL_DESC,0,2,booNFCancelada )       +
+               LFill( VL_BC_PIS,0,2,booNFCancelada )     +
+               LFill( VL_PIS,0,2,booNFCancelada )        +
+               LFill( VL_BC_COFINS,0,2,booNFCancelada )  +
+               LFill( VL_COFINS,0,2,booNFCancelada )     +
+               LFill( VL_PIS_RET,0,2,booNFCancelada )    +
+               LFill( VL_COFINS_RET,0,2,booNFCancelada ) +
+               LFill( VL_ISS,0,2,booNFCancelada ) ) ;
         end;
 
         // Registros FILHOS

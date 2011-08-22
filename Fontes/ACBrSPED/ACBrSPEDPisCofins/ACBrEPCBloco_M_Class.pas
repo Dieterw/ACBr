@@ -673,18 +673,18 @@ begin
                     ccPISPasepSalarios                  : strCOD_CONT :='99' ; // Contribuição para o PIS/Pasep - Folha de Salários
           end;
 
-          Add( LFill('M210')                   +
-               LFill( strCOD_CONT )            +
-               LFill( VL_REC_BRT ,0,2 )        +
-               LFill( VL_BC_CONT ,0,2 )        +
-               LFill( ALIQ_PIS ,0,2 )          +
-               LFill( QUANT_BC_PIS ,0,2 )      +
-               LFill( ALIQ_PIS_QUANT ,0,2 )    +
-               LFill( VL_CONT_APUR ,0,2 )      +
-               LFill( VL_AJUS_ACRES ,0,2 )     +
-               LFill( VL_AJUS_REDUC ,0,2 )     +
-               LFill( VL_CONT_DIFER ,0,2 )     +
-               LFill( VL_CONT_DIFER_ANT ,0,2 ) +
+          Add( LFill('M210')                      +
+               LFill( strCOD_CONT )               +
+               LFill( VL_REC_BRT ,0,2 )           +
+               LFill( VL_BC_CONT ,0,2 )           +
+               LFill( ALIQ_PIS ,0,2 )             +
+               LFill( QUANT_BC_PIS ,0,2, True )   +
+               LFill( ALIQ_PIS_QUANT ,0,2, True ) +
+               LFill( VL_CONT_APUR ,0,2 )         +
+               LFill( VL_AJUS_ACRES ,0,2 )        +
+               LFill( VL_AJUS_REDUC ,0,2 )        +
+               LFill( VL_CONT_DIFER ,0,2 )        +
+               LFill( VL_CONT_DIFER_ANT ,0,2 )    +
                LFill( VL_CONT_PER ,0,2 ) ) ;
         end;
 
@@ -1219,18 +1219,18 @@ begin
                     ccPISPasepSalarios                  : strCOD_CONT :='99' ; // Contribuição para o PIS/Pasep - Folha de Salários
           end;
 
-          Add( LFill('M610')                   +
-               LFill( strCOD_CONT )            +        
-               LFill( VL_REC_BRT ,0,2 )        +
-               LFill( VL_BC_CONT ,0,2 )        +
-               LFill( ALIQ_COFINS ,0,2 )       +
-               LFill( QUANT_BC_COFINS ,0,2 )   +
-               LFill( ALIQ_COFINS_QUANT ,0,2 ) +
-               LFill( VL_CONT_APUR ,0,2 )      +
-               LFill( VL_AJUS_ACRES ,0,2 )     +
-               LFill( VL_AJUS_REDUC ,0,2 )     +
-               LFill( VL_CONT_DIFER ,0,2 )     +
-               LFill( VL_CONT_DIFER_ANT ,0,2 ) +
+          Add( LFill('M610')                         +
+               LFill( strCOD_CONT )                  +
+               LFill( VL_REC_BRT ,0,2 )              +
+               LFill( VL_BC_CONT ,0,2 )              +
+               LFill( ALIQ_COFINS ,0,2 )             +
+               LFill( QUANT_BC_COFINS ,0,2, True )   +
+               LFill( ALIQ_COFINS_QUANT ,0,2, True ) +
+               LFill( VL_CONT_APUR ,0,2 )            +
+               LFill( VL_AJUS_ACRES ,0,2 )           +
+               LFill( VL_AJUS_REDUC ,0,2 )           +
+               LFill( VL_CONT_DIFER ,0,2 )           +
+               LFill( VL_CONT_DIFER_ANT ,0,2 )       +
                LFill( VL_CONT_PER ,0,2 ) ) ;
         end;
 

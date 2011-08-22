@@ -453,7 +453,7 @@ begin
      WriteToTXT( fsNomeCompleto, R, False, False );
 
      if fsEfetuarFlush then
-        FlushToDisk( ExtractFileDrive( fsNomeCompleto )  );
+        FlushToDisk( fsNomeCompleto );
 
      fsDtHrArquivo := FileDateToDateTime( FileAge( fsNomeCompleto ) );
 

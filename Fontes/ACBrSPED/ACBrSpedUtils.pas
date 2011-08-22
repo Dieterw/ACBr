@@ -84,7 +84,7 @@ end;
 
 function funChecaCOD_CONS(const COD_MOD, COD_CONS: AnsiString): Boolean;
 const
-  ListaEnergia: array[0..7] of String = ('01',  // - Comercial
+  ListaEnergia: array[0..7] of AnsiString = ('01',  // - Comercial
                                          '02',  // - Consumo Próprio
                                          '03',  // - Iluminação Pública
                                          '04',  // - Industrial
@@ -92,7 +92,7 @@ const
                                          '06',  // - Residencial
                                          '07',  // - Rural
                                          '08'); // - Serviço Público.
-  ListaAgua: array[0..25] of String = ('00',    // - 01 registro consolidando os documentos de consumo residencial até R$ 50,00
+  ListaAgua: array[0..25] of AnsiString = ('00',    // - 01 registro consolidando os documentos de consumo residencial até R$ 50,00
                                        '01',    // - 01 registro consolidando os documentos de consumo residencial de R$ 50,01 a R$ 100,00
                                        '02',    // - 01 registro consolidando os documentos de consumo residencial de R$ 100,01 a R$ 200,00
                                        '03',    // - 01 registro consolidando os documentos de consumo residencial de R$ 200,01 a R$ 300,00

@@ -950,7 +950,7 @@ begin
   fStringList.SaveToFile(NomeArquivo);
 
   if DoFlushToDisk then
-     FlushToDisk( ExtractFileDrive( NomeArquivo ) );
+     FlushToDisk( NomeArquivo );
 end;
 
 procedure TACBrTEFDArquivo.LeArquivo(const NomeArquivo : String);

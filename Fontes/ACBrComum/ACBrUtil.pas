@@ -111,7 +111,7 @@ Uses SysUtils, Math, Classes
       {$IFNDEF FPC}
         ,Libc
       {$else}
-        ,unix
+        ,unix, BaseUnix
       {$endif}
     {$endif} ;
 
@@ -234,7 +234,7 @@ function FunctionDetect (LibName, FuncName: String; var LibPointer: Pointer)
 function FunctionDetect (LibName, FuncName: String; var LibPointer: Pointer;
    var LibHandle: THandle ): boolean; overload ;
 
-function FlushToDisk(sDriveLetter: string): boolean;
+function FlushToDisk( sFile: string): boolean;
 
 Procedure DesligarMaquina(Reboot: Boolean = False; Forcar: Boolean = False) ;
 Procedure WriteToTXT( const ArqTXT, AString : AnsiString;
@@ -1804,7 +1804,7 @@ end ;
 
 {$IFDEF MSWINDOWS}
  { Fonte: http://stackoverflow.com/questions/1635947/how-to-make-sure-that-a-file-was-permanently-saved-on-usb-when-user-doesnt-use }
- function FlushToDisk(sDriveLetter: string): boolean;
+ function FlushToDisk( sFile: string): boolean;
  var
    hDrive: THandle;
    S:      string;
@@ -1812,7 +1812,7 @@ end ;
    bResult: boolean;
  begin
    bResult := False;
-   S := '\\.\' + sDriveLetter[1] + ':';
+   S := '\\.\' + ExtractFileDrive( sFile )[1] + ':';
 
    //NOTE: this may only work for the SYSTEM user
    hDrive    := CreateFile(PChar(S), GENERIC_READ or
@@ -1830,9 +1830,13 @@ end ;
    Result := bResult;
  end;
 {$ELSE}
- function FlushToDisk(sDriveLetter: string): boolean;
+ function FlushToDisk(sFile: string): boolean;
+ var
+   hDrive: THandle;
  begin
-   Result := False ;
+   hDrive := fpOpen(sFile, O_Creat or O_RDWR or O_SYNC);
+   Result := (fpfsync(hDrive) = 0);
+   fpClose(hDrive);
  end ;
 {$ENDIF}
 

@@ -971,7 +971,7 @@ object frmPrincipal: TfrmPrincipal
     MsgTrabalhando = 'Impressora est'#225' trabalhando'
     MsgRelatorio = 'Imprimindo %s  %d'#170' Via '
     MsgPausaRelatorio = 'Destaque a %d'#170' via, <ENTER> proxima, %d seg.'
-    PaginaDeCodigo = 0
+    PaginaDeCodigo = 28591
     FormMsgFonte.Charset = DEFAULT_CHARSET
     FormMsgFonte.Color = clWindowText
     FormMsgFonte.Height = -11
@@ -1017,6 +1017,8 @@ object frmPrincipal: TfrmPrincipal
       'HTML_Title_Size=2'
       'HTML_Font=<font size="2" face="COURIER NEW">')
     OnBobinaAdicionaLinhas = ACBrECF1BobinaAdicionaLinhas
+    Device.HandShake = hsRTS_CTS
+    Device.HardFlow = True
     ArqLOG = 'log.txt'
     ConfigBarras.MostrarCodigo = False
     ConfigBarras.LarguraLinha = 3

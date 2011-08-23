@@ -97,6 +97,13 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 22/08/2011
+-- ACBrECFDaruma --
+[+] Adicionado propriedade RespostasComando com um set de campos de dados 
+    retornados pela impressora fiscal.
+    Ver o Demo ACBr Daruma para exemplos de como utilizar.
+    (por: Régys Silveira)
+
 Data: 17/08/2011
 -- ACBrECF --
 [+] Adicionada propriedade no ACBrECF que permite montar o rodapé do cupom 
@@ -104,7 +111,6 @@ Data: 17/08/2011
     Obs.: O MD5 informado ficou a cargo da aplicação para que o usuário 
           tenha a liberdade de preenche-lo como quiser.
     (por: Régys Silveira)
-
 
 Data: 16/08/2011
 -- ACBrECFDaruma --

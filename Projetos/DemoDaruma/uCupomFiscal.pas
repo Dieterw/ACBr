@@ -91,6 +91,7 @@ type
     Label29: TLabel;
     ckbMinasLegal: TCheckBox;
     Label30: TLabel;
+    StatusBar1: TStatusBar;
     procedure btnAbrirCupomClick(Sender: TObject);
     procedure btnSubtotalizarClick(Sender: TObject);
     procedure btnRegistrarPagtoClick(Sender: TObject);
@@ -187,6 +188,19 @@ begin
     edtClienteEndereco.Text
   );
 
+  StatusBar1.Panels.Clear;
+  with StatusBar1.Panels.Add do
+  begin
+    Text  := 'COO: ' + frmPrincipal.ACBrECF1.RespostasComando.CampoByName('COO').AsString;
+    Width := 100;
+  end;
+
+  with StatusBar1.Panels.Add do
+  begin
+    Text  := 'CCF: ' + frmPrincipal.ACBrECF1.RespostasComando.CampoByName('CCF').AsString;
+    Width := 100;
+  end;
+
   pgcInfo.ActivePageIndex := 1;
   AtualizarTela;
 end;
@@ -243,6 +257,19 @@ begin
       ModoDescAcresc
     );
 
+    StatusBar1.Panels.Clear;
+    with StatusBar1.Panels.Add do
+    begin
+      Text  := 'Item: ' + frmPrincipal.ACBrECF1.RespostasComando.CampoByName('NumeroItem').AsString;;
+      Width := 100;
+    end;
+
+    with StatusBar1.Panels.Add do
+    begin
+      Text  := 'Valor Líquido: ' + FormatFloat(',#0.00', frmPrincipal.ACBrECF1.RespostasComando.CampoByName('ValorLiquido').AsFloat);
+      Width := 250;
+    end;
+
     AtualizarTela;
   finally
     btnItemRegistrar.Enabled := True;
@@ -267,6 +294,10 @@ begin
     NumItem := StrToInt(Digitado);
     frmPrincipal.ACBrECF1.CancelaItemVendido(NumItem);
     AtualizarTela;
+
+    ShowMessage(
+      'Valor cancelado: ' + FormatFloat(',#0.00', frmPrincipal.ACBrECF1.RespostasComando.CampoByName('ValorCancelado').AsFloat)
+    );
   end;
 end;
 
@@ -278,10 +309,17 @@ end;
 
 procedure TfrmCupomFiscal.btnSubtotalizarClick(Sender: TObject);
 begin
-  frmPrincipal.ACBrECF1.SubtotalizaNaoFiscal(
+  frmPrincipal.ACBrECF1.SubtotalizaCupom(
     StrToFloat(edtSubtotalDescAcrescVlr.Text),
     edtSubtotalObs.Text
   );
+
+  StatusBar1.Panels.Clear;
+  with StatusBar1.Panels.Add do
+  begin
+    Text  := 'Sub-Total: ' + FormatFloat(',#0.00', frmPrincipal.ACBrECF1.RespostasComando.CampoByName('SubTotal').AsFloat);
+    Width := 250;
+  end;
 
   pgcInfo.ActivePageIndex := 3;
   AtualizarTela;
@@ -300,6 +338,18 @@ begin
   );
 
   AtualizarTela;
+
+  StatusBar1.Panels.Clear;
+  with StatusBar1.Panels.Add do
+  begin
+    Valor := frmPrincipal.ACBrECF1.RespostasComando.CampoByName('Saldo').AsFloat;
+    if Valor > 0 then
+      Text := 'A Pagar: ' + FormatFloat(',#0.00', Valor)
+    else
+      Text := 'Troco: ' + FormatFloat(',#0.00', Valor);
+
+    Width := 300;
+  end;
 
   if StrToFloat(edtValorTroco.Text) >= 0 then
     pgcInfo.ActivePageIndex := 4;
@@ -326,6 +376,12 @@ begin
 
   AtualizarTela;
   Close;
+
+  ShowMessage(
+    'Cupom fechado.' + sLineBreak + sLineBreak +
+    'COO: ' + frmPrincipal.ACBrECF1.RespostasComando.CampoByName('COO').AsString + sLineBreak +
+    'Total Líquido: ' + FormatFloat(',#0.00', frmPrincipal.ACBrECF1.RespostasComando.CampoByName('TotalLiquido').AsFloat)
+  );
 end;
 
 end.

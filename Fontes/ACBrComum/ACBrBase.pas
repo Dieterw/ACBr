@@ -162,6 +162,7 @@ de campos quando necessário}
   public
     function Add: TACBrInformacao;
     function CampoByName(const ACampo: String): TACBrInformacao;
+    function AddCampo(const ANome, AValor: String): TACBrInformacao;
 
     property Items[Index: Integer]: TACBrInformacao read GetItem write SetItem; default;
   end;
@@ -405,6 +406,16 @@ begin
 end;
 
 { TACBrInformacoes }
+
+function TACBrInformacoes.AddCampo(const ANome,
+  AValor: String): TACBrInformacao;
+begin
+  with Self.Add do
+  begin
+    Nome     := ANome;
+    AsString := AValor;
+  end;
+end;
 
 function TACBrInformacoes.CampoByName(
   const ACampo: String): TACBrInformacao;

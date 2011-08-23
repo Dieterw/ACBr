@@ -40,6 +40,9 @@ begin
 
   Close;
 
+  ShowMessage(
+    'Valor cancelado: ' + FormatFloat(',#0.00', frmPrincipal.ACBrECF1.RespostasComando.CampoByName('ValorCancelado').AsFloat)
+  );
 end;
 
 end.

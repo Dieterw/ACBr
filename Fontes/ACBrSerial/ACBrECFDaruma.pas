@@ -1915,16 +1915,20 @@ begin
   AguardaImpressao := True ;
 
   if fpMFD then
-   begin
-     StrConsumidor := LeftStr(Consumidor.Documento,20) + cDELIMTADOR +
+  begin
+    StrConsumidor := LeftStr(Consumidor.Documento,20) + cDELIMTADOR +
                       LeftStr(Consumidor.Nome,30) + cDELIMTADOR +
                       LeftStr(Consumidor.Endereco,79) + cDELIMTADOR ;
 
-     EnviaComando(FS + 'F' + #200 + StrConsumidor ) ;
-     Consumidor.Enviado := True ;
-   end
+    EnviaComando(FS + 'F' + #200 + StrConsumidor ) ;
+    Consumidor.Enviado := True ;
+
+    RespostasComando.Clear;
+    RespostasComando.AddCampo('COO', Copy(fpRespostaComando, 10, 6));
+    RespostasComando.AddCampo('CCF', Copy(fpRespostaComando, 16, 6));
+  end
   else
-     EnviaComando(ESC + #200, 8) ;
+    EnviaComando(ESC + #200, 8) ;
 
   ZeraTotalApagar;
 end;
@@ -1953,16 +1957,22 @@ begin
       end;
 
       EnviaComando(FS + 'F' + #211, 15) ;  // Cancela Cupom
+
+      RespostasComando.Clear;
+      RespostasComando.AddCampo('COO', Copy(fpRespostaComando, 10, 6));
+      RespostasComando.AddCampo('CCF', Copy(fpRespostaComando, 16, 6));
+      RespostasComando.AddCampo('ValorCancelado', Copy(fpRespostaComando, 22, 12));
+
     end
     else
-    raise EACBrECFCMDInvalido.Create( ACBrStr('Não existe documento para cancelar.') );
+      raise EACBrECFCMDInvalido.Create( ACBrStr('Não existe documento para cancelar.') );
   end
 
   else if fsNumVersao = '2000' then
      EnviaComando(ESC + #211, 15)
   else
      EnviaComando(ESC + #206, 15) ;
-     
+
   ZeraTotalApagar;
 
   FechaRelatorio ;   { Fecha relatorio se ficou algum aberto (só por garantia)}
@@ -1971,8 +1981,14 @@ end;
 procedure TACBrECFDaruma.CancelaItemVendido(NumItem: Integer);
 begin
   if fpMFD then
-    EnviaComando(FS + 'F' + #203 + IntToStrZero(NumItem ,3) )
-  else if fsNumVersao = '2000' then
+  begin
+    EnviaComando(FS + 'F' + #203 + IntToStrZero(NumItem ,3) );
+
+    RespostasComando.Clear;
+    RespostasComando.AddCampo('ValorCancelado', Copy(fpRespostaComando, 13, 11));
+  end
+  else
+  if fsNumVersao = '2000' then
      EnviaComando(ESC + #204 + IntToStrZero( NumItem ,3) )
   else
      EnviaComando(ESC + #205 + IntToStrZero( NumItem ,3) ) ;
@@ -1982,8 +1998,13 @@ procedure TACBrECFDaruma.CancelaItemVendidoParcial(NumItem: Integer;
   Quantidade: Double);
 begin
   if fpMFD then
+  begin
     EnviaComando(FS + 'F' + #204 +  IntToStrZero(NumItem,3) +
                   IntToStrZero(Round(Quantidade * power(10,fpDecimaisQtd)), 7));
+
+    RespostasComando.Clear;
+    RespostasComando.AddCampo('ValorCancelado', Copy(fpRespostaComando, 10, 11));
+  end;
 end;
 
 procedure TACBrECFDaruma.CancelaDescontoAcrescimoItem(NumItem: Integer);
@@ -1994,29 +2015,42 @@ end;
 
 procedure TACBrECFDaruma.EfetuaPagamento(CodFormaPagto: String;
   Valor: Double; Observacao: AnsiString; ImprimeVinculado: Boolean);
-Var RetCmd : AnsiString ;
+var
+  RetCmd : AnsiString ;
+  Sinal: AnsiString ;
+  Saldo: AnsiString ;
 begin
   if fpMFD then
-   begin
-     Observacao := LeftStr(Observacao,84) + cDELIMTADOR ;
-     RetCmd := EnviaComando( FS + 'F' + #209 + CodFormaPagto +
-                 IntToStrZero( Round( Valor * 100),12) + Observacao, 2) ;
-     fsTotalAPagar := RoundTo( StrToFloatDef( copy(RetCmd,10,13),0 ) / 100, -2) ;
-   end
+  begin
+    Observacao := LeftStr(Observacao,84) + cDELIMTADOR ;
+    RetCmd := EnviaComando( FS + 'F' + #209 + CodFormaPagto +
+                IntToStrZero( Round( Valor * 100),12) + Observacao, 2) ;
+    fsTotalAPagar := RoundTo( StrToFloatDef( copy(RetCmd,10,13),0 ) / 100, -2) ;
+
+    // retornos da daruma
+    Sinal := Copy(fpRespostaComando, 10,  1);
+    Saldo := Copy(fpRespostaComando, 11, 12);
+
+    RespostasComando.Clear;
+    if Sinal = '+' then
+      RespostasComando.AddCampo('Saldo', Saldo)
+    else
+      RespostasComando.AddCampo('Saldo', FloatToStr(StrToFloat(Saldo) * -1));
+  end
   else
-   begin
-     Observacao := LeftStr(Observacao,48) + cDELIMTADOR ;
+  begin
+    Observacao := LeftStr(Observacao,48) + cDELIMTADOR ;
 
-     if fsNumVersao = '2000' then
-        RetCmd := EnviaComando( ESC + #207 + CodFormaPagto +
-                    IntToStrZero( Round( Valor * 100),12) + Observacao, 2)
-     else
-        RetCmd := EnviaComando( ESC + #242 + CodFormaPagto +
-                    IntToStrZero( Round( Valor * 100),12) + Observacao, 2) ;
+    if fsNumVersao = '2000' then
+      RetCmd := EnviaComando( ESC + #207 + CodFormaPagto +
+                  IntToStrZero( Round( Valor * 100),12) + Observacao, 2)
+    else
+      RetCmd := EnviaComando( ESC + #242 + CodFormaPagto +
+                  IntToStrZero( Round( Valor * 100),12) + Observacao, 2) ;
 
-     //fsTotalAPagar := RoundTo( StrToFloatDef( copy(RetCmd,2,12),0 ) / 100, -2) ;
-     fsTotalAPagar := RoundTo( fsTotalAPagar - Valor, -2) ;
-   end ;
+    //fsTotalAPagar := RoundTo( StrToFloatDef( copy(RetCmd,2,12),0 ) / 100, -2) ;
+    fsTotalAPagar := RoundTo( fsTotalAPagar - Valor, -2) ;
+  end ;
 
   fsEmPagamento := true ;
   fsRet244      := '' ;
@@ -2101,6 +2135,10 @@ begin
     end;
 
     EnviaComando( FS + 'F' + #210 + '0' + Obs, 5 );
+
+    RespostasComando.Clear;
+    RespostasComando.AddCampo('COO', Copy(fpRespostaComando, 10,  6));
+    RespostasComando.AddCampo('TotalLiquido', Copy(fpRespostaComando, 16, 12));
   end
   else
   if fsNumVersao = '2000' then
@@ -2117,19 +2155,25 @@ Var
   A_D : AnsiChar ;
 begin
   if DescontoAcrescimo > 0 then
-     A_D := '3'
+    A_D := '3'
   else
-     A_D := '1' ;
+    A_D := '1' ;
 
   DescontoAcrescimo := abs(DescontoAcrescimo) ;
 
   { Inicia fechamento com formas de Pagamento }
   if fpMFD then
-     EnviaComando(FS + 'F' + #206 + A_D + IntToStrZero(Round(DescontoAcrescimo * 100), 12), 5)
-  else if fsNumVersao = '2000' then
-     EnviaComando(ESC + #206 + A_D + IntToStrZero(Round( DescontoAcrescimo * 100 ), 12), 5)
+  begin
+    EnviaComando(FS + 'F' + #206 + A_D + IntToStrZero(Round(DescontoAcrescimo * 100), 12), 5);
+
+    RespostasComando.Clear;
+    RespostasComando.AddCampo('SubTotal', Copy(fpRespostaComando, 10, 12));
+  end
   else
-     EnviaComando(ESC + #241 + A_D + IntToStrZero(Round( DescontoAcrescimo * 100 ), 12), 5) ;
+  if fsNumVersao = '2000' then
+    EnviaComando(ESC + #206 + A_D + IntToStrZero(Round( DescontoAcrescimo * 100 ), 12), 5)
+  else
+    EnviaComando(ESC + #241 + A_D + IntToStrZero(Round( DescontoAcrescimo * 100 ), 12), 5) ;
 
   fsEmPagamento := true ;
   fsTotalAPagar := Subtotal ;
@@ -2206,6 +2250,10 @@ begin
       RetCmd := EnviaComando(FS + 'F' + #201 + AliquotaECF + QtdStr + ValorStr +
                 DescontoStr + FlagDesc + Codigo + Unidade + Descricao ) ;
     end ;
+
+    RespostasComando.Clear;
+    RespostasComando.AddCampo('NumeroItem',   Copy(fpRespostaComando, 10,  3));
+    RespostasComando.AddCampo('ValorLiquido', Copy(fpRespostaComando, 14, 11));
 
     if ValorDescontoAcrescimo > 0 then
       DescontoAcrescimoItemAnterior(

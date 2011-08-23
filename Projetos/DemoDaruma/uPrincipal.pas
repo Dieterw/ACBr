@@ -80,7 +80,7 @@ type
   private
     FBobinaCupom: TStringList;
     function GetIniFileName: String;
-    function LerIni(const ASessao, AIdentif: String): String;
+    function LerIni(const ASessao, AIdentif, ADef: String): String;
     procedure GravarIni(const ASessao, AIdentif, AValor: String);
     procedure AtivarMenus(const ALigar: Boolean);
   public
@@ -141,13 +141,13 @@ begin
   Result := IncludeTrailingPathDelimiter(GetDirApp + 'arquivos');
 end;
 
-function TfrmPrincipal.LerIni(const ASessao, AIdentif: String): String;
+function TfrmPrincipal.LerIni(const ASessao, AIdentif, ADef: String): String;
 var
   IniFile: TIniFile;
 begin
   IniFile := TIniFile.Create(GetIniFileName);
   try
-    Result := IniFile.ReadString(ASessao, AIdentif, '');
+    Result := IniFile.ReadString(ASessao, AIdentif, ADef);
   finally
     IniFile.Free;
   end;
@@ -185,9 +185,9 @@ begin
   ForceDirectories(GetDirArquivos);
 
   // Configurações do ECF
-  cbxPortaComunicacao.Text := LerIni('CONFIG', 'Porta');
-  cbxVelocidade.Text       := LerIni('CONFIG', 'Velocidade');
-  edtTimeout.Text          := LerIni('CONFIG', 'Timeout');
+  cbxPortaComunicacao.Text := LerIni('CONFIG', 'Porta', 'COM1');
+  cbxVelocidade.Text       := LerIni('CONFIG', 'Velocidade', '115200');
+  edtTimeout.Text          := LerIni('CONFIG', 'Timeout', '3');
 
   AtivarMenus(False);
 end;
@@ -237,7 +237,13 @@ begin
             ACBrECF1.CancelaNaoFiscal;
           end;
       end;
-
+      {
+      ACBrECF1.CarregaAliquotas;
+      ACBrECF1.CarregaFormasPagamento;
+      ACBrECF1.CarregaComprovantesNaoFiscais;
+      ACBrECF1.CarregaRelatoriosGerenciais;
+      ACBrECF1.CarregaUnidadesMedida;
+      }
       ACBrECF1.IdentificaOperador(NOME_OPERADOR);
     end
     else
@@ -321,6 +327,12 @@ end;
 procedure TfrmPrincipal.Cancelarcupomfiscal1Click(Sender: TObject);
 begin
   ACBrECF1.CancelaCupom;
+  ShowMessage(
+    'Cupom cancelado.' + sLineBreak + sLineBreak +
+    'COO do cupom cancelado: ' + ACBrECF1.RespostasComando.CampoByName('COO').AsString + sLineBreak +
+    'CCF do cupom cancelado: ' + ACBrECF1.RespostasComando.CampoByName('CCF').AsString + sLineBreak +
+    'Valor cancelado: ' + FormatFloat(',#0.00', ACBrECF1.RespostasComando.CampoByName('ValorCancelado').AsFloat)
+  );
 end;
 
 procedure TfrmPrincipal.RelatrioGerencial1Click(Sender: TObject);
@@ -374,4 +386,3 @@ begin
 end;
 
 end.
-

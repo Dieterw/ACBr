@@ -70,6 +70,7 @@ uses ACBrDevice,
      SysUtils ,
      Classes,
      ACBrConsts,
+     ACBrBase,
      Contnrs
      {$IFNDEF CONSOLE}
        {$IFDEF VisualCLX},
@@ -519,6 +520,7 @@ TACBrECFClass = class
 
     fsPathDLL: string;
     fpInfoRodapeCupom: TACBrECFRodape;
+    fpRespostasComando: TACBrInformacoes;
 
     procedure SetAtivo(const Value: Boolean);
     procedure SetTimeOut(const Value: Integer);
@@ -771,6 +773,8 @@ TACBrECFClass = class
     { String com a Resposta Completa da Impressora (sem tratamentos) }
     Property RespostaComando : AnsiString read fpRespostaComando
        write fpRespostaComando ;
+    { lista com as resposta de comando tratadas }
+    property RespostasComando: TACBrInformacoes read fpRespostasComando write fpRespostasComando;
     
     { Propriedades relacionadas aos dados do ECF }
     { ECF - Variaveis }
@@ -1449,6 +1453,8 @@ begin
 
   fpInfoRodapeCupom := TACBrECFRodape.Create;
 
+  fpRespostasComando := TACBrInformacoes.Create;
+
   {$IFNDEF CONSOLE}
     fsFormMsg                   := nil ;
     fsFormMsgProcedureAExecutar := nil ;
@@ -1485,6 +1491,8 @@ begin
   fpCodBarras.Free ;
 
   fpInfoRodapeCupom.Free ;
+
+  fpRespostasComando.Free ;
 
   {$IFNDEF CONSOLE}
     if Assigned( fsFormMsg ) then

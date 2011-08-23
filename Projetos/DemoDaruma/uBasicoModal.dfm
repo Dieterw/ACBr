@@ -19,32 +19,32 @@ object frmBasicoModal: TfrmBasicoModal
     Left = 0
     Top = 0
     Width = 564
-    Height = 265
+    Height = 270
     Align = alClient
     TabOrder = 0
   end
   object pnlRodape: TPanel
     Left = 0
-    Top = 265
+    Top = 270
     Width = 564
-    Height = 35
+    Height = 30
     Align = alBottom
     TabOrder = 1
     object btnExecutar: TButton
-      Left = 354
-      Top = 4
+      Left = 363
+      Top = 1
       Width = 100
-      Height = 27
+      Height = 28
       Align = alRight
       Caption = 'Executar'
       TabOrder = 0
       OnClick = btnExecutarClick
     end
     object btnCancelar: TButton
-      Left = 460
-      Top = 4
+      Left = 463
+      Top = 1
       Width = 100
-      Height = 27
+      Height = 28
       Align = alRight
       Cancel = True
       Caption = 'Cancelar'

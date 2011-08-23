@@ -445,6 +445,7 @@ TACBrECF = class( TACBrComponent )
     function GetMFAdicional: String;
     function GetInfoRodapeCupom: TACBrECFRodape;
     procedure SetInfoRodapeCupom(const Value: TACBrECFRodape);
+    function GetRespostasComandoClass: TACBrInformacoes;
   protected
     fpUltimoEstadoObtido: TACBrECFEstado;
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
@@ -471,6 +472,7 @@ TACBrECF = class( TACBrComponent )
     Property AguardandoResposta : Boolean     read GetAguardandoRespostaClass ;
     Property ComandoEnviado     : AnsiString  read GetComandoEnviadoClass ;
     Property RespostaComando    : AnsiString  read GetRespostaComandoClass ;
+    Property RespostasComando    : TACBrInformacoes  read GetRespostasComandoClass ;
     property ComandoLOG         : AnsiString  read GetComandoLOGClass
        write SetComandoLOGClass ;
 
@@ -1737,6 +1739,11 @@ end;
 function TACBrECF.GetRespostaComandoClass: AnsiString;
 begin
   Result := fsECF.RespostaComando ;
+end;
+
+function TACBrECF.GetRespostasComandoClass: TACBrInformacoes;
+begin
+  Result := fsECF.RespostasComando ;
 end;
 
 function TACBrECF.GetComandoLOGClass: AnsiString;

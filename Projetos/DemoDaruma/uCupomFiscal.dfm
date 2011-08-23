@@ -1,27 +1,22 @@
 inherited frmCupomFiscal: TfrmCupomFiscal
   Caption = 'Cupom Fiscal'
-  ClientHeight = 500
+  ClientHeight = 520
   ClientWidth = 790
   OnClose = FormClose
   OnCreate = FormCreate
-  ExplicitWidth = 796
-  ExplicitHeight = 532
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnlCliente: TPanel
     Top = 71
     Width = 790
-    Height = 394
+    Height = 400
     TabOrder = 1
-    ExplicitTop = 71
-    ExplicitWidth = 790
-    ExplicitHeight = 394
     object pgcInfo: TPageControl
       Left = 1
       Top = 1
       Width = 344
-      Height = 392
-      ActivePage = TabSheet1
+      Height = 398
+      ActivePage = TabSheet2
       Align = alClient
       TabOrder = 0
       object TabSheet1: TTabSheet
@@ -41,7 +36,7 @@ inherited frmCupomFiscal: TfrmCupomFiscal
         ImageIndex = 1
         object Bevel1: TBevel
           Left = 5
-          Top = 312
+          Top = 322
           Width = 321
           Height = 8
           Shape = bsTopLine
@@ -122,7 +117,7 @@ inherited frmCupomFiscal: TfrmCupomFiscal
         end
         object btnItemCancelarParcial: TButton
           Left = 6
-          Top = 326
+          Top = 336
           Width = 126
           Height = 27
           Caption = 'Cancelar item parcial'
@@ -132,7 +127,7 @@ inherited frmCupomFiscal: TfrmCupomFiscal
         end
         object btnItemCancelarTotal: TButton
           Left = 200
-          Top = 326
+          Top = 336
           Width = 126
           Height = 27
           Caption = 'Cancelar item total'
@@ -568,7 +563,7 @@ inherited frmCupomFiscal: TfrmCupomFiscal
       Left = 345
       Top = 1
       Width = 444
-      Height = 392
+      Height = 398
       Align = alRight
       Caption = 'Bobina'
       Enabled = False
@@ -577,11 +572,11 @@ inherited frmCupomFiscal: TfrmCupomFiscal
         Left = 2
         Top = 15
         Width = 440
-        Height = 311
+        Height = 317
         Align = alClient
         TabOrder = 0
         ControlData = {
-          4C0000007A2D0000252000000000000000000000000000000000000000000000
+          4C0000007A2D0000C32000000000000000000000000000000000000000000000
           000000004C000000000000000000000001000000E0D057007335CF11AE690800
           2B2E126208000000000000004C0000000114020000000000C000000000000046
           8000000000000000000000000000000000000000000000000000000000000000
@@ -589,7 +584,7 @@ inherited frmCupomFiscal: TfrmCupomFiscal
       end
       object GroupBox4: TGroupBox
         Left = 2
-        Top = 326
+        Top = 332
         Width = 440
         Height = 64
         Align = alBottom
@@ -692,27 +687,15 @@ inherited frmCupomFiscal: TfrmCupomFiscal
     end
   end
   inherited pnlRodape: TPanel
-    Top = 465
+    Top = 471
     Width = 790
     TabOrder = 2
-    ExplicitTop = 465
-    ExplicitWidth = 790
     inherited btnExecutar: TButton
       Left = 589
-      Top = 1
-      Height = 33
       Visible = False
-      ExplicitLeft = 589
-      ExplicitTop = 1
-      ExplicitHeight = 33
     end
     inherited btnCancelar: TButton
       Left = 689
-      Top = 1
-      Height = 33
-      ExplicitLeft = 689
-      ExplicitTop = 1
-      ExplicitHeight = 33
     end
   end
   object GroupBox1: TGroupBox
@@ -776,5 +759,12 @@ inherited frmCupomFiscal: TfrmCupomFiscal
       TabOrder = 3
       OnClick = btnIdentificaClienteClick
     end
+  end
+  object StatusBar1: TStatusBar
+    Left = 0
+    Top = 501
+    Width = 790
+    Height = 19
+    Panels = <>
   end
 end

@@ -1911,7 +1911,6 @@ end;
 procedure TACBrECFDaruma.AbreCupom ;
 Var StrConsumidor : String ;
 begin
-  { Daruma não permite informar o CPF/CNPJ na Abertura do Cupom }
   fpUltimaMsgPoucoPapel := 0 ;  { Zera tempo pra msg de pouco papel }
   AguardaImpressao := True ;
 

@@ -2771,7 +2771,7 @@ begin
   DescontoAcrescimo := RoundTo( DescontoAcrescimo, -2) ;
 
   { Tirando os Acentos e trocando todos os #13+#10 por #10 }
-  fsMensagemRodape := TiraAcentos( StringReplace(MensagemRodape,CR+LF,#10,[rfReplaceAll]) );
+  fsMensagemRodape := StringReplace(MensagemRodape,CR+LF,#10,[rfReplaceAll]) ;
   fsMensagemRodape := StringReplace(fsMensagemRodape,'|',#10,[rfReplaceAll]) ;
 
   { Acumula fsMensagemRodape na memória para usar em FechaCupom. Alguns ECFs
@@ -2851,7 +2851,6 @@ begin
 
   Observacao := TrimRight(Observacao) ;
   { Tirando os Acentos e os #13 e #10 }
-  Observacao := TiraAcentos( Observacao );
   Observacao := StringReplace(Observacao,CR,'',[rfReplaceAll]) ;
   Observacao := StringReplace(Observacao,LF,'',[rfReplaceAll]) ;
 
@@ -2920,7 +2919,7 @@ begin
   end ;
 
   { Tirando os Acentos e trocando todos os #13+#10 por #10 }
-  Observacao := TiraAcentos( StringReplace(Observacao,CR+LF,#10,[rfReplaceAll]) );
+  Observacao := StringReplace(Observacao,CR+LF,#10,[rfReplaceAll]) ;
   Observacao := StringReplace(Observacao,'|',#10,[rfReplaceAll]) ;
 
   { montar o rodape quando as informações de rodapé forem passadas }
@@ -3148,7 +3147,7 @@ begin
      raise Exception.Create(Format(ACBrStr(cACBrECFRegistraItemNaoFiscalException), [CodCNF] )) ;
 
   { Tirando os Acentos de OBS }
-  Obs := TiraAcentos( TrimRight(Obs) );
+  Obs := TrimRight(Obs) ;
   { Ajustando valores acima de 2 Decimais }
   Valor := RoundTo( Valor, -2) ;
 
@@ -3255,7 +3254,6 @@ begin
 
   Observacao := TrimRight(Observacao) ;
   { Tirando os Acentos e os #13 e #10 }
-  Observacao := TiraAcentos( Observacao );
   Observacao := StringReplace(Observacao,CR,'',[rfReplaceAll]) ;
   Observacao := StringReplace(Observacao,LF,'',[rfReplaceAll]) ;
 
@@ -3302,7 +3300,7 @@ begin
   DescontoAcrescimo := RoundTo( DescontoAcrescimo, -2) ;
 
   { Tirando os Acentos e trocando todos os #13+#10 por #10 }
-  fsMensagemRodape := TiraAcentos( StringReplace(MensagemRodape,CR+LF,#10,[rfReplaceAll]) );
+  fsMensagemRodape := StringReplace(MensagemRodape,CR+LF,#10,[rfReplaceAll]) ;
   fsMensagemRodape := StringReplace(fsMensagemRodape,'|',#10,[rfReplaceAll]) ;
 
   { Acumula fsMensagemRodape na memória para usar em FechaCupom. Alguns ECFs
@@ -3348,7 +3346,7 @@ begin
      Observacao := fsMensagemRodape ;
 
   { Tirando os Acentos e trocando todos os #13+#10 por #10 }
-  Observacao := TiraAcentos( StringReplace(Observacao,CR+LF,#10,[rfReplaceAll]) );
+  Observacao := StringReplace(Observacao,CR+LF,#10,[rfReplaceAll]) ;
   Observacao := StringReplace(Observacao,'|',#10,[rfReplaceAll]) ;
 
   ComandoLOG := 'FechaNaoFiscal( '+Observacao+' )' ;
@@ -3711,7 +3709,6 @@ procedure TACBrECF.ImprimeCheque(Banco: String; Valor: Double; Favorecido,
 begin
   Observacao := TrimRight(Observacao) ;
   { Tirando os Acentos e os #13 e #10 }
-  Observacao := TiraAcentos( Observacao );
   Observacao := StringReplace(Observacao,CR,'',[rfReplaceAll]) ;
   Observacao := StringReplace(Observacao,LF,'',[rfReplaceAll]) ;
 

@@ -1228,8 +1228,8 @@ begin
      raise Exception.Create( ACBrStr(cACBrECFConsumidorNomeException) ) ;
 
   fsDocumento := CPF_CNPJ ;
-  fsNome      := TiraAcentos( Nome );
-  fsEndereco  := TiraAcentos( Endereco );
+  fsNome      := Nome ;
+  fsEndereco  := Endereco ;
   fsEnviado   := False ;
 end;
 

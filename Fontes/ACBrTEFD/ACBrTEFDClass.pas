@@ -45,7 +45,7 @@ unit ACBrTEFDClass ;
 interface
 
 uses
-  Classes, SysUtils, contnrs
+  Classes, SysUtils, Contnrs, ACBrBase
   {$IFNDEF CONSOLE}
     {$IFDEF VisualCLX}
        ,QForms, QDialogs, QControls
@@ -146,43 +146,13 @@ type
 
   TACBrTEFDObterInfoECF = procedure( Operacao : TACBrTEFDInfoECF;
      var RetornoECF : String  ) of object ;
-  { TACBrTEFDLinhaInformacao }
-
-  TACBrTEFDLinhaInformacao = class
-  private
-    fInformacao : AnsiString;
-
-    function GetAsDate : TDateTime;
-    function GetAsFloat : Double;
-    function GetAsInteger : Integer;
-    function GetAsString: AnsiString;
-    function GetAsTime : TDateTime;
-    function GetAsTimeStamp : TDateTime;
-    function GetAsTimeStampSQL : TDateTime;
-    procedure SetAsAnsiString(const AValue: AnsiString);
-    procedure SetAsDate(const AValue : TDateTime);
-    procedure SetAsFloat(const AValue : Double);
-    procedure SetAsInteger(const AValue : Integer);
-    procedure SetAsString(const AValue: AnsiString);
-    procedure SetAsTime(const AValue : TDateTime);
-    procedure SetAsTimeStamp(const AValue : TDateTime);
-    procedure SetAsTimeStampSQL(const AValue : TDateTime);
-  public
-    property AsString   : AnsiString read GetAsString    write SetAsString ;
-    property AsDate     : TDateTime  read GetAsDate      write SetAsDate ;
-    property AsTime     : TDateTime  read GetAsTime      write SetAsTime ;
-    property AsTimeStamp: TDateTime  read GetAsTimeStamp write SetAsTimeStamp ;
-    property AsTimeStampSQL: TDateTime  read GetAsTimeStampSQL write SetAsTimeStampSQL ;
-    property AsInteger  : Integer    read GetAsInteger   write SetAsInteger ;
-    property AsFloat    : Double     read GetAsFloat     write SetAsFloat ;
-  end ;
 
    { TACBrTEFDLinha }
 
    TACBrTEFDLinha = class
    private
      fIdentificacao : SmallInt;
-     fACBrTEFDLinhaInformacao : TACBrTEFDLinhaInformacao;
+     fACBrTEFDLinhaInformacao : TACBrInformacao;
      fLinha : AnsiString;
      fSequencia : SmallInt;
      function GetChave : AnsiString ;
@@ -198,7 +168,7 @@ type
      property Identificacao : SmallInt   read fIdentificacao  ;
      property Sequencia     : SmallInt   read fSequencia      ;
      property Chave         : AnsiString read GetChave ;
-     property Informacao    : TACBrTEFDLinhaInformacao read fACBrTEFDLinhaInformacao ;
+     property Informacao    : TACBrInformacao read fACBrTEFDLinhaInformacao ;
    end ;
 
    { TACBrTEFDArquivo }
@@ -229,13 +199,13 @@ type
 
      procedure GravaInformacao( const Chave, Informacao : AnsiString ) ; overload;
      procedure GravaInformacao( const Chave : AnsiString;
-        const Informacao : TACBrTEFDLinhaInformacao ) ; overload;
+        const Informacao : TACBrInformacao ) ; overload;
      procedure GravaInformacao( const Identificacao : Integer;
         const Sequencia : Integer; const Informacao : AnsiString ) ; overload;
      procedure GravaInformacao( const Identificacao : Integer;
-        const Sequencia : Integer; const Informacao : TACBrTEFDLinhaInformacao ) ; overload;
+        const Sequencia : Integer; const Informacao : TACBrInformacao ) ; overload;
      function LeInformacao( const Identificacao : Integer;
-        const Sequencia : Integer = 0 ) : TACBrTEFDLinhaInformacao ;
+        const Sequencia : Integer = 0 ) : TACBrInformacao ;
 
      function LeLinha( const Identificacao : Integer;
         const Sequencia : Integer = 0) : TACBrTEFDLinha ;
@@ -258,7 +228,7 @@ type
      fDataHoraTransacaoComprovante : TDateTime;
      fDocumentoPessoa : String;
      fFinalizacao : String;
-     fInformacao : TACBrTEFDLinhaInformacao;
+     fInformacao : TACBrInformacao;
      fHeader : String;
      fID : Integer;
      fMoeda : Integer;
@@ -433,7 +403,7 @@ type
      procedure Clear ;
      procedure LeArquivo( const NomeArquivo : String ) ;
      Function LeInformacao( const Identificacao : Integer;
-        const Sequencia : Integer = 0 ) : TACBrTEFDLinhaInformacao ;
+        const Sequencia : Integer = 0 ) : TACBrInformacao ;
 
      property Conteudo : TACBrTEFDArquivo read fpConteudo ;
 
@@ -695,157 +665,6 @@ implementation
 Uses ACBrUtil, ACBrTEFD, dateutils, StrUtils, Math, ACBrTEFDCliSiTef,
      ACBrTEFDVeSPague ;
 
-{ TACBrTEFDLinhaInformacao }
-
-function TACBrTEFDLinhaInformacao.GetAsDate : TDateTime;
-var
-   DataStr : String;
-begin
-  DataStr := OnlyNumber(Trim(fInformacao)) ;
-
-  try
-     Result := EncodeDate( StrToInt(copy(DataStr,5,4)),
-                           StrToInt(copy(DataStr,3,2)),
-                           StrToInt(copy(DataStr,1,2)) ) ;
-  except
-     Result := 0 ;
-  end;
-end;
-
-function TACBrTEFDLinhaInformacao.GetAsFloat : Double;
-Var
-  Info : String ;
-begin
-  Info := StringReplace( Trim(fInformacao), ',','',[rfReplaceAll] );
-  Info := StringReplace( Info             , '.','',[rfReplaceAll] );
-
-  Result := StrToIntDef( Info ,0) / 100 ;
-end;
-
-function TACBrTEFDLinhaInformacao.GetAsInteger : Integer;
-begin
-  Result := StrToIntDef(Trim(fInformacao),0);
-end;
-
-function TACBrTEFDLinhaInformacao.GetAsString: AnsiString;
-begin
-   Result := fInformacao ;
-end;
-
-function TACBrTEFDLinhaInformacao.GetAsTime : TDateTime;
-var
-   TimeStr : String;
-begin
-  TimeStr := OnlyNumber(Trim(fInformacao)) ;
-
-  try
-     Result := EncodeTime( StrToInt(copy(TimeStr,1,2)),
-                           StrToInt(copy(TimeStr,3,2)),
-                           StrToInt(copy(TimeStr,5,2)), 0) ;
-  except
-     Result := 0 ;
-  end;
-end;
-
-function TACBrTEFDLinhaInformacao.GetAsTimeStamp : TDateTime;
-var
-   DateTimeStr : String;
-begin
-  DateTimeStr := OnlyNumber(Trim(fInformacao)) ;
-
-  try
-     Result := EncodeDateTime( YearOf(now),
-                               StrToInt(copy(DateTimeStr,3,2)),
-                               StrToInt(copy(DateTimeStr,1,2)),
-                               StrToInt(copy(DateTimeStr,5,2)),
-                               StrToInt(copy(DateTimeStr,7,2)),
-                               StrToInt(copy(DateTimeStr,9,2)), 0) ;
-  except
-     Result := 0 ;
-  end;
-end;
-
-function TACBrTEFDLinhaInformacao.GetAsTimeStampSQL : TDateTime;
-var
-   DateTimeStr : String;
-begin
-  DateTimeStr := OnlyNumber(Trim(fInformacao)) ;
-
-  try
-     Result := EncodeDateTime( StrToInt(copy(DateTimeStr,1,4)),
-                               StrToInt(copy(DateTimeStr,5,2)),
-                               StrToInt(copy(DateTimeStr,7,2)),
-                               StrToInt(copy(DateTimeStr,9,2)),
-                               StrToInt(copy(DateTimeStr,11,2)),
-                               StrToInt(copy(DateTimeStr,13,2)), 0) ;
-  except
-     Result := 0 ;
-  end;
-end;
-
-procedure TACBrTEFDLinhaInformacao.SetAsAnsiString(const AValue: AnsiString);
-begin
-   fInformacao := AValue;
-end;
-
-procedure TACBrTEFDLinhaInformacao.SetAsDate(const AValue : TDateTime);
-begin
-  if AValue = 0 then
-     fInformacao := ''
-  else
-     fInformacao := FormatDateTime('DDMMYYYY',AValue)
-end;
-
-procedure TACBrTEFDLinhaInformacao.SetAsFloat(const AValue : Double);
-begin
-  if AValue = 0 then
-     fInformacao := ''
-  else
-   begin
-     fInformacao := IntToStr(Trunc(SimpleRoundTo( AValue * 100 ,0)));
-     if Length(fInformacao) < 3 then
-        fInformacao := PadR(fInformacao,3,'0') ;
-   end ;
-end;
-
-procedure TACBrTEFDLinhaInformacao.SetAsInteger(const AValue : Integer);
-begin
-  if AValue = 0 then
-     fInformacao := ''
-  else
-     fInformacao := IntToStr( AValue );
-end;
-
-procedure TACBrTEFDLinhaInformacao.SetAsString(const AValue: AnsiString);
-begin
-   fInformacao := AValue;
-end;
-
-procedure TACBrTEFDLinhaInformacao.SetAsTime(const AValue : TDateTime);
-begin
-  if AValue = 0 then
-     fInformacao := ''
-  else
-     fInformacao := FormatDateTime('HHNNSS',AValue)
-end;
-
-procedure TACBrTEFDLinhaInformacao.SetAsTimeStamp(const AValue : TDateTime);
-begin
-  if AValue = 0 then
-     fInformacao := ''
-  else
-     fInformacao := FormatDateTime('DDMMHHNNSS',AValue)
-end;
-
-procedure TACBrTEFDLinhaInformacao.SetAsTimeStampSQL(const AValue : TDateTime);
-begin
-  if AValue = 0 then
-     fInformacao := ''
-  else
-     fInformacao := FormatDateTime('YYYYMMDDHHNNSS',AValue)
-end;
-
-
 { TACBrTEFDLinha }
 
 constructor TACBrTEFDLinha.Create;
@@ -856,7 +675,7 @@ begin
 
   inherited ;
 
-  fACBrTEFDLinhaInformacao := TACBrTEFDLinhaInformacao.Create;
+  fACBrTEFDLinhaInformacao := TACBrInformacao.Create;
 end;
 
 destructor TACBrTEFDLinha.Destroy;
@@ -984,7 +803,7 @@ begin
 end ;
 
 procedure TACBrTEFDArquivo.GravaInformacao(const Chave : AnsiString ;
-  const Informacao : TACBrTEFDLinhaInformacao) ;
+  const Informacao : TACBrInformacao) ;
 begin
    GravaInformacao(Chave, Informacao.AsString);
 end ;
@@ -1003,7 +822,7 @@ begin
 end;
 
 procedure TACBrTEFDArquivo.GravaInformacao( const Identificacao : Integer;
-   const Sequencia : Integer; const Informacao : TACBrTEFDLinhaInformacao ) ;
+   const Sequencia : Integer; const Informacao : TACBrInformacao ) ;
 begin
   GravaInformacao(Identificacao, Sequencia, Informacao.AsString);
 end;
@@ -1059,7 +878,7 @@ begin
 end;
 
 function TACBrTEFDArquivo.LeInformacao(const Identificacao : Integer;
-  const Sequencia : Integer = 0) : TACBrTEFDLinhaInformacao;
+  const Sequencia : Integer = 0) : TACBrInformacao;
 begin
   Result := LeLinha(Identificacao, Sequencia).Informacao ;
 end;
@@ -1071,7 +890,7 @@ begin
   inherited Create;
 
   fConteudo   := TACBrTEFDArquivo.Create;
-  fInformacao := TACBrTEFDLinhaInformacao.Create;
+  fInformacao := TACBrInformacao.Create;
 
   Clear;
 end;
@@ -1358,7 +1177,7 @@ begin
 end;
 
 function TACBrTEFDResp.LeInformacao(const Identificacao : Integer;
-   const Sequencia : Integer) : TACBrTEFDLinhaInformacao;
+   const Sequencia : Integer) : TACBrInformacao;
 begin
    Result := Conteudo.LeInformacao(Identificacao,Sequencia);
 end;

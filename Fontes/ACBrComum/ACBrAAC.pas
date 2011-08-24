@@ -547,7 +547,7 @@ begin
   begin
      for iFor := 0 to fsIdentPAF.OutrosArquivos.Count - 1 do
      begin
-        if fsIdentPAF.Paf.PrincipalExe.Nome = fsIdentPAF.OutrosArquivos[iFor].Nome then
+        if AnsiCompareText(fsIdentPAF.Paf.PrincipalExe.Nome, fsIdentPAF.OutrosArquivos[iFor].Nome) = 0 then
         begin
            fsIdentPAF.Paf.PrincipalExe.MD5 := fsIdentPAF.OutrosArquivos[iFor].MD5;
            Break

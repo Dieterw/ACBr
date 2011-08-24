@@ -38,6 +38,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+24/08/2011
+-- ACBrAAC --
+[-] Acerto no método que atualização do MD5.
+
 11/08/2011
 -- ACBrAAC --
 [+] Adicionada a propriedade EfetuarFlush : Boolean = True

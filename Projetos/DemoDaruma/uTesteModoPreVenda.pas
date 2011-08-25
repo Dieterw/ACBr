@@ -27,7 +27,7 @@ var
 implementation
 
 uses
-  uPrincipal;
+  uPrincipal, ACBrDevice;
 
 {$R *.dfm}
 
@@ -44,41 +44,58 @@ var
   end;
 
 begin
-  Self.Enabled := False;
-  SetStatus('');
   try
-    QtItens := StrToInt(edtQuantItens.Text);
-
-    with frmPrincipal do
-    begin
-      TickInicial := Now;
-
-      SetStatus('Abrindo cupom fiscal...');
-      ACBrECF1.AbreCupom('', '', '', rbtModoPreVenda.Checked);
-
-      SetStatus('Registrando itens...');
-      for I := 1 to QtItens do
+    Self.Enabled := False;
+    SetStatus('');
+    try
+      QtItens := StrToInt(edtQuantItens.Text);
+      with frmPrincipal do
       begin
-        ACBrECF1.VendeItem(
-          Format('%10.10d', [I]), Format('Descrição do Item %d', [I]), 'II', 1.00, 1.00
-        );
+        TickInicial := Now;
+
+        SetStatus('Abrindo cupom fiscal...');
+        ACBrECF1.AbreCupom('', '', '', rbtModoPreVenda.Checked);
+
+        SetStatus('Registrando itens...');
+        for I := 1 to QtItens do
+        begin
+          ACBrECF1.VendeItem(
+            Format('%10.10d', [I]), Format('Descrição do Item %d', [I]), 'II', 1.00, 1.00
+          );
+        end;
+
+        SetStatus('Subtotalizando o cupom fiscal...');
+        ACBrECF1.SubtotalizaCupom;
+
+        SetStatus('Efetuando pagamento...');
+        ACBrECF1.EfetuaPagamento('01', QtItens);
+
+        SetStatus('Fechando o cupom fiscal...');
+        ACBrECF1.FechaCupom;
+
+        TickFinal := Now
       end;
 
-      SetStatus('Subtotalizando o cupom fiscal...');
-      ACBrECF1.SubtotalizaCupom;
-
-      SetStatus('Efetuando pagamento...');
-      ACBrECF1.EfetuaPagamento('01', QtItens);
-
-      SetStatus('Fechando o cupom fiscal...');
-      ACBrECF1.FechaCupom;
-
-      TickFinal := Now
+      SetStatus('Tempo gasto: ' + FormatDateTime('hh:mm:ss:zzz', TickFinal - TickInicial));
+    finally
+      Self.Enabled := True;
     end;
+  except
+    on E: Exception do
+    begin
+      MessageDlg(
+        'Ocorreu o seguinte erro: ' + sLineBreak + E.Message,
+        mtError,
+        [mbOK],
+        0
+      );
 
-    SetStatus('Tempo gasto: ' + FormatDateTime('hh:mm:ss:zzz', TickFinal - TickInicial));
-  finally
-    Self.Enabled := True;
+      with frmPrincipal do
+      begin
+        if ACBrECF1.Estado in [estVenda, estPagamento] then
+          ACBrECF1.CancelaCupom;
+      end;
+    end;
   end;
 end;
 

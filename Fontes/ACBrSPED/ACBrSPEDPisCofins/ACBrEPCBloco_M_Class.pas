@@ -941,6 +941,8 @@ begin
                LFill( DESC_COMPL ) ) ;
         end;
 
+        // Registros FILHOS
+        WriteRegistroM410( RegM001.RegistroM400.Items[intFor] );
         ///
         RegistroM990.QTD_LIN_M := RegistroM990.QTD_LIN_M + 1;
      end;

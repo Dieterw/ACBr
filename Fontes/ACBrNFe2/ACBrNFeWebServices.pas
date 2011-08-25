@@ -2414,28 +2414,28 @@ begin
   Texto := Texto +       '<versaoDados>'+NFeconsCad+'</versaoDados>';
   Texto := Texto +     '</nfeCabecMsg>';
   Texto := Texto +   '</soap12:Header>';
-  Texto := Texto +   '<soap12:Body>';
-  if UFparaCodigo(TNFeConsultaCadastro(Self).UF) = 35 then
-   begin
-     Texto := Texto +   '<consultaCadastro2 xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro2">';
-     Texto := Texto +     '<nfeDadosMsg>';
-     Texto := Texto + FDadosMsg;
-     Texto := Texto +     '</nfeDadosMsg>';
-     Texto := Texto +   '</consultaCadastro2>';
-   end
-  else
-   begin
+  Texto := Texto +   '<soap12:Body>';                 // Linhas abaixo comentadas por Italo em 25/08/2011
+//  if UFparaCodigo(TNFeConsultaCadastro(Self).UF) = 35 then
+//   begin
+//     Texto := Texto +   '<consultaCadastro2 xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro2">';
+//     Texto := Texto +     '<nfeDadosMsg>';
+//     Texto := Texto + FDadosMsg;
+//     Texto := Texto +     '</nfeDadosMsg>';
+//     Texto := Texto +   '</consultaCadastro2>';
+//   end
+//  else
+//   begin
      Texto := Texto +     '<nfeDadosMsg xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro2">';
      Texto := Texto + FDadosMsg;
      Texto := Texto +     '</nfeDadosMsg>';
-   end;
+//   end;
   Texto := Texto +   '</soap12:Body>';
   Texto := Texto +'</soap12:Envelope>';
 
   Acao.Text := Texto;
 
   {$IFDEF ACBrNFeOpenSSL}
-     Acao.SaveToStream(Stream);  
+     Acao.SaveToStream(Stream);
      HTTP := THTTPSend.Create;
   {$ELSE}
      ReqResp := THTTPReqResp.Create(nil);

@@ -172,7 +172,7 @@ type
 
 { Tipo enumerado para separar os modelos daruma }
 TACBrModelosDaruma = (fs315, fs345, fs2000, fs600, fs2100T, fs600USB, fs700L, fs700H,
-                      fs700M, MACH1, MACH2, MACH3, fsIndefinido);
+                      fs700M, fsMACH1, fsMACH2, fsMACH3, fsIndefinido);
 
 { Classe filha de TACBrECFClass com implementaçao para Daruma }
 
@@ -1468,17 +1468,17 @@ begin
          end
         else if RetCmd = '010063' then
          begin
-          fsModeloDaruma  :=  MACH1 ;
+          fsModeloDaruma  :=  fsMACH1 ;
           SubModelo       :=  'FS-MACH1' ;
          end
         else if RetCmd = '010064' then
          begin
-          fsModeloDaruma  :=  MACH2 ;
+          fsModeloDaruma  :=  fsMACH2 ;
           SubModelo       :=  'FS-MACH2' ;
          end
         else if RetCmd = '010062' then
          begin
-          fsModeloDaruma  :=  MACH3;
+          fsModeloDaruma  :=  fsMACH3;
           SubModelo       :=  'FS-MACH3' ;
          end ;
 
@@ -1916,11 +1916,14 @@ begin
 
   if fpMFD then
   begin
-    StrConsumidor := LeftStr(Consumidor.Documento,20) + cDELIMTADOR +
-                      LeftStr(Consumidor.Nome,30) + cDELIMTADOR +
-                      LeftStr(Consumidor.Endereco,79) + cDELIMTADOR ;
+    if (ModoPreVenda) and (fsModeloDaruma >= fsMACH1) then
+      EnviaComando( FS + 'C' + #226 + '1' ) ;
 
-    EnviaComando(FS + 'F' + #200 + StrConsumidor ) ;
+    StrConsumidor := LeftStr(Consumidor.Documento,20) + cDELIMTADOR +
+                     LeftStr(Consumidor.Nome,30) + cDELIMTADOR +
+                     LeftStr(Consumidor.Endereco,79) + cDELIMTADOR ;
+
+    EnviaComando( FS + 'F' + #200 + StrConsumidor ) ;
     Consumidor.Enviado := True ;
 
     RespostasComando.Clear;

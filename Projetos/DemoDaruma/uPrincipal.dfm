@@ -1097,6 +1097,10 @@ object frmPrincipal: TfrmPrincipal
         Caption = 'Cupom Fiscal'
         OnClick = CupomFiscal2Click
       end
+      object TesteModoPreVenda: TMenuItem
+        Caption = 'Teste de modo pr'#233'-venda'
+        OnClick = TesteModoPreVendaClick
+      end
       object N3: TMenuItem
         Caption = '-'
       end

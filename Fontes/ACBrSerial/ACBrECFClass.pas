@@ -580,6 +580,7 @@ TACBrECFClass = class
     fpMFD: Boolean;
     fpTermica: Boolean;
     fpIdentificaConsumidorRodape: Boolean;
+    fpModoPreVenda: Boolean;
 
     { Coleçao de objetos TACBrECFAliquota }
     fpAliquotas: TACBrECFAliquotas;
@@ -908,6 +909,7 @@ TACBrECFClass = class
     Property MFD          : Boolean read fpMFD ;
     Property ParamDescontoISSQN : Boolean read GetParamDescontoISSQN ;
     Property IdentificaConsumidorRodape : Boolean read fpIdentificaConsumidorRodape ;
+    Property ModoPreVenda: Boolean read fpModoPreVenda write fpModoPreVenda ;
 
     { Procedimentos de Cupom Fiscal }
     property Consumidor : TACBrECFConsumidor read fpConsumidor ;
@@ -1442,6 +1444,7 @@ begin
   fpTermica               := False ;
   fpMFD                   := False ;
   fpIdentificaConsumidorRodape := False ;
+  fpModoPreVenda          := False;
   fpArqLOG                := '' ;
   fpComandoLOG            := '' ;
 

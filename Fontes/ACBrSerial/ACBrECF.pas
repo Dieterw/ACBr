@@ -619,7 +619,7 @@ TACBrECF = class( TACBrComponent )
     Procedure IdentificaConsumidor( CPF_CNPJ : String; Nome : String = '';
        Endereco : String = '') ;
     Procedure AbreCupom( CPF_CNPJ : String = ''; Nome : String = '';
-       Endereco : String = '') ;
+       Endereco : String = ''; ModoPreVenda: Boolean = False) ;
     procedure LegendaInmetroProximoItem; 
     Procedure VendeItem( Codigo, Descricao : String; AliquotaICMS : String;
        Qtd : Double ; ValorUnitario : Double; ValorDescontoAcrescimo : Double = 0;
@@ -2289,7 +2289,7 @@ begin
 end ;
 
 procedure TACBrECF.AbreCupom(CPF_CNPJ: String = ''; Nome : String = '';
-   Endereco : String = '') ;
+   Endereco : String = ''; ModoPreVenda: Boolean = False) ;
 var
   Tratado   : Boolean;
 begin
@@ -2316,6 +2316,7 @@ begin
   ComandoLOG := 'AbreCupom( '+CPF_CNPJ+', '+NOME+', '+ENDERECO+' )' ;
   try
     Tratado := False;
+    fsECF.ModoPreVenda := ModoPreVenda;
     fsECF.AbreCupom ;
   except
      if Assigned( FOnErrorAbreCupom ) then
@@ -2324,6 +2325,8 @@ begin
      if not Tratado then
         raise;
   end;
+
+  fsECF.ModoPreVenda := False;
 
   {$IFNDEF CONSOLE}
    if MemoAssigned then

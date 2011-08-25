@@ -17,7 +17,8 @@ uses
   uCupomFiscalDescAcresAnterior in 'uCupomFiscalDescAcresAnterior.pas' {frmCupomFiscalDescAcresAnterior},
   uRelatorioGerencialFormatado in 'uRelatorioGerencialFormatado.pas' {frmRelatorioGerencialFormatado},
   uLeituraXArquivo in 'uLeituraXArquivo.pas' {frmLeituraXArquivo},
-  uMenuFiscal in 'uMenuFiscal.pas' {frmMenuFiscal};
+  uMenuFiscal in 'uMenuFiscal.pas' {frmMenuFiscal},
+  uTesteModoPreVenda in 'uTesteModoPreVenda.pas' {frmTesteModoPreVenda};
 
 {$R *.res}
 

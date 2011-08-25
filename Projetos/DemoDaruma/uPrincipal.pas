@@ -51,6 +51,7 @@ type
     N3: TMenuItem;
     edtTimeout: TSpinEdit;
     Label4: TLabel;
+    TesteModoPreVenda: TMenuItem;
     procedure btnAtivarDesativarClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure cbxPortaComunicacaoChange(Sender: TObject);
@@ -77,6 +78,7 @@ type
     procedure Cancelarcupomfiscal1Click(Sender: TObject);
     procedure Cancelarcomprovantenofiscal1Click(Sender: TObject);
     procedure edtTimeoutChange(Sender: TObject);
+    procedure TesteModoPreVendaClick(Sender: TObject);
   private
     FBobinaCupom: TStringList;
     function GetIniFileName: String;
@@ -104,7 +106,7 @@ uses
   IniFiles, uGeracaoArquivos, uIdentificacaoPafECF, uProgramarBitmap,
   uSuprimento, uSangria, uRelatorioGerencial, uComprNaoFiscalCompleto,
   uComprNaoFiscal, uCupomFiscal, uRelatorioGerencialFormatado,
-  uLeituraXArquivo, uBasicoModal, uMenuFiscal;
+  uLeituraXArquivo, uBasicoModal, uMenuFiscal, uTesteModoPreVenda;
 
 procedure TfrmPrincipal.AtivarMenus(const ALigar: Boolean);
 var
@@ -349,6 +351,11 @@ end;
 procedure TfrmPrincipal.Suprimento1Click(Sender: TObject);
 begin
   AbrirFormularioModal(TfrmSuprimento);
+end;
+
+procedure TfrmPrincipal.TesteModoPreVendaClick(Sender: TObject);
+begin
+  AbrirFormularioModal(TfrmTesteModoPreVenda);
 end;
 
 procedure TfrmPrincipal.IdentificaodoPafECF1Click(Sender: TObject);

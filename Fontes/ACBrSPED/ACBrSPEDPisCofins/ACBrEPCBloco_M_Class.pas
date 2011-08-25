@@ -557,7 +557,7 @@ begin
                LFill( VL_BC_PIS_CUM ,0,2 )    +
                LFill( VL_BC_PIS_NC ,0,2 )     +
                LFill( VL_BC_PIS ,0,2 )        +
-               LFill( QUANT_BC_PIS_TOT ,0,2 ) +
+               LFill( QUANT_BC_PIS_TOT ,0,2,True ) +
                LFill( QUANT_BC_PIS ,0,2 )     +
                LFill( DESC_CRED ) ) ;
         end;
@@ -1006,7 +1006,7 @@ begin
                LFill( VL_BC_COFINS,0,2 )      +
                LFill( ALIQ_COFINS,0,2 )       +
                LFill( QUANT_BC_COFINS,0,2 )   +
-               LFill( ALIQ_COFINS_QUANT,0,2 ) +
+               LFill( ALIQ_COFINS_QUANT,0,2,True ) +
                LFill( VL_CRED,0,2 )           +
                LFill( VL_AJUS_ACRES,0,2 )     +
                LFill( VL_AJUS_REDUC,0,2 )     +
@@ -1104,7 +1104,7 @@ begin
                LFill( VL_BC_COFINS_CUM,0,2 )    +
                LFill( VL_BC_COFINS_NC,0,2 )     +
                LFill( VL_BC_COFINS,0,2 )        +
-               LFill( QUANT_BC_COFINS_TOT,0,2 ) +
+               LFill( QUANT_BC_COFINS_TOT,0,2,True ) +
                LFill( QUANT_BC_COFINS,0,2 )     +
                LFill( DESC_CRED ) ) ;
         end;

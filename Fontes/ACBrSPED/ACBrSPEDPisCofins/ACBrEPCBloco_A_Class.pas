@@ -105,8 +105,8 @@ type
 
     property RegistroA010Count: Integer read FRegistroA010Count write FRegistroA010Count;
     property RegistroA100Count: Integer read FRegistroA100Count write FRegistroA100Count;
-    property RegistroA110Count: Integer read FRegistroA110Count write FRegistroA111Count;
-    property RegistroA111Count: Integer read FRegistroA111Count write FRegistroA111Count;    
+    property RegistroA110Count: Integer read FRegistroA110Count write FRegistroA110Count;
+    property RegistroA111Count: Integer read FRegistroA111Count write FRegistroA111Count;
     property RegistroA120Count: Integer read FRegistroA120Count write FRegistroA120Count;
     property RegistroA170Count: Integer read FRegistroA170Count write FRegistroA170Count;
   end;

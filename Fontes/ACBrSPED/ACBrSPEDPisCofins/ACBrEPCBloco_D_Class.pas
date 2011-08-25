@@ -824,9 +824,9 @@ begin
                LFill( strCOD_SIT )  +
                LFill( SER )         +
                LFill( SUB )         +
-               LFill( NUM_DOC_INI ) +
-               LFill( NUM_DOC_FIN ) +
-               LFill( CFOP )        +
+               LFill( NUM_DOC_INI,9 ) +
+               LFill( NUM_DOC_FIN,9 ) +
+               LFill( CFOP,4 )      +
                LFill( DT_REF )      +
                LFill( VL_DOC,0,2 )  +
                LFill( VL_DESC,0,2 ) ) ;
@@ -1092,9 +1092,9 @@ begin
                LFill( COD_MOD )          +
                LFill( SER )              +
                LFill( SUB )              +
-               LFill( NUM_DOC_INI )      +
-               LFill( NUM_DOC_FIN )      +
-               LFill( CFOP )             +
+               LFill( NUM_DOC_INI,6 )    +
+               LFill( NUM_DOC_FIN,6 )    +
+               LFill( CFOP,4 )           +
                LFill( DT_REF )           +
                LFill( VL_DOC,0,2 )       +
                LFill( VL_DESC,0,2 )      +

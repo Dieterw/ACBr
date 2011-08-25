@@ -440,7 +440,7 @@ end;
 
 function TACBrInformacoes.GetFields(Index: String): TAcbrInformacao;
 begin
-  Result := FieldByName('Index');
+  Result := FieldByName(Index);
 end;
 
 function TACBrInformacoes.GetItem(

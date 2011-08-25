@@ -1924,8 +1924,8 @@ begin
     Consumidor.Enviado := True ;
 
     RespostasComando.Clear;
-    RespostasComando.AddCampo('COO', Copy(fpRespostaComando, 10, 6));
-    RespostasComando.AddCampo('CCF', Copy(fpRespostaComando, 16, 6));
+    RespostasComando.AddField('COO', Copy(fpRespostaComando, 10, 6));
+    RespostasComando.AddField('CCF', Copy(fpRespostaComando, 16, 6));
   end
   else
     EnviaComando(ESC + #200, 8) ;
@@ -1959,9 +1959,9 @@ begin
       EnviaComando(FS + 'F' + #211, 15) ;  // Cancela Cupom
 
       RespostasComando.Clear;
-      RespostasComando.AddCampo('COO', Copy(fpRespostaComando, 10, 6));
-      RespostasComando.AddCampo('CCF', Copy(fpRespostaComando, 16, 6));
-      RespostasComando.AddCampo('ValorCancelado', Copy(fpRespostaComando, 22, 12));
+      RespostasComando.AddField('COO', Copy(fpRespostaComando, 10, 6));
+      RespostasComando.AddField('CCF', Copy(fpRespostaComando, 16, 6));
+      RespostasComando.AddField('ValorCancelado', Copy(fpRespostaComando, 22, 12));
 
     end
     else
@@ -1985,7 +1985,7 @@ begin
     EnviaComando(FS + 'F' + #203 + IntToStrZero(NumItem ,3) );
 
     RespostasComando.Clear;
-    RespostasComando.AddCampo('ValorCancelado', Copy(fpRespostaComando, 13, 11));
+    RespostasComando.AddField('ValorCancelado', Copy(fpRespostaComando, 13, 11));
   end
   else
   if fsNumVersao = '2000' then
@@ -2003,7 +2003,7 @@ begin
                   IntToStrZero(Round(Quantidade * power(10,fpDecimaisQtd)), 7));
 
     RespostasComando.Clear;
-    RespostasComando.AddCampo('ValorCancelado', Copy(fpRespostaComando, 10, 11));
+    RespostasComando.AddField('ValorCancelado', Copy(fpRespostaComando, 10, 11));
   end;
 end;
 
@@ -2033,9 +2033,9 @@ begin
 
     RespostasComando.Clear;
     if Sinal = '+' then
-      RespostasComando.AddCampo('Saldo', Saldo)
+      RespostasComando.AddField('Saldo', Saldo)
     else
-      RespostasComando.AddCampo('Saldo', FloatToStr(StrToFloat(Saldo) * -1));
+      RespostasComando.AddField('Saldo', FloatToStr(StrToFloat(Saldo) * -1));
   end
   else
   begin
@@ -2137,8 +2137,8 @@ begin
     EnviaComando( FS + 'F' + #210 + '0' + Obs, 5 );
 
     RespostasComando.Clear;
-    RespostasComando.AddCampo('COO', Copy(fpRespostaComando, 10,  6));
-    RespostasComando.AddCampo('TotalLiquido', Copy(fpRespostaComando, 16, 12));
+    RespostasComando.AddField('COO', Copy(fpRespostaComando, 10,  6));
+    RespostasComando.AddField('TotalLiquido', Copy(fpRespostaComando, 16, 12));
   end
   else
   if fsNumVersao = '2000' then
@@ -2167,7 +2167,7 @@ begin
     EnviaComando(FS + 'F' + #206 + A_D + IntToStrZero(Round(DescontoAcrescimo * 100), 12), 5);
 
     RespostasComando.Clear;
-    RespostasComando.AddCampo('SubTotal', Copy(fpRespostaComando, 10, 12));
+    RespostasComando.AddField('SubTotal', Copy(fpRespostaComando, 10, 12));
   end
   else
   if fsNumVersao = '2000' then
@@ -2252,8 +2252,8 @@ begin
     end ;
 
     RespostasComando.Clear;
-    RespostasComando.AddCampo('NumeroItem',   Copy(fpRespostaComando, 10,  3));
-    RespostasComando.AddCampo('ValorLiquido', Copy(fpRespostaComando, 14, 11));
+    RespostasComando.AddField('NumeroItem',   Copy(fpRespostaComando, 10,  3));
+    RespostasComando.AddField('ValorLiquido', Copy(fpRespostaComando, 14, 11));
 
     if ValorDescontoAcrescimo > 0 then
       DescontoAcrescimoItemAnterior(

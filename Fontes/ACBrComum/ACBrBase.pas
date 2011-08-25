@@ -159,12 +159,14 @@ de campos quando necessário}
   private
     function GetItem(Index: Integer): TACBrInformacao;
     procedure SetItem(Index: Integer; const Value: TACBrInformacao);
+    function GetFields(Index: String): TAcbrInformacao;
   public
     function Add: TACBrInformacao;
-    function CampoByName(const ACampo: String): TACBrInformacao;
-    function AddCampo(const ANome, AValor: String): TACBrInformacao;
+    function AddField(const ANome, AValor: String): TACBrInformacao;
+    function FieldByName(const AName: String): TACBrInformacao;
 
-    property Items[Index: Integer]: TACBrInformacao read GetItem write SetItem; default;
+    property Items[Index: Integer]: TACBrInformacao read GetItem write SetItem;
+    property Fields[Index: String]: TAcbrInformacao read GetFields; default;
   end;
 
 procedure ACBrAboutDialog ;
@@ -386,7 +388,7 @@ begin
   if AValue = 0 then
      fInformacao := ''
   else
-     fInformacao := FormatDateTime('HHNNSS',AValue)
+     fInformacao := AnsiString(FormatDateTime('HHNNSS', AValue));
 end;
 
 procedure TACBrInformacao.SetAsTimeStamp(const AValue : TDateTime);
@@ -394,7 +396,7 @@ begin
   if AValue = 0 then
      fInformacao := ''
   else
-     fInformacao := FormatDateTime('DDMMHHNNSS',AValue)
+     fInformacao := AnsiString(FormatDateTime('DDMMHHNNSS', AValue));
 end;
 
 procedure TACBrInformacao.SetAsTimeStampSQL(const AValue : TDateTime);
@@ -402,35 +404,43 @@ begin
   if AValue = 0 then
      fInformacao := ''
   else
-     fInformacao := FormatDateTime('YYYYMMDDHHNNSS',AValue)
+     fInformacao := AnsiString(FormatDateTime('YYYYMMDDHHNNSS', AValue));
 end;
 
 { TACBrInformacoes }
 
-function TACBrInformacoes.AddCampo(const ANome,
+function TACBrInformacoes.AddField(const ANome,
   AValor: String): TACBrInformacao;
 begin
-  with Self.Add do
+  Result := Self.Add;
+  with Result do
   begin
     Nome     := ANome;
-    AsString := AValor;
+    AsString := AnsiString(AValor);
   end;
 end;
 
-function TACBrInformacoes.CampoByName(
-  const ACampo: String): TACBrInformacao;
+function TACBrInformacoes.FieldByName(const AName: String): TACBrInformacao;
 var
   I: Integer;
 begin
   Result := nil;
   for I := 0 to Self.Count - 1 do
   begin
-    if AnsiSameText(Self[I].Nome, ACampo) then
+    if AnsiSameText(Self.Items[I].Nome, AName) then
     begin
-      Result := Self[I];
+      Result := Self.Items[I];
       Exit;
     end;
   end;
+
+  if Result = nil then
+    Exception.CreateFmt('Resposta "%s" não encontrada.', [AName]);
+end;
+
+function TACBrInformacoes.GetFields(Index: String): TAcbrInformacao;
+begin
+  Result := FieldByName('Index');
 end;
 
 function TACBrInformacoes.GetItem(

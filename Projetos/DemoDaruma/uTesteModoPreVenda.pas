@@ -13,6 +13,7 @@ type
     edtQuantItens: TEdit;
     Label1: TLabel;
     Label2: TLabel;
+    lblStatus: TLabel;
     procedure btnExecutarClick(Sender: TObject);
   private
     { Private declarations }
@@ -33,38 +34,49 @@ uses
 procedure TfrmTesteModoPreVenda.btnExecutarClick(Sender: TObject);
 var
   TickInicial, TickFinal: TDateTime;
-  Tipo: String;
   QtItens: Integer;
   I: Integer;
+
+  procedure SetStatus(const ATexto: String);
+  begin
+    lblStatus.Caption := ATexto;
+    Application.ProcessMessages;
+  end;
+
 begin
   Self.Enabled := False;
+  SetStatus('');
   try
     QtItens := StrToInt(edtQuantItens.Text);
 
     with frmPrincipal do
     begin
       TickInicial := Now;
+
+      SetStatus('Abrindo cupom fiscal...');
       ACBrECF1.AbreCupom('', '', '', rbtModoPreVenda.Checked);
+
+      SetStatus('Registrando itens...');
       for I := 1 to QtItens do
       begin
         ACBrECF1.VendeItem(
           Format('%10.10d', [I]), Format('Descrição do Item %d', [I]), 'II', 1.00, 1.00
         );
       end;
+
+      SetStatus('Subtotalizando o cupom fiscal...');
       ACBrECF1.SubtotalizaCupom;
+
+      SetStatus('Efetuando pagamento...');
       ACBrECF1.EfetuaPagamento('01', QtItens);
+
+      SetStatus('Fechando o cupom fiscal...');
       ACBrECF1.FechaCupom;
+
       TickFinal := Now
     end;
 
-    if rbtModoPreVenda.Checked then
-      Tipo := 'Modo PRÉ_VENDA - '
-    else
-      Tipo := 'Modo NORMAL - ';
-
-    ShowMessage(
-      Tipo + 'Tempo gasto: ' + FormatDateTime('hh:mm:ss:zzz', TickFinal - TickInicial)
-    );
+    SetStatus('Tempo gasto: ' + FormatDateTime('hh:mm:ss:zzz', TickFinal - TickInicial));
   finally
     Self.Enabled := True;
   end;

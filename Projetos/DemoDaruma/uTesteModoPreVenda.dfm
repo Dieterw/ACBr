@@ -1,12 +1,12 @@
 inherited frmTesteModoPreVenda: TfrmTesteModoPreVenda
   Caption = 'Comparativo de modo Pr'#233'-venda'
-  ClientHeight = 206
+  ClientHeight = 252
   ClientWidth = 294
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnlCliente: TPanel
     Width = 294
-    Height = 176
+    Height = 222
     object Label1: TLabel
       Left = 25
       Top = 24
@@ -16,7 +16,7 @@ inherited frmTesteModoPreVenda: TfrmTesteModoPreVenda
     end
     object Label2: TLabel
       Left = 25
-      Top = 123
+      Top = 173
       Width = 244
       Height = 26
       Caption = 
@@ -28,6 +28,13 @@ inherited frmTesteModoPreVenda: TfrmTesteModoPreVenda
       Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
+    end
+    object lblStatus: TLabel
+      Left = 25
+      Top = 115
+      Width = 12
+      Height = 13
+      Caption = '...'
     end
     object rbtNormal: TRadioButton
       Left = 25
@@ -62,14 +69,14 @@ inherited frmTesteModoPreVenda: TfrmTesteModoPreVenda
     object edtQuantItens: TEdit
       Left = 25
       Top = 40
-      Width = 121
+      Width = 97
       Height = 21
       TabOrder = 0
       Text = '100'
     end
   end
   inherited pnlRodape: TPanel
-    Top = 176
+    Top = 222
     Width = 294
     inherited btnExecutar: TButton
       Left = 93

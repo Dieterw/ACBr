@@ -2165,8 +2165,8 @@ begin
              LFill(VL_ITEM,0,2)        +
              LFill(VL_BC_PIS,0,2)      +
              LFill(ALIQ_PIS,8,4)       +
-             LFill(QUANT_BC_PIS,0,3)   +
-             LFill(ALIQ_PIS_QUANT,0,4) +
+             LFill(QUANT_BC_PIS,0,3,True)   +
+             LFill(ALIQ_PIS_QUANT,0,4,True) +
              LFill(VL_PIS,0,2)         +
              LFill(COD_CTA) ) ;
         //
@@ -2232,8 +2232,8 @@ begin
              LFill(VL_ITEM,0,2)           +
              LFill(VL_BC_COFINS,0,2)      +
              LFill(ALIQ_COFINS,8,4)       +
-             LFill(QUANT_BC_COFINS,0,3)   +
-             LFill(ALIQ_COFINS_QUANT,0,4) +
+             LFill(QUANT_BC_COFINS,0,3,True)   +
+             LFill(ALIQ_COFINS_QUANT,0,4,True) +
              LFill(VL_COFINS,0,2)         +
              LFill(COD_CTA) ) ;
         //

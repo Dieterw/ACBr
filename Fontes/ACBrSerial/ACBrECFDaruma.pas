@@ -5029,9 +5029,9 @@ begin
     else
     begin
       Resp := xrGerarRelatorioOffline_ECF_Daruma(Relatorio, Tipo, Inicio, Fim,
-                                                 PathDest+'Daruma.mf',
-                                                 PathDest+'Daruma.mfd',
-                                                 PathDest+'Daruma.inf');
+                                                 DirDest + 'Daruma.mf',
+                                                 DirDest + 'Daruma.mfd',
+                                                 DirDest + 'Daruma.inf');
       if (Resp <> 1) then
         raise Exception.Create( ACBrStr( 'Erro ao executar rGerarRelatorioOffline_ECF_Daruma.'+sLineBreak+
                                          'Cod.: '+IntToStr(Resp)+' '+GetDescricaoErroDLL(Resp) )) ;
@@ -5098,9 +5098,9 @@ begin
     else
     begin
       Resp := xrGerarRelatorioOffline_ECF_Daruma(Relatorio, Tipo, DtInicial, DtFinal,
-                                                 PathDest+'Daruma.mf',
-                                                 PathDest+'Daruma.mfd',
-                                                 PathDest+'Daruma.inf');
+                                                 DirDest + 'Daruma.mf',
+                                                 DirDest + 'Daruma.mfd',
+                                                 DirDest + 'Daruma.inf');
       if (Resp <> 1) then
         raise Exception.Create( ACBrStr( 'Erro ao executar rGerarRelatorioOffline_ECF_Daruma.'+sLineBreak+
                                          'Cod.: '+IntToStr(Resp)+' '+GetDescricaoErroDLL(Resp) )) ;

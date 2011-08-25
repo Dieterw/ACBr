@@ -329,9 +329,10 @@ begin
   ACBrECF1.CancelaCupom;
   ShowMessage(
     'Cupom cancelado.' + sLineBreak + sLineBreak +
-    'COO do cupom cancelado: ' + ACBrECF1.RespostasComando.CampoByName('COO').AsString + sLineBreak +
-    'CCF do cupom cancelado: ' + ACBrECF1.RespostasComando.CampoByName('CCF').AsString + sLineBreak +
-    'Valor cancelado: ' + FormatFloat(',#0.00', ACBrECF1.RespostasComando.CampoByName('ValorCancelado').AsFloat)
+    'Resposta extendida:' + sLineBreak +
+    'COO do cupom cancelado: ' + ACBrECF1.RespostasComando['COO'].AsString + sLineBreak +
+    'CCF do cupom cancelado: ' + ACBrECF1.RespostasComando['CCF'].AsString + sLineBreak +
+    'Valor cancelado: ' + FormatFloat(',#0.00', ACBrECF1.RespostasComando['ValorCancelado'].AsFloat)
   );
 end;
 

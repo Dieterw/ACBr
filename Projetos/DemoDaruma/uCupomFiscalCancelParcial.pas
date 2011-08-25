@@ -41,7 +41,8 @@ begin
   Close;
 
   ShowMessage(
-    'Valor cancelado: ' + FormatFloat(',#0.00', frmPrincipal.ACBrECF1.RespostasComando.CampoByName('ValorCancelado').AsFloat)
+    'Resposta extendida: ' + sLineBreak +
+    'Valor cancelado: ' + FormatFloat(',#0.00', frmPrincipal.ACBrECF1.RespostasComando['ValorCancelado'].AsFloat)
   );
 end;
 

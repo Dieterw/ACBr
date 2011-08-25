@@ -191,13 +191,13 @@ begin
   StatusBar1.Panels.Clear;
   with StatusBar1.Panels.Add do
   begin
-    Text  := 'COO: ' + frmPrincipal.ACBrECF1.RespostasComando.CampoByName('COO').AsString;
+    Text  := 'COO: ' + frmPrincipal.ACBrECF1.RespostasComando['COO'].AsString;
     Width := 100;
   end;
 
   with StatusBar1.Panels.Add do
   begin
-    Text  := 'CCF: ' + frmPrincipal.ACBrECF1.RespostasComando.CampoByName('CCF').AsString;
+    Text  := 'CCF: ' + frmPrincipal.ACBrECF1.RespostasComando['CCF'].AsString;
     Width := 100;
   end;
 
@@ -260,13 +260,13 @@ begin
     StatusBar1.Panels.Clear;
     with StatusBar1.Panels.Add do
     begin
-      Text  := 'Item: ' + frmPrincipal.ACBrECF1.RespostasComando.CampoByName('NumeroItem').AsString;;
+      Text  := 'Item: ' + frmPrincipal.ACBrECF1.RespostasComando['NumeroItem'].AsString;;
       Width := 100;
     end;
 
     with StatusBar1.Panels.Add do
     begin
-      Text  := 'Valor Líquido: ' + FormatFloat(',#0.00', frmPrincipal.ACBrECF1.RespostasComando.CampoByName('ValorLiquido').AsFloat);
+      Text  := 'Valor Líquido: ' + FormatFloat(',#0.00', frmPrincipal.ACBrECF1.RespostasComando['ValorLiquido'].AsFloat);
       Width := 250;
     end;
 
@@ -296,7 +296,7 @@ begin
     AtualizarTela;
 
     ShowMessage(
-      'Valor cancelado: ' + FormatFloat(',#0.00', frmPrincipal.ACBrECF1.RespostasComando.CampoByName('ValorCancelado').AsFloat)
+      'Valor cancelado: ' + FormatFloat(',#0.00', frmPrincipal.ACBrECF1.RespostasComando['ValorCancelado'].AsFloat)
     );
   end;
 end;
@@ -317,7 +317,7 @@ begin
   StatusBar1.Panels.Clear;
   with StatusBar1.Panels.Add do
   begin
-    Text  := 'Sub-Total: ' + FormatFloat(',#0.00', frmPrincipal.ACBrECF1.RespostasComando.CampoByName('SubTotal').AsFloat);
+    Text  := 'Sub-Total: ' + FormatFloat(',#0.00', frmPrincipal.ACBrECF1.RespostasComando['SubTotal'].AsFloat);
     Width := 250;
   end;
 
@@ -342,7 +342,7 @@ begin
   StatusBar1.Panels.Clear;
   with StatusBar1.Panels.Add do
   begin
-    Valor := frmPrincipal.ACBrECF1.RespostasComando.CampoByName('Saldo').AsFloat;
+    Valor := frmPrincipal.ACBrECF1.RespostasComando['Saldo'].AsFloat;
     if Valor > 0 then
       Text := 'A Pagar: ' + FormatFloat(',#0.00', Valor)
     else
@@ -379,8 +379,9 @@ begin
 
   ShowMessage(
     'Cupom fechado.' + sLineBreak + sLineBreak +
-    'COO: ' + frmPrincipal.ACBrECF1.RespostasComando.CampoByName('COO').AsString + sLineBreak +
-    'Total Líquido: ' + FormatFloat(',#0.00', frmPrincipal.ACBrECF1.RespostasComando.CampoByName('TotalLiquido').AsFloat)
+    'Resposta extendida:' + sLineBreak +
+    'COO: ' + frmPrincipal.ACBrECF1.RespostasComando['COO'].AsString + sLineBreak +
+    'Total Líquido: ' + FormatFloat(',#0.00', frmPrincipal.ACBrECF1.RespostasComando['TotalLiquido'].AsFloat)
   );
 end;
 

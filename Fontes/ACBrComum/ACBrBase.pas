@@ -77,7 +77,7 @@
 Unit ACBrBase ;
 
 interface
-uses Classes, SysUtils, ACBrConsts,
+uses Classes, SysUtils, Contnrs, ACBrConsts,
      {$IFDEF COMPILER6_UP}
         Types
      {$ELSE}
@@ -155,7 +155,7 @@ de campos quando necessário}
     property AsFloat    : Double     read GetAsFloat     write SetAsFloat ;
   end ;
 
-  TACBrInformacoes = class(TList)
+  TACBrInformacoes = class(TObjectList)
   private
     function GetItem(Index: Integer): TACBrInformacao;
     procedure SetItem(Index: Integer; const Value: TACBrInformacao);

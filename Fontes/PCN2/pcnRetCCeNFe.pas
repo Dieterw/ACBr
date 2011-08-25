@@ -267,7 +267,8 @@ begin
          if FretEvento.Items[i].FRetInfEvento.FCNPJDest = '' then
            (*HR23 *)FretEvento.Items[i].FRetInfEvento.FCNPJDest  := Leitor.rCampo(tcStr, 'CPFDest');
          (*HR24 *)FretEvento.Items[i].FRetInfEvento.FemailDest   := Leitor.rCampo(tcStr, 'emailDest');
-         (*HR25 *)FretEvento.Items[i].FRetInfEvento.FdhRegEvento := Leitor.rCampo(tcStr, 'dhRegEvento');
+         // Tipo alterado de tcStr para tcDatHor por Italo em 25/08/2011
+         (*HR25 *)FretEvento.Items[i].FRetInfEvento.FdhRegEvento := Leitor.rCampo(tcDatHor, 'dhRegEvento');
          (*HR26 *)FretEvento.Items[i].FRetInfEvento.FnProt       := Leitor.rCampo(tcStr, 'nProt');
          inc(i);
        end;

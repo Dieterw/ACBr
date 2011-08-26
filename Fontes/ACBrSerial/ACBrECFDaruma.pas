@@ -218,6 +218,7 @@ TACBrECFDaruma = class( TACBrECFClass )
     function GetRet244: AnsiString;
     procedure ZeraTotalApagar ;
     procedure VerificarBmpTexto(var IndiceBMP: Integer; const ATexto: String);
+    function ModoPreVendaAtivado: Boolean;
     property Ret244 : AnsiString read GetRet244 ;
     function LimpaChr0(const AString: AnsiString): AnsiString;
     function EnviaComando_ECF_Daruma(cmd: AnsiString): AnsiString;
@@ -811,6 +812,11 @@ begin
      fsCNFVinc.Free ;
 
   inherited Destroy ;
+end;
+
+function TACBrECFDaruma.ModoPreVendaAtivado: Boolean;
+begin
+  Result := (ModoPreVenda) and (fsModeloDaruma >= fsMACH1);
 end;
 
 procedure TACBrECFDaruma.ZeraTotalApagar;
@@ -1916,9 +1922,6 @@ begin
 
   if fpMFD then
   begin
-    if (ModoPreVenda) and (fsModeloDaruma >= fsMACH1) then
-      EnviaComando( FS + 'C' + #226 + '1' ) ;
-
     StrConsumidor := LeftStr(Consumidor.Documento,20) + cDELIMTADOR +
                      LeftStr(Consumidor.Nome,30) + cDELIMTADOR +
                      LeftStr(Consumidor.Endereco,79) + cDELIMTADOR ;
@@ -1929,6 +1932,9 @@ begin
     RespostasComando.Clear;
     RespostasComando.AddField('COO', Copy(fpRespostaComando, 10, 6));
     RespostasComando.AddField('CCF', Copy(fpRespostaComando, 16, 6));
+
+    if ModoPreVendaAtivado then
+      EnviaComando( FS + 'C' + #226 + '1' ) ;
   end
   else
     EnviaComando(ESC + #200, 8) ;

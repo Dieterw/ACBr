@@ -2316,8 +2316,8 @@ begin
   ComandoLOG := 'AbreCupom( '+CPF_CNPJ+', '+NOME+', '+ENDERECO+' )' ;
   try
     Tratado := False;
-    fsECF.ModoPreVenda := ModoPreVenda;
     fsECF.AbreCupom ;
+    fsECF.ModoPreVenda := ModoPreVenda;
   except
      if Assigned( FOnErrorAbreCupom ) then
         FOnErrorAbreCupom(Tratado);
@@ -2325,8 +2325,6 @@ begin
      if not Tratado then
         raise;
   end;
-
-  fsECF.ModoPreVenda := False;
 
   {$IFNDEF CONSOLE}
    if MemoAssigned then
@@ -2777,6 +2775,8 @@ procedure TACBrECF.SubtotalizaCupom(DescontoAcrescimo: Double;
 var
   Tratado : Boolean;
 begin
+  fsECF.ModoPreVenda := False;
+
   { Ajustando valores acima de 2 Decimais }
   DescontoAcrescimo := RoundTo( DescontoAcrescimo, -2) ;
 

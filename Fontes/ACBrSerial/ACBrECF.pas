@@ -2316,8 +2316,8 @@ begin
   ComandoLOG := 'AbreCupom( '+CPF_CNPJ+', '+NOME+', '+ENDERECO+' )' ;
   try
     Tratado := False;
-    fsECF.AbreCupom ;
     fsECF.ModoPreVenda := ModoPreVenda;
+    fsECF.AbreCupom ;
   except
      if Assigned( FOnErrorAbreCupom ) then
         FOnErrorAbreCupom(Tratado);

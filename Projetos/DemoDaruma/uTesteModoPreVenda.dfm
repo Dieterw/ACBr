@@ -1,22 +1,22 @@
 inherited frmTesteModoPreVenda: TfrmTesteModoPreVenda
   Caption = 'Comparativo de modo Pr'#233'-venda'
-  ClientHeight = 252
-  ClientWidth = 294
+  ClientHeight = 414
+  ClientWidth = 370
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnlCliente: TPanel
-    Width = 294
-    Height = 222
+    Width = 370
+    Height = 384
     object Label1: TLabel
       Left = 25
-      Top = 24
+      Top = 19
       Width = 97
       Height = 13
       Caption = 'Quantidade de itens'
     end
     object Label2: TLabel
       Left = 25
-      Top = 173
+      Top = 333
       Width = 244
       Height = 26
       Caption = 
@@ -29,16 +29,16 @@ inherited frmTesteModoPreVenda: TfrmTesteModoPreVenda
       Font.Style = []
       ParentFont = False
     end
-    object lblStatus: TLabel
+    object Label3: TLabel
       Left = 25
-      Top = 115
-      Width = 12
+      Top = 111
+      Width = 38
       Height = 13
-      Caption = '...'
+      Caption = 'Status :'
     end
     object rbtNormal: TRadioButton
       Left = 25
-      Top = 75
+      Top = 62
       Width = 91
       Height = 17
       Caption = 'Modo Normal'
@@ -53,8 +53,8 @@ inherited frmTesteModoPreVenda: TfrmTesteModoPreVenda
       TabStop = True
     end
     object rbtModoPreVenda: TRadioButton
-      Left = 147
-      Top = 75
+      Left = 122
+      Top = 62
       Width = 109
       Height = 17
       Caption = 'Modo Pr'#233'-venda'
@@ -68,21 +68,36 @@ inherited frmTesteModoPreVenda: TfrmTesteModoPreVenda
     end
     object edtQuantItens: TEdit
       Left = 25
-      Top = 40
+      Top = 35
       Width = 97
       Height = 21
       TabOrder = 0
-      Text = '100'
+      Text = '50'
+    end
+    object memResposta: TMemo
+      Left = 25
+      Top = 127
+      Width = 321
+      Height = 200
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Courier New'
+      Font.Style = []
+      ParentFont = False
+      ReadOnly = True
+      TabOrder = 3
     end
   end
   inherited pnlRodape: TPanel
-    Top = 222
-    Width = 294
+    Top = 384
+    Width = 370
     inherited btnExecutar: TButton
-      Left = 93
+      Left = 169
+      Default = True
     end
     inherited btnCancelar: TButton
-      Left = 193
+      Left = 269
     end
   end
 end

@@ -13,7 +13,8 @@ type
     edtQuantItens: TEdit;
     Label1: TLabel;
     Label2: TLabel;
-    lblStatus: TLabel;
+    memResposta: TMemo;
+    Label3: TLabel;
     procedure btnExecutarClick(Sender: TObject);
   private
     { Private declarations }
@@ -27,7 +28,7 @@ var
 implementation
 
 uses
-  uPrincipal, ACBrDevice;
+  uPrincipal, ACBrDevice, ACBrUtil;
 
 {$R *.dfm}
 
@@ -36,47 +37,69 @@ var
   TickInicial, TickFinal: TDateTime;
   QtItens: Integer;
   I: Integer;
+  TickItemIni, TickItemFim: TDateTime;
 
-  procedure SetStatus(const ATexto: String);
+  procedure SetStatus(const AString: String; ALimpa: Boolean = False);
   begin
-    lblStatus.Caption := ATexto;
-    Application.ProcessMessages;
+    if ALimpa then
+      memResposta.Clear;
+    memResposta.Lines.Add(AString);
+  end;
+
+  procedure RegistrarTempo(const ATempo: TDateTime);
+  begin
+    SetStatus('  >> ' + FormatDateTime('hh:mm:ss:zzz', ATempo));
   end;
 
 begin
   try
     Self.Enabled := False;
-    SetStatus('');
     try
       QtItens := StrToInt(edtQuantItens.Text);
       with frmPrincipal do
       begin
         TickInicial := Now;
 
-        SetStatus('Abrindo cupom fiscal...');
+        SetStatus('Abrindo cupom fiscal...', True);
+        TickItemIni := Now;
         ACBrECF1.AbreCupom('', '', '', rbtModoPreVenda.Checked);
+        TickItemFim := Now;
+        RegistrarTempo(TickItemFim - TickItemIni);
 
         SetStatus('Registrando itens...');
+        TickItemIni := Now;
         for I := 1 to QtItens do
         begin
           ACBrECF1.VendeItem(
             Format('%10.10d', [I]), Format('Descrição do Item %d', [I]), 'II', 1.00, 1.00
           );
         end;
+        TickItemFim := Now;
+        RegistrarTempo(TickItemFim - TickItemIni);
 
         SetStatus('Subtotalizando o cupom fiscal...');
+        TickItemIni := Now;
         ACBrECF1.SubtotalizaCupom;
+        TickItemFim := Now;
+        RegistrarTempo(TickItemFim - TickItemIni);
 
         SetStatus('Efetuando pagamento...');
+        TickItemIni := Now;
         ACBrECF1.EfetuaPagamento('01', QtItens);
+        TickItemFim := Now;
+        RegistrarTempo(TickItemFim - TickItemIni);
 
         SetStatus('Fechando o cupom fiscal...');
+        TickItemIni := Now;
         ACBrECF1.FechaCupom;
+        TickItemFim := Now;
+        RegistrarTempo(TickItemFim - TickItemIni);
 
         TickFinal := Now
       end;
 
-      SetStatus('Tempo gasto: ' + FormatDateTime('hh:mm:ss:zzz', TickFinal - TickInicial));
+      SetStatus(StringOfChar('-', 40));
+      SetStatus('Tempo total gasto: ' + FormatDateTime('hh:mm:ss:zzz', TickFinal - TickInicial));
     finally
       Self.Enabled := True;
     end;

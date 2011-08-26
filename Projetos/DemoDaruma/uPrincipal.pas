@@ -52,6 +52,7 @@ type
     edtTimeout: TSpinEdit;
     Label4: TLabel;
     TesteModoPreVenda: TMenuItem;
+    ckbGravarLog: TCheckBox;
     procedure btnAtivarDesativarClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure cbxPortaComunicacaoChange(Sender: TObject);
@@ -79,6 +80,7 @@ type
     procedure Cancelarcomprovantenofiscal1Click(Sender: TObject);
     procedure edtTimeoutChange(Sender: TObject);
     procedure TesteModoPreVendaClick(Sender: TObject);
+    procedure ckbGravarLogClick(Sender: TObject);
   private
     FBobinaCupom: TStringList;
     function GetIniFileName: String;
@@ -190,6 +192,7 @@ begin
   cbxPortaComunicacao.Text := LerIni('CONFIG', 'Porta', 'COM1');
   cbxVelocidade.Text       := LerIni('CONFIG', 'Velocidade', '115200');
   edtTimeout.Text          := LerIni('CONFIG', 'Timeout', '3');
+  ckbGravarLog.Checked     := LerIni('CONFIG', 'GravarLog', 'N') = 'S';
 
   AtivarMenus(False);
 end;
@@ -209,6 +212,20 @@ end;
 procedure TfrmPrincipal.edtTimeoutChange(Sender: TObject);
 begin
   GravarIni('CONFIG', 'Timeout', edtTimeout.Text);
+end;
+
+procedure TfrmPrincipal.ckbGravarLogClick(Sender: TObject);
+begin
+  if ckbGravarLog.Checked then
+  begin
+    ACBrECF1.ArqLOG := IncludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0))) + 'log_ecf.txt';
+    GravarIni('CONFIG', 'GravarLog', 'S');
+  end
+  else
+  begin
+    ACBrECF1.ArqLOG := EmptyStr;
+    GravarIni('CONFIG', 'GravarLog', 'N');
+  end;
 end;
 
 procedure TfrmPrincipal.btnAtivarDesativarClick(Sender: TObject);
@@ -239,13 +256,13 @@ begin
             ACBrECF1.CancelaNaoFiscal;
           end;
       end;
-      {
+
       ACBrECF1.CarregaAliquotas;
       ACBrECF1.CarregaFormasPagamento;
       ACBrECF1.CarregaComprovantesNaoFiscais;
       ACBrECF1.CarregaRelatoriosGerenciais;
       ACBrECF1.CarregaUnidadesMedida;
-      }
+
       ACBrECF1.IdentificaOperador(NOME_OPERADOR);
     end
     else

@@ -1,6 +1,7 @@
 object frmPrincipal: TfrmPrincipal
   Left = 0
   Top = 0
+  BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'Demo ACBRDaruma'
   ClientHeight = 382
@@ -944,10 +945,10 @@ object frmPrincipal: TfrmPrincipal
         'COM9')
     end
     object btnAtivarDesativar: TButton
-      Left = 272
-      Top = 34
+      Left = 375
+      Top = 20
       Width = 90
-      Height = 25
+      Height = 39
       Caption = 'Ativar'
       TabOrder = 2
       OnClick = btnAtivarDesativarClick
@@ -963,10 +964,20 @@ object frmPrincipal: TfrmPrincipal
       Value = 3
       OnChange = edtTimeoutChange
     end
+    object ckbGravarLog: TCheckBox
+      Left = 272
+      Top = 38
+      Width = 97
+      Height = 17
+      Caption = 'Gravar log'
+      TabOrder = 4
+      OnClick = ckbGravarLogClick
+    end
   end
   object ACBrECF1: TACBrECF
     Modelo = ecfDaruma
     Porta = 'COM1'
+    IntervaloAposComando = 0
     MsgAguarde = 'Aguardando a resposta da Impressora: %d segundos'
     MsgTrabalhando = 'Impressora est'#225' trabalhando'
     MsgRelatorio = 'Imprimindo %s  %d'#170' Via '
@@ -1019,7 +1030,6 @@ object frmPrincipal: TfrmPrincipal
     OnBobinaAdicionaLinhas = ACBrECF1BobinaAdicionaLinhas
     Device.HandShake = hsRTS_CTS
     Device.HardFlow = True
-    ArqLOG = 'log.txt'
     ConfigBarras.MostrarCodigo = False
     ConfigBarras.LarguraLinha = 3
     ConfigBarras.Altura = 10

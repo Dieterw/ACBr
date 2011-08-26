@@ -4901,6 +4901,11 @@ begin
     -103: Result := 'Não foram encontradas as DLLs auxiliares (lebin.dll e LeituraMFDBin.dll)';
     -104: Result := 'Data informada é inferior ao primeiro documento emitido';
     -105: Result := 'Data informada é maior que a ultima redução Z impressa';
+    -106: Result := 'Nao possui movimento fiscal';
+    -107: Result := 'Porta de comunicação ocupada';
+    -110: Result := 'Indica que o GT foi atualizado no arquivo de registro do PAF';
+    -112: Result := 'O numero de serie ja existe no arquivo do PAF';
+    -113: Result := 'ECF conectado nao cadastrado no arquivo do PAF';
   else
     Result := 'Erro desconhecido.';
   end;

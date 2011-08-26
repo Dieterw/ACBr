@@ -1515,7 +1515,18 @@ begin
   Req.ChequeDC           := ChequeDC;
   FinalizarRequisicao;
 
-  Result := ProcessarRespostaPagamento( IndiceFPG_ECF, Valor);
+  LerRespostaRequisicao;
+
+  if (Resp.QtdLinhasComprovante <= 0) and (Resp.StatusTransacao = '0') then
+   begin
+     try
+        ProcessarResposta ;         { Faz a Impressão e / ou exibe Mensagem ao Operador }
+     finally
+        Result := ProcessarRespostaPagamento( IndiceFPG_ECF, Valor);
+     end;
+   end
+  else
+     Result := ProcessarRespostaPagamento( IndiceFPG_ECF, Valor);
 end;
 
 Function TACBrTEFDClass.CNC : Boolean ;
@@ -1656,7 +1667,7 @@ begin
   if fpAguardandoResposta then
      raise Exception.Create( ACBrStr( 'Requisição anterior não concluida' ) ) ;
 
-  { Verificanso se a Classe de TEF está Inicializado }
+  { Verificando se a Classe de TEF está Inicializado }
   VerificaInicializado ;
 
   TACBrTEFD(Owner).EstadoReq := reqIniciando;

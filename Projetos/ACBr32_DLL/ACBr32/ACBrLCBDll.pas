@@ -49,7 +49,7 @@ CRIA um novo componente TACBrLCB retornando o ponteiro para o objeto criado.
 Este ponteiro deve ser armazenado pela aplicação que utiliza a DLL e informado
 em todas as chamadas de função relativas ao TACBrLCB
 }
-Function LCB_Create(var lcbHandle: PLCBHandle): Integer; {$IFDEF STDCALL} stdcall; {$ELSE} cdecl; {$ENDIF} export;
+Function LCB_Create(var lcbHandle: PLCBHandle): Integer; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
 begin
 
   try
@@ -76,7 +76,7 @@ DESTRÓI o objeto TACBrLCB e libera a memória utilizada.
 Esta função deve SEMPRE ser chamada pela aplicação que utiliza a DLL
 quando o componente não mais for utilizado.
 }
-Function LCB_Destroy(var lcbHandle: PLCBHandle): Integer; {$IFDEF STDCALL} stdcall; {$ELSE} cdecl; {$ENDIF} export;
+Function LCB_Destroy(var lcbHandle: PLCBHandle): Integer; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
 begin
 
   try
@@ -98,7 +98,7 @@ begin
 
 end;
 
-Function LCB_GetUltimoErro(const lcbHandle: PLCBHandle; Buffer : pChar; const BufferLen : Integer) : Integer ; {$IFDEF STDCALL} stdcall; {$ELSE} cdecl; {$ENDIF} export;
+Function LCB_GetUltimoErro(const lcbHandle: PLCBHandle; Buffer : pChar; const BufferLen : Integer) : Integer ; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
 begin
 
   if (lcbHandle = nil) then
@@ -120,7 +120,7 @@ begin
 end;
 
 
-Function LCB_Ativar(const lcbHandle: PLCBHandle) : Integer; {$IFDEF STDCALL} stdcall; {$ELSE} cdecl; {$ENDIF} export;
+Function LCB_Ativar(const lcbHandle: PLCBHandle) : Integer; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
 begin
 
   if (lcbHandle = nil) then
@@ -142,7 +142,7 @@ begin
 
 end;
 
-Function LCB_Desativar(const lcbHandle: PLCBHandle) : Integer; {$IFDEF STDCALL} stdcall; {$ELSE} cdecl; {$ENDIF} export;
+Function LCB_Desativar(const lcbHandle: PLCBHandle) : Integer; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
 begin
 
   if (lcbHandle = nil) then
@@ -164,7 +164,7 @@ begin
 
 end;
 
-Function LCB_GetPorta(const lcbHandle: PLCBHandle; Buffer : pChar; const BufferLen : Integer) : Integer ; {$IFDEF STDCALL} stdcall; {$ELSE} cdecl; {$ENDIF} export;
+Function LCB_GetPorta(const lcbHandle: PLCBHandle; Buffer : pChar; const BufferLen : Integer) : Integer ; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
 var
   StrTmp : String;
 begin
@@ -189,7 +189,7 @@ begin
 
 end;
 
-Function LCB_SetPorta(const lcbHandle: PLCBHandle; const Porta : pChar) : Integer; {$IFDEF STDCALL} stdcall; {$ELSE} cdecl; {$ENDIF} export;
+Function LCB_SetPorta(const lcbHandle: PLCBHandle; const Porta : pChar) : Integer; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
 begin
 
   if (lcbHandle = nil) then
@@ -211,7 +211,7 @@ begin
 
 end;
 
-Function LCB_GetAtivo(const lcbHandle: PLCBHandle) : Integer; {$IFDEF STDCALL} stdcall; {$ELSE} cdecl; {$ENDIF} export;
+Function LCB_GetAtivo(const lcbHandle: PLCBHandle) : Integer; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
 begin
 
   if (lcbHandle = nil) then
@@ -235,7 +235,7 @@ begin
 
 end;
 
-Function LCB_SetOnLeCodigo(const lcbHandle: PLCBHandle; const method : TNotifyEvent) : Integer; {$IFDEF STDCALL} stdcall; {$ELSE} cdecl; {$ENDIF} export;
+Function LCB_SetOnLeCodigo(const lcbHandle: PLCBHandle; const method : TNotifyEvent) : Integer; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
 begin
 
   if (lcbHandle = nil) then

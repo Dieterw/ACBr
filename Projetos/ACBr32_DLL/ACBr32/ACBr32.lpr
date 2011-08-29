@@ -10,5 +10,7 @@ uses
   ACBrBALDll,
   ACBrLCBDll;
 
+{$R *.res}
+
 begin
 end.

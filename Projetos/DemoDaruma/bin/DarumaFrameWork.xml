@@ -1,7 +1,7 @@
 <DARUMAFRAMEWORK>
   <START>
-    <LocalArquivos>C:\Users\Regys\Desktop\</LocalArquivos>
-    <LocalArquivosRelatorios>C:\Users\Regys\Desktop\</LocalArquivosRelatorios>
+    <LocalArquivos>D:\DELPHI\AcBr\Projetos\DemoDaruma\bin\arquivos\</LocalArquivos>
+    <LocalArquivosRelatorios>D:\DELPHI\AcBr\Projetos\DemoDaruma\bin\arquivos\</LocalArquivosRelatorios>
     <LogTamMaxMB>5</LogTamMaxMB>
     <Produto>FISCAL</Produto>
     <ThreadAoIniciar>0</ThreadAoIniciar>
@@ -45,7 +45,7 @@
     <MensagemAviso>AVISO: [O PAPEL ESTA ACABANDO!!]. INSIRA NOVA BOBINA DE PAPEL.</MensagemAviso>
     <ModoGaveta>0</ModoGaveta>
     <NaoAvisarPoucoPapel>0</NaoAvisarPoucoPapel>
-    <PortaSerial>COM7</PortaSerial>
+    <PortaSerial>COM1</PortaSerial>
     <ReceberAvisoEmArquivo>0</ReceberAvisoEmArquivo>
     <ReceberDescricaoAvisoEmArquivo>0</ReceberDescricaoAvisoEmArquivo>
     <ReceberDescricaoErroEmArquivo>0</ReceberDescricaoErroEmArquivo>
@@ -77,7 +77,8 @@
       <TipoDescAcresc>D%</TipoDescAcresc>
       <UnidadeMedida>un</UnidadeMedida>
       <ValorDescAcresc>0.00</ValorDescAcresc>
-    </CF>
+      <MinasLegal>0</MinasLegal>
+      </CF>
     <CCD>
       <DocOrigem></DocOrigem>
       <FormaPgto>Cartao</FormaPgto>

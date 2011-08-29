@@ -97,6 +97,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 29/08/2011
+-- ACBrECFDaruma --
+[-] Acerto na definição do produto para a nova versão dll da daruma.
+    (por: Régys Silveira)
+
+
 Data: 25/08/2011
 -- ACBrECFDaruma --
 [+] Adicionado modo pré-venda, funciona somente para impressoras MACH 1, 2 e 3

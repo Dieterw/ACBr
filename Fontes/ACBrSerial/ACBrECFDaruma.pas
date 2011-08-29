@@ -4829,14 +4829,13 @@ begin
        'ao chamar: '+sLineBreak+
        'xeDefinirModoRegistro_Daruma( "2" )') );
 
-  // Configurar o tipo de impressora na DLL
-  Resp := xeDefinirProduto('FISCAL');
+  // Configurações gerais de funcionamento da DLL
+  Resp := xregAlterarValor_Daruma( 'START\Produto', 'FISCAL' );
   if Resp <> 1 then
      raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' '+GetDescricaoErroDLL(Resp)+sLineBreak+
        'ao chamar: '+sLineBreak+
-       'xeDefinirProduto( "FISCAL" )') );
+       'xregAlterarValor_Daruma( "START\Produto", "ECF" ) ') );
 
-  // Configurações gerais de funcionamento da DLL
   Resp := xregAlterarValor_Daruma( 'ECF\ControleAutomatico', '1' );
   if Resp <> 1 then
      raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' '+GetDescricaoErroDLL(Resp)+sLineBreak+

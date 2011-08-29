@@ -3019,6 +3019,10 @@ object Form1: TForm1
         Caption = 'Cancela Item Vendido'
         OnClick = CancelarItemVendido1Click
       end
+      object MenuItem23: TMenuItem
+        Caption = 'Desconto de Item Anterior'
+        OnClick = MenuItem23Click
+      end
       object N6: TMenuItem
         Caption = '-'
       end

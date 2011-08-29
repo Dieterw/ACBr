@@ -3121,7 +3121,7 @@ procedure TACBrECFEpson.ArquivoMFD_DLL(DataInicial, DataFinal: TDateTime;
   NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet;
   Finalidade: TACBrECFFinalizaArqMFD);
 Var
-  Resp : Integer ;
+  Resp, Tipo : Integer ;
   ArqTmp, DiaIni, DiaFim : AnsiString ;
   OldAtivo : Boolean ;
 begin
@@ -3129,6 +3129,13 @@ begin
 
   ArqTmp := ExtractFilePath( NomeArquivo ) + 'ACBr' ;
   DeleteFile( ArqTmp + '_CTP.txt' ) ;
+
+  case Finalidade of
+     finMF  : Tipo := 1;
+     finMFD : Tipo := 2;
+  else
+     Tipo := 3;
+  end ;
 
   OldAtivo := Ativo ;
   try
@@ -3142,7 +3149,7 @@ begin
     Resp := xEPSON_Obter_Dados_MF_MFD(  PAnsiChar(DiaIni), PAnsiChar(DiaFim),
                                         0,                // Faixa em Datas
                                         DocumentosToNum(Documentos),
-                                        3,                // Ato Cotepe - MFD
+                                        Tipo,
                                         0,                // Nao Gera Sintegra
                                         PAnsiChar( ArqTmp ) );
     if (Resp <> 0) then
@@ -3170,11 +3177,18 @@ procedure TACBrECFEpson.ArquivoMFD_DLL(ContInicial, ContFinal: Integer;
   Finalidade: TACBrECFFinalizaArqMFD;
   TipoContador: TACBrECFTipoContador);
 Var
-  Resp : Integer ;
+  Resp, Tipo : Integer ;
   ArqTmp, CooIni, CooFim : AnsiString ;
   OldAtivo : Boolean ;
 begin
   LoadDLLFunctions ;
+
+  case Finalidade of
+     finMF  : Tipo := 1;
+     finMFD : Tipo := 2;
+  else
+     Tipo := 3;
+  end ;
 
   ArqTmp := ExtractFilePath( NomeArquivo ) + 'ACBr' ;
   DeleteFile( ArqTmp + '_CTP.txt' ) ;
@@ -3189,9 +3203,9 @@ begin
     CooFim := IntToStr( ContFinal ) ;
 
     Resp := xEPSON_Obter_Dados_MF_MFD(  PAnsiChar(COOIni), PAnsiChar(CooFim),
-                                        2,                // Faixa em COO
+                                        IfThen( TipoContador = tpcCOO, 2, 1),
                                         DocumentosToNum(Documentos),
-                                        3,                // Ato Cotepe - TDM
+                                        Tipo,
                                         0,                // Nao Gera Sintegra
                                         PAnsiChar( ArqTmp ) );
     if (Resp <> 0) then

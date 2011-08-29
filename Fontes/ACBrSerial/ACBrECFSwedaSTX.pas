@@ -1465,15 +1465,17 @@ Procedure TACBrECFSwedaSTX.VendeItem( Codigo, Descricao : String;
   TipoDescontoAcrescimo : String; DescontoAcrescimo : String) ;
 var
    Aliquota : TACBrECFAliquota;
+   IAT:String;
 begin
   if Qtd > 9999 then
      raise EACBrECFCMDInvalido.Create( ACBrStr(
            'Quantidade deve ser inferior a 9999.'));
 
-  {O indicador de arredondamento ou trucamento é opcional e só existe em algumas
-   impressoras, para manter compatibilidade esta sendo enviado sempre o padrão(T)
-   omitindo o indicador no comando.
-   }
+  {Usa o arredondamento por item }
+  if ArredondaItemMFD then
+     IAT := 'A'
+  else
+     IAT := 'T';
  {Vai vir o indice, tem que transformar em aliquota no formato Tipo + Aliquota}
   if (AliquotaECF[1] <> 'I') and
      (AliquotaECF[1] <> 'F') and
@@ -1489,7 +1491,9 @@ begin
                        AjustaValor(ValorUnitario, fpDecimaisPreco) +'|'+
                        Trim(LeftStr(Unidade,2))                    +'|'+
                        AliquotaECF                                 +'|'+
-                       Trim(LeftStr(Descricao,33)));
+                       Trim(LeftStr(Descricao,33))                 +'|'+
+                       IAT
+                       );
 
   if ValorDescontoAcrescimo > 0 then
      DescontoAcrescimoItemAnterior( ValorDescontoAcrescimo, DescontoAcrescimo,

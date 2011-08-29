@@ -201,6 +201,7 @@ type
     mAcharRGIndice : TMenuItem ;
     mAcharRGDescricao : TMenuItem ;
     MenuItem20 : TMenuItem ;
+    MenuItem23 : TMenuItem ;
     mValorTotalNaoFiscal : TMenuItem ;
     mCancNaoFiscal : TMenuItem ;
     mAcresNaoFiscal : TMenuItem ;
@@ -441,6 +442,7 @@ type
     procedure mDescNaoFiscalClick(Sender : TObject) ;
     procedure mdsAACECFAfterOpen(DataSet : TDataSet) ;
     procedure MenuItem20Click(Sender : TObject) ;
+    procedure MenuItem23Click(Sender : TObject) ;
     procedure mFontesECFClick(Sender : TObject) ;
     procedure mLerTotaisRelatoriosGerenciaisClick(Sender : TObject) ;
     procedure mLerTrocoClick(Sender : TObject) ;
@@ -1586,6 +1588,11 @@ begin
   mResp.Lines.Add( 'Parametro Desconto ISSQN: '+
      IfThen( ACBrECF1.ParamDescontoISSQN , 'SIM', 'NAO') );
   AtualizaMemos ;
+end;
+
+procedure TForm1.MenuItem23Click(Sender : TObject) ;
+begin
+   ACBrECF1.DescontoAcrescimoItemAnterior(1);
 end;
 
 procedure TForm1.mFontesECFClick(Sender : TObject) ;

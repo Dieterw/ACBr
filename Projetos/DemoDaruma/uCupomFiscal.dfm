@@ -16,7 +16,7 @@ inherited frmCupomFiscal: TfrmCupomFiscal
       Top = 1
       Width = 344
       Height = 398
-      ActivePage = TabSheet1
+      ActivePage = TabSheet5
       Align = alClient
       TabOrder = 0
       object TabSheet1: TTabSheet

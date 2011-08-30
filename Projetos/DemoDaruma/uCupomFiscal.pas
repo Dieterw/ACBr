@@ -125,6 +125,8 @@ procedure TfrmCupomFiscal.AtualizarTela;
 var
   VlSubTotal, VlPago, VlTroco: Double;
 begin
+  Sleep(500);
+
   // Obter valores
   VlSubTotal := frmPrincipal.ACBrECF1.Subtotal;
   VlPago     := frmPrincipal.ACBrECF1.TotalPago;
@@ -374,15 +376,15 @@ begin
 
   frmPrincipal.ACBrECF1.FechaCupom(Observacao, cbxIndiceBMP.ItemIndex);
 
-  AtualizarTela;
-  Close;
-
   ShowMessage(
     'Cupom fechado.' + sLineBreak + sLineBreak +
     'Resposta extendida:' + sLineBreak +
     'COO: ' + frmPrincipal.ACBrECF1.RespostasComando['COO'].AsString + sLineBreak +
     'Total Líquido: ' + FormatFloat(',#0.00', frmPrincipal.ACBrECF1.RespostasComando['TotalLiquido'].AsFloat)
   );
+
+  AtualizarTela;
+  Close;
 end;
 
 end.

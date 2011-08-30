@@ -125,8 +125,6 @@ procedure TfrmCupomFiscal.AtualizarTela;
 var
   VlSubTotal, VlPago, VlTroco: Double;
 begin
-  Sleep(500);
-
   // Obter valores
   VlSubTotal := frmPrincipal.ACBrECF1.Subtotal;
   VlPago     := frmPrincipal.ACBrECF1.TotalPago;

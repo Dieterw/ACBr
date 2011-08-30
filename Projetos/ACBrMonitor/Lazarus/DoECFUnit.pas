@@ -483,6 +483,12 @@ begin
         else if Cmd.Metodo = 'arredonda' then
            Cmd.Resposta := BoolToStr( Arredonda, true )
 
+        else if Cmd.Metodo = 'arredondaitemmfd' then
+           Cmd.Resposta := BoolToStr( ArredondaItemMFD, true )
+
+        else if Cmd.Metodo = 'setarredondaitemmfd' then
+           ArredondaItemMFD := StrToBool( Trim(Cmd.Params(0)))
+
         else if Cmd.Metodo = 'mfd' then
            Cmd.Resposta := BoolToStr( MFD, true )
 

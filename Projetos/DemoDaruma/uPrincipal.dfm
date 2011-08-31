@@ -977,6 +977,7 @@ object frmPrincipal: TfrmPrincipal
   object ACBrECF1: TACBrECF
     Modelo = ecfDaruma
     Porta = 'COM1'
+    TimeOut = 7
     IntervaloAposComando = 0
     MsgAguarde = 'Aguardando a resposta da Impressora: %d segundos'
     MsgTrabalhando = 'Impressora est'#225' trabalhando'

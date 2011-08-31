@@ -385,6 +385,14 @@ begin
     'Total Líquido: ' + FormatFloat(',#0.00', frmPrincipal.ACBrECF1.RespostasComando['TotalLiquido'].AsFloat)
   );
 
+  {
+    Pode-se utilizar as propriedades:
+      frmPrincipal.ACBrECF1.NumCupom
+      frmPrincipal.ACBrECF1.SubTotal
+
+    Agora elas são atualizadas pelo retorno extendido.
+  }
+
   AtualizarTela;
   Close;
 end;

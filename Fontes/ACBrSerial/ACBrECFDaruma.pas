@@ -185,6 +185,7 @@ TACBrECFDaruma = class( TACBrECFClass )
     fsUsuarioAtual: String ;
     fsNumCupom    : String ; //COO
     fsNumCCF      : String ;
+    fsSubTotal    : Double ;
     fsArredonda   : Char ;
     fsTotalAPagar : Double ;
     fsEmPagamento : Boolean ;
@@ -771,6 +772,7 @@ begin
   fsNumCRO      := '' ;
   fsnumcupom    := '' ;
   fsNumCCF      := '' ;
+  fsSubTotal    := 0 ;
   fsArredonda   := ' ';
   fsCNFVinc     := nil ;
   fsTipoRel     := ' ' ;
@@ -857,6 +859,7 @@ begin
   fsArredonda := ' ' ;
   fsnumcupom  := '' ;
   fsNumCCF    := '' ;
+  fsSubTotal  := 0 ;
 
   fpMFD       := False ;
   fpTermica   := False ;
@@ -1274,7 +1277,7 @@ begin
       Result := fsNumCupom
     else
     begin
-      RetCmd  :=  RetornaInfoECF('26');
+      RetCmd :=  RetornaInfoECF('26');
       Result := RetCmd;
     end;
   end
@@ -1584,11 +1587,18 @@ begin
 end;
 
 function TACBrECFDaruma.GetSubTotal: Double;
-Var RetCmd : AnsiString ;
+var
+  RetCmd : AnsiString ;
 begin
   if fpMFD then
-    RetCmd  :=  RetornaInfoECF('47')
-  else if fsNumVersao = '2000' then
+  begin
+    if fsSubTotal > 0 then
+      RetCmd := FloatToStr(fsSubTotal * 100)
+    else
+      RetCmd := RetornaInfoECF('47');
+  end
+  else
+  if fsNumVersao = '2000' then
   begin
     RetCmd := EnviaComando(ESC + #235);
     if LeftStr(RetCmd, 1) <> ':' then
@@ -1946,8 +1956,8 @@ begin
     RespostasComando.AddField('COO', Copy(fpRespostaComando, 10, 6));
     RespostasComando.AddField('CCF', Copy(fpRespostaComando, 16, 6));
 
-    fsNumCupom := Copy(fpRespostaComando, 10, 6);
-    fsNumCCF   := Copy(fpRespostaComando, 16, 6);
+    fsNumCupom := RespostasComando['COO'].AsString;
+    fsNumCCF   := RespostasComando['CCF'].AsString;
 
     if ModoPreVendaAtivado then
       EnviaComando( FS + 'C' + #226 + '1' ) ;
@@ -2164,6 +2174,8 @@ begin
     RespostasComando.Clear;
     RespostasComando.AddField('COO', Copy(fpRespostaComando, 10,  6));
     RespostasComando.AddField('TotalLiquido', Copy(fpRespostaComando, 16, 12));
+
+    fsSubTotal := RespostasComando['TotalLiquido'].AsFloat;
   end
   else
   if fsNumVersao = '2000' then
@@ -2193,6 +2205,7 @@ begin
 
     RespostasComando.Clear;
     RespostasComando.AddField('SubTotal', Copy(fpRespostaComando, 10, 12));
+    fsSubTotal := RespostasComando['SubTotal'].AsFloat;
   end
   else
   if fsNumVersao = '2000' then

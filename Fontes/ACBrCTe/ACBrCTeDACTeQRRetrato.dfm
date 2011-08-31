@@ -1235,7 +1235,7 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
       end
       object qrlMsgTeste: TQRLabel
         Left = 12
-        Top = 27
+        Top = 34
         Width = 717
         Height = 32
         Enabled = False
@@ -1247,7 +1247,7 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
         Size.Values = (
           84.666666666666680000
           31.750000000000000000
-          71.437500000000000000
+          89.958333333333340000
           1897.062500000000000000)
         Alignment = taCenter
         AlignToBand = False

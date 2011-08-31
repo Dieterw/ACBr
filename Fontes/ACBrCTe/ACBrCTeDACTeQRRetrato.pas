@@ -535,12 +535,13 @@ type
 
 implementation
 
-uses StrUtils, ACBrCTeUtil, DateUtils;
+uses
+  StrUtils, ACBrCTeUtil, DateUtils;
 
 {$R *.dfm}
 
 const
-  _NUM_ITEMS_PAGE1  = 26; //esse valor eh dobrado por ter 2 NF por linha
+  _NUM_ITEMS_PAGE1      = 26; //esse valor eh dobrado por ter 2 NF por linha
   _NUM_ITEMS_OTHERPAGES = 88;
 
 var
@@ -813,7 +814,6 @@ begin
 //  qrbRecibo.Height           := 68;
 //  qrbSistema.Height          := 16;
 //  qrbDadosExcEmitente.Height := 40;
-
 end;
 
 procedure TfrmDACTeQRRetrato.qrb_01_ReciboBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
@@ -1272,7 +1272,6 @@ begin
   inherited;
   // Incluido por Italo em 20/04/2011
   PrintBand := QRCTe.PageNumber = 1;
-
 end;
 
 procedure TfrmDACTeQRRetrato.qrb_07_HeaderItensBeforePrint(
@@ -1344,7 +1343,6 @@ begin
 //    qrbLotacaoSim.Height       := 0;
    end;
 }
-
 end;
 
 procedure TfrmDACTeQRRetrato.qrb_09_ObsBeforePrint(
@@ -1645,7 +1643,6 @@ begin
    then qrlRetira.Caption := 'SIM'
    else qrlRetira.Caption := 'NÃO';
   qrlDadosRetira.Caption  := FCte.Ide.xdetretira;
-
 end;
 
 procedure TfrmDACTeQRRetrato.qrb_13_ModAquaviarioBeforePrint(
@@ -1655,7 +1652,6 @@ begin
   // Incluido por Italo em 06/05/2011
   PrintBand := QRCTe.PageNumber = 1;
   qrb_13_ModAquaviario.Enabled := (FCTe.Ide.tpCTe = tcNormal) and (FCTe.Ide.modal = mdAquaviario);
-
 end;
 
 procedure TfrmDACTeQRRetrato.qrb_14_ModFerroviarioBeforePrint(
@@ -1703,7 +1699,6 @@ begin
   // Incluido por Italo em 06/05/2011
   PrintBand := QRCTe.PageNumber = 1;
   qrb_15_ModDutoviario.Enabled := (FCTe.Ide.tpCTe = tcNormal) and (FCTe.Ide.modal = mdDutoviario);
-
 end;
 
 end.

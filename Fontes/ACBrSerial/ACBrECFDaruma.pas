@@ -1270,8 +1270,13 @@ begin
 
   if fpMFD then
   begin
-    RetCmd  :=  RetornaInfoECF('26');
-    Result := RetCmd;
+    if fsNumCupom <> '' then
+      Result := fsNumCupom
+    else
+    begin
+      RetCmd  :=  RetornaInfoECF('26');
+      Result := RetCmd;
+    end;
   end
   else if fsNumVersao='2000' then
   begin

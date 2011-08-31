@@ -1453,6 +1453,23 @@
 //------------------------------------------------------------------------------
 // Definições para o Quick Report
 //------------------------------------------------------------------------------
-
 // Descomente a linha abaixo caso o Quick Report tenha suporte a PDF
-// {$DEFINE QReport_PDF}
+
+//{$DEFINE QReport_PDF}
+
+
+//------------------------------------------------------------------------------
+// Definições para o componente ACBrNFSe
+//------------------------------------------------------------------------------
+// Descomente a linha abaixo para Usar OpenSSL no ACBrNFSe em Delphi
+
+//{$DEFINE ACBrNFSeOpenSSL}
+
+//------------------------------------------------------------------------------
+// Definições para o compomente ACBrCTe
+//------------------------------------------------------------------------------
+// Define o Pacote de Liberação / Descomente o pacote a ser utilizado 
+// Atenção não comente ou descomente as duas definições
+
+{$DEFINE PL_103}
+//{$DEFINE PL_104}

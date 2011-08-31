@@ -2943,10 +2943,16 @@ begin
 
     FcStat   := CCeRetorno.cStat;
     FxMotivo := CCeRetorno.xMotivo;
-    FMsg     := CCeRetorno.xMotivo;
+    // Alteração realizada por Italo em 30/08/2011 conforme sugestão do Wilson
+    /// Alterado linha abaixo para retornar a mensagem da informação do Evento e não o xMotivo pois o mesmo já
+    /// se encontra na classe acima "FxMotivo"
+    FMsg     := CCeRetorno.retEvento.Items[0].RetInfEvento.xMotivo;
+    // FMsg     := CCeRetorno.xMotivo;
     FTpAmb   := CCeRetorno.tpAmb;
 
-    Result   := (CCeRetorno.cStat = 128) or (CCeRetorno.cStat = 135) or (CCeRetorno.cStat = 136);
+    /// Alterado a linha Abaixo para Result=True apenas se o lote foi processado e o evento retornou sucesso e não rejeição.
+    Result   := (CCeRetorno.cStat = 128) and ((CCeRetorno.retEvento.Items[0].RetInfEvento.cStat = 135) or (CCeRetorno.retEvento.Items[0].RetInfEvento.cStat = 136));
+//    Result   := (CCeRetorno.cStat = 128) or (CCeRetorno.cStat = 135) or (CCeRetorno.cStat = 136);
 
     FPathArqResp := IntToStr(FCCe.idLote) + '-cce.xml';
     if FConfiguracoes.Geral.Salvar then

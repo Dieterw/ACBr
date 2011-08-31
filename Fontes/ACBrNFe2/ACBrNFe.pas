@@ -313,8 +313,11 @@ begin
      exit;
    end;
 
-  WebServices.CartaCorrecao.idLote := idLote; 
-  if not(WebServices.CartaCorrecao.Executar) then
+  WebServices.CartaCorrecao.idLote := idLote;
+  //if not(WebServices.CartaCorrecao.Executar) then
+  // Alteração realizada por Italo em 30/08/2011 conforme sugestão do Wilson
+  Result := WebServices.CartaCorrecao.Executar;
+  if not Result then
   begin
     if Assigned(Self.OnGerarLog) then
       Self.OnGerarLog(WebServices.CartaCorrecao.Msg);

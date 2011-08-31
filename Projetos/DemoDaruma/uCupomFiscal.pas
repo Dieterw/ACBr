@@ -192,12 +192,16 @@ begin
   with StatusBar1.Panels.Add do
   begin
     Text  := 'COO: ' + frmPrincipal.ACBrECF1.RespostasComando['COO'].AsString;
+    // pode utilizar também
+    // Text := 'COO: ' + frmPrincipal.ACBrECF1.NumCupom;
     Width := 100;
   end;
 
   with StatusBar1.Panels.Add do
   begin
     Text  := 'CCF: ' + frmPrincipal.ACBrECF1.RespostasComando['CCF'].AsString;
+    // Pode utilizar também
+    // Text := 'CCF: ' + frmPrincipal.ACBrECF1.NumCCF;
     Width := 100;
   end;
 

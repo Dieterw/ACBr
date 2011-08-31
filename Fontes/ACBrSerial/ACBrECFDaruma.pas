@@ -184,6 +184,7 @@ TACBrECFDaruma = class( TACBrECFClass )
     fsNumECF      : String ;
     fsUsuarioAtual: String ;
     fsNumCupom    : String ; //COO
+    fsNumCCF      : String ;
     fsArredonda   : Char ;
     fsTotalAPagar : Double ;
     fsEmPagamento : Boolean ;
@@ -769,6 +770,7 @@ begin
   fsRet244      := '' ;
   fsNumCRO      := '' ;
   fsnumcupom    := '' ;
+  fsNumCCF      := '' ;
   fsArredonda   := ' ';
   fsCNFVinc     := nil ;
   fsTipoRel     := ' ' ;
@@ -851,9 +853,10 @@ begin
   fsNumECF    := '' ;
   fsUsuarioAtual:= '' ;
   fsRet244    := '' ;
-  fsNumCRO    := '' ;
-  fsArredonda := ' ';
-  fsnumcupom  := '';
+  fsNumCRO    := ''  ;
+  fsArredonda := ' ' ;
+  fsnumcupom  := '' ;
+  fsNumCCF    := '' ;
 
   fpMFD       := False ;
   fpTermica   := False ;
@@ -1305,7 +1308,12 @@ function TACBrECFDaruma.GetNumCCF: String;
 begin
   Result := '' ;
   if fpMFD then
-    Result  :=  RetornaInfoECF('30')
+  begin
+    if fsNumCCF = '' then
+      Result :=  RetornaInfoECF('30')
+    else
+      Result := fsNumCCF;
+  end
   else
     Result := fsNumCupom;
 end;
@@ -1932,6 +1940,9 @@ begin
     RespostasComando.Clear;
     RespostasComando.AddField('COO', Copy(fpRespostaComando, 10, 6));
     RespostasComando.AddField('CCF', Copy(fpRespostaComando, 16, 6));
+
+    fsNumCupom := Copy(fpRespostaComando, 10, 6);
+    fsNumCCF   := Copy(fpRespostaComando, 16, 6);
 
     if ModoPreVendaAtivado then
       EnviaComando( FS + 'C' + #226 + '1' ) ;

@@ -185,6 +185,7 @@ TACBrECFDaruma = class( TACBrECFClass )
     fsUsuarioAtual: String ;
     fsNumCupom    : String ; //COO
     fsNumCCF      : String ;
+    fsNumUltimoItem : Integer ;
     fsSubTotal    : Double ;
     fsArredonda   : Char ;
     fsTotalAPagar : Double ;
@@ -981,10 +982,10 @@ begin
         fsCodAviso:= StrToIntDef(copy(Result,7,2),0) ;
      end ;
         
-     if (copy(result,1,2) = ':'+#200 ) then
-        fsNumCupom := copy(result,7,6)
-     else if (copy(result,1,2) <> ':B') then
-        fsNumCupom := '';
+     //if (copy(result,1,2) = ':'+#200 ) then
+     //   fsNumCupom := Trim(copy(result,6,6))
+     //else if (copy(result,1,2) <> ':B') then
+     //   fsNumCupom := '';
 
      if fsNumVersao = '2000' then
         if fsErro = 8 then
@@ -1274,7 +1275,7 @@ begin
   if fpMFD then
   begin
     if fsNumCupom <> '' then
-      Result := fsNumCupom
+      Result := Trim(fsNumCupom)
     else
     begin
       RetCmd :=  RetornaInfoECF('26');
@@ -1953,8 +1954,8 @@ begin
     Consumidor.Enviado := True ;
 
     RespostasComando.Clear;
-    RespostasComando.AddField('COO', Copy(fpRespostaComando, 10, 6));
-    RespostasComando.AddField('CCF', Copy(fpRespostaComando, 16, 6));
+    RespostasComando.AddField('COO', Trim(Copy(fpRespostaComando, 10, 6)));
+    RespostasComando.AddField('CCF', Trim(Copy(fpRespostaComando, 16, 6)));
 
     fsNumCupom := RespostasComando['COO'].AsString;
     fsNumCCF   := RespostasComando['CCF'].AsString;
@@ -1969,8 +1970,10 @@ begin
 end;
 
 procedure TACBrECFDaruma.CancelaCupom;
-Var RetCmd : String ;
-    NumCupCCD : String ;
+var
+  RetCmd : String ;
+  NumCupCCD : String ;
+  NumCupom: String;
 begin
   AguardaImpressao := True ;
 
@@ -1982,7 +1985,8 @@ begin
       try
         RetCmd := EnviaComando( FS + 'R' + #200 + '050');
         NumCupCCD := GetNumCupom;
-        if copy(RetCmd, 6, 6) <> NumCupCCD then
+        NumCupom  := copy(RetCmd, 6, 6);
+        if NumCupom <> NumCupCCD then
         begin
           EnviaComando(FS + 'F' + #214 , 15); // Fecho o CCD caso ainda não esteja fechado
           EnviaComando(FS + 'F' + #218 + NumCupCCD +#255+#255+#255, 15); // Cancela Conprovante Não Fiscal
@@ -2292,6 +2296,8 @@ begin
     RespostasComando.Clear;
     RespostasComando.AddField('NumeroItem',   Copy(fpRespostaComando, 10,  3));
     RespostasComando.AddField('ValorLiquido', Copy(fpRespostaComando, 14, 11));
+
+    fsNumUltimoItem := RespostasComando['NumeroItem'].AsInteger;
 
     if ValorDescontoAcrescimo > 0 then
       DescontoAcrescimoItemAnterior(
@@ -3587,8 +3593,14 @@ begin
   Result := 0 ;
 
   if fpMFD then
-    Result := StrToIntDef(RetornaInfoECF('058'), 0)
-  else if (fsNumVersao = '2000') then
+  begin
+    if fsNumUltimoItem > 0 then
+      Result := fsNumUltimoItem
+    else
+      Result := StrToIntDef(RetornaInfoECF('058'), 0)
+  end
+  else
+  if (fsNumVersao = '2000') then
   begin
     RetCmd := EnviaComando( ESC + #235 ) ;
 
@@ -5003,6 +5015,7 @@ begin
     if (Resp <> 1) then
       raise Exception.Create( ACBrStr( 'Erro ao executar rGerarEspelhoMFD_ECF_Daruma.'+sLineBreak+
                                         'Cod.: '+IntToStr(Resp)+' '+GetDescricaoErroDLL(Resp) )) ;
+
 
     if not FileExists(PathDest) then
       raise Exception.Create( ACBrStr( 'Erro na execução de rGerarEspelhoMFD_ECF_Daruma.'+sLineBreak+

@@ -97,11 +97,15 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 02/09/2011
+-- ACBrECF --
+[-] Implementação do relatório de configurações do Paf-ECF.
+    (por: Régys Silveira)
+
 Data: 29/08/2011
 -- ACBrECFDaruma --
 [-] Acerto na definição do produto para a nova versão dll da daruma.
     (por: Régys Silveira)
-
 
 Data: 25/08/2011
 -- ACBrECFDaruma --

@@ -992,6 +992,7 @@ object frmPrincipal: TfrmPrincipal
     FormMsgColor = clHighlight
     OnAntesAbreCupom = ACBrECF1AntesAbreCupom
     OnChangeEstado = ACBrECF1ChangeEstado
+    OnPAFGetKeyRSA = ACBrECF1PAFGetKeyRSA
     MemoParams.Strings = (
       '[Cabecalho]'
       'LIN000=<center><b>Demo Daruma</b></center>'

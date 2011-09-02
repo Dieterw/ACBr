@@ -81,6 +81,7 @@ type
     procedure edtTimeoutChange(Sender: TObject);
     procedure TesteModoPreVendaClick(Sender: TObject);
     procedure ckbGravarLogClick(Sender: TObject);
+    procedure ACBrECF1PAFGetKeyRSA(var Chave: AnsiString);
   private
     FBobinaCupom: TStringList;
     function GetIniFileName: String;
@@ -312,6 +313,11 @@ begin
   end;
 
   StatusBar1.Panels[1].Text := Estado;
+end;
+
+procedure TfrmPrincipal.ACBrECF1PAFGetKeyRSA(var Chave: AnsiString);
+begin
+
 end;
 
 //******************************************************************************

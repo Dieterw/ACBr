@@ -32,6 +32,7 @@ type
     chkMenuFiscalGerarArquivo: TCheckBox;
     chkMenuFiscalCotepe1704: TCheckBox;
     dlgDialogoSalvar: TSaveDialog;
+    btnParametrosConfiguracao: TButton;
     procedure btnMenuFiscalLXClick(Sender: TObject);
     procedure btnMenuFiscalLMFCClick(Sender: TObject);
     procedure btnMenuFiscalLMFSClick(Sender: TObject);
@@ -41,6 +42,7 @@ type
     procedure btnMenuFiscalRelDAVEmitidosClick(Sender: TObject);
     procedure btnMenuFiscalRelIdentPAFECFClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure btnParametrosConfiguracaoClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -284,6 +286,39 @@ begin
     );
   finally
     FormasPagamento.Free;
+  end;
+end;
+
+procedure TfrmMenuFiscal.btnParametrosConfiguracaoClick(Sender: TObject);
+var
+  Parametros: TACBrECFInfoPaf;
+begin
+  Parametros := TACBrECFInfoPaf.Create;
+  try
+    Parametros.TipoFuncionamento        := 'Em Rede';
+    Parametros.TipoDesenvolvimento      := 'Comercializável';
+    Parametros.IntegraçãoPAFECF         := 'Retaguarda';
+    Parametros.RealizaPreVenda          := True;
+    Parametros.RealizaDAVECF            := True;
+    Parametros.RealizaDAVNaoFiscal      := True;
+    Parametros.RealizaDAVOS             := True;
+    Parametros.IndiceTecnicoProd        := True;
+    Parametros.PostoCombustivel         := True;
+    Parametros.BarSimilarECFRestaurante := True;
+    Parametros.BarSimilarECFComum       := True;
+    Parametros.FarmaciaManipulacao      := True;
+    Parametros.OficinaConserto          := True;
+    Parametros.TransportePassageiro     := True;
+    Parametros.TotalizaValoresLista     := True;
+    Parametros.TransfPreVenda           := True;
+    Parametros.TransfDAV                := True;
+    Parametros.NaoCoincGT               := True;
+    Parametros.RecompoeGT               := True;
+    Parametros.ImpedeVendaVlrZero       := True;
+
+    frmPrincipal.ACBrECF1.PafMF_RelParametrosConfiguracao(Parametros);
+  finally
+    Parametros.Free;
   end;
 end;
 

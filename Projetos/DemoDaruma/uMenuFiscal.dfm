@@ -7,18 +7,18 @@ inherited frmMenuFiscal: TfrmMenuFiscal
   TextHeight = 13
   inherited pnlCliente: TPanel
     Width = 467
-    Height = 415
+    Height = 420
     object grpMenuFiscalOpcoes: TGroupBox
       Left = 1
       Top = 1
       Width = 465
-      Height = 329
+      Height = 334
       Align = alClient
       Caption = 'Op'#231#245'es do Menu fiscal'
       TabOrder = 0
       object Label31: TLabel
         Left = 64
-        Top = 275
+        Top = 295
         Width = 327
         Height = 26
         AutoSize = False
@@ -108,7 +108,7 @@ inherited frmMenuFiscal: TfrmMenuFiscal
       end
       object chkMenuFiscalGerarArquivo: TCheckBox
         Left = 64
-        Top = 194
+        Top = 214
         Width = 242
         Height = 17
         Caption = 'Efetuar a gera'#231#227'o de arquivo (LMFC, LMFS)'
@@ -123,7 +123,7 @@ inherited frmMenuFiscal: TfrmMenuFiscal
       end
       object chkMenuFiscalCotepe1704: TCheckBox
         Left = 81
-        Top = 217
+        Top = 237
         Width = 290
         Height = 37
         Caption = 
@@ -132,10 +132,19 @@ inherited frmMenuFiscal: TfrmMenuFiscal
         TabOrder = 9
         WordWrap = True
       end
+      object btnParametrosConfiguracao: TButton
+        Left = 251
+        Top = 169
+        Width = 171
+        Height = 25
+        Caption = 'Par'#226'metros de Configura'#231#227'o'
+        TabOrder = 10
+        OnClick = btnParametrosConfiguracaoClick
+      end
     end
     object pgcMenuFiscalTipo: TPageControl
       Left = 1
-      Top = 330
+      Top = 335
       Width = 465
       Height = 84
       ActivePage = tbsMenuFiscalTipoData
@@ -219,14 +228,14 @@ inherited frmMenuFiscal: TfrmMenuFiscal
     end
   end
   inherited pnlRodape: TPanel
-    Top = 415
+    Top = 420
     Width = 467
     inherited btnExecutar: TButton
-      Left = 257
+      Left = 266
       Visible = False
     end
     inherited btnCancelar: TButton
-      Left = 363
+      Left = 366
     end
   end
   object dlgDialogoSalvar: TSaveDialog

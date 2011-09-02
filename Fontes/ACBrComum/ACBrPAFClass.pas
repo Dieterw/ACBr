@@ -142,6 +142,26 @@ type
     fsVersao: String;
     fsPrincipalExe: TACBrECFArquivo;
     fsNome: String;
+    FFarmaciaManipulacao: Boolean;
+    FBarSimilarECFRestaurante: Boolean;
+    FRealizaDAVECF: Boolean;
+    FTransfPreVenda: Boolean;
+    FBarSimilarECFComum: Boolean;
+    FTransportePassageiro: Boolean;
+    FRealizaDAVNaoFiscal: Boolean;
+    FIndiceTecnicoProd: Boolean;
+    FRealizaPreVenda: Boolean;
+    FPostoCombustivel: Boolean;
+    FOficinaConserto: Boolean;
+    FTransfDAV: Boolean;
+    FTotalizaValoresLista: Boolean;
+    FTipoDesenvolvimento: String;
+    FTipoFuncionamento: String;
+    FImpedeVendaVlrZero: Boolean;
+    FRealizaDAVOS: Boolean;
+    FIntegraçãoPAFECF: String;
+    FRecompoeGT: Boolean;
+    FNaoCoincGT: Boolean;
     procedure SetVersao(const AValue : String) ;
   public
     constructor Create;
@@ -150,6 +170,28 @@ type
     property Nome: String read fsNome write fsNome;
     property Versao: String read fsVersao write SetVersao;
     property PrincipalExe: TACBrECFArquivo read fsPrincipalExe write fsPrincipalExe;
+
+    property TipoFuncionamento: String read FTipoFuncionamento write FTipoFuncionamento;
+    property TipoDesenvolvimento: String read FTipoDesenvolvimento write FTipoDesenvolvimento;
+    property IntegraçãoPAFECF: String read FIntegraçãoPAFECF write FIntegraçãoPAFECF;
+
+    property RealizaPreVenda: Boolean read FRealizaPreVenda write FRealizaPreVenda;
+    property RealizaDAVECF: Boolean read FRealizaDAVECF write FRealizaDAVECF;
+    property RealizaDAVNaoFiscal: Boolean read FRealizaDAVNaoFiscal write FRealizaDAVNaoFiscal;
+    property RealizaDAVOS: Boolean read FRealizaDAVOS write FRealizaDAVOS;
+    property IndiceTecnicoProd: Boolean read FIndiceTecnicoProd write FIndiceTecnicoProd;
+    property PostoCombustivel: Boolean read FPostoCombustivel write FPostoCombustivel;
+    property BarSimilarECFRestaurante: Boolean read FBarSimilarECFRestaurante write FBarSimilarECFRestaurante;
+    property BarSimilarECFComum: Boolean read FBarSimilarECFComum write FBarSimilarECFComum;
+    property FarmaciaManipulacao: Boolean read FFarmaciaManipulacao write FFarmaciaManipulacao;
+    property OficinaConserto: Boolean read FOficinaConserto write FOficinaConserto;
+    property TransportePassageiro: Boolean read FTransportePassageiro write FTransportePassageiro;
+    property TotalizaValoresLista: Boolean read FTotalizaValoresLista write FTotalizaValoresLista;
+    property TransfPreVenda: Boolean read FTransfPreVenda write FTransfPreVenda;
+    property TransfDAV: Boolean read FTransfDAV write FTransfDAV;
+    property NaoCoincGT: Boolean read FNaoCoincGT write FNaoCoincGT;
+    property RecompoeGT: Boolean read FRecompoeGT write FRecompoeGT;
+    property ImpedeVendaVlrZero: Boolean read FImpedeVendaVlrZero write FImpedeVendaVlrZero;
   end;
 
   TACBrECFIdentificacaoPAF = class( TPersistent )

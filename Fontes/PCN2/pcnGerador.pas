@@ -145,9 +145,17 @@ const
   V1_01 = 'versao="1.01"';
   V1_02 = 'versao="1.02"';
   V1_03 = 'versao="1.03"';
+  V1_04 = 'versao="1.04"'; // Incluido por Italo em 03/08/2011
   V1_07 = 'versao="1.07"';
   V1_10 = 'versao="1.10"';
   V2_00 = 'versao="2.00"';
+
+ // Incluido por Italo em 03/08/2011
+  VM_Rodo_1_04  = 'versaoModal="1.04"';
+  VM_Aereo_1_04 = 'versaoModal="1.04"';
+  VM_Aqua_1_04  = 'versaoModal="1.04"';
+  VM_Ferro_1_04 = 'versaoModal="1.04"';
+  VM_Duto_1_04  = 'versaoModal="1.04"';
 
   // NFE //
 
@@ -214,7 +222,7 @@ const
   DSC_INFADPROD = 'Informações adicionais do Produto';
   DSC_INFCPL = 'Informações complementares de interesse do contribuinte';
   DSC_ISUF = 'Inscrição na SUFRAMA';
-  DSC_EMAIL = 'Endereço de Email';  
+  DSC_EMAIL = 'Endereço de Email';
   DSC_IPITrib = 'IPI Tributável';
   DSC_MARCA = 'Marca dos volumes transportados';
   DSC_MATR = 'Matrícula do agente';
@@ -324,7 +332,7 @@ const
   DSC_VICMS = 'Valor do ICMS';
   DSC_VICMSRET = 'Valor do ICMS Retido';
   DSC_VICMSST = 'Valor do ICMS Substituição Tributaria';
-  DSC_VICMSSTRET = 'Valor do ICMS Substituição Tributaria Retido';  
+  DSC_VICMSSTRET = 'Valor do ICMS Substituição Tributaria Retido';
   DSC_VICMSSTCONS = 'Valor do ICMS Substituição Tributaria da UF de Consumo';
   DSC_VICMSSTDEST = 'Valor do ICMS Substituição Tributaria da UF de Destino';
   DSC_VII = 'Valor do Imposto de Importação';
@@ -463,7 +471,7 @@ begin
   FOpcoes.FTamanhoIdentacao := 3;
   FOpcoes.FFormatoAlerta := 'TAG:%TAGNIVEL% ID:%ID%/%TAG%(%DESCRICAO%) - %MSG%.'; // Vide comentário em wAlerta
   FOpcoes.FRetirarEspacos := True;
-  FOpcoes.FRetirarAcentos := True;  
+  FOpcoes.FRetirarAcentos := True;
   FOpcoes.FSuprimirDecimais := False;
   FOpcoes.FSomenteValidar := False;
   FOpcoes.FTagVaziaNoFormatoResumido := True;

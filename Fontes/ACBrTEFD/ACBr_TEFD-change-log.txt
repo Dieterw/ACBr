@@ -47,6 +47,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data:  02/09/2011  - Ver: 1.34
+[-] Correçao para consulta no Teste 10B / TecBan - Tele cheque Garantido,
+    que deveria exibir uma mensagem com botão de OK ao operador.
+    http://www.djsystem.com.br/acbr/forum/viewtopic.php?f=16&t=2955
+
 Data:  11/08/2011  - Ver: 1.33
 [-] Correção de Bug descrito em:
     http://www.djsystem.com.br/acbr/forum/viewtopic.php?f=16&p=12735

@@ -159,7 +159,7 @@ type
     FTipoFuncionamento: String;
     FImpedeVendaVlrZero: Boolean;
     FRealizaDAVOS: Boolean;
-    FIntegraçãoPAFECF: String;
+    FIntegracaoPAFECF: String;
     FRecompoeGT: Boolean;
     FNaoCoincGT: Boolean;
     procedure SetVersao(const AValue : String) ;
@@ -173,8 +173,7 @@ type
 
     property TipoFuncionamento: String read FTipoFuncionamento write FTipoFuncionamento;
     property TipoDesenvolvimento: String read FTipoDesenvolvimento write FTipoDesenvolvimento;
-    property IntegraçãoPAFECF: String read FIntegraçãoPAFECF write FIntegraçãoPAFECF;
-
+    property IntegracaoPAFECF: String read FIntegracaoPAFECF write FIntegracaoPAFECF;
     property RealizaPreVenda: Boolean read FRealizaPreVenda write FRealizaPreVenda;
     property RealizaDAVECF: Boolean read FRealizaDAVECF write FRealizaDAVECF;
     property RealizaDAVNaoFiscal: Boolean read FRealizaDAVNaoFiscal write FRealizaDAVNaoFiscal;

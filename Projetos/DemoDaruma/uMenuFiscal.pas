@@ -297,7 +297,7 @@ begin
   try
     Parametros.TipoFuncionamento        := 'Em Rede';
     Parametros.TipoDesenvolvimento      := 'Comercializável';
-    Parametros.IntegraçãoPAFECF         := 'Retaguarda';
+    Parametros.IntegracaoPAFECF         := 'Retaguarda';
     Parametros.RealizaPreVenda          := True;
     Parametros.RealizaDAVECF            := True;
     Parametros.RealizaDAVNaoFiscal      := True;

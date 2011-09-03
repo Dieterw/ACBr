@@ -335,6 +335,7 @@ type
     Label31: TLabel;
     btnIdentificaPafECF: TButton;
     RelatorioGerencialcomformatacao1: TMenuItem;
+    btnMenuFiscalConfigPAFECF: TButton;
     procedure cbxModeloChange(Sender: TObject);
     procedure Sair1Click(Sender: TObject);
     procedure bAtivarClick(Sender: TObject);
@@ -527,6 +528,7 @@ type
     procedure btnMenuFiscalRelIdentPAFECFClick(Sender: TObject);
     procedure btnIdentificaPafECFClick(Sender: TObject);
     procedure RelatorioGerencialcomformatacao1Click(Sender: TObject);
+    procedure btnMenuFiscalConfigPAFECFClick(Sender: TObject);
   private
     { Private declarations }
     Function Converte( cmd : String) : String;
@@ -3474,6 +3476,39 @@ procedure TForm1.btnIdentificaPafECFClick(Sender: TObject);
 begin
   ACBrECF1.IdentificaPAF('MD5: AXAXAXAXAXAXAXAXAXAXAXAXAXAXAXAX', 'Demo ACBrECF');
   ShowMessage('Identificação feita com sucesso.');
+end;
+
+procedure TForm1.btnMenuFiscalConfigPAFECFClick(Sender: TObject);
+var
+  Parametros: TACBrECFInfoPaf;
+begin
+  Parametros := TACBrECFInfoPaf.Create;
+  try
+    Parametros.TipoFuncionamento        := 'Em Rede';
+    Parametros.TipoDesenvolvimento      := 'Comercializável';
+    Parametros.IntegracaoPAFECF         := 'Retaguarda';
+    Parametros.RealizaPreVenda          := True;
+    Parametros.RealizaDAVECF            := True;
+    Parametros.RealizaDAVNaoFiscal      := True;
+    Parametros.RealizaDAVOS             := True;
+    Parametros.IndiceTecnicoProd        := True;
+    Parametros.PostoCombustivel         := True;
+    Parametros.BarSimilarECFRestaurante := True;
+    Parametros.BarSimilarECFComum       := True;
+    Parametros.FarmaciaManipulacao      := True;
+    Parametros.OficinaConserto          := True;
+    Parametros.TransportePassageiro     := True;
+    Parametros.TotalizaValoresLista     := True;
+    Parametros.TransfPreVenda           := True;
+    Parametros.TransfDAV                := True;
+    Parametros.NaoCoincGT               := True;
+    Parametros.RecompoeGT               := True;
+    Parametros.ImpedeVendaVlrZero       := True;
+
+    ACBrECF1.PafMF_RelParametrosConfiguracao(Parametros);
+  finally
+    Parametros.Free;
+  end;
 end;
 
 procedure TForm1.btnMenuFiscalLMFCClick(Sender: TObject);

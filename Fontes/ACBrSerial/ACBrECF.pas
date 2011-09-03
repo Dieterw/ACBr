@@ -5632,7 +5632,7 @@ begin
     Relatorio.Add('</linha_simples>');
     Relatorio.Add('Tipo de funcionamento: ' + AInfoPafECF.TipoFuncionamento);
     Relatorio.Add('Tipo de desenvolvimento: ' + AInfoPafECF.TipoDesenvolvimento);
-    Relatorio.Add('Integração com PAF_ECF: ' + AInfoPafECF.IntegraçãoPAFECF);
+    Relatorio.Add('Integração com PAF_ECF: ' + AInfoPafECF.IntegracaoPAFECF);
     Relatorio.Add('');
     Relatorio.Add('Parâmetros para Não Concomitância');
     Relatorio.Add('</linha_simples>');

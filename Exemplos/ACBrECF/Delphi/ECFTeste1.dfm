@@ -24,8 +24,8 @@ object Form1: TForm1
   TextHeight = 13
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 374
-    Width = 602
+    Top = 370
+    Width = 594
     Height = 19
     Panels = <
       item
@@ -38,17 +38,17 @@ object Form1: TForm1
   object PageControl1: TPageControl
     Left = 0
     Top = 0
-    Width = 602
-    Height = 334
-    ActivePage = TabSheet4
+    Width = 594
+    Height = 330
+    ActivePage = tbsMenuFiscal
     Align = alClient
     TabOrder = 1
     object TabSheet4: TTabSheet
       Caption = 'ECF'
       ImageIndex = 3
       DesignSize = (
-        594
-        306)
+        586
+        302)
       object SbArqLog: TSpeedButton
         Left = 563
         Top = 216
@@ -354,37 +354,31 @@ object Form1: TForm1
     end
     object TabSheet1: TTabSheet
       Caption = 'Cmd/Resp'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label2: TLabel
         Left = 0
         Top = 54
-        Width = 594
+        Width = 586
         Height = 17
         Align = alTop
         AutoSize = False
         Caption = 'Resposta'
         Layout = tlBottom
-        ExplicitWidth = 586
       end
       object Label17: TLabel
         Left = 0
         Top = 0
-        Width = 594
+        Width = 586
         Height = 15
         Align = alTop
         AutoSize = False
         Caption = 'Comando Enviado'
         Layout = tlBottom
-        ExplicitWidth = 586
       end
       object mResp: TMemo
         Left = 0
         Top = 71
-        Width = 594
-        Height = 235
+        Width = 586
+        Height = 231
         Align = alClient
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -401,7 +395,7 @@ object Form1: TForm1
       object mEnviado: TMemo
         Left = 0
         Top = 15
-        Width = 594
+        Width = 586
         Height = 39
         Align = alTop
         TabOrder = 0
@@ -411,23 +405,19 @@ object Form1: TForm1
     object TabSheet2: TTabSheet
       Caption = 'Cupom'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel1: TPanel
         Left = 0
         Top = 41
-        Width = 594
-        Height = 265
+        Width = 586
+        Height = 261
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
         object mBobina: TMemo
           Left = 0
           Top = 0
-          Width = 594
-          Height = 265
+          Width = 586
+          Height = 261
           Align = alClient
           Font.Charset = ANSI_CHARSET
           Font.Color = clBlack
@@ -444,14 +434,12 @@ object Form1: TForm1
         object wbBobina: TWebBrowser
           Left = 0
           Top = 0
-          Width = 594
-          Height = 265
+          Width = 586
+          Height = 261
           Align = alClient
           TabOrder = 1
-          ExplicitWidth = 586
-          ExplicitHeight = 261
           ControlData = {
-            4C000000643D0000631B00000000000000000000000000000000000000000000
+            4C000000913C0000FA1A00000000000000000000000000000000000000000000
             000000004C000000000000000000000001000000E0D057007335CF11AE690800
             2B2E126208000000000000004C0000000114020000000000C000000000000046
             8000000000000000000000000000000000000000000000000000000000000000
@@ -461,7 +449,7 @@ object Form1: TForm1
       object Panel2: TPanel
         Left = 0
         Top = 0
-        Width = 594
+        Width = 586
         Height = 41
         Align = alTop
         BevelOuter = bvNone
@@ -500,26 +488,17 @@ object Form1: TForm1
     object TabSheet3: TTabSheet
       Caption = 'RFD'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object PageControl2: TPageControl
         Left = 0
         Top = 55
-        Width = 594
-        Height = 271
+        Width = 586
+        Height = 247
         ActivePage = TabSheet6
         Align = alClient
         TabOrder = 1
-        ExplicitHeight = 251
         object TabSheet6: TTabSheet
           Caption = 'Sw.House'
           ImageIndex = 1
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Label8: TLabel
             Left = 12
             Top = 10
@@ -683,14 +662,10 @@ object Form1: TForm1
         end
         object TabSheet5: TTabSheet
           Caption = 'ACBrRFD.INI'
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Panel4: TPanel
             Left = 0
-            Top = 189
-            Width = 586
+            Top = 185
+            Width = 578
             Height = 34
             Align = alBottom
             BevelOuter = bvNone
@@ -717,8 +692,8 @@ object Form1: TForm1
           object mRFDParam: TMemo
             Left = 0
             Top = 0
-            Width = 586
-            Height = 189
+            Width = 578
+            Height = 185
             Align = alClient
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clBlack
@@ -734,13 +709,13 @@ object Form1: TForm1
       object Panel3: TPanel
         Left = 0
         Top = 0
-        Width = 594
+        Width = 586
         Height = 55
         Align = alTop
         BevelOuter = bvNone
         TabOrder = 0
         DesignSize = (
-          594
+          586
           55)
         object sbDirRFD: TSpeedButton
           Left = 561
@@ -796,13 +771,9 @@ object Form1: TForm1
     object TabSheet8: TTabSheet
       Caption = 'C'#243'digo de Barras'
       ImageIndex = 5
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       DesignSize = (
-        594
-        306)
+        586
+        302)
       object Label23: TLabel
         Left = 101
         Top = 0
@@ -1005,40 +976,34 @@ object Form1: TForm1
     object TabSheet9: TTabSheet
       Caption = 'Dados RZ'
       ImageIndex = 6
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       DesignSize = (
-        594
-        306)
+        586
+        302)
       object Label37: TLabel
         Left = 0
         Top = 0
-        Width = 594
+        Width = 586
         Height = 21
         Align = alTop
         AutoSize = False
         Caption = 'Resposta'
         Layout = tlBottom
-        ExplicitTop = 305
       end
       object Button2: TButton
         Left = 11
-        Top = 13
+        Top = -7
         Width = 108
         Height = 25
         Anchors = [akLeft, akBottom]
         Caption = 'Ler Dados RZ'
         TabOrder = 0
         OnClick = Button2Click
-        ExplicitTop = 33
       end
       object mRZ: TMemo
         Left = 11
         Top = 64
         Width = 570
-        Height = 205
+        Height = 185
         Anchors = [akLeft, akTop, akRight, akBottom]
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -1051,25 +1016,19 @@ object Form1: TForm1
         TabOrder = 1
         WantReturns = False
         WordWrap = False
-        ExplicitHeight = 225
       end
     end
     object tbsMenuFiscal: TTabSheet
       Caption = 'Menu Fiscal'
       ImageIndex = 6
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object grpMenuFiscalOpcoes: TGroupBox
         Left = 0
         Top = 0
-        Width = 594
-        Height = 258
+        Width = 586
+        Height = 234
         Align = alClient
         Caption = 'Op'#231#245'es do Menu fiscal'
         TabOrder = 0
-        ExplicitHeight = 238
         object Label31: TLabel
           Left = 10
           Top = 140
@@ -1156,22 +1115,26 @@ object Form1: TForm1
           TabOrder = 7
           OnClick = btnMenuFiscalRelIdentPAFECFClick
         end
+        object btnMenuFiscalConfigPAFECF: TButton
+          Left = 364
+          Top = 113
+          Width = 171
+          Height = 25
+          Caption = 'Configura'#231#245'es do PAF-ECF'
+          TabOrder = 8
+          OnClick = btnMenuFiscalConfigPAFECFClick
+        end
       end
       object pgcMenuFiscalTipo: TPageControl
         Left = 0
-        Top = 258
-        Width = 594
+        Top = 234
+        Width = 586
         Height = 68
         ActivePage = tbsMenuFiscalTipoData
         Align = alBottom
         TabOrder = 1
-        ExplicitTop = 238
         object tbsMenuFiscalTipoData: TTabSheet
           Caption = 'Emiss'#227'o por intervalo de data'
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Label24: TLabel
             Left = 16
             Top = 15
@@ -1209,10 +1172,6 @@ object Form1: TForm1
         object tbsMenuFiscalTipoCOO: TTabSheet
           Caption = 'Emiss'#227'o por intervalo de COO'
           ImageIndex = 1
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Label26: TLabel
             Left = 16
             Top = 15
@@ -1279,8 +1238,8 @@ object Form1: TForm1
   end
   object pBotoes: TPanel
     Left = 0
-    Top = 334
-    Width = 602
+    Top = 330
+    Width = 594
     Height = 40
     Cursor = crHelp
     Hint = 'Sobre o ACBrMonitor ?'
@@ -1288,12 +1247,12 @@ object Form1: TForm1
     TabOrder = 2
     TabStop = True
     DesignSize = (
-      602
+      594
       40)
     object Image1: TImage
       Left = 1
       Top = 1
-      Width = 600
+      Width = 592
       Height = 38
       Align = alClient
       Picture.Data = {
@@ -1497,7 +1456,6 @@ object Form1: TForm1
         FEF3FEB466C7FBCFFAD1450019B1FEF3FEB466C7FBCFFAD1450019B1FEF3FEB4
         66C7FBCFFAD145001BAC7D5FF5A3758FABFEB451401FFFD9}
       OnClick = Image1Click
-      ExplicitWidth = 592
     end
     object bAtivar: TBitBtn
       Left = 493

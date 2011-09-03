@@ -96,6 +96,9 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+-- ACBrTroco -- 03/09/2011
+[*]    Não considerar a existência da cédula de um real.  (DSA)
+
 -- ACBrInStore -- 03/05/2011
 [+]    Adicionado evento OnGetPrecoUnitario, para capturar o preço unitário do 
        produto, este se vier na etiqueta valot total o componente acha o peso,

@@ -212,7 +212,7 @@ end;
 function TACBrTroco.RetornarLegenda(XTotalMoeda,XValorMoeda : double) : string;
 var wLegenda : string;
 begin
-  if XValorMoeda >= 1.00 then
+  if XValorMoeda > 1.00 then
      wLegenda := fsStrCedula
   else
      wLegenda := fsStrMoeda ;

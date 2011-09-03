@@ -1517,16 +1517,12 @@ begin
 
   LerRespostaRequisicao;
 
-  if (Resp.QtdLinhasComprovante <= 0) and (Resp.StatusTransacao = '0') then
-   begin
-     try
-        ProcessarResposta ;         { Faz a Impressão e / ou exibe Mensagem ao Operador }
-     finally
-        Result := ProcessarRespostaPagamento( IndiceFPG_ECF, Valor);
-     end;
-   end
-  else
+  try
+    if (Resp.QtdLinhasComprovante <= 0) and (Resp.StatusTransacao = '0') then
+       ProcessarResposta ;         { Faz a Impressão e / ou exibe Mensagem ao Operador }
+  finally
      Result := ProcessarRespostaPagamento( IndiceFPG_ECF, Valor);
+  end;
 end;
 
 Function TACBrTEFDClass.CNC : Boolean ;

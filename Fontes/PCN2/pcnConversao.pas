@@ -46,6 +46,8 @@
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 
+{$I ACBr.inc}
+
 unit pcnConversao;
 
 interface uses
@@ -64,7 +66,8 @@ type
   TLayOut = (LayNfeRecepcao,LayNfeRetRecepcao,LayNfeCancelamento,LayNfeInutilizacao,LayNfeConsulta,LayNfeStatusServico,LayNfeCadastro, LayNfeEnvDPEC, LayNfeConsultaDPEC,
              LayCTeRecepcao,LayCTeRetRecepcao,LayCTeCancelamento,LayCTeInutilizacao,LayCTeConsultaCT,LayCTeStatusServico,LayCTeCadastro,LayNFeCCe);
 
-  TpcnSchema = (TsPL005c, TsPL006);
+  // Incluido o TsPL_CTe_103 e TsPL_CTe_104 para CTe por Italo em 03/08/2011
+  TpcnSchema = (TsPL005c, TsPL006, TsPL_CTe_103, TsPL_CTe_104);
   // Incluido o tlConsStatServCTe para CTe por possuir uma versão diferente da NFe
   TpcnTipoLayout = (tlAtuCadEmiDFe, tlCadEmiDFe, tlCancNFe, tlConsCad, tlConsReciNFe, tlConsSitNFe, tlConsStatServ,
     tlInutNFe, tlNFe, tlProcNFe, tlProcInutNFe, tlRetAtuCadEmiDFe, tlRetCancNFe, tlRetConsCad, tlRetConsReciNFe,
@@ -81,7 +84,8 @@ type
   TpcnIndicadorPagamento = (ipVista, ipPrazo, ipOutras);
   TpcnTipoNFe = (tnEntrada, tnSaida);
   TpcnTipoImpressao = (tiRetrato, tiPaisagem);
-  TpcnTipoEmissao = (teNormal, teContingencia, teSCAN, teDPEC, teFSDA);
+  // Tipo teSVCRS, teSVCSP incluido por Italo em 03/08/2011 (usado no CTe versão 1.04)
+  TpcnTipoEmissao = (teNormal, teContingencia, teSCAN, teDPEC, teFSDA, teSVCRS, teSVCSP);
   TpcnTipoAmbiente = (taProducao, taHomologacao);
   TpcnSituacaoEmissor = (seHomologacao, seProducao);
   TpcnFinalidadeNFe = (fnNormal, fnComplementar, fnAjuste);
@@ -90,7 +94,10 @@ type
   TpcnCondicaoVeiculo = (cvAcabado, cvInacabado, cvSemiAcabado);
   TpcnTipoArma = (taUsoPermitido, taUsoRestrito);
   TpcnOrigemMercadoria = (oeNacional, oeEstrangeiraImportacaoDireta, oeEstrangeiraAdquiridaBrasil);
-  TpcnCSTIcms = (cst00, cst10, cst20, cst30, cst40, cst41, cst45, cst50, cst51, cst60, cst70, cst80, cst81, cst90, cstPart10, cstPart90, cstRep41, cstVazio); //80 e 81 apenas para CTe
+  // Tipo cstICMSOutraUF, cstICMSSN incluido por Italo em 03/08/2011 (usado no CTe versão 1.04)
+  TpcnCSTIcms = (cst00, cst10, cst20, cst30, cst40, cst41, cst45, cst50, cst51,
+                 cst60, cst70, cst80, cst81, cst90, cstPart10, cstPart90,
+                 cstRep41, cstVazio, cstICMSOutraUF, cstICMSSN); //80 e 81 apenas para CTe
   TpcnCSOSNIcms = (csosnVazio,csosn101, csosn102, csosn103, csosn201, csosn202, csosn203, csosn300, csosn400, csosn500,csosn900 );
   TpcnDeterminacaoBaseIcms = (dbiMargemValorAgregado, dbiPauta, dbiPrecoTabelado, dbiValorOperacao);
   TpcnDeterminacaoBaseIcmsST = (dbisPrecoTabelado, dbisListaNegativa, dbisListaPositiva, dbisListaNeutra, dbisMargemValorAgregado, dbisPauta);
@@ -113,7 +120,8 @@ type
   TpcteLotacao = (ltNao, ltSim);
   TpcteProp = (tpTACAgregado, tpTACIndependente, tpOutros);
   TpcteMask = (msk4x2, msk7x2, msk9x2, msk10x2, msk13x2, msk15x2, msk6x3, mskAliq);
-  UnidMed = (uM3,uKG, uTON, uUNIDADE, uLITROS);
+  // Unidade uMMBTU incluido por Italo em 03/08/2011 (usado no CTe versão 1.04)
+  UnidMed = (uM3,uKG, uTON, uUNIDADE, uLITROS, uMMBTU);
   TpcnECFModRef = (ECFModRefVazio, ECFModRef2B,ECFModRef2C,ECFModRef2D);
   TpcnISSQNcSitTrib  = ( ISSQNcSitTribVazio , ISSQNcSitTribNORMAL, ISSQNcSitTribRETIDA, ISSQNcSitTribSUBSTITUTA,ISSQNcSitTribISENTA);
 
@@ -125,7 +133,7 @@ type
   // Incluido por Italo em 24/01/2011
   TpcteTipoDataPeriodo = (tdSemData, tdNaData, tdAteData, tdApartirData, tdNoPeriodo);
   TpcteTipoHorarioIntervalo = (thSemHorario, thNoHorario, thAteHorario, thApartirHorario, thNoIntervalo);
-  TpcteTipoDocumento = (tdDeclaracao, tdOutros);
+  TpcteTipoDocumento = (tdDeclaracao, tdDutoviario, tdOutros);
   TpcteTipoDocumentoAnterior = (daCTRC, daCTAC, daACT, daNF7, daNF27, daCAN, daCTMC, daATRE, daDTA, daCAI, daCCPI, daCA, daTIF, daOutros);
   TpcteRspPagPedagio = (rpEmitente, rpRemetente, rpExpedidor, rpRecebedor, rpDestinatario, rpTomadorServico);
   TpcteTipoDispositivo = (tdCartaoMagnetico, tdTAG, tdTicket);
@@ -135,6 +143,9 @@ type
   TpcteTipoCarroceria = (tcNaoAplicavel, tcAberta, tcFechada, tcGraneleira, tcPortaContainer, tcSider);
   // Incluido por Italo em 28/04/2011
   TPosRecibo = (prCabecalho, prRodape);
+  // Incluido por Italo em 03/08/2011
+  TpcteModeloNF = (moNF011AAvulsa, moNFProdutor);
+  TpcteTrafegoMutuo = (tmOrigem, tmDestino);
 
 const
   NFeUF: array[0..26] of String =
@@ -156,16 +167,33 @@ const
   NFeConsDPEC     = '1.01';
   NFeCCeNFe       = '1.00';
 
-  CTecabMsg       = '1.02';//1.02
-  CTeconsStatServ = '1.03';//1.01
-  CTeenviCTe      = '1.03';//1.02  // Nome da constante corrigita por Italo em 18/03/2011
-  CTeconsReciCTe  = '1.03';//1.02
-  CTeconsSitCTe   = '1.03';//1.02
-  CTecancCTe      = '1.03';//1.01
-  CTeinutCTe      = '1.03';//1.01
+// Alterado por Italo em 03/08/2011
+{$IFDEF PL_103}
+  CTecabMsg       = '1.02';
+  CTeconsStatServ = '1.03';
+  CTeenviCTe      = '1.03';  // Nome da constante corrigita por Italo em 18/03/2011
+  CTeconsReciCTe  = '1.03';
+  CTeconsSitCTe   = '1.03';
+  CTecancCTe      = '1.03';
+  CTeinutCTe      = '1.03';
   CTeconsCad      = '1.01';        // Incluido por Italo em 18/03/2011
-//  CTeEnvDPEC      = '1.01';
-//  CTeConsDPEC     = '1.01';
+  //CTeEnvDPEC      = '1.01';
+  //CTeConsDPEC     = '1.01';
+{$ENDIF}
+
+// Incluido por Italo em 03/08/2011
+{$IFDEF PL_104}
+  CTecabMsg       = '1.02';
+  CTeconsStatServ = '1.04';
+  CTeenviCTe      = '1.04';
+  CTeconsReciCTe  = '1.04';
+  CTeconsSitCTe   = '1.04';
+  CTecancCTe      = '1.04';
+  CTeinutCTe      = '1.04';
+  CTeconsCad      = '1.01';
+  //CTeEnvDPEC      = '1.01';
+  //CTeConsDPEC     = '1.01';
+{$ENDIF}
 
   LineBreak = #13#10;
 
@@ -302,6 +330,12 @@ function StrToTpRodado(var ok: boolean; const s: string): TpcteTipoRodado;
 function TpCarroceriaToStr(const t: TpcteTipoCarroceria): string;
 function StrToTpCarroceria(var ok: boolean; const s: string): TpcteTipoCarroceria;
 
+  // Incluido por Italo em 03/08/2011
+function ModeloNFToStr(const t: TpcteModeloNF): string;
+function StrToModeloNF(var ok: boolean; const s: string): TpcteModeloNF;
+function TrafegoMutuoToStr(const t: TpcteTrafegoMutuo): string;
+function StrToTrafegoMutuo(var ok: boolean; const s: string): TpcteTrafegoMutuo;
+
 implementation
 
 function StrToEnumerado(var ok: boolean; const s: string; const AString:
@@ -426,12 +460,12 @@ end;
 
 function TpEmisToStr(const t: TpcnTipoEmissao): string;
 begin
-  result := EnumeradoToStr(t, ['1', '2', '3', '4', '5'], [teNormal, teContingencia, teSCAN, teDPEC, teFSDA]);
+  result := EnumeradoToStr(t, ['1', '2', '3', '4', '5', '7', '8'], [teNormal, teContingencia, teSCAN, teDPEC, teFSDA, teSVCRS, teSVCSP]);
 end;
 
 function StrToTpEmis(var ok: boolean; const s: string): TpcnTipoEmissao;
 begin
-  result := StrToEnumerado(ok, s, ['1', '2', '3', '4', '5'], [teNormal, teContingencia, teSCAN, teDPEC, teFSDA]);
+  result := StrToEnumerado(ok, s, ['1', '2', '3', '4', '5', '7', '8'], [teNormal, teContingencia, teSCAN, teDPEC, teFSDA, teSVCRS, teSVCSP]);
 end;
 
 // B24 - Identificação do Ambiente *********************************************
@@ -593,8 +627,8 @@ begin
   // ID -> N10b - Grupo de informação do ICMS ST devido para a UF de destino,nas operações interestaduais de produtos que tiveram retenção antecipada de ICMS por ST na UF do remetente. Repasse via Substituto Tributário. (v2.0)
   // ID -> N11  - ICMS devido para outras UF
   // ID -> N12  - Outros
-  result := EnumeradoToStr(t, ['00' , '10' , '20' , '30' , '40' , '41' , '50' , '51' , '60' , '70' , '80' , '81', '90', '10', '90', '41'],
-                              [cst00, cst10, cst20, cst30, cst40, cst41, cst50, cst51, cst60, cst70, cst80, cst81, cst90, cstPart10 , cstPart90 , cstRep41]);
+  result := EnumeradoToStr(t, ['00' , '10' , '20' , '30' , '40' , '41' , '50' , '51' , '60' , '70' , '80' , '81', '90', '10', '90', '41', '90', 'SN'],
+                              [cst00, cst10, cst20, cst30, cst40, cst41, cst50, cst51, cst60, cst70, cst80, cst81, cst90, cstPart10 , cstPart90 , cstRep41, cstICMSOutraUF, cstICMSSN]);
 end;
 
 // A função abaixo foi alterada em 21/06/2010 por: Italo Jurisato Junior
@@ -602,8 +636,8 @@ end;
 // Para ficar compativel com a função: CSTICMSToStr, logo acima
 function StrToCSTICMS(var ok: boolean; const s: string): TpcnCSTIcms;
 begin
-  result := StrToEnumerado(ok, s, ['00', '10', '20', '30', '40', '41', '50', '51', '60', '70', '80', '81', '90'],
-    [cst00, cst10, cst20, cst30, cst40, cst41, cst50, cst51, cst60, cst70, cst80, cst81, cst90]);
+  result := StrToEnumerado(ok, s, ['00', '10', '20', '30', '40', '41', '50', '51', '60', '70', '80', '81', '90', '91', '92'],
+    [cst00, cst10, cst20, cst30, cst40, cst41, cst50, cst51, cst60, cst70, cst80, cst81, cst90, cstICMSOutraUF, cstICMSSN]);
 end;
 
 // A função abaixo foi alterada em 21/06/2010 por: Italo Jurisato Junior
@@ -619,7 +653,8 @@ end;
 // As linhas alteradas estão comentadas
 function CSTICMSToStrTagPosText(const t: TpcnCSTIcms): string;
 begin
-  result := EnumeradoToStr(t, ['PRESTAÇÃO SUJEITO À TRIBUTAÇÃO NORMAL ICMS',
+  result := EnumeradoToStr(t,
+   ['PRESTAÇÃO SUJEITO À TRIBUTAÇÃO NORMAL ICMS',
     '10',
     'PRESTAÇÃO SUJEITO À TRIBUTAÇÃO COM BC REDUZIDA DO ICMS',
     '30',
@@ -628,12 +663,14 @@ begin
     'ICMS ISENTO, NÃO TRIBUTADO OU DEFERIDO',
     '50',
     'ICMS ISENTO, NÃO TRIBUTADO OU DEFERIDO', // '51' alterado para o CT-e
-    '60',                                     // foi incluido pois esta faltando
+    'ICMS COBRADO ANTERIORMENTE POR SUBSTITUIÇÃO TRIBUTÁRIA',                   // foi incluido pois esta faltando
     '70',
     'RESPONSABILIDADE DO RECOLHIMENTO DO ICMS ATRIBUÍDO AO TOMADOR OU 3° POR ST',
     'ICMS DEVICO À OUTRA UF',
-    'ICMS OUTROS'],
-    [cst00, cst10, cst20, cst30, cst40, cst41, cst45, cst50, cst51, cst60, cst70, cst80, cst81, cst90]);
+    'ICMS OUTROS',
+    'ICMS DEVIDO A UF DE ORIGEM DA PRESTACAO, QUANDO DIFERENTE DA UF DO EMITENTE',
+    'SIMPLES NACIONAL'],
+    [cst00, cst10, cst20, cst30, cst40, cst41, cst45, cst50, cst51, cst60, cst70, cst80, cst81, cst90, cstICMSOutraUF, cstICMSSN]);
 end;
 
 // N13 - Modalidade de determinação da BC do ICMS ******************************
@@ -918,12 +955,14 @@ end;
 
 function UnidMedToStr(const t: UnidMed): string;
 begin
-  result := EnumeradoToStr(t, ['00', '01', '02', '03', '04'], [uM3,uKG, uTON, uUNIDADE, uLITROS]);
+  result := EnumeradoToStr(t, ['00', '01', '02', '03', '04', '05'],
+   [uM3,uKG, uTON, uUNIDADE, uLITROS, uMMBTU]);
 end;
 
 function StrToUnidMed(var ok: boolean; const s: String ): UnidMed;
 begin
-  result := StrToEnumerado(ok, s, ['00', '01', '02', '03', '04'], [uM3,uKG, uTON, uUNIDADE, uLITROS]);
+  result := StrToEnumerado(ok, s, ['00', '01', '02', '03', '04', '05'],
+   [uM3,uKG, uTON, uUNIDADE, uLITROS, uMMBTU]);
 end;
   // B20k - Modelo Refenciado  **************************************
 
@@ -1004,12 +1043,12 @@ end;
 
 function TpDocumentoToStr(const t: TpcteTipoDocumento): string;
 begin
-  result := EnumeradoToStr(t, ['00','99'], [tdDeclaracao, tdOutros]);
+  result := EnumeradoToStr(t, ['00','10','99'], [tdDeclaracao, tdDutoviario, tdOutros]);
 end;
 
 function StrToTpDocumento(var ok: boolean; const s: string): TpcteTipoDocumento;
 begin
-  result := StrToEnumerado(ok, s, ['00','99'], [tdDeclaracao, tdOutros]);
+  result := StrToEnumerado(ok, s, ['00','10','99'], [tdDeclaracao, tdDutoviario, tdOutros]);
 end;
 
 function TpDocumentoAnteriorToStr(const t: TpcteTipoDocumentoAnterior): string;
@@ -1086,6 +1125,30 @@ function StrToTpCarroceria(var ok: boolean; const s: string): TpcteTipoCarroceri
 begin
   result := StrToEnumerado(ok, s, ['00','01','02','03','04','05'],
    [tcNaoAplicavel, tcAberta, tcFechada, tcGraneleira, tcPortaContainer, tcSider]);
+end;
+
+function ModeloNFToStr(const t: TpcteModeloNF): string;
+begin
+  result := EnumeradoToStr(t, ['01','04'],
+   [moNF011AAvulsa, moNFProdutor]);
+end;
+
+function StrToModeloNf(var ok: boolean; const s: string): TpcteModeloNF;
+begin
+  result := StrToEnumerado(ok, s, ['01','04'],
+   [moNF011AAvulsa, moNFProdutor]);
+end;
+
+function TrafegoMutuoToStr(const t: TpcteTrafegoMutuo): string;
+begin
+  result := EnumeradoToStr(t, ['1','2'],
+   [tmOrigem, tmDestino]);
+end;
+
+function StrToTrafegoMutuo(var ok: boolean; const s: string): TpcteTrafegoMutuo;
+begin
+  result := StrToEnumerado(ok, s, ['1','2'],
+   [tmOrigem, tmDestino]);
 end;
 
 end.

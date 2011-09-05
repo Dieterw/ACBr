@@ -380,7 +380,7 @@ begin
       Result := '2.00';
 
     // Tipos de LayOut para CT-e
-
+    // Será removido após os demais fontes estiverem atualizados, por Italo em 03/08/2011
     if Layout = tlConsStatServCTe then Result := '1.03';
     if Layout = tlCTe             then Result := '1.03';
     if Layout = tlEnvCTe          then Result := '1.03';
@@ -445,8 +445,49 @@ begin
     if Layout = tlConsDPEC then
       Result := '2.00';
     if Layout = tlCCeNFe then
-      Result := '2.00'; 
+      Result := '2.00';
   end;
+
+  // Incluido/Alterado por Italo em 03/08/2011
+  // Tipos de LayOut para CT-e
+
+  if schema = TsPL_CTe_103 then
+  begin
+    if Layout = tlConsStatServCTe then Result := '1.03';
+    if Layout = tlCTe             then Result := '1.03';
+    if Layout = tlEnvCTe          then Result := '1.03';
+    if Layout = tlRetEnvCTe       then Result := '1.03';
+    if Layout = tlProcCTe         then Result := '1.03';
+    if Layout = tlConsReciCTe     then Result := '1.03';
+    if Layout = tlRetConsReciCTe  then Result := '1.03';
+    if Layout = tlConsSitCTe      then Result := '1.03';
+    if Layout = tlRetConsSitCTe   then Result := '1.03';
+    if Layout = tlCancCTe         then Result := '1.03';
+    if Layout = tlProcCancCTe     then Result := '1.03';
+    if Layout = tlRetCancCTe      then Result := '1.03';
+    if Layout = tlInutCTe         then Result := '1.03';
+    if Layout = tlProcInutCTe     then Result := '1.03';
+    if Layout = tlRetInutCTe      then Result := '1.03';
+  end;
+  if schema = TsPL_CTe_104 then
+  begin
+    if Layout = tlConsStatServCTe then Result := '1.04';
+    if Layout = tlCTe             then Result := '1.04';
+    if Layout = tlEnvCTe          then Result := '1.04';
+    if Layout = tlRetEnvCTe       then Result := '1.04';
+    if Layout = tlProcCTe         then Result := '1.04';
+    if Layout = tlConsReciCTe     then Result := '1.04';
+    if Layout = tlRetConsReciCTe  then Result := '1.04';
+    if Layout = tlConsSitCTe      then Result := '1.04';
+    if Layout = tlRetConsSitCTe   then Result := '1.04';
+    if Layout = tlCancCTe         then Result := '1.04';
+    if Layout = tlProcCancCTe     then Result := '1.04';
+    if Layout = tlRetCancCTe      then Result := '1.04';
+    if Layout = tlInutCTe         then Result := '1.04';
+    if Layout = tlProcInutCTe     then Result := '1.04';
+    if Layout = tlRetInutCTe      then Result := '1.04';
+  end;
+
 end;
 
 function HexToAscii(Texto: string): String;

@@ -5664,7 +5664,7 @@ begin
     Relatorio.Clear;
 
     Relatorio.Add('</linha_dupla>');
-    Relatorio.Add('<e>Parâmetros Configuração</e>');
+    Relatorio.Add('<e>Parâmetros  Configuração</e>');
     Relatorio.Add('</linha_dupla>');
     Relatorio.Add('');
 

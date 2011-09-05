@@ -68,8 +68,8 @@ type
 
   TRegistroG110 = class
   private
-    fDT_INI: TDateTime;         /// Data Inicial da Apuracao
-    fDT_FIN: TDateTime;         /// Data Final da Apuracao
+//    fDT_INI: TDateTime;         /// Data Inicial da Apuracao
+//    fDT_FIN: TDateTime;         /// Data Final da Apuracao
     fMODO_CIAP: String;         /// Modelo de CIAP adotado C ou D
     fSALDO_IN_ICMS: Currency;   /// Saldo inicial de ICMS do CIAP Modelo C
     fSALDO_FN_ICMS: Currency;   /// Saldo Final ICMS do CIAP Modelo C
@@ -84,8 +84,8 @@ type
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
 
-    property DT_INI: TDateTime read fDT_INI write fDT_INI;
-    property DT_FIN: TDateTime read fDT_FIN write fDT_FIN;
+//    property DT_INI: TDateTime read fDT_INI write fDT_INI;
+//    property DT_FIN: TDateTime read fDT_FIN write fDT_FIN;
     property MODO_CIAP: String read fMODO_CIAP write fMODO_CIAP;                /// Até versão 102
     property SALDO_IN_ICMS: Currency read fSALDO_IN_ICMS write fSALDO_IN_ICMS;
     property SALDO_FN_ICMS: Currency read fSALDO_FN_ICMS write fSALDO_FN_ICMS;  /// Até versão 102
@@ -161,8 +161,8 @@ type
   //  Por: Edilson Alves de oliveira
   TRegistroG126 = class
   private
-    FDT_INI       : TDateTime;
-    FDT_FIM       : TDateTime;
+//    FDT_INI       : TDateTime;
+//    FDT_FIM       : TDateTime;
     FNUM_PARC     : Integer;
     FVL_PARC_PASS : Currency;
     FVL_TRIB_OC   : Currency;
@@ -170,8 +170,8 @@ type
     FIND_PER_SAI  : Double;
     FVL_PARC_APROP: Currency;
   public
-    property DT_INI: TDateTime        read fDT_INI        write fDT_INI;
-    property DT_FIM: TDateTime        read FDT_FIM        write FDT_FIM;
+//    property DT_INI: TDateTime        read fDT_INI        write fDT_INI;
+//    property DT_FIM: TDateTime        read FDT_FIM        write FDT_FIM;
     property NUM_PARC: Integer        read FNUM_PARC      write FNUM_PARC;
     property VL_PARC_PASS: Currency   read FVL_PARC_PASS  write FVL_PARC_PASS;
     property VL_TRIB_OC: Currency     read FVL_TRIB_OC    write FVL_TRIB_OC;

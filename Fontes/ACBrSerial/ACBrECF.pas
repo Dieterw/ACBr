@@ -5618,54 +5618,99 @@ procedure TACBrECF.PafMF_RelParametrosConfiguracao(const AInfoPafECF: TACBrECFIn
   const AIndiceRelatorio: Integer);
 var
   Relatorio: TStringList;
+  TamColSimNao: Integer;
+  TamColDescr: Integer;
+
+  function GetDescrFlag(const ALigado: Boolean): String;
+  begin
+    Result := IfThen(ALigado, ': SIM', ': NÃO');
+  end;
+
+  function GetTipoIntegracao(const ATipo: TACBrPAFTipoIntegracao): String;
+  begin
+    case ATipo of
+      tpiRetaguarda: Result := ': Retaguarda';
+      tpiPED:        Result := ': Sistema PED';
+      tpiAmbos:      Result := ': Ambos';
+      tpiNaoIntegra: Result := ': Não Integrado';
+    end;
+
+  end;
+
+  function GetTipoDesenvolvimento(const ATipo: TACBrPAFTipoDesenvolvimento): String;
+  begin
+    case ATipo of
+      tpdComercializavel:       Result := ': Comercializável';
+      tpdExclusivoProprio:      Result := ': Exclusivo-Próprio';
+      tpdExclusivoTerceirizado: Result := ': Exclusivo-Terceirizado';
+    end;
+  end;
+
+  function GetTipoFuncionamento(const ATipo: TACBrPAFTipoFuncionamento): String;
+  begin
+    case ATipo of
+      tpfStandAlone:     Result := ': Stand-Alone';
+      tpfEmRede:         Result := ': Em Rede';
+      tpfParametrizavel: Result := ': Parametrizável';
+    end;
+  end;
+
 begin
+  TamColSimNao := Self.Colunas - 5;
+  TamColDescr  := Self.Colunas - 24;
+
   Relatorio := TStringList.Create;
   try
     Relatorio.Clear;
 
     Relatorio.Add('</linha_dupla>');
-    Relatorio.Add('Parâmetros de Configuração');
+    Relatorio.Add('<e>Parâmetros Configuração</e>');
     Relatorio.Add('</linha_dupla>');
-    Relatorio.Add('Configuração');
-    Relatorio.Add('</linha_simples>');
-    Relatorio.Add('Funcionalidades');
-    Relatorio.Add('</linha_simples>');
-    Relatorio.Add('Tipo de funcionamento: ' + AInfoPafECF.TipoFuncionamento);
-    Relatorio.Add('Tipo de desenvolvimento: ' + AInfoPafECF.TipoDesenvolvimento);
-    Relatorio.Add('Integração com PAF_ECF: ' + AInfoPafECF.IntegracaoPAFECF);
     Relatorio.Add('');
-    Relatorio.Add('Parâmetros para Não Concomitância');
+
+    Relatorio.Add('<n>Funcionalidades</n>');
     Relatorio.Add('</linha_simples>');
-    Relatorio.Add('Pré-Venda: ' + IfThen( AInfoPafECF.RealizaPreVenda, 'Sim', 'Não'));
-    Relatorio.Add('DAV por ECF: ' + IfThen( AInfoPafECF.RealizaDAVECF, 'Sim', 'Não'));
-    Relatorio.Add('DAV Impressora Não Fiscal: ' + IfThen( AInfoPafECF.RealizaDAVNaoFiscal, 'Sim', 'Não'));
-    Relatorio.Add('DAV-OS: ' + IfThen( AInfoPafECF.RealizaDAVOS, 'Sim', 'Não'));
+    Relatorio.Add(padL('Tipo de Funcionamento', TamColDescr) + GetTipoFuncionamento(AInfoPafECF.TipoFuncionamento));
+    Relatorio.Add(padL('Tipo de Desenvolvimento', TamColDescr) + GetTipoDesenvolvimento(AInfoPafECF.TipoDesenvolvimento));
+    Relatorio.Add(padL('Integração com PAF-ECF', TamColDescr) + GetTipoIntegracao(AInfoPafECF.IntegracaoPAFECF));
     Relatorio.Add('');
-    Relatorio.Add('Aplicações Especiais');
+
+    Relatorio.Add('<n>Parâmetros para Não Concomitância</n>');
     Relatorio.Add('</linha_simples>');
-    Relatorio.Add('Tab. Indíce Técnico Produção: ' + IfThen( AInfoPafECF.IndiceTecnicoProd, 'Sim', 'Não'));
-    Relatorio.Add('Posto Revendedor de Combustíveis: ' + IfThen( AInfoPafECF.PostoCombustivel, 'Sim', 'Não'));
-    Relatorio.Add('Bar, Resta. Similiar - ECF Restaurante: ' + IfThen( AInfoPafECF.BarSimilarECFRestaurante, 'Sim', 'Não'));
-    Relatorio.Add('Bar, Resta. Similiar - ECF Normal: ' + IfThen( AInfoPafECF.BarSimilarECFComum, 'Sim', 'Não'));
-    Relatorio.Add('Farmácia de Manipulação: ' + IfThen( AInfoPafECF.FarmaciaManipulacao, 'Sim', 'Não'));
-    Relatorio.Add('Oficina de Conserto: ' + IfThen( AInfoPafECF.OficinaConserto, 'Sim', 'Não'));
-    Relatorio.Add('Transporte de Passageiros: ' + IfThen( AInfoPafECF.TransportePassageiro, 'Sim', 'Não'));
+    Relatorio.Add(padL('Pré-Venda', TamColSimNao) + GetDescrFlag( AInfoPafECF.RealizaPreVenda));
+    Relatorio.Add(padL('DAV por ECF', TamColSimNao) + GetDescrFlag( AInfoPafECF.RealizaDAVECF));
+    Relatorio.Add(padL('DAV Impressora Não Fiscal', TamColSimNao) + GetDescrFlag( AInfoPafECF.RealizaDAVNaoFiscal));
+    Relatorio.Add(padL('DAV-OS', TamColSimNao) + GetDescrFlag( AInfoPafECF.RealizaDAVOS));
     Relatorio.Add('');
-    Relatorio.Add('Critérios por Unidade Federada');
+
+    Relatorio.Add('<n>Aplicações Especiais</n>');
+    Relatorio.Add('</linha_simples>');
+    Relatorio.Add(padL('Tab. Indíce Técnico Produção', TamColSimNao) + GetDescrFlag( AInfoPafECF.IndiceTecnicoProd));
+    Relatorio.Add(padL('Posto Revendedor de Combustíveis', TamColSimNao) + GetDescrFlag( AInfoPafECF.PostoCombustivel));
+    Relatorio.Add(padL('Bar, Resta. Similiar - ECF Restaurante', TamColSimNao) + GetDescrFlag( AInfoPafECF.BarSimilarECFRestaurante));
+    Relatorio.Add(padL('Bar, Resta. Similiar - ECF Normal', TamColSimNao) + GetDescrFlag( AInfoPafECF.BarSimilarECFComum));
+    Relatorio.Add(padL('Farmácia de Manipulação', TamColSimNao) + GetDescrFlag( AInfoPafECF.FarmaciaManipulacao));
+    Relatorio.Add(padL('Oficina de Conserto', TamColSimNao) + GetDescrFlag( AInfoPafECF.OficinaConserto));
+    Relatorio.Add(padL('Transporte de Passageiros', TamColSimNao) + GetDescrFlag( AInfoPafECF.TransportePassageiro));
+    Relatorio.Add('');
+
+    Relatorio.Add('<n>Critérios por Unidade Federada</n>');
     Relatorio.Add('</linha_simples>');
     Relatorio.Add('Requisito XVIII - Tela de Consulta de Preços');
-    Relatorio.Add('Totalização dos Valores da Lista: ' + IfThen( AInfoPafECF.TotalizaValoresLista, 'Sim', 'Não'));
-    Relatorio.Add('Transformação dos Infor. em Pré-Venda: ' + IfThen( AInfoPafECF.TransfPreVenda, 'Sim', 'Não'));
-    Relatorio.Add('Transformação dos Infor. em DAV: ' + IfThen( AInfoPafECF.TransfDAV, 'Sim', 'Não'));
+    Relatorio.Add(padL('Totalização dos Valores da Lista', TamColSimNao) + GetDescrFlag( AInfoPafECF.TotalizaValoresLista));
+    Relatorio.Add(padL('Transformação dos Infor. em Pré-Venda', TamColSimNao) + GetDescrFlag( AInfoPafECF.TransfPreVenda));
+    Relatorio.Add(padL('Transformação dos Infor. em DAV', TamColSimNao) + GetDescrFlag( AInfoPafECF.TransfDAV));
     Relatorio.Add('');
-    Relatorio.Add('Requisito XXII - PAF-ECF Integrado ao ECF');
+
+    Relatorio.Add('<n>Requisito XXII (PAF-ECF Integrado ao ECF)</n>');
     Relatorio.Add('</linha_simples>');
-    Relatorio.Add('Não Coincidência GT(ECF) X Arquivo Cripto.: ' + IfThen( AInfoPafECF.NaoCoincGT, 'Sim', 'Não'));
-    Relatorio.Add('Recompõe Valor do GT Arq. Criptografado: ' + IfThen( AInfoPafECF.RecompoeGT, 'Sim', 'Não'));
+    Relatorio.Add(padL('Não Coincidência GT(ECF) X Arquivo Cripto.', TamColSimNao) + GetDescrFlag( AInfoPafECF.NaoCoincGT));
+    Relatorio.Add(padL('Recompõe Valor do GT Arq. Criptografado', TamColSimNao) + GetDescrFlag( AInfoPafECF.RecompoeGT));
     Relatorio.Add('');
-    Relatorio.Add('Requisito XXXVI-A PAF-ECF Combustível');
+
+    Relatorio.Add('<n>Requisito XXXVI-A (PAF-ECF Combustível)</n>');
     Relatorio.Add('</linha_simples>');
-    Relatorio.Add('Impede Reg. Venda Valor Zero ou Negativo: ' + IfThen( AInfoPafECF.ImpedeVendaVlrZero, 'Sim', 'Não'));
+    Relatorio.Add(padL('Impede Reg. Venda Valor Zero ou Negativo', TamColSimNao) + GetDescrFlag( AInfoPafECF.ImpedeVendaVlrZero));
     Relatorio.Add('');
 
     Self.RelatorioGerencial(Relatorio, 1, AIndiceRelatorio);

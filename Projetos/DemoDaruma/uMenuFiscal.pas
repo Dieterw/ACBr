@@ -295,26 +295,26 @@ var
 begin
   Parametros := TACBrECFInfoPaf.Create;
   try
-    Parametros.TipoFuncionamento        := 'Em Rede';
-    Parametros.TipoDesenvolvimento      := 'Comercializável';
-    Parametros.IntegracaoPAFECF         := 'Retaguarda';
+    Parametros.TipoFuncionamento        := tpfEmRede;
+    Parametros.TipoDesenvolvimento      := tpdExclusivoTerceirizado;
+    Parametros.IntegracaoPAFECF         := tpiRetaguarda;
     Parametros.RealizaPreVenda          := True;
     Parametros.RealizaDAVECF            := True;
     Parametros.RealizaDAVNaoFiscal      := True;
     Parametros.RealizaDAVOS             := True;
-    Parametros.IndiceTecnicoProd        := True;
-    Parametros.PostoCombustivel         := True;
+    Parametros.IndiceTecnicoProd        := False;
+    Parametros.PostoCombustivel         := False;
     Parametros.BarSimilarECFRestaurante := True;
-    Parametros.BarSimilarECFComum       := True;
+    Parametros.BarSimilarECFComum       := False;
     Parametros.FarmaciaManipulacao      := True;
     Parametros.OficinaConserto          := True;
     Parametros.TransportePassageiro     := True;
-    Parametros.TotalizaValoresLista     := True;
+    Parametros.TotalizaValoresLista     := False;
     Parametros.TransfPreVenda           := True;
     Parametros.TransfDAV                := True;
     Parametros.NaoCoincGT               := True;
     Parametros.RecompoeGT               := True;
-    Parametros.ImpedeVendaVlrZero       := True;
+    Parametros.ImpedeVendaVlrZero       := False;
 
     frmPrincipal.ACBrECF1.PafMF_RelParametrosConfiguracao(Parametros);
   finally

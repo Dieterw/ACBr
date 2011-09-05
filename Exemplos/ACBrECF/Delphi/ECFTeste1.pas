@@ -3484,9 +3484,9 @@ var
 begin
   Parametros := TACBrECFInfoPaf.Create;
   try
-    Parametros.TipoFuncionamento        := 'Em Rede';
-    Parametros.TipoDesenvolvimento      := 'Comercializável';
-    Parametros.IntegracaoPAFECF         := 'Retaguarda';
+    Parametros.TipoFuncionamento        := tpfEmRede;
+    Parametros.TipoDesenvolvimento      := tpdExclusivoTerceirizado;
+    Parametros.IntegracaoPAFECF         := tpiRetaguarda;
     Parametros.RealizaPreVenda          := True;
     Parametros.RealizaDAVECF            := True;
     Parametros.RealizaDAVNaoFiscal      := True;

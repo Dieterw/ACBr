@@ -97,6 +97,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 04/09/2011
+-- ACBrECF --
+[-] Melhorias na estética do relatório de configurações do PAF-ECF
+    (por: Régys Silveira)
+
 Data: 02/09/2011
 -- ACBrECF --
 [-] Implementação do relatório de configurações do Paf-ECF.

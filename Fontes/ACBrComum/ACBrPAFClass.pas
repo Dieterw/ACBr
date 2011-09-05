@@ -40,6 +40,11 @@ interface
 uses SysUtils, Classes, Contnrs;
 
 type
+  TACBrPAFTipoFuncionamento = (tpfStandAlone, tpfEmRede, tpfParametrizavel);
+  TACBrPAFTipoDesenvolvimento = (tpdComercializavel, tpdExclusivoProprio, tpdExclusivoTerceirizado);
+  TACBrPAFTipoIntegracao = (tpiRetaguarda, tpiPED, tpiAmbos, tpiNaoIntegra);
+
+
   { TACBrAACECF }
 
   TACBrAACECF = class( TPersistent )
@@ -155,11 +160,11 @@ type
     FOficinaConserto: Boolean;
     FTransfDAV: Boolean;
     FTotalizaValoresLista: Boolean;
-    FTipoDesenvolvimento: String;
-    FTipoFuncionamento: String;
+    FTipoDesenvolvimento: TACBrPAFTipoDesenvolvimento;
+    FTipoFuncionamento: TACBrPAFTipoFuncionamento;
     FImpedeVendaVlrZero: Boolean;
     FRealizaDAVOS: Boolean;
-    FIntegracaoPAFECF: String;
+    FIntegracaoPAFECF: TACBrPAFTipoIntegracao;
     FRecompoeGT: Boolean;
     FNaoCoincGT: Boolean;
     procedure SetVersao(const AValue : String) ;
@@ -171,9 +176,9 @@ type
     property Versao: String read fsVersao write SetVersao;
     property PrincipalExe: TACBrECFArquivo read fsPrincipalExe write fsPrincipalExe;
 
-    property TipoFuncionamento: String read FTipoFuncionamento write FTipoFuncionamento;
-    property TipoDesenvolvimento: String read FTipoDesenvolvimento write FTipoDesenvolvimento;
-    property IntegracaoPAFECF: String read FIntegracaoPAFECF write FIntegracaoPAFECF;
+    property TipoFuncionamento: TACBrPAFTipoFuncionamento read FTipoFuncionamento write FTipoFuncionamento;
+    property TipoDesenvolvimento: TACBrPAFTipoDesenvolvimento read FTipoDesenvolvimento write FTipoDesenvolvimento;
+    property IntegracaoPAFECF: TACBrPAFTipoIntegracao read FIntegracaoPAFECF write FIntegracaoPAFECF;
     property RealizaPreVenda: Boolean read FRealizaPreVenda write FRealizaPreVenda;
     property RealizaDAVECF: Boolean read FRealizaDAVECF write FRealizaDAVECF;
     property RealizaDAVNaoFiscal: Boolean read FRealizaDAVNaoFiscal write FRealizaDAVNaoFiscal;

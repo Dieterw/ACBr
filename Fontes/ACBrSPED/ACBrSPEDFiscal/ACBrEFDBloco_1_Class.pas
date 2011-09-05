@@ -872,9 +872,9 @@ begin
                LFill( COD_MOD, 2 ) +
                LFill( SER, 4 ) +
                LFill( SUB, 3 ) +
-               LFill( Trim(NUM_DOC_INI), 12 ) +
-               LFill( Trim(NUM_DOC_FIN), 12 ) +
-               LFill( Trim(NUM_AUT), 60 ));
+               LFill( NUM_DOC_INI, 12 ) +
+               LFill( NUM_DOC_FIN, 12 ) +
+               LFill( NUM_AUT, 60 ));
         end;
         WriteRegistro1710( Reg1001.Registro1700.Items[intFor] );
 
@@ -899,8 +899,8 @@ begin
           Check(StrIsNumber(Trim(NUM_DOC_FIN)), '(1-1710) Documento Fiscal Cancelado: Numeração incorreta "%s" para Documento Final', [NUM_DOC_FIN]);
 
           Add( LFill('1710') +
-               LFill( Trim(NUM_DOC_INI), 12) +
-               LFill( Trim(NUM_DOC_FIN), 12) ) ;
+               LFill( NUM_DOC_INI, 12) +
+               LFill( NUM_DOC_FIN, 12) ) ;
         end;
         Registro1990.QTD_LIN_1 := Registro1990.QTD_LIN_1 + 1;
      end;

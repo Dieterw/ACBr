@@ -1197,7 +1197,8 @@ begin
                LFill( Integer(COD_DOC_IMP), 0 ) +
                LFill( NUM_DOC__IMP ) +
                LFill( PIS_IMP,0,2 ) +
-               LFill( COFINS_IMP,0,2 ) ) ;
+               LFill( COFINS_IMP,0,2 ) +
+               LFill( NUM_ACDRAW ) ) ;
         end;
         RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
      end;

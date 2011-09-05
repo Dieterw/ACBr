@@ -458,11 +458,13 @@ type
     fNUM_DOC__IMP: String;            /// Número do documento de Importação.
     fPIS_IMP: currency;               /// Valor pago de PIS na importação
     fCOFINS_IMP: currency;            /// Valor pago de COFINS na importação
+    fNUM_ACDRAW: String;              /// Numero do Ato Concessório ro regime Drawback public
   public
     property COD_DOC_IMP: TACBrDoctoImporta read FCOD_DOC_IMP write FCOD_DOC_IMP;
     property NUM_DOC__IMP: String read FNUM_DOC__IMP write FNUM_DOC__IMP;
     property PIS_IMP: currency read FPIS_IMP write FPIS_IMP;
     property COFINS_IMP: currency read FCOFINS_IMP write FCOFINS_IMP;
+    property NUM_ACDRAW: String read fNUM_ACDRAW write fNUM_ACDRAW;
   end;
 
   /// Registro C120 - Lista

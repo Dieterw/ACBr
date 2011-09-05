@@ -478,7 +478,8 @@ begin
              Check(funChecaCPF(CPF), '(0-0150) %s-%s, o CPF "%s" digitado é inválido!', [COD_PART, NOME, CPF]);
 //          Check(funChecaIE(IE, UF),         '(0-0150) %s-%s, a Inscrição Estadual "%s" digitada é inválida!', [COD_PART, NOME, IE]);
 //          Check(funChecaMUN(COD_MUN),       '(0-0150) %s-%s, o código do município "%s" digitado é inválido!', [COD_PART, NOME, IntToStr(COD_MUN)]);
-          Check(NOME <> '',                 '(0-0150) O nome do participante é obrigatório!');
+          Check(NOME <> '',                 '(0-0150) O nome do participante com CPF/CNPJ %s é obrigatório!', [CNPJ + CPF]);
+          Check(ENDERECO <> EmptyStr, '(0-150) O Endereço do participante "%s - %s - CPF/CNPJ %s" é obrigatório!', [COD_PART, NOME, CNPJ + CPF]);
           ///
           Add( LFill('0150') +
                LFill(COD_PART) +
@@ -518,7 +519,7 @@ begin
           ///
           Add( LFill('0175') +
                LFill(DT_ALT) +
-               LFill(NR_CAMPO) +
+               LFill(NR_CAMPO, 2) +
                LFill(CONT_ANT) ) ;
         end;
         Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
@@ -576,8 +577,12 @@ begin
             tiOutrosInsumos        : strTIPO_ITEM := '10';
             tiOutras               : strTIPO_ITEM := '99';
           end;
-          if Length(COD_GEN) > 0 then
-             Check(funChecaGENERO(COD_GEN), '(0-0200) O código do gênero "%s" digitado é inválido!', [COD_GEN]);
+          if COD_GEN <> EmptyStr then
+          begin
+            COD_GEN := funStrZero(COD_GEN, 2);
+            Check(funChecaGENERO(COD_GEN), '(0-0200) O código do gênero "%s" digitado é inválido! ' +
+              'Produto %s %s', [COD_GEN, COD_BARRA, DESCR_ITEM]);
+          end;
           ///
           Add( LFill('0200') +
                LFill( COD_ITEM ) +
@@ -588,7 +593,7 @@ begin
                LFill( strTIPO_ITEM ) +
                LFill( COD_NCM ) +
                LFill( EX_IPI ) +
-               LFill( COD_GEN ) +
+               LFill( COD_GEN, 2 ) +
                LFill( COD_LST ) +
                LFill( ALIQ_ICMS,0,2 ) ) ;
         end;

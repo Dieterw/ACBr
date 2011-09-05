@@ -43,7 +43,7 @@ unit ACBrEFDBloco_1_Class;
 interface
 
 uses SysUtils, Classes, DateUtils, ACBrSped, ACBrEFDBloco_1,
-     ACBrEFDBloco_0_Class, ACBrEFDBlocos;
+     ACBrEFDBloco_0_Class, ACBrEFDBlocos, ACBrUtil;
 
 type
   /// TBLOCO_1 -
@@ -863,14 +863,18 @@ begin
            cdaJogosSoltos:   strCOD_DISP := '05';
           end;
 
+          Check(StrIsNumber(Trim(NUM_DOC_INI)), '(1-1700) Documento Fiscal: Numeração incorreta "%s" para Documento Inicial', [NUM_DOC_INI]);
+          Check(StrIsNumber(Trim(NUM_DOC_FIN)), '(1-1700) Documento Fiscal: Numeração incorreta "%s" para Documento Final', [NUM_DOC_FIN]);
+          Check(StrIsNumber(Trim((NUM_AUT))), '(1-1700) Documento Fiscal: Numeração incorreta "%s" para Número Autorização', [NUM_AUT]);
+
           Add( LFill('1700') +
-               LFill( strCOD_DISP, 2) +
-               LFill( COD_MOD, 2) +
+               LFill( strCOD_DISP, 2 ) +
+               LFill( COD_MOD, 2 ) +
                LFill( SER, 4 ) +
-               LFill( SUB, 3) +
-               LFill( NUM_DOC_INI, 12) +
-               LFill( NUM_DOC_FIN, 12) +
-               LFill( NUM_AUT, 60) ) ;
+               LFill( SUB, 3 ) +
+               LFill( Trim(NUM_DOC_INI), 12 ) +
+               LFill( Trim(NUM_DOC_FIN), 12 ) +
+               LFill( Trim(NUM_AUT), 60 ));
         end;
         WriteRegistro1710( Reg1001.Registro1700.Items[intFor] );
 
@@ -891,9 +895,12 @@ begin
      begin
         with Reg1700.Registro1710.Items[intFor] do
         begin
+          Check(StrIsNumber(Trim(NUM_DOC_INI)), '(1-1710) Documento Fiscal Cancelado: Numeração incorreta "%s" para Documento Inicial', [NUM_DOC_INI]);
+          Check(StrIsNumber(Trim(NUM_DOC_FIN)), '(1-1710) Documento Fiscal Cancelado: Numeração incorreta "%s" para Documento Final', [NUM_DOC_FIN]);
+
           Add( LFill('1710') +
-               LFill( NUM_DOC_INI, 12) +
-               LFill( NUM_DOC_FIN, 12) ) ;
+               LFill( Trim(NUM_DOC_INI), 12) +
+               LFill( Trim(NUM_DOC_FIN), 12) ) ;
         end;
         Registro1990.QTD_LIN_1 := Registro1990.QTD_LIN_1 + 1;
      end;

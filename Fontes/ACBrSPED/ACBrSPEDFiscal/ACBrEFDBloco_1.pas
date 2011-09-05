@@ -673,9 +673,9 @@ type
     fCOD_MOD: String;               /// Codigo Modelo Documento Fiscal
     fSER: String;                   /// Serie Documento Fiscal
     fSUB: String;                   /// SubSerie Documento Fiscal
-    fNUM_DOC_INI: Currency;         /// Numero Documento Fiscal Inicial
-    fNUM_DOC_FIN: Currency;         /// Numero Documento Fiscal Final
-    fNUM_AUT: Currency;             /// Numero da Autorizacao
+    fNUM_DOC_INI: String;         /// Numero Documento Fiscal Inicial - deve ser String
+    fNUM_DOC_FIN: String;         /// Numero Documento Fiscal Final - deve ser String
+    fNUM_AUT: String;             /// Numero da Autorizacao - deve ser String
 
     FRegistro1710: TRegistro1710List;  /// BLOCO 1- Lista de Registro1710 (FILHO fo FILHO)
   public
@@ -686,9 +686,9 @@ type
     property COD_MOD: String read fCOD_MOD write fCOD_MOD;
     property SER: String read fSER write fSER;
     property SUB: String read fSUB write fSUB;
-    property NUM_DOC_INI: Currency read fNUM_DOC_INI write fNUM_DOC_INI;
-    property NUM_DOC_FIN: Currency read fNUM_DOC_FIN write fNUM_DOC_FIN;
-    property NUM_AUT: Currency read fNUM_AUT write fNUM_AUT;
+    property NUM_DOC_INI: String read fNUM_DOC_INI write fNUM_DOC_INI;
+    property NUM_DOC_FIN: String read fNUM_DOC_FIN write fNUM_DOC_FIN;
+    property NUM_AUT: String read fNUM_AUT write fNUM_AUT;
 
     property Registro1710: TRegistro1710List read FRegistro1710 write FRegistro1710;
   end;
@@ -708,11 +708,11 @@ type
 
   TRegistro1710 = class
   private
-    fNUM_DOC_INI: Currency;     /// Numero Documento Fiscal Inicial
-    fNUM_DOC_FIN: Currency;     /// Numero Documento Fiscal Final
+    fNUM_DOC_INI: String;     /// Numero Documento Fiscal Inicial
+    fNUM_DOC_FIN: String;     /// Numero Documento Fiscal Final
   public
-    property NUM_DOC_INI: Currency read fNUM_DOC_INI write fNUM_DOC_INI;
-    property NUM_DOC_FIN: Currency read fNUM_DOC_FIN write fNUM_DOC_FIN;
+    property NUM_DOC_INI: String read fNUM_DOC_INI write fNUM_DOC_INI;
+    property NUM_DOC_FIN: String read fNUM_DOC_FIN write fNUM_DOC_FIN;
   end;
 
   /// Registro 1710 - Lista

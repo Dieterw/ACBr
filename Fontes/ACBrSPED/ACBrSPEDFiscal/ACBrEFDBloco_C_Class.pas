@@ -1703,7 +1703,7 @@ begin
         with RegC100.RegistroC190.Items[intFor] do
         begin
           Add( LFill('C190') +
-               LFill( CST_ICMS ) +
+               LFill( CST_ICMS, 3 ) +
                LFill( CFOP,4 ) +
                LFill( ALIQ_ICMS,6,2 ) +
                LFill( VL_OPR,0,2 ) +

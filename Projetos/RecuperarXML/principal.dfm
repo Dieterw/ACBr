@@ -143,10 +143,10 @@ object frmPrincipal: TfrmPrincipal
     Height = 156
     TabOrder = 4
     object Image1: TImage
-      Left = 21
-      Top = 27
-      Width = 249
-      Height = 99
+      Left = 15
+      Top = 18
+      Width = 262
+      Height = 105
       Center = True
     end
     object Label3: TLabel

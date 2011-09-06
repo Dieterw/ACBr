@@ -3,7 +3,7 @@ unit ACBrHTMLtoXML;
 interface
 
 uses Forms, SysUtils, Math, pcnNFe, pcnNFeW, pcnAuxiliar, pcnConversao, ACBrUtil,
-  Classes;
+  Classes, Dialogs;
 
 function GerarXML(Arquivo : AnsiString) : String;
 
@@ -275,81 +275,95 @@ begin
                 Grupo := ArquivoItensTemp;
 
               with NFe.Det.Add do
-                begin
-                  //Prod.nItem := StrToIntDef(LerCampo(Grupo, 'Num.'), 0);
-                  Prod.nItem := i;
-                  Prod.xProd := LerCampo(Grupo, '|&|' + intTostr(i) + '|&|');
-
-                  //retira o código '|&|1|&|'
-                  grupo := copy(grupo, 8, length(grupo));
+              begin
+                //Prod.nItem := StrToIntDef(LerCampo(Grupo, 'Num.'), 0);
+                Prod.nItem := i;
+                Prod.xProd := LerCampo(Grupo, '|&|' + intTostr(i) + '|&|');
+                 //retira o código '|&|1|&|'
+                grupo := copy(grupo, 8, length(grupo));
+                //separa até a próxima tag |&|
+                Prod.qCom := ConverteStrToNumero(LerCampo(Grupo, '|&|'));
                   //separa até a próxima tag |&|
+                grupo := copy(grupo, pos('|&|', grupo) + 3, length(grupo));
 
-                  Prod.qCom := ConverteStrToNumero(LerCampo(Grupo, '|&|'));
-                   //separa até a próxima tag |&|
-                  grupo := copy(grupo, pos('|&|', grupo) + 3, length(grupo));
+                Prod.uCom := LerCampo(Grupo, '|&|');
+                  //separa até a próxima tag |&|
+                grupo := copy(grupo, pos('|&|', grupo) + 3, length(grupo));
 
-                  Prod.uCom := LerCampo(Grupo, '|&|');
-                    //separa até a próxima tag |&|
-                  grupo := copy(grupo, pos('|&|', grupo) + 3, length(grupo));
+                Prod.vProd := ConverteStrToNumero(LerCampo(Grupo, '|&|'));
+                  //separa até a próxima tag |&|
+                grupo := copy(grupo, pos('|&|', grupo) + 3, length(grupo));
 
-                  Prod.vProd := ConverteStrToNumero(LerCampo(Grupo, '|&|'));
-                    //separa até a próxima tag |&|
-                  grupo := copy(grupo, pos('|&|', grupo) + 3, length(grupo));
-
-                  //Daqui em diante continua mesmo layout
-
-                  Prod.cProd := LerCampo(Grupo, 'Código do Produto');
-                  Prod.NCM := LerCampo(Grupo, 'Código NCM');
-                  Prod.CFOP := LerCampo(Grupo, 'CFOP');
+                //Daqui em diante continua mesmo layout
+                Prod.cProd := LerCampo(Grupo, 'Código do Produto');
+                Prod.NCM := LerCampo(Grupo, 'Código NCM');
+                Prod.CFOP := LerCampo(Grupo, 'CFOP');
 //                  Prod.genero := StrToIntDef(LerCampo(Grupo,'Gênero'),0);
-                  Prod.vFrete := ConverteStrToNumero(LerCampo(Grupo, 'Valor Total do Frete'));
-                  Prod.cEAN := LerCampo(Grupo, 'Código EAN Comercial');
-                  Prod.qCom := ConverteStrToNumero(LerCampo(Grupo, 'Quantidade Comercial'));
-                  Prod.cEANTrib := LerCampo(Grupo, 'Código EAN Tributável');
-                  Prod.uTrib := LerCampo(Grupo, 'Unidade Tributável');
-                  Prod.qTrib := ConverteStrToNumero(LerCampo(Grupo, 'Quantidade Tributável'));
-                  Prod.vUnCom := ConverteStrToNumero(LerCampo(Grupo, 'Valor unitário de comercialização'));
-                  Prod.vUnTrib := ConverteStrToNumero(LerCampo(Grupo, 'Valor unitário de tributação'));
+                Prod.vFrete := ConverteStrToNumero(LerCampo(Grupo, 'Valor Total do Frete'));
+                Prod.cEAN := LerCampo(Grupo, 'Código EAN Comercial');
+                Prod.qCom := ConverteStrToNumero(LerCampo(Grupo, 'Quantidade Comercial'));
+                Prod.cEANTrib := LerCampo(Grupo, 'Código EAN Tributável');
+                Prod.uTrib := LerCampo(Grupo, 'Unidade Tributável');
+                Prod.qTrib := ConverteStrToNumero(LerCampo(Grupo, 'Quantidade Tributável'));
+                Prod.vUnCom := ConverteStrToNumero(LerCampo(Grupo, 'Valor unitário de comercialização'));
+                Prod.vUnTrib := ConverteStrToNumero(LerCampo(Grupo, 'Valor unitário de tributação'));
 
-                  if LerCampo(Grupo,'Chassi do veículo ') <> '' then
-                  begin
+                if LerCampo(Grupo,'Chassi do veículo ') <> '' then
+                begin
                    // preencher as tags referente a veículo
-                   Prod.veicProd.chassi  := LerCampo(Grupo,'Chassi do veículo ');
-                   Prod.veicProd.cCor    := LerCampo(Grupo,'Cor ');
-                   Prod.veicProd.xCor    := LerCampo(Grupo,'Descrição da cor ');
-                   Prod.veicProd.nSerie  := LerCampo(Grupo,'Serial (Série) ');
-                   Prod.veicProd.tpComb  := LerCampo(Grupo,'Tipo de Combustível ');
-                   Prod.veicProd.nMotor  := LerCampo(Grupo,'Número de Motor ');
-                   //Prod.veicProd.RENAVAM := LerCampo(Grupo,'RENAVAM');
-                   Prod.veicProd.anoMod  := StrToInt(LerCampo(Grupo,'Ano Modelo de Fabricação '));
-                   Prod.veicProd.anoFab  := StrToInt(LerCampo(Grupo,'Ano de Fabricação '));
-                 end;
-
-                  with Imposto.ICMS do
-                    begin
-                      orig := StrToOrig(ok, LerCampo(Grupo, 'Origem da Mercadoria', 1));
-                      CST := StrToCSTICMS(ok, LerCampo(Grupo, 'Tributação do ICMS', 2));
-                      //Modalidade Definição da BC ICMS NOR
-                      vBC := ConverteStrToNumero(LerCampo(Grupo, 'Base de Cálculo do ICMS Normal'));
-                      pICMS := ConverteStrToNumero(LerCampo(Grupo, 'Alíquota do ICMS Normal'));
-                      vICMS := ConverteStrToNumero(LerCampo(Grupo, 'Valor do ICMS Normal'));
-                    end;
-
-                    Grupo := copy(Grupo,pos('Imposto sobre produtos industrializados',grupo),length(grupo));
-                    with Imposto.IPI do
-                    begin
-                      cEnq := LerCampo(Grupo, 'Código de Enquadramento');
-                      vBC := ConverteStrToNumero(LerCampo(Grupo, 'Base de Cálculo'));
-                      pIPI := ConverteStrToNumero(LerCampo(Grupo, 'Alíquota'));
-                      vIPI := ConverteStrToNumero(LerCampo(Grupo, 'Valor'));
-                      CST := StrToCSTIPI(ok, LerCampo(Grupo, 'CST', 2));
-                    end;
+                  Prod.veicProd.chassi  := LerCampo(Grupo,'Chassi do veículo ');
+                  Prod.veicProd.cCor    := LerCampo(Grupo,'Cor ');
+                  Prod.veicProd.xCor    := LerCampo(Grupo,'Descrição da cor ');
+                  Prod.veicProd.nSerie  := LerCampo(Grupo,'Serial (Série) ');
+                  Prod.veicProd.tpComb  := LerCampo(Grupo,'Tipo de Combustível ');
+                  Prod.veicProd.nMotor  := LerCampo(Grupo,'Número de Motor ');
+                  //Prod.veicProd.RENAVAM := LerCampo(Grupo,'RENAVAM');
+                  Prod.veicProd.anoMod  := StrToInt(LerCampo(Grupo,'Ano Modelo de Fabricação '));
+                  Prod.veicProd.anoFab  := StrToInt(LerCampo(Grupo,'Ano de Fabricação '));
                 end;
+
+                with Imposto.ICMS do
+                begin
+                  orig := StrToOrig(ok, LerCampo(Grupo, 'Origem da Mercadoria', 1));
+                  CST := StrToCSTICMS(ok, LerCampo(Grupo, 'Tributação do ICMS', 2));
+                  //Modalidade Definição da BC ICMS NOR
+
+                  //separa até a próxima tag
+                  grupo:=Copy(Grupo,Pos('Modalidade',Grupo),Length(Grupo));
+
+                  pRedBC:=ConverteStrToNumero(LerCampo(Grupo,'Percentual Redução de BC do ICMS Normal'));
+                  vBC := ConverteStrToNumero(LerCampo(Grupo, 'Base de Cálculo'));
+                  pICMS := ConverteStrToNumero(LerCampo(Grupo, 'Alíquota'));
+
+                  //separa até a TAG alíquota
+                  grupo:=Copy(Grupo,Pos('Alíquota',Grupo),Length(Grupo));
+
+                  vICMS := ConverteStrToNumero(LerCampo(Grupo, 'Valor'));
+                  pMVAST:=ConverteStrToNumero(LerCampo(Grupo, 'Percentual da Margen de Valor Adicionado do ICMS ST'));
+                  pRedBCST:=ConverteStrToNumero(LerCampo(Grupo, 'Percentual da Redução de BC do ICMS ST'));
+                  vBCST:=ConverteStrToNumero(LerCampo(Grupo, 'Valor da BC do ICMS ST'));
+                  pICMSST:=ConverteStrToNumero(LerCampo(Grupo, 'Alíquota do Imposto do ICMS ST'));
+                  vICMSST:=ConverteStrToNumero(LerCampo(Grupo, 'Valor do ICMS ST'));
+                end;
+
+                if LerCampo(Grupo,'Imposto sobre produtos industrializados')<>'' then
+                begin
+                  Grupo := copy(Grupo,pos('Imposto sobre produtos industrializados',grupo),length(grupo));
+                  with Imposto.IPI do
+                  begin
+                    cEnq := LerCampo(Grupo, 'Código de Enquadramento');
+                    vBC := ConverteStrToNumero(LerCampo(Grupo, 'Base de Cálculo'));
+                    pIPI := ConverteStrToNumero(LerCampo(Grupo, 'Alíquota'));
+                    vIPI := ConverteStrToNumero(LerCampo(Grupo, 'Valor'));
+                    CST := StrToCSTIPI(ok, LerCampo(Grupo, 'CST', 2));
+                  end;
+                end;
+              end;
             end;
             break;
         end;
     end;
-
+   Grupo:=Copy(Grupo,Pos('Totais',Grupo),Length(Grupo));
    NFe.Total.ICMSTot.vBC   := ConverteStrToNumero(LerCampo(Grupo,'Base de Cálculo ICMS'));
    NFe.Total.ICMSTot.vICMS := ConverteStrToNumero(LerCampo(Grupo,'Valor do ICMS'));
    NFe.Total.ICMSTot.vBCST := ConverteStrToNumero(LerCampo(Grupo,'Base de Cálculo ICMS ST'));

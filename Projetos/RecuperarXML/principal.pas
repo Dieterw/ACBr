@@ -31,6 +31,9 @@ type
     WBXML: TWebBrowser;
     Button1: TButton;
     Label3: TLabel;
+    TabSheet3: TTabSheet;
+    Label4: TLabel;
+    Label5: TLabel;
     procedure btnPegarHTMLClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure WebBrowser1DocumentComplete(Sender: TObject;

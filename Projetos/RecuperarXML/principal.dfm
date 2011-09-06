@@ -172,7 +172,7 @@ object frmPrincipal: TfrmPrincipal
     Top = 200
     Width = 643
     Height = 193
-    ActivePage = TabSheet1
+    ActivePage = TabSheet3
     TabOrder = 5
     object TabSheet1: TTabSheet
       Caption = 'Dados HTML'
@@ -210,6 +210,44 @@ object frmPrincipal: TfrmPrincipal
             8000000000000000000000000000000000000000000000000000000000000000
             00000000000000000100000000000000000000000000000000000000}
         end
+      end
+    end
+    object TabSheet3: TTabSheet
+      Caption = 'Sobre'
+      ImageIndex = 2
+      object Label4: TLabel
+        Left = 0
+        Top = 0
+        Width = 635
+        Height = 139
+        Align = alClient
+        Caption = 
+          'Projeto Recuperar XML'#13#10'Este projeto '#233' mantido pela comunidade de' +
+          ' desenvolvedores do ACBr.'#13#10#13#10'Seu uso tem por objetivo fornecer o' +
+          's dados de NF-e utilizando busca basedo no layout do site da NF-' +
+          'e. Este site sofre modifica'#231#245'es constantes o que na maioria das ' +
+          'vezes faz com que este projeto se torne incompat'#237'vel, portanto n' +
+          #227'o h'#225' garantias de continuidade e manuten'#231#227'o deste projeto, use-' +
+          'o por conta e risco.'#13#10#13#10
+        WordWrap = True
+      end
+      object Label5: TLabel
+        Left = 0
+        Top = 139
+        Width = 635
+        Height = 26
+        Align = alBottom
+        Caption = 
+          'OS ARQUIVOS GERADOS POR ESTE PROGRAMA N'#195'O SUBSTITUEM O XML ORIGI' +
+          'NAL DA NF-E! Solicite aos fornecedores o envio do xml original, ' +
+          'al'#233'm de obrigat'#243'rio, '#233' mais seguro.'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clRed
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+        WordWrap = True
       end
     end
   end

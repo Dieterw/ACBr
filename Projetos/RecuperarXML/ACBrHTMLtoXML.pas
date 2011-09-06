@@ -76,7 +76,7 @@ var
  dData      : TDateTime; 
  i, posIni, posFim : Integer;
  sDataEmissao, Versao, sTexto : String;
- CaminhoXML, Grupo, ArquivoTXT, ArquivoRestante : AnsiString;
+ CaminhoXML, Grupo, ArquivoTXT, ArquivoRestante, GrupoTmp : AnsiString;
  ArquivoItens, ArquivoItensTemp, ArquivoDuplicatas, ArquivoVolumes : AnsiString;
  produtos: Integer;
 begin
@@ -325,30 +325,55 @@ begin
                 with Imposto.ICMS do
                 begin
                   orig := StrToOrig(ok, LerCampo(Grupo, 'Origem da Mercadoria', 1));
-                  CST := StrToCSTICMS(ok, LerCampo(Grupo, 'Tributação do ICMS', 2));
+                  CST := StrToCSTICMS(ok, Trim(LerCampo(Grupo, 'Tributação do ICMS', 3)));
                   //Modalidade Definição da BC ICMS NOR
 
                   //separa até a próxima tag
-                  grupo:=Copy(Grupo,Pos('Modalidade',Grupo),Length(Grupo));
+                  grupotmp:=Copy(Grupo,Pos('Modalidade',Grupo),Length(Grupo));
+                  if Pos('70',CSTICMSToStr(CST))>0 then
+                  begin
+                    pRedBC:=ConverteStrToNumero(LerCampo(GrupoTmp,'Percentual Redução de BC do ICMS Normal'));
+                    vBC := ConverteStrToNumero(LerCampo(GrupoTmp, 'Base de Cálculo'));
+                    pICMS := ConverteStrToNumero(LerCampo(GrupoTmp, 'Alíquota'));
+                    //separa até a TAG alíquota
+                    GrupoTmp:=Copy(GrupoTmp,Pos('Alíquota',GrupoTmp),Length(GrupoTmp));
 
-                  pRedBC:=ConverteStrToNumero(LerCampo(Grupo,'Percentual Redução de BC do ICMS Normal'));
-                  vBC := ConverteStrToNumero(LerCampo(Grupo, 'Base de Cálculo'));
-                  pICMS := ConverteStrToNumero(LerCampo(Grupo, 'Alíquota'));
+                    vICMS := ConverteStrToNumero(LerCampo(GrupoTmp, 'Valor'));
+                    pMVAST:=ConverteStrToNumero(LerCampo(GrupoTmp, 'Percentual da Margen de Valor Adicionado do ICMS ST'));
+                    pRedBCST:=ConverteStrToNumero(LerCampo(GrupoTmp, 'Percentual da Redução de BC do ICMS ST'));
+                    vBCST:=ConverteStrToNumero(LerCampo(GrupoTmp, 'Valor da BC do ICMS ST'));
+                    pICMSST:=ConverteStrToNumero(LerCampo(GrupoTmp, 'Alíquota do Imposto do ICMS ST'));
+                    vICMSST:=ConverteStrToNumero(LerCampo(GrupoTmp, 'Valor do ICMS ST'));
+                  end
+                  else if Pos('10',CSTICMSToStr(CST))>0 then
+                  begin
+                    vBC := ConverteStrToNumero(LerCampo(GrupoTmp, 'Base de Cálculo do ICMS Normal'));
+                    pICMS := ConverteStrToNumero(LerCampo(GrupoTmp, 'Alíquota ICMS Normal'));
+                    //separa até a TAG alíquota
+                    GrupoTmp:=Copy(GrupoTmp,Pos('Alíquota ICMS Normal',GrupoTmp),Length(GrupoTmp));
 
-                  //separa até a TAG alíquota
-                  grupo:=Copy(Grupo,Pos('Alíquota',Grupo),Length(Grupo));
+                    vICMS := ConverteStrToNumero(LerCampo(GrupoTmp, 'Valor do ICMS Normal'));
+                    vBCST:=ConverteStrToNumero(LerCampo(GrupoTmp, 'Base de Cálculo do ICMS ST'));
+                    pICMSST:=ConverteStrToNumero(LerCampo(GrupoTmp, 'Alíquota do ICMS ST'));
+                    vICMSST:=ConverteStrToNumero(LerCampo(GrupoTmp, 'Valor do ICMS ST'));
+                  end
+                  else
+                  begin
+                    vBC := ConverteStrToNumero(LerCampo(GrupoTmp, 'Base de Cálculo do ICMS Normal'));
+                    pICMS := ConverteStrToNumero(LerCampo(GrupoTmp, 'Alíquota ICMS Normal'));
+                    //separa até a TAG alíquota
+                    GrupoTmp:=Copy(GrupoTmp,Pos('Alíquota ICMS Normal',GrupoTmp),Length(GrupoTmp));
 
-                  vICMS := ConverteStrToNumero(LerCampo(Grupo, 'Valor'));
-                  pMVAST:=ConverteStrToNumero(LerCampo(Grupo, 'Percentual da Margen de Valor Adicionado do ICMS ST'));
-                  pRedBCST:=ConverteStrToNumero(LerCampo(Grupo, 'Percentual da Redução de BC do ICMS ST'));
-                  vBCST:=ConverteStrToNumero(LerCampo(Grupo, 'Valor da BC do ICMS ST'));
-                  pICMSST:=ConverteStrToNumero(LerCampo(Grupo, 'Alíquota do Imposto do ICMS ST'));
-                  vICMSST:=ConverteStrToNumero(LerCampo(Grupo, 'Valor do ICMS ST'));
+                    vICMS := ConverteStrToNumero(LerCampo(GrupoTmp, 'Valor do ICMS Normal'));
+                    vBCST:=ConverteStrToNumero(LerCampo(GrupoTmp, 'Base de Cálculo do ICMS ST'));
+                    pICMSST:=ConverteStrToNumero(LerCampo(GrupoTmp, 'Alíquota do ICMS ST'));
+                    vICMSST:=ConverteStrToNumero(LerCampo(GrupoTmp, 'Valor do ICMS ST'));
+                  end;
                 end;
 
-                if LerCampo(Grupo,'Imposto sobre produtos industrializados')<>'' then
+                if LerCampo(Grupo,'IMPOSTO SOBRE PRODUTOS INDUSTRIALIZADOS')<>'' then
                 begin
-                  Grupo := copy(Grupo,pos('Imposto sobre produtos industrializados',grupo),length(grupo));
+                  Grupo := copy(Grupo,pos('IMPOSTO SOBRE PRODUTOS INDUSTRIALIZADOS',grupo),length(grupo));
                   with Imposto.IPI do
                   begin
                     cEnq := LerCampo(Grupo, 'Código de Enquadramento');

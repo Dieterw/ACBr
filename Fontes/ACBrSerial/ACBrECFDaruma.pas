@@ -1941,6 +1941,10 @@ end;
 procedure TACBrECFDaruma.AbreCupom ;
 Var StrConsumidor : String ;
 begin
+  fsSubTotal := 0;
+  fsNumCupom := '';
+  fsNumCCF   := '';
+
   fpUltimaMsgPoucoPapel := 0 ;  { Zera tempo pra msg de pouco papel }
   AguardaImpressao := True ;
 

@@ -229,6 +229,12 @@ object frmPrincipal: TfrmPrincipal
           'vezes faz com que este projeto se torne incompat'#237'vel, portanto n' +
           #227'o h'#225' garantias de continuidade e manuten'#231#227'o deste projeto, use-' +
           'o por conta e risco.'#13#10#13#10
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
         WordWrap = True
       end
       object Label5: TLabel

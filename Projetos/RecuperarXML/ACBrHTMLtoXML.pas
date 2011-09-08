@@ -88,6 +88,7 @@ begin
 
  NFe.infNFe.ID := OnlyNumber(LerCampo(Grupo,'Chave de acesso'));
  NFe.Ide.nNF   := StrToIntDef(OnlyNumber(LerCampo(Grupo,'Número NF-e')),0);
+ NFe.procNFe.chNFe:= OnlyNumber(LerCampo(Grupo,'Chave de acesso'));
 
  { Incluido campo que recebe qual a Versão do XML que o arquivo está. }
  Versao        := LerCampo(Grupo,'Versão');
@@ -307,7 +308,8 @@ begin
                 Prod.qTrib := ConverteStrToNumero(LerCampo(Grupo, 'Quantidade Tributável'));
                 Prod.vUnCom := ConverteStrToNumero(LerCampo(Grupo, 'Valor unitário de comercialização'));
                 Prod.vUnTrib := ConverteStrToNumero(LerCampo(Grupo, 'Valor unitário de tributação'));
-
+                Prod.vDesc := ConverteStrToNumero(LerCampo(Grupo, 'Valor do Desconto'));
+                Prod.vOutro := ConverteStrToNumero(LerCampo(Grupo, 'Outras despesas acessórias'));
                 if LerCampo(Grupo,'Chassi do veículo ') <> '' then
                 begin
                    // preencher as tags referente a veículo

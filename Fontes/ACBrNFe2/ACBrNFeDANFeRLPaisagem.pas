@@ -1603,10 +1603,8 @@ begin
                   cdsItens.FieldByName('DESCRICAO').AsString := XProd;
                   cdsItens.FieldByName('NCM').AsString := NCM;
                   cdsItens.FieldByName('CFOP').AsString := CFOP;
-
-                  cdsItens.FieldByName('QTDE').AsString := NotaUtil.FormatFloat(qCom, sDisplayFormat[FCasasDecimaisqCom]);
-                  cdsItens.FieldByName('VALOR').AsString := NotaUtil.FormatFloat(vUnCom, sDisplayFormat[FCasasDecimaisvUnCom]);
-
+                  cdsItens.FieldByName('QTDE').AsString := FormatFloat(format(sDisplayFormat ,[FCasasDecimaisqCom,0]),qCom);
+                  cdsItens.FieldByName('VALOR').AsString := FormatFloat(format(sDisplayFormat ,[FCasasDecimaisvUnCom,0]),vUnCom);
                   cdsItens.FieldByName('UNIDADE').AsString := UCom;
                   cdsItens.FieldByName('TOTAL').AsString :=
                                       FormatFloat('###,###,###,##0.00', vProd);

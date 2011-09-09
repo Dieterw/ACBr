@@ -1779,9 +1779,9 @@ begin
      Gerador.wCampo(tcStr, 'ZC02', 'safra', 04, 09, 0, nfe.cana.safra, DSC_SAFRA);
      Gerador.wCampo(tcStr, 'ZC03', 'ref  ', 04, 09, 0, nfe.cana.ref, DSC_REF);
      (**)GerarforDia;
-    Gerador.wCampo(tcDe10,'ZC07','qTotMes', 01, 11, 1, nfe.cana.qTotMes, DSC_QTOTMES);
-    Gerador.wCampo(tcDe10,'ZC08','qTotAnt', 01, 11, 1, nfe.cana.qTotAnt, DSC_QTOTANT);
-    Gerador.wCampo(tcDe10,'ZC09','qTotGer', 01, 11, 1, nfe.cana.qTotGer, DSC_TOTGER);
+    Gerador.wCampo(tcDe10,'ZC07','qTotMes', 01, 21, 1, nfe.cana.qTotMes, DSC_QTOTMES);
+    Gerador.wCampo(tcDe10,'ZC08','qTotAnt', 01, 21, 1, nfe.cana.qTotAnt, DSC_QTOTANT);
+    Gerador.wCampo(tcDe10,'ZC09','qTotGer', 01, 21, 1, nfe.cana.qTotGer, DSC_TOTGER);
      (**)GerarDeduc;
     Gerador.wCampo(tcDe2,'ZC13','vFor   ', 01, 15, 1, nfe.cana.vFor, DSC_VFOR);
     Gerador.wCampo(tcDe2,'ZC14','vTotDed', 01, 15, 1, nfe.cana.vTotDed, DSC_VTOTDED);
@@ -1799,7 +1799,7 @@ begin
   for i := 0 to nfe.cana.fordia.Count - 1 do
   begin
     Gerador.wGrupo('forDia dia='+'"'+IntToStr(nfe.cana.fordia[i].dia)+'"', 'ZC04');
-    Gerador.wCampo(tcDe10,'ZC06','qtde   ', 11, 11, 1, nfe.cana.fordia[i].qtde, DSC_QTDE);
+    Gerador.wCampo(tcDe10,'ZC06','qtde   ', 11, 21, 1, nfe.cana.fordia[i].qtde, DSC_QTDE);
     Gerador.wGrupo('/forDia');
   end;
 end;

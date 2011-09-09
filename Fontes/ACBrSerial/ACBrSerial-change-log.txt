@@ -143,7 +143,7 @@ Data: 05/08/2011
 -- ACBrECFDaruma --
 [+] Implementado recurso para que os dados da ultima redução Z, alimente a 
     propriedade "DadosReducaoZClass", essa propriedade antes só conseguia ser 
-    ultilizada para armazenar dados antes da emissão da redução Z, esse recusor 
+    ultilizada para armazenar dados antes da emissão da redução Z, esse recurso 
     só foi implementado para o ECF Daruma. (por: Isaque Pinheiro)
 
 Nota: Após a implementação desse recurso nos demais ECFs, o arquivo .INI 

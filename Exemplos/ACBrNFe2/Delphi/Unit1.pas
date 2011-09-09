@@ -1888,7 +1888,7 @@ begin
       Total.ICMSTot.vSeg    := 0;
       Total.ICMSTot.vDesc   := 0;
       Total.ICMSTot.vII     := 0;
-      Total.ICMSTot.vIPI    := 0;
+      Total.ICMSTot.vIPI    := 5;
       Total.ICMSTot.vPIS    := 0;
       Total.ICMSTot.vCOFINS := 0;
       Total.ICMSTot.vOutro  := 0;
@@ -2144,9 +2144,9 @@ begin
   if not(InputQuery('WebServices Carta de Correção', 'Correção a ser considerada', Correcao)) then
      exit;
   ACBrNFe1.CartaCorrecao.CCe.Evento.Clear;
+   ACBrNFe1.CartaCorrecao.CCe.idLote := StrToInt(idLote) ;
   with ACBrNFe1.CartaCorrecao.CCe.Evento.Add do
    begin
-     idLote           := idLote;
      infEvento.chNFe := Chave;
      infEvento.cOrgao := StrToInt(codOrgao);
      infEvento.CNPJ   := CNPJ;

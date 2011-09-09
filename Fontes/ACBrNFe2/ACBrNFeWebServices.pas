@@ -3000,6 +3000,8 @@ begin
   finally
     {$IFDEF ACBrNFeOpenSSL}
        HTTP.Free;
+    {$ELSE}
+       ReqResp.Free;
     {$ENDIF}
     Acao.Free;
     Stream.Free;

@@ -48,6 +48,17 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alteração    08/09/2011
+-----------------------
+[-] Corrigido vazamento de memória, na emissão da CCe, o objeto "ReqResp"
+    estava sendo instanciado no método "TNFeCartaCorrecao.Executar", mas 
+    não estava sendo liberado.
+
+[-] Corrigido vazamento de memória na unit "pcnCCeNFe.pas", criado o método
+    "Destroy" na class TInfEvento, para liberar o objeto "TDetEvento", que
+    esta sendo instanciado no método Create.
+    (por Isaque Pinheiro)
+
 Alterações   14/07/2011
 ---------------
 [+] Incluído recurso para imprimir informações do FISCO no respectivo quadro e não no quadro informaçõs complementares (juaumkiko)

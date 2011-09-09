@@ -130,6 +130,7 @@ type
 
   TRetCCeNFe = class(TPersistent)
   private
+    FidLote : integer;
     FtpAmb: TpcnTipoAmbiente;
     FverAplic: string;
     FLeitor: TLeitor;
@@ -142,9 +143,11 @@ type
     destructor Destroy; override;
     function LerXml: boolean;
   published
+    property idLote: integer read FidLote write FidLote;
     property Leitor: TLeitor read FLeitor write FLeitor;
     property tpAmb: TpcnTipoAmbiente read FtpAmb write FtpAmb;
     property verAplic: string read FverAplic write FverAplic;
+    property cOrgao: integer read FcOrgao write FcOrgao;
     property cStat: integer read FcStat write FcStat;
     property xMotivo: string read FxMotivo write FxMotivo;
     property retEvento: TRetInfEventoCollection read FretEvento write FretEvento;
@@ -243,6 +246,7 @@ begin
   try
     if Leitor.rExtrai(1, 'retEnvEvento') <> '' then
     begin
+      (*HR03 *)FidLote   := Leitor.rCampo(tcInt, 'idLote');
       (*HR04 *)FtpAmb    := StrToTpAmb(ok, Leitor.rCampo(tcStr, 'tpAmb'));
       (*HR05 *)FverAplic := Leitor.rCampo(tcStr, 'verAplic');
       (*HR06 *)FcOrgao   := Leitor.rCampo(tcInt, 'cOrgao');

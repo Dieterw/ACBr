@@ -1798,8 +1798,7 @@ begin
     Gerador.wAlerta('ZC04', 'forDia', DSC_FORDIA, ERR_MSG_MAIOR_MAXIMO + '31');
   for i := 0 to nfe.cana.fordia.Count - 1 do
   begin
-    Gerador.wGrupo('forDia', 'ZC04');
-    Gerador.wCampo(tcInt, 'ZC05','dia    ', 01, 02, 1, nfe.cana.fordia[i].dia, DSC_DIA);
+    Gerador.wGrupo('forDia dia='+'"'+IntToStr(nfe.cana.fordia[i].dia)+'"', 'ZC04');
     Gerador.wCampo(tcDe10,'ZC06','qtde   ', 11, 11, 1, nfe.cana.fordia[i].qtde, DSC_QTDE);
     Gerador.wGrupo('/forDia');
   end;

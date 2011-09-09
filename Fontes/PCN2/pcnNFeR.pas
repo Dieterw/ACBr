@@ -780,7 +780,7 @@ begin
     while Leitor.rExtrai(2, 'forDia', '', i + 1) <> '' do
     begin
       NFe.cana.fordia.Add;
-      (*ZC05*) NFe.cana.fordia[i].dia := Leitor.rCampo(tcInt, 'dia');
+      (*ZC05*) NFe.cana.fordia[i].dia := Leitor.rAtributo('dia');
       (*ZC06*) NFe.cana.fordia[i].qtde := Leitor.rCampo(tcDe10, 'qtde');
       inc(i);
     end;

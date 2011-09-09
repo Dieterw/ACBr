@@ -1491,6 +1491,9 @@ function TNFeRetRecepcao.Executar: Boolean;
     Acao := TStringList.Create;
     Stream := TMemoryStream.Create;
 
+    if assigned(FNFeRetorno) then
+       FNFeRetorno.Free;    
+
     Texto := '<?xml version="1.0" encoding="utf-8"?>';
     Texto := Texto + '<soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">';
     Texto := Texto +   '<soap12:Header>';
@@ -1518,8 +1521,7 @@ function TNFeRetRecepcao.Executar: Boolean;
        ReqResp.UseUTF8InHeader := True;
        ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/nfe/wsdl/NfeStatusServico2';
     {$ENDIF}
-    if assigned(FNFeRetorno) then
-       FNFeRetorno.Free;
+
     FNFeRetorno := TRetConsReciNFe.Create;
     try
       TACBrNFe( FACBrNFe ).SetStatus( stNfeRetRecepcao );
@@ -1663,6 +1665,9 @@ begin
   Acao := TStringList.Create;
   Stream := TMemoryStream.Create;
 
+  if assigned(FNFeRetorno) then
+    FNFeRetorno.Free;
+
   Texto := '<?xml version="1.0" encoding="utf-8"?>';
   Texto := Texto + '<soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">';
   Texto := Texto +   '<soap12:Header>';
@@ -1690,8 +1695,7 @@ begin
      ReqResp.UseUTF8InHeader := True;
      ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetRecepcao2';
   {$ENDIF}
- if assigned(FNFeRetorno) then
-    FNFeRetorno.Free;
+
  FNFeRetorno := TRetConsReciNFe.Create;
  try
    TACBrNFe( FACBrNFe ).SetStatus( stNfeRetRecepcao );
@@ -2408,6 +2412,9 @@ begin
   Acao := TStringList.Create;
   Stream := TMemoryStream.Create;
 
+  if assigned(FRetConsCad) then
+     FRetConsCad.Free;
+
   Texto := '<?xml version="1.0" encoding="utf-8"?>';
   Texto := Texto + '<soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">';
   Texto := Texto +   '<soap12:Header>';
@@ -2448,8 +2455,7 @@ begin
   {$ENDIF}
   try
     TACBrNFe( FACBrNFe ).SetStatus( stNFeCadastro );
-    if assigned(FRetConsCad) then
-       FRetConsCad.Free;
+
     FRetConsCad := TRetConsCad.Create;
 
     if FConfiguracoes.Geral.Salvar then

@@ -88,6 +88,7 @@ type
     FDetEvento: TDetEvento;
   public
     constructor Create;
+    destructor Destroy; override;
     property id: String              read FID         write FID;
     property cOrgao: Integer         read FOrgao      write FOrgao;
     property tpAmb: TpcnTipoAmbiente read FtpAmbiente write FtpAmbiente;
@@ -225,6 +226,12 @@ constructor TInfEvento.Create;
 begin
   inherited Create;
   FDetEvento := TDetEvento.Create;
+end;
+
+destructor TInfEvento.Destroy;
+begin
+  FDetEvento.Free;
+  inherited;
 end;
 
 { TDetEvento }

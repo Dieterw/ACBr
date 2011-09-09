@@ -1660,13 +1660,13 @@ var
     ReqResp: THTTPReqResp;
  {$ENDIF}
 begin
+  if assigned(FNFeRetorno) then
+    FNFeRetorno.Free;
+    
   inherited Executar;
 
   Acao := TStringList.Create;
   Stream := TMemoryStream.Create;
-
-  if assigned(FNFeRetorno) then
-    FNFeRetorno.Free;
 
   Texto := '<?xml version="1.0" encoding="utf-8"?>';
   Texto := Texto + '<soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">';
@@ -2407,13 +2407,13 @@ var
      ReqResp: THTTPReqResp;
   {$ENDIF}
 begin
+  if assigned(FRetConsCad) then
+     FRetConsCad.Free;
+
   inherited Executar;
 
   Acao := TStringList.Create;
-  Stream := TMemoryStream.Create;
-
-  if assigned(FRetConsCad) then
-     FRetConsCad.Free;
+  Stream := TMemoryStream.Create;  
 
   Texto := '<?xml version="1.0" encoding="utf-8"?>';
   Texto := Texto + '<soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">';

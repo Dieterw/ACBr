@@ -397,6 +397,7 @@ type
     FcStat: Integer;
     FxMotivo: String;
     FTpAmb: TpcnTipoAmbiente;
+    FCCeRetorno: TRetCCeNFe;
   public
     constructor Create(AOwner : TComponent; ACCe : TCCeNFe);reintroduce;
     function Executar: Boolean; override;
@@ -406,6 +407,7 @@ type
     property cStat: Integer                read FcStat;
     property xMotivo: String               read FxMotivo;
     property TpAmb: TpcnTipoAmbiente       read FTpAmb;
+    property CCeRetorno: TRetCCeNFe        read FCCeRetorno;
   end;
 
   TWebServices = Class(TWebServicesBase)
@@ -2847,7 +2849,6 @@ end;
 
 function TNFeCartaCorrecao.Executar: Boolean;
 var
-  CCeRetorno: TRetCCeNFe;
   aMsg: string;
   Texto : String;
   Acao  : TStringList ;
@@ -2863,6 +2864,8 @@ var
   {$ENDIF}
 begin
   FCCe.idLote := idLote;
+  if Assigned(FCCeRetorno) then
+     FCCeRetorno.Free;
 
   inherited Executar;
 
@@ -2886,7 +2889,7 @@ begin
 
   Acao.Text := Texto;
 
-  {$IFDEF ACBrNFeOpenSSL}
+   {$IFDEF ACBrNFeOpenSSL}
      Acao.SaveToStream(Stream);
      HTTP := THTTPSend.Create;
   {$ELSE}
@@ -2925,9 +2928,9 @@ begin
        StrStream.Free;
     {$ENDIF}
 
-    CCeRetorno := TRetCCeNFe.Create;
-    CCeRetorno.Leitor.Arquivo := FRetWS;
-    CCeRetorno.LerXml;
+    FCCeRetorno := TRetCCeNFe.Create;
+    FCCeRetorno.Leitor.Arquivo := FRetWS;
+    FCCeRetorno.LerXml;
 
     TACBrNFe( FACBrNFe ).SetStatus( stIdle );
     aMsg := 'Ambiente : '+TpAmbToStr(CCeRetorno.tpAmb)+LineBreak+
@@ -2946,13 +2949,15 @@ begin
     // Alteração realizada por Italo em 30/08/2011 conforme sugestão do Wilson
     /// Alterado linha abaixo para retornar a mensagem da informação do Evento e não o xMotivo pois o mesmo já
     /// se encontra na classe acima "FxMotivo"
-    FMsg     := CCeRetorno.retEvento.Items[0].RetInfEvento.xMotivo;
-    // FMsg     := CCeRetorno.xMotivo;
+    // FMsg     := CCeRetorno.retEvento.Items[0].RetInfEvento.xMotivo;
+    //Alteração desfeita, pois primeiro deve ser visto se o lote foi processado e depois verificar nos eventos qual foi o resultado de cada um.
+    FMsg     := CCeRetorno.xMotivo;
     FTpAmb   := CCeRetorno.tpAmb;
 
     /// Alterado a linha Abaixo para Result=True apenas se o lote foi processado e o evento retornou sucesso e não rejeição.
-    Result   := (CCeRetorno.cStat = 128) and ((CCeRetorno.retEvento.Items[0].RetInfEvento.cStat = 135) or (CCeRetorno.retEvento.Items[0].RetInfEvento.cStat = 136));
-//    Result   := (CCeRetorno.cStat = 128) or (CCeRetorno.cStat = 135) or (CCeRetorno.cStat = 136);
+    // Result   := (CCeRetorno.cStat = 128) and ((CCeRetorno.retEvento.Items[0].RetInfEvento.cStat = 135) or (CCeRetorno.retEvento.Items[0].RetInfEvento.cStat = 136));
+    // Desfeito alteração pois um lote pode ter vários eventos e o primeiro ser processado e os demais não. A aplicaçào deve verificar se o lote foi processado e verificar se cada evento foi aceito
+    Result   := (CCeRetorno.cStat = 128) or (CCeRetorno.cStat = 135) or (CCeRetorno.cStat = 136);
 
     FPathArqResp := IntToStr(FCCe.idLote) + '-cce.xml';
     if FConfiguracoes.Geral.Salvar then
@@ -2996,7 +3001,6 @@ begin
        end;
       Leitor.Free;
     end;
-    CCeRetorno.Free;    
   finally
     {$IFDEF ACBrNFeOpenSSL}
        HTTP.Free;

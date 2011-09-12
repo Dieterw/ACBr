@@ -87,5 +87,22 @@ begin
    MemoStatus.Lines.Add(' Aguarde Imprimindo...');
    // Somente imprime o CTe
    DMCTE.CTe.Conhecimentos.Imprimir;
+
+   for i := 0 to (DMCTE.CTe.Conhecimentos.Count - 1) do
+    begin
+     DM_CNT.IncAltDel.SQL.Clear;
+     DM_CNT.IncAltDel.SQL.Add('Update Cnt_Conhecimento Set');
+     DM_CNT.IncAltDel.SQL.Add('Emissao = :xEmissao,');
+     DM_CNT.IncAltDel.SQL.Add('ChaveCTe = :xChave,');
+     DM_CNT.IncAltDel.SQL.Add('Impresso = :xImpresso');
+     DM_CNT.IncAltDel.SQL.Add('Where Serie = :xSerie');
+     DM_CNT.IncAltDel.SQL.Add('and Numero = :xNumero');
+     DM_CNT.IncAltDel.Params[0].AsDateTime:=DateOf(DMCTE.CTe.Conhecimentos.Items[i].CTe.Ide.dhEmi);
+     DM_CNT.IncAltDel.Params[1].AsString:=Copy(DMCTE.CTe.Conhecimentos.Items[i].CTe.inFCTe.ID,4,44);
+     DM_CNT.IncAltDel.Params[2].AsString:='S';
+     DM_CNT.IncAltDel.Params[3].AsInteger:=DMCTE.CTe.Conhecimentos.Items[i].CTe.Ide.serie;
+     DM_CNT.IncAltDel.Params[4].AsInteger:=DMCTE.CTe.Conhecimentos.Items[i].CTe.Ide.nCT;
+     DM_CNT.IncAltDel.ExecSQL;
+    end;
   end;
 end;

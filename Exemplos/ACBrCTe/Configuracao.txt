@@ -72,5 +72,3 @@
  DMCTE.DACTe.Site:=trim(DM_CTA.EmpresaSite.AsString);
  DMCTE.DACTe.TipoDACTE:=tiRetrato;
  DMCTE.DACTe.Usuario:='Usuário: '+DM_CTA.xUserName;
-
- MemoStatus.Clear;

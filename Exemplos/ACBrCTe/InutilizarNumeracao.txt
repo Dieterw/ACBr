@@ -1,0 +1,248 @@
+unit Frm_MovInutilizacaoCTe;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, EditNumber, jpeg, ExtCtrls, Buttons, ComCtrls;
+
+type
+  TfrmMovInutilizacaoCTe = class(TForm)
+    pcDados: TPageControl;
+    Conhecimentos: TTabSheet;
+    Label3: TLabel;
+    Panel1: TPanel;
+    btnInutilizar: TBitBtn;
+    btnLimpar: TBitBtn;
+    btnConsultaStatus: TBitBtn;
+    edtJustificativa: TEdit;
+    WebServices: TTabSheet;
+    Image1: TImage;
+    Image2: TImage;
+    MemoStatus: TMemo;
+    Label1: TLabel;
+    edtAno: TEditNumber;
+    Label2: TLabel;
+    edtModelo: TEditNumber;
+    Label4: TLabel;
+    edtSerie: TEditNumber;
+    Label5: TLabel;
+    edtInicial: TEditNumber;
+    Label6: TLabel;
+    edtFinal: TEditNumber;
+    procedure LimpaCampos;
+    procedure FormShow(Sender: TObject);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure AtivaBotao;
+    procedure edtAnoExit(Sender: TObject);
+    procedure edtSerieExit(Sender: TObject);
+    procedure edtInicialExit(Sender: TObject);
+    procedure edtFinalExit(Sender: TObject);
+    procedure edtJustificativaChange(Sender: TObject);
+    procedure btnInutilizarClick(Sender: TObject);
+    procedure btnLimparClick(Sender: TObject);
+    procedure btnConsultaStatusClick(Sender: TObject);
+  private
+    { Private declarations }
+    PathMensal, sDataHora, sStat, sMotivo, sProtocolo: String;
+  public
+    { Public declarations }
+  end;
+
+var
+  frmMovInutilizacaoCTe: TfrmMovInutilizacaoCTe;
+
+implementation
+
+uses
+ DateUtils, Math, Printers,
+ pcnConversao,
+ CTA_DataModule, CNT_DataModule, DMCTe_DataModule;
+
+{$R *.dfm}
+
+{ TfrmMovInutilizacaoCTe }
+
+procedure TfrmMovInutilizacaoCTe.LimpaCampos;
+begin
+ pcDados.ActivePageIndex:=0;
+
+ DM_CNT.Parametros.Close;
+ DM_CNT.Parametros.SQL.Clear;
+ DM_CNT.Parametros.SQL.Add('Select * From Cnt_Parametros');
+ DM_CNT.Parametros.SQL.Add('Where Empresa = :xEmpresa');
+ DM_CNT.Parametros.Params[0].AsString:=DM_CTA.xCodEmpresa;
+ DM_CNT.Parametros.Active:=True;
+ DM_CNT.Parametros.Open;
+
+ // Configurações -> Arquivos
+ DMCTe.CTe.Configuracoes.Arquivos.AdicionarLiteral:=True;
+ DMCTe.CTe.Configuracoes.Arquivos.EmissaoPathCTe:=True;
+ DMCTe.CTe.Configuracoes.Arquivos.PastaMensal:=True;
+ DMCTe.CTe.Configuracoes.Arquivos.PathCan:=trim(DM_CNT.ParametrosCTeGeralPathSalvar.AsString);
+ DMCTe.CTe.Configuracoes.Arquivos.PathDPEC:=trim(DM_CNT.ParametrosCTeGeralPathSalvar.AsString);
+ DMCTe.CTe.Configuracoes.Arquivos.PathInu:=trim(DM_CNT.ParametrosCTeGeralPathSalvar.AsString);
+ DMCTe.CTe.Configuracoes.Arquivos.PathCTe:=trim(DM_CNT.ParametrosCTeGeralPathSalvar.AsString);
+ DMCTe.CTe.Configuracoes.Arquivos.Salvar:=True;
+ PathMensal:=DMCTe.CTe.Configuracoes.Arquivos.GetPathCTe(0);
+
+ // Configurações -> Certificados
+ DMCTe.CTe.Configuracoes.Certificados.NumeroSerie:=trim(DM_CNT.ParametrosCTeCertNumSerie.AsString);
+ DMCTe.CTe.Configuracoes.Certificados.Senha:=trim(DM_CNT.ParametrosCTeCertSenha.AsString);
+
+ // Configurações -> Geral
+ case DM_CNT.ParametrosCTeGeralFormaEm.AsInteger of
+  0: DMCTe.CTe.Configuracoes.Geral.FormaEmissao:=teNormal;
+  1: DMCTe.CTe.Configuracoes.Geral.FormaEmissao:=teContingencia;
+  2: DMCTe.CTe.Configuracoes.Geral.FormaEmissao:=teDPEC;
+  3: DMCTe.CTe.Configuracoes.Geral.FormaEmissao:=teFSDA;
+  4: DMCTe.CTe.Configuracoes.Geral.FormaEmissao:=teSCAN;
+ end;
+ DMCTe.CTe.Configuracoes.Geral.PathSalvar:=PathMensal;
+ DMCTe.CTe.Configuracoes.Geral.PathSchemas:=trim(DM_CNT.ParametrosCTeGeralPathSchema.AsString);
+ DMCTe.CTe.Configuracoes.Geral.Salvar:=True;
+
+ // Configurações -> WebServices
+ DMCTe.CTe.Configuracoes.WebServices.AguardarConsultaRet:=0;
+ DMCTe.CTe.Configuracoes.WebServices.AjustaAguardaConsultaRet:=False;
+ case DM_CNT.ParametrosCTeWebServAmbiente.AsInteger of
+  0: DMCTe.CTe.Configuracoes.WebServices.Ambiente:=taHomologacao;
+  1: DMCTe.CTe.Configuracoes.WebServices.Ambiente:=taProducao;
+ end;
+ DMCTe.CTe.Configuracoes.WebServices.IntervaloTentativas:=0;
+ DMCTe.CTe.Configuracoes.WebServices.ProxyHost:=trim(DM_CNT.ParametrosCTeProxyHost.AsString);
+ DMCTe.CTe.Configuracoes.WebServices.ProxyPass:=trim(DM_CNT.ParametrosCTeProxyPass.AsString);
+ DMCTe.CTe.Configuracoes.WebServices.ProxyPort:=trim(DM_CNT.ParametrosCTeProxyPorta.AsString);
+ DMCTe.CTe.Configuracoes.WebServices.ProxyUser:=trim(DM_CNT.ParametrosCTeProxyUser.AsString);
+ DMCTe.CTe.Configuracoes.WebServices.Tentativas:=5;
+ DMCTe.CTe.Configuracoes.WebServices.UF:=DM_CNT.ParametrosCTeWebServUF.AsString;
+ DMCTe.CTe.Configuracoes.WebServices.Visualizar:=(DM_CNT.ParametrosCTeWebServVisualizar.AsString='S');
+
+ MemoStatus.Clear;
+ edtAno.StoreValue(YearOf(Date));
+ edtModelo.StoreValue(57);
+ edtSerie.StoreValue(DM_CNT.ParametrosSerie.AsInteger);
+ edtInicial.StoreValue(0);
+ edtInicial.SetFocus;
+ edtFinal.StoreValue(0);
+ edtJustificativa.Text:='';
+
+ btnInutilizar.Enabled:=False;
+ btnInutilizar.Visible:=DM_CTA.PermiteControlar;
+end;
+
+procedure TfrmMovInutilizacaoCTe.FormShow(Sender: TObject);
+begin
+ LimpaCampos;
+end;
+
+procedure TfrmMovInutilizacaoCTe.FormKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+ if key=#13
+  then begin
+   Perform(CM_DialogKey, VK_TAB, 0);
+   Key:=#0;
+  end;
+end;
+
+procedure TfrmMovInutilizacaoCTe.AtivaBotao;
+begin
+ btnInutilizar.Enabled:=(edtSerie.ValueInt>0) and (edtInicial.ValueInt>0) and
+  (edtFinal.ValueInt>0) and (edtInicial.ValueInt<=edtFinal.ValueInt) and
+  (Length(trim(edtJustificativa.Text))>15);
+end;
+
+procedure TfrmMovInutilizacaoCTe.edtAnoExit(Sender: TObject);
+begin
+ if edtAno.ValueInt<2000 then edtAno.StoreValue(YearOf(Date));
+ AtivaBotao;
+end;
+
+procedure TfrmMovInutilizacaoCTe.edtSerieExit(Sender: TObject);
+begin
+ AtivaBotao;
+end;
+
+procedure TfrmMovInutilizacaoCTe.edtInicialExit(Sender: TObject);
+begin
+ AtivaBotao;
+end;
+
+procedure TfrmMovInutilizacaoCTe.edtFinalExit(Sender: TObject);
+begin
+ AtivaBotao;
+end;
+
+procedure TfrmMovInutilizacaoCTe.edtJustificativaChange(Sender: TObject);
+begin
+ AtivaBotao;
+end;
+
+procedure TfrmMovInutilizacaoCTe.btnInutilizarClick(Sender: TObject);
+var
+ CNPJ: String;
+begin
+ pcDados.ActivePageIndex:=1;
+
+ DM_CTA.Empresa.Close;
+ DM_CTA.Empresa.SQL.Clear;
+ DM_CTA.Empresa.SQL.Add('Select * From Sis_Empresa');
+ DM_CTA.Empresa.SQL.Add('Where Codigo = :xCodigo');
+ DM_CTA.Empresa.Params[0].AsString:=DM_CNT.ParametrosEmitente.AsString;
+ DM_CTA.Empresa.Active:=True;
+ DM_CTA.Empresa.Open;
+
+ if copy(DM_CTA.EmpresaCNPJ.AsString,10,4)<>'0000'
+  then CNPJ := Copy(DM_CTA.EmpresaCNPJ.AsString, 2, 14)
+  else CNPJ := Copy(DM_CTA.EmpresaCNPJ.AsString, 1, 9) +
+               Copy(DM_CTA.EmpresaCNPJ.AsString, 14, 2);
+
+ DMCTe.CTe.WebServices.Inutiliza(CNPJ, edtJustificativa.Text, edtAno.ValueInt,
+                           edtModelo.ValueInt, edtSerie.ValueInt,
+                           edtInicial.ValueInt, edtFinal.ValueInt);
+
+ MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
+ MemoStatus.Lines.Add(' =>  Inutilização de Numeração');
+ MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
+ MemoStatus.Lines.Add('  Ano          : ' + edtAno.Text);
+ MemoStatus.Lines.Add('  Modelo       : ' + edtModelo.Text);
+ MemoStatus.Lines.Add('  Inicial      : ' + edtInicial.Text);
+ MemoStatus.Lines.Add('  Final        : ' + edtFinal.Text);
+ MemoStatus.Lines.Add('  Série        : ' + edtSerie.Text);
+ MemoStatus.Lines.Add('  Justificativa: ' + edtJustificativa.Text);
+
+ sProtocolo := DMCTe.CTe.WebServices.Inutilizacao.Protocolo;
+ sMotivo    := DMCTe.CTe.WebServices.Inutilizacao.xMotivo;
+ sStat      := IntToStr(DMCTe.CTe.WebServices.Inutilizacao.cStat);
+ sDataHora  := DateTimeToStr(DMCTe.CTe.WebServices.Inutilizacao.dhRecbto);
+ MemoStatus.Lines.Add('  Protocolo    : ' + sProtocolo);
+ MemoStatus.Lines.Add('  Motivo       : ' + sMotivo);
+ MemoStatus.Lines.Add('  Status       : ' + sStat);
+ MemoStatus.Lines.Add('  Data/Hora    : ' + sDataHora);
+ MemoStatus.Lines.Add(' ');
+
+ MessageDlg('Numeração Inutilizada', mtInformation, [mbOk], 0);
+ LimpaCampos;
+end;
+
+procedure TfrmMovInutilizacaoCTe.btnLimparClick(Sender: TObject);
+begin
+ LimpaCampos;
+end;
+
+procedure TfrmMovInutilizacaoCTe.btnConsultaStatusClick(Sender: TObject);
+begin
+ pcDados.ActivePageIndex:=1;
+ MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
+ MemoStatus.Lines.Add(' =>  Consultando Status do Serviço');
+ MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
+ DMCTe.CTe.WebServices.StatusServico.Executar;
+ sDataHora:= DateTimeToStr(DMCTe.CTe.WebServices.StatusServico.dhRetorno);
+ sStat := IntToStr(DMCTe.CTe.WebServices.StatusServico.cStat);
+ sMotivo := DMCTe.CTe.WebServices.StatusServico.xMotivo;
+ MemoStatus.Lines.Add('  ' + sStat + ' - ' + sMotivo);
+ MemoStatus.Lines.Add(' ');
+end;
+
+end.

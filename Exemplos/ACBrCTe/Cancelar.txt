@@ -1,0 +1,419 @@
+unit Frm_MovCancelarCNT;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ComCtrls, StdCtrls, jpeg, ExtCtrls, Grids, DBGrids, Buttons,
+  EditNumber;
+
+type
+  TfrmMovCancelarCNT = class(TForm)
+    pcDados: TPageControl;
+    Conhecimentos: TTabSheet;
+    gbIdentificacao: TGroupBox;
+    Label1: TLabel;
+    Label2: TLabel;
+    edtNumero: TEditNumber;
+    edtUnidade: TEditNumber;
+    edtDescUnidade: TEdit;
+    Panel1: TPanel;
+    btnCancelar: TBitBtn;
+    btnLimpar: TBitBtn;
+    DBGrid1: TDBGrid;
+    WebServices: TTabSheet;
+    Image1: TImage;
+    Image2: TImage;
+    MemoStatus: TMemo;
+    Label3: TLabel;
+    edtJustificativa: TEdit;
+    btnConsultaStatus: TBitBtn;
+    Label11: TLabel;
+    edtNumCopias: TEditNumber;
+    procedure LimpaCampos;
+    procedure FormShow(Sender: TObject);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure AtivaBotao;
+    procedure DBGrid1DblClick(Sender: TObject);
+    procedure btnCancelarClick(Sender: TObject);
+    procedure btnLimparClick(Sender: TObject);
+    procedure CancelarConhecimento;
+    procedure edtJustificativaChange(Sender: TObject);
+    procedure btnConsultaStatusClick(Sender: TObject);
+    procedure edtNumCopiasExit(Sender: TObject);
+  private
+    { Private declarations }
+    PathMensal, sDataHora, sStat, sMotivo, sProtocolo: String;
+    iHost, jHost: Integer;
+    Mensagem, sCC: TStrings;
+    Endereco, CopiaPara: String;
+    Ok, Falha, ConexaoSSL, PedeConfirmacao, AguardarEnvio, UsaIndy, EnviaPDF,
+    EnviaBoleto: Boolean;
+  public
+    { Public declarations }
+  end;
+
+var
+  frmMovCancelarCNT: TfrmMovCancelarCNT;
+
+implementation
+
+uses
+ Math, Printers,
+ pcnConversao,
+ CTA_DataModule, CNT_DataModule, BPM_DataModule, DMCTe_DataModule;
+
+{$R *.dfm}
+
+{ TfrmMovCancelarCNT }
+
+procedure TfrmMovCancelarCNT.LimpaCampos;
+begin
+ pcDados.ActivePageIndex:=0;
+
+ DM_CNT.Parametros.Close;
+ DM_CNT.Parametros.SQL.Clear;
+ DM_CNT.Parametros.SQL.Add('Select * From Cnt_Parametros');
+ DM_CNT.Parametros.SQL.Add('Where Empresa = :xEmpresa');
+ DM_CNT.Parametros.Params[0].AsString:=DM_CTA.xCodEmpresa;
+ DM_CNT.Parametros.Active:=True;
+ DM_CNT.Parametros.Open;
+
+ CopiaPara       := trim(DM_CNT.ParametrosCopiaPara.AsString);
+ PedeConfirmacao := (DM_CNT.ParametrosPedeConfirmacao.AsString='S');
+ AguardarEnvio   := (DM_CNT.ParametrosAguardarEnvio.AsString='S');
+ UsaIndy         := (DM_CNT.ParametrosUsaIndy.AsString='S');
+ EnviaPDF        := (DM_CNT.ParametrosEnviaPDF.AsString='S');
+ EnviaBoleto     := (DM_CNT.ParametrosEnviaBoleto.AsString='S');
+
+// Configurações -> Arquivos
+ DMCTe.CTe.Configuracoes.Arquivos.AdicionarLiteral:=True;
+ DMCTe.CTe.Configuracoes.Arquivos.EmissaoPathCTe:=True;
+ DMCTe.CTe.Configuracoes.Arquivos.PastaMensal:=True;
+ DMCTe.CTe.Configuracoes.Arquivos.PathCan:=trim(DM_CNT.ParametrosCTeGeralPathSalvar.AsString);
+ DMCTe.CTe.Configuracoes.Arquivos.PathDPEC:=trim(DM_CNT.ParametrosCTeGeralPathSalvar.AsString);
+ DMCTe.CTe.Configuracoes.Arquivos.PathInu:=trim(DM_CNT.ParametrosCTeGeralPathSalvar.AsString);
+ DMCTe.CTe.Configuracoes.Arquivos.PathCTe:=trim(DM_CNT.ParametrosCTeGeralPathSalvar.AsString);
+ DMCTe.CTe.Configuracoes.Arquivos.Salvar:=True;
+ PathMensal:=DMCTe.CTe.Configuracoes.Arquivos.GetPathCTe(0);
+
+ // Configurações -> Certificados
+ DMCTe.CTe.Configuracoes.Certificados.NumeroSerie:=trim(DM_CNT.ParametrosCTeCertNumSerie.AsString);
+ DMCTe.CTe.Configuracoes.Certificados.Senha:=trim(DM_CNT.ParametrosCTeCertSenha.AsString);
+
+ // Configurações -> Geral
+ case DM_CNT.ParametrosCTeGeralFormaEm.AsInteger of
+  0: DMCTe.CTe.Configuracoes.Geral.FormaEmissao:=teNormal;
+  1: DMCTe.CTe.Configuracoes.Geral.FormaEmissao:=teContingencia;
+  2: DMCTe.CTe.Configuracoes.Geral.FormaEmissao:=teDPEC;
+  3: DMCTe.CTe.Configuracoes.Geral.FormaEmissao:=teFSDA;
+  4: DMCTe.CTe.Configuracoes.Geral.FormaEmissao:=teSCAN;
+ end;
+ DMCTe.CTe.Configuracoes.Geral.PathSalvar:=PathMensal;
+ DMCTe.CTe.Configuracoes.Geral.PathSchemas:=trim(DM_CNT.ParametrosCTeGeralPathSchema.AsString);
+ DMCTe.CTe.Configuracoes.Geral.Salvar:=True;
+
+ // Configurações -> WebServices
+ DMCTe.CTe.Configuracoes.WebServices.AguardarConsultaRet:=0;
+ DMCTe.CTe.Configuracoes.WebServices.AjustaAguardaConsultaRet:=False;
+ case DM_CNT.ParametrosCTeWebServAmbiente.AsInteger of
+  0: DMCTe.CTe.Configuracoes.WebServices.Ambiente:=taHomologacao;
+  1: DMCTe.CTe.Configuracoes.WebServices.Ambiente:=taProducao;
+ end;
+ DMCTe.CTe.Configuracoes.WebServices.IntervaloTentativas:=0;
+ DMCTe.CTe.Configuracoes.WebServices.ProxyHost:=trim(DM_CNT.ParametrosCTeProxyHost.AsString);
+ DMCTe.CTe.Configuracoes.WebServices.ProxyPass:=trim(DM_CNT.ParametrosCTeProxyPass.AsString);
+ DMCTe.CTe.Configuracoes.WebServices.ProxyPort:=trim(DM_CNT.ParametrosCTeProxyPorta.AsString);
+ DMCTe.CTe.Configuracoes.WebServices.ProxyUser:=trim(DM_CNT.ParametrosCTeProxyUser.AsString);
+ DMCTe.CTe.Configuracoes.WebServices.Tentativas:=5;
+ DMCTe.CTe.Configuracoes.WebServices.UF:=DM_CNT.ParametrosCTeWebServUF.AsString;
+ DMCTe.CTe.Configuracoes.WebServices.Visualizar:=(DM_CNT.ParametrosCTeWebServVisualizar.AsString='S');
+
+ // DACTe
+ DMCTe.DACTe.PathPDF:=PathMensal;
+ DMCTe.DACTe.ExpandirLogoMarca:=False;
+ DMCTe.DACTe.ImprimirDescPorc:=False;
+ DMCTe.DACTe.ImprimirHoraSaida:=True;
+ DMCTe.DACTe.ImprimirHoraSaida_Hora:=DateToStr(Date);
+ DMCTe.DACTe.Logo:=trim(DM_CNT.ParametrosCTeGeralLogoMarca.AsString);
+ DMCTe.DACTe.MostrarPreview:=False; //chkVisualizar.Checked;
+ DMCTe.DACTe.Sistema:='Sistema: Controle de Conhecimentos '+
+                     'Versão: 4.0';
+ DMCTe.DACTe.Site:=trim(DM_CTA.EmpresaSite.AsString);
+ DMCTe.DACTe.TipoDACTE:=tiRetrato;
+ DMCTe.DACTe.Usuario:='Usuário: '+DM_CTA.xUserName;
+
+ MemoStatus.Clear;
+ edtUnidade.StoreValue(0);
+ edtDescUnidade.Text:='';
+ edtNumero.StoreValue(0);
+ edtJustificativa.Text:='';
+ edtNumCopias.StoreValue(1);
+
+ DM_CNT.Conhec2.Close;
+ DM_CNT.Conhec2.SQL.Clear;
+ DM_CNT.Conhec2.SQL.Add('Select Cnt_Conhecimento.*, Sis_PessoaFJ.*');
+ DM_CNT.Conhec2.SQL.Add('From Cnt_Conhecimento, Sis_PessoaFJ');
+ DM_CNT.Conhec2.SQL.Add('Where Cnt_Conhecimento.Destinatario = Sis_PessoaFJ.CGC');
+ DM_CNT.Conhec2.SQL.Add('and Impresso = :xImpresso');
+ DM_CNT.Conhec2.SQL.Add('and Cancelado = :xCancelado');
+ DM_CNT.Conhec2.SQL.Add('and Gravado = :xGravado');
+ DM_CNT.Conhec2.SQL.Add('and Fatura = :xFatura');
+ DM_CNT.Conhec2.SQL.Add('Order By Data Desc, Cnt_Conhecimento.Codigo, Cnt_Conhecimento.Numero Desc');
+ DM_CNT.Conhec2.Params[0].AsString:='S';
+ DM_CNT.Conhec2.Params[1].AsString:='N';
+ DM_CNT.Conhec2.Params[2].AsString:='S';
+ DM_CNT.Conhec2.Params[3].AsInteger:=0;
+ DM_CNT.Conhec2.Active:=True;
+ DM_CNT.Conhec2.Open;
+ DM_CNT.Conhec2.First;
+
+ DM_CNT.Conhec2ValorTotal.DisplayFormat:='###,##0.00';
+
+ btnCancelar.Enabled:=False;
+ btnCancelar.Visible:=DM_CTA.PermiteAlterar;
+end;
+
+procedure TfrmMovCancelarCNT.FormShow(Sender: TObject);
+begin
+ LimpaCampos;
+end;
+
+procedure TfrmMovCancelarCNT.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+ if key=#13
+  then begin
+   Perform(CM_DialogKey, VK_TAB, 0);
+   Key:=#0;
+  end;
+end;
+
+procedure TfrmMovCancelarCNT.AtivaBotao;
+begin
+ btnCancelar.Enabled:=(edtUnidade.ValueInt>0) and (edtNumero.ValueInt>0) and
+  (Length(trim(edtJustificativa.Text))>15);
+end;
+
+procedure TfrmMovCancelarCNT.DBGrid1DblClick(Sender: TObject);
+begin
+ edtUnidade.StoreValue(DM_CNT.Conhec2Codigo.AsInteger);
+ DM_BPM.Unidade.Close;
+ DM_BPM.Unidade.SQL.Clear;
+ DM_BPM.Unidade.SQL.Add('Select * From Bpm_Unidade');
+ DM_BPM.Unidade.SQL.Add('Where Empresa = :xEmpresa');
+ DM_BPM.Unidade.SQL.Add('and Codigo = :xCodigo');
+ DM_BPM.Unidade.Params[0].AsString:=DM_CTA.xCodEmpresa;
+ DM_BPM.Unidade.Params[1].AsInteger:=edtUnidade.ValueInt;
+ DM_BPM.Unidade.Active:=True;
+ DM_BPM.Unidade.Open;
+ edtDescUnidade.Text:=DM_BPM.UnidadeDescricao.AsString;
+ edtNumero.StoreValue(DM_CNT.Conhec2Numero.AsInteger);
+ AtivaBotao;
+end;
+
+procedure TfrmMovCancelarCNT.btnCancelarClick(Sender: TObject);
+begin
+ if MessageDlg('Cancela o Conhecimento Selecionado?',
+    mtConfirmation, [mbYes, mbNo], 0) = mrYes
+  then CancelarConhecimento;
+ LimpaCampos;
+end;
+
+procedure TfrmMovCancelarCNT.btnLimparClick(Sender: TObject);
+begin
+ LimpaCampos;
+end;
+
+procedure TfrmMovCancelarCNT.CancelarConhecimento;
+var
+ PathArquivo, NomeArquivo: String;
+begin
+ Mensagem:=TStringList.Create;
+ sCC:=TStringList.Create;
+ DMCTe.DACTe.NumCopias:=edtNumCopias.ValueInt;
+
+ pcDados.ActivePageIndex:=1;
+
+ DM_CTA.Empresa.Close;
+ DM_CTA.Empresa.SQL.Clear;
+ DM_CTA.Empresa.SQL.Add('Select * From Sis_Empresa');
+ DM_CTA.Empresa.SQL.Add('Where Codigo = :xCodigo');
+ DM_CTA.Empresa.Params[0].AsString:=DM_CNT.ParametrosEmitente.AsString;
+ DM_CTA.Empresa.Active:=True;
+ DM_CTA.Empresa.Open;
+
+ PathArquivo:=DMCTe.CTe.Configuracoes.Arquivos.GetPathCTe(DM_CNT.Conhec2Emissao.AsDateTime);
+ NomeArquivo:=PathArquivo+'\'+DM_CNT.Conhec2ChaveCTe.AsString+'-cte.xml';
+
+ DMCTe.CTe.Conhecimentos.Clear;
+ DMCTe.CTe.Conhecimentos.LoadFromFile(NomeArquivo);
+
+ MemoStatus.Lines.Add('XML:');
+ MemoStatus.Lines.Add(' Carregado');
+ MemoStatus.Lines.Add(' CT-e: '+Copy(DMCTe.CTe.Conhecimentos.Items[0].CTe.inFCTe.ID,4,44));
+
+ // EnviaSefaz = variável booleana
+ // Se False, apenas Imprime o DACTe
+ // Se True, envia para o SEFAZ para o cancelamento e Imprime o DACTe Cancelado
+ if DM_CTA.EnviaSefaz
+  then begin
+   DMCTe.CTe.Cancelamento(trim(edtJustificativa.Text));
+
+   MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
+   MemoStatus.Lines.Add(' =>  Cancelando CT-e com chave de acesso nº ' + DM_CNT.Conhec2ChaveCTe.AsString );
+   MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
+   MemoStatus.Lines.Add('  Justificativa: ' + edtJustificativa.Text);
+
+   sProtocolo := DMCTe.CTe.WebServices.Cancelamento.Protocolo;
+   sMotivo    := DMCTe.CTe.WebServices.Cancelamento.xMotivo;
+   sStat      := IntToStr(DMCTe.CTe.WebServices.Cancelamento.cStat);
+   sDataHora  := DateTimeToStr(DMCTe.CTe.WebServices.Cancelamento.DhRecbto);
+   MemoStatus.Lines.Add('  Protocolo    : ' + sProtocolo);
+   MemoStatus.Lines.Add('  Motivo       : ' + sMotivo);
+   MemoStatus.Lines.Add('  Status       : ' + sStat);
+   MemoStatus.Lines.Add('  Data/Hora    : ' + sDataHora);
+   MemoStatus.Lines.Add(' ');
+
+   DM_CNT.IncAltDel.SQL.Clear;
+   DM_CNT.IncAltDel.SQL.Add('Update Cnt_Conhecimento Set');
+   DM_CNT.IncAltDel.SQL.Add('Cancelado = :xCancelado,');
+   DM_CNT.IncAltDel.SQL.Add('CanProtocolo = :xProtocolo,');
+   DM_CNT.IncAltDel.SQL.Add('CanMotivo = :xMotivo');
+   DM_CNT.IncAltDel.SQL.Add('Where Codigo = :xCodigo');
+   DM_CNT.IncAltDel.SQL.Add('and Numero = :xNumero');
+   DM_CNT.IncAltDel.Params[0].AsString:='S';
+   DM_CNT.IncAltDel.Params[1].AsString:=sProtocolo;
+   DM_CNT.IncAltDel.Params[2].AsString:=edtJustificativa.Text;
+   DM_CNT.IncAltDel.Params[3].AsInteger:=edtUnidade.ValueInt;
+   DM_CNT.IncAltDel.Params[4].AsInteger:=edtNumero.ValueInt;
+   DM_CNT.IncAltDel.ExecSQL;
+  end;
+
+ DMCTe.CTe.Conhecimentos.Clear;
+ DMCTe.CTe.Conhecimentos.LoadFromFile(NomeArquivo);
+ MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
+ MemoStatus.Lines.Add(' Aguarde a Impressão...');
+ // Somente imprime o CTe
+ DMCTe.CTe.Conhecimentos.Imprimir;
+
+ DM_CTA.PessoaFJE.Close;
+ DM_CTA.PessoaFJE.SQL.Clear;
+ DM_CTA.PessoaFJE.SQL.Add('Select * From Sis_PessoaFJEmail');
+ DM_CTA.PessoaFJE.SQL.Add('Where CNPJ = :xCNPJ');
+ DM_CTA.PessoaFJE.SQL.Add('and Modulo = :xModulo');
+ DM_CTA.PessoaFJE.Params[0].AsString:=DM_CNT.Conhec2Pagador.AsString;
+ DM_CTA.PessoaFJE.Params[1].AsString:='DFE';
+ DM_CTA.PessoaFJE.Active:=True;
+ DM_CTA.PessoaFJE.Open;
+ if (DM_CTA.PessoaFJECNPJ.AsString=DM_CNT.Conhec2Pagador.AsString) and
+    (DM_CTA.PessoaFJEModulo.AsString='DFE')
+  then Endereco:=Trim(DM_CTA.PessoaFJEEmail.AsString)
+  else Endereco:='';
+
+ if Endereco<>''
+  then begin
+   Mensagem.Clear;
+   sCC.Clear;
+   Mensagem.Add('Comunicamos por este e-mail que o Conhecimento Eletrônico (Chave='+
+         Copy(DMCTe.CTe.Conhecimentos.Items[0].CTe.inFCTe.ID,4,44)+
+         ') obteve autorização de cancelamento sob o protocolo: '+DMCTe.CTe.Conhecimentos.Items[0].CTe.procCTe.nProt);
+   Mensagem.Add(' ');
+   Mensagem.Add('Enviamos em anexo o arquivo XML do respectivo CT-e Cancelado.');
+   Mensagem.Add(' ');
+   Mensagem.Add('Atenciosamente,');
+   Mensagem.Add(' ');
+   Mensagem.Add(DM_CTA.EmpresaNome.AsString);
+   Mensagem.Add(' ');
+   Mensagem.Add('>>> Sistema ERPJr <<<');
+
+   if Trim(DM_CTA.EmpresaEmail.AsString)<>''
+    then sCC.Add(Trim(DM_CTA.EmpresaEmail.AsString));
+   if CopiaPara<>''
+    then sCC.Add(CopiaPara);
+
+   DM_CTA.TabHost.Close;
+   DM_CTA.TabHost.SQL.Clear;
+   DM_CTA.TabHost.SQL.Add('Select * From Sis_TabHost');
+   DM_CTA.TabHost.SQL.Add('Where Empresa = :xEmpresa');
+   DM_CTA.TabHost.SQL.Add('Order By Sequencia');
+   DM_CTA.TabHost.Params[0].AsString:=DM_CTA.xCodEmpresa;
+   DM_CTA.TabHost.Active:=True;
+   DM_CTA.TabHost.Open;
+   DM_CTA.TabHost.Last;
+
+   jHost:=DM_CTA.TabHost.RecordCount;
+   iHost:=1;
+   DM_CTA.TabHost.First;
+   Ok:=False;
+   Falha:=False;
+   MemoStatus.Lines.Add(' CT-e: '+Copy(DMCTe.CTe.Conhecimentos.Items[0].CTe.inFCTe.ID,4,44));
+   MemoStatus.Lines.Add(' Destinatário: ' + Endereco);
+
+   repeat
+    MemoStatus.Lines.Add('  Aguarde... Enviando CT-e por e-mail. Host ['+
+          IntToStr(iHost)+']  ');
+    ConexaoSSL := (DM_CTA.TabHostPortaSMTP.AsInteger<>25);
+    try
+     DMCTe.CTe.Conhecimentos.Items[0].EnviarEmail(Trim(DM_CTA.TabHostServidorSMTP.AsString),
+                                          Trim(DM_CTA.TabHostPortaSMTP.AsString),
+                                          Trim(DM_CTA.TabHostUsuario.AsString),
+                                          Trim(DM_CTA.TabHostSenha.AsString),
+                                          Trim(DM_CTA.EmpresaEmail.AsString),
+                                          Endereco,
+                                          'CT-e Cancelado',
+                                          Mensagem,
+                                          ConexaoSSL,                  // SSL
+                                          EnviaPDF,                    // Enviar em PDF
+                                          sCC,                         // sCC
+                                          nil,                         // Anexos
+                                          PedeConfirmacao,             // Pede Confirmação de Recebimento
+                                          AguardarEnvio,               // Aguarda o Envio
+                                          DM_CTA.EmpresaNome.AsString); // Nome do remetente
+                                          //UsaIndy);
+     Ok:=True;
+    except
+     DM_CTA.TabHost.Next;
+     Inc(iHost);
+     if iHost>jHost then Falha:=True;
+    end;
+   until Ok or Falha;
+   if Ok
+    then MessageDlg('e-mail enviado com Sucesso.', mtInformation, [mbOk], 0);
+   if Falha
+    then MessageDlg('e-mail não enviado por motivo de Falha.', mtError, [mbOk], 0);
+
+  end
+  else MessageDlg('Tomador do Serviço não possui, e-mail cadastrado.', mtInformation, [mbOk], 0);
+
+ Mensagem.Free;
+ sCC.Free;
+ MessageDlg('Conhecimento Cancelado', mtInformation, [mbOk], 0);
+ LimpaCampos;
+end;
+
+procedure TfrmMovCancelarCNT.edtJustificativaChange(Sender: TObject);
+begin
+ AtivaBotao;
+end;
+
+procedure TfrmMovCancelarCNT.btnConsultaStatusClick(Sender: TObject);
+begin
+ pcDados.ActivePageIndex:=1;
+ MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
+ MemoStatus.Lines.Add(' =>  Consultando Status do Serviço');
+ MemoStatus.Lines.Add('-------------------------------------------------------------------------------------------');
+ DMCTe.CTe.WebServices.StatusServico.Executar;
+ sDataHora:= DateTimeToStr(DMCTe.CTe.WebServices.StatusServico.dhRetorno);
+ sStat := IntToStr(DMCTe.CTe.WebServices.StatusServico.cStat);
+ sMotivo := DMCTe.CTe.WebServices.StatusServico.xMotivo;
+ MemoStatus.Lines.Add('  ' + sStat + ' - ' + sMotivo);
+ MemoStatus.Lines.Add(' ');
+end;
+
+procedure TfrmMovCancelarCNT.edtNumCopiasExit(Sender: TObject);
+begin
+ if (edtNumCopias.ValueInt=0) or (edtNumCopias.ValueInt>10)
+  then edtNumCopias.StoreValue(1);
+end;
+
+end.

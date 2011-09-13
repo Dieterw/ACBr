@@ -349,13 +349,13 @@ type
   TRegistro0205 = class
   private
     FDESCR_ANT_ITEM : string;    //Descrição anterior do item
-    FDT_INI         : TDateTime; //Data inicial de utilização da descrição do item
-    FDT_FIM         : TDateTime; //Data final de utilização da descrição do item
+//    FDT_INI         : TDateTime; //Data inicial de utilização da descrição do item
+//    FDT_FIM         : TDateTime; //Data final de utilização da descrição do item
     FCOD_ANT_ITEM   : string;    //Código anterior do item com relação à última informação apresentada
   public
     property DESCR_ANT_ITEM : string    read FDESCR_ANT_ITEM write FDESCR_ANT_ITEM;
-    property DT_INI         : TDateTime read FDT_INI         write FDT_INI;
-    property DT_FIM         : TDateTime read FDT_FIM         write FDT_FIM;
+//    property DT_INI         : TDateTime read FDT_INI         write FDT_INI;
+//    property DT_FIM         : TDateTime read FDT_FIM         write FDT_FIM;
     property COD_ANT_ITEM   : string    read FCOD_ANT_ITEM   write FCOD_ANT_ITEM;
   end;
 

@@ -55,6 +55,8 @@ const
    CACBrSpedContabil_Versao = '0.04a' ;
 
 type
+  TACBrSPEDPrected = class(TACBrSPED);
+
   /// ACBrSpedContabil - Sitema Publico de Escrituração Digital Contabil
 
   { TACBrSPEDContabil }

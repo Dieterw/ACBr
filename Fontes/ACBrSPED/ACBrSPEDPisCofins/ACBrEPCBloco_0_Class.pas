@@ -441,6 +441,7 @@ var
 strCOD_INC_TRIB: string;
 strIND_APRO_CRED: string;
 strCOD_TIPO_CONT: string;
+strIND_REG_CUM: string;
 begin
   if Assigned(Reg0001.Registro0110) then
   begin
@@ -451,19 +452,28 @@ begin
          codEscrOpIncCumulativo: strCOD_INC_TRIB := '2';
          codEscrOpIncAmbos: strCOD_INC_TRIB := '3';
        end;
+
        case IND_APRO_CRED of
          indMetodoApropriacaoDireta: strIND_APRO_CRED := '1';
          indMetodoDeRateioProporcional: strIND_APRO_CRED := '2';
        end;
+
        case COD_TIPO_CONT of
          codIndTipoConExclAliqBasica: strCOD_TIPO_CONT := '1';
          codIndTipoAliqEspecificas: strCOD_TIPO_CONT := '2';
+       end;
+
+       case IND_REG_CUM of
+         codRegimeCaixa : strIND_REG_CUM := '1';
+         codRegimeCompetEscritConsolidada : strIND_REG_CUM := '2';
+         codRegimeCompetEscritDetalhada : strIND_REG_CUM := '9';
        end;
        ///
        Add( LFill('0110') +
             LFill( strCOD_INC_TRIB ) +
             LFill( strIND_APRO_CRED ) +
-            LFill( strCOD_TIPO_CONT ) ) ;
+            LFill( strCOD_TIPO_CONT ) +
+            lFill( strIND_REG_CUM ) ) ;
        ///
        if IND_APRO_CRED = indMetodoDeRateioProporcional then
          WriteRegistro0111(Reg0001.Registro0110);

@@ -160,6 +160,7 @@ type
     FCOD_INC_TRIB  : TACBrCodIndIncTributaria; //Código indicador da incidência tributária no período: 1 – Escrituração de operações com incidência exclusivamente no regime não-cumulativo; 2 – Escrituração de operações com incidência exclusivamente no regime cumulativo; 3 – Escrituração de operações com incidência nos regimes não-cumulativo e cumulativo.
     FIND_APRO_CRED : TACBrIndAproCred;         //Código indicador de método de apropriação de créditos comuns, no caso de incidência no regime nãocumulativo (COD_INC_TRIB = 1 ou 3): 1 – Método de Apropriação Direta; 2 – Método de Rateio Proporcional (Receita Bruta)
     FCOD_TIPO_CONT : TACBrCodIndTipoCon;       //Código indicador do Tipo de Contribuição Apurada no Período: 1 – Apuração da Contribuição Exclusivamente a Alíquota Básica; 2 – Apuração da Contribuição a Alíquotas Específicas (Diferenciadas e/ou por Unidade de Medida de Produto)
+    FIND_REG_CUM: TACBrCodIndCritEscrit;
 
     FRegistro0111: TRegistro0111;
   public
@@ -169,7 +170,7 @@ type
     property COD_INC_TRIB  : TACBrCodIndIncTributaria read FCOD_INC_TRIB  write FCOD_INC_TRIB;
     property IND_APRO_CRED : TACBrIndAproCred         read FIND_APRO_CRED write FIND_APRO_CRED;
     property COD_TIPO_CONT : TACBrCodIndTipoCon       read FCOD_TIPO_CONT write FCOD_TIPO_CONT;
-
+    property IND_REG_CUM   : TACBrCodIndCritEscrit    read FIND_REG_CUM   write FIND_REG_CUM;
     property Registro0111: TRegistro0111 read FRegistro0111 write FRegistro0111;
   end;
 

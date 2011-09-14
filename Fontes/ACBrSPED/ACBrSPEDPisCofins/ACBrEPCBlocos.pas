@@ -655,6 +655,12 @@ type
                          codIndTipoConExclAliqBasica, // 0 - Apuração da Contribuição Exclusivamente a Alíquota Básica
                          codIndTipoAliqEspecificas    // 1 - Apuração da Contribuição a Alíquotas Específicas (Diferenciadas e/ou por Unidade de Medida de Produto)
                        );
+  //Código indicador do critério de escrituração e apuração adotado
+  TACBrCodIndCritEscrit = ( codRegimeCaixa,                   //1 – Regime de Caixa – Escrituração consolidada (Registro F500);
+                            codRegimeCompetEscritConsolidada, //2 – Regime de Competência - Escrituração consolidada (Registro F550);
+                            codRegimeCompetEscritDetalhada    //9 – Regime de Competência - Escrituração detalhada, com base nos registros dos Blocos “A”, “C”, “D” e “F”.
+                          );
+
   //Código indicador da tabela de incidencia, conforme anexo III
   TACBrIndCodIncidencia = (
                             codIndiTabNaoTem,

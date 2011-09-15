@@ -137,23 +137,23 @@ TACBrECFFiscNET = class( TACBrECFClass )
     fsMarcaECF : String ;
 
     //dataregis | termoprinter
-    xGera_PAF                       : Function ( ComPort     : PAnsiChar;
-                                                 Modelo      : PAnsiChar;
-                                                 RegFileName : PAnsiChar;
-                                                 COOInicial  : PAnsiChar;
-                                                 COOFinal    : PAnsiChar) : integer; stdcall;
-    xGera_AtoCotepe1704_Periodo_MFD : Function ( ComPort            : PAnsiChar;
-                                                 Modelo             : PAnsiChar;
-                                                 RegFileName        : PAnsiChar;
-                                                 DataReducaoInicial : PAnsiChar;
-                                                 DataReducaoFinal   : PAnsiChar) : integer; stdcall;
+    xGera_PAF                       : Function ( ComPort     : AnsiString;
+                                                 Modelo      : AnsiString;
+                                                 RegFileName : AnsiString;
+                                                 COOInicial  : AnsiString;
+                                                 COOFinal    : AnsiString) : integer; stdcall;
+    xGera_AtoCotepe1704_Periodo_MFD : Function ( ComPort            : AnsiString;
+                                                 Modelo             : AnsiString;
+                                                 RegFileName        : AnsiString;
+                                                 DataReducaoInicial : AnsiString;
+                                                 DataReducaoFinal   : AnsiString) : integer; stdcall;
 
     // urano e demais
     xDLLReadLeMemorias : function (szPortaSerial, szNomeArquivo, szSerieECF,
-         bAguardaConcluirLeitura : PAnsiChar) : Integer; stdcall;
+         bAguardaConcluirLeitura : AnsiString) : Integer; stdcall;
 
     xDLLATO17GeraArquivo : function (szArquivoBinario, szArquivoTexto, szPeriodoIni, szPeriodoFIM,
-         TipoPeriodo, szUsuario, szTipoLeitura : PAnsiChar) : Integer; stdcall;
+         TipoPeriodo, szUsuario, szTipoLeitura : AnsiString) : Integer; stdcall;
 
     //Elgin
     xElgin_AbrePortaSerial  : function : Integer; StdCall;
@@ -2871,11 +2871,11 @@ procedure TACBrECFFiscNET.ArquivoMFD_DLL(DataInicial, DataFinal: TDateTime;
   NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet;
   Finalidade: TACBrECFFinalizaArqMFD);
 Var
-  iRet      : Integer;
-  PortaSerial, ModeloECF, NumFab, ArqTmp, Prop : String;
+  iRet : Integer;
+  PortaSerial, ModeloECF, NumFab, ArqTmp, Prop : AnsiString;
   DiaIni, DiaFim : AnsiString;
   OldAtivo  : Boolean;
-  cFinalidade:String;
+  cFinalidade:AnsiString;
 begin
   NumFab      := NumSerie;
   ModeloECF   := SubModeloECF;
@@ -2903,21 +2903,15 @@ begin
         DiaIni := FormatDateTime('yyyymmdd', DataInicial);
         DiaFim := FormatDateTime('yyyymmdd', DataFinal);
 
-        iRet := xDLLReadLeMemorias( PAnsiChar( PortaSerial ),
-                                    PAnsiChar( ArqTmp ),
-                                    PAnsiChar( NumFab ), '1');
+        iRet := xDLLReadLeMemorias( PortaSerial, ArqTmp, NumFab, '1');
 
         if iRet <> 0 then
            raise Exception.Create( ACBrStr( 'Erro ao executar DLLReadLeMemorias.' + sLineBreak +
                                             'Cod.: '+ IntToStr(iRet) + ' - ' +
                                             GetErroAtoCotepe1704(iRet) )) ;
 
-        iRet := xDLLATO17GeraArquivo( PAnsiChar( ArqTmp ),
-                                      PAnsiChar( NomeArquivo ),
-                                      PAnsiChar( DiaIni ),
-                                      PAnsiChar( DiaFim ),
-                                      'M', '1',
-                                      PAnsiChar( cFinalidade ) );
+        iRet := xDLLATO17GeraArquivo( ArqTmp, NomeArquivo, DiaIni, DiaFim,
+                                      'M', '1', cFinalidade );
 
         if iRet <> 0 then
            raise Exception.Create( ACBrStr( 'Erro ao executar DLLATO17GeraArquivo.' + sLineBreak +
@@ -2929,11 +2923,8 @@ begin
         DiaIni := FormatDateTime('dd/mm/yyyy', DataInicial);
         DiaFim := FormatDateTime('dd/mm/yyyy', DataFinal);
 
-        iRet := xGera_AtoCotepe1704_Periodo_MFD( PAnsiChar( PortaSerial ),
-                                                 PAnsiChar( ModeloECF ),
-                                                 PAnsiChar( NomeArquivo ),
-                                                 PAnsiChar( DiaIni ),
-                                                 PAnsiChar( DiaFim ) );
+        iRet := xGera_AtoCotepe1704_Periodo_MFD( PortaSerial, ModeloECF,
+                                                 NomeArquivo, DiaIni, DiaFim );
 
         if iRet <> 0 then
            raise Exception.Create( ACBrStr( 'Erro ao executar Gera_AtoCotepe1704_Periodo_MFD.'+sLineBreak+
@@ -2984,10 +2975,10 @@ procedure TACBrECFFiscNET.ArquivoMFD_DLL(ContInicial, ContFinal: Integer; NomeAr
   Finalidade: TACBrECFFinalizaArqMFD; TipoContador: TACBrECFTipoContador);
 Var
   iRet : Integer;
-  PortaSerial, ModeloECF, NumFab : String;
-  CooIni, CooFim, Prop, ArqTmp : String ;
+  PortaSerial, ModeloECF, NumFab : AnsiString;
+  CooIni, CooFim, Prop, ArqTmp : AnsiString ;
   OldAtivo : Boolean ;
-  cFinalidade:String;
+  cFinalidade:AnsiString;
 begin
   NumFab      := NumSerie;
   ModeloECF   := SubModeloECF;
@@ -3014,20 +3005,15 @@ begin
         if FileExists( NomeArquivo ) then
            DeleteFile( NomeArquivo ) ;
 
-        iRet := xDLLReadLeMemorias( PAnsiChar(PortaSerial),
-                                    PAnsiChar(ArqTmp),
-                                    PAnsiChar(NumFab), '1');
+        iRet := xDLLReadLeMemorias( PortaSerial, ArqTmp, NumFab, '1');
 
         if iRet <> 0 then
            raise Exception.Create( ACBrStr( 'Erro ao executar DLLReadLeMemorias.' + sLineBreak +
                                             'Cod.: '+ IntToStr(iRet) + ' - ' +
                                             GetErroAtoCotepe1704(iRet) )) ;
 
-        iRet := xDLLATO17GeraArquivo( PAnsiChar( ArqTmp ),
-                                      PAnsiChar( NomeArquivo ),
-                                      PAnsiChar( CooIni ),
-                                      PAnsiChar( CooFim ), 'C', '1',
-                                      PAnsiChar( cFinalidade ) );
+        iRet := xDLLATO17GeraArquivo( ArqTmp, NomeArquivo, CooIni, CooFim,
+                                      'C', '1', cFinalidade );
 
         if iRet <> 0 then
            raise Exception.Create( ACBrStr( 'Erro ao executar DLLATO17GeraArquivo.' + sLineBreak +
@@ -3036,11 +3022,7 @@ begin
       end
      else if pos(fsMarcaECF, 'dataregis|termoprinter') > 0 then
       begin
-        iRet := xGera_PAF( PAnsiChar( PortaSerial ) ,
-                           PAnsiChar( ModeloECF ),
-                           PAnsiChar( NomeArquivo ),
-                           PAnsiChar( CooIni ),
-                           PAnsiChar( CooFim ) );
+        iRet := xGera_PAF( PortaSerial, ModeloECF, NomeArquivo, CooIni, CooFim );
 
         if iRet <> 0 then
            raise Exception.Create( ACBrStr( 'Erro ao executar Gera_PAF.'+sLineBreak+

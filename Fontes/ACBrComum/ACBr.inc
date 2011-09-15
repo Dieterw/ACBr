@@ -82,6 +82,7 @@
   Diretiva     Descrição
   ------------------------------------------------------------------------------
   WIN32        Defined when target platform is 32 bit Windows
+  WIN64        Defined when target platform is 64 bit Windows
   MSWINDOWS    Defined when target platform is 32 bit Windows
   LINUX        Defined when target platform is Linux
   UNIX         Defined when target platform is Linux or Unix
@@ -376,6 +377,21 @@
     {$I ACBr_kylix.inc} // FPC incompatible stuff
   {$ELSE ~KYLIX}
 
+    {$IFDEF VER230} // XE2 ???
+      {$DEFINE BDS}
+      {$DEFINE BDS7}
+      {$DEFINE COMPILER16}
+      {$IFDEF BCB}
+        {$DEFINE BCB16}
+      {$ELSE}
+        {$DEFINE DELPHI16}
+        {$DEFINE DELPHI2011} // synonym to DELPHI16
+        {$DEFINE DELPHICOMPILER16}
+      {$ENDIF BCB}
+      {$DEFINE RTL230_UP}
+      {$UNDEF UNKNOWN_COMPILER_VERSION}
+    {$ENDIF VER230}
+
     {$IFDEF VER220} // Fulcrum
       {$DEFINE BDS}
       {$DEFINE BDS7}
@@ -545,6 +561,25 @@
 //------------------------------------------------------------------------------
 // DELPHIX_UP à partir dos mapeamentos DELPHIX
 //------------------------------------------------------------------------------
+
+{$IFDEF DELPHI16}
+  {$DEFINE DELPHI16_UP}
+  {$DEFINE DELPHI15_UP}
+  {$DEFINE DELPHI14_UP}
+  {$DEFINE DELPHI13_UP}
+  {$DEFINE DELPHI12_UP}
+  {$DEFINE DELPHI11_UP}
+  {$DEFINE DELPHI10_UP}
+  {$DEFINE DELPHI9_UP}
+  {$DEFINE DELPHI8_UP}
+  {$DEFINE DELPHI7_UP}
+  {$DEFINE DELPHI6_UP}
+  {$DEFINE DELPHI5_UP}
+  {$DEFINE DELPHI4_UP}
+  {$DEFINE DELPHI3_UP}
+  {$DEFINE DELPHI2_UP}
+  {$DEFINE DELPHI1_UP}
+{$ENDIF}
 
 {$IFDEF DELPHI15}
   {$DEFINE DELPHI15_UP}
@@ -761,6 +796,25 @@
 // DELPHICOMPILERX_UP à partir dos mapeamentos DELPHICOMPILERX
 //------------------------------------------------------------------------------
 
+{$IFDEF DELPHICOMPILER16}
+  {$DEFINE DELPHICOMPILER16_UP}
+  {$DEFINE DELPHICOMPILER15_UP}
+  {$DEFINE DELPHICOMPILER14_UP}
+  {$DEFINE DELPHICOMPILER13_UP}
+  {$DEFINE DELPHICOMPILER12_UP}
+  {$DEFINE DELPHICOMPILER11_UP}
+  {$DEFINE DELPHICOMPILER10_UP}
+  {$DEFINE DELPHICOMPILER9_UP}
+  {$DEFINE DELPHICOMPILER8_UP}
+  {$DEFINE DELPHICOMPILER7_UP}
+  {$DEFINE DELPHICOMPILER6_UP}
+  {$DEFINE DELPHICOMPILER5_UP}
+  {$DEFINE DELPHICOMPILER4_UP}
+  {$DEFINE DELPHICOMPILER3_UP}
+  {$DEFINE DELPHICOMPILER2_UP}
+  {$DEFINE DELPHICOMPILER1_UP}
+{$ENDIF}
+
 {$IFDEF DELPHICOMPILER15}
   {$DEFINE DELPHICOMPILER15_UP}
   {$DEFINE DELPHICOMPILER14_UP}
@@ -913,6 +967,26 @@
 //------------------------------------------------------------------------------
 // COMPILERX_UP à partir do mapeamento de nomes COMPILERX
 //------------------------------------------------------------------------------
+
+{$IFDEF COMPILER16}
+  {$DEFINE COMPILER16_UP}
+  {$DEFINE COMPILER15_UP}
+  {$DEFINE COMPILER14_UP}
+  {$DEFINE COMPILER13_UP}
+  {$DEFINE COMPILER12_UP}
+  {$DEFINE COMPILER11_UP}
+  {$DEFINE COMPILER10_UP}
+  {$DEFINE COMPILER9_UP}
+  {$DEFINE COMPILER8_UP}
+  {$DEFINE COMPILER7_UP}
+  {$DEFINE COMPILER6_UP}
+  {$DEFINE COMPILER5_UP}
+  {$DEFINE COMPILER4_UP}
+  {$DEFINE COMPILER35_UP}
+  {$DEFINE COMPILER3_UP}
+  {$DEFINE COMPILER2_UP}
+  {$DEFINE COMPILER1_UP}
+{$ENDIF}
 
 {$IFDEF COMPILER15}
   {$DEFINE COMPILER15_UP}
@@ -1331,6 +1405,10 @@
 //------------------------------------------------------------------------------
 
 {$IFDEF WIN32}
+  {$DEFINE MSWINDOWS}
+{$ENDIF}
+
+{$IFDEF WIN64}
   {$DEFINE MSWINDOWS}
 {$ENDIF}
 

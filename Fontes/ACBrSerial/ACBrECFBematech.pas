@@ -890,8 +890,8 @@ begin
 
      if ErroMsg <> '' then
       begin
-        ErroMsg := ACBrStr('Erro retornado pela Impressora: '+fpModeloStr+sLineBreak+
-                   sLineBreak+ErroMsg) ;
+        ErroMsg := 'Erro retornado pela Impressora: ' + fpModeloStr + sLineBreak+sLineBreak+
+                   ErroMsg ;
         raise EACBrECFSemResposta.create(ErroMsg) ;
       end
      else
@@ -2470,7 +2470,7 @@ end;
 function TACBrECFBematech.GetSubModeloECF: String;
 
 begin
-  if MFD then
+  if fs25MFD then
   begin
     if (fsSubModeloECF = '') then
       fsSubModeloECF := Trim( RetornaInfoECF( '60' ));
@@ -2713,7 +2713,7 @@ begin
            Nome := padL(Nome,30) ;
 
            if Endereco <> '' then
-              Nome := padL(Endereco,80) ;
+              Endereco := padL(Endereco,80) ;
         end ;
      end ;
 
@@ -3928,7 +3928,7 @@ begin
                                         'Arquivo: '+ArqTmp+'.mfd não foi criado' ) ) ;
 
      SysUtils.DeleteFile( NomeArquivo ) ;
-     Cmd := NomeArquivo + ' ' + ArqTmp + '.mfd 3 ' + ContInicial + ' ' + ContFinal + ' ' + Prop ;
+     Cmd := NomeArquivo + ' ' + ArqTmp + '.mfd 3 ' + COOIni + ' ' + CooFim + ' ' + Prop ;
      RunCommand('./bemamfd2',Cmd,True) ;
 
      if not FileExists( NomeArquivo ) then

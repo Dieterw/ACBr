@@ -427,7 +427,7 @@ TACBrECFBematech = class( TACBrECFClass )
 
     Function PreparaCmd( cmd : AnsiString ) : AnsiString ;
  protected
-    function TraduzirTag(const ATag: string): AnsiString; override;
+    function TraduzirTag(const ATag: AnsiString): AnsiString; override;
 
     procedure CRZToCOO(const ACRZIni, ACRZFim: Integer; var ACOOIni,
       ACOOFim: Integer);
@@ -4054,7 +4054,7 @@ begin
  {$ENDIF}
 end;
 
-function TACBrECFBematech.TraduzirTag(const ATag: string): AnsiString;
+function TACBrECFBematech.TraduzirTag(const ATag: AnsiString): AnsiString;
 const
   C_ON  = #1;
   C_OFF = #0;

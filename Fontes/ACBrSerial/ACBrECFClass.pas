@@ -1062,7 +1062,7 @@ TACBrECFClass = class
       const APathArquivo: AnsiString;
       const AAlinhamento: TACBrAlinhamento = alCentro); virtual;
 
-    function TraduzirTag(const ATag: String): AnsiString; virtual;
+    function TraduzirTag(const ATag: AnsiString): AnsiString; virtual;
     function PossuiTagCodBarra(const ATexto: String): Boolean; virtual;
     function CodificarPaginaDeCodigoECF(ATexto: String): AnsiString; virtual;
     function DecodificarPaginaDeCodigoECF(ATexto: AnsiString): String; virtual;
@@ -3918,7 +3918,7 @@ begin
   end;
 end;
 
-function TACBrECFClass.TraduzirTag(const ATag: String): AnsiString;
+function TACBrECFClass.TraduzirTag(const ATag: AnsiString): AnsiString;
 begin
   {*************************************************
 

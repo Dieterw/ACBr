@@ -67,15 +67,15 @@ const
 
   cTimeout = 3 ;  { Tempo PADRAO para msg de falha de comunicacao }
 
-  ARRAY_TAGS: array[0..33] of String = ( '</linha_simples>', '</linha_dupla>',
+  ARRAY_TAGS: array[0..37] of String = ( '</linha_simples>', '</linha_dupla>',
     '<e>', '</e>', '<n>', '</n>', '<s>', '</s>', '<c>', '</c>', '<i>', '</i>',
     '<ean8>', '</ean8>', '<ean13>', '</ean13>',
     '<std>', '</std>', '<inter>', '</inter>',
     '<code11>', '</code11>', '<code39>', '</code39>',
     '<code93>', '</code93>', '<code128>', '</code128>',
     '<upca>', '</upca>', '<codabar>', '</codabar>',
-    '<msi>', '</msi>'
-  );
+    '<msi>', '</msi>',
+    '<ad>','</ad>','<ce>','</ce>' );
 
   cACBrDeviceAtivarPortaException    = 'Porta não definida' ;
   cACBrDeviceAtivarException         = 'Erro abrindo: %s ' + sLineBreak +' %s ' ;

@@ -97,6 +97,14 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 17/09/2011
+-- ACBrECF --
+[+] Adicionado suporte as Tags de Formatação: <ad></ad> e <ce></ce>. Exemplo:
+    <ad>ALINHAR A DIREIRA</ad>
+    <ce>CENTRALIZAR</ce>
+[*] Parse de Tags melhorado para suportar caracteres "<",">" e "/" dentro da
+    String envolvida pelas Tags
+
 Data: 04/09/2011
 -- ACBrECF --
 [-] Melhorias na estética do relatório de configurações do PAF-ECF

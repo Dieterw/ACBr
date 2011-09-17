@@ -176,7 +176,7 @@ TACBrECFEpson = class( TACBrECFClass )
     property  Ret0907 : AnsiString read GetRet0907 ;
     procedure EnviaPAF;
  protected
-    function TraduzirTag(const ATag: string): AnsiString; override;
+    function TraduzirTag(const ATag: AnsiString): AnsiString; override;
 
     function GetDataHora: TDateTime; override ;
     function GetNumCupom: String; override ;
@@ -3376,7 +3376,7 @@ begin
   Result := inherited AchaCNFDescricao( Descricao, BuscaExata, IgnorarCase );
 end;
 
-function TACBrECFEpson.TraduzirTag(const ATag : string) : AnsiString ;
+function TACBrECFEpson.TraduzirTag(const ATag : AnsiString) : AnsiString ;
 const
   cOff = ESC + #0 ;
 

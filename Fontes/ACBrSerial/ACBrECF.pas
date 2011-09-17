@@ -840,7 +840,7 @@ TACBrECF = class( TACBrComponent )
       const AAlinhamento: TACBrAlinhamento = alCentro);
 
     function DecodificarTagsFormatacao(AString: AnsiString): AnsiString;
-    function TraduzirTag(const ATag: String): AnsiString;
+    function TraduzirTag(const ATag: AnsiString): AnsiString;
     function CodificarPaginaDeCodigoECF(ATexto: String): AnsiString;
     function DecodificarPaginaDeCodigoECF(ATexto: AnsiString): String;
 
@@ -4172,45 +4172,87 @@ end;
 
 function TACBrECF.DecodificarTagsFormatacao(AString: AnsiString): AnsiString;
 Var
-  IniTag, FimTag, LenTag : Integer ;
-  ATag : String ;
-  Cmd  : AnsiString ;
+  IniTag, IniTag2, FimTag, LenTag : Integer ;
+  ATag, Cmd : AnsiString ;
 begin
   Result := CodificarPaginaDeCodigoECF( AString );
 
-  IniTag := 0;
-  FimTag := 0;
-  while True do
+  // Processando TAGs de Caracteres de Controle //
+  IniTag := Pos( '<', Result);
+  while IniTag > 0 do
   begin
-    IniTag := PosEx( '<', Result, FimTag + 1);
-    if IniTag = 0 then
-       break ;
+    IniTag2 := PosEx( '<', Result, IniTag + 1);
+    FimTag  := PosEx( '>', Result, IniTag + 1);
+    if FimTag = 0 then
+      break;
 
-    FimTag := PosEx( '>', Result, IniTag + 1);
-    if FimTag < IniTag then
-       break;
+    while (IniTag2 > 0) and (IniTag2 < FimTag) do
+    begin
+      IniTag  := IniTag2;
+      IniTag2 := PosEx( '<', Result, IniTag + 1);
+    end ;
 
     LenTag := FimTag - IniTag + 1 ;
-    ATag   := LowerCase( copy( Result, IniTag, LenTag ) ) ;
+    ATag   := copy( Result, IniTag, LenTag ) ;
     Cmd    := TraduzirTag( ATag );
 
     if Cmd <> ATag then
     begin
-       Result := StuffString( Result, IniTag, LenTag, Cmd );
-       FimTag := FimTag + (Length(Cmd) - LenTag);
+      Result := StuffString( Result, IniTag, LenTag, Cmd );
+      FimTag := FimTag + (Length(Cmd) - LenTag);
     end ;
+
+    IniTag := PosEx( '<', Result, FimTag + 1);
+  end ;
+
+  // Processando TAG <ad> - Alinhar a Direita //
+  IniTag := Pos( '<ad>', Result);
+  while IniTag > 0 do
+  begin
+    FimTag  := PosEx( '</ad>', Result, IniTag + 1);
+    if FimTag = 0 then
+      break;
+
+    LenTag := FimTag - (IniTag+4)  ;
+    Cmd    := padR( copy( Result, IniTag+4, LenTag), Colunas );
+    Result := StuffString( Result, IniTag, LenTag+9, Cmd ) ;
+    IniTag := Pos( '<ad>', Result);
+  end ;
+
+  // Processando TAG <ce> - Alinhar ao Centro //
+  IniTag := Pos( '<ce>', Result);
+  while IniTag > 0 do
+  begin
+    FimTag  := PosEx( '</ce>', Result, IniTag + 1);
+    if FimTag = 0 then
+      break;
+
+    LenTag := FimTag - (IniTag+4)  ;
+    Cmd    := padC( copy( Result, IniTag+4, LenTag), Colunas );
+    Result := StuffString( Result, IniTag, LenTag+9, Cmd ) ;
+    IniTag := Pos( '<ce>', Result);
   end ;
 end;
 
-function TACBrECF.TraduzirTag(const ATag : String) : AnsiString ;
+function TACBrECF.TraduzirTag(const ATag : AnsiString) : AnsiString ;
+var
+   I : Integer ;
+   LowerTag : AnsiString ;
 begin
-   Result := fsECF.TraduzirTag( ATag );
+   Result := '' ;
+   if ATag = '' then
+     exit ;
+
+   LowerTag := LowerCase( ATag );
+   Result   := fsECF.TraduzirTag( LowerTag );
 
    if Result = '' then
    begin
-     case AnsiIndexText( ATag, ARRAY_TAGS) of
-       0 : Result := StringOfChar('-', Colunas);
-       1 : Result := StringOfChar('=', Colunas);
+     I := AnsiIndexText( LowerTag, ARRAY_TAGS) ;
+     case I of
+       0      : Result := StringOfChar('-', Colunas);
+       1      : Result := StringOfChar('=', Colunas);
+       34..37 : Result := ARRAY_TAGS[ I ] ;
      end ;
    end ;
 end ;

@@ -190,7 +190,7 @@ TACBrECFFiscNET = class( TACBrECFClass )
     function GetErroAtoCotepe1704(pRet: Integer): string;
 
  protected
-    function TraduzirTag(const ATag: string): AnsiString; override;
+    function TraduzirTag(const ATag: AnsiString): AnsiString; override;
 
     function GetDataHora: TDateTime; override ;
     function GetNumCupom: String; override ;
@@ -3280,7 +3280,7 @@ begin
   end;
 end;
 
-function TACBrECFFiscNET.TraduzirTag(const ATag : string) : AnsiString ;
+function TACBrECFFiscNET.TraduzirTag(const ATag : AnsiString) : AnsiString ;
 const
   cOff = ESC + '!' + #0 ;
 

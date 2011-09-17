@@ -189,7 +189,7 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
        var TempoLimite: TDateTime) : Boolean ; override ;
     function VerificaFimImpressao(var TempoLimite: TDateTime) : Boolean ; override ;
 
-    function TraduzirTag(const ATag: string): AnsiString; override;
+    function TraduzirTag(const ATag: AnsiString): AnsiString; override;
  public
     Constructor create( AOwner : TComponent  )  ;
     Destructor Destroy  ; override ;
@@ -2552,7 +2552,7 @@ begin
   fsCache34.Add( Info ) ;
 end;
 
-function TACBrECFSwedaSTX.TraduzirTag(const ATag: string): AnsiString;
+function TACBrECFSwedaSTX.TraduzirTag(const ATag: AnsiString): AnsiString;
 const
   INI = #22;
   OFF = INI + #175;

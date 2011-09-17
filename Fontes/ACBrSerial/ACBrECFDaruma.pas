@@ -434,7 +434,7 @@ TACBrECFDaruma = class( TACBrECFClass )
       const APathArquivo: AnsiString;
       const AAlinhamento: TACBrAlinhamento = alCentro); override;
 
-    function TraduzirTag(const ATag: string): AnsiString; override;
+    function TraduzirTag(const ATag: AnsiString): AnsiString; override;
 
     function MontaDadosReducaoZ: AnsiString; override;
  end ;
@@ -5238,7 +5238,7 @@ begin
   EnviaComando( FS + 'F' + #217);
 end;
 
-function TACBrECFDaruma.TraduzirTag(const ATag: string): AnsiString;
+function TACBrECFDaruma.TraduzirTag(const ATag: AnsiString): AnsiString;
 const
   C_ON  = #1;
   C_OFF = #0;

@@ -44,19 +44,19 @@
       </Item1>
       <Item2>
         <PackageName Value="FCL"/>
-        <MinVersion Major="1" Release="1" Valid="True"/>
+        <MinVersion Major="1" Valid="True" Release="1"/>
       </Item2>
       <Item3>
         <PackageName Value="MemDSLaz"/>
-        <MinVersion Major="1" Minor="2" Release="1" Valid="True"/>
+        <MinVersion Major="1" Minor="2" Valid="True" Release="1"/>
       </Item3>
       <Item4>
         <PackageName Value="zcomponent"/>
-        <MinVersion Major="6" Minor="6" Release="6" Valid="True"/>
+        <MinVersion Major="6" Minor="6" Valid="True" Release="6"/>
       </Item4>
       <Item5>
         <PackageName Value="LCLBase"/>
-        <MinVersion Major="1" Release="1" Valid="True"/>
+        <MinVersion Major="1" Valid="True" Release="1"/>
       </Item5>
       <Item6>
         <PackageName Value="ACBrSerial"/>
@@ -75,7 +75,7 @@
         <UnitName Value="ECFTeste"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
-        <CursorPos X="11" Y="12"/>
+        <CursorPos X="34" Y="5"/>
         <UsageCount Value="201"/>
       </Unit0>
       <Unit1>
@@ -87,8 +87,8 @@
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1593"/>
-        <CursorPos X="62" Y="1610"/>
+        <TopLine Value="1"/>
+        <CursorPos X="40" Y="11"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -166,7 +166,6 @@
     </Parsing>
     <Linking>
       <Debugging>
-        <UseLineInfoUnit Value="False"/>
         <StripSymbols Value="True"/>
       </Debugging>
       <Options>
@@ -183,6 +182,11 @@
     </Other>
   </CompilerOptions>
   <Debugging>
+    <Watches Count="1">
+      <Item1>
+        <Expression Value="Result"/>
+      </Item1>
+    </Watches>
     <Exceptions Count="8" IgnoreAll="True">
       <Item1>
         <Name Value="ESynaSerError"/>

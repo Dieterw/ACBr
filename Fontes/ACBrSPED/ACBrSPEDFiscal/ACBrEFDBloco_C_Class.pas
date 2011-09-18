@@ -2205,7 +2205,7 @@ begin
      if RegC460.RegistroC470.Count > 0 then
      begin
         if FBloco_0.Registro0000.IND_PERFIL in [pfPerfilB] then
-           raise Exception.Create(ACBrStr('O RegistroC470, não deve ser gerado em movimentações de saída, no PerfilB'));
+           Check(False, 'O RegistroC470, não deve ser gerado em movimentações de saída, no %s, conforme ATO COTEPE 09/08', ['PerfilB']);
      end;
      for intFor := 0 to RegC460.RegistroC470.Count - 1 do
      begin

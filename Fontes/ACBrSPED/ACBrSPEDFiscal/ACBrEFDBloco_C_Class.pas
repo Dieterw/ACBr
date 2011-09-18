@@ -1187,7 +1187,7 @@ begin
      if RegC100.RegistroC120.Count > 0 then
      begin
         if (RegC100.IND_OPER in [tpSaidaPrestacao]) then
-           raise Exception.Create( ACBrStr('O RegistroC120, não deve ser gerado em movimentações de saída, tanto para PerfilA quanto PerfilB'));
+           Check(False, 'O RegistroC120, não deve ser gerado em movimentações de saída, no %s e no %s, conforme ATO COTEPE 09/08', ['PerfilA','PerfilB']);
      end;
      for intFor := 0 to RegC100.RegistroC120.Count - 1 do
      begin
@@ -1216,7 +1216,7 @@ begin
      if RegC100.RegistroC130.Count > 0 then
      begin
         if (RegC100.IND_OPER in [tpEntradaAquisicao]) then
-           raise Exception.Create(ACBrStr('O RegistroC130, não deve ser gerado em movimentações de entrada, tanto para PerfilA quanto PerfilB'));
+           Check(False, 'O RegistroC130, não deve ser gerado em movimentações de entrada, no %s e no %s, conforme ATO COTEPE 09/08', ['PerfilA','PerfilB']);
      end;
      for intFor := 0 to RegC100.RegistroC130.Count - 1 do
      begin
@@ -1306,7 +1306,7 @@ begin
      if RegC100.RegistroC160.Count > 0 then
      begin
         if (RegC100.IND_OPER in [tpEntradaAquisicao]) then
-           raise Exception.Create(ACBrStr('O RegistroC160, não deve ser gerado em movimentações de entrada, tanto para PerfilA quanto PerfilB'));
+           Check(False, 'O RegistroC160, não deve ser gerado em movimentações de entrada, no %s e no %s, conforme ATO COTEPE 09/08', ['PerfilA','PerfilB']);
      end;
      for intFor := 0 to RegC100.RegistroC160.Count - 1 do
      begin
@@ -1336,7 +1336,7 @@ begin
      if RegC100.RegistroC165.Count > 0 then
      begin
         if (RegC100.IND_OPER in [tpEntradaAquisicao]) then
-           raise Exception.Create(ACBrStr('O RegistroC165, não deve ser gerado em movimentações de entrada, tanto para PerfilA quanto PerfilB'));
+           Check(False, 'O RegistroC165, não deve ser gerado em movimentações de entrada, no %s e no %s, conforme ATO COTEPE 09/08', ['PerfilA','PerfilB']);
      end;
      for intFor := 0 to RegC100.RegistroC165.Count - 1 do
      begin
@@ -1782,7 +1782,7 @@ begin
      if RegC001.RegistroC300.Count > 0 then
      begin
         if FBloco_0.Registro0000.IND_PERFIL in [pfPerfilA] then
-           raise Exception.Create(ACBrStr('O RegistroC300, não deve ser gerado em movimentações de saída, no PerfilA'));
+           Check(False, 'O RegistroC300, não deve ser gerado em movimentações de saída, no %s, conforme ATO COTEPE 09/08', ['PerfilA']);
      end;
      for intFor := 0 to RegC001.RegistroC300.Count - 1 do
      begin
@@ -1822,7 +1822,7 @@ begin
      if RegC300.RegistroC310.Count > 0 then
      begin
         if FBloco_0.Registro0000.IND_PERFIL in [pfPerfilA] then
-           raise Exception.Create(ACBrStr('O RegistroC310, não deve ser gerado em movimentações de saída, no PerfilA'));
+           Check(False, 'O RegistroC310, não deve ser gerado em movimentações de saída, no %s, conforme ATO COTEPE 09/08', ['PerfilA']);
      end;
      for intFor := 0 to RegC300.RegistroC310.Count - 1 do
      begin
@@ -1847,7 +1847,7 @@ begin
      if RegC300.RegistroC320.Count > 0 then
      begin
         if FBloco_0.Registro0000.IND_PERFIL in [pfPerfilA] then
-           raise Exception.Create(ACBrStr('O RegistroC320, não deve ser gerado em movimentações de saída, no PerfilA'));
+           Check(False, 'O RegistroC320, não deve ser gerado em movimentações de saída, no %s, conforme ATO COTEPE 09/08', ['PerfilA']);
      end;
      for intFor := 0 to RegC300.RegistroC320.Count - 1 do
      begin
@@ -1882,7 +1882,7 @@ begin
      if RegC320.RegistroC321.Count > 0 then
      begin
         if FBloco_0.Registro0000.IND_PERFIL in [pfPerfilA] then
-           raise Exception.Create(ACBrStr('O RegistroC321, não deve ser gerado em movimentações de saída, no PerfilA'));
+           Check(False, 'O RegistroC321, não deve ser gerado em movimentações de saída, no %s, conforme ATO COTEPE 09/08', ['PerfilA']);
      end;
      for intFor := 0 to RegC320.RegistroC321.Count - 1 do
      begin
@@ -1915,7 +1915,7 @@ begin
      if RegC001.RegistroC350.Count > 0 then
      begin
         if FBloco_0.Registro0000.IND_PERFIL in [pfPerfilB] then
-           raise Exception.Create(ACBrStr('O RegistroC350, não deve ser gerado em movimentações de saída, no PerfilB'));
+           Check(False, 'O RegistroC350, não deve ser gerado em movimentações de saída, no %s, conforme ATO COTEPE 09/08', ['PerfilB']);
      end;
      for intFor := 0 to RegC001.RegistroC350.Count - 1 do
      begin
@@ -1956,7 +1956,7 @@ begin
      if RegC350.RegistroC370.Count> 0 then
      begin
         if FBloco_0.Registro0000.IND_PERFIL in [pfPerfilB] then
-           raise Exception.Create(ACBrStr('O RegistroC370, não deve ser gerado em movimentações de saída, no PerfilB'));
+           Check(False, 'O RegistroC370, não deve ser gerado em movimentações de saída, no %s, conforme ATO COTEPE 09/08', ['PerfilB']);
      end;
      for intFor := 0 to RegC350.RegistroC370.Count - 1 do
      begin
@@ -1986,7 +1986,7 @@ begin
      if RegC350.RegistroC390.Count > 0 then
      begin
         if FBloco_0.Registro0000.IND_PERFIL in [pfPerfilB] then
-           raise Exception.Create(ACBrStr('O RegistroC390, não deve ser gerado em movimentações de saída, no PerfilB'));
+           Check(False, 'O RegistroC390, não deve ser gerado em movimentações de saída, no %s, conforme ATO COTEPE 09/08', ['PerfilB']);
      end;
      for intFor := 0 to RegC350.RegistroC390.Count - 1 do
      begin
@@ -2124,7 +2124,7 @@ begin
      if RegC420.RegistroC425.Count > 0 then
      begin
         if FBloco_0.Registro0000.IND_PERFIL in [pfPerfilA] then
-           raise Exception.Create(ACBrStr('O RegistroC425, não deve ser gerado em movimentações de saída, no PerfilA'));
+           Check(False, 'O RegistroC425, não deve ser gerado em movimentações de saída, no %s, conforme ATO COTEPE 09/08', ['PerfilA']);
      end;
      for intFor := 0 to RegC420.RegistroC425.Count - 1 do
      begin
@@ -2157,7 +2157,7 @@ begin
      if RegC405.RegistroC460.Count > 0 then
      begin
         if FBloco_0.Registro0000.IND_PERFIL in [pfPerfilB] then
-           raise Exception.Create(ACBrStr('O RegistroC460, não deve ser gerado em movimentações de saída, no PerfilB'));
+           Check(False, 'O RegistroC460, não deve ser gerado em movimentações de saída, no %s, conforme ATO COTEPE 09/08', ['PerfilB']);
      end;
      for intFor := 0 to RegC405.RegistroC460.Count - 1 do
      begin
@@ -2396,7 +2396,7 @@ begin
      if RegC500.RegistroC510.Count > 0 then
      begin
         if FBloco_0.Registro0000.IND_PERFIL in [pfPerfilB] then
-           raise Exception.Create(ACBrStr('O RegistroC510, não deve ser gerado em movimentações de entrada nem saída, no PerfilB'));
+           Check(False, 'O RegistroC510, não deve ser gerado em movimentações de entrada nem saída, no %s , conforme ATO COTEPE 09/08', ['PerfilB']);
      end;
      for intFor := 0 to RegC500.RegistroC510.Count - 1 do
      begin
@@ -2469,7 +2469,7 @@ begin
      if RegC001.RegistroC600.Count > 0 then
      begin
         if FBloco_0.Registro0000.IND_PERFIL in [pfPerfilA] then
-           raise Exception.Create(ACBrStr('O RegistroC600, não deve ser gerado em movimentações de entrada nem saída, no PerfilA'));
+           Check(False, 'O RegistroC600, não deve ser gerado em movimentações de entrada nem saída, no %s , conforme ATO COTEPE 09/08', ['PerfilA']);
      end;
      for intFor := 0 to RegC001.RegistroC600.Count - 1 do
      begin
@@ -2521,7 +2521,7 @@ begin
      if RegC600.RegistroC601.Count > 0 then
      begin
         if FBloco_0.Registro0000.IND_PERFIL in [pfPerfilA] then
-           raise Exception.Create(ACBrStr('O RegistroC601, não deve ser gerado em movimentações de entrada nem saída, no PerfilA'));
+           Check(False, 'O RegistroC601, não deve ser gerado em movimentações de entrada nem saída, no %s , conforme ATO COTEPE 09/08', ['PerfilA']);
      end;
      for intFor := 0 to RegC600.RegistroC601.Count - 1 do
      begin
@@ -2546,7 +2546,7 @@ begin
      if RegC600.RegistroC610.Count > 0 then
      begin
         if FBloco_0.Registro0000.IND_PERFIL in [pfPerfilA] then
-           raise Exception.Create(ACBrStr('O RegistroC610, não deve ser gerado em movimentações de entrada nem saída, no PerfilA'));
+           Check(False, 'O RegistroC610, não deve ser gerado em movimentações de entrada nem saída, no %s , conforme ATO COTEPE 09/08', ['PerfilA']);
      end;
      for intFor := 0 to RegC600.RegistroC610.Count - 1 do
      begin
@@ -2586,7 +2586,7 @@ begin
      if RegC600.RegistroC690.Count > 0 then
      begin
         if FBloco_0.Registro0000.IND_PERFIL in [pfPerfilA] then
-           raise Exception.Create(ACBrStr('O RegistroC690, não deve ser gerado em movimentações de entrada nem saída, no PerfilA'));
+           Check(False, 'O RegistroC690, não deve ser gerado em movimentações de entrada nem saída, no %s , conforme ATO COTEPE 09/08', ['PerfilA']);
      end;
      for intFor := 0 to RegC600.RegistroC690.Count - 1 do
      begin

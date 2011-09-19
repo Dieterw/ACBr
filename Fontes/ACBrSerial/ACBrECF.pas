@@ -5624,7 +5624,7 @@ begin
     Relatorio.Add('</linha_simples>');
     Relatorio.Add('Nome Comerc.: ' + IdentificacaoPaf.Paf.Nome);
     Relatorio.Add('Versao......: ' + IdentificacaoPaf.Paf.Versao);
-    Relatorio.Add('Versao ER...: ' + IdentificacaoPaf.VersaoER);
+    Relatorio.Add('ER-PAF-ECF..: ' + IdentificacaoPaf.VersaoER);
     Relatorio.Add('Princ. Exec.: ' + IdentificacaoPaf.Paf.PrincipalExe.Nome);
     Relatorio.Add('MD5.........: ' + IdentificacaoPaf.Paf.PrincipalExe.MD5);
 

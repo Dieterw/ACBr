@@ -194,7 +194,7 @@ begin
   I      := 0 ;
   while (Result = nil) and (I < fsIdentPAF.ECFsAutorizados.Count) do
   begin
-    if NumSerie = fsIdentPAF.ECFsAutorizados[I].NumeroSerie then
+    if Trim( NumSerie ) = Trim( fsIdentPAF.ECFsAutorizados[I].NumeroSerie ) then
        Result := fsIdentPAF.ECFsAutorizados[I]
     else
        Inc( I ) ;

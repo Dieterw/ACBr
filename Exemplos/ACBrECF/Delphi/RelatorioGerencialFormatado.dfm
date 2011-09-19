@@ -26,6 +26,8 @@ object frmGerencialFormatado: TfrmGerencialFormatado
       '<s>TEXTO SUBLINHADO</s>'
       '<c>TEXTO CONDENSADO</c>'
       '<i>TEXTO ITALICO</i>'
+      '<ad>Alinhado a direita</ad>'
+      '<ce>Centralizado</ce>'
       '</linha_dupla>'
       ''
       'CODIGOS DE BARRA'

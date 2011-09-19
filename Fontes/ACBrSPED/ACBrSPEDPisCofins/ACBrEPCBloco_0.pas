@@ -193,14 +193,14 @@ type
   //REGISTRO 0140: TABELA DE CADASTRO DE ESTABELECIMENTO
   TRegistro0140 = class
   private
-    FCOD_EST : string; //Código de identificação do estabelecimento
-    FNOME    : string; //Nome empresarial do estabelecimento
-    FCNPJ    : string; //Número de inscrição do estabelecimento no CNPJ
-    FUF      : string; //Sigla da unidade da federação do estabelecimento
-    FIE      : string; //Inscrição Estadual do estabelecimento, se contribuinte de ICMS
-    FCOD_MUN : string; //Código do município do domicílio fiscal do estabelecimento,conforme a tabela IBGE
-    FIM      : string; //Inscrição Municipal do estabelecimento, se contribuinte do ISS
-    FSUFRAMA : string; //Inscrição do estabelecimento na Suframa
+    FCOD_EST : string;  // Código de identificação do estabelecimento
+    FNOME    : string;  // Nome empresarial do estabelecimento
+    FCNPJ    : string;  // Número de inscrição do estabelecimento no CNPJ
+    FUF      : string;  // Sigla da unidade da federação do estabelecimento
+    FIE      : string;  // Inscrição Estadual do estabelecimento, se contribuinte de ICMS
+    FCOD_MUN : integer; // Código do município do domicílio fiscal do estabelecimento,conforme a tabela IBGE
+    FIM      : string;  // Inscrição Municipal do estabelecimento, se contribuinte do ISS
+    FSUFRAMA : string;  // Inscrição do estabelecimento na Suframa
 
     FRegistro0150 : TRegistro0150List;
     FRegistro0190 : TRegistro0190List;
@@ -216,7 +216,7 @@ type
     property CNPJ         : string            read FCNPJ         write FCNPJ;
     property UF           : string            read FUF           write FUF;
     property IE           : string            read FIE           write FIE;
-    property COD_MUN      : string            read FCOD_MUN      write FCOD_MUN;
+    property COD_MUN      : Integer           read FCOD_MUN      write FCOD_MUN;
     property IM           : string            read FIM           write FIM;
     property SUFRAMA      : string            read FSUFRAMA      write FSUFRAMA;
 
@@ -240,18 +240,18 @@ type
   //REGISTRO 0150: TABELA DE CADASTRO DO PARTICIPANTE
   TRegistro0150 = class
   private
-    FCOD_PART : string; //Código de identificação do participante no arquivo
-    FNOME     : string; //Nome pessoal ou empresarial do participante
-    FCOD_PAIS : string; //Código do país do participante, conforme a tabela indicada no item 3.2.1
-    FCNPJ     : string; //CNPJ do participante
-    FCPF      : string; //CPF do participante
-    FIE       : string; //Inscrição Estadual do participante
-    FCOD_MUN  : string; //Código do município, conforme a tabela IBGE
-    FSUFRAMA  : string; //Número de inscrição do participante na Suframa
-    FEND      : string; //Logradouro e endereço do imóvel
-    FNUM      : string; //Número do imóvel
-    FCOMPL    : string; //Dados complementares do endereço
-    FBAIRRO   : string; //Bairro em que o imóvel está situado
+    FCOD_PART : string;  // Código de identificação do participante no arquivo
+    FNOME     : string;  // Nome pessoal ou empresarial do participante
+    FCOD_PAIS : string;  // Código do país do participante, conforme a tabela indicada no item 3.2.1
+    FCNPJ     : string;  // CNPJ do participante
+    FCPF      : string;  // CPF do participante
+    FIE       : string;  // Inscrição Estadual do participante
+    FCOD_MUN  : integer; // Código do município, conforme a tabela IBGE
+    FSUFRAMA  : string;  // Número de inscrição do participante na Suframa
+    FEND      : string;  // Logradouro e endereço do imóvel
+    FNUM      : string;  // Número do imóvel
+    FCOMPL    : string;  // Dados complementares do endereço
+    FBAIRRO   : string;  // Bairro em que o imóvel está situado
   public
     property COD_PART : string read FCOD_PART write FCOD_PART;
     property NOME     : string read FNOME     write FNOME;
@@ -259,7 +259,7 @@ type
     property CNPJ     : string read FCNPJ     write FCNPJ;
     property CPF      : string read FCPF      write FCPF;
     property IE       : string read FIE       write FIE;
-    property COD_MUN  : string read FCOD_MUN  write FCOD_MUN;
+    property COD_MUN  : integer read FCOD_MUN  write FCOD_MUN;
     property SUFRAMA  : string read FSUFRAMA  write FSUFRAMA;
     property ENDERECO : string read FEND      write FEND;
     property NUM      : string read FNUM      write FNUM;

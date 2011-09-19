@@ -96,6 +96,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+-- ACBrCargaBal -- 19/09/2011
+[+]    Adição do componente ACBrCargaBal para gerar arquivos de produtos 
+       para balanças. (por: Régys silveira)
+
 -- ACBrTroco -- 03/09/2011
 [*]    Não considerar a existência da cédula de um real.  (DSA)
 

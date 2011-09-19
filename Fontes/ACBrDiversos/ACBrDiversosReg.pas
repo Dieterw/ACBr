@@ -86,7 +86,7 @@ type
 procedure Register;
 
 implementation
-Uses ACBrEnterTab, ACBrUtil, ACBrGIF,
+Uses ACBrEnterTab, ACBrUtil, ACBrGIF, ACBrCargaBal,
      ACBrCalculadora, ACBrExtenso, ACBrTroco, ACBrValidador,
      ACBrCMC7, ACBrFala, ACBrBarCode, ACBrInStore, SysUtils;
 
@@ -97,7 +97,7 @@ Uses ACBrEnterTab, ACBrUtil, ACBrGIF,
 procedure Register;
 begin
   RegisterComponents('ACBr', [TACBrCalculadora, TACBrCMC7, TACBrExtenso, TACBrTroco,
-     TACBrValidador, TACBrFala, TACBrEnterTab, TACBrGIF, TACBrBarCode, TACBrInStore]);
+     TACBrValidador, TACBrFala, TACBrEnterTab, TACBrGIF, TACBrBarCode, TACBrInStore, TACBrCargaBal]);
 
   { Registrando os Editores de Propriedade }
   RegisterPropertyEditor(TypeInfo(String), TACBrFala, 'OrigemArquivos',

@@ -45,6 +45,7 @@ contains
   ACBrGIF in '..\..\Fontes\ACBrDiversos\ACBrGIF.pas',
   Gif1 in '..\..\Fontes\ACBrDiversos\Gif1.pas',
   Gif3 in '..\..\Fontes\ACBrDiversos\Gif3.pas',
-  ACBrInStore in '..\..\Fontes\ACBrDiversos\ACBrInStore.pas';
+  ACBrInStore in '..\..\Fontes\ACBrDiversos\ACBrInStore.pas',
+  ACBrCargaBal in '..\..\Fontes\ACBrDiversos\ACBrCargaBal.pas';
 
 end.

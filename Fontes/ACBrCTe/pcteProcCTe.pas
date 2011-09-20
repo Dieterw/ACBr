@@ -43,6 +43,8 @@
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 
+{$I ACBr.inc}
+
 unit pcteProcCTe;
 
 interface uses
@@ -135,8 +137,8 @@ begin
   Result := False;
   ProtLido := False;
 
-  if retornarVersaoLayout(FSchema, tlProcCTe) = '1.03'
-   then begin
+//  if retornarVersaoLayout(FSchema, tlProcCTe) = '1.03'
+//   then begin
     XMLCTe := TStringList.Create;
     XMLinfProt := TStringList.Create;
     XMLinfProt2 := TStringList.Create;
@@ -201,7 +203,12 @@ begin
            XMLinfProt2.Text:=RetornarConteudoEntre(XMLinfProt.text, '<infProt>', '</infProt>');
 
         xProtCTe :=
+           {$IFDEF PL_103}
               '<protCTe ' + V1_03 +'>' +
+           {$ENDIF}
+           {$IFDEF PL_104}
+              '<protCTe ' + V1_04 +'>' +
+           {$ENDIF}
                 '<infProt>' +
                   PreencherTAG('tpAmb', XMLinfProt.text) +
                   PreencherTAG('verAplic', XMLinfProt.text) +
@@ -219,7 +226,12 @@ begin
     if ProtLido
      then begin
       xProtCTe :=
+           {$IFDEF PL_103}
             '<protCTe ' + V1_03 + '>' +
+           {$ENDIF}
+           {$IFDEF PL_104}
+            '<protCTe ' + V1_04 + '>' +
+           {$ENDIF}
               '<infProt>' +
                 '<tpAmb>'+TpAmbToStr(FtpAmb)+'</tpAmb>'+
                 '<verAplic>'+FverAplic+'</verAplic>'+
@@ -238,7 +250,12 @@ begin
     begin
       Gerador.ArquivoFormatoXML := '';
       Gerador.wGrupo(ENCODING_UTF8, '', False);
+    {$IFDEF PL_103}
       Gerador.wGrupo('cteProc ' + V1_03 + ' ' + NAME_SPACE_CTE, '');
+    {$ENDIF}
+    {$IFDEF PL_104}
+      Gerador.wGrupo('cteProc ' + V1_04 + ' ' + NAME_SPACE_CTE, '');
+    {$ENDIF}
       Gerador.wTexto('<CTe xmlns' + RetornarConteudoEntre(XMLCTe.Text, '<CTe xmlns', '</CTe>') + '</CTe>');
       Gerador.wTexto(xProtCTe);
       Gerador.wGrupo('/cteProc');
@@ -249,7 +266,7 @@ begin
     XMLinfProt2.Free;
     Result := (Gerador.ListaDeAlertas.Count = 0);
 
-  end;
+//  end;
 end;
 
 end.

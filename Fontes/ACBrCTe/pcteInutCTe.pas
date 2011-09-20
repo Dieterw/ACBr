@@ -43,6 +43,8 @@
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 
+{$I ACBr.inc}
+
 unit pcteInutCTe;
 
 interface uses
@@ -112,8 +114,8 @@ end;
 function TinutCTe.GerarXML: boolean;
 begin
   Result := False;
-  if RetornarVersaoLayout(FSchema, tlInutCTe) = '1.03' then
-  begin
+//  if RetornarVersaoLayout(FSchema, tlInutCTe) = '1.03' then
+//  begin
 
     FIDInutilizacao := 'ID' + IntToStrZero(FcUF, 2) +
       SomenteNumeros(FCNPJ) + IntToStrZero(Fmodelo, 2) + IntToStrZero(Fserie, 3) +
@@ -121,8 +123,13 @@ begin
 
     Gerador.ArquivoFormatoXML := '';
 
-    //    Gerador.wGrupo(ENCODING_UTF8, '', False);
+//    Gerador.wGrupo(ENCODING_UTF8, '', False);
+ {$IFDEF PL_103}
     Gerador.wGrupo('inutCTe ' + NAME_SPACE_CTE + ' ' + V1_03);
+ {$ENDIF}
+ {$IFDEF PL_104}
+    Gerador.wGrupo('inutCTe ' + NAME_SPACE_CTE + ' ' + V1_04);
+ {$ENDIF}
     Gerador.wGrupo('infInut Id="' + FIDInutilizacao + '"');
     if length(FIDInutilizacao) < 39 then
       Gerador.wAlerta('DP04', 'ID', '', 'ID de inutilização inválido');
@@ -146,7 +153,7 @@ begin
     Gerador.wGrupo('/inutCTe');
 
     Result := (Gerador.ListaDeAlertas.Count = 0);
-  end;
+//  end;
 end;
 
 end.

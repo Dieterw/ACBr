@@ -43,6 +43,8 @@
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 
+{$I ACBr.inc}
+
 unit pcteCTeR;
 
 interface uses
@@ -133,9 +135,16 @@ begin
     (*B15a*)CTe.Ide.procEmi := StrToprocEmi(ok, Leitor.rCampo(tcStr, 'procEmi'));
     (*B15b*)CTe.Ide.verProc := Leitor.rCampo(tcStr, 'verProc');
     (*B15c*)CTe.Ide.refCTE  := Leitor.rCampo(tcStr, 'refCTE');
+  {$IFDEF PL_103}
     (*B16*)CTe.Ide.cMunEmi  := Leitor.rCampo(tcInt, 'cMunEmi');
     (*B17*)CTe.Ide.xMunEmi  := Leitor.rCampo(tcStr, 'xMunEmi');
     (*B18*)CTe.Ide.UFEmi    := Leitor.rCampo(tcStr, 'UFEmi');
+  {$ENDIF}
+  {$IFDEF PL_104}
+    (*B16*)CTe.Ide.cMunEnv  := Leitor.rCampo(tcInt, 'cMunEnv');
+    (*B17*)CTe.Ide.xMunEnv  := Leitor.rCampo(tcStr, 'xMunEnv');
+    (*B18*)CTe.Ide.UFEnv    := Leitor.rCampo(tcStr, 'UFEnv');
+  {$ENDIF}
     (*B19*)CTe.Ide.modal    := StrToTpModal(ok, Leitor.rCampo(tcStr, 'modal'));
     (*B20*)CTe.Ide.tpServ   := StrToTpServ(ok, Leitor.rCampo(tcStr, 'tpServ'));
     (*B21*)CTe.Ide.cMunIni  := Leitor.rCampo(tcInt, 'cMunIni');
@@ -147,6 +156,10 @@ begin
     (*B27*)CTe.Ide.retira   := StrToTpRetira(ok, Leitor.rCampo(tcStr, 'retira'));
 
     (*B27a*)CTe.Ide.xdetretira := Leitor.rCampo(tcStr, 'xdetretira');
+  {$IFDEF PL_104}
+    (*#57*)CTe.Ide.dhCont := Leitor.rCampo(tcDatHor, 'dhCont');
+    (*#58*)CTe.Ide.xJust  := Leitor.rCampo(tcStr, 'xJust');
+  {$ENDIF}
   end;
 
   (* Grupo da TAG <ide><toma03> ***********************************************)
@@ -168,6 +181,9 @@ begin
       (*B33*)CTe.Ide.Toma4.IE      := Leitor.rCampo(tcStr, 'IE');
       (*B34*)CTe.Ide.Toma4.xNome   := Leitor.rCampo(tcStr, 'xNome');
       (*B35*)CTe.Ide.Toma4.xFant   := Leitor.rCampo(tcStr, 'xFant');
+  {$IFDEF PL_104}
+      (*#56*)CTe.Ide.Toma4.email   := Leitor.rCampo(tcStr, 'email');
+  {$ENDIF}
 
        if Leitor.rExtrai(3, 'enderToma') <> '' then
        begin
@@ -296,8 +312,10 @@ begin
       CTe.emit.enderemit.xMun    := Leitor.rCampo(tcStr, 'xMun');
       CTe.emit.enderemit.CEP     := Leitor.rCampo(tcInt, 'CEP');
       CTe.emit.enderemit.UF      := Leitor.rCampo(tcStr, 'UF');
+  {$IFDEF PL_103}
       CTe.emit.enderemit.cPais   := Leitor.rCampo(tcInt, 'cPais');
       CTe.emit.enderemit.xPais   := Leitor.rCampo(tcStr, 'xPais');
+  {$ENDIF}
       CTe.emit.enderemit.fone    := Leitor.rCampo(tcStr, 'fone');
     end;
   end;
@@ -310,6 +328,9 @@ begin
     CTe.Rem.xNome   := Leitor.rCampo(tcStr, 'xNome');
     CTe.Rem.xFant   := Leitor.rCampo(tcStr, 'xFant');
     CTe.Rem.fone    := Leitor.rCampo(tcStr, 'fone');
+  {$IFDEF PL_104}
+    CTe.Rem.email   := Leitor.rCampo(tcStr, 'email');
+  {$ENDIF}
 
     if Leitor.rExtrai(2, 'enderReme') <> '' then
     begin
@@ -331,6 +352,9 @@ begin
       CTe.Rem.InfNF.Add;
       CTe.Rem.InfNF[i01].nRoma := Leitor.rCampo(tcStr, 'nRoma');
       CTe.Rem.InfNF[i01].nPed  := Leitor.rCampo(tcStr, 'nPed');
+  {$IFDEF PL_104}
+      CTe.Rem.InfNF[i01].Modelo := StrToModeloNF(Ok, Leitor.rCampo(tcStr, 'mod'));
+  {$ENDIF}
       CTe.Rem.InfNF[i01].serie := Leitor.rCampo(tcStr, 'serie');
       CTe.Rem.InfNF[i01].nDoc  := Leitor.rCampo(tcEsp, 'nDoc');
       CTe.Rem.InfNF[i01].dEmi  := Leitor.rCampo(tcDat, 'dEmi');
@@ -388,6 +412,9 @@ begin
     CTe.Exped.IE      := Leitor.rCampo(tcStr, 'IE');
     CTe.Exped.xNome   := Leitor.rCampo(tcStr, 'xNome');
     CTe.Exped.fone    := Leitor.rCampo(tcStr, 'fone');
+  {$IFDEF PL_104}
+    CTe.Exped.email   := Leitor.rCampo(tcStr, 'email');
+  {$ENDIF}
 
     if Leitor.rExtrai(2, 'enderExped') <> '' then
     begin
@@ -411,6 +438,9 @@ begin
     CTe.receb.IE      := Leitor.rCampo(tcStr, 'IE');
     CTe.receb.xNome   := Leitor.rCampo(tcStr, 'xNome');
     CTe.receb.fone    := Leitor.rCampo(tcStr, 'fone');
+  {$IFDEF PL_104}
+    CTe.receb.email   := Leitor.rCampo(tcStr, 'email');
+  {$ENDIF}
 
     if Leitor.rExtrai(2, 'enderReceb') <> '' then
     begin
@@ -434,6 +464,9 @@ begin
     CTe.Dest.IE      := Leitor.rCampo(tcStr, 'IE');
     CTe.Dest.xNome   := Leitor.rCampo(tcStr, 'xNome');
     CTe.Dest.fone    := Leitor.rCampo(tcStr, 'fone');
+  {$IFDEF PL_104}
+    CTe.Dest.email   := Leitor.rCampo(tcStr, 'email');
+  {$ENDIF}
 
     if Leitor.rExtrai(2, 'enderDest') <> '' then
     begin
@@ -484,7 +517,12 @@ begin
   begin
     if Leitor.rExtrai(2, 'ICMS') <> '' then
     begin
+    {$IFDEF PL_103}
       if Leitor.rExtrai(3, 'CST00') <> '' then
+    {$ENDIF}
+    {$IFDEF PL_104}
+      if Leitor.rExtrai(3, 'ICMS00') <> '' then
+    {$ENDIF}
       begin
         if Leitor.rCampo(tcStr,'CST')='00'
         then begin
@@ -496,7 +534,12 @@ begin
         end;
       end;
 
+    {$IFDEF PL_103}
       if Leitor.rExtrai(3, 'CST20') <> '' then
+    {$ENDIF}
+    {$IFDEF PL_104}
+      if Leitor.rExtrai(3, 'ICMS20') <> '' then
+    {$ENDIF}
       begin
         if Leitor.rCampo(tcStr,'CST')='20'
         then begin
@@ -509,7 +552,12 @@ begin
         end;
       end;
 
+    {$IFDEF PL_103}
       if Leitor.rExtrai(3, 'CST45') <> '' then
+    {$ENDIF}
+    {$IFDEF PL_104}
+      if Leitor.rExtrai(3, 'ICMS45') <> '' then
+    {$ENDIF}
       begin
         sCST:=Leitor.rCampo(tcStr,'CST');
         if (sCST='40') or (sCST='41') or (sCST='51')
@@ -520,6 +568,21 @@ begin
           CTe.Imp.ICMS.CST45.CST := StrToCSTICMS(ok, Leitor.rCampo(tcStr,'CST'));
         end;
       end;
+
+    {$IFDEF PL_104}
+      if Leitor.rExtrai(3, 'ICMS60') <> '' then
+      begin
+        if Leitor.rCampo(tcStr,'CST')='60'
+        then begin
+          CTe.Imp.ICMS.SituTrib         := cst60;
+          CTe.Imp.ICMS.CST60.CST        := StrToCSTICMS(ok, Leitor.rCampo(tcStr,'CST'));
+          CTe.Imp.ICMS.CST60.vBCSTRet   := Leitor.rCampo(tcDe2,'vBCSTRet');
+          CTe.Imp.ICMS.CST60.vICMSSTRet := Leitor.rCampo(tcDe2,'vICMSSTRet');
+          CTe.Imp.ICMS.CST60.pICMSSTRet := Leitor.rCampo(tcDe2,'pICMSSTRet');
+          CTe.Imp.ICMS.CST60.vCred      := Leitor.rCampo(tcDe2,'vCred');
+        end;
+      end;
+    {$ENDIF}
 
       if Leitor.rExtrai(3, 'CST80') <> '' then
       begin
@@ -549,7 +612,12 @@ begin
         end;
       end;
 
+    {$IFDEF PL_103}
       if Leitor.rExtrai(3, 'CST90') <> '' then
+    {$ENDIF}
+    {$IFDEF PL_104}
+      if Leitor.rExtrai(3, 'ICMS90') <> '' then
+    {$ENDIF}
       begin
         if Leitor.rCampo(tcStr,'CST')='90'
         then begin
@@ -562,6 +630,28 @@ begin
           CTe.Imp.ICMS.CST90.vCred  := Leitor.rCampo(tcDe2,'vCred');
         end;
       end;
+
+      if Leitor.rExtrai(3, 'ICMSOutraUF') <> '' then
+      begin
+        if Leitor.rCampo(tcStr,'CST')='90'
+        then begin
+          // ICMS devido à UF de origem da prestação, quando diferente da UF do emitente
+          CTe.Imp.ICMS.SituTrib                  := cstICMSOutraUF;
+          CTe.Imp.ICMS.ICMSOutraUF.CST           := StrToCSTICMS(ok, Leitor.rCampo(tcStr,'CST'));
+          CTe.Imp.ICMS.ICMSOutraUF.pRedBCOutraUF := Leitor.rCampo(tcDe2,'pRedBCOutraUF');
+          CTe.Imp.ICMS.ICMSOutraUF.vBCOutraUF    := Leitor.rCampo(tcDe2,'vBCOutraUF');
+          CTe.Imp.ICMS.ICMSOutraUF.pICMSOutraUF  := Leitor.rCampo(tcDe2,'pICMSOutraUF');
+          CTe.Imp.ICMS.ICMSOutraUF.vICMSOutraUF  := Leitor.rCampo(tcDe2,'vICMSOutraUF');
+        end;
+      end;
+
+      if Leitor.rExtrai(3, 'ICMSSN') <> '' then
+      begin
+       // ICMS Simples Nacional
+       CTe.Imp.ICMS.SituTrib     := cstICMSSN;
+       CTe.Imp.ICMS.ICMSSN.indSN := Leitor.rCampo(tcInt,'indSN');
+      end;
+
     end;
   end;
 
@@ -570,7 +660,12 @@ begin
   begin
     if Leitor.rExtrai(2, 'infCarga') <> ''
     then begin
+  {$IFDEF PL_103}
       CTe.InfCarga.vMerc   := Leitor.rCampo(tcDe2,'vMerc');
+  {$ENDIF}
+  {$IFDEF PL_104}
+      CTe.InfCarga.vCarga   := Leitor.rCampo(tcDe2,'vCarga');
+  {$ENDIF}
       CTe.InfCarga.proPred := Leitor.rCampo(tcStr,'proPred');
       CTe.InfCarga.xOutCat := Leitor.rCampo(tcStr,'xOutCat');
     end;
@@ -653,7 +748,12 @@ begin
       CTe.InfSeg[i01].xSeg    := Leitor.rCampo(tcStr, 'xSeg');
       CTe.InfSeg[i01].nApol   := Leitor.rCampo(tcStr, 'nApol');
       CTe.InfSeg[i01].nAver   := Leitor.rCampo(tcStr, 'nAver');
+  {$IFDEF PL_103}
       CTe.InfSeg[i01].vMerc   := Leitor.rCampo(tcDe3, 'vMerc');
+  {$ENDIF}
+  {$IFDEF PL_104}
+      CTe.InfSeg[i01].vCarga   := Leitor.rCampo(tcDe3, 'vCarga');
+  {$ENDIF}
       inc(i01);
     end;
 
@@ -663,11 +763,16 @@ begin
       CTe.Rodo.dPrev := Leitor.rCampo(tcDat,'dPrev');
       CTe.Rodo.lota  := StrToTpLotacao(ok, Leitor.rCampo(tcStr,'lota'));
 
+  {$IFDEF PL_103}
       if Leitor.rExtrai(3, 'CTRB') <> '' then
       begin
         CTe.Rodo.CTRB.serie := Leitor.rCampo(tcInt,'serie');
         CTe.Rodo.CTRB.nCTRB := Leitor.rCampo(tcInt,'nCTRB');
       end;
+  {$ENDIF}
+  {$IFDEF PL_104}
+      CTe.Rodo.CIOT  := Leitor.rCampo(tcInt, 'CIOT');
+  {$ENDIF}
 
       i01 := 0;
       while Leitor.rExtrai(3, 'occ', '', i01 + 1) <> '' do
@@ -690,8 +795,9 @@ begin
 
       if Leitor.rExtrai(3, 'valePed') <> '' then
       begin
+  {$IFDEF PL_103}
         CTe.Rodo.valePed.nroRE     := Leitor.rCampo(tcStr, 'nroRE');
-        CTe.Rodo.valePed.vTValePed := Leitor.rCampo(tcDe2,'vTValePed');
+        CTe.Rodo.valePed.vTValePed := Leitor.rCampo(tcDe2, 'vTValePed');
         CTe.Rodo.valePed.respPg    := StrToRspPagPedagio(ok, Leitor.rCampo(tcStr, 'respPg'));
 
         i01 := 0;
@@ -705,6 +811,12 @@ begin
           CTe.Rodo.valePed.disp[i01].nCompC := Leitor.rCampo(tcStr, 'nCompC');
           inc(i01);
         end;
+  {$ENDIF}
+  {$IFDEF PL_104}
+        CTe.Rodo.valePed.CNPJForn := Leitor.rCampo(tcStr, 'CNPJForn');
+        CTe.Rodo.valePed.nCompra  := Leitor.rCampo(tcStr, 'nCompra');
+        CTe.Rodo.valePed.CNPJPg   := Leitor.rCampo(tcStr, 'CNPJPg');
+  {$ENDIF}
       end;
 
       i01 := 0;
@@ -764,7 +876,9 @@ begin
 
       if Leitor.rExtrai(3, 'tarifa') <> '' then
       begin
+  {$IFDEF PL_103}
         CTe.Aereo.tarifa.trecho := Leitor.rCampo(tcStr,'trecho');
+  {$ENDIF}
         CTe.Aereo.tarifa.CL     := Leitor.rCampo(tcStr,'CL');
         CTe.Aereo.tarifa.cTar   := Leitor.rCampo(tcStr,'cTar');
         CTe.Aereo.tarifa.vTar   := Leitor.rCampo(tcDe2,'vTar');
@@ -787,6 +901,16 @@ begin
       CTe.Aquav.tpNav    := StrToTpNavegacao(ok, Leitor.rCampo(tcStr, 'tpNav'));
       CTe.Aquav.irin     := Leitor.rCampo(tcStr,'irin');
 
+{$IFDEF PL_104}
+      i01 := 0;
+      while Leitor.rExtrai(3, 'balsa', '', i01 + 1) <> '' do
+      begin
+        CTe.Aquav.balsa.Add;
+        CTe.Aquav.balsa[i01].xBalsa := Leitor.rCampo(tcStr, 'xBalsa');
+        inc(i01);
+      end;
+{$ENDIF}
+
       i01 := 0;
       while Leitor.rExtrai(3, 'lacre', '', i01 + 1) <> '' do
       begin
@@ -800,9 +924,17 @@ begin
     if Leitor.rExtrai(2, 'ferrov') <> '' then
     begin
       CTe.Ferrov.tpTraf := StrToTpTrafego(ok, Leitor.rCampo(tcStr, 'tpTraf'));
+{$IFDEF PL_104}
+      if Leitor.rExtrai(3, 'trafMut') <> '' then
+      begin
+        CTe.Ferrov.trafMut.respFat := StrToTrafegoMutuo(ok, Leitor.rCampo(tcStr, 'respFat'));
+        CTe.Ferrov.trafMut.ferrEmi := StrToTrafegoMutuo(ok, Leitor.rCampo(tcStr, 'ferrEmi'));
+      end;
+{$ENDIF}
       CTe.Ferrov.fluxo  := Leitor.rCampo(tcStr,'fluxo');
       CTe.Ferrov.idTrem := Leitor.rCampo(tcStr,'idTrem');
       CTe.Ferrov.vFrete := Leitor.rCampo(tcDe2,'vFrete');
+{$IFDEF PL_103}
       if Leitor.rExtrai(3, 'ferroSub') <> '' then
       begin
         CTe.Ferrov.ferroSub.CNPJ  := Leitor.rCampo(tcStr,'CNPJ');
@@ -868,6 +1000,28 @@ begin
 
         inc(i01);
       end;
+{$ENDIF}
+
+{$IFDEF PL_104}
+      if Leitor.rExtrai(3, 'ferroEnv') <> '' then
+      begin
+        CTe.Ferrov.ferroEnv.CNPJ  := Leitor.rCampo(tcStr,'CNPJ');
+        CTe.Ferrov.ferroEnv.cInt  := Leitor.rCampo(tcStr,'cInt');
+        CTe.Ferrov.ferroEnv.IE    := Leitor.rCampo(tcStr,'IE');
+        CTe.Ferrov.ferroEnv.xNome := Leitor.rCampo(tcStr,'xNome');
+        if Leitor.rExtrai(4, 'enderFerro') <> '' then
+        begin
+          CTe.Ferrov.ferroEnv.EnderFerro.xLgr    := Leitor.rCampo(tcStr, 'xLgr');
+          CTe.Ferrov.ferroEnv.EnderFerro.nro     := Leitor.rCampo(tcStr, 'nro');
+          CTe.Ferrov.ferroEnv.EnderFerro.xCpl    := Leitor.rCampo(tcStr, 'xCpl');
+          CTe.Ferrov.ferroEnv.EnderFerro.xBairro := Leitor.rCampo(tcStr, 'xBairro');
+          CTe.Ferrov.ferroEnv.EnderFerro.cMun    := Leitor.rCampo(tcInt, 'cMun');
+          CTe.Ferrov.ferroEnv.EnderFerro.xMun    := Leitor.rCampo(tcStr, 'xMun');
+          CTe.Ferrov.ferroEnv.EnderFerro.CEP     := Leitor.rCampo(tcInt, 'CEP');
+          CTe.Ferrov.ferroEnv.EnderFerro.UF      := Leitor.rCampo(tcStr, 'UF');
+        end;
+      end;
+{$ENDIF}
 
       i01 := 0;
       while Leitor.rExtrai(3, 'detVag', '', i01 + 1) <> '' do
@@ -904,6 +1058,10 @@ begin
     if Leitor.rExtrai(2, 'duto') <> '' then
     begin
       CTe.duto.vTar := Leitor.rCampo(tcDe6, 'vTar');
+{$IFDEF PL_104}
+      CTe.duto.dIni := Leitor.rCampo(tcDat, 'dIni');
+      CTe.duto.dFim := Leitor.rCampo(tcDat, 'dFim');
+{$ENDIF}
     end; // fim das informações do modal Dutoviário
 
     i01 := 0;
@@ -983,7 +1141,12 @@ begin
     begin
       if Leitor.rExtrai(3, 'ICMSComp') <> '' then
       begin
+{$IFDEF PL_103}
         if Leitor.rExtrai(4, 'CST00') <> '' then
+{$ENDIF}
+{$IFDEF PL_104}
+        if Leitor.rExtrai(4, 'ICMS00') <> '' then
+{$ENDIF}
         begin
           if Leitor.rCampo(tcStr,'CST')='00'
           then begin
@@ -995,7 +1158,12 @@ begin
           end;
         end;
 
+{$IFDEF PL_103}
         if Leitor.rExtrai(4, 'CST20') <> '' then
+{$ENDIF}
+{$IFDEF PL_104}
+        if Leitor.rExtrai(4, 'ICMS20') <> '' then
+{$ENDIF}
         begin
           if Leitor.rCampo(tcStr,'CST')='20'
           then begin
@@ -1008,7 +1176,12 @@ begin
           end;
         end;
 
+{$IFDEF PL_103}
         if Leitor.rExtrai(4, 'CST45') <> '' then
+{$ENDIF}
+{$IFDEF PL_104}
+        if Leitor.rExtrai(4, 'ICMS45') <> '' then
+{$ENDIF}
         begin
           if (Leitor.rCampo(tcStr,'CST')='40') or
              (Leitor.rCampo(tcStr,'CST')='41') or
@@ -1018,6 +1191,21 @@ begin
             CTe.InfCTeComp[i01].impComp.ICMSComp.CST45.CST := Leitor.rCampo(tcStr,'CST');
           end;
         end;
+
+    {$IFDEF PL_104}
+        if Leitor.rExtrai(4, 'ICMS60') <> '' then
+        begin
+          if Leitor.rCampo(tcStr,'CST')='60'
+          then begin
+            CTe.InfCTeComp[i01].impComp.ICMSComp.SituTrib         := cst60;
+            CTe.InfCTeComp[i01].impComp.ICMSComp.CST60.CST        := Leitor.rCampo(tcStr,'CST');
+            CTe.InfCTeComp[i01].impComp.ICMSComp.CST60.vBCSTRet   := Leitor.rCampo(tcDe2,'vBCSTRet');
+            CTe.InfCTeComp[i01].impComp.ICMSComp.CST60.vICMSSTRet := Leitor.rCampo(tcDe2,'vICMSSTRet');
+            CTe.InfCTeComp[i01].impComp.ICMSComp.CST60.pICMSSTRet := Leitor.rCampo(tcDe2,'pICMSSTRet');
+            CTe.InfCTeComp[i01].impComp.ICMSComp.CST60.vCred      := Leitor.rCampo(tcDe2,'vCred');
+          end;
+        end;
+    {$ENDIF}
 
         if Leitor.rExtrai(4, 'CST80') <> '' then
         begin
@@ -1047,7 +1235,12 @@ begin
           end;
         end;
 
+{$IFDEF PL_103}
         if Leitor.rExtrai(4, 'CST90') <> '' then
+{$ENDIF}
+{$IFDEF PL_104}
+        if Leitor.rExtrai(4, 'ICMS90') <> '' then
+{$ENDIF}
         begin
           if Leitor.rCampo(tcStr,'CST')='90'
           then begin

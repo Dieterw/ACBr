@@ -58,7 +58,10 @@ unit ACBrCTeUtil;
 
 interface
 
-uses{$IFNDEF ACBrCTeOpenSSL}ACBrCAPICOM_TLB, ACBrMSXML2_TLB, JwaWinCrypt, {$ENDIF}
+uses
+{$IFNDEF ACBrCTeOpenSSL}
+  ACBrCAPICOM_TLB, ACBrMSXML2_TLB, JwaWinCrypt,
+{$ENDIF}
   Classes, Forms,
 {$IFDEF FPC}
   LResources, Controls, Graphics, Dialogs,
@@ -171,8 +174,13 @@ type
 
 implementation
 
-uses{$IFDEF ACBrCTeOpenSSL}libxml2, libxmlsec, libxslt, {$ELSE}ComObj, {$ENDIF}
- Sysutils, Variants, ACBrUtil;
+uses
+ {$IFDEF ACBrCTeOpenSSL}
+  libxml2, libxmlsec, libxslt,
+ {$ELSE}
+  ComObj,
+ {$ENDIF}
+  Sysutils, Variants, ACBrUtil;
 
 { CTeUtil }
 {$IFDEF ACBrCTeOpenSSL}
@@ -451,7 +459,7 @@ begin
   if CTeUtil.NaoEstaVazio(AValue) then
   begin
     AValue := CTeUtil.Poem_Zeros(CTeUtil.LimpaNumero(AValue), 10);
-    Result := copy(AValue, 1, 2) + ' ' + copy(AValue, 3, 4) + '-' + copy(AValue, 7, 4);    
+    Result := copy(AValue, 1, 2) + ' ' + copy(AValue, 3, 4) + '-' + copy(AValue, 7, 4);
 //    Result := '(' + copy(AValue, 1, 2) + ')' + copy(AValue, 3, 8);
   end;
 end;
@@ -878,6 +886,7 @@ begin
                            PathWithDelim(ExtractFileDir(application.ExeName))+
                            'Schemas',PathWithDelim(APathSchemas)));
 
+{$IFDEF PL_103}
  case Tipo of
   1: begin
       if CTeUtil.EstaVazio(APathSchemas) then
@@ -906,14 +915,37 @@ begin
       }
      end;
  end;
-  {
-  if Tipo = 1 then
-    schema_filename := pchar(ExtractFileDir(application.ExeName) + '\Schemas\cte_v1.03.xsd') //cte_v1.02.xsd
-  else if Tipo = 2 then
-    schema_filename := pchar(ExtractFileDir(application.ExeName) + '\Schemas\cancCte_v1.03.xsd') //cancCte_v1.01.xsd
-  else if Tipo = 3 then
-    schema_filename := pchar(ExtractFileDir(application.ExeName) + '\Schemas\inutCte_v1.03.xsd'); //inutCte_v1.01.xsd
-  }
+{$ENDIF}
+{$IFDEF PL_104}
+ case Tipo of
+  1: begin
+      if CTeUtil.EstaVazio(APathSchemas) then
+        schema_filename := pchar(PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\cte_v1.04.xsd')
+       else
+        schema_filename := pchar(PathWithDelim(APathSchemas)+'cte_v1.04.xsd');
+     end;
+  2: begin
+      if CTeUtil.EstaVazio(APathSchemas) then
+        schema_filename := pchar(PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\canccte_v1.04.xsd')
+       else
+        schema_filename := pchar(PathWithDelim(APathSchemas)+'canccte_v1.04.xsd');
+     end;
+  3: begin
+      if CTeUtil.EstaVazio(APathSchemas) then
+        schema_filename := pchar(PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\inutcte_v1.04.xsd')
+       else
+        schema_filename := pchar(PathWithDelim(APathSchemas)+'inutcte_v1.04.xsd');
+     end;
+  4: begin
+      {
+      if CTeUtil.EstaVazio(APathSchemas) then
+        schema_filename := pchar(PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\envDPEC_v1.04.xsd')
+       else
+        schema_filename := pchar(PathWithDelim(APathSchemas)+'envDPEC_v1.04.xsd');
+      }
+     end;
+ end;
+{$ENDIF}
 
   doc         := nil;
   schema_doc  := nil;
@@ -1028,6 +1060,7 @@ begin
                             PathWithDelim(ExtractFileDir(application.ExeName))+
                             'Schemas',PathWithDelim(APathSchemas)));
 
+{$IFDEF PL_103}
   case Tipo of
    1: begin
        Schema.remove('http://www.portalfiscal.inf.br/cte');
@@ -1058,15 +1091,39 @@ begin
         PathWithDelim(APathSchemas))+'envDPEC_v1.03.xsd')
       end;
   end;
-
-  {
-  if Tipo = 1 then
-    Schema.add('http://www.portalfiscal.inf.br/cte', ExtractFileDir(application.ExeName) + '\Schemas\cte_v1.03.xsd')//2.xsd')
-  else if Tipo = 2 then
-    Schema.add('http://www.portalfiscal.inf.br/cte', ExtractFileDir(application.ExeName) + '\Schemas\cancCte_v1.01.xsd')
-  else if Tipo = 3 then
-    Schema.add('http://www.portalfiscal.inf.br/cte', ExtractFileDir(application.ExeName) + '\Schemas\inutCte_v1.01.xsd');
-  }
+{$ENDIF}
+{$IFDEF PL_104}
+  case Tipo of
+   1: begin
+       Schema.remove('http://www.portalfiscal.inf.br/cte');
+       Schema.add('http://www.portalfiscal.inf.br/cte',
+        CTeUtil.SeSenao(CTeUtil.EstaVazio(APathSchemas),
+        PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',
+        PathWithDelim(APathSchemas))+'cte_v1.04.xsd')
+      end;
+   2: begin
+       Schema.remove('http://www.portalfiscal.inf.br/cte');
+       Schema.add('http://www.portalfiscal.inf.br/cte',
+        CTeUtil.SeSenao(CTeUtil.EstaVazio(APathSchemas),
+        PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',
+        PathWithDelim(APathSchemas))+'cancCte_v1.04.xsd')
+      end;
+   3: begin
+       Schema.remove('http://www.portalfiscal.inf.br/cte');
+       Schema.add('http://www.portalfiscal.inf.br/cte',
+        CTeUtil.SeSenao(CTeUtil.EstaVazio(APathSchemas),
+        PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',
+        PathWithDelim(APathSchemas))+'inutCte_v1.04.xsd')
+      end;
+   4: begin
+       Schema.remove('http://www.portalfiscal.inf.br/cte');
+       Schema.add( 'http://www.portalfiscal.inf.br/cte',
+        CTeUtil.SeSenao(CTeUtil.EstaVazio(APathSchemas),
+        PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',
+        PathWithDelim(APathSchemas))+'envDPEC_v1.04.xsd')
+      end;
+  end;
+{$ENDIF}
 
   DOMDocument.schemas := Schema;
   ParseError          := DOMDocument.validate;

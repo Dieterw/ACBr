@@ -43,6 +43,8 @@
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 
+{$I ACBr.inc}
+
 unit pcteConsSitCTe;
 
 interface uses
@@ -97,12 +99,17 @@ end;
 function TConsSitCTe.GerarXML: boolean;
 begin
   Result := False;
-  if retornarVersaoLayout(Fschema, tlConsSitCTe) = '1.03' then
-  begin
+//  if retornarVersaoLayout(Fschema, tlConsSitCTe) = '1.03' then
+//  begin
     Gerador.ArquivoFormatoXML := '';
 
 //    Gerador.wGrupo(ENCODING_UTF8, '', False);
+ {$IFDEF PL_103}
     Gerador.wGrupo('consSitCTe ' + NAME_SPACE_CTE + ' ' + V1_03);
+ {$ENDIF}
+ {$IFDEF PL_104}
+    Gerador.wGrupo('consSitCTe ' + NAME_SPACE_CTE + ' ' + V1_04);
+ {$ENDIF}
     Gerador.wCampo(tcStr, 'EP03', 'tpAmb', 001, 001, 1, tpAmbToStr(FtpAmb), DSC_TPAMB);
     Gerador.wCampo(tcStr, 'EP04', 'xServ', 009, 009, 1, 'CONSULTAR', DSC_XSERV);
     Gerador.wCampo(tcEsp, 'EP05', 'chCTe', 044, 044, 1, SomenteNumeros(FchCTe), DSC_CHCTe);
@@ -111,7 +118,7 @@ begin
     Gerador.wGrupo('/consSitCTe');
 
     Result := (Gerador.ListaDeAlertas.Count = 0);
-  end;
+//  end;
 end;
 
 end.

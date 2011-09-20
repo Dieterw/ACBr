@@ -470,7 +470,12 @@ var
   CancCTe: TcancCTe;
 begin
   CancCTe        := TcancCTe.Create;
-  CancCTe.schema := TsPL005c;
+ {$IFDEF PL_103}
+  CancCTe.schema := TsPL_CTe_103;
+ {$ENDIF}
+ {$IFDEF PL_104}
+  CancCTe.schema := TsPL_CTe_104;
+ {$ENDIF}
   CancCTe.chCTe  := TCTeCancelamento(Self).CTeChave;
   CancCTe.tpAmb  := TpcnTipoAmbiente(FConfiguracoes.WebServices.AmbienteCodigo-1);
   CancCTe.nProt  := TCTeCancelamento(Self).Protocolo;
@@ -512,7 +517,12 @@ var
   ConsSitCTe : TConsSitCTe;
 begin
   ConsSitCTe        := TConsSitCTe.Create;
-  ConsSitCTe.schema := TsPL005c;
+ {$IFDEF PL_103}
+  ConsSitCTe.schema := TsPL_CTe_103;
+ {$ENDIF}
+ {$IFDEF PL_104}
+  ConsSitCTe.schema := TsPL_CTe_104;
+ {$ENDIF}
   ConsSitCTe.TpAmb  := TpcnTipoAmbiente(FConfiguracoes.WebServices.AmbienteCodigo-1);
   ConsSitCTe.chCTe  := TCTeConsulta(Self).CTeChave;
   ConsSitCTe.GerarXML;
@@ -530,7 +540,12 @@ var
   InutCTe: TinutCTe;
 begin
   InutCTe        := TinutCTe.Create;
-  InutCTe.schema := TsPL005c;
+ {$IFDEF PL_103}
+  InutCTe.schema := TsPL_CTe_103;
+ {$ENDIF}
+ {$IFDEF PL_104}
+  InutCTe.schema := TsPL_CTe_104;
+ {$ENDIF}
   InutCTe.tpAmb  := TpcnTipoAmbiente(FConfiguracoes.WebServices.AmbienteCodigo-1);
   InutCTe.cUF    := FConfiguracoes.WebServices.UFCodigo;
   InutCTe.ano    := TCTeInutilizacao(Self).Ano;
@@ -630,7 +645,12 @@ var
   ConsReciCTe: TConsReciCTe;
 begin
   ConsReciCTe        := TConsReciCTe.Create;
-  ConsReciCTe.schema := TsPL005c;
+ {$IFDEF PL_103}
+  ConsReciCTe.schema := TsPL_CTe_103;
+ {$ENDIF}
+ {$IFDEF PL_104}
+  ConsReciCTe.schema := TsPL_CTe_104;
+ {$ENDIF}
   ConsReciCTe.tpAmb  := TpcnTipoAmbiente(FConfiguracoes.WebServices.AmbienteCodigo-1);
   ConsReciCTe.nRec   := TCTeRetRecepcao(Self).Recibo;
   ConsReciCTe.GerarXML;
@@ -660,7 +680,12 @@ begin
   // Fim
 
   ConsReciCTe        := TConsReciCTe.Create;
-  ConsReciCTe.schema := TsPL005c;
+ {$IFDEF PL_103}
+  ConsReciCTe.schema := TsPL_CTe_103;
+ {$ENDIF}
+ {$IFDEF PL_104}
+  ConsReciCTe.schema := TsPL_CTe_104;
+ {$ENDIF}
   ConsReciCTe.tpAmb  := TpcnTipoAmbiente(FConfiguracoes.WebServices.AmbienteCodigo-1);
   ConsReciCTe.nRec   := TCTeRecibo(Self).Recibo;
   ConsReciCTe.GerarXML;
@@ -674,7 +699,12 @@ var
   ConsStatServ: TConsStatServ;
 begin
   ConsStatServ        := TConsStatServ.create;
-  ConsStatServ.schema := TsPL005c;
+ {$IFDEF PL_103}
+  ConsStatServ.schema := TsPL_CTe_103;
+ {$ENDIF}
+ {$IFDEF PL_104}
+  ConsStatServ.schema := TsPL_CTe_104;
+ {$ENDIF}
   ConsStatServ.TpAmb  := TpcnTipoAmbiente(FConfiguracoes.WebServices.AmbienteCodigo-1);
   ConsStatServ.CUF    := FConfiguracoes.WebServices.UFCodigo;
 
@@ -931,14 +961,14 @@ begin
          StrStream := TStringStream.Create('');
          StrStream.CopyFrom(HTTP.Document, 0);
 
-         FRetornoWS := CTeUtil.ParseText(StrStream.DataString, True);
+         FRetornoWS := TiraAcentos(CTeUtil.ParseText(StrStream.DataString, True));
          FRetWS := CTeUtil.SeparaDados( FRetornoWS,'cteStatusServicoCTResult');
          StrStream.Free;
       {$ELSE}
          ReqResp.Execute(Acao.Text, Stream);
          StrStream := TStringStream.Create('');
          StrStream.CopyFrom(Stream, 0);
-         FRetornoWS := CTeUtil.ParseText(StrStream.DataString, True);
+         FRetornoWS := TiraAcentos(CTeUtil.ParseText(StrStream.DataString, True));
          FRetWS := CTeUtil.SeparaDados( FRetornoWS,'cteStatusServicoCTResult');
          StrStream.Free;
       {$ENDIF}
@@ -1075,14 +1105,14 @@ begin
 
          StrStream := TStringStream.Create('');
          StrStream.CopyFrom(HTTP.Document, 0);
-         FRetornoWS := CTeUtil.ParseText(StrStream.DataString, True);
+         FRetornoWS := TiraAcentos(CTeUtil.ParseText(StrStream.DataString, True));
          FRetWS := CTeUtil.SeparaDados( FRetornoWS,'cteRecepcaoLoteResult');
          StrStream.Free;
       {$ELSE}
          ReqResp.Execute(Acao.Text, Stream);
          StrStream := TStringStream.Create('');
          StrStream.CopyFrom(Stream, 0);
-         FRetornoWS := CTeUtil.ParseText(StrStream.DataString, True);
+         FRetornoWS := TiraAcentos(CTeUtil.ParseText(StrStream.DataString, True));
          FRetWS := CTeUtil.SeparaDados( FRetornoWS,'cteRecepcaoLoteResult');
          StrStream.Free;
       {$ENDIF}
@@ -1304,14 +1334,14 @@ function TCteRetRecepcao.Executar: Boolean;
 
          StrStream := TStringStream.Create('');
          StrStream.CopyFrom(HTTP.Document, 0);
-         FRetornoWS := CTeUtil.ParseText(StrStream.DataString, True);
+         FRetornoWS := TiraAcentos(CTeUtil.ParseText(StrStream.DataString, True));
          FRetWS := CTeUtil.SeparaDados( FRetornoWS,'cteRetRecepcaoResult');
          StrStream.Free;
       {$ELSE}
          ReqResp.Execute(Acao.Text, Stream);
          StrStream := TStringStream.Create('');
          StrStream.CopyFrom(Stream, 0);
-         FRetornoWS := CTeUtil.ParseText(StrStream.DataString, True);
+         FRetornoWS := TiraAcentos(CTeUtil.ParseText(StrStream.DataString, True));
          FRetWS := CTeUtil.SeparaDados( FRetornoWS,'cteRetRecepcaoResult');
          StrStream.Free;
       {$ENDIF}
@@ -1469,14 +1499,14 @@ begin
 
       StrStream := TStringStream.Create('');
       StrStream.CopyFrom(HTTP.Document, 0);
-      FRetornoWS := CTeUtil.ParseText(StrStream.DataString, True);
+      FRetornoWS := TiraAcentos(CTeUtil.ParseText(StrStream.DataString, True));
       FRetWS := CTeUtil.SeparaDados( FRetornoWS,'cteRetRecepcaoResult');
       StrStream.Free;
    {$ELSE}
       ReqResp.Execute(Acao.Text, Stream);
       StrStream := TStringStream.Create('');
       StrStream.CopyFrom(Stream, 0);
-      FRetornoWS := CTeUtil.ParseText(StrStream.DataString, True);
+      FRetornoWS := TiraAcentos(CTeUtil.ParseText(StrStream.DataString, True));
       FRetWS := CTeUtil.SeparaDados( FRetornoWS,'cteRetRecepcaoResult');
       StrStream.Free;
    {$ENDIF}
@@ -1588,14 +1618,14 @@ begin
 
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(HTTP.Document, 0);
-       FRetornoWS := CTeUtil.ParseText(StrStream.DataString, True);
+       FRetornoWS := TiraAcentos(CTeUtil.ParseText(StrStream.DataString, True));
        FRetWS := CTeUtil.SeparaDados( FRetornoWS,'cteConsultaCTResult');
        StrStream.Free;
     {$ELSE}
        ReqResp.Execute(Acao.Text, Stream);
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(Stream, 0);
-       FRetornoWS := CTeUtil.ParseText(StrStream.DataString, True);
+       FRetornoWS := TiraAcentos(CTeUtil.ParseText(StrStream.DataString, True));
        FRetWS := CTeUtil.SeparaDados( FRetornoWS,'cteConsultaCTResult');
        StrStream.Free;
     {$ENDIF}
@@ -1790,14 +1820,14 @@ begin
 
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(HTTP.Document, 0);
-       FRetornoWS := CTeUtil.ParseText(StrStream.DataString, True);
+       FRetornoWS := TiraAcentos(CTeUtil.ParseText(StrStream.DataString, True));
        FRetWS := CTeUtil.SeparaDados( FRetornoWS,'cteCancelamentoCTResult');
        StrStream.Free;
     {$ELSE}
        ReqResp.Execute(Acao.Text, Stream);
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(Stream, 0);
-       FRetornoWS := CTeUtil.ParseText(StrStream.DataString, True);
+       FRetornoWS := TiraAcentos(CTeUtil.ParseText(StrStream.DataString, True));
        FRetWS := CTeUtil.SeparaDados( FRetornoWS,'cteCancelamentoCTResult');
        StrStream.Free;
     {$ENDIF}
@@ -1883,7 +1913,12 @@ begin
     begin
       wProc := TStringList.Create;
       wProc.Add('<?xml version="1.0" encoding="UTF-8" ?>');
+ {$IFDEF PL_103}
       wProc.Add('<procCancCTe versao="1.03" xmlns="http://www.portalfiscal.inf.br/cte">');
+ {$ENDIF}
+ {$IFDEF PL_104}
+      wProc.Add('<procCancCTe versao="1.04" xmlns="http://www.portalfiscal.inf.br/cte">');
+ {$ENDIF}
       wProc.Add(FDadosMSG);
       wProc.Add(FRetWS);
       wProc.Add('</procCancCTe>');
@@ -1893,7 +1928,7 @@ begin
          FConfiguracoes.Geral.Save(FCTeChave+'-ProcCancCTe.xml', FXML_ProcCancCTe);
 
       if FConfiguracoes.Arquivos.Salvar then
-        FConfiguracoes.Geral.Save(FCTeChave+'-ProcCancCTe.xml', FXML_ProcCancCTe, FConfiguracoes.Arquivos.GetPathCan );
+         FConfiguracoes.Geral.Save(FCTeChave+'-ProcCancCTe.xml', FXML_ProcCancCTe, FConfiguracoes.Arquivos.GetPathCan );
     end;
 
   finally
@@ -1993,14 +2028,14 @@ begin
 
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(HTTP.Document, 0);
-       FRetornoWS := CTeUtil.ParseText(StrStream.DataString, True);
+       FRetornoWS := TiraAcentos(CTeUtil.ParseText(StrStream.DataString, True));
        FRetWS := CTeUtil.SeparaDados( FRetornoWS,'cteInutilizacaoCTResult');
        StrStream.Free;
     {$ELSE}
        ReqResp.Execute(Acao.Text, Stream);
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(Stream, 0);
-       FRetornoWS := CTeUtil.ParseText(StrStream.DataString, True);
+       FRetornoWS := TiraAcentos(CTeUtil.ParseText(StrStream.DataString, True));
        FRetWS := CTeUtil.SeparaDados( FRetornoWS,'cteInutilizacaoCTResult');
        StrStream.Free;
     {$ENDIF}
@@ -2046,7 +2081,12 @@ begin
     begin
       wProc := TStringList.Create;
       wProc.Add('<?xml version="1.0" encoding="UTF-8" ?>');
+ {$IFDEF PL_103}
       wProc.Add('<ProcInutCTe versao="1.03" xmlns="http://www.portalfiscal.inf.br/cte">');
+ {$ENDIF}
+ {$IFDEF PL_104}
+      wProc.Add('<ProcInutCTe versao="1.04" xmlns="http://www.portalfiscal.inf.br/cte">');
+ {$ENDIF}
       wProc.Add(FDadosMSG);
       wProc.Add(FRetWS);
       wProc.Add('</ProcInutCTe>');
@@ -2157,14 +2197,14 @@ begin
 
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(HTTP.Document, 0);
-       FRetornoWS := CTeUtil.ParseText(StrStream.DataString, True);
+       FRetornoWS := TiraAcentos(CTeUtil.ParseText(StrStream.DataString, True));
        FRetWS := CTeUtil.SeparaDados( FRetornoWS,'consultaCadastroResult');
        StrStream.Free;
     {$ELSE}
        ReqResp.Execute(Acao.Text, Stream);
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(Stream, 0);
-       FRetornoWS := CTeUtil.ParseText(StrStream.DataString, True);
+       FRetornoWS := TiraAcentos(CTeUtil.ParseText(StrStream.DataString, True));
        FRetWS := CTeUtil.SeparaDados( FRetornoWS,'consultaCadastroResult');
        StrStream.Free;
     {$ENDIF}

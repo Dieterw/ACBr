@@ -43,6 +43,8 @@
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 
+{$I ACBr.inc}
+
 unit pcteCancCTe;
 
 interface uses
@@ -98,12 +100,17 @@ function TcancCTe.GerarXML: boolean;
 begin
   //PENDENTE// revisar e inserir as regras de geração e validação
   Result := False;
-  if RetornarVersaoLayout(FSchema, tlCancCTe) = '1.03' then
-  begin
+//  if RetornarVersaoLayout(FSchema, tlCancCTe) = '1.03' then
+//  begin
     Gerador.ArquivoFormatoXML := '';
 
 //    Gerador.wGrupo(ENCODING_UTF8, '', False);
+ {$IFDEF PL_103}
     Gerador.wGrupo('cancCTe ' + NAME_SPACE_CTE + ' ' + V1_03);
+ {$ENDIF}
+ {$IFDEF PL_104}
+    Gerador.wGrupo('cancCTe ' + NAME_SPACE_CTE + ' ' + V1_04);
+ {$ENDIF}
     Gerador.wGrupo('infCanc Id="ID' + SomenteNumeros(FchCTe) + '"');
     Gerador.wCampo(tcStr, 'CP05', 'tpAmb', 001, 001, 1, tpAmbToStr(FtpAmb), DSC_TPAMB);
     Gerador.wCampo(tcStr, 'CP06', 'xServ', 008, 008, 1, 'CANCELAR', DSC_XSERV);
@@ -114,9 +121,9 @@ begin
     Gerador.wCampo(tcStr, 'CP09', 'xJust', 015, 255, 1, FiltrarTextoXML(true, FxJust), DSC_XJUST);
     Gerador.wGrupo('/infCanc');
     Gerador.wGrupo('/cancCTe');
-    
+
     Result := (Gerador.ListaDeAlertas.Count = 0);
-  end;
+//  end;
 end;
 
 end.

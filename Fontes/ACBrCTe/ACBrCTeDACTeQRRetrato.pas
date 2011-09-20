@@ -1059,7 +1059,12 @@ begin
 
   qrlProdPredominante.Caption := FCTe.InfCarga.proPred;
   qrlOutrasCaracCarga.Caption := FCTe.InfCarga.xOutCat;
+{$IFDEF PL_103}
   qrlVlrTotalMerc.Caption := CteUtil.FormatarValor(msk15x2, FCTe.InfCarga.vMerc);
+{$ENDIF}
+{$IFDEF PL_104}
+  qrlVlrTotalMerc.Caption := CteUtil.FormatarValor(msk15x2, FCTe.InfCarga.vCarga);
+{$ENDIF}
 
   {
   for i := 1 to 4 do
@@ -1486,6 +1491,7 @@ begin
   PrintBand := QRCTe.PageNumber = 1;
 
   // Incluido / Alterado por Italo em 29/12/2010 e 30/12/2010
+{$IFDEF PL_103}
   qrlNumRegEsp.Caption := FCTe.Rodo.valePed.nroRE;
   case FCTe.Rodo.valePed.respPg of
    rpEmitente:       qrlResponsavel.Caption := 'EMITENTE';
@@ -1496,6 +1502,7 @@ begin
    rpTomadorServico: qrlResponsavel.Caption := 'TOMADOR DO SERVIÇO';
   end;
   qrlValorTotal.Caption := CteUtil.FormatarValor(msk13x2, FCTe.Rodo.valePed.vTValePed);
+{$ENDIF}
 
   qrmTipo.Lines.Clear;
   qrmPlaca.Lines.Clear;
@@ -1517,6 +1524,7 @@ begin
   qrmNumDispositivo.Lines.Clear;
   qrmCodTransacao.Lines.Clear;
 
+{$IFDEF PL_103}
   for i := 0 to FCTe.Rodo.valePed.disp.Count - 1 do
   begin
    qrmEmpresas.Lines.Add(FCTe.Rodo.valePed.disp.Items[i].xEmp);
@@ -1524,6 +1532,7 @@ begin
    qrmNumDispositivo.Lines.Add(FCTe.Rodo.valePed.disp.Items[i].nDisp);
    qrmCodTransacao.Lines.Add(FCTe.Rodo.valePed.disp.Items[i].nCompC);
   end;
+{$ENDIF}
 
   qrlNomeMotorista.Caption := '';
   qrlCPFMotorista.Caption  := '';
@@ -1629,7 +1638,9 @@ begin
   with FCTe.Aereo do
   begin
     qrlAWB.Caption           := nOCA;
+  {$IFDEF PL_103}
     qrlTrecho.Caption        := tarifa.trecho;
+  {$ENDIF}
     qrlTarifaCL.Caption      := tarifa.CL;
     qrlTarifaCodigo.Caption  := tarifa.cTar;
     qrlTarifaValor.Caption   := FormatCurr('###,###,##0.00', tarifa.vTar);

@@ -421,7 +421,13 @@ begin
   begin
     LocCTeW := TCTeW.Create(Self.Items[i].CTe);
     try
-       LocCTeW.schema := TsPL005c;
+ {$IFDEF PL_103}
+       LocCTeW.schema := TsPL_CTe_103;
+ {$ENDIF}
+ {$IFDEF PL_104}
+       LocCTeW.schema := TsPL_CTe_104;
+ {$ENDIF}
+//       LocCTeW.schema := TsPL005c;
        LocCTeW.GerarXml;
        Self.Items[i].XML     := LocCTeW.Gerador.ArquivoFormatoXML;
        Self.Items[i].Alertas := LocCTeW.Gerador.ListaDeAlertas.Text;

@@ -55,16 +55,11 @@ uses
   {$ELSE}
      Dialogs,
   {$ENDIF}
-  pcteCTe,
-  pcnConversao,
-  ACBrCTeConhecimentos,
-  ACBrCTeConfiguracoes,
-  ACBrCTeWebServices,
-  ACBrCTeUtil,
-  ACBrCTeDACTeClass;
+  pcteCTe, pcnConversao, ACBrCTeConhecimentos, ACBrCTeConfiguracoes,
+  ACBrCTeWebServices, ACBrCTeUtil, ACBrCTeDACTeClass;
 
 const
-  ACBRCTE_VERSAO = '0.4.3a';
+  ACBRCTE_VERSAO = '0.5.0a';
 
 type
  TACBrCTeAboutInfo = (ACBrCTeAbout);

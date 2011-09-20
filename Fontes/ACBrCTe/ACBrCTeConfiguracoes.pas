@@ -47,7 +47,10 @@ unit ACBrCTeConfiguracoes;
 
 interface
 
-uses {$IFNDEF ACBrCTeOpenSSL} ACBrCAPICOM_TLB, JwaWinCrypt, JwaWinType, ACBrMSXML2_TLB,  {$ENDIF}
+uses
+ {$IFNDEF ACBrCTeOpenSSL}
+  ACBrCAPICOM_TLB, JwaWinCrypt, JwaWinType, ACBrMSXML2_TLB,
+ {$ENDIF}
   Classes, Sysutils, pcnConversao, ActiveX;
 
 {$IFNDEF ACBrCTeOpenSSL}
@@ -197,7 +200,7 @@ uses ACBrCteUtil,  Math, StrUtils, ACBrUtil, DateUtils;
 constructor TConfiguracoes.Create(AOwner: TComponent);
 begin
   inherited Create( AOwner ) ;
-  
+
   FGeral      := TGeralConf.Create(Self);
   FGeral.Name := 'GeralConf' ;
   {$IFDEF COMPILER6_UP}
@@ -345,7 +348,7 @@ begin
 
   if Codigo < 0 then
      raise Exception.Create('UF inválida');
-     
+
   FUF       := AValue;
   FUFCodigo := Codigo;
 end;
@@ -393,7 +396,7 @@ begin
          CertStoreMem.Add(Cert);
        end;
 
-      PrivateKey := Cert.PrivateKey;   
+      PrivateKey := Cert.PrivateKey;
 
       if (FSenhaCert <> '') and PrivateKey.IsHardwareDevice then
        begin
@@ -489,7 +492,7 @@ begin
     Result := FDataVenc;
   end
  else
-    Result := 0;  
+    Result := 0;
 end;
 {$ENDIF}
 

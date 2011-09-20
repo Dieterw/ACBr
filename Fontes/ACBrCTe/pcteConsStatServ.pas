@@ -43,6 +43,8 @@
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 
+{$I ACBr.inc}
+
 unit pcteConsStatServ;
 
 interface uses
@@ -106,17 +108,22 @@ end;
 function TConsStatServ.GerarXML: boolean;
 begin
   Result := False;
-  if retornarVersaoLayout(Fschema, tlConsStatServCTe) = '1.03' then
-  begin
+//  if retornarVersaoLayout(Fschema, tlConsStatServCTe) = '1.03' then
+//  begin
     Gerador.ArquivoFormatoXML := '';
 
+ {$IFDEF PL_103}
     Gerador.wGrupo('consStatServCte ' + NAME_SPACE_CTE + ' ' + V1_03);
+ {$ENDIF}
+ {$IFDEF PL_104}
+    Gerador.wGrupo('consStatServCte ' + NAME_SPACE_CTE + ' ' + V1_04);
+ {$ENDIF}
     Gerador.wCampo(tcStr, 'FP03', 'tpAmb', 001, 001, 1, tpAmbToStr(FtpAmb), DSC_TPAMB);
     Gerador.wCampo(tcStr, 'FP04', 'xServ', 006, 006, 1, 'STATUS', DSC_XSERV);
     Gerador.wGrupo('/consStatServCte');
 
     Result := (Gerador.ListaDeAlertas.Count = 0);
-  end;
+//  end;
 end;
 
 end.

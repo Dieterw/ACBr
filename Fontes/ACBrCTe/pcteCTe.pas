@@ -46,6 +46,8 @@
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 
+{$I ACBr.inc}
+
 unit pcteCTe;
 
 interface uses
@@ -104,9 +106,12 @@ type
   TCST00 = class;
   TCST20 = class;
   TCST45 = class;
+  TCST60 = class;
   TCST80 = class;
   TCST81 = class;
   TCST90 = class;
+  TICMSOutraUF = class;
+  TICMSSN = class;
 
   TInfCTeNorm = class;
   TInfCarga = class;
@@ -145,12 +150,16 @@ type
 
   Taereo = class; // Informações do modal Aéreo
   Ttarifa = class;
+  TnatCarga = class;
 
   Taquav = class; // Informações do modal Aquaviário
+  TbalsaCollection = class;
+  TbalsaCollectionItem = class;
   TLacreCollection = class;
   TLacreCollectionItem = class;
 
   Tferrov = class; // Informações do modal Ferroviário
+  TtrafMut = class;
   TferroSub = class;
   TEnderFerro = class;
   TDCLCollection = class;
@@ -177,6 +186,11 @@ type
 
   TveicNovosCollection = class; // Informações dos veículos transportados
   TveicNovosCollectionItem = class;
+
+  TCobr = class; // Informações dos Dados da cobrança do CT-e
+  TFat = class;
+  TDupCollection = class;
+  TDupCollectionItem = class;
 
   TrefNF = class;
   TtomaICMS = class;
@@ -216,6 +230,7 @@ type
 
     Fperi       : TperiCollection;
     FveicNovos  : TveicNovosCollection;
+    FCobr       : TCobr;
     FinfCTeSub  : TinfCTeSub;
     FinfCTeComp : TinfCTeCompCollection;
 
@@ -253,6 +268,7 @@ type
 
     property peri: TperiCollection read Fperi write Setperi;
     property veicNovos: TveicNovosCollection read FveicNovos write SetveicNovos;
+    property cobr: TCobr read FCobr write FCobr;
     property infCTeSub: TinfCTeSub read FinfCTeSub write FinfCTeSub;
     property InfCTeComp: TInfCTeCompCollection read FInfCTeComp write SetInfCTeComp;
     property InfCTeAnuEnt: TInfCTeAnuEnt read FInfCTeAnuEnt write FInfCTeAnuEnt;
@@ -286,9 +302,16 @@ type
     FprocEmi: TpcnProcessoEmissao;
     FverProc: String;
     FrefCTe: String;
+  {$IFDEF PL_103}
     FcMunEmi: integer;
     FxMunEmi: String;
     FUFEmi: String;
+  {$ENDIF}
+  {$IFDEF PL_104}
+    FcMunEnv: integer;
+    FxMunEnv: String;
+    FUFEnv: String;
+  {$ENDIF}
     Fmodal: TpcteModal;
     FtpServ: TpcteTipoServico;
     FcMunIni: integer;
@@ -301,6 +324,10 @@ type
     Fxdetretira: String;
     FToma03: TToma03;
     FToma4: TToma4;
+  {$IFDEF PL_104}
+    FdhCont: TDateTime;
+    FxJust: String;
+  {$ENDIF}
   public
     constructor Create(AOwner: TCTe);
     destructor Destroy; override;
@@ -322,9 +349,16 @@ type
     property procEmi: TpcnProcessoEmissao read FprocEmi write FprocEmi;
     property verProc: String read FverProc write FverProc;
     property refCTe: String read FrefCTe write FrefCTe;
+  {$IFDEF PL_103}
     property cMunEmi: integer read FcMunEmi write FcMunEmi;
     property xMunEmi: String read FxMunEmi write FxMunEmi;
     property UFEmi: String read FUFEmi write FUFEmi;
+  {$ENDIF}
+  {$IFDEF PL_104}
+    property cMunEnv: integer read FcMunEnv write FcMunEnv;
+    property xMunEnv: String read FxMunEnv write FxMunEnv;
+    property UFEnv: String read FUFEnv write FUFEnv;
+  {$ENDIF}
     property modal: TpcteModal read Fmodal write Fmodal;
     property tpServ: TpcteTipoServico read FtpServ write FtpServ;
     property cMunIni: integer read FcMunIni write FcMunIni;
@@ -337,6 +371,10 @@ type
     property xdetretira: String read Fxdetretira write Fxdetretira;
     property Toma03: TToma03 read FToma03 write FToma03;
     property Toma4: TToma4 read FToma4 write FToma4;
+  {$IFDEF PL_104}
+    property dhCont: TDateTime read FdhCont write FdhCont;
+    property xJust: String read FxJust write FxJust;
+  {$ENDIF}
   end;
 
   TToma03 = class(TPersistent)
@@ -353,8 +391,11 @@ type
     FIE        : String;
     FxNome     : String;
     FxFant     : String;
-    FEnderToma : TEnderToma;
     Ffone      : String;
+    FEnderToma : TEnderToma;
+  {$IFDEF PL_104}
+    Femail     : String;
+  {$ENDIF}
   public
     constructor Create(AOwner: TCTe);
     destructor Destroy; override;
@@ -366,6 +407,9 @@ type
     property xFant: String read FxFant write FxFant;
     property fone : String read Ffone write Ffone;
     property EnderToma: TEnderToma read FEnderToma write FEnderToma;
+  {$IFDEF PL_104}
+    property email : String read Femail write Femail;
+  {$ENDIF}
   end;
 
   TEnderToma = class(TPersistent)
@@ -612,8 +656,10 @@ type
     FxMun    : string;
     FCEP     : integer;
     FUF      : string;
+  {$IFDEF PL_103}
     FcPais   : integer;
     FxPais   : string;
+  {$ENDIF}
     Ffone    : String;
   published
     property xLgr: string read FxLgr write FxLgr;
@@ -624,19 +670,24 @@ type
     property xMun: string read FxMun write FxMun;
     property CEP: integer read FCEP write FCEP;
     property UF: string read FUF write FUF;
+  {$IFDEF PL_103}
     property cPais: integer read FcPais write FcPais;
     property xPais: string read FxPais write FxPais;
+  {$ENDIF}
     property fone: String read Ffone write Ffone;
   end;
 
   TRem = class(TPersistent)
   private
-    FEnderReme : TEnderReme;
     FCNPJCPF   : String;
     FIE        : String;
     FxNome     : String;
     FxFant     : String;
     Ffone      : String;
+    FEnderReme : TEnderReme;
+  {$IFDEF PL_104}
+    Femail     : String;
+  {$ENDIF}
     FInfNF     : TInfNFCollection;
     FInfNFE    : TInfNFECollection;
     FInfOutros : TInfOutrosCollection;
@@ -647,15 +698,18 @@ type
     constructor Create(AOwner: TCTe);
     destructor Destroy; override;
   published
-    property EnderReme: TEnderReme read FEnderReme write FEnderReme;
-    property InfNF: TInfNFCollection read FInfNF write SetInfNF;
-    property InfNFE: TInfNFECollection read FInfNFE write SetInfNFE;
-    property InfOutros: TInfOutrosCollection read FInfOutros write SetInfOutros;
     property CNPJCPF: String read FCNPJCPF write FCNPJCPF;
     property IE: String read FIE write FIE;
     property xNome: String read FxNome write FxNome;
     property xFant: String read FxFant write FxFant;
     property fone: String read Ffone write Ffone;
+    property EnderReme: TEnderReme read FEnderReme write FEnderReme;
+  {$IFDEF PL_104}
+    property email: String read Femail write Femail;
+  {$ENDIF}
+    property InfNF: TInfNFCollection read FInfNF write SetInfNF;
+    property InfNFE: TInfNFECollection read FInfNFE write SetInfNFE;
+    property InfOutros: TInfOutrosCollection read FInfOutros write SetInfOutros;
   end;
 
   TEnderReme = class(TPersistent)
@@ -697,6 +751,9 @@ type
   private
     FnRoma  : String;
     FnPed   : String;
+  {$IFDEF PL_104}
+    Fmodelo : TpcteModeloNF;
+  {$ENDIF}
     Fserie  : String;
     FnDoc   : String;
     FdEmi   : TDateTime;
@@ -716,6 +773,9 @@ type
   published
     property nRoma: string read FnRoma write FnRoma;
     property nPed: string read FnPed write FnPed;
+  {$IFDEF PL_104}
+    property modelo: TpcteModeloNF read Fmodelo write Fmodelo;
+  {$ENDIF}
     property serie: string read Fserie write Fserie;
     property nDoc: string read FnDoc write FnDoc;
     property dEmi: TDateTime read FdEmi write FdEmi;
@@ -811,6 +871,9 @@ type
     FxNome      : String;
     Ffone       : String;
     FEnderExped : TEnderExped;
+  {$IFDEF PL_104}
+    Femail      : String;
+  {$ENDIF}
   public
     constructor Create(AOwner: TCTe);
     destructor Destroy; override;
@@ -820,6 +883,9 @@ type
     property xNome : String read FxNome write FxNome;
     property fone : String read Ffone write Ffone;
     property EnderExped: TEnderExped read FEnderExped write FEnderExped;
+  {$IFDEF PL_104}
+    property email : String read Femail write Femail;
+  {$ENDIF}
   end;
 
   TEnderExped = class(TPersistent)
@@ -854,6 +920,9 @@ type
     FxNome      : String;
     Ffone       : String;
     FEnderReceb : TEnderReceb;
+  {$IFDEF PL_104}
+    Femail      : String;
+  {$ENDIF}
   public
     constructor Create(AOwner: TCTe);
     destructor Destroy; override;
@@ -863,6 +932,9 @@ type
     property xNome : String read FxNome write FxNome;
     property fone : String read Ffone write Ffone;
     property EnderReceb: TEnderReceb read FEnderReceb write FEnderReceb;
+  {$IFDEF PL_104}
+    property email : String read Femail write Femail;
+  {$ENDIF}
   end;
 
   TEnderReceb = class(TPersistent)
@@ -898,6 +970,9 @@ type
     Ffone      : String;
     FISUF      : String;
     FEnderDest : TEnderDest;
+  {$IFDEF PL_104}
+    Femail     : String;
+  {$ENDIF}
     FlocEnt    : TLocEnt;
   public
     constructor Create(AOwner: TCTe);
@@ -909,6 +984,9 @@ type
     property fone : String read Ffone write Ffone;
     property ISUF : String read FISUF write FISUF;
     property EnderDest: TEnderDest read FEnderDest write FEnderDest;
+  {$IFDEF PL_104}
+    property email : String read Femail write Femail;
+  {$ENDIF}
     property locEnt: TLocEnt read FlocEnt write FlocEnt;
   end;
 
@@ -1011,13 +1089,16 @@ type
 
   TICMS = class(TPersistent)
   private
-    FSituTrib : TpcnCSTIcms;
-    FCST00    : TCST00;
-    FCST20    : TCST20;
-    FCST45    : TCST45;
-    FCST80    : TCST80;
-    FCST81    : TCST81;
-    FCST90    : TCST90;
+    FSituTrib    : TpcnCSTIcms;
+    FCST00       : TCST00;
+    FCST20       : TCST20;
+    FCST45       : TCST45;
+    FCST60       : TCST60;
+    FCST80       : TCST80;
+    FCST81       : TCST81;
+    FCST90       : TCST90;
+    FICMSOutraUF : TICMSOutraUF;
+    FICMSSN      : TICMSSN;
   public
     constructor Create(AOwner: TImp);
     destructor Destroy; override;
@@ -1026,9 +1107,12 @@ type
     property CST00 : TCST00 read FCST00 write FCST00;
     property CST20 : TCST20 read FCST20 write FCST20;
     property CST45 : TCST45 read FCST45 write FCST45;
+    property CST60 : TCST60 read FCST60 write FCST60;
     property CST80 : TCST80 read FCST80 write FCST80;
     property CST81 : TCST81 read FCST81 write FCST81;
     property CST90 : TCST90 read FCST90 write FCST90;
+    property ICMSOutraUF : TICMSOutraUF read FICMSOutraUF write FICMSOutraUF;
+    property ICMSSN : TICMSSN read FICMSSN write FICMSSN;
   end;
 
   TCST00 = class(TPersistent)
@@ -1064,6 +1148,21 @@ type
     FCST : TpcnCSTIcms;
   published
     property CST: TpcnCSTIcms read FCST write FCST;
+  end;
+
+  TCST60 = class(TPersistent)
+  private
+    FCST        : TpcnCSTIcms;
+    FvBCSTRet   : Currency;
+    FvICMSSTRet : Currency;
+    FpICMSSTRet : Currency;
+    FvCred      : Currency;
+  published
+    property CST: TpcnCSTIcms read FCST write FCST default cst60;
+    property vBCSTRet: Currency read FvBCSTRet write FvBCSTRet;
+    property vICMSSTRet: Currency read FvICMSSTRet write FvICMSSTRet;
+    property pICMSSTRet: Currency read FpICMSSTRet write FpICMSSTRet;
+    property vCred: Currency read FvCred write FvCred;
   end;
 
   TCST80 = class(TPersistent)
@@ -1113,9 +1212,36 @@ type
     property vCred: Currency read FvCred write FvCred;
   end;
 
+  TICMSOutraUF = class(TPersistent)
+  private
+    FCST           : TpcnCSTIcms;
+    FpRedBCOutraUF : Currency;
+    FvBCOutraUF    : Currency;
+    FpICMSOutraUF  : Currency;
+    FvICMSOutraUF  : Currency;
+  published
+    property CST: TpcnCSTIcms read FCST write FCST default cst90;
+    property pRedBCOutraUF: Currency read FpRedBCOutraUF write FpRedBCOutraUF;
+    property vBCOutraUF: Currency read FvBCOutraUF write FvBCOutraUF;
+    property pICMSOutraUF: Currency read FpICMSOutraUF write FpICMSOutraUF;
+    property vICMSOutraUF: Currency read FvICMSOutraUF write FvICMSOutraUF;
+  end;
+
+  TICMSSN = class(TPersistent)
+  private
+    FindSN : Integer;
+  published
+    property indSN: Integer read FindSN write FindSN;
+  end;
+
   TInfCarga = class(TPersistent)
   private
+  {$IFDEF PL_103}
     FvMerc    : Currency;
+  {$ENDIF}
+  {$IFDEF PL_104}
+    FvCarga    : Currency;
+  {$ENDIF}
     FproPred  : string;
     FxOutCat  : string;
     FInfQ     : TInfQCollection;
@@ -1124,7 +1250,12 @@ type
     constructor Create(AOwner: TCTe);
     destructor Destroy; override;
   published
+  {$IFDEF PL_103}
     property vMerc : Currency read FvMerc write FvMerc;
+  {$ENDIF}
+  {$IFDEF PL_104}
+    property vCarga : Currency read FvCarga write FvCarga;
+  {$ENDIF}
     property proPred : String read FproPred write FproPred;
     property xOutCat : String read FxOutCat write FxOutCat;
     property InfQ: TInfQCollection read FInfQ write SetInfQ;
@@ -1330,7 +1461,12 @@ type
     FxSeg    : String;
     FnApol   : String;
     FnAver   : String;
-    FvMerc   : Currency;
+  {$IFDEF PL_103}
+    FvMerc    : Currency;
+  {$ENDIF}
+  {$IFDEF PL_104}
+    FvCarga    : Currency;
+  {$ENDIF}
   public
     constructor Create; reintroduce;
     destructor Destroy; override;
@@ -1339,7 +1475,12 @@ type
     property xSeg: string read FxSeg write FxSeg;
     property nApol: string read FnApol write FnApol;
     property nAver: string read FnAver write FnAver;
+  {$IFDEF PL_103}
     property vMerc: Currency read FvMerc write FvMerc;
+  {$ENDIF}
+  {$IFDEF PL_104}
+    property vCarga: Currency read FvCarga write FvCarga;
+  {$ENDIF}
   end;
 
   TRodo = class(TPersistent)
@@ -1347,7 +1488,12 @@ type
     FRNTRC   : String;
     FdPrev   : tDateTime;
     FLota    : TpcteLotacao;
+  {$IFDEF PL_103}
     FCTRB    : TCTRB;
+  {$ENDIF}
+  {$IFDEF PL_104}
+    FCIOT    : Integer;
+  {$ENDIF}
     FOcc     : TOccCollection;
     FvalePed : TValePed;
     Fveic    : TVeicCollection;
@@ -1364,7 +1510,12 @@ type
     property RNTRC: String read FRNTRC write FRNTRC;
     property dPrev: TDateTime read FdPrev write FdPrev;
     property Lota: TpcteLotacao read FLota write FLota;
+  {$IFDEF PL_103}
     property CTRB: TCTRB read FCTRB write FCTRB;
+  {$ENDIF}
+  {$IFDEF PL_104}
+    property CIOT: Integer read FCIOT write FCIOT;
+  {$ENDIF}
     property Occ: TOccCollection read FOcc write SetOcc;
     property valePed: TValePed read FvalePed write FvalePed;
     property veic: TVeicCollection read Fveic write SetVeic;
@@ -1424,6 +1575,7 @@ type
 
   TValePed = class(TPersistent)
   private
+  {$IFDEF PL_103}
     FnroRE     : String;
     FvTValePed : Currency;
     FrespPg    : TpcteRspPagPedagio;
@@ -1437,6 +1589,16 @@ type
     property vTValePed: Currency read FvTValePed write FvTValePed;
     property respPg: TpcteRspPagPedagio read FrespPg write FrespPg;
     property disp: TDispCollection read Fdisp write SetDisp;
+  {$ENDIF}
+  {$IFDEF PL_104}
+    FCNPJForn : String;
+    FnCompra  : String;
+    FCNPJPg   : String;
+  published
+    property CNPJForn: String read FCNPJForn write FCNPJForn;
+    property nCompra: String read FnCompra write FnCompra;
+    property CNPJPg: String read FCNPJPg write FCNPJPg;
+  {$ENDIF}
   end;
 
   TDispCollection = class(TCollection)
@@ -1576,6 +1738,9 @@ type
     FxLAgEmi : String;
     FcIATA   : String;
     Ftarifa  : Ttarifa;
+  {$IFDEF PL_104}
+    FnatCarga : TnatCarga;
+  {$ENDIF}
   public
     constructor Create(AOwner: TCTe);
     destructor Destroy; override;
@@ -1586,19 +1751,37 @@ type
     property xLAgEmi: String read FxLAgEmi write FxLAgEmi;
     property cIATA: String read FcIATA write FcIATA;
     property tarifa: Ttarifa read Ftarifa write Ftarifa;
+  {$IFDEF PL_104}
+    property natCarga: TnatCarga read FnatCarga write FnatCarga;
+  {$ENDIF}
   end;
 
   Ttarifa = class(TPersistent)
   private
+  {$IFDEF PL_103}
     Ftrecho : String;
+  {$ENDIF}
     FCL    : String;
     FcTar  : String;
     FvTar  : Currency;
   public
+  {$IFDEF PL_103}
     property trecho: String read Ftrecho write Ftrecho;
+  {$ENDIF}
     property CL: String read FCL write FCL;
     property cTar: String read FcTar write FcTar;
     property vTar: Currency read FvTar write FvTar;
+  end;
+
+  TnatCarga = class(TPersistent)
+  private
+    FxDime    : String;
+    FcinfManu : Integer;
+    FcImp     : String;
+  public
+    property xDime: String read FxDime write FxDime;
+    property cinfManu: Integer read FcinfManu write FcinfManu;
+    property cImp: String read FcImp write FcImp;
   end;
 
   Taquav = class(TPersistent)
@@ -1615,7 +1798,13 @@ type
     FprtDest  : String;
     FtpNav    : TpcteTipoNavegacao;
     Firin     : String;
+{$IFDEF PL_104}
+    Fbalsa    : TbalsaCollection;
+{$ENDIF}
     Flacre    : TLacreCollection;
+{$IFDEF PL_104}
+    procedure Setbalsa(const Value: TbalsaCollection);
+{$ENDIF}
     procedure SetLacre(const Value: TLacreCollection);
   public
     constructor Create(AOwner: TCTe);
@@ -1633,7 +1822,30 @@ type
     property prtDest: String read FprtDest write FprtDest;
     property tpNav: TpcteTipoNavegacao read FtpNav write FtpNav;
     property irin: String read Firin write Firin;
+{$IFDEF PL_104}
+    property balsa: TbalsaCollection read Fbalsa write Setbalsa;
+{$ENDIF}
     property Lacre: TLacreCollection read FLacre write SetLacre;
+  end;
+
+  TbalsaCollection = class(TCollection)
+  private
+    function GetItem(Index: Integer): TbalsaCollectionItem;
+    procedure SetItem(Index: Integer; Value: TbalsaCollectionItem);
+  public
+    constructor Create(AOwner: Taquav);
+    function Add: TbalsaCollectionItem;
+    property Items[Index: Integer]: TbalsaCollectionItem read GetItem write SetItem; default;
+  end;
+
+  TbalsaCollectionItem = class(TCollectionItem)
+  private
+    FxBalsa : string;
+  public
+    constructor Create; reintroduce;
+    destructor Destroy; override;
+  published
+    property xBalsa: string read FxBalsa write FxBalsa;
   end;
 
   TLacreCollection = class(TCollection)
@@ -1660,24 +1872,42 @@ type
   Tferrov = class(TPersistent)
   private
     FtpTraf   : TpcteTipoTrafego;
+{$IFDEF PL_104}
+    FtrafMut  : TtrafMut;
+{$ENDIF}
     Ffluxo    : String;
     FidTrem   : String;
     FvFrete   : Currency;
+{$IFDEF PL_103}
     FferroSub : TferroSub;
     FDCL      : TDCLCollection;
+{$ENDIF}
+{$IFDEF PL_104}
+    FferroEnv : TferroSub;
+{$ENDIF}
     FdetVag   : TdetVagCollection;
+{$IFDEF PL_103}
     procedure SetDCL(const Value: TDCLCollection);
+{$ENDIF}
     procedure SetdetVag(const Value: TdetVagCollection);
   public
     constructor Create(AOwner: TCTe);
     destructor Destroy; override;
   published
     property tpTraf: TpcteTipoTrafego read FtpTraf write FtpTraf;
+{$IFDEF PL_104}
+    property trafMut: TtrafMut read FtrafMut write FTrafMut;
+{$ENDIF}
     property fluxo: String read Ffluxo write Ffluxo;
     property idTrem: String read FidTrem write FidTrem;
     property vFrete: Currency read FvFrete write FvFrete;
+{$IFDEF PL_103}
     property ferroSub: TferroSub read FferroSub write FferroSub;
     property DCL: TDCLCollection read FDCL write SetDCL;
+{$ENDIF}
+{$IFDEF PL_104}
+    property ferroEnv: TferroSub read FferroEnv write FferroEnv;
+{$ENDIF}
     property detVag: TdetVagCollection read FdetVag write SetdetVag;
   end;
 
@@ -1697,6 +1927,15 @@ type
     property IE : String read FIE write FIE;
     property xNome : String read FxNome write FxNome;
     property EnderFerro: TEnderFerro read FEnderFerro write FEnderFerro;
+  end;
+
+  TtrafMut = class(TPersistent)
+  private
+    FrespFat : TpcteTrafegoMutuo;
+    FferrEmi : TpcteTrafegoMutuo;
+  published
+    property respFat : TpcteTrafegoMutuo read FrespFat write FrespFat;
+    property ferrEmi : TpcteTrafegoMutuo read FferrEmi write FferrEmi;
   end;
 
   TEnderFerro = class(TPersistent)
@@ -1916,8 +2155,16 @@ type
   Tduto = class(TPersistent)
   private
     FvTar : Currency;
+{$IFDEF PL_104}
+    FdIni : TDateTime;
+    FdFim : TDateTime;
+{$ENDIF}
   published
     property vTar: Currency read FvTar write FvTar;
+{$IFDEF PL_104}
+    property dIni: TDateTime read FdIni write FdIni;
+    property dFim: TDateTime read FdFim write FdFim;
+{$ENDIF}
   end;
 
   TperiCollection = class(TCollection)
@@ -1980,6 +2227,55 @@ type
     property cMod: string read FcMod write FcMod;
     property vUnit: Currency read FvUnit write FvUnit;
     property vFrete: Currency read FvFrete write FvFrete;
+  end;
+
+  TCobr = class(TPersistent)
+  private
+    FFat: TFat;
+    FDup: TDupCollection;
+    procedure SetDup(Value: TDupCollection);
+  public
+    constructor Create(AOwner: TCTe);
+    destructor Destroy; override;
+  published
+    property Fat: TFat read FFat write FFat;
+    property Dup: TDupCollection read FDup write SetDup;
+  end;
+
+  TFat = class(TPersistent)
+  private
+    FnFat: string;
+    FvOrig: currency;
+    FvDesc: currency;
+    FvLiq: currency;
+  published
+    property nFat: string read FnFat write FnFat;
+    property vOrig: currency read FvOrig write FvOrig;
+    property vDesc: currency read FvDesc write FvDesc;
+    property vLiq: currency read FvLiq write FvLiq;
+  end;
+
+  TDupCollection = class(TCollection)
+  private
+    function GetItem(Index: Integer): TDupCollectionItem;
+    procedure SetItem(Index: Integer; Value: TDupCollectionItem);
+  public
+    constructor Create(AOwner: TCobr);
+    destructor Destroy; override;
+
+    function Add: TDupCollectionItem;
+    property Items[Index: Integer]: TDupCollectionItem read GetItem write SetItem; default;
+  end;
+
+  TDupCollectionItem = class(TCollectionItem)
+  private
+    FnDup: string;
+    FdVenc: TDateTime;
+    FvDup: currency;
+  published
+    property nDup: string read FnDup write FnDup;
+    property dVenc: TDateTime read FdVenc write FdVenc;
+    property vDup: currency read FvDup write FvDup;
   end;
 
   TrefNF = class(TPersistent)
@@ -2109,13 +2405,16 @@ type
 
   TICMSComp = class(TPersistent)
   private
-    FSituTrib : TpcnCSTIcms;
-    FCST00    : TCST00;
-    FCST20    : TCST20;
-    FCST45    : TCST45;
-    FCST80    : TCST80;
-    FCST81    : TCST81;
-    FCST90    : TCST90;
+    FSituTrib    : TpcnCSTIcms;
+    FCST00       : TCST00;
+    FCST20       : TCST20;
+    FCST45       : TCST45;
+    FCST60       : TCST60;
+    FCST80       : TCST80;
+    FCST81       : TCST81;
+    FCST90       : TCST90;
+    FICMSOutraUF : TICMSOutraUF;
+    FICMSSN      : TICMSSN;
   public
     constructor Create(AOwner: TImpComp);
     destructor Destroy; override;
@@ -2124,9 +2423,12 @@ type
     property CST00 : TCST00 read FCST00 write FCST00;
     property CST20 : TCST20 read FCST20 write FCST20;
     property CST45 : TCST45 read FCST45 write FCST45;
+    property CST60 : TCST60 read FCST60 write FCST60;
     property CST80 : TCST80 read FCST80 write FCST80;
     property CST81 : TCST81 read FCST81 write FCST81;
     property CST90 : TCST90 read FCST90 write FCST90;
+    property ICMSOutraUF : TICMSOutraUF read FICMSOutraUF write FICMSOutraUF;
+    property ICMSSN : TICMSSN read FICMSSN write FICMSSN;
   end;
 
   TInfCTeAnuEnt = class(TPersistent)
@@ -2173,6 +2475,7 @@ begin
 
   Fperi         := TperiCollection.Create(Self);
   FveicNovos    := TveicNovosCollection.Create(Self);
+  FCobr         := TCobr.Create(Self);
   FinfCTeSub    := TinfCTeSub.Create(Self);
   FinfCTeComp   := TinfCTeCompCollection.Create(Self);
   FInfCTeAnuEnt := TInfCTeAnuEnt.Create(Self);
@@ -2204,6 +2507,7 @@ begin
 
   Fperi.Free;
   FveicNovos.Free;
+  FCobr.Free;
   FinfCTeSub.Free;
   FInfCTeComp.Free;
   FInfCTeAnuEnt.Free;
@@ -2724,12 +3028,15 @@ end;
 constructor TICMS.Create(AOwner: TImp);
 begin
   inherited Create;
-  FCST00 := TCST00.create;
-  FCST20 := TCST20.create;
-  FCST45 := TCST45.create;
-  FCST80 := TCST80.create;
-  FCST81 := TCST81.create;
-  FCST90 := TCST90.create;
+  FCST00       := TCST00.create;
+  FCST20       := TCST20.create;
+  FCST45       := TCST45.create;
+  FCST60       := TCST60.create;
+  FCST80       := TCST80.create;
+  FCST81       := TCST81.create;
+  FCST90       := TCST90.create;
+  FICMSOutraUF := TICMSOutraUF.Create;
+  FICMSSN      := TICMSSN.Create;
 end;
 
 destructor TICMS.Destroy;
@@ -2737,9 +3044,12 @@ begin
   FCST00.Free;
   FCST20.Free;
   FCST45.Free;
+  FCST60.Free;
   FCST80.Free;
   FCST81.Free;
   FCST90.Free;
+  FICMSOutraUF.Free;
+  FICMSSN.Free;
   inherited;
 end;
 
@@ -3116,9 +3426,13 @@ end;
 
 constructor TRodo.Create(AOwner: TCTe);
 begin
+{$IFDEF PL_103}
   FCTRB    := TCTRB.Create;
+{$ENDIF}
   FOcc     := TOccCollection.Create(Self);
+{$IFDEF PL_103}
   FvalePed := TValePed.Create(Self);
+{$ENDIF}
   Fveic    := TVeicCollection.Create(Self);
   FLacres  := TLacresCollection.Create(Self);
   Fmoto    := TMotoCollection.Create(Self);
@@ -3126,8 +3440,13 @@ end;
 
 destructor TRodo.Destroy;
 begin
+{$IFDEF PL_103}
   FCTRB.Free;
+{$ENDIF}
   FOcc.Free;
+{$IFDEF PL_103}
+  FvalePed.Free;
+{$ENDIF}
   FvalePed.Free;
   Fveic.Free;
   FLacres.Free;
@@ -3194,6 +3513,7 @@ end;
 
 { TValePed }
 
+{$IFDEF PL_103}
 constructor TValePed.Create(AOwner: TRodo);
 begin
   Fdisp := TDispCollection.Create(Self);
@@ -3209,6 +3529,7 @@ procedure TValePed.SetDisp(const Value: TDispCollection);
 begin
   Fdisp.Assign(Value);
 end;
+{$ENDIF}
 
 { TDispCollection }
 
@@ -3363,11 +3684,17 @@ end;
 constructor Taereo.Create(AOwner: TCTe);
 begin
   Ftarifa := Ttarifa.Create;
+{$IFDEF PL_104}
+  FnatCarga := TnatCarga.Create;
+{$ENDIF}
 end;
 
 destructor Taereo.Destroy;
 begin
   Ftarifa.Free;
+{$IFDEF PL_104}
+  FnatCarga.Free;
+{$ENDIF}
   inherited;
 end;
 
@@ -3375,18 +3702,68 @@ end;
 
 constructor Taquav.Create(AOwner: TCTe);
 begin
+{$IFDEF PL_104}
+ Fbalsa := TbalsaCollection.Create(Self);
+{$ENDIF}
  Flacre := TlacreCollection.Create(Self);
 end;
 
 destructor Taquav.Destroy;
 begin
+{$IFDEF PL_104}
+  Fbalsa.Free;
+{$ENDIF}
   Flacre.Free;
   inherited;
 end;
 
+{$IFDEF PL_104}
+procedure Taquav.Setbalsa(const Value: TbalsaCollection);
+begin
+  Fbalsa.Assign(Value);
+end;
+{$ENDIF}
+
 procedure Taquav.SetLacre(const Value: TLacreCollection);
 begin
   FLacre.Assign(Value);
+end;
+
+{ TbalsaCollection }
+
+function TbalsaCollection.Add: TbalsaCollectionItem;
+begin
+  Result := TbalsaCollectionItem(inherited Add);
+  Result.create;
+end;
+
+constructor TbalsaCollection.Create(AOwner: Taquav);
+begin
+  inherited Create(TbalsaCollectionItem);
+end;
+
+function TbalsaCollection.GetItem(Index: Integer): TbalsaCollectionItem;
+begin
+  Result := TbalsaCollectionItem(inherited GetItem(Index));
+end;
+
+procedure TbalsaCollection.SetItem(Index: Integer;
+  Value: TbalsaCollectionItem);
+begin
+  inherited SetItem(Index, Value);
+end;
+
+{ TbalsaCollectionItem }
+
+constructor TbalsaCollectionItem.Create;
+begin
+
+end;
+
+destructor TbalsaCollectionItem.Destroy;
+begin
+
+  inherited;
 end;
 
 { TLacreCollection }
@@ -3425,19 +3802,6 @@ begin
 
   inherited;
 end;
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 { TperiCollection }
 
@@ -3659,9 +4023,12 @@ begin
   FCST00 := TCST00.create;
   FCST20 := TCST20.create;
   FCST45 := TCST45.create;
+  FCST60 := TCST60.create;
   FCST80 := TCST80.create;
   FCST81 := TCST81.create;
   FCST90 := TCST90.create;
+  FICMSOutraUF := TICMSOutraUF.Create;
+  FICMSSN      := TICMSSN.Create;
 end;
 
 destructor TICMSComp.Destroy;
@@ -3669,9 +4036,12 @@ begin
   FCST00.Free;
   FCST20.Free;
   FCST45.Free;
+  FCST60.Free;
   FCST80.Free;
   FCST81.Free;
   FCST90.Free;
+  FICMSOutraUF.Free;
+  FICMSSN.Free;
   inherited;
 end;
 
@@ -3692,23 +4062,41 @@ end;
 constructor Tferrov.Create(AOwner: TCTe);
 begin
   inherited Create;
+{$IFDEF PL_104}
+  FtrafMut := TtrafMut.Create;
+{$ENDIF}
+{$IFDEF PL_103}
   FferroSub := TferroSub.Create(self);
   FDCL      := TDCLCollection.Create(Self);
+{$ENDIF}
+{$IFDEF PL_104}
+  FferroEnv := TferroSub.Create(self);
+{$ENDIF}
   FdetVag   := TdetVagCollection.Create(Self);
 end;
 
 destructor Tferrov.Destroy;
 begin
+{$IFDEF PL_104}
+  FtrafMut.Free;
+{$ENDIF}
+{$IFDEF PL_103}
   FferroSub.Free;
   FDCL.Free;
+{$ENDIF}
+{$IFDEF PL_104}
+  FferroEnv.Free;
+{$ENDIF}
   FdetVag.Free;
   inherited;
 end;
 
+{$IFDEF PL_103}
 procedure Tferrov.SetDCL(const Value: TDCLCollection);
 begin
   FDCL.Assign(Value);
 end;
+{$ENDIF}
 
 procedure Tferrov.SetdetVag(const Value: TdetVagCollection);
 begin
@@ -4026,6 +4414,54 @@ destructor TcontVagCollectionItem.Destroy;
 begin
 
   inherited;
+end;
+
+{Cobr}
+
+constructor TCobr.Create(AOwner: TCTe);
+begin
+  inherited Create;
+  FFat := TFat.Create;
+  FDup := TDupCollection.Create(self);
+end;
+
+destructor TCobr.Destroy;
+begin
+  FFat.Free;
+  FDup.Free;
+  inherited;
+end;
+
+procedure TCobr.SetDup(Value: TDupCollection);
+begin
+  FDup.Assign(Value);
+end;
+
+{ TDupCollection }
+
+constructor TDupCollection.Create(AOwner: TCobr);
+begin
+  inherited Create(TDupCollectionItem);
+end;
+
+destructor TDupCollection.Destroy;
+begin
+  inherited;
+end;
+
+function TDupCollection.Add: TDupCollectionItem;
+begin
+  Result := TDupCollectionItem(inherited Add);
+end;
+
+function TDupCollection.GetItem(Index: Integer): TDupCollectionItem;
+begin
+  Result := TDupCollectionItem(inherited GetItem(Index));
+end;
+
+procedure TDupCollection.SetItem(Index: Integer; Value: TDupCollectionItem);
+begin
+  inherited SetItem(Index, Value);
 end;
 
 end.

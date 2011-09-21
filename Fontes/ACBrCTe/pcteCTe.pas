@@ -3057,8 +3057,8 @@ end;
 
 constructor TInfCTeNorm.Create(AOwner: TCTe);
 begin
- FcontQt    := TInfcontQtCollection.Create(Self);
- FemiDocAnt := TemiDocAntCollection.Create(Self);
+  FcontQt    := TInfcontQtCollection.Create(Self);
+  FemiDocAnt := TemiDocAntCollection.Create(Self);
 end;
 
 destructor TInfCTeNorm.Destroy;
@@ -3447,7 +3447,6 @@ begin
 {$IFDEF PL_103}
   FvalePed.Free;
 {$ENDIF}
-  FvalePed.Free;
   Fveic.Free;
   FLacres.Free;
   Fmoto.Free;

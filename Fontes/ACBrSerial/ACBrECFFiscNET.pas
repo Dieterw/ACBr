@@ -680,6 +680,9 @@ begin
      // Ajuste de Colunas na ThermoPrinter, por Fabio Farias //
      if FiscNETResposta.Params.Values['ValorTexto']='TPF2001' then
         fpColunas := 40;
+     // Ajuste para 48 colunas no caso da Elgin X5 , por Juliomar Marchetti //
+     if FiscNETResposta.Params.Values['ValorTexto']='X5' then
+        fpColunas := 48;
 
   except
      Desativar ;

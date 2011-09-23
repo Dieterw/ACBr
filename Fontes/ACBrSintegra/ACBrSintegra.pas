@@ -1247,6 +1247,103 @@ type
       read GetObject write SetObject; default;
   end;
 
+  //Registros referentes ao Sapi MG
+  TRegistro88SP02 = class
+  private
+    FDataEstoque   : TDateTime;
+    FCodProduto    : String;
+    FDescricao     : String;
+    FUnidadeMedida : String;
+    FQuantidade    : Double;
+    FValorUnitario : Double;
+    FValorTotal    : Double;
+    FCodigoPosse   : String;
+    FCnpj          : String;
+    FIe            : String;
+    FUf            : String;
+  public
+    property DataEstoque : TDateTime read FDataEstoque write FDataEstoque;
+    property CodProduto  : String read FCodProduto write FCodProduto;
+    property Descricao   : String read FDescricao write FDescricao;
+    property UnidadeMedida : String read FUnidadeMedida write FUnidadeMedida;
+    property Quantidade : Double read FQuantidade write FQuantidade;
+    property ValorUnitario : Double read FValorUnitario write FValorUnitario;
+    property ValorTotal  : Double read FValorTotal write FValorTotal;
+    property CodigoPosse : String read FCodigoPosse write FCodigoPosse;
+    property Cnpj : String read FCnpj write FCnpj;
+    property Ie : String read FIe write FIe;
+    property Uf : String read FUf write FUf;
+  end;
+  
+  {Lista de objetos do tipo Registro88SP02}
+  TRegistros88SP02 = class(TObjectList)
+  protected
+    procedure SetObject (Index: Integer; Item: TRegistro88SP02);
+    function GetObject (Index: Integer): TRegistro88SP02;
+    procedure Insert (Index: Integer; Obj: TRegistro88SP02);
+  public
+    function Add (Obj: TRegistro88SP02): Integer;
+    property Objects [Index: Integer]: TRegistro88SP02
+      read GetObject write SetObject; default;
+  end;
+
+  TRegistro88SP03 = class
+  private
+    FCnpj : String;
+    FIe : String;
+    FDataRecebimento : TDateTime;
+    FUf : String;
+    FModelo : String;
+    FSerie : String;
+    FNumero : String;
+    FCfop : String;
+    FEmitente : String;
+    FValorTotal : Double;
+    FBaseCalculo : Double;
+    FValorIcms  : Double;
+    FIsentas    : Double;
+    FOutras     : Double;
+    FAliquota   : Double;
+    FSituacao : String;
+    FBeneficioFiscal : String;
+    FAliquotaInterna : Double;
+    FDataEmissao : TDateTime;
+    FMicroEmpresa : String;
+  public
+    property Cnpj : String read FCnpj write FCnpj;
+    property Ie : String read FIe write FIe;
+    property DataRecebimento : TDateTime read FDataRecebimento write FDataRecebimento;
+    property Uf : String read FUf write FUf;
+    property Modelo : String read FModelo write FModelo;
+    property Serie : String read FSerie write FSerie; 
+    property Numero : String read FNumero write FNumero;
+    property Cfop : String read FCfop write FCfop;
+    property Emitente : String read FEmitente write FEmitente; //P - proprio ou  T - terceiro
+    property ValorTotal : Double read FValorTotal write FValorTotal;
+    property BaseCalculo : Double read FBaseCalculo write FBaseCalculo;
+    property ValorIcms  : Double read FValorIcms write FValorIcms;
+    property Isentas    : Double read FIsentas write FIsentas;
+    property Outras     : Double read FOutras write FOutras;
+    property Aliquota   : Double read FAliquota write FAliquota;
+    property Situacao : String read FSituacao write FSituacao;
+    property BeneficioFiscal : String read FBeneficioFiscal write FBeneficioFiscal;
+    property AliquotaInterna : Double read FAliquotaInterna write FAliquotaInterna;
+    property DataEmissao : TDateTime read FDataEmissao write FDataEmissao;
+    property MicroEmpresa : String read FMicroEmpresa write FMicroEmpresa;
+  end;
+
+ {Lista de objetos do tipo Registro88SP03}
+  TRegistros88SP03 = class(TObjectList)
+  protected
+    procedure SetObject (Index: Integer; Item: TRegistro88SP03);
+    function GetObject (Index: Integer): TRegistro88SP03;
+    procedure Insert (Index: Integer; Obj: TRegistro88SP03);
+  public
+    function Add (Obj: TRegistro88SP03): Integer;
+    property Objects [Index: Integer]: TRegistro88SP03
+      read GetObject write SetObject; default;
+  end;
+
 
   TACBrSintegra = class(TComponent)
   private
@@ -1288,7 +1385,10 @@ type
     FRegistros88D: TRegistros88D;
     FRegistros88E: TRegistros88E;
     FRegistros88T: TRegistros88T;
+    FRegistros88SP02 : TRegistros88SP02;
+    FRegistros88SP03 : TRegistros88SP03;
     FInforma88C: Boolean;
+    FInformaSapiMG : Boolean;
 
     procedure GeraRegistro10;
     procedure GeraRegistro11;
@@ -1322,7 +1422,7 @@ type
     procedure GerarRegistro88SMS;
 
     procedure GerarRegistros90;
-    procedure WriteRecord(Rec: string);
+    procedure WriteRecord(Rec: string; vSapiMG : Boolean = false);
     function GetRegistro60M(Emissao: TDateTime;NumSerie: string): TRegistro60M;
     procedure GerarConjuntoRegistros60;
     function GetVersao: string;
@@ -1332,6 +1432,8 @@ type
     procedure GerarRegistros88D;
     procedure GerarRegistros88E;
     procedure GerarRegistros88T;
+    procedure GerarRegistro88SP02;
+    procedure GerarRegistro88SP03;
   public
     property Registro10: TRegistro10 read FRegistro10 write FRegistro10;
     property Registro11: TRegistro11 read FRegistro11 write FRegistro11;
@@ -1366,6 +1468,8 @@ type
     property Registros88D: TRegistros88D read FRegistros88D write FRegistros88D;
     property Registros88E: TRegistros88E read FRegistros88E write FRegistros88E;
     property Registros88T: TRegistros88T read FRegistros88T write FRegistros88T;
+    property Registros88SP02: TRegistros88SP02 read FRegistros88SP02 write FRegistros88SP02;
+    property Registros88SP03: TRegistros88SP03 read FRegistros88SP03 write FRegistros88SP03;
     property Ativo: Boolean read FAtivo write FAtivo;
     procedure LimparRegistros;
     procedure GeraArquivo;
@@ -1381,6 +1485,7 @@ type
     property Informa88SMS: Boolean read FInforma88SMS write FInforma88SMS;
     property Informa88EAN: Boolean read FInforma88EAN write FInforma88EAN;
     property Informa88C: Boolean read FInforma88C write FInforma88C;
+    property InformaSapiMG : Boolean read FInformaSapiMG write FInformaSapiMG;
   end;
 
   function Sort50(Item1: Pointer;Item2: Pointer): Integer;
@@ -1407,143 +1512,159 @@ uses ACBrUtil;
 constructor TACBrSintegra.Create(AOwner: TComponent);
 begin
   inherited;
-FRegistro10:=TRegistro10.Create;
-FRegistro11:=TRegistro11.Create;
-FRegistros50:=TRegistros50.Create(True);
-FRegistros51:=TRegistros51.Create(True);
-FRegistros53:=TRegistros53.Create(True);
-FRegistros54:=TRegistros54.Create(True);
-FRegistros55:=TRegistros55.Create(True);
-FRegistros56:=TRegistros56.Create(True);
-FRegistros60M:=TRegistros60M.Create(True);
-FRegistros60A:=TRegistros60A.Create(True);
-FRegistros60D:=TRegistros60D.Create(True);
-FRegistros60I:=TRegistros60I.Create(True);
-FRegistros60R:=TRegistros60R.Create(True);
-FRegistros61:=TRegistros61.Create(True);
-FRegistros61R:=TRegistros61R.Create(True);
-FRegistros70:=TRegistros70.Create(True);
-FRegistros71:=TRegistros71.Create(True);
-FRegistros74:=TRegistros74.Create(True);
-FRegistros75:=TRegistros75.Create(True);
-FRegistros76:=TRegistros76.Create(True);
-FRegistros77:=TRegistros77.Create(True);
-FRegistros85:=TRegistros85.Create(True);
-FRegistros86:=TRegistros86.Create(True);
-FRegistros88Ean:=TRegistros88Ean.Create(True);
-FRegistro88EC:=TRegistro88EC.Create;
-FRegistro88SF:=TRegistro88SF.Create;
-FRegistros88C:=TRegistros88C.Create;
-FRegistros88D:=TRegistros88D.Create;
-FRegistros88E:=TRegistros88E.Create;
-FRegistros88T:=TRegistros88T.Create;
-FVersaoValidador:=vv524;
-Ativo:=True;
+  FRegistro10:=TRegistro10.Create;
+  FRegistro11:=TRegistro11.Create;
+  FRegistros50:=TRegistros50.Create(True);
+  FRegistros51:=TRegistros51.Create(True);
+  FRegistros53:=TRegistros53.Create(True);
+  FRegistros54:=TRegistros54.Create(True);
+  FRegistros55:=TRegistros55.Create(True);
+  FRegistros56:=TRegistros56.Create(True);
+  FRegistros60M:=TRegistros60M.Create(True);
+  FRegistros60A:=TRegistros60A.Create(True);
+  FRegistros60D:=TRegistros60D.Create(True);
+  FRegistros60I:=TRegistros60I.Create(True);
+  FRegistros60R:=TRegistros60R.Create(True);
+  FRegistros61:=TRegistros61.Create(True);
+  FRegistros61R:=TRegistros61R.Create(True);
+  FRegistros70:=TRegistros70.Create(True);
+  FRegistros71:=TRegistros71.Create(True);
+  FRegistros74:=TRegistros74.Create(True);
+  FRegistros75:=TRegistros75.Create(True);
+  FRegistros76:=TRegistros76.Create(True);
+  FRegistros77:=TRegistros77.Create(True);
+  FRegistros85:=TRegistros85.Create(True);
+  FRegistros86:=TRegistros86.Create(True);
+  FRegistros88Ean:=TRegistros88Ean.Create(True);
+  FRegistro88EC:=TRegistro88EC.Create;
+  FRegistro88SF:=TRegistro88SF.Create;
+  FRegistros88C:=TRegistros88C.Create;
+  FRegistros88D:=TRegistros88D.Create;
+  FRegistros88E:=TRegistros88E.Create;
+  FRegistros88T:=TRegistros88T.Create;
+  FRegistros88SP02 := TRegistros88SP02.Create(True);
+  FRegistros88SP03 := TRegistros88SP03.Create(True);
+  FVersaoValidador:=vv524;
+  Ativo:=True;
 end;
 
 destructor TACBrSintegra.Destroy;
 begin
-LimparRegistros;
-FRegistro10.Free;
-FRegistro11.Free;
-FRegistros50.Free;
-FRegistros51.Free;
-FRegistros53.Free;
-FRegistros54.Free;
-FRegistros55.Free;
-FRegistros56.Free;
-FRegistros60M.Free;
-FRegistros60A.Free;
-FRegistros60D.Free;
-FRegistros60I.Free;
-FRegistros60R.Free;
-FRegistros61.Free;
-FRegistros61R.Free;
-FRegistros70.Free;
-FRegistros71.Free;
-FRegistros74.Free;
-FRegistros75.Free;
-FRegistros76.Free;
-FRegistros77.Free;
-FRegistros85.Free;
-FRegistros86.Free;
-FRegistros88Ean.Free;
-FRegistro88EC.Free;
-FRegistro88SF.Free;
-FRegistros88C.Free;
-FRegistros88D.Free;
-FRegistros88E.Free;
-FRegistros88T.Free;
-Ativo:=False;
+  LimparRegistros;
+  FRegistro10.Free;
+  FRegistro11.Free;
+  FRegistros50.Free;
+  FRegistros51.Free;
+  FRegistros53.Free;
+  FRegistros54.Free;
+  FRegistros55.Free;
+  FRegistros56.Free;
+  FRegistros60M.Free;
+  FRegistros60A.Free;
+  FRegistros60D.Free;
+  FRegistros60I.Free;
+  FRegistros60R.Free;
+  FRegistros61.Free;
+  FRegistros61R.Free;
+  FRegistros70.Free;
+  FRegistros71.Free;
+  FRegistros74.Free;
+  FRegistros75.Free;
+  FRegistros76.Free;
+  FRegistros77.Free;
+  FRegistros85.Free;
+  FRegistros86.Free;
+  FRegistros88Ean.Free;
+  FRegistro88EC.Free;
+  FRegistro88SF.Free;
+  FRegistros88C.Free;
+  FRegistros88D.Free;
+  FRegistros88E.Free;
+  FRegistros88T.Free;
+  FRegistros88SP02.Free;
+  FRegistros88SP03.Free;
+  Ativo:=False;
   inherited;
 end;
 
-procedure TACBrSintegra.WriteRecord(Rec: string);
+procedure TACBrSintegra.WriteRecord(Rec: string; vSapiMG : Boolean);
 begin
-if Length(Rec)<>126 then
-  raise Exception.Create(ACBrStr('Registro inválido!'+#13+
-    'Deve conter 126 posições. '+#13+
-    'Registro: '+Rec+#13+
-    'possui '+IntToStr(Length(Rec))+' posições.'));
-// mudança compatibilidade linux
-write(Arquivo, Rec + #13+#10 );
+  //adicionado variavel para checar a geração dos registro para o SAPI MG
+  //para não ocorrer problemas com a geração dos outros arquivos somente informo True nesta
+  //variavel para os registros SP02 e SP03
+  if not vSapiMG then
+  begin
+    if Length(Rec)<>126 then
+      raise Exception.Create(ACBrStr('Registro inválido!'+#13+
+        'Deve conter 126 posições. '+#13+
+        'Registro: '+Rec+#13+
+        'possui '+IntToStr(Length(Rec))+' posições.'));
+    // mudança compatibilidade linux
+  end;
+  write(Arquivo, Rec + #13+#10 );
 end;
 
 procedure TACBrSintegra.GeraArquivo;
 begin
-if Trim(FileName)='' then
-  raise Exception.Create(ACBrStr('Informe um nome de arquivo!'));
-AssignFile(Arquivo,FileName);
-Rewrite(Arquivo);
-try
-  GeraRegistro10;
-  GeraRegistro11;
+  if Trim(FileName)='' then
+    raise Exception.Create(ACBrStr('Informe um nome de arquivo!'));
+  AssignFile(Arquivo,FileName);
+  Rewrite(Arquivo);
+  try
+    GeraRegistro10;
+    GeraRegistro11;
 
-  GerarRegistros50;
-  GerarRegistros51;
-  GerarRegistros53;
-  GerarRegistros54;
-  GerarRegistros55;
-  GerarConjuntoRegistros60;
-  GerarRegistros60R;
-  GerarRegistros61;
-  GerarRegistros61R;
-  GerarRegistros70;
-  GerarRegistros71;
-  GerarRegistros74;
-  GerarRegistros75;
-  GerarRegistros76;
-  GerarRegistros77;
-  GerarRegistros85;
-  GerarRegistros86;
-  //registros 88EAN
-  if FInforma88EAN then
-    GerarRegistros88Ean;
+    GerarRegistros50;
+    GerarRegistros51;
+    GerarRegistros53;
+    GerarRegistros54;
+    GerarRegistros55;
+    GerarConjuntoRegistros60;
+    GerarRegistros60R;
+    GerarRegistros61;
+    GerarRegistros61R;
+    GerarRegistros70;
+    GerarRegistros71;
+    GerarRegistros74;
+    GerarRegistros75;
+    GerarRegistros76;
+    GerarRegistros77;
+    GerarRegistros85;
+    GerarRegistros86;
+    //registros 88EAN
+    if FInforma88EAN then
+      GerarRegistros88Ean;
 
-  if Trim(Registro88EC.NomeContabilista) <> '' then
-    GerarRegistro88EC;
-  if Trim(Registro88SF.NomeEmpresa) <> '' then
-    GerarRegistro88SF;
+    if Trim(Registro88EC.NomeContabilista) <> '' then
+      GerarRegistro88EC;
+    if Trim(Registro88SF.NomeEmpresa) <> '' then
+      GerarRegistro88SF;
 
-  //registros 88SM
-  if FInforma88SME then
-    GerarRegistro88SME;
+    //registros 88SM
+    if FInforma88SME then
+      GerarRegistro88SME;
 
-  if FInforma88SMS then
-    GerarRegistro88SMS;
+    if FInforma88SMS then
+      GerarRegistro88SMS;
 
-  if FInforma88C then begin
-    GerarRegistros88C;
-    GerarRegistros88D;
-    GerarRegistros88E;
-    GerarRegistros88T;
-  end;  
+    if FInforma88C then begin
+      GerarRegistros88C;
+      GerarRegistros88D;
+      GerarRegistros88E;
+      GerarRegistros88T;
+    end;
 
-  GerarRegistros90;
-finally
-  CloseFile(Arquivo);
-  LimparRegistros;
-end;
+    if FInformaSapiMG then
+    begin
+      GerarRegistro88SP02;
+      GerarRegistro88SP03;
+    end;
+
+    GerarRegistros90;
+  finally
+    CloseFile(Arquivo);
+    LimparRegistros;
+  end;
 end;
 
 procedure TACBrSintegra.GerarConjuntoRegistros60;
@@ -2127,6 +2248,12 @@ if FInforma88C then begin
   wtotal88:=wtotal88+Registros88T.Count;
 end;
 
+if FInformaSapiMG then
+begin
+  wtotal88:=wtotal88+Registros88SP02.Count;
+  wtotal88:=wtotal88+Registros88SP03.Count;
+end;
+
 if wtotal88>0 then
   wregistro:=wregistro+'88'+TBStrZero(IntToStr(wtotal88),8);
 wtotal90:=3;
@@ -2196,6 +2323,8 @@ FRegistros88C.Clear;
 FRegistros88D.Clear;
 FRegistros88E.Clear;
 FRegistros88T.Clear;
+FRegistros88SP02.Clear;
+FRegistros88SP03.Clear;
 end;
 
 function TACBrSintegra.GetVersao: string;
@@ -2580,6 +2709,67 @@ begin
       wregistro:=wregistro+Padl(UFPlaca3,2);
       wregistro:=wregistro+Space(28);
       WriteRecord(wregistro);
+    end;//With
+  end;//For
+end;
+
+procedure TACBrSintegra.GerarRegistro88SP02;
+var
+  wregistro: string;
+  i: Integer;
+begin
+  For i:=0 to Registros88SP02.Count-1 do
+  begin
+    With Registros88SP02[i] do
+    begin
+      wregistro:='88SP02';
+      wregistro:=wregistro+FormatDateTime('yyyymmdd',DataEstoque);
+      wregistro:=wregistro+Padl(CodProduto,14);
+      wregistro:=wregistro+PadL(Descricao,53);
+      wregistro:=wregistro+Padl(UnidadeMedida,6);
+      wregistro:=wregistro+TBStrZero(TiraPontos(FormatFloat('#,###0.000', Quantidade)),13); //quantidade do produto
+      wregistro:=wregistro+TBStrZero(TiraPontos(FormatFloat('#,###0.00', ValorUnitario)),13); //valor unitario
+      wregistro:=wregistro+TBStrZero(TiraPontos(FormatFloat('#,###0.00', ValorTotal)),13);
+      wregistro:=wregistro+Padl(CodigoPosse,1);
+      wregistro:=wregistro+TBStrZero(TiraPontos(Cnpj),14);
+      wregistro:=wregistro+Padl(TiraPontos(Ie),14);
+      wregistro:=wregistro+Padl(Uf,2);
+      WriteRecord(wregistro, True);
+    end;//With
+  end;//For
+end;
+
+procedure TACBrSintegra.GerarRegistro88SP03;
+var
+  wregistro: string;
+  i: Integer;
+begin
+  For i:=0 to Registros88SP03.Count-1 do
+  begin
+    With Registros88SP03[i] do
+    begin
+      wregistro:='88SP03';
+      wregistro:=wregistro+TBStrZero(TiraPontos(Cnpj),14);
+      wregistro:=wregistro+Padl(TiraPontos(Ie),14);
+      wregistro:=wregistro+FormatDateTime('yyyymmdd',DataRecebimento);
+      wregistro:=wregistro+Padl(Uf,2);
+      wregistro:=wregistro+Padl(Modelo,2);
+      wregistro:=wregistro+Padl(Serie,3);
+      wregistro:=wregistro+TBStrZero(Numero, 6);
+      wregistro:=wregistro+PadL(Cfop,4);
+      wregistro:=wregistro+Padl(Emitente,1);
+      wregistro:=wregistro+TBStrZero(TiraPontos(FormatFloat('#,###0.00', ValorTotal)),13); //quantidade do produto
+      wregistro:=wregistro+TBStrZero(TiraPontos(FormatFloat('#,###0.00', BaseCalculo)),13); //valor unitario
+      wregistro:=wregistro+TBStrZero(TiraPontos(FormatFloat('#,###0.00', ValorIcms)),13);
+      wregistro:=wregistro+TBStrZero(TiraPontos(FormatFloat('#,###0.00', Isentas)),13);
+      wregistro:=wregistro+TBStrZero(TiraPontos(FormatFloat('#,###0.00', Outras)),13);
+      wregistro:=wregistro+TBStrZero(TiraPontos(FormatFloat('#,###0.00', Aliquota)),4);
+      wregistro:=wregistro+Padl(Situacao,1);
+      wregistro:=wregistro+Padl(BeneficioFiscal,1);
+      wregistro:=wregistro+TBStrZero(TiraPontos(FormatFloat('#,###0.00', AliquotaInterna)),4);
+      wregistro:=wregistro+FormatDateTime('yyyymmdd',DataEmissao);
+      wregistro:=wregistro+Padl(MicroEmpresa,1);
+      WriteRecord(wregistro, True);
     end;//With
   end;//For
 end;
@@ -3501,6 +3691,52 @@ begin
 end;
 
 procedure TRegistros88T.SetObject(Index: Integer; Item: TRegistro88T);
+begin
+  inherited SetItem(Index, Item);
+end;
+
+{ TRegistros88SP02 }
+
+function TRegistros88SP02.Add(Obj: TRegistro88SP02): Integer;
+begin
+  Result := inherited Add(Obj);
+end;
+
+function TRegistros88SP02.GetObject(Index: Integer): TRegistro88SP02;
+begin
+  Result := inherited GetItem(Index) as TRegistro88SP02;
+end;
+
+procedure TRegistros88SP02.Insert(Index: Integer; Obj: TRegistro88SP02);
+begin
+  inherited SetItem(Index, Obj);
+end;
+
+procedure TRegistros88SP02.SetObject(Index: Integer;
+  Item: TRegistro88SP02);
+begin
+  inherited SetItem(Index, Item);
+end;
+
+{ TRegistros88SP03 }
+
+function TRegistros88SP03.Add(Obj: TRegistro88SP03): Integer;
+begin
+  Result := inherited Add(Obj)
+end;
+
+function TRegistros88SP03.GetObject(Index: Integer): TRegistro88SP03;
+begin
+  Result := inherited GetItem(Index) as TRegistro88SP03;
+end;
+
+procedure TRegistros88SP03.Insert(Index: Integer; Obj: TRegistro88SP03);
+begin
+  inherited SetItem(Index, Obj);
+end;
+
+procedure TRegistros88SP03.SetObject(Index: Integer;
+  Item: TRegistro88SP03);
 begin
   inherited SetItem(Index, Item);
 end;

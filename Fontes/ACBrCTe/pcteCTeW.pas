@@ -355,8 +355,9 @@ begin
   Gerador.wCampo(tcStr, '#018', 'tpCTe   ', 01, 01, 1, tpCTePagToStr(CTe.Ide.tpCTe), DSC_TPCTE);
   Gerador.wCampo(tcStr, '#019', 'procEmi', 01, 01, 1, procEmiToStr(CTe.Ide.procEmi), DSC_PROCEMI);
   Gerador.wCampo(tcStr, '#020', 'verProc', 01, 20, 1, CTe.Ide.verProc, DSC_VERPROC);
-  Gerador.wCampo(tcStr, '#021', 'refCTE ', 44, 44, 0, CTe.Ide.refCTE, DSC_REFCTE);
-  if not ValidarChave('NFe' + SomenteNumeros(CTe.Ide.refCTe)) then
+  Gerador.wCampo(tcStr, '#021', 'refCTE ', 44, 44, 0, SomenteNumeros(CTe.Ide.refCTE), DSC_REFCTE);
+  if SomenteNumeros(CTe.Ide.refCTe) <> '' then
+    if not ValidarChave('NFe' + SomenteNumeros(CTe.Ide.refCTe)) then
       Gerador.wAlerta('#021', 'refCTE', DSC_REFCTE, ERR_MSG_INVALIDO);
 {$IFDEF PL_103}
   Gerador.wCampo(tcInt, '#022', 'cMunEmi ', 07, 07, 1, CTe.ide.cMunEmi, DSC_CMUNEMI);

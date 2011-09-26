@@ -99,6 +99,11 @@ Símbolo : Significado
 
 Data: 17/09/2011
 -- ACBrECF --
+[+] Adicionado espelho do cupom não fiscal quando do cancelamento.
+    por: Juliomar Marchetti
+
+Data: 17/09/2011
+-- ACBrECF --
 [+] Adicionado suporte as Tags de Formatação: <ad></ad> e <ce></ce>. Exemplo:
     <ad>ALINHAR A DIREIRA</ad>
     <ce>CENTRALIZAR</ce>

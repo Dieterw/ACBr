@@ -3190,7 +3190,23 @@ end;
 procedure TACBrECF.CancelaNaoFiscal;
 Var
   Tratado : Boolean;
+  OldEstado : TACBrECFEstado ;
+  Docto     : String ;
+  SubTot    : Double ;
 begin
+  OldEstado := estDesconhecido ;
+  SubTot    := 0 ;
+  Docto     := '' ;
+
+  {$IFNDEF CONSOLE}
+  if MemoAssigned  then
+  begin
+     OldEstado := Estado ;
+     SubTot    := Subtotal ;
+     Docto     := IntToStrZero( StrToInt(NumCupom) ,6) ;
+  end ;
+  {$ENDIF}
+
   ComandoLOG := 'CancelaNaoFiscal';
 
   if Assigned( fOnAntesCancelaNaoFiscal ) then
@@ -3208,7 +3224,39 @@ begin
   end;
 
   {$IFNDEF CONSOLE}
-  // TODO
+   if MemoAssigned then
+   begin
+      fsMemoOperacao := 'CancelaNaoFiscal' ;
+
+      if OldEstado in [estNaoFiscal] then
+       begin
+          MemoTitulo('* COMPROVANTE NÃO-FISCAL *');
+          MemoTitulo('***      CANCELADO     ***');
+
+          if OldEstado = estVenda then
+             MemoAdicionaLinha( '<table width=100%><tr>'+
+              '<td align=left>TOTAL R$</td>'+
+              '<td align=right><b>'+FormatFloat('###,##0.00',SubTot)+'</b></td>'+
+              '</tr></table>') ;
+
+           MemoAdicionaLinha( fsMemoRodape );
+       end
+      else
+       begin
+          MemoAdicionaCabecalho ;
+          MemoTitulo('* COMPROVANTE NÃO-FISCAL *');
+          MemoTitulo('***      CANCELADO     ***');
+          MemoAdicionaLinha( '<table width=100%><tr>'+
+              '<td align=left>COO do CNF Cancelado:</td>'+
+              '<td align=right><b>'+Docto+'</b></td>'+
+              '</tr></table>' + sLineBreak + sLineBreak +
+              '<table width=100%><tr>'+
+              '<td align=left>Valor da Operacao  R$:</td>'+
+              '<td align=right><b>'+FormatFloat('#,###,##0.00',SubTot)+'</b></td>'+
+              '</tr></table>' + sLineBreak + sLineBreak +
+              fsMemoRodape ) ;
+       end ;
+   end ;
   {$ENDIF}
 
   if RFDAtivo then

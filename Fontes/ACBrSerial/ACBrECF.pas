@@ -2954,10 +2954,15 @@ begin
     RodapePafECF := RodapePafECF + #10 + 'DAV-OS' + Trim(InfoRodapeCupom.DavOs);
 
   // atende ao cupom mania do RJ
-  if InfoRodapeCupom.CupomMania > 0 then
+  if InfoRodapeCupom.CupomMania then
   begin
     RodapePafECF := RodapePafECF + #10 +
-      Format('Total ICMS: R$%.2f VÁLIDO PARA O CUPOM MANIA', [InfoRodapeCupom.CupomMania]);
+      'CUPOM MANIA, CONCORA A PRÊMIOS' + #10 +
+      'ENVIE SMS P/ 6789: ' +
+      Copy(RemoveStrings(fsECF.IE, ['.', '/', '-']), 1, 8) + // 8 primeiros digitos da Inscr.Estadual
+      FormatDateTime('ddmmyyyy', Date) + // data atual
+      Format('%6.6d', [StrToInt(NumCOO)]) + // numero do coo do cupom
+      Format('%3.3d', [StrToInt(NumECF)]); // numero do ecf
   end;
 
   if InfoRodapeCupom.MinasLegal then

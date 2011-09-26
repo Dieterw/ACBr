@@ -101,7 +101,7 @@ TACBrECFRodape = class
     fsMD5: String;
     fsDav: String;
     fsMinasLegal: Boolean;
-    fsCupomMania: Double;
+    fsCupomMania: Boolean;
   public
     constructor Create;
     procedure Clear;
@@ -110,7 +110,7 @@ TACBrECFRodape = class
     property Dav        : String  read fsDav        write fsDav;
     property DavOs      : String  read fsDavOs      write fsDavOs;
     property PreVenda   : String  read fsPreVenda   write fsPreVenda;
-    property CupomMania : Double  read fsCupomMania write fsCupomMania;
+    property CupomMania : Boolean read fsCupomMania write fsCupomMania;
     property MinasLegal : Boolean read fsMinasLegal write fsMinasLegal;
 end;
 
@@ -4055,7 +4055,7 @@ begin
   fsDav        := EmptyStr;
   fsDavOs      := EmptyStr;
   fsPreVenda   := EmptyStr;
-  fsCupomMania := 0.00;
+  fsCupomMania := False;
   fsMinasLegal := False;
 end;
 

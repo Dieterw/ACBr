@@ -97,7 +97,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
-Data: 17/09/2011
+Data: 26/09/2011
+-- ACBrECF --
+[*] Alterado o marcador de cupom mania para a ER 1.09
+    por: Régys Silveira
+
+Data: 26/09/2011
 -- ACBrECF --
 [+] Adicionado espelho do cupom não fiscal quando do cancelamento.
     por: Juliomar Marchetti

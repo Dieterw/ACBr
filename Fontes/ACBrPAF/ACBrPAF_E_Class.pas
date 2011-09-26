@@ -120,13 +120,19 @@ begin
       begin
         Check(funChecaCNPJ(CNPJ), '(E1) ESTABELECIMENTO: O CNPJ "%s" digitado é inválido!', [CNPJ]);
         Check(funChecaIE(IE, UF), '(E1) ESTABELECIMENTO: A Inscrição Estadual "%s" digitada é inválida!', [IE]);
-        ///
+
         Result := LFill('E1') +
                   LFill(CNPJ, 14) +
                   RFill(IE, 14) +
                   RFill(IM, 14) +
                   RFill(RAZAOSOCIAL, 50) +
-                  #13#10;
+                  RFill(NUM_FAB, 20) +
+                  RFill(MF_ADICIONAL, 1) +
+                  RFill(TIPO_ECF, 7) +
+                  RFill(MARCA_ECF, 20) +
+                  RFill(MODELO_ECF, 20) +
+                  LFill(DT_EST, 'yyyymmddhhmmss') +
+                  sLineBreak;
       end;
    end;
 end;
@@ -163,8 +169,8 @@ begin
                                            RFill(UN_MED, 6, ifThen(RegistroValido, ' ', '?')) +
                                            LFill(ifThen(QTDE_EST < 0, '-', '+')) +
                                            LFill(ifThen(QTDE_EST < 0, (QTDE_EST * (-1)), QTDE_EST), 9, 3) +
-                                           LFill(DT_EST, 'yyyymmdd') +
-                                           #13#10;
+                                           //LFill(DT_EST, 'yyyymmdd') +
+                                           sLineBreak;
         end;
         ///
         FRegistroE9.TOT_REG := FRegistroE9.TOT_REG + 1;

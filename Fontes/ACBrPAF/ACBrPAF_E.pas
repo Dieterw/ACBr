@@ -49,6 +49,20 @@ type
   /// REGISTRO TIPO E1 - IDENTIFICAÇÃO DO ESTABELECIMENTO USUÁRIO DO PAF-ECF
 
   TRegistroE1 = class(TRegistroX1)
+  private
+    fDT_EST: TDateTime;
+    fMODELO_ECF: string;
+    fMARCA_ECF: string;
+    fTIPO_ECF: string;
+    fNUM_FAB: string;
+    fMF_ADICIONAL: string;
+  public
+    property NUM_FAB: string read fNUM_FAB write fNUM_FAB;
+    property MF_ADICIONAL: string read fMF_ADICIONAL write fMF_ADICIONAL;
+    property TIPO_ECF: string read fTIPO_ECF write fTIPO_ECF;
+    property MARCA_ECF: string read fMARCA_ECF write fMARCA_ECF;
+    property MODELO_ECF: string read fMODELO_ECF write fMODELO_ECF;
+    property DT_EST: TDateTime read fDT_EST write fDT_EST;
   end;
 
   /// REGISTRO TIPO E2 - RELAÇÃO DAS MERCADORIAS EM ESTOQUE
@@ -60,7 +74,7 @@ type
     fDESC_MERC: string;    /// Descrição da mercadoria ou produto cadastrada na tabela a que se refere o requisito XI
     fUN_MED: string;       /// Unidade de medida cadastrada na tabela a que se refere o requisito XI
     fQTDE_EST: currency;   /// Quantidade da mercadoria ou produto constante no estoque, com duas casas decimais.
-    fDT_EST: TDateTime;    /// Data de emissão do DAV
+    //fDT_EST: TDateTime;    /// Data de emissão do DAV
   public
     constructor Create; virtual; /// Create
 
@@ -69,7 +83,7 @@ type
     property DESC_MERC: string read FDESC_MERC write FDESC_MERC;
     property UN_MED: string read FUN_MED write FUN_MED;
     property QTDE_EST: currency read FQTDE_EST write FQTDE_EST;
-    property DT_EST: TDateTime read FDT_EST write FDT_EST;
+    // property DT_EST: TDateTime read FDT_EST write FDT_EST; removido pela ER 1.09
   end;
 
   /// REGISTRO E2 - Lista

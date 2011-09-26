@@ -229,18 +229,20 @@ begin
        begin
          with D2.RegistroD3.New do
          begin
-           DT_INCLUSAO := DATE;
-           NUM_ITEM    := X;
-           COD_ITEM    := '10';
-           DESC_ITEM   := 'descricao do item';
-           QTDE_ITEM   := 10.00;
-           UNI_ITEM    := 'UN';
-           VL_UNIT     := 1.00;
-           VL_DESCTO   := 0.00;
-           VL_ACRES    := 0.00;
-           VL_TOTAL    := 10.00;
-           COD_TCTP    := '01T0700';
-           IND_CANC    := 'N';
+           DT_INCLUSAO   := DATE;
+           NUM_ITEM      := X;
+           COD_ITEM      := '10';
+           DESC_ITEM     := 'descricao do item';
+           QTDE_ITEM     := 10.00;
+           UNI_ITEM      := 'UN';
+           VL_UNIT       := 1.00;
+           VL_DESCTO     := 0.00;
+           VL_ACRES      := 0.00;
+           VL_TOTAL      := 10.00;
+           COD_TCTP      := '01T0700';
+           IND_CANC      := 'N';
+           DEC_QTDE_ITEM := 3;
+           DEC_VL_UNIT   := 2;
 
            RegistroValido := True;
          end;
@@ -254,23 +256,33 @@ end;
 
 procedure TForm6.btnEClick(Sender: TObject);
 var
-     E2: TRegistroE2;
-     i: integer;
+  E2: TRegistroE2;
+  i: integer;
 begin
-     // registro E1
-     PreencherHeader(ACBrPAF.PAF_E.RegistroE1); // preencher header do arquivo
-     // registro E2
-     ACBrPAF.PAF_E.RegistroE2.Clear;
-     for I := 1 to 15 do
-     begin
-       E2:=ACBrPAF.PAF_E.RegistroE2.New;
-       E2.COD_MERC :=GerarDados('I',14);
-       E2.DESC_MERC:=GerarDados('S',50);
-       E2.UN_MED   :=GerarDados('S',2);
-       E2.QTDE_EST :=GerarDados('I',3);
-       E2.DT_EST   :=Date;
-     end;
-     ACBrPAF.SaveFileTXT_E('PAF_E.txt');
+  // registro E1
+  PreencherHeader(ACBrPAF.PAF_E.RegistroE1); // preencher header do arquivo
+  with ACBrPAF.PAF_E do
+  begin
+    RegistroE1.NUM_FAB      := NUM_FAB;
+    RegistroE1.MF_ADICIONAL := MF_ADICIONAL;
+    RegistroE1.TIPO_ECF     := TIPO_ECF;
+    RegistroE1.MARCA_ECF    := MARCA_ECF;
+    RegistroE1.MODELO_ECF   := MODELO_ECF;
+    RegistroE1.DT_EST       := Now;
+
+    // registro E2
+    RegistroE2.Clear;
+    for I := 1 to 15 do
+    begin
+      E2:=ACBrPAF.PAF_E.RegistroE2.New;
+      E2.COD_MERC :=GerarDados('I',14);
+      E2.DESC_MERC:=GerarDados('S',50);
+      E2.UN_MED   :=GerarDados('S',2);
+      E2.QTDE_EST :=GerarDados('I',3);
+    end;
+  end;
+
+  ACBrPAF.SaveFileTXT_E('PAF_E.txt');
 end;
 
 procedure TForm6.btnNClick(Sender: TObject);

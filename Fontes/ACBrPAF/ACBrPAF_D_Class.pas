@@ -245,6 +245,8 @@ begin
                                            LFill(VL_TOTAL, 14, 2) +
                                            RFill(COD_TCTP, 7) +
                                            LFill(IND_CANC) +
+                                           LFill(DEC_QTDE_ITEM, 1) +
+                                           LFill(DEC_VL_UNIT, 1) +
                                            sLineBreak;
         end;
         ///

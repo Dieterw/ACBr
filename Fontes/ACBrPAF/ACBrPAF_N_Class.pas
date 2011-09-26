@@ -120,8 +120,8 @@ var
   IdLinha: String;
 begin
   if not FileExists(APathArquivo) then
-    raise Exception.Create( ACBrStr( Format(
-       'Arquivo "%s" informado não existe.', [APathArquivo])) );
+    raise Exception.Create( ACBrStr( AnsiString( Format(
+       'Arquivo "%s" informado não existe.', [APathArquivo])) ) );
 
   // ler os dados de um arquivo já gravado
   Arquivo := TStringList.Create;

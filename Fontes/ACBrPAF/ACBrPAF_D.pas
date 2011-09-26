@@ -124,6 +124,8 @@ type
     fVL_DESCTO: Currency;
     fVL_UNIT: Currency;
     fDT_INCLUSAO: TDateTime;
+    fDEC_VL_UNIT: Integer;
+    fDEC_QTDE_ITEM: Integer;
     fQTDE_ITEM: Currency;
   public
     constructor Create; virtual;
@@ -141,6 +143,8 @@ type
     property VL_TOTAL: Currency read fVL_TOTAL write fVL_TOTAL;
     property COD_TCTP: string read fCOD_TCTP write fCOD_TCTP;
     property IND_CANC: string read fIND_CANC write fIND_CANC;
+    property DEC_QTDE_ITEM: Integer read fDEC_QTDE_ITEM write fDEC_QTDE_ITEM;
+    property DEC_VL_UNIT: Integer read fDEC_VL_UNIT write fDEC_VL_UNIT;
   end;
 
   /// REGISTRO D3 - Lista

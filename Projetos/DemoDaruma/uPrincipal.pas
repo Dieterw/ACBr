@@ -320,6 +320,7 @@ end;
 procedure TfrmPrincipal.LeituraX1Click(Sender: TObject);
 begin
   ACBrECF1.LeituraX;
+  ShowMessage('COO: ' + ACBrECF1.NumCOO);
 end;
 
 procedure TfrmPrincipal.LeituraXparaarquivo1Click(Sender: TObject);

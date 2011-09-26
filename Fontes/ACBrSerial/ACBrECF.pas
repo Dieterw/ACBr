@@ -5763,6 +5763,16 @@ begin
     Relatorio.Add('</linha_dupla>');
     Relatorio.Add('');
 
+    Relatorio.Add(QuebraLinhas(
+      'Todas as parametrizações relacionadas neste relatório são de ' +
+      'configuração inacessível ao usuário do PAF-ECF. ' +
+      'A ativação ou não destes parâmetros é determinada pela unidade ' +
+      'federada e somente pode ser feita pela intervenção da empresa ' +
+      'desenvolvedora do PAF-ECF.',
+      Colunas)
+    );
+
+    Relatorio.Add('');
     Relatorio.Add('<n>Funcionalidades</n>');
     Relatorio.Add('</linha_simples>');
     Relatorio.Add(padL('Tipo de Funcionamento', TamColDescr) + GetTipoFuncionamento(AInfoPafECF.TipoFuncionamento));

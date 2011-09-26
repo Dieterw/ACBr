@@ -114,8 +114,8 @@ type
 type
   TfrlDANFeRL = class(TForm)
     RLNFe: TRLReport;
-    RLPDFFilter1: TRLPDFFilter;
     DataSource1: TDataSource;
+    RLPDFFilter1: TRLPDFFilter;
     procedure FormDestroy(Sender: TObject);
     procedure FormCreate(Sender: TObject);
   private
@@ -408,6 +408,17 @@ begin
       FExibirEAN := AExibirEAN;
       FProtocoloNFe := AProtocoloNFe;
       FResumoCanhoto_Texto := AResumoCanhoto_Texto;
+
+      with RLPDFFilter1.DocumentInfo do
+        begin
+          Title := 'DANFE - Nota fiscal nº ' +
+                                      FormatFloat('000,000,000', FNFe.Ide.nNF);
+          KeyWords := 'Número:' + FormatFloat('000,000,000', FNFe.Ide.nNF) +
+                      '; Data de emissão: ' + FormatDateTime('dd/mm/yyyy', FNFe.Ide.dEmi) +
+                      '; Destinatário: ' + FNFe.Dest.xNome +
+                      '; CNPJ: ' + FNFe.Dest.CNPJCPF +
+                      '; Valor total: ' + FormatFloat('###,###,###,###,##0.00', FNFe.Total.ICMSTot.vNF);
+        end;
 
       RLNFe.SaveToFile(AFile);
     finally

@@ -873,7 +873,7 @@ begin
   // Exibe o desenvolvedor do sistema
   if FSsitema <> '' then
     begin
-      rllSistema.Caption := 'DESENVOLVIDO POR ' + FSsitema;
+      rllSistema.Caption := FSsitema;
       rllSistema.Visible := True;
     end
   else

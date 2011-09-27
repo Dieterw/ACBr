@@ -2969,9 +2969,9 @@ begin
   begin
     // atende ao requisito do paf-ecf VIII-A itens 1,2 e 3
     RodapePafECF := RodapePafECF + #10 + 'MINAS LEGAL: ' +
-      Copy(RemoveStrings(CNPJ, ['.', '/', '-']), 1, 8) + // 8 primeiros digitos do cnpj
+      Copy(OnlyNumber(CNPJ), 1, 8) +     // 8 primeiros digitos do cnpj
       FormatDateTime('ddmmyyyy', Date) + // data atual
-      IntToStr(Trunc(Subtotal)); // Valor total sem casas decimais
+      IntToStr(Trunc(Subtotal));         // Valor total sem casas decimais
   end;
 
   RodapePafECF := Trim(RodapePafECF);

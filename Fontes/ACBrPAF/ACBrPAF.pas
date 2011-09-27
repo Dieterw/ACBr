@@ -62,7 +62,7 @@ uses
    ACBrPAF_N, ACBrPAF_N_Class;
 
 const
-   CACBrPAF_Versao = '0.07' ;
+   CACBrPAF_Versao = '0.09' ;
 
 type
 

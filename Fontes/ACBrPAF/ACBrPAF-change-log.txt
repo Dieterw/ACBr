@@ -47,7 +47,14 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
-Versão 0.08   18/05/11
+Versão 0.09   27/09/11
+---------------
+[+] Adicionado a propriedade InclusaoExclusao, para atender ao roteiro 1.09, 
+    onde deve ser colocado "?" nos registro onde houverem inclusão e exclusão
+    de registro pelo DB.
+    (por Juliomar Marchetti)
+
+Versão 0.08   26/09/11
 ---------------
 [-] Acerto na ordenação do arquivo de DAV (Registros D);
     Acerto na ordenação do arquivo de Movimento (Registros R);

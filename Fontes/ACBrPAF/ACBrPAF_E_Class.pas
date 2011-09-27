@@ -125,7 +125,7 @@ begin
                   LFill(CNPJ, 14) +
                   RFill(IE, 14) +
                   RFill(IM, 14) +
-                  RFill(RAZAOSOCIAL, 50) +
+                  RFill(RAZAOSOCIAL, 50, ifThen(not InclusaoExclusao, ' ', '?')) +
                   RFill(NUM_FAB, 20) +
                   RFill(MF_ADICIONAL, 1) +
                   RFill(TIPO_ECF, 7) +

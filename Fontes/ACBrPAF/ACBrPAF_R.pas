@@ -76,9 +76,11 @@ type
     fDT_INI: TDateTime;      /// Data do início do período informado no arquivo
     fDT_FIN: TDateTime;      /// Data do fim do período informado no arquivo
     fER_PAF_ECF: string;     /// Versão da Especificação de Requisitos do PAF-ECF
+    fInclusaoExclusao: Boolean; /// ER 1.08 inclusão/exclusão de registros
   public
     constructor Create; virtual; /// Create
 
+    property InclusaoExclusao: Boolean read fInclusaoExclusao write fInclusaoExclusao default False;
     property RegistroValido: Boolean read fRegistroValido write fRegistroValido default True;
     property NUM_FAB: string read FNUM_FAB write FNUM_FAB;
     property MF_ADICIONAL: string read fMF_ADICIONAL write fMF_ADICIONAL;
@@ -483,6 +485,7 @@ end;
 constructor TRegistroR01.Create;
 begin
    fRegistroValido := True;
+   fInclusaoExclusao := False;
 end;
 
 { TRegistroR02 }

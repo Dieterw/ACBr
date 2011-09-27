@@ -55,12 +55,16 @@ type
     FIE: String;           /// Inscrição Estadual do estabelecimento
     FIM: String;           /// Inscrição Municipal do estabelecimento
     FRAZAOSOCIAL: String;  /// Razão Social do estabelecimento
+    fInclusaoExclusao: Boolean; /// Validação dos registros colocando ??? nos espaços em branco da razao social
   public
+    constructor Create; virtual; /// Create
     property UF: String read FUF write FUF;
     property CNPJ: String read FCNPJ write FCNPJ;
     property IE: String read FIE write FIE;
     property IM: String read FIM write FIM;
     property RAZAOSOCIAL: String read FRAZAOSOCIAL write FRAZAOSOCIAL;
+
+    property InclusaoExclusao: Boolean read fInclusaoExclusao write fInclusaoExclusao default False;
   end;
 
   /// REGISTRO TIPO X9 - TOTALIZAÇÃO DO ARQUIVO
@@ -73,5 +77,12 @@ type
   end;
 
 implementation
+
+{ TRegistroX1 }
+
+constructor TRegistroX1.Create;
+begin
+  fInclusaoExclusao := False;
+end;
 
 end.

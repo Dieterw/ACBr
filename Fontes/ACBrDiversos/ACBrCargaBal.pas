@@ -56,11 +56,11 @@ type
 
   TACBrCargaBalSetor = class
   private
-    FCodigo: Smallint;
+    FCodigo: Integer;
     FDescricao: String;
   public
     constructor Create;
-    property Codigo: Smallint read FCodigo write FCodigo;
+    property Codigo: Integer read FCodigo write FCodigo;
     property Descricao: String read FDescricao write FDescricao;
   end;
 
@@ -71,7 +71,7 @@ type
     FValorVenda: Currency;
     FModeloEtiqueta: Smallint;
     FDescricao: String;
-    FCodigo: Smallint;
+    FCodigo: Integer;
     FTipo: TACBrCargaBalTipoVenda;
     FValidade: Smallint;
     FSetor: TACBrCargaBalSetor;
@@ -81,7 +81,7 @@ type
     property Setor: TACBrCargaBalSetor read FSetor write FSetor;
     property ModeloEtiqueta: Smallint read FModeloEtiqueta write FModeloEtiqueta;
     property Tipo: TACBrCargaBalTipoVenda read FTipo write FTipo;
-    property Codigo: Smallint read FCodigo write FCodigo;
+    property Codigo: Integer read FCodigo write FCodigo;
     property ValorVenda: Currency read FValorVenda write FValorVenda;
     property Validade: Smallint read FValidade write FValidade;
     property Descricao: String read FDescricao write FDescricao;
@@ -94,6 +94,10 @@ type
     function GetItem(Index: Integer): TACBrCargaBalItem;
     procedure SetItem(Index: Integer; const Value: TACBrCargaBalItem);
   public
+    constructor Create;
+    destructor Destroy; Override;
+    procedure Clear; override;
+    procedure Add(AItem : TACBrCargaBalItem);
     function New: TACBrCargaBalItem;
     property Items[Index: Integer]: TACBrCargaBalItem read GetItem write SetItem; Default;
   end;
@@ -104,25 +108,31 @@ type
     FProdutos: TACBrCargaBalItens;
     FModelo: TACBrCargaBalModelo;
     procedure Progresso(const AMensagem: String; const AContAtual, AContTotal: Integer);
-    function GetNomeArquivoNutricional: String;
-    function GetNomeArquivoProduto: String;
-    function GetNomeArquivoReceita: String;
-    function GetNomeArquivoSetor: String;
+
     function RFill(Str: string; Tamanho: Integer = 0; Caracter: Char = ' '): string; overload;
     function LFIll(Str: string; Tamanho: Integer = 0; Caracter: Char = '0'): string; overload;
     function LFIll(Valor: Currency; Tamanho: Integer; Decimais: Integer = 2; Caracter: Char = '0'): string; overload;
     function LFIll(Valor: Integer; Tamanho: Integer; Caracter: Char = '0'): string; overload;
+
+    function GetNomeArquivoNutricional: String;
+    function GetNomeArquivoProduto: String;
+    function GetNomeArquivoReceita: String;
+    function GetNomeArquivoSetor: String;
+
+    function GetTipoProdutoFilizola(Tipo: TACBrCargaBalTipoVenda): String;
+    function GetTipoProdutoToledo(Tipo: TACBrCargaBalTipoVenda): String;
+    function GetModeloStr: string;
+
     procedure PreencherFilizola(Arquivo, Setor: TStringList);
     procedure PreencherToledo(Arquivo, Nutricional: TStringList);
     procedure PreencherUrano(Arquivo: TStringList);
-    function GetTipoProdutoFilizola(Tipo: TACBrCargaBalTipoVenda): String;
-    function GetTipoProdutoToledo(Tipo: TACBrCargaBalTipoVenda): String;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-    procedure GerarArquivo(const ADiretorio: String);
+    procedure GerarArquivos(const ADiretorio: String);
   published
     property Modelo: TACBrCargaBalModelo read FModelo write FModelo;
+    property ModeloStr: String read GetModeloStr;
     property Produtos: TACBrCargaBalItens read FProdutos write FProdutos;
     property OnProgresso: TACBrCargaBalProgresso read FOnProgresso write FOnProgresso;
   end;
@@ -161,6 +171,40 @@ begin
 end;
 
 { TACBrCargaBalItens }
+
+procedure TACBrCargaBalItens.Add(AItem: TACBrCargaBalItem);
+var
+ FItem : TACBrCargaBalItem;
+begin
+    FItem                := TACBrCargaBalItem.Create;
+    FItem.Tecla          := AItem.Tecla;
+    FItem.Receita        := AItem.Receita;
+    FItem.ValorVenda     := AItem.ValorVenda;
+    FItem.ModeloEtiqueta := AItem.ModeloEtiqueta;
+    FItem.Descricao      := AItem.Descricao;
+    FItem.Codigo         := AItem.Codigo;
+    FItem.Tipo           := AItem.Tipo;
+    FItem.Validade       := AItem.Validade;
+    FItem.Setor.Codigo   := AItem.Setor.Codigo;
+    FItem.Setor.Descricao:= AItem.Setor.Descricao;
+    inherited Add(FItem);
+end;
+
+procedure TACBrCargaBalItens.Clear;
+begin
+  inherited Clear;
+end;
+
+constructor TACBrCargaBalItens.create;
+begin
+  inherited Create(True);
+end;
+
+destructor TACBrCargaBalItens.destroy;
+begin
+  Clear;
+  inherited Destroy;
+end;
 
 function TACBrCargaBalItens.GetItem(Index: Integer): TACBrCargaBalItem;
 begin
@@ -346,7 +390,7 @@ begin
     FOnProgresso(AMensagem, AContAtual, AContTotal);
 end;
 
-procedure TACBrCargaBal.GerarArquivo(const ADiretorio: String);
+procedure TACBrCargaBal.GerarArquivos(const ADiretorio: String);
 var
   Produto, Setor, Receita, Nutricional: TStringList;
   NomeArquivo: TFileName;
@@ -419,6 +463,15 @@ begin
     FreeAndNil(Receita);
     FreeAndNil(Nutricional);
   end;
+end;
+
+function TACBrCargaBal.GetModeloStr: string;
+begin
+ case fModelo of
+   modFilizola : result := 'Filizola';
+   modToledo : result := 'Toledo';
+   modUrano : result := 'Urano';
+ end;
 end;
 
 end.

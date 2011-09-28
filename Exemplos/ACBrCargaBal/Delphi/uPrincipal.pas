@@ -84,7 +84,7 @@ begin
     end;
 
     // gerar os arquivos para o diretório, informe somente o caminho do diretório
-    ACBrCargaBal1.GerarArquivo(edtDiretorio.Text);
+    ACBrCargaBal1.GerarArquivos(edtDiretorio.Text);
     ShowMessage('Arquivo gerado com sucesso!');
   except
     on E: Exception do

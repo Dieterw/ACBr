@@ -47,12 +47,17 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.09   28/09/11
+---------------
+[-] Acertos na geração do registro D3 para situação tributária e alíquota
+    (por: Régys Silveira, Juliomar Marchetti)
+
 Versão 0.09   27/09/11
 ---------------
 [+] Adicionado a propriedade InclusaoExclusao, para atender ao roteiro 1.09, 
     onde deve ser colocado "?" nos registro onde houverem inclusão e exclusão
     de registro pelo DB.
-    (por Juliomar Marchetti)
+    (por: Juliomar Marchetti)
 
 Versão 0.08   26/09/11
 ---------------

@@ -237,13 +237,14 @@ begin
                                            LFill(NUM_ITEM, 3, 0) +
                                            RFill(COD_ITEM, 14) +
                                            RFill(DESC_ITEM, 100) +
-                                           LFill(QTDE_ITEM, 7, 3) +
+                                           LFill(QTDE_ITEM, 7, DEC_QTDE_ITEM) +
                                            RFill(UNI_ITEM, 3) +
-                                           LFill(VL_UNIT, 8, 2) +
+                                           LFill(VL_UNIT, 8, DEC_VL_UNIT) +
                                            LFill(VL_DESCTO, 8, 2) +
                                            LFill(VL_ACRES, 8, 2) +
                                            LFill(VL_TOTAL, 14, 2) +
-                                           RFill(COD_TCTP, 7) +
+                                           RFill(SIT_TRIB,1) +
+                                           LFill(ALIQ,4) +
                                            LFill(IND_CANC) +
                                            LFill(DEC_QTDE_ITEM, 1) +
                                            LFill(DEC_VL_UNIT, 1) +

@@ -118,7 +118,6 @@ type
     fDESC_ITEM: string;
     fIND_CANC: string;
     fVL_ACRES: Currency;
-    fCOD_TCTP: string;
     fUNI_ITEM: string;
     fNUM_ITEM: Integer;
     fVL_DESCTO: Currency;
@@ -127,6 +126,9 @@ type
     fDEC_VL_UNIT: Integer;
     fDEC_QTDE_ITEM: Integer;
     fQTDE_ITEM: Currency;
+    //Versão 01.09
+    fALIQ: Currency;
+    fSIT_TRIB: string;
   public
     constructor Create; virtual;
 
@@ -141,7 +143,8 @@ type
     property VL_DESCTO: Currency read fVL_DESCTO write fVL_DESCTO;
     property VL_ACRES: Currency read fVL_ACRES write fVL_ACRES;
     property VL_TOTAL: Currency read fVL_TOTAL write fVL_TOTAL;
-    property COD_TCTP: string read fCOD_TCTP write fCOD_TCTP;
+    property SIT_TRIB : string read fSIT_TRIB write fSIT_TRIB;
+    property ALIQ : Currency read fALIQ write fALIQ;
     property IND_CANC: string read fIND_CANC write fIND_CANC;
     property DEC_QTDE_ITEM: Integer read fDEC_QTDE_ITEM write fDEC_QTDE_ITEM;
     property DEC_VL_UNIT: Integer read fDEC_VL_UNIT write fDEC_VL_UNIT;

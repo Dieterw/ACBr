@@ -239,9 +239,10 @@ begin
            VL_DESCTO     := 0.00;
            VL_ACRES      := 0.00;
            VL_TOTAL      := 10.00;
-           COD_TCTP      := '01T0700';
+           SIT_TRIB      := 'T'; // T, S, I, N, F
+           ALIQ          := 7.00; // SOMENTE QUANDO T E S
            IND_CANC      := 'N';
-           DEC_QTDE_ITEM := 3;
+           DEC_QTDE_ITEM := 2;
            DEC_VL_UNIT   := 2;
 
            RegistroValido := True;

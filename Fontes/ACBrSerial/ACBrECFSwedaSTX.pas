@@ -385,6 +385,8 @@ begin
   fsCache34.Clear ;
   fsRespostasComando := '' ;
   fsFalhasRX         := 0 ;
+  
+  fpColunas := 57;
 
   try
      { Testando a comunicaçao com a porta }
@@ -402,6 +404,9 @@ begin
         fpDecimaisPreco := fpDecimaisPreco + 1 ;
 
      fpDecimaisQtd   := StrToIntDef(copy( TACBrECF(fpOwner).RetornaInfoECF( 'U2' ),  1, 1), 2 ) ;
+
+     if GetSubModeloECF = 'IF ST2500' then
+        fpColunas := 56;
   except
      Desativar ;
      raise ;

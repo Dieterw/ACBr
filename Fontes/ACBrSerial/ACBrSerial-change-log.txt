@@ -102,6 +102,13 @@ Data: 26/09/2011
 [*] Alterado o marcador de cupom mania para a ER 1.09
     por: Régys Silveira
 
+
+Data: 27/09/2011 
+-- ACBrECFSwedaSTX --
+[-] informação do numero de colunas diferente para este modelo
+[-] informação padrão do numero de colunas usados nas impressões PAF
+    por: Juliomar Marchetti
+
 Data: 26/09/2011
 -- ACBrECF --
 [+] Adicionado espelho do cupom não fiscal quando do cancelamento.

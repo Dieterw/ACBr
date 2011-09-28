@@ -2987,12 +2987,14 @@ begin
               wProc.Add('<ProcEventoNFe versao="1.00" xmlns="http://www.portalfiscal.inf.br/nfe">');
               wProc.Add('<evento>');
               Leitor.Arquivo := FDadosMSG;
-              wProc.Add(Leitor.rExtrai(1, 'infEvento', '', i + 1));
+              // Alterado por Allan Wolski em 28/09/2011
+              wProc.Add(UTF8Encode(Leitor.rExtrai(1, 'infEvento', '', i + 1)));
               wProc.Add('</infEvento>');
               wProc.Add('</evento>');
               wProc.Add('<retEvento>');
               Leitor.Arquivo := FRetWS;
-              wProc.Add(Leitor.rExtrai(1, 'infEvento', '', j + 1));
+              // Alterado por Allan Wolski em 28/09/2011
+              wProc.Add(UTF8Encode(Leitor.rExtrai(1, 'infEvento', '', j + 1)));
               wProc.Add('</infEvento>');              
               wProc.Add('</retEvento>');
               wProc.Add('</ProcEventoNFe>');

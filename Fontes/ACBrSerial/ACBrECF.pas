@@ -2957,7 +2957,7 @@ begin
   if InfoRodapeCupom.CupomMania then
   begin
     RodapePafECF := RodapePafECF + #10 +
-      'CUPOM MANIA, CONCORA A PRÊMIOS' + #10 +
+      'CUPOM MANIA, CONCORRA A PRÊMIOS' + #10 +
       'ENVIE SMS P/ 6789: ' +
       Copy(OnlyNumber(fsECF.IE), 1, 8) +    // 8 primeiros digitos da Inscr.Estadual
       FormatDateTime('ddmmyyyy', Date) +    // data atual

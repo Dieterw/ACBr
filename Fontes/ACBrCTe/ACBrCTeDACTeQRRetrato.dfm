@@ -1725,18 +1725,18 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
       end
       object qrmDadosEmitente: TQRMemo
         Left = 113
-        Top = 45
+        Top = 37
         Width = 248
-        Height = 76
+        Height = 92
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          201.083333333333300000
+          243.416666666666700000
           298.979166666666700000
-          119.062500000000000000
+          97.895833333333340000
           656.166666666666800000)
         Alignment = taLeftJustify
         AlignToBand = False

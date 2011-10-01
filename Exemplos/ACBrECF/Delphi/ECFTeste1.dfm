@@ -24,8 +24,8 @@ object Form1: TForm1
   TextHeight = 13
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 374
-    Width = 602
+    Top = 370
+    Width = 594
     Height = 19
     Panels = <
       item
@@ -38,8 +38,8 @@ object Form1: TForm1
   object PageControl1: TPageControl
     Left = 0
     Top = 0
-    Width = 602
-    Height = 334
+    Width = 594
+    Height = 330
     ActivePage = tbsMenuFiscal
     Align = alClient
     TabOrder = 1
@@ -47,8 +47,8 @@ object Form1: TForm1
       Caption = 'ECF'
       ImageIndex = 3
       DesignSize = (
-        594
-        306)
+        586
+        302)
       object SbArqLog: TSpeedButton
         Left = 563
         Top = 216
@@ -491,8 +491,8 @@ object Form1: TForm1
       object PageControl2: TPageControl
         Left = 0
         Top = 55
-        Width = 594
-        Height = 271
+        Width = 586
+        Height = 247
         ActivePage = TabSheet6
         Align = alClient
         TabOrder = 1
@@ -709,13 +709,13 @@ object Form1: TForm1
       object Panel3: TPanel
         Left = 0
         Top = 0
-        Width = 594
+        Width = 586
         Height = 55
         Align = alTop
         BevelOuter = bvNone
         TabOrder = 0
         DesignSize = (
-          594
+          586
           55)
         object sbDirRFD: TSpeedButton
           Left = 561
@@ -772,8 +772,8 @@ object Form1: TForm1
       Caption = 'C'#243'digo de Barras'
       ImageIndex = 5
       DesignSize = (
-        594
-        306)
+        586
+        302)
       object Label23: TLabel
         Left = 101
         Top = 0
@@ -977,12 +977,12 @@ object Form1: TForm1
       Caption = 'Dados RZ'
       ImageIndex = 6
       DesignSize = (
-        594
-        306)
+        586
+        302)
       object Label37: TLabel
         Left = 0
         Top = 0
-        Width = 594
+        Width = 586
         Height = 21
         Align = alTop
         AutoSize = False
@@ -991,7 +991,7 @@ object Form1: TForm1
       end
       object Button2: TButton
         Left = 11
-        Top = -47
+        Top = -67
         Width = 108
         Height = 25
         Anchors = [akLeft, akBottom]
@@ -1003,7 +1003,7 @@ object Form1: TForm1
         Left = 11
         Top = 64
         Width = 570
-        Height = 145
+        Height = 125
         Anchors = [akLeft, akTop, akRight, akBottom]
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -1024,8 +1024,8 @@ object Form1: TForm1
       object grpMenuFiscalOpcoes: TGroupBox
         Left = 0
         Top = 0
-        Width = 594
-        Height = 238
+        Width = 586
+        Height = 234
         Align = alClient
         Caption = 'Op'#231#245'es do Menu fiscal'
         TabOrder = 0
@@ -1127,8 +1127,8 @@ object Form1: TForm1
       end
       object pgcMenuFiscalTipo: TPageControl
         Left = 0
-        Top = 238
-        Width = 594
+        Top = 234
+        Width = 586
         Height = 68
         ActivePage = tbsMenuFiscalTipoData
         Align = alBottom
@@ -1238,8 +1238,8 @@ object Form1: TForm1
   end
   object pBotoes: TPanel
     Left = 0
-    Top = 334
-    Width = 602
+    Top = 330
+    Width = 594
     Height = 40
     Cursor = crHelp
     Hint = 'Sobre o ACBrMonitor ?'
@@ -1247,12 +1247,12 @@ object Form1: TForm1
     TabOrder = 2
     TabStop = True
     DesignSize = (
-      602
+      594
       40)
     object Image1: TImage
       Left = 1
       Top = 1
-      Width = 600
+      Width = 592
       Height = 38
       Align = alClient
       Picture.Data = {

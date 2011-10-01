@@ -227,13 +227,13 @@ type
     fsValor: Double;
     fsCOO_Cupom: integer;
     fsCOO_Dav: integer;
-    fsNumero: Integer;
+    fsNumero: String;
     fsDtEmissao: TDateTime;
   public
     constructor Create;
     procedure Assign(ADAV: TACBrECFDAV);
 
-    property Numero: Integer read fsNumero write fsNumero;
+    property Numero: String read fsNumero write fsNumero;
     property Titulo: String read fsTitulo write fsTitulo;
     property COO_Dav: integer read fsCOO_Dav write fsCOO_Dav;
     property COO_Cupom: integer read fsCOO_Cupom write fsCOO_Cupom;
@@ -452,7 +452,7 @@ end;
 
 constructor TACBrECFDAV.create;
 begin
-  fsNumero    := 0;
+  fsNumero    := EmptyStr;
   fsCOO_Cupom := 0;
   fsCOO_Dav   := 0;
   fsTitulo    := '';

@@ -2968,10 +2968,12 @@ begin
   if InfoRodapeCupom.MinasLegal then
   begin
     // atende ao requisito do paf-ecf VIII-A itens 1,2 e 3
-    RodapePafECF := RodapePafECF + #10 + 'MINAS LEGAL: ' +
-      Copy(OnlyNumber(CNPJ), 1, 8) +     // 8 primeiros digitos do cnpj
-      FormatDateTime('ddmmyyyy', Date) + // data atual
-      IntToStr(Trunc(Subtotal));         // Valor total sem casas decimais
+    RodapePafECF := RodapePafECF + #10 + Format(
+      'MINAS LEGAL: %s %s %s', [
+      OnlyNumber(CNPJ),
+      FormatDateTime('ddmmyyyy', Date),
+      IntToStr(TruncFix(Self.Subtotal * 100))
+    ]);
   end;
 
   RodapePafECF := Trim(RodapePafECF);

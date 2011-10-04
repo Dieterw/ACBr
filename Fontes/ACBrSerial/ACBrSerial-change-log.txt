@@ -97,6 +97,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 04/10/2011
+-- ACBrECF --
+[*] Acerto da string do Minas Legal conforme retificação da ER 1.09
+    por: Régys Silveira
+
 Data: 26/09/2011
 -- ACBrECF --
 [*] Alterado o marcador de cupom mania para a ER 1.09

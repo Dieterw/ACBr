@@ -16,7 +16,7 @@ inherited frmCupomFiscal: TfrmCupomFiscal
       Top = 1
       Width = 344
       Height = 398
-      ActivePage = TabSheet4
+      ActivePage = TabSheet5
       Align = alClient
       TabOrder = 0
       object TabSheet1: TTabSheet
@@ -442,27 +442,6 @@ inherited frmCupomFiscal: TfrmCupomFiscal
           Alignment = taRightJustify
           Caption = 'Pr'#233'-Venda :'
         end
-        object Label29: TLabel
-          Left = 38
-          Top = 319
-          Width = 71
-          Height = 13
-          Alignment = taRightJustify
-          Caption = 'Cupom Mania :'
-        end
-        object Label30: TLabel
-          Left = 187
-          Top = 319
-          Width = 67
-          Height = 13
-          Caption = 'Valor do ICMS'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clGreen
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = []
-          ParentFont = False
-        end
         object edtFechamentoObs1: TEdit
           Left = 25
           Top = 68
@@ -534,20 +513,12 @@ inherited frmCupomFiscal: TfrmCupomFiscal
           Height = 21
           TabOrder = 7
         end
-        object edtCupomMania: TEdit
-          Left = 115
-          Top = 316
-          Width = 66
-          Height = 21
-          TabOrder = 8
-          Text = '0,00'
-        end
         object edtIdPrevenda: TEdit
           Left = 115
           Top = 289
           Width = 201
           Height = 21
-          TabOrder = 9
+          TabOrder = 8
         end
         object ckbMinasLegal: TCheckBox
           Left = 115
@@ -556,6 +527,14 @@ inherited frmCupomFiscal: TfrmCupomFiscal
           Height = 17
           Caption = 'Minas Legal'
           TabOrder = 10
+        end
+        object ckbCupomMania: TCheckBox
+          Left = 115
+          Top = 320
+          Width = 97
+          Height = 17
+          Caption = 'Cupom Mania'
+          TabOrder = 9
         end
       end
     end

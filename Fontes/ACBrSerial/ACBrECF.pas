@@ -5759,7 +5759,7 @@ begin
     Relatorio.Clear;
 
     Relatorio.Add('</linha_dupla>');
-    Relatorio.Add('<e>Parâmetros  Configuração</e>');
+    Relatorio.Add('<ce>Parâmetros de Configuração</ce>');
     Relatorio.Add('</linha_dupla>');
     Relatorio.Add('');
 

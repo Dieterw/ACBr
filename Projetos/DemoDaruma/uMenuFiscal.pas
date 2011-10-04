@@ -187,7 +187,7 @@ begin
     begin
       with DAVs.New do
       begin
-        Numero    := I;
+        Numero    := Format('%13.13d', [I]);
         COO_Dav   := RandomRange(0, 999999);
         COO_Cupom := RandomRange(0, 999999);
         Titulo    := RandomFrom(TipoDAV);

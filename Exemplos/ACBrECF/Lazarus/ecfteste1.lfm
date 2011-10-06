@@ -173,7 +173,7 @@ object Form1: TForm1
     Height = 317
     Top = 0
     Width = 547
-    ActivePage = tsCodBarras
+    ActivePage = tsTagsImpressao
     Align = alClient
     TabIndex = 4
     TabOrder = 0
@@ -329,6 +329,9 @@ object Form1: TForm1
         Top = 160
         Width = 513
         Anchors = [akTop, akLeft, akRight]
+        Lines.Strings = (
+          'Aguardando a resposta da Impressora: %d segundos'
+        )
         OnChange = mMsgChange
         ScrollBars = ssVertical
         TabOrder = 12
@@ -481,7 +484,7 @@ object Form1: TForm1
         TabOrder = 16
       end
       object chAACUsar: TCheckBox
-        Left = 212
+        Left = 196
         Height = 19
         Top = 258
         Width = 194
@@ -497,9 +500,9 @@ object Form1: TForm1
         TabOrder = 17
       end
       object chAACFlush: TCheckBox
-        Left = 436
+        Left = 415
         Height = 19
-        Top = 258
+        Top = 250
         Width = 50
         Caption = 'Flush'
         Checked = True
@@ -514,16 +517,34 @@ object Form1: TForm1
         State = cbChecked
         TabOrder = 18
       end
+      object chProcessMessages: TCheckBox
+        Left = 415
+        Height = 19
+        Top = 274
+        Width = 121
+        Caption = 'ProcessMessages'
+        Checked = True
+        Font.CharSet = ANSI_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Pitch = fpVariable
+        Font.Style = [fsBold]
+        OnChange = chProcessMessagesChange
+        ParentFont = False
+        State = cbChecked
+        TabOrder = 19
+      end
     end
     object TabSheet1: TTabSheet
       Caption = 'Cmd/Resp'
       ClientHeight = 291
-      ClientWidth = 506
+      ClientWidth = 539
       object Label2: TLabel
         Left = 0
         Height = 17
         Top = 54
-        Width = 506
+        Width = 539
         Align = alTop
         AutoSize = False
         Caption = 'Resposta'
@@ -534,7 +555,7 @@ object Form1: TForm1
         Left = 0
         Height = 15
         Top = 0
-        Width = 506
+        Width = 539
         Align = alTop
         AutoSize = False
         Caption = 'Comando Enviado'
@@ -545,7 +566,7 @@ object Form1: TForm1
         Left = 0
         Height = 220
         Top = 71
-        Width = 506
+        Width = 539
         Align = alClient
         Font.Color = clBlack
         Font.Height = 13
@@ -561,7 +582,7 @@ object Form1: TForm1
         Left = 0
         Height = 39
         Top = 15
-        Width = 506
+        Width = 539
         Align = alTop
         TabOrder = 0
         WantReturns = False
@@ -659,14 +680,14 @@ object Form1: TForm1
     end
     object TabSheet3: TTabSheet
       Caption = 'RFD'
-      ClientHeight = 298
-      ClientWidth = 507
+      ClientHeight = 291
+      ClientWidth = 539
       ImageIndex = 2
       object PageControl2: TPageControl
         Left = 0
-        Height = 243
+        Height = 236
         Top = 55
-        Width = 507
+        Width = 539
         ActivePage = TabSheet5
         Align = alClient
         TabIndex = 1
@@ -849,17 +870,17 @@ object Form1: TForm1
         end
         object TabSheet5: TTabSheet
           Caption = 'ACBrRFD.INI'
-          ClientHeight = 217
-          ClientWidth = 499
+          ClientHeight = 210
+          ClientWidth = 531
           object Panel4: TPanel
             Left = 0
             Height = 34
-            Top = 183
-            Width = 499
+            Top = 176
+            Width = 531
             Align = alBottom
             BevelOuter = bvNone
             ClientHeight = 34
-            ClientWidth = 499
+            ClientWidth = 531
             TabOrder = 0
             object bRFDLer: TButton
               Left = 131
@@ -882,9 +903,9 @@ object Form1: TForm1
           end
           object mRFDParam: TMemo
             Left = 0
-            Height = 183
+            Height = 176
             Top = 0
-            Width = 499
+            Width = 531
             Align = alClient
             Font.Color = clBlack
             Font.Height = 12
@@ -899,14 +920,14 @@ object Form1: TForm1
         Left = 0
         Height = 55
         Top = 0
-        Width = 507
+        Width = 539
         Align = alTop
         BevelOuter = bvNone
         ClientHeight = 55
-        ClientWidth = 507
+        ClientWidth = 539
         TabOrder = 0
         object sbDirRFD: TSpeedButton
-          Left = 474
+          Left = 506
           Height = 22
           Top = 23
           Width = 23
@@ -943,7 +964,7 @@ object Form1: TForm1
           Left = 134
           Height = 18
           Top = 23
-          Width = 340
+          Width = 372
           Anchors = [akTop, akLeft, akRight]
           Font.Color = clBlack
           Font.Height = 11
@@ -955,38 +976,24 @@ object Form1: TForm1
         end
       end
     end
-    object tsCodBarras: TTabSheet
-      Caption = 'Código de Barras'
+    object tsTagsImpressao: TTabSheet
+      Caption = 'Tags de Impressao'
       ClientHeight = 291
       ClientWidth = 539
-      object SpEdtLarguraBarra: TSpinEdit
-        Left = 230
+      object speBarrasLargura: TSpinEdit
+        Left = 12
         Height = 22
         Top = 40
         Width = 46
         AutoSize = False
-        MaxValue = 5
-        MinValue = 2
+        MaxValue = 6
         OnChange = seTimeOutChange
         TabOrder = 0
-        Value = 2
-      end
-      object BitBtn7: TBitBtn
-        Left = 285
-        Height = 23
-        Top = 258
-        Width = 95
-        Anchors = [akTop, akRight]
-        AutoSize = True
-        Caption = 'Fechar Cupom'
-        ModalResult = 1
-        OnClick = BitBtn7Click
-        TabOrder = 1
       end
       object BitBtn6: TBitBtn
-        Left = 397
+        Left = 380
         Height = 23
-        Top = 258
+        Top = 26
         Width = 133
         Anchors = [akTop, akRight]
         AutoSize = True
@@ -994,42 +1001,68 @@ object Form1: TForm1
         Default = True
         ModalResult = 1
         OnClick = BitBtn6Click
-        TabOrder = 2
+        TabOrder = 1
       end
       object MenTextoBarras: TMemo
-        Left = 176
-        Height = 137
-        Top = 104
-        Width = 241
+        Left = 0
+        Height = 217
+        Top = 74
+        Width = 539
+        Align = alBottom
         Lines.Strings = (
           'TEXTO LIVRE'
           'Até 600 caracteres'
-          'LINHA 3'
-          'LINHA 4'
-          '</linha_simples>'
           'ÁÉÚÍÓÚáéíóúÇçÃÕãõ'
+          ''
           '</linha_dupla>'
+          ''
+          '<CE>*** TAGS DE FORMATAÇÃO ***</CE>'
           '<e>EXPANDIDO</e>'
           '<N>Negrito</n>'
           '<S>Sublinhado</s>'
           '<C>CONDENSADO</C>'
           '<i>ITALICO</I>'
+          '</linha_simples>'
+          ''
+          '<CE>*** TAGS DE CÓDIGO DE BARRAS ***</CE>'
+          'EAN 8:'
+          '<ean8>1234567</ean8>'
+          'EAN13:'
           '<ean13>123456789012</ean13>'
+          'INT25:'
+          '<inter>1234567890</inter>'
+          'CODE39: '
+          '<code39>ABCDE12345</code39>'
+          'CODE93:'
+          '<code93>ABC123abc</code93>'
+          'CODE128:'
+          '<code128>$-=+ABC123abc</code128>'
+          'UPCA:'
+          '<upca>12345678901</upca>'
+          'CODABAR :'
+          '<codabar>$12345</codabar>'
+          '</linha_simples>'
+          ''
+          '<CE>*** TAGS DE FORMATAÇÃO ***</CE>'
           '<ce>NO CENTRO</CE>'
           '<AD>A Direira</ad>'
+          '</linha_simples>'
           ''
+          '<CE>*** TESTE DE TAGS INVÁLIDAS</CE>'
           '<ce> <>tags inválidas no texto">">><<</CE>'
           '<AD><da><ec></</A Direira</ad>'
+          ''
+          '</linha_dupla>'
         )
         ScrollBars = ssAutoBoth
-        TabOrder = 3
+        TabOrder = 2
       end
-      object ChImpTextoAbaixoBarras: TCheckBox
-        Left = 4
+      object chBarrasImprimeTexto: TCheckBox
+        Left = 164
         Height = 19
-        Top = 266
-        Width = 199
-        Caption = 'Imprime texto abaixo das barras'
+        Top = 40
+        Width = 151
+        Caption = 'Imprime Texto na Barra'
         Checked = True
         Font.CharSet = ANSI_CHARSET
         Font.Color = clBlack
@@ -1037,114 +1070,27 @@ object Form1: TForm1
         Font.Name = 'MS Sans Serif'
         Font.Pitch = fpVariable
         Font.Style = [fsBold]
+        OnChange = chBarrasImprimeTextoChange
         ParentFont = False
         State = cbChecked
-        TabOrder = 4
+        TabOrder = 3
       end
-      object ChImpTextoVertical: TCheckBox
-        Left = 4
-        Height = 19
-        Top = 247
-        Width = 171
-        Caption = 'Imprime Código na Vertical'
-        Font.CharSet = ANSI_CHARSET
-        Font.Color = clBlack
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Pitch = fpVariable
-        Font.Style = [fsBold]
-        OnChange = ChImpTextoVerticalChange
-        ParentFont = False
-        TabOrder = 5
-      end
-      object EdtCodBarras: TEdit
-        Left = 176
-        Height = 21
-        Top = 80
-        Width = 241
-        Font.CharSet = ANSI_CHARSET
-        Font.Color = clBlack
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Pitch = fpVariable
-        Font.Style = [fsBold]
-        ParentFont = False
-        TabOrder = 6
-        Text = '789000000001'
-      end
-      object SpEdAlturaBarra: TSpinEdit
-        Left = 371
+      object speBarrasAltura: TSpinEdit
+        Left = 84
         Height = 22
         Top = 40
         Width = 46
         AutoSize = False
         MaxValue = 200
-        MinValue = 50
         OnChange = seTimeOutChange
-        TabOrder = 7
-        Value = 80
-      end
-      object RdgTipoBarra: TRadioGroup
-        Left = 0
-        Height = 225
-        Top = 18
-        Width = 169
-        AutoFill = True
-        ChildSizing.LeftRightSpacing = 6
-        ChildSizing.TopBottomSpacing = 6
-        ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
-        ChildSizing.EnlargeVertical = crsHomogenousChildResize
-        ChildSizing.ShrinkHorizontal = crsScaleChilds
-        ChildSizing.ShrinkVertical = crsScaleChilds
-        ChildSizing.Layout = cclLeftToRightThenTopToBottom
-        ChildSizing.ControlsPerLine = 1
-        ClientHeight = 207
-        ClientWidth = 165
-        Font.CharSet = ANSI_CHARSET
-        Font.Color = clBlack
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Pitch = fpVariable
-        Font.Style = [fsBold]
-        ItemIndex = 0
-        Items.Strings = (
-          'EAN-13'
-          'EAN-8'
-          'STANDARD 2 OF 5'
-          'INTERLEAVED 2 OF 5'
-          'CODE128'
-          'CODE39'
-          'CODE93'
-          'UPC-A'
-          'CODABAR'
-          'MSI'
-          'CODE11'
-        )
-        OnClick = RdgTipoBarraClick
-        ParentFont = False
-        TabOrder = 8
-      end
-      object Label29: TLabel
-        Left = 176
-        Height = 14
-        Top = 64
-        Width = 35
-        Caption = 'String'
-        Font.CharSet = ANSI_CHARSET
-        Font.Color = clBlack
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Pitch = fpVariable
-        Font.Style = [fsBold]
-        ParentColor = False
-        ParentFont = False
+        TabOrder = 4
       end
       object Label28: TLabel
-        Left = 328
+        Left = 84
         Height = 14
         Top = 24
-        Width = 87
-        Caption = 'Altura da Barra'
+        Width = 35
+        Caption = 'Altura'
         Font.CharSet = ANSI_CHARSET
         Font.Color = clBlack
         Font.Height = -11
@@ -1155,11 +1101,11 @@ object Form1: TForm1
         ParentFont = False
       end
       object Label27: TLabel
-        Left = 176
+        Left = 12
         Height = 14
         Top = 24
-        Width = 97
-        Caption = 'Largura da Barra'
+        Width = 45
+        Caption = 'Largura'
         Font.CharSet = ANSI_CHARSET
         Font.Color = clBlack
         Font.Height = -11
@@ -1170,11 +1116,13 @@ object Form1: TForm1
         ParentFont = False
       end
       object Label24: TLabel
-        Left = 101
+        Left = 0
         Height = 17
         Top = 0
-        Width = 223
-        Caption = 'Impressão de Código de Barras'
+        Width = 539
+        Align = alTop
+        Alignment = taCenter
+        Caption = 'Tags de Formatação de Impressão e Código de Barras'
         Font.CharSet = ANSI_CHARSET
         Font.Color = clBlack
         Font.Height = -13
@@ -2501,6 +2449,13 @@ object Form1: TForm1
           Caption = 'ModeloStr'
           OnClick = mModeloStrClick
         end
+        object MenuItem21: TMenuItem
+          Caption = 'SubModeloECF'
+          OnClick = MenuItem21Click
+        end
+        object MenuItem24: TMenuItem
+          Caption = '-'
+        end
         object NumECF1: TMenuItem
           Caption = 'Num ECF'
           OnClick = NumECF1Click
@@ -3204,10 +3159,6 @@ object Form1: TForm1
       object ImpactoAgulhas1: TMenuItem
         Caption = 'Impacto Agulhas'
         OnClick = ImpactoAgulhas1Click
-      end
-      object mFontesECF: TMenuItem
-        Caption = 'Testar Fontes do ECF'
-        OnClick = mFontesECFClick
       end
       object N7: TMenuItem
         Caption = '-'

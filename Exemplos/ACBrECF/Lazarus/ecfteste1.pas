@@ -35,7 +35,6 @@ type
     bBobinaLimpar: TButton;
     bBobinaParams: TButton;
     BitBtn6 : TBitBtn ;
-    BitBtn7 : TBitBtn ;
     bRFDLer: TButton;
     bRFDSalvar: TButton;
     btnMenuFiscalLMFC : TButton ;
@@ -64,6 +63,7 @@ type
     cbxModelo: TComboBox;
     cbxPorta: TComboBox;
     chAACFlush : TCheckBox ;
+    chProcessMessages : TCheckBox ;
     chArredondaPorQtd: TCheckBox;
     chBloqueia: TCheckBox;
     chDescricaoGrande : TCheckBox ;
@@ -73,8 +73,7 @@ type
     ChequePronto1: TMenuItem;
     chExibeMsg: TCheckBox;
     chGavetaSinalInvertido: TCheckBox;
-    ChImpTextoAbaixoBarras : TCheckBox ;
-    ChImpTextoVertical : TCheckBox ;
+    chBarrasImprimeTexto : TCheckBox ;
     chkMenuFiscalCotepe1704 : TCheckBox ;
     chkMenuFiscalGerarArquivo : TCheckBox ;
     chRFD: TCheckBox;
@@ -121,7 +120,6 @@ type
     edSH_NumeroAP: TEdit;
     edSH_RazaoSocial: TEdit;
     edSH_VersaoAP: TEdit;
-    EdtCodBarras : TEdit ;
     edtCOOFinal : TSpinEdit ;
     edtCOOInicial : TSpinEdit ;
     EfetuaPagamentoNaoFiscal1: TMenuItem;
@@ -161,7 +159,6 @@ type
     Label26 : TLabel ;
     Label27 : TLabel ;
     Label28 : TLabel ;
-    Label29 : TLabel ;
     Label30 : TLabel ;
     Label31 : TLabel ;
     Label32 : TLabel ;
@@ -201,7 +198,9 @@ type
     mAcharRGIndice : TMenuItem ;
     mAcharRGDescricao : TMenuItem ;
     MenuItem20 : TMenuItem ;
+    MenuItem21 : TMenuItem ;
     MenuItem23 : TMenuItem ;
+    MenuItem24 : TMenuItem ;
     mValorTotalNaoFiscal : TMenuItem ;
     mCancNaoFiscal : TMenuItem ;
     mAcresNaoFiscal : TMenuItem ;
@@ -212,7 +211,6 @@ type
     mNumGNFC : TMenuItem ;
     mModeloStr : TMenuItem ;
     MenuItem22 : TMenuItem ;
-    mFontesECF : TMenuItem ;
     mLerTroco : TMenuItem ;
     mRZ : TMemo ;
     NumSerieMFD : TMenuItem ;
@@ -257,14 +255,13 @@ type
     mIM : TMenuItem ;
     pgAAC : TPageControl ;
     pgcMenuFiscalTipo : TPageControl ;
-    RdgTipoBarra : TRadioGroup ;
     SbAACNomeArq : TSpeedButton ;
     SbAACArqLog : TSpeedButton ;
     SbAACMD5Atualizar : TSpeedButton ;
     seBandWidth : TSpinEdit ;
     seMaxLinhasBuffer : TSpinEdit ;
-    SpEdAlturaBarra : TSpinEdit ;
-    SpEdtLarguraBarra : TSpinEdit ;
+    speBarrasAltura : TSpinEdit ;
+    speBarrasLargura : TSpinEdit ;
     tsAACParams : TTabSheet ;
     tsAACECFs : TTabSheet ;
     tsAACDados : TTabSheet ;
@@ -273,7 +270,7 @@ type
     tbsMenuFiscalTipoCOO : TTabSheet ;
     tbsMenuFiscalTipoData : TTabSheet ;
     tsDadosRedZ : TTabSheet ;
-    tsCodBarras : TTabSheet ;
+    tsTagsImpressao : TTabSheet ;
     wbBobina: TIpHtmlPanel;
     Label1: TLabel;
     Label10: TLabel;
@@ -406,7 +403,6 @@ type
     procedure bAACAbrirArquivoClick(Sender : TObject) ;
     procedure bACCVerificarGTClick(Sender : TObject) ;
     procedure BitBtn6Click(Sender : TObject) ;
-    procedure BitBtn7Click(Sender : TObject) ;
     procedure bLerDadosRedZClick(Sender : TObject) ;
     procedure btnMenuFiscalLMFCClick(Sender : TObject) ;
     procedure btnMenuFiscalLMFSClick(Sender : TObject) ;
@@ -425,7 +421,8 @@ type
     procedure chDescricaoGrandeChange(Sender : TObject) ;
     procedure chExibeMsgChange(Sender : TObject) ;
     procedure chGavetaSinalInvertidoChange(Sender : TObject) ;
-    procedure ChImpTextoVerticalChange(Sender : TObject) ;
+    procedure chBarrasImprimeTextoChange(Sender : TObject) ;
+    procedure chProcessMessagesChange(Sender : TObject) ;
     procedure chTentarChange(Sender : TObject) ;
     procedure mAchaCNFDescricaoClick(Sender : TObject) ;
     procedure mAcharAliqPorIndiceClick(Sender : TObject) ;
@@ -442,8 +439,8 @@ type
     procedure mDescNaoFiscalClick(Sender : TObject) ;
     procedure mdsAACECFAfterOpen(DataSet : TDataSet) ;
     procedure MenuItem20Click(Sender : TObject) ;
+    procedure MenuItem21Click(Sender : TObject) ;
     procedure MenuItem23Click(Sender : TObject) ;
-    procedure mFontesECFClick(Sender : TObject) ;
     procedure mLerTotaisRelatoriosGerenciaisClick(Sender : TObject) ;
     procedure mLerTrocoClick(Sender : TObject) ;
     procedure mModeloStrClick(Sender : TObject) ;
@@ -485,7 +482,6 @@ type
     procedure mUsuarioAtualClick(Sender : TObject) ;
     procedure mValorTotalNaoFiscalClick(Sender : TObject) ;
     procedure NumSerieMFDClick(Sender : TObject) ;
-    procedure RdgTipoBarraClick(Sender : TObject) ;
     procedure Sair1Click(Sender: TObject);
     procedure bAtivarClick(Sender: TObject);
     procedure cbxPortaChange(Sender: TObject);
@@ -1111,20 +1107,17 @@ begin
   end ;
 end;
 
-procedure TForm1.BitBtn7Click(Sender : TObject) ;
-begin
-  ACBrECF1.CodigodeBarras.AdicionarCodBarra(TACBrECFTipoCodBarra(RdgTipoBarra.ItemIndex),
-    SpEdtLarguraBarra.Value, SpEdAlturaBarra.Value, EdtCodBarras.Text,
-    ChImpTextoAbaixoBarras.Checked, ChImpTextoVertical.Checked);
-
-  ACBrECF1.FechaCupom( MenTextoBarras.Text );
-end;
-
 procedure TForm1.BitBtn6Click(Sender : TObject) ;
 begin
-  ACBrECF1.CodigodeBarras.AdicionarCodBarra(TACBrECFTipoCodBarra(RdgTipoBarra.ItemIndex),
-    SpEdtLarguraBarra.Value, SpEdAlturaBarra.Value, EdtCodBarras.Text,
-    ChImpTextoAbaixoBarras.Checked, ChImpTextoVertical.Checked);
+  if ACBrECF1.Estado <> estRelatorio then
+  begin
+    ACBrECF1.CorrigeEstadoErro ;
+    ACBrECF1.AbreRelatorioGerencial;
+  end ;
+
+  ACBrECF1.ConfigBarras.LarguraLinha  := speBarrasLargura.Value;
+  ACBrECF1.ConfigBarras.Altura        := speBarrasAltura.Value;
+  ACBrECF1.ConfigBarras.MostrarCodigo := chBarrasImprimeTexto.Checked;
 
   ACBrECF1.LinhaRelatorioGerencial( MenTextoBarras.Text );
 end;
@@ -1274,9 +1267,14 @@ begin
   ACBrECF1.GavetaSinalInvertido := chGavetaSinalInvertido.Checked ;
 end;
 
-procedure TForm1.ChImpTextoVerticalChange(Sender : TObject) ;
+procedure TForm1.chBarrasImprimeTextoChange(Sender : TObject) ;
 begin
-  MenTextoBarras.Enabled  :=  ChImpTextoVertical.Enabled;
+  MenTextoBarras.Enabled  :=  chBarrasImprimeTexto.Enabled;
+end;
+
+procedure TForm1.chProcessMessagesChange(Sender : TObject) ;
+begin
+  ACBrECF1.Device.ProcessMessages := chProcessMessages.Checked;
 end;
 
 procedure TForm1.chTentarChange(Sender : TObject) ;
@@ -1590,20 +1588,15 @@ begin
   AtualizaMemos ;
 end;
 
-procedure TForm1.MenuItem23Click(Sender : TObject) ;
+procedure TForm1.MenuItem21Click(Sender : TObject) ;
 begin
-   ACBrECF1.DescontoAcrescimoItemAnterior(1);
+  mResp.Lines.Add( 'SubModeloECF: ('+ ACBrECF1.SubModeloECF+')' );
+  AtualizaMemos ;
 end;
 
-procedure TForm1.mFontesECFClick(Sender : TObject) ;
+procedure TForm1.MenuItem23Click(Sender : TObject) ;
 begin
-  ACBrECF1.AbreRelatorioGerencial;
-  ACBRECF1.LinhaRelatorioGerencial('LINHA NORMAL 1');
-  ACBRECF1.LinhaRelatorioGerencial(#14+'EXPANDIDO 1 LINHA');
-  ACBRECF1.LinhaRelatorioGerencial('LINHA NORMAL 1');
-  ACBRECF1.LinhaRelatorioGerencial(#15+'ON/OFF MODO CONDENSADO'+#18);
-  ACBRECF1.LinhaRelatorioGerencial(#27+'W1'+'ON/OFF MODO EXPANDIDO'+#27+'W0');
-  ACBRECF1.FechaRelatorio;
+   ACBrECF1.DescontoAcrescimoItemAnterior( 1,'D','%', 3);
 end;
 
 procedure TForm1.mLerTotaisRelatoriosGerenciaisClick(Sender : TObject) ;
@@ -2091,23 +2084,6 @@ procedure TForm1.NumSerieMFDClick(Sender : TObject) ;
 begin
   mResp.Lines.Add( 'N.Série MFD: ('+ ACBrECF1.NumSerieMFD+')' );
   AtualizaMemos ;
-end;
-
-procedure TForm1.RdgTipoBarraClick(Sender : TObject) ;
-begin
-  Case RdgTipoBarra.ItemIndex of
-    0 : EdtCodBarras.Text :=  '789000000001';
-    1 : EdtCodBarras.Text :=  '0000000';
-    2 : EdtCodBarras.Text :=  '123456';
-    3 : EdtCodBarras.Text :=  '123456';
-    4 : EdtCodBarras.Text :=  'abcABC123';
-    5 : EdtCodBarras.Text :=  'ABC123';
-    6 : EdtCodBarras.Text :=  'ABC123';
-    7 : EdtCodBarras.Text :=  '00000000000';
-    8 : EdtCodBarras.Text :=  '123456';
-    9 : EdtCodBarras.Text :=  '123456';
-    10: EdtCodBarras.Text :=  '123456';
-  end;
 end;
 
 procedure TForm1.Sair1Click(Sender: TObject);

@@ -1365,9 +1365,13 @@ end;
 
 procedure TACBrTEFD.SetMultiplosCartoes(const AValue : Boolean);
 begin
-   if RespostasPendentes.Count > 0 then
-      raise Exception.Create( ACBrStr( 'Existem Respostas Pendentes. '+
+  if fMultiplosCartoes = AValue then
+     exit;
+
+  if RespostasPendentes.Count > 0 then
+     raise Exception.Create( ACBrStr( 'Existem Respostas Pendentes. '+
                               'Não é possível alterar "MultiplosCartoes"') ) ;
+
    fMultiplosCartoes := AValue;
 end;
 
@@ -1378,17 +1382,25 @@ end;
 
 procedure TACBrTEFD.SetAutoEfetuarPagamento(const AValue : Boolean);
 begin
+  if fAutoEfetuarPagamento = AValue then
+     exit;
+
   if RespostasPendentes.Count > 0 then
      raise Exception.Create( ACBrStr( 'Existem Respostas Pendentes. '+
                              'Não é possível alterar "AutoEfetuarPagamento"') ) ;
+
   fAutoEfetuarPagamento := AValue;
 end;
 
 procedure TACBrTEFD.SetAutoFinalizarCupom(const AValue : Boolean);
 begin
+  if fAutoFinalizarCupom = AValue then
+     exit ;
+
   if RespostasPendentes.Count > 0 then
      raise Exception.Create( ACBrStr( 'Existem Respostas Pendentes. '+
                              'Não é possível alterar "AutoFinalizarCupom"') ) ;
+
   fAutoFinalizarCupom := AValue;
 end;
 

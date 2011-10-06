@@ -2159,28 +2159,8 @@ begin
   begin
     VerificarBmpTexto(IndiceBMP, Observacao);
 
-    // Verifico se tenho que mandar o indice de alguma imagem ou um código de barras
-    // e permitido apenas um BMP ou um Código de barras }
-    if (IndiceBMP > 0) and (Not CodBarras.Adicionado) then
-      Obs :=  ESC + 'B' + IntToStrZero(IndiceBMP, 1) + Obs
-    else
-    if (CodBarras.Adicionado) then
-    begin
-      if CodBarras.ImpVertical then
-      begin
-        Obs :=  ESC + 'a' + IntToStrZero((Integer (CodBarras.Tipo) + 1), 2) +
-                IntToStrZero(CodBarras.Largura, 1) + IntToStrZero(CodBarras.Altura, 3) +
-                IfThen(CodBarras.ImpCodEmbaixo, '1', '0') + CodBarras.Codigo +
-                NUL + #022 + #018 + Obs;
-      end
-      else
-      begin
-        Obs :=  ESC + 'b' + IntToStrZero((Integer (CodBarras.Tipo) + 1), 2) +
-                IntToStrZero(CodBarras.Largura, 1) + IntToStrZero(CodBarras.Altura, 3) +
-                IfThen(CodBarras.ImpCodEmbaixo, '1', '0') + CodBarras.Codigo +
-                NUL + Obs;
-      end;
-    end;
+    if (IndiceBMP > 0) then
+      Obs :=  ESC + 'B' + IntToStrZero(IndiceBMP, 1) + Obs ;
 
     EnviaComando( FS + 'F' + #210 + '0' + Obs, 5 );
 
@@ -3140,25 +3120,8 @@ begin
       Buffer := copy( Linha, 1, P)  ;
       Espera := Trunc( CountStr( Buffer, #10 ) / 4) ;
 
-      if (IndiceBMP > 0) and (Not CodBarras.Adicionado) then
-        Buffer  :=  ESC + 'B' + IntToStrZero(IndiceBMP, 1) + Buffer
-      else if (CodBarras.Adicionado) then
-      begin
-        if CodBarras.ImpVertical then
-        begin
-          Buffer  :=  ESC + 'a' + IntToStrZero((Integer (CodBarras.Tipo) + 1), 2) +
-                  IntToStrZero(CodBarras.Largura, 1) + IntToStrZero(CodBarras.Altura, 3) +
-                  IfThen(CodBarras.ImpCodEmbaixo, '1', '0') + CodBarras.Codigo +
-                  NUL + #022 + #018 + Buffer;
-        end
-        else
-        begin
-          Buffer  :=  ESC + 'b' + IntToStrZero((Integer (CodBarras.Tipo) + 1), 2) +
-                  IntToStrZero(CodBarras.Largura, 1) + IntToStrZero(CodBarras.Altura, 3) +
-                  IfThen(CodBarras.ImpCodEmbaixo, '1', '0') + CodBarras.Codigo + NUL;
-        end;
-      end;
-
+      if (IndiceBMP > 0) then
+        Buffer  :=  ESC + 'B' + IntToStrZero(IndiceBMP, 1) + Buffer ;
 
       AguardaImpressao := (Espera > 3) ;
       if fsTipoRel = 'V' then

@@ -281,35 +281,6 @@ TACBrECFConsumidor = class
     procedure Zera;
 end ;
 
-{ Definindo novo tipo para armazenar o Código de Barras que será impresso no Documento }
-TACBrECFCodBarras = class
- private
-    fsTipoBarra   : TACBrECFTipoCodBarra;
-    fsLanguraBarra: Integer;
-    fsAlturaBarra : Integer;
-    fsCodigo      : String;
-    fsImpCodEmbaixo: Boolean;
-    fsImpVertical : Boolean;
-    fsEnviado     : Boolean;
-    function GetEnviado: Boolean;
-    function GetAdicionado: Boolean;
- public
-    constructor create ;
-    property Enviado      : Boolean               read GetEnviado write fsEnviado ;
-    property Tipo         : TACBrECFTipoCodBarra  read fsTipoBarra ;
-    property Largura      : Integer               read fsLanguraBarra ;
-    property Altura       : Integer               read fsAlturaBarra  ;
-    property Codigo       : String                read fsCodigo  ;
-    property ImpCodEmbaixo: Boolean               read fsImpCodEmbaixo ;
-    property ImpVertical  : Boolean               read fsImpVertical ;
-    property Adicionado   : Boolean               read GetAdicionado ;
-
-    procedure AdicionarCodBarra(TipoBarra: TACBrECFTipoCodBarra; LanguraBarra,
-      AlturaBarra: Integer; CodBarra: String; ImprimeCodEmbaixo : Boolean = True;
-      ImprimeVertical : Boolean = False );
-    procedure Zera;
-end ;
-
 { Lista de Objetos do tipo TACBrECFComprovanteNaoFiscal }
 TACBrECFComprovantesNaoFiscais = class(TObjectList)
   protected
@@ -595,7 +566,6 @@ TACBrECFClass = class
 
     fpConsumidor : TACBrECFConsumidor ;
 
-    fpCodBarras  : TACBrECFCodBarras ;
     { Class com instacia para armazenar dados da RZ }
     fpDadosReducaoZClass: TACBrECFDadosRZ;
 
@@ -1052,9 +1022,6 @@ TACBrECFClass = class
     { Obs: De/Codifica e Verifica Textos C-->  Codifica D--> Decodifica V--> Verifica }
     function DecodificaTexto(Operacao: Char; Texto: String; var Resposta: String): Boolean; virtual;
 
-    { priedade que acessa as informações do codbarras }
-    property CodBarras : TACBrECFCodBarras read fpCodBarras ;
-
     property PathDLL: string read fsPathDLL write fsPathDLL;
 
 
@@ -1449,14 +1416,9 @@ begin
   fpComandoLOG            := '' ;
 
   fpDadosReducaoZClass    := TACBrECFDadosRZ.Create ;
-
-  fpConsumidor  :=  TACBrECFConsumidor.create ;
-
-  fpCodBarras   :=  TACBrECFCodBarras.create;
-
-  fpInfoRodapeCupom := TACBrECFRodape.Create;
-
-  fpRespostasComando := TACBrInformacoes.Create;
+  fpConsumidor            := TACBrECFConsumidor.create ;
+  fpInfoRodapeCupom       := TACBrECFRodape.Create;
+  fpRespostasComando      := TACBrInformacoes.Create;
 
   {$IFNDEF CONSOLE}
     fsFormMsg                   := nil ;
@@ -1484,17 +1446,12 @@ begin
   if Assigned( fpComprovantesNaoFiscais ) then
      fpComprovantesNaoFiscais.Free ;
 
- if Assigned( fpUnidadesMedida ) then
-    fpUnidadesMedida.Free;
+  if Assigned( fpUnidadesMedida ) then
+     fpUnidadesMedida.Free;
 
   fpDadosReducaoZClass.Free;
-
   fpConsumidor.Free ;
-
-  fpCodBarras.Free ;
-
   fpInfoRodapeCupom.Free ;
-
   fpRespostasComando.Free ;
 
   {$IFNDEF CONSOLE}
@@ -3445,72 +3402,6 @@ function TACBrECFClass.DecodificaTexto(Operacao: Char; Texto: String;
 begin
   Result := False ;
   ErroAbstract('DecodificaTexto');
-end;
-
-{ TACBrECFCodBarras }
-
-constructor TACBrECFCodBarras.create;
-begin
-  Zera;
-end;
-
-procedure TACBrECFCodBarras.AdicionarCodBarra(TipoBarra: TACBrECFTipoCodBarra;
-  LanguraBarra, AlturaBarra: Integer; CodBarra: String; ImprimeCodEmbaixo: Boolean;
-  ImprimeVertical : Boolean);
-begin
-  if TipoBarra = barEAN13 then
-    if (Length(CodBarra) <> 12) or (StrToInt64Def(CodBarra, -1) = -1) then
-      raise Exception.Create( ACBrStr('EAN-13 suporta 12 dígitos de 0 a 9') ) ;
-
-  if TipoBarra = barEAN8 then
-    if (Length(CodBarra) <> 7) or (StrToInt64Def(CodBarra, -1) = -1) then
-      raise Exception.Create( ACBrStr('EAN-8 suporta 7 dígitos de 0 a 9') ) ;
-
-  if TipoBarra = barUPCA then
-    if (Length(CodBarra) <> 11) or (StrToInt64Def(CodBarra, -1) = -1) then
-      raise Exception.Create( ACBrStr('UPC-A suporta 11 dígitos de 0 a 9') ) ;
-
-  if TipoBarra = barCODE11 then
-    if (StrToInt64Def(CodBarra, -1) = -1) then
-      raise Exception.Create( ACBrStr('CODE 11 suporta Tamanho variável. 0 a 9 ') ) ;
-
-  if TipoBarra = barInterleaved then
-    if (StrToInt64Def(CodBarra, -1) = -1) then
-      raise Exception.Create( 'Interleaved 2 of 5 Tamanho sempre par. 0 a 9' ) ;
-
-  if TipoBarra = barStandard then
-    if (StrToInt64Def(CodBarra, -1) = -1) then
-      raise Exception.Create( ACBrStr('Standard 2 of 5 Tamanho variável. 0 a 9') ) ;
-
-  if TipoBarra = barMSI  then
-    if (StrToInt64Def(CodBarra, -1) = -1) then
-      raise Exception.Create( ACBrStr('MSI Tamanho variável. 0 a 9') ) ;
-
-  fsTipoBarra     :=  TipoBarra;
-  fsLanguraBarra  :=  LanguraBarra;
-  fsAlturaBarra   :=  AlturaBarra;
-  fsCodigo        :=  CodBarra;
-  fsImpCodEmbaixo :=  ImprimeCodEmbaixo;
-  fsImpVertical   :=  ImprimeVertical;
-end;
-
-procedure TACBrECFCodBarras.Zera;
-begin
-  fsTipoBarra     :=  barEAN13;
-  fsLanguraBarra  :=  0;
-  fsAlturaBarra   :=  0;
-  fsCodigo        :=  '';
-  fsImpCodEmbaixo :=  False;
-end;
-
-function TACBrECFCodBarras.GetAdicionado: Boolean;
-begin
-  Result := (fsCodigo <> '') ;
-end;
-
-function TACBrECFCodBarras.GetEnviado: Boolean;
-begin
-  Result := fsEnviado or (not Adicionado) ;
 end;
 
 procedure TACBrECFClass.ListaRelatorioGerencial(Relatorio: TStrings;

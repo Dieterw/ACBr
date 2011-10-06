@@ -433,7 +433,6 @@ TACBrECF = class( TACBrComponent )
     function GetTotalSubstituicaoTributariaISSQNClass: Double;
     function GetNumUltimoItemClass: Integer;
     function GetConsumidorClass: TACBrECFConsumidor;
-    function GetCodBarrasClass: TACBrECFCodBarras;
     function GetDadosReducaoZClass: TACBrECFDadosRZ;
     procedure SetRFD(const AValue: TACBrRFD);
     procedure SetAAC(const AValue: TACBrAAC);
@@ -772,14 +771,6 @@ TACBrECF = class( TACBrComponent )
      //--- True  se as informaçõe coicidem com os valores atuais
      //--- False se não coicidem
     function DecodificaTexto(Operacao: Char; Texto: String; var Resposta: String): Boolean;
-
-    { Metodo para imprimir o Código de Barras em Fechamento de CF "MSG PROMO"; }
-    { Não Fiscal Vinculado; Gerencial }
-    property CodigodeBarras : TACBrECFCodBarras read GetCodBarrasClass ;
-
-    { Grava dados do Código de Barras para ser usado nos Documento }
-    Procedure InformaCodBarras( TipoBarra: TACBrECFTipoCodBarra; LanguraBarra,
-      AlturaBarra: Integer; CodBarra: String; ImprimeCodEmbaixo: Boolean) ;
 
     {$IFNDEF CONSOLE}
      Procedure MemoLeParams ;
@@ -2412,7 +2403,6 @@ begin
 
   fsMensagemRodape := '' ;
   Consumidor.Zera ;
-  CodigodeBarras.Zera;
 
   {$IFNDEF CONSOLE}
    if MemoAssigned then
@@ -3014,9 +3004,7 @@ begin
 
   fsMensagemRodape := '' ;
   Consumidor.Zera ;
-  CodigodeBarras.Zera ;
   InfoRodapeCupom.Clear;
-
 end;
 
 
@@ -5244,55 +5232,12 @@ begin
   Result := fsECF.RetornaInfoECF( Registrador );
 end;
 
-function TACBrECF.GetCodBarrasClass: TACBrECFCodBarras;
-begin
-  Result := fsECF.CodBarras ;
-end;
-
 function TACBrECF.DecodificaTexto(Operacao: Char; Texto: String;
   var Resposta: String): Boolean;
 begin
    ComandoLOG := 'DecodificaTexto';
    Result := fsECF.DecodificaTexto(Operacao,Texto,Resposta) ;
 end;
-
-procedure TACBrECF.InformaCodBarras(TipoBarra: TACBrECFTipoCodBarra;
-  LanguraBarra, AlturaBarra: Integer; CodBarra: String;
-  ImprimeCodEmbaixo: Boolean);
-begin
-  fsECF.CodBarras.AdicionarCodBarra(TipoBarra, LanguraBarra, AlturaBarra,
-      CodBarra, ImprimeCodEmbaixo);
-end;
-
-
-(* Muita coisa a fazer....
-
-LeituraXSerial
-
-CancelaUltimoItem( 0 )
-
-07 GNF (Contador Geral de Operação Não Fiscal)
-Número do GNF relativo ao respectivo documento, quando houver
-
-08 GRG (Contador Geral de Relatório Gerencial)
-Número do GRG relativo ao respectivo documento (vide item 6.16.1.4)
-
-09 CDC (Contador de Comprovante de Crédito ou Débito)
-Número do CDC relativo ao respectivo documento
-(vide item 6.16.1.5)
-
-- DescontoItemVendido
-
-- TotalDescontosISS
-- TotalAcrescimosISS
-- TotalCancelamentosISS
-
-- Aliquotas: FS, NS e IS (Substituição, Nao icidencia e Isenção em ISSQN)
-
-- TotalSubstituicaoTributariaISS
-- TotalNaoTributadoISS
-- TotalIsencaoISS
- *)
 
 function TACBrECF.GetAbout: String;
 begin

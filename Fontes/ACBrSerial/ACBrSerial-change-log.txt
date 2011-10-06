@@ -97,6 +97,30 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 06/10/2011
+-- ACBrECF --
+[*] Removida a classe TACBrECFCodBarras, que era utilizada antes para Impressão
+    de Cod.Barras na Daruma. Atualmente o Cod.Barras é melhor suportado pelas
+    TAGs de Formatação (Veja Demo ECFTeste)
+
+-- ACBrECFDaruma --
+[*] Removido suporte para a Classe TACBrECFCodBarras
+
+-- ACBrECFEpson --
+[*] Rotina Ativar tenta detectar se o ECF está em 115200 ou 38400, já que as
+    novas FBIII vem por default em 115200 e as antigas por default 38400
+[-] Correção da exibição dos caracteres acentuados nas mensagens de erro
+[*] Otimização de comandos com parâmetros numéricos
+[*] Método DescontoAcrescimoItemAnterior ajustado para fazer uso do novo comando
+    de Desconto/Acrescimo de Item Distante
+[*] Método CarregaFormasPagamento não mais tenta carregar todas as Formas de
+    Pagamento não programadas. Ou seja, atualmente ele para na primeira mensagem
+    "Tipo de pagamento não definido".
+[*] Método TraduzirTag modificado para permitir sobreposição de Tags de caracter
+    como por exemplo: Negrito+Sublinhado
+[*] Implemetado suporte as Tags de Código de Barras
+
+
 Data: 04/10/2011
 -- ACBrECF --
 [*] Acerto da string do Minas Legal conforme retificação da ER 1.09

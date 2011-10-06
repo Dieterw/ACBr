@@ -115,7 +115,7 @@ TACBrECFEpsonResposta = class
 
     procedure SetResposta(const Value: AnsiString);
     Function RemoveEsc(const Campo: AnsiString): AnsiString ;
-    function GetDescRetorno: AnsiString;
+    function GetDescRetorno: String;
  public
     constructor create( AOwner : TACBrECFEpson ) ;
     destructor destroy ; override ;
@@ -137,6 +137,10 @@ TACBrECFEpsonResposta = class
 TACBrECFEpson = class( TACBrECFClass )
  private
     fsNumVersao : String ;
+    fsIsFBIII   : Boolean;
+    fsALNegrito : Boolean;
+    fsALExpandido : Boolean;
+    fsALSublinhado : Boolean;
     fsNumECF    : String ;
     fsNumLoja   : String ;
     fsCNPJ      : String ;
@@ -162,6 +166,8 @@ TACBrECFEpson = class( TACBrECFClass )
     xEPSON_Obter_Dados_MF_MFD : function (pszInicio:PAnsiChar; pszFinal:PAnsiChar;
        dwTipoEntrada:Integer; dwEspelhos:Integer; dwAtoCotepe:Integer;
        dwSintegra:Integer; pszArquivoSaida:PAnsiChar) : Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
+
+    procedure Ativar_Epson ;
 
     procedure LoadDLLFunctions;
     procedure AbrePortaSerialDLL;
@@ -609,7 +615,7 @@ begin
 end;
 
 
-function TACBrECFEpsonResposta.GetDescRetorno: AnsiString;
+function TACBrECFEpsonResposta.GetDescRetorno: String;
  Var  sValorSaida : String;
       sRetorno    : AnsiString ;
 begin
@@ -884,7 +890,7 @@ begin
             end;
   end;
   
-  Result := sValorSaida;
+  Result := ACBrStr( sValorSaida );
 end;
 
 
@@ -948,6 +954,35 @@ begin
   inherited Destroy ;
 end;
 
+procedure TACBrECFEpson.Ativar_Epson ;
+begin
+  try
+     EpsonComando.Comando := '0905' ;  // Obtendo o numero de colunas
+     EnviaComando ;
+     fpColunas := max( StrToIntDef( EpsonResposta.Params[0], 0 ), 48) ;
+
+     EpsonComando.Comando := '0585' ;  // Obtendo o numero de Decimais
+     EnviaComando ;
+     fpDecimaisQtd   := StrToIntDef( EpsonResposta.Params[0], fpDecimaisQtd) ;
+     fpDecimaisPreco := StrToIntDef( EpsonResposta.Params[1], fpDecimaisPreco) ;
+
+     EpsonComando.Comando := '090A' ; // Obtendo se a ECF Imprime Cheque, e Le CMC7
+     EnviaComando ;
+     fsImprimeCheque :=  EpsonResposta.Params[4]  = 'S';
+     fsLeituraCMC7   :=  EpsonResposta.Params[14] = 'S';
+
+     fsIsFBIII := (pos( 'FBIII', SubModeloECF ) > 0) ;
+
+  except
+     On E : Exception do
+     begin
+        raise EACBrECFNaoInicializado.Create( ACBrStr(
+                 'Erro inicializando a impressora '+fpModeloStr) + sLineBreak +
+                 E.Message );
+     end;
+  end ;
+end ;
+
 procedure TACBrECFEpson.Ativar;
 begin
   if not fpDevice.IsSerialPort  then
@@ -963,39 +998,46 @@ begin
   fsIE        := '' ;
   fsIM        := '' ;
   fsCliche    := '' ;
-  fsUsuarioAtual    := '' ;
-  fsDataHoraSB      := now ;
-  fsSubModeloECF    := '' ;
+  fsUsuarioAtual := '' ;
+  fsDataHoraSB   := now ;
+  fsSubModeloECF := '' ;
   fsRet0906   := '' ;
   fsRet0907   := '' ;
 
+  fsALNegrito    := False;
+  fsALExpandido  := False;
+  fsALSublinhado := False;
+
   try
-     try
-        EpsonComando.Comando := '0905' ;  // Obtendo o numero de colunas
-        EnviaComando ;
-        fpColunas := max( StrToIntDef( EpsonResposta.Params[0], 0 ), 48) ;
-
-        EpsonComando.Comando := '0585' ;  // Obtendo o numero de Decimais
-        EnviaComando ;
-        fpDecimaisQtd   := StrToIntDef( EpsonResposta.Params[0], fpDecimaisQtd) ;
-        fpDecimaisPreco := StrToIntDef( EpsonResposta.Params[1], fpDecimaisPreco) ;
-
-        EpsonComando.Comando := '090A' ; // Obtendo se a ECF Imprime Cheque, e Le CMC7
-        EnviaComando ;
-        fsImprimeCheque :=  EpsonResposta.Params[4]  = 'S';
-        fsLeituraCMC7   :=  EpsonResposta.Params[14] = 'S';
-     except
-        On E : Exception do
-        begin
-           raise EACBrECFNaoInicializado.Create( ACBrStr(
-                    'Erro inicializando a impressora '+fpModeloStr) + sLineBreak +
-                    E.Message );
-        end;
-     end ;
+    try
+       Ativar_Epson;
+    except
+       On E : Exception do
+       begin
+          if pos('(ACK = 0)',E.message) > 0 then
+           begin
+             if fpDevice.Baud = 38400 then
+              begin
+                fpDevice.Baud := 115200 ;
+                Ativar_Epson;
+              end
+             else if fpDevice.Baud = 115200 then
+              begin
+                fpDevice.Baud := 38400 ;
+                Ativar_Epson;
+              end
+             else
+                raise ;
+           end
+          else
+             raise ;
+       end ;
+    end ;
   except
-     Desativar ;
+     Desativar;
      raise ;
   end ;
+
 end;
 
 
@@ -1100,12 +1142,9 @@ begin
 
      ErroMsg := EpsonResposta.DescRetorno ;
      if ErroMsg <> '' then
-        ErroMsg := 'Erro: '+ EpsonResposta.Retorno+ ' - '+ErroMsg  ;
-
-     if ErroMsg <> '' then
       begin
-        ErroMsg := ACBrStr('Erro retornado pela Impressora: '+fpModeloStr+#10+#10+
-                   ErroMsg) ;
+        ErroMsg := 'Erro retornado pela Impressora: ' + fpModeloStr + sLineBreak + sLineBreak+
+                   'Erro: '+ EpsonResposta.Retorno+ ' - '+ErroMsg  ;
         raise EACBrECFSemResposta.create(ErroMsg) ;
       end
      else
@@ -1164,6 +1203,8 @@ begin
   // É Envio de Resposta Intermediária ?
   if Result and (LeftStr(Retorno,7) = #2 + #128 + #3 + '0085') then
   begin
+     // DEBUG //
+     //GravaLog( 'Resposta Intermediaria: ' +LeftStr(Retorno,7), True );
      Retorno     := Copy(Retorno, 8, Length(Retorno));
      TempoLimite := IncSecond(now, TimeOut);
      Result      := False ;
@@ -1172,7 +1213,7 @@ begin
   if Result then
   begin
      try
-        { Esta atribuição, Já verifica o ChkSum, em csaso de erro gera exception }
+        { Esta atribuição, Já verifica o ChkSum, em caso de erro gera exception }
         EpsonResposta.Resposta := Retorno ;
         fpDevice.Serial.SendByte(ACK);
 
@@ -1687,7 +1728,7 @@ procedure TACBrECFEpson.EfetuaPagamento(CodFormaPagto: String;
 begin
   EpsonComando.Comando  := '0A05' ;
   EpsonComando.AddParam( CodFormaPagto ) ;
-  EpsonComando.AddParam( IntToStrZero(Round(Valor * 100) ,13) ) ;
+  EpsonComando.AddParam( IntToStr(Round(Valor * 100)) ) ;
   EpsonComando.AddParam( copy(Observacao, 1,40) ) ;
   EpsonComando.AddParam( copy(Observacao,41,40) ) ;
   EnviaComando ;
@@ -1765,7 +1806,7 @@ begin
      EpsonComando.Extensao := '0006'
   else
      EpsonComando.Extensao := '0007' ;
-  EpsonComando.AddParam( IntToStrZero(Round(abs(DescontoAcrescimo) * 100) ,11)  );
+  EpsonComando.AddParam( IntToStr(Round(abs(DescontoAcrescimo) * 100))  );
   EnviaComando ;
 
   fsRet0906 := '' ;
@@ -1782,9 +1823,9 @@ begin
      Comando := '0A02' ;
      AddParam( LeftStr(Codigo,14) );
      AddParam( LeftStr(Descricao,233) );
-     AddParam( IntToStrZero(Round(Qtd * Power(10,fpDecimaisQtd) ) ,7)  );
+     AddParam( IntToStr(Round(Qtd * Power(10,fpDecimaisQtd) ))  );
      AddParam( Trim(LeftStr(Unidade,3)) );
-     AddParam( IntToStrZero(Round(ValorUnitario * Power(10,fpDecimaisPreco) ) ,8)  );
+     AddParam( IntToStr(Round(ValorUnitario * Power(10,fpDecimaisPreco) ))  );
      AddParam( AliquotaECF );
   end ;
   EnviaComando ;
@@ -1803,26 +1844,49 @@ procedure TACBrECFEpson.DescontoAcrescimoItemAnterior(
    ValorDescontoAcrescimo : Double ; DescontoAcrescimo : String ;
    TipoDescontoAcrescimo : String ; NumItem : Integer) ;
 begin
-  // NOTA: Epson não permite usar o parâmetro NumItem
-
-  EpsonComando.Comando  := '0A04' ;
-  if TipoDescontoAcrescimo = '%' then
+  if NumItem = 0 then
    begin
-     if DescontoAcrescimo = 'D' then
-        EpsonComando.Extensao := '0000'
+     EpsonComando.Comando  := '0A04' ;
+     if TipoDescontoAcrescimo = '%' then
+      begin
+        if DescontoAcrescimo = 'D' then
+           EpsonComando.Extensao := '0000'
+        else
+           EpsonComando.Extensao := '0001' ;
+      end
      else
-        EpsonComando.Extensao := '0001' ;
+      begin
+        if DescontoAcrescimo = 'D' then
+           EpsonComando.Extensao := '0004'
+        else
+           EpsonComando.Extensao := '0005' ;
+      end ;
+
+     EpsonComando.AddParam( IntToStr(Round(ValorDescontoAcrescimo * 100))  );
+     EnviaComando ;
    end
   else
    begin
-     if DescontoAcrescimo = 'D' then
-        EpsonComando.Extensao := '0004'
-     else
-        EpsonComando.Extensao := '0005' ;
-   end ;
+      EpsonComando.Comando  := '0A07' ;
+      if TipoDescontoAcrescimo = '%' then
+       begin
+         if DescontoAcrescimo = 'D' then
+            EpsonComando.Extensao := '0000'
+         else
+            EpsonComando.Extensao := '0001' ;
+       end
+      else
+       begin
+         if DescontoAcrescimo = 'D' then
+            EpsonComando.Extensao := '0010'
+         else
+            EpsonComando.Extensao := '0011' ;
+       end ;
 
-  EpsonComando.AddParam( IntToStrZero(Round(ValorDescontoAcrescimo * 100) ,11)  );
-  EnviaComando ;
+      EpsonComando.AddParam( IntToStr(NumItem) );
+      EpsonComando.AddParam( IntToStr(Round(ValorDescontoAcrescimo * 100)) );
+      EnviaComando ;
+   end ;
 
   fsRet0906 := '' ;
   fsRet0907 := '' ;
@@ -1885,7 +1949,7 @@ begin
   EpsonComando.Comando := '0540' ;
   if Tipo = 'S' then
      EpsonComando.Extensao := '0001' ;
-  EpsonComando.Params.Add( IntToStrZero(Round(Aliquota * 100) ,4) ) ;
+  EpsonComando.Params.Add( IntToStr(Round(Aliquota * 100)) ) ;
   EnviaComando ;
 
   CarregaAliquotas ;
@@ -1948,7 +2012,10 @@ begin
         except
            on E : Exception do
            begin
-              if (pos('090C',E.Message) = 0) then
+              // 090C “Tipo de pagamento não definido”
+              if (pos('090C',E.Message) > 0) then
+                 Break
+              else
                  raise ;
            end ;
         end;
@@ -2142,7 +2209,7 @@ begin
 
   EpsonComando.Comando := '0E30' ;
   EpsonComando.AddParam( CodFormaPagto ) ;
-  EpsonComando.AddParam( IntToStrZero(Round(Valor * 100) ,13) );
+  EpsonComando.AddParam( IntToStr(Round(Valor * 100)) );
   EpsonComando.AddParam( '1' ) ;
   EpsonComando.AddParam( '' ) ;
   EnviaComando ;
@@ -2559,7 +2626,7 @@ procedure TACBrECFEpson.RegistraItemNaoFiscal(CodCNF: String;
 begin
   EpsonComando.Comando := '0E15' ;
   EpsonComando.AddParam( CodCNF );
-  EpsonComando.AddParam( IntToStrZero(Round(Valor * 100) ,11) );
+  EpsonComando.AddParam( IntToStr(Round(Valor * 100)) );
   EnviaComando ;
 
   fsRet0906 := '' ;
@@ -2577,7 +2644,7 @@ begin
      EpsonComando.Extensao := '0006'
   else
      EpsonComando.Extensao := '0007' ;
-  EpsonComando.AddParam( IntToStrZero(Round(abs(DescontoAcrescimo) * 100) ,11)  );
+  EpsonComando.AddParam( IntToStr(Round(abs(DescontoAcrescimo) * 100))  );
   EnviaComando ;
 
   fsRet0906 := '' ;
@@ -2589,7 +2656,7 @@ procedure TACBrECFEpson.EfetuaPagamentoNaoFiscal(CodFormaPagto: String;
 begin
   EpsonComando.Comando  := '0E1A' ;
   EpsonComando.AddParam( CodFormaPagto ) ;
-  EpsonComando.AddParam( IntToStrZero(Round(Valor * 100) ,13) ) ;
+  EpsonComando.AddParam( IntToStr(Round(Valor * 100)) ) ;
   EpsonComando.AddParam( copy(Observacao, 1,40) ) ;
   EpsonComando.AddParam( copy(Observacao,41,40) ) ;
   EnviaComando ;
@@ -2719,7 +2786,7 @@ begin
     begin
        Comando := 'EE10' ;
        AddParam( LeftStr(Banco,2) ) ;
-       AddParam( IntToStrZero(Round(Valor * Power(10,fpDecimaisPreco) ) ,13)  ) ;
+       AddParam( IntToStr(Round(Valor * Power(10,fpDecimaisPreco) ))  ) ;
        AddParam( LeftStr(Favorecido,40) ) ;
        AddParam( LeftStr(Cidade,30) ) ;
        AddParam( Observacao ) ;
@@ -3323,11 +3390,11 @@ begin
      begin
         EpsonComando.Comando  :='0902';
         EpsonComando.Extensao :='0002';
-        EpsonComando.AddParam(IntToStrZero(i,2));
+        EpsonComando.AddParam(IntToStr(i));
         EnviaComando;
 
         RG := TACBrECFRelatorioGerencial.Create;
-        RG.Indice    := IntToStrZero(i,2);
+        RG.Indice    := IntToStr(i);
         RG.Descricao := EpsonResposta.Params[0];
         RG.Contador  := StrToIntDef(EpsonResposta.Params[1],0);
         fpRelatoriosGerenciais.Add(RG);
@@ -3378,29 +3445,99 @@ end;
 
 function TACBrECFEpson.TraduzirTag(const ATag : AnsiString) : AnsiString ;
 const
-  cOff = ESC + #0 ;
-
-  // <e></e>
-  cExpandido   = ESC + #4 ;
-
-  // <n></n>
-  cNegrito     = ESC + #1 ;
-
+  C_OFF = 0;
+  // <e>
+  cExpandidoOn = 4;
+  // <n>
+  cNegritoOn = 1;
   // <s></s>
-  cSublinhado  = ESC + #2 ;
+  cSublinhadoOn = 2;
+
+  cBarras = ESC + #128 ;
+  // ESC + #128 + T + H + W + HRIp + HRIl + EEEEEEEEEEEEE..EE
+  // --------
+  // ESC + #128 = Comando para impressão das barras
+  // T = 1 byte Tipo de codigo conforme tabela abaixo
+  // H = 1 byte. Altura do código de 0 a 255. 0 = Default
+  // W = 1 byte. Largura do código de 2 a 6. 0 = Default
+  // HRIp = 1 byte. Posiçao de Impressao do Texto. 0-Nao imprime, 1-Acima, 2-Abaixo, 3-Ambos
+  // HRIl = 1 byte. Letra da Impressao do Texto. 0-Letra A, 1-Letra B
+  // E = Codigo de barra
+
+  cEAN8     = 68 ; // <ean8></ean8>
+  cEAN13    = 67 ; // <ean13></ean13>
+  cINTER    = 70 ; // <inter></inter>
+  cCODE39   = 69; // <code39></code39>
+  cCODE93   = 72; // <code93></code93>
+  cCODE128  = 73; // <code128></code128>
+  cUPCA     = 65; // <upca></upca>
+  cCODABAR  = 71; // <codabar></codabar>
+  cBarraFim = '';
+
+  function ConfigurarBarras(const ACodigo: Integer): AnsiString;
+  Var
+    Altura, Largura, Mostrar : Integer ;
+  begin
+    Altura  := max(min(ConfigBarras.Altura,255),0);
+    Largura := ConfigBarras.LarguraLinha;
+    if Largura <> 0 then
+       Largura := max(min(Largura,6),2);
+    Mostrar := 0;
+    if ConfigBarras.MostrarCodigo then
+       Mostrar := 2;
+
+    Result := cBarras + chr(ACodigo) + chr( Altura ) + chr( Largura ) +
+              chr( Mostrar ) + #1 ;
+  end;
+var
+  TagNum, Cmd : Integer ;
 begin
 
-  case AnsiIndexText( ATag, ARRAY_TAGS) of
+  TagNum := AnsiIndexText( ATag, ARRAY_TAGS) ;
+
+  case TagNum of
      -1: Result := ATag;
-     2 : Result := cExpandido;
-     3 : Result := cOff;
-     4 : Result := cNegrito;
-     5 : Result := cOff;
-     6 : Result := cSublinhado;
-     7 : Result := cOff;
+     2 : fsALExpandido := True ;
+     3 : fsALExpandido := False ;
+     4 : fsALNegrito   := True ;
+     5 : fsALNegrito   := False ;
+     6 : fsALSublinhado:= True ;
+     7 : fsALSublinhado:= False ;
+     12: Result := ConfigurarBarras(cEAN8);
+     13: Result := cBarraFim;
+     14: Result := ConfigurarBarras(cEAN13);
+     15: Result := cBarraFim;
+     18: Result := ConfigurarBarras(cINTER);
+     19: Result := cBarraFim;
+     22: Result := ConfigurarBarras(cCODE39);
+     23: Result := cBarraFim;
+     24: Result := ConfigurarBarras(cCODE93);
+     25: Result := cBarraFim;
+     26: Result := ConfigurarBarras(cCODE128);
+     27: Result := cBarraFim;
+     28: Result := ConfigurarBarras(cUPCA);
+     29: Result := cBarraFim;
+     30: Result := ConfigurarBarras(cCODABAR);
+     31: Result := cBarraFim;
   else
      Result := '' ;
   end;
+
+  if (TagNum > 1) and (TagNum < 8) then
+  begin
+     Cmd := C_OFF ;
+
+     if fsALNegrito then
+        Cmd := Cmd + cNegritoOn;
+
+     if fsALExpandido then
+        Cmd := Cmd + cExpandidoOn;
+
+     if fsALSublinhado then
+        Cmd := Cmd + cSublinhadoOn;
+
+     Result := ESC + chr( Cmd );
+  end ;
 end ;
 
 end.

@@ -793,9 +793,9 @@ begin
         inc(i01);
       end;
 
+  {$IFDEF PL_103}
       if Leitor.rExtrai(3, 'valePed') <> '' then
       begin
-  {$IFDEF PL_103}
         CTe.Rodo.valePed.nroRE     := Leitor.rCampo(tcStr, 'nroRE');
         CTe.Rodo.valePed.vTValePed := Leitor.rCampo(tcDe2, 'vTValePed');
         CTe.Rodo.valePed.respPg    := StrToRspPagPedagio(ok, Leitor.rCampo(tcStr, 'respPg'));
@@ -811,13 +811,19 @@ begin
           CTe.Rodo.valePed.disp[i01].nCompC := Leitor.rCampo(tcStr, 'nCompC');
           inc(i01);
         end;
+      end;
   {$ENDIF}
   {$IFDEF PL_104}
-        CTe.Rodo.valePed.CNPJForn := Leitor.rCampo(tcStr, 'CNPJForn');
-        CTe.Rodo.valePed.nCompra  := Leitor.rCampo(tcStr, 'nCompra');
-        CTe.Rodo.valePed.CNPJPg   := Leitor.rCampo(tcStr, 'CNPJPg');
-  {$ENDIF}
+      i01 := 0;
+      while Leitor.rExtrai(3, 'valePed', '', i01 + 1) <> '' do
+      begin
+        CTe.Rodo.valePed.Add;
+        CTe.Rodo.valePed[i01].CNPJForn := Leitor.rCampo(tcStr, 'CNPJForn');
+        CTe.Rodo.valePed[i01].nCompra  := Leitor.rCampo(tcStr, 'nCompra');
+        CTe.Rodo.valePed[i01].CNPJPg   := Leitor.rCampo(tcStr, 'CNPJPg');
+        inc(i01);
       end;
+  {$ENDIF}
 
       i01 := 0;
       while Leitor.rExtrai(3, 'veic', '', i01 + 1) <> '' do

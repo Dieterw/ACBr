@@ -137,9 +137,15 @@ type
   TOccCollection = class;
   TOccCollectionItem = class;
   TEmiOCC = class;
+{$IFDEF PL_103}
   TValePed = class;
   TDispCollection = class;
   TDispCollectionItem = class;
+{$ENDIF}
+{$IFDEF PL_104}
+  TValePedCollection = class;
+  TValePedCollectionItem = class;
+{$ENDIF}
   TVeicCollection = class;
   TVeicCollectionItem = class;
   Tprop = class;
@@ -1495,11 +1501,19 @@ type
     FCIOT    : Integer;
   {$ENDIF}
     FOcc     : TOccCollection;
+  {$IFDEF PL_103}
     FvalePed : TValePed;
+  {$ENDIF}
+  {$IFDEF PL_104}
+    FvalePed : TValePedCollection;
+  {$ENDIF}
     Fveic    : TVeicCollection;
     FLacres  : TLacresCollection;
     Fmoto    : TMotoCollection;
     procedure SetOcc(const Value: TOccCollection);
+  {$IFDEF PL_104}
+    procedure SetValePed(const Value: TValePedCollection);
+  {$ENDIF}
     procedure SetVeic(const Value: TVeicCollection);
     procedure SetLacres(const Value: TLacresCollection);
     procedure SetMoto(const Value: TMotoCollection);
@@ -1517,7 +1531,12 @@ type
     property CIOT: Integer read FCIOT write FCIOT;
   {$ENDIF}
     property Occ: TOccCollection read FOcc write SetOcc;
+  {$IFDEF PL_103}
     property valePed: TValePed read FvalePed write FvalePed;
+  {$ENDIF}
+  {$IFDEF PL_104}
+    property valePed: TValePedCollection read FValePed write SetValePed;
+  {$ENDIF}
     property veic: TVeicCollection read Fveic write SetVeic;
     property Lacres: TLacresCollection read FLacres write SetLacres;
     property moto: TMotoCollection read Fmoto write SetMoto;
@@ -1573,9 +1592,9 @@ type
     property fone: String read Ffone write Ffone;
   end;
 
+{$IFDEF PL_103}
   TValePed = class(TPersistent)
   private
-  {$IFDEF PL_103}
     FnroRE     : String;
     FvTValePed : Currency;
     FrespPg    : TpcteRspPagPedagio;
@@ -1589,16 +1608,6 @@ type
     property vTValePed: Currency read FvTValePed write FvTValePed;
     property respPg: TpcteRspPagPedagio read FrespPg write FrespPg;
     property disp: TDispCollection read Fdisp write SetDisp;
-  {$ENDIF}
-  {$IFDEF PL_104}
-    FCNPJForn : String;
-    FnCompra  : String;
-    FCNPJPg   : String;
-  published
-    property CNPJForn: String read FCNPJForn write FCNPJForn;
-    property nCompra: String read FnCompra write FnCompra;
-    property CNPJPg: String read FCNPJPg write FCNPJPg;
-  {$ENDIF}
   end;
 
   TDispCollection = class(TCollection)
@@ -1628,6 +1637,30 @@ type
     property nDisp: String read FnDisp write FnDisp;
     property nCompC: String read FnCompC write FnCompC;
   end;
+{$ENDIF}
+
+{$IFDEF PL_104}
+  TValePedCollection = class(TCollection)
+  private
+    function GetItem(Index: Integer): TValePedCollectionItem;
+    procedure SetItem(Index: Integer; Value: TValePedCollectionItem);
+  public
+    constructor Create(AOwner: TRodo);
+    function Add: TValePedCollectionItem;
+    property Items[Index: Integer]: TValePedCollectionItem read GetItem write SetItem; default;
+  end;
+
+  TValePedCollectionItem = class(TCollectionItem)
+  private
+    FCNPJForn : String;
+    FnCompra  : String;
+    FCNPJPg   : String;
+  published
+    property CNPJForn: String read FCNPJForn write FCNPJForn;
+    property nCompra: String read FnCompra write FnCompra;
+    property CNPJPg: String read FCNPJPg write FCNPJPg;
+  end;
+{$ENDIF}
 
   TVeicCollection = class(TCollection)
   private
@@ -3433,6 +3466,9 @@ begin
 {$IFDEF PL_103}
   FvalePed := TValePed.Create(Self);
 {$ENDIF}
+{$IFDEF PL_104}
+  FvalePed := TValePedCollection.Create(Self);
+{$ENDIF}
   Fveic    := TVeicCollection.Create(Self);
   FLacres  := TLacresCollection.Create(Self);
   Fmoto    := TMotoCollection.Create(Self);
@@ -3444,9 +3480,9 @@ begin
   FCTRB.Free;
 {$ENDIF}
   FOcc.Free;
-{$IFDEF PL_103}
+// {$IFDEF PL_103}
   FvalePed.Free;
-{$ENDIF}
+// {$ENDIF}
   Fveic.Free;
   FLacres.Free;
   Fmoto.Free;
@@ -3471,6 +3507,11 @@ end;
 procedure TRodo.SetMoto(const Value: TMotoCollection);
 begin
  Fmoto.Assign(Value);
+end;
+
+procedure TRodo.SetValePed(const Value: TValePedCollection);
+begin
+ FValePed.Assign(Value);
 end;
 
 { TOccCollection }
@@ -3528,7 +3569,6 @@ procedure TValePed.SetDisp(const Value: TDispCollection);
 begin
   Fdisp.Assign(Value);
 end;
-{$ENDIF}
 
 { TDispCollection }
 
@@ -3566,6 +3606,7 @@ begin
 
   inherited;
 end;
+{$ENDIF}
 
 { TVeicCollection }
 
@@ -4462,6 +4503,32 @@ procedure TDupCollection.SetItem(Index: Integer; Value: TDupCollectionItem);
 begin
   inherited SetItem(Index, Value);
 end;
+
+{$IFDEF PL_104}
+{ TValePedCollection }
+
+function TValePedCollection.Add: TValePedCollectionItem;
+begin
+  Result := TValePedCollectionItem(inherited Add);
+end;
+
+constructor TValePedCollection.Create(AOwner: TRodo);
+begin
+  inherited Create(TValePedCollectionItem);
+end;
+
+function TValePedCollection.GetItem(
+  Index: Integer): TValePedCollectionItem;
+begin
+  Result := TValePedCollectionItem(inherited GetItem(Index));
+end;
+
+procedure TValePedCollection.SetItem(Index: Integer;
+  Value: TValePedCollectionItem);
+begin
+  inherited SetItem(Index, Value);
+end;
+{$ENDIF}
 
 end.
 

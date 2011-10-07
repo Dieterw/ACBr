@@ -3509,10 +3509,12 @@ begin
  Fmoto.Assign(Value);
 end;
 
+{$IFDEF PL_104}
 procedure TRodo.SetValePed(const Value: TValePedCollection);
 begin
  FValePed.Assign(Value);
 end;
+{$ENDIF}
 
 { TOccCollection }
 

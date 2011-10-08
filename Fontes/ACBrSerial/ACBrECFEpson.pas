@@ -115,7 +115,7 @@ TACBrECFEpsonResposta = class
 
     procedure SetResposta(const Value: AnsiString);
     Function RemoveEsc(const Campo: AnsiString): AnsiString ;
-    function GetDescRetorno: String;
+    function GetDescRetorno: AnsiString;
  public
     constructor create( AOwner : TACBrECFEpson ) ;
     destructor destroy ; override ;
@@ -615,7 +615,7 @@ begin
 end;
 
 
-function TACBrECFEpsonResposta.GetDescRetorno: String;
+function TACBrECFEpsonResposta.GetDescRetorno: AnsiString;
  Var  sValorSaida : String;
       sRetorno    : AnsiString ;
 begin

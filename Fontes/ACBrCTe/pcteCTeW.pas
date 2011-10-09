@@ -1077,18 +1077,18 @@ procedure TCTeW.GerarCST00;
 begin
 {$IFDEF PL_103}
   Gerador.wGrupo('CST00', '#241');
-{$ENDIF}
-{$IFDEF PL_104}
-  Gerador.wGrupo('ICMS00', '#241');
-{$ENDIF}
   Gerador.wCampo(tcStr, '#242', 'CST   ', 02, 02, 1, CSTICMSTOStr(CTe.Imp.ICMS.CST00.CST), DSC_CST);
   Gerador.wCampo(tcDe2, '#243', 'vBC   ', 01, 15, 1, CTe.Imp.ICMS.CST00.vBC, DSC_VBC);
   Gerador.wCampo(tcDe2, '#244', 'pICMS ', 01, 05, 1, CTe.Imp.ICMS.CST00.pICMS, DSC_PICMS);
   Gerador.wCampo(tcDe2, '#245', 'vICMS ', 01, 15, 1, CTe.Imp.ICMS.CST00.vICMS, DSC_VICMS);
-{$IFDEF PL_103}
   Gerador.wGrupo('/CST00');
 {$ENDIF}
 {$IFDEF PL_104}
+  Gerador.wGrupo('ICMS00', '#241');
+  Gerador.wCampo(tcStr, '#242', 'CST   ', 02, 02, 1, CSTICMSTOStr(CTe.Imp.ICMS.ICMS00.CST), DSC_CST);
+  Gerador.wCampo(tcDe2, '#243', 'vBC   ', 01, 15, 1, CTe.Imp.ICMS.ICMS00.vBC, DSC_VBC);
+  Gerador.wCampo(tcDe2, '#244', 'pICMS ', 01, 05, 1, CTe.Imp.ICMS.ICMS00.pICMS, DSC_PICMS);
+  Gerador.wCampo(tcDe2, '#245', 'vICMS ', 01, 15, 1, CTe.Imp.ICMS.ICMS00.vICMS, DSC_VICMS);
   Gerador.wGrupo('/ICMS00');
 {$ENDIF}
 end;
@@ -1097,19 +1097,20 @@ procedure TCTeW.GerarCST20;
 begin
 {$IFDEF PL_103}
   Gerador.wGrupo('CST20', '#246');
-{$ENDIF}
-{$IFDEF PL_104}
-  Gerador.wGrupo('ICMS20', '#246');
-{$ENDIF}
   Gerador.wCampo(tcStr, '#247', 'CST    ', 02, 02, 1, CSTICMSTOStr(CTe.Imp.ICMS.CST20.CST), DSC_CST);
   Gerador.wCampo(tcDe2, '#248', 'pRedBC ', 01, 05, 1, CTe.Imp.ICMS.CST20.pRedBC, DSC_PREDBC);
   Gerador.wCampo(tcDe2, '#249', 'vBC    ', 01, 15, 1, CTe.Imp.ICMS.CST20.vBC, DSC_VBC);
   Gerador.wCampo(tcDe2, '#250', 'pICMS  ', 01, 05, 1, CTe.Imp.ICMS.CST20.pICMS, DSC_PICMS);
   Gerador.wCampo(tcDe2, '#251', 'vICMS  ', 01, 15, 1, CTe.Imp.ICMS.CST20.vICMS, DSC_VICMS);
-{$IFDEF PL_103}
   Gerador.wGrupo('/CST20');
 {$ENDIF}
 {$IFDEF PL_104}
+  Gerador.wGrupo('ICMS20', '#246');
+  Gerador.wCampo(tcStr, '#247', 'CST    ', 02, 02, 1, CSTICMSTOStr(CTe.Imp.ICMS.ICMS20.CST), DSC_CST);
+  Gerador.wCampo(tcDe2, '#248', 'pRedBC ', 01, 05, 1, CTe.Imp.ICMS.ICMS20.pRedBC, DSC_PREDBC);
+  Gerador.wCampo(tcDe2, '#249', 'vBC    ', 01, 15, 1, CTe.Imp.ICMS.ICMS20.vBC, DSC_VBC);
+  Gerador.wCampo(tcDe2, '#250', 'pICMS  ', 01, 05, 1, CTe.Imp.ICMS.ICMS20.pICMS, DSC_PICMS);
+  Gerador.wCampo(tcDe2, '#251', 'vICMS  ', 01, 15, 1, CTe.Imp.ICMS.ICMS20.vICMS, DSC_VICMS);
   Gerador.wGrupo('/ICMS20');
 {$ENDIF}
 end;
@@ -1118,33 +1119,33 @@ procedure TCTeW.GerarCST45;
 begin
 {$IFDEF PL_103}
   Gerador.wGrupo('CST45', '#252');
-{$ENDIF}
-{$IFDEF PL_104}
-  Gerador.wGrupo('ICMS45', '#252');
-{$ENDIF}
   Gerador.wCampo(tcStr, '#253', 'CST ', 02, 02, 1, CSTICMSTOStr(CTe.Imp.ICMS.CST45.CST), DSC_CST);
-{$IFDEF PL_103}
   Gerador.wGrupo('/CST45');
 {$ENDIF}
 {$IFDEF PL_104}
+  Gerador.wGrupo('ICMS45', '#252');
+  Gerador.wCampo(tcStr, '#253', 'CST ', 02, 02, 1, CSTICMSTOStr(CTe.Imp.ICMS.ICMS45.CST), DSC_CST);
   Gerador.wGrupo('/ICMS45');
 {$ENDIF}
 end;
 
 procedure TCTeW.GerarCST60;
 begin
+{$IFDEF PL_104}
   Gerador.wGrupo('ICMS60', '#254');
-  Gerador.wCampo(tcStr, '#255', 'CST        ', 02, 02, 1, CSTICMSTOStr(CTe.Imp.ICMS.CST60.CST), DSC_CST);
-  Gerador.wCampo(tcDe2, '#256', 'vBCSTRet   ', 01, 15, 1, CTe.Imp.ICMS.CST60.vBCSTRet, DSC_VBC);
-  Gerador.wCampo(tcDe2, '#257', 'vICMSSTRet ', 01, 15, 1, CTe.Imp.ICMS.CST60.vICMSSTRet, DSC_VICMS);
-  Gerador.wCampo(tcDe2, '#258', 'pICMSSTRet ', 01, 05, 1, CTe.Imp.ICMS.CST60.pICMSSTRet, DSC_PICMS);
-  if CTe.Imp.ICMS.CST60.vCred > 0 then
-   Gerador.wCampo(tcDe2, '#259', 'vCred     ', 01, 15, 1, CTe.Imp.ICMS.CST60.vCred, DSC_VCRED);
+  Gerador.wCampo(tcStr, '#255', 'CST        ', 02, 02, 1, CSTICMSTOStr(CTe.Imp.ICMS.ICMS60.CST), DSC_CST);
+  Gerador.wCampo(tcDe2, '#256', 'vBCSTRet   ', 01, 15, 1, CTe.Imp.ICMS.ICMS60.vBCSTRet, DSC_VBC);
+  Gerador.wCampo(tcDe2, '#257', 'vICMSSTRet ', 01, 15, 1, CTe.Imp.ICMS.ICMS60.vICMSSTRet, DSC_VICMS);
+  Gerador.wCampo(tcDe2, '#258', 'pICMSSTRet ', 01, 05, 1, CTe.Imp.ICMS.ICMS60.pICMSSTRet, DSC_PICMS);
+  if CTe.Imp.ICMS.ICMS60.vCred > 0 then
+   Gerador.wCampo(tcDe2, '#259', 'vCred     ', 01, 15, 1, CTe.Imp.ICMS.ICMS60.vCred, DSC_VCRED);
   Gerador.wGrupo('/ICMS60');
+{$ENDIF}
 end;
 
 procedure TCTeW.GerarCST80;
 begin
+{$IFDEF PL_103}
   Gerador.wGrupo('CST80', 'J14');
   Gerador.wCampo(tcStr, 'J30', 'CST   ', 02, 02, 1, CSTICMSTOStr(CTe.Imp.ICMS.CST80.CST), DSC_CST);
   Gerador.wCampo(tcDe2, 'J41', 'vBC   ', 01, 15, 1, CTe.Imp.ICMS.CST80.vBC, DSC_VBC);
@@ -1153,10 +1154,12 @@ begin
   if CTe.Imp.ICMS.CST80.vCred > 0 then
    Gerador.wCampo(tcDe2, 'J44', 'vCred ', 01, 15, 1, CTe.Imp.ICMS.CST80.vCred, DSC_VCRED);
   Gerador.wGrupo('/CST80');
+{$ENDIF}
 end;
 
 procedure TCTeW.GerarCST81;
 begin
+{$IFDEF PL_103}
   Gerador.wGrupo('CST81', 'J15');
   Gerador.wCampo(tcStr, 'J30', 'CST     ', 02, 02, 1, CSTICMSTOStr(CTe.Imp.ICMS.CST81.CST), DSC_CST);
   if CTe.Imp.ICMS.CST81.pRedBC > 0 then
@@ -1165,16 +1168,13 @@ begin
   Gerador.wCampo(tcDe2, 'J53', 'pICMS   ', 01, 05, 1, CTe.Imp.ICMS.CST81.pICMS, DSC_PICMS);
   Gerador.wCampo(tcDe2, 'J54', 'vICMS   ', 01, 15, 1, CTe.Imp.ICMS.CST81.vICMS, DSC_VICMS);
   Gerador.wGrupo('/CST81');
+{$ENDIF}
 end;
 
 procedure TCTeW.GerarCST90;
 begin
 {$IFDEF PL_103}
   Gerador.wGrupo('CST90', '#260');
-{$ENDIF}
-{$IFDEF PL_104}
-  Gerador.wGrupo('ICMS90', '#260');
-{$ENDIF}
   Gerador.wCampo(tcStr, '#261', 'CST      ', 02, 02, 1, CSTICMSTOStr(CTe.Imp.ICMS.CST90.CST), DSC_CST);
   if CTe.Imp.ICMS.CST90.pRedBC > 0 then
     Gerador.wCampo(tcDe2, '#262', 'pRedBC ', 01, 05, 1, CTe.Imp.ICMS.CST90.pRedBC, DSC_PREDBC);
@@ -1183,16 +1183,25 @@ begin
   Gerador.wCampo(tcDe2, '#265', 'vICMS    ', 01, 15, 1, CTe.Imp.ICMS.CST90.vICMS, DSC_VICMS);
   if CTe.Imp.ICMS.CST90.vCred > 0 then
     Gerador.wCampo(tcDe2, '#266', 'vCred  ', 01, 15, 1, CTe.Imp.ICMS.CST90.vCred, DSC_VCRED);
-{$IFDEF PL_103}
   Gerador.wGrupo('/CST90');
 {$ENDIF}
 {$IFDEF PL_104}
+  Gerador.wGrupo('ICMS90', '#260');
+  Gerador.wCampo(tcStr, '#261', 'CST      ', 02, 02, 1, CSTICMSTOStr(CTe.Imp.ICMS.ICMS90.CST), DSC_CST);
+  if CTe.Imp.ICMS.ICMS90.pRedBC > 0 then
+    Gerador.wCampo(tcDe2, '#262', 'pRedBC ', 01, 05, 1, CTe.Imp.ICMS.ICMS90.pRedBC, DSC_PREDBC);
+  Gerador.wCampo(tcDe2, '#263', 'vBC      ', 01, 15, 1, CTe.Imp.ICMS.ICMS90.vBC, DSC_VBC);
+  Gerador.wCampo(tcDe2, '#264', 'pICMS    ', 01, 05, 1, CTe.Imp.ICMS.ICMS90.pICMS, DSC_PICMS);
+  Gerador.wCampo(tcDe2, '#265', 'vICMS    ', 01, 15, 1, CTe.Imp.ICMS.ICMS90.vICMS, DSC_VICMS);
+  if CTe.Imp.ICMS.ICMS90.vCred > 0 then
+    Gerador.wCampo(tcDe2, '#266', 'vCred  ', 01, 15, 1, CTe.Imp.ICMS.ICMS90.vCred, DSC_VCRED);
   Gerador.wGrupo('/ICMS90');
 {$ENDIF}
 end;
 
 procedure TCTeW.GerarICMSOutraUF;
 begin
+{$IFDEF PL_104}
   Gerador.wGrupo('ICMSOutraUF', '#267');
   Gerador.wCampo(tcStr, '#268', 'CST             ', 02, 02, 1, CSTICMSTOStr(CTe.Imp.ICMS.ICMSOutraUF.CST), DSC_CST);
   if CTe.Imp.ICMS.ICMSOutraUF.pRedBCOutraUF > 0 then
@@ -1201,13 +1210,16 @@ begin
   Gerador.wCampo(tcDe2, '#271', 'pICMSOutraUF    ', 01, 05, 1, CTe.Imp.ICMS.ICMSOutraUF.pICMSOutraUF, DSC_PICMS);
   Gerador.wCampo(tcDe2, '#272', 'vICMSOutraUF    ', 01, 15, 1, CTe.Imp.ICMS.ICMSOutraUF.vICMSOutraUF, DSC_VICMS);
   Gerador.wGrupo('/ICMSOutraUF');
+{$ENDIF}
 end;
 
 procedure TCTeW.GerarICMSSN;
 begin
+{$IFDEF PL_104}
   Gerador.wGrupo('ICMSSN', '#273');
   Gerador.wCampo(tcInt, '#274', 'indSN ', 01, 01, 1, CTe.Imp.ICMS.ICMSSN.indSN, '');
   Gerador.wGrupo('/ICMSSN');
+{$ENDIF}
 end;
 
 procedure TCTeW.GerarInfCTeNorm;

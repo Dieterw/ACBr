@@ -1671,10 +1671,18 @@ begin
 
    // Checar esse trecho
 
+{$IFDEF PL_103}
    if (CTeUtil.NaoEstaZerado(FCTe.Imp.ICMS.CST00.vICMS))
     then wicms_p := '1';
    if (CTeUtil.NaoEstaZerado(FCTe.Imp.ICMS.CST80.vICMS))
     then wicms_s := '1';
+{$ENDIF}
+{$IFDEF PL_104}
+   if (CTeUtil.NaoEstaZerado(FCTe.Imp.ICMS.ICMS00.vICMS))
+    then wicms_p := '1';
+   if (CTeUtil.NaoEstaZerado(FCTe.Imp.ICMS.ICMSOutraUF.vICMSOutraUF))
+    then wicms_s := '1';
+{$ENDIF}
 
    wchave := wchave + wicms_p + wicms_s;
 

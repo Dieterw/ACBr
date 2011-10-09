@@ -2461,15 +2461,23 @@ type
     destructor Destroy; override;
   published
     property SituTrib: TpcnCSTIcms read FSituTrib write FSituTrib;
+  {$IFDEF PL_103}
     property CST00 : TCST00 read FCST00 write FCST00;
     property CST20 : TCST20 read FCST20 write FCST20;
     property CST45 : TCST45 read FCST45 write FCST45;
-    property CST60 : TCST60 read FCST60 write FCST60;
     property CST80 : TCST80 read FCST80 write FCST80;
     property CST81 : TCST81 read FCST81 write FCST81;
     property CST90 : TCST90 read FCST90 write FCST90;
+  {$ENDIF}
+  {$IFDEF PL_104}
+    property ICMS00 : TCST00 read FCST00 write FCST00;
+    property ICMS20 : TCST20 read FCST20 write FCST20;
+    property ICMS45 : TCST45 read FCST45 write FCST45;
+    property ICMS60 : TCST60 read FCST60 write FCST60;
+    property ICMS90 : TCST90 read FCST90 write FCST90;
     property ICMSOutraUF : TICMSOutraUF read FICMSOutraUF write FICMSOutraUF;
     property ICMSSN : TICMSSN read FICMSSN write FICMSSN;
+  {$ENDIF}
   end;
 
   TInfCTeAnuEnt = class(TPersistent)

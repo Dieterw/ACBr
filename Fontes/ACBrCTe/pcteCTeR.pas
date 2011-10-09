@@ -1198,10 +1198,6 @@ begin
       begin
 {$IFDEF PL_103}
         if Leitor.rExtrai(4, 'CST00') <> '' then
-{$ENDIF}
-{$IFDEF PL_104}
-        if Leitor.rExtrai(4, 'ICMS00') <> '' then
-{$ENDIF}
         begin
           if Leitor.rCampo(tcStr,'CST')='00'
           then begin
@@ -1212,13 +1208,23 @@ begin
             CTe.InfCTeComp[i01].impComp.ICMSComp.CST00.vICMS := Leitor.rCampo(tcDe2,'vICMS');
           end;
         end;
+{$ENDIF}
+{$IFDEF PL_104}
+        if Leitor.rExtrai(4, 'ICMS00') <> '' then
+        begin
+          if Leitor.rCampo(tcStr,'CST')='00'
+          then begin
+            CTe.InfCTeComp[i01].impComp.ICMSComp.SituTrib     := cst00;
+            CTe.InfCTeComp[i01].impComp.ICMSComp.ICMS00.CST   := Leitor.rCampo(tcStr,'CST');
+            CTe.InfCTeComp[i01].impComp.ICMSComp.ICMS00.vBC   := Leitor.rCampo(tcDe2,'vBC');
+            CTe.InfCTeComp[i01].impComp.ICMSComp.ICMS00.pICMS := Leitor.rCampo(tcDe2,'pICMS');
+            CTe.InfCTeComp[i01].impComp.ICMSComp.ICMS00.vICMS := Leitor.rCampo(tcDe2,'vICMS');
+          end;
+        end;
+{$ENDIF}
 
 {$IFDEF PL_103}
         if Leitor.rExtrai(4, 'CST20') <> '' then
-{$ENDIF}
-{$IFDEF PL_104}
-        if Leitor.rExtrai(4, 'ICMS20') <> '' then
-{$ENDIF}
         begin
           if Leitor.rCampo(tcStr,'CST')='20'
           then begin
@@ -1230,13 +1236,24 @@ begin
             CTe.InfCTeComp[i01].impComp.ICMSComp.CST20.vICMS  := Leitor.rCampo(tcDe2,'vICMS');
           end;
         end;
+{$ENDIF}
+{$IFDEF PL_104}
+        if Leitor.rExtrai(4, 'ICMS20') <> '' then
+        begin
+          if Leitor.rCampo(tcStr,'CST')='20'
+          then begin
+            CTe.InfCTeComp[i01].impComp.ICMSComp.SituTrib     := cst20;
+            CTe.InfCTeComp[i01].impComp.ICMSComp.ICMS20.CST    := Leitor.rCampo(tcStr,'CST');
+            CTe.InfCTeComp[i01].impComp.ICMSComp.ICMS20.pRedBC := Leitor.rCampo(tcDe2,'pRedBC');
+            CTe.InfCTeComp[i01].impComp.ICMSComp.ICMS20.vBC    := Leitor.rCampo(tcDe2,'vBC');
+            CTe.InfCTeComp[i01].impComp.ICMSComp.ICMS20.pICMS  := Leitor.rCampo(tcDe2,'pICMS');
+            CTe.InfCTeComp[i01].impComp.ICMSComp.ICMS20.vICMS  := Leitor.rCampo(tcDe2,'vICMS');
+          end;
+        end;
+{$ENDIF}
 
 {$IFDEF PL_103}
         if Leitor.rExtrai(4, 'CST45') <> '' then
-{$ENDIF}
-{$IFDEF PL_104}
-        if Leitor.rExtrai(4, 'ICMS45') <> '' then
-{$ENDIF}
         begin
           if (Leitor.rCampo(tcStr,'CST')='40') or
              (Leitor.rCampo(tcStr,'CST')='41') or
@@ -1246,22 +1263,36 @@ begin
             CTe.InfCTeComp[i01].impComp.ICMSComp.CST45.CST := Leitor.rCampo(tcStr,'CST');
           end;
         end;
+{$ENDIF}
+{$IFDEF PL_104}
+        if Leitor.rExtrai(4, 'ICMS45') <> '' then
+        begin
+          if (Leitor.rCampo(tcStr,'CST')='40') or
+             (Leitor.rCampo(tcStr,'CST')='41') or
+             (Leitor.rCampo(tcStr,'CST')='51')
+          then begin
+            CTe.InfCTeComp[i01].impComp.ICMSComp.SituTrib  := Leitor.rCampo(tcStr,'CST');
+            CTe.InfCTeComp[i01].impComp.ICMSComp.ICMS45.CST := Leitor.rCampo(tcStr,'CST');
+          end;
+        end;
+{$ENDIF}
 
-    {$IFDEF PL_104}
+{$IFDEF PL_104}
         if Leitor.rExtrai(4, 'ICMS60') <> '' then
         begin
           if Leitor.rCampo(tcStr,'CST')='60'
           then begin
-            CTe.InfCTeComp[i01].impComp.ICMSComp.SituTrib         := cst60;
-            CTe.InfCTeComp[i01].impComp.ICMSComp.CST60.CST        := Leitor.rCampo(tcStr,'CST');
-            CTe.InfCTeComp[i01].impComp.ICMSComp.CST60.vBCSTRet   := Leitor.rCampo(tcDe2,'vBCSTRet');
-            CTe.InfCTeComp[i01].impComp.ICMSComp.CST60.vICMSSTRet := Leitor.rCampo(tcDe2,'vICMSSTRet');
-            CTe.InfCTeComp[i01].impComp.ICMSComp.CST60.pICMSSTRet := Leitor.rCampo(tcDe2,'pICMSSTRet');
-            CTe.InfCTeComp[i01].impComp.ICMSComp.CST60.vCred      := Leitor.rCampo(tcDe2,'vCred');
+            CTe.InfCTeComp[i01].impComp.ICMSComp.SituTrib          := cst60;
+            CTe.InfCTeComp[i01].impComp.ICMSComp.ICMS60.CST        := Leitor.rCampo(tcStr,'CST');
+            CTe.InfCTeComp[i01].impComp.ICMSComp.ICMS60.vBCSTRet   := Leitor.rCampo(tcDe2,'vBCSTRet');
+            CTe.InfCTeComp[i01].impComp.ICMSComp.ICMS60.vICMSSTRet := Leitor.rCampo(tcDe2,'vICMSSTRet');
+            CTe.InfCTeComp[i01].impComp.ICMSComp.ICMS60.pICMSSTRet := Leitor.rCampo(tcDe2,'pICMSSTRet');
+            CTe.InfCTeComp[i01].impComp.ICMSComp.ICMS60.vCred      := Leitor.rCampo(tcDe2,'vCred');
           end;
         end;
-    {$ENDIF}
+{$ENDIF}
 
+{$IFDEF PL_103}
         if Leitor.rExtrai(4, 'CST80') <> '' then
         begin
           if Leitor.rCampo(tcStr,'CST')='90'
@@ -1289,13 +1320,10 @@ begin
             CTe.InfCTeComp[i01].impComp.ICMSComp.CST81.vICMS  := Leitor.rCampo(tcDe2,'vICMS');
           end;
         end;
+{$ENDIF}
 
 {$IFDEF PL_103}
         if Leitor.rExtrai(4, 'CST90') <> '' then
-{$ENDIF}
-{$IFDEF PL_104}
-        if Leitor.rExtrai(4, 'ICMS90') <> '' then
-{$ENDIF}
         begin
           if Leitor.rCampo(tcStr,'CST')='90'
           then begin
@@ -1310,7 +1338,49 @@ begin
         end;
       end;
     end;
+{$ENDIF}
+{$IFDEF PL_104}
+        if Leitor.rExtrai(4, 'ICMS90') <> '' then
+        begin
+          if Leitor.rCampo(tcStr,'CST')='90'
+          then begin
+            CTe.InfCTeComp[i01].impComp.ICMSComp.SituTrib     := cst90;
+            CTe.InfCTeComp[i01].impComp.ICMSComp.ICMS90.CST    := Leitor.rCampo(tcStr,'CST');
+            CTe.InfCTeComp[i01].impComp.ICMSComp.ICMS90.pRedBC := Leitor.rCampo(tcDe2,'pRedBC');
+            CTe.InfCTeComp[i01].impComp.ICMSComp.ICMS90.vBC    := Leitor.rCampo(tcDe2,'vBC');
+            CTe.InfCTeComp[i01].impComp.ICMSComp.ICMS90.pICMS  := Leitor.rCampo(tcDe2,'pICMS');
+            CTe.InfCTeComp[i01].impComp.ICMSComp.ICMS90.vICMS  := Leitor.rCampo(tcDe2,'vICMS');
+            CTe.InfCTeComp[i01].impComp.ICMSComp.ICMS90.vCred  := Leitor.rCampo(tcDe2,'vCred');
+          end;
+        end;
+      end;
+    end;
+{$ENDIF}
 
+{$IFDEF PL_104}
+      if Leitor.rExtrai(4, 'ICMSOutraUF') <> '' then
+      begin
+        if Leitor.rCampo(tcStr,'CST')='90'
+        then begin
+          // ICMS devido à UF de origem da prestação, quando diferente da UF do emitente
+          CTe.InfCTeComp[i01].impComp.ICMSComp.SituTrib                  := cstICMSOutraUF;
+          CTe.InfCTeComp[i01].impComp.ICMSComp.ICMSOutraUF.CST           := StrToCSTICMS(ok, Leitor.rCampo(tcStr,'CST'));
+          CTe.InfCTeComp[i01].impComp.ICMSComp.ICMSOutraUF.pRedBCOutraUF := Leitor.rCampo(tcDe2,'pRedBCOutraUF');
+          CTe.InfCTeComp[i01].impComp.ICMSComp.ICMSOutraUF.vBCOutraUF    := Leitor.rCampo(tcDe2,'vBCOutraUF');
+          CTe.InfCTeComp[i01].impComp.ICMSComp.ICMSOutraUF.pICMSOutraUF  := Leitor.rCampo(tcDe2,'pICMSOutraUF');
+          CTe.InfCTeComp[i01].impComp.ICMSComp.ICMSOutraUF.vICMSOutraUF  := Leitor.rCampo(tcDe2,'vICMSOutraUF');
+        end;
+      end;
+{$ENDIF}
+
+{$IFDEF PL_104}
+      if Leitor.rExtrai(4, 'ICMSSN') <> '' then
+      begin
+       // ICMS Simples Nacional
+       CTe.InfCTeComp[i01].impComp.ICMSComp.SituTrib     := cstICMSSN;
+       CTe.InfCTeComp[i01].impComp.ICMSComp.ICMSSN.indSN := Leitor.rCampo(tcInt,'indSN');
+      end;
+{$ENDIF}
     inc(i01);
   end;
 

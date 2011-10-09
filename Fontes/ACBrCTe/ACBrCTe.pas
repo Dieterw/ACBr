@@ -58,8 +58,14 @@ uses
   pcteCTe, pcnConversao, ACBrCTeConhecimentos, ACBrCTeConfiguracoes,
   ACBrCTeWebServices, ACBrCTeUtil, ACBrCTeDACTeClass;
 
+{$IFDEF PL_103}
 const
-  ACBRCTE_VERSAO = '0.5.0a';
+  ACBRCTE_VERSAO = '0.6.0a XML 1.03';
+{$ENDIF}
+{$IFDEF PL_104}
+const
+  ACBRCTE_VERSAO = '0.6.0a XML 1.04';
+{$ENDIF}
 
 type
  TACBrCTeAboutInfo = (ACBrCTeAbout);

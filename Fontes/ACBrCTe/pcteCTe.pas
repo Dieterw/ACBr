@@ -263,8 +263,8 @@ type
     property vPrest: TvPrest read FvPrest write FvPrest;
     property Imp: TImp read FImp write FImp;
     property infCTeNorm: TInfCTeNorm read FInfCteNorm write FInfCTeNorm;
-    property InfCarga: TInfCarga read FInfCarga write FInfCarga;
-    property InfSeg: TInfSegCollection read FInfSeg write SetInfSeg;
+    property infCarga: TInfCarga read FInfCarga write FInfCarga;
+    property infSeg: TInfSegCollection read FInfSeg write SetInfSeg;
 
     property Rodo: TRodo read FRodo write FRodo;
     property Aereo: Taereo read Faereo write Faereo;
@@ -421,7 +421,7 @@ type
   TEnderToma = class(TPersistent)
   private
     FxLgr    : string;
-    FxNum    : string;
+    Fnro     : string;
     FxCpl    : string;
     FxBairro : string;
     FcMun    : integer;
@@ -432,7 +432,7 @@ type
     FxPais   : string;
   published
     property xLgr: string read FxLgr write FxLgr;
-    property xNum: string read FxNum write FxNum;
+    property nro: string read Fnro write Fnro;
     property xCpl: string read FxCpl write FxCpl;
     property xBairro: string read FxBairro write FxBairro;
     property cMun: integer read FcMun write FcMun;

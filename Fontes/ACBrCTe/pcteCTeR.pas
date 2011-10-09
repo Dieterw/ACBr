@@ -188,7 +188,7 @@ begin
        if Leitor.rExtrai(3, 'enderToma') <> '' then
        begin
          (*B37*)CTe.Ide.Toma4.EnderToma.xLgr    := Leitor.rCampo(tcStr, 'xLgr');
-         (*B37*)CTe.Ide.Toma4.EnderToma.xNum    := Leitor.rCampo(tcStr, 'nro');
+         (*B37*)CTe.Ide.Toma4.EnderToma.nro     := Leitor.rCampo(tcStr, 'nro');
          (*B37*)CTe.Ide.Toma4.EnderToma.xCpl    := Leitor.rCampo(tcStr, 'xCpl');
          (*B37*)CTe.Ide.Toma4.EnderToma.xBairro := Leitor.rCampo(tcStr, 'xBairro');
          (*B37*)CTe.Ide.Toma4.EnderToma.cMun    := Leitor.rCampo(tcInt, 'cMun');

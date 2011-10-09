@@ -374,9 +374,9 @@ type
     property xMunFim: String read FxMunFim write FxMunFim;
     property UFFim: String read FUFFim write FUFFim;
     property retira: TpcteRetira read Fretira write Fretira;
-    property xdetretira: String read Fxdetretira write Fxdetretira;
-    property Toma03: TToma03 read FToma03 write FToma03;
-    property Toma4: TToma4 read FToma4 write FToma4;
+    property xDetRetira: String read Fxdetretira write Fxdetretira;
+    property toma03: TToma03 read FToma03 write FToma03;
+    property toma4: TToma4 read FToma4 write FToma4;
   {$IFDEF PL_104}
     property dhCont: TDateTime read FdhCont write FdhCont;
     property xJust: String read FxJust write FxJust;
@@ -412,7 +412,7 @@ type
     property xNome: String read FxNome write FxNome;
     property xFant: String read FxFant write FxFant;
     property fone : String read Ffone write Ffone;
-    property EnderToma: TEnderToma read FEnderToma write FEnderToma;
+    property enderToma: TEnderToma read FEnderToma write FEnderToma;
   {$IFDEF PL_104}
     property email : String read Femail write Femail;
   {$ENDIF}
@@ -649,7 +649,7 @@ type
     property IE : String read FIE write FIE;
     property xNome : String read FxNome write FxNome;
     property xFant : String read FxFant write FxFant;
-    property EnderEmit: TEnderEmit read FEnderEmit write FEnderEmit;
+    property enderEmit: TEnderEmit read FEnderEmit write FEnderEmit;
   end;
 
   TEnderEmit = class(TPersistent)
@@ -709,13 +709,13 @@ type
     property xNome: String read FxNome write FxNome;
     property xFant: String read FxFant write FxFant;
     property fone: String read Ffone write Ffone;
-    property EnderReme: TEnderReme read FEnderReme write FEnderReme;
+    property enderReme: TEnderReme read FEnderReme write FEnderReme;
   {$IFDEF PL_104}
     property email: String read Femail write Femail;
   {$ENDIF}
-    property InfNF: TInfNFCollection read FInfNF write SetInfNF;
-    property InfNFE: TInfNFECollection read FInfNFE write SetInfNFE;
-    property InfOutros: TInfOutrosCollection read FInfOutros write SetInfOutros;
+    property infNF: TInfNFCollection read FInfNF write SetInfNF;
+    property infNFe: TInfNFECollection read FInfNFE write SetInfNFE;
+    property infOutros: TInfOutrosCollection read FInfOutros write SetInfOutros;
   end;
 
   TEnderReme = class(TPersistent)
@@ -888,7 +888,7 @@ type
     property IE : String read FIE write FIE;
     property xNome : String read FxNome write FxNome;
     property fone : String read Ffone write Ffone;
-    property EnderExped: TEnderExped read FEnderExped write FEnderExped;
+    property enderExped: TEnderExped read FEnderExped write FEnderExped;
   {$IFDEF PL_104}
     property email : String read Femail write Femail;
   {$ENDIF}
@@ -937,7 +937,7 @@ type
     property IE : String read FIE write FIE;
     property xNome : String read FxNome write FxNome;
     property fone : String read Ffone write Ffone;
-    property EnderReceb: TEnderReceb read FEnderReceb write FEnderReceb;
+    property enderReceb: TEnderReceb read FEnderReceb write FEnderReceb;
   {$IFDEF PL_104}
     property email : String read Femail write Femail;
   {$ENDIF}
@@ -989,7 +989,7 @@ type
     property xNome : String read FxNome write FxNome;
     property fone : String read Ffone write Ffone;
     property ISUF : String read FISUF write FISUF;
-    property EnderDest: TEnderDest read FEnderDest write FEnderDest;
+    property enderDest: TEnderDest read FEnderDest write FEnderDest;
   {$IFDEF PL_104}
     property email : String read Femail write Femail;
   {$ENDIF}
@@ -1090,7 +1090,7 @@ type
     destructor Destroy; override;
   published
     property ICMS: TICMS read FICMS write FICMS;
-    property InfAdFisco : String read FInfAdFisco write FInfAdFisco;
+    property infAdFisco : String read FInfAdFisco write FInfAdFisco;
   end;
 
   TICMS = class(TPersistent)
@@ -1264,7 +1264,7 @@ type
   {$ENDIF}
     property proPred : String read FproPred write FproPred;
     property xOutCat : String read FxOutCat write FxOutCat;
-    property InfQ: TInfQCollection read FInfQ write SetInfQ;
+    property infQ: TInfQCollection read FInfQ write SetInfQ;
   end;
 
   TInfQCollection = class(TCollection)

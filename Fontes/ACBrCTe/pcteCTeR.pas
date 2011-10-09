@@ -155,7 +155,7 @@ begin
     (*B26*)CTe.Ide.UFFim    := Leitor.rCampo(tcStr, 'UFFim');
     (*B27*)CTe.Ide.retira   := StrToTpRetira(ok, Leitor.rCampo(tcStr, 'retira'));
 
-    (*B27a*)CTe.Ide.xdetretira := Leitor.rCampo(tcStr, 'xdetretira');
+    (*B27a*)CTe.Ide.xdetretira := Leitor.rCampo(tcStr, 'xDetRetira');
   {$IFDEF PL_104}
     (*#57*)CTe.Ide.dhCont := Leitor.rCampo(tcDatHor, 'dhCont');
     (*#58*)CTe.Ide.xJust  := Leitor.rCampo(tcStr, 'xJust');

@@ -205,7 +205,10 @@ begin
   else
      Result := Value + StringOfChar(Caracter, Size - Length(Value));
 
-  Result := FDelimitador + Result;
+  if Caracter = '?' then
+     Result := FDelimitador + StringReplace(Result, ' ', Caracter, [rfReplaceAll])
+  else
+     Result := FDelimitador + Result;
 end;
 
 function TACBrTXTClass.LFill(Value: String; Size: Integer = 0; Caracter: Char = '0'): String;

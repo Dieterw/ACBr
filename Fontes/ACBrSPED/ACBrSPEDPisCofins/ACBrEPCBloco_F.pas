@@ -58,6 +58,7 @@ type
   TRegistroF205     = class;
   TRegistroF210List = class;
   TRegistroF211List = class;
+  TRegistroF550List = class;
   TRegistroF600List = class;
   TRegistroF700List = class;
   TRegistroF800List = class;
@@ -83,6 +84,7 @@ type
     FRegistroF130         : TRegistroF130List;
     FRegistroF150         : TRegistroF150List;
     FRegistroF200         : TRegistroF200List;
+    FRegistroF550         : TRegistroF550List;
     FRegistroF600         : TRegistroF600List;
     FRegistroF700         : TRegistroF700List;
     FRegistroF800         : TRegistroF800List;
@@ -97,6 +99,7 @@ type
     property RegistroF130 : TRegistroF130List read FRegistroF130 write FRegistroF130;
     property RegistroF150 : TRegistroF150List read FRegistroF150 write FRegistroF150;
     property RegistroF200 : TRegistroF200List read FRegistroF200 write FRegistroF200;
+    property RegistroF550 : TRegistroF550List read FRegistroF550 write FRegistroF550;
     property RegistroF600 : TRegistroF600List read FRegistroF600 write FRegistroF600;
     property RegistroF700 : TRegistroF700List read FRegistroF700 write FRegistroF700;
     property RegistroF800 : TRegistroF800List read FRegistroF800 write FRegistroF800;
@@ -586,6 +589,52 @@ type
     property Items[Index: Integer]: TRegistroF211 read GetItem write SetItem;
   end;
 
+   //REGISTRO F550: CONSOLIDAÇÃO DAS OPERAÇÕES DA PESSOA JURÍDICA SUBMETIDA AO REGIME DE TRIBUTAÇÃO COM BASE NO LUCRO PRESUMIDO –  INCIDÊNCIA DO PIS/PASEP E DA COFINS PELO REGIME DE COMPETÊNCIA
+  TRegistroF550 = class
+  private
+    FVL_REC_COMP             : currency;
+    FCST_PIS                 : TACBrSituacaoTribPIS;
+    FVL_DESC_PIS             : currency;
+    FVL_BC_PIS               : currency;
+    FALIQ_PIS                : currency;
+    FVL_PIS                  : currency;
+    FCST_COFINS              : TACBrSituacaoTribCOFINS;
+    FVL_DESC_COFINS          : currency;
+    FVL_BC_COFINS            : currency;
+    FALIQ_COFINS             : currency;
+    FVL_COFINS               : currency;
+    FCOD_MOD                 : String;
+    FCFOP                    : Integer;
+    FCOD_CTA                 : String;
+    FINFO_COMPL              : String;
+  public
+    property VL_REC_COMP     : currency                read FVL_REC_COMP          write FVL_REC_COMP;
+    property CST_PIS         : TACBrSituacaoTribPIS    read FCST_PIS              write FCST_PIS;
+    property VL_DESC_PIS     : currency                read FVL_DESC_PIS          write FVL_DESC_PIS;
+    property VL_BC_PIS       : currency                read FVL_BC_PIS            write FVL_BC_PIS;
+    property ALIQ_PIS        : currency                read FALIQ_PIS             write FALIQ_PIS;
+    property VL_PIS          : currency                read FVL_PIS               write FVL_PIS;
+    property CST_COFINS      : TACBrSituacaoTribCOFINS read FCST_COFINS           write FCST_COFINS;
+    property VL_DESC_COFINS  : currency                read FVL_DESC_COFINS       write FVL_DESC_COFINS;
+    property VL_BC_COFINS    : currency                read FVL_BC_COFINS         write FVL_BC_COFINS;
+    property ALIQ_COFINS     : currency                read FALIQ_COFINS          write FALIQ_COFINS;
+    property VL_COFINS       : currency                read FVL_COFINS            write FVL_COFINS;
+    property COD_MOD         : String                  read FCOD_MOD              write FCOD_MOD;
+    property CFOP            : Integer                 read FCFOP                 write FCFOP;
+    property COD_CTA         : String                  read FCOD_CTA              write FCOD_CTA;
+    property INFO_COMPL      : String                  read FINFO_COMPL           write FINFO_COMPL;
+  end;
+
+  // Registro F550 - Lista
+  TRegistroF550List = class(TObjectList)
+  private
+    function  GetItem(Index: Integer): TRegistroF550;
+    procedure SetItem(Index: Integer; const Value: TRegistroF550);
+  public
+    function New: TRegistroF550;
+    property Items[Index: Integer]: TRegistroF550 read GetItem write SetItem;
+  end;
+
   //REGISTRO F600: CONTRIBUIÇÃO RETIDA NA FONTE
   TRegistroF600 = class
   private
@@ -1039,6 +1088,25 @@ begin
 end;
 
 procedure TRegistroF800List.SetItem(Index: Integer; const Value: TRegistroF800);
+begin
+  Put(Index, Value);
+end;
+
+{ TRegistroF550List }
+
+function TRegistroF550List.GetItem(Index: Integer): TRegistroF550;
+begin
+  Result := TRegistroF550(Inherited Items[Index]);
+end;
+
+function TRegistroF550List.New: TRegistroF550;
+begin
+  Result := TRegistroF550.Create;
+  Add(Result);
+end;
+
+procedure TRegistroF550List.SetItem(Index: Integer;
+  const Value: TRegistroF550);
 begin
   Put(Index, Value);
 end;

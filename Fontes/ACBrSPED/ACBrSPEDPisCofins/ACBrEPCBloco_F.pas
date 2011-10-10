@@ -784,6 +784,7 @@ begin
   FRegistroF130 := TRegistroF130List.Create;
   FRegistroF150 := TRegistroF150List.Create;
   FRegistroF200 := TRegistroF200List.Create;
+  FRegistroF550 := TRegistroF550List.Create;
   FRegistroF600 := TRegistroF600List.Create;
   FRegistroF700 := TRegistroF700List.Create;
   FRegistroF800 := TRegistroF800List.Create;
@@ -796,6 +797,7 @@ begin
   FRegistroF130.Free;
   FRegistroF150.Free;
   FRegistroF200.Free;
+  FRegistroF550.Free;
   FRegistroF600.Free;
   FRegistroF700.Free;
   FRegistroF800.Free;

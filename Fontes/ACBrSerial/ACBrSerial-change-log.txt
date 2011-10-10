@@ -118,6 +118,12 @@ Data: 10/10/2011
     ECF.
 [+] Implementado suporte para ArredondaItemMFD para os novos ECFs FBIII
 
+-- ACBrETQ --
+[*] Modificado o método: ImprimirTexto, inserindo um novo Parâmetro:
+   ImprimirReverso : Boolean = False, por enquanto disponivel apenas no modelo:
+   EPL2 ou PPLB.
+   http://www.djsystem.com.br/acbr/forum/viewtopic.php?f=10&t=3329
+
 
 Data: 06/10/2011
 -- ACBrECF --

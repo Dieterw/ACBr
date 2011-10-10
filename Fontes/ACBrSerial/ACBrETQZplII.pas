@@ -60,7 +60,8 @@ type
 
     procedure ImprimirTexto(Orientacao: TACBrETQOrientacao; Fonte, MultiplicadorH,
       MultiplicadorV, Vertical, Horizontal: Integer; Texto: String;
-      SubFonte: Integer = 0); override;
+      SubFonte: Integer = 0; ImprimirReverso : Boolean = False); override;
+      
     procedure ImprimirBarras(Orientacao: TACBrETQOrientacao; TipoBarras,
       LarguraBarraLarga, LarguraBarraFina: String; Vertical, Horizontal: Integer;
       Texto: String; AlturaCodBarras: Integer = 0;
@@ -89,7 +90,7 @@ end;
 
 procedure TACBrETQZplII.ImprimirTexto(Orientacao: TACBrETQOrientacao; Fonte, MultiplicadorH,
   MultiplicadorV, Vertical, Horizontal: Integer; Texto: String;
-  SubFonte: Integer = 0);
+  SubFonte: Integer = 0; ImprimirReverso : Boolean = False);
 var
    eixoY, eixoX, MultH, MultV, fnt: String;
    wOrientacao: char;

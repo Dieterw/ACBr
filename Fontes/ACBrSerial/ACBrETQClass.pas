@@ -103,7 +103,7 @@ TACBrETQClass = class
 
     procedure ImprimirTexto(Orientacao: TACBrETQOrientacao; Fonte, MultiplicadorH,
       MultiplicadorV, Vertical, Horizontal: Integer;
-      Texto: String; SubFonte: Integer = 0); virtual;
+      Texto: String; SubFonte: Integer = 0; ImprimirReverso : Boolean = False); virtual;
     procedure ImprimirBarras(Orientacao: TACBrETQOrientacao; TipoBarras,
       LarguraBarraLarga, LarguraBarraFina: String; Vertical, Horizontal: Integer;
       Texto: String; AlturaCodBarras: Integer;
@@ -275,7 +275,7 @@ end;
 
 procedure TACBrETQClass.ImprimirTexto(Orientacao: TACBrETQOrientacao; Fonte, MultiplicadorH,
   MultiplicadorV, Vertical, Horizontal: Integer; Texto: String;
-  SubFonte: Integer = 0);
+  SubFonte: Integer = 0; ImprimirReverso : Boolean = False);
 begin
   raise Exception.Create(ACBrStr('Função ImprimirTexto não implementada em: ') + ModeloStr);
 end;

@@ -63,7 +63,7 @@ type
 
     procedure ImprimirTexto(Orientacao: TACBrETQOrientacao; Fonte, MultiplicadorH,
       MultiplicadorV, Vertical, Horizontal: Integer; Texto: String;
-      SubFonte: Integer = 0); override;
+      SubFonte: Integer = 0; ImprimirReverso : Boolean = False); override;
     procedure ImprimirBarras(Orientacao: TACBrETQOrientacao; TipoBarras,
       LarguraBarraLarga, LarguraBarraFina: String; Vertical, Horizontal: Integer;
       Texto: String; AlturaCodBarras: Integer;
@@ -117,15 +117,15 @@ begin
   Unidade     := etqDots;
 end;
 
-procedure TACBrETQEpl2.ImprimirTexto(Orientacao: TACBrETQOrientacao; Fonte, MultiplicadorH,
-  MultiplicadorV, Vertical, Horizontal: Integer; Texto: String;
-  SubFonte: Integer = 0);
+procedure TACBrETQEpl2.ImprimirTexto(Orientacao: TACBrETQOrientacao; Fonte,
+  MultiplicadorH, MultiplicadorV, Vertical, Horizontal: Integer; Texto: String;
+  SubFonte: Integer = 0; ImprimirReverso : Boolean = False);
 var
-   TipoVideo : char;
+   TipoVideo : Char;
 begin
   Cmd := '';
 
-  TipoVideo := 'N'; // Somente normal, R seria para Reverso
+  TipoVideo := ifthen( ImprimirReverso, 'R', 'N' )[1] ; // Somente normal, R seria para Reverso
 
   if (Fonte < 1) or (Fonte > 5) then
      Raise Exception.Create(ACBrStr('Informe um valor entre 1 e 5 para Fonte'));

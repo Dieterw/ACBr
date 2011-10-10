@@ -99,7 +99,7 @@ TACBrETQ = class( TACBrComponent )
 
     procedure ImprimirTexto(Orientacao: TACBrETQOrientacao; Fonte, MultiplicadorH,
       MultiplicadorV, Vertical, Horizontal: Integer; Texto: String;
-      SubFonte: Integer = 0);
+      SubFonte: Integer = 0; ImprimirReverso : Boolean = False);
     procedure ImprimirBarras(Orientacao: TACBrETQOrientacao; TipoBarras,
       LarguraBarraLarga, LarguraBarraFina: String; Vertical, Horizontal: Integer;
       Texto: String; AlturaCodBarras: Integer = 0;
@@ -277,8 +277,8 @@ begin
 end;
 
 procedure TACBrETQ.ImprimirTexto(Orientacao: TACBrETQOrientacao; Fonte, MultiplicadorH,
-  MultiplicadorV, Vertical, Horizontal: Integer; Texto: String;
-  SubFonte: Integer = 0);
+  MultiplicadorV, Vertical, Horizontal: Integer; Texto: String; SubFonte: Integer = 0;
+  ImprimirReverso : Boolean = False);
 begin
   if not Ativo then
      Ativar;
@@ -292,7 +292,8 @@ begin
   fsETQ.ImprimirTexto( Orientacao, Fonte,
                        MultiplicadorH, MultiplicadorV,
                        Vertical, Horizontal,
-                       Texto, SubFonte);
+                       Texto, SubFonte,
+                       ImprimirReverso);
 end;
 
 procedure TACBrETQ.ImprimirBarras(Orientacao: TACBrETQOrientacao; TipoBarras,
@@ -404,7 +405,6 @@ procedure TACBrETQ.SetDPI(const AValue : TACBrETQDPI) ;
 begin
   fsETQ.DPI := AValue;
 end;
-
 
 end.
 

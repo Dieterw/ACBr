@@ -30,10 +30,13 @@
         <LaunchingApplication PathPlusParams="/usr/X11R6/bin/xterm -T 'Lazarus Run Output' -e $(LazarusDir)/tools/runwait.sh $(TargetCmdLine)"/>
       </local>
     </RunParams>
-    <RequiredPackages Count="1">
+    <RequiredPackages Count="2">
       <Item1>
-        <PackageName Value="LCL"/>
+        <PackageName Value="ACBrSerial"/>
       </Item1>
+      <Item2>
+        <PackageName Value="LCL"/>
+      </Item2>
     </RequiredPackages>
     <Units Count="3">
       <Unit0>
@@ -52,7 +55,7 @@
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
-        <CursorPos X="53" Y="9"/>
+        <CursorPos X="24" Y="2"/>
         <UsageCount Value="20"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -61,19 +64,35 @@
         <Filename Value="lcbteste1.lfm"/>
         <TopLine Value="325"/>
         <CursorPos X="4" Y="352"/>
-        <SyntaxHighlighter Value="LFM"/>
         <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit2>
     </Units>
-    <JumpHistory Count="1" HistoryIndex="0">
+    <JumpHistory Count="5" HistoryIndex="4">
       <Position1>
         <Filename Value="lcbteste1.pas"/>
-        <Caret Line="9" Column="33" TopLine="1"/>
+        <Caret Line="9" Column="53" TopLine="1"/>
       </Position1>
+      <Position2>
+        <Filename Value="lcbteste1.pas"/>
+        <Caret Line="2" Column="53" TopLine="1"/>
+      </Position2>
+      <Position3>
+        <Filename Value="lcbteste1.pas"/>
+        <Caret Line="15" Column="61" TopLine="1"/>
+      </Position3>
+      <Position4>
+        <Filename Value="lcbteste1.pas"/>
+        <Caret Line="16" Column="63" TopLine="1"/>
+      </Position4>
+      <Position5>
+        <Filename Value="lcbteste1.pas"/>
+        <Caret Line="15" Column="61" TopLine="1"/>
+      </Position5>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>
-    <Version Value="9"/>
+    <Version Value="10"/>
     <PathDelim Value="\"/>
     <SearchPaths>
       <SrcPath Value="$(LazarusDir)\lcl;$(LazarusDir)\lcl\interfaces\$(LCLWidgetType)"/>
@@ -84,6 +103,9 @@
       </SyntaxOptions>
     </Parsing>
     <Linking>
+      <Debugging>
+        <DebugInfoType Value="dsAuto"/>
+      </Debugging>
       <Options>
         <Win32>
           <GraphicApplication Value="True"/>
@@ -91,6 +113,9 @@
       </Options>
     </Linking>
     <Other>
+      <CompilerMessages>
+        <UseMsgFile Value="True"/>
+      </CompilerMessages>
       <CompilerPath Value="$(CompPath)"/>
     </Other>
   </CompilerOptions>

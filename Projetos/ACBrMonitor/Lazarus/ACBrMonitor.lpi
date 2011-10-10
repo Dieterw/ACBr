@@ -46,7 +46,7 @@
       </Item1>
       <Item2>
         <PackageName Value="LCLBase"/>
-        <MinVersion Major="1" Release="1" Valid="True"/>
+        <MinVersion Major="1" Valid="True" Release="1"/>
       </Item2>
       <Item3>
         <PackageName Value="ACBr_BoletoFC_LazReport"/>
@@ -191,7 +191,9 @@
     </SearchPaths>
     <Linking>
       <Debugging>
-        <StripSymbols Value="True"/>
+        <GenerateDebugInfo Value="True"/>
+        <DebugInfoType Value="dsAuto"/>
+        <UseHeaptrc Value="True"/>
       </Debugging>
       <Options>
         <Win32>

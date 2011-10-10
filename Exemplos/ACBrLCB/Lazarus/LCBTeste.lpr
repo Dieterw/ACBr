@@ -7,7 +7,7 @@ uses
   cthreads,
   {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms
+  Forms, ACBrSerial
   { add your units here }, LCBTeste1;
 
 begin

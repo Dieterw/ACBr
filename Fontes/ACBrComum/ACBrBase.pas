@@ -435,7 +435,7 @@ begin
   end;
 
   if Result = nil then
-    Exception.CreateFmt('Resposta "%s" não encontrada.', [AName]);
+    raise Exception.CreateFmt('Resposta "%s" não encontrada.', [AName]);
 end;
 
 function TACBrInformacoes.GetFields(Index: String): TAcbrInformacao;

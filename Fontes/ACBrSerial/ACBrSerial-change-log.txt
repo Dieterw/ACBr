@@ -97,6 +97,28 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 10/10/2011
+-- ACBrECFBematech --
+[*] Método CarregaFormasPagamento modificado para usar informação do Registrador
+    49 nos modelos 25 e MFD, pois esse Registrador retorna corretamente a
+    informação da Forma de Pagamento que permite ou não Vinculado
+
+-- ACBrECFFiscNET --
+[*] Método ArquivoMFD_DLL modificado para efeetuar a Leitura da MF corretamente
+    nos modelos Elgin e DataRegis
+    http://www.djsystem.com.br/acbr/forum/viewtopic.php?f=10&t=3346
+    http://www.djsystem.com.br/acbr/forum/viewtopic.php?f=10&t=2951
+[+] Implementada a leitura da Venda Bruta no método DadosReducaoZ (Por: Endrigo)
+
+-- ACBrECFEpson --
+[-] Método CancelaCupom modificado para conseguir cancelar o cupom mesmo após a
+    impressão de Vários Vinculados.
+[+] Implementado Retorno Estendido em vários métodos.
+[+] Classe Interna faz uso de Retorno Estendido para otimizar comunicação com o
+    ECF.
+[+] Implementado suporte para ArredondaItemMFD para os novos ECFs FBIII
+
+
 Data: 06/10/2011
 -- ACBrECF --
 [*] Removida a classe TACBrECFCodBarras, que era utilizada antes para Impressão

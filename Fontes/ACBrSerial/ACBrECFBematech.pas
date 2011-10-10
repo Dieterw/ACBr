@@ -1784,29 +1784,60 @@ Var StrRet : AnsiString ;
     FPagto : TACBrECFFormaPagamento ;
     Descr : String ;
 begin
-  //BytesResp := 1925 ;
-  StrRet := RetornaInfoECF( '32' ); //, 8 ) ;
-  //  1 + (52 * 16) + (52 * 10) + (52 * 10) + (52 * 1)
-  //  1 + 832 + 520 + 520 + 52 = 1925
+  if not fs25MFD then
+   begin
+     //BytesResp := 1925 ;
+     StrRet := RetornaInfoECF( '32' );
+     //  1 + (52 * 16) + (52 * 10) + (52 * 10) + (52 * 1)
+     //  1 + 832 + 520 + 520 + 52 = 1925
 
-  inherited CarregaFormasPagamento ;   { Cria fpFormasPagamentos }
+     inherited CarregaFormasPagamento ;   { Cria fpFormasPagamentos }
 
-  For Cont := 1 to 50 do
-  begin
-    Descr := trim( copy( StrRet, (Cont * 16) - 15 + 1, 16) ) ;
-    if Descr <> '' then
-    begin
-       FPagto := TACBrECFFormaPagamento.create ;
+     For Cont := 1 to 50 do
+     begin
+       Descr := trim( copy( StrRet, (Cont * 16) - 15 + 1, 16) ) ;
+       if Descr <> '' then
+       begin
+          FPagto := TACBrECFFormaPagamento.create ;
 
-       FPagto.Indice    := IntToStrZero(Cont,2) ;
-       FPagto.Descricao := Descr;
-       FPagto.PermiteVinculado := (Cont > 1); {Apenas 1-Dinheiro nao permite}
-       FPagto.Total := RoundTo( StrToFloatDef( BcdToAsc(
-                           copy(StrRet,(Cont*10) - 9 + 833,10) ),0) / 10000, -4) ;
+          FPagto.Indice    := IntToStrZero(Cont,2) ;
+          FPagto.Descricao := Descr;
+          FPagto.PermiteVinculado := (Cont > 1); {Apenas 1-Dinheiro nao permite}
+          FPagto.Total := RoundTo( StrToFloatDef( BcdToAsc(
+                              copy(StrRet,(Cont*10) - 9 + 833,10) ),0) / 10000, -4) ;
 
-       fpFormasPagamentos.Add( FPagto ) ;
-    end ;
-  end ;
+          fpFormasPagamentos.Add( FPagto ) ;
+       end ;
+     end ;
+   end
+  else
+   begin
+     StrRet := RetornaInfoECF( '49' );
+     //  (20 * 16) + (20 * 7) + (20 * 7)   + (20 * 1)
+     //  Descricao +  Valor   +  Valor ult.+ Flag TEF
+     //     320    +   140    +   140      +   20
+
+     inherited CarregaFormasPagamento ;   { Cria fpFormasPagamentos }
+
+     For Cont := 1 to 20 do
+     begin
+       Descr := trim( copy( StrRet, (Cont * 16) - 15, 16) ) ;
+       if Descr <> '' then
+       begin
+          FPagto := TACBrECFFormaPagamento.create ;
+
+          FPagto.Indice    := IntToStrZero(Cont,2) ;
+          FPagto.Descricao := Descr;
+          FPagto.PermiteVinculado := (Cont > 1) and
+                                     (copy(StrRet, Cont + 600, 1 ) = #85);
+          FPagto.Total := RoundTo( StrToFloatDef( BcdToAsc(
+                              copy(StrRet,(Cont*7) - 6 + 320,7) ),0) / 100, -4) ;
+
+          fpFormasPagamentos.Add( FPagto ) ;
+       end ;
+     end ;
+   end ;
+
 end;
 
 procedure TACBrECFBematech.LerTotaisFormaPagamento;

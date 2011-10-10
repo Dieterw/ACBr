@@ -4669,13 +4669,11 @@ begin
          begin
             FPG := TACBrECFFormaPagamento.Create ;
             FPG.Assign( FormasPagamento[I] );
-            { TODO -oIsaque -cDaruma : Precisa ser implementado o recurso de (Informações adicionais em Modo Resposta Estendida) }
             FPG.Total := 0;
 
             MeiosDePagamento.Add( FPG ) ;
          end ;
 
-         { TODO -oIsaque -cDaruma : Precisa ser implementado o recurso de (Informações adicionais em Modo Resposta Estendida) }
          TotalTroco := 0;
        except
        end ;
@@ -4683,106 +4681,6 @@ begin
 
     ///// Montando o INI com as informações /////
     Result := MontaDadosReducaoZ;
-
-(*
-    Result := '[ECF]'+sLineBreak ;
-    Result := Result + 'DataMovimento = ' +
-              copy(RetCmd,1,2)+DateSeparator+
-              copy(RetCmd,3,2)+DateSeparator+
-              copy(RetCmd,7,2)+sLineBreak ;
-
-    Result := Result + 'NumSerie = ' + NumSerie + sLineBreak ;
-    Result := Result + 'NumLoja = ' + NumLoja + sLineBreak ;
-    Result := Result + 'NumECF = ' + NumECF + sLineBreak ;
-
-    Result := Result + 'NumCOO = ' + copy(RetCmd,935,6) + sLineBreak ;
-
-    Result := Result + 'NumCRZ = ' + Copy(RetCmd,927,4) + sLineBreak;
-    Result := Result + 'NumCRO = ' + Copy(RetCmd,923,4) + sLineBreak ;
-
-    { base de calculo }
-    { Inicia na coluna 129 com 14 posicoes cada base de calculo, na ordem de cadastro}
-    Result := Result + sLineBreak + '[Aliquotas]'+sLineBreak ;
-
-    //carrega as aliquotas da impressora
-    VBruta := 0;
-    TOPNF  := 0;
-    S := Copy(RetCmd,129,224);
-    if not Assigned( fpAliquotas ) then
-      CarregaAliquotas ;
-
-    for I := 0 to Aliquotas.Count - 1 do
-    begin
-       V := RoundTo(StrToFloatDef( copy(S,(I*14)+1,14),0) / 100, -2);
-       Result := Result + padL(Aliquotas[I].Indice,2) +
-                          Aliquotas[I].Tipo +
-                          IntToStrZero(Trunc(Aliquotas[I].Aliquota*100),4) + ' = '+
-                          FloatToStr( V) + sLineBreak ;
-
-       VBruta := V + VBruta;
-    end;
-    Result  := Result + sLineBreak + '[OutrasICMS]'+sLineBreak ;
-
-    { Substituição F1 + F2 }
-    V := RoundTo( StrToFloatDef(Copy(RetCmd,353,14),0)/100,-2 ) + RoundTo( StrToFloatDef(Copy(RetCmd,367,14),0)/100,-2);
-    Result  := Result + 'TotalSubstituicaoTributaria = ' + FloatToStr(V) + sLineBreak ;
-    VBruta := VBruta + V;
-
-    { Não tributado N1 + N2 }
-    V := RoundTo( StrToFloatDef(Copy(RetCmd,409,14),0)/100,-2 ) + RoundTo( StrToFloatDef(Copy(RetCmd,423,14),0)/100,-2);
-    Result := Result + 'TotalNaoTributado = ' + FloatToStr(V) + sLineBreak ;
-    VBruta := VBruta + V;
-
-    { Isento  I1 + I2 }
-    V := RoundTo( StrToFloatDef(Copy(RetCmd,381,14),0)/100,-2) + RoundTo( StrToFloatDef(Copy(RetCmd,395,14),0)/100,-2);
-    Result := Result + 'TotalIsencao = ' + FloatToStr(V) + sLineBreak ;
-    VBruta := VBruta + V;
-
-    Result := Result + sLineBreak + '[NaoFiscais]'+sLineBreak ;
-
-    {Carregar os comprovantes não fiscais }
-    if not Assigned( fpComprovantesNaoFiscais ) then
-      CarregaComprovantesNaoFiscais ;
-
-    {String Totalizadores não fiscas, 521,280}
-    S := Copy(RetCmd,521,280);
-    for I := 0 to ComprovantesNaoFiscais.Count - 1 do
-    begin
-       V := RoundTo(StrToFloatDef( copy(S,(I*14)+1,14),0) / 100, -2);
-       Result := Result + padL(ComprovantesNaoFiscais[I].Indice,2) + '_'+
-                          ComprovantesNaoFiscais[I].Descricao +' = '+
-                          FloatToStr( V ) + sLineBreak ;
-       TOPNF := V + TOPNF;
-    end;
-
-    Result := Result + sLineBreak + '[Totalizadores]'+sLineBreak;
-
-    //Descontos ISS
-    V := RoundTo( StrToFloatDef( copy(RetCmd,59,14),0) / 100, -2)  ;
-    //Desconto ISS + ICMS
-    V := V + RoundTo( StrToFloatDef( copy(RetCmd,45,14),0) / 100, -2)  ;
-    Result := Result + 'TotalDescontos = ' + FloatToStr( V ) + sLineBreak ;
-    VBruta := VBruta + V ;
-
-    //Cancelamentos ISS
-    V := RoundTo( StrToFloatDef( copy(RetCmd,59,14),0) / 100, -2)  ;
-    //Cancelamentos ISS + ICMS
-    V := V + RoundTo( StrToFloatDef( copy(RetCmd,73,14),0) / 100, -2)  ;
-    Result := Result + 'TotalCancelamentos = ' + FloatToStr( V ) + sLineBreak ;
-    VBruta := VBruta + V ;
-
-    //Acrescimos ISS
-    V := RoundTo( StrToFloatDef( copy(RetCmd,101,14),0) / 100, -2) ;
-    //Acrescimos ISS + ICMS
-    V := V + RoundTo( StrToFloatDef( copy(RetCmd,115,14),0) / 100, -2) ;
-    Result := Result + 'TotalAcrescimos = ' + FloatToStr(V)  + sLineBreak ;
-
-    Result := Result + 'TotalNaoFiscal = ' + FloatToStr(TOPNF) + sLineBreak ;
-    Result := Result + 'VendaBruta = ' + FloatToStr(VBruta) + sLineBreak ;
-
-    Result := Result + 'GrandeTotal = ' + FloatToStr(
-    RoundTo( StrToFloatDef( copy(RetCmd,9,18),0) / 100, -2) )  + sLineBreak ;
-*)
   end;
 end ;
 

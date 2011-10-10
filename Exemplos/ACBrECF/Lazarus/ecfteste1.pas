@@ -138,6 +138,7 @@ type
     gbAAC_PAF : TGroupBox ;
     gbAAC_SH : TGroupBox ;
     GrandeTotal1: TMenuItem;
+    GroupBox1 : TGroupBox ;
     grpMenuFiscalOpcoes : TGroupBox ;
     HorarioVerao1: TMenuItem;
     HorarioVerao2: TMenuItem;
@@ -159,6 +160,7 @@ type
     Label26 : TLabel ;
     Label27 : TLabel ;
     Label28 : TLabel ;
+    Label29 : TLabel ;
     Label30 : TLabel ;
     Label31 : TLabel ;
     Label32 : TLabel ;
@@ -174,6 +176,7 @@ type
     Label42 : TLabel ;
     Label43 : TLabel ;
     Label44 : TLabel ;
+    Label45 : TLabel ;
     mDataHoraSwBasico : TMenuItem ;
     mdsAACECF : TMemDataset ;
     mAACParams : TMemo ;
@@ -259,6 +262,8 @@ type
     SbAACArqLog : TSpeedButton ;
     SbAACMD5Atualizar : TSpeedButton ;
     seBandWidth : TSpinEdit ;
+    seDecimaisQTD : TSpinEdit ;
+    seDecimaisPreco : TSpinEdit ;
     seMaxLinhasBuffer : TSpinEdit ;
     speBarrasAltura : TSpinEdit ;
     speBarrasLargura : TSpinEdit ;
@@ -491,6 +496,8 @@ type
     procedure SbAACArqLogClick(Sender : TObject) ;
     procedure SbAACMD5AtualizarClick(Sender : TObject) ;
     procedure SbAACNomeArqClick(Sender : TObject) ;
+    procedure seDecimaisPrecoChange(Sender : TObject) ;
+    procedure seDecimaisQTDChange(Sender : TObject) ;
     procedure seMaxLinhasBufferChange(Sender : TObject) ;
     procedure seBandWidthChange(Sender : TObject) ;
     procedure Testar1Click(Sender: TObject);
@@ -972,7 +979,7 @@ begin
     begin
       with DAVs.New do
       begin
-        Numero    := I;
+        Numero    := IntToStrZero(I,10);
         COO_Dav   := RandomRange(0, 999999);
         COO_Cupom := RandomRange(0, 999999);
         Titulo    := RandomFrom(TipoDAV);
@@ -2134,8 +2141,10 @@ begin
         PageControl1.ActivePageIndex := 1 ;
   finally
      Self.Enabled := True;
-     cbxModelo.ItemIndex := Integer(ACBrECF1.Modelo) ;
-     cbxPorta.Text       := ACBrECF1.Porta ;
+     cbxModelo.ItemIndex   := Integer(ACBrECF1.Modelo) ;
+     cbxPorta.Text         := ACBrECF1.Porta ;
+     seDecimaisPreco.Value := ACBrECF1.DecimaisPreco;
+     seDecimaisQTD.Value   := ACBrECF1.DecimaisQtd;
   end ;
 end;
 
@@ -2174,6 +2183,16 @@ end;
 procedure TForm1.SbAACNomeArqClick(Sender : TObject) ;
 begin
   OpenURL( ExtractFilePath( Application.ExeName ) + edAACNomeArq.Text);
+end;
+
+procedure TForm1.seDecimaisPrecoChange(Sender : TObject) ;
+begin
+  ACBrECF1.DecimaisPreco := seDecimaisPreco.Value ;
+end;
+
+procedure TForm1.seDecimaisQTDChange(Sender : TObject) ;
+begin
+  ACBrECF1.DecimaisQtd := seDecimaisQTD.Value ;
 end;
 
 procedure TForm1.seMaxLinhasBufferChange(Sender : TObject) ;
@@ -2928,7 +2947,7 @@ begin
                     'Entre com a Descriçao:', cDescricao ) then
      exit ;
 
-  if not (ACBrECF1.Modelo in [ecfBematech, ecfNaoFiscal, ecfMecaf]) then
+  if not (ACBrECF1.Modelo in [ecfNaoFiscal, ecfMecaf]) then
   begin
      Resp := MessageDlg('Permite Vinculado nessa Forma de Pagamento ?',
                    mtConfirmation,mbYesNoCancel,0) ;

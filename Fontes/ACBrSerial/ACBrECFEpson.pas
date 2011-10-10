@@ -75,6 +75,8 @@ type
 
 TACBrECFEpson = class ;
 
+{ TACBrECFEpsonComando }
+
 TACBrECFEpsonComando = class
   private
     fsComando : AnsiString ;
@@ -98,7 +100,11 @@ TACBrECFEpsonComando = class
     property Params      : TStringList read fsParams ;
     property Seq         : Byte read fsSeq  ;
 
-    Procedure AddParam(AString  : AnsiString) ;
+    Procedure AddParamString(AString: AnsiString) ;
+    Procedure AddParamInteger(AInteger: Integer) ;
+    Procedure AddParamDouble(ADouble: Double; CasasDecimais: Integer = 2) ;
+    Procedure AddParamBool(ABool: Boolean) ;
+    Procedure AddParamDateTime(ADateTime: TDateTime;Tipo : Char = 'D'  ) ;
  end ;
 
 TACBrECFEpsonResposta = class
@@ -115,7 +121,7 @@ TACBrECFEpsonResposta = class
 
     procedure SetResposta(const Value: AnsiString);
     Function RemoveEsc(const Campo: AnsiString): AnsiString ;
-    function GetDescRetorno: AnsiString;
+    function GetDescRetorno: String;
  public
     constructor create( AOwner : TACBrECFEpson ) ;
     destructor destroy ; override ;
@@ -125,7 +131,7 @@ TACBrECFEpsonResposta = class
     property StatusPrinter: Integer     read fsStatusPrinter ;
     property StatusFiscal : Integer     read fsStatusFiscal ;
     property Retorno      : AnsiString  read fsRetorno ;
-    property DescRetorno  : AnsiString  read GetDescRetorno ;
+    property DescRetorno  : String      read GetDescRetorno ;
     property Params       : TStringList read fsParams ;
     property ChkSum       : AnsiString  read fsChkSum ;
  end ;
@@ -171,7 +177,9 @@ TACBrECFEpson = class( TACBrECFClass )
 
     procedure LoadDLLFunctions;
     procedure AbrePortaSerialDLL;
-    
+
+    procedure ZeraCache( ZeraRespostaComando: Boolean = True ) ;
+
     Function DocumentosToNum(Documentos : TACBrECFTipoDocumentoSet) : Integer ;
 
     Procedure PreparaCmd( cmd : AnsiString ) ;
@@ -208,6 +216,7 @@ TACBrECFEpson = class( TACBrECFClass )
     function GetGavetaAberta: Boolean; override ;
     function GetPoucoPapel : Boolean; override ;
     function GetHorarioVerao: Boolean; override ;
+    function GetArredonda : Boolean; override ;
     function GetParamDescontoISSQN: Boolean; override ;
 
     function GetCNPJ: String; override ;
@@ -400,6 +409,39 @@ begin
   inherited destroy ;
 end;
 
+procedure TACBrECFEpsonComando.AddParamString(AString : AnsiString) ;
+begin
+  fsParams.Add( InsertEsc( AString ) ) ;
+end ;
+
+procedure TACBrECFEpsonComando.AddParamInteger(AInteger : Integer) ;
+begin
+  AddParamString( IntToStr(AInteger) );
+end ;
+
+procedure TACBrECFEpsonComando.AddParamDouble(ADouble : Double; CasasDecimais: Integer) ;
+begin
+  AddParamInteger( Round( ADouble * power(10, CasasDecimais) ) ) ;
+end ;
+
+procedure TACBrECFEpsonComando.AddParamBool(ABool : Boolean) ;
+begin
+  AddParamString( IfThen(ABool,'S','N') ) ;
+end ;
+
+procedure TACBrECFEpsonComando.AddParamDateTime(ADateTime : TDateTime ;
+  Tipo : Char) ;
+var
+  Texto : String ;
+begin
+  if Tipo in ['T','H'] then
+     Texto := FormatDateTime('hhnnss',ADateTime)
+  else
+     Texto := FormatDateTime('ddmmyyyy',ADateTime) ;
+
+  AddParamString( Texto ) ;
+end ;
+
 function TACBrECFEpsonComando.InsertEsc(const Campo: AnsiString): AnsiString;
  Var I : Integer ;
 begin
@@ -448,11 +490,6 @@ begin
      fsExtensao := Value
   else
      fsExtensao := InsertEsc( HexToAscii(Value) ) ;
-end;
-
-procedure TACBrECFEpsonComando.AddParam(AString: AnsiString);
-begin
-  fsParams.Add( InsertEsc( AString ) ) ;
 end;
 
 function TACBrECFEpsonComando.GetFrameEnvio: AnsiString;
@@ -615,7 +652,7 @@ begin
 end;
 
 
-function TACBrECFEpsonResposta.GetDescRetorno: AnsiString;
+function TACBrECFEpsonResposta.GetDescRetorno: String;
  Var  sValorSaida : String;
       sRetorno    : AnsiString ;
 begin
@@ -923,8 +960,6 @@ begin
   fsUsuarioAtual    := '' ;
   fsDataHoraSB      := now ;
   fsSubModeloECF    := '' ;
-  fsRet0906   := '' ;
-  fsRet0907   := '' ;
   fsPAF1      := '' ;
   fsPAF2      := '' ;
   fsImprimeCheque := False ;
@@ -935,6 +970,8 @@ begin
   fpMFD       := True ;
   fpTermica   := True ;
   fpIdentificaConsumidorRodape := True ;
+
+  ZeraCache;
 
   fpModeloStr := 'Epson' ;
   fpRFDID     := 'EP' ;
@@ -1001,12 +1038,12 @@ begin
   fsUsuarioAtual := '' ;
   fsDataHoraSB   := now ;
   fsSubModeloECF := '' ;
-  fsRet0906   := '' ;
-  fsRet0907   := '' ;
 
   fsALNegrito    := False;
   fsALExpandido  := False;
   fsALSublinhado := False;
+
+  ZeraCache;
 
   try
     try
@@ -1188,7 +1225,7 @@ begin
      EpsonComando.Extensao := SL[1] ;
 
      for P := 2 to SL.Count-1 do
-        EpsonComando.AddParam(SL[P]);
+        EpsonComando.AddParamString( SL[P] );
   finally
      SL.Free ;
   end ;
@@ -1204,7 +1241,7 @@ begin
   if Result and (LeftStr(Retorno,7) = #2 + #128 + #3 + '0085') then
   begin
      // DEBUG //
-     //GravaLog( 'Resposta Intermediaria: ' +LeftStr(Retorno,7), True );
+     // GravaLog( 'Resposta Intermediaria: ' +LeftStr(Retorno,7), True );
      Retorno     := Copy(Retorno, 8, Length(Retorno));
      TempoLimite := IncSecond(now, TimeOut);
      Result      := False ;
@@ -1401,19 +1438,24 @@ end;
 function TACBrECFEpson.GetSubTotal: Double;
 begin
   try
-     EpsonComando.Comando := '0A03' ;
-     EnviaComando ;
-
-     Result := StrToFloatDef(EpsonResposta.Params[0],0) /100 ;
-     Result := RoundTo( Result, -2) ;
+    Result := RespostasComando['SubTotal'].AsFloat;
   except
-     on E : Exception do
-     begin
-        if (pos('0102',E.Message) <> 0) then
-           Result := 0
-        else
-           raise ;
-     end ;
+    try
+       EpsonComando.Comando := '0A03' ;
+       EnviaComando ;
+
+       RespostasComando.AddField( 'SubTotal', EpsonResposta.Params[0] );
+       Result := StrToFloatDef(EpsonResposta.Params[0],0) /100 ;
+       Result := RoundTo( Result, -2) ;
+    except
+       on E : Exception do
+       begin
+          if (pos('0102',E.Message) <> 0) then
+             Result := 0
+          else
+             raise ;
+       end ;
+    end ;
   end ;
 end;
 
@@ -1506,6 +1548,11 @@ begin
   Result := (EpsonResposta.Params[0] = 'S') ;
 end;
 
+function TACBrECFEpson.GetArredonda : Boolean ;
+begin
+  Result := fsIsFBIII and ArredondaItemMFD;
+end ;
+
 function TACBrECFEpson.GetParamDescontoISSQN : Boolean ;
 begin
   EpsonComando.Comando := '0513' ;
@@ -1524,8 +1571,7 @@ begin
   EpsonComando.TimeOut := TempoInicioMsg + 2 ;  // apenas para o bloqueio de teclado funcionar
   EnviaComando ;
 
-  fsRet0906 := '' ;
-  fsRet0907 := '' ;
+  ZeraCache;
 end;
 
 procedure TACBrECFEpson.LeituraXSerial(Linhas: TStringList);
@@ -1563,7 +1609,6 @@ begin
   end ;
 end;
 
-
 Procedure TACBrECFEpson.AbreGaveta ;
 begin
   EpsonComando.Comando := '0707' ;   // Gaveta 1 ??
@@ -1582,13 +1627,13 @@ begin
   if DataHora <> 0 then
    begin
      EpsonComando.Extensao := '0001' ;
-     EpsonComando.AddParam( FormatDateTime('ddmmyyyy',DataHora) ) ;
-     EpsonComando.AddParam( FormatDateTime('hhnnss',DataHora) ) ;
+     EpsonComando.AddParamDateTime( DataHora, 'D' ) ;
+     EpsonComando.AddParamDateTime( DataHora, 'T' ) ;
    end
   else
    begin
-     EpsonComando.AddParam( '' ) ;
-     EpsonComando.AddParam( '' ) ;
+     EpsonComando.AddParamString( '' ) ;
+     EpsonComando.AddParamString( '' ) ;
    end ;
 
   try
@@ -1608,8 +1653,7 @@ begin
      end ;
   end ;
 
-  fsRet0906 := '' ;
-  fsRet0907 := '' ;
+  ZeraCache;
 end;
 
 Procedure TACBrECFEpson.MudaHorarioVerao ;
@@ -1629,35 +1673,41 @@ begin
   begin
      EpsonComando.Comando  := '0A20' ;
      EpsonComando.Extensao := '0001' ;
-     EpsonComando.AddParam(LeftStr(Consumidor.Documento,20));
-     EpsonComando.AddParam(LeftStr(Consumidor.Nome,30));
-     EpsonComando.AddParam(copy(Consumidor.Endereco, 1,40));
-     EpsonComando.AddParam(copy(Consumidor.Endereco,41,40));
+     EpsonComando.AddParamString( LeftStr(Consumidor.Documento,20) );
+     EpsonComando.AddParamString( LeftStr(Consumidor.Nome,30) );
+     EpsonComando.AddParamString( copy(Consumidor.Endereco, 1,40) );
+     EpsonComando.AddParamString( copy(Consumidor.Endereco,41,40) );
      EnviaComando ;
   end ;
 
   EpsonComando.Comando := '0A01' ;
-  EpsonComando.AddParam('');   // 2 Campos de entrada Reservados ;
-  EpsonComando.AddParam('');
+  EpsonComando.AddParamString( '' );   // 2 Campos de entrada Reservados ;
+  EpsonComando.AddParamString( '' );
   EnviaComando ;
 
   Consumidor.Enviado := True ;
 
-  fsRet0906 := '' ;
-  fsRet0907 := '' ;
+  ZeraCache;
   fsEmPagamento := false ;
 end;
 
 procedure TACBrECFEpson.CancelaCupom;
-  Var Erro : String ;
-      CDC  : AnsiString ;
+Var
+  Erro : String ;
+  COOCupom, COOCDC : Integer ;
 begin
+  ZeraCache;
+  fsEmPagamento := false ;
+
   try
      // Cancelando o Cupom
      EpsonComando.Comando  := '0A18' ;
      EpsonComando.Extensao := '0008' ;
-     EpsonComando.AddParam('1');   // 1 Campo de entrada NÃO usado no Cancelamento de cupom ;
+     EpsonComando.AddParamInteger( 1 );   // 1 Campo de entrada NÃO usado no Cancelamento de cupom ;
      EnviaComando ;
+
+     RespostasComando.AddField( 'SubTotal', EpsonResposta.Params[0] );
+     RespostasComando.AddField( 'ValorCancelado', EpsonResposta.Params[1] );
   except
      on E : Exception do
      begin
@@ -1669,25 +1719,28 @@ begin
            // Pega o nro do CDC a cancelar
            EpsonComando.Comando := '0907';
            EnviaComando;
-           CDC := Trim(EpsonResposta.Params[0]) ;
+           COOCDC   := StrToInt( Trim(EpsonResposta.Params[0] ) ) ;
+           COOCupom := StrToInt( Trim(EpsonResposta.Params[12]) ) ;
 
-           // Estorna o CDC para poder cancelar o cupom
-           EpsonComando.Comando  := '0E30';
-           EpsonComando.Extensao := '0001';
-           { Passando apenas o numero do COO, os parametros iniciais não são
-             necessáriospara efetuar o cancelameto de CDC }
-           EpsonComando.AddParam('');
-           EpsonComando.AddParam('');
-           EpsonComando.AddParam('');
-           EpsonComando.AddParam(CDC);
-           EnviaComando;
-           FechaRelatorio;   { Fecha o estorno do CDC }
+           while COOCDC > COOCupom do
+           begin
+              // Estorna o CDC para poder cancelar o cupom
+              EpsonComando.Comando  := '0E30';
+              EpsonComando.Extensao := '0001';
+              { Passando apenas o numero do COO, os parametros iniciais não são
+                necessáriospara efetuar o cancelameto de CDC }
+              EpsonComando.AddParamString( '' );
+              EpsonComando.AddParamString( '' );
+              EpsonComando.AddParamString( '' );
+              EpsonComando.AddParamInteger( COOCDC );
+              EnviaComando;
+              FechaRelatorio;   { Fecha o estorno do CDC }
+
+              Dec( COOCDC ) ;
+           end ;
 
            // Agora sim... Cancelando o Cupom
-           EpsonComando.Comando  := '0A18' ;
-           EpsonComando.Extensao := '0008' ;
-           EpsonComando.AddParam('1');
-           EnviaComando ;
+           CancelaCupom;
          end
         else
          begin
@@ -1706,35 +1759,33 @@ begin
          end ;
      end ;
   end ;
-
-  fsRet0906 := '' ;
-  fsRet0907 := '' ;
-  fsEmPagamento := false ;
 end;
 
 procedure TACBrECFEpson.CancelaItemVendido(NumItem: Integer);
 begin
   EpsonComando.Comando  := '0A18' ;
   EpsonComando.Extensao := '0004' ;
-  EpsonComando.AddParam(IntToStr(NumItem)) ;
+  EpsonComando.AddParamInteger( NumItem ) ;
   EnviaComando ;
 
-  fsRet0906 := '' ;
-  fsRet0907 := '' ;
+  ZeraCache;
+  RespostasComando.AddField( 'SubTotal', EpsonResposta.Params[0] );
+  RespostasComando.AddField( 'ValorCancelado', EpsonResposta.Params[1] );
 end;
 
 procedure TACBrECFEpson.EfetuaPagamento(CodFormaPagto: String;
   Valor: Double; Observacao: AnsiString; ImprimeVinculado: Boolean);
 begin
   EpsonComando.Comando  := '0A05' ;
-  EpsonComando.AddParam( CodFormaPagto ) ;
-  EpsonComando.AddParam( IntToStr(Round(Valor * 100)) ) ;
-  EpsonComando.AddParam( copy(Observacao, 1,40) ) ;
-  EpsonComando.AddParam( copy(Observacao,41,40) ) ;
+  EpsonComando.AddParamString( CodFormaPagto ) ;
+  EpsonComando.AddParamDouble( Valor, 2 ) ;
+  EpsonComando.AddParamString( copy(Observacao, 1,40) ) ;
+  EpsonComando.AddParamString( copy(Observacao,41,40) ) ;
   EnviaComando ;
 
-  fsRet0906 := '' ;
-  fsRet0907 := '' ;
+  ZeraCache;
+  RespostasComando.AddField( 'TotalAPagar', EpsonResposta.Params[0] );
+  RespostasComando.AddField( 'TotalTroco', EpsonResposta.Params[1] );
 end;
 
 procedure TACBrECFEpson.FechaCupom(Observacao: AnsiString; IndiceBMP : Integer);
@@ -1753,10 +1804,10 @@ begin
      try
         EpsonComando.Comando  := '0A20' ;
         EpsonComando.Extensao := '0002' ;
-        EpsonComando.AddParam(LeftStr(Consumidor.Documento,20));
-        EpsonComando.AddParam(LeftStr(Consumidor.Nome,30));
-        EpsonComando.AddParam(copy(Consumidor.Endereco, 1,40));
-        EpsonComando.AddParam(copy(Consumidor.Endereco,41,40));
+        EpsonComando.AddParamString( LeftStr(Consumidor.Documento,20) );
+        EpsonComando.AddParamString( LeftStr(Consumidor.Nome,30) );
+        EpsonComando.AddParamString( copy(Consumidor.Endereco, 1,40) );
+        EpsonComando.AddParamString( copy(Consumidor.Endereco,41,40) );
         EnviaComando ;
         
         Consumidor.Enviado := True ;
@@ -1774,9 +1825,9 @@ begin
         EpsonComando.Comando  := '0A22' ;
         For I := 0 to 7 do
            if I >= SL.Count then
-              EpsonComando.AddParam('')
+              EpsonComando.AddParamString( '' )
            else
-              EpsonComando.AddParam(SL[I]) ;
+              EpsonComando.AddParamString( SL[I] ) ;
         EnviaComando ;
      finally
         SL.Free ;
@@ -1789,9 +1840,11 @@ begin
   EpsonComando.Extensao := '0001' ;   // Corta folha
   EnviaComando ;
 
-  fsRet0906 := '' ;
-  fsRet0907 := '' ;
+  ZeraCache;
   fsEmPagamento := false ;
+  RespostasComando.AddField( 'NumCCF', EpsonResposta.Params[0] );
+  RespostasComando.AddField( 'TotalPago', EpsonResposta.Params[1] );
+  RespostasComando.AddField( 'TotalTroco', EpsonResposta.Params[2] );
 end;
 
 procedure TACBrECFEpson.SubtotalizaCupom(DescontoAcrescimo: Double;
@@ -1806,11 +1859,11 @@ begin
      EpsonComando.Extensao := '0006'
   else
      EpsonComando.Extensao := '0007' ;
-  EpsonComando.AddParam( IntToStr(Round(abs(DescontoAcrescimo) * 100))  );
+  EpsonComando.AddParamDouble( abs(DescontoAcrescimo), 2 );
   EnviaComando ;
 
-  fsRet0906 := '' ;
-  fsRet0907 := '' ;
+  ZeraCache;
+  RespostasComando.AddField( 'SubTotal', EpsonResposta.Params[0] );
 end;
 
 Procedure TACBrECFEpson.VendeItem( Codigo, Descricao : String;
@@ -1820,24 +1873,46 @@ Procedure TACBrECFEpson.VendeItem( Codigo, Descricao : String;
 begin
   with EpsonComando do
   begin
-     Comando := '0A02' ;
-     AddParam( LeftStr(Codigo,14) );
-     AddParam( LeftStr(Descricao,233) );
-     AddParam( IntToStr(Round(Qtd * Power(10,fpDecimaisQtd) ))  );
-     AddParam( Trim(LeftStr(Unidade,3)) );
-     AddParam( IntToStr(Round(ValorUnitario * Power(10,fpDecimaisPreco) ))  );
-     AddParam( AliquotaECF );
+    if not fsIsFBIII then
+     begin
+       ArredondaItemMFD := False;  // Não suportado na BFII
+
+       Comando := '0A02' ;
+       AddParamString( LeftStr(Codigo,14) );
+       AddParamString( LeftStr(Descricao,233) );
+       AddParamDouble( Qtd, fpDecimaisQtd );
+       AddParamString( Trim(LeftStr(Unidade,3)) );
+       AddParamDouble( ValorUnitario, fpDecimaisPreco );
+       AddParamString( AliquotaECF );
+     end
+    else
+     begin
+        Comando := '0A12' ;
+        AddParamString( LeftStr(Codigo,14) );
+        AddParamString( LeftStr(Descricao,233) );
+        AddParamDouble( Qtd, fpDecimaisQtd );
+        AddParamString( Trim(LeftStr(Unidade,3)) );
+        AddParamDouble( ValorUnitario, fpDecimaisPreco );
+        AddParamString( AliquotaECF );
+        AddParamInteger( fpDecimaisQtd );
+        AddParamInteger( fpDecimaisPreco );
+        AddParamBool( ArredondaItemMFD );
+        AddParamString( 'S' );
+     end ;
   end ;
+
   EnviaComando ;
+
+  ZeraCache;
+  fsEmPagamento := false ;
+
+  if EpsonResposta.Params.Count > 0 then
+     RespostasComando.AddField( 'NumUltItem', EpsonResposta.Params[0] );
 
   { Se o desconto é maior que zero dá o comando de desconto de item }
   if ValorDescontoAcrescimo > 0 then
      DescontoAcrescimoItemAnterior( ValorDescontoAcrescimo, DescontoAcrescimo,
         TipoDescontoAcrescimo);
-
-  fsRet0906 := '' ;
-  fsRet0907 := '' ;
-  fsEmPagamento := false ;
 end;
 
 procedure TACBrECFEpson.DescontoAcrescimoItemAnterior(
@@ -1862,7 +1937,7 @@ begin
            EpsonComando.Extensao := '0005' ;
       end ;
 
-     EpsonComando.AddParam( IntToStr(Round(ValorDescontoAcrescimo * 100))  );
+     EpsonComando.AddParamDouble( ValorDescontoAcrescimo, 2 );
      EnviaComando ;
    end
   else
@@ -1883,13 +1958,13 @@ begin
             EpsonComando.Extensao := '0011' ;
        end ;
 
-      EpsonComando.AddParam( IntToStr(NumItem) );
-      EpsonComando.AddParam( IntToStr(Round(ValorDescontoAcrescimo * 100)) );
+      EpsonComando.AddParamInteger( NumItem );
+      EpsonComando.AddParamDouble( ValorDescontoAcrescimo, 2 );
       EnviaComando ;
    end ;
 
-  fsRet0906 := '' ;
-  fsRet0907 := '' ;
+  ZeraCache( False );
+  RespostasComando.AddField( 'SubTotal', EpsonResposta.Params[0] );
   fsEmPagamento := false ;
 end ;
 
@@ -1953,8 +2028,7 @@ begin
   EnviaComando ;
 
   CarregaAliquotas ;
-  fsRet0906 := '' ;
-  fsRet0907 := '' ;
+  ZeraCache;
 end;
 
 function TACBrECFEpson.AchaICMSAliquota( var AliquotaICMS: String):
@@ -1999,7 +2073,7 @@ begin
      while (A <= 20) do
      begin
         EpsonComando.Comando := '050D' ;
-        EpsonComando.AddParam( IntToStr(A) ) ;
+        EpsonComando.AddParamInteger( A ) ;
         try
            EnviaComando ;
 
@@ -2041,7 +2115,7 @@ begin
   For A := 0 to FormasPagamento.Count-1 do
   begin
      EpsonComando.Comando := '0902' ;
-     EpsonComando.AddParam( FormasPagamento[A].Indice );
+     EpsonComando.AddParamString( FormasPagamento[A].Indice );
      EnviaComando ;
 
      // Andre Bohn - O Total da Forma de Pagamento vem no Params[1] e não no
@@ -2074,8 +2148,8 @@ begin
   EpsonComando.Comando := '050C' ;
   if PermiteVinculado then
      EpsonComando.Extensao := '0001' ;
-  EpsonComando.AddParam( IntToStr(ProxIndice) ) ;
-  EpsonComando.AddParam( LeftStr(Descricao,15) ) ;
+  EpsonComando.AddParamInteger( ProxIndice ) ;
+  EpsonComando.AddParamString( LeftStr(Descricao,15) ) ;
   EnviaComando ;
 
   { Adicionando nova FPG no ObjectList }
@@ -2089,8 +2163,7 @@ begin
      fpFormasPagamentos.Add( FPagto ) ;
   end ;
 
-  fsRet0906 := '' ;
-  fsRet0907 := '' ;
+  ZeraCache;
 end;
 
 procedure TACBrECFEpson.CarregaComprovantesNaoFiscais;
@@ -2105,7 +2178,7 @@ begin
      begin
         EpsonComando.Comando  := '0902' ;
         EpsonComando.Extensao := '0001' ;
-        EpsonComando.AddParam( IntToStr(A) ) ;
+        EpsonComando.AddParamInteger( A ) ;
         try
            EnviaComando ;
 
@@ -2150,31 +2223,22 @@ procedure TACBrECFEpson.ProgramaComprovanteNaoFiscal(var Descricao : String;
    Tipo: String; Posicao : String);
 begin
   EpsonComando.Comando := '0572' ;
-  EpsonComando.AddParam( Descricao ) ;
+  EpsonComando.AddParamString( Descricao ) ;
   EnviaComando ;
 
   CarregaComprovantesNaoFiscais ;
 
-  fsRet0906 := '' ;
-  fsRet0907 := '' ;
+  ZeraCache;
 end;
 
 procedure TACBrECFEpson.AbreRelatorioGerencial(Indice : Integer) ;
-Var
-  IndiceStr : String ;
 begin
-  if Indice = 0 then
-     IndiceStr := '1'
-  else
-     IndiceStr := IntToStr(Indice);
-
   EpsonComando.Comando  := '0E01' ;
   EpsonComando.Extensao := '0004' ;
-  EpsonComando.AddParam( IndiceStr ) ;
+  EpsonComando.AddParamInteger( max(Indice,1) ) ;
   EnviaComando ;
   
-  fsRet0906 := '' ;
-  fsRet0907 := '' ;
+  ZeraCache;
 end;
 
 procedure TACBrECFEpson.LinhaRelatorioGerencial(Linha: AnsiString; IndiceBMP: Integer);
@@ -2189,7 +2253,7 @@ begin
      For I := 0 to SL.Count-1 do
      begin
         EpsonComando.Comando  := '0E02' ;
-        EpsonComando.AddParam(SL[I]) ;
+        EpsonComando.AddParamString( SL[I] ) ;
         EnviaComando ;
      end ;
   finally
@@ -2208,14 +2272,13 @@ begin
                              ' não foi cadastrada.') ) ;
 
   EpsonComando.Comando := '0E30' ;
-  EpsonComando.AddParam( CodFormaPagto ) ;
-  EpsonComando.AddParam( IntToStr(Round(Valor * 100)) );
-  EpsonComando.AddParam( '1' ) ;
-  EpsonComando.AddParam( '' ) ;
+  EpsonComando.AddParamString( CodFormaPagto ) ;
+  EpsonComando.AddParamDouble( Valor, 2 );
+  EpsonComando.AddParamInteger( 1 ) ;
+  EpsonComando.AddParamString( '' ) ;
   EnviaComando ;
 
-  fsRet0906 := '' ;
-  fsRet0907 := '' ;
+  ZeraCache;
 end;
 
 procedure TACBrECFEpson.LinhaCupomVinculado(Linha: AnsiString);
@@ -2234,8 +2297,7 @@ begin
      EnviaComando ;
   end ;
 
-  fsRet0906 := '' ;
-  fsRet0907 := '' ;
+  ZeraCache;
 end;
 
 procedure TACBrECFEpson.PulaLinhas(NumLinhas: Integer);
@@ -2244,7 +2306,7 @@ begin
      NumLinhas := LinhasEntreCupons ;
 
   EpsonComando.Comando := '0701' ;
-  EpsonComando.AddParam( IntToStr(NumLinhas) );
+  EpsonComando.AddParamInteger( NumLinhas );
   EnviaComando ;
 end;
 
@@ -2259,15 +2321,14 @@ begin
      else
         Extensao := '0000' ;
 
-     AddParam( IntToStr(ReducaoInicial) ) ;
-     AddParam( IntToStr(ReducaoFinal) ) ;
-     AddParam( '' ) ;
-     AddParam( '' ) ;
+     AddParamInteger( ReducaoInicial ) ;
+     AddParamInteger( ReducaoFinal ) ;
+     AddParamString( '' ) ;
+     AddParamString( '' ) ;
   end ;
   EnviaComando ;
 
-  fsRet0906 := '' ;
-  fsRet0907 := '' ;
+  ZeraCache;
 end;
 
 procedure TACBrECFEpson.LeituraMemoriaFiscal(DataInicial,
@@ -2281,15 +2342,14 @@ begin
      else
         Extensao := '0001' ;
 
-     AddParam( '' ) ;
-     AddParam( '' ) ;
-     AddParam( FormatDateTime('ddmmyyyy',DataInicial) ) ;
-     AddParam( FormatDateTime('ddmmyyyy',DataFinal) ) ;
+     AddParamString( '' ) ;
+     AddParamString( '' ) ;
+     AddParamDateTime( DataInicial ) ;
+     AddParamDateTime( DataFinal ) ;
   end ;
   EnviaComando ;
 
-  fsRet0906 := '' ;
-  fsRet0907 := '' ;
+  ZeraCache;
 end;
 
 procedure TACBrECFEpson.LeituraMemoriaFiscalSerial(ReducaoInicial,
@@ -2304,10 +2364,10 @@ begin
      else
         Extensao := '0008' ;
 
-     AddParam( IntToStr(ReducaoInicial) ) ;
-     AddParam( IntToStr(ReducaoFinal) ) ;
-     AddParam( '' ) ;
-     AddParam( '' ) ;
+     AddParamInteger( ReducaoInicial ) ;
+     AddParamInteger( ReducaoFinal ) ;
+     AddParamString( '' ) ;
+     AddParamString( '' ) ;
   end ;
   EnviaComando ;
   Sleep(200);
@@ -2329,10 +2389,10 @@ begin
         else
            Extensao := '000C' ;
 
-        AddParam( IntToStr(ReducaoInicial) ) ;
-        AddParam( IntToStr(ReducaoFinal) ) ;
-        AddParam( '' ) ;
-        AddParam( '' ) ;
+        AddParamInteger( ReducaoInicial ) ;
+        AddParamInteger( ReducaoFinal ) ;
+        AddParamString( '' ) ;
+        AddParamString( '' ) ;
      end ;
      try
         EnviaComando ;
@@ -2354,10 +2414,10 @@ begin
      else
         Extensao := '0009' ;
         
-     AddParam( '' ) ;
-     AddParam( '' ) ;
-     AddParam( FormatDateTime('ddmmyyyy',DataInicial) ) ;
-     AddParam( FormatDateTime('ddmmyyyy',DataFinal) ) ;
+     AddParamString( '' ) ;
+     AddParamString( '' ) ;
+     AddParamDateTime( DataInicial ) ;
+     AddParamDateTime( DataFinal ) ;
   end ;
   EnviaComando ;
   Sleep(200);
@@ -2379,10 +2439,10 @@ begin
         else
            Extensao := '000D' ;
            
-        AddParam( '' ) ;
-        AddParam( '' ) ;
-        AddParam( FormatDateTime('ddmmyyyy',DataInicial) ) ;
-        AddParam( FormatDateTime('ddmmyyyy',DataFinal) ) ;
+        AddParamString( '' ) ;
+        AddParamString( '' ) ;
+        AddParamDateTime( DataInicial ) ;
+        AddParamDateTime( DataFinal ) ;
      end ;
      try
         EnviaComando ;
@@ -2398,15 +2458,16 @@ begin
   inherited CorrigeEstadoErro(Reducao) ;
 
   if Estado <> estLivre then
+  begin
      try
         EpsonComando.Comando := '0210' ;
         EnviaComando ;
         sleep(500) ;
      except
      end ;
-  
-  fsRet0906 := '' ;
-  fsRet0907 := '' ;
+  end ;
+
+  ZeraCache;
 end;
 
 function TACBrECFEpson.GetCNPJ: String;
@@ -2570,18 +2631,23 @@ end;
 function TACBrECFEpson.GetNumUltimoItem: Integer;
 begin
   try
-     EpsonComando.Comando := '0903' ;
-     EnviaComando ;
-
-     Result := StrToIntDef( EpsonResposta.Params[0],0 ) ;
+    Result := RespostasComando['NumUltItem'].AsInteger;
   except
-     on E : Exception do
-     begin
-        if (pos('0102',E.Message) <> 0) then
-           Result := 0
-        else
-           raise ;
-     end ;
+    try
+       EpsonComando.Comando := '0903' ;
+       EnviaComando ;
+
+       RespostasComando.AddField( 'NumUltItem', EpsonResposta.Params[0] );
+       Result := StrToIntDef( EpsonResposta.Params[0],0 ) ;
+    except
+       on E : Exception do
+       begin
+          if (pos('0102',E.Message) <> 0) then
+             Result := 0
+          else
+             raise ;
+       end ;
+    end ;
   end ;
 end;
 
@@ -2595,42 +2661,41 @@ begin
   begin
      EpsonComando.Comando  := '0A20' ;
      EpsonComando.Extensao := '0001' ;
-     EpsonComando.AddParam(LeftStr(Consumidor.Documento,20));
-     EpsonComando.AddParam(LeftStr(Consumidor.Nome,30));
-     EpsonComando.AddParam(copy(Consumidor.Endereco, 1,40));
-     EpsonComando.AddParam(copy(Consumidor.Endereco,41,40));
+     EpsonComando.AddParamString( LeftStr(Consumidor.Documento,20) );
+     EpsonComando.AddParamString( LeftStr(Consumidor.Nome,30) );
+     EpsonComando.AddParamString( copy(Consumidor.Endereco, 1,40) );
+     EpsonComando.AddParamString( copy(Consumidor.Endereco,41,40) );
      EnviaComando ;
   end ;
 
   EpsonComando.Comando := '0E01' ;
-  EpsonComando.AddParam( '' );
+  EpsonComando.AddParamString( '' );
   EnviaComando ;
 
-  fsRet0906 := '' ;
-  fsRet0907 := '' ;
+  ZeraCache;
 end;
 
 procedure TACBrECFEpson.CancelaNaoFiscal;
 begin
   EpsonComando.Comando  := '0E18' ;
   EpsonComando.Extensao := '0008' ;
-  EpsonComando.AddParam('1');   // 1 Campo de entrada NÃO usado no Cancelamento de cupom ;
+  EpsonComando.AddParamInteger( 1 );   // 1 Campo de entrada NÃO usado no Cancelamento de cupom ;
   EnviaComando ;
 
-  fsRet0906 := '' ;
-  fsRet0907 := '' ;
+  ZeraCache;
+  RespostasComando.AddField( 'SubTotal', EpsonResposta.Params[0] );
+  RespostasComando.AddField( 'ValorCancelado', EpsonResposta.Params[1] );
 end;
 
 procedure TACBrECFEpson.RegistraItemNaoFiscal(CodCNF: String;
   Valor: Double; Obs: AnsiString);
 begin
   EpsonComando.Comando := '0E15' ;
-  EpsonComando.AddParam( CodCNF );
-  EpsonComando.AddParam( IntToStr(Round(Valor * 100)) );
+  EpsonComando.AddParamString( CodCNF );
+  EpsonComando.AddParamDouble( Valor, 2 );
   EnviaComando ;
 
-  fsRet0906 := '' ;
-  fsRet0907 := '' ;
+  ZeraCache;
 end;
 
 procedure TACBrECFEpson.SubtotalizaNaoFiscal(DescontoAcrescimo: Double;
@@ -2644,25 +2709,26 @@ begin
      EpsonComando.Extensao := '0006'
   else
      EpsonComando.Extensao := '0007' ;
-  EpsonComando.AddParam( IntToStr(Round(abs(DescontoAcrescimo) * 100))  );
+  EpsonComando.AddParamDouble( abs(DescontoAcrescimo), 2 );
   EnviaComando ;
 
-  fsRet0906 := '' ;
-  fsRet0907 := '' ;
+  ZeraCache;
+  RespostasComando.AddField( 'SubTotal', EpsonResposta.Params[0] );
 end;
 
 procedure TACBrECFEpson.EfetuaPagamentoNaoFiscal(CodFormaPagto: String;
   Valor: Double; Observacao: AnsiString; ImprimeVinculado: Boolean);
 begin
   EpsonComando.Comando  := '0E1A' ;
-  EpsonComando.AddParam( CodFormaPagto ) ;
-  EpsonComando.AddParam( IntToStr(Round(Valor * 100)) ) ;
-  EpsonComando.AddParam( copy(Observacao, 1,40) ) ;
-  EpsonComando.AddParam( copy(Observacao,41,40) ) ;
+  EpsonComando.AddParamString( CodFormaPagto ) ;
+  EpsonComando.AddParamDouble( Valor, 2 ) ;
+  EpsonComando.AddParamString( copy(Observacao, 1,40) ) ;
+  EpsonComando.AddParamString( copy(Observacao,41,40) ) ;
   EnviaComando ;
 
-  fsRet0906 := '' ;
-  fsRet0907 := '' ;
+  ZeraCache;
+  RespostasComando.AddField( 'TotalAPagar', EpsonResposta.Params[0] );
+  RespostasComando.AddField( 'TotalTroco', EpsonResposta.Params[1] );
 end;
 
 procedure TACBrECFEpson.FechaNaoFiscal(Observacao: ansiString; IndiceBMP : Integer);
@@ -2678,9 +2744,9 @@ begin
         EpsonComando.Comando  := '0A22' ;
         For I := 0 to 7 do
            if I >= SL.Count then
-              EpsonComando.AddParam('')
+              EpsonComando.AddParamString( '' )
            else
-              EpsonComando.AddParam(SL[I]) ;
+              EpsonComando.AddParamString( SL[I] ) ;
         EnviaComando ;
      finally
         SL.Free ;
@@ -2693,8 +2759,7 @@ begin
   EpsonComando.Extensao := '0001' ;
   EnviaComando ;
 
-  fsRet0906 := '' ;
-  fsRet0907 := '' ;
+  ZeraCache;
 end;
 
 procedure TACBrECFEpson.NaoFiscalCompleto(CodCNF: String; Valor: Double;
@@ -2768,8 +2833,7 @@ begin
     EpsonComando.Comando := 'EE12' ;
     EnviaComando ;
 
-    fsRet0906 := '' ;
-    fsRet0907 := '' ;
+    ZeraCache;
   end;
 end;
 
@@ -2785,13 +2849,13 @@ begin
     with EpsonComando do
     begin
        Comando := 'EE10' ;
-       AddParam( LeftStr(Banco,2) ) ;
-       AddParam( IntToStr(Round(Valor * Power(10,fpDecimaisPreco) ))  ) ;
-       AddParam( LeftStr(Favorecido,40) ) ;
-       AddParam( LeftStr(Cidade,30) ) ;
-       AddParam( Observacao ) ;
-       AddParam( '' ) ;
-       AddParam( FormatDateTime('ddmmyyyy',Data) ) ;
+       AddParamString( LeftStr(Banco,2) ) ;
+       AddParamDouble( Valor, fpDecimaisPreco ) ;
+       AddParamString( LeftStr(Favorecido,40) ) ;
+       AddParamString( LeftStr(Cidade,30) ) ;
+       AddParamString( Observacao ) ;
+       AddParamString( '' ) ;
+       AddParamDateTime( Data ) ;
     end ;
     EnviaComando ;         // Envia comando para imprimir o Cheque
 
@@ -2820,9 +2884,9 @@ begin
     with EpsonComando do
     begin
        Comando := '0721' ;
-       AddParam( '1' ) ;  // Formato '0' = E13B ou '1' - CMC7
-       AddParam( 'N' ) ;  // Recebe Informações Extendidas (S/N)
-       AddParam( 'N' ) ;  // Substituir caracteres não reconhecidos por '?' (S/N)
+       AddParamInteger( 1 ) ;   // Formato '0' = E13B ou '1' - CMC7
+       AddParamBool( False ) ;  // Recebe Informações Extendidas (S/N)
+       AddParamBool( False ) ;  // Substituir caracteres não reconhecidos por '?' (S/N)
     end ;
     EnviaComando ;       // Envia o comando para Ler o CMC7
 
@@ -2873,7 +2937,7 @@ begin
   begin
      try
         EpsonComando.Comando  := '0550' ;
-        EpsonComando.AddParam(LeftStr(Nome,20));
+        EpsonComando.AddParamString( LeftStr(Nome,20) );
         EnviaComando ;
 
         RetCmd := '' ;
@@ -2921,8 +2985,8 @@ begin
   begin
      try
         EpsonComando.Comando  := '0A23' ;
-        EpsonComando.AddParam(fsPAF1);
-        EpsonComando.AddParam(fsPAF2);
+        EpsonComando.AddParamString( fsPAF1 );
+        EpsonComando.AddParamString( fsPAF2 );
         EnviaComando ;
      except
      end ;
@@ -2968,6 +3032,9 @@ begin
 //25-Totalizador Geral       N   17
 //n+25-Percentual do Totalizador parcial  N  4
 //n+26-Total vendido         N  13
+
+  // TODO: Implementar a leitura dos valores na Classe da ReducaoZ
+
   Result := '';
 
   try
@@ -2980,7 +3047,7 @@ begin
 
      EpsonComando.Comando := '090D';
      EpsonComando.Params.Clear;
-     EpsonComando.AddParam(CRZ);
+     EpsonComando.AddParamString( CRZ );
      EnviaComando;
   except
      Exit;
@@ -3087,6 +3154,15 @@ begin
   if Resp <> 0 then
      raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao abrir a Porta com:'+sLineBreak+
         'EPSON_Serial_Abrir_Porta('+IntToStr(fpDevice.Baud)+', '+IntToStr(Porta)+')' ));
+end ;
+
+procedure TACBrECFEpson.ZeraCache( ZeraRespostaComando: Boolean ) ;
+begin
+  if ZeraRespostaComando then
+     RespostasComando.Clear;
+
+  fsRet0906 := '';
+  fsRet0907 := '';
 end ;
 
 procedure TACBrECFEpson.EspelhoMFD_DLL(DataInicial,
@@ -3390,7 +3466,7 @@ begin
      begin
         EpsonComando.Comando  :='0902';
         EpsonComando.Extensao :='0002';
-        EpsonComando.AddParam(IntToStr(i));
+        EpsonComando.AddParamInteger( i );
         EnviaComando;
 
         RG := TACBrECFRelatorioGerencial.Create;
@@ -3426,7 +3502,7 @@ begin
 
   EpsonComando.Comando  := '0570';
   EpsonComando.Extensao := '0000';
-  EpsonComando.AddParam(PadL(Descricao,15));
+  EpsonComando.AddParamString( PadL(Descricao,15) );
   EnviaComando;
   
   CarregaRelatoriosGerenciais;

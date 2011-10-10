@@ -147,6 +147,11 @@ TACBrECFFiscNET = class( TACBrECFClass )
                                                  RegFileName        : AnsiString;
                                                  DataReducaoInicial : AnsiString;
                                                  DataReducaoFinal   : AnsiString) : integer; stdcall;
+    xGera_AtoCotepe1704_Periodo_MF : Function ( ComPort            : AnsiString;
+                                                 Modelo             : AnsiString;
+                                                 RegFileName        : AnsiString;
+                                                 DataReducaoInicial : AnsiString;
+                                                 DataReducaoFinal   : AnsiString) : integer; stdcall;
 
     // urano e demais
     xDLLReadLeMemorias : function (szPortaSerial, szNomeArquivo, szSerieECF,
@@ -1260,20 +1265,36 @@ begin
   if (fsPAF <> '') and (pos(fsPAF,Obs) = 0) then
      if Obs = '' then
         Obs := fsPAF
-     else 
+     else
         Obs := fsPAF + #10 + Obs ;
 
-  if (Obs <> '') then
-  begin
-     FiscNETComando.NomeComando := 'ImprimeTexto' ;
-     FiscNETComando.AddParamString('TextoLivre',Obs);
+  try
+     FiscNETComando.NomeComando := 'EncerraDocumento' ;
+     if (Obs <> '') then
+        FiscNETComando.AddParamString('TextoPromocional',Obs);
+     FiscNETComando.TimeOut     := 5 ;
+     FiscNETComando.AddParamString('Operador',Operador) ;
      EnviaComando ;
-  end ;
 
-  FiscNETComando.NomeComando := 'EncerraDocumento' ;
-  FiscNETComando.TimeOut     := 5 ;
-  FiscNETComando.AddParamString('Operador',Operador) ;
-  EnviaComando ;
+  except
+     on E : Exception do
+     begin
+        if (pos('ErroProtSequenciaComando',E.Message) <> 0) then
+        begin
+           if (Obs <> '') then
+           begin
+              FiscNETComando.NomeComando := 'ImprimeTexto' ;
+              FiscNETComando.AddParamString('TextoLivre',Obs);
+              EnviaComando ;
+           end ;
+
+           FiscNETComando.NomeComando := 'EncerraDocumento' ;
+           FiscNETComando.TimeOut     := 5 ;
+           FiscNETComando.AddParamString('Operador',Operador) ;
+           EnviaComando ;
+        end ;
+     end ;
+  end ;
 
   fsEmPagamento := false ;
 end;
@@ -2706,6 +2727,7 @@ begin
    begin
      LIB_FiscNet := 'DLLG2_Gerador.dll' ;
      FiscNetFunctionDetect(LIB_FiscNet, 'Gera_AtoCotepe1704_Periodo_MFD',@xGera_AtoCotepe1704_Periodo_MFD );
+     FiscNetFunctionDetect(LIB_FiscNet, 'Gera_AtoCotepe1704_Periodo_MF',@xGera_AtoCotepe1704_Periodo_MF );
      FiscNetFunctionDetect(LIB_FiscNet, 'Gera_PAF',@xGera_PAF );
    end
 
@@ -2890,19 +2912,19 @@ begin
   try
      Ativo := False;
 
+     if (Finalidade = finMF) then
+        cFinalidade := 'MF'
+     else if (Finalidade = finTDM) then
+        cFinalidade := 'TDM'
+     else
+        cFinalidade := 'MFD';
+
      if pos(fsMarcaECF, 'urano') > 0 then
       begin
-        if (Finalidade = finMF) then
-           cFinalidade := 'MF'
-        else if (Finalidade = finTDM) then
-           cFinalidade := 'TDM'
-        else
-           cFinalidade := 'MFD';
-
         ArqTmp := ExtractFilePath( NomeArquivo ) + 'ACBr.TDM' ;
         if FileExists( NomeArquivo ) then
            DeleteFile( NomeArquivo ) ;
-        
+
         DiaIni := FormatDateTime('yyyymmdd', DataInicial);
         DiaFim := FormatDateTime('yyyymmdd', DataFinal);
 
@@ -2926,7 +2948,11 @@ begin
         DiaIni := FormatDateTime('dd/mm/yyyy', DataInicial);
         DiaFim := FormatDateTime('dd/mm/yyyy', DataFinal);
 
-        iRet := xGera_AtoCotepe1704_Periodo_MFD( PortaSerial, ModeloECF,
+        if (Finalidade = finMF) then
+          iRet := xGera_AtoCotepe1704_Periodo_MF( PortaSerial, ModeloECF,
+                                                 NomeArquivo, DiaIni, DiaFim )
+        else
+          iRet := xGera_AtoCotepe1704_Periodo_MFD( PortaSerial, ModeloECF,
                                                  NomeArquivo, DiaIni, DiaFim );
 
         if iRet <> 0 then
@@ -2958,7 +2984,7 @@ begin
                                           'Arquivo binário não gerado!'));
 
         iRet := xElgin_GeraArquivoATO17Binario( ArqTmp, NomeArquivo, DiaIni,
-                                                DiaFim, 'D', Prop, 'TDM');
+                                                DiaFim, 'D', Prop, cFinalidade);
 
         if (iRet <> 1) then
            raise Exception.Create(ACBrStr('Erro ao executar Elgin_GeraArquivoATO17Binario.'+sLineBreak+
@@ -2995,15 +3021,15 @@ begin
   try
      Ativo := False;
 
+     if (Finalidade = finMF) then
+        cFinalidade := 'MF'
+     else if (Finalidade = finTDM) then
+        cFinalidade := 'TDM'
+     else
+        cFinalidade := 'MFD';
+
      if pos(fsMarcaECF, 'urano') > 0 then
       begin
-        if (Finalidade = finMF) then
-           cFinalidade := 'MF'
-        else if (Finalidade = finTDM) then
-           cFinalidade := 'TDM'
-        else
-           cFinalidade := 'MFD';
-
         ArqTmp := ExtractFilePath( NomeArquivo ) + 'ACBr.TDM' ;
         if FileExists( NomeArquivo ) then
            DeleteFile( NomeArquivo ) ;
@@ -3054,7 +3080,7 @@ begin
                                           'Arquivo binário não gerado!'));
 
         iRet := xElgin_GeraArquivoATO17Binario( ArqTmp, NomeArquivo, CooIni,
-                                                CooFim, 'C', Prop, 'TDM');
+                                                CooFim, 'C', Prop, cFinalidade);
 
         if (iRet <> 1) then
            raise Exception.Create(ACBrStr('Erro ao executar Elgin_GeraArquivoATO17Binario.'+sLineBreak+
@@ -3239,6 +3265,17 @@ begin
 
    try
       Result := Result + 'TotalNaoFiscal = ' + FloatToStr( TOPNF ) + sLineBreak ;
+   except
+   end ;
+
+   try
+      FiscNETComando.NomeComando := 'LeMoeda' ;
+      FiscNETComando.AddParamString( 'NomeDadoMonetario','VendaBrutaReducao['+
+                                     IntToStr(StrToInt(NumCRZ)) + ']') ;
+      EnviaComando ;
+
+      VBruta := StringToFloatDef(
+         RemoveString('.', FiscNETResposta.Params.Values['ValorMoeda'] ), 0) ;
    except
    end ;
 

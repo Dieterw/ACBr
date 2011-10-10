@@ -173,9 +173,9 @@ object Form1: TForm1
     Height = 317
     Top = 0
     Width = 547
-    ActivePage = tsTagsImpressao
+    ActivePage = TabSheet4
     Align = alClient
-    TabIndex = 4
+    TabIndex = 0
     TabOrder = 0
     object TabSheet4: TTabSheet
       Caption = 'ECF'
@@ -424,17 +424,17 @@ object Form1: TForm1
         TabOrder = 14
       end
       object Label22: TLabel
-        Left = 411
+        Left = 476
         Height = 14
-        Top = 58
+        Top = 8
         Width = 54
         Caption = 'BandWidth'
         ParentColor = False
       end
       object seBandWidth: TSpinEdit
-        Left = 411
+        Left = 476
         Height = 21
-        Top = 74
+        Top = 24
         Width = 54
         Increment = 10
         MaxValue = 1000
@@ -442,9 +442,9 @@ object Form1: TForm1
         TabOrder = 15
       end
       object chDescricaoGrande: TCheckBox
-        Left = 372
+        Left = 188
         Height = 19
-        Top = 111
+        Top = 134
         Width = 106
         Caption = 'Descrição Grande'
         Checked = True
@@ -458,9 +458,7 @@ object Form1: TForm1
         Top = 111
         Width = 147
         Caption = 'Arredondamento Item MFD'
-        Checked = True
         OnChange = chArredondamentoItemMFDChange
-        State = cbChecked
         TabOrder = 9
       end
       object Label23: TLabel
@@ -534,6 +532,52 @@ object Form1: TForm1
         ParentFont = False
         State = cbChecked
         TabOrder = 19
+      end
+      object GroupBox1: TGroupBox
+        Left = 385
+        Height = 63
+        Top = 75
+        Width = 130
+        Caption = 'Decimais'
+        ClientHeight = 45
+        ClientWidth = 126
+        TabOrder = 20
+        object seDecimaisQTD: TSpinEdit
+          Left = 9
+          Height = 21
+          Top = 13
+          Width = 46
+          MaxValue = 4
+          OnChange = seDecimaisQTDChange
+          TabOrder = 0
+          Value = 3
+        end
+        object Label29: TLabel
+          Left = 17
+          Height = 14
+          Top = -1
+          Width = 18
+          Caption = 'Qtd'
+          ParentColor = False
+        end
+        object Label45: TLabel
+          Left = 65
+          Height = 14
+          Top = -1
+          Width = 29
+          Caption = 'Preço'
+          ParentColor = False
+        end
+        object seDecimaisPreco: TSpinEdit
+          Left = 65
+          Height = 21
+          Top = 13
+          Width = 46
+          MaxValue = 3
+          OnChange = seDecimaisPrecoChange
+          TabOrder = 1
+          Value = 3
+        end
       end
     end
     object TabSheet1: TTabSheet

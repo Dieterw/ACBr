@@ -5665,7 +5665,7 @@ var
 
   function GetDescrFlag(const ALigado: Boolean): String;
   begin
-    Result := IfThen(ALigado, ': SIM', ': NÃO');
+    Result := IfThen(ALigado, ': S', ': N');
   end;
 
   function GetTipoIntegracao(const ATipo: TACBrPAFTipoIntegracao): String;
@@ -5698,7 +5698,7 @@ var
   end;
 
 begin
-  TamColSimNao := Self.Colunas - 5;
+  TamColSimNao := Self.Colunas - 3;
   TamColDescr  := Self.Colunas - 24;
 
   Relatorio := TStringList.Create;
@@ -5706,13 +5706,16 @@ begin
     Relatorio.Clear;
 
     Relatorio.Add('</linha_dupla>');
-    Relatorio.Add('<ce>Parâmetros de Configuração</ce>');
+    Relatorio.Add('<ce>PARÂMETROS DE CONFIGURAÇÃO</ce>');
     Relatorio.Add('</linha_dupla>');
     Relatorio.Add('');
 
     Relatorio.Add(QuebraLinhas(
       'Todas as parametrizações relacionadas neste relatório são de ' +
-      'configuração inacessível ao usuário do PAF-ECF. ' +
+      'configuração inacessível ao usuário do PAF-ECF.',
+      Colunas)
+    );
+    Relatorio.Add(QuebraLinhas(
       'A ativação ou não destes parâmetros é determinada pela unidade ' +
       'federada e somente pode ser feita pela intervenção da empresa ' +
       'desenvolvedora do PAF-ECF.',
@@ -5722,17 +5725,17 @@ begin
     Relatorio.Add('');
     Relatorio.Add('<n>Funcionalidades</n>');
     Relatorio.Add('</linha_simples>');
-    Relatorio.Add(padL('Tipo de Funcionamento', TamColDescr) + GetTipoFuncionamento(AInfoPafECF.TipoFuncionamento));
-    Relatorio.Add(padL('Tipo de Desenvolvimento', TamColDescr) + GetTipoDesenvolvimento(AInfoPafECF.TipoDesenvolvimento));
-    Relatorio.Add(padL('Integração com PAF-ECF', TamColDescr) + GetTipoIntegracao(AInfoPafECF.IntegracaoPAFECF));
+    Relatorio.Add(padL('Tipo de Funcionamento', TamColDescr, '.') + GetTipoFuncionamento(AInfoPafECF.TipoFuncionamento));
+    Relatorio.Add(padL('Tipo de Desenvolvimento', TamColDescr, '.') + GetTipoDesenvolvimento(AInfoPafECF.TipoDesenvolvimento));
+    Relatorio.Add(padL('Integração com PAF-ECF', TamColDescr, '.') + GetTipoIntegracao(AInfoPafECF.IntegracaoPAFECF));
     Relatorio.Add('');
 
     Relatorio.Add('<n>Parâmetros para Não Concomitância</n>');
     Relatorio.Add('</linha_simples>');
-    Relatorio.Add(padL('Pré-Venda', TamColSimNao) + GetDescrFlag( AInfoPafECF.RealizaPreVenda));
-    Relatorio.Add(padL('DAV por ECF', TamColSimNao) + GetDescrFlag( AInfoPafECF.RealizaDAVECF));
-    Relatorio.Add(padL('DAV Impressora Não Fiscal', TamColSimNao) + GetDescrFlag( AInfoPafECF.RealizaDAVNaoFiscal));
-    Relatorio.Add(padL('DAV-OS', TamColSimNao) + GetDescrFlag( AInfoPafECF.RealizaDAVOS));
+    Relatorio.Add(padL('Pré-Venda', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.RealizaPreVenda));
+    Relatorio.Add(padL('DAV por ECF', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.RealizaDAVECF));
+    Relatorio.Add(padL('DAV Impressora Não Fiscal', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.RealizaDAVNaoFiscal));
+    Relatorio.Add(padL('DAV-OS', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.RealizaDAVOS));
     Relatorio.Add('');
 
     Relatorio.Add('<n>Aplicações Especiais</n>');

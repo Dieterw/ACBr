@@ -45,7 +45,7 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ExtCtrls, QuickRpt, QRCtrls, XMLIntf, XMLDoc, 
   JPEG, ACBrCTeQRCodeBar, pcnConversao, DB,
-  DBClient, ACBrCTeDACTeQR, qrRRect;
+  DBClient, ACBrCTeDACTeQR {, qrRRect};
 
 type
   TfrmDACTeQRRetrato = class(TfrmDACTeQR)
@@ -335,26 +335,12 @@ type
     QRShape61: TQRShape;
     QRShape62: TQRShape;
     qrb_17_Sistema: TQRChildBand;
-    qrb_18_Recibo: TQRChildBand;
     QRShape10: TQRShape;
     QRLabel65: TQRLabel;
     QRShape2: TQRShape;
     QRLabel66: TQRLabel;
     QRLabel70: TQRLabel;
-    QRShape3: TQRShape;
     QRShape53: TQRShape;
-    QRLabel69: TQRLabel;
-    QRShape4: TQRShape;
-    QRShape30: TQRShape;
-    QRLabel67: TQRLabel;
-    qrlDHChegada: TQRLabel;
-    QRLabel68: TQRLabel;
-    QRLabel72: TQRLabel;
-    QRLabel19: TQRLabel;
-    QRLabel57: TQRLabel;
-    qrlNumCte1: TQRLabel;
-    QRLabel60: TQRLabel;
-    qrlSerie1: TQRLabel;
     QRShape11: TQRShape;
     QRLabel71: TQRLabel;
     QRShape12: TQRShape;
@@ -494,6 +480,24 @@ type
     QRShape78: TQRShape;
     QRShape79: TQRShape;
     QRShape80: TQRShape;
+    qrb_01_Recibo_Aereo: TQRChildBand;
+    QRLabel19: TQRLabel;
+    QRShape81: TQRShape;
+    QRShape82: TQRShape;
+    QRLabel57: TQRLabel;
+    QRLabel60: TQRLabel;
+    QRLabel69: TQRLabel;
+    QRLabel161: TQRLabel;
+    QRLabel67: TQRLabel;
+    QRLabel68: TQRLabel;
+    QRLabel72: TQRLabel;
+    QRLabel163: TQRLabel;
+    QRShape3: TQRShape;
+    QRLabel165: TQRLabel;
+    lblCIOT: TQRLabel;
+    qrlCIOT: TQRLabel;
+    qrsCIOT: TQRShape;
+    qrmObsFisco: TQRMemo;
     procedure QRCTeBeforePrint(Sender: TCustomQuickRep; var PrintReport: Boolean);
     procedure qrb_01_ReciboBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
     procedure qrb_02_CabecalhoBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
@@ -513,8 +517,6 @@ type
     procedure qrb_09_ObsBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
     procedure qrb_10_ModRodFracionadoBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
     procedure qrb_11_ModRodLotacaoBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
-    procedure qrb_18_ReciboBeforePrint(Sender: TQRCustomBand;
-      var PrintBand: Boolean);
     procedure qrb_17_SistemaBeforePrint(Sender: TQRCustomBand;
       var PrintBand: Boolean);
     procedure qrb_16_DadosExcEmitenteBeforePrint(Sender: TQRCustomBand;
@@ -526,6 +528,8 @@ type
     procedure qrb_14_ModFerroviarioBeforePrint(Sender: TQRCustomBand;
       var PrintBand: Boolean);
     procedure qrb_15_ModDutoviarioBeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure qrb_01_Recibo_AereoBeforePrint(Sender: TQRCustomBand;
       var PrintBand: Boolean);
   private
     FTotalPages: integer;
@@ -821,13 +825,22 @@ procedure TfrmDACTeQRRetrato.qrb_01_ReciboBeforePrint(Sender: TQRCustomBand; var
 begin
   inherited;
   // Incluido/Alterado por Italo em 20/04/2011 / 27/04/2011
-  PrintBand := (QRCTe.PageNumber = 1) and (FPosRecibo = prCabecalho);
+  PrintBand := (QRCTe.PageNumber = 1) and (FCTe.Ide.modal <> mdAereo){(FPosRecibo = prCabecalho)};
 
-  qrlSerie2.Caption := IntToStr(FCTe.Ide.serie);
+  qrlSerie2.Caption  := IntToStr(FCTe.Ide.serie);
   qrlNumCte2.Caption := FormatFloat( '000,000,000', FCTe.Ide.nCT );
   // Incluido por Italo em 27/04/2011
   // TpcteTipoCTe = (tcNormal, tcComplemento, tcAnulacao, tcSubstituto);
-  qrb_01_Recibo.Enabled:=(FCTe.Ide.tpCTe = tcNormal);
+  qrb_01_Recibo.Enabled := (FCTe.Ide.tpCTe = tcNormal);
+end;
+
+procedure TfrmDACTeQRRetrato.qrb_01_Recibo_AereoBeforePrint(
+  Sender: TQRCustomBand; var PrintBand: Boolean);
+begin
+  inherited;
+  PrintBand := (QRCTe.PageNumber = 1) and (FCTe.Ide.modal = mdAereo);
+
+  qrb_01_Recibo_Aereo.Enabled := (FCTe.Ide.tpCTe = tcNormal);
 end;
 
 procedure TfrmDACTeQRRetrato.qrb_02_CabecalhoBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
@@ -854,9 +867,7 @@ begin
   qrlModal.Caption := TpModalToStrText(FCTe.Ide.modal);
   qrlModelo.Caption := FCTe.Ide.modelo;
   qrlSerie.Caption := IntToStr(FCTe.Ide.serie);
-  qrlSerie1.Caption := IntToStr(FCTe.Ide.serie);
   qrlNumCte.Caption := FormatFloat( '000,000,000', FCTe.Ide.nCT );
-  qrlNumCte1.Caption := FormatFloat( '000,000,000', FCTe.Ide.nCT );
   qrlPageNumber.Caption := format('%2.2d', [QRCTe.PageNumber]) + '/' + format('%2.2d', [FTotalPages]);
   qrlEmissao.Caption := CTeUtil.FormatDateTime(DateTimeToStr(FCTe.Ide.dhEmi));
   SetBarCodeImage(Copy(FCTe.InfCTe.Id, 4, 44), qriBarCode);
@@ -1423,8 +1434,6 @@ end;
 
 procedure TfrmDACTeQRRetrato.qrb_09_ObsBeforePrint(
   Sender: TQRCustomBand; var PrintBand: Boolean);
-var
- i: integer;
 begin
   inherited;
   // Incluido por Italo em 20/04/2011
@@ -1444,14 +1453,14 @@ begin
 //     qrmObs.Lines.Add( StringReplace( xCampo, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] )+': '+
 //                       StringReplace( xTexto, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
 //    end;
-  if FCTe.Compl.ObsFisco.Count>0
-   then qrmObs.Lines.Add('INFORMAÇÕES ADICIONAIS DE INTERESSE DO FISCO:');
-  for i := 0 to FCTe.Compl.ObsFisco.Count-1 do
-   with FCTe.Compl.ObsFisco.Items[i] do
-    begin
-     qrmObs.Lines.Add( StringReplace( xCampo, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] )+': '+
-                       StringReplace( xTexto, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
-    end;
+//  if FCTe.Compl.ObsFisco.Count>0
+//   then qrmObs.Lines.Add('INFORMAÇÕES ADICIONAIS DE INTERESSE DO FISCO:');
+//  for i := 0 to FCTe.Compl.ObsFisco.Count-1 do
+//   with FCTe.Compl.ObsFisco.Items[i] do
+//    begin
+//     qrmObs.Lines.Add( StringReplace( xCampo, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] )+': '+
+//                       StringReplace( xTexto, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
+//    end;
 
   // Linhas inseridas por Italo em 28/01/2011
   if FCTe.Ide.tpEmis in [teContingencia, teFSDA]
@@ -1533,6 +1542,18 @@ begin
   with FCTe.Rodo do
   begin
     qrlRntrcEmpresa.Caption := RNTRC;
+
+{$IFDEF PL_103}
+    qrsCIOT.Enabled := False;
+    lblCIOT.Enabled := False;
+    qrlCIOT.Enabled := False;
+{$ENDIF}
+{$IFDEF PL_104}
+    qrsCIOT.Enabled := True;
+    lblCIOT.Enabled := True;
+    qrlCIOT.Enabled := True;
+    qrlCIOT.Caption := CIOT;
+{$ENDIF}
 
   // Incluido / Alterado por Italo em 29/12/2010
     case Lota of
@@ -1618,75 +1639,6 @@ begin
   begin
    qrlLacres.Caption := qrlLacres.Caption + FCTe.Rodo.Lacres.Items[i].nLacre + '/';
   end;
-end;
-
-procedure TfrmDACTeQRRetrato.qrb_18_ReciboBeforePrint(Sender: TQRCustomBand;
-  var PrintBand: Boolean);
-begin
-  inherited;
-  // Última alteração realizada por base nas correções de Clever - BSoft Sistemas
-
-  // Incluido/Alterado por Italo em 20/04/2011 / 27/04/2011 / 04/07/2011
-  PrintBand := (QRCTe.PageNumber = 1);
-
-  // Incluido por Italo em 27/04/2011 / 04/07/2011
-  // TpcteTipoCTe = (tcNormal, tcComplemento, tcAnulacao, tcSubstituto);
-  if (FCTe.Ide.tpCTe = tcNormal) and PrintBand
-   then begin
-    qrb_18_Recibo.Enabled := (FPosRecibo = prRodape);
-    if qrb_18_Recibo.Enabled
-     then qrb_18_Recibo.Height  := 68
-     else qrb_18_Recibo.Height  := 0;
-   end;
-end;
-
-procedure TfrmDACTeQRRetrato.qrb_17_SistemaBeforePrint(Sender: TQRCustomBand;
-  var PrintBand: Boolean);
-begin
-  inherited;
-  // Incluido por Italo em 20/04/2011
-  PrintBand := QRCTe.PageNumber = 1;
-
-  qrlblSistema.Caption := FSistema + ' - ' + FUsuario;
-end;
-
-procedure TfrmDACTeQRRetrato.qrb_16_DadosExcEmitenteBeforePrint(Sender: TQRCustomBand;
-  var PrintBand: Boolean);
-var
- xTexto: String;
- i: Integer;
-begin
-  inherited;
-  // Incluido por Italo em 20/04/2011
-  PrintBand := QRCTe.PageNumber = 1;
-
-  qrmObsExcEmitente.Lines.BeginUpdate; // Linha inserida por Italo em 28/06/2011
-  qrmObsExcEmitente.Lines.Clear;
-
-  // Linhas Alteradas por Italo em 06/05/2011
-  if FCTe.Ide.modal = mdAereo
-   then begin
-    qrmObsExcEmitente.Lines.Add( 'O transporte coberto por este conhecimento se rege pelo código brasileiro de aeronáutica. '+
-                  'O expedidor/remetente aceita como corretas todas as especificações impressas neste conhecimento,' );
-    qrmObsExcEmitente.Lines.Add( 'certificando que os artigos perigosos descritos pela regulamentação da ICAO foram devidamente '+
-                  'informados e acondicionados para transporte aéreo.' );
-   end;
-
-  // Incluido por Italo em 28/06/2011
-  if FCTe.Ide.modal <> mdAereo
-   then begin
-//    qrmObsExcEmitente.Lines.Add( StringReplace( FCTe.Compl.xObs, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
-    for i := 0 to FCTe.Compl.ObsCont.Count-1 do
-     with FCTe.Compl.ObsCont.Items[i] do
-      begin
-       qrmObsExcEmitente.Lines.Add( StringReplace( xCampo, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] )+': '+
-                                    StringReplace( xTexto, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
-      end;
-   end;
-
-  // Linhas inseridas por Italo em 28/06/2011
-  qrmObsExcEmitente.Lines.Text := StringReplace( qrmObsExcEmitente.Lines.Text, ';', #13, [rfReplaceAll] );
-  qrmObsExcEmitente.Lines.EndUpdate;
 end;
 
 procedure TfrmDACTeQRRetrato.qrb_12_ModAereoBeforePrint(
@@ -1781,6 +1733,65 @@ begin
   // Incluido por Italo em 06/05/2011
   PrintBand := QRCTe.PageNumber = 1;
   qrb_15_ModDutoviario.Enabled := (FCTe.Ide.tpCTe = tcNormal) and (FCTe.Ide.modal = mdDutoviario);
+end;
+
+procedure TfrmDACTeQRRetrato.qrb_16_DadosExcEmitenteBeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+var
+ i: Integer;
+begin
+  inherited;
+  // Incluido por Italo em 20/04/2011
+  PrintBand := QRCTe.PageNumber = 1;
+
+  qrmObsExcEmitente.Lines.BeginUpdate; // Linha inserida por Italo em 28/06/2011
+  qrmObsExcEmitente.Lines.Clear;
+  qrmObsFisco.Lines.Clear;
+  (*
+  // Linhas Alteradas por Italo em 06/05/2011
+  if FCTe.Ide.modal = mdAereo
+   then begin
+    qrmObsExcEmitente.Lines.Add( 'O transporte coberto por este conhecimento se rege pelo código brasileiro de aeronáutica. '+
+                  'O expedidor/remetente aceita como corretas todas as especificações impressas neste conhecimento,' );
+    qrmObsExcEmitente.Lines.Add( 'certificando que os artigos perigosos descritos pela regulamentação da ICAO foram devidamente '+
+                  'informados e acondicionados para transporte aéreo.' );
+   end;
+*)
+  // Incluido por Italo em 28/06/2011
+  if FCTe.Ide.modal <> mdAereo
+   then begin
+    for i := 0 to FCTe.Compl.ObsCont.Count-1 do
+     with FCTe.Compl.ObsCont.Items[i] do
+      begin
+       qrmObsExcEmitente.Lines.Add( StringReplace( xCampo, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] )+': '+
+                                    StringReplace( xTexto, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
+      end;
+   end;
+
+  // Linhas inseridas por Italo em 28/06/2011
+  qrmObsExcEmitente.Lines.Text := StringReplace( qrmObsExcEmitente.Lines.Text, ';', #13, [rfReplaceAll] );
+  qrmObsExcEmitente.Lines.EndUpdate;
+
+  // Linhas inseridas por Italo em 11/10/2011
+  for i := 0 to FCTe.Compl.ObsFisco.Count-1 do
+   with FCTe.Compl.ObsFisco.Items[i] do
+    begin
+     qrmObsFisco.Lines.Add( StringReplace( xCampo, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] )+': '+
+                            StringReplace( xTexto, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
+    end;
+
+  qrmObsFisco.Lines.Text := StringReplace( qrmObsFisco.Lines.Text, ';', #13, [rfReplaceAll] );
+  qrmObsFisco.Lines.EndUpdate;
+end;
+
+procedure TfrmDACTeQRRetrato.qrb_17_SistemaBeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+  inherited;
+  // Incluido por Italo em 20/04/2011
+  PrintBand := QRCTe.PageNumber = 1;
+
+  qrlblSistema.Caption := FSistema + ' - ' + FUsuario;
 end;
 
 end.

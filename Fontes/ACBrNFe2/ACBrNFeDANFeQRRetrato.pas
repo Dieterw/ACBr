@@ -1070,7 +1070,8 @@ begin
    begin
       qrlTransPlaca.Caption   :=  Placa;
       qrlTransUFPlaca.Caption :=  UF;
-      //.Caption :=  RNTC;
+      // Alterado por Italo em 11/10/2011
+      qrlTransCodigoANTT.Caption := RNTC;
    end;
 
    if FNFe.Transp.Vol.Count > 0 then with FNFe.Transp.Vol[0] do

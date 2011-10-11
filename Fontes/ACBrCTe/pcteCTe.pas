@@ -1506,7 +1506,7 @@ type
     FCTRB    : TCTRB;
   {$ENDIF}
   {$IFDEF PL_104}
-    FCIOT    : Integer;
+    FCIOT    : String;
   {$ENDIF}
     FOcc     : TOccCollection;
   {$IFDEF PL_103}
@@ -1536,7 +1536,7 @@ type
     property CTRB: TCTRB read FCTRB write FCTRB;
   {$ENDIF}
   {$IFDEF PL_104}
-    property CIOT: Integer read FCIOT write FCIOT;
+    property CIOT: String read FCIOT write FCIOT;
   {$ENDIF}
     property Occ: TOccCollection read FOcc write SetOcc;
   {$IFDEF PL_103}

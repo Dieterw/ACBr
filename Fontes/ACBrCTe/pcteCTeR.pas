@@ -820,7 +820,7 @@ begin
       end;
   {$ENDIF}
   {$IFDEF PL_104}
-      CTe.Rodo.CIOT  := Leitor.rCampo(tcInt, 'CIOT');
+      CTe.Rodo.CIOT  := Leitor.rCampo(tcStr, 'CIOT');
   {$ENDIF}
 
       i01 := 0;

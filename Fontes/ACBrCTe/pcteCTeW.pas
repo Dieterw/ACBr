@@ -1460,7 +1460,7 @@ begin
    end;
 {$ENDIF}
 {$IFDEF PL_104}
-  Gerador.wCampo(tcInt, '#05', 'CIOT ', 12, 12, 0, CTe.Rodo.CIOT, '');
+  Gerador.wCampo(tcStr, '#05', 'CIOT ', 12, 12, 0, CTe.Rodo.CIOT, '');
 {$ENDIF}
 end;
 

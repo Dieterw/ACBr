@@ -423,6 +423,26 @@ object Form2: TForm2
     TabOrder = 6
   end
   object ACBrAAC1: TACBrAAC
+    IdentPAF.Paf.TipoFuncionamento = tpfStandAlone
+    IdentPAF.Paf.TipoDesenvolvimento = tpdComercializavel
+    IdentPAF.Paf.IntegracaoPAFECF = tpiRetaguarda
+    IdentPAF.Paf.RealizaPreVenda = False
+    IdentPAF.Paf.RealizaDAVECF = False
+    IdentPAF.Paf.RealizaDAVNaoFiscal = False
+    IdentPAF.Paf.RealizaDAVOS = False
+    IdentPAF.Paf.IndiceTecnicoProd = False
+    IdentPAF.Paf.PostoCombustivel = False
+    IdentPAF.Paf.BarSimilarECFRestaurante = False
+    IdentPAF.Paf.BarSimilarECFComum = False
+    IdentPAF.Paf.FarmaciaManipulacao = False
+    IdentPAF.Paf.OficinaConserto = False
+    IdentPAF.Paf.TransportePassageiro = False
+    IdentPAF.Paf.TotalizaValoresLista = False
+    IdentPAF.Paf.TransfPreVenda = False
+    IdentPAF.Paf.TransfDAV = False
+    IdentPAF.Paf.NaoCoincGT = False
+    IdentPAF.Paf.RecompoeGT = False
+    IdentPAF.Paf.ImpedeVendaVlrZero = False
     OnGetChave = ACBrAAC1GetChave
     Left = 420
     Top = 398

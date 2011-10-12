@@ -64,14 +64,14 @@ begin
    ACBrAAC1.AbrirArquivo;
 
    // Dados da software house
-   edtSH_RazaoSocial.Text := ACBrAAC1.SH_RazaoSocial;
-   edtSH_CNPJ.Text := ACBrAAC1.SH_CNPJ;
-   edtSH_IE.Text := ACBrAAC1.SH_IE;
-   edtSH_IM.Text := ACBrAAC1.SH_IM;
+   edtSH_RazaoSocial.Text := ACBrAAC1.IdentPAF.Empresa.RazaoSocial;
+   edtSH_CNPJ.Text := ACBrAAC1.IdentPAF.Empresa.CNPJ;
+   edtSH_IE.Text := ACBrAAC1.IdentPAF.Empresa.IE;
+   edtSH_IM.Text := ACBrAAC1.IdentPAF.Empresa.IM;
 
    // Dados do Aplicativo PAF
-   edtPAF_Nome.Text := ACBrAAC1.PAF_Nome;
-   edtPAF_Versao.Text := ACBrAAC1.PAF_Versao;
+   edtPAF_Nome.Text := ACBrAAC1.IdentPAF.Paf.Nome;
+   edtPAF_Versao.Text := ACBrAAC1.IdentPAF.Paf.Versao;
 
    // Outras informações extras
    edtParams.Text := ACBrAAC1.Params.Text;
@@ -86,15 +86,15 @@ begin
    ACBrAAC1.NomeArquivoAux := edtNomeArquivoAuxiliar.Text;
 
    // Dados da software house
-   ACBrAAC1.SH_RazaoSocial := edtSH_RazaoSocial.Text;
-   ACBrAAC1.SH_CNPJ := edtSH_CNPJ.Text;
-   ACBrAAC1.SH_IE := edtSH_IE.Text;
-   ACBrAAC1.SH_IM := edtSH_IM.Text;
+   ACBrAAC1.IdentPAF.Empresa.RazaoSocial := edtSH_RazaoSocial.Text;
+   ACBrAAC1.IdentPAF.Empresa.CNPJ := edtSH_CNPJ.Text;
+   ACBrAAC1.IdentPAF.Empresa.IE := edtSH_IE.Text;
+   ACBrAAC1.IdentPAF.Empresa.IM := edtSH_IM.Text;
 
    // Dados do Aplicativo PAF
-   ACBrAAC1.PAF_Nome := edtPAF_Nome.Text;
-   ACBrAAC1.PAF_Versao := edtPAF_Versao.Text;
-   ACBrAAC1.PAF_MD5 := edtPAF_MD5.Text;
+   ACBrAAC1.IdentPAF.Paf.Nome := edtPAF_Nome.Text;
+   ACBrAAC1.IdentPAF.Paf.Versao := edtPAF_Versao.Text;
+   ACBrAAC1.IdentPAF.Paf.PrincipalExe.MD5 := edtPAF_MD5.Text;
 
    // Outras informações extras
    ACBrAAC1.Params.Text := edtParams.Text;

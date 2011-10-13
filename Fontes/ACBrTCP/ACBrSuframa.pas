@@ -274,7 +274,7 @@ begin
           ConfiguraReqResp(ReqResp);
           ReqResp.UseUTF8InHeader := True;
           ReqResp.URL := 'https://servicos.suframa.gov.br/cadastroWS/services/CadastroWebService';
-          ReqResp.SoapAction := 'consultarSituacaoInscsuf';
+          ReqResp.SoapAction := 'https://servicos.suframa.gov.br/cadastroWS/services/CadastroWebService';
 
           ReqResp.Execute(Acao.Text, Stream);
           StrStream.CopyFrom(Stream, 0);

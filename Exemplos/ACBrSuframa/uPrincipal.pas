@@ -32,18 +32,19 @@ implementation
 
 procedure TfrmPrincipal.FormCreate(Sender: TObject);
 begin
+  memResposta.Clear;
   edtSuframa.Clear;
   edtCnpj.Clear;
-  memResposta.Clear;
 end;
 
 procedure TfrmPrincipal.btnConsultarClick(Sender: TObject);
 begin
-  ACBrSuframa1.Suframa := edtSuframa.Text;
-  ACBrSuframa1.CNPJ    := edtCnpj.Text;
+  ACBrSuframa1.Suframa := AnsiString(edtSuframa.Text);
+  ACBrSuframa1.CNPJ    := AnsiString(edtCnpj.Text);
 
   try
     ACBrSuframa1.Validar;
+
     memResposta.Clear;
     memResposta.Lines.Add('Situação:');
     memResposta.Lines.Add(StringOfChar('-', 30));

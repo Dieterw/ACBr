@@ -334,19 +334,17 @@ var
   MsgErro: String;
 begin
   MsgErro := ACBrValidadorValidarSuframa( AnsiString( ACBrUtil.OnlyNumber( FSuframa ) ) );
-  if MsgErro = '' then
-  begin
-    if Self.Executar then
-    begin
+  if MsgErro <> '' then
+    raise Exception.Create( 'Erro de validação: ' + sLineBreak + String( MsgErro ) );
 
-    end
-    else
-    begin
-      raise Exception.Create('não executou');
-    end;
-  end
-  else
-    raise Exception.Create( 'Erro validação: ' + sLineBreak + String( MsgErro ) );
+  if FCNPJ <> '' then
+  begin
+    MsgErro := ACBrValidadorValidarCNPJ( FCNPJ );
+    if MsgErro <> '' then
+      raise Exception.Create( 'Erro de validação: ' + sLineBreak + String( MsgErro ) );
+  end;
+
+  Self.Executar;
 end;
 
 end.

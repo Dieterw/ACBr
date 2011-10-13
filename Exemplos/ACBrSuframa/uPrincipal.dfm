@@ -65,7 +65,7 @@ object frmPrincipal: TfrmPrincipal
     Width = 163
     Height = 21
     TabOrder = 1
-    Text = 'Edit1'
+    Text = 'edtCnpj'
   end
   object ACBrSuframa1: TACBrSuframa
     ProxyPort = '8080'

@@ -96,6 +96,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+-- ACBrValidador-- 13/10/2011
+[+]    Adição da validação do número do SUFRAMA. 
+       (por: Régys silveira)
+
 -- ACBrCargaBal -- 19/09/2011
 [+]    Adição do componente ACBrCargaBal para gerar arquivos de produtos 
        para balanças. (por: Régys silveira)

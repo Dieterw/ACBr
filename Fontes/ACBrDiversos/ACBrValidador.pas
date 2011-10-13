@@ -70,49 +70,41 @@ const
   cIgnorarChar = './-' ;
 
 type
-  TACBrValTipoDocto = (docCPF, docCNPJ, docUF, docInscEst, docNumCheque,
-                       docPIS, docCEP, docCartaoCredito  ) ;
+  TACBrValTipoDocto = ( docCPF, docCNPJ, docUF, docInscEst, docNumCheque,
+                       docPIS, docCEP, docCartaoCredito, docSuframa ) ;
 
 type
   TACBrCalcDigFormula = (frModulo11, frModulo10PIS, frModulo10) ;
-
-type
-TACBrCalcDigito = class
-   private
-      fsMultIni: Integer;
-      fsMultFim: Integer;
-      fsMultAtu: Integer;
-      fsFormulaDigito: TACBrCalcDigFormula;
-      fsDocto: AnsiString;
-      fsDigitoFinal: Integer;
-      fsSomaDigitos: Integer;
-      fsModuloFinal: Integer;
-
-   public
-      constructor Create;
-      Procedure Calcular ;
-      Procedure CalculoPadrao ;
-
-      Property Documento : AnsiString read fsDocto write fsDocto ;
-      Property MultiplicadorInicial : Integer read fsMultIni write fsMultIni ;
-      Property MultiplicadorFinal   : Integer read fsMultFim write fsMultFim ;
-      property MultiplicadorAtual   : Integer read fsMultAtu write fsMultAtu;
-      Property DigitoFinal : Integer read fsDigitoFinal ;
-      property ModuloFinal : Integer read fsModuloFinal ;
-      Property SomaDigitos : Integer read fsSomaDigitos ;
-      Property FormulaDigito :  TACBrCalcDigFormula read fsFormulaDigito
-         write fsFormulaDigito ;
-end;
-
-type
   TACBrValidadorMsg = procedure(Mensagem : String) of object ;
 
-type
-{ Componente ACBrValidador }
+  TACBrCalcDigito = class
+  private
+    fsMultIni: Integer;
+    fsMultFim: Integer;
+    fsMultAtu: Integer;
+    fsFormulaDigito: TACBrCalcDigFormula;
+    fsDocto: AnsiString;
+    fsDigitoFinal: Integer;
+    fsSomaDigitos: Integer;
+    fsModuloFinal: Integer;
+  public
+    constructor Create;
 
-{ TACBrValidador }
+    Procedure Calcular;
+    Procedure CalculoPadrao;
 
-TACBrValidador = class( TACBrComponent )
+    Property Documento: AnsiString read fsDocto write fsDocto;
+    Property MultiplicadorInicial: Integer read fsMultIni write fsMultIni;
+    Property MultiplicadorFinal: Integer read fsMultFim write fsMultFim;
+    property MultiplicadorAtual: Integer read fsMultAtu write fsMultAtu;
+    Property DigitoFinal: Integer read fsDigitoFinal;
+    property ModuloFinal: Integer read fsModuloFinal;
+    Property SomaDigitos: Integer read fsSomaDigitos;
+    Property FormulaDigito: TACBrCalcDigFormula read fsFormulaDigito write fsFormulaDigito;
+  end;
+
+  { TACBrValidador }
+  TACBrValidador = class( TACBrComponent )
   private
     { Propriedades do Componente ACBrValidador }
     fsIgnorarChar: AnsiString;
@@ -142,6 +134,7 @@ TACBrValidador = class( TACBrComponent )
     Procedure ValidarPIS  ;
     Procedure ValidarCEP ;
     procedure ValidarCartaoCredito ;
+    procedure ValidarSuframa ;
   public
     constructor Create(AOwner: TComponent); override;
     Destructor Destroy  ; override;
@@ -161,6 +154,7 @@ TACBrValidador = class( TACBrComponent )
     Function FormatarCheque( AString : AnsiString ) : AnsiString ;
     Function FormatarPIS( AString : AnsiString )    : AnsiString ;
     Function FormatarCEP( AString: AnsiString )     : AnsiString ;
+    function FormatarSUFRAMA( AString: AnsiString )     : AnsiString ;
   published
     property TipoDocto : TACBrValTipoDocto read fsTipoDocto write fsTipoDocto
        default docCPF ;
@@ -179,7 +173,7 @@ TACBrValidador = class( TACBrComponent )
        default false ;
     property OnMsgErro : TACBrValidadorMsg read fsOnMsgErro write fsOnMsgErro;
 
-end ;
+  end ;
 
 function ACBrValidadorValidarCPF( const Documento : AnsiString ) : String ;
 function ACBrValidadorValidarCNPJ( const Documento : AnsiString ) : String ;
@@ -341,6 +335,7 @@ begin
           docPIS           : NomeDocto := 'PIS' ;
           docCEP           : NomeDocto := 'CEP' ;
           docCartaoCredito : NomeDocto := 'Número de Cartão' ;
+          docSuframa       : NomeDocto := 'SUFRAMA';
         end;
 
         fsMsgErro := NomeDocto + ' não pode ser vazio.' ;
@@ -357,6 +352,7 @@ begin
        docPIS           : ValidarPIS ;
        docCEP           : ValidarCEP ;
        docCartaoCredito : ValidarCartaoCredito ;
+       docSuframa       : ValidarSuframa ;
      end;
 
   if fsMsgErro <> '' then
@@ -377,12 +373,13 @@ begin
   Result := fsDocumento  ;
 
   case fsTipoDocto of
-    docCPF      : Result := FormatarCPF( fsDocumento )  ;
-    docCNPJ     : Result := FormatarCNPJ( fsDocumento )  ;
+    docCPF      : Result := FormatarCPF( fsDocumento ) ;
+    docCNPJ     : Result := FormatarCNPJ( fsDocumento ) ;
     docInscEst  : Result := FormatarIE( fsDocumento, fsComplemento ) ;
-    docNumCheque: Result := FormatarCheque( fsDocumento )  ;
-    docPIS      : Result := FormatarPIS( fsDocumento )  ;
-    docCEP      : Result := FormatarCEP( fsDocumento )  ;
+    docNumCheque: Result := FormatarCheque( fsDocumento ) ;
+    docPIS      : Result := FormatarPIS( fsDocumento ) ;
+    docCEP      : Result := FormatarCEP( fsDocumento ) ;
+    docSuframa  : Result := FormatarSUFRAMA( fsDocumento ) ;
   end;
 end;
 
@@ -1126,6 +1123,11 @@ begin
             copy(S,8,3) + '.' + copy(S,11,1)
 end;
 
+function TACBrValidador.FormatarSUFRAMA(AString: AnsiString): AnsiString;
+begin
+  Result := AString;
+end;
+
 procedure TACBrValidador.ValidarPIS;
 begin
   if fsAjustarTamanho then
@@ -1152,10 +1154,33 @@ begin
   end ;
 end;
 
+procedure TACBrValidador.ValidarSuframa;
+begin
+  if ( Length( fsDocto ) < 9 ) or ( not StrIsNumber( fsDocto ) ) then
+  begin
+     fsMsgErro := 'Código SUFRAMA deve ter no minímo 9 dígitos. (Apenas números)' ;
+     exit
+  end ;
+
+  Modulo.CalculoPadrao ;
+  Modulo.FormulaDigito := frModulo11 ;
+  Modulo.Documento     := copy(fsDocto, 1, 8) ;
+  Modulo.Calcular;
+
+  fsDigitoCalculado := IntToStr( Modulo.DigitoFinal ) ;
+  if (fsDigitoCalculado <> fsDocto[9]) then
+  begin
+     fsMsgErro := 'Número SUFRAMA inválido.' ;
+
+     if fsExibeDigitoCorreto then
+        fsMsgErro := fsMsgErro + ' Digito calculado: ' + fsDigitoCalculado ;
+  end;
+end;
 
 { Rotina extraida do site:   www.tcsystems.com.br   }
 Procedure TACBrValidador.ValidarCartaoCredito ;
-Var Valor, Soma, Multiplicador, Tamanho, i : Integer;
+Var
+  Valor, Soma, Multiplicador, Tamanho, i : Integer;
 begin
   if not StrIsNumber( fsDocto ) then
   begin

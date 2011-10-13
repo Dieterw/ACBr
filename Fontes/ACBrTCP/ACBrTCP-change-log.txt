@@ -37,6 +37,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+13/10/2011
+-- ACBrSuframa --
+[+] Adicionado componente ACBrSuframa para consumir o webservice do suframa.
+    por: Régys Silveira.
+
 10/04/2011
 -- ACBrCNIEE --
 [+] Implementada a propriedade VersaoArquivo: String, que contem o Numero da

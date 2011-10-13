@@ -29,13 +29,18 @@ requires
   rtl,
   designide,
   ACBrComum,
-  synapse;
+  synapse,
+  soaprtl,
+  inet,
+  dbrtl,
+  ACBrDiversos;
 
 contains
   ACBrSocket in '..\..\Fontes\ACBrTCP\ACBrSocket.pas',
   ACBrCEP in '..\..\Fontes\ACBrTCP\ACBrCEP.pas',
   ACBrTCPReg in '..\..\Fontes\ACBrTCP\ACBrTCPReg.pas',
   ACBrIBGE in '..\..\Fontes\ACBrTCP\ACBrIBGE.pas',
-  ACBrCNIEE in '..\..\Fontes\ACBrTCP\ACBrCNIEE.pas';
+  ACBrCNIEE in '..\..\Fontes\ACBrTCP\ACBrCNIEE.pas',
+  ACBrSuframa in '..\..\Fontes\ACBrTCP\ACBrSuframa.pas';
 
 end.

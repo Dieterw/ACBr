@@ -178,6 +178,7 @@ type
 function ACBrValidadorValidarCPF( const Documento : AnsiString ) : String ;
 function ACBrValidadorValidarCNPJ( const Documento : AnsiString ) : String ;
 function ACBrValidadorValidarCNPJouCPF( const Documento : AnsiString ) : String ;
+function ACBrValidadorValidarSuframa( const Documento : AnsiString ) : String ;
 
 function ACBrValidadorValidarDocumento( const TipoDocto : TACBrValTipoDocto;
   const Documento : AnsiString; const Complemento : AnsiString = '') : String ;
@@ -195,6 +196,11 @@ end;
 function ACBrValidadorValidarCNPJ(const Documento : AnsiString) : String ;
 begin
   Result := ACBrValidadorValidarDocumento( docCNPJ, Documento );
+end;
+
+function ACBrValidadorValidarSuframa( const Documento : AnsiString ) : String ;
+begin
+  Result := ACBrValidadorValidarDocumento( docSuframa, Documento );
 end;
 
 function ACBrValidadorValidarCNPJouCPF(const Documento : AnsiString) : String ;

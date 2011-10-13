@@ -74,7 +74,6 @@ type
 
     function SituacaoToStr(const ASituacao: Integer): String;
     function GetParametrosConsulta: String;
-    function LerTagXML(Texto, NomeCampo: string): string;
     function Executar: Boolean;
   public
     constructor Create(AOwner: TComponent); override;
@@ -98,55 +97,27 @@ constructor TACBrSuframa.Create(AOwner: TComponent);
 begin
   inherited;
 
-  FCNPJ       := '';
-  FSuframa    := '';
+  FCNPJ := '';
+  FSuframa := '';
   FRespostaWS := '';
-  FSituacao   := 0;
+  FSituacao := 0;
   FSituacaoDescr := '';
-
   fOnBuscaEfetuada := nil;
 end;
 
 destructor TACBrSuframa.Destroy;
 begin
-
+  //
   inherited;
-end;
-
-function TACBrSuframa.LerTagXML(Texto, NomeCampo: string): string;
-var
-  ConteudoTag: string;
-  inicio, fim: integer;
-begin
-  NomeCampo := '<' + UpperCase(Trim(NomeCampo)) + '>';
-  inicio    := pos(NomeCampo, UpperCase(Texto));
-
-  if inicio = 0 then
-    ConteudoTag := EmptyStr
-  else
-  begin
-    inicio := inicio + Length(NomeCampo);
-    Texto  := copy(Texto, inicio, length(Texto));
-    inicio := 0;
-    fim    := pos('</',Texto) - 1;
-
-    ConteudoTag := Trim(copy(Texto, inicio, fim));
-  end;
-
-  try
-    result := ConteudoTag;
-  except
-    raise Exception.Create('Conteúdo inválido. ' + ConteudoTag);
-  end;
 end;
 
 function TACBrSuframa.SituacaoToStr(const ASituacao: Integer): String;
 begin
   case ASituacao of
-    0: Result := 'Ocorreu erro na conexão com o servidor';
-    1: Result := 'Bloqueada';
-    2: Result := 'Habilitada';
-    3: Result := 'Dados não encontrados  (CNPJ ou a Inscrição Suframa estão incorretos ou não existem no sistema)';
+    0: Result := 'Ocorreu erro na conexão com o webservice';
+    1: Result := 'Empresa não habilitada';
+    2: Result := 'Empresa habilitada';
+    3: Result := 'Empresa não encontrada (CNPJ ou a Inscrição Suframa estão incorretos ou não existem no sistema)';
   else
     Result := 'Descrição da situação ainda não implementada';
   end;
@@ -220,6 +191,8 @@ begin
 end;
 
 function TACBrSuframa.Executar: Boolean;
+const
+  URL = 'https://servicos.suframa.gov.br/cadastroWS/services/CadastroWebService';
 var
   Acao: TStringList;
   Stream: TMemoryStream;
@@ -265,23 +238,22 @@ begin
         {$IFDEF ACBrNFeOpenSSL}
           Acao.SaveToStream(Stream);
           HTTP.Document.LoadFromStream(Stream);
-          ConfiguraHTTP(HTTP,'SOAPAction: "https://servicos.suframa.gov.br/cadastroWS/services/CadastroWebService"');
+          ConfiguraHTTP(HTTP,'SOAPAction: "' + URL + '"');
 
-          HTTP.HTTPMethod('POST', 'https://servicos.suframa.gov.br/cadastroWS/services/CadastroWebService');
+          HTTP.HTTPMethod('POST', URL);
           StrStream.CopyFrom(HTTP.Document, 0);
           FRespostaWS := NotaUtil.ParseText( StrStream.DataString );
         {$ELSE}
           ConfiguraReqResp(ReqResp);
           ReqResp.UseUTF8InHeader := True;
-          ReqResp.URL := 'https://servicos.suframa.gov.br/cadastroWS/services/CadastroWebService';
-          ReqResp.SoapAction := 'https://servicos.suframa.gov.br/cadastroWS/services/CadastroWebService';
+          ReqResp.URL := URL;
+          ReqResp.SoapAction := URL;
 
           ReqResp.Execute(Acao.Text, Stream);
           StrStream.CopyFrom(Stream, 0);
           FRespostaWS := NotaUtil.ParseText( AnsiString( StrStream.DataString ) );
         {$ENDIF}
 
-        // verificar a resposta do webservice
         if FCNPJ <> '' then
           Resposta := String(NotaUtil.SeparaDados(FRespostaWS, 'ns1:consultarSituacaoInscCnpjReturn'))
         else
@@ -294,10 +266,10 @@ begin
         end
         else
         begin
-          ErroCodigo := LerTagXML(String(FRespostaWS), 'faultcode');
+          ErroCodigo := NotaUtil.SeparaDados(String(FRespostaWS), 'faultcode');
           if ErroCodigo <> EmptyStr then
           begin
-            ErroMsg := LerTagXML(String(FRespostaWS), 'faultstring');
+            ErroMsg := NotaUtil.SeparaDados(String(FRespostaWS), 'faultstring');
             raise Exception.Create(ErroCodigo + sLineBreak + '  - ' + ErroMsg);
           end;
         end;

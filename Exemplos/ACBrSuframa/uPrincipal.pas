@@ -56,6 +56,7 @@ begin
   except
     on E: Exception do
     begin
+      memResposta.Clear;
       memResposta.Lines.Add('ERRO:');
       memResposta.Lines.Add(E.Message);
     end;

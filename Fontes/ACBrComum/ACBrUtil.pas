@@ -115,6 +115,9 @@ Uses SysUtils, Math, Classes
       {$endif}
     {$endif} ;
 
+function ParseText( Texto : AnsiString; Decode : Boolean = True) : AnsiString;
+function SeparaDados( Texto : AnsiString; Chave : String; MantemChave : Boolean = False ) : AnsiString;
+
 function ACBrStr( AString : AnsiString ) : String ;
 function ACBrStrToAnsi( AString : String ) : AnsiString ;
 function TruncFix( X : Double ) : Integer ;
@@ -2146,6 +2149,88 @@ begin
       Break;
     end;
 end;
+
+
+function SeparaDados( Texto : AnsiString; Chave : String; MantemChave : Boolean = False ) : AnsiString;
+var
+  PosIni, PosFim : Integer;
+begin
+  if MantemChave then
+   begin
+     PosIni := Pos(Chave,Texto)-1;
+     PosFim := Pos('/'+Chave,Texto)+length(Chave)+3;
+
+     if (PosIni = 0) or (PosFim = 0) then
+      begin
+        PosIni := Pos('ns2:'+Chave,Texto)-1;
+        PosFim := Pos('/ns2:'+Chave,Texto)+length(Chave)+3;
+      end;
+   end
+  else
+   begin
+     PosIni := Pos(Chave,Texto)+Pos('>',copy(Texto,Pos(Chave,Texto),length(Texto)));
+     PosFim := Pos('/'+Chave,Texto);
+
+     if (PosIni = 0) or (PosFim = 0) then
+      begin
+        PosIni := Pos('ns2:'+Chave,Texto)+Pos('>',copy(Texto,Pos('ns2:'+Chave,Texto),length(Texto)));
+        PosFim := Pos('/ns2:'+Chave,Texto);
+      end;
+   end;
+  Result := copy(Texto,PosIni,PosFim-(PosIni+1));
+end;
+
+function ParseText( Texto : AnsiString; Decode : Boolean = True) : AnsiString;
+begin
+  if Decode then
+   begin
+    Texto := StringReplace(Texto, '&amp;', '&', [rfReplaceAll]);
+    Texto := StringReplace(Texto, '&lt;', '<', [rfReplaceAll]);
+    Texto := StringReplace(Texto, '&gt;', '>', [rfReplaceAll]);
+    Texto := StringReplace(Texto, '&quot;', '"', [rfReplaceAll]);
+    Texto := StringReplace(Texto, '&#39;', #39, [rfReplaceAll]);
+    Texto := StringReplace(Texto, '&aacute;', 'á', [rfReplaceAll]);
+    Texto := StringReplace(Texto, '&Aacute;', 'Á', [rfReplaceAll]);
+    Texto := StringReplace(Texto, '&acirc;' , 'â', [rfReplaceAll]);
+    Texto := StringReplace(Texto, '&Acirc;' , 'Â', [rfReplaceAll]);
+    Texto := StringReplace(Texto, '&atilde;', 'ã', [rfReplaceAll]);
+    Texto := StringReplace(Texto, '&Atilde;', 'Ã', [rfReplaceAll]);
+    Texto := StringReplace(Texto, '&agrave;', 'à', [rfReplaceAll]);
+    Texto := StringReplace(Texto, '&Agrave;', 'À', [rfReplaceAll]);
+    Texto := StringReplace(Texto, '&eacute;', 'é', [rfReplaceAll]);
+    Texto := StringReplace(Texto, '&Eacute;', 'É', [rfReplaceAll]);
+    Texto := StringReplace(Texto, '&ecirc;' , 'ê', [rfReplaceAll]);
+    Texto := StringReplace(Texto, '&Ecirc;' , 'Ê', [rfReplaceAll]);
+    Texto := StringReplace(Texto, '&iacute;', 'í', [rfReplaceAll]);
+    Texto := StringReplace(Texto, '&Iacute;', 'Í', [rfReplaceAll]);
+    Texto := StringReplace(Texto, '&oacute;', 'ó', [rfReplaceAll]);
+    Texto := StringReplace(Texto, '&Oacute;', 'Ó', [rfReplaceAll]);
+    Texto := StringReplace(Texto, '&otilde;', 'õ', [rfReplaceAll]);
+    Texto := StringReplace(Texto, '&Otilde;', 'Õ', [rfReplaceAll]);
+    Texto := StringReplace(Texto, '&ocirc;' , 'ô', [rfReplaceAll]);
+    Texto := StringReplace(Texto, '&Ocirc;' , 'Ô', [rfReplaceAll]);
+    Texto := StringReplace(Texto, '&uacute;', 'ú', [rfReplaceAll]);
+    Texto := StringReplace(Texto, '&Uacute;', 'Ú', [rfReplaceAll]);
+    Texto := StringReplace(Texto, '&uuml;'  , 'ü', [rfReplaceAll]);
+    Texto := StringReplace(Texto, '&Uuml;'  , 'Ü', [rfReplaceAll]);
+    Texto := StringReplace(Texto, '&ccedil;', 'ç', [rfReplaceAll]);
+    Texto := StringReplace(Texto, '&Ccedil;', 'Ç', [rfReplaceAll]);
+    Texto := StringReplace(Texto, '&apos;', '''', [rfReplaceAll]);
+    Texto := UTF8Decode(Texto);
+   end
+  else
+   begin
+    Texto := StringReplace(Texto, '&', '&amp;', [rfReplaceAll]);
+    Texto := StringReplace(Texto, '<', '&lt;', [rfReplaceAll]);
+    Texto := StringReplace(Texto, '>', '&gt;', [rfReplaceAll]);
+    Texto := StringReplace(Texto, '"', '&quot;', [rfReplaceAll]);
+    Texto := StringReplace(Texto, #39, '&#39;', [rfReplaceAll]);
+    Texto := UTF8Encode(Texto);
+   end;
+
+  Result := Texto;
+end;
+
 
 //*****************************************************************************************
 

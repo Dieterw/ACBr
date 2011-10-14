@@ -47,7 +47,7 @@ unit ACBrSuframa;
 interface
 
 uses
-  Classes, SysUtils, contnrs, ACBrUtil, ACBrSocket, ACBrValidador, ACBrNFeUtil
+  Classes, SysUtils, contnrs, ACBrUtil, ACBrSocket, ACBrValidador
   {$IFDEF ACBrNFeOpenSSL}
     , HTTPSend
   {$ELSE}
@@ -253,13 +253,13 @@ begin
 
           ReqResp.Execute(Acao.Text, Stream);
           StrStream.CopyFrom(Stream, 0);
-          FRespostaWS := NotaUtil.ParseText( AnsiString( StrStream.DataString ) );
+          FRespostaWS := ParseText( AnsiString( StrStream.DataString ) );
         {$ENDIF}
 
         if FCNPJ <> '' then
-          Resposta := String(NotaUtil.SeparaDados(FRespostaWS, 'ns1:consultarSituacaoInscCnpjReturn'))
+          Resposta := String(SeparaDados(FRespostaWS, 'ns1:consultarSituacaoInscCnpjReturn'))
         else
-          Resposta := String(NotaUtil.SeparaDados(FRespostaWS, 'ns1:consultarSituacaoInscsufReturn'));
+          Resposta := String(SeparaDados(FRespostaWS, 'ns1:consultarSituacaoInscsufReturn'));
 
         if Resposta <> '' then
         begin
@@ -268,10 +268,10 @@ begin
         end
         else
         begin
-          ErroCodigo := String( NotaUtil.SeparaDados(FRespostaWS, 'faultcode') );
+          ErroCodigo := String( SeparaDados(FRespostaWS, 'faultcode') );
           if ErroCodigo <> EmptyStr then
           begin
-            ErroMsg := String( NotaUtil.SeparaDados(FRespostaWS, 'faultstring') );
+            ErroMsg := String( SeparaDados(FRespostaWS, 'faultstring') );
             raise EACBrSuframa.Create(ErroCodigo + sLineBreak + '  - ' + ErroMsg);
           end;
         end;

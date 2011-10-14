@@ -27,16 +27,13 @@ package ACBrTCP;
 
 requires
   rtl,
-  designide,
-  inet,
+  vcl,
+  ACBrComum,
+  ACBrDiversos,
   synapse,
   soaprtl,
-  dbrtl,
-  ACBrDiversos,
-  ACBrComum,
-  ACBr_NFe2,
-  PCN2,
-  ACBrCapicom;
+  inet,
+  dbrtl;
 
 contains
   ACBrSocket in '..\..\Fontes\ACBrTCP\ACBrSocket.pas',

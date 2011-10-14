@@ -59,6 +59,10 @@ begin
       memResposta.Clear;
       memResposta.Lines.Add('ERRO:');
       memResposta.Lines.Add(E.Message);
+      memResposta.Lines.Add('');
+      memResposta.Lines.Add('XML Resposta:');
+      memResposta.Lines.Add(StringOfChar('-', 30));
+      memResposta.Lines.Add(StringReplace(String(ACBrSuframa1.RespostaWS), #10, sLineBreak, [rfReplaceAll]));
     end;
   end;
 end;

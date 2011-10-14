@@ -315,7 +315,9 @@ begin
   Gerador.wCampo(tcInt, 'B08', 'nNF    ', 01, 09, 1, nfe.ide.nNF, DSC_NNF);
   Gerador.wCampo(tcDat, 'B09', 'dEmi   ', 10, 10, 1, nfe.ide.dEmi, DSC_DEMI);
   Gerador.wCampo(tcDat, 'B10', 'dSaiEnt', 10, 10, 0, nfe.ide.dSaiEnt, DSC_DSAIENT);
-  Gerador.wCampo(tcHor, 'B10a','hSaiEnt', 08, 08, 0, nfe.ide.hSaiEnt, DSC_HSAIENT);
+  // Incluido por Italo em 14/10/2011
+  if nfe.Ide.dSaiEnt>0
+   then Gerador.wCampo(tcHor, 'B10a','hSaiEnt', 08, 08, 0, nfe.ide.hSaiEnt, DSC_HSAIENT);
   Gerador.wCampo(tcStr, 'B11', 'tpNF   ', 01, 01, 1, tpNFToStr(nfe.ide.tpNF), DSC_TPNF);
   Gerador.wCampo(tcInt, 'B12', 'cMunFG ', 07, 07, 1, nfe.ide.cMunFG, DSC_CMUNFG);
   if not ValidarMunicipio(nfe.ide.cMunFG) then Gerador.wAlerta('B12', 'cMunFG', DSC_CMUNFG, ERR_MSG_INVALIDO);
@@ -449,7 +451,8 @@ begin
   Gerador.wCampo(tcStr, 'C12', 'UF     ', 02, 02, 1, xUF, DSC_UF);
   if not ValidarUF(xUF) then
     Gerador.wAlerta('C12', 'UF', DSC_UF, ERR_MSG_INVALIDO);
-  Gerador.wCampo(tcInt, 'C13', 'CEP    ', 08, 08, 0, nfe.Emit.enderEmit.CEP, DSC_CEP);
+  // Alterado por Italo em 14/10/2011
+  Gerador.wCampo(tcInt, 'C13', 'CEP    ', 08, 08, 1, nfe.Emit.enderEmit.CEP, DSC_CEP);
   Gerador.wCampo(tcInt, 'C14', 'cPais  ', 04, 04, 0, CODIGO_BRASIL, DSC_CPAIS); // Conforme NT-2009/01
   Gerador.wCampo(tcStr, 'C15', 'xPais  ', 01, 60, 0, nfe.Emit.enderEmit.xPais, DSC_XPAIS);
   Gerador.wCampo(tcStr, 'C16', 'fone   ', 06, 14, 0, somenteNumeros(nfe.Emit.enderEmit.fone), DSC_FONE);
@@ -465,13 +468,15 @@ begin
     Gerador.wCampo(tcStr, 'D03', 'xOrgao ', 01, 60, 1, nfe.Avulsa.xOrgao, DSC_XORGAO);
     Gerador.wCampo(tcStr, 'D04', 'matr   ', 01, 60, 1, nfe.Avulsa.matr, DSC_MATR);
     Gerador.wCampo(tcStr, 'D05', 'xAgente', 01, 60, 1, nfe.Avulsa.xAgente, DSC_XAGENTE);
-    Gerador.wCampo(tcStr, 'D06', 'fone   ', 06, 14, 1, somenteNumeros(nfe.Avulsa.fone), DSC_FONE);
+    // Alterado por Italo em 14/10/2011
+    Gerador.wCampo(tcStr, 'D06', 'fone   ', 06, 14, 0, somenteNumeros(nfe.Avulsa.fone), DSC_FONE);
     Gerador.wCampo(tcStr, 'D07', 'UF     ', 02, 02, 1, nfe.Avulsa.UF, DSC_UF);
     if not ValidarUF(nfe.Avulsa.UF) then
       Gerador.wAlerta('D07', 'UF', DSC_UF, ERR_MSG_INVALIDO);
-    Gerador.wCampo(tcStr, 'D08', 'nDAR   ', 01, 60, 1, nfe.Avulsa.nDAR, DSC_nDAR);
-    Gerador.wCampo(tcDat, 'D09', 'dEmi   ', 10, 10, 1, nfe.Avulsa.dEmi, DSC_DEMI);
-    Gerador.wCampo(tcDe2, 'D10', 'vDAR   ', 01, 15, 1, nfe.Avulsa.vDAR, DSC_VDAR);
+    // Alterado por Italo em 14/10/2011
+    Gerador.wCampo(tcStr, 'D08', 'nDAR   ', 01, 60, 0, nfe.Avulsa.nDAR, DSC_nDAR);
+    Gerador.wCampo(tcDat, 'D09', 'dEmi   ', 10, 10, 0, nfe.Avulsa.dEmi, DSC_DEMI);
+    Gerador.wCampo(tcDe2, 'D10', 'vDAR   ', 01, 15, 0, nfe.Avulsa.vDAR, DSC_VDAR);
     Gerador.wCampo(tcStr, 'D11', 'repEmi ', 01, 60, 1, nfe.Avulsa.repEmi, DSC_REPEMI);
     Gerador.wCampo(tcDat, 'D12', 'dPag   ', 10, 10, 1, nfe.Avulsa.dPag, DSC_DPAG);
     Gerador.wGrupo('/avulsa');
@@ -671,7 +676,8 @@ begin
   for j := 0 to nfe.Det[i].Prod.DI.Count - 1 do
   begin
     Gerador.wGrupo('DI', 'I18');
-    Gerador.wCampo(tcStr, 'I19', 'nDI        ', 01, 10, 1, nfe.Det[i].Prod.DI[j].nDI, DSC_NDI);
+    // Alterado por Italo em 14/10/2011
+    Gerador.wCampo(tcStr, 'I19', 'nDI        ', 01, 12, 1, nfe.Det[i].Prod.DI[j].nDI, DSC_NDI);
     Gerador.wCampo(tcDat, 'I20', 'dDI        ', 10, 10, 1, nfe.Det[i].Prod.DI[j].dDI, DSC_DDi);
     Gerador.wCampo(tcStr, 'I21', 'xLocDesemb ', 01, 60, 1, nfe.Det[i].Prod.DI[j].xLocDesemb, DSC_XLOCDESEMB);
     Gerador.wCampo(tcStr, 'I22', 'UFDesemb   ', 02, 02, 1, nfe.Det[i].Prod.DI[j].UFDesemb, DSC_UFDESEMB);
@@ -682,6 +688,9 @@ begin
     (**)GerarDetProdDIadi(i, j);
     Gerador.wGrupo('/DI');
   end;
+  // Incluido por Italo em 14/10/2011
+  if nfe.Det[i].Prod.DI.Count > 100 then
+    Gerador.wAlerta('I18', 'DI', DSC_NITEM, ERR_MSG_MAIOR_MAXIMO + '100');
 end;
 
 procedure TNFeW.GerarDetProdDIadi(const i, j: integer);
@@ -697,6 +706,9 @@ begin
     Gerador.wCampo(tcDe2, 'I29', 'vDescDI    ', 00, 15, 0, nfe.Det[i].Prod.DI[j].adi[k].vDescDI, DSC_VDESCDI);
     Gerador.wGrupo('/adi');
   end;
+  // Incluido por Italo em 14/10/2011
+  if nfe.Det[i].Prod.DI[j].adi.Count > 100 then
+    Gerador.wAlerta('I25', 'adi', DSC_NITEM, ERR_MSG_MAIOR_MAXIMO + '100');
 end;
 
 procedure TNFeW.GerarDetProdVeicProd(const i: integer);
@@ -737,7 +749,7 @@ begin
        Gerador.wCampo(tcStr, 'J24', 'cCorDENATRAN', 00, 2, 1, nfe.Det[i].Prod.veicProd.cCorDENATRAN, DSC_CCORDEN);
        Gerador.wCampo(tcInt, 'J25', 'lota    ', 01, 03, 1, nfe.Det[i].Prod.veicProd.lota, DSC_LOTA);
        Gerador.wCampo(tcInt, 'J26', 'tpRest  ', 01, 01, 1, nfe.Det[i].Prod.veicProd.tpRest, DSC_TPREST);
-     end;  
+     end;
     Gerador.wGrupo('/veicProd');
   end;
 end;
@@ -1539,6 +1551,9 @@ begin
     Gerador.wCampo(tcDe2, 'Y10', 'vDup ', 01, 15, 0, nfe.Cobr.Dup[i].vDup, DSC_VDUP);
     Gerador.wGrupo('/dup');
   end;
+  // Incluido por Italo em 14/10/2011
+  if nfe.Cobr.Dup.Count > 120 then
+    Gerador.wAlerta('Y07', 'dup', DSC_NITEM, ERR_MSG_MAIOR_MAXIMO + '120');
 end;
 
 procedure TNFeW.GerarTransp;
@@ -1618,7 +1633,8 @@ begin
     (trim(nfe.Transp.veicTransp.RNTC) <> '') then
   begin
     Gerador.wGrupo('veicTransp', 'X18');
-    Gerador.wCampo(tcStr, 'X19', 'placa   ', 01, 08, 1, nfe.Transp.veicTransp.placa, DSC_PLACA);
+    // Alterado por Italo em  14/10/2011
+    Gerador.wCampo(tcStr, 'X19', 'placa   ', 07, 07, 1, nfe.Transp.veicTransp.placa, DSC_PLACA);
     Gerador.wCampo(tcStr, 'X20', 'UF      ', 02, 02, 1, nfe.Transp.veicTransp.UF, DSC_UF);
     if not ValidarUF(nfe.Transp.veicTransp.UF) then
       Gerador.wAlerta('X20', 'UF', DSC_UF, ERR_MSG_INVALIDO);
@@ -1636,7 +1652,8 @@ begin
   for i := 0 to nfe.Transp.Reboque.Count - 1 do
   begin
     Gerador.wGrupo('reboque', 'X22');
-    Gerador.wCampo(tcStr, 'X23', 'placa ', 01, 08, 1, nfe.Transp.Reboque[i].placa, DSC_PLACA);
+    // Alterado por Italo em  14/10/2011
+    Gerador.wCampo(tcStr, 'X23', 'placa ', 07, 07, 1, nfe.Transp.Reboque[i].placa, DSC_PLACA);
     Gerador.wCampo(tcStr, 'X24', 'UF    ', 02, 02, 1, nfe.Transp.Reboque[i].UF, DSC_UF);
     if not ValidarUF(nfe.Transp.Reboque[i].UF) then
       Gerador.wAlerta('X24', 'UF', DSC_UF, ERR_MSG_INVALIDO);
@@ -1763,7 +1780,8 @@ begin
   if trim(nfe.compra.xNEmp) + trim(nfe.compra.xPed) + trim(nfe.compra.xCont) <> '' then
   begin
     Gerador.wGrupo('compra', 'ZB01');
-    Gerador.wCampo(tcStr, 'ZB02', 'xNEmp', 01, 17, 0, nfe.compra.xNEmp, DSC_XNEMP);
+    // Alterado por Italo em 14/10/2011
+    Gerador.wCampo(tcStr, 'ZB02', 'xNEmp', 01, 22, 0, nfe.compra.xNEmp, DSC_XNEMP);
     Gerador.wCampo(tcStr, 'ZB03', 'xPed ', 01, 60, 0, nfe.compra.xPed, DSC_XPED);
     Gerador.wCampo(tcStr, 'ZB04', 'xCont', 01, 60, 0, nfe.compra.xCont, DSC_XCONT);
     Gerador.wGrupo('/compra');

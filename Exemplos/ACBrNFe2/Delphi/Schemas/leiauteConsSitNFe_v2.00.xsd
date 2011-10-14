@@ -1,8 +1,9 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
+<!--  PL_006h versao alteracao no include para leiautteNFe_2.00 10/06/2011                         -->
 <!--  PL_006f versao com correcoes no xServ para tornar a literal CONSULTAR obrigatoria 21/05/2010 -->
 <!--  PL_006c versao com correcoes 24/12/2009 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.portalfiscal.inf.br/nfe" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" targetNamespace="http://www.portalfiscal.inf.br/nfe" elementFormDefault="qualified" attributeFormDefault="unqualified">
-	<xs:include schemaLocation="nfe_v2.00.xsd"/>
+	<xs:include schemaLocation="leiauteNFe_v2.00.xsd"/>
 	<xs:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="xmldsig-core-schema_v1.01.xsd"/>
 	<xs:complexType name="TConsSitNFe">
 		<xs:annotation>

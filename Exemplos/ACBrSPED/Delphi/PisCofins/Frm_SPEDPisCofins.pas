@@ -178,7 +178,7 @@ begin
                CNPJ    := '123456789';
                UF      := '';
                IE      := '';
-               COD_MUN := '';
+               COD_MUN := 0;
                IM      := '';
                SUFRAMA := '';
                //

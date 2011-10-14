@@ -56,6 +56,8 @@ uses
   ;
 
 type
+  EACBrSuframa = class( Exception );
+
   TACBrSuframa = class( TACBrHTTP )
   private
     fOnBuscaEfetuada: TNotifyEvent ;
@@ -156,13 +158,13 @@ begin
   if Trim(Self.ProxyUser) <> EmptyStr then
   begin
     if not InternetSetOption(Data, INTERNET_OPTION_PROXY_USERNAME, PChar(Self.ProxyUser), Length(Self.ProxyUser)) then
-      raise Exception.Create( 'Erro OnBeforePost: ' + IntToStr(GetLastError) );
+      raise EACBrSuframa.Create( 'Erro OnBeforePost: ' + IntToStr(GetLastError) );
   end;
 
   if Trim(Self.ProxyPass) <> EmptyStr then
   begin
     if not InternetSetOption(Data, INTERNET_OPTION_PROXY_PASSWORD, PChar(Self.ProxyPass),Length (Self.ProxyPass)) then
-      raise Exception.Create( 'Erro OnBeforePost: ' + IntToStr(GetLastError) );
+      raise EACBrSuframa.Create( 'Erro OnBeforePost: ' + IntToStr(GetLastError) );
   end;
 
   ContentHeader := Format(ContentTypeTemplate, ['application/soap+xml; charset=utf-8']);
@@ -266,11 +268,11 @@ begin
         end
         else
         begin
-          ErroCodigo := NotaUtil.SeparaDados(String(FRespostaWS), 'faultcode');
+          ErroCodigo := String( NotaUtil.SeparaDados(FRespostaWS, 'faultcode') );
           if ErroCodigo <> EmptyStr then
           begin
-            ErroMsg := NotaUtil.SeparaDados(String(FRespostaWS), 'faultstring');
-            raise Exception.Create(ErroCodigo + sLineBreak + '  - ' + ErroMsg);
+            ErroMsg := String( NotaUtil.SeparaDados(FRespostaWS, 'faultstring') );
+            raise EACBrSuframa.Create(ErroCodigo + sLineBreak + '  - ' + ErroMsg);
           end;
         end;
 
@@ -288,7 +290,7 @@ begin
     except
       on E: Exception do
       begin
-        raise Exception.Create(
+        raise EACBrSuframa.Create(
           'Ocorreu o seguinte erro ao consumir o webService Suframa:' + sLineBreak +
           '  - ' + E.Message
         );
@@ -307,13 +309,13 @@ var
 begin
   MsgErro := ACBrValidadorValidarSuframa( AnsiString( ACBrUtil.OnlyNumber( FSuframa ) ) );
   if MsgErro <> '' then
-    raise Exception.Create( 'Erro de validação: ' + sLineBreak + String( MsgErro ) );
+    raise EACBrSuframa.Create( 'Erro de validação: ' + sLineBreak + String( MsgErro ) );
 
   if FCNPJ <> '' then
   begin
     MsgErro := ACBrValidadorValidarCNPJ( FCNPJ );
     if MsgErro <> '' then
-      raise Exception.Create( 'Erro de validação: ' + sLineBreak + String( MsgErro ) );
+      raise EACBrSuframa.Create( 'Erro de validação: ' + sLineBreak + String( MsgErro ) );
   end;
 
   Self.Executar;

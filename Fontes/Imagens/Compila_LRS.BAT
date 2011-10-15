@@ -44,7 +44,7 @@ echo "****************************************"
 echo.
 
 :TCP
-%1\tools\lazres.exe ACBrTCP.lrs TACBrTCPServer.bmp TACBrCEP.bmp TACBrIBGE.bmp TACBrCNIEE.bmp
+%1\tools\lazres.exe ACBrTCP.lrs TACBrTCPServer.bmp TACBrCEP.bmp TACBrIBGE.bmp TACBrCNIEE.bmp TACBrSuframa.bmp
 move ACBrTCP.lrs ..\ACBrTCP
 echo.
 echo "****************************************"

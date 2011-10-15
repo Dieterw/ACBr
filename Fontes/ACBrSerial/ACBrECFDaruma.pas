@@ -865,8 +865,8 @@ begin
   fpMFD       := False ;
   fpTermica   := False ;
   fsTipoRel   := ' ' ;
-  fsEsperaFFCR    := False ;
-  fsModeloDaruma  :=  fsIndefinido;
+  fsEsperaFFCR:= False ;
+  fsModeloDaruma := fsIndefinido;
 
   try
      { Testando a comunicaçao com a porta e se é MFD }
@@ -1458,6 +1458,7 @@ begin
 
         RetCmd := EnviaComando(FS + 'R' + #200 + '082') ;
         RetCmd := copy(RetCmd,6,6) ;
+        SubModelo := '' ;
 
         if RetCmd = '010053' then
          begin
@@ -1508,24 +1509,9 @@ begin
         fpModeloStr := 'Daruma '+SubModelo ;
         fpMFD       := True ;
         fpTermica   := True ;
-
-        RetCmd  :=  RetornaInfoECF('83') ;
-
-        fsNumVersao := RetCmd ;
       finally
         Retentar := wRetentar ;
         TimeOut  := wTimeOut ;
-      end ;
-
-      if fpMFD then
-      begin
-        fpDecimaisQtd   := 3 ;
-        fpDecimaisPreco := 2 ;
-
-        RetCmd  :=  RetornaInfoECF('139') ;
-
-        fpDecimaisQtd   := StrToIntDef(copy(RetCmd,1,1),fpDecimaisQtd) ;
-        fpDecimaisPreco := StrToIntDef(copy(RetCmd,2,1),fpDecimaisPreco) ;
       end ;
     except
       fpMFD     := False ;
@@ -1564,6 +1550,20 @@ begin
        end;
 
       fpModeloStr := 'Daruma '+SubModelo
+    end ;
+
+    if fpMFD then
+    begin
+      RetCmd :=  RetornaInfoECF('83') ;
+      fsNumVersao := RetCmd ;
+
+      fpDecimaisQtd   := 3 ;
+      fpDecimaisPreco := 2 ;
+
+      RetCmd :=  RetornaInfoECF('139') ;
+
+      fpDecimaisQtd   := StrToIntDef(copy(RetCmd,1,1),fpDecimaisQtd) ;
+      fpDecimaisPreco := StrToIntDef(copy(RetCmd,2,1),fpDecimaisPreco) ;
     end ;
   end ;
 
@@ -4719,6 +4719,12 @@ end;
 
 procedure TACBrECFDaruma.UnloadDLLFunctions;
 begin
+  {  Comentado por DSA.
+     - Problemas ao executar os métodos várias vezes
+     - Seria necessário incluir código para liberar a DLL da Memoria,
+       (apenas atribuir Nil não libera a DLL da memória)
+     - Sleep(300) evita falhas na re-ativação do ECF pelo ACBrECF
+
   xeCarregarBitmapPromocional_ECF_Daruma := NIL;
   xeDefinirModoRegistro_Daruma := NIL;
   xeDefinirProduto := NIL;
@@ -4726,6 +4732,9 @@ begin
   xrGerarEspelhoMFD_ECF_Daruma := NIL;
   xrGerarRelatorio_ECF_Daruma := NIL;
   xrGerarRelatorioOffline_ECF_Daruma := NIL;
+  }
+
+  Sleep(300);
 end;
 
 procedure TACBrECFDaruma.ConfigurarDLL(Path : AnsiString );
@@ -4859,8 +4868,8 @@ begin
     if PathDest <> NomeArquivo then
       CopyFileTo(PathDest, NomeArquivo) ;
   finally
-    Ativo := OldAtivo;
     UnloadDLLFunctions;
+    Ativo := OldAtivo;
 
     if PathDest <> NomeArquivo then
       DeleteFile(PathDest);
@@ -4900,8 +4909,8 @@ begin
     if PathDest <> NomeArquivo then
       CopyFileTo(PathDest, NomeArquivo);
   finally
-    Ativo := OldAtivo;
     UnloadDLLFunctions;
+    Ativo := OldAtivo;
 
     if PathDest <> NomeArquivo then
       DeleteFile(PathDest);
@@ -4976,8 +4985,8 @@ begin
     if PathDest <> NomeArquivo then
       CopyFileTo(PathDest, NomeArquivo) ;
   finally
-    Ativo := OldAtivo;
     UnloadDLLFunctions;
+    Ativo := OldAtivo;
 
     if PathDest <> NomeArquivo then
       DeleteFile(PathDest);
@@ -5045,8 +5054,8 @@ begin
     if PathDest <> NomeArquivo then
       CopyFileTo(PathDest, NomeArquivo) ;
   finally
-    Ativo := OldAtivo;
     UnloadDLLFunctions;
+    Ativo := OldAtivo;
 
     if PathDest <> NomeArquivo then
       DeleteFile(PathDest);
@@ -5094,8 +5103,8 @@ begin
         raise Exception.Create( ACBrStr( 'Erro ao executar eCarregarBitmapPromocional_ECF_Daruma.'+sLineBreak+
                                          'Cod.: '+IntToStr(Resp)+' '+GetDescricaoErroDLL(Resp) )) ;
     finally
-      Ativo := OldAtivo;
       UnloadDLLFunctions;
+      Ativo := OldAtivo;
     end;
   end;
 end;

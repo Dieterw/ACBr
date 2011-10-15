@@ -1,8 +1,9 @@
 <?xml version="1.0"?>
 <CONFIG>
-  <Package Version="3">
+  <Package Version="4">
     <PathDelim Value="\"/>
     <Name Value="ACBrTCP"/>
+    <AddToProjectUsesSection Value="True"/>
     <Author Value="Daniel Simoes de Almeida"/>
     <CompilerOptions>
       <Version Value="10"/>
@@ -19,6 +20,12 @@
           <UseAnsiStrings Value="False"/>
         </SyntaxOptions>
       </Parsing>
+      <Linking>
+        <Debugging>
+          <GenerateDebugInfo Value="True"/>
+          <DebugInfoType Value="dsAuto"/>
+        </Debugging>
+      </Linking>
       <Other>
         <CompilerPath Value="$(CompPath)"/>
       </Other>
@@ -27,7 +34,7 @@
     <License Value="LGPL
 "/>
     <Version Minor="9"/>
-    <Files Count="5">
+    <Files Count="6">
       <Item1>
         <Filename Value="..\..\Fontes\ACBrTCP\ACBrSocket.pas"/>
         <UnitName Value="ACBrSocket"/>
@@ -49,6 +56,10 @@
         <Filename Value="..\..\Fontes\ACBrTCP\ACBrCNIEE.pas"/>
         <UnitName Value="ACBrCNIEE"/>
       </Item5>
+      <Item6>
+        <Filename Value="..\..\Fontes\ACBrTCP\ACBrSuframa.pas"/>
+        <UnitName Value="ACBrSuframa"/>
+      </Item6>
     </Files>
     <Type Value="RunAndDesignTime"/>
     <RequiredPkgs Count="5">

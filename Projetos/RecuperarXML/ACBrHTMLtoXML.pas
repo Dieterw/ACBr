@@ -373,15 +373,15 @@ begin
                   end;
                 end;
 
-                if LerCampo(Grupo,'IMPOSTO SOBRE PRODUTOS INDUSTRIALIZADOS')<>'' then
+                if LerCampo(Grupo,'|&|IMPOSTO SOBRE PRODUTOS INDUSTRIALIZADOS|&|')<>'' then
                 begin
-                  Grupo := copy(Grupo,pos('IMPOSTO SOBRE PRODUTOS INDUSTRIALIZADOS',grupo),length(grupo));
+                  Grupo := copy(Grupo,pos('|&|IMPOSTO SOBRE PRODUTOS INDUSTRIALIZADOS|&|',grupo),length(grupo));
                   with Imposto.IPI do
                   begin
                     cEnq := LerCampo(Grupo, 'Código de Enquadramento');
                     vBC := ConverteStrToNumero(LerCampo(Grupo, 'Base de Cálculo'));
                     pIPI := ConverteStrToNumero(LerCampo(Grupo, 'Alíquota'));
-                    vIPI := ConverteStrToNumero(LerCampo(Grupo, 'Valor'));
+                    vIPI := ConverteStrToNumero(LerCampo(Grupo, 'Valor IPI'));
                     CST := StrToCSTIPI(ok, LerCampo(Grupo, 'CST', 2));
                   end;
                 end;

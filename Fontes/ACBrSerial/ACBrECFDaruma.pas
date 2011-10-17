@@ -4360,6 +4360,7 @@ procedure TACBrECFDaruma.Sangria(const Valor: Double; Obs: AnsiString;
 var
   CmdBitmap: AnsiString;
 begin
+  fsNumCupom := '';
   VerificarBmpTexto(IndiceBMP, Obs);
 
   if fpMFD then
@@ -4382,6 +4383,7 @@ procedure TACBrECFDaruma.Suprimento(const Valor: Double; Obs: AnsiString;
 var
   CmdBitmap: AnsiString;
 begin
+  fsNumCupom := '';
   VerificarBmpTexto(IndiceBMP, Obs);
 
   if fpMFD then
@@ -4402,6 +4404,7 @@ end;
 procedure TACBrECFDaruma.NaoFiscalCompleto(CodCNF: String; Valor: Double;
   CodFormaPagto: String; Obs: AnsiString; IndiceBMP : Integer);
 begin
+  fsNumCupom := '';
   VerificarBmpTexto(IndiceBMP, Obs);
 
   { Chama rotinas da classe Pai (fpOwner) para atualizar os Memos }

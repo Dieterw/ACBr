@@ -112,7 +112,6 @@ type
     class procedure ShutDownXmlSec;
 {$ENDIF}
     class function GetURL(const AUF, AAmbiente, FormaEmissao: Integer; ALayOut: TLayOut): WideString;
-    class function SeparaDados( Texto : AnsiString; Chave : String; MantemChave : Boolean = False ) : AnsiString;
     class function Valida(const AXML: AnsiString; var AMsg: AnsiString; const APathSchemas: string = ''): Boolean;
 
     class function LimpaNumero(AValue: string): string;
@@ -164,7 +163,6 @@ type
 
     class function PathAplication: String;
     class procedure ConfAmbiente;
-    class function ParseText( Texto : AnsiString; Decode : Boolean = True) : AnsiString;
     class function TrataString(const AValue: String): String;overload;
     class function TrataString(const AValue: String; const ATamanho: Integer): String;overload;
     class function CortaD(const AString: string; const ATamanho: Integer): String;
@@ -356,13 +354,15 @@ class function CTeUtil.GetURLSP(AAmbiente: Integer;
   ALayOut: TLayOut): WideString;
 begin
   case ALayOut of
-    LayCTeStatusServico: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://nfe.fazenda.sp.gov.br/cteWEB/services/cteStatusServico.asmx'   , 'https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteStatusServico.asmx');
-    LayCTeCadastro: Result      := CTeUtil.SeSenao(AAmbiente = 1, 'https://nfe.fazenda.sp.gov.br/nfeWEB/services/cadConsultaCadastro.asmx', 'https://homologacao.nfe.fazenda.sp.gov.br/nfeWEB/services/cadConsultaCadastro.asmx');
-    LayCTeConsultaCT: Result    := CTeUtil.SeSenao(AAmbiente = 1, 'https://nfe.fazenda.sp.gov.br/cteWEB/services/cteConsulta.asmx'        , 'https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteConsulta.asmx');
-    LayCTeCancelamento: Result  := CTeUtil.SeSenao(AAmbiente = 1, 'https://nfe.fazenda.sp.gov.br/cteWEB/services/cteCancelamento.asmx'    , 'https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteCancelamento.asmx');
-    LayCTeInutilizacao: Result  := CTeUtil.SeSenao(AAmbiente = 1, 'https://nfe.fazenda.sp.gov.br/cteWEB/services/cteInutilizacao.asmx'    , 'https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteInutilizacao.asmx');
-    LayCTeRecepcao: Result      := CTeUtil.SeSenao(AAmbiente = 1, 'https://nfe.fazenda.sp.gov.br/cteWEB/services/cteRecepcao.asmx'        , 'https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteRecepcao.asmx');
-    LayCTeRetRecepcao: Result   := CTeUtil.SeSenao(AAmbiente = 1, 'https://nfe.fazenda.sp.gov.br/cteWEB/services/cteRetRecepcao.asmx'     , 'https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteRetRecepcao.asmx');
+    LayCTeStatusServico: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://nfe.fazenda.sp.gov.br/cteWEB/services/cteStatusServico.asmx'    , 'https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteStatusServico.asmx');
+    // Alterado por Italo em 17/10/2011
+//    LayCTeCadastro: Result      := CTeUtil.SeSenao(AAmbiente = 1, 'https://nfe.fazenda.sp.gov.br/nfeWEB/services/cadConsultaCadastro.asmx', 'https://homologacao.nfe.fazenda.sp.gov.br/nfeWEB/services/cadConsultaCadastro.asmx');
+    LayCTeCadastro     : Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://nfe.fazenda.sp.gov.br/nfeweb/services/cadconsultacadastro2.asmx', 'https://homologacao.nfe.fazenda.sp.gov.br/nfeweb/services/cadconsultacadastro2.asmx');
+    LayCTeConsultaCT: Result    := CTeUtil.SeSenao(AAmbiente = 1, 'https://nfe.fazenda.sp.gov.br/cteWEB/services/cteConsulta.asmx'         , 'https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteConsulta.asmx');
+    LayCTeCancelamento: Result  := CTeUtil.SeSenao(AAmbiente = 1, 'https://nfe.fazenda.sp.gov.br/cteWEB/services/cteCancelamento.asmx'     , 'https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteCancelamento.asmx');
+    LayCTeInutilizacao: Result  := CTeUtil.SeSenao(AAmbiente = 1, 'https://nfe.fazenda.sp.gov.br/cteWEB/services/cteInutilizacao.asmx'     , 'https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteInutilizacao.asmx');
+    LayCTeRecepcao: Result      := CTeUtil.SeSenao(AAmbiente = 1, 'https://nfe.fazenda.sp.gov.br/cteWEB/services/cteRecepcao.asmx'         , 'https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteRecepcao.asmx');
+    LayCTeRetRecepcao: Result   := CTeUtil.SeSenao(AAmbiente = 1, 'https://nfe.fazenda.sp.gov.br/cteWEB/services/cteRetRecepcao.asmx'      , 'https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteRetRecepcao.asmx');
   end;
 end;
 
@@ -696,56 +696,6 @@ begin
   Result := Result + StringOfChar(Caracter, (nLen - Length(Result)));
 end;
 
-class function CTeUtil.ParseText(Texto: AnsiString; Decode: Boolean): AnsiString;
-begin
-  if Decode then
-   begin
-    Texto := StringReplace(Texto, '&amp;', '&', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&lt;', '<', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&gt;', '>', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&quot;', '"', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&#39;', #39, [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&aacute;', 'á', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&Aacute;', 'Á', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&acirc;' , 'â', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&Acirc;' , 'Â', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&atilde;', 'ã', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&Atilde;', 'Ã', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&agrave;', 'à', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&Agrave;', 'À', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&eacute;', 'é', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&Eacute;', 'É', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&ecirc;' , 'ê', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&Ecirc;' , 'Ê', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&iacute;', 'í', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&Iacute;', 'Í', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&oacute;', 'ó', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&Oacute;', 'Ó', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&otilde;', 'õ', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&Otilde;', 'Õ', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&ocirc;' , 'ô', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&Ocirc;' , 'Ô', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&uacute;', 'ú', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&Uacute;', 'Ú', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&uuml;'  , 'ü', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&Uuml;'  , 'Ü', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&ccedil;', 'ç', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&Ccedil;', 'Ç', [rfReplaceAll]);
-    Texto := UTF8Decode(Texto);
-   end
-  else
-   begin
-    Texto := StringReplace(Texto, '&', '&amp;', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '<', '&lt;', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '>', '&gt;', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '"', '&quot;', [rfReplaceAll]);
-    Texto := StringReplace(Texto, #39, '&#39;', [rfReplaceAll]);
-    Texto := UTF8Encode(Texto);
-   end;
-
-  Result := Texto;
-end;
-
 class function CTeUtil.PathAplication: String;
 begin
   Result := ExtractFilePath(Application.ExeName);
@@ -804,48 +754,6 @@ begin
     Result := P;
     P := PosEx(SubStr, S, P + 1);
   end;
-end;
-
-class function CTeUtil.SeparaDados( Texto : AnsiString; Chave : String; MantemChave : Boolean = False ) : AnsiString;
-var
-  PosIni, PosFim : Integer;
-begin
-  if MantemChave then
-   begin
-     PosIni := Pos(Chave, Texto) - 1;
-     PosFim := Pos('/' + Chave, Texto) + length(Chave) + 3;
-
-     if (PosIni = 0) or (PosFim = 0) then
-      begin
-        PosIni := Pos('ns2:' + Chave, Texto) - 1;
-        PosFim := Pos('/ns2:' + Chave, Texto) + length(Chave) + 3;
-      end;
-   end
-  else
-   begin
-     PosIni := Pos(Chave, Texto) + Pos('>', copy(Texto, Pos(Chave, Texto), length(Texto)));
-     PosFim := Pos('/' + Chave, Texto);
-
-     if (PosIni = 0) or (PosFim = 0) then
-      begin
-        PosIni := Pos('ns2:' + Chave, Texto) + Pos('>', copy(Texto, Pos('ns2:' + Chave, Texto), length(Texto)));
-        PosFim := Pos('/ns2:' + Chave, Texto);
-      end;
-   end;
-
-  Result := copy(Texto, PosIni, PosFim - (PosIni + 1));
-{
-  PosIni := Pos(Chave, Texto) - 1;
-  PosFim := Pos('/' + Chave, Texto) + length(Chave) + 3;
-
-  if (PosIni = 0) or (PosFim = 0) then
-  begin
-    PosIni := Pos('ns1:' + Chave, Texto) - 1;
-    PosFim := Pos('/ns1:' + Chave, Texto) + length(Chave) + 3;
-  end;
-
-  Result := copy(Texto, PosIni, PosFim - (PosIni + 1));
- }
 end;
 
 {$IFDEF ACBrCTeOpenSSL}

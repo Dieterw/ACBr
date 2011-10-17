@@ -961,15 +961,15 @@ begin
          StrStream := TStringStream.Create('');
          StrStream.CopyFrom(HTTP.Document, 0);
 
-         FRetornoWS := TiraAcentos(CTeUtil.ParseText(StrStream.DataString, True));
-         FRetWS := CTeUtil.SeparaDados( FRetornoWS,'cteStatusServicoCTResult');
+         FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
+         FRetWS := SeparaDados( FRetornoWS, 'cteStatusServicoCTResult');
          StrStream.Free;
       {$ELSE}
          ReqResp.Execute(Acao.Text, Stream);
          StrStream := TStringStream.Create('');
          StrStream.CopyFrom(Stream, 0);
-         FRetornoWS := TiraAcentos(CTeUtil.ParseText(StrStream.DataString, True));
-         FRetWS := CTeUtil.SeparaDados( FRetornoWS,'cteStatusServicoCTResult');
+         FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
+         FRetWS := SeparaDados( FRetornoWS, 'cteStatusServicoCTResult');
          StrStream.Free;
       {$ENDIF}
       CTeRetorno := TRetConsStatServ.Create;
@@ -1105,15 +1105,15 @@ begin
 
          StrStream := TStringStream.Create('');
          StrStream.CopyFrom(HTTP.Document, 0);
-         FRetornoWS := TiraAcentos(CTeUtil.ParseText(StrStream.DataString, True));
-         FRetWS := CTeUtil.SeparaDados( FRetornoWS,'cteRecepcaoLoteResult');
+         FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
+         FRetWS := SeparaDados( FRetornoWS, 'cteRecepcaoLoteResult');
          StrStream.Free;
       {$ELSE}
          ReqResp.Execute(Acao.Text, Stream);
          StrStream := TStringStream.Create('');
          StrStream.CopyFrom(Stream, 0);
-         FRetornoWS := TiraAcentos(CTeUtil.ParseText(StrStream.DataString, True));
-         FRetWS := CTeUtil.SeparaDados( FRetornoWS,'cteRecepcaoLoteResult');
+         FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
+         FRetWS := SeparaDados( FRetornoWS, 'cteRecepcaoLoteResult');
          StrStream.Free;
       {$ENDIF}
       CTeRetorno := TretEnvCTe.Create;
@@ -1334,15 +1334,15 @@ function TCteRetRecepcao.Executar: Boolean;
 
          StrStream := TStringStream.Create('');
          StrStream.CopyFrom(HTTP.Document, 0);
-         FRetornoWS := TiraAcentos(CTeUtil.ParseText(StrStream.DataString, True));
-         FRetWS := CTeUtil.SeparaDados( FRetornoWS,'cteRetRecepcaoResult');
+         FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
+         FRetWS := SeparaDados( FRetornoWS, 'cteRetRecepcaoResult');
          StrStream.Free;
       {$ELSE}
          ReqResp.Execute(Acao.Text, Stream);
          StrStream := TStringStream.Create('');
          StrStream.CopyFrom(Stream, 0);
-         FRetornoWS := TiraAcentos(CTeUtil.ParseText(StrStream.DataString, True));
-         FRetWS := CTeUtil.SeparaDados( FRetornoWS,'cteRetRecepcaoResult');
+         FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
+         FRetWS := SeparaDados( FRetornoWS, 'cteRetRecepcaoResult');
          StrStream.Free;
       {$ENDIF}
       if FConfiguracoes.Geral.Salvar then
@@ -1499,15 +1499,15 @@ begin
 
       StrStream := TStringStream.Create('');
       StrStream.CopyFrom(HTTP.Document, 0);
-      FRetornoWS := TiraAcentos(CTeUtil.ParseText(StrStream.DataString, True));
-      FRetWS := CTeUtil.SeparaDados( FRetornoWS,'cteRetRecepcaoResult');
+      FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
+      FRetWS := SeparaDados( FRetornoWS, 'cteRetRecepcaoResult');
       StrStream.Free;
    {$ELSE}
       ReqResp.Execute(Acao.Text, Stream);
       StrStream := TStringStream.Create('');
       StrStream.CopyFrom(Stream, 0);
-      FRetornoWS := TiraAcentos(CTeUtil.ParseText(StrStream.DataString, True));
-      FRetWS := CTeUtil.SeparaDados( FRetornoWS,'cteRetRecepcaoResult');
+      FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
+      FRetWS := SeparaDados( FRetornoWS, 'cteRetRecepcaoResult');
       StrStream.Free;
    {$ENDIF}
    FCTeRetorno := TRetConsReciCTe.Create;
@@ -1618,15 +1618,15 @@ begin
 
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(HTTP.Document, 0);
-       FRetornoWS := TiraAcentos(CTeUtil.ParseText(StrStream.DataString, True));
-       FRetWS := CTeUtil.SeparaDados( FRetornoWS,'cteConsultaCTResult');
+       FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
+       FRetWS := SeparaDados( FRetornoWS, 'cteConsultaCTResult');
        StrStream.Free;
     {$ELSE}
        ReqResp.Execute(Acao.Text, Stream);
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(Stream, 0);
-       FRetornoWS := TiraAcentos(CTeUtil.ParseText(StrStream.DataString, True));
-       FRetWS := CTeUtil.SeparaDados( FRetornoWS,'cteConsultaCTResult');
+       FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
+       FRetWS := SeparaDados( FRetornoWS, 'cteConsultaCTResult');
        StrStream.Free;
     {$ENDIF}
     CTeRetorno := TRetConsSitCTe.Create;
@@ -1820,15 +1820,15 @@ begin
 
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(HTTP.Document, 0);
-       FRetornoWS := TiraAcentos(CTeUtil.ParseText(StrStream.DataString, True));
-       FRetWS := CTeUtil.SeparaDados( FRetornoWS,'cteCancelamentoCTResult');
+       FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
+       FRetWS := SeparaDados( FRetornoWS, 'cteCancelamentoCTResult');
        StrStream.Free;
     {$ELSE}
        ReqResp.Execute(Acao.Text, Stream);
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(Stream, 0);
-       FRetornoWS := TiraAcentos(CTeUtil.ParseText(StrStream.DataString, True));
-       FRetWS := CTeUtil.SeparaDados( FRetornoWS,'cteCancelamentoCTResult');
+       FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
+       FRetWS := SeparaDados( FRetornoWS, 'cteCancelamentoCTResult');
        StrStream.Free;
     {$ENDIF}
 
@@ -2028,15 +2028,15 @@ begin
 
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(HTTP.Document, 0);
-       FRetornoWS := TiraAcentos(CTeUtil.ParseText(StrStream.DataString, True));
-       FRetWS := CTeUtil.SeparaDados( FRetornoWS,'cteInutilizacaoCTResult');
+       FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
+       FRetWS := SeparaDados( FRetornoWS, 'cteInutilizacaoCTResult');
        StrStream.Free;
     {$ELSE}
        ReqResp.Execute(Acao.Text, Stream);
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(Stream, 0);
-       FRetornoWS := TiraAcentos(CTeUtil.ParseText(StrStream.DataString, True));
-       FRetWS := CTeUtil.SeparaDados( FRetornoWS,'cteInutilizacaoCTResult');
+       FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
+       FRetWS := SeparaDados( FRetornoWS, 'cteInutilizacaoCTResult');
        StrStream.Free;
     {$ENDIF}
 
@@ -2155,20 +2155,37 @@ begin
 
   Acao   := TStringList.Create;
   Stream := TMemoryStream.Create;
-
+  // Alterado por Italo em  17/10/2011
+  (*
   Texto := '<?xml version="1.0" encoding="utf-8"?>';
   Texto := Texto + '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">';
   Texto := Texto +   '<soap:Body>';
   Texto := Texto +     '<consultaCadastro xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro">';
   Texto := Texto +       '<nfeCabecMsg>';
-  Texto := Texto + CTeUtil.ParseText(FCabMsg,False);
+  Texto := Texto +         ParseText(FCabMsg, False);
   Texto := Texto +       '</nfeCabecMsg>';
   Texto := Texto +       '<nfeDadosMsg>';
-  Texto := Texto + CTeUtil.ParseText(FDadosMsg,False);
+  Texto := Texto +         ParseText(FDadosMsg, False);
   Texto := Texto +       '</nfeDadosMsg>';
   Texto := Texto +     '</consultaCadastro>';
   Texto := Texto +   '</soap:Body>';
   Texto := Texto + '</soap:Envelope>';
+  *)
+
+  Texto := '<?xml version="1.0" encoding="utf-8"?>';
+  Texto := Texto + '<soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">';
+  Texto := Texto +   '<soap12:Header>';
+  Texto := Texto +     '<nfeCabecMsg xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro2">';
+  Texto := Texto +       '<cUF>'+IntToStr(UFparaCodigo(TCTeConsultaCadastro(Self).UF))+'</cUF>';
+  Texto := Texto +       '<versaoDados>'+CTeconsCad+'</versaoDados>';
+  Texto := Texto +     '</nfeCabecMsg>';
+  Texto := Texto +   '</soap12:Header>';
+  Texto := Texto +   '<soap12:Body>';
+  Texto := Texto +     '<nfeDadosMsg xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro2">';
+  Texto := Texto +       FDadosMsg;
+  Texto := Texto +     '</nfeDadosMsg>';
+  Texto := Texto +   '</soap12:Body>';
+  Texto := Texto +'</soap12:Envelope>';
 
   Acao.Text := Texto;
 
@@ -2180,7 +2197,9 @@ begin
      ConfiguraReqResp( ReqResp );
      ReqResp.URL := Trim(FURL);
      ReqResp.UseUTF8InHeader := True;
-     ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro/consultaCadastro';
+     // Alterado por Italo em  17/10/2011
+//     ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro/consultaCadastro';
+     ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro2' ;
   {$ENDIF}
   try
     TACBrCTe( FACBrCTe ).SetStatus( stCTeCadastro );
@@ -2192,25 +2211,29 @@ begin
     FRetWS := '';
     {$IFDEF ACBrCTeOpenSSL}
        HTTP.Document.LoadFromStream(Stream);
-       ConfiguraHTTP(HTTP,'SOAPAction: "http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro/consultaCadastro"');
+       // Alterado por Italo em  17/10/2011
+//       ConfiguraHTTP(HTTP,'SOAPAction: "http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro/consultaCadastro"');
+       ConfiguraHTTP(HTTP,'SOAPAction: "http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro2"');
        HTTP.HTTPMethod('POST', FURL);
 
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(HTTP.Document, 0);
-       FRetornoWS := TiraAcentos(CTeUtil.ParseText(StrStream.DataString, True));
-       FRetWS := CTeUtil.SeparaDados( FRetornoWS,'consultaCadastroResult');
+       FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
+       // Alterado por Italo em  17/10/2011
+//       FRetWS := SeparaDados( FRetornoWS, 'consultaCadastroResult');
+       FRetWS := SeparaDados( FRetornoWS,'consultaCadastro2Result');
        StrStream.Free;
     {$ELSE}
        ReqResp.Execute(Acao.Text, Stream);
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(Stream, 0);
-       FRetornoWS := TiraAcentos(CTeUtil.ParseText(StrStream.DataString, True));
-       FRetWS := CTeUtil.SeparaDados( FRetornoWS,'consultaCadastroResult');
+       FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
+       // Alterado por Italo em  17/10/2011
+//       FRetWS := SeparaDados( FRetornoWS, 'consultaCadastroResult');
+       FRetWS := SeparaDados( FRetornoWS,'consultaCadastro2Result');
        StrStream.Free;
     {$ENDIF}
 
-//    if FRetConsCad = nil then
-//       FRetConsCad := TRetConsCad.Create;
     FRetConsCad := TRetConsCad.Create;
     FRetConsCad.Leitor.Arquivo := FRetWS;
     FRetConsCad.LerXml;

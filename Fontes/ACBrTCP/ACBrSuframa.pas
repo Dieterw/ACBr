@@ -244,7 +244,7 @@ begin
 
           HTTP.HTTPMethod('POST', URL);
           StrStream.CopyFrom(HTTP.Document, 0);
-          FRespostaWS := NotaUtil.ParseText( StrStream.DataString );
+          FRespostaWS := ParseText( StrStream.DataString );
         {$ELSE}
           ConfiguraReqResp(ReqResp);
           ReqResp.UseUTF8InHeader := True;

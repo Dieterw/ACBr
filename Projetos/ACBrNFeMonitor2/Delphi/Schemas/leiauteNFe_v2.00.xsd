@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--  PL_006i - 03/07/11 - acrescimo do item 6/7 tpEmis  // NT2011/004 -->
+<!--  PL_006i - 10/06/11 - acrescimo do item 8 - Venda a Orgao Publico no motDesoICMS  // NT2011/004 -->
+<!--  PL_006i - 13/05/11 - correções da NT 2011/004  // v2.0-->
 <!--  PL_006g versao com inclusão de novos CFOP e CST do PIS/COFINS 24/06/2010-->
 <!--  PL_006f versao com alteração do NCM para aceitar zeros, CST do ICMSST, vTodDed do grupo da cana 09/05/2010 -->
 <!--  PL_006f correção da definição e da lista de valores válidos para alguns campos - vide NT 2010/003 para maiores detalhes - 31/05/2010 -->
@@ -95,16 +98,21 @@ SCAN 900-999</xs:documentation>
 											<xs:documentation>Data de emissão do Documento Fiscal (AAAA-MM-DD)</xs:documentation>
 										</xs:annotation>
 									</xs:element>
-									<xs:element name="dSaiEnt" type="TData" minOccurs="0">
+									<xs:sequence minOccurs="0">
 										<xs:annotation>
-											<xs:documentation>Data de saída ou de entrada da mercadoria / produto (AAAA-MM-DD)</xs:documentation>
+											<xs:documentation>NT2011/004</xs:documentation>
 										</xs:annotation>
-									</xs:element>
-									<xs:element name="hSaiEnt" type="TTime" minOccurs="0">
-										<xs:annotation>
-											<xs:documentation>Hora de saída ou de entrada da mercadoria / produto (HH:MM:SS) (v2.0)</xs:documentation>
-										</xs:annotation>
-									</xs:element>
+										<xs:element name="dSaiEnt" type="TData">
+											<xs:annotation>
+												<xs:documentation>Data de saída ou de entrada da mercadoria / produto (AAAA-MM-DD)</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="hSaiEnt" type="TTime" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Hora de saída ou de entrada da mercadoria / produto (HH:MM:SS) (v2.0)</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+									</xs:sequence>
 									<xs:element name="tpNF">
 										<xs:annotation>
 											<xs:documentation>Tipo do Documento Fiscal (0 - entrada; 1 - saída)</xs:documentation>
@@ -320,7 +328,9 @@ Preencher com "2B", quando se tratar de Cupom Fiscal emitido por máquina regist
 2 - Contingência FS
 3 - Contingência SCAN
 4 - Contingência DPEC
-5 - Contingência FSDA</xs:documentation>
+5 - Contingência FSDA
+6 - Contingência SVC - AN
+7 - Contingência SVC - RS</xs:documentation>
 										</xs:annotation>
 										<xs:simpleType>
 											<xs:restriction base="xs:string">
@@ -330,6 +340,8 @@ Preencher com "2B", quando se tratar de Cupom Fiscal emitido por máquina regist
 												<xs:enumeration value="3"/>
 												<xs:enumeration value="4"/>
 												<xs:enumeration value="5"/>
+												<xs:enumeration value="6"/>
+												<xs:enumeration value="7"/>
 											</xs:restriction>
 										</xs:simpleType>
 									</xs:element>
@@ -559,7 +571,7 @@ Este campo será obrigatoriamente preenchido com:
 											</xs:restriction>
 										</xs:simpleType>
 									</xs:element>
-									<xs:element name="fone">
+									<xs:element name="fone" minOccurs="0">
 										<xs:annotation>
 											<xs:documentation>Telefone</xs:documentation>
 										</xs:annotation>
@@ -575,7 +587,7 @@ Este campo será obrigatoriamente preenchido com:
 											<xs:documentation>Sigla da Unidade da Federação</xs:documentation>
 										</xs:annotation>
 									</xs:element>
-									<xs:element name="nDAR">
+									<xs:element name="nDAR" minOccurs="0">
 										<xs:annotation>
 											<xs:documentation>Número do Documento de Arrecadação de Receita</xs:documentation>
 										</xs:annotation>
@@ -586,12 +598,12 @@ Este campo será obrigatoriamente preenchido com:
 											</xs:restriction>
 										</xs:simpleType>
 									</xs:element>
-									<xs:element name="dEmi" type="TData">
+									<xs:element name="dEmi" type="TData" minOccurs="0">
 										<xs:annotation>
 											<xs:documentation>Data de emissão do DAR (AAAA-MM-DD)</xs:documentation>
 										</xs:annotation>
 									</xs:element>
-									<xs:element name="vDAR" type="TDec_1302">
+									<xs:element name="vDAR" type="TDec_1302" minOccurs="0">
 										<xs:annotation>
 											<xs:documentation>Valor Total constante no DAR</xs:documentation>
 										</xs:annotation>
@@ -775,7 +787,7 @@ Formato ”CFOP9999”.</xs:documentation>
 														</xs:restriction>
 													</xs:simpleType>
 												</xs:element>
-												<xs:element name="qCom" type="TDec_1504">
+												<xs:element name="qCom" type="TDec_1104v">
 													<xs:annotation>
 														<xs:documentation>Quantidade Comercial  do produto, alterado para aceitar de 0 a 4 casas decimais e 11 inteiros. (v2.0)</xs:documentation>
 													</xs:annotation>
@@ -812,7 +824,7 @@ Formato ”CFOP9999”.</xs:documentation>
 														</xs:restriction>
 													</xs:simpleType>
 												</xs:element>
-												<xs:element name="qTrib" type="TDec_1504">
+												<xs:element name="qTrib" type="TDec_1104v">
 													<xs:annotation>
 														<xs:documentation>Quantidade Tributável - alterado para aceitar de 0 a 4 casas decimais e 11 inteiros (v2.0)</xs:documentation>
 													</xs:annotation>
@@ -858,17 +870,21 @@ Formato ”CFOP9999”.</xs:documentation>
 														</xs:restriction>
 													</xs:simpleType>
 												</xs:element>
-												<xs:element name="DI" minOccurs="0" maxOccurs="unbounded">
+												<xs:element name="DI" minOccurs="0" maxOccurs="100">
+													<xs:annotation>
+														<xs:documentation>Delcaração de Importação
+(NT 2011/004)</xs:documentation>
+													</xs:annotation>
 													<xs:complexType>
 														<xs:sequence>
 															<xs:element name="nDI">
 																<xs:annotation>
-																	<xs:documentation>Numero do Documento de Importação DI/DSI/DA (DI/DSI/DA)</xs:documentation>
+																	<xs:documentation>Numero do Documento de Importação DI/DSI/DA/DRI-E (DI/DSI/DA/DRI-E) (NT2011/004)</xs:documentation>
 																</xs:annotation>
 																<xs:simpleType>
 																	<xs:restriction base="TString">
 																		<xs:minLength value="1"/>
-																		<xs:maxLength value="10"/>
+																		<xs:maxLength value="12"/>
 																	</xs:restriction>
 																</xs:simpleType>
 															</xs:element>
@@ -909,9 +925,9 @@ Formato ”CFOP9999”.</xs:documentation>
 																	</xs:restriction>
 																</xs:simpleType>
 															</xs:element>
-															<xs:element name="adi" maxOccurs="unbounded">
+															<xs:element name="adi" maxOccurs="100">
 																<xs:annotation>
-																	<xs:documentation>Adições</xs:documentation>
+																	<xs:documentation>Adições (NT 2011/004)</xs:documentation>
 																</xs:annotation>
 																<xs:complexType>
 																	<xs:sequence>
@@ -1867,6 +1883,7 @@ Informar o motivo da desoneração:
 5 – Diplomático/Consular;
 6 – Utilitários e Motocicletas da Amazônia Ocidental e Áreas de Livre Comércio (Resolução 714/88 e 790/94 – CONTRAN e suas alterações);
 7 – SUFRAMA;
+8 - Venda a órgão Público;
 9 – outros. (v2.0)</xs:documentation>
 																						</xs:annotation>
 																						<xs:simpleType>
@@ -1879,6 +1896,7 @@ Informar o motivo da desoneração:
 																								<xs:enumeration value="5"/>
 																								<xs:enumeration value="6"/>
 																								<xs:enumeration value="7"/>
+																								<xs:enumeration value="8"/>
 																								<xs:enumeration value="9"/>
 																							</xs:restriction>
 																						</xs:simpleType>
@@ -1983,16 +2001,21 @@ A exigência do preenchimento das informações do ICMS diferido fica à critér
 																						</xs:restriction>
 																					</xs:simpleType>
 																				</xs:element>
-																				<xs:element name="vBCSTRet" type="TDec_1302">
+																				<xs:sequence minOccurs="0">
 																					<xs:annotation>
-																						<xs:documentation>Valor da BC do ICMS ST retido anteriormente (v2.0)</xs:documentation>
+																						<xs:documentation>NT2010/004</xs:documentation>
 																					</xs:annotation>
-																				</xs:element>
-																				<xs:element name="vICMSSTRet" type="TDec_1302">
-																					<xs:annotation>
-																						<xs:documentation>Valor do ICMS ST retido anteriormente  (v2.0)</xs:documentation>
-																					</xs:annotation>
-																				</xs:element>
+																					<xs:element name="vBCSTRet" type="TDec_1302">
+																						<xs:annotation>
+																							<xs:documentation>Valor da BC do ICMS ST retido anteriormente (v2.0)</xs:documentation>
+																						</xs:annotation>
+																					</xs:element>
+																					<xs:element name="vICMSSTRet" type="TDec_1302">
+																						<xs:annotation>
+																							<xs:documentation>Valor do ICMS ST retido anteriormente  (v2.0)</xs:documentation>
+																						</xs:annotation>
+																					</xs:element>
+																				</xs:sequence>
 																			</xs:sequence>
 																		</xs:complexType>
 																	</xs:element>
@@ -2666,16 +2689,21 @@ Operação interestadual para consumidor final com partilha do ICMS  devido na o
 																						</xs:restriction>
 																					</xs:simpleType>
 																				</xs:element>
-																				<xs:element name="vBCSTRet" type="TDec_1302">
+																				<xs:sequence minOccurs="0">
 																					<xs:annotation>
-																						<xs:documentation>Valor da BC do ICMS ST retido anteriormente (v2.0)</xs:documentation>
+																						<xs:documentation>NT2011/004</xs:documentation>
 																					</xs:annotation>
-																				</xs:element>
-																				<xs:element name="vICMSSTRet" type="TDec_1302">
-																					<xs:annotation>
-																						<xs:documentation>Valor do ICMS ST retido anteriormente  (v2.0)</xs:documentation>
-																					</xs:annotation>
-																				</xs:element>
+																					<xs:element name="vBCSTRet" type="TDec_1302">
+																						<xs:annotation>
+																							<xs:documentation>Valor da BC do ICMS ST retido anteriormente (v2.0) </xs:documentation>
+																						</xs:annotation>
+																					</xs:element>
+																					<xs:element name="vICMSSTRet" type="TDec_1302">
+																						<xs:annotation>
+																							<xs:documentation>Valor do ICMS ST retido anteriormente  (v2.0)</xs:documentation>
+																						</xs:annotation>
+																					</xs:element>
+																				</xs:sequence>
 																			</xs:sequence>
 																		</xs:complexType>
 																	</xs:element>
@@ -3113,12 +3141,12 @@ I – ISENTA. (v.2.0)
 																		</xs:element>
 																		<xs:element name="qBCProd" type="TDec_1204">
 																			<xs:annotation>
-																				<xs:documentation>Quantidade Vendida </xs:documentation>
+																				<xs:documentation>Quantidade Vendida  (NT2011/004)</xs:documentation>
 																			</xs:annotation>
 																		</xs:element>
-																		<xs:element name="vAliqProd" type="TDec_1104">
+																		<xs:element name="vAliqProd" type="TDec_1104v">
 																			<xs:annotation>
-																				<xs:documentation>Alíquota do PIS (em reais)</xs:documentation>
+																				<xs:documentation>Alíquota do PIS (em reais) (NT2011/004)</xs:documentation>
 																			</xs:annotation>
 																		</xs:element>
 																		<xs:element name="vPIS" type="TDec_1302">
@@ -3221,12 +3249,12 @@ I – ISENTA. (v.2.0)
 																			<xs:sequence>
 																				<xs:element name="qBCProd" type="TDec_1204">
 																					<xs:annotation>
-																						<xs:documentation>Quantidade Vendida </xs:documentation>
+																						<xs:documentation>Quantidade Vendida (NT2011/004) </xs:documentation>
 																					</xs:annotation>
 																				</xs:element>
-																				<xs:element name="vAliqProd" type="TDec_1104">
+																				<xs:element name="vAliqProd" type="TDec_1104v">
 																					<xs:annotation>
-																						<xs:documentation>Alíquota do PIS (em reais)</xs:documentation>
+																						<xs:documentation>Alíquota do PIS (em reais) (NT2011/004)</xs:documentation>
 																					</xs:annotation>
 																				</xs:element>
 																			</xs:sequence>
@@ -3348,12 +3376,12 @@ I – ISENTA. (v.2.0)
 																		</xs:element>
 																		<xs:element name="qBCProd" type="TDec_1204">
 																			<xs:annotation>
-																				<xs:documentation>Quantidade Vendida </xs:documentation>
+																				<xs:documentation>Quantidade Vendida (NT2011/004)</xs:documentation>
 																			</xs:annotation>
 																		</xs:element>
-																		<xs:element name="vAliqProd" type="TDec_1104">
+																		<xs:element name="vAliqProd" type="TDec_1104v">
 																			<xs:annotation>
-																				<xs:documentation>Alíquota do COFINS (em reais)</xs:documentation>
+																				<xs:documentation>Alíquota do COFINS (em reais) (NT2011/004)</xs:documentation>
 																			</xs:annotation>
 																		</xs:element>
 																		<xs:element name="vCOFINS" type="TDec_1302">
@@ -3502,12 +3530,12 @@ I – ISENTA. (v.2.0)
 																			<xs:sequence>
 																				<xs:element name="qBCProd" type="TDec_1204">
 																					<xs:annotation>
-																						<xs:documentation>Quantidade Vendida </xs:documentation>
+																						<xs:documentation>Quantidade Vendida (NT2011/004) </xs:documentation>
 																					</xs:annotation>
 																				</xs:element>
-																				<xs:element name="vAliqProd" type="TDec_1104">
+																				<xs:element name="vAliqProd" type="TDec_1104v">
 																					<xs:annotation>
-																						<xs:documentation>Alíquota do COFINS (em reais)</xs:documentation>
+																						<xs:documentation>Alíquota do COFINS (em reais) (NT2011/004)</xs:documentation>
 																					</xs:annotation>
 																				</xs:element>
 																			</xs:sequence>
@@ -4045,9 +4073,9 @@ Substituição Tributaria;</xs:documentation>
 											</xs:sequence>
 										</xs:complexType>
 									</xs:element>
-									<xs:element name="dup" minOccurs="0" maxOccurs="unbounded">
+									<xs:element name="dup" minOccurs="0" maxOccurs="120">
 										<xs:annotation>
-											<xs:documentation>Dados das duplicatas</xs:documentation>
+											<xs:documentation>Dados das duplicatas NT 2011/004</xs:documentation>
 										</xs:annotation>
 										<xs:complexType>
 											<xs:sequence>
@@ -4237,12 +4265,12 @@ concessório</xs:documentation>
 								<xs:sequence>
 									<xs:element name="xNEmp" minOccurs="0">
 										<xs:annotation>
-											<xs:documentation>Informação da Nota de Empenho de compras públicas</xs:documentation>
+											<xs:documentation>Informação da Nota de Empenho de compras públicas (NT2011/004)</xs:documentation>
 										</xs:annotation>
 										<xs:simpleType>
 											<xs:restriction base="TString">
 												<xs:minLength value="1"/>
-												<xs:maxLength value="17"/>
+												<xs:maxLength value="22"/>
 											</xs:restriction>
 										</xs:simpleType>
 									</xs:element>
@@ -4602,12 +4630,12 @@ concessório</xs:documentation>
 				<xs:element name="cMsg">
 					<xs:annotation>
 						<xs:documentation>Código da Mensagem (v2.0) 
-Campo de uso da SEFAZ para enviar mensagem de interesse da SEFAZ para o emissor.</xs:documentation>
+alterado para tamanho variavel 1-4. (NT2011/004)</xs:documentation>
 					</xs:annotation>
 					<xs:simpleType>
 						<xs:restriction base="xs:string">
 							<xs:whiteSpace value="preserve"/>
-							<xs:pattern value="[0-9]{4}"/>
+							<xs:pattern value="[0-9]{1,4}"/>
 						</xs:restriction>
 					</xs:simpleType>
 				</xs:element>
@@ -4802,12 +4830,12 @@ Campo de uso da SEFAZ para enviar mensagem de interesse da SEFAZ para o emissor.
 			</xs:element>
 			<xs:element name="cMun" type="TCodMunIBGE">
 				<xs:annotation>
-					<xs:documentation>Código do município (utilizar a tabela do IBGE), informar 9999999 para operações com o exterior.</xs:documentation>
+					<xs:documentation>Código do município</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="xMun">
 				<xs:annotation>
-					<xs:documentation>Nome do município, informar EXTERIOR para operações com o exterior.</xs:documentation>
+					<xs:documentation>Nome do município</xs:documentation>
 				</xs:annotation>
 				<xs:simpleType>
 					<xs:restriction base="TString">
@@ -4821,9 +4849,9 @@ Campo de uso da SEFAZ para enviar mensagem de interesse da SEFAZ para o emissor.
 					<xs:documentation>Sigla da UF</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="CEP" minOccurs="0">
+			<xs:element name="CEP">
 				<xs:annotation>
-					<xs:documentation>CEP</xs:documentation>
+					<xs:documentation>CEP - NT 2011/004</xs:documentation>
 				</xs:annotation>
 				<xs:simpleType>
 					<xs:restriction base="xs:string">
@@ -4957,14 +4985,12 @@ Campo de uso da SEFAZ para enviar mensagem de interesse da SEFAZ para o emissor.
 		<xs:sequence>
 			<xs:element name="placa">
 				<xs:annotation>
-					<xs:documentation>Placa do veículo</xs:documentation>
+					<xs:documentation>Placa do veículo (NT2011/004)</xs:documentation>
 				</xs:annotation>
 				<xs:simpleType>
 					<xs:restriction base="xs:string">
-						<xs:minLength value="1"/>
-						<xs:maxLength value="8"/>
 						<xs:whiteSpace value="preserve"/>
-						<xs:pattern value="[A-Z0-9]+"/>
+						<xs:pattern value="[A-Z]{3}[0-9]{4}"/>
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
@@ -5007,6 +5033,7 @@ Campo de uso da SEFAZ para enviar mensagem de interesse da SEFAZ para o emissor.
 			<xs:enumeration value="1124"/>
 			<xs:enumeration value="1125"/>
 			<xs:enumeration value="1126"/>
+			<xs:enumeration value="1128"/>
 			<xs:enumeration value="1151"/>
 			<xs:enumeration value="1152"/>
 			<xs:enumeration value="1153"/>
@@ -5123,6 +5150,7 @@ Campo de uso da SEFAZ para enviar mensagem de interesse da SEFAZ para o emissor.
 			<xs:enumeration value="2124"/>
 			<xs:enumeration value="2125"/>
 			<xs:enumeration value="2126"/>
+			<xs:enumeration value="2128"/>
 			<xs:enumeration value="2151"/>
 			<xs:enumeration value="2152"/>
 			<xs:enumeration value="2153"/>
@@ -5222,6 +5250,7 @@ Campo de uso da SEFAZ para enviar mensagem de interesse da SEFAZ para o emissor.
 			<xs:enumeration value="3102"/>
 			<xs:enumeration value="3126"/>
 			<xs:enumeration value="3127"/>
+			<xs:enumeration value="3128"/>
 			<xs:enumeration value="3201"/>
 			<xs:enumeration value="3202"/>
 			<xs:enumeration value="3205"/>
@@ -5513,7 +5542,9 @@ Campo de uso da SEFAZ para enviar mensagem de interesse da SEFAZ para o emissor.
 	</xs:simpleType>
 	<xs:simpleType name="TCfopTransp">
 		<xs:annotation>
-			<xs:documentation>Tipo CFOP - Transportes - uso exclusivo na retenção - 31/05/2010</xs:documentation>
+			<xs:documentation>Tipo CFOP - Transportes - uso exclusivo na retenção - 31/05/2010
+			Acrescimo dos CFOP de 5931/5932/6931/6932 no CFOP de retTransp
+</xs:documentation>
 		</xs:annotation>
 		<xs:restriction base="xs:string">
 			<xs:whiteSpace value="preserve"/>
@@ -5526,6 +5557,8 @@ Campo de uso da SEFAZ para enviar mensagem de interesse da SEFAZ para o emissor.
 			<xs:enumeration value="5357"/>
 			<xs:enumeration value="5359"/>
 			<xs:enumeration value="5360"/>
+			<xs:enumeration value="5931"/>
+			<xs:enumeration value="5932"/>
 			<xs:enumeration value="6351"/>
 			<xs:enumeration value="6352"/>
 			<xs:enumeration value="6353"/>
@@ -5535,6 +5568,8 @@ Campo de uso da SEFAZ para enviar mensagem de interesse da SEFAZ para o emissor.
 			<xs:enumeration value="6357"/>
 			<xs:enumeration value="6359"/>
 			<xs:enumeration value="6360"/>
+			<xs:enumeration value="6931"/>
+			<xs:enumeration value="6932"/>
 			<xs:enumeration value="7358"/>
 		</xs:restriction>
 	</xs:simpleType>

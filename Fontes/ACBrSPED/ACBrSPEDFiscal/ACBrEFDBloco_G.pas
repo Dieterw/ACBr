@@ -161,8 +161,8 @@ type
   //  Por: Edilson Alves de oliveira
   TRegistroG126 = class
   private
-//    FDT_INI       : TDateTime;
-//    FDT_FIM       : TDateTime;
+    FDT_INI       : TDateTime;
+    FDT_FIM       : TDateTime;
     FNUM_PARC     : Integer;
     FVL_PARC_PASS : Currency;
     FVL_TRIB_OC   : Currency;
@@ -170,8 +170,8 @@ type
     FIND_PER_SAI  : Double;
     FVL_PARC_APROP: Currency;
   public
-//    property DT_INI: TDateTime        read fDT_INI        write fDT_INI;
-//    property DT_FIM: TDateTime        read FDT_FIM        write FDT_FIM;
+    property DT_INI: TDateTime        read fDT_INI        write fDT_INI;
+    property DT_FIM: TDateTime        read FDT_FIM        write FDT_FIM;
     property NUM_PARC: Integer        read FNUM_PARC      write FNUM_PARC;
     property VL_PARC_PASS: Currency   read FVL_PARC_PASS  write FVL_PARC_PASS;
     property VL_TRIB_OC: Currency     read FVL_TRIB_OC    write FVL_TRIB_OC;

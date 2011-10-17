@@ -132,7 +132,7 @@ begin
   HTTP.ProxyPort := Self.ProxyPort;
   HTTP.ProxyUser := Self.ProxyUser;
   HTTP.ProxyPass := Self.ProxyPass;
-  HTTP.MimeType  := 'application/soap+xml; charset=utf-8'
+  HTTP.MimeType  := 'application/soap+xml; charset=utf-8';
   HTTP.UserAgent := EmptyStr;
   HTTP.Protocol  := '1.1' ;
   HTTP.AddPortNumberToHost := False;

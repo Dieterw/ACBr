@@ -48,7 +48,7 @@ unit ACBrSocket;
 interface
 
 uses SysUtils, Classes,
-     blcksock, synsock, httpsend,  {Units da Synapse}
+     blcksock, synsock, httpsend, ssl_openssl,  {Units da Synapse}
      {$IFDEF MSWINDOWS} windows, wininet, {$ENDIF}  { Units para a auto-detecção de Proxy }
      ACBrBase ;
 
@@ -191,6 +191,7 @@ TACBrHTTP = class( TACBrComponent )
 
     function AjustaParam(AParam : String) : String ;
     procedure HTTPGet( AURL : String) ; virtual ;
+    Procedure HTTPPost( AURL : String ) ; virtual ;
     function GetHeaderValue( AValue : String ) : String ;
 
     procedure LerConfiguracoesProxy; 
@@ -629,6 +630,64 @@ begin
        OnAntesAbrirHTTP( AURL ) ;
 
     OK := HTTPSend.HTTPMethod('GET', AURL) and (HTTPSend.ResultCode = 200);
+    RespHTTP.LoadFromStream( HTTPSend.Document ) ;
+
+    // Verifica se a Resposta está em ANSI //
+    {$IFDEF UNICODE}
+     CT := LowerCase( GetHeaderValue('Content-Type:') );
+
+     if pos('utf-8', CT) = 0 then     // Resposta em ISO (ansi) ?
+        RespHTTP.Text := ACBrStr( RespHTTP.Text ) ;
+    {$ENDIF}
+
+
+    // DEBUG //
+    // WriteToTXT( '/tmp/HTTP.txt', RespHTTP.Text );
+    // WriteToTXT( '/tmp/HeaderRESP.txt', HTTPSend.Headers.Text );
+
+    if not OK then
+       raise EACBrHTTPError.Create( 'Erro HTTP: '+IntToStr(HTTPSend.ResultCode)+' '+
+                                     HTTPSend.ResultString + sLineBreak +
+                                     'URL: '+AURL + sLineBreak + sLineBreak +
+                                     'Resposta HTTP:' + sLineBreak +
+                                     AjustaLinhas( RespHTTP.Text, 80, 20) ) ;
+  finally
+    {$IFNDEF CONSOLE}
+     Screen.Cursor := OldCursor;
+    {$ENDIF}
+  end;
+end ;
+
+Procedure TACBrHTTP.HTTPPost( AURL : String ) ;
+var
+  OK : Boolean ;
+  {$IFNDEF CONSOLE}
+   OldCursor : TCursor ;
+  {$ENDIF}
+  {$IFDEF UNICODE}
+   CT : String ;
+  {$ENDIF}
+begin
+  {$IFNDEF CONSOLE}
+   OldCursor := Screen.Cursor ;
+   Screen.Cursor := crHourGlass;
+  {$ENDIF}
+  try
+    RespHTTP.Clear;
+    //HTTPSend.Clear;
+
+    // DEBUG //
+    // WriteToTXT( '/tmp/HTTP.txt', 'URL: '+AURL );
+
+    {$IFDEF UNICODE}
+     HTTPSend.Headers.Add('Accept-Charset: utf-8;q=*;q=0.7') ;
+    {$ENDIF}
+
+    if Assigned( OnAntesAbrirHTTP ) then
+       OnAntesAbrirHTTP( AURL ) ;
+
+    HTTPSend.HTTPMethod('POST', AURL);
+    OK := HTTPSend.ResultCode = 200;
     RespHTTP.LoadFromStream( HTTPSend.Document ) ;
 
     // Verifica se a Resposta está em ANSI //

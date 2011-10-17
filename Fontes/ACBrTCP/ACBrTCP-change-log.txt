@@ -37,6 +37,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+17/10/2011
+-- ACBrSocket --
+[+] Adicionado método post no TACBrHTTP.
+    por: Régys Silveira.
+
 13/10/2011
 -- ACBrSuframa --
 [+] Adicionado componente ACBrSuframa para consumir o webservice do suframa.

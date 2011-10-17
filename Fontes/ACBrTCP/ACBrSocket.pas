@@ -177,6 +177,7 @@ TACBrHTTP = class( TACBrComponent )
     fHTTPSend : THTTPSend ;
     fOnAntesAbrirHTTP : TACBrOnAntesAbrirHTTP ;
     fRespHTTP   : TStringList ;
+    FParseText: Boolean;
     function GetProxyHost : string ;
     function GetProxyPass : string ;
     function GetProxyPort : string ;
@@ -203,6 +204,7 @@ TACBrHTTP = class( TACBrComponent )
     property ProxyPort : string read GetProxyPort write SetProxyPort ;
     property ProxyUser : string read GetProxyUser write SetProxyUser ;
     property ProxyPass : string read GetProxyPass write SetProxyPass ;
+    property ParseText : Boolean read FParseText write FParseText default False;
 
     property OnAntesAbrirHTTP : TACBrOnAntesAbrirHTTP
        read fOnAntesAbrirHTTP write fOnAntesAbrirHTTP ;
@@ -245,6 +247,7 @@ begin
 
      while (fErroBind = 0) do
      begin
+
         if Terminated or (not Assigned(fsSock)) then
            break ;
 
@@ -632,6 +635,9 @@ begin
     OK := HTTPSend.HTTPMethod('GET', AURL) and (HTTPSend.ResultCode = 200);
     RespHTTP.LoadFromStream( HTTPSend.Document ) ;
 
+    if ParseText then
+      RespHTTP.Text := ACBrUtil.ParseText( RespHTTP.Text ) ;
+
     // Verifica se a Resposta está em ANSI //
     {$IFDEF UNICODE}
      CT := LowerCase( GetHeaderValue('Content-Type:') );
@@ -689,6 +695,9 @@ begin
     HTTPSend.HTTPMethod('POST', AURL);
     OK := HTTPSend.ResultCode = 200;
     RespHTTP.LoadFromStream( HTTPSend.Document ) ;
+
+    if ParseText then
+      RespHTTP.Text := ACBrUtil.ParseText( RespHTTP.Text ) ;
 
     // Verifica se a Resposta está em ANSI //
     {$IFDEF UNICODE}

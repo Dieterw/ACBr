@@ -47,75 +47,56 @@ unit ACBrSuframa;
 interface
 
 uses
-  Classes, SysUtils, contnrs, ACBrUtil, ACBrSocket, ACBrValidador
-  {$IFDEF ACBrNFeOpenSSL}
-    , HTTPSend
-  {$ELSE}
-    , SoapHTTPClient, SOAPHTTPTrans, SOAPConst, JwaWinCrypt, WinInet
-  {$ENDIF}
-  ;
+  Classes, SysUtils, contnrs, ACBrUtil, ACBrSocket, ACBrValidador;
 
 type
   EACBrSuframa = class( Exception );
 
+  TACBrSuframaSituacao = class
+  private
+    FCodigo: Integer;
+    function GetDescricao: string;
+  public
+    constructor Create;
+    procedure Clear;
+  //published
+    property Codigo: Integer read FCodigo write FCodigo;
+    property Descricao: string read GetDescricao;
+  end;
+
   TACBrSuframa = class( TACBrHTTP )
   private
     fOnBuscaEfetuada: TNotifyEvent ;
-    FCNPJ: AnsiString;
-    FSuframa: AnsiString;
-    FRespostaWS: AnsiString;
-    FSituacao: Integer;
-    FSituacaoDescr: string;
-
-    {$IFDEF ACBrNFeOpenSSL}
-       procedure ConfiguraHTTP( HTTP : THTTPSend; Action : AnsiString);
-    {$ELSE}
-       procedure ConfiguraReqResp( ReqResp : THTTPReqResp);
-       procedure OnBeforePost(const HTTPReqResp: THTTPReqResp; Data: Pointer);
-    {$ENDIF}
-
-    function SituacaoToStr(const ASituacao: Integer): String;
-    function GetParametrosConsulta: String;
-    function Executar: Boolean;
+    FSituacao: TACBrSuframaSituacao;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy ; override;
-    procedure Validar;
+    procedure ConsultarSituacao(const ASuframa, ACnpj: AnsiString);
   published
-    property CNPJ: AnsiString read FCNPJ write FCNPJ;
-    property Suframa: AnsiString read FSuframa write FSuframa;
-    property RespostaWS: AnsiString read FRespostaWS;
-    property Situacao: Integer read FSituacao;
-    property SituacaoDescr: string read FSituacaoDescr;
-
+    property Situacao: TACBrSuframaSituacao read FSituacao;
     property OnBuscaEfetuada: TNotifyEvent read fOnBuscaEfetuada write fOnBuscaEfetuada;
   end;
 
 implementation
 
-{ TACBrSuframa }
+const
+  URL_WEBSERVICE = 'https://servicos.suframa.gov.br/cadastroWS/services/CadastroWebService';
 
-constructor TACBrSuframa.Create(AOwner: TComponent);
+{ TACBrSuframaSituacao }
+
+procedure TACBrSuframaSituacao.Clear;
 begin
-  inherited;
-
-  FCNPJ := '';
-  FSuframa := '';
-  FRespostaWS := '';
-  FSituacao := 0;
-  FSituacaoDescr := '';
-  fOnBuscaEfetuada := nil;
+  FCodigo := 0;
 end;
 
-destructor TACBrSuframa.Destroy;
+constructor TACBrSuframaSituacao.Create;
 begin
-  //
-  inherited;
+  Self.Clear;
 end;
 
-function TACBrSuframa.SituacaoToStr(const ASituacao: Integer): String;
+function TACBrSuframaSituacao.GetDescricao: string;
 begin
-  case ASituacao of
+  case FCodigo of
     0: Result := 'Ocorreu erro na conexão com o webservice';
     1: Result := 'Empresa não habilitada';
     2: Result := 'Empresa habilitada';
@@ -125,98 +106,63 @@ begin
   end;
 end;
 
-{$IFDEF ACBrNFeOpenSSL}
-procedure TACBrSuframa.ConfiguraHTTP( HTTP : THTTPSend; Action : AnsiString);
-begin
-  HTTP.ProxyHost := Self.ProxyHost;
-  HTTP.ProxyPort := Self.ProxyPort;
-  HTTP.ProxyUser := Self.ProxyUser;
-  HTTP.ProxyPass := Self.ProxyPass;
-  HTTP.MimeType  := 'application/soap+xml; charset=utf-8';
-  HTTP.UserAgent := EmptyStr;
-  HTTP.Protocol  := '1.1' ;
-  HTTP.AddPortNumberToHost := False;
-  HTTP.Headers.Add(Action);
-end;
-{$ELSE}
-procedure TACBrSuframa.ConfiguraReqResp( ReqResp : THTTPReqResp);
-begin
-  if Trim(Self.ProxyHost) <> EmptyStr then
-  begin
-    ReqResp.Proxy    := Self.ProxyHost + ':' + Self.ProxyPort;
-    ReqResp.UserName := Self.ProxyUser;
-    ReqResp.Password := Self.ProxyPass;
-  end;
+{ TACBrSuframa }
 
-  ReqResp.OnBeforePost := OnBeforePost;
+constructor TACBrSuframa.Create(AOwner: TComponent);
+begin
+  inherited;
+
+  FSituacao := TACBrSuframaSituacao.Create;
+  fOnBuscaEfetuada := nil;
+  Self.ParseText := True;
 end;
 
-procedure TACBrSuframa.OnBeforePost(const HTTPReqResp: THTTPReqResp; Data: Pointer);
-var
-  ContentHeader: string;
+destructor TACBrSuframa.Destroy;
 begin
-  if Trim(Self.ProxyUser) <> EmptyStr then
-  begin
-    if not InternetSetOption(Data, INTERNET_OPTION_PROXY_USERNAME, PChar(Self.ProxyUser), Length(Self.ProxyUser)) then
-      raise EACBrSuframa.Create( 'Erro OnBeforePost: ' + IntToStr(GetLastError) );
-  end;
-
-  if Trim(Self.ProxyPass) <> EmptyStr then
-  begin
-    if not InternetSetOption(Data, INTERNET_OPTION_PROXY_PASSWORD, PChar(Self.ProxyPass),Length (Self.ProxyPass)) then
-      raise EACBrSuframa.Create( 'Erro OnBeforePost: ' + IntToStr(GetLastError) );
-  end;
-
-  ContentHeader := Format(ContentTypeTemplate, ['application/soap+xml; charset=utf-8']);
-  HttpAddRequestHeaders(Data, PChar(ContentHeader), Length(ContentHeader), HTTP_ADDREQ_FLAG_REPLACE);
-  HTTPReqResp.CheckContentType;
-end;
-{$ENDIF}
-
-function TACBrSuframa.GetParametrosConsulta: String;
-begin
-  if FCNPJ = '' then
-  begin
-    Result :=
-      '<con:consultarSituacaoInscsuf soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">' +
-        '<inscsuf>' + ACBrUtil.OnlyNumber( FSuframa ) + '</inscsuf>' +
-      '</con:consultarSituacaoInscsuf>';
-  end
-  else
-  begin
-    Result :=
-      '<con:consultarSituacaoInscCnpj soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">' +
-        '<cnpj>' + ACBrUtil.OnlyNumber( FCNPJ ) + '</cnpj>' +
-        '<inscsuf>' + ACBrUtil.OnlyNumber( FSuframa ) + '</inscsuf>' +
-      '</con:consultarSituacaoInscCnpj>';
-  end;
+  FSituacao.Free;
+  inherited;
 end;
 
-function TACBrSuframa.Executar: Boolean;
-const
-  URL = 'https://servicos.suframa.gov.br/cadastroWS/services/CadastroWebService';
+procedure TACBrSuframa.ConsultarSituacao(const ASuframa, ACnpj: AnsiString);
 var
   Acao: TStringList;
+  ParametrosConsulta: String;
   Stream: TMemoryStream;
-  StrStream: TStringStream;
   ErroCodigo, ErroMsg: String;
-  Resposta: String;
-
-  {$IFDEF ACBrNFeOpenSSL}
-    HTTP: THTTPSend;
-  {$ELSE}
-    ReqResp: THTTPReqResp;
-  {$ENDIF}
+  Retorno: String;
 begin
-  Result := False;
-  FRespostaWS := '';
-  FSituacao := 0;
-  FSituacaoDescr := '';
+  FSituacao.Clear;
+
+  ErroMsg := ACBrValidadorValidarSuframa( AnsiString( ACBrUtil.OnlyNumber( ASuframa ) ) );
+  if ErroMsg <> '' then
+    raise EACBrSuframa.Create( 'Erro de validação: ' + sLineBreak + String( ErroMsg ) );
+
+  if ACnpj <> '' then
+  begin
+    ErroMsg := ACBrValidadorValidarCNPJ( ACNPJ );
+    if ErroMsg <> '' then
+      raise EACBrSuframa.Create( 'Erro de validação: ' + sLineBreak + String( ErroMsg ) );
+  end;
 
   Acao := TStringList.Create;
   Stream := TMemoryStream.Create;
-  StrStream := TStringStream.Create(EmptyStr);
   try
+    if ACNPJ = '' then
+    begin
+      ParametrosConsulta :=
+        '<con:consultarSituacaoInscsuf soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">' +
+          '<inscsuf>' + ACBrUtil.OnlyNumber( ASuframa ) + '</inscsuf>' +
+        '</con:consultarSituacaoInscsuf>';
+    end
+    else
+    begin
+      ParametrosConsulta :=
+        '<con:consultarSituacaoInscCnpj soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">' +
+          '<cnpj>' + ACBrUtil.OnlyNumber( ACNPJ ) + '</cnpj>' +
+          '<inscsuf>' + ACBrUtil.OnlyNumber( ASuframa ) + '</inscsuf>' +
+        '</con:consultarSituacaoInscCnpj>';
+    end;
+
     Acao.Text :=
       '<?xml version="1.0" encoding="utf-8"?>' +
       '<soapenv:Envelope ' +
@@ -225,68 +171,42 @@ begin
         'xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" ' +
         'xmlns:con="http://consultas.ws.cadastro.fucapi.br">' +
         '<soapenv:Header/>' +
-        '<soapenv:Body>' +
-          GetParametrosConsulta +
-        '</soapenv:Body>' +
-      '</soapenv:Envelope>';
+        '<soapenv:Body>' + ParametrosConsulta + '</soapenv:Body>' +
+      '</soapenv:Envelope/>';
 
     try
-      {$IFDEF ACBrNFeOpenSSL}
-        HTTP := THTTPSend.Create;
-      {$ELSE}
-        ReqResp := THTTPReqResp.Create(nil);
-      {$ENDIF}
-      try
-        {$IFDEF ACBrNFeOpenSSL}
-          Acao.SaveToStream(Stream);
-          HTTP.Document.LoadFromStream(Stream);
-          ConfiguraHTTP(HTTP,'SOAPAction: "' + URL + '"');
+      Acao.SaveToStream(Stream);
 
-          HTTP.HTTPMethod('POST', URL);
-          StrStream.CopyFrom(HTTP.Document, 0);
-          FRespostaWS := ParseText( StrStream.DataString );
-        {$ELSE}
-          ConfiguraReqResp(ReqResp);
-          ReqResp.UseUTF8InHeader := True;
-          ReqResp.URL := URL;
-          ReqResp.SoapAction := URL;
+      Self.HTTPSend.Clear;
+      Self.HTTPSend.Document.LoadFromStream(Stream);
+      Self.HTTPSend.Headers.Add( 'SOAPAction: "' + URL_WEBSERVICE + '"' );
+      Self.HTTPPost(URL_WEBSERVICE);
 
-          ReqResp.Execute(Acao.Text, Stream);
-          StrStream.CopyFrom(Stream, 0);
-          FRespostaWS := ParseText( AnsiString( StrStream.DataString ) );
-        {$ENDIF}
+      if ACNPJ <> '' then
+        Retorno := String(SeparaDados(AnsiString(RespHTTP.Text), 'ns1:consultarSituacaoInscCnpjReturn'))
+      else
+        Retorno := String(SeparaDados(AnsiString(RespHTTP.Text), 'ns1:consultarSituacaoInscsufReturn'));
 
-        if FCNPJ <> '' then
-          Resposta := String(SeparaDados(FRespostaWS, 'ns1:consultarSituacaoInscCnpjReturn'))
-        else
-          Resposta := String(SeparaDados(FRespostaWS, 'ns1:consultarSituacaoInscsufReturn'));
-
-        if Resposta <> '' then
+      if Retorno <> '' then
+        FSituacao.Codigo := StrToInt(Retorno)
+      else
+      begin
+        ErroCodigo := String( SeparaDados(AnsiString(RespHTTP.Text), 'faultcode') );
+        if ErroCodigo <> EmptyStr then
         begin
-          FSituacao      := StrToInt(Resposta);
-          FSituacaoDescr := SituacaoToStr(FSituacao);
-        end
-        else
-        begin
-          ErroCodigo := String( SeparaDados(FRespostaWS, 'faultcode') );
-          if ErroCodigo <> EmptyStr then
-          begin
-            ErroMsg := String( SeparaDados(FRespostaWS, 'faultstring') );
-            raise EACBrSuframa.Create(ErroCodigo + sLineBreak + '  - ' + ErroMsg);
-          end;
+          ErroMsg := String( SeparaDados(AnsiString(RespHTTP.Text), 'faultstring') );
+          raise EACBrSuframa.Create(ErroCodigo + sLineBreak + '  - ' + ErroMsg);
         end;
 
-        Result := True;
-
-        if Assigned(fOnBuscaEfetuada) then
-          OnBuscaEfetuada( Self );
-      finally
-        {$IFDEF ACBrNFeOpenSSL}
-          HTTP.Free;
-        {$ELSE}
-          ReqResp.Free;
-        {$ENDIF}
+        if SameText(String(RespHTTP), Acao.Text) then
+        begin
+          RespHTTP.Clear;
+          raise EACBrSuframa.Create('Resposta do webservice não foi recebida.');
+        end;
       end;
+
+      if Assigned(fOnBuscaEfetuada) then
+        OnBuscaEfetuada( Self );
     except
       on E: Exception do
       begin
@@ -297,28 +217,9 @@ begin
       end;
     end;
   finally
-    StrStream.Free;
     Stream.Free;
     Acao.Free;
   end;
-end;
-
-procedure TACBrSuframa.Validar;
-var
-  MsgErro: String;
-begin
-  MsgErro := ACBrValidadorValidarSuframa( AnsiString( ACBrUtil.OnlyNumber( FSuframa ) ) );
-  if MsgErro <> '' then
-    raise EACBrSuframa.Create( 'Erro de validação: ' + sLineBreak + String( MsgErro ) );
-
-  if FCNPJ <> '' then
-  begin
-    MsgErro := ACBrValidadorValidarCNPJ( FCNPJ );
-    if MsgErro <> '' then
-      raise EACBrSuframa.Create( 'Erro de validação: ' + sLineBreak + String( MsgErro ) );
-  end;
-
-  Self.Executar;
 end;
 
 end.

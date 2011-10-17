@@ -40,6 +40,11 @@ Símbolo : Significado
 17/10/2011
 -- ACBrSocket --
 [+] Adicionado método post no TACBrHTTP.
+[+] Adicionada propriedade para controle de fazer o parse do retorno ou não
+    no TACBrHTTP.
+    por: Régys Silveira.
+-- ACBrSuframa --
+[+] Alterado ACBrSuframa para utilizar somente o OpenSSL para requisição.
     por: Régys Silveira.
 
 13/10/2011

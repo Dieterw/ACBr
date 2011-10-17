@@ -38,31 +38,37 @@ begin
 end;
 
 procedure TfrmPrincipal.btnConsultarClick(Sender: TObject);
-begin
-  ACBrSuframa1.Suframa := AnsiString(edtSuframa.Text);
-  ACBrSuframa1.CNPJ    := AnsiString(edtCnpj.Text);
 
+  procedure AddXMLResposta;
+  begin
+    if ACBrSuframa1.RespHTTP.Text <> '' then
+    begin
+      memResposta.Lines.Add('');
+      memResposta.Lines.Add('XML Resposta:');
+      memResposta.Lines.Add(StringOfChar('-', 30));
+      memResposta.Lines.Add(ACBrSuframa1.RespHTTP.Text);
+    end;
+  end;
+
+begin
   try
-    ACBrSuframa1.Validar;
+    ACBrSuframa1.ConsultarSituacao(
+      AnsiString(edtSuframa.Text),
+      AnsiString(edtCnpj.Text)
+    );
 
     memResposta.Clear;
     memResposta.Lines.Add('Situação:');
     memResposta.Lines.Add(StringOfChar('-', 30));
-    memResposta.Lines.Add(Format('%d - %s', [ACBrSuframa1.Situacao, ACBrSuframa1.SituacaoDescr]));
-    memResposta.Lines.Add('');
-    memResposta.Lines.Add('XML Resposta:');
-    memResposta.Lines.Add(StringOfChar('-', 30));
-    memResposta.Lines.Add(StringReplace(String(ACBrSuframa1.RespostaWS), #10, sLineBreak, [rfReplaceAll]));
+    memResposta.Lines.Add(Format('%d - %s', [ACBrSuframa1.Situacao.Codigo, ACBrSuframa1.Situacao.Descricao]));
+    AddXMLResposta;
   except
     on E: Exception do
     begin
       memResposta.Clear;
       memResposta.Lines.Add('ERRO:');
       memResposta.Lines.Add(E.Message);
-      memResposta.Lines.Add('');
-      memResposta.Lines.Add('XML Resposta:');
-      memResposta.Lines.Add(StringOfChar('-', 30));
-      memResposta.Lines.Add(StringReplace(String(ACBrSuframa1.RespostaWS), #10, sLineBreak, [rfReplaceAll]));
+      AddXMLResposta;
     end;
   end;
 end;

@@ -177,7 +177,7 @@ const
   CTeconsSitCTe   = '1.03';
   CTecancCTe      = '1.03';
   CTeinutCTe      = '1.03';
-  CTeconsCad      = '1.01';        // Incluido por Italo em 18/03/2011
+  CTeconsCad      = '2.00';  // Alterado por Italo em 17/10/2011
   //CTeEnvDPEC      = '1.01';
   //CTeConsDPEC     = '1.01';
 {$ENDIF}
@@ -191,7 +191,7 @@ const
   CTeconsSitCTe   = '1.04';
   CTecancCTe      = '1.04';
   CTeinutCTe      = '1.04';
-  CTeconsCad      = '1.01';
+  CTeconsCad      = '2.00';  // Alterado por Italo em 17/10/2011
   //CTeEnvDPEC      = '1.01';
   //CTeConsDPEC     = '1.01';
 {$ENDIF}

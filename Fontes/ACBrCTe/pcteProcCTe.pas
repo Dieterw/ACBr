@@ -134,7 +134,6 @@ var
   i : Integer;
   ProtLido : Boolean; // Protocolo lido do Arquivo
 begin
-  Result := False;
   ProtLido := False;
 
 //  if retornarVersaoLayout(FSchema, tlProcCTe) = '1.03'

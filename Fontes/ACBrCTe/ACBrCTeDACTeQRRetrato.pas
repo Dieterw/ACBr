@@ -205,7 +205,7 @@ type
     qrlPaisToma: TQRLabel;
     qrlMunToma: TQRLabel;
     qrb_10_ModRodFracionado: TQRChildBand;
-    qrb_11_ModRodLotacao: TQRChildBand;
+    qrb_11_ModRodLot103: TQRChildBand;
     QRLabel10: TQRLabel;
     QRShape1: TQRShape;
     qrmObs: TQRMemo;
@@ -498,6 +498,42 @@ type
     qrlCIOT: TQRLabel;
     qrsCIOT: TQRShape;
     qrmObsFisco: TQRMemo;
+    qrb_11_ModRodLot104: TQRChildBand;
+    QRShape4: TQRShape;
+    QRShape30: TQRShape;
+    QRShape83: TQRShape;
+    QRShape84: TQRShape;
+    QRShape85: TQRShape;
+    QRShape86: TQRShape;
+    QRShape87: TQRShape;
+    QRShape88: TQRShape;
+    QRShape89: TQRShape;
+    QRShape90: TQRShape;
+    QRShape92: TQRShape;
+    QRLabel167: TQRLabel;
+    QRLabel169: TQRLabel;
+    QRLabel170: TQRLabel;
+    QRLabel171: TQRLabel;
+    QRLabel172: TQRLabel;
+    QRLabel173: TQRLabel;
+    QRLabel174: TQRLabel;
+    QRLabel177: TQRLabel;
+    QRLabel178: TQRLabel;
+    QRLabel179: TQRLabel;
+    QRLabel181: TQRLabel;
+    QRLabel182: TQRLabel;
+    QRLabel183: TQRLabel;
+    qrmUF2: TQRMemo;
+    qrmTipo2: TQRMemo;
+    qrmRNTRC2: TQRMemo;
+    qrmPlaca2: TQRMemo;
+    qrmCNPJForn: TQRMemo;
+    qrmNumCompra: TQRMemo;
+    qrlValorTotal2: TQRLabel;
+    qrlResponsavel2: TQRLabel;
+    qrlNomeMotorista2: TQRLabel;
+    qrlLacres2: TQRLabel;
+    qrlCPFMotorista2: TQRLabel;
     procedure QRCTeBeforePrint(Sender: TCustomQuickRep; var PrintReport: Boolean);
     procedure qrb_01_ReciboBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
     procedure qrb_02_CabecalhoBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
@@ -516,7 +552,7 @@ type
       BandPrinted: Boolean);
     procedure qrb_09_ObsBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
     procedure qrb_10_ModRodFracionadoBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
-    procedure qrb_11_ModRodLotacaoBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
+    procedure qrb_11_ModRodLot103BeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
     procedure qrb_17_SistemaBeforePrint(Sender: TQRCustomBand;
       var PrintBand: Boolean);
     procedure qrb_16_DadosExcEmitenteBeforePrint(Sender: TQRCustomBand;
@@ -530,6 +566,8 @@ type
     procedure qrb_15_ModDutoviarioBeforePrint(Sender: TQRCustomBand;
       var PrintBand: Boolean);
     procedure qrb_01_Recibo_AereoBeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure qrb_11_ModRodLot104BeforePrint(Sender: TQRCustomBand;
       var PrintBand: Boolean);
   private
     FTotalPages: integer;
@@ -553,6 +591,7 @@ var
   FProtocoloCTe : string;
   nItemControle : Integer;
   Fracionado    : Integer;
+  Versao        : Integer;
 
 procedure TfrmDACTeQRRetrato.Itens;
 var
@@ -739,6 +778,14 @@ var
   nRestItens, nTotalItens : Integer;
 begin
   inherited;
+
+{$IFDEF PL_103}
+  Versao := 103;
+{$ENDIF}
+{$IFDEF PL_104}
+  Versao := 104;
+{$ENDIF}
+
   Itens;
   nItemControle := 0;
   FTotalPages   := 1;
@@ -758,7 +805,8 @@ begin
 
   // Incluido por Italo em 06/05/2011
   qrb_10_ModRodFracionado.Height := 0;
-  qrb_11_ModRodLotacao.Height    := 0;
+  qrb_11_ModRodLot103.Height     := 0;
+  qrb_11_ModRodLot104.Height     := 0;
   qrb_12_ModAereo.Height         := 0;
   qrb_13_ModAquaviario.Height    := 0;
   qrb_14_ModFerroviario.Height   := 0;
@@ -770,13 +818,14 @@ begin
                   if FCTe.Rodo.Lota = ltNao
                    then begin
                     qrb_10_ModRodFracionado.Height := 44;
-                    //    qrb_11_ModRodLotacao.Height    := 0;
                     Fracionado                     := 10
                    end
                    else begin
                     qrb_10_ModRodFracionado.Height := 44;
-                    qrb_11_ModRodLotacao.Height    := 108;
                     Fracionado                     := 0;
+                    if Versao = 103
+                     then qrb_11_ModRodLot103.Height := 108
+                     else qrb_11_ModRodLot104.Height := 108;
                    end;
                  end;
    mdAereo: begin
@@ -1537,7 +1586,8 @@ begin
   qrb_10_ModRodFracionado.Enabled := (FCTe.Ide.tpCTe = tcNormal) and (FCTe.Ide.modal = mdRodoviario);
 
   // Incluido / Alterado por Italo em 29/12/2010
-  qrb_11_ModRodLotacao.Enabled := False;
+  qrb_11_ModRodLot103.Enabled := False;
+  qrb_11_ModRodLot104.Enabled := False;
 
   with FCTe.Rodo do
   begin
@@ -1560,12 +1610,14 @@ begin
       ltNao: begin
               qrlTituloLotacao.Caption     := 'DADOS ESPECÍFICOS DO MODAL RODOVIÁRIO - CARGA FRACIONADA';
               qrlLotacao.Caption           := 'NÃO';
-              qrb_11_ModRodLotacao.Enabled := False;
+//              qrb_11_ModRodLot103.Enabled := False;
              end;
       ltsim: begin
               qrlTituloLotacao.Caption     := 'DADOS ESPECÍFICOS DO MODAL RODOVIÁRIO - LOTAÇÃO';
               qrlLotacao.Caption           := 'SIM';
-              qrb_11_ModRodLotacao.Enabled := True;
+              if Versao = 103
+               then qrb_11_ModRodLot103.Enabled := True
+               else qrb_11_ModRodLot104.Enabled := True;
              end;
     end;
 
@@ -1573,7 +1625,7 @@ begin
   end;
 end;
 
-procedure TfrmDACTeQRRetrato.qrb_11_ModRodLotacaoBeforePrint(
+procedure TfrmDACTeQRRetrato.qrb_11_ModRodLot103BeforePrint(
   Sender: TQRCustomBand; var PrintBand: Boolean);
 var
   i: integer;
@@ -1638,6 +1690,64 @@ begin
   for i := 0 to FCTe.Rodo.Lacres.Count - 1 do
   begin
    qrlLacres.Caption := qrlLacres.Caption + FCTe.Rodo.Lacres.Items[i].nLacre + '/';
+  end;
+end;
+
+procedure TfrmDACTeQRRetrato.qrb_11_ModRodLot104BeforePrint(
+  Sender: TQRCustomBand; var PrintBand: Boolean);
+var
+ i: Integer;
+begin
+  inherited;
+
+  // Incluido por Italo em 18/10/2011
+  PrintBand := QRCTe.PageNumber = 1;
+
+  qrmTipo2.Lines.Clear;
+  qrmPlaca2.Lines.Clear;
+  qrmUF2.Lines.Clear;
+  qrmRNTRC2.Lines.Clear;
+
+  for i:= 0 to FCTe.Rodo.veic.Count - 1 do
+  begin
+   if TpPropriedadeToStr(FCTe.Rodo.veic.Items[i].tpProp) = 'P'
+    then qrmTipo2.Lines.Add('Próprio')
+    else qrmTipo2.Lines.Add('Terceiro');
+   qrmPlaca2.Lines.Add(FCTe.Rodo.veic.Items[i].placa);
+   qrmUF2.Lines.Add(FCTe.Rodo.veic.Items[i].UF);
+   qrmRNTRC2.Lines.Add(FCTe.Rodo.veic.Items[i].Prop.RNTRC);
+  end;
+
+  qrlResponsavel2.Caption := '';
+  qrlValorTotal2.Caption  := '';
+  qrmCNPJForn.Lines.Clear;
+  qrmNumCompra.Lines.Clear;
+
+{$IFDEF PL_104}
+  for i := 0 to FCTe.Rodo.valePed.Count -1 do
+  begin
+   if i = 0
+    then begin
+     qrlResponsavel2.Caption := FCTe.Rodo.valePed.Items[i].CNPJPg;
+     qrlValorTotal2.Caption := '';
+    end;
+   qrmCNPJForn.Lines.Add(FCTe.Rodo.valePed.Items[i].CNPJForn);
+   qrmNumCompra.Lines.Add(FCTe.Rodo.valePed.Items[i].nCompra);
+  end;
+{$ENDIF}
+
+  qrlNomeMotorista2.Caption := '';
+  qrlCPFMotorista2.Caption  := '';
+  qrlLacres2.Caption        := '';
+  if FCTe.Rodo.moto.Count>0
+   then begin
+    qrlNomeMotorista2.Caption := FCTe.Rodo.moto.Items[0].xNome;
+    qrlCPFMotorista2.Caption  := CTeUtil.FormatarCNPJ(FCTe.Rodo.moto.Items[0].CPF);
+   end;
+
+  for i := 0 to FCTe.Rodo.Lacres.Count - 1 do
+  begin
+   qrlLacres2.Caption := qrlLacres.Caption + FCTe.Rodo.Lacres.Items[i].nLacre + '/';
   end;
 end;
 

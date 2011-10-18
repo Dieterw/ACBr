@@ -1158,8 +1158,8 @@ begin
          StrStream := TStringStream.Create('');
          StrStream.CopyFrom(HTTP.Document, 0);
 
-         FRetornoWS := NotaUtil.ParseText(StrStream.DataString, True);
-         FRetWS := NotaUtil.SeparaDados( FRetornoWS,'nfeStatusServicoNF2Result');
+         FRetornoWS := ParseText(StrStream.DataString, True);
+         FRetWS := SeparaDados( FRetornoWS,'nfeStatusServicoNF2Result');
          StrStream.Free;
       {$ELSE}
          ReqResp.Execute(Acao.Text, Stream);
@@ -1310,8 +1310,8 @@ begin
 
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(HTTP.Document, 0);
-       FRetornoWS := NotaUtil.ParseText(StrStream.DataString, True);
-       FRetWS := NotaUtil.SeparaDados( FRetornoWS,'nfeRecepcaoLote2Result');
+       FRetornoWS := ParseText(StrStream.DataString, True);
+       FRetWS := SeparaDados( FRetornoWS,'nfeRecepcaoLote2Result');
        StrStream.Free;
     {$ELSE}
        ReqResp.Execute(Acao.Text, Stream);
@@ -1538,8 +1538,8 @@ function TNFeRetRecepcao.Executar: Boolean;
 
          StrStream := TStringStream.Create('');
          StrStream.CopyFrom(HTTP.Document, 0);
-         FRetornoWS := NotaUtil.ParseText(StrStream.DataString, True);
-         FRetWS := NotaUtil.SeparaDados( FRetornoWS,'nfeRetRecepcao2Result');
+         FRetornoWS := ParseText(StrStream.DataString, True);
+         FRetWS := SeparaDados( FRetornoWS,'nfeRetRecepcao2Result');
          StrStream.Free;
       {$ELSE}
          ReqResp.Execute(Acao.Text, Stream);
@@ -1712,8 +1712,8 @@ begin
 
       StrStream := TStringStream.Create('');
       StrStream.CopyFrom(HTTP.Document, 0);
-      FRetornoWS := NotaUtil.ParseText(StrStream.DataString, True);
-      FRetWS := NotaUtil.SeparaDados( FRetornoWS,'nfeRetRecepcao2Result');
+      FRetornoWS := ParseText(StrStream.DataString, True);
+      FRetWS := SeparaDados( FRetornoWS,'nfeRetRecepcao2Result');
       StrStream.Free;
    {$ELSE}
       ReqResp.Execute(Acao.Text, Stream);
@@ -1851,8 +1851,8 @@ begin
 
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(HTTP.Document, 0);
-       FRetornoWS := NotaUtil.ParseText(StrStream.DataString, True);
-       FRetWS := NotaUtil.SeparaDados( FRetornoWS,'nfeConsultaNF2Result');
+       FRetornoWS := ParseText(StrStream.DataString, True);
+       FRetWS := SeparaDados( FRetornoWS,'nfeConsultaNF2Result');
        StrStream.Free;
     {$ELSE}
        ReqResp.Execute(Acao.Text, Stream);
@@ -2077,8 +2077,8 @@ begin
 
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(HTTP.Document, 0);
-       FRetornoWS := NotaUtil.ParseText(StrStream.DataString, True);
-       FRetWS := NotaUtil.SeparaDados( FRetornoWS,'nfeCancelamentoNF2Result');
+       FRetornoWS := ParseText(StrStream.DataString, True);
+       FRetWS := SeparaDados( FRetornoWS,'nfeCancelamentoNF2Result');
        StrStream.Free;
     {$ELSE}
        ReqResp.Execute(Acao.Text, Stream);
@@ -2287,8 +2287,8 @@ begin
 
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(HTTP.Document, 0);
-       FRetornoWS := NotaUtil.ParseText(StrStream.DataString, True);
-       FRetWS := NotaUtil.SeparaDados( FRetornoWS,'nfeInutilizacaoNF2Result');
+       FRetornoWS := ParseText(StrStream.DataString, True);
+       FRetWS := SeparaDados( FRetornoWS,'nfeInutilizacaoNF2Result');
        StrStream.Free;
     {$ELSE}
        ReqResp.Execute(Acao.Text, Stream);
@@ -2471,8 +2471,8 @@ begin
 
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(HTTP.Document, 0);
-       FRetornoWS := NotaUtil.ParseText(StrStream.DataString, True);
-       FRetWS := NotaUtil.SeparaDados( FRetornoWS,'consultaCadastro2Result');
+       FRetornoWS := ParseText(StrStream.DataString, True);
+       FRetWS := SeparaDados( FRetornoWS,'consultaCadastro2Result');
        StrStream.Free;
     {$ELSE}
        ReqResp.Execute(Acao.Text, Stream);
@@ -2623,8 +2623,8 @@ begin
        HTTP.HTTPMethod('POST', FURL);
 
        StrStream.CopyFrom(HTTP.Document, 0);
-       FRetornoWS := NotaUtil.ParseText(StrStream.DataString, True);
-       FRetWS := NotaUtil.SeparaDados( FRetornoWS,'sceRecepcaoDPECResult',True);
+       FRetornoWS := ParseText(StrStream.DataString, True);
+       FRetWS := SeparaDados( FRetornoWS,'sceRecepcaoDPECResult',True);
     {$ELSE}
        ReqResp.Execute(Acao.Text, Stream);
        StrStream.CopyFrom(Stream, 0);
@@ -2769,8 +2769,8 @@ begin
 
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(HTTP.Document, 0);
-       FRetornoWS := NotaUtil.ParseText(StrStream.DataString, True);
-       FRetWS := NotaUtil.SeparaDados( FRetornoWS,'sceConsultaDPECResult',True);
+       FRetornoWS := ParseText(StrStream.DataString, True);
+       FRetWS := SeparaDados( FRetornoWS,'sceConsultaDPECResult',True);
        StrStream.Free;
     {$ELSE}
        ReqResp.Execute(Acao.Text, Stream);
@@ -2922,8 +2922,8 @@ begin
 
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(HTTP.Document, 0);
-       FRetornoWS := NotaUtil.ParseText(StrStream.DataString, True);
-       FRetWS := NotaUtil.SeparaDados( FRetornoWS,'nfeRecepcaoEventoResult');
+       FRetornoWS := ParseText(StrStream.DataString, True);
+       FRetWS := SeparaDados( FRetornoWS,'nfeRecepcaoEventoResult');
        StrStream.Free;
     {$ELSE}
        ReqResp.Execute(Acao.Text, Stream);

@@ -1006,12 +1006,12 @@ begin
      Texto := Texto + '    <nfeStatusServicoNF xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/NfeStatusServico">';
      Texto := Texto + '      <nfeCabecMsg>';
 
-     Texto := Texto + NotaUtil.ParseText(FCabMsg,False);
+     Texto := Texto + ParseText(FCabMsg,False);
 
      Texto := Texto + '      </nfeCabecMsg>';
      Texto := Texto + '      <nfeDadosMsg>';
 
-     Texto := Texto + NotaUtil.ParseText(FDadosMsg,False);
+     Texto := Texto + ParseText(FDadosMsg,False);
 
      Texto := Texto + '      </nfeDadosMsg>';
      Texto := Texto + '    </nfeStatusServicoNF>';
@@ -1040,7 +1040,7 @@ begin
          StrStream := TStringStream.Create('');
          StrStream.CopyFrom(HTTP.Document, 0);
 
-         FRetWS := NotaUtil.SeparaDados( NotaUtil.ParseText(StrStream.DataString, True),'nfeStatusServicoNFResult');
+         FRetWS := SeparaDados( ParseText(StrStream.DataString, True),'nfeStatusServicoNFResult');
          StrStream.Free;
       {$ELSE}
          Nota   := GetNfeStatusServico( False, FURL, Rio);
@@ -1144,12 +1144,12 @@ begin
      Texto := Texto + '    <nfeRecepcaoLote xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/NfeRecepcao">';
      Texto := Texto + '      <nfeCabecMsg>';
 
-     Texto := Texto + NotaUtil.ParseText(FCabMsg,False);
+     Texto := Texto + ParseText(FCabMsg,False);
 
      Texto := Texto + '      </nfeCabecMsg>';
      Texto := Texto + '      <nfeDadosMsg>';
 
-     Texto := Texto + NotaUtil.ParseText(FDadosMsg,False);
+     Texto := Texto + ParseText(FDadosMsg,False);
 
      Texto := Texto + '      </nfeDadosMsg>';
      Texto := Texto + '    </nfeRecepcaoLote>';
@@ -1175,7 +1175,7 @@ begin
 
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(HTTP.Document, 0);
-       FRetWS := NotaUtil.SeparaDados( NotaUtil.ParseText(StrStream.DataString, True),'nfeRecepcaoLoteResult');
+       FRetWS := SeparaDados( ParseText(StrStream.DataString, True),'nfeRecepcaoLoteResult');
        StrStream.Free;
     {$ELSE}
        Nota   := GetNfeRecepcao( False, FURL, Rio);
@@ -1356,12 +1356,12 @@ function TNFeRetRecepcao.Executar: Boolean;
        Texto := Texto + '    <nfeRetRecepcao xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetRecepcao">';
        Texto := Texto + '      <nfeCabecMsg>';
 
-       Texto := Texto + NotaUtil.ParseText(FCabMsg,False);
+       Texto := Texto + ParseText(FCabMsg,False);
 
        Texto := Texto + '      </nfeCabecMsg>';
        Texto := Texto + '      <nfeDadosMsg>';
 
-       Texto := Texto + NotaUtil.ParseText(FDadosMsg,False);
+       Texto := Texto + ParseText(FDadosMsg,False);
 
        Texto := Texto + '      </nfeDadosMsg>';
        Texto := Texto + '    </nfeRetRecepcao>';
@@ -1390,7 +1390,7 @@ function TNFeRetRecepcao.Executar: Boolean;
          StrStream := TStringStream.Create('');
          StrStream.CopyFrom(HTTP.Document, 0);
 
-         FRetWS := NotaUtil.SeparaDados( NotaUtil.ParseText(StrStream.DataString, True),'nfeRetRecepcaoResult');
+         FRetWS := SeparaDados( ParseText(StrStream.DataString, True),'nfeRetRecepcaoResult');
          StrStream.Free;
       {$ELSE}
          Nota   := GetNfeRetRecepcao( False, FURL, Rio);
@@ -1519,12 +1519,12 @@ begin
     Texto := Texto + '    <nfeRetRecepcao xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetRecepcao">';
     Texto := Texto + '      <nfeCabecMsg>';
 
-    Texto := Texto + NotaUtil.ParseText(FCabMsg,False);
+    Texto := Texto + ParseText(FCabMsg,False);
 
     Texto := Texto + '      </nfeCabecMsg>';
     Texto := Texto + '      <nfeDadosMsg>';
 
-    Texto := Texto + NotaUtil.ParseText(FDadosMsg,False);
+    Texto := Texto + ParseText(FDadosMsg,False);
 
     Texto := Texto + '      </nfeDadosMsg>';
     Texto := Texto + '    </nfeRetRecepcao>';
@@ -1553,7 +1553,7 @@ begin
       StrStream := TStringStream.Create('');
       StrStream.CopyFrom(HTTP.Document, 0);
 
-      FRetWS := NotaUtil.SeparaDados( NotaUtil.ParseText(StrStream.DataString, True),'nfeRetRecepcaoResult');
+      FRetWS := SeparaDados( ParseText(StrStream.DataString, True),'nfeRetRecepcaoResult');
       StrStream.Free;
    {$ELSE}
       Nota   := GetNfeRetRecepcao( False, FURL, Rio);
@@ -1630,12 +1630,12 @@ begin
      Texto := Texto + '    <nfeConsultaNF xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsulta">';
      Texto := Texto + '      <nfeCabecMsg>';
 
-     Texto := Texto + NotaUtil.ParseText(FCabMsg,False);
+     Texto := Texto + ParseText(FCabMsg,False);
 
      Texto := Texto + '      </nfeCabecMsg>';
      Texto := Texto + '      <nfeDadosMsg>';
 
-     Texto := Texto + NotaUtil.ParseText(FDadosMsg,False);
+     Texto := Texto + ParseText(FDadosMsg,False);
 
      Texto := Texto + '      </nfeDadosMsg>';
      Texto := Texto + '    </nfeConsultaNF>';
@@ -1663,7 +1663,7 @@ begin
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(HTTP.Document, 0);
 
-       FRetWS := NotaUtil.SeparaDados( NotaUtil.ParseText(StrStream.DataString, True),'nfeConsultaNFResult');
+       FRetWS := SeparaDados( ParseText(StrStream.DataString, True),'nfeConsultaNFResult');
        StrStream.Free;
     {$ELSE}
        Nota   := GetNfeConsulta( False, FURL, Rio);
@@ -1805,12 +1805,12 @@ begin
      Texto := Texto + '    <nfeCancelamentoNF xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/NfeCancelamento">';
      Texto := Texto + '      <nfeCabecMsg>';
 
-     Texto := Texto + NotaUtil.ParseText(FCabMsg,False);
+     Texto := Texto + ParseText(FCabMsg,False);
 
      Texto := Texto + '      </nfeCabecMsg>';
      Texto := Texto + '      <nfeDadosMsg>';
 
-     Texto := Texto + NotaUtil.ParseText(FDadosMsg,False);
+     Texto := Texto + ParseText(FDadosMsg,False);
 
      Texto := Texto + '      </nfeDadosMsg>';
      Texto := Texto + '    </nfeCancelamentoNF>';
@@ -1840,7 +1840,7 @@ begin
 
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(HTTP.Document, 0);
-       FRetWS := NotaUtil.SeparaDados( NotaUtil.ParseText(StrStream.DataString, True),'nfeCancelamentoNFResult');
+       FRetWS := SeparaDados( ParseText(StrStream.DataString, True),'nfeCancelamentoNFResult');
        StrStream.Free;
     {$ELSE}
        Nota   := GetNfeCancelamento(False, FURL, Rio);
@@ -1979,12 +1979,12 @@ begin
      Texto := Texto + '    <nfeInutilizacaoNF xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/NfeInutilizacao">';
      Texto := Texto + '      <nfeCabecMsg>';
 
-     Texto := Texto + NotaUtil.ParseText(FCabMsg,False);
+     Texto := Texto + ParseText(FCabMsg,False);
 
      Texto := Texto + '      </nfeCabecMsg>';
      Texto := Texto + '      <nfeDadosMsg>';
 
-     Texto := Texto + NotaUtil.ParseText(FDadosMsg,False);
+     Texto := Texto + ParseText(FDadosMsg,False);
 
      Texto := Texto + '      </nfeDadosMsg>';
      Texto := Texto + '    </nfeInutilizacaoNF>';
@@ -2014,7 +2014,7 @@ begin
 
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(HTTP.Document, 0);
-       FRetWS := NotaUtil.SeparaDados( NotaUtil.ParseText(StrStream.DataString, True),'nfeInutilizacaoNFResult');
+       FRetWS := SeparaDados( ParseText(StrStream.DataString, True),'nfeInutilizacaoNFResult');
        StrStream.Free;
     {$ELSE}
        Nota   := GetNfeInutilizacao(False, FURL, Rio);
@@ -2115,12 +2115,12 @@ begin
      Texto := Texto + '    <consultaCadastro xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro">';
      Texto := Texto + '      <nfeCabecMsg>';
 
-     Texto := Texto + NotaUtil.ParseText(FCabMsg,False);
+     Texto := Texto + ParseText(FCabMsg,False);
 
      Texto := Texto + '      </nfeCabecMsg>';
      Texto := Texto + '      <nfeDadosMsg>';
 
-     Texto := Texto + NotaUtil.ParseText(FDadosMsg,False);
+     Texto := Texto + ParseText(FDadosMsg,False);
 
      Texto := Texto + '      </nfeDadosMsg>';
      Texto := Texto + '    </consultaCadastro>';
@@ -2147,7 +2147,7 @@ begin
 
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(HTTP.Document, 0);
-       FRetWS := NotaUtil.SeparaDados( NotaUtil.ParseText(StrStream.DataString, True),'consultaCadastroResult');
+       FRetWS := SeparaDados( ParseText(StrStream.DataString, True),'consultaCadastroResult');
        StrStream.Free;
     {$ELSE}
        Nota   := GetCadConsultaCadastro(False, FURL, Rio);
@@ -2293,14 +2293,14 @@ begin
 
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(HTTP.Document, 0);
-       RetOriginal:=NotaUtil.ParseText(StrStream.DataString, True);
-       FRetWS := NotaUtil.SeparaDados(RetOriginal,'sceRecepcaoDPECResult',True);
+       RetOriginal:=ParseText(StrStream.DataString, True);
+       FRetWS := SeparaDados(RetOriginal,'sceRecepcaoDPECResult',True);
        StrStream.Free;
     {$ELSE}
        ReqResp.Execute(Acao.Text, Stream);
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(Stream, 0);
-       FRetWS := NotaUtil.SeparaDados( NotaUtil.ParseText(StrStream.DataString, True),'sceRecepcaoDPECResult',True);
+       FRetWS := SeparaDados( ParseText(StrStream.DataString, True),'sceRecepcaoDPECResult',True);
        StrStream.Free;
     {$ENDIF}
 
@@ -2415,13 +2415,13 @@ begin
 
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(HTTP.Document, 0);
-       FRetWS := NotaUtil.SeparaDados( NotaUtil.ParseText(StrStream.DataString, True),'sceConsultaDPECResult',True);
+       FRetWS := SeparaDados( ParseText(StrStream.DataString, True),'sceConsultaDPECResult',True);
        StrStream.Free;
     {$ELSE}
        ReqResp.Execute(Acao.Text, Stream);
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(Stream, 0);
-       FRetWS := NotaUtil.SeparaDados( NotaUtil.ParseText(StrStream.DataString, True),'sceConsultaDPECResult',True);
+       FRetWS := SeparaDados( ParseText(StrStream.DataString, True),'sceConsultaDPECResult',True);
        StrStream.Free;
     {$ENDIF}
 

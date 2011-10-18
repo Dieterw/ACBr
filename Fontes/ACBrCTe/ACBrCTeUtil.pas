@@ -869,7 +869,7 @@ begin
     exit;
   end;
 
-  schema_doc := xmlReadFile(schema_filename, nil, XML_DETECT_IDS);
+  schema_doc := xmlReadFile(PAnsiChar(schema_filename), nil, XML_DETECT_IDS);
   //  the schema cannot be loaded or is not well-formed
   if (schema_doc = nil) then
   begin
@@ -1187,7 +1187,7 @@ begin
   else if Tipo = 3 then
     AStr := AStr + '</inutCTe>';
 
-  XmlAss := CTeUtil.sign_file(PChar(AStr), PChar(ArqPFX), PChar(PFXSenha));
+  XmlAss := CTeUtil.sign_file(PAnsiChar(AStr), PChar(ArqPFX), PChar(PFXSenha));
 
   // Removendo quebras de linha //
   XmlAss := StringReplace(XmlAss, #10, '', [rfReplaceAll]);
@@ -1399,7 +1399,7 @@ begin
       raise Exception.Create('Error :failed to create signature context');
 
     // { load private key}
-    dsigCtx^.signKey := xmlSecCryptoAppKeyLoad(key_file, xmlSecKeyDataFormatPkcs12, senha, nil, nil);
+    dsigCtx^.signKey := xmlSecCryptoAppKeyLoad(PAnsiChar(key_file), xmlSecKeyDataFormatPkcs12, PAnsiChar(senha), nil, nil);
     if (dsigCtx^.signKey = nil) then
       raise Exception.Create('Error: failed to load private pem key from "' + key_file + '"');
 

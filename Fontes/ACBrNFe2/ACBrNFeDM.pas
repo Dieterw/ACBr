@@ -308,12 +308,12 @@ begin
       Connection.WriteStrData('', XCpl);
       Connection.WriteStrData('', XBairro);
       Connection.WriteStrData('', inttostr(CMun));
-      Connection.WriteStrData('', NotaUtil.ParseText(XMun,true));
+      Connection.WriteStrData('', ParseText(XMun,true));
       Connection.WriteStrData('', UF);
-      Connection.WriteStrData('', NotaUtil.FormatarCEP(inttostr(CEP)));
+      Connection.WriteStrData('', FormatarCEP(inttostr(CEP)));
       Connection.WriteStrData('', inttostr(CPais));
       Connection.WriteStrData('', XPais);
-      Connection.WriteStrData('', NotaUtil.FormatarFone(Fone));
+      Connection.WriteStrData('', FormatarFone(Fone));
     end;
     Connection.WriteStrData('', IE);
   end;
@@ -372,9 +372,9 @@ begin
       Connection.WriteStrData('', XCpl);
       Connection.WriteStrData('', XBairro);
       Connection.WriteStrData('', inttostr(CMun));
-      Connection.WriteStrData('', NotaUtil.ParseText(XMun,true));
+      Connection.WriteStrData('', ParseText(XMun,true));
       Connection.WriteStrData('', UF);
-      Connection.WriteStrData('', NotaUtil.FormatarCEP(inttostr(CEP)));
+      Connection.WriteStrData('', FormatarCEP(inttostr(CEP)));
       Connection.WriteStrData('', inttostr(CPais));
       Connection.WriteStrData('', XPais);
       Connection.WriteStrData('', NotaUtil.FormatarFone(Fone));
@@ -597,7 +597,7 @@ begin
       Connection.WriteStrData('', XNome);
       Connection.WriteStrData('', IE);
       Connection.WriteStrData('', XEnder);
-      Connection.WriteStrData('', NotaUtil.ParseText(XMun,true));
+      Connection.WriteStrData('', ParseText(XMun,true));
       Connection.WriteStrData('', UF);
     end;
   end;

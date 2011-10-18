@@ -1101,6 +1101,13 @@ object frmPrincipal: TfrmPrincipal
           OnClick = Gerencialcomformatao1Click
         end
       end
+      object N4: TMenuItem
+        Caption = '-'
+      end
+      object RelatriosGerenciaisCadastrados1: TMenuItem
+        Caption = 'Relat'#243'rios Gerenciais Cadastrados'
+        OnClick = RelatriosGerenciaisCadastrados1Click
+      end
     end
     object CupomFiscal1: TMenuItem
       Caption = 'Cupom Fiscal'

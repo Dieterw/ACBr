@@ -53,6 +53,8 @@ type
     Label4: TLabel;
     TesteModoPreVenda: TMenuItem;
     ckbGravarLog: TCheckBox;
+    N4: TMenuItem;
+    RelatriosGerenciaisCadastrados1: TMenuItem;
     procedure btnAtivarDesativarClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure cbxPortaComunicacaoChange(Sender: TObject);
@@ -81,6 +83,7 @@ type
     procedure edtTimeoutChange(Sender: TObject);
     procedure TesteModoPreVendaClick(Sender: TObject);
     procedure ckbGravarLogClick(Sender: TObject);
+    procedure RelatriosGerenciaisCadastrados1Click(Sender: TObject);
   private
     FBobinaCupom: TStringList;
     function GetIniFileName: String;
@@ -360,6 +363,28 @@ end;
 procedure TfrmPrincipal.RelatrioGerencial1Click(Sender: TObject);
 begin
   AbrirFormularioModal(TfrmRelatorioGerencial);
+end;
+
+procedure TfrmPrincipal.RelatriosGerenciaisCadastrados1Click(Sender: TObject);
+var
+  I: Integer;
+  Msg: String;
+begin
+  ACBrECF1.CarregaRelatoriosGerenciais;
+
+  Msg := 'Relatórios gerenciais:' + sLineBreak + sLineBreak;
+  for I := 0 to ACBrECF1.RelatoriosGerenciais.Count -1 do
+  begin
+    if ACBrECF1.RelatoriosGerenciais[I].Descricao <> '' then
+    begin
+      Msg :=
+        'RG: ' + ACBrECF1.RelatoriosGerenciais[I].Indice + ' -> ' +
+        ACBrECF1.RelatoriosGerenciais[I].Descricao +
+        ' CER:'+ IntToStr(ACBrECF1.RelatoriosGerenciais[I].Contador);
+    end;
+  end;
+
+  ShowMessage(Msg);
 end;
 
 procedure TfrmPrincipal.Sangria1Click(Sender: TObject);

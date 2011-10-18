@@ -252,20 +252,6 @@ type
     N33: TMenuItem;
     EstornaMeiodePagamento1: TMenuItem;
     DeCodificaTexto1: TMenuItem;
-    TabSheet8: TTabSheet;
-    Label23: TLabel;
-    RdgTipoBarra: TRadioGroup;
-    Label27: TLabel;
-    Label28: TLabel;
-    SpEdAlturaBarra: TSpinEdit;
-    EdtCodBarras: TEdit;
-    Label29: TLabel;
-    ChImpTextoVertical: TCheckBox;
-    ChImpTextoAbaixoBarras: TCheckBox;
-    MenTextoBarras: TMemo;
-    BitBtn6: TBitBtn;
-    BitBtn7: TBitBtn;
-    SpEdtLarguraBarra: TSpinEdit;
     N34: TMenuItem;
     AchaAliquotaporIndice1: TMenuItem;
     AchaAliquotaporValor1: TMenuItem;
@@ -487,10 +473,6 @@ type
     procedure ConsultaRegistradorECF1Click(Sender: TObject);
     procedure EstornaMeiodePagamento1Click(Sender: TObject);
     procedure DeCodificaTexto1Click(Sender: TObject);
-    procedure BitBtn6Click(Sender: TObject);
-    procedure ChImpTextoVerticalClick(Sender: TObject);
-    procedure BitBtn7Click(Sender: TObject);
-    procedure RdgTipoBarraClick(Sender: TObject);
     procedure AchaAliquotaporIndice1Click(Sender: TObject);
     procedure AchaAliquotaporValor1Click(Sender: TObject);
     procedure AcharMeioPagamentoporIndice1Click(Sender: TObject);
@@ -2993,46 +2975,6 @@ begin
 
   mResp.Lines.Add( 'Resposta: '+ Resposta );
   AtualizaMemos ;
-end;
-
-procedure TForm1.BitBtn6Click(Sender: TObject);
-begin
-  ACBrECF1.CodigodeBarras.AdicionarCodBarra(TACBrECFTipoCodBarra(RdgTipoBarra.ItemIndex),
-    SpEdtLarguraBarra.Value, SpEdAlturaBarra.Value, EdtCodBarras.Text,
-    ChImpTextoAbaixoBarras.Checked, ChImpTextoVertical.Checked);
-
-  ACBrECF1.LinhaRelatorioGerencial( MenTextoBarras.Text );
-end;
-
-procedure TForm1.BitBtn7Click(Sender: TObject);
-begin
-  ACBrECF1.CodigodeBarras.AdicionarCodBarra(TACBrECFTipoCodBarra(RdgTipoBarra.ItemIndex),
-    SpEdtLarguraBarra.Value, SpEdAlturaBarra.Value, EdtCodBarras.Text,
-    ChImpTextoAbaixoBarras.Checked, ChImpTextoVertical.Checked);
-
-  ACBrECF1.FechaCupom( MenTextoBarras.Text );
-end;
-
-procedure TForm1.ChImpTextoVerticalClick(Sender: TObject);
-begin
-  MenTextoBarras.Enabled  :=  ChImpTextoVertical.Enabled;
-end;
-
-procedure TForm1.RdgTipoBarraClick(Sender: TObject);
-begin
-  Case RdgTipoBarra.ItemIndex of
-    0 : EdtCodBarras.Text :=  '789000000001';
-    1 : EdtCodBarras.Text :=  '0000000';
-    2 : EdtCodBarras.Text :=  '123456';
-    3 : EdtCodBarras.Text :=  '123456';
-    4 : EdtCodBarras.Text :=  'abcABC123';
-    5 : EdtCodBarras.Text :=  'ABC123';
-    6 : EdtCodBarras.Text :=  'ABC123';
-    7 : EdtCodBarras.Text :=  '00000000000';
-    8 : EdtCodBarras.Text :=  '123456';
-    9 : EdtCodBarras.Text :=  '123456';
-    10: EdtCodBarras.Text :=  '123456';
-  end;
 end;
 
 procedure TForm1.AchaAliquotaporIndice1Click(Sender: TObject);

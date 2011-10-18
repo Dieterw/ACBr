@@ -377,8 +377,8 @@ begin
   begin
     if ACBrECF1.RelatoriosGerenciais[I].Descricao <> '' then
     begin
-      Msg :=
-        'RG: ' + ACBrECF1.RelatoriosGerenciais[I].Indice + ' -> ' +
+      Msg := Msg + sLineBreak +
+        ACBrECF1.RelatoriosGerenciais[I].Indice + ' -> ' +
         ACBrECF1.RelatoriosGerenciais[I].Descricao +
         ' CER:'+ IntToStr(ACBrECF1.RelatoriosGerenciais[I].Contador);
     end;

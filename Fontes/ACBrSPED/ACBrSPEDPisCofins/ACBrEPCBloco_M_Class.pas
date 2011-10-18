@@ -873,17 +873,20 @@ begin
   begin
      with RegM001.RegistroM350 do
      begin
-       Add( LFill('M350')             +
-            LFill( VL_TOT_FOL,0,2 )   +
-            LFill( VL_EXC_BC,0,2 )    +
-            LFill( VL_TOT_BC,0,2 )    +
-            LFill( ALIQ_PIS_FOL,0,2 ) +
-            LFill( VL_TOT_CONT_FOL,0,2 ) ) ;
+        if VL_TOT_FOL > 0 then
+        begin
+           Add( LFill('M350')             +
+                LFill( VL_TOT_FOL,0,2 )   +
+                LFill( VL_EXC_BC,0,2 )    +
+                LFill( VL_TOT_BC,0,2 )    +
+                LFill( ALIQ_PIS_FOL,0,2 ) +
+                LFill( VL_TOT_CONT_FOL,0,2 ) ) ;
+
+           RegistroM990.QTD_LIN_M := RegistroM990.QTD_LIN_M + 1;
+           /// Variavél para armazenar a quantidade de registro do tipo.
+           FRegistroM350Count := FRegistroM350Count + 1 ;
+        end;
      end;
-     ///
-     RegistroM990.QTD_LIN_M := RegistroM990.QTD_LIN_M + 1;
-     /// Variavél para armazenar a quantidade de registro do tipo.
-     FRegistroM350Count := FRegistroM350Count + 1;
   end;
 end;
 

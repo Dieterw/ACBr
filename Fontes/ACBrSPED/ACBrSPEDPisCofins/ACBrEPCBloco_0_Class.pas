@@ -472,8 +472,7 @@ begin
        Add( LFill('0110') +
             LFill( strCOD_INC_TRIB ) +
             LFill( strIND_APRO_CRED ) +
-            LFill( strCOD_TIPO_CONT ) +
-            lFill( strIND_REG_CUM ) ) ;
+            LFill( strCOD_TIPO_CONT ) ) ; // + lFill( strIND_REG_CUM ) ) ;
        ///
        if IND_APRO_CRED = indMetodoDeRateioProporcional then
          WriteRegistro0111(Reg0001.Registro0110);

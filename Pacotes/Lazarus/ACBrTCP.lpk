@@ -64,10 +64,10 @@
     <Type Value="RunAndDesignTime"/>
     <RequiredPkgs Count="5">
       <Item1>
-        <PackageName Value="synapse"/>
+        <PackageName Value="ACBrDiversos"/>
       </Item1>
       <Item2>
-        <PackageName Value="ACBrComum"/>
+        <PackageName Value="synapse"/>
       </Item2>
       <Item3>
         <PackageName Value="FCL"/>

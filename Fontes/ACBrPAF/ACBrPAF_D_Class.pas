@@ -236,7 +236,7 @@ begin
                                            LFill(DT_INCLUSAO, 'yyyymmdd') +
                                            LFill(NUM_ITEM, 3, 0) +
                                            RFill(COD_ITEM, 14) +
-                                           RFill(DESC_ITEM, 100) +
+                                           RFill(DESC_ITEM, 100, ifThen(RegistroValido, ' ', '?')) +
                                            LFill(QTDE_ITEM, 7, DEC_QTDE_ITEM) +
                                            RFill(UNI_ITEM, 3) +
                                            LFill(VL_UNIT, 8, DEC_VL_UNIT) +

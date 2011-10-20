@@ -47,6 +47,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+
+Versão 0.09   20/10/11
+---------------
+[-] Acerto na inscrição estadual da desenvolvedora
+    (por: Régys Silveira)
+
 Versão 0.09   19/10/11
 ---------------
 [-] Acertos na descrição do item quando não é um registro válido. (colocar '??')

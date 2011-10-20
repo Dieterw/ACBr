@@ -252,7 +252,7 @@ begin
                   LFill(CNPJ, 14) +
                   RFill(IE, 14) +
                   LFill(CNPJ_SH, 14) +
-                  LFill(IE_SH, 14) +
+                  RFill(IE_SH, 14) +
                   LFill(IM_SH, 14) +
                   RFill(NOME_SH, 40, ifThen(not InclusaoExclusao, ' ', '?')) ;
 

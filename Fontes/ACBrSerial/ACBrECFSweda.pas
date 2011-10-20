@@ -194,13 +194,13 @@ TACBrECFSweda = class( TACBrECFClass )
     fsEmVinculado  : Boolean;
 
     xECF_AbrePortaSerial : Function: Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
-    xECF_DownloadMFD : Function (Arquivo: PAnsichar; TipoDownload: PAnsichar;
-      ParametroInicial: PAnsichar; ParametroFinal: PAnsichar; UsuarioECF: PAnsichar ):
+    xECF_DownloadMFD : Function (Arquivo: AnsiString; TipoDownload: AnsiString;
+      ParametroInicial: AnsiString; ParametroFinal: AnsiString; UsuarioECF: AnsiString ):
       Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
-    xECF_ReproduzirMemoriaFiscalMFD : Function (tipo: PAnsichar; fxai: PAnsichar;
-      fxaf:  PAnsichar; asc: PAnsichar; bin: PAnsichar): Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
+    xECF_ReproduzirMemoriaFiscalMFD : Function (tipo: AnsiString; fxai: AnsiString;
+      fxaf:  AnsiString; asc: AnsiString; bin: AnsiString): Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
     xECF_FechaPortaSerial : Function: Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
-    xECF_DownloadMF : Function(Arquivo:PAnsiChar):Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
+    xECF_DownloadMF : Function(Arquivo:AnsiString):Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
 
     procedure LoadDLLFunctions;
     procedure AbrePortaSerialDLL;
@@ -3386,20 +3386,14 @@ begin
      EnviaComando('57'+ padL(Linha1,42) + padL(Linha2,42)) ;
 end;
 
-procedure TACBrECFSweda.LoadDLLFunctions ;
+procedure TACBrECFSweda.LoadDLLFunctions;
+var
+  sLibName: string;
+
  procedure SwedaFunctionDetect( FuncName: String; var LibPointer: Pointer ) ;
- var
- sLibName: string;
  begin
    if not Assigned( LibPointer )  then
    begin
-     // Verifica se exite o caminho das DLLs
-     if Length(PathDLL) > 0 then
-        sLibName := PathWithDelim(PathDLL);
-
-     // Concatena o caminho se exitir mais o nome da DLL.
-     sLibName := sLibName + cLIB_Sweda;
-
      if not FunctionDetect( sLibName, FuncName, LibPointer) then
      begin
         LibPointer := NIL ;
@@ -3408,17 +3402,23 @@ procedure TACBrECFSweda.LoadDLLFunctions ;
    end ;
  end ;
 begin
-   {$IFDEF MSWINDOWS}
-    if not fileexists(IncludeTrailingPathDelimiter(ExtractFilePath(
-      {$IFNDEF CONSOLE} Application.ExeName {$ELSE} ParamStr(0) {$ENDIF})) + 'Swmfd.dll') then
+  // Verifica se exite o caminho das DLLs
+  if Length(PathDLL) > 0 then
+     sLibName := PathWithDelim(PathDLL);
+
+  // Concatena o caminho se exitir mais o nome da DLL.
+  sLibName := sLibName + cLIB_Sweda;
+
+  {$IFDEF MSWINDOWS}
+    if not FileExists( ExtractFilePath( sLibName ) + 'Swmfd.dll') then
        raise Exception.Create( ACBrStr( 'Não foi encontrada a dll auxiliar Swmfd.dll.' ) ) ;
    {$ENDIF}
-   DeleteFile(IncludeTrailingPathDelimiter(ExtractFilePath(
-      {$IFNDEF CONSOLE} Application.ExeName {$ELSE} ParamStr(0) {$ENDIF})) + 'SWC.INI');
+   DeleteFile( ExtractFilePath( sLibName ) + 'SWC.INI');
+
    SwedaFunctionDetect('ECF_AbrePortaSerial', @xECF_AbrePortaSerial);
+   SwedaFunctionDetect('ECF_DownloadMFD', @xECF_DownloadMFD);
    SwedaFunctionDetect('ECF_ReproduzirMemoriaFiscalMFD', @xECF_ReproduzirMemoriaFiscalMFD);
    SwedaFunctionDetect('ECF_FechaPortaSerial', @xECF_FechaPortaSerial);
-   SwedaFunctionDetect('ECF_DownloadMFD', @xECF_DownloadMFD);
    SwedaFunctionDetect('ECF_DownloadMF',@xECF_DownloadMF);
 end ;
 
@@ -3461,7 +3461,7 @@ begin
     DiaIni := FormatDateTime('DD/MM/YY',DataInicial) ;
     DiaFim := FormatDateTime('DD/MM/YY',DataFinal) ;
 
-    Resp := xECF_DownloadMFD( PAnsichar( NomeArquivo ), '1', PAnsiChar(DiaIni), PAnsiChar(DiaFim), '0');
+    Resp := xECF_DownloadMFD( NomeArquivo, '1', DiaIni, DiaFim, '0');
     if (Resp <> 1) then
       raise Exception.Create( ACBrStr( 'Erro ao executar ECF_DownloadMFD.'+sLineBreak+
                                        'Cod.: '+IntToStr(Resp) ))
@@ -3497,7 +3497,7 @@ begin
     CooIni := IntToStrZero( COOInicial, 6 ) ;
     CooFim := IntToStrZero( COOFinal, 6 ) ;
 
-    Resp := xECF_DownloadMFD( PAnsichar( NomeArquivo ), '2', PAnsiChar(CooIni), PAnsiChar(CooFim), '0');
+    Resp := xECF_DownloadMFD( NomeArquivo, '2', CooIni, CooFim, '0');
     if (Resp <> 1) then
       raise Exception.Create( ACBrStr( 'Erro ao executar ECF_DownloadMFD.'+sLineBreak+
                                        'Cod.: '+IntToStr(Resp) ));
@@ -3539,7 +3539,9 @@ begin
 
     PathBin := ExtractFilePath(NomeArquivo);
     PathBin:= PathBin + 'MF.BIN';
-    Resp := xECF_DownloadMF(PAnsiChar(pathBin));
+    DeleteFile( PathBin );
+
+    Resp := xECF_DownloadMF( pathBin );
     if Resp <> 1 then
       raise Exception.Create( ACBrStr( 'Erro ao executar xECFDownloadMF'+sLineBreak+
                                        'Cod.: '+IntToStr(Resp) ));
@@ -3547,9 +3549,7 @@ begin
     DiaIni := FormatDateTime('DD/MM/YY',DataInicial) ;
     DiaFim := FormatDateTime('DD/MM/YY',DataFinal) ;
 
-    Resp := xECF_ReproduzirMemoriaFiscalMFD('2', PAnsiChar(DiaIni), PAnsiChar(DiaFim), PAnsichar( NomeArquivo ),PAnsiChar(pathBin));
-    DeleteFile(IncludeTrailingPathDelimiter(ExtractFilePath(
-      {$IFNDEF CONSOLE} Application.ExeName {$ELSE} ParamStr(0) {$ENDIF})) + 'MF.BIN');
+    Resp := xECF_ReproduzirMemoriaFiscalMFD('2', DiaIni, DiaFim, NomeArquivo, pathBin);
 
     if (Resp <> 1) then
       raise Exception.Create( ACBrStr( 'Erro ao executar ECF_DownloadMFD.'+sLineBreak+
@@ -3601,14 +3601,14 @@ begin
 
     PathBin := ExtractFilePath(NomeArquivo);
     PathBin:= PathBin + 'MF.BIN';
-    Resp := xECF_DownloadMF(PAnsiChar(pathBin));
+    DeleteFile( PathBin );
+
+    Resp := xECF_DownloadMF( pathBin );
     if Resp <> 1 then
       raise Exception.Create( ACBrStr( 'Erro ao executar xECFDownloadMF'+sLineBreak+
                                        'Cod.: '+IntToStr(Resp) ));
 
-    Resp := xECF_ReproduzirMemoriaFiscalMFD('2', PAnsiChar(CooIni), PAnsiChar(CooFim),PAnsichar(NomeArquivo),PansiChar(PathBin));
-    DeleteFile(IncludeTrailingPathDelimiter(ExtractFilePath(
-      {$IFNDEF CONSOLE} Application.ExeName {$ELSE} ParamStr(0) {$ENDIF})) + 'MF.BIN');
+    Resp := xECF_ReproduzirMemoriaFiscalMFD('2', CooIni, CooFim, NomeArquivo, PathBin);
 
     if (Resp <> 1) then
       raise Exception.Create( ACBrStr( 'Erro ao executar xECF_ReproduzirMemoriaFiscalMFD.'+sLineBreak+

@@ -413,10 +413,6 @@ TACBrECFBematech = class( TACBrECFClass )
        cPAR13: AnsiString; cPAR14: AnsiString ): Integer; StdCall;
     xGeraTxtPorCOO : function (MfdFileName, TxtFileName : AnsiString;
        Usuario, COOInicial, COOFinal : integer): Integer; StdCall;
-    xBematech_FI_HabilitaDesabilitaRetornoEstendidoMFD :
-       function (FlagRetorno : AnsiString): Integer; StdCall;
-   	xBematech_FI_RetornoImpressoraMFD : function ( Var ACK: Integer;
-       Var ST1: Integer; Var ST2: Integer; Var ST3: Integer ): Integer; StdCall;
 
     {$IFDEF MSWINDOWS}
     procedure LoadDLLFunctions;
@@ -993,7 +989,7 @@ begin
      end ;
    end ;
 
-   if fsFalhasFimImpressao > 4 then
+   if fsFalhasFimImpressao > 10 then
       raise EACBrECFSemResposta.create( ACBrStr(
              'Impressora '+fpModeloStr+' não está em linha')) ;
 
@@ -3523,11 +3519,7 @@ begin
    BematechFunctionDetect('Bematech_FI_DownloadMFD',@xBematech_FI_DownloadMFD );
    BematechFunctionDetect('Bematech_FI_FormatoDadosMFD',@xBematech_FI_FormatoDadosMFD );
 
-   BematechFunctionDetect('Bematech_FI_HabilitaDesabilitaRetornoEstendidoMFD',@xBematech_FI_HabilitaDesabilitaRetornoEstendidoMFD );
-   BematechFunctionDetect('Bematech_FI_RetornoImpressoraMFD',@xBematech_FI_RetornoImpressoraMFD );
-
-
-   if POs(GetSubModeloECF,'MP-2000|MP-6000 TH FI ')>0  then
+   if Pos(GetSubModeloECF,'MP-2000|MP-6000 TH FI ') > 0  then
    begin
      BematechFunctionDetect('BemaGeraRegistrosTipoE',@xBemaGeraRegistrosTipoE, cLIB_MFD );
      BematechFunctionDetect('GeraTxtPorCOO',@xGeraTxtPorCOO, cLIB_MFD );
@@ -3543,8 +3535,28 @@ procedure TACBrECFBematech.AbrePortaSerialDLL(const Porta, Path : String ) ;
 Var
   Resp : Integer ;
   IniFile : String ;
-  Ini  : TIniFile ;
+
+  procedure ConfiguraBemaFI32ini ;
+  var
+    Ini : TIniFile ;
+  begin
+    Ini := TIniFile.Create( IniFile );
+    try
+       Ini.WriteString('Sistema','Porta',Porta ) ;
+       Ini.WriteString('Sistema','Path',Path ) ;
+    finally
+       Ini.Free ;
+    end ;
+  end;
+
 begin
+  Ativo := False;
+  Sleep( 300 ) ;
+
+  IniFile := ExtractFilePath( ParamStr(0) )+'BemaFi32.ini' ;
+  if FileExists( IniFile ) then
+     ConfiguraBemaFI32ini;
+
   Resp := xBematech_FI_AbrePortaSerial();
 {
   1: OK.
@@ -3553,17 +3565,7 @@ begin
 }
   if Resp = -4 then
   begin
-     IniFile := ExtractFilePath(
-          {$IFNDEF CONSOLE} Application.ExeName {$ELSE} ParamStr(0) {$ENDIF}
-                                    )+'BemaFi32.ini' ;
-     Ini := TIniFile.Create( IniFile );
-     try
-        Ini.WriteString('Sistema','Porta',Porta ) ;
-        Ini.WriteString('Sistema','Path',Path ) ;
-     finally
-        Ini.Free ;
-     end ;
-
+     ConfiguraBemaFI32ini ;
      Resp := xBematech_FI_AbrePortaSerial();
   end ;
 
@@ -3583,8 +3585,8 @@ var
   OldAtivo : Boolean ;
   {$IFDEF LINUX} Cmd : String ; {$ENDIF}
 begin
-  ArqTmp := ExtractFilePath( NomeArquivo ) + 'ACBr' ;
-  DeleteFile( ArqTmp + '.mfd' ) ;
+  ArqTmp := ExtractFilePath( NomeArquivo ) + 'ACBr.mfd' ;
+  DeleteFile( ArqTmp ) ;
 
   DiaIni := FormatDateTime('ddmmyy',DataInicial) ;
   DiaFim := FormatDateTime('ddmmyy',DataFinal) ;
@@ -3595,22 +3597,22 @@ begin
   try
      Ativo := False;
 
-     Cmd := fpDevice.Porta + ' ' + ArqTmp+'.mfd 1 ' + DiaIni + ' ' + DiaFim + ' ' + Prop;
+     Cmd := fpDevice.Porta + ' ' + ArqTmp+' 1 ' + DiaIni + ' ' + DiaFim + ' ' + Prop;
      RunCommand('./linuxmfd',Cmd,True) ;
 
-     if not FileExists( ArqTmp + '.mfd' ) then
+     if not FileExists( ArqTmp ) then
         raise Exception.Create( ACBrStr('Erro na execução do utilitário "linuxmfd" '+
-                                        'Arquivo: '+ArqTmp+'.mfd não foi criado' ) ) ;
+                                        'Arquivo: '+ArqTmp+' não foi criado' ) ) ;
 
      SysUtils.DeleteFile( NomeArquivo ) ;
-     Cmd := NomeArquivo + ' ' + ArqTmp + '.mfd 1 ' + DiaIni + ' ' + DiaFim + ' ' + Prop ;
+     Cmd := NomeArquivo + ' ' + ArqTmp + ' 1 ' + DiaIni + ' ' + DiaFim + ' ' + Prop ;
      RunCommand('./bemamfd2',Cmd,True) ;
 
      if not FileExists( NomeArquivo ) then
         raise Exception.Create( ACBrStr( 'Erro na execução do utilitário "bemamfd2".'+sLineBreak+
                                 'Arquivo: "'+NomeArquivo + '" não gerado' )) ;
   finally
-     DeleteFile( ArqTmp + '.mfd' ) ;
+     DeleteFile( ArqTmp ) ;
      Ativo := OldAtivo ;
   end;
  {$ELSE}
@@ -3618,31 +3620,27 @@ begin
 
   OldAtivo := Ativo ;
   try
-     Ativo := False;
-
      AbrePortaSerialDLL( fpDevice.Porta, ExtractFilePath( NomeArquivo ) ) ;
 
-     Resp := xBematech_FI_DownloadMFD( PAnsiChar( ArqTmp + '.mfd'),   // Arquivo de Saida
-                                       '1',                       // 1 = Por Data
-                                       PAnsiChar( DiaIni ),
-                                       PAnsiChar( DiaFim ),
-                                       PAnsiChar( Prop ) ) ;          // Propietário Atual
+     Resp := xBematech_FI_DownloadMFD( ArqTmp,            // Arquivo de Saida
+                                       '1',               // 1 = Por Data
+                                       DiaIni, DiaFim,
+                                       Prop ) ;           // Propietário Atual
 
      if (Resp <> 1) then
         raise Exception.Create( ACBrStr( 'Erro ao executar Bematech_FI_DownloadMFD.'+sLineBreak+
                                          'Cod.: '+IntToStr(Resp) )) ;
 
-     if not FileExists( ArqTmp + '.mfd' ) then
+     if not FileExists( ArqTmp ) then
         raise Exception.Create( ACBrStr( 'Erro na execução de Bematech_FI_DownloadMFD.'+sLineBreak+
-                               'Arquivo: "'+ArqTmp + '.mfd" não gerado' )) ;
+                               'Arquivo: "'+ArqTmp + '" não gerado' )) ;
 
-     Resp := xBematech_FI_FormatoDadosMFD( PAnsiChar( ArqTmp + '.mfd'),   // Arquivo de Entrada
-                                           PAnsiChar( NomeArquivo ),      // Arquivo de Saida
-                                           '0',                       // Formato TXT
-                                           '1',                       // Por Data
-                                           PAnsiChar( DiaIni ),
-                                           PAnsiChar( DiaFim ),
-                                           PAnsiChar( Prop ) ) ;          // Propietário Atual
+     Resp := xBematech_FI_FormatoDadosMFD( ArqTmp,            // Arquivo de Entrada
+                                           NomeArquivo,       // Arquivo de Saida
+                                           '0',               // Formato TXT
+                                           '1',               // Por Data
+                                           DiaIni, DiaFim,
+                                           Prop ) ;           // Propietário Atual
      if (Resp <> 1) then
         raise Exception.Create( ACBrStr( 'Erro ao executar Bematech_FI_FormatoDadosMFD.'+sLineBreak+
                                          'Cod.: '+IntToStr(Resp) )) ;
@@ -3652,7 +3650,7 @@ begin
                                 'Arquivo: "'+NomeArquivo + '" não gerado' )) ;
   finally
      xBematech_FI_FechaPortaSerial();
-     DeleteFile( ArqTmp + '.mfd' ) ;
+     DeleteFile( ArqTmp ) ;
      Ativo := OldAtivo ;
   end;
  {$ENDIF}
@@ -3666,8 +3664,8 @@ var
   OldAtivo : Boolean ;
   {$IFDEF LINUX} Cmd : String ; {$ENDIF}
 begin
-  ArqTmp := ExtractFilePath( NomeArquivo ) + 'ACBr' ;
-  DeleteFile( ArqTmp + '.mfd' ) ;
+  ArqTmp := ExtractFilePath( NomeArquivo ) + 'ACBr.mfd' ;
+  DeleteFile( ArqTmp ) ;
 
   CooIni := IntToStrZero( COOInicial, 6 ) ;
   CooFim := IntToStrZero( COOFinal, 6 ) ;
@@ -3678,22 +3676,22 @@ begin
   try
      Ativo := False;
 
-     Cmd := fpDevice.Porta + ' ' + ArqTmp+'.mfd 2 '+ CooIni + ' ' + CooFim + ' ' + Prop  ;
+     Cmd := fpDevice.Porta + ' ' + ArqTmp+' 2 '+ CooIni + ' ' + CooFim + ' ' + Prop  ;
      RunCommand('./linuxmfd',Cmd,True) ;
 
-     if not FileExists( ArqTmp + '.mfd' ) then
+     if not FileExists( ArqTmp ) then
         raise Exception.Create( ACBrStr('Erro na execução do utilitário "linuxmfd" '+
-                                        'Arquivo: '+ArqTmp+'.mfd não foi criado' ) ) ;
+                                        'Arquivo: '+ArqTmp+' não foi criado' ) ) ;
 
      SysUtils.DeleteFile( NomeArquivo ) ;
-     Cmd := NomeArquivo + ' ' + ArqTmp + '.mfd 2 ' + CooIni + ' ' + CooFim + ' ' + Prop ;
+     Cmd := NomeArquivo + ' ' + ArqTmp + ' 2 ' + CooIni + ' ' + CooFim + ' ' + Prop ;
      RunCommand('./bemamfd2',Cmd,True) ;
 
      if not FileExists( NomeArquivo ) then
         raise Exception.Create( ACBrStr( 'Erro na execução do utilitário "bemamfd2".'+sLineBreak+
                                 'Arquivo: "'+NomeArquivo + '" não gerado' )) ;
   finally
-     DeleteFile( ArqTmp + '.mfd' ) ;
+     DeleteFile( ArqTmp ) ;
      Ativo := OldAtivo ;
   end;
  {$ELSE}
@@ -3701,31 +3699,27 @@ begin
 
   OldAtivo := Ativo ;
   try
-     Ativo := False;
-
      AbrePortaSerialDLL( fpDevice.Porta, ExtractFilePath( NomeArquivo ) ) ;
 
-     Resp := xBematech_FI_DownloadMFD( PAnsichar( ArqTmp + '.mfd'),   // Arquivo de Saida
-                                       '2',                       // 2 = Por Coo
-                                       PAnsiChar( CooIni ),
-                                       PAnsiChar( CooFim ),
-                                       PAnsiChar( Prop ) ) ;          // Propietário Atual
+     Resp := xBematech_FI_DownloadMFD( ArqTmp,            // Arquivo de Saida
+                                       '2',               // 2 = Por Coo
+                                       CooIni, CooFim,
+                                       Prop ) ;           // Propietário Atual
 
      if (Resp <> 1) then
         raise Exception.Create( ACBrStr( 'Erro ao executar Bematech_FI_DownloadMFD.'+sLineBreak+
                                          'Cod.: '+IntToStr(Resp) )) ;
 
-     if not FileExists( ArqTmp + '.mfd' ) then
+     if not FileExists( ArqTmp ) then
         raise Exception.Create( ACBrStr( 'Erro na execução de Bematech_FI_DownloadMFD.'+sLineBreak+
-                               'Arquivo: "'+ArqTmp + '.mfd" não gerado' )) ;
+                               'Arquivo: "'+ArqTmp + '" não gerado' )) ;
 
-     Resp := xBematech_FI_FormatoDadosMFD( PAnsichar( ArqTmp + '.mfd'),   // Arquivo de Entrada
-                                           PAnsichar( NomeArquivo ),      // Arquivo de Saida
-                                           '0',                       // Formato TXT
-                                           '2',                       // Por COO
-                                           PAnsichar( CooIni ),
-                                           PAnsichar( CooFim ),
-                                           PAnsichar( Prop ) ) ;          // Propietário Atual
+     Resp := xBematech_FI_FormatoDadosMFD( ArqTmp,            // Arquivo de Entrada
+                                           NomeArquivo,       // Arquivo de Saida
+                                           '0',               // Formato TXT
+                                           '2',               // Por COO
+                                           CooIni, CooFim,
+                                           Prop ) ;           // Propietário Atual
      if (Resp <> 1) then
         raise Exception.Create( ACBrStr( 'Erro ao executar Bematech_FI_FormatoDadosMFD.'+sLineBreak+
                                          'Cod.: '+IntToStr(Resp) )) ;
@@ -3735,7 +3729,7 @@ begin
                                 'Arquivo: "'+NomeArquivo + '" não gerado' )) ;
   finally
      xBematech_FI_FechaPortaSerial();
-     DeleteFile( ArqTmp + '.mfd' ) ;
+     DeleteFile( ArqTmp ) ;
      Ativo := OldAtivo ;
   end;
  {$ENDIF}
@@ -3749,11 +3743,11 @@ Var
   Resp : Integer ;
   DiaIni, DiaFim, Prop, ArqTmp, cEndereco, cRazao : AnsiString ;
   OldAtivo : Boolean ;
-  Tipo: PAnsiChar;
+  Tipo: AnsiChar;
   {$IFDEF LINUX} Cmd : String ; {$ENDIF}
 begin
-  ArqTmp := ExtractFilePath( NomeArquivo ) +'ACBr';
-  DeleteFile( ArqTmp + '.mfd' ) ;
+  ArqTmp := ExtractFilePath( NomeArquivo ) +'ACBr.mfd';
+  DeleteFile( ArqTmp ) ;
 
   DiaIni := FormatDateTime('ddmmyy',DataInicial) ;
   DiaFim := FormatDateTime('ddmmyy',DataFinal) ;
@@ -3789,22 +3783,22 @@ begin
   try
      Ativo := False;
 
-     Cmd := fpDevice.Porta + ' ' + ArqTmp+'.mfd 3 ' + DiaIni + ' ' + DiaFim + ' ' + Prop;
+     Cmd := fpDevice.Porta + ' ' + ArqTmp+' 3 ' + DiaIni + ' ' + DiaFim + ' ' + Prop;
      RunCommand('./linuxmfd',Cmd,True) ;
 
-     if not FileExists( ArqTmp + '.mfd' ) then
+     if not FileExists( ArqTmp ) then
         raise Exception.Create( ACBrStr('Erro na execução do utilitário "linuxmfd" '+
-                                        'Arquivo: '+ArqTmp+'.mfd não foi criado' ) ) ;
+                                        'Arquivo: '+ArqTmp+' não foi criado' ) ) ;
 
      SysUtils.DeleteFile( NomeArquivo ) ;
-     Cmd := NomeArquivo + ' ' + ArqTmp + '.mfd 3 ' + DiaIni + ' ' + DiaFim + ' ' + Prop ;
+     Cmd := NomeArquivo + ' ' + ArqTmp + ' 3 ' + DiaIni + ' ' + DiaFim + ' ' + Prop ;
      RunCommand('./bemamfd2',Cmd,True) ;
 
      if not FileExists( NomeArquivo ) then
         raise Exception.Create( ACBrStr( 'Erro na execução do utilitário "bemamfd2".'+sLineBreak+
                                 'Arquivo: "'+NomeArquivo + '" não gerado' )) ;
   finally
-     DeleteFile( ArqTmp + '.mfd' ) ;
+     DeleteFile( ArqTmp ) ;
      Ativo := OldAtivo ;
   end;
  {$ELSE}
@@ -3812,32 +3806,27 @@ begin
 
   OldAtivo := Ativo ;
   try
-     Ativo := False;
-
      AbrePortaSerialDLL( fpDevice.Porta, ExtractFilePath( NomeArquivo ) ) ;
 
-     Resp := xBematech_FI_DownloadMFD( PAnsiChar( ArqTmp + '.mfd'),   // Arquivo de Saida
-                                       '1',                       // 1 = Por Data
-                                       PAnsiChar( DiaIni ),
-                                       PAnsiChar( DiaFim ),
-                                       PAnsiChar( Prop ) ) ;          // Propietário Atual
+     Resp := xBematech_FI_DownloadMFD( ArqTmp,            // Arquivo de Saida
+                                       '1',               // 1 = Por Data
+                                       DiaIni, DiaFim,
+                                       Prop ) ;           // Propietário Atual
 
      if (Resp <> 1) then
         raise Exception.Create( ACBrStr( 'Erro ao executar Bematech_FI_DownloadMFD.'+sLineBreak+
                                          'Cod.: '+IntToStr(Resp) )) ;
 
-     if not FileExists( ArqTmp + '.mfd' ) then
+     if not FileExists( ArqTmp ) then
         raise Exception.Create( ACBrStr( 'Erro na execução de Bematech_FI_DownloadMFD.'+sLineBreak+
-                               'Arquivo: "'+ArqTmp + '.mfd" não gerado' )) ;
+                               'Arquivo: "'+ArqTmp + '" não gerado' )) ;
 
      // tipo do formato do arquivo se a emissão ocorreu por LMFC ou Arq.MFD
-     Resp := xBemaGeraRegistrosTipoE( PAnsiChar( ArqTmp + '.mfd'),
-                                      PAnsichar( NomeArquivo ),
-                                      PAnsiChar( DiaIni ),
-                                      PAnsiChar( DiaFim ),
-                                      PAnsichar( cRazao ),
-                                      PAnsichar( cEndereco ),
-                                      '',Tipo, '', '', '', '', '', '', '', '',
+     Resp := xBemaGeraRegistrosTipoE( ArqTmp,
+                                      NomeArquivo,
+                                      DiaIni, DiaFim ,
+                                      cRazao, cEndereco,
+                                      '', Tipo, '', '', '', '', '', '', '', '',
                                       '', '', '', '', '' );
 
      if (Resp < 0) or (Resp > 1) then
@@ -3853,7 +3842,7 @@ begin
                                 'Arquivo: "'+NomeArquivo + '" não gerado' )) ;
   finally
      xBematech_FI_FechaPortaSerial();
-     DeleteFile( ArqTmp + '.mfd' ) ;
+     DeleteFile( ArqTmp ) ;
      Ativo := OldAtivo ;
   end;
  {$ENDIF}
@@ -3903,7 +3892,7 @@ Var
   Resp : Integer ;
   DiaIni, DiaFim, Prop, ArqTmp, cEndereco, cRazao, COOIni, CooFim : AnsiString ;
   OldAtivo : Boolean ;
-  Tipo: PAnsiChar;
+  Tipo: Char;
   cArqTemp, cArqTempTXT : TextFile;
   cLinha : string;
   Texto : TStringList;
@@ -3974,15 +3963,12 @@ begin
 
   OldAtivo := Ativo ;
   try
-     Ativo := False;
-
      AbrePortaSerialDLL( fpDevice.Porta, ExtractFilePath( NomeArquivo ) ) ;
 
-     Resp := xBematech_FI_DownloadMFD( PAnsiChar( ArqTmp + '.mfd'),   // Arquivo de Saida
-                                       '2',                       // 1 = Por Data
-                                       PAnsiChar( CooIni ),
-                                       PAnsiChar( CooFim ),
-                                       PAnsiChar( Prop ) ) ;          // Propietário Atual
+     Resp := xBematech_FI_DownloadMFD( ArqTmp + '.mfd',   // Arquivo de Saida
+                                       '2',               // 1 = Por Data
+                                       CooIni, CooFim,
+                                       Prop ) ;           // Propietário Atual
      if (Resp <> 1) then
         raise Exception.Create( ACBrStr( 'Erro ao executar Bematech_FI_DownloadMFD.'+sLineBreak+
                                          'Cod.: '+IntToStr(Resp) )) ;
@@ -3992,11 +3978,10 @@ begin
                                'Arquivo: "'+ArqTmp + '.mfd" não gerado' )) ;
 
 
-     Resp := xGeraTxtPorCOO( PAnsiChar( ArqTmp + '.mfd'),
-                             PAnsiChar( ArqTmp+'_ESP_' + '.txt'),
+     Resp := xGeraTxtPorCOO( ArqTmp + '.mfd',
+                             ArqTmp+'_ESP_' + '.txt',
                              StrToInt(Prop),
-                             ContInicial,
-                             ContFinal);
+                             ContInicial, ContFinal);
 
      if (Resp < 0) or (Resp > 1) then
         raise Exception.Create( ACBrStr( 'Erro ao executar GeraTxtPorCOO.'+sLineBreak+
@@ -4052,15 +4037,10 @@ begin
 
      // Função que executa a geração do arquivo no layout do Ato Cotepe 17/04
      // para o PAF-ECF, por intervalo de datas previamente capturadas.
-//   Resp := xBematech_FI_HabilitaDesabilitaRetornoEstendidoMFD('1');
-//   Resp := xBematech_FI_RetornoImpressoraMFD(iACK,iST1,iST2,iST3);
-
-     Resp := xBemaGeraRegistrosTipoE( PAnsiChar( ArqTmp + '.mfd'),
-                                      PAnsichar( NomeArquivo ),
-                                      PAnsiChar( DiaIni ),
-                                      PAnsiChar( DiaFim ),
-                                      PAnsichar( cRazao ),
-                                      PAnsichar( cEndereco ),
+     Resp := xBemaGeraRegistrosTipoE( ArqTmp + '.mfd',
+                                      NomeArquivo,
+                                      DiaIni, DiaFim,
+                                      cRazao, cEndereco,
                                       '',Tipo,'','','','','','','','','','','','','' );
 
      if (Resp < 0) or (Resp > 1) then

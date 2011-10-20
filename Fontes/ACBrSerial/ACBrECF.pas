@@ -5204,7 +5204,7 @@ begin
   if Assigned( fsOnPAFCalcEAD ) then
      fsOnPAFCalcEAD( Arquivo )
   else
-     GetACBrEAD.AssinarArquivoComEAD( Arquivo ) ;
+     GetACBrEAD.AssinarArquivoComEAD( Arquivo, True ) ;
 
   Result := True;
 end;

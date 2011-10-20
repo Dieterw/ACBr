@@ -169,11 +169,12 @@ TACBrECFEpson = class( TACBrECFClass )
     xEPSON_Serial_Abrir_Porta : function (dwVelocidade:Integer; wPorta:Integer):Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
     xEPSON_Serial_Fechar_Porta : function : Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
     xEPSON_Serial_Obter_Estado_Com : function : Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
-    xEPSON_Obter_Dados_MF_MFD : function (pszInicio:PAnsiChar; pszFinal:PAnsiChar;
+    xEPSON_Obter_Dados_MF_MFD : function (pszInicio:AnsiString; pszFinal:AnsiString;
        dwTipoEntrada:Integer; dwEspelhos:Integer; dwAtoCotepe:Integer;
-       dwSintegra:Integer; pszArquivoSaida:PAnsiChar) : Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
+       dwSintegra:Integer; pszArquivoSaida:AnsiString) : Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
 
     procedure Ativar_Epson ;
+    procedure FechaPortaSerialDLL(const OldAtivo : Boolean) ;
 
     procedure LoadDLLFunctions;
     procedure AbrePortaSerialDLL;
@@ -1026,6 +1027,7 @@ begin
      raise Exception.Create(ACBrStr('A impressora: '+fpModeloStr+' requer'+sLineBreak+
                             'Porta Serial:  (COM1, COM2, COM3, ...)'));
 
+  GravaLog( 'ACBrDevice.Ativar' );
   inherited Ativar ; { Abre porta serial }
 
   fsNumVersao := '' ;
@@ -1739,7 +1741,7 @@ begin
               Dec( COOCDC ) ;
            end ;
 
-           // Agora sim... Cancelando o Cupom
+           { Agora sim... Cancelando o Cupom }
            CancelaCupom;
          end
         else
@@ -3116,6 +3118,15 @@ begin
   end ;
 end;
 
+procedure TACBrECFEpson.ZeraCache( ZeraRespostaComando: Boolean ) ;
+begin
+  if ZeraRespostaComando then
+     RespostasComando.Clear;
+
+  fsRet0906 := '';
+  fsRet0907 := '';
+end ;
+
 procedure TACBrECFEpson.LoadDLLFunctions ;
  procedure EpsonFunctionDetect( FuncName: String; var LibPointer: Pointer ) ;
  var
@@ -3150,19 +3161,36 @@ Var
 begin
   Porta := StrToIntDef( OnlyNumber( fpDevice.Porta ), 0) ;
 
+  GravaLog( 'Desativando ACBrECF' );
+  Ativo := False ;
+
+  GravaLog( 'xEPSON_Serial_Abrir_Porta' );
   Resp := xEPSON_Serial_Abrir_Porta( fpDevice.Baud, Porta ) ;
   if Resp <> 0 then
      raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao abrir a Porta com:'+sLineBreak+
         'EPSON_Serial_Abrir_Porta('+IntToStr(fpDevice.Baud)+', '+IntToStr(Porta)+')' ));
 end ;
 
-procedure TACBrECFEpson.ZeraCache( ZeraRespostaComando: Boolean ) ;
+procedure TACBrECFEpson.FechaPortaSerialDLL(const OldAtivo : Boolean) ;
+var
+  OldTimeOut : Integer ;
 begin
-  if ZeraRespostaComando then
-     RespostasComando.Clear;
+  GravaLog( 'xEPSON_Serial_Fechar_Porta' ) ;
+  xEPSON_Serial_Fechar_Porta ;
 
-  fsRet0906 := '';
-  fsRet0907 := '';
+  GravaLog( 'Ativando ACBr: '+ifthen(OldAtivo,'SIM','NAO') ) ;
+  Sleep( 500 ) ;
+
+  if OldAtivo then
+  begin
+    OldTimeOut := TimeOut;
+    try
+      TimeOut := 10;   // Tenta ativar com um TimeOut maior
+      Ativo   := True
+    finally
+      TimeOut := OldTimeOut;
+    end ;
+  end ;
 end ;
 
 procedure TACBrECFEpson.EspelhoMFD_DLL(DataInicial,
@@ -3180,25 +3208,23 @@ begin
 
   OldAtivo := Ativo ;
   try
-    Ativo := False ;
-
     AbrePortaSerialDLL ;
 
     DiaIni := FormatDateTime('ddmmyyyy',DataInicial) ;
     DiaFim := FormatDateTime('ddmmyyyy',DataFinal) ;
 
-    Resp := xEPSON_Obter_Dados_MF_MFD(  PAnsiChar(DiaIni), PAnsiChar(DiaFim),
+    GravaLog( 'xEPSON_Obter_Dados_MF_MFD' );
+    Resp := xEPSON_Obter_Dados_MF_MFD(  DiaIni, DiaFim,
                                         0,                // Faixa em Datas
                                         DocumentosToNum(Documentos),
                                         0,                // Não Gera Ato Cotepe
                                         0,                // Nao Gera Sintegra
-                                        PAnsiChar( ArqTmp ) );
+                                        ArqTmp );
     if (Resp <> 0) then
       raise Exception.Create( ACBrStr( 'Erro ao executar EPSON_Obter_Dados_MF_MFD.'+sLineBreak+
                                        'Cod.: '+IntToStr(Resp) ))
   finally
-    xEPSON_Serial_Fechar_Porta ;
-    Ativo := OldAtivo ;
+    FechaPortaSerialDLL(OldAtivo) ;
   end ;
 
   if FileExists( ArqTmp + '_ESP.txt' ) then
@@ -3227,25 +3253,23 @@ begin
 
   OldAtivo := Ativo ;
   try
-    Ativo := False ;
-
     AbrePortaSerialDLL ;
 
     CooIni := IntToStr( COOInicial ) ;
     CooFim := IntToStr( COOFinal ) ;
 
-    Resp := xEPSON_Obter_Dados_MF_MFD(  PAnsiChar(COOIni), PAnsiChar(CooFim),
+    GravaLog( 'xEPSON_Obter_Dados_MF_MFD' );
+    Resp := xEPSON_Obter_Dados_MF_MFD(  COOIni, CooFim,
                                         2,                // Faixa em COO
                                         DocumentosToNum(Documentos),
                                         0,                // Não Gera Ato Cotepe
                                         0,                // Nao Gera Sintegra
-                                        PAnsiChar( ArqTmp ) );
+                                        ArqTmp );
     if (Resp <> 0) then
       raise Exception.Create( ACBrStr( 'Erro ao executar EPSON_Obter_Dados_MF_MFD.'+sLineBreak+
                                        'Cod.: '+IntToStr(Resp) ))
   finally
-    xEPSON_Serial_Fechar_Porta ;
-    Ativo := OldAtivo ;
+    FechaPortaSerialDLL(OldAtivo);
   end ;
 
   if FileExists( ArqTmp + '_ESP.txt' ) then
@@ -3282,25 +3306,23 @@ begin
 
   OldAtivo := Ativo ;
   try
-    Ativo := False ;
-
     AbrePortaSerialDLL ;
 
     DiaIni := FormatDateTime('ddmmyyyy',DataInicial) ;
     DiaFim := FormatDateTime('ddmmyyyy',DataFinal) ;
 
-    Resp := xEPSON_Obter_Dados_MF_MFD(  PAnsiChar(DiaIni), PAnsiChar(DiaFim),
+    GravaLog( 'xEPSON_Obter_Dados_MF_MFD' );
+    Resp := xEPSON_Obter_Dados_MF_MFD(  DiaIni, DiaFim,
                                         0,                // Faixa em Datas
                                         DocumentosToNum(Documentos),
                                         Tipo,
                                         0,                // Nao Gera Sintegra
-                                        PAnsiChar( ArqTmp ) );
+                                        ArqTmp );
     if (Resp <> 0) then
       raise Exception.Create( ACBrStr( 'Erro ao executar EPSON_Obter_Dados_MF_MFD.'+sLineBreak+
                                        'Cod.: '+IntToStr(Resp) ))
   finally
-    xEPSON_Serial_Fechar_Porta ;
-    Ativo := OldAtivo ;
+    FechaPortaSerialDLL(OldAtivo);
   end ;
 
   if FileExists( ArqTmp + '_CTP.txt' ) then
@@ -3338,25 +3360,23 @@ begin
 
   OldAtivo := Ativo ;
   try
-    Ativo := False ;
-
     AbrePortaSerialDLL ;
 
     CooIni := IntToStr( ContInicial ) ;
     CooFim := IntToStr( ContFinal ) ;
 
-    Resp := xEPSON_Obter_Dados_MF_MFD(  PAnsiChar(COOIni), PAnsiChar(CooFim),
+    GravaLog( 'xEPSON_Obter_Dados_MF_MFD' );
+    Resp := xEPSON_Obter_Dados_MF_MFD(  COOIni, CooFim,
                                         IfThen( TipoContador = tpcCOO, 2, 1),
                                         DocumentosToNum(Documentos),
                                         Tipo,
                                         0,                // Nao Gera Sintegra
-                                        PAnsiChar( ArqTmp ) );
+                                        ArqTmp );
     if (Resp <> 0) then
       raise Exception.Create( ACBrStr( 'Erro ao executar EPSON_Obter_Dados_MF_MFD.'+sLineBreak+
                                        'Cod.: '+IntToStr(Resp) ))
   finally
-    xEPSON_Serial_Fechar_Porta ;
-    Ativo := OldAtivo ;
+    FechaPortaSerialDLL(OldAtivo) ;
   end ;
 
   if FileExists( ArqTmp + '_CTP.txt' ) then

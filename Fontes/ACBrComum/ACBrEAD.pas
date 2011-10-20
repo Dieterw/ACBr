@@ -116,7 +116,9 @@ type
     Procedure GerarChaves( var AChavePublica : AnsiString;
        var AChavePrivada : AnsiString ) ;
 
-    function AssinarArquivoComEAD( const NomeArquivo: String) : AnsiString ;
+    function AssinarArquivoComEAD( const NomeArquivo: String;
+       RemoveEADSeExistir : Boolean = False ) : AnsiString ;
+    Procedure RemoveEADArquivo( const NomeArquivo: String) ;
 
     function VerificarEADArquivo( const NomeArquivo: String): Boolean ; overload ;
     function VerificarEAD( const AString : AnsiString): Boolean ; overload ;
@@ -222,7 +224,7 @@ begin
   {$ENDIF}
 end;
 
-Function TACBrEAD.BioToStr( ABio: pBIO) : String ;
+function TACBrEAD.BioToStr(ABio : pBIO) : String ;
 Var
   {$IFDEF USE_libeay32}
    Buf : array [0..1023] of AnsiChar;
@@ -252,8 +254,8 @@ begin
   {$ENDIF}
 end ;
 
-procedure TACBrEAD.GerarChaves( var AChavePublica : AnsiString;
-  var AChavePrivada : AnsiString ) ;
+procedure TACBrEAD.GerarChaves(var AChavePublica : AnsiString ;
+  var AChavePrivada : AnsiString) ;
 
   function FindFileSeed : String ;
   var
@@ -394,7 +396,8 @@ begin
   {$ENDIF}
 end ;
 
-function TACBrEAD.GerarXMLeECFc( const NomeSwHouse, Diretorio : String ) : Boolean ;
+function TACBrEAD.GerarXMLeECFc(const NomeSwHouse, Diretorio : String
+  ) : Boolean ;
 Var
   Modulo, Expoente : AnsiString ;
   SL : TStringList ;
@@ -631,12 +634,40 @@ begin
 end ;
 
 
-function TACBrEAD.AssinarArquivoComEAD( const NomeArquivo: String) : AnsiString ;
+function TACBrEAD.AssinarArquivoComEAD(const NomeArquivo : String ;
+  RemoveEADSeExistir : Boolean) : AnsiString ;
 begin
+  if RemoveEADSeExistir then
+     RemoveEADArquivo( NomeArquivo );
+
   Result := CalcularEADArquivo( NomeArquivo );
   if Result <> '' then
      WriteToTXT( NomeArquivo, 'EAD' + Result, True, False );  // Compatiblidade Linux
 end;
+
+procedure TACBrEAD.RemoveEADArquivo(const NomeArquivo : String) ;
+Var
+  SL : TStringList ;
+  SLBottom : Integer ;
+begin
+  VerificaNomeArquivo( NomeArquivo );
+
+  SL := TStringList.Create;
+  try
+     SL.LoadFromFile( NomeArquivo );
+     if SL.Count < 1 then
+       raise Exception.Create( 'Conteudo do Arquivo Informado é vazio' );
+
+     SLBottom := SL.Count-1 ;  // Pega a última linha do arquivo,
+     if UpperCase( copy( SL[ SLBottom ],1,3) ) = 'EAD' then
+     begin
+        SL.Delete( SLBottom );    // remove a linha do EAD
+        SL.SaveToFile( NomeArquivo );
+     end ;
+  finally
+     SL.Free;
+  end ;
+end ;
 
 function TACBrEAD.VerificarEADArquivo(const NomeArquivo : String) : Boolean ;
 Var
@@ -676,7 +707,7 @@ begin
      raise Exception.Create( 'Conteudo Informado é vazio' );
 
   SLBottom := AStringList.Count-1;   // Pega a última linha do arquivo,
-  EAD := AStringList[ SLBottom ] ;  // pois ela contem o EAD, e depois,
+  EAD := AStringList[ SLBottom ] ;   // pois ela contem o EAD, e depois,
   AStringList.Delete( SLBottom );    // remove a linha do EAD
 
   MS := TMemoryStream.Create;

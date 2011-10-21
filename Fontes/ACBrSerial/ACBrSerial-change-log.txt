@@ -99,6 +99,12 @@ Símbolo : Significado
 
 Data: 20/10/2011
 -- ACBrECF --
+[*] Alteração na formação do rodapé conforme alterações da especificação de 
+    requisitos do paf-ecf
+    por: Régys Silveira
+
+Data: 20/10/2011
+-- ACBrECF --
 [*] Método TACBrECF.AssinaArquivoComEAD modificado para verificar se o arquivo
     gerado pela DLL do ECF já possui ou não registro EAD
 

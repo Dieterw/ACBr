@@ -2927,23 +2927,24 @@ begin
 
   { montar o rodape quando as informações de rodapé forem passadas }
   RodapePafECF := EmptyStr;
+
   // atende ao requisito do paf-ECF
   if Trim(InfoRodapeCupom.MD5) <> EmptyStr then
-    RodapePafECF := RodapePafECF + #10 + 'MD5:' + Trim(InfoRodapeCupom.MD5);
-
-  // atende ao requisito do paf-ECF VI item 5
-  if Trim(InfoRodapeCupom.Dav) <> EmptyStr then
-    RodapePafECF := RodapePafECF + #10 + 'DAV' + Trim(InfoRodapeCupom.Dav);
+    RodapePafECF := 'MD5:' + Trim(InfoRodapeCupom.MD5);
 
   // atende ao requisito do paf-ECF V item 2
   if Trim(InfoRodapeCupom.PreVenda) <> EmptyStr then
-    RodapePafECF := RodapePafECF + #10 + 'PV' + Trim(InfoRodapeCupom.PreVenda);
+    RodapePafECF := RodapePafECF + 'PV' + Trim(InfoRodapeCupom.PreVenda);
+
+  // atende ao requisito do paf-ECF VI item 5
+  if Trim(InfoRodapeCupom.Dav) <> EmptyStr then
+    RodapePafECF := RodapePafECF + 'DAV' + Trim(InfoRodapeCupom.Dav);
 
   // atende ao requisito do paf-ECF XLI item 1
   if Trim(InfoRodapeCupom.DavOs) <> EmptyStr then
-    RodapePafECF := RodapePafECF + #10 + 'DAV-OS' + Trim(InfoRodapeCupom.DavOs);
+    RodapePafECF := RodapePafECF + 'DAV-OS' + Trim(InfoRodapeCupom.DavOs);
 
-  // atende ao cupom mania do RJ
+  // atende ao requisito VII-A 2-A (Cupom Mania [RJ])
   if InfoRodapeCupom.CupomMania then
   begin
     RodapePafECF := RodapePafECF + #10 +
@@ -2955,9 +2956,10 @@ begin
       Format('%3.3d', [StrToInt(NumECF)]);  // numero do ecf
   end;
 
+  // atende ao requisito VII-A 2 (Minas Legal [MG])
+  // (Retificação http://www.fazenda.gov.br/confaz/confaz/atos/atos_cotepe/2011/AC039_11%20retifica%C3%A7%C3%A3o.htm)
   if InfoRodapeCupom.MinasLegal then
   begin
-    // atende ao requisito do paf-ecf VIII-A itens 1,2 e 3
     RodapePafECF := RodapePafECF + #10 + Format(
       'MINAS LEGAL: %s %s %s', [
       OnlyNumber(CNPJ),

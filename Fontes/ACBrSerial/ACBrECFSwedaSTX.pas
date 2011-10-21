@@ -102,7 +102,7 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
     fsRespostasComando : String ;
     fsFalhasRX : Byte ;
 
-    xECF_AbrePortaSerial : Function: Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
+    xECF_AbreConnectC : Function(Meio: Integer; PathW: AnsiString): Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
     xECF_DownloadMFD : Function (Arquivo: AnsiString; TipoDownload: AnsiString;
       ParametroInicial: AnsiString; ParametroFinal: AnsiString; UsuarioECF: AnsiString ):
       Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
@@ -112,7 +112,7 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
     xECF_DownloadMF : Function(Arquivo:AnsiString):Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
 
 
-    procedure AbrePortaSerialDLL;
+    procedure AbrePortaSerialDLL( APath : AnsiString );
     procedure LoadDLLFunctions;
 
     function RemoveNulos(Str:AnsiString):AnsiString;
@@ -940,7 +940,7 @@ begin
   OldAtivo := Ativo ;
   try
     Ativo := False ;
-    AbrePortaSerialDLL ;
+    AbrePortaSerialDLL( ExtractFilePath( NomeArquivo ) ) ;
 
     CooIni := IntToStrZero( COOInicial, 6 ) ;
     CooFim := IntToStrZero( COOFinal, 6 ) ;
@@ -976,7 +976,7 @@ begin
     ShortDateFormat    := 'dd/mm/yy' ;
 
     Ativo := False ;
-    AbrePortaSerialDLL ;
+    AbrePortaSerialDLL( ExtractFilePath( NomeArquivo ) ) ;
 
     DiaIni := FormatDateTime('DD/MM/YY',DataInicial) ;
     DiaFim := FormatDateTime('DD/MM/YY',DataFinal) ;
@@ -1012,7 +1012,7 @@ begin
   OldAtivo := Ativo ;
   try
     Ativo := False ;
-    AbrePortaSerialDLL ;
+    AbrePortaSerialDLL( ExtractFilePath( NomeArquivo ) ) ;
 
     if TipoContador = tpcCRZ then
     begin
@@ -1080,7 +1080,7 @@ begin
   OldDateSeparator   := DateSeparator;
   try
     Ativo := False ;
-    AbrePortaSerialDLL ;
+    AbrePortaSerialDLL( ExtractFilePath( NomeArquivo ) ) ;
 
     DateSeparator      :='/';
     ShortDateFormat    := 'dd/mm/yy' ;
@@ -1904,7 +1904,7 @@ begin
    {$ENDIF}
    DeleteFile( ExtractFilePath( sLibName ) + 'SWC.INI');
 
-   SwedaFunctionDetect('ECF_AbrePortaSerial', @xECF_AbrePortaSerial);
+   SwedaFunctionDetect('ECF_AbreConnectC', @xECF_AbreConnectC);
    SwedaFunctionDetect('ECF_DownloadMFD', @xECF_DownloadMFD);
    SwedaFunctionDetect('ECF_ReproduzirMemoriaFiscalMFD', @xECF_ReproduzirMemoriaFiscalMFD);
    SwedaFunctionDetect('ECF_FechaPortaSerial', @xECF_FechaPortaSerial);
@@ -2204,14 +2204,14 @@ begin
    EnviaComando('20');
 end;
 
-procedure TACBrECFSwedaSTX.AbrePortaSerialDLL ;
+procedure TACBrECFSwedaSTX.AbrePortaSerialDLL( APath : AnsiString ) ;
 Var
 //Porta : Integer ;
   Resp : Integer ;
 begin
 //Porta := StrToIntDef( OnlyNumber( fpDevice.Porta ), 0) ;
 
-  Resp := xECF_AbrePortaSerial;
+  Resp := xECF_AbreConnectC( 0, APath );
   if Resp <> 1 then
      raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao abrir a Porta com:'+sLineBreak+
         'ECF_AbrePortaSerial'));

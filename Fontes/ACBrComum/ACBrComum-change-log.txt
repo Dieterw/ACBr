@@ -38,6 +38,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+20/10/2011
+-- ACBrEAD --
+[+] Adicionado o método:
+    procedure TACBrEAD.RemoveEADArquivo(const NomeArquivo : String)
+
 24/08/2011
 -- ACBrAAC --
 [-] Acerto no método que atualização do MD5.

@@ -97,6 +97,48 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 20/10/2011
+-- ACBrECF --
+[*] Método TACBrECF.AssinaArquivoComEAD modificado para verificar se o arquivo
+    gerado pela DLL do ECF já possui ou não registro EAD
+
+-- ACBrECFEpson --
+[*] Declarações da DLL modificadas de PAnsiChar para AnsiString
+[*] Removido TypeCast PAnsiChar() de todas as chamadas a DLL
+[+] Adicionado método interno: FechaPortaSerialDLL para melhor controle da
+    transição entre o controle da Serial pela DLL de volta para o ACBrECF
+
+-- ACBrECFBematech --
+[*] Remoção de declaração de métodos da DLL não utilizados
+    xBematech_FI_HabilitaDesabilitaRetornoEstendidoMFD e
+    xBematech_FI_RetornoImpressoraMFD
+[*] método VerificaFimLeitura modificado para re-tentar 10 vezes e não apenas 3
+    http://www.djsystem.com.br/acbr/forum/viewtopic.php?p=16820#p16820
+[*] Método AbrePortaSerialDLL:
+    - Modificado para ajustar parâmetros em BemaFI32.ini antes da abertura da
+      Porta Serial pela DLL, caso o mesmo seja encontrado na mesma pasta de
+      Bemafi32.DLL
+    - Adicionado pequeno intervalo entre o desativamento do ACBrECF e a abertura
+      da DLL, para previnir erros de porta ocupada
+[*] Removido TypeCast PAnsiChar() de todas as chamadas a DLL
+
+-- ACBrECFSweda --
+[*] Declarações da DLL modificadas de PAnsiChar para AnsiString
+[*] Removido TypeCast PAnsiChar() de todas as chamadas a DLL
+
+-- ACBrECFSwedaSTX --
+[*] Declarações da DLL modificadas de PAnsiChar para AnsiString
+[*] Removido TypeCast PAnsiChar() de todas as chamadas a DLL
+[*] Função de abertura da porta serial pela DLL modificada para usar
+    "ECF_AbreConnectC", que permite informar o Path para os arquivos
+[*] Removido Tipo interno, TACBrECFSwedaInfo34A1 por falta de uso.
+[-] Melhorado suporte ao protocolo STX quando o Tipo de retorno for "!"
+    http://www.djsystem.com.br/acbr/forum/viewtopic.php?f=10&t=3427
+
+-- ACBrECFFiscNET --
+[*] Métodos ArquivoMFD_DLL modificados para usar as DLLs padrões da ZPM quando
+    o modelo nao for Elgin e (TermoPrinter ou DataRegis)
+
 Data: 15/10/2011
 -- ACBrECFDaruma --
 [*] Código de ativação modificado para ficar mais segura a detecção de MFD

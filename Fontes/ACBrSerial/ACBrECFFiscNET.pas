@@ -132,7 +132,7 @@ TACBrECFFiscNET = class( TACBrECFClass )
     fsFiscNETComando: TACBrECFFiscNETComando;
     fsFiscNETResposta: TACBrECFFiscNETResposta;
     fsComandoVendeItem : String ;
-    fsComandosImpressao : array[0..9] of AnsiString ;
+    fsComandosImpressao : array[0..10] of AnsiString ;
     fsEmPagamento : Boolean ;
     fsMarcaECF : String ;
 
@@ -635,6 +635,7 @@ begin
   fsComandosImpressao[7]  := #27 + 'W1';
   fsComandosImpressao[8]  := #27 + 'W0';
   fsComandosImpressao[9]  := #30 ;
+  fsComandosImpressao[10] := #12 ;
 end;
 
 destructor TACBrECFFiscNET.Destroy;
@@ -2919,31 +2920,7 @@ begin
      else
         cFinalidade := 'MFD';
 
-     if pos(fsMarcaECF, 'urano') > 0 then
-      begin
-        ArqTmp := ExtractFilePath( NomeArquivo ) + 'ACBr.TDM' ;
-        if FileExists( NomeArquivo ) then
-           DeleteFile( NomeArquivo ) ;
-
-        DiaIni := FormatDateTime('yyyymmdd', DataInicial);
-        DiaFim := FormatDateTime('yyyymmdd', DataFinal);
-
-        iRet := xDLLReadLeMemorias( PortaSerial, ArqTmp, NumFab, '1');
-
-        if iRet <> 0 then
-           raise Exception.Create( ACBrStr( 'Erro ao executar DLLReadLeMemorias.' + sLineBreak +
-                                            'Cod.: '+ IntToStr(iRet) + ' - ' +
-                                            GetErroAtoCotepe1704(iRet) )) ;
-
-        iRet := xDLLATO17GeraArquivo( ArqTmp, NomeArquivo, DiaIni, DiaFim,
-                                      'M', '1', cFinalidade );
-
-        if iRet <> 0 then
-           raise Exception.Create( ACBrStr( 'Erro ao executar DLLATO17GeraArquivo.' + sLineBreak +
-                                            'Cod.: '+ IntToStr(iRet) + ' - ' +
-                                            GetErroAtoCotepe1704(iRet) )) ;
-      end
-     else if pos(fsMarcaECF, 'dataregis|termoprinter') > 0 then
+     if pos(fsMarcaECF, 'dataregis|termoprinter') > 0 then
       begin
         DiaIni := FormatDateTime('dd/mm/yyyy', DataInicial);
         DiaFim := FormatDateTime('dd/mm/yyyy', DataFinal);
@@ -2993,7 +2970,29 @@ begin
         xElgin_FechaPortaSerial();
       end
      else
-        raise Exception.Create( ACBrStr( 'ArquivoMFD_DLL por período ainda não Implementado para: '+fsMarcaECF ) ) ;
+      begin
+        ArqTmp := ExtractFilePath( NomeArquivo ) + 'ACBr.TDM' ;
+        if FileExists( NomeArquivo ) then
+           DeleteFile( NomeArquivo ) ;
+
+        DiaIni := FormatDateTime('yyyymmdd', DataInicial);
+        DiaFim := FormatDateTime('yyyymmdd', DataFinal);
+
+        iRet := xDLLReadLeMemorias( PortaSerial, ArqTmp, NumFab, '1');
+
+        if iRet <> 0 then
+           raise Exception.Create( ACBrStr( 'Erro ao executar DLLReadLeMemorias.' + sLineBreak +
+                                            'Cod.: '+ IntToStr(iRet) + ' - ' +
+                                            GetErroAtoCotepe1704(iRet) )) ;
+
+        iRet := xDLLATO17GeraArquivo( ArqTmp, NomeArquivo, DiaIni, DiaFim,
+                                      'M', '1', cFinalidade );
+
+        if iRet <> 0 then
+           raise Exception.Create( ACBrStr( 'Erro ao executar DLLATO17GeraArquivo.' + sLineBreak +
+                                            'Cod.: '+ IntToStr(iRet) + ' - ' +
+                                            GetErroAtoCotepe1704(iRet) )) ;
+      end ;
   finally
      Ativo := OldAtivo ;
   end ;
@@ -3028,28 +3027,7 @@ begin
      else
         cFinalidade := 'MFD';
 
-     if pos(fsMarcaECF, 'urano') > 0 then
-      begin
-        ArqTmp := ExtractFilePath( NomeArquivo ) + 'ACBr.TDM' ;
-        if FileExists( NomeArquivo ) then
-           DeleteFile( NomeArquivo ) ;
-
-        iRet := xDLLReadLeMemorias( PortaSerial, ArqTmp, NumFab, '1');
-
-        if iRet <> 0 then
-           raise Exception.Create( ACBrStr( 'Erro ao executar DLLReadLeMemorias.' + sLineBreak +
-                                            'Cod.: '+ IntToStr(iRet) + ' - ' +
-                                            GetErroAtoCotepe1704(iRet) )) ;
-
-        iRet := xDLLATO17GeraArquivo( ArqTmp, NomeArquivo, CooIni, CooFim,
-                                      'C', '1', cFinalidade );
-
-        if iRet <> 0 then
-           raise Exception.Create( ACBrStr( 'Erro ao executar DLLATO17GeraArquivo.' + sLineBreak +
-                                            'Cod.: '+ IntToStr(iRet) + ' - ' +
-                                            GetErroAtoCotepe1704(iRet) )) ;
-      end
-     else if pos(fsMarcaECF, 'dataregis|termoprinter') > 0 then
+     if pos(fsMarcaECF, 'dataregis|termoprinter') > 0 then
       begin
         iRet := xGera_PAF( PortaSerial, ModeloECF, NomeArquivo, CooIni, CooFim );
 
@@ -3089,7 +3067,26 @@ begin
         xElgin_FechaPortaSerial();
       end
      else
-        raise Exception.Create( ACBrStr( 'ArquivoMFD_DLL por COO ainda não Implementado para: '+fsMarcaECF ) ) ;
+      begin
+        ArqTmp := ExtractFilePath( NomeArquivo ) + 'ACBr.TDM' ;
+        if FileExists( NomeArquivo ) then
+           DeleteFile( NomeArquivo ) ;
+
+        iRet := xDLLReadLeMemorias( PortaSerial, ArqTmp, NumFab, '1');
+
+        if iRet <> 0 then
+           raise Exception.Create( ACBrStr( 'Erro ao executar DLLReadLeMemorias.' + sLineBreak +
+                                            'Cod.: '+ IntToStr(iRet) + ' - ' +
+                                            GetErroAtoCotepe1704(iRet) )) ;
+
+        iRet := xDLLATO17GeraArquivo( ArqTmp, NomeArquivo, CooIni, CooFim,
+                                      'C', '1', cFinalidade );
+
+        if iRet <> 0 then
+           raise Exception.Create( ACBrStr( 'Erro ao executar DLLATO17GeraArquivo.' + sLineBreak +
+                                            'Cod.: '+ IntToStr(iRet) + ' - ' +
+                                            GetErroAtoCotepe1704(iRet) )) ;
+      end ;
   finally
     Ativo := OldAtivo ;
   end;

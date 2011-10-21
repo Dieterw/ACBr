@@ -2256,7 +2256,7 @@ procedure TFrmACBrMonitor.bCancelarClick(Sender: TObject);
 begin
   EscondeConfig;
   DesInicializar ;
-  LerIni;
+  Inicializar;
 end;
 
 {------------------------------------------------------------------------------}
@@ -2268,7 +2268,7 @@ begin
     EscondeConfig;
 
     DesInicializar;  { Re-Inicializa, para as alteraçoes fazerem efeito }
-    LerIni;
+    Inicializar;
   end
   else
     ExibeConfig;

@@ -100,7 +100,8 @@ Símbolo : Significado
 Data: 20/10/2011
 -- ACBrECF --
 [*] Alteração na formação do rodapé conforme alterações da especificação de 
-    requisitos do paf-ecf
+    requisitos do paf-ecf, 
+[-] Acerto na formação do ano do Cupom Mania para ddmmaa
     por: Régys Silveira
 
 Data: 20/10/2011

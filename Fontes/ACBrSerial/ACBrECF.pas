@@ -2951,7 +2951,7 @@ begin
       'CUPOM MANIA, CONCORRA A PRÊMIOS' + #10 +
       'ENVIE SMS P/ 6789: ' +
       Copy(OnlyNumber(fsECF.IE), 1, 8) +    // 8 primeiros digitos da Inscr.Estadual
-      FormatDateTime('ddmmyyyy', Date) +    // data atual
+      FormatDateTime('ddmmyy', Date) +    // data atual
       Format('%6.6d', [StrToInt(NumCOO)]) + // numero do coo do cupom
       Format('%3.3d', [StrToInt(NumECF)]);  // numero do ecf
   end;

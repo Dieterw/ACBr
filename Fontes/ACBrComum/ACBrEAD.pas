@@ -656,7 +656,7 @@ begin
   try
      SL.LoadFromFile( NomeArquivo );
      if SL.Count < 1 then
-       raise Exception.Create( 'Conteudo do Arquivo Informado é vazio' );
+        exit ;
 
      SLBottom := SL.Count-1 ;  // Pega a última linha do arquivo,
      if UpperCase( copy( SL[ SLBottom ],1,3) ) = 'EAD' then
@@ -704,7 +704,7 @@ Var
   SLBottom : Integer ;
 begin
   if AStringList.Count < 1 then
-     raise Exception.Create( 'Conteudo Informado é vazio' );
+     raise Exception.Create( ACBrStr('Conteudo Informado é vazio' ) );
 
   SLBottom := AStringList.Count-1;   // Pega a última linha do arquivo,
   EAD := AStringList[ SLBottom ] ;   // pois ela contem o EAD, e depois,

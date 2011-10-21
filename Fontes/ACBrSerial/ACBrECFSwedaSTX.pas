@@ -101,6 +101,7 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
     fsCache34   : TACBrECFSwedaCache ;
     fsRespostasComando : String ;
     fsFalhasRX : Byte ;
+    fsSubModelo:String ;
 
     xECF_AbreConnectC : Function(Meio: Integer; PathW: AnsiString): Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
     xECF_DownloadMFD : Function (Arquivo: AnsiString; TipoDownload: AnsiString;
@@ -112,8 +113,8 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
     xECF_DownloadMF : Function(Arquivo:AnsiString):Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
 
 
-    procedure AbrePortaSerialDLL( APath : AnsiString );
     procedure LoadDLLFunctions;
+    procedure AbrePortaSerialDLL;
 
     function RemoveNulos(Str:AnsiString):AnsiString;
     Function PreparaCmd( cmd : AnsiString ) : AnsiString ;
@@ -284,7 +285,7 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
 
 implementation
 Uses ACBrECF, ACBrConsts,
-     SysUtils,
+     SysUtils, IniFiles,
    {$IFDEF COMPILER6_UP} DateUtils, StrUtils, {$ELSE} ACBrD5, Windows,{$ENDIF}
      Math;
 
@@ -335,6 +336,7 @@ begin
   fpDevice.HandShake := hsDTR_DSR ;
   { Variaveis internas dessa classe }
   fsVerProtocolo := '' ;
+  fsSubModelo := '';
   fsCache34   := TACBrECFSwedaCache.create( True );
   fsSEQ       := 42 ;
   fsRespostasComando := '' ;
@@ -364,6 +366,7 @@ begin
   GravaLog( 'Ativar' ) ;
 
   fsVerProtocolo := '' ;
+  fsSubModelo := '';
   fpMFD       := True ;
   fpTermica   := True ;
   fsCache34.Clear ;
@@ -389,7 +392,7 @@ begin
 
      fpDecimaisQtd := StrToIntDef(copy( TACBrECF(fpOwner).RetornaInfoECF( 'U2' ),  1, 1), 2 ) ;
 
-     if GetSubModeloECF = 'IF ST2500' then
+     if SubModeloECF = 'IF ST2500' then
         fpColunas := 56;
   except
      Desativar ;
@@ -735,7 +738,7 @@ begin
 end;
 
 function TACBrECFSwedaSTX.VerificaFimImpressao(var TempoLimite: TDateTime): Boolean;
-Var Cmd, Ret, RetCmd, OldRetCmd : AnsiString ;
+Var Cmd, Ret, RetCmd : AnsiString ;
     wACK : Byte ;
     I : Integer ;
 begin
@@ -773,25 +776,25 @@ begin
            I := 0 ;
            while (I < 30) and (not Result) do
            begin
+              Inc( I ) ;
               TempoLimite := IncSecond(now, TimeOut);
               try
                  Ret := fpDevice.Serial.RecvPacket(200) ;
               except
               end ;
 
-              RetCmd := RetCmd + Ret ;
-              Inc( I ) ;
-
-              // DEBUG
-              GravaLog('         VerificaFimImpressao: I: '+IntToStr(I)+' Bloco Lido: '+RetCmd ) ;
-              OldRetCmd := RetCmd;
-              Result :=  VerificaFimLeitura( RetCmd, TempoLimite) ;
-              if OldRetCmd <> RetCmd then
+              if Length( Ret ) > 0 then
               begin
                  // DEBUG
                  GravaLog('         VerificaFimImpressao: ECF respondeu, continue esperando' ) ;
                  I := 0 ;
               end ;
+
+              RetCmd := RetCmd + Ret ;
+
+              // DEBUG
+              GravaLog('         VerificaFimImpressao: I: '+IntToStr(I)+' Bloco Lido: '+RetCmd ) ;
+              Result :=  VerificaFimLeitura( RetCmd, TempoLimite) ;
            end ;
 
            Result := Result and (pos(copy(RetCmd,11,1), 'ACDGI') > 0) ;
@@ -939,8 +942,7 @@ begin
 
   OldAtivo := Ativo ;
   try
-    Ativo := False ;
-    AbrePortaSerialDLL( ExtractFilePath( NomeArquivo ) ) ;
+    AbrePortaSerialDLL ;
 
     CooIni := IntToStrZero( COOInicial, 6 ) ;
     CooFim := IntToStrZero( COOFinal, 6 ) ;
@@ -975,8 +977,7 @@ begin
     DateSeparator      :='/';
     ShortDateFormat    := 'dd/mm/yy' ;
 
-    Ativo := False ;
-    AbrePortaSerialDLL( ExtractFilePath( NomeArquivo ) ) ;
+    AbrePortaSerialDLL ;
 
     DiaIni := FormatDateTime('DD/MM/YY',DataInicial) ;
     DiaFim := FormatDateTime('DD/MM/YY',DataFinal) ;
@@ -1011,8 +1012,7 @@ begin
 
   OldAtivo := Ativo ;
   try
-    Ativo := False ;
-    AbrePortaSerialDLL( ExtractFilePath( NomeArquivo ) ) ;
+    AbrePortaSerialDLL ;
 
     if TipoContador = tpcCRZ then
     begin
@@ -1079,8 +1079,7 @@ begin
   OldShortDateFormat := ShortDateFormat ;
   OldDateSeparator   := DateSeparator;
   try
-    Ativo := False ;
-    AbrePortaSerialDLL( ExtractFilePath( NomeArquivo ) ) ;
+    AbrePortaSerialDLL ;
 
     DateSeparator      :='/';
     ShortDateFormat    := 'dd/mm/yy' ;
@@ -1187,9 +1186,11 @@ end;
 
 function TACBrECFSwedaSTX.GetSubModeloECF: String;
 begin
- Result :=trim(copy(RetornaInfoECF( 'I1' ),22,21));
-end;
+ if fsSubModelo = '' then
+     fsSubModelo := trim(copy(RetornaInfoECF( 'I1' ),22,21));
 
+ Result := fsSubModelo;
+end;
 
 function TACBrECFSwedaSTX.GetSubTotal: Double;
 begin
@@ -1469,11 +1470,18 @@ begin
      raise EACBrECFCMDInvalido.Create( ACBrStr(
            'Quantidade deve ser inferior a 9999.'));
 
-  {Usa o arredondamento por item }
-  if ArredondaItemMFD then
-     IAT := 'A'
-  else
-     IAT := 'T';
+  {Usa o arredondamento por item  (apenas em ST120 ou superior) }
+  IAT := '';
+  if fsVerProtocolo > 'D' then
+  begin
+    if ArredondaItemMFD then
+       IAT := 'A'
+    else
+       IAT := 'T';
+
+    IAT := '|'+IAT;
+  end ;
+
  {Vai vir o indice, tem que transformar em aliquota no formato Tipo + Aliquota}
   if (AliquotaECF[1] <> 'I') and
      (AliquotaECF[1] <> 'F') and
@@ -1489,7 +1497,7 @@ begin
                        AjustaValor(ValorUnitario, fpDecimaisPreco) +'|'+
                        Trim(LeftStr(Unidade,2))                    +'|'+
                        AliquotaECF                                 +'|'+
-                       Trim(LeftStr(Descricao,33))                 +'|'+
+                       Trim(LeftStr(Descricao,33))                 +
                        IAT
                        );
 
@@ -1875,43 +1883,6 @@ begin
      end ;
 end;
 
-procedure TACBrECFSwedaSTX.LoadDLLFunctions;
-var
-  sLibName: string;
-
- procedure SwedaFunctionDetect( FuncName: String; var LibPointer: Pointer ) ;
- begin
-   if not Assigned( LibPointer )  then
-   begin
-     if not FunctionDetect( sLibName, FuncName, LibPointer) then
-     begin
-        LibPointer := NIL ;
-        raise Exception.Create( ACBrStr( 'Erro ao carregar a função:'+FuncName+' de: '+cLIB_Sweda ) ) ;
-     end ;
-   end ;
- end ;
-begin
-  // Verifica se exite o caminho das DLLs
-  if Length(PathDLL) > 0 then
-     sLibName := PathWithDelim(PathDLL);
-
-  // Concatena o caminho se exitir mais o nome da DLL.
-  sLibName := sLibName + cLIB_Sweda;
-
-  {$IFDEF MSWINDOWS}
-    if not FileExists( ExtractFilePath( sLibName ) + 'Swmfd.dll') then
-       raise Exception.Create( ACBrStr( 'Não foi encontrada a dll auxiliar Swmfd.dll.' ) ) ;
-   {$ENDIF}
-   DeleteFile( ExtractFilePath( sLibName ) + 'SWC.INI');
-
-   SwedaFunctionDetect('ECF_AbreConnectC', @xECF_AbreConnectC);
-   SwedaFunctionDetect('ECF_DownloadMFD', @xECF_DownloadMFD);
-   SwedaFunctionDetect('ECF_ReproduzirMemoriaFiscalMFD', @xECF_ReproduzirMemoriaFiscalMFD);
-   SwedaFunctionDetect('ECF_FechaPortaSerial', @xECF_FechaPortaSerial);
-   SwedaFunctionDetect('ECF_DownloadMF',@xECF_DownloadMF);
-end ;
-
-
 procedure TACBrECFSwedaSTX.AbreCupomVinculado(COO, CodFormaPagto,
    CodComprovanteNaoFiscal :  String; Valor : Double ) ;
 var
@@ -2204,12 +2175,62 @@ begin
    EnviaComando('20');
 end;
 
-procedure TACBrECFSwedaSTX.AbrePortaSerialDLL( APath : AnsiString ) ;
-Var
-//Porta : Integer ;
-  Resp : Integer ;
+procedure TACBrECFSwedaSTX.LoadDLLFunctions;
+var
+  sLibName: string;
+
+ procedure SwedaFunctionDetect( FuncName: String; var LibPointer: Pointer ) ;
+ begin
+   if not Assigned( LibPointer )  then
+   begin
+     if not FunctionDetect( sLibName, FuncName, LibPointer) then
+     begin
+        LibPointer := NIL ;
+        raise Exception.Create( ACBrStr( 'Erro ao carregar a função:'+FuncName+' de: '+cLIB_Sweda ) ) ;
+     end ;
+   end ;
+ end ;
 begin
-//Porta := StrToIntDef( OnlyNumber( fpDevice.Porta ), 0) ;
+  // Verifica se exite o caminho das DLLs
+  if Length(PathDLL) > 0 then
+     sLibName := PathWithDelim(PathDLL);
+
+  // Concatena o caminho se exitir mais o nome da DLL.
+  sLibName := sLibName + cLIB_Sweda;
+
+  {$IFDEF MSWINDOWS}
+    if not FileExists( ExtractFilePath( sLibName ) + 'Swmfd.dll') then
+       raise Exception.Create( ACBrStr( 'Não foi encontrada a dll auxiliar Swmfd.dll.' ) ) ;
+   {$ENDIF}
+
+   SwedaFunctionDetect('ECF_AbreConnectC', @xECF_AbreConnectC);
+   SwedaFunctionDetect('ECF_DownloadMFD', @xECF_DownloadMFD);
+   SwedaFunctionDetect('ECF_ReproduzirMemoriaFiscalMFD', @xECF_ReproduzirMemoriaFiscalMFD);
+   SwedaFunctionDetect('ECF_FechaPortaSerial', @xECF_FechaPortaSerial);
+   SwedaFunctionDetect('ECF_DownloadMF',@xECF_DownloadMF);
+end ;
+
+procedure TACBrECFSwedaSTX.AbrePortaSerialDLL ;
+Var
+  Porta, Resp, Velocidade : Integer ;
+  APath : String ;
+  Ini : TIniFile ;
+begin
+  APath      := ExtractFilePath( ParamStr(0) ) ;
+  Porta      := StrToIntDef( OnlyNumber( fpDevice.Porta ), 0) ;
+  Velocidade := fpDevice.Baud;
+
+  Ativo := False ;
+  Sleep(500);
+
+  Ini := TIniFile.Create( APath + 'SWC.INI' );
+  try
+     Ini.WriteInteger('COMUNICAÇÃO','PORTA', Porta ) ;
+     Ini.WriteInteger('COMUNICAÇÃO','VELOCIDADE', Velocidade ) ;
+     Ini.WriteString('COMUNICAÇÃO','LOG', APath+'LogDLLSweda.txt' ) ;
+  finally
+     Ini.Free ;
+  end ;
 
   Resp := xECF_AbreConnectC( 0, APath );
   if Resp <> 1 then

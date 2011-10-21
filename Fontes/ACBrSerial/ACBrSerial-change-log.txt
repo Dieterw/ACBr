@@ -97,12 +97,17 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
-Data: 20/10/2011
+Data: 21/10/2011
 -- ACBrECF --
 [*] Alteração na formação do rodapé conforme alterações da especificação de 
     requisitos do paf-ecf, 
 [-] Acerto na formação do ano do Cupom Mania para ddmmaa
     por: Régys Silveira
+
+-- ACBrECFSwedaSTX --
+[-] Corrigido Bug no método Vendeitem para ECF ST100 (Protocolo D), que não
+    possuem o parâmetro IAT              (Por: DSA)
+[*] Melhorado método AbrePortaSerialDLL  (Por: DSA)
 
 Data: 20/10/2011
 -- ACBrECF --

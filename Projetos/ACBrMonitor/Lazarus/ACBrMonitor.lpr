@@ -18,8 +18,8 @@ uses
 {$R *.res}
 
 begin
-  DeleteFile( 'c:\temp\heaptrclog.trc');
-  SetHeapTraceOutput( 'c:\temp\heaptrclog.trc');
+  //DeleteFile( 'c:\temp\heaptrclog.trc');
+  //SetHeapTraceOutput( 'c:\temp\heaptrclog.trc');
   Application.Initialize;
 
   {$IFDEF MSWINDOWS}

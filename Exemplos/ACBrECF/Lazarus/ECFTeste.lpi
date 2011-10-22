@@ -18,7 +18,7 @@
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
       <MinorVersionNr Value="9"/>
-      <BuildNr Value="8"/>
+      <BuildNr Value="9"/>
       <Language Value="0416"/>
       <CharSet Value="04B0"/>
       <StringTable ProductVersion=""/>
@@ -84,10 +84,11 @@
         <ComponentName Value="Form1"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ECFTeste1"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
         <TopLine Value="4"/>
-        <CursorPos X="8" Y="8"/>
+        <CursorPos X="5" Y="8"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -165,10 +166,11 @@
     </Parsing>
     <Linking>
       <Debugging>
-        <GenerateDebugInfo Value="True"/>
         <DebugInfoType Value="dsAuto"/>
+        <UseLineInfoUnit Value="False"/>
         <StripSymbols Value="True"/>
       </Debugging>
+      <LinkSmart Value="True"/>
       <Options>
         <Win32>
           <GraphicApplication Value="True"/>
@@ -183,36 +185,6 @@
     </Other>
   </CompilerOptions>
   <Debugging>
-    <BreakPoints Count="4">
-      <Item1>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="..\..\..\Fontes\ACBrSerial\ACBrECFSwedaSTX.pas"/>
-        <Line Value="2214"/>
-      </Item1>
-      <Item2>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="..\..\..\Fontes\ACBrSerial\ACBrECFSwedaSTX.pas"/>
-        <Line Value="2215"/>
-      </Item2>
-      <Item3>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="..\..\..\Fontes\ACBrSerial\ACBrECFFiscNET.pas"/>
-        <Line Value="3075"/>
-      </Item3>
-      <Item4>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="..\..\..\Fontes\ACBrSerial\ACBrECFFiscNET.pas"/>
-        <Line Value="3030"/>
-      </Item4>
-    </BreakPoints>
     <Watches Count="1">
       <Item1>
         <Expression Value="Result"/>

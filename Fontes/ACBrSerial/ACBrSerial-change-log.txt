@@ -97,6 +97,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 22/10/2011
+-- ACBrECFSwedaSTX --
+[*] Otimização de código (refectoring)  (Por: DSA)
+[-] Corrigido método ArquivoMFD_DLL por COO  (Por: DSA)
+
 Data: 21/10/2011
 -- ACBrECF --
 [*] Alteração na formação do rodapé conforme alterações da especificação de 

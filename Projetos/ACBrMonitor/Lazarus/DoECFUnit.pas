@@ -48,8 +48,18 @@ Function PegaUnidadesMedida : String ;
 Procedure StringToMemo( AString : AnsiString; Memo : TStringList );
 
 implementation
-uses ACBrECF, ACBrDevice, ACBrUtil, ACBrECFClass, StrUtils,
+uses ACBrECF, ACBrDevice, ACBrUtil, ACBrECFClass, StrUtils, UtilUnit,
   {$IFNDEF CONSOLE}ACBrMonitor1 {$ELSE}ACBrMonitorConsoleDM {$ENDIF} ;
+
+function AjustaNomeArquivoCmd( Cmd : TACBrCmd; Param: Integer = 2 ) : String ;
+begin
+  if Cmd.Params(Param) <> '' then
+     Result := Cmd.Params(Param)
+  else
+     Result := Cmd.Metodo+'.txt' ;
+
+  Result := AcertaPath( Result );
+end;
 
 Procedure DoECF( Cmd : TACBrCmd ) ;
 Var wDescricao  : AnsiString ;
@@ -162,7 +172,7 @@ begin
 
         else if Cmd.Metodo = 'ie' then
            Cmd.Resposta := IE
-//IMS
+
         else if Cmd.Metodo = 'im' then
            Cmd.Resposta := IM
 
@@ -171,13 +181,13 @@ begin
 
         else if Cmd.Metodo = 'usuarioatual' then
            Cmd.Resposta := UsuarioAtual
-//IMS 20/10/2009
+
         else if Cmd.Metodo = 'datahorasb' then
            Cmd.Resposta := FormatDateTime('dd/mm/yy hh:nn:ss', DataHoraSB )
 
         else if Cmd.Metodo = 'submodeloecf' then
            Cmd.Resposta := SubModeloECF
-//IMS
+
         else if Cmd.Metodo = 'paf' then
            Cmd.Resposta := PAF
 
@@ -457,7 +467,7 @@ begin
         else if Cmd.Metodo = 'cancelanaofiscal' then
            CancelaNaoFiscal
 
-        else if Cmd.Metodo = 'leiturax' then
+        else if (Cmd.Metodo = 'leiturax') or (Cmd.Metodo = 'pafmf_lx_Impressao') then
            LeituraX
 
         else if Cmd.Metodo = 'leituraxserial' then
@@ -686,32 +696,26 @@ begin
               end ;
             end ;
          end
-//IMS 22/10/2009
+
         else if Cmd.Metodo = 'arquivomfd_dll' then
          begin
-           if Cmd.Params(2) <> '' then
-              NomeArquivo := Cmd.Params(2)
-           else
-              NomeArquivo := 'ctp1704.txt' ;
+           NomeArquivo := AjustaNomeArquivoCmd( Cmd ) ;
 
            if pos(DateSeparator,Cmd.Params(0)) > 0 then
               ArquivoMFD_DLL(
-                  StringToDateTime(Cmd.Params(0)),          { Dt.Inicial }
-                  StringToDateTime(Cmd.Params(1)),            { Dt.Final }
-                  NomeArquivo )                        { Nome do Arquivo }
+                  StringToDateTime(Cmd.Params(0)),                { Dt.Inicial }
+                  StringToDateTime(Cmd.Params(1)),                  { Dt.Final }
+                  NomeArquivo )                              { Nome do Arquivo }
            else
               ArquivoMFD_DLL(
-                  StrToInt(Trim(Cmd.Params(0))),            { COOInicial }
-                  StrToInt(Trim(Cmd.Params(1))),              { COOFinal }
-                  NomeArquivo ) ;                       { Nome do Arquivo }
+                  StrToInt(Trim(Cmd.Params(0))),                  { COOInicial }
+                  StrToInt(Trim(Cmd.Params(1))),                    { COOFinal }
+                  NomeArquivo ) ;                            { Nome do Arquivo }
          end
 
         else if Cmd.Metodo = 'espelhomfd_dll' then
          begin
-           if Cmd.Params(2) <> '' then
-              NomeArquivo := Cmd.Params(2)
-           else
-              NomeArquivo := 'espelho.txt' ;
+           NomeArquivo := AjustaNomeArquivoCmd( Cmd ) ;
 
            if pos(DateSeparator,Cmd.Params(0)) > 0 then
               EspelhoMFD_DLL(
@@ -724,7 +728,111 @@ begin
                       StrToInt(Trim(Cmd.Params(1))),                { COOFinal }
                       NomeArquivo ) ;                        { Nome do Arquivo }
          end
-//IMS 22/10/2009
+
+        else if Cmd.Metodo = 'pafmf_lmfc_impressao' then
+         begin
+           if pos(DateSeparator,Cmd.Params(0)) > 0 then
+              PafMF_LMFC_Impressao(
+                      StringToDateTime(Cmd.Params(0)),            { Dt.Inicial }
+                      StringToDateTime(Cmd.Params(1)) )             { Dt.Final }
+           else
+              PafMF_LMFC_Impressao(
+                      StrToInt(Trim(Cmd.Params(0))),              { CRZInicial }
+                      StrToInt(Trim(Cmd.Params(1))) ) ;             { CRZFinal }
+         end
+
+        else if Cmd.Metodo = 'pafmf_lmfc_espelho' then
+         begin
+           NomeArquivo := AjustaNomeArquivoCmd( Cmd ) ;
+
+           if pos(DateSeparator,Cmd.Params(0)) > 0 then
+              PafMF_LMFC_Espelho(
+                      StringToDateTime(Cmd.Params(0)),            { Dt.Inicial }
+                      StringToDateTime(Cmd.Params(1)),              { Dt.Final }
+                      NomeArquivo )                          { Nome do Arquivo }
+           else
+              PafMF_LMFC_Espelho(
+                      StrToInt(Trim(Cmd.Params(0))),              { CRZInicial }
+                      StrToInt(Trim(Cmd.Params(1))),                { CRZFinal }
+                      NomeArquivo )                          { Nome do Arquivo }
+         end
+
+        else if Cmd.Metodo = 'pafmf_lmfc_cotepe1704' then
+         begin
+           NomeArquivo := AjustaNomeArquivoCmd( Cmd ) ;
+
+           if pos(DateSeparator,Cmd.Params(0)) > 0 then
+              PafMF_LMFC_Cotepe1704(
+                      StringToDateTime(Cmd.Params(0)),            { Dt.Inicial }
+                      StringToDateTime(Cmd.Params(1)),              { Dt.Final }
+                      NomeArquivo )                          { Nome do Arquivo }
+           else
+              PafMF_LMFC_Cotepe1704(
+                      StrToInt(Trim(Cmd.Params(0))),              { CRZInicial }
+                      StrToInt(Trim(Cmd.Params(1))),                { CRZFinal }
+                      NomeArquivo )                          { Nome do Arquivo }
+         end
+
+        else if Cmd.Metodo = 'pafmf_lmfs_impressao' then
+         begin
+           if pos(DateSeparator,Cmd.Params(0)) > 0 then
+              PafMF_LMFS_Impressao(
+                      StringToDateTime(Cmd.Params(0)),            { Dt.Inicial }
+                      StringToDateTime(Cmd.Params(1)) )             { Dt.Final }
+           else
+              PafMF_LMFS_Impressao(
+                      StrToInt(Trim(Cmd.Params(0))),              { CRZInicial }
+                      StrToInt(Trim(Cmd.Params(1))) ) ;             { CRZFinal }
+         end
+
+        else if Cmd.Metodo = 'pafmf_lmfs_espelho' then
+         begin
+           NomeArquivo := AjustaNomeArquivoCmd( Cmd ) ;
+
+           if pos(DateSeparator,Cmd.Params(0)) > 0 then
+              PafMF_LMFS_Espelho(
+                      StringToDateTime(Cmd.Params(0)),            { Dt.Inicial }
+                      StringToDateTime(Cmd.Params(1)),              { Dt.Final }
+                      NomeArquivo )                          { Nome do Arquivo }
+           else
+              PafMF_LMFS_Espelho(
+                      StrToInt(Trim(Cmd.Params(0))),              { CRZInicial }
+                      StrToInt(Trim(Cmd.Params(1))),                { CRZFinal }
+                      NomeArquivo )                          { Nome do Arquivo }
+         end
+
+        else if Cmd.Metodo = 'pafmf_mfd_espelho' then
+         begin
+           NomeArquivo := AjustaNomeArquivoCmd( Cmd ) ;
+
+           if pos(DateSeparator,Cmd.Params(0)) > 0 then
+              PafMF_MFD_Espelho(
+                      StringToDateTime(Cmd.Params(0)),            { Dt.Inicial }
+                      StringToDateTime(Cmd.Params(1)),              { Dt.Final }
+                      NomeArquivo )                          { Nome do Arquivo }
+           else
+              PafMF_MFD_Espelho(
+                      StrToInt(Trim(Cmd.Params(0))),              { COOInicial }
+                      StrToInt(Trim(Cmd.Params(1))),                { COOFinal }
+                      NomeArquivo )                          { Nome do Arquivo }
+         end
+
+        else if Cmd.Metodo = 'pafmf_mfd_cotepe1704' then
+         begin
+           NomeArquivo := AjustaNomeArquivoCmd( Cmd ) ;
+
+           if pos(DateSeparator,Cmd.Params(0)) > 0 then
+              PafMF_MFD_Cotepe1704(
+                      StringToDateTime(Cmd.Params(0)),            { Dt.Inicial }
+                      StringToDateTime(Cmd.Params(1)),              { Dt.Final }
+                      NomeArquivo )                          { Nome do Arquivo }
+           else
+              PafMF_MFD_Cotepe1704(
+                      StrToInt(Trim(Cmd.Params(0))),              { COOInicial }
+                      StrToInt(Trim(Cmd.Params(1))),                { COOFinal }
+                      NomeArquivo )                          { Nome do Arquivo }
+         end
+
         else if Cmd.Metodo = 'enviacomando' then
            if Cmd.Params(1) <> '' then
               EnviaComando(Cmd.Params(0),StrToInt(Trim(Cmd.Params(1))))

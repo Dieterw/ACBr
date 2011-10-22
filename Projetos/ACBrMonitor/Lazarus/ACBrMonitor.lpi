@@ -192,8 +192,10 @@
     <Linking>
       <Debugging>
         <DebugInfoType Value="dsAuto"/>
+        <UseLineInfoUnit Value="False"/>
         <StripSymbols Value="True"/>
       </Debugging>
+      <LinkSmart Value="True"/>
       <Options>
         <Win32>
           <GraphicApplication Value="True"/>

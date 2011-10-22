@@ -493,6 +493,7 @@ TACBrECFClass = class
     fpInfoRodapeCupom: TACBrECFRodape;
     fpRespostasComando: TACBrInformacoes;
 
+    function GetPathDLL : string ;
     procedure SetAtivo(const Value: Boolean);
     procedure SetTimeOut(const Value: Integer);
     function GetTimeOut: Integer;
@@ -1022,8 +1023,7 @@ TACBrECFClass = class
     { Obs: De/Codifica e Verifica Textos C-->  Codifica D--> Decodifica V--> Verifica }
     function DecodificaTexto(Operacao: Char; Texto: String; var Resposta: String): Boolean; virtual;
 
-    property PathDLL: string read fsPathDLL write fsPathDLL;
-
+    property PathDLL: string read GetPathDLL write fsPathDLL;
 
     procedure ProgramarBitmapPromocional(const AIndice: Integer;
       const APathArquivo: AnsiString;
@@ -1468,6 +1468,11 @@ begin
      Ativar
   else
      Desativar ;
+end;
+
+function TACBrECFClass.GetPathDLL : string ;
+begin
+  Result := PathWithDelim(fsPathDLL);
 end;
 
 procedure TACBrECFClass.Ativar;

@@ -94,14 +94,14 @@ end;
 { TACBrECFSwedaSTX }
 
 TACBrECFSwedaSTX = class( TACBrECFClass )
- private
-
+  private
     fsSEQ       : Byte ;
     fsVerProtocolo : String ;
     fsCache34   : TACBrECFSwedaCache ;
     fsRespostasComando : String ;
     fsFalhasRX : Byte ;
     fsSubModelo:String ;
+    fsApplicationPath: String ;
 
     xECF_AbreConnectC : Function(Meio: Integer; PathW: AnsiString): Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
     xECF_DownloadMFD : Function (Arquivo: AnsiString; TipoDownload: AnsiString;
@@ -112,7 +112,7 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
     xECF_FechaPortaSerial : Function: Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
     xECF_DownloadMF : Function(Arquivo:AnsiString):Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
 
-
+    Function DescricaoErroDLL(const NErro: Integer) : String;
     procedure LoadDLLFunctions;
     procedure AbrePortaSerialDLL;
 
@@ -124,7 +124,7 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
     function AjustaRetorno(Retorno: AnsiString): AnsiString;
     function AjustaValor( ADouble : Double; Decimais : Integer = 2 ) : String ;
     function ExtraiRetornoLeituras(Retorno: AnsiString): AnsiString;
- protected
+  protected
     function GetDataHora: TDateTime; override ;
     function GetNumCupom: String; override ;
     function GetNumECF: String; override ;
@@ -175,7 +175,7 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
     function VerificaFimImpressao(var TempoLimite: TDateTime) : Boolean ; override ;
 
     function TraduzirTag(const ATag: AnsiString): AnsiString; override;
- public
+  public
     Constructor create( AOwner : TComponent  )  ;
     Destructor Destroy  ; override ;
     procedure Ativar ; override ;
@@ -337,6 +337,7 @@ begin
   { Variaveis internas dessa classe }
   fsVerProtocolo := '' ;
   fsSubModelo := '';
+  fsApplicationPath := '';
   fsCache34   := TACBrECFSwedaCache.create( True );
   fsSEQ       := 42 ;
   fsRespostasComando := '' ;
@@ -367,6 +368,7 @@ begin
 
   fsVerProtocolo := '' ;
   fsSubModelo := '';
+  fsApplicationPath := ExtractFilePath( ParamStr(0) );
   fpMFD       := True ;
   fpTermica   := True ;
   fsCache34.Clear ;
@@ -949,7 +951,7 @@ begin
     Resp := xECF_DownloadMFD( NomeArquivo, '2', CooIni, CooFim, '0');
     if (Resp <> 1) then
       raise Exception.Create( ACBrStr( 'Erro ao executar ECF_DownloadMFD.'+sLineBreak+
-                                       'Cod.: '+IntToStr(Resp) ))
+                                       DescricaoErroDLL(Resp) ))
   finally
     xECF_FechaPortaSerial ;
     Ativo := OldAtivo ;
@@ -966,29 +968,20 @@ Var
   Resp : Integer ;
   DiaIni, DiaFim : AnsiString ;
   OldAtivo : Boolean ;
-  oldDateSeparator: Char;
-  OldShortDateFormat : String;
 begin
   LoadDLLFunctions ;
   OldAtivo           := Ativo ;
-  OldShortDateFormat := ShortDateFormat ;
-  OldDateSeparator   := DateSeparator;
   try
-    DateSeparator      :='/';
-    ShortDateFormat    := 'dd/mm/yy' ;
-
     AbrePortaSerialDLL ;
 
-    DiaIni := FormatDateTime('DD/MM/YY',DataInicial) ;
-    DiaFim := FormatDateTime('DD/MM/YY',DataFinal) ;
+    DiaIni := FormatDateTime('dd"/"mm"/"yy', DataInicial) ;
+    DiaFim := FormatDateTime('dd"/"mm"/"yy', DataFinal) ;
 
     Resp := xECF_DownloadMFD( NomeArquivo, '1', DiaIni, DiaFim, '0');
     if (Resp <> 1) then
       raise Exception.Create( ACBrStr( 'Erro ao executar ECF_DownloadMFD.'+sLineBreak+
-                                       'Cod.: '+IntToStr(Resp) ))
+                                       DescricaoErroDLL(Resp) ))
   finally
-    DateSeparator   := OldDateSeparator;
-    ShortDateFormat := OldShortDateFormat;
     xECF_FechaPortaSerial ;
     Ativo := OldAtivo ;
   end ;
@@ -1004,9 +997,9 @@ procedure TACBrECFSwedaSTX.ArquivoMFD_DLL(ContInicial, ContFinal: Integer;
   TipoContador: TACBrECFTipoContador);
 Var
   Resp : Integer ;
-  CooIni, CooFim, respm : AnsiString ;
+  CooIni, CooFim : AnsiString ;
   OldAtivo : Boolean ;
-  PathBin:AnsiString;
+  PathBin, Tipo :AnsiString;
 begin
   LoadDLLFunctions ;
 
@@ -1014,44 +1007,43 @@ begin
   try
     AbrePortaSerialDLL ;
 
+    PathBin:= fsApplicationPath + 'MF.BIN';
+
     if TipoContador = tpcCRZ then
-    begin
+     begin
        {Por CRZ}
        CooIni := IntToStrZero( ContInicial, 4 ) ;
        CooFim := IntToStrZero( ContFinal, 4 ) ;
-    end
+     end
     else
-    if TipoContador = tpcCOO then
-    begin
+     begin
        {POr COO}
-       CooIni := IntToStrZero( ContInicial, 7);
-       CooFim := IntToStrZero( ContFinal, 7 ) ;
-    end
+       CooIni  := IntToStrZero( ContInicial, 7 );
+       CooFim  := IntToStrZero( ContFinal, 7 ) ;
+       PathBin := '';  // por COO Download deve ser efetuado diretamente do ECF
+     end ;
+
+    case Finalidade of
+       finMF  : Tipo := '1';
+       finTDM : Tipo := '3';
     else
-      raise Exception.Create('Tipo de contador desconhecido, tipos válidos: CRZ, COO');
+       Tipo := '2' ;
+    end;
 
-    PathBin := ExtractFilePath(NomeArquivo);
-    PathBin:= PathBin + 'MF.BIN';
-    DeleteFile( PathBin );
+    if PathBin <> '' then
+    begin
+      DeleteFile( PathBin );
 
-    Resp := xECF_DownloadMF( pathBin );
-    case resp of
-      -3: respm:='Não existe movimento';
-      -2: respm:='Parâmetro inválido na função.';
-       0: respm:='Erro de comunicação.';
-     -27: respm:='Status do ECF diferente de 6,0,0,0 (Ack,St1,St2,St3).';
-      -1: respm:='Falta movimento em um dos arquivos binários.';
-      end;
+      Resp := xECF_DownloadMF( pathBin );
+      if Resp <> 1 then
+        raise Exception.Create( ACBrStr( 'Erro ao executar xECFDownloadMF'+sLineBreak+
+                                         DescricaoErroDLL(Resp) ));
+    end ;
 
-    if Resp <> 1 then
-      raise Exception.Create( ACBrStr( 'Erro ao executar xECFDownloadMF'+sLineBreak+
-                                       'Cod.: '+IntToStr(Resp)+' '+respm ));
-
-    Resp := xECF_ReproduzirMemoriaFiscalMFD('2', CooIni, CooFim, NomeArquivo, PathBin);
-
+    Resp := xECF_ReproduzirMemoriaFiscalMFD(Tipo , CooIni, CooFim, NomeArquivo, PathBin);
     if (Resp <> 1) then
       raise Exception.Create( ACBrStr( 'Erro ao executar xECF_ReproduzirMemoriaFiscalMFD.'+sLineBreak+
-                                       'Cod.: '+IntToStr(Resp) ))
+                                       DescricaoErroDLL(Resp) ))
   finally
     xECF_FechaPortaSerial ;
     Ativo := OldAtivo ;
@@ -1067,50 +1059,40 @@ procedure TACBrECFSwedaSTX.ArquivoMFD_DLL(DataInicial, DataFinal: TDateTime;
   Finalidade: TACBrECFFinalizaArqMFD);
 Var
   Resp : Integer ;
-  DiaIni, DiaFim, respm : AnsiString ;
+  DiaIni, DiaFim : AnsiString ;
   OldAtivo : Boolean ;
-  PathBin:AnsiString;
-  oldDateSeparator: Char;
-  OldShortDateFormat : String;
+  PathBin, Tipo:AnsiString;
 begin
   LoadDLLFunctions ;
 
   OldAtivo := Ativo ;
-  OldShortDateFormat := ShortDateFormat ;
-  OldDateSeparator   := DateSeparator;
   try
     AbrePortaSerialDLL ;
 
-    DateSeparator      :='/';
-    ShortDateFormat    := 'dd/mm/yy' ;
-    PathBin := ExtractFilePath(NomeArquivo);
-    PathBin:= PathBin + 'MF.BIN';
+    PathBin:= fsApplicationPath + 'MF.BIN';
     DeleteFile( PathBin );
 
     Resp := xECF_DownloadMF( pathBin );
-    case resp of
-      -3: respm:='Não existe movimento';
-      -2: respm:='Parâmetro inválido na função.';
-       0: respm:='Erro de comunicação.';
-     -27: respm:='Status do ECF diferente de 6,0,0,0 (Ack,St1,St2,St3).';
-      -1: respm:='Falta movimento em um dos arquivos binários.';
-      end;
     if Resp <> 1 then
       raise Exception.Create( ACBrStr( 'Erro ao executar xECFDownloadMF'+sLineBreak+
-                                       'Cod.: '+IntToStr(Resp)+' '+respm ));
+                                       DescricaoErroDLL(Resp) ));
 
-    DiaIni := FormatDateTime('DD/MM/YY',DataInicial) ;
-    DiaFim := FormatDateTime('DD/MM/YY',DataFinal) ;
+    case Finalidade of
+       finMF  : Tipo := '1';
+       finTDM : Tipo := '3';
+    else
+       Tipo := '2' ;
+    end;
 
-    Resp := xECF_ReproduzirMemoriaFiscalMFD('2', DiaIni, DiaFim, NomeArquivo, pathBin);
+    DiaIni := FormatDateTime('dd"/"mm"/"yy', DataInicial) ;
+    DiaFim := FormatDateTime('dd"/"mm"/"yy', DataFinal) ;
 
+    Resp := xECF_ReproduzirMemoriaFiscalMFD(Tipo, DiaIni, DiaFim, NomeArquivo, pathBin);
     if (Resp <> 1) then
       raise Exception.Create( ACBrStr( 'Erro ao executar ECF_DownloadMFD.'+sLineBreak+
-                                       'Cod.: '+IntToStr(Resp) ))
+                                       DescricaoErroDLL(Resp) ))
   finally
     xECF_FechaPortaSerial ;
-    DateSeparator   := OldDateSeparator;
-    ShortDateFormat := OldShortDateFormat;
     Ativo := OldAtivo ;
   end ;
 
@@ -2193,7 +2175,7 @@ var
 begin
   // Verifica se exite o caminho das DLLs
   if Length(PathDLL) > 0 then
-     sLibName := PathWithDelim(PathDLL);
+     sLibName := PathDLL;
 
   // Concatena o caminho se exitir mais o nome da DLL.
   sLibName := sLibName + cLIB_Sweda;
@@ -2210,29 +2192,47 @@ begin
    SwedaFunctionDetect('ECF_DownloadMF',@xECF_DownloadMF);
 end ;
 
+Function TACBrECFSwedaSTX.DescricaoErroDLL(const NErro: Integer) : String ;
+var
+  Descr : String ;
+begin
+  case NErro of
+    -30 : Descr := 'Não implementado no modelo conectado.' ;
+    -27 : Descr := 'Status do ECF diferente de 6,0,0,0 (Ack,St1,St2,St3).' ;
+     -3 : Descr := 'Não existe movimento' ;
+     -2 : Descr := 'Parâmetro inválido na função.' ;
+     -1 : Descr := 'Falta movimento em um dos arquivos binários.' ;
+      0 : Descr := 'Erro de comunicação.' ;
+  else
+     Descr := '';
+  end ;
+
+   Result := 'Cod.: '+IntToStr(NErro) ;
+   if Descr <> '' then
+      Result := Result + ' - ' + Descr;
+end ;
+
 procedure TACBrECFSwedaSTX.AbrePortaSerialDLL ;
 Var
   Porta, Resp, Velocidade : Integer ;
-  APath : String ;
   Ini : TIniFile ;
 begin
-  APath      := ExtractFilePath( ParamStr(0) ) ;
   Porta      := StrToIntDef( OnlyNumber( fpDevice.Porta ), 0) ;
   Velocidade := fpDevice.Baud;
 
   Ativo := False ;
   Sleep(500);
 
-  Ini := TIniFile.Create( APath + 'SWC.INI' );
+  Ini := TIniFile.Create( fsApplicationPath + 'SWC.INI' );
   try
      Ini.WriteInteger('COMUNICAÇÃO','PORTA', Porta ) ;
      Ini.WriteInteger('COMUNICAÇÃO','VELOCIDADE', Velocidade ) ;
-     Ini.WriteString('COMUNICAÇÃO','LOG', APath+'LogDLLSweda.txt' ) ;
+     Ini.WriteString('COMUNICAÇÃO','LOG', fsApplicationPath+'LogDLLSweda.txt' ) ;
   finally
      Ini.Free ;
   end ;
 
-  Resp := xECF_AbreConnectC( 0, APath );
+  Resp := xECF_AbreConnectC( 0, fsApplicationPath );
   if Resp <> 1 then
      raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao abrir a Porta com:'+sLineBreak+
         'ECF_AbrePortaSerial'));

@@ -1506,7 +1506,7 @@ begin
           SubModelo       :=  'FS-MACH3' ;
          end ;
 
-        fpModeloStr := 'Daruma '+SubModelo ;
+        fpModeloStr := 'Daruma ';
         fpMFD       := True ;
         fpTermica   := True ;
       finally
@@ -1549,7 +1549,7 @@ begin
          SubModelo      := '' ;
        end;
 
-      fpModeloStr := 'Daruma '+SubModelo
+      fpModeloStr := 'Daruma ';
     end ;
 
     if fpMFD then

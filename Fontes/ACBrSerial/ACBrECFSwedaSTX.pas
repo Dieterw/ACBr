@@ -485,7 +485,10 @@ begin
    { Limpando de "fpRespostaComando" os Status não solicitados }
    fpRespostaComando := AjustaRetorno( fpRespostaComando  );
 
-   ErroMsg := DescreveErro( StrToIntDef(Mensagem,-1) ) ;
+   if copy(fpRespostaComando,5,1) = '-' then
+      ErroMsg := DescreveErro( StrToIntDef(Mensagem,-1) )
+   else
+      ErroMsg := '';
 
    if ErroMsg <> '' then
     begin

@@ -871,6 +871,13 @@ object frmPrincipal: TfrmPrincipal
     Font.Style = []
     ParentFont = False
   end
+  object lblModeloImpressora: TLabel
+    Left = 265
+    Top = 85
+    Width = 12
+    Height = 13
+    Caption = '...'
+  end
   object StatusBar1: TStatusBar
     Left = 0
     Top = 363

@@ -55,6 +55,7 @@ type
     ckbGravarLog: TCheckBox;
     N4: TMenuItem;
     RelatriosGerenciaisCadastrados1: TMenuItem;
+    lblModeloImpressora: TLabel;
     procedure btnAtivarDesativarClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure cbxPortaComunicacaoChange(Sender: TObject);
@@ -268,6 +269,8 @@ begin
       ACBrECF1.CarregaUnidadesMedida;
 
       ACBrECF1.IdentificaOperador(NOME_OPERADOR);
+
+      lblModeloImpressora.Caption := ACBrECF1.ModeloStr + sLineBreak + ACBrECF1.SubModeloECF;
     end
     else
     begin

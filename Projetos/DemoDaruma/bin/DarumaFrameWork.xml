@@ -1,7 +1,7 @@
 <DARUMAFRAMEWORK>
   <START>
-    <LocalArquivos>D:\DELPHI\AcBr\Projetos\DemoDaruma\bin\arquivos\</LocalArquivos>
-    <LocalArquivosRelatorios>D:\DELPHI\AcBr\Projetos\DemoDaruma\bin\arquivos\</LocalArquivosRelatorios>
+    <LocalArquivos>D:\DELPHI\AcBr\Projetos\DemoDaruma\bin\</LocalArquivos>
+    <LocalArquivosRelatorios>D:\DELPHI\AcBr\Projetos\DemoDaruma\bin\</LocalArquivosRelatorios>
     <LogTamMaxMB>5</LogTamMaxMB>
     <Produto>FISCAL</Produto>
     <ThreadAoIniciar>0</ThreadAoIniciar>
@@ -38,10 +38,10 @@
     <FarmaciaPopular>0</FarmaciaPopular>
     <LegendaInmetro>0</LegendaInmetro>
     <LMFCompleta>0</LMFCompleta>
-    <NomeUltimoCMD>rGerarEspelhoMFD_ECF_Daruma</NomeUltimoCMD>
+    <NomeUltimoCMD>esAbrirSerial</NomeUltimoCMD>
     <MaxFechamentoAutomatico>0</MaxFechamentoAutomatico>
-    <MensagemApl1>DarumaFramework - Mensagem Não Programada</MensagemApl1>
-    <MensagemApl2>DarumaFramework - Mensagem Não Programada</MensagemApl2>
+    <MensagemApl1>MD5: AXAXAXAXAXAXAXAXAXAXAXAXAXAXAXTT</MensagemApl1>
+    <MensagemApl2>Demo ACBr DarumaFramework.dll</MensagemApl2>
     <MensagemAviso>AVISO: [O PAPEL ESTA ACABANDO!!]. INSIRA NOVA BOBINA DE PAPEL.</MensagemAviso>
     <ModoGaveta>0</ModoGaveta>
     <NaoAvisarPoucoPapel>0</NaoAvisarPoucoPapel>
@@ -78,6 +78,7 @@
       <UnidadeMedida>un</UnidadeMedida>
       <ValorDescAcresc>0.00</ValorDescAcresc>
       <MinasLegal>0</MinasLegal>
+        <MensagemFormaPagamento></MensagemFormaPagamento>
       </CF>
     <CCD>
       <DocOrigem></DocOrigem>
@@ -140,5 +141,6 @@
   <OBSERVER>
     <PathEntrada>c:\Daruma.cmd</PathEntrada>
     <PathSaida>c:\Daruma.ret</PathSaida>
-  </OBSERVER>
+    <Latencia>25</Latencia>
+    </OBSERVER>
 </DARUMAFRAMEWORK>

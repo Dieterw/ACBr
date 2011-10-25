@@ -4323,6 +4323,7 @@ Var
   var
      Est : TACBrECFEstado ;
      OldTimeOut : LongInt ;
+     Erro : String ;
   begin
      ComandoLOG := 'LinhaRelatorioGerencial( "'+Texto+'", '+IntToStr(IndiceBMP)+' )';
 
@@ -4330,24 +4331,33 @@ Var
      try
         fsECF.LinhaRelatorioGerencial( Texto, IndiceBMP ) ;
      except
-        // Não conseguiu imprimir ? Verifique se o relatório foi fechado pelo ECF //
-        OldTimeOut := TimeOut;
-        TimeOut    := max(TimeOut,5);  // Tenta ler o Estado por 5 seg ou mais
-        try
+       On E : Exception do
+       begin
+         Erro := E.Message ;
+
+         // Não conseguiu imprimir ? Verifique se o relatório foi fechado pelo ECF //
+         OldTimeOut := TimeOut;
+         TimeOut    := max(TimeOut,5);  // Tenta ler o Estado por 5 seg ou mais
+         try
            Est := Estado;              // Lendo o estado do ECF
 
            if Est = estLivre then
            begin
-              // Está Livre, provavelmente foi fechado por longo tempo de
-              // impressao... (O ECF é obrigado a fechar o Gerencial após 2
-              // minutos de Impressão). Vamos abrir um Novo Gerencial e Tentar
-              // novamente
-              AbreRelatorioGerencial(fsIndiceGerencial);
-              fsECF.LinhaRelatorioGerencial( Texto, IndiceBMP );
+             // Está Livre, provavelmente foi fechado por longo tempo de
+             // impressao... (O ECF é obrigado a fechar o Gerencial após 2
+             // minutos de Impressão). Vamos abrir um Novo Gerencial e Tentar
+             // novamente
+             AbreRelatorioGerencial(fsIndiceGerencial);
+             fsECF.LinhaRelatorioGerencial( Texto, IndiceBMP );
            end ;
-        finally
+         finally
            TimeOut := OldTimeOut;
-        end ;
+
+           if Est <> estLivre then
+              raise Exception.Create( ACBrStrToAnsi(Erro) );
+
+         end ;
+       end ;
      end ;
   end ;
 

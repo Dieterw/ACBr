@@ -97,6 +97,13 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 25/10/2011
+[-] Corrigido bug em método LinhaRelatorioGerencial que não disparava Exception
+    quando MaxBuffer > 0
+
+-- ACBrECFSwedaSTX --
+[-] Correção de Bugs na detecção de Fim de Leitura do Protocolo STX
+
 Data: 22/10/2011
 -- ACBrECFSwedaSTX --
 [*] Otimização de código (refectoring)  (Por: DSA)

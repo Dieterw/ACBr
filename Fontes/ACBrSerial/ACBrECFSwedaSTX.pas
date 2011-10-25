@@ -485,10 +485,7 @@ begin
    { Limpando de "fpRespostaComando" os Status não solicitados }
    fpRespostaComando := AjustaRetorno( fpRespostaComando  );
 
-   if copy(fpRespostaComando,5,1) = '-' then
-      ErroMsg := DescreveErro( StrToIntDef(Mensagem,-1) )
-   else
-      ErroMsg := '';
+   ErroMsg := DescreveErro( StrToIntDef(Mensagem,-1) ) ;
 
    if ErroMsg <> '' then
     begin
@@ -654,7 +651,7 @@ end ;
 function TACBrECFSwedaSTX.VerificaFimLeitura(var Retorno: AnsiString;
    var TempoLimite: TDateTime) : Boolean ;
 Var
-  LenRet, PosETX, PosSTX : Integer ;
+  LenRet, PosETX, PosSTX, Erro : Integer ;
   Bloco, Tarefa : AnsiString ;
   Sequencia, ACK_PC : Byte ;
   Tipo : AnsiChar ;
@@ -688,55 +685,57 @@ begin
   // DEBUG
   GravaLog( '         VerificaFimLeitura: Verificando Bloco: '+Bloco, True) ;
 
-  if (Tipo = '!') and (LenRet > Length(Bloco)) then  // Bloco de Satus não solicitado, Descartando
-   begin
-     GravaLog( '         VerificaFimLeitura: Bloco (!) Descartado: '+Bloco+sLineBreak+
-               IfThen(AguardaImpressao,' - AguardaImpressao - ','')+' Buffer: '+Retorno, True) ;
-     Result := False ;
-   end
-  else
-   begin
-     { Verificando a Sequencia }
-     if Sequencia <> fsSEQ then
-     begin
-        Result := False ;  // Ignore o Bloco, pois não é a resposta do CMD solicitado
-        GravaLog( '         Sequencia de Resposta ('+IntToStr(Sequencia)+')'+
-                  'diferente da enviada ('+IntToStr(fsSEQ)+')' ) ;
-     end ;
+  { Verificando a Sequencia }
+  if Sequencia <> fsSEQ then
+  begin
+     Result := False ;  // Ignore o Bloco, pois não é a resposta do CMD solicitado
+     GravaLog( '         Sequencia de Resposta ('+IntToStr(Sequencia)+')'+
+               'diferente da enviada ('+IntToStr(fsSEQ)+')' ) ;
+  end ;
 
-     { Verificando o CheckSum }
-     ACK_PC := ACK ;
+  if Result and (Tipo = '!') then  // Bloco de Satus não solicitado, Verificando
+  begin
+    Erro := StrToIntDef( copy(Bloco,6,4), 0 ) ;
 
-     if Result and
-       ( CalcCheckSum(LeftStr(Bloco,Length(Bloco)-1)) <> RightStr(Bloco,1) ) then
-     begin
-       ACK_PC := NACK ;  // Erro no CheckSum, retornar NACK
-       if fsFalhasRX > CFALHAS then
-          raise Exception( ACBrStr('Erro no digito Verificador da Resposta.'+sLineBreak+
-                           'Falha: '+IntToStr(fsFalhasRX)) ) ;
-       Inc( fsFalhasRX ) ;  // Incrementa numero de Falhas
-       Result := False ;
-     end ;
+    if not (Erro in [ 52, 216, 240 ])  then
+    begin
+      GravaLog( '         VerificaFimLeitura: Bloco (!) Descartado: '+Bloco, True) ;
+      Result := False ;
+    end
+  end ;
 
-     fpDevice.Serial.SendByte(ACK_PC);
+  { Verificando o CheckSum }
+  ACK_PC := ACK ;
 
-     if Result then
-        fsRespostasComando := fsRespostasComando + Retorno ;  // Salva este Bloco
+  if Result and
+    ( CalcCheckSum(LeftStr(Bloco,Length(Bloco)-1)) <> RightStr(Bloco,1) ) then
+  begin
+    ACK_PC := NACK ;  // Erro no CheckSum, retornar NACK
+    if fsFalhasRX > CFALHAS then
+       raise Exception( ACBrStr('Erro no digito Verificador da Resposta.'+sLineBreak+
+                        'Falha: '+IntToStr(fsFalhasRX)) ) ;
+    Inc( fsFalhasRX ) ;  // Incrementa numero de Falhas
+    Result := False ;
+  end ;
 
-     if (ACK_PC = ACK) then           // ACK OK ?
-     begin
-        if Tipo = '-' then            // Erro ocorrido,
-           AguardaImpressao := False  //   portanto, Desliga AguardaImpressao (caso estivesse ligado)
-        else if Result and (Tipo = '!') then
-           GravaLog('         Bloco "!" considerado')
-        else if Tipo <> '+' then      // Tipo não é '-' nem '+', portanto não é o Ultimo Bloco
-           Result := False ;          //   portanto Zera para Ler proximo Bloco
-     end ;
+  fpDevice.Serial.SendByte(ACK_PC);
 
-     // DEBUG
-     GravaLog( '         VerificaFimLeitura: Seq:'+IntToStr(Sequencia)+' Tarefa:'+
-               Tarefa+' Tipo: '+Tipo+' ACK:'+IntToStr(ACK_PC)+' Result: '+IfThen(Result,'True','False') ) ;
-   end ;
+  if Result then
+     fsRespostasComando := fsRespostasComando + Retorno ;  // Salva este Bloco
+
+  if (ACK_PC = ACK) then           // ACK OK ?
+  begin
+     if Tipo = '-' then            // Erro ocorrido,
+        AguardaImpressao := False  //   portanto, Desliga AguardaImpressao (caso estivesse ligado)
+     else if Result and (Tipo = '!') then
+        GravaLog('         Bloco "!" considerado')
+     else if Tipo <> '+' then      // Tipo não é '-' nem '+', portanto não é o Ultimo Bloco
+        Result := False ;          //   portanto Zera para Ler proximo Bloco
+  end ;
+
+  // DEBUG
+  GravaLog( '         VerificaFimLeitura: Seq:'+IntToStr(Sequencia)+' Tarefa:'+
+            Tarefa+' Tipo: '+Tipo+' ACK:'+IntToStr(ACK_PC)+' Result: '+IfThen(Result,'True','False') ) ;
 
   if not Result then
      Retorno := copy(Retorno, PosETX+2, Length(Retorno) ) ;
@@ -905,6 +904,8 @@ begin
 
      PosSTX := PosEx( STX , Retorno, PosETX);
   end ;
+
+  Result := StringReplace(Result, #151 ,'-' ,[rfReplaceAll] );
 end ;
 
 function TACBrECFSwedaSTX.DescompactaRetorno( const Dados : AnsiString ) : AnsiString ;

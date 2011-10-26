@@ -3953,7 +3953,8 @@ begin
     finMF:
       begin
         Tipo := '0';
-        CRZToCOO(ContInicial, ContFinal, ContInicial, ContFinal);
+        if TipoContador = tpcCRZ then
+          CRZToCOO(ContInicial, ContFinal, ContInicial, ContFinal);
       end;
     finMFD: Tipo := '1';
     finTDM: Tipo := '2';

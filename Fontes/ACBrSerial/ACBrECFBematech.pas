@@ -3882,44 +3882,47 @@ var
   Retorno: TStringList;
   CRZi, CRZf: string;
   Linha: string;
-  I: Integer;
+  I, PosCOO: Integer;
   cInicial: Integer;
 begin
   Retorno := TStringList.Create;
   try
     Self.LeituraMemoriaFiscalSerial(ACRZIni, ACRZFim, Retorno);
-    Retorno.Text := Trim(Retorno.Text);
 
+    Retorno.Text := Trim(Retorno.Text);
     if Retorno.Text = '' then
       raise Exception.Create('Nenhuma leitura serial não foi retornada pela impressora fiscal.');
 
+    PosCOO  := 0;
     ACOOIni := 0;
     ACOOFim := 0;
     CRZi    := Format('%4.4d  ', [ACRZIni]);
     CRZf    := Format('%4.4d  ', [ACRZFim]);
 
-    // achar o inicio da lista
-    for I := 0 to Retorno.Count - 1 do
+    I := 0 ;
+    while (I < Retorno.Count) and ( (ACOOIni = 0) or (ACOOFim = 0) ) do
     begin
-      if Trim(Retorno[I]) = 'REDUÇõES DIÁRIAS' then
+      Linha := Retorno[I];
+
+      if PosCOO = 0 then  // Já achou o cabeçalho ?
       begin
-        cInicial := I;
-        Break;
-      end;
-    end;
-
-    for I := cInicial to Retorno.Count - 1 do
-    begin
-      Linha := Retorno.Strings[I];
-      if Copy(Linha, 1, 6) = CRZi then
-        ACOOIni := StrToIntDef(Copy(Linha, 13, 6), 0)
+        if (pos('CRZ ',Linha) = 1) then
+          PosCOO := pos('COO ', Linha);
+      end
       else
-      if Copy(Linha, 1, 6) = CRZf then
-        ACOOFim := StrToIntDef(Copy(Linha, 13, 6), 0);
+      begin
+        if Copy(Linha, 1, 6) = CRZi then
+          ACOOIni := StrToIntDef(Copy(Linha, PosCOO, 6), 0)
+        else
+        if Copy(Linha, 1, 6) = CRZf then
+          ACOOFim := StrToIntDef(Copy(Linha, PosCOO, 6), 0);
+      end ;
 
-      if (ACOOIni > 0) and (ACOOFim > 0) then
-        Break;
-    end;
+      Inc( I ) ;
+    end ;
+
+    ACOOIni := max(ACOOIni, 1);
+    ACOOFim := max(ACOOFim, ACOOIni);
   finally
     Retorno.Free;
   end;

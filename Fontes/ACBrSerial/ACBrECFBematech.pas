@@ -3875,7 +3875,7 @@ begin
     begin
       if Trim(Retorno[I]) = 'REDUÇõES DIÁRIAS' then
       begin
-        cInicial := I + 7;
+        cInicial := I;
         Break;
       end;
     end;

@@ -97,6 +97,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 21/10/2011
+-- ACBrECFBematech --
+[-] Acerto no método CRZToCOO para funcionar com qualquer impressora bematech
+    por: Régys Silveira
+
 Data: 25/10/2011
 [-] Corrigido bug em método LinhaRelatorioGerencial que não disparava Exception
     quando MaxBuffer > 0

@@ -3855,26 +3855,42 @@ var
   CRZi, CRZf: string;
   Linha: string;
   I: Integer;
+  cInicial: Integer;
 begin
   Retorno := TStringList.Create;
   try
     Self.LeituraMemoriaFiscalSerial(ACRZIni, ACRZFim, Retorno);
     Retorno.Text := Trim(Retorno.Text);
 
+    if Retorno.Text = '' then
+      raise Exception.Create('Nenhuma leitura serial não foi retornada pela impressora fiscal.');
+
     ACOOIni := 0;
     ACOOFim := 0;
     CRZi    := Format('%4.4d  ', [ACRZIni]);
     CRZf    := Format('%4.4d  ', [ACRZFim]);
 
-    // desprezar o cabeçalho e o fim do arquivo
-    for I := 36 to Retorno.Count - 30 do
+    // achar o inicio da lista
+    for I := 0 to Retorno.Count - 1 do
+    begin
+      if Trim(Retorno[I]) = 'REDUÇõES DIÁRIAS' then
+      begin
+        cInicial := I + 7;
+        Break;
+      end;
+    end;
+
+    for I := cInicial to Retorno.Count - 1 do
     begin
       Linha := Retorno.Strings[I];
       if Copy(Linha, 1, 6) = CRZi then
         ACOOIni := StrToIntDef(Copy(Linha, 13, 6), 0)
       else
       if Copy(Linha, 1, 6) = CRZf then
-        ACOOFim := StrToIntDef(Copy(Linha, 13, 6), 0)
+        ACOOFim := StrToIntDef(Copy(Linha, 13, 6), 0);
+
+      if (ACOOIni > 0) and (ACOOFim > 0) then
+        Break;
     end;
   finally
     Retorno.Free;

@@ -422,7 +422,8 @@ TACBrECFBematech = class( TACBrECFClass )
     function GetTotalizadoresParciais : String ;
 
     Function PreparaCmd( cmd : AnsiString ) : AnsiString ;
- protected
+    function AnalisarRetornoDll(const ARetorno: Integer): String;
+
     function TraduzirTag(const ATag: AnsiString): AnsiString; override;
 
     procedure CRZToCOO(const ACRZIni, ACRZFim: Integer; var ACOOIni,
@@ -3570,11 +3571,38 @@ begin
   end ;
 
   if Resp <> 1 then
-     raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao abrir a Porta com:'+sLineBreak+
+     raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp) + ' - ' + AnalisarRetornoDll(Resp) +' ao abrir a Porta com:'+sLineBreak+
      'Bematech_FI_AbrePortaSerial()'));
 end ;
 
 {$ENDIF}
+
+function TACBrECFBematech.AnalisarRetornoDll(const ARetorno: Integer): String;
+begin
+  case ARetorno of
+      0: Result := 'Erro de Comunicação !';
+     -1: Result := 'Erro de Execução na Função. Verifique!';
+     -2: Result := 'Parâmetro Inválido !';
+     -3: Result := 'Alíquota não programada !';
+     -4: Result := 'Arquivo BemaFI32.INI não encontrado. Verifique!';
+     -5: Result := 'Erro ao Abrir a Porta de Comunicação';
+     -6: Result := 'Impressora Desligada ou Desconectada';
+     -7: Result := 'Banco Não Cadastrado no Arquivo BemaFI32.ini';
+     -8: Result := 'Erro ao Criar ou Gravar no Arquivo Retorno.txt ou Status.txt';
+    -18: Result := 'Não foi possível abrir arquivo INTPOS.001 !';
+    -19: Result := 'Parâmetro diferentes !';
+    -20: Result := 'Transação cancelada pelo Operador !';
+    -21: Result := 'A Transação não foi aprovada !';
+    -22: Result := 'Não foi possível terminal a Impressão !';
+    -23: Result := 'Não foi possível terminal a Operação !';
+    -24: Result := 'Forma de pagamento não programada.';
+    -25: Result := 'Totalizador não fiscal não programado.';
+    -26: Result := 'Transação já Efetuada !';
+    -28: Result := 'Não há Informações para serem Impressas !';
+  else
+    Result := '';
+  end;
+end;
 
 procedure TACBrECFBematech.EspelhoMFD_DLL(DataInicial,
   DataFinal: TDateTime; NomeArquivo: AnsiString;
@@ -3629,7 +3657,7 @@ begin
 
      if (Resp <> 1) then
         raise Exception.Create( ACBrStr( 'Erro ao executar Bematech_FI_DownloadMFD.'+sLineBreak+
-                                         'Cod.: '+IntToStr(Resp) )) ;
+                                         'Cod.: '+IntToStr(Resp) + ' - ' + AnalisarRetornoDll(Resp) )) ;
 
      if not FileExists( ArqTmp ) then
         raise Exception.Create( ACBrStr( 'Erro na execução de Bematech_FI_DownloadMFD.'+sLineBreak+
@@ -3643,7 +3671,7 @@ begin
                                            Prop ) ;           // Propietário Atual
      if (Resp <> 1) then
         raise Exception.Create( ACBrStr( 'Erro ao executar Bematech_FI_FormatoDadosMFD.'+sLineBreak+
-                                         'Cod.: '+IntToStr(Resp) )) ;
+                                         'Cod.: '+IntToStr(Resp) + ' - ' + AnalisarRetornoDll(Resp) )) ;
 
      if not FileExists( NomeArquivo ) then
         raise Exception.Create( ACBrStr( 'Erro na execução de Bematech_FI_FormatoDadosMFD.'+sLineBreak+
@@ -3708,7 +3736,7 @@ begin
 
      if (Resp <> 1) then
         raise Exception.Create( ACBrStr( 'Erro ao executar Bematech_FI_DownloadMFD.'+sLineBreak+
-                                         'Cod.: '+IntToStr(Resp) )) ;
+                                         'Cod.: '+IntToStr(Resp) + ' - ' + AnalisarRetornoDll(Resp) )) ;
 
      if not FileExists( ArqTmp ) then
         raise Exception.Create( ACBrStr( 'Erro na execução de Bematech_FI_DownloadMFD.'+sLineBreak+
@@ -3722,7 +3750,7 @@ begin
                                            Prop ) ;           // Propietário Atual
      if (Resp <> 1) then
         raise Exception.Create( ACBrStr( 'Erro ao executar Bematech_FI_FormatoDadosMFD.'+sLineBreak+
-                                         'Cod.: '+IntToStr(Resp) )) ;
+                                         'Cod.: '+IntToStr(Resp) + ' - ' + AnalisarRetornoDll(Resp) )) ;
 
      if not FileExists( NomeArquivo ) then
         raise Exception.Create( ACBrStr( 'Erro na execução de Bematech_FI_FormatoDadosMFD.'+sLineBreak+
@@ -3815,7 +3843,7 @@ begin
 
      if (Resp <> 1) then
         raise Exception.Create( ACBrStr( 'Erro ao executar Bematech_FI_DownloadMFD.'+sLineBreak+
-                                         'Cod.: '+IntToStr(Resp) )) ;
+                                         'Cod.: '+IntToStr(Resp) + ' - ' + AnalisarRetornoDll(Resp) )) ;
 
      if not FileExists( ArqTmp ) then
         raise Exception.Create( ACBrStr( 'Erro na execução de Bematech_FI_DownloadMFD.'+sLineBreak+
@@ -3831,7 +3859,7 @@ begin
 
      if (Resp < 0) or (Resp > 1) then
         raise Exception.Create( ACBrStr( 'Erro ao executar BemaGeraRegistrosTipoE.'+sLineBreak+
-                                         'Cod.: '+IntToStr(Resp) )) ;
+                                         'Cod.: '+IntToStr(Resp) + ' - ' + AnalisarRetornoDll(Resp) )) ;
 
      if not FileExists( NomeArquivo ) then
         raise Exception.Create( ACBrStr( 'Erro na execução de BemaGeraRegistrosTipoE.'+sLineBreak+
@@ -3987,7 +4015,7 @@ begin
                                        Prop ) ;           // Propietário Atual
      if (Resp <> 1) then
         raise Exception.Create( ACBrStr( 'Erro ao executar Bematech_FI_DownloadMFD.'+sLineBreak+
-                                         'Cod.: '+IntToStr(Resp) )) ;
+                                         'Cod.: '+IntToStr(Resp) + ' - ' + AnalisarRetornoDll(Resp) )) ;
 
      if not FileExists( ArqTmp + '.mfd' ) then
         raise Exception.Create( ACBrStr( 'Erro na execução de Bematech_FI_DownloadMFD.'+sLineBreak+
@@ -4001,7 +4029,7 @@ begin
 
      if (Resp < 0) or (Resp > 1) then
         raise Exception.Create( ACBrStr( 'Erro ao executar GeraTxtPorCOO.'+sLineBreak+
-                                         'Cod.: '+IntToStr(Resp) )) ;
+                                         'Cod.: '+IntToStr(Resp) + ' - ' + AnalisarRetornoDll(Resp) )) ;
 
      // Cria o arquivo EspelhoTMP.TXT para guardar a imagens dos cupons
      // capturados, retirando as linhas em branco.
@@ -4061,7 +4089,7 @@ begin
 
      if (Resp < 0) or (Resp > 1) then
         raise Exception.Create( ACBrStr( 'Erro ao executar BemaGeraRegistrosTipoE.'+sLineBreak+
-                                         'Cod.: '+IntToStr(Resp) )) ;
+                                         'Cod.: '+IntToStr(Resp) + ' - ' + AnalisarRetornoDll(Resp) )) ;
 
      if not FileExists( NomeArquivo ) then
         raise Exception.Create( ACBrStr( 'Erro na execução de BemaGeraRegistrosTipoE.'+sLineBreak+

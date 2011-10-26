@@ -1634,7 +1634,7 @@ begin
   begin
     Gerador.wGrupo('veicTransp', 'X18');
     // Alterado por Italo em  14/10/2011
-    Gerador.wCampo(tcStr, 'X19', 'placa   ', 07, 07, 1, nfe.Transp.veicTransp.placa, DSC_PLACA);
+    Gerador.wCampo(tcStr, 'X19', 'placa   ', 06, 07, 1, nfe.Transp.veicTransp.placa, DSC_PLACA);
     Gerador.wCampo(tcStr, 'X20', 'UF      ', 02, 02, 1, nfe.Transp.veicTransp.UF, DSC_UF);
     if not ValidarUF(nfe.Transp.veicTransp.UF) then
       Gerador.wAlerta('X20', 'UF', DSC_UF, ERR_MSG_INVALIDO);
@@ -1653,7 +1653,7 @@ begin
   begin
     Gerador.wGrupo('reboque', 'X22');
     // Alterado por Italo em  14/10/2011
-    Gerador.wCampo(tcStr, 'X23', 'placa ', 07, 07, 1, nfe.Transp.Reboque[i].placa, DSC_PLACA);
+    Gerador.wCampo(tcStr, 'X23', 'placa ', 06, 07, 1, nfe.Transp.Reboque[i].placa, DSC_PLACA);
     Gerador.wCampo(tcStr, 'X24', 'UF    ', 02, 02, 1, nfe.Transp.Reboque[i].UF, DSC_UF);
     if not ValidarUF(nfe.Transp.Reboque[i].UF) then
       Gerador.wAlerta('X24', 'UF', DSC_UF, ERR_MSG_INVALIDO);

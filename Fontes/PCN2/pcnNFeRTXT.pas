@@ -757,6 +757,7 @@ begin
     (*U04*)NFe.Det[i].Imposto.ISSQN.vISSQN := LerCampo(tcDe2, 'vISSQN');
     (*U05*)NFe.Det[i].Imposto.ISSQN.cMunFG := LerCampo(tcInt, 'cMunFG');
     (*U06*)NFe.Det[i].Imposto.ISSQN.cListServ := LerCampo(tcInt, 'cListServ');
+    (*U07*)NFe.Det[i].Imposto.ISSQN.cSitTrib := StrToISSQNcSitTrib(Ok, LerCampo(tcStr, 'cSitTrib'));
   end;
 
   if ID = 'W02' then (* Grupo da TAG <total><ICMSTot> *************************)

@@ -1207,28 +1207,44 @@ begin
                with Imposto do
                 begin
                    NodePai := trvwNFe.Items.AddChild(NodeItem,'Imposto');
-                   Node := trvwNFe.Items.AddChild(NodePai,'ICMS');
-                   with ICMS do
-                    begin
-                      trvwNFe.Items.AddChild(Node,'CST=' +CSTICMSToStr(CST));
-                      trvwNFe.Items.AddChild(Node,'CSOSN=' +CSOSNIcmsToStr(CSOSN));
-                      trvwNFe.Items.AddChild(Node,'orig='  +OrigToStr(ICMS.orig));
-                      trvwNFe.Items.AddChild(Node,'modBC=' +modBCToStr(ICMS.modBC));
-                      trvwNFe.Items.AddChild(Node,'pRedBC=' +FloatToStr(ICMS.pRedBC));
-                      trvwNFe.Items.AddChild(Node,'vBC='   +FloatToStr(ICMS.vBC));
-                      trvwNFe.Items.AddChild(Node,'pICMS=' +FloatToStr(ICMS.pICMS));
-                      trvwNFe.Items.AddChild(Node,'vICMS=' +FloatToStr(ICMS.vICMS));
-                      trvwNFe.Items.AddChild(Node,'modBCST='  +modBCSTToStr(ICMS.modBCST));
-                      trvwNFe.Items.AddChild(Node,'pMVAST='   +FloatToStr(ICMS.pMVAST));
-                      trvwNFe.Items.AddChild(Node,'pRedBCST=' +FloatToStr(ICMS.pRedBCST));
-                      trvwNFe.Items.AddChild(Node,'vBCST='    +FloatToStr(ICMS.vBCST));
-                      trvwNFe.Items.AddChild(Node,'pICMSST='  +FloatToStr(ICMS.pICMSST));
-                      trvwNFe.Items.AddChild(Node,'vICMSST='  +FloatToStr(ICMS.vICMSST));
-                      trvwNFe.Items.AddChild(Node,'vBCSTRet='   +FloatToStr(ICMS.vBCSTRet));
-                      trvwNFe.Items.AddChild(Node,'vICMSSTRet=' +FloatToStr(ICMS.vICMSSTRet));
-                      trvwNFe.Items.AddChild(Node,'pCredSN='   +FloatToStr(ICMS.pCredSN));
-                      trvwNFe.Items.AddChild(Node,'vCredICMSSN='   +FloatToStr(ICMS.vCredICMSSN));
-                    end;
+
+                   if ISSQN.cSitTrib = ISSQNcSitTribVazio then
+                   begin
+                     Node := trvwNFe.Items.AddChild(NodePai,'ICMS');
+                     with ICMS do
+                      begin
+                        trvwNFe.Items.AddChild(Node,'CST=' +CSTICMSToStr(CST));
+                        trvwNFe.Items.AddChild(Node,'CSOSN=' +CSOSNIcmsToStr(CSOSN));
+                        trvwNFe.Items.AddChild(Node,'orig='  +OrigToStr(ICMS.orig));
+                        trvwNFe.Items.AddChild(Node,'modBC=' +modBCToStr(ICMS.modBC));
+                        trvwNFe.Items.AddChild(Node,'pRedBC=' +FloatToStr(ICMS.pRedBC));
+                        trvwNFe.Items.AddChild(Node,'vBC='   +FloatToStr(ICMS.vBC));
+                        trvwNFe.Items.AddChild(Node,'pICMS=' +FloatToStr(ICMS.pICMS));
+                        trvwNFe.Items.AddChild(Node,'vICMS=' +FloatToStr(ICMS.vICMS));
+                        trvwNFe.Items.AddChild(Node,'modBCST='  +modBCSTToStr(ICMS.modBCST));
+                        trvwNFe.Items.AddChild(Node,'pMVAST='   +FloatToStr(ICMS.pMVAST));
+                        trvwNFe.Items.AddChild(Node,'pRedBCST=' +FloatToStr(ICMS.pRedBCST));
+                        trvwNFe.Items.AddChild(Node,'vBCST='    +FloatToStr(ICMS.vBCST));
+                        trvwNFe.Items.AddChild(Node,'pICMSST='  +FloatToStr(ICMS.pICMSST));
+                        trvwNFe.Items.AddChild(Node,'vICMSST='  +FloatToStr(ICMS.vICMSST));
+                        trvwNFe.Items.AddChild(Node,'vBCSTRet='   +FloatToStr(ICMS.vBCSTRet));
+                        trvwNFe.Items.AddChild(Node,'vICMSSTRet=' +FloatToStr(ICMS.vICMSSTRet));
+                        trvwNFe.Items.AddChild(Node,'pCredSN='   +FloatToStr(ICMS.pCredSN));
+                        trvwNFe.Items.AddChild(Node,'vCredICMSSN='   +FloatToStr(ICMS.vCredICMSSN));
+                      end;
+                   end
+                   else
+                   begin
+                     Node := trvwNFe.Items.AddChild(NodePai,'ISSQN');
+                     with ISSQN do
+                      begin
+                        trvwNFe.Items.AddChild(Node,'vBC='       +FloatToStr(vBC));
+                        trvwNFe.Items.AddChild(Node,'vAliq='     +FloatToStr(vAliq));
+                        trvwNFe.Items.AddChild(Node,'vISSQN='    +FloatToStr(vISSQN));
+                        trvwNFe.Items.AddChild(Node,'cMunFG='    +IntToStr(cMunFG));
+                        trvwNFe.Items.AddChild(Node,'cListServ=' +IntToStr(cListServ));
+                      end;
+                   end;
 
                    if (IPI.vBC > 0) then
                     begin
@@ -1340,19 +1356,6 @@ begin
                          trvwNFe.Items.AddChild(Node,'vAliqProd=' +FloatToStr(vAliqProd));
                          trvwNFe.Items.AddChild(Node,'vCOFINS='   +FloatToStr(vCOFINS));
                        end;
-                    end;
-
-                   if (ISSQN.vBC > 0) then
-                    begin
-                     Node := trvwNFe.Items.AddChild(NodePai,'ISSQN');
-                     with ISSQN do
-                      begin
-                        trvwNFe.Items.AddChild(Node,'vBC='       +FloatToStr(vBC));
-                        trvwNFe.Items.AddChild(Node,'vAliq='     +FloatToStr(vAliq));
-                        trvwNFe.Items.AddChild(Node,'vISSQN='    +FloatToStr(vISSQN));
-                        trvwNFe.Items.AddChild(Node,'cMunFG='    +IntToStr(cMunFG));
-                        trvwNFe.Items.AddChild(Node,'cListServ=' +IntToStr(cListServ));
-                      end;
                     end;
                 end;
              end;

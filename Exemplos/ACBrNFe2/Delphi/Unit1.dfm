@@ -1,9 +1,9 @@
 object Form1: TForm1
   Left = 250
   Top = 97
-  Width = 878
-  Height = 623
   Caption = 'ACBrNFe'
+  ClientHeight = 589
+  ClientWidth = 870
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -19,7 +19,7 @@ object Form1: TForm1
     Left = 0
     Top = 0
     Width = 297
-    Height = 585
+    Height = 589
     Align = alLeft
     TabOrder = 0
     object lblColaborador: TLabel
@@ -368,7 +368,6 @@ object Form1: TForm1
               Font.Height = -13
               Font.Name = 'MS Sans Serif'
               Font.Style = []
-              ItemHeight = 16
               ItemIndex = 24
               ParentFont = False
               TabOrder = 1
@@ -780,8 +779,6 @@ object Form1: TForm1
       Width = 153
       Height = 25
       Caption = 'Salvar Configura'#231#245'es'
-      TabOrder = 1
-      OnClick = btnSalvarConfigClick
       Glyph.Data = {
         76010000424D7601000000000000760000002800000020000000100000000100
         04000000000000010000130B0000130B00001000000000000000000000000000
@@ -796,19 +793,21 @@ object Form1: TForm1
         99337F3FF7F3733777F30F08F0F0337999337F7737F73F7777330FFFF0039999
         93337FFFF7737777733300000033333333337777773333333333}
       NumGlyphs = 2
+      TabOrder = 1
+      OnClick = btnSalvarConfigClick
     end
   end
   object Panel2: TPanel
     Left = 297
     Top = 0
-    Width = 565
-    Height = 585
+    Width = 573
+    Height = 589
     Align = alClient
     TabOrder = 1
     object Panel3: TPanel
       Left = 1
       Top = 1
-      Width = 563
+      Width = 571
       Height = 216
       Align = alTop
       TabOrder = 0
@@ -939,8 +938,8 @@ object Form1: TForm1
         OnClick = btnConsultarDPECClick
       end
       object btnImportarXML: TButton
-        Left = 376
-        Top = 96
+        Left = 375
+        Top = 95
         Width = 177
         Height = 25
         Caption = 'Importar TXT/XML'
@@ -1005,8 +1004,8 @@ object Form1: TForm1
     object PageControl2: TPageControl
       Left = 1
       Top = 217
-      Width = 563
-      Height = 367
+      Width = 571
+      Height = 371
       ActivePage = TabSheet8
       Align = alClient
       TabOrder = 1
@@ -1015,8 +1014,8 @@ object Form1: TForm1
         object MemoResp: TMemo
           Left = 0
           Top = 0
-          Width = 555
-          Height = 341
+          Width = 563
+          Height = 343
           Align = alClient
           ScrollBars = ssVertical
           TabOrder = 0
@@ -1028,12 +1027,12 @@ object Form1: TForm1
         object WBResposta: TWebBrowser
           Left = 0
           Top = 0
-          Width = 555
-          Height = 341
+          Width = 563
+          Height = 343
           Align = alClient
           TabOrder = 0
           ControlData = {
-            4C0000005C3900003E2300000000000000000000000000000000000000000000
+            4C000000303A0000732300000000000000000000000000000000000000000000
             000000004C000000000000000000000001000000E0D057007335CF11AE690800
             2B2E126208000000000000004C0000000114020000000000C000000000000046
             8000000000000000000000000000000000000000000000000000000000000000
@@ -1046,8 +1045,8 @@ object Form1: TForm1
         object memoLog: TMemo
           Left = 0
           Top = 0
-          Width = 555
-          Height = 339
+          Width = 563
+          Height = 343
           Align = alClient
           ScrollBars = ssVertical
           TabOrder = 0
@@ -1059,8 +1058,8 @@ object Form1: TForm1
         object trvwNFe: TTreeView
           Left = 0
           Top = 0
-          Width = 555
-          Height = 339
+          Width = 563
+          Height = 343
           Align = alClient
           Indent = 19
           TabOrder = 0
@@ -1072,8 +1071,8 @@ object Form1: TForm1
         object memoRespWS: TMemo
           Left = 0
           Top = 0
-          Width = 555
-          Height = 341
+          Width = 563
+          Height = 343
           Align = alClient
           ScrollBars = ssVertical
           TabOrder = 0
@@ -1085,8 +1084,8 @@ object Form1: TForm1
         object MemoDados: TMemo
           Left = 0
           Top = 0
-          Width = 555
-          Height = 341
+          Width = 563
+          Height = 343
           Align = alClient
           ScrollBars = ssVertical
           TabOrder = 0

@@ -1990,7 +1990,7 @@ begin
 {$IFDEF DELPHI12_UP}
  LibHandle := GetModuleHandle( PWideChar( LibName ) );
  {$ELSE}
- LibHandle := GetModuleHandle( LibName );
+ LibHandle := GetModuleHandle( PChar( LibName ) );
  {$ENDIF}
  if LibHandle <> 0 then
     Result := FreeLibrary( LibHandle )

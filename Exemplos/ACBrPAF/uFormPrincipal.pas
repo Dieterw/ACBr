@@ -271,6 +271,9 @@ begin
     RegistroE1.MODELO_ECF   := MODELO_ECF;
     RegistroE1.DT_EST       := Now;
 
+    RegistroE1.InclusaoExclusao := True;
+    RegistroE1.RegistroValido   := False;
+
     // registro E2
     RegistroE2.Clear;
     for I := 1 to 15 do
@@ -280,6 +283,8 @@ begin
       E2.DESC_MERC:=GerarDados('S',50);
       E2.UN_MED   :=GerarDados('S',2);
       E2.QTDE_EST :=GerarDados('I',3);
+
+      E2.RegistroValido := False;
     end;
   end;
 

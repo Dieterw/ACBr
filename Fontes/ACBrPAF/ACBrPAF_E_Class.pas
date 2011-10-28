@@ -130,7 +130,7 @@ begin
                   RFill(MF_ADICIONAL, 1) +
                   RFill(TIPO_ECF, 7) +
                   RFill(MARCA_ECF, 20) +
-                  RFill(MODELO_ECF, 20) +
+                  RFill(MODELO_ECF, 20,  ifThen(RegistroValido, ' ', '?')) +
                   LFill(DT_EST, 'yyyymmddhhmmss') +
                   sLineBreak;
       end;

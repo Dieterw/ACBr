@@ -40,6 +40,11 @@ Símbolo : Significado
 
 20/10/2011
 -- ACBrEAD --
+[*] Acerto no método UnLoadLibrary para compilar no delphi 9 acima
+    por: Régys Silveira
+
+20/10/2011
+-- ACBrEAD --
 [+] Adicionado o método:
     procedure TACBrEAD.RemoveEADArquivo(const NomeArquivo : String)
 

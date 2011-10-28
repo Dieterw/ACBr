@@ -1987,7 +1987,11 @@ begin
  if LibHandle <> 0 then
     Result := dynlibs.FreeLibrary(LibHandle) ;
 {$ELSE}
+{$IFDEF DELPHI12_UP}
+ LibHandle := GetModuleHandle( PWideChar( LibName ) );
+ {$ELSE}
  LibHandle := GetModuleHandle( LibName );
+ {$ENDIF}
  if LibHandle <> 0 then
     Result := FreeLibrary( LibHandle )
 {$ENDIF}

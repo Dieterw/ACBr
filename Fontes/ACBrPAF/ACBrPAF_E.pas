@@ -56,7 +56,9 @@ type
     fTIPO_ECF: string;
     fNUM_FAB: string;
     fMF_ADICIONAL: string;
+    fRegistroValido: Boolean;
   public
+    property RegistroValido: Boolean read fRegistroValido write fRegistroValido default True;
     property NUM_FAB: string read fNUM_FAB write fNUM_FAB;
     property MF_ADICIONAL: string read fMF_ADICIONAL write fMF_ADICIONAL;
     property TIPO_ECF: string read fTIPO_ECF write fTIPO_ECF;
@@ -83,7 +85,6 @@ type
     property DESC_MERC: string read FDESC_MERC write FDESC_MERC;
     property UN_MED: string read FUN_MED write FUN_MED;
     property QTDE_EST: currency read FQTDE_EST write FQTDE_EST;
-    // property DT_EST: TDateTime read FDT_EST write FDT_EST; removido pela ER 1.09
   end;
 
   /// REGISTRO E2 - Lista

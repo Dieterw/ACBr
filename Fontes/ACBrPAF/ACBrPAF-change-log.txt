@@ -48,6 +48,11 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Versão 0.09   28/10/11
+---------------
+[-] Acerto no arquivo de estoque para marcar o E1 como válido ou não
+    (por: Régys Silveira)
+
 Versão 0.09   20/10/11
 ---------------
 [-] Acerto na inscrição estadual da desenvolvedora

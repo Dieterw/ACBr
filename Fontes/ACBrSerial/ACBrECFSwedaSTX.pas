@@ -50,11 +50,6 @@ uses ACBrECFClass, ACBrDevice, ACBrUtil, Classes, Contnrs
      {$ENDIF};
 
 const
-   STX  = #02 ;
-   ETX  = #03 ;
-   ACK  = 06 ;
-   NACK = 21 ;
-   ESC  = #27 ;
    CFALHAS = 3 ;
   {$IFDEF LINUX}
    cLIB_Sweda = 'libconvecf.so';
@@ -424,7 +419,7 @@ begin
 
    fpDevice.Serial.DeadlockTimeout := 2000 ; { Timeout p/ Envio }
 
-   while (ACK_ECF <> ACK) do
+   while (chr(ACK_ECF) <> ACK) do
    begin
       fpDevice.Serial.Purge ;                   { Limpa a Porta }
 
@@ -441,14 +436,14 @@ begin
          if ACK_ECF = 0 then
             raise EACBrECFSemResposta.create( ACBrStr(
                      'Impressora '+fpModeloStr+' não responde (ACK = 0)') )
-         else if ACK_ECF = 21 then    { retorno em caracter 21d=15h=NAK }
+         else if chr(ACK_ECF) = NAK then    { retorno em caracter 21d=15h=NAK }
             raise EACBrECFSemResposta.create( ACBrStr(
                   'Impressora '+fpModeloStr+' não reconheceu o Comando'+
                   sLineBreak+' (ACK = 21). Falha: '+IntToStr(FalhasTX)) )
-         else if ACK_ECF <> 6 then
+         else if chr(ACK_ECF) <> ACK then
             raise EACBrECFSemResposta.create( ACBrStr(
                   'Erro. Resposta da Impressora '+fpModeloStr+' inválida'+
-                  sLineBreak+' (ACK = '+IntToStr(ACK)+')') ) ;
+                  sLineBreak+' (ACK = '+IntToStr(ACK_ECF)+')') ) ;
       except
          on E : EACBrECFSemResposta do
           begin
@@ -705,12 +700,12 @@ begin
   end ;
 
   { Verificando o CheckSum }
-  ACK_PC := ACK ;
+  ACK_PC := Ord(ACK) ;
 
   if Result and
     ( CalcCheckSum(LeftStr(Bloco,Length(Bloco)-1)) <> RightStr(Bloco,1) ) then
   begin
-    ACK_PC := NACK ;  // Erro no CheckSum, retornar NACK
+    ACK_PC := Ord(NAK) ;  // Erro no CheckSum, retornar NACK
     if fsFalhasRX > CFALHAS then
        raise Exception( ACBrStr('Erro no digito Verificador da Resposta.'+sLineBreak+
                         'Falha: '+IntToStr(fsFalhasRX)) ) ;
@@ -723,7 +718,7 @@ begin
   if Result then
      fsRespostasComando := fsRespostasComando + Retorno ;  // Salva este Bloco
 
-  if (ACK_PC = ACK) then           // ACK OK ?
+  if (chr(ACK_PC) = ACK) then           // ACK OK ?
   begin
      if Tipo = '-' then            // Erro ocorrido,
         AguardaImpressao := False  //   portanto, Desliga AguardaImpressao (caso estivesse ligado)

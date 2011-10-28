@@ -94,7 +94,7 @@ type TACBrCHQPerto = class( TACBrCHQClass )
 end ;
 
 implementation
-Uses ACBrUtil, ACBrDevice,
+Uses ACBrUtil, ACBrDevice, ACBrConsts,
    {$IFDEF COMPILER6_UP} DateUtils {$ELSE} ACBrD5{$ENDIF},
      SysUtils ;
 
@@ -282,7 +282,7 @@ begin
   result := '' ;
   if cmd = '' then exit ;
 
-  cmd := #2 + cmd + #3 ;   { STX + COMANDO + DADOS + ETX }
+  cmd := STX + cmd + ETX ;   { STX + COMANDO + DADOS + ETX }
 
   { Calculando BCC }
   BCC := ord(cmd[1]) xor ord(cmd[2]) ;

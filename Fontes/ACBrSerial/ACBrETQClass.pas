@@ -50,9 +50,6 @@ unit ACBrETQClass;
 interface
 uses ACBrDevice, Classes;
 
-const
-   CRLF = #13 + #10;
-
 type
 
 { Classe generica de ETIQUETA, nao implementa nenhum modelo especifico, apenas

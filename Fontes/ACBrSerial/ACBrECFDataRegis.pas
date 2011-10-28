@@ -101,14 +101,13 @@ uses ACBrECFClass, ACBrDevice, ACBrUtil,
      {$ENDIF} ;
 
       //CONFORME MANUAL PARA VERSOES X.03
-const STX   = #02 ;
-      ETX   = #03 ;
-	   _START = #254 ;
-	   _ACKN  = #004 ;
-	   _NAKN  = #006 ;
-	   _ACKC  = #008 ;
-	   _EOM	  = #026 ;
-	   _END	  = #013 ;
+const
+   _START = #254 ;
+   _ACKN  = #004 ;
+   _NAKN  = #006 ;
+   _ACKC  = #008 ;
+   _EOM	  = #026 ;
+   _END	  = #013 ;
 
  //********************************************************
  //        Lista de mensagem de aviso

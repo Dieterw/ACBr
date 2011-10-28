@@ -1581,15 +1581,25 @@ begin
      begin
         ASC := Ord(AString[I]) ;
 
-        case ASC of
-           2   : Ch := '[STX]' ;
-           3   : Ch := '[ETX]' ;
-           6   : Ch := '[ACK]' ;
-           10  : Ch := '[LF]' ;
-           13  : Ch := '[CR]' ;
-           27  : Ch := '[ESC]' ;
-           255 : Ch := '[FF]' ;
-           32..126 : Ch := AString[I] ;
+        case AString[I] of
+           NUL   : Ch := '[NUL]' ;
+           STX   : Ch := '[STX]' ;
+           ETX   : Ch := '[ETX]' ;
+           ENQ   : Ch := '[ENQ]' ;
+           ACK   : Ch := '[ACK]' ;
+           BELL  : Ch := '[BEL]' ;
+           TAB   : Ch := '[TAB]' ;
+           BS    : Ch := '[BS]' ;
+           LF    : Ch := '[LF]' ;
+           FF    : Ch := '[FF]' ;
+           CR    : Ch := '[CR]' ;
+           SO    : Ch := '[SO]' ;
+           DC2   : Ch := '[DC2]' ;
+           NAK   : Ch := '[NAK]' ;
+           ESC   : Ch := '[ESC]' ;
+           FS    : Ch := '[FS]' ;
+           GS    : Ch := '[GS]' ;
+           #32..#126 : Ch := AString[I] ;
         else ;
           Ch := '['+IntToStr(ASC)+']'
         end;

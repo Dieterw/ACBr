@@ -50,9 +50,6 @@ unit ACBrETQPpla;
 interface
 uses ACBrETQClass, ACBrUtil, ACBrDevice, Classes ;
 
-const
-   STX : String = chr(002);
-
 type
 
   { TACBrETQPpla }
@@ -87,7 +84,7 @@ type
   end ;
 
 implementation
-Uses ACBrETQ,
+Uses ACBrETQ, ACBrConsts,
      {$IFDEF COMPILER6_UP} StrUtils {$ELSE} ACBrD5, Windows{$ENDIF},
      SysUtils, math ;
 

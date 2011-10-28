@@ -56,14 +56,6 @@ interface
 uses ACBrECFClass, ACBrDevice, ACBrUtil,
      Classes ;
 
-const  STX = #02  ;
-       ETX = #03  ;
-       ESC = #27  ;
-       FLD = #28  ;
-       CR  = #13  ;
-       LF  = #10  ;
-       ACK = 06  ;
-       NACK= 21  ;
 const
   {$IFDEF LINUX}
    cLIB_Epson = 'libInterfaceEpson.so';
@@ -500,10 +492,10 @@ begin
   { Montando pacote com Parametros }
   ParamsStr := '' ;
   For I := 0 to fsParams.Count-1 do
-    ParamsStr := ParamsStr + FLD + fsParams[I] ;
+    ParamsStr := ParamsStr + FS + fsParams[I] ;
 
   { Montando Pacote de Envio }
-  Result := STX + AnsiChar(chr(fsSeq)) + fsComando + FLD + fsExtensao + ParamsStr + ETX ;
+  Result := STX + AnsiChar(chr(fsSeq)) + fsComando + FS + fsExtensao + ParamsStr + ETX ;
 
   { Calculando o Checksum }
   Result := Result + EpsonCheckSum( Result ) ;
@@ -592,12 +584,12 @@ begin
   { Pega apenas o Frame de Dados }
   Buf := copy(fsResposta,3,Length(fsResposta)-7) ;  //  Remove STX, SEQ, ETX e CHKSUM
 
-  { Quebrando Parametros Separados por FLD e inserindo-os em fsParams }
+  { Quebrando Parametros Separados por FS e inserindo-os em fsParams }
   while Buf <> '' do
   begin
-     P := pos(FLD,Buf) ;
+     P := pos(FS,Buf) ;
      if (P > 1) and (Buf[P-1] = #27) then   // Achou #27+#28 ?
-        P := PosEx(FLD,Buf,P+1) ;           // Se SIM, pegue o proximo #28
+        P := PosEx(FS,Buf,P+1) ;           // Se SIM, pegue o proximo #28
 
      if P = 0 then
         P := Length(Buf)+1 ;
@@ -1102,7 +1094,7 @@ begin
   try
      fpDevice.Serial.DeadlockTimeout := 2000 ; { Timeout p/ Envio }
 
-     while (ByteACK <> ACK) do     { Se ACK = 6 Comando foi reconhecido }
+     while (chr(ByteACK) <> ACK) do     { Se ACK = 6 Comando foi reconhecido }
      begin
         ByteACK := 0 ;
         fpDevice.Serial.Purge ;                   { Limpa a Porta }
@@ -1126,11 +1118,11 @@ begin
            if ByteACK = 0 then
               raise EACBrECFSemResposta.create( ACBrStr(
                     'Impressora '+fpModeloStr+' não responde (ACK = 0)' ))
-           else if ByteACK = NACK then    { retorno em caracter 21d=15h=NACK }
+           else if chr(ByteACK) = NAK then    { retorno em caracter 21d=15h=NACK }
               raise EACBrECFSemResposta.create( ACBrStr(
                     'Impressora '+fpModeloStr+' não reconheceu o Comando'+
                     sLineBreak+' (NACK)') )
-           else if ByteACK <> 6 then
+           else if chr(ByteACK) <> ACK then
               raise EACBrECFSemResposta.create( ACBrStr(
                     'Erro. Resposta da Impressora '+fpModeloStr+' inválida'+
                     sLineBreak+' (ACK = '+IntToStr(ByteACK)+')')) ;
@@ -1199,14 +1191,14 @@ Procedure TACBrECFEpson.PreparaCmd(cmd: AnsiString) ;
      P   : Integer ;
      SL  : TStringList ;
 begin
-  { Quebrando Parametros Separados por FLD }
+  { Quebrando Parametros Separados por FS }
   Buf := Cmd ;
   SL  := TStringList.create;
   try
      SL.Clear ;
      while Buf <> '' do
      begin
-        P := pos(FLD,Buf) ;
+        P := pos(FS,Buf) ;
         if P = 0 then
            P := Length(Buf)+1 ;
 
@@ -1254,7 +1246,7 @@ begin
      try
         { Esta atribuição, Já verifica o ChkSum, em caso de erro gera exception }
         EpsonResposta.Resposta := Retorno ;
-        fpDevice.Serial.SendByte(ACK);
+        fpDevice.Serial.SendByte(ord(ACK));
 
         if EpsonResposta.Seq <> EpsonComando.Seq then  // Despreza esse Bloco
         begin
@@ -1267,7 +1259,7 @@ begin
      except
         on E : Exception do
         begin
-           fpDevice.Serial.SendByte(NACK);
+           fpDevice.Serial.SendByte(ord(NAK));
            GravaLog( 'Pacote Inválido, NACK enviado: '+Retorno, True ) ;
            Result  := False ;
            Retorno := '' ;

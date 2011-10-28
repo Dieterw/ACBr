@@ -72,9 +72,6 @@ uses ACBrECFClass, ACBrDevice, ACBrUtil, Classes, IniFiles
         {$IFDEF VCL}, Forms {$ENDIF}
       {$ENDIF};
 
-const STX = #02 ;
-      ETX = #03 ;
-       
 type
 
 { Classe filha de TACBrECFClass com implementaçao para Yanco }
@@ -190,7 +187,7 @@ TACBrECFYanco = class( TACBrECFClass )
  end ;
 
 implementation
-Uses SysUtils, Math,
+Uses SysUtils, Math, ACBrConsts,
     {$IFDEF COMPILER6_UP} DateUtils, StrUtils {$ELSE} ACBrD5, Windows{$ENDIF} ;
 
 { ----------------------------- TDJECFYanco ------------------------------ }

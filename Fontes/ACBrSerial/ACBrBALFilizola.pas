@@ -52,9 +52,6 @@ interface
 uses ACBrBALClass,
      Classes;
 
-const STX = #02 ;
-      ETX = #03 ;
-
 type
   TACBrBALFilizola = class( TACBrBALClass )
   public
@@ -64,7 +61,7 @@ type
   end ;
 
 implementation
-Uses ACBrBAL,  
+Uses ACBrBAL, ACBrConsts,
      {$IFDEF COMPILER6_UP} DateUtils, StrUtils {$ELSE} ACBrD5, Windows{$ENDIF},
      SysUtils ;
 

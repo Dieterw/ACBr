@@ -96,12 +96,6 @@ interface
 uses ACBrECFClass, ACBrDevice, ACBrUtil,
      Classes ;
 
-const  STX = #02  ;
-       ETX = #03  ;
-       ESC = #27  ;
-       CR  = #13  ;
-       LF  = #10  ;
-
 type
 { Classe filha de TACBrECFClass com implementaçao para Mecaf }
 TACBrECFMecaf = class( TACBrECFClass )
@@ -238,7 +232,7 @@ TACBrECFMecaf = class( TACBrECFClass )
  end ;
 
 implementation
-Uses SysUtils, Math,
+Uses SysUtils, Math, ACBrConsts,
     {$IFDEF COMPILER6_UP} DateUtils, StrUtils {$ELSE} ACBrD5, Windows{$ENDIF} ;
 
 { ----------------------------- TACBrECFMecaf ------------------------------ }

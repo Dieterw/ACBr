@@ -97,6 +97,17 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 27/10/2011
+-- ACBrSerial --
+[*] Organização de vários fontes para o uso das constantes de ACBrConsts (por: DSA)
+
+-- ACBrECFBematech --
+[*] Completa re-escrita dos métodos ArquivoMFD_DLL, e EspelhoMFD_DLL para que os
+    mesmos façam uso das novas rotinas da Bemafi32.DLL, Bematech_FI_ArquivoMFD e
+    Bematech_FI_EspelhoMFD respectivamente  (por: DSA)
+[*] Ajustes no método CRZToCOO para encontrar o COO quando CRZ Inicial e Final
+    forem iguais.   (por: DSA)
+
 Data: 21/10/2011
 -- ACBrECFBematech --
 [-] Acerto no método CRZToCOO para funcionar com qualquer impressora bematech

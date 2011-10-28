@@ -94,7 +94,7 @@ uses ACBrECFClass, ACBrDevice, ACBrUtil, ACBrConsts,
        {$IFDEF VCL}, Controls, Forms, Dialogs {$ENDIF}
      {$ENDIF} ;
 
-const CRLF = #13+#10 ;
+const
       cCmdImpCondensado = #15 ;
       cCmdImpExpandidoUmaLinha = #14 ;
       cCmdImpFimExpandido = '#20';

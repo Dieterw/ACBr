@@ -48,12 +48,7 @@ interface
 uses ACBrBALClass,
      Classes;
 
-const STX = #02 ;
-      ETX = #03 ;
-      CR  = #13 ;
-      
 type
-
   TACBrBALToledo2180 = class( TACBrBALClass )
   public
     constructor Create(AOwner: TComponent);

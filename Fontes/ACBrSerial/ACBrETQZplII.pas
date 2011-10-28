@@ -50,9 +50,6 @@ uses ACBrETQClass, ACBrUtil, ACBrDevice, Dialogs
      {$ENDIF}
      ,Classes ;
 
-const
-   STX : String = chr(002);
-
 type
   TACBrETQZplII = class( TACBrETQClass )
   public

@@ -236,6 +236,7 @@ function FunctionDetect (LibName, FuncName: String; var LibPointer: Pointer)
  : boolean; overload ;
 function FunctionDetect (LibName, FuncName: String; var LibPointer: Pointer;
    var LibHandle: THandle ): boolean; overload ;
+function UnLoadLibrary(LibName: AnsiString ): Boolean ;
 
 function FlushToDisk( sFile: string): boolean;
 
@@ -1974,6 +1975,24 @@ begin
         Result := true;
   end;
 end;
+
+function UnLoadLibrary(LibName: AnsiString ): Boolean ;
+var
+  LibHandle: THandle ;
+begin
+ Result := True ;
+ LibHandle := 0;
+{$IFDEF FPC}
+ LibHandle := dynlibs.LoadLibrary( LibName ) ;
+ if LibHandle <> 0 then
+    Result := dynlibs.FreeLibrary(LibHandle) ;
+{$ELSE}
+ LibHandle := GetModuleHandle( LibName );
+ if LibHandle <> 0 then
+    Result := FreeLibrary( LibHandle )
+{$ENDIF}
+end ;
+
 
 //funcoes para uso com o modulo ACBrSintegra ***********************************************
 

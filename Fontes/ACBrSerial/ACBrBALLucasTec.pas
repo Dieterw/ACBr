@@ -47,9 +47,6 @@ interface
 uses ACBrBALClass,
      Classes;
 
-{const STX = #02 ;
-      ETX = #03 ;}
-
 type
   TACBrBALLucasTec = class( TACBrBALClass )
   public

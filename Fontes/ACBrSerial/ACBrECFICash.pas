@@ -49,10 +49,7 @@ interface
 uses ACBrECFClass, ACBrDevice, ACBrUtil,
      Classes ;
 
-const  STX = #2;
-       ETX = #3;
-       FF  = #12 ;
-       cACK = 06  ;
+const  cACK = 06  ;
        NACK= 21  ;
 
 type
@@ -196,7 +193,7 @@ TACBrECFICash = class( TACBrECFClass )
  end ;
 
 implementation
-Uses SysUtils, Math,
+Uses SysUtils, Math, ACBrConsts,
     {$IFDEF COMPILER6_UP} DateUtils, StrUtils {$ELSE} ACBrD5, Windows{$ENDIF} ;
 
 { ----------------------------- TACBrECFICash ------------------------------ }

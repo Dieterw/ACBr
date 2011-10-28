@@ -48,12 +48,7 @@ interface
 uses ACBrBALClass,
      Classes;
 
-const STX = #02 ;
-      ETX = #03 ;
-      CR  = #13 ;
-      
 type
-
   TACBrBALToledo = class( TACBrBALClass )
   public
     constructor Create(AOwner: TComponent);
@@ -62,7 +57,7 @@ type
   end ;
 
 implementation
-Uses ACBrBAL, ACBrUtil,
+Uses ACBrBAL, ACBrUtil, ACBrConsts,
      {$IFDEF COMPILER6_UP} DateUtils, StrUtils {$ELSE} ACBrD5, synaser, Windows{$ENDIF},
      SysUtils, Math ;
 

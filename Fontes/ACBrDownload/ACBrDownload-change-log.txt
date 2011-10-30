@@ -38,7 +38,7 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 30/10/2011
--- ACBrCNIEE --
+-- ACBrDownload --
 [+] Librado componente para download de arquivos
     por: Isaque Pinheiro / Daniel Simões
 

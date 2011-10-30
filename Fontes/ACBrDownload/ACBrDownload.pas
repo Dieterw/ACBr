@@ -245,6 +245,8 @@ begin
      protFTP : fDown := TACBrFTPDownload.Create(Self);
    end;
 
+   fDownloadStatus := stDownload;
+
    if fProtocolo <> protNenhum then
       fDown.StartDownload;
 end;

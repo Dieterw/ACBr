@@ -50,7 +50,7 @@ unit ACBrDownloadClass;
 interface
 
 uses
-  Classes, SysUtils,
+  Classes, SysUtils, Forms,
   ACBrUtil, ACBrBase,
   httpsend, ftpsend, blcksock, synautil;
 
@@ -262,6 +262,7 @@ begin
                     wHour,
                     wMin,
                     wSec);
+  Application.ProcessMessages;
 end;
 
 procedure TACBrDownloadClass.DoHookStatus(Sender: TObject; Reason: THookSocketReason;
@@ -344,7 +345,8 @@ end;
 procedure TACBrDownloadClass.SetSizeRecvBuffer(const Value: Integer);
 begin
   fSizeRecvBuffer := Value;
-  fSock.SizeRecvBuffer := Value;
+  if Assigned(fSock) then
+     fSock.SizeRecvBuffer := Value;
 end;
 
 procedure TACBrDownloadClass.SetDownloadStatus(const Value: TDownloadStatus);
@@ -357,7 +359,7 @@ end;
 
 procedure TACBrDownloadClass.StartDownload;
 begin
-  //
+
 end;
 
 procedure TACBrDownloadClass.OpenCreateFile;

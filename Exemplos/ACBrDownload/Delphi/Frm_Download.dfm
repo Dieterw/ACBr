@@ -67,7 +67,7 @@ object Form1: TForm1
   end
   object bDownload: TBitBtn
     Left = 24
-    Top = 328
+    Top = 322
     Width = 99
     Height = 26
     Caption = 'Download'
@@ -90,7 +90,7 @@ object Form1: TForm1
   end
   object bStop: TBitBtn
     Left = 353
-    Top = 328
+    Top = 322
     Width = 69
     Height = 26
     Anchors = [akTop, akRight]
@@ -115,7 +115,7 @@ object Form1: TForm1
   end
   object bPause: TBitBtn
     Left = 195
-    Top = 328
+    Top = 322
     Width = 76
     Height = 26
     Anchors = [akTop]
@@ -140,7 +140,7 @@ object Form1: TForm1
   end
   object ProgressBar1: TProgressBar
     Left = 24
-    Top = 361
+    Top = 355
     Width = 398
     Height = 20
     Anchors = [akLeft, akTop, akRight]
@@ -359,8 +359,17 @@ object Form1: TForm1
       TabOrder = 3
     end
   end
+  object CheckBox1: TCheckBox
+    Left = 23
+    Top = 381
+    Width = 132
+    Height = 17
+    Caption = 'Fechar ap'#243's download'
+    TabOrder = 11
+  end
   object fACBrDownload: TACBrDownload
     SizeRecvBuffer = 0
+    OnAfterDownload = fACBrDownloadAfterDownload
     OnHookStatus = HookStatus
     OnHookMonitor = HookMonitor
     Left = 358

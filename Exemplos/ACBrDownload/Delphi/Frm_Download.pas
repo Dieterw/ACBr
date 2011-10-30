@@ -55,6 +55,7 @@ type
     edtProxyUser: TEdit;
     edtProxyPass: TEdit;
     fACBrDownload: TACBrDownload;
+    CheckBox1: TCheckBox;
     procedure bStopClick(Sender: TObject);
     procedure bDownloadClick(Sender: TObject);
     procedure bPauseClick(Sender: TObject);
@@ -67,6 +68,7 @@ type
       Sec: Word);
     procedure HookStatus(Sender: TObject; Reason: THookSocketReason;
       const BytesToDownload, BytesDownloaded: Integer);
+    procedure fACBrDownloadAfterDownload(Sender: TObject);
   private
     { private declarations }
   public
@@ -155,6 +157,17 @@ begin
    GroupBox1.Enabled := edtProt.Text = 'FTP';
 end;
 
+procedure TForm1.fACBrDownloadAfterDownload(Sender: TObject);
+begin
+   if fACBrDownload.DownloadStatus = stDownload then
+   begin
+      ShowMessage('Download concluído com sucesso!');
+
+      if CheckBox1.Checked then
+         Self.Close;
+   end;
+end;
+
 procedure TForm1.FormCreate(Sender: TObject);
 begin
    edtProt.OnChange(Sender)
@@ -181,7 +194,6 @@ begin
                      FormatFloat('###,###,##0', BytesToDownload / 1024) +' KB  -  ' + sConnectionInfo;
 
   lConnectionInfo.Caption := sConnectionInfo;
-  Application.ProcessMessages;
 end;
 
 procedure TForm1.HookStatus(Sender: TObject; Reason: THookSocketReason;

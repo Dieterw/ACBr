@@ -1913,7 +1913,7 @@ procedure TACBrECFEpson.DescontoAcrescimoItemAnterior(
    ValorDescontoAcrescimo : Double ; DescontoAcrescimo : String ;
    TipoDescontoAcrescimo : String ; NumItem : Integer) ;
 begin
-  if NumItem = 0 then
+  if not fsIsFBIII then
    begin
      EpsonComando.Comando  := '0A04' ;
      if TipoDescontoAcrescimo = '%' then

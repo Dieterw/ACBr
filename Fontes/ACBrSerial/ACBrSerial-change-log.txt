@@ -97,6 +97,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 31/10/2011
+-- ACBrECFEpson --
+[-] Corrigido Desconto/Acréscimo de Item Anterior na FBIII (por: DSA)
+
 Data: 27/10/2011
 -- ACBrSerial --
 [*] Organização de vários fontes para o uso das constantes de ACBrConsts (por: DSA)

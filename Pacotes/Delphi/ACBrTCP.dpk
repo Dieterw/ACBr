@@ -1,6 +1,7 @@
 package ACBrTCP;
 
 {$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
 {$ALIGN 8}
 {$ASSERTIONS ON}
 {$BOOLEVAL OFF}
@@ -22,6 +23,8 @@ package ACBrTCP;
 {$WRITEABLECONST OFF}
 {$MINENUMSIZE 1}
 {$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
 {$DESCRIPTION 'ACBr Automação Comercial Brasil - ACBrTCP (http://acbr.sf.net/)'}
 {$IMPLICITBUILD ON}
 
@@ -38,6 +41,10 @@ contains
   ACBrTCPReg in '..\..\Fontes\ACBrTCP\ACBrTCPReg.pas',
   ACBrIBGE in '..\..\Fontes\ACBrTCP\ACBrIBGE.pas',
   ACBrCNIEE in '..\..\Fontes\ACBrTCP\ACBrCNIEE.pas',
-  ACBrSuframa in '..\..\Fontes\ACBrTCP\ACBrSuframa.pas';
+  ACBrSuframa in '..\..\Fontes\ACBrTCP\ACBrSuframa.pas',
+  ACBrDownload in '..\..\Fontes\ACBrTCP\ACBrDownload.pas',
+  ACBrDownloadClass in '..\..\Fontes\ACBrTCP\ACBrDownloadClass.pas',
+  ACBrFTPDownload in '..\..\Fontes\ACBrTCP\ACBrFTPDownload.pas',
+  ACBrHTTPDownload in '..\..\Fontes\ACBrTCP\ACBrHTTPDownload.pas';
 
 end.

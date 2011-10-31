@@ -41,7 +41,8 @@ procedure Register;
 
 implementation
 
-Uses ACBrSocket, ACBrCEP, ACBrIBGE, ACBrCNIEE, ACBrSuframa, SysUtils;
+Uses ACBrSocket, ACBrCEP, ACBrIBGE, ACBrCNIEE, ACBrSuframa, ACBrDownload,
+   SysUtils;
 
 {$IFNDEF FPC}
    {$R ACBrTCP.dcr}
@@ -50,7 +51,7 @@ Uses ACBrSocket, ACBrCEP, ACBrIBGE, ACBrCNIEE, ACBrSuframa, SysUtils;
 procedure Register;
 begin
   RegisterComponents('ACBr',
-    [TACBrTCPServer, TACBrCEP, TACBrIBGE, TACBrCNIEE, TACBrSuframa]
+    [TACBrTCPServer, TACBrCEP, TACBrIBGE, TACBrCNIEE, TACBrSuframa, TACBrDownload]
   );
 end;
 

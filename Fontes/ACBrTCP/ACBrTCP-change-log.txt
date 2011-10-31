@@ -37,6 +37,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+30/10/2011
+-- ACBrDownload --
+[+] Librado componente para download de arquivos
+    por: Isaque Pinheiro / Daniel Simões
+
 17/10/2011
 -- ACBrSocket --
 [+] Adicionado método post no TACBrHTTP.

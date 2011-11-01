@@ -39,7 +39,7 @@ Símbolo : Significado
 
 30/10/2011
 -- ACBrDownload --
-[+] Librado componente para download de arquivos
+[+] Liberado componente para download de arquivos
     por: Isaque Pinheiro / Daniel Simões
 
 17/10/2011
@@ -48,6 +48,7 @@ Símbolo : Significado
 [+] Adicionada propriedade para controle de fazer o parse do retorno ou não
     no TACBrHTTP.
     por: Régys Silveira.
+
 -- ACBrSuframa --
 [+] Alterado ACBrSuframa para utilizar somente o OpenSSL para requisição.
     por: Régys Silveira.

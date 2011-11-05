@@ -97,7 +97,6 @@ type
     constructor Create;
     destructor Destroy; Override;
     procedure Clear; override;
-    procedure Add(AItem : TACBrCargaBalItem);
     function New: TACBrCargaBalItem;
     property Items[Index: Integer]: TACBrCargaBalItem read GetItem write SetItem; Default;
   end;
@@ -171,24 +170,6 @@ begin
 end;
 
 { TACBrCargaBalItens }
-
-procedure TACBrCargaBalItens.Add(AItem: TACBrCargaBalItem);
-var
- FItem : TACBrCargaBalItem;
-begin
-    FItem                := TACBrCargaBalItem.Create;
-    FItem.Tecla          := AItem.Tecla;
-    FItem.Receita        := AItem.Receita;
-    FItem.ValorVenda     := AItem.ValorVenda;
-    FItem.ModeloEtiqueta := AItem.ModeloEtiqueta;
-    FItem.Descricao      := AItem.Descricao;
-    FItem.Codigo         := AItem.Codigo;
-    FItem.Tipo           := AItem.Tipo;
-    FItem.Validade       := AItem.Validade;
-    FItem.Setor.Codigo   := AItem.Setor.Codigo;
-    FItem.Setor.Descricao:= AItem.Setor.Descricao;
-    inherited Add(FItem);
-end;
 
 procedure TACBrCargaBalItens.Clear;
 begin

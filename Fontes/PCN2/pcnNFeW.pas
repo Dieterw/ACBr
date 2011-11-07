@@ -1231,7 +1231,10 @@ end;
 
 procedure TNFeW.GerarDetImpostoII(const i: integer);
 begin
-  if nfe.Det[i].Imposto.II.vII > 0 then
+  if (nfe.Det[i].Imposto.II.vBc > 0) or
+     (nfe.Det[i].Imposto.II.vDespAdu > 0) or
+     (nfe.Det[i].Imposto.II.vII > 0) or
+     (nfe.Det[i].Imposto.II.vIOF > 0) then
   begin
     Gerador.wGrupo('II', 'P01');
     Gerador.wCampo(tcDe2, 'P02', 'vBC     ', 01, 15, 1, nfe.Det[i].Imposto.II.vBc, DSC_VBC);

@@ -1,9 +1,9 @@
 object Form1: TForm1
   Left = 451
   Top = 163
-  Width = 604
-  Height = 358
   Caption = 'Form1'
+  ClientHeight = 324
+  ClientWidth = 596
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -16,8 +16,8 @@ object Form1: TForm1
   object Memo1: TMemo
     Left = 0
     Top = 136
-    Width = 588
-    Height = 184
+    Width = 596
+    Height = 188
     Align = alClient
     Lines.Strings = (
       'Memo1')
@@ -28,7 +28,7 @@ object Form1: TForm1
   object PageControl1: TPageControl
     Left = 0
     Top = 0
-    Width = 588
+    Width = 596
     Height = 136
     ActivePage = TabSheet1
     Align = alTop
@@ -58,15 +58,13 @@ object Form1: TForm1
           Width = 156
           Height = 21
           Style = csDropDownList
-          ItemHeight = 13
-          ItemIndex = 1
           TabOrder = 0
-          Text = 'BuscarCEP'
           OnChange = cbxWSChange
           Items.Strings = (
             'Nenhum'
             'BuscarCEP'
-            'CEPLivre')
+            'CEPLivre'
+            'Republica virtual')
         end
         object edChaveBuscarCEP: TEdit
           Left = 7
@@ -79,7 +77,7 @@ object Form1: TForm1
       object GroupBox1: TGroupBox
         Left = 180
         Top = 0
-        Width = 400
+        Width = 408
         Height = 108
         Align = alClient
         Caption = 'Proxy'
@@ -181,7 +179,7 @@ object Form1: TForm1
       object GroupBox4: TGroupBox
         Left = 164
         Top = 0
-        Width = 416
+        Width = 424
         Height = 108
         Align = alClient
         Caption = 'Por Endere'#231'o'
@@ -312,13 +310,13 @@ object Form1: TForm1
       object GroupBox6: TGroupBox
         Left = 164
         Top = 0
-        Width = 416
+        Width = 424
         Height = 108
         Align = alClient
         Caption = 'Por Nome'
         TabOrder = 1
         DesignSize = (
-          416
+          424
           108)
         object bBuscarLogradouro1: TButton
           Left = 142
@@ -332,7 +330,7 @@ object Form1: TForm1
         object edIBGENome: TEdit
           Left = 38
           Top = 26
-          Width = 336
+          Width = 344
           Height = 21
           Anchors = [akLeft, akTop, akRight]
           TabOrder = 0

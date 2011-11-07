@@ -569,16 +569,14 @@ end;
 procedure TACBrWSRepublicaVirtual.ProcessaResposta;
 Var
    Buffer : String ;
-   PosIni : Integer ;
    Endereco : TACBrCEPEndereco ;
 begin
   fOwner.fEnderecos.Clear;
 
   try
      Buffer := fOwner.RespHTTP.Text;
-     PosIni := pos('<resultado>1',Buffer) ;
 
-     if PosIni > 0 then
+     if StrToIntDef(Endereco.LerTagXML(Buffer, 'resultado'), 0) > 0 then
        begin
          Endereco := TACBrCEPEndereco.Create;
 

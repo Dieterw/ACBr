@@ -97,6 +97,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 07/11/2011
+-- ACBrBal --
+[+] Adicionado novo modelo de balança MGNA
+    http://djsystem.com.br/acbr/forum/viewtopic.php?f=5&t=3473
+
 Data: 31/10/2011
 -- ACBrECFEpson --
 [-] Corrigido Desconto/Acréscimo de Item Anterior na FBIII (por: DSA)

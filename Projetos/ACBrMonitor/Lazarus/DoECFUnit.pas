@@ -39,6 +39,8 @@ Uses Classes, TypInfo, SysUtils, CmdUnit ;
 
 Procedure DoECF( Cmd : TACBrCmd ) ;
 Function PegaAliquotas : String ;
+Function PegaRelatoriosGerenciais : String ;
+Function PegaTotaisRelatoriosGerenciais : String ;
 Function PegaTotaisAliquotas : String ;
 Function PegaFormasPagamento : String ;
 Function PegaTotaisFormasPagamento : String ;
@@ -67,6 +69,7 @@ Var wDescricao  : AnsiString ;
     Linha       : AnsiString ;
     NomeArquivo : String ;
     FPG         : TACBrECFFormaPagamento ;
+    REL         : TACBrECFRelatorioGerencial;
     ICMS        : TACBrECFAliquota ;
     CNF         : TACBrECFComprovanteNaoFiscal ;
 begin
@@ -359,6 +362,38 @@ begin
          begin
             wDescricao := Cmd.Params(0) ;
             ProgramaUnidadeMedida( wDescricao ) ;
+         end
+
+        else if Cmd.Metodo = 'relatoriosgerenciais' then
+           Cmd.Resposta := PegaRelatoriosGerenciais
+
+        else if Cmd.Metodo = 'carregarelatoriosgerenciais' then
+         begin
+           CarregaRelatoriosGerenciais ;
+           Cmd.Resposta := PegaRelatoriosGerenciais;
+         end
+
+        else if Cmd.Metodo = 'lertotaisrelatoriosgerenciais' then
+           Cmd.Resposta := PegaTotaisRelatoriosGerenciais
+
+        else if Cmd.Metodo = 'programaformapagamento' then
+         begin
+            wDescricao := Cmd.Params(0) ;
+            ProgramaRelatoriosGerenciais( wDescricao ,             { Descricao }
+                   Cmd.Params(1) ) ;                            { Posicao = '' }
+         end
+
+        else if Cmd.Metodo = 'achargdescricao' then
+         begin
+           REL := AchaRGDescricao( cmd.Params(0),                 { Descricao }
+                     StrToBoolDef(Trim(Cmd.Params(1)),False) ) ;  { BuscaExata }
+           if REL <> nil then
+              Cmd.Resposta := padL(REL.Indice,4) +
+                              padL( REL.Descricao, 30) +
+                              IntToStrZero( REL.Contador, 5 )
+           else
+              raise Exception.Create('Relatório Gerencial: '+Trim(cmd.Params(0))+
+                                     ' não encontrado');
          end
 
         else if Cmd.Metodo = 'testapodeabrircupom' then
@@ -868,6 +903,44 @@ begin
         Result := copy(Result,1,Length(Result)-1) ;
   end ;
 end ;
+
+function PegaRelatoriosGerenciais : String ;
+Var I : Integer ;
+begin
+  Result := '' ;
+  with {$IFNDEF CONSOLE}FrmACBrMonitor.ACBrECF1 {$ELSE}dm.ACBrECF1 {$ENDIF} do
+  begin
+     if RelatoriosGerenciais.Count < 1 then
+        CarregaRelatoriosGerenciais ;
+
+     for I := 0 to RelatoriosGerenciais.Count -1 do
+        Result := Result + padL(RelatoriosGerenciais[I].Indice,4) +
+                           padL( RelatoriosGerenciais[I].Descricao, 30) +
+                           IntToStrZero( RelatoriosGerenciais[I].Contador, 5 ) + '|' ;
+
+     if Result <> '' then
+        Result := copy(Result,1,Length(Result)-1) ;
+  end ;
+end;
+
+function PegaTotaisRelatoriosGerenciais : String ;
+Var I : Integer ;
+begin
+  Result := '' ;
+  with {$IFNDEF CONSOLE}FrmACBrMonitor.ACBrECF1 {$ELSE}dm.ACBrECF1 {$ENDIF} do
+  begin
+     LerTotaisRelatoriosGerenciais ;
+
+     for I := 0 to RelatoriosGerenciais.Count -1 do
+     begin
+        Result := Result + padL( RelatoriosGerenciais[I].Indice,4)  +
+                           IntToStrZero( RelatoriosGerenciais[I].Contador, 5 ) + '|' ;
+     end ;
+
+     if Result <> '' then
+        Result := copy(Result,1,Length(Result)-1) ;
+  end ;
+end;
 
 {------------------------------------------------------------------------------}
 Function PegaTotaisAliquotas : String ;

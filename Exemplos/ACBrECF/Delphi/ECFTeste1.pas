@@ -322,6 +322,7 @@ type
     btnIdentificaPafECF: TButton;
     RelatorioGerencialcomformatacao1: TMenuItem;
     btnMenuFiscalConfigPAFECF: TButton;
+    SubModelo1: TMenuItem;
     procedure cbxModeloChange(Sender: TObject);
     procedure Sair1Click(Sender: TObject);
     procedure bAtivarClick(Sender: TObject);
@@ -513,6 +514,7 @@ type
     procedure btnMenuFiscalConfigPAFECFClick(Sender: TObject);
     procedure ACBrECF1ChangeEstado(const EstadoAnterior,
       EstadoAtual: TACBrECFEstado);
+    procedure SubModelo1Click(Sender: TObject);
   private
     { Private declarations }
     Function Converte( cmd : String) : String;
@@ -1131,6 +1133,12 @@ begin
      mResp.Lines.Add( 'Subtotaliza Cupom: '+ Desc );
      AtualizaMemos ;
   end ;
+end;
+
+procedure TForm1.SubModelo1Click(Sender: TObject);
+begin
+  mResp.Lines.Add( 'SubModelo: ('+ ACBrECF1.SubModeloECF+')' );
+  AtualizaMemos ;
 end;
 
 procedure TForm1.CancelaDescontoAcrescimoSubTotal1Click(Sender: TObject);

@@ -789,7 +789,7 @@ object Form1: TForm1
       end
       object Button2: TButton
         Left = 11
-        Top = -127
+        Top = -147
         Width = 108
         Height = 25
         Anchors = [akLeft, akBottom]
@@ -801,7 +801,7 @@ object Form1: TForm1
         Left = 11
         Top = 64
         Width = 570
-        Height = 65
+        Height = 45
         Anchors = [akLeft, akTop, akRight, akBottom]
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -1381,6 +1381,10 @@ object Form1: TForm1
         object Modelo1: TMenuItem
           Caption = 'Modelo'
           OnClick = Modelo1Click
+        end
+        object SubModelo1: TMenuItem
+          Caption = 'SubModelo'
+          OnClick = SubModelo1Click
         end
       end
       object N19: TMenuItem

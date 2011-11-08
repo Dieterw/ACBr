@@ -32,6 +32,9 @@ object Form1: TForm1
         Width = 80
       end
       item
+        Width = 300
+      end
+      item
         Width = 50
       end>
   end
@@ -786,7 +789,7 @@ object Form1: TForm1
       end
       object Button2: TButton
         Left = 11
-        Top = -107
+        Top = -127
         Width = 108
         Height = 25
         Anchors = [akLeft, akBottom]
@@ -798,7 +801,7 @@ object Form1: TForm1
         Left = 11
         Top = 64
         Width = 570
-        Height = 85
+        Height = 65
         Anchors = [akLeft, akTop, akRight, akBottom]
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -2038,6 +2041,7 @@ object Form1: TForm1
     OnMsgAguarde = ACBrECF1MsgAguarde
     OnAguardandoRespostaChange = ACBrECF1AguardandoRespostaChange
     OnMsgPoucoPapel = ACBrECF1MsgPoucoPapel
+    OnChangeEstado = ACBrECF1ChangeEstado
     DecimaisPreco = 2
     MemoParams.Strings = (
       '[Cabecalho]'

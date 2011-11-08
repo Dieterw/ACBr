@@ -511,6 +511,8 @@ type
     procedure btnIdentificaPafECFClick(Sender: TObject);
     procedure RelatorioGerencialcomformatacao1Click(Sender: TObject);
     procedure btnMenuFiscalConfigPAFECFClick(Sender: TObject);
+    procedure ACBrECF1ChangeEstado(const EstadoAnterior,
+      EstadoAtual: TACBrECFEstado);
   private
     { Private declarations }
     Function Converte( cmd : String) : String;
@@ -589,7 +591,7 @@ begin
   mResp.Lines.Add( E.Message );
   StatusBar1.Panels[0].Text := 'Exception' ;
   AtualizaMemos( False ) ;
-  StatusBar1.Panels[1].Text := E.Message ;
+  StatusBar1.Panels[2].Text := E.Message ;
 //  PageControl1.ActivePageIndex := 1 ;
 //  MessageDlg( E.Message,mtError,[mbOk],0) ;
 end ;
@@ -745,7 +747,7 @@ end;
 
 procedure TForm1.ACBrECF1MsgAguarde(Mensagem : String);
 begin
-  StatusBar1.Panels[1].Text := StringReplace(Mensagem,#10,' ',[rfReplaceAll]) ;
+  StatusBar1.Panels[2].Text := StringReplace(Mensagem,#10,' ',[rfReplaceAll]) ;
 end;
 
 procedure TForm1.DataHora1Click(Sender: TObject);
@@ -2008,6 +2010,40 @@ begin
   Application.ProcessMessages ;
 
   WB_ScrollToBottom(wbBobina);
+end;
+
+procedure TForm1.ACBrECF1ChangeEstado(const EstadoAnterior,
+  EstadoAtual: TACBrECFEstado);
+var
+  sEstAnterior, sEstAtual: String;
+begin
+  case EstadoAnterior of
+    estNaoInicializada: sEstAnterior := 'estNaoInicializada';
+    estDesconhecido: sEstAnterior := 'estDesconhecido';
+    estLivre: sEstAnterior := 'estLivre';
+    estVenda: sEstAnterior := 'estVenda';
+    estPagamento: sEstAnterior := 'estPagamento';
+    estRelatorio: sEstAnterior := 'estRelatorio';
+    estBloqueada: sEstAnterior := 'estBloqueada';
+    estRequerZ: sEstAnterior := 'estRequerZ';
+    estRequerX: sEstAnterior := 'estRequerX';
+    estNaoFiscal: sEstAnterior := 'estNaoFiscal';
+  end;
+
+  case EstadoAtual of
+    estNaoInicializada: sEstAtual := 'estNaoInicializada';
+    estDesconhecido: sEstAtual := 'estDesconhecido';
+    estLivre: sEstAtual := 'estLivre';
+    estVenda: sEstAtual := 'estVenda';
+    estPagamento: sEstAtual := 'estPagamento';
+    estRelatorio: sEstAtual := 'estRelatorio';
+    estBloqueada: sEstAtual := 'estBloqueada';
+    estRequerZ: sEstAtual := 'estRequerZ';
+    estRequerX: sEstAtual := 'estRequerX';
+    estNaoFiscal: sEstAtual := 'estNaoFiscal';
+  end;
+
+  StatusBar1.Panels[1].Text := Format('Anterior: %s - Atual: %s', [sEstAnterior, sEstAtual]);
 end;
 
 procedure TForm1.WB_LoadHTML(WebBrowser: TWebBrowser; HTMLCode: string);

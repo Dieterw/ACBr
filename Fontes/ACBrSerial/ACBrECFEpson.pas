@@ -145,11 +145,12 @@ TACBrECFEpson = class( TACBrECFClass )
     fsIE        : String ;
     fsIM        : String ;
     fsCliche    : AnsiString ;
-    fsUsuarioAtual       : String ;
-    fsDataHoraSB         : TDateTime ;
-    fsSubModeloECF       : String ;
-    fsRet0906   : AnsiString ;
-    fsRet0907   : AnsiString ;
+    fsUsuarioAtual : String ;
+    fsDataHoraSB   : TDateTime ;
+    fsSubModeloECF : String ;
+    fsRet0906 : AnsiString ;
+    fsRet0907 : AnsiString ;
+    fsBytesIn : Integer ;
     fsEpsonComando: TACBrECFEpsonComando;
     fsEpsonResposta: TACBrECFEpsonResposta;
     fsImprimeCheque: Boolean;
@@ -1087,6 +1088,7 @@ begin
   ErroMsg := '' ;
   fpComandoEnviado   := '' ;
   fpRespostaComando  := '' ;
+  fsBytesIn          := 0 ;
   EpsonResposta.Resposta := '' ;  // Zera resposta
   OldTimeOut := TimeOut ;
   TimeOut    := max(EpsonComando.TimeOut, TimeOut) ;
@@ -1227,18 +1229,41 @@ end;
 
 Function TACBrECFEpson.VerificaFimLeitura(var Retorno: AnsiString;
    var TempoLimite: TDateTime) : Boolean ;
-begin
-  Result := ((LeftStr(Retorno,1) = STX) and (Length(Retorno) >= 7) and
-             (copy(Retorno,Length(Retorno)-4,1) = ETX) ) ;
 
-  // É Envio de Resposta Intermediária ?
-  if Result and (LeftStr(Retorno,7) = #2 + #128 + #3 + '0085') then
+var
+  LenRet : Integer ;
+
+  Function BlocoEValido : Boolean ;
+  begin
+    Result := ((LeftStr(Retorno,1) = STX) and (LenRet >= 7) and
+               (copy( Retorno, LenRet-4, 1) = ETX) ) ;
+  end ;
+
+begin
+  LenRet := Length(Retorno) ;
+  Result := BlocoEValido;
+
+  if LenRet > fsBytesIn then  // ECF está enviando dados... aumente o TimeOut
+     TempoLimite := IncSecond(now, TimeOut);
+
+  fsBytesIn := LenRet;
+
+  if not Result then
   begin
      // DEBUG //
-     // GravaLog( 'Resposta Intermediaria: ' +LeftStr(Retorno,7), True );
-     Retorno     := Copy(Retorno, 8, Length(Retorno));
-     TempoLimite := IncSecond(now, TimeOut);
-     Result      := False ;
+     //GravaLog( 'Aguardando Bloco: ' +Retorno, True );
+     exit ;
+  end ;
+
+  // É Envio de Resposta Intermediária ?
+  if (LeftStr(Retorno,7) = #2 + #128 + #3 + '0085') then
+  begin
+     // DEBUG //
+     //GravaLog( 'Resposta Intermediaria detectada: ' +Retorno, True );
+     Retorno     := Copy(Retorno, 8, LenRet );
+     LenRet      := Length(Retorno) ;
+     fsBytesIn   := LenRet;
+     Result      := BlocoEValido ; // Re-avalia o Retorno restante
   end ;
 
   if Result then
@@ -1263,9 +1288,14 @@ begin
            GravaLog( 'Pacote Inválido, NACK enviado: '+Retorno, True ) ;
            Result  := False ;
            Retorno := '' ;
+           fpDevice.Serial.Purge;  // Zera conteudo de Porta Serial
         end ;
      end ;
   end ;
+
+  // DEBUG //
+  {if Result then
+     GravaLog('Fim da Leitura: '+Retorno, True);}
 end;
 
 function TACBrECFEpson.GetDataHora: TDateTime;
@@ -1617,7 +1647,7 @@ end;
 Procedure TACBrECFEpson.ReducaoZ(DataHora: TDateTime) ;
 begin
   EpsonComando.Comando := '0801' ;
-  EpsonComando.TimeOut := TempoInicioMsg + 2 ;  // apenas para o bloqueio de teclado funcionar
+  EpsonComando.TimeOut := TempoInicioMsg + 30 ;  // apenas para o bloqueio de teclado funcionar
   if DataHora <> 0 then
    begin
      EpsonComando.Extensao := '0001' ;

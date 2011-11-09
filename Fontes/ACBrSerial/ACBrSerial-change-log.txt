@@ -97,6 +97,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 09/11/2011
+-- ACBrECFEpson --
+[-] Correções na detecção do Fim de resposta do Protocolo Serial (por: DSA)
+
 Data: 08/11/2011
 -- ACBrECFDaruma --
 [*] Acerto para ler a variável do submodelo quando estiver disponível e quando 

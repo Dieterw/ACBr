@@ -195,7 +195,8 @@ TACBrECFDaruma = class( TACBrECFClass )
     fsEsperaFFCR  : Boolean ;
     fsComandosImpressao : array[0..22] of AnsiString ;
 
-    fsModeloDaruma  : TACBrModelosDaruma;
+    fsModeloDaruma: TACBrModelosDaruma;
+    fsSubModeloECF: String ;
 
     fsRet244: AnsiString ;
     fsNumCRO: String ;
@@ -782,6 +783,7 @@ begin
   ZeraTotalApagar;
 
   fpModeloStr := 'Daruma' ;
+  fsSubModeloECF := '';
   fpRFDID     := 'DR' ;
   fpPaginaDeCodigo := 28591 ;
 
@@ -867,6 +869,7 @@ begin
   fsTipoRel   := ' ' ;
   fsEsperaFFCR:= False ;
   fsModeloDaruma := fsIndefinido;
+  fsSubModeloECF := '';
 
   try
      { Testando a comunicaçao com a porta e se é MFD }
@@ -1445,68 +1448,67 @@ function TACBrECFDaruma.GetNumVersao: String ;
 Var RetCmd    : AnsiString ;
     wRetentar : Boolean ;
     wTimeOut  : Integer ;
-    SubModelo : String ;
 begin
   if fsNumVersao = '' then
   begin
     try
       wRetentar := Retentar ;
       wTimeOut  := TimeOut ;
+
       try
         TimeOut  := 1 ;
         Retentar := false ;
 
         RetCmd := EnviaComando(FS + 'R' + #200 + '082') ;
         RetCmd := copy(RetCmd,6,6) ;
-        SubModelo := '' ;
+        fsSubModeloECF := '' ;
 
         if RetCmd = '010053' then
-         begin
-          fsModeloDaruma  :=  fs600 ;
-          SubModelo       :=  'FS-600' ;
-         end
+        begin
+          fsModeloDaruma := fs600 ;
+          fsSubModeloECF := 'FS-600' ;
+        end
         else if RetCmd = '010054' then
-         begin
-          fsModeloDaruma  :=  fs2100T ;
-          SubModelo       :=  'FS-2100T' ;
-         end
+        begin
+          fsModeloDaruma := fs2100T ;
+          fsSubModeloECF := 'FS-2100T' ;
+        end
         else if RetCmd = '010058' then
-         begin
-          fsModeloDaruma  :=  fs600USB ;
-          SubModelo       :=  'FS-600 USB' ;
-         end
+        begin
+          fsModeloDaruma := fs600USB ;
+          fsSubModeloECF := 'FS-600 USB' ;
+        end
         else if RetCmd = '010059' then
-         begin
-          fsModeloDaruma  :=  fs700L ;
-          SubModelo       :=  'FS-700L' ;
-         end
+        begin
+          fsModeloDaruma := fs700L ;
+          fsSubModeloECF := 'FS-700L' ;
+        end
         else if RetCmd = '010060' then
-         begin
-          fsModeloDaruma  :=  fs700H ;
-          SubModelo       :=  'FS-700H' ;
-         end
+        begin
+          fsModeloDaruma := fs700H ;
+          fsSubModeloECF := 'FS-700H' ;
+        end
         else if RetCmd = '010061' then
-         begin
-          fsModeloDaruma  :=  fs700M ;
-          SubModelo       :=  'FS-700M' ;
-         end
+        begin
+          fsModeloDaruma := fs700M ;
+          fsSubModeloECF := 'FS-700M' ;
+        end
         else if RetCmd = '010063' then
-         begin
-          fsModeloDaruma  :=  fsMACH1 ;
-          SubModelo       :=  'FS-MACH1' ;
-         end
+        begin
+          fsModeloDaruma := fsMACH1 ;
+          fsSubModeloECF := 'FS-MACH1' ;
+        end
         else if RetCmd = '010064' then
-         begin
-          fsModeloDaruma  :=  fsMACH2 ;
-          SubModelo       :=  'FS-MACH2' ;
-         end
+        begin
+          fsModeloDaruma := fsMACH2 ;
+          fsSubModeloECF := 'FS-MACH2' ;
+        end
         else if RetCmd = '010062' then
-         begin
-          fsModeloDaruma  :=  fsMACH3;
-          SubModelo       :=  'FS-MACH3' ;
-         end ;
+        begin
+          fsModeloDaruma := fsMACH3;
+          fsSubModeloECF := 'FS-MACH3' ;
+        end ;
 
-        fpModeloStr := 'Daruma ';
         fpMFD       := True ;
         fpTermica   := True ;
       finally
@@ -1525,31 +1527,29 @@ begin
       end ;
 
       if RetCmd = ':10043' then
-       begin
-         fsNumVersao    :=  '345';
-         fsModeloDaruma :=  fs345;
-         SubModelo      :=  'FS-345'
-       end
+      begin
+        fsNumVersao    := '345';
+        fsModeloDaruma := fs345;
+        fsSubModeloECF := 'FS-345'
+      end
       else if RetCmd = ':10033' then
-       begin
-         fsNumVersao    :=  '315';
-         fsModeloDaruma :=  fs315;
-         SubModelo      :=  'FS-315'
-       end
+      begin
+        fsNumVersao    := '315';
+        fsModeloDaruma := fs315;
+        fsSubModeloECF := 'FS-315'
+      end
       else if retcmd=':10004' then
-       begin
-         fsNumVersao    :=  '2000';
-         fsModeloDaruma :=  fs2000;
-         SubModelo      :=  'FS-2000'
-       end
+      begin
+        fsNumVersao    := '2000';
+        fsModeloDaruma := fs2000;
+        fsSubModeloECF := 'FS-2000'
+      end
       else
-       begin
-         fsNumVersao    :=  copy(RetCmd,2,length(RetCmd)-2) ;
-         fsModeloDaruma :=  fsIndefinido;
-         SubModelo      := '' ;
-       end;
-
-      fpModeloStr := 'Daruma ';
+      begin
+        fsNumVersao    := copy(RetCmd,2,length(RetCmd)-2) ;
+        fsModeloDaruma := fsIndefinido;
+        fsSubModeloECF := '' ;
+      end;
     end ;
 
     if fpMFD then
@@ -4034,7 +4034,13 @@ end;
 
 function TACBrECFDaruma.GetSubModeloECF: String;
 begin
-   Result := Trim(RetornaInfoECF('81'))
+  if Trim(fsSubModeloECF) <> '' then
+    Result := fsSubModeloECF
+  else
+  begin
+    Result := Trim(RetornaInfoECF('81'));
+    fsSubModeloECF := Result;
+  end;
 end;
 
 function TACBrECFDaruma.GetDataMovimento: TDateTime;

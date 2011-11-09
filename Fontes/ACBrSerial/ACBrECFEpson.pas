@@ -1645,7 +1645,15 @@ begin
 end;
 
 Procedure TACBrECFEpson.ReducaoZ(DataHora: TDateTime) ;
+var
+  DtHrECF : TDateTime ;
 begin
+  if DataHora <> 0 then
+  begin
+     DtHrECF  := GetDataHora;
+     DataHora := max( IncMinute(DtHrECF,-5), min( IncMinute(DtHrECF,5), DataHora)) ;
+  end ;
+
   EpsonComando.Comando := '0801' ;
   EpsonComando.TimeOut := TempoInicioMsg + 30 ;  // apenas para o bloqueio de teclado funcionar
   if DataHora <> 0 then

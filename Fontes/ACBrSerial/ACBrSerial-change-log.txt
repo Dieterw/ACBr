@@ -100,6 +100,8 @@ Símbolo : Significado
 Data: 09/11/2011
 -- ACBrECFEpson --
 [-] Correções na detecção do Fim de resposta do Protocolo Serial (por: DSA)
+[-] Correção no envio do Comando da Redução Z com o ajuste de Hora para no
+    máximo de +-5 min.   (por: DSA)
 
 Data: 08/11/2011
 -- ACBrECFDaruma --

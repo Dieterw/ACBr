@@ -3889,7 +3889,7 @@ begin
   end ;
 
   try
-     ComandoLOG := 'ReducaoZ( '+DateToStr(DataHora)+' )' ;
+     ComandoLOG := 'ReducaoZ( '+DateTimeToStr(DataHora)+' )' ;
 
      if Assigned( fOnAntesReducaoZ ) then
         fOnAntesReducaoZ(Self);

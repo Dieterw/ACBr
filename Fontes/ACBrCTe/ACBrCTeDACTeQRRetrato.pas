@@ -534,6 +534,26 @@ type
     qrlNomeMotorista2: TQRLabel;
     qrlLacres2: TQRLabel;
     qrlCPFMotorista2: TQRLabel;
+    qrb_18_Recibo: TQRChildBand;
+    QRShape91: TQRShape;
+    QRShape93: TQRShape;
+    QRShape94: TQRShape;
+    QRShape95: TQRShape;
+    QRShape96: TQRShape;
+    QRShape97: TQRShape;
+    QRLabel175: TQRLabel;
+    QRLabel176: TQRLabel;
+    QRLabel180: TQRLabel;
+    QRLabel184: TQRLabel;
+    QRLabel185: TQRLabel;
+    QRLabel186: TQRLabel;
+    QRLabel187: TQRLabel;
+    QRLabel188: TQRLabel;
+    QRLabel189: TQRLabel;
+    QRLabel190: TQRLabel;
+    QRLabel191: TQRLabel;
+    qrlSerie3: TQRLabel;
+    qrlNumCTe3: TQRLabel;
     procedure QRCTeBeforePrint(Sender: TCustomQuickRep; var PrintReport: Boolean);
     procedure qrb_01_ReciboBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
     procedure qrb_02_CabecalhoBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
@@ -568,6 +588,8 @@ type
     procedure qrb_01_Recibo_AereoBeforePrint(Sender: TQRCustomBand;
       var PrintBand: Boolean);
     procedure qrb_11_ModRodLot104BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure qrb_18_ReciboBeforePrint(Sender: TQRCustomBand;
       var PrintBand: Boolean);
   private
     FTotalPages: integer;
@@ -874,7 +896,7 @@ procedure TfrmDACTeQRRetrato.qrb_01_ReciboBeforePrint(Sender: TQRCustomBand; var
 begin
   inherited;
   // Incluido/Alterado por Italo em 20/04/2011 / 27/04/2011
-  PrintBand := (QRCTe.PageNumber = 1) and (FCTe.Ide.modal <> mdAereo){(FPosRecibo = prCabecalho)};
+  PrintBand := (QRCTe.PageNumber = 1) and (FCTe.Ide.modal <> mdAereo) and (FPosRecibo = prCabecalho);
 
   qrlSerie2.Caption  := IntToStr(FCTe.Ide.serie);
   qrlNumCte2.Caption := FormatFloat( '000,000,000', FCTe.Ide.nCT );
@@ -1902,6 +1924,20 @@ begin
   PrintBand := QRCTe.PageNumber = 1;
 
   qrlblSistema.Caption := FSistema + ' - ' + FUsuario;
+end;
+
+procedure TfrmDACTeQRRetrato.qrb_18_ReciboBeforePrint(
+  Sender: TQRCustomBand; var PrintBand: Boolean);
+begin
+  inherited;
+  // Incluido por Italo em 10/11/2011
+  PrintBand := (QRCTe.PageNumber = 1) and (FCTe.Ide.modal <> mdAereo) and (FPosRecibo = prRodape);
+
+  qrlSerie3.Caption  := IntToStr(FCTe.Ide.serie);
+  qrlNumCte3.Caption := FormatFloat( '000,000,000', FCTe.Ide.nCT );
+
+  // TpcteTipoCTe = (tcNormal, tcComplemento, tcAnulacao, tcSubstituto);
+  qrb_18_Recibo.Enabled := (FCTe.Ide.tpCTe = tcNormal);
 end;
 
 end.

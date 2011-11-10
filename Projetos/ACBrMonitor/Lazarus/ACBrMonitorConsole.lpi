@@ -37,7 +37,6 @@
         <Filename Value="ACBrMonitorConsole.lpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="ACBrMonitorConsole"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
         <TopLine Value="136"/>
@@ -52,10 +51,13 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
         <UnitName Value="ACBrMonitorConsoleDM"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
         <TopLine Value="33"/>
         <CursorPos X="19" Y="45"/>
         <UsageCount Value="27"/>
+        <Loaded Value="True"/>
       </Unit1>
       <Unit2>
         <Filename Value="C:\lazarus\fpc\2.4.3\source\packages\fcl-base\src\custapp.pp"/>
@@ -411,7 +413,7 @@
         <UsageCount Value="10"/>
       </Unit47>
     </Units>
-    <JumpHistory Count="24" HistoryIndex="23">
+    <JumpHistory Count="23" HistoryIndex="22">
       <Position1>
         <Filename Value="ACBrMonitorConsole.lpr"/>
         <Caret Line="289" Column="19" TopLine="270"/>
@@ -498,16 +500,12 @@
       </Position21>
       <Position22>
         <Filename Value="ACBrMonitorConsole.lpr"/>
-        <Caret Line="1" Column="1" TopLine="58"/>
+        <Caret Line="140" Column="78" TopLine="120"/>
       </Position22>
       <Position23>
         <Filename Value="ACBrMonitorConsole.lpr"/>
-        <Caret Line="140" Column="78" TopLine="120"/>
-      </Position23>
-      <Position24>
-        <Filename Value="ACBrMonitorConsole.lpr"/>
         <Caret Line="156" Column="45" TopLine="136"/>
-      </Position24>
+      </Position23>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

@@ -433,6 +433,13 @@ begin
             seta "AguardaImpressao := True" para ficar mais rápido }
          end
 
+        else if Cmd.Metodo = 'descontoacrescimoitemanterior' then
+           DescontoAcrescimoItemAnterior(
+                 StringToFloat( Cmd.Params(0)),                        { Valor }
+                 PadL(Cmd.Params(1),1,'D'),                       { 'D' ou 'A' }
+                 PadL(Cmd.Params(2),1,'%'),                       { '%' ou '$' }
+                 StrToIntDef(Cmd.Params(3),0) )                  { NumItem = 0 }
+
         else if Cmd.Metodo = 'subtotalizacupom' then
            SubtotalizaCupom( StringToFloatDef( Cmd.Params(0), 0),  {Acresc/Desc}
                              Cmd.Params(1) )                  { Msg.Rodape = ''}

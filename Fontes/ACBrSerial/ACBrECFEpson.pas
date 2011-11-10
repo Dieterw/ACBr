@@ -1251,7 +1251,7 @@ begin
   if not Result then
   begin
      // DEBUG //
-     //GravaLog( 'Aguardando Bloco: ' +Retorno, True );
+     GravaLog( 'Aguardando Bloco: ' +Retorno, True );
      exit ;
   end ;
 
@@ -1259,7 +1259,7 @@ begin
   if (LeftStr(Retorno,7) = #2 + #128 + #3 + '0085') then
   begin
      // DEBUG //
-     //GravaLog( 'Resposta Intermediaria detectada: ' +Retorno, True );
+     GravaLog( 'Resposta Intermediaria detectada: ' +Retorno, True );
      Retorno     := Copy(Retorno, 8, LenRet );
      LenRet      := Length(Retorno) ;
      fsBytesIn   := LenRet;
@@ -1294,8 +1294,8 @@ begin
   end ;
 
   // DEBUG //
-  {if Result then
-     GravaLog('Fim da Leitura: '+Retorno, True);}
+  if Result then
+     GravaLog('Fim da Leitura: '+Retorno, True);
 end;
 
 function TACBrECFEpson.GetDataHora: TDateTime;

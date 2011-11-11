@@ -1234,7 +1234,8 @@ begin
   if (nfe.Det[i].Imposto.II.vBc > 0) or
      (nfe.Det[i].Imposto.II.vDespAdu > 0) or
      (nfe.Det[i].Imposto.II.vII > 0) or
-     (nfe.Det[i].Imposto.II.vIOF > 0) then
+     (nfe.Det[i].Imposto.II.vIOF > 0) or
+     (Copy(nfe.Det[i].Prod.CFOP,1,1) = '3') then
   begin
     Gerador.wGrupo('II', 'P01');
     Gerador.wCampo(tcDe2, 'P02', 'vBC     ', 01, 15, 1, nfe.Det[i].Imposto.II.vBc, DSC_VBC);

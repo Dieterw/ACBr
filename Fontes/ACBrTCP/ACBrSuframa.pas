@@ -172,7 +172,7 @@ begin
         'xmlns:con="http://consultas.ws.cadastro.fucapi.br">' +
         '<soapenv:Header/>' +
         '<soapenv:Body>' + ParametrosConsulta + '</soapenv:Body>' +
-      '</soapenv:Envelope/>';
+      '</soapenv:Envelope>';
 
     try
       Acao.SaveToStream(Stream);

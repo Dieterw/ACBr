@@ -60,49 +60,91 @@ type
     procedure bBuscarCEPClick(Sender : TObject) ;
     procedure bBuscarLogradouro1Click(Sender : TObject) ;
     procedure bBuscarLogradouroClick(Sender : TObject) ;
-    procedure cbxWSChange(Sender : TObject) ;
     procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
-    procedure AjustaProxy ;
-    { private declarations }
+    procedure ConfigurarComponente ;
   public
-    { public declarations }
-  end ; 
+
+  end ;
 
 var
   Form1 : TForm1 ; 
 
 implementation
 
+uses
+  IniFiles;
+
 {$R *.dfm}
 
 { TForm1 }
 
-procedure TForm1.cbxWSChange(Sender : TObject) ;
+procedure TForm1.ConfigurarComponente ;
 begin
   ACBrCEP1.WebService := TACBrCEPWebService( cbxWS.ItemIndex ) ;
-  edChaveBuscarCEP.Enabled := (ACBrCEP1.WebService in [wsBuscarCep, wsCepLivre]) ;
-end;
 
-procedure TForm1.FormCreate(Sender: TObject);
-begin
-  PageControl1.ActivePageIndex := 0;
-end;
-
-procedure TForm1.AjustaProxy ;
-begin
-  ACBrCEP1.ProxyHost := edProxyHost.Text ;
-  ACBrCEP1.ProxyPort := edProxyPort.Text ;
-  ACBrCEP1.ProxyUser := edProxyUser.Text ;
-  ACBrCEP1.ProxyPass := edProxyPass.Text ;
+  ACBrCEP1.ProxyHost   := edProxyHost.Text ;
+  ACBrCEP1.ProxyPort   := edProxyPort.Text ;
+  ACBrCEP1.ProxyUser   := edProxyUser.Text ;
+  ACBrCEP1.ProxyPass   := edProxyPass.Text ;
+  ACBrCEP1.ChaveAcesso := edChaveBuscarCEP.Text;
 
   ACBrIBGE1.ProxyHost := edProxyHost.Text ;
   ACBrIBGE1.ProxyPort := edProxyPort.Text ;
   ACBrIBGE1.ProxyUser := edProxyUser.Text ;
   ACBrIBGE1.ProxyPass := edProxyPass.Text ;
-
-  ACBrCEP1.ChaveAcesso := edChaveBuscarCEP.Text;
 end ;
+
+//******************************************************************************
+
+procedure TForm1.FormCreate(Sender: TObject);
+var
+  Ini: TIniFile;
+begin
+  Ini := TIniFile.Create(ExtractFilePath(ParamStr(0)) + 'config.ini');
+  try
+    cbxWS.ItemIndex       := Ini.ReadInteger('GERAL', 'Modelo', 0);
+    edChaveBuscarCEP.Text := Ini.ReadString('GERAL', 'ChaveAcesso', '');
+
+    edProxyHost.Text := Ini.ReadString('PROXY', 'Host', '');
+    edProxyPort.Text := Ini.ReadString('PROXY', 'Porta', '');
+    edProxyUser.Text := Ini.ReadString('PROXY', 'Usuario', '');
+    edProxyPass.Text := Ini.ReadString('PROXY', 'Senha', '');
+  finally
+    Ini.Free;
+  end;
+
+  PageControl1.ActivePageIndex := 0;
+end;
+
+procedure TForm1.FormClose(Sender: TObject; var Action: TCloseAction);
+var
+  Ini: TIniFile;
+begin
+  Ini := TIniFile.Create(ExtractFilePath(ParamStr(0)) + 'config.ini');
+  try
+    Ini.WriteInteger('GERAL', 'Modelo', cbxWS.ItemIndex);
+    Ini.WriteString('GERAL', 'ChaveAcesso', edChaveBuscarCEP.Text);
+
+    Ini.WriteString('PROXY', 'Host', edProxyHost.Text);
+    Ini.WriteString('PROXY', 'Porta', edProxyPort.Text);
+    Ini.WriteString('PROXY', 'Usuario', edProxyUser.Text);
+    Ini.WriteString('PROXY', 'Senha', edProxyPass.Text);
+  finally
+    Ini.Free;
+  end;
+end;
+
+//******************************************************************************
+
+procedure TForm1.ACBrCEP1AntesAbrirHTTP(var AURL : String) ;
+begin
+  Memo1.Lines.Clear;
+  Memo1.Lines.Add('Efetuando consulta HTTP em:' ) ;
+  Memo1.Lines.Add( AURL );
+  Memo1.Lines.Add( '' );
+end;
 
 procedure TForm1.ACBrCEP1BuscaEfetuada(Sender : TObject) ;
 var
@@ -134,6 +176,8 @@ begin
   Memo1.Lines.Add('Resposta HTTP:');
   Memo1.Lines.AddStrings( ACBrCEP1.RespHTTP );
 end;
+
+//******************************************************************************
 
 procedure TForm1.ACBrIBGE1AntesAbrirHTTP(var AURL : String) ;
 begin
@@ -173,9 +217,11 @@ begin
   Memo1.Lines.AddStrings( ACBrIBGE1.RespHTTP );
 end;
 
+//******************************************************************************
+
 procedure TForm1.bBuscarCEP1Click(Sender : TObject) ;
 begin
-  AjustaProxy ;
+  ConfigurarComponente ;
 
   try
      ACBrIBGE1.BuscarPorCodigo( StrToIntDef(edIBGECod.Text,0) );
@@ -187,17 +233,9 @@ begin
   end ;
 end;
 
-procedure TForm1.ACBrCEP1AntesAbrirHTTP(var AURL : String) ;
-begin
-  Memo1.Lines.Clear;
-  Memo1.Lines.Add('Efetuando consulta HTTP em:' ) ;
-  Memo1.Lines.Add( AURL );
-  Memo1.Lines.Add( '' );
-end;
-
 procedure TForm1.bBuscarCEPClick(Sender : TObject) ;
 begin
-  AjustaProxy ;
+  ConfigurarComponente ;
 
   try
      ACBrCEP1.BuscarPorCEP(edCEP.Text);
@@ -209,9 +247,11 @@ begin
   end ;
 end;
 
+//******************************************************************************
+
 procedure TForm1.bBuscarLogradouro1Click(Sender : TObject) ;
 begin
-  AjustaProxy ;
+  ConfigurarComponente ;
 
   try
      ACBrIBGE1.BuscarPorNome( edIBGENome.Text );
@@ -225,7 +265,7 @@ end;
 
 procedure TForm1.bBuscarLogradouroClick(Sender : TObject) ;
 begin
-  AjustaProxy ;
+  ConfigurarComponente ;
 
   try
      ACBrCEP1.BuscarPorLogradouro( edCidade.Text, edTipo_Logradouro.Text,

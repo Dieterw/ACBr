@@ -2,8 +2,8 @@ object Form1: TForm1
   Left = 451
   Top = 163
   Caption = 'CEP Teste'
-  ClientHeight = 324
-  ClientWidth = 596
+  ClientHeight = 450
+  ClientWidth = 600
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -11,27 +11,28 @@ object Form1: TForm1
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = True
+  Position = poScreenCenter
+  OnClose = FormClose
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   object Memo1: TMemo
     Left = 0
     Top = 136
-    Width = 596
-    Height = 188
+    Width = 600
+    Height = 314
     Align = alClient
     Lines.Strings = (
       'Memo1')
     ScrollBars = ssBoth
     TabOrder = 0
-    WordWrap = False
   end
   object PageControl1: TPageControl
     Left = 0
     Top = 0
-    Width = 596
+    Width = 600
     Height = 136
-    ActivePage = TabSheet2
+    ActivePage = TabSheet1
     Align = alTop
     TabOrder = 1
     object TabSheet1: TTabSheet
@@ -60,12 +61,12 @@ object Form1: TForm1
           Height = 21
           Style = csDropDownList
           TabOrder = 0
-          OnChange = cbxWSChange
           Items.Strings = (
             'Nenhum'
             'BuscarCEP'
             'CEPLivre'
-            'Republica virtual')
+            'Republica virtual'
+            'Bases4you')
         end
         object edChaveBuscarCEP: TEdit
           Left = 7
@@ -78,7 +79,7 @@ object Form1: TForm1
       object GroupBox1: TGroupBox
         Left = 180
         Top = 0
-        Width = 408
+        Width = 412
         Height = 108
         Align = alClient
         Caption = 'Proxy'
@@ -180,7 +181,7 @@ object Form1: TForm1
       object GroupBox4: TGroupBox
         Left = 164
         Top = 0
-        Width = 424
+        Width = 428
         Height = 108
         Align = alClient
         Caption = 'Por Endere'#231'o'
@@ -311,13 +312,13 @@ object Form1: TForm1
       object GroupBox6: TGroupBox
         Left = 164
         Top = 0
-        Width = 424
+        Width = 428
         Height = 108
         Align = alClient
         Caption = 'Por Nome'
         TabOrder = 1
         DesignSize = (
-          424
+          428
           108)
         object bBuscarLogradouro1: TButton
           Left = 142
@@ -331,7 +332,7 @@ object Form1: TForm1
         object edIBGENome: TEdit
           Left = 38
           Top = 26
-          Width = 344
+          Width = 348
           Height = 21
           Anchors = [akLeft, akTop, akRight]
           TabOrder = 0

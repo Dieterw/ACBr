@@ -1929,14 +1929,22 @@ procedure TfrmDACTeQRRetrato.qrb_18_ReciboBeforePrint(
   Sender: TQRCustomBand; var PrintBand: Boolean);
 begin
   inherited;
-  // Incluido por Italo em 10/11/2011
-  PrintBand := (QRCTe.PageNumber = 1) and (FCTe.Ide.modal <> mdAereo) and (FPosRecibo = prRodape);
+  // Incluido Novamente por Italo em 10/11/2011
+  // Incluido/Alterado por Italo em 20/04/2011 / 27/04/2011 / 04/07/2011
+  PrintBand := (QRCTe.PageNumber = 1);
 
   qrlSerie3.Caption  := IntToStr(FCTe.Ide.serie);
   qrlNumCte3.Caption := FormatFloat( '000,000,000', FCTe.Ide.nCT );
 
+  // Incluido por Italo em 27/04/2011 / 04/07/2011
   // TpcteTipoCTe = (tcNormal, tcComplemento, tcAnulacao, tcSubstituto);
-  qrb_18_Recibo.Enabled := (FCTe.Ide.tpCTe = tcNormal);
+  if (FCTe.Ide.tpCTe = tcNormal) and PrintBand
+   then begin
+    qrb_18_Recibo.Enabled := (FCTe.Ide.modal <> mdAereo) and (FPosRecibo = prRodape);
+    if qrb_18_Recibo.Enabled
+     then qrb_18_Recibo.Height  := 68
+     else qrb_18_Recibo.Height  := 0;
+   end;
 end;
 
 end.

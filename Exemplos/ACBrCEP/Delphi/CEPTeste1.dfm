@@ -1,7 +1,7 @@
 object Form1: TForm1
   Left = 451
   Top = 163
-  Caption = 'Form1'
+  Caption = 'CEP Teste'
   ClientHeight = 324
   ClientWidth = 596
   Color = clBtnFace
@@ -11,6 +11,7 @@ object Form1: TForm1
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = True
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   object Memo1: TMemo
@@ -30,7 +31,7 @@ object Form1: TForm1
     Top = 0
     Width = 596
     Height = 136
-    ActivePage = TabSheet1
+    ActivePage = TabSheet2
     Align = alTop
     TabOrder = 1
     object TabSheet1: TTabSheet

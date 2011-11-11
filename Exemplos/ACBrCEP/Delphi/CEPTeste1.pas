@@ -61,6 +61,7 @@ type
     procedure bBuscarLogradouro1Click(Sender : TObject) ;
     procedure bBuscarLogradouroClick(Sender : TObject) ;
     procedure cbxWSChange(Sender : TObject) ;
+    procedure FormCreate(Sender: TObject);
   private
     procedure AjustaProxy ;
     { private declarations }
@@ -80,7 +81,12 @@ implementation
 procedure TForm1.cbxWSChange(Sender : TObject) ;
 begin
   ACBrCEP1.WebService := TACBrCEPWebService( cbxWS.ItemIndex ) ;
-  edChaveBuscarCEP.Enabled := (ACBrCEP1.WebService = wsBuscarCep) ;
+  edChaveBuscarCEP.Enabled := (ACBrCEP1.WebService in [wsBuscarCep, wsCepLivre]) ;
+end;
+
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+  PageControl1.ActivePageIndex := 0;
 end;
 
 procedure TForm1.AjustaProxy ;
@@ -94,6 +100,8 @@ begin
   ACBrIBGE1.ProxyPort := edProxyPort.Text ;
   ACBrIBGE1.ProxyUser := edProxyUser.Text ;
   ACBrIBGE1.ProxyPass := edProxyPass.Text ;
+
+  ACBrCEP1.ChaveAcesso := edChaveBuscarCEP.Text;
 end ;
 
 procedure TForm1.ACBrCEP1BuscaEfetuada(Sender : TObject) ;
@@ -183,12 +191,6 @@ procedure TForm1.ACBrCEP1AntesAbrirHTTP(var AURL : String) ;
 begin
   Memo1.Lines.Clear;
   Memo1.Lines.Add('Efetuando consulta HTTP em:' ) ;
-
-  if (ACBrCEP1.WebService = wsBuscarCep) and (edChaveBuscarCEP.Text <> '') then
-  begin
-    AURL := AURL + '&chave='+edChaveBuscarCEP.Text;
-  end ;
-
   Memo1.Lines.Add( AURL );
   Memo1.Lines.Add( '' );
 end;

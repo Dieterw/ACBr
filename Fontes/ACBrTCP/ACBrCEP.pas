@@ -48,12 +48,13 @@ unit ACBrCEP ;
 interface
 
 uses
-  Classes, SysUtils, contnrs,
-  ACBrSocket ;
+  Classes, SysUtils, contnrs, ACBrSocket ;
 
 type
 
-  TACBrCEPWebService = ( wsNenhum, wsBuscarCep, wsCepLivre, wsRepublicaVirtual ) ;
+  TACBrCEPWebService = ( wsNenhum, wsBuscarCep, wsCepLivre, wsRepublicaVirtual, wsBases4you ) ;
+
+  EACBrCEPException = class ( Exception );
 
   { TACBrCEPEndereco }
 
@@ -193,11 +194,22 @@ type
          AUF, ABairro : String ) ; override ;
   end ;
 
+  TACBrWSBases4you = class(TACBrCEPWSClass)
+    private
+      procedure ProcessaResposta ;
+    public
+      constructor Create( AOwner : TACBrCEP ) ; override ;
+
+      Procedure BuscarPorCEP( ACEP : String ) ; override ;
+      Procedure BuscarPorLogradouro( AMunicipio, ATipo_Logradouro, ALogradouro,
+         AUF, ABairro : String ) ; override ;
+  end ;
+
 implementation
 
 uses ACBrUtil ;
 
-{ TACBrCEPEndereco }
+{ TACBrCEPEndereco ************************************************************}
 
 constructor TACBrCEPEndereco.Create ;
 begin
@@ -217,7 +229,7 @@ begin
   Result := copy(IBGE_Municipio,1,2) ;
 end;
 
-{ TACBrCEPEnderecos }
+{ TACBrCEPEnderecos ***********************************************************}
 
 procedure TACBrCEPEnderecos.SetObject(Index : Integer ; Item : TACBrCEPEndereco) ;
 begin
@@ -245,7 +257,7 @@ begin
   Result := inherited Add(Obj) ;
 end ;
 
-{ TACBrCEP }
+{ TACBrCEP ********************************************************************}
 
 constructor TACBrCEP.Create(AOwner : TComponent) ;
 begin
@@ -276,6 +288,7 @@ begin
     wsBuscarCep : fACBrCEPWS := TACBrWSBuscarCEP.Create( Self );
     wsCepLivre  : fACBrCEPWS := TACBrWSCEPLivre.Create( Self );
     wsRepublicaVirtual : fACBrCEPWS := TACBrWSRepublicaVirtual.Create(Self);
+    wsBases4you : fACBrCEPWS := TACBrWSBases4you.Create(Self);
   else
      fACBrCEPWS := TACBrCEPWSClass.Create( Self ) ;
   end ;
@@ -294,7 +307,7 @@ begin
 
   ACEP := Trim( OnlyNumber( AnsiString( ACEP ) ) ) ;
   if ACEP = '' then
-     raise Exception.Create('CEP deve ser informado');
+     raise EACBrCEPException.Create('CEP deve ser informado');
 
   fACBrCEPWS.BuscarPorCEP(ACEP);
 
@@ -311,17 +324,17 @@ begin
   Result := fEnderecos.Count;
 end ;
 
-{ TACBrCEPWSClass }
+{ TACBrCEPWSClass *************************************************************}
 
 procedure TACBrCEPWSClass.ErrorAbstract ;
 begin
-  raise Exception.Create( 'Nenhum WebService selecionado' )
+  raise EACBrCEPException.Create( 'Nenhum WebService selecionado' )
 end ;
 
 procedure TACBrCEPWSClass.TestarChave;
 begin
   if fOwner.ChaveAcesso = EmptyStr then
-    raise Exception.Create('Chave de acesso não informada.');
+    raise EACBrCEPException.Create('Chave de acesso não informada.');
 end;
 
 constructor TACBrCEPWSClass.Create( AOwner : TACBrCEP) ;
@@ -366,11 +379,11 @@ begin
   try
      result := ConteudoTag;
   except
-     raise Exception.Create('Conteúdo inválido. '+ConteudoTag);
+     raise EACBrCEPException.Create('Conteúdo inválido. '+ConteudoTag);
   end;
 end;
 
-{ TACBrWSBuscarCEP - http://www.buscarcep.com.br }
+{ TACBrWSBuscarCEP - http://www.buscarcep.com.br *******************************}
 
 constructor TACBrWSBuscarCEP.Create(AOwner : TACBrCEP) ;
 begin
@@ -400,7 +413,7 @@ begin
   AUF              := fOwner.AjustaParam( AUF );
 
   if (AMunicipio = '') or (ALogradouro = '') or (AUF = '') then
-     raise Exception.Create('UF, Cidade e Logradouro devem ser informados');
+     raise EACBrCEPException.Create('UF, Cidade e Logradouro devem ser informados');
 
   Params := '?logradouro=' + ALogradouro+
             '&cidade='     + AMunicipio+
@@ -472,7 +485,7 @@ begin
 end ;
 
 
-{ TACBrWSCEPLivre - http://ceplivre.com.br/ }
+{ TACBrWSCEPLivre - http://ceplivre.com.br/ ***********************************}
 
 constructor TACBrWSCEPLivre.Create(AOwner : TACBrCEP) ;
 begin
@@ -498,7 +511,7 @@ begin
 
   ALogradouro := fOwner.AjustaParam( ALogradouro ) ;
   if (ALogradouro = '') then
-     raise Exception.Create('Cidade e Logradouro devem ser informados');
+     raise EACBrCEPException.Create('Cidade e Logradouro devem ser informados');
 
   fOwner.HTTPGet( fpURL + 'logradouro/' + Trim( fOwner.ChaveAcesso ) + '/' + Alogradouro + '/csv' ) ;
   ProcessaResposta ;
@@ -547,7 +560,7 @@ begin
      fOwner.OnBuscaEfetuada( Self );
 end ;
 
-{ TACBrWSRepublicaVirtual }
+{ TACBrWSRepublicaVirtual http://www.republicavirtual.com.br/cep/ *************}
 
 constructor TACBrWSRepublicaVirtual.Create(AOwner: TACBrCEP);
 begin
@@ -567,7 +580,7 @@ end;
 procedure TACBrWSRepublicaVirtual.BuscarPorLogradouro(AMunicipio,
   ATipo_Logradouro, ALogradouro, AUF, ABairro: String);
 begin
-  raise Exception.Create(ACBrStr('Busca por Logradouro não disponível no site Republica Virtual.'));
+  raise EACBrCEPException.Create(ACBrStr('Busca por Logradouro não disponível no site Republica Virtual.'));
 end;
 
 procedure TACBrWSRepublicaVirtual.ProcessaResposta;
@@ -596,6 +609,80 @@ begin
     fOwner.OnBuscaEfetuada( Self );
 end ;
 
+
+{ TACBrWSBases4you http://www.base4you.com ************************************}
+
+constructor TACBrWSBases4you.Create(AOwner: TACBrCEP);
+begin
+  inherited Create(AOwner);
+
+  fOwner.ParseText := True;
+  fpURL := 'http://www.bases4you.com/wscep.php';
+end;
+
+procedure TACBrWSBases4you.BuscarPorCEP(ACEP: String);
+var
+  Acao: TStringList;
+  Stream: TMemoryStream;
+begin
+  Acao   := TStringList.Create;
+  Stream := TMemoryStream.Create;
+  try
+    Acao.Text :=
+     '<?xml version="1.0" encoding="UTF-8" standalone="no"?>'+
+     '<SOAP-ENV:Envelope '+
+       'xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" '+
+       'xmlns:xsd="http://www.w3.org/2001/XMLSchema" '+
+       'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '+
+       'xmlns:tns="urn:cepwsdl" '+
+       'xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" '+
+       'xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" '+
+       'xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" >'+
+       '<SOAP-ENV:Body>'+
+         '<mns:ConsultaCEP '+
+           'xmlns:mns="urn:cepwsdl" '+
+           'SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">'+
+           '<userkey xsi:type="xsd:string">' + Trim( fOwner.ChaveAcesso ) + '</userkey>'+
+           '<cep xsi:type="xsd:string">' + OnlyNumber( AnsiString( ACEP ) ) + '</cep>'+
+         '</mns:ConsultaCEP>'+
+       '</SOAP-ENV:Body>'+
+     '</SOAP-ENV:Envelope>';
+
+    try
+      Acao.SaveToStream(Stream);
+
+      fOwner.HTTPSend.Clear;
+      fOwner.HTTPSend.Document.LoadFromStream(Stream);
+      fOwner.HTTPSend.Headers.Add( 'SoapAction: "urn:cepwsdl#ConsultaCEP"' );
+      fOwner.HTTPPost(fpURL);
+
+      ProcessaResposta;
+    except
+      on E: Exception do
+      begin
+        raise EACBrCEPException.Create(
+          'Ocorreu o seguinte erro ao consumir o webService base4you:' + sLineBreak +
+          '  - ' + E.Message
+        );
+      end;
+    end;
+  finally
+    Stream.Free;
+    Acao.Free;
+  end;
+end;
+
+procedure TACBrWSBases4you.BuscarPorLogradouro(AMunicipio, ATipo_Logradouro,
+  ALogradouro, AUF, ABairro: String);
+begin
+  inherited;
+
+end;
+
+procedure TACBrWSBases4you.ProcessaResposta;
+begin
+
+end;
 
 end.
 

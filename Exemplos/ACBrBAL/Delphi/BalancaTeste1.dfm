@@ -1,9 +1,9 @@
 object Form1: TForm1
   Left = 444
   Top = 211
-  Width = 464
-  Height = 375
   Caption = 'Form1'
+  ClientHeight = 337
+  ClientWidth = 448
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -109,7 +109,7 @@ object Form1: TForm1
   end
   object edtTimeOut: TEdit
     Left = 208
-    Top = 296
+    Top = 302
     Width = 73
     Height = 24
     TabOrder = 4
@@ -200,7 +200,10 @@ object Form1: TForm1
         'Nenhuma'
         'Filizola'
         'Toledo'
-        'Urano')
+        'Toledo2180'
+        'Urano'
+        'LucasTec'
+        'Magna')
     end
     object cmbPortaSerial: TComboBox
       Left = 16

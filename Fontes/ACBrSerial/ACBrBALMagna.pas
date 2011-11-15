@@ -82,7 +82,7 @@ begin
   while (Result <= 0) and (TempoFinal > now) do
   begin
      fpDevice.Serial.Purge ;
-     fpDevice.EnviaString( #05 );      { Envia comando solicitando o Peso }
+     fpDevice.EnviaString( #80 );      { Envia comando solicitando o Peso }
      sleep(200) ;
      MillisecTimeOut := MilliSecondsBetween(now,TempoFinal) ;
 
@@ -113,18 +113,24 @@ begin
          Mfinal := Length(resposta);
       Resposta := Copy (Resposta,Minicio,MFinal - Minicio);
 
+      Resposta := StringReplace(Resposta, '.', DecimalSeparator, [rfReplaceAll]);
+      Resposta := StringReplace(Resposta, ',', DecimalSeparator, [rfReplaceAll]);
+
 
      try
          if Length(Resposta) > 10 then
             fpUltimoPesoLido := StrToFloat(copy(Resposta, 1, 6)) / 1000
-         else if pos(DecimalSeparator, Resposta) > 0 then
+         else if pos(Decimalseparator, Resposta) > 0 then                        
            fpUltimoPesoLido := StrToFloat(Resposta)
         else
            fpUltimoPesoLido := StrToInt(Resposta) / 1000
      except
         case Trim(Resposta)[1] of
 //          'I' : fpUltimoPesoLido := -1  ;  { Instavel }
-          'N' : fpUltimoPesoLido := -2  ;  { Peso Negativo }
+            'N' : begin
+                   fpUltimoPesoLido := -2  ;  { Peso Negativo }
+                   fpUltimaResposta := 'Peso Negativo ';
+                  end;
 //          'S' : fpUltimoPesoLido := -10 ;  { Sobrecarga de Peso }
         else
            fpUltimoPesoLido := 0 ;
@@ -133,6 +139,7 @@ begin
   except
      { Peso não foi recebido (TimeOut) }
      fpUltimoPesoLido := -9 ;
+     fpUltimaResposta := 'Peso Não Lido ';
   end ;
 end;
 

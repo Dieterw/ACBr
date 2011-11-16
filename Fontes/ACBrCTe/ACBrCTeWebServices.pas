@@ -1646,13 +1646,13 @@ begin
 
     // Incluido por Italo em 16/11/2011
     FprotCTe.Schema             := CTeRetorno.protCTe.Schema;
-    FprotCTe.PathNFe            := CTeRetorno.protCTe.PathCTe;
+    FprotCTe.PathCTe            := CTeRetorno.protCTe.PathCTe;
     FprotCTe.PathRetConsReciCTe := CTeRetorno.protCTe.PathRetConsReciCTe;
     FprotCTe.PathRetConsSitCTe  := CTeRetorno.protCTe.PathRetConsSitCTe;
     FprotCTe.PathRetConsSitCTe  := CTeRetorno.protCTe.PathRetConsSitCTe;
     FprotCTe.tpAmb              := CTeRetorno.protCTe.tpAmb;
     FprotCTe.verAplic           := CTeRetorno.protCTe.verAplic;
-    FprotCTe.chNFe              := CTeRetorno.protCTe.chCTe;
+    FprotCTe.chCTe              := CTeRetorno.protCTe.chCTe;
     FprotCTe.dhRecbto           := CTeRetorno.protCTe.dhRecbto;
     FprotCTe.nProt              := CTeRetorno.protCTe.nProt;
     FprotCTe.digVal             := CTeRetorno.protCTe.digVal;

@@ -229,6 +229,9 @@ type
     FprotCTe: TProcCTe;
     FretCancCTe: TRetCancCTe;
   public
+    constructor Create(AOwner : TComponent); reintroduce;
+    destructor Destroy; override;
+
     function Executar: Boolean;override;
     property CTeChave: WideString read FCTeChave write FCTeChave;
     property Protocolo: WideString read FProtocolo write FProtocolo;
@@ -1556,6 +1559,21 @@ begin
 end;
 
 { TCTeConsulta }
+constructor TCTeConsulta.Create(AOwner: TComponent);
+begin
+  FConfiguracoes := TConfiguracoes( TACBrCTe( AOwner ).Configuracoes );
+  FACBrCTe       := TACBrCTe( AOwner );
+
+  FprotCTe:= TProcCTe.Create;
+  FretCancCTe:= TRetCancCTe.Create;
+end;
+
+destructor TCTeConsulta.Destroy;
+begin
+  FprotCTe.Free;
+  FretCancCTe.Free;
+end;
+
 function TCTeConsulta.Executar: Boolean;
 var
   CTeRetorno: TRetConsSitCTe;
@@ -1606,6 +1624,8 @@ begin
      ReqResp.UseUTF8InHeader := True;
      ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/cte/wsdl/CteConsulta/cteConsultaCT';
   {$ENDIF}
+  // Alterado por Italo em 16/11/2011
+  CTeRetorno := TRetConsSitCTe.Create;
   try
     TACBrCTe( FACBrCTe ).SetStatus( stCTeConsulta );
     if FConfiguracoes.Geral.Salvar then
@@ -1629,7 +1649,7 @@ begin
        FRetWS := SeparaDados( FRetornoWS, 'cteConsultaCTResult');
        StrStream.Free;
     {$ENDIF}
-    CTeRetorno := TRetConsSitCTe.Create;
+
     CTeRetorno.Leitor.Arquivo := FRetWS;
     CTeRetorno.LerXML;
 
@@ -1639,6 +1659,8 @@ begin
     FxMotivo    := CTeRetorno.xMotivo;
     FcUF        := CTeRetorno.cUF;
     FCTeChave   := CTeRetorno.chCTe;
+    FMsg        := CTeRetorno.XMotivo;
+
 
     // Comentado por Italo em 16/11/2011
 //    FprotCTe    := CTeRetorno.protCTe;    //Arrumar
@@ -1667,8 +1689,6 @@ begin
     FretCancCTe.chCTe    := CTeRetorno.retCancCTe.chCTe;
     FretCancCTe.dhRecbto := CTeRetorno.retCancCTe.dhRecbto;
     FretCancCTe.nProt    := CTeRetorno.retCancCTe.nProt;
-
-    FMsg        := CTeRetorno.XMotivo;
 
     FProtocolo := CTeUtil.SeSenao(CTeUtil.NaoEstaVazio(CTeRetorno.retCancCTe.nProt),CTeRetorno.retCancCTe.nProt,CTeRetorno.protCTe.nProt);
     FDhRecbto  := CTeUtil.SeSenao(CTeRetorno.retCancCTe.dhRecbto <> 0,CTeRetorno.retCancCTe.dhRecbto,CTeRetorno.protCTe.dhRecbto);

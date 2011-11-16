@@ -1639,8 +1639,35 @@ begin
     FxMotivo    := CTeRetorno.xMotivo;
     FcUF        := CTeRetorno.cUF;
     FCTeChave   := CTeRetorno.chCTe;
-    FprotCTe    := CTeRetorno.protCTe;    //Arrumar
-    FretCancCTe := CTeRetorno.retCancCTe; //Arrumar
+
+    // Comentado por Italo em 16/11/2011
+//    FprotCTe    := CTeRetorno.protCTe;    //Arrumar
+//    FretCancCTe := CTeRetorno.retCancCTe; //Arrumar
+
+    // Incluido por Italo em 16/11/2011
+    FprotCTe.Schema             := CTeRetorno.protCTe.Schema;
+    FprotCTe.PathNFe            := CTeRetorno.protCTe.PathCTe;
+    FprotCTe.PathRetConsReciCTe := CTeRetorno.protCTe.PathRetConsReciCTe;
+    FprotCTe.PathRetConsSitCTe  := CTeRetorno.protCTe.PathRetConsSitCTe;
+    FprotCTe.PathRetConsSitCTe  := CTeRetorno.protCTe.PathRetConsSitCTe;
+    FprotCTe.tpAmb              := CTeRetorno.protCTe.tpAmb;
+    FprotCTe.verAplic           := CTeRetorno.protCTe.verAplic;
+    FprotCTe.chNFe              := CTeRetorno.protCTe.chCTe;
+    FprotCTe.dhRecbto           := CTeRetorno.protCTe.dhRecbto;
+    FprotCTe.nProt              := CTeRetorno.protCTe.nProt;
+    FprotCTe.digVal             := CTeRetorno.protCTe.digVal;
+    FprotCTe.cStat              := CTeRetorno.protCTe.cStat;
+    FprotCTe.xMotivo            := CTeRetorno.protCTe.xMotivo;
+
+    FretCancCTe.tpAmb    := CTeRetorno.retCancCTe.tpAmb;
+    FretCancCTe.verAplic := CTeRetorno.retCancCTe.verAplic;
+    FretCancCTe.cStat    := CTeRetorno.retCancCTe.cStat;
+    FretCancCTe.xMotivo  := CTeRetorno.retCancCTe.xMotivo;
+    FretCancCTe.cUF      := CTeRetorno.retCancCTe.cUF;
+    FretCancCTe.chCTe    := CTeRetorno.retCancCTe.chCTe;
+    FretCancCTe.dhRecbto := CTeRetorno.retCancCTe.dhRecbto;
+    FretCancCTe.nProt    := CTeRetorno.retCancCTe.nProt;
+
     FMsg        := CTeRetorno.XMotivo;
 
     FProtocolo := CTeUtil.SeSenao(CTeUtil.NaoEstaVazio(CTeRetorno.retCancCTe.nProt),CTeRetorno.retCancCTe.nProt,CTeRetorno.protCTe.nProt);

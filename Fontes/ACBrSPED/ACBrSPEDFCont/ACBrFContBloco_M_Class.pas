@@ -47,9 +47,16 @@ type
   TBloco_M = class(TACBrSPED)
   private
     FRegistroM001: TRegistroM001;      /// BLOCO M - RegistroM001
-    FRegistroM020: TRegistroM020;      /// BLOCO M - RegistroM020    
+    FRegistroM020: TRegistroM020;      /// BLOCO M - RegistroM020
+    FRegistroM025: TRegistroM025List;  /// BLOCO M - Lista de RegistroM025
     FRegistroM030: TRegistroM030List;  /// BLOCO M - Lista de RegistroM030
     FRegistroM990: TRegistroM990;      /// BLOCO M - FRegistroM990
+
+    FRegistroM155Count: Integer;
+    FRegistroM355Count: Integer;
+
+    function WriteRegistroM155(RegM030: TRegistroM030): AnsiString;
+    function WriteRegistroM355(RegM030: TRegistroM030): AnsiString;
 
   public
     constructor Create; /// Create
@@ -58,16 +65,23 @@ type
 
     function WriteRegistroM001: AnsiString;
     function WriteRegistroM020: AnsiString;
+    function WriteRegistroM025: AnsiString;
     function WriteRegistroM030: AnsiString;
     function WriteRegistroM990: AnsiString;
 
     property RegistroM001: TRegistroM001     read fRegistroM001 write fRegistroM001;
     property RegistroM020: TRegistroM020     read fRegistroM020 write fRegistroM020;
+    property RegistroM025: TRegistroM025List read fRegistroM025 write fRegistroM025;
     property RegistroM030: TRegistroM030List read fRegistroM030 write fRegistroM030;
     property RegistroM990: TRegistroM990     read fRegistroM990 write fRegistroM990;
+
+    property RegistroM155Count: Integer read FRegistroM155Count write FRegistroM155Count;
+    property RegistroM355Count: Integer read FRegistroM355Count write FRegistroM355Count;
   end;
 
 implementation
+
+uses ACBrTXTClass;
 
 { TBloco_M }
 
@@ -75,8 +89,12 @@ constructor TBloco_M.Create;
 begin
   FRegistroM001 := TRegistroM001.Create;
   FRegistroM020 := TRegistroM020.Create;
+  FRegistroM025 := TRegistroM025List.Create;
   FRegistroM030 := TRegistroM030List.Create;
   FRegistroM990 := TRegistroM990.Create;
+
+  FRegistroM155Count := 0;
+  FRegistroM355Count := 0;
 
   FRegistroM990.QTD_LIN_M := 0;
 end;
@@ -84,7 +102,8 @@ end;
 destructor TBloco_M.Destroy;
 begin
   FRegistroM001.Free;
-  FRegistroM020.Free;  
+  FRegistroM020.Free;
+  FRegistroM025.Free;
   FRegistroM030.Free;
   FRegistroM990.Free;
   inherited;
@@ -92,6 +111,7 @@ end;
 
 procedure TBloco_M.LimpaRegistros;
 begin
+  FRegistroM025.Clear;
   FRegistroM030.Clear;
 
   FRegistroM990.QTD_LIN_M := 0;
@@ -134,6 +154,13 @@ begin
                  LFill(QUALI_PJ, 2) +
                  LFill(TIPO_ESCRIT) +
                  LFill(NRO_REC_ANTERIOR) +
+                 LFill(ID_ESCR_PER_ANT) +
+                 LFill(SIT_SLD_PER_ANT) +
+                 LFill(IND_LCTO_INI_SLD) +
+                 LFill(FORM_APUR, 1) +
+                 LFill(FORM_TRIBUT) +
+                 LFill(TRIM_LUC_ARB) +
+                 LFill(FORM_TRIB_TRI) +
                  Delimitador +
                  #13#10;
        ///
@@ -141,6 +168,42 @@ begin
      end;
   end;
 end;
+
+
+function TBloco_M.WriteRegistroM025: AnsiString;
+var
+intFor: integer;
+strRegistroM025: AnsiString;
+begin
+  strRegistroM025 := '';
+
+  if Assigned(FRegistroM025) then
+  begin
+     for intFor := 0 to FRegistroM025.Count - 1 do
+     begin
+        with FRegistroM025.Items[intFor] do
+        begin
+           ///
+           Check(((IND_DC_FIN_FC = 'D') or (IND_DC_FIN_FC = 'C')) , '(M-M025) Indicador da situação do saldo fiscal final "%s", deve ser D-Devedor ou C-Credor',[IND_DC_FIN_FC]);
+           Check(((IND_DC_FIN_SOC = 'D') or (IND_DC_FIN_SOC = 'C')) , '(M-M025) Indicador da situação do saldo Societário final "%s", deve ser D-Devedor ou C-Credor',[IND_DC_FIN_SOC]);
+           ///
+           strRegistroM025 :=  strRegistroM025 + LFill('M025') +
+                                                 LFill(COD_CTA) +
+                                                 LFill(COD_CCUS) +
+                                                 LFill(COD_CTA_REF) +
+                                                 LFill(VL_SLD_FIN_FC, 19,2) +
+                                                 LFill(IND_DC_FIN_FC) +
+                                                 LFill(VL_SLD_FIN_SOC, 19,2) +
+                                                 LFill(IND_DC_FIN_SOC) +
+                                                 Delimitador +
+                                                 #13#10;
+        end;
+        FRegistroM990.QTD_LIN_M := FRegistroM990.QTD_LIN_M + 1;
+     end;
+  end;
+  Result := strRegistroM025;
+end;
+
 
 function TBloco_M.WriteRegistroM030: AnsiString;
 var
@@ -161,18 +224,119 @@ begin
            ///
            strRegistroM030 :=  strRegistroM030 + LFill('M030') +
                                                  LFill(IND_PER) +
-                                                 LFill('') + //Não preencher
-                                                 LFill('') + //Não preencher
                                                  LFill(VL_LUC_LIQ, 19,2) +
                                                  LFill(IND_LUC_LIQ) +
                                                  Delimitador +
                                                  #13#10;
         end;
+
+        // Registros Filhos
+        strRegistroM030 := strRegistroM030 +
+                           WriteRegistroM155(FRegistroM030.Items[intFor] );
+
+        strRegistroM030 := strRegistroM030 +
+                           WriteRegistroM355(FRegistroM030.Items[intFor] );
+
         FRegistroM990.QTD_LIN_M := FRegistroM990.QTD_LIN_M + 1;
      end;
   end;
   Result := strRegistroM030;
 end;
+
+function TBloco_M.WriteRegistroM155(RegM030: TRegistroM030): AnsiString;
+var
+intFor: integer;
+strRegistroM155: AnsiString;
+begin
+  strRegistroM155 := '';
+
+  if Assigned(RegM030.RegistroM155) then
+  begin
+     for intFor := 0 to RegM030.RegistroM155.Count - 1 do
+     begin
+        with RegM030.RegistroM155.Items[intFor] do
+        begin
+           ///
+           strRegistroM155 :=  strRegistroM155 + LFill('M155') +
+                                                 LFill(COD_CTA) +
+                                                 LFill(COD_CCUS) +
+                                                 LFill(COD_CTA_REF) +
+                                                 LFill(VL_SLD_INI_SOC_ANT, 19, 2) +
+                                                 LFill(IND_DC_INI_SOC_ANT) +
+                                                 LFill(VL_IS_DEB, 19, 2) +
+                                                 LFill(VL_IS_CRED, 19, 2) +
+                                                 LFill(VL_SLD_INI_SOC, 19, 2) +
+                                                 LFill(IND_DC_INI_SOC) +
+                                                 LFill(VL_SLD_INI_FC_ANT, 19, 2) +
+                                                 LFill(IND_DC_INI_FC_ANT) +
+                                                 LFill(VL_IF_DEB, 19, 2) +
+                                                 LFill(VL_IF_CRED, 19, 2) +
+                                                 LFill(VL_SLD_INI_FC, 19, 2) +
+                                                 LFill(IND_DC_INI_FC) +
+                                                 LFill(VL_DEB_CONTABIL, 19, 2) +
+                                                 LFill(VL_CRED_CONTABIL, 19, 2) +
+                                                 LFill(VL_DEB_FCONT_E, 19, 2) +
+                                                 LFill(VL_CRED_FCONT_E, 19, 2) +
+                                                 LFill(VL_DEB_FCONT_I, 19, 2) +
+                                                 LFill(VL_CRED_FCONT_I, 19, 2) +
+                                                 LFill(VL_TR_DEB, 19, 2) +
+                                                 LFill(VL_TR_CRED, 19, 2) +
+                                                 LFill(VL_TF_DEB, 19, 2) +
+                                                 LFill(VL_TF_CRED, 19, 2) +
+                                                 LFill(VL_TS_DEB, 19, 2) +
+                                                 LFill(VL_TS_CRED, 19, 2) +
+                                                 LFill(VL_EF_DEB, 19, 2) +
+                                                 LFill(VL_EF_CRED, 19, 2) +
+                                                 LFill(VL_SLD_FIN_FC, 19, 2) +
+                                                 LFill(IND_DC_FIN_FC) +
+                                                 LFill(VL_SLD_FIN_SOC, 19, 2) +
+                                                 LFill(IND_DC_FIN_SOC) +
+                                                 Delimitador +
+                                                 #13#10;
+        end;
+       FRegistroM990.QTD_LIN_M := FRegistroM990.QTD_LIN_M + 1;
+     end;
+     FRegistroM155Count := FRegistroM155Count + RegM030.RegistroM155.Count;
+  end;
+  Result := strRegistroM155;
+end;
+
+function TBloco_M.WriteRegistroM355(RegM030: TRegistroM030): AnsiString;
+var
+intFor: integer;
+strRegistroM355: AnsiString;
+begin
+  strRegistroM355 := '';
+
+  if Assigned(RegM030.RegistroM355) then
+  begin
+     for intFor := 0 to RegM030.RegistroM355.Count - 1 do
+     begin
+        with RegM030.RegistroM355.Items[intFor] do
+        begin
+           ///
+           strRegistroM355 :=  strRegistroM355 + LFill('M355') +
+                                                 LFill(COD_CTA) +
+                                                 LFill(COD_CCUS) +
+                                                 LFill(COD_CTA_REF) +
+                                                 LFill(VL_SLD_FIN_SOC, 19, 2) +
+                                                 LFill(IND_DC_FIN_SOC) +
+                                                 LFill(VL_DEB_FCONT_E, 19, 2) +
+                                                 LFill(VL_CRED_FCONT_E, 19, 2) +
+                                                 LFill(VL_DEB_FCONT_I, 19, 2) +
+                                                 LFill(VL_CRED_FCONT_I, 19, 2) +
+                                                 LFill(VL_SLD_FIN_FC_AL, 19, 2) +
+                                                 LFill(IND_DC_FIN_FC_AL) +
+                                                 Delimitador +
+                                                 #13#10;
+        end;
+       FRegistroM990.QTD_LIN_M := FRegistroM990.QTD_LIN_M + 1;
+     end;
+     FRegistroM355Count := FRegistroM355Count + RegM030.RegistroM355.Count;
+  end;
+  Result := strRegistroM355;
+end;
+
 
 function TBloco_M.WriteRegistroM990: AnsiString;
 begin

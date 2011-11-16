@@ -55,8 +55,11 @@ type
 
   TRegistroI051List = class;
   TRegistroI155List = class;
+  TRegistroI156List = class;
   TRegistroI250List = class;
+  TRegistroI256List = class;
   TRegistroI355List = class;
+  TRegistroI356List = class;
 
   /// Registro I050 - PLANO DE CONTAS
 
@@ -209,7 +212,12 @@ type
     fVL_CRED: Currency;       /// Valor total dos créditos no período.
     fVL_SLD_FIN: Currency;    /// Valor do saldo final do período.
     fIND_DC_FIN: String;  /// Indicador da situação do saldo final: D - Devedor; C - Credor.
+    
+    FRegistroI156: TRegistroI156List;  /// BLOCO I - Lista de RegistroI156 (FILHO)
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
     property COD_CTA: String read fCOD_CTA write fCOD_CTA;
     property COD_CCUS: String read fCOD_CCUS write fCOD_CCUS;
     property VL_SLD_INI: Currency read fVL_SLD_INI write fVL_SLD_INI;
@@ -218,6 +226,9 @@ type
     property VL_CRED: Currency read fVL_CRED write fVL_CRED;
     property VL_SLD_FIN: Currency read fVL_SLD_FIN write fVL_SLD_FIN;
     property IND_DC_FIN: String read fIND_DC_FIN write fIND_DC_FIN;
+
+    /// Registros FILHOS
+    property RegistroI156: TRegistroI156List read FRegistroI156 write FRegistroI156;
   end;
 
   /// Registro I155 - Lista
@@ -230,6 +241,33 @@ type
     function New: TRegistroI155;
     property Items[Index: Integer]: TRegistroI155 read GetItem write SetItem;
   end;
+
+
+  /// Registro I156 - Mapeamento Referencial dos Totais de Débitos e Créditos
+
+  TRegistroI156 = class
+  private
+    fCOD_CTA_REF: String;     /// Código da Conta Referencial.
+    fVL_DEB: Currency;    /// Valor Total Débitos.
+    fVL_CRED: Currency;    /// Valor Total Créditos.
+  public
+    property COD_CTA_REF: String read fCOD_CTA_REF write fCOD_CTA_REF;
+    property VL_DEB: Currency read fVL_DEB write fVL_DEB;
+    property VL_CRED: Currency read fVL_CRED write fVL_CRED;
+  end;
+
+  /// Registro I156 - Lista
+
+  TRegistroI156List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroI156;
+    procedure SetItem(Index: Integer; const Value: TRegistroI156);
+  public
+    function New: TRegistroI156;
+    property Items[Index: Integer]: TRegistroI156 read GetItem write SetItem;
+  end;
+
+
 
   // Registro I200 - Lançamentos Contábeis
 
@@ -249,6 +287,7 @@ type
     property DT_LCTO: TDateTime read fDT_LCTO write fDT_LCTO;
     property VL_LCTO: Currency read fVL_LCTO write fVL_LCTO;
     property IND_LCTO: String read fIND_LCTO write fIND_LCTO;
+    
     property RegistroI250: TRegistroI250List read fRegistroI250 write fRegistroI250;
   end;
 
@@ -273,7 +312,12 @@ type
     fCOD_HIST_PAD: String;
     fHIST: String;
     fCOD_PART: String;
+
+    fRegistroI256: TRegistroI256List; /// BLOCO I - Lista de RegistroI256 (FILHO)
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
     property COD_CTA: String read fCOD_CTA write fCOD_CTA;
     property COD_CCUS: String read fCOD_CCUS write fCOD_CCUS;
     property VL_DC: Currency read fVL_DC write fVL_DC;
@@ -282,6 +326,8 @@ type
     property COD_HIST_PAD: String  read fCOD_HIST_PAD write fCOD_HIST_PAD;
     property HIST: String read fHIST write fHIST;
     property COD_PART: String read fCOD_PART write fCOD_PART;
+
+    property RegistroI256: TRegistroI256List read fRegistroI256 write fRegistroI256;
   end;
 
   // Registro I250 - lista
@@ -294,6 +340,33 @@ type
     function New: TRegistroI250;
     property Items[Index: Integer]: TRegistroI250 read GetItem write SetItem;
   end;
+
+
+  // Registro I256 - Mapeamento Referencial das Partidas do Lançamento
+
+  TRegistroI256 = class
+  private
+    fCOD_CTA_REF: String; //Código da Conta Referencial
+    fVL_DC: Currency; //Valor da Partida
+    fIND_DC: String; //Natureza Partida
+  public
+    property COD_CTA_REF: String read fCOD_CTA_REF write fCOD_CTA_REF;
+    property VL_DC: Currency read fVL_DC write fVL_DC;
+    property IND_DC: String read fIND_DC write fIND_DC;
+  end;
+
+  // Registro I256 - lista
+
+  TRegistroI256List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroI256;
+    procedure SetItem(Index: Integer; Value: TRegistroI256);
+  public
+    function New: TRegistroI256;
+    property Items[Index: Integer]: TRegistroI256 read GetItem write SetItem;
+  end;
+
+
 
   /// Registro I350 - SALDO DAS CONTAS DE RESULTADO ANTES DO ENCERRAMENTO – IDENTIFICAÇÃO DA DATA
 
@@ -331,11 +404,20 @@ type
     fVL_CTA: Currency;    /// Valor do saldo final antes do lançamento de encerramento.
     fIND_DC: String;  /// Indicador da situação do saldo final: D - Devedor; C - Credor.
 
+    FRegistroI356: TRegistroI356List;  /// BLOCO I - Lista de RegistroI356 (FILHO)
+
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
     property COD_CTA: String read fCOD_CTA write fCOD_CTA;
     property COD_CCUS: String read fCOD_CCUS write fCOD_CCUS;
     property VL_CTA: Currency read fVL_CTA write fVL_CTA;
     property IND_DC: String read fIND_DC write fIND_DC;
+
+    /// Registros FILHOS
+    property RegistroI356: TRegistroI356List read FRegistroI356 write FRegistroI356;
+
   end;
 
   /// Registro I355 - Lista
@@ -349,6 +431,35 @@ type
     property Items[Index: Integer]: TRegistroI355 read GetItem write SetItem;
   end;
 
+
+
+  /// Registro I356 - Mapeamento Referencial dos Saldos Finais das Contas de Resultado antes
+
+  TRegistroI356 = class
+  private
+    fCOD_CTA_REF: String;     /// Código da Conta Referencial.
+    fVL_CTA: Currency;    /// Valor do saldo final.
+    fIND_DC: String;  /// Indicador da situação do saldo final: D - Devedor; C - Credor.
+
+  public
+    property COD_CTA_REF: String read fCOD_CTA_REF write fCOD_CTA_REF;
+    property VL_CTA: Currency read fVL_CTA write fVL_CTA;
+    property IND_DC: String read fIND_DC write fIND_DC;
+  end;
+
+  /// Registro I356 - Lista
+
+  TRegistroI356List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroI356;
+    procedure SetItem(Index: Integer; const Value: TRegistroI356);
+  public
+    function New: TRegistroI356;
+    property Items[Index: Integer]: TRegistroI356 read GetItem write SetItem;
+  end;
+
+
+
   /// Registro I990 - ENCERRAMENTO DO BLOCO I
 
   TRegistroI990 = class
@@ -360,7 +471,7 @@ type
 
 implementation
 
-{ TRegistroI012List }
+{ TRegistroI050 }
 
 constructor TRegistroI050.Create;
 begin
@@ -474,6 +585,19 @@ begin
   Put(Index, Value);
 end;
 
+
+constructor TRegistroI155.Create;
+begin
+   FRegistroI156 := TRegistroI156List.Create;
+end;
+
+destructor TRegistroI155.Destroy;
+begin
+  FRegistroI156.Free;
+  inherited;
+end;
+
+
 { TRegistroI155List }
 
 function TRegistroI155List.GetItem(Index: Integer): TRegistroI155;
@@ -491,6 +615,27 @@ procedure TRegistroI155List.SetItem(Index: Integer; const Value: TRegistroI155);
 begin
   Put(Index, Value);
 end;
+
+
+{ TRegistroI156List }
+
+function TRegistroI156List.GetItem(Index: Integer): TRegistroI156;
+begin
+  Result := TRegistroI156(Inherited Items[Index]);
+end;
+
+function TRegistroI156List.New: TRegistroI156;
+begin
+  Result := TRegistroI156.Create;
+  Add(Result);
+end;
+
+procedure TRegistroI156List.SetItem(Index: Integer; const Value: TRegistroI156);
+begin
+  Put(Index, Value);
+end;
+
+
 
 // TRegistroI200
 
@@ -523,6 +668,21 @@ begin
   Put(Index, Value);
 end;
 
+
+// TRegistroI250
+
+constructor TRegistroI250.Create;
+begin
+  FRegistroI256 := TRegistroI256List.create;
+end;
+
+destructor TRegistroI250.Destroy;
+begin
+  FRegistroI256.Free;
+  inherited;
+end;
+
+
 // TRegistroI250List
 
 function TRegistroI250List.GetItem(index: Integer): TRegistroI250;
@@ -540,6 +700,26 @@ procedure TRegistroI250List.SetItem(Index: Integer; Value: TRegistroI250);
 begin
    Put(Index, Value);
 end;
+
+
+// TRegistroI256List
+
+function TRegistroI256List.GetItem(index: Integer): TRegistroI256;
+begin
+  Result := TRegistroI256( inherited Items[Index]);
+end;
+
+function TRegistroI256List.New: TRegistroI256;
+begin
+   Result := TRegistroI256.Create;
+   Add(Result);
+end;
+
+procedure TRegistroI256List.SetItem(Index: Integer; Value: TRegistroI256);
+begin
+   Put(Index, Value);
+end;
+
 
 constructor TRegistroI350.Create;
 begin
@@ -570,6 +750,19 @@ begin
   Put(Index, Value);
 end;
 
+
+constructor TRegistroI355.Create;
+begin
+   FRegistroI356 := TRegistroI356List.Create;
+end;
+
+destructor TRegistroI355.Destroy;
+begin
+  FRegistroI356.Free;
+  inherited;
+end;
+
+
 { TRegistroI355List }
 
 function TRegistroI355List.GetItem(Index: Integer): TRegistroI355;
@@ -587,5 +780,25 @@ procedure TRegistroI355List.SetItem(Index: Integer; const Value: TRegistroI355);
 begin
   Put(Index, Value);
 end;
+
+{ TRegistroI356List }
+
+function TRegistroI356List.GetItem(Index: Integer): TRegistroI356;
+begin
+  Result := TRegistroI356(Inherited Items[Index]);
+end;
+
+function TRegistroI356List.New: TRegistroI356;
+begin
+  Result := TRegistroI356.Create;
+  Add(Result);
+end;
+
+procedure TRegistroI356List.SetItem(Index: Integer; const Value: TRegistroI356);
+begin
+  Put(Index, Value);
+end;
+
+
 
 end.

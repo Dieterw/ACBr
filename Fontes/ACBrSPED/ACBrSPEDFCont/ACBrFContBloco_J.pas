@@ -58,13 +58,13 @@ type
   TRegistroJ930 = class
   private
     fIDENT_NOM: String;      /// Nome do signatário.
-    fIDENT_CPF: String;      /// CPF.
+    fIDENT_CPF_CNPJ: String;      /// CPF/CNPJ.
     fIDENT_QUALIF: String;   /// Qualificação do assinante, conforme tabela do Departamento Nacional de Registro do Comércio - DNRC.
     fCOD_ASSIN: String;      /// Código de qualificação do assinante, conforme tabela do Departamento Nacional de Registro do Comércio - DNRC.
     fIND_CRC: String;        /// Número de inscrição do contabilista no Conselho Regional de Contabilidade.
   public
     property IDENT_NOM: String read fIDENT_NOM write fIDENT_NOM;
-    property IDENT_CPF: String read fIDENT_CPF write fIDENT_CPF;
+    property IDENT_CPF_CNPJ: String read fIDENT_CPF_CNPJ write fIDENT_CPF_CNPJ;
     property IDENT_QUALIF: String read fIDENT_QUALIF write fIDENT_QUALIF;
     property COD_ASSIN: String read fCOD_ASSIN write fCOD_ASSIN;
     property IND_CRC: String read fIND_CRC write fIND_CRC;

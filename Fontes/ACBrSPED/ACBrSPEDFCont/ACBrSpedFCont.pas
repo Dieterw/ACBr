@@ -113,7 +113,8 @@ type
 
     /// BLOCO M
     function WriteRegistroM001: AnsiString;
-    function WriteRegistroM020: AnsiString;    
+    function WriteRegistroM020: AnsiString;
+    function WriteRegistroM025: AnsiString;
     function WriteRegistroM030: AnsiString;
     function WriteRegistroM990: AnsiString;
 
@@ -373,7 +374,8 @@ begin
 
    /// BLOCO M
     AStringList.Add(Trim(WriteRegistroM001));
-    AStringList.Add(Trim(WriteRegistroM020));    
+    if Bloco_M.RegistroM001.IND_DAD = 0 then AStringList.Add(Trim(WriteRegistroM020));
+    if Bloco_M.RegistroM025.Count > 0 then AStringList.Add(Trim(WriteRegistroM025));
     if Bloco_M.RegistroM030.Count > 0 then AStringList.Add(Trim(WriteRegistroM030));
     AStringList.Add(Trim(WriteRegistroM990));
 
@@ -481,6 +483,14 @@ begin
          QTD_REG_BLC := Bloco_I.RegistroI155Count;
       end;
    end;
+   if Bloco_I.RegistroI156Count > 0 then
+   begin
+      with Bloco_9.Registro9900.New do
+      begin
+         REG_BLC := 'I156';
+         QTD_REG_BLC := Bloco_I.RegistroI156Count;
+      end;
+   end;
 end;
 
 function TACBrSPEDFCont.WriteRegistroI200: AnsiString;
@@ -503,6 +513,14 @@ begin
          QTD_REG_BLC := Bloco_I.RegistroI250Count;
       end;
    end;
+   if Bloco_I.RegistroI256Count > 0 then
+   begin
+      with Bloco_9.Registro9900.New do
+      begin
+         REG_BLC := 'I256';
+         QTD_REG_BLC := Bloco_I.RegistroI256Count;
+      end;
+   end;
 end;
 
 function TACBrSPEDFCont.WriteRegistroI350: AnsiString;
@@ -523,6 +541,14 @@ begin
       begin
          REG_BLC := 'I355';
          QTD_REG_BLC := Bloco_I.RegistroI355Count;
+      end;
+   end;
+   if Bloco_I.RegistroI356Count > 0 then
+   begin
+      with Bloco_9.Registro9900.New do
+      begin
+         REG_BLC := 'I356';
+         QTD_REG_BLC := Bloco_I.RegistroI356Count;
       end;
    end;
 end;
@@ -596,6 +622,18 @@ begin
    end;
 end;
 
+function TACBrSPEDFCont.WriteRegistroM025: AnsiString;
+begin
+   Result := Bloco_M.WriteRegistroM025;
+
+   with Bloco_9.Registro9900.New do
+   begin
+      REG_BLC := 'M025';
+      QTD_REG_BLC := 1;
+   end;
+end;
+
+
 function TACBrSPEDFCont.WriteRegistroM030: AnsiString;
 begin
    Result := Bloco_M.WriteRegistroM030;
@@ -606,6 +644,22 @@ begin
       begin
          REG_BLC := 'M030';
          QTD_REG_BLC := Bloco_M.RegistroM030.Count;
+      end;
+   end;
+   if Bloco_M.RegistroM155Count > 0 then
+   begin
+      with Bloco_9.Registro9900.New do
+      begin
+         REG_BLC := 'M155';
+         QTD_REG_BLC := Bloco_M.RegistroM155Count;
+      end;
+   end;
+   if Bloco_M.RegistroM355Count > 0 then
+   begin
+      with Bloco_9.Registro9900.New do
+      begin
+         REG_BLC := 'M355';
+         QTD_REG_BLC := Bloco_M.RegistroM355Count;
       end;
    end;
 end;

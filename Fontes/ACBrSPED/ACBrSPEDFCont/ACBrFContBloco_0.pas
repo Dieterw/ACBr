@@ -60,6 +60,7 @@ type
     fCOD_MUN: String;     /// Código do município do domicílio fiscal do empresário ou sociedade empresária, conforme tabela do IBGE - Instituto Brasileiro de Geografia e Estatística.
     fIM: String;          /// Inscrição Municipal do empresário ou sociedade empresária.
     fIND_SIT_ESP: String; /// Indicador de situação especial (conforme tabela publicada pelo Sped).
+    fIND_SIT_INI_PER: String; //Indicador do início do período conforme Tabela de Indicador do início do período.
   public
     property DT_INI: TDateTime read FDT_INI write FDT_INI;
     property DT_FIN: TDateTime read FDT_FIN write FDT_FIN;
@@ -70,6 +71,7 @@ type
     property COD_MUN: String read fCOD_MUN write fCOD_MUN;
     property IM: String read fIM write fIM;
     property IND_SIT_ESP: String read fIND_SIT_ESP write fIND_SIT_ESP;
+    property IND_SIT_INI_PER: String read fIND_SIT_INI_PER write fIND_SIT_INI_PER;
   end;
 
 implementation

@@ -130,7 +130,7 @@ begin
            ///
            strRegistroJ930 :=  strRegistroJ930 + LFill('J930') +
                                                  LFill(IDENT_NOM) +
-                                                 LFill(IDENT_CPF) +
+                                                 LFill(IDENT_CPF_CNPJ) +
                                                  LFill(IDENT_QUALIF) +
                                                  LFill(COD_ASSIN, 3) +
                                                  LFill(IND_CRC, 11) +

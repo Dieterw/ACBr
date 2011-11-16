@@ -97,6 +97,7 @@ begin
        Check(funChecaIE(IE, UF), '(0-0000) A inscrição estadual "%s" digitada é inválida!', [IE]);
        Check(funChecaMUN(StrToInt(COD_MUN)), '(0-0000) O código do município "%s" digitado é inválido!', [COD_MUN]);
        Check((((IND_SIT_ESP >= '0') and (IND_SIT_ESP <= '4')) or (IND_SIT_ESP = '')), '(0-0000) O indicador "%s" de situação especial, deve ser vazio ou informado o número 0 ou 1 ou 2 ou 3 ou 4!', [IND_SIT_ESP]);
+       Check(((IND_SIT_INI_PER >= '0') and (IND_SIT_INI_PER <= '3')), '(0-0000) O indicador "%s" de início do período, deve ser informado o número 0 ou 1 ou 2 ou 3!', [IND_SIT_INI_PER]);
        ///
        Result := LFill('0000') +
                  LFill('LALU') +
@@ -108,7 +109,8 @@ begin
                  LFill(IE) +
                  LFill(COD_MUN, 7) +
                  LFill(IM) +
-                 LFill(IND_SIT_ESP, 1) +
+                 LFill(IND_SIT_ESP) +
+                 LFill(IND_SIT_INI_PER, 1) +
                  Delimitador +
                  #13#10;
        ///

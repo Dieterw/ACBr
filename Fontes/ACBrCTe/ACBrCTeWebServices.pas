@@ -1031,6 +1031,8 @@ begin
   finally
     {$IFDEF ACBrCTeOpenSSL}
        HTTP.Free;
+    {$ELSE}
+      ReqResp.Free;
     {$ENDIF}
     Acao.Free;
     Stream.Free;
@@ -1166,6 +1168,8 @@ begin
   finally
     {$IFDEF ACBrCTeOpenSSL}
        HTTP.Free;
+    {$ELSE}
+      ReqResp.Free;
     {$ENDIF}
     Acao.Free;
     Stream.Free;
@@ -1387,6 +1391,8 @@ function TCteRetRecepcao.Executar: Boolean;
     finally
       {$IFDEF ACBrCTeOpenSSL}
          HTTP.Free;
+      {$ELSE}
+         ReqResp.Free;
       {$ENDIF}
       Acao.Free;
       Stream.Free;
@@ -1550,6 +1556,8 @@ begin
  finally
    {$IFDEF ACBrCTeOpenSSL}
       HTTP.Free;
+   {$ELSE}
+      ReqResp.Free;
    {$ENDIF}
    Acao.Free;
    Stream.Free;
@@ -1792,7 +1800,11 @@ begin
   finally
     {$IFDEF ACBrCTeOpenSSL}
        HTTP.Free;
+    {$ELSE}
+      ReqResp.Free;
     {$ENDIF}
+    // Incluido Por Italo em 16/11/2011
+    CTeRetorno.Free;
     Acao.Free;
     Stream.Free;
     CTeUtil.ConfAmbiente;
@@ -1981,11 +1993,13 @@ begin
   finally
     {$IFDEF ACBrCTeOpenSSL}
        HTTP.Free;
+    {$ELSE}
+      ReqResp.Free;
     {$ENDIF}
     Acao.Free;
     Stream.Free;
     // Alterado por Italo em 16/03/2011
-    // CTeRetorno.Free;
+    CTeRetorno.Free;
     CTeUtil.ConfAmbiente;
     TACBrCTe( FACBrCTe ).SetStatus( stCTeIdle );
   end;
@@ -2148,9 +2162,12 @@ begin
   finally
     {$IFDEF ACBrCTeOpenSSL}
        HTTP.Free;
+    {$ELSE}
+      ReqResp.Free;
     {$ENDIF}
     Acao.Free;
     Stream.Free;
+    CTeRetorno.Free;
     CTeUtil.ConfAmbiente;
     TACBrCTe( FACBrCTe ).SetStatus( stCTeIdle );
   end;
@@ -2319,6 +2336,8 @@ begin
   finally
     {$IFDEF ACBrCTeOpenSSL}
        HTTP.Free;
+    {$ELSE}
+      ReqResp.Free;
     {$ENDIF}
     Acao.Free;
     Stream.Free;

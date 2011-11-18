@@ -801,7 +801,7 @@ begin
       CTe.InfSeg[i01].vMerc   := Leitor.rCampo(tcDe3, 'vMerc');
   {$ENDIF}
   {$IFDEF PL_104}
-      CTe.InfSeg[i01].vCarga   := Leitor.rCampo(tcDe3, 'vCarga');
+      CTe.InfSeg[i01].vCarga   := Leitor.rCampo(tcDe2, 'vCarga');
   {$ENDIF}
       inc(i01);
     end;

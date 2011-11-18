@@ -1417,7 +1417,7 @@ begin
     Gerador.wCampo(tcDe3, '#311', 'vMerc   ', 01, 15, 0, CTe.InfSeg[i].vMerc, DSC_VMERC);
 {$ENDIF}
 {$IFDEF PL_104}
-    Gerador.wCampo(tcDe3, '#311', 'vCarga  ', 01, 15, 0, CTe.InfSeg[i].vCarga, DSC_VMERC);
+    Gerador.wCampo(tcDe2, '#311', 'vCarga  ', 01, 15, 0, CTe.InfSeg[i].vCarga, DSC_VMERC);
 {$ENDIF}
     Gerador.wGrupo('/seg');
   end;

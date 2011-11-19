@@ -244,6 +244,14 @@ begin
   chave := StringReplace(chave,'NFe','CTe',[rfReplaceAll]);
   CTe.infCTe.ID := chave;
   CTe.ide.cDV := RetornarDigito(CTe.infCTe.ID);
+  
+  // Incluido por Italo em 19/11/2011
+{$IFDEF PL_103}
+  CTe.Ide.cCT := RetornarCodigoNumericoCTe(CTe.infCTe.ID);
+{$ENDIF}
+{$IFDEF PL_104}
+  CTe.Ide.cCT := RetornarCodigoNumerico(CTe.infCTe.ID, 2);
+{$ENDIF}
 
   // Carrega Layout que sera utilizado para gera o txt
   Gerador.LayoutArquivoTXT.Clear;
@@ -340,7 +348,7 @@ begin
   Gerador.wCampo(tcStr, '#006', 'cCT     ', 09, 09, 1, IntToStrZero(RetornarCodigoNumericoCTe(CTe.infCTe.ID), 9), DSC_CNF);
 {$ENDIF}
 {$IFDEF PL_104}
-  Gerador.wCampo(tcStr, '#006', 'cCT     ', 09, 09, 1, IntToStrZero(RetornarCodigoNumerico(CTe.infCTe.ID, 2), 8), DSC_CNF);
+  Gerador.wCampo(tcStr, '#006', 'cCT     ', 08, 08, 1, IntToStrZero(RetornarCodigoNumerico(CTe.infCTe.ID, 2), 8), DSC_CNF);
 {$ENDIF}
 
   Gerador.wCampo(tcInt, '#007', 'CFOP    ', 04, 04, 1, CTe.ide.CFOP, DSC_CFOP);

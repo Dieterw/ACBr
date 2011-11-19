@@ -376,7 +376,7 @@ begin
         else if Cmd.Metodo = 'lertotaisrelatoriosgerenciais' then
            Cmd.Resposta := PegaTotaisRelatoriosGerenciais
 
-        else if Cmd.Metodo = 'programaformapagamento' then
+        else if Cmd.Metodo = 'programarelatoriosgerenciais' then
          begin
             wDescricao := Cmd.Params(0) ;
             ProgramaRelatoriosGerenciais( wDescricao ,             { Descricao }

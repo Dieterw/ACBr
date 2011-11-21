@@ -879,7 +879,7 @@ begin
                LFill( VL_OPER_AQUIS,0,2 )         +
                LFill( PARC_OPER_NAO_BC_CRED,0,2 ) +
                LFill( VL_BC_CRED,0,2 )            +
-               LFill( IND_NR_PARC )               +
+               LFill( IND_NR_PARC,1 )             +
                LFill( strCST_PIS )                +
                LFill( VL_BC_PIS,0,2 )             +
                LFill( ALIQ_PIS,0,2 )              +

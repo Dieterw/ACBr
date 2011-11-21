@@ -91,7 +91,7 @@ end;
 
 procedure TFrmSPEDPisCofins.btnB_0Click(Sender: TObject);
 const
-strUNID: array[0..4] of string = ('PC', 'UN', 'LT', 'PC', 'MT');
+  strUNID: array[0..4] of string = ('PC', 'UN', 'LT', 'PC', 'MT');
 
 var
 int0140: integer;
@@ -193,7 +193,7 @@ begin
                      CNPJ     := '123456789';
                      CPF      := '123456789';
                      IE       := '';
-                     COD_MUN  := '';
+                     COD_MUN  := 0;
                      SUFRAMA  := '';
                      ENDERECO := 'ENDERECO';
                      NUM      := '';

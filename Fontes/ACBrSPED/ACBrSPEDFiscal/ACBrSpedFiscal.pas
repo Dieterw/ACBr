@@ -1965,6 +1965,14 @@ begin
                QTD_REG_BLC := Bloco_G.RegistroG125Count;
             end;
          end;
+         if Bloco_G.RegistroG126Count > 0 then
+         begin
+            with New do
+            begin
+               REG_BLC := 'G126';
+               QTD_REG_BLC := Bloco_G.RegistroG126Count;
+            end;
+         end;
          if Bloco_G.RegistroG130Count > 0 then
          begin
             with New do

@@ -558,6 +558,7 @@ var
   intFor: integer;
   strIND_FRT: AnsiString;
   strCOD_SIT: AnsiString;
+  booCTRCCancelado: Boolean;
 begin
   if Assigned( RegD001.RegistroD100 ) then
   begin
@@ -583,6 +584,7 @@ begin
             sdExtempCompl:           strCOD_SIT := '07';
             sdRegimeEspecNEsp:       strCOD_SIT := '08';
           end;
+          booCTRCCancelado := (strCOD_SIT = '02');
           Add( LFill('D100') +
                LFill( Integer(IND_OPER), 0 ) +
                LFill( Integer(IND_EMIT), 0 ) +
@@ -597,13 +599,13 @@ begin
                LFill( DT_A_P ) +
                LFill( TP_CT_e ) +
                LFill( CHV_CTE_REF ) +
-               LFill( VL_DOC,0,2 ) +
-               LFill( VL_DESC,0,2 ) +
+               LFill( VL_DOC,0,2, booCTRCCancelado ) +
+               LFill( VL_DESC,0,2, booCTRCCancelado ) +
                LFill( strIND_FRT ) +
-               LFill( VL_SERV,0,2 ) +
-               LFill( VL_BC_ICMS,0,2 ) +
-               LFill( VL_ICMS,0,2 ) +
-               LFill( VL_NT,0,2 ) +
+               LFill( VL_SERV,0,2, booCTRCCancelado ) +
+               LFill( VL_BC_ICMS,0,2, booCTRCCancelado ) +
+               LFill( VL_ICMS,0,2, booCTRCCancelado ) +
+               LFill( VL_NT,0,2, booCTRCCancelado ) +
                LFill( COD_INF ) +
                LFill( COD_CTA ) ) ;
         end;

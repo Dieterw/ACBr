@@ -636,11 +636,11 @@ begin
      begin
         with RegD100.RegistroD110.Items[intFor] do
         begin
-          Add( LFill('D110') +
-               LFill(NUN_ITEM, 3) +
-               LFill(COD_ITEM ) +
-               LFill(VL_SERV ) +
-               LFill(VL_OUT ) );
+          Add( LFill('D110')        +
+               LFill(NUN_ITEM, 3)   +
+               LFill(COD_ITEM )     +
+               LFill(VL_SERV, 0, 2) +
+               LFill(VL_OUT, 0, 2));
         end;
         /// Registros FILHOS
         WriteRegistroD120( RegD100.RegistroD110.Items[intFor] );

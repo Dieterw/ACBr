@@ -745,8 +745,8 @@ begin
       with RegF120.RegistroF129.Items[intFor] do
       begin
         case IND_PROC of
-          opJusticaFederal : strIND_PROC := '0';
-          opSecexRFB       : strIND_PROC := '1';
+          opJusticaFederal : strIND_PROC := '1';
+          opSecexRFB       : strIND_PROC := '3';
           opOutros         : strIND_PROC := '9';
           opNenhum         : strIND_PROC := '';
         end;

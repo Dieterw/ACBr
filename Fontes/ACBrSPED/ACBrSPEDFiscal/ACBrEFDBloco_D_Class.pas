@@ -868,7 +868,7 @@ begin
                LFill( DT_DOC ) +
                LFill( VL_DOC,0,2 ) +
                LFill( VL_MERC,0,2 ) +
-               LFill( QTD_VOL ) +
+               LFill( QTD_VOL, 0 ) +
                LFill( PESO_BRT,0,2 ) +
                LFill( PESO_LIQ,0,2 ) ) ;
         end;

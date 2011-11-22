@@ -814,7 +814,7 @@ begin
         begin
           Add( LFill('1620') +
                LFill( PER_APU_CRED ) +
-               LFill( ORIG_CRED ) +   //Verificar criação da tabela no ACBrEPCBlocos
+               LFill( ORIG_CRED, 2 ) +   //Verificar criação da tabela no ACBrEPCBlocos
                LFill( COD_CRED ) +    //Verificar criação da tabela no ACBrEPCBlocos
                LFill( VL_CRED,0,2 ) ) ;
         end;

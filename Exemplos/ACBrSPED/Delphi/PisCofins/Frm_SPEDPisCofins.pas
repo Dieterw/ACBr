@@ -232,6 +232,20 @@ begin
                end;
             end;
          end;
+
+         // FILHO - REGISTRO 0500: PLANO DE CONTAS CONTÁBEIS
+         with Registro0500New do
+         begin
+           DT_ALT := StrToDate('01/04/2011');
+           COD_NAT_CC := ncgAtivo;
+           IND_CTA := indCTASintetica;
+           NIVEL := '0';
+           COD_CTA := '0';
+           NOME_CTA := 'NOME CTA';
+           COD_CTA_REF := '0';
+           CNPJ_EST := '123456789';
+         end;
+
       end;
    end;
 
@@ -497,6 +511,50 @@ begin
 //        IND_MOV := 1;
 //      end;
 //   end;
+
+
+   with ACBrSPEDPisCofins1.Bloco_D do
+   begin
+      with RegistroD001New do
+      begin
+        IND_MOV := imComDados;
+
+
+        //Estabelecimento
+        with RegistroD010New do
+        begin
+          CNPJ := '123456789';
+
+//          for INotas := 1 to NNotas do
+//          begin
+//            with RegistroD100New do
+//            begin
+//              IND_OPER := 0;
+//              IND_EMIT := 0;
+//              COD_PART := '';
+//              COD_MOD :=  '';
+//            end;
+//          end;
+
+          //Resumo da Escrituração Diária – Prestação de Serviços de Transportes
+          // (Códigos 07, 08, 8B, 09, 10, 11, 26, 27 e 57).
+          with RegistroD200New do
+          begin
+          //|D200|08|00|||11574|11854|6352|000011574|000011854|6352|25072011|6807,57|0,00|
+            COD_MOD := '08';
+            COD_SIT := sdfRegular;
+            SER := '';
+            SUB := '';
+            NUM_DOC_INI := 11574;
+            NUM_DOC_FIN := 11854;
+            CFOP := 6352;
+            DT_REF := StrToDate('15/04/2011');
+            VL_DOC := 6807.57;
+            VL_DESC := 0;
+          end;
+        end;
+      end;
+   end;
    btnB_D.Enabled := false;
 
    if cbConcomitante.Checked then

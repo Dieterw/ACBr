@@ -148,7 +148,7 @@ type
   private
     fPER_APU_CRED: Integer;	             //02	PER_APU_CRED	Período de Apuração do Crédito (MM/AAAA)	N	006	-
     fORIG_CRED: Integer;	               //03	ORIG_CRED	Indicador da origem do crédito:01 – Crédito decorrente de operações próprias;02 – Crédito transferido por pessoa jurídica sucedida.	N	002*	-
-    fCNPJ_SUC: Integer;	                 //04	CNPJ_SUC	CNPJ da pessoa jurídica cedente do crédito (se ORIG_CRED = 02).	N	014*	-
+    fCNPJ_SUC: string;	                 //04	CNPJ_SUC	CNPJ da pessoa jurídica cedente do crédito (se ORIG_CRED = 02).	N	014*	-
     fCOD_CRED: Integer;	                 //05	COD_CRED	Código do Tipo do Crédito, conforme Tabela 4.3.6.	N	003*	-
     fVL_CRED_APU: Currency;	             //06	VL_CRED_APU	Valor do Crédito apurado na Escrituração Fiscal Digital ou em demonstrativo DACON de períodos anteriores.  	N	-	02
     fVL_CRED_EXT_APU: Currency;	         //07	VL_CRED_EXT_APU	Valor de Crédito Extemporâneo Apurado (Registro 1101), referente a Período Anterior, Informado no Campo 02 – PER_APU_CRED	N	-	02
@@ -171,7 +171,7 @@ type
 
     property PER_APU_CRED: Integer read FPER_APU_CRED write FPER_APU_CRED;
     property ORIG_CRED: Integer read FORIG_CRED write FORIG_CRED;
-    property CNPJ_SUC: Integer read FCNPJ_SUC write FCNPJ_SUC;
+    property CNPJ_SUC: string read FCNPJ_SUC write FCNPJ_SUC;
     property COD_CRED: Integer read FCOD_CRED write FCOD_CRED;
     property VL_CRED_APU: Currency read FVL_CRED_APU write FVL_CRED_APU;
     property VL_CRED_EXT_APU: Currency read FVL_CRED_EXT_APU write FVL_CRED_EXT_APU;
@@ -223,7 +223,7 @@ type
     fCOD_CCUS: string;	            //19	COD_CCUS	Código do Centro de Custos.	C	060	-
     fDESC_COMPL: string;	          //20	DESC_COMPL	Descrição complementar do Documento/Operação.	C	-	-
     fPER_ESCRIT: Integer;	          //21	PER_ESCRIT	Mês/Ano da Escrituração em que foi registrado o documento/operação (Crédito pelo método da Apropriação Direta).	N	006*	-
-    fCNPJ: Integer;	                //22	CNPJ	CNPJ do estabelecimento gerador do crédito extemporâneo (Campo 04  do Registro 0140)	N	014*	-
+    fCNPJ: string;	                //22	CNPJ	CNPJ do estabelecimento gerador do crédito extemporâneo (Campo 04  do Registro 0140)	N	014*	-
 
     FRegistro1102: TRegistro1102; // NIVEL 4
   public
@@ -250,7 +250,7 @@ type
     property COD_CCUS: string read FCOD_CCUS write FCOD_CCUS;
     property DESC_COMPL: string read FDESC_COMPL write FDESC_COMPL;
     property PER_ESCRIT: Integer read FPER_ESCRIT write FPER_ESCRIT;
-    property CNPJ: Integer read FCNPJ write FCNPJ;
+    property CNPJ: string read FCNPJ write FCNPJ;
 
     property Registro1102: TRegistro1102 read FRegistro1102 write FRegistro1102;
   end;
@@ -325,7 +325,7 @@ type
   //REGISTRO 1210: DETALHAMENTO DA CONTRIBUIÇÃO SOCIAL EXTEMPORÂNEA – PIS/PASEP
   TRegistro1210 = class
   private
-    fCNPJ: Integer;	              //02	CNPJ	Número de inscrição do estabelecimento no CNPJ (Campo 04 do Registro 0140).	N	014*	-
+    fCNPJ: string;	              //02	CNPJ	Número de inscrição do estabelecimento no CNPJ (Campo 04 do Registro 0140).	N	014*	-
     fCST_PIS: Integer;	          //03	CST_PIS	Código da Situação Tributária referente ao PIS/PASEP, conforme a Tabela indicada no item 4.3.3.	N	002*	-
     fCOD_PART: string;	          //04	COD_PART	Código do participante (Campo 02 do Registro 0150)	C	060	-
     fDT_OPER: TDateTime;	        //05	DT_OPER	Data da Operação (ddmmaaaa)	N	008*	-
@@ -336,7 +336,7 @@ type
     fCOD_CTA: string;	            //10	COD_CTA	Código da conta analítica contábil debitada/creditada	C	060	-
     fDESC_COMPL: string;          //11	DESC_COMPL	Descrição complementar do Documento/Operação	C	-	-
   public
-    property CNPJ: Integer read FCNPJ write FCNPJ;
+    property CNPJ: string read FCNPJ write FCNPJ;
     property CST_PIS: Integer read FCST_PIS write FCST_PIS;
     property COD_PART: string read FCOD_PART write FCOD_PART;
     property DT_OPER: TDateTime read FDT_OPER write FDT_OPER;
@@ -417,7 +417,7 @@ type
   private
     fPER_APU_CRED: Integer;	            //02	PER_APU_CRED	Período de Apuração do Crédito (MM/AAAA)	N	006	-
     fORIG_CRED: Integer;	              //03	ORIG_CRED	Indicador da origem do crédito:01 – Crédito decorrente de operações próprias;02 – Crédito transferido por pessoa jurídica sucedida.	N	002*	-
-    fCNPJ_SUC: Integer;	                //04	CNPJ_SUC	CNPJ da pessoa jurídica cedente do crédito (se ORIG_CRED = 02).	N	014*	-
+    fCNPJ_SUC: string;	                //04	CNPJ_SUC	CNPJ da pessoa jurídica cedente do crédito (se ORIG_CRED = 02).	N	014*	-
     fCOD_CRED: Integer;	                //05	COD_CRED	Código do Tipo do Crédito, conforme Tabela 4.3.6.	N	003*	-
     fVL_CRED_APU: Currency;	            //06	VL_CRED_APU	Valor do Crédito apurado na Escrituração Fiscal Digital ou em demonstrativo DACON de períodos anteriores.	N	-	02
     fVL_CRED_EXT_APU: Currency;	        //07	VL_CRED_EXT_APU	Valor de Crédito Extemporâneo Apurado (Registro 1501), referente a Período Anterior, Informado no Campo 02 – PER_APU_CRED	N	-	02
@@ -440,7 +440,7 @@ type
 
     property PER_APU_CRED: Integer read FPER_APU_CRED write FPER_APU_CRED;
     property ORIG_CRED: Integer read FORIG_CRED write FORIG_CRED;
-    property CNPJ_SUC: Integer read FCNPJ_SUC write FCNPJ_SUC;
+    property CNPJ_SUC: string read FCNPJ_SUC write FCNPJ_SUC;
     property COD_CRED: Integer read FCOD_CRED write FCOD_CRED;
     property VL_CRED_APU: Currency read FVL_CRED_APU write FVL_CRED_APU;
     property VL_CRED_EXT_APU: Currency read FVL_CRED_EXT_APU write FVL_CRED_EXT_APU;
@@ -492,7 +492,7 @@ type
     fCOD_CCUS: string;	            //19	COD_CCUS	Código do Centro de Custos	C	060	-
     fDESC_COMPL: string;	          //20	DESC_COMPL	Descrição complementar do Documento/Operação	C	-	-
     fPER_ESCRIT: Integer;	          //21	PER_ESCRIT	Mês/Ano da Escrituração em que foi registrado o documento/operação (Crédito pelo método da Apropriação Direta).	N	006*	-
-    fCNPJ: Integer;	                //22	CNPJ	CNPJ do estabelecimento gerador do crédito extemporâneo (Campo 04  do Registro 0140)	N	014*	-
+    fCNPJ: string;	                //22	CNPJ	CNPJ do estabelecimento gerador do crédito extemporâneo (Campo 04  do Registro 0140)	N	014*	-
 
     FRegistro1502: TRegistro1502; // NIVEL 4
   public
@@ -519,7 +519,7 @@ type
     property COD_CCUS: string read FCOD_CCUS write FCOD_CCUS;
     property DESC_COMPL: string read FDESC_COMPL write FDESC_COMPL;
     property PER_ESCRIT: Integer read FPER_ESCRIT write FPER_ESCRIT;
-    property CNPJ: Integer read FCNPJ write FCNPJ;
+    property CNPJ: string read FCNPJ write FCNPJ;
 
     property Registro1502: TRegistro1502 read FRegistro1502 write FRegistro1502;
   end;
@@ -594,7 +594,7 @@ type
   //REGISTRO 1610: DETALHAMENTO DA CONTRIBUIÇÃO SOCIAL EXTEMPORÂNEA – COFINS
   TRegistro1610 = class
   private
-    fCNPJ: Integer;	                //02	CNPJ	Número de inscrição do estabelecimento no CNPJ (Campo 04 do Registro 0140).	N	014*	-
+    fCNPJ: string;	                //02	CNPJ	Número de inscrição do estabelecimento no CNPJ (Campo 04 do Registro 0140).	N	014*	-
     fCST_COFINS: Integer;	          //03	CST_COFINS	Código da Situação Tributária referente a COFINS, conforme a Tabela indicada no item 4.3.4.	N	002*	-
     fCOD_PART: string;	            //04	COD_PART	Código do participante (Campo 02 do Registro 0150)	C	060	-
     fDT_OPER: TDateTime;	          //05	DT_OPER	Data da Operação (ddmmaaaa)	N	008*	-
@@ -605,7 +605,7 @@ type
     fCOD_CTA: string;	              //10	COD_CTA	Código da conta analítica contábil debitada/creditada	C	060	-
     fDESC_COMPL: string;	          //11	DESC_COMPL	Descrição complementar do Documento/Operação	C	-	-
   public
-    property CNPJ: Integer read FCNPJ write FCNPJ;
+    property CNPJ: string read FCNPJ write FCNPJ;
     property CST_COFINS: Integer read FCST_COFINS write FCST_COFINS;
     property COD_PART: string read FCOD_PART write FCOD_PART;
     property DT_OPER: TDateTime read FDT_OPER write FDT_OPER;

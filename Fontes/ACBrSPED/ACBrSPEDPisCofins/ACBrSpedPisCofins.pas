@@ -1681,6 +1681,32 @@ begin
                QTD_REG_BLC := Bloco_F.RegistroF211Count;
             end;
          end;
+         
+         (*Edilon Alves de Oliveira*)
+         if Bloco_F.RegistroF500Count > 0 then
+         begin
+            with New do
+            begin
+               REG_BLC := 'F500';
+               QTD_REG_BLC := Bloco_F.RegistroF500Count;
+            end;
+         end;
+         if Bloco_F.RegistroF550Count > 0 then
+         begin
+            with New do
+            begin
+               REG_BLC := 'F550';
+               QTD_REG_BLC := Bloco_F.RegistroF550Count;
+            end;
+         end;
+         if Bloco_F.RegistroF560Count > 0 then
+         begin
+            with New do
+            begin
+               REG_BLC := 'F560';
+               QTD_REG_BLC := Bloco_F.RegistroF560Count;
+            end;
+         end;
          if Bloco_F.RegistroF600Count > 0 then
          begin
             with New do

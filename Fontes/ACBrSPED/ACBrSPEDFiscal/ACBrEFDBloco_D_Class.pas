@@ -764,6 +764,7 @@ begin
             tipEnc:   intIND_TFA := 1;
             tipCI:    intIND_TFA := 2;
             tipOutra: intIND_TFA := 9;
+            else      intIND_TFA := 9;
           end;
 
           Add( LFill('D150') +
@@ -834,6 +835,7 @@ begin
             ttDutoviario:      intIND_CARGA := 4;
             ttAereo:           intIND_CARGA := 5;
             ttOutros:          intIND_CARGA := 9;
+            else               intIND_CARGA := 9;
           end;
           Add( LFill('D161') +
                LFill( intIND_CARGA, 0 ) +
@@ -1373,6 +1375,7 @@ begin
             assPublico:             intTP_ASSINANTE := 4;
             assSemiPublico:         intTP_ASSINANTE := 5;
             assOutros:              intTP_ASSINANTE := 6;
+            else                    intTP_ASSINANTE := 6;
           end;
 
           Add( LFill('D500') +
@@ -1431,6 +1434,7 @@ begin
             recOutrasProprias:        intIND_REC := 4;
             recTerceiroCoFaturamento: intIND_REC := 5;
             recTerceiroOutras:        intIND_REC := 9;
+            else                      intIND_REC := 0;
           end;
 
           Add( LFill('D510') +
@@ -1461,6 +1465,7 @@ begin
             spAcessoInternet:   intIND_SERV := 3;
             spMultimidia:       intIND_SERV := 4;
             spOutros:           intIND_SERV := 9;
+            else                intIND_SERV := 9;
           end;
 
           Add( LFill( 'D530' ) +

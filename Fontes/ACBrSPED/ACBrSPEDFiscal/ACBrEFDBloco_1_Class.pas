@@ -743,6 +743,7 @@ begin
            tlMonofasico: intTP_LIGACAO := 1;
            tlBifasico:   intTP_LIGACAO := 2;
            tlTrifasico:  intTP_LIGACAO := 3;
+           else          intTP_LIGACAO := 1;
           end;
 
           Add( LFill('1500') +

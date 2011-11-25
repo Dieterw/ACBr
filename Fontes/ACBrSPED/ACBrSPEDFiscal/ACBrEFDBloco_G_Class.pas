@@ -117,6 +117,7 @@ begin
 
   FRegistroG110Count := 0;
   FRegistroG125Count := 0;
+  FRegistroG126Count := 0;
   FRegistroG130Count := 0;
   FRegistroG140Count := 0;
 

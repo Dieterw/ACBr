@@ -56,6 +56,7 @@ type
 
     FRegistroC100Count: Integer;
     FRegistroC110Count: Integer;
+    FRegistroC105Count: Integer;
     FRegistroC112Count: Integer;
     FRegistroC113Count: Integer;
     FRegistroC114Count: Integer;
@@ -113,6 +114,7 @@ type
     FRegistroC890Count: Integer;
 
     procedure WriteRegistroC100(RegC001: TRegistroC001) ;
+    procedure WriteRegistroC105(RegC100: TRegistroC100);
     procedure WriteRegistroC110(RegC100: TRegistroC100);
     procedure WriteRegistroC111(RegC110: TRegistroC110);
     procedure WriteRegistroC112(RegC110: TRegistroC110);
@@ -181,6 +183,7 @@ type
     function RegistroC100New: TRegistroC100;
     function RegistroC110New: TRegistroC110;
 
+    function RegistroC105New: TRegistroC105;
     function RegistroC111New: TRegistroC111;
     function RegistroC112New: TRegistroC112;
     function RegistroC113New: TRegistroC113;
@@ -245,6 +248,7 @@ type
     property RegistroC990: TRegistroC990 read FRegistroC990 write FRegistroC990;
 
     property RegistroC100Count: Integer read FRegistroC100Count write FRegistroC100Count;
+    property RegistroC105Count: Integer read FRegistroC105Count write FRegistroC105Count;
     property RegistroC110Count: Integer read FRegistroC110Count write FRegistroC110Count;
     property RegistroC112Count: Integer read FRegistroC112Count write FRegistroC112Count;
     property RegistroC113Count: Integer read FRegistroC113Count write FRegistroC113Count;
@@ -327,6 +331,7 @@ begin
   FRegistroC990 := TRegistroC990.Create;
 
   FRegistroC100Count := 0;
+  FRegistroC105Count := 0;
   FRegistroC110Count := 0;
   FRegistroC112Count := 0;
   FRegistroC113Count := 0;
@@ -411,6 +416,11 @@ end;
 function TBloco_C.RegistroC100New: TRegistroC100;
 begin
    Result := FRegistroC001.RegistroC100.New;
+end;
+
+function TBloco_C.RegistroC105New: TRegistroC105;
+begin
+   Result := FRegistroC001.RegistroC100.Items[FRegistroC001.RegistroC100.Count -1].RegistroC105.New;
 end;
 
 function TBloco_C.RegistroC110New: TRegistroC110;
@@ -903,6 +913,39 @@ begin
            sdExtempCompl:           strCOD_SIT := '07';
            sdRegimeEspecNEsp:       strCOD_SIT := '08';
           end;
+
+          //Obs.: A partir de 01/01/2012 passará a ser:
+          //Indicador do tipo do frete:
+          //0- Por conta do emitente;
+          //1- Por conta do destinatário/remetente;
+          //2- Por conta de terceiros;
+          //9- Sem cobrança de frete.
+          if DT_INI >= EncodeDate(2012,01,01) then
+          begin
+            case IND_FRT of
+             tfPorContaEmitente:     strIND_FRT := '0';
+             tfPorContaDestinatario: strIND_FRT := '1';
+             tfPorContaTerceiros:    strIND_FRT := '2';
+             tfSemCobrancaFrete:     strIND_FRT := '9';
+             tfNenhum:               strIND_FRT := '';
+            end;
+          end
+          else
+            case IND_FRT of
+             tfPorContaTerceiros:    strIND_FRT := '0';
+             tfPorContaEmitente:     strIND_FRT := '1';
+             tfPorContaDestinatario: strIND_FRT := '2';
+             tfSemCobrancaFrete:     strIND_FRT := '9';
+             tfNenhum:               strIND_FRT := '';
+            end;
+
+          case IND_PGTO of
+           tpVista:        strIND_PGTO := '0';
+           tpPrazo:        strIND_PGTO := '1';
+           tpSemPagamento: strIND_PGTO := '9';
+           tpNenhum:       strIND_PGTO := '';
+          end;
+
           /// Tratamento NFs canceladas 02/03, denegada 04 ou inutilizada 05 - Jean Barreiros 25Nov2009
           if Pos(strCOD_SIT,'02, 03, 04, 05') > 0 then
           begin
@@ -914,20 +957,7 @@ begin
           end
           else
             booNFCancelada := false;
-          //
-          case IND_FRT of
-           tfPorContaTerceiros:    strIND_FRT := '0';
-           tfPorContaEmitente:     strIND_FRT := '1';
-           tfPorContaDestinatario: strIND_FRT := '2';
-           tfSemCobrancaFrete:     strIND_FRT := '9';
-           tfNenhum:               strIND_FRT := '';
-          end;
-          case IND_PGTO of
-           tpVista:        strIND_PGTO := '0';
-           tpPrazo:        strIND_PGTO := '1';
-           tpSemPagamento: strIND_PGTO := '9';
-           tpNenhum:       strIND_PGTO := '';
-          end;
+
 
           Add( LFill('C100') +
                LFill( Integer(IND_OPER), 0 ) +
@@ -960,6 +990,7 @@ begin
                LFill( VL_COFINS_ST,0,2, booNFCancelada ) ) ;
         end;
         /// Registros FILHOS
+        WriteRegistroC105( RegC001.RegistroC100.Items[intFor] ) ;
         WriteRegistroC110( RegC001.RegistroC100.Items[intFor] ) ;
         WriteRegistroC120( RegC001.RegistroC100.Items[intFor] ) ;
         WriteRegistroC130( RegC001.RegistroC100.Items[intFor] ) ;
@@ -976,6 +1007,34 @@ begin
      FRegistroC100Count := FRegistroC100Count + RegC001.RegistroC100.Count;
 
      RegC001.RegistroC100.Clear;
+  end;
+end;
+
+procedure TBloco_C.WriteRegistroC105(RegC100: TRegistroC100);
+var
+  intFor: integer;
+  strOPER: AnsiString;
+begin
+  if Assigned( RegC100.RegistroC105 ) then
+  begin
+     for intFor := 0 to RegC100.RegistroC105.Count - 1 do
+     begin
+       with RegC100.RegistroC105.Items[intFor] do
+       begin
+         case OPER of
+           toCombustiveisLubrificantes: strOPER := '0';
+           toLeasingVeiculos:           strOPER := '1';
+         end;                                        
+         Check(funChecaUF(UF), '(C-C105) UF DESTINO: A UF "%s" informada é inválida!', [UF]);
+         ///
+         Add( LFill('C105') +
+              LFill( strOPER ) +
+              LFill( UF ) ) ;
+       end;
+       RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+     /// Variável para armazenar a quantidade de registro do tipo.
+     FRegistroC105Count := FRegistroC105Count + RegC100.RegistroC105.Count;
   end;
 end;
 
@@ -1025,6 +1084,7 @@ begin
            opJusticaEstadual: intIND_PROC := 2;
            opSecexRFB:        intIND_PROC := 9;
            opOutros:          intIND_PROC := 9;
+           else               intIND_PROC := 9;
           end;
 
           Add( LFill('C111') +
@@ -1134,6 +1194,7 @@ begin
            ttDutoviario:      intIND_CARGA := 4;
            ttAereo:           intIND_CARGA := 5;
            ttOutros:          intIND_CARGA := 9;
+           else               intIND_CARGA := 9;
           end;
 
           Add( LFill('C115') +
@@ -1584,6 +1645,7 @@ begin
            tovVendaDireta:    intIND_VEIC_OPER := 2;
            tovVendaDConcess:  intIND_VEIC_OPER := 3;
            tovVendaOutros:    intIND_VEIC_OPER := 9;
+           else               intIND_VEIC_OPER := 9;
           end;
 
           Add( LFill('C175') +
@@ -2344,6 +2406,7 @@ begin
             tlMonofasico: intTP_LIGACAO := 1;
             tlBifasico:   intTP_LIGACAO := 2;
             tlTrifasico:  intTP_LIGACAO := 3;
+            else          intTP_LIGACAO := 1;
            end;
 
            Add( LFill('C500') +

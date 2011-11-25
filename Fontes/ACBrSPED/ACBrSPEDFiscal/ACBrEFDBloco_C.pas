@@ -1,4 +1,4 @@
-{******************************************************************************}
+{******************************************************************************} 
 { Projeto: Componentes ACBr                                                    }
 {  Biblioteca multiplataforma de componentes Delphi para interação com equipa- }
 { mentos de Automação Comercial utilizados no Brasil                           }
@@ -47,6 +47,7 @@ uses
 
 type
   TRegistroC100List = class;
+  TRegistroC105List = class;
   TRegistroC110List = class;
   TRegistroC111List = class;
   TRegistroC112List = class;
@@ -167,6 +168,7 @@ type
     fVL_PIS_ST: currency;               /// Valor total do PIS retido por substituição tributária
     fVL_COFINS_ST: currency;            /// Valor total da COFINS retido por substituição tributária
 
+    FRegistroC105: TRegistroC105List;  /// BLOCO C - Lista de RegistroC105 (FILHO)
     FRegistroC110: TRegistroC110List;  /// BLOCO C - Lista de RegistroC110 (FILHO)
     FRegistroC120: TRegistroC120List;  /// BLOCO C - Lista de RegistroC120 (FILHO)
     FRegistroC130: TRegistroC130List;  /// BLOCO C - Lista de RegistroC130 (FILHO)
@@ -209,6 +211,7 @@ type
     property VL_PIS_ST: currency read FVL_PIS_ST write FVL_PIS_ST;
     property VL_COFINS_ST: currency read FVL_COFINS_ST write FVL_COFINS_ST;
     /// Registros FILHOS
+    property RegistroC105: TRegistroC105List read FRegistroC105 write FRegistroC105;
     property RegistroC110: TRegistroC110List read FRegistroC110 write FRegistroC110;
     property RegistroC120: TRegistroC120List read FRegistroC120 write FRegistroC120;
     property RegistroC130: TRegistroC130List read FRegistroC130 write FRegistroC130;
@@ -229,6 +232,28 @@ type
   public
     function New: TRegistroC100;
     property Items[Index: Integer]: TRegistroC100 read GetItem write SetItem;
+  end;
+
+  /// Registro C105 - OPERAÇÕES COM ICMS ST RECOLHIDO PARA UF DIVERSA DO DESTINATÁRIO DO DOCUMENTO FISCAL (CÓDIGO 55).
+
+  TRegistroC105 = class
+  private
+    fOPER: TACBrTipoOperacaoST; /// Indicador do tipo de operação. 0- Combustíveis e Lubrificantes; 1- leasing de veículos ou faturamento direto.
+    fUF: String;                /// Sigla da UF de destino do ICMS_ST
+  public
+    property OPER: TACBrTipoOperacaoST read fOPER write fOPER;
+    property UF: String read fUF write fUF;
+  end;
+
+  /// Registro C105 - Lista
+  
+  TRegistroC105List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroC105; /// GetItem
+    procedure SetItem(Index: Integer; const Value: TRegistroC105); /// SetItem
+  public
+    function New: TRegistroC105;
+    property Items[Index: Integer]: TRegistroC105 read GetItem write SetItem;
   end;
 
   /// Registro C110 - INFORMAÇÃO COMPLEMENTAR DA NOTA FISCAL (CÓDIGO 01; 1B, 04 e 55)
@@ -2330,6 +2355,25 @@ procedure TRegistroC100List.SetItem(Index: Integer; const Value: TRegistroC100);
 begin
   Put(Index, Value);
 end;
+
+{ TRegistroC105List }
+
+function TRegistroC105List.GetItem(Index: Integer): TRegistroC105;
+begin
+  Result := TRegistroC105(Inherited Items[Index]);
+end;
+
+function TRegistroC105List.New: TRegistroC105;
+begin
+  Result := TRegistroC105.Create;
+  Add(Result);
+end;
+
+procedure TRegistroC105List.SetItem(Index: Integer; const Value: TRegistroC105);
+begin
+  Put(Index, Value);
+end;
+
 
 { TRegistroC110List }
 

@@ -159,7 +159,10 @@ type
                          opOutros,           // 9 - Outros
                          opNenhum           // Preencher vazio
                          );
-  ///
+  /// Indicador do tipo de operação
+  TACBrTipoOperacaoST = (toCombustiveisLubrificantes, // 0 - Combustíveis e Lubrificantes
+                         toLeasingVeiculos            // 1 - leasing de veículos ou faturamento direto
+                         );
   TACBrDoctoArrecada = (daEstadualArrecadacao,  // 0 - Documento Estadual de Arrecadação
                         daGNRE                  // 1 - GNRE
                         );

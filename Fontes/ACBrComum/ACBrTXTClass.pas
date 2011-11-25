@@ -65,7 +65,7 @@ type
     procedure SetNomeArquivo(const AValue: String);
   public
     constructor create ;
-    destructor destroy ; override ;
+    destructor Destroy ; override ;
 
     procedure WriteBuffer ;
     procedure SaveToFile ;

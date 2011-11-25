@@ -1981,7 +1981,8 @@ var
   LibHandle: THandle ;
 begin
  Result := True ;
- LibHandle := 0;
+// LibHandle := 0;
+
 {$IFDEF FPC}
  LibHandle := dynlibs.LoadLibrary( LibName ) ;
  if LibHandle <> 0 then

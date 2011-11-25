@@ -461,7 +461,9 @@ begin
            opJusticaEstadual: intIND_PROC := 2;
            opSecexRFB:        intIND_PROC := 3;
            opOutros:          intIND_PROC := 9;
+           else               intIND_PROC := 9;
           end;
+
           Add( LFill('E112') +
                LFill( NUM_DA ) +
                LFill( NUM_PROC ) +
@@ -701,6 +703,7 @@ begin
            opJusticaEstadual: intIND_PROC := 2;
            opSecexRFB:        intIND_PROC := 3;
            opOutros:          intIND_PROC := 9;
+           else               intIND_PROC := 9;
           end;
 
           Add( LFill('E230') +
@@ -727,16 +730,33 @@ begin
      begin
         with RegE220.RegistroE240.Items[intFor] do
         begin
-          Add( LFill('E240') +
-               LFill( COD_PART ) +
-               LFill( COD_MOD ) +
-               LFill( SER ) +
-               LFill( SUB ) +
-               LFill( NUM_DOC ) +
-               LFill( DT_DOC ) +
-               LFill( CHV_NFE ) +
-               LFill( COD_ITEM ) +
-               LFill( VL_AJ_ITEM,0 ) ) ;
+          /// Versão do leiaute do arquivo.
+          if FBloco_0.Registro0000.COD_VER = vlVersao103 then
+          begin
+             Add( LFill('E240') +
+                  LFill( COD_PART ) +
+                  LFill( COD_MOD ) +
+                  LFill( SER ) +
+                  LFill( SUB ) +
+                  LFill( NUM_DOC ) +
+                  LFill( DT_DOC ) +
+                  LFill( COD_ITEM ) +
+                  LFill( VL_AJ_ITEM,0 )) ;
+          end
+		  else
+          begin
+             Add( LFill('E240') +
+                  LFill( COD_PART ) +
+                  LFill( COD_MOD ) +
+                  LFill( SER ) +
+                  LFill( SUB ) +
+                  LFill( NUM_DOC ) +
+                  LFill( DT_DOC ) +
+                  LFill( CHV_NFE ) +
+                  LFill( COD_ITEM ) +
+                  LFill( VL_AJ_ITEM,0 )) ;
+          end;
+
         end;
         RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
      end;
@@ -913,6 +933,7 @@ begin
            odProcessoAdminist: intIND_DOC := 1;
            odPerDcomp:         intIND_DOC := 2;
            odOutros:           intIND_DOC := 9;
+           else                intIND_DOC := 9;
           end;
 
           Add( LFill('E530') +

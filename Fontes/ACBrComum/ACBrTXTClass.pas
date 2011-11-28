@@ -42,7 +42,10 @@ unit ACBrTXTClass;
 
 interface
 
-uses SysUtils, Classes, DateUtils, Math;
+uses {$IFDEF MSWINDOWS}
+      Windows,
+    {$ENDIF}
+      SysUtils, Classes, DateUtils, Math;
 
 type
   TErrorEvent = procedure(const MsnError: AnsiString) of object;

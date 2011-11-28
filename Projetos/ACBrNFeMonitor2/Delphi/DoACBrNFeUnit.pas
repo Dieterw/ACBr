@@ -48,6 +48,7 @@ procedure GerarIniNFe( AStr: WideString ) ;
 function GerarNFeIni( XML : WideString ) : WideString;
 procedure EnviarEmail(const sSmtpHost, sSmtpPort, sSmtpUser, sSmtpPasswd, sFrom, sTo, sAssunto, sAttachment, sAttachment2: String; sMensagem : TStrings; SSL : Boolean; sCopias: String='');
 procedure EnviarEmailIndy(const sSmtpHost, sSmtpPort, sSmtpUser, sSmtpPasswd, sFrom, sTo, sAssunto, sAttachment, sAttachment2: String; sMensagem : TStrings; SSL : Boolean; sCopias: String='');
+procedure GerarIniCCe( AStr: WideString ) ;
 
 implementation
 
@@ -61,7 +62,8 @@ Uses IniFiles, StrUtils, DateUtils,
   pcnConsSitNFe, pcnRetConsSitNFe,
   pcnInutNFe, pcnRetInutNFe,
   pcnRetEnvNFe, pcnConsReciNFe, pcnAuxiliar,
-  pcnNFeRTXT, ACBrNFeNotasFiscais, pcnRetConsCad, StdCtrls, pcnProcNFe;
+  pcnNFeRTXT, ACBrNFeNotasFiscais, pcnRetConsCad, StdCtrls, pcnProcNFe,
+  pcnRetCCeNFe;
 
 Procedure DoACBrNFe( Cmd : TACBrNFeCmd ) ;
 var
@@ -237,6 +239,17 @@ begin
            else
               ACBrNFe1.DANFE.NumCopias := StrToIntDef(edtNumCopia.Text,1);
 
+           if NotaUtil.NaoEstaVazio(Cmd.Params(3)) then
+              ACBrNFe1.DANFE.ProtocoloNFe := Cmd.Params(3);
+
+           if (ACBrNFe1.NotasFiscais.Items[0].NFe.Ide.tpEmis = teDPEC) and
+              NotaUtil.EstaVazio(ACBrNFe1.DANFE.ProtocoloNFe) then
+            begin
+              ACBrNFe1.WebServices.ConsultaDPEC.NFeChave := ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID;
+              ACBrNFe1.WebServices.ConsultaDPEC.Executar;
+              ACBrNFe1.DANFE.ProtocoloNFe := ACBrNFe1.WebServices.ConsultaDPEC.nRegDPEC +' '+ DateTimeToStr(ACBrNFe1.WebServices.ConsultaDPEC.dhRegDPEC);
+            end;
+
            ACBrNFe1.NotasFiscais.Imprimir;
            Cmd.Resposta := 'Danfe Impresso com sucesso';
            if ACBrNFe1.DANFE.MostrarPreview then
@@ -250,6 +263,17 @@ begin
               ACBrNFe1.NotasFiscais.LoadFromFile(Cmd.Params(0))
            else
               raise Exception.Create('Arquivo '+Cmd.Params(0)+' não encontrado.');
+
+           if NotaUtil.NaoEstaVazio(Cmd.Params(1)) then
+              ACBrNFe1.DANFE.ProtocoloNFe := Cmd.Params(1);
+              
+           if (ACBrNFe1.NotasFiscais.Items[0].NFe.Ide.tpEmis = teDPEC) and
+              NotaUtil.EstaVazio(ACBrNFe1.DANFE.ProtocoloNFe) then
+            begin
+              ACBrNFe1.WebServices.ConsultaDPEC.NFeChave := ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID;
+              ACBrNFe1.WebServices.ConsultaDPEC.Executar;
+              ACBrNFe1.DANFE.ProtocoloNFe := ACBrNFe1.WebServices.ConsultaDPEC.nRegDPEC +' '+ DateTimeToStr(ACBrNFe1.WebServices.ConsultaDPEC.dhRegDPEC);
+            end;
 
            try
               ACBrNFe1.NotasFiscais.ImprimirPDF;
@@ -652,6 +676,46 @@ begin
                     end;
                   end;
                end;
+            end;
+         end
+
+        else if (Cmd.Metodo = 'cartadecorrecao')then
+         begin
+           ACBrNFe1.CartaCorrecao.CCe.Evento.Clear;
+
+           GerarIniCCe( Cmd.Params(0) );
+
+           ACBrNFe1.EnviarCartaCorrecao(ACBrNFe1.CartaCorrecao.CCe.idLote);
+
+           if ACBrNFe1.Configuracoes.Geral.Salvar then
+            begin
+              Cmd.Resposta :=  Cmd.Resposta+
+              'Arquivo='+ACBrNFe1.WebServices.CartaCorrecao.PathArqResp;
+            end;
+           Cmd.Resposta := Cmd.Resposta+sLineBreak+
+                           'idLote='   +IntToStr(ACBrNFe1.WebServices.CartaCorrecao.CCeRetorno.idLote)+sLineBreak+
+                           'tpAmb='    +TpAmbToStr(ACBrNFe1.WebServices.CartaCorrecao.CCeRetorno.tpAmb)+sLineBreak+
+                           'verAplic=' +ACBrNFe1.WebServices.CartaCorrecao.CCeRetorno.verAplic+sLineBreak+
+                           'cOrgao='   +IntToStr(ACBrNFe1.WebServices.CartaCorrecao.CCeRetorno.cOrgao)+sLineBreak+
+                           'cStat='    +IntToStr(ACBrNFe1.WebServices.CartaCorrecao.CCeRetorno.cStat)+sLineBreak+
+                           'xMotivo='  +ACBrNFe1.WebServices.CartaCorrecao.CCeRetorno.xMotivo+sLineBreak;
+           for I:= 0 to ACBrNFe1.WebServices.CartaCorrecao.CCeRetorno.retEvento.Count-1 do
+            begin
+
+              Cmd.Resposta := Cmd.Resposta+sLineBreak+
+               '[EVENTO'+Trim(IntToStrZero(I+1,3))+']'+sLineBreak+
+               'tpAmb='     +TpAmbToStr(ACBrNFe1.WebServices.CartaCorrecao.CCeRetorno.retEvento.Items[I].RetInfEvento.tpAmb)+sLineBreak+
+               'verAplic='  +ACBrNFe1.WebServices.CartaCorrecao.CCeRetorno.retEvento.Items[I].RetInfEvento.verAplic+sLineBreak+
+               'cOrgao='    +IntToStr(ACBrNFe1.WebServices.CartaCorrecao.CCeRetorno.retEvento.Items[I].RetInfEvento.cOrgao)+sLineBreak+
+               'cStat='     +IntToStr(ACBrNFe1.WebServices.CartaCorrecao.CCeRetorno.retEvento.Items[I].RetInfEvento.cStat)+sLineBreak+
+               'xMotivo='   +ACBrNFe1.WebServices.CartaCorrecao.CCeRetorno.retEvento.Items[I].RetInfEvento.xMotivo+sLineBreak+
+               'chNFe='     +ACBrNFe1.WebServices.CartaCorrecao.CCeRetorno.retEvento.Items[I].RetInfEvento.chNFe+sLineBreak+
+               'tpEvento='  +IntToStr(ACBrNFe1.WebServices.CartaCorrecao.CCeRetorno.retEvento.Items[I].RetInfEvento.tpEvento)+sLineBreak+
+               'xEvento='   +ACBrNFe1.WebServices.CartaCorrecao.CCeRetorno.retEvento.Items[I].RetInfEvento.xEvento+sLineBreak+
+               'nSeqEvento='+IntToStr(ACBrNFe1.WebServices.CartaCorrecao.CCeRetorno.retEvento.Items[I].RetInfEvento.nSeqEvento)+sLineBreak+
+               'CNPJDest='  +ACBrNFe1.WebServices.CartaCorrecao.CCeRetorno.retEvento.Items[I].RetInfEvento.CNPJDest+sLineBreak+
+               'dhRegEvento='+DateTimeToStr(ACBrNFe1.WebServices.CartaCorrecao.CCeRetorno.retEvento.Items[I].RetInfEvento.dhRegEvento)+sLineBreak+
+               'nProt='     +ACBrNFe1.WebServices.CartaCorrecao.CCeRetorno.retEvento.Items[I].RetInfEvento.nProt;
             end;
          end
 
@@ -1390,27 +1454,12 @@ begin
                        begin
                         CST :=  StrToCSTPIS(OK, INIRec.ReadString( sSecao,'CST','01'));
 
-                        if (CST = pis01) or (CST = pis02) then
-                         begin
-                           PIS.vBC  := StringToFloatDef( INIRec.ReadString(sSecao,'ValorBase','') ,0);
-                           PIS.pPIS := StringToFloatDef( INIRec.ReadString(sSecao,'Aliquota' ,'') ,0);
-                           PIS.vPIS := StringToFloatDef( INIRec.ReadString(sSecao,'Valor'    ,'') ,0);
-                         end
-                        else if CST = pis03 then
-                         begin
-                           PIS.qBCProd   := StringToFloatDef( INIRec.ReadString(sSecao,'Quantidade','') ,0);
-                           PIS.vAliqProd := StringToFloatDef( INIRec.ReadString(sSecao,'ValorAliquota'  ,'') ,0);
-                           PIS.vPIS      := StringToFloatDef( INIRec.ReadString(sSecao,'Valor'     ,'') ,0);
-                         end
-                        else if CST = pis99 then
-                         begin
-                           PIS.vBC       := StringToFloatDef( INIRec.ReadString(sSecao,'ValorBase'     ,'') ,0);
-                           PIS.pPIS      := StringToFloatDef( INIRec.ReadString(sSecao,'Aliquota'  ,'') ,0);
-                           PIS.qBCProd   := StringToFloatDef( INIRec.ReadString(sSecao,'Quantidade','') ,0);
-                           PIS.vAliqProd := StringToFloatDef( INIRec.ReadString(sSecao,'ValorAliquota'  ,'') ,0);
-                           PIS.vPIS      := StringToFloatDef( INIRec.ReadString(sSecao,'Valor' ,'') ,0);
-                         end;
-                      end;
+                        PIS.vBC       := StringToFloatDef( INIRec.ReadString(sSecao,'ValorBase'     ,'') ,0);
+                        PIS.pPIS      := StringToFloatDef( INIRec.ReadString(sSecao,'Aliquota'  ,'') ,0);
+                        PIS.qBCProd   := StringToFloatDef( INIRec.ReadString(sSecao,'Quantidade','') ,0);
+                        PIS.vAliqProd := StringToFloatDef( INIRec.ReadString(sSecao,'ValorAliquota'  ,'') ,0);
+                        PIS.vPIS      := StringToFloatDef( INIRec.ReadString(sSecao,'Valor' ,'') ,0);
+                       end;
                     end;
 
                    sSecao    := 'PISST'+IntToStrZero(I,3) ;
@@ -1435,26 +1484,11 @@ begin
                       begin
                         CST := StrToCSTCOFINS(OK, INIRec.ReadString( sSecao,'CST','01'));
 
-                        if (CST = cof01) or (CST = cof02)   then
-                         begin
-                           COFINS.vBC     := StringToFloatDef( INIRec.ReadString(sSecao,'ValorBase','') ,0);
-                           COFINS.pCOFINS := StringToFloatDef( INIRec.ReadString(sSecao,'Aliquota' ,'') ,0);
-                           COFINS.vCOFINS := StringToFloatDef( INIRec.ReadString(sSecao,'Valor'    ,'') ,0);
-                         end
-                        else if CST = cof03 then
-                         begin
-                           COFINS.qBCProd   := StringToFloatDef( INIRec.ReadString(sSecao,'Quantidade'   ,'') ,0);
-                           COFINS.vAliqProd := StringToFloatDef( INIRec.ReadString(sSecao,'ValorAliquota','') ,0);
-                           COFINS.vCOFINS   := StringToFloatDef( INIRec.ReadString(sSecao,'Valor'        ,'') ,0);
-                         end
-                        else if CST = cof99 then
-                         begin
-                           COFINS.vBC       := StringToFloatDef( INIRec.ReadString(sSecao,'ValorBase'     ,'') ,0);
-                           COFINS.pCOFINS   := StringToFloatDef( INIRec.ReadString(sSecao,'Aliquota'  ,'') ,0);
-                           COFINS.qBCProd   := StringToFloatDef( INIRec.ReadString(sSecao,'Quantidade','') ,0);
-                           COFINS.vAliqProd := StringToFloatDef( INIRec.ReadString(sSecao,'ValorAliquota'  ,'') ,0);
-                           COFINS.vCOFINS   := StringToFloatDef( INIRec.ReadString(sSecao,'Valor' ,'') ,0);
-                         end;
+                        COFINS.vBC       := StringToFloatDef( INIRec.ReadString(sSecao,'ValorBase'     ,'') ,0);
+                        COFINS.pCOFINS   := StringToFloatDef( INIRec.ReadString(sSecao,'Aliquota'  ,'') ,0);
+                        COFINS.qBCProd   := StringToFloatDef( INIRec.ReadString(sSecao,'Quantidade','') ,0);
+                        COFINS.vAliqProd := StringToFloatDef( INIRec.ReadString(sSecao,'ValorAliquota'  ,'') ,0);
+                        COFINS.vCOFINS   := StringToFloatDef( INIRec.ReadString(sSecao,'Valor' ,'') ,0);
                       end;
                     end;
 
@@ -2528,6 +2562,57 @@ begin
     IdMessage.Free;
     IdSMTP.Free;
   end;
+end;
+
+procedure GerarIniCCe( AStr: WideString ) ;
+var
+  I      : Integer;
+  sSecao, sFim : String;
+  INIRec : TMemIniFile ;
+  SL     : TStringList;
+begin
+ INIRec := TMemIniFile.create( 'cce.ini' ) ;
+
+ SL := TStringList.Create;
+ if FilesExists(Astr) then
+    SL.LoadFromFile(AStr)
+ else
+    Sl.Text := ConvertStrRecived( Astr );
+
+ INIRec.SetStrings( SL );
+ SL.Free ;
+
+ with frmAcbrNfeMonitor do
+  begin
+   try
+     ACBrNFe1.CartaCorrecao.CCe.idLote := INIRec.ReadInteger( 'CCE','idLote' ,0);
+     I := 1 ;
+     while true do
+      begin
+        sSecao := 'EVENTO'+IntToStrZero(I,3) ;
+        sFim   := INIRec.ReadString(  sSecao,'chNFe'  ,'FIM');
+        if (sFim = 'FIM') or (Length(sFim) <= 0) then
+           break ;
+
+        with ACBrNFe1.CartaCorrecao.CCe.Evento.Add do
+         begin
+           infEvento.chNFe  := INIRec.ReadString(  sSecao,'chNFe' ,'');
+           infEvento.cOrgao := INIRec.ReadInteger( sSecao,'cOrgao' ,0);
+           infEvento.CNPJ   := INIRec.ReadString(  sSecao,'CNPJ' ,'');
+           infEvento.dhEvento :=  NotaUtil.StringToDateTime(INIRec.ReadString(  sSecao,'dhEvento' ,''));
+           infEvento.tpEvento := 110110;
+           infEvento.nSeqEvento := INIRec.ReadInteger( sSecao,'nSeqEvento' ,1);
+           infEvento.versaoEvento := '1.00';
+           infEvento.detEvento.descEvento := 'Carta de Correção';
+           infEvento.detEvento.xCorrecao := INIRec.ReadString(  sSecao,'xCorrecao' ,'');
+           infEvento.detEvento.xCondUso := ''; //Texto fixo conforme NT 2011.003 -  http://www.nfe.fazenda.gov.br/portal/exibirArquivo.aspx?conteudo=tsiloeZ6vBw=
+         end;
+        Inc(I);
+      end;
+   finally
+      INIRec.Free ;
+   end;
+ end;
 end;
 
 end.

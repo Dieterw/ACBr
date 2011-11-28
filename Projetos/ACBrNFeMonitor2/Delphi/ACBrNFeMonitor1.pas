@@ -1006,12 +1006,12 @@ begin
 
   mResp.Lines.BeginUpdate ;
   mResp.Lines.Add( Comando + sLineBreak + Resposta ) ;
-  while mResp.Lines.Count > BufferMemoResposta do
-     mResp.Lines.Delete(0) ;
+//  while mResp.Lines.Count > BufferMemoResposta do
+//     mResp.Lines.Delete(0) ;
   mResp.Lines.EndUpdate ;
 
   if cbLog.Checked then
-     WriteToTXT(ArqLogTXT, Comando + sLineBreak + Resposta);
+     WriteToTXT(ArqLogTXT, DateTimeToStr(now)+' - '+ Comando + sLineBreak + Resposta);
 end;
 
 procedure TfrmAcbrNfeMonitor.Processar;
@@ -1032,6 +1032,7 @@ begin
 
      Linha := Trim( mCmd.Lines.Text );
      mCmd.Lines.Text := '';
+     mResp.Lines.Text := '';
 
      if Linha <> '' then
      begin

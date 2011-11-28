@@ -27,7 +27,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
     Left = 0
     Top = 0
     Width = 571
-    Height = 225
+    Height = 223
     Align = alClient
     TabOrder = 0
     object Splitter1: TSplitter
@@ -85,7 +85,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
       Left = 1
       Top = 92
       Width = 569
-      Height = 132
+      Height = 130
       Align = alClient
       TabOrder = 1
       object pTodResp: TPanel
@@ -102,7 +102,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
         Left = 1
         Top = 18
         Width = 567
-        Height = 113
+        Height = 111
         Align = alClient
         Lines.Strings = (
           '')
@@ -116,7 +116,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
   end
   object pBotoes: TPanel
     Left = 0
-    Top = 488
+    Top = 486
     Width = 571
     Height = 40
     Align = alBottom
@@ -4100,7 +4100,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 528
+    Top = 526
     Width = 571
     Height = 19
     Panels = <
@@ -4113,7 +4113,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
   end
   object pConfig: TPanel
     Left = 0
-    Top = 225
+    Top = 223
     Width = 571
     Height = 263
     Align = alBottom
@@ -4124,7 +4124,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
       Top = 1
       Width = 569
       Height = 261
-      ActivePage = Monitor
+      ActivePage = DANFE
       Align = alClient
       Style = tsFlatButtons
       TabOrder = 0
@@ -5021,7 +5021,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
               Top = 50
               Width = 219
               Height = 21
-              ItemHeight = 0
+              ItemHeight = 13
               TabOrder = 2
             end
             object cbxImpDescPorc: TCheckBox

@@ -489,7 +489,7 @@ begin
                LFill( COD_CTA ) +
                LFill( COD_CCUS ) +
                LFill( DESC_COMPL ) +
-               LFill( PER_ESCRIT ) +
+               LFill( PER_ESCRIT,6 ) +
                LFill( CNPJ ) ) ;
         end;
         // Registros FILHOS
@@ -534,15 +534,15 @@ begin
         with Reg1001.Registro1200.Items[intFor] do
         begin
           Add( LFill('1200') +
-               LFill( PER_APUR_ANT ) +
-               LFill( NAT_CONT_REC ) +
-               LFill( VL_CONT_APUR,0,2 ) +
-               LFill( VL_CRED_PIS_DESC,0,2 ) +
-               LFill( VL_CONT_DEV,0,2 ) +
-               LFill( VL_OUT_DED,0,2 ) +
-               LFill( VL_CONT_EXT,0,2 ) +
-               LFill( VL_MUL,0,2 ) +
-               LFill( VL_JUR,0,2 ) +
+               LFill( PER_APUR_ANT, 6 )       +
+               LFill( NAT_CONT_REC )          +
+               LFill( VL_CONT_APUR,0,2 )      +
+               LFill( VL_CRED_PIS_DESC,0,2 )  +
+               LFill( VL_CONT_DEV,0,2 )       +
+               LFill( VL_OUT_DED,0,2 )        +
+               LFill( VL_CONT_EXT,0,2 )       +
+               LFill( VL_MUL,0,2 )            +
+               LFill( VL_JUR,0,2 )            +
                LFill( DT_RECOL ) ) ;
         end;
         // Registros FILHOS
@@ -597,9 +597,9 @@ begin
         with Reg1200.Registro1220.Items[intFor] do
         begin
           Add( LFill('1220') +
-               LFill( PER_APU_CRED ) +
-               LFill( ORIG_CRED ) +   //Verificar criação da tabela no ACBrEPCBlocos
-               LFill( COD_CRED ) +    //Verificar criação da tabela no ACBrEPCBlocos
+               LFill( PER_APU_CRED, 6 ) +
+               LFill( ORIG_CRED )       +   //Verificar criação da tabela no ACBrEPCBlocos
+               LFill( COD_CRED )        +   //Verificar criação da tabela no ACBrEPCBlocos
                LFill( VL_CRED,0,2 ) ) ;
         end;
         ///
@@ -621,12 +621,12 @@ begin
         with Reg1001.Registro1300.Items[intFor] do
         begin
           Add( LFill('1300') +
-               LFill( IND_NAT_RET ) +       //Verificar criação da tabela no ACBrEPCBlocos
-               LFill( PR_REC_RET ) +
-               LFill( VL_RET_APU,0,2 ) +
-               LFill( VL_RET_DED,0,2 ) +
-               LFill( VL_RET_PER,0,2 ) +
-               LFill( VL_RET_DCOMP,0,2 ) +
+               LFill( IND_NAT_RET )       +  //Verificar criação da tabela no ACBrEPCBlocos
+               LFill( PR_REC_RET, 6 )     +
+               LFill( VL_RET_APU,0,2 )    +
+               LFill( VL_RET_DED,0,2 )    +
+               LFill( VL_RET_PER,0,2 )    +
+               LFill( VL_RET_DCOMP,0,2 )  +
                LFill( SLD_RET,0,2 ) ) ;
         end;
         ///
@@ -706,7 +706,7 @@ begin
                LFill( COD_CTA ) +
                LFill( COD_CCUS ) +
                LFill( DESC_COMPL ) +
-               LFill( PER_ESCRIT ) +
+               LFill( PER_ESCRIT, 6 ) +
                LFill( CNPJ ) ) ;
         end;
         // Registros FILHOS
@@ -750,15 +750,15 @@ begin
         with Reg1001.Registro1600.Items[intFor] do
         begin
           Add( LFill('1600') +
-               LFill( PER_APUR_ANT ) +
-               LFill( NAT_CONT_REC ) +
-               LFill( VL_CONT_APUR,0,2 ) +
+               LFill( PER_APUR_ANT, 6)          +
+               LFill( NAT_CONT_REC )            +
+               LFill( VL_CONT_APUR,0,2 )        +
                LFill( VL_CRED_COFINS_DESC,0,2 ) +
-               LFill( VL_CONT_DEV,0,2 ) +
-               LFill( VL_OUT_DED,0,2 ) +
-               LFill( VL_CONT_EXT,0,2 ) +
-               LFill( VL_MUL,0,2 ) +
-               LFill( VL_JUR,0,2 ) +
+               LFill( VL_CONT_DEV,0,2 )         +
+               LFill( VL_OUT_DED,0,2 )          +
+               LFill( VL_CONT_EXT,0,2 )         +
+               LFill( VL_MUL,0,2 )              +
+               LFill( VL_JUR,0,2 )              +
                LFill( DT_RECOL ) ) ;
         end;
         // Registros FILHOS
@@ -813,9 +813,9 @@ begin
         with Reg1600.Registro1620.Items[intFor] do
         begin
           Add( LFill('1620') +
-               LFill( PER_APU_CRED ) +
-               LFill( ORIG_CRED, 2 ) +   //Verificar criação da tabela no ACBrEPCBlocos
-               LFill( COD_CRED ) +    //Verificar criação da tabela no ACBrEPCBlocos
+               LFill( PER_APU_CRED, 6 ) +
+               LFill( ORIG_CRED, 2 )    +  //Verificar criação da tabela no ACBrEPCBlocos
+               LFill( COD_CRED )        +  //Verificar criação da tabela no ACBrEPCBlocos
                LFill( VL_CRED,0,2 ) ) ;
         end;
         ///
@@ -837,12 +837,12 @@ begin
         with Reg1001.Registro1700.Items[intFor] do
         begin
           Add( LFill('1700') +
-               LFill( IND_NAT_RET ) +       //Verificar criação da tabela no ACBrEPCBlocos
-               LFill( PR_REC_RET ) +
-               LFill( VL_RET_APU,0,2 ) +
-               LFill( VL_RET_DED,0,2 ) +
-               LFill( VL_RET_PER,0,2 ) +
-               LFill( VL_RET_DCOMP,0,2 ) +
+               LFill( IND_NAT_RET )       +  //Verificar criação da tabela no ACBrEPCBlocos
+               LFill( PR_REC_RET, 6 )     +
+               LFill( VL_RET_APU,0,2 )    +
+               LFill( VL_RET_DED,0,2 )    +
+               LFill( VL_RET_PER,0,2 )    +
+               LFill( VL_RET_DCOMP,0,2 )  +
                LFill( SLD_RET,0,2 ) ) ;
         end;
         ///

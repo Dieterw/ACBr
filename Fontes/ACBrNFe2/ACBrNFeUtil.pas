@@ -955,6 +955,8 @@ begin
     LayNfeConsulta      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeConsulta2', 'https://homologacao.sefaz.mt.gov.br/nfews/v2/services/NfeConsulta2');
     LayNfeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.mt.gov.br/nfews/v2/services/NfeStatusServico2', 'https://homologacao.sefaz.mt.gov.br/nfews/v2/services/NfeStatusServico2');
     LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.mt.gov.br/nfews/v2/services/CadConsultaCadastro2', 'https://homologacao.sefaz.mt.gov.br/nfews/v2/services/CadConsultaCadastro2');
+    // Incluido por Italo em 28/11/2011
+    LayNFeCCe           : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.mt.gov.br/nfews/v2/services/RecepcaoEvento', 'https://homologacao.sefaz.mt.gov.br/nfews/v2/services/RecepcaoEvento');
   end;
 end;
 

@@ -2985,13 +2985,26 @@ begin
               wProc := TStringList.Create;
               wProc.Add('<?xml version="1.0" encoding="UTF-8" ?>');
               wProc.Add('<ProcEventoNFe versao="1.00" xmlns="http://www.portalfiscal.inf.br/nfe">');
-              wProc.Add('<evento>');
+              wProc.Add('<evento version="1.00">');
               Leitor.Arquivo := FDadosMSG;
               // Alterado por Allan Wolski em 28/09/2011
               wProc.Add(UTF8Encode(Leitor.rExtrai(1, 'infEvento', '', i + 1)));
               wProc.Add('</infEvento>');
+
+              wProc.Add('<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">');
+              Leitor.Arquivo := FDadosMSG;
+              wProc.Add(UTF8Encode(Leitor.rExtrai(1, 'SignedInfo', '', i + 1)));
+              wProc.Add('</SignedInfo>');
+              Leitor.Arquivo := FDadosMSG;
+              wProc.Add(UTF8Encode(Leitor.rExtrai(1, 'SignatureValue', '', i + 1)));
+              wProc.Add('</SignatureValue>');
+              Leitor.Arquivo := FDadosMSG;
+              wProc.Add(UTF8Encode(Leitor.rExtrai(1, 'KeyInfo', '', i + 1)));
+              wProc.Add('</KeyInfo>');
+              wProc.Add('</Signature>');
+
               wProc.Add('</evento>');
-              wProc.Add('<retEvento>');
+              wProc.Add('<retEvento version="1.00">');
               Leitor.Arquivo := FRetWS;
               // Alterado por Allan Wolski em 28/09/2011
               wProc.Add(UTF8Encode(Leitor.rExtrai(1, 'infEvento', '', j + 1)));

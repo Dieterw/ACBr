@@ -71,7 +71,7 @@ const
 
 type
   TACBrValTipoDocto = ( docCPF, docCNPJ, docUF, docInscEst, docNumCheque,
-                       docPIS, docCEP, docCartaoCredito, docSuframa ) ;
+                       docPIS, docCEP, docCartaoCredito, docSuframa, docGTIN ) ;
 
 type
   TACBrCalcDigFormula = (frModulo11, frModulo10PIS, frModulo10) ;
@@ -135,6 +135,7 @@ type
     Procedure ValidarCEP ;
     procedure ValidarCartaoCredito ;
     procedure ValidarSuframa ;
+    procedure ValidarGTIN;
   public
     constructor Create(AOwner: TComponent); override;
     Destructor Destroy  ; override;
@@ -179,6 +180,8 @@ function ACBrValidadorValidarCPF( const Documento : AnsiString ) : String ;
 function ACBrValidadorValidarCNPJ( const Documento : AnsiString ) : String ;
 function ACBrValidadorValidarCNPJouCPF( const Documento : AnsiString ) : String ;
 function ACBrValidadorValidarSuframa( const Documento : AnsiString ) : String ;
+function ACBrValidadorValidarGTIN( const Documento : AnsiString ) : String ;
+
 
 function ACBrValidadorValidarDocumento( const TipoDocto : TACBrValTipoDocto;
   const Documento : AnsiString; const Complemento : AnsiString = '') : String ;
@@ -201,6 +204,11 @@ end;
 function ACBrValidadorValidarSuframa( const Documento : AnsiString ) : String ;
 begin
   Result := ACBrValidadorValidarDocumento( docSuframa, Documento );
+end;
+
+function ACBrValidadorValidarGTIN( const Documento : AnsiString ) : String ;
+begin
+  Result := ACBrValidadorValidarDocumento( docGTIN, Documento );
 end;
 
 function ACBrValidadorValidarCNPJouCPF(const Documento : AnsiString) : String ;
@@ -342,6 +350,7 @@ begin
           docCEP           : NomeDocto := 'CEP' ;
           docCartaoCredito : NomeDocto := 'Número de Cartão' ;
           docSuframa       : NomeDocto := 'SUFRAMA';
+          docGTIN          : NomeDocto := 'GTIN';
         end;
 
         fsMsgErro := NomeDocto + ' não pode ser vazio.' ;
@@ -359,6 +368,7 @@ begin
        docCEP           : ValidarCEP ;
        docCartaoCredito : ValidarCartaoCredito ;
        docSuframa       : ValidarSuframa ;
+       docGTIN          : ValidarGTIN ;
      end;
 
   if fsMsgErro <> '' then
@@ -1180,6 +1190,54 @@ begin
 
      if fsExibeDigitoCorreto then
         fsMsgErro := fsMsgErro + ' Digito calculado: ' + fsDigitoCalculado ;
+  end;
+end;
+
+procedure TACBrValidador.ValidarGTIN;
+var
+  DigOriginal, DigCalculado, Codigo: String;
+
+  function CalcularDV(ACodigoGTIN: String): String;
+  var
+    I, DV: Integer;
+  begin
+    Result   := '' ;
+
+    if not Length(ACodigoGTIN) in [7, 11, 12, 13] then
+      Exit;
+
+    DV := 0;
+    for I := Length(ACodigoGTIN) downto 1 do
+      DV := DV + (StrToInt(ACodigoGTIN[I]) * IfThen(odd(I), 1, 3));
+
+    DV := (Ceil(DV / 10) * 10) - DV ;
+    Result := IntToStr(DV);
+  end;
+
+begin
+  if not StrIsNumber(AnsiString(fsDocto)) then
+  begin
+    fsMsgErro := 'Código GTIN inválido, o código GTIN deve conter somente números.' ;
+    Exit;
+  end;
+
+  if not(Length(fsDocto) in [8, 12, 13, 14]) then
+  begin
+    fsMsgErro := 'Código GTIN inválido, o código GTIN deve ter 8, 12, 13 ou 14 caracteres.' ;
+    Exit;
+  end;
+
+  Codigo       := Copy(fsDocto, 1, Length(fsDocto) - 1);
+  DigOriginal  := fsDocto[Length(fsDocto)];
+  DigCalculado := CalcularDV(Codigo);
+
+  if DigOriginal <> DigCalculado then
+  begin
+   fsMsgErro := 'Código GTIN inválido.' ;
+   fsDigitoCalculado := DigCalculado;
+
+   if fsExibeDigitoCorreto then
+     fsMsgErro := fsMsgErro + ' Digito calculado: ' + fsDigitoCalculado ;
   end;
 end;
 

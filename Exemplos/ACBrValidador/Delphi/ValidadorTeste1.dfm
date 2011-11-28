@@ -69,6 +69,7 @@ object frValidador: TfrValidador
     Width = 97
     Height = 21
     Style = csDropDownList
+    DropDownCount = 20
     TabOrder = 2
     OnChange = cbTipoDoctoChange
     Items.Strings = (
@@ -80,7 +81,8 @@ object frValidador: TfrValidador
       'docPIS'
       'docCEP'
       'docCartaoCredito'
-      'docSuframa')
+      'docSuframa'
+      'docGTIN')
   end
   object mMsgErro: TMemo
     Left = 8

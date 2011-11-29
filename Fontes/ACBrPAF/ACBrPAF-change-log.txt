@@ -48,6 +48,12 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Versão 0.09   29/11/11
+---------------
+[-] Acerto no arquivo de DAVs emitidos, alguém alterou o que já havia sido 
+    acertado para a ER 1.09 na parte de itens.
+    (por: Régys Silveira)
+
 Versão 0.09   28/10/11
 ---------------
 [-] Acerto no arquivo de estoque para marcar o E1 como válido ou não

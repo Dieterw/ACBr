@@ -3649,7 +3649,7 @@ begin
   // Se está usando o AAC, basta informar o Objeto IdentPAF //
   // Se NAO está usando o AAC, o Objeto IdentPAF deve ser instânciado e populado //
   if Assigned( ACBrECF1.AAC ) then
-    ACBrECF1.PafMF_RelIdentificacaoPafECF( ACBrECF1.AAC.IdentPAF, 0);
+    ACBrECF1.PafMF_RelIdentificacaoPafECF( ACBrECF1.AAC.IdentPAF, 0)
   else
   begin
     IdentPaf := TACBrECFIdentificacaoPAF.Create;

@@ -37,8 +37,8 @@ unit ACBrAAC;
 
 interface
 
-uses ACBrBase, ACBrPAFClass,
-     SysUtils, Classes;
+uses
+  ACBrBase, ACBrPAFClass, SysUtils, Classes;
 
 type
   EACBrAAC                       = class(Exception);
@@ -83,6 +83,7 @@ type
      fsOnVerificarRecomporValorGT : TACBrAACOnVerificarRecomporValorGT ;
      fsParams : TStringList ;
      fsIdentPAF: TACBrECFIdentificacaoPAF;
+    fsGravarConfigApp: Boolean;
      function GetChave : AnsiString ;
      procedure SetNomeArquivoAux(const AValue : String) ;
      procedure SetParams(const AValue : TStringList) ;
@@ -123,6 +124,8 @@ type
        write fsGravarDadosPAF default True;
     property GravarTodosECFs : Boolean read fsGravarTodosECFs
        write fsGravarTodosECFs default True;
+    property GravarConfigApp  : Boolean read fsGravarConfigApp
+       write fsGravarConfigApp default True;
     property ArqLOG : String  read fsArqLOG write fsArqLOG ;
 
     property IdentPAF    : TACBrECFIdentificacaoPAF
@@ -275,13 +278,50 @@ begin
 
      if GravarDadosPAF then
      begin
-        fsIdentPAF.NumeroLaudo           := Ini.ReadString('PAF','NumeroLaudo',''); // Número do Laudo
-        fsIdentPAF.VersaoER              := Ini.ReadString('PAF','VersaoER','');    // Versão do Roteiro Executado na Homologação
-        fsIdentPAF.Paf.Nome              := Ini.ReadString('PAF','Nome','');        // Nome do Sistema PAF
-        fsIdentPAF.Paf.Versao            := Ini.ReadString('PAF','Versao','');      // Versão do Sistema PAF
-        fsIdentPAF.Paf.PrincipalExe.Nome := Ini.ReadString('PAF','NomeExe','');     // Nome do Principal EXE do PAF
-        fsIdentPAF.Paf.PrincipalExe.MD5  := Ini.ReadString('PAF','MD5Exe','');      // MD5 do Principal EXE do PAF
+        fsIdentPAF.NumeroLaudo             := Ini.ReadString('PAF','NumeroLaudo',''); // Número do Laudo
+        fsIdentPAF.VersaoER                := Ini.ReadString('PAF','VersaoER','');    // Versão do Roteiro Executado na Homologação
+        fsIdentPAF.Paf.Nome                := Ini.ReadString('PAF','Nome','');        // Nome do Sistema PAF
+        fsIdentPAF.Paf.Versao              := Ini.ReadString('PAF','Versao','');      // Versão do Sistema PAF
+        fsIdentPAF.Paf.PrincipalExe.Nome   := Ini.ReadString('PAF','NomeExe','');     // Nome do Principal EXE do PAF
+        fsIdentPAF.Paf.PrincipalExe.MD5    := Ini.ReadString('PAF','MD5Exe','');      // MD5 do Principal EXE do PAF
+
+        fsIdentPAF.Paf.TipoFuncionamento   := TACBrPAFTipoFuncionamento(Ini.ReadInteger('PAF', 'TipoFuncionamento', 0));
+        fsIdentPAF.Paf.TipoDesenvolvimento := TACBrPAFTipoDesenvolvimento(Ini.ReadInteger('PAF', 'TipoDesenvolvimento', 0));
+        fsIdentPAF.Paf.IntegracaoPAFECF    := TACBrPAFTipoIntegracao(Ini.ReadInteger('PAF', 'IntegracaoPAFECF', 0));
      end ;
+
+     if GravarConfigApp then
+     begin
+        fsIdentPAF.Paf.RealizaPreVenda              := Ini.ReadBool('CONFIG', 'RealizaPreVenda', False);
+        fsIdentPAF.Paf.RealizaDAVECF                := Ini.ReadBool('CONFIG', 'RealizaDAVECF', False);
+        fsIdentPAF.Paf.RealizaDAVNaoFiscal          := Ini.ReadBool('CONFIG', 'RealizaDAVNaoFiscal', False);
+        fsIdentPAF.Paf.RealizaDAVOS                 := Ini.ReadBool('CONFIG', 'RealizaDAVOS', False);
+        fsIdentPAF.Paf.DAVConfAnexoII               := Ini.ReadBool('CONFIG', 'DAVConfAnexoII', False);
+        fsIdentPAF.Paf.RealizaLancamentoMesa        := Ini.ReadBool('CONFIG', 'RealizaLancamentoMesa', False);
+        fsIdentPAF.Paf.IndiceTecnicoProd            := Ini.ReadBool('CONFIG', 'IndiceTecnicoProd', False);
+        fsIdentPAF.Paf.BarSimilarECFRestaurante     := Ini.ReadBool('CONFIG', 'BarSimilarECFRestaurante', False);
+        fsIdentPAF.Paf.BarSimilarECFComum           := Ini.ReadBool('CONFIG', 'BarSimilarECFComum', False);
+        fsIdentPAF.Paf.BarSimilarBalanca            := Ini.ReadBool('CONFIG', 'BarSimilarBalanca', False);
+        fsIdentPAF.Paf.UsaImpressoraNaoFiscal       := Ini.ReadBool('CONFIG', 'UsaImpressoraNaoFiscal', False);
+        fsIdentPAF.Paf.DAVDiscrFormula              := Ini.ReadBool('CONFIG', 'DAVDiscrFormula', False);
+        fsIdentPAF.Paf.ImpedeVendaVlrZero           := Ini.ReadBool('CONFIG', 'ImpedeVendaVlrZero', False);
+        fsIdentPAF.Paf.AcumulaVolumeDiario          := Ini.ReadBool('CONFIG', 'AcumulaVolumeDiario', False);
+        fsIdentPAF.Paf.ArmazenaEncerranteIniFinal   := Ini.ReadBool('CONFIG', 'ArmazenaEncerranteIniFinal', False);
+        fsIdentPAF.Paf.EmiteContrEncerrAposREDZLEIX := Ini.ReadBool('CONFIG', 'EmiteContrEncerrAposREDZLEIX', False);
+        fsIdentPAF.Paf.IntegradoComBombas           := Ini.ReadBool('CONFIG', 'IntegradoComBombas', False);
+        fsIdentPAF.Paf.CriaAbastDivergEncerrante    := Ini.ReadBool('CONFIG', 'CriaAbastDivergEncerrante', False);
+        fsIdentPAF.Paf.CadastroPlacaBomba           := Ini.ReadBool('CONFIG', 'CadastroPlacaBomba', False);
+        fsIdentPAF.Paf.TransportePassageiro         := Ini.ReadBool('CONFIG', 'TransportePassageiro', False);
+        fsIdentPAF.Paf.TotalizaValoresLista         := Ini.ReadBool('CONFIG', 'TotalizaValoresLista', False);
+        fsIdentPAF.Paf.TransfPreVenda               := Ini.ReadBool('CONFIG', 'TransfPreVenda', False);
+        fsIdentPAF.Paf.TransfDAV                    := Ini.ReadBool('CONFIG', 'TransfDAV', False);
+        fsIdentPAF.Paf.NaoCoincGT                   := Ini.ReadBool('CONFIG', 'NaoCoincGT', False);
+        fsIdentPAF.Paf.RecompoeGT                   := Ini.ReadBool('CONFIG', 'RecompoeGT', False);
+        fsIdentPAF.Paf.EmitePED                     := Ini.ReadBool('CONFIG', 'EmitePED', False);
+        fsIdentPAF.Paf.CupomMania                   := Ini.ReadBool('CONFIG', 'CupomMania', False);
+        fsIdentPAF.Paf.MinasLegal                   := Ini.ReadBool('CONFIG', 'MinasLegal', False);
+     end;
+
      fsIdentPAF.ArquivoListaAutenticados.MD5 := Ini.ReadString('PAF','MD5','');     // MD5 do arquivo que contem a lista de arquivos autenticados
 
      if GravarDadosPAF and GravarDadosSH then
@@ -405,7 +445,45 @@ begin
         Ini.WriteString('PAF','VersaoER',fsIdentPAF.VersaoER);             // Versão do Roteiro Executado na Homologação
         Ini.WriteString('PAF','NomeExe',fsIdentPAF.Paf.PrincipalExe.Nome); // Nome do Principal EXE do PAF
         Ini.WriteString('PAF','MD5Exe',fsIdentPAF.Paf.PrincipalExe.MD5);   // MD5  do Principal EXE do PAF
+
+        Ini.WriteInteger('PAF', 'TipoFuncionamento', Integer(fsIdentPAF.Paf.TipoFuncionamento));
+        Ini.WriteInteger('PAF', 'TipoDesenvolvimento', Integer(fsIdentPAF.Paf.TipoDesenvolvimento));
+        Ini.WriteInteger('PAF', 'IntegracaoPAFECF', Integer(fsIdentPAF.Paf.IntegracaoPAFECF));
      end ;
+
+     if GravarConfigApp then
+     begin
+        Ini.WriteBool('CONFIG', 'RealizaPreVenda', fsIdentPAF.Paf.RealizaPreVenda);
+        Ini.WriteBool('CONFIG', 'RealizaDAVECF', fsIdentPAF.Paf.RealizaDAVECF);
+        Ini.WriteBool('CONFIG', 'RealizaDAVNaoFiscal', fsIdentPAF.Paf.RealizaDAVNaoFiscal);
+        Ini.WriteBool('CONFIG', 'RealizaDAVOS', fsIdentPAF.Paf.RealizaDAVOS);
+        Ini.WriteBool('CONFIG', 'DAVConfAnexoII', fsIdentPAF.Paf.DAVConfAnexoII);
+        Ini.WriteBool('CONFIG', 'RealizaLancamentoMesa', fsIdentPAF.Paf.RealizaLancamentoMesa);
+        Ini.WriteBool('CONFIG', 'IndiceTecnicoProd', fsIdentPAF.Paf.IndiceTecnicoProd);
+        Ini.WriteBool('CONFIG', 'BarSimilarECFRestaurante', fsIdentPAF.Paf.BarSimilarECFRestaurante);
+        Ini.WriteBool('CONFIG', 'BarSimilarECFComum', fsIdentPAF.Paf.BarSimilarECFComum);
+        Ini.WriteBool('CONFIG', 'BarSimilarBalanca', fsIdentPAF.Paf.BarSimilarBalanca);
+        Ini.WriteBool('CONFIG', 'UsaImpressoraNaoFiscal', fsIdentPAF.Paf.UsaImpressoraNaoFiscal);
+        Ini.WriteBool('CONFIG', 'DAVDiscrFormula', fsIdentPAF.Paf.DAVDiscrFormula);
+        Ini.WriteBool('CONFIG', 'ImpedeVendaVlrZero', fsIdentPAF.Paf.ImpedeVendaVlrZero);
+        Ini.WriteBool('CONFIG', 'AcumulaVolumeDiario', fsIdentPAF.Paf.AcumulaVolumeDiario);
+        Ini.WriteBool('CONFIG', 'ArmazenaEncerranteIniFinal', fsIdentPAF.Paf.ArmazenaEncerranteIniFinal);
+        Ini.WriteBool('CONFIG', 'EmiteContrEncerrAposREDZLEIX', fsIdentPAF.Paf.EmiteContrEncerrAposREDZLEIX);
+        Ini.WriteBool('CONFIG', 'IntegradoComBombas', fsIdentPAF.Paf.IntegradoComBombas);
+        Ini.WriteBool('CONFIG', 'CriaAbastDivergEncerrante', fsIdentPAF.Paf.CriaAbastDivergEncerrante);
+        Ini.WriteBool('CONFIG', 'CadastroPlacaBomba', fsIdentPAF.Paf.CadastroPlacaBomba);
+        Ini.WriteBool('CONFIG', 'TransportePassageiro', fsIdentPAF.Paf.TransportePassageiro);
+        Ini.WriteBool('CONFIG', 'TotalizaValoresLista', fsIdentPAF.Paf.TotalizaValoresLista);
+        Ini.WriteBool('CONFIG', 'TransfPreVenda', fsIdentPAF.Paf.TransfPreVenda);
+        Ini.WriteBool('CONFIG', 'TransfDAV', fsIdentPAF.Paf.TransfDAV);
+        Ini.WriteBool('CONFIG', 'NaoCoincGT', fsIdentPAF.Paf.NaoCoincGT);
+        Ini.WriteBool('CONFIG', 'RecompoeGT', fsIdentPAF.Paf.RecompoeGT);
+        Ini.WriteBool('CONFIG', 'EmitePED', fsIdentPAF.Paf.EmitePED);
+        Ini.WriteBool('CONFIG', 'CupomMania', fsIdentPAF.Paf.CupomMania);
+        Ini.WriteBool('CONFIG', 'MinasLegal', fsIdentPAF.Paf.MinasLegal);
+     end;
+
+
      Ini.WriteString('PAF','MD5',fsIdentPAF.ArquivoListaAutenticados.MD5); // MD5 do arquivo que contem a lista de arquivos autenticados
 
      // Lista de ECFs autorizados a usar o PAF-ECF no estabelecimento

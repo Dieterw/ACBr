@@ -220,9 +220,6 @@ object Form2: TForm2
       450019B1FEF3FEB466C7FBCFFAD1450019B1FEF3FEB466C7FBCFFAD1450019B1
       FEF3FEB466C7FBCFFAD1450019B1FEF3FEB466C7FBCFFAD1450019B1FEF3FEB4
       66C7FBCFFAD145001BAC7D5FF5A3758FABFEB451401FFFD9}
-    ExplicitLeft = -5
-    ExplicitTop = 253
-    ExplicitWidth = 470
   end
   object Label8: TLabel
     Left = 8
@@ -430,19 +427,30 @@ object Form2: TForm2
     IdentPAF.Paf.RealizaDAVECF = False
     IdentPAF.Paf.RealizaDAVNaoFiscal = False
     IdentPAF.Paf.RealizaDAVOS = False
+    IdentPAF.Paf.DAVConfAnexoII = False
+    IdentPAF.Paf.RealizaLancamentoMesa = False
     IdentPAF.Paf.IndiceTecnicoProd = False
-    IdentPAF.Paf.PostoCombustivel = False
     IdentPAF.Paf.BarSimilarECFRestaurante = False
     IdentPAF.Paf.BarSimilarECFComum = False
-    IdentPAF.Paf.FarmaciaManipulacao = False
-    IdentPAF.Paf.OficinaConserto = False
+    IdentPAF.Paf.BarSimilarBalanca = False
+    IdentPAF.Paf.UsaImpressoraNaoFiscal = False
+    IdentPAF.Paf.DAVDiscrFormula = False
+    IdentPAF.Paf.ImpedeVendaVlrZero = False
+    IdentPAF.Paf.AcumulaVolumeDiario = False
+    IdentPAF.Paf.ArmazenaEncerranteIniFinal = False
+    IdentPAF.Paf.EmiteContrEncerrAposREDZLEIX = False
+    IdentPAF.Paf.IntegradoComBombas = False
+    IdentPAF.Paf.CriaAbastDivergEncerrante = False
+    IdentPAF.Paf.CadastroPlacaBomba = False
     IdentPAF.Paf.TransportePassageiro = False
     IdentPAF.Paf.TotalizaValoresLista = False
     IdentPAF.Paf.TransfPreVenda = False
     IdentPAF.Paf.TransfDAV = False
     IdentPAF.Paf.NaoCoincGT = False
     IdentPAF.Paf.RecompoeGT = False
-    IdentPAF.Paf.ImpedeVendaVlrZero = False
+    IdentPAF.Paf.EmitePED = False
+    IdentPAF.Paf.CupomMania = False
+    IdentPAF.Paf.MinasLegal = False
     OnGetChave = ACBrAAC1GetChave
     Left = 420
     Top = 398

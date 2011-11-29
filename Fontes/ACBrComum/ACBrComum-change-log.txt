@@ -38,6 +38,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+29/11/2011
+-- ACBrEAD --
+[*] Adicionadas as configurações do Paf-ECF ao AAC
+    por: Régys Silveira
+
 20/10/2011
 -- ACBrEAD --
 [*] Acerto no método UnLoadLibrary para compilar no delphi 9 acima

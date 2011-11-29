@@ -3647,55 +3647,56 @@ var
   I: Integer;
 begin
   // Se está usando o AAC, basta informar o Objeto IdentPAF //
-  if Assigned( ACBrECF1.AAC ) then
-  begin
-     ACBrECF1.PafMF_RelIdentificacaoPafECF( ACBrECF1.AAC.IdentPAF, 0);
-     exit ;
-  end ;
-
   // Se NAO está usando o AAC, o Objeto IdentPAF deve ser instânciado e populado //
-  IdentPaf := TACBrECFIdentificacaoPAF.Create;
-  try
-    IdentPaf.NumeroLaudo := 'ABC1234567890'; // retirar do laudo
-    IdentPaf.VersaoER    := '01.06'; // retirar do laudo
+  if Assigned( ACBrECF1.AAC ) then
+    ACBrECF1.PafMF_RelIdentificacaoPafECF( ACBrECF1.AAC.IdentPAF, 0);
+  else
+  begin
+    IdentPaf := TACBrECFIdentificacaoPAF.Create;
+    try
+      IdentPaf.NumeroLaudo := 'ABC1234567890'; // retirar do laudo
+      IdentPaf.VersaoER    := '01.06'; // retirar do laudo
 
-    // preencher dados da empresa conforme o que foi informado no laudo de análise
-    IdentPaf.Empresa.RazaoSocial := 'Razao social Empresa';
-    IdentPaf.Empresa.CNPJ        := '01.222.333/00001-99';
-    IdentPaf.Empresa.Endereco    := 'Rua da Felicidade, 1';
-    IdentPaf.Empresa.Cidade      := 'SAO PAULO';
-    IdentPaf.Empresa.Uf          := 'SP';
-    IdentPaf.Empresa.Cep         := '99.999-999';
-    IdentPaf.Empresa.Telefone    := '(99)1111.2222';
-    IdentPaf.Empresa.Contato     := 'Nome do Contato';
+      // preencher dados da empresa conforme o que foi informado no laudo de análise
+      IdentPaf.Empresa.RazaoSocial := 'Razao social Empresa';
+      IdentPaf.Empresa.CNPJ        := '01.222.333/00001-99';
+      IdentPaf.Empresa.Endereco    := 'Rua da Felicidade, 1';
+      IdentPaf.Empresa.Cidade      := 'SAO PAULO';
+      IdentPaf.Empresa.Uf          := 'SP';
+      IdentPaf.Empresa.Cep         := '99.999-999';
+      IdentPaf.Empresa.Telefone    := '(99)1111.2222';
+      IdentPaf.Empresa.Contato     := 'Nome do Contato';
 
-    IdentPaf.Paf.Nome              := 'DemoECF';// preencher conforme o laudo
-    IdentPaf.Paf.Versao            := 'v01.01.01'; // versão atual do aplicativo
-    IdentPaf.Paf.PrincipalExe.Nome := UpperCase(ExtractFileName(ParamStr(0)));
-    IdentPaf.Paf.PrincipalExe.MD5  := StringOfChar('X', 32); // md5 atual do aplicativo
+      IdentPaf.Paf.Nome              := 'DemoECF';// preencher conforme o laudo
+      IdentPaf.Paf.Versao            := 'v01.01.01'; // versão atual do aplicativo
+      IdentPaf.Paf.PrincipalExe.Nome := UpperCase(ExtractFileName(ParamStr(0)));
+      IdentPaf.Paf.PrincipalExe.MD5  := StringOfChar('X', 32); // md5 atual do aplicativo
 
-    IdentPaf.ArquivoListaAutenticados.Nome := 'lista_arquivos.txt'; // nome do arquivo contendo a lista de autenticados
-    IdentPaf.ArquivoListaAutenticados.MD5  := 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'; // md5 do arquivo, mesmo que vai impresso nos cupons
+      IdentPaf.ArquivoListaAutenticados.Nome := 'lista_arquivos.txt'; // nome do arquivo contendo a lista de autenticados
+      IdentPaf.ArquivoListaAutenticados.MD5  := 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'; // md5 do arquivo, mesmo que vai impresso nos cupons
 
-    // adicionar os arquivos adicionados ao arquivo da lista de autenticados
-    for I := 1 to 5 do
-    begin
-      with IdentPaf.OutrosArquivos.New do
+      // adicionar os arquivos adicionados ao arquivo da lista de autenticados
+      for I := 1 to 5 do
       begin
-        Nome := Format('Arquivo %3.3d', [I]);
-        MD5  := StringOfChar('X', 32);
+        with IdentPaf.OutrosArquivos.New do
+        begin
+          Nome := Format('Arquivo %3.3d', [I]);
+          MD5  := StringOfChar('X', 32);
+        end;
       end;
+
+      // ecfs autorizados para funcionamento na máquina
+      IdentPaf.ECFsAutorizados.clear;
+      for I := 1 to 3 do
+      begin
+        with IdentPaf.ECFsAutorizados.New do
+          NumeroSerie := StringOfChar('A', 15) ;
+      end;
+
+      ACBrECF1.PafMF_RelIdentificacaoPafECF(IdentPaf, 0);
+    finally
+      IdentPaf.Free;
     end;
-
-    // ecfs autorizados para funcionamento na máquina
-    IdentPaf.ECFsAutorizados.clear;
-    for I := 1 to 3 do
-      with IdentPaf.ECFsAutorizados.New do
-        NumeroSerie := StringOfChar('A', 15) ;
-
-    ACBrECF1.PafMF_RelIdentificacaoPafECF(IdentPaf, 0);
-  finally
-    IdentPaf.Free;
   end;
 end;
 

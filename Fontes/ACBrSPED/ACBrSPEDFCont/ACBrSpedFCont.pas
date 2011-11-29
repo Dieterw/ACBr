@@ -626,7 +626,7 @@ function TACBrSPEDFCont.WriteRegistroM025: AnsiString;
 begin
    Result := Bloco_M.WriteRegistroM025;
 
-   if Bloco_J.RegistroM025.Count > 0 then
+   if Bloco_M.RegistroM025.Count > 0 then
    begin
      with Bloco_9.Registro9900.New do
      begin

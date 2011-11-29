@@ -389,53 +389,52 @@ begin
     begin
       if CTeUtil.EstaVazio(NumCertCarregado) then
          NumCertCarregado := Cert.SerialNumber;
+
+      PrivateKey := Cert.PrivateKey;
+
       if  CertStoreMem = nil then
        begin
          CertStoreMem := CoStore.Create;
          CertStoreMem.Open(CAPICOM_MEMORY_STORE, 'Memoria', CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED);
          CertStoreMem.Add(Cert);
-       end;
 
-      PrivateKey := Cert.PrivateKey;
+         if (FSenhaCert <> '') and PrivateKey.IsHardwareDevice then
+          begin
+            XML := XML + '<Signature xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />';
+            XML := XML + '<Reference URI="#">';
+            XML := XML + '<Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />';
+            XML := XML + '<DigestValue></DigestValue></Reference></SignedInfo><SignatureValue></SignatureValue><KeyInfo></KeyInfo></Signature>';
 
-      if (FSenhaCert <> '') and PrivateKey.IsHardwareDevice then
-       begin
-         PrivateKey := Cert.PrivateKey;
+            xmldoc                    := CoDOMDocument50.Create;
+            xmldoc.async              := False;
+            xmldoc.validateOnParse    := False;
+            xmldoc.preserveWhiteSpace := True;
+            xmldoc.loadXML(XML);
+            xmldoc.setProperty('SelectionNamespaces', DSIGNS);
 
-         XML := XML + '<Signature xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />';
-         XML := XML + '<Reference URI="#">';
-         XML := XML + '<Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />';
-         XML := XML + '<DigestValue></DigestValue></Reference></SignedInfo><SignatureValue></SignatureValue><KeyInfo></KeyInfo></Signature>';
+            xmldsig           := CoMXDigitalSignature50.Create;
+            xmldsig.signature := xmldoc.selectSingleNode('.//ds:Signature');
+            xmldsig.store     := CertStoreMem;
 
-         xmldoc                    := CoDOMDocument50.Create;
-         xmldoc.async              := False;
-         xmldoc.validateOnParse    := False;
-         xmldoc.preserveWhiteSpace := True;
-         xmldoc.loadXML(XML);
-         xmldoc.setProperty('SelectionNamespaces', DSIGNS);
+            dsigKey := xmldsig.createKeyFromCSP(PrivateKey.ProviderType, PrivateKey.ProviderName, PrivateKey.ContainerName, 0);
+            if (dsigKey = nil) then
+               raise Exception.Create('Erro ao criar a chave do CSP.');
 
-         xmldsig           := CoMXDigitalSignature50.Create;
-         xmldsig.signature := xmldoc.selectSingleNode('.//ds:Signature');
-         xmldsig.store     := CertStoreMem;
+            SigKey := dsigKey as IXMLDSigKeyEx;
+            SigKey.getCSPHandle( hCryptProvider );
 
-         dsigKey := xmldsig.createKeyFromCSP(PrivateKey.ProviderType, PrivateKey.ProviderName, PrivateKey.ContainerName, 0);
-         if (dsigKey = nil) then
-            raise Exception.Create('Erro ao criar a chave do CSP.');
+            try
+              CryptSetProvParam( hCryptProvider , PP_SIGNATURE_PIN, LPBYTE(FSenhaCert), 0 );
+            finally
+              CryptReleaseContext(hCryptProvider, 0);
+            end;
 
-         SigKey := dsigKey as IXMLDSigKeyEx;
-         SigKey.getCSPHandle( hCryptProvider );
-
-         try
-           CryptSetProvParam( hCryptProvider , PP_SIGNATURE_PIN, LPBYTE(FSenhaCert), 0 );
-         finally
-           CryptReleaseContext(hCryptProvider, 0);
+            SigKey  := nil;
+            dsigKey := nil;
+            xmldsig := nil;
+            xmldoc  := nil;
          end;
-
-         SigKey  := nil;
-         dsigKey := nil;
-         xmldsig := nil;
-         xmldoc  := nil;
-      end;
+       end;
 
       Result    := Cert;
       FDataVenc := Cert.ValidToDate;

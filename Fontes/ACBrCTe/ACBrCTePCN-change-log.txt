@@ -48,6 +48,11 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alteração    29/11/2011
+-----------------------
+[-] Acerto na passagem da senha para o certifico a cada sessão.
+    http://djsystem.com.br/acbr/forum/viewtopic.php?f=6&t=4054
+
 Alterações   04/07/11 (Italo Jurisato Junior)
 ---------------
 [-] Alterações na rotina para assinar usando o ACBrCTeOpenSSL, conforme

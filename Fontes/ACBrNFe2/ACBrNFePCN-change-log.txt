@@ -47,6 +47,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Alteração    29/11/2011
+-----------------------
+[-] Acerto na passagem da senha para o certifico a cada sessão.
+    http://djsystem.com.br/acbr/forum/viewtopic.php?f=6&t=4054
 
 Alteração    08/09/2011
 -----------------------

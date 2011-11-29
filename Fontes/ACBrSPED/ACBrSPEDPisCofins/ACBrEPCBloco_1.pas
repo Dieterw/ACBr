@@ -64,7 +64,7 @@ type
   TRegistro1700List = class;
   TRegistro1800List = class;
   TRegistro1809List = class;
-
+  TRegistro1900List = class;
 
   //REGISTRO 1001: ABERTURA DO BLOCO 1
   TRegistro1001 = class(TOpenBlocos)
@@ -78,6 +78,7 @@ type
     FRegistro1600: TRegistro1600List; // NIVEL 2
     FRegistro1700: TRegistro1700List; // NIVEL 2
     FRegistro1800: TRegistro1800List; // NIVEL 2
+    FRegistro1900: TRegistro1900List; // NIVEL 2
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
@@ -91,6 +92,7 @@ type
     property Registro1600: TRegistro1600List read FRegistro1600 write FRegistro1600;
     property Registro1700: TRegistro1700List read FRegistro1700 write FRegistro1700;
     property Registro1800: TRegistro1800List read FRegistro1800 write FRegistro1800;
+    property Registro1900: TRegistro1900List read FRegistro1900 write FRegistro1900;
   end;
 
   //REGISTRO 1010: PROCESSO REFERENCIADO – AÇÃO JUDICIAL
@@ -740,6 +742,54 @@ type
     property Items[Index: Integer]: TRegistro1809 read GetItem write SetItem;
   end;
 
+
+  (*Por: Edilson Alves de Oliveira
+    REGISTRO 1900 - CONSOLIDAÇÃO DOS DOCUMENTOS EMITIDOS NO PERÍODO POR 
+                    PESSOA  JURÍDICA  SUBMETIDA  AO  REGIME  DE  TRIBUTAÇÃO
+                    COM  BASE  NO LUCRO PRESUMIDO – REGIME DE CAIXA OU DE COMPETÊNCIA*)
+
+  TRegistro1900 = class
+  private
+    FCNPJ       : string;
+    FCOD_MOD    : string;
+    FSER        : string;
+    FSUB_SER    : string;
+    FCOD_SIT    : TACBrSituacaoDF;
+    FVL_TOT_REC : Currency;
+    FQUANT_DOC  : Currency;
+    FCST_PIS    : TACBrSituacaoTribPIS;
+    FCST_COFINS : TACBrSituacaoTribCOFINS;
+    FCFOP       : Integer;
+    FINF_COMPL  : string;
+    FCOD_CTA    : string;
+
+  public
+
+    property CNPJ      : string                  read FCNPJ        write FCNPJ       ;
+    property COD_MOD   : string                  read FCOD_MOD     write FCOD_MOD    ;
+    property SER       : string                  read FSER         write FSER        ;
+    property SUB_SER   : string                  read FSUB_SER     write FSUB_SER    ;
+    property COD_SIT   : TACBrSituacaoDF         read FCOD_SIT     write FCOD_SIT    ;
+    property VL_TOT_REC: Currency                read FVL_TOT_REC  write FVL_TOT_REC ;
+    property QUANT_DOC : Currency                read FQUANT_DOC   write FQUANT_DOC  ;
+    property CST_PIS   : TACBrSituacaoTribPIS    read FCST_PIS     write FCST_PIS    ;
+    property CST_COFINS: TACBrSituacaoTribCOFINS read FCST_COFINS  write FCST_COFINS ;
+    property CFOP      : Integer                 read FCFOP        write FCFOP       ;
+    property INF_COMPL : string                  read FINF_COMPL   write FINF_COMPL  ;
+    property COD_CTA   : string                  read FCOD_CTA     write FCOD_CTA    ;
+
+  end;
+
+  // Registro 1900 - Lista
+  TRegistro1900List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistro1900;
+    procedure SetItem(Index: Integer; const Value: TRegistro1900);
+  public
+    function New: TRegistro1900;
+    property Items[Index: Integer]: TRegistro1900 read GetItem write SetItem;
+  end;
+
   //REGISTRO 1990: ENCERRAMENTO DO BLOCO 1
   TRegistro1990 = class
   private
@@ -763,6 +813,7 @@ begin
   FRegistro1600 := TRegistro1600List.Create;
   FRegistro1700 := TRegistro1700List.Create;
   FRegistro1800 := TRegistro1800List.Create;
+  FRegistro1900 := TRegistro1900List.Create;
 end;
 
 destructor TRegistro1001.Destroy;
@@ -776,6 +827,7 @@ begin
   FRegistro1600.Free;
   FRegistro1700.Free;
   FRegistro1800.Free;
+  FRegistro1900.Free;
   inherited;
 end;
 
@@ -1162,5 +1214,23 @@ begin
   Put(Index, Value);
 end;
 
+{ TRegistro1900List }
+
+function TRegistro1900List.GetItem(Index: Integer): TRegistro1900;
+begin
+  Result := TRegistro1900(Inherited Items[Index]);
+end;
+
+function TRegistro1900List.New: TRegistro1900;
+begin
+  Result := TRegistro1900.Create;
+  Add(Result);
+end;
+
+procedure TRegistro1900List.SetItem(Index: Integer;
+  const Value: TRegistro1900);
+begin
+  Put(Index, Value);
+end;
 
 end.

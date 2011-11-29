@@ -5711,7 +5711,7 @@ var
 
 begin
   TamColSimNao := Self.Colunas - 3;
-  TamColDescr  := Self.Colunas - 24;
+  TamColDescr  := Self.Colunas - 25;
 
   Relatorio := TStringList.Create;
   try
@@ -5735,49 +5735,103 @@ begin
     );
 
     Relatorio.Add('');
-    Relatorio.Add('<n>Funcionalidades</n>');
+    Relatorio.Add('<n>FUNCIONALIDADES</n>');
     Relatorio.Add('</linha_simples>');
     Relatorio.Add(padL('Tipo de Funcionamento', TamColDescr, '.') + GetTipoFuncionamento(AInfoPafECF.TipoFuncionamento));
     Relatorio.Add(padL('Tipo de Desenvolvimento', TamColDescr, '.') + GetTipoDesenvolvimento(AInfoPafECF.TipoDesenvolvimento));
     Relatorio.Add(padL('Integração com PAF-ECF', TamColDescr, '.') + GetTipoIntegracao(AInfoPafECF.IntegracaoPAFECF));
-    Relatorio.Add('');
 
-    Relatorio.Add('<n>Parâmetros para Não Concomitância</n>');
-    Relatorio.Add('</linha_simples>');
-    Relatorio.Add(padL('Pré-Venda', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.RealizaPreVenda));
-    Relatorio.Add(padL('DAV por ECF', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.RealizaDAVECF));
-    Relatorio.Add(padL('DAV Impressora Não Fiscal', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.RealizaDAVNaoFiscal));
-    Relatorio.Add(padL('DAV-OS', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.RealizaDAVOS));
     Relatorio.Add('');
-
-    Relatorio.Add('<n>Aplicações Especiais</n>');
+    Relatorio.Add('<n>PARÂMETROS PARA NÃO CONCOMITÂNCIA</n>');
     Relatorio.Add('</linha_simples>');
-    Relatorio.Add(padL('Tab. Indíce Técnico Produção', TamColSimNao) + GetDescrFlag( AInfoPafECF.IndiceTecnicoProd));
-    Relatorio.Add(padL('Posto Revendedor de Combustíveis', TamColSimNao) + GetDescrFlag( AInfoPafECF.PostoCombustivel));
-    Relatorio.Add(padL('Bar, Resta. Similiar - ECF Restaurante', TamColSimNao) + GetDescrFlag( AInfoPafECF.BarSimilarECFRestaurante));
-    Relatorio.Add(padL('Bar, Resta. Similiar - ECF Normal', TamColSimNao) + GetDescrFlag( AInfoPafECF.BarSimilarECFComum));
-    Relatorio.Add(padL('Farmácia de Manipulação', TamColSimNao) + GetDescrFlag( AInfoPafECF.FarmaciaManipulacao));
-    Relatorio.Add(padL('Oficina de Conserto', TamColSimNao) + GetDescrFlag( AInfoPafECF.OficinaConserto));
-    Relatorio.Add(padL('Transporte de Passageiros', TamColSimNao) + GetDescrFlag( AInfoPafECF.TransportePassageiro));
+
+    Relatorio.Add('<n>Req IV</n>');
+    Relatorio.Add('ITEM 2: Realiza registros de pré-venda');
+    Relatorio.Add(padL('conforme definido no inciso II do art. 1º', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.RealizaPreVenda));
+    Relatorio.Add('ITEM 3: Emitir DAV, impresso em equip. não');
+    Relatorio.Add(padL('fiscal, conf. defin. no inciso III do art.1º', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.RealizaDAVNaoFiscal));
+    Relatorio.Add('ITEM 4: Emite DAV, impresso no ECF, como');
+    Relatorio.Add('Relat. Ger.,conforme defin. no inciso');
+    Relatorio.Add(padL('III do art.1º', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.RealizaDAVECF ));
+    Relatorio.Add('ITEM 6: Registro de lançamento de mesa ou');
+    Relatorio.Add(padL('conta de cliente', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.RealizaLancamentoMesa ));
+    Relatorio.Add('<n>Req VI</n>');
+    Relatorio.Add('ITEM 2: imprime o DAV conforme o modelo');
+    Relatorio.Add(padL('constante no Anexo II', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.DAVConfAnexoII ));
+
     Relatorio.Add('');
-
-    Relatorio.Add('<n>Critérios por Unidade Federada</n>');
+    Relatorio.Add('<n>OFICINA DE CONSERTO</n>');
     Relatorio.Add('</linha_simples>');
-    Relatorio.Add('Requisito XVIII - Tela de Consulta de Preços');
-    Relatorio.Add(padL('Totalização dos Valores da Lista', TamColSimNao) + GetDescrFlag( AInfoPafECF.TotalizaValoresLista));
-    Relatorio.Add(padL('Transformação dos Infor. em Pré-Venda', TamColSimNao) + GetDescrFlag( AInfoPafECF.TransfPreVenda));
-    Relatorio.Add(padL('Transformação dos Infor. em DAV', TamColSimNao) + GetDescrFlag( AInfoPafECF.TransfDAV));
+
+    Relatorio.Add('<n>Req. XLI</n>');
+    Relatorio.Add(padL('ITEM 1: Emite DAV-OS para serviços', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.RealizaDAVOS ));
+
     Relatorio.Add('');
-
-    Relatorio.Add('<n>Requisito XXII (PAF-ECF Integrado ao ECF)</n>');
+    Relatorio.Add('<n>APLICAÇÕES ESPECIAIS</n>');
     Relatorio.Add('</linha_simples>');
-    Relatorio.Add(padL('Não Coincidência GT(ECF) X Arquivo Cripto.', TamColSimNao) + GetDescrFlag( AInfoPafECF.NaoCoincGT));
-    Relatorio.Add(padL('Recompõe Valor do GT Arq. Criptografado', TamColSimNao) + GetDescrFlag( AInfoPafECF.RecompoeGT));
+
+    Relatorio.Add('<n>Req. VII</n>');
+    Relatorio.Add('ITEM 20: Tabela de Indice Técnico');
+    Relatorio.Add(padL('de Producao', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.IndiceTecnicoProd ));
+    Relatorio.Add('<n>Req. XXXVII</n>');
+    Relatorio.Add(padL('ITEM 1: Bar,Restaurante e Similares', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.BarSimilarECFRestaurante ));
+    Relatorio.Add('<n>Req. XXXVIII-A</n>');
+    Relatorio.Add(padL('ITEM 1: Bar,Restaurante e Similar c/ balança', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.BarSimilarBalanca ));
+    Relatorio.Add('<n>Req. XXXIX</n>');
+    Relatorio.Add('ITEM 1: Usa impressora não fiscal no ambiente');
+    Relatorio.Add(padL('ambiente de produção', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.UsaImpressoraNaoFiscal ));
+    Relatorio.Add('<n>Req. XL</n>');
+    Relatorio.Add('ITENS 1 e 2: Imprime DAV descriminando a');
+    Relatorio.Add(padL('fórmula manipulada', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.DAVDiscrFormula ));
+
     Relatorio.Add('');
-
-    Relatorio.Add('<n>Requisito XXXVI-A (PAF-ECF Combustível)</n>');
+    Relatorio.Add('<n>REVENDA COMBUSTÍVEL</n>');
     Relatorio.Add('</linha_simples>');
-    Relatorio.Add(padL('Impede Reg. Venda Valor Zero ou Negativo', TamColSimNao) + GetDescrFlag( AInfoPafECF.ImpedeVendaVlrZero));
+
+    Relatorio.Add('<n>Req. XXXII</n>');
+    Relatorio.Add('ITEM 1: Acumula por dia, o volume de cada');
+    Relatorio.Add(padL('combustível', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.AcumulaVolumeDiario ));
+    Relatorio.Add('ITEM 2: Armazena os encerrantes inicial');
+    Relatorio.Add(padL('e final a cada abastecimento', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.ArmazenaEncerranteIniFinal ));
+
+    Relatorio.Add('<n>REQ XXXIII</n>');
+    Relatorio.Add('ITENS 1 e 2: Emite controle de encerrantes');
+    Relatorio.Add(PadL('após a Redução Z e Leitura Z', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.EmiteContrEncerrAposREDZLEIX ));
+
+    Relatorio.Add('<n>REQ XXXV</n>');
+    Relatorio.Add(padL('ITEM 1: PAF integrado com bombas', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.IntegradoComBombas ));
+    Relatorio.Add('ITEM 3: Cria um abastecimento em caso de');
+    Relatorio.Add(padL('divergência de encerrantes', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.CriaAbastDivergEncerrante ));
+
+    Relatorio.Add('<n>Requisito XXXVI-A</n>');
+    Relatorio.Add('ITEM 1: impede registro venda com valor');
+    Relatorio.Add(padL('zerado ou negativo', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.ImpedeVendaVlrZero ));
+
+    Relatorio.Add('<n>REQ XXXVI-B</n>');
+    Relatorio.Add('ITENS 1, 2, 3 e 4: possui cadastro da(s)');
+    Relatorio.Add(padL('placa(s) da(s) bomba(s)', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.CadastroPlacaBomba ));
+
+    Relatorio.Add('');
+    Relatorio.Add('<n>CRITÉRIOS POR UNIDADE FEDERADA</n>');
+    Relatorio.Add('</linha_simples>');
+
+    Relatorio.Add('<n>Req. XVII</n>');
+    Relatorio.Add('ITEM 1 alinea b: emissão de documento');
+    Relatorio.Add(padL('fiscal por PED', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.EmitePED ));
+
+    Relatorio.Add('<n>REQ XVIII</n>');
+    Relatorio.Add('ITEM 1 - Tela de Consulta de Produtos');
+    Relatorio.Add(padL('Alinea a: Totalização dos valores da lista', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.TotalizaValoresLista ));
+    Relatorio.Add(padL('Alinea b: Transf. das info em Pré-venda', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.TransfPreVenda ));
+    Relatorio.Add(padL('Alinea c: Transf. das info em DAV', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.TransfDAV ));
+
+    Relatorio.Add('<n>REQ. XXII</n>');
+    Relatorio.Add(PadL('ITEM 7 Alinea b: Recompõe valor GT', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.RecompoeGT ));
+
+    Relatorio.Add('<n>Req. VIII-A</n>');
+    Relatorio.Add(padL('ITEM 2 : MINAS LEGAL', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.MinasLegal ));
+    Relatorio.Add(padL('ITEM 2A: CUPOM MANIA', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.CupomMania ));
+
     Relatorio.Add('');
 
     Self.RelatorioGerencial(Relatorio, 1, AIndiceRelatorio);

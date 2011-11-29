@@ -97,6 +97,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+
+Data: 29/11/2011
+-- ACBrECFEpson --
+[*] Acerto na impressão do relatório de configurações do Paf-ECF
+    por: Regys Silveira, Koplin, Juliomar
+
 Data: 09/11/2011
 -- ACBrECFEpson --
 [-] Correções na detecção do Fim de resposta do Protocolo Serial (por: DSA)

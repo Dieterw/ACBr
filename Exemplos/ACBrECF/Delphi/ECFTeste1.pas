@@ -3470,26 +3470,38 @@ var
 begin
   Parametros := TACBrECFInfoPaf.Create;
   try
-    Parametros.TipoFuncionamento        := tpfEmRede;
-    Parametros.TipoDesenvolvimento      := tpdExclusivoTerceirizado;
-    Parametros.IntegracaoPAFECF         := tpiRetaguarda;
-    Parametros.RealizaPreVenda          := True;
-    Parametros.RealizaDAVECF            := True;
-    Parametros.RealizaDAVNaoFiscal      := True;
-    Parametros.RealizaDAVOS             := True;
-    Parametros.IndiceTecnicoProd        := True;
-    Parametros.PostoCombustivel         := True;
-    Parametros.BarSimilarECFRestaurante := True;
-    Parametros.BarSimilarECFComum       := True;
-    Parametros.FarmaciaManipulacao      := True;
-    Parametros.OficinaConserto          := True;
-    Parametros.TransportePassageiro     := True;
-    Parametros.TotalizaValoresLista     := True;
-    Parametros.TransfPreVenda           := True;
-    Parametros.TransfDAV                := True;
-    Parametros.NaoCoincGT               := True;
-    Parametros.RecompoeGT               := True;
-    Parametros.ImpedeVendaVlrZero       := True;
+    Parametros.TipoFuncionamento   := tpfEmRede;
+    Parametros.TipoDesenvolvimento := tpdExclusivoTerceirizado;
+    Parametros.IntegracaoPAFECF    := tpiRetaguarda;
+
+    Parametros.RealizaPreVenda              := True;
+    Parametros.RealizaDAVECF                := True;
+    Parametros.RealizaDAVNaoFiscal          := True;
+    Parametros.RealizaDAVOS                 := True;
+    Parametros.DAVConfAnexoII               := True;
+    Parametros.RealizaLancamentoMesa        := True;
+    Parametros.IndiceTecnicoProd            := True;
+    Parametros.BarSimilarECFRestaurante     := True;
+    Parametros.BarSimilarECFComum           := True;
+    Parametros.BarSimilarBalanca            := True;
+    Parametros.UsaImpressoraNaoFiscal       := True;
+    Parametros.DAVDiscrFormula              := True;
+    Parametros.ImpedeVendaVlrZero           := True;
+    Parametros.AcumulaVolumeDiario          := True;
+    Parametros.ArmazenaEncerranteIniFinal   := True;
+    Parametros.EmiteContrEncerrAposREDZLEIX := True;
+    Parametros.IntegradoComBombas           := True;
+    Parametros.CriaAbastDivergEncerrante    := True;
+    Parametros.CadastroPlacaBomba           := True;
+    Parametros.TransportePassageiro         := True;
+    Parametros.TotalizaValoresLista         := True;
+    Parametros.TransfPreVenda               := True;
+    Parametros.TransfDAV                    := True;
+    Parametros.NaoCoincGT                   := True;
+    Parametros.RecompoeGT                   := True;
+    Parametros.EmitePED                     := True;
+    Parametros.CupomMania                   := True;
+    Parametros.MinasLegal                   := True;
 
     ACBrECF1.PafMF_RelParametrosConfiguracao(Parametros);
   finally

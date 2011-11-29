@@ -147,26 +147,37 @@ type
     fsVersao: String;
     fsPrincipalExe: TACBrECFArquivo;
     fsNome: String;
-    FFarmaciaManipulacao: Boolean;
+    FDAVDiscrFormula: Boolean;
     FBarSimilarECFRestaurante: Boolean;
     FRealizaDAVECF: Boolean;
     FTransfPreVenda: Boolean;
     FBarSimilarECFComum: Boolean;
+    FBarSimilarBalanca: Boolean;
+    FUsaImpressoraNaoFiscal: Boolean;
     FTransportePassageiro: Boolean;
     FRealizaDAVNaoFiscal: Boolean;
     FIndiceTecnicoProd: Boolean;
     FRealizaPreVenda: Boolean;
-    FPostoCombustivel: Boolean;
-    FOficinaConserto: Boolean;
     FTransfDAV: Boolean;
     FTotalizaValoresLista: Boolean;
+    FDAVConfAnexoII: Boolean;
+    FRealizaLancamentoMesa: Boolean;
     FTipoDesenvolvimento: TACBrPAFTipoDesenvolvimento;
     FTipoFuncionamento: TACBrPAFTipoFuncionamento;
     FImpedeVendaVlrZero: Boolean;
+    FAcumulaVolumeDiario: Boolean;
+    FArmazenaEncerranteIniFinal: Boolean;
+    FEmiteContrEncerrAposREDZLEIX: Boolean;
+    FIntegradoComBombas: Boolean;
+    FCriaAbastDivergEncerrante: Boolean;
+    FCadastroPlacaBomba: Boolean;
     FRealizaDAVOS: Boolean;
     FIntegracaoPAFECF: TACBrPAFTipoIntegracao;
     FRecompoeGT: Boolean;
     FNaoCoincGT: Boolean;
+    FEmitePED: Boolean;
+    FMinasLegal: Boolean;
+    FCupomMania: Boolean;
     procedure SetVersao(const AValue : String) ;
   public
     constructor Create;
@@ -176,26 +187,48 @@ type
     property Versao: String read fsVersao write SetVersao;
     property PrincipalExe: TACBrECFArquivo read fsPrincipalExe write fsPrincipalExe;
 
+    //funcionalidades
     property TipoFuncionamento: TACBrPAFTipoFuncionamento read FTipoFuncionamento write FTipoFuncionamento;
     property TipoDesenvolvimento: TACBrPAFTipoDesenvolvimento read FTipoDesenvolvimento write FTipoDesenvolvimento;
     property IntegracaoPAFECF: TACBrPAFTipoIntegracao read FIntegracaoPAFECF write FIntegracaoPAFECF;
+
+    //parametros de nao concomitancia
     property RealizaPreVenda: Boolean read FRealizaPreVenda write FRealizaPreVenda;
     property RealizaDAVECF: Boolean read FRealizaDAVECF write FRealizaDAVECF;
     property RealizaDAVNaoFiscal: Boolean read FRealizaDAVNaoFiscal write FRealizaDAVNaoFiscal;
     property RealizaDAVOS: Boolean read FRealizaDAVOS write FRealizaDAVOS;
+    property DAVConfAnexoII: Boolean read FDAVConfAnexoII write FDAVConfAnexoII;
+    property RealizaLancamentoMesa: Boolean read FRealizaLancamentoMesa write FRealizaLancamentoMesa;
+
+   // aplicações especiais
     property IndiceTecnicoProd: Boolean read FIndiceTecnicoProd write FIndiceTecnicoProd;
-    property PostoCombustivel: Boolean read FPostoCombustivel write FPostoCombustivel;
     property BarSimilarECFRestaurante: Boolean read FBarSimilarECFRestaurante write FBarSimilarECFRestaurante;
     property BarSimilarECFComum: Boolean read FBarSimilarECFComum write FBarSimilarECFComum;
-    property FarmaciaManipulacao: Boolean read FFarmaciaManipulacao write FFarmaciaManipulacao;
-    property OficinaConserto: Boolean read FOficinaConserto write FOficinaConserto;
+    property BarSimilarBalanca: Boolean read FBarSimilarBalanca write FBarSimilarBalanca;
+    property UsaImpressoraNaoFiscal: Boolean read FUsaImpressoraNaoFiscal write FUsaImpressoraNaoFiscal;
+    property DAVDiscrFormula: Boolean read FDAVDiscrFormula write FDAVDiscrFormula;
+
+    //posto
+    property ImpedeVendaVlrZero: Boolean read FImpedeVendaVlrZero write FImpedeVendaVlrZero;
+    property AcumulaVolumeDiario: Boolean read FAcumulaVolumeDiario write FAcumulaVolumeDiario;
+    property ArmazenaEncerranteIniFinal: Boolean read FArmazenaEncerranteIniFinal write FArmazenaEncerranteIniFinal;
+    property EmiteContrEncerrAposREDZLEIX: Boolean read FEmiteContrEncerrAposREDZLEIX write FEmiteContrEncerrAposREDZLEIX;
+    property IntegradoComBombas:Boolean read FIntegradoComBombas write FIntegradoComBombas;
+    property CriaAbastDivergEncerrante: Boolean read FCriaAbastDivergEncerrante write FCriaAbastDivergEncerrante;
+    property CadastroPlacaBomba: Boolean read FCadastroPlacaBomba write FCadastroPlacaBomba;
+
+    // transporte de passageiros
     property TransportePassageiro: Boolean read FTransportePassageiro write FTransportePassageiro;
+
+   //criterios por uf
     property TotalizaValoresLista: Boolean read FTotalizaValoresLista write FTotalizaValoresLista;
     property TransfPreVenda: Boolean read FTransfPreVenda write FTransfPreVenda;
     property TransfDAV: Boolean read FTransfDAV write FTransfDAV;
     property NaoCoincGT: Boolean read FNaoCoincGT write FNaoCoincGT;
     property RecompoeGT: Boolean read FRecompoeGT write FRecompoeGT;
-    property ImpedeVendaVlrZero: Boolean read FImpedeVendaVlrZero write FImpedeVendaVlrZero;
+    property EmitePED: Boolean read FEmitePED write FEmitePED;
+    property CupomMania: Boolean read FCupomMania write FCupomMania;
+    property MinasLegal: Boolean read FMinasLegal write FMinasLegal;
   end;
 
   TACBrECFIdentificacaoPAF = class( TPersistent )

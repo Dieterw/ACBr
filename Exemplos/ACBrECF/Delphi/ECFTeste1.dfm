@@ -789,7 +789,7 @@ object Form1: TForm1
       end
       object Button2: TButton
         Left = 11
-        Top = -147
+        Top = -167
         Width = 108
         Height = 25
         Anchors = [akLeft, akBottom]
@@ -798,11 +798,11 @@ object Form1: TForm1
         OnClick = Button2Click
       end
       object mRZ: TMemo
-        Left = 11
-        Top = 64
-        Width = 570
-        Height = 45
-        Anchors = [akLeft, akTop, akRight, akBottom]
+        Left = 0
+        Top = 21
+        Width = 594
+        Height = 285
+        Align = alClient
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = 13

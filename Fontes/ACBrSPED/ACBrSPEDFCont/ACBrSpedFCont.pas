@@ -626,10 +626,13 @@ function TACBrSPEDFCont.WriteRegistroM025: AnsiString;
 begin
    Result := Bloco_M.WriteRegistroM025;
 
-   with Bloco_9.Registro9900.New do
+   if Bloco_J.RegistroM025.Count > 0 then
    begin
-      REG_BLC := 'M025';
-      QTD_REG_BLC := 1;
+     with Bloco_9.Registro9900.New do
+     begin
+       REG_BLC := 'M025';
+       QTD_REG_BLC := Bloco_M.RegistroM025.Count;
+     end;
    end;
 end;
 

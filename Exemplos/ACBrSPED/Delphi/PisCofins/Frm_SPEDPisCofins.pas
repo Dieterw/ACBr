@@ -61,6 +61,7 @@ type
     procedure btnB_FClick(Sender: TObject);
     procedure btnB_MClick(Sender: TObject);
     procedure btnB_AClick(Sender: TObject);
+    procedure btnVariosBlocosClick(Sender: TObject);
   private
      procedure LoadToMemo;
     { Private declarations }
@@ -106,16 +107,22 @@ begin
    cbConcomitante.Enabled := False ;
    btnB_0.Enabled := false;
    btnB_C.Enabled := True ;
+   with ACBrSPEDPisCofins1 do
+   begin
+     DT_INI := StrToDate('01/04/2011');
+     DT_FIN := StrToDate('30/04/2011');
+     IniciaGeracao;
+   end;
 
    if cbConcomitante.Checked then
    begin
       with ACBrSPEDPisCofins1 do
       begin
-         DT_INI := StrToDate('01/04/2011');
-         DT_FIN := StrToDate('30/04/2011');
+//         DT_INI := StrToDate('01/04/2011');
+//         DT_FIN := StrToDate('30/04/2011');
          LinhasBuffer := StrToIntDef( edBufLinhas.Text, 0 );
 
-         IniciaGeracao;
+//         IniciaGeracao;
       end;
 
       LoadToMemo;
@@ -126,127 +133,132 @@ begin
       // Dados da Empresa
       with Registro0000New do
       begin
-         COD_VER          := vlVersao101;
-         TIPO_ESCRIT      := tpEscrOriginal;
-         IND_SIT_ESP      := indSitAbertura;
-         NUM_REC_ANTERIOR := '';
-         NOME             := 'NOME DA EMPRESA';
-         CNPJ             := '123456789';
-         UF               := 'ES';
-         COD_MUN          := 3200607;
-         SUFRAMA          := '';
-         IND_NAT_PJ       := indNatPJSocEmpresariaGeral;
-         IND_ATIV         := indAtivIndustrial;
+        COD_VER          := vlVersao101;
+        TIPO_ESCRIT      := tpEscrOriginal;
+        IND_SIT_ESP      := indSitAbertura;
+        NUM_REC_ANTERIOR := '';
+        NOME             := 'NOME DA EMPRESA';
+        CNPJ             := '11111111111180';
+        UF               := 'ES';
+        COD_MUN          := 3200607;
+        SUFRAMA          := '';
+        IND_NAT_PJ       := indNatPJSocEmpresariaGeral;
+        IND_ATIV         := indAtivIndustrial;
+
+        with Registro0001New do
+        begin
+           IND_MOV := imComDados;
+
+           // FILHO - Dados do contador.
+           with Registro0100New do
+           begin
+              NOME       := 'NOME DO CONTADOR';
+              CPF        := '12345678909'; // Deve ser uma informação valida
+              CRC        := '123456';
+              CNPJ       := '22222222222259';
+              CEP        := '';
+              ENDERECO   := '';
+              NUM        := '';
+              COMPL      := '';
+              BAIRRO     := '';
+              FONE       := '';
+              FAX        := '';
+              EMAIL      := '';
+              COD_MUN    := 3200607;
+           end;
+
+           // FILHO - Regime de Apuração
+           with Registro0110New do
+           begin
+              COD_INC_TRIB  := codEscrOpIncNaoCumulativo;
+              IND_APRO_CRED := indMetodoApropriacaoDireta;
+              COD_TIPO_CONT := codIndTipoConExclAliqBasica;
+           end;
+           //0140 - Tabela de Cadastro de Estabelecimento
+           for int0140 := 1 to 2 do
+           begin
+           // FILHO
+              with Registro0140New do
+              begin
+                 COD_EST := IntToStr(int0140);
+                 NOME    := 'NOME DO ESTABELECIMENTO '+IntToStr(int0140);
+                 CNPJ    := '33333333333328';
+                 UF      := 'ES';
+                 IE      := '';
+                 COD_MUN := 3200607;
+                 IM      := '';
+                 SUFRAMA := '';
+
+                 // 10 Clientes por estabelecimento
+                 for int0150 := 1 to 10 do
+                 begin
+                    //0150 - Tabela de Cadastro do Participante
+                    with Registro0150New do
+                    begin
+                       COD_PART := IntToStr(int0150);
+                       NOME     := 'NOME DO CLIENTE '+ IntToStr(int0150);
+                       COD_PAIS := '1058';
+                       CNPJ     := '';
+                       CPF      := '12345678909';
+                       IE       := '';
+                       COD_MUN  := 3200607;
+                       SUFRAMA  := '';
+                       ENDERECO := 'ENDERECO DO CLIENTE '+ IntToStr(int0150);
+                       NUM      := IntToStr(int0150);
+                       COMPL    := 'COMPLEMENTO DO CLIENTE '+ IntToStr(int0150);
+                       BAIRRO   := 'BAIRRO';
+                       //
+                    end;
+                 end;
+
+                 // 0190 - Identificação das Unidades de Medida
+                 for int0190 := Low(strUNID) to High(strUNID) do
+                 begin
+                    with Registro0190New do
+                    begin
+                       UNID  := strUNID[int0190];
+                       DESCR := 'Descricao ' + strUNID[int0190];
+                    end;
+                 end;
+
+                 //10 produtos/serviços
+                 for int0200 := 1 to 10 do
+                 begin
+                    // 0200 - Tabela de Identificação do Item (Produtos e Serviços)
+                    with Registro0200New do
+                    begin
+                       COD_ITEM     := FormatFloat('000000', int0200);
+                       DESCR_ITEM   := 'DESCRIÇÃO DO ITEM';
+                       COD_BARRA    := '';
+                       COD_ANT_ITEM := '';
+                       UNID_INV     := '';
+                       TIPO_ITEM    := tiMercadoriaRevenda;
+                       COD_NCM      := '12345678';
+                       EX_IPI       := '';
+                       COD_GEN      := '';
+                       COD_LST      := '';
+                       ALIQ_ICMS    := 0;
+                    end;
+                 end;
+              end;
+           end;
+
+           // FILHO - REGISTRO 0500: PLANO DE CONTAS CONTÁBEIS
+           with Registro0500New do
+           begin
+             DT_ALT := StrToDate('01/04/2011');
+             COD_NAT_CC := ncgAtivo;
+             IND_CTA := indCTASintetica;
+             NIVEL := '0';
+             COD_CTA := '0';
+             NOME_CTA := 'NOME CTA';
+             COD_CTA_REF := '0';
+             CNPJ_EST := '123456789';
+           end;
+
+        end;
       end;
-      with Registro0001New do
-      begin
-         IND_MOV := imComDados;
 
-         // FILHO - Dados do contador.
-         with Registro0100New do
-         begin
-            NOME       := 'NOME DO CONTADOR';
-            CPF        := '12345678900'; // Deve ser uma informação valida
-            CRC        := '123456';
-            CNPJ       := '123456789';
-            CEP        := '';
-            ENDERECO   := '';
-            NUM        := '';
-            COMPL      := '';
-            BAIRRO     := '';
-            FONE       := '';
-            FAX        := '';
-            EMAIL      := '';
-            COD_MUN    := 3200607;
-         end;
-
-         // FILHO - Regime de Apuração
-         with Registro0110New do
-         begin
-            COD_INC_TRIB  := codEscrOpIncNaoCumulativo;
-            IND_APRO_CRED := indMetodoApropriacaoDireta;
-            COD_TIPO_CONT := codIndTipoConExclAliqBasica;
-         end;
-
-         for int0140 := 1 to 10 do
-         begin
-         // FILHO
-            with Registro0140New do
-            begin
-               COD_EST := IntToStr(int0140);
-               NOME    := 'NOME DO ESTABELECIMENTO';
-               CNPJ    := '123456789';
-               UF      := '';
-               IE      := '';
-               COD_MUN := 0;
-               IM      := '';
-               SUFRAMA := '';
-               //
-               for int0150 := 1 to 10 do
-               begin
-                  // 10 Clientes
-                  with Registro0150New do
-                  begin
-                     COD_PART := IntToStr(int0150);
-                     NOME     := 'NOME DO CLIENTE';
-                     COD_PAIS := '001';
-                     CNPJ     := '123456789';
-                     CPF      := '123456789';
-                     IE       := '';
-                     COD_MUN  := 0;
-                     SUFRAMA  := '';
-                     ENDERECO := 'ENDERECO';
-                     NUM      := '';
-                     COMPL    := 'COMPLEMENTO';
-                     BAIRRO   := 'BAIRRO';
-                     //
-                  end;
-               end;
-               // FILHO
-               for int0190 := Low(strUNID) to High(strUNID) do
-               begin
-                  with Registro0190New do
-                  begin
-                     UNID  := strUNID[int0190];
-                     DESCR := 'Descricao ' + strUNID[int0190];
-                  end;
-               end;
-               // FILHO
-               for int0200 := 1 to 10 do
-               begin
-                  // Cadastro dos Itens
-                  with Registro0200New do
-                  begin
-                     COD_ITEM     := FormatFloat('000000', int0200);
-                     DESCR_ITEM   := 'DESCRIÇÃO DO ITEM';
-                     COD_BARRA    := '';
-                     COD_ANT_ITEM := '';
-                     UNID_INV     := '';
-                     TIPO_ITEM    := tiMercadoriaRevenda;
-                     COD_NCM      := '12345678';
-                     EX_IPI       := '';
-                     COD_GEN      := '';
-                     COD_LST      := '';
-                     ALIQ_ICMS    := 0;
-                  end;
-               end;
-            end;
-         end;
-
-         // FILHO - REGISTRO 0500: PLANO DE CONTAS CONTÁBEIS
-         with Registro0500New do
-         begin
-           DT_ALT := StrToDate('01/04/2011');
-           COD_NAT_CC := ncgAtivo;
-           IND_CTA := indCTASintetica;
-           NIVEL := '0';
-           COD_CTA := '0';
-           NOME_CTA := 'NOME CTA';
-           COD_CTA_REF := '0';
-           CNPJ_EST := '123456789';
-         end;
-
-      end;
    end;
 
    if cbConcomitante.Checked then
@@ -288,7 +300,7 @@ begin
 
    // Limpa a lista de erros.
    memoError.Lines.Clear;
-   // Informa o pata onde será salvo o arquivo TXT.
+   // Informa o pasta onde será salvo o arquivo TXT.
    ACBrSPEDPisCofins1.Path := '.\';
    ACBrSPEDPisCofins1.Arquivo := edtFile.Text;
 
@@ -308,6 +320,17 @@ begin
    btnB_M.Enabled := true;
    btnTXT.Enabled := True ;
    cbConcomitante.Enabled := True ;
+end;
+
+procedure TFrmSPEDPisCofins.btnVariosBlocosClick(Sender: TObject);
+begin
+  btnB_0.Click;
+  btnB_1.Click;
+  btnB_A.Click;
+  btnB_C.Click;
+  btnB_D.Click;
+  btnB_F.Click;
+  btnB_M.Click;
 end;
 
 procedure TFrmSPEDPisCofins.btnErrorClick(Sender: TObject);
@@ -349,6 +372,15 @@ begin
 //      end;
 //   end;
 
+   with ACBrSPEDPisCofins1.Bloco_1 do
+   begin
+      with Registro1001New do
+      begin
+         IND_MOV := imSemDados;
+      end;
+   end;
+
+
    if cbConcomitante.Checked then
    begin
       ACBrSPEDPisCofins1.WriteBloco_1;
@@ -380,13 +412,18 @@ begin
       with RegistroC001New do
       begin
          IND_MOV := imComDados;
-         //
-         for INotas := 1 to NNotas do
+
+         //C010 - Identificação do Estabelecimento
+         with RegistroC010New do
          begin
-           with RegistroC010New do
+           CNPJ := '11111111111180';
+           IND_ESCRI := IndEscriConsolidado;
+
+           //Inserir Notas...
+           for INotas := 1 to NNotas do
            begin
-              CNPJ := '123456789';
-              IND_ESCRI := IndEscriConsolidado;
+              //C100 - Documento - Nota Fiscal (código 01), Nota Fiscal Avulsa (código 1B), Nota
+              // Fiscal de Produtor (código 04) e NF-e (código 55)
               with RegistroC100New do
               begin
                 IND_OPER      := tpEntradaAquisicao;
@@ -397,8 +434,8 @@ begin
                 SER           := '';
                 NUM_DOC       := FormatFloat('NF000000',INotas);
                 CHV_NFE       := '';
-                DT_DOC        := Date();
-                DT_E_S        := Date();
+                DT_DOC        := DT_INI + INotas;
+                DT_E_S        := DT_INI + INotas;
                 VL_DOC        := 0;
                 IND_PGTO      := tpSemPagamento;
                 VL_DESC       := 0;
@@ -417,9 +454,11 @@ begin
                 VL_COFINS     := 0;
                 VL_PIS_ST     := 0;
                 VL_COFINS_ST  := 0;
-                //c170
+
+                //10 itens para cada nota...
                 for IItens := 1 to 10 do
                 begin
+                  //c170 - Complemento de Documento – Itens do Documento (códigos 01, 1B, 04 e 55)
                   with RegistroC170New do   //Inicio Adicionar os Itens:
                   begin
                      NUM_ITEM         := FormatFloat('000', IItens);
@@ -458,35 +497,41 @@ begin
                      ALIQ_COFINS_R    := 0;
                      VL_COFINS        := 0;
                      COD_CTA          := '000';
-                   end; //Fim dos Itens;
+                  end; //Fim dos Itens;
                 end;
-                //c190
-                for IItens := 1 to 10 do
+
+                if cbConcomitante.Checked then
                 begin
-                  with RegistroC190New do
-                  begin
-                     COD_MOD := '';
-                     DT_REF_INI := Date;
-                     DT_REF_FIN := Date;
-                     COD_ITEM := '';
-                     COD_NCM := '';
-                     EX_IPI := '';
-                     VL_TOT_ITEM := 0;
-                  end;//Fim dos Itens;
+                   if (INotas mod BNotas) = 0 then   // Gravar a cada BNotas notas
+                   begin
+                      // Grava registros na memoria para o TXT, e limpa memoria
+                      ACBrSPEDPisCofins1.WriteBloco_C( False );  // False, NAO fecha o Bloco
+                      ProgressBar1.Position := INotas;
+                      Application.ProcessMessages;
+                   end;
                 end;
+
               end;
 
-              if cbConcomitante.Checked then
+              //10 itens c190
+              for IItens := 1 to 10 do
               begin
-                 if (INotas mod BNotas) = 0 then   // Gravar a cada N notas
-                 begin
-                    // Grava registros na memoria para o TXT, e limpa memoria
-                    ACBrSPEDPisCofins1.WriteBloco_C( False );  // False, NAO fecha o Bloco
-                    ProgressBar1.Position := INotas;
-                    Application.ProcessMessages;
-                 end;
+                // c190 - Consolidação de Notas Fiscais Eletrônicas (Código 55) – Operações de
+                // Aquisição com Direito a Crédito, e Operações de Devolução de Compras e
+                // Vendas.
+                with RegistroC190New do
+                begin
+                   COD_MOD := '';
+                   DT_REF_INI := Date;
+                   DT_REF_FIN := Date;
+                   COD_ITEM := '';
+                   COD_NCM := '';
+                   EX_IPI := '';
+                   VL_TOT_ITEM := 0;
+                end;//Fim dos Itens;
               end;
-           end;   
+
+           end;
          end;
       end;
    end;
@@ -523,7 +568,7 @@ begin
         //Estabelecimento
         with RegistroD010New do
         begin
-          CNPJ := '123456789';
+          CNPJ := '11111111111180';
 
 //          for INotas := 1 to NNotas do
 //          begin
@@ -536,7 +581,7 @@ begin
 //            end;
 //          end;
 
-          //Resumo da Escrituração Diária – Prestação de Serviços de Transportes
+          //D200 - Resumo da Escrituração Diária – Prestação de Serviços de Transportes
           // (Códigos 07, 08, 8B, 09, 10, 11, 26, 27 e 57).
           with RegistroD200New do
           begin
@@ -548,7 +593,7 @@ begin
             NUM_DOC_INI := 11574;
             NUM_DOC_FIN := 11854;
             CFOP := 6352;
-            DT_REF := StrToDate('15/04/2011');
+            DT_REF := DT_INI;// StrToDate('15/04/2011');
             VL_DOC := 6807.57;
             VL_DESC := 0;
           end;
@@ -605,9 +650,13 @@ begin
       with RegistroF001New do
       begin
         IND_MOV := imComDados;
+
+        //F010 - Identificação do Estabelecimento
         with RegistroF010New do
         begin
-           CNPJ := '123456789';
+           CNPJ := '11111111111180';
+
+           //F100 - Demais Documentos e Operações Geradoras de Contribuição e Créditos
            with RegistroF100New do
            begin
               IND_OPER      := indRepCustosDespesasEncargos;
@@ -617,7 +666,7 @@ begin
               VL_OPER       := 0;
               CST_PIS       := stpisOutrasOperacoesSaida;
               VL_BC_PIS     := 0;
-              ALIQ_PIS      := 0;
+              ALIQ_PIS      := 1.2375;
               VL_PIS        := 0;
               CST_COFINS    := stcofinsOutrasOperacoesSaida;
               VL_BC_COFINS  := 0;
@@ -650,6 +699,8 @@ begin
       with RegistroM001New do
       begin
         IND_MOV := imComDados;
+
+        //M100 - Crédito de PIS/PASEP Relativo ao Período
          with RegistroM100New do
          begin
             COD_CRED       := '';
@@ -667,6 +718,40 @@ begin
             VL_CRED_DESC   := 0;
             SLD_CRED       := 0;
          end;
+
+         with RegistroM200New do
+         begin
+           VL_TOT_CONT_NC_PER := 0;
+           VL_TOT_CRED_DESC := 0;
+           VL_TOT_CRED_DESC_ANT := 0;
+           VL_TOT_CONT_NC_DEV := 0;
+           VL_RET_NC := 0;
+           VL_OUT_DED_NC := 0;
+           VL_CONT_NC_REC := 0;
+           VL_TOT_CONT_CUM_PER := 0;
+           VL_RET_CUM := 0;
+           VL_OUT_DED_CUM := 0;
+           VL_CONT_CUM_REC := 0;
+           VL_TOT_CONT_REC := 0;
+
+           with RegistroM210New do
+           begin
+             COD_CONT := ccNaoAcumAliqBasica;
+             VL_REC_BRT := 0;
+             VL_BC_CONT := 0;
+             ALIQ_PIS := 0;
+             QUANT_BC_PIS := 0;
+             ALIQ_PIS_QUANT := 0;
+             VL_CONT_APUR := 0;
+             VL_AJUS_ACRES := 0;
+             VL_AJUS_REDUC := 0;
+             VL_CONT_DIFER := 0;
+             VL_CONT_DIFER_ANT := 0;
+             VL_CONT_PER := 0;
+           end;
+
+         end;
+
       end;
    end;
    btnB_M.Enabled := false;
@@ -680,10 +765,10 @@ end;
 
 procedure TFrmSPEDPisCofins.btnB_AClick(Sender: TObject);
 var
-INotas: Integer;
-IItens: Integer;
-NNotas: Integer;
-BNotas: Integer;
+  INotas: Integer;
+  IItens: Integer;
+  NNotas: Integer;
+  BNotas: Integer;
 begin
    // Alimenta o componente com informações para gerar todos os registros do
    // Bloco A.
@@ -706,7 +791,7 @@ begin
          begin
            with RegistroA010New do
            begin
-              CNPJ := '123456789';
+              CNPJ := '11111111111180';
               with RegistroA100New do
               begin
                  IND_OPER      := itoContratado;
@@ -717,8 +802,8 @@ begin
                  SUB           := '';
                  NUM_DOC       := FormatFloat('NF000000',INotas);
                  CHV_NFSE      := '';
-                 DT_DOC        := Date();
-                 DT_EXE_SERV   := Date();
+                 DT_DOC        := DT_INI + INotas;
+                 DT_EXE_SERV   := DT_INI + INotas;
                  VL_DOC        := 0;
                  IND_PGTO      := tpSemPagamento;
                  VL_DESC       := 0;
@@ -729,6 +814,7 @@ begin
                  VL_PIS_RET    := 0;
                  VL_COFINS_RET := 0;
                  VL_ISS        := 0;
+
                  //A170
                  for IItens := 1 to 10 do
                  begin

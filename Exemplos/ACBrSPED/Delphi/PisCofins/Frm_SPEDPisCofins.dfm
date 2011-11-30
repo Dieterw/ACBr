@@ -2,7 +2,7 @@ object FrmSPEDPisCofins: TFrmSPEDPisCofins
   Left = 356
   Top = 153
   Caption = 'ACBrSpedPisCofins - Demo'
-  ClientHeight = 506
+  ClientHeight = 547
   ClientWidth = 687
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -14,12 +14,12 @@ object FrmSPEDPisCofins: TFrmSPEDPisCofins
   Position = poScreenCenter
   DesignSize = (
     687
-    506)
+    547)
   PixelsPerInch = 96
   TextHeight = 13
   object Label2: TLabel
     Left = 8
-    Top = 128
+    Top = 160
     Width = 65
     Height = 13
     Caption = 'Lista de erros'
@@ -28,7 +28,7 @@ object FrmSPEDPisCofins: TFrmSPEDPisCofins
   end
   object Label3: TLabel
     Left = 8
-    Top = 232
+    Top = 272
     Width = 75
     Height = 13
     Caption = 'Arquivo Gerado'
@@ -37,7 +37,7 @@ object FrmSPEDPisCofins: TFrmSPEDPisCofins
   end
   object Label7: TLabel
     Left = 24
-    Top = 464
+    Top = 507
     Width = 63
     Height = 13
     Caption = 'Buffer Linhas'
@@ -46,7 +46,7 @@ object FrmSPEDPisCofins: TFrmSPEDPisCofins
   end
   object Label8: TLabel
     Left = 128
-    Top = 464
+    Top = 507
     Width = 61
     Height = 13
     Caption = 'Buffer Notas'
@@ -55,17 +55,18 @@ object FrmSPEDPisCofins: TFrmSPEDPisCofins
   end
   object memoError: TMemo
     Left = 8
-    Top = 145
-    Width = 669
+    Top = 177
+    Width = 641
     Height = 83
     Anchors = [akLeft, akTop, akRight]
+    ScrollBars = ssVertical
     TabOrder = 0
   end
   object memoTXT: TMemo
     Left = 8
-    Top = 248
-    Width = 671
-    Height = 208
+    Top = 288
+    Width = 641
+    Height = 201
     Anchors = [akLeft, akTop, akRight, akBottom]
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
@@ -80,23 +81,25 @@ object FrmSPEDPisCofins: TFrmSPEDPisCofins
   end
   object btnError: TButton
     Left = 395
-    Top = 478
+    Top = 519
     Width = 100
     Height = 25
     Anchors = [akRight, akBottom]
     Caption = 'Gerar TXT Error'
     TabOrder = 2
     OnClick = btnErrorClick
+    ExplicitTop = 478
   end
   object btnTXT: TButton
     Left = 521
-    Top = 478
+    Top = 519
     Width = 100
     Height = 25
     Anchors = [akRight, akBottom]
     Caption = 'Gerar TXT'
     TabOrder = 3
     OnClick = btnTXTClick
+    ExplicitTop = 478
   end
   object Panel1: TPanel
     Left = 0
@@ -149,15 +152,16 @@ object FrmSPEDPisCofins: TFrmSPEDPisCofins
     object edtFile: TEdit
       Left = 22
       Top = 28
-      Width = 284
+      Width = 252
       Height = 21
       Anchors = [akLeft, akTop, akRight]
       TabOrder = 0
-      Text = 'ACBrSpedFiscal.txt'
+      Text = 'ACBrSpedPISCofins.txt'
       OnChange = edtFileChange
+      OnExit = edtFileChange
     end
     object cbConcomitante: TCheckBox
-      Left = 330
+      Left = 298
       Top = 30
       Width = 134
       Height = 19
@@ -190,7 +194,7 @@ object FrmSPEDPisCofins: TFrmSPEDPisCofins
     Left = 0
     Top = 58
     Width = 687
-    Height = 62
+    Height = 87
     Align = alTop
     BevelOuter = bvNone
     BorderWidth = 1
@@ -217,72 +221,82 @@ object FrmSPEDPisCofins: TFrmSPEDPisCofins
       ExplicitWidth = 450
     end
     object btnB_0: TButton
-      Left = 43
-      Top = 22
-      Width = 80
+      Left = 22
+      Top = 51
+      Width = 62
       Height = 25
       Caption = 'Bloco 0'
       TabOrder = 0
       OnClick = btnB_0Click
     end
     object btnB_1: TButton
-      Left = 559
-      Top = 22
-      Width = 80
+      Left = 109
+      Top = 51
+      Width = 62
       Height = 25
       Caption = 'Bloco 1'
       TabOrder = 1
       OnClick = btnB_1Click
     end
     object btnB_C: TButton
-      Left = 215
-      Top = 22
-      Width = 80
+      Left = 284
+      Top = 51
+      Width = 60
       Height = 25
       Caption = 'Bloco C'
-      TabOrder = 2
+      TabOrder = 3
       OnClick = btnB_CClick
     end
     object btnB_D: TButton
-      Left = 301
-      Top = 22
-      Width = 80
+      Left = 369
+      Top = 51
+      Width = 62
       Height = 25
       Caption = 'Bloco D'
-      TabOrder = 3
+      TabOrder = 4
       OnClick = btnB_DClick
     end
     object btnB_A: TButton
-      Left = 129
-      Top = 22
-      Width = 80
+      Left = 197
+      Top = 51
+      Width = 62
       Height = 25
       Caption = 'Bloco A'
-      TabOrder = 4
+      TabOrder = 2
       OnClick = btnB_AClick
     end
     object btnB_F: TButton
-      Left = 387
-      Top = 22
-      Width = 80
+      Left = 457
+      Top = 51
+      Width = 62
       Height = 25
       Caption = 'Bloco F'
       TabOrder = 5
       OnClick = btnB_FClick
     end
     object btnB_M: TButton
-      Left = 473
-      Top = 22
-      Width = 80
+      Left = 544
+      Top = 51
+      Width = 62
       Height = 25
       Caption = 'Bloco M'
       TabOrder = 6
       OnClick = btnB_MClick
     end
+    object btnVariosBlocos: TButton
+      Left = 22
+      Top = 20
+      Width = 584
+      Height = 25
+      Hint = 'Gera o arquivo com os bloco 0,1,A,C,9'
+      Caption = 'Todos os Blocos'
+      TabOrder = 7
+      OnClick = btnVariosBlocosClick
+    end
   end
   object btnB_9: TButton
     Left = 272
-    Top = 478
+    Top = 519
     Width = 100
     Height = 25
     Anchors = [akRight, akBottom]
@@ -290,18 +304,19 @@ object FrmSPEDPisCofins: TFrmSPEDPisCofins
     Enabled = False
     TabOrder = 6
     OnClick = btnB_9Click
+    ExplicitTop = 478
   end
   object edBufLinhas: TEdit
     Left = 16
-    Top = 478
+    Top = 521
     Width = 80
     Height = 21
     TabOrder = 7
     Text = '1000'
   end
   object edBufNotas: TEdit
-    Left = 120
-    Top = 478
+    Left = 128
+    Top = 521
     Width = 80
     Height = 21
     Enabled = False
@@ -309,19 +324,21 @@ object FrmSPEDPisCofins: TFrmSPEDPisCofins
     Text = '1000'
   end
   object ProgressBar1: TProgressBar
-    Left = 200
-    Top = 122
+    Left = 199
+    Top = 151
     Width = 348
     Height = 20
     TabOrder = 9
     Visible = False
   end
   object ACBrSPEDPisCofins1: TACBrSPEDPisCofins
-    Path = 'C:\Program Files\Borland\Delphi7\Bin\'
+    Path = '.\'
+    Arquivo = 'ACBrSPEDPisCofins.txt'
     Delimitador = '|'
     TrimString = True
     CurMascara = '#0.00'
+    OnError = ACBrSPEDPisCofins1Error
     Left = 352
-    Top = 208
+    Top = 248
   end
 end

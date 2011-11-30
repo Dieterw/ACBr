@@ -164,8 +164,6 @@ type
     class function StringToFloatDef(const AValue: String; const DefaultValue: Double): Double;
     class procedure ConfAmbiente;
     class function PathAplication: String;
-    class function ParseText( Texto : AnsiString; Decode : Boolean = True) : AnsiString;
-    class function SeparaDados( Texto : AnsiString; Chave : String; MantemChave : Boolean = False ) : AnsiString;
     class function GerarChaveContingencia(FNFe:TNFe): String;
     class function FormatarChaveContigencia(AValue: String): String;
     class function PreparaCasasDecimais(AValue: Integer): String;

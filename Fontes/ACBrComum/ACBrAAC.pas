@@ -176,6 +176,7 @@ begin
   fsGravarDadosSH     := True;
   fsGravarDadosPAF    := True;
   fsGravarTodosECFs   := True;
+  fsGravarConfigApp   := True;
   fsDtHrArquivo       := 0 ;
 end ;
 
@@ -292,34 +293,34 @@ begin
 
      if GravarConfigApp then
      begin
-        fsIdentPAF.Paf.RealizaPreVenda              := Ini.ReadBool('CONFIG', 'RealizaPreVenda', False);
-        fsIdentPAF.Paf.RealizaDAVECF                := Ini.ReadBool('CONFIG', 'RealizaDAVECF', False);
-        fsIdentPAF.Paf.RealizaDAVNaoFiscal          := Ini.ReadBool('CONFIG', 'RealizaDAVNaoFiscal', False);
-        fsIdentPAF.Paf.RealizaDAVOS                 := Ini.ReadBool('CONFIG', 'RealizaDAVOS', False);
-        fsIdentPAF.Paf.DAVConfAnexoII               := Ini.ReadBool('CONFIG', 'DAVConfAnexoII', False);
-        fsIdentPAF.Paf.RealizaLancamentoMesa        := Ini.ReadBool('CONFIG', 'RealizaLancamentoMesa', False);
-        fsIdentPAF.Paf.IndiceTecnicoProd            := Ini.ReadBool('CONFIG', 'IndiceTecnicoProd', False);
-        fsIdentPAF.Paf.BarSimilarECFRestaurante     := Ini.ReadBool('CONFIG', 'BarSimilarECFRestaurante', False);
-        fsIdentPAF.Paf.BarSimilarECFComum           := Ini.ReadBool('CONFIG', 'BarSimilarECFComum', False);
-        fsIdentPAF.Paf.BarSimilarBalanca            := Ini.ReadBool('CONFIG', 'BarSimilarBalanca', False);
-        fsIdentPAF.Paf.UsaImpressoraNaoFiscal       := Ini.ReadBool('CONFIG', 'UsaImpressoraNaoFiscal', False);
-        fsIdentPAF.Paf.DAVDiscrFormula              := Ini.ReadBool('CONFIG', 'DAVDiscrFormula', False);
-        fsIdentPAF.Paf.ImpedeVendaVlrZero           := Ini.ReadBool('CONFIG', 'ImpedeVendaVlrZero', False);
-        fsIdentPAF.Paf.AcumulaVolumeDiario          := Ini.ReadBool('CONFIG', 'AcumulaVolumeDiario', False);
-        fsIdentPAF.Paf.ArmazenaEncerranteIniFinal   := Ini.ReadBool('CONFIG', 'ArmazenaEncerranteIniFinal', False);
-        fsIdentPAF.Paf.EmiteContrEncerrAposREDZLEIX := Ini.ReadBool('CONFIG', 'EmiteContrEncerrAposREDZLEIX', False);
-        fsIdentPAF.Paf.IntegradoComBombas           := Ini.ReadBool('CONFIG', 'IntegradoComBombas', False);
-        fsIdentPAF.Paf.CriaAbastDivergEncerrante    := Ini.ReadBool('CONFIG', 'CriaAbastDivergEncerrante', False);
-        fsIdentPAF.Paf.CadastroPlacaBomba           := Ini.ReadBool('CONFIG', 'CadastroPlacaBomba', False);
-        fsIdentPAF.Paf.TransportePassageiro         := Ini.ReadBool('CONFIG', 'TransportePassageiro', False);
-        fsIdentPAF.Paf.TotalizaValoresLista         := Ini.ReadBool('CONFIG', 'TotalizaValoresLista', False);
-        fsIdentPAF.Paf.TransfPreVenda               := Ini.ReadBool('CONFIG', 'TransfPreVenda', False);
-        fsIdentPAF.Paf.TransfDAV                    := Ini.ReadBool('CONFIG', 'TransfDAV', False);
-        fsIdentPAF.Paf.NaoCoincGT                   := Ini.ReadBool('CONFIG', 'NaoCoincGT', False);
-        fsIdentPAF.Paf.RecompoeGT                   := Ini.ReadBool('CONFIG', 'RecompoeGT', False);
-        fsIdentPAF.Paf.EmitePED                     := Ini.ReadBool('CONFIG', 'EmitePED', False);
-        fsIdentPAF.Paf.CupomMania                   := Ini.ReadBool('CONFIG', 'CupomMania', False);
-        fsIdentPAF.Paf.MinasLegal                   := Ini.ReadBool('CONFIG', 'MinasLegal', False);
+        fsIdentPAF.Paf.RealizaPreVenda              := Ini.ReadBool('PAF', 'RealizaPreVenda', False);
+        fsIdentPAF.Paf.RealizaDAVECF                := Ini.ReadBool('PAF', 'RealizaDAVECF', False);
+        fsIdentPAF.Paf.RealizaDAVNaoFiscal          := Ini.ReadBool('PAF', 'RealizaDAVNaoFiscal', False);
+        fsIdentPAF.Paf.RealizaDAVOS                 := Ini.ReadBool('PAF', 'RealizaDAVOS', False);
+        fsIdentPAF.Paf.DAVConfAnexoII               := Ini.ReadBool('PAF', 'DAVConfAnexoII', False);
+        fsIdentPAF.Paf.RealizaLancamentoMesa        := Ini.ReadBool('PAF', 'RealizaLancamentoMesa', False);
+        fsIdentPAF.Paf.IndiceTecnicoProd            := Ini.ReadBool('PAF', 'IndiceTecnicoProd', False);
+        fsIdentPAF.Paf.BarSimilarECFRestaurante     := Ini.ReadBool('PAF', 'BarSimilarECFRestaurante', False);
+        fsIdentPAF.Paf.BarSimilarECFComum           := Ini.ReadBool('PAF', 'BarSimilarECFComum', False);
+        fsIdentPAF.Paf.BarSimilarBalanca            := Ini.ReadBool('PAF', 'BarSimilarBalanca', False);
+        fsIdentPAF.Paf.UsaImpressoraNaoFiscal       := Ini.ReadBool('PAF', 'UsaImpressoraNaoFiscal', False);
+        fsIdentPAF.Paf.DAVDiscrFormula              := Ini.ReadBool('PAF', 'DAVDiscrFormula', False);
+        fsIdentPAF.Paf.ImpedeVendaVlrZero           := Ini.ReadBool('PAF', 'ImpedeVendaVlrZero', False);
+        fsIdentPAF.Paf.AcumulaVolumeDiario          := Ini.ReadBool('PAF', 'AcumulaVolumeDiario', False);
+        fsIdentPAF.Paf.ArmazenaEncerranteIniFinal   := Ini.ReadBool('PAF', 'ArmazenaEncerranteIniFinal', False);
+        fsIdentPAF.Paf.EmiteContrEncerrAposREDZLEIX := Ini.ReadBool('PAF', 'EmiteContrEncerrAposREDZLEIX', False);
+        fsIdentPAF.Paf.IntegradoComBombas           := Ini.ReadBool('PAF', 'IntegradoComBombas', False);
+        fsIdentPAF.Paf.CriaAbastDivergEncerrante    := Ini.ReadBool('PAF', 'CriaAbastDivergEncerrante', False);
+        fsIdentPAF.Paf.CadastroPlacaBomba           := Ini.ReadBool('PAF', 'CadastroPlacaBomba', False);
+        fsIdentPAF.Paf.TransportePassageiro         := Ini.ReadBool('PAF', 'TransportePassageiro', False);
+        fsIdentPAF.Paf.TotalizaValoresLista         := Ini.ReadBool('PAF', 'TotalizaValoresLista', False);
+        fsIdentPAF.Paf.TransfPreVenda               := Ini.ReadBool('PAF', 'TransfPreVenda', False);
+        fsIdentPAF.Paf.TransfDAV                    := Ini.ReadBool('PAF', 'TransfDAV', False);
+        fsIdentPAF.Paf.NaoCoincGT                   := Ini.ReadBool('PAF', 'NaoCoincGT', False);
+        fsIdentPAF.Paf.RecompoeGT                   := Ini.ReadBool('PAF', 'RecompoeGT', False);
+        fsIdentPAF.Paf.EmitePED                     := Ini.ReadBool('PAF', 'EmitePED', False);
+        fsIdentPAF.Paf.CupomMania                   := Ini.ReadBool('PAF', 'CupomMania', False);
+        fsIdentPAF.Paf.MinasLegal                   := Ini.ReadBool('PAF', 'MinasLegal', False);
      end;
 
      fsIdentPAF.ArquivoListaAutenticados.MD5 := Ini.ReadString('PAF','MD5','');     // MD5 do arquivo que contem a lista de arquivos autenticados
@@ -453,34 +454,34 @@ begin
 
      if GravarConfigApp then
      begin
-        Ini.WriteBool('CONFIG', 'RealizaPreVenda', fsIdentPAF.Paf.RealizaPreVenda);
-        Ini.WriteBool('CONFIG', 'RealizaDAVECF', fsIdentPAF.Paf.RealizaDAVECF);
-        Ini.WriteBool('CONFIG', 'RealizaDAVNaoFiscal', fsIdentPAF.Paf.RealizaDAVNaoFiscal);
-        Ini.WriteBool('CONFIG', 'RealizaDAVOS', fsIdentPAF.Paf.RealizaDAVOS);
-        Ini.WriteBool('CONFIG', 'DAVConfAnexoII', fsIdentPAF.Paf.DAVConfAnexoII);
-        Ini.WriteBool('CONFIG', 'RealizaLancamentoMesa', fsIdentPAF.Paf.RealizaLancamentoMesa);
-        Ini.WriteBool('CONFIG', 'IndiceTecnicoProd', fsIdentPAF.Paf.IndiceTecnicoProd);
-        Ini.WriteBool('CONFIG', 'BarSimilarECFRestaurante', fsIdentPAF.Paf.BarSimilarECFRestaurante);
-        Ini.WriteBool('CONFIG', 'BarSimilarECFComum', fsIdentPAF.Paf.BarSimilarECFComum);
-        Ini.WriteBool('CONFIG', 'BarSimilarBalanca', fsIdentPAF.Paf.BarSimilarBalanca);
-        Ini.WriteBool('CONFIG', 'UsaImpressoraNaoFiscal', fsIdentPAF.Paf.UsaImpressoraNaoFiscal);
-        Ini.WriteBool('CONFIG', 'DAVDiscrFormula', fsIdentPAF.Paf.DAVDiscrFormula);
-        Ini.WriteBool('CONFIG', 'ImpedeVendaVlrZero', fsIdentPAF.Paf.ImpedeVendaVlrZero);
-        Ini.WriteBool('CONFIG', 'AcumulaVolumeDiario', fsIdentPAF.Paf.AcumulaVolumeDiario);
-        Ini.WriteBool('CONFIG', 'ArmazenaEncerranteIniFinal', fsIdentPAF.Paf.ArmazenaEncerranteIniFinal);
-        Ini.WriteBool('CONFIG', 'EmiteContrEncerrAposREDZLEIX', fsIdentPAF.Paf.EmiteContrEncerrAposREDZLEIX);
-        Ini.WriteBool('CONFIG', 'IntegradoComBombas', fsIdentPAF.Paf.IntegradoComBombas);
-        Ini.WriteBool('CONFIG', 'CriaAbastDivergEncerrante', fsIdentPAF.Paf.CriaAbastDivergEncerrante);
-        Ini.WriteBool('CONFIG', 'CadastroPlacaBomba', fsIdentPAF.Paf.CadastroPlacaBomba);
-        Ini.WriteBool('CONFIG', 'TransportePassageiro', fsIdentPAF.Paf.TransportePassageiro);
-        Ini.WriteBool('CONFIG', 'TotalizaValoresLista', fsIdentPAF.Paf.TotalizaValoresLista);
-        Ini.WriteBool('CONFIG', 'TransfPreVenda', fsIdentPAF.Paf.TransfPreVenda);
-        Ini.WriteBool('CONFIG', 'TransfDAV', fsIdentPAF.Paf.TransfDAV);
-        Ini.WriteBool('CONFIG', 'NaoCoincGT', fsIdentPAF.Paf.NaoCoincGT);
-        Ini.WriteBool('CONFIG', 'RecompoeGT', fsIdentPAF.Paf.RecompoeGT);
-        Ini.WriteBool('CONFIG', 'EmitePED', fsIdentPAF.Paf.EmitePED);
-        Ini.WriteBool('CONFIG', 'CupomMania', fsIdentPAF.Paf.CupomMania);
-        Ini.WriteBool('CONFIG', 'MinasLegal', fsIdentPAF.Paf.MinasLegal);
+        Ini.WriteBool('PAF', 'RealizaPreVenda', fsIdentPAF.Paf.RealizaPreVenda);
+        Ini.WriteBool('PAF', 'RealizaDAVECF', fsIdentPAF.Paf.RealizaDAVECF);
+        Ini.WriteBool('PAF', 'RealizaDAVNaoFiscal', fsIdentPAF.Paf.RealizaDAVNaoFiscal);
+        Ini.WriteBool('PAF', 'RealizaDAVOS', fsIdentPAF.Paf.RealizaDAVOS);
+        Ini.WriteBool('PAF', 'DAVConfAnexoII', fsIdentPAF.Paf.DAVConfAnexoII);
+        Ini.WriteBool('PAF', 'RealizaLancamentoMesa', fsIdentPAF.Paf.RealizaLancamentoMesa);
+        Ini.WriteBool('PAF', 'IndiceTecnicoProd', fsIdentPAF.Paf.IndiceTecnicoProd);
+        Ini.WriteBool('PAF', 'BarSimilarECFRestaurante', fsIdentPAF.Paf.BarSimilarECFRestaurante);
+        Ini.WriteBool('PAF', 'BarSimilarECFComum', fsIdentPAF.Paf.BarSimilarECFComum);
+        Ini.WriteBool('PAF', 'BarSimilarBalanca', fsIdentPAF.Paf.BarSimilarBalanca);
+        Ini.WriteBool('PAF', 'UsaImpressoraNaoFiscal', fsIdentPAF.Paf.UsaImpressoraNaoFiscal);
+        Ini.WriteBool('PAF', 'DAVDiscrFormula', fsIdentPAF.Paf.DAVDiscrFormula);
+        Ini.WriteBool('PAF', 'ImpedeVendaVlrZero', fsIdentPAF.Paf.ImpedeVendaVlrZero);
+        Ini.WriteBool('PAF', 'AcumulaVolumeDiario', fsIdentPAF.Paf.AcumulaVolumeDiario);
+        Ini.WriteBool('PAF', 'ArmazenaEncerranteIniFinal', fsIdentPAF.Paf.ArmazenaEncerranteIniFinal);
+        Ini.WriteBool('PAF', 'EmiteContrEncerrAposREDZLEIX', fsIdentPAF.Paf.EmiteContrEncerrAposREDZLEIX);
+        Ini.WriteBool('PAF', 'IntegradoComBombas', fsIdentPAF.Paf.IntegradoComBombas);
+        Ini.WriteBool('PAF', 'CriaAbastDivergEncerrante', fsIdentPAF.Paf.CriaAbastDivergEncerrante);
+        Ini.WriteBool('PAF', 'CadastroPlacaBomba', fsIdentPAF.Paf.CadastroPlacaBomba);
+        Ini.WriteBool('PAF', 'TransportePassageiro', fsIdentPAF.Paf.TransportePassageiro);
+        Ini.WriteBool('PAF', 'TotalizaValoresLista', fsIdentPAF.Paf.TotalizaValoresLista);
+        Ini.WriteBool('PAF', 'TransfPreVenda', fsIdentPAF.Paf.TransfPreVenda);
+        Ini.WriteBool('PAF', 'TransfDAV', fsIdentPAF.Paf.TransfDAV);
+        Ini.WriteBool('PAF', 'NaoCoincGT', fsIdentPAF.Paf.NaoCoincGT);
+        Ini.WriteBool('PAF', 'RecompoeGT', fsIdentPAF.Paf.RecompoeGT);
+        Ini.WriteBool('PAF', 'EmitePED', fsIdentPAF.Paf.EmitePED);
+        Ini.WriteBool('PAF', 'CupomMania', fsIdentPAF.Paf.CupomMania);
+        Ini.WriteBool('PAF', 'MinasLegal', fsIdentPAF.Paf.MinasLegal);
      end;
 
 

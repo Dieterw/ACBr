@@ -562,12 +562,12 @@ begin
                LFill( DT_OPER )          +
                LFill( VL_OPER,0,2 )      +
                LFill( strCST_PIS )       +
-               LFill( VL_BC_PIS,0,2 )    +
-               LFill( ALIQ_PIS,0,2 )     +
+               LFill( VL_BC_PIS,0,4, False, '0','0.0000' )    +
+               LFill( ALIQ_PIS,0,4, False, '0','0.0000' )     +
                LFill( VL_PIS,0,2 )       +
                LFill( strCST_COFINS )    +
-               LFill( VL_BC_COFINS,0,2 ) +
-               LFill( ALIQ_COFINS,0,2 )  +
+               LFill( VL_BC_COFINS,0,4, False, '0','0.0000' ) +
+               LFill( ALIQ_COFINS,0,4, False, '0','0.0000' )  +
                LFill( VL_COFINS,0,2 )    +
                LFill( strNAT_BC_CRED )   +
                LFill( strIND_ORIG_CRED ) +

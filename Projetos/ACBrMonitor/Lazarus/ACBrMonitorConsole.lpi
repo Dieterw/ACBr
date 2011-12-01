@@ -10,7 +10,6 @@
       <MainUnit Value="0"/>
       <Title Value="ACBrMonitorConsole"/>
       <UseAppBundle Value="False"/>
-      <ActiveWindowIndexAtStart Value="0"/>
     </General>
     <i18n>
       <EnableI18N LFM="False"/>
@@ -37,12 +36,10 @@
         <Filename Value="ACBrMonitorConsole.lpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="ACBrMonitorConsole"/>
-        <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
         <TopLine Value="136"/>
         <CursorPos X="45" Y="156"/>
         <UsageCount Value="27"/>
-        <Loaded Value="True"/>
       </Unit0>
       <Unit1>
         <Filename Value="ACBrMonitorConsoleDM.pas"/>
@@ -52,12 +49,10 @@
         <ResourceBaseClass Value="DataModule"/>
         <UnitName Value="ACBrMonitorConsoleDM"/>
         <IsVisibleTab Value="True"/>
-        <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
         <TopLine Value="33"/>
-        <CursorPos X="19" Y="45"/>
+        <CursorPos X="20" Y="45"/>
         <UsageCount Value="27"/>
-        <Loaded Value="True"/>
       </Unit1>
       <Unit2>
         <Filename Value="C:\lazarus\fpc\2.4.3\source\packages\fcl-base\src\custapp.pp"/>
@@ -413,103 +408,10 @@
         <UsageCount Value="10"/>
       </Unit47>
     </Units>
-    <JumpHistory Count="23" HistoryIndex="22">
-      <Position1>
-        <Filename Value="ACBrMonitorConsole.lpr"/>
-        <Caret Line="289" Column="19" TopLine="270"/>
-      </Position1>
-      <Position2>
-        <Filename Value="ACBrMonitorConsole.lpr"/>
-        <Caret Line="254" Column="18" TopLine="241"/>
-      </Position2>
-      <Position3>
-        <Filename Value="ACBrMonitorConsole.lpr"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
-      </Position3>
-      <Position4>
-        <Filename Value="ACBrMonitorConsole.lpr"/>
-        <Caret Line="117" Column="28" TopLine="100"/>
-      </Position4>
-      <Position5>
-        <Filename Value="ACBrMonitorConsole.lpr"/>
-        <Caret Line="121" Column="23" TopLine="104"/>
-      </Position5>
-      <Position6>
-        <Filename Value="ACBrMonitorConsole.lpr"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
-      </Position6>
-      <Position7>
-        <Filename Value="ACBrMonitorConsole.lpr"/>
-        <Caret Line="40" Column="6" TopLine="35"/>
-      </Position7>
-      <Position8>
-        <Filename Value="ACBrMonitorConsole.lpr"/>
-        <Caret Line="41" Column="27" TopLine="21"/>
-      </Position8>
-      <Position9>
-        <Filename Value="ACBrMonitorConsole.lpr"/>
-        <Caret Line="294" Column="1" TopLine="269"/>
-      </Position9>
-      <Position10>
-        <Filename Value="ACBrMonitorConsole.lpr"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
-      </Position10>
-      <Position11>
-        <Filename Value="ACBrMonitorConsole.lpr"/>
-        <Caret Line="10" Column="35" TopLine="1"/>
-      </Position11>
-      <Position12>
-        <Filename Value="ACBrMonitorConsole.lpr"/>
-        <Caret Line="15" Column="36" TopLine="1"/>
-      </Position12>
-      <Position13>
-        <Filename Value="ACBrMonitorConsole.lpr"/>
-        <Caret Line="16" Column="16" TopLine="1"/>
-      </Position13>
-      <Position14>
-        <Filename Value="ACBrMonitorConsole.lpr"/>
-        <Caret Line="140" Column="50" TopLine="127"/>
-      </Position14>
-      <Position15>
-        <Filename Value="ACBrMonitorConsole.lpr"/>
-        <Caret Line="134" Column="16" TopLine="127"/>
-      </Position15>
-      <Position16>
-        <Filename Value="ACBrMonitorConsole.lpr"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
-      </Position16>
-      <Position17>
-        <Filename Value="ACBrMonitorConsole.lpr"/>
-        <Caret Line="10" Column="35" TopLine="1"/>
-      </Position17>
-      <Position18>
-        <Filename Value="ACBrMonitorConsole.lpr"/>
-        <Caret Line="15" Column="36" TopLine="1"/>
-      </Position18>
-      <Position19>
-        <Filename Value="ACBrMonitorConsole.lpr"/>
-        <Caret Line="16" Column="16" TopLine="1"/>
-      </Position19>
-      <Position20>
-        <Filename Value="ACBrMonitorConsole.lpr"/>
-        <Caret Line="140" Column="50" TopLine="126"/>
-      </Position20>
-      <Position21>
-        <Filename Value="ACBrMonitorConsole.lpr"/>
-        <Caret Line="130" Column="15" TopLine="72"/>
-      </Position21>
-      <Position22>
-        <Filename Value="ACBrMonitorConsole.lpr"/>
-        <Caret Line="140" Column="78" TopLine="120"/>
-      </Position22>
-      <Position23>
-        <Filename Value="ACBrMonitorConsole.lpr"/>
-        <Caret Line="156" Column="45" TopLine="136"/>
-      </Position23>
-    </JumpHistory>
+    <JumpHistory Count="0" HistoryIndex="-1"/>
   </ProjectOptions>
   <CompilerOptions>
-    <Version Value="10"/>
+    <Version Value="11"/>
     <PathDelim Value="\"/>
     <Target>
       <Filename Value="ACBrMonitorConsole"/>
@@ -521,7 +423,7 @@
     </SearchPaths>
     <Linking>
       <Debugging>
-        <DebugInfoType Value="dsAuto"/>
+        <GenerateDebugInfo Value="False"/>
         <UseLineInfoUnit Value="False"/>
         <StripSymbols Value="True"/>
       </Debugging>

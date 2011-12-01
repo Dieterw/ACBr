@@ -42,7 +42,7 @@ uses
   ACBrECF, ACBrRFD, ACBrBAL, ACBrETQ, ACBrSocket, ACBrCEP, ACBrIBGE ;
 
 const
-   Versao = '0.9.7b' ;
+   {$I versao.txt}
    _C = 'tYk*5W@' ;
 
 type

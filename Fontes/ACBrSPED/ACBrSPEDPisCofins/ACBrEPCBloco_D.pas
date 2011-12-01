@@ -117,7 +117,7 @@ type
   //REGISTRO D100: AQUISIÇÃO DE SERVIÇOS DE TRANSPORTE - NOTA FISCAL DE SERVIÇO DE TRANSPORTE (CÓDIGO 07) E CONHECIMENTOS DE TRANSPORTE RODOVIÁRIO DE CARGAS (CÓDIGO 08), CONHECIMENTO DE TRANSPORTE DE CARGAS AVULSO (CÓDIGO 8B), AQUAVIÁRIO DE CARGAS (CÓDIGO 09), AÉREO (CÓDIGO 10), FERROVIÁRIO DE CARGAS (CÓDIGO 11), MULTIMODAL DE CARGAS (CÓDIGO 26), NOTA FISCAL DE TRANSPORTE FERROVIÁRIO DE CARGA (CÓDIGO 27) E CONHECIMENTO DE TRANSPORTE ELETRÔNICO – CT-e (CÓDIGO 57)
   TRegistroD100 = class
   private
-    fIND_OPER     : TACBrIndicadorTpOperacao;          //02	IND_OPER	Indicador do tipo de operação:0- Aquisição;	C	001*	-
+    fIND_OPER     : string;                            //02	IND_OPER	Indicador do tipo de operação:0- Aquisição;	C	001*	-
     fIND_EMIT     : TACBrIndicadorEmitenteDF;          //03	IND_EMIT	Indicador do emitente do documento fiscal:0- Emissão Própria;1- Emissão por Terceiros	C	001*	-
     fCOD_PART     : string;                            //04	COD_PART	Código do participante (campo 02 do Registro 0150).	C	060	-
     fCOD_MOD      : string;                            //05	COD_MOD	Código do modelo do documento fiscal, conforme a Tabela 4.1.1 	C	002*	-
@@ -129,7 +129,7 @@ type
     fDT_DOC       : TDateTime;                         //11	DT_DOC	Data de referência/emissão dos documentos fiscais	N	008*	-
     fDT_A_P       : TDateTime;                         //12	DT_A_P	Data da aquisição ou da prestação do serviço	N	008*	-
     fTP_CT_e      : string;                            //13	TP_CT-e	Tipo de Conhecimento de Transporte Eletrônico conforme definido no Manual de Integração do CT-e	N	001*	-
-    fCHV_CTE_REF  : string;                           //14	CHV_CTE_REF	Chave do CT-e de referência cujos valores foram complementados (opção “1” do campo anterior) ou cujo débito foi anulado (opção “2” do campo anterior). 	N	044*	-
+    fCHV_CTE_REF  : string;                            //14	CHV_CTE_REF	Chave do CT-e de referência cujos valores foram complementados (opção “1” do campo anterior) ou cujo débito foi anulado (opção “2” do campo anterior). 	N	044*	-
     fVL_DOC       : Currency;                          //15	VL_DOC	Valor total do documento fiscal	N	-	02
     fVL_DESC      : Currency;                          //16	VL_DESC	Valor total do desconto	N	-	02
     fIND_FRT      : TACBrTipoFrete;                    //17	IND_FRT	Indicador do tipo do frete:0- Por conta de terceiros;1- Por conta do emitente;2- Por conta do destinatário;9- Sem cobrança de frete.	C	001*	-
@@ -147,7 +147,7 @@ type
     constructor Create;  virtual;  // Create
     destructor  Destroy; override; // Destroy
 
-    property IND_OPER     : TACBrIndicadorTpOperacao read FIND_OPER     write FIND_OPER;
+    property IND_OPER     : string                   read FIND_OPER     write FIND_OPER;
     property IND_EMIT     : TACBrIndicadorEmitenteDF read FIND_EMIT     write FIND_EMIT;
     property COD_PART     : string                   read FCOD_PART     write FCOD_PART;
     property COD_MOD      : string                   read FCOD_MOD      write FCOD_MOD;
@@ -158,8 +158,8 @@ type
     property CHV_CTE      : string                   read FCHV_CTE      write FCHV_CTE;
     property DT_DOC       : TDateTime                read FDT_DOC       write FDT_DOC;
     property DT_A_P       : TDateTime                read FDT_A_P       write FDT_A_P;
-    property TP_CT_e      : string                  read FTP_CT_e      write FTP_CT_e;
-    property CHV_CTE_REF  : string                  read FCHV_CTE_REF  write FCHV_CTE_REF;
+    property TP_CT_e      : string                   read FTP_CT_e      write FTP_CT_e;
+    property CHV_CTE_REF  : string                   read FCHV_CTE_REF  write FCHV_CTE_REF;
     property VL_DOC       : Currency                 read FVL_DOC       write FVL_DOC;
     property VL_DESC      : Currency                 read FVL_DESC      write FVL_DESC;
     property IND_FRT      : TACBrTipoFrete           read FIND_FRT      write FIND_FRT;

@@ -449,7 +449,7 @@ type
     FCST_PIS                : TACBrSituacaoTribPIS;
     FIDENT_EMP              : string;
     FNUM_CONT               : string;
-    FIND_OPER               : TACBrIndicadorTpOperacao;
+    FIND_OPER               : string;
     FINF_COMP               : string;
     FDESC_UNID_IMOB         : string;
     FIND_NAT_EMP            : string;
@@ -462,7 +462,7 @@ type
     constructor Create; virtual;  /// Create
     destructor Destroy; override; /// Destroy
 
-    property IND_OPER       : TACBrIndicadorTpOperacao read FIND_OPER       write FIND_OPER;
+    property IND_OPER       : string                   read FIND_OPER       write FIND_OPER;
     property UNID_IMOB      : string                   read FUNID_IMOB      write FUNID_IMOB;
     property IDENT_EMP      : string                   read FIDENT_EMP      write FIDENT_EMP;
     property DESC_UNID_IMOB : string                   read FDESC_UNID_IMOB write FDESC_UNID_IMOB;

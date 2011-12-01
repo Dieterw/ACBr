@@ -494,7 +494,7 @@ end;
 procedure TBloco_D.WriteRegistroD100(RegD010: TRegistroD010) ;
   var
     intFor      : integer;
-    strIND_OPER : AnsiString;
+//    strIND_OPER : AnsiString;
     strIND_EMIT : AnsiString;
     strCOD_SIT  : AnsiString;
     strCOD_MOD  : AnsiString;
@@ -508,10 +508,14 @@ begin
         begin
           Check(Pos(COD_MOD, '07 08 8B 09 10 11 26 27 57') > 0, '(D-100) O Modelo do Documento "%s" é inválido!', [COD_MOD]);
 
-          case IND_OPER of
-            itoContratado : strIND_OPER := '0';
-            itoPrestado   : strIND_OPER := '1';
-          end;
+
+//          case IND_OPER of
+//            itoContratado : strIND_OPER := '0';
+//            itoPrestado   : strIND_OPER := '1';
+//          end;
+
+//          strIND_OPER := IND_OPER[1];
+
           case IND_EMIT of
             iedfProprio  : strIND_EMIT := '0';
             iedfTerceiro : strIND_EMIT := '1';
@@ -535,7 +539,7 @@ begin
           end;
 
           Add( LFill('D100')           +
-               LFill( strIND_OPER )    +
+               LFill( IND_OPER )       +
                LFill( strIND_EMIT )    +
                LFill( COD_PART )       +
                LFill( COD_MOD )        +

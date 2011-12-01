@@ -1088,7 +1088,7 @@ end;
 procedure TBloco_F.WriteRegistroF200(RegF010: TRegistroF010) ;
   var
     intFor         : integer;
-    strIND_OPER    : AnsiString;
+//    strIND_OPER    : AnsiString;
     strCST_PIS     : AnsiString;
     strCST_COFINS  : AnsiString;
 begin
@@ -1098,10 +1098,10 @@ begin
      begin
         with RegF010.RegistroF200.Items[intFor] do
         begin
-          case IND_OPER of
-            itoContratado : strIND_OPER := '0';
-            itoPrestado   : strIND_OPER := '1';
-          end;
+//          case IND_OPER of
+//            itoContratado : strIND_OPER := '0';
+//            itoPrestado   : strIND_OPER := '1';
+//          end;
 
           case CST_PIS of
             stpisValorAliquotaNormal                           : strCST_PIS := '01';
@@ -1176,7 +1176,7 @@ begin
           end;
 
           Add( LFill('F200')               +
-               LFill( strIND_OPER )        +
+               LFill( IND_OPER )           + //Verificar criação da tabela no ACBrEPCBlocos ATENÇÃO: não é igual a TACBrIndicadorTpOperacao
                LFill( UNID_IMOB )          + //Verificar criação da tabela no ACBrEPCBlocos
                LFill( IDENT_EMP )          +
                LFill( DESC_UNID_IMOB )     +

@@ -12,13 +12,12 @@
       <Title Value="ECFTeste"/>
       <ResourceType Value="res"/>
       <UseXPManifest Value="True"/>
-      <ActiveWindowIndexAtStart Value="0"/>
     </General>
     <VersionInfo>
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
       <MinorVersionNr Value="9"/>
-      <BuildNr Value="10"/>
+      <BuildNr Value="12"/>
       <Language Value="0416"/>
       <CharSet Value="04B0"/>
       <StringTable ProductVersion=""/>
@@ -38,7 +37,7 @@
         <LaunchingApplication PathPlusParams="\usr\X11R6\bin\xterm -T 'Lazarus Run Output' -e $(LazarusDir)\tools\runwait.sh $(TargetCmdLine)"/>
       </local>
     </RunParams>
-    <RequiredPackages Count="8">
+    <RequiredPackages Count="7">
       <Item1>
         <PackageName Value="ACBrComum"/>
       </Item1>
@@ -51,22 +50,18 @@
         <MinVersion Major="1" Minor="2" Valid="True" Release="1"/>
       </Item3>
       <Item4>
-        <PackageName Value="zcomponent"/>
-        <MinVersion Major="6" Minor="6" Valid="True" Release="6"/>
-      </Item4>
-      <Item5>
         <PackageName Value="LCLBase"/>
         <MinVersion Major="1" Valid="True" Release="1"/>
+      </Item4>
+      <Item5>
+        <PackageName Value="ACBrSerial"/>
       </Item5>
       <Item6>
-        <PackageName Value="ACBrSerial"/>
+        <PackageName Value="LCL"/>
       </Item6>
       <Item7>
-        <PackageName Value="LCL"/>
-      </Item7>
-      <Item8>
         <PackageName Value="TurboPowerIPro"/>
-      </Item8>
+      </Item7>
     </RequiredPackages>
     <Units Count="7">
       <Unit0>
@@ -85,13 +80,10 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ECFTeste1"/>
         <IsVisibleTab Value="True"/>
-        <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="36" Y="13"/>
         <UsageCount Value="201"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
       </Unit1>
       <Unit2>
         <Filename Value="configuraserial.pas"/>
@@ -151,7 +143,7 @@
     </Units>
   </ProjectOptions>
   <CompilerOptions>
-    <Version Value="10"/>
+    <Version Value="11"/>
     <PathDelim Value="\"/>
     <Target>
       <Filename Value="ECFTeste"/>
@@ -166,7 +158,7 @@
     </Parsing>
     <Linking>
       <Debugging>
-        <DebugInfoType Value="dsAuto"/>
+        <GenerateDebugInfo Value="False"/>
         <UseLineInfoUnit Value="False"/>
         <StripSymbols Value="True"/>
       </Debugging>

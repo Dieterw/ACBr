@@ -1,5 +1,4 @@
 inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
-  Left = 199
   Top = 119
   Width = 835
   Height = 624
@@ -820,7 +819,7 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
       object QRLabel132: TQRLabel
         Left = 6
         Top = 45
-        Width = 27
+        Width = 14
         Height = 13
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -831,10 +830,10 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
           34.395833333333340000
           15.875000000000000000
           119.062500000000000000
-          71.437500000000000000)
+          37.041666666666670000)
         Alignment = taLeftJustify
         AlignToBand = False
-        AutoSize = False
+        AutoSize = True
         AutoStretch = False
         Caption = 'RG'
         Color = clWhite

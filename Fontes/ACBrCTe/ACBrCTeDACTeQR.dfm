@@ -1,6 +1,6 @@
 object frmDACTeQR: TfrmDACTeQR
-  Left = 193
-  Top = 114
+  Left = 199
+  Top = 118
   Width = 880
   Height = 708
   Caption = 'frmDACTeQR'
@@ -55,6 +55,7 @@ object frmDACTeQR: TfrmDACTeQR
     PrinterSettings.LastPage = 0
     PrinterSettings.OutputBin = Auto
     PrintIfEmpty = True
+    ReportTitle = 'DACTe 01/12/2011'
     ShowProgress = False
     SnapToGrid = True
     Units = MM

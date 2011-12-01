@@ -4578,8 +4578,8 @@ begin
        DescontoISSQN     := RoundTo( StrToFloatDef( copy(RetCmd,59,14),0) / 100, -2 ) ;
        CancelamentoISSQN := RoundTo( StrToFloatDef( copy(RetCmd,59,14),0) / 100, -2 ) ;
        CancelamentoICMS  := RoundTo( StrToFloatDef( copy(RetCmd,73,14),0) / 100, -2 ) ;
-       AcrescimoISSQN    := RoundTo( StrToFloatDef( copy(RetCmd,101,14),0) / 100, -2 ) ;
-       AcrescimoICMS     := RoundTo( StrToFloatDef( copy(RetCmd,115,14),0) / 100, -2 ) ;
+       AcrescimoICMS     := RoundTo( StrToFloatDef( copy(RetCmd,101,14),0) / 100, -2 ) ;
+       AcrescimoISSQN    := RoundTo( StrToFloatDef( copy(RetCmd,115,14),0) / 100, -2 ) ;
        DescontoOPNF      := RoundTo( StrToFloatDef( copy(RetCmd,801,14),0) / 100, -2 ) ;
        CancelamentoOPNF  := RoundTo( StrToFloatDef( copy(RetCmd,815,14),0) / 100, -2 ) ;
        AcrescimoOPNF     := RoundTo( StrToFloatDef( copy(RetCmd,829,14),0) / 100, -2 ) ;

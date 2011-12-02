@@ -294,6 +294,7 @@ type
     procedure SetItem(Index: Integer; const Value: TRegistro0190);
   public
     function New: TRegistro0190;
+    function LocalizaRegistro(pUNID: String): boolean;    
     property Items[Index: Integer]: TRegistro0190 read GetItem write SetItem;
   end;
 
@@ -598,6 +599,21 @@ end;
 function TRegistro0190List.GetItem(Index: Integer): TRegistro0190;
 begin
   Result := TRegistro0190(Inherited Items[Index]);
+end;
+
+function TRegistro0190List.LocalizaRegistro(pUNID: String): boolean;
+var
+intFor: integer;
+begin
+   Result := false;
+   for intFor := 0 to Self.Count - 1 do
+   begin
+      if Self.Items[intFor].UNID = pUNID then
+      begin
+         Result := true;
+         Break;
+      end;
+   end;
 end;
 
 function TRegistro0190List.New: TRegistro0190;

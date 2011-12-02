@@ -1208,7 +1208,7 @@ var
 
     DV := 0;
     for I := Length(ACodigoGTIN) downto 1 do
-      DV := DV + (StrToInt(ACodigoGTIN[I]) * IfThen(odd(I), 1, 3));
+      DV := DV + (StrToInt(ACodigoGTIN[I]) * IfThen(odd(I), 3, 1));
 
     DV := (Ceil(DV / 10) * 10) - DV ;
     Result := IntToStr(DV);

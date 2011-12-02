@@ -96,6 +96,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+-- ACBrValidador-- 02/12/2011
+[-]    Acerto o calculo do GTIN para codigos de 14 digitos
+       (por: Régys silveira)
+
 -- ACBrValidador-- 28/11/2011
 [+]    Adição da validação do número do GTIN.
        (por: Régys silveira)

@@ -4576,7 +4576,7 @@ begin
        ValorVendaBruta   := RoundTo( ValorGrandeTotal - GTInicial, -2 ) ;
        DescontoICMS      := RoundTo( StrToFloatDef( copy(RetCmd,45,14),0) / 100, -2 ) ;
        DescontoISSQN     := RoundTo( StrToFloatDef( copy(RetCmd,59,14),0) / 100, -2 ) ;
-       CancelamentoISSQN := RoundTo( StrToFloatDef( copy(RetCmd,59,14),0) / 100, -2 ) ;
+       CancelamentoISSQN := RoundTo( StrToFloatDef( copy(RetCmd,87,14),0) / 100, -2 ) ;
        CancelamentoICMS  := RoundTo( StrToFloatDef( copy(RetCmd,73,14),0) / 100, -2 ) ;
        AcrescimoICMS     := RoundTo( StrToFloatDef( copy(RetCmd,101,14),0) / 100, -2 ) ;
        AcrescimoISSQN    := RoundTo( StrToFloatDef( copy(RetCmd,115,14),0) / 100, -2 ) ;

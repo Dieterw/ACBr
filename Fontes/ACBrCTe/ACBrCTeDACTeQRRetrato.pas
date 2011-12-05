@@ -1380,6 +1380,23 @@ begin
         qrlVlrICMS.Caption     := CteUtil.FormatarValor(msk9x2, FCTe.Imp.ICMS.ICMS90.vICMS);
         qrlICMS_ST.Caption     := CteUtil.FormatarValor(msk4x2, FCTe.Imp.ICMS.ICMS90.vCred);
       end;
+    // Incluido por Italo em 05/12/2011 (contribuição de Doni Dephi)  
+    cstICMSOutraUF:
+      begin
+        qrlRedBaseCalc.Caption := CteUtil.FormatarValor(mskAliq, FCTe.Imp.ICMS.ICMSOutraUF.pRedBCOutraUF);
+        qrlBaseCalc.Caption    := CteUtil.FormatarValor(msk9x2, FCTe.Imp.ICMS.ICMSOutraUF.vBCOutraUF);
+        qrlAliqICMS.Caption    := CteUtil.FormatarValor(msk4x2, FCTe.Imp.ICMS.ICMSOutraUF.pICMSOutraUF);
+        qrlVlrICMS.Caption     := CteUtil.FormatarValor(msk9x2, FCTe.Imp.ICMS.ICMSOutraUF.vICMSOutraUF);
+        qrlICMS_ST.Caption     := '';
+      end;
+    cstICMSSN:
+      begin
+        qrlRedBaseCalc.Caption := '';
+        qrlBaseCalc.Caption    := '';
+        qrlAliqICMS.Caption    := '';
+        qrlVlrICMS.Caption     := '';
+        qrlICMS_ST.Caption     := '';
+      end;
   end;
 {$ENDIF}
 end;

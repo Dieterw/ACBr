@@ -38,6 +38,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+05/12/2011
+-- ACBrNFe2 --
+[*] Inclusão de diretivas de compilação para o Delphi XE2 nos Danfes para RAVE
+    por: juaumkiko
+
 29/11/2011
 -- ACBrEAD --
 [*] Adicionadas as configurações do Paf-ECF ao AAC

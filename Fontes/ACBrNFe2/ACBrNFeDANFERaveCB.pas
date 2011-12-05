@@ -49,7 +49,8 @@ interface
 
 uses Forms, SysUtils, Classes,
   RpDefine, RpDevice, RVClass, RVProj, RVCsBars, RVCsStd, RVCsData,
-  RvDirectDataView, RVDataField, jpeg,
+  RvDirectDataView, RVDataField,
+  {$IFNDEF COMPILER16} JPEG, {$ELSE} Vcl.Imaging.jpeg, {$ENDIF}
   ACBrNFeDANFEClass, ACBrDANFeCBRave, pcnNFe, pcnConversao;
 
 type

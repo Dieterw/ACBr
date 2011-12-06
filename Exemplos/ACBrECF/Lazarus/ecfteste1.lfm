@@ -185,7 +185,7 @@ object Form1: TForm1
       object SbArqLog: TSpeedButton
         Left = 277
         Height = 22
-        Top = 218
+        Top = 216
         Width = 24
         Caption = '...'
         NumGlyphs = 0
@@ -276,18 +276,18 @@ object Form1: TForm1
       end
       object chTentar: TCheckBox
         Left = 20
-        Height = 19
+        Height = 17
         Top = 66
-        Width = 109
+        Width = 107
         Caption = 'Tentar Novamente'
         OnChange = chTentarChange
         TabOrder = 4
       end
       object chBloqueia: TCheckBox
         Left = 20
-        Height = 19
+        Height = 17
         Top = 88
-        Width = 138
+        Width = 136
         Caption = 'Bloqueia Mouse Teclado'
         Checked = True
         OnChange = chBloqueiaChange
@@ -296,9 +296,9 @@ object Form1: TForm1
       end
       object chExibeMsg: TCheckBox
         Left = 20
-        Height = 19
+        Height = 17
         Top = 111
-        Width = 121
+        Width = 119
         Caption = 'Exibe Msg Aguarde...'
         Checked = True
         OnChange = chExibeMsgChange
@@ -307,18 +307,18 @@ object Form1: TForm1
       end
       object chArredondaPorQtd: TCheckBox
         Left = 188
-        Height = 19
+        Height = 17
         Top = 66
-        Width = 174
+        Width = 172
         Caption = 'Arredondamento por Quantidade'
         OnChange = chArredondaPorQtdChange
         TabOrder = 5
       end
       object chGavetaSinalInvertido: TCheckBox
         Left = 188
-        Height = 19
+        Height = 17
         Top = 88
-        Width = 125
+        Width = 123
         Caption = 'Gaveta Sinal Invertido'
         OnChange = chGavetaSinalInvertidoChange
         TabOrder = 7
@@ -443,9 +443,9 @@ object Form1: TForm1
       end
       object chDescricaoGrande: TCheckBox
         Left = 188
-        Height = 19
+        Height = 17
         Top = 134
-        Width = 106
+        Width = 104
         Caption = 'Descrição Grande'
         Checked = True
         OnChange = chDescricaoGrandeChange
@@ -454,9 +454,9 @@ object Form1: TForm1
       end
       object chArredondamentoItemMFD: TCheckBox
         Left = 188
-        Height = 19
+        Height = 17
         Top = 111
-        Width = 147
+        Width = 145
         Caption = 'Arredondamento Item MFD'
         OnChange = chArredondamentoItemMFDChange
         TabOrder = 9
@@ -483,9 +483,9 @@ object Form1: TForm1
       end
       object chAACUsar: TCheckBox
         Left = 196
-        Height = 19
+        Height = 17
         Top = 258
-        Width = 194
+        Width = 192
         Caption = 'Usar Arq.Auxiliar Criptografado'
         Font.CharSet = ANSI_CHARSET
         Font.Color = clBlack
@@ -499,9 +499,9 @@ object Form1: TForm1
       end
       object chAACFlush: TCheckBox
         Left = 415
-        Height = 19
+        Height = 17
         Top = 250
-        Width = 50
+        Width = 48
         Caption = 'Flush'
         Checked = True
         Font.CharSet = ANSI_CHARSET
@@ -517,9 +517,9 @@ object Form1: TForm1
       end
       object chProcessMessages: TCheckBox
         Left = 415
-        Height = 19
+        Height = 17
         Top = 274
-        Width = 121
+        Width = 119
         Caption = 'ProcessMessages'
         Checked = True
         Font.CharSet = ANSI_CHARSET
@@ -3297,19 +3297,30 @@ object Form1: TForm1
     IdentPAF.Paf.RealizaDAVECF = False
     IdentPAF.Paf.RealizaDAVNaoFiscal = False
     IdentPAF.Paf.RealizaDAVOS = False
+    IdentPAF.Paf.DAVConfAnexoII = False
+    IdentPAF.Paf.RealizaLancamentoMesa = False
     IdentPAF.Paf.IndiceTecnicoProd = False
-    IdentPAF.Paf.PostoCombustivel = False
     IdentPAF.Paf.BarSimilarECFRestaurante = False
     IdentPAF.Paf.BarSimilarECFComum = False
-    IdentPAF.Paf.FarmaciaManipulacao = False
-    IdentPAF.Paf.OficinaConserto = False
+    IdentPAF.Paf.BarSimilarBalanca = False
+    IdentPAF.Paf.UsaImpressoraNaoFiscal = False
+    IdentPAF.Paf.DAVDiscrFormula = False
+    IdentPAF.Paf.ImpedeVendaVlrZero = False
+    IdentPAF.Paf.AcumulaVolumeDiario = False
+    IdentPAF.Paf.ArmazenaEncerranteIniFinal = False
+    IdentPAF.Paf.EmiteContrEncerrAposREDZLEIX = False
+    IdentPAF.Paf.IntegradoComBombas = False
+    IdentPAF.Paf.CriaAbastDivergEncerrante = False
+    IdentPAF.Paf.CadastroPlacaBomba = False
     IdentPAF.Paf.TransportePassageiro = False
     IdentPAF.Paf.TotalizaValoresLista = False
     IdentPAF.Paf.TransfPreVenda = False
     IdentPAF.Paf.TransfDAV = False
     IdentPAF.Paf.NaoCoincGT = False
     IdentPAF.Paf.RecompoeGT = False
-    IdentPAF.Paf.ImpedeVendaVlrZero = False
+    IdentPAF.Paf.EmitePED = False
+    IdentPAF.Paf.CupomMania = False
+    IdentPAF.Paf.MinasLegal = False
     OnGetChave = ACBrAAC1GetChave
     OnAntesAbrirArquivo = ACBrAAC1AntesAbrirArquivo
     OnDepoisAbrirArquivo = ACBrAAC1DepoisAbrirArquivo

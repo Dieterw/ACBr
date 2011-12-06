@@ -167,6 +167,9 @@ begin
         else if Cmd.Metodo = 'numversao' then
            Cmd.Resposta := NumVersao
 
+        else if Cmd.Metodo = 'mfadicional' then
+           Cmd.Resposta := MFAdicional
+
         else if Cmd.Metodo = 'datamovimento' then
            Cmd.Resposta := FormatDateTime('dd/mm/yy', DataMovimento )
 
@@ -531,9 +534,6 @@ begin
 
         else if Cmd.Metodo = 'horarioverao' then
            Cmd.Resposta := BoolToStr( HorarioVerao, true )
-
-        else if Cmd.Metodo = 'mfadicional' then
-           Cmd.Resposta := MFAdicional
 
         else if Cmd.Metodo = 'arredonda' then
            Cmd.Resposta := BoolToStr( Arredonda, true )

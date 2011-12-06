@@ -532,7 +532,7 @@ begin
         else if Cmd.Metodo = 'horarioverao' then
            Cmd.Resposta := BoolToStr( HorarioVerao, true )
 
-        else if Cmd.Metodo = 'mfAdicional' then
+        else if Cmd.Metodo = 'mfadicional' then
            Cmd.Resposta := MFAdicional
 
         else if Cmd.Metodo = 'arredonda' then

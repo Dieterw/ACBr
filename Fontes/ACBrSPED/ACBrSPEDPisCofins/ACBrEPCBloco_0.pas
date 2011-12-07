@@ -344,6 +344,7 @@ type
     procedure SetItem(Index: Integer; const Value: TRegistro0200);
   public
     function New: TRegistro0200;
+    function LocalizaRegistro(pCOD_ITEM: String): boolean;
     property Items[Index: Integer]: TRegistro0200 read GetItem write SetItem;
   end;
 
@@ -638,6 +639,21 @@ function TRegistro0200List.New: TRegistro0200;
 begin
   Result := TRegistro0200.Create;
   Add(Result);
+end;
+
+function TRegistro0200List.LocalizaRegistro(pCOD_ITEM: String): boolean;
+var
+intFor: integer;
+begin
+   Result := false;
+   for intFor := 0 to Self.Count - 1 do
+   begin
+      if Self.Items[intFor].COD_ITEM = pCOD_ITEM then
+      begin
+         Result := true;
+         Break;
+      end;
+   end;
 end;
 
 procedure TRegistro0200List.SetItem(Index: Integer; const Value: TRegistro0200);

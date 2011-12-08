@@ -2239,6 +2239,7 @@ begin
      try
         {$I-}
         CloseFile( fsArqBuf );
+        IOResult;
         {$I+}
      except
      end ;

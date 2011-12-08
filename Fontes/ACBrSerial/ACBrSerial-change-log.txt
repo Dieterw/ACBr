@@ -98,8 +98,17 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
-Data: 29/11/2011
+Data: 07/12/2011
 -- ACBrECFEpson --
+[-] Corrigido Bug na Re-Ativação do componente após chamar as funções da DLL
+[*] Adicionado tratamento para Verificação de Parâmetro na geração de Arquivo
+    MFD por COO, que atualmente não é suportado pela DLL da Epson.
+
+-- ACBrECFNaoFiscal e ACBrDevice --
+[-] Correções para evitar mensagens: "I/O error 103"
+
+Data: 29/11/2011
+-- ACBrECF --
 [*] Acerto na impressão do relatório de configurações do Paf-ECF
     por: Regys Silveira, Koplin, Juliomar
 

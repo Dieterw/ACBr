@@ -814,7 +814,7 @@ begin
 
        Flush( ArqPrn ) ;
     finally
-       {$I+}
+       {$I-}
        {$IFNDEF FPC}System.{$ENDIF}CloseFile( ArqPrn ) ;
        {$I+}
     end ;

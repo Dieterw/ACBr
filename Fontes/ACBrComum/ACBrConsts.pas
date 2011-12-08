@@ -166,6 +166,7 @@ const
   cACBrECFAchaFPGIndiceException         = 'Forma de Pagamento: %s inválida' ;
   cACBrECFFPGPermiteVinculadoException   = 'Forma de Pagamento: %s '+#10+
                                            'não permite Cupom Vinculado' ;
+  cACBrECFPAFFuncaoNaoSuportada          = 'Função não suportada pelo modelo de ECF utilizado';
   cACBrECFRegistraItemNaoFiscalException = 'Comprovante não fiscal: %s inválido' ;
   cACBrECFSetRFDException                = 'Não é possível mudar ACBrECF.RFD com o componente ativo' ;
   cACBrECFSetAACException                = 'Não é possível mudar ACBrECF.AAC com o componente ativo' ;

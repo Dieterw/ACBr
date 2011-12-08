@@ -1489,6 +1489,9 @@ procedure TACBrECFClass.Desativar;
 begin
   if not fpAtivo then exit ;
 
+  AguardandoResposta := False;
+  AguardaImpressao   := False;
+
   fpDevice.Desativar ;
 
   fpEstado := estNaoInicializada ;

@@ -134,6 +134,7 @@ TACBrECFEpsonResposta = class
 
 TACBrECFEpson = class( TACBrECFClass )
  private
+    fsTentaDetectarVelocidade: Boolean;
     fsNumVersao : String ;
     fsIsFBIII   : Boolean;
     fsALNegrito : Boolean;
@@ -178,6 +179,7 @@ TACBrECFEpson = class( TACBrECFClass )
 
     Procedure PreparaCmd( cmd : AnsiString ) ;
 
+    function  GetRet0402( Indice: Integer): AnsiString;
     function  GetRet0906: AnsiString;
     property  Ret0906 : AnsiString read GetRet0906 ;
     function  GetRet0907: AnsiString;
@@ -940,8 +942,9 @@ begin
   fpDevice.Stop      := s1;
   fpDevice.Data      := 8;
   fpDevice.HandShake := hsDTR_DSR;
-  fpDecimaisQtd      := 3 ;
-  fpDecimaisPreco    := 2 ;
+  fpColunas          := -1 ;  // Força a detecção de Parâmetros de inicializaçao ao ativar
+
+  fsTentaDetectarVelocidade := True;
 
   { Variaveis internas dessa classe }
   fsNumVersao := '' ;
@@ -988,19 +991,23 @@ end;
 procedure TACBrECFEpson.Ativar_Epson ;
 begin
   try
-     EpsonComando.Comando := '0905' ;  // Obtendo o numero de colunas
-     EnviaComando ;
-     fpColunas := max( StrToIntDef( EpsonResposta.Params[0], 0 ), 48) ;
+     if fpColunas < 0 then
+     begin
+        EpsonComando.Comando := '0905' ;  // Obtendo o numero de colunas
+        EnviaComando ;
+        fsTentaDetectarVelocidade := False;
+        fpColunas := max( StrToIntDef( EpsonResposta.Params[0], 0 ), 48) ;
 
-     EpsonComando.Comando := '0585' ;  // Obtendo o numero de Decimais
-     EnviaComando ;
-     fpDecimaisQtd   := StrToIntDef( EpsonResposta.Params[0], fpDecimaisQtd) ;
-     fpDecimaisPreco := StrToIntDef( EpsonResposta.Params[1], fpDecimaisPreco) ;
+        EpsonComando.Comando := '0585' ;  // Obtendo o numero de Decimais
+        EnviaComando ;
+        fpDecimaisQtd   := StrToIntDef( EpsonResposta.Params[0], fpDecimaisQtd) ;
+        fpDecimaisPreco := StrToIntDef( EpsonResposta.Params[1], fpDecimaisPreco) ;
 
-     EpsonComando.Comando := '090A' ; // Obtendo se a ECF Imprime Cheque, e Le CMC7
-     EnviaComando ;
-     fsImprimeCheque :=  EpsonResposta.Params[4]  = 'S';
-     fsLeituraCMC7   :=  EpsonResposta.Params[14] = 'S';
+        EpsonComando.Comando := '090A' ; // Obtendo se a ECF Imprime Cheque, e Le CMC7
+        EnviaComando ;
+        fsImprimeCheque :=  EpsonResposta.Params[4]  = 'S';
+        fsLeituraCMC7   :=  EpsonResposta.Params[14] = 'S';
+     end ;
 
      fsIsFBIII := (pos( 'FBIII', SubModeloECF ) > 0) ;
 
@@ -1046,7 +1053,7 @@ begin
     except
        On E : Exception do
        begin
-          if pos('(ACK = 0)',E.message) > 0 then
+          if fsTentaDetectarVelocidade and (pos('(ACK = 0)',E.message) > 0) then
            begin
              if fpDevice.Baud = 38400 then
               begin
@@ -1104,6 +1111,8 @@ begin
         if not TransmiteComando( cmd ) then
            continue ;
 
+        fpComandoEnviado := cmd ;
+
         if fpDevice.HandShake = hsDTR_DSR then
            fpDevice.Serial.DTR := True ;  { Liga o DTR para ler a Resposta }
 
@@ -1145,8 +1154,6 @@ begin
         end ;
 
      end ;
-
-     fpComandoEnviado := cmd ;
 
      { Chama Rotina da Classe mãe TACBrClass para ler Resposta. Se houver
        falha na leitura LeResposta dispara Exceçao.
@@ -1251,7 +1258,7 @@ begin
   if not Result then
   begin
      // DEBUG //
-     GravaLog( 'Aguardando Bloco: ' +Retorno, True );
+     //GravaLog( 'Aguardando Bloco: ' +Retorno, True );
      exit ;
   end ;
 
@@ -1259,7 +1266,7 @@ begin
   if (LeftStr(Retorno,7) = #2 + #128 + #3 + '0085') then
   begin
      // DEBUG //
-     GravaLog( 'Resposta Intermediaria detectada: ' +Retorno, True );
+     // GravaLog( 'Resposta Intermediaria detectada: ' +Retorno, True );
      Retorno     := Copy(Retorno, 8, LenRet );
      LenRet      := Length(Retorno) ;
      fsBytesIn   := LenRet;
@@ -1294,8 +1301,8 @@ begin
   end ;
 
   // DEBUG //
-  if Result then
-     GravaLog('Fim da Leitura: '+Retorno, True);
+  //if Result then
+  //   GravaLog('Fim da Leitura: '+Retorno, True);
 end;
 
 function TACBrECFEpson.GetDataHora: TDateTime;
@@ -1414,22 +1421,26 @@ begin
   Result := fsNumECF ;
 end;
 
-function TACBrECFEpson.GetNumSerie: String;
+function TACBrECFEpson.GetRet0402(Indice : Integer) : AnsiString ;
 begin
   EpsonComando.Comando := '0402' ;
   EnviaComando ;
 
-  Result      := EpsonResposta.Params[0] ;
-  fsNumVersao := EpsonResposta.Params[5];
+  Indice := min( max(Indice,0), EpsonResposta.Params.Count-1) ;
+  Result := EpsonResposta.Params[Indice] ;
+
+  fsSubModeloECF := EpsonResposta.Params[3] ;
+  fsNumVersao    := EpsonResposta.Params[5];
+end ;
+
+function TACBrECFEpson.GetNumSerie: String;
+begin
+  Result := GetRet0402(0);
 end;
 
 function TACBrECFEpson.GetNumSerieMFD: String;
 begin
-  EpsonComando.Comando := '0402' ;
-  EnviaComando ;
-
-  Result      := EpsonResposta.Params[1] ;
-  fsNumVersao := EpsonResposta.Params[5];
+  Result := GetRet0402(1);
 end;
 
 function TACBrECFEpson.GetNumVersao: String ;
@@ -2569,10 +2580,10 @@ end;
 
 function TACBrECFEpson.GetSubModeloECF: String;
 begin
-  EpsonComando.Comando := '0402' ;
-  EnviaComando ;
+  if fsSubModeloECF = '' then
+     GetRet0402(0);
 
-  Result := EpsonResposta.Params[3] ;
+  Result := fsSubModeloECF ;
 end;
 
 function TACBrECFEpson.GetDataMovimento: TDateTime;
@@ -3203,23 +3214,33 @@ end ;
 
 procedure TACBrECFEpson.FechaPortaSerialDLL(const OldAtivo : Boolean) ;
 var
-  OldTimeOut : Integer ;
+  Resp : Integer ;
 begin
   GravaLog( 'xEPSON_Serial_Fechar_Porta' ) ;
-  xEPSON_Serial_Fechar_Porta ;
+  Resp := xEPSON_Serial_Fechar_Porta ;
+  if Resp <> 0 then
+     raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao Fechar a Porta com:'+sLineBreak+
+        'EPSON_Serial_Fechar_Porta' ));
 
-  GravaLog( 'Ativando ACBr: '+ifthen(OldAtivo,'SIM','NAO') ) ;
-  Sleep( 500 ) ;
+  GravaLog( 'Ativar ACBr: '+ifthen(OldAtivo,'SIM','NAO') ) ;
 
   if OldAtivo then
   begin
-    OldTimeOut := TimeOut;
-    try
-      TimeOut := 10;   // Tenta ativar com um TimeOut maior
-      Ativo   := True
-    finally
-      TimeOut := OldTimeOut;
-    end ;
+     while (Resp < 5) and (not Ativo) do
+     begin
+        Inc( Resp ) ;
+
+        try
+          GravaLog('- Tentativa: '+IntToStr(Resp));
+          Ativar;
+        except
+          GravaLog( '  Falha... Aguardando '+IntToStr(Resp)+' segundo(s)' );
+          Sleep(Resp * 1000);
+        end ;
+     end ;
+
+     if not Ativo then
+        Ativar;
   end ;
 end ;
 
@@ -3233,8 +3254,8 @@ Var
 begin
   LoadDLLFunctions ;
 
-  ArqTmp := ExtractFilePath( NomeArquivo ) + 'D' ;
-  DeleteFile( ArqTmp + '_ESP.txt' ) ;
+  ArqTmp := ExtractFilePath( NomeArquivo ) + 'ACBr' ;
+  DeleteFiles( ArqTmp + '_???.txt' ) ;
 
   OldAtivo := Ativo ;
   try
@@ -3278,8 +3299,8 @@ Var
 begin
   LoadDLLFunctions ;
 
-  ArqTmp := ExtractFilePath( NomeArquivo ) + 'C' ;
-  DeleteFile( ArqTmp + '_ESP.txt' ) ;
+  ArqTmp := ExtractFilePath( NomeArquivo ) + 'ACBr' ;
+  DeleteFiles( ArqTmp + '_???.txt' ) ;
 
   OldAtivo := Ativo ;
   try
@@ -3325,7 +3346,7 @@ begin
   LoadDLLFunctions ;
 
   ArqTmp := ExtractFilePath( NomeArquivo ) + 'ACBr' ;
-  DeleteFile( ArqTmp + '_CTP.txt' ) ;
+  DeleteFiles( ArqTmp + '_???.txt' ) ;
 
   case Finalidade of
      finMF  : Tipo := 1;
@@ -3344,7 +3365,7 @@ begin
     GravaLog( 'xEPSON_Obter_Dados_MF_MFD' );
     Resp := xEPSON_Obter_Dados_MF_MFD(  DiaIni, DiaFim,
                                         0,                // Faixa em Datas
-                                        DocumentosToNum(Documentos),
+                                        0,                // Sem Espelhos
                                         Tipo,
                                         0,                // Nao Gera Sintegra
                                         ArqTmp );
@@ -3376,6 +3397,12 @@ Var
   ArqTmp, CooIni, CooFim : AnsiString ;
   OldAtivo : Boolean ;
 begin
+
+  // Extraido do Manual da Epson:
+  // Leituras somente podem ser realizadas por faixa de CRZ ou Data de Movimento
+  if TipoContador = tpcCOO then
+     raise Exception.Create( ACBrStr(cACBrECFPAFFuncaoNaoSuportada) ) ;
+
   LoadDLLFunctions ;
 
   case Finalidade of
@@ -3386,7 +3413,7 @@ begin
   end ;
 
   ArqTmp := ExtractFilePath( NomeArquivo ) + 'ACBr' ;
-  DeleteFile( ArqTmp + '_CTP.txt' ) ;
+  DeleteFiles( ArqTmp + '_???.txt' ) ;
 
   OldAtivo := Ativo ;
   try
@@ -3398,7 +3425,7 @@ begin
     GravaLog( 'xEPSON_Obter_Dados_MF_MFD' );
     Resp := xEPSON_Obter_Dados_MF_MFD(  COOIni, CooFim,
                                         IfThen( TipoContador = tpcCOO, 2, 1),
-                                        DocumentosToNum(Documentos),
+                                        0,                // Sem Espelhos
                                         Tipo,
                                         0,                // Nao Gera Sintegra
                                         ArqTmp );

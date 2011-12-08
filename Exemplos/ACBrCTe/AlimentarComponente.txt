@@ -24,13 +24,12 @@ begin
    Ide.dhEmi  := Now;
    Ide.tpImp  := tiRetrato;
 
-   // TpcnTipoEmissao = (teNormal, teContingencia, teSCAN, teDPEC, teFSDA);
+   // TpcnTipoEmissao = (teNormal, teContingencia, teSCAN, teDPEC, teFSDA, teSVCRS, teSVCSP);
    case DM_CNT.ParametrosCTeGeralFormaEm.AsInteger of
     0: Ide.tpEmis := teNormal;
-    1: Ide.tpEmis := teContingencia;
-    2: Ide.tpEmis := teSCAN;
-    3: Ide.tpEmis := teDPEC;
-    4: Ide.tpEmis := teFSDA;
+    1: Ide.tpEmis := teFSDA; // Contingencia FSDA
+    2: Ide.tpEmis := teSVCRS;
+    3: Ide.tpEmis := teSVCSP;
    end;
 
    // TpcnTipoAmbiente = (taProducao, taHomologacao);
@@ -126,7 +125,7 @@ begin
      Ide.Toma4.xFant             := DM_CTA.PessoaFJFantasia.AsString;
      Ide.Toma4.fone              := DM_CTA.PessoaFJTelefone.AsString;
      Ide.Toma4.EnderToma.xLgr    := DM_CTA.PessoaFJEndereco.AsString;
-     Ide.Toma4.EnderToma.xNum    := DM_CTA.PessoaFJNumero.AsString;
+     Ide.Toma4.EnderToma.nro     := DM_CTA.PessoaFJNumero.AsString;
      Ide.Toma4.EnderToma.xCpl    := DM_CTA.PessoaFJComplemento.AsString;
      Ide.Toma4.EnderToma.xBairro := DM_CTA.PessoaFJBairro.AsString;
      CodigoMunicipio             := DM_CTA.PessoaFJCodigoEstado.AsInteger * 100000 +
@@ -608,6 +607,7 @@ begin
    // TpcnCSTIcms = (cst00, cst10, cst20, cst30, cst40, cst41, cst45, cst50, cst51, cst60, cst70, cst80, cst81, cst90);
    // 80 e 81 apenas para CTe
 
+{$IFDEF PL_103}
    case DM_CNT.Conhec2CSTICMS.AsInteger of
    00: begin
         Imp.ICMS.SituTrib    := cst00;
@@ -662,6 +662,63 @@ begin
         Imp.ICMS.CST90.vCred  := RoundTo(DM_CNT.Conhec2CreditoICMS.AsFloat, -2);
        end;
    end;
+{$ENDIF}
+
+   //
+   //  Valores dos Impostos
+   //
+   // TpcnCSTIcms = (cst00, cst10, cst20, cst30, cst40, cst41, cst45, cst50, cst51,
+   //                cst60, cst70, cst80, cst81, cst90, cstPart10, cstPart90,
+   //                cstRep41, cstVazio, cstICMSOutraUF, cstICMSSN); //80 e 81 apenas para CTe
+
+{$IFDEF PL_104}
+   case DM_CNT.Conhec2CSTICMS.AsInteger of
+   00: begin
+        Imp.ICMS.SituTrib     := cst00;
+        Imp.ICMS.ICMS00.CST   := cst00; // Tributação Normal ICMS
+        Imp.ICMS.ICMS00.vBC   := RoundTo(DM_CNT.Conhec2BaseCalc.AsFloat, -2);
+        Imp.ICMS.ICMS00.pICMS := RoundTo(DM_CNT.Conhec2AliqICMS.AsFloat, -2);
+        Imp.ICMS.ICMS00.vICMS := RoundTo(DM_CNT.Conhec2ValorICMS.AsFloat, -2);
+       end;
+   20: begin
+        Imp.ICMS.SituTrib      := cst20;
+        Imp.ICMS.ICMS20.CST    := cst20; // Tributação com BC reduzida do ICMS
+        Imp.ICMS.ICMS20.pRedBC := RoundTo(DM_CNT.Conhec2ReducaoICMS.AsFloat, -2);
+        Imp.ICMS.ICMS20.vBC    := RoundTo(DM_CNT.Conhec2BaseCalc.AsFloat, -2);
+        Imp.ICMS.ICMS20.pICMS  := RoundTo(DM_CNT.Conhec2AliqICMS.AsFloat, -2);
+        Imp.ICMS.ICMS20.vICMS  := RoundTo(DM_CNT.Conhec2ValorICMS.AsFloat, -2);
+       end;
+   40: begin
+        Imp.ICMS.SituTrib  := cst40;
+        Imp.ICMS.ICMS45.CST := cst40; // ICMS Isento
+       end;
+   41: begin
+        Imp.ICMS.SituTrib  := cst41;
+        Imp.ICMS.ICMS45.CST := cst41; // ICMS não Tributada
+       end;
+   51: begin
+        Imp.ICMS.SituTrib  := cst51;
+        Imp.ICMS.ICMS45.CST := cst51; // ICMS diferido
+       end;
+   60: begin
+        Imp.ICMS.SituTrib          := cst60;
+        Imp.ICMS.ICMS60.CST        := cst60; // Tributação atribuida ao tomador ou 3. por ST
+        Imp.ICMS.ICMS60.vBCSTRet   := RoundTo(DM_CNT.Conhec2BaseCalc.AsFloat, -2);
+        Imp.ICMS.ICMS60.pICMSSTRet := RoundTo(DM_CNT.Conhec2AliqICMS.AsFloat, -2);
+        Imp.ICMS.ICMS60.vICMSSTRet := RoundTo(DM_CNT.Conhec2ValorICMS.AsFloat, -2);
+        Imp.ICMS.ICMS60.vCred      := RoundTo(DM_CNT.Conhec2CreditoICMS.AsFloat, -2);
+       end;
+   90: begin
+        Imp.ICMS.SituTrib      := cst90;
+        Imp.ICMS.ICMS90.CST    := cst90; // ICMS Outros
+        Imp.ICMS.ICMS90.pRedBC := RoundTo(DM_CNT.Conhec2ReducaoICMS.AsFloat, -2);
+        Imp.ICMS.ICMS90.vBC    := RoundTo(DM_CNT.Conhec2BaseCalc.AsFloat, -2);
+        Imp.ICMS.ICMS90.pICMS  := RoundTo(DM_CNT.Conhec2AliqICMS.AsFloat, -2);
+        Imp.ICMS.ICMS90.vICMS  := RoundTo(DM_CNT.Conhec2ValorICMS.AsFloat, -2);
+        Imp.ICMS.ICMS90.vCred  := RoundTo(DM_CNT.Conhec2CreditoICMS.AsFloat, -2);
+       end;
+   end;
+{$ENDIF}
 
    case DM_CNT.Conhec2TipoCTe.AsInteger of
     0,3: begin
@@ -935,6 +992,7 @@ begin
                   //
                   // TpcnCSTIcms = (cst00, cst10, cst20, cst30, cst40, cst41, cst45, cst50, cst51, cst60, cst70, cst80, cst81, cst90);
                   // 80 e 81 apenas para CTe
+          {$IFDEF PL_103}
                   case DM_CNT.ComplementoCST.AsInteger of
                   00: begin
                        ImpComp.ICMSComp.SituTrib    := cst00;
@@ -988,7 +1046,56 @@ begin
                        ImpComp.ICMSComp.CST90.vICMS  := RoundTo(DM_CNT.ComplementoValorICMS.AsFloat, -2);
                        ImpComp.ICMSComp.CST90.vCred  := RoundTo(DM_CNT.ComplementoCredito.AsFloat, -2);
                       end;
-                   end;
+                  end;
+          {$ENDIF}
+          {$IFDEF PL_104}
+                  case DM_CNT.ComplementoCST.AsInteger of
+                  00: begin
+                       ImpComp.ICMSComp.SituTrib     := cst00;
+                       ImpComp.ICMSComp.ICMS00.CST   := cst00; // Tributação Normal ICMS
+                       ImpComp.ICMSComp.ICMS00.vBC   := RoundTo(DM_CNT.ComplementoBC.AsFloat, -2);
+                       ImpComp.ICMSComp.ICMS00.pICMS := RoundTo(DM_CNT.ComplementoAliq.AsFloat, -2);
+                       ImpComp.ICMSComp.ICMS00.vICMS := RoundTo(DM_CNT.ComplementoValorICMS.AsFloat, -2);
+                      end;
+                  20: begin
+                       ImpComp.ICMSComp.SituTrib      := cst20;
+                       ImpComp.ICMSComp.ICMS20.CST    := cst20; // Tributação com BC reduzida do ICMS
+                       ImpComp.ICMSComp.ICMS20.pRedBC := RoundTo(DM_CNT.ComplementoReducao.AsFloat, -2);
+                       ImpComp.ICMSComp.ICMS20.vBC    := RoundTo(DM_CNT.ComplementoBC.AsFloat, -2);
+                       ImpComp.ICMSComp.ICMS20.pICMS  := RoundTo(DM_CNT.ComplementoAliq.AsFloat, -2);
+                       ImpComp.ICMSComp.ICMS20.vICMS  := RoundTo(DM_CNT.ComplementoValorICMS.AsFloat, -2);
+                      end;
+                  40: begin
+                       ImpComp.ICMSComp.SituTrib   := cst40;
+                       ImpComp.ICMSComp.ICMS45.CST := cst40; // ICMS Isento
+                      end;
+                  41: begin
+                       ImpComp.ICMSComp.SituTrib   := cst41;
+                       ImpComp.ICMSComp.ICMS45.CST := cst41; // ICMS não Tributada
+                      end;
+                  51: begin
+                       ImpComp.ICMSComp.SituTrib   := cst51;
+                       ImpComp.ICMSComp.ICMS45.CST := cst51; // ICMS diferido
+                      end;
+                  60: begin
+                       ImpComp.ICMSComp.SituTrib          := cst60;
+                       ImpComp.ICMSComp.ICMS60.CST        := cst60; // Tributação atribuida ao tomador ou 3. por ST
+                       ImpComp.ICMSComp.ICMS60.vBCSTRet   := RoundTo(DM_CNT.ComplementoBC.AsFloat, -2);
+                       ImpComp.ICMSComp.ICMS60.pICMSSTRet := RoundTo(DM_CNT.ComplementoAliq.AsFloat, -2);
+                       ImpComp.ICMSComp.ICMS60.vICMSSTRet := RoundTo(DM_CNT.ComplementoValorICMS.AsFloat, -2);
+                       ImpComp.ICMSComp.ICMS60.vCred      := RoundTo(DM_CNT.ComplementoCredito.AsFloat, -2);
+                      end;
+                  90: begin
+                       ImpComp.ICMSComp.SituTrib      := cst90;
+                       ImpComp.ICMSComp.ICMS90.CST    := cst90; // ICMS Outros
+                       ImpComp.ICMSComp.ICMS90.pRedBC := RoundTo(DM_CNT.ComplementoReducao.AsFloat, -2);
+                       ImpComp.ICMSComp.ICMS90.vBC    := RoundTo(DM_CNT.ComplementoBC.AsFloat, -2);
+                       ImpComp.ICMSComp.ICMS90.pICMS  := RoundTo(DM_CNT.ComplementoAliq.AsFloat, -2);
+                       ImpComp.ICMSComp.ICMS90.vICMS  := RoundTo(DM_CNT.ComplementoValorICMS.AsFloat, -2);
+                       ImpComp.ICMSComp.ICMS90.vCred  := RoundTo(DM_CNT.ComplementoCredito.AsFloat, -2);
+                      end;
+                  end;
+          {$ENDIF}
                  end;
                end;
               DM_CNT.Complemento.Next;

@@ -101,7 +101,7 @@ Símbolo : Significado
 Data: 10/12/2011
 -- ACBrECFSwedaSTX --
 [-] Corrigido Bug na geração do ArquivoMFD por Data. (Gerava apenas com dados da MF)
-[-] Corrigido método CortaPapel, adcionando suporte para parâmetro Parcial/Total
+[-] Corrigido método CortaPapel, adicionando suporte para parâmetro Parcial/Total
     e ao modelos antigos de STX
 
 -- ACBrECFFiscNET --

@@ -135,6 +135,7 @@ TACBrECFFiscNET = class( TACBrECFClass )
     fsComandosImpressao : array[0..10] of AnsiString ;
     fsEmPagamento : Boolean ;
     fsMarcaECF : String ;
+    fsModeloECF: String ;
 
     //dataregis | termoprinter
     xGera_PAF                       : Function ( ComPort     : AnsiString;
@@ -615,7 +616,8 @@ begin
   fsArredonda := -1 ;
   fsComandoVendeItem := '' ;
   fsEmPagamento := false ;
-  fsMarcaECF := '';
+  fsMarcaECF    := '';
+  fsModeloECF   := '';
   
   fpModeloStr := 'FiscNET' ;
   fpPaginaDeCodigo := 850 ;
@@ -659,7 +661,8 @@ begin
   fsNumLoja   := '' ;
   fsArredonda := -1 ;
   fsComandoVendeItem := '' ;
-  fsMarcaECF := '' ;
+  fsMarcaECF  := '' ;
+  fsModeloECF := '' ;
   fsBaseTotalDiaMeioPagamento := 99;
   fsBaseTotalDiaNaoFiscal     := 99;
 
@@ -677,17 +680,21 @@ begin
      FiscNETComando.NomeComando := 'LeTexto' ;
      FiscNETComando.AddParamString('NomeTexto','Marca') ;
      EnviaComando ;
-     fpModeloStr := 'FiscNET: '+ FiscNETResposta.Params.Values['ValorTexto'] ;
+     fsMarcaECF := FiscNETResposta.Params.Values['ValorTexto'] ;
+     fpModeloStr := 'FiscNET: '+ fsMarcaECF ;
+     fsMarcaECF := LowerCase(Trim(fsMarcaECF)) ;
 
      FiscNETComando.NomeComando := 'LeTexto';
      FiscNETComando.AddParamString('NomeTexto','Modelo');
      EnviaComando;
-     fpModeloStr := fpModeloStr + ' - ' + FiscNETResposta.Params.Values['ValorTexto'] ;
-     // Ajuste de Colunas na ThermoPrinter, por Fabio Farias //
-     if FiscNETResposta.Params.Values['ValorTexto']='TPF2001' then
-        fpColunas := 40;
-     // Ajuste para 48 colunas no caso da Elgin X5 , por Juliomar Marchetti //
-     if FiscNETResposta.Params.Values['ValorTexto']='X5' then
+     fsModeloECF := FiscNETResposta.Params.Values['ValorTexto'] ;
+
+     fpModeloStr := fpModeloStr + ' - ' + fsModeloECF ;
+
+     // Ajuste de Colunas para modelos Específicos //
+     if (fsModeloECF = 'TPF2001') then
+        fpColunas := 40
+     else if (pos(fsModeloECF, 'X5|3202DT') > 0) then
         fpColunas := 48;
 
   except
@@ -2262,11 +2269,7 @@ end;
 
 function TACBrECFFiscNET.GetSubModeloECF: String;
 begin
-  FiscNETComando.NomeComando := 'LeTexto' ;
-  FiscNETComando.AddParamString('NomeTexto','Modelo') ;
-  EnviaComando ;
-
-  Result := FiscNETResposta.Params.Values['ValorTexto'] ;
+  Result := fsModeloECF;
 end;
 
 function TACBrECFFiscNET.GetDataMovimento: TDateTime;
@@ -2718,12 +2721,6 @@ Var
    end ;
  end ;
 begin
-  FiscNETComando.NomeComando := 'LeTexto';
-  FiscNETComando.AddParamString('NomeTexto','Marca');
-  EnviaComando;
-  fsMarcaECF := FiscNETResposta.Params.Values['ValorTexto'] ;
-  fsMarcaECF := LowerCase(Trim(fsMarcaECF)) ;
-
   if pos(fsMarcaECF, 'dataregis|termoprinter') > 0 then
    begin
      LIB_FiscNet := 'DLLG2_Gerador.dll' ;
@@ -3321,10 +3318,15 @@ function TACBrECFFiscNET.TraduzirTag(const ATag : AnsiString) : AnsiString ;
 const
   // <e></e>
   cExpandidoON   = #14 ;
+  cExpandidoOFF  = '' ;
+  cExpandidoON_B = ESC + '!' + #32 ;
+  cExpandidoOFF_B= ESC + '!' + #0 ;
 
   // <n></n>
   cNegritoON     = ESC + 'E' ;
   cNegritoOFF    = ESC + 'F' ;
+  cNegritoON_B   = ESC + 'E' + #1 ;
+  cNegritoOFF_B  = ESC + 'E' + #0 ;
 
   cBarras   = #29 ;
   cBarrasAltura = cBarras + 'h' ;
@@ -3342,6 +3344,8 @@ const
   cUPCA     = 0 ; // <upca></upca>
   cCODABAR  = 6 ; // <codabar></codabar>
   cBarraFim = #0 ;
+var
+  CodB : Boolean ;
 
   function ConfigurarBarras(const ACodigo: Integer): AnsiString;
   Var
@@ -3371,11 +3375,15 @@ const
 
 begin
 
+  // Modelos mais antigos usam comandos "B" //
+  CodB := (pos(fsModeloECF,'3202DT') > 0) ;
+
   case AnsiIndexText( ATag, ARRAY_TAGS) of
      -1: Result := ATag;
-     2 : Result := cExpandidoON;
-     4 : Result := cNegritoON;
-     5 : Result := cNegritoOFF;
+     2 : Result := ifthen(CodB, cExpandidoON_B , cExpandidoON);
+     3 : Result := ifthen(CodB, cExpandidoOFF_B, cExpandidoOFF);
+     4 : Result := ifthen(CodB, cNegritoON_B , cNegritoON);
+     5 : Result := ifthen(CodB, cNegritoOFF_B, cNegritoOFF);
      12: Result := ConfigurarBarras(cEAN8);
      13: Result := cBarraFim;
      14: Result := ConfigurarBarras(cEAN13);

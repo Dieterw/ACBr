@@ -105,7 +105,6 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
     xECF_ReproduzirMemoriaFiscalMFD : Function (tipo: AnsiString; fxai: AnsiString;
       fxaf:  AnsiString; asc: AnsiString; bin: AnsiString): Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
     xECF_FechaPortaSerial : Function: Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
-    xECF_DownloadMF : Function(Arquivo:AnsiString):Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
 
     Function DescricaoErroDLL(const NErro: Integer) : String;
     procedure LoadDLLFunctions;
@@ -678,7 +677,7 @@ begin
   Tipo      := Bloco[5] ;
 
   // DEBUG
-  GravaLog( '         VerificaFimLeitura: Verificando Bloco: '+Bloco, True) ;
+  //GravaLog( '         VerificaFimLeitura: Verificando Bloco: '+Bloco, True) ;
 
   { Verificando a Sequencia }
   if Sequencia <> fsSEQ then
@@ -729,8 +728,8 @@ begin
   end ;
 
   // DEBUG
-  GravaLog( '         VerificaFimLeitura: Seq:'+IntToStr(Sequencia)+' Tarefa:'+
-            Tarefa+' Tipo: '+Tipo+' ACK:'+IntToStr(ACK_PC)+' Result: '+IfThen(Result,'True','False') ) ;
+  {GravaLog( '         VerificaFimLeitura: Seq:'+IntToStr(Sequencia)+' Tarefa:'+
+            Tarefa+' Tipo: '+Tipo+' ACK:'+IntToStr(ACK_PC)+' Result: '+IfThen(Result,'True','False') ) ;}
 
   if not Result then
      Retorno := copy(Retorno, PosETX+2, Length(Retorno) ) ;
@@ -785,14 +784,14 @@ begin
               if Length( Ret ) > 0 then
               begin
                  // DEBUG
-                 GravaLog('         VerificaFimImpressao: ECF respondeu, continue esperando' ) ;
+                 //GravaLog('         VerificaFimImpressao: ECF respondeu, continue esperando' ) ;
                  I := 0 ;
               end ;
 
               RetCmd := RetCmd + Ret ;
 
               // DEBUG
-              GravaLog('         VerificaFimImpressao: I: '+IntToStr(I)+' Bloco Lido: '+RetCmd ) ;
+              //GravaLog('         VerificaFimImpressao: I: '+IntToStr(I)+' Bloco Lido: '+RetCmd ) ;
               Result :=  VerificaFimLeitura( RetCmd, TempoLimite) ;
            end ;
 
@@ -998,15 +997,13 @@ Var
   Resp : Integer ;
   CooIni, CooFim : AnsiString ;
   OldAtivo : Boolean ;
-  PathBin, Tipo :AnsiString;
+  Tipo :AnsiString;
 begin
   LoadDLLFunctions ;
 
   OldAtivo := Ativo ;
   try
     AbrePortaSerialDLL ;
-
-    PathBin:= fsApplicationPath + 'MF.BIN';
 
     if TipoContador = tpcCRZ then
      begin
@@ -1019,7 +1016,6 @@ begin
        {POr COO}
        CooIni  := IntToStrZero( ContInicial, 7 );
        CooFim  := IntToStrZero( ContFinal, 7 ) ;
-       PathBin := '';  // por COO Download deve ser efetuado diretamente do ECF
      end ;
 
     case Finalidade of
@@ -1029,17 +1025,7 @@ begin
        Tipo := '2' ;
     end;
 
-    if PathBin <> '' then
-    begin
-      DeleteFile( PathBin );
-
-      Resp := xECF_DownloadMF( pathBin );
-      if Resp <> 1 then
-        raise Exception.Create( ACBrStr( 'Erro ao executar xECFDownloadMF'+sLineBreak+
-                                         DescricaoErroDLL(Resp) ));
-    end ;
-
-    Resp := xECF_ReproduzirMemoriaFiscalMFD(Tipo , CooIni, CooFim, NomeArquivo, PathBin);
+    Resp := xECF_ReproduzirMemoriaFiscalMFD(Tipo , CooIni, CooFim, NomeArquivo, '');
     if (Resp <> 1) then
       raise Exception.Create( ACBrStr( 'Erro ao executar xECF_ReproduzirMemoriaFiscalMFD.'+sLineBreak+
                                        DescricaoErroDLL(Resp) ))
@@ -1060,21 +1046,13 @@ Var
   Resp : Integer ;
   DiaIni, DiaFim : AnsiString ;
   OldAtivo : Boolean ;
-  PathBin, Tipo:AnsiString;
+  Tipo:AnsiString;
 begin
   LoadDLLFunctions ;
 
   OldAtivo := Ativo ;
   try
     AbrePortaSerialDLL ;
-
-    PathBin:= fsApplicationPath + 'MF.BIN';
-    DeleteFile( PathBin );
-
-    Resp := xECF_DownloadMF( pathBin );
-    if Resp <> 1 then
-      raise Exception.Create( ACBrStr( 'Erro ao executar xECFDownloadMF'+sLineBreak+
-                                       DescricaoErroDLL(Resp) ));
 
     case Finalidade of
        finMF  : Tipo := '1';
@@ -1086,7 +1064,7 @@ begin
     DiaIni := FormatDateTime('dd"/"mm"/"yy', DataInicial) ;
     DiaFim := FormatDateTime('dd"/"mm"/"yy', DataFinal) ;
 
-    Resp := xECF_ReproduzirMemoriaFiscalMFD(Tipo, DiaIni, DiaFim, NomeArquivo, pathBin);
+    Resp := xECF_ReproduzirMemoriaFiscalMFD(Tipo, DiaIni, DiaFim, NomeArquivo, '');
     if (Resp <> 1) then
       raise Exception.Create( ACBrStr( 'Erro ao executar ECF_DownloadMFD.'+sLineBreak+
                                        DescricaoErroDLL(Resp) ))
@@ -2188,7 +2166,6 @@ begin
    SwedaFunctionDetect('ECF_DownloadMFD', @xECF_DownloadMFD);
    SwedaFunctionDetect('ECF_ReproduzirMemoriaFiscalMFD', @xECF_ReproduzirMemoriaFiscalMFD);
    SwedaFunctionDetect('ECF_FechaPortaSerial', @xECF_FechaPortaSerial);
-   SwedaFunctionDetect('ECF_DownloadMF',@xECF_DownloadMF);
 end ;
 
 Function TACBrECFSwedaSTX.DescricaoErroDLL(const NErro: Integer) : String ;
@@ -2503,8 +2480,14 @@ begin
 end;
 
 procedure TACBrECFSwedaSTX.CortaPapel(const CorteParcial: Boolean);
+var
+  Cmd : String ;
 begin
-   EnviaComando('62|0');
+  Cmd := '62' ;
+  if (fsVerProtocolo > 'D') then
+     Cmd := Cmd + '|' + ifthen( CorteParcial, '1', '2') ;
+
+  EnviaComando( Cmd );
 end;
 
 procedure TACBrECFSwedaSTX.IdentificaOperador(Nome: String);

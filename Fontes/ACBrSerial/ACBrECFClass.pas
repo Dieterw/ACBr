@@ -3449,6 +3449,9 @@ begin
     begin
       TACBrECF(fpOwner).PulaLinhas ;
       TACBrECF(fpOwner).CortaPapel ;
+      if Imp < 1 then
+         Sleep( 200 ) ;
+
       PausarRelatorio( Imp ) ;
     end ;
   end ;

@@ -3306,8 +3306,8 @@ begin
   try
     AbrePortaSerialDLL ;
 
-    CooIni := IntToStr( COOInicial ) ;
-    CooFim := IntToStr( COOFinal ) ;
+    CooIni := IntToStrZero( COOInicial, 6 ) ;
+    CooFim := IntToStrZero( COOFinal, 6 ) ;
 
     GravaLog( 'xEPSON_Obter_Dados_MF_MFD' );
     Resp := xEPSON_Obter_Dados_MF_MFD(  COOIni, CooFim,
@@ -3419,8 +3419,8 @@ begin
   try
     AbrePortaSerialDLL ;
 
-    CooIni := IntToStr( ContInicial ) ;
-    CooFim := IntToStr( ContFinal ) ;
+    CooIni := IntToStrZero( ContInicial, IfThen( TipoContador = tpcCOO, 6, 4) ) ;
+    CooFim := IntToStrZero( ContFinal, IfThen( TipoContador = tpcCOO, 6, 4) ) ;
 
     GravaLog( 'xEPSON_Obter_Dados_MF_MFD' );
     Resp := xEPSON_Obter_Dados_MF_MFD(  COOIni, CooFim,

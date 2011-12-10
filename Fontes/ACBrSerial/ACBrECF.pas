@@ -4297,7 +4297,7 @@ begin
      case I of
        0      : Result := StringOfChar('-', Colunas);
        1      : Result := StringOfChar('=', Colunas);
-       34..37 : Result := ARRAY_TAGS[ I ] ;
+       34..37 : Result := ARRAY_TAGS[ I ] ;  // Mantem a TAGs de alinhamento no texto para serem tratadas depois
      end ;
    end ;
 end ;

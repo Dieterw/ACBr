@@ -3319,21 +3319,76 @@ end;
 
 function TACBrECFFiscNET.TraduzirTag(const ATag : AnsiString) : AnsiString ;
 const
-  cOff = ESC + '!' + #0 ;
-
   // <e></e>
-  cExpandido   = ESC + '!' + #32 ;
+  cExpandidoON   = #14 ;
 
   // <n></n>
-  cNegrito     = ESC + '!' + #8 ;
+  cNegritoON     = ESC + 'E' ;
+  cNegritoOFF    = ESC + 'F' ;
+
+  cBarras   = #29 ;
+  cBarrasAltura = cBarras + 'h' ;
+  cBarrasLargura= cBarras + 'w' ;
+  cBarrasMostrarOFF = cBarras + 'H' + #0 ;
+  cBarrasMostrarON  = cBarras + 'H' + #2 ; // HRI na Base
+  cBarrasFonte      = cBarras + 'f' + #0 ; // Fonte A
+
+  cBarrasCodigo = cBarras + 'k' ;
+
+  cEAN8     = 3 ; // <ean8></ean8>
+  cEAN13    = 2 ; // <ean13></ean13>
+  cINTER    = 5 ; // <inter></inter>
+  cCODE39   = 4 ; // <code39></code39>
+  cUPCA     = 0 ; // <upca></upca>
+  cCODABAR  = 6 ; // <codabar></codabar>
+  cBarraFim = #0 ;
+
+  function ConfigurarBarras(const ACodigo: Integer): AnsiString;
+  Var
+    Altura, Largura, Mostrar : Integer ;
+  begin
+    Result := '';
+
+    if ConfigBarras.MostrarCodigo then
+       Result := Result + cBarrasMostrarON + cBarrasFonte
+    else
+       Result := Result + cBarrasMostrarOFF;
+
+    if ConfigBarras.Altura > 0 then
+    begin
+       Altura := max(min(ConfigBarras.Altura,255),1);
+       Result := Result + cBarrasAltura + chr(Altura);
+    end ;
+
+    if ConfigBarras.LarguraLinha > 0 then
+    begin
+       Largura := max(min(ConfigBarras.LarguraLinha,6),2);
+       Result  := Result + cBarrasLargura + chr(Largura);
+    end ;
+
+    Result := Result + cBarrasCodigo + Chr( ACodigo );
+  end;
+
 begin
 
   case AnsiIndexText( ATag, ARRAY_TAGS) of
      -1: Result := ATag;
-     2 : Result := cExpandido;
-     3 : Result := cOff;
-     4 : Result := cNegrito;
-     5 : Result := cOff;
+     2 : Result := cExpandidoON;
+     4 : Result := cNegritoON;
+     5 : Result := cNegritoOFF;
+     12: Result := ConfigurarBarras(cEAN8);
+     13: Result := cBarraFim;
+     14: Result := ConfigurarBarras(cEAN13);
+     15: Result := cBarraFim;
+     18: Result := ConfigurarBarras(cINTER);
+     19: Result := cBarraFim;
+     22: Result := ConfigurarBarras(cCODE39);
+     23: Result := cBarraFim;
+     28: Result := ConfigurarBarras(cUPCA);
+     29: Result := cBarraFim;
+     30: Result := ConfigurarBarras(cCODABAR);
+     31: Result := cBarraFim;
+
   else
      Result := '' ;
   end;

@@ -1517,8 +1517,18 @@ begin
 
       fpEstado := estDesconhecido ;
 
-      EpsonComando.Comando := '0810' ;
-      EnviaComando ;
+      try
+         EpsonComando.Comando := '0810' ;
+         EnviaComando ;
+      except
+         on E : Exception do
+         begin
+            if (pos('0106',E.Message) <> 0) then  // Erro: 0106 - Comando aceito apenas fora de intervenção.
+               exit ;
+
+            raise;
+         end ;
+      end ;
 
       BitS := ACBrUtil.IntToBin(EpsonResposta.StatusFiscal, 16) ;
 

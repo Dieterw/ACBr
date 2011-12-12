@@ -3144,8 +3144,23 @@ begin
 end;
 
 procedure TForm1.AbreRelatorioGerencial1Click(Sender: TObject);
+var
+  NomeRel : String ;
+  Indice  : Integer ;
+  RelGer : TACBrECFRelatorioGerencial ;
 begin
-  ACBrECF1.AbreRelatorioGerencial ;
+  NomeRel := '' ;
+  if not InputQuery('Abertura de Relatório Gerencial',
+                    'Digite o Nome do Relatório Gerencial (vazio default)',
+                    NomeRel ) then
+     exit ;
+
+  Indice := 0;
+  RelGer := ACBrECF1.AchaRGDescricao(NomeRel);
+  if RelGer <> nil then
+     Indice := StrToIntDef( RelGer.Indice, 0) ;
+
+  ACBrECF1.AbreRelatorioGerencial( Indice ) ;
 end;
 
 procedure TForm1.AbreCupomVinculado1Click(Sender: TObject);

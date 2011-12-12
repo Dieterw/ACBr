@@ -173,7 +173,11 @@ begin
               COD_INC_TRIB  := codEscrOpIncNaoCumulativo;
               IND_APRO_CRED := indMetodoApropriacaoDireta;
               COD_TIPO_CONT := codIndTipoConExclAliqBasica;
+              //Campo IND_REG_CUM apenas para Lucro Presumido e (COD_INC_TRIB = 2)
+              //IND_REG_CUM := 1;
            end;
+
+
            //0140 - Tabela de Cadastro de Estabelecimento
            for int0140 := 1 to 2 do
            begin
@@ -238,6 +242,14 @@ begin
                        COD_GEN      := '';
                        COD_LST      := '';
                        ALIQ_ICMS    := 0;
+
+                      //Cria uma alteração apenas para o item 5...
+                      if (int0200 = 5) then with Registro0205New do
+                      begin
+                        DESCR_ANT_ITEM := 'DESCRIÇÃO ANTERIOR DO ITEM 5';
+                        DT_INI := StrToDate('01/04/2011');
+                        DT_FIM := StrToDate('15/04/2011');
+                      end;
                     end;
                  end;
               end;

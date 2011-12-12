@@ -88,7 +88,6 @@ object FrmSPEDPisCofins: TFrmSPEDPisCofins
     Caption = 'Gerar TXT Error'
     TabOrder = 2
     OnClick = btnErrorClick
-    ExplicitTop = 478
   end
   object btnTXT: TButton
     Left = 521
@@ -99,7 +98,6 @@ object FrmSPEDPisCofins: TFrmSPEDPisCofins
     Caption = 'Gerar TXT'
     TabOrder = 3
     OnClick = btnTXTClick
-    ExplicitTop = 478
   end
   object Panel1: TPanel
     Left = 0
@@ -152,7 +150,7 @@ object FrmSPEDPisCofins: TFrmSPEDPisCofins
     object edtFile: TEdit
       Left = 22
       Top = 28
-      Width = 252
+      Width = 244
       Height = 21
       Anchors = [akLeft, akTop, akRight]
       TabOrder = 0
@@ -161,7 +159,7 @@ object FrmSPEDPisCofins: TFrmSPEDPisCofins
       OnExit = edtFileChange
     end
     object cbConcomitante: TCheckBox
-      Left = 298
+      Left = 290
       Top = 30
       Width = 134
       Height = 19
@@ -304,7 +302,6 @@ object FrmSPEDPisCofins: TFrmSPEDPisCofins
     Enabled = False
     TabOrder = 6
     OnClick = btnB_9Click
-    ExplicitTop = 478
   end
   object edBufLinhas: TEdit
     Left = 16

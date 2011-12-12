@@ -255,6 +255,7 @@ begin
   begin
      intP := intP * 10;
   end;
+
   if strCurMascara <> '' then
      Result := FDelimitador + FormatCurr(strCurMascara, Value)
   else

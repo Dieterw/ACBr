@@ -1724,6 +1724,8 @@ begin
              LFill(NUM_DOC)            +
              LFill(DT_DOC, 'ddmmyyyy') +
              LFill(VL_DOC,0,2) );
+        // Registros FILHOS
+        WriteRegistroC396( RegC010.RegistroC395.Items[intFor] );
         //
         RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
       end;

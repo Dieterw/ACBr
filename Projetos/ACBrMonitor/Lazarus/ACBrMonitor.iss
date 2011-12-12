@@ -8,7 +8,6 @@
 
 #define MyAppName "ACBrMonitor"
 #define MyAppVerName MyAppName + '-' + MyAppVersion
-;#define MyAppVerName "ACBrMonitor-0.9.7b"
 #define MyAppPublisher "Projeto ACBr"
 #define MyAppURL "http://acbr.sourceforge.net/ACBrMonitor.htm"
 #define MyAppUrlName "ACBrMonitor.url"
@@ -50,7 +49,7 @@ Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:Ad
 [Files]
 Source: ACBrMonitor.exe; DestDir: {app}; Flags: ignoreversion; Components: programa
 Source: ACBrMonitorConsole.exe; DestDir: {app}; Flags: ignoreversion; Components: console
-Source: ECFTeste.exe; DestDir: {app}; Flags: ignoreversion; Components: programa
+Source: {#ACBrDIR}\Exemplos\ACBrECF\Lazarus\ECFTeste.exe; DestDir: {app}; Flags: ignoreversion; Components: programa
 Source: PRICETAB.TXT; DestDir: {app}; Flags: onlyifdoesntexist; Components: programa
 Source: ..\Exemplos\TesteTXT.BAT; DestDir: {app}\Exemplos; Flags: ignoreversion; Components: exemplos
 Source: ..\Exemplos\Clipper_TXT_xHarbour_Socket.zip; DestDir: {app}\Exemplos; Flags: ignoreversion; Components: exemplos
@@ -67,7 +66,9 @@ Source: {#ACBrDIR}\DLLs\OpenSSL\libeay32.dll; DestDir: {app}; Flags: ; Component
 Source: {#ACBrDIR}\DLLs\OpenSSL\ssleay32.dll; DestDir: {app}; Flags: ; Components: programa
 Source: {#ACBrDIR}\DLLs\MSVCR\msvcr71.dll; DestDir: {app}; Flags: ; Components: programa
 Source: {#ACBrDIR}\Fontes\ACBrBoleto\Logos\Colorido\*.*; DestDir: {app}\Logos; Flags: ; Components: programa
-; NOTE: Don't use "Flags: ignoreversion" on any shared system files
+
+
+
 
 [INI]
 Filename: {app}\{#MyAppUrlName}; Section: InternetShortcut; Key: URL; String: {#MyAppURL}; Components: help

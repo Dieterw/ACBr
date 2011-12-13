@@ -201,6 +201,12 @@ begin
     Width := 100;
   end;
 
+  with StatusBar1.Panels.Add do
+  begin
+    Text  := 'NumItem: ' + IntToStr(frmPrincipal.ACBrECF1.NumUltItem);
+    Width := 100;
+  end;
+
   pgcInfo.ActivePageIndex := 1;
   AtualizarTela;
 end;

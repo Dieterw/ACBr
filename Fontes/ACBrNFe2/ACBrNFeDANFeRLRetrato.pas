@@ -116,6 +116,10 @@
 |*    estiver no Delphi. Obrigatória a utilização da versão 3.70B ou superior
 |*    do Fortes Report. Download disponível em
 |*    http://sourceforge.net/projects/fortesreport/files/
+|* 13/12/2011: Peterson de Cerqueira Matos
+|*  - Conserto da exibição da base e do valor do ICMS de cada item no caso
+|*    de ser simples nacional, pois estava saindo zerado. (Este código de
+|*    exibição dos itens foi copiado do DANFE em QuickReport)
 ******************************************************************************}
 
 
@@ -1754,18 +1758,41 @@ begin
 
                   if FNFe.Emit.CRT = crtSimplesNacional then
                     begin
+                      //=============  Trecho copiado do Danfe em Quick Report =======================
+                      //==============================================================================
+                      // Adicionado para imprimir alíquotas
+                      //==============================================================================
                       if CSOSNIcmsToStr(Imposto.ICMS.CSOSN) > '' then
-                        cdsItens.FieldByName('CSOSN').AsString :=
-                            OrigToStr(orig) + CSOSNIcmsToStr(Imposto.ICMS.CSOSN)
+                        cdsItens.FieldByName('CSOSN').AsString := OrigToStr(orig) + CSOSNIcmsToStr(Imposto.ICMS.CSOSN)
                       else
                         cdsItens.FieldByName('CSOSN').AsString := '';
-                      cdsItens.FieldByName('BICMS').AsString := '0,00';
-                      cdsItens.FieldByName('ALIQICMS').AsString := '0,00';
-                      cdsItens.FieldByName('VALORICMS').AsString := '0,00';
+
+                      //==============================================================================
+                      // Resetando valores das qlíquotas
+                      //==============================================================================
+                      sBCICMS    := '0,00';
+                      sALIQICMS  := '0,00';
+                      sVALORICMS := '0,00';
+
+                      case CSOSN of
+                        csosn900:
+                          begin
+                            sBCICMS    := FormatFloat('#,##0.00', VBC);
+                            sALIQICMS  := FormatFloat('#,##0.00', PICMS);
+                            sVALORICMS := FormatFloat('#,##0.00', VICMS);
+                         end;
+                      end;
+
+                      cdsItens.FieldByName('BICMS').AsString       := sBCICMS;
+                      cdsItens.FieldByName('ALIQICMS').AsString    := sALIQICMS;
+                      cdsItens.FieldByName('VALORICMS').AsString   := sVALORICMS;
+                      //===========  Final do trecho copiado do Danfe em Quick Report ===============
+
                       lblCST.Caption := 'CSOSN';
                       lblCST.Font.Size := 4;
                       lblCST.Top := 19;
                       txtCST.DataField := 'CSOSN';
+
                     end; //FNFe.Emit.CRT = crtSimplesNacional
                 end; // with Imposto.ICMS do
 

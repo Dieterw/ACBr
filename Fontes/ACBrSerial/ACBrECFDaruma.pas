@@ -774,6 +774,7 @@ begin
   fsNumCRO      := '' ;
   fsnumcupom    := '' ;
   fsNumCCF      := '' ;
+  fsNumUltimoItem := 0;
   fsSubTotal    := 0 ;
   fsArredonda   := ' ';
   fsCNFVinc     := nil ;
@@ -863,6 +864,7 @@ begin
   fsnumcupom  := '' ;
   fsNumCCF    := '' ;
   fsSubTotal  := 0 ;
+  fsNumUltimoItem := 0;
 
   fpMFD       := False ;
   fpTermica   := False ;
@@ -1948,6 +1950,7 @@ begin
   fsSubTotal := 0;
   fsNumCupom := '';
   fsNumCCF   := '';
+  fsNumUltimoItem := 0;
 
   fpUltimaMsgPoucoPapel := 0 ;  { Zera tempo pra msg de pouco papel }
   AguardaImpressao := True ;

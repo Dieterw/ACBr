@@ -303,11 +303,8 @@ begin
     Parametros.RealizaDAVNaoFiscal      := True;
     Parametros.RealizaDAVOS             := True;
     Parametros.IndiceTecnicoProd        := False;
-    Parametros.PostoCombustivel         := False;
     Parametros.BarSimilarECFRestaurante := True;
     Parametros.BarSimilarECFComum       := False;
-    Parametros.FarmaciaManipulacao      := True;
-    Parametros.OficinaConserto          := True;
     Parametros.TransportePassageiro     := True;
     Parametros.TotalizaValoresLista     := False;
     Parametros.TransfPreVenda           := True;

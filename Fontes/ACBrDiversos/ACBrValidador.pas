@@ -1199,16 +1199,20 @@ var
 
   function CalcularDV(ACodigoGTIN: String): String;
   var
-    I, DV: Integer;
+    Dig, I, DV: Integer;
   begin
-    Result   := '' ;
-
-    if not Length(ACodigoGTIN) in [7, 11, 12, 13] then
-      Exit;
-
     DV := 0;
+    Result := '' ;
+
+    // adicionar os zeros a esquerda, se não fizer isso o cálculo não bate
+    // limite = tamanho maior codigo (gtin14) - 1 (digito)
+    ACodigoGTIN := PadR(ACodigoGTIN, 13, '0');
+
     for I := Length(ACodigoGTIN) downto 1 do
-      DV := DV + (StrToInt(ACodigoGTIN[I]) * IfThen(odd(I), 3, 1));
+    begin
+      Dig := StrToInt(ACodigoGTIN[I]);
+      DV  := DV + (Dig * IfThen(odd(I), 3, 1));
+    end;
 
     DV := (Ceil(DV / 10) * 10) - DV ;
     Result := IntToStr(DV);

@@ -228,7 +228,7 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
        Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
     Procedure LeituraMemoriaFiscalSerial( ReducaoInicial, ReducaoFinal : Integer;
        Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
-    Procedure IdentificaPAF( Linha1, Linha2 : String) ; override ;
+    Procedure IdentificaPAF( NomeVersao, MD5 : String) ; override ;
     Function RetornaInfoECF( Registrador: String) : AnsiString; override ;
 
     Procedure AbreGaveta ; override ;
@@ -2495,9 +2495,9 @@ begin
    EnviaComando_ECF('56|'+Copy(Nome,1,20));
 end;
 
-procedure TACBrECFSwedaSTX.IdentificaPAF(Linha1, Linha2: String);
+procedure TACBrECFSwedaSTX.IdentificaPAF( NomeVersao, MD5 : String);
 begin
-   EnviaComando('39|D|'+padL(Linha1,42) + padL(Linha2,42));
+   EnviaComando('39|D|'+padL(NomeVersao,42) + padL(MD5,42));
 end;
 
 function TACBrECFSwedaSTX.GetPAF: String;

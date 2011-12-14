@@ -357,7 +357,7 @@ TACBrECFEpson = class( TACBrECFClass )
     Function LeituraCMC7 : AnsiString ; override ;
 
     Procedure IdentificaOperador ( Nome: String); override;
-    Procedure IdentificaPAF( Linha1, Linha2 : String) ; override ;
+    Procedure IdentificaPAF( NomeVersao, MD5 : String) ; override ;
     Procedure CortaPapel( const CorteParcial : Boolean = false) ; override ;
     procedure Suprimento( const Valor: Double; Obs : AnsiString;
        DescricaoCNF: String; DescricaoFPG: String; IndiceBMP: Integer) ; override ;
@@ -3026,10 +3026,10 @@ begin
   Result := padL(fsPAF1,42)+'|'+padL(fsPAF2,42) ; 
 end;
 
-procedure TACBrECFEpson.IdentificaPAF(Linha1, Linha2: String);
+procedure TACBrECFEpson.IdentificaPAF(NomeVersao, MD5 : String);
 begin
-  fsPAF1 := LeftStr( Linha1, 42) ;
-  fsPAF2 := LeftStr( Linha2, 42) ;
+  fsPAF1 := LeftStr( NomeVersao, 42) ;
+  fsPAF2 := LeftStr( MD5, 42) ;
 end;
 
 procedure TACBrECFEpson.EnviaPAF ;

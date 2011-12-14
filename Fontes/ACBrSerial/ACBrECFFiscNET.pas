@@ -369,7 +369,7 @@ TACBrECFFiscNET = class( TACBrECFClass )
     Procedure ProgramaComprovanteNaoFiscal( var Descricao: String;
        Tipo : String = ''; Posicao : String = '') ; override ;
 
-    procedure IdentificaPAF( Linha1, Linha2 : String) ; override ;
+    procedure IdentificaPAF( NomeVersao, MD5 : String) ; override ;
 
  end ;
 
@@ -2666,9 +2666,9 @@ begin
   end ;
 end;
 
-procedure TACBrECFFiscNET.IdentificaPAF(Linha1, Linha2: String);  
+procedure TACBrECFFiscNET.IdentificaPAF(NomeVersao, MD5 : String);
 begin
-   fsPAF := Linha1 + #10 + Linha2 ;
+   fsPAF := NomeVersao + #10 + MD5 ;
    FiscNETComando.NomeComando := 'EscreveTexto' ;
    FiscNETComando.AddParamString('NomeTexto' ,'TextoLivre') ;
    FiscNETComando.AddParamString('ValorTexto', fsPAF ) ;

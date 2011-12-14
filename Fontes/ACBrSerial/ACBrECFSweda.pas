@@ -345,7 +345,7 @@ TACBrECFSweda = class( TACBrECFClass )
     Procedure LeituraMFDSerial( COOInicial, COOFinal : Integer;
        Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
 
-    procedure IdentificaPAF(Linha1, Linha2: String); override ;
+    procedure IdentificaPAF( NomeVersao, MD5 : String); override ;
 
     Procedure AbreGaveta ; override ;
 
@@ -3380,10 +3380,9 @@ begin
   end ;
 end;
 
-Procedure TACBrECFSweda.IdentificaPAF(Linha1,Linha2: String);
+Procedure TACBrECFSweda.IdentificaPAF( NomeVersao, MD5 : String);
 begin
-  if fpMFD then
-     EnviaComando('57'+ padL(Linha1,42) + padL(Linha2,42)) ;
+  EnviaComando('57'+ padL(NomeVersao,42) + padL(MD5,42)) ;
 end;
 
 procedure TACBrECFSweda.LoadDLLFunctions;

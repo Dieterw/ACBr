@@ -584,7 +584,7 @@ TACBrECFBematech = class( TACBrECFClass )
        Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
     Procedure LeituraMFDSerial( COOInicial, COOFinal : Integer;
        Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
-    Procedure IdentificaPAF( Linha1, Linha2 : String) ; override ;
+    Procedure IdentificaPAF( NomeVersao, MD5 : String) ; override ;
     Function RetornaInfoECF( Registrador: String) : AnsiString; override ;
 
     Procedure AbreGaveta ; override ;
@@ -3370,9 +3370,9 @@ begin
    end ;
 end;
 
-procedure TACBrECFBematech.IdentificaPAF(Linha1, Linha2: String);
+procedure TACBrECFBematech.IdentificaPAF(NomeVersao, MD5 : String);
 begin
-  fsPAF := padL(Linha1,42) + padL(Linha2,42) ;
+  fsPAF := padL(NomeVersao,42) + padL(MD5,42) ;
   EnviaComando(#62 + #64 + fsPAF) ;
 end;
 

@@ -372,7 +372,7 @@ TACBrECFDaruma = class( TACBrECFClass )
        TipoContador: TACBrECFTipoContador = tpcCOO  ) ; override ;
 
     Procedure IdentificaOperador ( Nome: String); override;
-    Procedure IdentificaPAF( Linha1, Linha2 : String) ; override ;
+    Procedure IdentificaPAF( NomeVersao, MD5 : String) ; override ;
     Function RetornaInfoECF( Registrador : String ) : AnsiString; override ;
     function DecodificaTexto(Operacao: Char; Texto: String; var Resposta: String): Boolean; override;
 
@@ -4287,35 +4287,32 @@ begin
      Result := RetornaInfoECF('131');
 end;
 
-procedure TACBrECFDaruma.IdentificaPAF(Linha1, Linha2: String);
+procedure TACBrECFDaruma.IdentificaPAF(NomeVersao, MD5 : String);
 var
   Resp: Integer;
 begin
-  if fpMFD then
-  begin
-    EnviaComando( FS + 'C' + #214 + PadL(Linha1,42) + PadL(Linha2,42) );
+  EnviaComando( FS + 'C' + #214 + PadL(NomeVersao,42) + PadL(MD5,42) );
 
+  try
+    LoadDLLFunctions;
     try
-      LoadDLLFunctions;
-      try
-        ConfigurarDLL('');
+      ConfigurarDLL('');
 
-        // gravar no registro para evitar a perda, algumas funções da dll leem dessas chaves
-        Resp := xregAlterarValor_Daruma('ECF\MensagemApl1', Linha1 );
-        if Resp <> 1 then
-           raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar: '+sLineBreak+
-           'xregAlterarValor_Daruma( "ECF\MensagemApl1",  "'+Linha1+'" )') );
+      // gravar no registro para evitar a perda, algumas funções da dll leem dessas chaves
+      Resp := xregAlterarValor_Daruma('ECF\MensagemApl1', NomeVersao );
+      if Resp <> 1 then
+         raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar: '+sLineBreak+
+         'xregAlterarValor_Daruma( "ECF\MensagemApl1",  "'+NomeVersao+'" )') );
 
-        Resp := xregAlterarValor_Daruma('ECF\MensagemApl2', Linha2 );
-        if Resp <> 1 then
-           raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar: '+sLineBreak+
-           'xregAlterarValor_Daruma( "ECF\MensagemApl2",  "'+Linha1+'" )') );
-      finally
-        UnloadDLLFunctions;
-      end;
-    except
-      // Exceção muda... pode falhar se não achar a DLL
+      Resp := xregAlterarValor_Daruma('ECF\MensagemApl2', MD5 );
+      if Resp <> 1 then
+         raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar: '+sLineBreak+
+         'xregAlterarValor_Daruma( "ECF\MensagemApl2",  "'+MD5+'" )') );
+    finally
+      UnloadDLLFunctions;
     end;
+  except
+    // Exceção muda... pode falhar se não achar a DLL
   end;
 end;
 

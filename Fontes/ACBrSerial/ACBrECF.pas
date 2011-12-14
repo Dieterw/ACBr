@@ -751,7 +751,7 @@ TACBrECF = class( TACBrComponent )
        Finalidade: TACBrECFFinalizaArqMFD = finMFD; TipoContador: TACBrECFTipoContador = tpcCOO) ; overload ;
 
     Procedure IdentificaOperador( Nome : String) ;
-    Procedure IdentificaPAF( Linha1, Linha2 : String) ;
+    Procedure IdentificaPAF( NomeVersao, MD5 : String) ;
     Function RetornaInfoECF( Registrador : String ) : AnsiString;
 
     procedure ArredondarPorQtd( var Qtd: Double; const ValorUnitario: Double;
@@ -2928,9 +2928,9 @@ begin
   { montar o rodape quando as informações de rodapé forem passadas }
   RodapePafECF := EmptyStr;
 
-  // atende ao requisito do paf-ECF
+  // atende ao requisito do Paf-ECF
   if Trim(InfoRodapeCupom.MD5) <> EmptyStr then
-    RodapePafECF := 'MD5:' + Trim(InfoRodapeCupom.MD5);
+    RodapePafECF := 'MD-5:' + Trim(InfoRodapeCupom.MD5);
 
   // atende ao requisito do paf-ECF V item 2
   if Trim(InfoRodapeCupom.PreVenda) <> EmptyStr then
@@ -5230,11 +5230,16 @@ begin
   fsIdentificarOperador := False ;
 end;
 
-procedure TACBrECF.IdentificaPAF(Linha1, Linha2: String);
+procedure TACBrECF.IdentificaPAF(NomeVersao, MD5: String);
 begin
-  ComandoLOG := 'IdentificaPAF('+Linha1+' , '+Linha2+')';
+  ComandoLOG := 'IdentificaPAF('+NomeVersao+' , '+MD5+')';
 
-  fsECF.IdentificaPAF(Linha1, Linha2);
+  try
+     fsECF.IdentificaPAF(NomeVersao, MD5);
+  except
+     // Se não conseguiu programar os dados PAF-ECF, usa o InfoRodapeCupom para imprimir o MD5 //
+     InfoRodapeCupom.MD5 := MD5;
+  end ;
 end;
 
 Function TACBrECF.RetornaInfoECF( Registrador : String ) : AnsiString;

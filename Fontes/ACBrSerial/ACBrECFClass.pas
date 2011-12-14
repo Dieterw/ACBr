@@ -94,6 +94,9 @@ EACBrECFNaoInicializado = class(EACBrECFErro) ;
 EACBrECFOcupado         = class(EACBrECFErro) ;
 
 { Definindo novo tipo para armazenar os dados que irão compor o rodapé }
+
+{ TACBrECFRodape }
+
 TACBrECFRodape = class
   private
     fsPreVenda: String;
@@ -102,11 +105,12 @@ TACBrECFRodape = class
     fsDav: String;
     fsMinasLegal: Boolean;
     fsCupomMania: Boolean;
+    procedure SetMD5(AValue : String) ;
   public
     constructor Create;
     procedure Clear;
   published
-    property MD5        : String  read fsMD5        write fsMD5;
+    property MD5        : String  read fsMD5        write SetMD5;
     property Dav        : String  read fsDav        write fsDav;
     property DavOs      : String  read fsDavOs      write fsDavOs;
     property PreVenda   : String  read fsPreVenda   write fsPreVenda;
@@ -1006,7 +1010,7 @@ TACBrECFClass = class
        TipoContador: TACBrECFTipoContador = tpcCOO ) ; overload ; virtual ;
 
     Procedure IdentificaOperador(Nome : String); virtual;
-    Procedure IdentificaPAF( Linha1, Linha2 : String) ; virtual ;
+    Procedure IdentificaPAF( NomeVersao, MD5 : String) ; virtual ;
     Function RetornaInfoECF( Registrador: String) : AnsiString; Virtual ;
 
     { Retorna a Resposta do ECF }
@@ -2591,7 +2595,7 @@ begin
 //  ErroAbstract('IdentificaOperador');
 end;
 
-procedure TACBrECFClass.IdentificaPAF(Linha1, Linha2: String);
+procedure TACBrECFClass.IdentificaPAF(NomeVersao, MD5: String);
 begin
   ErroAbstract('IdentificaPAF');
 end;
@@ -3956,6 +3960,26 @@ begin
 end;
 
 { TACBrECFRodape }
+
+procedure TACBrECFRodape.SetMD5(AValue : String) ;
+Var
+  P : Integer ;
+  UpValue : String ;
+begin
+  if fsMD5 = AValue then Exit ;
+
+  // Removendo o pre-fixo "MD5", "MD5:" e "MD-5:"
+  UpValue := UpperCase(AValue);
+  P       := 1 ;
+  if LeftStr(UpValue,5) = 'MD-5:' then
+     P := 6
+  else if LeftStr(UpValue,4) = 'MD5:' then
+     P := 5
+  else if LeftStr(UpValue,3) = 'MD5' then
+     P := 4 ;
+
+  fsMD5 := copy(AValue,P,Length(AValue)) ;
+end ;
 
 constructor TACBrECFRodape.Create;
 begin

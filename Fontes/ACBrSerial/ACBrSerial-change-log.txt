@@ -98,6 +98,21 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Data: 14/12/2011
+-- ACBrECF --
+[*] Modificada a assinatura do método IdentificaPAF para:
+    IdentificaPAF( NomeVersao, MD5 : String) ;
+[*] Método IdentificaPAF modificado para no caso de falha da programação no ECF,
+    usar a impressão de InfoRodapeCupom.MD5
+[*] Adicionado tratamento em InfoRodapeCupom.MD5 para evitar impressão dupla do
+    prefixo "MD-5:"
+[-] Corrigida a impressão do prefixo de InfoRodapeCupom.MD5 no Rodapé do Cupom,
+    de acordo com o última versão do PAF-ECF
+
+-- ACBrECFSwedaSTX --
+[-] Corrigida programação de IdentificaPAF, para considerar o numero de colunas
+    do ECF
+
 Data: 10/12/2011
 -- ACBrECFSwedaSTX --
 [-] Corrigido Bug na geração do ArquivoMFD por Data. (Gerava apenas com dados da MF)

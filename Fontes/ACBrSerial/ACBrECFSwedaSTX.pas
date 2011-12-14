@@ -2497,7 +2497,7 @@ end;
 
 procedure TACBrECFSwedaSTX.IdentificaPAF( NomeVersao, MD5 : String);
 begin
-   EnviaComando('39|D|'+padL(NomeVersao,42) + padL(MD5,42));
+   EnviaComando('39|D|'+padL(NomeVersao,Colunas) + padL(MD5,Colunas));
 end;
 
 function TACBrECFSwedaSTX.GetPAF: String;

@@ -33,13 +33,11 @@ requires
   designide,
   dbrtl,
   dsnap,
+  ACBr_Boleto,
   frx14,
   frxDB14,
   frxe14,
-  fs14,
-  ACBrComum,
-  ACBrDiversos,
-  ACBr_Boleto;
+  fs14;
 
 contains
   ACBrBoletoFCFR in '..\..\Fontes\ACBrBoleto\ACBrBoletoFCFR.pas' {dmACBrBoletoFCFR: TDataModule},

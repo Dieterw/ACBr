@@ -627,7 +627,7 @@ begin
         with Reg1001.Registro1300.Items[intFor] do
         begin
           Add( LFill('1300') +
-               LFill( IND_NAT_RET )       +  //Verificar criação da tabela no ACBrEPCBlocos
+               LFill( IND_NAT_RET, 2 )    +  //Verificar criação da tabela no ACBrEPCBlocos
                LFill( PR_REC_RET, 6 )     +
                LFill( VL_RET_APU,0,2 )    +
                LFill( VL_RET_DED,0,2 )    +
@@ -843,7 +843,7 @@ begin
         with Reg1001.Registro1700.Items[intFor] do
         begin
           Add( LFill('1700') +
-               LFill( IND_NAT_RET )       +  //Verificar criação da tabela no ACBrEPCBlocos
+               LFill( IND_NAT_RET, 2 )    +  //Verificar criação da tabela no ACBrEPCBlocos
                LFill( PR_REC_RET, 6 )     +
                LFill( VL_RET_APU,0,2 )    +
                LFill( VL_RET_DED,0,2 )    +

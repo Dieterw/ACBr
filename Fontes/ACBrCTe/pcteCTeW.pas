@@ -1684,7 +1684,12 @@ begin
   Gerador.wCampo(tcStr, '#03', 'nOCA    ', 14, 14, 0, CTe.Aereo.nOCA, '');
   Gerador.wCampo(tcDat, '#04', 'dPrev   ', 10, 10, 0, CTe.Aereo.dPrev, '');
   Gerador.wCampo(tcStr, '#05', 'xLAgEmi ', 01, 20, 0, CTe.Aereo.xLAgEmi, '');
+{$IFDEF PL_103}
   Gerador.wCampo(tcStr, '#06', 'cIATA   ', 01, 14, 0, CTe.Aereo.cIATA, '');
+{$ENDIF}
+{$IFDEF PL_104}
+  Gerador.wCampo(tcStr, '#06', 'IdT     ', 01, 14, 0, CTe.Aereo.IdT, '');
+{$ENDIF}
 
   Gerador.wGrupo('tarifa', '#07');
 {$IFDEF PL_103}
@@ -1694,6 +1699,18 @@ begin
   Gerador.wCampo(tcStr, '#09', 'cTar   ', 01, 04, 0, CTe.Aereo.tarifa.cTar, '');
   Gerador.wCampo(tcDe2, '#10', 'vTar   ', 01, 15, 0, CTe.Aereo.tarifa.vTar, '');
   Gerador.wGrupo('/tarifa');
+
+{$IFDEF PL_104}
+  if (CTe.Aereo.natCarga.xDime<>'') or (CTe.Aereo.natCarga.cinfManu<>0) or
+     (CTe.Aereo.natCarga.cImp<>'')
+   then begin
+    Gerador.wGrupo('natCarga', '#11');
+    Gerador.wCampo(tcStr, '#12', 'xDime   ', 05, 14, 0, CTe.Aereo.natCarga.xDime, '');
+    Gerador.wCampo(tcInt, '#13', 'cInfManu', 02, 02, 0, CTe.Aereo.natCarga.cinfManu, '');
+    Gerador.wCampo(tcStr, '#14', 'cIMP    ', 03, 03, 0, CTe.Aereo.natCarga.cIMP, '');
+    Gerador.wGrupo('/natCarga');
+   end;
+{$ENDIF}
 
   Gerador.wGrupo('/aereo');
 end;

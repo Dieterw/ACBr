@@ -927,7 +927,12 @@ begin
       CTe.Aereo.nOCA    := Leitor.rCampo(tcStr,'nOCA');
       CTe.Aereo.dPrev   := Leitor.rCampo(tcDat,'dPrev');
       CTe.Aereo.xLAgEmi := Leitor.rCampo(tcStr,'xLAgEmi');
-      CTe.Aereo.cIATA   := Leitor.rCampo(tcStr,'cIATA');
+  {$IFDEF PL_103}
+      CTe.Aereo.cIATA     := Leitor.rCampo(tcStr,'cIATA');
+  {$ENDIF}
+  {$IFDEF PL_104}
+      CTe.Aereo.IdT     := Leitor.rCampo(tcStr,'IdT');
+  {$ENDIF}
 
       if Leitor.rExtrai(3, 'tarifa') <> '' then
       begin

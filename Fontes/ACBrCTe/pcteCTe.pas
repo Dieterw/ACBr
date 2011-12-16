@@ -1777,7 +1777,12 @@ type
     FnOCA    : String;
     FdPrev   : tDateTime;
     FxLAgEmi : String;
+  {$IFDEF PL_103}
     FcIATA   : String;
+  {$ENDIF}
+  {$IFDEF PL_104}
+    FIdT   : String;
+  {$ENDIF}
     Ftarifa  : Ttarifa;
   {$IFDEF PL_104}
     FnatCarga : TnatCarga;
@@ -1790,7 +1795,12 @@ type
     property nOCA: String read FnOCA write FnOCA;
     property dPrev: TDateTime read FdPrev write FdPrev;
     property xLAgEmi: String read FxLAgEmi write FxLAgEmi;
+  {$IFDEF PL_103}
     property cIATA: String read FcIATA write FcIATA;
+  {$ENDIF}
+  {$IFDEF PL_104}
+    property IdT: String read FIdT write FIdT;
+  {$ENDIF}
     property tarifa: Ttarifa read Ftarifa write Ftarifa;
   {$IFDEF PL_104}
     property natCarga: TnatCarga read FnatCarga write FnatCarga;
@@ -1818,11 +1828,11 @@ type
   private
     FxDime    : String;
     FcinfManu : Integer;
-    FcImp     : String;
+    FcIMP     : String;
   public
     property xDime: String read FxDime write FxDime;
     property cinfManu: Integer read FcinfManu write FcinfManu;
-    property cImp: String read FcImp write FcImp;
+    property cIMP: String read FcIMP write FcIMP;
   end;
 
   Taquav = class(TPersistent)

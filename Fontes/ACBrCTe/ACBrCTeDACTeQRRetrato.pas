@@ -1818,11 +1818,14 @@ begin
     qrlAWB.Caption           := nOCA;
   {$IFDEF PL_103}
     qrlTrecho.Caption        := tarifa.trecho;
+    qrlContaCorrente.Caption := cIATA; // ??? Conta Corrente ???
   {$ENDIF}
     qrlTarifaCL.Caption      := tarifa.CL;
     qrlTarifaCodigo.Caption  := tarifa.cTar;
     qrlTarifaValor.Caption   := FormatCurr('###,###,##0.00', tarifa.vTar);
-    qrlContaCorrente.Caption := cIATA; // ??? Conta Corrente ???
+  {$IFDEF PL_104}
+    qrlContaCorrente.Caption := IdT; // ??? Conta Corrente ???
+  {$ENDIF}
     qrlMinuta.Caption        := FormatFloat('0000000000', nMinu);
 
     qrlLojaAgenteEmissor.Caption := xLAgEmi;

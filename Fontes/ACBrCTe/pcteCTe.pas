@@ -1827,15 +1827,15 @@ type
   TnatCarga = class(TPersistent)
   private
     FxDime    : String;
-    FcinfManu : Integer;
-    FcIMP     : String;
+    FcinfManu : Integer; // Alterar para ser uma lista
+    FcIMP     : String;  // Alterar para ser uma lista
   public
     property xDime: String read FxDime write FxDime;
     property cinfManu: Integer read FcinfManu write FcinfManu;
     property cIMP: String read FcIMP write FcIMP;
   end;
 
-  Taquav = class(TPersistent)
+  Taquav = class(TPersistent) // Definir o Grupo detCont
   private
     FvPrest   : Currency;
     FvAFRMM   : Currency;
@@ -1920,7 +1920,7 @@ type
   end;
 
   // Informações do modal Ferroviário
-  Tferrov = class(TPersistent)
+  Tferrov = class(TPersistent)   // Definir o Grupo ratVag
   private
     FtpTraf   : TpcteTipoTrafego;
 {$IFDEF PL_104}

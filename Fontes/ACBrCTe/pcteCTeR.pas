@@ -944,6 +944,11 @@ begin
         CTe.Aereo.tarifa.vTar   := Leitor.rCampo(tcDe2,'vTar');
       end;
 
+  {$IFDEF PL_104}
+      CTe.Aereo.natCarga.xDime     := Leitor.rCampo(tcStr,'xDime');
+      CTe.Aereo.natCarga.cinfManu  := Leitor.rCampo(tcInt,'cInfManu');
+      CTe.Aereo.natCarga.cIMP      := Leitor.rCampo(tcStr,'cIMP');
+  {$ENDIF}
     end; // fim das informações do modal Aéreo
 
     if Leitor.rExtrai(2, 'aquav') <> '' then

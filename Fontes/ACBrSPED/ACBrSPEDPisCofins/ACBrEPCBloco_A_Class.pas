@@ -456,6 +456,7 @@ begin
         //Check(Reg0001.Registro0190.LocalizaRegistro(UNID), '(0-0190) UNIDADE MEDIDA: A unidade de medida "%s" foi duplicada na lista de registros 0190!', [UNID]);
 
         case IND_ORIG_CRED of
+            opcVazio          : strIND_ORIG_CRED := '';
             opcMercadoInterno : strIND_ORIG_CRED := '0';
             opcImportacao     : strIND_ORIG_CRED := '1';
         end;
@@ -533,6 +534,7 @@ begin
         end;
 
         case NAT_BC_CRED of
+          bccVazio                         : strNAT_BC_CRED := '';
           bccAqBensRevenda                 : strNAT_BC_CRED := '01';
           bccAqBensUtiComoInsumo           : strNAT_BC_CRED := '02';
           bccAqServUtiComoInsumo           : strNAT_BC_CRED := '03';

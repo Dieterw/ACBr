@@ -934,6 +934,7 @@ begin
           end;
 
           case IND_APUR of
+            iaVazio     : strIND_APUR := '';
             iaMensal    : strIND_APUR := '0';
             iaDecendial : strIND_APUR := '1';
           end;

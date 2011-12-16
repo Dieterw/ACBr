@@ -175,7 +175,8 @@ type
   /// Indicador de período de apuração do IPI
   TACBrApuracaoIPI = (
                        iaMensal,               // 0 - Mensal
-                       iaDecendial             // 1 - Decendial
+                       iaDecendial,            // 1 - Decendial
+                       iaVazio
                       );
   /// Indicador de tipo de referência da base de cálculo do ICMS (ST) do produto farmacêutico
   TACBrTipoBaseMedicamento = (
@@ -605,8 +606,9 @@ type
 
   // Indicador da Origem do Crédito
   TACBrOrigemCredito = (
-                         opcMercadoInterno,      // 0 – Operação no Mercado Interno
-                         opcImportacao           // 1 – Operação de Importação
+                         opcMercadoInterno,     // 0 – Operação no Mercado Interno
+                         opcImportacao,         // 1 – Operação de Importação
+                         opcVazio               // Vazio. 
                        );
   // Tipo de Escrituração
   TACBrTipoEscrituracao = (
@@ -689,6 +691,7 @@ type
                          );
   //Código da Base de Cálculo do Crédito - {NAT_BC_CRED} - 4.3.7 - Tabela Base de Cálculo do Crédito
   TACBrBaseCalculoCredito = (
+                              bccVazio,                         // ''   // vazio.
                               bccAqBensRevenda,                 // '01' // Aquisição de bens para revenda
                               bccAqBensUtiComoInsumo,           // '02' // Aquisição de bens utilizados como insumo
                               bccAqServUtiComoInsumo,           // '03' // Aquisição de serviços utilizados como insumo

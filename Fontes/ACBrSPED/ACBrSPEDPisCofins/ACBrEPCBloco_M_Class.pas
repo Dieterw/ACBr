@@ -689,7 +689,8 @@ begin
         end;
 
         // Registros FILHOS
-        WriteRegistroM211( RegM200.RegistroM210.Items[intFor] );
+        if (Bloco_0.Registro0000.IND_NAT_PJ = indNatPJSocCooperativa) then
+          WriteRegistroM211( RegM200.RegistroM210.Items[intFor] );
         WriteRegistroM220( RegM200.RegistroM210.Items[intFor] );
         WriteRegistroM230( RegM200.RegistroM210.Items[intFor] );
         ///
@@ -1240,7 +1241,8 @@ begin
         end;
 
         // Registros FILHOS
-        WriteRegistroM611( RegM600.RegistroM610.Items[intFor] );
+        if (Bloco_0.Registro0000.IND_NAT_PJ = indNatPJSocCooperativa) then
+          WriteRegistroM611( RegM600.RegistroM610.Items[intFor] );
         WriteRegistroM620( RegM600.RegistroM610.Items[intFor] );
         WriteRegistroM630( RegM600.RegistroM610.Items[intFor] );
         ///

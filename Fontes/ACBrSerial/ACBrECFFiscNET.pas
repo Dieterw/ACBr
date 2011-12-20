@@ -2686,13 +2686,19 @@ end;
 
 function TACBrECFFiscNET.GetParamDescontoISSQN: Boolean;
 begin
-  FiscNETComando.NomeComando := 'LeInteiro' ;
-  FiscNETComando.AddParamString('NomeInteiro','PermiteISS') ;
-  EnviaComando ;
   try
+    FiscNETComando.NomeComando := 'LeInteiro' ;
+    FiscNETComando.AddParamString('NomeInteiro','PermiteISS') ;
+    EnviaComando ;
     Result  := StrToIntDef(FiscNETResposta.Params.Values['ValorInteiro'], 0) = 15 ;
   except
-     Result := False;
+     On E : Exception do
+     begin
+        Result := False;
+        // Comando não existe em versões antigas //
+        if pos('ErroProtNomeRegistrador', E.Message) = 0 then
+           raise ;
+     end ;
   end;
 end;
 

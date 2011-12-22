@@ -121,8 +121,12 @@ type
     procedure GerarCTRB;       // Nivel 3
     procedure GerarOCC;        // Nivel 3
     procedure GerarValePed;    // Nivel 3
+{$IFDEF PL_103}
     procedure ValePed_103;
+{$ENDIF}
+{$IFDEF PL_104}
     procedure ValePed_104;
+{$ENDIF}
     procedure GerarVeic;       // Nivel 3
     procedure GerarLacre;      // Nivel 3
     procedure GerarMoto;       // Nivel 3
@@ -1531,13 +1535,11 @@ begin
 {$ENDIF}
 end;
 
-procedure TCTeW.ValePed_103;
 {$IFDEF PL_103}
+procedure TCTeW.ValePed_103;
 var
  i: Integer;
-{$ENDIF}
 begin
-{$IFDEF PL_103}
   Gerador.wGrupo('valePed', 'L23');
 
   Gerador.wCampo(tcStr, 'L24', 'nroRE     ', 05, 09, 0, CTe.Rodo.valePed.nroRE, '');
@@ -1562,16 +1564,14 @@ begin
    end;
 
   Gerador.wGrupo('/valePed');
-{$ENDIF}
 end;
+{$ENDIF}
 
-procedure TCTeW.ValePed_104;
 {$IFDEF PL_104}
+procedure TCTeW.ValePed_104;
 var
  i: Integer;
-{$ENDIF}
 begin
-{$IFDEF PL_104}
   for i := 0 to CTe.Rodo.valeped.Count - 1 do
   begin
     Gerador.wGrupo('valePed', '#16');
@@ -1582,8 +1582,8 @@ begin
   end;
   if CTe.Rodo.valeped.Count > 990 then
     Gerador.wAlerta('#16', 'valePed', '', ERR_MSG_MAIOR_MAXIMO + '990');
-{$ENDIF}
 end;
+{$ENDIF}
 
 procedure TCTeW.GerarVeic;
 var
@@ -1717,7 +1717,7 @@ end;
 
 procedure TCTeW.GerarAquav;  // N
 var
- i: Integer;
+ i, i01: Integer;
 begin
   Gerador.wGrupo('aquav', '#01');
   Gerador.wCampo(tcDe2, '#02', 'vPrest   ', 01, 15, 1, CTe.Aquav.vPrest, '');
@@ -1745,6 +1745,7 @@ begin
   Gerador.wCampo(tcStr, '#14', 'tpNav    ', 01, 01, 1, TpNavegacaoToStr(CTe.Aquav.tpNav), '');
   Gerador.wCampo(tcStr, '#15', 'irin     ', 01, 10, 1, CTe.Aquav.irin, '');
 
+{$IFDEF PL_103}
   for i := 0 to CTe.Aquav.Lacre.Count - 1 do
    begin
     Gerador.wGrupo('lacre', '#16');
@@ -1753,6 +1754,59 @@ begin
    end;
   if CTe.Aquav.Lacre.Count > 3 then
    Gerador.wAlerta('#16', 'lacre', '', ERR_MSG_MAIOR_MAXIMO + '3');
+{$ENDIF}
+
+{$IFDEF PL_104}
+  for i := 0 to CTe.Aquav.detCont.Count - 1 do
+   begin
+    Gerador.wGrupo('detCont', '#16');
+    Gerador.wCampo(tcStr, '#17', 'nCont ', 01, 20, 1, CTe.Aquav.detCont.Items[i].nCont, '');
+
+    for i01 := 0 to CTe.Aquav.Lacre.Count - 1 do
+     begin
+      Gerador.wGrupo('lacre', '#18');
+      Gerador.wCampo(tcStr, '#19', 'nLacre ', 01, 20, 1, CTe.Aquav.Lacre.Items[i01].nLacre, '');
+      Gerador.wGrupo('/lacre');
+     end;
+    if CTe.Aquav.Lacre.Count > 3 then
+     Gerador.wAlerta('#18', 'lacre', '', ERR_MSG_MAIOR_MAXIMO + '3');
+
+    if (CTe.Aquav.detCont.Items[i].infNFCont.Count>0) or
+       (CTe.Aquav.detCont.Items[i].infNFeCont.Count>0)
+     then begin
+      Gerador.wGrupo('infDoc', '#20');
+
+      for i01 := 0 to CTe.Aquav.detCont.Items[i].infNFCont.Count - 1 do
+       begin
+        Gerador.wGrupo('infNF', '#21');
+        Gerador.wCampo(tcStr, '#22', 'serie  ', 01, 03, 1, CTe.Aquav.detCont.Items[i].infNFCont.Items[i01].serie, '');
+        Gerador.wCampo(tcStr, '#23', 'nDoc   ', 01, 20, 1, CTe.Aquav.detCont.Items[i].infNFCont.Items[i01].nDoc, '');
+        Gerador.wCampo(tcDe2, '#24', 'unidRat', 01, 05, 1, CTe.Aquav.detCont.Items[i].infNFCont.Items[i01].unidRat, '');
+        Gerador.wGrupo('/infNF');
+       end;
+      if CTe.Aquav.detCont.Items[i].infNFCont.Count > 990 then
+       Gerador.wAlerta('#21', 'infNF', '', ERR_MSG_MAIOR_MAXIMO + '990');
+
+      for i01 := 0 to CTe.Aquav.detCont.Items[i].infNFeCont.Count - 1 do
+       begin
+        Gerador.wGrupo('infNFe', '#25');
+        Gerador.wCampo(tcStr, '#26', 'chave  ', 44, 44, 1, SomenteNumeros(CTe.Aquav.detCont.Items[i].infNFeCont.Items[i01].chave), DSC_REFNFE);
+        if not ValidarChave('NFe' + SomenteNumeros(CTe.Aquav.detCont.Items[i].infNFeCont.Items[i01].chave)) then
+         Gerador.wAlerta('#26', 'chave', DSC_REFNFE, ERR_MSG_INVALIDO);
+        Gerador.wCampo(tcDe2, '#27', 'unidRat', 01, 05, 1, CTe.Aquav.detCont.Items[i].infNFeCont.Items[i01].unidRat, '');
+        Gerador.wGrupo('/infNFe');
+       end;
+      if CTe.Aquav.detCont.Items[i].infNFeCont.Count > 990 then
+       Gerador.wAlerta('#25', 'infNFe', '', ERR_MSG_MAIOR_MAXIMO + '990');
+
+      Gerador.wGrupo('/infDoc');
+     end;
+
+    Gerador.wGrupo('/detCont');
+   end;
+  if CTe.Aquav.detCont.Count > 990 then
+   Gerador.wAlerta('#16', 'detCont', '', ERR_MSG_MAIOR_MAXIMO + '990');
+{$ENDIF}
 
   Gerador.wGrupo('/aquav');
 end;
@@ -1976,6 +2030,39 @@ begin
      end;
     if CTe.Ferrov.detVag.Items[i].contVag.Count > 990 then
      Gerador.wAlerta('#31', 'contVag', '', ERR_MSG_MAIOR_MAXIMO + '990');
+
+{$IFDEF PL_104}
+    if (CTe.Ferrov.detVag.Items[i].ratNF.Count>0) or
+       (CTe.Ferrov.detVag.Items[i].ratNFe.Count>0)
+     then begin
+      Gerador.wGrupo('ratVag', '#34');
+
+      for i01 := 0 to CTe.Ferrov.detVag.Items[i].ratNF.Count - 1 do
+       begin
+        Gerador.wGrupo('ratNF', '#35');
+        Gerador.wCampo(tcStr, '#36', 'serie  ', 01, 03, 1, CTe.Ferrov.detVag.Items[i].ratNF.Items[i01].serie, '');
+        Gerador.wCampo(tcStr, '#37', 'nDoc   ', 01, 20, 1, CTe.Ferrov.detVag.Items[i].ratNF.Items[i01].nDoc, '');
+        Gerador.wCampo(tcDe2, '#38', 'pesoRat', 01, 05, 1, CTe.Ferrov.detVag.Items[i].ratNF.Items[i01].pesoRat, '');
+        Gerador.wGrupo('/ratNF');
+       end;
+      if CTe.Ferrov.detVag.Items[i].ratNF.Count > 990 then
+       Gerador.wAlerta('#35', 'ratNF', '', ERR_MSG_MAIOR_MAXIMO + '990');
+
+      for i01 := 0 to CTe.Ferrov.detVag.Items[i].ratNFe.Count - 1 do
+       begin
+        Gerador.wGrupo('ratNFe', '#39');
+        Gerador.wCampo(tcStr, '#40', 'chave  ', 44, 44, 1, SomenteNumeros(CTe.Ferrov.detVag.Items[i].ratNFe.Items[i01].chave), DSC_REFNFE);
+        if not ValidarChave('NFe' + SomenteNumeros(CTe.Ferrov.detVag.Items[i].ratNFe.Items[i01].chave)) then
+         Gerador.wAlerta('#40', 'chave', DSC_REFNFE, ERR_MSG_INVALIDO);
+        Gerador.wCampo(tcDe2, '#41', 'pesoRat', 01, 05, 1, CTe.Ferrov.detVag.Items[i].ratNFe.Items[i01].pesoRat, '');
+        Gerador.wGrupo('/ratNFe');
+       end;
+      if CTe.Ferrov.detVag.Items[i].ratNFe.Count > 990 then
+       Gerador.wAlerta('#39', 'ratNFe', '', ERR_MSG_MAIOR_MAXIMO + '990');
+
+      Gerador.wGrupo('/ratVag');
+     end;
+{$ENDIF}
 
     Gerador.wGrupo('/detVag');
    end;

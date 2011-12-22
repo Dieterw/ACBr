@@ -164,6 +164,16 @@ type
   TLacreCollection = class;
   TLacreCollectionItem = class;
 
+{$IFDEF PL_104}
+  TdetContCollection = class;
+  TdetContCollectionItem = class;
+
+  TinfNFContCollection = class;
+  TinfNFContCollectionItem = class;
+  TinfNFeContCollection = class;
+  TinfNFeContCollectionItem = class;
+{$ENDIF}
+
   Tferrov = class; // Informações do modal Ferroviário
   TtrafMut = class;
   TferroSub = class;
@@ -184,6 +194,13 @@ type
   TlacDetVagCollectionItem = class;
   TcontVagCollection = class;
   TcontVagCollectionItem = class;
+
+{$IFDEF PL_104}
+  TratNFCollection = class;
+  TratNFCollectionItem = class;
+  TratNFeCollection = class;
+  TratNFeCollectionItem = class;
+{$ENDIF}
 
   Tduto = class; // Informações do modal Dutoviário
 
@@ -1852,11 +1869,23 @@ type
 {$IFDEF PL_104}
     Fbalsa    : TbalsaCollection;
 {$ENDIF}
+
     Flacre    : TLacreCollection;
+
+{$IFDEF PL_104}
+    FdetCont  : TdetContCollection;
+{$ENDIF}
+
+
 {$IFDEF PL_104}
     procedure Setbalsa(const Value: TbalsaCollection);
 {$ENDIF}
+
     procedure SetLacre(const Value: TLacreCollection);
+
+{$IFDEF PL_104}
+    procedure SetdetCont(const Value: TdetContCollection);
+{$ENDIF}
   public
     constructor Create(AOwner: TCTe);
     destructor Destroy; override;
@@ -1876,7 +1905,12 @@ type
 {$IFDEF PL_104}
     property balsa: TbalsaCollection read Fbalsa write Setbalsa;
 {$ENDIF}
+
     property Lacre: TLacreCollection read FLacre write SetLacre;
+
+{$IFDEF PL_104}
+    property detCont: TdetContCollection read FdetCont write SetdetCont;
+{$ENDIF}
   end;
 
   TbalsaCollection = class(TCollection)
@@ -1919,8 +1953,82 @@ type
     property nLacre: string read FnLacre write FnLacre;
   end;
 
+{$IFDEF PL_104}
+  TdetContCollection = class(TCollection)
+  private
+    function GetItem(Index: Integer): TdetContCollectionItem;
+    procedure SetItem(Index: Integer; Value: TdetContCollectionItem);
+  public
+    constructor Create(AOwner: Taquav);
+    function Add: TdetContCollectionItem;
+    property Items[Index: Integer]: TdetContCollectionItem read GetItem write SetItem; default;
+  end;
+
+  TdetContCollectionItem = class(TCollectionItem)
+  private
+    FnCont : string;
+    FinfNFCont : TinfNFContCollection;
+    FinfNFeCont : TinfNFeContCollection;
+    procedure SetinfNFCont(const Value: TinfNFContCollection);
+    procedure SetinfNFeCont(const Value: TinfNFeContCollection);
+  public
+    constructor Create; reintroduce;
+    destructor Destroy; override;
+  published
+    property nCont: string read FnCont write FnCont;
+    property infNFCont: TinfNFContCollection read FinfNFCont write SetinfNFCont;
+    property infNFeCont: TinfNFeContCollection read FinfNFeCont write SetinfNFeCont;
+  end;
+
+  TinfNFContCollection = class(TCollection)
+  private
+    function GetItem(Index: Integer): TinfNFContCollectionItem;
+    procedure SetItem(Index: Integer; Value: TinfNFContCollectionItem);
+  public
+    constructor Create(AOwner: TdetContCollectionItem);
+    function Add: TinfNFContCollectionItem;
+    property Items[Index: Integer]: TinfNFContCollectionItem read GetItem write SetItem; default;
+  end;
+
+  TinfNFContCollectionItem = class(TCollectionItem)
+  private
+    Fserie : string;
+    FnDoc : string;
+    FunidRat : Currency;
+  public
+    constructor Create; reintroduce;
+    destructor Destroy; override;
+  published
+    property serie: string read Fserie write Fserie;
+    property nDoc: string read FnDoc write FnDoc;
+    property unidRat: Currency read FunidRat write FunidRat;
+  end;
+
+  TinfNFeContCollection = class(TCollection)
+  private
+    function GetItem(Index: Integer): TinfNFeContCollectionItem;
+    procedure SetItem(Index: Integer; Value: TinfNFeContCollectionItem);
+  public
+    constructor Create(AOwner: TdetContCollectionItem);
+    function Add: TinfNFeContCollectionItem;
+    property Items[Index: Integer]: TinfNFeContCollectionItem read GetItem write SetItem; default;
+  end;
+
+  TinfNFeContCollectionItem = class(TCollectionItem)
+  private
+    Fchave : string;
+    FunidRat : Currency;
+  public
+    constructor Create; reintroduce;
+    destructor Destroy; override;
+  published
+    property chave: string read Fchave write Fchave;
+    property unidRat: Currency read FunidRat write FunidRat;
+  end;
+{$ENDIF}
+
   // Informações do modal Ferroviário
-  Tferrov = class(TPersistent)   // Definir o Grupo ratVag
+  Tferrov = class(TPersistent)   
   private
     FtpTraf   : TpcteTipoTrafego;
 {$IFDEF PL_104}
@@ -2146,8 +2254,16 @@ type
     FpesoBC : Currency;
     FlacDetVag : TlacDetVagCollection;
     FcontVag : TcontVagCollection;
+{$IFDEF PL_104}
+    FratNF : TratNFCollection;
+    FratNFe : TratNFeCollection;
+{$ENDIF}
     procedure SetlacDetVag(const Value: TlacDetVagCollection);
     procedure SetcontVag(const Value: TcontVagCollection);
+{$IFDEF PL_104}
+    procedure SetratNF(const Value: TratNFCollection);
+    procedure SetratNFe(const Value: TratNFeCollection);
+{$ENDIF}
   public
     constructor Create; reintroduce;
     destructor Destroy; override;
@@ -2159,6 +2275,10 @@ type
     property pesoBC: Currency read FpesoBC write FpesoBC;
     property lacDetVag: TlacDetVagCollection read FlacDetVag write SetlacDetVag;
     property contVag: TcontVagCollection read FcontVag write SetcontVag;
+{$IFDEF PL_104}
+    property ratNF: TratNFCollection read FratNF write SetratNF;
+    property ratNFe: TratNFeCollection read FratNFe write SetratNFe;
+{$ENDIF}
   end;
 
   TlacDetVagCollection = class(TCollection)
@@ -2202,6 +2322,54 @@ type
     property nCont: string read FnCont write FnCont;
     property dPrev: TDateTime read FdPrev write FdPrev;
   end;
+
+{$IFDEF PL_104}
+  TratNFCollection = class(TCollection)
+  private
+    function GetItem(Index: Integer): TratNFCollectionItem;
+    procedure SetItem(Index: Integer; Value: TratNFCollectionItem);
+  public
+    constructor Create(AOwner: TdetVagCollectionItem);
+    function Add: TratNFCollectionItem;
+    property Items[Index: Integer]: TratNFCollectionItem read GetItem write SetItem; default;
+  end;
+
+  TratNFCollectionItem = class(TCollectionItem)
+  private
+    Fserie : string;
+    FnDoc : string;
+    FpesoRat : Currency;
+  public
+    constructor Create; reintroduce;
+    destructor Destroy; override;
+  published
+    property serie: string read Fserie write Fserie;
+    property nDoc: string read FnDoc write FnDoc;
+    property pesoRat: Currency read FpesoRat write FpesoRat;
+  end;
+
+  TratNFeCollection = class(TCollection)
+  private
+    function GetItem(Index: Integer): TratNFeCollectionItem;
+    procedure SetItem(Index: Integer; Value: TratNFeCollectionItem);
+  public
+    constructor Create(AOwner: TdetVagCollectionItem);
+    function Add: TratNFeCollectionItem;
+    property Items[Index: Integer]: TratNFeCollectionItem read GetItem write SetItem; default;
+  end;
+
+  TratNFeCollectionItem = class(TCollectionItem)
+  private
+    Fchave : string;
+    FpesoRat : Currency;
+  public
+    constructor Create; reintroduce;
+    destructor Destroy; override;
+  published
+    property chave: string read Fchave write Fchave;
+    property pesoRat: Currency read FpesoRat write FpesoRat;
+  end;
+{$ENDIF}
 
   Tduto = class(TPersistent)
   private
@@ -3773,7 +3941,12 @@ begin
 {$IFDEF PL_104}
  Fbalsa := TbalsaCollection.Create(Self);
 {$ENDIF}
+
  Flacre := TlacreCollection.Create(Self);
+
+{$IFDEF PL_104}
+ FdetCont := TdetContCollection.Create(Self);
+{$ENDIF}
 end;
 
 destructor Taquav.Destroy;
@@ -3781,7 +3954,12 @@ begin
 {$IFDEF PL_104}
   Fbalsa.Free;
 {$ENDIF}
+
   Flacre.Free;
+
+{$IFDEF PL_104}
+  FdetCont.Free;
+{$ENDIF}
   inherited;
 end;
 
@@ -3796,6 +3974,13 @@ procedure Taquav.SetLacre(const Value: TLacreCollection);
 begin
   FLacre.Assign(Value);
 end;
+
+{$IFDEF PL_104}
+procedure Taquav.SetdetCont(const Value: TdetContCollection);
+begin
+  FdetCont.Assign(Value);
+end;
+{$ENDIF}
 
 { TbalsaCollection }
 
@@ -3870,6 +4055,136 @@ begin
 
   inherited;
 end;
+
+{ TdetContCollection }
+{$IFDEF PL_104}
+function TdetContCollection.Add: TdetContCollectionItem;
+begin
+  Result := TdetContCollectionItem(inherited Add);
+  Result.create;
+end;
+
+constructor TdetContCollection.Create(AOwner: Taquav);
+begin
+  inherited Create(TdetContCollectionItem);
+end;
+
+function TdetContCollection.GetItem(
+  Index: Integer): TdetContCollectionItem;
+begin
+  Result := TdetContCollectionItem(inherited GetItem(Index));
+end;
+
+procedure TdetContCollection.SetItem(Index: Integer;
+  Value: TdetContCollectionItem);
+begin
+  inherited SetItem(Index, Value);
+end;
+
+{ TdetContCollectionItem }
+
+constructor TdetContCollectionItem.Create;
+begin
+ FinfNFCont := TinfNFContCollection.Create(Self);
+ FinfNFeCont := TinfNFeContCollection.Create(Self);
+end;
+
+destructor TdetContCollectionItem.Destroy;
+begin
+  FinfNFCont.Free;
+  FinfNFeCont.Free;
+
+  inherited;
+end;
+
+procedure TdetContCollectionItem.SetinfNFCont(
+  const Value: TinfNFContCollection);
+begin
+  FinfNFCont.Assign(Value);
+end;
+
+procedure TdetContCollectionItem.SetinfNFeCont(
+  const Value: TinfNFeContCollection);
+begin
+  FinfNFeCont.Assign(Value);
+end;
+
+{ TinfNFContCollection }
+
+function TinfNFContCollection.Add: TinfNFContCollectionItem;
+begin
+  Result := TinfNFContCollectionItem(inherited Add);
+  Result.create;
+end;
+
+constructor TinfNFContCollection.Create(AOwner: TdetContCollectionItem);
+begin
+  inherited Create(TinfNFContCollectionItem);
+end;
+
+function TinfNFContCollection.GetItem(
+  Index: Integer): TinfNFContCollectionItem;
+begin
+  Result := TinfNFContCollectionItem(inherited GetItem(Index));
+end;
+
+procedure TinfNFContCollection.SetItem(Index: Integer;
+  Value: TinfNFContCollectionItem);
+begin
+  inherited SetItem(Index, Value);
+end;
+
+{ TinfNFContCollectionItem }
+
+constructor TinfNFContCollectionItem.Create;
+begin
+
+end;
+
+destructor TinfNFContCollectionItem.Destroy;
+begin
+
+  inherited;
+end;
+
+{ TinfNFeContCollection }
+
+function TinfNFeContCollection.Add: TinfNFeContCollectionItem;
+begin
+  Result := TinfNFeContCollectionItem(inherited Add);
+  Result.create;
+end;
+
+constructor TinfNFeContCollection.Create(AOwner: TdetContCollectionItem);
+begin
+  inherited Create(TinfNFeContCollectionItem);
+end;
+
+function TinfNFeContCollection.GetItem(
+  Index: Integer): TinfNFeContCollectionItem;
+begin
+  Result := TinfNFeContCollectionItem(inherited GetItem(Index));
+end;
+
+procedure TinfNFeContCollection.SetItem(Index: Integer;
+  Value: TinfNFeContCollectionItem);
+begin
+  inherited SetItem(Index, Value);
+end;
+
+{ TinfNFeContCollectionItem }
+
+constructor TinfNFeContCollectionItem.Create;
+begin
+
+end;
+
+destructor TinfNFeContCollectionItem.Destroy;
+begin
+
+  inherited;
+end;
+{$ENDIF}
 
 { TperiCollection }
 
@@ -4387,12 +4702,20 @@ constructor TdetVagCollectionItem.Create;
 begin
   FlacDetVag := TlacDetVagCollection.Create(Self);
   FcontVag   := TcontVagCollection.Create(Self);
+{$IFDEF PL_104}
+  FratNF     := TratNFCollection.Create(Self);
+  FratNFe    := TratNFeCollection.Create(Self);
+{$ENDIF}
 end;
 
 destructor TdetVagCollectionItem.Destroy;
 begin
   FlacDetVag.Free;
   FcontVag.Free;
+{$IFDEF PL_104}
+  FratNF.Free;
+  FratNFe.Free;
+{$ENDIF}
   inherited;
 end;
 
@@ -4407,6 +4730,18 @@ procedure TdetVagCollectionItem.SetcontVag(
 begin
  FcontVag.Assign(Value);
 end;
+
+{$IFDEF PL_104}
+procedure TdetVagCollectionItem.SetratNF(const Value: TratNFCollection);
+begin
+ FratNF.Assign(Value);
+end;
+
+procedure TdetVagCollectionItem.SetratNFe(const Value: TratNFeCollection);
+begin
+ FratNFe.Assign(Value);
+end;
+{$ENDIF}
 
 { TlacDetVagCollection }
 
@@ -4483,6 +4818,83 @@ begin
 
   inherited;
 end;
+
+{ TratNFCollection }
+
+{$IFDEF PL_104}
+function TratNFCollection.Add: TratNFCollectionItem;
+begin
+  Result := TratNFCollectionItem(inherited Add);
+  Result.create;
+end;
+
+constructor TratNFCollection.Create(AOwner: TdetVagCollectionItem);
+begin
+  inherited Create(TratNFCollectionItem);
+end;
+
+function TratNFCollection.GetItem(Index: Integer): TratNFCollectionItem;
+begin
+  Result := TratNFCollectionItem(inherited GetItem(Index));
+end;
+
+procedure TratNFCollection.SetItem(Index: Integer;
+  Value: TratNFCollectionItem);
+begin
+  inherited SetItem(Index, Value);
+end;
+
+{ TratNFCollectionItem }
+
+constructor TratNFCollectionItem.Create;
+begin
+
+end;
+
+destructor TratNFCollectionItem.Destroy;
+begin
+
+  inherited;
+end;
+
+{ TratNFeCollection }
+
+function TratNFeCollection.Add: TratNFeCollectionItem;
+begin
+  Result := TratNFeCollectionItem(inherited Add);
+  Result.create;
+end;
+
+constructor TratNFeCollection.Create(AOwner: TdetVagCollectionItem);
+begin
+  inherited Create(TratNFeCollectionItem);
+end;
+
+function TratNFeCollection.GetItem(Index: Integer): TratNFeCollectionItem;
+begin
+  Result := TratNFeCollectionItem(inherited GetItem(Index));
+end;
+
+procedure TratNFeCollection.SetItem(Index: Integer;
+  Value: TratNFeCollectionItem);
+begin
+  inherited SetItem(Index, Value);
+end;
+
+{ TratNFeCollectionItem }
+
+constructor TratNFeCollectionItem.Create;
+begin
+
+end;
+
+destructor TratNFeCollectionItem.Destroy;
+begin
+
+  inherited;
+end;
+
+{$ENDIF}
 
 {Cobr}
 

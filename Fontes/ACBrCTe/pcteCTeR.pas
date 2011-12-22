@@ -976,6 +976,7 @@ begin
       end;
 {$ENDIF}
 
+{$IFDEF PL_103}
       i01 := 0;
       while Leitor.rExtrai(3, 'lacre', '', i01 + 1) <> '' do
       begin
@@ -983,7 +984,45 @@ begin
         CTe.Aquav.Lacre[i01].nLacre := Leitor.rCampo(tcStr, 'nLacre');
         inc(i01);
       end;
+{$ENDIF}
 
+{$IFDEF PL_104}
+      i01 := 0;
+      while Leitor.rExtrai(3, 'detCont', '', i01 + 1) <> '' do
+      begin
+        CTe.Aquav.detCont.Add;
+        CTe.Aquav.detCont[i01].nCont := Leitor.rCampo(tcStr, 'nCont');
+
+        i02 := 0;
+        while Leitor.rExtrai(4, 'lacre', '', i02 + 1) <> '' do
+        begin
+          CTe.Aquav.Lacre.Add;
+          CTe.Aquav.Lacre[i02].nLacre := Leitor.rCampo(tcStr, 'nLacre');
+          inc(i02);
+        end;
+
+        i02 := 0;
+        while Leitor.rExtrai(4, 'infNF', '', i02 + 1) <> '' do
+        begin
+          CTe.Aquav.detCont[i01].infNFCont.Add;
+          CTe.Aquav.detCont[i01].infNFCont[i02].serie   := Leitor.rCampo(tcStr, 'serie');
+          CTe.Aquav.detCont[i01].infNFCont[i02].nDoc    := Leitor.rCampo(tcStr, 'nDoc');
+          CTe.Aquav.detCont[i01].infNFCont[i02].unidRat := Leitor.rCampo(tcDe2, 'unidRat');
+          inc(i02);
+        end;
+
+        i02 := 0;
+        while Leitor.rExtrai(4, 'infNFe', '', i02 + 1) <> '' do
+        begin
+          CTe.Aquav.detCont[i01].infNFeCont.Add;
+          CTe.Aquav.detCont[i01].infNFeCont[i02].chave   := Leitor.rCampo(tcStr, 'chave');
+          CTe.Aquav.detCont[i01].infNFeCont[i02].unidRat := Leitor.rCampo(tcDe2, 'unidRat');
+          inc(i02);
+        end;
+
+        inc(i01);
+      end;
+{$ENDIF}
     end; // fim das informações do modal Aquaviário
 
     if Leitor.rExtrai(2, 'ferrov') <> '' then
@@ -1115,6 +1154,27 @@ begin
           CTe.Ferrov.detVag[i01].contVag[i02].dPrev := Leitor.rCampo(tcDat, 'dPrev');
           inc(i02);
         end;
+
+  {$IFDEF PL_104}
+        i02 := 0;
+        while Leitor.rExtrai(4, 'ratNF', '', i02 + 1) <> '' do
+        begin
+          CTe.Ferrov.detVag[i01].ratNF.Add;
+          CTe.Ferrov.detVag[i01].ratNF[i02].serie   := Leitor.rCampo(tcStr, 'serie');
+          CTe.Ferrov.detVag[i01].ratNF[i02].nDoc    := Leitor.rCampo(tcStr, 'nDoc');
+          CTe.Ferrov.detVag[i01].ratNF[i02].pesoRat := Leitor.rCampo(tcDe2, 'pesoRat');
+          inc(i02);
+        end;
+
+        i02 := 0;
+        while Leitor.rExtrai(4, 'ratNFe', '', i02 + 1) <> '' do
+        begin
+          CTe.Ferrov.detVag[i01].ratNFe.Add;
+          CTe.Ferrov.detVag[i01].ratNFe[i02].chave   := Leitor.rCampo(tcStr, 'chave');
+          CTe.Ferrov.detVag[i01].ratNFe[i02].pesoRat := Leitor.rCampo(tcDe2, 'pesoRat');
+          inc(i02);
+        end;
+  {$ENDIF}
 
         inc(i01);
       end;

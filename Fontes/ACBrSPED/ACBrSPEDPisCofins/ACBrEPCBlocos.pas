@@ -682,7 +682,7 @@ type
   //Indicador do tipo de conta (0500)
   TACBrIndCTA = (
                    indCTASintetica,  //S Sintética
-                   indACTAnalitica   //A Analitica
+                   indCTAnalitica    //A Analitica
                 );
   //Indicador da apuração das contribuições e créditos, na escrituração das operações por NF-e e ECF (C010)
   TACBrIndEscrituracao = (

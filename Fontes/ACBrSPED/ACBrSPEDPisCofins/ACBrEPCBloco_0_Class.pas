@@ -798,7 +798,7 @@ begin
            end;
            case IND_CTA of
              indCTASintetica: strIND_CTA := 'S';
-             IndACTAnalitica: strIND_CTA := 'A';
+             IndCTAnalitica: strIND_CTA := 'A';
            end;
 
            Check(Pos(strCOD_NAT_CC, '01,02,03,04,05,09,10,99') > 0, '(0-0500) O código da natureza da conta/grupo de contas "%s" digitado é inválido!', [strCOD_NAT_CC]);

@@ -47,6 +47,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data:  27/12/2011  - Ver: 1.35
+[+] Adicionado suporte para o TEF AUTTAR
+    http://www.djsystem.com.br/acbr/forum/viewtopic.php?p=20973#p20973
+
 Data:  02/09/2011  - Ver: 1.34
 [-] Correçao para consulta no Teste 10B / TecBan - Tele cheque Garantido,
     que deveria exibir uma mensagem com botão de OK ao operador.

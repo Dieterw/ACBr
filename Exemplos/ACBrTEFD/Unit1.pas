@@ -101,6 +101,8 @@ type
      tsOperacao : TTabSheet;
      sCliSiTef: TShape;
      ckCliSiTef: TCheckBox;
+    ckAuttar: TCheckBox;
+    sAuttar: TShape;
      procedure ACBrECF1MsgPoucoPapel(Sender : TObject) ;
      procedure ACBrTEFD1AguardaResp(Arquivo : String;
         SegundosTimeOut : Integer; var Interromper : Boolean);
@@ -133,6 +135,7 @@ type
      procedure BaneseObtemInformacao(var ItemSelecionado : Integer);
      procedure bCancelarRespClick(Sender : TObject);
      procedure cbxGPChange(Sender : TObject);
+     procedure ckAuttarChange(Sender : TObject) ;
      procedure ckCliSiTefChange(Sender : TObject);
      procedure ckVSPagueChange(Sender : TObject) ;
      procedure edEsperaSleepChange(Sender : TObject);
@@ -200,7 +203,8 @@ type
   end; 
 
 var
-  Form1 : TForm1; 
+  Form1 : TForm1;
+  NroCartao : integer;
 
 implementation
 
@@ -243,6 +247,8 @@ begin
 
   pMensagem.Visible := False ;
   pMensagem.Align   := alClient ;
+
+  NroCartao := 0;
 end;
 
 procedure TForm1.ckTEFDIALChange(Sender : TObject);
@@ -288,6 +294,13 @@ begin
   else
      sVSPague.Brush.Color := clRed ;
   ckVSPague.Checked := ACBrTEFD1.TEFVeSPague.Habilitado;
+
+
+  if ACBrTEFD1.TEFAuttar.Inicializado then
+     sAuttar.Brush.Color := clLime
+  else
+     sAuttar.Brush.Color := clRed ;
+  ckAuttar.Checked := ACBrTEFD1.TEFAuttar.Habilitado;
 
   cbxGP.ItemIndex  := Integer( ACBrTEFD1.GPAtual ) ;
   cbxGP1.ItemIndex := cbxGP.ItemIndex ;
@@ -753,6 +766,11 @@ begin
   finally
     AvaliaTEFs;
   end;
+end;
+
+procedure TForm1.ckAuttarChange(Sender : TObject) ;
+begin
+  ACBrTEFD1.TEFAuttar.Habilitado := ckAuttar.Checked;
 end;
 
 procedure TForm1.ckCliSiTefChange(Sender : TObject);

@@ -45,7 +45,7 @@ unit ACBrTEFD;
 interface
 
 uses
-  Classes, SysUtils, ACBrTEFDClass,
+  Classes, SysUtils, ACBrTEFDClass, ACBrTEFDAuttar,
   ACBrTEFDDial, ACBrTEFDDisc, ACBrTEFDHiper, ACBrTEFDCliSiTef, ACBrTEFDGpu,
   ACBrTEFDVeSPague, ACBrTEFDBanese
   {, ACBrTEFDGoodCard, ACBrTEFDFoxWin}
@@ -105,7 +105,8 @@ type
      fTefVeSPague  : TACBrTEFDVeSPague;
      fTefDisc      : TACBrTEFDDisc ;
      fTefHiper     : TACBrTEFDHiper ;
-	 fTefBanese    : TACBrTEFDBanese ;
+     fTefBanese    : TACBrTEFDBanese ;
+     fTefAuttar    : TACBrTEFDAuttar ;
 //   fTefGood      : TACBrTEFDGoodCard ;
 //   fTefFW        : TACBrTEFDFoxWin ;
      fEsperaSTS    : Integer;
@@ -239,7 +240,8 @@ type
      property TEFCliSiTef: TACBrTEFDCliSiTef read fTefCliSiTef ;
      property TEFVeSPague: TACBrTEFDVeSPague read fTefVeSPague ;
      property TEFGPU     : TACBrTEFDGpu      read fTefGPU ;
-	 property TEFBanese  : TACBrTEFDBanese   read fTefBanese ;
+     property TEFBanese  : TACBrTEFDBanese   read fTefBanese ;
+     property TEFAuttar  : TACBrTEFDAuttar   read fTefAuttar ;     
 //   property TEFGood    : TACBrTEFDGoodCard read fTefGood ;
 //   property TEFFoxWin  : TACBrTEFDFoxWin   read fTefFW ;
 
@@ -350,6 +352,13 @@ begin
   fTEFList.Add(fTefDial);     // Adicionando "fTefDial" na Lista Objetos de Classes de TEF
   {$IFDEF COMPILER6_UP}
    fTefDial.SetSubComponent(True);   // Ajustando como SubComponente para aparecer no ObjectInspector
+  {$ENDIF}
+
+  { Criando Classe TEF_AUTTAR IP }
+  fTefAuttar := TACBrTEFDAuttar.Create(self);
+  fTEFList.Add(fTefAuttar);     // Adicionando "fTefAuttar" na Lista Objetos de Classes de TEF
+  {$IFDEF COMPILER6_UP}
+   fTefAuttar.SetSubComponent(True);   // Ajustando como SubComponente para aparecer no ObjectInspector
   {$ENDIF}
 
   { Criando Classe TEF_DISC }
@@ -516,7 +525,8 @@ begin
     gpCliSiTef : fTefClass := fTefCliSiTef;
     gpVeSPague : fTefClass := fTefVeSPague;
     gpTefGpu   : fTefClass := fTefGPU;
-	gpBanese   : fTefClass := fTefBanese ;
+    gpBanese   : fTefClass := fTefBanese ;
+    gpTefAuttar: fTefClass := fTefAuttar ;
 //  gpGoodCard : fTefClass := fTefGood ;
 //  gpFoxWin   : fTefClass := fTefFW ;
   end;

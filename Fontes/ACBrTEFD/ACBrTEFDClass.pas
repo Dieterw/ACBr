@@ -55,7 +55,7 @@ uses
   {$ENDIF} ;
 
 const
-   CACBrTEFD_Versao      = '1.34' ;
+   CACBrTEFD_Versao      = '1.35' ;
    CACBrTEFD_EsperaSTS   = 7 ;
    CACBrTEFD_EsperaSleep = 250 ;
    CACBrTEFD_NumVias     = 2 ;
@@ -65,7 +65,7 @@ type
   { Tipos de TEF Existente. Cado novo Tipo de Tef precisa de uma NOVA Classe,
     filha de  TACBrTEFDClass }
   TACBrTEFDTipo = ( gpNenhum, gpTefDial, gpTefDisc, gpHiperTef, gpCliSiTef,
-                    gpTefGpu, gpVeSPague, gpBanese {, gpGoodCard, gpFoxWin} ) ;
+                    gpTefGpu, gpVeSPague, gpBanese, gpTefAuttar {, gpGoodCard, gpFoxWin} ) ;
 
   TACBrTEFDReqEstado = ( reqNenhum,             // Nennhuma Requisição em andamento
                          reqIniciando,          // Iniciando uma nova Requisicao
@@ -2308,10 +2308,15 @@ begin
      { Se é Multiplos Cartoes, e ainda Resta SALDO deve enviar um CNF }
      if MultiplosCartoes and (RespostasPendentes.SaldoRestante > 0) then
       begin
-        self.CNF;
 
-        { Atualizando Arquivo de Backup com a Informacao de que o CNF já foi enviado }
-        RespostaPendente.CNFEnviado := True ;
+        if Tipo <> gpTefAuttar then
+        begin
+          { Para TEF DISCADOs tradicional confirma a transação no primeiro cartao }
+          self.CNF;
+          { Atualizando Arquivo de Backup com a Informacao de que o CNF já foi enviado }
+          RespostaPendente.CNFEnviado := True ;
+        end;
+
         if ArqBack <> '' then
            RespostaPendente.Conteudo.GravarArquivo( ArqBack, True ) ;   { True = DoFlushToDisk }
 

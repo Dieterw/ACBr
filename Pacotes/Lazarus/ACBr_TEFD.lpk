@@ -1,11 +1,12 @@
 <?xml version="1.0"?>
 <CONFIG>
-  <Package Version="3">
+  <Package Version="4">
     <PathDelim Value="\"/>
     <Name Value="ACBr_TEFD"/>
+    <AddToProjectUsesSection Value="True"/>
     <Author Value="Daniel Simões de Almeida"/>
     <CompilerOptions>
-      <Version Value="10"/>
+      <Version Value="11"/>
       <PathDelim Value="\"/>
       <SearchPaths>
         <IncludeFiles Value="..\..\Fontes\ACBrTEFD;..\..\Fontes\ACBrComum"/>
@@ -27,7 +28,7 @@
     </CompilerOptions>
     <Description Value="Componente para TEF Discado e Dedicado com suporte a Multiplos Cartões"/>
     <License Value="LGPL"/>
-    <Version Major="1" Minor="31"/>
+    <Version Major="1" Minor="35"/>
     <Files Count="8">
       <Item1>
         <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFDClass.pas"/>

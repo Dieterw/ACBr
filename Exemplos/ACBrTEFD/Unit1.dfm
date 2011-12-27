@@ -1,7 +1,7 @@
 object Form1: TForm1
-  Left = 368
-  Top = 116
-  Width = 741
+  Left = 358
+  Top = 244
+  Width = 766
   Height = 488
   Caption = 'TEFDDemo'
   Color = clBtnFace
@@ -15,14 +15,14 @@ object Form1: TForm1
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   DesignSize = (
-    725
+    750
     450)
   PixelsPerInch = 96
   TextHeight = 13
   object Memo1: TMemo
     Left = 0
     Top = 208
-    Width = 725
+    Width = 750
     Height = 192
     Align = alClient
     Lines.Strings = (
@@ -33,7 +33,7 @@ object Form1: TForm1
   object PageControl1: TPageControl
     Left = 0
     Top = 0
-    Width = 725
+    Width = 750
     Height = 208
     ActivePage = tsOperacao
     Align = alTop
@@ -210,14 +210,14 @@ object Form1: TForm1
       object Panel2: TPanel
         Left = 308
         Top = 0
-        Width = 409
+        Width = 434
         Height = 180
         Align = alClient
         TabOrder = 1
         object gbConfigTEF: TGroupBox
           Left = 1
           Top = 1
-          Width = 407
+          Width = 432
           Height = 178
           Align = alClient
           Caption = 'TEF'
@@ -471,7 +471,7 @@ object Form1: TForm1
       object gbComandosTEF: TGroupBox
         Left = 292
         Top = 0
-        Width = 425
+        Width = 450
         Height = 180
         Align = alClient
         Caption = 'TEF'
@@ -619,7 +619,7 @@ object Form1: TForm1
   object StatusBar1: TStatusBar
     Left = 0
     Top = 427
-    Width = 725
+    Width = 750
     Height = 23
     Panels = <
       item
@@ -635,7 +635,7 @@ object Form1: TForm1
   object Panel1: TPanel
     Left = 0
     Top = 400
-    Width = 725
+    Width = 750
     Height = 27
     Align = alBottom
     BevelInner = bvLowered
@@ -649,7 +649,7 @@ object Form1: TForm1
       Shape = stCircle
     end
     object lECFName: TLabel
-      Left = 40
+      Left = 32
       Top = 6
       Width = 50
       Height = 13
@@ -658,7 +658,7 @@ object Form1: TForm1
       ParentColor = False
     end
     object sTEFDial: TShape
-      Left = 136
+      Left = 96
       Top = 6
       Width = 17
       Height = 16
@@ -666,7 +666,7 @@ object Form1: TForm1
       Shape = stCircle
     end
     object sTEFDisc: TShape
-      Left = 237
+      Left = 197
       Top = 6
       Width = 17
       Height = 16
@@ -674,7 +674,7 @@ object Form1: TForm1
       Shape = stCircle
     end
     object sHiperTEF: TShape
-      Left = 337
+      Left = 297
       Top = 6
       Width = 17
       Height = 16
@@ -682,7 +682,7 @@ object Form1: TForm1
       Shape = stCircle
     end
     object sCliSiTef: TShape
-      Left = 443
+      Left = 403
       Top = 6
       Width = 17
       Height = 16
@@ -690,15 +690,23 @@ object Form1: TForm1
       Shape = stCircle
     end
     object sVSPague: TShape
-      Left = 532
+      Left = 492
       Top = 6
       Width = 17
       Height = 16
       Brush.Color = clRed
       Shape = stCircle
     end
+    object sAuttar: TShape
+      Left = 594
+      Top = 5
+      Width = 17
+      Height = 16
+      Brush.Color = clRed
+      Shape = stCircle
+    end
     object ckTEFDIAL: TCheckBox
-      Left = 160
+      Left = 120
       Top = 5
       Width = 69
       Height = 19
@@ -709,7 +717,7 @@ object Form1: TForm1
       OnClick = ckTEFDIALChange
     end
     object ckTEFDISC: TCheckBox
-      Left = 257
+      Left = 217
       Top = 5
       Width = 69
       Height = 19
@@ -718,7 +726,7 @@ object Form1: TForm1
       OnClick = ckTEFDISCChange
     end
     object ckHIPERTEF: TCheckBox
-      Left = 357
+      Left = 317
       Top = 6
       Width = 76
       Height = 19
@@ -727,7 +735,7 @@ object Form1: TForm1
       OnClick = ckHIPERTEFChange
     end
     object ckCliSiTef: TCheckBox
-      Left = 466
+      Left = 426
       Top = 5
       Width = 60
       Height = 19
@@ -736,9 +744,9 @@ object Form1: TForm1
       OnClick = ckCliSiTefChange
     end
     object bCancelarResp: TButton
-      Left = 634
+      Left = 680
       Top = 3
-      Width = 88
+      Width = 75
       Height = 23
       Caption = 'CancelarResp'
       TabOrder = 4
@@ -746,7 +754,7 @@ object Form1: TForm1
       OnClick = bCancelarRespClick
     end
     object ckVSPague: TCheckBox
-      Left = 556
+      Left = 516
       Top = 5
       Width = 72
       Height = 19
@@ -754,9 +762,18 @@ object Form1: TForm1
       TabOrder = 5
       OnClick = ckVSPagueChange
     end
+    object ckAuttar: TCheckBox
+      Left = 618
+      Top = 5
+      Width = 53
+      Height = 20
+      Caption = 'Auttar'
+      TabOrder = 6
+      OnClick = ckAuttarChange
+    end
   end
   object pMensagem: TPanel
-    Left = 169
+    Left = 182
     Top = 240
     Width = 440
     Height = 136
@@ -866,12 +883,13 @@ object Form1: TForm1
     MsgRelatorio = 'Imprimindo %s  %d'#170' Via '
     MsgPausaRelatorio = 'Destaque a %d'#170' via, <ENTER> proxima, %d seg.'
     MaxLinhasBuffer = 3
-    FormMsgFonte.Charset = DEFAULT_CHARSET
+    PaginaDeCodigo = 850
     FormMsgFonte.Color = clBlack
     FormMsgFonte.Height = 11
     FormMsgFonte.Name = 'MS Shell Dlg'
     FormMsgFonte.Pitch = fpVariable
     FormMsgFonte.Style = []
+    FormMsgFonte.Weight = 40
     FormMsgColor = clHighlight
     MemoParams.Strings = (
       '[Cabecalho]'
@@ -911,6 +929,9 @@ object Form1: TForm1
       'HTML_Font=<font size="2" face="Lucida Console">')
     Device.HandShake = hsRTS_CTS
     Device.HardFlow = True
+    ConfigBarras.MostrarCodigo = True
+    ConfigBarras.LarguraLinha = 3
+    ConfigBarras.Altura = 10
     Left = 16
     Top = 296
   end
@@ -944,6 +965,7 @@ object Form1: TForm1
     TEFVeSPague.AplicacaoVersao = '1.0'
     TEFVeSPague.EnderecoIP = 'localhost'
     TEFVeSPague.Porta = '60906'
+    TEFVeSPague.TemPendencias = False
     TEFVeSPague.TransacaoADM = 'Administracao Consultar'
     TEFVeSPague.TransacaoCRT = 'Cartao Vender'
     TEFVeSPague.TransacaoCHQ = 'Cheque Consultar'
@@ -962,7 +984,13 @@ object Form1: TForm1
     TEFBanese.ArqSTS = 'C:\bcard\resp\status.txt'
     TEFBanese.ArqResp = 'C:\bcard\resp\resposta.txt'
     TEFBanese.ArqRespBkp = 'C:\bcard\resposta.txt'
+    TEFBanese.ArqRespMovBkp = 'C:\bcard\copiamovimento.txt'
     TEFBanese.OnObtemInformacao = ACBrTEFD1BaneseObtemInformacao
+    TEFAuttar.ArqTemp = 'C:\Auttar_TefIP\req\intpos.tmp'
+    TEFAuttar.ArqReq = 'C:\Auttar_TefIP\req\intpos.001'
+    TEFAuttar.ArqSTS = 'C:\Auttar_TefIP\resp\intpos.sts'
+    TEFAuttar.ArqResp = 'C:\Auttar_TefIP\resp\intpos.001'
+    TEFAuttar.GPExeName = 'C:\Program Files (x86)\Auttar\IntegradorTEF-IP.exe'
     OnAguardaResp = ACBrTEFD1AguardaResp
     OnExibeMsg = ACBrTEFD1ExibeMsg
     OnBloqueiaMouseTeclado = ACBrTEFD1BloqueiaMouseTeclado
@@ -977,7 +1005,7 @@ object Form1: TForm1
     OnAntesCancelarTransacao = ACBrTEFD1AntesCancelarTransacao
     OnMudaEstadoReq = ACBrTEFD1MudaEstadoReq
     OnMudaEstadoResp = ACBrTEFD1MudaEstadoResp
-    Left = 96
+    Left = 48
     Top = 296
   end
 end

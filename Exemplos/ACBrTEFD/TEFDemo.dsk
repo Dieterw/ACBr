@@ -10,22 +10,40 @@ File_7=SourceModule,'C:\Pascal\Comp\ACBr\branches\ACBrNovo\Fontes\ACBrTEFD\ACBrT
 File_8=SourceModule,'C:\Pascal\Comp\ACBr\branches\ACBrNovo\Fontes\ACBrTEFD\ACBrTEFDGoodCard.pas',0,1,1,1,1,0,0
 
 [Modules]
-Module0=C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit4.pas
-Module1=C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit1.pas
-Module2=C:\Pascal\Comp\ACBr\trunk\Fontes\ACBrTEFD\ACBrTEFDVeSPague.pas
-Module3=C:\Pascal\Comp\ACBr\trunk\Fontes\ACBrTEFD\ACBrTEFDCliSiTef.pas
-Count=4
+Module0=C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit5.pas
+Module1=C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit2.pas
+Module2=C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit3.pas
+Module3=C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit4.pas
+Module4=C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit1.pas
+Module5=C:\Pascal\Comp\ACBr\trunk\Fontes\ACBrTEFD\ACBrTEFDVeSPague.pas
+Module6=C:\Pascal\Comp\ACBr\trunk\Fontes\ACBrTEFD\ACBrTEFDCliSiTef.pas
+Count=7
 EditWindowCount=1
 
-[C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit4.pas]
+[C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit5.pas]
 ModuleType=SourceModule
 FormState=1
 FormOnTop=0
 
-[C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit1.pas]
+[C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit2.pas]
 ModuleType=SourceModule
 FormState=1
 FormOnTop=1
+
+[C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit3.pas]
+ModuleType=SourceModule
+FormState=1
+FormOnTop=1
+
+[C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit4.pas]
+ModuleType=SourceModule
+FormState=1
+FormOnTop=1
+
+[C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit1.pas]
+ModuleType=SourceModule
+FormState=1
+FormOnTop=0
 
 [C:\Pascal\Comp\ACBr\trunk\Fontes\ACBrTEFD\ACBrTEFDVeSPague.pas]
 ModuleType=SourceModule
@@ -46,12 +64,15 @@ FormState=0
 FormOnTop=0
 
 [EditWindow0]
-ViewCount=4
-CurrentView=1
+ViewCount=7
+CurrentView=4
 View0=0
 View1=1
 View2=2
 View3=3
+View4=4
+View5=5
+View6=6
 CodeExplorer=CodeExplorer@EditWindow0
 MessageView=MessageView@EditWindow0
 Create=1
@@ -75,26 +96,47 @@ BottomPanelData=00000400010000000B0000004D65737361676556696577000000000000000000
 
 [View0]
 Module=C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit1.pas
-CursorX=25
-CursorY=750
-TopLine=741
+CursorX=52
+CursorY=781
+TopLine=771
 LeftCol=1
 
 [View1]
+Module=C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit2.pas
+CursorX=1
+CursorY=1
+TopLine=1
+LeftCol=1
+
+[View2]
+Module=C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit3.pas
+CursorX=1
+CursorY=1
+TopLine=1
+LeftCol=1
+
+[View3]
 Module=C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit4.pas
 CursorX=62
 CursorY=15
 TopLine=1
 LeftCol=1
 
-[View2]
+[View4]
+Module=C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit5.pas
+CursorX=33
+CursorY=17
+TopLine=1
+LeftCol=1
+
+[View5]
 Module=C:\Pascal\Comp\ACBr\trunk\Fontes\ACBrTEFD\ACBrTEFDCliSiTef.pas
 CursorX=1
 CursorY=1
 TopLine=67
 LeftCol=1
 
-[View3]
+[View6]
 Module=C:\Pascal\Comp\ACBr\trunk\Fontes\ACBrTEFD\ACBrTEFDVeSPague.pas
 CursorX=86
 CursorY=185
@@ -138,9 +180,9 @@ Width=1680
 Height=122
 MaxLeft=-1
 MaxTop=-1
-MaxWidth=1696
+MaxWidth=1692
 MaxHeight=122
-ClientWidth=1680
+ClientWidth=1676
 ClientHeight=84
 
 [ProjectManager]

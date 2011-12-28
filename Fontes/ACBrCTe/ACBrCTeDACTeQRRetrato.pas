@@ -512,7 +512,6 @@ type
     QRShape85: TQRShape;
     QRShape86: TQRShape;
     QRShape87: TQRShape;
-    QRShape88: TQRShape;
     QRShape89: TQRShape;
     QRShape90: TQRShape;
     QRShape92: TQRShape;
@@ -524,7 +523,6 @@ type
     QRLabel173: TQRLabel;
     QRLabel174: TQRLabel;
     QRLabel177: TQRLabel;
-    QRLabel178: TQRLabel;
     QRLabel179: TQRLabel;
     QRLabel181: TQRLabel;
     QRLabel182: TQRLabel;
@@ -535,8 +533,6 @@ type
     qrmPlaca2: TQRMemo;
     qrmCNPJForn: TQRMemo;
     qrmNumCompra: TQRMemo;
-    qrlValorTotal2: TQRLabel;
-    qrlResponsavel2: TQRLabel;
     qrlNomeMotorista2: TQRLabel;
     qrlLacres2: TQRLabel;
     qrlCPFMotorista2: TQRLabel;
@@ -560,6 +556,8 @@ type
     QRLabel191: TQRLabel;
     qrlSerie3: TQRLabel;
     qrlNumCTe3: TQRLabel;
+    QRShape98: TQRShape;
+    qrmCNPJPg: TQRMemo;
     procedure QRCTeBeforePrint(Sender: TCustomQuickRep; var PrintReport: Boolean);
     procedure qrb_01_ReciboBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
     procedure qrb_02_CabecalhoBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
@@ -1763,21 +1761,16 @@ begin
    qrmRNTRC2.Lines.Add(FCTe.Rodo.veic.Items[i].Prop.RNTRC);
   end;
 
-  qrlResponsavel2.Caption := '';
-  qrlValorTotal2.Caption  := '';
   qrmCNPJForn.Lines.Clear;
   qrmNumCompra.Lines.Clear;
+  qrmCNPJPg.Lines.Clear;
 
 {$IFDEF PL_104}
   for i := 0 to FCTe.Rodo.valePed.Count -1 do
   begin
-   if i = 0
-    then begin
-     qrlResponsavel2.Caption := FCTe.Rodo.valePed.Items[i].CNPJPg;
-     qrlValorTotal2.Caption := '';
-    end;
-   qrmCNPJForn.Lines.Add(FCTe.Rodo.valePed.Items[i].CNPJForn);
+   qrmCNPJForn.Lines.Add(CTeUtil.FormatarCNPJ(FCTe.Rodo.valePed.Items[i].CNPJForn));
    qrmNumCompra.Lines.Add(FCTe.Rodo.valePed.Items[i].nCompra);
+   qrmCNPJPg.Lines.Add(CTeUtil.FormatarCNPJ(FCTe.Rodo.valePed.Items[i].CNPJPg));
   end;
 {$ENDIF}
 

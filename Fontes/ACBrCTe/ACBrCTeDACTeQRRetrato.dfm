@@ -12448,25 +12448,6 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
         Brush.Style = bsClear
         Shape = qrsRectangle
       end
-      object QRShape88: TQRShape
-        Left = 207
-        Top = 42
-        Width = 532
-        Height = 1
-        HelpContext = 1
-        Frame.Color = clBlack
-        Frame.DrawTop = False
-        Frame.DrawBottom = False
-        Frame.DrawLeft = False
-        Frame.DrawRight = False
-        Size.Values = (
-          2.645833333333333000
-          547.687500000000000000
-          111.125000000000000000
-          1407.583333333333000000)
-        Brush.Style = bsClear
-        Shape = qrsRectangle
-      end
       object QRShape89: TQRShape
         Left = 1
         Top = 82
@@ -12505,7 +12486,7 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
         Shape = qrsRectangle
       end
       object QRShape92: TQRShape
-        Left = 460
+        Left = 330
         Top = 13
         Width = 1
         Height = 69
@@ -12516,7 +12497,7 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           182.562500000000000000
-          1217.083333333333000000
+          873.124999999999900000
           34.395833333333340000
           2.645833333333333000)
         Brush.Style = bsClear
@@ -12709,8 +12690,8 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
         FontSize = 5
       end
       object QRLabel174: TQRLabel
-        Left = 468
-        Top = 31
+        Left = 334
+        Top = 15
         Width = 86
         Height = 9
         Frame.Color = clBlack
@@ -12720,8 +12701,8 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           23.812500000000000000
-          1238.250000000000000000
-          82.020833333333340000
+          883.708333333333400000
+          39.687500000000000000
           227.541666666666700000)
         Alignment = taLeftJustify
         AlignToBand = False
@@ -12740,40 +12721,9 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
         FontSize = 5
       end
       object QRLabel177: TQRLabel
-        Left = 210
-        Top = 31
-        Width = 72
-        Height = 9
-        Frame.Color = clBlack
-        Frame.DrawTop = False
-        Frame.DrawBottom = False
-        Frame.DrawLeft = False
-        Frame.DrawRight = False
-        Size.Values = (
-          23.812500000000000000
-          555.625000000000000000
-          82.020833333333340000
-          190.500000000000000000)
-        Alignment = taLeftJustify
-        AlignToBand = False
-        AutoSize = True
-        AutoStretch = False
-        Caption = 'FORNECEDORA CNPJ'
-        Color = clWhite
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -7
-        Font.Name = 'Times New Roman'
-        Font.Style = []
-        ParentFont = False
-        Transparent = False
-        WordWrap = True
-        FontSize = 5
-      end
-      object QRLabel178: TQRLabel
-        Left = 468
+        Left = 618
         Top = 15
-        Width = 49
+        Width = 69
         Height = 9
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -12782,14 +12732,14 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           23.812500000000000000
-          1238.250000000000000000
+          1635.125000000000000000
           39.687500000000000000
-          129.645833333333300000)
+          182.562500000000000000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
         AutoStretch = False
-        Caption = 'VALOR TOTAL'
+        Caption = 'CNPJ RESPONS'#193'VEL'
         Color = clWhite
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -12804,7 +12754,7 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
       object QRLabel179: TQRLabel
         Left = 210
         Top = 15
-        Width = 69
+        Width = 67
         Height = 9
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -12815,12 +12765,12 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
           23.812500000000000000
           555.625000000000000000
           39.687500000000000000
-          182.562500000000000000)
+          177.270833333333300000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
         AutoStretch = False
-        Caption = 'RESPONS'#193'VEL CNPJ'
+        Caption = 'CNPJ FORNECEDOR'
         Color = clWhite
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -13067,19 +13017,19 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
       end
       object qrmCNPJForn: TQRMemo
         Left = 210
-        Top = 45
-        Width = 247
-        Height = 35
+        Top = 32
+        Width = 117
+        Height = 48
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          92.604166666666680000
+          127.000000000000000000
           555.625000000000000000
-          119.062500000000000000
-          653.520833333333400000)
+          84.666666666666680000
+          309.562500000000000000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = False
@@ -13100,20 +13050,20 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
         FontSize = 7
       end
       object qrmNumCompra: TQRMemo
-        Left = 468
-        Top = 45
-        Width = 265
-        Height = 35
+        Left = 334
+        Top = 32
+        Width = 275
+        Height = 48
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          92.604166666666680000
-          1238.250000000000000000
-          119.062500000000000000
-          701.145833333333400000)
+          127.000000000000000000
+          883.708333333333400000
+          84.666666666666680000
+          727.604166666666800000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = False
@@ -13128,68 +13078,6 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
           'Transacao 1'
           'Transacao 2'
           'Transacao 3')
-        ParentFont = False
-        Transparent = True
-        WordWrap = True
-        FontSize = 7
-      end
-      object qrlValorTotal2: TQRLabel
-        Left = 520
-        Top = 15
-        Width = 95
-        Height = 13
-        Frame.Color = clBlack
-        Frame.DrawTop = False
-        Frame.DrawBottom = False
-        Frame.DrawLeft = False
-        Frame.DrawRight = False
-        Size.Values = (
-          34.395833333333340000
-          1375.833333333333000000
-          39.687500000000000000
-          251.354166666666700000)
-        Alignment = taRightJustify
-        AlignToBand = False
-        AutoSize = False
-        AutoStretch = False
-        Caption = 'qrlValorTotal2'
-        Color = clWhite
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -9
-        Font.Name = 'Times New Roman'
-        Font.Style = []
-        ParentFont = False
-        Transparent = True
-        WordWrap = True
-        FontSize = 7
-      end
-      object qrlResponsavel2: TQRLabel
-        Left = 284
-        Top = 15
-        Width = 66
-        Height = 13
-        Frame.Color = clBlack
-        Frame.DrawTop = False
-        Frame.DrawBottom = False
-        Frame.DrawLeft = False
-        Frame.DrawRight = False
-        Size.Values = (
-          34.395833333333340000
-          751.416666666666800000
-          39.687500000000000000
-          174.625000000000000000)
-        Alignment = taLeftJustify
-        AlignToBand = False
-        AutoSize = True
-        AutoStretch = False
-        Caption = 'qrlResponsavel2'
-        Color = clWhite
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -9
-        Font.Name = 'Times New Roman'
-        Font.Style = []
         ParentFont = False
         Transparent = True
         WordWrap = True
@@ -13283,6 +13171,58 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
         Font.Height = -9
         Font.Name = 'Times New Roman'
         Font.Style = []
+        ParentFont = False
+        Transparent = True
+        WordWrap = True
+        FontSize = 7
+      end
+      object QRShape98: TQRShape
+        Left = 614
+        Top = 13
+        Width = 1
+        Height = 69
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          182.562500000000000000
+          1624.541666666667000000
+          34.395833333333340000
+          2.645833333333333000)
+        Brush.Style = bsClear
+        Shape = qrsRectangle
+      end
+      object qrmCNPJPg: TQRMemo
+        Left = 618
+        Top = 32
+        Width = 117
+        Height = 48
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          127.000000000000000000
+          1635.125000000000000000
+          84.666666666666680000
+          309.562500000000000000)
+        Alignment = taLeftJustify
+        AlignToBand = False
+        AutoSize = False
+        AutoStretch = False
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -9
+        Font.Name = 'Times New Roman'
+        Font.Style = []
+        Lines.Strings = (
+          'Empresa 1'
+          'Empresa 2'
+          'Empresa 3')
         ParentFont = False
         Transparent = True
         WordWrap = True

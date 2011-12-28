@@ -68,10 +68,12 @@ const
 {$ENDIF}
 
 type
- TACBrCTeAboutInfo = (ACBrCTeAbout);
+  TACBrCTeAboutInfo = (ACBrCTeAbout);
 
- { Evento para gerar log das mensagens do Componente }
- TACBrCTeLog = procedure(const Mensagem : String) of object ;
+  EACBrCTeException = class(Exception);
+
+  { Evento para gerar log das mensagens do Componente }
+  TACBrCTeLog = procedure(const Mensagem : String) of object ;
 
   TACBrCTe = class(TComponent)
   private

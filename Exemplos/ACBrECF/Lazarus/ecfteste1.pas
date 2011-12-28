@@ -204,6 +204,9 @@ type
     MenuItem21 : TMenuItem ;
     MenuItem23 : TMenuItem ;
     MenuItem24 : TMenuItem ;
+    MenuItem25: TMenuItem;
+    mDAV: TMenuItem;
+    mDAVOS: TMenuItem;
     mValorTotalNaoFiscal : TMenuItem ;
     mCancNaoFiscal : TMenuItem ;
     mAcresNaoFiscal : TMenuItem ;
@@ -441,6 +444,8 @@ type
     procedure mARQMFDDLLCooClick(Sender : TObject) ;
     procedure mARQMFDDLLPeriodoClick(Sender : TObject) ;
     procedure mCancNaoFiscalClick(Sender : TObject) ;
+    procedure mDAVClick(Sender: TObject);
+    procedure mDAVOSClick(Sender: TObject);
     procedure mDescNaoFiscalClick(Sender : TObject) ;
     procedure mdsAACECFAfterOpen(DataSet : TDataSet) ;
     procedure MenuItem20Click(Sender : TObject) ;
@@ -648,7 +653,7 @@ implementation
 
 uses ACBrUtil, ACBrECFBematech, VendeItem, EfetuaPagamento,
      Relatorio, Sobre, TypInfo, Math, IniFiles,
-     ConfiguraSerial, ACBrPAFClass;
+     ConfiguraSerial, uDAV, uDAVOS, ACBrPAFClass;
      
 procedure TForm1.FormCreate(Sender: TObject);
 Var I : TACBrECFModelo ;
@@ -1574,6 +1579,26 @@ procedure TForm1.mCancNaoFiscalClick(Sender : TObject) ;
 begin
   mResp.Lines.Add( 'TotalCancelamentosOPNF: ('+ FloatToStr(ACBrECF1.TotalCancelamentosOPNF)+')' );
   AtualizaMemos ;
+end;
+
+procedure TForm1.mDAVClick(Sender: TObject);
+begin
+  frmDAV := TfrmDAV.Create(Self);
+  try
+    frmDAV.ShowModal;
+  finally
+    FreeAndNil(frmDAV);
+  end;
+end;
+
+procedure TForm1.mDAVOSClick(Sender: TObject);
+begin
+  frmDAVOS := TfrmDAVOS.Create(Self);
+  try
+    frmDAVOS.ShowModal;
+  finally
+    FreeAndNil(frmDAVOS);
+  end;
 end;
 
 procedure TForm1.mDescNaoFiscalClick(Sender : TObject) ;

@@ -2995,6 +2995,17 @@ object Form1: TForm1
           OnClick = mARQMFDDLLPeriodoClick
         end
       end
+      object MenuItem25: TMenuItem
+        Caption = '-'
+      end
+      object mDAV: TMenuItem
+        Caption = 'DAV'
+        OnClick = mDAVClick
+      end
+      object mDAVOS: TMenuItem
+        Caption = 'DAV-OS'
+        OnClick = mDAVOSClick
+      end
     end
     object Cupom1: TMenuItem
       Caption = 'Cupom Fiscal'

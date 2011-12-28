@@ -323,6 +323,9 @@ type
     RelatorioGerencialcomformatacao1: TMenuItem;
     btnMenuFiscalConfigPAFECF: TButton;
     SubModelo1: TMenuItem;
+    N43: TMenuItem;
+    DAV1: TMenuItem;
+    DAVOS1: TMenuItem;
     procedure cbxModeloChange(Sender: TObject);
     procedure Sair1Click(Sender: TObject);
     procedure bAtivarClick(Sender: TObject);
@@ -515,6 +518,8 @@ type
     procedure ACBrECF1ChangeEstado(const EstadoAnterior,
       EstadoAtual: TACBrECFEstado);
     procedure SubModelo1Click(Sender: TObject);
+    procedure DAV1Click(Sender: TObject);
+    procedure DAVOS1Click(Sender: TObject);
   private
     { Private declarations }
     Function Converte( cmd : String) : String;
@@ -546,7 +551,7 @@ implementation
 
 uses ACBrUtil, ACBrECFBematech, VendeItem, EfetuaPagamento,
      Relatorio, Sobre, TypInfo, Math, ActiveX, MSHTML, IniFiles,
-  ConfiguraSerial, ACBrPAFClass, RelatorioGerencialFormatado;
+  ConfiguraSerial, ACBrPAFClass, RelatorioGerencialFormatado, uDAV, uDAVOS;
 
 {$R *.dfm}
 
@@ -2649,6 +2654,26 @@ begin
   mResp.Lines.Add( 'Data Movimento: ('+ FormatDateTime('dd/mm/yy',
                    ACBrECF1.DataMovimento) +')' );
   AtualizaMemos ;
+end;
+
+procedure TForm1.DAV1Click(Sender: TObject);
+begin
+  frmDAV := TfrmDAV.Create(Self);
+  try
+    frmDAV.ShowModal;
+  finally
+    FreeAndNil(frmDAV);
+  end;
+end;
+
+procedure TForm1.DAVOS1Click(Sender: TObject);
+begin
+  frmDAVOS := TfrmDAVOS.Create(Self);
+  try
+    frmDAVOS.ShowModal;
+  finally
+    FreeAndNil(frmDAVOS);
+  end;
 end;
 
 procedure TForm1.DadosUltimaReduoZ1Click(Sender: TObject);

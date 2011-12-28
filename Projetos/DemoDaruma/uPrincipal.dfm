@@ -1152,5 +1152,16 @@ object frmPrincipal: TfrmPrincipal
         OnClick = Cancelarcomprovantenofiscal1Click
       end
     end
+    object DAV1: TMenuItem
+      Caption = 'DAV'
+      object DAV2: TMenuItem
+        Caption = 'DAV'
+        OnClick = DAV2Click
+      end
+      object DAVOS1: TMenuItem
+        Caption = 'DAV-OS'
+        OnClick = DAVOS1Click
+      end
+    end
   end
 end

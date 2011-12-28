@@ -18,7 +18,9 @@ uses
   uRelatorioGerencialFormatado in 'uRelatorioGerencialFormatado.pas' {frmRelatorioGerencialFormatado},
   uLeituraXArquivo in 'uLeituraXArquivo.pas' {frmLeituraXArquivo},
   uMenuFiscal in 'uMenuFiscal.pas' {frmMenuFiscal},
-  uTesteModoPreVenda in 'uTesteModoPreVenda.pas' {frmTesteModoPreVenda};
+  uTesteModoPreVenda in 'uTesteModoPreVenda.pas' {frmTesteModoPreVenda},
+  uDAV in 'uDAV.pas' {frmDAV},
+  uDAVOS in 'uDAVOS.pas' {frmDAVOS};
 
 {$R *.res}
 

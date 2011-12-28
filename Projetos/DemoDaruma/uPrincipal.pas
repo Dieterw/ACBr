@@ -56,6 +56,9 @@ type
     N4: TMenuItem;
     RelatriosGerenciaisCadastrados1: TMenuItem;
     lblModeloImpressora: TLabel;
+    DAV1: TMenuItem;
+    DAV2: TMenuItem;
+    DAVOS1: TMenuItem;
     procedure btnAtivarDesativarClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure cbxPortaComunicacaoChange(Sender: TObject);
@@ -85,6 +88,8 @@ type
     procedure TesteModoPreVendaClick(Sender: TObject);
     procedure ckbGravarLogClick(Sender: TObject);
     procedure RelatriosGerenciaisCadastrados1Click(Sender: TObject);
+    procedure DAV2Click(Sender: TObject);
+    procedure DAVOS1Click(Sender: TObject);
   private
     FBobinaCupom: TStringList;
     function GetIniFileName: String;
@@ -112,7 +117,7 @@ uses
   IniFiles, uGeracaoArquivos, uIdentificacaoPafECF, uProgramarBitmap,
   uSuprimento, uSangria, uRelatorioGerencial, uComprNaoFiscalCompleto,
   uComprNaoFiscal, uCupomFiscal, uRelatorioGerencialFormatado,
-  uLeituraXArquivo, uBasicoModal, uMenuFiscal, uTesteModoPreVenda;
+  uLeituraXArquivo, uBasicoModal, uMenuFiscal, uTesteModoPreVenda, uDAV, uDAVOS;
 
 procedure TfrmPrincipal.AtivarMenus(const ALigar: Boolean);
 var
@@ -433,6 +438,16 @@ end;
 procedure TfrmPrincipal.CupomFiscal2Click(Sender: TObject);
 begin
   AbrirFormularioModal(TfrmCupomFiscal);
+end;
+
+procedure TfrmPrincipal.DAV2Click(Sender: TObject);
+begin
+  AbrirFormularioModal(TfrmDAV);
+end;
+
+procedure TfrmPrincipal.DAVOS1Click(Sender: TObject);
+begin
+  AbrirFormularioModal(TfrmDAVOS);
 end;
 
 procedure TfrmPrincipal.Normal1Click(Sender: TObject);

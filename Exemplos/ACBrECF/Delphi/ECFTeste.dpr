@@ -8,7 +8,9 @@ uses
   EfetuaPagamento in 'EfetuaPagamento.pas' {frPagamento},
   Sobre in 'Sobre.pas' {frSobre},
   ConfiguraSerial in 'ConfiguraSerial.pas' {frConfiguraSerial},
-  RelatorioGerencialFormatado in 'RelatorioGerencialFormatado.pas' {frmGerencialFormatado};
+  RelatorioGerencialFormatado in 'RelatorioGerencialFormatado.pas' {frmGerencialFormatado},
+  uDAV in 'uDAV.pas',
+  uDAVOS in 'uDAVOS.pas';
 
 {$R *.res}
 

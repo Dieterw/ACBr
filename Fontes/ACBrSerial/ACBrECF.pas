@@ -280,6 +280,9 @@ TACBrECF = class( TACBrComponent )
     fsIdentificarOperador : Boolean;
     fsNumSerieCache       : String ;
 
+    FDAVItemCount: Integer;
+    FDAVTotal: Double;
+
     function GetArredondaItemMFD : Boolean ;
     function GetPaginaDeCodigoClass : Word ;
     procedure SetArredondaItemMFD(const AValue : Boolean) ;
@@ -837,6 +840,14 @@ TACBrECF = class( TACBrComponent )
 
     function MontaDadosReducaoZ: AnsiString;
 
+    procedure DAV_Abrir(const AEmissao: TDateTime;
+      const ADescrDocumento, ANumero, ASituacao, AVendedor, AObservacao,
+      ACNPJCPF, ANomeCliente, AEndereco: String; const AIndice: Integer = 0);
+    procedure DAV_Fechar(const AObservacao: String);
+    procedure DAV_RegistrarItem(const ACodigo, ADescricao, AUnid: String;
+      const AQuantidade, AVlrUnitario, AVlrDesconto, AVlrAcrescimo: Double;
+      const ACancelado: Boolean);
+
   published
      property About : String read GetAbout write SetAbout stored False ;
      property Modelo : TACBrECFModelo read fsModelo write SetModelo
@@ -1069,6 +1080,9 @@ begin
   fsRegistrouRFDCNF := False ;
   fsIdentificarOperador := True ;
   fsNumSerieCache   := '';
+
+  FDAVItemCount := 0;
+  FDAVTotal     := 0.00;
 
   fsEADInterno     := nil;
   fsEAD            := nil;
@@ -5863,6 +5877,142 @@ begin
     ')';
 
   fsECF.ProgramarBitmapPromocional(AIndice, APathArquivo, AAlinhamento);
+end;
+
+procedure TACBrECF.DAV_Abrir(const AEmissao: TDateTime; const ADescrDocumento,
+  ANumero, ASituacao, AVendedor, AObservacao, ACNPJCPF, ANomeCliente,
+  AEndereco: String; const AIndice: Integer);
+var
+  TextoRel: TStringList;
+begin
+  FDAVItemCount := 0;
+  FDAVTotal     := 0.00;
+
+  TextoRel := TStringList.Create;
+  try
+    TextoRel.Clear;
+    TextoRel.Add('</linha_simples>');
+    TextoRel.Add('<ce>DOCUMENTO AUXILIAR DE VENDA</ce>');
+    TextoRel.Add('</linha_simples>');
+    TextoRel.Add('<e>' + ADescrDocumento + ' N.' + ANumero + '</e>');
+    TextoRel.Add('</linha_simples>');
+    TextoRel.Add('<ce>NÃO É DOCUMENTO FISCAL</ce>');
+    TextoRel.Add('<ce>NÃO COMPROVA PAGAMENTO</ce>');
+    TextoRel.Add('<ce>NÃO É VÁLIDO COMO RECIBO E COMO</ce>');
+    TextoRel.Add('<ce>GARANTIA DE MERCADORIA</ce>');
+    TextoRel.Add('</linha_simples>');
+    TextoRel.Add('Emissao.: ' + FormatDateTime('dd/mm/yyyy hh:mm', AEmissao));
+
+    if AVendedor > EmptyStr then
+      TextoRel.Add('Vendedor: ' + Copy(AVendedor, 0, 38));
+
+    if ASituacao <> '' then
+      TextoRel.Add('Situacao: ' + Copy(ASituacao, 0, 38));
+
+    if AObservacao <> '' then
+      TextoRel.Add(AObservacao);
+
+    TextoRel.Add('');
+
+    TextoRel.Add('IDENTIFICACAO DO DESTINATÁRIO');
+    TextoRel.Add('</linha_simples>');
+    TextoRel.Add('CNPJ/CPF: ' + ACNPJCPF);
+    TextoRel.Add('Nome: '     + ANomeCliente);
+    TextoRel.Add('Endereço: ' + AEndereco);
+
+    TextoRel.Add('');
+    TextoRel.Add('</linha_simples>');
+    TextoRel.Add('CODIGO DESCRICAO QTD UN VL.UNIT VL.DESC VL.TOTAL');
+    TextoRel.Add('</linha_simples>');
+
+    AbreRelatorioGerencial(AIndice);
+    LinhaRelatorioGerencial(TextoRel.Text);
+  finally
+    TextoRel.Free;
+  end;
+end;
+
+procedure TACBrECF.DAV_RegistrarItem(const ACodigo, ADescricao, AUnid: String;
+ const AQuantidade, AVlrUnitario, AVlrDesconto, AVlrAcrescimo: Double;
+ const ACancelado: Boolean);
+var
+  TextoRel: TStringList;
+  ValorTotal: Double;
+  strQuant: String;
+  decimais: Double;
+begin
+  if Self.Estado <> estRelatorio then
+    raise EACBrECFErro.Create('Efetue a abertura do DAV antes de continuar.');
+
+  ValorTotal := ((AVlrUnitario * AQuantidade) + AVlrAcrescimo) - AVlrDesconto;
+
+  TextoRel := TStringList.Create;
+  try
+    FDAVItemCount := FDAVItemCount + 1;
+    if not ACancelado then
+      FDAVTotal := FDAVTotal + ValorTotal;
+
+    TextoRel.Add(
+      Format('%3.3d', [FDAVItemCount]) + ' ' +
+      padL(ACodigo, 14) + ' ' +
+      ADescricao
+    );
+
+    decimais := Frac(AQuantidade);
+    if Frac(AQuantidade) > 0 then
+      strQuant := Format('%11.3f', [AQuantidade])
+    else
+      strQuant := padR(IntToStr(Trunc(AQuantidade)), 11);
+
+    TextoRel.Add(
+      strQuant + ' ' +
+      padL(AUnid, 3, ' ') +
+      Format('%10.2f', [AVlrUnitario]) +
+      Format('%11.2f', [ValorTotal]) +
+      IfThen(ACancelado, ' Cancelado', '')
+    );
+
+    if AVlrDesconto > 0 then
+      TextoRel.Add(Format('desconto item %3.3d: %.2f', [FDAVItemCount, AVlrDesconto]));
+
+    if AVlrAcrescimo > 0 then
+      TextoRel.Add(Format('acréscimo item %3.3d: %.2f', [FDAVItemCount, AVlrAcrescimo]));
+
+    LinhaRelatorioGerencial(TextoRel.Text);
+  finally
+    TextoRel.Free;
+  end;
+end;
+
+procedure TACBrECF.DAV_Fechar(const AObservacao: String);
+begin
+  if Self.Estado <> estRelatorio then
+    raise EACBrECFErro.Create('Efetue a abertura do DAV antes de continuar.');
+
+  if Trim(AObservacao) <> EmptyStr then
+  begin
+    LinhaRelatorioGerencial('');
+    LinhaRelatorioGerencial(AObservacao);
+  end;
+
+  LinhaRelatorioGerencial('</linha_simples>');
+  LinhaRelatorioGerencial(
+    padL(IntToStr(FDAVItemCount) + ' iten(s)', 12, ' ') +
+    padR('Valor Total: ' + Format('%11.2f', [FDAVTotal]), 36, ' ')
+  );
+
+  LinhaRelatorioGerencial('');
+  LinhaRelatorioGerencial('');
+  LinhaRelatorioGerencial('</linha_dupla>');
+  LinhaRelatorioGerencial('<ce>É VEDADA A AUTENTIÇÃO DESTE DOCUMENTO</ce>');
+  LinhaRelatorioGerencial('</linha_dupla>');
+  LinhaRelatorioGerencial('');
+  LinhaRelatorioGerencial('');
+
+  FechaRelatorio;
+
+  FDAVItemCount := 0;
+  FDAVTotal     := 0.00;
 end;
 
 end.

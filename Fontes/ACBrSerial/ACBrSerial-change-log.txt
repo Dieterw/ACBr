@@ -97,6 +97,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 27/12/2011
+-- ACBrECF --
+[+] Adicionados métodos para a impressão do DAV normal.
+    por: Régys Silveira
 
 Data: 14/12/2011
 -- ACBrECF --

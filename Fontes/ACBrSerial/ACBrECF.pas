@@ -5939,7 +5939,6 @@ var
   TextoRel: TStringList;
   ValorTotal: Double;
   strQuant: String;
-  decimais: Double;
 begin
   if Self.Estado <> estRelatorio then
     raise EACBrECFErro.Create('Efetue a abertura do DAV antes de continuar.');
@@ -5958,7 +5957,6 @@ begin
       ADescricao
     );
 
-    decimais := Frac(AQuantidade);
     if Frac(AQuantidade) > 0 then
       strQuant := Format('%11.3f', [AQuantidade])
     else
@@ -5985,29 +5983,42 @@ begin
 end;
 
 procedure TACBrECF.DAV_Fechar(const AObservacao: String);
+var
+  DescrItem: String;
+  TextoRel: TStringList;
 begin
   if Self.Estado <> estRelatorio then
     raise EACBrECFErro.Create('Efetue a abertura do DAV antes de continuar.');
 
-  if Trim(AObservacao) <> EmptyStr then
-  begin
-    LinhaRelatorioGerencial('');
-    LinhaRelatorioGerencial(AObservacao);
+  TextoRel := TStringList.Create;
+  try
+    if Trim(AObservacao) <> EmptyStr then
+    begin
+      TextoRel.Add('');
+      TextoRel.Add(AObservacao);
+    end;
+
+    if FDAVItemCount > 1 then
+      DescrItem := padL(IntToStr(FDAVItemCount) + ' itens', 12, ' ')
+    else
+      DescrItem := padL(IntToStr(FDAVItemCount) + ' item', 12, ' ');
+
+    TextoRel.Add('</linha_simples>');
+    TextoRel.Add(DescrItem + padR('Valor Total: ' + Format('%11.2f', [FDAVTotal]), 36, ' ')
+    );
+
+    TextoRel.Add('');
+    TextoRel.Add('');
+    TextoRel.Add('</linha_dupla>');
+    TextoRel.Add('<ce>É VEDADA A AUTENTIÇÃO DESTE DOCUMENTO</ce>');
+    TextoRel.Add('</linha_dupla>');
+    TextoRel.Add('');
+    TextoRel.Add('');
+
+    LinhaRelatorioGerencial(TextoRel.Text);
+  finally
+    TextoRel.Free;
   end;
-
-  LinhaRelatorioGerencial('</linha_simples>');
-  LinhaRelatorioGerencial(
-    padL(IntToStr(FDAVItemCount) + ' iten(s)', 12, ' ') +
-    padR('Valor Total: ' + Format('%11.2f', [FDAVTotal]), 36, ' ')
-  );
-
-  LinhaRelatorioGerencial('');
-  LinhaRelatorioGerencial('');
-  LinhaRelatorioGerencial('</linha_dupla>');
-  LinhaRelatorioGerencial('<ce>É VEDADA A AUTENTIÇÃO DESTE DOCUMENTO</ce>');
-  LinhaRelatorioGerencial('</linha_dupla>');
-  LinhaRelatorioGerencial('');
-  LinhaRelatorioGerencial('');
 
   FechaRelatorio;
 

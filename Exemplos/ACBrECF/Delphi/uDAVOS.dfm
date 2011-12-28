@@ -1,6 +1,6 @@
 object frmDAVOS: TfrmDAVOS
-  Left = 0
-  Top = 0
+  Left = 392
+  Top = 276
   BorderStyle = bsDialog
   Caption = 'Emiss'#227'o de DAV-OS'
   ClientHeight = 410
@@ -21,7 +21,7 @@ object frmDAVOS: TfrmDAVOS
     Top = 0
     Width = 620
     Height = 375
-    ActivePage = TabSheet3
+    ActivePage = TabSheet1
     Align = alClient
     TabOrder = 0
     object TabSheet1: TTabSheet
@@ -96,6 +96,7 @@ object frmDAVOS: TfrmDAVOS
         Top = 40
         Width = 174
         Height = 21
+        ItemHeight = 13
         ItemIndex = 0
         MaxLength = 30
         TabOrder = 0
@@ -334,7 +335,6 @@ object frmDAVOS: TfrmDAVOS
       Top = 1
       Width = 100
       Height = 33
-      Align = alRight
       Caption = 'Fechar'
       TabOrder = 0
       OnClick = btnCancelarClick

@@ -1,6 +1,6 @@
 object frmDAV: TfrmDAV
-  Left = 0
-  Top = 0
+  Left = 323
+  Top = 212
   BorderStyle = bsDialog
   Caption = 'Emiss'#227'o de DAV'
   ClientHeight = 410
@@ -96,6 +96,7 @@ object frmDAV: TfrmDAV
         Top = 40
         Width = 174
         Height = 21
+        ItemHeight = 13
         ItemIndex = 0
         MaxLength = 30
         TabOrder = 0
@@ -334,7 +335,6 @@ object frmDAV: TfrmDAV
       Top = 1
       Width = 100
       Height = 33
-      Align = alRight
       Caption = 'Fechar'
       TabOrder = 0
       OnClick = btnCancelarClick

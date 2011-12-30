@@ -1,4 +1,6 @@
 inherited frmProgramarBitmap: TfrmProgramarBitmap
+  Left = 289
+  Top = 243
   Caption = 'Bitmap promocional'
   ClientHeight = 158
   ClientWidth = 481
@@ -7,7 +9,7 @@ inherited frmProgramarBitmap: TfrmProgramarBitmap
   TextHeight = 13
   inherited pnlCliente: TPanel
     Width = 481
-    Height = 123
+    Height = 128
     object Label1: TLabel
       Left = 22
       Top = 60
@@ -52,6 +54,7 @@ inherited frmProgramarBitmap: TfrmProgramarBitmap
       Width = 49
       Height = 21
       Style = csDropDownList
+      ItemHeight = 13
       TabOrder = 0
       Items.Strings = (
         '1'
@@ -66,6 +69,7 @@ inherited frmProgramarBitmap: TfrmProgramarBitmap
       Width = 119
       Height = 21
       Style = csDropDownList
+      ItemHeight = 13
       TabOrder = 1
       Items.Strings = (
         'Esquerda'
@@ -73,7 +77,7 @@ inherited frmProgramarBitmap: TfrmProgramarBitmap
     end
   end
   inherited pnlRodape: TPanel
-    Top = 123
+    Top = 128
     Width = 481
     inherited btnExecutar: TButton
       Left = 271

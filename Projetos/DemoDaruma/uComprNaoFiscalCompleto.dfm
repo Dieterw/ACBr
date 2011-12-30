@@ -1,4 +1,6 @@
 inherited frmComprNaoFiscalCompleto: TfrmComprNaoFiscalCompleto
+  Left = 341
+  Top = 208
   Caption = 'Comprovante N'#227'o Fiscal Completo'
   ClientHeight = 370
   ClientWidth = 387
@@ -7,7 +9,7 @@ inherited frmComprNaoFiscalCompleto: TfrmComprNaoFiscalCompleto
   TextHeight = 13
   inherited pnlCliente: TPanel
     Width = 387
-    Height = 335
+    Height = 340
     object Label1: TLabel
       Left = 15
       Top = 15
@@ -66,6 +68,7 @@ inherited frmComprNaoFiscalCompleto: TfrmComprNaoFiscalCompleto
       Width = 145
       Height = 21
       Style = csDropDownList
+      ItemHeight = 13
       TabOrder = 0
     end
     object cbxMeioPagto: TComboBox
@@ -74,6 +77,7 @@ inherited frmComprNaoFiscalCompleto: TfrmComprNaoFiscalCompleto
       Width = 145
       Height = 21
       Style = csDropDownList
+      ItemHeight = 13
       TabOrder = 1
     end
     object edtValor: TEdit
@@ -81,7 +85,6 @@ inherited frmComprNaoFiscalCompleto: TfrmComprNaoFiscalCompleto
       Top = 74
       Width = 90
       Height = 21
-      Alignment = taRightJustify
       TabOrder = 2
       Text = '1,00'
     end
@@ -91,6 +94,7 @@ inherited frmComprNaoFiscalCompleto: TfrmComprNaoFiscalCompleto
       Width = 52
       Height = 21
       Style = csDropDownList
+      ItemHeight = 13
       ItemIndex = 0
       TabOrder = 8
       Text = '0'
@@ -153,7 +157,7 @@ inherited frmComprNaoFiscalCompleto: TfrmComprNaoFiscalCompleto
     end
   end
   inherited pnlRodape: TPanel
-    Top = 335
+    Top = 340
     Width = 387
     inherited btnExecutar: TButton
       Left = 177

@@ -1,4 +1,6 @@
 inherited frmGeracaoArquivos: TfrmGeracaoArquivos
+  Left = 329
+  Top = 207
   Caption = 'Gera'#231#227'o de arquivos com DLL'
   ClientHeight = 316
   ClientWidth = 282
@@ -7,7 +9,7 @@ inherited frmGeracaoArquivos: TfrmGeracaoArquivos
   TextHeight = 13
   inherited pnlCliente: TPanel
     Width = 282
-    Height = 281
+    Height = 286
     object Label4: TLabel
       Left = 53
       Top = 122
@@ -42,6 +44,7 @@ inherited frmGeracaoArquivos: TfrmGeracaoArquivos
       Width = 178
       Height = 21
       Style = csDropDownList
+      ItemHeight = 13
       TabOrder = 1
       Items.Strings = (
         'MF'
@@ -58,6 +61,7 @@ inherited frmGeracaoArquivos: TfrmGeracaoArquivos
       Width = 178
       Height = 21
       Style = csDropDownList
+      ItemHeight = 13
       TabOrder = 2
       OnChange = cbxTipoParametroChange
       Items.Strings = (
@@ -119,7 +123,7 @@ inherited frmGeracaoArquivos: TfrmGeracaoArquivos
     end
   end
   inherited pnlRodape: TPanel
-    Top = 281
+    Top = 286
     Width = 282
     inherited btnExecutar: TButton
       Left = 72

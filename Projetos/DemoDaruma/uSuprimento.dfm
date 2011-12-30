@@ -1,4 +1,6 @@
 inherited frmSuprimento: TfrmSuprimento
+  Left = 319
+  Top = 206
   Caption = 'Suprimento'
   ClientHeight = 200
   ClientWidth = 410
@@ -6,7 +8,7 @@ inherited frmSuprimento: TfrmSuprimento
   TextHeight = 13
   inherited pnlCliente: TPanel
     Width = 410
-    Height = 165
+    Height = 170
     object Label1: TLabel
       Left = 20
       Top = 19
@@ -48,9 +50,8 @@ inherited frmSuprimento: TfrmSuprimento
     object edtValor: TEdit
       Left = 20
       Top = 35
-      Width = 121
+      Width = 116
       Height = 21
-      Alignment = taRightJustify
       TabOrder = 0
       Text = '2,13'
     end
@@ -68,6 +69,7 @@ inherited frmSuprimento: TfrmSuprimento
       Width = 52
       Height = 21
       Style = csDropDownList
+      ItemHeight = 13
       ItemIndex = 0
       TabOrder = 2
       Text = '0'
@@ -81,7 +83,7 @@ inherited frmSuprimento: TfrmSuprimento
     end
   end
   inherited pnlRodape: TPanel
-    Top = 165
+    Top = 170
     Width = 410
     inherited btnExecutar: TButton
       Left = 200

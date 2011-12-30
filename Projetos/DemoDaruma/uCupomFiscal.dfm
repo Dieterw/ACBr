@@ -1,4 +1,6 @@
 inherited frmCupomFiscal: TfrmCupomFiscal
+  Left = 361
+  Top = 181
   Caption = 'Cupom Fiscal'
   ClientHeight = 520
   ClientWidth = 790
@@ -85,6 +87,7 @@ inherited frmCupomFiscal: TfrmCupomFiscal
             Width = 91
             Height = 21
             Style = csDropDownList
+            ItemHeight = 13
             ItemIndex = 0
             TabOrder = 1
             Text = 'Percentual'
@@ -98,6 +101,7 @@ inherited frmCupomFiscal: TfrmCupomFiscal
             Width = 88
             Height = 21
             Style = csDropDownList
+            ItemHeight = 13
             ItemIndex = 0
             TabOrder = 0
             Text = 'Desconto'
@@ -247,6 +251,7 @@ inherited frmCupomFiscal: TfrmCupomFiscal
             Width = 51
             Height = 21
             Style = csDropDownList
+            ItemHeight = 13
             TabOrder = 6
             Items.Strings = (
               'FF'
@@ -307,7 +312,6 @@ inherited frmCupomFiscal: TfrmCupomFiscal
           Top = 25
           Width = 103
           Height = 21
-          Alignment = taRightJustify
           TabOrder = 0
           Text = '0,00'
         end
@@ -358,6 +362,7 @@ inherited frmCupomFiscal: TfrmCupomFiscal
           Width = 169
           Height = 21
           Style = csDropDownList
+          ItemHeight = 0
           TabOrder = 0
         end
         object edtPagtoVlr: TEdit
@@ -365,7 +370,6 @@ inherited frmCupomFiscal: TfrmCupomFiscal
           Top = 25
           Width = 118
           Height = 21
-          Alignment = taRightJustify
           TabOrder = 1
           Text = '0,00'
         end
@@ -456,6 +460,7 @@ inherited frmCupomFiscal: TfrmCupomFiscal
           Width = 52
           Height = 21
           Style = csDropDownList
+          ItemHeight = 13
           ItemIndex = 0
           TabOrder = 0
           Text = '0'
@@ -616,7 +621,6 @@ inherited frmCupomFiscal: TfrmCupomFiscal
           Top = 35
           Width = 113
           Height = 21
-          Alignment = taRightJustify
           Enabled = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
@@ -633,7 +637,6 @@ inherited frmCupomFiscal: TfrmCupomFiscal
           Top = 35
           Width = 113
           Height = 21
-          Alignment = taRightJustify
           Enabled = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
@@ -650,7 +653,6 @@ inherited frmCupomFiscal: TfrmCupomFiscal
           Top = 35
           Width = 113
           Height = 21
-          Alignment = taRightJustify
           Enabled = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText

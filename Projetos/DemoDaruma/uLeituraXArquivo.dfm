@@ -1,4 +1,6 @@
 inherited frmLeituraXArquivo: TfrmLeituraXArquivo
+  Left = 347
+  Top = 224
   Caption = 'Gravar leitura X para arquivo'
   ClientHeight = 103
   ClientWidth = 458
@@ -6,7 +8,7 @@ inherited frmLeituraXArquivo: TfrmLeituraXArquivo
   TextHeight = 13
   inherited pnlCliente: TPanel
     Width = 458
-    Height = 68
+    Height = 73
     object Label1: TLabel
       Left = 20
       Top = 14
@@ -33,7 +35,7 @@ inherited frmLeituraXArquivo: TfrmLeituraXArquivo
     end
   end
   inherited pnlRodape: TPanel
-    Top = 68
+    Top = 73
     Width = 458
     inherited btnExecutar: TButton
       Left = 248

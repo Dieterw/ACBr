@@ -1,4 +1,6 @@
 inherited frmRelatorioGerencialFormatado: TfrmRelatorioGerencialFormatado
+  Left = 305
+  Top = 176
   Caption = 'Relat'#243'rio gerencial com formata'#231#227'o'
   ClientHeight = 450
   ClientWidth = 400
@@ -6,12 +8,12 @@ inherited frmRelatorioGerencialFormatado: TfrmRelatorioGerencialFormatado
   TextHeight = 13
   inherited pnlCliente: TPanel
     Width = 400
-    Height = 415
+    Height = 420
     object memRelatorio: TMemo
       Left = 1
       Top = 1
       Width = 398
-      Height = 413
+      Height = 418
       Align = alClient
       Lines.Strings = (
         '<e>TEXTO EXPANDIDO</e>'
@@ -60,7 +62,7 @@ inherited frmRelatorioGerencialFormatado: TfrmRelatorioGerencialFormatado
     end
   end
   inherited pnlRodape: TPanel
-    Top = 415
+    Top = 420
     Width = 400
     inherited btnExecutar: TButton
       Left = 190

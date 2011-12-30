@@ -1,6 +1,6 @@
 object frmBasicoModal: TfrmBasicoModal
-  Left = 0
-  Top = 0
+  Left = 353
+  Top = 206
   BorderStyle = bsDialog
   Caption = 'Demo ACBrDaruma'
   ClientHeight = 300
@@ -35,7 +35,6 @@ object frmBasicoModal: TfrmBasicoModal
       Top = 1
       Width = 100
       Height = 28
-      Align = alRight
       Caption = 'Executar'
       TabOrder = 0
       OnClick = btnExecutarClick
@@ -45,7 +44,6 @@ object frmBasicoModal: TfrmBasicoModal
       Top = 1
       Width = 100
       Height = 28
-      Align = alRight
       Cancel = True
       Caption = 'Cancelar'
       TabOrder = 1

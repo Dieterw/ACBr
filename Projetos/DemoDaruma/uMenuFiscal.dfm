@@ -1,4 +1,6 @@
 inherited frmMenuFiscal: TfrmMenuFiscal
+  Left = 342
+  Top = 209
   Caption = 'Menu Fiscal'
   ClientHeight = 450
   ClientWidth = 467

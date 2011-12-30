@@ -1,6 +1,6 @@
 object frmPrincipal: TfrmPrincipal
-  Left = 0
-  Top = 0
+  Left = 356
+  Top = 186
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'Demo ACBRDaruma'
@@ -926,6 +926,7 @@ object frmPrincipal: TfrmPrincipal
       Width = 84
       Height = 21
       CharCase = ecUpperCase
+      ItemHeight = 13
       TabOrder = 1
       OnChange = cbxVelocidadeChange
       Items.Strings = (
@@ -938,6 +939,7 @@ object frmPrincipal: TfrmPrincipal
       Width = 105
       Height = 21
       CharCase = ecUpperCase
+      ItemHeight = 13
       TabOrder = 0
       OnChange = cbxPortaComunicacaoChange
       Items.Strings = (

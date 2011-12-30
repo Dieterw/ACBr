@@ -1,4 +1,6 @@
 inherited frmCupomFiscalDescAcresAnterior: TfrmCupomFiscalDescAcresAnterior
+  Left = 329
+  Top = 229
   Caption = 'Desconto/Acr'#233'scimo item anterior'
   ClientHeight = 159
   ClientWidth = 349
@@ -6,7 +8,7 @@ inherited frmCupomFiscalDescAcresAnterior: TfrmCupomFiscalDescAcresAnterior
   TextHeight = 13
   inherited pnlCliente: TPanel
     Width = 349
-    Height = 124
+    Height = 129
     object Label25: TLabel
       Left = 112
       Top = 60
@@ -41,6 +43,7 @@ inherited frmCupomFiscalDescAcresAnterior: TfrmCupomFiscalDescAcresAnterior
       Width = 91
       Height = 21
       Style = csDropDownList
+      ItemHeight = 13
       ItemIndex = 0
       TabOrder = 2
       Text = 'Percentual'
@@ -54,6 +57,7 @@ inherited frmCupomFiscalDescAcresAnterior: TfrmCupomFiscalDescAcresAnterior
       Width = 88
       Height = 21
       Style = csDropDownList
+      ItemHeight = 13
       ItemIndex = 0
       TabOrder = 1
       Text = 'Desconto'
@@ -82,7 +86,7 @@ inherited frmCupomFiscalDescAcresAnterior: TfrmCupomFiscalDescAcresAnterior
     end
   end
   inherited pnlRodape: TPanel
-    Top = 124
+    Top = 129
     Width = 349
     inherited btnExecutar: TButton
       Left = 139

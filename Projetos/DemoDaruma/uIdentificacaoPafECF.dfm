@@ -1,4 +1,6 @@
 inherited frmIdentificacaoPafECF: TfrmIdentificacaoPafECF
+  Left = 323
+  Top = 203
   Caption = 'Identifica'#231#227'o do Paf-ECF'
   ClientHeight = 149
   ClientWidth = 347
@@ -6,7 +8,7 @@ inherited frmIdentificacaoPafECF: TfrmIdentificacaoPafECF
   TextHeight = 13
   inherited pnlCliente: TPanel
     Width = 347
-    Height = 114
+    Height = 119
     object edtLinha1: TEdit
       Left = 32
       Top = 34
@@ -25,7 +27,7 @@ inherited frmIdentificacaoPafECF: TfrmIdentificacaoPafECF
     end
   end
   inherited pnlRodape: TPanel
-    Top = 114
+    Top = 119
     Width = 347
     inherited btnExecutar: TButton
       Left = 137

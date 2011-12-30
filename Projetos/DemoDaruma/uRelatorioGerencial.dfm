@@ -1,4 +1,6 @@
 inherited frmRelatorioGerencial: TfrmRelatorioGerencial
+  Left = 313
+  Top = 231
   Caption = 'Relat'#243'rio Gerencial'
   ClientHeight = 249
   ClientWidth = 419
@@ -7,7 +9,7 @@ inherited frmRelatorioGerencial: TfrmRelatorioGerencial
   TextHeight = 13
   inherited pnlCliente: TPanel
     Width = 419
-    Height = 214
+    Height = 219
     object Label1: TLabel
       Left = 10
       Top = 9
@@ -35,6 +37,7 @@ inherited frmRelatorioGerencial: TfrmRelatorioGerencial
       Width = 396
       Height = 21
       Style = csDropDownList
+      ItemHeight = 13
       TabOrder = 0
     end
     object edtTexto1: TEdit
@@ -51,6 +54,7 @@ inherited frmRelatorioGerencial: TfrmRelatorioGerencial
       Width = 43
       Height = 21
       Style = csDropDownList
+      ItemHeight = 13
       ItemIndex = 0
       TabOrder = 1
       Text = '0'
@@ -68,6 +72,7 @@ inherited frmRelatorioGerencial: TfrmRelatorioGerencial
       Width = 43
       Height = 21
       Style = csDropDownList
+      ItemHeight = 13
       ItemIndex = 0
       TabOrder = 3
       Text = '0'
@@ -93,6 +98,7 @@ inherited frmRelatorioGerencial: TfrmRelatorioGerencial
       Width = 43
       Height = 21
       Style = csDropDownList
+      ItemHeight = 13
       ItemIndex = 0
       TabOrder = 5
       Text = '0'
@@ -118,6 +124,7 @@ inherited frmRelatorioGerencial: TfrmRelatorioGerencial
       Width = 43
       Height = 21
       Style = csDropDownList
+      ItemHeight = 13
       ItemIndex = 0
       TabOrder = 7
       Text = '0'
@@ -143,6 +150,7 @@ inherited frmRelatorioGerencial: TfrmRelatorioGerencial
       Width = 43
       Height = 21
       Style = csDropDownList
+      ItemHeight = 13
       ItemIndex = 0
       TabOrder = 9
       Text = '0'
@@ -164,7 +172,7 @@ inherited frmRelatorioGerencial: TfrmRelatorioGerencial
     end
   end
   inherited pnlRodape: TPanel
-    Top = 214
+    Top = 219
     Width = 419
     inherited btnExecutar: TButton
       Left = 209

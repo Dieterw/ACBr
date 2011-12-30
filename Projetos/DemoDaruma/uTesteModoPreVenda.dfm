@@ -1,4 +1,6 @@
 inherited frmTesteModoPreVenda: TfrmTesteModoPreVenda
+  Left = 534
+  Top = 246
   Caption = 'Comparativo de modo Pr'#233'-venda'
   ClientHeight = 414
   ClientWidth = 370

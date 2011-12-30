@@ -1,4 +1,6 @@
 inherited frmDAV: TfrmDAV
+  Left = 338
+  Top = 203
   Caption = 'Emiss'#227'o de DAV'
   ClientHeight = 400
   ClientWidth = 610
@@ -13,7 +15,7 @@ inherited frmDAV: TfrmDAV
       Top = 1
       Width = 608
       Height = 368
-      ActivePage = TabSheet3
+      ActivePage = TabSheet1
       Align = alClient
       TabOrder = 0
       object TabSheet1: TTabSheet
@@ -88,6 +90,7 @@ inherited frmDAV: TfrmDAV
           Top = 40
           Width = 174
           Height = 21
+          ItemHeight = 13
           ItemIndex = 0
           MaxLength = 30
           TabOrder = 0

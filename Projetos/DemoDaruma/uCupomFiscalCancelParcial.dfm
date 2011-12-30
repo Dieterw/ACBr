@@ -1,4 +1,6 @@
 inherited frmCupomFiscalCancelParcial: TfrmCupomFiscalCancelParcial
+  Left = 348
+  Top = 220
   Caption = 'Cancelamento parcial'
   ClientHeight = 116
   ClientWidth = 217
@@ -6,7 +8,7 @@ inherited frmCupomFiscalCancelParcial: TfrmCupomFiscalCancelParcial
   TextHeight = 13
   inherited pnlCliente: TPanel
     Width = 217
-    Height = 81
+    Height = 86
     object Label27: TLabel
       Left = 29
       Top = 20
@@ -41,7 +43,7 @@ inherited frmCupomFiscalCancelParcial: TfrmCupomFiscalCancelParcial
     end
   end
   inherited pnlRodape: TPanel
-    Top = 81
+    Top = 86
     Width = 217
     inherited btnExecutar: TButton
       Left = 7

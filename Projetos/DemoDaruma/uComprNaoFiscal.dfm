@@ -1,4 +1,6 @@
 inherited frmComprNaoFiscal: TfrmComprNaoFiscal
+  Left = 327
+  Top = 215
   Caption = 'Comprovante N'#227'o Fiscal'
   ClientHeight = 500
   ClientWidth = 790
@@ -8,12 +10,12 @@ inherited frmComprNaoFiscal: TfrmComprNaoFiscal
   TextHeight = 13
   inherited pnlCliente: TPanel
     Width = 790
-    Height = 465
+    Height = 470
     object PageControl1: TPageControl
       Left = 1
       Top = 72
       Width = 344
-      Height = 392
+      Height = 397
       ActivePage = TabSheet4
       Align = alClient
       TabOrder = 1
@@ -52,6 +54,7 @@ inherited frmComprNaoFiscal: TfrmComprNaoFiscal
           Width = 203
           Height = 21
           Style = csDropDownList
+          ItemHeight = 0
           TabOrder = 0
         end
         object edtItemVlr: TEdit
@@ -59,7 +62,6 @@ inherited frmComprNaoFiscal: TfrmComprNaoFiscal
           Top = 26
           Width = 100
           Height = 21
-          Alignment = taRightJustify
           TabOrder = 1
           Text = '0,00'
         end
@@ -117,7 +119,6 @@ inherited frmComprNaoFiscal: TfrmComprNaoFiscal
           Top = 28
           Width = 103
           Height = 21
-          Alignment = taRightJustify
           TabOrder = 0
           Text = '0,00'
         end
@@ -168,6 +169,7 @@ inherited frmComprNaoFiscal: TfrmComprNaoFiscal
           Width = 194
           Height = 21
           Style = csDropDownList
+          ItemHeight = 13
           TabOrder = 0
         end
         object edtPagtoVlr: TEdit
@@ -175,7 +177,6 @@ inherited frmComprNaoFiscal: TfrmComprNaoFiscal
           Top = 23
           Width = 114
           Height = 21
-          Alignment = taRightJustify
           TabOrder = 1
           Text = '0,00'
         end
@@ -219,6 +220,7 @@ inherited frmComprNaoFiscal: TfrmComprNaoFiscal
           Width = 52
           Height = 21
           Style = csDropDownList
+          ItemHeight = 13
           ItemIndex = 0
           TabOrder = 0
           Text = '0'
@@ -330,14 +332,14 @@ inherited frmComprNaoFiscal: TfrmComprNaoFiscal
       Left = 345
       Top = 72
       Width = 444
-      Height = 392
+      Height = 397
       Align = alRight
       Caption = 'Bobina'
       Enabled = False
       TabOrder = 2
       object GroupBox4: TGroupBox
         Left = 2
-        Top = 326
+        Top = 331
         Width = 440
         Height = 64
         Align = alBottom
@@ -390,7 +392,6 @@ inherited frmComprNaoFiscal: TfrmComprNaoFiscal
           Top = 35
           Width = 113
           Height = 21
-          Alignment = taRightJustify
           Enabled = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
@@ -407,7 +408,6 @@ inherited frmComprNaoFiscal: TfrmComprNaoFiscal
           Top = 35
           Width = 113
           Height = 21
-          Alignment = taRightJustify
           Enabled = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
@@ -424,7 +424,6 @@ inherited frmComprNaoFiscal: TfrmComprNaoFiscal
           Top = 35
           Width = 113
           Height = 21
-          Alignment = taRightJustify
           Enabled = False
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
@@ -441,11 +440,11 @@ inherited frmComprNaoFiscal: TfrmComprNaoFiscal
         Left = 2
         Top = 15
         Width = 440
-        Height = 311
+        Height = 316
         Align = alClient
         TabOrder = 1
         ControlData = {
-          4C0000007A2D0000252000000000000000000000000000000000000000000000
+          4C0000007A2D0000A92000000000000000000000000000000000000000000000
           000000004C000000000000000000000001000000E0D057007335CF11AE690800
           2B2E126208000000000000004C0000000114020000000000C000000000000046
           8000000000000000000000000000000000000000000000000000000000000000
@@ -454,7 +453,7 @@ inherited frmComprNaoFiscal: TfrmComprNaoFiscal
     end
   end
   inherited pnlRodape: TPanel
-    Top = 465
+    Top = 470
     Width = 790
     inherited btnExecutar: TButton
       Left = 580

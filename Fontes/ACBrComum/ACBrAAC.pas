@@ -316,7 +316,6 @@ begin
         fsIdentPAF.Paf.TotalizaValoresLista         := Ini.ReadBool('PAF', 'TotalizaValoresLista', False);
         fsIdentPAF.Paf.TransfPreVenda               := Ini.ReadBool('PAF', 'TransfPreVenda', False);
         fsIdentPAF.Paf.TransfDAV                    := Ini.ReadBool('PAF', 'TransfDAV', False);
-        fsIdentPAF.Paf.NaoCoincGT                   := Ini.ReadBool('PAF', 'NaoCoincGT', False);
         fsIdentPAF.Paf.RecompoeGT                   := Ini.ReadBool('PAF', 'RecompoeGT', False);
         fsIdentPAF.Paf.EmitePED                     := Ini.ReadBool('PAF', 'EmitePED', False);
         fsIdentPAF.Paf.CupomMania                   := Ini.ReadBool('PAF', 'CupomMania', False);
@@ -477,7 +476,6 @@ begin
         Ini.WriteBool('PAF', 'TotalizaValoresLista', fsIdentPAF.Paf.TotalizaValoresLista);
         Ini.WriteBool('PAF', 'TransfPreVenda', fsIdentPAF.Paf.TransfPreVenda);
         Ini.WriteBool('PAF', 'TransfDAV', fsIdentPAF.Paf.TransfDAV);
-        Ini.WriteBool('PAF', 'NaoCoincGT', fsIdentPAF.Paf.NaoCoincGT);
         Ini.WriteBool('PAF', 'RecompoeGT', fsIdentPAF.Paf.RecompoeGT);
         Ini.WriteBool('PAF', 'EmitePED', fsIdentPAF.Paf.EmitePED);
         Ini.WriteBool('PAF', 'CupomMania', fsIdentPAF.Paf.CupomMania);

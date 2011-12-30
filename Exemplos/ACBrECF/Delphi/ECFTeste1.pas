@@ -3526,7 +3526,6 @@ begin
       Parametros.TotalizaValoresLista         := True;
       Parametros.TransfPreVenda               := True;
       Parametros.TransfDAV                    := True;
-      Parametros.NaoCoincGT                   := True;
       Parametros.RecompoeGT                   := True;
       Parametros.EmitePED                     := True;
       Parametros.CupomMania                   := True;

@@ -174,7 +174,6 @@ type
     FRealizaDAVOS: Boolean;
     FIntegracaoPAFECF: TACBrPAFTipoIntegracao;
     FRecompoeGT: Boolean;
-    FNaoCoincGT: Boolean;
     FEmitePED: Boolean;
     FMinasLegal: Boolean;
     FCupomMania: Boolean;
@@ -224,7 +223,6 @@ type
     property TotalizaValoresLista: Boolean read FTotalizaValoresLista write FTotalizaValoresLista;
     property TransfPreVenda: Boolean read FTransfPreVenda write FTransfPreVenda;
     property TransfDAV: Boolean read FTransfDAV write FTransfDAV;
-    property NaoCoincGT: Boolean read FNaoCoincGT write FNaoCoincGT;
     property RecompoeGT: Boolean read FRecompoeGT write FRecompoeGT;
     property EmitePED: Boolean read FEmitePED write FEmitePED;
     property CupomMania: Boolean read FCupomMania write FCupomMania;

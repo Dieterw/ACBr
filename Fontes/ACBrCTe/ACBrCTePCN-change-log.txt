@@ -48,6 +48,10 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+02/01/2012 - Régys Silveira
+---------------------------
+[-] Acertos na emissão de CTe para o Fast-Report
+
 Alteração    29/11/2011
 -----------------------
 [-] Acerto na passagem da senha para o certifico a cada sessão.

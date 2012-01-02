@@ -116,7 +116,7 @@ end;
 
 procedure TACBrCTeDACTEFR.ImprimirDACTEPDF(CTE: TCTe);
 const
-  TITULO_PDF = 'Conhecimento Transporte Eletrônica';
+  TITULO_PDF = 'Conhecimento de Transporte Eletrônico';
 var
   I: Integer;
 begin
@@ -132,7 +132,7 @@ begin
 
     for I := 0 to TACBrCTe(ACBrCTe).Conhecimentos.Count - 1 do
     begin
-      dmDacte.frxPDFExport.FileName := PathPDF + dmDacte.CTe.procCTe.chCTe + '.pdf';
+      dmDacte.frxPDFExport.FileName := IncludeTrailingPathDelimiter(PathPDF) + dmDacte.CTe.procCTe.chCTe + '.pdf';
       dmDacte.frxReport.Export(dmDacte.frxPDFExport);
     end;
   end;

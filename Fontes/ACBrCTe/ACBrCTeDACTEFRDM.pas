@@ -48,7 +48,7 @@ interface
 
 uses
   SysUtils, Classes, ACBrCTeDACTEClass, pcteCTe, frxClass, frxExportPDF, DB,
-  DBClient, frxDBSet, pcnConversao, frxBarcode;
+  DBClient, frxDBSet, pcnConversao, frxBarcode, MaskUtils;
 
 type
   TdmACBrCTeFR = class(TDataModule)
@@ -287,26 +287,28 @@ begin
     FieldDefs.Add('TotalServico', ftFloat);
     FieldDefs.Add('TotalReceber', ftFloat);
     CreateDataSet;
-    Append;
 
     if CTe.vPrest.comp.Count > 0 then
     begin
        for I := 0 to CTe.vPrest.comp.Count - 1 do
        begin
+          Append;
           FieldByName('Nome').AsString  :=  CTe.vPrest.comp.Items[I].xNome;
           FieldByName('Valor').AsFloat  :=  CTe.vPrest.comp.Items[I].vComp;
           FieldByName('TotalServico').AsFloat  := CTe.vPrest.vTPrest;
           FieldByName('TotalReceber').AsFloat  := CTe.vPrest.vRec;
+          Post;
        end;
     end
     else
     begin
+       Append;
        FieldByName('Nome').AsString  :=  '';
        FieldByName('Valor').AsFloat  :=  0;
        FieldByName('TotalServico').AsFloat  := 0;
        FieldByName('TotalReceber').AsFloat  := 0;
+       Post;
     end;
-   Post;
   end;
 
 end;
@@ -328,9 +330,6 @@ begin
   CarregaInformacoesAdicionais;
   CarregaSeguro;
   CarregaModalRodoviario;
-
-
-
 end;
 
 procedure TdmACBrCTeFR.CarregaDadosNotasFiscais;
@@ -343,8 +342,14 @@ var
   TmpStr: String;
   j: Integer;
   wInfAdProd: String;
+  DoctoRem: String;
 begin
   { dados das Notas Fiscais }
+  DoctoRem := FCTe.Rem.CNPJCPF;
+  if Length(DoctoRem) > 11 then
+    DoctoRem := FormatMaskText('##.###.###\/####-##;0;_', DoctoRem)
+  else
+    DoctoRem := FormatMaskText('###.###.###-##;0;_', DoctoRem);
 
   with cdsDadosNotasFiscais do
   begin
@@ -368,7 +373,7 @@ begin
           FieldByName('Serie').AsString := serie;
           FieldByName('ChaveAcesso').AsString := '';
           FieldByName('NotaFiscal').AsString := nDoc;
-          FieldByName('TextoImpressao').AsString := 'NF                   '+FCTe.Rem.CNPJCPF+'                                                 '+serie+'  /  '+nDoc;
+          FieldByName('TextoImpressao').AsString := 'NF                 '+DoctoRem+'                                      '+FormatFloat('000', StrToInt(serie))+'  /  '+FormatFloat('000000000', StrToInt(nDoc));
        end;
       Post;
     end;
@@ -383,7 +388,7 @@ begin
          FieldByName('Serie').AsString := '';
          FieldByName('ChaveAcesso').AsString := chave;
          FieldByName('NotaFiscal').AsString := '';
-         FieldByName('TextoImpressao').AsString := 'NFe   '+chave;
+         FieldByName('TextoImpressao').AsString := 'NF-e            '+chave;
       end;
       Post;
     end;
@@ -580,7 +585,7 @@ begin
     FieldDefs.Add('Mod_', ftString, 2);
     FieldDefs.Add('Serie', ftString, 3);
     FieldDefs.Add('NCT', ftString, 9);
-    FieldDefs.Add('dhEmi', ftString, 19);
+    FieldDefs.Add('dhEmi', ftDate);
     FieldDefs.Add('TpImp', ftString, 1);
     FieldDefs.Add('TpEmis', ftString, 50);
     FieldDefs.Add('CDV', ftString, 1);
@@ -619,29 +624,29 @@ begin
       FieldByName('CFOP').AsString := IntToStr(CFOP);
       FieldByName('NatOp').AsString := NatOp;
       case forPag of
-        fpPago: FieldByName('forPag').AsString := 'PAGO';
-        fpAPagar: FieldByName('forPag').AsString := 'A PAGAR';
-        fpOutros: FieldByName('forPag').AsString := 'OUTROS';
+        fpPago: FieldByName('forPag').AsString := 'Pago';
+        fpAPagar: FieldByName('forPag').AsString := 'A Pagar';
+        fpOutros: FieldByName('forPag').AsString := 'Outros';
       end;
       FieldByName('Mod_').AsString := modelo;
       FieldByName('Serie').AsString := IntToStr(Serie);
       FieldByName('NCT').AsString := CTeUtil.FormatarNumCTe(nCT);
-      FieldByName('dhEmi').AsString := CTeUtil.FormatDate(DateToStr(dhEmi));
+      FieldByName('dhEmi').AsDateTime := dhEmi;
       case tpCTe of
-        tcNormal: FieldByName('TpCT').AsString := 'NORMAL';
-        tcComplemento: FieldByName('TpCT').AsString := 'COMPLEMENTO';
-        tcAnulacao: FieldByName('TpCT').AsString := 'ANULAÇÃO';
-        tcSubstituto: FieldByName('TpCT').AsString := 'SUBSTITUTO';
+        tcNormal: FieldByName('TpCT').AsString := 'Normal';
+        tcComplemento: FieldByName('TpCT').AsString := 'Complemento';
+        tcAnulacao: FieldByName('TpCT').AsString := 'Anulação';
+        tcSubstituto: FieldByName('TpCT').AsString := 'Substituto';
       end;
       FieldByName('cMunEmi').AsString := IntToStr(cMunEmi);
       FieldByName('xMunEmi').AsString := xMunEmi;
       FieldByName('UFEmi').AsString   := UFEmi;
       FieldByName('modal').AsString := CTeUtil.SeSenao(modal = mdRodoviario, '0', '0');
       case tpServ of
-        tsNormal: FieldByName('tpServ').AsString := 'NORMAL';
-        tsSubcontratacao: FieldByName('tpServ').AsString := 'SUBCONTRATAÇÃO';
-        tsRedespacho: FieldByName('tpServ').AsString := 'REDESPACHO';
-        tsIntermediario: FieldByName('tpServ').AsString := 'INTERMEDIARIO';
+        tsNormal: FieldByName('tpServ').AsString := 'Normal';
+        tsSubcontratacao: FieldByName('tpServ').AsString := 'Subcontratação';
+        tsRedespacho: FieldByName('tpServ').AsString := 'Redespacho';
+        tsIntermediario: FieldByName('tpServ').AsString := 'Intermediário';
       end;
       FieldByName('cMunIni').AsString := IntToStr(cMunIni);
       FieldByName('xMunIni').AsString := xMunIni;
@@ -657,14 +662,14 @@ begin
       FieldByName('VerProc').AsString := VerProc;
 
       case Toma03.Toma of
-       tmRemetente    : FieldByName('Toma').AsString := 'REMETENTE';
-       tmDestinatario : FieldByName('Toma').AsString := 'DESTINATARIO';
-       tmExpedidor    : FieldByName('Toma').AsString := 'EXPEDIDOR';
-       tmRecebedor    : FieldByName('Toma').AsString := 'RECEBEDOR';
+       tmRemetente    : FieldByName('Toma').AsString := 'Remetente';
+       tmDestinatario : FieldByName('Toma').AsString := 'Destinatário';
+       tmExpedidor    : FieldByName('Toma').AsString := 'Expedidor';
+       tmRecebedor    : FieldByName('Toma').AsString := 'Recebedor';
       end;
 
       case Toma4.Toma of
-       tmOutros       : FieldByName('Toma').AsString := 'OUTROS';
+       tmOutros       : FieldByName('Toma').AsString := 'Outros';
       end;
 
 
@@ -697,46 +702,46 @@ begin
     Append;
     with FCTe.compl do
     begin
-       wObs := xObs;
+      wObs := xObs;
 
-       //Contingencia
-       if FCTe.Ide.tpEmis=teNORMAL then
-          wContingencia := ''
-       else
-       begin
-          if (FCTe.Ide.tpEmis = teContingencia) or (FCTe.Ide.tpEmis = teFSDA) or (FCTe.Ide.tpEmis = teSCAN) then
-            wContingencia := 'DACTE EM CONTINGÊNCIA, IMPRESSO EM DECORRÊNCIA DE PROBLEMAS TÉCNICOS'
-          else if FCTe.Ide.tpEmis = teDPEC then
-            wContingencia := 'DACTE IMPRESSO EM CONTINGÊNCIA - DPEC REGULARMENTE RECEBIDA PELA RECEITA FEDERAL DO BRASIL';
+      //Contingencia
+      if FCTe.Ide.tpEmis=teNORMAL then
+        wContingencia := ''
+      else
+      begin
+        if (FCTe.Ide.tpEmis = teContingencia) or (FCTe.Ide.tpEmis = teFSDA) or (FCTe.Ide.tpEmis = teSCAN) then
+          wContingencia := 'DACTE EM CONTINGÊNCIA, IMPRESSO EM DECORRÊNCIA DE PROBLEMAS TÉCNICOS'
+        else if FCTe.Ide.tpEmis = teDPEC then
+          wContingencia := 'DACTE IMPRESSO EM CONTINGÊNCIA - DPEC REGULARMENTE RECEBIDA PELA RECEITA FEDERAL DO BRASIL';
 
-      //            wContingencia := wContingencia + ';' +
-//                             'DATA/HORA INÍCIO: ' + CTeUtil.SeSenao(FCTe.ide.dhCont = 0, ' ', DateTimeToStr(FCTe.ide.dhCont)) + ';'+
-//                             'MOTIVO CONTINGÊNCIA: ' + CTeUtil.SeSenao(CTeUtil.EstaVazio(FCTe.ide.xJust), ' ', FCTe.ide.xJust);
+//            wContingencia := wContingencia + ';' +
+//            'DATA/HORA INÍCIO: ' + CTeUtil.SeSenao(FCTe.ide.dhCont = 0, ' ', DateTimeToStr(FCTe.ide.dhCont)) + ';'+
+//            'MOTIVO CONTINGÊNCIA: ' + CTeUtil.SeSenao(CTeUtil.EstaVazio(FCTe.ide.xJust), ' ', FCTe.ide.xJust);
        end;
-       if Length(wObs) > 0 then
-         wObs := wObs + ';';
-        wObs := wObs + wContingencia;
+      if Length(wObs) > 0 then
+        wObs := wObs + ';';
+      wObs := wObs + wContingencia;
 
-       vTemp := TStringList.Create;
-       try
-         if Trim(wObs) <> '' then
-         begin
-           Campos := Split(';', wObs);
-           for IndexCampo := 0 to Length(Campos) - 1 do
-               vTemp.Add(Campos[IndexCampo]);
+      vTemp := TStringList.Create;
+      try
+        if Trim(wObs) <> '' then
+        begin
+          Campos := Split(';', wObs);
+          for IndexCampo := 0 to Length(Campos) - 1 do
+            vTemp.Add(Campos[IndexCampo]);
 
-           wLinhasObs := 1; //TotalObS(vTemp.Text);
-           TmpStr := vTemp.Text;
-           BufferObs := TmpStr;
+          wLinhasObs := 1; //TotalObS(vTemp.Text);
+          TmpStr := vTemp.Text;
+          BufferObs := TmpStr;
         end
         else
-           BufferObs := '';
+          BufferObs := '';
 
       finally
         vTemp.Free;
       end;
     end;
-    FieldByName('OBS').AsString        := BufferObs;
+    FieldByName('OBS').AsString := BufferObs;
 
     Post;
   end;
@@ -759,8 +764,8 @@ begin
       Append;
       //
       case CTe.Rodo.Lota of
-        ltNao :   FieldByName('LOTACAO').AsString  := 'NAO';
-        ltSim :   FieldByName('LOTACAO').AsString  := 'SIM';
+        ltNao :   FieldByName('LOTACAO').AsString  := 'Não';
+        ltSim :   FieldByName('LOTACAO').AsString  := 'Sim';
       end;
       FieldByName('RNTRC').AsString   := CTe.Rodo.RNTRC;
       FieldByName('DATAPREVISTA').AsString    := DateToStr(CTe.Rodo.dPrev);
@@ -1037,12 +1042,12 @@ begin
      for I := 0 to CTe.InfSeg.Count - 1 do
      begin
         case CTe.InfSeg.Items[I].respSeg of
-          rsRemetente :      FieldByName('RESPONSAVEL').AsString  := 'REMETENTE';
-          rsExpedidor :      FieldByName('RESPONSAVEL').AsString  := 'EXPEDIDOR';
-          rsRecebedor :      FieldByName('RESPONSAVEL').AsString  := 'RECEBEDOR';
-          rsDestinatario :   FieldByName('RESPONSAVEL').AsString  := 'DESTINATARIO';
-          rsEmitenteCTe :    FieldByName('RESPONSAVEL').AsString  := 'EMITENTE';
-          rsTomadorServico : FieldByName('RESPONSAVEL').AsString  := 'TOMADOR';
+          rsRemetente :      FieldByName('RESPONSAVEL').AsString  := 'Remetente';
+          rsExpedidor :      FieldByName('RESPONSAVEL').AsString  := 'Expedidor';
+          rsRecebedor :      FieldByName('RESPONSAVEL').AsString  := 'Recebedor';
+          rsDestinatario :   FieldByName('RESPONSAVEL').AsString  := 'Destinatário';
+          rsEmitenteCTe :    FieldByName('RESPONSAVEL').AsString  := 'Emitente';
+          rsTomadorServico : FieldByName('RESPONSAVEL').AsString  := 'Tomador';
         end;
         FieldByName('NOMESEGURADORA').AsString   := CTe.InfSeg.Items[I].xSeg;
         FieldByName('NUMEROAPOLICE').AsString    := CTe.InfSeg.Items[I].nApol;
@@ -1211,9 +1216,9 @@ begin
     Append;
     for I := 0 to CTe.InfCarga.InfQ.Count - 1 do
     begin
-       FieldByName('Produto').AsString :=             CTe.InfCarga.proPred;
-       FieldByName('CaracteristicaCarga').AsString := CTe.InfCarga.xOutCat;
-       FieldByName('ValorServico').AsFloat :=  CTe.InfCarga.vMerc;
+      FieldByName('Produto').AsString :=             CTe.InfCarga.proPred;
+      FieldByName('CaracteristicaCarga').AsString := CTe.InfCarga.xOutCat;
+      FieldByName('ValorServico').AsFloat :=  CTe.InfCarga.vMerc;
 
        case CTe.InfCarga.InfQ.Items[I].cUnid of
           uM3   : begin

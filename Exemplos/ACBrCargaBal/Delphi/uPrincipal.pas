@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ACBrCargaBal, ACBrBase;
+  Dialogs, StdCtrls, ACBrCargaBal, ACBrBase, ComCtrls;
 
 type
   TfrmPrincipal = class(TForm)
@@ -16,10 +16,14 @@ type
     btnFechar: TButton;
     Label1: TLabel;
     Label2: TLabel;
+    ProgressBar1: TProgressBar;
+    lblStatus: TLabel;
     procedure btnFecharClick(Sender: TObject);
     procedure btnGerarArquivoClick(Sender: TObject);
     procedure btnEscolherDiretorioClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure ACBrCargaBal1Progresso(Mensagem: String; ProgressoAtual,
+      ProgressoTotal: Integer);
   private
     { Private declarations }
   public
@@ -66,7 +70,7 @@ begin
 
     // adição dos itens que serão gerados no arquivo
     ACBrCargaBal1.Produtos.Clear;
-    for I := 0 to 50 do
+    for I := 0 to 1000 do
     begin
       with ACBrCargaBal1.Produtos.New do
       begin
@@ -78,6 +82,7 @@ begin
         Validade        := 15;
         Tecla           := 0;
         Receita         := Format('Receita do item %d', [I]);
+        Nutricional     := Format('Informação Nutricional do item %d', [I]);;
         Setor.Codigo    := 1;
         Setor.Descricao := 'GERAL';
       end;
@@ -93,6 +98,16 @@ begin
       ShowMessage('Ocorreu o seguinte erro:' + sLineBreak + E.Message);
     end;
   end;
+end;
+
+procedure TfrmPrincipal.ACBrCargaBal1Progresso(Mensagem: String;
+  ProgressoAtual, ProgressoTotal: Integer);
+begin
+  lblStatus.Caption     := Mensagem;
+  ProgressBar1.Max      := ProgressoTotal;
+  ProgressBar1.Position := ProgressoAtual;
+
+  Application.ProcessMessages;
 end;
 
 end.

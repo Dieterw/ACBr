@@ -46,7 +46,7 @@ interface
 
 uses
   ACBrBase,
-  SysUtils , Classes, Contnrs;
+  SysUtils, Classes, Contnrs;
 
 type
   EACBrCargaBal = class(Exception);
@@ -75,7 +75,8 @@ type
     FTipo: TACBrCargaBalTipoVenda;
     FValidade: Smallint;
     FSetor: TACBrCargaBalSetor;
-  public
+    FNutricional: string;
+  Public
     constructor Create;
     destructor Destroy; override;
     property Setor: TACBrCargaBalSetor read FSetor write FSetor;
@@ -87,6 +88,7 @@ type
     property Descricao: String read FDescricao write FDescricao;
     property Receita: String read FReceita write FReceita;
     property Tecla: Integer read FTecla write FTecla;
+    property Nutricional: string Read FNutricional Write FNutricional;
   end;
 
   TACBrCargaBalItens = class(TObjectList)
@@ -120,6 +122,8 @@ type
 
     function GetTipoProdutoFilizola(Tipo: TACBrCargaBalTipoVenda): String;
     function GetTipoProdutoToledo(Tipo: TACBrCargaBalTipoVenda): String;
+    function GetTipoProdutoUrano(Tipo: TACBrCargaBalTipoVenda): string;
+    function CalcularSoma(const xStr: string): integer;
     function GetModeloStr: string;
 
     procedure PreencherFilizola(Arquivo, Setor: TStringList);
@@ -260,7 +264,7 @@ begin
   case FModelo of
     modFilizola : Result := 'CADTXT.TXT';
     modToledo   : Result := 'TXITENS.TXT';
-    modUrano    : Result := 'NomeArquivoUrano.TXT';
+    modUrano    : Result := 'PRODUTOS.TXT';
   end;
 end;
 
@@ -281,32 +285,52 @@ begin
   end;
 end;
 
+function TACBrCargaBal.GetTipoProdutoUrano(Tipo: TACBrCargaBalTipoVenda): string;
+begin
+  case Tipo of
+    tpvPeso    : Result:='P';
+    tpvUnidade : Result:='U';
+  end;
+end;
+
 function TACBrCargaBal.GetNomeArquivoSetor: String;
 begin
-  // Toledo nao possui arquivo de setor a parte
+  // Toledo e Urano nao possuem arquivo de setor a parte
   case FModelo of
-    modFilizola : Result := 'SETORTXT.TXT';
-    modUrano    : Result := 'NomeArquivoUrano.TXT';
+    modFilizola : Result := 'SETORTXT.TXT';    
   end;
 end;
 
 function TACBrCargaBal.GetNomeArquivoReceita: String;
 begin
-  // Toledo nao possui arquivo de Receita a parte
+  // Toledo e Urano nao possuem arquivo de Receita a parte
   case FModelo of
     modFilizola : Result := 'REC_ASS.TXT';
-    modUrano    : Result := 'NomeArquivoUrano.TXT';
   end;
 end;
 
 function TACBrCargaBal.GetNomeArquivoNutricional: String;
 begin
-  // A filizola nao possui arquivo nutricional a parte das informações
+  // A filizola e urano nao possuem arquivo nutricional a parte das informações
   // são incluídas no mesmo arquivo de itens.
   case FModelo of
-    modToledo   : Result := 'INFNUTRI.TXT';
-    modUrano    : Result := 'NomeArquivoUrano.TXT';
+    modToledo : Result := 'INFNUTRI.TXT';
   end;
+end;
+
+function TACBrCargaBal.CalcularSoma(const xStr: string): Integer;
+var
+  I, Vl: Integer;
+begin
+  result:=0;
+  Vl:=0;
+  if Length(xStr)<1 then
+    exit;
+  for I:=1 to Length(xStr) do
+  begin
+    Vl:=Vl+Ord(xStr[I]);
+  end;
+  result:=Vl;
 end;
 
 procedure TACBrCargaBal.PreencherFilizola(Arquivo, Setor: TStringList);
@@ -360,8 +384,81 @@ begin
 end;
 
 procedure TACBrCargaBal.PreencherUrano(Arquivo: TStringList);
+var
+  i, Total, xtam: Integer;
+  xnutric: string;
 begin
-  raise EACBrCargaBal.Create('Geração de arquivo do Modelo Urano não implementado!');
+  //modelo do arquivo: serve somente para as novas balanças urano (linha top e topmax)
+  //0x10+0x02+codigo[5]+pesagem[35]+chksum[4]+0x03+0x13+0x10
+                //      pesagem[35]=tipoproduto[1]+descricao[20]+preco[9]+validade[4]+tipovalidade[1]
+
+  Total := Produtos.Count;
+
+  for i := 0 to Total - 1 do
+  begin
+    //linha do produto
+    Arquivo.Add(#10#02 +
+      LFIll(Produtos[i].Codigo, 5) +
+      GetTipoProdutoUrano(Produtos[i].Tipo) +
+      RFIll(Produtos[i].Descricao, 20) +
+      FormatCurr('000000.00', Produtos[i].ValorVenda) +
+      LFIll(Produtos[i].Validade, 4) +
+      'D'
+    );
+    xtam := CalcularSoma(Arquivo[Arquivo.Count-1]);
+    Arquivo[Arquivo.Count-1] := Arquivo[Arquivo.Count-1] + IntToHex(xtam, 4) + #03;
+
+    if Produtos[i].Nutricional <> '' then
+    begin
+      //linha da informação nutricional
+      //0x11+0x02+codigo[5]+pesagem[35]+informacoes nutricionais[258]+chksum[4]+0x03+0x13+0x10
+                                      //informacoes nutricionais[258]=1 linha de 41 caracteres para porção
+                                      // e 8 linhas de 21 caracteres para [calorias,carboidratos,proteínas,gorduras totais,
+                                      //                                   gorduras saturadas,gordura trans,fibra alimentar,
+                                      //                                   sódio].
+
+      Arquivo.Add(#11#02 +
+        LFIll(Produtos[i].Codigo, 5) +
+        GetTipoProdutoUrano(Produtos[i].Tipo) +
+        RFIll(Produtos[i].Descricao, 20) +
+        FormatCurr('000000.00', Produtos[i].ValorVenda) +
+        LFIll(Produtos[i].Validade, 4) +
+        'D' +
+        RFIll(Produtos[i].Nutricional, 258)
+        );
+
+      xtam := CalcularSoma(Arquivo[Arquivo.Count-1]);
+      Arquivo[Arquivo.Count-1] := Arquivo[Arquivo.Count-1] + IntToHex(xtam, 4) + #03;
+    end;
+
+    if Produtos[i].Receita <> '' then
+    begin
+    //linha da receita
+    //0x12+0x02+codigo[5]+pesagem[35]+informacoes adicionais[615]+chksum[4]+0x03+0x13+0x10
+                                    //informacoes adicionais[615]=15 linhas de 41 caracteres.
+
+      xnutric:='';
+
+      if Produtos[i].Nutricional = '' then
+        xnutric := RFill('', 209);
+
+      Arquivo.Add(#12#02 +
+        LFIll(Produtos[i].Codigo, 5) +
+        GetTipoProdutoUrano(Produtos[i].Tipo) +
+        RFIll(Produtos[i].Descricao, 20) +
+        FormatCurr('000000.00', Produtos[i].ValorVenda) +
+        LFIll(Produtos[i].Validade, 4) +
+        'D' +
+        xnutric +
+        RFIll(Produtos[i].Receita, 615)
+        );
+
+      xtam := CalcularSoma(Arquivo[Arquivo.Count-1]);
+      Arquivo[Arquivo.Count-1] := Arquivo[Arquivo.Count-1] + IntToHex(xtam, 4) + #03;
+    end;
+
+    Progresso(Format('Gerando produto %6.6d %s', [Produtos[i].Codigo, Produtos[i].Descricao]), i, Total);
+  end;
 end;
 
 procedure TACBrCargaBal.Progresso(const AMensagem: String; const AContAtual,

@@ -96,6 +96,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+-- ACBrCargaBal -- 02/01/2012
+[+]    Adicionado a geração de arquivos para o modelo Urano, contribuição
+       de reginaldocosta postado no fóru.
+       http://djsystem.com.br/acbr/forum/viewtopic.php?f=10&t=4355
+       (por: Régys Silveira, conciliação dos fontes)
+
 -- ACBrValidador-- 13/12/2011
 [-]    Acerto o calculo do GTIN 
        (por: Régys silveira)

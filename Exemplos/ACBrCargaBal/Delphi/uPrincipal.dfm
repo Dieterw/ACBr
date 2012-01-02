@@ -1,9 +1,9 @@
 object frmPrincipal: TfrmPrincipal
-  Left = 0
-  Top = 0
+  Left = 422
+  Top = 332
   BorderStyle = bsDialog
   Caption = 'Demo ACBRCargaBal'
-  ClientHeight = 172
+  ClientHeight = 209
   ClientWidth = 457
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -30,12 +30,20 @@ object frmPrincipal: TfrmPrincipal
     Height = 13
     Caption = 'Diret'#243'rio onde ser'#227'o gerados os arquivos'
   end
+  object lblStatus: TLabel
+    Left = 15
+    Top = 110
+    Width = 41
+    Height = 13
+    Caption = 'lblStatus'
+  end
   object cbxModelo: TComboBox
     Left = 15
     Top = 30
     Width = 145
     Height = 21
     Style = csDropDownList
+    ItemHeight = 13
     ItemIndex = 0
     TabOrder = 0
     Text = 'Filizola'
@@ -63,7 +71,7 @@ object frmPrincipal: TfrmPrincipal
   end
   object btnGerarArquivo: TButton
     Left = 233
-    Top = 130
+    Top = 170
     Width = 101
     Height = 25
     Caption = 'Gerar arquivo'
@@ -72,7 +80,7 @@ object frmPrincipal: TfrmPrincipal
   end
   object btnFechar: TButton
     Left = 340
-    Top = 130
+    Top = 170
     Width = 101
     Height = 25
     Cancel = True
@@ -80,9 +88,17 @@ object frmPrincipal: TfrmPrincipal
     TabOrder = 4
     OnClick = btnFecharClick
   end
+  object ProgressBar1: TProgressBar
+    Left = 15
+    Top = 125
+    Width = 426
+    Height = 17
+    TabOrder = 5
+  end
   object ACBrCargaBal1: TACBrCargaBal
     Modelo = modFilizola
-    Left = 45
-    Top = 110
+    OnProgresso = ACBrCargaBal1Progresso
+    Left = 35
+    Top = 160
   end
 end

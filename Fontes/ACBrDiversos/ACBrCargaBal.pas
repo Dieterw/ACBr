@@ -424,7 +424,7 @@ begin
         FormatCurr('000000.00', Produtos[i].ValorVenda) +
         LFIll(Produtos[i].Validade, 4) +
         'D' +
-        RFIll(Produtos[i].Nutricional, 258)
+        RFIll(Produtos[i].Nutricional, 209)
         );
 
       xtam := CalcularSoma(Arquivo[Arquivo.Count-1]);

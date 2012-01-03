@@ -1622,15 +1622,15 @@ begin
           stpisOutrasOperacoes                               : strCST_PIS := '99';
         end;
 
-        Add( LFill('C381')             +
-             LFill(strCST_PIS)         +
-             LFill(COD_ITEM)           +
-             LFill(VL_ITEM,0,2)        +
-             LFill(VL_BC_PIS,0,2)      +
-             LFill(ALIQ_PIS,8,4)       +
-             LFill(QUANT_BC_PIS,0,3)   +
-             LFill(ALIQ_PIS_QUANT,0,4) +
-             LFill(VL_PIS,0,2)         +
+        Add( LFill('C381')                   +
+             LFill(strCST_PIS)               +
+             LFill(COD_ITEM)                 +
+             LFill(VL_ITEM,0,2)              +
+             LFill(VL_BC_PIS,0,2, True)      +
+             LFill(ALIQ_PIS,8,4, True)       +
+             LFill(QUANT_BC_PIS,0,3, True)   +
+             LFill(ALIQ_PIS_QUANT,0,4, True) +
+             LFill(VL_PIS,0,2)               +
              LFill(COD_CTA) ) ;
         //
         RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
@@ -1688,15 +1688,15 @@ begin
           stcofinsOutrasOperacoes                               : strCST_COFINS := '99';
         end;
 
-        Add( LFill('C385')                +
-             LFill(strCST_COFINS)         +
-             LFill(COD_ITEM)              +
-             LFill(VL_ITEM,0,2)           +
-             LFill(VL_BC_COFINS,0,2)      +
-             LFill(ALIQ_COFINS,8,4)       +
-             LFill(QUANT_BC_COFINS,0,3)   +
-             LFill(ALIQ_COFINS_QUANT,0,4) +
-             LFill(VL_COFINS,0,2)         +
+        Add( LFill('C385')                      +
+             LFill(strCST_COFINS)               +
+             LFill(COD_ITEM)                    +
+             LFill(VL_ITEM,0,2)                 +
+             LFill(VL_BC_COFINS,0,2, True)      +
+             LFill(ALIQ_COFINS,8,4, True)       +
+             LFill(QUANT_BC_COFINS,0,3, True)   +
+             LFill(ALIQ_COFINS_QUANT,0,4, True) +
+             LFill(VL_COFINS,0,2)               +
              LFill(COD_CTA) ) ;
         //
         RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
@@ -1725,11 +1725,11 @@ begin
              LFill(NUM_DOC)            +
              LFill(DT_DOC, 'ddmmyyyy') +
              LFill(VL_DOC,0,2) );
-        // Registros FILHOS
-        WriteRegistroC396( RegC010.RegistroC395.Items[intFor] );
-        //
-        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
       end;
+      // Registros FILHOS
+      WriteRegistroC396( RegC010.RegistroC395.Items[intFor] );
+      //
+      RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
     end;
     // Variavél para armazenar a quantidade de registro do tipo.
     FRegistroC395Count := FRegistroC395Count + RegC010.RegistroC395.Count;
@@ -2281,10 +2281,7 @@ end;
 procedure TBloco_C.WriteRegistroC500(RegC010: TRegistroC010);
   var
     intFor              : integer;
-    intTP_LIGACAO       : integer;
     strCOD_SIT          : AnsiString;
-    strCOD_GRUPO_TENSAO : AnsiString;
-    strCOD_CONS         : AnsiString;
 begin
   if Assigned( RegC010.RegistroC500 ) then
   begin

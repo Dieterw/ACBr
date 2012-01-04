@@ -763,6 +763,8 @@ begin
   chRFD.Font.Style := chRFD.Font.Style + [fsBold];
   chRFD.Font.Color := clRed;
 
+  deBOLDirLogo.Text:= ExtractFilePath(Application.ExeName)+'Logos'+PathDelim;
+
   pgBoleto.ActivePageIndex := 0;
   cbxBOLF_JChange(Self);
   cbxBOLFiltroChange(Self);
@@ -1442,7 +1444,8 @@ begin
     edtCodCliente.Text       := ini.ReadString('BOLETO', 'CodigoCedente', '');
 
     {Parametros do Boleto - Boleto}
-    deBOLDirLogo.Text        := ini.ReadString('BOLETO', 'DirLogos', '');
+    deBOLDirLogo.Text        := ini.ReadString('BOLETO', 'DirLogos',
+                                ExtractFilePath(Application.ExeName)+'Logos'+PathDelim);
     edtBOLSH.Text            := ini.ReadString('BOLETO', 'SoftwareHouse', '');
     spBOLCopias.Value        := ini.ReadInteger('BOLETO', 'Copias', 1);
     ckgBOLMostrar.Checked[0] := Ini.ReadBool('BOLETO', 'Preview', True);

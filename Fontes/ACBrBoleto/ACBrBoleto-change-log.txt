@@ -70,8 +70,34 @@ Versao 0.0.10a do FortesReport 06/07/11
 [-] Corrigido problema com componentes não encontrados no dfm do Fortes.
     (Juliana Tamizou)
 
+
+Versao 0.0.32a 04/01/2012
+[*] Caixa Exocômica SICOB - Ajustado geração do arquivo remessa CNAB240. 
+    Remessa homologada pelo Banco. (Juliana Tamizou)
+
+[*] Santander - Alterado propriedade tamanhoConta para 11. (Douglas Tybel)
+
+[*] Bradesco - Adicionado registro 2 para as mensagens do boleto. (André Medeiros)
+    Melhorado montagem do campo Código do Cedente na montagem do Código de Barras. 
+    (Clausqueller Mitome)
+
+[*] Implementado envio de boleto por email. (Carlos do NAscimento Filho)
+
+
+[-] Caixa Econômica(SIGCB) - Corrigido leitura do campo Valor Pago no 
+    arquivo retorno CNAB240. (Eduardo)
+
+[-] Caixa Econômica(SIGCB) - Corrigido tamanho máximo agência. 
+    Corrigido verificação da conta/agencia no arquivo retorno CNAB240. (Douglas Tybel)
+
+[-] Banco do Brasil - Corrigido  leitura do arquivo de retorno CNAB240.
+    Corrigido geração do arquivo remessa CNAB240. (Diulio Bianco)
+
+
+
+
 Versao 0.0.31a 09/09/2011
-[*]	Adicionado a geração do arquivo remessa do Santander, a checagem da instrução
+[*] Adicionado a geração do arquivo remessa do Santander, a checagem da instrução
     de protesto, caso seja informado a data de protesto e a intrução de protesto não 
 	tenha sido informada, a instrução 1 ficará com o código para protesto.
 	

@@ -79,8 +79,8 @@ begin
    fpNome   := 'Santander';
    fpNumero:= 033;
    fpTamanhoMaximoNossoNum := 12;
-   fpTamanhoConta:= 8;
    fpTamanhoCarteira:= 3;
+   fpTamanhoConta := 11;
 end;
 
 function TACBrBancoSantander.CalcularDigitoVerificador(const ACBrTitulo: TACBrTitulo ): String;
@@ -334,6 +334,7 @@ begin
    rCedente := trim(Copy(ARetorno[0],47,30));
    rAgencia := trim(Copy(ARetorno[1],18,4));
    rConta   := trim(Copy(ARetorno[1],22,8))+ Copy(ARetorno[1],384,1);
+   rConta   := padR( OnlyNumber(rConta),fpTamanhoConta,'0');
    rDigitoConta := Copy(ARetorno[1],385,1);
 
    rCNPJCPF := OnlyNumber( Copy(ARetorno[1],04,14) );

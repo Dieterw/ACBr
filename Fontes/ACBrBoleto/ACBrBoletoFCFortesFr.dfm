@@ -1,6 +1,6 @@
 object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
-  Left = 65
-  Top = -18
+  Left = 66
+  Top = 200
   Width = 1003
   Height = 780
   Caption = 'ACBRBoletoFCFortesFr'
@@ -25,7 +25,6 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
     Margins.BottomMargin = 5.000000000000000000
     ParentFont = True
     PreviewOptions.ShowModal = True
-    ShowProgress = False
     BeforePrint = LayoutBoletoBeforePrint
     OnDataCount = LayoutBoletoDataCount
     OnDataRecord = LayoutBoletoDataRecord

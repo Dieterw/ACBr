@@ -47,8 +47,10 @@ type
 
   TACBrBancoBradesco = class(TACBrBancoClass)
   private
+    fSequencia: Integer;
   protected
   public
+    property Sequencia : Integer read fSequencia  write fSequencia;
     Constructor create(AOwner: TACBrBanco);
     function CalcularDigitoVerificador(const ACBrTitulo:TACBrTitulo): String; override;
     function MontarCodigoBarras(const ACBrTitulo : TACBrTitulo): String; override;
@@ -81,6 +83,7 @@ begin
    fpTamanhoAgencia := 4;
    fpTamanhoConta   := 6;
    fpTamanhoCarteira:= 2;
+   fSequencia := 1;
 end;
 
 function TACBrBancoBradesco.CalcularDigitoVerificador(const ACBrTitulo: TACBrTitulo ): String;
@@ -109,7 +112,8 @@ begin
                       padR(Cedente.Agencia,4,'0') +
                       ACBrTitulo.Carteira +
                       ACBrTitulo.NossoNumero +
-                      padR(Cedente.Conta,7,'0') + '0';
+
+                      padR(copy(Cedente.Conta, Length(Cedente.Conta) - 6, Length(Cedente.Conta)),7,'0') + '0';
 
       DigitoCodBarras := CalcularDigitoCodigoBarras(CodigoBarras);
    end;
@@ -158,7 +162,58 @@ var
   Protesto, TipoSacado, MensagemCedente, aConta     :String;
   aCarteira: String;
   TipoBoleto :Char;
-  I :Integer;
+
+  function DoMontaInstrucoes1(const AStr: string): string;
+  begin
+    Result := '';
+    with ACBrTitulo, ACBrBoleto do
+    begin
+      if Mensagem.Count = 1 then   //verifica se o indice é 1 porque a primeira instrução vai no registro 1
+        begin
+          Result := AStr;
+          Exit; // Nenhum mensagem especificada. Registro não será necessário gerar o registro
+        end;
+
+      Result := AStr + #13#10 +
+                '2'                                     +                 // IDENTIFICAÇÃO DO LAYOUT PARA O REGISTRO
+                Copy(padL(Mensagem[1], 80, ' '), 1, 80);                  // CONTEÚDO DA 1ª LINHA DE IMPRESSÃO DA ÁREA "INSTRUÇÕES” DO BOLETO
+
+      if Mensagem.Count = 3 then
+        Result := Result +
+                  Copy(padL(Mensagem[2], 80, ' '), 1, 80)                 // CONTEÚDO DA 2ª LINHA DE IMPRESSÃO DA ÁREA "INSTRUÇÕES” DO BOLETO
+      else
+        Result := Result +
+                  padL('', 80, ' ');                                      // CONTEÚDO DO RESTANTE DAS LINHAS
+
+      if Mensagem.Count = 4 then
+        Result := Result +
+                  Copy(padL(Mensagem[3], 80, ' '), 1, 80)                 // CONTEÚDO DA 3ª LINHA DE IMPRESSÃO DA ÁREA "INSTRUÇÕES” DO BOLETO
+      else
+        Result := Result +
+                  padL('', 80, ' ');                                      // CONTEÚDO DO RESTANTE DAS LINHAS
+
+      if Mensagem.Count = 5 then
+        Result := Result +
+                  Copy(padL(Mensagem[4], 80, ' '), 1, 80)                 // CONTEÚDO DA 4ª LINHA DE IMPRESSÃO DA ÁREA "INSTRUÇÕES” DO BOLETO
+      else
+        Result := Result +
+                  padL('', 80, ' ');                                      // CONTEÚDO DO RESTANTE DAS LINHAS
+
+
+      Result := Result +
+                space(45) +                                               // COMPLEMENTO DO REGISTRO
+                aCarteira                                           +
+                aAgencia                                            +
+                aConta                                              +
+                Cedente.ContaDigito                                 +
+                NossoNumero + DigitoNossoNumero                     +
+                IntToStrZero(ListadeBoletos.IndexOf(ACBrTitulo)+
+                             ListadeBoletos.IndexOf(ACBrTitulo)+ 3, 6);   // Nº SEQÜENCIAL DO REGISTRO NO ARQUIVO
+      Sequencia := Sequencia + 1;
+    end;
+  end;
+  //
+
 begin
 
    with ACBrTitulo do
@@ -225,13 +280,8 @@ begin
 
       with ACBrBoleto do
       begin
-         for I:= 0 to Mensagem.count-1 do
-             MensagemCedente:= Mensagem[i];
-
-         if length(MensagemCedente) > 60 then
-            MensagemCedente:= copy(MensagemCedente,1,60);
-
-
+         MensagemCedente:= Mensagem[0];
+         
          Result:= '1'                                                     +  // ID Registro
                   StringOfChar( '0', 19)                                  +  // Dados p/ Débito Automático
                   '0'+ aCarteira                                          +
@@ -261,8 +311,19 @@ begin
                   padL( Sacado.Logradouro + Sacado.Numero              +
                            Sacado.Bairro + Sacado.Cidade + Sacado.UF, 40) +
                   space(12) + padL( Sacado.CEP, 8 )                       +
-                  padl( MensagemCedente, 60 )                               +
-                  IntToStrZero( ListadeBoletos.IndexOf(ACBrTitulo)+2, 6 );
+                  padl( MensagemCedente, 60 );
+
+        
+        if Mensagem.Count > 1 then
+           Result := Result + IntToStrZero(ListadeBoletos.IndexOf(ACBrTitulo) +
+                               ListadeBoletos.IndexOf(ACBrTitulo) + 2, 6) // Nº SEQÜENCIAL DO REGISTRO NO ARQUIVO
+        else
+          Result := Result + IntToStrZero(ListadeBoletos.IndexOf(ACBrTitulo) + 2, 6); // Nº SEQÜENCIAL DO REGISTRO NO ARQUIVO
+
+        
+        Sequencia := Sequencia + 1;
+        Result := DoMontaInstrucoes1(Result);
+        
 
          Result:= UpperCase(Result);
       end;
@@ -272,7 +333,12 @@ end;
 function TACBrBancoBradesco.GerarRegistroTrailler400( ARemessa:TStringList ): String;
 begin
    Result:= '9' + Space(393)                     + // ID Registro
-            IntToStrZero( ARemessa.Count + 1, 6);  // Contador de Registros
+            IntToStrZero( Sequencia + 1, 6);  // Contador de Registros
+
+  //Retorna a sequencia após a escrita do trailler, caso o programador não destrua e crie novamente a classe
+  //Evitando que no novo arquivo a sequencia do trailler seja acumulada
+  Sequencia := 1;
+  //
    Result:= UpperCase(Result);
 end;
 
@@ -289,8 +355,10 @@ begin
                              'não é um arquivo de retorno do '+ Nome));
 
    rCedente := trim(Copy(ARetorno[0],47,30));
-   rAgencia := trim(Copy(ARetorno[1],25,5));
-   rConta   := trim(Copy(ARetorno[1],30,7));
+
+   rAgencia := trim(Copy(ARetorno[1], 26, ACBrBanco.TamanhoAgencia));
+   rConta := trim(Copy(ARetorno[1], 31, ACBrBanco.TamanhoConta));
+
    rDigitoConta := Copy(ARetorno[1],37,1);
 
    ACBrBanco.ACBrBoleto.NumeroArquivo := StrToIntDef(Copy(ARetorno[0],109,5),0);
@@ -415,8 +483,8 @@ begin
          DataOcorrencia := StringToDateTimeDef( Copy(Linha,111,2)+'/'+
                                                 Copy(Linha,113,2)+'/'+
                                                 Copy(Linha,115,2),0, 'DD/MM/YY' );
-
-         Vencimento := StringToDateTimeDef( Copy(Linha,147,2)+'/'+
+         if Copy(Linha,147,2)<>'00' then
+            Vencimento := StringToDateTimeDef( Copy(Linha,147,2)+'/'+
                                             Copy(Linha,149,2)+'/'+
                                             Copy(Linha,151,2),0, 'DD/MM/YY' );
 

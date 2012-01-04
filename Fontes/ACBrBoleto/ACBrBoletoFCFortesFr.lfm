@@ -27,7 +27,6 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
     RealBounds.Top = 0
     RealBounds.Width = 0
     RealBounds.Height = 0
-    ShowProgress = False
     BeforePrint = LayoutBoletoBeforePrint
     OnDataCount = LayoutBoletoDataCount
     OnDataRecord = LayoutBoletoDataRecord

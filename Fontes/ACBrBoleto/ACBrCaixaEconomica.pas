@@ -75,6 +75,7 @@ begin
    fpDigito := 9;
    fpNome   := 'Caixa Economica Federal';
    fpNumero:= 104;
+   fpTamanhoAgencia :=  5;
    fpTamanhoMaximoNossoNum := 15;
 end;
 
@@ -501,7 +502,7 @@ begin
          raise Exception.Create(ACBrStr('CNPJ\CPF do arquivo inválido'));
 
       if (not LeCedenteRetorno) and ((rAgencia <> OnlyNumber(Cedente.Agencia)) or
-          (rConta <> OnlyNumber(Cedente.Conta))) then
+          (rConta+rDigitoConta <> OnlyNumber(Cedente.CodigoCedente))) then
          raise Exception.Create(ACBrStr('Agencia\Conta do arquivo inválido'));
 
       Cedente.Nome    := rCedente;

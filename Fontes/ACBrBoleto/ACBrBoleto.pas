@@ -54,10 +54,11 @@ uses ACBrBase,  {Units da ACBr}
      {$ENDIF}
      SysUtils, ACBrValidador,
      {$IFDEF COMPILER6_UP} Types, {$ELSE} Windows, {$ENDIF}
+     smtpsend, ssl_openssl, mimemess, mimepart, // units para enviar email
      Graphics, Contnrs, Classes;
 
 const
-  CACBrBoleto_Versao = '0.0.31a' ;
+  CACBrBoleto_Versao = '0.0.32a' ;
 
 type
   TACBrTipoCobranca =
@@ -71,7 +72,8 @@ type
     cobBancoMercantil,
     cobSicred,
     cobBancoob,
-    cobBanrisul
+    cobBanrisul,
+    cobHSBC
     );
 
   TACBrTitulo = class;
@@ -633,6 +635,25 @@ TACBrBoleto = class( TACBrComponent )
     procedure GerarPDF;
     procedure GerarHTML;
 
+    // enviar email.
+    procedure EnviarEmail(const sSmtpHost,
+                                sSmtpPort,
+                                sSmtpUser,
+                                sSmtpPasswd,
+                                sFrom,
+                                sTo,
+                                sAssunto: String;
+                                sMensagem : TStrings;
+                                SSL : Boolean;
+                                EnviaPDF: Boolean = true;
+                                sCC: TStrings = nil;
+                                Anexos:TStrings=nil;
+                                PedeConfirma: Boolean = False;
+                                AguardarEnvio: Boolean = False;
+                                NomeRemetente: String = '';
+                                TLS : Boolean = True);
+
+
     procedure AdicionarMensagensPadroes(Titulo : TACBrTitulo; AStringList: TStrings);
 
     procedure GerarRemessa(NumeroRemessa : Integer);
@@ -715,13 +736,35 @@ TACBrBoletoFCClass = class(TACBrComponent)
     property DirArqPDF_HTML : String          read GetDirArqPDF_HTML write SetDirArqPDF_HTML;
   end;
 
+  //email
+  TSendMailThread = class(TThread)
+  private
+    FException : Exception;
+    FOwner: TACBrBoleto;
+    procedure DoHandleException;
+  public
+    OcorreramErros: Boolean;
+    Terminado: Boolean;
+    smtp : TSMTPSend;
+    sFrom : String;
+    sTo : String;
+    sCC : TStrings;
+    slmsg_Lines : TStrings;
+    constructor Create(AOwner: TACBrBoleto);
+    destructor Destroy; override;
+  protected
+    procedure Execute; override;
+    procedure HandleException;
+  end;
+
+
 procedure Register;
 
 implementation
 
 Uses ACBrUtil, ACBrBancoBradesco, ACBrBancoBrasil, ACBrBancoItau, ACBrBancoSicredi,
      ACBrBancoMercantil, ACBrCaixaEconomica, ACBrBancoBanrisul, ACBrBancoSantander,
-     ACBrBancoob, ACBrCaixaEconomicaSICOB ,Forms,
+     ACBrBancoob, ACBrCaixaEconomicaSICOB ,ACBrBancoHSBC,Forms,
      {$IFDEF COMPILER6_UP} StrUtils {$ELSE} ACBrD5 {$ENDIF}, Math;
 
 {$IFNDEF FPC}
@@ -1117,6 +1160,200 @@ begin
   ACBrBoletoFC.GerarPDF;
 end;
 
+
+procedure TACBrBoleto.EnviarEmail(const sSmtpHost,
+                                      sSmtpPort,
+                                      sSmtpUser,
+                                      sSmtpPasswd,
+                                      sFrom,
+                                      sTo,
+                                      sAssunto: String;
+                                      sMensagem : TStrings;
+                                      SSL : Boolean;
+                                      EnviaPDF: Boolean = true;
+                                      sCC: TStrings=nil;
+                                      Anexos:TStrings=nil;
+                                      PedeConfirma: Boolean = False;
+                                      AguardarEnvio: Boolean = False;
+                                      NomeRemetente: String = '';
+                                      TLS : Boolean = True);
+var
+ ThreadSMTP : TSendMailThread;
+ m:TMimemess;
+ p: TMimepart;
+ StreamNFe : TStringStream;
+ NomeArq : String;
+ i: Integer;
+begin
+ m:=TMimemess.create;
+
+ ThreadSMTP := TSendMailThread.Create(Self) ;  // Não Libera, pois usa FreeOnTerminate := True ;
+ StreamNFe  := TStringStream.Create('');
+ try
+    p := m.AddPartMultipart('mixed', nil);
+    if sMensagem <> nil then
+       m.AddPartText(sMensagem, p);
+
+    if (EnviaPDF) then
+    begin
+      ACBrBoletoFC.DirArqPDF_HTML:=ExtractFilePath(Application.ExeName);
+      ACBrBoletoFC.NomeArquivo :='boleto.pdf';
+       NomeArq:=ExtractFilePath(Application.ExeName)+'boleto.pdf';
+       GerarPDF;
+       m.AddPartBinaryFromFile(NomeArq, p);
+
+    end else
+     begin
+      ACBrBoletoFC.DirArqPDF_HTML:=ExtractFilePath(Application.ExeName);
+      ACBrBoletoFC.NomeArquivo :='boleto.html';
+       NomeArq:=ExtractFilePath(Application.ExeName)+'boleto.html';
+       GerarHTML;
+       m.AddPartBinaryFromFile(NomeArq, p);
+     end;
+
+
+    if assigned(Anexos) then
+      for i := 0 to Anexos.Count - 1 do
+      begin
+        m.AddPartBinaryFromFile(Anexos[i], p);
+      end;
+
+    m.header.tolist.add(sTo);
+
+    if Trim(NomeRemetente) <> '' then
+      m.header.From := Format('%s<%s>', [NomeRemetente, sFrom])
+    else
+      m.header.From := sFrom;
+
+    m.header.subject:= sAssunto;
+    m.Header.ReplyTo := sFrom;
+    if PedeConfirma then
+       m.Header.CustomHeaders.Add('Disposition-Notification-To: '+sFrom);
+    m.EncodeMessage;
+
+    ThreadSMTP.sFrom := sFrom;
+    ThreadSMTP.sTo   := sTo;
+    if sCC <> nil then
+       ThreadSMTP.sCC.AddStrings(sCC);
+    ThreadSMTP.slmsg_Lines.AddStrings(m.Lines);
+
+    ThreadSMTP.smtp.UserName := sSmtpUser;
+    ThreadSMTP.smtp.Password := sSmtpPasswd;
+
+    ThreadSMTP.smtp.TargetHost := sSmtpHost;
+
+    ThreadSMTP.smtp.FullSSL := SSL;
+    ThreadSMTP.smtp.AutoTLS := TLS;
+
+
+    ThreadSMTP.Resume; // inicia a thread
+    if AguardarEnvio then
+    begin
+      repeat
+        Sleep(1000);
+        Application.ProcessMessages;
+      until ThreadSMTP.Terminado;
+    end;
+
+ finally
+    m.free;
+    StreamNFe.Free ;
+ end;
+end;
+
+// email
+procedure TSendMailThread.DoHandleException;
+begin
+
+  if FException is Exception then
+    Application.ShowException(FException)
+  else
+    SysUtils.ShowException(FException, nil);
+end;
+
+// email
+constructor TSendMailThread.Create(AOwner: TACBrBoleto);
+begin
+  FOwner      := AOwner;
+  smtp        := TSMTPSend.Create;
+  slmsg_Lines := TStringList.Create;
+  sCC         := TStringList.Create;
+  sFrom       := '';
+  sTo         := '';
+
+  FreeOnTerminate := True;
+
+  inherited Create(True);
+end;
+
+
+destructor TSendMailThread.Destroy;
+begin
+  slmsg_Lines.Free;
+  sCC.Free;
+  smtp.Free;
+
+  inherited;
+end;
+
+procedure TSendMailThread.Execute;
+var
+   I: integer;
+begin
+  inherited;
+
+  try
+    Terminado := False;
+    try
+      if not smtp.Login() then
+        raise Exception.Create('SMTP ERROR: Login:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
+
+      if not smtp.MailFrom( sFrom, Length(sFrom)) then
+        raise Exception.Create('SMTP ERROR: MailFrom:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
+
+      if not smtp.MailTo(sTo) then
+        raise Exception.Create('SMTP ERROR: MailTo:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
+
+      if (sCC <> nil) then
+      begin
+        for I := 0 to sCC.Count - 1 do
+        begin
+          if not smtp.MailTo(sCC.Strings[i]) then
+            raise Exception.Create('SMTP ERROR: MailTo:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
+        end;
+      end;
+
+      if not smtp.MailData(slmsg_Lines) then
+        raise Exception.Create('SMTP ERROR: MailData:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
+
+      if not smtp.Logout() then
+        raise Exception.Create('SMTP ERROR: Logout:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
+    finally
+      try
+        smtp.Sock.CloseSocket;
+      except
+      end ;
+      Terminado := True;
+    end;
+  except
+    Terminado := True;
+    HandleException;
+  end;
+end;
+
+procedure TSendMailThread.HandleException;
+begin
+  FException := Exception(ExceptObject);
+  try
+    // Não mostra mensagens de EAbort
+    if not (FException is EAbort) then
+      Synchronize(DoHandleException);
+  finally
+    FException := nil;
+  end;
+end;
+
+
 procedure TACBrBoleto.GerarHTML;
 begin
    if not Assigned(ACBrBoletoFC) then
@@ -1277,7 +1514,8 @@ end;
 
 procedure TACBrBanco.SetTamMaximoNossoNumero(const Avalue: Integer);
 begin
-  {Apenas para aparecer no ObjectInspector do D7}
+  {Altera o tamanho maximo do Nosso Numero} 
+  BancoClass.fpTamanhoMaximoNossoNum := AValue;
 end;
 
 procedure TACBrBanco.SetTipoCobranca(const AValue: TACBrTipoCobranca);
@@ -1297,7 +1535,8 @@ begin
     cobItau          : fBancoClass := TACBrBancoItau.Create(self);           {341}
     cobBancoMercantil: fBancoClass := TACBrBancoMercantil.create(Self);      {389}
     cobSicred        : fBancoClass := TACBrBancoSicredi.Create(self);        {748}
-    cobBancoob       : fBancoClass := TACBrBancoob.create(self)              {756}
+    cobBancoob       : fBancoClass := TACBrBancoob.create(self);              {756}
+    cobHSBC          : fBancoClass := TACBrBancoHSBC.create(self);            {399}
   else
     fBancoClass := TACBrBancoClass.create(Self);
   end;

@@ -6,7 +6,7 @@
     <AddToProjectUsesSection Value="True"/>
     <Author Value="Daniel Simoes de Almeida"/>
     <CompilerOptions>
-      <Version Value="10"/>
+      <Version Value="11"/>
       <PathDelim Value="\"/>
       <SearchPaths>
         <IncludeFiles Value="..\..\Fontes\ACBrBoleto;..\..\Fontes\ACBrComum"/>
@@ -21,7 +21,7 @@
     <Description Value="ACBrBoleto"/>
     <License Value="LGPL"/>
     <Version Minor="1"/>
-    <Files Count="11">
+    <Files Count="12">
       <Item1>
         <Filename Value="..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
         <HasRegisterProc Value="True"/>
@@ -67,6 +67,10 @@
         <Filename Value="..\..\Fontes\ACBrBoleto\ACBrCaixaEconomicaSICOB.pas"/>
         <UnitName Value="ACBrCaixaEconomicaSICOB"/>
       </Item11>
+      <Item12>
+        <Filename Value="..\..\Fontes\ACBrBoleto\ACBrBancoHSBC.pas"/>
+        <UnitName Value="ACBrBancoHSBC"/>
+      </Item12>
     </Files>
     <Type Value="RunAndDesignTime"/>
     <RequiredPkgs Count="2">

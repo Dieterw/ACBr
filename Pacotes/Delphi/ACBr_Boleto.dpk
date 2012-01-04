@@ -31,7 +31,8 @@ requires
   ACBrDiversos,
   designide,
   ACBrComum,
-  vclactnband;
+  vclactnband,
+  vclx;
 
 contains
   ACBrBancoBradesco in '..\..\Fontes\ACBrBoleto\ACBrBancoBradesco.pas',
@@ -44,6 +45,7 @@ contains
   ACBrBancoob in '..\..\Fontes\ACBrBoleto\ACBrBancoob.pas',
   ACBrBancoMercantil in '..\..\Fontes\ACBrBoleto\ACBrBancoMercantil.pas',
   ACBrBancoSantander in '..\..\Fontes\ACBrBoleto\ACBrBancoSantander.pas',
-  ACBrCaixaEconomicaSICOB in '..\..\Fontes\ACBrBoleto\ACBrCaixaEconomicaSICOB.pas';
+  ACBrCaixaEconomicaSICOB in '..\..\Fontes\ACBrBoleto\ACBrCaixaEconomicaSICOB.pas',
+  ACBrBancoHSBC in '..\..\Fontes\ACBrBoleto\ACBrBancoHSBC.pas';
 
 end.

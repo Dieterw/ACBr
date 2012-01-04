@@ -318,6 +318,24 @@ begin
          ATipoOcorrencia := '01';
       end;
 
+      { Pegando o tipo de EspecieDoc }
+      if EspecieDoc = 'DM' then
+         EspecieDoc   := '02'
+      else if EspecieDoc = 'RC' then
+         EspecieDoc   := '17'
+      else if EspecieDoc = 'NP' then
+         EspecieDoc   := '12'
+      else if EspecieDoc = 'NS' then
+         EspecieDoc   := '16'
+      else if EspecieDoc = 'ND' then
+         EspecieDoc   := '19'
+      else if EspecieDoc = 'DS' then
+         EspecieDoc   := '04'
+      else
+         EspecieDoc := EspecieDoc;
+
+
+
       { Pegando o Aceite do Titulo }
       case Aceite of
          atSim :  ATipoAceite := 'A';
@@ -379,7 +397,7 @@ begin
                '02'                                                       + //107 a 108 - Espécie do documento
                ATipoAceite                             + //109 - Identificação de título Aceito / Não aceito
                FormatDateTime('ddmmyyyy', DataDocumento)                  + //110 a 117 - Data da emissão do documento
-               IfThen(ValorMoraJuros > 0, '1', '0')                       + //118 - Código de juros de mora: Valor por dia
+               IfThen(ValorMoraJuros > 0, '1', '3')                       + //118 - Código de juros de mora: Valor por dia
                //ADataMoraJuros    não há carência de juros               + //119 a 126 - Data a partir da qual serão cobrados juros
                '00000000'                                                 + //119 a 126 - Não há carência para juros
 
@@ -583,6 +601,12 @@ begin
       { Pegando o tipo de EspecieDoc }
       if EspecieDoc = 'DM' then
          ATipoEspecieDoc   := '01'
+      else if EspecieDoc = 'NP' then
+         ATipoEspecieDoc   := '02'
+      else if EspecieDoc = 'NS' then
+         ATipoEspecieDoc   := '03'
+      else if EspecieDoc = 'ND' then
+         ATipoEspecieDoc   := '13'
       else if EspecieDoc = 'RC' then
          ATipoEspecieDoc   := '05';
 

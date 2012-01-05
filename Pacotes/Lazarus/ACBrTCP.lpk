@@ -6,13 +6,12 @@
     <AddToProjectUsesSection Value="True"/>
     <Author Value="Daniel Simoes de Almeida"/>
     <CompilerOptions>
-      <Version Value="10"/>
+      <Version Value="11"/>
       <PathDelim Value="\"/>
       <SearchPaths>
-        <IncludeFiles Value="..\..\Fontes\ACBrTCP;..\..\Fontes\ACBrComum"/>
-        <OtherUnitFiles Value="..\..\Fontes\ACBrTCP;..\..\Fontes\ACBrComum"/>
+        <IncludeFiles Value="..\..\Fontes\ACBrTCP;..\..\Fontes\ACBrComum;..\..\Fontes\ACBrDiversos"/>
+        <OtherUnitFiles Value="..\..\Fontes\ACBrTCP;..\..\Fontes\ACBrComum;..\..\Fontes\ACBrDiversos"/>
         <UnitOutputDirectory Value="..\..\lib\$(TargetCPU)-$(TargetOS)"/>
-        <SrcPath Value="..\..\Fontes\ACBrTCP;..\..\Fontes\ACBrComum"/>
       </SearchPaths>
       <Parsing>
         <SyntaxOptions>
@@ -20,13 +19,10 @@
           <UseAnsiStrings Value="False"/>
         </SyntaxOptions>
       </Parsing>
-      <Linking>
-        <Debugging>
-          <GenerateDebugInfo Value="True"/>
-          <DebugInfoType Value="dsAuto"/>
-        </Debugging>
-      </Linking>
       <Other>
+        <CompilerMessages>
+          <UseMsgFile Value="True"/>
+        </CompilerMessages>
         <CompilerPath Value="$(CompPath)"/>
       </Other>
     </CompilerOptions>
@@ -81,7 +77,7 @@
       </Item5>
     </RequiredPkgs>
     <UsageOptions>
-      <UnitPath Value="$(PkgOutDir)\"/>
+      <UnitPath Value="$(PkgOutDir)"/>
     </UsageOptions>
     <PublishOptions>
       <Version Value="2"/>

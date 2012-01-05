@@ -9,12 +9,14 @@
       <Version Value="11"/>
       <PathDelim Value="\"/>
       <SearchPaths>
-        <IncludeFiles Value="..\..\Fontes\ACBrPAF;..\..\Fontes\ACBrComum"/>
-        <OtherUnitFiles Value="..\..\Fontes\ACBrPAF;..\..\Fontes\ACBrComum"/>
+        <IncludeFiles Value="..\..\Fontes\ACBrPAF;..\..\Fontes\ACBrComum;..\..\Fontes\ACBrSPED"/>
+        <OtherUnitFiles Value="..\..\Fontes\ACBrPAF;..\..\Fontes\ACBrComum;..\..\Fontes\ACBrSPED"/>
         <UnitOutputDirectory Value="..\..\lib\$(TargetCPU)-$(TargetOS)"/>
-        <SrcPath Value="..\..\Fontes\ACBrPAF;..\..\Fontes\ACBrComum"/>
       </SearchPaths>
       <Other>
+        <CompilerMessages>
+          <UseMsgFile Value="True"/>
+        </CompilerMessages>
         <CompilerPath Value="$(CompPath)"/>
       </Other>
     </CompilerOptions>
@@ -87,17 +89,20 @@
       </Item16>
     </Files>
     <Type Value="RunAndDesignTime"/>
-    <RequiredPkgs Count="2">
+    <RequiredPkgs Count="3">
       <Item1>
-        <PackageName Value="LCL"/>
+        <PackageName Value="ACBr_SPED"/>
       </Item1>
       <Item2>
+        <PackageName Value="LCL"/>
+      </Item2>
+      <Item3>
         <PackageName Value="FCL"/>
         <MinVersion Major="1" Valid="True"/>
-      </Item2>
+      </Item3>
     </RequiredPkgs>
     <UsageOptions>
-      <UnitPath Value="$(PkgOutDir)\"/>
+      <UnitPath Value="$(PkgOutDir)"/>
     </UsageOptions>
     <PublishOptions>
       <Version Value="2"/>

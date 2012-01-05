@@ -190,7 +190,7 @@ begin
                 001: Banco.TipoCobranca:= cobBancoDoBrasil;
                 008,033,353: banco.TipoCobranca:= cobSantander;
                 041: Banco.TipoCobranca:= cobBanrisul;
-                104: Banco.TipoCobranca:= cobCaixaEconomica; //cobCaixaEconomica;
+                104: Banco.TipoCobranca:= cobCaixaEconomica;
                 237: Banco.TipoCobranca:= cobBradesco;
                 341: Banco.TipoCobranca:= cobItau;
                 389: Banco.TipoCobranca:= cobBancoMercantil;

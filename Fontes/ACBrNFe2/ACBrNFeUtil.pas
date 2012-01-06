@@ -926,6 +926,7 @@ begin
     LayNfeConsulta      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.ce.gov.br/nfe2/services/NfeConsulta2', 'https://nfeh.sefaz.ce.gov.br/nfe2/services/NfeConsulta2');
     LayNfeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.ce.gov.br/nfe2/services/NfeStatusServico2', 'https://nfeh.sefaz.ce.gov.br/nfe2/services/NfeStatusServico2');
     LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.ce.gov.br/nfe2/services/CadConsultaCadastro2', 'https://nfeh.sefaz.ce.gov.br/nfe2/services/CadConsultaCadastro2');
+    LayNFeCCe           : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.ce.gov.br/nfe2/services/RecepcaoEvento',       'https://nfeh.sefaz.ce.gov.br/nfe2/services/RecepcaoEvento');
   end;
 end;
 

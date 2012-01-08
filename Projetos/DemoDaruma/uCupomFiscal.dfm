@@ -87,7 +87,6 @@ inherited frmCupomFiscal: TfrmCupomFiscal
             Width = 91
             Height = 21
             Style = csDropDownList
-            ItemHeight = 13
             ItemIndex = 0
             TabOrder = 1
             Text = 'Percentual'
@@ -101,7 +100,6 @@ inherited frmCupomFiscal: TfrmCupomFiscal
             Width = 88
             Height = 21
             Style = csDropDownList
-            ItemHeight = 13
             ItemIndex = 0
             TabOrder = 0
             Text = 'Desconto'
@@ -251,20 +249,19 @@ inherited frmCupomFiscal: TfrmCupomFiscal
             Width = 51
             Height = 21
             Style = csDropDownList
-            ItemHeight = 13
             TabOrder = 6
             Items.Strings = (
               'FF'
               'II'
               'NN'
-              'T0700'
-              'T1200'
-              'T1800'
-              'T2500'
+              '07T'
+              '12T'
+              '18T'
+              '25T'
               'FS'
               'IS'
               'NS'
-              'S0200')
+              '02S')
           end
         end
         object btnItemDescAcrescAnterior: TButton
@@ -362,7 +359,6 @@ inherited frmCupomFiscal: TfrmCupomFiscal
           Width = 169
           Height = 21
           Style = csDropDownList
-          ItemHeight = 0
           TabOrder = 0
         end
         object edtPagtoVlr: TEdit
@@ -460,7 +456,6 @@ inherited frmCupomFiscal: TfrmCupomFiscal
           Width = 52
           Height = 21
           Style = csDropDownList
-          ItemHeight = 13
           ItemIndex = 0
           TabOrder = 0
           Text = '0'

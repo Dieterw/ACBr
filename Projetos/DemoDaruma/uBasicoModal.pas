@@ -72,8 +72,6 @@ begin
 
   if GoBotton then
     WB_ScrollToBottom(WebBrowser);
-
-  Application.ProcessMessages;
 end;
 
 procedure TfrmBasicoModal.WB_ScrollToTop(WebBrowser1: TWebBrowser);
@@ -91,7 +89,6 @@ begin
     pw.scrollBy(0, -scrollpos);
   finally
     LockWindowUpdate(0);
-    Application.ProcessMessages;
   end;
 end;
 
@@ -110,7 +107,6 @@ begin
     pw.scrollBy(0, scrollpos);
   finally
     LockWindowUpdate(0);
-    Application.ProcessMessages;
   end;
 end;
 

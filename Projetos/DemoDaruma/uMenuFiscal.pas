@@ -309,7 +309,6 @@ begin
     Parametros.TotalizaValoresLista     := False;
     Parametros.TransfPreVenda           := True;
     Parametros.TransfDAV                := True;
-    Parametros.NaoCoincGT               := True;
     Parametros.RecompoeGT               := True;
     Parametros.ImpedeVendaVlrZero       := False;
 

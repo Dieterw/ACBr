@@ -134,7 +134,7 @@ begin
   edtValorTroco.Text := FormatFloat(',#0.00', VlTroco);
 
   // Atualizar a bobina do cupom fiscal
-  WB_LoadHTML(WebBrowser1, frmPrincipal.BobinaCupom.Text);
+  WB_LoadHTML(WebBrowser1, frmPrincipal.BobinaCupom.Text, True);
 end;
 
 procedure TfrmCupomFiscal.FormClose(Sender: TObject; var Action: TCloseAction);

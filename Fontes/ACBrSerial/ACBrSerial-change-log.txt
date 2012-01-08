@@ -97,6 +97,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 08/01/2012
+-- ACBrECFDaruma --
+[+] Acerto no método de retorno das alíquotas da Redução Z, conforme relato no 
+    fórum: http://djsystem.com.br/acbr/forum/viewtopic.php?f=10&t=4425
+    por: Régys Silveira
+
 Data: 27/12/2011
 -- ACBrECF --
 [+] Adicionados métodos para a impressão do DAV normal.

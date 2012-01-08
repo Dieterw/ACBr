@@ -926,7 +926,6 @@ object frmPrincipal: TfrmPrincipal
       Width = 84
       Height = 21
       CharCase = ecUpperCase
-      ItemHeight = 13
       TabOrder = 1
       OnChange = cbxVelocidadeChange
       Items.Strings = (
@@ -939,7 +938,6 @@ object frmPrincipal: TfrmPrincipal
       Width = 105
       Height = 21
       CharCase = ecUpperCase
-      ItemHeight = 13
       TabOrder = 0
       OnChange = cbxPortaComunicacaoChange
       Items.Strings = (

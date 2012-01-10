@@ -1346,8 +1346,8 @@ begin
                LFill( COD_MOD )        +
                LFill( strCOD_SIT )     +
                LFill( SER )            +
-               LFill( SUB )            +
-               LFill( NUM_DOC )        +
+               LFill( SUB, 3 )         +
+               LFill( NUM_DOC, 9 )     +
                LFill( DT_DOC )         +
                LFill( DT_A_P )         +
                LFill( VL_DOC,0,2 )     +

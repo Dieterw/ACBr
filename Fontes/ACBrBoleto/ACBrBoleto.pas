@@ -2087,7 +2087,6 @@ var
    FiltroAntigo         : TACBrBoletoFCFiltro;
    MostrarPreviewAntigo : Boolean;
    MostrarSetupAntigo   : Boolean;
-   teste: String;
 begin
    if NomeArquivo = '' then
       raise Exception.Create( ACBrStr('NomeArquivo não especificado')) ;

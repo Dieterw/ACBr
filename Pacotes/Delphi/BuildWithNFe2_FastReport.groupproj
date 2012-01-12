@@ -27,9 +27,6 @@
 			<Projects Include="ACBrTCP.dproj">
 				<Dependencies/>
 			</Projects>
-			<Projects Include="ACBr_Boleto.dproj">
-				<Dependencies/>
-			</Projects>
 			<Projects Include="ACBrCapicom.dproj">
 				<Dependencies/>
 			</Projects>
@@ -39,6 +36,9 @@
 			<Projects Include="ACBrNFe2\PCN2.dproj">
 				<Dependencies/>
 			</Projects>
+			<Projects Include="ACBr_Boleto.dproj">
+				<Dependencies/>
+			</Projects>
 			<Projects Include="ACBrNFe2\ACBr_NFe2.dproj">
 				<Dependencies/>
 			</Projects>
@@ -46,6 +46,9 @@
 				<Dependencies/>
 			</Projects>
 			<Projects Include="ACBrNFe2\ACBrNFeDanfeFRpkg.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="ACBrNFe2\ACBrCTeDacteFRpkg.dproj">
 				<Dependencies/>
 			</Projects>
 		</ItemGroup>
@@ -128,15 +131,6 @@
 		<Target Name="ACBrTCP:Make">
 			<MSBuild Targets="Make" Projects="ACBrTCP.dproj"/>
 		</Target>
-		<Target Name="ACBr_Boleto">
-			<MSBuild Projects="ACBr_Boleto.dproj"/>
-		</Target>
-		<Target Name="ACBr_Boleto:Clean">
-			<MSBuild Targets="Clean" Projects="ACBr_Boleto.dproj"/>
-		</Target>
-		<Target Name="ACBr_Boleto:Make">
-			<MSBuild Targets="Make" Projects="ACBr_Boleto.dproj"/>
-		</Target>
 		<Target Name="ACBrCapicom">
 			<MSBuild Projects="ACBrCapicom.dproj"/>
 		</Target>
@@ -163,6 +157,15 @@
 		</Target>
 		<Target Name="PCN2:Make">
 			<MSBuild Targets="Make" Projects="ACBrNFe2\PCN2.dproj"/>
+		</Target>
+		<Target Name="ACBr_Boleto">
+			<MSBuild Projects="ACBr_Boleto.dproj"/>
+		</Target>
+		<Target Name="ACBr_Boleto:Clean">
+			<MSBuild Targets="Clean" Projects="ACBr_Boleto.dproj"/>
+		</Target>
+		<Target Name="ACBr_Boleto:Make">
+			<MSBuild Targets="Make" Projects="ACBr_Boleto.dproj"/>
 		</Target>
 		<Target Name="ACBr_NFe2">
 			<MSBuild Projects="ACBrNFe2\ACBr_NFe2.dproj"/>
@@ -191,14 +194,23 @@
 		<Target Name="ACBrNFeDanfeFRpkg:Make">
 			<MSBuild Targets="Make" Projects="ACBrNFe2\ACBrNFeDanfeFRpkg.dproj"/>
 		</Target>
+		<Target Name="ACBrCTeDacteFRpkg">
+			<MSBuild Projects="ACBrNFe2\ACBrCTeDacteFRpkg.dproj"/>
+		</Target>
+		<Target Name="ACBrCTeDacteFRpkg:Clean">
+			<MSBuild Targets="Clean" Projects="ACBrNFe2\ACBrCTeDacteFRpkg.dproj"/>
+		</Target>
+		<Target Name="ACBrCTeDacteFRpkg:Make">
+			<MSBuild Targets="Make" Projects="ACBrNFe2\ACBrCTeDacteFRpkg.dproj"/>
+		</Target>
 		<Target Name="Build">
-			<CallTarget Targets="ACBrComum;ACBrDiversos;ACBrSerial;ACBr_SPED;ACBr_PAF;ACBr_Sintegra;ACBr_TEFD;ACBrTCP;ACBr_Boleto;ACBrCapicom;ACBrOpenSSL;PCN2;ACBr_NFe2;ACBr_CTe;ACBrNFeDanfeFRpkg"/>
+			<CallTarget Targets="ACBrComum;ACBrDiversos;ACBrSerial;ACBr_SPED;ACBr_PAF;ACBr_Sintegra;ACBr_TEFD;ACBrTCP;ACBrCapicom;ACBrOpenSSL;PCN2;ACBr_Boleto;ACBr_NFe2;ACBr_CTe;ACBrNFeDanfeFRpkg;ACBrCTeDacteFRpkg"/>
 		</Target>
 		<Target Name="Clean">
-			<CallTarget Targets="ACBrComum:Clean;ACBrDiversos:Clean;ACBrSerial:Clean;ACBr_SPED:Clean;ACBr_PAF:Clean;ACBr_Sintegra:Clean;ACBr_TEFD:Clean;ACBrTCP:Clean;ACBr_Boleto:Clean;ACBrCapicom:Clean;ACBrOpenSSL:Clean;PCN2:Clean;ACBr_NFe2:Clean;ACBr_CTe:Clean;ACBrNFeDanfeFRpkg:Clean"/>
+			<CallTarget Targets="ACBrComum:Clean;ACBrDiversos:Clean;ACBrSerial:Clean;ACBr_SPED:Clean;ACBr_PAF:Clean;ACBr_Sintegra:Clean;ACBr_TEFD:Clean;ACBrTCP:Clean;ACBrCapicom:Clean;ACBrOpenSSL:Clean;PCN2:Clean;ACBr_Boleto:Clean;ACBr_NFe2:Clean;ACBr_CTe:Clean;ACBrNFeDanfeFRpkg:Clean;ACBrCTeDacteFRpkg:Clean"/>
 		</Target>
 		<Target Name="Make">
-			<CallTarget Targets="ACBrComum:Make;ACBrDiversos:Make;ACBrSerial:Make;ACBr_SPED:Make;ACBr_PAF:Make;ACBr_Sintegra:Make;ACBr_TEFD:Make;ACBrTCP:Make;ACBr_Boleto:Make;ACBrCapicom:Make;ACBrOpenSSL:Make;PCN2:Make;ACBr_NFe2:Make;ACBr_CTe:Make;ACBrNFeDanfeFRpkg:Make"/>
+			<CallTarget Targets="ACBrComum:Make;ACBrDiversos:Make;ACBrSerial:Make;ACBr_SPED:Make;ACBr_PAF:Make;ACBr_Sintegra:Make;ACBr_TEFD:Make;ACBrTCP:Make;ACBrCapicom:Make;ACBrOpenSSL:Make;PCN2:Make;ACBr_Boleto:Make;ACBr_NFe2:Make;ACBr_CTe:Make;ACBrNFeDanfeFRpkg:Make;ACBrCTeDacteFRpkg:Make"/>
 		</Target>
 		<Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 	</Project>

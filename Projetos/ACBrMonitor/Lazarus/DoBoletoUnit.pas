@@ -42,11 +42,11 @@ uses
 procedure DoBoleto(Cmd: TACBrCmd);
 procedure LerIniBoletos(aStr: AnsiString);
 procedure IncluirTitulo(aIni: TMemIniFile; Sessao: String);
-
+function ListaBancos() : String;
 
 implementation
 
-uses ACBrBoleto, ACBrUtil, ACBrMonitor1, DoACBrUnit,strutils ;
+uses ACBrBoleto, ACBrUtil, ACBrMonitor1, DoACBrUnit,strutils, typinfo ;
 
 procedure DoBoleto ( Cmd: TACBrCmd ) ;
 begin
@@ -91,6 +91,11 @@ begin
           Imprimir
         else if Cmd.Params(1)= 'P' then
           GerarPDF;
+       end
+
+      else if cmd.Metodo = 'listabancos' then
+       begin
+         Cmd.Resposta := ListaBancos();
        end
 
       ELSE
@@ -331,6 +336,28 @@ begin
          PercentualMulta     := aIni.ReadFloat(Sessao,'PercentualMulta',PercentualMulta);
       end;
    end;
+end;
+
+function ListaBancos() : String;
+var
+   IBanco : TACBrTipoCobranca;
+   SBanco : AnsiString;
+begin
+   IBanco := Low(TACBrTipoCobranca);
+   Inc(IBanco); // Removendo item 0-Nenhum
+   Result := '';
+
+   while IBanco <= High(TACBrTipoCobranca) do
+   begin
+     sBanco := GetEnumName( TypeInfo(TACBrTipoCobranca), Integer(IBanco) );
+     sBanco := copy(SBanco,4, Length(SBanco)); // Reovendo "cob" do nome do banco.
+     Result := Result + sBanco + '|';
+
+     Inc(IBanco);
+   end;
+
+   if Result <> '' then
+      Result := copy(Result,1,Length(Result)-1) ;
 end;
 
 end.

@@ -120,7 +120,7 @@ TACBrBAL = class( TACBrComponent )
 
 implementation
 Uses ACBrUtil, ACBrBALFilizola, ACBrBALToledo, ACBrBALUrano,
-     ACBrBALLucasTec,  ACBrBALToledo2180, AcbrBalMagna,
+     ACBrBALLucasTec,  ACBrBALToledo2180, ACBrBALMagna,
      {$IFDEF COMPILER6_UP} StrUtils {$ELSE} ACBrD5{$ENDIF},
      Math;
 
@@ -301,4 +301,4 @@ end;
 
 end.
 
-
+

@@ -10,6 +10,7 @@
       <MainUnit Value="0"/>
       <Title Value="ACBrMonitorConsole"/>
       <UseAppBundle Value="False"/>
+      <ActiveWindowIndexAtStart Value="0"/>
     </General>
     <i18n>
       <EnableI18N LFM="False"/>
@@ -17,8 +18,38 @@
     <VersionInfo>
       <StringTable ProductVersion=""/>
     </VersionInfo>
-    <BuildModes Count="1">
-      <Item1 Name="default" Default="True"/>
+    <BuildModes Count="2" Active="Release">
+      <Item1 Name="Debug" Default="True"/>
+      <Item2 Name="Release">
+        <CompilerOptions>
+          <Version Value="11"/>
+          <PathDelim Value="\"/>
+          <Target>
+            <Filename Value="ACBrMonitorConsole"/>
+          </Target>
+          <SearchPaths>
+            <IncludeFiles Value="$(ProjOutDir);..\..\..\Fontes\ACBrComum"/>
+            <OtherUnitFiles Value="..\..\..\Fontes\ACBrSerial;..\..\..\Fontes\ACBrTCP;..\..\..\Fontes\ACBrComum;..\..\..\Fontes\ACBrDiversos;..\..\..\Fontes\synalist"/>
+            <UnitOutputDirectory Value="ACBrMonitorConsoleLib\$(TargetCPU)-$(TargetOS)"/>
+          </SearchPaths>
+          <Linking>
+            <Debugging>
+              <GenerateDebugInfo Value="False"/>
+              <UseLineInfoUnit Value="False"/>
+              <StripSymbols Value="True"/>
+            </Debugging>
+            <LinkSmart Value="True"/>
+          </Linking>
+          <Other>
+            <CompilerMessages>
+              <UseMsgFile Value="True"/>
+            </CompilerMessages>
+            <CustomOptions Value="-dCONSOLE
+-dUseCThreads"/>
+            <CompilerPath Value="$(CompPath)"/>
+          </Other>
+        </CompilerOptions>
+      </Item2>
     </BuildModes>
     <PublishOptions>
       <Version Value="2"/>
@@ -36,10 +67,13 @@
         <Filename Value="ACBrMonitorConsole.lpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="ACBrMonitorConsole"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
         <TopLine Value="136"/>
         <CursorPos X="45" Y="156"/>
         <UsageCount Value="27"/>
+        <Loaded Value="True"/>
       </Unit0>
       <Unit1>
         <Filename Value="ACBrMonitorConsoleDM.pas"/>
@@ -48,11 +82,13 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
         <UnitName Value="ACBrMonitorConsoleDM"/>
-        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
         <TopLine Value="33"/>
         <CursorPos X="20" Y="45"/>
         <UsageCount Value="27"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
       </Unit1>
       <Unit2>
         <Filename Value="C:\lazarus\fpc\2.4.3\source\packages\fcl-base\src\custapp.pp"/>
@@ -421,13 +457,6 @@
       <OtherUnitFiles Value="..\..\..\Fontes\ACBrSerial;..\..\..\Fontes\ACBrTCP;..\..\..\Fontes\ACBrComum;..\..\..\Fontes\ACBrDiversos;..\..\..\Fontes\synalist"/>
       <UnitOutputDirectory Value="ACBrMonitorConsoleLib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
-    <Linking>
-      <Debugging>
-        <GenerateDebugInfo Value="False"/>
-        <UseLineInfoUnit Value="False"/>
-        <StripSymbols Value="True"/>
-      </Debugging>
-    </Linking>
     <Other>
       <CompilerMessages>
         <UseMsgFile Value="True"/>

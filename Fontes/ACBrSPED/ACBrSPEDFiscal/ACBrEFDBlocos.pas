@@ -102,7 +102,8 @@ type
   TACBrVersaoLeiaute      = (vlVersao100,  // Código 001 - Versão 100 Ato COTEPE 01/01/2008
                              vlVersao101,  // Código 002 - Versão 101 Ato COTEPE 01/01/2009
                              vlVersao102,  // Código 003 - Versão 102 Ato COTEPE 01/01/2010
-                             vlVersao103   // Código 004 - Versão 103 Ato COTEPE 01/01/2011
+                             vlVersao103,  // Código 004 - Versão 103 Ato COTEPE 01/01/2011
+                             vlVersao104   // Código 005 - Versão 104 Ato COTEPE 01/01/2012
                              );
   /// Código da finalidade do arquivo - TRegistro0000
   TACBrCodFinalidade      = (raOriginal,     // 0 - Remessa do arquivo original

@@ -1174,8 +1174,12 @@ begin
     mResp.Lines.Add('   * Incentive a equipe de desenvolvimento do ACBrMonitor') ;
     mResp.Lines.Add('     a continuar com esse trabalho.');
     mResp.Lines.Add('');
-    mResp.Lines.Add('   * EFETUE AINDA HOJE A SUA DOAÇÃO. Acesse:') ;
-    mResp.Lines.Add('     http://acbr.sourceforge.net/drupal/?q=node/14') ;
+    mResp.Lines.Add('   * ASSINE AINDA HOJE O NOSSO SERVIÇO DE SUPORTE ACBrSAC:') ;
+    mResp.Lines.Add('     http://www.djsystem.com.br/acbr/sac/') ;
+    mResp.Lines.Add('');
+    mResp.Lines.Add('   * Para maiores informações de como funciona nosso atendimento visite:') ;
+    mResp.Lines.Add('     http://www.djsystem.com.br/acbr/sac/index.php/sobre') ;
+    mResp.Lines.Add('     http://www.djsystem.com.br/acbr/sac/index.php/questoesimportantes') ;
 
     { Se for NAO fiscal, desliga o AVISO antes de ativar }
     if ACBrECF1.Modelo = ecfNaoFiscal then

@@ -3,15 +3,13 @@
   <Package Version="4">
     <PathDelim Value="\"/>
     <Name Value="ACBrComum"/>
-    <AddToProjectUsesSection Value="True"/>
     <Author Value="Daniel Simoes de Almeida"/>
     <CompilerOptions>
       <Version Value="11"/>
       <PathDelim Value="\"/>
       <SearchPaths>
-        <IncludeFiles Value="..\..\Fontes\ACBrComum"/>
         <OtherUnitFiles Value="..\..\Fontes\ACBrComum"/>
-        <UnitOutputDirectory Value="..\..\lib\$(TargetCPU)-$(TargetOS)"/>
+        <UnitOutputDirectory Value="..\..\Fontes\ACBrComum\lib\$(TargetCPU)-$(TargetOS)\"/>
       </SearchPaths>
       <Parsing>
         <SyntaxOptions>
@@ -67,19 +65,17 @@
       </Item8>
     </Files>
     <Type Value="RunAndDesignTime"/>
-    <RequiredPkgs Count="3">
+    <RequiredPkgs Count="2">
       <Item1>
         <PackageName Value="IDEIntf"/>
       </Item1>
       <Item2>
-        <PackageName Value="LCL"/>
-      </Item2>
-      <Item3>
         <PackageName Value="FCL"/>
         <MinVersion Major="1" Valid="True"/>
-      </Item3>
+      </Item2>
     </RequiredPkgs>
     <UsageOptions>
+      <IncludePath Value="..\..\Fontes\ACBrComum"/>
       <UnitPath Value="$(PkgOutDir)"/>
     </UsageOptions>
     <PublishOptions>

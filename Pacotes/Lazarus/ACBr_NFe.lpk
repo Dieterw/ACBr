@@ -1,18 +1,21 @@
 <?xml version="1.0"?>
 <CONFIG>
-  <Package Version="3">
+  <Package Version="4">
     <PathDelim Value="\"/>
     <Name Value="ACBr_NFe"/>
     <Author Value="André Ferreira de Moraes"/>
     <CompilerOptions>
-      <Version Value="8"/>
+      <Version Value="11"/>
       <PathDelim Value="\"/>
       <SearchPaths>
-        <IncludeFiles Value="..\..\Fontes\ACBrNFe\;..\..\Fontes\ACBrComum\"/>
-        <OtherUnitFiles Value="..\..\Fontes\ACBrNFe\;..\..\Fontes\ACBrComum\"/>
-        <UnitOutputDirectory Value="..\..\lib\$(TargetCPU)-$(TargetOS)"/>
-        <SrcPath Value="..\..\Fontes\ACBrNFe\;..\..\Fontes\ACBrComum\"/>
+        <OtherUnitFiles Value="..\..\Fontes\ACBrNFe2"/>
+        <UnitOutputDirectory Value="..\..\Fontes\ACBrNFe2\lib\$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
+      <Parsing>
+        <SyntaxOptions>
+          <UseAnsiStrings Value="False"/>
+        </SyntaxOptions>
+      </Parsing>
       <Other>
         <CompilerPath Value="$(CompPath)"/>
       </Other>
@@ -85,7 +88,7 @@
       </Item6>
     </RequiredPkgs>
     <UsageOptions>
-      <UnitPath Value="$(PkgOutDir)\"/>
+      <UnitPath Value="$(PkgOutDir)"/>
     </UsageOptions>
     <PublishOptions>
       <Version Value="2"/>

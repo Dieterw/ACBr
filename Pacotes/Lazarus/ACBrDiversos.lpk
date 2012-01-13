@@ -3,15 +3,13 @@
   <Package Version="4">
     <PathDelim Value="\"/>
     <Name Value="ACBrDiversos"/>
-    <AddToProjectUsesSection Value="True"/>
     <Author Value="Daniel Simoes de Almeida"/>
     <CompilerOptions>
       <Version Value="11"/>
       <PathDelim Value="\"/>
       <SearchPaths>
-        <IncludeFiles Value="..\..\Fontes\ACBrDiversos;..\..\Fontes\ACBrComum"/>
-        <OtherUnitFiles Value="..\..\Fontes\ACBrDiversos;..\..\Fontes\ACBrComum"/>
-        <UnitOutputDirectory Value="..\..\lib\$(TargetCPU)-$(TargetOS)"/>
+        <OtherUnitFiles Value="..\..\Fontes\ACBrDiversos"/>
+        <UnitOutputDirectory Value="..\..\Fontes\ACBrDiversos\lib\$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
       <Parsing>
         <SyntaxOptions>
@@ -92,17 +90,17 @@ ACBrCalculadora, ACBrExtenso, ACBrValidador, ACBrFala, ACBrCMC7, ACBrGIF, ACBrBa
     <Type Value="RunAndDesignTime"/>
     <RequiredPkgs Count="4">
       <Item1>
-        <PackageName Value="ACBrComum"/>
+        <PackageName Value="LCL"/>
       </Item1>
       <Item2>
-        <PackageName Value="FCL"/>
-        <MinVersion Major="1" Valid="True"/>
+        <PackageName Value="ACBrComum"/>
       </Item2>
       <Item3>
-        <PackageName Value="IDEIntf"/>
+        <PackageName Value="FCL"/>
+        <MinVersion Major="1" Valid="True"/>
       </Item3>
       <Item4>
-        <PackageName Value="LCL"/>
+        <PackageName Value="IDEIntf"/>
       </Item4>
     </RequiredPkgs>
     <UsageOptions>

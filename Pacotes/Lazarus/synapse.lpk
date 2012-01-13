@@ -1,21 +1,21 @@
 <?xml version="1.0"?>
 <CONFIG>
-  <Package Version="3">
+  <Package Version="4">
     <PathDelim Value="\"/>
     <Name Value="synapse"/>
     <Author Value="Lukas Gebauer"/>
     <CompilerOptions>
-      <Version Value="8"/>
+      <Version Value="11"/>
       <PathDelim Value="\"/>
       <SearchPaths>
-        <IncludeFiles Value="..\..\Fontes\synalist\"/>
-        <OtherUnitFiles Value="..\..\Fontes\synalist\"/>
-        <UnitOutputDirectory Value="..\..\lib\$(TargetCPU)-$(TargetOS)"/>
-        <SrcPath Value="..\..\Fontes\synalist\"/>
+        <IncludeFiles Value="..\..\Fontes\synalist"/>
+        <OtherUnitFiles Value="..\..\Fontes\synalist"/>
+        <UnitOutputDirectory Value="..\..\Fontes\synalist\lib\$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
       <Parsing>
         <SyntaxOptions>
           <CStyleOperator Value="False"/>
+          <UseAnsiStrings Value="False"/>
         </SyntaxOptions>
       </Parsing>
       <Other>
@@ -168,7 +168,7 @@
       </Item1>
     </RequiredPkgs>
     <UsageOptions>
-      <UnitPath Value="$(PkgOutDir)\"/>
+      <UnitPath Value="$(PkgOutDir)"/>
     </UsageOptions>
     <PublishOptions>
       <Version Value="2"/>

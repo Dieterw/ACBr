@@ -1,16 +1,15 @@
 <?xml version="1.0"?>
 <CONFIG>
-  <Package Version="3">
+  <Package Version="4">
     <PathDelim Value="\"/>
     <Name Value="ACBr_SPED"/>
     <Author Value="Isaque Pinheiro"/>
     <CompilerOptions>
-      <Version Value="10"/>
+      <Version Value="11"/>
       <PathDelim Value="\"/>
       <SearchPaths>
-        <IncludeFiles Value="..\..\Fontes\ACBrSPED;..\..\Fontes\ACBrSPED\ACBrSPEDFiscal;..\..\Fontes\ACBrSPED\ACBrSPEDContabil;..\..\Fontes\ACBrComum;..\..\Fontes\ACBrSPED\ACBrSPEDPisCofins"/>
-        <OtherUnitFiles Value="..\..\Fontes\ACBrSPED;..\..\Fontes\ACBrSPED\ACBrSPEDFiscal;..\..\Fontes\ACBrSPED\ACBrSPEDContabil;..\..\Fontes\ACBrComum;..\..\Fontes\ACBrSPED\ACBrSPEDPisCofins"/>
-        <UnitOutputDirectory Value="..\..\lib\$(TargetCPU)-$(TargetOS)"/>
+        <OtherUnitFiles Value="..\..\Fontes\ACBrSPED;..\..\Fontes\ACBrSPED\ACBrSPEDFiscal;..\..\Fontes\ACBrSPED\ACBrSPEDContabil;..\..\Fontes\ACBrSPED\ACBrSPEDPisCofins"/>
+        <UnitOutputDirectory Value="..\..\Fontes\ACBrSPED\lib\$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
       <Parsing>
         <SyntaxOptions>

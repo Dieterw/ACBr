@@ -3,15 +3,13 @@
   <Package Version="4">
     <PathDelim Value="\"/>
     <Name Value="ACBrTCP"/>
-    <AddToProjectUsesSection Value="True"/>
     <Author Value="Daniel Simoes de Almeida"/>
     <CompilerOptions>
       <Version Value="11"/>
       <PathDelim Value="\"/>
       <SearchPaths>
-        <IncludeFiles Value="..\..\Fontes\ACBrTCP;..\..\Fontes\ACBrComum;..\..\Fontes\ACBrDiversos"/>
-        <OtherUnitFiles Value="..\..\Fontes\ACBrTCP;..\..\Fontes\ACBrComum;..\..\Fontes\ACBrDiversos"/>
-        <UnitOutputDirectory Value="..\..\lib\$(TargetCPU)-$(TargetOS)"/>
+        <OtherUnitFiles Value="..\..\Fontes\ACBrTCP"/>
+        <UnitOutputDirectory Value="..\..\Fontes\ACBrTCP\lib\$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
       <Parsing>
         <SyntaxOptions>
@@ -58,7 +56,7 @@
       </Item6>
     </Files>
     <Type Value="RunAndDesignTime"/>
-    <RequiredPkgs Count="5">
+    <RequiredPkgs Count="4">
       <Item1>
         <PackageName Value="ACBrDiversos"/>
       </Item1>
@@ -72,9 +70,6 @@
       <Item4>
         <PackageName Value="IDEIntf"/>
       </Item4>
-      <Item5>
-        <PackageName Value="LCL"/>
-      </Item5>
     </RequiredPkgs>
     <UsageOptions>
       <UnitPath Value="$(PkgOutDir)"/>

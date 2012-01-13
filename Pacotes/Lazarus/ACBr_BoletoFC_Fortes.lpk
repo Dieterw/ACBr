@@ -1,17 +1,15 @@
 <?xml version="1.0"?>
 <CONFIG>
-  <Package Version="3">
+  <Package Version="4">
     <PathDelim Value="\"/>
     <Name Value="ACBr_BoletoFC_Fortes"/>
     <Author Value="Projeto RLBoleto"/>
     <CompilerOptions>
-      <Version Value="9"/>
+      <Version Value="11"/>
       <PathDelim Value="\"/>
       <SearchPaths>
-        <IncludeFiles Value="..\..\Fontes\ACBrBoleto;..\..\Fontes\ACBrComum"/>
-        <OtherUnitFiles Value="..\..\Fontes\ACBrBoleto;..\..\Fontes\ACBrComum"/>
-        <UnitOutputDirectory Value="..\..\lib\$(TargetCPU)-$(TargetOS)"/>
-        <SrcPath Value="..\..\Fontes\ACBrBoleto;..\..\Fontes\ACBrComum"/>
+        <OtherUnitFiles Value="..\..\Fontes\ACBrBoleto"/>
+        <UnitOutputDirectory Value="..\..\Fontes\ACBrBoleto\lib\$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
       <Other>
         <CompilerPath Value="$(CompPath)"/>
@@ -41,7 +39,7 @@
       </Item3>
     </RequiredPkgs>
     <UsageOptions>
-      <UnitPath Value="$(PkgOutDir)\"/>
+      <UnitPath Value="$(PkgOutDir)"/>
     </UsageOptions>
     <PublishOptions>
       <Version Value="2"/>

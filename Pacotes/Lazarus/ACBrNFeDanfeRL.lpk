@@ -1,22 +1,15 @@
 <?xml version="1.0"?>
 <CONFIG>
-  <Package Version="3">
+  <Package Version="4">
     <PathDelim Value="\"/>
     <Name Value="ACBrNFeDanfeRL"/>
     <CompilerOptions>
-      <Version Value="8"/>
+      <Version Value="11"/>
       <PathDelim Value="\"/>
       <SearchPaths>
-        <IncludeFiles Value="..\ACBrComum\"/>
-        <OtherUnitFiles Value="..\ACBrComum\"/>
-        <UnitOutputDirectory Value="..\ACBr\lib\$(TargetCPU)-$(TargetOS)"/>
-        <SrcPath Value="..\ACBrComum\"/>
+        <OtherUnitFiles Value="..\..\Fontes\ACBrNFe2"/>
+        <UnitOutputDirectory Value="..\..\Fontes\ACBrNFe2\lib\$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
-      <Parsing>
-        <SyntaxOptions>
-          <UseAnsiStrings Value="True"/>
-        </SyntaxOptions>
-      </Parsing>
       <Other>
         <CompilerPath Value="$(CompPath)"/>
       </Other>
@@ -41,14 +34,17 @@
       </Item4>
     </Files>
     <Type Value="RunAndDesignTime"/>
-    <RequiredPkgs Count="2">
+    <RequiredPkgs Count="3">
       <Item1>
-        <PackageName Value="fortes324forlaz"/>
+        <PackageName Value="ACBr_NFe"/>
       </Item1>
       <Item2>
+        <PackageName Value="fortes324forlaz"/>
+      </Item2>
+      <Item3>
         <PackageName Value="FCL"/>
         <MinVersion Major="1" Valid="True"/>
-      </Item2>
+      </Item3>
     </RequiredPkgs>
     <UsageOptions>
       <UnitPath Value="$(PkgOutDir)"/>

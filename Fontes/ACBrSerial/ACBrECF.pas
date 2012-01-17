@@ -5649,12 +5649,14 @@ begin
     Relatorio.Add('CEP.........: ' + IdentificacaoPaf.Empresa.Cep);
     Relatorio.Add('Telefone....: ' + IdentificacaoPaf.Empresa.Telefone);
     Relatorio.Add('Contato.....: ' + IdentificacaoPaf.Empresa.Contato);
+    Relatorio.Add('e-mal.......: ' + IdentificacaoPaf.Empresa.Email);
 
     Relatorio.Add('');
     Relatorio.Add('<n>IDENTIFICACAO DO PAF-ECF</n>');
     Relatorio.Add('</linha_simples>');
     Relatorio.Add('Nome Comerc.: ' + IdentificacaoPaf.Paf.Nome);
     Relatorio.Add('Versao......: ' + IdentificacaoPaf.Paf.Versao);
+    Relatorio.Add('Laudo.......: ' + IdentificacaoPaf.NumeroLaudo);
     Relatorio.Add('ER-PAF-ECF..: ' + IdentificacaoPaf.VersaoER);
     Relatorio.Add('Princ. Exec.: ' + IdentificacaoPaf.Paf.PrincipalExe.Nome);
     Relatorio.Add('MD5.........: ' + IdentificacaoPaf.Paf.PrincipalExe.MD5);
@@ -5760,6 +5762,16 @@ begin
       'desenvolvedora do PAF-ECF.',
       Colunas)
     );
+
+    Relatorio.Add('');
+    Relatorio.Add('<n>IDENTIFICAÇÃO E CARACTERISTICAS DO</n>');
+    Relatorio.Add('<n>PROGRAMA APLICATIVO FISCAL</n>');
+    Relatorio.Add('</linha_simples>');
+    Relatorio.Add(padL('Nome Comercial', TamColDescr, '.')    + ': ' + AInfoPafECF.Nome);
+    Relatorio.Add(padL('Versão', TamColDescr, '.')            + ': ' + AInfoPafECF.Versao);
+    Relatorio.Add(padL('Ling. Programação', TamColDescr, '.') + ': ' + AInfoPafECF.Linguagem);
+    Relatorio.Add(padL('Sist. Operacional', TamColDescr, '.') + ': ' + AInfoPafECF.SistemaOperacional);
+    Relatorio.Add(padL('Banco de Dados.', TamColDescr, '.')   + ': ' + AInfoPafECF.BancoDados);
 
     Relatorio.Add('');
     Relatorio.Add('<n>FUNCIONALIDADES</n>');

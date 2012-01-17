@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 192
-  Top = 194
+  Left = 349
+  Top = 171
   BorderStyle = bsDialog
   Caption = 'Configura'#231#227'o do Arquivo Auxiliar Criptografado (AAC)'
   ClientHeight = 450
@@ -627,6 +627,7 @@ object Form1: TForm1
           Width = 222
           Height = 21
           Style = csDropDownList
+          ItemHeight = 0
           TabOrder = 0
         end
         object cbxTipoIntegracao: TComboBox
@@ -635,6 +636,7 @@ object Form1: TForm1
           Width = 222
           Height = 21
           Style = csDropDownList
+          ItemHeight = 0
           TabOrder = 2
         end
         object cbxTipoDesenvolvimento: TComboBox
@@ -643,6 +645,7 @@ object Form1: TForm1
           Width = 222
           Height = 21
           Style = csDropDownList
+          ItemHeight = 0
           TabOrder = 1
         end
       end
@@ -1080,6 +1083,7 @@ object Form1: TForm1
             Top = 77
             Width = 83
             Height = 21
+            ItemHeight = 13
             ItemIndex = 0
             TabOrder = 1
             Text = 'COM1'
@@ -1110,6 +1114,7 @@ object Form1: TForm1
             Width = 213
             Height = 21
             Style = csDropDownList
+            ItemHeight = 13
             ItemIndex = 0
             TabOrder = 0
             Text = 'ecfBematech'
@@ -1131,6 +1136,7 @@ object Form1: TForm1
             Width = 127
             Height = 21
             Style = csDropDownList
+            ItemHeight = 13
             ItemIndex = 0
             TabOrder = 2
             Text = '9600'

@@ -104,8 +104,6 @@ type
     ckTransfPreVenda: TCheckBox;
     ckTotalizaValoresLista: TCheckBox;
     ckMinasLegal: TCheckBox;
-
-    procedure ACBrAAC1GetChave(var Chave: AnsiString);
     procedure btnSairAplicativoClick(Sender: TObject);
     procedure btnECFCapturarDadosClick(Sender: TObject);
     procedure btnAdicionarECFClick(Sender: TObject);
@@ -113,6 +111,7 @@ type
     procedure btnSalvarArquivoClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure edGTECFKeyPress(Sender: TObject; var Key: Char);
+    procedure ACBrAAC1GetChave(var Chave: String);
   private
     function GetPathArquivoAuxiliar: String;
     procedure buscaInformacoesArquivoAuxiliar;
@@ -204,11 +203,6 @@ begin
   end
   else
     buscaInformacoesArquivoAuxiliar;
-end;
-
-procedure TForm1.ACBrAAC1GetChave(var Chave: AnsiString);
-begin
-  Chave := '1234';
 end;
 
 procedure TForm1.edGTECFKeyPress(Sender: TObject; var Key: Char);
@@ -442,6 +436,11 @@ end;
 procedure Tform1.btnSairAplicativoClick(Sender: TObject);
 begin
   close;
+end;
+
+procedure TForm1.ACBrAAC1GetChave(var Chave: String);
+begin
+  Chave := '1234';
 end;
 
 end.

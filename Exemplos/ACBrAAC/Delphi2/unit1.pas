@@ -15,24 +15,6 @@ type
     Edit1: TEdit;
     ACBrECF: TACBrECF;
     ACBrAAC1: TACBrAAC;
-    GroupBox1: TGroupBox;
-    Label1: TLabel;
-    Label3: TLabel;
-    Label4: TLabel;
-    Label15: TLabel;
-    edRazaoSocial: TEdit;
-    edCNPJ: TEdit;
-    edInscEstadual: TEdit;
-    edInscMunicipal: TEdit;
-    GroupBox2: TGroupBox;
-    Label14: TLabel;
-    Label11: TLabel;
-    Label12: TLabel;
-    Label5: TLabel;
-    edNomePAF: TEdit;
-    edVersaoPAF: TEdit;
-    edMD5Paf: TEdit;
-    edExecutavel: TEdit;
     pnlBotton: TPanel;
     btnSairAplicativo: TSpeedButton;
     btnSalvarArquivo: TSpeedButton;
@@ -55,12 +37,73 @@ type
     cbxECFModelo: TComboBox;
     edCROECF: TSpinEdit;
     lstECFsAutorizados: TListView;
+    cbxECFVelocidade: TComboBox;
+    Label20: TLabel;
+    TabSheet3: TTabSheet;
+    TabSheet4: TTabSheet;
+    Label1: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    Label15: TLabel;
+    edRazaoSocial: TEdit;
+    edCNPJ: TEdit;
+    edInscEstadual: TEdit;
+    edInscMunicipal: TEdit;
+    GroupBox1: TGroupBox;
+    Label14: TLabel;
+    Label11: TLabel;
+    Label12: TLabel;
+    Label5: TLabel;
+    edNomePAF: TEdit;
+    edVersaoPAF: TEdit;
+    edMD5Paf: TEdit;
+    edExecutavel: TEdit;
+    GroupBox2: TGroupBox;
+    edSistemaOperacional: TEdit;
+    Label19: TLabel;
+    edBancoDados: TEdit;
+    Label18: TLabel;
+    edLinguagem: TEdit;
+    Label17: TLabel;
+    GroupBox3: TGroupBox;
     cbxTipoFuncionamento: TComboBox;
-    cbxTipoDesenvolvimento: TComboBox;
     cbxTipoIntegracao: TComboBox;
-    Label10: TLabel;
-    Label13: TLabel;
+    cbxTipoDesenvolvimento: TComboBox;
     Label16: TLabel;
+    Label13: TLabel;
+    Label10: TLabel;
+    pgcConfigPafECF: TPageControl;
+    TabSheet5: TTabSheet;
+    TabSheet6: TTabSheet;
+    TabSheet7: TTabSheet;
+    TabSheet9: TTabSheet;
+    ckRealizaLancamentoMesa: TCheckBox;
+    ckDAVConfAnexoII: TCheckBox;
+    ckRealizaDAVOS: TCheckBox;
+    ckRealizaDAVNaoFiscal: TCheckBox;
+    ckRealizaDAVECF: TCheckBox;
+    ckRealizaPreVenda: TCheckBox;
+    ckDAVDiscrFormula: TCheckBox;
+    ckUsaImpressoraNaoFiscal: TCheckBox;
+    ckBarSimilarECFComum: TCheckBox;
+    ckBarSimilarBalanca: TCheckBox;
+    ckBarSimilarECFRestaurante: TCheckBox;
+    ckIndiceTecnicoProd: TCheckBox;
+    ckCriaAbastDivergEncerrante: TCheckBox;
+    ckIntegradoComBombas: TCheckBox;
+    ckArmazenaEncerranteIniFinal: TCheckBox;
+    ckEmiteContrEncerrAposREDZLEIX: TCheckBox;
+    ckAcumulaVolumeDiario: TCheckBox;
+    ckImpedeVendaVlrZero: TCheckBox;
+    ckCadastroPlacaBomba: TCheckBox;
+    ckTransportePassageiro: TCheckBox;
+    ckCupomMania: TCheckBox;
+    ckEmitePED: TCheckBox;
+    ckTransfDAV: TCheckBox;
+    ckRecompoeGT: TCheckBox;
+    ckTransfPreVenda: TCheckBox;
+    ckTotalizaValoresLista: TCheckBox;
+    ckMinasLegal: TCheckBox;
 
     procedure ACBrAAC1GetChave(var Chave: AnsiString);
     procedure btnSairAplicativoClick(Sender: TObject);
@@ -85,6 +128,9 @@ var
   Form1: TForm1;
 
 implementation
+
+uses
+  TypInfo;
 
 {$R *.dfm}
 
@@ -113,11 +159,43 @@ begin
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);
+var
+  TipoFunc: TACBrPAFTipoFuncionamento;
+  TipoDesenv: TACBrPAFTipoDesenvolvimento;
+  TipoIntegr: TACBrPAFTipoIntegracao;
 begin
-  PageControl1.ActivePageIndex     := 0;
-  cbxTipoFuncionamento.ItemIndex   := 0;
-  cbxTipoDesenvolvimento.ItemIndex := 0;
-  cbxTipoIntegracao.ItemIndex      := 0;
+  PageControl1.ActivePageIndex    := 0;
+  pgcConfigPafECF.ActivePageIndex := 0;
+
+  cbxTipoFuncionamento.Items.BeginUpdate;  
+  try
+    cbxTipoFuncionamento.Items.Clear;
+    for TipoFunc := Low(TACBrPAFTipoFuncionamento) to High(TACBrPAFTipoFuncionamento) do
+      cbxTipoFuncionamento.Items.Add(GetEnumName(TypeInfo(TACBrPAFTipoFuncionamento), Integer(TipoFunc)));
+  finally
+    cbxTipoFuncionamento.Items.EndUpdate;
+    cbxTipoFuncionamento.ItemIndex := 0;
+  end;
+
+  cbxTipoDesenvolvimento.Items.BeginUpdate;  
+  try
+    cbxTipoDesenvolvimento.Items.Clear;
+    for TipoDesenv := Low(TACBrPAFTipoDesenvolvimento) to High(TACBrPAFTipoDesenvolvimento) do
+      cbxTipoDesenvolvimento.Items.Add(GetEnumName(TypeInfo(TACBrPAFTipoDesenvolvimento), Integer(TipoDesenv)));
+  finally
+    cbxTipoDesenvolvimento.Items.EndUpdate;
+    cbxTipoDesenvolvimento.ItemIndex := 0;
+  end;
+
+  cbxTipoIntegracao.Items.BeginUpdate;  
+  try
+    cbxTipoIntegracao.Items.Clear;
+    for TipoIntegr := Low(TACBrPAFTipoIntegracao) to High(TACBrPAFTipoIntegracao) do
+      cbxTipoIntegracao.Items.Add(GetEnumName(TypeInfo(TACBrPAFTipoIntegracao), Integer(TipoIntegr)));
+  finally
+    cbxTipoIntegracao.Items.EndUpdate;
+    cbxTipoIntegracao.ItemIndex := 0;
+  end;    
 
   if not FileExists(GetPathArquivoAuxiliar) then
   begin
@@ -154,19 +232,61 @@ begin
 
     ACBrAAC1.NomeArquivoAux := GetPathArquivoAuxiliar;
     ACBrAAC1.AbrirArquivo;
-    ACBrAAC1.IdentPAF.Empresa.RazaoSocial   := edRazaoSocial.Text;
-    ACBrAAC1.IdentPAF.Empresa.CNPJ          := edCNPJ.Text;
-    ACBrAAC1.IdentPAF.Empresa.IE            := edInscEstadual.Text;
-    ACBrAAC1.IdentPAF.Empresa.IM            := edInscMunicipal.Text;
-    ACBrAAC1.IdentPAF.Paf.Nome              := edNomePAF.Text;
-    ACBrAAC1.IdentPAF.Paf.Versao            := edVersaoPAF.Text;
-    ACBrAAC1.IdentPAF.Paf.PrincipalExe.Nome := edNomePAF.Text;
-    ACBrAAC1.IdentPAF.Paf.PrincipalExe.MD5  := edExecutavel.Text;
+    ACBrAAC1.IdentPAF.Empresa.RazaoSocial    := edRazaoSocial.Text;
+    ACBrAAC1.IdentPAF.Empresa.CNPJ           := edCNPJ.Text;
+    ACBrAAC1.IdentPAF.Empresa.IE             := edInscEstadual.Text;
+    ACBrAAC1.IdentPAF.Empresa.IM             := edInscMunicipal.Text;
+    ACBrAAC1.IdentPAF.Paf.Nome               := edNomePAF.Text;
+    ACBrAAC1.IdentPAF.Paf.Linguagem          := edLinguagem.Text;
+    ACBrAAC1.IdentPAF.Paf.BancoDados         := edBancoDados.Text;
+    ACBrAAC1.IdentPAF.Paf.SistemaOperacional := edSistemaOperacional.Text;
+    ACBrAAC1.IdentPAF.Paf.Versao             := edVersaoPAF.Text;
+    ACBrAAC1.IdentPAF.Paf.PrincipalExe.Nome  := edExecutavel.Text;
+    ACBrAAC1.IdentPAF.Paf.PrincipalExe.MD5   := edMD5Paf.Text;
 
+    //funcionalidades
     ACBrAAC1.IdentPAF.Paf.TipoFuncionamento   := TACBrPAFTipoFuncionamento(cbxTipoFuncionamento.ItemIndex);
     ACBrAAC1.IdentPAF.Paf.TipoDesenvolvimento := TACBrPAFTipoDesenvolvimento(cbxTipoDesenvolvimento.ItemIndex);
     ACBrAAC1.IdentPAF.Paf.IntegracaoPAFECF    := TACBrPAFTipoIntegracao(cbxTipoIntegracao.ItemIndex);
 
+    //parametros de nao concomitancia
+    ACBrAAC1.IdentPAF.Paf.RealizaPreVenda              := ckRealizaPreVenda.Checked;
+    ACBrAAC1.IdentPAF.Paf.RealizaDAVECF                := ckRealizaDAVECF.Checked;
+    ACBrAAC1.IdentPAF.Paf.RealizaDAVNaoFiscal          := ckRealizaDAVNaoFiscal.Checked;
+    ACBrAAC1.IdentPAF.Paf.RealizaDAVOS                 := ckRealizaDAVOS.Checked;
+    ACBrAAC1.IdentPAF.Paf.DAVConfAnexoII               := ckDAVConfAnexoII.Checked;
+    ACBrAAC1.IdentPAF.Paf.RealizaLancamentoMesa        := ckRealizaLancamentoMesa.Checked;
+
+   // aplicações especiais
+    ACBrAAC1.IdentPAF.Paf.IndiceTecnicoProd            := ckIndiceTecnicoProd.Checked;
+    ACBrAAC1.IdentPAF.Paf.BarSimilarECFRestaurante     := ckBarSimilarECFRestaurante.Checked;
+    ACBrAAC1.IdentPAF.Paf.BarSimilarECFComum           := ckBarSimilarECFComum.Checked;
+    ACBrAAC1.IdentPAF.Paf.BarSimilarBalanca            := ckBarSimilarBalanca.Checked;
+    ACBrAAC1.IdentPAF.Paf.UsaImpressoraNaoFiscal       := ckUsaImpressoraNaoFiscal.Checked;
+    ACBrAAC1.IdentPAF.Paf.DAVDiscrFormula              := ckDAVDiscrFormula.Checked;
+
+    //posto
+    ACBrAAC1.IdentPAF.Paf.ImpedeVendaVlrZero           := ckImpedeVendaVlrZero.Checked;
+    ACBrAAC1.IdentPAF.Paf.AcumulaVolumeDiario          := ckAcumulaVolumeDiario.Checked;
+    ACBrAAC1.IdentPAF.Paf.ArmazenaEncerranteIniFinal   := ckArmazenaEncerranteIniFinal.Checked;
+    ACBrAAC1.IdentPAF.Paf.EmiteContrEncerrAposREDZLEIX := ckEmiteContrEncerrAposREDZLEIX.Checked;
+    ACBrAAC1.IdentPAF.Paf.IntegradoComBombas           := ckIntegradoComBombas.Checked;
+    ACBrAAC1.IdentPAF.Paf.CriaAbastDivergEncerrante    := ckCriaAbastDivergEncerrante.Checked;
+    ACBrAAC1.IdentPAF.Paf.CadastroPlacaBomba           := ckCadastroPlacaBomba.Checked;
+
+    // transporte de passageiros
+    ACBrAAC1.IdentPAF.Paf.TransportePassageiro         := ckTransportePassageiro.Checked;
+
+   //criterios por uf
+    ACBrAAC1.IdentPAF.Paf.TotalizaValoresLista         := ckTotalizaValoresLista.Checked;
+    ACBrAAC1.IdentPAF.Paf.TransfPreVenda               := ckTransfPreVenda.Checked;
+    ACBrAAC1.IdentPAF.Paf.TransfDAV                    := ckTransfDAV.Checked;
+    ACBrAAC1.IdentPAF.Paf.RecompoeGT                   := ckRecompoeGT.Checked;
+    ACBrAAC1.IdentPAF.Paf.EmitePED                     := ckEmitePED.Checked;
+    ACBrAAC1.IdentPAF.Paf.CupomMania                   := ckCupomMania.Checked;
+    ACBrAAC1.IdentPAF.Paf.MinasLegal                   := ckMinasLegal.Checked;
+                                                            
+    // ECFS Autorizados para uso
     ACBrAAC1.IdentPAF.ECFsAutorizados.Clear;
     for ct := 0 to lstECFsAutorizados.Items.Count - 1 do
     begin
@@ -196,50 +316,49 @@ var
 begin
   ACBrAAC1.NomeArquivoAux := GetPathArquivoAuxiliar;
   ACBrAAC1.AbrirArquivo;
-  edRazaoSocial.Text   := ACBrAAC1.IdentPAF.Empresa.RazaoSocial;
-  edCNPJ.Text          := ACBrAAC1.IdentPAF.Empresa.CNPJ;
-  edInscEstadual.Text  := ACBrAAC1.IdentPAF.Empresa.IE;
-  edInscMunicipal.Text := ACBrAAC1.IdentPAF.Empresa.IM;
-  edNomePAF.Text       := ACBrAAC1.IdentPAF.Paf.Nome;
-  edVersaoPAF.Text     := ACBrAAC1.IdentPAF.Paf.Versao;
-  edExecutavel.Text    := ACBrAAC1.IdentPAF.Paf.PrincipalExe.Nome;
-  edMD5Paf.Text        := ACBrAAC1.IdentPAF.Paf.PrincipalExe.MD5;
+  edRazaoSocial.Text        := ACBrAAC1.IdentPAF.Empresa.RazaoSocial;
+  edCNPJ.Text               := ACBrAAC1.IdentPAF.Empresa.CNPJ;
+  edInscEstadual.Text       := ACBrAAC1.IdentPAF.Empresa.IE;
+  edInscMunicipal.Text      := ACBrAAC1.IdentPAF.Empresa.IM;
+  edNomePAF.Text            := ACBrAAC1.IdentPAF.Paf.Nome;
+  edVersaoPAF.Text          := ACBrAAC1.IdentPAF.Paf.Versao;
+  edLinguagem.Text          := ACBrAAC1.IdentPAF.Paf.Linguagem;
+  edBancoDados.Text         := ACBrAAC1.IdentPAF.Paf.BancoDados;
+  edSistemaOperacional.Text := ACBrAAC1.IdentPAF.Paf.SistemaOperacional;
+  edExecutavel.Text         := ACBrAAC1.IdentPAF.Paf.PrincipalExe.Nome;
+  edMD5Paf.Text             := ACBrAAC1.IdentPAF.Paf.PrincipalExe.MD5;
 
   cbxTipoFuncionamento.ItemIndex   := Integer(ACBrAAC1.IdentPAF.Paf.TipoFuncionamento);
   cbxTipoDesenvolvimento.ItemIndex := Integer(ACBrAAC1.IdentPAF.Paf.TipoDesenvolvimento);
   cbxTipoIntegracao.ItemIndex      := Integer(ACBrAAC1.IdentPAF.Paf.IntegracaoPAFECF);
 
-
-  {
-      ACBrAAC1.IdentPAF.Paf.RealizaPreVenda;
-      ACBrAAC1.IdentPAF.Paf.RealizaDAVECF;
-      ACBrAAC1.IdentPAF.Paf.RealizaDAVNaoFiscal;
-      ACBrAAC1.IdentPAF.Paf.RealizaDAVOS;
-      ACBrAAC1.IdentPAF.Paf.DAVConfAnexoII;
-      ACBrAAC1.IdentPAF.Paf.RealizaLancamentoMesa;
-      ACBrAAC1.IdentPAF.Paf.IndiceTecnicoProd;
-      ACBrAAC1.IdentPAF.Paf.BarSimilarECFRestaurante;
-      ACBrAAC1.IdentPAF.Paf.BarSimilarECFComum;
-      ACBrAAC1.IdentPAF.Paf.BarSimilarBalanca;
-      ACBrAAC1.IdentPAF.Paf.UsaImpressoraNaoFiscal;
-      ACBrAAC1.IdentPAF.Paf.DAVDiscrFormula;
-      ACBrAAC1.IdentPAF.Paf.ImpedeVendaVlrZero;
-      ACBrAAC1.IdentPAF.Paf.AcumulaVolumeDiario;
-      ACBrAAC1.IdentPAF.Paf.ArmazenaEncerranteIniFinal;
-      ACBrAAC1.IdentPAF.Paf.EmiteContrEncerrAposREDZLEIX;
-      ACBrAAC1.IdentPAF.Paf.IntegradoComBombas;
-      ACBrAAC1.IdentPAF.Paf.CriaAbastDivergEncerrante;
-      ACBrAAC1.IdentPAF.Paf.CadastroPlacaBomba;
-      ACBrAAC1.IdentPAF.Paf.TransportePassageiro;
-      ACBrAAC1.IdentPAF.Paf.TotalizaValoresLista;
-      ACBrAAC1.IdentPAF.Paf.TransfPreVenda;
-      ACBrAAC1.IdentPAF.Paf.TransfDAV;
-      ACBrAAC1.IdentPAF.Paf.NaoCoincGT;
-      ACBrAAC1.IdentPAF.Paf.RecompoeGT;
-      ACBrAAC1.IdentPAF.Paf.EmitePED;
-      ACBrAAC1.IdentPAF.Paf.CupomMania;
-      ACBrAAC1.IdentPAF.Paf.MinasLegal;
-  }
+  ckRealizaPreVenda.Checked              := ACBrAAC1.IdentPAF.Paf.RealizaPreVenda;
+  ckRealizaDAVECF.Checked                := ACBrAAC1.IdentPAF.Paf.RealizaDAVECF;
+  ckRealizaDAVNaoFiscal.Checked          := ACBrAAC1.IdentPAF.Paf.RealizaDAVNaoFiscal;
+  ckRealizaDAVOS.Checked                 := ACBrAAC1.IdentPAF.Paf.RealizaDAVOS;
+  ckDAVConfAnexoII.Checked               := ACBrAAC1.IdentPAF.Paf.DAVConfAnexoII;
+  ckRealizaLancamentoMesa.Checked        := ACBrAAC1.IdentPAF.Paf.RealizaLancamentoMesa;
+  ckIndiceTecnicoProd.Checked            := ACBrAAC1.IdentPAF.Paf.IndiceTecnicoProd;
+  ckBarSimilarECFRestaurante.Checked     := ACBrAAC1.IdentPAF.Paf.BarSimilarECFRestaurante;
+  ckBarSimilarECFComum.Checked           := ACBrAAC1.IdentPAF.Paf.BarSimilarECFComum;
+  ckBarSimilarBalanca.Checked            := ACBrAAC1.IdentPAF.Paf.BarSimilarBalanca;
+  ckUsaImpressoraNaoFiscal.Checked       := ACBrAAC1.IdentPAF.Paf.UsaImpressoraNaoFiscal;
+  ckDAVDiscrFormula.Checked              := ACBrAAC1.IdentPAF.Paf.DAVDiscrFormula;
+  ckImpedeVendaVlrZero.Checked           := ACBrAAC1.IdentPAF.Paf.ImpedeVendaVlrZero;
+  ckAcumulaVolumeDiario.Checked          := ACBrAAC1.IdentPAF.Paf.AcumulaVolumeDiario;
+  ckArmazenaEncerranteIniFinal.Checked   := ACBrAAC1.IdentPAF.Paf.ArmazenaEncerranteIniFinal;
+  ckEmiteContrEncerrAposREDZLEIX.Checked := ACBrAAC1.IdentPAF.Paf.EmiteContrEncerrAposREDZLEIX;
+  ckIntegradoComBombas.Checked           := ACBrAAC1.IdentPAF.Paf.IntegradoComBombas;
+  ckCriaAbastDivergEncerrante.Checked    := ACBrAAC1.IdentPAF.Paf.CriaAbastDivergEncerrante;
+  ckCadastroPlacaBomba.Checked           := ACBrAAC1.IdentPAF.Paf.CadastroPlacaBomba;
+  ckTransportePassageiro.Checked         := ACBrAAC1.IdentPAF.Paf.TransportePassageiro;
+  ckTotalizaValoresLista.Checked         := ACBrAAC1.IdentPAF.Paf.TotalizaValoresLista;
+  ckTransfPreVenda.Checked               := ACBrAAC1.IdentPAF.Paf.TransfPreVenda;
+  ckTransfDAV.Checked                    := ACBrAAC1.IdentPAF.Paf.TransfDAV;
+  ckRecompoeGT.Checked                   := ACBrAAC1.IdentPAF.Paf.RecompoeGT;
+  ckEmitePED.Checked                     := ACBrAAC1.IdentPAF.Paf.EmitePED;
+  ckCupomMania.Checked                   := ACBrAAC1.IdentPAF.Paf.CupomMania;
+  ckMinasLegal.Checked                   := ACBrAAC1.IdentPAF.Paf.MinasLegal;
 
   lstECFsAutorizados.Clear;
   lstECFsAutorizados.Items.BeginUpdate;
@@ -259,8 +378,9 @@ begin
   gbxECFCaptura.Enabled := False;
   try
     try
-      ACBrECF.Porta  := cbxECFPorta.Text;
-      ACBrECF.Modelo := TACBrECFModelo(cbxECFModelo.ItemIndex + 2);
+      ACBrECF.Porta       := cbxECFPorta.Text;
+      ACBrECF.Modelo      := TACBrECFModelo(cbxECFModelo.ItemIndex + 2);
+      ACBrECF.Device.Baud :=  StrToInt(cbxECFVelocidade.Text);
       ACBrECF.Ativar;
     except
       on E: Exception do

@@ -823,7 +823,7 @@ TACBrECF = class( TACBrComponent )
       const IndiceRelatorio: Integer = 0);
 
     procedure PafMF_RelParametrosConfiguracao(
-      const AInfoPafECF: TACBrECFInfoPaf; const AIndiceRelatorio: Integer = 1);
+      AInfoPafECF: TACBrECFInfoPaf; const AIndiceRelatorio: Integer = 1);
 
     procedure DoVerificaValorGT ;
     procedure DoAtualizarValorGT ;
@@ -5687,7 +5687,7 @@ begin
   end;
 end;
 
-procedure TACBrECF.PafMF_RelParametrosConfiguracao(const AInfoPafECF: TACBrECFInfoPaf;
+procedure TACBrECF.PafMF_RelParametrosConfiguracao(AInfoPafECF: TACBrECFInfoPaf;
   const AIndiceRelatorio: Integer);
 var
   Relatorio: TStringList;
@@ -5729,6 +5729,14 @@ var
   end;
 
 begin
+  if (not Assigned(AInfoPafECF)) then
+  begin
+    if Assigned(fsAAC) then
+      AInfoPafECF := fsAAC.IdentPAF.Paf
+    else
+      raise Exception.Create( ACBrStr('Parâmetros de configuração do Paf-ECF não informados') ) ;
+  end;
+
   TamColSimNao := Self.Colunas - 3;
   TamColDescr  := Self.Colunas - 25;
 

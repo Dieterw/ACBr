@@ -3,8 +3,8 @@ object Form1: TForm1
   Top = 194
   BorderStyle = bsDialog
   Caption = 'Configura'#231#227'o do Arquivo Auxiliar Criptografado (AAC)'
-  ClientHeight = 500
-  ClientWidth = 792
+  ClientHeight = 450
+  ClientWidth = 730
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -45,7 +45,7 @@ object Form1: TForm1
   object Image1: TImage
     Left = 0
     Top = 0
-    Width = 792
+    Width = 730
     Height = 40
     Align = alTop
     Picture.Data = {
@@ -258,154 +258,16 @@ object Form1: TForm1
     Text = 'Edit1'
     Visible = False
   end
-  object GroupBox1: TGroupBox
-    Left = 0
-    Top = 40
-    Width = 792
-    Height = 66
-    Align = alTop
-    Caption = 'Dados da Empresa Desenvolvedora'
-    TabOrder = 1
-    object Label1: TLabel
-      Left = 8
-      Top = 17
-      Width = 63
-      Height = 13
-      Caption = 'Raz'#227'o Social'
-    end
-    object Label3: TLabel
-      Left = 543
-      Top = 17
-      Width = 67
-      Height = 13
-      Caption = 'Insc. Estadual'
-    end
-    object Label4: TLabel
-      Left = 676
-      Top = 17
-      Width = 74
-      Height = 13
-      Caption = 'Insc. Municipal:'
-    end
-    object Label15: TLabel
-      Left = 385
-      Top = 17
-      Width = 30
-      Height = 13
-      Caption = 'CNPJ:'
-    end
-    object edRazaoSocial: TEdit
-      Left = 8
-      Top = 33
-      Width = 371
-      Height = 21
-      TabOrder = 0
-      Text = 'SUA EMPRESA SISTEMAS LTDA'
-    end
-    object edCNPJ: TEdit
-      Left = 385
-      Top = 33
-      Width = 152
-      Height = 21
-      TabOrder = 1
-      Text = '08101553000142'
-    end
-    object edInscEstadual: TEdit
-      Left = 543
-      Top = 33
-      Width = 127
-      Height = 21
-      TabOrder = 2
-      Text = '54454545'
-    end
-    object edInscMunicipal: TEdit
-      Left = 676
-      Top = 33
-      Width = 105
-      Height = 21
-      TabOrder = 3
-      Text = '32345424'
-    end
-  end
-  object GroupBox2: TGroupBox
-    Left = 0
-    Top = 106
-    Width = 792
-    Height = 68
-    Align = alTop
-    Caption = 'Dados do Aplicativo Emissor de Cupom Fiscal'
-    TabOrder = 2
-    object Label14: TLabel
-      Left = 8
-      Top = 17
-      Width = 89
-      Height = 13
-      Caption = 'Nome do PAF-ECF'
-    end
-    object Label11: TLabel
-      Left = 236
-      Top = 17
-      Width = 36
-      Height = 13
-      Caption = 'Vers'#227'o:'
-    end
-    object Label12: TLabel
-      Left = 449
-      Top = 17
-      Width = 89
-      Height = 13
-      Caption = 'MD5 do aplicativo:'
-    end
-    object Label5: TLabel
-      Left = 323
-      Top = 17
-      Width = 83
-      Height = 13
-      Caption = 'Princ. Execut'#225'vel'
-    end
-    object edNomePAF: TEdit
-      Left = 8
-      Top = 33
-      Width = 222
-      Height = 21
-      TabOrder = 0
-      Text = 'SEU PDV'
-    end
-    object edVersaoPAF: TEdit
-      Left = 236
-      Top = 33
-      Width = 81
-      Height = 21
-      TabOrder = 1
-      Text = '1.5'
-    end
-    object edMD5Paf: TEdit
-      Left = 449
-      Top = 33
-      Width = 332
-      Height = 21
-      TabOrder = 3
-      Text = 'ASBBD45AS4D5AS4D546ASF54D'
-    end
-    object edExecutavel: TEdit
-      Left = 323
-      Top = 33
-      Width = 120
-      Height = 21
-      TabOrder = 2
-      Text = 'PDV.EXE'
-    end
-  end
   object pnlBotton: TPanel
     Left = 0
-    Top = 455
-    Width = 792
+    Top = 405
+    Width = 730
     Height = 45
     Align = alBottom
     BevelOuter = bvNone
-    TabOrder = 4
+    TabOrder = 2
     object btnSairAplicativo: TSpeedButton
-      Left = 631
+      Left = 571
       Top = 6
       Width = 150
       Height = 32
@@ -466,7 +328,7 @@ object Form1: TForm1
       OnClick = btnSairAplicativoClick
     end
     object btnSalvarArquivo: TSpeedButton
-      Left = 475
+      Left = 415
       Top = 6
       Width = 150
       Height = 32
@@ -533,46 +395,537 @@ object Form1: TForm1
   end
   object PageControl1: TPageControl
     Left = 0
-    Top = 174
-    Width = 792
-    Height = 281
+    Top = 40
+    Width = 730
+    Height = 365
     ActivePage = TabSheet2
     Align = alClient
-    TabOrder = 3
+    TabOrder = 1
+    TabStop = False
+    object TabSheet4: TTabSheet
+      Caption = 'Dados da empresa desenvolvedora'
+      ImageIndex = 3
+      object Label1: TLabel
+        Left = 12
+        Top = 12
+        Width = 63
+        Height = 13
+        Caption = 'Raz'#227'o Social'
+      end
+      object Label3: TLabel
+        Left = 170
+        Top = 55
+        Width = 67
+        Height = 13
+        Caption = 'Insc. Estadual'
+      end
+      object Label4: TLabel
+        Left = 303
+        Top = 55
+        Width = 74
+        Height = 13
+        Caption = 'Insc. Municipal:'
+      end
+      object Label15: TLabel
+        Left = 12
+        Top = 55
+        Width = 30
+        Height = 13
+        Caption = 'CNPJ:'
+      end
+      object edRazaoSocial: TEdit
+        Left = 12
+        Top = 28
+        Width = 396
+        Height = 21
+        TabOrder = 0
+        Text = 'SUA EMPRESA SISTEMAS LTDA'
+      end
+      object edCNPJ: TEdit
+        Left = 12
+        Top = 71
+        Width = 152
+        Height = 21
+        TabOrder = 1
+        Text = '08101553000142'
+      end
+      object edInscEstadual: TEdit
+        Left = 170
+        Top = 71
+        Width = 127
+        Height = 21
+        TabOrder = 2
+        Text = '54454545'
+      end
+      object edInscMunicipal: TEdit
+        Left = 303
+        Top = 71
+        Width = 105
+        Height = 21
+        TabOrder = 3
+        Text = '32345424'
+      end
+    end
+    object TabSheet3: TTabSheet
+      Caption = 'Dados do aplicativo Paf-ECF'
+      ImageIndex = 2
+      object GroupBox1: TGroupBox
+        Left = 0
+        Top = 0
+        Width = 722
+        Height = 126
+        Align = alTop
+        Caption = 'Identifica'#231#227'o'
+        TabOrder = 0
+        object Label14: TLabel
+          Left = 12
+          Top = 27
+          Width = 89
+          Height = 13
+          Caption = 'Nome do PAF-ECF'
+        end
+        object Label11: TLabel
+          Left = 240
+          Top = 27
+          Width = 36
+          Height = 13
+          Caption = 'Vers'#227'o:'
+        end
+        object Label12: TLabel
+          Left = 240
+          Top = 72
+          Width = 89
+          Height = 13
+          Caption = 'MD5 do aplicativo:'
+        end
+        object Label5: TLabel
+          Left = 12
+          Top = 70
+          Width = 96
+          Height = 13
+          Caption = 'Principal Execut'#225'vel'
+        end
+        object edNomePAF: TEdit
+          Left = 12
+          Top = 43
+          Width = 222
+          Height = 21
+          TabOrder = 0
+          Text = 'SEU PDV'
+        end
+        object edVersaoPAF: TEdit
+          Left = 240
+          Top = 43
+          Width = 81
+          Height = 21
+          TabOrder = 1
+          Text = '1.5'
+        end
+        object edMD5Paf: TEdit
+          Left = 240
+          Top = 88
+          Width = 222
+          Height = 21
+          TabOrder = 3
+          Text = 'ASBBD45AS4D5AS4D546ASF54D'
+        end
+        object edExecutavel: TEdit
+          Left = 12
+          Top = 86
+          Width = 222
+          Height = 21
+          TabOrder = 2
+          Text = 'PDV.EXE'
+        end
+      end
+      object GroupBox2: TGroupBox
+        Left = 0
+        Top = 126
+        Width = 722
+        Height = 85
+        Align = alTop
+        Caption = 'Caracter'#237'sticas'
+        TabOrder = 1
+        object Label19: TLabel
+          Left = 468
+          Top = 29
+          Width = 119
+          Height = 13
+          Caption = 'Banco de dados utilizado'
+        end
+        object Label18: TLabel
+          Left = 240
+          Top = 29
+          Width = 132
+          Height = 13
+          Caption = 'Linguagem de programa'#231#227'o'
+        end
+        object Label17: TLabel
+          Left = 12
+          Top = 29
+          Width = 102
+          Height = 13
+          Caption = 'Sistemas Operacional'
+        end
+        object edSistemaOperacional: TEdit
+          Left = 12
+          Top = 45
+          Width = 222
+          Height = 21
+          TabOrder = 0
+          Text = 'WINDOWS'
+        end
+        object edBancoDados: TEdit
+          Left = 468
+          Top = 45
+          Width = 222
+          Height = 21
+          TabOrder = 2
+          Text = 'FIREBIRD'
+        end
+        object edLinguagem: TEdit
+          Left = 240
+          Top = 45
+          Width = 222
+          Height = 21
+          TabOrder = 1
+          Text = 'DELPHI'
+        end
+      end
+      object GroupBox3: TGroupBox
+        Left = 0
+        Top = 211
+        Width = 722
+        Height = 126
+        Align = alClient
+        Caption = 'Funcionalidades'
+        TabOrder = 2
+        object Label16: TLabel
+          Left = 468
+          Top = 22
+          Width = 89
+          Height = 13
+          Caption = 'Tipo de integra'#231#227'o'
+        end
+        object Label13: TLabel
+          Left = 240
+          Top = 22
+          Width = 119
+          Height = 13
+          Caption = 'Tipo de desenvolvimento'
+        end
+        object Label10: TLabel
+          Left = 12
+          Top = 22
+          Width = 109
+          Height = 13
+          Caption = 'Tipo de funcionamento'
+        end
+        object cbxTipoFuncionamento: TComboBox
+          Left = 12
+          Top = 38
+          Width = 222
+          Height = 21
+          Style = csDropDownList
+          TabOrder = 0
+        end
+        object cbxTipoIntegracao: TComboBox
+          Left = 468
+          Top = 38
+          Width = 222
+          Height = 21
+          Style = csDropDownList
+          TabOrder = 2
+        end
+        object cbxTipoDesenvolvimento: TComboBox
+          Left = 240
+          Top = 38
+          Width = 222
+          Height = 21
+          Style = csDropDownList
+          TabOrder = 1
+        end
+      end
+    end
+    object TabSheet2: TTabSheet
+      Caption = 'Configura'#231#245'es do Paf-ECF'
+      ImageIndex = 1
+      object pgcConfigPafECF: TPageControl
+        Left = 0
+        Top = 0
+        Width = 722
+        Height = 337
+        ActivePage = TabSheet5
+        Align = alClient
+        TabOrder = 0
+        TabStop = False
+        object TabSheet5: TTabSheet
+          Caption = 'N'#227'o concomit'#226'ncia'
+          object ckRealizaLancamentoMesa: TCheckBox
+            Left = 14
+            Top = 130
+            Width = 170
+            Height = 17
+            Caption = 'Realiza lan'#231'amento de mesa'
+            TabOrder = 5
+          end
+          object ckDAVConfAnexoII: TCheckBox
+            Left = 34
+            Top = 107
+            Width = 170
+            Height = 17
+            Caption = 'Imprime DAV Impressora normal'
+            TabOrder = 4
+          end
+          object ckRealizaDAVOS: TCheckBox
+            Left = 34
+            Top = 61
+            Width = 107
+            Height = 17
+            Caption = 'Realiza DAV-OS'
+            TabOrder = 2
+          end
+          object ckRealizaDAVNaoFiscal: TCheckBox
+            Left = 34
+            Top = 84
+            Width = 134
+            Height = 17
+            Caption = 'Imprime DAV no ECF'
+            TabOrder = 3
+          end
+          object ckRealizaDAVECF: TCheckBox
+            Left = 14
+            Top = 38
+            Width = 85
+            Height = 17
+            Caption = 'Realiza DAV'
+            TabOrder = 1
+          end
+          object ckRealizaPreVenda: TCheckBox
+            Left = 14
+            Top = 15
+            Width = 115
+            Height = 17
+            Caption = 'Realiza Pr'#233'-Venda'
+            TabOrder = 0
+          end
+        end
+        object TabSheet6: TTabSheet
+          Caption = 'Aplica'#231#245'es especiais'
+          ImageIndex = 1
+          object ckDAVDiscrFormula: TCheckBox
+            Left = 14
+            Top = 155
+            Width = 252
+            Height = 17
+            Caption = 'Imprime DAV discriminando a f'#243'rmula manipulada'
+            TabOrder = 6
+          end
+          object ckUsaImpressoraNaoFiscal: TCheckBox
+            Left = 14
+            Top = 130
+            Width = 272
+            Height = 17
+            Caption = 'Usa impressora n'#227'o fiscal em ambiente de produ'#231#227'o'
+            TabOrder = 5
+          end
+          object ckBarSimilarECFComum: TCheckBox
+            Left = 14
+            Top = 61
+            Width = 222
+            Height = 17
+            Caption = 'Bar, Restaurante e Similares (ECF Comum)'
+            TabOrder = 2
+          end
+          object ckBarSimilarBalanca: TCheckBox
+            Left = 14
+            Top = 84
+            Width = 222
+            Height = 17
+            Caption = 'Bar, Restaurante e Similares com balan'#231'a'
+            TabOrder = 3
+          end
+          object ckBarSimilarECFRestaurante: TCheckBox
+            Left = 14
+            Top = 38
+            Width = 252
+            Height = 17
+            Caption = 'Bar, Restaurante e Similares (ECF Restaurante)'
+            TabOrder = 1
+          end
+          object ckIndiceTecnicoProd: TCheckBox
+            Left = 14
+            Top = 15
+            Width = 232
+            Height = 17
+            Caption = 'Utiliza tabela de ind'#237'ce t'#233'cnico de produ'#231#227'o'
+            TabOrder = 0
+          end
+          object ckTransportePassageiro: TCheckBox
+            Left = 14
+            Top = 107
+            Width = 152
+            Height = 17
+            Caption = 'Transporte de passageiros'
+            TabOrder = 4
+          end
+        end
+        object TabSheet7: TTabSheet
+          Caption = 'Posto de gasolina'
+          ImageIndex = 2
+          object ckCriaAbastDivergEncerrante: TCheckBox
+            Left = 14
+            Top = 130
+            Width = 317
+            Height = 17
+            Caption = 'Cria um abastecimento em caso de diverg'#234'ncia de encerrantes'
+            TabOrder = 0
+          end
+          object ckIntegradoComBombas: TCheckBox
+            Left = 14
+            Top = 107
+            Width = 172
+            Height = 17
+            Caption = 'Paf-ECF integrado com bombas'
+            TabOrder = 1
+          end
+          object ckArmazenaEncerranteIniFinal: TCheckBox
+            Left = 14
+            Top = 61
+            Width = 302
+            Height = 17
+            Caption = 'Armazena o encerrante inicial e final a cada abastecimento'
+            TabOrder = 2
+          end
+          object ckEmiteContrEncerrAposREDZLEIX: TCheckBox
+            Left = 14
+            Top = 84
+            Width = 317
+            Height = 17
+            Caption = 'Emite o controle de encerrantes ap'#243's a redu'#231#227'o Z e leitura X'
+            TabOrder = 3
+          end
+          object ckAcumulaVolumeDiario: TCheckBox
+            Left = 14
+            Top = 38
+            Width = 287
+            Height = 17
+            Caption = 'Acumula por dia o valor da venda de cada combust'#237'vel'
+            TabOrder = 4
+          end
+          object ckImpedeVendaVlrZero: TCheckBox
+            Left = 14
+            Top = 15
+            Width = 292
+            Height = 17
+            Caption = 'Impede o registro de venda com valor zerado ou negativo'
+            TabOrder = 5
+          end
+          object ckCadastroPlacaBomba: TCheckBox
+            Left = 14
+            Top = 153
+            Width = 217
+            Height = 17
+            Caption = 'Possui cadastro das placas das bombas'
+            TabOrder = 6
+          end
+        end
+        object TabSheet9: TTabSheet
+          Caption = 'Crit'#233'rios por UF'
+          ImageIndex = 4
+          object ckCupomMania: TCheckBox
+            Left = 14
+            Top = 130
+            Width = 92
+            Height = 17
+            Caption = 'Cupom Mania'
+            TabOrder = 0
+          end
+          object ckEmitePED: TCheckBox
+            Left = 14
+            Top = 107
+            Width = 207
+            Height = 17
+            Caption = 'Emiss'#227'o de documento fiscal por PED'
+            TabOrder = 1
+          end
+          object ckTransfDAV: TCheckBox
+            Left = 29
+            Top = 61
+            Width = 142
+            Height = 17
+            Caption = 'Transforma lista em DAV'
+            TabOrder = 2
+          end
+          object ckRecompoeGT: TCheckBox
+            Left = 14
+            Top = 84
+            Width = 122
+            Height = 17
+            Caption = 'Recomp'#245'e valor GT'
+            TabOrder = 3
+          end
+          object ckTransfPreVenda: TCheckBox
+            Left = 29
+            Top = 38
+            Width = 172
+            Height = 17
+            Caption = 'Transforma lista em Pr'#233'-Venda'
+            TabOrder = 4
+          end
+          object ckTotalizaValoresLista: TCheckBox
+            Left = 14
+            Top = 15
+            Width = 132
+            Height = 17
+            Caption = 'Totaliza valores da lista'
+            TabOrder = 5
+          end
+          object ckMinasLegal: TCheckBox
+            Left = 14
+            Top = 153
+            Width = 77
+            Height = 17
+            Caption = 'Minas Legal'
+            TabOrder = 6
+          end
+        end
+      end
+    end
     object TabSheet1: TTabSheet
       Caption = 'ECF Autorizados para funcionamento'
       object GroupBox4: TGroupBox
         Left = 0
         Top = 0
-        Width = 404
-        Height = 253
+        Width = 341
+        Height = 337
         Align = alLeft
         Caption = 'Dados do ECF a ser Adicionado'
         TabOrder = 0
         object Label6: TLabel
-          Left = 8
-          Top = 18
+          Left = 11
+          Top = 28
           Width = 120
           Height = 13
           Caption = 'N'#250'mero de S'#233'rie do ECF:'
         end
         object Label7: TLabel
-          Left = 207
-          Top = 18
+          Left = 11
+          Top = 71
           Width = 18
           Height = 13
           Caption = 'GT:'
         end
         object Label8: TLabel
-          Left = 334
-          Top = 18
+          Left = 138
+          Top = 71
           Width = 26
           Height = 13
           Caption = 'CRO:'
         end
         object btnAdicionarECF: TSpeedButton
-          Left = 292
-          Top = 61
+          Left = 232
+          Top = 46
           Width = 100
           Height = 28
           Caption = 'Adicionar ECF'
@@ -606,8 +959,8 @@ object Form1: TForm1
           OnClick = btnAdicionarECFClick
         end
         object btnExcluirECFs: TSpeedButton
-          Left = 186
-          Top = 61
+          Left = 232
+          Top = 80
           Width = 100
           Height = 28
           Caption = 'Excluir ECFs'
@@ -641,15 +994,15 @@ object Form1: TForm1
           OnClick = btnExcluirECFsClick
         end
         object edNumeroSerieECF: TEdit
-          Left = 8
-          Top = 34
-          Width = 193
+          Left = 11
+          Top = 44
+          Width = 185
           Height = 21
           TabOrder = 0
         end
         object edGTECF: TEdit
-          Left = 207
-          Top = 34
+          Left = 11
+          Top = 87
           Width = 121
           Height = 21
           TabOrder = 1
@@ -657,17 +1010,17 @@ object Form1: TForm1
         end
         object gbxECFCaptura: TGroupBox
           Left = 2
-          Top = 184
-          Width = 400
-          Height = 67
+          Top = 226
+          Width = 337
+          Height = 109
           Align = alBottom
           Caption = 'Capturar dados de um ECF conectado'
           TabOrder = 3
           object btnECFCapturarDados: TSpeedButton
-            Left = 290
-            Top = 30
+            Left = 230
+            Top = 35
             Width = 100
-            Height = 28
+            Height = 63
             Hint = 'Capturar dados do ECF conectado'
             Caption = 'Capturar'
             Glyph.Data = {
@@ -709,15 +1062,22 @@ object Form1: TForm1
             Caption = 'Modelo'
           end
           object Label9: TLabel
-            Left = 201
-            Top = 18
+            Left = 10
+            Top = 61
             Width = 25
             Height = 13
             Caption = 'Porta'
           end
+          object Label20: TLabel
+            Left = 97
+            Top = 61
+            Width = 53
+            Height = 13
+            Caption = 'Velocidade'
+          end
           object cbxECFPorta: TComboBox
-            Left = 201
-            Top = 34
+            Left = 8
+            Top = 77
             Width = 83
             Height = 21
             ItemIndex = 0
@@ -747,7 +1107,7 @@ object Form1: TForm1
           object cbxECFModelo: TComboBox
             Left = 10
             Top = 34
-            Width = 185
+            Width = 213
             Height = 21
             Style = csDropDownList
             ItemIndex = 0
@@ -765,10 +1125,23 @@ object Form1: TForm1
               'ecfICash'
               'ecfQuattro')
           end
+          object cbxECFVelocidade: TComboBox
+            Left = 97
+            Top = 77
+            Width = 127
+            Height = 21
+            Style = csDropDownList
+            ItemIndex = 0
+            TabOrder = 2
+            Text = '9600'
+            Items.Strings = (
+              '9600'
+              '115200')
+          end
         end
         object edCROECF: TSpinEdit
-          Left = 334
-          Top = 34
+          Left = 138
+          Top = 87
           Width = 58
           Height = 22
           MaxValue = 0
@@ -778,10 +1151,10 @@ object Form1: TForm1
         end
       end
       object lstECFsAutorizados: TListView
-        Left = 404
+        Left = 341
         Top = 0
-        Width = 380
-        Height = 253
+        Width = 381
+        Height = 337
         Align = alClient
         Columns = <
           item
@@ -800,68 +1173,6 @@ object Form1: TForm1
         RowSelect = True
         TabOrder = 1
         ViewStyle = vsReport
-      end
-    end
-    object TabSheet2: TTabSheet
-      Caption = 'Configura'#231#245'es do Paf-ECF'
-      ImageIndex = 1
-      object Label10: TLabel
-        Left = 3
-        Top = 9
-        Width = 109
-        Height = 13
-        Caption = 'Tipo de funcionamento'
-      end
-      object Label13: TLabel
-        Left = 215
-        Top = 9
-        Width = 119
-        Height = 13
-        Caption = 'Tipo de desenvolvimento'
-      end
-      object Label16: TLabel
-        Left = 427
-        Top = 9
-        Width = 89
-        Height = 13
-        Caption = 'Tipo de integra'#231#227'o'
-      end
-      object cbxTipoFuncionamento: TComboBox
-        Left = 3
-        Top = 25
-        Width = 206
-        Height = 21
-        Style = csDropDownList
-        TabOrder = 0
-        Items.Strings = (
-          'tpfStandAlone'
-          'tpfEmRede'
-          'tpfParametrizavel')
-      end
-      object cbxTipoDesenvolvimento: TComboBox
-        Left = 215
-        Top = 25
-        Width = 206
-        Height = 21
-        Style = csDropDownList
-        TabOrder = 1
-        Items.Strings = (
-          'tpdComercializavel'
-          'tpdExclusivoProprio'
-          'tpdExclusivoTerceirizado')
-      end
-      object cbxTipoIntegracao: TComboBox
-        Left = 427
-        Top = 25
-        Width = 206
-        Height = 21
-        Style = csDropDownList
-        TabOrder = 2
-        Items.Strings = (
-          'tpiRetaguarda'
-          'tpiPED'
-          'tpiAmbos'
-          'tpiNaoIntegra')
       end
     end
   end
@@ -926,7 +1237,6 @@ object Form1: TForm1
     Top = 3
   end
   object ACBrAAC1: TACBrAAC
-    GravarConfigApp = False
     IdentPAF.Paf.TipoFuncionamento = tpfStandAlone
     IdentPAF.Paf.TipoDesenvolvimento = tpdComercializavel
     IdentPAF.Paf.IntegracaoPAFECF = tpiRetaguarda
@@ -953,7 +1263,6 @@ object Form1: TForm1
     IdentPAF.Paf.TotalizaValoresLista = False
     IdentPAF.Paf.TransfPreVenda = False
     IdentPAF.Paf.TransfDAV = False
-    IdentPAF.Paf.NaoCoincGT = False
     IdentPAF.Paf.RecompoeGT = False
     IdentPAF.Paf.EmitePED = False
     IdentPAF.Paf.CupomMania = False

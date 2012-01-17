@@ -279,12 +279,15 @@ begin
 
      if GravarDadosPAF then
      begin
-        fsIdentPAF.NumeroLaudo             := Ini.ReadString('PAF','NumeroLaudo',''); // Número do Laudo
-        fsIdentPAF.VersaoER                := Ini.ReadString('PAF','VersaoER','');    // Versão do Roteiro Executado na Homologação
-        fsIdentPAF.Paf.Nome                := Ini.ReadString('PAF','Nome','');        // Nome do Sistema PAF
-        fsIdentPAF.Paf.Versao              := Ini.ReadString('PAF','Versao','');      // Versão do Sistema PAF
-        fsIdentPAF.Paf.PrincipalExe.Nome   := Ini.ReadString('PAF','NomeExe','');     // Nome do Principal EXE do PAF
-        fsIdentPAF.Paf.PrincipalExe.MD5    := Ini.ReadString('PAF','MD5Exe','');      // MD5 do Principal EXE do PAF
+        fsIdentPAF.NumeroLaudo             := Ini.ReadString('PAF','NumeroLaudo','');        // Número do Laudo
+        fsIdentPAF.VersaoER                := Ini.ReadString('PAF','VersaoER','');           // Versão do Roteiro Executado na Homologação
+        fsIdentPAF.Paf.Nome                := Ini.ReadString('PAF','Nome','');               // Nome do Sistema PAF
+        fsIdentPAF.Paf.Versao              := Ini.ReadString('PAF','Versao','');             // Versão do Sistema PAF
+        fsIdentPAF.Paf.Linguagem           := Ini.ReadString('PAF','Linguagem','');          // Linguagem de programação utilizada
+        fsIdentPAF.Paf.BancoDados          := Ini.ReadString('PAF','BancoDados','');         // Banco de dados utilizado
+        fsIdentPAF.Paf.SistemaOperacional  := Ini.ReadString('PAF','SistemaOperacional',''); // Sistema operacional em que roda o aplicativo
+        fsIdentPAF.Paf.PrincipalExe.Nome   := Ini.ReadString('PAF','NomeExe','');            // Nome do Principal EXE do PAF
+        fsIdentPAF.Paf.PrincipalExe.MD5    := Ini.ReadString('PAF','MD5Exe','');             // MD5 do Principal EXE do PAF
 
         fsIdentPAF.Paf.TipoFuncionamento   := TACBrPAFTipoFuncionamento(Ini.ReadInteger('PAF', 'TipoFuncionamento', 0));
         fsIdentPAF.Paf.TipoDesenvolvimento := TACBrPAFTipoDesenvolvimento(Ini.ReadInteger('PAF', 'TipoDesenvolvimento', 0));
@@ -441,6 +444,11 @@ begin
      begin
         Ini.WriteString('PAF','Nome',fsIdentPAF.Paf.Nome);                 // Nome do Sistema PAF
         Ini.WriteString('PAF','Versao',fsIdentPAF.Paf.Versao);             // Versão do Sistema PAF
+
+        Ini.WriteString('PAF','Linguagem',fsIdentPAF.Paf.Linguagem);                   // Linguagem de programação utilizada
+        Ini.WriteString('PAF','BancoDados',fsIdentPAF.Paf.BancoDados);                 // Banco de dados utilizado
+        Ini.WriteString('PAF','SistemaOperacional',fsIdentPAF.Paf.SistemaOperacional); // Sistema operacional no qual roda o aplicativo
+
         Ini.WriteString('PAF','NumeroLaudo',fsIdentPAF.NumeroLaudo);       // Número do Laudo
         Ini.WriteString('PAF','VersaoER',fsIdentPAF.VersaoER);             // Versão do Roteiro Executado na Homologação
         Ini.WriteString('PAF','NomeExe',fsIdentPAF.Paf.PrincipalExe.Nome); // Nome do Principal EXE do PAF

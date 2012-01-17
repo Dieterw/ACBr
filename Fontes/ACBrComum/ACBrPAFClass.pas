@@ -177,6 +177,9 @@ type
     FEmitePED: Boolean;
     FMinasLegal: Boolean;
     FCupomMania: Boolean;
+    fsBancoDados: String;
+    fsSistemaOperacional: String;
+    fsLinguagem: String;
     procedure SetVersao(const AValue : String) ;
   public
     constructor Create;
@@ -184,6 +187,9 @@ type
   published
     property Nome: String read fsNome write fsNome;
     property Versao: String read fsVersao write SetVersao;
+    property BancoDados: String read fsBancoDados write fsBancoDados;
+    property Linguagem: String read fsLinguagem write fsLinguagem;
+    property SistemaOperacional: String read fsSistemaOperacional write fsSistemaOperacional;
     property PrincipalExe: TACBrECFArquivo read fsPrincipalExe write fsPrincipalExe;
 
     //funcionalidades

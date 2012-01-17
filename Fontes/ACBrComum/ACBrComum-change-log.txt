@@ -38,6 +38,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+17/01/2012
+-- ACBrAAC, ACBrPAF --
+[*] Adição de novos campos que devem ser informados no relatório de configuração
+    do paf-ECF, gravação dos campos no arquivo auxiliar.
+    por: Régys Silveira
+
 05/12/2011
 -- ACBrNFe2 --
 [*] Inclusão de diretivas de compilação para o Delphi XE2 nos Danfes para RAVE

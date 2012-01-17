@@ -58,6 +58,8 @@ type
   TRegistroD170List = class;
   TRegistroD180List = class;
   TRegistroD190List = class; {Márcio Lopes 21Dez2009}
+  TRegistroD195List = class; {Cilleni Caetano 16Jan2012}
+  TRegistroD197List = class; {Cilleni Caetano 16Jan2012} 
   TRegistroD300List = class;
   TRegistroD301List = class;
   TRegistroD310List = class;
@@ -141,6 +143,7 @@ type
     FRegistroD170: TRegistroD170List;
     FRegistroD180: TRegistroD180List;
     FRegistroD190: TRegistroD190List; /// BLOCO D - Lista de RegistroD190 (FILHO) {Márcio Lopes 21Dez2009}
+    FRegistroD195: TRegistroD195List;
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
@@ -176,6 +179,7 @@ type
     property RegistroD170: TRegistroD170List read FRegistroD170 write FRegistroD170;
     property RegistroD180: TRegistroD180List read FRegistroD180 write FRegistroD180;
     property RegistroD190: TRegistroD190List read FRegistroD190 write FRegistroD190;  {Márcio Lopes 04Dez2009}
+    property RegistroD195: TRegistroD195List read FRegistroD195 write FRegistroD195;    
   end;
 
   /// Registro D100 - Lista
@@ -611,6 +615,67 @@ type
   public
     function New: TRegistroD190;
     property Items[Index: Integer]: TRegistroD190 read GetItem write SetItem;
+  end;
+
+  /// Registro D195 - OBSERVAÇOES DO LANÇAMENTO FISCAL (CÓDIGO 07, 08, 09, 10, 11, 26 E 27)
+
+  TRegistroD195 = class
+  private
+    fCOD_OBS: String;    /// Código da observação do lançamento fiscal (campo 02 do Registro 0460)
+    fTXT_COMPL: String;  /// Descrição complementar do código de observação.
+
+    fRegistroD197: TRegistroD197List;
+  public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
+    property COD_OBS: String read FCOD_OBS write FCOD_OBS;
+    property TXT_COMPL: String read FTXT_COMPL write FTXT_COMPL;
+
+    property RegistroD197: TRegistroD197List read FRegistroD197 write FRegistroD197;
+  end;
+
+  /// Registro D195 - Lista
+
+  TRegistroD195List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroD195; /// GetItem
+    procedure SetItem(Index: Integer; const Value: TRegistroD195); /// SetItem
+  public
+    function New: TRegistroD195;
+    property Items[Index: Integer]: TRegistroD195 read GetItem write SetItem;
+  end;
+
+  /// Registro D197 - OUTRAS OBRIGAÇÕES TRIBUTÁRIAS, AJUSTES E INFORMAÇÕES DE VALORES PROVENIENTES DE DOCUMENTO FISCAL.
+
+  TRegistroD197 = class
+  private
+    fCOD_AJ: String;           /// Código do ajustes/benefício/incentivo, conforme tabela indicada no item 5.3.
+    fDESCR_COMPL_AJ: String;   /// Descrição complementar do ajuste da apuração, nos casos em que o código da tabela for “9999”
+    fCOD_ITEM: String;         /// Código do item (campo 02 do Registro 0200)
+    fVL_BC_ICMS: currency;     /// Base de cálculo do ICMS ou do ICMS ST
+    fALIQ_ICMS: currency;      /// Alíquota do ICMS
+    fVL_ICMS: currency;        /// Valor do ICMS ou do ICMS ST
+    fVL_OUTROS: currency;      /// Outros valores
+  public
+    property COD_AJ: String read FCOD_AJ write FCOD_AJ;
+    property DESCR_COMPL_AJ: String read FDESCR_COMPL_AJ write FDESCR_COMPL_AJ;
+    property COD_ITEM: String read FCOD_ITEM write FCOD_ITEM;
+    property VL_BC_ICMS: currency read FVL_BC_ICMS write FVL_BC_ICMS;
+    property ALIQ_ICMS: currency read FALIQ_ICMS write FALIQ_ICMS;
+    property VL_ICMS: currency read FVL_ICMS write FVL_ICMS;
+    property VL_OUTROS: currency read FVL_OUTROS write FVL_OUTROS;
+  end;
+
+  /// Registro C197 - Lista
+
+  TRegistroD197List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistroD197; /// GetItem
+    procedure SetItem(Index: Integer; const Value: TRegistroD197); /// SetItem
+  public
+    function New: TRegistroD197;
+    property Items[Index: Integer]: TRegistroD197 read GetItem write SetItem;
   end;
 
   /// Registro D300 - REGISTRO ANALÍTICO DOS BILHETES CONSOLIDADOS DE PASSAGEM RODOVIÁRIO (CÓDIGO 13), DE PASSAGEM AQUAVIÁRIO (CÓDIGO 14), DE PASSAGEM E NOTA DE BAGAGEM (CÓDIGO 15) E DE PASSAGEM FERROVIÁRIO (CÓDIGO 16)
@@ -1580,6 +1645,45 @@ begin
   Put(Index, Value);
 end;
 
+
+
+{ TRegistroD195List }
+
+function TRegistroD195List.GetItem(Index: Integer): TRegistroD195;
+begin
+  Result := TRegistroD195(Inherited Items[Index]);
+end;
+
+function TRegistroD195List.New: TRegistroD195;
+begin
+  Result := TRegistroD195.Create;
+  Add(Result);
+end;
+
+procedure TRegistroD195List.SetItem(Index: Integer; const Value: TRegistroD195);
+begin
+  Put(Index, Value);
+end;
+
+{ TRegistroD197List }
+
+function TRegistroD197List.GetItem(Index: Integer): TRegistroD197;
+begin
+  Result := TRegistroD197(Inherited Items[Index]);
+end;
+
+function TRegistroD197List.New: TRegistroD197;
+begin
+  Result := TRegistroD197.Create;
+  Add(Result);
+end;
+
+procedure TRegistroD197List.SetItem(Index: Integer; const Value: TRegistroD197);
+begin
+  Put(Index, Value);
+end;
+
+
 { TRegistroD300List }
 
 function TRegistroD300List.GetItem(Index: Integer): TRegistroD300;
@@ -1990,6 +2094,19 @@ begin
   FRegistroD510.Free;
   FRegistroD530.Free;
   FRegistroD590.Free;
+  inherited;
+end;
+
+{ TRegistroC195 }
+
+constructor TRegistroD195.Create;
+begin
+   FRegistroD197 := TRegistroD197List.Create;
+end;
+
+destructor TRegistroD195.Destroy;
+begin
+  FRegistroD197.Free;
   inherited;
 end;
 

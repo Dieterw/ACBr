@@ -36,6 +36,8 @@
 |*
 |* 10/04/2009: Isaque Pinheiro
 |*  - Criação e distribuição da Primeira Versao
+|* 16/01/2012: Cilleni Caeano
+|*  - Criado o registro 1010
 *******************************************************************************}
 
 unit ACBrEFDBloco_1;
@@ -46,6 +48,7 @@ uses
   SysUtils, Classes, Contnrs, DateUtils, ACBrEFDBlocos;
 
 type
+  TRegistro1010List = class;
   TRegistro1100List = class;
   TRegistro1105List = class;
   TRegistro1110List = class;
@@ -57,6 +60,7 @@ type
   TRegistro1350List = class;
   TRegistro1360List = class;
   TRegistro1370List = class;
+  TRegistro1390List = class;  
   TRegistro1400List = class;
   TRegistro1500List = class;
   TRegistro1510List = class;
@@ -69,10 +73,12 @@ type
 
   TRegistro1001 = class(TOpenBlocos)
   private
+    FRegistro1010: TRegistro1010List;
     FRegistro1100: TRegistro1100List;
     FRegistro1200: TRegistro1200List;
     FRegistro1300: TRegistro1300List;
     FRegistro1350: TRegistro1350List;
+    FRegistro1390: TRegistro1390List;    
     FRegistro1400: TRegistro1400List;
     FRegistro1500: TRegistro1500List;
     FRegistro1600: TRegistro1600List;
@@ -82,10 +88,12 @@ type
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
 
+    property Registro1010: TRegistro1010List read FRegistro1010 write FRegistro1010;    
     property Registro1100: TRegistro1100List read FRegistro1100 write FRegistro1100;
     property Registro1200: TRegistro1200List read FRegistro1200 write FRegistro1200;
     property Registro1300: TRegistro1300List read FRegistro1300 write FRegistro1300;
     property Registro1350: TRegistro1350List read FRegistro1350 write FRegistro1350;
+    property Registro1390: TRegistro1390List read FRegistro1390 write FRegistro1390;
     property Registro1400: TRegistro1400List read FRegistro1400 write FRegistro1400;
     property Registro1500: TRegistro1500List read FRegistro1500 write FRegistro1500;
     property Registro1600: TRegistro1600List read FRegistro1600 write FRegistro1600;
@@ -138,6 +146,46 @@ type
   public
     function New: TRegistro1100;
     property Items[Index: Integer]: TRegistro1100 read GetItem write SetItem;
+  end;
+
+  /// Registro 1010 - Obrigatoriedade de registros do Bloco 1
+
+  TRegistro1010 = class
+  private
+    fIND_EXP   : String;// Reg. 1100 - Ocorreu averbação (conclusão) de exportação no período:
+    fIND_CCRF  : String;// Reg. 1200 – Existem informações acerca de créditos de ICMS a serem controlados, definidos pela Sefaz:
+    fIND_COMB  : String;// Reg. 1300 – É comercio varejista de combustíveis:
+    fIND_USINA : String;// Reg. 1390 – Usinas de açúcar e/álcool – O estabelecimento é produtor de açúcar e/ou álcool carburante:
+    fIND_VA    : String;// Reg. 1400 – Existem informações a serem prestadas neste registro e o registro é obrigatório em sua Unidade da Federação:
+    fIND_EE    : String;// Reg. 1500 - A empresa é distribuidora de energia e ocorreu fornecimento de energia elétrica para consumidores de outra UF:
+    fIND_CART  : String;// Reg. 1600 - Realizou vendas com Cartão de Crédito ou de débito:
+    fIND_FORM  : String;// Reg. 1700 - É obrigatório em sua unidade da federação o controle de utilização de documentos  fiscais em papel:
+    fIND_AER   : String;// Reg. 1800 – A empresa prestou serviços de transporte aéreo de cargas e de passageiros:
+
+  public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
+    property IND_EXP   : String read fIND_EXP   write fIND_EXP   ;
+    property IND_CCRF  : String read fIND_CCRF  write fIND_CCRF  ;
+    property IND_COMB  : String read fIND_COMB  write fIND_COMB  ;
+    property IND_USINA : String read fIND_USINA write fIND_USINA ;
+    property IND_VA    : String read fIND_VA    write fIND_VA    ;
+    property IND_EE    : String read fIND_EE    write fIND_EE    ;
+    property IND_CART  : String read fIND_CART  write fIND_CART  ;
+    property IND_FORM  : String read fIND_FORM  write fIND_FORM  ;
+    property IND_AER   : String read fIND_AER   write fIND_AER   ;
+  end;
+
+  /// Registro 1010 - Lista
+
+  TRegistro1010List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistro1010;
+    procedure SetItem(Index: Integer; const Value: TRegistro1010);
+  public
+    function New: TRegistro1010;
+    property Items[Index: Integer]: TRegistro1010 read GetItem write SetItem;
   end;
 
   /// Registro 1105 - DOCUMENTOS FISCAIS DE EXPORTAÇÃO
@@ -481,6 +529,27 @@ type
     property Items[Index: Integer]: TRegistro1370  read GetItem write SetItem;
   end;
 
+  
+  /// Registro 1390 - CONTROLE DE PRODUÇÃO DE USINA
+
+  TRegistro1390 = class
+  private
+    fCOD_PROD: String;      /// Código do item (campo 02 do Registro 0200)
+  public
+    property COD_PROD: String read fCOD_PROD write fCOD_PROD;
+  end;
+
+  /// Registro 1390 - Lista
+
+  TRegistro1390List = class(TObjectList)
+  private
+    function GetItem(Index: Integer): TRegistro1390;
+    procedure SetItem(Index: Integer; const Value: TRegistro1390);
+  public
+    function New: TRegistro1390;
+    property Items[Index: Integer]: TRegistro1390 read GetItem write SetItem;
+  end;
+
 
   /// Registro 1400 - CINFORMAÇÃO SOBRE VALORES AGREGADOS.
 
@@ -791,6 +860,25 @@ begin
   Put(Index, Value);
 end;
 
+{ TRegistro1010List }
+
+function TRegistro1010List.GetItem(Index: Integer): TRegistro1010;
+begin
+  Result := TRegistro1010(Inherited Items[Index]);
+end;
+
+function TRegistro1010List.New: TRegistro1010;
+begin
+  Result := TRegistro1010.Create;
+  Add(Result);
+end;
+
+procedure TRegistro1010List.SetItem(Index: Integer; const Value: TRegistro1010);
+begin
+  Put(Index, Value);
+end;
+
+
 { TRegistro1105List }
 
 function TRegistro1105List.GetItem(Index: Integer): TRegistro1105;
@@ -939,6 +1027,23 @@ begin
 end;
 
 procedure TRegistro1320List.SetItem(Index: Integer; const Value: TRegistro1320);
+begin
+  Put(Index, Value);
+end;
+{ TRegistro1390List }
+
+function TRegistro1390List.GetItem(Index: Integer): TRegistro1390;
+begin
+  Result := TRegistro1390(Inherited Items[Index]);
+end;
+
+function TRegistro1390List.New: TRegistro1390;
+begin
+  Result := TRegistro1390.Create;
+  Add(Result);
+end;
+
+procedure TRegistro1390List.SetItem(Index: Integer; const Value: TRegistro1390);
 begin
   Put(Index, Value);
 end;
@@ -1156,6 +1261,7 @@ end;
 
 constructor TRegistro1001.Create;
 begin
+   FRegistro1010 := TRegistro1010List.Create;
    FRegistro1100 := TRegistro1100List.Create;
    FRegistro1200 := TRegistro1200List.Create;
    FRegistro1300 := TRegistro1300List.Create;
@@ -1195,6 +1301,19 @@ begin
   fRegistro1105.Free;
   inherited;
 end;
+
+{ TRegistro1010 }
+
+constructor TRegistro1010.Create;
+begin
+  inherited;
+end;
+
+destructor TRegistro1010.Destroy;
+begin
+  inherited;
+end;
+
 
 { TRegistro1105 }
 

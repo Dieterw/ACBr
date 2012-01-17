@@ -54,6 +54,7 @@ type
     FRegistro1001: TRegistro1001;      /// BLOCO 1 - Registro1001
     FRegistro1990: TRegistro1990;      /// BLOCO 1 - Registro1990
 
+    FRegistro1010Count: Integer;    
     FRegistro1100Count: Integer;
     FRegistro1105Count: Integer;
     FRegistro1110Count: Integer;
@@ -65,6 +66,7 @@ type
     FRegistro1350Count: Integer;
     FRegistro1360Count: Integer;
     FRegistro1370Count: Integer;
+    FRegistro1390Count: Integer;
     FRegistro1400Count: Integer;
     FRegistro1500Count: Integer;
     FRegistro1510Count: Integer;
@@ -73,6 +75,7 @@ type
     FRegistro1710Count: Integer;
     FRegistro1800Count: Integer;
 
+    procedure WriteRegistro1010(Reg1001: TRegistro1001) ;
     procedure WriteRegistro1100(Reg1001: TRegistro1001) ;
     procedure WriteRegistro1105(Reg1100: TRegistro1100) ;
     procedure WriteRegistro1110(Reg1105: TRegistro1105) ;
@@ -84,6 +87,7 @@ type
     procedure WriteRegistro1350(Reg1001: TRegistro1001) ;
     procedure WriteRegistro1360(Reg1350: TRegistro1350) ;
     procedure WriteRegistro1370(Reg1350: TRegistro1350) ;
+    procedure WriteRegistro1390(Reg1001: TRegistro1001) ;
     procedure WriteRegistro1400(Reg1001: TRegistro1001) ;
     procedure WriteRegistro1500(Reg1001: TRegistro1001) ;
     procedure WriteRegistro1510(Reg1500: TRegistro1500) ;
@@ -100,6 +104,7 @@ type
     procedure LimpaRegistros;
 
     function Registro1001New: TRegistro1001;
+    function Registro1010New: TRegistro1010;    
     function Registro1100New: TRegistro1100;
     function Registro1105New: TRegistro1105;
     function Registro1110New: TRegistro1110;
@@ -111,6 +116,7 @@ type
     function Registro1350New: TRegistro1350;
     function Registro1360New: TRegistro1360;
     function Registro1370New: TRegistro1370;
+    function Registro1390New: TRegistro1390;    
     function Registro1400New: TRegistro1400;
     function Registro1500New: TRegistro1500;
     function Registro1510New: TRegistro1510;
@@ -126,6 +132,7 @@ type
     property Registro1001: TRegistro1001 read FRegistro1001 write FRegistro1001;
     property Registro1990: TRegistro1990 read FRegistro1990 write FRegistro1990;
 
+    property Registro1010Count: Integer read FRegistro1010Count write FRegistro1010Count;
     property Registro1100Count: Integer read FRegistro1100Count write FRegistro1100Count;
     property Registro1105Count: Integer read FRegistro1105Count write FRegistro1105Count;
     property Registro1110Count: Integer read FRegistro1110Count write FRegistro1110Count;
@@ -137,6 +144,7 @@ type
     property Registro1350Count: Integer read FRegistro1350Count write FRegistro1350Count;
     property Registro1360Count: Integer read FRegistro1360Count write FRegistro1360Count;
     property Registro1370Count: Integer read FRegistro1370Count write FRegistro1370Count;
+    property Registro1390Count: Integer read FRegistro1390Count write FRegistro1390Count;    
     property Registro1400Count: Integer read FRegistro1400Count write FRegistro1400Count;
     property Registro1500Count: Integer read FRegistro1500Count write FRegistro1500Count;
     property Registro1510Count: Integer read FRegistro1510Count write FRegistro1510Count;
@@ -167,6 +175,7 @@ begin
   FRegistro1001 := TRegistro1001.Create;
   FRegistro1990 := TRegistro1990.Create;
 
+  Registro1010Count := 0;  
   Registro1100Count := 0;
   Registro1105Count := 0;
   Registro1110Count := 0;
@@ -178,6 +187,7 @@ begin
   Registro1350Count := 0;
   Registro1360Count := 0;
   Registro1370Count := 0;
+  Registro1390Count := 0;  
   Registro1400Count := 0;
   Registro1500Count := 0;
   Registro1510Count := 0;
@@ -214,6 +224,12 @@ function TBloco_1.Registro1100New: TRegistro1100;
 begin
    Result := FRegistro1001.Registro1100.New;
 end;
+
+function TBloco_1.Registro1010New: TRegistro1010;
+begin
+   Result := FRegistro1001.Registro1010.New;
+end;
+
 
 function TBloco_1.Registro1105New: TRegistro1105;
 begin
@@ -277,6 +293,12 @@ begin
    Result := FRegistro1001.Registro1350.Items[FRegistro1001.Registro1350.Count -1].Registro1370.New;
 end;
 
+function TBloco_1.Registro1390New: TRegistro1390;
+begin
+   Result := FRegistro1001.Registro1390.New;
+end;
+
+
 function TBloco_1.Registro1400New: TRegistro1400;
 begin
    Result := FRegistro1001.Registro1400.New;
@@ -323,10 +345,12 @@ begin
 
        if IND_MOV = imComDados then
        begin
+         WriteRegistro1010(Registro1001) ;
          WriteRegistro1100(Registro1001) ;
          WriteRegistro1200(Registro1001) ;
          WriteRegistro1300(Registro1001) ;
          WriteRegistro1350(Registro1001) ;
+         WriteRegistro1390(Registro1001) ;         
          WriteRegistro1400(Registro1001) ;
          WriteRegistro1500(Registro1001) ;
          WriteRegistro1600(Registro1001) ;
@@ -338,6 +362,36 @@ begin
      Registro1990.QTD_LIN_1 := Registro1990.QTD_LIN_1 + 1;
   end;
 end;
+
+procedure TBloco_1.WriteRegistro1010(Reg1001: TRegistro1001) ;
+var
+  intFor: integer;
+  strTP_CHC: AnsiString;
+begin
+  if Assigned( Reg1001.Registro1010 ) then
+  begin
+     for intFor := 0 to Reg1001.Registro1010.Count - 1 do
+     begin
+        with Reg1001.Registro1010.Items[intFor] do
+        begin
+         Add( LFill('1010') +
+               LFill( IND_EXP ) +
+               LFill( IND_CCRF ) +
+               LFill( IND_COMB  ) +
+               LFill( IND_USINA ) +
+               LFill( IND_VA  ) +
+               LFill( IND_EE ) +
+               LFill( IND_CART  ) +
+               LFill( IND_FORM  ) +
+               LFill( IND_AER )) ;
+         Registro1990.QTD_LIN_1 := Registro1990.QTD_LIN_1 + 1;
+        end;
+     end;
+     /// Variavél para armazenar a quantidade de registro do tipo.
+     FRegistro1010Count := FRegistro1010Count + Reg1001.Registro1010.Count;
+  end;
+end;
+
 
 procedure TBloco_1.WriteRegistro1100(Reg1001: TRegistro1001) ;
 var
@@ -665,6 +719,28 @@ begin
      FRegistro1370Count := FRegistro1370Count + Reg1350.Registro1370.Count;
   end;
 end;
+
+
+procedure TBloco_1.WriteRegistro1390(Reg1001: TRegistro1001) ;
+var
+  intFor: integer;
+begin
+  if Assigned( Reg1001.Registro1390 ) then
+  begin
+     for intFor := 0 to Reg1001.Registro1390.Count - 1 do
+     begin
+        with Reg1001.Registro1390.Items[intFor] do
+        begin
+          Add( LFill('1390') +
+               LFill( COD_PROD ) ) ;
+        end;
+        Registro1990.QTD_LIN_1 := Registro1990.QTD_LIN_1 + 1;
+     end;
+     /// Variavél para armazenar a quantidade de registro do tipo.
+     FRegistro1400Count := FRegistro1400Count + Reg1001.Registro1390.Count;
+  end;
+end;
+
 
 procedure TBloco_1.WriteRegistro1400(Reg1001: TRegistro1001) ;
 var

@@ -443,6 +443,7 @@ inherited frmComprNaoFiscal: TfrmComprNaoFiscal
         Height = 316
         Align = alClient
         TabOrder = 1
+        OnDocumentComplete = WebBrowser1DocumentComplete
         ControlData = {
           4C0000007A2D0000A92000000000000000000000000000000000000000000000
           000000004C000000000000000000000001000000E0D057007335CF11AE690800

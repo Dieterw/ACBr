@@ -19,8 +19,7 @@ type
   public
     procedure ClearFields;
 
-    procedure WB_LoadHTML(WebBrowser: TWebBrowser; HTMLCode: string;
-      GoBotton: Boolean = True);
+    procedure WB_LoadHTML(WebBrowser: TWebBrowser; HTMLCode: string);
     procedure WB_ScrollToTop(WebBrowser1: TWebBrowser);
     procedure WB_ScrollToBottom(WebBrowser1: TWebBrowser);
 
@@ -42,8 +41,7 @@ uses
 
 {$R *.dfm}
 
-procedure TfrmBasicoModal.WB_LoadHTML(WebBrowser: TWebBrowser; HTMLCode: string;
-  GoBotton: Boolean);
+procedure TfrmBasicoModal.WB_LoadHTML(WebBrowser: TWebBrowser; HTMLCode: string);
 var
   sl: TStringList;
   ms: TMemoryStream;
@@ -69,9 +67,6 @@ begin
       sl.Free;
     end;
   end;
-
-  if GoBotton then
-    WB_ScrollToBottom(WebBrowser);
 end;
 
 procedure TfrmBasicoModal.WB_ScrollToTop(WebBrowser1: TWebBrowser);

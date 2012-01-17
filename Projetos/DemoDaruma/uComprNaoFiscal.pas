@@ -66,6 +66,8 @@ type
     procedure btnRegistrarPagtoClick(Sender: TObject);
     procedure btnFechamentoClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure WebBrowser1DocumentComplete(Sender: TObject;
+      const pDisp: IDispatch; var URL: OleVariant);
   private
     procedure AtualizarTela;
   public
@@ -223,6 +225,12 @@ begin
 
   AtualizarTela;
   Close;
+end;
+
+procedure TfrmComprNaoFiscal.WebBrowser1DocumentComplete(Sender: TObject;
+  const pDisp: IDispatch; var URL: OleVariant);
+begin
+  WB_ScrollToBottom(WebBrowser1);
 end;
 
 end.

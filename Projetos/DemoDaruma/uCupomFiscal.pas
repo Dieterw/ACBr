@@ -101,6 +101,8 @@ type
     procedure btnItemCancelarParcialClick(Sender: TObject);
     procedure btnItemDescAcrescAnteriorClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure WebBrowser1DocumentComplete(Sender: TObject;
+      const pDisp: IDispatch; var URL: OleVariant);
   private
     procedure AtualizarTela;
     { Private declarations }
@@ -134,7 +136,13 @@ begin
   edtValorTroco.Text := FormatFloat(',#0.00', VlTroco);
 
   // Atualizar a bobina do cupom fiscal
-  WB_LoadHTML(WebBrowser1, frmPrincipal.BobinaCupom.Text, True);
+  WB_LoadHTML(WebBrowser1, frmPrincipal.BobinaCupom.Text);
+end;
+
+procedure TfrmCupomFiscal.WebBrowser1DocumentComplete(Sender: TObject;
+  const pDisp: IDispatch; var URL: OleVariant);
+begin
+  WB_ScrollToBottom(WebBrowser1);
 end;
 
 procedure TfrmCupomFiscal.FormClose(Sender: TObject; var Action: TCloseAction);

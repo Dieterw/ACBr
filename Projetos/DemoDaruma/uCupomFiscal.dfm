@@ -87,6 +87,7 @@ inherited frmCupomFiscal: TfrmCupomFiscal
             Width = 91
             Height = 21
             Style = csDropDownList
+            ItemHeight = 13
             ItemIndex = 0
             TabOrder = 1
             Text = 'Percentual'
@@ -100,6 +101,7 @@ inherited frmCupomFiscal: TfrmCupomFiscal
             Width = 88
             Height = 21
             Style = csDropDownList
+            ItemHeight = 13
             ItemIndex = 0
             TabOrder = 0
             Text = 'Desconto'
@@ -249,6 +251,7 @@ inherited frmCupomFiscal: TfrmCupomFiscal
             Width = 51
             Height = 21
             Style = csDropDownList
+            ItemHeight = 13
             TabOrder = 6
             Items.Strings = (
               'FF'
@@ -359,6 +362,7 @@ inherited frmCupomFiscal: TfrmCupomFiscal
           Width = 169
           Height = 21
           Style = csDropDownList
+          ItemHeight = 13
           TabOrder = 0
         end
         object edtPagtoVlr: TEdit
@@ -456,6 +460,7 @@ inherited frmCupomFiscal: TfrmCupomFiscal
           Width = 52
           Height = 21
           Style = csDropDownList
+          ItemHeight = 13
           ItemIndex = 0
           TabOrder = 0
           Text = '0'
@@ -554,6 +559,7 @@ inherited frmCupomFiscal: TfrmCupomFiscal
         Height = 317
         Align = alClient
         TabOrder = 0
+        OnDocumentComplete = WebBrowser1DocumentComplete
         ControlData = {
           4C0000007A2D0000C32000000000000000000000000000000000000000000000
           000000004C000000000000000000000001000000E0D057007335CF11AE690800

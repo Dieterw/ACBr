@@ -1,15 +1,15 @@
 object FrmACBrMonitor: TFrmACBrMonitor
   Left = 215
-  Height = 562
+  Height = 582
   Top = 103
-  Width = 594
+  Width = 610
   ActiveControl = PageControl1
   Align = alClient
   Caption = 'ACBrMonitor'
-  ClientHeight = 562
-  ClientWidth = 594
-  Constraints.MinHeight = 440
-  Constraints.MinWidth = 530
+  ClientHeight = 582
+  ClientWidth = 610
+  Constraints.MinHeight = 480
+  Constraints.MinWidth = 590
   Font.Height = -13
   Icon.Data = {
     9E09000000000100010018180000010020008809000016000000280000001800
@@ -104,8 +104,8 @@ object FrmACBrMonitor: TFrmACBrMonitor
   object StatusBar1: TStatusBar
     Left = 0
     Height = 23
-    Top = 539
-    Width = 594
+    Top = 559
+    Width = 610
     Panels = <    
       item
         Text = 'Monitor: Inativo'
@@ -118,24 +118,21 @@ object FrmACBrMonitor: TFrmACBrMonitor
   object pBotoes: TPanel
     Left = 0
     Height = 43
-    Hint = 'Sobre o ACBrMonitor ?'
-    Top = 496
-    Width = 594
+    Top = 516
+    Width = 610
     Align = alBottom
     ClientHeight = 43
-    ClientWidth = 594
-    Font.Height = -16
+    ClientWidth = 610
+    Font.Height = -13
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 1
     object Image1: TImage
-      Cursor = crHandPoint
       Left = 1
       Height = 41
       Top = 1
-      Width = 592
+      Width = 608
       Align = alClient
-      OnClick = Image1Click
       Picture.Data = {
         1754506F727461626C654E6574776F726B47726170686963B94C000089504E47
         0D0A1A0A0000000D494844520000040000000028080600000060AD88CB000000
@@ -758,11 +755,11 @@ object FrmACBrMonitor: TFrmACBrMonitor
       AnchorSideTop.Control = pBotoes
       AnchorSideTop.Side = asrCenter
       AnchorSideRight.Control = bConfig
-      Left = 344
-      Height = 31
+      Left = 390
+      Height = 27
       Hint = 'Cancela as Alterações efetuadas'
-      Top = 6
-      Width = 111
+      Top = 8
+      Width = 97
       Anchors = [akTop, akRight]
       AutoSize = True
       BorderSpacing.Right = 20
@@ -804,11 +801,11 @@ object FrmACBrMonitor: TFrmACBrMonitor
       AnchorSideTop.Control = pBotoes
       AnchorSideTop.Side = asrCenter
       AnchorSideRight.Control = bConfig
-      Left = 342
-      Height = 31
+      Left = 390
+      Height = 27
       Hint = 'Esconde o ACBrMonitor'
-      Top = 6
-      Width = 123
+      Top = 8
+      Width = 107
       Anchors = [akTop, akRight]
       AutoSize = True
       BorderSpacing.Right = 10
@@ -851,11 +848,11 @@ object FrmACBrMonitor: TFrmACBrMonitor
       AnchorSideTop.Side = asrCenter
       AnchorSideRight.Control = pBotoes
       AnchorSideRight.Side = asrBottom
-      Left = 475
-      Height = 31
+      Left = 507
+      Height = 27
       Hint = 'Configura os equipamentos e '#13#10'Método de Monitoramento'
-      Top = 6
-      Width = 108
+      Top = 8
+      Width = 92
       Anchors = [akTop, akRight]
       AutoSize = True
       BorderSpacing.Right = 10
@@ -863,22 +860,87 @@ object FrmACBrMonitor: TFrmACBrMonitor
       OnClick = bConfigClick
       TabOrder = 1
     end
+    object ACBrGIF1: TACBrGIF
+      AnchorSideLeft.Control = pBotoes
+      AnchorSideTop.Control = pBotoes
+      AnchorSideBottom.Control = pBotoes
+      AnchorSideBottom.Side = asrBottom
+      Cursor = crHandPoint
+      Left = 1
+      Height = 41
+      Hint = 'Sobre o SAC ?'
+      Top = 1
+      Width = 319
+      Anchors = [akTop, akLeft, akBottom]
+      AutoSize = False
+      OnClick = ACBrGIF1Click
+    end
+    object sbSobre: TSpeedButton
+      AnchorSideTop.Control = pBotoes
+      AnchorSideTop.Side = asrCenter
+      AnchorSideRight.Control = btMinimizar
+      Left = 353
+      Height = 27
+      Hint = 'Sobre o ACBrMonitor ?'
+      Top = 8
+      Width = 27
+      Anchors = [akTop, akRight]
+      BorderSpacing.Right = 10
+      Glyph.Data = {
+        36040000424D3604000000000000360000002800000010000000100000000100
+        2000000000000004000000000000000000000000000000000000FF00FF00FF00
+        FF00FF00FF00FF00FF00D1A8A2FF9E4D44FE7B0D05FF881B0EFF84160CFF7100
+        00FF933F3FFEC99F9FFFFF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+        FF00F1E4E1FFA04939FE9E3516FFD16E31FFF79B48FFFFA44DFFFFA44DFFF69A
+        47FFCA652DFF8B1D0DFF8A2F2FFEEDDFDFFFFF00FF00FF00FF00FF00FF00F2E5
+        E1FF99381EFEC75F21FFFF9A38FFFF9A38FFFF9A38FFFF9A38FFFF9A38FFFF9A
+        38FFFF9A38FFFF9A38FFB84B19FF780F0FFEEDDFDFFFFF00FF00FF00FF00AD5A
+        3FFECC6019FFFF8F23FFFF8F23FFFFB976FFD2C5C0FFCCC3C0FFC9C2BFFFCAC2
+        BFFFB15F16FFFF8F23FFFF8F23FFB84711FF8A2F2FFEFF00FF00DCB6A8FFB148
+        13FFFF840FFFFF840FFFFF840FFFFF840FFFFFCA94FFFFFFFFFFFFFFFFFF9454
+        17FFFF840FFFFF840FFFFF840FFFFF840FFF8B1702FFC99F9FFFBC7252FEDD68
+        0AFFFF7F00FFFF7F00FFFF7F00FFFF7F00FFFFBE7FFFFFFFFFFFFFFFFFFF8E44
+        02FFFF7F00FFFF7F00FFFF7F00FFFF7F00FFCA4F00FF933F3FFEAB4A1CFFFA7F
+        04FFFF8403FFFF8403FFFF8303FFFF8303FFFFC080FFFFFFFFFFFFFFFFFF9A4A
+        03FFFF8200FFFF8200FFFF8200FFFF8200FFF67900FF710000FFB9561AFFFF8E
+        16FFFF911EFFFF911EFFFF911EFFFF911EFFFFC88EFFFFFFFFFFFFFFFFFFA851
+        04FFFF8500FFFF8500FFFF8500FFFF8500FFFF8500FF831100FFBC5A1CFFFF9A
+        2FFFFFA13FFFFFA13FFFFFA13FFFFFA13FFFFFD6AAFFFFFFFFFFFFFFFFFFB55A
+        0FFFFF8500FFFF8500FFFF8500FFFF8500FFFF8500FF841301FFB65821FFFAA0
+        44FFFFB161FFFFB161FFFFB161FFF7D4B2FFFFFFFFFFFFFFFFFFFFFFFFFFC577
+        3CFFFFAD56FFFF9727FFFF8500FFFF8500FFF77D00FF760703FFC98359FEE58B
+        3CFFFFC181FFFFC181FFFFC181FFFFC181FFFFC181FFEFB682FFEFBE93FFFFC1
+        81FFFFC181FFFFC181FFFFBE7AFFFFB05CFFCF6924FF9B4742FEE5C3ACFFC765
+        1CFFFFC88BFFFFD2A1FFFFD2A1FFFFD2A1FFFFE7CEFFEFE5E1FFC5A294FFD69C
+        70FFFFD2A1FFFFD2A1FFFFD2A1FFFFCC96FF992E10FFCEA5A1FFFF00FF00C77C
+        4CFEDD8134FFFFDBB2FFFFE1BFFFFFE1BFFFFFFBF7FFFFFFFFFFFFFFFFFFC591
+        71FFFFE1BFFFFFE1BFFFFFE1BFFFC4724BFF9A4437FEFF00FF00FF00FF00F6EB
+        E3FFBF6830FEDD8439FFFFE1BFFFFFEEDDFFFFF6ECFFFFFCF9FFF7EBE2FFFFEE
+        DDFFFFEEDDFFFFE7CEFFC9774AFF93301CFEF0E2E0FFFF00FF00FF00FF00FF00
+        FF00F6EBE3FFC67C4CFEC5631CFFE39E65FFFAD2A8FFFFDDB6FFFFDDB6FFF9D8
+        B7FFDB9B71FFAD4A1EFFA7543DFEF1E4E1FFFF00FF00FF00FF00FF00FF00FF00
+        FF00FF00FF00FF00FF00E5C2ACFFC88158FEB35420FFB9561AFFB55118FFA644
+        19FFB76D50FED9B4A6FFFF00FF00FF00FF00FF00FF00FF00FF00
+      }
+      NumGlyphs = 0
+      OnClick = sbSobreClick
+    end
   end
   object pPrincipal: TPanel
     Left = 0
-    Height = 285
+    Height = 305
     Top = 0
-    Width = 594
+    Width = 610
     Align = alClient
-    ClientHeight = 285
-    ClientWidth = 594
+    ClientHeight = 305
+    ClientWidth = 610
     TabOrder = 2
     object Splitter1: TSplitter
       Cursor = crVSplit
       Left = 1
       Height = 5
       Top = 101
-      Width = 592
+      Width = 608
       Align = alTop
       Beveled = True
       ResizeAnchor = akTop
@@ -887,18 +949,18 @@ object FrmACBrMonitor: TFrmACBrMonitor
       Left = 1
       Height = 100
       Top = 1
-      Width = 592
+      Width = 608
       Align = alTop
       Caption = 'pCmd'
       ClientHeight = 100
-      ClientWidth = 592
+      ClientWidth = 608
       Constraints.MinHeight = 70
       TabOrder = 0
       object mCmd: TMemo
         Left = 1
         Height = 58
         Top = 18
-        Width = 590
+        Width = 606
         Align = alClient
         ReadOnly = True
         ScrollBars = ssVertical
@@ -911,7 +973,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
         Left = 1
         Height = 17
         Top = 1
-        Width = 590
+        Width = 606
         Align = alTop
         BevelOuter = bvNone
         Caption = 'Comandos a Processar'
@@ -921,7 +983,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
         Left = 1
         Height = 23
         Top = 76
-        Width = 590
+        Width = 606
         Panels = <        
           item
             Text = 'Processando:'
@@ -934,20 +996,20 @@ object FrmACBrMonitor: TFrmACBrMonitor
     end
     object pRespostas: TPanel
       Left = 1
-      Height = 178
+      Height = 198
       Top = 106
-      Width = 592
+      Width = 608
       Align = alClient
       Caption = 'pRespostas'
-      ClientHeight = 178
-      ClientWidth = 592
+      ClientHeight = 198
+      ClientWidth = 608
       Constraints.MinHeight = 70
       TabOrder = 1
       object mResp: TMemo
         Left = 1
-        Height = 159
+        Height = 179
         Top = 18
-        Width = 590
+        Width = 606
         Align = alClient
         ReadOnly = True
         ScrollBars = ssAutoBoth
@@ -961,7 +1023,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
         Left = 1
         Height = 17
         Top = 1
-        Width = 590
+        Width = 606
         Align = alTop
         BevelOuter = bvNone
         Caption = 'Respostas Enviadas'
@@ -972,18 +1034,18 @@ object FrmACBrMonitor: TFrmACBrMonitor
   object pConfig: TPanel
     Left = 0
     Height = 211
-    Top = 285
-    Width = 594
+    Top = 305
+    Width = 610
     Align = alBottom
     ClientHeight = 211
-    ClientWidth = 594
+    ClientWidth = 610
     TabOrder = 3
     Visible = False
     object PageControl1: TPageControl
       Left = 1
       Height = 209
       Top = 1
-      Width = 592
+      Width = 608
       ActivePage = tsACBrBoleto
       Align = alClient
       Images = ImageList1
@@ -4012,14 +4074,14 @@ object FrmACBrMonitor: TFrmACBrMonitor
       object tsACBrBoleto: TTabSheet
         Caption = 'Boleto'
         ClientHeight = 179
-        ClientWidth = 584
+        ClientWidth = 600
         ImageIndex = 16
         OnShow = tsACBrBoletoShow
         object pgBoleto: TPageControl
           Left = 0
           Height = 179
           Top = 0
-          Width = 584
+          Width = 600
           ActivePage = tsBoleto
           Align = alClient
           TabIndex = 2
@@ -4521,7 +4583,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
           object tsBoleto: TTabSheet
             Caption = 'Boleto'
             ClientHeight = 149
-            ClientWidth = 576
+            ClientWidth = 592
             object deBOLDirLogo: TDirectoryEdit
               AnchorSideTop.Control = lblBOLDirLogo
               AnchorSideTop.Side = asrBottom
@@ -4547,7 +4609,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
             object spBOLCopias: TSpinEdit
               AnchorSideTop.Control = edtBOLSH
               AnchorSideTop.Side = asrCenter
-              Left = 480
+              Left = 496
               Height = 25
               Top = 25
               Width = 48
@@ -4560,7 +4622,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
               AnchorSideLeft.Control = spBOLCopias
               AnchorSideLeft.Side = asrCenter
               AnchorSideTop.Control = lblBOLDirLogo
-              Left = 484
+              Left = 500
               Height = 18
               Top = 7
               Width = 41
@@ -4572,7 +4634,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
               Left = 247
               Height = 25
               Top = 25
-              Width = 220
+              Width = 236
               Anchors = [akTop, akLeft, akRight]
               TabOrder = 1
             end
@@ -4633,7 +4695,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
               Left = 423
               Height = 25
               Top = 70
-              Width = 105
+              Width = 121
               Anchors = [akTop, akLeft, akRight]
               ItemHeight = 17
               ItemIndex = 0
@@ -4674,7 +4736,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
               Left = 247
               Height = 25
               Top = 115
-              Width = 263
+              Width = 279
               ShowHidden = False
               ButtonWidth = 23
               NumGlyphs = 0

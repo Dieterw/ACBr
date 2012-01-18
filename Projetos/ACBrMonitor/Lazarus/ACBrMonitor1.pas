@@ -41,7 +41,7 @@ uses
   CmdUnit, ACBrECF, ACBrDIS, ACBrGAV, ACBrDevice, ACBrCHQ, ACBrLCB, ACBrRFD, { Unit do ACBr }
   Dialogs, ExtCtrls, Menus, Buttons, StdCtrls, ComCtrls, Controls, Graphics,
   Spin, MaskEdit, EditBtn, ACBrBAL, ACBrETQ, ACBrSocket, ACBrCEP, ACBrIBGE,
-  blcksock, ACBrValidador, ACBrBoleto, ACBrBoletoFCLazReportDm;
+  blcksock, ACBrValidador, ACBrGIF, ACBrBoleto, ACBrBoletoFCLazReportDm;
 
 const
   {$I versao.txt}
@@ -61,6 +61,7 @@ type
     ACBrBoletoFCLazReport1 : TACBrBoletoFCLazReport ;
     ACBrCEP1 : TACBrCEP ;
     ACBrECF1: TACBrECF;
+    ACBrGIF1 : TACBrGIF ;
     ACBrIBGE1 : TACBrIBGE ;
     ACBrValidador1 : TACBrValidador ;
     ApplicationProperties1: TApplicationProperties;
@@ -90,6 +91,7 @@ type
     edtConvenio: TEdit;
     edtModalidade: TEdit;
     edtCodTransmissao: TEdit;
+    Image1 : TImage ;
     Label5: TLabel;
     Label73: TLabel;
     Label74: TLabel;
@@ -113,7 +115,6 @@ type
     gbCEPProxy : TGroupBox ;
     gbCEPTestar : TGroupBox ;
     gbCEP : TGroupBox ;
-    Image1: TImage;
     Label11: TLabel;
     Label68: TLabel;
     Label69: TLabel;
@@ -155,6 +156,7 @@ type
     deRFDDataSwBasico : TDateEdit ;
     pgBoleto: TPageControl;
     spBOLCopias: TSpinEdit;
+    sbSobre : TSpeedButton ;
     StatusBar1: TStatusBar;
     ImageList1: TImageList;
     ACBrCHQ1: TACBrCHQ;
@@ -407,6 +409,7 @@ type
     TimerTC: TTimer;
     sbCHQSerial: TSpeedButton;
     procedure ACBrCEP1AntesAbrirHTTP(var AURL : String) ;
+    procedure ACBrGIF1Click(Sender : TObject) ;
     procedure ApplicationProperties1Exception(Sender: TObject; E: Exception);
     procedure ApplicationProperties1Minimize(Sender: TObject);
     procedure ApplicationProperties1Restore(Sender: TObject);
@@ -433,9 +436,9 @@ type
     procedure bECFTestarClick(Sender: TObject);
     procedure bECFLeituraXClick(Sender: TObject);
     procedure bECFAtivarClick(Sender: TObject);
-    procedure Image1Click(Sender: TObject);
     procedure meRFDHoraCadastroExit(Sender : TObject) ;
     procedure meRFDHoraSwBasicoExit(Sender : TObject) ;
+    procedure sbSobreClick(Sender : TObject) ;
     procedure TcpServerConecta(const TCPBlockSocket: TTCPBlockSocket;
       var Enviar: ansistring);{%h-}
     procedure TcpServerDesConecta(const TCPBlockSocket: TTCPBlockSocket;
@@ -626,6 +629,7 @@ var
   iBAL: TACBrBALModelo;
   iCEP: TACBrCEPWebService;
   IBanco: TACBrTipoCobranca;
+  AppDir : String ;
 begin
   {$IFDEF LINUX}
    FpUmask(0);
@@ -637,19 +641,19 @@ begin
   fsCmd       := TACBrCmd.Create;
   fsProcessar := TStringList.Create;
 
-  Inicio := True;
-  ArqSaiTXT := '';
-  ArqSaiTMP := '';
-  ArqEntTXT := '';
-  ArqLogTXT := '';
-  Conexao := nil;
-  NewLines := '';
+  Inicio     := True;
+  ArqSaiTXT  := '';
+  ArqSaiTMP  := '';
+  ArqEntTXT  := '';
+  ArqLogTXT  := '';
+  Conexao    := nil;
+  NewLines   := '';
   DISWorking := False;
 
-  pCanClose := False;
-  fsRFDIni := '';
+  pCanClose      := False;
+  fsRFDIni       := '';
   fsRFDLeuParams := False;
-  fsCNPJSWOK := False;
+  fsCNPJSWOK     := False;
 
   TipoCMD := 'A'; {Tipo de Comando A - ACBr, B - Bematech, D - Daruma}
 
@@ -771,6 +775,17 @@ begin
 
   Application.Title := Caption;
 
+  AppDir := ExtractFilePath(Application.ExeName);
+
+  if FileExists( AppDir + 'banner_acbrmonitor.gif' ) then
+   begin
+     ACBrGIF1.LoadFromFile( AppDir + 'banner_acbrmonitor.gif' );
+     ACBrGIF1.Transparent := True;
+     ACBrGIF1.Start;
+   end
+  else
+     ACBrGIF1.Visible := False;
+
   Timer1.Enabled := True;
 end;
 
@@ -802,6 +817,11 @@ begin
   begin
     AURL := AURL + '&chave='+edCEPChaveBuscarCEP.Text;
   end ;
+end;
+
+procedure TFrmACBrMonitor.ACBrGIF1Click(Sender : TObject) ;
+begin
+  OpenURL('http://www.djsystem.com.br/acbr/sac/');
 end;
 
 procedure TFrmACBrMonitor.ApplicationProperties1Minimize(Sender: TObject);
@@ -1167,19 +1187,6 @@ begin
 
     if cbLog.Checked then
       mResp.Lines.Add('Log de comandos será gravado em: ' + ArqLogTXT);
-
-    mResp.Lines.Add('');
-    mResp.Lines.Add('   * Você gosta do ACBrMonitor ?');
-    mResp.Lines.Add('');
-    mResp.Lines.Add('   * Incentive a equipe de desenvolvimento do ACBrMonitor') ;
-    mResp.Lines.Add('     a continuar com esse trabalho.');
-    mResp.Lines.Add('');
-    mResp.Lines.Add('   * ASSINE AINDA HOJE O NOSSO SERVIÇO DE SUPORTE ACBrSAC:') ;
-    mResp.Lines.Add('     http://www.djsystem.com.br/acbr/sac/') ;
-    mResp.Lines.Add('');
-    mResp.Lines.Add('   * Para maiores informações de como funciona nosso atendimento visite:') ;
-    mResp.Lines.Add('     http://www.djsystem.com.br/acbr/sac/index.php/sobre') ;
-    mResp.Lines.Add('     http://www.djsystem.com.br/acbr/sac/index.php/questoesimportantes') ;
 
     { Se for NAO fiscal, desliga o AVISO antes de ativar }
     if ACBrECF1.Modelo = ecfNaoFiscal then
@@ -2581,17 +2588,6 @@ begin
   AvaliaEstadoTsRFD;
 end;
 
-procedure TFrmACBrMonitor.Image1Click(Sender: TObject);
-begin
-  frmSobre := TfrmSobre.Create(self);
-  try
-    frmSobre.lVersao.Caption := 'Ver: ' + Versao;
-    frmSobre.ShowModal;
-  finally
-    FreeAndNil(frmSobre);
-  end;
-end;
-
 procedure TFrmACBrMonitor.meRFDHoraCadastroExit(Sender : TObject) ;
 begin
   try
@@ -2610,6 +2606,17 @@ begin
      mResp.Lines.Add( 'Hora Inválida' );
      meRFDHoraSwBasico.SetFocus;
   end ;
+end;
+
+procedure TFrmACBrMonitor.sbSobreClick(Sender : TObject) ;
+begin
+  frmSobre := TfrmSobre.Create(self);
+  try
+    frmSobre.lVersao.Caption := 'Ver: ' + Versao;
+    frmSobre.ShowModal;
+  finally
+    FreeAndNil(frmSobre);
+  end;
 end;
 
 procedure TFrmACBrMonitor.TcpServerConecta(const TCPBlockSocket: TTCPBlockSocket;
@@ -3511,7 +3518,7 @@ procedure TFrmACBrMonitor.FormShortCut(Key: integer; Shift: TShiftState;
   var Handled: boolean);
 begin
   if (Key = VK_HELP) or (Key = VK_F1) then
-    Image1Click(self);
+    sbSobre.Click;
 end;
 
 {------------------------------------------------------------------------------}
@@ -3925,3 +3932,4 @@ begin
 end;
 
 end.
+

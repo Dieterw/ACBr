@@ -45,20 +45,24 @@ type
 
   TfrmSobre = class(TForm)
     bDoar: TBitBtn;
+    bSAC : TBitBtn ;
     Image1 : TImage ;
-    Image2 : TImage ;
+    imgLazarus : TImage ;
+    imgSynapse : TImage ;
     Timer1: TTimer;
     lVersao: TLabel;
     lDesenvolvedores: TLabel;
     lACBr: TLabel;
-    BitBtn1: TBitBtn;
+    bOK: TBitBtn;
     lNome: TLabel;
     Label1: TLabel;
     bAjuda: TBitBtn;
+    procedure bSACClick(Sender : TObject) ;
     procedure bDoarClick(Sender: TObject);
-    procedure Image2Click(Sender : TObject) ;
+    procedure imgLazarusClick(Sender : TObject) ;
+    procedure imgSynapseClick(Sender : TObject) ;
     procedure Timer1Timer(Sender: TObject);
-    procedure BitBtn1Click(Sender: TObject);
+    procedure bOKClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormCreate(Sender: TObject);
     procedure lACBrClick(Sender: TObject);
@@ -111,12 +115,22 @@ begin
  OpenURL( 'http://acbr.sourceforge.net/drupal/?q=node/14' );
 end;
 
-procedure TfrmSobre.Image2Click(Sender : TObject) ;
+procedure TfrmSobre.bSACClick(Sender : TObject) ;
+begin
+ OpenURL('http://www.djsystem.com.br/acbr/sac/');
+end;
+
+procedure TfrmSobre.imgLazarusClick(Sender : TObject) ;
 begin
   OpenURL('http://www.lazarus.freepascal.org/');
 end;
 
-procedure TfrmSobre.BitBtn1Click(Sender: TObject);
+procedure TfrmSobre.imgSynapseClick(Sender : TObject) ;
+begin
+ OpenURL('http://www.ararat.cz/synapse/');
+end;
+
+procedure TfrmSobre.bOKClick(Sender: TObject);
 begin
   Timer1.Enabled := false ;
   close ;

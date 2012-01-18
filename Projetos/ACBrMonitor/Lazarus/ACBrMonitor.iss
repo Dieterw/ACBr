@@ -48,6 +48,7 @@ Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:Ad
 
 [Files]
 Source: ACBrMonitor.exe; DestDir: {app}; Flags: ignoreversion; Components: programa
+Source: banner_acbrmonitor.gif; DestDir: {app}; Flags: ignoreversion; Components: programa
 Source: ACBrMonitorConsole.exe; DestDir: {app}; Flags: ignoreversion; Components: console
 Source: {#ACBrDIR}\Exemplos\ACBrECF\Lazarus\ECFTeste.exe; DestDir: {app}; Flags: ignoreversion; Components: programa
 Source: PRICETAB.TXT; DestDir: {app}; Flags: onlyifdoesntexist; Components: programa
@@ -85,3 +86,4 @@ Name: {group}\{cm:ProgramOnTheWeb,{#MyAppName}}; Filename: {app}\{#MyAppUrlName}
 [Run]
 Filename: {app}\{#MyAppExeName}; Description: {cm:LaunchProgram,{#MyAppName}}; Flags: nowait postinstall skipifsilent
 Filename: {app}\ACBrMonitor.chm; Description: Novidades desta Versão; Flags: postinstall shellexec skipifsilent; Components: help
+

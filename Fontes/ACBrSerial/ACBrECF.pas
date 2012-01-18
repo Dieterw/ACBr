@@ -5649,7 +5649,7 @@ begin
     Relatorio.Add('CEP.........: ' + IdentificacaoPaf.Empresa.Cep);
     Relatorio.Add('Telefone....: ' + IdentificacaoPaf.Empresa.Telefone);
     Relatorio.Add('Contato.....: ' + IdentificacaoPaf.Empresa.Contato);
-    Relatorio.Add('e-mal.......: ' + IdentificacaoPaf.Empresa.Email);
+    Relatorio.Add('e-mail......: ' + IdentificacaoPaf.Empresa.Email);
 
     Relatorio.Add('');
     Relatorio.Add('<n>IDENTIFICACAO DO PAF-ECF</n>');

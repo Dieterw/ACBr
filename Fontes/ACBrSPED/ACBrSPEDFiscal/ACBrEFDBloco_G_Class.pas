@@ -228,7 +228,7 @@ begin
                    LFill( SOM_ICMS_OC, 0, 2) );
            end
            else
-           if FBloco_0.Registro0000.COD_VER = vlVersao103 then
+           if FBloco_0.Registro0000.COD_VER > vlVersao103 then
            begin
               Add( LFill('G110') +
                    LFill( DT_INI) +
@@ -288,7 +288,7 @@ begin
                    LFill( VL_PARC_APROP, 0, 2 ) );
            end
            else
-           if FBloco_0.Registro0000.COD_VER = vlVersao103 then
+           if FBloco_0.Registro0000.COD_VER > vlVersao103 then
            begin
               Add( LFill('G125') +
                    LFill( COD_IND_BEM ) +
@@ -303,7 +303,7 @@ begin
            end;
         end;
         /// Registro FILHOS do FILHO
-        if FBloco_0.Registro0000.COD_VER = vlVersao103 then
+        if FBloco_0.Registro0000.COD_VER > vlVersao103 then
         begin
           WriteRegistroG126( RegG110.RegistroG125.Items[intFor]);
         end;

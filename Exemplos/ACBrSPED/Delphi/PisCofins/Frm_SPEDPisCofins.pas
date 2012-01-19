@@ -764,6 +764,39 @@ begin
 
          end;
 
+         with RegistroM600 do
+         begin
+           VL_TOT_CONT_NC_PER := 1;
+           VL_TOT_CRED_DESC := 2;
+           VL_TOT_CRED_DESC_ANT := 3;
+           VL_TOT_CONT_NC_DEV := 4;
+           VL_RET_NC := 5;
+           VL_OUT_DED_NC := 6;
+           VL_CONT_NC_REC := 7;
+           VL_TOT_CONT_CUM_PER := 8;
+           VL_RET_CUM := 9;
+           VL_OUT_DED_CUM := 10;
+           VL_CONT_CUM_REC := 11;
+           VL_TOT_CONT_REC := 12;
+
+           with RegistroM610New do
+           begin
+             COD_CONT := ccNaoAcumAliqBasica;
+             VL_REC_BRT := 2;
+             VL_BC_CONT := 3;
+             ALIQ_COFINS := 4;
+             QUANT_BC_COFINS := 5;
+             ALIQ_COFINS_QUANT := 6;
+             VL_CONT_APUR := 7;
+             VL_AJUS_ACRES := 8;
+             VL_AJUS_REDUC := 9;
+             VL_CONT_DIFER := 10;
+             VL_CONT_DIFER_ANT := 11;
+             VL_CONT_PER := 12;
+           end;
+
+         end;
+
       end;
    end;
    btnB_M.Enabled := false;

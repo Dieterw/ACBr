@@ -18,7 +18,7 @@
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
       <MinorVersionNr Value="9"/>
-      <BuildNr Value="18"/>
+      <BuildNr Value="20"/>
       <Language Value="0416"/>
       <CharSet Value="04B0"/>
       <StringTable ProductVersion=""/>
@@ -74,31 +74,34 @@
         <LaunchingApplication PathPlusParams="\usr\X11R6\bin\xterm -T 'Lazarus Run Output' -e $(LazarusDir)\tools\runwait.sh $(TargetCmdLine)"/>
       </local>
     </RunParams>
-    <RequiredPackages Count="7">
+    <RequiredPackages Count="8">
       <Item1>
-        <PackageName Value="ACBrComum"/>
+        <PackageName Value="ACBrDiversos"/>
       </Item1>
       <Item2>
-        <PackageName Value="FCL"/>
-        <MinVersion Major="1" Valid="True" Release="1"/>
+        <PackageName Value="ACBrComum"/>
       </Item2>
       <Item3>
-        <PackageName Value="MemDSLaz"/>
-        <MinVersion Major="1" Minor="2" Valid="True" Release="1"/>
+        <PackageName Value="FCL"/>
+        <MinVersion Major="1" Valid="True" Release="1"/>
       </Item3>
       <Item4>
-        <PackageName Value="LCLBase"/>
-        <MinVersion Major="1" Valid="True" Release="1"/>
+        <PackageName Value="MemDSLaz"/>
+        <MinVersion Major="1" Minor="2" Valid="True" Release="1"/>
       </Item4>
       <Item5>
-        <PackageName Value="ACBrSerial"/>
+        <PackageName Value="LCLBase"/>
+        <MinVersion Major="1" Valid="True" Release="1"/>
       </Item5>
       <Item6>
-        <PackageName Value="LCL"/>
+        <PackageName Value="ACBrSerial"/>
       </Item6>
       <Item7>
-        <PackageName Value="TurboPowerIPro"/>
+        <PackageName Value="LCL"/>
       </Item7>
+      <Item8>
+        <PackageName Value="TurboPowerIPro"/>
+      </Item8>
     </RequiredPackages>
     <Units Count="9">
       <Unit0>
@@ -119,8 +122,8 @@
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1571"/>
-        <CursorPos X="23" Y="1577"/>
+        <TopLine Value="701"/>
+        <CursorPos X="18" Y="662"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>

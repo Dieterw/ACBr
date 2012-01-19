@@ -6,9 +6,9 @@ interface
 
 uses
   ACBrECF, ACBrECFClass, ACBrBase, ACBrRFD, ACBrDevice, ACBrAAC, ACBrConsts,
-  LCLIntf, Classes, SysUtils, Forms, Controls, Graphics, LCLType, Dialogs,
-  DateUtils, IpHtml, Menus, Buttons, StdCtrls, ExtCtrls, ComCtrls, Spin,
-  EditBtn, DBGrids, DbCtrls, strutils, memds, db;
+  ACBrGIF, LCLIntf, Classes, SysUtils, Forms, Controls, Graphics, LCLType,
+  Dialogs, DateUtils, IpHtml, Menus, Buttons, StdCtrls, ExtCtrls, ComCtrls,
+  Spin, EditBtn, DBGrids, DbCtrls, strutils, memds, db;
 
 type
   TSimpleIpHtml = class(TIpHtml)
@@ -26,6 +26,7 @@ type
     AbrirCupom1: TMenuItem;
     ACBrAAC1 : TACBrAAC ;
     ACBrECF1: TACBrECF;
+    ACBrGIF1: TACBrGIF;
     ACBrRFD1: TACBrRFD;
     Aliquotas1: TMenuItem;
     AliquotasICMS1: TMenuItem;
@@ -656,7 +657,9 @@ uses ACBrUtil, ACBrECFBematech, VendeItem, EfetuaPagamento,
      ConfiguraSerial, uDAV, uDAVOS, ACBrPAFClass;
      
 procedure TForm1.FormCreate(Sender: TObject);
-Var I : TACBrECFModelo ;
+Var
+  I: TACBrECFModelo ;
+  AppDir: String ;
 begin
   cbxModelo.Items.Clear ;
   For I := Low(TACBrECFModelo) to High(TACBrECFModelo) do
@@ -690,6 +693,17 @@ begin
 
   if (not chRFD.Checked) and DirectoryExists( ACBrRFD1.DirRFD ) then
      chRFD.Checked := true ;
+
+  AppDir := ExtractFilePath(Application.ExeName);
+
+  if FileExists( AppDir + 'banner_acbrmonitor.gif' ) then
+   begin
+     ACBrGIF1.LoadFromFile( AppDir + 'banner_acbrmonitor.gif' );
+     ACBrGIF1.Transparent := True;
+     ACBrGIF1.Start;
+   end
+  else
+     ACBrGIF1.Visible := False;
 end;
 
 {-----------------------------------------------------------------------------}

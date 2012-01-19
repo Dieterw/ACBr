@@ -3848,6 +3848,8 @@ begin
       <s></s>             - Sublinhado
       <c></c>             - Condensado
       <i></i>             - Itálico
+      <ad></ad>           - Alinhado a direita
+      <ce></ce>           - centralizado
 
       <ean8></ean8>       - ean 8
       <ean13></ean13>     - ean 13

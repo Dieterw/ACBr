@@ -69,6 +69,8 @@
 |   - Adição do registro 56
 |* 03/12/2010: Marcelo Cainelli
 |   - Adição dos registros 88 para combustíveis
+|* 23/01/2012: EMBarbosa
+|   - Adição dos registros 88STES e 88STITNF por Wilson Camargo
 *******************************************************************************}
 
 {$I ACBr.inc}
@@ -163,6 +165,82 @@ type
     property TelefoneEmpresa: string read FTelefoneEmpresa write FTelefoneEmpresa;
     property EmailEmpresa: string read FEmailEmpresa write FEmailEmpresa;
     property AlteraEmpresa: integer read FAlteraEmpresa write FAlteraEmpresa;
+  end;
+
+  TRegistro88STES = class
+  private
+    FCNPJ: string;
+    FDataInventario: TDateTime;
+    FCodigoProduto: string;
+    FQuantidade: Double;
+    FVlrICMSST: Double;
+    FVlrICMSOP: Double;
+  public
+    property CNPJ: string read FCNPJ write FCNPJ;
+    property DataInventario: TDateTime read FDataInventario write FDataInventario;
+    property CodigoProduto: string read FCodigoProduto write FCodigoProduto;
+    property Quantidade: Double read FQuantidade write FQuantidade;
+    property VlrICMSST: Double read FVlrICMSST write FVlrICMSST;
+    property VlrICMSOP: Double read FVlrICMSOP write FVlrICMSOP;
+  end;
+  {Lista de objetos do tipo Registro88STES}
+  TRegistros88STES = class(TObjectList)
+  protected
+    procedure SetObject (Index: Integer; Item: TRegistro88STES);
+    function GetObject (Index: Integer): TRegistro88STES;
+    procedure Insert (Index: Integer; Obj: TRegistro88STES);
+  public
+    function Add (Obj: TRegistro88STES): Integer;
+    property Objects [Index: Integer]: TRegistro88STES read GetObject write SetObject; default;
+  end;
+
+  TRegistro88STITNF = class
+  private
+    FCNPJ: string;
+    FModelo: string;
+    FSerie: string;
+    FNumero: string;
+    FCFOP: string;
+    FCST: string;
+    FNumeroItem: integer;
+    FDataEntrada: TDateTime;
+    FCodigoProduto: string;
+    FQuantidade: Double;
+    FVlrProduto: Double;
+    FValorDesconto: Double;
+    FBaseICMSOP: Double;
+    FBaseICMSST: Double;
+    FAliquotaICMSST: Double;
+    FAliquotaICMSOP: Double;
+    FVlrIPI: Double;
+  public
+    property CNPJ: string read FCNPJ write FCNPJ;
+    property Modelo: string read FModelo write FModelo;
+    property Serie: string read FSerie write FSerie;
+    property Numero: string read FNumero write FNumero;
+    property CFOP: string read FCFOP write FCFOP;
+    property CST: string read FCST write FCST;
+    property NumeroItem: integer read FNumeroItem write FNumeroItem;
+    property DataEntrada: TDateTime read FDataEntrada write FDataEntrada;
+    property CodigoProduto: string read FCodigoProduto write FCodigoProduto;
+    property Quantidade: Double read FQuantidade write FQuantidade;
+    property VlrProduto: Double read FVlrProduto write FVlrProduto;
+    property ValorDesconto: Double read FValorDesconto write FValorDesconto;
+    property BaseICMSOP: Double read FBaseICMSOP write FBaseICMSOP;
+    property BaseICMSST: Double read FBaseICMSST write FBaseICMSST;
+    property AliquotaICMSST: Double read FAliquotaICMSST write FAliquotaICMSST;
+    property AliquotaICMSOP: Double read FAliquotaICMSOP write FAliquotaICMSOP;
+    property VlrIPI: Double read FVlrIPI write FVlrIPI;
+  end;
+  {Lista de objetos do tipo Registro88STITNF}
+  TRegistros88STITNF = class(TObjectList)
+  protected
+    procedure SetObject (Index: Integer; Item: TRegistro88STITNF);
+    function GetObject (Index: Integer): TRegistro88STITNF;
+    procedure Insert (Index: Integer; Obj: TRegistro88STITNF);
+  public
+    function Add (Obj: TRegistro88STITNF): Integer;
+    property Objects [Index: Integer]: TRegistro88STITNF read GetObject write SetObject; default;
   end;
 
   TRegistro88C = class
@@ -1387,6 +1465,8 @@ type
     FRegistros88T: TRegistros88T;
     FRegistros88SP02 : TRegistros88SP02;
     FRegistros88SP03 : TRegistros88SP03;
+    FRegistros88STES : TRegistros88STES;
+    FRegistros88STITNF : TRegistros88STITNF;
     FInforma88C: Boolean;
     FInformaSapiMG : Boolean;
 
@@ -1420,6 +1500,8 @@ type
 
     procedure GerarRegistro88SME;
     procedure GerarRegistro88SMS;
+    procedure GerarRegistro88STES;
+    procedure GerarRegistro88STITNF;
 
     procedure GerarRegistros90;
     procedure WriteRecord(Rec: string; vSapiMG : Boolean = false);
@@ -1470,6 +1552,8 @@ type
     property Registros88T: TRegistros88T read FRegistros88T write FRegistros88T;
     property Registros88SP02: TRegistros88SP02 read FRegistros88SP02 write FRegistros88SP02;
     property Registros88SP03: TRegistros88SP03 read FRegistros88SP03 write FRegistros88SP03;
+    property Registros88STES: TRegistros88STES read FRegistros88STES write FRegistros88STES;
+    property Registros88STITNF: TRegistros88STITNF read FRegistros88STITNF write FRegistros88STITNF;
     property Ativo: Boolean read FAtivo write FAtivo;
     procedure LimparRegistros;
     procedure GeraArquivo;
@@ -1544,6 +1628,8 @@ begin
   FRegistros88T:=TRegistros88T.Create;
   FRegistros88SP02 := TRegistros88SP02.Create(True);
   FRegistros88SP03 := TRegistros88SP03.Create(True);
+  FRegistros88STES:=TRegistros88STES.Create;
+  FRegistros88STITNF:=TRegistros88STITNF.Create;
   FVersaoValidador:=vv524;
   Ativo:=True;
 end;
@@ -1579,6 +1665,8 @@ begin
   FRegistro88SF.Free;
   FRegistros88C.Free;
   FRegistros88D.Free;
+  FRegistros88STES.Free;
+  FRegistros88STITNF.Free;
   FRegistros88E.Free;
   FRegistros88T.Free;
   FRegistros88SP02.Free;
@@ -1659,7 +1747,8 @@ begin
       GerarRegistro88SP02;
       GerarRegistro88SP03;
     end;
-
+    GerarRegistro88STES;
+    GerarRegistro88STITNF;
     GerarRegistros90;
   finally
     CloseFile(Arquivo);
@@ -1819,20 +1908,19 @@ for i := 0 to Registros51.Count-1 do
 begin
   with Registros51[i] do
   begin
-    wregistro:='51';
-    wregistro:=wregistro+TBStrZero(TiraPontos(CPFCNPJ),14)+
-      Padl(TiraPontos(Inscricao),14);
-    wregistro:=wregistro+FormatDateTime('yyyymmdd',DataDocumento);
-    wregistro:=wregistro+Padl(Estado,2);
-    wregistro:=wregistro+Padl(Serie,3);
-    wregistro:=wregistro+TBStrZero(RightStr(Numero,6),6);
-    wregistro:=wregistro+Padl(TiraPontos(Cfop),4);
-    wregistro:=wregistro+TBStrZero(TiraPontos(FormatFloat('#,##0.00',ValorContabil)),13);
-    wregistro:=wregistro+TBStrZero(TiraPontos(FormatFloat('#,##0.00',ValorIpi)),13);
-    wregistro:=wregistro+TBStrZero(TiraPontos(FormatFloat('#,##0.00',ValorIsentas)),13);
-    wregistro:=wregistro+TBStrZero(TiraPontos(FormatFloat('#,##0.00',ValorOutras)),13);
-    wregistro:=wregistro+Space(20);
-    wregistro:=wregistro+Padl(Situacao,1);
+    wregistro := '51';
+    wregistro := wregistro+TBStrZero(TiraPontos(CPFCNPJ),14) + Padl(TiraPontos(Inscricao),14);
+    wregistro := wregistro+FormatDateTime('yyyymmdd',DataDocumento);
+    wregistro := wregistro+Padl(Estado,2);
+    wregistro := wregistro+Padl(Serie,3);
+    wregistro := wregistro+TBStrZero(RightStr(Numero,6),6);
+    wregistro := wregistro+Padl(TiraPontos(Cfop),4);
+    wregistro := wregistro+TBStrZero(TiraPontos(FormatFloat('#,##0.00',ValorContabil)),13);
+    wregistro := wregistro+TBStrZero(TiraPontos(FormatFloat('#,##0.00',ValorIpi)),13);
+    wregistro := wregistro+TBStrZero(TiraPontos(FormatFloat('#,##0.00',ValorIsentas)),13);
+    wregistro := wregistro+TBStrZero(TiraPontos(FormatFloat('#,##0.00',ValorOutras)),13);
+    wregistro := wregistro+Space(20);
+    wregistro := wregistro+Padl(Situacao,1);
     WriteRecord(wregistro);
   end;
 end;
@@ -2241,6 +2329,12 @@ if FInforma88SME then
 if FInforma88SMS then
   inc(wtotal88);
 
+if FRegistros88STES.Count > 0 then
+  inc(wtotal88);
+
+if FRegistros88STITNF.Count > 0 then
+  inc(wtotal88);
+
 if FInforma88C then begin
   wtotal88:=wtotal88+Registros88C.Count;
   wtotal88:=wtotal88+Registros88D.Count;
@@ -2325,6 +2419,8 @@ FRegistros88E.Clear;
 FRegistros88T.Clear;
 FRegistros88SP02.Clear;
 FRegistros88SP03.Clear;
+FRegistros88STES.Clear;
+FRegistros88STITNF.Clear;
 end;
 
 function TACBrSintegra.GetVersao: string;
@@ -2769,6 +2865,63 @@ begin
       wregistro:=wregistro+TBStrZero(TiraPontos(FormatFloat('#,###0.00', AliquotaInterna)),4);
       wregistro:=wregistro+FormatDateTime('yyyymmdd',DataEmissao);
       wregistro:=wregistro+Padl(MicroEmpresa,1);
+      WriteRecord(wregistro, True);
+    end;//With
+  end;//For
+end;
+
+{ TRegistros88STES }
+
+procedure TACBrSintegra.GerarRegistro88STES;
+var
+  wregistro: string;
+  i: Integer;
+begin
+  For i:=0 to Registros88STES.Count-1 do
+  begin
+    With Registros88STES[i] do
+    begin
+      wregistro := '88STES';
+      wregistro := wregistro+TBStrZero(TiraPontos(CNPJ),14);
+      wregistro := wregistro+FormatDateTime('yyyymmdd',DataInventario);
+      wregistro := wregistro+TBStrZero(CodigoProduto,14);
+      wregistro := wregistro+TBStrZero(TiraPontos(FormatFloat('#,###0.00', Quantidade)),13); //quantidade do produto
+      wregistro := wregistro+TBStrZero(TiraPontos(FormatFloat('#,##0.00', VlrICMSST)),12); //Valor ICMS ST
+      wregistro := wregistro+TBStrZero(TiraPontos(FormatFloat('#,##0.00', VlrICMSOP)),12); //Valor ICMS OP
+      WriteRecord(wregistro, True);
+    end;//With
+  end;//For
+end;
+
+{ TRegistros88STITNF }
+
+procedure TACBrSintegra.GerarRegistro88STITNF;
+var
+  wregistro: string;
+  i: Integer;
+begin
+  For i:=0 to Registros88STITNF.Count-1 do
+  begin
+    With Registros88STITNF[i] do
+    begin
+      wregistro := '88STITNF';
+      wregistro := wregistro+TBStrZero(TiraPontos(CNPJ),14);
+      wregistro := wregistro+Padl(Modelo,2);
+      wregistro := wregistro+Padl(Serie,3);
+      wregistro := wregistro+TBStrZero(Numero, 6);
+      wregistro := wregistro+PadL(CFOP,4);
+      wregistro := wregistro+PadL(CST,3);
+      wregistro := wregistro+TBStrZero(TiraPontos(FormatFloat('000', NumeroItem)),3); //Numero do Item
+      wregistro := wregistro+FormatDateTime('yyyymmdd',DataEntrada);
+      wregistro := wregistro+TBStrZero(CodigoProduto,14);
+      wregistro := wregistro+TBStrZero(TiraPontos(FormatFloat('#,###0.00', Quantidade)),11); //quantidade do produto
+      wregistro := wregistro+TBStrZero(TiraPontos(FormatFloat('#,##0.00', VlrProduto)),12); //valor do produto
+      wregistro := wregistro+TBStrZero(TiraPontos(FormatFloat('#,##0.00', ValorDesconto)),12); //valor desconto
+      wregistro := wregistro+TBStrZero(TiraPontos(FormatFloat('#,##0.00', BaseICMSOP)),12);
+      wregistro := wregistro+TBStrZero(TiraPontos(FormatFloat('#,##0.00', BaseICMSST)),12);
+      wregistro := wregistro+TBStrZero(TiraPontos(FormatFloat('#,###0.00', AliquotaICMSOP)),4);
+      wregistro := wregistro+TBStrZero(TiraPontos(FormatFloat('#,###0.00', AliquotaICMSST)),4);
+      wregistro := wregistro+TBStrZero(TiraPontos(FormatFloat('#,##0.00', VlrIPI)),12);
       WriteRecord(wregistro, True);
     end;//With
   end;//For
@@ -3651,6 +3804,28 @@ begin
   inherited SetItem(Index, Item);
 end;
 
+{ TRegistros88STES }
+
+function TRegistros88STES.Add(Obj: TRegistro88STES): Integer;
+begin
+  Result:=inherited Add(Obj);
+end;
+
+function TRegistros88STES.GetObject(Index: Integer): TRegistro88STES;
+begin
+  Result:=inherited GetItem(Index) as TRegistro88STES;
+end;
+
+procedure TRegistros88STES.Insert(Index: Integer; Obj: TRegistro88STES);
+begin
+  inherited SetItem(Index, Obj);
+end;
+
+procedure TRegistros88STES.SetObject(Index: Integer; Item: TRegistro88STES);
+begin
+  inherited SetItem(Index, Item);
+end;
+
 { TRegistros88E }
 
 function TRegistros88E.Add(Obj: TRegistro88E): Integer;
@@ -3737,6 +3912,30 @@ end;
 
 procedure TRegistros88SP03.SetObject(Index: Integer;
   Item: TRegistro88SP03);
+begin
+  inherited SetItem(Index, Item);
+end;
+
+{ TRegistros88STITNF }
+
+function TRegistros88STITNF.Add(Obj: TRegistro88STITNF): Integer;
+begin
+  Result:=inherited Add(Obj);
+end;
+
+function TRegistros88STITNF.GetObject(Index: Integer): TRegistro88STITNF;
+begin
+  Result:=inherited GetItem(Index) as TRegistro88STITNF;
+end;
+
+procedure TRegistros88STITNF.Insert(Index: Integer;
+  Obj: TRegistro88STITNF);
+begin
+  inherited SetItem(Index, Obj);
+end;
+
+procedure TRegistros88STITNF.SetObject(Index: Integer;
+  Item: TRegistro88STITNF);
 begin
   inherited SetItem(Index, Item);
 end;

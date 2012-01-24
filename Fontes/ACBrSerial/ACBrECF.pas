@@ -2516,13 +2516,13 @@ begin
     ser enviada para o ECF }
   AliquotaECF := AliquotaICMS ;
 
-  { convertendo IS1, IS2 = "SI";   FS1, FS2 = "SF";   NS1, NS2 = "SN" }
+  { convertendo IS1, IS2 = "SIx";   FS1, FS2 = "SFx";   NS1, NS2 = "SNx" }
   if copy(AliquotaICMS,1,2) = 'FS' then
-     AliquotaECF := 'SF'
+     AliquotaECF := 'SF' + copy(AliquotaICMS,3,1)
   else if copy(AliquotaICMS,1,2) = 'NS' then
-     AliquotaECF := 'SN'
+     AliquotaECF := 'SN' + copy(AliquotaICMS,3,1)
   else if copy(AliquotaICMS,1,2) = 'IS' then
-     AliquotaECF := 'SI' ;
+     AliquotaECF := 'SI' + copy(AliquotaICMS,3,1) ;
 
   Aliquota := AchaICMSAliquota( AliquotaECF ) ;
 

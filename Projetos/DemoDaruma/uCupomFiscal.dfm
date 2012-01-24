@@ -18,7 +18,7 @@ inherited frmCupomFiscal: TfrmCupomFiscal
       Top = 1
       Width = 344
       Height = 398
-      ActivePage = TabSheet1
+      ActivePage = TabSheet2
       Align = alClient
       TabOrder = 0
       object TabSheet1: TTabSheet
@@ -87,7 +87,6 @@ inherited frmCupomFiscal: TfrmCupomFiscal
             Width = 91
             Height = 21
             Style = csDropDownList
-            ItemHeight = 13
             ItemIndex = 0
             TabOrder = 1
             Text = 'Percentual'
@@ -101,7 +100,6 @@ inherited frmCupomFiscal: TfrmCupomFiscal
             Width = 88
             Height = 21
             Style = csDropDownList
-            ItemHeight = 13
             ItemIndex = 0
             TabOrder = 0
             Text = 'Desconto'
@@ -251,7 +249,6 @@ inherited frmCupomFiscal: TfrmCupomFiscal
             Width = 51
             Height = 21
             Style = csDropDownList
-            ItemHeight = 13
             TabOrder = 6
             Items.Strings = (
               'FF'
@@ -264,7 +261,19 @@ inherited frmCupomFiscal: TfrmCupomFiscal
               'FS'
               'IS'
               'NS'
-              '02S')
+              '02S'
+              'F1'
+              'F2'
+              'I1'
+              'I2'
+              'N1'
+              'N2'
+              'FS1'
+              'IS1'
+              'NS1'
+              'FS2'
+              'IS2'
+              'NS2')
           end
         end
         object btnItemDescAcrescAnterior: TButton
@@ -362,7 +371,6 @@ inherited frmCupomFiscal: TfrmCupomFiscal
           Width = 169
           Height = 21
           Style = csDropDownList
-          ItemHeight = 13
           TabOrder = 0
         end
         object edtPagtoVlr: TEdit
@@ -460,7 +468,6 @@ inherited frmCupomFiscal: TfrmCupomFiscal
           Width = 52
           Height = 21
           Style = csDropDownList
-          ItemHeight = 13
           ItemIndex = 0
           TabOrder = 0
           Text = '0'

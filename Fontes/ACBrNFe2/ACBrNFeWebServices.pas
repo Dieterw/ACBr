@@ -2408,7 +2408,7 @@ var
   {$ENDIF}
 begin
   if assigned(FRetConsCad) then
-     FRetConsCad.Free;
+     FreeAndNil(FRetConsCad);
 
   inherited Executar;
 

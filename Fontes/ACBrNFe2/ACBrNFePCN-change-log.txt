@@ -48,6 +48,12 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Data: 24/01/2012 
+-- ACBrNFeWebServices -- 
+[-] Acerto conforme post no fórum:
+    http://djsystem.com.br/acbr/forum/viewtopic.php?f=6&t=3970
+
+
 Alteração    06/01/2012
 -----------------------
 [+] Adicionado endereço do webservice da CC-e para o Ceará

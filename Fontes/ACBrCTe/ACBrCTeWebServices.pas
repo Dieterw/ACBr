@@ -2215,10 +2215,15 @@ var
      ReqResp: THTTPReqResp;
   {$ENDIF}
 begin
-  {Result :=} inherited Executar;
+  // Alterado por Italo em  25/01/2012
+  if assigned(FRetConsCad) then
+     FreeAndNil(FRetConsCad);
 
-  Acao   := TStringList.Create;
+  inherited Executar;
+
+  Acao := TStringList.Create;
   Stream := TMemoryStream.Create;
+
   // Alterado por Italo em  17/10/2011
   (*
   Texto := '<?xml version="1.0" encoding="utf-8"?>';
@@ -2267,8 +2272,6 @@ begin
   {$ENDIF}
   try
     TACBrCTe( FACBrCTe ).SetStatus( stCTeCadastro );
-    if assigned(FRetConsCad) then
-       FRetConsCad.Free;
 
     if FConfiguracoes.Geral.Salvar then
       FConfiguracoes.Geral.Save(FormatDateTime('yyyymmddhhnnss',Now)+'-ped-cad.xml', FDadosMsg);

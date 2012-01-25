@@ -189,7 +189,7 @@ function ACBrValidadorFormatarDocumento( const TipoDocto : TACBrValTipoDocto;
   const Documento : AnsiString) : String ;
 
 implementation
-{$IFDEF COMPILER6_UP} uses Variants , Math, StrUtils;
+{$IFDEF COMPILER6_UP} uses Variants , Math, StrUtils;{$ENDIF}
 
 function ACBrValidadorValidarCPF(const Documento : AnsiString) : String ;
 begin
@@ -259,8 +259,6 @@ begin
     ACBrVal.Free;
   end;
 end;
-
-{$ENDIF}
 
 { TACBrValidador }
 

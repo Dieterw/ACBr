@@ -914,6 +914,19 @@ begin
            sdRegimeEspecNEsp:       strCOD_SIT := '08';
           end;
 
+          /// Tratamento NFs canceladas 02/03, denegada 04 ou inutilizada 05 - Jean Barreiros 25Nov2009
+          /// Invertido a posição do teste condicional pois o ACBr por padrão adiciona IND_FRT=2 - Ederson Selvati
+          if Pos(strCOD_SIT,'02, 03, 04, 05') > 0 then
+          begin
+            DT_DOC   := 0;
+            DT_E_S   := 0;
+            IND_FRT  := tfNenhum;
+            IND_PGTO := tpNenhum;
+            booNFCancelada := true
+          end
+          else
+            booNFCancelada := false;
+
           //Obs.: A partir de 01/01/2012 passará a ser:
           //Indicador do tipo do frete:
           //0- Por conta do emitente;
@@ -945,18 +958,6 @@ begin
            tpSemPagamento: strIND_PGTO := '9';
            tpNenhum:       strIND_PGTO := '';
           end;
-
-          /// Tratamento NFs canceladas 02/03, denegada 04 ou inutilizada 05 - Jean Barreiros 25Nov2009
-          if Pos(strCOD_SIT,'02, 03, 04, 05') > 0 then
-          begin
-            DT_DOC   := 0;
-            DT_E_S   := 0;
-            IND_FRT  := tfNenhum;
-            IND_PGTO := tpNenhum;
-            booNFCancelada := true
-          end
-          else
-            booNFCancelada := false;
 
 
           Add( LFill('C100') +

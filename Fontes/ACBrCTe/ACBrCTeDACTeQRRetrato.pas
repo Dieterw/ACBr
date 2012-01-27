@@ -995,7 +995,8 @@ begin
       qrlDescricao.Caption:= 'PROTOCOLO DE HOMOLOGAÇÃO DE CANCELAMENTO';
      end;
 
-    if FCTe.procCTe.cStat = 102 then
+    // Alterado de 102 para 110 por Italo em 27/01/2012
+    if FCTe.procCTe.cStat = 110 then
      begin
       qrlDescricao.Caption:= 'PROTOCOLO DE DENEGAÇÃO DE USO';
      end;
@@ -1585,14 +1586,16 @@ begin
         qrlMsgTeste.Enabled := True;
        end;
 
-      if FCTe.procCTe.cStat = 102 then
+      // Alterado de 102 para 110 por Italo em 27/01/2012
+      if FCTe.procCTe.cStat = 110 then
        begin
         qrlMsgTeste.Caption := 'CT-e DENEGADO';
         qrlMsgTeste.Visible := True;
         qrlMsgTeste.Enabled := True;
        end;
 
-      if not FCTe.procCTe.cStat in [101, 102, 100] then
+      // Alterado de 102 para 110 por Italo em 27/01/2012
+      if not FCTe.procCTe.cStat in [101, 110, 100] then
        begin
         qrlMsgTeste.Caption := FCTe.procCTe.xMotivo;
         qrlMsgTeste.Visible := True;

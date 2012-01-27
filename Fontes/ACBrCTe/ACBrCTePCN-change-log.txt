@@ -48,6 +48,12 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   27/01/12 (Italo Jurisato Junior)
+---------------
+[-] Alteração na Emissão do DACTE - Quick Report código do status para CT-e DENEGADA 
+    estava 102 sendo que o correto é 110, conforme falha detectada na emissão do DANFE
+    - Quick Report por Moroni.
+
 Alterações   25/01/12 (Italo Jurisato Junior)
 ---------------
 [-] Alteração no Consultar Cadastro (ACBrCTeWebServices) de forma semelhante 

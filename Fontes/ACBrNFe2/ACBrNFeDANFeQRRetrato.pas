@@ -1110,15 +1110,16 @@ begin
                qrlMsgTeste.Visible  := True;
                qrlMsgTeste.Enabled := True;
             end;
-
-            if FNFe.procNFe.cStat = 102 then
+            // Alterado de 102 para 110 por Italo em 27/01/2012
+            if FNFe.procNFe.cStat = 110 then
             begin
                qrlMsgTeste.Caption  := 'NF-e DENEGADA';
                qrlMsgTeste.Visible  := True;
                qrlMsgTeste.Enabled := True;
             end;
 
-            if not FNFe.procNFe.cStat in [101, 102, 100] then
+            // Alterado de 102 para 110 por Italo em 27/01/2012
+            if not FNFe.procNFe.cStat in [101, 110, 100] then
             begin
                 qrlMsgTeste.Caption:=  FNFe.procNFe.xMotivo;
                 qrlMsgTeste.Visible := True;
@@ -1383,7 +1384,8 @@ begin
                 qrlDescricao.Caption:= 'PROTOCOLO DE HOMOLOGAÇÃO DE CANCELAMENTO';
             end;
 
-            if FNFe.procNFe.cStat = 102 then
+            // Alterado de 102 para 110 por Italo em 27/01/2012
+            if FNFe.procNFe.cStat = 110 then
             begin
                 qrlDescricao.Caption:= 'PROTOCOLO DE DENEGAÇÃO DE USO';
             end;

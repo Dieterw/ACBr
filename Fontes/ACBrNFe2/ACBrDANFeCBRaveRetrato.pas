@@ -189,6 +189,16 @@ begin
         FontRotation:=45;
         Print('NFe Cancelada');
       end
+     else if (procNFe.cStat = 110) then
+      begin //NFe denegada
+        SetFont(FontNameUsed,25);
+        FontColor:=clRed;
+        Bold:=True;
+        Underline:=True;
+        GotoXY(FFirstX+80,YY-80);
+        FontRotation:=45;
+        Print('NFe Denegada');
+      end
      else if ((procNFe.cStat <> 100 ) and
               (Ide.tpEmis <> teFSDA) and
               (Ide.tpEmis <> teCONTINGENCIA) and
@@ -459,6 +469,9 @@ begin
             if ((NFeCancelada) or
                 (ACBrNFe.NotasFiscais.Items[FNFIndex].NFe.procNFe.cStat=101)) then
                Box([fsLeft,fsTop],PosX,YPos,aWidth,aHeigthPadrao,'PROTOCOLO DE HOMOLOGAÇÃO DO CANCELAMENTO',aProtocolo,taCenter,True)
+            else
+            if (ACBrNFe.NotasFiscais.Items[FNFIndex].NFe.procNFe.cStat=110) then
+               Box([fsLeft,fsTop],PosX,YPos,aWidth,aHeigthPadrao,'PROTOCOLO DE DENEGAÇÃO',aProtocolo,taCenter,True)
             else
                Box([fsLeft,fsTop],PosX,YPos,aWidth,aHeigthPadrao,'PROTOCOLO DE AUTORIZAÇÃO DE USO',aProtocolo,taCenter,True);
          end

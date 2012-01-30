@@ -170,7 +170,7 @@ begin
         Print('AMBIENTE DE HOMOLOGAÇÃO - SEM VALOR FISCAL');
       end
      else if ((procNFe.cStat = 101) or (NFeCancelada)) then
-      begin //homologação
+      begin // cancelada
         SetFont(FontNameUsed,28);
         FontColor:=clRed;
         Bold:=True;
@@ -178,6 +178,16 @@ begin
         GotoXY(PosX+5,YY);
         FontRotation:=33;
         Print('NFe Cancelada');
+      end
+     else if (procNFe.cStat = 110) then
+      begin // denegada
+        SetFont(FontNameUsed,28);
+        FontColor:=clRed;
+        Bold:=True;
+        Underline:=True;
+        GotoXY(PosX+5,YY);
+        FontRotation:=33;
+        Print('NFe Denegada');
       end
      else if ((procNFe.cStat <> 100 ) and
               (Ide.tpEmis <> teFSDA) and
@@ -440,6 +450,9 @@ begin
             if ((NFeCancelada) or
                 (ACBrNFe.NotasFiscais.Items[FNFIndex].NFe.procNFe.cStat=101)) then
                Box([fsLeft,fsTop],PosX,YPos,aWidth,aHeigthPadrao,'PROTOCOLO DE HOMOLOGAÇÃO DO CANCELAMENTO',aProtocolo,taCenter,True)
+            else
+            if (ACBrNFe.NotasFiscais.Items[FNFIndex].NFe.procNFe.cStat=110) then
+               Box([fsLeft,fsTop],PosX,YPos,aWidth,aHeigthPadrao,'PROTOCOLO DE DENEGAÇÃO',aProtocolo,taCenter,True)
             else
                Box([fsLeft,fsTop],PosX,YPos,aWidth,aHeigthPadrao,'PROTOCOLO DE AUTORIZAÇÃO DE USO',aProtocolo,taCenter,True);
          end

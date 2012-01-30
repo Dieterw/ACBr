@@ -917,6 +917,8 @@ begin
          begin
             if FDANFEClassOwner.NFeCancelada then
                Connection.WriteStrData('', 'NFe Cancelada')
+            else if (FNFe.procNFe.cStat = 110) then
+              Connection.WriteStrData('', 'NFe com Uso Denegado')
             else
                Connection.WriteStrData('', '');
          end;
@@ -979,6 +981,8 @@ begin
       if ((FDANFEClassOwner.NFeCancelada) or
           (FNFe.procNFe.cStat=101)) then
          Connection.WriteStrData('', 'PROTOCOLO DE HOMOLOGAÇÃO DO CANCELAMENTO')
+      else if (FNFe.procNFe.cStat=110) then
+         Connection.WriteStrData('', 'PROTOCOLO DE DENEGAÇÃO DE USO')
       else
          Connection.WriteStrData('', 'PROTOCOLO DE AUTORIZAÇÃO DE USO');
       if notautil.EstaVazio(FDANFEClassOwner.ProtocoloNFe) then

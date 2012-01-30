@@ -266,9 +266,11 @@ begin
     end;
 
     i01 := 0;
+    // Incluido por Italo em 30/01/2012
+    I := 0;
     while Leitor.rExtrai(2, 'ObsCont', '', i01 + 1) <> '' do
     begin
-      I := 0;
+//      I := 0;
       I := RetornarPosEx('ObsCont xCampo=', Leitor.Arquivo, I + 1);
       J := RetornarPosEx('"', Leitor.Arquivo, I + 16);
       CTe.Compl.ObsCont.Add;
@@ -280,9 +282,11 @@ begin
     end;
 
     i01 := 0;
+    // Incluido por Italo em 30/01/2012
+    I := 0;
     while Leitor.rExtrai(2, 'ObsFisco', '', i01 + 1) <> '' do
     begin
-      I := 0;
+//      I := 0;
       I := RetornarPosEx('ObsFisco xCampo=', Leitor.Arquivo, I + 1);
       J := RetornarPosEx('"', Leitor.Arquivo, I + 17);
       CTe.Compl.ObsFisco.Add;

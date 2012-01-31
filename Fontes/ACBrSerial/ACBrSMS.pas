@@ -42,11 +42,7 @@ interface
 
 uses
   ACBrBase, ACBrConsts, ACBrDevice, ACBrSMSClass,
-  SysUtils , Classes
- {$IFNDEF CONSOLE}
-    {$IFDEF VisualCLX}, QControls, QForms, QDialogs, QGraphics, QStdCtrls{$ENDIF}
-    {$IFDEF VCL}, Controls, Forms, Dialogs, Graphics, StdCtrls {$ENDIF}
- {$ENDIF} ;
+  SysUtils , Classes;
 
 type
   TACBrSMS = class(TACBrComponent)

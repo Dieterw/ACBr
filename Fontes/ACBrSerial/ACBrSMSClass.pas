@@ -41,11 +41,7 @@ unit ACBrSMSClass;
 interface
 
 uses
-  ACBrDevice, ACBrECF, Classes, SysUtils
- {$IFNDEF CONSOLE}
-   {$IFDEF VisualCLX}, QForms {$ENDIF}
-   {$IFDEF VCL}, Forms {$ENDIF}
- {$ENDIF} ;
+  ACBrDevice, ACBrECF, Classes, SysUtils;
 
 const
   FALHA_INICIALIZACAO   = 'Não foi possível inicializar o envio da mensagem.';

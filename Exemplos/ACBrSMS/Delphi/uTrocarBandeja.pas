@@ -41,7 +41,13 @@ begin
   else
     frmPrincipal.ACBrSMS1.TrocarBandeja(sin2);
 
-  ShowMessage('Pronto.');
+  ShowMessage(
+    'Pronto.' +
+    sLineBreak +
+    sLineBreak +
+    'Última resposta:' + sLineBreak +
+    String(frmPrincipal.ACBrSMS1.UltimaResposta)
+  );
 end;
 
 end.

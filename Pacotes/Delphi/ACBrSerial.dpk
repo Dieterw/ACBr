@@ -87,8 +87,10 @@ contains
   ACBrTER in '..\..\Fontes\ACBrSerial\ACBrTER.pas',
   ACBrTERClass in '..\..\Fontes\ACBrSerial\ACBrTERClass.pas',
   ACBrTERWilbor in '..\..\Fontes\ACBrSerial\ACBrTERWilbor.pas',
+  ACBrSMSZTE in '..\..\Fontes\ACBrSerial\ACBrSMSZTE.pas',
   ACBrSMS in '..\..\Fontes\ACBrSerial\ACBrSMS.pas',
   ACBrSMSClass in '..\..\Fontes\ACBrSerial\ACBrSMSClass.pas',
-  ACBrSMSDaruma in '..\..\Fontes\ACBrSerial\ACBrSMSDaruma.pas';
+  ACBrSMSDaruma in '..\..\Fontes\ACBrSerial\ACBrSMSDaruma.pas',
+  ACBrSMSGenerico in '..\..\Fontes\ACBrSerial\ACBrSMSGenerico.pas';
 
 end.

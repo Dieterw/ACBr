@@ -48,8 +48,6 @@ type
   private
 
   public
-    constructor Create(AOwner: TComponent);
-
     function EmLinha: Boolean; override;
     function IMEI: AnsiString; override;
     function Operadora: AnsiString; override;
@@ -82,18 +80,6 @@ begin
   Self.EnviarComando('AT+ZOPRT=5');
   if not Self.ATResult then
     raise EACBrSMSException.Create('Não foi possível inicializar o modem.');
-end;
-
-constructor TACBrSMSZTE.Create(AOwner: TComponent);
-begin
-  inherited Create(AOwner);
-
-  ATTimeOut := 10000;
-
-  fpDevice.Baud := 115200;
-  fpDevice.TimeOut := 10000;
-  fpDevice.HandShake := hsNenhum;
-  fpDevice.Serial.AtTimeout := 10000;
 end;
 
 function TACBrSMSZTE.EmLinha: Boolean;

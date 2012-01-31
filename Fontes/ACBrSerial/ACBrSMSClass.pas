@@ -70,6 +70,7 @@ type
     fpAtivo: Boolean;
     fpUltimaResposta: AnsiString;
     fpAtResult: Boolean;
+    fpBandejasSimCard: Integer;
   public
     constructor Create(AOwner: TComponent);
     Destructor Destroy; override;
@@ -101,6 +102,7 @@ type
     property ATResult: Boolean read fpATResult write fpATResult;
     property RecebeConfirmacao: Boolean read fpRecebeConfirmacao write fpRecebeConfirmacao;
     property QuebraMensagens: Boolean read fpQuebraMensagens write fpQuebraMensagens;
+    property BandejasSimCard: Integer read fpBandejasSimCard;
     property UltimaResposta: AnsiString read fpUltimaResposta write fpUltimaResposta;
   end;
 
@@ -115,6 +117,8 @@ constructor TACBrSMSClass.Create(AOwner: TComponent);
 begin
   fpDevice := (AOwner as TACBrSMS).Device;
   fpDevice.SetDefaultValues;
+  fpDevice.TimeOut := 10000;
+  fpDevice.Serial.AtTimeout := 10000;
 
   fpAtivo := False;
   fpSinCard := sin1;
@@ -122,6 +126,7 @@ begin
   fpQuebraMensagens := False;
   fpATResult := False;
   fpATTimeout := 10000;
+  fpBandejasSimCard := 1;
   fpUltimaResposta := AnsiString(EmptyStr);
 end;
 

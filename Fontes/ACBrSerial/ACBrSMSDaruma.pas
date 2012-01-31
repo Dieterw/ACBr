@@ -78,12 +78,7 @@ constructor TACBrSMSDaruma.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
 
-  ATTimeOut := 10000;
-
-  fpDevice.Baud := 115200;
-  fpDevice.TimeOut := 10000;
-  fpDevice.HandShake := hsNenhum;
-  fpDevice.Serial.AtTimeout := 10000;
+  fpBandejasSimCard := 2;
 end;
 
 procedure TACBrSMSDaruma.TrocarBandeja(const ASinCard: TACBrSMSSinCard);

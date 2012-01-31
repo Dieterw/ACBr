@@ -67,6 +67,7 @@ type
     function GetATTimeOut: Integer;
     function GetATResult: Boolean;
     procedure SetATResult(const Value: Boolean);
+    function GetBandejasSimCard: Integer;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -100,6 +101,7 @@ type
     property ATTimeOut: Integer read GetATTimeOut write SetATTimeOut;
     property ATResult: Boolean read GetATResult write SetATResult;
     property RecebeConfirmacao: Boolean read GetRecebeConfirmacao write SetRecebeConfirmacao;
+    property BandejasSimCard: Integer read GetBandejasSimCard;
     property QuebraMensagens: Boolean read GetQuebraMensagens write SetQuebraMensagens;
     property UltimaResposta: AnsiString read GetUltimaReposta;
   end;
@@ -235,6 +237,11 @@ end;
 function TACBrSMS.GetATTimeOut: Integer;
 begin
   Result := fsSMS.ATTimeOut;
+end;
+
+function TACBrSMS.GetBandejasSimCard: Integer;
+begin
+  Result := fsSMS.BandejasSimCard;
 end;
 
 function TACBrSMS.GetQuebraMensagens: Boolean;

@@ -48,8 +48,6 @@ type
   private
 
   public
-    constructor Create(AOwner: TComponent);
-
     function EmLinha: Boolean; override;
     function IMEI: AnsiString; override;
     function Operadora: AnsiString; override;
@@ -72,18 +70,6 @@ uses
   ACBrDevice, ACBrUtil, ACBrConsts;
 
 { TACBrSMSGenerico }
-
-constructor TACBrSMSGenerico.Create(AOwner: TComponent);
-begin
-  inherited Create(AOwner);
-
-  ATTimeOut := 10000;
-
-  fpDevice.Baud := 115200;
-  fpDevice.TimeOut := 10000;
-  fpDevice.HandShake := hsNenhum;
-  fpDevice.Serial.AtTimeout := 10000;
-end;
 
 function TACBrSMSGenerico.EmLinha: Boolean;
 begin

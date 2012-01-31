@@ -167,15 +167,12 @@ begin
   F := TStringList.Create;
   R := TStringList.Create;
   try
-    R.Delimiter := '|';
-    R.StrictDelimiter := True;
-
     F.LoadFromFile(APath);
 
     Self.Clear;
     for I := 0 to F.Count - 1 do
     begin
-      R.DelimitedText := F.Strings[I];
+      R.Text := StringReplace(F.Strings[I], '|', sLineBreak, [rfReplaceAll]);
       if R.Count = 2 then
       begin
         with Self.Add do

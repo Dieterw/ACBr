@@ -32,7 +32,7 @@ object frmEnviarMensagem: TfrmEnviarMensagem
   end
   object lblContador: TLabel
     Left = 431
-    Top = 100
+    Top = 51
     Width = 12
     Height = 13
     Alignment = taRightJustify
@@ -84,5 +84,13 @@ object frmEnviarMensagem: TfrmEnviarMensagem
       'Sincard 1'
       'Sincard 2')
     TabOrder = 2
+  end
+  object ckbQuebrarMensagem: TCheckBox
+    Left = 150
+    Top = 26
+    Width = 236
+    Height = 17
+    Caption = 'Quebrar mensagem grande e enviar em lote.'
+    TabOrder = 5
   end
 end

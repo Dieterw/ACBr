@@ -64,6 +64,7 @@ type
   private
     fpRecebeConfirmacao: Boolean;
     fpSinCard: TACBrSMSSinCard;
+    fpQuebraMensagens: Boolean;
     procedure SetAtivo(const Value: Boolean);
   protected
     fpDevice: TACBrDevice;
@@ -86,13 +87,14 @@ type
 
     procedure TrocarBandeja(const ASinCard: TACBrSMSSinCard); virtual;
     procedure EnviarSMS(const ATelefone, AMensagem: AnsiString;
-      var AIndice: Integer); virtual;
+      var AIndice: String); virtual;
     procedure ListarMensagens(const AFiltro: TACBrSMSFiltro;
       const APath: AnsiString); virtual;
 
     property Ativo: Boolean read fpAtivo write SetAtivo;
     property SinCard: TACBrSMSSinCard read fpSinCard write fpSinCard;
     property RecebeConfirmacao: Boolean read fpRecebeConfirmacao write fpRecebeConfirmacao;
+    property QuebraMensagens: Boolean read fpQuebraMensagens write fpQuebraMensagens;
     property UltimaResposta: AnsiString read fpUltimaResposta write fpUltimaResposta;
   end;
 
@@ -109,8 +111,9 @@ begin
   fpDevice.SetDefaultValues;
 
   fpAtivo := False;
-  fpRecebeConfirmacao := False;
   fpSinCard := sin1;
+  fpRecebeConfirmacao := False;
+  fpQuebraMensagens := False;
   fpUltimaResposta := EmptyStr;
 end;
 
@@ -128,10 +131,9 @@ begin
 end;
 
 procedure TACBrSMSClass.EnviarSMS(const ATelefone, AMensagem: AnsiString;
-  var AIndice: Integer);
+  var AIndice: String);
 begin
-  if Length(AMensagem) > 160 then
-    raise EACBrSMSException.Create('A mensagem deve ter no máximo 160 caracteres.');
+  raise EACBrSMSException.Create('ENVIAR SMS não implementado.');
 end;
 
 function TACBrSMSClass.Fabricante: AnsiString;

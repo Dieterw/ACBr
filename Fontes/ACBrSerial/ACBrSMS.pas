@@ -65,6 +65,8 @@ type
     function GetUltimaReposta: AnsiString;
     procedure TestaAtivo;
     procedure TestaEmLinha;
+    function GetQuebraMensagens: Boolean;
+    procedure SetQuebraMensagens(const Value: Boolean);
 
   public
     constructor Create(AOwner: TComponent); override;
@@ -83,7 +85,7 @@ type
 
     procedure TrocarBandeja(const ASinCard: TACBrSMSSinCard);
     procedure EnviarSMS(const ATelefone, AMensagem: AnsiString;
-      var AIndice: Integer);
+      var AIndice: String);
     procedure ListarMensagens(const AFiltro: TACBrSMSFiltro;
       const APath: AnsiString);
   published
@@ -93,6 +95,7 @@ type
     property Modelo: TACBrSMSModelo read fsModelo write SetModelo;
     property SinCard: TACBrSMSSinCard read GetSinCard write SetSinCard;
     property RecebeConfirmacao: Boolean read GetRecebeConfirmacao write SetRecebeConfirmacao;
+    property QuebraMensagens: Boolean read GetQuebraMensagens write SetQuebraMensagens;
     property UltimaResposta: AnsiString read GetUltimaReposta;
   end;
 
@@ -156,19 +159,54 @@ begin
 end;
 
 procedure TACBrSMS.EnviarSMS(const ATelefone, AMensagem: AnsiString;
-  var AIndice: Integer);
+  var AIndice: String);
+var
+  F: TStringList;
+  I: Integer;
+  IndiceMsg: String;
 begin
-  if Length(AMensagem) > 160 then
-    raise EACBrSMSException.Create('A quantidade máxima permitida de caracteres por mensagem de texto é de 160 caractes.');
-
   TestaAtivo;
-  fsSMS.EnviarSMS(ATelefone, AMensagem, AIndice);
+  TestaEmLinha;
+
+  // se o parametro estiver true, então quebrar em mensagens menores e enviar.
+  if not QuebraMensagens then
+  begin
+    if Length(AMensagem) > 160 then
+      raise EACBrSMSException.Create('A quantidade máxima permitida de caracteres por mensagem de texto é de 160 caractes.');
+
+    fsSMS.EnviarSMS(ATelefone, AMensagem, AIndice);
+  end
+  else
+  begin
+    AIndice := EmptyStr;
+
+    F := TStringList.Create;
+    try
+      F.Text := QuebraLinhas(AMensagem, 160);
+      for I := 0 to F.Count - 1 do
+      begin
+        fsSMS.EnviarSMS(ATelefone, F.Strings[I], IndiceMsg);
+        AIndice := AIndice + ',' + IndiceMsg;
+      end;
+
+      // limpar a virgula inicial
+      if AIndice <> EmptyStr then
+        AIndice := Copy(AIndice, 2, Length(AIndice));
+    finally
+      F.Free;
+    end;
+  end;
 end;
 
 function TACBrSMS.Fabricante: AnsiString;
 begin
   TestaAtivo;
   Result := fsSMS.Fabricante;
+end;
+
+function TACBrSMS.GetQuebraMensagens: Boolean;
+begin
+  Result := fsSMS.QuebraMensagens;
 end;
 
 function TACBrSMS.GetRecebeConfirmacao: Boolean;
@@ -241,6 +279,11 @@ begin
   end;
 
   fsModelo := Value;
+end;
+
+procedure TACBrSMS.SetQuebraMensagens(const Value: Boolean);
+begin
+  fsSMS.QuebraMensagens := Value;
 end;
 
 procedure TACBrSMS.SetRecebeConfirmacao(const Value: Boolean);

@@ -16,6 +16,7 @@ type
     memMensagem: TMemo;
     btnCancelar: TButton;
     rdgBandeja: TRadioGroup;
+    ckbQuebrarMensagem: TCheckBox;
     procedure btnCancelarClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnEnviarClick(Sender: TObject);
@@ -55,7 +56,7 @@ end;
 
 procedure TfrmEnviarMensagem.btnEnviarClick(Sender: TObject);
 var
-  IndiceMsgEnviada: Integer;
+  IndiceMsgEnviada: String;
 begin
   if Trim(edtTelefone.Text) = EmptyStr then
     raise Exception.Create('Informe o número do telefone.');
@@ -68,6 +69,8 @@ begin
   else
     frmPrincipal.ACBrSMS1.SinCard := sin2;
 
+  frmPrincipal.ACBrSMS1.QuebraMensagens := ckbQuebrarMensagem.Checked;
+
   frmPrincipal.ACBrSMS1.EnviarSMS(
     AnsiString(edtTelefone.Text),
     AnsiString(memMensagem.Text),
@@ -75,7 +78,7 @@ begin
   );
 
   ShowMessage(
-    'Mensagem envida com sucesso. Indice: ' + IntToStr(IndiceMsgEnviada) +
+    'Mensagem envida com sucesso. Indice: ' + IndiceMsgEnviada +
     sLineBreak +
     sLineBreak +
     'Ultima resposta: ' +

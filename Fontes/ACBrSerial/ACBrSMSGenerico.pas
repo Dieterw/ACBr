@@ -59,7 +59,7 @@ type
     function Firmware: AnsiString; override;
 
     procedure EnviarSMS(const ATelefone: AnsiString;
-      const AMensagem: AnsiString; var AIndice: Integer); override;
+      const AMensagem: AnsiString; var AIndice: String); override;
     procedure ListarMensagens(const AFiltro: TACBrSMSFiltro;
       const APath: AnsiString); override;
   end;
@@ -222,7 +222,7 @@ begin
 end;
 
 procedure TACBrSMSGenerico.EnviarSMS(const ATelefone,
-  AMensagem: AnsiString; var AIndice: Integer);
+  AMensagem: AnsiString; var AIndice: String);
 var
   Cmd: AnsiString;
   bRec: Integer;
@@ -269,8 +269,8 @@ begin
   Ret := Trim(Copy(Ret, Pos(':', Ret) + 1, Length(Ret)));
   Ret := Trim(Copy(Ret, 1, Pos('OK', Ret) - 1));
 
-  AIndice := StrToIntDef(Trim(Ret), -1);
-  if AIndice = -1 then
+  AIndice := IntToStr(StrToIntDef(Trim(Ret), -1));
+  if AIndice = '-1' then
     raise EACBrSMSException.Create(FALHA_INDICE_MENSAGEM + sLineBreak + fpUltimaResposta);
 end;
 

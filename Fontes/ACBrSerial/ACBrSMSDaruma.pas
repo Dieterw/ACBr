@@ -151,7 +151,7 @@ begin
   // definir o número de telefone do destinatário ******************************
   Cmd := 'AT+CMGS="' + ATelefone + '"';
   Self.EnviarComando(Cmd);
-  if Pos('>', fpUltimaResposta) <= 0 then
+  if not Self.ATResult then
     raise EACBrSMSException.Create(FALHA_NUMERO_TELEFONE + sLineBreak + fpUltimaResposta);
 
 

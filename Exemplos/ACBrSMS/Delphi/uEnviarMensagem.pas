@@ -66,7 +66,7 @@ begin
 
   if Trim(memMensagem.Text) = EmptyStr then
     raise Exception.Create('Informe a mensagem a ser enviada.');
-
+  {
   if frmPrincipal.ACBrSMS1.BandejasSimCard > 1 then
   begin
     if rdgBandeja.ItemIndex = 0 then
@@ -74,7 +74,7 @@ begin
     else
       frmPrincipal.ACBrSMS1.TrocarBandeja(sin2);
   end;
-
+  }
   frmPrincipal.ACBrSMS1.QuebraMensagens := ckbQuebrarMensagem.Checked;
 
   frmPrincipal.ACBrSMS1.EnviarSMS(

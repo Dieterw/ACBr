@@ -141,6 +141,8 @@ begin
     finally
       Ini.Free;
     end;
+
+    menTrocarBandeja.Visible := ACBrSMS1.BandejasSimCard > 1;
   end
   else
   begin

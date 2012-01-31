@@ -41,7 +41,10 @@ procedure TfrmEnviarMensagem.FormCreate(Sender: TObject);
 begin
   edtTelefone.Clear;
   memMensagem.Clear;
-  rdgBandeja.ItemIndex := Integer(frmPrincipal.ACBrSMS1.SinCard);
+
+  rdgBandeja.Visible := frmPrincipal.ACBrSMS1.BandejasSimCard > 1;
+  if rdgBandeja.Visible then
+    rdgBandeja.ItemIndex := Integer(frmPrincipal.ACBrSMS1.SinCard);
 end;
 
 procedure TfrmEnviarMensagem.memMensagemChange(Sender: TObject);

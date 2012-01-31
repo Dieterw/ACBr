@@ -341,11 +341,6 @@ var
   Cmd: AnsiString;
   Ret: AnsiString;
 begin
-  // verificar se o sincard está sincronizado **********************************
-  if EstadoSincronismo <> sinSincronizado then
-    raise EACBrSMSException.Create(FALHA_SINCARD_SINCRONIZADO);
-
-
   // definir o modo de envio ***************************************************
   Cmd := 'AT+CMGF=1';
   Self.EnviarComando(Cmd);

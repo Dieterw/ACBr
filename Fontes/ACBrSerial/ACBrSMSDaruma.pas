@@ -57,6 +57,7 @@ type
     function Fabricante: AnsiString; override;
     function ModeloModem: AnsiString; override;
     function Firmware: AnsiString; override;
+    function EstadoSincronismo: TACBrSMSSincronismo; override;
 
     procedure TrocarBandeja(const ASinCard: TACBrSMSSinCard); override;
     procedure EnviarSMS(const ATelefone: AnsiString;
@@ -69,13 +70,15 @@ type
 implementation
 
 uses
-  ACBrDevice, ACBrUtil;
+  ACBrDevice, ACBrUtil, ACBrConsts;
 
 { TACBrSMSDaruma }
 
 constructor TACBrSMSDaruma.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
+
+  ATTimeOut := 10000;
 
   fpDevice.Baud := 115200;
   fpDevice.TimeOut := 10000;
@@ -86,6 +89,8 @@ end;
 procedure TACBrSMSDaruma.TrocarBandeja(const ASinCard: TACBrSMSSinCard);
 var
   cmd: AnsiString;
+  Tentativas: Integer;
+  Sincr: TACBrSMSSincronismo;
 begin
   case ASinCard of
     sin1: cmd := 'ATL1';
@@ -93,34 +98,37 @@ begin
   end;
 
   fpDevice.Serial.Purge;
-  fpUltimaResposta := Trim(fpDevice.Serial.ATCommand(cmd));
+  Self.EnviarComando(cmd);
 
-  if not fpDevice.Serial.ATResult then
-    raise EACBrSMSException.Create('Não foi possível efetuar a troca da bandeja.');
+  if not Self.ATResult then
+    raise EACBrSMSException.Create('Não foi possível efetuar a troca da bandeja.')
+  else
+  begin
+    // aguardar a sincronização com a operadora
+    Tentativas := 0;
+    repeat
+      Sleep(1000);
+      Sincr := EstadoSincronismo;
+
+      Inc(Tentativas);
+    until (Sincr = sinSincronizado) or (Tentativas >= 30);
+
+    if Tentativas > 30 then
+      raise EACBrSMSException.Create('Não foi possivel sincronizar o SinCard com a operadora de telefonia.');
+  end;
 end;
 
 function TACBrSMSDaruma.EmLinha: Boolean;
-var
-  Cmd: AnsiString;
 begin
-  Cmd := 'AT';
-
-  fpDevice.Serial.Purge;
-  fpUltimaResposta := Trim(fpDevice.Serial.ATCommand(Cmd));
-
-  Result := fpDevice.Serial.ATResult;
+  Self.EnviarComando('AT');
+  Result := fpATResult;
 end;
 
 function TACBrSMSDaruma.IMEI: AnsiString;
-var
-  Cmd: AnsiString;
 begin
-  Cmd := 'AT+CGSN';
+  Self.EnviarComando('AT+CGSN');
 
-  fpDevice.Serial.Purge;
-  fpUltimaResposta := Trim(fpDevice.Serial.ATCommand(Cmd));
-
-  if fpDevice.Serial.ATResult then
+  if Self.ATResult then
     Result := Trim(Copy(fpUltimaResposta, 1, Pos('OK', fpUltimaResposta) - 1))
   else
     Result := EmptyStr;
@@ -133,68 +141,52 @@ var
   Retorno: String;
   I: Integer;
 begin
-  TrocarBandeja(Self.SinCard);
-
   case AFiltro of
     fltTudo:     cmd := 'AT+CMGL="ALL"';
     fltLidas:    cmd := 'AT+CMGL="REC READ"';
     fltNaoLidas: cmd := 'AT+CMGL="REC UNREAD"';
   end;
 
-  fpDevice.Serial.Purge;
-  fpUltimaResposta := Trim(fpDevice.Serial.ATCommand(cmd));
-
-  Retorno := EmptyStr;
-  for I := 0 to Length(fpUltimaResposta) - 1 do
+  Self.EnviarComando(cmd);
+  if Self.ATResult then
   begin
-    if not(fpUltimaResposta[I] in [#0, #5, #$18, #$C]) then
-      Retorno := Retorno + fpUltimaResposta[I];
-  end;
+    Retorno := EmptyStr;
+    for I := 0 to Length(fpUltimaResposta) - 1 do
+    begin
+      if not(fpUltimaResposta[I] in [#0, #5, #$18, #$C]) then
+        Retorno := Retorno + fpUltimaResposta[I];
+    end;
 
-  fpUltimaResposta := Trim(Retorno);
-  WriteToTXT(APath, fpUltimaResposta, False, True);
+    fpUltimaResposta := Trim(Retorno);
+    WriteToTXT(APath, fpUltimaResposta, False, True);
+  end;
 end;
 
 function TACBrSMSDaruma.ModeloModem: AnsiString;
-var
-  Cmd: AnsiString;
 begin
-  Cmd := 'AT+CGMM';
+  Self.EnviarComando('AT+CGMM');
 
-  fpDevice.Serial.Purge;
-  fpUltimaResposta := Trim(fpDevice.Serial.ATCommand(Cmd));
-
-  if fpDevice.Serial.ATResult then
+  if Self.ATResult then
     Result := Trim(Copy(fpUltimaResposta, 1, Pos('OK', fpUltimaResposta) - 1))
   else
     Result := EmptyStr;
 end;
 
 function TACBrSMSDaruma.Fabricante: AnsiString;
-var
-  Cmd: AnsiString;
 begin
-  Cmd := 'AT+CGMI';
+  Self.EnviarComando('AT+CGMI');
 
-  fpDevice.Serial.Purge;
-  fpUltimaResposta := Trim(fpDevice.Serial.ATCommand(Cmd));
-
-  if fpDevice.Serial.ATResult then
+  if Self.ATResult then
     Result := Trim(Copy(fpUltimaResposta, 1, Pos('OK', fpUltimaResposta) - 1))
   else
     Result := EmptyStr;
 end;
 
 function TACBrSMSDaruma.Firmware: AnsiString;
-var
-  Cmd: AnsiString;
 begin
-  Cmd := 'AT+CGMR';
+  Self.EnviarComando('AT+CGMR');
 
-  fpDevice.Serial.Purge;
-  fpUltimaResposta := Trim(fpDevice.Serial.ATCommand(Cmd));
-
-  if fpDevice.Serial.ATResult then
+  if Self.ATResult then
     Result := Trim(Copy(fpUltimaResposta, 1, Pos('OK', fpUltimaResposta) - 1))
   else
     Result := EmptyStr;
@@ -202,15 +194,11 @@ end;
 
 function TACBrSMSDaruma.NivelSinal: Double;
 var
-  Cmd: AnsiString;
   RetCmd: AnsiString;
 begin
-  Cmd := 'AT+CSQ';
+  Self.EnviarComando('AT+CSQ');
 
-  fpDevice.Serial.Purge;
-  fpUltimaResposta := Trim(fpDevice.Serial.ATCommand(Cmd));
-
-  if fpDevice.Serial.ATResult then
+  if Self.ATResult then
   begin
     RetCmd := AnsiUpperCase(fpUltimaResposta);
     RetCmd := Trim(Copy(RetCmd, 1, Pos('OK', RetCmd) - 1));
@@ -223,15 +211,10 @@ begin
 end;
 
 function TACBrSMSDaruma.Operadora: AnsiString;
-var
-  Cmd: AnsiString;
 begin
-  Cmd := 'AT+COPS?';
+  Self.EnviarComando('AT+COPS?');
 
-  fpDevice.Serial.Purge;
-  fpUltimaResposta := Trim(fpDevice.Serial.ATCommand(Cmd));
-
-  if fpDevice.Serial.ATResult then
+  if Self.ATResult then
   begin
     Result := Trim(Copy(fpUltimaResposta, 1, Pos('OK', fpUltimaResposta) - 1));
     Result := Copy(Result, Pos('"', Result) + 1, Length(Result));
@@ -241,46 +224,63 @@ begin
     Result := EmptyStr;
 end;
 
+function TACBrSMSDaruma.EstadoSincronismo: TACBrSMSSincronismo;
+var
+  RetCmd: AnsiString;
+  Retorno: Integer;
+begin
+  Self.EnviarComando('AT+CREG?');
+
+  if Self.ATResult then
+  begin
+    RetCmd := fpUltimaResposta;
+    RetCmd := Trim(Copy(RetCmd, 1, Pos('OK', RetCmd) - 1));
+    RetCmd := Trim(Copy(RetCmd, pos(':', RetCmd) + 1, Length(RetCmd)));
+
+    if RetCmd = '0,1' then
+      Result := sinSincronizado
+    else if RetCmd = '0,2' then
+      Result := sinBucandoRede
+    else
+      Result := sinNaoSincronizado;
+  end
+  else
+    Result := sinErro;
+end;
+
 procedure TACBrSMSDaruma.EnviarSMS(const ATelefone,
   AMensagem: AnsiString; var AIndice: String);
 var
   Cmd: AnsiString;
-  bRec: Integer;
   Ret: AnsiString;
-const
-  CR = #13;
-  CTRL_Z = #26;
 begin
-  // definir a bandeja da qual será enviada a mensagem *************************
-  TrocarBandeja(Self.SinCard);
+  // verificar se o sincard está sincronizado **********************************
+  if EstadoSincronismo <> sinSincronizado then
+    raise EACBrSMSException.Create(FALHA_SINCARD_SINCRONIZADO);
+
 
   // definir o modo de envio ***************************************************
   Cmd := 'AT+CMGF=1';
-  fpUltimaResposta := Trim(fpDevice.Serial.ATCommand(Cmd));
-  if not fpDevice.Serial.ATResult then
+  Self.EnviarComando(Cmd);
+  if not Self.ATResult then
     raise EACBrSMSException.Create(FALHA_INICIALIZACAO + sLineBreak + fpUltimaResposta);
 
+
   // definir o número de telefone do destinatário ******************************
-  Cmd := 'AT+CMGS="' + ATelefone + '"' + CR;
-  fpDevice.Serial.Purge;
-  bRec := fpDevice.Serial.SendBuffer(Pointer(Cmd), Length(Cmd));
-  if bRec = Length(Cmd) then
-  begin
-    Sleep(1000);
-    fpUltimaResposta := Trim(fpDevice.Serial.RecvPacket(fpDevice.Serial.AtTimeout));
-    if Pos('>', fpUltimaResposta ) <= 0 then
-      raise EACBrSMSException.Create(FALHA_NUMERO_TELEFONE + sLineBreak + fpUltimaResposta);
-  end
-  else
-    raise EACBrSMSException.Create(FALHA_NUMERO_TELEFONE);
+  Cmd := 'AT+CMGS="' + ATelefone + '"';
+  Self.EnviarBuffer(Cmd);
+  if Pos('>', fpUltimaResposta) <= 0 then
+    raise EACBrSMSException.Create(FALHA_NUMERO_TELEFONE + sLineBreak + fpUltimaResposta);
+
 
   // Enviar a mensagem *********************************************************
-  Cmd := Trim(AMensagem) + CTRL_Z + CR;
-  fpUltimaResposta := fpDevice.Serial.ATCommand(Cmd);
-  if not fpDevice.Serial.ATResult then
+  Cmd := Trim(AMensagem) + CTRL_Z;
+  Self.EnviarComando(Cmd);
+  if not Self.ATResult then
     raise EACBrSMSException.Create(FALHA_ENVIAR_MENSAGEM + sLineBreak + fpUltimaResposta);
 
-  // verificar se foi retornado indice da mensagem
+
+  // verificar se foi retornado indice da mensagem *****************************
   Ret := fpUltimaResposta;
   if Pos(':', Ret) >= 0 then
   begin
@@ -291,7 +291,10 @@ begin
     AIndice := IntToStr(StrToIntDef(Trim(Ret), -1));
     if AIndice = '-1' then
       raise EACBrSMSException.Create(FALHA_INDICE_MENSAGEM + sLineBreak + fpUltimaResposta);
-  end;
+  end
+  else
+    AIndice := '-1';
 end;
 
 end.
+

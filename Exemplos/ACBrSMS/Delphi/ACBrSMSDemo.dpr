@@ -11,6 +11,7 @@ uses
 
 begin
   Application.Initialize;
+  Application.Title := 'Demo ACBrSMS';
   Application.CreateForm(TfrmPrincipal, frmPrincipal);
   Application.Run;
 end.

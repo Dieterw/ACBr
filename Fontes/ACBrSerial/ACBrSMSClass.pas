@@ -44,7 +44,8 @@ uses
   ACBrDevice, ACBrECF, Classes, SysUtils;
 
 const
-  FALHA_INICIALIZACAO   = 'Não foi possível inicializar o envio da mensagem.';
+  FALHA_INICIALIZACAO = 'Não foi possível inicializar o envio da mensagem.';
+  FALHA_SINCARD_SINCRONIZADO = 'Sincard não sincronizado com a rede celular.';
   FALHA_NUMERO_TELEFONE = 'Falha ao definir o número de telefone do destinatário.';
   FALHA_ENVIAR_MENSAGEM = 'Não foi possível enviar a mensagem de texto.';
   FALHA_INDICE_MENSAGEM = 'Indice retornado inválido, mensagem não foi enviada.';
@@ -53,6 +54,7 @@ type
   EACBrSMSException = class(Exception);
 
   TACBrSMSModelo = (modNenhum, modDaruma, modZTE, modGenerico);
+  TACBrSMSSincronismo = (sinErro, sinSincronizado, sinNaoSincronizado, sinBucandoRede);
   TACBrSMSSinCard = (sin1, sin2);
   TACBrSMSFiltro = (fltTudo, fltLidas, fltNaoLidas);
 
@@ -61,17 +63,22 @@ type
     fpRecebeConfirmacao: Boolean;
     fpSinCard: TACBrSMSSinCard;
     fpQuebraMensagens: Boolean;
+    fpATTimeOut: Integer;
     procedure SetAtivo(const Value: Boolean);
   protected
     fpDevice: TACBrDevice;
     fpAtivo: Boolean;
     fpUltimaResposta: AnsiString;
+    fpAtResult: Boolean;
   public
     constructor Create(AOwner: TComponent);
     Destructor Destroy; override;
 
     procedure Ativar; virtual;
     procedure Desativar; virtual;
+
+    procedure EnviarComando(Cmd: AnsiString);
+    procedure EnviarBuffer(Cmd: AnsiString);
 
     function EmLinha: Boolean; virtual;
     function IMEI: AnsiString; virtual;
@@ -80,6 +87,7 @@ type
     function Fabricante: AnsiString; virtual;
     function ModeloModem: AnsiString; virtual;
     function Firmware: AnsiString; virtual;
+    function EstadoSincronismo: TACBrSMSSincronismo; virtual;
 
     procedure TrocarBandeja(const ASinCard: TACBrSMSSinCard); virtual;
     procedure EnviarSMS(const ATelefone, AMensagem: AnsiString;
@@ -89,6 +97,8 @@ type
 
     property Ativo: Boolean read fpAtivo write SetAtivo;
     property SinCard: TACBrSMSSinCard read fpSinCard write fpSinCard;
+    property ATTimeOut: Integer read fpATTimeOut write fpATTimeOut;
+    property ATResult: Boolean read fpATResult write fpATResult;
     property RecebeConfirmacao: Boolean read fpRecebeConfirmacao write fpRecebeConfirmacao;
     property QuebraMensagens: Boolean read fpQuebraMensagens write fpQuebraMensagens;
     property UltimaResposta: AnsiString read fpUltimaResposta write fpUltimaResposta;
@@ -110,7 +120,9 @@ begin
   fpSinCard := sin1;
   fpRecebeConfirmacao := False;
   fpQuebraMensagens := False;
-  fpUltimaResposta := EmptyStr;
+  fpATResult := False;
+  fpATTimeout := 10000;
+  fpUltimaResposta := AnsiString(EmptyStr);
 end;
 
 destructor TACBrSMSClass.Destroy;
@@ -130,6 +142,11 @@ procedure TACBrSMSClass.EnviarSMS(const ATelefone, AMensagem: AnsiString;
   var AIndice: String);
 begin
   raise EACBrSMSException.Create('ENVIAR SMS não implementado.');
+end;
+
+function TACBrSMSClass.EstadoSincronismo: TACBrSMSSincronismo;
+begin
+  raise EACBrSMSException.Create('ESTADO SINCRONISMO não implementado.');
 end;
 
 function TACBrSMSClass.Fabricante: AnsiString;
@@ -179,6 +196,63 @@ end;
 procedure TACBrSMSClass.TrocarBandeja(const ASinCard: TACBrSMSSinCard);
 begin
   raise EACBrSMSException.Create('Trocar Bandeja não implementado.');
+end;
+
+procedure TACBrSMSClass.EnviarComando(Cmd: AnsiString);
+var
+  sRet: AnsiString;
+begin
+  fpUltimaResposta := '';
+  fpAtResult := False;
+
+  fpDevice.Serial.Purge;
+  fpDevice.Serial.SendString(Cmd + sLineBreak);
+
+  repeat
+    sRet := fpDevice.Serial.Recvstring(fpATTimeOut);
+
+    if sRet <> Cmd then
+      fpUltimaResposta := fpUltimaResposta + sRet + sLineBreak;
+
+    if sRet = 'ERROR' then
+      break;
+    if sRet = 'NO CARRIER' then
+      break;
+    if sRet = 'BUSY' then
+      break;
+    if sRet = 'NO DIALTONE' then
+      break;
+
+    if (sRet = 'OK') or
+       (sRet = '>') or
+       (Pos('CONNECT', String(sRet)) = 1) then
+    begin
+      fpAtResult := True;
+      break;
+    end;
+  until fpDevice.Serial.LastError <> 0;
+
+  fpUltimaResposta := Trim(fpUltimaResposta);
+end;
+
+procedure TACBrSMSClass.EnviarBuffer(Cmd: AnsiString);
+var
+  bRec: Integer;
+begin
+  fpDevice.Serial.Purge;
+  ATResult := False;
+
+  Cmd := Cmd + sLineBreak;
+  bRec := fpDevice.Serial.SendBuffer(Pointer(Cmd), Length(Cmd));
+
+  if bRec = Length(Cmd) then
+  begin
+    Sleep(500);
+    fpUltimaResposta := Trim(fpDevice.Serial.RecvPacket(fpDevice.Serial.AtTimeout));
+    AtResult := True;
+  end
+  else
+    raise EACBrSMSException.Create('Falha ao enviar buffer de comando para o modem.');
 end;
 
 procedure TACBrSMSClass.Ativar;

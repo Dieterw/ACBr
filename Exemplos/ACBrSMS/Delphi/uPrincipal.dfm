@@ -326,9 +326,13 @@ object frmPrincipal: TfrmPrincipal
   end
   object ACBrSMS1: TACBrSMS
     Ativo = False
+    Device.Baud = 115200
     Modelo = modDaruma
     SinCard = sin1
+    ATTimeOut = 10000
+    ATResult = False
     RecebeConfirmacao = False
+    QuebraMensagens = False
     Left = 212
     Top = 215
   end
@@ -364,6 +368,10 @@ object frmPrincipal: TfrmPrincipal
       object menFirmware: TMenuItem
         Caption = 'Firmware'
         OnClick = menFirmwareClick
+      end
+      object menSincronismo: TMenuItem
+        Caption = 'Sincronismo'
+        OnClick = menSincronismoClick
       end
     end
     object Mtodos1: TMenuItem

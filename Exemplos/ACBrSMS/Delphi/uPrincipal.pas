@@ -36,6 +36,7 @@ type
     pBotoes: TPanel;
     Image1: TImage;
     Sobre1: TMenuItem;
+    menSincronismo: TMenuItem;
     procedure FormDestroy(Sender: TObject);
     procedure btnAtivarClick(Sender: TObject);
     procedure menEmLinhaClick(Sender: TObject);
@@ -50,6 +51,7 @@ type
     procedure menMensagemEnviarClick(Sender: TObject);
     procedure menMensagemListarClick(Sender: TObject);
     procedure menTrocarBandejaClick(Sender: TObject);
+    procedure menSincronismoClick(Sender: TObject);
   private
     procedure AtivarMenus(const AAtivar: Boolean);
     function PathIni: String;
@@ -234,6 +236,23 @@ begin
     sLineBreak +
     String(ACBrSMS1.Operadora)
   );
+end;
+
+procedure TfrmPrincipal.menSincronismoClick(Sender: TObject);
+var
+  Msg: String;
+  Sinc: TACBrSMSSincronismo;
+begin
+  Sinc := ACBrSMS1.EstadoSincronismo;
+
+  case Sinc of
+    sinErro           : Msg := 'Erro.';
+    sinSincronizado   : Msg := 'Sincronizado.';
+    sinNaoSincronizado: Msg := 'Não sincronizado.';
+    sinBucandoRede    : Msg := 'Buscando rede...';
+  end;
+
+  ShowMessage('Sincronismo Atual: ' + Msg);
 end;
 
 procedure TfrmPrincipal.menTrocarBandejaClick(Sender: TObject);

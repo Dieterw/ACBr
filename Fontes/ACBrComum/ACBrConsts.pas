@@ -69,6 +69,7 @@ const
   ESC = #27  ;
   FS  = #28  ;
   GS  = #29  ;
+  CTRL_Z = #26;
   CRLF = CR + LF;
 
   cTimeout = 3 ;  { Tempo PADRAO para msg de falha de comunicacao }

@@ -63,7 +63,10 @@ type
     procedure TestaEmLinha;
     function GetQuebraMensagens: Boolean;
     procedure SetQuebraMensagens(const Value: Boolean);
-
+    procedure SetATTimeOut(const Value: Integer);
+    function GetATTimeOut: Integer;
+    function GetATResult: Boolean;
+    procedure SetATResult(const Value: Boolean);
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -78,18 +81,24 @@ type
     function Fabricante: AnsiString;
     function ModeloModem: AnsiString;
     function Firmware: AnsiString;
+    function EstadoSincronismo: TACBrSMSSincronismo;
 
     procedure TrocarBandeja(const ASinCard: TACBrSMSSinCard);
     procedure EnviarSMS(const ATelefone, AMensagem: AnsiString;
       var AIndice: String);
     procedure ListarMensagens(const AFiltro: TACBrSMSFiltro;
       const APath: AnsiString);
+
+    procedure EnviarComando(Cmd: AnsiString);
+    procedure EnviarBuffer(Cmd: AnsiString);
   published
     property Ativo: Boolean read fsAtivo write SetAtivo;
     property Device: TACBrDevice read fsDevice;
     property SMS: TACBrSMSClass read fsSMS;
     property Modelo: TACBrSMSModelo read fsModelo write SetModelo;
     property SinCard: TACBrSMSSinCard read GetSinCard write SetSinCard;
+    property ATTimeOut: Integer read GetATTimeOut write SetATTimeOut;
+    property ATResult: Boolean read GetATResult write SetATResult;
     property RecebeConfirmacao: Boolean read GetRecebeConfirmacao write SetRecebeConfirmacao;
     property QuebraMensagens: Boolean read GetQuebraMensagens write SetQuebraMensagens;
     property UltimaResposta: AnsiString read GetUltimaReposta;
@@ -98,7 +107,7 @@ type
 implementation
 
 uses
-  ACBrUtil, ACBrSMSDaruma, ACBrSMSZTE, ACBrSMSGenerico;
+  ACBrUtil, ACBrSMSDaruma, ACBrSMSGenerico, ACBrSMSZTE;
 
 { TACBrSMS }
 
@@ -154,6 +163,18 @@ begin
   Result := fsSMS.EmLinha;
 end;
 
+procedure TACBrSMS.EnviarBuffer(Cmd: AnsiString);
+begin
+  TestaAtivo;
+  fsSMS.EnviarBuffer(Cmd);
+end;
+
+procedure TACBrSMS.EnviarComando(Cmd: AnsiString);
+begin
+  TestaAtivo;
+  fsSMS.EnviarComando(Cmd);
+end;
+
 procedure TACBrSMS.EnviarSMS(const ATelefone, AMensagem: AnsiString;
   var AIndice: String);
 var
@@ -194,10 +215,26 @@ begin
   end;
 end;
 
+function TACBrSMS.EstadoSincronismo: TACBrSMSSincronismo;
+begin
+  TestaAtivo;
+  Result := fsSMS.EstadoSincronismo;
+end;
+
 function TACBrSMS.Fabricante: AnsiString;
 begin
   TestaAtivo;
   Result := fsSMS.Fabricante;
+end;
+
+function TACBrSMS.GetATResult: Boolean;
+begin
+  Result := fsSMS.ATResult;
+end;
+
+function TACBrSMS.GetATTimeOut: Integer;
+begin
+  Result := fsSMS.ATTimeOut;
 end;
 
 function TACBrSMS.GetQuebraMensagens: Boolean;
@@ -298,6 +335,16 @@ begin
     Ativar
   else
     Desativar;
+end;
+
+procedure TACBrSMS.SetATResult(const Value: Boolean);
+begin
+  fsSMS.ATResult := Value;
+end;
+
+procedure TACBrSMS.SetATTimeOut(const Value: Integer);
+begin
+  fsSMS.ATTimeOut := Value;
 end;
 
 procedure TACBrSMS.Ativar;

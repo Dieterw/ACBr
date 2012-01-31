@@ -65,9 +65,9 @@ begin
     raise Exception.Create('Informe a mensagem a ser enviada.');
 
   if rdgBandeja.ItemIndex = 0 then
-    frmPrincipal.ACBrSMS1.SinCard := sin1
+    frmPrincipal.ACBrSMS1.TrocarBandeja(sin1)
   else
-    frmPrincipal.ACBrSMS1.SinCard := sin2;
+    frmPrincipal.ACBrSMS1.TrocarBandeja(sin2);
 
   frmPrincipal.ACBrSMS1.QuebraMensagens := ckbQuebrarMensagem.Checked;
 

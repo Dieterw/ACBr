@@ -41,10 +41,10 @@ unit ACBrSMSZTE;
 interface
 
 uses
-  ACBrSMSClass, ACBrSMSGenerico, Classes, SysUtils;
+  ACBrSMSClass, Classes, SysUtils;
 
 type
-  TACBrSMSZTE = class(TACBrSMSGenerico)
+  TACBrSMSZTE = class(TACBrSMSClass)
   private
 
   public
@@ -54,7 +54,7 @@ type
 implementation
 
 uses
-  ACBrDevice, ACBrUtil, ACBrConsts;
+  ACBrDevice, ACBrUtil;
 
 { TACBrSMSZTE }
 

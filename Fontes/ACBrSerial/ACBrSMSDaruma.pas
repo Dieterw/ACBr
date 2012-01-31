@@ -50,15 +50,6 @@ type
   public
     constructor Create(AOwner: TComponent);
 
-    function EmLinha: Boolean; override;
-    function IMEI: AnsiString; override;
-    function Operadora: AnsiString; override;
-    function NivelSinal: Double; override;
-    function Fabricante: AnsiString; override;
-    function ModeloModem: AnsiString; override;
-    function Firmware: AnsiString; override;
-    function EstadoSincronismo: TACBrSMSSincronismo; override;
-
     procedure TrocarBandeja(const ASinCard: TACBrSMSSinCard); override;
     procedure EnviarSMS(const ATelefone: AnsiString;
       const AMensagem: AnsiString; var AIndice: String); override;
@@ -70,7 +61,7 @@ type
 implementation
 
 uses
-  ACBrDevice, ACBrUtil, ACBrConsts;
+  ACBrDevice, ACBrUtil;
 
 { TACBrSMSDaruma }
 
@@ -113,22 +104,6 @@ begin
   end;
 end;
 
-function TACBrSMSDaruma.EmLinha: Boolean;
-begin
-  Self.EnviarComando('AT');
-  Result := fpATResult;
-end;
-
-function TACBrSMSDaruma.IMEI: AnsiString;
-begin
-  Self.EnviarComando('AT+CGSN');
-
-  if Self.ATResult then
-    Result := Trim(Copy(fpUltimaResposta, 1, Pos('OK', fpUltimaResposta) - 1))
-  else
-    Result := EmptyStr;
-end;
-
 procedure TACBrSMSDaruma.ListarMensagens(const AFiltro: TACBrSMSFiltro;
   const APath: AnsiString);
 var
@@ -155,92 +130,6 @@ begin
     fpUltimaResposta := Trim(Retorno);
     WriteToTXT(APath, fpUltimaResposta, False, True);
   end;
-end;
-
-function TACBrSMSDaruma.ModeloModem: AnsiString;
-begin
-  Self.EnviarComando('AT+CGMM');
-
-  if Self.ATResult then
-    Result := Trim(Copy(fpUltimaResposta, 1, Pos('OK', fpUltimaResposta) - 1))
-  else
-    Result := EmptyStr;
-end;
-
-function TACBrSMSDaruma.Fabricante: AnsiString;
-begin
-  Self.EnviarComando('AT+CGMI');
-
-  if Self.ATResult then
-    Result := Trim(Copy(fpUltimaResposta, 1, Pos('OK', fpUltimaResposta) - 1))
-  else
-    Result := EmptyStr;
-end;
-
-function TACBrSMSDaruma.Firmware: AnsiString;
-begin
-  Self.EnviarComando('AT+CGMR');
-
-  if Self.ATResult then
-    Result := Trim(Copy(fpUltimaResposta, 1, Pos('OK', fpUltimaResposta) - 1))
-  else
-    Result := EmptyStr;
-end;
-
-function TACBrSMSDaruma.NivelSinal: Double;
-var
-  RetCmd: AnsiString;
-begin
-  Self.EnviarComando('AT+CSQ');
-
-  if Self.ATResult then
-  begin
-    RetCmd := AnsiUpperCase(fpUltimaResposta);
-    RetCmd := Trim(Copy(RetCmd, 1, Pos('OK', RetCmd) - 1));
-    RetCmd := Trim(Copy(RetCmd, pos(':', RetCmd) + 1, Length(RetCmd)));
-
-    Result := StrToFloatDef(String(RetCmd), 0.00);
-  end
-  else
-    Result := 0;
-end;
-
-function TACBrSMSDaruma.Operadora: AnsiString;
-begin
-  Self.EnviarComando('AT+COPS?');
-
-  if Self.ATResult then
-  begin
-    Result := Trim(Copy(fpUltimaResposta, 1, Pos('OK', fpUltimaResposta) - 1));
-    Result := Copy(Result, Pos('"', Result) + 1, Length(Result));
-    Result := Copy(Result, 1, Pos('"', Result) - 1);
-  end
-  else
-    Result := EmptyStr;
-end;
-
-function TACBrSMSDaruma.EstadoSincronismo: TACBrSMSSincronismo;
-var
-  RetCmd: AnsiString;
-  Retorno: Integer;
-begin
-  Self.EnviarComando('AT+CREG?');
-
-  if Self.ATResult then
-  begin
-    RetCmd := fpUltimaResposta;
-    RetCmd := Trim(Copy(RetCmd, 1, Pos('OK', RetCmd) - 1));
-    RetCmd := Trim(Copy(RetCmd, pos(':', RetCmd) + 1, Length(RetCmd)));
-
-    if RetCmd = '0,1' then
-      Result := sinSincronizado
-    else if RetCmd = '0,2' then
-      Result := sinBucandoRede
-    else
-      Result := sinNaoSincronizado;
-  end
-  else
-    Result := sinErro;
 end;
 
 procedure TACBrSMSDaruma.EnviarSMS(const ATelefone,

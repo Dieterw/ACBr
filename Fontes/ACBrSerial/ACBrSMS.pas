@@ -109,7 +109,7 @@ type
 implementation
 
 uses
-  ACBrUtil, ACBrSMSDaruma, ACBrSMSGenerico, ACBrSMSZTE;
+  ACBrUtil, ACBrSMSDaruma, ACBrSMSZTE;
 
 { TACBrSMS }
 
@@ -313,7 +313,6 @@ begin
   case Value of
     modDaruma: fsSMS := TACBrSMSDaruma.Create(Self);
     modZTE: fsSMS := TACBrSMSZTE.Create(Self);
-    modGenerico: fsSMS := TACBrSMSGenerico.Create(Self);
   else
     fsSMS := TACBrSMSClass.create(Self);
   end;

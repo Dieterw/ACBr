@@ -44,6 +44,7 @@ uses
   ACBrDevice, ACBrECF, Classes, SysUtils;
 
 const
+  CTRL_Z = #26;
   FALHA_INICIALIZACAO = 'Não foi possível inicializar o envio da mensagem.';
   FALHA_SINCARD_SINCRONIZADO = 'Sincard não sincronizado com a rede celular.';
   FALHA_NUMERO_TELEFONE = 'Falha ao definir o número de telefone do destinatário.';
@@ -140,54 +141,132 @@ end;
 
 function TACBrSMSClass.EmLinha: Boolean;
 begin
-  Result := False;
-end;
-
-procedure TACBrSMSClass.EnviarSMS(const ATelefone, AMensagem: AnsiString;
-  var AIndice: String);
-begin
-  raise EACBrSMSException.Create('ENVIAR SMS não implementado.');
+  Self.EnviarComando('AT');
+  Result := fpATResult;
 end;
 
 function TACBrSMSClass.EstadoSincronismo: TACBrSMSSincronismo;
+var
+  RetCmd: AnsiString;
+  Retorno: Integer;
 begin
-  raise EACBrSMSException.Create('ESTADO SINCRONISMO não implementado.');
+  Self.EnviarComando('AT+CREG?');
+
+  if Self.ATResult then
+  begin
+    RetCmd := fpUltimaResposta;
+    RetCmd := Trim(Copy(RetCmd, 1, Pos('OK', RetCmd) - 1));
+    RetCmd := Trim(Copy(RetCmd, pos(':', RetCmd) + 1, Length(RetCmd)));
+
+    if RetCmd = '0,1' then
+      Result := sinSincronizado
+    else if RetCmd = '0,2' then
+      Result := sinBucandoRede
+    else
+      Result := sinNaoSincronizado;
+  end
+  else
+    Result := sinErro;
 end;
 
 function TACBrSMSClass.Fabricante: AnsiString;
 begin
-  raise EACBrSMSException.Create('FABRICANTE não implementado.');
+  Self.EnviarComando('AT+CGMI');
+
+  if Self.ATResult then
+    Result := Trim(Copy(fpUltimaResposta, 1, Pos('OK', fpUltimaResposta) - 1))
+  else
+    Result := EmptyStr;
 end;
 
 function TACBrSMSClass.IMEI: AnsiString;
 begin
-  raise EACBrSMSException.Create('IMEI não implementado.');
+  Self.EnviarComando('AT+CGSN');
+
+  if Self.ATResult then
+    Result := Trim(Copy(fpUltimaResposta, 1, Pos('OK', fpUltimaResposta) - 1))
+  else
+    Result := EmptyStr;
 end;
 
 procedure TACBrSMSClass.ListarMensagens(const AFiltro: TACBrSMSFiltro;
   const APath: AnsiString);
+var
+  cmd: AnsiString;
+  Retorno: String;
+  I: Integer;
 begin
-  raise EACBrSMSException.Create('Listar mensagens não implementado.');
+  case AFiltro of
+    fltTudo:     cmd := 'AT+CMGL="ALL"';
+    fltLidas:    cmd := 'AT+CMGL="REC READ"';
+    fltNaoLidas: cmd := 'AT+CMGL="REC UNREAD"';
+  end;
+
+  Self.EnviarComando(cmd);
+  if Self.ATResult then
+  begin
+    Retorno := EmptyStr;
+    for I := 0 to Length(fpUltimaResposta) - 1 do
+    begin
+      if not(fpUltimaResposta[I] in [#0, #5, #$18, #$C]) then
+        Retorno := Retorno + fpUltimaResposta[I];
+    end;
+
+    fpUltimaResposta := Trim(Retorno);
+    WriteToTXT(APath, fpUltimaResposta, False, True);
+  end;
 end;
 
 function TACBrSMSClass.ModeloModem: AnsiString;
 begin
-  raise EACBrSMSException.Create('MODELO MODEM não implementado.');
+  Self.EnviarComando('AT+CGMM');
+
+  if Self.ATResult then
+    Result := Trim(Copy(fpUltimaResposta, 1, Pos('OK', fpUltimaResposta) - 1))
+  else
+    Result := EmptyStr;
 end;
 
 function TACBrSMSClass.NivelSinal: Double;
+var
+  RetCmd: AnsiString;
 begin
-  raise EACBrSMSException.Create('Nivel de Sinal não implementado.');
+  Self.EnviarComando('AT+CSQ');
+
+  if Self.ATResult then
+  begin
+    RetCmd := AnsiUpperCase(fpUltimaResposta);
+    RetCmd := Trim(Copy(RetCmd, 1, Pos('OK', RetCmd) - 1));
+    RetCmd := Trim(Copy(RetCmd, pos(':', RetCmd) + 1, Length(RetCmd)));
+
+    Result := StrToFloatDef(String(RetCmd), 0.00);
+  end
+  else
+    Result := 0;
 end;
 
 function TACBrSMSClass.Operadora: AnsiString;
 begin
-  raise EACBrSMSException.Create('Retorno de Operadora não implementado.');
+  Self.EnviarComando('AT+COPS?');
+
+  if Self.ATResult then
+  begin
+    Result := Trim(Copy(fpUltimaResposta, 1, Pos('OK', fpUltimaResposta) - 1));
+    Result := Copy(Result, Pos('"', Result) + 1, Length(Result));
+    Result := Copy(Result, 1, Pos('"', Result) - 1);
+  end
+  else
+    Result := EmptyStr;
 end;
 
 function TACBrSMSClass.Firmware: AnsiString;
 begin
-  raise EACBrSMSException.Create('REVISAO não implementado.');
+  Self.EnviarComando('AT+CGMR');
+
+  if Self.ATResult then
+    Result := Trim(Copy(fpUltimaResposta, 1, Pos('OK', fpUltimaResposta) - 1))
+  else
+    Result := EmptyStr;
 end;
 
 procedure TACBrSMSClass.SetAtivo(const Value: Boolean);
@@ -196,11 +275,6 @@ begin
     Ativar
   else
     Desativar;
-end;
-
-procedure TACBrSMSClass.TrocarBandeja(const ASinCard: TACBrSMSSinCard);
-begin
-  raise EACBrSMSException.Create('Trocar Bandeja não implementado.');
 end;
 
 procedure TACBrSMSClass.EnviarComando(Cmd: AnsiString);
@@ -280,6 +354,17 @@ begin
      fpDevice.Desativar;
 
   fpAtivo := False;
+end;
+
+procedure TACBrSMSClass.EnviarSMS(const ATelefone, AMensagem: AnsiString;
+  var AIndice: String);
+begin
+  raise EACBrSMSException.Create('ENVIAR SMS não implementado.');
+end;
+
+procedure TACBrSMSClass.TrocarBandeja(const ASinCard: TACBrSMSSinCard);
+begin
+  raise EACBrSMSException.Create('Trocar Bandeja não implementado.');
 end;
 
 end.

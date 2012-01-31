@@ -326,7 +326,6 @@ object frmPrincipal: TfrmPrincipal
   end
   object ACBrSMS1: TACBrSMS
     Ativo = False
-    Device.Baud = 115200
     Modelo = modDaruma
     SinCard = sin1
     ATTimeOut = 10000
@@ -345,6 +344,13 @@ object frmPrincipal: TfrmPrincipal
         Caption = 'Em linha?'
         OnClick = menEmLinhaClick
       end
+      object menSincronismo: TMenuItem
+        Caption = 'Sincronismo'
+        OnClick = menSincronismoClick
+      end
+      object N3: TMenuItem
+        Caption = '-'
+      end
       object menIMEI: TMenuItem
         Caption = 'IMEI'
         OnClick = menIMEIClick
@@ -357,36 +363,45 @@ object frmPrincipal: TfrmPrincipal
         Caption = 'N'#237'vel de Sinal'
         OnClick = menNivelSinalClick
       end
-      object menModelo: TMenuItem
-        Caption = 'Modelo'
-        OnClick = menModeloClick
+      object N4: TMenuItem
+        Caption = '-'
       end
       object menFabricante: TMenuItem
         Caption = 'Fabricante'
         OnClick = menFabricanteClick
       end
+      object menModelo: TMenuItem
+        Caption = 'Modelo'
+        OnClick = menModeloClick
+      end
       object menFirmware: TMenuItem
         Caption = 'Firmware'
         OnClick = menFirmwareClick
       end
-      object menSincronismo: TMenuItem
-        Caption = 'Sincronismo'
-        OnClick = menSincronismoClick
-      end
     end
     object Mtodos1: TMenuItem
       Caption = 'M'#233'todos'
+      object menTrocarBandeja: TMenuItem
+        Caption = 'Trocar bandeja'
+        OnClick = menTrocarBandejaClick
+      end
+      object N2: TMenuItem
+        Caption = '-'
+      end
       object menMensagemEnviar: TMenuItem
         Caption = 'Enviar mensagem'
         OnClick = menMensagemEnviarClick
       end
+      object menEnviarLote: TMenuItem
+        Caption = 'Enviar Lote'
+        OnClick = menEnviarLoteClick
+      end
+      object N1: TMenuItem
+        Caption = '-'
+      end
       object menMensagemListar: TMenuItem
         Caption = 'Listar mensagens'
         OnClick = menMensagemListarClick
-      end
-      object menTrocarBandeja: TMenuItem
-        Caption = 'Trocar bandeja'
-        OnClick = menTrocarBandejaClick
       end
     end
     object Sobre1: TMenuItem

@@ -3,11 +3,10 @@ unit uPrincipal;
 interface
 
 uses
-  Synaser,
+  ACBrBase, ACBrSMS, ACBrSMSClass,
 
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ACBrSMSClass, ACBrSMS, StdCtrls, ACBrSMSDaruma, ACBrBase,
-  ExtCtrls, ComCtrls, Menus, jpeg, ACBrGIF;
+  Dialogs, StdCtrls, Menus, jpeg, ExtCtrls, ACBrSMSDaruma;
 
 type
   TfrmPrincipal = class(TForm)
@@ -37,6 +36,11 @@ type
     Image1: TImage;
     Sobre1: TMenuItem;
     menSincronismo: TMenuItem;
+    menEnviarLote: TMenuItem;
+    N1: TMenuItem;
+    N2: TMenuItem;
+    N3: TMenuItem;
+    N4: TMenuItem;
     procedure FormDestroy(Sender: TObject);
     procedure btnAtivarClick(Sender: TObject);
     procedure menEmLinhaClick(Sender: TObject);
@@ -52,12 +56,12 @@ type
     procedure menMensagemListarClick(Sender: TObject);
     procedure menTrocarBandejaClick(Sender: TObject);
     procedure menSincronismoClick(Sender: TObject);
+    procedure menEnviarLoteClick(Sender: TObject);
   private
     procedure AtivarMenus(const AAtivar: Boolean);
     function PathIni: String;
-    { Private declarations }
   public
-    { Public declarations }
+
   end;
 
 var
@@ -67,7 +71,7 @@ implementation
 
 uses
   IniFiles, StrUtils, TypInfo,
-  uListaMensagem, uTrocarBandeja, uEnviarMensagem;
+  uListaMensagem, uTrocarBandeja, uEnviarMensagem, uEnvioLote;
 
 {$R *.dfm}
 
@@ -158,6 +162,16 @@ var
 begin
   Msg := IfThen(ACBrSMS1.EmLinha, 'SMS em linha', 'SMS não está em linha.');
   ShowMessage(Msg);
+end;
+
+procedure TfrmPrincipal.menEnviarLoteClick(Sender: TObject);
+begin
+  frmEnvioLote := TfrmEnvioLote.Create(Self);
+  try
+    frmEnvioLote.ShowModal;
+  finally
+    FreeAndNil(frmEnvioLote);
+  end;
 end;
 
 procedure TfrmPrincipal.menFabricanteClick(Sender: TObject);

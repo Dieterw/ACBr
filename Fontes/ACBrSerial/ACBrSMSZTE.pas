@@ -41,7 +41,7 @@ unit ACBrSMSZTE;
 interface
 
 uses
-  ACBrSMSClass, Classes, SysUtils;
+  ACBrSMSClass, Classes;
 
 type
   TACBrSMSZTE = class(TACBrSMSClass)
@@ -54,7 +54,7 @@ type
 implementation
 
 uses
-  ACBrDevice, ACBrUtil;
+  ACBrDevice, ACBrUtil, SysUtils;
 
 { TACBrSMSZTE }
 

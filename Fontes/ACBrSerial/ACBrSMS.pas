@@ -87,6 +87,8 @@ type
     procedure TrocarBandeja(const ASinCard: TACBrSMSSinCard);
     procedure EnviarSMS(const ATelefone, AMensagem: AnsiString;
       var AIndice: String);
+    procedure EnviarSMSLote(const ALote: TACBrSMSMensagens;
+      var AIndice: String);
     procedure ListarMensagens(const AFiltro: TACBrSMSFiltro;
       const APath: AnsiString);
 
@@ -208,6 +210,23 @@ begin
       F.Free;
     end;
   end;
+end;
+
+procedure TACBrSMS.EnviarSMSLote(const ALote: TACBrSMSMensagens; var AIndice: String);
+var
+  I: Integer;
+  IndMsgAtual: String;
+begin
+  AIndice := EmptyStr;
+  for I := 0 to ALote.Count - 1 do
+  begin
+    fsSMS.EnviarSMS(ALote[I].Telefone, ALote[I].Mensagem, IndMsgAtual);
+    AIndice := AIndice + ',' + IndMsgAtual;
+  end;
+
+  // limpar a virgula inicial
+  if AIndice <> EmptyStr then
+    AIndice := Copy(AIndice, 2, Length(AIndice));
 end;
 
 function TACBrSMS.EstadoSincronismo: TACBrSMSSincronismo;

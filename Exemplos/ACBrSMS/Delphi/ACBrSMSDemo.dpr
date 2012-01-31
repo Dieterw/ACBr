@@ -5,7 +5,8 @@ uses
   uPrincipal in 'uPrincipal.pas' {frmPrincipal},
   uListaMensagem in 'uListaMensagem.pas' {frmListaMensagem},
   uTrocarBandeja in 'uTrocarBandeja.pas' {frmTrocarBandeja},
-  uEnviarMensagem in 'uEnviarMensagem.pas' {frmEnviarMensagem};
+  uEnviarMensagem in 'uEnviarMensagem.pas' {frmEnviarMensagem},
+  uEnvioLote in 'uEnvioLote.pas' {frmEnvioLote};
 
 {$R *.res}
 

@@ -41,7 +41,7 @@ unit ACBrSMSClass;
 interface
 
 uses
-  ACBrDevice, ACBrECF, Classes, SysUtils;
+  ACBrDevice, Classes, SysUtils, Contnrs;
 
 const
   CTRL_Z = #26;
@@ -58,6 +58,27 @@ type
   TACBrSMSSincronismo = (sinErro, sinSincronizado, sinNaoSincronizado, sinBucandoRede);
   TACBrSMSSinCard = (sin1, sin2);
   TACBrSMSFiltro = (fltTudo, fltLidas, fltNaoLidas);
+
+  TACBrSMSMensagem = class
+  private
+    FMensagem: String;
+    FTelefone: String;
+  public
+    property Telefone: String read FTelefone write FTelefone;
+    property Mensagem: String read FMensagem write FMensagem;
+  end;
+
+  TACBrSMSMensagens = class(TObjectList)
+  protected
+    procedure SetObject (Index: Integer; Item: TACBrSMSMensagem);
+    function GetObject (Index: Integer): TACBrSMSMensagem;
+    procedure Insert (Index: Integer; Obj: TACBrSMSMensagem);
+  public
+    procedure LoadFromFrile(const APath: String);
+    function Add: TACBrSMSMensagem; overload;
+    function Add (Obj: TACBrSMSMensagem): Integer; overload;
+    property Objects [Index: Integer]: TACBrSMSMensagem read GetObject write SetObject; default;
+  end;
 
   TACBrSMSClass = class
   private
@@ -110,6 +131,70 @@ implementation
 
 uses
   ACBrSMS, ACBrUtil;
+
+{ TACBrSMSMensagens }
+
+function TACBrSMSMensagens.Add: TACBrSMSMensagem;
+begin
+  Result := TACBrSMSMensagem.create;
+  Add(Result);
+end;
+
+function TACBrSMSMensagens.Add(Obj: TACBrSMSMensagem): Integer;
+begin
+  Result := inherited Add(Obj);
+end;
+
+function TACBrSMSMensagens.GetObject(Index: Integer): TACBrSMSMensagem;
+begin
+  Result := inherited GetItem(Index) as TACBrSMSMensagem ;
+end;
+
+procedure TACBrSMSMensagens.Insert(Index: Integer; Obj: TACBrSMSMensagem);
+begin
+  inherited Insert(Index, Obj);
+end;
+
+procedure TACBrSMSMensagens.LoadFromFrile(const APath: String);
+var
+  F: TStringList;
+  R: TStringList;
+  I: Integer;
+begin
+  if not FileExists(APath) then
+    raise EACBrSMSException.CreateFmt('Arquivo "%s" não encontrado.', [APath]);
+
+  F := TStringList.Create;
+  R := TStringList.Create;
+  try
+    R.Delimiter := '|';
+    R.StrictDelimiter := True;
+
+    F.LoadFromFile(APath);
+
+    Self.Clear;
+    for I := 0 to F.Count - 1 do
+    begin
+      R.DelimitedText := F.Strings[I];
+      if R.Count = 2 then
+      begin
+        with Self.Add do
+        begin
+          Telefone := R.Strings[0];
+          Mensagem := R.Strings[1];
+        end;
+      end;
+    end;
+  finally
+    R.Free;
+    F.Free;
+  end;
+end;
+
+procedure TACBrSMSMensagens.SetObject(Index: Integer; Item: TACBrSMSMensagem);
+begin
+  inherited SetItem (Index, Item) ;
+end;
 
 { TACBrSMSClass }
 

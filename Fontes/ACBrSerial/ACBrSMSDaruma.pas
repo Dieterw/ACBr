@@ -41,7 +41,7 @@ unit ACBrSMSDaruma;
 interface
 
 uses
-  ACBrSMSClass, Classes, SysUtils;
+  ACBrSMSClass, Classes;
 
 type
   TACBrSMSDaruma = class(TACBrSMSClass)
@@ -61,7 +61,7 @@ type
 implementation
 
 uses
-  ACBrDevice, ACBrUtil;
+  ACBrDevice, ACBrUtil, SysUtils;
 
 { TACBrSMSDaruma }
 

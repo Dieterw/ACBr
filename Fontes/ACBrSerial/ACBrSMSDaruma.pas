@@ -93,9 +93,7 @@ begin
     // aguardar a sincronização com a operadora
     Tentativas := 0;
     repeat
-      Sleep(1000);
       Sincr := EstadoSincronismo;
-
       Inc(Tentativas);
     until (Sincr = sinSincronizado) or (Tentativas >= 30);
 
@@ -152,7 +150,7 @@ begin
 
   // definir o número de telefone do destinatário ******************************
   Cmd := 'AT+CMGS="' + ATelefone + '"';
-  Self.EnviarBuffer(Cmd);
+  Self.EnviarComando(Cmd);
   if Pos('>', fpUltimaResposta) <= 0 then
     raise EACBrSMSException.Create(FALHA_NUMERO_TELEFONE + sLineBreak + fpUltimaResposta);
 

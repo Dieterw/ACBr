@@ -91,7 +91,6 @@ type
       const APath: AnsiString);
 
     procedure EnviarComando(Cmd: AnsiString);
-    procedure EnviarBuffer(Cmd: AnsiString);
   published
     property Ativo: Boolean read fsAtivo write SetAtivo;
     property Device: TACBrDevice read fsDevice;
@@ -163,12 +162,6 @@ function TACBrSMS.EmLinha: Boolean;
 begin
   TestaAtivo;
   Result := fsSMS.EmLinha;
-end;
-
-procedure TACBrSMS.EnviarBuffer(Cmd: AnsiString);
-begin
-  TestaAtivo;
-  fsSMS.EnviarBuffer(Cmd);
 end;
 
 procedure TACBrSMS.EnviarComando(Cmd: AnsiString);

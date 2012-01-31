@@ -80,8 +80,7 @@ type
     procedure Desativar; virtual;
 
     procedure EnviarComando(Cmd: AnsiString);
-    procedure EnviarBuffer(Cmd: AnsiString);
-
+    
     function EmLinha: Boolean; virtual;
     function IMEI: AnsiString; virtual;
     function NivelSinal: Double; virtual;
@@ -288,22 +287,22 @@ begin
   fpDevice.Serial.SendString(Cmd + sLineBreak);
 
   repeat
-    sRet := fpDevice.Serial.Recvstring(fpATTimeOut);
+    sRet := fpDevice.Serial.RecvPacket(fpATTimeOut);
 
     if sRet <> Cmd then
-      fpUltimaResposta := fpUltimaResposta + sRet + sLineBreak;
+      fpUltimaResposta := fpUltimaResposta + sRet;
 
-    if sRet = 'ERROR' then
+    if Pos('ERROR', sRet) > 0 then
       break;
-    if sRet = 'NO CARRIER' then
+    if Pos('NO CARRIER', sRet) > 0 then
       break;
-    if sRet = 'BUSY' then
+    if Pos('BUSY', sRet) > 0 then
       break;
-    if sRet = 'NO DIALTONE' then
+    if Pos('NO DIALTONE', sRet) > 0 then
       break;
 
-    if (sRet = 'OK') or
-       (sRet = '>') or
+    if (Pos('OK', sRet) > 0) or
+       (Pos('>', sRet) > 0) or
        (Pos('CONNECT', String(sRet)) = 1) then
     begin
       fpAtResult := True;
@@ -312,26 +311,6 @@ begin
   until fpDevice.Serial.LastError <> 0;
 
   fpUltimaResposta := Trim(fpUltimaResposta);
-end;
-
-procedure TACBrSMSClass.EnviarBuffer(Cmd: AnsiString);
-var
-  bRec: Integer;
-begin
-  fpDevice.Serial.Purge;
-  ATResult := False;
-
-  Cmd := Cmd + sLineBreak;
-  bRec := fpDevice.Serial.SendBuffer(Pointer(Cmd), Length(Cmd));
-
-  if bRec = Length(Cmd) then
-  begin
-    Sleep(500);
-    fpUltimaResposta := Trim(fpDevice.Serial.RecvPacket(fpDevice.Serial.AtTimeout));
-    AtResult := True;
-  end
-  else
-    raise EACBrSMSException.Create('Falha ao enviar buffer de comando para o modem.');
 end;
 
 procedure TACBrSMSClass.Ativar;

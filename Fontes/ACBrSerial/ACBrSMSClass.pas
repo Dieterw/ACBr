@@ -337,13 +337,55 @@ end;
 
 procedure TACBrSMSClass.EnviarSMS(const ATelefone, AMensagem: AnsiString;
   var AIndice: String);
+var
+  Cmd: AnsiString;
+  Ret: AnsiString;
 begin
-  raise EACBrSMSException.Create('ENVIAR SMS não implementado.');
+  // verificar se o sincard está sincronizado **********************************
+  if EstadoSincronismo <> sinSincronizado then
+    raise EACBrSMSException.Create(FALHA_SINCARD_SINCRONIZADO);
+
+
+  // definir o modo de envio ***************************************************
+  Cmd := 'AT+CMGF=1';
+  Self.EnviarComando(Cmd);
+  if not Self.ATResult then
+    raise EACBrSMSException.Create(FALHA_INICIALIZACAO + sLineBreak + fpUltimaResposta);
+
+
+  // definir o número de telefone do destinatário ******************************
+  Cmd := 'AT+CMGS="' + ATelefone + '"';
+  Self.EnviarComando(Cmd);
+  if not Self.ATResult then
+    raise EACBrSMSException.Create(FALHA_NUMERO_TELEFONE + sLineBreak + fpUltimaResposta);
+
+
+  // Enviar a mensagem *********************************************************
+  Cmd := Trim(AMensagem) + CTRL_Z;
+  Self.EnviarComando(Cmd);
+  if not Self.ATResult then
+    raise EACBrSMSException.Create(FALHA_ENVIAR_MENSAGEM + sLineBreak + fpUltimaResposta);
+
+
+  // verificar se foi retornado indice da mensagem *****************************
+  Ret := fpUltimaResposta;
+  if Pos(':', Ret) >= 0 then
+  begin
+    // separar o indice da mensagem
+    Ret := Trim(Copy(Ret, Pos(':', Ret) + 1, Length(Ret)));
+    Ret := Trim(Copy(Ret, 1, Pos('OK', Ret) - 1));
+
+    AIndice := IntToStr(StrToIntDef(Trim(Ret), -1));
+    if AIndice = '-1' then
+      raise EACBrSMSException.Create(FALHA_INDICE_MENSAGEM + sLineBreak + fpUltimaResposta);
+  end
+  else
+    AIndice := '-1';
 end;
 
 procedure TACBrSMSClass.TrocarBandeja(const ASinCard: TACBrSMSSinCard);
 begin
-  raise EACBrSMSException.Create('Trocar Bandeja não implementado.');
+  raise EACBrSMSException.Create('Dispositivo não possui suporte para a troca de bandejas SimCard.');
 end;
 
 end.

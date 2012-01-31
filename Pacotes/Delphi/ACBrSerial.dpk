@@ -1,7 +1,5 @@
 package ACBrSerial;
 
-{$I ACBr.inc}
-
 {$R *.res}
 {$ALIGN 8}
 {$ASSERTIONS ON}
@@ -29,11 +27,7 @@ package ACBrSerial;
 
 requires
   rtl,
-  {$IFDEF VisualCLX}
-   visualclx,
-  {$ELSE}
-   vcl,
-  {$ENDIF}
+  vcl,
   designide,
   ACBrDiversos,
   synapse;
@@ -92,6 +86,9 @@ contains
   ACBrSerialReg in '..\..\Fontes\ACBrSerial\ACBrSerialReg.pas',
   ACBrTER in '..\..\Fontes\ACBrSerial\ACBrTER.pas',
   ACBrTERClass in '..\..\Fontes\ACBrSerial\ACBrTERClass.pas',
-  ACBrTERWilbor in '..\..\Fontes\ACBrSerial\ACBrTERWilbor.pas';
+  ACBrTERWilbor in '..\..\Fontes\ACBrSerial\ACBrTERWilbor.pas',
+  ACBrSMS in '..\..\Fontes\ACBrSerial\ACBrSMS.pas',
+  ACBrSMSClass in '..\..\Fontes\ACBrSerial\ACBrSMSClass.pas',
+  ACBrSMSDaruma in '..\..\Fontes\ACBrSerial\ACBrSMSDaruma.pas';
 
 end.

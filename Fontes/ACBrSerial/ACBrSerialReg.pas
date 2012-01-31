@@ -97,7 +97,7 @@ procedure Register;
 implementation
 Uses ACBrUtil,  
      ACBrECF, ACBrGAV, ACBrCHQ, ACBrLCB, ACBrDIS, ACBrTER, ACBrBAL, ACBrETQ,
-     ACBrRFD,
+     ACBrRFD, ACBrSMS,
      SysUtils;
 
 {$IFNDEF FPC}
@@ -107,7 +107,7 @@ Uses ACBrUtil,
 procedure Register;
 begin
   RegisterComponents('ACBr', [TACBrECF, TACBrRFD, TACBrGAV, TACBrCHQ,
-     TACBrLCB, TACBrDIS, TACBrTER, TACBrBAL, TACBrETQ]);
+     TACBrLCB, TACBrDIS, TACBrTER, TACBrBAL, TACBrETQ, TACBrSMS]);
 
   { Registrando os Editores de Propriedade }
   RegisterPropertyEditor(TypeInfo(String), TACBrGAV, 'StrComando',
@@ -133,6 +133,8 @@ begin
   RegisterPropertyEditor(TypeInfo(TACBrDevice), TACBrTER, 'Device',
     TClassProperty);
   RegisterPropertyEditor(TypeInfo(TACBrDevice), TACBrETQ, 'Device',
+    TClassProperty);
+  RegisterPropertyEditor(TypeInfo(TACBrDevice), TACBrSMS, 'Device',
     TClassProperty);
   {$ENDIF}
 

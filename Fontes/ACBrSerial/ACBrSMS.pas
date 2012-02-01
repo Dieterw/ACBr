@@ -124,7 +124,6 @@ begin
   fsDevice.SetSubComponent( true );
   {$ENDIF}
   fsDevice.Porta := 'COM1';
-  fsDevice.HandShake := hsNenhum;
 
   fsModelo := modNenhum;
   fsSMS  := TACBrSMSClass.Create(Self);

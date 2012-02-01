@@ -3387,6 +3387,7 @@ end;
 
 constructor TRegistroC100.Create;
 begin
+  FRegistroC105 := TRegistroC105List.Create;  /// BLOCO C - Lista de RegistroC105 (FILHO)
   FRegistroC110 := TRegistroC110List.Create;  /// BLOCO C - Lista de RegistroC110 (FILHO)
   FRegistroC120 := TRegistroC120List.Create;  /// BLOCO C - Lista de RegistroC110 (FILHO)
   FRegistroC130 := TRegistroC130List.Create;  /// BLOCO C - Lista de RegistroC110 (FILHO)
@@ -3400,6 +3401,7 @@ end;
 
 destructor TRegistroC100.Destroy;
 begin
+  FRegistroC105.Free;
   FRegistroC110.Free;
   FRegistroC120.Free;
   FRegistroC130.Free;

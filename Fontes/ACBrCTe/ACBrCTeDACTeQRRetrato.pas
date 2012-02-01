@@ -85,7 +85,6 @@ type
     QRLabel23: TQRLabel;
     QRLabel25: TQRLabel;
     QRLabel33: TQRLabel;
-    QRLabel73: TQRLabel;
     QRLabel74: TQRLabel;
     qrlChave: TQRLabel;
     qrlPageNumber: TQRLabel;
@@ -308,7 +307,6 @@ type
     qrmComplValor2: TQRMemo;
     qrsQuadro01: TQRShape;
     qrsQuadro02: TQRShape;
-    qrsQuadro03: TQRShape;
     qrsQuadro04: TQRShape;
     qrsQuadro05: TQRShape;
     qrsQuadro07: TQRShape;
@@ -324,8 +322,6 @@ type
     qrsLinhaV05: TQRShape;
     qrsLinhaH04: TQRShape;
     qrsLinhaV07: TQRShape;
-    qrsLinhaV03: TQRShape;
-    qrsLinhaV02: TQRShape;
     qrsLinhaV01: TQRShape;
     qrsLinhaV11: TQRShape;
     qrsLinhaH06: TQRShape;
@@ -397,7 +393,7 @@ type
     qrmQtdUnidMedida1: TQRMemo;
     qrmQtdUnidMedida2: TQRMemo;
     qrmQtdUnidMedida3: TQRMemo;
-    qrmQtdUnidMedida4: TQRMemo;
+    qrmQtdUnidMedida5: TQRMemo;
     qrb_06_ValorPrestacao: TQRChildBand;
     QRShape46: TQRShape;
     QRShape48: TQRShape;
@@ -558,6 +554,14 @@ type
     qrlNumCTe3: TQRLabel;
     QRShape98: TQRShape;
     qrmCNPJPg: TQRMemo;
+    QRShape88: TQRShape;
+    qrlVariavel1: TQRLabel;
+    qriBarCode2: TQRImage;
+    QRShape99: TQRShape;
+    qrmQtdUnidMedida4: TQRMemo;
+    QRLabel73: TQRLabel;
+    QRShape100: TQRShape;
+    qrsQuadro03: TQRShape;
     procedure QRCTeBeforePrint(Sender: TCustomQuickRep; var PrintReport: Boolean);
     procedure qrb_01_ReciboBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
     procedure qrb_02_CabecalhoBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
@@ -902,7 +906,7 @@ begin
   // Incluido/Alterado por Italo em 20/04/2011 / 27/04/2011
   PrintBand := (QRCTe.PageNumber = 1) and (FCTe.Ide.modal <> mdAereo) and (FPosRecibo = prCabecalho);
 
-  qrlSerie2.Caption  := IntToStr(FCTe.Ide.serie);
+  qrlSerie2.Caption  := FormatFloat( '000', FCTe.Ide.serie);
   qrlNumCte2.Caption := FormatFloat( '000,000,000', FCTe.Ide.nCT );
   // Incluido por Italo em 27/04/2011
   // TpcteTipoCTe = (tcNormal, tcComplemento, tcAnulacao, tcSubstituto);
@@ -941,7 +945,7 @@ begin
 
   qrlModal.Caption := TpModalToStrText(FCTe.Ide.modal);
   qrlModelo.Caption := FCTe.Ide.modelo;
-  qrlSerie.Caption := IntToStr(FCTe.Ide.serie);
+  qrlSerie.Caption := FormatFloat( '000', FCTe.Ide.serie);
   qrlNumCte.Caption := FormatFloat( '000,000,000', FCTe.Ide.nCT );
   qrlPageNumber.Caption := format('%2.2d', [QRCTe.PageNumber]) + '/' + format('%2.2d', [FTotalPages]);
   qrlEmissao.Caption := CTeUtil.FormatDateTime(DateTimeToStr(FCTe.Ide.dhEmi));
@@ -985,9 +989,12 @@ begin
   // Normal **************************************************************
   if FCTe.Ide.tpEmis in [teNormal, teSCAN] then
    begin
+    // Incluidas por Italo em 01/01/2012
+    qrlVariavel1.Enabled := True;
+    qriBarCode2.Enabled  := False;
     if FCTe.procCTe.cStat = 100 then
      begin
-      qrlDescricao.Caption:= 'PROTOCOLO DE AUTORIZAÇÃO DE USO';
+      qrlDescricao.Caption := 'PROTOCOLO DE AUTORIZAÇÃO DE USO';
      end;
 
     if FCTe.procCTe.cStat = 101 then
@@ -1013,11 +1020,16 @@ begin
 
   if FCTe.Ide.tpEmis in [teContingencia, teFSDA] then
    begin
+    // Incluidas por Italo em 01/01/2012
+    qrlVariavel1.Enabled := False;
+    qriBarCode2.Enabled  := True;
+
     strChaveContingencia := CTeUtil.GerarChaveContingencia(FCTe);
-    SetBarCodeImage(strChaveContingencia,qriBarCode);
+    SetBarCodeImage(strChaveContingencia, qriBarCode2);
     qrlDescricao.Caption := 'DADOS DO CT-E';
     qrlProtocolo.Caption := CTeUtil.FormatarChaveContingencia(strChaveContingencia);
    end;
+   
   // DPEC ****************************************************************
   if FCTe.Ide.tpEmis = teDPEC then
    begin
@@ -1168,6 +1180,8 @@ begin
   qrmQtdUnidMedida2.Lines.Clear;
   qrmQtdUnidMedida3.Lines.Clear;
   qrmQtdUnidMedida4.Lines.Clear;
+  // Incluido por Italo em 01/01/2012
+  qrmQtdUnidMedida5.Lines.Clear;
 
   for i := 0 to FCTe.InfCarga.InfQ.Count - 1 do
    begin
@@ -1956,7 +1970,7 @@ begin
   // Incluido/Alterado por Italo em 20/04/2011 / 27/04/2011 / 04/07/2011
   PrintBand := (QRCTe.PageNumber = 1);
 
-  qrlSerie3.Caption  := IntToStr(FCTe.Ide.serie);
+  qrlSerie3.Caption  := FormatFloat( '000', FCTe.Ide.serie);
   qrlNumCte3.Caption := FormatFloat( '000,000,000', FCTe.Ide.nCT );
 
   // Incluido por Italo em 27/04/2011 / 04/07/2011

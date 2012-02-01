@@ -1342,7 +1342,8 @@ type
 
   TInfcontQtCollectionItem = class(TCollectionItem)
   private
-    FnCont     : Integer;
+    // Alterado de Integer para String por Italo em 31/01/2012
+    FnCont     : String;
     FlacContQt : TlacContQtCollection;
     FdPrev     : TDateTime;
     procedure SetlacContQt(const Value: TlacContQtCollection);
@@ -1350,7 +1351,8 @@ type
     constructor Create; reintroduce;
     destructor Destroy; override;
   published
-    property nCont: Integer read FnCont write FnCont;
+    // Alterado de Integer para String por Italo em 31/01/2012
+    property nCont: String read FnCont write FnCont;
     property lacContQt: TlacContQtCollection read FlacContQt write SetlacContQt;
     property dPrev: TDateTime read FdPrev write FdPrev;
   end;

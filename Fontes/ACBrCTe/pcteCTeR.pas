@@ -737,7 +737,8 @@ begin
     while Leitor.rExtrai(2, 'contQt', '', i01 + 1) <> '' do
     begin
       CTe.infCTeNorm.contQt.Add;
-      CTe.infCTeNorm.contQt[i01].nCont := Leitor.rCampo(tcInt, 'nCont');
+    // Alterado de Integer para String por Italo em 31/01/2012
+      CTe.infCTeNorm.contQt[i01].nCont := Leitor.rCampo(tcStr, 'nCont');
 
       i02 := 0;
       while Leitor.rExtrai(3, 'lacContQt', '', i02 + 1) <> '' do

@@ -1324,7 +1324,8 @@ begin
   for i := 0 to CTe.infCTeNorm.contQt.Count - 1 do
   begin
     Gerador.wGrupo('contQt', '#285');
-    Gerador.wCampo(tcInt, '#286', 'nCont ', 01, 20, 1, CTe.infCTeNorm.contQt[i].nCont, '');
+    // Alterado de Integer para String por Italo em 31/01/2012
+    Gerador.wCampo(tcStr, '#286', 'nCont ', 01, 20, 1, CTe.infCTeNorm.contQt[i].nCont, '');
 
     for i01 := 0 to CTe.infCTeNorm.contQt[i].lacContQt.Count - 1 do
     begin

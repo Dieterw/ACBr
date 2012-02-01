@@ -68,6 +68,7 @@ type
     function GetATResult: Boolean;
     procedure SetATResult(const Value: Boolean);
     function GetBandejasSimCard: Integer;
+    function GetUltimoComando: AnsiString;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -105,6 +106,7 @@ type
     property BandejasSimCard: Integer read GetBandejasSimCard;
     property QuebraMensagens: Boolean read GetQuebraMensagens write SetQuebraMensagens;
     property UltimaResposta: AnsiString read GetUltimaReposta;
+    property UltimoComando: AnsiString read GetUltimoComando;
   end;
 
 implementation
@@ -273,6 +275,11 @@ end;
 function TACBrSMS.GetUltimaReposta: AnsiString;
 begin
   Result := fsSMS.UltimaResposta;
+end;
+
+function TACBrSMS.GetUltimoComando: AnsiString;
+begin
+  Result := fsSMS.UltimoComando;
 end;
 
 function TACBrSMS.IMEI: AnsiString;

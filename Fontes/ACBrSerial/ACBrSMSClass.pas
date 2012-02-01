@@ -91,6 +91,7 @@ type
     fpDevice: TACBrDevice;
     fpAtivo: Boolean;
     fpUltimaResposta: AnsiString;
+    fpUltimoComando: AnsiString;
     fpAtResult: Boolean;
     fpBandejasSimCard: Integer;
   public
@@ -125,6 +126,7 @@ type
     property QuebraMensagens: Boolean read fpQuebraMensagens write fpQuebraMensagens;
     property BandejasSimCard: Integer read fpBandejasSimCard;
     property UltimaResposta: AnsiString read fpUltimaResposta write fpUltimaResposta;
+    property UltimoComando: AnsiString read fpUltimoComando write fpUltimoComando;
   end;
 
 implementation
@@ -210,6 +212,7 @@ begin
   fpATTimeout := 10000;
   fpBandejasSimCard := 1;
   fpUltimaResposta := AnsiString(EmptyStr);
+  fpUltimoComando := AnsiString(EmptyStr);
 end;
 
 destructor TACBrSMSClass.Destroy;
@@ -363,6 +366,7 @@ var
   sRet: AnsiString;
 begin
   fpUltimaResposta := '';
+  fpUltimoComando := Cmd;
   fpAtResult := False;
 
   fpDevice.Serial.Purge;

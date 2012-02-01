@@ -10,7 +10,6 @@ uses
 
 type
   TfrmPrincipal = class(TForm)
-    ACBrSMS1: TACBrSMS;
     GroupBox5: TGroupBox;
     btnAtivar: TButton;
     cbxPorta: TComboBox;
@@ -41,6 +40,7 @@ type
     N2: TMenuItem;
     N3: TMenuItem;
     N4: TMenuItem;
+    ACBrSMS1: TACBrSMS;
     procedure FormDestroy(Sender: TObject);
     procedure btnAtivarClick(Sender: TObject);
     procedure menEmLinhaClick(Sender: TObject);

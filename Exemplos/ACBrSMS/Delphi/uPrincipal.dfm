@@ -324,17 +324,6 @@ object frmPrincipal: TfrmPrincipal
         66C7FBCFFAD145001BAC7D5FF5A3758FABFEB451401FFFD9}
     end
   end
-  object ACBrSMS1: TACBrSMS
-    Ativo = False
-    Modelo = modDaruma
-    SinCard = sin1
-    ATTimeOut = 10000
-    ATResult = False
-    RecebeConfirmacao = False
-    QuebraMensagens = False
-    Left = 212
-    Top = 215
-  end
   object MainMenu1: TMainMenu
     Left = 270
     Top = 215
@@ -408,5 +397,17 @@ object frmPrincipal: TfrmPrincipal
       Caption = 'Sobre'
       OnClick = Sobre1Click
     end
+  end
+  object ACBrSMS1: TACBrSMS
+    Ativo = False
+    Device.Baud = 115200
+    Modelo = modNenhum
+    SinCard = sin1
+    ATTimeOut = 10000
+    ATResult = False
+    RecebeConfirmacao = False
+    QuebraMensagens = False
+    Left = 185
+    Top = 215
   end
 end

@@ -941,7 +941,7 @@ procedure TBloco_1.WriteRegistro1900(Reg1001: TRegistro1001);
 var strCOD_SIT,
     strCST_PIS,
     strCST_COFINS:string;
-    intFor:Word;
+    intFor:Integer;
 begin
   if Assigned(Reg1001.Registro1900) then
   begin

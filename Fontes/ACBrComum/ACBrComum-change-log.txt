@@ -38,6 +38,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+02/02/2012
+-- ACBrAAC, ACBrPaf --
+[*] Adição do campo de Codigo Nacional de Identificação do ECF ao AAC
+    conforme tópico: http://djsystem.com.br/acbr/forum/viewtopic.php?f=20&t=3048
+    merge: RBS
+
 17/01/2012
 -- ACBrAAC, ACBrPAF --
 [*] Adição de novos campos que devem ser informados no relatório de configuração

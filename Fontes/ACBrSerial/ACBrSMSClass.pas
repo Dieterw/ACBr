@@ -378,14 +378,13 @@ begin
     if sRet <> Cmd then
       fpUltimaResposta := fpUltimaResposta + sRet;
 
-    if Pos('ERROR', sRet) > 0 then
+    if (Pos('ERROR', sRet) > 0) or
+       (Pos('NO CARRIER', sRet) > 0) or
+       (Pos('BUSY', sRet) > 0) or
+       (Pos('NO DIALTONE', sRet) > 0) then
+    begin
       break;
-    if Pos('NO CARRIER', sRet) > 0 then
-      break;
-    if Pos('BUSY', sRet) > 0 then
-      break;
-    if Pos('NO DIALTONE', sRet) > 0 then
-      break;
+    end;
 
     if (Pos('OK', sRet) > 0) or
        (Pos('>', sRet) > 0) or

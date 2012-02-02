@@ -679,7 +679,8 @@ begin
     NewECF.NumeroSerie    := AECF.NumeroSerie;
     NewECF.CRO            := AECF.CRO;
     NewECF.DtHrAtualizado := AECF.DtHrAtualizado;
-    NewECF.ValorGT        := AECF.ValorGT;
+    NewECF.ValorGT        := AECF.ValorGT;   
+    NewECF.CNI            := AECF.CNI;
 
     fsIdentPAF.ECFsAutorizados.Clear;
     fsIdentPAF.ECFsAutorizados.Add( NewECF );

@@ -53,6 +53,7 @@ type
     FDtHrAtualizado : TDateTime ;
     FValorGT: Double;
     FNumeroSerie: String;
+    FCNI : Integer;
     function GetLinhaDados : String ;
     procedure SetLinhaDados(const AValue : String) ;
     procedure SetValorGT(const AValue : Double) ;
@@ -60,7 +61,8 @@ type
     property NumeroSerie    : String    read FNumeroSerie    write FNumeroSerie;
     property CRO            : Integer   read FCRO            write FCRO;
     property ValorGT        : Double    read FValorGT        write SetValorGT;
-    property DtHrAtualizado : TDateTime read FDtHrAtualizado write FDtHrAtualizado;
+    property DtHrAtualizado : TDateTime read FDtHrAtualizado write FDtHrAtualizado;  
+    property CNI            : Integer   read FCNI            write FCNI;            //Codigo Nacional de Identificacao do ECF
 
     property LinhaDados : String read GetLinhaDados write SetLinhaDados ;
   end;
@@ -414,10 +416,11 @@ end;
 
 function TACBrAACECF.GetLinhaDados : String ;
 begin
-  Result := NumeroSerie         + '|' +
-            IntToStr(CRO)       + '|' +
-            FloatToStr(ValorGT) + '|' +
-            DTtoS(DtHrAtualizado) ;
+  Result := NumeroSerie           + '|' +
+            IntToStr(CRO)         + '|' +
+            FloatToStr(ValorGT)   + '|' +
+            DTtoS(DtHrAtualizado) + '|' +
+            IntToStr(CNI)         ;
 end ;
 
 procedure TACBrAACECF.SetLinhaDados(const AValue : String) ;
@@ -428,12 +431,13 @@ begin
   try
      SL.Text := StringReplace( AValue, '|', sLineBreak, [rfReplaceAll] ) ;
 
-     if SL.Count < 4 then exit ;
+     if SL.Count < 5 then exit ;
 
      NumeroSerie    := SL[0] ;
      CRO            := StrToIntDef( SL[1], 0) ;
      ValorGT        := StrToFloatDef( SL[2], 0) ;
-     DtHrAtualizado := StoD( SL[3] ) ;
+     DtHrAtualizado := StoD( SL[3] ) ;       
+     CNI            := StrToIntDef( SL[4], 0) ;
   finally
      SL.Free;
   end ;

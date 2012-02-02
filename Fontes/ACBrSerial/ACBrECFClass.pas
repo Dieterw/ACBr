@@ -2680,6 +2680,8 @@ end;
 
 procedure TACBrECFClass.DoOnMsgPoucoPapel( Mensagem : String ) ;
 begin
+  if MsgPoucoPapel < 0 then exit;
+
   if now > IncSecond(fpUltimaMsgPoucoPapel, MsgPoucoPapel) then { Avisa ? }
   begin
      if Assigned( fsOnMsgPoucoPapel ) then

@@ -509,8 +509,6 @@ begin
 end;
 
 procedure TBloco_1.WriteRegistro1102(Reg1101: TRegistro1101) ;
-var
-intFor: integer;
 begin
   if Assigned(Reg1101.Registro1102) then
   begin
@@ -726,8 +724,6 @@ begin
 end;
 
 procedure TBloco_1.WriteRegistro1502(Reg1501: TRegistro1501) ;
-var
-intFor: integer;
 begin
   if Assigned(Reg1501.Registro1502) then
   begin
@@ -947,7 +943,6 @@ begin
   begin
      for intFor := 0 to Reg1001.Registro1900.Count - 1 do
      begin
-
         with Reg1001.Registro1900.Items[intFor] do
         begin
           //if Length(CNPJ) > 0 then Check(funChecaCNPJ(CNPJ), '(0-1900) %s-%s, o CNPJ "%s" digitado é inválido!', [CNPJ]);

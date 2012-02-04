@@ -1287,7 +1287,8 @@ begin
   except
      on E : Exception do
      begin
-        if (pos('ErroProtSequenciaComando',E.Message) <> 0) then
+        if (pos('ErroProtSequenciaComando',E.Message) <> 0) or
+           (pos('ErroCMDForaDeSequencia',E.Message) <> 0) then
         begin
            if (Obs <> '') then
            begin

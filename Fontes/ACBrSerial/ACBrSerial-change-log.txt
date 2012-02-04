@@ -97,6 +97,15 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 04/02/2012
+-- ACBrECFFiscNet --
+[-] Correçao de Fechamento de Cupom com Mensagem promocional em DataRegis. (DSA)
+    http://www.djsystem.com.br/acbr/forum/viewtopic.php?f=10&t=4542
+
+-- ACBrECFBematech --
+[-] Correção da Leitura da DataHoraSB em alguns modelos (DSA)
+    http://www.djsystem.com.br/acbr/forum/viewtopic.php?f=10&t=4548
+
 Data: 02/02/2012
 -- ACBrECF --
 [*] Possibilidade de desabilitar MsgPoucoPapel, atribuindo valor negativo

@@ -2160,12 +2160,12 @@ begin
   {$IFDEF MSWINDOWS}
     if not FileExists( ExtractFilePath( sLibName ) + 'Swmfd.dll') then
        raise Exception.Create( ACBrStr( 'Não foi encontrada a dll auxiliar Swmfd.dll.' ) ) ;
-   {$ENDIF}
+  {$ENDIF}
 
-   SwedaFunctionDetect('ECF_AbreConnectC', @xECF_AbreConnectC);
-   SwedaFunctionDetect('ECF_DownloadMFD', @xECF_DownloadMFD);
-   SwedaFunctionDetect('ECF_ReproduzirMemoriaFiscalMFD', @xECF_ReproduzirMemoriaFiscalMFD);
-   SwedaFunctionDetect('ECF_FechaPortaSerial', @xECF_FechaPortaSerial);
+  SwedaFunctionDetect('ECF_AbreConnectC', @xECF_AbreConnectC);
+  SwedaFunctionDetect('ECF_DownloadMFD', @xECF_DownloadMFD);
+  SwedaFunctionDetect('ECF_ReproduzirMemoriaFiscalMFD', @xECF_ReproduzirMemoriaFiscalMFD);
+  SwedaFunctionDetect('ECF_FechaPortaSerial', @xECF_FechaPortaSerial);
 end ;
 
 Function TACBrECFSwedaSTX.DescricaoErroDLL(const NErro: Integer) : String ;

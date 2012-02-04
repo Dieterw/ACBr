@@ -2439,10 +2439,11 @@ function TACBrECFBematech.GetDataHoraSB: TDateTime;
 Leitura da Memória Fiscal, só para não retornar erro coloquei esta
 informação abaixo, temos que criar uma rotina que leia a LMF serial
 para retornar os valores corretos}
-Var RetCmd : AnsiString ;
+Var RetCmd, Linha, LinhaVer : AnsiString ;
     OldShortDateFormat : String ;
     Linhas : TStringList;
-    i,x,nLinha, CRZ :Integer;
+    I, nLinha, CRZ :Integer;
+    AchouBlocoSB : Boolean ;
 begin
   Result := 0.0;
 
@@ -2454,41 +2455,49 @@ begin
     Linhas := TStringList.Create;
 
     try
-      CRZ := StrToIntDef(NumCRZ, 0) ;
+      CRZ := StrToIntDef(NumCRZ, 1) ;
       LeituraMemoriaFiscalSerial(CRZ, CRZ, Linhas);
 
-      for i := 0 to Linhas.Count-1 do
+      I := 0 ;
+      AchouBlocoSB := False;
+      while (not AchouBlocoSB) and (I < Linhas.Count) do
       begin
-        if pos('SOFTWARE B', Linhas[i]) > 0 then
-        begin
-          for x := i+1 to Linhas.Count-1 do
-          begin
-            if StrToIntDef(StringReplace(Copy(Linhas[x], 1, 8), '.', '', [rfReplaceAll]), 0) = 0 then
-            begin
-               nLinha := x-1;
-               break;
-            end;
-          end;
-          Break;
-        end;
-      end;
+         Linha := Linhas[I] ;
+         AchouBlocoSB := (pos('SOFTWARE B', Linha ) > 0) ;
+         Inc( I ) ;
+      end ;
 
-      if nLinha >= 0 then
+      Linha    := '';
+      LinhaVer := '';
+      while AchouBlocoSB and (I < Linhas.Count) and (Linha = LinhaVer) do
+      begin
+         Linha := Trim(Linhas[I]) ;
+         if (Linha <> '') then
+         begin
+            if ( StrIsNumber( copy(Linha,1,2) ) and ( copy(Linha,3,1) = '.' ) and
+                 StrIsNumber( copy(Linha,4,2) ) and ( copy(Linha,6,1) = '.' ) and
+                 StrIsNumber( copy(Linha,7,2) ) ) then
+               LinhaVer := Linha;
+         end ;
+
+         Inc( I ) ;
+      end ;
+
+      if LinhaVer <> '' then
       begin
         // 01.00.01                    25/06/2009 21:07:40
-        RetCmd := Linhas[nLinha] ;
-        x := pos('/', RetCmd ) ;
+        I := pos('/', LinhaVer ) ;
 
         OldShortDateFormat := ShortDateFormat ;
         try
           ShortDateFormat := 'dd/mm/yyyy' ;
-          Result := StrToDate( StringReplace( copy(RetCmd, x-2, 10 ),
+          Result := StrToDate( StringReplace( copy(LinhaVer, I-2, 10 ),
                                            '/', DateSeparator, [rfReplaceAll] ) ) ;
 
-          x := pos(':', RetCmd ) ;
-          Result := RecodeHour(  result,StrToInt(copy(RetCmd, x-2,2))) ;
-          Result := RecodeMinute(result,StrToInt(copy(RetCmd, x+1,2))) ;
-          Result := RecodeSecond(result,StrToInt(copy(RetCmd, x+4,2))) ;
+          I := pos(':', LinhaVer ) ;
+          Result := RecodeHour(  result,StrToInt(copy(LinhaVer, I-2,2))) ;
+          Result := RecodeMinute(result,StrToInt(copy(LinhaVer, I+1,2))) ;
+          Result := RecodeSecond(result,StrToInt(copy(LinhaVer, I+4,2))) ;
         finally
           ShortDateFormat := OldShortDateFormat ;
         end ;

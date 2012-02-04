@@ -1461,6 +1461,9 @@ var
     ReqResp: THTTPReqResp;
  {$ENDIF}
 begin
+  if assigned(FCTeRetorno) then
+   FCTeRetorno.Free;
+
   {Result :=} inherited Executar;
 
   Acao   := TStringList.Create;
@@ -1493,10 +1496,10 @@ begin
      ReqResp.UseUTF8InHeader := True;
      ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/cte/wsdl/CteRetRecepcao/cteRetRecepcao';
   {$ENDIF}
+
+ FCTeRetorno := TRetConsReciCTe.Create;
  try
    TACBrCTe( FACBrCTe ).SetStatus( stCTeRetRecepcao );
-   if assigned(FCTeRetorno) then
-      FCTeRetorno.Free;
 
    if FConfiguracoes.Geral.Salvar then
      FConfiguracoes.Geral.Save(Recibo+'-ped-rec.xml', FDadosMsg);
@@ -1519,7 +1522,10 @@ begin
       FRetWS := SeparaDados( FRetornoWS, 'cteRetRecepcaoResult');
       StrStream.Free;
    {$ENDIF}
-   FCTeRetorno := TRetConsReciCTe.Create;
+
+   if FConfiguracoes.Geral.Salvar then
+    FConfiguracoes.Geral.Save(Recibo+'-pro-rec.xml', FRetWS);
+
    FCTeRetorno.Leitor.Arquivo := FRetWS;
    FCTeRetorno.LerXML;
 

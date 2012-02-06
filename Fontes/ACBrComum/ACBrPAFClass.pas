@@ -431,13 +431,16 @@ begin
   try
      SL.Text := StringReplace( AValue, '|', sLineBreak, [rfReplaceAll] ) ;
 
-     if SL.Count < 5 then exit ;
+     if SL.Count < 4 then exit ;
 
      NumeroSerie    := SL[0] ;
      CRO            := StrToIntDef( SL[1], 0) ;
      ValorGT        := StrToFloatDef( SL[2], 0) ;
-     DtHrAtualizado := StoD( SL[3] ) ;       
-     CNI            := StrToIntDef( SL[4], 0) ;
+     DtHrAtualizado := StoD( SL[3] ) ;  
+     if SL.Count > 4 then  
+        CNI := StrToIntDef( SL[4], 0)
+     else
+        CNI := 0 ;
   finally
      SL.Free;
   end ;

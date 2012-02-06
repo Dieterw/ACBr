@@ -260,7 +260,28 @@ begin
      //GravaLog('Arquivo Descriptografado: '+sLineBreak+ R );
 
      SL.Text := R;
+     // Verificando o arquivo:
+     I := SL.Count-1 ;
+     Linha := SL[ I ] ;   // Pega Ultima Linha
+     if copy(Linha,1,4) = 'CRC:' then   // Ultima Linha é CRC ?
+     begin
+        CRC := StrToIntDef( copy( Linha, 5, Length(Linha) ), -999) ;
+        SL.Delete( I );
+
+        if StringCrc16( SL.Text ) <> CRC then
+           raise EACBrAAC_CRC.Create(
+              ACBrStr('Arquivo: '+NomeArquivoAux+' inválido') );
+     end ;
+
+     // Atribuindo para o .INI //
      Ini.SetStrings( SL );
+
+     // Seçao 'PAF' deve existir //
+     if not Ini.SectionExists('PAF') then
+     begin
+       raise EACBrAAC_ArquivoInvalido.Create(
+          ACBrStr('Arquivo: '+NomeArquivoAux+' inválido') );
+     end ;
 
      if GravarDadosSH then
      begin
@@ -326,20 +347,6 @@ begin
      end;
 
      fsIdentPAF.ArquivoListaAutenticados.MD5 := Ini.ReadString('PAF','MD5','');     // MD5 do arquivo que contem a lista de arquivos autenticados
-
-     if GravarDadosPAF and GravarDadosSH then
-     begin
-       CRC := StringCrc16( fsIdentPAF.Empresa.RazaoSocial +
-                           fsIdentPAF.Empresa.CNPJ +
-                           fsIdentPAF.Empresa.IE +
-                           fsIdentPAF.Empresa.IM +
-                           fsIdentPAF.Paf.Nome +
-                           fsIdentPAF.Paf.Versao +
-                           fsIdentPAF.ArquivoListaAutenticados.MD5 );
-       if Ini.ReadInteger('CHK','CRC16',0) <> CRC then
-          raise EACBrAAC_ArquivoInvalido.Create(
-             ACBrStr('Arquivo: '+NomeArquivoAux+' inválido') );
-     end ;
 
      fsIdentPAF.ECFsAutorizados.Clear;
      I := 0 ;
@@ -507,20 +514,8 @@ begin
         Ini.WriteString( 'Params', Ident, Params[I] );
      end ;
 
-     if GravarDadosPAF and GravarDadosSH then
-     begin
-       // Calculando o CRC //
-       CRC := StringCrc16( fsIdentPAF.Empresa.RazaoSocial +
-                           fsIdentPAF.Empresa.CNPJ +
-                           fsIdentPAF.Empresa.IE +
-                           fsIdentPAF.Empresa.IM +
-                           fsIdentPAF.Paf.Nome +
-                           fsIdentPAF.Paf.Versao +
-                           fsIdentPAF.ArquivoListaAutenticados.MD5 );
-       Ini.WriteInteger('CHK','CRC16',CRC);
-     end ;
-
      Ini.GetStrings( SL );
+     SL.Add( 'CRC:' + IntToStr( StringCrc16( SL.Text ) ) );
 
      // DEBUG
      //GravaLog('Arquivo em Memoria: '+sLineBreak+ SL.Text );

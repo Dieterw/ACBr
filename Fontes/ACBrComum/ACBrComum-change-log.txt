@@ -38,6 +38,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+06/02/2012
+-- ACBrAAC --
+[+] Adicionada verificação de CRC na Gravacao/Abertura do arquivo AAC. Para
+    testar por corrupção de dados (por: DSA)
+
 02/02/2012
 -- ACBrAAC, ACBrPaf --
 [*] Adição do campo de Codigo Nacional de Identificação do ECF ao AAC

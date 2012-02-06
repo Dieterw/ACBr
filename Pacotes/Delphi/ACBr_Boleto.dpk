@@ -45,6 +45,7 @@ contains
   ACBrBancoMercantil in '..\..\Fontes\ACBrBoleto\ACBrBancoMercantil.pas',
   ACBrBancoSantander in '..\..\Fontes\ACBrBoleto\ACBrBancoSantander.pas',
   ACBrCaixaEconomicaSICOB in '..\..\Fontes\ACBrBoleto\ACBrCaixaEconomicaSICOB.pas',
-  ACBrBancoHSBC in '..\..\Fontes\ACBrBoleto\ACBrBancoHSBC.pas';
+  ACBrBancoHSBC in '..\..\Fontes\ACBrBoleto\ACBrBancoHSBC.pas',
+  ACBrBanestes in '..\..\Fontes\ACBrBoleto\ACBrBanestes.pas';
 
 end.

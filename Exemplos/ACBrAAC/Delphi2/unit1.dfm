@@ -398,7 +398,7 @@ object Form1: TForm1
     Top = 40
     Width = 730
     Height = 365
-    ActivePage = TabSheet2
+    ActivePage = TabSheet1
     Align = alClient
     TabOrder = 1
     TabStop = False
@@ -627,7 +627,6 @@ object Form1: TForm1
           Width = 222
           Height = 21
           Style = csDropDownList
-          ItemHeight = 0
           TabOrder = 0
         end
         object cbxTipoIntegracao: TComboBox
@@ -636,7 +635,6 @@ object Form1: TForm1
           Width = 222
           Height = 21
           Style = csDropDownList
-          ItemHeight = 0
           TabOrder = 2
         end
         object cbxTipoDesenvolvimento: TComboBox
@@ -645,7 +643,6 @@ object Form1: TForm1
           Width = 222
           Height = 21
           Style = csDropDownList
-          ItemHeight = 0
           TabOrder = 1
         end
       end
@@ -996,6 +993,13 @@ object Form1: TForm1
             3300CEB2A59A34019A3401CEB2A5993300993300E2E2E2F8F8F8}
           OnClick = btnExcluirECFsClick
         end
+        object Label21: TLabel
+          Left = 11
+          Top = 114
+          Width = 38
+          Height = 13
+          Caption = 'CNIEE :'
+        end
         object edNumeroSerieECF: TEdit
           Left = 11
           Top = 44
@@ -1083,7 +1087,6 @@ object Form1: TForm1
             Top = 77
             Width = 83
             Height = 21
-            ItemHeight = 13
             ItemIndex = 0
             TabOrder = 1
             Text = 'COM1'
@@ -1114,7 +1117,6 @@ object Form1: TForm1
             Width = 213
             Height = 21
             Style = csDropDownList
-            ItemHeight = 13
             ItemIndex = 0
             TabOrder = 0
             Text = 'ecfBematech'
@@ -1136,7 +1138,6 @@ object Form1: TForm1
             Width = 127
             Height = 21
             Style = csDropDownList
-            ItemHeight = 13
             ItemIndex = 0
             TabOrder = 2
             Text = '9600'
@@ -1154,6 +1155,14 @@ object Form1: TForm1
           MinValue = 0
           TabOrder = 2
           Value = 0
+        end
+        object edCNIEE: TEdit
+          Left = 11
+          Top = 130
+          Width = 121
+          Height = 21
+          TabOrder = 4
+          OnKeyPress = edGTECFKeyPress
         end
       end
       object lstECFsAutorizados: TListView
@@ -1173,6 +1182,10 @@ object Form1: TForm1
           end
           item
             Caption = 'CRO'
+          end
+          item
+            Caption = 'CNIEE'
+            Width = 100
           end>
         GridLines = True
         ReadOnly = True

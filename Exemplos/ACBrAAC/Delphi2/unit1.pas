@@ -104,6 +104,8 @@ type
     ckTransfPreVenda: TCheckBox;
     ckTotalizaValoresLista: TCheckBox;
     ckMinasLegal: TCheckBox;
+    edCNIEE: TEdit;
+    Label21: TLabel;
     procedure btnSairAplicativoClick(Sender: TObject);
     procedure btnECFCapturarDadosClick(Sender: TObject);
     procedure btnAdicionarECFClick(Sender: TObject);
@@ -111,13 +113,13 @@ type
     procedure btnSalvarArquivoClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure edGTECFKeyPress(Sender: TObject; var Key: Char);
-    procedure ACBrAAC1GetChave(var Chave: String);
+    procedure ACBrAAC1GetChave(var Chave: AnsiString);
   private
     function GetPathArquivoAuxiliar: String;
     procedure buscaInformacoesArquivoAuxiliar;
     procedure recriarArquivoAuxiliar;
     procedure AdicionarItemGrid(const ANumeroSerie: String;
-      const AValorGT: Double; const ACRO: Integer);
+      const AValorGT: Double; const ACRO: Integer; const ACNIEE: Integer);
     function StrToNumero(const AString: String): Double;
   public
 
@@ -133,14 +135,20 @@ uses
 
 {$R *.dfm}
 
+procedure TForm1.ACBrAAC1GetChave(var Chave: AnsiString);
+begin
+  Chave := '1234';
+end;
+
 procedure TForm1.AdicionarItemGrid(const ANumeroSerie: String;
-  const AValorGT: Double; const ACRO: Integer);
+  const AValorGT: Double; const ACRO: Integer; const ACNIEE: Integer);
 begin
   with lstECFsAutorizados.Items.Add do
   begin
     Caption := ANumeroSerie;
     SubItems.Add(FormatFloat(',#0.00', AValorGT));
     SubItems.Add(Format('%3.3d', [ACRO]));
+    SubItems.Add(Format('%6.6d', [ACNIEE]));
   end;
 end;
 
@@ -360,7 +368,7 @@ begin
     for ct:=0 to  ACBrAAC1.IdentPAF.ECFsAutorizados.Count-1 do
     begin
       with TACBrAACECF(ACBrAAC1.IdentPAF.ECFsAutorizados.Items[ct]) do
-        AdicionarItemGrid(NumeroSerie, ValorGT, CRO);
+        AdicionarItemGrid(NumeroSerie, ValorGT, CRO, CNI);
     end;
   finally
     lstECFsAutorizados.Items.EndUpdate;
@@ -413,7 +421,13 @@ begin
       raise Exception.Create('Valor do GT não informado!');
     end;
 
-    AdicionarItemGrid(edNumeroSerieECF.Text, StrToNumero(edGTECF.Text), edCROECF.Value);
+    if Trim(edCNIEE.Text) = '' then
+    begin
+      edNumeroSerieECF.SetFocus;
+      raise Exception.Create('Codigo CNIEE não informado!');
+    end;
+
+    AdicionarItemGrid(edNumeroSerieECF.Text, StrToNumero(edGTECF.Text), edCROECF.Value, StrToInt(edCNIEE.Text));
   except
     on E: Exception do
     begin
@@ -436,11 +450,6 @@ end;
 procedure Tform1.btnSairAplicativoClick(Sender: TObject);
 begin
   close;
-end;
-
-procedure TForm1.ACBrAAC1GetChave(var Chave: String);
-begin
-  Chave := '1234';
 end;
 
 end.

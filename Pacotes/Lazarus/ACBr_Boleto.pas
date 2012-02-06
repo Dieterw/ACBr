@@ -10,7 +10,7 @@ uses
   ACBrBoleto, ACBrBancoBradesco, ACBrBancoBrasil, ACBrBancoItau, 
   ACBrBancoSicredi, ACBrBancoMercantil, ACBrCaixaEconomica, ACBrBancoBanrisul, 
   ACBrBancoSantander, ACBrBancoob, ACBrCaixaEconomicaSICOB, ACBrBancoHSBC, 
-  LazarusPackageIntf;
+  ACBrBanestes, LazarusPackageIntf;
 
 implementation
 

@@ -59,6 +59,11 @@ Versao 0.1.1a do LazReport 02/08/11
 [+] Adicionado campos Outras Deduções e Outros Acréscimos ao boleto, conforme
     solicitação da Caixa Econômica Federal(Juliana Tamizou)
 
+Versao 0.0.12a do FortesReport 06/02/12
+[+] Corrigido problema com o tipo de Código de Barras impresso, alterado
+    propriedade Ratio do componente para 3, corrigindo o problema da não
+    homologação dos boletos impressos através deste gerador.(Markapollo)
+
 Versao 0.0.11a do FortesReport 02/08/11
 [+] Adicionado campos Outras Deduções e Outros Acréscimos ao boleto, conforme
     solicitação da Caixa Econômica Federal(Giuliano Naspolini Ribeiro)
@@ -69,6 +74,18 @@ Versao 0.0.11a do FortesReport 02/08/11
 Versao 0.0.10a do FortesReport 06/07/11
 [-] Corrigido problema com componentes não encontrados no dfm do Fortes.
     (Juliana Tamizou)
+
+
+Versao 0.0.33a 06/02/2012
+[+] Adicionado unit para o Banco Banestes(Banco do Espirito Santo), com
+    impressão dos boletos.(MarKapollo)
+
+[+] Adicionado unit para o Banco HSBC, com impressão dos boletos.(Jorge)
+
+
+[*] Alterado unit Banco do Brasil, função de Geração de Remessa 240 colunas
+    para gerar corretamente os registros tipo P, para a carteira 17.
+    (Douglas Tybel)
 
 
 Versao 0.0.32a 04/01/2012

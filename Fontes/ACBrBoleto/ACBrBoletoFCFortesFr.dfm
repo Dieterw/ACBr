@@ -1,8 +1,8 @@
 object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
-  Left = 66
-  Top = 200
+  Left = 35
+  Top = 341
   Width = 1003
-  Height = 780
+  Height = 768
   Caption = 'ACBRBoletoFCFortesFr'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -15,8 +15,8 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
   PixelsPerInch = 96
   TextHeight = 13
   object LayoutBoleto: TRLReport
-    Left = 64
-    Top = -8
+    Left = 48
+    Top = -304
     Width = 794
     Height = 1123
     Margins.LeftMargin = 4.000000000000000000
@@ -2628,6 +2628,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         InvalidCode = icDrawAnyway
         Margins.LeftMargin = 1.000000000000000000
         Margins.RightMargin = 1.000000000000000000
+        Ratio = 3.000000000000000000
       end
       object RLLabel169: TRLLabel
         Left = 584
@@ -2739,8 +2740,8 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
     end
   end
   object BoletoCarne: TRLReport
-    Left = 936
-    Top = 32
+    Left = 856
+    Top = -120
     Width = 794
     Height = 1123
     Font.Charset = DEFAULT_CHARSET
@@ -3924,6 +3925,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Margins.LeftMargin = 1.000000000000000000
         Margins.RightMargin = 1.000000000000000000
         ParentFont = False
+        Ratio = 3.000000000000000000
       end
       object txtNumeroBanco: TRLLabel
         Left = 254

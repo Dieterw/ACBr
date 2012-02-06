@@ -168,7 +168,7 @@ var
     Result := '';
     with ACBrTitulo, ACBrBoleto do
     begin
-      if Mensagem.Count = 1 then   //verifica se o indice é 1 porque a primeira instrução vai no registro 1
+      if Mensagem.Count <= 1 then   //verifica se o indice é 1 porque a primeira instrução vai no registro 1
         begin
           Result := AStr;
           Exit; // Nenhum mensagem especificada. Registro não será necessário gerar o registro
@@ -280,6 +280,7 @@ begin
 
       with ACBrBoleto do
       begin
+         if Mensagem.Text<>'' then
          MensagemCedente:= Mensagem[0];
          
          Result:= '1'                                                     +  // ID Registro

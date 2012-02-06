@@ -58,7 +58,7 @@ uses ACBrBase,  {Units da ACBr}
      Graphics, Contnrs, Classes;
 
 const
-  CACBrBoleto_Versao = '0.0.32a' ;
+  CACBrBoleto_Versao = '0.0.33a' ;
 
 type
   TACBrTipoCobranca =
@@ -73,6 +73,7 @@ type
     cobSicred,
     cobBancoob,
     cobBanrisul,
+    cobBanestes,
     cobHSBC
     );
 
@@ -762,7 +763,7 @@ procedure Register;
 
 implementation
 
-Uses ACBrUtil, ACBrBancoBradesco, ACBrBancoBrasil, ACBrBancoItau, ACBrBancoSicredi,
+Uses ACBrUtil, ACBrBancoBradesco, ACBrBancoBrasil, ACBrBanestes, ACBrBancoItau, ACBrBancoSicredi,
      ACBrBancoMercantil, ACBrCaixaEconomica, ACBrBancoBanrisul, ACBrBancoSantander,
      ACBrBancoob, ACBrCaixaEconomicaSICOB ,ACBrBancoHSBC,Forms,
      {$IFDEF COMPILER6_UP} StrUtils {$ELSE} ACBrD5 {$ENDIF}, Math;
@@ -1527,6 +1528,7 @@ begin
 
   case AValue of
     cobBancoDoBrasil : fBancoClass := TACBrBancoBrasil.create(Self);         {001}
+    cobBanestes      : fBancoClass := TACBrBanestes.create(self);            {021}
     cobSantander     : fBancoClass := TACBrBancoSantander.create(Self);      {033,353,008}
     cobBanrisul      : fBancoClass := TACBrBanrisul.create(Self);            {041}
     cobCaixaEconomica: fBancoClass := TACBrCaixaEconomica.create(Self);      {104}

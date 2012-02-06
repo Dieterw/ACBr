@@ -386,7 +386,7 @@ begin
                padL(ACBrBoleto.Cedente.ContaDigito, 1, '0')               + //36 - Dígito verificador da conta
                ' '                                                        + //37 - Dígito verificador da agência / conta
                padL(ANossoNumero+aDV, 20, ' ')                            + //38 a 57 - Nosso número - identificação do título no banco
-               '1'                                                        + //58 - Cobrança Simples
+               IfThen(StrToIntDef(Carteira,0) = 17,'7','1')               + //58 - Cobrança Simples
                '1'                                                        + //59 - Forma de cadastramento do título no banco: com cadastramento
                '1'                                                        + //60 - Tipo de documento: Tradicional
                ATipoBoleto                                                + //61 a 62 - Quem emite e quem distribui o boleto?

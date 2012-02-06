@@ -1,7 +1,7 @@
 object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
-  Left = -8
+  Left = -338
   Height = 718
-  Top = -8
+  Top = -9
   Width = 1024
   Caption = 'ACBRBoletoFCFortesFr'
   ClientHeight = 718
@@ -13,9 +13,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
   OnCreate = FormCreate
   LCLVersion = '0.9.31'
   object LayoutBoleto: TRLReport
-    Left = 128
+    Left = 120
     Height = 1123
-    Top = -192
+    Top = -368
     Width = 794
     Margins.LeftMargin = 4
     Margins.TopMargin = 5
@@ -3224,6 +3224,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         InvalidCode = icDrawAnyway
         Margins.LeftMargin = 1
         Margins.RightMargin = 1
+        Ratio = 3
         RealBounds.Left = 0
         RealBounds.Top = 0
         RealBounds.Width = 0
@@ -3366,9 +3367,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
     end
   end
   object BoletoCarne: TRLReport
-    Left = 936
+    Left = 920
     Height = 1123
-    Top = 32
+    Top = 8
     Width = 794
     Font.Color = clBlack
     Font.Height = -13
@@ -4817,6 +4818,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Margins.LeftMargin = 1
         Margins.RightMargin = 1
         ParentFont = False
+        Ratio = 3
         RealBounds.Left = 0
         RealBounds.Top = 0
         RealBounds.Width = 0

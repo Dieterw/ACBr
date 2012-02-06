@@ -478,7 +478,7 @@ begin
       txtNomeSacado2.Caption          := Titulo.Sacado.NomeSacado;
       txtEnderecoSacado2.Caption      := Titulo.Sacado.Logradouro + ' '+
                                          Titulo.Sacado.Numero + Titulo.Sacado.Complemento;
-      txtCidadeSacado2.Caption        := Titulo.Sacado.CEP + ' '+Titulo.Sacado.Cidade +
+      txtCidadeSacado2.Caption        := Titulo.Sacado.CEP + ' '+Titulo.Sacado.Bairro + ' '+Titulo.Sacado.Cidade +
                                          ' '+Titulo.Sacado.UF;
       txtCpfCnpjSacado2.Caption       := Titulo.Sacado.CNPJCPF;
       txtInstrucoes2.Lines.Text       := Titulo.Mensagem.Text;

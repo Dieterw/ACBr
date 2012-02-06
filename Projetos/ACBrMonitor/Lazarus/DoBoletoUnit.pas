@@ -193,7 +193,8 @@ begin
            begin
               case NumeroBanco of
                 001: Banco.TipoCobranca:= cobBancoDoBrasil;
-                008,033,353: banco.TipoCobranca:= cobSantander;
+                008,033,353: Banco.TipoCobranca:= cobSantander;
+                021: Banco.TipoCobranca:= cobBanestes;
                 041: Banco.TipoCobranca:= cobBanrisul;
                 104: Banco.TipoCobranca:= cobCaixaEconomica;
                 237: Banco.TipoCobranca:= cobBradesco;

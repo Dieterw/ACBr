@@ -4014,9 +4014,9 @@ object FrmACBrMonitor: TFrmACBrMonitor
           Height = 180
           Top = 0
           Width = 600
-          ActivePage = tsBoleto
+          ActivePage = TabSheet2
           Align = alClient
-          TabIndex = 2
+          TabIndex = 1
           TabOrder = 0
           object tsCedente: TTabSheet
             Caption = 'Cedente'
@@ -4290,7 +4290,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
           object TabSheet2: TTabSheet
             Caption = 'Conta Bancária'
             ClientHeight = 149
-            ClientWidth = 576
+            ClientWidth = 592
             object cbxBOLBanco: TComboBox
               AnchorSideLeft.Control = lblBOLBanco
               AnchorSideTop.Control = lblBOLBanco
@@ -4302,6 +4302,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
               AutoSelect = False
               ItemHeight = 16
               ParentShowHint = False
+              Style = csDropDownList
               TabOrder = 0
             end
             object lblBOLBanco: TLabel

@@ -1691,6 +1691,7 @@ begin
          Prod.qTrib     := 1;
          Prod.vUnTrib   := 100;
 
+         Prod.vOutro    := 0;
          Prod.vFrete    := 0;
          Prod.vSeg      := 0;
          Prod.vDesc     := 0;

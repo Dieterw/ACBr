@@ -70,7 +70,7 @@
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="136"/>
+        <TopLine Value="229"/>
         <CursorPos X="45" Y="156"/>
         <UsageCount Value="27"/>
         <Loaded Value="True"/>
@@ -82,13 +82,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
         <UnitName Value="ACBrMonitorConsoleDM"/>
-        <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="33"/>
+        <TopLine Value="456"/>
         <CursorPos X="20" Y="45"/>
         <UsageCount Value="27"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
       </Unit1>
       <Unit2>
         <Filename Value="C:\lazarus\fpc\2.4.3\source\packages\fcl-base\src\custapp.pp"/>
@@ -200,8 +197,8 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="DoECFUnit"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="515"/>
-        <CursorPos X="73" Y="522"/>
+        <TopLine Value="862"/>
+        <CursorPos X="37" Y="887"/>
         <UsageCount Value="26"/>
       </Unit16>
       <Unit17>

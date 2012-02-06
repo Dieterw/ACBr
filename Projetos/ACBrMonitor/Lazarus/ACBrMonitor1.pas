@@ -41,7 +41,8 @@ uses
   CmdUnit, ACBrECF, ACBrDIS, ACBrGAV, ACBrDevice, ACBrCHQ, ACBrLCB, ACBrRFD, { Unit do ACBr }
   Dialogs, ExtCtrls, Menus, Buttons, StdCtrls, ComCtrls, Controls, Graphics,
   Spin, MaskEdit, EditBtn, ACBrBAL, ACBrETQ, ACBrSocket, ACBrCEP, ACBrIBGE,
-  blcksock, ACBrValidador, ACBrGIF, ACBrBoleto, ACBrBoletoFCLazReportDm;
+  blcksock, ACBrValidador, ACBrGIF, ACBrBoleto, ACBrBoletoFCLazReportDm,
+  ACBrEAD;
 
 const
   {$I versao.txt}
@@ -60,6 +61,7 @@ type
     ACBrBoleto1: TACBrBoleto;
     ACBrBoletoFCLazReport1 : TACBrBoletoFCLazReport ;
     ACBrCEP1 : TACBrCEP ;
+    ACBrEAD1: TACBrEAD;
     ACBrECF1: TACBrECF;
     ACBrGIF1 : TACBrGIF ;
     ACBrIBGE1 : TACBrIBGE ;
@@ -67,6 +69,9 @@ type
     ApplicationProperties1: TApplicationProperties;
     bCEPTestar : TButton ;
     bIBGETestar : TButton ;
+    bRFDKeyImportar: TButton;
+    bRFDRSAPrivada: TButton;
+    bRFDRSAPublica: TButton;
     cbCEPWebService : TComboBox ;
     cbxBOLUF: TComboBox;
     cbxBOLBanco: TComboBox;
@@ -96,6 +101,8 @@ type
     Label73: TLabel;
     Label74: TLabel;
     Label75: TLabel;
+    mRFDKey: TMemo;
+    Panel1: TPanel;
     seRFDGTCadastro : TFloatSpinEdit ;
     edTimeOutTCP : TEdit ;
     edtCodCliente: TEdit;
@@ -182,6 +189,7 @@ type
     pConfig: TPanel;
     PageControl1: TPageControl;
     TabSheet1: TTabSheet;
+    tsChaveRSA: TTabSheet;
     tsConsultas : TTabSheet ;
     tsACBrBoleto: TTabSheet;
     TabSheet2: TTabSheet;
@@ -336,10 +344,6 @@ type
     cbRFDModelo: TComboBox;
     ACBrRFD1: TACBrRFD;
     Label45: TLabel;
-    tsRFDRSA: TTabSheet;
-    mRFDKey: TMemo;
-    Panel1: TPanel;
-    bRFDKeyImportar: TButton;
     lRFDID: TLabel;
     lRFDMarca: TLabel;
     tsRFDUsuario: TTabSheet;
@@ -364,8 +368,6 @@ type
     meRFDHoraCadastro: TMaskEdit;
     cbSenha: TCheckBox;
     Label3: TLabel;
-    bRFDRSAPrivada: TButton;
-    bRFDRSAPublica: TButton;
     chRFDIgnoraMFD: TCheckBox;
     Label55: TLabel;
     edECFLog: TEdit;
@@ -409,6 +411,7 @@ type
     TimerTC: TTimer;
     sbCHQSerial: TSpeedButton;
     procedure ACBrCEP1AntesAbrirHTTP(var AURL : String) ;
+    procedure ACBrEAD1GetChavePrivada(var Chave: AnsiString);
     procedure ACBrGIF1Click(Sender : TObject) ;
     procedure ApplicationProperties1Exception(Sender: TObject; E: Exception);
     procedure ApplicationProperties1Minimize(Sender: TObject);
@@ -817,6 +820,11 @@ begin
   begin
     AURL := AURL + '&chave='+edCEPChaveBuscarCEP.Text;
   end ;
+end;
+
+procedure TFrmACBrMonitor.ACBrEAD1GetChavePrivada(var Chave: AnsiString);
+begin
+  Chave := LerChaveSWH;
 end;
 
 procedure TFrmACBrMonitor.ACBrGIF1Click(Sender : TObject) ;
@@ -2028,7 +2036,7 @@ begin
     if LerChaveSWH = '' then
     begin
       PageControl1.ActivePage := tsRFD;
-      pgConRFD.ActivePage := tsRFDRSA;
+      pgConRFD.ActivePage := tsChaveRSA;
 
       raise Exception.Create('Para trabalhar com RFD é necessário ' +
         'definir uma Chave Privada');
@@ -3165,7 +3173,6 @@ begin
 
   tsRFDUsuario.Enabled := ACBrECF1.Ativo and ACBrRFD1.Ativo;
   tsRFDSwH.Enabled := tsRFDUsuario.Enabled;
-  tsRFDRSA.Enabled := tsRFDUsuario.Enabled;
   tsRFDINI.Enabled := tsRFDUsuario.Enabled;
 
   lRFDID.Caption := ACBrRFD1.ECF_RFDID;

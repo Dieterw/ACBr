@@ -884,6 +884,12 @@ begin
            else
               EnviaComando(Cmd.Params(0))
 
+        else if Cmd.Metodo = 'assinaarquivo' then
+        begin
+           NomeArquivo := AjustaNomeArquivoCmd( Cmd, 0 ) ;
+           AssinaArquivoComEAD(Cmd.Params(0))
+        end
+
         ELSE
            raise Exception.Create('Comando inválido ('+Cmd.Comando+')') ;
 

@@ -297,6 +297,7 @@ begin
         NumeroSerie := lstECFsAutorizados.Items[ct].Caption;
         ValorGT     := StrToNumero(lstECFsAutorizados.Items[ct].SubItems[0]);
         CRO         := StrToInt(lstECFsAutorizados.Items[ct].SubItems[1]);
+        CNI         := StrToInt(lstECFsAutorizados.Items[ct].SubItems[2])
       end;
     end;
 

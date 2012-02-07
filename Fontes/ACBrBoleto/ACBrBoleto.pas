@@ -265,6 +265,7 @@ type
   TACBrBancoClass = class
   private
      function GetNumero: Integer;
+     procedure ErroAbstract( NomeProcedure : String ) ;
   protected
     fpDigito: Integer;
     fpNome:   String;
@@ -1670,14 +1671,14 @@ begin
   { Método implementado apenas para evitar Warnings de compilação (poderia ser abstrato)
     Você de fazer "override" desse método em todas as classes filhas de TACBrBancoClass }
   Result := '' ;
-  raise Exception.Create( ACBrStr('Geracao do arquivo Remessa em 400 colunas não implementada o banco '+ Nome+'.')) ;
+  ErroAbstract('GerarRemessa400');
 end;
 
 function TACBrBancoClass.GerarRegistroHeader240 ( NumeroRemessa: Integer
    ) : String;
 begin
   Result := '';
-  raise Exception.Create( ACBrStr('Geracao do arquivo Remessa em 240 colunas não implementada para o banco '+ Nome+'.')) ;
+  ErroAbstract('GerarRemessa240');
 end;
 
 function TACBrBancoClass.GerarRegistroTrailler400( ARemessa: TStringList): String;
@@ -1702,14 +1703,12 @@ end;
 
 Procedure TACBrBancoClass.LerRetorno400 ( ARetorno: TStringList );
 begin
-   raise Exception.Create( ACBrStr('Leitura do arquivo Retorno em 400 '+
-                           'colunas não implementada no banco '+ Nome+'.')) ;
+   ErroAbstract('LerRetorno400');
 end;
 
 Procedure TACBrBancoClass.LerRetorno240 ( ARetorno: TStringList );
 begin
-   raise Exception.Create( ACBrStr('Leitura do arquivo Retorno em 240 '+
-                           'colunas não implementada no banco '+ Nome+'.')) ;
+   ErroAbstract('LerRetorno240');
 end;
 
 function TACBrBancoClass.GerarRegistroTransacao400(  ACBrTitulo: TACBrTitulo): String;
@@ -1757,6 +1756,14 @@ end ;
  function TACBrBancoClass.GetNumero: Integer;
 begin
    Result:= ACBrBanco.Numero;
+end;
+
+procedure TACBrBancoClass.ErroAbstract(NomeProcedure: String);
+begin
+   raise Exception.Create(Format(ACBrStr('Função %s não implementada '+
+                                         ' para o banco %s') + sLineBreak +
+                                         ACBrStr('Ajude no desenvolvimento do ACBrECF. ')+ sLineBreak+
+                                         ACBrStr('Acesse nosso Forum em: http://acbr.sf.net/'),[NomeProcedure,Nome])) ;
 end;
 
 function TACBrBancoClass.CalcularFatorVencimento(const DataVencimento: TDatetime) : String;

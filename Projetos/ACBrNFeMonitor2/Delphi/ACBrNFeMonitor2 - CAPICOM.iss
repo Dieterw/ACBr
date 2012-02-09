@@ -50,6 +50,7 @@ Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:Ad
 
 [Files]
 Source: ACBrNFeMonitor.exe; DestDir: {app}; Flags: ignoreversion; Components: programa
+Source: banner_acbrmonitor.gif; DestDir: {app}; Flags: ignoreversion; Components: programa
 Source: leia-me.txt; DestDir: {app}; Flags: isreadme ignoreversion; Components: programa
 Source: LICENCA.TXT; DestDir: {app}; Flags: ignoreversion; Components: programa
 Source: LICENSE.TXT; DestDir: {app}; Flags: ignoreversion; Components: programa

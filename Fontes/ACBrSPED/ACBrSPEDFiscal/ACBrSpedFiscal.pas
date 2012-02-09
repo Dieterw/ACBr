@@ -69,6 +69,8 @@ type
     FInicializado : boolean;
     FOnError: TErrorEvent;
 
+    FOnRegistro0200: TEvent0200;
+
     FDT_INI: TDateTime;           /// Data inicial das informações contidas no arquivo
     FDT_FIN: TDateTime;           /// Data final das informações contidas no arquivo
 
@@ -107,6 +109,9 @@ type
 
     function GetOnError: TErrorEvent; /// Método do evento OnError
     procedure SetOnError(const Value: TErrorEvent); /// Método SetError
+
+    function GetOnRegistro0200: TEvent0200;
+    procedure SetOnRegistro0200(const Value: TEvent0200);
 
     procedure LimpaRegistros;
   protected
@@ -179,6 +184,7 @@ type
     property CurMascara: ansistring read GetCurMascara write SetCurMascara;
 
     property OnError: TErrorEvent read GetOnError write SetOnError;
+    property OnRegistro0200: TEvent0200 read GetOnRegistro0200 write SetOnRegistro0200;
   end;
 
 procedure Register;
@@ -229,6 +235,11 @@ begin
   FDelimitador := '|';
   FCurMascara := '#0.00';
   FTrimString := True;
+
+  // Seta os valores defaults para todos os cdaBlocos
+  SetDelimitador(FDelimitador);
+  SetCurMascara(FCurMascara);
+  SetTrimString(FTrimString);
 end;
 
 destructor TACBrSPEDFiscal.Destroy;
@@ -469,6 +480,11 @@ begin
   Result := FOnError;
 end;
 
+function TACBrSPEDFiscal.GetOnRegistro0200: TEvent0200;
+begin
+   Result := FOnRegistro0200;
+end;
+
 procedure TACBrSPEDFiscal.SetOnError(const Value: TErrorEvent);
 begin
   FOnError := Value;
@@ -481,6 +497,13 @@ begin
   FBloco_G.OnError := Value;
   FBloco_H.OnError := Value;
   FBloco_9.OnError := Value;
+end;
+
+procedure TACBrSPEDFiscal.SetOnRegistro0200(const Value: TEvent0200);
+begin
+  FOnRegistro0200 := Value;
+
+  FBloco_0.OnRegistro0200 := Value;
 end;
 
 procedure TACBrSPEDFiscal.SaveFileTXT;

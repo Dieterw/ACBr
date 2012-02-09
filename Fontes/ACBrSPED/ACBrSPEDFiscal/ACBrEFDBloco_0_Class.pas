@@ -48,12 +48,15 @@ uses SysUtils, Classes, DateUtils, ACBrSped, ACBrEFDBloco_0, ACBrEFDBlocos,
      ACBrTXTClass;
 
 type
+  TEvent0200 = procedure(var ALinha: AnsiString) of object;
   /// TBLOCO_0 - Abertura, Identificação e Referências
 
   { TBloco_0 }
 
   TBloco_0 = class(TACBrSPED)
   private
+    FOnRegistro0200: TEvent0200;
+
     FRegistro0000: TRegistro0000;      /// BLOCO 0 - Registro0000
     FRegistro0001: TRegistro0001;      /// BLOCO 0 - Registro0001
     FRegistro0990: TRegistro0990;      /// BLOCO 0 - Registro0990
@@ -95,6 +98,8 @@ type
 
     procedure CriaRegistros;
     procedure LiberaRegistros;
+    function GetOnRegistro0200: TEvent0200;
+    procedure SetOnRegistro0200(const Value: TEvent0200);
   public
     constructor Create;           /// Create
     destructor Destroy; override; /// Destroy
@@ -144,6 +149,8 @@ type
     property Registro0460Count: Integer read FRegistro0460Count write FRegistro0460Count;
     property Registro0500Count: Integer read FRegistro0500Count write FRegistro0500Count;
     property Registro0600Count: Integer read FRegistro0600Count write FRegistro0600Count;
+
+    property OnRegistro0200: TEvent0200 read GetOnRegistro0200 write SetOnRegistro0200;
   end;
 
 implementation
@@ -162,6 +169,11 @@ destructor TBloco_0.Destroy;
 begin
   LiberaRegistros;
   inherited;
+end;
+
+function TBloco_0.GetOnRegistro0200: TEvent0200;
+begin
+   Result := FOnRegistro0200;
 end;
 
 procedure TBloco_0.CriaRegistros;
@@ -224,7 +236,7 @@ end;
 
 function TBloco_0.Registro0015New: TRegistro0015;
 begin
-   Result := FRegistro0001.Registro0015.New;
+   Result := FRegistro0001.Registro0015.New(FRegistro0001);
 end;
 
 function TBloco_0.Registro0100New: TRegistro0100;
@@ -234,42 +246,74 @@ end;
 
 function TBloco_0.Registro0150New: TRegistro0150;
 begin
-   Result := FRegistro0001.Registro0150.New;
+   Result := FRegistro0001.Registro0150.New(FRegistro0001);
 end;
 
 function TBloco_0.Registro0175New: TRegistro0175;
+var
+U0150: TRegistro0150;
+U0150Count: Integer;
 begin
-   Result := FRegistro0001.Registro0150.Items[FRegistro0001.Registro0150.Count -1].Registro0175.New;
+   U0150Count := FRegistro0001.Registro0150.Count -1;
+   if U0150Count = -1 then
+      raise Exception.Create('O registro 0175 deve ser filho do registro 0150, e não existe nenhum 0150 pai!');
+
+   U0150 := FRegistro0001.Registro0150.Items[U0150Count];
+   Result  := U0150.Registro0175.New(U0150);
 end;
 
 function TBloco_0.Registro0190New: TRegistro0190;
 begin
-   Result := FRegistro0001.Registro0190.New;
+   Result := FRegistro0001.Registro0190.New(FRegistro0001);
 end;
 
 function TBloco_0.Registro0200New: TRegistro0200;
 begin
-   Result := FRegistro0001.Registro0200.New;
+   Result := FRegistro0001.Registro0200.New(FRegistro0001);
 end;
 
 function TBloco_0.Registro0205New: TRegistro0205;
+var
+U0200: TRegistro0200;
+U0200Count: Integer;
 begin
-   Result := FRegistro0001.Registro0200.Items[FRegistro0001.Registro0200.Count -1].Registro0205.New;
+   U0200Count := FRegistro0001.Registro0200.Count -1;
+   if U0200Count = -1 then
+      raise Exception.Create('O registro 0205 deve ser filho do registro 0200, e não existe nenhum 0200 pai!');
+
+   U0200 := FRegistro0001.Registro0200.Items[U0200Count];
+   Result  := U0200.Registro0205.New(U0200);
 end;
 
 function TBloco_0.Registro0206New: TRegistro0206;
+var
+U0200: TRegistro0200;
+U0200Count: Integer;
 begin
-   Result := FRegistro0001.Registro0200.Items[FRegistro0001.Registro0200.Count -1].Registro0206.New;
+   U0200Count := FRegistro0001.Registro0200.Count -1;
+   if U0200Count = -1 then
+      raise Exception.Create('O registro 0206 deve ser filho do registro 0200, e não existe nenhum 0200 pai!');
+
+   U0200 := FRegistro0001.Registro0200.Items[U0200Count];
+   Result  := U0200.Registro0206.New(U0200);
 end;
 
 function TBloco_0.Registro0220New: TRegistro0220;
+var
+U0200: TRegistro0200;
+U0200Count: Integer;
 begin
-   Result := FRegistro0001.Registro0200.Items[FRegistro0001.Registro0200.Count -1].Registro0220.New;
+   U0200Count := FRegistro0001.Registro0200.Count -1;
+   if U0200Count = -1 then
+      raise Exception.Create('O registro 0220 deve ser filho do registro 0200, e não existe nenhum 0200 pai!');
+
+   U0200 := FRegistro0001.Registro0200.Items[U0200Count];
+   Result  := U0200.Registro0220.New(U0200);
 end;
 
 function TBloco_0.Registro0300New: TRegistro0300;
 begin
-   Result := FRegistro0001.Registro0300.New;
+   Result := FRegistro0001.Registro0300.New(FRegistro0001);
 end;
 
 function TBloco_0.Registro0305New: TRegistro0305;
@@ -279,27 +323,32 @@ end;
 
 function TBloco_0.Registro0400New: TRegistro0400;
 begin
-   Result := FRegistro0001.Registro0400.New;
+   Result := FRegistro0001.Registro0400.New(FRegistro0001);
 end;
 
 function TBloco_0.Registro0450New: TRegistro0450;
 begin
-   Result := FRegistro0001.Registro0450.New;
+   Result := FRegistro0001.Registro0450.New(FRegistro0001);
 end;
 
 function TBloco_0.Registro0460New: TRegistro0460;
 begin
-   Result := FRegistro0001.Registro0460.New;
+   Result := FRegistro0001.Registro0460.New(FRegistro0001);
 end;
 
 function TBloco_0.Registro0500New: TRegistro0500;
 begin
-   Result := FRegistro0001.Registro0500.New;
+   Result := FRegistro0001.Registro0500.New(FRegistro0001);
 end;
 
 function TBloco_0.Registro0600New: TRegistro0600;
 begin
-   Result := FRegistro0001.Registro0600.New;
+   Result := FRegistro0001.Registro0600.New(FRegistro0001);
+end;
+
+procedure TBloco_0.SetOnRegistro0200(const Value: TEvent0200);
+begin
+   FOnRegistro0200 := Value;
 end;
 
 procedure TBloco_0.WriteRegistro0000 ;
@@ -557,9 +606,11 @@ procedure TBloco_0.WriteRegistro0200(Reg0001: TRegistro0001) ;
 var
   intFor: integer;
   strTIPO_ITEM: AnsiString;
+  strLinha: AnsiString;
 begin
   if Assigned( Reg0001.Registro0200 ) then
   begin
+     strLinha := '';
      for intFor := 0 to Reg0001.Registro0200.Count - 1 do
      begin
         with Reg0001.Registro0200.Items[intFor] do
@@ -584,19 +635,25 @@ begin
             Check(funChecaGENERO(COD_GEN), '(0-0200) O código do gênero "%s" digitado é inválido! ' +
               'Produto %s %s', [COD_GEN, COD_BARRA, DESCR_ITEM]);
           end;
-          ///
-          Add( LFill('0200') +
-               LFill( COD_ITEM ) +
-               LFill( DESCR_ITEM ) +
-               LFill( COD_BARRA ) +
-               LFill( COD_ANT_ITEM ) +
-               LFill( UNID_INV ) +
-               LFill( strTIPO_ITEM ) +
-               LFill( COD_NCM ) +
-               LFill( EX_IPI ) +
-               LFill( COD_GEN, 2 ) +
-               LFill( COD_LST ) +
-               LFill( ALIQ_ICMS,0,2 ) ) ;
+          //
+          strLinha := strLinha +
+                      LFill('0200') +
+                      LFill( COD_ITEM ) +
+                      LFill( DESCR_ITEM ) +
+                      LFill( COD_BARRA ) +
+                      LFill( COD_ANT_ITEM ) +
+                      LFill( UNID_INV ) +
+                      LFill( strTIPO_ITEM ) +
+                      LFill( COD_NCM ) +
+                      LFill( EX_IPI ) +
+                      LFill( COD_GEN, 2 ) +
+                      LFill( COD_LST ) +
+                      LFill( ALIQ_ICMS,0,2 ) ;
+
+          if Assigned(FOnRegistro0200) then
+             FOnRegistro0200(strLinha);
+
+          Add( strLinha );
         end;
         /// Registros FILHOS
         WriteRegistro0205( Reg0001.Registro0200.Items[intFor] ) ;

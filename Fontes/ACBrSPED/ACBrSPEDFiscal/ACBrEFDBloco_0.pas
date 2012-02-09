@@ -178,7 +178,7 @@ type
     function GetItem(Index: Integer): TRegistro0015;
     procedure SetItem(Index: Integer; const Value: TRegistro0015);
   public
-    function New: TRegistro0015;
+    function New(AOwner: TRegistro0001): TRegistro0015;
     property Items[Index: Integer]: TRegistro0015 read GetItem write SetItem;
   end;
 
@@ -260,7 +260,7 @@ type
     function GetItem(Index: Integer): TRegistro0150;
     procedure SetItem(Index: Integer; const Value: TRegistro0150);
   public
-    function New: TRegistro0150;
+    function New(AOwner: TRegistro0001): TRegistro0150;
     function LocalizaRegistro(pCOD_PART: String): boolean;
     property Items[Index: Integer]: TRegistro0150 read GetItem write SetItem;
   end;
@@ -285,7 +285,7 @@ type
     function GetItem(Index: Integer): TRegistro0175;
     procedure SetItem(Index: Integer; const Value: TRegistro0175);
   public
-    function New: TRegistro0175;
+    function New(AOwner: TRegistro0150): TRegistro0175;
     property Items[Index: Integer]: TRegistro0175 read GetItem write SetItem;
   end;
 
@@ -307,7 +307,7 @@ type
     function GetItem(Index: Integer): TRegistro0190;
     procedure SetItem(Index: Integer; const Value: TRegistro0190);
   public
-    function New: TRegistro0190;
+    function New(AOwner: TRegistro0001): TRegistro0190;
     function LocalizaRegistro(pUNID: String): boolean;
     property Items[Index: Integer]: TRegistro0190 read GetItem write SetItem;
   end;
@@ -359,7 +359,7 @@ type
     function GetItem(Index: Integer): TRegistro0200;
     procedure SetItem(Index: Integer; const Value: TRegistro0200);
   public
-    function New: TRegistro0200;
+    function New(AOwner: TRegistro0001): TRegistro0200;
     function LocalizaRegistro(pCOD_ITEM: String): boolean;
     property Items[Index: Integer]: TRegistro0200 read GetItem write SetItem;
   end;
@@ -386,7 +386,7 @@ type
     function GetItem(Index: Integer): TRegistro0205;
     procedure SetItem(Index: Integer; const Value: TRegistro0205);
   public
-    function New: TRegistro0205;
+    function New(AOwner: TRegistro0200): TRegistro0205;
     property Items[Index: Integer]: TRegistro0205 read GetItem write SetItem;
   end;
 
@@ -406,7 +406,7 @@ type
     function GetItem(Index: Integer): TRegistro0206;
     procedure SetItem(Index: Integer; const Value: TRegistro0206);
   public
-    function New: TRegistro0206;
+    function New(AOwner: TRegistro0200): TRegistro0206;
     property Items[Index: Integer]: TRegistro0206 read GetItem write SetItem;
   end;
 
@@ -415,7 +415,7 @@ type
   TRegistro0220 = class
   private
     fUNID_CONV: String;  /// Unidade comercial a ser convertida na unidade de estoque, referida em 0200:
-    fFAT_CONV: Double;       /// Fator de conversão:
+    fFAT_CONV: Double;   /// Fator de conversão:
   public
     property UNID_CONV: String read FUNID_CONV write FUNID_CONV;
     property FAT_CONV: Double read FFAT_CONV write FFAT_CONV;
@@ -428,7 +428,7 @@ type
     function GetItem(Index: Integer): TRegistro0220;
     procedure SetItem(Index: Integer; const Value: TRegistro0220);
   public
-    function New: TRegistro0220;
+    function New(AOwner: TRegistro0200): TRegistro0220;
     property Items[Index: Integer]: TRegistro0220 read GetItem write SetItem;
   end;
 
@@ -465,7 +465,7 @@ type
     function GetItem(Index: Integer): TRegistro0300;
     procedure SetItem(Index: Integer; const Value: TRegistro0300);
   public
-    function New: TRegistro0300;
+    function New(AOwner: TRegistro0001): TRegistro0300;
     function LocalizaRegistro(pCOD_IND_BEM: String): boolean;
     property Items[Index: Integer]: TRegistro0300 read GetItem write SetItem;
   end;
@@ -500,7 +500,7 @@ type
     function GetItem(Index: Integer): TRegistro0400;
     procedure SetItem(Index: Integer; const Value: TRegistro0400);
   public
-    function New: TRegistro0400;
+    function New(AOwner: TRegistro0001): TRegistro0400;
     function LocalizaRegistro(pCOD_NAT: String): boolean;
     property Items[Index: Integer]: TRegistro0400 read GetItem write SetItem;
   end;
@@ -523,7 +523,7 @@ type
     function GetItem(Index: Integer): TRegistro0450;
     procedure SetItem(Index: Integer; const Value: TRegistro0450);
   public
-    function New: TRegistro0450;
+    function New(AOwner: TRegistro0001): TRegistro0450;
     property Items[Index: Integer]: TRegistro0450 read GetItem write SetItem;
   end;
 
@@ -545,7 +545,7 @@ type
     function GetItem(Index: Integer): TRegistro0460;
     procedure SetItem(Index: Integer; const Value: TRegistro0460);
   public
-    function New: TRegistro0460;
+    function New(AOwner: TRegistro0001): TRegistro0460;
     property Items[Index: Integer]: TRegistro0460 read GetItem write SetItem;
   end;
 
@@ -573,7 +573,7 @@ type
     function GetItem(Index: Integer): TRegistro0500;
     procedure SetItem(Index: Integer; const Value: TRegistro0500);
   public
-    function New: TRegistro0500;
+    function New(AOwner: TRegistro0001): TRegistro0500;
     property Items[Index: Integer]: TRegistro0500 read GetItem write SetItem;
   end;
 
@@ -595,7 +595,7 @@ type
     function GetItem(Index: Integer): TRegistro0600;
     procedure SetItem(Index: Integer; const Value: TRegistro0600);
   public
-    function New: TRegistro0600;
+    function New(AOwner: TRegistro0001): TRegistro0600;
     property Items[Index: Integer]: TRegistro0600 read GetItem write SetItem;
   end;
 
@@ -654,8 +654,11 @@ begin
   Result := TRegistro0015(Inherited Items[Index]);
 end;
 
-function TRegistro0015List.New: TRegistro0015;
+function TRegistro0015List.New(AOwner: TRegistro0001): TRegistro0015;
 begin
+  if not (AOwner is TRegistro0001) then
+     raise Exception.Create('O registro pai recebido não é o registro 0001!');
+
   Result := TRegistro0015.Create;
   Add(Result);
 end;
@@ -687,8 +690,11 @@ begin
    end;
 end;
 
-function TRegistro0150List.New: TRegistro0150;
+function TRegistro0150List.New(AOwner: TRegistro0001): TRegistro0150;
 begin
+  if not (AOwner is TRegistro0001) then
+     raise Exception.Create('O registro pai recebido não é o registro 0001!');
+
   Result := TRegistro0150.Create;
   Add(Result);
 end;
@@ -705,8 +711,11 @@ begin
   Result := TRegistro0175(Inherited Items[Index]);
 end;
 
-function TRegistro0175List.New: TRegistro0175;
+function TRegistro0175List.New(AOwner: TRegistro0150): TRegistro0175;
 begin
+  if not (AOwner is TRegistro0150) then
+     raise Exception.Create('O registro pai recebido não é o registro 0150!');
+
   Result := TRegistro0175.Create;
   Add(Result);
 end;
@@ -738,8 +747,11 @@ begin
    end;
 end;
 
-function TRegistro0190List.New: TRegistro0190;
+function TRegistro0190List.New(AOwner: TRegistro0001): TRegistro0190;
 begin
+  if not (AOwner is TRegistro0001) then
+     raise Exception.Create('O registro pai recebido não é o registro 0001!');
+
   Result := TRegistro0190.Create;
   Add(Result);
 end;
@@ -771,8 +783,11 @@ begin
    end;
 end;
 
-function TRegistro0200List.New: TRegistro0200;
+function TRegistro0200List.New(AOwner: TRegistro0001): TRegistro0200;
 begin
+  if not (AOwner is TRegistro0001) then
+     raise Exception.Create('O registro pai recebido não é o registro 0001!');
+
   Result := TRegistro0200.Create;
   Add(Result);
 end;
@@ -789,8 +804,11 @@ begin
   Result := TRegistro0205(Inherited Items[Index]);
 end;
 
-function TRegistro0205List.New: TRegistro0205;
+function TRegistro0205List.New(AOwner: TRegistro0200): TRegistro0205;
 begin
+  if not (AOwner is TRegistro0200) then
+     raise Exception.Create('O registro pai recebido não é o registro 0200!');
+
   Result := TRegistro0205.Create;
   Add(Result);
 end;
@@ -807,8 +825,11 @@ begin
   Result := TRegistro0206(Inherited Items[Index]);
 end;
 
-function TRegistro0206List.New: TRegistro0206;
+function TRegistro0206List.New(AOwner: TRegistro0200): TRegistro0206;
 begin
+  if not (AOwner is TRegistro0200) then
+     raise Exception.Create('O registro pai recebido não é o registro 0200!');
+
   Result := TRegistro0206.Create;
   Add(Result);
 end;
@@ -825,8 +846,11 @@ begin
   Result := TRegistro0220(Inherited Items[Index]);
 end;
 
-function TRegistro0220List.New: TRegistro0220;
+function TRegistro0220List.New(AOwner: TRegistro0200): TRegistro0220;
 begin
+  if not (AOwner is TRegistro0200) then
+     raise Exception.Create('O registro pai recebido não é o registro 0200!');
+
   Result := TRegistro0220.Create;
   Add(Result);
 end;
@@ -858,8 +882,11 @@ begin
    end;
 end;
 
-function TRegistro0400List.New: TRegistro0400;
+function TRegistro0400List.New(AOwner: TRegistro0001): TRegistro0400;
 begin
+  if not (AOwner is TRegistro0001) then
+     raise Exception.Create('O registro pai recebido não é o registro 0001!');
+
   Result := TRegistro0400.Create;
   Add(Result);
 end;
@@ -876,8 +903,11 @@ begin
   Result := TRegistro0450(Inherited Items[Index]);
 end;
 
-function TRegistro0450List.New: TRegistro0450;
+function TRegistro0450List.New(AOwner: TRegistro0001): TRegistro0450;
 begin
+  if not (AOwner is TRegistro0001) then
+     raise Exception.Create('O registro pai recebido não é o registro 0001!');
+
   Result := TRegistro0450.Create;
   Add(Result);
 end;
@@ -894,8 +924,11 @@ begin
   Result := TRegistro0460(inherited Items[Index]);
 end;
 
-function TRegistro0460List.New: TRegistro0460;
+function TRegistro0460List.New(AOwner: TRegistro0001): TRegistro0460;
 begin
+  if not (AOwner is TRegistro0001) then
+     raise Exception.Create('O registro pai recebido não é o registro 0001!');
+
   Result := TRegistro0460.Create;
   Add(Result);
 end;
@@ -970,8 +1003,11 @@ begin
    end;
 end;
 
-function TRegistro0300List.New: TRegistro0300;
+function TRegistro0300List.New(AOwner: TRegistro0001): TRegistro0300;
 begin
+  if not (AOwner is TRegistro0001) then
+     raise Exception.Create('O registro pai recebido não é o registro 0001!');
+
   Result := TRegistro0300.Create;
   Add(Result);
 end;
@@ -988,8 +1024,11 @@ begin
   Result := TRegistro0500(inherited Items[Index]);
 end;
 
-function TRegistro0500List.New: TRegistro0500;
+function TRegistro0500List.New(AOwner: TRegistro0001): TRegistro0500;
 begin
+  if not (AOwner is TRegistro0001) then
+     raise Exception.Create('O registro pai recebido não é o registro 0001!');
+
   Result := TRegistro0500.Create;
   Add(Result);
 end;
@@ -1006,8 +1045,11 @@ begin
   Result := TRegistro0600(inherited Items[Index]);
 end;
 
-function TRegistro0600List.New: TRegistro0600;
+function TRegistro0600List.New(AOwner: TRegistro0001): TRegistro0600;
 begin
+  if not (AOwner is TRegistro0001) then
+     raise Exception.Create('O registro pai recebido não é o registro 0001!');
+
   Result := TRegistro0600.Create;
   Add(Result);
 end;

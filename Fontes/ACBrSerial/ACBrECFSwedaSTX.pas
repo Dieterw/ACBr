@@ -2012,7 +2012,7 @@ begin
    OldShortDateFormat := ShortDateFormat ;
    try
       sData := Copy(RetCmd,22,10);
-      ShortDateFormat := 'dd/mm/yy' ;
+      ShortDateFormat := 'dd/mm/yyyy' ;
       Result := StrToDate(sData);
    finally
       ShortDateFormat := OldShortDateFormat ;
@@ -2281,7 +2281,7 @@ begin
    RetCMD := Copy(RetCMD,17,length(RetCMD));
 
    Result := '[ECF]'+sLineBreak;
-   Result := Result + 'DataMovimento = '+Copy(RetCMD,199,11) +sLineBreak ;
+   Result := Result + 'DataMovimento = '+Copy(RetCMD,199,10) +sLineBreak ;
    Result := Result + 'NumSerie = ' + Copy(RetCMD,51,22) + sLineBreak;
    Result := Result + 'NumLoja = '+ NumLoja +sLineBreak;
    Result := Result + 'NumECF = '+ Copy(RetCMD,73,3) + sLineBreak;

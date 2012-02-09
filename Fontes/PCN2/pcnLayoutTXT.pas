@@ -163,6 +163,11 @@ begin
     LoadLayout('<B01>     B|cUF¨|cNF¨|NatOp¨|indPag¨|mod¨|serie¨|nNF¨|dEmi¨|dSaiEnt¨|hSaiEnt¨|tpNF¨|cMunFG¨|TpImp¨|TpEmis¨|CDV¨|TpAmb¨|FinNFe¨|ProcEmi¨|VerProc¨|dhCont¨|xJust¨'); //ok
     LoadLayout('<B12a>  B13|refNFe¨'); //ok
     LoadLayout('<B14>   B14|cUF¨|AAMM¨|CNPJ¨|Mod¨|serie¨|nNF¨'); //ok
+    LoadLayout('<B20a> B20a|cUF¨|AAMM¨|IE¨|Mod¨|serie¨|nNF¨'); //
+    LoadLayout('<B20d> B20d|CNPJ¨'); //
+    LoadLayout('<B20e> B20e|CPF¨'); //
+    LoadLayout('<B20i> B20e|refCTe¨'); //
+    LoadLayout('<B20j> B20e|mod¨|nECF¨|nCOO¨'); //
     LoadLayout('<C01>     C|XNome¨|XFant¨|IE¨|IEST¨|IM¨|CNAE¨|CRT¨'); //ok
     LoadLayout('<C01>   C02|CNPJ¨'); //ok
     LoadLayout('<C01>  C02a|CPF¨'); //ok

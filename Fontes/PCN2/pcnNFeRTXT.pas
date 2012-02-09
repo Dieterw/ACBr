@@ -273,6 +273,47 @@ begin
     (*B20*)NFe.Ide.NFref[i].RefNF.nNF := LerCampo(tcInt, 'nNF');
   end;
 
+  if ID = 'B20A' then (* Grupo da TAG <ide><NFref><refNFP> **********************)
+  begin
+    NFe.Ide.NFref.Add;
+    i := NFe.ide.NFref.Count - 1;
+    (*B20b*)NFe.Ide.NFref[i].refNFP.cUF := LerCampo(tcInt, 'cUF');
+    (*B20c*)NFe.Ide.NFref[i].refNFP.AAMM := LerCampo(tcEsp, 'AAMM');
+    (*B20f*)NFe.Ide.NFref[i].refNFP.IE := LerCampo(tcStr, 'IE');
+    (*B20f*)NFe.Ide.NFref[i].refNFP.modelo := LerCampo(tcStr, 'mod');
+    (*B20g*)NFe.ide.NFref[i].refNFP.serie := LerCampo(tcInt, 'serie');
+    (*B20h*)NFe.Ide.NFref[i].refNFP.nNF := LerCampo(tcInt, 'nNF');
+  end;
+
+  if (ID = 'B20D') and  (NFe.ide.NFref.Count > 0) then
+   begin
+     i := NFe.ide.NFref.Count - 1;
+    (*B20d*)NFe.Ide.NFref[i].refNFP.CNPJCPF := LerCampo(tcEsp, 'CNPJ');
+   end;
+
+  if (ID = 'B20E') and  (NFe.ide.NFref.Count > 0) then
+   begin
+     i := NFe.ide.NFref.Count - 1;
+    (*B20e*)NFe.Ide.NFref[i].refNFP.CNPJCPF := LerCampo(tcEsp, 'CPF');
+   end;
+
+  (* Grupo da TAG <ide><NFref><refCTe> ****************************************)
+  if ID = 'B20I' then
+  begin
+    NFe.Ide.NFref.Add;
+    i := NFe.ide.NFref.Count - 1;
+    (*B13*)NFe.ide.NFref[i].refCTe := LerCampo(tcEsp, 'refCTe');
+  end;
+
+  if ID = 'B20J' then (* Grupo da TAG <ide><NFref><refECF> **********************)
+  begin
+    NFe.Ide.NFref.Add;
+    i := NFe.ide.NFref.Count - 1;
+    (*B20k*)NFe.Ide.NFref[i].RefECF.modelo := StrToECFModRef(ok, LerCampo(tcStr, 'mod'));
+    (*B20i*)NFe.Ide.NFref[i].RefECF.nECF := LerCampo(tcStr, 'nECF');
+    (*B20m*)NFe.Ide.NFref[i].RefECF.nCOO := LerCampo(tcStr, 'nCOO');
+  end;
+
   if ID = 'C' then (* Grupo da TAG <emit> *************************************)
   begin
     (*C  *)NFe.Emit.xNome := LerCampo(tcStr, 'xNome');

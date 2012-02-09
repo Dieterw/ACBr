@@ -3977,6 +3977,15 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
         C1C2}
       OnClick = Image1Click
     end
+    object ACBrGIF1: TACBrGIF
+      Left = 1
+      Top = 1
+      Width = 284
+      Height = 38
+      Cursor = crHandPoint
+      Transparent = True
+      OnClick = ACBrGIF1Click
+    end
     object btCancelar: TBitBtn
       Left = 362
       Top = 3

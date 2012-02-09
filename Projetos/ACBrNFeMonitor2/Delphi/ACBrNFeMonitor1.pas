@@ -41,7 +41,7 @@ uses IniFiles, CmdUnitNFe, FileCtrl, Printers,
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ComCtrls, ExtCtrls, Buttons, Spin, Menus, ImgList,
   ACBrNFe, ACBrNFeDANFEClass, ACBrNFeDANFERave, pcnConversao, OleCtrls,
-  SHDocVw, ACBrNFeUtil, ACBrNFeDANFERaveCB;
+  SHDocVw, ACBrNFeUtil, ACBrNFeDANFERaveCB, ACBrGIF;
 
 const
    BufferMemoResposta = 10000 ;              { Maximo de Linhas no MemoResposta }
@@ -246,6 +246,7 @@ type
     rgCasasDecimaisQtd: TRadioGroup;
     spedtDecimaisVUnit: TSpinEdit;
     Label45: TLabel;
+    ACBrGIF1: TACBrGIF;
     procedure DoACBrTimer(Sender: TObject);
     procedure edOnlyNumbers(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
@@ -290,6 +291,7 @@ type
     procedure Image1Click(Sender: TObject);
     procedure btnDoarClick(Sender: TObject);
     procedure cbxSalvarArqsClick(Sender: TObject);
+    procedure ACBrGIF1Click(Sender: TObject);
   private
     { Private declarations }
     ACBrNFeMonitorINI : string;
@@ -1147,6 +1149,16 @@ begin
   mResp.Clear ;
   mCmd.Clear ;
   PageControl1.ActivePage := Monitor;
+
+  if FileExists( PathWithDelim(ExtractFilePath(Application.ExeName)) + 'banner_acbrmonitor.gif' ) then
+   begin
+     ACBrGIF1.LoadFromFile( PathWithDelim(ExtractFilePath(Application.ExeName)) + 'banner_acbrmonitor.gif' );
+     ACBrGIF1.Transparent := True;
+     ACBrGIF1.Start;
+   end
+  else
+     ACBrGIF1.Visible := False;
+
   Cmd       := TACBrNFeCmd.Create ;
 
   Inicio    := true ;
@@ -1180,7 +1192,6 @@ begin
   Application.HintHidePause      := 5000 ;
 
   Timer1.Enabled := True ;
-
 end;
 
 procedure TfrmAcbrNfeMonitor.Restaurar1Click(Sender: TObject);
@@ -1684,6 +1695,11 @@ end;
 procedure TfrmAcbrNfeMonitor.cbxSalvarArqsClick(Sender: TObject);
 begin
 VerificaDiretorios;
+end;
+
+procedure TfrmAcbrNfeMonitor.ACBrGIF1Click(Sender: TObject);
+begin
+   OpenURL('http://www.djsystem.com.br/acbr/sac/')
 end;
 
 end.

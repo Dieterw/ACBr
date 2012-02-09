@@ -882,7 +882,7 @@ begin
     LayNfeConsulta      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.sefazvirtual.fazenda.gov.br/nfeconsulta2/nfeconsulta2.asmx', 'https://hom.sefazvirtual.fazenda.gov.br/NfeConsulta2/NfeConsulta2.asmx');
     LayNfeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.sefazvirtual.fazenda.gov.br/NFeStatusServico2/NFeStatusServico2.asmx', 'https://hom.sefazvirtual.fazenda.gov.br/NfeStatusServico2/NfeStatusServico2.asmx');
 //    LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, '', '');
-    LayNFeCCe           : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://sefazvirtual.fazenda.gov.br/RecepcaoEvento/RecepcaoEvento.asmx', 'https://hom.sefazvirtual.fazenda.gov.br/RecepcaoEvento/RecepcaoEvento.asmx');
+    LayNFeCCe           : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.sefazvirtual.fazenda.gov.br/RecepcaoEvento/RecepcaoEvento.asmx', 'https://hom.sefazvirtual.fazenda.gov.br/RecepcaoEvento/RecepcaoEvento.asmx');
   end;
 end;
 

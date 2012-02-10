@@ -153,7 +153,8 @@ type
     // Incluido por Italo em 28/01/2011
     class function GerarChaveContingencia(FCTe:TCTe): String;
     class function FormatarChaveContingencia(AValue: String): String;
-
+    // Incluido por Italo em 10/02/2012
+    class function ValidaAssinatura(const AXML: AnsiString;  var AMsg: AnsiString): Boolean;
 
 {$IFDEF ACBrCTeOpenSSL}
     class function Assinar(const AXML, ArqPFX, PFXSenha: AnsiString; out AXMLAssinado, FMensagem: AnsiString): Boolean;
@@ -1041,6 +1042,53 @@ begin
   ParseError          := nil;
   Schema              := nil;
 end;
+
+function ValidaAssinaturaMSXML(XML: AnsiString; out Msg: AnsiString): Boolean;
+var
+  xmldoc  : IXMLDOMDocument3;
+  xmldsig : IXMLDigitalSignature;
+
+  pKeyInfo : IXMLDOMNode;
+  pKey, pKeyOut : IXMLDSigKey;
+
+begin
+  xmldoc := CoDOMDocument50.Create;
+  xmldsig := CoMXDigitalSignature50.Create;
+
+  xmldoc.async              := False;
+  xmldoc.validateOnParse    := False;
+  xmldoc.preserveWhiteSpace := True;
+
+   if (not xmldoc.loadXML(XML) ) then
+      raise Exception.Create('Não foi possível carregar o arquivo: '+XML);
+  try
+    xmldoc.setProperty('SelectionNamespaces', DSIGNS);
+    xmldsig.signature := xmldoc.selectSingleNode('.//ds:Signature');
+
+   if (xmldsig.signature = nil ) then
+      raise Exception.Create('Não foi possível carregar o ler a assinatura: '+XML);
+
+    pKeyInfo := xmldoc.selectSingleNode('.//ds:KeyInfo/ds:X509Data');
+
+    pKey := xmldsig.createKeyFromNode(pKeyInfo);
+
+    try
+      pKeyOut := xmldsig.verify(pKey);
+    except
+       on E: Exception do
+          Msg := 'Erro ao verificar assinatura do arquivo: '+ E.Message;
+    end;
+  finally
+    Result := (pKeyOut <> nil );
+
+    pKeyOut := nil;
+    pKey := nil;
+    pKeyInfo := nil;
+    xmldsig := nil;
+    xmldoc := nil;
+  end;
+end;
+
 {$ENDIF}
 
 class function CTeUtil.Valida(const AXML: AnsiString;
@@ -1050,6 +1098,16 @@ begin
   Result := ValidaLibXML(AXML, AMsg, APathSchemas);
 {$ELSE}
   Result := ValidaMSXML(AXML, AMsg, APathSchemas);
+{$ENDIF}
+end;
+
+class function CTeUtil.ValidaAssinatura(const AXML: AnsiString;
+  var AMsg: AnsiString): Boolean;
+begin
+{$IFDEF ACBrCTeOpenSSL}
+  Result := False;
+{$ELSE}
+  Result := ValidaAssinaturaMSXML(AXML,AMsg);
 {$ENDIF}
 end;
 

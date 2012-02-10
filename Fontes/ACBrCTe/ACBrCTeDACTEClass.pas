@@ -93,7 +93,7 @@ type
     property Logo: String read FLogo write FLogo ;
     property Sistema: String read FSistema write FSistema ;
     property Usuario: String read FUsuario write FUsuario ;
-    property PathPDF: String read FPathArquivos write FPathArquivos ;
+    property PathPDF: String read GetPathArquivos write FPathArquivos ;
     property Impressora: String read FImpressora write FImpressora ;
     property ImprimirHoraSaida: Boolean read FImprimirHoraSaida write FImprimirHoraSaida ;
     property ImprimirHoraSaida_Hora: string read FImprimirHoraSaida_Hora write FImprimirHoraSaida_Hora ;

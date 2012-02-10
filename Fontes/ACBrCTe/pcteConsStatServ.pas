@@ -107,7 +107,7 @@ end;
 
 function TConsStatServ.GerarXML: boolean;
 begin
-  Result := False;
+//  Result := False;
 //  if retornarVersaoLayout(Fschema, tlConsStatServCTe) = '1.03' then
 //  begin
     Gerador.ArquivoFormatoXML := '';

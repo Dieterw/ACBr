@@ -113,7 +113,7 @@ end;
 
 function TinutCTe.GerarXML: boolean;
 begin
-  Result := False;
+//  Result := False;
 //  if RetornarVersaoLayout(FSchema, tlInutCTe) = '1.03' then
 //  begin
 

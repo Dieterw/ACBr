@@ -2080,6 +2080,10 @@ begin
      ReqResp.UseUTF8InHeader := True;
      ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/cte/wsdl/CteInutilizacao/cteInutilizacaoCT';
   {$ENDIF}
+
+  // Alterado por Italo em 10/02/2012
+  CTeRetorno := TRetInutCTe.Create;
+
   try
     TACBrCTe( FACBrCTe ).SetStatus( stCTeInutilizacao );
     if FConfiguracoes.Geral.Salvar then
@@ -2107,7 +2111,6 @@ begin
        StrStream.Free;
     {$ENDIF}
 
-    CTeRetorno := TRetInutCTe.Create;
     CTeRetorno.Leitor.Arquivo := FRetWS;
     CTeRetorno.LerXml;
 

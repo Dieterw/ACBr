@@ -99,7 +99,7 @@ end;
 function TcancCTe.GerarXML: boolean;
 begin
   //PENDENTE// revisar e inserir as regras de geração e validação
-  Result := False;
+//  Result := False;
 //  if RetornarVersaoLayout(FSchema, tlCancCTe) = '1.03' then
 //  begin
     Gerador.ArquivoFormatoXML := '';

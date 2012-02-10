@@ -113,6 +113,7 @@ type
     procedure GerarCTe;
     procedure Assinar;
     procedure Valida;
+    function ValidaAssinatura(out Msg : String) : Boolean;
     procedure Imprimir;
     procedure ImprimirPDF;
     function  Add: Conhecimento;
@@ -488,6 +489,25 @@ begin
        raise Exception.Create('Falha na validação dos dados do Conhecimento '+
                     IntToStr(Self.Items[i].CTe.Ide.nCT) +
                     sLineBreak + Self.Items[i].Alertas + FMsg);
+  end;
+end;
+
+function TConhecimentos.ValidaAssinatura(out Msg : String) : Boolean;
+var
+ i: Integer;
+ FMsg : AnsiString;
+begin
+  Result := True;
+  for i:= 0 to Self.Count-1 do
+   begin
+     if not(CTeUtil.ValidaAssinatura(('<CTe xmlns' + RetornarConteudoEntre(Self.Items[i].XML, '<CTe xmlns', '</CTe>')+ '</CTe>'), FMsg)) then
+      begin
+        Result := False;
+        Msg := 'Falha na validação da assinatura do conhecimento '+
+                               IntToStr(Self.Items[i].CTe.Ide.nCT)+sLineBreak+FMsg
+      end
+     else
+       Result := True;
   end;
 end;
 

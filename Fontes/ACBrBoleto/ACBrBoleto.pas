@@ -1762,8 +1762,8 @@ procedure TACBrBancoClass.ErroAbstract(NomeProcedure: String);
 begin
    raise Exception.Create(Format(ACBrStr('Função %s não implementada '+
                                          ' para o banco %s') + sLineBreak +
-                                         ACBrStr('Ajude no desenvolvimento do ACBrECF. ')+ sLineBreak+
-                                         ACBrStr('Acesse nosso Forum em: http://acbr.sf.net/'),[NomeProcedure,Nome])) ;
+                                         'Ajude no desenvolvimento do ACBrECF. '+ sLineBreak+
+                                         'Acesse nosso Forum em: http://acbr.sf.net/',[NomeProcedure,Nome])) ;
 end;
 
 function TACBrBancoClass.CalcularFatorVencimento(const DataVencimento: TDatetime) : String;

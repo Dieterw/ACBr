@@ -398,7 +398,6 @@ var
   ArqBak : String ;
   R      : AnsiString ;
   Continua : Boolean ;
-//  CRC : Word ;
 begin
   GravaLog( 'GravarArqRegistro' );
 

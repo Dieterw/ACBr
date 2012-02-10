@@ -156,6 +156,7 @@ type
     class function FormatarChaveAcesso(AValue : String ): String;
     class function GetURL(Const AUF, AAmbiente, FormaEmissao: Integer; ALayOut: TLayOut): WideString;
     class function Valida(Const AXML: AnsiString; var AMsg: AnsiString; const APathSchemas: string = ''): Boolean;
+    class function ValidaAssinatura(const AXML: AnsiString;  var AMsg: AnsiString): Boolean;
 {$IFDEF ACBrNFeOpenSSL}
     class function Assinar(const AXML, ArqPFX, PFXSenha: AnsiString; out AXMLAssinado, FMensagem: AnsiString): Boolean;
 {$ELSE}
@@ -1266,6 +1267,52 @@ begin
   ParseError := nil;
   Schema := nil;
 end;
+
+function ValidaAssinaturaMSXML(XML: AnsiString; out Msg: AnsiString): Boolean;
+var
+  xmldoc  : IXMLDOMDocument3;
+  xmldsig : IXMLDigitalSignature;
+
+  pKeyInfo : IXMLDOMNode;
+  pKey, pKeyOut : IXMLDSigKey;
+
+begin
+  xmldoc := CoDOMDocument50.Create;
+  xmldsig := CoMXDigitalSignature50.Create;
+
+  xmldoc.async              := False;
+  xmldoc.validateOnParse    := False;
+  xmldoc.preserveWhiteSpace := True;
+
+   if (not xmldoc.loadXML(XML) ) then
+      raise EACBrNFeException.Create('Não foi possível carregar o arquivo: '+XML);
+  try
+    xmldoc.setProperty('SelectionNamespaces', DSIGNS);
+    xmldsig.signature := xmldoc.selectSingleNode('.//ds:Signature');
+
+   if (xmldsig.signature = nil ) then
+      raise EACBrNFeException.Create('Não foi possível carregar o ler a assinatura: '+XML);
+
+    pKeyInfo := xmldoc.selectSingleNode('.//ds:KeyInfo/ds:X509Data');
+
+    pKey := xmldsig.createKeyFromNode(pKeyInfo);
+
+    try
+      pKeyOut := xmldsig.verify(pKey);
+    except
+       on E: Exception do
+          Msg := 'Erro ao verificar assinatura do arquivo: '+ E.Message;
+    end;
+  finally
+    Result := (pKeyOut <> nil );
+
+    pKeyOut := nil;
+    pKey := nil;
+    pKeyInfo := nil;
+    xmldsig := nil;
+    xmldoc := nil;
+  end;
+end;
 {$ENDIF}
 
 class function NotaUtil.Valida(const AXML: AnsiString;
@@ -1275,6 +1322,16 @@ begin
   Result := ValidaLibXML(AXML,AMsg,APathSchemas);
 {$ELSE}
   Result := ValidaMSXML(AXML,AMsg,APathSchemas);
+{$ENDIF}
+end;
+
+class function NotaUtil.ValidaAssinatura(const AXML: AnsiString;
+  var AMsg: AnsiString): Boolean;
+begin
+{$IFDEF ACBrNFeOpenSSL}
+  Result := False;
+{$ELSE}
+  Result := ValidaAssinaturaMSXML(AXML,AMsg);
 {$ENDIF}
 end;
 

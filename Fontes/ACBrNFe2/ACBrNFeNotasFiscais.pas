@@ -114,6 +114,7 @@ type
     procedure GerarNFe;
     procedure Assinar;
     procedure Valida;
+    function ValidaAssinatura(out Msg : String) : Boolean;
     procedure Imprimir;
     procedure ImprimirPDF;
     function  Add: NotaFiscal;
@@ -500,7 +501,25 @@ begin
        raise EACBrNFeException.Create('Falha na validação dos dados da nota '+
                                IntToStr(Self.Items[i].NFe.Ide.nNF)+sLineBreak+Self.Items[i].Alertas+FMsg);
   end;
-end;                                               
+end;
+
+function TNotasFiscais.ValidaAssinatura(out Msg : String) : Boolean;
+var
+ i: Integer;
+ FMsg : AnsiString;
+begin
+  for i:= 0 to Self.Count-1 do
+   begin
+     if not(NotaUtil.ValidaAssinatura(('<NFe xmlns' + RetornarConteudoEntre(Self.Items[i].XML, '<NFe xmlns', '</NFe>')+ '</NFe>'), FMsg)) then
+      begin
+        Result := False;
+        Msg := 'Falha na validação da assinatura da nota '+
+                               IntToStr(Self.Items[i].NFe.Ide.nNF)+sLineBreak+FMsg
+      end
+     else
+       Result := True;
+  end;
+end;
 
 function TNotasFiscais.LoadFromFile(CaminhoArquivo: string): boolean;
 var

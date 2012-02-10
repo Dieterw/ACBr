@@ -166,8 +166,8 @@ begin
     LoadLayout('<B20a> B20a|cUF¨|AAMM¨|IE¨|Mod¨|serie¨|nNF¨'); //
     LoadLayout('<B20d> B20d|CNPJ¨'); //
     LoadLayout('<B20e> B20e|CPF¨'); //
-    LoadLayout('<B20i> B20e|refCTe¨'); //
-    LoadLayout('<B20j> B20e|mod¨|nECF¨|nCOO¨'); //
+    LoadLayout('<B20i> B20i|refCTe¨'); //
+    LoadLayout('<B20j> B20j|mod¨|nECF¨|nCOO¨'); //
     LoadLayout('<C01>     C|XNome¨|XFant¨|IE¨|IEST¨|IM¨|CNAE¨|CRT¨'); //ok
     LoadLayout('<C01>   C02|CNPJ¨'); //ok
     LoadLayout('<C01>  C02a|CPF¨'); //ok

@@ -425,16 +425,16 @@ TACBrECFBematech = class( TACBrECFClass )
     {$ENDIF}
 
     function GetTotalizadoresParciais : String ;
-
-    Function PreparaCmd( cmd : AnsiString ) : AnsiString ;
-    function AnalisarRetornoDll(const ARetorno: Integer): String;
-
-    function TraduzirTag(const ATag: AnsiString): AnsiString; override;
-
     procedure CRZToCOO(const ACRZIni, ACRZFim: Integer; var ACOOIni,
       ACOOFim: Integer);
 
+
+ protected
     property TotalizadoresParciais : String read GetTotalizadoresParciais ;
+
+    Function PreparaCmd( cmd : AnsiString ) : AnsiString ;
+    function AnalisarRetornoDll(const ARetorno: Integer): String;
+    function TraduzirTag(const ATag: AnsiString): AnsiString; override;
 
     function GetDataHora: TDateTime; override ;
     function GetNumCupom: String; override ;

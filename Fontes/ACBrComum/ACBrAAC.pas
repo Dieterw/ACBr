@@ -526,7 +526,7 @@ begin
      if fsCriarBAK then
      begin
         ArqBak := ChangeFileExt( fsNomeCompleto, '.bak');
-        DeleteFile( ArqBak );
+        SysUtils.DeleteFile( ArqBak );
         RenameFile( fsNomeCompleto, ArqBak );
      end ;
 

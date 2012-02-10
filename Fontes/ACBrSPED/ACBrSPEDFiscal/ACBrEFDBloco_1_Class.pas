@@ -366,7 +366,6 @@ end;
 procedure TBloco_1.WriteRegistro1010(Reg1001: TRegistro1001) ;
 var
   intFor: integer;
-  strTP_CHC: AnsiString;
 begin
   if Assigned( Reg1001.Registro1010 ) then
   begin

@@ -485,8 +485,6 @@ begin
 end;
 
 procedure TBloco_0.WriteRegistro0111(Reg0110: TRegistro0110) ;
-var
-  intFor: integer;
 begin
   if Assigned(Reg0110.Registro0111) then
   begin

@@ -3356,7 +3356,7 @@ var
 
   function ConfigurarBarras(const ACodigo: Integer): AnsiString;
   Var
-    Altura, Largura, Mostrar : Integer ;
+    Altura, Largura : Integer ;
   begin
     Result := '';
 

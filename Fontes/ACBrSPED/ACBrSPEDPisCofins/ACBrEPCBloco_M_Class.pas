@@ -283,7 +283,6 @@ end;
 
 function TBloco_M.RegistroM220New: TRegistroM220;
   var
-    M200Count: integer;
     M210Count: integer;
 begin
    M210Count := FRegistroM001.RegistroM200.RegistroM210.Count -1;
@@ -614,8 +613,6 @@ begin
 end;
 
 procedure TBloco_M.WriteRegistroM200(RegM001: TRegistroM001) ;
-  var
-    intFor: integer;
 begin
   if Assigned(RegM001.RegistroM200) then
   begin
@@ -703,7 +700,6 @@ end;
 
 procedure TBloco_M.WriteRegistroM211(RegM210: TRegistroM210) ;
   var
-    intFor          : integer;
     strIND_TIP_COOP : AnsiString;
 begin
   if Assigned(RegM210.RegistroM211) then
@@ -867,8 +863,6 @@ begin
 end;
 
 procedure TBloco_M.WriteRegistroM350(RegM001: TRegistroM001) ;
-  var
-    intFor: integer;
 begin
   if Assigned(RegM001.RegistroM350) then
   begin
@@ -1166,8 +1160,6 @@ begin
 end;
 
 procedure TBloco_M.WriteRegistroM600(RegM001: TRegistroM001) ;
-  var
-    intFor: integer;
 begin
   if Assigned(RegM001.RegistroM600) then
   begin
@@ -1255,7 +1247,6 @@ end;
 
 procedure TBloco_M.WriteRegistroM611(RegM610: TRegistroM610) ;
   var
-    intFor          : integer;
     strIND_TIP_COOP : AnsiString;
 begin
   if Assigned(RegM610.RegistroM611) then

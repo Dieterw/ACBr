@@ -208,8 +208,6 @@ begin
 end;
 
 function TACBrEAD.GetOpenSSL_Version: String;
-Var
-  SSLInfo : Integer ;
 begin
    Result := SSLeay_version( 0 );
 end;
@@ -228,9 +226,10 @@ function TACBrEAD.BioToStr(ABio : pBIO) : String ;
 Var
   {$IFDEF USE_libeay32}
    Buf : array [0..1023] of AnsiChar;
+  {$ELSE}
+   Ret : Integer ;
   {$ENDIF}
   Lin : AnsiString ;
-  Ret : Integer ;
 begin
   Result := '';
 

@@ -759,8 +759,6 @@ const
 
 
 constructor TACBrECFDaruma.create( AOwner : TComponent ) ;
-var
-  Resp: Integer;
 begin
   inherited create( AOwner ) ;
 
@@ -2239,7 +2237,7 @@ Procedure TACBrECFDaruma.VendeItem( Codigo, Descricao : String;
   ValorDescontoAcrescimo : Double; Unidade : String;
   TipoDescontoAcrescimo : String; DescontoAcrescimo : String) ;
 Var
-  QtdStr, ValorStr, DescontoStr, SepDec, FlagDesc, NumItem, ModoCalculo : String;
+  QtdStr, ValorStr, DescontoStr, SepDec, FlagDesc, ModoCalculo : String;
   LenQtd : Integer ;
   RetCmd : AnsiString ;
   Cmd : AnsiChar ;

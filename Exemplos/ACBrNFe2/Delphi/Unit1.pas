@@ -136,6 +136,7 @@ type
     btnAdicionarProtNFe: TButton;
     btnCarregarXMLEnviar: TButton;
     btnCartadeCorrecao: TButton;
+    btnValidarAssinatura: TButton;
     procedure sbtnCaminhoCertClick(Sender: TObject);
     procedure sbtnLogoMarcaClick(Sender: TObject);
     procedure sbtnPathSalvarClick(Sender: TObject);
@@ -170,6 +171,7 @@ type
     procedure btnAdicionarProtNFeClick(Sender: TObject);
     procedure btnCarregarXMLEnviarClick(Sender: TObject);
     procedure btnCartadeCorrecaoClick(Sender: TObject);
+    procedure btnValidarAssinaturaClick(Sender: TObject);
     
   private
     { Private declarations }
@@ -566,6 +568,20 @@ begin
   MemoResp.Lines.Text :=  UTF8Encode(ACBrNFe1.WebServices.Inutilizacao.RetWS);
   memoRespWS.Lines.Text :=  UTF8Encode(ACBrNFe1.WebServices.Inutilizacao.RetornoWS);  
   LoadXML(MemoResp, WBResposta);
+
+{  ACBrNFe1.WebServices.Inutilizacao.TpAmb
+  ACBrNFe1.WebServices.Inutilizacao.verAplic
+  ACBrNFe1.WebServices.Inutilizacao.cStat
+  ACBrNFe1.WebServices.Inutilizacao.xMotivo
+  ACBrNFe1.WebServices.Inutilizacao.cUF
+  ACBrNFe1.WebServices.Inutilizacao.Ano
+  ACBrNFe1.WebServices.Inutilizacao.CNPJ
+  ACBrNFe1.WebServices.Inutilizacao.Modelo
+  ACBrNFe1.WebServices.Inutilizacao.Serie
+  ACBrNFe1.WebServices.Inutilizacao.NumeroInicial
+  ACBrNFe1.WebServices.Inutilizacao.NumeroFinal
+  ACBrNFe1.WebServices.Inutilizacao.dhRecbto
+  ACBrNFe1.WebServices.Inutilizacao.Protocolo    }
 end;
 
 procedure TForm1.ACBrNFe1StatusChange(Sender: TObject);
@@ -1616,8 +1632,8 @@ begin
       Emit.enderEmit.xPais   := 'BRASIL';
 
       Emit.IEST              := '';
-      Emit.IM                := ''; // Preencher no caso de existir serviços na nota
-      Emit.CNAE              := ''; // Verifique na cidade do emissor da NFe se é permitido
+      Emit.IM                := '2648800'; // Preencher no caso de existir serviços na nota
+      Emit.CNAE              := '6201500'; // Verifique na cidade do emissor da NFe se é permitido
                                     // a inclusão de serviços na NFe
       Emit.CRT               := crtRegimeNormal;// (1-crtSimplesNacional, 2-crtSimplesExcessoReceita, 3-crtRegimeNormal)
 
@@ -1640,9 +1656,9 @@ begin
       Dest.xNome             := 'D.J. COM. E LOCAÇÃO DE SOFTWARES LTDA - ME';
 
       Dest.EnderDest.Fone    := '1532599600';
-      Dest.EnderDest.CEP     := 18270410;
-      Dest.EnderDest.xLgr    := 'Praça Anita Costa';
-      Dest.EnderDest.nro     := '0034';
+      Dest.EnderDest.CEP     := 18270170;
+      Dest.EnderDest.xLgr    := 'Rua Coronel Aureliano de Camargo';
+      Dest.EnderDest.nro     := '973';
       Dest.EnderDest.xCpl    := '';
       Dest.EnderDest.xBairro := 'Centro';
       Dest.EnderDest.cMun    := 3554003;
@@ -1670,13 +1686,13 @@ begin
       Entrega.cMun    := 0;
       Entrega.xMun    := '';
       Entrega.UF      := '';}
-
+ {
 //Adicionando Produtos
       with Det.Add do
        begin
          Prod.nItem    := 1; // Número sequencial, para cada item deve ser incrementado
          Prod.cProd    := '123456';
-         Prod.cEAN     := '1234567890123';
+         Prod.cEAN     := '7896523206646';
          Prod.xProd    := 'Descrição do Produto';
          Prod.NCM      := '94051010'; // Tabela NCM disponível em  http://www.receita.fazenda.gov.br/Aliquotas/DownloadArqTIPI.htm
          Prod.EXTIPI   := '';
@@ -1686,7 +1702,7 @@ begin
          Prod.vUnCom   := 100;
          Prod.vProd    := 100 ;
 
-         Prod.cEANTrib  := '';
+         Prod.cEANTrib  := '7896523206646';
          Prod.uTrib     := 'UN';
          Prod.qTrib     := 1;
          Prod.vUnTrib   := 100;
@@ -1786,7 +1802,7 @@ begin
             ICMSCons.UFcons        := '' ;
           end;}
 
-         with Imposto do
+ {        with Imposto do
           begin
             with ICMS do
              begin
@@ -1819,7 +1835,7 @@ begin
                vUnid  := 0;
                pIPI   := 5;
                vIPI   := 5;
-             end;
+             end;         }
 {
             with II do
              begin
@@ -1877,32 +1893,71 @@ begin
                vAliq     := 0;
                vISSQN    := 0;
                cMunFG    := 0;
-               cListServ := 0; // Preencha este campo usando a tabela disponível
+               cListServ := 1402; // Preencha este campo usando a tabela disponível
                                // em http://www.planalto.gov.br/Ccivil_03/LEIS/LCP/Lcp116.htm
              end;}
-          end;
+      {    end;
+       end ;         }
+
+//Adicionando Serviços
+      with Det.Add do
+       begin
+         Prod.nItem    := 1; // Número sequencial, para cada item deve ser incrementado
+         Prod.cProd    := '123457';
+         Prod.cEAN     := '';
+         Prod.xProd    := 'Descrição do Serviço';
+         Prod.NCM      := '99';
+         Prod.EXTIPI   := '';
+         Prod.CFOP     := '5933';
+         Prod.uCom     := 'UN';
+         Prod.qCom     := 1 ;
+         Prod.vUnCom   := 100;
+         Prod.vProd    := 100 ;
+
+         Prod.cEANTrib  := '';
+         Prod.uTrib     := 'UN';
+         Prod.qTrib     := 1;
+         Prod.vUnTrib   := 100;
+
+         Prod.vFrete    := 0;
+         Prod.vSeg      := 0;
+         Prod.vDesc     := 0;
+
+         infAdProd      := 'Informação Adicional do Serviço';
+
+//Grupo para serviços
+            with Imposto.ISSQN do
+             begin
+               cSitTrib  := ISSQNcSitTribNORMAL; 
+               vBC       := 100;
+               vAliq     := 2;
+               vISSQN    := 2;
+               cMunFG    := 3554003;
+               cListServ := 1402; // Preencha este campo usando a tabela disponível
+                               // em http://www.planalto.gov.br/Ccivil_03/LEIS/LCP/Lcp116.htm
+             end;
        end ;
 
-      Total.ICMSTot.vBC     := 100;
-      Total.ICMSTot.vICMS   := 18;
+      Total.ICMSTot.vBC     := 0;
+      Total.ICMSTot.vICMS   := 0;
       Total.ICMSTot.vBCST   := 0;
       Total.ICMSTot.vST     := 0;
-      Total.ICMSTot.vProd   := 100;
+      Total.ICMSTot.vProd   := 0;
       Total.ICMSTot.vFrete  := 0;
       Total.ICMSTot.vSeg    := 0;
       Total.ICMSTot.vDesc   := 0;
       Total.ICMSTot.vII     := 0;
-      Total.ICMSTot.vIPI    := 5;
+      Total.ICMSTot.vIPI    := 0;
       Total.ICMSTot.vPIS    := 0;
       Total.ICMSTot.vCOFINS := 0;
       Total.ICMSTot.vOutro  := 0;
       Total.ICMSTot.vNF     := 100;
 
-{      Total.ISSQNtot.vServ   := 0;
-      Total.ISSQNTot.vBC     := 0;
-      Total.ISSQNTot.vISS    := 0;
+      Total.ISSQNtot.vServ   := 100;
+      Total.ISSQNTot.vBC     := 100;
+      Total.ISSQNTot.vISS    := 2;
       Total.ISSQNTot.vPIS    := 0;
-      Total.ISSQNTot.vCOFINS := 0;}
+      Total.ISSQNTot.vCOFINS := 0;
 
 {      Total.retTrib.vRetPIS    := 0;
       Total.retTrib.vRetCOFINS := 0;
@@ -2035,6 +2090,15 @@ begin
   MemoResp.Lines.Text :=  UTF8Encode(ACBrNFe1.WebServices.Cancelamento.RetWS);
   memoRespWS.Lines.Text :=  UTF8Encode(ACBrNFe1.WebServices.Cancelamento.RetornoWS);
   LoadXML(MemoResp, WBResposta);
+
+{  ACBrNFe1.WebServices.Cancelamento.TpAmb
+  ACBrNFe1.WebServices.Cancelamento.verAplic
+  ACBrNFe1.WebServices.Cancelamento.cStat
+  ACBrNFe1.WebServices.Cancelamento.xMotivo
+  ACBrNFe1.WebServices.Cancelamento.cUF
+  ACBrNFe1.WebServices.Cancelamento.NFeChave
+  ACBrNFe1.WebServices.Cancelamento.DhRecbto
+  ACBrNFe1.WebServices.Cancelamento.Protocolo }
 end;
 
 procedure TForm1.btnAdicionarProtNFeClick(Sender: TObject);
@@ -2166,7 +2230,27 @@ begin
 
   MemoResp.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.CartaCorrecao.RetWS);
   memoRespWS.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.CartaCorrecao.RetornoWS);
+//  ACBrNFe1.WebServices.CartaCorrecao.CCeRetorno.retEvento.Items[0].XXXX
   LoadXML(MemoResp, WBResposta);
+end;
+
+procedure TForm1.btnValidarAssinaturaClick(Sender: TObject);
+var
+  Msg : String;
+begin
+  OpenDialog1.Title := 'Selecione a NFE';
+  OpenDialog1.DefaultExt := '*-nfe.XML';
+  OpenDialog1.Filter := 'Arquivos NFE (*-nfe.XML)|*-nfe.XML|Arquivos XML (*.XML)|*.XML|Todos os Arquivos (*.*)|*.*';
+  OpenDialog1.InitialDir := ACBrNFe1.Configuracoes.Geral.PathSalvar;
+  if OpenDialog1.Execute then
+  begin
+    ACBrNFe1.NotasFiscais.Clear;
+    ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
+    if not ACBrNFe1.NotasFiscais.ValidaAssinatura(Msg) then
+      MemoDados.Lines.Add('Erro: '+Msg)
+    else
+      ShowMessage('Assinatura Válida');  
+  end;
 end;
 
 end.

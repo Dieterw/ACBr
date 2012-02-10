@@ -1,9 +1,9 @@
 object Form1: TForm1
-  Left = 250
-  Top = 97
-  Caption = 'ACBrNFe'
-  ClientHeight = 589
-  ClientWidth = 870
+  Left = 269
+  Top = 149
+  Width = 886
+  Height = 627
+  Caption = 'ACBrNFe - Demonstra'#231#227'o'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -368,6 +368,7 @@ object Form1: TForm1
               Font.Height = -13
               Font.Name = 'MS Sans Serif'
               Font.Style = []
+              ItemHeight = 16
               ItemIndex = 24
               ParentFont = False
               TabOrder = 1
@@ -779,6 +780,8 @@ object Form1: TForm1
       Width = 153
       Height = 25
       Caption = 'Salvar Configura'#231#245'es'
+      TabOrder = 1
+      OnClick = btnSalvarConfigClick
       Glyph.Data = {
         76010000424D7601000000000000760000002800000020000000100000000100
         04000000000000010000130B0000130B00001000000000000000000000000000
@@ -793,8 +796,6 @@ object Form1: TForm1
         99337F3FF7F3733777F30F08F0F0337999337F7737F73F7777330FFFF0039999
         93337FFFF7737777733300000033333333337777773333333333}
       NumGlyphs = 2
-      TabOrder = 1
-      OnClick = btnSalvarConfigClick
     end
   end
   object Panel2: TPanel
@@ -808,7 +809,7 @@ object Form1: TForm1
       Left = 1
       Top = 1
       Width = 571
-      Height = 216
+      Height = 242
       Align = alTop
       TabOrder = 0
       object btnImprimir: TButton
@@ -974,8 +975,8 @@ object Form1: TForm1
         OnClick = btnGerarTXTClick
       end
       object btnAdicionarProtNFe: TButton
-        Left = 8
-        Top = 186
+        Left = 9
+        Top = 184
         Width = 177
         Height = 25
         Caption = 'Adicionar nfeProc ao XML'
@@ -1000,12 +1001,21 @@ object Form1: TForm1
         TabOrder = 20
         OnClick = btnCartadeCorrecaoClick
       end
+      object btnValidarAssinatura: TButton
+        Left = 9
+        Top = 212
+        Width = 177
+        Height = 25
+        Caption = 'Validar Assinatura'
+        TabOrder = 21
+        OnClick = btnValidarAssinaturaClick
+      end
     end
     object PageControl2: TPageControl
       Left = 1
-      Top = 217
+      Top = 243
       Width = 571
-      Height = 371
+      Height = 345
       ActivePage = TabSheet8
       Align = alClient
       TabOrder = 1
@@ -1046,7 +1056,7 @@ object Form1: TForm1
           Left = 0
           Top = 0
           Width = 563
-          Height = 343
+          Height = 317
           Align = alClient
           ScrollBars = ssVertical
           TabOrder = 0
@@ -1059,7 +1069,7 @@ object Form1: TForm1
           Left = 0
           Top = 0
           Width = 563
-          Height = 343
+          Height = 317
           Align = alClient
           Indent = 19
           TabOrder = 0

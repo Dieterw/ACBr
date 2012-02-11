@@ -69,26 +69,18 @@ begin
 end;
 
 function TACBrBALUrano.LePeso(MillisecTimeOut : Integer) : Double;
-{var
-  TempoFinal : TDateTime ;}
 begin
-  //Result     := 0 ;
-  //TempoFinal := IncMilliSecond(now,MillisecTimeOut) ;
-  //while (Result <= 0) and (TempoFinal > now) do
-  //begin
   fpDevice.Serial.Purge;
   fpDevice.EnviaString(#05); { Envia comando solicitando o Peso }
   sleep(200);
-    //MillisecTimeOut := MilliSecondsBetween(now,TempoFinal); //Filizola
   LeSerial( MillisecTimeOut );
   Result := fpUltimoPesoLido;
-  //end ;
 end;
 
 procedure TACBrBALUrano.LeSerial( MillisecTimeOut : Integer) ;
  var
    Resposta: String;
-   Quantos: integer;
+   Quantos, PosDelim: integer;
 begin
   fpUltimoPesoLido := 0 ;
   fpUltimaResposta := '' ;
@@ -97,16 +89,20 @@ begin
     //fpUltimaResposta := '1BT11BA131BN01BS21BD41BQ1931BB * PESO: 5,10kg1BE1BP01';
     Resposta := fpUltimaResposta;
 
+    PosDelim := pos(':', Resposta);
+    if PosDelim = 0 then
+       PosDelim := pos('N0', Resposta);
+
     if Copy(Resposta, pos('PESO', Resposta)-2, 1) = ' ' then
       Resposta := 'I'
-    else if Copy(Resposta, pos(':', Resposta)+1, 1) = '-' then
+    else if Copy(Resposta, PosDelim + 1, 1) = '-' then
       Resposta := 'N';
 
     if Length(Resposta) > 1  then
     begin
-      Quantos := (pos('g', Resposta)-2);
-      Quantos := Quantos - (pos(':', Resposta)+1);
-      Resposta := Copy(Resposta, pos(':', Resposta)+2, Quantos); //123456
+      Quantos := (pos('g', Resposta) - 2);
+      Quantos := Quantos - (PosDelim + 1);
+      Resposta := Copy(Resposta, PosDelim + 2, Quantos); //123456
     end;
 
     { Ajustando o separador de Decimal corretamente }

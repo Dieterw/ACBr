@@ -37,12 +37,8 @@
 unit ACBrBALDigitron;
 
 interface
-uses ACBrBALClass,
+uses ACBrBALClass, ACBrConsts,
      Classes;
-
-const STX = #02 ;
-      ETX = #03 ;
-      CR  = #13 ;
 
 type
 

@@ -610,9 +610,9 @@ var
 begin
   if Assigned( Reg0001.Registro0200 ) then
   begin
-     strLinha := '';
      for intFor := 0 to Reg0001.Registro0200.Count - 1 do
      begin
+        strLinha := '';
         with Reg0001.Registro0200.Items[intFor] do
         begin
           case TIPO_ITEM of

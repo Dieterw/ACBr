@@ -32,28 +32,21 @@
 {                                                                              }
 {******************************************************************************}
 
-{******************************************************************************
-|* Historico
-|*
-|* 04/10/2005: Fabio Farias  / Daniel Simões de Almeida
-|*  - Primeira Versao ACBrBALFilizola
-|* 25/05/2005: Daniel Simoes de Almeida
-|*  - Adaptado para funcionar com vários modelos de Filizola (MF, BP) permitindo
-|*    variação na posição do ponto flutante
-|* 16/02/2007: Juliano Pereira dos Santos
-|*  - Adaptado para funcionar com modelo "CS"
-******************************************************************************}
-
 {$I ACBr.inc}
 
-unit ACBrBALFilizola;
+unit ACBrBALDigitron;
 
 interface
 uses ACBrBALClass,
      Classes;
 
+const STX = #02 ;
+      ETX = #03 ;
+      CR  = #13 ;
+
 type
-  TACBrBALFilizola = class( TACBrBALClass )
+
+  TACBrBALDigitron = class( TACBrBALClass )
   public
     constructor Create(AOwner: TComponent);
     function LePeso( MillisecTimeOut : Integer = 3000) :Double; override;
@@ -61,74 +54,60 @@ type
   end ;
 
 implementation
-Uses ACBrBAL, ACBrConsts,
+Uses ACBrBAL, ACBrUtil,
      {$IFDEF COMPILER6_UP} DateUtils, StrUtils {$ELSE} ACBrD5, Windows{$ENDIF},
-     SysUtils ;
+     SysUtils, Math ;
 
-{ TACBrBALGertecSerial }
+{ TACBrBALDigitron }
 
-constructor TACBrBALFilizola.Create(AOwner: TComponent);
+constructor TACBrBALDigitron.Create(AOwner: TComponent);
 begin
   inherited Create( AOwner );
 
-  fpModeloStr := 'Filizola' ;
+  fpModeloStr := 'Digitron' ;
 end;
 
-function TACBrBALFilizola.LePeso( MillisecTimeOut : Integer) : Double;
-Var TempoFinal : TDateTime ;
-begin
-  { A Filizola pode responder com Instavel inicalmente, mas depois ela poderia
-    estabilizar... Portanto o Loop abaixo tenta ler um Peso válido até o limite
-    de tempo estabelecido em "MilliSecTimeOut" ser atingido ou um Peso valido
-    retornado }
-  Result := 0 ;
-  fpUltimoPesoLido := 0 ;
-  fpUltimaResposta := '' ;
-  TempoFinal := IncMilliSecond(now,MillisecTimeOut) ;
-
-  while (Result <= 0) and (TempoFinal > now) do
-  begin
-     fpDevice.Serial.Purge ;
-     fpDevice.EnviaString( #05 );      { Envia comando solicitando o Peso }
-     sleep(200) ;
-     MillisecTimeOut := MilliSecondsBetween(now,TempoFinal) ;
-
-     LeSerial( MillisecTimeOut );
-
-     Result := fpUltimoPesoLido ;
-  end ;
-end;
-
-procedure TACBrBALFilizola.LeSerial( MillisecTimeOut : Integer) ;
-Var Resposta : AnsiString ;
+function TACBrBALDigitron.LePeso( MillisecTimeOut : Integer) : Double;
 begin
   fpUltimoPesoLido := 0 ;
   fpUltimaResposta := '' ;
 
+  fpDevice.Serial.Purge ;           { Limpa a Porta }
+  fpDevice.EnviaString( #05 );      { Envia comando solicitando o Peso }
+  sleep(200) ;
+
+  LeSerial( MillisecTimeOut );
+
+  Result := fpUltimoPesoLido ;
+end;
+
+procedure TACBrBALDigitron.LeSerial(MillisecTimeOut: Integer);
+Var
+  Resposta : AnsiString ;
+  Decimais : Integer ;
+  St2      : AnsiChar ;
+  PI,PF    : Integer ;
+begin
+  fpUltimoPesoLido := 0 ;
+  fpUltimaResposta := '' ;
+
+  Decimais := 100 ;
   Try
-     fpUltimaResposta := fpDevice.Serial.RecvPacket( MillisecTimeOut );
+     fpUltimaResposta := Copy(fpDevice.Serial.RecvPacket( MillisecTimeOut ),1,10);
 
-     { Retira STX, ETX }
-     Resposta := fpUltimaResposta;
-     if copy(Resposta, 1, 1) = STX then
-        Resposta := copy(Resposta, 2, Length(Resposta));
+     Resposta := Trim( copy( fpUltimaResposta, 2, 6 )) ;
 
-     if copy(Resposta, Length(Resposta), 1) = ETX then
-        Resposta := copy(Resposta, 1, Length(Resposta) - 1);
-     
      { Ajustando o separador de Decimal corretamente }
      Resposta := StringReplace(Resposta, '.', DecimalSeparator, [rfReplaceAll]);
      Resposta := StringReplace(Resposta, ',', DecimalSeparator, [rfReplaceAll]);
 
      try
-        if Length(Resposta) > 10 then
-           fpUltimoPesoLido := StrToFloat(copy(Resposta, 1, 6)) / 1000
-        else if pos(DecimalSeparator, Resposta) > 0 then
+        if pos(DecimalSeparator,Resposta) > 0 then  { Já existe ponto decimal ? }
            fpUltimoPesoLido := StrToFloat(Resposta)
         else
-           fpUltimoPesoLido := StrToInt(Resposta) / 1000
+           fpUltimoPesoLido := StrToInt(Resposta) / Decimais ;
      except
-        case Trim(Resposta)[1] of
+        case Resposta[1] of
           'I' : fpUltimoPesoLido := -1  ;  { Instavel }
           'N' : fpUltimoPesoLido := -2  ;  { Peso Negativo }
           'S' : fpUltimoPesoLido := -10 ;  { Sobrecarga de Peso }

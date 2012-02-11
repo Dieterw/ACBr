@@ -1240,6 +1240,15 @@ var
 begin
   Obs := Observacao ;
 
+     { Tem PAF ? }     { PAF ainda não está na Obs ?}
+  if (fsPAF <> '') and (pos(fsPAF,Obs) = 0) then
+  begin
+    if Obs = '' then
+       Obs := fsPAF
+    else
+       Obs := fsPAF + #10 + Obs ;
+  end ;
+
   if not Consumidor.Enviado then
   begin
      { Removendo o Consumidor da Observação, pois vai usar comando próprio }
@@ -1268,13 +1277,6 @@ begin
 //        Obs := Observacao ;
      end ;
   end ;
-
-     { Tem PAF ? }     { PAF ainda não está na Obs ?}
-  if (fsPAF <> '') and (pos(fsPAF,Obs) = 0) then
-     if Obs = '' then
-        Obs := fsPAF
-     else
-        Obs := fsPAF + #10 + Obs ;
 
   try
      FiscNETComando.NomeComando := 'EncerraDocumento' ;
@@ -2669,7 +2671,7 @@ end;
 
 procedure TACBrECFFiscNET.IdentificaPAF(NomeVersao, MD5 : String);
 begin
-   fsPAF := NomeVersao + #10 + MD5 ;
+   fsPAF := Trim( NomeVersao + #10 + MD5 ) ;
    FiscNETComando.NomeComando := 'EscreveTexto' ;
    FiscNETComando.AddParamString('NomeTexto' ,'TextoLivre') ;
    FiscNETComando.AddParamString('ValorTexto', fsPAF ) ;

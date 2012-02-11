@@ -573,7 +573,7 @@ begin
    end;
 
    SaldoAPagar := StringToFloatDef( SubTotal, -98787158);
-   SaldoAPagar := SimpleRoundTo( SaldoAPagar, -2);     // por Rodrigo Baltazar
+   SaldoAPagar := RoundTo( SaldoAPagar, -2);     // http://www.djsystem.com.br/acbr/forum/viewtopic.php?f=16&t=4745
 
    if SaldoAPagar = -98787158 then
       raise Exception.Create( ACBrStr( 'Erro na conversão do Valor Retornado '+

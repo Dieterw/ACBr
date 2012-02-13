@@ -3084,7 +3084,7 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
           222.250000000000000000
           66.145833333333340000
           87.312500000000000000)
-        Alignment = taCenter
+        Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
         AutoStretch = False

@@ -92,7 +92,7 @@ end;
 
 procedure TFrmSPEDPisCofins.btnB_0Click(Sender: TObject);
 const
-  strUNID: array[0..4] of string = ('PC', 'UN', 'LT', 'PC', 'MT');
+  strUNID: array[0..4] of string = ('PC', 'UN', 'LT', 'KG', 'MT');
 
 var
 int0140: integer;
@@ -186,7 +186,11 @@ begin
               begin
                  COD_EST := IntToStr(int0140);
                  NOME    := 'NOME DO ESTABELECIMENTO '+IntToStr(int0140);
-                 CNPJ    := '33333333333328';
+                 if int0140 = 1 then
+                    CNPJ    := '11111111111180'
+                 else
+                    CNPJ    := '11111111000191'; //oito primeiros dígitos devem bater...
+
                  UF      := 'ES';
                  IE      := '';
                  COD_MUN := 3200607;
@@ -235,7 +239,7 @@ begin
                        DESCR_ITEM   := 'DESCRIÇÃO DO ITEM';
                        COD_BARRA    := '';
                        COD_ANT_ITEM := '';
-                       UNID_INV     := '';
+                       UNID_INV     := strUNID[int0200 mod (High(strUNID))];
                        TIPO_ITEM    := tiMercadoriaRevenda;
                        COD_NCM      := '12345678';
                        EX_IPI       := '';
@@ -262,10 +266,10 @@ begin
              COD_NAT_CC := ncgAtivo;
              IND_CTA := indCTASintetica;
              NIVEL := '0';
-             COD_CTA := '0';
+             COD_CTA := '01';
              NOME_CTA := 'NOME CTA';
              COD_CTA_REF := '0';
-             CNPJ_EST := '123456789';
+             CNPJ_EST := '33333333333328';
            end;
 
         end;
@@ -440,11 +444,11 @@ begin
               begin
                 IND_OPER      := tpEntradaAquisicao;
                 IND_EMIT      := edEmissaoPropria;
-                COD_PART      := '001';
-                COD_MOD       := '';
+                COD_PART      := '2'; //Baseado no registro 0200
+                COD_MOD       := '01';
                 COD_SIT       := sdRegular;
                 SER           := '';
-                NUM_DOC       := FormatFloat('NF000000',INotas);
+                NUM_DOC       := FormatFloat('000000000',INotas); //
                 CHV_NFE       := '';
                 DT_DOC        := DT_INI + INotas;
                 DT_E_S        := DT_INI + INotas;
@@ -483,7 +487,8 @@ begin
                      IND_MOV          := mfNao;
                      CST_ICMS         := sticmsTributadaIntegralmente;
                      CFOP             := '1252';
-                     COD_NAT          := '64';
+                     COD_NAT          := '';
+//                     COD_NAT          := '64'; //Informar no 0400 antes de utilizá-lo
                      VL_BC_ICMS       := 0;
                      ALIQ_ICMS        := 0;
                      VL_ICMS          := 0;
@@ -508,7 +513,7 @@ begin
                      QUANT_BC_COFINS  := 0;
                      ALIQ_COFINS_R    := 0;
                      VL_COFINS        := 0;
-                     COD_CTA          := '000';
+                     COD_CTA          := '01'; //Baseado no 0500
                   end; //Fim dos Itens;
                 end;
 
@@ -524,26 +529,30 @@ begin
                 end;
 
               end;
-
-              //10 itens c190
-              for IItens := 1 to 10 do
-              begin
-                // c190 - Consolidação de Notas Fiscais Eletrônicas (Código 55) – Operações de
-                // Aquisição com Direito a Crédito, e Operações de Devolução de Compras e
-                // Vendas.
-                with RegistroC190New do
-                begin
-                   COD_MOD := '';
-                   DT_REF_INI := Date;
-                   DT_REF_FIN := Date;
-                   COD_ITEM := '';
-                   COD_NCM := '';
-                   EX_IPI := '';
-                   VL_TOT_ITEM := 0;
-                end;//Fim dos Itens;
-              end;
-
            end;
+
+
+//           //Registros c190
+//           for INotas := 1 to NNotas  do
+//           begin
+//             // c190 - Consolidação de Notas Fiscais Eletrônicas (Código 55) – Operações de
+//             // Aquisição com Direito a Crédito, e Operações de Devolução de Compras e
+//             // Vendas.
+//             with RegistroC190New do
+//             begin
+//               COD_MOD := '55';
+//               DT_REF_INI := Date;
+//               DT_REF_FIN := Date;
+//               COD_ITEM := ''; //Código do item (campo 02 do Registro 0200)
+//               COD_NCM := '';
+//               EX_IPI := '';
+//               VL_TOT_ITEM := 0;
+//
+//               //Registros C191 e C195
+//
+//
+//             end;
+//           end;
          end;
       end;
    end;
@@ -672,22 +681,23 @@ begin
            with RegistroF100New do
            begin
               IND_OPER      := indRepCustosDespesasEncargos;
-              COD_PART      := '001';
-              COD_ITEM      := '000'; //Codigo do Item no registro 0200
+              COD_PART      := '1';
+              COD_ITEM      := '000001'; //Codigo do Item no registro 0200
               DT_OPER       := Date();
-              VL_OPER       := 0;
-              CST_PIS       := stpisOutrasOperacoesSaida;
+              VL_OPER       := 0.01;  //Deve ser Maior que zero
+              CST_PIS       := stpisOperCredExcRecTribMercInt;  //Para Operação Representativa de Aquisição, Custos, Despesa ou Encargos, Sujeita à Incidência de Crédito, o CST deve ser referente a Operações com Direito a Crédito (50 a 56) ou a Crédito Presumido (60 a 66).Para Operação Representativa de Receita Auferida, Sujeita ao Pagamento da Contribuição, o CST deve ser igual a 01, 02, 03 ou 05.Para Operação Representativa de Receita Auferida NÃO Sujeita ao Pagamento da Contribuição, o CST deve ser igual a 04, 06, 07, 08, 09, 49 ou 99.
               VL_BC_PIS     := 0;
               ALIQ_PIS      := 1.2375;
               VL_PIS        := 0;
-              CST_COFINS    := stcofinsOutrasOperacoesSaida;
+              CST_COFINS    := stcofinsOperCredExcRecTribMercInt;
               VL_BC_COFINS  := 0;
               ALIQ_COFINS   := 0;
               VL_COFINS     := 0;
               NAT_BC_CRED   := bccAqBensRevenda;
               IND_ORIG_CRED := opcMercadoInterno;
               COD_CTA       := '';
-              COD_CCUS      := '123';
+              COD_CCUS      := '';
+//              COD_CCUS      := '123';//Para usar o COD_CCUS é necessário gerar, primeiro, um registro 0600 correspondente.
               DESC_DOC_OPER := ''; 
            end;
         end;
@@ -703,6 +713,8 @@ begin
 end;
 
 procedure TFrmSPEDPisCofins.btnB_MClick(Sender: TObject);
+var
+  vlBC, vlBcCofins, aliqCofins, vlcredNC: Real;
 begin
    // Alimenta o componente com informações para gerar todos os registros do
    // Bloco M.
@@ -710,92 +722,127 @@ begin
    begin
       with RegistroM001New do
       begin
-        IND_MOV := imComDados;
+        IND_MOV := imSemDados;
 
-        //M100 - Crédito de PIS/PASEP Relativo ao Período
-         with RegistroM100New do
-         begin
-            COD_CRED       := '';
-            IND_CRED_ORI   := TACBrIndCredOri(0);
-            VL_BC_PIS      := 0;
-            ALIQ_PIS       := 0;
-            QUANT_BC_PIS   := 0;
-            ALIQ_PIS_QUANT := 0;
-            VL_CRED        := 0;
-            VL_AJUS_ACRES  := 0;
-            VL_AJUS_REDUC  := 0;
-            VL_CRED_DIF    := 0;
-            VL_CRED_DISP   := 0;
-            IND_DESC_CRED  := TACBrIndDescCred(0);
-            VL_CRED_DESC   := 0;
-            SLD_CRED       := 0;
-         end;
+//        //M100 - Crédito de PIS/PASEP Relativo ao Período
+//         with RegistroM100New do
+//         begin
+//            COD_CRED       := '101';
+//            IND_CRED_ORI   := TACBrIndCredOri(0);
+//            VL_BC_PIS      := 0;
+//            ALIQ_PIS       := 0;
+//            QUANT_BC_PIS   := 0;
+//            ALIQ_PIS_QUANT := 0;
+//            VL_CRED        := 0.01; //OBRIGATORIO
+//            VL_AJUS_ACRES  := 0;
+//            VL_AJUS_REDUC  := 0;
+//            VL_CRED_DIF    := 0;
+//            VL_CRED_DISP   := 0;
+//            IND_DESC_CRED  := TACBrIndDescCred(0);
+//            VL_CRED_DESC   := 0;
+//            SLD_CRED       := 0;
+//         end;
+//
+//         with RegistroM200New do
+//         begin
+//           VL_TOT_CONT_NC_PER := 0;
+//           VL_TOT_CRED_DESC := 0;
+//           VL_TOT_CRED_DESC_ANT := 0;
+//           VL_TOT_CONT_NC_DEV := 0;
+//           VL_RET_NC := 0;
+//           VL_OUT_DED_NC := 0;
+//           VL_CONT_NC_REC := 0;
+//           VL_TOT_CONT_CUM_PER := 0;
+//           VL_RET_CUM := 0;
+//           VL_OUT_DED_CUM := 0;
+//           VL_CONT_CUM_REC := 0;
+//           VL_TOT_CONT_REC := 0;
+//
+//           with RegistroM210New do
+//           begin
+//             COD_CONT := ccNaoAcumAliqBasica;
+//             VL_REC_BRT := 0;
+//             VL_BC_CONT := 0;
+//             ALIQ_PIS := 0;
+//             QUANT_BC_PIS := 0;
+//             ALIQ_PIS_QUANT := 0;
+//             VL_CONT_APUR := 0;
+//             VL_AJUS_ACRES := 0;
+//             VL_AJUS_REDUC := 0;
+//             VL_CONT_DIFER := 0;
+//             VL_CONT_DIFER_ANT := 0;
+//             VL_CONT_PER := 0;
+//           end;
+//
+//         end;
 
-         with RegistroM200New do
-         begin
-           VL_TOT_CONT_NC_PER := 0;
-           VL_TOT_CRED_DESC := 0;
-           VL_TOT_CRED_DESC_ANT := 0;
-           VL_TOT_CONT_NC_DEV := 0;
-           VL_RET_NC := 0;
-           VL_OUT_DED_NC := 0;
-           VL_CONT_NC_REC := 0;
-           VL_TOT_CONT_CUM_PER := 0;
-           VL_RET_CUM := 0;
-           VL_OUT_DED_CUM := 0;
-           VL_CONT_CUM_REC := 0;
-           VL_TOT_CONT_REC := 0;
+//         with RegistroM600 do
+//         begin
+//           VL_TOT_CONT_NC_PER := 1;
+//           VL_TOT_CRED_DESC := 2;
+//           VL_TOT_CRED_DESC_ANT := 3;
+//           VL_TOT_CONT_NC_DEV := 4;
+//           VL_RET_NC := 5;
+//           VL_OUT_DED_NC := 6;
+//           VL_CONT_NC_REC := 7;
+//           VL_TOT_CONT_CUM_PER := 8;
+//           VL_RET_CUM := 9;
+//           VL_OUT_DED_CUM := 10;
+//           VL_CONT_CUM_REC := 11;
+//           VL_TOT_CONT_REC := 12;
+//
+//           with RegistroM610New do
+//           begin
+//             COD_CONT := ccNaoAcumAliqBasica;
+//             VL_REC_BRT := 2;
+//             VL_BC_CONT := 3;
+//             ALIQ_COFINS := 4;
+//             QUANT_BC_COFINS := 5;
+//             ALIQ_COFINS_QUANT := 6;
+//             VL_CONT_APUR := 7;
+//             VL_AJUS_ACRES := 8;
+//             VL_AJUS_REDUC := 9;
+//             VL_CONT_DIFER := 10;
+//             VL_CONT_DIFER_ANT := 11;
+//             VL_CONT_PER := 12;
+//           end;
+//
+//         end;
 
-           with RegistroM210New do
-           begin
-             COD_CONT := ccNaoAcumAliqBasica;
-             VL_REC_BRT := 0;
-             VL_BC_CONT := 0;
-             ALIQ_PIS := 0;
-             QUANT_BC_PIS := 0;
-             ALIQ_PIS_QUANT := 0;
-             VL_CONT_APUR := 0;
-             VL_AJUS_ACRES := 0;
-             VL_AJUS_REDUC := 0;
-             VL_CONT_DIFER := 0;
-             VL_CONT_DIFER_ANT := 0;
-             VL_CONT_PER := 0;
-           end;
+//          vlBC := 293040.02;
+//          vlBcCofins := 20823.48;
+//          aliqCofins := 7.6;
+//          vlcredNC := 0;
+//          with RegistroM600New do begin
+//            {02} VL_TOT_CONT_NC_PER := StrToCurr(FormatCurr('#####0.00',(vlBcCofins*aliqCofins)/100));
+//            {03} VL_TOT_CRED_DESC := vlcredNC;
+//            {04} VL_TOT_CRED_DESC_ANT := 0;
+//            {05} VL_TOT_CONT_NC_DEV := StrToCurr(FormatCurr('#####0.00',(vlBcCofins*aliqCofins)/100))-vlcredNC;
+//            {06} VL_RET_NC := 0;
+//            {07} VL_OUT_DED_NC := 0;
+//            {08} VL_CONT_NC_REC := StrToCurr(FormatCurr('#####0.00',(vlBcCofins*aliqCofins)/100))-vlcredNC;
+//            {09} VL_TOT_CONT_CUM_PER := 0;
+//            {10} VL_RET_CUM := 0;
+//            {11} VL_OUT_DED_CUM := 0;
+//            {12} VL_CONT_CUM_REC := 0;
+//            {13} VL_TOT_CONT_REC := StrToCurr(FormatCurr('#####0.00',(vlBcCofins*aliqCofins)/100))-vlcredNC;
+//
+//            with RegistroM610New do begin
+//            {02} COD_CONT := ccNaoAcumAliqBasica;
+//            {03} VL_REC_BRT := vlBC;
+//            {04} VL_BC_CONT := vlBcCofins;
+//            {05} ALIQ_COFINS := aliqCofins;
+//            {06} QUANT_BC_COFINS := 0;
+//            {07} ALIQ_COFINS_QUANT := 0;
+//            {08} VL_CONT_APUR := StrToCurr(FormatCurr('#####0.00',(vlBcCofins*aliqCofins)/100));
+//            {09} VL_AJUS_ACRES := 0;
+//            {10} VL_AJUS_REDUC := 0;
+//            {11} VL_CONT_DIFER := 0;
+//            {12} VL_CONT_DIFER_ANT:= 0;
+//            {13} VL_CONT_PER := StrToCurr(FormatCurr('#####0.00',(vlBcCofins*aliqCofins)/100));
+//            end;
+//          end;
 
-         end;
-
-         with RegistroM600 do
-         begin
-           VL_TOT_CONT_NC_PER := 1;
-           VL_TOT_CRED_DESC := 2;
-           VL_TOT_CRED_DESC_ANT := 3;
-           VL_TOT_CONT_NC_DEV := 4;
-           VL_RET_NC := 5;
-           VL_OUT_DED_NC := 6;
-           VL_CONT_NC_REC := 7;
-           VL_TOT_CONT_CUM_PER := 8;
-           VL_RET_CUM := 9;
-           VL_OUT_DED_CUM := 10;
-           VL_CONT_CUM_REC := 11;
-           VL_TOT_CONT_REC := 12;
-
-           with RegistroM610New do
-           begin
-             COD_CONT := ccNaoAcumAliqBasica;
-             VL_REC_BRT := 2;
-             VL_BC_CONT := 3;
-             ALIQ_COFINS := 4;
-             QUANT_BC_COFINS := 5;
-             ALIQ_COFINS_QUANT := 6;
-             VL_CONT_APUR := 7;
-             VL_AJUS_ACRES := 8;
-             VL_AJUS_REDUC := 9;
-             VL_CONT_DIFER := 10;
-             VL_CONT_DIFER_ANT := 11;
-             VL_CONT_PER := 12;
-           end;
-
-         end;
 
       end;
    end;
@@ -832,16 +879,16 @@ begin
       begin
          IND_MOV := imComDados;
          //
-         for INotas := 1 to NNotas do
+         with RegistroA010New do
          begin
-           with RegistroA010New do
+            CNPJ := '11111111111180'; //ou 33333333333328
+           for INotas := 1 to NNotas do
            begin
-              CNPJ := '11111111111180';
               with RegistroA100New do
               begin
                  IND_OPER      := itoContratado;
                  IND_EMIT      := iedfProprio;
-                 COD_PART      := '001';
+                 COD_PART      := '2'; // baseado no registro 0150
                  COD_SIT       := sdfRegular;
                  SER           := '';
                  SUB           := '';
@@ -849,7 +896,7 @@ begin
                  CHV_NFSE      := '';
                  DT_DOC        := DT_INI + INotas;
                  DT_EXE_SERV   := DT_INI + INotas;
-                 VL_DOC        := 0;
+                 VL_DOC        := 0.01; //Deve ser maior que zero
                  IND_PGTO      := tpSemPagamento;
                  VL_DESC       := 0;
                  VL_BC_PIS     := 0;
@@ -861,27 +908,29 @@ begin
                  VL_ISS        := 0;
 
                  //A170
-                 for IItens := 1 to 10 do
+                 for IItens := 1 to 5 do
                  begin
                    with RegistroA170New do   //Inicio Adicionar os Itens:
                    begin
                       NUM_ITEM         := IItens;
-                      COD_ITEM         := IntToStr(NUM_ITEM);
+                      COD_ITEM         := FormatFloat('000000', NUM_ITEM); //Código deve ser baseado no registro 0200
+//                      COD_ITEM         := IntToStr(NUM_ITEM);
                       DESCR_COMPL      := FormatFloat('NF000000',INotas)+' -> ITEM '+COD_ITEM;
                       VL_ITEM          := 0;
                       VL_DESC          := 0;
-                      NAT_BC_CRED      := bccAqBensRevenda;
+                      NAT_BC_CRED      := bccOutrasOpeComDirCredito;
                       IND_ORIG_CRED    := opcMercadoInterno;
-                      CST_PIS          := stpisOutrasOperacoesSaida;
+                      CST_PIS          := stpisOutrasOperacoes;
                       VL_BC_PIS        := 0;
                       ALIQ_PIS         := 0;
                       VL_PIS           := 0;
-                      CST_COFINS       := stcofinsOutrasOperacoesSaida;
+                      CST_COFINS       := stcofinsOutrasOperacoes;
                       VL_BC_COFINS     := 0;
                       ALIQ_COFINS      := 0;
                       VL_COFINS        := 0;
-                      COD_CTA          := '000';
-                      COD_CCUS         := '123';
+                      COD_CTA          := '01';
+                      COD_CCUS         := '';
+//                      COD_CCUS         := '123'; //Para usar o COD_CCUS é necessário gerar, primeiro, um registro 0600 correspondente.
                     end; //Fim dos Itens;
                  end;
               end;
@@ -905,7 +954,7 @@ begin
       LoadToMemo;
    end;
 
-   ProgressBar1.Visible := False ;   
+   ProgressBar1.Visible := False ;
 end;
 
 end.

@@ -150,7 +150,7 @@ object FrmSPEDPisCofins: TFrmSPEDPisCofins
     object edtFile: TEdit
       Left = 22
       Top = 28
-      Width = 244
+      Width = 224
       Height = 21
       Anchors = [akLeft, akTop, akRight]
       TabOrder = 0
@@ -159,7 +159,7 @@ object FrmSPEDPisCofins: TFrmSPEDPisCofins
       OnExit = edtFileChange
     end
     object cbConcomitante: TCheckBox
-      Left = 290
+      Left = 270
       Top = 30
       Width = 134
       Height = 19
@@ -185,7 +185,7 @@ object FrmSPEDPisCofins: TFrmSPEDPisCofins
       Width = 80
       Height = 21
       TabOrder = 2
-      Text = '10'
+      Text = '5'
     end
   end
   object Panel2: TPanel
@@ -219,7 +219,7 @@ object FrmSPEDPisCofins: TFrmSPEDPisCofins
       ExplicitWidth = 450
     end
     object btnB_0: TButton
-      Left = 22
+      Left = 23
       Top = 51
       Width = 62
       Height = 25

@@ -206,6 +206,9 @@ begin
            QRCTe.PrevShowThumbs      := False;
            QRCTe.PreviewInitialState := wsMaximized;
            QRCTe.PrevInitialZoom     := qrZoomToWidth;
+           
+           // Incluido por Italo em 14/02/2012
+           QRCTe.PreviewDefaultSaveType := stPDF;
          {$ENDIF}
 
            QRCTe.Prepare;

@@ -138,7 +138,7 @@ begin
         IND_SIT_ESP      := indSitAbertura;
         NUM_REC_ANTERIOR := '';
         NOME             := 'NOME DA EMPRESA';
-        CNPJ             := '11111111111180';
+        CNPJ             := '11111111000191';
         UF               := 'ES';
         COD_MUN          := 3200607;
         SUFRAMA          := '';
@@ -155,7 +155,7 @@ begin
               NOME       := 'NOME DO CONTADOR';
               CPF        := '12345678909'; // Deve ser uma informação valida
               CRC        := '123456';
-              CNPJ       := '22222222222259';
+              CNPJ       := '22222222000000';
               CEP        := '';
               ENDERECO   := '';
               NUM        := '';
@@ -187,9 +187,9 @@ begin
                  COD_EST := IntToStr(int0140);
                  NOME    := 'NOME DO ESTABELECIMENTO '+IntToStr(int0140);
                  if int0140 = 1 then
-                    CNPJ    := '11111111111180'
+                    CNPJ    := '11111111000191'
                  else
-                    CNPJ    := '11111111000191'; //oito primeiros dígitos devem bater...
+                    CNPJ    := '11111111000272'; //oito primeiros dígitos devem bater...
 
                  UF      := 'ES';
                  IE      := '';
@@ -269,7 +269,7 @@ begin
              COD_CTA := '01';
              NOME_CTA := 'NOME CTA';
              COD_CTA_REF := '0';
-             CNPJ_EST := '33333333333328';
+             CNPJ_EST := '33333333000191';
            end;
 
         end;
@@ -432,7 +432,7 @@ begin
          //C010 - Identificação do Estabelecimento
          with RegistroC010New do
          begin
-           CNPJ := '11111111111180';
+           CNPJ := '11111111000191';
            IND_ESCRI := IndEscriConsolidado;
 
            //Inserir Notas...
@@ -589,7 +589,7 @@ begin
         //Estabelecimento
         with RegistroD010New do
         begin
-          CNPJ := '11111111111180';
+          CNPJ := '11111111000191';
 
 //          for INotas := 1 to NNotas do
 //          begin
@@ -675,7 +675,7 @@ begin
         //F010 - Identificação do Estabelecimento
         with RegistroF010New do
         begin
-           CNPJ := '11111111111180';
+           CNPJ := '11111111000191';
 
            //F100 - Demais Documentos e Operações Geradoras de Contribuição e Créditos
            with RegistroF100New do
@@ -685,13 +685,13 @@ begin
               COD_ITEM      := '000001'; //Codigo do Item no registro 0200
               DT_OPER       := Date();
               VL_OPER       := 0.01;  //Deve ser Maior que zero
-              CST_PIS       := stpisOperCredExcRecTribMercInt;  //Para Operação Representativa de Aquisição, Custos, Despesa ou Encargos, Sujeita à Incidência de Crédito, o CST deve ser referente a Operações com Direito a Crédito (50 a 56) ou a Crédito Presumido (60 a 66).Para Operação Representativa de Receita Auferida, Sujeita ao Pagamento da Contribuição, o CST deve ser igual a 01, 02, 03 ou 05.Para Operação Representativa de Receita Auferida NÃO Sujeita ao Pagamento da Contribuição, o CST deve ser igual a 04, 06, 07, 08, 09, 49 ou 99.
+              CST_PIS       := stpisCredPresAquiExcRecTribMercInt;  //Para Operação Representativa de Aquisição, Custos, Despesa ou Encargos, Sujeita à Incidência de Crédito, o CST deve ser referente a Operações com Direito a Crédito (50 a 56) ou a Crédito Presumido (60 a 66).Para Operação Representativa de Receita Auferida, Sujeita ao Pagamento da Contribuição, o CST deve ser igual a 01, 02, 03 ou 05.Para Operação Representativa de Receita Auferida NÃO Sujeita ao Pagamento da Contribuição, o CST deve ser igual a 04, 06, 07, 08, 09, 49 ou 99.
               VL_BC_PIS     := 0;
               ALIQ_PIS      := 1.2375;
               VL_PIS        := 0;
-              CST_COFINS    := stcofinsOperCredExcRecTribMercInt;
+              CST_COFINS    := stcofinsCredPresAquiExcRecTribMercInt;
               VL_BC_COFINS  := 0;
-              ALIQ_COFINS   := 0;
+              ALIQ_COFINS   := 3.04;
               VL_COFINS     := 0;
               NAT_BC_CRED   := bccAqBensRevenda;
               IND_ORIG_CRED := opcMercadoInterno;
@@ -722,74 +722,121 @@ begin
    begin
       with RegistroM001New do
       begin
-        IND_MOV := imSemDados;
+        IND_MOV := imComDados;
 
-//        //M100 - Crédito de PIS/PASEP Relativo ao Período
-//         with RegistroM100New do
-//         begin
-//            COD_CRED       := '101';
-//            IND_CRED_ORI   := TACBrIndCredOri(0);
-//            VL_BC_PIS      := 0;
-//            ALIQ_PIS       := 0;
-//            QUANT_BC_PIS   := 0;
-//            ALIQ_PIS_QUANT := 0;
-//            VL_CRED        := 0.01; //OBRIGATORIO
-//            VL_AJUS_ACRES  := 0;
-//            VL_AJUS_REDUC  := 0;
-//            VL_CRED_DIF    := 0;
-//            VL_CRED_DISP   := 0;
-//            IND_DESC_CRED  := TACBrIndDescCred(0);
-//            VL_CRED_DESC   := 0;
-//            SLD_CRED       := 0;
-//         end;
-//
-//         with RegistroM200New do
-//         begin
-//           VL_TOT_CONT_NC_PER := 0;
-//           VL_TOT_CRED_DESC := 0;
-//           VL_TOT_CRED_DESC_ANT := 0;
-//           VL_TOT_CONT_NC_DEV := 0;
-//           VL_RET_NC := 0;
-//           VL_OUT_DED_NC := 0;
-//           VL_CONT_NC_REC := 0;
-//           VL_TOT_CONT_CUM_PER := 0;
-//           VL_RET_CUM := 0;
-//           VL_OUT_DED_CUM := 0;
-//           VL_CONT_CUM_REC := 0;
-//           VL_TOT_CONT_REC := 0;
-//
-//           with RegistroM210New do
-//           begin
-//             COD_CONT := ccNaoAcumAliqBasica;
-//             VL_REC_BRT := 0;
-//             VL_BC_CONT := 0;
-//             ALIQ_PIS := 0;
-//             QUANT_BC_PIS := 0;
-//             ALIQ_PIS_QUANT := 0;
-//             VL_CONT_APUR := 0;
-//             VL_AJUS_ACRES := 0;
-//             VL_AJUS_REDUC := 0;
-//             VL_CONT_DIFER := 0;
-//             VL_CONT_DIFER_ANT := 0;
-//             VL_CONT_PER := 0;
-//           end;
-//
-//         end;
+        //M100 - Crédito de PIS/PASEP Relativo ao Período
+         with RegistroM100New do
+         begin
+            COD_CRED       := '106';
+            IND_CRED_ORI   := icoOperProprias;
+            VL_BC_PIS      := 0;
+            ALIQ_PIS       := 1.2375;
+            QUANT_BC_PIS   := 0;
+            ALIQ_PIS_QUANT := 0;
+            VL_CRED        := 0.01; //OBRIGATORIO
+            VL_AJUS_ACRES  := 0;
+            VL_AJUS_REDUC  := 0;
+            VL_CRED_DIF    := 0;
+            VL_CRED_DISP   := 0.01;
+            IND_DESC_CRED  := idcTotal;
+            VL_CRED_DESC   := 0.01; //Valor do Crédito disponível, descontado da contribuição apurada no próprio período. Se IND_DESC_CRED=0, informar o valor total do Campo 12; Se IND_DESC_CRED=1, informar o valor parcial do Campo 12.
+            SLD_CRED       := 0;
 
-//         with RegistroM600 do
-//         begin
-//           VL_TOT_CONT_NC_PER := 1;
-//           VL_TOT_CRED_DESC := 2;
-//           VL_TOT_CRED_DESC_ANT := 3;
-//           VL_TOT_CONT_NC_DEV := 4;
-//           VL_RET_NC := 5;
-//           VL_OUT_DED_NC := 6;
-//           VL_CONT_NC_REC := 7;
-//           VL_TOT_CONT_CUM_PER := 8;
-//           VL_RET_CUM := 9;
-//           VL_OUT_DED_CUM := 10;
-//           VL_CONT_CUM_REC := 11;
-//           VL_TOT_CONT_REC := 12;
+            with RegistroM105New do
+            begin
+              NAT_BC_CRED := bccAqBensRevenda;
+              CST_PIS := stpisCredPresAquiExcRecTribMercInt;
+              VL_BC_PIS_TOT := 0;
+              VL_BC_PIS_CUM := 0;
+              VL_BC_PIS_NC := 0;
+              VL_BC_PIS := 0;
+              QUANT_BC_PIS_TOT := 0;
+              QUANT_BC_PIS := 0;
+              DESC_CRED := '';
+            end;
+
+         end;
+
+         with RegistroM200New do
+         begin
+           VL_TOT_CONT_NC_PER := 0.01;
+           VL_TOT_CRED_DESC := 0.01;
+           VL_TOT_CRED_DESC_ANT := 0;
+           VL_TOT_CONT_NC_DEV := 0;
+           VL_RET_NC := 0;
+           VL_OUT_DED_NC := 0;
+           VL_CONT_NC_REC := 0;
+           VL_TOT_CONT_CUM_PER := 0;
+           VL_RET_CUM := 0;
+           VL_OUT_DED_CUM := 0;
+           VL_CONT_CUM_REC := 0;
+           VL_TOT_CONT_REC := 0;
+
+           with RegistroM210New do
+           begin
+             COD_CONT := ccNaoAcumAliqBasica;
+             VL_REC_BRT := 0;
+             VL_BC_CONT := 0;
+             ALIQ_PIS := 0;
+             QUANT_BC_PIS := 0;
+             ALIQ_PIS_QUANT := 0;
+             VL_CONT_APUR := 0.01;
+             VL_AJUS_ACRES := 0;
+             VL_AJUS_REDUC := 0;
+             VL_CONT_DIFER := 0;
+             VL_CONT_DIFER_ANT := 0;
+             VL_CONT_PER := 0.01;
+           end;
+
+         end;
+
+         with RegistroM500New do
+         begin
+           COD_CRED           := '106';
+           IND_CRED_ORI       := icoOperProprias;
+           VL_BC_COFINS       := 0;
+           ALIQ_COFINS        := 3.0400;
+           QUANT_BC_COFINS    := 0;
+           ALIQ_COFINS_QUANT  := 0;
+           VL_CRED            := 0; //OBRIGATORIO
+           VL_AJUS_ACRES      := 0;
+           VL_AJUS_REDUC      := 0;
+           VL_CRED_DIFER      := 0;
+           VL_CRED_DISP       := 0;
+           IND_DESC_CRED      := idcTotal;
+           VL_CRED_DESC       := 0;
+           SLD_CRED           := 0;
+
+           with RegistroM505New do
+           begin
+              NAT_BC_CRED := bccAqBensRevenda;
+              CST_COFINS := stcofinsCredPresAquiExcRecTribMercInt;
+              VL_BC_COFINS_TOT := 0;
+              VL_BC_COFINS_CUM := 0;
+              VL_BC_COFINS_NC := 0;
+              VL_BC_COFINS := 0;
+              QUANT_BC_COFINS_TOT := 0;
+              QUANT_BC_COFINS := 0;
+              DESC_CRED := '';
+           end;
+
+         end;
+
+
+         with RegistroM600 do
+         begin
+           VL_TOT_CONT_NC_PER := 0;
+           VL_TOT_CRED_DESC := 0;
+           VL_TOT_CRED_DESC_ANT := 0;
+           VL_TOT_CONT_NC_DEV := 0;
+           VL_RET_NC := 0;
+           VL_OUT_DED_NC := 0;
+           VL_CONT_NC_REC := 0;
+           VL_TOT_CONT_CUM_PER := 0;
+           VL_RET_CUM := 0;
+           VL_OUT_DED_CUM := 0;
+           VL_CONT_CUM_REC := 0;
+           VL_TOT_CONT_REC := 0;
 //
 //           with RegistroM610New do
 //           begin
@@ -807,7 +854,7 @@ begin
 //             VL_CONT_PER := 12;
 //           end;
 //
-//         end;
+         end;
 
 //          vlBC := 293040.02;
 //          vlBcCofins := 20823.48;
@@ -881,7 +928,7 @@ begin
          //
          with RegistroA010New do
          begin
-            CNPJ := '11111111111180'; //ou 33333333333328
+            CNPJ := '11111111000191'; //ou 33333333333328
            for INotas := 1 to NNotas do
            begin
               with RegistroA100New do

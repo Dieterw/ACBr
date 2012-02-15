@@ -150,7 +150,7 @@ object FrmSPEDPisCofins: TFrmSPEDPisCofins
     object edtFile: TEdit
       Left = 22
       Top = 28
-      Width = 224
+      Width = 216
       Height = 21
       Anchors = [akLeft, akTop, akRight]
       TabOrder = 0
@@ -159,7 +159,7 @@ object FrmSPEDPisCofins: TFrmSPEDPisCofins
       OnExit = edtFileChange
     end
     object cbConcomitante: TCheckBox
-      Left = 270
+      Left = 262
       Top = 30
       Width = 134
       Height = 19
@@ -333,7 +333,7 @@ object FrmSPEDPisCofins: TFrmSPEDPisCofins
     Arquivo = 'ACBrSPEDPisCofins.txt'
     Delimitador = '|'
     TrimString = True
-    CurMascara = '#0.00'
+    CurMascara = '#0.00##'
     OnError = ACBrSPEDPisCofins1Error
     Left = 352
     Top = 248

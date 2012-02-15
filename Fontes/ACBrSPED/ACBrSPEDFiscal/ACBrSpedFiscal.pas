@@ -2058,6 +2058,14 @@ begin
                QTD_REG_BLC := Bloco_H.RegistroH010Count;
             end;
          end;
+         if Bloco_H.RegistroH020Count > 0 then
+         begin
+            with New do
+            begin
+               REG_BLC := 'H020';
+               QTD_REG_BLC := Bloco_H.RegistroH020Count;
+            end;
+         end;
       end;
    end;
 end;

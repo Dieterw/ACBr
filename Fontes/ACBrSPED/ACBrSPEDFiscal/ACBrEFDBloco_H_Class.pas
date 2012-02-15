@@ -56,9 +56,11 @@ type
 
     FRegistroH005Count: Integer;
     FRegistroH010Count: Integer;
+    FRegistroH020Count: Integer;
 
     procedure WriteRegistroH005(RegH001: TRegistroH001);
     procedure WriteRegistroH010(RegH005: TRegistroH005);
+    procedure WriteRegistroH020(RegH010: TRegistroH010);
 
     procedure CriaRegistros;
     procedure LiberaRegistros;
@@ -70,6 +72,7 @@ type
     function RegistroH001New: TRegistroH001;
     function RegistroH005New: TRegistroH005;
     function RegistroH010New: TRegistroH010;
+    function RegistroH020New: TRegistroH020;
 
     procedure WriteRegistroH001;
     procedure WriteRegistroH990;
@@ -80,6 +83,7 @@ type
 
     property RegistroH005Count: Integer read FRegistroH005Count write FRegistroH005Count;
     property RegistroH010Count: Integer read FRegistroH010Count write FRegistroH010Count;
+    property RegistroH020Count: Integer read FRegistroH020Count write FRegistroH020Count;
   end;
 
 implementation
@@ -132,12 +136,35 @@ end;
 
 function TBloco_H.RegistroH005New: TRegistroH005;
 begin
-   Result := FRegistroH001.RegistroH005.New;
+   Result := FRegistroH001.RegistroH005.New(FRegistroH001);
 end;
 
 function TBloco_H.RegistroH010New: TRegistroH010;
+var
+UH005: TRegistroH005;
+UH005Count: Integer;
 begin
-   Result := FRegistroH001.RegistroH005.Items[FRegistroH001.RegistroH005.Count -1].RegistroH010.New;
+   UH005Count := FRegistroH001.RegistroH005.Count -1;
+   if UH005Count = -1 then
+      raise Exception.Create('O registro H010 deve ser filho do registro H005, e não existe nenhum H005 pai!');
+
+   UH005  := FRegistroH001.RegistroH005.Items[UH005Count];
+   Result := UH005.RegistroH010.New(UH005);
+end;
+
+function TBloco_H.RegistroH020New: TRegistroH020;
+var
+UH010: TRegistroH010;
+UH005Count: integer;
+UH010Count: integer;
+begin
+   UH005Count := FRegistroH001.RegistroH005.Count -1;
+   UH010Count := FRegistroH001.RegistroH005.Items[UH005Count].RegistroH010.Count -1;
+   if UH010Count = -1 then
+      raise Exception.Create('O registro H020 deve ser filho do registro H010, e não existe nenhum H010 pai!');
+
+   UH010  := FRegistroH001.RegistroH005.Items[UH005Count].RegistroH010.Items[UH010Count];
+   Result := UH010.RegistroH020.New(UH010);
 end;
 
 procedure TBloco_H.WriteRegistroH001;
@@ -204,10 +231,35 @@ begin
                LFill( TXT_COMPL ) +
                LFill( COD_CTA ) ) ;
         end;
+        /// Registros FILHOS
+        WriteRegistroH020( RegH005.RegistroH010.Items[intFor] );
+
         RegistroH990.QTD_LIN_H := RegistroH990.QTD_LIN_H + 1;
      end;
      /// Variavél para armazenar a quantidade de registro do tipo.
      FRegistroH010Count := FRegistroH010Count + RegH005.RegistroH010.Count;
+  end;
+end;
+
+procedure TBloco_H.WriteRegistroH020(RegH010: TRegistroH010);
+var
+  intFor: integer;
+begin
+  if Assigned( RegH010.RegistroH020 ) then
+  begin
+     for intFor := 0 to RegH010.RegistroH020.Count - 1 do
+     begin
+        with RegH010.RegistroH020.Items[intFor] do
+        begin
+          Add( LFill('H020') +
+               LFill( CST_ICMS,3 ) +
+               LFill( BC_ICMS,0,2 ) +
+               LFill( VL_ICMS,0,2 ) );
+        end;
+        RegistroH990.QTD_LIN_H := RegistroH990.QTD_LIN_H + 1;
+     end;
+     /// Variavél para armazenar a quantidade de registro do tipo.
+     FRegistroH020Count := FRegistroH020Count + RegH010.RegistroH020.Count;
   end;
 end;
 

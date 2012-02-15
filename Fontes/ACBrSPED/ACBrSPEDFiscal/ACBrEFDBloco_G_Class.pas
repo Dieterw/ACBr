@@ -147,31 +147,40 @@ end;
 
 function TBloco_G.RegistroG110New: TRegistroG110;
 begin
-   Result := FRegistroG001.RegistroG110.New;
+   Result := FRegistroG001.RegistroG110.New(FRegistroG001);
 end;
 
 function TBloco_G.RegistroG125New: TRegistroG125;
 var
+G110: TRegistroG110;
 G110Count: integer;
 begin
    G110Count := FRegistroG001.RegistroG110.Count -1;
+   if G110Count = -1 then
+      raise Exception.Create('O registro G125 deve ser filho do registro G110, e não existe nenhum G110 pai!');
    //
-   Result := FRegistroG001.RegistroG110.Items[G110Count].RegistroG125.New;
+   G110   := FRegistroG001.RegistroG110.Items[G110Count];
+   Result := G110.RegistroG125.New(G110);
 end;
 
 function TBloco_G.RegistroG130New: TRegistroG130;
 var
+G125: TRegistroG125;
 G110Count: integer;
 G125Count: integer;
 begin
    G110Count := FRegistroG001.RegistroG110.Count -1;
    G125Count := FRegistroG001.RegistroG110.Items[G110Count].RegistroG125.Count -1;
+   if G125Count = -1 then
+      raise Exception.Create('O registro G130 deve ser filho do registro G125, e não existe nenhum G125 pai!');
    //
-   Result := FRegistroG001.RegistroG110.Items[G110Count].RegistroG125.Items[G125Count].RegistroG130.New;
+   G125   := FRegistroG001.RegistroG110.Items[G110Count].RegistroG125.Items[G125Count];
+   Result := G125.RegistroG130.New(G125);
 end;
 
 function TBloco_G.RegistroG140New: TRegistroG140;
 var
+G130: TRegistroG130;
 G110Count: integer;
 G125Count: integer;
 G130Count: integer;
@@ -179,8 +188,11 @@ begin
    G110Count := FRegistroG001.RegistroG110.Count -1;
    G125Count := FRegistroG001.RegistroG110.Items[G110Count].RegistroG125.Count -1;
    G130Count := FRegistroG001.RegistroG110.Items[G110Count].RegistroG125.Items[G125Count].RegistroG130.Count -1;
+   if G130Count = -1 then
+      raise Exception.Create('O registro G140 deve ser filho do registro G130, e não existe nenhum G130 pai!');
    //
-   Result := FRegistroG001.RegistroG110.Items[G110Count].RegistroG125.Items[G125Count].RegistroG130.Items[G130Count].RegistroG140.New;
+   G130   := FRegistroG001.RegistroG110.Items[G110Count].RegistroG125.Items[G125Count].RegistroG130.Items[G130Count];
+   Result := G130.RegistroG140.New(G130);
 end;
 
 procedure TBloco_G.WriteRegistroG001;
@@ -382,12 +394,17 @@ end;
 
 function TBloco_G.RegistroG126New: TRegistroG126;
 var
+G125: TRegistroG125;
 G110Count: integer;
 G125Count: integer;
 begin
    G110Count := FRegistroG001.RegistroG110.Count -1;
    G125Count := FRegistroG001.RegistroG110.Items[G110Count].RegistroG125.Count -1;
-   Result := FRegistroG001.RegistroG110.Items[G110Count].RegistroG125.Items[G125Count].RegistroG126.New;
+   if G125Count = -1 then
+      raise Exception.Create('O registro G126 deve ser filho do registro G125, e não existe nenhum G125 pai!');
+
+   G125   := FRegistroG001.RegistroG110.Items[G110Count].RegistroG125.Items[G125Count];
+   Result := G125.RegistroG126.New(G125);
 end;
 
 (*Por: Edilson Alves de oliveira*)

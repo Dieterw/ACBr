@@ -68,8 +68,6 @@ type
 
   TRegistroG110 = class
   private
-//    fDT_INI: TDateTime;         /// Data Inicial da Apuracao
-//    fDT_FIN: TDateTime;         /// Data Final da Apuracao
     fMODO_CIAP: String;         /// Modelo de CIAP adotado C ou D
     fSALDO_IN_ICMS: Currency;   /// Saldo inicial de ICMS do CIAP Modelo C
     fSALDO_FN_ICMS: Currency;   /// Saldo Final ICMS do CIAP Modelo C
@@ -84,8 +82,6 @@ type
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
 
-//    property DT_INI: TDateTime read fDT_INI write fDT_INI;
-//    property DT_FIN: TDateTime read fDT_FIN write fDT_FIN;
     property MODO_CIAP: String read fMODO_CIAP write fMODO_CIAP;                /// Até versão 102
     property SALDO_IN_ICMS: Currency read fSALDO_IN_ICMS write fSALDO_IN_ICMS;
     property SALDO_FN_ICMS: Currency read fSALDO_FN_ICMS write fSALDO_FN_ICMS;  /// Até versão 102
@@ -106,7 +102,7 @@ type
     function GetItem(Index: Integer): TRegistroG110; /// GetItem
     procedure SetItem(Index: Integer; const Value: TRegistroG110); /// SetItem
   public
-    function New: TRegistroG110;
+    function New(AOwner: TRegistroG001): TRegistroG110;
     property Items[Index: Integer]: TRegistroG110 read GetItem write SetItem;
   end;
 
@@ -153,7 +149,7 @@ type
     function GetItem(Index: Integer): TRegistroG125; /// GetItem
     procedure SetItem(Index: Integer; const Value: TRegistroG125); /// SetItem
   public
-    function New: TRegistroG125;
+    function New(AOwner: TRegistroG110): TRegistroG125;
     property Items[Index: Integer]: TRegistroG125 read GetItem write SetItem;
   end;
 
@@ -187,7 +183,7 @@ type
     function GetItem(Index: Integer): TRegistroG126; /// GetItem
     procedure SetItem(Index: Integer; const Value: TRegistroG126); /// SetItem
   public
-    function New: TRegistroG126;
+    function New(AOwner: TRegistroG125): TRegistroG126;
     property Items[Index: Integer]: TRegistroG126 read GetItem write SetItem;
   end;
 
@@ -225,7 +221,7 @@ type
     function GetItem(Index: Integer): TRegistroG130; /// GetItem
     procedure SetItem(Index: Integer; const Value: TRegistroG130); /// SetItem
   public
-    function New: TRegistroG130;
+    function New(AOwner: TRegistroG125): TRegistroG130;
     property Items[Index: Integer]: TRegistroG130 read GetItem write SetItem;
   end;
 
@@ -247,7 +243,7 @@ type
     function GetItem(Index: Integer): TRegistroG140; /// GetItem
     procedure SetItem(Index: Integer; const Value: TRegistroG140); /// SetItem
   public
-    function New: TRegistroG140;
+    function New(AOwner: TRegistroG130): TRegistroG140;
     property Items[Index: Integer]: TRegistroG140 read GetItem write SetItem;
   end;
 
@@ -283,8 +279,11 @@ begin
   Result := TRegistroG110(Inherited Items[Index]);
 end;
 
-function TRegistroG110List.New: TRegistroG110;
+function TRegistroG110List.New(AOwner: TRegistroG001): TRegistroG110;
 begin
+  if not (AOwner is TRegistroG001) then
+     raise Exception.Create('O registro pai recebido não é o registro G001!');
+
   Result := TRegistroG110.Create;
   Add(Result);
 end;
@@ -316,8 +315,11 @@ begin
   Result := TRegistroG125(Inherited Items[Index]);
 end;
 
-function TRegistroG125List.New: TRegistroG125;
+function TRegistroG125List.New(AOwner: TRegistroG110): TRegistroG125;
 begin
+  if not (AOwner is TRegistroG110) then
+     raise Exception.Create('O registro pai recebido não é o registro G110!');
+
   Result := TRegistroG125.Create;
   Add(Result);
 end;
@@ -347,8 +349,11 @@ begin
   Result := TRegistroG130(Inherited Items[Index]);
 end;
 
-function TRegistroG130List.New: TRegistroG130;
+function TRegistroG130List.New(AOwner: TRegistroG125): TRegistroG130;
 begin
+  if not (AOwner is TRegistroG125) then
+     raise Exception.Create('O registro pai recebido não é o registro G125!');
+
   Result := TRegistroG130.Create;
   Add(Result);
 end;
@@ -365,8 +370,11 @@ begin
   Result := TRegistroG140(Inherited Items[Index]);
 end;
 
-function TRegistroG140List.New: TRegistroG140;
+function TRegistroG140List.New(AOwner: TRegistroG130): TRegistroG140;
 begin
+  if not (AOwner is TRegistroG130) then
+     raise Exception.Create('O registro pai recebido não é o registro G130!');
+
   Result := TRegistroG140.Create;
   Add(Result);
 end;
@@ -398,8 +406,11 @@ begin
   Result := TRegistroG126(Inherited Items[Index]);
 end;
 
-function TRegistroG126List.New: TRegistroG126;
+function TRegistroG126List.New(AOwner: TRegistroG125): TRegistroG126;
 begin
+  if not (AOwner is TRegistroG125) then
+     raise Exception.Create('O registro pai recebido não é o registro G125!');
+
   Result := TRegistroG126.Create;
   Add(Result);
 end;

@@ -333,7 +333,7 @@ object FrmSPEDPisCofins: TFrmSPEDPisCofins
     Arquivo = 'ACBrSPEDPisCofins.txt'
     Delimitador = '|'
     TrimString = True
-    CurMascara = '#0.00##'
+    CurMascara = '#0.00'
     OnError = ACBrSPEDPisCofins1Error
     Left = 352
     Top = 248

@@ -480,7 +480,7 @@ begin
                      NUM_ITEM         := FormatFloat('000', IItens);
                      COD_ITEM         := FormatFloat('000000',StrToInt(NUM_ITEM));
                      DESCR_COMPL      := FormatFloat('NF000000',INotas)+' -> ITEM '+COD_ITEM;
-                     QTD              := 1;
+                     QTD              := 1.123456; // O último dígito deve ser ignorado no arquivo
                      UNID             := 'UN';
                      VL_ITEM          := 0;
                      VL_DESC          := 0;

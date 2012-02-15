@@ -1277,6 +1277,7 @@ end;
 
 destructor TRegistro1001.Destroy;
 begin
+   FRegistro1010.Free;
    FRegistro1100.Free;
    FRegistro1200.Free;
    FRegistro1300.Free;

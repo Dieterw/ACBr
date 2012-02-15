@@ -733,11 +733,11 @@ begin
                LFill( PARC_OPER_NAO_BC_CRED,0,2 ) +
                LFill( strCST_PIS )                +
                LFill( VL_BC_PIS,0,2 )             +
-               LFill( ALIQ_PIS,0,2 )              +
+               DFill( ALIQ_PIS, 4 )              +
                LFill( VL_PIS,0,2 )                +
                LFill( strCST_COFINS )             +
                LFill( VL_BC_COFINS,0,2 )          +
-               LFill( ALIQ_COFINS,0,2 )           +
+               DFill( ALIQ_COFINS, 4 )           +
                LFill( VL_COFINS,0,2 )             +
                LFill( COD_CTA )                   +
                LFill( COD_CCUS )                  +
@@ -903,11 +903,11 @@ begin
                LFill( IND_NR_PARC,1 )             +
                LFill( strCST_PIS )                +
                LFill( VL_BC_PIS,0,2 )             +
-               LFill( ALIQ_PIS,0,2 )              +
+               DFill( ALIQ_PIS, 4 )              +
                LFill( VL_PIS,0,2 )                +
                LFill( strCST_COFINS )             +
                LFill( VL_BC_COFINS,0,2 )          +
-               LFill( ALIQ_COFINS,0,2 )           +
+               DFill( ALIQ_COFINS, 4 )           +
                LFill( VL_COFINS,0,2 )             +
                LFill( COD_CTA )                   +
                LFill( COD_CCUS )                  +
@@ -1068,10 +1068,10 @@ begin
                LFill( VL_BC_EST,0,2 )      +
                LFill( VL_BC_MEN_EST,0,2 )  +
                LFill( strCST_PIS )         +
-               LFill( ALIQ_PIS,0,2 )       +
+               DFill( ALIQ_PIS, 4 )       +
                LFill( VL_CRED_PIS,0,2 )    +
                LFill( strCST_COFINS )      +
-               LFill( ALIQ_COFINS,0,2 )    +
+               DFill( ALIQ_COFINS, 4 )    +
                LFill( VL_CRED_COFINS,0,2 ) +
                LFill( DESC_EST )           +
                LFill( COD_CTA ) ) ;
@@ -1188,11 +1188,11 @@ begin
                LFill( VL_TOT_REC,0,2 )     +
                LFill( strCST_PIS )         +
                LFill( VL_BC_PIS,0,2 )      +
-               LFill( ALIQ_PIS,0,2 )       +
+               DFill( ALIQ_PIS, 4 )       +
                LFill( VL_PIS,0,2 )         +
                LFill( strCST_COFINS )      +
                LFill( VL_BC_COFINS,0,2 )   +
-               LFill( ALIQ_COFINS,0,2 )    +
+               DFill( ALIQ_COFINS, 4 )    +
                LFill( VL_COFINS,0,2 )      +
                LFill( PERC_REC_RECEB,0,2 ) +
                LFill( IND_NAT_EMP )        + //Verificar criação da tabela no ACBrEPCBlocos
@@ -1300,13 +1300,13 @@ begin
            LFill( VL_EXC_BC_CUS_INC_ACUM,0,2 )  +
            LFill( VL_BC_CUS_INC,0,2 )           +
            LFill( strCST_PIS )                  +
-           LFill( ALIQ_PIS,0,2 )                +
+           DFill( ALIQ_PIS, 4 )                +
            LFill( VL_CRED_PIS_ACUM,0,2 )        +
            LFill( VL_CRED_PIS_DESC_ANT,0,2 )    +
            LFill( VL_CRED_PIS_DESC,0,2 )        +
            LFill( VL_CRED_PIS_DESC_FUT,0,2 )    +
            LFill( strCST_COFINS )               +
-           LFill( ALIQ_COFINS,0,2 )             +
+           DFill( ALIQ_COFINS, 4 )             +
            LFill( VL_CRED_COFINS_ACUM,0,2 )     +
            LFill( VL_CRED_COFINS_DESC_ANT,0,2 ) +
            LFill( VL_CRED_COFINS_DESC,0,2 )     +
@@ -1408,10 +1408,10 @@ begin
              LFill( VL_CUS_ORC_AJU,0,2 )   +
              LFill( VL_BC_CRED,0,2 )       +
              LFill( strCST_PIS )           +
-             LFill( ALIQ_PIS,0,2 )         +
+             DFill( ALIQ_PIS, 4 )         +
              LFill( VL_CRED_PIS_UTIL,0,2 ) +
              LFill( strCST_COFINS )        +
-             LFill( ALIQ_COFINS,0,2 )      +
+             DFill( ALIQ_COFINS, 4 )      +
              LFill( VL_CRED_COFINS_UTIL,0,2 ) ) ;
         //
         RegistroF990.QTD_LIN_F := RegistroF990.QTD_LIN_F + 1;
@@ -1545,13 +1545,13 @@ begin
                   LFill( VL_REC_COMP,0,2 )     +
                   LFill( strCST_PIS )          +
                   LFill( VL_DESC_PIS ,0,2 )    +
-                  LFill( VL_BC_PIS ,0,2 )      +
-                  LFill( ALIQ_PIS,0,2 )        +
+                  DFill( VL_BC_PIS, 4 )      +
+                  DFill( ALIQ_PIS, 4 )        +
                   LFill( VL_PIS,0,2 )          +
                   LFill( strCST_COFINS )       +
                   LFill( VL_DESC_COFINS ,0,2 ) +
-                  LFill( VL_BC_COFINS ,0,2 )   +
-                  LFill( ALIQ_COFINS,0,2 )     +
+                  DFill( VL_BC_COFINS, 4 )   +
+                  DFill( ALIQ_COFINS, 4 )     +
                   LFill( VL_COFINS,0,2 )       +
                   LFill( COD_MOD )             +
                   LFill( CFOP )                +
@@ -1661,14 +1661,14 @@ begin
                   LFill( VL_REC_COMP      ,0,2 )  +
                   LFill( strCST_PIS             ) +
                   LFill( VL_DESC_PIS       ,0,2 ) +
-                  LFill( QUANT_BC_PIS      ,0,2 ) +
-                  LFill( ALIQ_PIS_QUANT   ,0,2 )  +
+                  DFill( QUANT_BC_PIS      , 3 ) +
+                  DFill( ALIQ_PIS_QUANT    , 4 )  +
                   LFill( VL_PIS           ,0,2 )  +
                   LFill( strCST_COFINS        )   +
                   LFill( VL_DESC_COFINS    ,0,2 ) +
-                  LFill( QUANT_BC_COFINS   ,0,2 ) +
-                  LFill( ALIQ_COFINS_QUANT,0,2 )  +
-                  LFill( VL_COFINS        ,0,2 )  +
+                  DFill( QUANT_BC_COFINS   , 3 ) +
+                  DFill( ALIQ_COFINS_QUANT , 4 )  +
+                  LFill( VL_COFINS         ,0,2 )  +
                   LFill( COD_MOD           )      +
                   LFill( CFOP              )      +
                   LFill( COD_CTA           )      +
@@ -1711,7 +1711,7 @@ begin
           Add( LFill('F600')               +
                LFill( strIND_NAT_RET )     +
                LFill( DT_RET )             +
-               LFill( VL_BC_RET ,0,2 )     +
+               DFill( VL_BC_RET , 4 )     +
                LFill( VL_RET ,0,2 )        +
                LFill( COD_REC )            +
                LFill( strIND_NAT_REC )     +  
@@ -1943,13 +1943,13 @@ begin
                   LFill( VL_REC_CAIXA,0,2 )    +
                   LFill( strCST_PIS )          +
                   LFill( VL_DESC_PIS ,0,2 )    +
-                  LFill( VL_BC_PIS ,0,2 )      +
-                  LFill( ALIQ_PIS,0,2 )        +
+                  DFill( VL_BC_PIS, 4 )      +
+                  DFill( ALIQ_PIS, 4 )        +
                   LFill( VL_PIS,0,2 )          +
                   LFill( strCST_COFINS )       +
                   LFill( VL_DESC_COFINS ,0,2 ) +
-                  LFill( VL_BC_COFINS ,0,2 )   +
-                  LFill( ALIQ_COFINS,0,2 )     +
+                  DFill( VL_BC_COFINS, 4 )   +
+                  DFill( ALIQ_COFINS, 4 )     +
                   LFill( VL_COFINS,0,2 )       +
                   LFill( COD_MOD )             +
                   LFill( CFOP )                +

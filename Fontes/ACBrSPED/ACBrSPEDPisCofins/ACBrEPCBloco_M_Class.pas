@@ -452,20 +452,20 @@ begin
              idcParcial : strIND_DESC_CRED :='1' ; // 1 // Utilização de valor parcial para desconto da contribuição apurada no período, no Registro M200
           end;
 
-          Add( LFill('M100')               +
-               LFill( COD_CRED )           +        //Verificar criação da tabela no ACBrEPCBlocos
-               LFill( strIND_CRED_ORI )    +        
-               LFill( VL_BC_PIS,0,2 )      +
-               LFill( ALIQ_PIS,0,2 )       +
-               LFill( QUANT_BC_PIS,0,2 )   +
-               LFill( ALIQ_PIS_QUANT,0,2 ) +
-               LFill( VL_CRED ,0,2 )       +
-               LFill( VL_AJUS_ACRES ,0,2 ) +
-               LFill( VL_AJUS_REDUC ,0,2 ) +
-               LFill( VL_CRED_DIF ,0,2 )   +
-               LFill( VL_CRED_DISP ,0,2 )  +
-               LFill( strIND_DESC_CRED )   +        
-               LFill( VL_CRED_DESC ,0,2 )  +
+          Add( LFill('M100')                      +
+               LFill( COD_CRED )                  +  //Verificar criação da tabela no ACBrEPCBlocos
+               LFill( strIND_CRED_ORI )           +
+               LFill( VL_BC_PIS,0,2, True)        +
+               DFill( ALIQ_PIS, 4, True)          +
+               DFill( QUANT_BC_PIS, 3, True)     +  // Veja nota abaixo e também http://www.djsystem.com.br/acbr/mantis/view.php?id=1010
+               DFill( ALIQ_PIS_QUANT, 4, True)    +  //Deve permitir nulo, pois só deve ser preenchido caso COD_CRED ser 103, 203, 303, 105, 205, 305, 108, 208 e 308.
+               LFill( VL_CRED ,0,2, True)         +
+               LFill( VL_AJUS_ACRES ,0,2 )        +
+               LFill( VL_AJUS_REDUC ,0,2 )        +
+               LFill( VL_CRED_DIF ,0,2 )          +
+               LFill( VL_CRED_DISP ,0,2 )         +
+               LFill( strIND_DESC_CRED )          +
+               LFill( VL_CRED_DESC ,0,2, True )   +
                LFill( SLD_CRED ,0,2 ) ) ;
         end;
 
@@ -553,11 +553,11 @@ begin
                LFill( strNAT_BC_CRED )        +
                LFill( strCST_PIS )            +
                LFill( VL_BC_PIS_TOT ,0,2 )    +
-               LFill( VL_BC_PIS_CUM ,0,2 )    +
+               LFill( VL_BC_PIS_CUM ,0,2, True)    +
                LFill( VL_BC_PIS_NC ,0,2 )     +
                LFill( VL_BC_PIS ,0,2 )        +
-               LFill( QUANT_BC_PIS_TOT ,0,2,True ) +
-               LFill( QUANT_BC_PIS ,0,2 )     +
+               DFill( QUANT_BC_PIS_TOT , 3,True ) +
+               DFill( QUANT_BC_PIS , 3 )     +
                LFill( DESC_CRED ) ) ;
         end;
 
@@ -674,9 +674,9 @@ begin
                LFill( strCOD_CONT )               +
                LFill( VL_REC_BRT ,0,2 )           +
                LFill( VL_BC_CONT ,0,2 )           +
-               LFill( ALIQ_PIS ,0,2 )             +
-               LFill( QUANT_BC_PIS ,0,2, True )   +
-               LFill( ALIQ_PIS_QUANT ,0,2, True ) +
+               DFill( ALIQ_PIS , 4 )             +
+               DFill( QUANT_BC_PIS , 3, True )   +
+               DFill( ALIQ_PIS_QUANT , 4, True ) +
                LFill( VL_CONT_APUR ,0,2 )         +
                LFill( VL_AJUS_ACRES ,0,2 )        +
                LFill( VL_AJUS_REDUC ,0,2 )        +
@@ -998,20 +998,20 @@ begin
              idcParcial : strIND_DESC_CRED :='1' ; // 1 // Utilização de valor parcial para desconto da contribuição apurada no período, no Registro M200
           end;
 
-          Add( LFill('M500')                  +
-               LFill( COD_CRED )              +                  //Verificar criação da tabela no ACBrEPCBlocos
-               LFill( strIND_CRED_ORI )       +                  
-               LFill( VL_BC_COFINS,0,2 )      +
-               LFill( ALIQ_COFINS,0,2 )       +
-               LFill( QUANT_BC_COFINS,0,2 )   +
-               LFill( ALIQ_COFINS_QUANT,0,2,True ) +
-               LFill( VL_CRED,0,2 )           +
-               LFill( VL_AJUS_ACRES,0,2 )     +
-               LFill( VL_AJUS_REDUC,0,2 )     +
-               LFill( VL_CRED_DIFER,0,2 )     +
-               LFill( VL_CRED_DISP,0,2 )      +
-               LFill( strIND_DESC_CRED )      +                  
-               LFill( VL_CRED_DESC,0,2 )      +
+          Add( LFill('M500')                      +
+               LFill( COD_CRED )                  +  //Verificar criação da tabela no ACBrEPCBlocos
+               LFill( strIND_CRED_ORI )           +
+               LFill( VL_BC_COFINS,0,2 )          +
+               DFill( ALIQ_COFINS, 4, True)       +
+               DFill( QUANT_BC_COFINS, 3, True )  +
+               DFill( ALIQ_COFINS_QUANT, 4, True) +
+               LFill( VL_CRED,0,2 )               +
+               LFill( VL_AJUS_ACRES,0,2 )         +
+               LFill( VL_AJUS_REDUC,0,2 )         +
+               LFill( VL_CRED_DIFER,0,2 )         +
+               LFill( VL_CRED_DISP,0,2 )          +
+               LFill( strIND_DESC_CRED )          +
+               LFill( VL_CRED_DESC,0,2 )          +
                LFill( SLD_CRED,0,2 ) ) ;
         end;
 
@@ -1102,8 +1102,8 @@ begin
                LFill( VL_BC_COFINS_CUM,0,2 )    +
                LFill( VL_BC_COFINS_NC,0,2 )     +
                LFill( VL_BC_COFINS,0,2 )        +
-               LFill( QUANT_BC_COFINS_TOT,0,2,True ) +
-               LFill( QUANT_BC_COFINS,0,2 )     +
+               DFill( QUANT_BC_COFINS_TOT, 3, True ) +
+               DFill( QUANT_BC_COFINS, 3 )     +
                LFill( DESC_CRED ) ) ;
         end;
 
@@ -1221,9 +1221,9 @@ begin
                LFill( strCOD_CONT )                  +
                LFill( VL_REC_BRT ,0,2 )              +
                LFill( VL_BC_CONT ,0,2 )              +
-               LFill( ALIQ_COFINS ,0,2 )             +
-               LFill( QUANT_BC_COFINS ,0,2, True )   +
-               LFill( ALIQ_COFINS_QUANT ,0,2, True ) +
+               DFill( ALIQ_COFINS , 4 )             +
+               DFill( QUANT_BC_COFINS , 3, True )   +
+               DFill( ALIQ_COFINS_QUANT , 4, True ) +
                LFill( VL_CONT_APUR ,0,2 )            +
                LFill( VL_AJUS_ACRES ,0,2 )           +
                LFill( VL_AJUS_REDUC ,0,2 )           +

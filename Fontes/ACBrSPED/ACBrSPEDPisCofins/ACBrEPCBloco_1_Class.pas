@@ -489,8 +489,8 @@ begin
                LFill( NAT_BC_CRED ) + //Verificar criação da tabela no ACBrEPCBlocos
                LFill( IND_ORIG_CRED ) +  //Verificar criação da tabela no ACBrEPCBlocos
                LFill( CST_PIS ) +
-               LFill( VL_BC_PIS,0,2 ) +
-               LFill( ALIQ_PIS,0,2 ) +
+               DFill( VL_BC_PIS, 3 ) +
+               DFill( ALIQ_PIS, 4 ) +
                LFill( VL_PIS,0,2 ) +
                LFill( COD_CTA ) +
                LFill( COD_CCUS ) +
@@ -704,8 +704,8 @@ begin
                LFill( NAT_BC_CRED ) + //Verificar criação da tabela no ACBrEPCBlocos
                LFill( IND_ORIG_CRED ) +  //Verificar criação da tabela no ACBrEPCBlocos
                LFill( CST_COFINS ) +
-               LFill( VL_BC_COFINS,0,2 ) +
-               LFill( ALIQ_COFINS,0,2 ) +
+               DFill( VL_BC_COFINS, 3 ) +
+               DFill( ALIQ_COFINS, 4 ) +
                LFill( VL_COFINS,0,2 ) +
                LFill( COD_CTA ) +
                LFill( COD_CCUS ) +
@@ -790,8 +790,8 @@ begin
                LFill( COD_PART ) +
                LFill( DT_OPER ) +
                LFill( VL_OPER,0,2 ) +
-               LFill( VL_BC_COFINS,0,2 ) +
-               LFill( ALIQ_COFINS,0,2 ) +
+               DFill( VL_BC_COFINS, 3 ) +
+               DFill( ALIQ_COFINS, 4 ) +
                LFill( VL_COFINS,0,2 ) +
                LFill( COD_CTA ) +
                LFill( DESC_COMPL ) ) ;

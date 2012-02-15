@@ -528,7 +528,7 @@ begin
   SL1 := TStringList.Create;
   SL2 := TStringList.Create;
   try
-    SL1.Text := String( ACBrStrToAnsi( fOwner.RespHTTP.Text ) ) ;
+    SL1.Text := String( fOwner.RespHTTP.Text ) ;
 
     For I := 0 to SL1.Count-1 do
     begin
@@ -547,7 +547,7 @@ begin
           Bairro          := SL2[3] ;
           Municipio       := SL2[4] ;
           UF              := SL2[5] ;
-          IBGE_Municipio  := SL2[9] ;
+          IBGE_Municipio  := SL2[7] ;
         end ;
       end ;
     end ;
@@ -685,4 +685,4 @@ begin
 end;
 
 end.
-
+

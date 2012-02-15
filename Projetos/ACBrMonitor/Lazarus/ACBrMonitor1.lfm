@@ -1046,10 +1046,10 @@ object FrmACBrMonitor: TFrmACBrMonitor
       Height = 209
       Top = 1
       Width = 608
-      ActivePage = tsMonitor
+      ActivePage = tsConsultas
       Align = alClient
       Images = ImageList1
-      TabIndex = 0
+      TabIndex = 11
       TabOrder = 0
       object tsMonitor: TTabSheet
         Caption = '&Monitor'
@@ -4787,8 +4787,8 @@ object FrmACBrMonitor: TFrmACBrMonitor
       end
       object tsConsultas: TTabSheet
         Caption = 'Consultas'
-        ClientHeight = 179
-        ClientWidth = 584
+        ClientHeight = 180
+        ClientWidth = 600
         ImageIndex = 17
         object gbCEP: TGroupBox
           Left = 267
@@ -4804,7 +4804,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
             AnchorSideTop.Side = asrBottom
             Left = 6
             Height = 24
-            Top = 18
+            Top = 17
             Width = 156
             ItemHeight = 16
             ItemIndex = 1
@@ -4822,8 +4822,8 @@ object FrmACBrMonitor: TFrmACBrMonitor
             AnchorSideTop.Control = lCEPChave
             AnchorSideTop.Side = asrBottom
             Left = 6
-            Height = 25
-            Top = 64
+            Height = 24
+            Top = 61
             Width = 156
             TabOrder = 1
           end
@@ -4831,9 +4831,9 @@ object FrmACBrMonitor: TFrmACBrMonitor
             AnchorSideTop.Control = cbCEPWebService
             AnchorSideTop.Side = asrBottom
             Left = 6
-            Height = 18
-            Top = 46
-            Width = 39
+            Height = 17
+            Top = 44
+            Width = 41
             BorderSpacing.Top = 3
             Caption = 'Chave:'
             ParentColor = False
@@ -4843,8 +4843,8 @@ object FrmACBrMonitor: TFrmACBrMonitor
             AnchorSideTop.Side = asrBottom
             AnchorSideRight.Control = bCEPTestar
             Left = 6
-            Height = 25
-            Top = 109
+            Height = 24
+            Top = 104
             Width = 87
             Anchors = [akTop, akLeft, akRight]
             BorderSpacing.Right = 5
@@ -4857,8 +4857,8 @@ object FrmACBrMonitor: TFrmACBrMonitor
             AnchorSideRight.Control = cbCEPWebService
             AnchorSideRight.Side = asrBottom
             Left = 98
-            Height = 27
-            Top = 108
+            Height = 26
+            Top = 103
             Width = 64
             Anchors = [akTop, akRight]
             AutoSize = True
@@ -4870,8 +4870,8 @@ object FrmACBrMonitor: TFrmACBrMonitor
             AnchorSideTop.Control = edCEPChaveBuscarCEP
             AnchorSideTop.Side = asrBottom
             Left = 6
-            Height = 18
-            Top = 91
+            Height = 17
+            Top = 87
             Width = 23
             BorderSpacing.Top = 2
             Caption = 'CEP'
@@ -4880,7 +4880,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
           object lCEPWebService: TLabel
             AnchorSideTop.Control = gbCEP
             Left = 12
-            Height = 18
+            Height = 17
             Top = 0
             Width = 69
             Caption = 'WebService'
@@ -4899,9 +4899,9 @@ object FrmACBrMonitor: TFrmACBrMonitor
           object lCEPProxyServidor: TLabel
             AnchorSideLeft.Control = edCONProxyHost
             Left = 8
-            Height = 18
+            Height = 17
             Top = 24
-            Width = 50
+            Width = 49
             Caption = 'Servidor'
             ParentColor = False
           end
@@ -4909,8 +4909,8 @@ object FrmACBrMonitor: TFrmACBrMonitor
             AnchorSideTop.Control = lCEPProxyServidor
             AnchorSideTop.Side = asrBottom
             Left = 8
-            Height = 25
-            Top = 42
+            Height = 24
+            Top = 41
             Width = 151
             TabOrder = 0
           end
@@ -4918,17 +4918,17 @@ object FrmACBrMonitor: TFrmACBrMonitor
             AnchorSideLeft.Control = edCONProxyPort
             AnchorSideTop.Control = lCEPProxyServidor
             Left = 174
-            Height = 18
+            Height = 17
             Top = 24
-            Width = 32
+            Width = 31
             Caption = 'Porta'
             ParentColor = False
           end
           object edCONProxyPort: TEdit
             AnchorSideTop.Control = edCONProxyHost
             Left = 174
-            Height = 25
-            Top = 42
+            Height = 24
+            Top = 41
             Width = 56
             TabOrder = 1
           end
@@ -4937,9 +4937,9 @@ object FrmACBrMonitor: TFrmACBrMonitor
             AnchorSideTop.Control = edCONProxyHost
             AnchorSideTop.Side = asrBottom
             Left = 9
-            Height = 18
-            Top = 77
-            Width = 46
+            Height = 17
+            Top = 75
+            Width = 44
             BorderSpacing.Top = 10
             Caption = 'Usuário'
             ParentColor = False
@@ -4948,8 +4948,8 @@ object FrmACBrMonitor: TFrmACBrMonitor
             AnchorSideTop.Control = lCEPProxyUsuario
             AnchorSideTop.Side = asrBottom
             Left = 9
-            Height = 25
-            Top = 95
+            Height = 24
+            Top = 92
             Width = 105
             TabOrder = 2
           end
@@ -4957,17 +4957,17 @@ object FrmACBrMonitor: TFrmACBrMonitor
             AnchorSideLeft.Control = edCONProxyPass
             AnchorSideTop.Control = lCEPProxyUsuario
             Left = 129
-            Height = 18
-            Top = 77
-            Width = 36
+            Height = 17
+            Top = 75
+            Width = 37
             Caption = 'Senha'
             ParentColor = False
           end
           object edCONProxyPass: TEdit
             AnchorSideTop.Control = edCONProxyUser
             Left = 129
-            Height = 25
-            Top = 95
+            Height = 24
+            Top = 92
             Width = 105
             EchoMode = emPassword
             PasswordChar = '*'
@@ -4987,10 +4987,10 @@ object FrmACBrMonitor: TFrmACBrMonitor
             AnchorSideLeft.Control = gbCEPTestar
             AnchorSideLeft.Side = asrCenter
             AnchorSideTop.Side = asrBottom
-            Left = 9
-            Height = 18
+            Left = 13
+            Height = 17
             Top = 28
-            Width = 103
+            Width = 95
             BorderSpacing.Top = 2
             Caption = 'Codigo ou Nome'
             ParentColor = False
@@ -5001,8 +5001,8 @@ object FrmACBrMonitor: TFrmACBrMonitor
             AnchorSideTop.Control = lIBGECodNome
             AnchorSideTop.Side = asrBottom
             Left = 8
-            Height = 25
-            Top = 46
+            Height = 24
+            Top = 45
             Width = 104
             BorderSpacing.Right = 5
             TabOrder = 0
@@ -5014,7 +5014,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
             AnchorSideTop.Side = asrCenter
             AnchorSideRight.Side = asrBottom
             Left = 28
-            Height = 27
+            Height = 26
             Top = 83
             Width = 64
             AutoSize = True

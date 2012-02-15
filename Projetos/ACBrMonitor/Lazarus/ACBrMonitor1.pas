@@ -853,12 +853,12 @@ Var
 begin
   with ACBrCEP1 do
   begin
-     WebService := TACBrCEPWebService( cbCEPWebService.ItemIndex );
-
-     ProxyHost  := edCONProxyHost.Text;
-     ProxyPort  := edCONProxyPort.Text;
-     ProxyUser  := edCONProxyUser.Text;
-     ProxyPass  := edCONProxyPass.Text;
+     WebService  := TACBrCEPWebService( cbCEPWebService.ItemIndex );
+     ChaveAcesso := edCEPChaveBuscarCEP.Text;
+     ProxyHost   := edCONProxyHost.Text;
+     ProxyPort   := edCONProxyPort.Text;
+     ProxyUser   := edCONProxyUser.Text;
+     ProxyPass   := edCONProxyPass.Text;
 
      if BuscarPorCEP( edCEPTestar.Text ) > 0 then
      begin
@@ -954,7 +954,7 @@ end;
 procedure TFrmACBrMonitor.cbCEPWebServiceChange(Sender : TObject) ;
 begin
   ACBrCEP1.WebService := TACBrCEPWebService( cbCEPWebService.ItemIndex ) ;
-  edCEPChaveBuscarCEP.Enabled := (ACBrCEP1.WebService = wsBuscarCep) ;
+  edCEPChaveBuscarCEP.Enabled := (ACBrCEP1.WebService in [wsBuscarCep, wsCepLivre]) ;
 end;
 
 procedure TFrmACBrMonitor.chECFArredondaMFDClick(Sender: TObject);

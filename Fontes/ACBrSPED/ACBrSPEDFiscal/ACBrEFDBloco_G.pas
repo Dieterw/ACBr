@@ -79,7 +79,7 @@ type
     FSOM_ICMS_OC: Currency;     /// Valor de outros créditos a ser apropriado na Apuração do ICMS, correspondente ao somatório do campo 09 do registro G126
     FRegistroG125: TRegistroG125List;  /// BLOCO G - Lista de RegistroG110 (FILHO fo FILHO)
   public
-    constructor Create; virtual; /// Create
+    constructor Create(AOwner: TRegistroG001); virtual; /// Create
     destructor Destroy; override; /// Destroy
 
     property MODO_CIAP: String read fMODO_CIAP write fMODO_CIAP;                /// Até versão 102
@@ -124,7 +124,7 @@ type
     FRegistroG130: TRegistroG130List;  /// BLOCO G - Lista de RegistroG130 (FILHO do FILHO)
     FRegistroG126: TRegistroG126List;
   public
-    constructor Create; virtual; /// Create
+    constructor Create(AOwner: TRegistroG110); virtual; /// Create
     destructor Destroy; override; /// Destroy
 
     property COD_IND_BEM: String read fCOD_IND_BEM write fCOD_IND_BEM;
@@ -166,6 +166,8 @@ type
     FIND_PER_SAI  : Double;
     FVL_PARC_APROP: Currency;
   public
+    constructor Create(AOwner: TRegistroG125); virtual; /// Create
+
     property DT_INI: TDateTime        read fDT_INI        write fDT_INI;
     property DT_FIN: TDateTime        read FDT_FIN        write FDT_FIN;
     property NUM_PARC: Integer        read FNUM_PARC      write FNUM_PARC;
@@ -201,7 +203,7 @@ type
 
     FRegistroG140: TRegistroG140List;  /// BLOCO G - Lista de RegistroG130 (FILHO fo FILHO)
   public
-    constructor Create; virtual; /// Create
+    constructor Create(AOwner: TRegistroG125); virtual; /// Create
     destructor Destroy; override; /// Destroy
 
     property IND_EMIT: TACBrEmitente read fIND_EMIT write fIND_EMIT;
@@ -232,6 +234,8 @@ type
     fNUM_ITEM: String;  /// Numero Sequencial do Item no documento fiscal
     fCOD_ITEM: String;  /// Codigo Correspondente do bem no documento fiscal
   public
+    constructor Create(AOwner: TRegistroG130); virtual; /// Create
+
     property NUM_ITEM: String read fNUM_ITEM write fNUM_ITEM;
     property COD_ITEM: String read fCOD_ITEM write fCOD_ITEM;
   end;
@@ -261,8 +265,11 @@ implementation
 
 { TRegistroG110 }
 
-constructor TRegistroG110.Create;
+constructor TRegistroG110.Create(AOwner: TRegistroG001);
 begin
+  if not (AOwner is TRegistroG001) then
+     raise Exception.Create('O registro pai recebido não é o registro G001!');
+
   FRegistroG125 := TRegistroG125List.Create;  /// BLOCO G - Lista de RegistroG125 (FILHO fo FILHO)
 end;
 
@@ -281,10 +288,7 @@ end;
 
 function TRegistroG110List.New(AOwner: TRegistroG001): TRegistroG110;
 begin
-  if not (AOwner is TRegistroG001) then
-     raise Exception.Create('O registro pai recebido não é o registro G001!');
-
-  Result := TRegistroG110.Create;
+  Result := TRegistroG110.Create(AOwner);
   Add(Result);
 end;
 
@@ -295,8 +299,11 @@ end;
 
 { TRegistroG125 }
 
-constructor TRegistroG125.Create;
+constructor TRegistroG125.Create(AOwner: TRegistroG110);
 begin
+  if not (AOwner is TRegistroG110) then
+     raise Exception.Create('O registro pai recebido não é o registro G110!');
+
   FRegistroG130 := TRegistroG130List.Create;  /// BLOCO G - Lista de RegistroG130 (FILHO fo FILHO)
   FRegistroG126 := TRegistroG126List.Create;  /// BLOCO G - Lista de RegistroG126 (FILHO fo FILHO)
 end;
@@ -317,10 +324,7 @@ end;
 
 function TRegistroG125List.New(AOwner: TRegistroG110): TRegistroG125;
 begin
-  if not (AOwner is TRegistroG110) then
-     raise Exception.Create('O registro pai recebido não é o registro G110!');
-
-  Result := TRegistroG125.Create;
+  Result := TRegistroG125.Create(AOwner);
   Add(Result);
 end;
 
@@ -331,8 +335,11 @@ end;
 
 { TRegistroG130 }
 
-constructor TRegistroG130.Create;
+constructor TRegistroG130.Create(AOwner: TRegistroG125);
 begin
+  if not (AOwner is TRegistroG125) then
+     raise Exception.Create('O registro pai recebido não é o registro G125!');
+
   FRegistroG140 := TRegistroG140List.Create;  /// BLOCO G - Lista de RegistroG130 (FILHO fo FILHO)
 end;
 
@@ -351,10 +358,7 @@ end;
 
 function TRegistroG130List.New(AOwner: TRegistroG125): TRegistroG130;
 begin
-  if not (AOwner is TRegistroG125) then
-     raise Exception.Create('O registro pai recebido não é o registro G125!');
-
-  Result := TRegistroG130.Create;
+  Result := TRegistroG130.Create(AOwner);
   Add(Result);
 end;
 
@@ -372,10 +376,7 @@ end;
 
 function TRegistroG140List.New(AOwner: TRegistroG130): TRegistroG140;
 begin
-  if not (AOwner is TRegistroG130) then
-     raise Exception.Create('O registro pai recebido não é o registro G130!');
-
-  Result := TRegistroG140.Create;
+  Result := TRegistroG140.Create(AOwner);
   Add(Result);
 end;
 
@@ -408,10 +409,7 @@ end;
 
 function TRegistroG126List.New(AOwner: TRegistroG125): TRegistroG126;
 begin
-  if not (AOwner is TRegistroG125) then
-     raise Exception.Create('O registro pai recebido não é o registro G125!');
-
-  Result := TRegistroG126.Create;
+  Result := TRegistroG126.Create(AOwner);
   Add(Result);
 end;
 
@@ -419,6 +417,22 @@ procedure TRegistroG126List.SetItem(Index: Integer;
   const Value: TRegistroG126);
 begin
   Put(Index, Value);
+end;
+
+{ TRegistroG126 }
+
+constructor TRegistroG126.Create(AOwner: TRegistroG125);
+begin
+  if not (AOwner is TRegistroG125) then
+     raise Exception.Create('O registro pai recebido não é o registro G125!');
+end;
+
+{ TRegistroG140 }
+
+constructor TRegistroG140.Create(AOwner: TRegistroG130);
+begin
+  if not (AOwner is TRegistroG130) then
+     raise Exception.Create('O registro pai recebido não é o registro G130!');
 end;
 
 end.

@@ -71,7 +71,7 @@ type
 
     FRegistroH010: TRegistroH010List;  /// BLOCO C - Lista de RegistroH010 (FILHO)
   public
-    constructor Create; virtual; /// Create
+    constructor Create(AOwner: TRegistroH001); virtual; /// Create
     destructor Destroy; override; /// Destroy
 
     property DT_INV: TDateTime read FDT_INV write FDT_INV;
@@ -107,7 +107,7 @@ type
 
     FRegistroH020: TRegistroH020List;  /// BLOCO H - Lista de RegistroH020 (FILHO)
   public
-    constructor Create; virtual; /// Create
+    constructor Create(AOwner: TRegistroH005); virtual; /// Create
     destructor Destroy; override; /// Destroy
 
     property COD_ITEM: String read FCOD_ITEM write FCOD_ITEM;
@@ -142,6 +142,8 @@ type
     fBC_ICMS: currency;         /// Informe a base de cálculo do ICMS
     fVL_ICMS: currency;         /// Informe o valor do ICMS a ser debitado ou creditado
   public
+    constructor Create(AOwner: TRegistroH010); virtual; /// Create
+
     property CST_ICMS: String read FCST_ICMS write FCST_ICMS;
     property BC_ICMS: currency read FBC_ICMS write FBC_ICMS;
     property VL_ICMS: currency read FVL_ICMS write FVL_ICMS;
@@ -178,10 +180,7 @@ end;
 
 function TRegistroH010List.New(AOwner: TRegistroH005): TRegistroH010;
 begin
-  if not (AOwner is TRegistroH005) then
-     raise Exception.Create('O registro pai recebido não é o registro H005!');
-
-  Result := TRegistroH010.Create;
+  Result := TRegistroH010.Create(AOwner);
   Add(Result);
 end;
 
@@ -199,10 +198,7 @@ end;
 
 function TRegistroH005List.New(AOwner: TRegistroH001): TRegistroH005;
 begin
-  if not (AOwner is TRegistroH001) then
-     raise Exception.Create('O registro pai recebido não é o registro H001!');
-
-  Result := TRegistroH005.Create;
+  Result := TRegistroH005.Create(AOwner);
   Add(Result);
 end;
 
@@ -213,8 +209,11 @@ end;
 
 { TRegistroH005 }
 
-constructor TRegistroH005.Create;
+constructor TRegistroH005.Create(AOwner: TRegistroH001);
 begin
+  if not (AOwner is TRegistroH001) then
+     raise Exception.Create('O registro pai recebido não é o registro H001!');
+
   FRegistroH010 := TRegistroH010List.Create;
 end;
 
@@ -248,10 +247,7 @@ end;
 
 function TRegistroH020List.New(AOwner: TRegistroH010): TRegistroH020;
 begin
-  if not (AOwner is TRegistroH010) then
-     raise Exception.Create('O registro pai recebido não é o registro H010!');
-
-  Result := TRegistroH020.Create;
+  Result := TRegistroH020.Create(AOwner);
   Add(Result);
 end;
 
@@ -263,8 +259,11 @@ end;
 
 { TRegistroH010 }
 
-constructor TRegistroH010.Create;
+constructor TRegistroH010.Create(AOwner: TRegistroH005);
 begin
+  if not (AOwner is TRegistroH005) then
+     raise Exception.Create('O registro pai recebido não é o registro H005!');
+
   FRegistroH020 := TRegistroH020List.Create;
 end;
 
@@ -272,6 +271,14 @@ destructor TRegistroH010.Destroy;
 begin
   FRegistroH020.Free;
   inherited;
+end;
+
+{ TRegistroH020 }
+
+constructor TRegistroH020.Create(AOwner: TRegistroH010);
+begin
+  if not (AOwner is TRegistroH010) then
+     raise Exception.Create('O registro pai recebido não é o registro H010!');
 end;
 
 end.

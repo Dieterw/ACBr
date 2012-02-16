@@ -116,8 +116,7 @@ type
     fIND_AER   : String;// Reg. 1800 – A empresa prestou serviços de transporte aéreo de cargas e de passageiros:
 
   public
-    constructor Create; virtual; /// Create
-    destructor Destroy; override; /// Destroy
+    constructor Create(AOwner: TRegistro1001); virtual; /// Create
 
     property IND_EXP   : String read fIND_EXP   write fIND_EXP   ;
     property IND_CCRF  : String read fIND_CCRF  write fIND_CCRF  ;
@@ -159,7 +158,7 @@ type
 
     fRegistro1105: TRegistro1105List;
   public
-    constructor Create; virtual; /// Create
+    constructor Create(AOwner: TRegistro1001); virtual; /// Create
     destructor Destroy; override; /// Destroy
 
     property IND_DOC: TACBrTipoDocto read FIND_DOC write FIND_DOC;
@@ -201,7 +200,7 @@ type
 
     fRegistro1110: TRegistro1110List;
   public
-    constructor Create; virtual; /// Create
+    constructor Create(AOwner: TRegistro1100); virtual; /// Create
     destructor Destroy; override; /// Destroy
 
     property COD_MOD: String read FCOD_MOD write FCOD_MOD;
@@ -239,6 +238,8 @@ type
     fQTD: Double;           /// Quantidade do item efetivamente exportado.
     fUNID: String;          /// Unidade do item (Campo 02 do registro 0190)
   public
+    constructor Create(AOwner: TRegistro1105); virtual; /// Create
+
     property COD_PART: String read FCOD_PART write FCOD_PART;
     property COD_MOD: String read FCOD_MOD write FCOD_MOD;
     property SER: String read FSER write FSER;
@@ -274,7 +275,7 @@ type
 
     FRegistro1210: TRegistro1210List;
   public
-    constructor Create; virtual; /// Create
+    constructor Create(AOwner: TRegistro1001); virtual; /// Create
     destructor Destroy; override; /// Destroy
 
     property COD_AJ_APUR : String read FCOD_AJ_APUR  write FCOD_AJ_APUR;
@@ -306,6 +307,8 @@ type
     fNR_DOC: String;           /// Número do documento utilizado na baixa de créditos
     fVL_CRED_UTIL: Currency;     /// Total de crédito utilizado
   public
+    constructor Create(AOwner: TRegistro1200); virtual; /// Create
+
     property TIPO_UTIL: String read FTIPO_UTIL write FTIPO_UTIL;
     property NR_DOC: String read FNR_DOC write FNR_DOC;
     property VL_CRED_UTIL: Currency read FVL_CRED_UTIL write FVL_CRED_UTIL;
@@ -339,7 +342,7 @@ type
 
     FRegistro1310: TRegistro1310List;  /// BLOCO 1 - Lista de Registro1310 (FILHO)
   public
-    constructor Create; virtual; /// Create
+    constructor Create(AOwner: TRegistro1001); virtual; /// Create
     destructor Destroy; override; /// Destroy
 
     property COD_ITEM: String       read FCOD_ITEM     write FCOD_ITEM;
@@ -383,7 +386,7 @@ type
 
     FRegistro1320: TRegistro1320List;  /// BLOCO 1 - Lista de Registro1320 (FILHO)
   public
-    constructor Create; virtual; /// Create
+    constructor Create(AOwner: TRegistro1300); virtual; /// Create
     destructor Destroy; override; /// Destroy
 
     property NUM_TANQUE  : String   read fNUM_TANQUE   write fNUM_TANQUE;
@@ -425,6 +428,8 @@ type
     fVOL_AFERI  : Double;       /// Aferições da Bomba, em litros
     fVOL_VENDAS : Double;       /// Vendas (08 – 09 - 10 ) do bico, em litros
   public
+    constructor Create(AOwner: TRegistro1310); virtual; /// Create
+
     property NUM_BICO:String       read fNUM_BICO    write fNUM_BICO    ;
     property NR_INTERV:String      read fNR_INTERV   write fNR_INTERV   ;
     property MOT_INTERV:String     read fMOT_INTERV  write fMOT_INTERV  ;
@@ -460,7 +465,7 @@ type
     FRegistro1360: TRegistro1360List;  /// BLOCO 1 - Lista de Registro1360 (FILHO)
     FRegistro1370: TRegistro1370List;  /// BLOCO 1 - Lista de Registro1360 (FILHO)
   public
-    constructor Create; virtual; /// Create
+    constructor Create(AOwner: TRegistro1001); virtual; /// Create
     destructor Destroy; override; /// Destroy
 
     property SERIE:        String read fSERIE        write fSERIE       ;
@@ -489,6 +494,8 @@ type
     fNUM_LACRE: String;         /// Número de Série da Bomba
     fDT_APLICACAO: TDateTime;   /// Nome do Fabricante da Bomba
   public
+    constructor Create(AOwner: TRegistro1350); virtual; /// Create
+
     property NUM_LACRE:    String    read fNUM_LACRE     write fNUM_LACRE    ;
     property DT_APLICACAO: TDateTime read fDT_APLICACAO  write fDT_APLICACAO ;
   end;
@@ -512,6 +519,8 @@ type
       fCOD_ITEM:String;    /// Código do Produto, constante do registro 0200 C 060 - O
       fNUM_TANQUE:String;  /// Tanque que armazena o combustível.
   public
+    constructor Create(AOwner: TRegistro1350); virtual; /// Create
+
     property   NUM_BICO  :String read fNUM_BICO   write fNUM_BICO  ;    /// Número seqüencial do bico ligado a bomba
     property   COD_ITEM  :String read fCOD_ITEM   write fCOD_ITEM  ;    /// Código do Produto, constante do registro
     property   NUM_TANQUE:String read fNUM_TANQUE write fNUM_TANQUE;  /// Tanque que armazena o combustível.
@@ -534,6 +543,8 @@ type
   private
     fCOD_PROD: String;      /// Código do item (campo 02 do Registro 0200)
   public
+    constructor Create(AOwner: TRegistro1001); virtual; /// Create
+
     property COD_PROD: String read fCOD_PROD write fCOD_PROD;
   end;
 
@@ -557,6 +568,8 @@ type
     fMUN: String;           /// Código do Município de origem
     fVALOR: Currency;      /// Valor mensal correspondente ao município
   public
+    constructor Create(AOwner: TRegistro1001); virtual; /// Create
+
     property COD_ITEM: String read FCOD_ITEM write FCOD_ITEM;
     property MUN: String read FMUN write FMUN;
     property VALOR: Currency read FVALOR write FVALOR;
@@ -606,7 +619,7 @@ type
 
     FRegistro1510: TRegistro1510List;
   public
-    constructor Create; virtual; /// Create
+    constructor Create(AOwner: TRegistro1001); virtual; /// Create
     destructor Destroy; override; /// Destroy
 
     property IND_OPER: String read FIND_OPER write FIND_OPER;
@@ -675,6 +688,8 @@ type
     fVL_COFINS: currency;          /// Valor da COFINS
     fCOD_CTA: String;              /// Código da conta analítica contábil debitada/creditada
   public
+    constructor Create(AOwner: TRegistro1500); virtual; /// Create
+
     property NUM_ITEM: String read FNUM_ITEM write FNUM_ITEM;
     property COD_ITEM: String read FCOD_ITEM write FCOD_ITEM;
     property COD_CLASS: String read FCOD_CLASS write FCOD_CLASS;
@@ -716,6 +731,8 @@ type
     fTOT_CREDITO: currency;    /// Valor do item
     fTOT_DEBITO: currency;     /// Valor total do desconto
   public
+    constructor Create(AOwner: TRegistro1001); virtual; /// Create
+
     property COD_PART: String read FCOD_PART write FCOD_PART;
     property TOT_CREDITO: currency read FTOT_CREDITO write FTOT_CREDITO;
     property TOT_DEBITO: currency read FTOT_DEBITO write FTOT_DEBITO;
@@ -746,7 +763,7 @@ type
 
     FRegistro1710: TRegistro1710List;  /// BLOCO 1- Lista de Registro1710 (FILHO fo FILHO)
   public
-    constructor Create; virtual; /// Create
+    constructor Create(AOwner: TRegistro1001); virtual; /// Create
     destructor Destroy; override; /// Destroy
 
     property COD_DISP: TACBrDispositivo read fCOD_DISP write fCOD_DISP;
@@ -778,6 +795,8 @@ type
     fNUM_DOC_INI: String;     /// Numero Documento Fiscal Inicial
     fNUM_DOC_FIN: String;     /// Numero Documento Fiscal Final
   public
+    constructor Create(AOwner: TRegistro1700); virtual; /// Create
+
     property NUM_DOC_INI: String read fNUM_DOC_INI write fNUM_DOC_INI;
     property NUM_DOC_FIN: String read fNUM_DOC_FIN write fNUM_DOC_FIN;
   end;
@@ -807,6 +826,8 @@ type
     fVL_BC_ICMS_APUR: Currency; /// Valor base ICMS apurada
     fVL_DIF: Currency;          /// Valor diferenca a estorno de credito na apuracao
   public
+    constructor Create(AOwner: TRegistro1001); virtual; /// Create
+
     property VL_CARGA:Currency read fVL_CARGA write fVL_CARGA ;
     property VL_PASS:Currency read fVL_PASS write fVL_PASS ;
     property VL_FAT:Currency read fVL_FAT write fVL_FAT ;
@@ -849,10 +870,7 @@ end;
 
 function TRegistro1100List.New(AOwner: TRegistro1001): TRegistro1100;
 begin
-  if not (AOwner is TRegistro1001) then
-     raise Exception.Create('O registro pai recebido não é o registro 1001!');
-
-  Result := TRegistro1100.Create;
+  Result := TRegistro1100.Create(AOwner);
   Add(Result);
 end;
 
@@ -870,10 +888,7 @@ end;
 
 function TRegistro1010List.New(AOwner: TRegistro1001): TRegistro1010;
 begin
-  if not (AOwner is TRegistro1001) then
-     raise Exception.Create('O registro pai recebido não é o registro 1001!');
-
-  Result := TRegistro1010.Create;
+  Result := TRegistro1010.Create(AOwner);
   Add(Result);
 end;
 
@@ -892,10 +907,7 @@ end;
 
 function TRegistro1105List.New(AOwner: TRegistro1100): TRegistro1105;
 begin
-  if not (AOwner is TRegistro1100) then
-     raise Exception.Create('O registro pai recebido não é o registro 1100!');
-
-  Result := TRegistro1105.Create;
+  Result := TRegistro1105.Create(AOwner);
   Add(Result);
 end;
 
@@ -913,10 +925,7 @@ end;
 
 function TRegistro1110List.New(AOwner: TRegistro1105): TRegistro1110;
 begin
-  if not (AOwner is TRegistro1105) then
-     raise Exception.Create('O registro pai recebido não é o registro 1105!');
-
-  Result := TRegistro1110.Create;
+  Result := TRegistro1110.Create(AOwner);
   Add(Result);
 end;
 
@@ -934,10 +943,7 @@ end;
 
 function TRegistro1200List.New(AOwner: TRegistro1001): TRegistro1200;
 begin
-  if not (AOwner is TRegistro1001) then
-     raise Exception.Create('O registro pai recebido não é o registro 1001!');
-
-  Result := TRegistro1200.Create;
+  Result := TRegistro1200.Create(AOwner);
   Add(Result);
 end;
 
@@ -955,10 +961,7 @@ end;
 
 function TRegistro1210List.New(AOwner: TRegistro1200): TRegistro1210;
 begin
-  if not (AOwner is TRegistro1200) then
-     raise Exception.Create('O registro pai recebido não é o registro 1200!');
-
-  Result := TRegistro1210.Create;
+  Result := TRegistro1210.Create(AOwner);
   Add(Result);
 end;
 
@@ -969,8 +972,11 @@ end;
 
 { TRegistro1300 }
 
-constructor TRegistro1300.Create;
+constructor TRegistro1300.Create(AOwner: TRegistro1001);
 begin
+  if not (AOwner is TRegistro1001) then
+     raise Exception.Create('O registro pai recebido não é o registro 1001!');
+
   FRegistro1310 := TRegistro1310List.Create;  /// BLOCO 1 - Lista de Registro1310 (FILHO)
 end;
 
@@ -989,10 +995,7 @@ end;
 
 function TRegistro1300List.New(AOwner: TRegistro1001): TRegistro1300;
 begin
-  if not (AOwner is TRegistro1001) then
-     raise Exception.Create('O registro pai recebido não é o registro 1001!');
-
-  Result := TRegistro1300.Create;
+  Result := TRegistro1300.Create(AOwner);
   Add(Result);
 end;
 
@@ -1003,8 +1006,11 @@ end;
 
 { TRegistro1310 }
 
-constructor TRegistro1310.Create;
+constructor TRegistro1310.Create(AOwner: TRegistro1300);
 begin
+  if not (AOwner is TRegistro1300) then
+     raise Exception.Create('O registro pai recebido não é o registro 1300!');
+
   FRegistro1320 := TRegistro1320List.Create;  /// BLOCO 1 - Lista de Registro1320 (FILHO)
 end;
 
@@ -1023,10 +1029,7 @@ end;
 
 function TRegistro1310List.New(AOwner: TRegistro1300): TRegistro1310;
 begin
-  if not (AOwner is TRegistro1300) then
-     raise Exception.Create('O registro pai recebido não é o registro 1300!');
-
-  Result := TRegistro1310.Create;
+  Result := TRegistro1310.Create(AOwner);
   Add(Result);
 end;
 
@@ -1044,10 +1047,7 @@ end;
 
 function TRegistro1320List.New(AOwner: TRegistro1310): TRegistro1320;
 begin
-  if not (AOwner is TRegistro1310) then
-     raise Exception.Create('O registro pai recebido não é o registro 1310!');
-
-  Result := TRegistro1320.Create;
+  Result := TRegistro1320.Create(AOwner);
   Add(Result);
 end;
 
@@ -1064,10 +1064,7 @@ end;
 
 function TRegistro1390List.New(AOwner: TRegistro1001): TRegistro1390;
 begin
-  if not (AOwner is TRegistro1001) then
-     raise Exception.Create('O registro pai recebido não é o registro 1001!');
-
-  Result := TRegistro1390.Create;
+  Result := TRegistro1390.Create(AOwner);
   Add(Result);
 end;
 
@@ -1085,10 +1082,7 @@ end;
 
 function TRegistro1400List.New(AOwner: TRegistro1001): TRegistro1400;
 begin
-  if not (AOwner is TRegistro1001) then
-     raise Exception.Create('O registro pai recebido não é o registro 1001!');
-
-  Result := TRegistro1400.Create;
+  Result := TRegistro1400.Create(AOwner);
   Add(Result);
 end;
 
@@ -1106,10 +1100,7 @@ end;
 
 function TRegistro1500List.New(AOwner: TRegistro1001): TRegistro1500;
 begin
-  if not (AOwner is TRegistro1001) then
-     raise Exception.Create('O registro pai recebido não é o registro 1001!');
-
-  Result := TRegistro1500.Create;
+  Result := TRegistro1500.Create(AOwner);
   Add(Result);
 end;
 
@@ -1127,10 +1118,7 @@ end;
 
 function TRegistro1510List.New(AOwner: TRegistro1500): TRegistro1510;
 begin
-  if not (AOwner is TRegistro1500) then
-     raise Exception.Create('O registro pai recebido não é o registro 1500!');
-
-  Result := TRegistro1510.Create;
+  Result := TRegistro1510.Create(AOwner);
   Add(Result);
 end;
 
@@ -1148,10 +1136,7 @@ end;
 
 function TRegistro1350List.New(AOwner: TRegistro1001): TRegistro1350;
 begin
-  if not (AOwner is TRegistro1001) then
-     raise Exception.Create('O registro pai recebido não é o registro 1001!');
-
-  Result := TRegistro1350.Create;
+  Result := TRegistro1350.Create(AOwner);
   Add(Result);
 end;
 
@@ -1169,10 +1154,7 @@ end;
 
 function TRegistro1360List.New(AOwner: TRegistro1350): TRegistro1360;
 begin
-  if not (AOwner is TRegistro1350) then
-     raise Exception.Create('O registro pai recebido não é o registro 1350!');
-
-  Result := TRegistro1360.Create;
+  Result := TRegistro1360.Create(AOwner);
   Add(Result);
 end;
 
@@ -1190,10 +1172,7 @@ end;
 
 function TRegistro1370List.New(AOwner: TRegistro1350): TRegistro1370;
 begin
-  if not (AOwner is TRegistro1350) then
-     raise Exception.Create('O registro pai recebido não é o registro 1350!');
-
-  Result := TRegistro1370.Create;
+  Result := TRegistro1370.Create(AOwner);
   Add(Result);
 end;
 
@@ -1211,10 +1190,7 @@ end;
 
 function TRegistro1600List.New(AOwner: TRegistro1001): TRegistro1600;
 begin
-  if not (AOwner is TRegistro1001) then
-     raise Exception.Create('O registro pai recebido não é o registro 1001!');
-
-  Result := TRegistro1600.Create;
+  Result := TRegistro1600.Create(AOwner);
   Add(Result);
 end;
 
@@ -1225,8 +1201,11 @@ end;
 
 { TRegistro1350 }
 
-constructor TRegistro1350.Create;
+constructor TRegistro1350.Create(AOwner: TRegistro1001);
 begin
+  if not (AOwner is TRegistro1001) then
+     raise Exception.Create('O registro pai recebido não é o registro 1001!');
+
   FRegistro1360 := TRegistro1360List.Create;  /// BLOCO 1 - Lista de Registro1360 (FILHO)
   FRegistro1370 := TRegistro1370List.Create;  /// BLOCO 1 - Lista de Registro1370 (FILHO)
 end;
@@ -1240,8 +1219,11 @@ end;
 
 { TRegistro1700 }
 
-constructor TRegistro1700.Create;
+constructor TRegistro1700.Create(AOwner: TRegistro1001);
 begin
+  if not (AOwner is TRegistro1001) then
+     raise Exception.Create('O registro pai recebido não é o registro 1001!');
+
   FRegistro1710 := TRegistro1710List.Create;  /// BLOCO 1 - Lista de Registro1710 (FILHO)
 end;
 
@@ -1260,10 +1242,7 @@ end;
 
 function TRegistro1700List.New(AOwner: TRegistro1001): TRegistro1700;
 begin
-  if not (AOwner is TRegistro1001) then
-     raise Exception.Create('O registro pai recebido não é o registro 1001!');
-
-  Result := TRegistro1700.Create;
+  Result := TRegistro1700.Create(AOwner);
   Add(Result);
 end;
 
@@ -1281,16 +1260,21 @@ end;
 
 function TRegistro1710List.New(AOwner: TRegistro1700): TRegistro1710;
 begin
-  if not (AOwner is TRegistro1700) then
-     raise Exception.Create('O registro pai recebido não é o registro 1700!');
-
-  Result := TRegistro1710.Create;
+  Result := TRegistro1710.Create(AOwner);
   Add(Result);
 end;
 
 procedure TRegistro1710List.SetItem(Index: Integer; const Value: TRegistro1710);
 begin
   Put(Index, Value);
+end;
+
+{ TRegistro1710 }
+
+constructor TRegistro1710.Create(AOwner: TRegistro1700);
+begin
+  if not (AOwner is TRegistro1700) then
+     raise Exception.Create('O registro pai recebido não é o registro 1700!');
 end;
 
 { TRegistro1800List }
@@ -1302,10 +1286,7 @@ end;
 
 function TRegistro1800List.New(AOwner: TRegistro1001): TRegistro1800;
 begin
-  if not (AOwner is TRegistro1001) then
-     raise Exception.Create('O registro pai recebido não é o registro 1001!');
-
-  Result := TRegistro1800.Create;
+  Result := TRegistro1800.Create(AOwner);
   Add(Result);
 end;
 
@@ -1349,8 +1330,11 @@ end;
 
 { TRegistro1100 }
 
-constructor TRegistro1100.Create;
+constructor TRegistro1100.Create(AOwner: TRegistro1001);
 begin
+  if not (AOwner is TRegistro1001) then
+     raise Exception.Create('O registro pai recebido não é o registro 1001!');
+
    fRegistro1105 := TRegistro1105List.Create;
 end;
 
@@ -1364,19 +1348,17 @@ end;
 
 constructor TRegistro1010.Create;
 begin
-  inherited;
+  if not (AOwner is TRegistro1001) then
+     raise Exception.Create('O registro pai recebido não é o registro 1001!');
 end;
-
-destructor TRegistro1010.Destroy;
-begin
-  inherited;
-end;
-
 
 { TRegistro1105 }
 
-constructor TRegistro1105.Create;
+constructor TRegistro1105.Create(AOwner: TRegistro1100);
 begin
+  if not (AOwner is TRegistro1100) then
+     raise Exception.Create('O registro pai recebido não é o registro 1100!');
+
    fRegistro1110 := TRegistro1110List.Create;
 end;
 
@@ -1388,8 +1370,11 @@ end;
 
 { TRegistro1200 }
 
-constructor TRegistro1200.Create;
+constructor TRegistro1200.Create(AOwner: TRegistro1001);
 begin
+  if not (AOwner is TRegistro1001) then
+     raise Exception.Create('O registro pai recebido não é o registro 1001!');
+
    FRegistro1210 := TRegistro1210List.Create;
 end;
 
@@ -1401,8 +1386,11 @@ end;
 
 { TRegistro1500 }
 
-constructor TRegistro1500.Create;
+constructor TRegistro1500.Create(AOwner: TRegistro1001);
 begin
+  if not (AOwner is TRegistro1001) then
+     raise Exception.Create('O registro pai recebido não é o registro 1001!');
+
    FRegistro1510 := TRegistro1510List.Create;
 end;
 
@@ -1410,6 +1398,86 @@ destructor TRegistro1500.Destroy;
 begin
   FRegistro1510.Free;
   inherited;
+end;
+
+{ TRegistro1110 }
+
+constructor TRegistro1110.Create(AOwner: TRegistro1105);
+begin
+  if not (AOwner is TRegistro1105) then
+     raise Exception.Create('O registro pai recebido não é o registro 1105!');
+end;
+
+{ TRegistro1210 }
+
+constructor TRegistro1210.Create(AOwner: TRegistro1200);
+begin
+  if not (AOwner is TRegistro1200) then
+     raise Exception.Create('O registro pai recebido não é o registro 1200!');
+end;
+
+{ TRegistro1320 }
+
+constructor TRegistro1320.Create(AOwner: TRegistro1310);
+begin
+  if not (AOwner is TRegistro1310) then
+     raise Exception.Create('O registro pai recebido não é o registro 1310!');
+end;
+
+{ TRegistro1360 }
+
+constructor TRegistro1360.Create(AOwner: TRegistro1350);
+begin
+  if not (AOwner is TRegistro1350) then
+     raise Exception.Create('O registro pai recebido não é o registro 1350!');
+end;
+
+{ TRegistro1370 }
+
+constructor TRegistro1370.Create(AOwner: TRegistro1350);
+begin
+  if not (AOwner is TRegistro1350) then
+     raise Exception.Create('O registro pai recebido não é o registro 1350!');
+end;
+
+{ TRegistro1390 }
+
+constructor TRegistro1390.Create(AOwner: TRegistro1001);
+begin
+  if not (AOwner is TRegistro1001) then
+     raise Exception.Create('O registro pai recebido não é o registro 1001!');
+end;
+
+{ TRegistro1400 }
+
+constructor TRegistro1400.Create(AOwner: TRegistro1001);
+begin
+  if not (AOwner is TRegistro1001) then
+     raise Exception.Create('O registro pai recebido não é o registro 1001!');
+end;
+
+{ TRegistro1510 }
+
+constructor TRegistro1510.Create(AOwner: TRegistro1500);
+begin
+  if not (AOwner is TRegistro1500) then
+     raise Exception.Create('O registro pai recebido não é o registro 1500!');
+end;
+
+{ TRegistro1600 }
+
+constructor TRegistro1600.Create(AOwner: TRegistro1001);
+begin
+  if not (AOwner is TRegistro1001) then
+     raise Exception.Create('O registro pai recebido não é o registro 1001!');
+end;
+
+{ TRegistro1800 }
+
+constructor TRegistro1800.Create(AOwner: TRegistro1001);
+begin
+  if not (AOwner is TRegistro1001) then
+     raise Exception.Create('O registro pai recebido não é o registro 1001!');
 end;
 
 end.

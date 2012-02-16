@@ -55,7 +55,7 @@ object frmDACTeQR: TfrmDACTeQR
     PrinterSettings.LastPage = 0
     PrinterSettings.OutputBin = Auto
     PrintIfEmpty = True
-    ReportTitle = 'DACTe 01/12/2011'
+    ReportTitle = 'DACTe 16/02/2012'
     ShowProgress = False
     SnapToGrid = True
     Units = MM

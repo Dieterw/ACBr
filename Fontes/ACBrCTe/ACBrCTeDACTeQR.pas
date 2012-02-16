@@ -209,6 +209,8 @@ begin
            
            // Incluido por Italo em 14/02/2012
            QRCTe.PreviewDefaultSaveType := stPDF;
+           // Incluido por Italo em 16/02/2012
+           QRExportFilterLibrary.AddFilter(TQRPDFDocumentFilter);
          {$ENDIF}
 
            QRCTe.Prepare;

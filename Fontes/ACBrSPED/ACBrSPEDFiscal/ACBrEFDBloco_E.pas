@@ -89,7 +89,7 @@ type
 
     FRegistroE110: TRegistroE110;
   public
-    constructor Create; virtual; /// Create
+    constructor Create(AOwner: TRegistroE001); virtual; /// Create
     destructor Destroy; override; /// Destroy
 
     property DT_INI: TDateTime read FDT_INI write FDT_INI;
@@ -98,13 +98,12 @@ type
     property RegistroE110: TRegistroE110 read FRegistroE110 write FRegistroE110;
   end;
 
-
   TRegistroE100List = class(TObjectList)
   private
     function  GetItem(Index: Integer): TRegistroE100;              /// GetItem
     procedure SetItem(Index: Integer; const Value: TRegistroE100); /// SetItem
   public
-    function New: TRegistroE100;
+    function New(AOwner: TRegistroE001): TRegistroE100;
     property Items[Index: Integer]: TRegistroE100 read GetItem write SetItem;
   end;
 
@@ -131,7 +130,7 @@ type
     FRegistroE115: TRegistroE115List;
     FRegistroE116: TRegistroE116List;
   public
-    constructor Create; virtual; /// Create
+    constructor Create(AOwner: TRegistroE100); virtual; /// Create
     destructor Destroy; override; /// Destroy
 
     property VL_TOT_DEBITOS: Currency read fVL_TOT_DEBITOS write fVL_TOT_DEBITOS;
@@ -165,7 +164,7 @@ type
     FRegistroE112: TRegistroE112List;
     FRegistroE113: TRegistroE113List;
   public
-    constructor Create; virtual; /// Create
+    constructor Create(AOwner: TRegistroE110); virtual; /// Create
     destructor Destroy; override; /// Destroy
 
     property COD_AJ_APUR: String read fCOD_AJ_APUR write fCOD_AJ_APUR;
@@ -183,7 +182,7 @@ type
     function GetItem(Index: Integer): TRegistroE111; /// GetItem
     procedure SetItem(Index: Integer; const Value: TRegistroE111); /// SetItem
   public
-    function New: TRegistroE111;
+    function New(AOwner: TRegistroE110): TRegistroE111;
     property Items[Index: Integer]: TRegistroE111 read GetItem write SetItem;
   end;
 
@@ -197,6 +196,8 @@ type
     fPROC: String;                  /// Descrição resumida do processo que embasou o lançamento
     fTXT_COMPL: String;             /// Código de referência à observação (campo 02 do Registro 0460)
   public
+    constructor Create(AOwner: TRegistroE111); virtual; /// Create
+
     property NUM_DA: String read fNUM_DA write fNUM_DA;
     property NUM_PROC: String read fNUM_PROC write fNUM_PROC;
     property IND_PROC: TACBrOrigemProcesso read fIND_PROC write fIND_PROC;
@@ -211,7 +212,7 @@ type
     function GetItem(Index: Integer): TRegistroE112; /// GetItem
     procedure SetItem(Index: Integer; const Value: TRegistroE112); /// SetItem
   public
-    function New: TRegistroE112;
+    function New(AOwner: TRegistroE111): TRegistroE112;
     property Items[Index: Integer]: TRegistroE112 read GetItem write SetItem;
   end;
 
@@ -229,6 +230,8 @@ type
     fCOD_ITEM: String;        /// Código do item (campo 02 do Registro 0200)
     fVL_AJ_ITEM: currency;    /// Valor do ajuste para a operação/item
   public
+    constructor Create(AOwner: TRegistroE111); virtual; /// Create
+
     property COD_PART: String read fCOD_PART write fCOD_PART;
     property COD_MOD: String read fCOD_MOD write fCOD_MOD;
     property SER: String read fSER write fSER;
@@ -247,7 +250,7 @@ type
     function GetItem(Index: Integer): TRegistroE113; /// GetItem
     procedure SetItem(Index: Integer; const Value: TRegistroE113); /// SetItem
   public
-    function New: TRegistroE113;
+    function New(AOwner: TRegistroE111): TRegistroE113;
     property Items[Index: Integer]: TRegistroE113 read GetItem write SetItem;
   end;
 
@@ -259,6 +262,8 @@ type
     fVL_INF_ADIC: currency;   /// Valor referente à informação adicional
     fDESCR_COMPL_AJ: String;  /// Descrição complementar do ajuste
   public
+    constructor Create(AOwner: TRegistroE110); virtual; /// Create
+
     property COD_INF_ADIC: String read fCOD_INF_ADIC write fCOD_INF_ADIC;
     property VL_INF_ADIC: currency read fVL_INF_ADIC write fVL_INF_ADIC;
     property DESCR_COMPL_AJ: String read fDESCR_COMPL_AJ write fDESCR_COMPL_AJ;
@@ -271,7 +276,7 @@ type
     function GetItem(Index: Integer): TRegistroE115; /// GetItem
     procedure SetItem(Index: Integer; const Value: TRegistroE115); /// SetItem
   public
-    function New: TRegistroE115;
+    function New(AOwner: TRegistroE110): TRegistroE115;
     property Items[Index: Integer]: TRegistroE115 read GetItem write SetItem;
   end;
 
@@ -289,6 +294,8 @@ type
     fTXT_COMPL: String;             /// Descrição complementar das obrigações a recolher.
     fMES_REF: string;               /// VERSÃO 103 : Informe o mês de referência no formato “mmaaaa”
   public
+    constructor Create(AOwner: TRegistroE110); virtual; /// Create
+
     property COD_OR: String read fCOD_OR write fCOD_OR;
     property VL_OR: currency read fVL_OR write fVL_OR;
     property DT_VCTO: TDateTime read fDT_VCTO write fDT_VCTO;
@@ -307,7 +314,7 @@ type
     function GetItem(Index: Integer): TRegistroE116; /// GetItem
     procedure SetItem(Index: Integer; const Value: TRegistroE116); /// SetItem
   public
-    function New: TRegistroE116;
+    function New(AOwner: TRegistroE110): TRegistroE116;
     property Items[Index: Integer]: TRegistroE116 read GetItem write SetItem;
   end;
 
@@ -321,7 +328,7 @@ type
 
     fRegistroE210: TRegistroE210List;
   public
-    constructor Create; virtual; /// Create
+    constructor Create(AOwner: TRegistroE001); virtual; /// Create
     destructor Destroy; override; /// Destroy
 
     property UF: String read fUF write fUF;
@@ -336,7 +343,7 @@ type
     function  GetItem(Index: Integer): TRegistroE200;              /// GetItem
     procedure SetItem(Index: Integer; const Value: TRegistroE200); /// SetItem
   public
-    function New: TRegistroE200;
+    function New(AOwner: TRegistroE001): TRegistroE200;
     property Items[Index: Integer]: TRegistroE200 read GetItem write SetItem;
   end;
 
@@ -362,7 +369,7 @@ type
     fRegistroE220: TRegistroE220List;
     fRegistroE250: TRegistroE250List;
   public
-    constructor Create; virtual; /// Create
+    constructor Create(AOwner: TRegistroE200); virtual; /// Create
     destructor Destroy; override; /// Destroy
 
     property IND_MOV_ST: TACBRMovimentoST read fIND_MOV_ST write fIND_MOV_ST;
@@ -391,7 +398,7 @@ type
     function GetItem(Index: Integer): TRegistroE210; /// GetItem
     procedure SetItem(Index: Integer; const Value: TRegistroE210); /// SetItem
   public
-    function New: TRegistroE210;
+    function New(AOwner: TRegistroE200): TRegistroE210;
     property Items[Index: Integer]: TRegistroE210 read GetItem write SetItem;
   end;
 
@@ -406,7 +413,7 @@ type
     FRegistroE230: TRegistroE230List;
     FRegistroE240: TRegistroE240List;
   public
-    constructor Create; virtual; /// Create
+    constructor Create(AOwner: TRegistroE210); virtual; /// Create
     destructor Destroy; override; /// Destroy
 
     property COD_AJ_APUR: String read fCOD_AJ_APUR write fCOD_AJ_APUR;
@@ -424,7 +431,7 @@ type
     function GetItem(Index: Integer): TRegistroE220; /// GetItem
     procedure SetItem(Index: Integer; const Value: TRegistroE220); /// SetItem
   public
-    function New: TRegistroE220;
+    function New(AOwner: TRegistroE210): TRegistroE220;
     property Items[Index: Integer]: TRegistroE220 read GetItem write SetItem;
   end;
 
@@ -438,6 +445,8 @@ type
     fPROC: String;                  /// Descrição resumida do processo que embasou o lançamento
     fTXT_COMPL: String;             /// Código de referência à observação (campo 02 do Registro 0460)
   public
+    constructor Create(AOwner: TRegistroE220); virtual; /// Create
+
     property NUM_DA: String read fNUM_DA write fNUM_DA;
     property NUM_PROC: String read fNUM_PROC write fNUM_PROC;
     property IND_PROC: TACBrOrigemProcesso read fIND_PROC write fIND_PROC;
@@ -452,7 +461,7 @@ type
     function GetItem(Index: Integer): TRegistroE230; /// GetItem
     procedure SetItem(Index: Integer; const Value: TRegistroE230); /// SetItem
   public
-    function New: TRegistroE230;
+    function New(AOwner: TRegistroE220): TRegistroE230;
     property Items[Index: Integer]: TRegistroE230 read GetItem write SetItem;
   end;
 
@@ -470,6 +479,8 @@ type
     fCOD_ITEM: String;     /// Código do item (campo 02 do Registro 0200)
     fVL_AJ_ITEM: currency; /// Valor do ajuste para a operação/item
   public
+    constructor Create(AOwner: TRegistroE220); virtual; /// Create
+
     property COD_PART: String read fCOD_PART write fCOD_PART;
     property COD_MOD: String read fCOD_MOD write fCOD_MOD;
     property SER: String read fSER write fSER;
@@ -488,7 +499,7 @@ type
     function GetItem(Index: Integer): TRegistroE240; /// GetItem
     procedure SetItem(Index: Integer; const Value: TRegistroE240); /// SetItem
   public
-    function New: TRegistroE240;
+    function New(AOwner: TRegistroE220): TRegistroE240;
     property Items[Index: Integer]: TRegistroE240 read GetItem write SetItem;
   end;
 
@@ -506,6 +517,8 @@ type
     fTXT_COMPL: String;             /// Descrição complementar das obrigações a recolher
     fMES_REF: string;               /// VERSÃO 103 : Informe o mês de referência no formato “mmaaaa”
   public
+    constructor Create(AOwner: TRegistroE210); virtual; /// Create
+
     property COD_OR: String read fCOD_OR write fCOD_OR;
     property VL_OR: currency read fVL_OR write fVL_OR;
     property DT_VCTO: TDateTime read fDT_VCTO write fDT_VCTO;
@@ -524,7 +537,7 @@ type
     function GetItem(Index: Integer): TRegistroE250; /// GetItem
     procedure SetItem(Index: Integer; const Value: TRegistroE250); /// SetItem
   public
-    function New: TRegistroE250;
+    function New(AOwner: TRegistroE210): TRegistroE250;
     property Items[Index: Integer]: TRegistroE250 read GetItem write SetItem;
   end;
 
@@ -539,7 +552,7 @@ type
     fRegistroE510: TRegistroE510List;
     fRegistroE520: TRegistroE520List;
   public
-    constructor Create; virtual; /// Create
+    constructor Create(AOwner: TRegistroE001); virtual; /// Create
     destructor Destroy; override; /// Destroy
 
     property IND_APUR: TACBrApuracaoIPI read fIND_APUR write fIND_APUR;
@@ -557,7 +570,7 @@ type
     function GetItem(Index: Integer): TRegistroE500; /// GetItem
     procedure SetItem(Index: Integer; const Value: TRegistroE500); /// SetItem
   public
-    function New: TRegistroE500;
+    function New(AOwner: TRegistroE001): TRegistroE500;
     property Items[Index: Integer]: TRegistroE500 read GetItem write SetItem;
   end;
 
@@ -572,6 +585,8 @@ type
     fVL_BC_IPI: currency;           /// Parcela correspondente ao "Valor da base de cálculo do IPI" referente ao CFOP e ao Código de Tributação do IPI, para operações tributadas
     fVL_IPI: currency;              /// Parcela correspondente ao "Valor do IPI" referente ao CFOP e ao Código de Tributação do IPI, para operações tributadas
   public
+    constructor Create(AOwner: TRegistroE500); virtual; /// Create
+
     property CFOP: String                  read fCFOP        write fCFOP;
 //    property CST_IPI: TACBrSituacaoTribIPI read fCST_IPI     write fCST_IPI;
     property CST_IPI: string               read fCST_IPI     write fCST_IPI;
@@ -587,7 +602,7 @@ type
     function GetItem(Index: Integer): TRegistroE510; /// GetItem
     procedure SetItem(Index: Integer; const Value: TRegistroE510); /// SetItem
   public
-    function New: TRegistroE510;
+    function New(AOwner: TRegistroE500): TRegistroE510;
     property Items[Index: Integer]: TRegistroE510 read GetItem write SetItem;
   end;
 
@@ -605,7 +620,7 @@ type
 
     fRegistroE530: TRegistroE530List;
   public
-    constructor Create; virtual; /// Create
+    constructor Create(AOwner: TRegistroE500); virtual; /// Create
     destructor Destroy; override; /// Destroy
 
     property VL_SD_ANT_IPI: currency read fVL_SD_ANT_IPI write fVL_SD_ANT_IPI;
@@ -626,7 +641,7 @@ type
     function GetItem(Index: Integer): TRegistroE520; /// GetItem
     procedure SetItem(Index: Integer; const Value: TRegistroE520); /// SetItem
   public
-    function New: TRegistroE520;
+    function New(AOwner: TRegistroE500): TRegistroE520;
     property Items[Index: Integer]: TRegistroE520 read GetItem write SetItem;
   end;
 
@@ -641,6 +656,8 @@ type
     fNUM_DOC: String;            /// Número do documento / processo / declaração ao qual o ajuste está vinculado, se houver
     fDESCR_AJ: String;           /// Descrição resumida do ajuste.
   public
+    constructor Create(AOwner: TRegistroE520); virtual; /// Create
+
     property IND_AJ: TACBrTipoAjuste read fIND_AJ write fIND_AJ;
     property VL_AJ: currency read fVL_AJ write fVL_AJ;
     property COD_AJ: String read fCOD_AJ write fCOD_AJ;
@@ -656,7 +673,7 @@ type
     function GetItem(Index: Integer): TRegistroE530; /// GetItem
     procedure SetItem(Index: Integer; const Value: TRegistroE530); /// SetItem
   public
-    function New: TRegistroE530;
+    function New(AOwner: TRegistroE520): TRegistroE530;
     property Items[Index: Integer]: TRegistroE530 read GetItem write SetItem;
   end;
 
@@ -681,9 +698,9 @@ begin
   Result := TRegistroE111(Inherited Items[Index]);
 end;
 
-function TRegistroE111List.New: TRegistroE111;
+function TRegistroE111List.New(AOwner: TRegistroE110): TRegistroE111;
 begin
-  Result := TRegistroE111.Create;
+  Result := TRegistroE111.Create(AOwner);
   Add(Result);
 end;
 
@@ -699,9 +716,9 @@ begin
   Result := TRegistroE112(Inherited Items[Index]);
 end;
 
-function TRegistroE112List.New: TRegistroE112;
+function TRegistroE112List.New(AOwner: TRegistroE111): TRegistroE112;
 begin
-  Result := TRegistroE112.Create;
+  Result := TRegistroE112.Create(AOwner);
   Add(Result);
 end;
 
@@ -717,9 +734,9 @@ begin
   Result := TRegistroE113(Inherited Items[Index]);
 end;
 
-function TRegistroE113List.New: TRegistroE113;
+function TRegistroE113List.New(AOwner: TRegistroE111): TRegistroE113;
 begin
-  Result := TRegistroE113.Create;
+  Result := TRegistroE113.Create(AOwner);
   Add(Result);
 end;
 
@@ -735,9 +752,9 @@ begin
   Result := TRegistroE115(Inherited Items[Index]);
 end;
 
-function TRegistroE115List.New: TRegistroE115;
+function TRegistroE115List.New(AOwner: TRegistroE110): TRegistroE115;
 begin
-  Result := TRegistroE115.Create;
+  Result := TRegistroE115.Create(AOwner);
   Add(Result);
 end;
 
@@ -753,9 +770,9 @@ begin
   Result := TRegistroE116(Inherited Items[Index]);
 end;
 
-function TRegistroE116List.New: TRegistroE116;
+function TRegistroE116List.New(AOwner: TRegistroE110): TRegistroE116;
 begin
-  Result := TRegistroE116.Create;
+  Result := TRegistroE116.Create(AOwner);
   Add(Result);
 end;
 
@@ -771,9 +788,9 @@ begin
   Result := TRegistroE210(Inherited Items[Index]);
 end;
 
-function TRegistroE210List.New: TRegistroE210;
+function TRegistroE210List.New(AOwner: TRegistroE200): TRegistroE210;
 begin
-  Result := TRegistroE210.Create;
+  Result := TRegistroE210.Create(AOwner);
   Add(Result);
 end;
 
@@ -789,9 +806,9 @@ begin
   Result := TRegistroE220(Inherited Items[Index]);
 end;
 
-function TRegistroE220List.New: TRegistroE220;
+function TRegistroE220List.New(AOwner: TRegistroE210): TRegistroE220;
 begin
-  Result := TRegistroE220.Create;
+  Result := TRegistroE220.Create(AOwner);
   Add(Result);
 end;
 
@@ -807,9 +824,9 @@ begin
   Result := TRegistroE230(Inherited Items[Index]);
 end;
 
-function TRegistroE230List.New: TRegistroE230;
+function TRegistroE230List.New(AOwner: TRegistroE220): TRegistroE230;
 begin
-  Result := TRegistroE230.Create;
+  Result := TRegistroE230.Create(AOwner);
   Add(Result);
 end;
 
@@ -825,9 +842,9 @@ begin
   Result := TRegistroE240(Inherited Items[Index]);
 end;
 
-function TRegistroE240List.New: TRegistroE240;
+function TRegistroE240List.New(AOwner: TRegistroE220): TRegistroE240;
 begin
-  Result := TRegistroE240.Create;
+  Result := TRegistroE240.Create(AOwner);
   Add(Result);
 end;
 
@@ -843,9 +860,9 @@ begin
   Result := TRegistroE250(Inherited Items[Index]);
 end;
 
-function TRegistroE250List.New: TRegistroE250;
+function TRegistroE250List.New(AOwner: TRegistroE210): TRegistroE250;
 begin
-  Result := TRegistroE250.Create;
+  Result := TRegistroE250.Create(AOwner);
   Add(Result);
 end;
 
@@ -861,9 +878,9 @@ begin
   Result := TRegistroE500(Inherited Items[Index]);
 end;
 
-function TRegistroE500List.New: TRegistroE500;
+function TRegistroE500List.New(AOwner: TRegistroE001): TRegistroE500;
 begin
-  Result := TRegistroE500.Create;
+  Result := TRegistroE500.Create(AOwner);
   Add(Result);
 end;
 
@@ -879,9 +896,9 @@ begin
   Result := TRegistroE510(Inherited Items[Index]);
 end;
 
-function TRegistroE510List.New: TRegistroE510;
+function TRegistroE510List.New(AOwner: TRegistroE500): TRegistroE510;
 begin
-  Result := TRegistroE510.Create;
+  Result := TRegistroE510.Create(AOwner);
   Add(Result);
 end;
 
@@ -897,9 +914,9 @@ begin
   Result := TRegistroE520(Inherited Items[Index]);
 end;
 
-function TRegistroE520List.New: TRegistroE520;
+function TRegistroE520List.New(AOwner: TRegistroE500): TRegistroE520;
 begin
-  Result := TRegistroE520.Create;
+  Result := TRegistroE520.Create(AOwner);
   Add(Result);
 end;
 
@@ -915,9 +932,9 @@ begin
   Result := TRegistroE530(Inherited Items[Index]);
 end;
 
-function TRegistroE530List.New: TRegistroE530;
+function TRegistroE530List.New(AOwner: TRegistroE520): TRegistroE530;
 begin
-  Result := TRegistroE530.Create;
+  Result := TRegistroE530.Create(AOwner);
   Add(Result);
 end;
 
@@ -933,9 +950,9 @@ begin
   Result := TRegistroE200(Inherited Items[Index]);
 end;
 
-function TRegistroE200List.New: TRegistroE200;
+function TRegistroE200List.New(AOwner: TRegistroE001): TRegistroE200;
 begin
-  Result := TRegistroE200.Create;
+  Result := TRegistroE200.Create(AOwner);
   Add(Result);
 end;
 
@@ -946,8 +963,11 @@ end;
 
 { TRegistroE200 }
 
-constructor TRegistroE200.Create;
+constructor TRegistroE200.Create(AOwner: TRegistroE001);
 begin
+  if not (AOwner is TRegistroE001) then
+     raise Exception.Create('O registro pai recebido não é o registro E001!');
+
    FRegistroE210 := TRegistroE210List.Create;   /// BLOCO E - Lista de RegistroE210 (FILHO)
 end;
 
@@ -959,8 +979,11 @@ end;
 
 { TRegistroE210 }
 
-constructor TRegistroE210.Create;
+constructor TRegistroE210.Create(AOwner: TRegistroE200);
 begin
+  if not (AOwner is TRegistroE200) then
+     raise Exception.Create('O registro pai recebido não é o registro E200!');
+
    FRegistroE220 := TRegistroE220List.Create;   /// BLOCO E - Lista de RegistroE220 (FILHO)
    FRegistroE250 := TRegistroE250List.Create;   /// BLOCO E - Lista de RegistroE250 (FILHO)
 end;
@@ -974,8 +997,11 @@ end;
 
 { TRegistroE510 }
 
-constructor TRegistroE500.Create;
+constructor TRegistroE500.Create(AOwner: TRegistroE001);
 begin
+  if not (AOwner is TRegistroE001) then
+     raise Exception.Create('O registro pai recebido não é o registro E001!');
+
    FRegistroE510 := TRegistroE510List.Create;   /// BLOCO E - Lista de RegistroE510 (FILHO)
    FRegistroE520 := TRegistroE520List.Create;   /// BLOCO E - Lista de RegistroE520 (FILHO)
 end;
@@ -987,11 +1013,22 @@ begin
   inherited;
 end;
 
+{ TRegistroE510 }
+
+constructor TRegistroE510.Create(AOwner: TRegistroE500);
+begin
+  if not (AOwner is TRegistroE500) then
+     raise Exception.Create('O registro pai recebido não é o registro E500!');
+end;
+
 { TRegistroE100 }
 
-constructor TRegistroE100.Create;
+constructor TRegistroE100.Create(AOwner: TRegistroE001);
 begin
-   FRegistroE110 := TRegistroE110.Create;
+  if not (AOwner is TRegistroE001) then
+     raise Exception.Create('O registro pai recebido não é o registro E001!');
+
+   FRegistroE110 := TRegistroE110.Create(Self);
 end;
 
 destructor TRegistroE100.Destroy;
@@ -1002,7 +1039,7 @@ end;
 
 { TRegistroE110 }
 
-constructor TRegistroE110.Create;
+constructor TRegistroE110.Create(AOwner: TRegistroE100);
 begin
    FRegistroE111 := TRegistroE111List.Create;
    FRegistroE115 := TRegistroE115List.Create;
@@ -1019,8 +1056,11 @@ end;
 
 { TRegistroE111 }
 
-constructor TRegistroE111.Create;
+constructor TRegistroE111.Create(AOwner: TRegistroE110);
 begin
+  if not (AOwner is TRegistroE110) then
+     raise Exception.Create('O registro pai recebido não é o registro E110!');
+
    FRegistroE112 := TRegistroE112List.Create;
    FRegistroE113 := TRegistroE113List.Create;
 end;
@@ -1034,8 +1074,11 @@ end;
 
 { TRegistroE220 }
 
-constructor TRegistroE220.Create;
+constructor TRegistroE220.Create(AOwner: TRegistroE210);
 begin
+  if not (AOwner is TRegistroE210) then
+     raise Exception.Create('O registro pai recebido não é o registro E210!');
+
    FRegistroE230 := TRegistroE230List.Create;
    FRegistroE240 := TRegistroE240List.Create;
 end;
@@ -1049,8 +1092,11 @@ end;
 
 { TRegistroE520 }
 
-constructor TRegistroE520.Create;
+constructor TRegistroE520.Create(AOwner: TRegistroE500);
 begin
+  if not (AOwner is TRegistroE500) then
+     raise Exception.Create('O registro pai recebido não é o registro E500!');
+
    fRegistroE530 := TRegistroE530List.Create;
 end;
 
@@ -1086,9 +1132,9 @@ begin
   Result := TRegistroE100(Inherited Items[Index]);
 end;
 
-function TRegistroE100List.New: TRegistroE100;
+function TRegistroE100List.New(AOwner: TRegistroE001): TRegistroE100;
 begin
-  Result := TRegistroE100.Create;
+  Result := TRegistroE100.Create(AOwner);
   Add(Result);
 end;
 
@@ -1097,5 +1143,69 @@ begin
   Put(Index, Value);
 end;
 
+
+{ TRegistroE112 }
+
+constructor TRegistroE112.Create(AOwner: TRegistroE111);
+begin
+  if not (AOwner is TRegistroE111) then
+     raise Exception.Create('O registro pai recebido não é o registro E111!');
+end;
+
+{ TRegistroE113 }
+
+constructor TRegistroE113.Create(AOwner: TRegistroE111);
+begin
+  if not (AOwner is TRegistroE111) then
+     raise Exception.Create('O registro pai recebido não é o registro E111!');
+end;
+
+{ TRegistroE115 }
+
+constructor TRegistroE115.Create(AOwner: TRegistroE110);
+begin
+  if not (AOwner is TRegistroE110) then
+     raise Exception.Create('O registro pai recebido não é o registro E110!');
+end;
+
+{ TRegistroE116 }
+
+constructor TRegistroE116.Create(AOwner: TRegistroE110);
+begin
+  if not (AOwner is TRegistroE110) then
+     raise Exception.Create('O registro pai recebido não é o registro E110!');
+end;
+
+{ TRegistroE230 }
+
+constructor TRegistroE230.Create(AOwner: TRegistroE220);
+begin
+  if not (AOwner is TRegistroE220) then
+     raise Exception.Create('O registro pai recebido não é o registro E220!');
+end;
+
+{ TRegistroE240 }
+
+constructor TRegistroE240.Create(AOwner: TRegistroE220);
+begin
+  if not (AOwner is TRegistroE220) then
+     raise Exception.Create('O registro pai recebido não é o registro E220!');
+end;
+
+{ TRegistroE250 }
+
+constructor TRegistroE250.Create(AOwner: TRegistroE210);
+begin
+  if not (AOwner is TRegistroE210) then
+     raise Exception.Create('O registro pai recebido não é o registro E210!');
+end;
+
+{ TRegistroE530 }
+
+constructor TRegistroE530.Create(AOwner: TRegistroE520);
+begin
+  if not (AOwner is TRegistroE520) then
+     raise Exception.Create('O registro pai recebido não é o registro E520!');
+end;
 
 end.

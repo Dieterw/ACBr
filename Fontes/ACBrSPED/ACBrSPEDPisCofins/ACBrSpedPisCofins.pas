@@ -222,9 +222,9 @@ begin
   FBloco_M.Bloco_0 := FBloco_0;
 
   FPath := ExtractFilePath(ParamStr(0));
-  FDelimitador := '|';
-  FCurMascara := '#0.00';
-  FTrimString := True;
+  Delimitador := '|';   	//Não chamamos a variável diretamente pois precisa-se alterar os registros filhos também.
+  CurMascara := '#0.00';	//Não chamamos a variável diretamente pois precisa-se alterar os registros filhos também.
+  TrimString := True;		//Não chamamos a variável diretamente pois precisa-se alterar os registros filhos também.
 end;
 
 destructor TACBrSPEDPisCofins.Destroy;

@@ -77,7 +77,7 @@ type
     function Add( const AString : AnsiString; AddDelimiter : Boolean = True ) : Integer;
     function RFill(Value: String; Size: Integer = 0; Caracter: Char = ' '): String; overload;
     function LFill(Value: String; Size: Integer = 0; Caracter: Char = '0'): String; overload;
-    function DFill(Value: Extended;
+    function DFill(Value: Double;
                    Decimal: Integer = 2;
                    Nulo: Boolean = false): String;
     function LFill(Value: Currency;
@@ -262,7 +262,7 @@ begin
      Result := LFill(Trunc(Value * intP), Size, Nulo, Caracter);
 end;
 
-function TACBrTXTClass.DFill(Value: Extended;
+function TACBrTXTClass.DFill(Value: Double;
                         Decimal: Integer = 2;
                         Nulo: Boolean = false): String;
 begin
@@ -272,7 +272,7 @@ begin
      Result := FDelimitador;
      Exit;
   end;
-  Result := FDelimitador + FormatFloat('#0.' + StringOfChar('0', Decimal), Value); //FormatCurr não permite precisão acima de 4 casas decimais
+  Result := FDelimitador + FormatCurr('#0.' + StringOfChar('0', Decimal), Value); //FormatCurr não permite precisão acima de 4 casas decimais
 end;
 
 function TACBrTXTClass.LFill(Value: Integer; Size: Integer; Nulo: Boolean = false; Caracter: Char = '0'): String;

@@ -310,6 +310,7 @@ strTIPO_ESCRIT: AnsiString;
 strIND_SIT_ESP: AnsiString;
 strIND_NAT_PJ: AnsiString;
 strIND_ATIV: AnsiString;
+strNUM_REC_ANTERIOR: AnsiString;
 begin
   if Assigned(Registro0000) then
   begin
@@ -344,6 +345,12 @@ begin
          indAtivoImobiliaria: strIND_ATIV := '4';
          indAtivoOutros: strIND_ATIV := '9';
        end;
+
+       if (TIPO_ESCRIT = tpEscrRetificadora) then
+          strNUM_REC_ANTERIOR := LFill( NUM_REC_ANTERIOR, 41 )
+       else
+          strNUM_REC_ANTERIOR := '';
+
        Check(funChecaCNPJ(CNPJ), '(0-0000) ENTIDADE: O CNPJ "%s" digitado é inválido!', [CNPJ]);
        Check(funChecaUF(UF), '(0-0000) ENTIDADE: A UF "%s" digitada é inválido!', [UF]);
        Check(funChecaMUN(COD_MUN), '(0-0000) ENTIDADE: O código do município "%s" digitado é inválido!', [IntToStr(COD_MUN)]);
@@ -352,7 +359,7 @@ begin
             LFill( strCOD_VER ) +
             LFill( strTIPO_ESCRIT ) +
             LFill( strIND_SIT_ESP ) +
-            LFill( NUM_REC_ANTERIOR, 41 ) +
+            LFill( strNUM_REC_ANTERIOR ) +
             LFill( DT_INI ) +
             LFill( DT_FIN ) +
             LFill( NOME ) +

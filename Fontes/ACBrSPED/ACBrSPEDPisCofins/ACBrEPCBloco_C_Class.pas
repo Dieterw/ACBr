@@ -901,7 +901,7 @@ begin
              LFill(strCOD_DOC_IMP)  +
              LFill(NUM_DOC__IMP)    +
              LFill(PIS_IMP,0,2)     +
-             LFill(COFINS_IMP,0,2) +
+             LFill(COFINS_IMP,0,2)  +
              LFill(NUM_ACDRAW, 20)) ;
         //
         RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
@@ -1100,13 +1100,13 @@ begin
               {24} LFill( VL_IPI,0,2 )           +
               {25} LFill( strCST_PIS )           +
               {26} LFill( VL_BC_PIS,0,2 )        +
-              {27} LFill( ALIQ_PIS_PERC,8, 4, False, '0', '#0.0000' ) +
-              {28} DFill( QUANT_BC_PIS,3,true )  +
-              {29} DFill( ALIQ_PIS_R,4,true )    +
+              {27} DFill( ALIQ_PIS_PERC, 4, True ) +
+              {28} DFill( QUANT_BC_PIS,  3, True ) +
+              {29} DFill( ALIQ_PIS_R,    4, True ) +
               {30} LFill( VL_PIS,0,2 )           +
               {31} LFill( strCST_COFINS )        +
               {32} LFill( VL_BC_COFINS,0,2 )     +
-              {33} LFill( ALIQ_COFINS_PERC,8,4, False, '0', '#0.0000' ) +
+              {33} DFill( ALIQ_COFINS_PERC, 4, True ) +
               {34} DFill( QUANT_BC_COFINS,3,true )+
               {35} DFill( ALIQ_COFINS_R,4,true ) +
               {36} LFill( VL_COFINS,0,2 )        +
@@ -1402,7 +1402,7 @@ begin
              LFill(VL_ITEM,0,2)        +
              LFill(VL_DESC,0,2)        +
              LFill(VL_BC_PIS,0,2)      +
-             LFill(ALIQ_PIS,8,4,False,'0','#0.0000' ) +
+             DFill(ALIQ_PIS, 4, True ) +
              DFill(QUANT_BC_PIS,3,True)   +
              DFill(ALIQ_PIS_QUANT,4,True) +
              LFill(VL_PIS,0,2)            +
@@ -1975,7 +1975,7 @@ begin
              LFill(strCST_PIS)         +
              LFill(VL_ITEM,0,2)        +
              LFill(VL_BC_PIS,0,2)      +
-             DFill(ALIQ_PIS, 4)       +
+             DFill(ALIQ_PIS, 4, True)       +
              DFill(QUANT_BC_PIS, 3, True)   +
              DFill(ALIQ_PIS_QUANT, 4, True) +
              LFill(VL_PIS,0,2)         +
@@ -2167,7 +2167,7 @@ begin
              LFill(CFOP,4)             +
              LFill(VL_ITEM,0,2)        +
              LFill(VL_BC_PIS,0,2)      +
-             DFill(ALIQ_PIS, 4)       +
+             DFill(ALIQ_PIS, 4, True)       +
              DFill(QUANT_BC_PIS, 3, True)   +
              DFill(ALIQ_PIS_QUANT, 4, True) +
              LFill(VL_PIS,0,2)         +

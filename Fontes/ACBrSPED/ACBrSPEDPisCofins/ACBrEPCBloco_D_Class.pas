@@ -1240,22 +1240,22 @@ begin
                LFill( ECF_MOD )               +
                LFill( ECF_FAB )               +
                LFill( DT_DOC )                +
-               LFill( CRO )                   +
-               LFill( CRZ )                   +
-               LFill( NUM_COO_FIN )           +
-               LFill( GT_FIN )                +
-               LFill( VL_BRT,0,2 )            +
+               LFill( CRO, 3 )                +
+               LFill( CRZ, 6 )                +
+               LFill( NUM_COO_FIN, 6 )        +
+               DFill( GT_FIN )                +
+               DFill( VL_BRT )                +
                LFill( strCST_PIS )            +
-               LFill( VL_BC_PIS,0,2 )         +
-               DFill( ALIQ_PIS, 4 )          +
-               DFill( QUANT_BC_PIS, 3 )      +
-               DFill( ALIQ_PIS_QUANT, 4 )    +
+               LFill( VL_BC_PIS, 0, 2 )       +
+               DFill( ALIQ_PIS, 4, True )           +
+               DFill( QUANT_BC_PIS, 3, True )       +
+               DFill( ALIQ_PIS_QUANT, 4, True )     +
                LFill( VL_PIS,0,2 )            +
                LFill( strCST_COFINS )         +
                LFill( VL_BC_COFINS,0,2 )      +
-               DFill( ALIQ_COFINS, 4 )       +
-               DFill( QUANT_BC_COFINS, 3 )   +
-               DFill( ALIQ_COFINS_QUANT, 4 ) +
+               DFill( ALIQ_COFINS, 4, True )        +
+               DFill( QUANT_BC_COFINS, 3, True )    +
+               DFill( ALIQ_COFINS_QUANT, 4, True )  +
                LFill( VL_COFINS,0,2 )         +
                LFill(COD_CTA) ) ;
         end;

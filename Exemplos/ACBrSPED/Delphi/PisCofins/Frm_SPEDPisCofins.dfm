@@ -150,7 +150,7 @@ object FrmSPEDPisCofins: TFrmSPEDPisCofins
     object edtFile: TEdit
       Left = 22
       Top = 28
-      Width = 216
+      Width = 204
       Height = 21
       Anchors = [akLeft, akTop, akRight]
       TabOrder = 0
@@ -159,7 +159,7 @@ object FrmSPEDPisCofins: TFrmSPEDPisCofins
       OnExit = edtFileChange
     end
     object cbConcomitante: TCheckBox
-      Left = 262
+      Left = 250
       Top = 30
       Width = 134
       Height = 19
@@ -228,7 +228,7 @@ object FrmSPEDPisCofins: TFrmSPEDPisCofins
       OnClick = btnB_0Click
     end
     object btnB_1: TButton
-      Left = 109
+      Left = 544
       Top = 51
       Width = 62
       Height = 25
@@ -237,7 +237,7 @@ object FrmSPEDPisCofins: TFrmSPEDPisCofins
       OnClick = btnB_1Click
     end
     object btnB_C: TButton
-      Left = 284
+      Left = 197
       Top = 51
       Width = 60
       Height = 25
@@ -246,7 +246,7 @@ object FrmSPEDPisCofins: TFrmSPEDPisCofins
       OnClick = btnB_CClick
     end
     object btnB_D: TButton
-      Left = 369
+      Left = 283
       Top = 51
       Width = 62
       Height = 25
@@ -255,7 +255,7 @@ object FrmSPEDPisCofins: TFrmSPEDPisCofins
       OnClick = btnB_DClick
     end
     object btnB_A: TButton
-      Left = 197
+      Left = 110
       Top = 51
       Width = 62
       Height = 25
@@ -264,7 +264,7 @@ object FrmSPEDPisCofins: TFrmSPEDPisCofins
       OnClick = btnB_AClick
     end
     object btnB_F: TButton
-      Left = 457
+      Left = 370
       Top = 51
       Width = 62
       Height = 25
@@ -273,7 +273,7 @@ object FrmSPEDPisCofins: TFrmSPEDPisCofins
       OnClick = btnB_FClick
     end
     object btnB_M: TButton
-      Left = 544
+      Left = 457
       Top = 51
       Width = 62
       Height = 25

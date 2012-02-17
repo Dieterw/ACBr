@@ -252,7 +252,7 @@ begin
                       begin
                         DESCR_ANT_ITEM := 'DESCRIÇÃO ANTERIOR DO ITEM 5';
                         DT_INI := StrToDate('01/04/2011');
-                        DT_FIM := StrToDate('15/04/2011');
+                        DT_FIM := StrToDate('15/04/2011'); //Observe que o campo é DT_FIM e não DT_FIN
                       end;
                     end;
                  end;
@@ -341,12 +341,13 @@ end;
 procedure TFrmSPEDPisCofins.btnVariosBlocosClick(Sender: TObject);
 begin
   btnB_0.Click;
-  btnB_1.Click;
   btnB_A.Click;
   btnB_C.Click;
   btnB_D.Click;
   btnB_F.Click;
   btnB_M.Click;
+  btnB_1.Click;
+
 end;
 
 procedure TFrmSPEDPisCofins.btnErrorClick(Sender: TObject);

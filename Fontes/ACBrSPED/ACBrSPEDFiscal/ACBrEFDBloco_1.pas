@@ -1346,7 +1346,7 @@ end;
 
 { TRegistro1010 }
 
-constructor TRegistro1010.Create;
+constructor TRegistro1010.Create(AOwner: TRegistro1001);
 begin
   if not (AOwner is TRegistro1001) then
      raise Exception.Create('O registro pai recebido não é o registro 1001!');

@@ -87,44 +87,43 @@ end;
 procedure TACBrBALToledo2180.LeSerial(MillisecTimeOut: Integer);
 Var
   Resposta : AnsiString ;
-  p        : Integer ;
-  i:Integer;
-  pesos:array[1..5] of Double;
+  P, I     : Integer ;
+  Pesos    : array[1..5] of Double;
 begin
   fpUltimoPesoLido := 0 ;
   fpUltimaResposta := '' ;
 
   Try
-
-     for i:=1 to 5 do begin
+     for I := 1 to 5 do
+     begin
         fpUltimaResposta := fpDevice.Serial.RecvTerminated( MillisecTimeOut, #13);
 
-        p:=Pos(#96,fpUltimaResposta);
-        if p>0 then begin
-           Resposta:=Copy(fpUltimaResposta,p+1,Length(fpUltimaResposta));
+        P := Pos( #96, fpUltimaResposta );
 
-           Resposta:=Copy(Resposta,1,6);
+        if P > 0 then
+        begin
+           Resposta := Copy(fpUltimaResposta, P + 1, Length(fpUltimaResposta) );
+           Resposta := Copy(Resposta,1,6);
            Insert('.',Resposta,6);
-          end
-          else
-           Resposta:='I';
+        end
+        else
+           Resposta := 'I';
 
         { Ajustando o separador de Decimal corretamente }
         Resposta := StringReplace(Resposta, '.', DecimalSeparator, [rfReplaceAll]);
         Resposta := StringReplace(Resposta, ',', DecimalSeparator, [rfReplaceAll]);
 
         try
-           pesos[i] := StrToFloat(Resposta)
+           Pesos[I] := StrToFloat(Resposta)
         except
-           pesos[i] := 0;
+           Pesos[I] := 0;
         end;
      end;
 
-     if (pesos[3]=pesos[4]) and (pesos[4]=pesos[5]) then
+     if (Pesos[3] = Pesos[4]) and (Pesos[4] = Pesos[5]) then
         fpUltimoPesoLido := pesos[5]
-       else begin
+     else
         fpUltimoPesoLido := -1 ;
-     end;
 
   except
      { Peso não foi recebido (TimeOut) }

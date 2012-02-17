@@ -28,7 +28,7 @@
     <License Value="LGPL
 "/>
     <Version Minor="9"/>
-    <Files Count="6">
+    <Files Count="8">
       <Item1>
         <Filename Value="..\..\Fontes\ACBrTCP\ACBrSocket.pas"/>
         <UnitName Value="ACBrSocket"/>
@@ -54,6 +54,14 @@
         <Filename Value="..\..\Fontes\ACBrTCP\ACBrSuframa.pas"/>
         <UnitName Value="ACBrSuframa"/>
       </Item6>
+      <Item7>
+        <Filename Value="..\..\Fontes\ACBrTCP\ACBrDownload.pas"/>
+        <UnitName Value="ACBrDownload"/>
+      </Item7>
+      <Item8>
+        <Filename Value="..\..\Fontes\ACBrTCP\ACBrDownloadClass.pas"/>
+        <UnitName Value="ACBrDownloadClass"/>
+      </Item8>
     </Files>
     <Type Value="RunAndDesignTime"/>
     <RequiredPkgs Count="4">

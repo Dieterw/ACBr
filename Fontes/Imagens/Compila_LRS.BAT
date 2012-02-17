@@ -26,7 +26,7 @@ echo "****************************************"
 echo.
 
 :Serial
-%1\tools\lazres.exe ACBrSerial.lrs TACBrECF.bmp TACBrGAV.bmp TACBrCHQ.bmp TACBrLCB.bmp TACBrDIS.bmp TACBrBAL.bmp TACBrTER.bmp TACBrETQ.bmp TACBrRFD.bmp
+%1\tools\lazres.exe ACBrSerial.lrs TACBrECF.bmp TACBrGAV.bmp TACBrCHQ.bmp TACBrLCB.bmp TACBrDIS.bmp TACBrBAL.bmp TACBrTER.bmp TACBrETQ.bmp TACBrRFD.bmp TACBrSMS.bmp
 move ACBrSerial.lrs ..\ACBrSerial
 echo.
 echo "****************************************"
@@ -44,7 +44,7 @@ echo "****************************************"
 echo.
 
 :TCP
-%1\tools\lazres.exe ACBrTCP.lrs TACBrTCPServer.bmp TACBrCEP.bmp TACBrIBGE.bmp TACBrCNIEE.bmp TACBrSuframa.bmp
+%1\tools\lazres.exe ACBrTCP.lrs TACBrTCPServer.bmp TACBrCEP.bmp TACBrIBGE.bmp TACBrCNIEE.bmp TACBrSuframa.bmp TACBrDownload.bmp
 move ACBrTCP.lrs ..\ACBrTCP
 echo.
 echo "****************************************"

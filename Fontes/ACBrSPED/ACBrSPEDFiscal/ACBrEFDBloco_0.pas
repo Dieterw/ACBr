@@ -937,9 +937,6 @@ end;
 
 constructor TRegistro0150.Create(AOwner: TRegistro0001);
 begin
-  if not (AOwner is TRegistro0001) then
-     raise Exception.Create('O registro pai recebido não é o registro 0001!');
-
   FRegistro0175 := TRegistro0175List.Create;
 end;
 
@@ -953,9 +950,6 @@ end;
 
 constructor TRegistro0200.Create(AOwner: TRegistro0001);
 begin
-  if not (AOwner is TRegistro0001) then
-     raise Exception.Create('O registro pai recebido não é o registro 0001!');
-
    FRegistro0205 := TRegistro0205List.Create;
    FRegistro0206 := TRegistro0206List.Create;
    FRegistro0220 := TRegistro0220List.Create;
@@ -973,9 +967,6 @@ end;
 
 constructor TRegistro0300.Create(AOwner: TRegistro0001);
 begin
-  if not (AOwner is TRegistro0001) then
-     raise Exception.Create('O registro pai recebido não é o registro 0001!');
-
    FRegistro0305 := TRegistro0305.Create(Self);
 end;
 
@@ -1058,112 +1049,84 @@ end;
 
 constructor TRegistro0005.Create(AOwner: TRegistro0001);
 begin
-  if not (AOwner is TRegistro0001) then
-     raise Exception.Create('O registro pai recebido não é o registro 0001!');
 end;
 
 { TRegistro0015 }
 
 constructor TRegistro0015.Create(AOwner: TRegistro0001);
 begin
-  if not (AOwner is TRegistro0001) then
-     raise Exception.Create('O registro pai recebido não é o registro 0001!');
 end;
 
 { TRegistro0100 }
 
 constructor TRegistro0100.Create(AOwner: TRegistro0001);
 begin
-  if not (AOwner is TRegistro0001) then
-     raise Exception.Create('O registro pai recebido não é o registro 0001!');
 end;
 
 { TRegistro0175 }
 
 constructor TRegistro0175.Create(AOwner: TRegistro0150);
 begin
-  if not (AOwner is TRegistro0150) then
-     raise Exception.Create('O registro pai recebido não é o registro 0150!');
 end;
 
 { TRegistro0190 }
 
 constructor TRegistro0190.Create(AOwner: TRegistro0001);
 begin
-  if not (AOwner is TRegistro0001) then
-     raise Exception.Create('O registro pai recebido não é o registro 0001!');
 end;
 
 { TRegistro0205 }
 
 constructor TRegistro0205.Create(AOwner: TRegistro0200);
 begin
-  if not (AOwner is TRegistro0200) then
-     raise Exception.Create('O registro pai recebido não é o registro 0200!');
 end;
 
 { TRegistro0206 }
 
 constructor TRegistro0206.Create(AOwner: TRegistro0200);
 begin
-  if not (AOwner is TRegistro0200) then
-     raise Exception.Create('O registro pai recebido não é o registro 0200!');
 end;
 
 { TRegistro0220 }
 
 constructor TRegistro0220.Create(AOwner: TRegistro0200);
 begin
-  if not (AOwner is TRegistro0200) then
-     raise Exception.Create('O registro pai recebido não é o registro 0200!');
 end;
 
 { TRegistro0305 }
 
 constructor TRegistro0305.Create(AOwner: TRegistro0300);
 begin
-  if not (AOwner is TRegistro0300) then
-     raise Exception.Create('O registro pai recebido não é o registro 0300!');
 end;
 
 { TRegistro0400 }
 
 constructor TRegistro0400.Create(AOwner: TRegistro0001);
 begin
-  if not (AOwner is TRegistro0001) then
-     raise Exception.Create('O registro pai recebido não é o registro 0001!');
 end;
 
 { TRegistro0450 }
 
 constructor TRegistro0450.Create(AOwner: TRegistro0001);
 begin
-  if not (AOwner is TRegistro0001) then
-     raise Exception.Create('O registro pai recebido não é o registro 0001!');
 end;
 
 { TRegistro0460 }
 
 constructor TRegistro0460.Create(AOwner: TRegistro0001);
 begin
-  if not (AOwner is TRegistro0001) then
-     raise Exception.Create('O registro pai recebido não é o registro 0001!');
 end;
 
 { TRegistro0500 }
 
 constructor TRegistro0500.Create(AOwner: TRegistro0001);
 begin
-  if not (AOwner is TRegistro0001) then
-     raise Exception.Create('O registro pai recebido não é o registro 0001!');
 end;
 
 { TRegistro0600 }
 
 constructor TRegistro0600.Create(AOwner: TRegistro0001);
 begin
-  if not (AOwner is TRegistro0001) then
-     raise Exception.Create('O registro pai recebido não é o registro 0001!');
 end;
 
 end.

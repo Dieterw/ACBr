@@ -267,9 +267,6 @@ implementation
 
 constructor TRegistroG110.Create(AOwner: TRegistroG001);
 begin
-  if not (AOwner is TRegistroG001) then
-     raise Exception.Create('O registro pai recebido não é o registro G001!');
-
   FRegistroG125 := TRegistroG125List.Create;  /// BLOCO G - Lista de RegistroG125 (FILHO fo FILHO)
 end;
 
@@ -301,9 +298,6 @@ end;
 
 constructor TRegistroG125.Create(AOwner: TRegistroG110);
 begin
-  if not (AOwner is TRegistroG110) then
-     raise Exception.Create('O registro pai recebido não é o registro G110!');
-
   FRegistroG130 := TRegistroG130List.Create;  /// BLOCO G - Lista de RegistroG130 (FILHO fo FILHO)
   FRegistroG126 := TRegistroG126List.Create;  /// BLOCO G - Lista de RegistroG126 (FILHO fo FILHO)
 end;
@@ -337,9 +331,6 @@ end;
 
 constructor TRegistroG130.Create(AOwner: TRegistroG125);
 begin
-  if not (AOwner is TRegistroG125) then
-     raise Exception.Create('O registro pai recebido não é o registro G125!');
-
   FRegistroG140 := TRegistroG140List.Create;  /// BLOCO G - Lista de RegistroG130 (FILHO fo FILHO)
 end;
 
@@ -423,16 +414,12 @@ end;
 
 constructor TRegistroG126.Create(AOwner: TRegistroG125);
 begin
-  if not (AOwner is TRegistroG125) then
-     raise Exception.Create('O registro pai recebido não é o registro G125!');
 end;
 
 { TRegistroG140 }
 
 constructor TRegistroG140.Create(AOwner: TRegistroG130);
 begin
-  if not (AOwner is TRegistroG130) then
-     raise Exception.Create('O registro pai recebido não é o registro G130!');
 end;
 
 end.

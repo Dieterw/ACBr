@@ -309,12 +309,20 @@ end;
 
 function TBloco_D.RegistroD100New: TRegistroD100;
 begin
-   Result := FRegistroD001.RegistroD100.New;
+   Result := FRegistroD001.RegistroD100.New(FRegistroD001);
 end;
 
 function TBloco_D.RegistroD110New: TRegistroD110;
+var
+D100Count: integer;
+D100: TRegistroD100;
 begin
-   Result := FRegistroD001.RegistroD100.Items[FRegistroD001.RegistroD100.Count -1].RegistroD110.New;
+   D100Count := FRegistroD001.RegistroD100.Count -1;
+   if D100Count = -1 then
+      raise Exception.Create('O registro D110 deve ser filho do registro D100, e não existe nenhum D100 pai!');
+
+   D100   := FRegistroD001.RegistroD100.Items[D100Count];
+   Result := D100.RegistroD110.New(D100);
 end;
 
 function TBloco_D.RegistroD411New: TRegistroD411;

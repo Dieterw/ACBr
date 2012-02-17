@@ -211,9 +211,6 @@ end;
 
 constructor TRegistroH005.Create(AOwner: TRegistroH001);
 begin
-  if not (AOwner is TRegistroH001) then
-     raise Exception.Create('O registro pai recebido não é o registro H001!');
-
   FRegistroH010 := TRegistroH010List.Create;
 end;
 
@@ -261,9 +258,6 @@ end;
 
 constructor TRegistroH010.Create(AOwner: TRegistroH005);
 begin
-  if not (AOwner is TRegistroH005) then
-     raise Exception.Create('O registro pai recebido não é o registro H005!');
-
   FRegistroH020 := TRegistroH020List.Create;
 end;
 
@@ -277,8 +271,6 @@ end;
 
 constructor TRegistroH020.Create(AOwner: TRegistroH010);
 begin
-  if not (AOwner is TRegistroH010) then
-     raise Exception.Create('O registro pai recebido não é o registro H010!');
 end;
 
 end.

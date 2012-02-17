@@ -965,9 +965,6 @@ end;
 
 constructor TRegistroE200.Create(AOwner: TRegistroE001);
 begin
-  if not (AOwner is TRegistroE001) then
-     raise Exception.Create('O registro pai recebido não é o registro E001!');
-
    FRegistroE210 := TRegistroE210List.Create;   /// BLOCO E - Lista de RegistroE210 (FILHO)
 end;
 
@@ -981,9 +978,6 @@ end;
 
 constructor TRegistroE210.Create(AOwner: TRegistroE200);
 begin
-  if not (AOwner is TRegistroE200) then
-     raise Exception.Create('O registro pai recebido não é o registro E200!');
-
    FRegistroE220 := TRegistroE220List.Create;   /// BLOCO E - Lista de RegistroE220 (FILHO)
    FRegistroE250 := TRegistroE250List.Create;   /// BLOCO E - Lista de RegistroE250 (FILHO)
 end;
@@ -999,9 +993,6 @@ end;
 
 constructor TRegistroE500.Create(AOwner: TRegistroE001);
 begin
-  if not (AOwner is TRegistroE001) then
-     raise Exception.Create('O registro pai recebido não é o registro E001!');
-
    FRegistroE510 := TRegistroE510List.Create;   /// BLOCO E - Lista de RegistroE510 (FILHO)
    FRegistroE520 := TRegistroE520List.Create;   /// BLOCO E - Lista de RegistroE520 (FILHO)
 end;
@@ -1017,17 +1008,12 @@ end;
 
 constructor TRegistroE510.Create(AOwner: TRegistroE500);
 begin
-  if not (AOwner is TRegistroE500) then
-     raise Exception.Create('O registro pai recebido não é o registro E500!');
 end;
 
 { TRegistroE100 }
 
 constructor TRegistroE100.Create(AOwner: TRegistroE001);
 begin
-  if not (AOwner is TRegistroE001) then
-     raise Exception.Create('O registro pai recebido não é o registro E001!');
-
    FRegistroE110 := TRegistroE110.Create(Self);
 end;
 
@@ -1058,9 +1044,6 @@ end;
 
 constructor TRegistroE111.Create(AOwner: TRegistroE110);
 begin
-  if not (AOwner is TRegistroE110) then
-     raise Exception.Create('O registro pai recebido não é o registro E110!');
-
    FRegistroE112 := TRegistroE112List.Create;
    FRegistroE113 := TRegistroE113List.Create;
 end;
@@ -1076,9 +1059,6 @@ end;
 
 constructor TRegistroE220.Create(AOwner: TRegistroE210);
 begin
-  if not (AOwner is TRegistroE210) then
-     raise Exception.Create('O registro pai recebido não é o registro E210!');
-
    FRegistroE230 := TRegistroE230List.Create;
    FRegistroE240 := TRegistroE240List.Create;
 end;
@@ -1094,9 +1074,6 @@ end;
 
 constructor TRegistroE520.Create(AOwner: TRegistroE500);
 begin
-  if not (AOwner is TRegistroE500) then
-     raise Exception.Create('O registro pai recebido não é o registro E500!');
-
    fRegistroE530 := TRegistroE530List.Create;
 end;
 
@@ -1148,64 +1125,48 @@ end;
 
 constructor TRegistroE112.Create(AOwner: TRegistroE111);
 begin
-  if not (AOwner is TRegistroE111) then
-     raise Exception.Create('O registro pai recebido não é o registro E111!');
 end;
 
 { TRegistroE113 }
 
 constructor TRegistroE113.Create(AOwner: TRegistroE111);
 begin
-  if not (AOwner is TRegistroE111) then
-     raise Exception.Create('O registro pai recebido não é o registro E111!');
 end;
 
 { TRegistroE115 }
 
 constructor TRegistroE115.Create(AOwner: TRegistroE110);
 begin
-  if not (AOwner is TRegistroE110) then
-     raise Exception.Create('O registro pai recebido não é o registro E110!');
 end;
 
 { TRegistroE116 }
 
 constructor TRegistroE116.Create(AOwner: TRegistroE110);
 begin
-  if not (AOwner is TRegistroE110) then
-     raise Exception.Create('O registro pai recebido não é o registro E110!');
 end;
 
 { TRegistroE230 }
 
 constructor TRegistroE230.Create(AOwner: TRegistroE220);
 begin
-  if not (AOwner is TRegistroE220) then
-     raise Exception.Create('O registro pai recebido não é o registro E220!');
 end;
 
 { TRegistroE240 }
 
 constructor TRegistroE240.Create(AOwner: TRegistroE220);
 begin
-  if not (AOwner is TRegistroE220) then
-     raise Exception.Create('O registro pai recebido não é o registro E220!');
 end;
 
 { TRegistroE250 }
 
 constructor TRegistroE250.Create(AOwner: TRegistroE210);
 begin
-  if not (AOwner is TRegistroE210) then
-     raise Exception.Create('O registro pai recebido não é o registro E210!');
 end;
 
 { TRegistroE530 }
 
 constructor TRegistroE530.Create(AOwner: TRegistroE520);
 begin
-  if not (AOwner is TRegistroE520) then
-     raise Exception.Create('O registro pai recebido não é o registro E520!');
 end;
 
 end.

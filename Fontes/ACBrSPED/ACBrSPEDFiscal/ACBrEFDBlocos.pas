@@ -336,7 +336,8 @@ type
                         mbcOT              // OT = Outras Saídas do Imobilizado
                         );
   /// Código de grupo de tensão
-  TACBrGrupoTensao = (gtA1,          // 01 - A1 - Alta Tensão (230kV ou mais)
+  TACBrGrupoTensao = (gtNenhum,      // '' - Vazio. Para uso quando o documento for cancelado.
+                      gtA1,          // 01 - A1 - Alta Tensão (230kV ou mais)
                       gtA2,          // 02 - A2 - Alta Tensão (88 a 138kV)
                       gtA3,          // 03 - A3 - Alta Tensão (69kV)
                       gtA3a,         // 04 - A3a - Alta Tensão (30kV a 44kV)
@@ -362,7 +363,8 @@ type
                         ccServicoPublico     // 08 -Serviço Público
                         );
   /// Código de tipo de Ligação
-  TACBrTipoLigacao = (tlMonofasico,          // 1 - Monofásico
+  TACBrTipoLigacao = (tlNenhum,              // '' - Para uso quando o documento for cancelado
+                      tlMonofasico,          // 1 - Monofásico
                       tlBifasico,            // 2 - Bifásico
                       tlTrifasico            // 3 - Trifásico
                       );

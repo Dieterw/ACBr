@@ -2388,6 +2388,7 @@ begin
             sdRegimeEspecNEsp:       strCOD_SIT := '08';
            end;
            case COD_GRUPO_TENSAO of
+            gtNenhum:       strCOD_GRUPO_TENSAO := '';
             gtA1:           strCOD_GRUPO_TENSAO := '01';
             gtA2:           strCOD_GRUPO_TENSAO := '02';
             gtA3:           strCOD_GRUPO_TENSAO := '03';
@@ -2407,7 +2408,7 @@ begin
             tlMonofasico: intTP_LIGACAO := 1;
             tlBifasico:   intTP_LIGACAO := 2;
             tlTrifasico:  intTP_LIGACAO := 3;
-            else          intTP_LIGACAO := 1;
+            else          intTP_LIGACAO := 0; // tlNenhum para casos em que o documento for cancelado
            end;
 
            Add( LFill('C500') +
@@ -2435,7 +2436,7 @@ begin
                 LFill( COD_INF ) +
                 LFill( VL_PIS,0,2 ) +
                 LFill( VL_COFINS,0,2 ) +
-                LFill( intTP_LIGACAO, 0 ) +
+                LFill( intTP_LIGACAO, 0, True ) +
                 LFill( strCOD_GRUPO_TENSAO ) ) ;
         end;
         /// Registro FILHOS do FILHO

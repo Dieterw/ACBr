@@ -272,7 +272,7 @@ begin
      Result := FDelimitador;
      Exit;
   end;
-  Result := FDelimitador + FormatCurr('#0.' + StringOfChar('0', Decimal), Value); //FormatCurr não permite precisão acima de 4 casas decimais
+  Result := FDelimitador + FormatFloat('#0.' + StringOfChar('0', Decimal), Value); //FormatCurr não permite precisão acima de 4 casas decimais
 end;
 
 function TACBrTXTClass.LFill(Value: Integer; Size: Integer; Nulo: Boolean = false; Caracter: Char = '0'): String;

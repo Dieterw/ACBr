@@ -47,6 +47,15 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 1.00b   17/02/2012
+-- ACBrSPEDFiscal --
+[*] Adicionado versão 005 para validação a partir de 01/01/2012
+[*] Modificações nos registros C500, para atender a possibilidade de 
+	cancelamento dos documentos. Campos TP_LIGACAO e COD_GRUPO_TENSAO.
+	A conversão pode gerar alguma incompatibilidade caso você utilize 
+	uma conversão direta de inteiro para o tipo TACBrTipoLigacao ou 
+	TACBrGrupoTensao. (EMBarbosa)
+
 Versão 1.00 Beta 15/06/2011
 [+] Lançado Versão Beta do SPEDFCont
 

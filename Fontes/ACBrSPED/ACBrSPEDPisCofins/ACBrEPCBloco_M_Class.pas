@@ -457,9 +457,9 @@ begin
                LFill( strIND_CRED_ORI )           +
                LFill( VL_BC_PIS,0,2, True)        +
                DFill( ALIQ_PIS, 4, True)          +
-               DFill( QUANT_BC_PIS, 3, True)     +  // Veja nota abaixo e também http://www.djsystem.com.br/acbr/mantis/view.php?id=1010
+               DFill( QUANT_BC_PIS, 3, True)      +  // Veja nota abaixo e também http://www.djsystem.com.br/acbr/mantis/view.php?id=1010
                DFill( ALIQ_PIS_QUANT, 4, True)    +  //Deve permitir nulo, pois só deve ser preenchido caso COD_CRED ser 103, 203, 303, 105, 205, 305, 108, 208 e 308.
-               LFill( VL_CRED ,0,2, True)         +
+               LFill( VL_CRED ,0,2)               +
                LFill( VL_AJUS_ACRES ,0,2 )        +
                LFill( VL_AJUS_REDUC ,0,2 )        +
                LFill( VL_CRED_DIF ,0,2 )          +

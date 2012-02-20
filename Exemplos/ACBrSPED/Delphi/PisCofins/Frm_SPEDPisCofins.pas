@@ -170,7 +170,7 @@ begin
            // FILHO - Regime de Apuração
            with Registro0110New do
            begin
-              COD_INC_TRIB  := codEscrOpIncNaoCumulativo;
+              COD_INC_TRIB  := codEscrOpIncNaoCumulativo; //codEscrOpIncCumulativo;
               IND_APRO_CRED := indMetodoApropriacaoDireta;
               COD_TIPO_CONT := codIndTipoConExclAliqBasica;
               //Campo IND_REG_CUM apenas para Lucro Presumido e (COD_INC_TRIB = 2)
@@ -502,13 +502,13 @@ begin
                      VL_BC_IPI        := 0;
                      ALIQ_IPI         := 0;
                      VL_IPI           := 0;
-                     CST_PIS          := stpisOutrasOperacoesSaida;
+                     CST_PIS          := stpisOutrasOperacoes;
                      VL_BC_PIS        := 0;
                      ALIQ_PIS_PERC    := 0;
                      QUANT_BC_PIS     := 0;
-                     ALIQ_PIS_R       := 0;
+                     ALIQ_PIS_R       := 1;
                      VL_PIS           := 0;
-                     CST_COFINS       := stcofinsOutrasOperacoesSaida;
+                     CST_COFINS       := stcofinsOutrasOperacoes;
                      VL_BC_COFINS     := 0;
                      ALIQ_COFINS_PERC := 0;
                      QUANT_BC_COFINS  := 0;
@@ -619,6 +619,33 @@ begin
             VL_DOC := 6807.57;
             VL_DESC := 0;
           end;
+
+
+//          with RegistroD350New do
+//          begin
+//            COD_MOD := '2E';
+//            ECF_MOD := 'MODELO DO ECF';
+//            ECF_FAB := 'NUMSERIEECF';
+//            DT_DOC := DT_INI;
+//            CRO := 1;
+//            CRZ := 1;
+//            NUM_COO_FIN := 10;
+//            GT_FIN := 10000;
+//            VL_BRT := 10000;
+//            CST_PIS := stpisValorAliquotaDiferenciada;
+//            VL_BC_PIS := 100;
+//            ALIQ_PIS := 2;
+//            QUANT_BC_PIS := 100;
+//            ALIQ_PIS_QUANT := 1;
+//            VL_PIS := 1;
+//            CST_COFINS := stcofinsValorAliquotaDiferenciada;
+//            VL_BC_COFINS := 100;
+//            ALIQ_COFINS := 2;
+//            QUANT_BC_COFINS := 300;
+//            ALIQ_COFINS_QUANT := 2;
+//            VL_COFINS := 3;
+//            COD_CTA := '';
+//          end;
         end;
       end;
    end;
@@ -734,13 +761,13 @@ begin
             ALIQ_PIS       := 1.2375;
             QUANT_BC_PIS   := 0;
             ALIQ_PIS_QUANT := 0;
-            VL_CRED        := 0.01; //OBRIGATORIO
+            VL_CRED        := 0; //OBRIGATORIO
             VL_AJUS_ACRES  := 0;
             VL_AJUS_REDUC  := 0;
             VL_CRED_DIF    := 0;
-            VL_CRED_DISP   := 0.01;
+            VL_CRED_DISP   := 0;
             IND_DESC_CRED  := idcTotal;
-            VL_CRED_DESC   := 0.01; //Valor do Crédito disponível, descontado da contribuição apurada no próprio período. Se IND_DESC_CRED=0, informar o valor total do Campo 12; Se IND_DESC_CRED=1, informar o valor parcial do Campo 12.
+            VL_CRED_DESC   := 0; //Valor do Crédito disponível, descontado da contribuição apurada no próprio período. Se IND_DESC_CRED=0, informar o valor total do Campo 12; Se IND_DESC_CRED=1, informar o valor parcial do Campo 12.
             SLD_CRED       := 0;
 
             with RegistroM105New do
@@ -760,8 +787,8 @@ begin
 
          with RegistroM200New do
          begin
-           VL_TOT_CONT_NC_PER := 0.01;
-           VL_TOT_CRED_DESC := 0.01;
+           VL_TOT_CONT_NC_PER := 0;
+           VL_TOT_CRED_DESC := 0;
            VL_TOT_CRED_DESC_ANT := 0;
            VL_TOT_CONT_NC_DEV := 0;
            VL_RET_NC := 0;
@@ -773,21 +800,21 @@ begin
            VL_CONT_CUM_REC := 0;
            VL_TOT_CONT_REC := 0;
 
-           with RegistroM210New do
-           begin
-             COD_CONT := ccNaoAcumAliqBasica;
-             VL_REC_BRT := 0;
-             VL_BC_CONT := 0;
-             ALIQ_PIS := 0;
-             QUANT_BC_PIS := 0;
-             ALIQ_PIS_QUANT := 0;
-             VL_CONT_APUR := 0.01;
-             VL_AJUS_ACRES := 0;
-             VL_AJUS_REDUC := 0;
-             VL_CONT_DIFER := 0;
-             VL_CONT_DIFER_ANT := 0;
-             VL_CONT_PER := 0.01;
-           end;
+//           with RegistroM210New do
+//           begin
+//             COD_CONT := ccNaoAcumAliqBasica;
+//             VL_REC_BRT := 0;
+//             VL_BC_CONT := 0;
+//             ALIQ_PIS := 0;
+//             QUANT_BC_PIS := 0;
+//             ALIQ_PIS_QUANT := 0;
+//             VL_CONT_APUR := 0.01;
+//             VL_AJUS_ACRES := 0;
+//             VL_AJUS_REDUC := 0;
+//             VL_CONT_DIFER := 0;
+//             VL_CONT_DIFER_ANT := 0;
+//             VL_CONT_PER := 0.01;
+//           end;
 
          end;
 

@@ -476,10 +476,27 @@ begin
          codRegimeCompetEscritDetalhada : strIND_REG_CUM := '9';
        end;
        ///
-       Add( LFill('0110') +
-            LFill( strCOD_INC_TRIB ) +
-            LFill( strIND_APRO_CRED ) +
-            LFill( strCOD_TIPO_CONT ) ) ; // + lFill( strIND_REG_CUM ) ) ;
+       if FRegistro0000.COD_VER >= vlVersao101 then
+       begin
+         //Verificar a necessidade desse if abaixo quando sair a versão 2.0 do PVA PisCofins
+         if (COD_INC_TRIB = codEscrOpIncCumulativo) then
+	       //Nota: Só a versão 2.0 ou superior do PVA vai estar pronta para validar esse arquivo.
+           Add( LFill('0110') +
+                LFill( strCOD_INC_TRIB ) +
+                LFill( strIND_APRO_CRED ) +
+                LFill( strCOD_TIPO_CONT )  +
+                lFill( strIND_REG_CUM ) )
+         else
+           Add( LFill('0110') +
+                LFill( strCOD_INC_TRIB ) +
+                LFill( strIND_APRO_CRED ) +
+                LFill( strCOD_TIPO_CONT ) ) ;
+       end
+       else //Modelos de registro anteriores à versao 1.0.3 do guia prático
+         Add( LFill('0110') +
+              LFill( strCOD_INC_TRIB ) +
+              LFill( strIND_APRO_CRED ) +
+              LFill( strCOD_TIPO_CONT ) ) ;
        ///
        if IND_APRO_CRED = indMetodoDeRateioProporcional then
          WriteRegistro0111(Reg0001.Registro0110);

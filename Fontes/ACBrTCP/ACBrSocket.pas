@@ -648,8 +648,8 @@ begin
 
 
     // DEBUG //
-    // WriteToTXT( '/tmp/HTTP.txt', RespHTTP.Text );
-    // WriteToTXT( '/tmp/HeaderRESP.txt', HTTPSend.Headers.Text );
+    //WriteToTXT( 'C:\TEMP\HTTP.txt', RespHTTP.Text );
+    //WriteToTXT( 'C:\TEMP\HeaderRESP.txt', HTTPSend.Headers.Text );
 
     if not OK then
        raise EACBrHTTPError.Create( 'Erro HTTP: '+IntToStr(HTTPSend.ResultCode)+' '+
@@ -909,4 +909,4 @@ begin
   fHTTPSend.ProxyUser := AValue;
 end;
 
-end.
+end.

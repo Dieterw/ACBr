@@ -410,7 +410,6 @@ type
     edTCNaoEncontrado: TEdit;
     TimerTC: TTimer;
     sbCHQSerial: TSpeedButton;
-    procedure ACBrCEP1AntesAbrirHTTP(var AURL : String) ;
     procedure ACBrEAD1GetChavePrivada(var Chave: AnsiString);
     procedure ACBrGIF1Click(Sender : TObject) ;
     procedure ApplicationProperties1Exception(Sender: TObject; E: Exception);
@@ -812,14 +811,6 @@ begin
 
   StatusBar1.Panels[0].Text := 'Exception';
   //  MessageDlg( E.Message,mtError,[mbOk],0) ;
-end;
-
-procedure TFrmACBrMonitor.ACBrCEP1AntesAbrirHTTP(var AURL : String) ;
-begin
-  if (ACBrCEP1.WebService = wsBuscarCep) and (edCEPChaveBuscarCEP.Text <> '') then
-  begin
-    AURL := AURL + '&chave='+edCEPChaveBuscarCEP.Text;
-  end ;
 end;
 
 procedure TFrmACBrMonitor.ACBrEAD1GetChavePrivada(var Chave: AnsiString);
@@ -1595,6 +1586,7 @@ begin
   with ACBrCEP1 do
   begin
     WebService := TACBrCEPWebService(cbCEPWebService.ItemIndex) ;
+    ChaveAcesso:= edCEPChaveBuscarCEP.Text;
     ProxyHost  := edCONProxyHost.Text;
     ProxyPort  := edCONProxyPort.Text;
     ProxyUser  := edCONProxyUser.Text;

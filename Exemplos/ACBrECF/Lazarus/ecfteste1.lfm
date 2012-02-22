@@ -1,7 +1,7 @@
 object Form1: TForm1
-  Left = 395
+  Left = 386
   Height = 403
-  Top = 316
+  Top = 308
   Width = 547
   Caption = 'Teste de Impressora Fiscal'
   ClientHeight = 383
@@ -1022,7 +1022,7 @@ object Form1: TForm1
     end
     object tsTagsImpressao: TTabSheet
       Caption = 'Tags de Impressao'
-      ClientHeight = 291
+      ClientHeight = 294
       ClientWidth = 539
       object speBarrasLargura: TSpinEdit
         Left = 12
@@ -1050,7 +1050,7 @@ object Form1: TForm1
       object MenTextoBarras: TMemo
         Left = 0
         Height = 217
-        Top = 74
+        Top = 77
         Width = 539
         Align = alBottom
         Lines.Strings = (
@@ -1180,11 +1180,11 @@ object Form1: TForm1
     end
     object tsDadosRedZ: TTabSheet
       Caption = 'Dados Redução Z'
-      ClientHeight = 291
+      ClientHeight = 294
       ClientWidth = 539
       object mRZ: TMemo
         Left = 0
-        Height = 241
+        Height = 244
         Top = 17
         Width = 539
         Align = alTop
@@ -1202,7 +1202,7 @@ object Form1: TForm1
       object bLerDadosRedZ: TButton
         Left = 7
         Height = 25
-        Top = 264
+        Top = 267
         Width = 108
         Anchors = [akLeft, akBottom]
         Caption = 'Ler Dados RZ'
@@ -1528,13 +1528,13 @@ object Form1: TForm1
           Caption = 'Gerar o arquivo no formato do ato Cotepe 17/04 (Somente para os menus: LMFC, Arq.MFD)'
           TabOrder = 9
         end
-        object btnMenuFiscalParametrosConfig: TButton
+        object btnMenuFiscalConfigPAFECF: TButton
           Left = 178
           Height = 25
           Top = 72
           Width = 149
-          Caption = 'Parametros de Configuração'
-          OnClick = btnMenuFiscalParametrosConfigClick
+          Caption = 'Configurações do PAF-ECF'
+          OnClick = btnMenuFiscalConfigPAFECFClick
           TabOrder = 10
         end
       end

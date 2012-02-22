@@ -528,7 +528,9 @@ begin
   SL1 := TStringList.Create;
   SL2 := TStringList.Create;
   try
-    SL1.Text := String( fOwner.RespHTTP.Text ) ;
+    Buffer := String( fOwner.RespHTTP.Text ) ;
+    // CEP livre retorna vários endereços na mesma linha... tratando...
+    SL1.Text := StringReplace( Buffer, '""', '"'+sLineBreak+'"', [rfReplaceAll] );
 
     For I := 0 to SL1.Count-1 do
     begin

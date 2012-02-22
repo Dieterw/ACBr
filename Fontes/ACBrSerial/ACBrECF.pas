@@ -5873,6 +5873,10 @@ begin
 
     Relatorio.Add('');
 
+    {$IFDEF UNICODE}
+     Relatorio.Text := ACBrStr( Relatorio.Text );
+    {$ENDIF}
+
     Self.RelatorioGerencial(Relatorio, 1, AIndiceRelatorio);
   finally
     Relatorio.Free

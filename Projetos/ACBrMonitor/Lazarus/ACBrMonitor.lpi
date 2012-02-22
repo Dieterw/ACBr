@@ -78,7 +78,7 @@
       </Item1>
       <Item2>
         <PackageName Value="LCLBase"/>
-        <MinVersion Major="1" Valid="True" Release="1"/>
+        <MinVersion Major="1" Release="1" Valid="True"/>
       </Item2>
       <Item3>
         <PackageName Value="ACBr_BoletoFC_LazReport"/>

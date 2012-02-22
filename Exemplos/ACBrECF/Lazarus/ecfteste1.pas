@@ -38,6 +38,7 @@ type
     BitBtn6 : TBitBtn ;
     bRFDLer: TButton;
     bRFDSalvar: TButton;
+    btnMenuFiscalConfigPAFECF : TButton ;
     btnMenuFiscalLMFC : TButton ;
     btnMenuFiscalLMFS : TButton ;
     btnMenuFiscalLX : TButton ;
@@ -414,6 +415,7 @@ type
     procedure bACCVerificarGTClick(Sender : TObject) ;
     procedure BitBtn6Click(Sender : TObject) ;
     procedure bLerDadosRedZClick(Sender : TObject) ;
+    procedure btnMenuFiscalConfigPAFECFClick(Sender : TObject) ;
     procedure btnMenuFiscalLMFCClick(Sender : TObject) ;
     procedure btnMenuFiscalLMFSClick(Sender : TObject) ;
     procedure btnMenuFiscalLXClick(Sender : TObject) ;
@@ -880,6 +882,55 @@ begin
          mRZ.Lines.Add( 'Total      : ' + FormatFloat('###,##0.00', MeiosDePagamento[I].Total) );
      end;
      mRZ.Lines.Add( 'Total Troco : ' + FormatFloat('###,##0.00', TotalTroco) );
+  end;
+end;
+
+procedure TForm1.btnMenuFiscalConfigPAFECFClick(Sender : TObject) ;
+var
+  Parametros: TACBrECFInfoPaf;
+begin
+  if Assigned(ACBrECF1.AAC) then
+    ACBrECF1.PafMF_RelParametrosConfiguracao(ACBrECF1.AAC.IdentPAF.Paf)
+  else
+  begin
+    Parametros := TACBrECFInfoPaf.Create;
+    try
+      Parametros.TipoFuncionamento   := tpfEmRede;
+      Parametros.TipoDesenvolvimento := tpdExclusivoTerceirizado;
+      Parametros.IntegracaoPAFECF    := tpiRetaguarda;
+
+      Parametros.RealizaPreVenda              := True;
+      Parametros.RealizaDAVECF                := True;
+      Parametros.RealizaDAVNaoFiscal          := True;
+      Parametros.RealizaDAVOS                 := True;
+      Parametros.DAVConfAnexoII               := True;
+      Parametros.RealizaLancamentoMesa        := True;
+      Parametros.IndiceTecnicoProd            := True;
+      Parametros.BarSimilarECFRestaurante     := True;
+      Parametros.BarSimilarECFComum           := True;
+      Parametros.BarSimilarBalanca            := True;
+      Parametros.UsaImpressoraNaoFiscal       := True;
+      Parametros.DAVDiscrFormula              := True;
+      Parametros.ImpedeVendaVlrZero           := True;
+      Parametros.AcumulaVolumeDiario          := True;
+      Parametros.ArmazenaEncerranteIniFinal   := True;
+      Parametros.EmiteContrEncerrAposREDZLEIX := True;
+      Parametros.IntegradoComBombas           := True;
+      Parametros.CriaAbastDivergEncerrante    := True;
+      Parametros.CadastroPlacaBomba           := True;
+      Parametros.TransportePassageiro         := True;
+      Parametros.TotalizaValoresLista         := True;
+      Parametros.TransfPreVenda               := True;
+      Parametros.TransfDAV                    := True;
+      Parametros.RecompoeGT                   := True;
+      Parametros.EmitePED                     := True;
+      Parametros.CupomMania                   := True;
+      Parametros.MinasLegal                   := True;
+
+      ACBrECF1.PafMF_RelParametrosConfiguracao(Parametros);
+    finally
+      Parametros.Free;
+    end;
   end;
 end;
 

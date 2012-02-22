@@ -618,7 +618,7 @@ begin
 
     if TIPO = 'AC'   then Tabela_1 := '1.09.0.E.11.01. .  .  .     01NNNNNNX.14.00';
     if TIPO = 'AC'   then Tabela_2 := '2.13.0.E.11.02.E.11.01. 01NNNNNNNNNXY.13.14';
-    if TIPO = 'AL'   then Tabela_1 := '1.09.0.0.11.01. .  .  .     24BNNNNNX.14.00';
+    if TIPO = 'AL'   then Tabela_1 := '1.09.0.0.11.01. .  .  .     24NNNNNNX.14.00';
     if TIPO = 'AP'   then Tabela_1 := '1.09.0.1.11.01. .  .  .     03NNNNNNX.14.00';
     if TIPO = 'AP'   then Tabela_2 := '2.09.1.1.11.01. .  .  .     03NNNNNNX.14.00';
     if TIPO = 'AP'   then Tabela_3 := '3.09.0.E.11.01. .  .  .     03NNNNNNX.14.00';

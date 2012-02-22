@@ -173,9 +173,9 @@ object Form1: TForm1
     Height = 320
     Top = 0
     Width = 547
-    ActivePage = TabSheet4
+    ActivePage = tsMenuFiscal
     Align = alClient
-    TabIndex = 0
+    TabIndex = 6
     TabOrder = 0
     object TabSheet4: TTabSheet
       Caption = 'ECF'
@@ -276,18 +276,18 @@ object Form1: TForm1
       end
       object chTentar: TCheckBox
         Left = 20
-        Height = 17
+        Height = 19
         Top = 66
-        Width = 107
+        Width = 109
         Caption = 'Tentar Novamente'
         OnChange = chTentarChange
         TabOrder = 4
       end
       object chBloqueia: TCheckBox
         Left = 20
-        Height = 17
+        Height = 19
         Top = 88
-        Width = 136
+        Width = 138
         Caption = 'Bloqueia Mouse Teclado'
         Checked = True
         OnChange = chBloqueiaChange
@@ -296,9 +296,9 @@ object Form1: TForm1
       end
       object chExibeMsg: TCheckBox
         Left = 20
-        Height = 17
+        Height = 19
         Top = 111
-        Width = 119
+        Width = 121
         Caption = 'Exibe Msg Aguarde...'
         Checked = True
         OnChange = chExibeMsgChange
@@ -307,18 +307,18 @@ object Form1: TForm1
       end
       object chArredondaPorQtd: TCheckBox
         Left = 188
-        Height = 17
+        Height = 19
         Top = 66
-        Width = 172
+        Width = 174
         Caption = 'Arredondamento por Quantidade'
         OnChange = chArredondaPorQtdChange
         TabOrder = 5
       end
       object chGavetaSinalInvertido: TCheckBox
         Left = 188
-        Height = 17
+        Height = 19
         Top = 88
-        Width = 123
+        Width = 125
         Caption = 'Gaveta Sinal Invertido'
         OnChange = chGavetaSinalInvertidoChange
         TabOrder = 7
@@ -443,9 +443,9 @@ object Form1: TForm1
       end
       object chDescricaoGrande: TCheckBox
         Left = 188
-        Height = 17
+        Height = 19
         Top = 134
-        Width = 104
+        Width = 106
         Caption = 'Descrição Grande'
         Checked = True
         OnChange = chDescricaoGrandeChange
@@ -454,9 +454,9 @@ object Form1: TForm1
       end
       object chArredondamentoItemMFD: TCheckBox
         Left = 188
-        Height = 17
+        Height = 19
         Top = 111
-        Width = 145
+        Width = 147
         Caption = 'Arredondamento Item MFD'
         OnChange = chArredondamentoItemMFDChange
         TabOrder = 9
@@ -483,9 +483,9 @@ object Form1: TForm1
       end
       object chAACUsar: TCheckBox
         Left = 196
-        Height = 17
+        Height = 19
         Top = 258
-        Width = 192
+        Width = 194
         Caption = 'Usar Arq.Auxiliar Criptografado'
         Font.CharSet = ANSI_CHARSET
         Font.Color = clBlack
@@ -499,9 +499,9 @@ object Form1: TForm1
       end
       object chAACFlush: TCheckBox
         Left = 415
-        Height = 17
+        Height = 19
         Top = 250
-        Width = 48
+        Width = 50
         Caption = 'Flush'
         Checked = True
         Font.CharSet = ANSI_CHARSET
@@ -517,9 +517,9 @@ object Form1: TForm1
       end
       object chProcessMessages: TCheckBox
         Left = 415
-        Height = 17
+        Height = 19
         Top = 274
-        Width = 119
+        Width = 121
         Caption = 'ProcessMessages'
         Checked = True
         Font.CharSet = ANSI_CHARSET
@@ -1230,12 +1230,12 @@ object Form1: TForm1
     end
     object tsMenuFiscal: TTabSheet
       Caption = 'Menu Fiscal'
-      ClientHeight = 291
+      ClientHeight = 294
       ClientWidth = 539
       object pgcMenuFiscalTipo: TPageControl
         Left = 0
         Height = 68
-        Top = 223
+        Top = 226
         Width = 539
         ActivePage = tbsMenuFiscalTipoData
         Align = alBottom
@@ -1409,12 +1409,12 @@ object Form1: TForm1
       end
       object grpMenuFiscalOpcoes: TGroupBox
         Left = 0
-        Height = 223
+        Height = 226
         Top = 0
         Width = 539
         Align = alClient
         Caption = 'Opções do Menu fiscal'
-        ClientHeight = 205
+        ClientHeight = 208
         ClientWidth = 535
         TabOrder = 1
         object Label32: TLabel
@@ -1527,6 +1527,15 @@ object Form1: TForm1
           Width = 453
           Caption = 'Gerar o arquivo no formato do ato Cotepe 17/04 (Somente para os menus: LMFC, Arq.MFD)'
           TabOrder = 9
+        end
+        object btnMenuFiscalParametrosConfig: TButton
+          Left = 178
+          Height = 25
+          Top = 72
+          Width = 149
+          Caption = 'Parametros de Configuração'
+          OnClick = btnMenuFiscalParametrosConfigClick
+          TabOrder = 10
         end
       end
     end

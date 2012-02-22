@@ -52,6 +52,7 @@ type
     bAACAbrirArquivo : TButton ;
     bACCVerificarGT : TButton ;
     bAACAtualizarGT : TButton ;
+    btnMenuFiscalParametrosConfig: TButton;
     CancelaCupom1: TMenuItem;
     CancelaImpressoCheque1: TMenuItem;
     CancelaNoFiscal1: TMenuItem;
@@ -421,6 +422,7 @@ type
     procedure btnMenuFiscalRelDAVEmitidosClick(Sender : TObject) ;
     procedure btnMenuFiscalRelIdentPAFECFClick(Sender : TObject) ;
     procedure btnMenuFiscalRelMeiosPagtoClick(Sender : TObject) ;
+    procedure btnMenuFiscalParametrosConfigClick(Sender: TObject);
     procedure chAACFlushChange(Sender : TObject) ;
     procedure chAACUsarChange(Sender : TObject) ;
     procedure cbxModeloChange(Sender: TObject);
@@ -1101,6 +1103,40 @@ begin
   finally
     FormasPagamento.Free;
   end;
+end;
+
+procedure TForm1.btnMenuFiscalParametrosConfigClick(Sender: TObject);
+var
+  IdentPaf: TACBrECFIdentificacaoPAF;
+  I: Integer;
+begin
+  // Se está usando o AAC, basta informar o Objeto IdentPAF //
+  if Assigned( ACBrECF1.AAC ) then
+  begin
+     ACBrECF1.PafMF_RelParametrosConfiguracao( ACBrECF1.AAC.IdentPAF.Paf, 0);
+     exit ;
+  end ;
+
+  IdentPaf := TACBrECFIdentificacaoPAF.Create;
+  try
+    IdentPaf.NumeroLaudo := 'ABC1234567890'; // retirar do laudo
+    IdentPaf.VersaoER    := '01.06'; // retirar do laudo
+
+
+    IdentPaf.Paf.Nome              := 'DemoECF';// preencher conforme o laudo
+    IdentPaf.Paf.Versao            := 'v01.01.01'; // versão atual do aplicativo
+    IdentPaf.Paf.PrincipalExe.Nome := UpperCase(ExtractFileName(ParamStr(0)));
+
+    {Parametros de Configuração do PAF}
+    IdentPaf.Paf.RealizaPreVenda:= True;
+    IdentPaf.Paf.RealizaDAVECF := True;
+
+
+    ACBrECF1.PafMF_RelParametrosConfiguracao(IdentPaf.Paf, 0);
+  finally
+    IdentPaf.Free;
+  end;
+
 end;
 
 procedure TForm1.chAACFlushChange(Sender : TObject) ;

@@ -69,9 +69,10 @@ type
     ApplicationProperties1: TApplicationProperties;
     bCEPTestar : TButton ;
     bIBGETestar : TButton ;
-    bRFDKeyImportar: TButton;
-    bRFDRSAPrivada: TButton;
-    bRFDRSAPublica: TButton;
+    bRSALoadKey: TButton;
+    bRSAPrivKey: TButton;
+    bRSAPubKey: TButton;
+    bRSAeECFc : TButton ;
     cbCEPWebService : TComboBox ;
     cbxBOLUF: TComboBox;
     cbxBOLBanco: TComboBox;
@@ -101,8 +102,9 @@ type
     Label73: TLabel;
     Label74: TLabel;
     Label75: TLabel;
-    mRFDKey: TMemo;
+    mRSAKey: TMemo;
     Panel1: TPanel;
+    SelectDirectoryDialog1 : TSelectDirectoryDialog ;
     seRFDGTCadastro : TFloatSpinEdit ;
     edTimeOutTCP : TEdit ;
     edtCodCliente: TEdit;
@@ -417,6 +419,7 @@ type
     procedure ApplicationProperties1Restore(Sender: TObject);
     procedure bCEPTestarClick(Sender : TObject) ;
     procedure bIBGETestarClick(Sender : TObject) ;
+    procedure bRSAeECFcClick(Sender : TObject) ;
     procedure cbxBOLFiltroChange ( Sender: TObject ) ;
     procedure cbxBOLF_JChange ( Sender: TObject ) ;
     procedure cbCEPWebServiceChange(Sender : TObject) ;
@@ -520,7 +523,7 @@ type
     procedure edSH_AplicativoChange(Sender: TObject);
     procedure edSH_NumeroAPChange(Sender: TObject);
     procedure tsRFDShow(Sender: TObject);
-    procedure bRFDKeyImportarClick(Sender: TObject);
+    procedure bRSALoadKeyClick(Sender: TObject);
     procedure ACBrRFD1GetKeyRSA(var PrivateKey_RSA: string);
     procedure cbRFDModeloChange(Sender: TObject);
     procedure bRFDIDClick(Sender: TObject);
@@ -529,10 +532,8 @@ type
     procedure seRFDGTCadastroExit(Sender: TObject);
     procedure tsRFDRSAShow(Sender: TObject);
     procedure cbSenhaClick(Sender: TObject);
-    procedure bRFDRSAPrivadaClick(Sender: TObject);
-    procedure bRFDRSAPublicaClick(Sender: TObject);
-    procedure pgConRFDPageChanging(Sender: TObject; NewPage: TTabSheet;
-      var AllowChange: boolean);
+    procedure bRSAPrivKeyClick(Sender: TObject);
+    procedure bRSAPubKeyClick(Sender: TObject);
     procedure edECFLogChange(Sender: TObject);
     procedure sbLogClick(Sender: TObject);
     procedure sbECFLogClick(Sender: TObject);
@@ -570,7 +571,6 @@ type
     fsDTPrecos: integer;
 
     fsLinesLog: ansistring;
-
 
     procedure DesInicializar ;
     procedure Inicializar;
@@ -816,6 +816,21 @@ end;
 procedure TFrmACBrMonitor.ACBrEAD1GetChavePrivada(var Chave: AnsiString);
 begin
   Chave := LerChaveSWH;
+
+  if Chave = '' then
+  begin
+     Chave := mRSAKey.Text ;
+     if copy(Chave,1,5) <> '-----' then
+        Chave := '' ;
+  end ;
+
+  if Chave = '' then
+     raise Exception.Create( 'Chave RSA Privada não especificada.'+sLineBreak+
+                             '- Selecione a aba "Chave RSA"'+sLineBreak+
+                             '- Calcule sua Chave Privada'+sLineBreak+
+                             '- Salve as configurações'+sLineBreak+
+                             '- Distribua a sua Chave Privada com o arquivo '+sLineBreak+
+                             '  criptografado "swh.ini"' ) ;
 end;
 
 procedure TFrmACBrMonitor.ACBrGIF1Click(Sender : TObject) ;
@@ -918,6 +933,30 @@ begin
         AMsg := 'Nenhuma Cidade encontrada' ;
 
      MessageDlg(AMsg,mtInformation,[mbOK],0);
+  end ;
+end;
+
+procedure TFrmACBrMonitor.bRSAeECFcClick(Sender : TObject) ;
+var
+   NomeSH, ArqXML : String ;
+begin
+  NomeSH := edSH_RazaoSocial.Text ;
+  if NomeSH = '' then
+     NomeSH := 'Sua SoftwareHouse' ;
+
+  if not InputQuery('Sw.House','Entre com o nome da Sw.House', NomeSH ) then
+     exit ;
+
+  if SelectDirectoryDialog1.Execute then
+  begin
+     ArqXML := PathWithDelim(SelectDirectoryDialog1.FileName) + NomeSH + '.xml' ;
+     if FileExists( ArqXML )  then
+        if MessageDlg( 'Arquivo já existe, sobrescrever ?',
+                       mtConfirmation, mbYesNoCancel, 0) <> mrYes then
+           exit ;
+
+     if ACBrEAD1.GerarXMLeECFc( NomeSH, SelectDirectoryDialog1.FileName ) then
+        MessageDlg('Arquivo: '+ArqXML+' criado', mtInformation, [mbOK], 0 );
   end ;
 end;
 
@@ -1470,6 +1509,8 @@ begin
     Ini.Free;
   end;
 
+  LerSW;
+
   with ACBrECF1 do
   begin
     Desativar;
@@ -1559,8 +1600,6 @@ begin
 
     if chRFD.Checked then
     begin
-       LerSW;
-
        if FileExists( ArqINI ) then
           ACBrRFD1.LerINI;
     end
@@ -1678,11 +1717,15 @@ end;
 procedure TFrmACBrMonitor.LerSW;
 var
   INI: TIniFile;
-  ArqSWH, Pass: ansistring;
-  JaExiste: boolean;
+  ArqSWH, Pass, Chave: ansistring;
 begin
   ArqSWH := ExtractFilePath(Application.ExeName) + 'swh.ini';
-  JaExiste := FileExists(ArqSWH);
+  if not FileExists(ArqSWH) then
+  begin
+     mResp.Lines.Add( 'ATENÇÃO: Arquivo "swh.ini" não encontrado.'+sLineBreak+
+                      '     Nenhuma Chave RSA Privada pode ser lida.'+sLineBreak);
+     exit ;
+  end ;
 
   Ini := TIniFile.Create(ArqSWH);
   try
@@ -1690,10 +1733,7 @@ begin
     Pass := IntToStrZero(StringCrc16(edSH_CNPJ.Text + IntToStrZero(fsHashSenha, 8)), 8);
 
     if LeINICrypt(INI, 'SWH', 'Verifica', Pass) <> 'ARQUIVO SWH.INI ESTA OK' then
-      if JaExiste then
-        raise Exception.Create('Arquivo "swh.ini" inválido.')
-      else
-        raise Exception.Create('Arquivo "swh.ini" não encontrado.');
+        raise Exception.Create('Arquivo "swh.ini" inválido.') ;
 
     edSH_RazaoSocial.Text := LeINICrypt(INI, 'SWH', 'RazaoSocial', Pass);
     edSH_COO.Text         := LeINICrypt(INI, 'SWH', 'COO', Pass);
@@ -1718,6 +1758,17 @@ begin
   finally
     Ini.Free;
   end;
+
+  try
+    Chave := '';
+    ACBrEAD1GetChavePrivada( Chave );
+    mRSAKey.Text := '- Chave válida encontrada no arquivo "swh.ini"'+sLineBreak+
+                    '- Conteudo omitido por segurança. '+sLineBreak+
+                    '- Chave será utilizada para assinatura digital';
+  except
+     mRSAKey.Text := 'ATENÇÃO: Chave RSA Privada NÃO pode ser lida no arquivo "swh.ini".';
+     mResp.Lines.Add( mRSAKey.Text + sLineBreak );
+  end ;
 end;
 
 {------------------------------------------------------------------------------}
@@ -1861,11 +1912,10 @@ begin
   AddLinesLog;
 
   SalvarConfBoletos;
+  SalvarSW;
 
   if chRFD.Checked then
   begin
-    SalvarSW;
-
     with ACBrRFD1 do
     begin
        if Ativo then
@@ -1989,7 +2039,7 @@ end;
 procedure TFrmACBrMonitor.SalvarSW;
 var
   INI: TIniFile;
-  Pass: ansistring;
+  Pass, Chave: ansistring;
 begin
   with ACBrRFD1 do
   begin
@@ -2003,6 +2053,12 @@ begin
      SH_VersaoAplicativo := edSH_VersaoAP.Text;
      SH_Linha1           := edSH_Linha1.Text;
      SH_Linha2           := edSH_Linha2.Text;
+  end ;
+
+  try
+    Chave := '';
+    ACBrEAD1GetChavePrivada( Chave );
+  except
   end ;
 
   Ini := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'swh.ini');
@@ -2022,16 +2078,19 @@ begin
     GravaINICrypt(INI, 'SWH', 'Linha1', ACBrRFD1.SH_Linha1, Pass);
     GravaINICrypt(INI, 'SWH', 'Linha2', ACBrRFD1.SH_Linha2, Pass);
 
-    if mRFDKey.Text <> '' then
-      GravaINICrypt(INI, 'SWH', 'RSA', Trim(mRFDKey.Text), Pass)
-    else
-    if LerChaveSWH = '' then
-    begin
-      PageControl1.ActivePage := tsRFD;
-      pgConRFD.ActivePage := tsChaveRSA;
+    if copy( mRSAKey.Text, 1, 5) = '-----' then
+      GravaINICrypt(INI, 'SWH', 'RSA', Trim(mRSAKey.Text), Pass)
 
-      raise Exception.Create('Para trabalhar com RFD é necessário ' +
-        'definir uma Chave Privada');
+    else
+     begin
+        if (Chave = '') and chRFD.Checked then
+        begin
+          PageControl1.ActivePage := tsChaveRSA;
+
+          raise Exception.Create('Para trabalhar com RFD é necessário ' +
+            'definir uma Chave Privada');
+
+        end ;
     end;
 
   finally
@@ -3229,29 +3288,6 @@ begin
   end;
 end;
 
-{------------------------------------------------------------------------------}
-procedure TFrmACBrMonitor.pgConRFDPageChanging(Sender: TObject;
-  NewPage: TTabSheet; var AllowChange: boolean);
-var
-  CNPJ: string;
-begin
-  if NewPage.PageIndex > 1 then
-  begin
-    if not fsCNPJSWOK then
-      fsCNPJSWOK := (LerChaveSWH = '') or (edSH_CNPJ.Text = '');
-
-    if not fsCNPJSWOK then
-    begin
-      CNPJ := '';
-      if InputQuery('Configuração', 'Digite o CNPJ da Sw.House', CNPJ) then
-        fsCNPJSWOK := (CNPJ = edSH_CNPJ.Text);
-    end;
-
-    AllowChange := fsCNPJSWOK;
-    pgConRFD.ActivePageIndex := 0;
-  end;
-end;
-
 procedure TFrmACBrMonitor.sbDirRFDClick(Sender: TObject);
 begin
   OpenURL(ACBrRFD1.DirRFD);
@@ -3300,16 +3336,16 @@ end;
 {------------------------------ Aba Chave RSA --------------------------------}
 procedure TFrmACBrMonitor.tsRFDRSAShow(Sender: TObject);
 begin
-  if mRFDKey.Text = '' then
-    mRFDKey.Text := LerChaveSWH;
+  if mRSAKey.Text = '' then
+    mRSAKey.Text := LerChaveSWH;
 end;
 
-procedure TFrmACBrMonitor.bRFDKeyImportarClick(Sender: TObject);
+procedure TFrmACBrMonitor.bRSALoadKeyClick(Sender: TObject);
 begin
   OpenDialog1.Filter := 'Arquivos KEY|*.key|Arquivos PEM|*.pem|Todos Arquivos|*.*';
 
   if OpenDialog1.Execute then
-     mRFDKey.Lines.LoadFromFile(OpenDialog1.FileName);
+     mRSAKey.Lines.LoadFromFile(OpenDialog1.FileName);
 end;
 
 procedure TFrmACBrMonitor.ACBrRFD1GetKeyRSA(var PrivateKey_RSA: string);
@@ -3317,11 +3353,21 @@ begin
   PrivateKey_RSA := LerChaveSWH;
 end;
 
-procedure TFrmACBrMonitor.bRFDRSAPrivadaClick(Sender: TObject);
+procedure TFrmACBrMonitor.bRSAPrivKeyClick(Sender: TObject);
+Var
+  ChavePublica, ChavePrivada : AnsiString ;
 begin
-  if mRFDKey.Text <> '' then
+  if mRSAKey.Text <> '' then
     raise Exception.Create('Você já possui uma chave RSA.');
 
+  ChavePrivada := '' ;
+  ChavePublica := '' ;
+
+  ACBrEAD1.GerarChaves( ChavePublica, ChavePrivada );
+
+  mRSAKey.Lines.Text := StringReplace( ChavePrivada, #10, sLineBreak, [rfReplaceAll] );
+
+(*
   try
      { Executando o "openssl.exe"
        Sintaxe de comandos extraidas de:  http://www.madboa.com/geek/openssl/ }
@@ -3330,28 +3376,37 @@ begin
 
     { Lendo a resposta }
     try
-      mRFDKey.Clear;
-      mRFDKey.Lines.LoadFromFile('id.rsa');
+      mRSAKey.Clear;
+      mRSAKey.Lines.LoadFromFile('id.rsa');
     except
       raise Exception.Create('Erro ao gerar Chave Privada, usando o "openssl"');
     end;
   finally
     DeleteFile('id.rsa');  // Removendo a chave privada do disco ;
   end;
+*)
 end;
 
-procedure TFrmACBrMonitor.bRFDRSAPublicaClick(Sender: TObject);
+procedure TFrmACBrMonitor.bRSAPubKeyClick(Sender: TObject);
 var
-  SL: TStringList;
+  //SL: TStringList;
+  Chave, NomeArq : AnsiString ;
 begin
-  if mRFDKey.Text = '' then
-    raise Exception.Create('Chave RSA não definida.');
+  mResp.Lines.Add('Calculando Chave Pública através da Chave Privada');
+  Chave  := ACBrEAD1.CalcularChavePublica;
+  Chave  := StringReplace( Chave, #10, sLineBreak, [rfReplaceAll] );
+  NomeArq:= ExtractFilePath( Application.ExeName ) + 'pub_key.pem' ;
 
+  WriteToTXT( NomeArq, Chave, False, False );
+  mResp.Lines.Add( Chave );
+  mResp.Lines.Add('Chave pública gravada no arquivo: '+sLineBreak+NomeArq );
+
+(*
   ChDir(ExtractFilePath(Application.ExeName));
   SL := TStringList.Create;
   try
     { Gravando a chave RSA temporariamente no DirLog }
-    mRFDKey.Lines.SaveToFile('id.rsa');
+    mRSAKey.Lines.SaveToFile('id.rsa');
 
      { Executando o "openssl.exe"
        Sintaxe de comandos extraidas de:  http://www.madboa.com/geek/openssl/ }
@@ -3372,6 +3427,7 @@ begin
   finally
     DeleteFile('id.rsa');  // Removendo a chave privada do disco ;
   end;
+*)
 end;
 
 procedure TFrmACBrMonitor.edSH_AplicativoChange(Sender: TObject);

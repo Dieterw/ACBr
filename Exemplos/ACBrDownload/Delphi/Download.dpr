@@ -1,7 +1,7 @@
 program Download;
 
 uses
-  Vcl.Forms,
+  Forms,
   Frm_Download in 'Frm_Download.pas' {Form1},
   ACBrHTTPDownload in 'ACBrHTTPDownload.pas',
   ACBrFTPDownload in 'ACBrFTPDownload.pas',
@@ -11,10 +11,10 @@ uses
 {$R *.res}
 
 begin
-  ReportMemoryLeaksOnShutdown := DebugHook <> 0;
+  //ReportMemoryLeaksOnShutdown := DebugHook <> 0;
 
   Application.Initialize;
-  Application.MainFormOnTaskbar := True;
+  //Application.MainFormOnTaskbar := True;
   Application.CreateForm(TForm1, Form1);
   Application.Run;
 end.

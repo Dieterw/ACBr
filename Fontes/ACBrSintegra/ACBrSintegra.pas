@@ -71,6 +71,8 @@
 |   - Adição dos registros 88 para combustíveis
 |* 23/01/2012: EMBarbosa
 |   - Adição dos registros 88STES e 88STITNF por Wilson Camargo
+|* 23/02/2012: EMBarbosa
+|   * Correção do contador (88STES e 88STITNF) por Wilson Camargo
 *******************************************************************************}
 
 {$I ACBr.inc}
@@ -2330,10 +2332,10 @@ if FInforma88SMS then
   inc(wtotal88);
 
 if FRegistros88STES.Count > 0 then
-  inc(wtotal88);
+  wtotal88 := wtotal88 + FRegistros88STES.Count;
 
 if FRegistros88STITNF.Count > 0 then
-  inc(wtotal88);
+  wtotal88 := wtotal88 + FRegistros88STITNF.Count;
 
 if FInforma88C then begin
   wtotal88:=wtotal88+Registros88C.Count;

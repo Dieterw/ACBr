@@ -120,6 +120,8 @@
 |*  - Conserto da exibição da base e do valor do ICMS de cada item no caso
 |*    de ser simples nacional, pois estava saindo zerado. (Este código de
 |*    exibição dos itens foi copiado do DANFE em QuickReport)
+|* 24/02/2012: Peterson de Cerqueira Matos
+|*  - Correção da exibição dos itens quando o emitente é CRT = 2
 ******************************************************************************}
 
 
@@ -1683,7 +1685,7 @@ begin
                   cdsItens.FieldByName('VALORDESC').AsString :=
                                       FormatFloat('###,###,###,##0.00', vDesc);
 
-                  if FNFe.Emit.CRT in [crtRegimeNormal] then
+                  if FNFe.Emit.CRT in [crtRegimeNormal, crtSimplesExcessoReceita] then
                     begin
                       if CSTICMSToStr(CST) > '' then
                         sCST := OrigToStr(orig) + CSTICMSToStr(CST)

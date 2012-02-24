@@ -17,13 +17,12 @@ object frRelatorio: TfrRelatorio
   OnCreate = FormCreate
   OnShow = FormShow
   Position = poMainFormCenter
-  LCLVersion = '0.9.29'
+  LCLVersion = '0.9.31'
   object sbFPG: TSpeedButton
     Left = 128
     Height = 22
     Top = 26
     Width = 23
-    Color = clBtnFace
     Glyph.Data = {
       76010000424D7601000000000000760000002800000020000000100000000100
       04000000000000010000120B0000120B00001000000010000000000000000000
@@ -47,7 +46,6 @@ object frRelatorio: TfrRelatorio
     Height = 22
     Top = 26
     Width = 23
-    Color = clBtnFace
     Glyph.Data = {
       76010000424D7601000000000000760000002800000020000000100000000100
       04000000000000010000120B0000120B00001000000010000000000000000000
@@ -139,6 +137,27 @@ object frRelatorio: TfrRelatorio
       'rotinas de TEF para imprirmir '
       'comprovantes, quando a impressao do '
       'Cupom NAO Fiscal vinculado falhar.'
+      '</linha_dupla>'
+      '<CE>*** CARACTERES ACENTUADOS '
+      '***</CE>'
+      'ÁÉÚÍÓÚáéíóúÇçÃÕãõ'
+      '</linha_simples>'
+      '<CE>*** TAGS DE FORMATAÇÃO ***</CE>'
+      '<e>EXPANDIDO</e>'
+      '<N>Negrito</n>'
+      '<S>Sublinhado</s>'
+      '<C>CONDENSADO</C>'
+      '<i>ITALICO</I>'
+      '</linha_simples>'
+      '<CE>*** TAGS DE FORMATAÇÃO ***</CE>'
+      '<ce>NO CENTRO</CE>'
+      '<AD>A Direira</ad>'
+      '</linha_simples>'
+      '<CE>*** TESTE DE TAGS INVÁLIDAS</CE>'
+      '<ce> <>tags inválidas no texto">">><<</CE>'
+      '<AD><da><ec></</A Direira</ad>'
+      '</linha_dupla>'
+      ''
     )
     ParentFont = False
     ScrollBars = ssVertical

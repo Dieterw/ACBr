@@ -1183,7 +1183,7 @@ begin
       begin
         ErroMsg := 'Erro retornado pela Impressora: ' + fpModeloStr + sLineBreak+sLineBreak+
                    'Erro: '+ EpsonResposta.Retorno+ ' - '+ErroMsg  ;
-        raise EACBrECFSemResposta.create( ACBrStr( ErroMsg ) ) ;
+        raise EACBrECFSemResposta.create( ErroMsg ) ;
       end
      else
         Sleep( IntervaloAposComando ) ;  { Pequena pausa entre comandos }

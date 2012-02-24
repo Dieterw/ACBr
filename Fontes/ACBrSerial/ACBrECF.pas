@@ -4341,7 +4341,6 @@ Var
   begin
      ComandoLOG := 'LinhaRelatorioGerencial( "'+Texto+'", '+IntToStr(IndiceBMP)+' )';
 
-     Texto := DecodificarTagsFormatacao( Texto );
      try
         fsECF.LinhaRelatorioGerencial( Texto, IndiceBMP ) ;
      except
@@ -4384,7 +4383,8 @@ begin
   else
    begin
      Texto  := '' ;
-     Buffer := AjustaLinhas(Linha, Colunas) ;
+     Buffer := DecodificarTagsFormatacao( Linha );
+     Buffer := AjustaLinhas(Buffer, Colunas) ;
      SL     := TStringList.Create ;
      try
         SL.Text := Buffer ;
@@ -4522,19 +4522,20 @@ end;
 
 procedure TACBrECF.LinhaCupomVinculado(const Linha: AnsiString);
 Var
-  Texto, Buffer : String ;
+  Texto, Buffer : AnsiString ;
   Lin   : Integer ;
   SL    : TStringList ;
 begin
   if MaxLinhasBuffer < 1 then
    begin
      ComandoLOG := 'LinhaCupomVinculado( '+Linha+' )';
-     fsECF.LinhaCupomVinculado( Linha )
+     fsECF.LinhaCupomVinculado( DecodificarTagsFormatacao( Linha ) )
    end
   else
    begin
      Texto  := '' ;
-     Buffer := AjustaLinhas(Linha, Colunas) ;
+     Buffer := DecodificarTagsFormatacao( Linha );
+     Buffer := AjustaLinhas(Buffer, Colunas) ;
      SL     := TStringList.Create ;
      try
         SL.Text := Buffer ;

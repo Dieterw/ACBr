@@ -119,11 +119,10 @@
         <ComponentName Value="Form1"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ECFTeste1"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="888"/>
-        <CursorPos X="3" Y="892"/>
+        <TopLine Value="4010"/>
+        <CursorPos X="1" Y="4045"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -156,10 +155,13 @@
         <ComponentName Value="frRelatorio"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Relatorio"/>
+        <EditorIndex Value="8"/>
         <WindowIndex Value="0"/>
         <TopLine Value="67"/>
-        <CursorPos X="27" Y="82"/>
+        <CursorPos X="18" Y="83"/>
         <UsageCount Value="201"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
       </Unit4>
       <Unit5>
         <Filename Value="sobre.pas"/>
@@ -193,7 +195,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="75"/>
         <CursorPos X="5" Y="95"/>
-        <UsageCount Value="39"/>
+        <UsageCount Value="108"/>
       </Unit7>
       <Unit8>
         <Filename Value="uDAVOS.pas"/>
@@ -205,7 +207,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="80"/>
         <CursorPos X="17" Y="95"/>
-        <UsageCount Value="39"/>
+        <UsageCount Value="108"/>
       </Unit8>
     </Units>
   </ProjectOptions>
@@ -238,6 +240,15 @@
     </Other>
   </CompilerOptions>
   <Debugging>
+    <BreakPoints Count="1">
+      <Item1>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="..\..\..\Fontes\ACBrSerial\ACBrECFSwedaSTX.pas"/>
+        <Line Value="2672"/>
+      </Item1>
+    </BreakPoints>
     <Watches Count="1">
       <Item1>
         <Expression Value="Result"/>

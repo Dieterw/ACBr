@@ -168,7 +168,6 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
        var TempoLimite: TDateTime) : Boolean ; override ;
     function VerificaFimImpressao(var TempoLimite: TDateTime) : Boolean ; override ;
 
-    function TraduzirTag(const ATag: AnsiString): AnsiString; override;
   public
     Constructor create( AOwner : TComponent  )  ;
     Destructor Destroy  ; override ;
@@ -275,6 +274,9 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
        NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos];
        Finalidade: TACBrECFFinalizaArqMFD = finMFD;
        TipoContador: TACBrECFTipoContador = tpcCOO  ) ; override ;
+
+    function TraduzirTag(const ATag: AnsiString): AnsiString; override;
+    function TraduzirTagBloco(const ATag, Conteudo : AnsiString) : AnsiString ; override;
  end ;
 
 implementation
@@ -329,16 +331,15 @@ begin
 
   fpDevice.HandShake := hsDTR_DSR ;
   { Variaveis internas dessa classe }
-  fsVerProtocolo := '' ;
-  fsSubModelo := '';
-  fsApplicationPath := '';
-  fsCache34   := TACBrECFSwedaCache.create( True );
-  fsSEQ       := 42 ;
+  fsVerProtocolo     := '' ;
+  fsSubModelo        := '';
+  fsApplicationPath  := '';
+  fsCache34          := TACBrECFSwedaCache.create( True );
+  fsSEQ              := 42 ;
   fsRespostasComando := '' ;
   fsFalhasRX         := 0 ;
-  
-  fpModeloStr := 'SwedaSTX' ;
-  fpRFDID     := 'SW' ;
+  fpModeloStr        := 'SwedaSTX' ;
+  fpRFDID            := 'SW' ;
 end;
 
 destructor TACBrECFSwedaSTX.Destroy;
@@ -350,6 +351,7 @@ end;
 
 procedure TACBrECFSwedaSTX.Ativar;
 Var RetCmd : AnsiString ;
+   LargFonte, AreaImp : Integer ;
 begin
   if not fpDevice.IsSerialPort  then
      raise Exception.Create(ACBrStr('A impressora: '+fpModeloStr+' requer'+sLineBreak+
@@ -360,16 +362,16 @@ begin
 
   GravaLog( 'Ativar' ) ;
 
-  fsVerProtocolo := '' ;
-  fsSubModelo := '';
+  fsVerProtocolo    := '' ;
+  fsSubModelo       := '';
   fsApplicationPath := ExtractFilePath( ParamStr(0) );
-  fpMFD       := True ;
-  fpTermica   := True ;
   fsCache34.Clear ;
   fsRespostasComando := '' ;
   fsFalhasRX         := 0 ;
   
-  fpColunas := 57;
+  fpColunas := 56;
+  fpMFD     := True ;
+  fpTermica := True ;
 
   try
      { Testando a comunicaçao com a porta }
@@ -388,8 +390,15 @@ begin
 
      fpDecimaisQtd := StrToIntDef(copy( TACBrECF(fpOwner).RetornaInfoECF( 'U2' ),  1, 1), 2 ) ;
 
-     if SubModeloECF = 'IF ST2500' then
-        fpColunas := 56;
+     try
+        // Tentando calcular o numero de Colunas //
+        RetCmd := TACBrECF(fpOwner).RetornaInfoECF( 'R2' ) ;
+        LargFonte := StrToInt( copy( RetCmd, IfThen( copy(RetCmd, 36, 1) = 'A', 37, 41 ), 2) );
+        AreaImp   := StrToInt( copy( RetCmd, 45, 4) );
+        fpColunas := Trunc( AreaImp / LargFonte ) ;
+     except
+     end ;
+
   except
      Desativar ;
      raise ;
@@ -1820,7 +1829,14 @@ begin
   else
      while Length( Linha ) > 0 do
      begin
-        P := Length( Linha ) ;
+        P := 0 ;
+        if LeftStr(Linha,1) = STX then
+           P := Pos(ETX, Linha);
+        if P = 0 then
+           P := Pos(STX, Linha)-1;
+        if P <= 0 then
+           P := Length( Linha ) ;
+
         if P > MaxChars then    { Acha o fim de Linha mais próximo do limite máximo }
            P := PosLast(#10, LeftStr(Linha,MaxChars) ) ;
 
@@ -1831,14 +1847,18 @@ begin
         Espera := Trunc( CountStr( Buffer, #10 ) / 4) ;
 
         AguardaImpressao := (Espera > 3) ;
-        EnviaComando( '25|' + Buffer, Espera ) ;
+
+        if LeftStr(Buffer,1) = STX then
+           EnviaComando( copy(Buffer, 2, Length(Buffer)-2 ), Espera )
+        else
+           EnviaComando( '25|' + Buffer, Espera ) ;
 
         { ficou apenas um LF sozinho ? }
         if (P = Colunas) and (RightStr( Buffer, 1) <> #10) and
            (copy( Linha, P+1, 1) = #10) then
            P := P + 1 ;
 
-        Linha  := copy( Linha, P+1, Length(Linha) ) ;   // O Restante
+        Linha := copy( Linha, P+1, Length(Linha) ) ;   // O Restante
      end ;
 end;
 
@@ -1853,7 +1873,7 @@ end;
 
 procedure TACBrECFSwedaSTX.LinhaCupomVinculado(Linha: AnsiString);
 begin
-   EnviaComando('25|'+Linha);
+   LinhaRelatorioGerencial( Linha );
 end;
 
 procedure TACBrECFSwedaSTX.FechaRelatorio;
@@ -2151,16 +2171,12 @@ var
  end ;
 begin
   // Verifica se exite o caminho das DLLs
+  sLibName := '';
   if Length(PathDLL) > 0 then
      sLibName := PathDLL;
 
   // Concatena o caminho se exitir mais o nome da DLL.
   sLibName := sLibName + cLIB_Sweda;
-
-  {$IFDEF MSWINDOWS}
-    if not FileExists( ExtractFilePath( sLibName ) + 'Swmfd.dll') then
-       raise Exception.Create( ACBrStr( 'Não foi encontrada a dll auxiliar Swmfd.dll.' ) ) ;
-  {$ENDIF}
 
   SwedaFunctionDetect('ECF_AbreConnectC', @xECF_AbreConnectC);
   SwedaFunctionDetect('ECF_DownloadMFD', @xECF_DownloadMFD);
@@ -2585,7 +2601,6 @@ const
   //<i></i>
   cItalicoOn  = '';
   cITalicoOff = '';
-
 begin
 
   case AnsiIndexText( ATag, ARRAY_TAGS) of
@@ -2605,6 +2620,64 @@ begin
   end;
 
 end;
+
+function TACBrECFSwedaSTX.TraduzirTagBloco(const ATag, Conteudo : AnsiString
+   ) : AnsiString ;
+const
+  // 10|T|EEEEEEEEEEEEE..EE|A|H|M|P|F|ME|BCCDD
+  // --------
+  // 10 = Comando para impressão das barras
+  // T = Tipo de codigo de Barras
+  // EEEE..EE = Codigo de barra, máximo 40
+  // A = Alinhamento (fixo em 1 - Centro )
+  // H = Altura em Milimitros 3 a 32, (padrão 16)
+  // M = Magnitude, espessura (fixo em 2), usado como Largura
+  // P = Posiçao HRI. imprimir ou não codigo abaixo da barra
+  //     0 - Não imprime ou 2 - Após o Código
+  // F - Fonte para HRI, fixo em 'A' - Normal
+  // ME - Margem esquerda, fixo em 0
+
+  cEAN8     = 'D'; // <ean8></ean8>
+  cEAN13    = 'C'; // <ean13></ean13>
+  cINTER25  = 'F'; // <inter></inter>
+  cCODE39   = 'E'; // <code39></code39>
+  cCODE93   = 'I'; // <code93></code93>
+  cCODE128  = 'J'; // <code128></code128>
+  cUPCA     = 'A'; // <upca></upca>
+  cCODABAR  = 'G'; // <codabar></codabar>
+
+  function MontaCodBarras(const ATipo: AnsiString; ACodigo: AnsiString;
+    TamFixo: Integer = 0): AnsiString;
+  var
+    L, A : Integer ;
+  begin
+    L := IfThen( ConfigBarras.LarguraLinha = 0, 2, max(min(ConfigBarras.LarguraLinha,5),1) );
+    A := IfThen( ConfigBarras.Altura = 0, 16, max(min(ConfigBarras.Altura,32),3) );
+
+    ACodigo := Trim( ACodigo );
+    if TamFixo > 0 then
+       ACodigo := padR( ACodigo, TamFixo, '0') ;
+
+    Result := STX + '10|' + ATipo + '|'+ ACodigo + '|1|' + IntToStr(A) + '|' +
+              IntToStr(L) + '|' + ifthen( ConfigBarras.MostrarCodigo, '2', '0' ) +
+              '|A|0' + ETX ;
+  end;
+
+begin
+  case AnsiIndexText( ATag, ARRAY_TAGS) of
+     12,13: Result := MontaCodBarras(cEAN8, Conteudo, 7);
+     14,15: Result := MontaCodBarras(cEAN13, Conteudo, 12);
+     18,19: Result := MontaCodBarras(cINTER25, Conteudo);
+     22,23: Result := MontaCodBarras(cCODE39, Conteudo ) ;
+     24,25: Result := ifthen(fsVerProtocolo > 'E', MontaCodBarras(cCODE93, Conteudo), '' ) ;
+     26,27: Result := IfThen(fsVerProtocolo > 'E', MontaCodBarras(cCODE128, Conteudo), ''  );
+     28,29: Result := MontaCodBarras(cUPCA, Conteudo, 11);
+     30,31: Result := MontaCodBarras(cCODABAR, Conteudo ) ;
+  else
+     Result := inherited TraduzirTagBloco(ATag, Conteudo) ;
+  end;
+
+end ;
 
 end.
 

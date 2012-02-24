@@ -1031,7 +1031,6 @@ object Form1: TForm1
         Width = 46
         AutoSize = False
         MaxValue = 6
-        OnChange = seTimeOutChange
         TabOrder = 0
       end
       object BitBtn6: TBitBtn
@@ -1092,12 +1091,11 @@ object Form1: TForm1
           '<AD>A Direira</ad>'
           '</linha_simples>'
           ''
-          '<CE>*** TESTE DE TAGS INVÁLIDAS</CE>'
+          '<CE>*** TESTE DE TAGS INVÁLIDAS ***</CE>'
           '<ce> <>tags inválidas no texto">">><<</CE>'
           '<AD><da><ec></</A Direira</ad>'
           ''
           '</linha_dupla>'
-          '</corte_parcial>'
         )
         ScrollBars = ssAutoBoth
         TabOrder = 2
@@ -1127,7 +1125,6 @@ object Form1: TForm1
         Width = 46
         AutoSize = False
         MaxValue = 200
-        OnChange = seTimeOutChange
         TabOrder = 4
       end
       object Label28: TLabel

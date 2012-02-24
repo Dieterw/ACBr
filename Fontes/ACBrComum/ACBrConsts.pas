@@ -84,6 +84,8 @@ const
     '<msi>', '</msi>',
     '<ad>','</ad>','<ce>','</ce>' );
 
+  TAGS_BLOCO: set of byte = [12..37] ;
+
   cACBrDeviceAtivarPortaException    = 'Porta não definida' ;
   cACBrDeviceAtivarException         = 'Erro abrindo: %s ' + sLineBreak +' %s ' ;
   cACBrDeviceSetBaudException        = 'Valor deve estar na faixa de 50 a 4000000.'+#10+

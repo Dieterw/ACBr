@@ -186,8 +186,6 @@ TACBrECFEpson = class( TACBrECFClass )
     property  Ret0907 : AnsiString read GetRet0907 ;
     procedure EnviaPAF;
  protected
-    function TraduzirTag(const ATag: AnsiString): AnsiString; override;
-
     function GetDataHora: TDateTime; override ;
     function GetNumCupom: String; override ;
     function GetNumCCF: String; override ;
@@ -371,6 +369,8 @@ TACBrECFEpson = class( TACBrECFClass )
        TACBrECFComprovanteNaoFiscal; override;
 
     function GetDadosUltimaReducaoZ: AnsiString; override ;
+
+    function TraduzirTag(const ATag: AnsiString): AnsiString; override;
  end ;
 
 function EpsonCheckSum(Dados: AnsiString): AnsiString;

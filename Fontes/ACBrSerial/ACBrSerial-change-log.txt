@@ -97,6 +97,17 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 24/02/2012
+-- ACBrECF --
+[*] Melhoria no tratamento de TAGs, adicionando mecanismo para tratamento
+    especial com TAGS de Bloco, como por exemplo Cod.Barras (DSA)
+[+] Adicionado suporte a Impressão de TAGs em Cupom Vinculado (DSA)
+[-] Correção de Impressão em PafMF_RelParametrosConfiguracao (acentos e ajuste
+    para máximo de Colunas) (DSA)
+
+-- ACBrECFSwedaSTX --
+[+] Adicionado suporte as TAGs de Códigos de Barra
+
 Data: 11/02/2012
 -- ACBrECFFiscNet --
 [-] Correção de Fechamento de Cupom com Identificação de Consumidor e Identifi-

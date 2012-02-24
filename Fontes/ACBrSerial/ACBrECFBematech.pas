@@ -434,7 +434,6 @@ TACBrECFBematech = class( TACBrECFClass )
 
     Function PreparaCmd( cmd : AnsiString ) : AnsiString ;
     function AnalisarRetornoDll(const ARetorno: Integer): String;
-    function TraduzirTag(const ATag: AnsiString): AnsiString; override;
 
     function GetDataHora: TDateTime; override ;
     function GetNumCupom: String; override ;
@@ -628,6 +627,8 @@ TACBrECFBematech = class( TACBrECFClass )
        Documentos : TACBrECFTipoDocumentoSet = [docTodos];
        Finalidade: TACBrECFFinalizaArqMFD = finMFD;
        TipoContador: TACBrECFTipoContador = tpcCOO ) ; override ;
+    function TraduzirTag(const ATag: AnsiString): AnsiString; override;
+    function TraduzirTagBloco(const ATag, Conteudo: AnsiString): AnsiString; override;
  end ;
 
 implementation
@@ -2739,7 +2740,8 @@ begin
    end ;
 end;
 
-procedure TACBrECFBematech.AbreNaoFiscal( CPF_CNPJ, Nome, Endereco: String );
+procedure TACBrECFBematech.AbreNaoFiscal(CPF_CNPJ : String ; Nome : String ;
+   Endereco : String) ;
 begin
   if fs25MFD then
   begin
@@ -3985,7 +3987,6 @@ function TACBrECFBematech.TraduzirTag(const ATag: AnsiString): AnsiString;
 const
   C_ON  = #1;
   C_OFF = #0;
-  C_BARRA = #107;
 
   // <e></e>
   cExpandidoOn   = ESC + 'W' + C_ON;
@@ -4006,35 +4007,6 @@ const
   //<i></i>
   cItalicoOn  = ESC + '4';
   cITalicoOff = ESC + '5';
-
-  cEAN8     = GS + C_BARRA + #3; // <ean8></ean8>
-  cEAN13    = GS + C_BARRA + #2; // <ean13></ean13>
-  cSTD25    = ''; // <std></std>
-  cINTER25  = ''; // <inter></inter>
-  cCODE11   = ''; // <code11></code11>
-  cCODE39   = GS + C_BARRA + #4; // <code39></code39>
-  cCODE93   = GS + C_BARRA + #72; // <code93></code93>
-  cCODE128  = GS + C_BARRA + #73; // <code128></code128>
-  cUPCA     = GS + C_BARRA + #0; // <upca></upca>
-  cCODABAR  = GS + C_BARRA + #6; // <codabar></codabar>
-  cMSI      = GS + C_BARRA + #22; // <msi></msi>
-  cBarraFim = NUL;
-
-  function ConfigurarBarras(const ACodigo: AnsiString): AnsiString;
-  var
-    Largura: AnsiString;
-    Altura: AnsiString;
-    Mostrar: AnsiString;
-  begin
-    Largura := GS + #119 + IntToStr(ConfigBarras.Altura);
-    Altura  := GS + #104 + IntToStr(ConfigBarras.LarguraLinha);
-
-    if ConfigBarras.MostrarCodigo then
-      Mostrar := GS + #72 + '1'
-    else
-      Mostrar := GS + #72 + '0';
-    Result := Largura + Altura + Mostrar + ACodigo;
-  end;
 begin
 
   case AnsiIndexText( ATag, ARRAY_TAGS) of
@@ -4049,33 +4021,78 @@ begin
      9 : Result := cCondensadoOff;
      10: Result := cItalicoOn;
      11: Result := cITalicoOff;
-     12: Result := ConfigurarBarras(cEAN8);
-     13: Result := cBarraFim;
-     14: Result := ConfigurarBarras(cEAN13);
-     15: Result := cBarraFim;
-     16: Result := ConfigurarBarras(cSTD25);
-     17: Result := cBarraFim;
-     18: Result := ConfigurarBarras(cINTER25);
-     19: Result := cBarraFim;
-     20: Result := ConfigurarBarras(cCODE11);
-     21: Result := cBarraFim;
-     22: Result := ConfigurarBarras(cCODE39);
-     23: Result := cBarraFim;
-     24: Result := ConfigurarBarras(cCODE93);
-     25: Result := cBarraFim;
-     26: Result := ConfigurarBarras(cCODE128);
-     27: Result := cBarraFim;
-     28: Result := ConfigurarBarras(cUPCA);
-     29: Result := cBarraFim;
-     30: Result := ConfigurarBarras(cCODABAR);
-     31: Result := cBarraFim;
-     32: Result := ConfigurarBarras(cMSI);
-     33: Result := cBarraFim;
   else
      Result := '' ;
   end;
 
 end;
+
+function TACBrECFBematech.TraduzirTagBloco(const ATag, Conteudo : AnsiString
+   ) : AnsiString ;
+const
+  C_BARRA = GS + 'k' ;
+
+  cEAN8     = C_BARRA + 'D' ; // <ean8></ean8>
+  cEAN13    = C_BARRA + 'C' ; // <ean13></ean13>
+  cINTER25  = C_BARRA + 'F' ; // <inter></inter>
+  cCODE39   = C_BARRA + 'E' ; // <code39></code39>
+  cCODE93   = C_BARRA + 'H' ; // <code93></code93>
+  cCODE128  = C_BARRA + 'I' ; // <code128></code128>
+  cUPCA     = C_BARRA + 'A' ; // <upca></upca>
+  cCODABAR  = C_BARRA + 'G' ; // <codabar></codabar>
+  cMSI      = C_BARRA + #130; // <msi></msi>
+
+  function MontaCodBarras(const ATipo: AnsiString; ACodigo: AnsiString;
+    TamFixo: Integer = 0): AnsiString;
+  var
+    L, A : Integer ;
+  begin
+    L := IfThen( ConfigBarras.LarguraLinha = 0, 3, max(min(ConfigBarras.LarguraLinha,4),2) );
+    A := IfThen( ConfigBarras.Altura = 0, 162, max(min(ConfigBarras.Altura,255),1) );
+
+    ACodigo := Trim( ACodigo );
+    if TamFixo > 0 then
+       ACodigo := padR( ACodigo, TamFixo, '0') ;
+
+    Result := GS + 'w' + chr( L ) + // Largura
+              GS + 'h' + chr( A ) + // Altura
+              GS + 'H' + ifthen( ConfigBarras.MostrarCodigo, #1, #0 ) +
+              ATipo + chr( Length( ACodigo ) ) + ACodigo;
+  end;
+
+  Function AddStartStop( Conteudo: AnsiString ) : AnsiString ;
+  begin
+    Result := Trim(Conteudo) ;
+    if LeftStr(Result,1) <> '*' then
+       Result := '*'+Result;
+    if RightStr(Result,1) <> '*' then
+       Result := Result+'*' ;
+  end ;
+
+var
+   Is010000 : Boolean ;
+
+begin
+  // MP4000 ver 01.00.00 tem sérios problemas quando tenta imprimir CODE39 ou CODEBAR
+  Is010000 := (StrToIntDef( NumVersao,0 ) <= 10000) ;
+
+  case AnsiIndexText( ATag, ARRAY_TAGS) of
+     12,13: Result := MontaCodBarras(cEAN8, Conteudo, 7);
+     14,15: Result := MontaCodBarras(cEAN13, Conteudo, 12);
+     18,19: Result := MontaCodBarras(cINTER25, Conteudo);
+     22,23: Result := ifthen( Is010000, '',
+                              MontaCodBarras(cCODE39, AddStartStop(Conteudo) ) );
+     24,25: Result := MontaCodBarras(cCODE93, Conteudo);
+     26,27: Result := MontaCodBarras(cCODE128, Conteudo);
+     28,29: Result := MontaCodBarras(cUPCA, Conteudo, 11);
+     30,31: Result := ifthen( Is010000, '',
+                              MontaCodBarras(cCODABAR, AddStartStop(Conteudo) ) );
+     32,33: Result := MontaCodBarras(cMSI, Conteudo);
+  else
+     Result := inherited TraduzirTagBloco(ATag, Conteudo) ;
+  end;
+
+end ;
 
 end.
 

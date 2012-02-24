@@ -196,8 +196,6 @@ TACBrECFFiscNET = class( TACBrECFClass )
     function GetErroAtoCotepe1704(pRet: Integer): string;
 
  protected
-    function TraduzirTag(const ATag: AnsiString): AnsiString; override;
-
     function GetDataHora: TDateTime; override ;
     function GetNumCupom: String; override ;
     function GetNumCCF: String; override ;
@@ -370,7 +368,7 @@ TACBrECFFiscNET = class( TACBrECFClass )
        Tipo : String = ''; Posicao : String = '') ; override ;
 
     procedure IdentificaPAF( NomeVersao, MD5 : String) ; override ;
-
+    function TraduzirTag(const ATag: AnsiString): AnsiString; override;
  end ;
 
 implementation

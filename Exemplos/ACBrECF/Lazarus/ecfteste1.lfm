@@ -2575,6 +2575,13 @@ object Form1: TForm1
       end
       object Flags1: TMenuItem
         Caption = 'Flags'
+        object miTipoUltimoDoc: TMenuItem
+          Caption = 'TipoUltimoDocumento'
+          OnClick = miTipoUltimoDocClick
+        end
+        object MenuItem27: TMenuItem
+          Caption = '-'
+        end
         object PoucoPapel1: TMenuItem
           Caption = 'Pouco Papel ?'
           OnClick = PoucoPapel1Click
@@ -2893,7 +2900,7 @@ object Form1: TForm1
         Caption = '-'
       end
       object CupomVinculado1: TMenuItem
-        Caption = 'Cupom Vinculado'
+        Caption = 'Cupom Vinculado ou CCD'
         object CupomVinculadoCompleto2: TMenuItem
           Caption = 'Cupom Vinculado Completo'
           OnClick = ListaCupomVinculado1Click
@@ -2915,6 +2922,13 @@ object Form1: TForm1
         object mTesteVinculado: TMenuItem
           Caption = 'Teste de Vinculado'
           OnClick = mTesteVinculadoClick
+        end
+        object MenuItem26: TMenuItem
+          Caption = '-'
+        end
+        object miEstornoCCD: TMenuItem
+          Caption = 'EstornaCCD'
+          OnClick = miEstornoCCDClick
         end
       end
       object RelatorioGerencial1: TMenuItem

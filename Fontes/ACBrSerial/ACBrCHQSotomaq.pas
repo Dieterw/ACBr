@@ -63,10 +63,10 @@ type TACBrCHQSotomaq = class( TACBrCHQClass )
 end ;
 
 implementation
-Uses ACBrUtil,
-     SysUtils,
-   {$IFDEF COMPILER6_UP} DateUtils, {$ELSE} Windows,{$ENDIF}
-     synaser;
+Uses
+  SysUtils,
+  {$IFDEF COMPILER6_UP} DateUtils, {$ELSE} Windows,{$ENDIF}
+  ACBrUtil;
 
 { TACBrCHQSotomaq }
 

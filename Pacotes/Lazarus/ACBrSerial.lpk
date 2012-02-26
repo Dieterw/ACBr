@@ -19,6 +19,7 @@
       </Parsing>
       <Other>
         <CompilerMessages>
+          <IgnoredMessages idx4079="True" idx4080="True" idx5024="True" idx5043="True"/>
           <UseMsgFile Value="True"/>
         </CompilerMessages>
         <CompilerPath Value="$(CompPath)"/>

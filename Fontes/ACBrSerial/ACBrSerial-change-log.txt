@@ -97,6 +97,33 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 25/02/2012
+-- ACBrSerial --
+[*] Diversos ajustes nos fontes para remoção de alguns Warning e Hints (DSA)
+
+-- ACBrECF --
+[+] Adicionada propriedade: TipoUltimoDocumento : TACBrECFTipoDocumento que
+    retorna o Tipo de Ultimo Documento emitido (não será possivel implementa-la
+    em todos modelos de ECF)     (DSA)
+[+] Adiconada a Function EstornaCCD( const Todos: Boolean = True) : Integer
+    Efetua o cancelamento do(s) CCD(s), se este for o último documento emitido.
+    Retorna o número de CCDs que conseguiu cancelar.   (DSA)
+
+-- ACBrSwedaSTX --
+[+] Adicionado método GetDataHoraSB  (DSA)
+
+-- ACBrECFFiscNET --
+[-] Corrigido o retorno do método: GetDataHoraSB (DSA)
+[+] Adicionado método: GetTipoUltimoDocumento (DSA)
+[+] Adicionado Function: EstornaCCD (DSA)
+
+-- ACBrECFEpson --
+[+] Adicionado método: GetTipoUltimoDocumento (DSA)
+[+] Adicionado Function: EstornaCCD (DSA)
+[-] Corrigido método: GetSubTotal, para retornar o valor correto quando o
+    documento aberto se tratar de um Cupom Não Fiscal  (DSA)
+
+
 Data: 24/02/2012
 -- ACBrECF --
 [*] Melhoria no tratamento de TAGs, adicionando mecanismo para tratamento

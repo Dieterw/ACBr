@@ -94,7 +94,7 @@ unit ACBrECFDataRegis ;
 
 interface
 uses ACBrECFClass, ACBrDevice, ACBrUtil,
-     Classes, Contnrs
+     Classes
      {$IFNDEF CONSOLE}
        {$IFDEF VisualCLX}, QDialogs, QControls, QForms {$ENDIF}
        {$IFDEF VCL}, Dialogs, Controls, Forms {$ENDIF}
@@ -701,7 +701,7 @@ begin
   begin
      Retorno := ExtraiRetorno( RetCmd ) ;
      Try
-        Estado := RetCmd[1] ;
+        Estado := Retorno[1] ;
      except
         Estado := 'X' ;
      end ;
@@ -1596,9 +1596,7 @@ end;
 
 function TACBrECFDataRegis.AchaICMSAliquota( var AliquotaICMS: String):
    TACBrECFAliquota;
-  Var AliquotaStr : String ;
 begin
-  AliquotaStr := '' ;
   Result      := nil ;
 
   case AliquotaICMS[1] of

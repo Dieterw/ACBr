@@ -53,7 +53,7 @@ uses ACBrDevice, ACBrBase, ACBrBALClass,  {Units da ACBr}
        {$IFDEF VisualCLX}, QExtCtrls {$ELSE}, ExtCtrls {$ENDIF}
      {$ENDIF}
      {$IFDEF COMPILER6_UP}, Types {$ELSE}, Windows {$ENDIF}
-     ,Contnrs, Classes;
+     , Classes;
 
 type
 

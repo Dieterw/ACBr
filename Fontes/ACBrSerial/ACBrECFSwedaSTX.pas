@@ -31,13 +31,6 @@
 {                                                                              }
 {******************************************************************************}
 
-{******************************************************************************
-|* Historico
-|*
-|* 25/08/2009:  Daniel Simoes de Almeida
-|*   Primeira Versao: Criaçao e Distribuiçao da Primeira Versao
-******************************************************************************}
-
 {$I ACBr.inc}
 
 unit ACBrECFSwedaSTX ;
@@ -143,6 +136,7 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
     function GetIM: String; override ;
     function GetCliche: AnsiString; override ;
     function GetUsuarioAtual: String; override ;
+    function GetDataHoraSB: TDateTime; override ;
     function GetPAF: String; override ;
     function GetDataMovimento: TDateTime; override ;
     function GetGrandeTotal: Double; override ;
@@ -655,7 +649,7 @@ function TACBrECFSwedaSTX.VerificaFimLeitura(var Retorno: AnsiString;
    var TempoLimite: TDateTime) : Boolean ;
 Var
   LenRet, PosETX, PosSTX, Erro : Integer ;
-  Bloco, Tarefa : AnsiString ;
+  Bloco : AnsiString ;
   Sequencia, ACK_PC : Byte ;
   Tipo : AnsiChar ;
 begin
@@ -682,7 +676,7 @@ begin
   Bloco     := copy(Retorno, 1, PosETX+1) ;
   Result    := True ;
   Sequencia := Ord( Bloco[2] ) ;
-  Tarefa    := copy(Bloco,3,2) ;
+  //Tarefa  := copy(Bloco,3,2) ;
   Tipo      := Bloco[5] ;
 
   // DEBUG
@@ -2020,6 +2014,23 @@ begin
    Result := copy(RemoveNulos(RetCMD),1,2);
 end;
 
+function TACBrECFSwedaSTX.GetDataHoraSB : TDateTime ;
+Var RetCmd : AnsiString ;
+    OldShortDateFormat : String ;
+begin
+  RetCmd := Trim(RetornaInfoECF( 'J1' )) ;
+  OldShortDateFormat := ShortDateFormat ;
+  try
+     ShortDateFormat := 'dd/mm/yyyy' ;
+     Result := StrToDate(copy(RetCmd,10,10)) ;
+  finally
+     ShortDateFormat := OldShortDateFormat ;
+  end ;
+  Result := RecodeHour(  Result,StrToInt(copy(RetCmd,21,2))) ;
+  Result := RecodeMinute(Result,StrToInt(copy(RetCmd,24,2))) ;
+  Result := RecodeSecond(Result,StrToInt(copy(RetCmd,27,2))) ;
+end ;
+
 
 function TACBrECFSwedaSTX.GetDataMovimento: TDateTime;
  Var
@@ -2149,7 +2160,8 @@ begin
    Result := Copy(RetCMD,210,6);
 end ;
 
-procedure TACBrECFSwedaSTX.AbreNaoFiscal( CPF_CNPJ, Nome, Endereco: String );
+procedure TACBrECFSwedaSTX.AbreNaoFiscal(CPF_CNPJ : String ; Nome : String ;
+   Endereco : String) ;
 begin
    EnviaComando('20');
 end;

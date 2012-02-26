@@ -54,7 +54,7 @@ Uses ACBrBase, ACBrDevice, ACBrTERClass,  {Units da ACBr}
      SysUtils,
      {$IFDEF VisualCLX} QExtCtrls {$ELSE} ExtCtrls {$ENDIF},
      {$IFDEF COMPILER6_UP} Types {$ELSE} Windows {$ENDIF},
-     Contnrs, Classes;
+      Classes;
 
 Type
     TACBrTERModelo = ( terNenhum, terWilbor );

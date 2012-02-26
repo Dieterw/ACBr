@@ -2101,6 +2101,7 @@ Var RetCmd, Str, Descricao : AnsiString ;
     Cont : Integer ;
     CNF : TACBrECFComprovanteNaoFiscal ;
 begin
+  Str    := '' ;
   RetCmd := EnviaComando('29' + '7') ;
   if copy(RetCmd,1,3) <> '.+T' then exit ;
   Str := Str + copy(RetCmd, 8, 120) ;
@@ -2804,10 +2805,8 @@ function TACBrECFSweda.GetUsuarioAtual: String;
  var
   wretorno: Ansistring;
   I      : Integer ;
-  Flag   : String ;
 begin
   Result := '';
-  Flag   := '';
   I      := 0 ;
   while I < 5 do
   begin

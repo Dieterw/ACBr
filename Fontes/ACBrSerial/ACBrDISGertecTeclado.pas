@@ -77,7 +77,7 @@ TACBrDISGertecTeclado = class( TACBrDISClass )
 end ;
 
 implementation
-Uses ACBrDIS, ACBrUtil,
+Uses ACBrUtil,
      SysUtils,
      {$IFDEF COMPILER6_UP} DateUtils {$ELSE} ACBrD5, Windows{$ENDIF} ;
 

@@ -1190,7 +1190,7 @@ begin
   else
      RetCmd := RetornaInfoECF('66') ;
 
-  Result := StrToFloatDef(  RetCmd, 0) / 100 ;
+  Result := StrToFloatDef(RetCmd, 0) / 100 ;
 end;
 
 {  Ordem de Retorno do Estado da Impressora
@@ -2440,10 +2440,10 @@ function TACBrECFBematech.GetDataHoraSB: TDateTime;
 Leitura da Memória Fiscal, só para não retornar erro coloquei esta
 informação abaixo, temos que criar uma rotina que leia a LMF serial
 para retornar os valores corretos}
-Var RetCmd, Linha, LinhaVer : AnsiString ;
+Var Linha, LinhaVer : AnsiString ;
     OldShortDateFormat : String ;
     Linhas : TStringList;
-    I, nLinha, CRZ :Integer;
+    I, CRZ :Integer;
     AchouBlocoSB : Boolean ;
 begin
   Result := 0.0;
@@ -2452,7 +2452,6 @@ begin
   // porque acontecerá erro, conforme consulta ao atendimento da bematech
   if Estado in [estLivre] then
   begin
-    nLinha := -1;
     Linhas := TStringList.Create;
 
     try

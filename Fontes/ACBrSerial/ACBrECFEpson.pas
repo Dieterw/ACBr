@@ -31,23 +31,6 @@
 {                                                                              }
 {******************************************************************************}
 
-{******************************************************************************
-|* Historico
-|*
-|* 04/11/2007: Daniel Simões de Almeida e Eduardo Durieux Lopes
-|* - Primeira Versao: Criaçao e Distribuiçao da Primeira Versao
-|* 04/12/2007: Andre Bohn
-|* - Corrigido bug em LerTotaisFormaPagamento
-|* - Implementado os métodos: ImprimeCheque, CancelaImpressaoCheque, 
-|*                            GetChequePronto, LeituraCMC7
-|* 11/04/2008: Daniel Simões de Almeida
-|* - Adicionados métodos: CortaPapel, IdentificaConsumidor, Suprimento
-|* 14/06/2009: Daniel Simões de Almeida
-|* - Adicionada propriedades: CDC, GNF, GRG. Por: José Nilton Pace
-|* 10/02/2010: José Nilton Pace
-|* - Corrigido bug em GetTotalIsencao
-******************************************************************************}
-
 {$I ACBr.inc}
 
 unit ACBrECFEpson ;
@@ -213,6 +196,8 @@ TACBrECFEpson = class( TACBrECFClass )
     function GetArredonda : Boolean; override ;
     function GetParamDescontoISSQN: Boolean; override ;
 
+    function GetTipoUltimoDocumento : TACBrECFTipoDocumento ; override ;
+
     function GetCNPJ: String; override ;
     function GetIE: String; override ;
     function GetIM: String; override ;
@@ -359,6 +344,8 @@ TACBrECFEpson = class( TACBrECFClass )
     Procedure CortaPapel( const CorteParcial : Boolean = false) ; override ;
     procedure Suprimento( const Valor: Double; Obs : AnsiString;
        DescricaoCNF: String; DescricaoFPG: String; IndiceBMP: Integer) ; override ;
+
+    Function EstornaCCD( const Todos: Boolean = True) : Integer; override ;
 
     procedure CarregaRelatoriosGerenciais; override;
     procedure LerTotaisRelatoriosGerenciais ; override ;
@@ -1474,8 +1461,16 @@ begin
     Result := RespostasComando['SubTotal'].AsFloat;
   except
     try
-       EpsonComando.Comando := '0A03' ;
-       EnviaComando ;
+       if Estado = estNaoFiscal then
+        begin
+          EpsonComando.Comando := '0E03' ;
+          EnviaComando ;
+        end
+       else
+        begin
+          EpsonComando.Comando := '0A03' ;
+          EnviaComando ;
+        end ;
 
        RespostasComando.AddField( 'SubTotal', EpsonResposta.Params[0] );
        Result := StrToFloatDef(EpsonResposta.Params[0],0) /100 ;
@@ -1602,6 +1597,32 @@ begin
   EnviaComando ;
 
   Result := (EpsonResposta.Params[0] = 'S') ;
+end ;
+
+function TACBrECFEpson.GetTipoUltimoDocumento : TACBrECFTipoDocumento ;
+var
+   Tipo : Integer ;
+begin
+  EpsonComando.Comando := '0908' ;
+  EnviaComando ;
+
+  Tipo := StrToIntDef(EpsonResposta.Params[0],0) ;
+  case Tipo of
+    1 : Result := docCF;
+    2 : Result := docRZ;
+    3 : Result := docLX;
+    5 : Result := docLMF;
+    22: Result := docCupomAdicional;
+    23: Result := docCFCancelamento;
+    24: Result := docCNF;
+    25: Result := docCNFCancelamento;
+    26: Result := docEstornoPagto;
+    27: Result := docCCD;
+    28: Result := docEstornoCCD;
+    29,14: Result := docRG;
+  else
+    Result := docNenhum;
+  end ;
 end ;
 
 Procedure TACBrECFEpson.LeituraX ;
@@ -1745,7 +1766,6 @@ end;
 procedure TACBrECFEpson.CancelaCupom;
 Var
   Erro : String ;
-  COOCupom, COOCDC : Integer ;
 begin
   ZeraCache;
   fsEmPagamento := false ;
@@ -1767,28 +1787,7 @@ begin
         // Verificando se motivo do Erro foi falta do cancelamento do CDC (Erro 0A15)
         if (pos('0A15',E.Message) > 0) then
          begin
-           // Pega o nro do CDC a cancelar
-           EpsonComando.Comando := '0907';
-           EnviaComando;
-           COOCDC   := StrToInt( Trim(EpsonResposta.Params[0] ) ) ;
-           COOCupom := StrToInt( Trim(EpsonResposta.Params[12]) ) ;
-
-           while COOCDC > COOCupom do
-           begin
-              // Estorna o CDC para poder cancelar o cupom
-              EpsonComando.Comando  := '0E30';
-              EpsonComando.Extensao := '0001';
-              { Passando apenas o numero do COO, os parametros iniciais não são
-                necessáriospara efetuar o cancelameto de CDC }
-              EpsonComando.AddParamString( '' );
-              EpsonComando.AddParamString( '' );
-              EpsonComando.AddParamString( '' );
-              EpsonComando.AddParamInteger( COOCDC );
-              EnviaComando;
-              FechaRelatorio;   { Fecha o estorno do CDC }
-
-              Dec( COOCDC ) ;
-           end ;
+           TACBrECF(fpOwner).EstornaCCD( True ) ;
 
            { Agora sim... Cancelando o Cupom }
            CancelaCupom;
@@ -3019,6 +3018,43 @@ begin
   inherited Suprimento(Valor, Obs, DescricaoCNF, DescricaoFPG, IndiceBMP);
 end;
 
+function TACBrECFEpson.EstornaCCD(const Todos : Boolean) : Integer ;
+var
+   COOCDC, COOCupom : Integer ;
+begin
+  Result := 0;
+
+  if TipoUltimoDocumento <> docCCD then
+     exit ;
+
+  // Pega o nro do CDC a cancelar
+  EpsonComando.Comando := '0907';
+  EnviaComando;
+  COOCDC   := StrToInt( Trim(EpsonResposta.Params[0] ) ) ;
+  COOCupom := StrToInt( Trim(EpsonResposta.Params[12]) ) ;
+
+  while COOCDC > COOCupom do
+  begin
+     // Estorna o CDC para poder cancelar o cupom
+     EpsonComando.Comando  := '0E30';
+     EpsonComando.Extensao := '0001';
+     { Passando apenas o numero do COO, os parametros iniciais não são
+       necessáriospara efetuar o cancelameto de CDC }
+     EpsonComando.AddParamString( '' );
+     EpsonComando.AddParamString( '' );
+     EpsonComando.AddParamString( '' );
+     EpsonComando.AddParamInteger( COOCDC );
+     EnviaComando;
+     FechaRelatorio;   { Fecha o estorno do CDC }
+
+     Inc( Result ) ;
+     Dec( COOCDC ) ;
+
+     if not Todos then
+        Break;
+  end ;
+end ;
+
 function TACBrECFEpson.GetPAF: String;
 begin
   Result := padL(fsPAF1,42)+'|'+padL(fsPAF2,42) ; 
@@ -3576,8 +3612,6 @@ begin
 end ;
 
 procedure TACBrECFEpson.ProgramaRelatorioGerencial( var Descricao: String; Posicao: String);
-const
-   MaxRG = 30; //Falta saber qual a qtde máxima de RGs na EPSON
 begin
   CarregaRelatoriosGerenciais;
   Descricao := Copy(Trim(Descricao),1,15);

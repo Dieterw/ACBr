@@ -637,8 +637,9 @@ begin
 end;
 
 function TACBrECFQuattro.GetEstado: TACBrECFEstado;
-Var RetCmd, Status, Transacao : AnsiString ;
-    FlagZ, FlagX : AnsiChar ;
+Var
+  RetCmd : AnsiString ;
+  FlagZ, FlagX : AnsiChar ;
 begin
   if (not fpAtivo) then
      fpEstado := estNaoInicializada
@@ -651,8 +652,8 @@ begin
         try FlagZ := RetCmd[18]  except FlagZ := ' ' end ;
 
         { Status pode ser: C - concluida, P - Pendente, E - Erro no Comando }
-        Status    := UpperCase(copy(RetCmd,7,1)) ;
-        Transacao := UpperCase(Trim(copy(RetCmd,8,8))) ;
+        //Status  := UpperCase(copy(RetCmd,7,1)) ;
+        //Transacao := UpperCase(Trim(copy(RetCmd,8,8))) ;
 
         fpEstado := estDesconhecido ;
 
@@ -1222,6 +1223,7 @@ Var RetCmd, Str, Descricao : AnsiString ;
     Cont : Integer ;
     CNF : TACBrECFComprovanteNaoFiscal ;
 begin
+  Str    := '';
   RetCmd := EnviaComando('29' + '7') ;
   if copy(RetCmd,1,3) <> '.+T' then exit ;
   Str := Str + copy(RetCmd, 8, 120) ;

@@ -74,7 +74,7 @@ TACBrDISKeytecTeclado = class( TACBrDISClass )
 end ;
 
 implementation
-Uses ACBrDIS, ACBrUtil,
+Uses ACBrUtil,
      SysUtils,
      {$IFDEF COMPILER6_UP} DateUtils {$ELSE} ACBrD5, Math, Windows{$ENDIF} ;
 

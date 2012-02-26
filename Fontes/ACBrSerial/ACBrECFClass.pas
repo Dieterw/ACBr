@@ -31,42 +31,12 @@
 {                                                                              }
 {******************************************************************************}
 
-{******************************************************************************
-|* Historico
-|*
-|* 19/05/2004: Primeira Versao
-|*    Daniel Simoes de Almeida
-|*    Criaçao e Distribuiçao da Primeira Versao
-|* 28/06/2004: Varias modificaçoes. Documentado em ACBrECF.pas ou
-|*    ACBr-change-log.txt
-|* 05/05/2006: Daniel Simoes de Almeida e Fabio Farias
-|*  - Corriga a Perda de foco da aplicação quando usando ExibeMensagem ou
-|*    BloqueiaMouseTeclado  (abertura da janela ShowModal )
-|* 23/05/2006:  Daniel Simoes de Almeida
-|*   - Métodos "ListaRelatorioGerencial" e "ListaCupomVinculado" abstraidos
-|*     pela classe TACBrECFClass... eliminando várias linhas de código nas
-|*     classes filhas
-|* 03/10/2006:  Daniel Simoes de Almeida
-|*   - Corrigido Bug no método FormMsgDoProcedure (usado p/ bloqueio do teclado)
-|*     A pilha de retorno das Exceções não era executada corretamente
-|* 18/12/2006:  J. Luís Schiavo
-|*  - Corrigido Bug em DoOnMsgRetentar, Resposta com sinal invertido
-|* 13/04/2007:  Daniel Simoes de Almeida
-|*  - ArredondaPorQtd não será executado caso o ValorTotal com a Qtd acrescida
-|*    fique superior ao Valor Arredondado pretendido. Isso pode ocorrer se o
-|*    Preço Unitário é grande... nesses casos não há como ajustar... :-(
-|* 05/03/2008:  Daniel Simoes de Almeida / Alexsander Rosa
-|*  - Metodos AchaFPGDescricao e AchaCNFDescricao fazem busca por String usando
-|*    o mesmo tamanho da String informada em Descricao
-******************************************************************************}
-
 {$I ACBr.inc}
 
 Unit ACBrECFClass ;
 
 interface
 uses ACBrDevice,
-     ACBrPAFClass,
      SysUtils ,
      Classes,
      ACBrConsts,
@@ -640,6 +610,8 @@ TACBrECFClass = class
     function GetChequePronto: Boolean; virtual ;
     function GetParamDescontoISSQN: Boolean; virtual;
 
+    function GetTipoUltimoDocumento : TACBrECFTipoDocumento ; virtual ;
+
     Function EnviaComando_ECF( cmd : AnsiString ) : AnsiString ; virtual ;
 
     procedure LeResposta ; virtual ;
@@ -886,6 +858,8 @@ TACBrECFClass = class
     Property IdentificaConsumidorRodape : Boolean read fpIdentificaConsumidorRodape ;
     Property ModoPreVenda: Boolean read fpModoPreVenda write fpModoPreVenda ;
 
+    Property TipoUltimoDocumento: TACBrECFTipoDocumento read GetTipoUltimoDocumento ;
+
     { Procedimentos de Cupom Fiscal }
     property Consumidor : TACBrECFConsumidor read fpConsumidor ;
     Procedure AbreCupom ; virtual ;
@@ -938,6 +912,8 @@ TACBrECFClass = class
        DescricaoCNF: String; DescricaoFPG: String; IndiceBMP: Integer ) ; virtual ;
     procedure Suprimento( const Valor: Double; Obs : AnsiString;
        DescricaoCNF: String; DescricaoFPG: String; IndiceBMP: Integer ) ; virtual ;
+
+    Function EstornaCCD( const Todos: Boolean = True) : Integer; virtual ;
 
     { Gaveta de dinheiro }
     Procedure AbreGaveta  ; virtual ;
@@ -1625,6 +1601,7 @@ end ;
 
 function TACBrECFClass.EnviaComando_ECF(cmd: AnsiString): AnsiString;
 begin
+  Result := '';
   ErroAbstract( 'EnviaComando_ECF' );
 end;
 
@@ -1798,6 +1775,7 @@ end;
 function TACBrECFClass.VerificaFimLeitura(var Retorno: AnsiString;
    var TempoLimite: TDateTime) : Boolean ;
 begin
+  Result := False;
   raise Exception.Create(Format(ACBrStr(cACBrECFVerificaFimLeituraException), [ ModeloStr ])) ;
 end;
 
@@ -2092,6 +2070,7 @@ end;
 { Essa função PODE ser override por cada Classe Filha criada }
 Function TACBrECFClass.LeituraCMC7 : AnsiString ;
 begin
+  Result := '';
   GeraErro( EACBrECFCMDInvalido.Create( Format(cACBrECFLeituraCMC7Exception,
                                                [ ModeloStr ] ))) ;
 end;
@@ -2288,6 +2267,12 @@ begin
   Sangria( Valor, Obs, DescricaoCNF, DescricaoFPG, IndiceBMP);
 end;
 
+function TACBrECFClass.EstornaCCD(const Todos : Boolean) : Integer ;
+begin
+  Result := 0;
+  ErroAbstract('EstornaCCD');
+end ;
+
 procedure TACBrECFClass.PulaLinhas(NumLinhas: Integer);
 begin
   if NumLinhas = 0 then
@@ -2364,6 +2349,11 @@ function TACBrECFClass.GetParamDescontoISSQN: Boolean;
 begin
   Result := (Trim(IM) <> '') ;
 end;
+
+function TACBrECFClass.GetTipoUltimoDocumento : TACBrECFTipoDocumento ;
+begin
+   Result := docNenhum;
+end ;
 
 function TACBrECFClass.GetDataMovimento: TDateTime;
 begin
@@ -2490,6 +2480,7 @@ end;
 
 function TACBrECFClass.GetDadosUltimaReducaoZ: AnsiString;
 begin
+  Result := '';
   ErroAbstract('DadosUltimaReducaoZ');
 end;
 
@@ -2603,7 +2594,8 @@ end;
 
 Function TACBrECFClass.RetornaInfoECF( Registrador : String ) : AnsiString ;
 begin
-   ErroAbstract('RetornaInfoECF');
+  Result := '';
+  ErroAbstract('RetornaInfoECF');
 end;
 
 procedure TACBrECFClass.PreparaTEF;

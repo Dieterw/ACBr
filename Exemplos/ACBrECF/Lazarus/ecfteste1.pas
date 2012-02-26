@@ -8,7 +8,7 @@ uses
   ACBrECF, ACBrECFClass, ACBrBase, ACBrRFD, ACBrDevice, ACBrAAC, ACBrConsts,
   ACBrGIF, LCLIntf, Classes, SysUtils, Forms, Controls, Graphics, LCLType,
   Dialogs, DateUtils, IpHtml, Menus, Buttons, StdCtrls, ExtCtrls, ComCtrls,
-  Spin, EditBtn, DBGrids, DbCtrls, strutils, memds, db;
+  Spin, EditBtn, DBGrids, DbCtrls, memds, db;
 
 type
   TSimpleIpHtml = class(TIpHtml)
@@ -210,6 +210,10 @@ type
     MenuItem25: TMenuItem;
     mDAV: TMenuItem;
     mDAVOS: TMenuItem;
+    MenuItem26 : TMenuItem ;
+    MenuItem27 : TMenuItem ;
+    miEstornoCCD : TMenuItem ;
+    miTipoUltimoDoc : TMenuItem ;
     mValorTotalNaoFiscal : TMenuItem ;
     mCancNaoFiscal : TMenuItem ;
     mAcresNaoFiscal : TMenuItem ;
@@ -456,6 +460,8 @@ type
     procedure MenuItem20Click(Sender : TObject) ;
     procedure MenuItem21Click(Sender : TObject) ;
     procedure MenuItem23Click(Sender : TObject) ;
+    procedure miEstornoCCDClick(Sender : TObject) ;
+    procedure miTipoUltimoDocClick(Sender : TObject) ;
     procedure mLerTotaisRelatoriosGerenciaisClick(Sender : TObject) ;
     procedure mLerTrocoClick(Sender : TObject) ;
     procedure mModeloStrClick(Sender : TObject) ;
@@ -657,7 +663,7 @@ implementation
 {$R *.lfm}
 
 uses ACBrUtil, ACBrECFBematech, VendeItem, EfetuaPagamento,
-     Relatorio, Sobre, TypInfo, Math, IniFiles,
+     Relatorio, Sobre, TypInfo, Math, IniFiles, strutils,
      ConfiguraSerial, uDAV, uDAVOS, ACBrPAFClass;
      
 procedure TForm1.FormCreate(Sender: TObject);
@@ -1159,7 +1165,6 @@ end;
 procedure TForm1.btnMenuFiscalParametrosConfigClick(Sender: TObject);
 var
   IdentPaf: TACBrECFIdentificacaoPAF;
-  I: Integer;
 begin
   // Se está usando o AAC, basta informar o Objeto IdentPAF //
   if Assigned( ACBrECF1.AAC ) then
@@ -1402,6 +1407,7 @@ var
 begin
   ACBrECF1.LerTotaisComprovanteNaoFiscal ;
 
+  Descricao := '';
   if not InputQuery('Acha CNF por Descrição',
                     'Entre com o descricao:', Descricao ) then
     Exit;
@@ -1428,6 +1434,7 @@ var
 begin
   ACBrECF1.LerTotaisAliquota ;
 
+  Indice := '';
   if not InputQuery('Acha Aliquota por Indice',
                     'Entre com o Indice:', Indice ) then
     Exit;
@@ -1454,6 +1461,7 @@ var
 begin
   ACBrECF1.LerTotaisAliquota ;
 
+  ValorStr := '';
   if not InputQuery('Acha Aliquota por Valor',
                     'Entre com o Valor:', ValorStr ) then
     Exit;
@@ -1481,6 +1489,7 @@ var
 begin
   ACBrECF1.LerTotaisComprovanteNaoFiscal ;
 
+  Indice := '';
   if not InputQuery('Acha CNF por Indice',
                     'Entre com o Indice:', Indice ) then
     Exit;
@@ -1507,6 +1516,7 @@ var
 begin
   ACBrECF1.LerTotaisFormaPagamento ;
 
+  Descricao := '';
   if not InputQuery('Acha Forma Pagamento por Descrição',
                     'Entre com a descrição:', Descricao ) then
     Exit;
@@ -1533,6 +1543,7 @@ var
 begin
   ACBrECF1.LerTotaisFormaPagamento ;
 
+  Indice := '';
   if not InputQuery('Acha Forma Pagamento por Indice',
                     'Entre com o Indice:', Indice ) then
     Exit;
@@ -1558,6 +1569,7 @@ var
 begin
   ACBrECF1.CarregaRelatoriosGerenciais ;
 
+  Descricao := '';
   if not InputQuery('Acha Relatório Gerencial por Indice',
                     'Entre com o Indice:', Descricao ) then
     Exit;
@@ -1583,6 +1595,7 @@ var
 begin
   ACBrECF1.CarregaRelatoriosGerenciais ;
 
+  Indice := '';
   if not InputQuery('Acha Relatório Gerencial por Indice',
                     'Entre com o Indice:', Indice ) then
     Exit;
@@ -1730,6 +1743,23 @@ end;
 procedure TForm1.MenuItem23Click(Sender : TObject) ;
 begin
    ACBrECF1.DescontoAcrescimoItemAnterior( 1,'D','%', 3);
+end;
+
+procedure TForm1.miEstornoCCDClick(Sender : TObject) ;
+var
+   Estor : Integer ;
+begin
+   Estor := ACBrECF1.EstornaCCD ;
+   mResp.Lines.Add( 'EstornaCCD  - Estornados: '+IntToStr(Estor) );
+
+   AtualizaMemos;
+end;
+
+procedure TForm1.miTipoUltimoDocClick(Sender : TObject) ;
+begin
+  mResp.Lines.Add( 'TipoUltimoDocumento: ('+
+    GetEnumName(TypeInfo(TACBrECFTipoDocumento), integer(ACBrECF1.TipoUltimoDocumento) )  +')' );
+  AtualizaMemos ;
 end;
 
 procedure TForm1.mLerTotaisRelatoriosGerenciaisClick(Sender : TObject) ;

@@ -68,7 +68,7 @@ implementation
 Uses ACBrUtil,
      SysUtils,
    {$IFDEF COMPILER6_UP} DateUtils, {$ELSE} Windows,{$ENDIF}
-     ACBrDevice, synaser;
+     ACBrDevice;
 
 { TACBrCHQSchalter }
 

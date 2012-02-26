@@ -200,6 +200,7 @@ begin
       F.Text := QuebraLinhas(AMensagem, 160);
       for I := 0 to F.Count - 1 do
       begin
+        IndiceMsg := '';
         fsSMS.EnviarSMS(ATelefone, F.Strings[I], IndiceMsg);
         AIndice := AIndice + ',' + IndiceMsg;
       end;
@@ -221,6 +222,7 @@ begin
   AIndice := EmptyStr;
   for I := 0 to ALote.Count - 1 do
   begin
+    IndMsgAtual := '' ;
     fsSMS.EnviarSMS(ALote[I].Telefone, ALote[I].Mensagem, IndMsgAtual);
     AIndice := AIndice + ',' + IndMsgAtual;
   end;

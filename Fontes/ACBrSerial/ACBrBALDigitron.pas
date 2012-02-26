@@ -50,7 +50,7 @@ type
   end ;
 
 implementation
-Uses ACBrBAL, ACBrUtil,
+Uses ACBrUtil,
      {$IFDEF COMPILER6_UP} DateUtils, StrUtils {$ELSE} ACBrD5, Windows{$ENDIF},
      SysUtils, Math ;
 
@@ -81,8 +81,6 @@ procedure TACBrBALDigitron.LeSerial(MillisecTimeOut: Integer);
 Var
   Resposta : AnsiString ;
   Decimais : Integer ;
-  St2      : AnsiChar ;
-  PI,PF    : Integer ;
 begin
   fpUltimoPesoLido := 0 ;
   fpUltimaResposta := '' ;

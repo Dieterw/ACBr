@@ -31,34 +31,6 @@
 {                                                                              }
 {******************************************************************************}
 
-{******************************************************************************
-|* Historico
-|*
-|* 26/06/2006: Daniel Simões de Almeida
-|* - Primeira Versao: Criaçao e Distribuiçao da Primeira Versao
-|* 28/11/2006: Daniel Simões de Almeida
-|* - Corrigo bug em SubTotalizaCupom
-|* 09/01/2007: Daniel Simões de Almeida
-|* - Corrigido espacejamento de PulaLinhas ( considerando 1 linha = 30 dots )
-|* - Corrigido BUG em Método CorrigeEstadoErro, que sempre causava o Reinicio
-|*   do ECF
-|* - Método AbreRelatorioGerencial modificado para cadastrar  Relatorio
-|*   Gerencial ( 0 ) caso ele ainda não exista
-|* 10/01/2007: Daniel Simões de Almeida
-|* - Método VendeItem gerava exceção quando Desconto era informado
-|* - Método "LinhaRelatorioGerencial" nao imprimir linhas vazias e em textos
-|*   maiores que 492 caracteres poderia haver quebra do lay-out de impressao
-|* 01/04/2007:  Daniel Simoes de Almeida
-|*  - Implementados métodos de Cupom Não Fiscal
-|* 24/02/2008:  Fabio Farias
-|*  - Compatibilizada com a TermoPrinter
-|* 05/02/2009:  Daniel Simões de Almeida
-|*  - Corrigido método NaoFiscalCompleto, que era cancelado quando Registrador
-|*    NaoFiscal era de Saidas (-) ou continha Obs no rodapé
-|* 13/09/2010:  Emerson da Silva Crema
-|*  - Implementado Metodo GetDadosUltimaReducaoZ.
-******************************************************************************}
-
 {$I ACBr.inc}
 
 unit ACBrECFFiscNET ;
@@ -215,6 +187,8 @@ TACBrECFFiscNET = class( TACBrECFClass )
     function GetChequePronto: Boolean; override ;
     function GetArredonda: Boolean; override ;
 
+    function GetTipoUltimoDocumento : TACBrECFTipoDocumento ; override ;
+
     function GetCNPJ: String; override ;
     function GetIE: String; override ;
     function GetIM: String; override ;
@@ -294,6 +268,8 @@ TACBrECFFiscNET = class( TACBrECFClass )
        Obs : AnsiString = '') ; override ;
     procedure NaoFiscalCompleto(CodCNF: String; Valor: Double;
       CodFormaPagto: String; Obs: AnsiString; IndiceBMP : Integer = 0); override ;
+
+    Function EstornaCCD( const Todos: Boolean = True) : Integer; override ;
 
     Procedure LeituraX ; override ;
     Procedure LeituraXSerial( Linhas : TStringList) ; override ;
@@ -2210,54 +2186,67 @@ begin
 end;
 
 function TACBrECFFiscNET.GetDataHoraSB: TDateTime;
-Var RetCmd : AnsiString ;
+Var Linha, LinhaVer : AnsiString ;
     OldShortDateFormat : String ;
     Linhas : TStringList;
-    i,x,nLinha, CRZ :Integer;
+    I, CRZ :Integer;
+    AchouBlocoSB : Boolean ;
 begin
   Result := 0.0;
 
+  // verificar se a redução Z está pendente e não fazer se estiver
+  // porque acontecerá erro, conforme consulta ao atendimento da bematech
   if Estado in [estLivre] then
   begin
-    nLinha := -1;
     Linhas := TStringList.Create;
 
     try
-      CRZ := StrToIntDef(NumCRZ, 0) ;
+      CRZ := StrToIntDef(NumCRZ, 1) ;
       LeituraMemoriaFiscalSerial(CRZ, CRZ, Linhas);
 
-      for i := 0 to Linhas.Count-1 do
+      I := 0 ;
+      AchouBlocoSB := False;
+      while (not AchouBlocoSB) and (I < Linhas.Count) do
       begin
-        if pos('SOFTWARE B', Linhas[i]) > 0 then
-        begin
-          for x := i+1 to Linhas.Count-1 do
-          begin
-            if StrToIntDef(StringReplace(Copy(Linhas[x], 1, 8), '.', '', [rfReplaceAll]), 0) = 0 then
-            begin
-               nLinha := x-1;
-               break;
-            end;
-          end;
-          Break;
-        end;
-      end;
+         Linha := Linhas[I] ;
+         AchouBlocoSB := (pos('SOFTWARE B', Linha ) > 0) ;
+         Inc( I ) ;
+      end ;
 
-      if nLinha >= 0 then
+      Linha    := '';
+      LinhaVer := '';
+      while AchouBlocoSB and (I < Linhas.Count) and (Linha = LinhaVer) do
       begin
-        // 01.00.01                    25/06/2009 21:07:40
-        RetCmd := Linhas[nLinha] ;
-        x := pos('/', RetCmd ) ;
+         Linha := Trim(Linhas[I]) ;
+         if (Linha <> '') then
+         begin
+            if ( StrIsNumber( copy(Linha,1,2) ) and ( copy(Linha,3,1) = '.' ) and
+                 StrIsNumber( copy(Linha,4,2) ) and ( copy(Linha,6,1) = '.' ) and
+                 StrIsNumber( copy(Linha,7,2) ) ) then
+               LinhaVer := Linha;
+         end ;
+
+         Inc( I ) ;
+      end ;
+
+      if LinhaVer <> '' then
+      begin
+        // SOFTWARE BµSICO:
+        //03.00.00 09/10/2002   12:18:47
+        //03.03.00 06/03/2006   10:57:23
+
+        I := pos('/', LinhaVer ) ;
 
         OldShortDateFormat := ShortDateFormat ;
         try
           ShortDateFormat := 'dd/mm/yyyy' ;
-          Result := StrToDate( StringReplace( copy(RetCmd, x-2, 10 ),
+          Result := StrToDate( StringReplace( copy(LinhaVer, I-2, 10 ),
                                            '/', DateSeparator, [rfReplaceAll] ) ) ;
 
-          x := pos(':', RetCmd ) ;
-          Result := RecodeHour(  result,StrToInt(copy(RetCmd, x-2,2))) ;
-          Result := RecodeMinute(result,StrToInt(copy(RetCmd, x+1,2))) ;
-          Result := RecodeSecond(result,StrToInt(copy(RetCmd, x+4,2))) ;
+          I := pos(':', LinhaVer ) ;
+          Result := RecodeHour(  result,StrToInt(copy(LinhaVer, I-2,2))) ;
+          Result := RecodeMinute(result,StrToInt(copy(LinhaVer, I+1,2))) ;
+          Result := RecodeSecond(result,StrToInt(copy(LinhaVer, I+4,2))) ;
         finally
           ShortDateFormat := OldShortDateFormat ;
         end ;
@@ -2545,6 +2534,34 @@ begin
   Result := (fsArredonda = 0) or (fsArredonda = 2) ;
 end;
 
+function TACBrECFFiscNET.GetTipoUltimoDocumento : TACBrECFTipoDocumento ;
+var
+   Tipo : Integer ;
+begin
+  FiscNETComando.NomeComando := 'LeInteiro' ;
+  FiscNETComando.AddParamString('NomeInteiro','TipoUltimoDocEmitido') ;
+  EnviaComando ;
+
+  Tipo := StrToIntDef( FiscNETResposta.Params.Values['ValorInteiro'] ,0) ;
+
+  case Tipo of
+    1        : Result := docLX;
+    2        : Result := docRZ;
+    3        : Result := docCF;
+    4,5,6    : Result := docCNF;
+    7,8      : Result := docCFCancelamento;
+    9        : Result := docCNFCancelamento;
+    10       : Result := docCupomAdicional;
+    11       : Result := docLMF;
+    12,13,14 : Result := docCCD;
+    15       : Result := docRG;
+    16       : Result := docEstornoPagto;
+    17       : Result := docEstornoCCD;
+  else
+    Result := docNenhum;
+  end ;
+end ;
+
 procedure TACBrECFFiscNET.NaoFiscalCompleto(CodCNF: String; Valor: Double;
   CodFormaPagto: String; Obs: AnsiString; IndiceBMP : Integer);
 begin
@@ -2575,6 +2592,48 @@ begin
      end ;
   end ;
 end;
+
+function TACBrECFFiscNET.EstornaCCD(const Todos : Boolean) : Integer ;
+var
+   CCD : Integer ;
+   Fim : Boolean ;
+   Erro : String ;
+begin
+  Result := 0;
+
+  if TipoUltimoDocumento <> docCCD then
+     exit ;
+
+  CCD := StrToIntDef(NumCupom,0) ;
+  Fim := not Todos;
+
+  repeat
+     try
+        FiscNETComando.NomeComando := 'EstornaCreditoDebito' ;
+        FiscNETComando.AddParamInteger('COO',CCD) ;
+        EnviaComando ;
+
+
+        FiscNETComando.NomeComando := 'EncerraDocumento' ;
+        FiscNETComando.AddParamString('Operador',Operador) ;
+        EnviaComando ;
+
+        Dec(CCD);
+        Inc( Result );
+     except
+        On E : Exception do
+        begin
+           Erro := E.Message;
+
+           if pos('ErroCMDCOOInvalido', Erro) > 0 then
+              Fim := True
+           else
+              raise ;
+        end ;
+     end ;
+  until Fim;
+
+end ;
 
 procedure TACBrECFFiscNET.CarregaRelatoriosGerenciais;
   Function SubCarregaGerenciais(Indice : Integer) : Boolean ;

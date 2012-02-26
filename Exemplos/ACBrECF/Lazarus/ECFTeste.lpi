@@ -18,7 +18,7 @@
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
       <MinorVersionNr Value="9"/>
-      <BuildNr Value="22"/>
+      <BuildNr Value="23"/>
       <Language Value="0416"/>
       <CharSet Value="04B0"/>
       <StringTable ProductVersion=""/>
@@ -121,8 +121,8 @@
         <UnitName Value="ECFTeste1"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="4010"/>
-        <CursorPos X="1" Y="4045"/>
+        <TopLine Value="1"/>
+        <CursorPos X="1" Y="1"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -155,13 +155,10 @@
         <ComponentName Value="frRelatorio"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Relatorio"/>
-        <EditorIndex Value="8"/>
         <WindowIndex Value="0"/>
         <TopLine Value="67"/>
-        <CursorPos X="18" Y="83"/>
+        <CursorPos X="17" Y="72"/>
         <UsageCount Value="201"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
       </Unit4>
       <Unit5>
         <Filename Value="sobre.pas"/>
@@ -193,9 +190,9 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uDAV"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="75"/>
-        <CursorPos X="5" Y="95"/>
-        <UsageCount Value="108"/>
+        <TopLine Value="1"/>
+        <CursorPos X="3" Y="8"/>
+        <UsageCount Value="122"/>
       </Unit7>
       <Unit8>
         <Filename Value="uDAVOS.pas"/>
@@ -205,9 +202,9 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uDAVOS"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="80"/>
-        <CursorPos X="17" Y="95"/>
-        <UsageCount Value="108"/>
+        <TopLine Value="1"/>
+        <CursorPos X="3" Y="8"/>
+        <UsageCount Value="122"/>
       </Unit8>
     </Units>
   </ProjectOptions>
@@ -234,21 +231,13 @@
     </Linking>
     <Other>
       <CompilerMessages>
+        <IgnoredMessages idx5024="True" idx5043="True"/>
         <UseMsgFile Value="True"/>
       </CompilerMessages>
       <CompilerPath Value="$(CompPath)"/>
     </Other>
   </CompilerOptions>
   <Debugging>
-    <BreakPoints Count="1">
-      <Item1>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="..\..\..\Fontes\ACBrSerial\ACBrECFSwedaSTX.pas"/>
-        <Line Value="2672"/>
-      </Item1>
-    </BreakPoints>
     <Watches Count="1">
       <Item1>
         <Expression Value="Result"/>

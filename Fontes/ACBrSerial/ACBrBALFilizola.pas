@@ -61,7 +61,7 @@ type
   end ;
 
 implementation
-Uses ACBrBAL, ACBrConsts,
+Uses ACBrConsts,
      {$IFDEF COMPILER6_UP} DateUtils, StrUtils {$ELSE} ACBrD5, Windows{$ENDIF},
      SysUtils ;
 

@@ -829,8 +829,8 @@ end;
 
 procedure TACBrECFYanco.AbreCupomVinculado(COO, CodFormaPagto,
   CodComprovanteNaoFiscal: String; Valor: Double);
-Var FPG : TACBrECFFormaPagamento ;
-    FPGDesc : String ;
+Var
+  FPG : TACBrECFFormaPagamento ;
 begin
   FPG := AchaFPGIndice( CodFormaPagto ) ;
 
@@ -838,10 +838,9 @@ begin
      raise Exception.create( ACBrStr('Forma de Pagamento: '+CodFormaPagto+
                              ' não foi cadastrada.' )) ;
 
-  COO       := Poem_Zeros( trim(COO) ,6) ;
-  FPGDesc   := padL( FPG.Descricao, 16 ) ;
+  COO := Poem_Zeros( trim(COO) ,6) ;
 
-   EnviaComando('132',40);
+  EnviaComando('132',40);
 end;
 
 procedure TACBrECFYanco.LinhaCupomVinculado(Linha: AnsiString);

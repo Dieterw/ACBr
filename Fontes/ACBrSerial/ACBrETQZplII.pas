@@ -72,8 +72,8 @@ type
   end ;
 
 implementation
-Uses ACBrETQ,
-     {$IFDEF COMPILER6_UP} StrUtils {$ELSE} ACBrD5, Windows{$ENDIF},
+Uses
+     {$IFNDEF COMPILER6_UP} ACBrD5, Windows, {$ENDIF}
      SysUtils ;
 
 { TACBrETQPpla }

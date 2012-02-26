@@ -34,84 +34,6 @@
 {                                                                              }
 {******************************************************************************}
 
-{******************************************************************************
-|* Historico
-|*
-|* 19/05/2004: Daniel Simoes de Almeida
-|*  - Primeira Versao: Criaçao e Distribuiçao da Primeira Versao
-|* 20/05/2004:  Alexandre Rocha Lima e Marcondes
-|*  - Primeira Versao Multi-plataforma: Compatibilidade entre VCL e VisualCLX
-|* 23/06/2004:  Daniel Simoes de Almeida
-|*  - Propriedade NumVersao mudou de Integer para String para compatibilizar com
-|*    alguns modelos de ECF
-|*  - Propriedades renomeadas: (Melhor organizaçao visual das Propriedades)
-|*    MsgTempoInicio -> TempoInicioMsg,
-|*    MsgExibe       -> ExibeMensagem.
-|*  - Evento OnMsgAguarde teve seu parametro modificado de:
-|*    TempoRestante : Integer -> Mensagem : String
-|*  - Novas Propriedades:
-|*    DescricaoGrande : Boolean default false;
-|*    MsgRelatorio, MsgPausaRelatorio : String;
-|*    PausaRelatorio : Integer  default 5
-|*    LinhasEntreCupons : Integer  default 7
-|*    FormMsgColor : TColor
-|*    FormMsgFonte : TFonte
-|*  - Novos Metodos:
-|*    RelatorioGerencial(Relatorio : TStrings; Vias : Integer = 1)
-|*    AbreRelatorioGerencial
-|*    LinhaRelatorioGerencial( Linha : String )
-|*    CupomVinculado(COO, CodFormaPagto : String; Valor : Double
-|*              Relatorio : TStrings; Vias : Integer = 1)
-|*    AbreCupomVinculado(COO, CodFormaPagto : String; Valor : Double)
-|*    LinhaCupomVinculado( Linha : String )
-|* 30/06/2004:  Daniel Simoes de Almeida
-|*  - Metodo  CorrigeEstadoErro  implementado
-|* 10/06/2004:  Daniel Simoes de Almeida
-|*  - Adicionada sobrecarga ao método MudaHorarioVerao.
-|*    Procedure MudaHorarioVerao( EHorarioVerao : Boolean ) ;
-|*    - Nesse novo método não será aberta nenhuma janela ShowModal
-|* 03/05/2006:  Daniel Simoes de Almeida
-|*  - Métodos LinhaRelatorioGerencial e LinhaCupomVinculado agora permitem
-|*    informar várias linhas separadas por #10 ou #13+#10
-|*    - Se o ECF for Térmico (MFD) e permitir informar várias linhas
-|*      simultaneamente, impressão de linhas será muito mais rápida
-|* 23/05/2006:  Daniel Simoes de Almeida
-|*   - Adicionado método: PulaLinhas( NumLinhas : Integer = 0 ) ;
-|* 29/06/2006:  Daniel Simoes de Almeida
-|*   - Adicionado propriedade: GavetaSinalInvertido : Boolean default False
-|* 05/07/2007:  Daniel Simoes de Almeida
-|*   - Adicionado propriedade: NumCCF (necessaria para o RFD)
-|*   - Adicionado o método IdentificaConsumidor
-|* 05/03/2008:  Alexsander Rosa
-|*   - Adicionado o método IdentificaOperador
-|* 10/04/2008:  Daniel Simoes de Almeida
-|*   - método IdentificaOperador ligado a propriedade Operador. Todos os
-|*     modelos de ECF revisados com a possibilidade de informar o Operador
-|*   - Adicionado método: CortaPapel( CorteParcial : Boolean = false) ;
-|*   - Adicionado método: Sangria( const Valor: Double; Obs: String;
-|*       DescricaoCNF: String = 'SANGRIA'; DescricaoFPG: String = 'DINHEIRO')
-|*   - Adicionado método: Suprimento( const Valor: Double; Obs: String;
-|*       DescricaoCNF: String = 'SUPRIMENTO'; DescricaoFPG: String = 'DINHEIRO')
-|* 24/04/2008:  Daniel Simoes de Almeida
-|*   - Metodo VendeItem modificado, adicionado parametro:
-|*     DescontoAcrescimo : String = 'D' que permite definir se é Desc ou Acresc
-|* 25/04/2008:  Daniel Simoes de Almeida
-|*   - Adicionada a propriedade: MsgTrabalhando = "Impressora está trabalhando"
-|*   - Modificado mecanismo TimeOut em LeResposta.
-|*     - LeResposta detecta quando o ECF está enviando dados pela serial e com
-|*     isso NAO inicia a contagem regressiva de TimeOut, e exibe o texto de
-|*     "MsgTrabalhando"
-|*   - Removido o texto "-- CORTE AQUI --" do método genêrico de Corte de Papel
-|*     ( a VISANET (TEF) não gostou :(  )
-|* 17/01/2009:  Daniel Simoes de Almeida
-|*   - Modificado método AchaFPGDescricao, adicionando o parâmetro:
-|*     BuscaExata : Boolean = False )
-|*   - Modificado método AchaCNFDescricao, adicionando o parâmetro:
-|*     BuscaExata : Boolean = False )
-|* 03/02/2009:  Daniel Simoes de Almeida
-|*   - Removido IfThen de algumas Units para compatibilizar com FPC 2.2.3
-******************************************************************************}
-
 {$I ACBr.inc}
 
 Unit ACBrECF ;
@@ -285,6 +207,7 @@ TACBrECF = class( TACBrComponent )
 
     function GetArredondaItemMFD : Boolean ;
     function GetPaginaDeCodigoClass : Word ;
+    function GetTipoUltimoDocumentoClass : TACBrECFTipoDocumento ;
     procedure SetArredondaItemMFD(const AValue : Boolean) ;
     procedure SetAtivo(const AValue: Boolean);
     procedure SetPaginaDeCodigoClass(const AValue : Word) ;
@@ -615,6 +538,8 @@ TACBrECF = class( TACBrComponent )
     Property ParamDescontoISSQN : Boolean  read GetParamDescontoISSQNClass ;
     Property IdentificaConsumidorRodape : Boolean read GetIdentificaConsumidorRodapeClass ;
 
+    Property TipoUltimoDocumento: TACBrECFTipoDocumento read GetTipoUltimoDocumentoClass ;
+
     { Procedimentos de Cupom Fiscal }
     property Consumidor : TACBrECFConsumidor read GetConsumidorClass ;
     { Grava dados do Consumidor para ser usado na Abertura ou Fechamento do Cupom }
@@ -671,6 +596,8 @@ TACBrECF = class( TACBrComponent )
     procedure Suprimento( const Valor: Double; Obs: AnsiString;
        DescricaoCNF: String = 'SUPRIMENTO'; DescricaoFPG: String = 'DINHEIRO';
        IndiceBMP: Integer = 0) ;
+
+    Function EstornaCCD( const Todos: Boolean = True ) : Integer;
 
     { Gaveta de dinheiro }
     Procedure AbreGaveta  ;
@@ -1549,6 +1476,12 @@ end;
 function TACBrECF.GetPaginaDeCodigoClass : Word ;
 begin
    Result := fsECF.PaginaDeCodigo;
+end;
+
+function TACBrECF.GetTipoUltimoDocumentoClass : TACBrECFTipoDocumento ;
+begin
+  ComandoLOG := 'TipoUltimoDocumento' ;
+  Result := fsECF.TipoUltimoDocumento ;
 end;
 
 procedure TACBrECF.SetArredondaItemMFD(const AValue : Boolean) ;
@@ -3086,6 +3019,58 @@ begin
   if Assigned( fOnDepoisSuprimento ) then
      fOnDepoisSuprimento( Valor, Obs, DescricaoCNF, DescricaoFPG);
 end;
+
+function TACBrECF.EstornaCCD(const Todos : Boolean) : Integer ;
+Var
+  Tratado : Boolean;
+  Docto, I : Integer ;
+begin
+  Docto  := -1 ;
+  Result := 0;
+
+  {$IFNDEF CONSOLE}
+   if MemoAssigned  then
+   begin
+      Docto := StrToInt(NumCupom) ;
+   end ;
+  {$ENDIF}
+
+  ComandoLOG := 'EstornaCCD( '+BoolToStr( Todos )+' )';
+
+  if Assigned( fOnAntesCancelaNaoFiscal ) then
+     fOnAntesCancelaNaoFiscal(Self);
+
+  try
+    Tratado := False;
+    Result  := fsECF.EstornaCCD( Todos ) ;
+  except
+     if Assigned( FOnErrorCancelaNaoFiscal ) then
+        FOnErrorCancelaNaoFiscal(Tratado);
+
+     if not Tratado then
+        raise;
+  end;
+
+  {$IFNDEF CONSOLE}
+   if MemoAssigned then
+   begin
+      fsMemoOperacao := 'EstornaCCD' ;
+
+      For I := 1 to Result do
+      begin
+         MemoTitulo('*** ESTORNO de CCD  ****');
+         MemoAdicionaLinha('       COO: '+IntToStrZero(Docto-I+1,6));
+         MemoAdicionaLinha( fsMemoRodape );
+      end
+   end ;
+  {$ENDIF}
+
+  if RFDAtivo then
+     fsRFD.Documento('NC');
+
+  if Assigned( FOnDepoisCancelaNaoFiscal ) then
+     FOnDepoisCancelaNaoFiscal(Self);
+end ;
 
 
 procedure TACBrECF.NaoFiscalCompleto(CodCNF: String; Valor: Double;

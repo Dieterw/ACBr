@@ -57,7 +57,7 @@ type
   end ;
 
 implementation
-Uses ACBrBAL, ACBrUtil, ACBrConsts,
+Uses ACBrUtil, ACBrConsts,
      {$IFDEF COMPILER6_UP} DateUtils, StrUtils {$ELSE} ACBrD5, synaser, Windows{$ENDIF},
      SysUtils, Math ;
 

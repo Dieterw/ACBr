@@ -546,13 +546,8 @@ begin
 end;
 
 procedure TACBrECFUrano.AbreCupom ;
-var
-  Razao, Linha1, Linha2: String;
 begin
   BytesResp := 0 ;
-  Razao := '';
-  Linha1 := '';
-  Linha2 := '';
 
   try
     EnviaComando('00' + R ) ;
@@ -931,7 +926,7 @@ var
   Reducoes: String;
 begin
   // Urano não possui Leitura Simplificada
-  Datas := Padl(Datas,12);
+  Datas := Padl('',12);
   Reducoes := IntToStrZero(ReducaoInicial, 4) + IntToStrZero(ReducaoFinal, 4);
 
   EnviaComando('16' + '1' + Datas + Reducoes + R, 30 * (ReducaoFinal - ReducaoInicial + 1));
@@ -946,7 +941,7 @@ begin
   // Urano não possui Leitura Simplificada
   Datas := FormatDateTime('ddmmyy', DataInicial) +
     FormatDateTime('ddmmyy', DataFinal);
-  Reducoes := Padl(Reducoes,8);
+  Reducoes := Padl('',8);
 
   EnviaComando('16' + '0' + Datas + Reducoes + R, 30 * DaysBetween(DataFinal, DataInicial));
 end;

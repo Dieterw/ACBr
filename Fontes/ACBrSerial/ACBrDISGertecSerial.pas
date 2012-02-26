@@ -58,9 +58,9 @@ TACBrDISGertecSerial = class( TACBrDISClass )
 end ;
 
 implementation
-Uses ACBrDIS,
-     SysUtils,
-     {$IFDEF COMPILER6_UP} DateUtils {$ELSE} ACBrD5{$ENDIF} ;
+Uses
+  SysUtils,
+  {$IFDEF COMPILER6_UP} DateUtils {$ELSE} ACBrD5{$ENDIF} ;
 
 { TACBrDISGertecSerial }
 

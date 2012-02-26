@@ -54,7 +54,7 @@ type
 implementation
 
 uses
-  ACBrDevice, ACBrUtil, SysUtils;
+  ACBrUtil, SysUtils;
 
 { TACBrSMSZTE }
 

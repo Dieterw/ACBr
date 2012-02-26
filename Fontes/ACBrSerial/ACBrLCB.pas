@@ -145,9 +145,9 @@ end ;
 
 implementation
 
-uses ACBrUtil,
+uses
     {$IFDEF COMPILER6_UP} DateUtils, StrUtils, {$ELSE} ACBrD5, {$ENDIF}
-     Math, synaser;
+     ACBrUtil ;
 
 { TACBrLCB }
 

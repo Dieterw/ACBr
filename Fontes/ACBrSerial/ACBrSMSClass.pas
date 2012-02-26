@@ -232,7 +232,6 @@ end;
 function TACBrSMSClass.EstadoSincronismo: TACBrSMSSincronismo;
 var
   RetCmd: AnsiString;
-  Retorno: Integer;
 begin
   Self.EnviarComando('AT+CREG?');
 

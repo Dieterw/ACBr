@@ -84,9 +84,9 @@ type
   end ;
 
 implementation
-Uses ACBrETQ, ACBrConsts,
-     {$IFDEF COMPILER6_UP} StrUtils {$ELSE} ACBrD5, Windows{$ENDIF},
-     SysUtils, math ;
+Uses  ACBrConsts,
+     {$IFNDEF COMPILER6_UP} ACBrD5, Windows, {$ENDIF}
+     SysUtils;
 
 { TACBrETQPpla }
 
@@ -118,14 +118,12 @@ begin
 end ;
 
 function TACBrETQPpla.ConverterUnidade(AValue : Integer) : Integer ;
-Var
-  Valor : Double ;
 begin
   Result := AValue;
   if Unidade <> etqDots then
      exit ;
 
-  Valor  := inherited ConverterUnidade( etqMilimetros, AValue ) ;
+  Result := inherited ConverterUnidade( etqMilimetros, AValue ) ;
 end ;
 
 procedure TACBrETQPpla.ImprimirTexto(Orientacao: TACBrETQOrientacao; Fonte, MultiplicadorH,

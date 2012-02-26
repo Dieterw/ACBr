@@ -755,7 +755,6 @@ begin
 
   try
     MS.Position := 0;
-    Ret := -1 ;
     md := EVP_get_digestbyname('md5');
     EVP_DigestInit( @md_ctx, md ) ;
     EVP_DigestUpdate( @md_ctx, MS.Memory, MS.Size ) ;

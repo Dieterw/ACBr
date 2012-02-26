@@ -4265,6 +4265,7 @@ begin
     LowerTag := LowerCase( Tag1 );
     IndTag1  := AnsiIndexText( LowerTag, ARRAY_TAGS) ;
     Tag2     := '' ;
+    PosTag2  := 0 ;
 
     if (IndTag1 in TAGS_BLOCO) then  // Tag de Bloco, Procure pelo Fechamento
     begin
@@ -4380,6 +4381,7 @@ Var
          // Não conseguiu imprimir ? Verifique se o relatório foi fechado pelo ECF //
          OldTimeOut := TimeOut;
          TimeOut    := max(TimeOut,5);  // Tenta ler o Estado por 5 seg ou mais
+         Est        := estDesconhecido;
          try
            Est := Estado;              // Lendo o estado do ECF
 

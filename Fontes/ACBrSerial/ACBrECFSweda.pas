@@ -1554,12 +1554,14 @@ end;
 procedure TACBrECFSweda.CancelaDescontoAcrescimoSubTotal(
   TipoAcrescimoDesconto: Char);
 begin
-    if TipoAcrescimoDesconto = 'D' then
+{    if TipoAcrescimoDesconto = 'D' then
       TipoAcrescimoDesconto:= '2'
     else if TipoAcrescimoDesconto = 'A' then
       TipoAcrescimoDesconto:= '1';
 
-//    EnviaComando('63'+  TipoAcrescimoDesconto);
+    EnviaComando('63'+  TipoAcrescimoDesconto);
+}
+    
     EnviaComando('63'+ '0');
 end;
 

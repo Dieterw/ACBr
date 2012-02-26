@@ -86,7 +86,7 @@ type
 implementation
 Uses  ACBrConsts,
      {$IFNDEF COMPILER6_UP} ACBrD5, Windows, {$ENDIF}
-     SysUtils;
+     SysUtils, StrUtils ;
 
 { TACBrETQPpla }
 

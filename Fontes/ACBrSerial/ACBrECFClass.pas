@@ -3992,7 +3992,10 @@ end ;
 
 constructor TACBrECFRodape.Create;
 begin
-  fsMD5 := EmptyStr;
+  fsMD5        := EmptyStr;
+  fsCupomMania := False;
+  fsMinasLegal := False;
+
   Self.Clear;
 end;
 
@@ -4001,8 +4004,6 @@ begin
   fsDav        := EmptyStr;
   fsDavOs      := EmptyStr;
   fsPreVenda   := EmptyStr;
-  fsCupomMania := False;
-  fsMinasLegal := False;
 end;
 
 end.

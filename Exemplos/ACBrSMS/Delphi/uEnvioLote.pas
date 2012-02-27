@@ -68,6 +68,7 @@ begin
       }
 
       frmPrincipal.ACBrSMS1.EnviarSMSLote(LoteMsgs, Indices);
+      ShowMessage('Enviadas: ' + Indices);
     finally
       LoteMsgs.Free;
     end;

@@ -97,6 +97,13 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 27/02/2012
+-- ACBrSerial --
+[*] Acerto para não limpar a marcação de minas legal e cupom mania.
+    Conforme post no fórum: 
+    http://djsystem.com.br/acbr/forum/viewtopic.php?f=10&t=3334&p=24334#p24334
+    por: Regys
+
 Data: 25/02/2012
 -- ACBrSerial --
 [*] Diversos ajustes nos fontes para remoção de alguns Warning e Hints (DSA)

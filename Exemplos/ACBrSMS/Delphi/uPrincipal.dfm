@@ -401,7 +401,7 @@ object frmPrincipal: TfrmPrincipal
   object ACBrSMS1: TACBrSMS
     Ativo = False
     Device.Baud = 115200
-    Modelo = modNenhum
+    Modelo = modDaruma
     SinCard = sin1
     ATTimeOut = 10000
     ATResult = False

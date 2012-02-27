@@ -103,6 +103,9 @@ Data: 27/02/2012
     Conforme post no fórum: 
     http://djsystem.com.br/acbr/forum/viewtopic.php?f=10&t=3334&p=24334#p24334
     por: Regys
+-- ACBrSMS --
+[*] Diversos ajustes nos fontes para remoção de alguns Warning e Hints
+    por: Regys
 
 Data: 25/02/2012
 -- ACBrSerial --

@@ -50,6 +50,7 @@ const
   FALHA_NUMERO_TELEFONE = 'Falha ao definir o número de telefone do destinatário.';
   FALHA_ENVIAR_MENSAGEM = 'Não foi possível enviar a mensagem de texto.';
   FALHA_INDICE_MENSAGEM = 'Indice retornado inválido, mensagem não foi enviada.';
+  FALHA_LEITURA_MENSAGEM = 'Não foi possível ler as mensagens do SimCard.';
 
 type
   EACBrSMSException = class(Exception);
@@ -90,8 +91,8 @@ type
   protected
     fpDevice: TACBrDevice;
     fpAtivo: Boolean;
-    fpUltimaResposta: AnsiString;
-    fpUltimoComando: AnsiString;
+    fpUltimaResposta: String;
+    fpUltimoComando: String;
     fpAtResult: Boolean;
     fpBandejasSimCard: Integer;
   public
@@ -101,22 +102,22 @@ type
     procedure Ativar; virtual;
     procedure Desativar; virtual;
 
-    procedure EnviarComando(Cmd: AnsiString);
+    procedure EnviarComando(Cmd: String);
     
     function EmLinha: Boolean; virtual;
-    function IMEI: AnsiString; virtual;
+    function IMEI: String; virtual;
     function NivelSinal: Double; virtual;
-    function Operadora: AnsiString; virtual;
-    function Fabricante: AnsiString; virtual;
-    function ModeloModem: AnsiString; virtual;
-    function Firmware: AnsiString; virtual;
+    function Operadora: String; virtual;
+    function Fabricante: String; virtual;
+    function ModeloModem: String; virtual;
+    function Firmware: String; virtual;
     function EstadoSincronismo: TACBrSMSSincronismo; virtual;
 
     procedure TrocarBandeja(const ASinCard: TACBrSMSSinCard); virtual;
-    procedure EnviarSMS(const ATelefone, AMensagem: AnsiString;
+    procedure EnviarSMS(const ATelefone, AMensagem: String;
       var AIndice: String); virtual;
     procedure ListarMensagens(const AFiltro: TACBrSMSFiltro;
-      const APath: AnsiString); virtual;
+      const APath: String); virtual;
 
     property Ativo: Boolean read fpAtivo write SetAtivo;
     property SinCard: TACBrSMSSinCard read fpSinCard write fpSinCard;
@@ -125,8 +126,8 @@ type
     property RecebeConfirmacao: Boolean read fpRecebeConfirmacao write fpRecebeConfirmacao;
     property QuebraMensagens: Boolean read fpQuebraMensagens write fpQuebraMensagens;
     property BandejasSimCard: Integer read fpBandejasSimCard;
-    property UltimaResposta: AnsiString read fpUltimaResposta write fpUltimaResposta;
-    property UltimoComando: AnsiString read fpUltimoComando write fpUltimoComando;
+    property UltimaResposta: String read fpUltimaResposta write fpUltimaResposta;
+    property UltimoComando: String read fpUltimoComando write fpUltimoComando;
   end;
 
 implementation
@@ -211,8 +212,8 @@ begin
   fpATResult := False;
   fpATTimeout := 10000;
   fpBandejasSimCard := 1;
-  fpUltimaResposta := AnsiString(EmptyStr);
-  fpUltimoComando := AnsiString(EmptyStr);
+  fpUltimaResposta := EmptyStr;
+  fpUltimoComando := String(EmptyStr);
 end;
 
 destructor TACBrSMSClass.Destroy;
@@ -231,7 +232,7 @@ end;
 
 function TACBrSMSClass.EstadoSincronismo: TACBrSMSSincronismo;
 var
-  RetCmd: AnsiString;
+  RetCmd: String;
 begin
   Self.EnviarComando('AT+CREG?');
 
@@ -252,17 +253,17 @@ begin
     Result := sinErro;
 end;
 
-function TACBrSMSClass.Fabricante: AnsiString;
+function TACBrSMSClass.Fabricante: String;
 begin
   Self.EnviarComando('AT+CGMI');
 
   if Self.ATResult then
     Result := Trim(Copy(fpUltimaResposta, 1, Pos('OK', fpUltimaResposta) - 1))
   else
-    Result := EmptyStr;
+    Result := '';
 end;
 
-function TACBrSMSClass.IMEI: AnsiString;
+function TACBrSMSClass.IMEI: String;
 begin
   Self.EnviarComando('AT+CGSN');
 
@@ -273,9 +274,9 @@ begin
 end;
 
 procedure TACBrSMSClass.ListarMensagens(const AFiltro: TACBrSMSFiltro;
-  const APath: AnsiString);
+  const APath: String);
 var
-  cmd: AnsiString;
+  cmd: String;
   Retorno: String;
   I: Integer;
 begin
@@ -296,11 +297,11 @@ begin
     end;
 
     fpUltimaResposta := Trim(Retorno);
-    WriteToTXT(APath, fpUltimaResposta, False, True);
+    WriteToTXT(AnsiString(APath), AnsiString(fpUltimaResposta), False, True);
   end;
 end;
 
-function TACBrSMSClass.ModeloModem: AnsiString;
+function TACBrSMSClass.ModeloModem: String;
 begin
   Self.EnviarComando('AT+CGMM');
 
@@ -312,7 +313,7 @@ end;
 
 function TACBrSMSClass.NivelSinal: Double;
 var
-  RetCmd: AnsiString;
+  RetCmd: String;
 begin
   Self.EnviarComando('AT+CSQ');
 
@@ -328,7 +329,7 @@ begin
     Result := 0;
 end;
 
-function TACBrSMSClass.Operadora: AnsiString;
+function TACBrSMSClass.Operadora: String;
 begin
   Self.EnviarComando('AT+COPS?');
 
@@ -342,7 +343,7 @@ begin
     Result := EmptyStr;
 end;
 
-function TACBrSMSClass.Firmware: AnsiString;
+function TACBrSMSClass.Firmware: String;
 begin
   Self.EnviarComando('AT+CGMR');
 
@@ -360,22 +361,31 @@ begin
     Desativar;
 end;
 
-procedure TACBrSMSClass.EnviarComando(Cmd: AnsiString);
+procedure TACBrSMSClass.EnviarComando(Cmd: String);
 var
-  sRet: AnsiString;
+  sRet: String;
 begin
   fpUltimaResposta := '';
   fpUltimoComando := Cmd;
   fpAtResult := False;
 
   fpDevice.Serial.Purge;
-  fpDevice.Serial.SendString(Cmd + sLineBreak);
+  fpDevice.Serial.SendString(AnsiString(Cmd + sLineBreak));
 
   repeat
-    sRet := fpDevice.Serial.RecvPacket(fpATTimeOut);
+    Sleep(100);
+    sRet := String(fpDevice.Serial.RecvPacket(fpATTimeOut));
 
     if sRet <> Cmd then
       fpUltimaResposta := fpUltimaResposta + sRet;
+
+    if (Pos('OK', sRet) > 0) or
+       (Pos('>', sRet) > 0) or
+       (Pos('CONNECT', String(sRet)) = 1) then
+    begin
+      fpAtResult := True;
+      break;
+    end;
 
     if (Pos('ERROR', sRet) > 0) or
        (Pos('NO CARRIER', sRet) > 0) or
@@ -385,13 +395,6 @@ begin
       break;
     end;
 
-    if (Pos('OK', sRet) > 0) or
-       (Pos('>', sRet) > 0) or
-       (Pos('CONNECT', String(sRet)) = 1) then
-    begin
-      fpAtResult := True;
-      break;
-    end;
   until fpDevice.Serial.LastError <> 0;
 
   fpUltimaResposta := Trim(fpUltimaResposta);
@@ -419,11 +422,11 @@ begin
   fpAtivo := False;
 end;
 
-procedure TACBrSMSClass.EnviarSMS(const ATelefone, AMensagem: AnsiString;
+procedure TACBrSMSClass.EnviarSMS(const ATelefone, AMensagem: String;
   var AIndice: String);
 var
-  Cmd: AnsiString;
-  Ret: AnsiString;
+  Cmd: String;
+  Ret: String;
 begin
   // definir o modo de envio ***************************************************
   Cmd := 'AT+CMGF=1';
@@ -451,7 +454,7 @@ begin
   if Pos(':', Ret) >= 0 then
   begin
     // separar o indice da mensagem
-    Ret := Trim(Copy(Ret, Pos(':', Ret) + 1, Length(Ret)));
+    Ret := Trim(Copy(Ret, Pos('CMGS:', Ret) + 5, Length(Ret)));
     Ret := Trim(Copy(Ret, 1, Pos('OK', Ret) - 1));
 
     AIndice := IntToStr(StrToIntDef(Trim(Ret), -1));

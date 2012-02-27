@@ -58,7 +58,7 @@ type
     procedure SetSinCard(const Value: TACBrSMSSinCard);
     function GetRecebeConfirmacao: Boolean;
     function GetSinCard: TACBrSMSSinCard;
-    function GetUltimaReposta: AnsiString;
+    function GetUltimaReposta: String;
     procedure TestaAtivo;
     procedure TestaEmLinha;
     function GetQuebraMensagens: Boolean;
@@ -68,7 +68,7 @@ type
     function GetATResult: Boolean;
     procedure SetATResult(const Value: Boolean);
     function GetBandejasSimCard: Integer;
-    function GetUltimoComando: AnsiString;
+    function GetUltimoComando: String;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -77,23 +77,23 @@ type
     procedure Desativar;
 
     function EmLinha: Boolean;
-    function IMEI: AnsiString;
+    function IMEI: String;
     function NivelSinal: Double;
-    function Operadora: AnsiString;
-    function Fabricante: AnsiString;
-    function ModeloModem: AnsiString;
-    function Firmware: AnsiString;
+    function Operadora: String;
+    function Fabricante: String;
+    function ModeloModem: String;
+    function Firmware: String;
     function EstadoSincronismo: TACBrSMSSincronismo;
 
     procedure TrocarBandeja(const ASinCard: TACBrSMSSinCard);
-    procedure EnviarSMS(const ATelefone, AMensagem: AnsiString;
+    procedure EnviarSMS(const ATelefone, AMensagem: String;
       var AIndice: String);
     procedure EnviarSMSLote(const ALote: TACBrSMSMensagens;
       var AIndice: String);
     procedure ListarMensagens(const AFiltro: TACBrSMSFiltro;
-      const APath: AnsiString);
+      const APath: String);
 
-    procedure EnviarComando(Cmd: AnsiString);
+    procedure EnviarComando(Cmd: String);
   published
     property Ativo: Boolean read fsAtivo write SetAtivo;
     property Device: TACBrDevice read fsDevice;
@@ -105,8 +105,8 @@ type
     property RecebeConfirmacao: Boolean read GetRecebeConfirmacao write SetRecebeConfirmacao;
     property BandejasSimCard: Integer read GetBandejasSimCard;
     property QuebraMensagens: Boolean read GetQuebraMensagens write SetQuebraMensagens;
-    property UltimaResposta: AnsiString read GetUltimaReposta;
-    property UltimoComando: AnsiString read GetUltimoComando;
+    property UltimaResposta: String read GetUltimaReposta;
+    property UltimoComando: String read GetUltimoComando;
   end;
 
 implementation
@@ -167,13 +167,13 @@ begin
   Result := fsSMS.EmLinha;
 end;
 
-procedure TACBrSMS.EnviarComando(Cmd: AnsiString);
+procedure TACBrSMS.EnviarComando(Cmd: String);
 begin
   TestaAtivo;
   fsSMS.EnviarComando(Cmd);
 end;
 
-procedure TACBrSMS.EnviarSMS(const ATelefone, AMensagem: AnsiString;
+procedure TACBrSMS.EnviarSMS(const ATelefone, AMensagem: String;
   var AIndice: String);
 var
   F: TStringList;
@@ -238,7 +238,7 @@ begin
   Result := fsSMS.EstadoSincronismo;
 end;
 
-function TACBrSMS.Fabricante: AnsiString;
+function TACBrSMS.Fabricante: String;
 begin
   TestaAtivo;
   Result := fsSMS.Fabricante;
@@ -274,30 +274,30 @@ begin
   Result := fsSMS.SinCard;
 end;
 
-function TACBrSMS.GetUltimaReposta: AnsiString;
+function TACBrSMS.GetUltimaReposta: String;
 begin
   Result := fsSMS.UltimaResposta;
 end;
 
-function TACBrSMS.GetUltimoComando: AnsiString;
+function TACBrSMS.GetUltimoComando: String;
 begin
   Result := fsSMS.UltimoComando;
 end;
 
-function TACBrSMS.IMEI: AnsiString;
+function TACBrSMS.IMEI: String;
 begin
   TestaAtivo;
   Result := fsSMS.IMEI;
 end;
 
 procedure TACBrSMS.ListarMensagens(const AFiltro: TACBrSMSFiltro;
-  const APath: AnsiString);
+  const APath: String);
 begin
   TestaAtivo;
   fsSMS.ListarMensagens(AFiltro, APath);
 end;
 
-function TACBrSMS.ModeloModem: AnsiString;
+function TACBrSMS.ModeloModem: String;
 begin
   TestaAtivo;
   Result := fsSMS.ModeloModem;
@@ -309,13 +309,13 @@ begin
   Result := fsSMS.NivelSinal;
 end;
 
-function TACBrSMS.Operadora: AnsiString;
+function TACBrSMS.Operadora: String;
 begin
   TestaAtivo;
   Result := fsSMS.Operadora;
 end;
 
-function TACBrSMS.Firmware: AnsiString;
+function TACBrSMS.Firmware: String;
 begin
   TestaAtivo;
   Result := fsSMS.Firmware;

@@ -78,8 +78,8 @@ begin
   frmPrincipal.ACBrSMS1.QuebraMensagens := ckbQuebrarMensagem.Checked;
 
   frmPrincipal.ACBrSMS1.EnviarSMS(
-    AnsiString(edtTelefone.Text),
-    AnsiString(memMensagem.Text),
+    edtTelefone.Text,
+    memMensagem.Text,
     IndiceMsgEnviada
   );
 
@@ -89,7 +89,7 @@ begin
     sLineBreak +
     'Ultima resposta: ' +
     sLineBreak +
-    String(frmPrincipal.ACBrSMS1.UltimaResposta)
+    frmPrincipal.ACBrSMS1.UltimaResposta
   );
 end;
 

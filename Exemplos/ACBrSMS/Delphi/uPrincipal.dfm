@@ -344,6 +344,10 @@ object frmPrincipal: TfrmPrincipal
         Caption = 'IMEI'
         OnClick = menIMEIClick
       end
+      object menIMSI: TMenuItem
+        Caption = 'IMSI'
+        OnClick = menIMSIClick
+      end
       object menOperadora: TMenuItem
         Caption = 'Operadora'
         OnClick = menOperadoraClick
@@ -400,7 +404,6 @@ object frmPrincipal: TfrmPrincipal
   end
   object ACBrSMS1: TACBrSMS
     Ativo = False
-    Device.Baud = 115200
     Modelo = modDaruma
     SinCard = sin1
     ATTimeOut = 10000

@@ -102,10 +102,11 @@ type
     procedure Ativar; virtual;
     procedure Desativar; virtual;
 
-    procedure EnviarComando(Cmd: String);
+    procedure EnviarComando(ACmd: String; ATimeOut: Integer = 0);
     
     function EmLinha: Boolean; virtual;
     function IMEI: String; virtual;
+    function IMSI: String; virtual;
     function NivelSinal: Double; virtual;
     function Operadora: String; virtual;
     function Fabricante: String; virtual;
@@ -273,6 +274,16 @@ begin
     Result := EmptyStr;
 end;
 
+function TACBrSMSClass.IMSI: String;
+begin
+  Self.EnviarComando('AT+CIMI');
+
+  if Self.ATResult then
+    Result := Trim(Copy(fpUltimaResposta, 1, Pos('OK', fpUltimaResposta) - 1))
+  else
+    Result := EmptyStr;
+end;
+
 procedure TACBrSMSClass.ListarMensagens(const AFiltro: TACBrSMSFiltro;
   const APath: String);
 var
@@ -361,22 +372,25 @@ begin
     Desativar;
 end;
 
-procedure TACBrSMSClass.EnviarComando(Cmd: String);
+procedure TACBrSMSClass.EnviarComando(ACmd: String; ATimeOut: Integer);
 var
   sRet: String;
 begin
+  if ATimeOut = 0 then
+    ATimeOut := fpATTimeOut;
+
   fpUltimaResposta := '';
-  fpUltimoComando := Cmd;
+  fpUltimoComando := ACmd;
   fpAtResult := False;
 
   fpDevice.Serial.Purge;
-  fpDevice.Serial.SendString(AnsiString(Cmd + sLineBreak));
+  fpDevice.Serial.SendString(AnsiString(ACmd + sLineBreak));
 
   repeat
     Sleep(100);
-    sRet := String(fpDevice.Serial.RecvPacket(fpATTimeOut));
+    sRet := String(fpDevice.Serial.RecvPacket(ATimeOut));
 
-    if sRet <> Cmd then
+    if sRet <> ACmd then
       fpUltimaResposta := fpUltimaResposta + sRet;
 
     if (Pos('OK', sRet) > 0) or

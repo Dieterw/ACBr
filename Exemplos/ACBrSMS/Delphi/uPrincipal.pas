@@ -41,6 +41,7 @@ type
     N3: TMenuItem;
     N4: TMenuItem;
     ACBrSMS1: TACBrSMS;
+    menIMSI: TMenuItem;
     procedure FormDestroy(Sender: TObject);
     procedure btnAtivarClick(Sender: TObject);
     procedure menEmLinhaClick(Sender: TObject);
@@ -57,6 +58,7 @@ type
     procedure menTrocarBandejaClick(Sender: TObject);
     procedure menSincronismoClick(Sender: TObject);
     procedure menEnviarLoteClick(Sender: TObject);
+    procedure menIMSIClick(Sender: TObject);
   private
     procedure AtivarMenus(const AAtivar: Boolean);
     function PathIni: String;
@@ -180,7 +182,7 @@ begin
     'Fabricante: ' +
     sLineBreak +
     sLineBreak +
-    String(ACBrSMS1.Fabricante)
+    ACBrSMS1.Fabricante
   );
 end;
 
@@ -190,7 +192,7 @@ begin
     'Firmware: ' +
     sLineBreak +
     sLineBreak +
-    String(ACBrSMS1.Firmware)
+    ACBrSMS1.Firmware
   );
 end;
 
@@ -200,7 +202,17 @@ begin
     'IMEI: ' +
     sLineBreak +
     sLineBreak +
-    String(ACBrSMS1.IMEI)
+    ACBrSMS1.IMEI
+  );
+end;
+
+procedure TfrmPrincipal.menIMSIClick(Sender: TObject);
+begin
+  ShowMessage(
+    'IMSI: ' +
+    sLineBreak +
+    sLineBreak +
+    ACBrSMS1.IMSI
   );
 end;
 
@@ -230,7 +242,7 @@ begin
     'Modelo modem: ' +
     sLineBreak +
     sLineBreak +
-    String(ACBrSMS1.ModeloModem)
+    ACBrSMS1.ModeloModem
   );
 end;
 
@@ -250,7 +262,7 @@ begin
     'Operadora: ' +
     sLineBreak +
     sLineBreak +
-    String(ACBrSMS1.Operadora)
+    ACBrSMS1.Operadora
   );
 end;
 

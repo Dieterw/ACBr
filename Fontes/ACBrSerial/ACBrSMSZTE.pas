@@ -49,6 +49,8 @@ type
 
   public
     procedure Ativar; override;
+    procedure ListarMensagens(const AFiltro: TACBrSMSFiltro;
+      const APath: string); override;
   end;
 
 implementation
@@ -66,6 +68,46 @@ begin
   Self.EnviarComando('AT+ZOPRT=5');
   if not Self.ATResult then
     raise EACBrSMSException.Create('Não foi possível inicializar o modem.');
+end;
+
+procedure TACBrSMSZTE.ListarMensagens(const AFiltro: TACBrSMSFiltro;
+  const APath: string);
+var
+  cmd: String;
+  Retorno: String;
+  I: Integer;
+begin
+  // definir o modo de envio
+  cmd := 'AT+CMGF=1';
+  Self.EnviarComando(Cmd);
+  if not Self.ATResult then
+    raise EACBrSMSException.Create(FALHA_INICIALIZACAO + sLineBreak + fpUltimaResposta);
+
+  // definir ver todas as mensagens
+  cmd := 'AT+CPMS="MT"';
+  Self.EnviarComando(Cmd);
+  if not Self.ATResult then
+    raise EACBrSMSException.Create(FALHA_LEITURA_MENSAGEM + sLineBreak + fpUltimaResposta);
+
+  case AFiltro of
+    fltTudo:     cmd := 'AT+CMGL="ALL"';
+    fltLidas:    cmd := 'AT+CMGL="REC READ"';
+    fltNaoLidas: cmd := 'AT+CMGL="REC UNREAD"';
+  end;
+
+  Self.EnviarComando(cmd);
+  if Self.ATResult then
+  begin
+    Retorno := EmptyStr;
+    for I := 0 to Length(fpUltimaResposta) -1 do
+    begin
+      if not(fpUltimaResposta[I] in [#0, #5, #$18, #$C]) then
+        Retorno := Retorno + fpUltimaResposta[I];
+    end;
+
+    fpUltimaResposta := Trim(Retorno);
+    WriteToTXT(AnsiString(APath), AnsiString(fpUltimaResposta), False, True);
+  end;
 end;
 
 end.

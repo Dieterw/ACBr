@@ -78,6 +78,7 @@ type
 
     function EmLinha: Boolean;
     function IMEI: String;
+    function IMSI: String;
     function NivelSinal: Double;
     function Operadora: String;
     function Fabricante: String;
@@ -93,7 +94,7 @@ type
     procedure ListarMensagens(const AFiltro: TACBrSMSFiltro;
       const APath: String);
 
-    procedure EnviarComando(Cmd: String);
+    procedure EnviarComando(ACmd: String; ATimeOut: Integer = 0);
   published
     property Ativo: Boolean read fsAtivo write SetAtivo;
     property Device: TACBrDevice read fsDevice;
@@ -167,10 +168,10 @@ begin
   Result := fsSMS.EmLinha;
 end;
 
-procedure TACBrSMS.EnviarComando(Cmd: String);
+procedure TACBrSMS.EnviarComando(ACmd: String; ATimeOut: Integer);
 begin
   TestaAtivo;
-  fsSMS.EnviarComando(Cmd);
+  fsSMS.EnviarComando(ACmd, ATimeOut);
 end;
 
 procedure TACBrSMS.EnviarSMS(const ATelefone, AMensagem: String;
@@ -288,6 +289,12 @@ function TACBrSMS.IMEI: String;
 begin
   TestaAtivo;
   Result := fsSMS.IMEI;
+end;
+
+function TACBrSMS.IMSI: String;
+begin
+  TestaAtivo;
+  Result := fsSMS.IMSI;
 end;
 
 procedure TACBrSMS.ListarMensagens(const AFiltro: TACBrSMSFiltro;

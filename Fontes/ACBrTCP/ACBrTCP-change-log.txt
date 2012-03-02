@@ -37,6 +37,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+01/03/2012
+-- ACBrSocket --
+[-] Corrigida interpretação do Retorno HTTP em UTF-8 para Delphi Ansi  (DSA)
+    http://www.djsystem.com.br/acbr/forum/viewtopic.php?f=14&t=3809
+
 11/11/2011
 -- ACBrCEP --
 [-] Acerto na busca de cep do CepLivre que mudou o endereço e passou a utilizar 

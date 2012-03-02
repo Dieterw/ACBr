@@ -28,7 +28,7 @@ type
     edTipo_Logradouro : TEdit ;
     edUF : TEdit ;
     edBairro : TEdit ;
-    edChaveBuscarCEP : TEdit ;
+    edChaveWS : TEdit ;
     edProxyHost : TEdit ;
     edProxyPass : TEdit ;
     edProxyPort : TEdit ;
@@ -82,12 +82,13 @@ implementation
 procedure TForm1.cbxWSChange(Sender : TObject) ;
 begin
   ACBrCEP1.WebService := TACBrCEPWebService( cbxWS.ItemIndex ) ;
-  edChaveBuscarCEP.Enabled := (ACBrCEP1.WebService = wsBuscarCep) ;
 end;
 
 procedure TForm1.AjustaProxy ;
 begin
   cbxWSChange(Self);
+
+  ACBrCEP1.ChaveAcesso := edChaveWS.Text;
 
   ACBrCEP1.ProxyHost := edProxyHost.Text ;
   ACBrCEP1.ProxyPort := edProxyPort.Text ;
@@ -188,11 +189,6 @@ begin
   Memo1.Lines.Clear;
   Memo1.Lines.Add('Efetuando consulta HTTP em:' ) ;
 
-  if (ACBrCEP1.WebService = wsBuscarCep) and (edChaveBuscarCEP.Text <> '') then
-  begin
-    AURL := AURL + '&chave='+edChaveBuscarCEP.Text;
-  end ;
-
   Memo1.Lines.Add( AURL );
   Memo1.Lines.Add( '' );
 end;
@@ -241,4 +237,4 @@ begin
 end;
 
 end.
-
+

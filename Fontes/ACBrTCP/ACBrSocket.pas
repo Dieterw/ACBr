@@ -610,9 +610,7 @@ var
   {$IFNDEF CONSOLE}
    OldCursor : TCursor ;
   {$ENDIF}
-  {$IFDEF UNICODE}
    CT : String ;
-  {$ENDIF}
 begin
   {$IFNDEF CONSOLE}
    OldCursor := Screen.Cursor ;
@@ -639,13 +637,14 @@ begin
       RespHTTP.Text := ACBrUtil.ParseText( RespHTTP.Text ) ;
 
     // Verifica se a Resposta está em ANSI //
-    {$IFDEF UNICODE}
      CT := LowerCase( GetHeaderValue('Content-Type:') );
-
+    {$IFDEF UNICODE}
      if pos('utf-8', CT) = 0 then     // Resposta em ISO (ansi) ?
         RespHTTP.Text := ACBrStr( RespHTTP.Text ) ;
+     {$ELSE}
+     if pos('utf-8', CT) > 0 then     // Resposta em UTF-8 ?
+        RespHTTP.Text := Utf8ToAnsi( RespHTTP.Text ) ;
     {$ENDIF}
-
 
     // DEBUG //
     //WriteToTXT( 'C:\TEMP\HTTP.txt', RespHTTP.Text );

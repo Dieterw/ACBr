@@ -48,6 +48,12 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+01/03/2012
+[+] Adicionado os Registros "B" 
+[-] Correções no registro "C" 
+	(por: Gutierres Santana da Costa)
+	http://www.djsystem.com.br/acbr/forum/viewtopic.php?f=12&t=4990
+	
 Versão 0.09   29/11/11
 ---------------
 [-] Acerto no arquivo de DAVs emitidos, alguém alterou o que já havia sido 

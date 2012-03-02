@@ -36,13 +36,12 @@
 |*
 |* 10/04/2009: Isaque Pinheiro
 |*  - Criação e distribuição da Primeira Versao
-|* 29/11/2010: Gutierres Santana da Costa
-|*  - Implementado Registro Tipo C "Controle de Abastecimento e Encerrante"
-|* 29/02/2012: Gutierres Santana da Costa
-|*  - Implementado property ID_ABASTECIMENTO e DATA_ABASTECIMENTO 
+|* 01/03/2012: Gutierres Santana da Costa
+|*  - Implementado Registro Tipo B "Substituição da placa eletrônica de
+|     gerenciamento de bomba de combustivel
 *******************************************************************************}
 
-unit ACBrPAF_C;
+unit ACBrPAF_B;
 
 interface
 
@@ -50,96 +49,87 @@ uses
   SysUtils, Classes, Contnrs, DateUtils, ACBrPAFRegistros;
 
 type
-  /// REGISTRO TIPO C1 - IDENTIFICAÇÃO DO ESTABELECIMENTO USUÁRIO DO PAF-ECF
+  /// REGISTRO TIPO B1 - IDENTIFICAÇÃO DO ESTABELECIMENTO USUÁRIO DO PAF-ECF
 
-  TRegistroC1 = class(TRegistroX1)
+  TRegistroB1 = class(TRegistroX1)
   end;
 
-  /// REGISTRO TIPO C2 - RELAÇÃO DE MERCADORIAS E SERVIÇOS
+  /// REGISTRO TIPO B2 - REGISTRO DE SUBSTITUIÇÃO DA PLACA ELETRÓNICA DE GERENCIAMENTO DE BOMBA DE COMBUSTIVEL
 
-  TRegistroC2 = class
+  TRegistroB2 = class
   private
     fRegistroValido: boolean;
-    fID_ABASTECIMENTO: string;
     fTANQUE: string;
     fBOMBA: string;
     fBICO: string;
-    fCOMBUSTIVEL: string;
-    fDATA_ABASTECIMENTO: TDateTime;
-    fHORA_ABASTECIMENTO: TDateTime;
-    fENCERRANTE_INICIAL: currency;
-    fENCERRANTE_FINAL: currency;
-    fSTATUS_ABASTECIMENTO: string;
-    fNRO_SERIE_ECF: string;
     fDATA: TDateTime;
     fHORA: TDateTime;
-    fCOO: Integer;
-    fNRO_NOTA_FISCAL: Integer;
-    fVOLUME: Currency;
+    fMOTIVO: string;
+    fCNPJ_EMPRESA: string;
+    fCPF_TECNICO: string;
+    fNRO_LACRE_ANTES: string;
+    fNRO_LACRE_APOS: string;
+    fENCERRANTE_ANTES: currency;
+    fENCERRANTE_APOS: currency;
   public
     constructor Create; virtual; /// Create
 
     property RegistroValido: Boolean read fRegistroValido write fRegistroValido default True;
-    property ID_ABASTECIMENTO: string read fID_ABASTECIMENTO write fID_ABASTECIMENTO;
-    property TANQUE: string read fTANQUE write fTANQUE;
     property BOMBA: string read fBOMBA write fBOMBA;
     property BICO: string read fBICO write fBICO;
-    property COMBUSTIVEL: string read fCOMBUSTIVEL write fCOMBUSTIVEL;
-    property DATA_ABASTECIMENTO: TDateTime read fDATA_ABASTECIMENTO write fDATA_ABASTECIMENTO;
-    property HORA_ABASTECIMENTO: TDateTime read fHORA_ABASTECIMENTO write fHORA_ABASTECIMENTO;
-    property ENCERRANTE_INICIAL: currency read fENCERRANTE_INICIAL write fENCERRANTE_INICIAL;
-    property ENCERRANTE_FINAL: currency read fENCERRANTE_FINAL write fENCERRANTE_FINAL;
-    property STATUS_ABASTECIMENTO: string read fSTATUS_ABASTECIMENTO write fSTATUS_ABASTECIMENTO;
-    property NRO_SERIE_ECF: string read fNRO_SERIE_ECF write fNRO_SERIE_ECF;
     property DATA: TDateTime read fDATA write fDATA;
     property HORA: TDateTime read fHORA write fHORA;
-    property COO: Integer read fCOO write fCOO;
-    property NRO_NOTA_FISCAL: Integer read fNRO_NOTA_FISCAL write fNRO_NOTA_FISCAL;
-    property VOLUME: Currency read fVOLUME write fVOLUME;
-
+    property MOTIVO: string read fMOTIVO write fMOTIVO;
+    property CNPJ_EMPRESA: string read fCNPJ_EMPRESA write fCNPJ_EMPRESA;
+    property CPF_TECNICO: string read fCPF_TECNICO write fCPF_TECNICO;
+    property NRO_LACRE_ANTES: string read fNRO_LACRE_ANTES write fNRO_LACRE_ANTES;
+    property NRO_LACRE_APOS: string read fNRO_LACRE_APOS write fNRO_LACRE_APOS;
+    property ENCERRANTE_ANTES: currency read fENCERRANTE_ANTES write fENCERRANTE_ANTES;
+    property ENCERRANTE_APOS: currency read fENCERRANTE_APOS write fENCERRANTE_APOS;
   end;
 
-  /// REGISTRO C2 - Lista
+  /// REGISTRO B2 - Lista
 
-  TRegistroC2List = class(TObjectList)
+  TRegistroB2List = class(TObjectList)
   private
-    function GetItem(Index: Integer): TRegistroC2;
-    procedure SetItem(Index: Integer; const Value: TRegistroC2);
+    function GetItem(Index: Integer): TRegistroB2;
+    procedure SetItem(Index: Integer; const Value: TRegistroB2);
   public
-    function New: TRegistroC2;
-    property Items[Index: Integer]: TRegistroC2 read GetItem write SetItem;
+    function New: TRegistroB2;
+    property Items[Index: Integer]: TRegistroB2 read GetItem write SetItem;
   end;
 
-  /// REGISTRO TIPO C9 - TOTALIZAÇÃO DO ARQUIVO
+  /// REGISTRO TIPO B9 - TOTALIZAÇÃO DO ARQUIVO
 
-  TRegistroC9 = class(TRegistroX9)
+  TRegistroB9 = class(TRegistroX9)
   end;
 
 implementation
 
-(* TRegistroC2List *)
+(* TRegistroB2List *)
 
-function TRegistroC2List.GetItem(Index: Integer): TRegistroC2;
+function TRegistroB2List.GetItem(Index: Integer): TRegistroB2;
 begin
-  Result := TRegistroC2(inherited Items[Index]);
+  Result := TRegistroB2(inherited Items[Index]);
 end;
 
-function TRegistroC2List.New: TRegistroC2;
+function TRegistroB2List.New: TRegistroB2;
 begin
-  Result := TRegistroC2.Create;
+  Result := TRegistroB2.Create;
   Add(Result);
 end;
 
-procedure TRegistroC2List.SetItem(Index: Integer; const Value: TRegistroC2);
+procedure TRegistroB2List.SetItem(Index: Integer; const Value: TRegistroB2);
 begin
   Put(Index, Value);
 end;
 
-{ TRegistroC2 }
+{ TRegistroB2 }
 
-constructor TRegistroC2.Create;
+constructor TRegistroB2.Create;
 begin
-   fRegistroValido := True;
+  fRegistroValido := True;
 end;
 
 end.
+

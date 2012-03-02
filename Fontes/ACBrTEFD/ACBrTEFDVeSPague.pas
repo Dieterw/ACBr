@@ -814,6 +814,7 @@ var
   I : Integer ;
   Transacao : String ;
 begin
+  Result := True ;
   Transacao := Trim(fTransacaoADM) ;
 
   { No modo BackGround não há um comando que retorne todas as Opçoes
@@ -1006,7 +1007,7 @@ begin
   Retorno := FazerRequisicao( fTransacaoPendente, 'ADM', Valor, '', ListaParams  ) ;
 
   if Retorno = 0 then
-     Retorno := ContinuarRequisicao( True ) ;  { True = Imprimir Comprovantes agora }
+     ContinuarRequisicao( True ) ;  { True = Imprimir Comprovantes agora }
 
   if fTemPendencias then
   begin
@@ -1048,8 +1049,6 @@ Function TACBrTEFDVeSPague.FazerRequisicao( Transacao : String;
 begin
    if fpAguardandoResposta then
       raise Exception.Create( ACBrStr( 'Requisição anterior não concluida' ) ) ;
-
-   Result := 0 ;
 
    fCancelandoTransacao := (AnsiUpperCase(Transacao) = 'ADMINISTRACAO CANCELAR');
 

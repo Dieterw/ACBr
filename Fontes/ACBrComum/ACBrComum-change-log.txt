@@ -38,6 +38,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 01/03/2012
+-- ACBrPAF --
+[-] Tentativa de correção da Ordanação da Lista DAVs Emitidos (DSA)
+
 06/02/2012
 -- ACBrAAC --
 [+] Adicionada verificação de CRC na Gravacao/Abertura do arquivo AAC. Para

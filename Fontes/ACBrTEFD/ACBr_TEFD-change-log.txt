@@ -47,6 +47,19 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data:  01/03/2012  = Ver: 2.00
+-- ACBrTEFD --
+[+] Adicionado suporte a diversos novos Gerenciadores.
+    GoodCard, FoxWin (Sorocred), DTEF (Direçao), PetroCard, CrediShop, TicketCar
+    (Por Marcio D.Carvalho)
+    http://www.djsystem.com.br/acbr/forum/viewtopic.php?f=16&t=2853
+[*] Correção de vários Hints e Warnings (DSA)
+
+-- ACBrTEFDVeSPague --
+[-] Corrigido Bug que não gravava informações com nomes semelhantes:
+    http://www.djsystem.com.br/acbr/forum/viewtopic.php?f=16&t=4942
+
+
 Data:  27/12/2011  - Ver: 1.35
 [+] Adicionado suporte para o TEF AUTTAR
     http://www.djsystem.com.br/acbr/forum/viewtopic.php?p=20973#p20973

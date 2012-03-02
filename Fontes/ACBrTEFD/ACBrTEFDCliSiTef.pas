@@ -258,8 +258,7 @@ begin
    fpCredito := False;
    for I := 0 to Conteudo.Count - 1 do
    begin
-     Linha := Conteudo.Linha[I];
-
+     Linha  := Conteudo.Linha[I];
      LinStr := StringToBinaryString( Linha.Informacao.AsString );
 
      case Linha.Identificacao of
@@ -745,7 +744,6 @@ begin
       raise Exception.Create( ACBrStr( 'Requisição anterior não concluida' ) ) ;
 
    fReimpressao := False;
-   Result   := 0 ;
    ANow     := Now ;
    DataStr  := FormatDateTime('YYYYMMDD', ANow );
    HoraStr  := FormatDateTime('HHNNSS', ANow );

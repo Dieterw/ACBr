@@ -1,12 +1,35 @@
 unit Unit6;
 
+{$IFDEF FPC}
+ {$mode objfpc}{$H+}
+{$ENDIF}
+
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, Buttons;
+  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
+  Buttons;
 
 type
+
+  { TForm6 }
+
+  TForm6 = class(TForm)
+    BitBtn1 : TBitBtn;
+    RadioButton1 : TRadioButton;
+    RadioButton2 : TRadioButton;
+    RadioButton3 : TRadioButton;
+    procedure BitBtn1Click(Sender : TObject);
+  private
+    { private declarations }
+  public
+    { public declarations }
+  end;
+
+var
+  Form6 : TForm6; 
+
+implementation
 
 {$IFNDEF FPC}
  {$R *.dfm}
@@ -16,28 +39,9 @@ type
 
 { TForm6 }
 
-  TForm6 = class(TForm)
-    BitBtn1: TBitBtn;
-    RadioButton1: TRadioButton;
-    RadioButton2: TRadioButton;
-    RadioButton3: TRadioButton;
-    procedure BitBtn1Click(Sender: TObject);
-  private
-    { Private declarations }
-  public
-    { Public declarations }
-  end;
-
-var
-  Form6: TForm6;
-
-implementation
-
-{ TForm6 }
-
-procedure TForm6.BitBtn1Click(Sender: TObject);
+procedure TForm6.BitBtn1Click(Sender : TObject);
 begin
-  ModalResult := mrOk;
+  ModalResult := mrOK;
 end;
 
 end.

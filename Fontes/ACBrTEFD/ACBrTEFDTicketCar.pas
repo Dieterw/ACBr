@@ -34,41 +34,36 @@
 {******************************************************************************
 |* Historico
 |*
-|* 18/03/2011: Márcio Delfino Carvalho
+|* 10/08/2011: Márcio D. Carvalho
 |*  - Primeira Versao: Criaçao e Distribuiçao da Primeira Versao
-|* 10/08/2011: Márcio Delfino Carvalho
-|*  - Exibição da msg "IMPRIMINDO", durante a impressão
 ******************************************************************************}
-
 
 {$I ACBr.inc}
 
-unit ACBrTEFDBanese;
+unit ACBrTEFDTicketCar;
 
 interface
 
 uses
   Classes, SysUtils, ACBrTEFDClass
   {$IFDEF VisualCLX}
-     ,QForms, QControls
+     ,QControls
   {$ELSE}
-     ,Forms, Controls
+     ,Controls
   {$ENDIF}  ;
 
 
 Const
-  {Caminho padrão dos arquivos de requisição e resposta}
-  CACBrTEFDBanese_ArqTemp    = 'C:\bcard\req\pergunta.tmp' ;
-  CACBrTEFDBanese_ArqReq     = 'C:\bcard\req\pergunta.txt' ;
-  CACBrTEFDBanese_ArqResp    = 'C:\bcard\resp\resposta.txt' ;
-  CACBrTEFDBanese_ArqRespBkp = 'C:\bcard\resposta.txt' ;
-  CACBrTEFDBanese_ArqRespMovBkp = 'C:\bcard\copiamovimento.txt' ;
-  CACBrTEFDBanese_ArqSTS     = 'C:\bcard\resp\status.txt' ;
+  CACBrTEFDTicketCar_ArqTemp    = 'C:\TCS\TX\INTTCS.tmp' ;
+  CACBrTEFDTicketCar_ArqReq     = 'C:\TCS\TX\INTTCS.001' ;
+  CACBrTEFDTicketCar_ArqResp    = 'C:\TCS\RX\INTTCS.001' ;
+  CACBrTEFDTicketCar_ArqSTS     = 'C:\TCS\RX\INTTCS.RET' ;
+  CACBrTEFDCrediShop_GPExeName  = 'C:\TCS\tcs.exe' ;
 
 type
-  { TACBrTEFDRespBanese }
+  { TACBrTEFDRespTicketCar }
 
-  TACBrTEFDRespBanese = class( TACBrTEFDResp )
+  TACBrTEFDRespTicketCar = class( TACBrTEFDResp )
   protected
     function GetTransacaoAprovada : Boolean; override;
   public
@@ -77,36 +72,48 @@ type
       const Informacao : AnsiString );
   end;
 
-  {Evento para obter informações sobre o tipo de transação ADM}
-  TACBrTEFDBaneseObtemInformacao = procedure( var ItemSelecionado : Integer ) of object ;
+  TACBrTEFDTicketCarObtemDadosVenda = procedure( var NumGNF, NumCOO, NumCNF, 
+    CodProduto, IndProdServ, IndISS, PosTotalizador: Integer; var
+    CodTCS, DescricaoProduto: String; var QuantProduto, VlrDesconto,
+    VlrUnitario: Double ) of object ;
 
   {Tipos de operação}
-  TOperacaoTEFBanese = (operCRT, operReimpressao, operCancelamento, operFechamento) ;
+  TACBrTEFDTicketCarObtemListaProdutos = procedure( var ListaProdutos : TStringList ) of object ;
 
-  { TACBrTEFDBanese }
+  { TACBrTEFDTicketCar }
 
-   TACBrTEFDBanese = class( TACBrTEFDClass )
+   TACBrTEFDTicketCar = class( TACBrTEFDClass )
    private
      fArqReq : String;
      fArqTmp : String;
      fArqResp: String;
      fArqSTS : String;
-     fArqRespBkp: String;
+     fGPExeName : String;
+
      fRespostas: TStringList;
+
+     fConteudoResp : TACBrTEFDArquivo;
+     fConteudoRet  : TACBrTEFDArquivo;
+
+     fNumLoja  : Integer;
+     fNumCaixa : Integer;
+     fAtualizaPrecos : Boolean;
+
      fDocumentosProcessados : AnsiString ;
-     fOnObtemInformacao : TACBrTEFDBaneseObtemInformacao;
-     fArqRespMovBkp: String;
+     fOnObtemDadosVenda : TACBrTEFDTicketCarObtemDadosVenda;
+     fOnObtemListaProdutos : TACBrTEFDTicketCarObtemListaProdutos;
      procedure SetArqTmp(const AValue : String);
      procedure SetArqReq(const AValue : String);
      procedure SetArqResp(const AValue : String);
      procedure SetArqSTS(const AValue : String);
-     procedure SetArqRespBkp(const AValue : String);
-     procedure MontaArquivoResposta(aNSU: String; aRetorno:TStringList;
-       operacao:TOperacaoTEFBanese);
-     procedure ImprimirComprovantes(SL : TStringList);
-     function  RealizaTransacao(operacao : TOperacaoTEFBanese; Valor : Double): Boolean;
-     function  ProcessaRespostaRequisicao(operacao: TOperacaoTEFBanese) : Boolean;
-     procedure SetArqRespMovBkp(const Value: String);
+     procedure SetGPExeName(const AValue : String);
+     procedure SetNumLoja(const AValue : Integer);
+     procedure SetNumCaixa(const AValue : Integer);
+     procedure SetAtualizaPrecos(const AValue : Boolean);     
+
+     procedure ImprimirComprovantes(imgCupom: TStringList);
+     function  RealizaTransacao(operacao : String; Valor : Double): Boolean;
+     function  ProcessaRespostaRequisicao(operacao: String) : Boolean;
    protected
      Function  FazerRequisicao(AHeader : AnsiString = ''; Valor : Double = 0;
        IndiceFPG_ECF : String = '') : Boolean ;
@@ -145,23 +152,28 @@ type
      property ArqReq   : String read fArqReq    write SetArqReq ;
      property ArqSTS   : String read fArqSTS    write SetArqSTS  ;
      property ArqResp  : String read fArqResp   write SetArqResp ;
-     property ArqRespBkp  : String read fArqRespBkp   write SetArqRespBkp ;
-     property ArqRespMovBkp  : String read fArqRespMovBkp   write SetArqRespMovBkp ;
-     property OnObtemInformacao : TACBrTEFDBaneseObtemInformacao read fOnObtemInformacao write fOnObtemInformacao ;
+     property GPExeName : String read fGPExeName write fGPExeName ;
+
+     property NumLoja  : Integer read fNumLoja   write SetNumLoja ;
+     property NumCaixa  : Integer read fNumCaixa  write SetNumCaixa ;
+     property AtualizaPrecos : Boolean read fAtualizaPrecos write SetAtualizaPrecos ;
+
+     property OnObtemDadosVenda : TACBrTEFDTicketCarObtemDadosVenda read fOnObtemDadosVenda write fOnObtemDadosVenda ;
+     property OnObtemListaProdutos : TACBrTEFDTicketCarObtemListaProdutos read fOnObtemListaProdutos write fOnObtemListaProdutos ;
    end;
 
 implementation
 
-Uses ACBrUtil, dateutils, StrUtils, ACBrTEFD, Dialogs, Math;
+Uses ACBrUtil, dateutils, ACBrTEFD, Dialogs, Math, strutils;
 
-{ TACBrTEFDRespBanese }
+{ TACBrTEFDRespTicketCar }
 
-function TACBrTEFDRespBanese.GetTransacaoAprovada : Boolean;
+function TACBrTEFDRespTicketCar.GetTransacaoAprovada : Boolean;
 begin
    Result := True ;
 end;
 
-procedure TACBrTEFDRespBanese.ConteudoToProperty;
+procedure TACBrTEFDRespTicketCar.ConteudoToProperty;
 var
    Linha : TACBrTEFDLinha ;
    I     : Integer;
@@ -178,6 +190,7 @@ begin
      LinStr := StringToBinaryString( Linha.Informacao.AsString );
 
      case Linha.Identificacao of
+       // TODO: Mapear mais propriedades do CliSiTef //
        100 :fpModalidadePagto              := LinStr;
        101 :fpModalidadePagtoExtenso       := LinStr;
        102 :fpModalidadePagtoDescrita      := LinStr;
@@ -199,8 +212,8 @@ begin
        //156 : fpRede                        := LinStr;
        501 : fpTipoPessoa                  := AnsiChar(IfThen(Linha.Informacao.AsInteger = 0,'J','F')[1]);
        502 : fpDocumentoPessoa             := LinStr ;
-       505 : fpQtdParcelas                 := Linha.Informacao.AsInteger ;
-       506 : fpDataPreDatado               := Linha.Informacao.AsDate;
+       //505 : fpQtdParcelas                 := Linha.Informacao.AsInteger;
+       //506 : fpDataPreDatado               := Linha.Informacao.AsDate;
 
        //incluido por Evandro
        627 : fpAgencia                     := LinStr;
@@ -229,7 +242,6 @@ begin
             102 : fpDocumentoVinculado := LinStr;
             103 : fpValorTotal         := fpValorTotal + Linha.Informacao.AsFloat;
             104 : fpRede               := Linha.Informacao.AsString ;
-            130 : fpTextoEspecialOperador := Linha.Informacao.AsString;
           end;
         end;
      end;
@@ -249,7 +261,7 @@ begin
    end;
 end;
 
-procedure TACBrTEFDRespBanese.GravaInformacao(const Identificacao : Integer;
+procedure TACBrTEFDRespTicketCar.GravaInformacao(const Identificacao : Integer;
    const Informacao : AnsiString);
 begin
   fpConteudo.GravaInformacao( Identificacao, 0,
@@ -258,65 +270,83 @@ end;
 
 { TACBrTEFDClass }
 
-constructor TACBrTEFDBanese.Create(AOwner : TComponent);
+constructor TACBrTEFDTicketCar.Create(AOwner : TComponent);
 begin
   inherited Create(AOwner);
 
-  ArqReq    := CACBrTEFDBanese_ArqReq ;
-  ArqResp   := CACBrTEFDBanese_ArqResp ;
-  ArqSTS    := CACBrTEFDBanese_ArqSTS ;
-  ArqTemp   := CACBrTEFDBanese_ArqTemp ;
-  ArqRespBkp  := CACBrTEFDBanese_ArqRespBkp ;
-  ArqRespMovBkp := CACBrTEFDBanese_ArqRespMovBkp ;  
-  GPExeName := '' ;
-  fpTipo    := gpBanese;
-  Name      := 'Banese' ;
+  ArqReq    := CACBrTEFDTicketCar_ArqReq ;
+  ArqResp   := CACBrTEFDTicketCar_ArqResp ;
+  ArqTemp   := CACBrTEFDTicketCar_ArqTemp ;
+  ArqSTS    := CACBrTEFDTicketCar_ArqSTS ;
+  GPExeName := CACBrTEFDCrediShop_GPExeName;
+  fpTipo    := gpTicketCar;
+
+  fConteudoRet  := TACBrTEFDArquivo.Create;
+  fConteudoResp := TACBrTEFDArquivo.Create;
+
+  Name      := 'TicketCar' ;
 end;
 
-destructor TACBrTEFDBanese.Destroy;
+destructor TACBrTEFDTicketCar.Destroy;
 begin
    fRespostas.Free ;
+   fConteudoRet.Free;
+   fConteudoResp.Free;
 
    inherited Destroy;
 end;
 
-procedure TACBrTEFDBanese.SetArqTmp(const AValue : String);
+procedure TACBrTEFDTicketCar.SetArqTmp(const AValue : String);
 begin
   fArqTmp := Trim( AValue ) ;
 end;
 
-procedure TACBrTEFDBanese.SetArqReq(const AValue : String);
+procedure TACBrTEFDTicketCar.SetArqReq(const AValue : String);
 begin
   fArqReq := Trim( AValue ) ;
 end;
 
-procedure TACBrTEFDBanese.SetArqResp(const AValue : String);
+procedure TACBrTEFDTicketCar.SetArqResp(const AValue : String);
 begin
   fArqResp := Trim( AValue ) ;
 end;
 
-procedure TACBrTEFDBanese.SetArqSTS(const AValue : String);
+procedure TACBrTEFDTicketCar.SetArqSTS(const AValue : String);
 begin
   fArqSTS := Trim( AValue ) ;
 end;
 
-procedure TACBrTEFDBanese.SetArqRespBkp(const AValue : String);
+procedure TACBrTEFDTicketCar.SetGPExeName(const AValue : String);
 begin
-  fArqRespBkp := Trim( AValue ) ;
+  fGPExeName := Trim( AValue ) ;
 end;
 
-
-procedure TACBrTEFDBanese.AtivarGP;
+procedure TACBrTEFDTicketCar.SetNumLoja(const AValue : Integer);
 begin
-   raise Exception.Create( ACBrStr( 'CliBanese não pode ser ativado localmente' )) ;
+  fNumLoja := AValue ;
 end;
 
-procedure TACBrTEFDBanese.VerificaAtivo;
+procedure TACBrTEFDTicketCar.SetNumCaixa(const AValue : Integer);
+begin
+  fNumCaixa := AValue ;
+end;
+
+procedure TACBrTEFDTicketCar.SetAtualizaPrecos(const AValue : Boolean);
+begin
+  fAtualizaPrecos := AValue ;
+end;
+
+procedure TACBrTEFDTicketCar.AtivarGP;
+begin
+   raise Exception.Create( ACBrStr( 'CliDTEF não pode ser ativado localmente' )) ;
+end;
+
+procedure TACBrTEFDTicketCar.VerificaAtivo;
 begin
    {Nada a Fazer}
 end;
 
-procedure TACBrTEFDBanese.ConfirmarEReimprimirTransacoesPendentes;
+procedure TACBrTEFDTicketCar.ConfirmarEReimprimirTransacoesPendentes;
 Var
   ArquivosVerficar : TStringList ;
   ArqMask, NSUs    : AnsiString;
@@ -367,12 +397,12 @@ begin
   end;
 end;
 
-Function TACBrTEFDBanese.ADM : Boolean;
+Function TACBrTEFDTicketCar.ADM : Boolean;
 begin
   Result := FazerRequisicao('ADM', 0, '0' );
 end;
 
-Function TACBrTEFDBanese.CRT( Valor : Double; IndiceFPG_ECF : String;
+Function TACBrTEFDTicketCar.CRT( Valor : Double; IndiceFPG_ECF : String;
    DocumentoVinculado : String = ''; Moeda : Integer = 0 ) : Boolean;
 begin
   Result := False;
@@ -386,7 +416,7 @@ begin
     end;
 end;
 
-Function TACBrTEFDBanese.CHQ(Valor : Double; IndiceFPG_ECF : String;
+Function TACBrTEFDTicketCar.CHQ(Valor : Double; IndiceFPG_ECF : String;
    DocumentoVinculado : String; CMC7 : String; TipoPessoa : AnsiChar;
    DocumentoPessoa : String; DataCheque : TDateTime; Banco : String;
    Agencia : String; AgenciaDC : String; Conta : String; ContaDC : String;
@@ -395,156 +425,99 @@ begin
   Result := False;
 end;
 
-Procedure TACBrTEFDBanese.CNF(Rede, NSU, Finalizacao : String;
+Procedure TACBrTEFDTicketCar.CNF(Rede, NSU, Finalizacao : String;
    DocumentoVinculado : String) ;
-var ArquivoReq : TStringList;   
 begin
-  {O CNF é sempre padrão, não necessitando ser montado dinamicamente}
-  ArquivoReq := TStringList.Create;
-  ArquivoReq.Add('CF0000TTTT00');
-  ArquivoReq.SaveToFile(ArqTemp);
-  Sleep(1000);
-  RenameFile(ArqTemp, ArqReq);
-  Sleep(2000);
-  DeleteFile(ArqResp);
-  Sleep(2000);
-  DeleteFile(ArqSTS);
-  ArquivoReq.Free;
-end;
-
-Function TACBrTEFDBanese.CNC(Rede, NSU : String;
-   DataHoraTransacao : TDateTime; Valor : Double) : Boolean;
-begin
-  {Não existe CNC}
-  Result := True;
-end;
-
-Procedure TACBrTEFDBanese.NCN(Rede, NSU, Finalizacao : String;
-   Valor : Double; DocumentoVinculado : String) ;
-begin
-  {Não existe NCN}
   //
 end;
 
-Function TACBrTEFDBanese.FazerRequisicao(AHeader : AnsiString = '';
+Function TACBrTEFDTicketCar.CNC(Rede, NSU : String;
+   DataHoraTransacao : TDateTime; Valor : Double) : Boolean;
+begin
+  Result := True;
+end;
+
+Procedure TACBrTEFDTicketCar.NCN(Rede, NSU, Finalizacao : String;
+   Valor : Double; DocumentoVinculado : String) ;
+begin
+  //
+end;
+
+Function TACBrTEFDTicketCar.FazerRequisicao(AHeader : AnsiString = '';
   Valor : Double = 0; IndiceFPG_ECF : String = '') : Boolean ;
 Var
-  aNSU : AnsiString;
+  Erro, aNSU : AnsiString;
   ArquivoResposta : TStringList;
-  ItemSelecionado : integer;
+  i : integer;
 begin
   Result   := False ;
 
   ApagaEVerifica( ArqTemp );  // Apagando Arquivo Temporario anterior //
   ApagaEVerifica( ArqReq );   // Apagando Arquivo de Requisicao anterior //
-  ApagaEVerifica( ArqSTS );   // Apagando Arquivo de Status anterior //
+  ApagaEVerifica( ArqSTS );   // Apagando Arquivo de Retorno da resposta //
   ApagaEVerifica( ArqResp );  // Apagando Arquivo de Resposta anterior //
 
   if fpAguardandoResposta then
     raise Exception.Create( ACBrStr( 'Requisição anterior não concluida' ) ) ;
 
-  {Cria um NSU}
   aNSU := FormatDateTime('HHNNSS', Now );;
-
-  if AHeader = 'ADM' then
-    begin
-      ItemSelecionado := -1 ;
-      {Chama o evento e aguarda a resposta do item selecionado
-       1 - Reimpressão
-       2 - Cancelamento
-       3 - Fechamento
-      }
-      fOnObtemInformacao( ItemSelecionado ) ;
-      Result := True;
-    end;
 
   if AHeader = 'CRT' then
     begin
-      //ApagaEVerifica( ArqRespBkp );  // Apagando Arquivo de Backup da Resposta anterior //
-      Result := RealizaTransacao(operCRT, Valor);
+      Result := RealizaTransacao('CRT', Valor);
     end;
 
-  if ((AHeader = 'ADM') and (ItemSelecionado = 1)) then
+  if (AHeader = 'ADM') then
     begin
-      {Verifica se o Arquivo de Backup da Resposta anterior existe}    
-      if FileExists(ArqRespBkp) then
-        Result := True
-      else
-        ShowMessage('Não existe arquivo de resposta para imprimir');
+      Result := RealizaTransacao('ADM', 0);
     end;
 
-  if ((AHeader = 'ADM') and (ItemSelecionado = 2)) then
-    begin
-      {Apagando o Arquivo de Backup da Resposta anterior}
-      //ApagaEVerifica( ArqRespBkp );
-      Result := RealizaTransacao(operCancelamento, 0);
-    end;
-
-  if ((AHeader = 'ADM') and (ItemSelecionado = 3)) then
-    begin
-      Result := RealizaTransacao(operFechamento, 0);
-    end;
+  Erro := '';
 
   if not Result then
-    Exit
-     //raise EACBrTEFDErro.Create( ACBrStr( Erro ) )
+     raise EACBrTEFDErro.Create( ACBrStr( Erro ) )
   else
     begin
       Resp.Clear;
 
-      with TACBrTEFDRespBanese( Resp ) do
+      with TACBrTEFDRespTicketCar( Resp ) do
       begin
         ArquivoResposta := TStringList.Create;
+        try
 
-        if ((AHeader = 'ADM') and (ItemSelecionado = 1)) then
-          begin
-            ArquivoResposta.LoadFromFile(ArqRespBkp);
-            MontaArquivoResposta('0', ArquivoResposta, operReimpressao);
-            ImprimirComprovantes(ArquivoResposta);
-          end
-        else
-          begin
-            if ((AHeader = 'ADM') and (ItemSelecionado = 3)) then
-              ArquivoResposta.LoadFromFile(ArqRespMovBkp)
-            else
-              ArquivoResposta.LoadFromFile(ArqRespBkp);
+           for i := 1 to fConteudoResp.LeInformacao(514, 0).AsInteger do
+             ArquivoResposta.Add(copy(fConteudoResp.LeInformacao(515, i).AsString, 2 , Length(fConteudoResp.LeInformacao(515, i).AsString)-2));
 
-            if ((AHeader = 'ADM') and ((ItemSelecionado = 2) or (ItemSelecionado = 3))) then
-              begin
-                {Lê o Arquivo de Backup da Resposta anterior existe e monta uma
-                estrutura que possa ser utilizada com as funções de impressão
-                do ACBr}
-                MontaArquivoResposta('0', ArquivoResposta, OperCancelamento);
-                ImprimirComprovantes(ArquivoResposta);
-              end
-            else
-              begin
-                {Lê o Arquivo de Backup da Resposta anterior existe e monta uma
-                estrutura que possa ser utilizada com as rotinas de impressão
-                do ACBr}              
-                MontaArquivoResposta(aNSU, ArquivoResposta, operCRT);
+           if (AHeader = 'ADM') then
+             begin
+               ImprimirComprovantes(ArquivoResposta);
+             end;
+           if (AHeader = 'CRT') then
+             begin
+               fConteudoResp.GravaInformacao(134,000, aNSU);
+               fConteudoResp.GravaInformacao(102,000, 'T.E.F.');
+               fConteudoResp.GravaInformacao(121,000, BinaryStringToString(ArquivoResposta.Text));
 
-                {Grava informações utilizadas pelas rotinas de impressão do ACBr}
-                Conteudo.Conteudo.Text := ArquivoResposta.Text;
-                Conteudo.GravaInformacao(899,100, AHeader ) ;
-                Conteudo.GravaInformacao(899,101, IntToStr(fpIDSeq) ) ;
-                Conteudo.GravaInformacao(899,102, IndiceFPG_ECF ) ;
-                Conteudo.GravaInformacao(899,103, IntToStr(Trunc(SimpleRoundTo( Valor * 100 ,0))) );
-                Conteudo.GravaInformacao(899,104, AHeader );
-                Conteudo.GravaInformacao(899,130, 'IMPRIMINDO...' ) ;
+               Conteudo.Conteudo.Text := fConteudoResp.Conteudo.Text;
+               Conteudo.GravaInformacao(899,100, AHeader ) ;
+               Conteudo.GravaInformacao(899,101, IntToStr(fpIDSeq) ) ;
+               Conteudo.GravaInformacao(899,102, IndiceFPG_ECF ) ;
+               Conteudo.GravaInformacao(899,103, IntToStr(Trunc(SimpleRoundTo( Valor * 100 ,0))) );
+               Conteudo.GravaInformacao(899,104, AHeader );
 
-                Resp.TipoGP := fpTipo;
-              end;
-          end;
+               Resp.TipoGP := fpTipo;
+             end;
+        finally
+           ArquivoResposta.Free;
+        end ;
       end;
     end;
 end;
 
-function TACBrTEFDBanese.ProcessaRespostaRequisicao(operacao: TOperacaoTEFBanese) : Boolean;
+function TACBrTEFDTicketCar.ProcessaRespostaRequisicao(operacao: String) : Boolean;
 var
    TempoInicioEspera : Double;
    Interromper, OK   : Boolean;
-   RespostaRequisicao : TStringList;
 begin
   Result := False;
   Interromper := False ;
@@ -554,11 +527,11 @@ begin
      begin
         TempoInicioEspera := now ;
         fpAguardandoResposta := True ;
+
         try
-           {Aguarda o arquivo de status}
            repeat
               Sleep( TACBrTEFD(Owner).EsperaSleep );  // Necessário Para não sobrecarregar a CPU //
-  
+
               with TACBrTEFD(Owner) do
               begin
                  if Assigned( OnAguardaResp ) then
@@ -566,8 +539,6 @@ begin
                                    Interromper ) ;
               end ;
            until FileExists( ArqSTS ) or Interromper ;
-
-           DeleteFile(ArqSTS);
         finally
            fpAguardandoResposta := False ;
            with TACBrTEFD(Owner) do
@@ -577,55 +548,34 @@ begin
            end ;
         end;
 
-        TempoInicioEspera := now ;
-        try
-           {Aguarda o arquivo de resposta}        
-           repeat
-              Sleep( TACBrTEFD(Owner).EsperaSleep );  // Necessário Para não sobrecarregar a CPU //
+        fConteudoRet.LeArquivo( ArqSTS );
 
-              with TACBrTEFD(Owner) do
-              begin
-                 if Assigned( OnAguardaResp ) then
-                    OnAguardaResp( ArqResp, SecondsBetween(TempoInicioEspera, Now),
-                                   Interromper ) ;
-              end ;
-           until FileExists( ArqResp ) or Interromper ;
-        finally
-           fpAguardandoResposta := False ;
-           with TACBrTEFD(Owner) do
-           begin
-              if Assigned( OnAguardaResp ) then
-                 OnAguardaResp( ArqResp, -1, Interromper ) ;
-           end ;
-        end;
-
-        RespostaRequisicao := TStringList.Create;
-        RespostaRequisicao.LoadFromFile(ArqResp);
-
-        if copy(RespostaRequisicao[0],19,2) <> '00' then
+        if fConteudoRet.LeInformacao(517, 0).AsInteger <> 0 then
           begin
-             DeleteFile(ArqResp);
-             ShowMessage(copy(RespostaRequisicao[0],25,length(RespostaRequisicao[0])));
-             RespostaRequisicao.Free;
+             DeleteFile(ArqSTS);
+             ShowMessage(fConteudoRet.LeInformacao(517, 1).AsString);
+             fConteudoRet.Clear;
              Interromper := True;
+             Exit;
+          end;
+
+        if FileExists( ArqResp ) then
+          begin
+            fConteudoResp.LeArquivo( ArqResp );
+            DeleteFile(ArqSTS);
+            DeleteFile(ArqResp);
+            
+            //if ((operacao = operCRT) or (operacao = operCancelamento))  then
+              //CNF('', '', '');
+
+            OK := True;
+            Result := True;            
           end
         else
           begin
-            if (operacao = operFechamento) then
-              RespostaRequisicao.SaveToFile(ArqRespMovBkp)
-            else
-              RespostaRequisicao.SaveToFile(ArqRespBkp);
-
-            RespostaRequisicao.Free;
-            DeleteFile(ArqSTS);
-            DeleteFile(ArqResp);
-
-            {Se for CRT ou cancelamento, envia a confirmação}
-            if ((operacao = operCRT) or (operacao = operCancelamento))  then
-              CNF('', '', '');
-
-            OK := True;
-            Result := True;
+             fConteudoRet.Clear;
+             Interromper := True;
+             Exit;
           end;
      end ;
   finally
@@ -633,7 +583,7 @@ begin
   end ;
 end;
 
-function TACBrTEFDBanese.ProcessarRespostaPagamento( const IndiceFPG_ECF : String;
+function TACBrTEFDTicketCar.ProcessarRespostaPagamento( const IndiceFPG_ECF : String;
         const Valor : Double) : Boolean;
 var
   ImpressaoOk : Boolean;
@@ -649,7 +599,7 @@ begin
      CopiarResposta ;
 
      { Cria cópia do Objeto Resp, e salva no ObjectList "RespostasPendentes" }
-     RespostaPendente := TACBrTEFDRespBanese.Create ;
+     RespostaPendente := TACBrTEFDRespTicketCar.Create ;
      RespostaPendente.Assign( Resp );
      RespostasPendentes.Add( RespostaPendente );
 
@@ -698,56 +648,23 @@ begin
   end;
 end;
 
-procedure TACBrTEFDBanese.MontaArquivoResposta(aNSU: String; aRetorno:TStringList;
-    operacao:TOperacaoTEFBanese);
-var aResposta, imgCupom : TStringList;
-    posicao : Integer;
-begin
-  aResposta := TStringList.Create;
-  imgCupom := TStringList.Create;
-
-  posicao := 25;
-  while posicao < Length(aRetorno[0]) do
-    begin
-      imgCupom.Add(copy(aRetorno[0], posicao, 40));
-      posicao := posicao + 40;
-    end;
-
-  if operacao = operCRT then
-    begin
-      aResposta.Add('134-000 = ' + aNSU);
-      aResposta.Add('102-000 = T.E.F.');
-      aResposta.Add('121-000 = ' +  BinaryStringToString(imgCupom.Text));
-    end
-  else
-    aResposta.Text := imgCupom.Text;
-
-  aRetorno.Text := aResposta.Text;
-  aResposta.Clear;
-end;
-
-procedure TACBrTEFDBanese.ImprimirComprovantes(SL : TStringList);
+procedure TACBrTEFDTicketCar.ImprimirComprovantes(imgCupom: TStringList);
 var
   ImpressaoOk, FechaGerencialAberto, GerencialAberto : Boolean;
   Est : AnsiChar;
-  TempoInicio : TDateTime;
 begin
   CopiarResposta;
 
   GerencialAberto      := False;
   ImpressaoOk          := False ;
-  FechaGerencialAberto := False ;
-  TempoInicio          := now ;
-  
+  FechaGerencialAberto := False;
+
   with TACBrTEFD(Owner) do
   begin
     try
-      BloquearMouseTeclado( True );
-
       while not ImpressaoOk do
       begin
         try
-          try
            if FechaGerencialAberto then
            begin
              Est := EstadoECF;
@@ -766,10 +683,7 @@ begin
                raise EACBrTEFDECF.Create( ACBrStr('ECF não está LIVRE') ) ;
            end;
 
-            TempoInicio     := now ;
-            DoExibeMsg( opmExibirMsgOperador, 'IMPRIMINDO...' ) ;
-
-            if SL.Text <> '' then
+            if imgCupom.Text <> '' then
             begin
               if not GerencialAberto then
                begin
@@ -777,7 +691,7 @@ begin
                  GerencialAberto := True ;
                end;
 
-              ECFImprimeVia( trGerencial, 1, SL );
+              ECFImprimeVia( trGerencial, 1, imgCupom );
 
               ImpressaoOk := True ;
             end;
@@ -786,19 +700,6 @@ begin
           begin
              ComandarECF( opeFechaGerencial );
              GerencialAberto := False;
-          end;
-          finally
-            { Verifica se Mensagem Ficou pelo menos por 5 segundos }
-            if ImpressaoOk then
-            begin
-              while SecondsBetween(now,TempoInicio) < 5 do
-              begin
-                Sleep(EsperaSleep) ;
-                Application.ProcessMessages;
-              end;
-            end;
-
-            DoExibeMsg( opmRemoverMsgOperador, '' ) ;
           end;
         except
           on EACBrTEFDECF do ImpressaoOk := False ;
@@ -816,36 +717,87 @@ begin
         end;
       end ;
     finally
-      SL.Free;
+      //
     end;
   end;
 end;
 
-function TACBrTEFDBanese.RealizaTransacao(operacao : TOperacaoTEFBanese; Valor : Double): Boolean;
-var
-  ArquivoRequisicao : TStringList;
+function TACBrTEFDTicketCar.RealizaTransacao(operacao : String; Valor : Double): Boolean;
+var ArquivoRequisicao : TStringList;
+    NumGNF, NumCOO,
+    NumCNF, CodProduto, IndProdServ, IndISS,
+    PosTotalizador : Integer;
+    CodTCS, DescricaoProduto: String;
+    QuantProduto, VlrDesconto, VlrUnitario : Double;
 begin
   ArquivoRequisicao := TStringList.Create;
   try
-    case operacao of
-      operCRT          : ArquivoRequisicao.Add('SP0001TTTTC' +
-                         padR(RemoveString(',', FormatFloat('0.00', Valor)), 12, '0'));
-      operCancelamento : ArquivoRequisicao.Add('SP0001TTTTL');
-      operFechamento   : ArquivoRequisicao.Add('SP0001TTTTM')
-    end;
-    ArquivoRequisicao.SaveToFile('C:\bcard\req\pergunta.tmp');
+     if operacao = 'ADM' then
+       begin
+         if fAtualizaPrecos then
+           begin
+             fOnObtemListaProdutos(ArquivoRequisicao);
+           end
+         else
+           begin
+             ArquivoRequisicao.Add('500-000 = ADM');
+             ArquivoRequisicao.Add('501-000 = ' + IntToStr(SecondOfTheDay(now)));
+             ArquivoRequisicao.Add('999-999 = 0')
+           end;
+       end;
+
+     if operacao = 'CRT' then
+       begin
+         NumGNF           := 0;
+         NumCOO           := 0;
+         NumCNF           := 0;
+         CodProduto       := 0;
+         IndProdServ      := 0;
+         IndISS           := 0;
+         PosTotalizador   := 0;
+         CodTCS           := '';
+         DescricaoProduto := '';
+         QuantProduto     := 0;
+         VlrDesconto      := 0;
+         VlrUnitario      := 0;
+         fOnObtemDadosVenda(NumGNF, NumCOO, NumCNF, CodProduto,
+                            IndProdServ, IndISS, PosTotalizador,
+                            CodTCS, DescricaoProduto, QuantProduto, VlrDesconto,
+                            VlrUnitario);
+
+         ArquivoRequisicao.Add('500-000 = CRT');
+         ArquivoRequisicao.Add('501-000 = ' + IntToStr(SecondOfTheDay(now)));
+         ArquivoRequisicao.Add('502-000 = ' + IntToStr(fNumCaixa));
+         ArquivoRequisicao.Add('503-000 = ' + IntToStr(NumGNF));
+         ArquivoRequisicao.Add('504-000 = ' + IntToStr(NumCOO));
+         ArquivoRequisicao.Add('505-000 = ' + IntToStr(fNumLoja));
+         ArquivoRequisicao.Add('506-000 = ' + CodTCS);
+         ArquivoRequisicao.Add('507-000 = ' + FormatFloat('0', QuantProduto * 100));
+         ArquivoRequisicao.Add('508-000 = ' + FormatFloat('0', VlrDesconto * 100));
+         ArquivoRequisicao.Add('509-000 = ' + IntToStr(CodProduto));
+         ArquivoRequisicao.Add('509-001 = ' + DescricaoProduto);
+         ArquivoRequisicao.Add('510-000 = ' + FormatFloat('0', Valor * 100));
+         ArquivoRequisicao.Add('518-000 = ' + IntToStr(IndProdServ));
+         ArquivoRequisicao.Add('519-000 = ' + FormatFloat('0', VlrUnitario * 1000));
+         ArquivoRequisicao.Add('520-000 = ' + IntToStr(IndISS));
+         ArquivoRequisicao.Add('521-000 = ' + IntToStr(NumCNF));
+         ArquivoRequisicao.Add('522-000 = ' + IntToStr(PosTotalizador));
+         ArquivoRequisicao.Add('999-999 = 0');
+       end;
+
+     ArquivoRequisicao.SaveToFile(CACBrTEFDTicketCar_ArqTemp);
   finally
-    ArquivoRequisicao.Free;
+     ArquivoRequisicao.Free;
   end ;
 
   RenameFile(fArqTmp, fArqReq);
 
-  Result := ProcessaRespostaRequisicao(operacao);
-end;
+  if fAtualizaPrecos then
+    RunCommand( GPExeName, '/A' )
+  else
+    RunCommand( GPExeName );
 
-procedure TACBrTEFDBanese.SetArqRespMovBkp(const Value: String);
-begin
-  fArqRespMovBkp := Value;
+  Result := ProcessaRespostaRequisicao(operacao);
 end;
 
 end.

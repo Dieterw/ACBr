@@ -97,8 +97,19 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 01/03/2012
+-- ACBrECF --
+[*] Relatórios emitidos por PafMf_* modificados para evitar o uso da Tag "<e>"
+    http://www.djsystem.com.br/acbr/forum/viewtopic.php?f=10&t=4932
+
+-- ACBrECFBematech --
+[-] Tentativa de Correção para a impressão da Tag "<e>"
+
+-- ACBrECFSwedaSTX --
+[-] Ajuste para evitar erros de TimeOut após o acionamento da Gaveta
+
 Data: 27/02/2012
--- ACBrSerial --
+-- ACBrECF --
 [*] Acerto para não limpar a marcação de minas legal e cupom mania.
     Conforme post no fórum: 
     http://djsystem.com.br/acbr/forum/viewtopic.php?f=10&t=3334&p=24334#p24334

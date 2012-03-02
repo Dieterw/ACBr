@@ -1283,6 +1283,7 @@ end;
 Procedure TACBrECFSwedaSTX.AbreGaveta ;
 begin
   EnviaComando( '11' ) ;
+  Sleep(200);
 end;
 
 Procedure TACBrECFSwedaSTX.ReducaoZ(DataHora: TDateTime) ;

@@ -42,7 +42,7 @@ FormOnTop=1
 
 [C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit1.pas]
 ModuleType=SourceModule
-FormState=1
+FormState=0
 FormOnTop=0
 
 [C:\Pascal\Comp\ACBr\trunk\Fontes\ACBrTEFD\ACBrTEFDVeSPague.pas]
@@ -180,9 +180,9 @@ Width=1680
 Height=122
 MaxLeft=-1
 MaxTop=-1
-MaxWidth=1692
+MaxWidth=1696
 MaxHeight=122
-ClientWidth=1676
+ClientWidth=1680
 ClientHeight=84
 
 [ProjectManager]

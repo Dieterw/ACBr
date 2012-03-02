@@ -28,9 +28,9 @@ object Form1: TForm1
     Height = 208
     Top = 0
     Width = 769
-    ActivePage = tsConfig
+    ActivePage = tsOperacao
     Align = alTop
-    TabIndex = 0
+    TabIndex = 1
     TabOrder = 2
     object tsConfig: TTabSheet
       Caption = 'Configuração'
@@ -337,7 +337,7 @@ object Form1: TForm1
     object tsOperacao: TTabSheet
       Caption = 'Operação'
       ClientHeight = 180
-      ClientWidth = 750
+      ClientWidth = 761
       object gbCupomECF: TGroupBox
         Left = 0
         Height = 180
@@ -475,11 +475,11 @@ object Form1: TForm1
         Left = 292
         Height = 180
         Top = 0
-        Width = 458
+        Width = 469
         Align = alClient
         Caption = 'TEF'
         ClientHeight = 162
-        ClientWidth = 454
+        ClientWidth = 465
         TabOrder = 1
         object bADM: TButton
           Left = 6
@@ -594,7 +594,7 @@ object Form1: TForm1
         object bAbreVendeSubTotaliza2: TButton
           Left = 230
           Height = 27
-          Top = 42
+          Top = 29
           Width = 187
           Caption = 'ConfirmarTransacoesPendentes'
           OnClick = bAbreVendeSubTotaliza2Click
@@ -603,7 +603,7 @@ object Form1: TForm1
         object bAbreVendeSubTotaliza3: TButton
           Left = 230
           Height = 27
-          Top = 84
+          Top = 58
           Width = 187
           Caption = 'ImprimirTransacoesPendentes'
           OnClick = bAbreVendeSubTotaliza3Click
@@ -612,11 +612,40 @@ object Form1: TForm1
         object bAbreVendeSubTotaliza4: TButton
           Left = 230
           Height = 27
-          Top = 126
+          Top = 87
           Width = 187
           Caption = 'FinalizarCupom'
           OnClick = bAbreVendeSubTotaliza4Click
           TabOrder = 13
+        end
+        object GroupBox1: TGroupBox
+          Left = 232
+          Height = 45
+          Top = 115
+          Width = 185
+          Caption = 'TEF Direção'
+          ClientHeight = 27
+          ClientWidth = 181
+          TabOrder = 14
+          object ComboBox1: TComboBox
+            Left = 9
+            Height = 23
+            Top = 1
+            Width = 166
+            ItemHeight = 15
+            ItemIndex = 0
+            Items.Strings = (
+              'Nenhuma Transação'
+              'Cartão de Crédito'
+              'Cartão de Débito'
+              'Cartão Voucher'
+              'Cartão Private Label'
+              'Cheque'
+              'Controle de Frota'
+            )
+            TabOrder = 0
+            Text = 'Nenhuma Transação'
+          end
         end
       end
     end
@@ -974,6 +1003,41 @@ object Form1: TForm1
     TEFBanese.ArqRespBkp = 'C:\bcard\resposta.txt'
     TEFBanese.ArqRespMovBkp = 'C:\bcard\copiamovimento.txt'
     TEFBanese.OnObtemInformacao = BaneseObtemInformacao
+    TEFAuttar.ArqTemp = 'C:\Auttar_TefIP\req\intpos.tmp'
+    TEFAuttar.ArqReq = 'C:\Auttar_TefIP\req\intpos.001'
+    TEFAuttar.ArqSTS = 'C:\Auttar_TefIP\resp\intpos.sts'
+    TEFAuttar.ArqResp = 'C:\Auttar_TefIP\resp\intpos.001'
+    TEFAuttar.GPExeName = 'C:\Program Files (x86)\Auttar\IntegradorTEF-IP.exe'
+    TEFGood.ArqTemp = 'C:\good\gettemp.dat'
+    TEFGood.ArqReq = 'C:\good\getreq.dat'
+    TEFGood.ArqSTS = 'C:\good\getstat.dat'
+    TEFGood.ArqResp = 'C:\good\getresp.dat'
+    TEFGood.GPExeName = 'C:\good\GETGoodMed.exe'
+    TEFFoxWin.ArqTemp = 'C:\FwTEF\req\intpos.tmp'
+    TEFFoxWin.ArqReq = 'C:\FwTEF\req\intpos.001'
+    TEFFoxWin.ArqSTS = 'C:\FwTEF\rsp\intpos.sts'
+    TEFFoxWin.ArqResp = 'C:\FwTEF\rsp\intpos.001'
+    TEFFoxWin.GPExeName = 'C:\FwTEF\bin\FwTEF.exe'
+    TEFCliDTEF.OnExibeMenu = CliDTEFExibeMenu
+    TEFCliDTEF.OnObtemInformacao = CliDTEFObtemInformacao
+    TEFPetrocard.ArqTemp = 'C:\CardTech\req\intpos.tmp'
+    TEFPetrocard.ArqReq = 'C:\CardTech\req\intpos.001'
+    TEFPetrocard.ArqSTS = 'C:\CardTech\resp\intpos.sts'
+    TEFPetrocard.ArqResp = 'C:\CardTech\resp\intpos.001'
+    TEFPetrocard.GPExeName = 'C:\CardTech\sac.exe'
+    TEFCrediShop.ArqTemp = 'C:\tef_cshp\req\intpos.tmp'
+    TEFCrediShop.ArqReq = 'C:\tef_cshp\req\intpos.001'
+    TEFCrediShop.ArqSTS = 'C:\tef_cshp\resp\intpos.sts'
+    TEFCrediShop.ArqResp = 'C:\tef_cshp\resp\intpos.001'
+    TEFCrediShop.GPExeName = 'C:\tef_cshp\vpos_tef.exe'
+    TEFTicketCar.ArqTemp = 'C:\TCS\TX\INTTCS.tmp'
+    TEFTicketCar.ArqReq = 'C:\TCS\TX\INTTCS.001'
+    TEFTicketCar.ArqSTS = 'C:\TCS\RX\INTTCS.RET'
+    TEFTicketCar.ArqResp = 'C:\TCS\RX\INTTCS.001'
+    TEFTicketCar.GPExeName = 'C:\TCS\tcs.exe'
+    TEFTicketCar.NumLoja = 0
+    TEFTicketCar.NumCaixa = 0
+    TEFTicketCar.AtualizaPrecos = False
     OnAguardaResp = ACBrTEFD1AguardaResp
     OnExibeMsg = ACBrTEFD1ExibeMsg
     OnBloqueiaMouseTeclado = ACBrTEFD1BloqueiaMouseTeclado

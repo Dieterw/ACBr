@@ -5498,7 +5498,12 @@ begin
     Relatorio.Add('');
 
     if AIndiceRelatorio <= 0 then
-      Relatorio.Add('<e>   MEIOS DE PAGAMENTO</e>');
+    begin
+      Relatorio.Add('</linha_dupla>');
+      Relatorio.Add('<ce>MEIOS DE PAGAMENTO</ce>');
+      Relatorio.Add('</linha_dupla>');
+      Relatorio.Add('');
+    end;
 
     if Trim(ATituloRelatorio) <> '' then
       Relatorio.Add(PadC(ATituloRelatorio, TamLin));
@@ -5610,7 +5615,12 @@ begin
     Relatorio.Add('');
 
     if IndiceRelatorio <= 0 then
-      Relatorio.Add('<e>      DAV EMITIDOS</e>');
+    begin
+      Relatorio.Add('</linha_dupla>');
+      Relatorio.Add('<ce>DAV EMITIDOS</ce>');
+      Relatorio.Add('</linha_dupla>');
+      Relatorio.Add('');
+    end;
 
     if Trim(TituloRelatorio) <> '' then
     begin
@@ -5665,7 +5675,12 @@ begin
     Relatorio.Add('');
 
     if IndiceRelatorio <= 0 then
-      Relatorio.Add('<e>IDENTIFICACAO DO PAF-ECF</e>');
+    begin
+      Relatorio.Add('</linha_dupla>');
+      Relatorio.Add('<ce>IDENTIFICACAO DO PAF-ECF</ce>');
+      Relatorio.Add('</linha_dupla>');
+      Relatorio.Add('');
+    end;
 
     Relatorio.Add('</linha_dupla>');
     Relatorio.Add('LAUDO NUMERO: <n>' + IdentificacaoPaf.NumeroLaudo + '</n>');
@@ -5950,7 +5965,7 @@ begin
     TextoRel.Add('</linha_simples>');
     TextoRel.Add('<ce>DOCUMENTO AUXILIAR DE VENDA</ce>');
     TextoRel.Add('</linha_simples>');
-    TextoRel.Add('<e>' + ADescrDocumento + ' N.' + ANumero + '</e>');
+    TextoRel.Add('<ce>' + ADescrDocumento + ' N.' + ANumero + '</ce>');
     TextoRel.Add('</linha_simples>');
     TextoRel.Add('<ce>NÃO É DOCUMENTO FISCAL</ce>');
     TextoRel.Add('<ce>NÃO COMPROVA PAGAMENTO</ce>');

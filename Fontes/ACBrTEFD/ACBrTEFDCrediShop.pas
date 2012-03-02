@@ -34,13 +34,13 @@
 {******************************************************************************
 |* Historico
 |*
-|* 21/11/2009: Daniel Simoes de Almeida
+|* 10/08/2011: Márcio D. Carvalho
 |*  - Primeira Versao: Criaçao e Distribuiçao da Primeira Versao
 ******************************************************************************}
 
 {$I ACBr.inc}
 
-unit ACBrTEFDGoodCard;
+unit ACBrTEFDCrediShop;
 
 interface
 
@@ -48,17 +48,17 @@ uses
   Classes, SysUtils, ACBrTEFDClass;
 
 const
-  CACBrTEFDGoodCard_ArqTemp   = 'C:\good\gettemp.dat' ;
-  CACBrTEFDGoodCard_ArqReq    = 'C:\good\getreq.dat' ;
-  CACBrTEFDGoodCard_ArqResp   = 'C:\good\getresp.dat' ;
-  CACBrTEFDGoodCard_ArqSTS    = 'C:\good\getstat.dat' ;
-  CACBrTEFDGoodCard_GPExeName = 'C:\good\GETGoodMed.exe' ;
+  CACBrTEFDCrediShop_ArqTemp   = 'C:\tef_cshp\req\intpos.tmp' ;
+  CACBrTEFDCrediShop_ArqReq    = 'C:\tef_cshp\req\intpos.001' ;
+  CACBrTEFDCrediShop_ArqResp   = 'C:\tef_cshp\resp\intpos.001' ;
+  CACBrTEFDCrediShop_ArqSTS    = 'C:\tef_cshp\resp\intpos.sts' ;
+  CACBrTEFDCrediShop_GPExeName = 'C:\tef_cshp\vpos_tef.exe' ;
 
 
 type
-   { TACBrTEFDGoodCard }
+   { TACBrTEFDCrediShop }
 
-   TACBrTEFDGoodCard = class( TACBrTEFDClassTXT )
+   TACBrTEFDCrediShop = class( TACBrTEFDClassTXT )
    private
    public
      constructor Create( AOwner : TComponent ) ; override ;
@@ -70,17 +70,17 @@ Uses ACBrUtil, dateutils;
 
 { TACBrTEFDClass }
 
-constructor TACBrTEFDGoodCard.Create(AOwner : TComponent);
+constructor TACBrTEFDCrediShop.Create(AOwner : TComponent);
 begin
   inherited Create(AOwner);
 
-  ArqReq    := CACBrTEFDGoodCard_ArqReq ;
-  ArqResp   := CACBrTEFDGoodCard_ArqResp ;
-  ArqSTS    := CACBrTEFDGoodCard_ArqSTS ;
-  ArqTemp   := CACBrTEFDGoodCard_ArqTemp ;
-  GPExeName := CACBrTEFDGoodCard_GPExeName ;
-  fpTipo    := gpGoodCard;
-  Name      := 'GoodCard' ;
+  ArqReq    := CACBrTEFDCrediShop_ArqReq ;
+  ArqResp   := CACBrTEFDCrediShop_ArqResp ;
+  ArqSTS    := CACBrTEFDCrediShop_ArqSTS ;
+  ArqTemp   := CACBrTEFDCrediShop_ArqTemp ;
+  GPExeName := CACBrTEFDCrediShop_GPExeName ;
+  fpTipo    := gpCrediShop;
+  Name      := 'CrediShop' ;
 end;
 
 end.

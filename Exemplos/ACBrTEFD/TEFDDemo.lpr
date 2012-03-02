@@ -9,7 +9,7 @@ uses
   {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
   Forms, Unit1, ConfiguraSerial, ACBr_TEFD, Unit2, Unit3, Unit4, Unit5, Unit6,
-  ACBrComum, ACBrSerial;
+  Unit7, ACBrComum, ACBrSerial;
 
 {$R TEFDDemo.res}
 

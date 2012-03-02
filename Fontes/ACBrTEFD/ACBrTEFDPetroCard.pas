@@ -40,7 +40,7 @@
 
 {$I ACBr.inc}
 
-unit ACBrTEFDGoodCard;
+unit ACBrTEFDPetroCard;
 
 interface
 
@@ -48,17 +48,17 @@ uses
   Classes, SysUtils, ACBrTEFDClass;
 
 const
-  CACBrTEFDGoodCard_ArqTemp   = 'C:\good\gettemp.dat' ;
-  CACBrTEFDGoodCard_ArqReq    = 'C:\good\getreq.dat' ;
-  CACBrTEFDGoodCard_ArqResp   = 'C:\good\getresp.dat' ;
-  CACBrTEFDGoodCard_ArqSTS    = 'C:\good\getstat.dat' ;
-  CACBrTEFDGoodCard_GPExeName = 'C:\good\GETGoodMed.exe' ;
+  CACBrTEFDPetroCard_ArqTemp   = 'C:\CardTech\req\intpos.tmp' ;
+  CACBrTEFDPetroCard_ArqReq    = 'C:\CardTech\req\intpos.001' ;
+  CACBrTEFDPetroCard_ArqResp   = 'C:\CardTech\resp\intpos.001' ;
+  CACBrTEFDPetroCard_ArqSTS    = 'C:\CardTech\resp\intpos.sts' ;
+  CACBrTEFDPetroCard_GPExeName = 'C:\CardTech\sac.exe' ;
 
 
 type
    { TACBrTEFDGoodCard }
 
-   TACBrTEFDGoodCard = class( TACBrTEFDClassTXT )
+   TACBrTEFDPetroCard = class( TACBrTEFDClassTXT )
    private
    public
      constructor Create( AOwner : TComponent ) ; override ;
@@ -70,17 +70,17 @@ Uses ACBrUtil, dateutils;
 
 { TACBrTEFDClass }
 
-constructor TACBrTEFDGoodCard.Create(AOwner : TComponent);
+constructor TACBrTEFDPetroCard.Create(AOwner : TComponent);
 begin
   inherited Create(AOwner);
 
-  ArqReq    := CACBrTEFDGoodCard_ArqReq ;
-  ArqResp   := CACBrTEFDGoodCard_ArqResp ;
-  ArqSTS    := CACBrTEFDGoodCard_ArqSTS ;
-  ArqTemp   := CACBrTEFDGoodCard_ArqTemp ;
-  GPExeName := CACBrTEFDGoodCard_GPExeName ;
-  fpTipo    := gpGoodCard;
-  Name      := 'GoodCard' ;
+  ArqReq    := CACBrTEFDPetroCard_ArqReq ;
+  ArqResp   := CACBrTEFDPetroCard_ArqResp ;
+  ArqSTS    := CACBrTEFDPetroCard_ArqSTS ;
+  ArqTemp   := CACBrTEFDPetroCard_ArqTemp ;
+  GPExeName := CACBrTEFDPetroCard_GPExeName ;
+  fpTipo    := gpPetroCard;
+  Name      := 'PetroCard' ;
 end;
 
 end.

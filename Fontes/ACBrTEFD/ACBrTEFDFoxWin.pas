@@ -57,7 +57,7 @@ const
 type
    { TACBrTEFDFoxWin }
 
-   TACBrTEFDFoxWin = class( TACBrTEFDClass )
+   TACBrTEFDFoxWin = class( TACBrTEFDClassTXT )
    private
    public
      constructor Create( AOwner : TComponent ) ; override ;

@@ -47,8 +47,8 @@ interface
 uses
   Classes, SysUtils, ACBrTEFDClass, ACBrTEFDAuttar,
   ACBrTEFDDial, ACBrTEFDDisc, ACBrTEFDHiper, ACBrTEFDCliSiTef, ACBrTEFDGpu,
-  ACBrTEFDVeSPague, ACBrTEFDBanese
-  {, ACBrTEFDGoodCard, ACBrTEFDFoxWin}
+  ACBrTEFDVeSPague, ACBrTEFDBanese, ACBrTEFDGoodCard, ACBrTEFDFoxWin,
+  ACBrTEFDCliDTEF, ACBrTEFDPetroCard, ACBrTEFDCrediShop, ACBrTEFDTicketCar
   {$IFDEF FPC}
     ,LResources
   {$ENDIF}
@@ -98,6 +98,7 @@ type
      fPathBackup   : String;
      fGPAtual      : TACBrTEFDTipo;
      fTecladoBloqueado : Boolean;
+
      fTefClass     : TACBrTEFDClass ;
      fTefDial      : TACBrTEFDDial ;
      fTefGPU       : TACBrTEFDGpu ;
@@ -107,8 +108,13 @@ type
      fTefHiper     : TACBrTEFDHiper ;
      fTefBanese    : TACBrTEFDBanese ;
      fTefAuttar    : TACBrTEFDAuttar ;
-//   fTefGood      : TACBrTEFDGoodCard ;
-//   fTefFW        : TACBrTEFDFoxWin ;
+     fTefGood      : TACBrTEFDGoodCard ;
+     fTefFW        : TACBrTEFDFoxWin ;
+     fTefCliDTEF   : TACBrTEFDCliDTEF ;
+     fTefPetrocard : TACBrTEFDPetroCard ;
+     fTefCrediShop : TACBrTEFDCrediShop ;
+     fTefTicketCar : TACBrTEFDTicketCar ;
+
      fEsperaSTS    : Integer;
      fTEFList      : TACBrTEFDClassList ;
      fpRespostasPendentes : TACBrTEFDRespostasPendentes;
@@ -123,7 +129,6 @@ type
      function GetPathBackup : String;
      function GetReq : TACBrTEFDReq;
      function GetResp : TACBrTEFDResp;
-     procedure SetAutoAtivarGP(const AValue : Boolean);
      procedure SetAutoEfetuarPagamento(const AValue : Boolean);
      procedure SetAutoFinalizarCupom(const AValue : Boolean);
      procedure SetEsperaSleep(const AValue : Integer);
@@ -242,8 +247,12 @@ type
      property TEFGPU     : TACBrTEFDGpu      read fTefGPU ;
      property TEFBanese  : TACBrTEFDBanese   read fTefBanese ;
      property TEFAuttar  : TACBrTEFDAuttar   read fTefAuttar ;     
-//   property TEFGood    : TACBrTEFDGoodCard read fTefGood ;
-//   property TEFFoxWin  : TACBrTEFDFoxWin   read fTefFW ;
+     property TEFGood    : TACBrTEFDGoodCard read fTefGood ;
+     property TEFFoxWin  : TACBrTEFDFoxWin   read fTefFW ;
+     property TEFCliDTEF : TACBrTEFDCliDTEF  read fTefCliDTEF ;
+     property TEFPetrocard : TACBrTEFDPetroCard  read fTefPetrocard ;
+     property TEFCrediShop : TACBrTEFDCrediShop  read fTefCrediShop ;
+     property TEFTicketCar : TACBrTEFDTicketCar  read fTefTicketCar ;
 
      property OnAguardaResp : TACBrTEFDAguardaRespEvent read fOnAguardaResp
         write fOnAguardaResp ;
@@ -403,8 +412,7 @@ begin
    fTefBanese.SetSubComponent(True);   // Ajustando como SubComponente para aparecer no ObjectInspector
   {$ENDIF}
 
-(*
-{ Criando Classe GOOD CARD }
+  { Criando Classe GOOD CARD }
   fTefGood := TACBrTEFDGoodCard.Create(self);
   fTEFList.Add(fTefGood);     // Adicionando "fTefGood" na Lista Objetos de Classes de TEF
   {$IFDEF COMPILER6_UP}
@@ -417,7 +425,34 @@ begin
   {$IFDEF COMPILER6_UP}
    fTefFW.SetSubComponent(True);   // Ajustando como SubComponente para aparecer no ObjectInspector
   {$ENDIF}
-*)
+
+  { Criando Classe CliDTEF }
+  fTefCliDTEF := TACBrTEFDCliDTEF.Create(self);
+  fTEFList.Add(fTefCliDTEF);     // Adicionando "fTefCliDTEF" na Lista Objetos de Classes de TEF
+  {$IFDEF COMPILER6_UP}
+   fTefCliDTEF.SetSubComponent(True);   // Ajustando como SubComponente para aparecer no ObjectInspector
+  {$ENDIF}
+
+  { Criando Classe Petrocard }
+  fTefPetrocard := TACBrTEFDPetroCard.Create(self);
+  fTEFList.Add(fTefPetrocard);     // Adicionando "fTefPetrocard" na Lista Objetos de Classes de TEF
+  {$IFDEF COMPILER6_UP}
+   fTefPetrocard.SetSubComponent(True);   // Ajustando como SubComponente para aparecer no ObjectInspector
+  {$ENDIF}
+
+  { Criando Classe CrediShop }
+  fTefCrediShop := TACBrTEFDCrediShop.Create(self);
+  fTEFList.Add(fTefCrediShop);     // Adicionando "fTefCrediShop" na Lista Objetos de Classes de TEF
+  {$IFDEF COMPILER6_UP}
+   fTefCrediShop.SetSubComponent(True);   // Ajustando como SubComponente para aparecer no ObjectInspector
+  {$ENDIF}
+
+  { Criando Classe TicketCar }
+  fTefTicketCar := TACBrTEFDTicketCar.Create(self);
+  fTEFList.Add(fTefTicketCar);     // Adicionando "fTefTicketCar" na Lista Objetos de Classes de TEF
+  {$IFDEF COMPILER6_UP}
+   fTefTicketCar.SetSubComponent(True);   // Ajustando como SubComponente para aparecer no ObjectInspector
+  {$ENDIF}
 
   GPAtual := gpTefDial;
 end;
@@ -519,16 +554,20 @@ begin
   if AValue = fGPAtual then exit ;
 
   case AValue of
-    gpTefDial  : fTefClass := fTefDial ;
-    gpTefDisc  : fTefClass := fTefDisc ;
-    gpHiperTef : fTefClass := fTefHiper ;
-    gpCliSiTef : fTefClass := fTefCliSiTef;
-    gpVeSPague : fTefClass := fTefVeSPague;
-    gpTefGpu   : fTefClass := fTefGPU;
-    gpBanese   : fTefClass := fTefBanese ;
-    gpTefAuttar: fTefClass := fTefAuttar ;
-//  gpGoodCard : fTefClass := fTefGood ;
-//  gpFoxWin   : fTefClass := fTefFW ;
+    gpTefDial   : fTefClass := fTefDial ;
+    gpTefDisc   : fTefClass := fTefDisc ;
+    gpHiperTef  : fTefClass := fTefHiper ;
+    gpCliSiTef  : fTefClass := fTefCliSiTef;
+    gpVeSPague  : fTefClass := fTefVeSPague;
+    gpTefGpu    : fTefClass := fTefGPU;
+    gpBanese    : fTefClass := fTefBanese ;
+    gpTefAuttar : fTefClass := fTefAuttar ;
+    gpGoodCard  : fTefClass := fTefGood ;
+    gpFoxWin    : fTefClass := fTefFW ;
+    gpCliDTEF   : fTefClass := fTefCliDTEF ;
+    gpPetroCard : fTefClass := fTefPetrocard ;
+    gpCrediShop : fTefClass := fTefCrediShop ;
+    gpTicketCar : fTefClass := fTefTicketCar ;
   end;
 
   fGPAtual := AValue;
@@ -1359,18 +1398,6 @@ begin
       raise Exception.Create( ACBrStr('Valor máximo de EsperaSleep deve ser: 500' )) ;
 
    fEsperaSleep := AValue;
-end;
-
-procedure TACBrTEFD.SetAutoAtivarGP(const AValue : Boolean);
-var
-   I : Integer;
-begin
-  { Ajustando o mesmo valor nas Classes de TEF }
-  For I := 0 to fTEFList.Count-1 do
-    if fTEFList[I] is TACBrTEFDClassTXT then
-       TACBrTEFDClassTXT( fTEFList[I] ).AutoAtivarGP := AValue;
-
-  fAutoAtivarGP := AValue;
 end;
 
 procedure TACBrTEFD.SetMultiplosCartoes(const AValue : Boolean);

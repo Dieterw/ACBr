@@ -31,79 +31,6 @@
 {                                                                              }
 {******************************************************************************}
 
-{******************************************************************************
-|* Historico
-|*
-|* 19/05/2004:  Daniel Simoes de Almeida
-|*   Primeira Versao: Criaçao e Distribuiçao da Primeira Versao
-|* 21/06/2004:  Daniel Simoes de Almeida
-|*   Otimizacao acesso a Variaveis do ECF (NumSerie, NumECF, NumVersao)
-|*   Melhorado o suporte a Impressora Thermica MFD
-|* 20/05/2005:  Daniel Simoes de Almeida
-|*   Corrigido BUG em FechaCupom. Linhas de Observação eram impressas erradas.
-|*   -  Bug reportado por: Erique Costa
-|* 13/06/2005:  Daniel Simoes de Almeida
-|*   Corrigido BUG em AbreCupom na MP25 / MFD. Mesmo que CPF/CNPJ não fosse
-|*   informado era impressa a linha de CPF/CNPJ.
-|*   -  Bug reportado por: Anderson Rogerio Bejatto
-|* 26/10/2005:  Daniel Simoes de Almeida
-|*   Corrigido BUG em CarregaFormasPagamento. Todas as formas carregadas eram
-|*   convertidas para Maiusculas   Bug reportado por: Ederson Selvati 
-|* 29/10/2005:  Daniel Simoes de Almeida
-|*   Adcionado itens SA-Sangria e SU-suprimento em CarregaComprovantesNaoFiscais.
-|*   pois esses indices sempre estarão presentes na Bematech
-|* 01/12/2005:  Daniel Simoes de Almeida
-|*   Melhorado suporte a VendaItem em MFD, usando  novo comando 63
-|*   (não imprimia a Unidade)
-|* 08/12/2005:  Daniel Simoes de Almeida
-|*  - VerificaFimImpressao disparava excessão quando ECF não estava em linha
-|*    Bug reportado por: Adriano Alves Dornelas
-|*  - Diminuido tempo de alguns Sleeps de 100 para 10 a fim de agilizar a
-|*    comunicaçao com o ECF (experimental)
-|* 03/05/2006:  Daniel Simoes de Almeida
-|*  - Adcionada a propriedade Publica IsTH, que retorna Verdadeiro se o ECF for
-|*    Térmico (mais rápido)
-|*  - Se o ECF for Térmico imprime as Linhas do Vinculado e Gerencial em apenas
-|*    um comando, (muito mais rápido) 
-|* 08/06/2006:  Daniel Simoes de Almeida
-|*  - Modificado EnviaComando para tolerar 3 falhas na recepção do ACK...Ou seja
-4|*    o erro só será reportado se o ECF retornar ACK inválido 3 vezes consecutivas
-|* 16/06/2006:  Daniel Simoes de Almeida
-|*  - Abertura de Cupom Vinculado as vezes falha na Bematech MP20/40 se usar
-|*    todos os parâmetros... nesses casos de erro, será tentada a abertura com
-|*    parametros simples antes de acusar a falha
-|*  - Removida a tolerancia de 3 ACKs inválidos inserida em 08/06/2006.
-|*    Mecanismo de espera do ACK ajustado para trabalhar junto com o TimeOut
-|* 29/06/2006:  Daniel Simoes de Almeida
-|*  - Aumentado o TimeOut dos comandos LeituraX e AbreRelatorioGerencial
-|* 01/08/2006:  Anderson Rogerio Bejatto
-|*  - Aumentado o TimeOut do comando FechaCupom
-|* 01/09/2006:  Daniel Simoes de Almeida
-|*  - Adicionada a verificação do Estado  estRequerZ  se o modelo for MFD
-|* 07/11/2006:  Daniel Simoes de Almeida
-|*  - Adicionada a verificação do modelo MP40, que possui apenas 40 colunas
-|* 04/12/2006:  Daniel Simoes de Almeida
-|*  - Corrigido Bug na abertura de Cupom Fiscal com CNPJ na MP20
-|* 01/04/2007:  Daniel Simoes de Almeida
-|*  - Implementados métodos de Cupom Não Fiscal
-|* 04/09/2006:  Daniel Simoes de Almeida
-|*  - Adicionada a verificação do Estado  estRequerZ  para todos os modelos,
-|*    pois a versão 3.30 da MP20-FI2, em alguns casos, não mais emite a 
-|*    Redução Z automáticamente
-|* 11/04/2008:  Daniel Simoes de Almeida
-|*  - Adicionado método CortarPapel
-|*  - EnviaComando_ECF melhorada para diminuir frequencia de msgs de ACK inválido
-|*  - VerificaFimImpressao melhorada para detectar que o ECF está trabalhando
-|*    e com isso aumentar o Tempo de estouro do TimeOut.
-|*    - Com isso, não é necessário setar TimeOuts muito grandes
-|* 09/06/2009:  Daniel Simoes de Almeida
-|*  - Correção em GetDadosUltimaReducaoZ, para somar TotalCancelamentos em
-|*    VendaBruta. Por: Brener B. Leão
-|* 10/06/2009:  Daniel Simoes de Almeida
-|*  - Implementação da programação de relatorio gerencial
-|*    Por: Franklin Haut
-******************************************************************************}
-
 {$I ACBr.inc}
 
 unit ACBrECFBematech ;
@@ -3984,12 +3911,12 @@ end;
 
 function TACBrECFBematech.TraduzirTag(const ATag: AnsiString): AnsiString;
 const
-  C_ON  = #1;
-  C_OFF = #0;
+  C_ON  = #1 ;
+  C_OFF = #0 ;
 
   // <e></e>
-  cExpandidoOn   = ESC + 'W' + C_ON;
-  cExpandidoOff  = ESC + 'W' + C_OFF;
+  cExpandidoOn   = ESC + SO;
+  cExpandidoOff  = #20;
 
   // <n></n>
   cNegritoOn     = ESC + 'E';

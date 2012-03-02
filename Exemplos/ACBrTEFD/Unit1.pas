@@ -10,7 +10,7 @@ uses
   Classes, SysUtils,
   Forms, Controls, Graphics, Dialogs,
   StdCtrls, ExtCtrls, Buttons, ComCtrls, ACBrECF, ACBrDevice, ACBrTEFD,
-  ACBrTEFDClass, ACBrUtil , ACBrTEFDCliSiTef, ACBrTEFDVeSPague, ACBrBase, ACBrTEFDBanese;
+  ACBrTEFDClass, ACBrUtil , ACBrTEFDCliSiTef, ACBrTEFDCliDTEF;
 
 type
 
@@ -60,6 +60,7 @@ type
      ckMultiplosCartoes1 : TCheckBox;
      ckTEFDIAL : TCheckBox;
      ckTEFDISC : TCheckBox;
+     ComboBox1 : TComboBox ;
      edEsperaSTS : TEdit;
      edFPGCartao : TEdit;
      edFPGCheque : TEdit;
@@ -70,6 +71,7 @@ type
      gbConfigECF : TGroupBox;
      gbConfigTEF : TGroupBox;
      gbCupomECF : TGroupBox;
+     GroupBox1 : TGroupBox ;
      Label1 : TLabel;
      Label10 : TLabel;
      Label11 : TLabel;
@@ -138,6 +140,9 @@ type
      procedure ckAuttarChange(Sender : TObject) ;
      procedure ckCliSiTefChange(Sender : TObject);
      procedure ckVSPagueChange(Sender : TObject) ;
+     procedure CliDTEFExibeMenu(Titulo : String ; Opcoes : TStringList ;
+        var ItemSelecionado : Integer ; var VoltarMenu : Boolean) ;
+     procedure CliDTEFObtemInformacao(var ItemSelecionado : Integer) ;
      procedure edEsperaSleepChange(Sender : TObject);
      procedure edEsperaSTSChange(Sender : TObject);
      procedure pMensagemOperadorClick(Sender: TObject);
@@ -204,12 +209,11 @@ type
 
 var
   Form1 : TForm1;
-  NroCartao : integer;
 
 implementation
 
 Uses typinfo, dateutils, strutils, ConfiguraSerial, Unit2, Unit3, Unit4, Unit5,
-     Unit6;
+     Unit6, Unit7;
 
 {$IFNDEF FPC}
  {$R *.dfm}
@@ -245,10 +249,12 @@ begin
   PageControl1.ActivePageIndex := 0 ;
   Memo1.Lines.Clear;
 
+  ACBrTEFD1.TEFCliDTEF.NumVias := 1;
+  ACBrTEFD1.TEFCliDTEF.NumeroTerminal := '001';
+  ACBrTEFD1.TEFCliDTEF.ArqResp := 'C:\DPOS3x25\CUPONS\';
+
   pMensagem.Visible := False ;
   pMensagem.Align   := alClient ;
-
-  NroCartao := 0;
 end;
 
 procedure TForm1.ckTEFDIALChange(Sender : TObject);
@@ -781,6 +787,40 @@ end;
 procedure TForm1.ckVSPagueChange(Sender : TObject) ;
 begin
   ACBrTEFD1.TEFVeSPague.Habilitado := ckVSPague.Checked;
+end;
+
+procedure TForm1.CliDTEFExibeMenu(Titulo : String ; Opcoes : TStringList ;
+   var ItemSelecionado : Integer ; var VoltarMenu : Boolean) ;
+var
+  AForm : TForm7 ;
+  MR    : TModalResult ;
+begin
+  AForm := TForm7.Create(self);
+  try
+    AForm.pnlInformacao.Caption := Titulo;
+    AForm.ListBox1.Items.AddStrings(Opcoes);
+
+    MR := AForm.ShowModal ;
+
+    VoltarMenu := (MR = mrRetry) ;
+
+    if (MR = mrOK) then
+      ItemSelecionado := AForm.ListBox1.ItemIndex;
+  finally
+    AForm.Free;
+  end;
+end;
+
+procedure TForm1.CliDTEFObtemInformacao(var ItemSelecionado : Integer) ;
+begin
+  case ComboBox1.ItemIndex of
+    1: ItemSelecionado := 1;
+    2: ItemSelecionado := 2;
+    3: ItemSelecionado := 3;
+    4: ItemSelecionado := 4;
+    5: ItemSelecionado := 5;
+    6: ItemSelecionado := 10;
+  end;
 end;
 
 procedure TForm1.edEsperaSleepChange(Sender : TObject);

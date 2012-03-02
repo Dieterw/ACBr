@@ -55,7 +55,7 @@ uses
   {$ENDIF} ;
 
 const
-   CACBrTEFD_Versao      = '1.35' ;
+   CACBrTEFD_Versao      = '2.00' ;
    CACBrTEFD_EsperaSTS   = 7 ;
    CACBrTEFD_EsperaSleep = 250 ;
    CACBrTEFD_NumVias     = 2 ;
@@ -65,7 +65,8 @@ type
   { Tipos de TEF Existente. Cado novo Tipo de Tef precisa de uma NOVA Classe,
     filha de  TACBrTEFDClass }
   TACBrTEFDTipo = ( gpNenhum, gpTefDial, gpTefDisc, gpHiperTef, gpCliSiTef,
-                    gpTefGpu, gpVeSPague, gpBanese, gpTefAuttar {, gpGoodCard, gpFoxWin} ) ;
+                    gpTefGpu, gpVeSPague, gpBanese, gpTefAuttar, gpGoodCard,
+                    gpFoxWin, gpCliDTEF, gpPetrocard, gpCrediShop, gpTicketCar ) ;
 
   TACBrTEFDReqEstado = ( reqNenhum,             // Nennhuma Requisição em andamento
                          reqIniciando,          // Iniciando uma nova Requisicao
@@ -644,9 +645,10 @@ type
    { TACBrTEFDClassTXT }
 
    TACBrTEFDClassTXT = class( TACBrTEFDClass )
-   published
+   public
      constructor Create( AOwner : TComponent ) ; override;
 
+   published
      property AutoAtivarGP ;
 
      property NumVias;
@@ -789,7 +791,7 @@ begin
   I        := 0 ;
   while (IndChave < 0) and (I < fStringList.Count) do
   begin
-     if copy(fStringList[I],1,Length(Chave)) = Chave then
+     if copy(fStringList[I],1,Length(Chave)+3) = Chave + ' = ' then
         IndChave := I
      else
         Inc( I ) ;
@@ -839,7 +841,7 @@ begin
   I      := 0 ;
   while (Result < 0) and (I < fStringList.Count) do
   begin
-     if copy(fStringList[I],1,Length(Campo)) = Campo then
+     if copy(fStringList[I],1,Length(Campo)+3) = Campo + ' = ' then
         Result := I;
      Inc( I ) ;
   end;
@@ -1473,7 +1475,7 @@ end;
 Function TACBrTEFDClass.CRT( Valor : Double; IndiceFPG_ECF : String;
    DocumentoVinculado: String = ''; Moeda : Integer = 0 ) : Boolean;
 begin
-  Result      := False ;
+  Result := False ;
   VerificarTransacaoPagamento( Valor );
 
   IniciarRequisicao('CRT');
@@ -1496,7 +1498,7 @@ Function TACBrTEFDClass.CHQ( Valor : Double; IndiceFPG_ECF : String;
 begin
   // Compensacao não é utilizado em TEF discado //
 
-  Result      := False ;
+  Result := False ;
   VerificarTransacaoPagamento( Valor );
 
   IniciarRequisicao('CHQ');
@@ -2258,7 +2260,8 @@ begin
      RespostaPendente.Assign( Resp );
      RespostasPendentes.Add( RespostaPendente );
 
-     ImpressaoOk := true;
+     ImpressaoOk        := True;
+     TecladoEstavaLivre := True ;
 
      {Efetuar o pagamento automaticamente?}
      if AutoEfetuarPagamento then

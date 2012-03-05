@@ -97,6 +97,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 04/03/2012
+-- ACBrECF --
+[*] Criado novo tipo de exceção: EACBrECFTimeOut, para ser disparada apenas
+    quando há erro de TimeOut, e somente nessa circunstância...
+
 Data: 01/03/2012
 -- ACBrECF --
 [*] Relatórios emitidos por PafMf_* modificados para evitar o uso da Tag "<e>"

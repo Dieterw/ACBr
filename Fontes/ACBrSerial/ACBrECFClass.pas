@@ -60,6 +60,7 @@ type
 EACBrECFErro            = class(Exception) ;
 EACBrECFCMDInvalido     = class(EACBrECFErro) ;
 EACBrECFSemResposta     = class(EACBrECFErro) ;
+EACBrECFTimeOut         = class(EACBrECFErro) ;
 EACBrECFNaoInicializado = class(EACBrECFErro) ;
 EACBrECFOcupado         = class(EACBrECFErro) ;
 
@@ -1633,7 +1634,7 @@ begin
   if fpRespostaComando = 'ACBrErro' then
   begin
      fpRespostaComando := '' ;
-     raise EACBrECFSemResposta.create( Format(ACBrStr(cACBrECFSemRespostaException), [ModeloStr]) ) ;
+     raise EACBrECFTimeOut.create( Format(ACBrStr(cACBrECFSemRespostaException), [ModeloStr]) ) ;
   end ;
 end;
 

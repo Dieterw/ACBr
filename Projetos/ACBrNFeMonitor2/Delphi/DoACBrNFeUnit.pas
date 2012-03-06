@@ -2430,7 +2430,7 @@ begin
                INIRec.WriteString(sSecao,'xDed',xDed) ;
                INIRec.WriteFloat( sSecao,'vDed' ,vDed) ;
              end;
-          end;
+          end;                        
 
           INIRec.WriteString('procNFe','tpAmb',TpAmbToStr(procNFe.tpAmb)) ;
           INIRec.WriteString('procNFe','verAplic',procNFe.verAplic) ;
@@ -2438,7 +2438,7 @@ begin
           INIRec.WriteString('procNFe','dhRecbto'  ,DateToStr(procNFe.dhRecbto));
           INIRec.WriteString('procNFe','nProt',procNFe.nProt) ;
           INIRec.WriteString('procNFe','digVal',procNFe.digVal) ;
-          INIRec.WriteString('procNFe','cStat',procNFe.cStat) ;
+          INIRec.WriteString('procNFe','cStat',IntToStr(procNFe.cStat)) ;
           INIRec.WriteString('procNFe','xMotivo',procNFe.xMotivo) ;
        end;
    finally

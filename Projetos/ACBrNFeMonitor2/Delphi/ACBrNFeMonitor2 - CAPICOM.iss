@@ -5,9 +5,9 @@
 #define FileHandle = FileOpen(AddBackslash(SourcePath) + "versao.txt")
 #define FileLine = FileRead(FileHandle)
 #define FileHandle FileClose(FileHandle)
-#define Version Str( FileLine )
-#define VersionLen Len( Version )
-#define MyAppVersion copy( Version, 11, 6 )
+#define MyAppVersion Str( FileLine )
+#define MyAppVersion copy( MyAppVersion, pos("'", MyAppVersion) + 1, pos(";", MyAppVersion) )
+#define MyAppVersion Copy( MyAppVersion, 0, pos("'", MyAppVersion) - 1 )
 
 #define MyAppName "ACBrNFeMonitor"
 #define MyAppVerName "ACBrNFeMonitor2-CAPICOM-"+MyAppVersion
@@ -33,17 +33,17 @@ SolidCompression=yes
 AppMuTex=ACBrNFeMonitor
 
 [Types]
-Name: "compact"; Description: "Instalação Mínima";
-Name: "full"; Description: "Instalação Completa"
-Name: "custom"; Description: "Instalação Customizada"; Flags: iscustom
+Name: compact; Description: Instalação Mínima
+Name: full; Description: Instalação Completa
+Name: custom; Description: Instalação Customizada; Flags: iscustom
 
 [Components]
-Name: "programa"; Description: "Programa ACBrNFeMonitor"; Types: full compact custom; Flags: fixed
-Name: "help"; Description: "Arquivos de Ajuda"; Types: full custom
-Name: "exemplos"; Description: "Exemplos de Uso"; Types: full custom
+Name: programa; Description: Programa ACBrNFeMonitor; Types: full compact custom; Flags: fixed
+Name: help; Description: Arquivos de Ajuda; Types: full custom
+Name: exemplos; Description: Exemplos de Uso; Types: full custom
 
 [Languages]
-Name: "brazilianportuguese"; MessagesFile: "compiler:Languages\BrazilianPortuguese.isl"
+Name: brazilianportuguese; MessagesFile: compiler:Languages\BrazilianPortuguese.isl
 
 [Tasks]
 Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked
@@ -69,7 +69,7 @@ Source: MunIBGE\*.*; DestDir: {app}\MunIBGE; Flags: ; Components: programa
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [INI]
-Filename: "{app}\{#MyAppUrlName}"; Section: "InternetShortcut"; Key: "URL"; String: "{#MyAppURL}"; Components: help
+Filename: {app}\{#MyAppUrlName}; Section: InternetShortcut; Key: URL; String: {#MyAppURL}; Components: help
 
 [Icons]
 Name: {group}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}; Components: programa
@@ -77,10 +77,9 @@ Name: {group}\LEIA-ME.TXT; Filename: notepad; Parameters: leia-me.txt; WorkingDi
 Name: {group}\Manual do ACBrNFeMonitor; Filename: {app}\ACBrNFeMonitor.chm; WorkingDir: {app}; Components: help
 Name: {userdesktop}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}; Tasks: desktopicon
 Name: {userstartup}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}
-Name: "{group}\{cm:ProgramOnTheWeb,{#MyAppName}}"; Filename: "{app}\{#MyAppUrlName}"; Components: help
+Name: {group}\{cm:ProgramOnTheWeb,{#MyAppName}}; Filename: {app}\{#MyAppUrlName}; Components: help
 
 [Run]
 Filename: {app}\instala.bat; Description: {cm:LaunchProgram,instala.bat}; Flags: nowait postinstall skipifsilent
 Filename: {app}\{#MyAppExeName}; Description: {cm:LaunchProgram,{#MyAppName}}; Flags: nowait postinstall skipifsilent
-
 

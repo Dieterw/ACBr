@@ -3,7 +3,7 @@ object frmEnviarMensagem: TfrmEnviarMensagem
   Top = 0
   BorderStyle = bsDialog
   Caption = 'Enviar Mensagem'
-  ClientHeight = 288
+  ClientHeight = 311
   ClientWidth = 451
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -47,11 +47,11 @@ object frmEnviarMensagem: TfrmEnviarMensagem
   end
   object btnEnviar: TButton
     Left = 237
-    Top = 255
+    Top = 276
     Width = 100
     Height = 25
     Caption = 'Enviar'
-    TabOrder = 3
+    TabOrder = 4
     OnClick = btnEnviarClick
   end
   object memMensagem: TMemo
@@ -64,17 +64,25 @@ object frmEnviarMensagem: TfrmEnviarMensagem
   end
   object btnCancelar: TButton
     Left = 343
-    Top = 255
+    Top = 276
     Width = 100
     Height = 25
     Cancel = True
     Caption = 'Cancelar'
-    TabOrder = 4
+    TabOrder = 5
     OnClick = btnCancelarClick
+  end
+  object ckbQuebrarMensagem: TCheckBox
+    Left = 8
+    Top = 206
+    Width = 236
+    Height = 15
+    Caption = 'Quebrar mensagem grande e enviar em lote.'
+    TabOrder = 2
   end
   object rdgBandeja: TRadioGroup
     Left = 8
-    Top = 206
+    Top = 227
     Width = 435
     Height = 43
     Caption = 'Bandeja'
@@ -83,14 +91,6 @@ object frmEnviarMensagem: TfrmEnviarMensagem
     Items.Strings = (
       'Sincard 1'
       'Sincard 2')
-    TabOrder = 2
-  end
-  object ckbQuebrarMensagem: TCheckBox
-    Left = 150
-    Top = 26
-    Width = 236
-    Height = 17
-    Caption = 'Quebrar mensagem grande e enviar em lote.'
-    TabOrder = 5
+    TabOrder = 3
   end
 end

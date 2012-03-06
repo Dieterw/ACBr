@@ -36,10 +36,13 @@ end;
 
 procedure TfrmTrocarBandeja.btnTrocarChipClick(Sender: TObject);
 begin
+  if frmPrincipal.ACBrSMS1.BandejasSimCard < 2 then
+    raise Exception.Create('Este modelo possui somente uma bandeja de SimCard.');
+
   if rdgBandeja.ItemIndex = 0 then
-    frmPrincipal.ACBrSMS1.TrocarBandeja(sin1)
+    frmPrincipal.ACBrSMS1.TrocarBandeja(simCard1)
   else
-    frmPrincipal.ACBrSMS1.TrocarBandeja(sin2);
+    frmPrincipal.ACBrSMS1.TrocarBandeja(simCard2);
 
   ShowMessage(
     'Pronto.' +

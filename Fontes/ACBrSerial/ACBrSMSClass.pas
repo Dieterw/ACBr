@@ -46,7 +46,7 @@ uses
 const
   CTRL_Z = #26;
   FALHA_INICIALIZACAO = 'Não foi possível inicializar o envio da mensagem.';
-  FALHA_SINCARD_SINCRONIZADO = 'Sincard não sincronizado com a rede celular.';
+  FALHA_SIMCARD_SINCRONIZADO = 'SimCard não sincronizado com a rede celular.';
   FALHA_NUMERO_TELEFONE = 'Falha ao definir o número de telefone do destinatário.';
   FALHA_ENVIAR_MENSAGEM = 'Não foi possível enviar a mensagem de texto.';
   FALHA_INDICE_MENSAGEM = 'Indice retornado inválido, mensagem não foi enviada.';
@@ -57,7 +57,7 @@ type
 
   TACBrSMSModelo = (modNenhum, modDaruma, modZTE, modGenerico);
   TACBrSMSSincronismo = (sinErro, sinSincronizado, sinNaoSincronizado, sinBucandoRede);
-  TACBrSMSSinCard = (sin1, sin2);
+  TACBrSMSSimCard = (simCard1, simCard2);
   TACBrSMSFiltro = (fltTudo, fltLidas, fltNaoLidas);
 
   TACBrSMSMensagem = class
@@ -84,7 +84,7 @@ type
   TACBrSMSClass = class
   private
     fpRecebeConfirmacao: Boolean;
-    fpSinCard: TACBrSMSSinCard;
+    fpSimCard: TACBrSMSSimCard;
     fpQuebraMensagens: Boolean;
     fpATTimeOut: Integer;
     procedure SetAtivo(const Value: Boolean);
@@ -114,14 +114,14 @@ type
     function Firmware: String; virtual;
     function EstadoSincronismo: TACBrSMSSincronismo; virtual;
 
-    procedure TrocarBandeja(const ASinCard: TACBrSMSSinCard); virtual;
+    procedure TrocarBandeja(const ASimCard: TACBrSMSSimCard); virtual;
     procedure EnviarSMS(const ATelefone, AMensagem: String;
       var AIndice: String); virtual;
     procedure ListarMensagens(const AFiltro: TACBrSMSFiltro;
       const APath: String); virtual;
 
     property Ativo: Boolean read fpAtivo write SetAtivo;
-    property SinCard: TACBrSMSSinCard read fpSinCard write fpSinCard;
+    property SimCard: TACBrSMSSimCard read fpSimCard write fpSimCard;
     property ATTimeOut: Integer read fpATTimeOut write fpATTimeOut;
     property ATResult: Boolean read fpATResult write fpATResult;
     property RecebeConfirmacao: Boolean read fpRecebeConfirmacao write fpRecebeConfirmacao;
@@ -207,7 +207,7 @@ begin
   fpDevice.Serial.AtTimeout := 10000;
 
   fpAtivo := False;
-  fpSinCard := sin1;
+  fpSimCard := simCard1;
   fpRecebeConfirmacao := False;
   fpQuebraMensagens := False;
   fpATResult := False;
@@ -479,7 +479,7 @@ begin
     AIndice := '-1';
 end;
 
-procedure TACBrSMSClass.TrocarBandeja(const ASinCard: TACBrSMSSinCard);
+procedure TACBrSMSClass.TrocarBandeja(const ASimCard: TACBrSMSSimCard);
 begin
   raise EACBrSMSException.Create('Dispositivo não possui suporte para a troca de bandejas SimCard.');
 end;

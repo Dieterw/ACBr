@@ -405,7 +405,6 @@ object frmPrincipal: TfrmPrincipal
   object ACBrSMS1: TACBrSMS
     Ativo = False
     Modelo = modDaruma
-    SinCard = sin1
     ATTimeOut = 10000
     ATResult = False
     RecebeConfirmacao = False

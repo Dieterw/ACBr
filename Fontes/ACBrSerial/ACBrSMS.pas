@@ -55,9 +55,8 @@ type
     procedure SetAtivo(const Value: Boolean);
     procedure SetModelo(const Value: TACBrSMSModelo);
     procedure SetRecebeConfirmacao(const Value: Boolean);
-    procedure SetSinCard(const Value: TACBrSMSSinCard);
     function GetRecebeConfirmacao: Boolean;
-    function GetSinCard: TACBrSMSSinCard;
+    function GetSimCard: TACBrSMSSimCard;
     function GetUltimaReposta: String;
     procedure TestaAtivo;
     procedure TestaEmLinha;
@@ -86,7 +85,7 @@ type
     function Firmware: String;
     function EstadoSincronismo: TACBrSMSSincronismo;
 
-    procedure TrocarBandeja(const ASinCard: TACBrSMSSinCard);
+    procedure TrocarBandeja(const ASimCard: TACBrSMSSimCard);
     procedure EnviarSMS(const ATelefone, AMensagem: String;
       var AIndice: String);
     procedure EnviarSMSLote(const ALote: TACBrSMSMensagens;
@@ -100,7 +99,7 @@ type
     property Device: TACBrDevice read fsDevice;
     property SMS: TACBrSMSClass read fsSMS;
     property Modelo: TACBrSMSModelo read fsModelo write SetModelo;
-    property SinCard: TACBrSMSSinCard read GetSinCard write SetSinCard;
+    property SimCard: TACBrSMSSimCard read GetSimCard;
     property ATTimeOut: Integer read GetATTimeOut write SetATTimeOut;
     property ATResult: Boolean read GetATResult write SetATResult;
     property RecebeConfirmacao: Boolean read GetRecebeConfirmacao write SetRecebeConfirmacao;
@@ -155,11 +154,14 @@ begin
     raise EACBrSMSException.Create('SMS não está em linha.');
 end;
 
-procedure TACBrSMS.TrocarBandeja(const ASinCard: TACBrSMSSinCard);
+procedure TACBrSMS.TrocarBandeja(const ASimCard: TACBrSMSSimCard);
 begin
   TestaAtivo;
-  fsSMS.TrocarBandeja(ASinCard);
-  SetSinCard(ASinCard);
+  if fsSMS.SimCard <> ASimCard then
+  begin
+    fsSMS.TrocarBandeja(ASimCard);
+    fsSMS.SimCard := ASimCard;
+  end;
 end;
 
 function TACBrSMS.EmLinha: Boolean;
@@ -215,7 +217,8 @@ begin
   end;
 end;
 
-procedure TACBrSMS.EnviarSMSLote(const ALote: TACBrSMSMensagens; var AIndice: String);
+procedure TACBrSMS.EnviarSMSLote(const ALote: TACBrSMSMensagens;
+  var AIndice: String);
 var
   I: Integer;
   IndMsgAtual: String;
@@ -270,9 +273,9 @@ begin
   Result := fsSMS.RecebeConfirmacao;
 end;
 
-function TACBrSMS.GetSinCard: TACBrSMSSinCard;
+function TACBrSMS.GetSimCard: TACBrSMSSimCard;
 begin
-  Result := fsSMS.SinCard;
+  Result := fsSMS.SimCard;
 end;
 
 function TACBrSMS.GetUltimaReposta: String;
@@ -355,11 +358,6 @@ end;
 procedure TACBrSMS.SetRecebeConfirmacao(const Value: Boolean);
 begin
   fsSMS.RecebeConfirmacao := Value;
-end;
-
-procedure TACBrSMS.SetSinCard(const Value: TACBrSMSSinCard);
-begin
-  fsSMS.SinCard := Value;
 end;
 
 procedure TACBrSMS.SetAtivo(const Value: Boolean);

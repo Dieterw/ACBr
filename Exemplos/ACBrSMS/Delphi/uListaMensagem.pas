@@ -34,6 +34,10 @@ uses
 procedure TfrmListaMensagem.FormCreate(Sender: TObject);
 begin
   lstMensagens.Clear;
+
+  rdgBandeja.Enabled := frmPrincipal.ACBrSMS1.BandejasSimCard > 1;
+  if rdgBandeja.Enabled then
+    rdgBandeja.ItemIndex := Integer(frmPrincipal.ACBrSMS1.SimCard);
 end;
 
 procedure TfrmListaMensagem.btnListarMensagensClick(Sender: TObject);
@@ -42,10 +46,13 @@ var
 begin
   lstMensagens.Clear;
 
-  if rdgBandeja.ItemIndex = 0 then
-    frmPrincipal.ACBrSMS1.SinCard := sin1
-  else
-    frmPrincipal.ACBrSMS1.SinCard := sin2;
+  if frmPrincipal.ACBrSMS1.BandejasSimCard > 1 then
+  begin
+    if rdgBandeja.ItemIndex = 0 then
+      frmPrincipal.ACBrSMS1.TrocarBandeja(simCard1)
+    else
+      frmPrincipal.ACBrSMS1.TrocarBandeja(simCard2);
+  end;
 
   case rgdFiltroMsg.ItemIndex of
     1: Filtro := fltLidas;

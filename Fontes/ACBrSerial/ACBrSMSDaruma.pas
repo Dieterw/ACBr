@@ -49,7 +49,7 @@ type
 
   public
     constructor Create(AOwner: TComponent);
-    procedure TrocarBandeja(const ASinCard: TACBrSMSSinCard); override;
+    procedure TrocarBandeja(const ASimCard: TACBrSMSSimCard); override;
   end;
 
 implementation
@@ -66,34 +66,56 @@ begin
   fpBandejasSimCard := 2;
 end;
 
-procedure TACBrSMSDaruma.TrocarBandeja(const ASinCard: TACBrSMSSinCard);
+procedure TACBrSMSDaruma.TrocarBandeja(const ASimCard: TACBrSMSSimCard);
 var
   cmd: String;
   Tentativas: Integer;
-  Sincr: TACBrSMSSincronismo;
+  Str: String;
+  ListaParametro: TStringList;
 begin
-  case ASinCard of
-    sin1: cmd := 'ATL1';
-    sin2: cmd := 'ATL2';
+  if ASimCard = SimCard then
+    Exit;
+
+  case ASimCard of
+    simCard1: cmd := 'ATL1';
+    simCard2: cmd := 'ATL2';
   end;
 
   fpDevice.Serial.Purge;
   Self.EnviarComando(cmd);
 
-  if not Self.ATResult then
-    raise EACBrSMSException.Create('Não foi possível efetuar a troca da bandeja.')
-  else
+  if Self.ATResult then
   begin
-    // aguardar a sincronização com a operadora
-    Tentativas := 0;
-    repeat
-      Sincr := EstadoSincronismo;
-      Inc(Tentativas);
-    until (Sincr = sinSincronizado) or (Tentativas >= 30);
+    Self.SimCard := ASimCard;
 
-    if Tentativas > 30 then
-      raise EACBrSMSException.Create('Não foi possivel sincronizar o SinCard com a operadora de telefonia.');
-  end;
+    ListaParametro := TStringList.Create;
+    try
+      Tentativas := 0;
+      repeat
+
+        Sleep(500);
+        Self.EnviarComando('AT+CIND?');
+        //exemplo de retorno:   +CIND: 5,99,1,0,0,0,0,1,4
+
+        Str := Self.UltimaResposta;
+        Str := Trim(Copy(Str, 7, Length(Str) - 9));
+        Str := StringReplace(Str, ',', sLineBreak, [rfReplaceAll]);
+
+        ListaParametro.Text := Str;
+        Str := ListaParametro[2];
+
+        Inc(Tentativas);
+
+      until (Str = '1') or (Tentativas >= 30);
+
+      if Tentativas > 30 then
+        raise EACBrSMSException.Create('Não foi possivel sincronizar o SinCard com a operadora de telefonia.');
+    finally
+      ListaParametro.Free;
+    end;
+  end
+  else
+    raise EACBrSMSException.Create('Não foi possível efetuar a troca da bandeja.')
 end;
 
 end.

@@ -274,7 +274,13 @@ begin
               15: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //PA - Pará
               25: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //PB - Paraibá
               41: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //PR - Paraná
-              26: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //PE - Pernambuco
+
+              // Alterado por Italo em 07/03/2012
+              // conforme informações postadas no fórum por
+              // Eliton.net e jek
+              26: Result := CTeUtil.GetURLSP(AAmbiente, ALayOut);               //PE - Pernambuco
+//              26: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //PE - Pernambuco
+
               22: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //PI - Piauí
               33: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //RJ - Rio de Janeiro
               24: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //RN - Rio Grande do Norte

@@ -1929,8 +1929,8 @@ Var RetCmd, S: AnsiString ;
     Descr : String ;
 begin
   Cont      := 1 ;
-  BytesResp := 1550 ;
-  RetCmd    := EnviaComando( #35 + #33, 8 ) ;
+  //BytesResp := 1550 ;
+  RetCmd    := RetornaInfoECF( '33' ); //, 8 ) ;
   // ( 2 * 50 ) + (10 * 50) + (19 * 50)
   //     100    +    500    +   950    = 1550
 
@@ -1962,8 +1962,8 @@ begin
      RetCmd := '' ;
      if fs25MFD then
      begin
-        BytesResp := 60 ;
-        RetCmd    := EnviaComando( #35 + #47 ) ;
+        //BytesResp := 60 ;
+        RetCmd    := RetornaInfoECF( '47' ) ;
      end ;
 
     { Adicionando SA-Sangria e SU-Suprimento que sempre estarão presentes na Bematech}
@@ -2539,12 +2539,15 @@ var
   Cont : Integer ;
   StrRet : AnsiString ;
 begin
-   // Result:= 0 ; // Alguem sabe como a Bematech Retorna essa informação ???
+   // Result:= 0 ; // O Comando para retornar essa informação está defasado de acordo com a documentação. Mas está comentado abaixo pois não funciona no Emulador
   Cont      := 52;
   BytesResp := 1925 ;
   StrRet := EnviaComando( #35+#32, 8 ) ;
   Result := RoundTo( StrToFloatDef( BcdToAsc(
                      copy(StrRet,(Cont*10) - 9 + 833,10) ),0) / 10000, -4) ;
+//begin
+//  O comando abaixo só funciona nas MP-4000. 
+//  Result := StrToFloatDef( RetornaInfoECF( '78' ) ,0) / 100 ;
 end;
 
 function TACBrECFBematech.GetTotalDescontosISSQN: Double;

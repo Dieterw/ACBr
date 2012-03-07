@@ -1107,8 +1107,8 @@ begin
               {31} LFill( strCST_COFINS )        +
               {32} LFill( VL_BC_COFINS,0,2 )     +
               {33} DFill( ALIQ_COFINS_PERC, 4, True ) +
-              {34} DFill( QUANT_BC_COFINS,3,true )+
-              {35} DFill( ALIQ_COFINS_R,4,true ) +
+              {34} DFill( QUANT_BC_COFINS,3, True )+
+              {35} DFill( ALIQ_COFINS_R, 4, True ) +
               {36} LFill( VL_COFINS,0,2 )        +
               {37} LFill( COD_CTA ) ) ;
         end;
@@ -1203,9 +1203,9 @@ begin
              LFill(CFOP)               +
              LFill(VL_ITEM,0,2)        +
              LFill(VL_DESC,0,2)        +
-             LFill(VL_BC_PIS,0,2,True)      +
-             DFill(ALIQ_PIS,4,True)       +
-             LFill(QUANT_BC_PIS,0,3,True)   +
+             LFill(VL_BC_PIS,0,2,True) +
+             DFill(ALIQ_PIS,4,True)    +
+             LFill(QUANT_BC_PIS,0,3,True) +
              DFill(ALIQ_PIS_QUANT,4,True) +
              LFill(VL_PIS,0,2)         +
              LFill(COD_CTA) ) ;
@@ -1271,10 +1271,10 @@ begin
              LFill(CFOP)                       +
              LFill(VL_ITEM,0,2)                +
              LFill(VL_DESC,0,2)                +
-             LFill(VL_BC_COFINS,0,2,True)      +
-             DFill(ALIQ_COFINS, 4,True)       +
-             LFill(QUANT_BC_COFINS,0,3,True)   +
-             DFill(ALIQ_COFINS_QUANT, 4,True) +
+             LFill(VL_BC_COFINS,0, 2, True)    +
+             DFill(ALIQ_COFINS, 4, True)       +
+             LFill(QUANT_BC_COFINS, 0, 3, True)+
+             DFill(ALIQ_COFINS_QUANT, 4, True) +
              LFill(VL_COFINS,0,2)              +
              LFill(COD_CTA) ) ;
         //
@@ -1401,7 +1401,7 @@ begin
              LFill(CFOP,4)             +
              LFill(VL_ITEM,0,2)        +
              LFill(VL_DESC,0,2)        +
-             LFill(VL_BC_PIS,0,2)      +
+             LFill(VL_BC_PIS, 0, 2)    +
              DFill(ALIQ_PIS, 4, True ) +
              DFill(QUANT_BC_PIS,3,True)   +
              DFill(ALIQ_PIS_QUANT,4,True) +
@@ -1469,7 +1469,7 @@ begin
              LFill(CFOP,4)                +
              LFill(VL_ITEM,0,2)           +
              LFill(VL_DESC,0,2)           +
-             LFill(VL_BC_COFINS,0,2)      +
+             LFill(VL_BC_COFINS, 0, 2)    +
              LFill(ALIQ_COFINS,8,4,False,'0','#0.0000' ) +
              DFill(QUANT_BC_COFINS,3,True)   +
              DFill(ALIQ_COFINS_QUANT,4,True) +
@@ -1622,15 +1622,15 @@ begin
           stpisOutrasOperacoes                               : strCST_PIS := '99';
         end;
 
-        Add( LFill('C381')                   +
-             LFill(strCST_PIS)               +
-             LFill(COD_ITEM)                 +
-             LFill(VL_ITEM,0,2)              +
-             LFill(VL_BC_PIS,0,2, True)      +
+        Add( LFill('C381')                  +
+             LFill(strCST_PIS)              +
+             LFill(COD_ITEM)                +
+             LFill(VL_ITEM,0,2)             +
+             LFill(VL_BC_PIS,0,2, True)     +
              DFill(ALIQ_PIS, 4, True)       +
              DFill(QUANT_BC_PIS, 3, True)   +
              DFill(ALIQ_PIS_QUANT, 4, True) +
-             LFill(VL_PIS,0,2)               +
+             LFill(VL_PIS,0,2)              +
              LFill(COD_CTA) ) ;
         //
         RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
@@ -1688,15 +1688,15 @@ begin
           stcofinsOutrasOperacoes                               : strCST_COFINS := '99';
         end;
 
-        Add( LFill('C385')                      +
-             LFill(strCST_COFINS)               +
-             LFill(COD_ITEM)                    +
-             LFill(VL_ITEM,0,2)                 +
-             LFill(VL_BC_COFINS,0,2, True)      +
+        Add( LFill('C385')                     +
+             LFill(strCST_COFINS)              +
+             LFill(COD_ITEM)                   +
+             LFill(VL_ITEM,0,2)                +
+             LFill(VL_BC_COFINS,0,2, True)     +
              DFill(ALIQ_COFINS, 4, True)       +
              DFill(QUANT_BC_COFINS, 3, True)   +
              DFill(ALIQ_COFINS_QUANT, 4, True) +
-             LFill(VL_COFINS,0,2)               +
+             LFill(VL_COFINS,0,2)              +
              LFill(COD_CTA) ) ;
         //
         RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
@@ -1850,11 +1850,11 @@ begin
              LFill(strNAT_BC_CRED)   +
              LFill(strCST_PIS)       +
              LFill(VL_BC_PIS,0,2)    +
-             DFill(ALIQ_PIS, 4)     +
+             DFill(ALIQ_PIS, 4)      +
              LFill(VL_PIS,0,2)       +
              LFill(strCST_COFINS)    +
              LFill(VL_BC_COFINS,0,2) +
-             DFill(ALIQ_COFINS, 4)  +
+             DFill(ALIQ_COFINS, 4)   +
              LFill(VL_COFINS,0,2)    +
              LFill(COD_CTA) );
         //
@@ -2037,15 +2037,15 @@ begin
           stcofinsOutrasOperacoes                               : strCST_COFINS := '99';
         end;
 
-        Add( LFill('C485')                +
-             LFill(strCST_COFINS)         +
-             LFill(VL_ITEM,0,2)           +
-             LFill(VL_BC_COFINS,0,2)      +
+        Add( LFill('C485')               +
+             LFill(strCST_COFINS)        +
+             LFill(VL_ITEM,0,2)          +
+             LFill(VL_BC_COFINS,0,2)     +
              DFill(ALIQ_COFINS, 4)       +
-             DFill(QUANT_BC_COFINS, 3, True)   +
+             DFill(QUANT_BC_COFINS,   3, True) +
              DFill(ALIQ_COFINS_QUANT, 4, True) +
-             LFill(VL_COFINS,0,2)         +
-             LFill(COD_ITEM)              +
+             LFill(VL_COFINS,0,2)        +
+             LFill(COD_ITEM)             +
              LFill(COD_CTA) ) ;
         //
         RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
@@ -2167,8 +2167,8 @@ begin
              LFill(CFOP,4)             +
              LFill(VL_ITEM,0,2)        +
              LFill(VL_BC_PIS,0,2)      +
-             DFill(ALIQ_PIS, 4, True)       +
-             DFill(QUANT_BC_PIS, 3, True)   +
+             DFill(ALIQ_PIS,       4, True) +
+             DFill(QUANT_BC_PIS,   3, True) +
              DFill(ALIQ_PIS_QUANT, 4, True) +
              LFill(VL_PIS,0,2)         +
              LFill(COD_CTA) ) ;
@@ -2234,9 +2234,9 @@ begin
              LFill(CFOP,4)                +
              LFill(VL_ITEM,0,2)           +
              LFill(VL_BC_COFINS,0,2)      +
-             DFill(ALIQ_COFINS, 4)       +
-             DFill(QUANT_BC_COFINS, 3,True)   +
-             DFill(ALIQ_COFINS_QUANT, 4,True) +
+             DFill(ALIQ_COFINS, 4)        +
+             DFill(QUANT_BC_COFINS,   3, True) +
+             DFill(ALIQ_COFINS_QUANT, 4, True) +
              LFill(VL_COFINS,0,2)         +
              LFill(COD_CTA) ) ;
         //
@@ -2405,7 +2405,7 @@ begin
              LFill(VL_ITEM,0,2)   +
              LFill(strNAT_BC_CRED)+
              LFill(VL_BC_PIS,0,2) +
-             DFill(ALIQ_PIS, 4)  +
+             DFill(ALIQ_PIS, 4)   +
              LFill(VL_PIS,0,2)    +
              LFill(COD_CTA) ) ;
         //
@@ -2491,7 +2491,7 @@ begin
              LFill(VL_ITEM,0,2)      +
              LFill(strNAT_BC_CRED)   +
              LFill(VL_BC_COFINS,0,2) +
-             DFill(ALIQ_COFINS, 4)  +
+             DFill(ALIQ_COFINS, 4)   +
              LFill(VL_COFINS,0,2)    +
              LFill(COD_CTA) ) ;
         //
@@ -2631,7 +2631,7 @@ begin
              LFill(strCST_PIS)    +
              LFill(VL_ITEM,0,2)   +
              LFill(VL_BC_PIS,0,2) +
-             DFill(ALIQ_PIS, 4)  +
+             DFill(ALIQ_PIS, 4)   +
              LFill(VL_PIS,0,2)    +
              LFill(COD_CTA) ) ;
         //
@@ -2695,7 +2695,7 @@ begin
              LFill(strCST_COFINS)    +
              LFill(VL_ITEM,0,2)      +
              LFill(VL_BC_COFINS,0,2) +
-             DFill(ALIQ_COFINS, 4)  +
+             DFill(ALIQ_COFINS, 4)   +
              LFill(VL_COFINS,0,2)    +
              LFill(COD_CTA) ) ;
         //

@@ -858,6 +858,18 @@ type
                           indRepReceitaNaoAuferida      //2 - Operação Representativa de Receita Auferida Não Sujeita ao Pagamento da Contribuição para o PIS/Pasep e da Cofins (CST 04, 06, 07, 08, 09, 49 ou 99).
                         );
 
+   //Indicador da composição da receita recebida no período (RegsitroF525 - IND_REC):
+   TACBrIndicadorDaComposicaoDaReceitaRecebida = (
+                          crCliente,          //01- Clientes
+                          crAdministradora,   //02- Administradora de cartão de débito/crédito
+                          crTituloDeCredito,  //03- Título de crédito - Duplicata, nota promissória, cheque, etc.
+                          crDocumentoFiscal,  //04- Documento fiscal
+                          crItemVendido,      //05- Item vendido (produtos e serviços)
+                          crOutros            //99- Outros (Detalhar no campo 10 – Informação Complementar)
+                        );
+
+
+
   TOpenBlocos = class
   private
     FIND_MOV: TACBrIndicadorMovimento;    /// Indicador de movimento: 0- Bloco com dados informados, 1- Bloco sem dados informados.

@@ -528,16 +528,18 @@ begin
   SL1 := TStringList.Create;
   SL2 := TStringList.Create;
   try
-    Buffer := String( fOwner.RespHTTP.Text ) ;
+    Buffer := fOwner.RespHTTP.Text ;
     // CEP livre retorna vários endereços na mesma linha... tratando...
     SL1.Text := StringReplace( Buffer, '""', '"'+sLineBreak+'"', [rfReplaceAll] );
 
     For I := 0 to SL1.Count-1 do
     begin
       Buffer := SL1[I] ;
+      Buffer := StringReplace( Buffer, ',', sLineBreak, [rfReplaceAll] );
+      Buffer := StringReplace( Buffer, '"', EmptyStr,   [rfReplaceAll] );
 
       SL2.Clear;
-      SL2.Text := StringReplace( Buffer, ',', sLineBreak, [rfReplaceAll] );
+      SL2.Text := Buffer;
 
       if (SL2.Count >= 9) and (Length( OnlyNumber( AnsiString(SL2[8]) ) ) = 8) then
       begin

@@ -1967,7 +1967,7 @@ procedure TACBrBoleto.ChecarDadosObrigatorios;
 begin
    if (Cedente.Nome= '') or (cedente.Conta = '') or (Cedente.ContaDigito ='') or
       (Cedente.Agencia = '') or (Cedente.AgenciaDigito = '') then
-     raise Exception.Create(ACBrStr('Informações do Cedente Imcompletas'));
+     raise Exception.Create(ACBrStr('Informações do Cedente incompletas'));
 end;
 
 { TACBrBoletoFCClass }

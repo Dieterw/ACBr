@@ -579,15 +579,15 @@ begin
 
       {Pegando Código da Ocorrencia}
       case OcorrenciaOriginal.Tipo of
-         toRemessaBaixar                        : ATipoOcorrencia := '02'; {Pedido de Baixa}
-         toRemessaConcederAbatimento            : ATipoOcorrencia := '04'; {Concessão de Abatimento}
-         toRemessaCancelarAbatimento            : ATipoOcorrencia := '05'; {Cancelamento de Abatimento concedido}
-         toRemessaAlterarVencimento             : ATipoOcorrencia := '06'; {Alteração de vencimento}
-         toRemessaAlterarNumeroControle         : ATipoOcorrencia := '08'; {Alteração de seu número}
-         toRemessaProtestar                     : ATipoOcorrencia := '09'; {Pedido de protesto}
-         toRemessaCancelarIntrucaoProtestoBaixa : ATipoOcorrencia := '10'; {Sustar protesto e baixar}
-         toRemessaCancelarInstrucaoProtesto     : ATipoOcorrencia := '10'; {Sustar protesto e manter na carteira}
-         toRemessaOutrasOcorrencias             : ATipoOcorrencia := '31'; {Alteração de Outros Dados}
+         toRemessaBaixar                         : ATipoOcorrencia := '02'; {Pedido de Baixa}
+         toRemessaConcederAbatimento             : ATipoOcorrencia := '04'; {Concessão de Abatimento}
+         toRemessaCancelarAbatimento             : ATipoOcorrencia := '05'; {Cancelamento de Abatimento concedido}
+         toRemessaAlterarVencimento              : ATipoOcorrencia := '06'; {Alteração de vencimento}
+         toRemessaAlterarNumeroControle          : ATipoOcorrencia := '08'; {Alteração de seu número}
+         toRemessaProtestar                      : ATipoOcorrencia := '09'; {Pedido de protesto}
+         toRemessaCancelarInstrucaoProtestoBaixa : ATipoOcorrencia := '10'; {Sustar protesto e baixar}
+         toRemessaCancelarInstrucaoProtesto      : ATipoOcorrencia := '10'; {Sustar protesto e manter na carteira}
+         toRemessaOutrasOcorrencias              : ATipoOcorrencia := '31'; {Alteração de Outros Dados}
       else
          ATipoOcorrencia := '01';                                      {Remessa}
       end;

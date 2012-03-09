@@ -306,7 +306,7 @@ begin
       toRemessaAlterarVencimento : Ocorrencia:='06'; {Alteração de vencimento}
       //toRemessaAlterarNumeroControle         : Ocorrencia := '08'; {Alteração de seu número}
       toRemessaProtestar                    : Ocorrencia :='09'; {Pedido de protesto}
-      toRemessaCancelarIntrucaoProtestoBaixa: Ocorrencia:='18'; {Sustar protesto e baixar}
+      toRemessaCancelarInstrucaoProtestoBaixa: Ocorrencia:='18'; {Sustar protesto e baixar}
       toRemessaCancelarInstrucaoProtesto    : Ocorrencia:='19'; {Sustar protesto e manter na carteira}
       toRemessaOutrasOcorrencias: Ocorrencia:='31'; {Alteração de Outros Dados}
     else
@@ -537,7 +537,7 @@ begin
          toRemessaCancelarAbatimento: Ocorrencia := '05'; {Cancelamento de Abatimento concedido}
          toRemessaAlterarVencimento:  Ocorrencia := '06'; {Alteração de vencimento}
          toRemessaProtestar:          Ocorrencia := '09'; {Pedido de protesto}
-         toRemessaCancelarIntrucaoProtestoBaixa: Ocorrencia := '18'; {Sustar protesto e baixar}
+         toRemessaCancelarInstrucaoProtestoBaixa: Ocorrencia := '18'; {Sustar protesto e baixar}
          toRemessaCancelarInstrucaoProtesto:     Ocorrencia := '19'; {Sustar protesto e manter na carteira}
          toRemessaOutrasOcorrencias:  Ocorrencia := '31'; {Alteração de Outros Dados}
       else

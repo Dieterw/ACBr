@@ -565,11 +565,11 @@ begin
              LFill(strIND_ORIG_CRED)   +
              LFill(strCST_PIS)         +
              LFill( VL_BC_PIS,0,2 )    +
-             LFill( ALIQ_PIS,0,2 )     +
+             LFill( ALIQ_PIS,0,4 )     +
              LFill( VL_PIS,0,2 )       +
              LFill(strCST_COFINS)      +
              LFill( VL_BC_COFINS,0,2 ) +
-             LFill( ALIQ_COFINS,0,2 )  +
+             LFill( ALIQ_COFINS,0,4 )  +
              LFill( VL_COFINS,0,2 )    +
              LFill(COD_CTA)            +
              LFill(COD_CCUS) ) ;

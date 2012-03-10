@@ -37,6 +37,21 @@ namespace ACBr.Net
 
 		#region P/Invoke Helpers
 
+		protected string ToUTF8(string value)
+		{
+			return Encoding.Default.GetString(Encoding.UTF8.GetBytes(value));
+		}
+
+		protected string FromUTF8(string value)
+		{
+			return Encoding.UTF8.GetString(Encoding.Default.GetBytes(value));
+		}
+
+		protected string FromUTF8(StringBuilder value)
+		{
+			return Encoding.UTF8.GetString(Encoding.Default.GetBytes(value.ToString()));
+		}
+
 		protected string GetString(GetStringEntryPointDelegate entryPoint)
 		{
 			const int BUFFER_LEN = 256;
@@ -50,12 +65,12 @@ namespace ACBr.Net
 			int ret = entryPoint(handle, buffer, bufferLen);
 			CheckResult(ret);
 
-			return buffer.ToString();
+			return FromUTF8(buffer);
 		}
 
 		protected void SetString(SetStringEntryPointDelegate entryPoint, string value)
 		{
-			int ret = entryPoint(handle, value);
+			int ret = entryPoint(handle, ToUTF8(value));
 			CheckResult(ret);
 		}
 
@@ -126,7 +141,17 @@ namespace ACBr.Net
 
 		#region Dispose Methods
 
-		protected abstract void Dispose(bool disposing);
+		protected abstract void OnDisposing();
+
+		private void Dispose(bool disposing)
+		{
+			if (disposing)
+			{
+				GC.SuppressFinalize(this);
+			}
+
+			OnDisposing();
+		}
 
 		public void Dispose()
 		{

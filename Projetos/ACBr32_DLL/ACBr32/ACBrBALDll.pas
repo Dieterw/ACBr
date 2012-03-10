@@ -82,13 +82,19 @@ begin
 
   try
 
-     if (balHandle <> nil) then
+     if (balHandle = nil) then
      begin
-         balHandle^.BAL.Destroy();
-         Dispose(balHandle);
+        Result := -2;
+        Exit;
      end;
 
+     balHandle^.BAL.Destroy();
+     balHandle^.BAL := nil;
+
+     Dispose(balHandle);
+     balHandle := nil;
      Result := 0;
+
   except
      on exception : Exception do
      begin

@@ -377,6 +377,12 @@ namespace ACBr.Net
 		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
 		public static extern int ECF_SetDecimaisQtd(IntPtr ecfHandle, int decimaisQtd);
 
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern int ECF_GetDadosReducaoZ(IntPtr ecfHandle, StringBuilder buffer, int bufferLen);
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern int ECF_GetDadosUltimaReducaoZ(IntPtr ecfHandle, StringBuilder buffer, int bufferLen);
+
 		#endregion Propriedades do Componente
 
 		#region Cupom Fiscal
@@ -456,6 +462,9 @@ namespace ACBr.Net
 
 		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
 		public static extern int ECF_CortaPapel(IntPtr ecfHandle, bool corteParcial);
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern int ECF_IdentificaPAF(IntPtr ecfHandle, string nomeVersao, string md5);
 
 		#endregion Relatórios
 

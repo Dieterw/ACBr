@@ -131,7 +131,10 @@ begin
   end;
 
   try
-    ecfHandle^.ECF.Destroy;
+
+    ecfHandle^.ECF.Destroy();
+    ecfHandle^.ECF := nil;
+
     Dispose(ecfHandle);
     ecfHandle := nil;
     Result := 0;
@@ -3999,6 +4002,80 @@ begin
   end;
 end;
 
+Function ECF_IdentificaPAF(const ecfHandle: PECFHandle; const NomeVersao : pChar; const MD5 : pChar) : Integer ;{$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF}  export;
+begin
+
+  if (ecfHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+  try
+
+     ecfHandle^.ECF.IdentificaPAF(NomeVersao, MD5);
+     Result := 0;
+
+  except
+     on exception : Exception do
+     begin
+        ecfHandle^.UltimoErro := exception.Message;
+        Result  := -1;
+     end
+  end;
+end;
+
+Function ECF_GetDadosReducaoZ(const ecfHandle: PECFHandle; Buffer : pChar; const BufferLen : Integer) : Integer ; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+var
+  StrTmp : String;
+begin
+
+  if (ecfHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+ try
+     StrTmp := ecfHandle^.ECF.DadosReducaoZ;
+     StrPLCopy(Buffer, StrTmp, BufferLen);
+     Result := length(StrTmp);
+  except
+     on exception : Exception do
+     begin
+        ecfHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end;
+
+end;
+
+Function ECF_GetDadosUltimaReducaoZ(const ecfHandle: PECFHandle; Buffer : pChar; const BufferLen : Integer) : Integer ; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+var
+  StrTmp : String;
+begin
+
+  if (ecfHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+ try
+     StrTmp := ecfHandle^.ECF.DadosUltimaReducaoZ;
+     StrPLCopy(Buffer, StrTmp, BufferLen);
+     Result := length(StrTmp);
+  except
+     on exception : Exception do
+     begin
+        ecfHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+  end;
+
+end;
+
+
 {
 NÀO IMPLEMENTADO
 
@@ -4261,7 +4338,11 @@ ECF_LeituraMemoriaFiscalData,
 ECF_LeituraMemoriaFiscalSerialReducao,
 ECF_LeituraMemoriaFiscalSerialData,
 ECF_LeituraMemoriaFiscalArquivoReducao,
-ECF_LeituraMemoriaFiscalArquivoData;
+ECF_LeituraMemoriaFiscalArquivoData,
+
+ECF_IdentificaPAF,
+ECF_GetDadosReducaoZ,
+ECF_GetDadosUltimaReducaoZ;
 
 {Não implementado}
 

@@ -71,6 +71,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IdentificaPAF.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="IdentificaPAF.Designer.cs">
+      <DependentUpon>IdentificaPAF.cs</DependentUpon>
+    </Compile>
     <Compile Include="LeituraMemoriaFiscal.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -85,6 +91,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="IdentificaPAF.resx">
+      <DependentUpon>IdentificaPAF.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="LeituraMemoriaFiscal.resx">
       <DependentUpon>LeituraMemoriaFiscal.cs</DependentUpon>
     </EmbeddedResource>
@@ -102,7 +111,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

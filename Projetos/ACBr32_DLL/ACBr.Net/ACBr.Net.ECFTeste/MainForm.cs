@@ -329,6 +329,44 @@ namespace ACBr.Net.ECFTeste
 			}
 		}
 
+		private void Ler_DadosReducaoZ()
+		{
+			try
+			{
+				WriteResp(string.Format("DadosReducaoZ:\n{0}", acbrECF.DadosReducaoZ));
+				descriptionToolStripStatusLabel.Text = string.Empty;
+			}
+			catch (NullReferenceException)
+			{
+				messageToolStripStatusLabel.Text = "Não inicializado.";
+				descriptionToolStripStatusLabel.Text = string.Empty;
+			}
+			catch (Exception exception)
+			{
+				messageToolStripStatusLabel.Text = "Exception";
+				descriptionToolStripStatusLabel.Text = exception.Message;
+			}
+		}
+
+		private void Ler_DadosUltimaReducaoZ()
+		{
+			try
+			{
+				WriteResp(string.Format("DadosUltimaReducaoZ:\n{0}", acbrECF.DadosUltimaReducaoZ));
+				descriptionToolStripStatusLabel.Text = string.Empty;
+			}
+			catch (NullReferenceException)
+			{
+				messageToolStripStatusLabel.Text = "Não inicializado.";
+				descriptionToolStripStatusLabel.Text = string.Empty;
+			}
+			catch (Exception exception)
+			{
+				messageToolStripStatusLabel.Text = "Exception";
+				descriptionToolStripStatusLabel.Text = exception.Message;
+			}
+		}
+
 		private void Ler_TodasVariaveis()
 		{
 			var type = typeof(ACBrECF);
@@ -387,31 +425,43 @@ namespace ACBr.Net.ECFTeste
 		{
 			try
 			{
-				respListBox.Items.Add("Abrindo cupom ...");
-				acbrECF.AbreCupom("", "", "");
-				Application.DoEvents();
-
-				for (int i = 0; i < 10; i++)
+				if (acbrECF.Estado == EstadoECF.Livre)
 				{
-					respListBox.Items.Add("Vende Item #" + i + " ...");
-					acbrECF.VendeItem(string.Format("{0:0000000000000}", i + 1), "PRODUTO " + i, "II", 1, 1.99M, 0M, "UN", "%", "D");
+					respListBox.Items.Add("Abrindo cupom ...");
+					acbrECF.AbreCupom("", "", "");
 					Application.DoEvents();
 				}
 
-				acbrECF.SubtotalizaCupom(0M, "Mensagem SubtotalizaCupom ACBr.NET");
-				respListBox.Items.Add("Subtotaliza Cupom ...");
-				Application.DoEvents();
+				if (acbrECF.Estado == EstadoECF.Venda)
+				{
+					for (int i = 0; i < 10; i++)
+					{
+						respListBox.Items.Add("Vende Item #" + i + " ...");
+						acbrECF.VendeItem(string.Format("{0:0000000000000}", i + 1), "PRODUTO àáèéìíòóùúü " + i, "II", 1, 1.99M, 0M, "UN", "%", "D");
+						Application.DoEvents();
+					}
 
-				var forma01 = acbrECF.FormasPagamento[0];
-				acbrECF.EfetuaPagamento(forma01.Indice, 50M, "Mensagem EfetuaPagamento ACBr.NET", false);
-				respListBox.Items.Add("Efetua Pagamento ...");
-				Application.DoEvents();
+					acbrECF.SubtotalizaCupom(0M, "Mensagem SubtotalizaCupom ACBr.NET");
+					respListBox.Items.Add("Subtotaliza Cupom ...");
+					Application.DoEvents();
+				}
 
-				acbrECF.FechaCupom("Mensagem FechaCupom ACBr.NET");
-				respListBox.Items.Add("Fecha Cupom ...");
-				Application.DoEvents();
+				if (acbrECF.Estado == EstadoECF.Pagamento)
+				{
+					if (acbrECF.TotalPago == 0)
+					{
+						var forma01 = acbrECF.FormasPagamento[0];
+						acbrECF.EfetuaPagamento(forma01.Indice, 50M, "Mensagem EfetuaPagamento ACBr.NET", false);
+						respListBox.Items.Add("Efetua Pagamento ...");
+						Application.DoEvents();
+					}
 
-				WriteResp("Finalizado!");
+					acbrECF.FechaCupom("Mensagem àáèéìíòóùúü FechaCupom ACBr.NET");
+					respListBox.Items.Add("Fecha Cupom ...");
+					Application.DoEvents();
+
+					WriteResp("Finalizado!");
+				}
 			}
 			catch (NullReferenceException)
 			{
@@ -547,6 +597,16 @@ namespace ACBr.Net.ECFTeste
 			Ler_PAF();
 		}
 
+		private void dadosReducaoZToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			Ler_DadosReducaoZ();
+		}
+
+		private void dadosUltimaReduçãoZToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			Ler_DadosUltimaReducaoZ();
+		}
+
 		private void lerTodasAsVariáveisToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			Ler_TodasVariaveis();
@@ -567,8 +627,6 @@ namespace ACBr.Net.ECFTeste
 			ReducaoZ();
 		}
 
-		#endregion Event Handlers
-
 		private void leituraMemóriaFiscalToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			using (LeituraMemoriaFiscal form = new LeituraMemoriaFiscal())
@@ -580,11 +638,11 @@ namespace ACBr.Net.ECFTeste
 					{
 						if (form.ByPeriod)
 						{
-							this.acbrECF.LeituraMemoriaFiscal(form.InitialCCR, form.FinalCCR, form.Simple);
+							this.acbrECF.LeituraMemoriaFiscal(form.InitialDate, form.FinalDate, form.Simple);
 						}
 						else
 						{
-							this.acbrECF.LeituraMemoriaFiscal(form.InitialDate, form.FinalDate, form.Simple);
+							this.acbrECF.LeituraMemoriaFiscal(form.InitialCCR, form.FinalCCR, form.Simple);
 						}
 
 						WriteResp("LeituraMemoriaFiscal OK");
@@ -616,11 +674,11 @@ namespace ACBr.Net.ECFTeste
 					{
 						if (form.ByPeriod)
 						{
-							result = this.acbrECF.LeituraMemoriaFiscalSerial(form.InitialCCR, form.FinalCCR, form.Simple);
+							result = this.acbrECF.LeituraMemoriaFiscalSerial(form.InitialDate, form.FinalDate, form.Simple);
 						}
 						else
 						{
-							result = this.acbrECF.LeituraMemoriaFiscalSerial(form.InitialDate, form.FinalDate, form.Simple);
+							result = this.acbrECF.LeituraMemoriaFiscalSerial(form.InitialCCR, form.FinalCCR, form.Simple);
 						}
 
 						WriteResp(result);
@@ -638,5 +696,34 @@ namespace ACBr.Net.ECFTeste
 				}
 			}
 		}
+
+		private void identificaPAFToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			using (IdentificaPAF form = new IdentificaPAF())
+			{
+				var ret = form.ShowDialog();
+				if (ret == System.Windows.Forms.DialogResult.OK)
+				{
+					try
+					{
+						acbrECF.IdentificaPAF(form.Linha1, form.Linha2);
+						WriteResp("Identifica PAF: " + form.Linha1);
+					}
+					catch (NullReferenceException)
+					{
+						messageToolStripStatusLabel.Text = "Não inicializado.";
+						descriptionToolStripStatusLabel.Text = string.Empty;
+					}
+					catch (Exception exception)
+					{
+						messageToolStripStatusLabel.Text = "Exception";
+						descriptionToolStripStatusLabel.Text = exception.Message;
+					}
+				}
+			}
+		}
+
+		#endregion Event Handlers
+
 	}
 }

@@ -81,13 +81,19 @@ begin
 
   try
 
-     if (lcbHandle <> nil) then
+     if (lcbHandle = nil) then
      begin
-         lcbHandle^.LCB.Destroy();
-         Dispose(lcbHandle);
+        Result := -2;
+        Exit;
      end;
 
+     lcbHandle^.LCB.Destroy();
+     lcbHandle^.LCB := nil;
+
+     Dispose(lcbHandle);
+     lcbHandle := nil;
      Result := 0;
+
   except
      on exception : Exception do
      begin

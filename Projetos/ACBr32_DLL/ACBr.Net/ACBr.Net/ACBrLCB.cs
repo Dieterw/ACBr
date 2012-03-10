@@ -77,17 +77,12 @@ namespace ACBr.Net
 			}
 		}
 
-		protected override void Dispose(bool disposing)
+		protected override void OnDisposing()
 		{
 			if (this.handle != IntPtr.Zero)
 			{
 				int ret = ACBrDll.LCB_Destroy(ref this.handle);
-				this.handle = IntPtr.Zero;
-			}
-
-			if (disposing)
-			{
-				GC.SuppressFinalize(this);
+				CheckResult(ret);
 			}
 		}
 

@@ -51,6 +51,8 @@
 			this.cNPJToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.iEToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.pAFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.dadosReduçãoZToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.dadosUltimaReduçãoZToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.lerTodasAsVariáveisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.relatóriosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.leituraXToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -59,8 +61,12 @@
 			this.leituraMemóriaFiscalSerialToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.cupomFiscalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.testaCupomFiscalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.utilitariosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.identificaPAFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.tabControl = new System.Windows.Forms.TabControl();
 			this.ecfTabPage = new System.Windows.Forms.TabPage();
+			this.velocidadeComboBox = new System.Windows.Forms.ComboBox();
+			this.velocidadeLabel = new System.Windows.Forms.Label();
 			this.descricaoCheckBox = new System.Windows.Forms.CheckBox();
 			this.gavetaCheckBox = new System.Windows.Forms.CheckBox();
 			this.intervaloNumericUpDown = new System.Windows.Forms.NumericUpDown();
@@ -74,8 +80,6 @@
 			this.cmdTabPage = new System.Windows.Forms.TabPage();
 			this.respListBox = new System.Windows.Forms.ListBox();
 			this.ativarCheckButton = new System.Windows.Forms.CheckBox();
-			this.velocidadeComboBox = new System.Windows.Forms.ComboBox();
-			this.velocidadeLabel = new System.Windows.Forms.Label();
 			this.statusStrip1.SuspendLayout();
 			this.menuStrip1.SuspendLayout();
 			this.tabControl.SuspendLayout();
@@ -124,7 +128,8 @@
             this.principalToolStripMenuItem,
             this.variáveisToolStripMenuItem,
             this.relatóriosToolStripMenuItem,
-            this.cupomFiscalToolStripMenuItem});
+            this.cupomFiscalToolStripMenuItem,
+            this.utilitariosToolStripMenuItem});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
 			this.menuStrip1.Size = new System.Drawing.Size(535, 24);
@@ -209,7 +214,9 @@
             this.numVersãoToolStripMenuItem,
             this.cNPJToolStripMenuItem,
             this.iEToolStripMenuItem,
-            this.pAFToolStripMenuItem});
+            this.pAFToolStripMenuItem,
+            this.dadosReduçãoZToolStripMenuItem,
+            this.dadosUltimaReduçãoZToolStripMenuItem});
 			this.equipamentoToolStripMenuItem.Name = "equipamentoToolStripMenuItem";
 			this.equipamentoToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
 			this.equipamentoToolStripMenuItem.Text = "Equipamento";
@@ -217,65 +224,79 @@
 			// estadoToolStripMenuItem
 			// 
 			this.estadoToolStripMenuItem.Name = "estadoToolStripMenuItem";
-			this.estadoToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+			this.estadoToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
 			this.estadoToolStripMenuItem.Text = "Estado";
 			this.estadoToolStripMenuItem.Click += new System.EventHandler(this.estadoToolStripMenuItem_Click);
 			// 
 			// dataHoraToolStripMenuItem
 			// 
 			this.dataHoraToolStripMenuItem.Name = "dataHoraToolStripMenuItem";
-			this.dataHoraToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+			this.dataHoraToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
 			this.dataHoraToolStripMenuItem.Text = "Data / Hora";
 			this.dataHoraToolStripMenuItem.Click += new System.EventHandler(this.dataHoraToolStripMenuItem_Click);
 			// 
 			// numECFToolStripMenuItem
 			// 
 			this.numECFToolStripMenuItem.Name = "numECFToolStripMenuItem";
-			this.numECFToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+			this.numECFToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
 			this.numECFToolStripMenuItem.Text = "Num ECF";
 			this.numECFToolStripMenuItem.Click += new System.EventHandler(this.numECFToolStripMenuItem_Click);
 			// 
 			// numLojaToolStripMenuItem
 			// 
 			this.numLojaToolStripMenuItem.Name = "numLojaToolStripMenuItem";
-			this.numLojaToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+			this.numLojaToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
 			this.numLojaToolStripMenuItem.Text = "Num Loja";
 			this.numLojaToolStripMenuItem.Click += new System.EventHandler(this.numLojaToolStripMenuItem_Click);
 			// 
 			// numSérieToolStripMenuItem
 			// 
 			this.numSérieToolStripMenuItem.Name = "numSérieToolStripMenuItem";
-			this.numSérieToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+			this.numSérieToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
 			this.numSérieToolStripMenuItem.Text = "Num Série";
 			this.numSérieToolStripMenuItem.Click += new System.EventHandler(this.numSérieToolStripMenuItem_Click);
 			// 
 			// numVersãoToolStripMenuItem
 			// 
 			this.numVersãoToolStripMenuItem.Name = "numVersãoToolStripMenuItem";
-			this.numVersãoToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+			this.numVersãoToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
 			this.numVersãoToolStripMenuItem.Text = "Num Versão";
 			this.numVersãoToolStripMenuItem.Click += new System.EventHandler(this.numVersãoToolStripMenuItem_Click);
 			// 
 			// cNPJToolStripMenuItem
 			// 
 			this.cNPJToolStripMenuItem.Name = "cNPJToolStripMenuItem";
-			this.cNPJToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+			this.cNPJToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
 			this.cNPJToolStripMenuItem.Text = "CNPJ";
 			this.cNPJToolStripMenuItem.Click += new System.EventHandler(this.cNPJToolStripMenuItem_Click);
 			// 
 			// iEToolStripMenuItem
 			// 
 			this.iEToolStripMenuItem.Name = "iEToolStripMenuItem";
-			this.iEToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+			this.iEToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
 			this.iEToolStripMenuItem.Text = "IE";
 			this.iEToolStripMenuItem.Click += new System.EventHandler(this.iEToolStripMenuItem_Click);
 			// 
 			// pAFToolStripMenuItem
 			// 
 			this.pAFToolStripMenuItem.Name = "pAFToolStripMenuItem";
-			this.pAFToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+			this.pAFToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
 			this.pAFToolStripMenuItem.Text = "PAF";
 			this.pAFToolStripMenuItem.Click += new System.EventHandler(this.pAFToolStripMenuItem_Click);
+			// 
+			// dadosReduçãoZToolStripMenuItem
+			// 
+			this.dadosReduçãoZToolStripMenuItem.Name = "dadosReduçãoZToolStripMenuItem";
+			this.dadosReduçãoZToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
+			this.dadosReduçãoZToolStripMenuItem.Text = "DadosReduçãoZ";
+			this.dadosReduçãoZToolStripMenuItem.Click += new System.EventHandler(this.dadosReducaoZToolStripMenuItem_Click);
+			// 
+			// dadosUltimaReduçãoZToolStripMenuItem
+			// 
+			this.dadosUltimaReduçãoZToolStripMenuItem.Name = "dadosUltimaReduçãoZToolStripMenuItem";
+			this.dadosUltimaReduçãoZToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
+			this.dadosUltimaReduçãoZToolStripMenuItem.Text = "DadosUltimaReduçãoZ";
+			this.dadosUltimaReduçãoZToolStripMenuItem.Click += new System.EventHandler(this.dadosUltimaReduçãoZToolStripMenuItem_Click);
 			// 
 			// lerTodasAsVariáveisToolStripMenuItem
 			// 
@@ -338,6 +359,21 @@
 			this.testaCupomFiscalToolStripMenuItem.Text = "Testa Cupom Fiscal";
 			this.testaCupomFiscalToolStripMenuItem.Click += new System.EventHandler(this.testaCupomFiscalToolStripMenuItem_Click);
 			// 
+			// utilitariosToolStripMenuItem
+			// 
+			this.utilitariosToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.identificaPAFToolStripMenuItem});
+			this.utilitariosToolStripMenuItem.Name = "utilitariosToolStripMenuItem";
+			this.utilitariosToolStripMenuItem.Size = new System.Drawing.Size(69, 20);
+			this.utilitariosToolStripMenuItem.Text = "Utilitários";
+			// 
+			// identificaPAFToolStripMenuItem
+			// 
+			this.identificaPAFToolStripMenuItem.Name = "identificaPAFToolStripMenuItem";
+			this.identificaPAFToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+			this.identificaPAFToolStripMenuItem.Text = "Identifica PAF";
+			this.identificaPAFToolStripMenuItem.Click += new System.EventHandler(this.identificaPAFToolStripMenuItem_Click);
+			// 
 			// tabControl
 			// 
 			this.tabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -372,6 +408,24 @@
 			this.ecfTabPage.TabIndex = 0;
 			this.ecfTabPage.Text = "ECF";
 			this.ecfTabPage.UseVisualStyleBackColor = true;
+			// 
+			// velocidadeComboBox
+			// 
+			this.velocidadeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.velocidadeComboBox.FormattingEnabled = true;
+			this.velocidadeComboBox.Location = new System.Drawing.Point(303, 29);
+			this.velocidadeComboBox.Name = "velocidadeComboBox";
+			this.velocidadeComboBox.Size = new System.Drawing.Size(109, 21);
+			this.velocidadeComboBox.TabIndex = 12;
+			// 
+			// velocidadeLabel
+			// 
+			this.velocidadeLabel.AutoSize = true;
+			this.velocidadeLabel.Location = new System.Drawing.Point(300, 13);
+			this.velocidadeLabel.Name = "velocidadeLabel";
+			this.velocidadeLabel.Size = new System.Drawing.Size(63, 13);
+			this.velocidadeLabel.TabIndex = 11;
+			this.velocidadeLabel.Text = "Velocidade:";
 			// 
 			// descricaoCheckBox
 			// 
@@ -507,24 +561,6 @@
 			this.ativarCheckButton.UseVisualStyleBackColor = true;
 			this.ativarCheckButton.CheckedChanged += new System.EventHandler(this.ativarCheckButton_CheckedChanged);
 			// 
-			// velocidadeComboBox
-			// 
-			this.velocidadeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.velocidadeComboBox.FormattingEnabled = true;
-			this.velocidadeComboBox.Location = new System.Drawing.Point(303, 29);
-			this.velocidadeComboBox.Name = "velocidadeComboBox";
-			this.velocidadeComboBox.Size = new System.Drawing.Size(109, 21);
-			this.velocidadeComboBox.TabIndex = 12;
-			// 
-			// velocidadeLabel
-			// 
-			this.velocidadeLabel.AutoSize = true;
-			this.velocidadeLabel.Location = new System.Drawing.Point(300, 13);
-			this.velocidadeLabel.Name = "velocidadeLabel";
-			this.velocidadeLabel.Size = new System.Drawing.Size(63, 13);
-			this.velocidadeLabel.TabIndex = 11;
-			this.velocidadeLabel.Text = "Velocidade:";
-			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -602,6 +638,10 @@
 		private System.Windows.Forms.ToolStripMenuItem leituraMemóriaFiscalSerialToolStripMenuItem;
 		private System.Windows.Forms.ComboBox velocidadeComboBox;
 		private System.Windows.Forms.Label velocidadeLabel;
+		private System.Windows.Forms.ToolStripMenuItem utilitariosToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem identificaPAFToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem dadosReduçãoZToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem dadosUltimaReduçãoZToolStripMenuItem;
     }
 }
 

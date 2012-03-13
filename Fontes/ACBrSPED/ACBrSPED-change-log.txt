@@ -47,6 +47,15 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 1.00b   13/03/2012
+-- ACBrSPEDPisCofins --
+[*] Alterado valores No bloco C registro C100 o campo 17 IND_FRT para 
+	validação a partir de 01/01/2012. Essa modificação pode gerar uma
+	incompatibilidade em valores armazenados anteriormente. Pedimos que 
+	verifique a correta geração do arquivo. Veja também discussão sobre:
+	http://www.djsystem.com.br/acbr/forum/viewtopic.php?f=23&t=5010
+
+
 Versão 1.00b   17/02/2012
 -- ACBrSPEDFiscal --
 [*] Adicionado versão 005 para validação a partir de 01/01/2012

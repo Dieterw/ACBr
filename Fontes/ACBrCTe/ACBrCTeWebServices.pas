@@ -603,7 +603,9 @@ begin
   FCabMsg := StringReplace( FCabMsg, '<?xml version="1.0"?>', '', [rfReplaceAll] ) ;
 
   ConCadCTe        := TConsCad.Create;
-  ConCadCTe.schema := TsPL005c;
+  // Alterado por Italo em 14/03/2012
+  ConCadCTe.schema := TsPL006;
+//  ConCadCTe.schema := TsPL005c;
   ConCadCTe.UF     := TCTeConsultaCadastro(Self).UF;
   ConCadCTe.IE     := TCTeConsultaCadastro(Self).IE;
   ConCadCTe.CNPJ   := TCTeConsultaCadastro(Self).CNPJ;

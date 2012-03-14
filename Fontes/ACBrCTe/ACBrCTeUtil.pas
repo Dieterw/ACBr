@@ -348,7 +348,8 @@ class function CTeUtil.GetURLRS(AAmbiente: Integer;
 begin
   case ALayOut of
     LayCTeStatusServico: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.rs.gov.br/ws/ctestatusservico/CteStatusServico.asmx'      , 'https://homologacao.cte.sefaz.rs.gov.br/ws/ctestatusservico/CteStatusServico.asmx');
-//    LayCTeCadastro: Result      := CTeUtil.SeSenao(AAmbiente = 1, 'https://sef.sefaz.rs.gov.br/ws/CadConsultaCadastro/CadConsultaCadastro.asmx', 'https://sef.sefaz.rs.gov.br/ws/CadConsultaCadastro/CadConsultaCadastro.asmx');
+    // Alterado por Italo em 14/03/2012 conforme sugestão de Moacir
+    LayCTeCadastro: Result      := CTeUtil.SeSenao(AAmbiente = 1, 'https://sef.sefaz.rs.gov.br/ws/cadconsultacadastro/cadconsultacadastro2.asmx', 'https://sef.sefaz.rs.gov.br/ws/cadconsultacadastro/cadconsultacadastro2.asmx');
     LayCTeConsultaCT: Result    := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.rs.gov.br/ws/cteconsulta/CteConsulta.asmx'                , 'https://homologacao.cte.sefaz.rs.gov.br/ws/cteconsulta/CteConsulta.asmx');
     LayCTeCancelamento: Result  := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.rs.gov.br/ws/ctecancelamento/ctecancelamento.asmx'        , 'https://homologacao.cte.sefaz.rs.gov.br/ws/ctecancelamento/ctecancelamento.asmx');
     LayCTeInutilizacao: Result  := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.rs.gov.br/ws/cteinutilizacao/cteinutilizacao.asmx'        , 'https://homologacao.cte.sefaz.rs.gov.br/ws/cteinutilizacao/cteinutilizacao.asmx');
@@ -1011,31 +1012,78 @@ begin
   case Tipo of
    1: begin
        Schema.remove('http://www.portalfiscal.inf.br/cte');
+
        Schema.add('http://www.portalfiscal.inf.br/cte',
         CTeUtil.SeSenao(CTeUtil.EstaVazio(APathSchemas),
         PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',
-        PathWithDelim(APathSchemas))+'cte_v1.04.xsd')
+        PathWithDelim(APathSchemas))+'cte_v1.04.xsd');
+       (*
+       // Incluido por Italo em 14/03/2012
+       if pos('<aereo>',XML)<>0
+        then begin
+         Schema.add('http://www.portalfiscal.inf.br/cte',
+          CTeUtil.SeSenao(CTeUtil.EstaVazio(APathSchemas),
+          PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',
+          PathWithDelim(APathSchemas))+'cteModalAereo_v1.04.xsd');
+        end
+        else begin
+         if pos('<aquav>',XML)<>0
+          then begin
+           Schema.add('http://www.portalfiscal.inf.br/cte',
+            CTeUtil.SeSenao(CTeUtil.EstaVazio(APathSchemas),
+            PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',
+            PathWithDelim(APathSchemas))+'cteModalAquaviario_v1.04.xsd');
+          end
+          else begin
+           if pos('<duto>',XML)<>0
+            then begin
+             Schema.add('http://www.portalfiscal.inf.br/cte',
+              CTeUtil.SeSenao(CTeUtil.EstaVazio(APathSchemas),
+              PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',
+              PathWithDelim(APathSchemas))+'cteModalDutoviario_v1.04.xsd');
+            end
+            else begin
+             if pos('<ferrov>',XML)<>0
+              then begin
+               Schema.add('http://www.portalfiscal.inf.br/cte',
+                CTeUtil.SeSenao(CTeUtil.EstaVazio(APathSchemas),
+                PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',
+                PathWithDelim(APathSchemas))+'cteModalFerroviario_v1.04.xsd');
+              end
+              else begin
+               if pos('<rodo>',XML)<>0
+                then begin
+                 Schema.add('http://www.portalfiscal.inf.br/cte',
+                  CTeUtil.SeSenao(CTeUtil.EstaVazio(APathSchemas),
+                  PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',
+                  PathWithDelim(APathSchemas))+'cteModalRodoviario_v1.04.xsd');
+                end;
+              end;
+            end;
+          end;
+        end;
+       *)
       end;
    2: begin
        Schema.remove('http://www.portalfiscal.inf.br/cte');
        Schema.add('http://www.portalfiscal.inf.br/cte',
         CTeUtil.SeSenao(CTeUtil.EstaVazio(APathSchemas),
         PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',
-        PathWithDelim(APathSchemas))+'cancCte_v1.04.xsd')
+        PathWithDelim(APathSchemas))+'cancCte_v1.04.xsd');
       end;
    3: begin
        Schema.remove('http://www.portalfiscal.inf.br/cte');
        Schema.add('http://www.portalfiscal.inf.br/cte',
         CTeUtil.SeSenao(CTeUtil.EstaVazio(APathSchemas),
         PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',
-        PathWithDelim(APathSchemas))+'inutCte_v1.04.xsd')
+        PathWithDelim(APathSchemas))+'inutCte_v1.04.xsd');
       end;
    4: begin
        Schema.remove('http://www.portalfiscal.inf.br/cte');
        Schema.add( 'http://www.portalfiscal.inf.br/cte',
         CTeUtil.SeSenao(CTeUtil.EstaVazio(APathSchemas),
         PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',
-        PathWithDelim(APathSchemas))+'envDPEC_v1.04.xsd')
+        PathWithDelim(APathSchemas))+'envDPEC_v1.04.xsd');
       end;
   end;
 {$ENDIF}

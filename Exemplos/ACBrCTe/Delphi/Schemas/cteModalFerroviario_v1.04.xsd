@@ -317,7 +317,7 @@ Informar os zeros não significativos.</xs:documentation>
 								</xs:annotation>
 								<xs:complexType>
 									<xs:choice>
-										<xs:element name="ratNF" maxOccurs="5000">
+										<xs:element name="ratNF" maxOccurs="unbounded">
 											<xs:annotation>
 												<xs:documentation>Informações do Rateio das NF</xs:documentation>
 											</xs:annotation>
@@ -353,7 +353,7 @@ Informar os zeros não significativos.</xs:documentation>
 												</xs:sequence>
 											</xs:complexType>
 										</xs:element>
-										<xs:element name="ratNFe" maxOccurs="5000">
+										<xs:element name="ratNFe" maxOccurs="unbounded">
 											<xs:annotation>
 												<xs:documentation>Informações do Rateio das NFe</xs:documentation>
 											</xs:annotation>

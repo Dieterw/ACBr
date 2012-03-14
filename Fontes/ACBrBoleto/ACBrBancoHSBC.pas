@@ -47,7 +47,9 @@ type
 
   TACBrBancoHSBC = class(TACBrBancoClass)
   private
+
   protected
+
   public
     Constructor create(AOwner: TACBrBanco);
     function CalcularDigitoVerificador(const ACBrTitulo:TACBrTitulo): String; override;
@@ -77,57 +79,98 @@ begin
    fpDigito                := 9;
    fpNome                  := 'HSBC';
    fpNumero                := 399;
-   fpTamanhoMaximoNossoNum := 10;
+   fpTamanhoMaximoNossoNum := 13;
    fpTamanhoAgencia        := 4;
-   fpTamanhoConta          := 6;
-   fpTamanhoCarteira       := 2;
+   fpTamanhoConta          := 7;
+   fpTamanhoCarteira       := 3;
 end;
 
 function TACBrBancoHSBC.CalcularDigitoVerificador(const ACBrTitulo: TACBrTitulo ): String;
-begin
-   Modulo.CalculoPadrao;
-   Modulo.MultiplicadorFinal := 7;
-   Modulo.Documento          := ACBrTitulo.Carteira + ACBrTitulo.NossoNumero;
-   Modulo.Calcular;
-
-   if (Modulo.ModuloFinal = 0) or (Modulo.ModuloFinal = 1) then
-      Result:= '0'
-   else
-      Result:= IntToStr(Modulo.DigitoFinal);
-end;
-
-function TACBrBancoHSBC.MontarCodigoBarras ( const ACBrTitulo: TACBrTitulo) : String;
 var
-  CodigoBarras, FatorVencimento, DigitoCodBarras,DigitoNossoNumero:String;
+  ANumeroDoc: AnsiString;
+  ANumeroBase: AnsiString;
+  ADigito1: AnsiString;
+  ADigito2: AnsiString;
+  ADigito: AnsiString;
+
+  Numero: Extended;
+  Cedente: Extended;
+  Vencimento: Extended;
+
+  function CalcularDigito(const ANumero: AnsiString): AnsiString;
+  begin
+    Modulo.CalculoPadrao;
+    Modulo.Documento := AnsiString(ANumero);
+    Modulo.Calcular;
+
+    Result := AnsiString(IntToStr(Modulo.DigitoFinal));
+  end;
+
 begin
+  Result := '0';
 
-   with ACBrTitulo.ACBrBoleto do
-   begin
-      DigitoNossoNumero      := CalcularDigitoVerificador(ACBrTitulo);
-      FatorVencimento        := CalcularFatorVencimento(ACBrTitulo.Vencimento);
+  // numero base para o calculo do primeiro e segundo digitos
+  ANumeroDoc := padR(AnsiString(ACBrTitulo.NumeroDocumento), 13, '0');
 
-      CodigoBarras    := IntToStr( Numero )+'9'+ FatorVencimento +
-                         IntToStrZero(Round(ACBrTitulo.ValorDocumento*100),10) +
-                         ACBrTitulo.NossoNumero+DigitoNossoNumero +
-                         padR(Cedente.Agencia,4,'0') +
-                         padR(Cedente.Conta,6,'0') + Cedente.ContaDigito+
-                         ACBrTitulo.Carteira + '1';
-      DigitoCodBarras := CalcularDigitoCodigoBarras(CodigoBarras);
-   end;
+  // Calculo do primeiro digito
+  ANumeroBase := ANumeroDoc;
+  ADigito     := CalcularDigito(ANumeroDoc);
+  ADigito1    := ADigito + '4';
 
-   Result:= IntToStr(Numero) + '9'+ DigitoCodBarras + Copy(CodigoBarras,5,39);
+  // calculo do segundo digito
+  Vencimento  := StrToFloat(FormatDateTime('ddmmyy', ACBrTitulo.Vencimento));
+  Cedente     := StrToFloat(Self.ACBrBanco.ACBrBoleto.Cedente.CodigoCedente);
+  Numero      := StrToFloat(ANumeroBase + ADigito1);
+
+  ANumeroBase := FloatToStr(Numero + Cedente + Vencimento);
+  ADigito2    := CalcularDigito(ANumeroBase);
+
+  // digito final 3 posicoes = digito 1 + '4' + digito 2
+  Result := ADigito1 + ADigito2;
 end;
 
 function TACBrBancoHSBC.MontarCampoNossoNumero (
    const ACBrTitulo: TACBrTitulo ) : String;
 begin
-   Result:= copy(ACBrTitulo.NossoNumero,1,2)+' '+copy(ACBrTitulo.NossoNumero,3,3)+' '+copy(ACBrTitulo.NossoNumero,6,3)+' '+copy(ACBrTitulo.NossoNumero,9,2)+' '+CalcularDigitoVerificador(ACBrTitulo);
+  Result :=
+   ACBrTitulo.NossoNumero + '-' +
+   CalcularDigitoVerificador(ACBrTitulo);
 end;
 
 function TACBrBancoHSBC.MontarCampoCodigoCedente (
    const ACBrTitulo: TACBrTitulo ) : String;
 begin
-   Result := ACBrTitulo.ACBrBoleto.Cedente.Agencia+' '+ACBrTitulo.ACBrBoleto.Cedente.Conta+ACBrTitulo.ACBrBoleto.Cedente.ContaDigito;
+   Result :=
+     ACBrTitulo.ACBrBoleto.Cedente.Agencia + ' ' +
+     ACBrTitulo.ACBrBoleto.Cedente.Conta +
+     ACBrTitulo.ACBrBoleto.Cedente.ContaDigito;
+end;
+
+function TACBrBancoHSBC.MontarCodigoBarras ( const ACBrTitulo: TACBrTitulo) : String;
+var
+  Parte1, Parte2,
+  CodigoBarras,
+  DigitoCodBarras: String;
+begin
+  with ACBrTitulo do
+  begin
+    Parte1 :=
+      IntToStr( ACBrBoleto.Banco.Numero ) +
+      '9';
+
+    Parte2 :=
+      CalcularFatorVencimento(Vencimento) +
+      IntToStrZero(Round(ValorDocumento * 100), 10) +
+      padR(ACBrBoleto.Cedente.CodigoCedente, 7, '0') +
+      padR(NossoNumero, 13, '0') +
+      DataToJuliano(Vencimento) +
+      '2';
+
+    CodigoBarras    := Parte1 + Parte2;
+    DigitoCodBarras := CalcularDigitoCodigoBarras(CodigoBarras);
+  end;
+
+  Result := Parte1 + DigitoCodBarras + Parte2;
 end;
 
 function TACBrBancoHSBC.GerarRegistroHeader400(NumeroRemessa : Integer): String;
@@ -920,7 +963,7 @@ begin
          Result:= IntToStrZero(CodMotivo,2) +' - Outros Motivos';
       end;
    else
-      Result:= IntToStrZero(CodMotivo,2) +' - Outros Motivos';
+      Result:= IntToStrZero(CodMotivo,2) + ' - Outros Motivos';
    end;
 end;
 

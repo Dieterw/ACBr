@@ -276,6 +276,7 @@ type
     fpTamanhoConta: Integer;
     fpAOwner: TACBrBanco;
     fpTamanhoMaximoNossoNum: Integer;
+    function DataToJuliano(const AData: TDateTime): String;
     function CalcularFatorVencimento(const DataVencimento: TDateTime): String; virtual;
     function CalcularDigitoCodigoBarras(const CodigoBarras: String): String; virtual;
   public
@@ -767,7 +768,7 @@ implementation
 Uses ACBrUtil, ACBrBancoBradesco, ACBrBancoBrasil, ACBrBanestes, ACBrBancoItau, ACBrBancoSicredi,
      ACBrBancoMercantil, ACBrCaixaEconomica, ACBrBancoBanrisul, ACBrBancoSantander,
      ACBrBancoob, ACBrCaixaEconomicaSICOB ,ACBrBancoHSBC,Forms,
-     {$IFDEF COMPILER6_UP} StrUtils {$ELSE} ACBrD5 {$ENDIF}, Math;
+     {$IFDEF COMPILER6_UP} StrUtils {$ELSE} ACBrD5 {$ENDIF}, Math, DateUtils;
 
 {$IFNDEF FPC}
    {$R ACBrBoleto.dcr}
@@ -1769,6 +1770,22 @@ end;
 function TACBrBancoClass.CalcularFatorVencimento(const DataVencimento: TDatetime) : String;
 begin
    Result := IntToStr( Trunc(DataVencimento - EncodeDate(1997,10,07)) );
+end;
+
+function TACBrBancoClass.DataToJuliano(const AData: TDateTime): String;
+var
+  DiaDoAno: String;
+  UltDigAno: String;
+begin
+  if AData = 0 then
+    Result := '0000'
+  else
+  begin
+    UltDigAno := FormatDateTime('yyyy', AData)[4];
+    DiaDoAno  := Format('%3.3d', [DayOfTheYear(AData)]);
+
+    Result    := DiaDoAno + UltDigAno;
+  end;
 end;
 
 function TACBrBancoClass.CalcularDigitoCodigoBarras (

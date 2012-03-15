@@ -48,6 +48,12 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   15/03/12 (Regys Silveira)
+---------------
+[-] Acerto para validar o tamanho maximo de campos decimais sem considerar a 
+    virgula, conforme apontado em:
+    http://djsystem.com.br/acbr/forum/viewtopic.php?f=6&t=5072
+
 Alterações   27/01/12 (Italo Jurisato Junior)
 ---------------
 [-] Alteração na Emissão do DANFE - Quick Report código do status para CT-e DENEGADA 

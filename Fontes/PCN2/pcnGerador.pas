@@ -626,6 +626,7 @@ end;
 procedure TGerador.wCampo(const Tipo: TpcnTipoCampo; ID, TAG: string; const min, max, ocorrencias: smallint; const valor: variant; const Descricao: string = '');
 var
   NumeroDecimais: smallint;
+  Limite: Integer;
   alerta, ConteudoProcessado: string;
   wAno, wMes, wDia, wHor, wMin, wSeg, wMse: Word;
   EstaVazio: boolean;
@@ -635,6 +636,7 @@ begin
   EstaVazio           := False;
   NumeroDecimais      := 0;
   ConteudoProcessado  := '';
+  Limite              := max;
   case Tipo of
     tcStr   : begin
                 ConteudoProcessado := trim(valor);
@@ -665,6 +667,9 @@ begin
       tcDe4,
       tcDe6,  // Incluido por Italo em 30/09/2010
       tcDe10 : begin
+                // adicionar um para que o máximo não considere a virgula
+                Limite := Limite + 1;
+
                 // Tipo numerico com decimais
                   case Tipo of
                     tcDe2 : NumeroDecimais :=  2;
@@ -695,10 +700,10 @@ begin
                   // Tipo Inteiro
                   ConteudoProcessado := IntToStr(valor);
                   EstaVazio := (valor = 0) and (ocorrencias = 0);
-                  if min = max then
+                  if min = Limite then
                   begin
                     ConteudoProcessado := StringOfChar('0', 60) + ConteudoProcessado;
-                    ConteudoProcessado := copy(ConteudoProcessado, length(ConteudoProcessado) - max + 1, max);
+                    ConteudoProcessado := copy(ConteudoProcessado, length(ConteudoProcessado) - Limite + 1, Limite);
                   end;
               end;
     end;
@@ -706,7 +711,7 @@ begin
     //(Existem tags obrigatórias que podem ser nulas ex. cEAN)  if (ocorrencias = 1) and (EstaVazio) then
     if (ocorrencias = 1) and (EstaVazio) and (min > 0)                                            then alerta := ERR_MSG_VAZIO;
     if (length(ConteudoProcessado) < min) and (alerta = '') and (length(ConteudoProcessado) > 1)  then alerta := ERR_MSG_MENOR;
-    if length(ConteudoProcessado) > max                                                           then alerta := ERR_MSG_MAIOR;
+    if length(ConteudoProcessado) > Limite                                                        then alerta := ERR_MSG_MAIOR;
       // Grava alerta //
     if (alerta <> '') and (pos(ERR_MSG_VAZIO, alerta) = 0) and (not EstaVazio)                    then alerta := alerta + ' [' + VarToStr(valor) + ']';
     walerta(ID, TAG, Descricao, alerta);

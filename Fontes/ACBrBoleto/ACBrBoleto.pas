@@ -527,6 +527,7 @@ type
     fReferencia           : String;
     fVersao               : String;
     fACBrBoleto           : TACBrBoleto;
+    fTextoLivre           : String;
 
     procedure SetCarteira(const AValue: String);
     procedure SetNossoNumero ( const AValue: String ) ;
@@ -583,6 +584,8 @@ type
      property Versao               : String   read fVersao  write fVersao;
      property SeuNumero            : String   read fSeuNumero write fSeuNumero;
      property PercentualMulta      : Double   read fPercentualMulta write fPercentualMulta;
+
+     property TextoLivre : String read fTextoLivre write fTextoLivre;
    end;
 
   { TListadeBoletos }

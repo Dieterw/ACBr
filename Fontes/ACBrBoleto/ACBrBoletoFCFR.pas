@@ -174,6 +174,7 @@ begin
      FieldDefs.Add('OcorrenciaOriginal', ftInteger);
      FieldDefs.Add('Instrucao1', ftString, 300);
      FieldDefs.Add('Instrucao2', ftString, 300);
+     FieldDefs.Add('TextoLivre', ftMemo, 2000);
      // Sacado
      FieldDefs.Add('Sacado_NomeSacado', ftString, 100);
      FieldDefs.Add('Sacado_CNPJCPF', ftString, 14);
@@ -345,6 +346,7 @@ begin
             FieldByName('OcorrenciaOriginal').AsInteger := Integer(ListadeBoletos[iFor].OcorrenciaOriginal);
             FieldByName('Instrucao1').AsString          := ListadeBoletos[iFor].Instrucao1;
             FieldByName('Instrucao2').AsString          := ListadeBoletos[iFor].Instrucao2;
+            FieldByName('TextoLivre').AsString          := ListadeBoletos[iFor].TextoLivre;
             // Sacado
             FieldByName('Sacado_NomeSacado').AsString   := ListadeBoletos[iFor].Sacado.NomeSacado;
             FieldByName('Sacado_CNPJCPF').AsString      := ListadeBoletos[iFor].Sacado.CNPJCPF;

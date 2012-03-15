@@ -2083,7 +2083,7 @@ begin
   wregistro:=wregistro+Padl(Trim(NumSerie),20);
   wregistro:=wregistro+TBStrZero(IntToStr(NumOrdem),3);
   wregistro:=wregistro+ModeloDoc;
-  wregistro:=wregistro+tbstrzero(IntToStr(CooInicial),6);
+  wregistro:=wregistro+TBStrZero(IntToStr(CooInicial),6);
   wregistro:=wregistro+TBStrZero(IntToStr(CooFinal),6);
   wregistro:=wregistro+TBStrZero(IntToStr(CRZ),6);
   wregistro:=wregistro+TBStrZero(IntToStr(CRO),3);

@@ -317,8 +317,6 @@ TACBrECFDaruma = class( TACBrECFClass )
       const AAlinhamento: TACBrAlinhamento = alCentro); override;
 
     function TraduzirTag(const ATag: AnsiString): AnsiString; override;
-
-    function MontaDadosReducaoZ: AnsiString; override;
  end ;
 
 implementation
@@ -1808,11 +1806,6 @@ procedure TACBrECFDaruma.MudaHorarioVerao(EHorarioVerao: Boolean);
 begin
   If EHorarioVerao then FlagVerao := '1' else FlagVerao := '0' ;
   EnviaComando(ESC + #228 + 'XXXXX' + FlagVerao + StringOfChar('X',34) ) ;
-end;
-
-function TACBrECFDaruma.MontaDadosReducaoZ: AnsiString;
-begin
-   Result := inherited MontaDadosReducaoZ;
 end;
 
 procedure TACBrECFDaruma.MudaArredondamento(Arredondar: Boolean);
@@ -4205,7 +4198,7 @@ procedure TACBrECFDaruma.IdentificaPAF(NomeVersao, MD5 : String);
 var
   Resp: Integer;
 begin
-  EnviaComando( FS + 'C' + #214 + PadL(NomeVersao,42) + PadL(MD5,42) );
+  EnviaComando( FS + 'C' + #214 + PadL(MD5,42) + PadL(NomeVersao,42) );
 
   try
     LoadDLLFunctions;
@@ -4213,15 +4206,15 @@ begin
       ConfigurarDLL('');
 
       // gravar no registro para evitar a perda, algumas funções da dll leem dessas chaves
-      Resp := xregAlterarValor_Daruma('ECF\MensagemApl1', NomeVersao );
+      Resp := xregAlterarValor_Daruma('ECF\MensagemApl1', MD5 );
       if Resp <> 1 then
          raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar: '+sLineBreak+
-         'xregAlterarValor_Daruma( "ECF\MensagemApl1",  "'+NomeVersao+'" )') );
+         'xregAlterarValor_Daruma( "ECF\MensagemApl1",  "'+MD5+'" )') );
 
-      Resp := xregAlterarValor_Daruma('ECF\MensagemApl2', MD5 );
+      Resp := xregAlterarValor_Daruma('ECF\MensagemApl2', NomeVersao );
       if Resp <> 1 then
          raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar: '+sLineBreak+
-         'xregAlterarValor_Daruma( "ECF\MensagemApl2",  "'+MD5+'" )') );
+         'xregAlterarValor_Daruma( "ECF\MensagemApl2",  "'+NomeVersao+'" )') );
     finally
       UnloadDLLFunctions;
     end;
@@ -4468,7 +4461,6 @@ begin
        NumeroDeSerieMFD := NumSerieMFD;
        NumeroDoECF      := NumECF;
        NumeroDaLoja     := NumLoja;
-       NumeroCOOInicial := '0';
 
        { CONTADORES }
        COO  := StrToIntDef(copy(RetCmd,935,6),0);
@@ -4479,10 +4471,8 @@ begin
        CDC  := StrToIntDef(Copy(RetCmd,1001,4),0);
        CFC  := StrToIntDef(Copy(RetCmd,985,4),0);
        GRG  := StrToIntDef(Copy(RetCmd,959,6),0);
-       GNFC := 0;
        CFD  := StrToIntDef(Copy(RetCmd,965,6),0);
        NCN  := StrToIntDef(Copy(RetCmd,997,4),0);
-       CCDC := 0;
 
        { TOTALIZADORES }
        GTInicial         := RoundTo( StrToFloatDef( copy(RetCmd,27,18),0) / 100, -2 ) ;

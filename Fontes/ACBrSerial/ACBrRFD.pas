@@ -1448,7 +1448,6 @@ begin
   begin
      RZ := '' ;
      try
-        { Por enquanto, Apenas Bematech suporta DadosUltimaReducaoZ }
         RZ := TACBrECF( fsECF ).DadosUltimaReducaoZ ;
      except
      end ;

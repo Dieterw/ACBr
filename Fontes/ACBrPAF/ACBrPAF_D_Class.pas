@@ -232,7 +232,7 @@ begin
         begin
           ///
           strRegistroD3 := strRegistroD3 + LFill('D3') +
-                                           LFill(RegD2.NUM_DAV, 13) +
+                                           RFill(RegD2.NUM_DAV, 13) +
                                            LFill(DT_INCLUSAO, 'yyyymmdd') +
                                            LFill(NUM_ITEM, 3, 0) +
                                            RFill(COD_ITEM, 14) +

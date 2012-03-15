@@ -97,6 +97,28 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 15/03/2012
+-- ACBrECF --
+[*] Relatório de Meios de Pagamento do PAF-ECF, modificado conforme solicitação
+    da POLIMIG, informando a coluna de Total Geral somando Fiscal e Nao-Fiscal
+    (por: DSA)
+
+[*] Adicionado a linha "ITEM 8 Recompõe Número Série" no relatório de Parametros
+    de Configuração do PAF-ECF (por: DSA)
+
+[-] Método: "IdentificaPAF"  modificado em todos modelos para imprimir o MD5
+    sempre na primeira linha, conforme solicitação da POLIMIG     (por: DSA)
+
+-- ACBrECFDaruma --
+[-] Método DadosUltimaReducaoZ modificado para que o mesmo não informe valores
+    que ele não é capaz de ler do ECF...
+    Removido: NumeroCOOInicial := '0', GNFC := 0, CCDC := 0      (por: DSA)
+
+-- ACBrECFSwedaSTX --
+[-] Método DadosUltimaReducaoZ modificado para que a Data do Movimento seja
+    informada usando o mesmo padrão de DadosReducaoZ (DD/MM/YY)     (por: DSA)
+
+
 Data: 04/03/2012
 -- ACBrECF --
 [*] Criado novo tipo de exceção: EACBrECFTimeOut, para ser disparada apenas

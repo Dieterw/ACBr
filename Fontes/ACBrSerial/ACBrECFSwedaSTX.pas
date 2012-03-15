@@ -2309,7 +2309,8 @@ begin
    RetCMD := Copy(RetCMD,17,length(RetCMD));
 
    Result := '[ECF]'+sLineBreak;
-   Result := Result + 'DataMovimento = '+Copy(RetCMD,199,10) +sLineBreak ;
+   Result := Result + 'DataMovimento = '+Copy(RetCMD,199,5)+DateSeparator+
+                                         Copy(RetCMD,207,2)+sLineBreak ;
    Result := Result + 'NumSerie = ' + Copy(RetCMD,51,22) + sLineBreak;
    Result := Result + 'NumLoja = '+ NumLoja +sLineBreak;
    Result := Result + 'NumECF = '+ Copy(RetCMD,73,3) + sLineBreak;
@@ -2525,7 +2526,7 @@ end;
 
 procedure TACBrECFSwedaSTX.IdentificaPAF( NomeVersao, MD5 : String);
 begin
-   EnviaComando('39|D|'+padL(NomeVersao,Colunas) + padL(MD5,Colunas));
+   EnviaComando('39|D|' + padL(MD5,Colunas) + padL(NomeVersao,Colunas) );
 end;
 
 function TACBrECFSwedaSTX.GetPAF: String;

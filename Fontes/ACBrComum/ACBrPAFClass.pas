@@ -146,6 +146,7 @@ type
 
   TACBrECFInfoPaf = class( TPersistent )
   private
+    FRecompoeNumSerie : Boolean ;
     fsVersao: String;
     fsPrincipalExe: TACBrECFArquivo;
     fsNome: String;
@@ -232,6 +233,7 @@ type
     property TransfPreVenda: Boolean read FTransfPreVenda write FTransfPreVenda;
     property TransfDAV: Boolean read FTransfDAV write FTransfDAV;
     property RecompoeGT: Boolean read FRecompoeGT write FRecompoeGT;
+    property RecompoeNumSerie: Boolean read FRecompoeNumSerie write FRecompoeNumSerie;
     property EmitePED: Boolean read FEmitePED write FEmitePED;
     property CupomMania: Boolean read FCupomMania write FCupomMania;
     property MinasLegal: Boolean read FMinasLegal write FMinasLegal;

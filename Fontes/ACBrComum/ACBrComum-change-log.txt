@@ -38,6 +38,31 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+15/03/2012
+-- ACBrAAC --
+[+] Criado novo evento: OnVerificarRecomporNumSerie
+    procedure( const NumSerie: String; const ValorGT : Double; var CRO: Integer;
+               var CNI: Integer)
+    Será disparado quando o ACBrAAC não encontrar o Numero de Série do ECF na
+    lista de ECFs liberados, o que pode ocorrer quando o arquivo estiver
+    corrimpido    (Por: DSA)
+
+[+] Criada nova propriedade: IdentPAF.Paf.RecompoeNumSerie : Boolean
+    Se for True, e não encontar o Num.Serie, tenta executar o evento
+    OnVerificarRecomporNumSerie   (por: DSA)
+
+[*] Evento OnVerificarRecomporValorGT somente será disparado quando:
+    sIdentPAF.Paf.RecompoeGT = True    (por: DSA)
+
+-- TACBrTXTClass --
+[*]  Método TACBrTXTClass.WriteBuffer modificado para nao criar arquivos
+     como UTF8, o que pode causar problemas nos programas de validação.
+     Problema ocorria WinXP, em Sistemas compilados com IDE com suporte a
+     Unicode     (por: DSA)
+
+-- ACBrUtil --
+[*]  Pequena otimização na function: WriteToTXT   (por: DSA)
+
 Data: 01/03/2012
 -- ACBrPAF --
 [-] Tentativa de correção da Ordanação da Lista DAVs Emitidos (DSA)

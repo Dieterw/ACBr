@@ -3312,7 +3312,7 @@ end;
 
 procedure TACBrECFBematech.IdentificaPAF(NomeVersao, MD5 : String);
 begin
-  fsPAF := padL(NomeVersao,42) + padL(MD5,42) ;
+  fsPAF := padL(MD5,42) + padL(NomeVersao,42) ;
   EnviaComando(#62 + #64 + fsPAF) ;
 end;
 

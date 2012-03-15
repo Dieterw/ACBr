@@ -3383,7 +3383,7 @@ end;
 
 Procedure TACBrECFSweda.IdentificaPAF( NomeVersao, MD5 : String);
 begin
-  EnviaComando('57'+ padL(NomeVersao,42) + padL(MD5,42)) ;
+  EnviaComando('57'+ padL(MD5,42) + padL(NomeVersao,42)) ;
 end;
 
 procedure TACBrECFSweda.LoadDLLFunctions;

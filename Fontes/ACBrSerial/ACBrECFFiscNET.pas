@@ -2728,7 +2728,7 @@ end;
 
 procedure TACBrECFFiscNET.IdentificaPAF(NomeVersao, MD5 : String);
 begin
-   fsPAF := Trim( NomeVersao + #10 + MD5 ) ;
+   fsPAF := Trim( MD5 + #10 + NomeVersao ) ;
    FiscNETComando.NomeComando := 'EscreveTexto' ;
    FiscNETComando.AddParamString('NomeTexto' ,'TextoLivre') ;
    FiscNETComando.AddParamString('ValorTexto', fsPAF ) ;

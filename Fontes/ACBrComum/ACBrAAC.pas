@@ -59,7 +59,8 @@ type
   TACBrAACAntesArquivo = procedure( var Continua: Boolean) of object ;
   TACBrAACOnVerificarRecomporValorGT = procedure(const NumSerie: String;
      var ValorGT : Double) of object ;
-
+  TACBrAACOnVerificarRecomporNumSerie = procedure(const NumSerie: String;
+     const ValorGT : Double; var CRO: Integer; var CNI: Integer) of object ;
   { TACBrAAC }
 
   TACBrAAC = class( TACBrComponent )
@@ -80,6 +81,7 @@ type
      fsOnDepoisAbrirArquivo : TNotifyEvent ;
      fsOnDepoisGravarArquivo : TNotifyEvent ;
      fsOnGetChave : TACBrAACGetChave ;
+     fsOnVerificarRecomporNumSerie : TACBrAACOnVerificarRecomporNumSerie ;
      fsOnVerificarRecomporValorGT : TACBrAACOnVerificarRecomporValorGT ;
      fsParams : TStringList ;
      fsIdentPAF: TACBrECFIdentificacaoPAF;
@@ -147,6 +149,8 @@ type
       read fsOnDepoisGravarArquivo write fsOnDepoisGravarArquivo ;
     property VerificarRecomporValorGT : TACBrAACOnVerificarRecomporValorGT
       read fsOnVerificarRecomporValorGT write fsOnVerificarRecomporValorGT;
+    property VerificarRecomporNumSerie : TACBrAACOnVerificarRecomporNumSerie
+      read fsOnVerificarRecomporNumSerie write fsOnVerificarRecomporNumSerie;
   end;
 
 implementation
@@ -169,6 +173,8 @@ begin
   fsOnDepoisAbrirArquivo  := nil ;
   fsOnAntesGravarArquivo  := nil ;
   fsOnDepoisGravarArquivo := nil ;
+  fsOnVerificarRecomporNumSerie := nil;
+  fsOnVerificarRecomporValorGT  := nil;
 
   fsNomeArquivoAux    := '' ;
   fsCriarBAK          := True;
@@ -341,6 +347,7 @@ begin
         fsIdentPAF.Paf.TransfPreVenda               := Ini.ReadBool('PAF', 'TransfPreVenda', False);
         fsIdentPAF.Paf.TransfDAV                    := Ini.ReadBool('PAF', 'TransfDAV', False);
         fsIdentPAF.Paf.RecompoeGT                   := Ini.ReadBool('PAF', 'RecompoeGT', False);
+        fsIdentPAF.Paf.RecompoeNumSerie             := Ini.ReadBool('PAF', 'RecompoeNumSerie', False);
         fsIdentPAF.Paf.EmitePED                     := Ini.ReadBool('PAF', 'EmitePED', False);
         fsIdentPAF.Paf.CupomMania                   := Ini.ReadBool('PAF', 'CupomMania', False);
         fsIdentPAF.Paf.MinasLegal                   := Ini.ReadBool('PAF', 'MinasLegal', False);
@@ -491,6 +498,7 @@ begin
         Ini.WriteBool('PAF', 'TransfPreVenda', fsIdentPAF.Paf.TransfPreVenda);
         Ini.WriteBool('PAF', 'TransfDAV', fsIdentPAF.Paf.TransfDAV);
         Ini.WriteBool('PAF', 'RecompoeGT', fsIdentPAF.Paf.RecompoeGT);
+        Ini.WriteBool('PAF', 'RecompoeNumSerie', fsIdentPAF.Paf.RecompoeNumSerie);
         Ini.WriteBool('PAF', 'EmitePED', fsIdentPAF.Paf.EmitePED);
         Ini.WriteBool('PAF', 'CupomMania', fsIdentPAF.Paf.CupomMania);
         Ini.WriteBool('PAF', 'MinasLegal', fsIdentPAF.Paf.MinasLegal);
@@ -581,20 +589,47 @@ function TACBrAAC.VerificarGTECF(const NumeroSerie : String ;
 var
    AECF : TACBrAACECF ;
    ValorGTNovo : Double ;
+   CRONovo, CNINovo : Integer ;
+   NewECF : TACBrAACECF ;
 begin
   Result := 0;
   VerificaReCarregarArquivo;
 
   AECF := AchaECF( NumeroSerie );
   if not Assigned( AECF ) then
-     Result := -1
+   begin
+     Result := -1;
+
+     if fsIdentPAF.Paf.RecompoeNumSerie and
+        Assigned( fsOnVerificarRecomporNumSerie ) then
+     begin
+        CRONovo := 0;
+        CNINovo := 0;
+
+        fsOnVerificarRecomporNumSerie( NumeroSerie, ValorGT, CRONovo, CNINovo ) ;
+        if (CRONovo > 0) then
+        begin
+           NewECF := TACBrAACECF.Create;
+           NewECF.NumeroSerie    := NumeroSerie;
+           NewECF.CRO            := CRONovo;
+           NewECF.DtHrAtualizado := Now;
+           NewECF.ValorGT        := ValorGT;
+           NewECF.CNI            := CNINovo;
+           fsIdentPAF.ECFsAutorizados.Add( NewECF );
+           SalvarArquivo;
+
+           Result := 0;
+        end ;
+     end ;
+   end
   else
     if RoundTo( AECF.ValorGT, -2) <> RoundTo( ValorGT, -2 ) then
     begin
        ValorGT := AECF.ValorGT;
        Result  := -2;
 
-       if Assigned( fsOnVerificarRecomporValorGT ) then
+       if fsIdentPAF.Paf.RecompoeGT and
+          Assigned( fsOnVerificarRecomporValorGT ) then
        begin
           ValorGTNovo := AECF.ValorGT;
           fsOnVerificarRecomporValorGT( NumeroSerie, ValorGTNovo );

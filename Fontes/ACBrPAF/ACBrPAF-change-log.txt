@@ -48,6 +48,10 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+15/03/2012
+[*] Correção para gravar D3.NUM_DAV como alfa-numerico, (no caso de DAV com 10
+    dígitos)   (por: DSA)
+
 01/03/2012
 [+] Adicionado os Registros "B" 
 [-] Correções no registro "C" 

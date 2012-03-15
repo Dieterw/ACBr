@@ -38,7 +38,7 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 06/03/2012
--- ACBrSocket --
+-- ACBrCEP --
 [-] Removidas as aspas do retorno do CEPLivre (Regys Silveira)
     http://djsystem.com.br/acbr/forum/viewtopic.php?f=14&t=3809
 

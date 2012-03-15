@@ -5557,7 +5557,8 @@ begin
         Relatorio.Add(padC(ATituloRelatorio, TamLin));
 
       Relatorio.Add('');
-      AddCabecalho(0);
+      Relatorio.Add('Identificacao           Valor');
+      Relatorio.Add('</linha_simples>');
 
       // acumular os valores totais das formas
       FPAcumuladas.Clear;
@@ -5573,11 +5574,10 @@ begin
       FPAcumuladas.Ordenar;
       for I := 0 to FPAcumuladas.Count - 1 do
       begin
-        Relatorio.Add(Format('%s %s %s', [
+        Relatorio.Add(Format('%s %s', [
           padL(FPAcumuladas[I].Descricao, 18),
-          Format('R$%12.2n', [FPAcumuladas[I].ValorFiscal]),
-          Format('R$%12.2n', [FPAcumuladas[I].ValorNaoFiscal])
-        ]));
+          Format('R$%12.2n', [FPAcumuladas[I].ValorFiscal +
+                              FPAcumuladas[I].ValorNaoFiscal]) ]));
 
         SubTTFiscal  := SubTTFiscal  + FPAcumuladas[I].ValorFiscal;
         SubTTNFiscal := SubTTNFiscal + FPAcumuladas[I].ValorNaoFiscal;
@@ -5913,6 +5913,7 @@ begin
 
     Relatorio.Add('<n>REQ. XXII</n>');
     Relatorio.Add(PadL('ITEM 7 Alinea b: Recompõe valor GT', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.RecompoeGT ));
+    Relatorio.Add(PadL('ITEM 8 Recompõe Número Série', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.RecompoeNumSerie ));
 
     Relatorio.Add('<n>Req. VIII-A</n>');
     Relatorio.Add(padL('ITEM 2 : MINAS LEGAL', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.MinasLegal ));

@@ -1925,17 +1925,19 @@ Procedure WriteToTXT( const ArqTXT, AString : AnsiString;
    const AppendIfExists : Boolean = True; AddLineBreak : Boolean = True );
 var
   FS : TFileStream ;
-  Buffer : AnsiString ;
+  LineBreak : AnsiString ;
 begin
   FS := TFileStream.Create( ArqTXT, IfThen( AppendIfExists and FileExists(ArqTXT),
      fmOpenReadWrite, fmCreate) or fmShareDenyWrite );
   try
-     Buffer := AString ;
-     if AddLineBreak then
-        Buffer := Buffer + sLineBreak ;
-
      FS.Seek(0, soFromEnd);  // vai para EOF
-     FS.Write(Pointer(Buffer)^,Length(Buffer));
+     FS.Write(Pointer(AString)^,Length(AString));
+
+     if AddLineBreak then
+     begin
+        LineBreak := sLineBreak;
+        FS.Write(Pointer(LineBreak)^,Length(LineBreak));
+     end ;
   finally
      FS.Free ;
   end;

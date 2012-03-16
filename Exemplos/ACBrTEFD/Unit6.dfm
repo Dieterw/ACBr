@@ -1,6 +1,6 @@
 object Form6: TForm6
-  Left = 0
-  Top = 0
+  Left = 412
+  Top = 291
   BorderStyle = bsDialog
   Caption = 'Op'#231#245'es - Banese'
   ClientHeight = 148

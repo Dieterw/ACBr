@@ -1,5 +1,5 @@
 object Form1: TForm1
-  Left = 358
+  Left = 373
   Top = 244
   Width = 766
   Height = 488
@@ -275,7 +275,7 @@ object Form1: TForm1
             Width = 133
             Height = 21
             Style = csDropDownList
-            ItemHeight = 13
+            ItemHeight = 0
             TabOrder = 0
             OnChange = cbxGPChange
           end
@@ -588,7 +588,7 @@ object Form1: TForm1
         end
         object bAbreVendeSubTotaliza2: TButton
           Left = 230
-          Top = 58
+          Top = 44
           Width = 187
           Height = 27
           Caption = 'ConfirmarTransacoesPendentes'
@@ -597,7 +597,7 @@ object Form1: TForm1
         end
         object bAbreVendeSubTotaliza3: TButton
           Left = 230
-          Top = 100
+          Top = 73
           Width = 187
           Height = 27
           Caption = 'ImprimirTransacoesPendentes'
@@ -606,12 +606,38 @@ object Form1: TForm1
         end
         object bAbreVendeSubTotaliza4: TButton
           Left = 230
-          Top = 142
+          Top = 102
           Width = 187
           Height = 27
           Caption = 'FinalizarCupom'
           TabOrder = 13
           OnClick = bAbreVendeSubTotaliza4Click
+        end
+        object GroupBox1: TGroupBox
+          Left = 232
+          Top = 131
+          Width = 185
+          Height = 45
+          Caption = 'TEF Dire'#231#227'o'
+          TabOrder = 14
+          object ComboBox1: TComboBox
+            Left = 9
+            Top = 17
+            Width = 166
+            Height = 21
+            ItemHeight = 13
+            ItemIndex = 0
+            TabOrder = 0
+            Text = 'Nenhuma Transa'#231#227'o'
+            Items.Strings = (
+              'Nenhuma Transa'#231#227'o'
+              'Cart'#227'o de Cr'#233'dito'
+              'Cart'#227'o de D'#233'bito'
+              'Cart'#227'o Voucher'
+              'Cart'#227'o Private Label'
+              'Cheque'
+              'Controle de Frota')
+          end
         end
       end
     end
@@ -884,12 +910,12 @@ object Form1: TForm1
     MsgPausaRelatorio = 'Destaque a %d'#170' via, <ENTER> proxima, %d seg.'
     MaxLinhasBuffer = 3
     PaginaDeCodigo = 850
+    FormMsgFonte.Charset = DEFAULT_CHARSET
     FormMsgFonte.Color = clBlack
     FormMsgFonte.Height = 11
     FormMsgFonte.Name = 'MS Shell Dlg'
     FormMsgFonte.Pitch = fpVariable
     FormMsgFonte.Style = []
-    FormMsgFonte.Weight = 40
     FormMsgColor = clHighlight
     MemoParams.Strings = (
       '[Cabecalho]'
@@ -991,6 +1017,34 @@ object Form1: TForm1
     TEFAuttar.ArqSTS = 'C:\Auttar_TefIP\resp\intpos.sts'
     TEFAuttar.ArqResp = 'C:\Auttar_TefIP\resp\intpos.001'
     TEFAuttar.GPExeName = 'C:\Program Files (x86)\Auttar\IntegradorTEF-IP.exe'
+    TEFGood.ArqTemp = 'C:\good\gettemp.dat'
+    TEFGood.ArqReq = 'C:\good\getreq.dat'
+    TEFGood.ArqSTS = 'C:\good\getstat.dat'
+    TEFGood.ArqResp = 'C:\good\getresp.dat'
+    TEFGood.GPExeName = 'C:\good\GETGoodMed.exe'
+    TEFFoxWin.ArqTemp = 'C:\FwTEF\req\intpos.tmp'
+    TEFFoxWin.ArqReq = 'C:\FwTEF\req\intpos.001'
+    TEFFoxWin.ArqSTS = 'C:\FwTEF\rsp\intpos.sts'
+    TEFFoxWin.ArqResp = 'C:\FwTEF\rsp\intpos.001'
+    TEFFoxWin.GPExeName = 'C:\FwTEF\bin\FwTEF.exe'
+    TEFPetrocard.ArqTemp = 'C:\CardTech\req\intpos.tmp'
+    TEFPetrocard.ArqReq = 'C:\CardTech\req\intpos.001'
+    TEFPetrocard.ArqSTS = 'C:\CardTech\resp\intpos.sts'
+    TEFPetrocard.ArqResp = 'C:\CardTech\resp\intpos.001'
+    TEFPetrocard.GPExeName = 'C:\CardTech\sac.exe'
+    TEFCrediShop.ArqTemp = 'C:\tef_cshp\req\intpos.tmp'
+    TEFCrediShop.ArqReq = 'C:\tef_cshp\req\intpos.001'
+    TEFCrediShop.ArqSTS = 'C:\tef_cshp\resp\intpos.sts'
+    TEFCrediShop.ArqResp = 'C:\tef_cshp\resp\intpos.001'
+    TEFCrediShop.GPExeName = 'C:\tef_cshp\vpos_tef.exe'
+    TEFTicketCar.ArqTemp = 'C:\TCS\TX\INTTCS.tmp'
+    TEFTicketCar.ArqReq = 'C:\TCS\TX\INTTCS.001'
+    TEFTicketCar.ArqSTS = 'C:\TCS\RX\INTTCS.RET'
+    TEFTicketCar.ArqResp = 'C:\TCS\RX\INTTCS.001'
+    TEFTicketCar.GPExeName = 'C:\TCS\tcs.exe'
+    TEFTicketCar.NumLoja = 0
+    TEFTicketCar.NumCaixa = 0
+    TEFTicketCar.AtualizaPrecos = False
     OnAguardaResp = ACBrTEFD1AguardaResp
     OnExibeMsg = ACBrTEFD1ExibeMsg
     OnBloqueiaMouseTeclado = ACBrTEFD1BloqueiaMouseTeclado

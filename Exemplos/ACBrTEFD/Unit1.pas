@@ -10,7 +10,7 @@ uses
   Classes, SysUtils,
   Forms, Controls, Graphics, Dialogs,
   StdCtrls, ExtCtrls, Buttons, ComCtrls, ACBrECF, ACBrDevice, ACBrTEFD,
-  ACBrTEFDClass, ACBrUtil , ACBrTEFDCliSiTef, ACBrTEFDCliDTEF;
+  ACBrTEFDClass, ACBrUtil , ACBrTEFDCliSiTef, ACBrTEFDCliDTEF, ACBrBase;
 
 type
 

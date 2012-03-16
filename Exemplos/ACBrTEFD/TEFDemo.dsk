@@ -10,22 +10,27 @@ File_7=SourceModule,'C:\Pascal\Comp\ACBr\branches\ACBrNovo\Fontes\ACBrTEFD\ACBrT
 File_8=SourceModule,'C:\Pascal\Comp\ACBr\branches\ACBrNovo\Fontes\ACBrTEFD\ACBrTEFDGoodCard.pas',0,1,1,1,1,0,0
 
 [Modules]
-Module0=C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit5.pas
-Module1=C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit2.pas
-Module2=C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit3.pas
-Module3=C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit4.pas
-Module4=C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit1.pas
+Module0=C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit1.pas
+Module1=C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit5.pas
+Module2=C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit4.pas
+Module3=C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit3.pas
+Module4=C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit2.pas
 Module5=C:\Pascal\Comp\ACBr\trunk\Fontes\ACBrTEFD\ACBrTEFDVeSPague.pas
 Module6=C:\Pascal\Comp\ACBr\trunk\Fontes\ACBrTEFD\ACBrTEFDCliSiTef.pas
 Count=7
 EditWindowCount=1
+
+[C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit1.pas]
+ModuleType=SourceModule
+FormState=1
+FormOnTop=0
 
 [C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit5.pas]
 ModuleType=SourceModule
 FormState=1
 FormOnTop=0
 
-[C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit2.pas]
+[C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit4.pas]
 ModuleType=SourceModule
 FormState=1
 FormOnTop=1
@@ -35,15 +40,10 @@ ModuleType=SourceModule
 FormState=1
 FormOnTop=1
 
-[C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit4.pas]
+[C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit2.pas]
 ModuleType=SourceModule
 FormState=1
 FormOnTop=1
-
-[C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit1.pas]
-ModuleType=SourceModule
-FormState=0
-FormOnTop=0
 
 [C:\Pascal\Comp\ACBr\trunk\Fontes\ACBrTEFD\ACBrTEFDVeSPague.pas]
 ModuleType=SourceModule
@@ -55,7 +55,7 @@ ModuleType=SourceModule
 FormState=0
 FormOnTop=0
 
-[C:\Program Files (x86)\Borland\Delphi7\Bin\ProjectGroup1.bpg]
+[C:\Pascal\Delphi\ProjectGroup1.bpg]
 FormState=0
 FormOnTop=0
 
@@ -65,7 +65,7 @@ FormOnTop=0
 
 [EditWindow0]
 ViewCount=7
-CurrentView=4
+CurrentView=0
 View0=0
 View1=1
 View2=2
@@ -96,9 +96,9 @@ BottomPanelData=00000400010000000B0000004D65737361676556696577000000000000000000
 
 [View0]
 Module=C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit1.pas
-CursorX=52
-CursorY=781
-TopLine=771
+CursorX=1
+CursorY=63
+TopLine=49
 LeftCol=1
 
 [View1]
@@ -124,8 +124,8 @@ LeftCol=1
 
 [View4]
 Module=C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit5.pas
-CursorX=33
-CursorY=17
+CursorX=42
+CursorY=12
 TopLine=1
 LeftCol=1
 

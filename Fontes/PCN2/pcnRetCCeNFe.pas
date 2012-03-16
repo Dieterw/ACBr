@@ -90,6 +90,7 @@ type
     FemailDest: String;
     FdhRegEvento: TDateTime;
     FnProt: String;
+    FXML: AnsiString;
   public
   published
     property Id: string  read FId write FId;
@@ -106,6 +107,7 @@ type
     property emailDest: String read FemailDest write FemailDest;
     property dhRegEvento: TDateTime read FdhRegEvento write FdhRegEvento;
     property nProt: String read FnProt write FnProt;
+    property XML: AnsiString read FXML write FXML;
   end;
 
   TRetInfEventoCollection = class(TCollection)

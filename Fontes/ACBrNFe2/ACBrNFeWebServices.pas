@@ -3008,9 +3008,12 @@ begin
               Leitor.Arquivo := FRetWS;
               // Alterado por Allan Wolski em 28/09/2011
               wProc.Add(UTF8Encode(Leitor.rExtrai(1, 'infEvento', '', j + 1)));
-              wProc.Add('</infEvento>');              
+              wProc.Add('</infEvento>');
               wProc.Add('</retEvento>');
               wProc.Add('</ProcEventoNFe>');
+
+              CCeRetorno.retEvento.Items[j].RetInfEvento.XML:=wProc.Text;
+
               if FConfiguracoes.Geral.Salvar then
                  FConfiguracoes.Geral.Save(FCCe.Evento.Items[i].InfEvento.chNFe + '-ProcEventoNFe.xml', wProc.Text);
               if FConfiguracoes.Arquivos.Salvar then

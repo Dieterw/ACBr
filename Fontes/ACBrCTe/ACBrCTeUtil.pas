@@ -1017,52 +1017,6 @@ begin
         CTeUtil.SeSenao(CTeUtil.EstaVazio(APathSchemas),
         PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',
         PathWithDelim(APathSchemas))+'cte_v1.04.xsd');
-       (*
-       // Incluido por Italo em 14/03/2012
-       if pos('<aereo>',XML)<>0
-        then begin
-         Schema.add('http://www.portalfiscal.inf.br/cte',
-          CTeUtil.SeSenao(CTeUtil.EstaVazio(APathSchemas),
-          PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',
-          PathWithDelim(APathSchemas))+'cteModalAereo_v1.04.xsd');
-        end
-        else begin
-         if pos('<aquav>',XML)<>0
-          then begin
-           Schema.add('http://www.portalfiscal.inf.br/cte',
-            CTeUtil.SeSenao(CTeUtil.EstaVazio(APathSchemas),
-            PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',
-            PathWithDelim(APathSchemas))+'cteModalAquaviario_v1.04.xsd');
-          end
-          else begin
-           if pos('<duto>',XML)<>0
-            then begin
-             Schema.add('http://www.portalfiscal.inf.br/cte',
-              CTeUtil.SeSenao(CTeUtil.EstaVazio(APathSchemas),
-              PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',
-              PathWithDelim(APathSchemas))+'cteModalDutoviario_v1.04.xsd');
-            end
-            else begin
-             if pos('<ferrov>',XML)<>0
-              then begin
-               Schema.add('http://www.portalfiscal.inf.br/cte',
-                CTeUtil.SeSenao(CTeUtil.EstaVazio(APathSchemas),
-                PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',
-                PathWithDelim(APathSchemas))+'cteModalFerroviario_v1.04.xsd');
-              end
-              else begin
-               if pos('<rodo>',XML)<>0
-                then begin
-                 Schema.add('http://www.portalfiscal.inf.br/cte',
-                  CTeUtil.SeSenao(CTeUtil.EstaVazio(APathSchemas),
-                  PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',
-                  PathWithDelim(APathSchemas))+'cteModalRodoviario_v1.04.xsd');
-                end;
-              end;
-            end;
-          end;
-        end;
-       *)
       end;
    2: begin
        Schema.remove('http://www.portalfiscal.inf.br/cte');
@@ -1095,6 +1049,131 @@ begin
   DOMDocument         := nil;
   ParseError          := nil;
   Schema              := nil;
+end;
+
+// Incluido por Italo em 16/03/2012
+function ValidaModalMSXML(XML: AnsiString; out Msg: AnsiString;
+ const APathSchemas: string = ''): Boolean;
+{$IFDEF PL_104}
+var
+  DOMDocument : IXMLDOMDocument2;
+  ParseError  : IXMLDOMParseError;
+  Schema      : XMLSchemaCache;
+  Tipo        : Integer;
+{$ENDIF}
+begin
+{$IFDEF PL_103}
+  Result := True;
+{$ENDIF}
+
+{$IFDEF PL_104}
+  Tipo := 0;
+
+  if pos( '<aereo>', XML ) <> 0
+   then begin
+    Tipo := 1;
+    XML := SeparaDados( XML, 'aereo' );
+    XML := '<aereo xmlns="http://www.portalfiscal.inf.br/cte">' +
+            XML +
+           '</aereo>';
+   end;
+  if pos( '<aquav>', XML) <> 0
+   then begin
+    Tipo := 2;
+    XML := SeparaDados( XML, 'aquav' );
+    XML := '<aquav xmlns="http://www.portalfiscal.inf.br/cte">' +
+            XML +
+           '</aquav>';
+   end;
+  if pos( '<duto>', XML) <> 0
+   then begin
+    Tipo := 3;
+    XML := SeparaDados( XML, 'duto' );
+    XML := '<duto xmlns="http://www.portalfiscal.inf.br/cte">' +
+            XML +
+           '</duto>';
+   end;
+  if pos( '<ferrov>', XML) <> 0
+   then begin
+    Tipo := 4;
+    XML := SeparaDados( XML, 'ferrov' );
+    XML := '<ferrov xmlns="http://www.portalfiscal.inf.br/cte">' +
+            XML +
+           '</ferrov>';
+   end;
+  if pos( '<rodo>', XML) <> 0
+   then begin
+    Tipo := 5;
+    XML := SeparaDados( XML, 'rodo' );
+    XML := '<rodo xmlns="http://www.portalfiscal.inf.br/cte">' +
+            XML +
+           '</rodo>';
+   end;
+
+  XML := '<?xml version="1.0" encoding="UTF-8" ?>' + XML;
+
+  if Tipo = 0 then
+    raise Exception.Create('Modal não encontrado no XML.');
+
+  DOMDocument                  := CoDOMDocument50.Create;
+  DOMDocument.async            := False;
+  DOMDocument.resolveExternals := False;
+  DOMDocument.validateOnParse  := True;
+  DOMDocument.loadXML(XML);
+
+  Schema := CoXMLSchemaCache50.Create;
+
+  if not DirectoryExists(CTeUtil.SeSenao(CTeUtil.EstaVazio(APathSchemas),
+                  PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas',
+                  PathWithDelim(APathSchemas))) then
+    raise Exception.Create('Diretório de Schemas não encontrado'+sLineBreak+
+                            CTeUtil.SeSenao(CTeUtil.EstaVazio(APathSchemas),
+                            PathWithDelim(ExtractFileDir(application.ExeName))+
+                            'Schemas',PathWithDelim(APathSchemas)));
+
+  Schema.remove('http://www.portalfiscal.inf.br/cte');
+
+  case Tipo of
+   1: begin
+       Schema.add('http://www.portalfiscal.inf.br/cte',
+          CTeUtil.SeSenao(CTeUtil.EstaVazio(APathSchemas),
+          PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',
+          PathWithDelim(APathSchemas))+'cteModalAereo_v1.04.xsd');
+      end;
+   2: begin
+       Schema.add('http://www.portalfiscal.inf.br/cte',
+          CTeUtil.SeSenao(CTeUtil.EstaVazio(APathSchemas),
+          PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',
+          PathWithDelim(APathSchemas))+'cteModalAquaviario_v1.04.xsd');
+      end;    
+   3: begin
+       Schema.add('http://www.portalfiscal.inf.br/cte',
+          CTeUtil.SeSenao(CTeUtil.EstaVazio(APathSchemas),
+          PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',
+          PathWithDelim(APathSchemas))+'cteModalDutoviario_v1.04.xsd');
+      end;
+   4: begin
+       Schema.add('http://www.portalfiscal.inf.br/cte',
+          CTeUtil.SeSenao(CTeUtil.EstaVazio(APathSchemas),
+          PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',
+          PathWithDelim(APathSchemas))+'cteModalFerroviario_v1.04.xsd');
+      end;
+   5: begin
+       Schema.add('http://www.portalfiscal.inf.br/cte',
+          CTeUtil.SeSenao(CTeUtil.EstaVazio(APathSchemas),
+          PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',
+          PathWithDelim(APathSchemas))+'cteModalRodoviario_v1.04.xsd');
+      end;
+  end;
+
+  DOMDocument.schemas := Schema;
+  ParseError          := DOMDocument.validate;
+  Result              := (ParseError.errorCode = 0);
+  Msg                 := ParseError.reason;
+  DOMDocument         := nil;
+  ParseError          := nil;
+  Schema              := nil;
+{$ENDIF}
 end;
 
 function ValidaAssinaturaMSXML(XML: AnsiString; out Msg: AnsiString): Boolean;
@@ -1151,7 +1230,9 @@ begin
 {$IFDEF ACBrCTeOpenSSL}
   Result := ValidaLibXML(AXML, AMsg, APathSchemas);
 {$ELSE}
-  Result := ValidaMSXML(AXML, AMsg, APathSchemas);
+  // Alterado por Italo em 16/03/2012
+  Result := ValidaMSXML(AXML, AMsg, APathSchemas) and
+            ValidaModalMSXML(AXML, AMsg, APathSchemas);
 {$ENDIF}
 end;
 

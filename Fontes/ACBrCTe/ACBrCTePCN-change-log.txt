@@ -48,6 +48,14 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   16/03/2012 (Italo Jurisato Junior)
+---------------
+[+] Foi criado a função ValidaModalMSXML no fonte ACBrCTeUtil.pas 
+    E alterado a função Valida para que a mesma chame as funções:
+      ValidaMSXML e ValidaModalMSXML
+    Finalidade: validar o XML por completo, visto que antes não ocorria a validação
+                do bloco especifico ao modal (versão 1.04).
+
 Alterações   27/01/12 (Italo Jurisato Junior)
 ---------------
 [-] Alteração na Emissão do DACTE - Quick Report código do status para CT-e DENEGADA 

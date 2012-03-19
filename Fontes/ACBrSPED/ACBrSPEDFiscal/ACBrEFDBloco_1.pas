@@ -1290,6 +1290,7 @@ begin
    FRegistro1200 := TRegistro1200List.Create;
    FRegistro1300 := TRegistro1300List.Create;
    FRegistro1350 := TRegistro1350List.Create;
+   FRegistro1390 := TRegistro1390List.Create;
    FRegistro1400 := TRegistro1400List.Create;
    FRegistro1500 := TRegistro1500List.Create;
    FRegistro1600 := TRegistro1600List.Create;
@@ -1306,6 +1307,7 @@ begin
    FRegistro1200.Free;
    FRegistro1300.Free;
    FRegistro1350.Free;
+   FRegistro1390.Free;
    FRegistro1400.Free;
    FRegistro1500.Free;
    FRegistro1600.Free;

@@ -51,6 +51,70 @@ type TComprovanteNaoFiscalRec = record
     Contador: Integer;
 end;
 
+type TRelatorioGerencialRec = record
+    Indice: array[0..3] of char;
+    Descricao: array[0..29] of char;
+    Contador: Integer;
+end;
+
+type TDadosRZRec = record
+     COO: integer;
+     CFD: integer;
+     CancelamentoISSQN: double;
+     GNFC: integer;
+     CRO: integer;
+     ValorVendaBruta: double;
+     TotalizadoresNaoFiscais: array of TComprovanteNaoFiscalRec;
+     TotalizadoresNaoFiscaisLen : integer;
+     ICMS: array of TAliquotaRec;
+     ICMSLen : integer;
+     AcrescimoICMS: double;
+     DescontoICMS: double;
+     NaoTributadoICMS: double;
+     RelatorioGerencial: array of TRelatorioGerencialRec;
+     RelatorioGerencialLen: integer;
+     CRZ: integer;
+     ISSQN: array of TAliquotaRec;
+     ISSQNLen : integer;
+     GRG: integer;
+     ValorGrandeTotal: double;
+     AcrescimoISSQN: double;
+     NaoTributadoISSQN: double;
+     IsentoICMS: double;
+     SubstituicaoTributariaICMS: double;
+     DataDaImpressora: double;
+     TotalOperacaoNaoFiscal: double;
+     DescontoISSQN: double;
+     CancelamentoOPNF: double;
+     AcrescimoOPNF: double;
+     DescontoOPNF: double;
+     CancelamentoICMS: double;
+     GNF: integer;
+     IsentoISSQN: double;
+     SubstituicaoTributariaISSQN: double;
+     VendaLiquida: double;
+     CFC: integer;
+     CCF: integer;
+     TotalISSQN: double;
+     TotalICMS: double;
+     CDC: integer;
+     CCDC: integer;
+     NCN: integer;
+     DataDoMovimento: double;
+     MeiosDePagamento: array of TFormaPagamentoRec;
+     MeiosDePagamentoLen: integer;
+     NumeroCOOInicial: array[0..29] of char;
+     NumeroDoECF: array[0..29] of char;
+     NumeroDeSerie: array[0..29] of char;
+     NumeroDeSerieMFD: array[0..29] of char;
+     NumeroDaLoja: array[0..29] of char;
+     TotalTroco: double;
+end;
+
+{Ponteiro para o Handle }
+type PDadosRZRec = ^TDadosRZRec;
+
+
 implementation
 
 {
@@ -4075,6 +4139,179 @@ begin
 
 end;
 
+Function ECF_GetDadosReducaoZClass(const ecfHandle: PECFHandle; var retDadosRZ : PDadosRZRec) : Integer ; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+var
+  I : integer;
+  dadosRZ : TACBrECFDadosRZ;
+
+begin
+
+  if (ecfHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+   try
+
+      dadosRZ := ecfHandle^.ECF.DadosReducaoZClass;
+
+      New(retDadosRZ);
+      retDadosRZ^.COO :=  dadosRZ.COO;
+      retDadosRZ^.CFD :=  dadosRZ.CFD;
+      retDadosRZ^.CancelamentoISSQN :=  dadosRZ.CancelamentoISSQN;
+      retDadosRZ^.GNFC :=  dadosRZ.GNFC;
+      retDadosRZ^.CRO :=  dadosRZ.CRO;
+      retDadosRZ^.ValorVendaBruta :=  dadosRZ.ValorVendaBruta;
+
+      SetLength(retDadosRZ^.TotalizadoresNaoFiscais, dadosRZ.TotalizadoresNaoFiscais.Count);
+      retDadosRZ^.TotalizadoresNaoFiscaisLen  :=  dadosRZ.TotalizadoresNaoFiscais.Count;
+      for I := 0 to dadosRZ.TotalizadoresNaoFiscais.Count -1 do
+      begin
+
+           StrPLCopy(retDadosRZ^.TotalizadoresNaoFiscais[I].Indice, dadosRZ.TotalizadoresNaoFiscais[I].Indice, 3);
+           StrPLCopy(retDadosRZ^.TotalizadoresNaoFiscais[I].FormaPagamento, dadosRZ.TotalizadoresNaoFiscais[I].FormaPagamento, 3);
+           StrPLCopy(retDadosRZ^.TotalizadoresNaoFiscais[I].Descricao, dadosRZ.TotalizadoresNaoFiscais[I].Descricao, 30);
+           retDadosRZ^.TotalizadoresNaoFiscais[I].PermiteVinculado := dadosRZ.TotalizadoresNaoFiscais[I].PermiteVinculado;
+           retDadosRZ^.TotalizadoresNaoFiscais[I].Contador := dadosRZ.TotalizadoresNaoFiscais[I].Contador;
+           retDadosRZ^.TotalizadoresNaoFiscais[I].Total := dadosRZ.TotalizadoresNaoFiscais[I].Total;
+
+      end;
+
+      SetLength(retDadosRZ^.ICMS, dadosRZ.ICMS.Count);
+      retDadosRZ^.ICMSLen := dadosRZ.ICMS.Count;
+      for I := 0 to dadosRZ.ICMS.Count -1 do
+      begin
+
+           StrPLCopy(retDadosRZ^.ICMS[I].Indice, dadosRZ.ICMS[I].Indice, 3);
+           retDadosRZ^.ICMS[I].Aliquota := dadosRZ.ICMS[I].Aliquota;
+           retDadosRZ^.ICMS[I].Sequencia := dadosRZ.ICMS[I].Sequencia;
+           retDadosRZ^.ICMS[I].Tipo := dadosRZ.ICMS[I].Tipo;
+           retDadosRZ^.ICMS[I].Total := dadosRZ.ICMS[I].Total;
+
+      end;
+
+
+      retDadosRZ^.AcrescimoICMS :=  dadosRZ.AcrescimoICMS;
+      retDadosRZ^.DescontoICMS :=  dadosRZ.DescontoICMS;
+      retDadosRZ^.NaoTributadoICMS :=  dadosRZ.NaoTributadoICMS;
+
+      SetLength(retDadosRZ^.RelatorioGerencial, dadosRZ.RelatorioGerencial.Count);
+      retDadosRZ^.RelatorioGerencialLen :=  dadosRZ.RelatorioGerencial.Count;
+      for I := 0 to dadosRZ.RelatorioGerencial.Count -1 do
+      begin
+
+           StrPLCopy(retDadosRZ^.RelatorioGerencial[I].Indice, dadosRZ.RelatorioGerencial[I].Indice, 3);
+           StrPLCopy(retDadosRZ^.RelatorioGerencial[I].Descricao, dadosRZ.RelatorioGerencial[I].Descricao, 30);
+           retDadosRZ^.RelatorioGerencial[I].Contador := dadosRZ.RelatorioGerencial[I].Contador;
+
+      end;
+
+
+      retDadosRZ^.CRZ :=  dadosRZ.CRZ;
+
+      SetLength(retDadosRZ^.ISSQN, dadosRZ.ISSQN.Count);
+      retDadosRZ^.ISSQNLen  :=  dadosRZ.ISSQN.Count;
+      for I := 0 to dadosRZ.ISSQN.Count -1 do
+      begin
+
+           StrPLCopy(retDadosRZ^.ISSQN[I].Indice, dadosRZ.ISSQN[I].Indice, 3);
+           retDadosRZ^.ISSQN[I].Aliquota := dadosRZ.ISSQN[I].Aliquota;
+           retDadosRZ^.ISSQN[I].Sequencia := dadosRZ.ISSQN[I].Sequencia;
+           retDadosRZ^.ISSQN[I].Tipo := dadosRZ.ISSQN[I].Tipo;
+           retDadosRZ^.ISSQN[I].Total := dadosRZ.ISSQN[I].Total;
+
+      end;
+
+      retDadosRZ^.GRG :=  dadosRZ.GRG;
+      retDadosRZ^.ValorGrandeTotal :=  dadosRZ.ValorGrandeTotal;
+      retDadosRZ^.AcrescimoISSQN :=  dadosRZ.AcrescimoISSQN;
+      retDadosRZ^.NaoTributadoISSQN :=  dadosRZ.NaoTributadoISSQN;
+      retDadosRZ^.IsentoICMS :=  dadosRZ.IsentoICMS;
+      retDadosRZ^.SubstituicaoTributariaICMS :=  dadosRZ.SubstituicaoTributariaICMS;
+      retDadosRZ^.DataDaImpressora :=  double(dadosRZ.DataDaImpressora);
+      retDadosRZ^.TotalOperacaoNaoFiscal :=  dadosRZ.TotalOperacaoNaoFiscal;
+      retDadosRZ^.DescontoISSQN :=  dadosRZ.DescontoISSQN;
+      retDadosRZ^.CancelamentoOPNF :=  dadosRZ.CancelamentoOPNF;
+      retDadosRZ^.AcrescimoOPNF :=  dadosRZ.AcrescimoOPNF;
+      retDadosRZ^.DescontoOPNF :=  dadosRZ.DescontoOPNF;
+      retDadosRZ^.CancelamentoICMS :=  dadosRZ.CancelamentoICMS;
+      retDadosRZ^.GNF :=  dadosRZ.GNF;
+      retDadosRZ^.IsentoISSQN :=  dadosRZ.IsentoISSQN;
+      retDadosRZ^.SubstituicaoTributariaISSQN :=  dadosRZ.SubstituicaoTributariaISSQN;
+      retDadosRZ^.VendaLiquida :=  dadosRZ.VendaLiquida;
+      retDadosRZ^.CFC :=  dadosRZ.CFC;
+      retDadosRZ^.CCF :=  dadosRZ.CCF;
+      retDadosRZ^.TotalISSQN :=  dadosRZ.TotalISSQN;
+      retDadosRZ^.TotalICMS :=  dadosRZ.TotalICMS;
+      retDadosRZ^.CDC :=  dadosRZ.CDC;
+      retDadosRZ^.CCDC :=  dadosRZ.CCDC;
+      retDadosRZ^.NCN :=  dadosRZ.NCN;
+      retDadosRZ^.DataDoMovimento :=  double(dadosRZ.DataDoMovimento);
+
+      SetLength(retDadosRZ^.MeiosDePagamento, dadosRZ.MeiosDePagamento.Count);
+      retDadosRZ^.MeiosDePagamentoLen :=  dadosRZ.MeiosDePagamento.Count;
+      for I := 0 to dadosRZ.MeiosDePagamento.Count -1 do
+      begin
+
+           StrPLCopy(retDadosRZ^.MeiosDePagamento[I].Indice, dadosRZ.MeiosDePagamento[I].Indice, 3);
+           StrPLCopy(retDadosRZ^.MeiosDePagamento[I].Descricao, dadosRZ.MeiosDePagamento[I].Descricao, 30);
+           retDadosRZ^.MeiosDePagamento[I].PermiteVinculado := dadosRZ.MeiosDePagamento[I].PermiteVinculado;
+           retDadosRZ^.MeiosDePagamento[I].Total := dadosRZ.MeiosDePagamento[I].Total;
+
+      end;
+
+      StrPLCopy(retDadosRZ^.NumeroCOOInicial, dadosRZ.NumeroCOOInicial, 30);
+      StrPLCopy(retDadosRZ^.NumeroDoECF, dadosRZ.NumeroDoECF, 30);
+      StrPLCopy(retDadosRZ^.NumeroDeSerie, dadosRZ.NumeroDeSerie, 30);
+      StrPLCopy(retDadosRZ^.NumeroDeSerieMFD, dadosRZ.NumeroDeSerieMFD, 30);
+      StrPLCopy(retDadosRZ^.NumeroDaLoja, dadosRZ.NumeroDaLoja, 30);
+
+      retDadosRZ^.TotalTroco :=  dadosRZ.TotalTroco;
+
+      Result := 0;
+
+   except
+     on exception : Exception do
+     begin
+        ecfHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+   end;
+end;
+
+
+Function ECF_DestroyDadosReducaoZClass(const ecfHandle: PECFHandle; var dadosRZ : PDadosRZRec) : Integer ; {$IFDEF STDCALL} stdcall; {$ENDIF} {$IFDEF CDECL} cdecl; {$ENDIF} export;
+begin
+
+  if (ecfHandle = nil) then
+  begin
+     Result := -2;
+     Exit;
+  end;
+
+   try
+
+      Dispose(dadosRZ);
+      dadosRZ := nil;
+
+      //SetLength(retDadosRZ.TotalizadoresNaoFiscais, dadosRZ.TotalizadoresNaoFiscais.Count);
+      //SetLength(retDadosRZ.ICMS, dadosRZ.ICMS.Count);
+      //SetLength(retDadosRZ.RelatorioGerencial, dadosRZ.RelatorioGerencial.Count);
+      //SetLength(retDadosRZ.ISSQN, dadosRZ.ISSQN.Count);
+      //SetLength(retDadosRZ.MeiosDePagamento, dadosRZ.MeiosDePagamento.Count);
+
+      Result := 0;
+
+   except
+     on exception : Exception do
+     begin
+        ecfHandle^.UltimoErro := exception.Message;
+        Result := -1;
+     end
+   end;
+end;
+
 
 {
 NÀO IMPLEMENTADO
@@ -4342,7 +4579,9 @@ ECF_LeituraMemoriaFiscalArquivoData,
 
 ECF_IdentificaPAF,
 ECF_GetDadosReducaoZ,
-ECF_GetDadosUltimaReducaoZ;
+ECF_GetDadosUltimaReducaoZ,
+ECF_GetDadosReducaoZClass,
+ECF_DestroyDadosReducaoZClass;
 
 {Não implementado}
 

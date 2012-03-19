@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ACBr.Net
 {
-	public static class ACBrDll
+	internal static class ACBrDll
 	{
 		#region ACBrECF
 
@@ -65,6 +65,171 @@ namespace ACBr.Net
 
 			[MarshalAs(UnmanagedType.I4)]
 			public int Contador;
+		}
+
+		[StructLayout(LayoutKind.Sequential)]
+		public struct RelatorioGerencialRec
+		{
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+			public string Indice;
+
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 30)]
+			public string Descricao;
+
+			[MarshalAs(UnmanagedType.I4)]
+			public int Contador;
+		}
+
+		[StructLayout(LayoutKind.Sequential)]
+		public struct DadosRZRec
+		{
+			[MarshalAs(UnmanagedType.I4)]
+			public int COO;
+
+			[MarshalAs(UnmanagedType.I4)]
+			public int CFD;
+
+			[MarshalAs(UnmanagedType.R8)]
+			public double CancelamentoISSQN;
+
+			[MarshalAs(UnmanagedType.I4)]
+			public int GNFC;
+
+			[MarshalAs(UnmanagedType.I4)]
+			public int CRO;
+
+			[MarshalAs(UnmanagedType.R8)]
+			public double ValorVendaBruta;
+
+			public IntPtr TotalizadoresNaoFiscais;
+
+			[MarshalAs(UnmanagedType.I4)]
+			public int TotalizadoresNaoFiscaisLen;
+
+			public IntPtr ICMS;
+
+			[MarshalAs(UnmanagedType.I4)]
+			public int ICMSLen;
+
+			[MarshalAs(UnmanagedType.R8)]
+			public double AcrescimoICMS;
+
+			[MarshalAs(UnmanagedType.R8)]
+			public double DescontoICMS;
+
+			[MarshalAs(UnmanagedType.R8)]
+			public double NaoTributadoICMS;
+
+			public IntPtr RelatorioGerencial;
+
+			[MarshalAs(UnmanagedType.I4)]
+			public int RelatorioGerencialLen;
+
+			[MarshalAs(UnmanagedType.I4)]
+			public int CRZ;
+
+			public IntPtr ISSQN;
+
+			[MarshalAs(UnmanagedType.I4)]
+			public int ISSQNLen;
+
+			[MarshalAs(UnmanagedType.I4)]
+			public int GRG;
+
+			[MarshalAs(UnmanagedType.R8)]
+			public double ValorGrandeTotal;
+
+			[MarshalAs(UnmanagedType.R8)]
+			public double AcrescimoISSQN;
+
+			[MarshalAs(UnmanagedType.R8)]
+			public double NaoTributadoISSQN;
+
+			[MarshalAs(UnmanagedType.R8)]
+			public double IsentoICMS;
+
+			[MarshalAs(UnmanagedType.R8)]
+			public double SubstituicaoTributariaICMS;
+
+			[MarshalAs(UnmanagedType.R8)]
+			public double DataDaImpressora;
+
+			[MarshalAs(UnmanagedType.R8)]
+			public double TotalOperacaoNaoFiscal;
+
+			[MarshalAs(UnmanagedType.R8)]
+			public double DescontoISSQN;
+
+			[MarshalAs(UnmanagedType.R8)]
+			public double CancelamentoOPNF;
+
+			[MarshalAs(UnmanagedType.R8)]
+			public double AcrescimoOPNF;
+
+			[MarshalAs(UnmanagedType.R8)]
+			public double DescontoOPNF;
+
+			[MarshalAs(UnmanagedType.R8)]
+			public double CancelamentoICMS;
+
+			[MarshalAs(UnmanagedType.I4)]
+			public int GNF;
+
+			[MarshalAs(UnmanagedType.R8)]
+			public double IsentoISSQN;
+
+			[MarshalAs(UnmanagedType.R8)]
+			public double SubstituicaoTributariaISSQN;
+
+			[MarshalAs(UnmanagedType.R8)]
+			public double VendaLiquida;
+
+			[MarshalAs(UnmanagedType.I4)]
+			public int CFC;
+
+			[MarshalAs(UnmanagedType.I4)]
+			public int CCF;
+
+			[MarshalAs(UnmanagedType.R8)]
+			public double TotalISSQN;
+
+			[MarshalAs(UnmanagedType.R8)]
+			public double TotalICMS;
+
+			[MarshalAs(UnmanagedType.I4)]
+			public int CDC;
+
+			[MarshalAs(UnmanagedType.I4)]
+			public int CCDC;
+
+			[MarshalAs(UnmanagedType.I4)]
+			public int NCN;
+
+			[MarshalAs(UnmanagedType.R8)]
+			public double DataDoMovimento;
+
+			public IntPtr MeiosDePagamento;
+
+			[MarshalAs(UnmanagedType.I4)]
+			public int MeiosDePagamentoLen;
+
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 30)]
+			public string NumeroCOOInicial;
+
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 30)]
+			public string NumeroDoECF;
+
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 30)]
+			public string NumeroDeSerie;
+
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 30)]
+			public string NumeroDeSerieMFD;
+
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 30)]
+			public string NumeroDaLoja;
+
+			[MarshalAs(UnmanagedType.R8)]
+			public double TotalTroco;
 		}
 
 		#endregion Interop Types
@@ -382,6 +547,12 @@ namespace ACBr.Net
 
 		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
 		public static extern int ECF_GetDadosUltimaReducaoZ(IntPtr ecfHandle, StringBuilder buffer, int bufferLen);
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern int ECF_GetDadosReducaoZClass(IntPtr ecfHandle, out IntPtr dadosRZ);
+
+		[DllImport("ACBr32.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern int ECF_DestroyDadosReducaoZClass(IntPtr ecfHandle, ref IntPtr dadosRZ);
 
 		#endregion Propriedades do Componente
 

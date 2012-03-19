@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace ACBr.Net
@@ -744,7 +745,8 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetString(ACBrDll.ECF_GetDadosReducaoZ);
+				const int BUFFER_LEN = 16384;
+				return GetString(ACBrDll.ECF_GetDadosReducaoZ, BUFFER_LEN);
 			}
 		}
 
@@ -752,7 +754,16 @@ namespace ACBr.Net
 		{
 			get
 			{
-				return GetString(ACBrDll.ECF_GetDadosUltimaReducaoZ);
+				const int BUFFER_LEN = 16384;
+				return GetString(ACBrDll.ECF_GetDadosUltimaReducaoZ, BUFFER_LEN);
+			}
+		}
+
+		public ACBrECFDadosRZ DadosReducaoZClass
+		{
+			get
+			{
+				return GetDadosReducaoZClass();
 			}
 		}
 
@@ -1017,6 +1028,151 @@ namespace ACBr.Net
 		{
 			int ret = ACBrDll.ECF_LeituraMemoriaFiscalArquivoData(this.handle, dataInicial.ToOADate(), dataFinal.ToOADate(), ToUTF8(nomeArquivo), simplificada);
 			CheckResult(ret);
+		}
+
+		private ACBrECFDadosRZ GetDadosReducaoZClass()
+		{
+			IntPtr ptr;
+			int ret = ACBrDll.ECF_GetDadosReducaoZClass(this.handle, out ptr);
+			CheckResult(ret);
+
+			try
+			{
+				ACBrECFDadosRZ dadosRZ = new ACBrECFDadosRZ();
+				ACBrDll.DadosRZRec record = (ACBrDll.DadosRZRec)Marshal.PtrToStructure(ptr, typeof(ACBrDll.DadosRZRec));
+
+				dadosRZ.COO = record.COO;
+				dadosRZ.CFD = record.CFD;
+				dadosRZ.CancelamentoISSQN = Convert.ToDecimal(record.CancelamentoISSQN);
+				dadosRZ.GNFC = record.GNFC;
+				dadosRZ.CRO = record.CRO;
+				dadosRZ.ValorVendaBruta = Convert.ToDecimal(record.ValorVendaBruta);
+
+				dadosRZ.TotalizadoresNaoFiscais = new ACBrECFComprovanteNaoFiscal[record.TotalizadoresNaoFiscaisLen];
+				for (int i = 0; i < record.TotalizadoresNaoFiscaisLen; i++)
+				{
+					IntPtr itemPtr = new IntPtr(record.TotalizadoresNaoFiscais.ToInt32() + (i * Marshal.SizeOf(typeof(ACBrDll.ComprovanteNaoFiscalRec))));
+					ACBrDll.ComprovanteNaoFiscalRec itemRec = (ACBrDll.ComprovanteNaoFiscalRec)Marshal.PtrToStructure(itemPtr, typeof(ACBrDll.ComprovanteNaoFiscalRec));
+
+					ACBrECFComprovanteNaoFiscal item = new ACBrECFComprovanteNaoFiscal();
+					item.Indice = FromUTF8(itemRec.Indice);
+					item.PermiteVinculado = itemRec.PermiteVinculado;
+					item.Descricao = FromUTF8(itemRec.Descricao);
+					item.FormaPagamento = FromUTF8(itemRec.FormaPagamento);
+					item.Total = Convert.ToDecimal(itemRec.Total);
+					item.Contador = itemRec.Contador;
+
+					dadosRZ.TotalizadoresNaoFiscais[i] = item;
+				}
+
+				dadosRZ.ICMS = new ACBrECFAliquota[record.ICMSLen];
+				for (int i = 0; i < record.ICMSLen; i++)
+				{
+					IntPtr itemPtr = new IntPtr(record.ICMS.ToInt32() + (i * Marshal.SizeOf(typeof(ACBrDll.AliquotaRec))));
+					ACBrDll.AliquotaRec itemRec = (ACBrDll.AliquotaRec)Marshal.PtrToStructure(itemPtr, typeof(ACBrDll.AliquotaRec));
+
+					ACBrECFAliquota item = new ACBrECFAliquota();
+					item.Indice = FromUTF8(itemRec.Indice);
+					item.Aliquota = Convert.ToDecimal(itemRec.Aliquota);
+					item.Tipo = Convert.ToString(itemRec.Tipo);
+					item.Total = Convert.ToDecimal(itemRec.Total);
+					item.Sequencia = itemRec.Sequencia;
+
+					dadosRZ.ICMS[i] = item;
+				}
+
+				dadosRZ.AcrescimoICMS = Convert.ToDecimal(record.AcrescimoICMS);
+				dadosRZ.DescontoICMS = Convert.ToDecimal(record.DescontoICMS);
+				dadosRZ.NaoTributadoICMS = Convert.ToDecimal(record.NaoTributadoICMS);
+
+				dadosRZ.RelatorioGerencial = new ACBrECFRelatorioGerencial[record.RelatorioGerencialLen];
+				for (int i = 0; i < record.RelatorioGerencialLen; i++)
+				{
+					IntPtr itemPtr = new IntPtr(record.RelatorioGerencial.ToInt32() + (i * Marshal.SizeOf(typeof(ACBrDll.RelatorioGerencialRec))));
+					ACBrDll.RelatorioGerencialRec itemRec = (ACBrDll.RelatorioGerencialRec)Marshal.PtrToStructure(itemPtr, typeof(ACBrDll.RelatorioGerencialRec));
+
+					ACBrECFRelatorioGerencial item = new ACBrECFRelatorioGerencial();
+					item.Indice = FromUTF8(itemRec.Indice);
+					item.Descricao = FromUTF8(itemRec.Descricao);
+					item.Contador = itemRec.Contador;
+
+					dadosRZ.RelatorioGerencial[i] = item;
+				}
+
+				dadosRZ.CRZ = record.CRZ;
+
+				dadosRZ.ISSQN = new ACBrECFAliquota[record.ISSQNLen];
+				for (int i = 0; i < record.ISSQNLen; i++)
+				{
+					IntPtr itemPtr = new IntPtr(record.ISSQN.ToInt32() + (i * Marshal.SizeOf(typeof(ACBrDll.AliquotaRec))));
+					ACBrDll.AliquotaRec itemRec = (ACBrDll.AliquotaRec)Marshal.PtrToStructure(itemPtr, typeof(ACBrDll.AliquotaRec));
+
+					ACBrECFAliquota item = new ACBrECFAliquota();
+					item.Indice = FromUTF8(itemRec.Indice);
+					item.Aliquota = Convert.ToDecimal(itemRec.Aliquota);
+					item.Tipo = Convert.ToString(itemRec.Tipo);
+					item.Total = Convert.ToDecimal(itemRec.Total);
+					item.Sequencia = itemRec.Sequencia;
+
+					dadosRZ.ISSQN[i] = item;
+				}
+
+				dadosRZ.GRG = record.GRG;
+				dadosRZ.ValorGrandeTotal = Convert.ToDecimal(record.ValorGrandeTotal);
+				dadosRZ.AcrescimoISSQN = Convert.ToDecimal(record.AcrescimoISSQN);
+				dadosRZ.NaoTributadoISSQN = Convert.ToDecimal(record.NaoTributadoISSQN);
+				dadosRZ.IsentoICMS = Convert.ToDecimal(record.IsentoICMS);
+				dadosRZ.SubstituicaoTributariaICMS = Convert.ToDecimal(record.SubstituicaoTributariaICMS);
+				dadosRZ.DataDaImpressora = DateTime.FromOADate(record.DataDaImpressora);
+				dadosRZ.TotalOperacaoNaoFiscal = Convert.ToDecimal(record.TotalOperacaoNaoFiscal);
+				dadosRZ.DescontoISSQN = Convert.ToDecimal(record.DescontoISSQN);
+				dadosRZ.CancelamentoOPNF = Convert.ToDecimal(record.CancelamentoOPNF);
+				dadosRZ.AcrescimoOPNF = Convert.ToDecimal(record.AcrescimoOPNF);
+				dadosRZ.DescontoOPNF = Convert.ToDecimal(record.DescontoOPNF);
+				dadosRZ.CancelamentoICMS = Convert.ToDecimal(record.CancelamentoICMS);
+				dadosRZ.GNF = record.GNF;
+				dadosRZ.IsentoISSQN = Convert.ToDecimal(record.IsentoISSQN);
+				dadosRZ.SubstituicaoTributariaISSQN = Convert.ToDecimal(record.SubstituicaoTributariaISSQN);
+				dadosRZ.VendaLiquida = Convert.ToDecimal(record.VendaLiquida);
+				dadosRZ.CFC = record.CFC;
+				dadosRZ.CCF = record.CCF;
+				dadosRZ.TotalISSQN = Convert.ToDecimal(record.TotalISSQN);
+				dadosRZ.TotalICMS = Convert.ToDecimal(record.TotalICMS);
+				dadosRZ.CDC = record.CDC;
+				dadosRZ.CCDC = record.CCDC;
+				dadosRZ.NCN = record.NCN;
+				dadosRZ.DataDoMovimento = DateTime.FromOADate(record.DataDoMovimento);
+
+				dadosRZ.MeiosDePagamento = new ACBrECFFormaPagamento[record.MeiosDePagamentoLen];
+				for (int i = 0; i < record.MeiosDePagamentoLen; i++)
+				{
+					IntPtr itemPtr = new IntPtr(record.MeiosDePagamento.ToInt32() + (i * Marshal.SizeOf(typeof(ACBrDll.FormaPagamentoRec))));
+					ACBrDll.FormaPagamentoRec itemRec = (ACBrDll.FormaPagamentoRec)Marshal.PtrToStructure(itemPtr, typeof(ACBrDll.FormaPagamentoRec));
+
+					ACBrECFFormaPagamento item = new ACBrECFFormaPagamento();
+					item.Indice = FromUTF8(itemRec.Indice);
+					item.Descricao = FromUTF8(itemRec.Descricao);
+					item.PermiteVinculado = itemRec.PermiteVinculado;
+					item.Total = Convert.ToDecimal(itemRec.Total);
+
+					dadosRZ.MeiosDePagamento[i] = item;
+				}
+
+				dadosRZ.NumeroCOOInicial = FromUTF8(record.NumeroCOOInicial);
+				dadosRZ.NumeroDoECF = FromUTF8(record.NumeroDoECF);
+				dadosRZ.NumeroDeSerie = FromUTF8(record.NumeroDeSerie);
+				dadosRZ.NumeroDeSerieMFD = FromUTF8(record.NumeroDeSerieMFD);
+				dadosRZ.NumeroDaLoja = FromUTF8(record.NumeroDaLoja);
+
+				dadosRZ.TotalTroco = Convert.ToDecimal(record.TotalTroco);
+
+				return dadosRZ;
+			}
+			finally
+			{
+				ret = ACBrDll.ECF_DestroyDadosReducaoZClass(this.handle, ref ptr);
+				CheckResult(ret);
+			}
 		}
 
 		#endregion Relatórios

@@ -570,6 +570,7 @@ type
     procedure SetItem(Index: Integer; const Value: TRegistro0460);
   public
     function New(AOwner: TRegistro0001): TRegistro0460;
+    function LocalizaRegistro(pCOD_OBS: String): boolean;
     property Items[Index: Integer]: TRegistro0460 read GetItem write SetItem;
   end;
 
@@ -920,6 +921,21 @@ end;
 function TRegistro0460List.GetItem(Index: Integer): TRegistro0460;
 begin
   Result := TRegistro0460(inherited Items[Index]);
+end;
+
+function TRegistro0460List.LocalizaRegistro(pCOD_OBS: String): boolean;
+var
+intFor: integer;
+begin
+   Result := false;
+   for intFor := 0 to Self.Count - 1 do
+   begin
+      if Self.Items[intFor].COD_OBS = pCOD_OBS then
+      begin
+         Result := true;
+         Break;
+      end;
+   end;
 end;
 
 function TRegistro0460List.New(AOwner: TRegistro0001): TRegistro0460;

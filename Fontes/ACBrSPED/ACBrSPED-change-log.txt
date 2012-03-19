@@ -47,6 +47,13 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+
+Versão 1.00b   17/02/2012
+-- ACBrSPEDFiscal --
+[+] Adicionado LocalizaRegistro para registros 460 conforme sugestão de odlawso
+    veja: http://www.djsystem.com.br/acbr/mantis/view.php?id=1145
+
+
 Versão 1.00b   13/03/2012
 -- ACBrSPEDPisCofins --
 [*] Alterado valores No bloco C registro C100 o campo 17 IND_FRT para 

@@ -266,21 +266,28 @@ begin
      //GravaLog('Arquivo Descriptografado: '+sLineBreak+ R );
 
      SL.Text := R;
-     // Verificando o arquivo:
-     I := SL.Count-1 ;
-     Linha := SL[ I ] ;   // Pega Ultima Linha
-     if copy(Linha,1,4) = 'CRC:' then   // Ultima Linha é CRC ?
+     if Trim(SL.Text) <> '' then
      begin
-        CRC := StrToIntDef( copy( Linha, 5, Length(Linha) ), -999) ;
-        SL.Delete( I );
+       // Verificando o arquivo:
+       I := SL.Count-1 ;
+       Linha := SL[ I ] ;   // Pega Ultima Linha
+       if copy(Linha,1,4) = 'CRC:' then   // Ultima Linha é CRC ?
+       begin
+          CRC := StrToIntDef( copy( Linha, 5, Length(Linha) ), -999) ;
+          SL.Delete( I );
 
-        if StringCrc16( SL.Text ) <> CRC then
-           raise EACBrAAC_CRC.Create(
-              ACBrStr('Arquivo: '+NomeArquivoAux+' inválido') );
-     end ;
+          if StringCrc16( SL.Text ) <> CRC then
+             raise EACBrAAC_CRC.Create(
+                ACBrStr('Arquivo: '+NomeArquivoAux+' inválido') );
+       end ;
+     end;
 
      // Atribuindo para o .INI //
      Ini.SetStrings( SL );
+
+     {
+        Como as configurações de gravar ou não podem estar desabilitadas,
+        fazer este teste vai causar um erro quando não
 
      // Seçao 'PAF' deve existir //
      if not Ini.SectionExists('PAF') then
@@ -288,6 +295,7 @@ begin
        raise EACBrAAC_ArquivoInvalido.Create(
           ACBrStr('Arquivo: '+NomeArquivoAux+' inválido') );
      end ;
+     }
 
      if GravarDadosSH then
      begin

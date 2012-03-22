@@ -38,6 +38,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+22/03/2012
+-- ACBrAAC --
+[-] Ocorria erro quando o arquivo era criado em branco e quando não se 
+    habilitava a gravação de algumas sessões
+    (por: Regys Silveira)
+
 15/03/2012
 -- ACBrAAC --
 [+] Criado novo evento: OnVerificarRecomporNumSerie

@@ -2451,6 +2451,43 @@ begin
   end;
 end;
 
+function SubstituirVariaveis(const ATexto: String): String;
+var
+  TextoStr: String;
+begin
+  if Trim(ATexto) = '' then
+    Result := ''
+  else
+  begin
+    TextoStr := ATexto;
+    
+    if frmAcbrNfeMonitor.ACBrNFe1.NotasFiscais.Count <= 0 then
+      Exit;
+
+    with frmAcbrNfeMonitor.ACBrNFe1.NotasFiscais.Items[0].NFe do
+    begin
+      TextoStr := StringReplace(TextoStr,'[EmitNome]',     Emit.xNome,   [rfReplaceAll, rfIgnoreCase]);
+      TextoStr := StringReplace(TextoStr,'[EmitFantasia]', Emit.xFant,   [rfReplaceAll, rfIgnoreCase]);
+      TextoStr := StringReplace(TextoStr,'[EmitCNPJCPF]',  Emit.CNPJCPF, [rfReplaceAll, rfIgnoreCase]);
+      TextoStr := StringReplace(TextoStr,'[EmitIE]',       Emit.IE,      [rfReplaceAll, rfIgnoreCase]);
+
+      TextoStr := StringReplace(TextoStr,'[DestNome]',     Dest.xNome,   [rfReplaceAll, rfIgnoreCase]);
+      TextoStr := StringReplace(TextoStr,'[DestCNPJCPF]',  Dest.CNPJCPF, [rfReplaceAll, rfIgnoreCase]);
+      TextoStr := StringReplace(TextoStr,'[DestIE]',       Dest.IE,      [rfReplaceAll, rfIgnoreCase]);
+
+      TextoStr := StringReplace(TextoStr,'[ChaveNFe]',     procNFe.chNFe, [rfReplaceAll, rfIgnoreCase]);
+
+      TextoStr := StringReplace(TextoStr,'[NumeroNF]',     FormatFloat('000000000',     Ide.nNF),           [rfReplaceAll, rfIgnoreCase]);
+      TextoStr := StringReplace(TextoStr,'[ValorNF]',      FormatFloat('0.00',          Total.ICMSTot.vNF), [rfReplaceAll, rfIgnoreCase]);
+      TextoStr := StringReplace(TextoStr,'[dtEmissao]',    FormatDateTime('dd/mm/yyyy', Ide.dEmi),          [rfReplaceAll, rfIgnoreCase]);
+      TextoStr := StringReplace(TextoStr,'[dtSaida]',      FormatDateTime('dd/mm/yyyy', Ide.dSaiEnt),       [rfReplaceAll, rfIgnoreCase]);
+      TextoStr := StringReplace(TextoStr,'[hrSaida]',      FormatDateTime('hh:mm:ss',   Ide.hSaiEnt),       [rfReplaceAll, rfIgnoreCase]);
+    end;
+
+    Result := TextoStr;
+  end;
+end;
+
 
 procedure EnviarEmail(const sSmtpHost, sSmtpPort, sSmtpUser, sSmtpPasswd, sFrom, sTo, sAssunto, sAttachment, sAttachment2: String; sMensagem : TStrings; SSL : Boolean; sCopias: String='');
 var
@@ -2467,14 +2504,18 @@ begin
   try
      p := m.AddPartMultipart('mixed', nil);
      if sMensagem <> nil then
+     begin
+        sMensagem.Text := SubstituirVariaveis(sMensagem.Text);
         m.AddPartText(sMensagem, p);
+     end;
+
      if sAttachment <> '' then
        m.AddPartBinaryFromFile(sAttachment, p);
      if sAttachment2 <> '' then
        m.AddPartBinaryFromFile(sAttachment2, p);
      m.header.tolist.add(sTo);
      m.header.From := sFrom;
-     m.header.subject:=sAssunto;
+     m.header.subject:=SubstituirVariaveis(sAssunto);
      m.EncodeMessage;
      msg_lines.Add(m.Lines.Text);
 
@@ -2547,8 +2588,8 @@ begin
         IdMessage.CCList.EMailAddresses := sCopias;
 
      IdMessage.Priority := mpNormal;
-     IdMessage.Subject := sAssunto;
-     IdMessage.Body.Text := sMensagem.Text;
+     IdMessage.Subject := SubstituirVariaveis(sAssunto);
+     IdMessage.Body.Text := SubstituirVariaveis(sMensagem.Text);
 
      if NotaUtil.NaoEstaVazio(sAttachment) then
         TIdAttachment.create(IdMessage.MessageParts, sAttachment);

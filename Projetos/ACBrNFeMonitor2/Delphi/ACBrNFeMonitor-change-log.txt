@@ -48,6 +48,22 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+21/03/2012
+[+]     : Adicionado o suporte a variáveis no assunto e corpo do e-mail
+            [EmitNome]
+            [EmitFantasia]
+            [EmitCNPJCPF]
+            [EmitIE]
+            [DestNome]
+            [DestCNPJCPF]
+            [DestIE]
+            [ChaveNFe]
+            [NumeroNF]
+            [ValorNF]
+            [dtEmissao]
+            [dtSaida]
+            [hrSaida]
+
 03/03/11
 [-]	: Corrigido geração de ICMSPart(10,90) e ICMSST(41)
 [-]	: Corrigido geração do arquivo no formato TXT do SEFAZ para a versão 2.0

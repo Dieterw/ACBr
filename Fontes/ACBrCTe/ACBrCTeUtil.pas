@@ -1231,8 +1231,10 @@ begin
   Result := ValidaLibXML(AXML, AMsg, APathSchemas);
 {$ELSE}
   // Alterado por Italo em 16/03/2012
-  Result := ValidaMSXML(AXML, AMsg, APathSchemas) and
-            ValidaModalMSXML(AXML, AMsg, APathSchemas);
+  if pos('<infCanc', AXML) <> 0
+   then Result := ValidaMSXML(AXML, AMsg, APathSchemas)
+   else Result := ValidaMSXML(AXML, AMsg, APathSchemas) and
+                  ValidaModalMSXML(AXML, AMsg, APathSchemas);
 {$ENDIF}
 end;
 

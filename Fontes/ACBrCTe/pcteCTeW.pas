@@ -2095,7 +2095,7 @@ begin
     Gerador.wCampo(tcStr, '#319', 'grEmb      ', 01,  06, 0, CTe.peri.Items[i].grEmb, '');
     Gerador.wCampo(tcStr, '#320', 'qTotProd   ', 01,  20, 1, CTe.peri.Items[i].qTotProd, '');
     Gerador.wCampo(tcStr, '#321', 'qVolTipo   ', 01,  60, 0, CTe.peri.Items[i].qVolTipo, '');
-    Gerador.wCampo(tcStr, '#322', 'pontoFugor ', 01,  06, 0, CTe.peri.Items[i].pontoFulgor, '');
+    Gerador.wCampo(tcStr, '#322', 'pontoFulgor', 01,  06, 0, CTe.peri.Items[i].pontoFulgor, '');
     Gerador.wGrupo('/peri');
    end;
   if CTe.peri.Count > 990 then

@@ -23,7 +23,7 @@
       <CharSet Value="04B0"/>
       <StringTable ProductVersion=""/>
     </VersionInfo>
-    <BuildModes Count="2" Active="Debug">
+    <BuildModes Count="2" Active="Release">
       <Item1 Name="Debug" Default="True"/>
       <Item2 Name="Release">
         <CompilerOptions>
@@ -119,6 +119,7 @@
         <ComponentName Value="Form1"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ECFTeste1"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>

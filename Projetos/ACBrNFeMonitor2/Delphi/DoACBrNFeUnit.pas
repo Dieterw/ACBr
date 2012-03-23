@@ -2497,16 +2497,18 @@ var
   p: TMimepart;
   CC: Tstrings;
   I : Integer;
+  CorpoEmail: TStringList;
 begin
   msg_lines := TStringList.Create;
+  CorpoEmail := TStringList.Create;
   smtp := TSMTPSend.Create;
- m:=TMimemess.create;
+  m:=TMimemess.create;
   try
      p := m.AddPartMultipart('mixed', nil);
      if sMensagem <> nil then
      begin
-        sMensagem.Text := SubstituirVariaveis(sMensagem.Text);
-        m.AddPartText(sMensagem, p);
+        CorpoEmail.Text := SubstituirVariaveis(sMensagem.Text);
+        m.AddPartText(CorpoEmail, p);
      end;
 
      if sAttachment <> '' then
@@ -2552,6 +2554,7 @@ begin
        raise Exception.Create('SMTP ERROR: Logout:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
   finally
      msg_lines.Free;
+     CorpoEmail.Free;
      smtp.Free;
      m.free;
   end;

@@ -281,7 +281,7 @@ with ACBrSintegra do
 begin
   Registro11.Endereco:='ENDERECO DA EMPRESA';
   Registro11.Numero:='1';
-  Registro11.Bairo:='BAIRRO DA EMPRESA';
+  Registro11.Bairro:='BAIRRO DA EMPRESA';
   Registro11.Cep:='11.111-111';
   Registro11.Responsavel:='RESPONSAVEL';
   Registro11.Telefone:='1111111111';

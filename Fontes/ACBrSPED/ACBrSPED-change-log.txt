@@ -48,6 +48,13 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Versão 1.00b   25/03/2012
+-- ACBrSPEDFiscal --
+[+] Adicionado evento Before e After em alguns registros para a necessidade de
+    se gerar registros adicionais ou diferentes no arquivo TXT do SPED para que
+    atenda casos como o para gerar registros no formato do sistema G5 da Contmatic.
+
+
 Versão 1.00b   17/02/2012
 -- ACBrSPEDFiscal --
 [+] Adicionado LocalizaRegistro para registros 460 conforme sugestão de odlawso

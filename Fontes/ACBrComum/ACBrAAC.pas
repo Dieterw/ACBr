@@ -413,6 +413,7 @@ var
   ArqBak : String ;
   R      : AnsiString ;
   Continua : Boolean ;
+  CRC : Word;
 begin
   GravaLog( 'GravarArqRegistro' );
 
@@ -527,6 +528,19 @@ begin
      begin
         Ident := 'L_'+IntToStrZero(I,4);
         Ini.WriteString( 'Params', Ident, Params[I] );
+     end ;
+
+     // Codigo re-inserido para manter compatibilidade de Arquivo AAC com
+     // Executaveis compilados com a versão antiga. Caso contrário Executaveis
+     // antigos cairiam no Erro: "Arquivo XXX inválido" ao tentar abrir o arquivo
+     if GravarDadosPAF and GravarDadosSH then
+     begin
+       // Calculando o CRC //
+       CRC := StringCrc16( IdentPAF.Empresa.RazaoSocial + IdentPAF.Empresa.CNPJ +
+                           IdentPAF.Empresa.IE + IdentPAF.Empresa.IM +
+                           IdentPAF.Paf.Nome + IdentPAF.Paf.Versao +
+                           fsIdentPAF.Paf.PrincipalExe.MD5 );
+       Ini.WriteInteger('CHK','CRC16',CRC);
      end ;
 
      Ini.GetStrings( SL );

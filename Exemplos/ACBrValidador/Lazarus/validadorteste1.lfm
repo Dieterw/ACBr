@@ -9,26 +9,27 @@ object frValidador: TfrValidador
   VertScrollBar.Range = 243
   ActiveControl = edDocto
   Caption = 'Validador de Documentos'
+  ClientHeight = 251
+  ClientWidth = 336
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   OnCreate = FormCreate
   Position = poScreenCenter
+  LCLVersion = '0.9.31'
   object Label1: TLabel
     Left = 8
     Height = 14
     Top = 8
-    Width = 55
+    Width = 56
     Caption = 'Documento'
-    Color = clNone
     ParentColor = False
   end
   object Label2: TLabel
     Left = 232
     Height = 14
     Top = 8
-    Width = 21
+    Width = 22
     Caption = 'Tipo'
-    Color = clNone
     ParentColor = False
   end
   object Label3: TLabel
@@ -37,25 +38,22 @@ object frValidador: TfrValidador
     Top = 144
     Width = 90
     Caption = 'Mensagem de Erro'
-    Color = clNone
     ParentColor = False
   end
   object Label4: TLabel
     Left = 144
     Height = 14
     Top = 8
-    Width = 66
+    Width = 65
     Caption = 'Complemento'
-    Color = clNone
     ParentColor = False
   end
   object Label5: TLabel
     Left = 8
     Height = 14
     Top = 56
-    Width = 63
+    Width = 59
     Caption = 'Ignorar Char'
-    Color = clNone
     ParentColor = False
   end
   object edDocto: TEdit
@@ -72,7 +70,6 @@ object frValidador: TfrValidador
     Height = 21
     Top = 24
     Width = 97
-    AutoCompleteText = [cbactEndOfLineComplete, cbactSearchAscending]
     ItemHeight = 13
     Items.Strings = (
       'docCPF'
@@ -84,7 +81,6 @@ object frValidador: TfrValidador
       'docCEP'
       'docCartaoCredito'
     )
-    MaxLength = 0
     OnChange = cbTipoDoctoChange
     Style = csDropDownList
     TabOrder = 2
@@ -126,7 +122,7 @@ object frValidador: TfrValidador
   end
   object cbPermiteVazio: TCheckBox
     Left = 144
-    Height = 13
+    Height = 19
     Top = 56
     Width = 84
     Caption = 'Permite Vazio'
@@ -135,7 +131,7 @@ object frValidador: TfrValidador
   end
   object cbAjustarTam: TCheckBox
     Left = 144
-    Height = 13
+    Height = 19
     Top = 80
     Width = 100
     Caption = 'Ajustar Tamanho'
@@ -154,7 +150,7 @@ object frValidador: TfrValidador
   end
   object cbException: TCheckBox
     Left = 144
-    Height = 13
+    Height = 19
     Top = 128
     Width = 91
     Caption = 'Gerar Exceção'
@@ -163,7 +159,7 @@ object frValidador: TfrValidador
   end
   object cbExibeDigCorreto: TCheckBox
     Left = 144
-    Height = 13
+    Height = 19
     Top = 104
     Width = 126
     Caption = 'Exibe Digito Calculado'

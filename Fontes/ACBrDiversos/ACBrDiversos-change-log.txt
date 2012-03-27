@@ -96,9 +96,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
--- ACBrValidador-- 27/03/2012
-[+]    Adicionada função de verificação da IE 
-       (por: Régys silveira)
+13/12/2011
+-- ACBrValidador--
+[-]    Correção no calculo de Insc.Estadual da BA para numeros com 9 dígitos (DSA)
+[-]    Correção no calculo de DF, removida restrição do 3 digito ser '3,4,5' (DSA)
+[+]    Adicionada função rápida para verificação da IE (por: Régys silveira)
 
 -- ACBrCargaBal -- 02/01/2012
 [+]    Adicionado a geração de arquivos para o modelo Urano, contribuição

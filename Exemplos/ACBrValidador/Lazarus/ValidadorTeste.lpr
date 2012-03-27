@@ -10,6 +10,8 @@ uses
   Forms
   { add your units here }, ValidadorTeste1, ACBrDiversos;
 
+{$R *.res}
+
 begin
   Application.Initialize;
   Application.CreateForm(TfrValidador, frValidador);

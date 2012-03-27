@@ -179,6 +179,7 @@ type
 function ACBrValidadorValidarCPF( const Documento : AnsiString ) : String ;
 function ACBrValidadorValidarCNPJ( const Documento : AnsiString ) : String ;
 function ACBrValidadorValidarCNPJouCPF( const Documento : AnsiString ) : String ;
+function ACBrValidadorValidarIE(const AIE, AUF: AnsiString): String ;
 function ACBrValidadorValidarSuframa( const Documento : AnsiString ) : String ;
 function ACBrValidadorValidarGTIN( const Documento : AnsiString ) : String ;
 
@@ -199,6 +200,11 @@ end;
 function ACBrValidadorValidarCNPJ(const Documento : AnsiString) : String ;
 begin
   Result := ACBrValidadorValidarDocumento( docCNPJ, Documento );
+end;
+
+function ACBrValidadorValidarIE(const AIE, AUF: AnsiString): String;
+begin
+  Result := ACBrValidadorValidarDocumento(docInscEst, AIE, AUF);
 end;
 
 function ACBrValidadorValidarSuframa( const Documento : AnsiString ) : String ;

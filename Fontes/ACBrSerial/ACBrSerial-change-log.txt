@@ -97,6 +97,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 27/03/2012
+-- ACBrECF --
+[*] Acerto na impressão de informações do Cupom Mania como pedido pelos 
+    homologadores do RJ. (por: Regys Silveira)
+
 Data: 15/03/2012
 -- ACBrECF --
 [*] Relatório de Meios de Pagamento do PAF-ECF, modificado conforme solicitação

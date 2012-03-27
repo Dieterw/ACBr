@@ -2896,13 +2896,15 @@ begin
   // atende ao requisito VII-A 2-A (Cupom Mania [RJ])
   if InfoRodapeCupom.CupomMania then
   begin
-    RodapePafECF := RodapePafECF + #10 +
-      'CUPOM MANIA, CONCORRA A PRÊMIOS' + #10 +
-      'ENVIE SMS P/ 6789: ' +
+    RodapePafECF := RodapePafECF + #10 + 'CUPOM MANIA, CONCORRA A PRÊMIOS';
+    RodapePafECF := RodapePafECF + #10 + 'ENVIE SMS P/ 6789: ' +
       Copy(OnlyNumber(fsECF.IE), 1, 8) +    // 8 primeiros digitos da Inscr.Estadual
-      FormatDateTime('ddmmyy', Date) +    // data atual
+      FormatDateTime('ddmmyy', Date) +      // data atual
       Format('%6.6d', [StrToInt(NumCOO)]) + // numero do coo do cupom
       Format('%3.3d', [StrToInt(NumECF)]);  // numero do ecf
+
+    RodapePafECF := RodapePafECF + #10 + 'PROCON – R da Ajuda 5 – RJ – (21) 151';
+    RodapePafECF := RodapePafECF + #10 + 'ALERJ – R 1º de Março s/n – RJ – (21) 25881418';
   end;
 
   // atende ao requisito VII-A 2 (Minas Legal [MG])

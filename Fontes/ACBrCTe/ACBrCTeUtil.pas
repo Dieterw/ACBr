@@ -458,7 +458,9 @@ begin
     if (Length(sAux) < 8) then
       sAux := '0' + sAux;
 
-  Result := copy(sAux, 1, 5) + '-' + copy(sAux, 6, 3);
+  if sAux = '00000000'
+   then Result := Space(9)
+   else Result := copy(sAux, 1, 5) + '-' + copy(sAux, 6, 3);
 end;
 
 class function CTeUtil.FormatarFone(AValue: string): string;

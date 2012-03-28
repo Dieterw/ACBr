@@ -628,11 +628,16 @@ var
   strTIPO_ITEM: AnsiString;
   strLinha: AnsiString;
 begin
-  strLinha := '';
   if Assigned( Reg0001.Registro0200 ) then
   begin
+     strLinha := '';
+     //-- Before
+     if Assigned(FOnBeforeWriteRegistro0200) then
+        FOnBeforeWriteRegistro0200(strLinha);
+
      for intFor := 0 to Reg0001.Registro0200.Count - 1 do
      begin
+        strLinha := '';
         with Reg0001.Registro0200.Items[intFor] do
         begin
           case TIPO_ITEM of
@@ -655,9 +660,6 @@ begin
             Check(funChecaGENERO(COD_GEN), '(0-0200) O código do gênero "%s" digitado é inválido! ' +
               'Produto %s %s', [COD_GEN, COD_BARRA, DESCR_ITEM]);
           end;
-          //-- Before
-          if Assigned(FOnBeforeWriteRegistro0200) then
-             FOnBeforeWriteRegistro0200(strLinha);
 
           strLinha := strLinha +
                       LFill('0200') +
@@ -720,14 +722,16 @@ var
 begin
   if Assigned( Reg0200.Registro0206 ) then
   begin
+     strLinha := '';
+     //-- Before
+     if Assigned(FOnBeforeWriteRegistro0206) then
+        FOnBeforeWriteRegistro0206(strLinha);
+
      for intFor := 0 to Reg0200.Registro0206.Count - 1 do
      begin
+        strLinha := '';
         with Reg0200.Registro0206.Items[intFor] do
         begin
-          //-- Before
-          if Assigned(FOnBeforeWriteRegistro0206) then
-             FOnBeforeWriteRegistro0206(strLinha);
-
           strLinha := strLinha +
                       LFill('0206') +
                       LFill( COD_COMB );
@@ -897,16 +901,18 @@ begin
   begin
      if Assigned( Reg0001.Registro0500 ) then
      begin
+        strLinha := '';
+        //-- Before
+        if Assigned(FOnBeforeWriteRegistro0500) then
+           FOnBeforeWriteRegistro0500(strLinha);
+
         for intFor := 0 to Reg0001.Registro0500.Count - 1 do
         begin
+           strLinha := '';
            with Reg0001.Registro0500.Items[intFor] do
            begin
               Check(Pos(COD_NAT_CC, '01,02,03,04,05,09,10,99') > 0, '(0-0500) O código da natureza da conta/grupo de contas "%s" digitado é inválido!', [COD_NAT_CC]);
               Check(((IND_CTA = 'S') or (IND_CTA = 'A')), '(0-0500) O indicador "%s" do tipo de conta, deve ser informado  S ou A!', [IND_CTA]);
-
-              //-- Before
-              if Assigned(FOnBeforeWriteRegistro0500) then
-                 FOnBeforeWriteRegistro0500(strLinha);
 
               strLinha := strLinha +
                           LFill('0500') +
@@ -938,14 +944,16 @@ var
 begin
   if Assigned( Reg0001.Registro0600 ) then
   begin
+     strLinha := '';
+     //-- Before
+     if Assigned(FOnBeforeWriteRegistro0600) then
+        FOnBeforeWriteRegistro0600(strLinha);
+
      for intFor := 0 to Reg0001.Registro0600.Count - 1 do
      begin
+        strLinha := '';
         with Reg0001.Registro0600.Items[intFor] do
         begin
-          //-- Before
-          if Assigned(FOnBeforeWriteRegistro0600) then
-             FOnBeforeWriteRegistro0600(strLinha);
-
           strLinha := strLinha +
                       LFill( '0600'   ) +
                       LFill( DT_ALT   ) +

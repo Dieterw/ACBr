@@ -4710,7 +4710,7 @@ function TACBrECFDaruma.GetDescricaoErroDLL(const ACodigo: Integer): String;
 begin
   case ACodigo of
      0:   Result := 'Erro durante a execução.';
-//     1:   Result := 'Operação realizada com sucesso.
+     1:   Result := 'Operação realizada com sucesso.';
     -1:   Result := 'Erro do Método.';
     -2:   Result := 'Parâmetro incorreto.';
     -3:   Result := 'Alíquota (Situação tributária) não programada.';
@@ -4892,6 +4892,7 @@ begin
 
     if not FileExists( PathDest ) then
       raise Exception.Create( ACBrStr( 'Erro na execução de xrGerarRelatorio_ECF_Daruma.'+sLineBreak+
+                                       'Cod: '+ IntToStr(Resp) + ' ' + GetDescricaoErroDLL(Resp) + sLineBreak +
                                        'Modo: ' + IfThen(OldAtivo, 'On-Line', 'Off-Line') + sLineBreak +
                                        'Arquivo: "'+ NomeArq +'" não gerado' )) ;
 
@@ -4961,6 +4962,7 @@ begin
 
     if not FileExists( PathDest ) then
       raise Exception.Create( ACBrStr( 'Erro na execução de xrGerarRelatorio_ECF_Daruma.'+sLineBreak+
+                                       'Cod: '+ IntToStr(Resp) + ' ' + GetDescricaoErroDLL(Resp) + sLineBreak +
                                        'Modo: ' + IfThen(OldAtivo, 'On-Line', 'Off-Line') + sLineBreak +
                                        'Arquivo: "'+ NomeArq +'" não gerado' )) ;
 

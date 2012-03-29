@@ -68,14 +68,21 @@ type
   private
     fDT_INV: TDateTime;    /// Data do inventário:
     fVL_INV: currency;     /// Valor total do estoque:
+    fMOT_INV: TACBrMotivoInventario;      ///01 – No final no período;
+                                         ///02 – Na mudança de forma de tributação da mercadoria (ICMS);
+                                         ///03 – Na solicitação da baixa cadastral, paralisação temporária e outras situações;
+                                         ///04 – Na alteração de regime de pagamento – condição do contribuinte;
+                                         ///05 – Por determinação dos fiscos.
 
-    FRegistroH010: TRegistroH010List;  /// BLOCO C - Lista de RegistroH010 (FILHO)
+    FRegistroH010: TRegistroH010List;  /// BLOCO H - Lista de RegistroH010 (FILHO)
   public
     constructor Create(AOwner: TRegistroH001); virtual; /// Create
     destructor Destroy; override; /// Destroy
 
     property DT_INV: TDateTime read FDT_INV write FDT_INV;
     property VL_INV: currency read FVL_INV write FVL_INV;
+    property MOT_INV: TACBrMotivoInventario read fMOT_INV write fMOT_INV;
+
     /// Registros FILHOS
     property RegistroH010: TRegistroH010List read FRegistroH010 write FRegistroH010;
   end;

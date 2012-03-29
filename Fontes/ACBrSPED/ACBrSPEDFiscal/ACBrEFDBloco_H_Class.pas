@@ -189,6 +189,7 @@ end;
 procedure TBloco_H.WriteRegistroH005(RegH001: TRegistroH001);
 var
   intFor: integer;
+  strMotInv: string;
 begin
   if Assigned( RegH001.RegistroH005 ) then
   begin
@@ -196,9 +197,38 @@ begin
      begin
         with RegH001.RegistroH005.Items[intFor] do
         begin
-          Add( LFill('H005') +
-               LFill( DT_INV ) +
-               LFill( VL_INV, 0) ) ;
+          if (FBloco_0.Registro0000.COD_VER  >= vlVersao104) then
+          begin
+              if DT_INI >= EncodeDate(2012,07,01) then
+              begin
+                case MOT_INV of
+                  miFinalPeriodo:       strMotInv := '01';
+                  miMudancaTributacao:  strMotInv := '02';
+                  miBaixaCadastral:     strMotInv := '03';
+                  miRegimePagamento:    strMotInv := '04';
+                  miDeterminacaoFiscos: strMotInv := '05';
+                else
+                  strMotInv := '01';
+                end;
+
+                Add( LFill('H005') +
+                     LFill( DT_INV ) +
+                     LFill( VL_INV, 0) +
+                     LFill( strMotInv ) ) ;
+              end
+              else
+              begin
+                Add( LFill('H005') +
+                     LFill( DT_INV ) +
+                     LFill( VL_INV, 0) ) ;
+              end;
+          end
+          else //versões vlVersao103 para trás.
+          begin
+            Add( LFill('H005') +
+                 LFill( DT_INV ) +
+                 LFill( VL_INV, 0) ) ;
+          end;
         end;
         /// Registros FILHOS
         WriteRegistroH010( RegH001.RegistroH005.Items[intFor] );
@@ -231,6 +261,7 @@ begin
                LFill( TXT_COMPL ) +
                LFill( COD_CTA ) ) ;
         end;
+
         /// Registros FILHOS
         WriteRegistroH020( RegH005.RegistroH010.Items[intFor] );
 
@@ -245,22 +276,27 @@ procedure TBloco_H.WriteRegistroH020(RegH010: TRegistroH010);
 var
   intFor: integer;
 begin
-  if Assigned( RegH010.RegistroH020 ) then
-  begin
-     for intFor := 0 to RegH010.RegistroH020.Count - 1 do
-     begin
-        with RegH010.RegistroH020.Items[intFor] do
-        begin
-          Add( LFill('H020') +
-               LFill( CST_ICMS,3 ) +
-               LFill( BC_ICMS,0,2 ) +
-               LFill( VL_ICMS,0,2 ) );
-        end;
-        RegistroH990.QTD_LIN_H := RegistroH990.QTD_LIN_H + 1;
-     end;
-     /// Variavél para armazenar a quantidade de registro do tipo.
-     FRegistroH020Count := FRegistroH020Count + RegH010.RegistroH020.Count;
-  end;
+  if FBloco_0.Registro0000.COD_VER >= vlVersao104 then
+    if DT_INI >= EncodeDate(2012,07,01) then
+    begin
+      if Assigned( RegH010.RegistroH020 ) then
+      begin
+         for intFor := 0 to RegH010.RegistroH020.Count - 1 do
+         begin
+            with RegH010.RegistroH020.Items[intFor] do
+            begin
+              Add( LFill('H020') +
+                   LFill( CST_ICMS ) +
+                   LFill( BC_ICMS, 0, 2 ) +
+                   LFill( VL_ICMS, 0, 2 ) ) ;
+            end;
+
+            RegistroH990.QTD_LIN_H := RegistroH990.QTD_LIN_H + 1;
+         end;
+         /// Variavél para armazenar a quantidade de registro do tipo.
+         FRegistroH020Count := FRegistroH020Count + RegH010.RegistroH020.Count;
+      end;
+    end;
 end;
 
 procedure TBloco_H.WriteRegistroH990;

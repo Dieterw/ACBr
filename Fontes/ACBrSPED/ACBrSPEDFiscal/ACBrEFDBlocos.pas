@@ -384,8 +384,13 @@ type
                         assSemiPublico,            // 5 - Semi-Público
                         assOutros                  // 6 - Outros
                         );
-
-
+  /// Motivo do Inventário
+  TACBrMotivoInventario = (miFinalPeriodo,
+                           miMudancaTributacao,
+                           miBaixaCadastral,
+                           miRegimePagamento,
+                           miDeterminacaoFiscos
+                           );
 
   TOpenBlocos = class
   private

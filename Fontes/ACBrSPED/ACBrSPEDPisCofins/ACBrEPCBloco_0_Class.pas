@@ -359,7 +359,7 @@ begin
             LFill( strCOD_VER ) +
             LFill( strTIPO_ESCRIT ) +
             LFill( strIND_SIT_ESP ) +
-            LFill( strNUM_REC_ANTERIOR ) +
+            strNUM_REC_ANTERIOR +
             LFill( DT_INI ) +
             LFill( DT_FIN ) +
             LFill( NOME ) +

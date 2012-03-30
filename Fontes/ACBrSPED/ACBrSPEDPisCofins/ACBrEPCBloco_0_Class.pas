@@ -347,7 +347,7 @@ begin
        end;
 
        if (TIPO_ESCRIT = tpEscrRetificadora) then
-          strNUM_REC_ANTERIOR := LFill( NUM_REC_ANTERIOR, 41 )
+          strNUM_REC_ANTERIOR := NUM_REC_ANTERIOR
        else
           strNUM_REC_ANTERIOR := '';
 
@@ -359,7 +359,7 @@ begin
             LFill( strCOD_VER ) +
             LFill( strTIPO_ESCRIT ) +
             LFill( strIND_SIT_ESP ) +
-            strNUM_REC_ANTERIOR +
+            LFill( strNUM_REC_ANTERIOR) +
             LFill( DT_INI ) +
             LFill( DT_FIN ) +
             LFill( NOME ) +

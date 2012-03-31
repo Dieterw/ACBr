@@ -41,8 +41,7 @@ uses
   CmdUnit, ACBrECF, ACBrDIS, ACBrGAV, ACBrDevice, ACBrCHQ, ACBrLCB, ACBrRFD, { Unit do ACBr }
   Dialogs, ExtCtrls, Menus, Buttons, StdCtrls, ComCtrls, Controls, Graphics,
   Spin, MaskEdit, EditBtn, ACBrBAL, ACBrETQ, ACBrSocket, ACBrCEP, ACBrIBGE,
-  blcksock, ACBrValidador, ACBrGIF, ACBrBoleto, ACBrBoletoFCLazReportDm,
-  ACBrEAD;
+  blcksock, ACBrValidador, ACBrGIF, ACBrBoleto, ACBrBoletoFCFortesFr, ACBrEAD;
 
 const
   {$I versao.txt}
@@ -59,7 +58,7 @@ type
 
   TFrmACBrMonitor = class(TForm)
     ACBrBoleto1: TACBrBoleto;
-    ACBrBoletoFCLazReport1 : TACBrBoletoFCLazReport ;
+    ACBrBoletoFCFortes1 : TACBrBoletoFCFortes ;
     ACBrCEP1 : TACBrCEP ;
     ACBrEAD1: TACBrEAD;
     ACBrECF1: TACBrECF;
@@ -1683,7 +1682,7 @@ begin
     DirArqRetorno := deBolDirRetorno.Text;
   end;
 
-  with ACBrBoletoFCLazReport1 do
+  with ACBrBoletoFCFortes1 do
   begin
     case cbxBOLFiltro.ItemIndex of
       0: Filtro := fiNenhum;

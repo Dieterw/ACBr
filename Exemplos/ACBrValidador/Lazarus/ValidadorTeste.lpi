@@ -49,7 +49,7 @@
         <UnitName Value="ValidadorTeste"/>
         <TopLine Value="1"/>
         <CursorPos X="53" Y="15"/>
-        <UsageCount Value="25"/>
+        <UsageCount Value="27"/>
       </Unit0>
       <Unit1>
         <Filename Value="validadorteste1.pas"/>
@@ -57,12 +57,11 @@
         <ComponentName Value="frValidador"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ValidadorTeste1"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
         <TopLine Value="9"/>
-        <CursorPos X="35" Y="16"/>
-        <UsageCount Value="25"/>
+        <CursorPos X="45" Y="19"/>
+        <UsageCount Value="27"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit1>
@@ -70,7 +69,7 @@
         <Filename Value="validadorteste1.lfm"/>
         <TopLine Value="144"/>
         <CursorPos X="4" Y="171"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit2>
       <Unit3>
@@ -79,19 +78,19 @@
         <WindowIndex Value="0"/>
         <TopLine Value="240"/>
         <CursorPos X="20" Y="261"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit3>
       <Unit4>
         <Filename Value="C:\lazarus\fpc\2.2.0\source\rtl\objpas\sysutils\sysutilh.inc"/>
         <TopLine Value="198"/>
         <CursorPos X="34" Y="228"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit4>
       <Unit5>
         <Filename Value="C:\lazarus\fpc\2.2.0\source\rtl\inc\objpash.inc"/>
         <TopLine Value="126"/>
         <CursorPos X="18" Y="135"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit5>
       <Unit6>
         <Filename Value="..\..\..\ACBrGIF.pas"/>
@@ -99,7 +98,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="243"/>
         <CursorPos X="31" Y="264"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit6>
       <Unit7>
         <Filename Value="..\..\..\Gif3.pas"/>
@@ -107,7 +106,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit7>
       <Unit8>
         <Filename Value="..\..\..\Gif1.pas"/>
@@ -115,16 +114,17 @@
         <WindowIndex Value="0"/>
         <TopLine Value="36"/>
         <CursorPos X="7" Y="53"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit8>
       <Unit9>
         <Filename Value="..\..\..\Fontes\ACBrDiversos\ACBrValidador.pas"/>
         <UnitName Value="ACBrValidador"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="780"/>
-        <CursorPos X="66" Y="793"/>
-        <UsageCount Value="12"/>
+        <TopLine Value="170"/>
+        <CursorPos X="41" Y="186"/>
+        <UsageCount Value="13"/>
         <Bookmarks Count="2">
           <Item0 X="1" Y="779" ID="1"/>
           <Item1 X="19" Y="661" ID="2"/>
@@ -136,8 +136,8 @@
         <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
         <TopLine Value="88"/>
-        <CursorPos X="24" Y="102"/>
-        <UsageCount Value="10"/>
+        <CursorPos X="83" Y="101"/>
+        <UsageCount Value="11"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="None"/>
       </Unit10>
@@ -145,123 +145,123 @@
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="..\..\..\Fontes\ACBrDiversos\ACBrValidador.pas"/>
-        <Caret Line="780" Column="1" TopLine="768"/>
+        <Caret Line="783" Column="1" TopLine="768"/>
       </Position1>
       <Position2>
         <Filename Value="..\..\..\Fontes\ACBrDiversos\ACBrValidador.pas"/>
-        <Caret Line="782" Column="1" TopLine="768"/>
+        <Caret Line="784" Column="1" TopLine="768"/>
       </Position2>
       <Position3>
         <Filename Value="..\..\..\Fontes\ACBrDiversos\ACBrValidador.pas"/>
-        <Caret Line="783" Column="1" TopLine="768"/>
+        <Caret Line="785" Column="1" TopLine="777"/>
       </Position3>
       <Position4>
         <Filename Value="..\..\..\Fontes\ACBrDiversos\ACBrValidador.pas"/>
-        <Caret Line="784" Column="1" TopLine="768"/>
+        <Caret Line="787" Column="1" TopLine="777"/>
       </Position4>
       <Position5>
         <Filename Value="..\..\..\Fontes\ACBrDiversos\ACBrValidador.pas"/>
-        <Caret Line="785" Column="1" TopLine="777"/>
+        <Caret Line="789" Column="1" TopLine="777"/>
       </Position5>
       <Position6>
         <Filename Value="..\..\..\Fontes\ACBrDiversos\ACBrValidador.pas"/>
-        <Caret Line="787" Column="1" TopLine="777"/>
+        <Caret Line="798" Column="1" TopLine="778"/>
       </Position6>
       <Position7>
         <Filename Value="..\..\..\Fontes\ACBrDiversos\ACBrValidador.pas"/>
-        <Caret Line="789" Column="1" TopLine="777"/>
+        <Caret Line="1076" Column="1" TopLine="1064"/>
       </Position7>
       <Position8>
         <Filename Value="..\..\..\Fontes\ACBrDiversos\ACBrValidador.pas"/>
-        <Caret Line="798" Column="1" TopLine="778"/>
+        <Caret Line="1126" Column="41" TopLine="1116"/>
       </Position8>
       <Position9>
         <Filename Value="..\..\..\Fontes\ACBrDiversos\ACBrValidador.pas"/>
-        <Caret Line="1076" Column="1" TopLine="1064"/>
+        <Caret Line="789" Column="34" TopLine="775"/>
       </Position9>
       <Position10>
         <Filename Value="..\..\..\Fontes\ACBrDiversos\ACBrValidador.pas"/>
-        <Caret Line="1126" Column="41" TopLine="1116"/>
+        <Caret Line="761" Column="1" TopLine="749"/>
       </Position10>
       <Position11>
         <Filename Value="..\..\..\Fontes\ACBrDiversos\ACBrValidador.pas"/>
-        <Caret Line="789" Column="34" TopLine="775"/>
+        <Caret Line="763" Column="1" TopLine="749"/>
       </Position11>
       <Position12>
         <Filename Value="..\..\..\Fontes\ACBrDiversos\ACBrValidador.pas"/>
-        <Caret Line="761" Column="1" TopLine="749"/>
+        <Caret Line="780" Column="1" TopLine="768"/>
       </Position12>
       <Position13>
         <Filename Value="..\..\..\Fontes\ACBrDiversos\ACBrValidador.pas"/>
-        <Caret Line="763" Column="1" TopLine="749"/>
+        <Caret Line="782" Column="1" TopLine="768"/>
       </Position13>
       <Position14>
         <Filename Value="..\..\..\Fontes\ACBrDiversos\ACBrValidador.pas"/>
-        <Caret Line="780" Column="1" TopLine="768"/>
+        <Caret Line="783" Column="1" TopLine="768"/>
       </Position14>
       <Position15>
         <Filename Value="..\..\..\Fontes\ACBrDiversos\ACBrValidador.pas"/>
-        <Caret Line="782" Column="1" TopLine="768"/>
+        <Caret Line="769" Column="5" TopLine="759"/>
       </Position15>
       <Position16>
         <Filename Value="..\..\..\Fontes\ACBrDiversos\ACBrValidador.pas"/>
-        <Caret Line="783" Column="1" TopLine="768"/>
+        <Caret Line="1131" Column="38" TopLine="1110"/>
       </Position16>
       <Position17>
         <Filename Value="..\..\..\Fontes\ACBrDiversos\ACBrValidador.pas"/>
-        <Caret Line="769" Column="5" TopLine="759"/>
+        <Caret Line="1209" Column="73" TopLine="1188"/>
       </Position17>
       <Position18>
         <Filename Value="..\..\..\Fontes\ACBrDiversos\ACBrValidador.pas"/>
-        <Caret Line="1131" Column="38" TopLine="1110"/>
+        <Caret Line="1302" Column="11" TopLine="1281"/>
       </Position18>
       <Position19>
         <Filename Value="..\..\..\Fontes\ACBrDiversos\ACBrValidador.pas"/>
-        <Caret Line="1209" Column="73" TopLine="1188"/>
+        <Caret Line="1311" Column="8" TopLine="1290"/>
       </Position19>
       <Position20>
         <Filename Value="..\..\..\Fontes\ACBrDiversos\ACBrValidador.pas"/>
-        <Caret Line="1302" Column="11" TopLine="1281"/>
+        <Caret Line="1313" Column="8" TopLine="1292"/>
       </Position20>
       <Position21>
         <Filename Value="..\..\..\Fontes\ACBrDiversos\ACBrValidador.pas"/>
-        <Caret Line="1311" Column="8" TopLine="1290"/>
+        <Caret Line="1316" Column="76" TopLine="1295"/>
       </Position21>
       <Position22>
         <Filename Value="..\..\..\Fontes\ACBrDiversos\ACBrValidador.pas"/>
-        <Caret Line="1313" Column="8" TopLine="1292"/>
+        <Caret Line="1320" Column="26" TopLine="1299"/>
       </Position22>
       <Position23>
         <Filename Value="..\..\..\Fontes\ACBrDiversos\ACBrValidador.pas"/>
-        <Caret Line="1316" Column="76" TopLine="1295"/>
+        <Caret Line="1332" Column="16" TopLine="1311"/>
       </Position23>
       <Position24>
         <Filename Value="..\..\..\Fontes\ACBrDiversos\ACBrValidador.pas"/>
-        <Caret Line="1320" Column="26" TopLine="1299"/>
+        <Caret Line="1333" Column="14" TopLine="1313"/>
       </Position24>
       <Position25>
         <Filename Value="..\..\..\Fontes\ACBrDiversos\ACBrValidador.pas"/>
-        <Caret Line="1332" Column="16" TopLine="1311"/>
+        <Caret Line="1402" Column="44" TopLine="1398"/>
       </Position25>
       <Position26>
         <Filename Value="..\..\..\Fontes\ACBrDiversos\ACBrValidador.pas"/>
-        <Caret Line="1333" Column="14" TopLine="1313"/>
+        <Caret Line="760" Column="39" TopLine="734"/>
       </Position26>
       <Position27>
         <Filename Value="..\..\..\Fontes\ACBrDiversos\ACBrValidador.pas"/>
-        <Caret Line="1402" Column="44" TopLine="1398"/>
+        <Caret Line="827" Column="1" TopLine="815"/>
       </Position27>
       <Position28>
         <Filename Value="..\..\..\Fontes\ACBrDiversos\ACBrValidador.pas"/>
-        <Caret Line="760" Column="39" TopLine="734"/>
+        <Caret Line="677" Column="3" TopLine="665"/>
       </Position28>
       <Position29>
         <Filename Value="..\..\..\Fontes\ACBrDiversos\ACBrValidador.pas"/>
-        <Caret Line="827" Column="1" TopLine="815"/>
+        <Caret Line="777" Column="21" TopLine="756"/>
       </Position29>
       <Position30>
         <Filename Value="..\..\..\Fontes\ACBrDiversos\ACBrValidador.pas"/>
-        <Caret Line="677" Column="3" TopLine="665"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position30>
     </JumpHistory>
   </ProjectOptions>

@@ -6014,7 +6014,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
     NumeroArquivo = 0
     DataArquivo = 0
     DataCreditoLanc = 0
-    ACBrBoletoFC = ACBrBoletoFCLazReport1
+    ACBrBoletoFC = ACBrBoletoFCFortes1
     left = 528
     top = 24
   end
@@ -6035,12 +6035,6 @@ object FrmACBrMonitor: TFrmACBrMonitor
     left = 250
     top = 55
   end
-  object ACBrBoletoFCLazReport1: TACBrBoletoFCLazReport
-    ACBrBoleto = ACBrBoleto1
-    SoftwareHouse = 'Projeto ACBr - http://acbr.sf.net'
-    left = 530
-    top = 64
-  end
   object ACBrEAD1: TACBrEAD
     OnGetChavePrivada = ACBrEAD1GetChavePrivada
     left = 281
@@ -6049,5 +6043,10 @@ object FrmACBrMonitor: TFrmACBrMonitor
   object SelectDirectoryDialog1: TSelectDirectoryDialog
     left = 64
     top = 188
+  end
+  object ACBrBoletoFCFortes1: TACBrBoletoFCFortes
+    ACBrBoleto = ACBrBoleto1
+    left = 527
+    top = 62
   end
 end

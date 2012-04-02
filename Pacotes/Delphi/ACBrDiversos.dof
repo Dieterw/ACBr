@@ -134,29 +134,3 @@ OriginalFilename=
 ProductName=
 ProductVersion=1.0.0.0
 Comments=
-[Excluded Packages]
-C:\Pascal\Comp\ACBr\branches\ACBrNovo\lib\synapse.bpl=Synapse TCP/IP / Serial library (http://www.synapse.ararat.cz)
-C:\Pascal\Comp\ACBr\branches\ACBrNovo\lib\ACBrDiversos.bpl=ACBr Automação Comercial Brasil - ACBrDiversos (http://acbr.sf.net/)
-C:\Pascal\Comp\ACBr\branches\ACBrNovo\lib\ACBrSerial.bpl=ACBr Automação Comercial Brasil - ACBrSerial (http://acbr.sf.net/)
-[HistoryLists\hlDebugSourcePath]
-Count=1
-Item0=..\..\Fontes\ACBrComum
-[HistoryLists\hlUnitAliases]
-Count=1
-Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
-[HistoryLists\hlSearchPath]
-Count=3
-Item0=..\..\Fontes\ACBrComum
-Item1=../../Fontes/ACBrComum
-Item2=../../ACBrComum
-[HistoryLists\hlUnitOutputDirectory]
-Count=2
-Item0=..\..\lib
-Item1=../../lib
-[HistoryLists\hlBPLOutput]
-Count=2
-Item0=..\..\lib
-Item1=../../lib
-[HistoryLists\hlDCPOutput]
-Count=1
-Item0=..\..\lib

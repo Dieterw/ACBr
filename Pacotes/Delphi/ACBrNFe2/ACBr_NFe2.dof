@@ -88,7 +88,7 @@ RemoteSymbols=0
 MinStackSize=16384
 MaxStackSize=1048576
 ImageBase=4194304
-ExeDescription=ACBrNFePCN2 - (http://acbr.sourceforge.net/)
+ExeDescription=ACBr Automação Comercial Brasil - ACBrNFePCN2 (http://acbr.sourceforge.net/)
 [Directories]
 OutputDir=
 UnitOutputDir=
@@ -134,5 +134,3 @@ OriginalFilename=
 ProductName=
 ProductVersion=1.0.0.0
 Comments=
-[Excluded Packages]
-c:\program files\borland\delphi7\Projects\Bpl\DJComps_CLX.bpl=Componentes DJSystem

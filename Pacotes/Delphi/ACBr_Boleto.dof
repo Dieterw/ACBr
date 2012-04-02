@@ -88,7 +88,7 @@ RemoteSymbols=0
 MinStackSize=16384
 MaxStackSize=1048576
 ImageBase=4194304
-ExeDescription=ACBr Automação Comercial Brasil - ACBrBoleto - (http://acbr.sourceforge.net/)
+ExeDescription=ACBr Automação Comercial Brasil - ACBrBoleto (http://acbr.sourceforge.net/)
 [Directories]
 OutputDir=
 UnitOutputDir=
@@ -134,21 +134,3 @@ OriginalFilename=
 ProductName=
 ProductVersion=1.0.0.0
 Comments=
-[HistoryLists\hlDebugSourcePath]
-Count=1
-Item0=..\..\Fontes\synalist
-[HistoryLists\hlUnitAliases]
-Count=1
-Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
-[HistoryLists\hlSearchPath]
-Count=1
-Item0=..\..\Fontes\synalist
-[HistoryLists\hlUnitOutputDirectory]
-Count=1
-Item0=..\..\lib
-[HistoryLists\hlBPLOutput]
-Count=1
-Item0=..\..\lib
-[HistoryLists\hlDCPOutput]
-Count=1
-Item0=..\..\lib

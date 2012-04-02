@@ -67,7 +67,7 @@ package ACBr_NFe2;
 {$WRITEABLECONST OFF}
 {$MINENUMSIZE 1}
 {$IMAGEBASE $400000}
-{$DESCRIPTION 'ACBrNFePCN2 - (http://acbr.sourceforge.net/)'}
+{$DESCRIPTION 'ACBr Automação Comercial Brasil - ACBrNFePCN2 (http://acbr.sourceforge.net/)'}
 {$IMPLICITBUILD ON}
 
 requires
@@ -79,11 +79,8 @@ requires
   inet,
   soaprtl,
   ACBrComum,
-  {$IFDEF ACBrNFeOpenSSL}
   ACBrOpenSSL,
-  {$ELSE}
   ACBrCapicom,
-  {$ENDIF}
   synapse,
   PCN2;
 

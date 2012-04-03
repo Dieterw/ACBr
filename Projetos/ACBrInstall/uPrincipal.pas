@@ -98,6 +98,7 @@ type
     btnInstalarACBr: TSpeedButton;
     ckbFecharTortoise: TCheckBox;
     btnVisualizarLogCompilacao: TSpeedButton;
+    pnlInfoCompilador: TPanel;
     lblInfoCompilacao: TLabel;
     procedure imgPropaganda1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -323,7 +324,8 @@ begin
 
   if edtPlatform.ItemIndex = 0 then // Win32
     tPlatform := bpWin32
-  else if edtPlatform.ItemIndex = 1 then // Win64
+  else
+  if edtPlatform.ItemIndex = 1 then // Win64
     tPlatform := bpWin64;
 end;
 
@@ -341,10 +343,6 @@ procedure TfrmPrincipal.BeforeExecute(Sender: TJclBorlandCommandLineTool);
 begin
   // limpar os parâmetros do compilador
   Sender.Options.Clear;
-
-  // definir os diretórios do pacotes compilados
-  //oACBr.Installations[iVersion].BPLOutputPath[tPlatform] := sDirBPLPath;
-  //oACBr.Installations[iVersion].DCPOutputPath[tPlatform] := sDirDCPpath;
 
   // não utilizar o dcc32.cfg
   if oACBr.Installations[iVersion].SupportsNoConfig then
@@ -530,71 +528,80 @@ begin
     end;
 
     // instalar os pacotes somente se não ocorreu erro na compilação
-    if FCountErros <= 0 then
+    if (edtPlatform.ItemIndex = 0) then
     begin
-      lstMsgInstalacao.Items.Add('');
-      lstMsgInstalacao.Items.Add('INSTALANDO OS PACOTES...');
-      lstMsgInstalacao.ItemIndex := lstMsgInstalacao.Count - 1;
-
-      for iDpk := 0 to frameDpk.Pacotes.Count - 1 do
+      if (FCountErros <= 0) then
       begin
-        NomePacote := frameDpk.Pacotes[iDpk].Caption;
+        lstMsgInstalacao.Items.Add('');
+        lstMsgInstalacao.Items.Add('INSTALANDO OS PACOTES...');
+        lstMsgInstalacao.ItemIndex := lstMsgInstalacao.Count - 1;
 
-        if frameDpk.IsPacoteNF2(NomePacote) then
-          sDirPackage := sDirRoot + '\Pacotes\Delphi\ACBrNFe2\'
-        else
-          sDirPackage := sDirRoot + '\Pacotes\Delphi\';
-
-        if IsDelphiPackage(NomePacote) then
+        for iDpk := 0 to frameDpk.Pacotes.Count - 1 do
         begin
-          // instalar somente os pacotes de designtime
-          GetDPKFileInfo(sDirPackage + NomePacote, bRunOnly);
-          if not bRunOnly then
-          begin
-            // se o pacote estiver marcado instalar, senão desinstalar
-            if frameDpk.Pacotes[iDpk].Checked then
-            begin
-              ACBrUtil.WriteToTXT(AnsiString(PathArquivoLog), AnsiString(''));
+          NomePacote := frameDpk.Pacotes[iDpk].Caption;
 
-              if oACBr.Installations[iVersion].InstallPackage(
-                sDirPackage + NomePacote,
-                sDirBPLPath,
-                sDirDCPpath) then
+          if frameDpk.IsPacoteNF2(NomePacote) then
+            sDirPackage := sDirRoot + '\Pacotes\Delphi\ACBrNFe2\'
+          else
+            sDirPackage := sDirRoot + '\Pacotes\Delphi\';
+
+          if IsDelphiPackage(NomePacote) then
+          begin
+            // instalar somente os pacotes de designtime
+            GetDPKFileInfo(sDirPackage + NomePacote, bRunOnly);
+            if not bRunOnly then
+            begin
+              // se o pacote estiver marcado instalar, senão desinstalar
+              if frameDpk.Pacotes[iDpk].Checked then
               begin
-                lstMsgInstalacao.Items.Add(Format('Pacote "%s" instalado com sucesso.', [sDirPackage + NomePacote]));
-                lstMsgInstalacao.ItemIndex := lstMsgInstalacao.Count - 1;
+                ACBrUtil.WriteToTXT(AnsiString(PathArquivoLog), AnsiString(''));
+
+                if oACBr.Installations[iVersion].InstallPackage(
+                  sDirPackage + NomePacote,
+                  sDirBPLPath,
+                  sDirDCPpath) then
+                begin
+                  lstMsgInstalacao.Items.Add(Format('Pacote "%s" instalado com sucesso.', [sDirPackage + NomePacote]));
+                  lstMsgInstalacao.ItemIndex := lstMsgInstalacao.Count - 1;
+                end
+                else
+                begin
+                  Inc(FCountErros);
+                  lstMsgInstalacao.Items.Add(Format('Ocorreu um erro ao instalar o pacote "%s".', [sDirPackage + NomePacote]));
+                  lstMsgInstalacao.ItemIndex := lstMsgInstalacao.Count - 1;
+                end;
               end
               else
               begin
-                Inc(FCountErros);
-                lstMsgInstalacao.Items.Add(Format('Ocorreu um erro ao instalar o pacote "%s".', [sDirPackage + NomePacote]));
-                lstMsgInstalacao.ItemIndex := lstMsgInstalacao.Count - 1;
-              end;
-            end
-            else
-            begin
-              ACBrUtil.WriteToTXT(AnsiString(PathArquivoLog), AnsiString(''));
+                ACBrUtil.WriteToTXT(AnsiString(PathArquivoLog), AnsiString(''));
 
-              if oACBr.Installations[iVersion].UninstallPackage(
-                sDirPackage + NomePacote,
-                sDirBPLPath,
-                sDirDCPpath) then
-              begin
-                lstMsgInstalacao.Items.Add(Format('Pacote "%s" removido com sucesso...', [NomePacote]));
-                lstMsgInstalacao.ItemIndex := lstMsgInstalacao.Count - 1;
+                if oACBr.Installations[iVersion].UninstallPackage(
+                  sDirPackage + NomePacote,
+                  sDirBPLPath,
+                  sDirDCPpath) then
+                begin
+                  lstMsgInstalacao.Items.Add(Format('Pacote "%s" removido com sucesso...', [NomePacote]));
+                  lstMsgInstalacao.ItemIndex := lstMsgInstalacao.Count - 1;
+                end;
               end;
             end;
           end;
-        end;
 
-        pgbInstalacao.Position := pgbInstalacao.Position + 1;
-        Application.ProcessMessages;
+          pgbInstalacao.Position := pgbInstalacao.Position + 1;
+          Application.ProcessMessages;
+        end;
+      end
+      else
+      begin
+        lstMsgInstalacao.Items.Add('');
+        lstMsgInstalacao.Items.Add('Abortando... Ocorreram erros na compilação dos pacotes.');
+        lstMsgInstalacao.ItemIndex := lstMsgInstalacao.Count - 1;
       end;
     end
     else
     begin
       lstMsgInstalacao.Items.Add('');
-      lstMsgInstalacao.Items.Add('Abortando... Ocorreram erros na compilação dos pacotes.');
+      lstMsgInstalacao.Items.Add('Para a plataforma de 64 bits os pacotes são somente compilados.');
       lstMsgInstalacao.ItemIndex := lstMsgInstalacao.Count - 1;
     end;
   finally
@@ -699,6 +706,14 @@ end;
 procedure TfrmPrincipal.wizPgInstalacaoEnterPage(Sender: TObject;
   const FromPage: TJvWizardCustomPage);
 begin
+  SetPlatformSelected;
+
+  // para 64 bit somente compilar
+  if tPlatform = bpWin32 then // Win32
+    btnInstalarACBr.Caption := 'Instalar'
+  else // win64
+    btnInstalarACBr.Caption := 'Compilar';
+
   // mostrar ao usuário as informações de compilação
   lblInfoCompilacao.Caption :=
     edtDelphiVersion.Text + ' ' + edtPlatform.Text + sLineBreak +

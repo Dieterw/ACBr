@@ -2471,19 +2471,11 @@ object frmPrincipal: TfrmPrincipal
         Caption = 'Visualizar log'
         OnClick = btnVisualizarLogCompilacaoClick
       end
-      object lblInfoCompilacao: TLabel
-        Left = 20
-        Top = 15
-        Width = 516
-        Height = 57
-        AutoSize = False
-        Caption = 'Linha 1'#13#10'Linha 2'#13#10'Linha 3'#13#10'Linha 4'
-      end
       object lstMsgInstalacao: TListBox
         Left = 20
-        Top = 75
+        Top = 72
         Width = 516
-        Height = 241
+        Height = 244
         ItemHeight = 13
         TabOrder = 0
       end
@@ -2493,6 +2485,24 @@ object frmPrincipal: TfrmPrincipal
         Width = 516
         Height = 17
         TabOrder = 1
+      end
+      object pnlInfoCompilador: TPanel
+        Left = 20
+        Top = 15
+        Width = 516
+        Height = 51
+        BevelOuter = bvLowered
+        TabOrder = 2
+        object lblInfoCompilacao: TLabel
+          AlignWithMargins = True
+          Left = 4
+          Top = 4
+          Width = 508
+          Height = 46
+          Align = alClient
+          AutoSize = False
+          Caption = 'Linha 1'#13#10'Linha 2'#13#10'Linha 3'
+        end
       end
     end
     object wizPgFinalizar: TJvWizardInteriorPage
@@ -2650,7 +2660,7 @@ object frmPrincipal: TfrmPrincipal
       object Label9: TLabel
         Left = 14
         Top = 19
-        Width = 312
+        Width = 313
         Height = 19
         Caption = 'Assistente de instala'#231#227'o do Projeto ACBr'
         Color = clWhite
@@ -2671,7 +2681,6 @@ object frmPrincipal: TfrmPrincipal
         Cursor = crHandPoint
         Animate = True
         Center = True
-        FrameIndex = 4
         Image.Data = {
           688B00004749463839613F012800F70000FFFFFFFFFFE5FFFFCCF7FAFDFFFF99
           FFF7B9FFF9A9FFFA84EAFA9EFFF573FFF74AFFFF00FFF268F2F478FFF456E9F5

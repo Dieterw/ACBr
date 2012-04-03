@@ -898,6 +898,8 @@ begin
     LayNfeConsulta      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.am.gov.br/services2/services/NfeConsulta2', 'https://homnfe.sefaz.am.gov.br/services2/services/NfeConsulta2');
     LayNfeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.am.gov.br/services2/services/NfeStatusServico2', 'https://homnfe.sefaz.am.gov.br/services2/services/NfeStatusServico2');
     LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.am.gov.br/services2/services/cadconsultacadastro2', 'https://homnfe.sefaz.am.gov.br/services2/services/cadconsultacadastro2');
+    // Incluido por Italo em 03/04/2012
+    LayNFeCCe           : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.am.gov.br/services2/services/RecepcaoEvento', 'https://homnfe.sefaz.am.gov.br/services2/services/RecepcaoEvento');
   end;
 end;
 
@@ -912,7 +914,9 @@ begin
     LayNfeConsulta      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.ba.gov.br/webservices/nfenw/NfeConsulta2.asmx', 'https://hnfe.sefaz.ba.gov.br/webservices/nfenw/NfeConsulta2.asmx');
     LayNfeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.ba.gov.br/webservices/nfenw/NfeStatusServico2.asmx', 'https://hnfe.sefaz.ba.gov.br/webservices/nfenw/NfeStatusServico2.asmx');
     LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.ba.gov.br/webservices/nfenw/CadConsultaCadastro2.asmx', 'https://hnfe.sefaz.ba.gov.br/webservices/nfenw/CadConsultaCadastro2.asmx');
-    LayNFeCCe           : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.ba.gov.br/webservices/sre/nferecepcaoevento.asmx', 'https://hnfe.sefaz.ba.gov.br/webservices/sre/nferecepcaoevento.asmx');
+    // Alterado por Italo em 03/04/2012
+    LayNFeCCe           : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.ba.gov.br/webservices/sre/nferecepcaoevento.asmx', 'https://hnfe.sefaz.ba.gov.br/webservices/sre/RecepcaoEvento.asmx');
+//    LayNFeCCe           : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.ba.gov.br/webservices/sre/nferecepcaoevento.asmx', 'https://hnfe.sefaz.ba.gov.br/webservices/sre/nferecepcaoevento.asmx');
   end;
 end;
 
@@ -973,6 +977,8 @@ begin
     LayNfeConsulta      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.ms.gov.br/producao/services2/NfeConsulta2', 'https://homologacao.nfe.ms.gov.br/homologacao/services2/NfeConsulta2');
     LayNfeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.ms.gov.br/producao/services2/NfeStatusServico2', 'https://homologacao.nfe.ms.gov.br/homologacao/services2/NfeStatusServico2');
     LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.ms.gov.br/producao/services2/CadConsultaCadastro2', 'https://homologacao.nfe.ms.gov.br/homologacao/services2/CadConsultaCadastro2');
+    // Incluido por Italo em 03/04/2012
+    LayNFeCCe           : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.ms.gov.br/producao/services2/NfeRecepcaoEvento', 'https://homologacao.nfe.ms.gov.br/homologacao/services2/RecepcaoEvento');
   end;
 end;
 
@@ -987,7 +993,9 @@ begin
     LayNfeConsulta      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.mg.gov.br/nfe2/services/NfeConsulta2', 'https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeConsulta2');
     LayNfeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.mg.gov.br/nfe2/services/NfeStatus2', 'https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeStatus2');
     LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.mg.gov.br/nfe2/services/cadconsultacadastro2', 'https://hnfe.fazenda.mg.gov.br/nfe2/services/cadconsultacadastro2');
-    LayNFeCCe           : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.mg.gov.br/nfe2/services/NfeRecepcaoEvento', 'https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeRecepcaoEvento');
+    // Alterado por Italo em 03/04/2012
+    LayNFeCCe           : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.mg.gov.br/nfe2/services/RecepcaoEvento', 'https://hnfe.fazenda.mg.gov.br/nfe2/services/RecepcaoEvento');
+//    LayNFeCCe           : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.mg.gov.br/nfe2/services/NfeRecepcaoEvento', 'https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeRecepcaoEvento');
   end;
 end;
 
@@ -1002,6 +1010,7 @@ begin
     LayNfeConsulta      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe2.fazenda.pr.gov.br/nfe/NFeConsulta2', 'https://homologacao.nfe2.fazenda.pr.gov.br/nfe/NFeConsulta2');
     LayNfeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe2.fazenda.pr.gov.br/nfe/NFeStatusServico2', 'https://homologacao.nfe2.fazenda.pr.gov.br/nfe/NFeStatusServico2');
 //    LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, '', '');
+//    LayNfeCCe           : Result := NotaUtil.SeSenao(AAmbiente=1, '', '');
   end;
 end;
 

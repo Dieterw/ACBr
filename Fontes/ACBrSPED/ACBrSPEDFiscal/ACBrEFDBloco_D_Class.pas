@@ -1183,9 +1183,9 @@ begin
         begin
           Add( LFill('D355') +
                LFill( DT_DOC ) +
-               LFill( CRO ) +
-               LFill( CRZ ) +
-               LFill( NUM_COO_FIN ) +
+               LFill( CRO, 3 ) +
+               LFill( CRZ, 6 ) +
+               LFill( NUM_COO_FIN, 6 ) +
                LFill( GT_FIN,0,2 ) +
                LFill( VL_BRT,0,2 ) ) ;
         end;

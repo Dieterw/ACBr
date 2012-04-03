@@ -1134,7 +1134,7 @@ end;
 Procedure TACBrValidador.ValidarUF(UF: AnsiString) ;
 begin
  if pos( ','+UF+',', ',AC,AL,AP,AM,BA,CE,DF,ES,GO,MA,MT,MS,MG,PA,PB,PR,PE,PI,'+
-                     'RJ,RN,RS,RO,RR,SC,SP,SE,TO,') = 0 then
+                     'RJ,RN,RS,RO,RR,SC,SP,SE,TO,EX,') = 0 then
     fsMsgErro := 'UF inválido: '+UF ;
 end;
 

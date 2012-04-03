@@ -1197,7 +1197,7 @@ begin
         RegistroD990.QTD_LIN_D := RegistroD990.QTD_LIN_D + 1;
      end;
      /// Variavél para armazenar a quantidade de registro do tipo.
-     FRegistroD350Count := FRegistroD350Count + RegD350.RegistroD355.Count;
+     FRegistroD355Count := FRegistroD355Count + RegD350.RegistroD355.Count;
   end;
 end;
 

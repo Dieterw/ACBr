@@ -11,9 +11,8 @@ BRCC = $(ROOT)\bin\brcc32.exe $**
 #------------------------------------------------------------------------------
 PROJECTS = ACBrComum.bpl ACBrDiversos.bpl ACBrSerial.bpl ACBr_SPED.bpl \
   ACBr_PAF.bpl ACBr_Sintegra.bpl ACBr_TEFD.bpl ACBrTCP.bpl ACBr_Boleto.bpl \
-  ACBrCapicom.bpl ACBrOpenSSL.bpl ACBr_NFe2.bpl ACBr_CTe.bpl \
-  ACBrNFeDanfeRVCodeBase.bpl ACBrNFeDanfeRV.bpl ACBrNFeDanfeQRpkg.bpl \
-  ACBrCTeDacteQRpkg.bpl
+  ACBrCapicom.bpl ACBrOpenSSL.bpl ACBr_NFe.bpl ACBrNFeDanfeRVCodeBase.bpl \
+  ACBrNFeDanfeRV.bpl ACBrNFeDanfeQRpkg.bpl ACBr_CTe.bpl ACBrCTeDacteQRpkg.bpl
 #------------------------------------------------------------------------------
 default: $(PROJECTS)
 #------------------------------------------------------------------------------
@@ -45,28 +44,28 @@ ACBrTCP.bpl: ACBrTCP.dpk
 ACBr_Boleto.bpl: ACBr_Boleto.dpk
   $(DCC)
 
-ACBrNFeDanfeRV.bpl: ACBrNFe2\ACBrNFeDanfeRV.dpk
+ACBr_NFe.bpl: ACBrNFe\ACBr_NFe.dpk
   $(DCC)
 
-ACBrNFeDanfeRVCodeBase.bpl: ACBrNFe2\ACBrNFeDanfeRVCodeBase.dpk
+ACBrNFeDanfeRV.bpl: ACBrNFe\ACBrNFeDanfeRV.dpk
   $(DCC)
 
-ACBrNFeDanfeQRpkg.bpl: ACBrNFe2\ACBrNFeDanfeQRpkg.dpk
+ACBrNFeDanfeRVCodeBase.bpl: ACBrNFe\ACBrNFeDanfeRVCodeBase.dpk
   $(DCC)
 
-ACBr_CTe.bpl: ACBrNFe2\ACBr_CTe.dpk
+ACBrNFeDanfeQRpkg.bpl: ACBrNFe\ACBrNFeDanfeQRpkg.dpk
   $(DCC)
 
-ACBrCTeDacteQRpkg.bpl: ACBrNFe2\ACBrCTeDacteQRpkg.dpk
+ACBr_CTe.bpl: ACBrNFe\ACBr_CTe.dpk
+  $(DCC)
+
+ACBrCTeDacteQRpkg.bpl: ACBrNFe\ACBrCTeDacteQRpkg.dpk
   $(DCC)
 
 ACBrCapicom.bpl: ACBrCapicom.dpk
   $(DCC)
 
 ACBrOpenSSL.bpl: ACBrOpenSSL.dpk
-  $(DCC)
-
-ACBr_NFe2.bpl: ACBrNFe2\ACBr_NFe2.dpk
   $(DCC)
 
 

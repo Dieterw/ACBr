@@ -1,6 +1,7 @@
 package ACBrTCP;
 
 {$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
 {$ALIGN 8}
 {$ASSERTIONS ON}
 {$BOOLEVAL OFF}
@@ -22,9 +23,10 @@ package ACBrTCP;
 {$WRITEABLECONST OFF}
 {$MINENUMSIZE 1}
 {$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
 {$DESCRIPTION 'ACBr Automação Comercial Brasil - ACBrTCP (http://acbr.sf.net/)'}
 {$IMPLICITBUILD ON}
-{$DEFINE DEBUG}
 
 requires
   rtl,

@@ -25,6 +25,7 @@ package ACBr_SPED;
 {$DESCRIPTION 'ACBr Automação Comercial Brasil Sped Fiscal e Contabil (http://acbr.sourceforge.net/)'}
 {$IMPLICITBUILD ON}
 {$DEFINE DEBUG}
+{$DEFINE DEBUG}
 
 requires
   rtl,

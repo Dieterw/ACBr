@@ -22,7 +22,7 @@ package ACBr_Boleto;
 {$WRITEABLECONST OFF}
 {$MINENUMSIZE 1}
 {$IMAGEBASE $400000}
-{$DESCRIPTION 'ACBr Automação Comercial Brasil - ACBrBoleto (http://acbr.sourceforge.net/)'}
+{$DESCRIPTION 'ACBr Automação Comercial Brasil - ACBrBoleto - (http://acbr.sourceforge.net/)'}
 {$IMPLICITBUILD ON}
 
 requires

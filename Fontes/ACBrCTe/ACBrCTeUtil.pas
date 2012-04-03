@@ -300,12 +300,12 @@ begin
         3 : begin
              {
              case ALayOut of
-              LayCTeStatusServico : Result := CTeUtil.SeSenao(AAmbiente=1, 'https://www.scan.fazenda.gov.br/NfeStatusServico/NfeStatusServico.asmx', 'https://hom.nfe.fazenda.gov.br/SCAN/nfestatusservico/NfeStatusServico.asmx');
-              LayCTeConsultaCT    : Result := CTeUtil.SeSenao(AAmbiente=1, 'https://www.scan.fazenda.gov.br/NfeConsulta/NfeConsulta.asmx'          , 'https://hom.nfe.fazenda.gov.br/SCAN/nfeconsulta/NfeConsulta.asmx');
-              LayCTeCancelamento  : Result := CTeUtil.SeSenao(AAmbiente=1, 'https://www.scan.fazenda.gov.br/NfeCancelamento/NfeCancelamento.asmx'  , 'https://hom.nfe.fazenda.gov.br/SCAN/nfecancelamento/NfeCancelamento.asmx');
-              LayCTeInutilizacao  : Result := CTeUtil.SeSenao(AAmbiente=1, 'https://www.scan.fazenda.gov.br/NfeInutilizacao/NfeInutilizacao.asmx'  , 'https://hom.nfe.fazenda.gov.br/SCAN/nfeinutilizacao/NfeInutilizacao.asmx');
               LayCTeRecepcao      : Result := CTeUtil.SeSenao(AAmbiente=1, 'https://www.scan.fazenda.gov.br/NfeRecepcao/NfeRecepcao.asmx'          , 'https://hom.nfe.fazenda.gov.br/SCAN/nferecepcao/NfeRecepcao.asmx');
               LayCTeRetRecepcao   : Result := CTeUtil.SeSenao(AAmbiente=1, 'https://www.scan.fazenda.gov.br/NfeRetRecepcao/NfeRetRecepcao.asmx'    , 'https://hom.nfe.fazenda.gov.br/SCAN/nferetrecepcao/NfeRetRecepcao.asmx');
+              LayCTeCancelamento  : Result := CTeUtil.SeSenao(AAmbiente=1, 'https://www.scan.fazenda.gov.br/NfeCancelamento/NfeCancelamento.asmx'  , 'https://hom.nfe.fazenda.gov.br/SCAN/nfecancelamento/NfeCancelamento.asmx');
+              LayCTeInutilizacao  : Result := CTeUtil.SeSenao(AAmbiente=1, 'https://www.scan.fazenda.gov.br/NfeInutilizacao/NfeInutilizacao.asmx'  , 'https://hom.nfe.fazenda.gov.br/SCAN/nfeinutilizacao/NfeInutilizacao.asmx');
+              LayCTeConsultaCT    : Result := CTeUtil.SeSenao(AAmbiente=1, 'https://www.scan.fazenda.gov.br/NfeConsulta/NfeConsulta.asmx'          , 'https://hom.nfe.fazenda.gov.br/SCAN/nfeconsulta/NfeConsulta.asmx');
+              LayCTeStatusServico : Result := CTeUtil.SeSenao(AAmbiente=1, 'https://www.scan.fazenda.gov.br/NfeStatusServico/NfeStatusServico.asmx', 'https://hom.nfe.fazenda.gov.br/SCAN/nfestatusservico/NfeStatusServico.asmx');
              end;
              }
             end;
@@ -319,13 +319,13 @@ class function CTeUtil.GetURLSVRS(AAmbiente: Integer;
   ALayOut: TLayOut): WideString;
 begin
   case ALayOut of
-    LayCTeStatusServico: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.rs.gov.br/ws/ctestatusservico/ctestatusservico.asmx'      , 'https://homologacao.cte.sefaz.rs.gov.br/ws/ctestatusservico/ctestatusservico.asmx');
-//    LayCTeCadastro: Result      := CTeUtil.SeSenao(AAmbiente = 1, 'https://sef.sefaz.rs.gov.br/ws/CadConsultaCadastro/CadConsultaCadastro.asmx', 'https://sef.sefaz.rs.gov.br/ws/CadConsultaCadastro/CadConsultaCadastro.asmx');
-    LayCTeConsultaCT: Result    := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.rs.gov.br/ws/cteconsulta/cteconsulta.asmx'                , 'https://homologacao.cte.sefaz.rs.gov.br/ws/cteconsulta/cteconsulta.asmx');
-    LayCTeCancelamento: Result  := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.rs.gov.br/ws/ctecancelamento/ctecancelamento.asmx'        , 'https://homologacao.cte.sefaz.rs.gov.br/ws/ctecancelamento/ctecancelamento.asmx');
-    LayCTeInutilizacao: Result  := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.rs.gov.br/ws/cteinutilizacao/cteinutilizacao.asmx'        , 'https://homologacao.cte.sefaz.rs.gov.br/ws/cteinutilizacao/cteinutilizacao.asmx');
     LayCTeRecepcao: Result      := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.rs.gov.br/ws/cterecepcao/CteRecepcao.asmx'                , 'https://homologacao.cte.sefaz.rs.gov.br/ws/cterecepcao/CteRecepcao.asmx');
     LayCTeRetRecepcao: Result   := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.rs.gov.br/ws/cteretrecepcao/CteRetRecepcao.asmx'          , 'https://homologacao.cte.sefaz.rs.gov.br/ws/cteretrecepcao/CteRetRecepcao.asmx');
+    LayCTeCancelamento: Result  := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.rs.gov.br/ws/ctecancelamento/ctecancelamento.asmx'        , 'https://homologacao.cte.sefaz.rs.gov.br/ws/ctecancelamento/ctecancelamento.asmx');
+    LayCTeInutilizacao: Result  := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.rs.gov.br/ws/cteinutilizacao/cteinutilizacao.asmx'        , 'https://homologacao.cte.sefaz.rs.gov.br/ws/cteinutilizacao/cteinutilizacao.asmx');
+    LayCTeConsultaCT: Result    := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.rs.gov.br/ws/cteconsulta/cteconsulta.asmx'                , 'https://homologacao.cte.sefaz.rs.gov.br/ws/cteconsulta/cteconsulta.asmx');
+    LayCTeStatusServico: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.rs.gov.br/ws/ctestatusservico/ctestatusservico.asmx'      , 'https://homologacao.cte.sefaz.rs.gov.br/ws/ctestatusservico/ctestatusservico.asmx');
+//    LayCTeCadastro: Result      := CTeUtil.SeSenao(AAmbiente = 1, 'https://sef.sefaz.rs.gov.br/ws/CadConsultaCadastro/CadConsultaCadastro.asmx', 'https://sef.sefaz.rs.gov.br/ws/CadConsultaCadastro/CadConsultaCadastro.asmx');
   end;
 end;
 
@@ -333,13 +333,13 @@ class function CTeUtil.GetURLMG(AAmbiente: Integer;
   ALayOut: TLayOut): WideString;
 begin
   case ALayOut of
-    LayCTeStatusServico: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.mg.gov.br/cte/services/CteStatusServico'   , 'https://hcte.fazenda.mg.gov.br/cte/services/CteStatusServico');
-//    LayCTeCadastro: Result      := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.mg.gov.br/cte/services/cadConsultaCadastro', 'https://hcte.fazenda.mg.gov.br/cte/services/cadConsultaCadastro');
-    LayCTeConsultaCT: Result    := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.mg.gov.br/cte/services/CteConsulta'        , 'https://hcte.fazenda.mg.gov.br/cte/services/CteConsulta');
-    LayCTeCancelamento: Result  := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.mg.gov.br/cte/services/CteCancelamento'    , 'https://hcte.fazenda.mg.gov.br/cte/services/CteCancelamento');
-    LayCTeInutilizacao: Result  := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.mg.gov.br/cte/services/CteInutilizacao'    , 'https://hcte.fazenda.mg.gov.br/cte/services/CteInutilizacao');
     LayCTeRecepcao: Result      := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.mg.gov.br/cte/services/CteRecepcao'        , 'https://hcte.fazenda.mg.gov.br/cte/services/CteRecepcao'); //?WSDL
     LayCTeRetRecepcao: Result   := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.mg.gov.br/cte/services/CteRetRecepcao'     , 'https://hcte.fazenda.mg.gov.br/cte/services/CteRetRecepcao'); //?WSDL
+    LayCTeCancelamento: Result  := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.mg.gov.br/cte/services/CteCancelamento'    , 'https://hcte.fazenda.mg.gov.br/cte/services/CteCancelamento');
+    LayCTeInutilizacao: Result  := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.mg.gov.br/cte/services/CteInutilizacao'    , 'https://hcte.fazenda.mg.gov.br/cte/services/CteInutilizacao');
+    LayCTeConsultaCT: Result    := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.mg.gov.br/cte/services/CteConsulta'        , 'https://hcte.fazenda.mg.gov.br/cte/services/CteConsulta');
+    LayCTeStatusServico: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.mg.gov.br/cte/services/CteStatusServico'   , 'https://hcte.fazenda.mg.gov.br/cte/services/CteStatusServico');
+//    LayCTeCadastro: Result      := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.mg.gov.br/cte/services/cadConsultaCadastro', 'https://hcte.fazenda.mg.gov.br/cte/services/cadConsultaCadastro');
   end;
 end;
 
@@ -347,14 +347,14 @@ class function CTeUtil.GetURLRS(AAmbiente: Integer;
   ALayOut: TLayOut): WideString;
 begin
   case ALayOut of
+    LayCTeRecepcao: Result      := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.rs.gov.br/ws/cterecepcao/CteRecepcao.asmx'                , 'https://homologacao.cte.sefaz.rs.gov.br/ws/cterecepcao/CteRecepcao.asmx');
+    LayCTeRetRecepcao: Result   := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.rs.gov.br/ws/cteretrecepcao/cteRetRecepcao.asmx'          , 'https://homologacao.cte.sefaz.rs.gov.br/ws/cteretrecepcao/cteRetRecepcao.asmx'); //CteRetRecepcao.asmx
+    LayCTeCancelamento: Result  := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.rs.gov.br/ws/ctecancelamento/ctecancelamento.asmx'        , 'https://homologacao.cte.sefaz.rs.gov.br/ws/ctecancelamento/ctecancelamento.asmx');
+    LayCTeInutilizacao: Result  := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.rs.gov.br/ws/cteinutilizacao/cteinutilizacao.asmx'        , 'https://homologacao.cte.sefaz.rs.gov.br/ws/cteinutilizacao/cteinutilizacao.asmx');
+    LayCTeConsultaCT: Result    := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.rs.gov.br/ws/cteconsulta/CteConsulta.asmx'                , 'https://homologacao.cte.sefaz.rs.gov.br/ws/cteconsulta/CteConsulta.asmx');
     LayCTeStatusServico: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.rs.gov.br/ws/ctestatusservico/CteStatusServico.asmx'      , 'https://homologacao.cte.sefaz.rs.gov.br/ws/ctestatusservico/CteStatusServico.asmx');
     // Alterado por Italo em 14/03/2012 conforme sugestão de Moacir
     LayCTeCadastro: Result      := CTeUtil.SeSenao(AAmbiente = 1, 'https://sef.sefaz.rs.gov.br/ws/cadconsultacadastro/cadconsultacadastro2.asmx', 'https://sef.sefaz.rs.gov.br/ws/cadconsultacadastro/cadconsultacadastro2.asmx');
-    LayCTeConsultaCT: Result    := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.rs.gov.br/ws/cteconsulta/CteConsulta.asmx'                , 'https://homologacao.cte.sefaz.rs.gov.br/ws/cteconsulta/CteConsulta.asmx');
-    LayCTeCancelamento: Result  := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.rs.gov.br/ws/ctecancelamento/ctecancelamento.asmx'        , 'https://homologacao.cte.sefaz.rs.gov.br/ws/ctecancelamento/ctecancelamento.asmx');
-    LayCTeInutilizacao: Result  := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.rs.gov.br/ws/cteinutilizacao/cteinutilizacao.asmx'        , 'https://homologacao.cte.sefaz.rs.gov.br/ws/cteinutilizacao/cteinutilizacao.asmx');
-    LayCTeRecepcao: Result      := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.rs.gov.br/ws/cterecepcao/CteRecepcao.asmx'                , 'https://homologacao.cte.sefaz.rs.gov.br/ws/cterecepcao/CteRecepcao.asmx');
-    LayCTeRetRecepcao: Result   := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.rs.gov.br/ws/cteretrecepcao/cteRetRecepcao.asmx'          , 'https://homologacao.cte.sefaz.rs.gov.br/ws/cteretrecepcao/cteRetRecepcao.asmx'); //CteRetRecepcao.asmx
   end;
 end;
 
@@ -362,15 +362,15 @@ class function CTeUtil.GetURLSP(AAmbiente: Integer;
   ALayOut: TLayOut): WideString;
 begin
   case ALayOut of
-    LayCTeStatusServico: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://nfe.fazenda.sp.gov.br/cteWEB/services/cteStatusServico.asmx'    , 'https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteStatusServico.asmx');
-    // Alterado por Italo em 17/10/2011
-//    LayCTeCadastro: Result      := CTeUtil.SeSenao(AAmbiente = 1, 'https://nfe.fazenda.sp.gov.br/nfeWEB/services/cadConsultaCadastro.asmx', 'https://homologacao.nfe.fazenda.sp.gov.br/nfeWEB/services/cadConsultaCadastro.asmx');
-    LayCTeCadastro     : Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://nfe.fazenda.sp.gov.br/nfeweb/services/cadconsultacadastro2.asmx', 'https://homologacao.nfe.fazenda.sp.gov.br/nfeweb/services/cadconsultacadastro2.asmx');
-    LayCTeConsultaCT: Result    := CTeUtil.SeSenao(AAmbiente = 1, 'https://nfe.fazenda.sp.gov.br/cteWEB/services/cteConsulta.asmx'         , 'https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteConsulta.asmx');
-    LayCTeCancelamento: Result  := CTeUtil.SeSenao(AAmbiente = 1, 'https://nfe.fazenda.sp.gov.br/cteWEB/services/cteCancelamento.asmx'     , 'https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteCancelamento.asmx');
-    LayCTeInutilizacao: Result  := CTeUtil.SeSenao(AAmbiente = 1, 'https://nfe.fazenda.sp.gov.br/cteWEB/services/cteInutilizacao.asmx'     , 'https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteInutilizacao.asmx');
     LayCTeRecepcao: Result      := CTeUtil.SeSenao(AAmbiente = 1, 'https://nfe.fazenda.sp.gov.br/cteWEB/services/cteRecepcao.asmx'         , 'https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteRecepcao.asmx');
     LayCTeRetRecepcao: Result   := CTeUtil.SeSenao(AAmbiente = 1, 'https://nfe.fazenda.sp.gov.br/cteWEB/services/cteRetRecepcao.asmx'      , 'https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteRetRecepcao.asmx');
+    LayCTeCancelamento: Result  := CTeUtil.SeSenao(AAmbiente = 1, 'https://nfe.fazenda.sp.gov.br/cteWEB/services/cteCancelamento.asmx'     , 'https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteCancelamento.asmx');
+    LayCTeInutilizacao: Result  := CTeUtil.SeSenao(AAmbiente = 1, 'https://nfe.fazenda.sp.gov.br/cteWEB/services/cteInutilizacao.asmx'     , 'https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteInutilizacao.asmx');
+    LayCTeConsultaCT: Result    := CTeUtil.SeSenao(AAmbiente = 1, 'https://nfe.fazenda.sp.gov.br/cteWEB/services/cteConsulta.asmx'         , 'https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteConsulta.asmx');
+    LayCTeStatusServico: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://nfe.fazenda.sp.gov.br/cteWEB/services/cteStatusServico.asmx'    , 'https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteStatusServico.asmx');
+    // Alterado por Italo em 17/10/2011
+    LayCTeCadastro              : Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://nfe.fazenda.sp.gov.br/nfeweb/services/cadconsultacadastro2.asmx', 'https://homologacao.nfe.fazenda.sp.gov.br/nfeweb/services/cadconsultacadastro2.asmx');
+//    LayCTeCadastro: Result      := CTeUtil.SeSenao(AAmbiente = 1, 'https://nfe.fazenda.sp.gov.br/nfeWEB/services/cadConsultaCadastro.asmx', 'https://homologacao.nfe.fazenda.sp.gov.br/nfeWEB/services/cadConsultaCadastro.asmx');
   end;
 end;
 
@@ -379,28 +379,27 @@ class function CTeUtil.GetURLMS(AAmbiente: Integer;
 begin
   // Os links para o Ambiente de Produção devem ser checados
   case ALayOut of
-    LayCTeStatusServico: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://producao.cte.ms.gov.br/cteWEB/CteStatusServico.asmx'   , 'https://homologacao.cte.ms.gov.br/cteWEB/CteStatusServico.asmx');
-    LayCTeCadastro: Result      := CTeUtil.SeSenao(AAmbiente = 1, 'https://producao.cte.ms.gov.br/cteWEB/CadConsultaCadastro.asmx', 'https://homologacao.cte.ms.gov.br/cteWEB/CadConsultaCadastro.asmx');
-    LayCTeConsultaCT: Result    := CTeUtil.SeSenao(AAmbiente = 1, 'https://producao.cte.ms.gov.br/cteWEB/CteConsulta.asmx'        , 'https://homologacao.cte.ms.gov.br/cteWEB/CteConsulta.asmx');
-    LayCTeCancelamento: Result  := CTeUtil.SeSenao(AAmbiente = 1, 'https://producao.cte.ms.gov.br/cteWEB/CteCancelamento.asmx'    , 'https://homologacao.cte.ms.gov.br/cteWEB/CteCancelamento.asmx');
-    LayCTeInutilizacao: Result  := CTeUtil.SeSenao(AAmbiente = 1, 'https://producao.cte.ms.gov.br/cteWEB/CteInutilizacao.asmx'    , 'https://homologacao.cte.ms.gov.br/cteWEB/CteInutilizacao.asmx');
     LayCTeRecepcao: Result      := CTeUtil.SeSenao(AAmbiente = 1, 'https://producao.cte.ms.gov.br/cteWEB/CteRecepcao.asmx'        , 'https://homologacao.cte.ms.gov.br/cteWEB/CteRecepcao.asmx');
     LayCTeRetRecepcao: Result   := CTeUtil.SeSenao(AAmbiente = 1, 'https://producao.cte.ms.gov.br/cteWEB/CteRetRecepcao.asmx'     , 'https://homologacao.cte.ms.gov.br/cteWEB/CteRetRecepcao.asmx');
+    LayCTeCancelamento: Result  := CTeUtil.SeSenao(AAmbiente = 1, 'https://producao.cte.ms.gov.br/cteWEB/CteCancelamento.asmx'    , 'https://homologacao.cte.ms.gov.br/cteWEB/CteCancelamento.asmx');
+    LayCTeInutilizacao: Result  := CTeUtil.SeSenao(AAmbiente = 1, 'https://producao.cte.ms.gov.br/cteWEB/CteInutilizacao.asmx'    , 'https://homologacao.cte.ms.gov.br/cteWEB/CteInutilizacao.asmx');
+    LayCTeConsultaCT: Result    := CTeUtil.SeSenao(AAmbiente = 1, 'https://producao.cte.ms.gov.br/cteWEB/CteConsulta.asmx'        , 'https://homologacao.cte.ms.gov.br/cteWEB/CteConsulta.asmx');
+    LayCTeStatusServico: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://producao.cte.ms.gov.br/cteWEB/CteStatusServico.asmx'   , 'https://homologacao.cte.ms.gov.br/cteWEB/CteStatusServico.asmx');
+    LayCTeCadastro: Result      := CTeUtil.SeSenao(AAmbiente = 1, 'https://producao.cte.ms.gov.br/cteWEB/CadConsultaCadastro.asmx', 'https://homologacao.cte.ms.gov.br/cteWEB/CadConsultaCadastro.asmx');
   end;
 end;
 
 class function CTeUtil.GetURLMT(AAmbiente: Integer;
   ALayOut: TLayOut): WideString;
 begin
-// TIRADOS ESPAÇOS EM BRANCO DO INICIO DAS URL´S
   case ALayOut of
-    LayCTeStatusServico: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.mt.gov.br/ctews/services/CteStatusServico'   , 'https://homologacao.sefaz.mt.gov.br/ctews/services/CteStatusServico'); //?WSDL
-//    LayCTeCadastro: Result      := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.mt.gov.br/ctews/services/cadConsultaCadastro', 'https://homologacao.sefaz.mt.gov.br/ctews/services/cadConsultaCadastro');
-    LayCTeConsultaCT: Result    := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.mt.gov.br/ctews/services/CteConsulta'        , 'https://homologacao.sefaz.mt.gov.br/ctews/services/CteConsulta');
-    LayCTeCancelamento: Result  := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.mt.gov.br/ctews/services/CteCancelamento'    , 'https://homologacao.sefaz.mt.gov.br/ctews/services/CteCancelamento');
-    LayCTeInutilizacao: Result  := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.mt.gov.br/ctews/services/CteInutilizacao'    , 'https://homologacao.sefaz.mt.gov.br/ctews/services/CteInutilizacao');
     LayCTeRecepcao: Result      := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.mt.gov.br/ctews/services/CteRecepcao'        , 'https://homologacao.sefaz.mt.gov.br/ctews/services/CteRecepcao'); //?WSDL
     LayCTeRetRecepcao: Result   := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.mt.gov.br/ctews/services/CteRetRecepcao'     , 'https://homologacao.sefaz.mt.gov.br/ctews/services/CteRetRecepcao'); //?WSDL
+    LayCTeCancelamento: Result  := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.mt.gov.br/ctews/services/CteCancelamento'    , 'https://homologacao.sefaz.mt.gov.br/ctews/services/CteCancelamento');
+    LayCTeInutilizacao: Result  := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.mt.gov.br/ctews/services/CteInutilizacao'    , 'https://homologacao.sefaz.mt.gov.br/ctews/services/CteInutilizacao');
+    LayCTeConsultaCT: Result    := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.mt.gov.br/ctews/services/CteConsulta'        , 'https://homologacao.sefaz.mt.gov.br/ctews/services/CteConsulta');
+    LayCTeStatusServico: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.mt.gov.br/ctews/services/CteStatusServico'   , 'https://homologacao.sefaz.mt.gov.br/ctews/services/CteStatusServico'); //?WSDL
+//    LayCTeCadastro: Result      := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.mt.gov.br/ctews/services/cadConsultaCadastro', 'https://homologacao.sefaz.mt.gov.br/ctews/services/cadConsultaCadastro');
   end;
 end;
 

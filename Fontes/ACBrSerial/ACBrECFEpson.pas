@@ -1170,7 +1170,11 @@ begin
       begin
         ErroMsg := 'Erro retornado pela Impressora: ' + fpModeloStr + sLineBreak+sLineBreak+
                    'Erro: '+ EpsonResposta.Retorno+ ' - '+ErroMsg  ;
-        raise EACBrECFSemResposta.create( ErroMsg ) ;
+
+        if EpsonResposta.Retorno = '0304' then
+           DoOnErrorSemPapel
+        else
+           raise EACBrECFSemResposta.create( ErroMsg ) ;
       end
      else
         Sleep( IntervaloAposComando ) ;  { Pequena pausa entre comandos }
@@ -1874,7 +1878,7 @@ begin
      SL := TStringList.create ;
      try
         SL.Text := Obs ;
-        EpsonComando.Comando  := '0A22' ;
+        EpsonComando.Comando := '0A22' ;
         For I := 0 to 7 do
            if I >= SL.Count then
               EpsonComando.AddParamString( '' )

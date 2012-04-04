@@ -18,12 +18,12 @@
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
       <MinorVersionNr Value="9"/>
-      <BuildNr Value="23"/>
+      <BuildNr Value="24"/>
       <Language Value="0416"/>
       <CharSet Value="04B0"/>
       <StringTable ProductVersion=""/>
     </VersionInfo>
-    <BuildModes Count="2" Active="Release">
+    <BuildModes Count="2" Active="Debug">
       <Item1 Name="Debug" Default="True"/>
       <Item2 Name="Release">
         <CompilerOptions>
@@ -120,10 +120,11 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ECFTeste1"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
-        <CursorPos X="9" Y="7"/>
+        <TopLine Value="712"/>
+        <CursorPos X="1" Y="729"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -146,8 +147,8 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="EfetuaPagamento"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="95"/>
-        <CursorPos X="37" Y="107"/>
+        <TopLine Value="83"/>
+        <CursorPos X="1" Y="94"/>
         <UsageCount Value="201"/>
       </Unit3>
       <Unit4>
@@ -193,7 +194,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="3" Y="8"/>
-        <UsageCount Value="130"/>
+        <UsageCount Value="179"/>
       </Unit7>
       <Unit8>
         <Filename Value="uDAVOS.pas"/>
@@ -205,7 +206,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="3" Y="8"/>
-        <UsageCount Value="130"/>
+        <UsageCount Value="179"/>
       </Unit8>
     </Units>
   </ProjectOptions>
@@ -239,6 +240,22 @@
     </Other>
   </CompilerOptions>
   <Debugging>
+    <BreakPoints Count="2">
+      <Item1>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="..\..\..\Fontes\ACBrSerial\ACBrECFFiscNET.pas"/>
+        <Line Value="735"/>
+      </Item1>
+      <Item2>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="..\..\..\Fontes\ACBrSerial\ACBrECFSwedaSTX.pas"/>
+        <Line Value="493"/>
+      </Item2>
+    </BreakPoints>
     <Watches Count="1">
       <Item1>
         <Expression Value="Result"/>

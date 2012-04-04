@@ -52,6 +52,12 @@ Símbolo : Significado
     cobrança não registrada.
     (por: Regys Silveira) 
 
+04/04/2012
+-- ACBrBoletoFCLazReport --
+[*] Modificado para permitir ler os relatórios (FCLazReport_Carne.lrf,
+    FCLazReport_CompEntrega.lrf, FCLazReport_Padrao.lrf) do disco caso os mesmos
+    estejam na mesma pasta do aplicativo.   (DSA)
+
 Versao 0.0.1 do FastReport 05/08/11
 [-] Lançado a 1a versão para impressão dos boletos em FastReport.
     (por: Isaque Pinheiro)

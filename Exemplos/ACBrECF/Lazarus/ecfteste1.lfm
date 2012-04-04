@@ -153,7 +153,7 @@ object Form1: TForm1
   Menu = MainMenu1
   OnCreate = FormCreate
   Position = poScreenCenter
-  LCLVersion = '0.9.31'
+  LCLVersion = '1.1'
   object StatusBar1: TStatusBar
     Left = 0
     Height = 23
@@ -173,9 +173,9 @@ object Form1: TForm1
     Height = 320
     Top = 0
     Width = 547
-    ActivePage = tsMenuFiscal
+    ActivePage = TabSheet1
     Align = alClient
-    TabIndex = 6
+    TabIndex = 1
     TabOrder = 0
     object TabSheet4: TTabSheet
       Caption = 'ECF'
@@ -582,7 +582,7 @@ object Form1: TForm1
     end
     object TabSheet1: TTabSheet
       Caption = 'Cmd/Resp'
-      ClientHeight = 291
+      ClientHeight = 294
       ClientWidth = 539
       object Label2: TLabel
         Left = 0
@@ -608,14 +608,16 @@ object Form1: TForm1
       end
       object mResp: TMemo
         Left = 0
-        Height = 220
+        Height = 223
         Top = 71
         Width = 539
         Align = alClient
+        Font.CharSet = ANSI_CHARSET
         Font.Color = clBlack
-        Font.Height = 13
+        Font.Height = -13
         Font.Name = 'Courier'
-        Font.Pitch = fpVariable
+        Font.Pitch = fpFixed
+        Font.Quality = fqDraft
         ParentFont = False
         ScrollBars = ssBoth
         TabOrder = 1
@@ -1048,8 +1050,8 @@ object Form1: TForm1
       end
       object MenTextoBarras: TMemo
         Left = 0
-        Height = 217
-        Top = 77
+        Height = 204
+        Top = 90
         Width = 539
         Align = alBottom
         Lines.Strings = (
@@ -1173,6 +1175,22 @@ object Form1: TForm1
         Font.Style = [fsBold]
         ParentColor = False
         ParentFont = False
+      end
+      object chIgnorarTagsFormatacao: TCheckBox
+        Left = 164
+        Height = 19
+        Top = 66
+        Width = 183
+        Caption = 'Ignorar TAGs de Formatação'
+        Font.CharSet = ANSI_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Pitch = fpVariable
+        Font.Style = [fsBold]
+        OnChange = chBarrasImprimeTextoChange
+        ParentFont = False
+        TabOrder = 5
       end
     end
     object tsDadosRedZ: TTabSheet
@@ -3363,6 +3381,7 @@ object Form1: TForm1
     IdentPAF.Paf.TransfPreVenda = False
     IdentPAF.Paf.TransfDAV = False
     IdentPAF.Paf.RecompoeGT = False
+    IdentPAF.Paf.RecompoeNumSerie = False
     IdentPAF.Paf.EmitePED = False
     IdentPAF.Paf.CupomMania = False
     IdentPAF.Paf.MinasLegal = False

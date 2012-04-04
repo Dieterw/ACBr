@@ -418,7 +418,11 @@ begin
    begin
      ErroMsg := ACBrStr('Erro retornado pela Impressora: '+fpModeloStr+#10+#10+
                 ErroMsg);
-     raise EACBrECFSemResposta.create(ErroMsg) ;
+
+     if ErroMsg = '10' then
+        DoOnErrorSemPapel
+     else
+        raise EACBrECFSemResposta.create(ErroMsg) ;
    end
   else
      Sleep( IntervaloAposComando ) ;  { Pequena pausa entre comandos }

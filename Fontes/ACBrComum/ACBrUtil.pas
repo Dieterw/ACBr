@@ -1137,12 +1137,17 @@ end ;
  ---------------------------------------------------------------------------- }
 function AjustaLinhas(Texto: AnsiString; Colunas: Integer ;
    NumMaxLinhas: Integer = 0; PadLinhas: Boolean = False): AnsiString;
-Var Count,P,I : Integer ;
-    Linha : AnsiString ;
+Var
+  Count,P,I : Integer ;
+  Linha, CRLF : AnsiString ;
 begin
   { Trocando todos os #13+#10 por #10 }
-  Texto := StringReplace(Texto, #13+#10   , #10, [rfReplaceAll]) ;
-  Texto := StringReplace(Texto, sLineBreak, #10, [rfReplaceAll]) ;
+  CRLF := sLineBreak ;
+  if (CRLF <> #13+#10) then
+     Texto := StringReplace(Texto, #13+#10, #10, [rfReplaceAll]) ;
+
+  if (CRLF <> #10) then
+     Texto := StringReplace(Texto, CRLF, #10, [rfReplaceAll]) ;
 
   { Ajustando a largura das Linhas para o máximo permitido em  "Colunas"
     e limitando em "NumMaxLinhas" o total de Linhas}

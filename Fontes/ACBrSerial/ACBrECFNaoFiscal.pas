@@ -1480,18 +1480,11 @@ begin
 end;
 
 procedure TACBrECFNaoFiscal.LinhaRelatorioGerencial(Linha: AnsiString; IndiceBMP: Integer);
- Var AStringList : TStringList ;
 begin
   Linha := AjustaLinhas( Linha, Colunas );
   Linha := StringReplace( Linha, #10, sLineBreak, [rfReplaceAll] ) ;
 
-  AStringList := TStringList.create;
-  try
-     AStringList.Text := Linha ;
-     ImprimePorta( AStringList );
-  finally
-     AStringList.Free ;
-  end ;
+  ImprimePorta(Linha);
 end;
 
 procedure TACBrECFNaoFiscal.AbreCupomVinculado(COO, CodFormaPagto,

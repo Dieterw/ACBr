@@ -1,7 +1,7 @@
 object frmDemo: TfrmDemo
-  Left = 112
+  Left = 299
   Height = 601
-  Top = 70
+  Top = 72
   Width = 811
   Caption = 'Demo ACBrBoleto'
   ClientHeight = 601
@@ -80,7 +80,7 @@ object frmDemo: TfrmDemo
       Top = 24
       Width = 80
       TabOrder = 4
-      Text = '09'
+      Text = 'RG'
     end
     object Label6: TLabel
       Left = 483
@@ -917,11 +917,12 @@ object frmDemo: TfrmDemo
     DataArquivo = 0
     DataCreditoLanc = 0
     ComprovanteEntrega = True
-    ACBrBoletoFC = ACBrBoletoFCFortes1
+    ACBrBoletoFC = ACBrBoletoFCLazReport1
     left = 200
     top = 264
   end
   object ACBrBoletoFCLazReport1: TACBrBoletoFCLazReport
+    ACBrBoleto = ACBrBoleto1
     DirLogo = '..\..\..\Fontes\ACBrBoleto\Logos\Colorido'
     NomeArquivo = 'boleto.pdf'
     SoftwareHouse = 'Projeto ACBr - http://acbr.sf.net'
@@ -930,7 +931,6 @@ object frmDemo: TfrmDemo
     top = 264
   end
   object ACBrBoletoFCFortes1: TACBrBoletoFCFortes
-    ACBrBoleto = ACBrBoleto1
     DirLogo = '..\..\..\Fontes\ACBrBoleto\Logos\Colorido'
     NomeArquivo = 'boleto.pdf'
     SoftwareHouse = 'Projeto ACBr - http://acbr.sf.net'

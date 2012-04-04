@@ -60,6 +60,7 @@ type
 EACBrECFErro            = class(Exception) ;
 EACBrECFCMDInvalido     = class(EACBrECFErro) ;
 EACBrECFSemResposta     = class(EACBrECFErro) ;
+EACBrECFSemPapel        = class(EACBrECFErro) ;
 EACBrECFTimeOut         = class(EACBrECFErro) ;
 EACBrECFNaoInicializado = class(EACBrECFErro) ;
 EACBrECFOcupado         = class(EACBrECFErro) ;
@@ -443,6 +444,7 @@ TACBrECFClass = class
     fsAguardandoResposta: Boolean;
     fsOnAguardandoRespostaChange: TNotifyEvent;
     fsOnMsgPoucoPapel: TNotifyEvent;
+    fsOnErrorSemPapel : TNotifyEvent ;
     fsOnMsgRetentar : TACBrECFMsgRetentar ;
     fsOperador: String;
     fsBytesRec : Integer ;
@@ -520,6 +522,7 @@ TACBrECFClass = class
     fpEstado: TACBrECFEstado;
     fpArredondaPorQtd: Boolean;
     fpArredondaItemMFD : Boolean ;
+    fpIgnorarErroSemPapel : Boolean ;
     fpDecimaisPreco: Integer;
     fpDecimaisQtd: Integer;
     fpArqLOG: String;
@@ -629,6 +632,7 @@ TACBrECFClass = class
     procedure PausarRelatorio( Via : Integer) ;
 
     procedure DoOnMsgPoucoPapel( Mensagem : String = '') ;
+    procedure DoOnErrorSemPapel ;
     Function DoOnMsgRetentar( const Mensagem : String;
        const Situacao : String = '') : Boolean ;
 
@@ -648,6 +652,8 @@ TACBrECFClass = class
        write fpArredondaPorQtd ;
     property ArredondaItemMFD : Boolean read fpArredondaItemMFD
        write fpArredondaItemMFD ;
+    property IgnorarErroSemPapel : Boolean read fpIgnorarErroSemPapel
+       write fpIgnorarErroSemPapel;
 
     property DecimaisPreco : Integer read fpDecimaisPreco
        write fpDecimaisPreco default 3 ;
@@ -678,6 +684,8 @@ TACBrECFClass = class
         read fsOnMsgPoucoPapel write fsOnMsgPoucoPapel ;
     property OnMsgRetentar : TACBrECFMsgRetentar
         read  fsOnMsgRetentar write fsOnMsgRetentar ;
+    property OnErrorSemPapel : TNotifyEvent
+        read fsOnErrorSemPapel write fsOnErrorSemPapel ;
 
     Property TimeOut  : Integer read GetTimeOut write SetTimeOut ;
     Property Retentar : Boolean read fsRetentar write fsRetentar ;
@@ -723,8 +731,9 @@ TACBrECFClass = class
     Property RespostaComando : AnsiString read fpRespostaComando
        write fpRespostaComando ;
     { lista com as resposta de comando tratadas }
-    property RespostasComando: TACBrInformacoes read fpRespostasComando write fpRespostasComando;
-    
+    property RespostasComando: TACBrInformacoes read fpRespostasComando
+       write fpRespostasComando;
+
     { Propriedades relacionadas aos dados do ECF }
     { ECF - Variaveis }
     Property DataHora  : TDateTime read GetDataHora  ;
@@ -1383,7 +1392,8 @@ begin
   fpRespostaComando       := '' ;
   fpUltimaMsgPoucoPapel   := 0 ;
   fpArredondaPorQtd       := False ;
-  fpArredondaItemMFD      := False;
+  fpArredondaItemMFD      := False ;
+  fpIgnorarErroSemPapel   := False ;
   fpDecimaisPreco         := 3 ;
   fpDecimaisQtd           := 3 ;
   fpAliquotas             := nil ;
@@ -1532,7 +1542,8 @@ begin
        try
           Result := EnviaComando_ECF( Cmd ) ;
        finally
-          AguardandoResposta := False ;
+          AguardandoResposta  := False ;
+          IgnorarErroSemPapel := False;
           GravaLog('            TX -> '+fpComandoEnviado, True);
           GravaLog('   '+FormatDateTime('hh:nn:ss',now)+' RX <- '+fpRespostaComando, True);
        end ;
@@ -2696,6 +2707,16 @@ begin
      fpUltimaMsgPoucoPapel := now ;
   end ;
 end;
+
+procedure TACBrECFClass.DoOnErrorSemPapel ;
+begin
+   if fpIgnorarErroSemPapel then exit;
+
+   if Assigned( fsOnErrorSemPapel ) then
+      fsOnErrorSemPapel( self )
+   else
+      raise EACBrECFSemPapel.Create( cACBrECFSemPapelException );
+end ;
 
 function TACBrECFClass.DoOnMsgRetentar( const Mensagem : String;
    const Situacao : String = ''): Boolean;

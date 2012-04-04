@@ -543,7 +543,11 @@ begin
       begin
         ErroMsg := ACBrStr('Erro retornado pela Impressora: '+fpModeloStr+#10+#10+
                    ErroMsg) ;
-        raise EACBrECFSemResposta.create(ErroMsg) ;
+
+        if charAviso = FIMPAPEL then
+           DoOnErrorSemPapel
+        else
+           raise EACBrECFSemResposta.create(ErroMsg) ;
       end
     else
        Sleep(max(IfThen( IsV03,300,100), IntervaloAposComando) ) ;

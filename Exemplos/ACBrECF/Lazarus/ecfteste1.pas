@@ -66,6 +66,7 @@ type
     cbxModelo: TComboBox;
     cbxPorta: TComboBox;
     chAACFlush : TCheckBox ;
+    chIgnorarTagsFormatacao : TCheckBox ;
     chProcessMessages : TCheckBox ;
     chArredondaPorQtd: TCheckBox;
     chBloqueia: TCheckBox;
@@ -725,7 +726,7 @@ begin
   AtualizaMemos( False ) ;
   StatusBar1.Panels[1].Text := E.Message ;
 //  PageControl1.ActivePageIndex := 1 ;
-//  MessageDlg( E.Message,mtError,[mbOk],0) ;
+  MessageDlg( E.Message,mtError,[mbOk],0) ;
 end ;
 
 procedure TForm1.AtualizaMemos(VerificaEstado : Boolean = true) ;
@@ -1236,6 +1237,7 @@ begin
   ACBrECF1.ConfigBarras.LarguraLinha  := speBarrasLargura.Value;
   ACBrECF1.ConfigBarras.Altura        := speBarrasAltura.Value;
   ACBrECF1.ConfigBarras.MostrarCodigo := chBarrasImprimeTexto.Checked;
+  ACBrECF1.IgnorarTagsFormatacao      := chIgnorarTagsFormatacao.Checked;
 
   ACBrECF1.LinhaRelatorioGerencial( MenTextoBarras.Text );
 end;

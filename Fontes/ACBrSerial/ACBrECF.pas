@@ -198,18 +198,21 @@ TACBrECF = class( TACBrComponent )
     fsOnPAFCalcEAD  : TACBrEADCalc;
     fsOnPAFGetKeyRSA : TACBrEADGetChave ;
 
-    fsGavetaSinalInvertido: Boolean;
-    fsIdentificarOperador : Boolean;
-    fsNumSerieCache       : String ;
+    fsGavetaSinalInvertido  : Boolean;
+    fsIgnorarTagsFormatacao : Boolean ;
+    fsIdentificarOperador   : Boolean;
+    fsNumSerieCache         : String ;
 
     FDAVItemCount: Integer;
     FDAVTotal: Double;
 
     function GetArredondaItemMFD : Boolean ;
+    function GetIgnorarErroSemPapel : Boolean ;
     function GetPaginaDeCodigoClass : Word ;
     function GetTipoUltimoDocumentoClass : TACBrECFTipoDocumento ;
     procedure SetArredondaItemMFD(const AValue : Boolean) ;
     procedure SetAtivo(const AValue: Boolean);
+    procedure SetIgnorarErroSemPapel(AValue : Boolean) ;
     procedure SetPaginaDeCodigoClass(const AValue : Word) ;
     procedure SetModelo(const AValue: TACBrECFModelo);
     procedure SetPorta(const AValue: String);
@@ -229,6 +232,7 @@ TACBrECF = class( TACBrComponent )
     procedure SetOnAguardandoRespostaChange(const AValue: TNotifyEvent);
     procedure SetOnMsgPoucoPapel(const AValue: TNotifyEvent);
     procedure SetOnMsgRetentar(const AValue: TACBrECFMsgRetentar);
+    procedure SetOnErrorSemPapel(AValue : TNotifyEvent) ;
 
     function GetPorta: String;
     function GetRetentar: Boolean;
@@ -245,6 +249,7 @@ TACBrECF = class( TACBrComponent )
     function GetOnMsgAguarde: TACBrECFMsgAguarde;
     function GetOnAguardandoRespostaChange: TNotifyEvent;
     function GetOnMsgPoucoPapel: TNotifyEvent;
+    function GetOnErrorSemPapel : TNotifyEvent ;
     function GetOnMsgRetentar: TACBrECFMsgRetentar;
 
     function GetAguardandoRespostaClass: Boolean;
@@ -400,6 +405,8 @@ TACBrECF = class( TACBrComponent )
     Property RespostasComando    : TACBrInformacoes  read GetRespostasComandoClass ;
     property ComandoLOG         : AnsiString  read GetComandoLOGClass
        write SetComandoLOGClass ;
+    property IgnorarErroSemPapel : Boolean read GetIgnorarErroSemPapel
+                write SetIgnorarErroSemPapel ;
 
     Property AguardaImpressao : Boolean read GetAguardaImpressao
                  write SetAguardaImpressao ;
@@ -792,6 +799,8 @@ TACBrECF = class( TACBrComponent )
                  write SetDescricaoGrande default false ;
      property GavetaSinalInvertido : Boolean read fsGavetaSinalInvertido
                  write fsGavetaSinalInvertido default false ;
+     property IgnorarTagsFormatacao : Boolean read fsIgnorarTagsFormatacao
+                 write fsIgnorarTagsFormatacao default false ;
 
      property Operador   : String read GetOperador   write SetOperador ;
      property MsgAguarde : String read GetMsgAguarde write SetMsgAguarde ;
@@ -834,6 +843,8 @@ TACBrECF = class( TACBrComponent )
                                              write SetOnMsgPoucoPapel ;
      property OnMsgRetentar : TACBrECFMsgRetentar read  GetOnMsgRetentar
                                                   write SetOnMsgRetentar ;
+     property OnErrorSemPapel : TNotifyEvent read GetOnErrorSemPapel
+                                            write SetOnErrorSemPapel ;
 
     property OnAntesAbreCupom : TACBrECFOnAbreCupom
        read FOnAntesAbreCupom write FOnAntesAbreCupom;
@@ -1009,6 +1020,8 @@ begin
   fsRegistrouRFDCNF := False ;
   fsIdentificarOperador := True ;
   fsNumSerieCache   := '';
+  fsGavetaSinalInvertido  := False;
+  fsIgnorarTagsFormatacao := False;
 
   FDAVItemCount := 0;
   FDAVTotal     := 0.00;
@@ -1227,6 +1240,16 @@ begin
      Ativar
   else
      Desativar ;
+end;
+
+procedure TACBrECF.SetIgnorarErroSemPapel(AValue : Boolean) ;
+begin
+  fsECF.IgnorarErroSemPapel := AValue;
+end;
+
+procedure TACBrECF.SetOnErrorSemPapel(AValue : TNotifyEvent) ;
+begin
+  fsECF.OnErrorSemPapel := AValue;
 end;
 
 procedure TACBrECF.SetPaginaDeCodigoClass(const AValue : Word) ;
@@ -1471,6 +1494,16 @@ end;
 function TACBrECF.GetArredondaItemMFD : Boolean ;
 begin
   Result := fsECF.ArredondaItemMFD;
+end;
+
+function TACBrECF.GetIgnorarErroSemPapel : Boolean ;
+begin
+  Result := fsECF.IgnorarErroSemPapel;
+end;
+
+function TACBrECF.GetOnErrorSemPapel : TNotifyEvent ;
+begin
+  Result := fsECF.OnErrorSemPapel;
 end;
 
 function TACBrECF.GetPaginaDeCodigoClass : Word ;
@@ -1821,6 +1854,7 @@ end;
 function TACBrECF.GetEstadoClass: TACBrECFEstado;
 begin
   ComandoLOG := 'Estado' ;
+  IgnorarErroSemPapel := True;
   Result := fsECF.Estado ;
 
   if Result <> fpUltimoEstadoObtido then
@@ -1943,6 +1977,7 @@ end;
 
 function TACBrECF.GetGrandeTotalClass: Double;
 begin
+  IgnorarErroSemPapel := True;
   ComandoLOG := 'GrandeTotal' ;
   Result := RoundTo( fsECF.GrandeTotal, -2) ;
 end;
@@ -4278,7 +4313,12 @@ begin
     end ;
 
     if Tag2 = '' then
-       Cmd := TraduzirTag( Tag1 )
+     begin
+       if fsIgnorarTagsFormatacao and (IndTag1 in TAGS_FORMATACAO) then
+          Cmd := ''
+       else
+          Cmd := TraduzirTag( Tag1 ) ;
+     end
     else
      begin
        Cmd := TraduzirTagBloco( LowerTag, copy(Result, PosTag1+LenTag1, PosTag2-PosTag1-LenTag1) );
@@ -4335,7 +4375,8 @@ begin
    if ATag = '' then
      exit ;
 
-   // Chamada Recursiva, para no caso de "Conteudo" ter TAGs não resolvidas //
+   { Chamada Recursiva, para no caso de "Conteudo" ter TAGs não resolvidas
+     dentro do Bloco }
    AString := DecodificarTagsFormatacao( Conteudo, False ) ;
 
    LowerTag := LowerCase( ATag );
@@ -5122,12 +5163,12 @@ begin
   Erro := fsAAC.VerificarGTECF( fsNumSerieCache, ValorGT_AAC );
 
   if Erro = -1 then
-     raise EACBrAAC_NumSerieNaoEncontrado.Create( Format( ACBrStr(
-           cACBrAACNumSerieNaoEncontardoException ), [ fsNumSerieCache ] ) );
+     raise EACBrAAC_NumSerieNaoEncontrado.Create( ACBrStr( Format(
+           cACBrAACNumSerieNaoEncontardoException, [ fsNumSerieCache ] )) );
 
   if Erro = -2 then
-     raise EACBrAAC_ValorGTInvalido.Create( Format( ACBrStr(
-           cACBrAACValorGTInvalidoException ), [ValorGT_ECF, ValorGT_AAC] ) );
+     raise EACBrAAC_ValorGTInvalido.Create( ACBrStr( Format(
+           cACBrAACValorGTInvalidoException , [ValorGT_ECF, ValorGT_AAC] )) );
 end ;
 
 procedure TACBrECF.DoAtualizarValorGT ;

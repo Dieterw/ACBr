@@ -792,37 +792,42 @@ begin
      if fs25MFD then
         fsST3 := (nSTH shl 8) + nSTL;
 
-     { Verificando por erros em ST1 e ST2 }
-     ErroMsg := '' ;
-     For B := 0 to 7 do
-     begin
-        if TestBit( ST1, B) then
-           if (not PediuStatus) or ((B <> 1) and (B <> 6)) then
-              ErroMsg := ErroMsg + ACBrStr(ErrosST1[ B ]) + sLineBreak ;
-
-        if TestBit( ST2, B) then
-           ErroMsg := ErroMsg + ACBrStr(ErrosST2[ B ]) + sLineBreak ;
-     end ;
-
-     { Verifica se possui erro "Pouco Papel" = ErrosST1[ 6 ] }
-     if pos(ErrosST1[ 6 ] + sLineBreak, ErroMsg) > 0 then
-     begin
+     { Verifica se possui erro "Pouco Papel" }
+     if TestBit( ST1, 6 ) then
         DoOnMsgPoucoPapel ;
-        { Remove da lista de erros para nao gerar Exceção }
-        ErroMsg := StringReplace(ErroMsg,ErrosST1[ 6 ] + sLineBreak,'',
-                                         [rfReplaceAll,rfIgnoreCase]) ;
-     end ;
 
+     ErroMsg := '' ;
      // Alguns erros estendidos não impedem de continuar a 'conversa' com o ECF
      // por isso só busca o erro estendido se realmente tiver algum erro grave!
-     if (ErroMsg <> '') and (fsST3 > 0) and (fsST3 < 218) then
-       ErroMsg := ErroMsg + ACBrStr(ErrosST3[fsST3]) + sLineBreak;
+     if fs25MFD then
+      begin
+        if (fsST3 > 0) and (fsST3 <= High(ErrosST3)) and
+           (fsST1+fsST2 <> 0) then
+           ErroMsg := ErrosST3[fsST3] + sLineBreak
+      end
+     else
+      begin
+        { Verificando por erros em ST1 e ST2 }
+        For B := 0 to 7 do
+        begin
+           if (B <> 6) and TestBit( ST1, B) then
+              if (not PediuStatus) or (B <> 1) then
+                 ErroMsg := ErroMsg + ErrosST1[ B ] + sLineBreak ;
+
+           if TestBit( ST2, B) then
+              ErroMsg := ErroMsg + ErrosST2[ B ] + sLineBreak ;
+        end ;
+      end ;
 
      if ErroMsg <> '' then
       begin
         ErroMsg := 'Erro retornado pela Impressora: ' + fpModeloStr + sLineBreak+sLineBreak+
                    ErroMsg ;
-        raise EACBrECFSemResposta.create(ErroMsg) ;
+
+        if (fsST1 = 128) or (fsST3 = 11) then
+           DoOnErrorSemPapel
+        else
+           raise EACBrECFSemResposta.create(ACBrStr(ErroMsg)) ;
       end
      else
         Sleep( IntervaloAposComando ) ;  { Pequena pausa entre comandos }

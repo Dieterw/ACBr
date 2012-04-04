@@ -84,6 +84,7 @@ const
     '<msi>', '</msi>',
     '<ad>','</ad>','<ce>','</ce>' );
 
+  TAGS_FORMATACAO: set of byte = [2..11] ;
   TAGS_BLOCO: set of byte = [12..37] ;
 
   cACBrDeviceAtivarPortaException    = 'Porta não definida' ;
@@ -115,6 +116,7 @@ const
   cACBrECFOcupadoException             = 'Componente ACBrECF ocupado' + sLineBreak +
                                          'Aguardando resposta do comando anterior' ;
   cACBrECFSemRespostaException         = 'Impressora %s não está respondendo' ;
+  cACBrECFSemPapelException            = 'FIM DE PAPEL' ;
   cACBrECFCmdSemRespostaException      = 'Comandos não estão sendo enviados para Impressora %s ' ;
   cACBrECFEnviaCmdSemRespostaException = 'Erro ao enviar comandos para a Impressora %s ' ;
   cACBrECFDoOnMsgSemRespostaRetentar   = 'A impressora %s não está repondendo.' ;

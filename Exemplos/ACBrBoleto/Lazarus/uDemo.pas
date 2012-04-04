@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
   StdCtrls, EditBtn, ACBrBoleto, ACBrBoletoFCLazReportDm, ACBrBoletoFCFortesFr,
-  ExtCtrls, MaskEdit, Buttons, LR_View, ACBrUtil;
+  ExtCtrls, MaskEdit, Buttons, ACBrUtil;
 
 type
 

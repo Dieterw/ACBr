@@ -934,7 +934,10 @@ begin
            ErroMsg := ErroMsg + sLineBreak + 'Erro estendido ('+
            IntToStrZero(fsErroSTD, 3) + ' -> ' + ErroEstendidoTexto(fsErroSTD)+ ')';
 
-        raise EACBrECFSemResposta.create(ACBrStr(ErroMsg)) ;
+        if (fsErro = 50) or (fsErroSTD = 72) then
+           DoOnErrorSemPapel
+        else
+           raise EACBrECFSemResposta.create(ACBrStr(ErroMsg)) ;
       end
      else
         Sleep( IntervaloAposComando ) ;  { Pequena pausa entre comandos }

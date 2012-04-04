@@ -387,7 +387,7 @@ TACBrECFSweda = class( TACBrECFClass )
  end ;
 
 implementation
-Uses SysUtils, ACBrECF,  
+Uses SysUtils, ACBrECF, ACBrConsts,
     {$IFDEF COMPILER6_UP} DateUtils, StrUtils {$ELSE} ACBrD5, Windows {$ENDIF},
      Math ;
 
@@ -575,7 +575,7 @@ begin
            if fsOldSeq <> copy(Result,9,4) then
               DoOnMsgPoucoPapel( 'Papel acabando' )
            else
-              ErroMsg := 'Sem papel' ;
+              ErroMsg := cACBrECFSemPapelException ;
         end ;
       end
      else if copy(Result, 1, 2) = '.-' then
@@ -600,7 +600,11 @@ begin
         ErroMsg := ACBrStr('Erro retornado pela Impressora: '+fpModeloStr+
                    sLineBreak + sLineBreak+
                    ErroMsg );
-        raise EACBrECFSemResposta.create( ErroMsg ) ;
+
+        if ErroMsg = cACBrECFSemPapelException then
+           DoOnErrorSemPapel
+        else
+           raise EACBrECFSemResposta.create( ErroMsg ) ;
       end
      else
         Sleep( IntervaloAposComando ) ;  { Pequena pausa entre comandos }

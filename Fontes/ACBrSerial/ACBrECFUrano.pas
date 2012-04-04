@@ -359,19 +359,17 @@ begin
         else
            ErroMsg := 'Erro retornado pelo ECF: '+IntToStrZero(Erro,2) ;
         end ;
-
-        if Erro = 87 then       { Verifica se possui erro "Pouco Papel" }
-        begin
-           DoOnMsgPoucoPapel ;
-           ErroMsg := '' ;   { Apaga Msg de Erro para nao gerar Exceção }
-        end ;
       end ;
 
      if ErroMsg <> '' then
       begin
         ErroMsg := ACBrStr('Erro retornado pela Impressora: '+fpModeloStr+#10+#10+
                    ErroMsg );
-        raise EACBrECFSemResposta.create(ErroMsg) ;
+
+        if Erro = 87 then
+           DoOnErrorSemPapel
+        else
+           raise EACBrECFSemResposta.create(ErroMsg) ;
       end
      else
         Sleep( IntervaloAposComando ) ;  { Pequena pausa entre comandos }

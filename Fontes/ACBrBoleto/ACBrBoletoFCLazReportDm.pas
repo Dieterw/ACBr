@@ -119,7 +119,7 @@ end;
 procedure TACBrBoletoFCLazReport.Imprimir;
 var
   frACBrBoletoLazReport : TdmACbrBoletoFCLazReport;
-  RelBoleto : string;
+  RelBoleto, Dir : string;
   PageIni, PageFim, PInd : Integer;
   Res : TLResource ;
   MS  : TMemoryStream ;
@@ -139,19 +139,26 @@ begin
               RelBoleto := 'FCLazReport_Padrao';
         end;
 
-        Res := LazarusResources.Find(RelBoleto,'LRF');  // Le de ACBrBoletoFCLazReport.lrs
-        if Res = nil then
-           raise Exception.Create('Resource: '+RelBoleto+' não encontrado');
+        Dir := ExtractFilePath(Application.ExeName) ;
+        if FileExists( Dir + RelBoleto + '.lrf' ) then
+           frReport1.LoadFromFile( Dir + RelBoleto + '.lrf' )
+        else
+         begin
 
-        MS := TMemoryStream.Create ;
-        try
-           MS.Write(Pointer(Res.Value)^,Length(Res.Value)) ;
-           MS.Position := 0;
+           Res := LazarusResources.Find(RelBoleto,'LRF');  // Le de ACBrBoletoFCLazReport.lrs
+           if Res = nil then
+              raise Exception.Create('Resource: '+RelBoleto+' não encontrado');
 
-           frReport1.LoadFromXMLStream( MS );
-        finally
-           MS.Free ;
-        end;
+           MS := TMemoryStream.Create ;
+           try
+              MS.Write(Pointer(Res.Value)^,Length(Res.Value)) ;
+              MS.Position := 0;
+
+              frReport1.LoadFromXMLStream( MS );
+           finally
+              MS.Free ;
+           end;
+         end ;
 
         PInd := Printer.PrinterIndex;
         frReport1.ChangePrinter( PInd, 0 );

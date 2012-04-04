@@ -97,6 +97,27 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 04/04/2012
+-- ACBrECF --
+[+] Incluido novo Exception, EACBrECFSemPapel que é disparado apenas na situação
+    de FIM DE PAPEL. Todas as classes de ECF foram revisadas para efetuar o
+    tratamento adequado para essa situação  (DSA)
+[+] Adicionado novo evento: OnErrorSemPapel, que pode ser disparado quando o
+    ACBrECF detectar a exceção EACBrECFSemPapel. Se o evento não for programado
+    a exceção EACBrECFSemPapel será levantada.   (DSA)
+[+] Adicionada nova propriedade Publica: IgnorarErroSemPapel, que pode ser
+    ligada, quando desejamos ler alguma valor do ECF sem que o mesmo dispare a
+    exceção EACBrECFSemPapel. Ela sempre será desligada após a execução do
+    próximo comando.   (DSA)
+[+] Adicionada nova propriedade Published: IgnorarTagsFormatacao, se configurada
+    para True, o ACBrECF ignorará as Tags: <e>,</e>,<n>,</n>,<s>,</s>,<c>,</c>,
+    <i>,</i>. Util quando o ECF apresentar problemas em relatórios com Tags de
+    Formatação   (DSA)
+
+-- ACBrECFBematech --
+[*] Leitura e detecção de Erro aprimorada para modelos com MFD, evitando
+    mensagens de erro das antigas Matriciais  (DSA)
+
 Data: 27/03/2012
 -- ACBrECF --
 [*] Acerto na impressão de informações do Cupom Mania como pedido pelos 

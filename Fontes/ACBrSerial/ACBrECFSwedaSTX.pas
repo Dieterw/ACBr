@@ -489,7 +489,11 @@ begin
       ErroMsg := ACBrStr('Erro retornado pela Impressora: '+fpModeloStr+
                  sLineBreak+sLineBreak+
                  'Erro ('+Mensagem+') '+ErroMsg ) ;
-      raise EACBrECFSemResposta.create(ErroMsg) ;
+
+      if Trim(Mensagem) = '125' then
+         DoOnErrorSemPapel
+      else
+         raise EACBrECFSemResposta.create(ErroMsg) ;
     end
    else
       Sleep( IntervaloAposComando ) ;  { Pequena pausa entre comandos }

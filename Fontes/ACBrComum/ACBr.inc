@@ -1549,5 +1549,5 @@
 // Define o Pacote de Liberação / Descomente o pacote a ser utilizado 
 // Atenção não comente ou descomente as duas definições
 
-{$DEFINE PL_103}
-//{$DEFINE PL_104}
+//{$DEFINE PL_103}
+{$DEFINE PL_104}

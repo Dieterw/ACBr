@@ -715,7 +715,7 @@ procedure TACBrECFDaruma.VerificarBmpTexto(var IndiceBMP: Integer;
   const ATexto: String);
 begin
   if IndiceBMP > 5 then
-    raise Exception.Create( ACBrStr('Indice do bitmap deve ser um valor entre 1 e 5, ou 0 para nenhum.') );
+    raise EACBrECFERRO.Create( ACBrStr('Indice do bitmap deve ser um valor entre 1 e 5, ou 0 para nenhum.') );
 
   // Se possui código de barras e Bitmap no texto remover o bitmap,
   // porque a Daruma imprime um em cima do outro
@@ -726,7 +726,7 @@ end;
 procedure TACBrECFDaruma.Ativar;
 begin
   if not fpDevice.IsSerialPort  then
-     raise Exception.Create(ACBrStr('A impressora: '+fpModeloStr+' requer'+#10+
+     raise EACBrECFERRO.Create(ACBrStr('A impressora: '+fpModeloStr+' requer'+#10+
                             'Porta Serial:  (COM1, COM2, COM3, ...)'));
 
 //  fpDevice.HandShake := hsRTS_CTS ;
@@ -2425,14 +2425,14 @@ begin
   TipoStr := UpperCase(Tipo) ;
 
   if fsNumVersao = '2000' then
-     raise Exception.Create(ACBrStr('ProgramaAliquota ainda não implemenado na FS2000'))
+     raise EACBrECFERRO.Create(ACBrStr('ProgramaAliquota ainda não implemenado na FS2000'))
 
   else if fpMFD then
   begin
     CarregaAliquotas ;
 
     if AchaICMSAliquota(Aliquota, TipoStr[1]) <> nil then
-      raise Exception.Create(ACBrStr('Aliquota (' + FormatFloat('###,##0.00', Aliquota) + ') já existe.')) ;
+      raise EACBrECFERRO.Create(ACBrStr('Aliquota (' + FormatFloat('###,##0.00', Aliquota) + ') já existe.')) ;
 
     ProxIndice := StrToIntDef(Posicao,0) ;
     if (ProxIndice < 1) or (ProxIndice > 16) then { Indice passado é válido ? }
@@ -2445,7 +2445,7 @@ begin
     end ;
 
     if ProxIndice > 16 then
-      raise Exception.create(ACBrStr('Não há espaço para programar novas Aliquotas !'));
+      raise EACBrECFERRO.create(ACBrStr('Não há espaço para programar novas Aliquotas !'));
 
 {  Código comentado, pois o comando abaixo está errado...
     if TipoStr <> 'S' then
@@ -2726,12 +2726,12 @@ begin
   { Daruma cadastra qualquer descrição mesmo repetida, por isso vamos ver se ja existe antes }
   FPagto:= AchaFPGDescricao(Trim(Descricao),True);
   if FPagto <> nil then
-     raise Exception.Create(ACBrStr('Forma de Pagamento já cadastrada'));
+     raise EACBrECFERRO.Create(ACBrStr('Forma de Pagamento já cadastrada'));
 
   ProxIndice := StrToIntDef(Posicao,-1) ;
 
   if fsNumVersao = '2000' then
-     raise Exception.Create(ACBrStr('ProgramaFormaPagamento ainda não implemenado na FS2000'))
+     raise EACBrECFERRO.Create(ACBrStr('ProgramaFormaPagamento ainda não implemenado na FS2000'))
 
   else if fpMFD then
   begin
@@ -2747,7 +2747,7 @@ begin
     end ;
 
     if ProxIndice > 20 then
-      raise Exception.create(ACBrStr('Não há espaço para programar novas Formas de '+
+      raise EACBrECFERRO.create(ACBrStr('Não há espaço para programar novas Formas de '+
                                'Pagamento'));
 
     EnviaComando( FS + 'C' + #203 + IntToStrZero(ProxIndice,2) + Descricao ) ;
@@ -2769,7 +2769,7 @@ begin
     end ;
 
     if ProxIndice > 15 then
-      raise Exception.create(ACBrStr('Não há espaço para programar novas Formas de '+
+      raise EACBrECFERRO.create(ACBrStr('Não há espaço para programar novas Formas de '+
                                'Pagamento'));
 
     If PermiteVinculado then FlagVinculado := 'V' else FlagVinculado := 'X' ;
@@ -2800,7 +2800,7 @@ begin
 
   try
     if fsNumVersao = '2000' then
-      raise Exception.Create(ACBrStr('ProgramaRelatorioGerencial ainda não implemenado na FS2000'))
+      raise EACBrECFERRO.Create(ACBrStr('ProgramaRelatorioGerencial ainda não implemenado na FS2000'))
 
     else if fpMFD then // Para daruma FS600 e FS700
     begin
@@ -2829,7 +2829,7 @@ begin
       end ;
     end
     else
-      raise Exception.Create(ACBrStr('ECF FS345 não suporta RelatorioGerencial'));
+      raise EACBrECFERRO.Create(ACBrStr('ECF FS345 não suporta RelatorioGerencial'));
   except
       { Se falhou ao carregar, deve "nilzar" as variaveis para que as rotinas
         "Acha*" tentem carregar novamente }
@@ -2856,12 +2856,12 @@ begin
   ProxIndice := StrToIntDef(Posicao, -1) ;
 
   if fsNumVersao = '2000' then
-     raise Exception.Create(ACBrStr('ProgramaRelatorioGerencial ainda não implemenado na FS2000'))
+     raise EACBrECFERRO.Create(ACBrStr('ProgramaRelatorioGerencial ainda não implemenado na FS2000'))
 
   else if fpMFD then
   begin
     if AchaRGDescricao(Descricao, True) <> nil then
-      raise Exception.Create(ACBrStr('Relatório Gerencial ('+Descricao+') já existe.')) ;
+      raise EACBrECFERRO.Create(ACBrStr('Relatório Gerencial ('+Descricao+') já existe.')) ;
 
     if (ProxIndice < 2) or (ProxIndice > 20) then { Indice passado é válido ? }
     begin
@@ -2873,12 +2873,12 @@ begin
     end ;
 
     if ProxIndice > 20 then
-      raise Exception.create(ACBrStr('Não há espaço para programar novos RGs'));
+      raise EACBrECFERRO.create(ACBrStr('Não há espaço para programar novos RGs'));
 
     EnviaComando( FS + 'C' + #205 + IntToStrZero(ProxIndice,2) + PadL(Descricao,15) ) ;
   end
   else
-    raise Exception.Create(ACBrStr('ECF FS345 não suporta RelatorioGerencial'));
+    raise EACBrECFERRO.Create(ACBrStr('ECF FS345 não suporta RelatorioGerencial'));
 
   CarregaRelatoriosGerenciais ;
 end;
@@ -2898,12 +2898,12 @@ begin
   ProxIndice := StrToIntDef(Posicao,-1) ;
 
   if fsNumVersao = '2000' then
-     raise Exception.Create(ACBrStr('ProgramaComprovanteNaoFiscal ainda não implemenado na FS2000'))
+     raise EACBrECFERRO.Create(ACBrStr('ProgramaComprovanteNaoFiscal ainda não implemenado na FS2000'))
 
   else if fpMFD then
   begin
     if AchaCNFDescricao(Descricao, True) <> nil then
-      raise Exception.Create(ACBrStr('Comprovante não fiscal ('+Descricao+') já existe.')) ;
+      raise EACBrECFERRO.Create(ACBrStr('Comprovante não fiscal ('+Descricao+') já existe.')) ;
 
     if (ProxIndice < 3) or (ProxIndice > 20) then { Indice passado é válido ? }
     begin
@@ -2915,7 +2915,7 @@ begin
     end ;
 
     if ProxIndice > 20 then
-      raise Exception.create(ACBrStr('Não há espaço para programar novas CNFs'));
+      raise EACBrECFERRO.create(ACBrStr('Não há espaço para programar novas CNFs'));
 
     EnviaComando( FS + 'C' + #204 + IntToStrZero(ProxIndice,2) + PadL(Descricao,15) ) ;
 
@@ -2931,18 +2931,18 @@ begin
       Tipo := UpperCase(Tipo) ;
 
     if pos(Tipo,'V+-') = 0 then
-      raise Exception.Create(ACBrStr('Os Tipos válidos para Daruma são:'+sLineBreak+
+      raise EACBrECFERRO.Create(ACBrStr('Os Tipos válidos para Daruma são:'+sLineBreak+
                                'V  Comprovante Vinculado'+sLineBreak+
                                '+  Entrada de Recursos'+sLineBreak+
                                '-  Saida de Recursos')) ;
     if Tipo = 'V' then
     begin
       if AchaCNFVincDescricao(Descricao) <> nil then
-        raise Exception.Create(ACBrStr('Comprovante não fiscal ('+Descricao+') já existe.')) ;
+        raise EACBrECFERRO.Create(ACBrStr('Comprovante não fiscal ('+Descricao+') já existe.')) ;
     end
     else
       if AchaCNFDescricao(Descricao, True) <> nil then
-        raise Exception.Create(ACBrStr('Comprovante não fiscal ('+Descricao+') já existe.')) ;
+        raise EACBrECFERRO.Create(ACBrStr('Comprovante não fiscal ('+Descricao+') já existe.')) ;
 
     EnviaComando( ESC + #226 + Tipo + Descricao ) ;
     CarregaComprovantesNaoFiscais ;
@@ -2964,7 +2964,7 @@ begin
     begin
       RG  := AchaRGIndice( IndiceStr ) ;
       if RG = nil then
-        raise Exception.create( ACBrStr('Relatório Gerencial: '+IndiceStr+
+        raise EACBrECFERRO.create( ACBrStr('Relatório Gerencial: '+IndiceStr+
                                 ' não foi cadastrado.') ) ;
 
       EnviaComando(FS + 'F' + #230 + IndiceStr, 5) ;
@@ -3087,21 +3087,21 @@ begin
   begin
     FPG := AchaFPGIndice( CodFormaPagto ) ;
     if FPG = nil then
-      raise Exception.create( ACBrStr('Forma de Pagamento: '+CodFormaPagto+
+      raise EACBrECFERRO.create( ACBrStr('Forma de Pagamento: '+CodFormaPagto+
                                 ' não foi cadastrada.') ) ;
 
     if CodComprovanteNaoFiscal <> '' then
     begin
       CNF := AchaCNFVincIndice( CodComprovanteNaoFiscal ) ;
       if CNF = nil then
-        raise Exception.create( ACBrStr('Comprovante NÃO Fiscal Vinculado: '+
+        raise EACBrECFERRO.create( ACBrStr('Comprovante NÃO Fiscal Vinculado: '+
                             CodComprovanteNaoFiscal+' não cadastrado.') ) ;
     end
     else
     begin
       CNF := AchaCNFVincDescricao( FPG.Descricao ) ;
       if CNF = nil then
-        raise Exception.create( ACBrStr('Não existe nenhum Comprovante NÃO Fiscal Vinculado'+
+        raise EACBrECFERRO.create( ACBrStr('Não existe nenhum Comprovante NÃO Fiscal Vinculado'+
                             ' com a Descrição: '+FPG.Descricao)) ;
     end ;
 
@@ -4211,12 +4211,12 @@ begin
       // gravar no registro para evitar a perda, algumas funções da dll leem dessas chaves
       Resp := xregAlterarValor_Daruma('ECF\MensagemApl1', MD5 );
       if Resp <> 1 then
-         raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar: '+sLineBreak+
+         raise EACBrECFERRO.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar: '+sLineBreak+
          'xregAlterarValor_Daruma( "ECF\MensagemApl1",  "'+MD5+'" )') );
 
       Resp := xregAlterarValor_Daruma('ECF\MensagemApl2', NomeVersao );
       if Resp <> 1 then
-         raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar: '+sLineBreak+
+         raise EACBrECFERRO.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar: '+sLineBreak+
          'xregAlterarValor_Daruma( "ECF\MensagemApl2",  "'+NomeVersao+'" )') );
     finally
       UnloadDLLFunctions;
@@ -4239,7 +4239,7 @@ begin
 
     Indice := StrToIntDef(Registrador,0) ;
     if (Indice < 1) or (Indice > 578) then
-      raise Exception.create( ACBrStr('Não existe nenhum Informação com o Registrador: '+Registrador+'('+IntToStr(Indice)+')')) ;
+      raise EACBrECFERRO.create( ACBrStr('Não existe nenhum Informação com o Registrador: '+Registrador+'('+IntToStr(Indice)+')')) ;
 
     Registrador := IntToStrZero(Indice, 3);
     Result := EnviaComando( FS + 'R' + #200 + Registrador);
@@ -4371,10 +4371,10 @@ begin
                Result := False;
        end
       else
-         raise Exception.Create( ACBrStr('Versão do Firmeware da Impressora não suporta este comando ! ') );
+         raise EACBrECFERRO.Create( ACBrStr('Versão do Firmeware da Impressora não suporta este comando ! ') );
    end
    else
-      raise Exception.Create( ACBrStr('A Impressora não suporta este comando ! ') );
+      raise EACBrECFERRO.Create( ACBrStr('A Impressora não suporta este comando ! ') );
 end;
 
 
@@ -4618,7 +4618,7 @@ procedure TACBrECFDaruma.LoadDLLFunctions;
       if not FunctionDetect( sLibName, FuncName, LibPointer) then
       begin
         LibPointer := NIL ;
-        raise Exception.Create( ACBrStr( 'Erro ao carregar a função: '+FuncName+' de: '+cLIB_Daruma ) ) ;
+        raise EACBrECFERRO.Create( ACBrStr( 'Erro ao carregar a função: '+FuncName+' de: '+cLIB_Daruma ) ) ;
       end ;
     end ;
   end ;
@@ -4667,44 +4667,44 @@ begin
   // configurar a daruma para gravar somente no XML
   Resp := xeDefinirModoRegistro_Daruma('2');
   if Resp <> 1 then
-     raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' '+GetDescricaoErroDLL(Resp)+sLineBreak+
+     raise EACBrECFERRO.Create( ACBrStr('Erro: '+IntToStr(Resp)+' '+GetDescricaoErroDLL(Resp)+sLineBreak+
        'ao chamar: '+sLineBreak+
        'xeDefinirModoRegistro_Daruma( "2" )') );
 
   // Configurações gerais de funcionamento da DLL
   Resp := xregAlterarValor_Daruma( 'START\Produto', 'FISCAL' );
   if Resp <> 1 then
-     raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' '+GetDescricaoErroDLL(Resp)+sLineBreak+
+     raise EACBrECFERRO.Create( ACBrStr('Erro: '+IntToStr(Resp)+' '+GetDescricaoErroDLL(Resp)+sLineBreak+
        'ao chamar: '+sLineBreak+
        'xregAlterarValor_Daruma( "START\Produto", "ECF" ) ') );
 
   Resp := xregAlterarValor_Daruma( 'ECF\ControleAutomatico', '1' );
   if Resp <> 1 then
-     raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' '+GetDescricaoErroDLL(Resp)+sLineBreak+
+     raise EACBrECFERRO.Create( ACBrStr('Erro: '+IntToStr(Resp)+' '+GetDescricaoErroDLL(Resp)+sLineBreak+
        'ao chamar: '+sLineBreak+
        'xregAlterarValor_Daruma( "ECF\ControleAutomatico", "1" ) ') );
 
   Resp := xregAlterarValor_Daruma( 'ECF\PortaSerial', Porta );
   if Resp <> 1 then
-     raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' '+GetDescricaoErroDLL(Resp)+sLineBreak+
+     raise EACBrECFERRO.Create( ACBrStr('Erro: '+IntToStr(Resp)+' '+GetDescricaoErroDLL(Resp)+sLineBreak+
        'ao chamar: '+sLineBreak+
        'xregAlterarValor_Daruma( "ECF\PortaSerial", "'+Porta+'" ) ') );
 
   Resp := xregAlterarValor_Daruma( 'ECF\Velocidade', Velocidade );
   if Resp <> 1 then
-     raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' '+GetDescricaoErroDLL(Resp)+sLineBreak+
+     raise EACBrECFERRO.Create( ACBrStr('Erro: '+IntToStr(Resp)+' '+GetDescricaoErroDLL(Resp)+sLineBreak+
        'ao chamar: '+sLineBreak+
        'xregAlterarValor_Daruma( "ECF\Velocidade", "'+Velocidade+'" ) ') );
 
   Resp := xregAlterarValor_Daruma( 'START\LocalArquivos', Path );
   if Resp <> 1 then
-     raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' '+GetDescricaoErroDLL(Resp)+sLineBreak+
+     raise EACBrECFERRO.Create( ACBrStr('Erro: '+IntToStr(Resp)+' '+GetDescricaoErroDLL(Resp)+sLineBreak+
        'ao chamar:'+sLineBreak+
        'xregAlterarValor_Daruma( "START\LocalArquivos",  "'+Path+'" ) ') );
 
   Resp := xregAlterarValor_Daruma( 'START\LocalArquivosRelatorios', Path );
   if Resp <> 1 then
-     raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' '+GetDescricaoErroDLL(Resp)+sLineBreak+
+     raise EACBrECFERRO.Create( ACBrStr('Erro: '+IntToStr(Resp)+' '+GetDescricaoErroDLL(Resp)+sLineBreak+
        'ao chamar:'+sLineBreak+
        'xregAlterarValor_Daruma( "START\LocalArquivos", "'+Path+'" ) ') );
 end;
@@ -4774,11 +4774,11 @@ begin
 
     Resp := xrGerarEspelhoMFD_ECF_Daruma(Tipo, CooIni, CooFim);
     if (Resp <> 1) then
-      raise Exception.Create( ACBrStr( 'Erro ao executar rGerarEspelhoMFD_ECF_Daruma.'+sLineBreak+
+      raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar rGerarEspelhoMFD_ECF_Daruma.'+sLineBreak+
                                        'Cod.: '+IntToStr(Resp)+' '+GetDescricaoErroDLL(Resp) )) ;
 
     if not FileExists( PathDest ) then
-      raise Exception.Create( ACBrStr( 'Erro na execução de rGerarEspelhoMFD_ECF_Daruma.'+sLineBreak+
+      raise EACBrECFERRO.Create( ACBrStr( 'Erro na execução de rGerarEspelhoMFD_ECF_Daruma.'+sLineBreak+
                                        'Arquivo: "'+ ARQ_MFD_DLL +'" não gerado' )) ;
 
     if PathDest <> NomeArquivo then
@@ -4814,12 +4814,12 @@ begin
 
     Resp := xrGerarEspelhoMFD_ECF_Daruma(Tipo, DiaIni, DiaFim );
     if (Resp <> 1) then
-      raise Exception.Create( ACBrStr( 'Erro ao executar rGerarEspelhoMFD_ECF_Daruma.'+sLineBreak+
+      raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar rGerarEspelhoMFD_ECF_Daruma.'+sLineBreak+
                                         'Cod.: '+IntToStr(Resp)+' '+GetDescricaoErroDLL(Resp) )) ;
 
 
     if not FileExists(PathDest) then
-      raise Exception.Create( ACBrStr( 'Erro na execução de rGerarEspelhoMFD_ECF_Daruma.'+sLineBreak+
+      raise EACBrECFERRO.Create( ACBrStr( 'Erro na execução de rGerarEspelhoMFD_ECF_Daruma.'+sLineBreak+
                               'Arquivo: "'+ ARQ_MFD_DLL +'" não gerado' )) ;
 
     if PathDest <> NomeArquivo then
@@ -4845,7 +4845,7 @@ begin
   OldAtivo := Ativo;
   try
     if Finalidade in [finSintegra, finSPED] then
-      raise Exception.Create(ACBrStr('Finalidades SINTEGRA e SPED somente podem ser utilizadas por DATA DE MOVIMENTO'));
+      raise EACBrECFERRO.Create(ACBrStr('Finalidades SINTEGRA e SPED somente podem ser utilizadas por DATA DE MOVIMENTO'));
 
     case Finalidade of
       finMF: Relatorio := 'MF';
@@ -4854,14 +4854,14 @@ begin
       finNFP: Relatorio := 'NFP';
       finNFPTDM: Relatorio := 'NFPTDM';
     else
-      raise Exception.Create(ACBrStr('Finalidade não reconhecida, finalidades válidas: MF, MFD, TDM, NFP, NFPTDM'));
+      raise EACBrECFERRO.Create(ACBrStr('Finalidade não reconhecida, finalidades válidas: MF, MFD, TDM, NFP, NFPTDM'));
     end;
 
     case TipoContador of
       tpcCRZ: Tipo := 'CRZ';
       tpcCOO: Tipo := 'COO';
     else
-      raise Exception.Create(ACBrStr('Tipo de contador desconhecido, tipos válidos: CRZ, COO'));
+      raise EACBrECFERRO.Create(ACBrStr('Tipo de contador desconhecido, tipos válidos: CRZ, COO'));
     end;
 
     NomeArq  := 'ATO_' + Relatorio + '_' + Tipo + '.TXT';
@@ -4879,7 +4879,7 @@ begin
     begin
       Resp := xrGerarRelatorio_ECF_Daruma(Relatorio, Tipo, Inicio, Fim);
       if (Resp <> 1) then
-        raise Exception.Create( ACBrStr( 'Erro ao executar xrGerarRelatorio_ECF_Daruma.'+sLineBreak+
+        raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar xrGerarRelatorio_ECF_Daruma.'+sLineBreak+
                                          'Cod.: '+IntToStr(Resp)+' '+GetDescricaoErroDLL(Resp) )) ;
     end
     else
@@ -4889,12 +4889,12 @@ begin
                                                  DirDest + 'Daruma.mfd',
                                                  DirDest + 'Daruma.inf');
       if (Resp <> 1) then
-        raise Exception.Create( ACBrStr( 'Erro ao executar rGerarRelatorioOffline_ECF_Daruma.'+sLineBreak+
+        raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar rGerarRelatorioOffline_ECF_Daruma.'+sLineBreak+
                                          'Cod.: '+IntToStr(Resp)+' '+GetDescricaoErroDLL(Resp) )) ;
     end;
 
     if not FileExists( PathDest ) then
-      raise Exception.Create( ACBrStr( 'Erro na execução de xrGerarRelatorio_ECF_Daruma.'+sLineBreak+
+      raise EACBrECFERRO.Create( ACBrStr( 'Erro na execução de xrGerarRelatorio_ECF_Daruma.'+sLineBreak+
                                        'Cod: '+ IntToStr(Resp) + ' ' + GetDescricaoErroDLL(Resp) + sLineBreak +
                                        'Modo: ' + IfThen(OldAtivo, 'On-Line', 'Off-Line') + sLineBreak +
                                        'Arquivo: "'+ NomeArq +'" não gerado' )) ;
@@ -4929,7 +4929,7 @@ begin
       finSintegra: Relatorio := 'SINTEGRA';
       finSPED: Relatorio := 'SPED';
     else
-      raise Exception.Create(ACBrStr('Finalidade não reconhecida, finalidades válidas: MF, MFD, TDM, NFP, NFPTDM, SINTEGRA, SPED'));
+      raise EACBrECFERRO.Create(ACBrStr('Finalidade não reconhecida, finalidades válidas: MF, MFD, TDM, NFP, NFPTDM, SINTEGRA, SPED'));
     end;
 
     NomeArq  := 'ATO_' + Relatorio + '_DATA.TXT';
@@ -4949,7 +4949,7 @@ begin
     begin
       Resp := xrGerarRelatorio_ECF_Daruma(Relatorio, Tipo, DtInicial, DtFinal);
       if (Resp <> 1) then
-        raise Exception.Create( ACBrStr( 'Erro ao executar xrGerarRelatorio_ECF_Daruma.'+sLineBreak+
+        raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar xrGerarRelatorio_ECF_Daruma.'+sLineBreak+
                                          'Cod.: '+IntToStr(Resp)+' '+GetDescricaoErroDLL(Resp) )) ;
     end
     else
@@ -4959,12 +4959,12 @@ begin
                                                  DirDest + 'Daruma.mfd',
                                                  DirDest + 'Daruma.inf');
       if (Resp <> 1) then
-        raise Exception.Create( ACBrStr( 'Erro ao executar rGerarRelatorioOffline_ECF_Daruma.'+sLineBreak+
+        raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar rGerarRelatorioOffline_ECF_Daruma.'+sLineBreak+
                                          'Cod.: '+IntToStr(Resp)+' '+GetDescricaoErroDLL(Resp) )) ;
     end;
 
     if not FileExists( PathDest ) then
-      raise Exception.Create( ACBrStr( 'Erro na execução de xrGerarRelatorio_ECF_Daruma.'+sLineBreak+
+      raise EACBrECFERRO.Create( ACBrStr( 'Erro na execução de xrGerarRelatorio_ECF_Daruma.'+sLineBreak+
                                        'Cod: '+ IntToStr(Resp) + ' ' + GetDescricaoErroDLL(Resp) + sLineBreak +
                                        'Modo: ' + IfThen(OldAtivo, 'On-Line', 'Off-Line') + sLineBreak +
                                        'Arquivo: "'+ NomeArq +'" não gerado' )) ;
@@ -4991,16 +4991,16 @@ begin
   if fpMFD then
   begin
     if AIndice > 5 then
-      raise Exception.Create( ACBrStr('Posição do Bitmap dever ser um número entre 1 e 5.') );
+      raise EACBrECFERRO.Create( ACBrStr('Posição do Bitmap dever ser um número entre 1 e 5.') );
 
     if Trim(APathArquivo) = EmptyStr then
-      raise Exception.Create( ACBrStr('Caminho para o arquivo de imagem não foi informado.') );
+      raise EACBrECFERRO.Create( ACBrStr('Caminho para o arquivo de imagem não foi informado.') );
 
     if not FileExists(APathArquivo) then
-      raise Exception.Create( ACBrStr( 'Arquivo "'+APathArquivo+'", não foi encontrado.') );
+      raise EACBrECFERRO.Create( ACBrStr( 'Arquivo "'+APathArquivo+'", não foi encontrado.') );
 
     if AnsiUpperCase(ExtractFileExt(APathArquivo)) <> '.BMP' then
-      raise Exception.Create( ACBrStr( 'Arquivo "'+APathArquivo+'", deve ser um arquivo do tipo bitmap.') );
+      raise EACBrECFERRO.Create( ACBrStr( 'Arquivo "'+APathArquivo+'", deve ser um arquivo do tipo bitmap.') );
 
     Indice := Format('%2.2d', [AIndice]);
 
@@ -5018,7 +5018,7 @@ begin
 
       Resp := xeCarregarBitmapPromocional_ECF_Daruma(APathArquivo, Indice, Posicao);
       if (Resp <> 1) then
-        raise Exception.Create( ACBrStr( 'Erro ao executar eCarregarBitmapPromocional_ECF_Daruma.'+sLineBreak+
+        raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar eCarregarBitmapPromocional_ECF_Daruma.'+sLineBreak+
                                          'Cod.: '+IntToStr(Resp)+' '+GetDescricaoErroDLL(Resp) )) ;
     finally
       UnloadDLLFunctions;

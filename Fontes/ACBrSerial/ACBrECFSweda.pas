@@ -434,7 +434,7 @@ end;
 procedure TACBrECFSweda.Ativar;
 begin
   if not fpDevice.IsSerialPort  then
-     raise Exception.Create(ACBrStr('A impressora: '+fpModeloStr+' requer'+#10+
+     raise EACBrECFERRO.Create(ACBrStr('A impressora: '+fpModeloStr+' requer'+#10+
                             'Porta Serial:  (COM1, COM2, COM3, ...)'));
 
 //  fpDevice.HandShake := hsDTR_DSR ;
@@ -675,7 +675,7 @@ begin
            try
               Ret := fpDevice.Serial.RecvPacket(200) ;
               if Ret = '' then
-                 raise Exception.create('Sem resposta') ;
+                 raise EACBrECFERRO.create('Sem resposta') ;
 
               RetCmd := RetCmd + Ret ;
               TempoLimite := IncSecond(now, TimeOut);
@@ -1392,7 +1392,7 @@ begin
   end ;
 
   if Erro <> '' then
-     raise Exception.Create(Erro);
+     raise EACBrECFERRO.Create(Erro);
      
   FechaRelatorio ;   { Fecha relatorio se ficou algum aberto (só por garantia)}
 end;
@@ -1408,7 +1408,7 @@ Var Espera : Integer ;
 begin
   if ImprimeVinculado then
      if (fsVersaoSweda < swdD) and (fsVinculado > 0) then
-        raise Exception.Create(ACBrStr('Já existe Forma de Pagamento com '+sLineBreak+
+        raise EACBrECFERRO.Create(ACBrStr('Já existe Forma de Pagamento com '+sLineBreak+
                        'comprovante NAO fiscal vinculado pendente. '+sLineBreak+
                        'Impressora: '+fpModeloStr+' Modelo: '+fsModeloSweda+sLineBreak+
                        ' aceita apenas 1 Compr.NAO Fiscal Viculado por Cupom.'))
@@ -1802,7 +1802,7 @@ begin
   end ;
 
   if ProxIndice > 15 then
-     raise Exception.create(ACBrStr('Não há espaço para programar novas Aliquotas'));
+     raise EACBrECFERRO.create(ACBrStr('Não há espaço para programar novas Aliquotas'));
 
   EnviaComando( '33' + Tipo + IntToStrZero(ProxIndice,2) + ValStr ) ;
 
@@ -2054,7 +2054,7 @@ begin
 
      if TemVinculado then LenMax := 160 else LenMax := 150 ;
      if Length(Cmd) > LenMax then
-        raise Exception.create(ACBrStr('Não há espaço para programar novas Formas de '+
+        raise EACBrECFERRO.create(ACBrStr('Não há espaço para programar novas Formas de '+
                                'Pagamento'));
    end ;
 
@@ -2080,7 +2080,7 @@ begin
   if fpMFD then
    begin
      if AchaRGDescricao(Descricao, True) <> nil then
-        raise Exception.Create(ACBrStr('Relatório Gerencial ('+Descricao+') já existe.')) ;
+        raise EACBrECFERRO.Create(ACBrStr('Relatório Gerencial ('+Descricao+') já existe.')) ;
 
      if (ProxIndice < 2) or (ProxIndice > 30) then { Indice passado é válido ? }
      begin
@@ -2092,12 +2092,12 @@ begin
      end ;
 
      if ProxIndice > 30 then
-        raise Exception.create(ACBrStr('Não há espaço para programar novos RGs'));
+        raise EACBrECFERRO.create(ACBrStr('Não há espaço para programar novos RGs'));
 
      EnviaComando( '32' + PadL(Descricao,15) ) ;
    end
   else
-     raise Exception.Create(ACBrStr('Impressoras sem MFD não suportam Programação de Relatórios Gerenciais'));
+     raise EACBrECFERRO.Create(ACBrStr('Impressoras sem MFD não suportam Programação de Relatórios Gerenciais'));
 
   CarregaRelatoriosGerenciais ;
 end;
@@ -2178,7 +2178,7 @@ begin
      Tipo := '+' ;
 
   if (pos(Tipo,'&+-') = 0) or (Length(Tipo) > 1) then
-     raise Exception.Create(ACBrStr('Os Tipos válidos para Sweda são:'+sLineBreak+
+     raise EACBrECFERRO.Create(ACBrStr('Os Tipos válidos para Sweda são:'+sLineBreak+
                             '&  Criaçao de um novo Grupo (Titulo)'+sLineBreak+
                             '+  Entrada de Recursos'+sLineBreak+
                             '-  Saida de Recursos'+sLineBreak+sLineBreak+
@@ -2208,7 +2208,7 @@ begin
      Cmd := StuffString(Cmd, (ProxIndice*15)-14,0, padL(Tipo + Descricao,15) ) ;
 
   if Length(Cmd) > 750 then
-     raise Exception.create(ACBrStr('Não há espaço para programar novos Comprovantes'+
+     raise EACBrECFERRO.create(ACBrStr('Não há espaço para programar novos Comprovantes'+
                             ' não Fiscais'));
 
   EnviaComando( '38' + 'N' + Cmd ) ;
@@ -2239,7 +2239,7 @@ begin
      begin
        RG  := AchaRGIndice( IntToStrZero(Indice, 2 ) ) ;
        if RG = nil then
-          raise Exception.create( ACBrStr('Relatório Gerencial: '+IntToStr(Indice)+
+          raise EACBrECFERRO.create( ACBrStr('Relatório Gerencial: '+IntToStr(Indice)+
                                   ' não foi cadastrado.' ));
        Cmd := Cmd + PadL(RG.Descricao,15);
      end;
@@ -2639,7 +2639,7 @@ Var Dia,Mes,Ano   : String ;
     Espera        : Integer ;
 begin
   if not ChequePronto then
-     raise Exception.Create(ACBrStr('Cheque não está posicionado')) ;
+     raise EACBrECFERRO.Create(ACBrStr('Cheque não está posicionado')) ;
 
   Espera     := 25 ;
   Banco      := IntToStrZero(StrToIntDef(Banco,1),3) ;
@@ -3401,7 +3401,7 @@ var
      if not FunctionDetect( sLibName, FuncName, LibPointer) then
      begin
         LibPointer := NIL ;
-        raise Exception.Create( ACBrStr( 'Erro ao carregar a função:'+FuncName+' de: '+cLIB_Sweda ) ) ;
+        raise EACBrECFERRO.Create( ACBrStr( 'Erro ao carregar a função:'+FuncName+' de: '+cLIB_Sweda ) ) ;
      end ;
    end ;
  end ;
@@ -3415,7 +3415,7 @@ begin
 
   {$IFDEF MSWINDOWS}
     if not FileExists( ExtractFilePath( sLibName ) + 'Swmfd.dll') then
-       raise Exception.Create( ACBrStr( 'Não foi encontrada a dll auxiliar Swmfd.dll.' ) ) ;
+       raise EACBrECFERRO.Create( ACBrStr( 'Não foi encontrada a dll auxiliar Swmfd.dll.' ) ) ;
    {$ENDIF}
    DeleteFile( ExtractFilePath( sLibName ) + 'SWC.INI');
 
@@ -3436,7 +3436,7 @@ begin
 
   Resp := xECF_AbrePortaSerial;
   if Resp <> 1 then
-     raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao abrir a Porta com:'+sLineBreak+
+     raise EACBrECFERRO.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao abrir a Porta com:'+sLineBreak+
         'ECF_AbrePortaSerial'));
 end ;
 
@@ -3467,7 +3467,7 @@ begin
 
     Resp := xECF_DownloadMFD( NomeArquivo, '1', DiaIni, DiaFim, '0');
     if (Resp <> 1) then
-      raise Exception.Create( ACBrStr( 'Erro ao executar ECF_DownloadMFD.'+sLineBreak+
+      raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar ECF_DownloadMFD.'+sLineBreak+
                                        'Cod.: '+IntToStr(Resp) ))
   finally
     DateSeparator   := OldDateSeparator;
@@ -3477,7 +3477,7 @@ begin
   end ;
 
   if not FileExists( NomeArquivo ) then
-     raise Exception.Create( ACBrStr( 'Erro na execução de ECF_DownloadMFD.'+sLineBreak+
+     raise EACBrECFERRO.Create( ACBrStr( 'Erro na execução de ECF_DownloadMFD.'+sLineBreak+
                             'Arquivo: "'+NomeArquivo+'" não gerado' ))
 end;
 
@@ -3503,7 +3503,7 @@ begin
 
     Resp := xECF_DownloadMFD( NomeArquivo, '2', CooIni, CooFim, '0');
     if (Resp <> 1) then
-      raise Exception.Create( ACBrStr( 'Erro ao executar ECF_DownloadMFD.'+sLineBreak+
+      raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar ECF_DownloadMFD.'+sLineBreak+
                                        'Cod.: '+IntToStr(Resp) ));
   finally
     xECF_FechaPortaSerial ;
@@ -3511,7 +3511,7 @@ begin
   end ;
 
   if not FileExists( NomeArquivo ) then
-     raise Exception.Create( ACBrStr( 'Erro na execução de ECF_DownloadMFD.'+sLineBreak+
+     raise EACBrECFERRO.Create( ACBrStr( 'Erro na execução de ECF_DownloadMFD.'+sLineBreak+
                             'Arquivo: "'+NomeArquivo + '" não gerado' ))
 end;
 
@@ -3547,7 +3547,7 @@ begin
 
     Resp := xECF_DownloadMF( pathBin );
     if Resp <> 1 then
-      raise Exception.Create( ACBrStr( 'Erro ao executar xECFDownloadMF'+sLineBreak+
+      raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar xECFDownloadMF'+sLineBreak+
                                        'Cod.: '+IntToStr(Resp) ));
 
     DiaIni := FormatDateTime('DD/MM/YY',DataInicial) ;
@@ -3556,7 +3556,7 @@ begin
     Resp := xECF_ReproduzirMemoriaFiscalMFD('2', DiaIni, DiaFim, NomeArquivo, pathBin);
 
     if (Resp <> 1) then
-      raise Exception.Create( ACBrStr( 'Erro ao executar ECF_DownloadMFD.'+sLineBreak+
+      raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar ECF_DownloadMFD.'+sLineBreak+
                                        'Cod.: '+IntToStr(Resp) ))
   finally
     xECF_FechaPortaSerial ;
@@ -3566,7 +3566,7 @@ begin
   end ;
 
   if not FileExists( NomeArquivo ) then
-     raise Exception.Create( ACBrStr( 'Erro na execução de ECF_DownloadMFD.'+sLineBreak+
+     raise EACBrECFERRO.Create( ACBrStr( 'Erro na execução de ECF_DownloadMFD.'+sLineBreak+
                             'Arquivo: "'+NomeArquivo+'" não gerado' ))
 end;
 
@@ -3601,7 +3601,7 @@ begin
        CooFim := IntToStrZero( ContFinal, 7 ) ;
     end
     else
-      raise Exception.Create('Tipo de contador desconhecido, tipos válidos: CRZ, COO');
+      raise EACBrECFERRO.Create('Tipo de contador desconhecido, tipos válidos: CRZ, COO');
 
     PathBin := ExtractFilePath(NomeArquivo);
     PathBin:= PathBin + 'MF.BIN';
@@ -3609,13 +3609,13 @@ begin
 
     Resp := xECF_DownloadMF( pathBin );
     if Resp <> 1 then
-      raise Exception.Create( ACBrStr( 'Erro ao executar xECFDownloadMF'+sLineBreak+
+      raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar xECFDownloadMF'+sLineBreak+
                                        'Cod.: '+IntToStr(Resp) ));
 
     Resp := xECF_ReproduzirMemoriaFiscalMFD('2', CooIni, CooFim, NomeArquivo, PathBin);
 
     if (Resp <> 1) then
-      raise Exception.Create( ACBrStr( 'Erro ao executar xECF_ReproduzirMemoriaFiscalMFD.'+sLineBreak+
+      raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar xECF_ReproduzirMemoriaFiscalMFD.'+sLineBreak+
                                        'Cod.: '+IntToStr(Resp) ))
   finally
     xECF_FechaPortaSerial ;
@@ -3623,7 +3623,7 @@ begin
   end ;
 
   if not FileExists( NomeArquivo ) then
-     raise Exception.Create( ACBrStr( 'Erro na execução de ECF_DownloadMFD.'+sLineBreak+
+     raise EACBrECFERRO.Create( ACBrStr( 'Erro na execução de ECF_DownloadMFD.'+sLineBreak+
                             'Arquivo: "'+NomeArquivo + '" não gerado' ))
 end;
 

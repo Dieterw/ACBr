@@ -499,7 +499,7 @@ begin
   try
      fsCont := StrToInt( copy(Buf,1,(P-1)) ) ;
   except
-     raise Exception.Create(ACBrStr('Num.Identificação inválido')) ;
+     raise EACBrECFERRO.Create(ACBrStr('Num.Identificação inválido')) ;
   end ;
   Buf := copy(Buf,P+1,Length(Buf)) ;  // Remove a Ident.
 
@@ -507,7 +507,7 @@ begin
   try
      fsCodRetorno := StrToInt( copy(Buf,1,(P-1)) ) ;
   except
-     raise Exception.Create(ACBrStr('Cod.Retorno inválido')) ;
+     raise EACBrECFERRO.Create(ACBrStr('Cod.Retorno inválido')) ;
   end ;
   Buf := Trim(copy(Buf,P+1,Length(Buf))) ;  // Remove Retorno
 
@@ -625,7 +625,7 @@ end;
 procedure TACBrECFFiscNET.Ativar;
 begin
   if not fpDevice.IsSerialPort  then
-     raise Exception.Create(ACBrStr('A impressora: '+fpModeloStr+' requer'+sLineBreak+
+     raise EACBrECFERRO.Create(ACBrStr('A impressora: '+fpModeloStr+' requer'+sLineBreak+
                             'Porta Serial:  (COM1, COM2, COM3, ...)'));
 
   inherited Ativar ; { Abre porta serial }
@@ -1190,7 +1190,7 @@ begin
   end ;
 
   if Erro <> '' then
-     raise Exception.create(Erro);
+     raise EACBrECFERRO.create(Erro);
 
   fsEmPagamento := false ;
     
@@ -1824,7 +1824,7 @@ begin
   FPG := AchaFPGIndice( CodFormaPagto ) ;
 
   if FPG = nil then
-     raise Exception.create( ACBrStr('Forma de Pagamento: '+CodFormaPagto+
+     raise EACBrECFERRO.create( ACBrStr('Forma de Pagamento: '+CodFormaPagto+
                              ' não foi cadastrada.') ) ;
 
   FiscNETComando.NomeComando := 'AbreCreditoDebito' ;
@@ -2788,7 +2788,7 @@ Var
      if not FunctionDetect( sLibName, FuncName, LibPointer) then
      begin
         LibPointer := NIL ;
-        raise Exception.Create( ACBrStr( 'Erro ao carregar a função:'+FuncName+' de: '+LibName ) ) ;
+        raise EACBrECFERRO.Create( ACBrStr( 'Erro ao carregar a função:'+FuncName+' de: '+LibName ) ) ;
      end ;
    end ;
  end ;
@@ -2853,7 +2853,7 @@ begin
      end ;
 
      if Resp <> 1 then
-        raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao abrir a Porta com:'+sLineBreak+
+        raise EACBrECFERRO.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao abrir a Porta com:'+sLineBreak+
         'Elgin_AbrePortaSerial()'));
   end ;
 end;
@@ -2889,18 +2889,18 @@ begin
 
      iRet := xElgin_DownloadMFD(ArqTmp + '.mfd', '1', DiaIni, DiaFim, '');
      if (iRet <> 1) then
-        raise Exception.Create( ACBrStr( 'Erro ao executar Elgin_DownloadMFD.'+sLineBreak+
+        raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar Elgin_DownloadMFD.'+sLineBreak+
                                          'Cod.: ' + IntToStr(iRet) )) ;
      if not FileExists( ArqTmp + '.mfd' ) then
-        raise Exception.Create( ACBrStr( 'Erro na execução de Elgin_DownloadMFD.'+sLineBreak+
+        raise EACBrECFERRO.Create( ACBrStr( 'Erro na execução de Elgin_DownloadMFD.'+sLineBreak+
                                          'Arquivo: "' + ArqTmp + '.mfd" não gerado' )) ;
 
      iRet := xElgin_FormatoDadosMFD(ArqTmp + '.mfd', nomeArquivo, '0', '1', DiaIni, DiaFim, '');
      if (iRet <> 1) then
-        raise Exception.Create( ACBrStr( 'Erro ao executar Elgin_FormatoDadosMFD.'+sLineBreak+
+        raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar Elgin_FormatoDadosMFD.'+sLineBreak+
                                          'Cod.: ' + IntToStr(iRet) )) ;
      if not FileExists( NomeArquivo ) then
-        raise Exception.Create( ACBrStr( 'Erro na execução de Elgin_FormatoDadosMFD.'+sLineBreak+
+        raise EACBrECFERRO.Create( ACBrStr( 'Erro na execução de Elgin_FormatoDadosMFD.'+sLineBreak+
                                          'Arquivo: "' + NomeArquivo + '" não gerado' )) ;
      xElgin_FechaPortaSerial();
      DeleteFile( ArqTmp + '.mfd' ) ;
@@ -2942,18 +2942,18 @@ begin
 
      iRet := xElgin_DownloadMFD(ArqTmp + '.mfd', '2', CooIni, CooFim, Prop);
      if (iRet <> 1) then
-        raise Exception.Create( ACBrStr( 'Erro ao executar Elgin_DownloadMFD.'+sLineBreak+
+        raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar Elgin_DownloadMFD.'+sLineBreak+
                                          'Cod.: ' + IntToStr(iRet) )) ;
      if not FileExists( ArqTmp + '.mfd' ) then
-        raise Exception.Create( ACBrStr( 'Erro na execução de Elgin_DownloadMFD.'+sLineBreak+
+        raise EACBrECFERRO.Create( ACBrStr( 'Erro na execução de Elgin_DownloadMFD.'+sLineBreak+
                                          'Arquivo: "' + ArqTmp + '.mfd" não gerado' )) ;
 
      iRet := xElgin_FormatoDadosMFD(ArqTmp + '.mfd', nomeArquivo, '0', '2', CooIni, CooFim, Prop);
      if (iRet <> 1) then
-        raise Exception.Create( ACBrStr( 'Erro ao executar Elgin_FormatoDadosMFD.'+sLineBreak+
+        raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar Elgin_FormatoDadosMFD.'+sLineBreak+
                                          'Cod.: ' + IntToStr(iRet) )) ;
      if not FileExists( NomeArquivo ) then
-        raise Exception.Create( ACBrStr( 'Erro na execução de Elgin_FormatoDadosMFD.'+sLineBreak+
+        raise EACBrECFERRO.Create( ACBrStr( 'Erro na execução de Elgin_FormatoDadosMFD.'+sLineBreak+
                                          'Arquivo: "' + NomeArquivo + '" não gerado' )) ;
      xElgin_FechaPortaSerial();
      DeleteFile( ArqTmp + '.mfd' ) ;
@@ -3002,12 +3002,12 @@ begin
                                                  NomeArquivo, DiaIni, DiaFim );
 
         if iRet <> 0 then
-           raise Exception.Create( ACBrStr( 'Erro ao executar Gera_AtoCotepe1704_Periodo_MFD.'+sLineBreak+
+           raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar Gera_AtoCotepe1704_Periodo_MFD.'+sLineBreak+
                                             'Cod.: '+IntToStr(iRet) + ' - ' +
                                             GetErroAtoCotepe1704(iRet) )) ;
 
         if not FileExists( NomeArquivo ) then
-           raise Exception.Create( ACBrStr( 'Erro na execução de Gera_AtoCotepe1704_Periodo_MFD.'+sLineBreak+
+           raise EACBrECFERRO.Create( ACBrStr( 'Erro na execução de Gera_AtoCotepe1704_Periodo_MFD.'+sLineBreak+
                                             'Arquivo: "'+NomeArquivo + '" não gerado' ))
       end
      else if (fsMarcaECF = 'elgin') then
@@ -3022,18 +3022,18 @@ begin
         iRet := xElgin_LeMemoriasBinario( ArqTmp, NumFab, true );
 
         if (iRet <> 1) then
-           raise Exception.Create(ACBrStr('Erro ao executar Elgin_LeMemoriasBinario.'+sLineBreak+
+           raise EACBrECFERRO.Create(ACBrStr('Erro ao executar Elgin_LeMemoriasBinario.'+sLineBreak+
                                           'Cod.: ' + IntToStr(iRet))) ;
 
         if not FilesExists( ArqTmp ) then
-           raise Exception.Create(ACBrStr('Erro na execução de Elgin_LeMemoriasBinario.'+sLineBreak+
+           raise EACBrECFERRO.Create(ACBrStr('Erro na execução de Elgin_LeMemoriasBinario.'+sLineBreak+
                                           'Arquivo binário não gerado!'));
 
         iRet := xElgin_GeraArquivoATO17Binario( ArqTmp, NomeArquivo, DiaIni,
                                                 DiaFim, 'D', Prop, cFinalidade);
 
         if (iRet <> 1) then
-           raise Exception.Create(ACBrStr('Erro ao executar Elgin_GeraArquivoATO17Binario.'+sLineBreak+
+           raise EACBrECFERRO.Create(ACBrStr('Erro ao executar Elgin_GeraArquivoATO17Binario.'+sLineBreak+
                                           'Cod.: ' + IntToStr(iRet))) ;
 
         xElgin_FechaPortaSerial();
@@ -3050,7 +3050,7 @@ begin
         iRet := xDLLReadLeMemorias( PortaSerial, ArqTmp, NumFab, '1');
 
         if iRet <> 0 then
-           raise Exception.Create( ACBrStr( 'Erro ao executar DLLReadLeMemorias.' + sLineBreak +
+           raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar DLLReadLeMemorias.' + sLineBreak +
                                             'Cod.: '+ IntToStr(iRet) + ' - ' +
                                             GetErroAtoCotepe1704(iRet) )) ;
 
@@ -3058,7 +3058,7 @@ begin
                                       'M', '1', cFinalidade );
 
         if iRet <> 0 then
-           raise Exception.Create( ACBrStr( 'Erro ao executar DLLATO17GeraArquivo.' + sLineBreak +
+           raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar DLLATO17GeraArquivo.' + sLineBreak +
                                             'Cod.: '+ IntToStr(iRet) + ' - ' +
                                             GetErroAtoCotepe1704(iRet) )) ;
       end ;
@@ -3101,12 +3101,12 @@ begin
         iRet := xGera_PAF( PortaSerial, ModeloECF, NomeArquivo, CooIni, CooFim );
 
         if iRet <> 0 then
-           raise Exception.Create( ACBrStr( 'Erro ao executar Gera_PAF.'+sLineBreak+
+           raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar Gera_PAF.'+sLineBreak+
                                             'Cod.: '+IntToStr(iRet) + ' - ' +
                                             GetErroAtoCotepe1704(iRet) )) ;
 
         if not FileExists( NomeArquivo ) then
-           raise Exception.Create( ACBrStr( 'Erro na execução de Gera_PAF.'+sLineBreak+
+           raise EACBrECFERRO.Create( ACBrStr( 'Erro na execução de Gera_PAF.'+sLineBreak+
                                             ': "'+NomeArquivo + '" não gerado' ))
       end
 
@@ -3119,18 +3119,18 @@ begin
         iRet := xElgin_LeMemoriasBinario( ArqTmp, NumFab, true );
 
         if (iRet <> 1) then
-           raise Exception.Create(ACBrStr('Erro ao executar Elgin_LeMemoriasBinario.'+sLineBreak+
+           raise EACBrECFERRO.Create(ACBrStr('Erro ao executar Elgin_LeMemoriasBinario.'+sLineBreak+
                                                    'Cod.: ' + IntToStr(iRet))) ;
 
         if not FilesExists( ArqTmp ) then
-           raise Exception.Create(ACBrStr('Erro na execução de Elgin_LeMemoriasBinario.'+sLineBreak+
+           raise EACBrECFERRO.Create(ACBrStr('Erro na execução de Elgin_LeMemoriasBinario.'+sLineBreak+
                                           'Arquivo binário não gerado!'));
 
         iRet := xElgin_GeraArquivoATO17Binario( ArqTmp, NomeArquivo, CooIni,
                                                 CooFim, 'C', Prop, cFinalidade);
 
         if (iRet <> 1) then
-           raise Exception.Create(ACBrStr('Erro ao executar Elgin_GeraArquivoATO17Binario.'+sLineBreak+
+           raise EACBrECFERRO.Create(ACBrStr('Erro ao executar Elgin_GeraArquivoATO17Binario.'+sLineBreak+
                                           'Cod.: ' + IntToStr(iRet))) ;
 
         xElgin_FechaPortaSerial();
@@ -3144,7 +3144,7 @@ begin
         iRet := xDLLReadLeMemorias( PortaSerial, ArqTmp, NumFab, '1');
 
         if iRet <> 0 then
-           raise Exception.Create( ACBrStr( 'Erro ao executar DLLReadLeMemorias.' + sLineBreak +
+           raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar DLLReadLeMemorias.' + sLineBreak +
                                             'Cod.: '+ IntToStr(iRet) + ' - ' +
                                             GetErroAtoCotepe1704(iRet) )) ;
 
@@ -3152,7 +3152,7 @@ begin
                                       'C', '1', cFinalidade );
 
         if iRet <> 0 then
-           raise Exception.Create( ACBrStr( 'Erro ao executar DLLATO17GeraArquivo.' + sLineBreak +
+           raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar DLLATO17GeraArquivo.' + sLineBreak +
                                             'Cod.: '+ IntToStr(iRet) + ' - ' +
                                             GetErroAtoCotepe1704(iRet) )) ;
       end ;

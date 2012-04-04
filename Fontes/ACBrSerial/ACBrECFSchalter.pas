@@ -252,7 +252,7 @@ end;
 procedure TACBrECFSchalter.Ativar;
 begin
   if not fpDevice.IsSerialPort  then
-     raise Exception.Create(ACBrStr('A impressora: '+fpModeloStr+' requer'+#10+
+     raise EACBrECFERRO.Create(ACBrStr('A impressora: '+fpModeloStr+' requer'+#10+
                             'Porta Serial:  (COM1, COM2, COM3, ...)'));
 
   fpDevice.HandShake := hsRTS_CTS ;
@@ -1101,7 +1101,7 @@ begin
   end ;
 
   if ProxIndice > 15 then
-     raise Exception.create(ACBrStr('Não há espaço para programar novas Aliquotas'));
+     raise EACBrECFERRO.create(ACBrStr('Não há espaço para programar novas Aliquotas'));
 
   BytesResp := 1 ;
   EnviaComando( #34 + IntToStrZero(ProxIndice,2) + Tipo + ValStr ) ;
@@ -1208,7 +1208,7 @@ begin
   end ;
 
   if ProxIndice > 19 then
-     raise Exception.create(ACBrStr('Não há espaço para programar novas Formas de '+
+     raise EACBrECFERRO.create(ACBrStr('Não há espaço para programar novas Formas de '+
                             'Pagamento'));
 
   BytesResp := 1 ;
@@ -1293,7 +1293,7 @@ begin
         begin
            IndiceFPG := StrToIntDef(copy(Tipo, PV + 1 ,2) , -1) ;
            if IndiceFPG = -1 then
-              raise Exception.Create(ACBrStr('A impressora '+fpModeloStr+' necessita como '+sLineBreak+
+              raise EACBrECFERRO.Create(ACBrStr('A impressora '+fpModeloStr+' necessita como '+sLineBreak+
                     'parâmetro o Indice de uma Forma de Pagamento para permitir '+sLineBreak+
                     'o Vinculado.'+sLineBreak+sLineBreak+
                     'Experimente passar para o parametro Tipo '+sLineBreak+
@@ -1311,7 +1311,7 @@ begin
      begin
         FPG := AchaFPGIndice(IntToStrZero(IndiceFPG,2)) ;
         if FPG = nil then
-           raise Exception.Create(ACBrStr('Forma de Pagamento: '+
+           raise EACBrECFERRO.Create(ACBrStr('Forma de Pagamento: '+
                                   IntToStrZero(IndiceFPG,2)+ ' não encontrada.')) ;
         DescrFPG := FPG.Descricao ;
      end ;
@@ -1336,7 +1336,7 @@ begin
   end ;
 
   if ProxIndice > 19 then
-     raise Exception.create(ACBrStr('Não há espaço para programar novos Comprovantes'+
+     raise EACBrECFERRO.create(ACBrStr('Não há espaço para programar novos Comprovantes'+
                             ' não Fiscais'));
   {$IFNDEF CONSOLE}
     if (IndiceFPG > 0) and (IndiceFPG <> 99) then
@@ -1350,7 +1350,7 @@ begin
                      ')'+sLineBreak+sLineBreak+
                      'Continua com a operação ?' ) ,
                      mtConfirmation,mbYesNoCancel,0) <> mrYes then
-          raise Exception.create(ACBrStr('Programaçao de Comprovante não Fiscal cancelada'));
+          raise EACBrECFERRO.create(ACBrStr('Programaçao de Comprovante não Fiscal cancelada'));
     end ;
   {$ENDIF}
   
@@ -1390,26 +1390,26 @@ Var FPG : TACBrECFFormaPagamento ;
 begin
   FPG := AchaFPGIndice( CodFormaPagto ) ;
   if FPG = nil then
-     raise Exception.create( ACBrStr('Forma de Pagamento: '+CodFormaPagto+
+     raise EACBrECFERRO.create( ACBrStr('Forma de Pagamento: '+CodFormaPagto+
                              ' não foi cadastrada.' )) ;
 
   if CodComprovanteNaoFiscal <> '' then
    begin
      CNF := AchaCNFIndice( CodComprovanteNaoFiscal ) ;
      if CNF = nil then
-        raise Exception.create( ACBrStr('Comprovante NÃO Fiscal: '+
+        raise EACBrECFERRO.create( ACBrStr('Comprovante NÃO Fiscal: '+
                          CodComprovanteNaoFiscal+' não cadastrado.' )) ;
    end
   else
    begin
      CNF := AchaCNFFormaPagamento( FPG.Indice ) ;
      if CNF = nil then
-        raise Exception.create( ACBrStr('Não existe nenhum Comprovante NÃO Fiscal '+
+        raise EACBrECFERRO.create( ACBrStr('Não existe nenhum Comprovante NÃO Fiscal '+
                          ' associado a Forma de Pagamento: '+FPG.Indice )) ;
    end ;
 
   if not CNF.PermiteVinculado then
-     raise Exception.create( ACBrStr('O Comprovante não Fiscal: '+CNF.Descricao+
+     raise EACBrECFERRO.create( ACBrStr('O Comprovante não Fiscal: '+CNF.Descricao+
                              ' não permite Cupom NÃO Fiscal Vinculado' )) ;
 
   COO      := Poem_Zeros( trim(COO) ,6) ;

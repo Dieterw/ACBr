@@ -266,7 +266,7 @@ end;
 procedure TACBrECFMecaf.Ativar;
 begin
   if not fpDevice.IsSerialPort  then
-     raise Exception.Create(ACBrStr('A impressora: '+fpModeloStr+' requer'+#10+
+     raise EACBrECFERRO.Create(ACBrStr('A impressora: '+fpModeloStr+' requer'+#10+
                             'Porta Serial:  (COM1, COM2, COM3, ...)'));
 
   fpDevice.HandShake := hsRTS_CTS ;
@@ -702,7 +702,7 @@ Var Linhas, CodTroco : String ;
 begin
   if ImprimeVinculado then
      if fsVinculado then
-        raise Exception.Create(ACBrStr('Já existe Forma de Pagamento com '+#10+
+        raise EACBrECFERRO.Create(ACBrStr('Já existe Forma de Pagamento com '+#10+
                                'comprovante NAO fiscal vinculado pendente. '+#10+
                                'Impressora: '+fpModeloStr+' aceita apenas um '+#10+
                                'Comprovante não Fiscal Viculado por Cupom.'))
@@ -940,7 +940,7 @@ begin
   end ;
 
   if ProxIndice > 15 then
-     raise Exception.create(ACBrStr('Não há espaço para programar novas Aliquotas'));
+     raise EACBrECFERRO.create(ACBrStr('Não há espaço para programar novas Aliquotas'));
 
   EnviaComando( '46' + IntToStrZero(ProxIndice,2) + ValStr + sTipo ) ;
 
@@ -1037,7 +1037,7 @@ begin
   end ;
 
   if ProxIndice > 15 then
-     raise Exception.create(ACBrStr('Não há espaço para programar novas Formas de '+
+     raise EACBrECFERRO.create(ACBrStr('Não há espaço para programar novas Formas de '+
                             'Pagamento'));
 
   EnviaComando( '29' + IntToStrZero(ProxIndice,2) + Descricao ) ;
@@ -1107,7 +1107,7 @@ begin
   end ;
 
   if ProxIndice > 31 then
-     raise Exception.create(ACBrStr('Não há espaço para programar novos Comprovantes'+
+     raise EACBrECFERRO.create(ACBrStr('Não há espaço para programar novos Comprovantes'+
                             ' não Fiscais'));
 
   EnviaComando( '29' + IntToStrZero(ProxIndice,2) + Descricao ) ;

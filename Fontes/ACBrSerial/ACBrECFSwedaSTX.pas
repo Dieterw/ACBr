@@ -348,7 +348,7 @@ Var RetCmd : AnsiString ;
    LargFonte, AreaImp : Integer ;
 begin
   if not fpDevice.IsSerialPort  then
-     raise Exception.Create(ACBrStr('A impressora: '+fpModeloStr+' requer'+sLineBreak+
+     raise EACBrECFERRO.Create(ACBrStr('A impressora: '+fpModeloStr+' requer'+sLineBreak+
                             'Porta Serial:  (COM1, COM2, COM3, ...)'));
 
   fpDevice.HandShake := hsDTR_DSR ;
@@ -713,7 +713,7 @@ begin
   begin
     ACK_PC := Ord(NAK) ;  // Erro no CheckSum, retornar NACK
     if fsFalhasRX > CFALHAS then
-       raise Exception( ACBrStr('Erro no digito Verificador da Resposta.'+sLineBreak+
+       raise EACBrECFERRO( ACBrStr('Erro no digito Verificador da Resposta.'+sLineBreak+
                         'Falha: '+IntToStr(fsFalhasRX)) ) ;
     Inc( fsFalhasRX ) ;  // Incrementa numero de Falhas
     Result := False ;
@@ -955,7 +955,7 @@ begin
     CooFim := IntToStrZero( COOFinal, 6 ) ;
     Resp := xECF_DownloadMFD( NomeArquivo, '2', CooIni, CooFim, '0');
     if (Resp <> 1) then
-      raise Exception.Create( ACBrStr( 'Erro ao executar ECF_DownloadMFD.'+sLineBreak+
+      raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar ECF_DownloadMFD.'+sLineBreak+
                                        DescricaoErroDLL(Resp) ))
   finally
     xECF_FechaPortaSerial ;
@@ -963,7 +963,7 @@ begin
   end ;
 
   if not FileExists( NomeArquivo ) then
-     raise Exception.Create( ACBrStr( 'Erro na execução de ECF_DownloadMFD.'+sLineBreak+
+     raise EACBrECFERRO.Create( ACBrStr( 'Erro na execução de ECF_DownloadMFD.'+sLineBreak+
                             'Arquivo: "'+NomeArquivo + '" não gerado' ))
 end;
 
@@ -984,7 +984,7 @@ begin
 
     Resp := xECF_DownloadMFD( NomeArquivo, '1', DiaIni, DiaFim, '0');
     if (Resp <> 1) then
-      raise Exception.Create( ACBrStr( 'Erro ao executar ECF_DownloadMFD.'+sLineBreak+
+      raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar ECF_DownloadMFD.'+sLineBreak+
                                        DescricaoErroDLL(Resp) ))
   finally
     xECF_FechaPortaSerial ;
@@ -992,7 +992,7 @@ begin
   end ;
 
   if not FileExists( NomeArquivo ) then
-     raise Exception.Create( ACBrStr( 'Erro na execução de ECF_DownloadMFD.'+sLineBreak+
+     raise EACBrECFERRO.Create( ACBrStr( 'Erro na execução de ECF_DownloadMFD.'+sLineBreak+
                             'Arquivo: "'+NomeArquivo+'" não gerado' ))
 end;
 
@@ -1034,7 +1034,7 @@ begin
 
     Resp := xECF_ReproduzirMemoriaFiscalMFD(Tipo , CooIni, CooFim, NomeArquivo, '');
     if (Resp <> 1) then
-      raise Exception.Create( ACBrStr( 'Erro ao executar xECF_ReproduzirMemoriaFiscalMFD.'+sLineBreak+
+      raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar xECF_ReproduzirMemoriaFiscalMFD.'+sLineBreak+
                                        DescricaoErroDLL(Resp) ))
   finally
     xECF_FechaPortaSerial ;
@@ -1042,7 +1042,7 @@ begin
   end ;
 
   if not FileExists( NomeArquivo ) then
-     raise Exception.Create( ACBrStr( 'Erro na execução de ECF_DownloadMFD.'+sLineBreak+
+     raise EACBrECFERRO.Create( ACBrStr( 'Erro na execução de ECF_DownloadMFD.'+sLineBreak+
                             'Arquivo: "'+NomeArquivo + '" não gerado' ))
 end;
 
@@ -1073,7 +1073,7 @@ begin
 
     Resp := xECF_ReproduzirMemoriaFiscalMFD(Tipo, DiaIni, DiaFim, NomeArquivo, '');
     if (Resp <> 1) then
-      raise Exception.Create( ACBrStr( 'Erro ao executar ECF_DownloadMFD.'+sLineBreak+
+      raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar ECF_DownloadMFD.'+sLineBreak+
                                        DescricaoErroDLL(Resp) ))
   finally
     xECF_FechaPortaSerial ;
@@ -1081,7 +1081,7 @@ begin
   end ;
 
   if not FileExists( NomeArquivo ) then
-     raise Exception.Create( ACBrStr( 'Erro na execução de ECF_DownloadMFD.'+sLineBreak+
+     raise EACBrECFERRO.Create( ACBrStr( 'Erro na execução de ECF_DownloadMFD.'+sLineBreak+
                             'Arquivo: "'+NomeArquivo+'" não gerado' ))
 end;
 
@@ -1807,7 +1807,7 @@ begin
 
    RG := AchaRGIndice(FormatFloat('00',Indice));
    if RG = nil then
-     raise Exception.create( ACBrStr('Relatório Gerencial: '+IntToStr(Indice)+
+     raise EACBrECFERRO.create( ACBrStr('Relatório Gerencial: '+IntToStr(Indice)+
                                  ' não foi cadastrado.' ));
    sDescricao := PadL(RG.Descricao,15);
    AguardaImpressao := True;
@@ -2181,7 +2181,7 @@ var
      if not FunctionDetect( sLibName, FuncName, LibPointer) then
      begin
         LibPointer := NIL ;
-        raise Exception.Create( ACBrStr( 'Erro ao carregar a função:'+FuncName+' de: '+cLIB_Sweda ) ) ;
+        raise EACBrECFERRO.Create( ACBrStr( 'Erro ao carregar a função:'+FuncName+' de: '+cLIB_Sweda ) ) ;
      end ;
    end ;
  end ;
@@ -2242,7 +2242,7 @@ begin
 
   Resp := xECF_AbreConnectC( 0, fsApplicationPath );
   if Resp <> 1 then
-     raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao abrir a Porta com:'+sLineBreak+
+     raise EACBrECFERRO.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao abrir a Porta com:'+sLineBreak+
         'ECF_AbrePortaSerial'));
 end ;
 
@@ -2256,7 +2256,7 @@ begin
    P := StrToInt(CodCNF);
    CNF := AchaCNFIndice(IntToStrZero(P,2));
    if CNF = nil then
-      raise Exception.Create('Indice não encontrado!');
+      raise EACBrECFERRO.Create('Indice não encontrado!');
    sDescricao :=CNF.Descricao;
 //   {Remove o sinal da descrição}
 //   sDescricao[1]:= ' ';

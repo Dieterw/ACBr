@@ -228,7 +228,7 @@ end;
 procedure TACBrECFICash.Ativar;
 begin
   if not fpDevice.IsSerialPort  then
-     raise Exception.Create(ACBrStr('A impressora: '+fpModeloStr+' requer'+#10+
+     raise EACBrECFERRO.Create(ACBrStr('A impressora: '+fpModeloStr+' requer'+#10+
                             'Porta Serial:  (COM1, COM2, COM3, ...)'));
 
   inherited Ativar ; { Abre porta serial }
@@ -760,7 +760,7 @@ begin
 {  TODO: Mecanismo de vinculados
   if ImprimeVinculado then
      if fsVinculado then
-        raise Exception.Create(ACBrStr('Já existe Forma de Pagamento com '+#10+
+        raise EACBrECFERRO.Create(ACBrStr('Já existe Forma de Pagamento com '+#10+
                                'comprovante NAO fiscal vinculado pendente. '+#10+
                                'Impressora: '+fpModeloStr+' aceita apenas um '+#10+
                                'Comprovante não Fiscal Viculado por Cupom.'))
@@ -853,7 +853,7 @@ end;
 procedure TACBrECFICash.ProgramaAliquota(Aliquota: Double; Tipo: Char;
    Posicao : String);
 begin
-   raise Exception.Create( ACBrStr('ECF '+fpModeloStr+' só permite programação de Aliquotas'+
+   raise EACBrECFERRO.Create( ACBrStr('ECF '+fpModeloStr+' só permite programação de Aliquotas'+
                            ' em Estado de Intervenção técnica.')) ;
 end;
 
@@ -1321,12 +1321,12 @@ procedure TACBrECFICash.Sangria( const Valor: Double; Obs: AnsiString;
 begin
   CNF := AchaCNFDescricao(DescricaoCNF, True) ;
   if CNF = nil then
-     raise Exception.Create(ACBrStr('Não existe nenhum Comprovante Não Fiscal '+
+     raise EACBrECFERRO.Create(ACBrStr('Não existe nenhum Comprovante Não Fiscal '+
                             'cadastrado como: "'+DescricaoCNF+'"')) ;
 
   FPG := AchaFPGDescricao(DescricaoFPG, True) ;
   if FPG = nil then
-     raise Exception.Create(ACBrStr('Não existe nenhuma Forma de Pagamento '+
+     raise EACBrECFERRO.Create(ACBrStr('Não existe nenhuma Forma de Pagamento '+
                             'cadastrada como: "'+DescricaoFPG+'"')) ;
 
   Obs    := AjustaLinhas( Obs, Colunas, 8 );

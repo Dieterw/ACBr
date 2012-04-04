@@ -240,7 +240,7 @@ end;
 procedure TACBrECFQuattro.Ativar;
 begin
   if not fpDevice.IsSerialPort  then
-     raise Exception.Create(ACBrStr('A impressora: '+fpModeloStr+' requer'+#10+
+     raise EACBrECFERRO.Create(ACBrStr('A impressora: '+fpModeloStr+' requer'+#10+
                             'Porta Serial:  (COM1, COM2, COM3, ...)'));
 
 //  fpDevice.HandShake := hsDTR_DSR ;
@@ -847,7 +847,7 @@ Var CPF_CNPJ : String ;
 begin
   fpUltimaMsgPoucoPapel := 0 ;  { Zera tempo pra msg de pouco papel }
 //  if Estado = estRequerX then
-//     raise Exception.create(ACBrStr('Leitura X inicial ainda não foi emitida'));
+//     raise EACBrECFERRO.create(ACBrStr('Leitura X inicial ainda não foi emitida'));
 
   CPF_CNPJ := '' ;
   if (Consumidor.Documento <> '') then
@@ -1103,7 +1103,7 @@ begin
   end ;
 
   if ProxIndice > 15 then
-     raise Exception.create(ACBrStr('Não há espaço para programar novas Aliquotas'));
+     raise EACBrECFERRO.create(ACBrStr('Não há espaço para programar novas Aliquotas'));
 
   EnviaComando( '33' + Tipo + IntToStrZero(ProxIndice,2) + ValStr ) ;
 
@@ -1302,7 +1302,7 @@ begin
      Tipo := '+' ;
 
   if (pos(Tipo,'&+-') = 0) or (Length(Tipo) > 1) then
-     raise Exception.Create(ACBrStr('Os Tipos válidos para Quattro são:'+sLineBreak+
+     raise EACBrECFERRO.Create(ACBrStr('Os Tipos válidos para Quattro são:'+sLineBreak+
                             '&  Criaçao de um novo Grupo (Titulo)'+sLineBreak+
                             '+  Entrada de Recursos'+sLineBreak+
                             '-  Saida de Recursos') ) ;
@@ -1451,7 +1451,7 @@ end;
 procedure TACBrECFQuattro.CancelaImpressaoCheque;
 begin
    { Quattro não possui comando para cancelar a impressão de cheques}
-   raise Exception.Create(ACBrStr('Impressora '+fpModeloStr+ ' não possui comando para '+
+   raise EACBrECFERRO.Create(ACBrStr('Impressora '+fpModeloStr+ ' não possui comando para '+
                           'cancelar a impressão de cheques. ' + sLineBreak +
                           'Por favor desligue e ligue a impressora ou insira '+
                           'um documento.'));

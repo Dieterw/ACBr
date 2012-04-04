@@ -232,7 +232,7 @@ end;
 procedure TACBrECFYanco.Ativar;
 begin
   if not fpDevice.IsSerialPort  then
-     raise Exception.Create(ACBrStr('Esse modelo de impressora requer'+#10+
+     raise EACBrECFERRO.Create(ACBrStr('Esse modelo de impressora requer'+#10+
                             'Porta Serial:  (COM1, COM2, COM3, ...)'));
 
   fpDevice.HandShake := hsRTS_CTS ;
@@ -839,7 +839,7 @@ begin
   FPG := AchaFPGIndice( CodFormaPagto ) ;
 
   if FPG = nil then
-     raise Exception.create( ACBrStr('Forma de Pagamento: '+CodFormaPagto+
+     raise EACBrECFERRO.create( ACBrStr('Forma de Pagamento: '+CodFormaPagto+
                              ' não foi cadastrada.' )) ;
 
   COO := Poem_Zeros( trim(COO) ,6) ;

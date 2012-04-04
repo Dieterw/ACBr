@@ -280,7 +280,7 @@ function TACBrECFSCUComando.GetComando: AnsiString;
       CHK : Byte ;
 begin
   if (fsCMD = 255) and (fsEXT = 0) then
-     raise Exception.Create(ACBrStr('Para comandos 255, EXT deve ser especificado')) ;
+     raise EACBrECFERRO.Create(ACBrStr('Para comandos 255, EXT deve ser especificado')) ;
 
   BCD := '' ;
   For I := 0 to fsParams.Count-1 do
@@ -408,7 +408,7 @@ begin
   CHK := Soma mod 256  ;
 
   if CHK <> fsCHK then
-     raise Exception.Create(ACBrStr('CheckSum da Resposta é inválido'));
+     raise EACBrECFERRO.Create(ACBrStr('CheckSum da Resposta é inválido'));
 
 (*  { Convertendo caracteres de comando para Hexa para poder armazenar
     corretamente no TStringList }
@@ -456,7 +456,7 @@ end;
 procedure TACBrECFSCU.Ativar;
 begin
   if not fpDevice.IsSerialPort  then
-     raise Exception.Create(ACBrStr('A impressora: '+fpModeloStr+' requer'+#10+
+     raise EACBrECFERRO.Create(ACBrStr('A impressora: '+fpModeloStr+' requer'+#10+
                             'Porta Serial:  (COM1, COM2, COM3, ...)'));
 
   inherited Ativar ; { Abre porta serial }
@@ -554,10 +554,10 @@ begin
   BCD := copy(CmdExtBcd,3,Length(CmdExtBcd) ) ;
 
   if (CMD = 255) and (EXT = 0) then
-     raise Exception.Create(ACBrStr('Erro ! CMD = 255 e EXT = 0')) ;
+     raise EACBrECFERRO.Create(ACBrStr('Erro ! CMD = 255 e EXT = 0')) ;
 
   if (CMD <> 255) and (EXT <> 0) then
-     raise Exception.Create(ACBrStr('Erro ! EXT deve ser 0')) ;
+     raise EACBrECFERRO.Create(ACBrStr('Erro ! EXT deve ser 0')) ;
 
   SCUComando.CMD := CMD ;
   SCUComando.EXT := EXT ;

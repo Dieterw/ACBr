@@ -449,7 +449,7 @@ begin
 
   Tamanho := Length(Trim(Value)) ;
   if (Tamanho <> 2) and (Tamanho <> 4) then
-     raise Exception.Create(ACBrStr('Comando Epson deve ter 4 Caracteres em Hexadecimal')) ;
+     raise EACBrECFERRO.Create(ACBrStr('Comando Epson deve ter 4 Caracteres em Hexadecimal')) ;
 
   { Zerando instrucoes adicionais do comando }
   fsParams.Clear ;
@@ -467,7 +467,7 @@ procedure TACBrECFEpsonComando.SetExtensao(const Value: AnsiString);
 begin
   Tamanho := Length(Trim(Value)) ;
   if (Tamanho <> 2) and (Tamanho <> 4) then
-     raise Exception.Create(ACBrStr('Extensao de Comando Epson deve ter 4 Caracteres em Hexadecimal')) ;
+     raise EACBrECFERRO.Create(ACBrStr('Extensao de Comando Epson deve ter 4 Caracteres em Hexadecimal')) ;
 
   if Tamanho = 2 then
      fsExtensao := Value
@@ -553,22 +553,22 @@ begin
   fsResposta := Value ;
 
   if LeftStr(fsResposta,1) <> STX then
-     raise Exception.Create(ACBrStr('Resposta inválida. Não inicia com STX (02)')) ;
+     raise EACBrECFERRO.Create(ACBrStr('Resposta inválida. Não inicia com STX (02)')) ;
 
   if copy(fsResposta,Length(fsResposta)-4,1) <> ETX then
-     raise Exception.Create(ACBrStr('Resposta inválida. Não finaliza com ETX (03)')) ;
+     raise EACBrECFERRO.Create(ACBrStr('Resposta inválida. Não finaliza com ETX (03)')) ;
 
   if fsOwner.VerificaChecksum then
   begin
      fsChkSum := RightStr(fsResposta,4) ;
      if EpsonCheckSum( copy(fsResposta,1,Length(fsResposta)-4) ) <> fsChkSum then
-        raise Exception.create(ACBrStr('Resposta inválida. CheckSum da Resposta não está correto.')) ;
+        raise EACBrECFERRO.create(ACBrStr('Resposta inválida. CheckSum da Resposta não está correto.')) ;
   end ;
 
   try
      fsSeq := ord(fsResposta[2]) ;
   except
-     raise Exception.Create(ACBrStr('Resposta inválida. Num.Sequencia inválido')) ;
+     raise EACBrECFERRO.Create(ACBrStr('Resposta inválida. Num.Sequencia inválido')) ;
   end ;
 
   { Pega apenas o Frame de Dados }
@@ -589,7 +589,7 @@ begin
   end ;
 
   if fsParams.Count < 4 then
-     raise Exception.Create(ACBrStr('Resposta Incompleta'));
+     raise EACBrECFERRO.Create(ACBrStr('Resposta Incompleta'));
 
   { Removendo Status Printer de fsParams }
   try
@@ -597,7 +597,7 @@ begin
   except
      on E : Exception do
      begin
-        raise Exception.Create(ACBrStr('Resposta Inválida. Erro ao calcular Status da Impressora')+sLineBreak+
+        raise EACBrECFERRO.Create(ACBrStr('Resposta Inválida. Erro ao calcular Status da Impressora')+sLineBreak+
                                E.Message) ;
      end ;
   end ;
@@ -609,7 +609,7 @@ begin
   except
      on E : Exception do
      begin
-        raise Exception.Create(ACBrStr('Resposta Inválida. Erro ao calcular Status Fiscal')+sLineBreak+
+        raise EACBrECFERRO.Create(ACBrStr('Resposta Inválida. Erro ao calcular Status Fiscal')+sLineBreak+
                                E.Message) ;
      end ;
   end ;
@@ -623,7 +623,7 @@ begin
   except
      on E : Exception do
      begin
-        raise Exception.Create(ACBrStr('Resposta Inválida. Erro ao calcular Cod.Retorno')+sLineBreak+
+        raise EACBrECFERRO.Create(ACBrStr('Resposta Inválida. Erro ao calcular Cod.Retorno')+sLineBreak+
                                E.Message) ;
      end ;
   end ;
@@ -1009,7 +1009,7 @@ end ;
 procedure TACBrECFEpson.Ativar;
 begin
   if not fpDevice.IsSerialPort  then
-     raise Exception.Create(ACBrStr('A impressora: '+fpModeloStr+' requer'+sLineBreak+
+     raise EACBrECFERRO.Create(ACBrStr('A impressora: '+fpModeloStr+' requer'+sLineBreak+
                             'Porta Serial:  (COM1, COM2, COM3, ...)'));
 
   GravaLog( 'ACBrDevice.Ativar' );
@@ -1149,7 +1149,7 @@ begin
      Try
         EpsonResposta.Resposta := fpRespostaComando ;
         if EpsonResposta.Seq <> EpsonComando.Seq then
-           raise Exception.Create(ACBrStr('Sequencia de Resposta diferente da enviada')) ;
+           raise EACBrECFERRO.Create(ACBrStr('Sequencia de Resposta diferente da enviada')) ;
 
         fpDevice.Serial.SendByte(ACK);
 
@@ -1205,7 +1205,7 @@ begin
      end ;
 
      if SL.Count < 1 then
-        raise Exception.create(ACBrStr('Erro ao informar comando.  Use:'+sLineBreak+
+        raise EACBrECFERRO.create(ACBrStr('Erro ao informar comando.  Use:'+sLineBreak+
                                'Comando(4 Hex) #28 Extensao(4 Hex) [ #28 PARAM1 [ #28 PARAM2 ... ]] '+sLineBreak+sLineBreak+
                                'Exemplo, Para emitir Leitura X use: '+sLineBreak+
                                'EnviaComando("0802" + #28 + "0000" ) ') );
@@ -1807,7 +1807,7 @@ begin
                  FechaRelatorio ;
               except
                  { Se não conseguiu Fechar Relatorio, dispara Msg de exceção original }
-                 raise Exception.Create( Erro );
+                 raise EACBrECFERRO.Create( Erro );
               end ;
             end
            else
@@ -2198,7 +2198,7 @@ begin
   end ;
 
   if ProxIndice > 20 then
-     raise Exception.create(ACBrStr('Não há espaço para programar novas Formas de '+
+     raise EACBrECFERRO.create(ACBrStr('Não há espaço para programar novas Formas de '+
                             'Pagamento'));
 
   EpsonComando.Comando := '050C' ;
@@ -2324,7 +2324,7 @@ begin
   FPG := AchaFPGIndice( CodFormaPagto ) ;
 
   if FPG = nil then
-     raise Exception.create( ACBrStr('Forma de Pagamento: '+CodFormaPagto+
+     raise EACBrECFERRO.create( ACBrStr('Forma de Pagamento: '+CodFormaPagto+
                              ' não foi cadastrada.') ) ;
 
   EpsonComando.Comando := '0E30' ;
@@ -3235,7 +3235,7 @@ procedure TACBrECFEpson.LoadDLLFunctions ;
      if not FunctionDetect( sLibName, FuncName, LibPointer) then
      begin
         LibPointer := NIL ;
-        raise Exception.Create( ACBrStr( 'Erro ao carregar a função:'+FuncName+' de: '+cLIB_Epson ) ) ;
+        raise EACBrECFERRO.Create( ACBrStr( 'Erro ao carregar a função:'+FuncName+' de: '+cLIB_Epson ) ) ;
      end ;
    end ;
  end ;
@@ -3258,7 +3258,7 @@ begin
   GravaLog( 'xEPSON_Serial_Abrir_Porta' );
   Resp := xEPSON_Serial_Abrir_Porta( fpDevice.Baud, Porta ) ;
   if Resp <> 0 then
-     raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao abrir a Porta com:'+sLineBreak+
+     raise EACBrECFERRO.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao abrir a Porta com:'+sLineBreak+
         'EPSON_Serial_Abrir_Porta('+IntToStr(fpDevice.Baud)+', '+IntToStr(Porta)+')' ));
 end ;
 
@@ -3269,7 +3269,7 @@ begin
   GravaLog( 'xEPSON_Serial_Fechar_Porta' ) ;
   Resp := xEPSON_Serial_Fechar_Porta ;
   if Resp <> 0 then
-     raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao Fechar a Porta com:'+sLineBreak+
+     raise EACBrECFERRO.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao Fechar a Porta com:'+sLineBreak+
         'EPSON_Serial_Fechar_Porta' ));
 
   GravaLog( 'Ativar ACBr: '+ifthen(OldAtivo,'SIM','NAO') ) ;
@@ -3322,7 +3322,7 @@ begin
                                         0,                // Nao Gera Sintegra
                                         ArqTmp );
     if (Resp <> 0) then
-      raise Exception.Create( ACBrStr( 'Erro ao executar EPSON_Obter_Dados_MF_MFD.'+sLineBreak+
+      raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar EPSON_Obter_Dados_MF_MFD.'+sLineBreak+
                                        'Cod.: '+IntToStr(Resp) ))
   finally
     FechaPortaSerialDLL(OldAtivo) ;
@@ -3331,12 +3331,12 @@ begin
   if FileExists( ArqTmp + '_ESP.txt' ) then
    begin
      if not CopyFileTo( ArqTmp + '_ESP.txt', NomeArquivo ) then
-        raise Exception.Create( ACBrStr( 'Erro ao copiar: '+sLineBreak+
+        raise EACBrECFERRO.Create( ACBrStr( 'Erro ao copiar: '+sLineBreak+
                                 ArqTmp + '_ESP.txt'+sLineBreak+
                                 'para'+sLineBreak+NomeArquivo ))
    end
   else
-     raise Exception.Create( ACBrStr( 'Erro na execução de EPSON_Obter_Dados_MF_MFD.'+sLineBreak+
+     raise EACBrECFERRO.Create( ACBrStr( 'Erro na execução de EPSON_Obter_Dados_MF_MFD.'+sLineBreak+
                             'Arquivo: '+ArqTmp + '_ESP.txt não gerado' ))
 end;
 
@@ -3367,7 +3367,7 @@ begin
                                         0,                // Nao Gera Sintegra
                                         ArqTmp );
     if (Resp <> 0) then
-      raise Exception.Create( ACBrStr( 'Erro ao executar EPSON_Obter_Dados_MF_MFD.'+sLineBreak+
+      raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar EPSON_Obter_Dados_MF_MFD.'+sLineBreak+
                                        'Cod.: '+IntToStr(Resp) ))
   finally
     FechaPortaSerialDLL(OldAtivo);
@@ -3376,12 +3376,12 @@ begin
   if FileExists( ArqTmp + '_ESP.txt' ) then
    begin
      if not CopyFileTo( ArqTmp + '_ESP.txt', NomeArquivo ) then
-        raise Exception.Create( ACBrStr( 'Erro ao copiar: '+sLineBreak+
+        raise EACBrECFERRO.Create( ACBrStr( 'Erro ao copiar: '+sLineBreak+
                                 ArqTmp + '_ESP.txt'+sLineBreak+
                                 'para'+sLineBreak+NomeArquivo ))
    end
   else
-     raise Exception.Create( ACBrStr( 'Erro na execução de EPSON_Obter_Dados_MF_MFD.'+sLineBreak+
+     raise EACBrECFERRO.Create( ACBrStr( 'Erro na execução de EPSON_Obter_Dados_MF_MFD.'+sLineBreak+
                             'Arquivo: "'+ArqTmp + '_ESP.txt" não gerado' ))
 end;
 
@@ -3420,7 +3420,7 @@ begin
                                         0,                // Nao Gera Sintegra
                                         ArqTmp );
     if (Resp <> 0) then
-      raise Exception.Create( ACBrStr( 'Erro ao executar EPSON_Obter_Dados_MF_MFD.'+sLineBreak+
+      raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar EPSON_Obter_Dados_MF_MFD.'+sLineBreak+
                                        'Cod.: '+IntToStr(Resp) ))
   finally
     FechaPortaSerialDLL(OldAtivo);
@@ -3429,12 +3429,12 @@ begin
   if FileExists( ArqTmp + '_CTP.txt' ) then
    begin
      if not CopyFileTo( ArqTmp + '_CTP.txt', NomeArquivo ) then
-        raise Exception.Create( ACBrStr( 'Erro ao copiar: '+sLineBreak+
+        raise EACBrECFERRO.Create( ACBrStr( 'Erro ao copiar: '+sLineBreak+
                                 ArqTmp + '_CTP.txt'+sLineBreak+
                                 'para'+sLineBreak+NomeArquivo ))
    end
   else
-     raise Exception.Create( ACBrStr( 'Erro na execução de EPSON_Obter_Dados_MF_MFD.'+sLineBreak+
+     raise EACBrECFERRO.Create( ACBrStr( 'Erro na execução de EPSON_Obter_Dados_MF_MFD.'+sLineBreak+
                             'Arquivo: '+ArqTmp + '_CTP.txt não gerado' ))
 end;
 
@@ -3451,7 +3451,7 @@ begin
   // Extraido do Manual da Epson:
   // Leituras somente podem ser realizadas por faixa de CRZ ou Data de Movimento
   if TipoContador = tpcCOO then
-     raise Exception.Create( ACBrStr(cACBrECFPAFFuncaoNaoSuportada) ) ;
+     raise EACBrECFERRO.Create( ACBrStr(cACBrECFPAFFuncaoNaoSuportada) ) ;
 
   LoadDLLFunctions ;
 
@@ -3480,7 +3480,7 @@ begin
                                         0,                // Nao Gera Sintegra
                                         ArqTmp );
     if (Resp <> 0) then
-      raise Exception.Create( ACBrStr( 'Erro ao executar EPSON_Obter_Dados_MF_MFD.'+sLineBreak+
+      raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar EPSON_Obter_Dados_MF_MFD.'+sLineBreak+
                                        'Cod.: '+IntToStr(Resp) ))
   finally
     FechaPortaSerialDLL(OldAtivo) ;
@@ -3489,12 +3489,12 @@ begin
   if FileExists( ArqTmp + '_CTP.txt' ) then
    begin
      if not CopyFileTo( ArqTmp + '_CTP.txt', NomeArquivo ) then
-        raise Exception.Create( ACBrStr( 'Erro ao copiar: '+sLineBreak+
+        raise EACBrECFERRO.Create( ACBrStr( 'Erro ao copiar: '+sLineBreak+
                                 ArqTmp + '_CTP.txt'+sLineBreak+
                                 'para'+sLineBreak+NomeArquivo ))
    end
   else
-     raise Exception.Create( ACBrStr( 'Erro na execução de EPSON_Obter_Dados_MF_MFD.'+sLineBreak+
+     raise EACBrECFERRO.Create( ACBrStr( 'Erro na execução de EPSON_Obter_Dados_MF_MFD.'+sLineBreak+
                             'Arquivo: "'+ArqTmp + '_CTP.txt" não gerado' ))
 end;
 
@@ -3623,7 +3623,7 @@ begin
   Descricao := Copy(Trim(Descricao),1,15);
 
   if AchaRGDescricao(Descricao, True)<>nil then
-     raise Exception.Create(ACBrStr('Relatório Gerencial ('+Descricao+') já existe.')) ;
+     raise EACBrECFERRO.Create(ACBrStr('Relatório Gerencial ('+Descricao+') já existe.')) ;
 
   EpsonComando.Comando  := '0570';
   EpsonComando.Extensao := '0000';

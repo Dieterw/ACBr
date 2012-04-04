@@ -961,9 +961,12 @@ begin
       end;
 
   {$IFDEF PL_104}
-      CTe.Aereo.natCarga.xDime     := Leitor.rCampo(tcStr,'xDime');
-      CTe.Aereo.natCarga.cinfManu  := Leitor.rCampo(tcInt,'cInfManu');
-      CTe.Aereo.natCarga.cIMP      := Leitor.rCampo(tcStr,'cIMP');
+      if Leitor.rExtrai(3, 'natCarga') <> '' then
+       begin
+         CTe.Aereo.natCarga.xDime     := Leitor.rCampo(tcStr,'xDime');
+         CTe.Aereo.natCarga.cinfManu  := Leitor.rCampo(tcInt,'cInfManu');
+         CTe.Aereo.natCarga.cIMP      := Leitor.rCampo(tcStr,'cIMP');
+       end;  
   {$ENDIF}
     end; // fim das informações do modal Aéreo
 

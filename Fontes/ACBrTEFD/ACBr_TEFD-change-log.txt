@@ -48,9 +48,13 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 Data:  04/04/2012
--- ACBrTEFAuttar --
+-- ACBrTEFDAuttar --
 [-] TEF Auttar deve emitir msg de Desfazimento apenas no Final de todas
     transações  (por: Juliomar Marchetti)
+
+-- ACBrTEFDVeSPague --
+[-] Modicada assinatura do Evento OnObtemCampo, para usar String ao invez de
+    AnsiString no parâmetro var Resposta. (por: Giuliano Naspolini Ribeiro)
 
 Data:  01/03/2012  = Ver: 2.00
 -- ACBrTEFD --

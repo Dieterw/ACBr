@@ -118,7 +118,7 @@ type
      Memo: TStringList; var ItemSelecionado : Integer) of object ;
 
   TACBrTEFDVeSPagueObtemCampo = procedure( Titulo : String;
-    Mascara : String; Tipo : AnsiChar; var Resposta : AnsiString;
+    Mascara : String; Tipo : AnsiChar; var Resposta : String;
     var Digitado : Boolean ) of object ;
 
   { TACBrTEFDVeSPague }
@@ -1214,7 +1214,8 @@ end;
 
 procedure TACBrTEFDVeSPague.ProcessarColeta ;
 var
-  Mensagem, Mascara, Resposta, Msg : AnsiString ;
+  Mensagem, Mascara, Msg : AnsiString ;
+  Resposta : String ;
   Tipo : AnsiChar ;
   OpcoesMenu, Video_Mensagem : TStringList ;
   ItemSelecionado, OldSeq : Integer ;

@@ -1644,7 +1644,9 @@ begin
             IfThen(MsgStr <> '' , sLineBreak+sLineBreak, '' ) +
             MsgStr ;
 
-  TACBrTEFD(Owner).DoExibeMsg( opmOK, MsgStr ) ;
+  { TEF Auttar deve emitir msg apenas no Final de todos Desfazimentos }
+  if Tipo <> gpTefAuttar then
+     TACBrTEFD(Owner).DoExibeMsg( opmOK, MsgStr ) ;
 end;
 
 procedure TACBrTEFDClass.AtivarGP;
@@ -2023,6 +2025,11 @@ begin
            ArquivosVerficar.Delete( 0 );
          end;
      end;
+
+     { TEF Auttar deve emitir msg apenas no Final de todos Desfazimentos }
+     if Tipo = gpTefAuttar then
+        if RespostasCanceladas.count > 0 then
+           TACBrTEFD(Owner).DoExibeMsg( opmOK, 'Transação TEF não Efetuada Reter o Cupom Fiscal!' ) ;
   finally
      ArquivosVerficar.Free;
      RespostasCanceladas.Free;

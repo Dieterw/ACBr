@@ -1788,7 +1788,7 @@ function TACBrECFClass.VerificaFimLeitura(var Retorno: AnsiString;
    var TempoLimite: TDateTime) : Boolean ;
 begin
   Result := False;
-  raise EACBrECFErro.Create( ACBrStr(Format(cACBrECFVerificaFimLeituraException), [ ModeloStr ])) ;
+  raise EACBrECFErro.Create( ACBrStr(Format(cACBrECFVerificaFimLeituraException, [ ModeloStr ]))) ;
 end;
 
 function TACBrECFClass.VerificaFimImpressao(var TempoLimite: TDateTime): Boolean;
@@ -2262,13 +2262,13 @@ Var
 begin
   CNF := AchaCNFDescricao(DescricaoCNF, True) ;
   if CNF = nil then
-     raise EACBrECFErro.Create( ACBrStr(Format(cACBrECFAchaCNFException),
-                                   [ DescricaoCNF ] )) ;
+     raise EACBrECFErro.Create( ACBrStr(Format(cACBrECFAchaCNFException,
+                                   [ DescricaoCNF ] ))) ;
 
   FPG := AchaFPGDescricao(DescricaoFPG, True) ;
   if FPG = nil then
-     raise EACBrECFErro.Create( ACBrStr(Format(cACBrECFAchaFPGException),
-                                   [ DescricaoFPG ])) ;
+     raise EACBrECFErro.Create( ACBrStr(Format(cACBrECFAchaFPGException,
+                                   [ DescricaoFPG ]))) ;
 
   NaoFiscalCompleto( CNF.Indice, Valor, FPG.Indice, Obs);
 end;

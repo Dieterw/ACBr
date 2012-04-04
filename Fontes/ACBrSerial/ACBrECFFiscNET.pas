@@ -349,7 +349,7 @@ TACBrECFFiscNET = class( TACBrECFClass )
 
 implementation
 Uses ACBrECF, ACBrConsts,
-     {$IFDEF COMPILER6_UP} DateUtils, StrUtils{$ELSE} ACBrD5, SysUtils, Windows{$ENDIF},
+     {$IFDEF COMPILER6_UP} DateUtils, StrUtils{$ELSE} ACBrD5, Windows{$ENDIF},
      SysUtils, Math, IniFiles ;
 
 { -------------------------  TACBrECFFiscNETComando -------------------------- }

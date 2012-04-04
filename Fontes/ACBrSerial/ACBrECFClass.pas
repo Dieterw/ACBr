@@ -58,12 +58,12 @@ uses ACBrDevice,
 type
 
 EACBrECFErro            = class(Exception) ;
-EACBrECFCMDInvalido     = class(EACBrECFErro) ;
-EACBrECFSemResposta     = class(EACBrECFErro) ;
-EACBrECFSemPapel        = class(EACBrECFErro) ;
-EACBrECFTimeOut         = class(EACBrECFErro) ;
-EACBrECFNaoInicializado = class(EACBrECFErro) ;
-EACBrECFOcupado         = class(EACBrECFErro) ;
+  EACBrECFCMDInvalido     = class(EACBrECFErro) ;
+  EACBrECFSemResposta     = class(EACBrECFErro) ;
+  EACBrECFSemPapel        = class(EACBrECFErro) ;
+  EACBrECFTimeOut         = class(EACBrECFErro) ;
+  EACBrECFNaoInicializado = class(EACBrECFErro) ;
+  EACBrECFOcupado         = class(EACBrECFErro) ;
 
 { Definindo novo tipo para armazenar os dados que irão compor o rodapé }
 
@@ -1061,7 +1061,7 @@ begin
      NewVar := 'T' ;
 
   if not (NewVar in ['T','S']) then
-     raise Exception.create(ACBrStr(cACBrECFAliquotaSetTipoException));
+     raise EACBrECFErro.create( ACBrStr(cACBrECFAliquotaSetTipoException));
   fsTipo := Value;
 end;
 
@@ -1186,10 +1186,10 @@ begin
   Endereco  := Trim( Endereco );
 
   if CPF_CNPJ = '' then
-     raise Exception.Create(ACBrStr(cACBrECFConsumidorCPFCNPJException)) ;
+     raise EACBrECFErro.Create( ACBrStr(cACBrECFConsumidorCPFCNPJException)) ;
 
   if (Nome = '') and (Endereco <> '') then
-     raise Exception.Create( ACBrStr(cACBrECFConsumidorNomeException) ) ;
+     raise EACBrECFErro.Create( ACBrStr(cACBrECFConsumidorNomeException) ) ;
 
   fsDocumento := CPF_CNPJ ;
   fsNome      := Nome ;
@@ -1334,7 +1334,7 @@ end;
 constructor TACBrECFClass.create( AOwner : TComponent ) ;
 begin
   if not (AOwner is TACBrECF) then
-     raise Exception.create( ACBrStr(cACBrECFClassCreateException) );
+     raise EACBrECFErro.create( ACBrStr(cACBrECFClassCreateException) );
 
   fpOwner := AOwner ;
 
@@ -1788,7 +1788,7 @@ function TACBrECFClass.VerificaFimLeitura(var Retorno: AnsiString;
    var TempoLimite: TDateTime) : Boolean ;
 begin
   Result := False;
-  raise Exception.Create(Format(ACBrStr(cACBrECFVerificaFimLeituraException), [ ModeloStr ])) ;
+  raise EACBrECFErro.Create( ACBrStr(Format(cACBrECFVerificaFimLeituraException), [ ModeloStr ])) ;
 end;
 
 function TACBrECFClass.VerificaFimImpressao(var TempoLimite: TDateTime): Boolean;
@@ -2262,12 +2262,12 @@ Var
 begin
   CNF := AchaCNFDescricao(DescricaoCNF, True) ;
   if CNF = nil then
-     raise Exception.Create(Format(ACBrStr(cACBrECFAchaCNFException),
+     raise EACBrECFErro.Create( ACBrStr(Format(cACBrECFAchaCNFException),
                                    [ DescricaoCNF ] )) ;
 
   FPG := AchaFPGDescricao(DescricaoFPG, True) ;
   if FPG = nil then
-     raise Exception.Create(Format(ACBrStr(cACBrECFAchaFPGException),
+     raise EACBrECFErro.Create( ACBrStr(Format(cACBrECFAchaFPGException),
                                    [ DescricaoFPG ])) ;
 
   NaoFiscalCompleto( CNF.Indice, Valor, FPG.Indice, Obs);
@@ -3575,7 +3575,7 @@ end;
     {$ENDIF}
 
     if Assigned(fsFormMsg) then
-       Raise Exception.Create(ACBrStr(cACBrECFFormMsgDoProcedureException)) ;
+       Raise EACBrECFErro.Create( ACBrStr(cACBrECFFormMsgDoProcedureException)) ;
 
     fsFormMsg  := TForm.create( Application ) ;
 
@@ -3626,7 +3626,7 @@ end;
         end ;
 
        if fsFormMsgException <> '' then
-          raise Exception.Create( ACBrStr(fsFormMsgException) ) ;
+          raise EACBrECFErro.Create( ACBrStr(fsFormMsgException) ) ;
     finally
        {$IFDEF VisualCLX}
        Application.OnEvent := OldOnEvent;

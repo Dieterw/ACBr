@@ -612,7 +612,7 @@ var
   wRetentar : Boolean ;
 begin
   if not fpDevice.IsSerialPort  then
-     raise Exception.Create(ACBrStr('A impressora: '+fpModeloStr+' requer'+sLineBreak+
+     raise EACBrECFErro.Create( ACBrStr('A impressora: '+fpModeloStr+' requer'+sLineBreak+
                             'Porta Serial:  (COM1, COM2, COM3, ...)'));
 
   fpDevice.HandShake := hsRTS_CTS ;
@@ -915,7 +915,7 @@ begin
            Result := (Length( RetCmd ) >= 2) ;
          end
         else
-           raise Exception.Create(ACBrStr('ACK diferente de 6'));
+           raise EACBrECFErro.Create( ACBrStr('ACK diferente de 6'));
      except
        On E: Exception do
        begin
@@ -1905,7 +1905,7 @@ begin
   if fpMFD then
    begin
      if AchaRGDescricao(Descricao, True) <> nil then
-        raise Exception.Create(ACBrStr('Relatório Gerencial ('+Descricao+') já existe.')) ;
+        raise EACBrECFErro.Create( ACBrStr('Relatório Gerencial ('+Descricao+') já existe.')) ;
 
      if (ProxIndice < 2) or (ProxIndice > 30) then { Indice passado é válido ? }
      begin
@@ -1917,12 +1917,12 @@ begin
      end ;
 
      if ProxIndice > 30 then
-        raise Exception.create(ACBrStr('Não há espaço para programar novos RGs'));
+        raise EACBrECFErro.create( ACBrStr('Não há espaço para programar novos RGs'));
 
      EnviaComando( #82 + IntToStrZero(ProxIndice,2) + PadL(Descricao,17) ) ;
    end
   else
-     raise Exception.Create(ACBrStr('Impressoras sem MFD não suportam Programação de Relatórios Gerenciais'));
+     raise EACBrECFErro.Create( ACBrStr('Impressoras sem MFD não suportam Programação de Relatórios Gerenciais'));
 
   CarregaRelatoriosGerenciais ;
 end;
@@ -2015,7 +2015,7 @@ begin
      ProxIndice := ComprovantesNaoFiscais.Count + 1 ;
 
   if ProxIndice > 50 then
-     raise Exception.create(ACBrStr('Não há espaço para programar novos Comprovantes'+
+     raise EACBrECFErro.create( ACBrStr('Não há espaço para programar novos Comprovantes'+
                             ' não Fiscais'));
 
   BytesResp := 0 ;
@@ -2044,7 +2044,7 @@ begin
 
   Modelo := fsModelosCheque.AchaModeloBanco( Banco ) ;
   if Modelo = nil then
-     raise Exception.create(ACBrStr('Modelo de cheque do Banco: '+Banco+
+     raise EACBrECFErro.create( ACBrStr('Modelo de cheque do Banco: '+Banco+
                             ' não encontrado'));
   BytesResp := 0 ;
   with Modelo do
@@ -2078,7 +2078,7 @@ procedure TACBrECFBematech.ImpactoAgulhas( NivelForca : Integer = 2);
 Var Value : Integer ;
 begin
   if fs25MFD or ( StrToIntDef( NumVersao,0 ) < 310) then
-     raise Exception.Create(ACBrStr('Comando para aumentar o impacto das agulhas '+
+     raise EACBrECFErro.Create( ACBrStr('Comando para aumentar o impacto das agulhas '+
                             'não disponível neste modelo de ECF.')) ;
 
   Value := min(max(NivelForca,3),1) ;
@@ -2100,7 +2100,7 @@ begin
      Espera := 10 ;
      RG  := AchaRGIndice( IndiceStr ) ;
      if RG = nil then
-        raise Exception.create( ACBrStr('Relatório Gerencial: '+IndiceStr+
+        raise EACBrECFErro.create( ACBrStr('Relatório Gerencial: '+IndiceStr+
                                 ' não foi cadastrado.' ));
 
      EnviaComando( #83 + IndiceStr, Espera);
@@ -2154,7 +2154,7 @@ begin
   FPG := AchaFPGIndice( CodFormaPagto ) ;
 
   if FPG = nil then
-     raise Exception.create( ACBrStr('Forma de Pagamento: '+CodFormaPagto+
+     raise EACBrECFErro.create( ACBrStr('Forma de Pagamento: '+CodFormaPagto+
                              ' não foi cadastrada.') ) ;
 
   COO       := Poem_Zeros( trim(COO) ,6) ;
@@ -2665,7 +2665,7 @@ begin
    begin
      FPG := AchaFPGIndice(CodFormaPagto) ;
      if FPG = nil then
-        raise Exception.create( ACBrStr('Forma de pagamento: '+CodFormaPagto+
+        raise EACBrECFErro.create( ACBrStr('Forma de pagamento: '+CodFormaPagto+
                                 ' não encontrada'));
 
      AguardaImpressao := True ;
@@ -2720,7 +2720,7 @@ begin
   else
    begin
      if fsNFCodCNF <> '' then
-        raise Exception.Create(ACBrStr('Essa versão de ECF apenas permite o registro '+
+        raise EACBrECFErro.Create( ACBrStr('Essa versão de ECF apenas permite o registro '+
                                'de 1 Item não Fiscal'));
 
      fsNFCodCNF := CodCNF ;
@@ -3404,15 +3404,15 @@ begin
   ByteReg := StrToIntDef( Registrador, 0 ) ;
 
   Case ByteReg of
-      //Nota: Conforme os manuais da Bematech (ECFs MP2100, MP3000 e MP4000),
-      //      os valores dos registradores 0, 1, 2, 32, 33 e 34 só devem ser
-      //      usados para impressoras MP20 e MP40.
+     //Nota: Conforme os manuais da Bematech (ECFs MP2100, MP3000 e MP4000),
+     //      os valores dos registradores 0, 1, 2, 32, 33 e 34 só devem ser
+     //      usados para impressoras MP20 e MP40.
      0            : begin BytesResp := 15 ; IsBCD := False ; end ;
+     //1,8,9,10,11,12,14,15,18,19,45,46,52,53,57,59,71 : BytesResp := 2 ; //Não são necessários pois o padrão é esse...
      2            : begin BytesResp := 33 ; IsBCD := False ; end ;
      3,68         : BytesResp := 9 ;
      4,5,22,30,66,77,78,79,80,81,82 : BytesResp := 7 ; //Apesar de documentados na MP4000 registradores 80,81,82 não funcionam no emulador nem na MP3000, é preciso testar numa MP4000
      6,7,27,31,41,54,55,56,67,253 : BytesResp := 3 ;
-     //1,8,9,10,11,12,14,15,18,19,45,46,52,53,57,59,71 : BytesResp := 2 ; //Não são necessários pois o padrão é esse...
      13           : begin BytesResp := 186 ; IsBCD := False ; end ;
      16,29,70     : IsBCD := False ;
      17,20,21,28,65,74,75,76,254 : begin BytesResp := 1 ; IsBCD := False ; end ;
@@ -3459,7 +3459,7 @@ procedure TACBrECFBematech.LoadDLLFunctions;
      if not FunctionDetect( sLibName, FuncName, LibPointer) then
      begin
         LibPointer := NIL ;
-        raise Exception.Create( ACBrStr( 'Erro ao carregar a função:'+FuncName+' de: '+LibName ) ) ;
+        raise EACBrECFErro.Create( ACBrStr( 'Erro ao carregar a função:'+FuncName+' de: '+LibName ) ) ;
      end ;
    end ;
  end ;
@@ -3515,7 +3515,7 @@ begin
   end ;
 
   if Resp <> 1 then
-     raise Exception.Create( ACBrStr('Erro em Bematech_FI_AbrePortaSerial'+sLineBreak+
+     raise EACBrECFErro.Create( ACBrStr('Erro em Bematech_FI_AbrePortaSerial'+sLineBreak+
                              AnalisarRetornoDll(Resp) ));
 end ;
 
@@ -3576,7 +3576,7 @@ begin
      RunCommand('./linuxmfd',Cmd,True) ;
 
      if not FileExists( ArqTmp ) then
-        raise Exception.Create( ACBrStr('Erro na execução do utilitário "linuxmfd" '+
+        raise EACBrECFErro.Create( ACBrStr('Erro na execução do utilitário "linuxmfd" '+
                                         'Arquivo: '+ArqTmp+' não foi criado' ) ) ;
 
      SysUtils.DeleteFile( NomeArquivo ) ;
@@ -3584,7 +3584,7 @@ begin
      RunCommand('./bemamfd2',Cmd,True) ;
 
      if not FileExists( NomeArquivo ) then
-        raise Exception.Create( ACBrStr( 'Erro na execução do utilitário "bemamfd2".'+sLineBreak+
+        raise EACBrECFErro.Create( ACBrStr( 'Erro na execução do utilitário "bemamfd2".'+sLineBreak+
                                 'Arquivo: "'+NomeArquivo + '" não gerado' )) ;
   finally
      DeleteFile( ArqTmp ) ;
@@ -3604,11 +3604,11 @@ begin
                                       Prop, cChavePublica, cChavePrivada );
 
      if (Resp <> 1) then
-        raise Exception.Create( ACBrStr( 'Erro ao executar Bematech_FI_EspelhoMFD.'+sLineBreak+
+        raise EACBrECFErro.Create( ACBrStr( 'Erro ao executar Bematech_FI_EspelhoMFD.'+sLineBreak+
                                          AnalisarRetornoDll(Resp) )) ;
 
      if not FileExists( NomeArquivo ) then
-        raise Exception.Create( ACBrStr( 'Erro na execução de Bematech_FI_EspelhoMFD.'+sLineBreak+
+        raise EACBrECFErro.Create( ACBrStr( 'Erro na execução de Bematech_FI_EspelhoMFD.'+sLineBreak+
                                 'Arquivo: "'+NomeArquivo + '" não gerado' )) ;
   finally
      xBematech_FI_FechaPortaSerial();
@@ -3641,7 +3641,7 @@ begin
      RunCommand('./linuxmfd',Cmd,True) ;
 
      if not FileExists( ArqTmp ) then
-        raise Exception.Create( ACBrStr('Erro na execução do utilitário "linuxmfd" '+
+        raise EACBrECFErro.Create( ACBrStr('Erro na execução do utilitário "linuxmfd" '+
                                         'Arquivo: '+ArqTmp+' não foi criado' ) ) ;
 
      SysUtils.DeleteFile( NomeArquivo ) ;
@@ -3649,7 +3649,7 @@ begin
      RunCommand('./bemamfd2',Cmd,True) ;
 
      if not FileExists( NomeArquivo ) then
-        raise Exception.Create( ACBrStr( 'Erro na execução do utilitário "bemamfd2".'+sLineBreak+
+        raise EACBrECFErro.Create( ACBrStr( 'Erro na execução do utilitário "bemamfd2".'+sLineBreak+
                                 'Arquivo: "'+NomeArquivo + '" não gerado' )) ;
   finally
      DeleteFile( ArqTmp ) ;
@@ -3667,11 +3667,11 @@ begin
                                       Prop, cChavePublica, cChavePrivada );
 
      if (Resp <> 1) then
-        raise Exception.Create( ACBrStr( 'Erro ao executar Bematech_FI_EspelhoMFD.'+sLineBreak+
+        raise EACBrECFErro.Create( ACBrStr( 'Erro ao executar Bematech_FI_EspelhoMFD.'+sLineBreak+
                                          AnalisarRetornoDll(Resp) )) ;
 
      if not FileExists( NomeArquivo ) then
-        raise Exception.Create( ACBrStr( 'Erro na execução de Bematech_FI_EspelhoMFD.'+sLineBreak+
+        raise EACBrECFErro.Create( ACBrStr( 'Erro na execução de Bematech_FI_EspelhoMFD.'+sLineBreak+
                                 'Arquivo: "'+NomeArquivo + '" não gerado' )) ;
   finally
      xBematech_FI_FechaPortaSerial();
@@ -3718,7 +3718,7 @@ begin
      RunCommand('./linuxmfd',Cmd,True) ;
 
      if not FileExists( ArqTmp ) then
-        raise Exception.Create( ACBrStr('Erro na execução do utilitário "linuxmfd" '+
+        raise EACBrECFErro.Create( ACBrStr('Erro na execução do utilitário "linuxmfd" '+
                                         'Arquivo: '+ArqTmp+' não foi criado' ) ) ;
 
      SysUtils.DeleteFile( NomeArquivo ) ;
@@ -3726,7 +3726,7 @@ begin
      RunCommand('./bemamfd2',Cmd,True) ;
 
      if not FileExists( NomeArquivo ) then
-        raise Exception.Create( ACBrStr( 'Erro na execução do utilitário "bemamfd2".'+sLineBreak+
+        raise EACBrECFErro.Create( ACBrStr( 'Erro na execução do utilitário "bemamfd2".'+sLineBreak+
                                 'Arquivo: "'+NomeArquivo + '" não gerado' )) ;
   finally
      DeleteFile( ArqTmp ) ;
@@ -3750,13 +3750,13 @@ begin
                                       cChavePublica, cChavePrivada, 1 ) ;
 
      if (Resp <> 1) then
-        raise Exception.Create( ACBrStr( 'Erro ao executar xBematech_FI_ArquivoMFD.'+sLineBreak+
+        raise EACBrECFErro.Create( ACBrStr( 'Erro ao executar xBematech_FI_ArquivoMFD.'+sLineBreak+
                                          AnalisarRetornoDll(Resp) )) ;
 
      FindFiles( FileMask, Arquivos );
 
      if Arquivos.Count < 1 then
-        raise Exception.Create( ACBrStr( 'Erro na execução de xBematech_FI_ArquivoMFD.'+sLineBreak+
+        raise EACBrECFErro.Create( ACBrStr( 'Erro na execução de xBematech_FI_ArquivoMFD.'+sLineBreak+
                                 'Arquivo: "'+NomeArquivo + '" não gerado' )) ;
 
      RenameFile( Arquivos[0], NomeArquivo );
@@ -3809,7 +3809,7 @@ begin
      RunCommand('./linuxmfd',Cmd,True) ;
 
      if not FileExists( ArqTmp ) then
-        raise Exception.Create( ACBrStr('Erro na execução do utilitário "linuxmfd" '+
+        raise EACBrECFErro.Create( ACBrStr('Erro na execução do utilitário "linuxmfd" '+
                                         'Arquivo: '+ArqTmp+' não foi criado' ) ) ;
 
      SysUtils.DeleteFile( NomeArquivo ) ;
@@ -3817,7 +3817,7 @@ begin
      RunCommand('./bemamfd2',Cmd,True) ;
 
      if not FileExists( NomeArquivo ) then
-        raise Exception.Create( ACBrStr( 'Erro na execução do utilitário "bemamfd2".'+sLineBreak+
+        raise EACBrECFErro.Create( ACBrStr( 'Erro na execução do utilitário "bemamfd2".'+sLineBreak+
                                 'Arquivo: "'+NomeArquivo + '" não gerado' )) ;
   finally
      DeleteFile( ArqTmp ) ;
@@ -3838,13 +3838,13 @@ begin
      Resp := xBematech_FI_ArquivoMFD( '', COOIni, COOFim, 'C', Prop, Tipo,
                                       cChavePublica, cChavePrivada, 1 ) ;
      if (Resp <> 1) then
-        raise Exception.Create( ACBrStr( 'Erro ao executar xBematech_FI_ArquivoMFD.'+sLineBreak+
+        raise EACBrECFErro.Create( ACBrStr( 'Erro ao executar xBematech_FI_ArquivoMFD.'+sLineBreak+
                                          AnalisarRetornoDll(Resp) )) ;
 
      FindFiles( FileMask, Arquivos );
 
      if Arquivos.Count < 1 then
-        raise Exception.Create( ACBrStr( 'Erro na execução de xBematech_FI_ArquivoMFD.'+sLineBreak+
+        raise EACBrECFErro.Create( ACBrStr( 'Erro na execução de xBematech_FI_ArquivoMFD.'+sLineBreak+
                                 'Arquivo: "'+NomeArquivo + '" não gerado' )) ;
 
      RenameFile( Arquivos[0], NomeArquivo );
@@ -3873,7 +3873,7 @@ begin
     //Retorno.SaveToFile('c:\temp\retorno.txt');
 
     if Retorno.Text = '' then
-      raise Exception.Create('Nenhuma leitura serial não foi retornada pela impressora fiscal.');
+      raise EACBrECFErro.Create( 'Nenhuma leitura serial não foi retornada pela impressora fiscal.');
 
     PosCOO  := 0;
     ACOOIni := 0;
@@ -3905,10 +3905,10 @@ begin
     end ;
 
     if ACOOIni = 0 then
-       raise Exception.Create( ACBrStr('Periodo inicial - CRZ: '+CRZi+' não encontrado') );
+       raise EACBrECFErro.Create( ACBrStr('Periodo inicial - CRZ: '+CRZi+' não encontrado') );
 
     if ACOOFim = 0 then
-       raise Exception.Create( ACBrStr('Periodo final - CRZ: '+CRZf+' não encontrado') );
+       raise EACBrECFErro.Create( ACBrStr('Periodo final - CRZ: '+CRZf+' não encontrado') );
 
     GravaLog('CRZ Inicial: '+IntToStr(ACRZIni)+' - COO: '+IntToStr(ACOOIni) +sLineBreak +
              'CRZ Final: '+IntToStr(ACRZFim)+' - COO: '+IntToStr(ACOOFim) );

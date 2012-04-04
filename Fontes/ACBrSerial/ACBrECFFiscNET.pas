@@ -732,7 +732,9 @@ begin
         ErroMsg := ACBrStr('Erro retornado pela Impressora: '+fpModeloStr+#10+#10+
                    ErroMsg ) ;
 
-        if ( FiscNETResposta.CodRetorno in [ 7003, 7004, 15011 ] ) then
+        if (FiscNETResposta.CodRetorno = 7003) or
+           (FiscNETResposta.CodRetorno = 7004) or
+           (FiscNETResposta.CodRetorno = 15011) then
            DoOnErrorSemPapel
         else
            raise EACBrECFSemResposta.create(ErroMsg) ;

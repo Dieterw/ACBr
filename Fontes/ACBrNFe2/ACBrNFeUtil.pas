@@ -1009,7 +1009,8 @@ begin
     LayNfeInutilizacao  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe2.fazenda.pr.gov.br/nfe/NFeInutilizacao2', 'https://homologacao.nfe2.fazenda.pr.gov.br/nfe/NFeInutilizacao2');
     LayNfeConsulta      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe2.fazenda.pr.gov.br/nfe/NFeConsulta2', 'https://homologacao.nfe2.fazenda.pr.gov.br/nfe/NFeConsulta2');
     LayNfeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe2.fazenda.pr.gov.br/nfe/NFeStatusServico2', 'https://homologacao.nfe2.fazenda.pr.gov.br/nfe/NFeStatusServico2');
-//    LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, '', '');
+    // Incluido por Italo em 05/04/2012 a pedido de Paulo Madalozzo
+    LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe2.fazenda.pr.gov.br/nfe/CadConsultaCadastro2', 'https://homologacao.nfe2.fazenda.pr.gov.br/nfe/CadConsultaCadastro2');
 //    LayNfeCCe           : Result := NotaUtil.SeSenao(AAmbiente=1, '', '');
   end;
 end;

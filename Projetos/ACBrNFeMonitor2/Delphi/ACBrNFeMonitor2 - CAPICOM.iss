@@ -60,7 +60,7 @@ Source: ACBrNFeMonitor-change-log.txt; DestDir: {app}; Flags: ignoreversion; Com
 Source: ..\..\..\DLLs\Capicom\capicom.dll; DestDir: {sys}; Components: programa; Flags: regserver
 Source: ..\..\..\DLLs\Capicom\msxml5.dll; DestDir: {sys}; Components: programa; Flags: regserver
 Source: ..\..\..\DLLs\Capicom\msxml5r.dll; DestDir: {sys}; Flags: ; Components: programa
-Source: ..\..\..\DLLs\Capicom\instala.bat; DestDir: {app}; Flags: ; Components: programa
+;Source: ..\..\..\DLLs\Capicom\instala.bat; DestDir: {app}; Flags: ; Components: programa
 Source: ..\..\..\DLLs\OpenSSL\libeay32.dll; DestDir: {app}; Flags: ; Components: programa
 Source: ..\..\..\DLLs\OpenSSL\ssleay32.dll; DestDir: {app}; Flags: ; Components: programa
 Source: Report\DANFE_Rave513.rav; DestDir: {app}\Report; Flags: ; Components: programa
@@ -80,6 +80,5 @@ Name: {userstartup}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir: {
 Name: {group}\{cm:ProgramOnTheWeb,{#MyAppName}}; Filename: {app}\{#MyAppUrlName}; Components: help
 
 [Run]
-Filename: {app}\instala.bat; Description: {cm:LaunchProgram,instala.bat}; Flags: nowait postinstall skipifsilent
+;Filename: {app}\instala.bat; Description: {cm:LaunchProgram,instala.bat}; Flags: nowait postinstall skipifsilent
 Filename: {app}\{#MyAppExeName}; Description: {cm:LaunchProgram,{#MyAppName}}; Flags: nowait postinstall skipifsilent
-

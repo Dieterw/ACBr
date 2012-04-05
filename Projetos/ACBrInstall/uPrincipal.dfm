@@ -1,7 +1,7 @@
 object frmPrincipal: TfrmPrincipal
   Left = 0
   Top = 0
-  ActiveControl = lstMsgInstalacao
+  ActiveControl = wizPgInicio
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'Instalador ACBr'
@@ -24,7 +24,7 @@ object frmPrincipal: TfrmPrincipal
     Top = 0
     Width = 720
     Height = 500
-    ActivePage = wizPgInstalacao
+    ActivePage = wizPgInicio
     ButtonBarHeight = 42
     ButtonStart.Caption = 'Para o in'#237'cio'
     ButtonStart.NumGlyphs = 1
@@ -2318,9 +2318,9 @@ object frmPrincipal: TfrmPrincipal
       end
       object gbxFramePacotes: TGroupBox
         Left = 17
-        Top = 99
+        Top = 130
         Width = 519
-        Height = 272
+        Height = 241
         Caption = 'Marque os pacotes que deseja instalar'
         TabOrder = 3
         inline frameDpk: TframePacotes
@@ -2328,14 +2328,14 @@ object frmPrincipal: TfrmPrincipal
           Left = 5
           Top = 18
           Width = 509
-          Height = 249
+          Height = 218
           Align = alClient
           Color = clBtnFace
           ParentBackground = False
           ParentColor = False
           TabOrder = 0
           inherited pnlBotoesPacotes: TPanel
-            Top = 217
+            Top = 186
             Width = 509
             inherited btnPacotesDesmarcarTodos: TSpeedButton
               Left = 477
@@ -2345,6 +2345,22 @@ object frmPrincipal: TfrmPrincipal
             end
           end
         end
+      end
+      object ckbInstalarCapicom: TCheckBox
+        Left = 17
+        Top = 99
+        Width = 97
+        Height = 17
+        Caption = 'Instalar Capicom'
+        TabOrder = 4
+      end
+      object ckbInstalarOpenSSL: TCheckBox
+        Left = 150
+        Top = 99
+        Width = 97
+        Height = 17
+        Caption = 'Instalar OpenSSL'
+        TabOrder = 5
       end
     end
     object wizPgObterFontes: TJvWizardInteriorPage
@@ -2660,7 +2676,7 @@ object frmPrincipal: TfrmPrincipal
       object Label9: TLabel
         Left = 14
         Top = 19
-        Width = 313
+        Width = 312
         Height = 19
         Caption = 'Assistente de instala'#231#227'o do Projeto ACBr'
         Color = clWhite
@@ -2681,6 +2697,7 @@ object frmPrincipal: TfrmPrincipal
         Cursor = crHandPoint
         Animate = True
         Center = True
+        FrameIndex = 1
         Image.Data = {
           688B00004749463839613F012800F70000FFFFFFFFFFE5FFFFCCF7FAFDFFFF99
           FFF7B9FFF9A9FFFA84EAFA9EFFF573FFF74AFFFF00FFF268F2F478FFF456E9F5

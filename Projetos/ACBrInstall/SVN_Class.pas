@@ -55,9 +55,11 @@ type
   private
     class procedure SVNCollabNetExec(Params: String); static;
     class procedure SVNTortoiseExec( Params: String ); static;
-    class function  WinExecAndWait32(CmdLine: AnsiString; Visibility: Integer): DWORD; static;
   public
     class constructor Create;
+
+    // executar programa externo e aguardar o termino
+    class function  WinExecAndWait32(CmdLine: AnsiString; Visibility: Integer = SW_SHOW): DWORD; static;
 
     // Métodos que utilizam o tortoise
     class function IsTortoiseInstalado: Boolean; static;

@@ -2,7 +2,7 @@ object framePacotes: TframePacotes
   Left = 0
   Top = 0
   Width = 495
-  Height = 299
+  Height = 240
   Color = clBtnFace
   ParentBackground = False
   ParentColor = False
@@ -10,7 +10,7 @@ object framePacotes: TframePacotes
   object Label1: TLabel
     AlignWithMargins = True
     Left = 16
-    Top = 9
+    Top = 4
     Width = 85
     Height = 13
     Margins.Left = 5
@@ -25,7 +25,7 @@ object framePacotes: TframePacotes
   object Label2: TLabel
     AlignWithMargins = True
     Left = 256
-    Top = 9
+    Top = 4
     Width = 99
     Height = 13
     Margins.Left = 5
@@ -40,7 +40,7 @@ object framePacotes: TframePacotes
   object Label3: TLabel
     AlignWithMargins = True
     Left = 16
-    Top = 99
+    Top = 84
     Width = 99
     Height = 13
     Margins.Left = 5
@@ -55,7 +55,7 @@ object framePacotes: TframePacotes
   object Label4: TLabel
     AlignWithMargins = True
     Left = 256
-    Top = 99
+    Top = 84
     Width = 100
     Height = 13
     Margins.Left = 5
@@ -69,7 +69,7 @@ object framePacotes: TframePacotes
   end
   object pnlBotoesPacotes: TPanel
     Left = 0
-    Top = 267
+    Top = 208
     Width = 495
     Height = 32
     Align = alBottom
@@ -159,7 +159,7 @@ object framePacotes: TframePacotes
   object synapse_dpk: TCheckBox
     AlignWithMargins = True
     Left = 46
-    Top = 30
+    Top = 25
     Width = 116
     Height = 17
     Margins.Left = 25
@@ -182,7 +182,7 @@ object framePacotes: TframePacotes
   object ACBrComum_dpk: TCheckBox
     AlignWithMargins = True
     Left = 46
-    Top = 47
+    Top = 42
     Width = 116
     Height = 17
     Margins.Left = 25
@@ -205,7 +205,7 @@ object framePacotes: TframePacotes
   object ACBrDiversos_dpk: TCheckBox
     AlignWithMargins = True
     Left = 46
-    Top = 64
+    Top = 59
     Width = 116
     Height = 17
     Margins.Left = 25
@@ -228,7 +228,7 @@ object framePacotes: TframePacotes
   object ACBrSerial_dpk: TCheckBox
     AlignWithMargins = True
     Left = 286
-    Top = 30
+    Top = 25
     Width = 116
     Height = 17
     Margins.Left = 25
@@ -248,7 +248,7 @@ object framePacotes: TframePacotes
   object ACBrTCP_dpk: TCheckBox
     AlignWithMargins = True
     Left = 286
-    Top = 47
+    Top = 42
     Width = 116
     Height = 17
     Margins.Left = 25
@@ -268,7 +268,7 @@ object framePacotes: TframePacotes
   object ACBr_TEFD_dpk: TCheckBox
     AlignWithMargins = True
     Left = 286
-    Top = 64
+    Top = 59
     Width = 116
     Height = 17
     Margins.Left = 25
@@ -288,7 +288,7 @@ object framePacotes: TframePacotes
   object ACBr_Boleto_dpk: TCheckBox
     AlignWithMargins = True
     Left = 46
-    Top = 120
+    Top = 105
     Width = 116
     Height = 17
     Margins.Left = 25
@@ -308,7 +308,7 @@ object framePacotes: TframePacotes
   object ACBr_Sintegra_dpk: TCheckBox
     AlignWithMargins = True
     Left = 46
-    Top = 137
+    Top = 122
     Width = 116
     Height = 17
     Margins.Left = 25
@@ -328,7 +328,7 @@ object framePacotes: TframePacotes
   object ACBr_SPED_dpk: TCheckBox
     AlignWithMargins = True
     Left = 46
-    Top = 154
+    Top = 139
     Width = 116
     Height = 17
     Margins.Left = 25
@@ -348,7 +348,7 @@ object framePacotes: TframePacotes
   object ACBr_PAF_dpk: TCheckBox
     AlignWithMargins = True
     Left = 46
-    Top = 171
+    Top = 156
     Width = 116
     Height = 17
     Margins.Left = 25
@@ -368,7 +368,7 @@ object framePacotes: TframePacotes
   object ACBrOpenSSL_dpk: TCheckBox
     AlignWithMargins = True
     Left = 286
-    Top = 120
+    Top = 105
     Width = 116
     Height = 17
     Margins.Left = 25
@@ -388,7 +388,7 @@ object framePacotes: TframePacotes
   object ACBrCapicom_dpk: TCheckBox
     AlignWithMargins = True
     Left = 286
-    Top = 137
+    Top = 122
     Width = 116
     Height = 17
     Margins.Left = 25
@@ -408,7 +408,7 @@ object framePacotes: TframePacotes
   object PCN2_dpk: TCheckBox
     AlignWithMargins = True
     Left = 286
-    Top = 154
+    Top = 139
     Width = 116
     Height = 17
     Margins.Left = 25
@@ -428,7 +428,7 @@ object framePacotes: TframePacotes
   object ACBr_NFe2_dpk: TCheckBox
     AlignWithMargins = True
     Left = 286
-    Top = 171
+    Top = 156
     Width = 116
     Height = 17
     Margins.Left = 25
@@ -448,7 +448,7 @@ object framePacotes: TframePacotes
   object ACBr_CTe_dpk: TCheckBox
     AlignWithMargins = True
     Left = 286
-    Top = 188
+    Top = 173
     Width = 116
     Height = 17
     Margins.Left = 25

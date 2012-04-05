@@ -100,6 +100,8 @@ type
     btnVisualizarLogCompilacao: TSpeedButton;
     pnlInfoCompilador: TPanel;
     lblInfoCompilacao: TLabel;
+    ckbInstalarCapicom: TCheckBox;
+    ckbInstalarOpenSSL: TCheckBox;
     procedure imgPropaganda1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -143,6 +145,12 @@ type
     function PathApp: String;
     function PathArquivoIni: String;
     function PathArquivoLog: String;
+    procedure InstalarCapicom;
+    procedure InstalarOpenSSL;
+    function PathSystem: String;
+    function RegistrarActiveXServer(const AServerLocation: string;
+      const ARegister: Boolean): Boolean;
+    procedure CopiarArquivoToSystem(const ANomeArquivo: String);
   public
 
   end;
@@ -189,6 +197,130 @@ begin
   Result := DirectoryExists(IncludeTrailingPathDelimiter(ADiretorio) + '.svn')
 end;
 
+// retorna o diretório de sistema atual
+function TfrmPrincipal.PathSystem: String;
+var
+  strTmp: array[0..MAX_PATH] of char;
+  DirWindows: String;
+const
+  SYS_64 = 'SysWOW64';
+  SYS_32 = 'System32';
+begin
+  Result := '';
+
+  //SetLength(strTmp, MAX_PATH);
+  if Windows.GetWindowsDirectory(strTmp, MAX_PATH) > 0 then
+  begin
+    DirWindows := Trim(StrPas(strTmp));
+    DirWindows := IncludeTrailingPathDelimiter(DirWindows);
+
+    if DirectoryExists(DirWindows + SYS_64) then
+      Result := DirWindows + SYS_64
+    else
+    if DirectoryExists(DirWindows + SYS_32) then
+      Result := DirWindows + SYS_32
+    else
+      raise EFileNotFoundException.Create('Diretório de sistema não encontrado.');
+  end
+  else
+    raise EFileNotFoundException.Create('Ocorreu um erro ao tentar obter o diretório do windows.');
+end;
+
+function TfrmPrincipal.RegistrarActiveXServer(const AServerLocation: string;
+  const ARegister: Boolean): Boolean;
+var
+  ServerDllRegisterServer: function: HResult; stdcall;
+  ServerDllUnregisterServer: function: HResult; stdcall;
+  ServerHandle: THandle;
+
+  procedure UnloadServerFunctions;
+  begin
+    @ServerDllRegisterServer := nil;
+    @ServerDllUnregisterServer := nil;
+    FreeLibrary(ServerHandle);
+  end;
+
+  function LoadServerFunctions: Boolean;
+  begin
+    Result := False;
+    ServerHandle := SafeLoadLibrary(AServerLocation);
+
+    if (ServerHandle <> 0) then
+    begin
+      @ServerDllRegisterServer := GetProcAddress(ServerHandle, 'DllRegisterServer');
+      @ServerDllUnregisterServer := GetProcAddress(ServerHandle, 'DllUnregisterServer');
+
+      if (@ServerDllRegisterServer = nil) or (@ServerDllUnregisterServer = nil) then
+        UnloadServerFunctions
+      else
+        Result := True;
+    end;
+  end;
+begin
+  Result := False;
+  try
+    if LoadServerFunctions then
+    try
+      if ARegister then
+        Result := ServerDllRegisterServer = S_OK
+      else
+        Result := ServerDllUnregisterServer = S_OK;
+    finally
+      UnloadServerFunctions;
+    end;
+  except
+  end;
+end;
+
+procedure TfrmPrincipal.CopiarArquivoToSystem(const ANomeArquivo: String);
+var
+  PathOrigem: String;
+  PathDestino: String;
+  DirSystem: String;
+  DirACBr: String;
+begin
+  DirSystem := Trim(PathSystem);
+  DirACBr   := IncludeTrailingPathDelimiter(edtDirDestino.Text);
+
+  if DirSystem = '' then
+    raise EFileNotFoundException.Create('Diretório de sistema não encontrado.')
+  else
+    DirSystem := IncludeTrailingPathDelimiter(DirSystem);
+
+  PathOrigem  := DirACBr + 'DLLs\Capicom\' + ANomeArquivo;
+  PathDestino := DirSystem + ANomeArquivo;
+
+  if FileExists(PathOrigem) and not(FileExists(PathDestino)) then
+  begin
+    if not CopyFileTo(PathOrigem, PathDestino, True) then
+      raise EFilerError.CreateFmt(
+        'Ocorreu o seguinte erro ao tentar copiar o arquivo "%s": %d - %s', [
+        ANomeArquivo,
+        GetLastError,
+        SysErrorMessage(GetLastError)
+      ]);
+  end;
+end;
+
+// copia as dlls da pasta capcom para a pasta de sistema e registra a dll
+procedure TfrmPrincipal.InstalarCapicom;
+begin
+  CopiarArquivoToSystem('capicom.dll');
+  CopiarArquivoToSystem('msxml5.dll');
+  CopiarArquivoToSystem('msxml5r.dll');
+
+  RegistrarActiveXServer('capicom.dll', True);
+  RegistrarActiveXServer('msxml5.dll', True);
+end;
+
+// copia as dlls da pasta openssl, estas dlls são utilizadas para assinar
+// arquivos e outras coisas mais
+procedure TfrmPrincipal.InstalarOpenSSL;
+begin
+  CopiarArquivoToSystem('libeay32.dll');
+  CopiarArquivoToSystem('ssleay32.dll');
+end;
+
 // ler o arquivo .ini de configurações e setar os campos com os valores lidos
 procedure TfrmPrincipal.LerConfiguracoes;
 var
@@ -201,6 +333,8 @@ begin
     edtPlatform.ItemIndex      := edtPlatform.Items.IndexOf(ArqIni.ReadString('CONFIG', 'Plataforma', 'Win32'));
     edtDelphiVersion.ItemIndex := edtDelphiVersion.Items.IndexOf(ArqIni.ReadString('CONFIG', 'DelphiVersao', ''));
     ckbFecharTortoise.Checked  := ArqIni.ReadBool('CONFIG', 'FecharTortoise', True);
+    ckbInstalarCapicom.Checked := ArqIni.ReadBool('CONFIG', 'InstalarCapicom', True);
+    ckbInstalarOpenSSL.Checked := ArqIni.ReadBool('CONFIG', 'InstalarOpenSSL', True);
 
     if Trim(edtDelphiVersion.Text) = '' then
       edtDelphiVersion.ItemIndex := 0;
@@ -226,6 +360,8 @@ begin
     ArqIni.WriteString('CONFIG', 'DelphiVersao', edtDelphiVersion.Text);
     ArqIni.WriteString('CONFIG', 'Plataforma', edtPlatform.Text);
     ArqIni.WriteBool('CONFIG', 'FecharTortoise', ckbFecharTortoise.Checked);
+    ArqIni.WriteBool('CONFIG', 'InstalarCapicom', ckbInstalarCapicom.Checked);
+    ArqIni.WriteBool('CONFIG', 'InstalarOpenSSL', ckbInstalarOpenSSL.Checked);
 
     for I := 0 to frameDpk.Pacotes.Count - 1 do
       ArqIni.WriteBool('PACOTES', frameDpk.Pacotes[I].Caption, frameDpk.Pacotes[I].Checked);
@@ -603,6 +739,38 @@ begin
       lstMsgInstalacao.Items.Add('');
       lstMsgInstalacao.Items.Add('Para a plataforma de 64 bits os pacotes são somente compilados.');
       lstMsgInstalacao.ItemIndex := lstMsgInstalacao.Count - 1;
+    end;
+
+    // instalar capicom
+    if ckbInstalarCapicom.Checked then
+    begin
+      try
+        InstalarCapicom;
+        lstMsgInstalacao.Items.Add(Format('CAPICOM instalado com sucesso em "%s".', [PathSystem]));
+        lstMsgInstalacao.ItemIndex := lstMsgInstalacao.Count - 1;
+      except
+        on E: Exception do
+        begin
+          lstMsgInstalacao.Items.Add(Format('Ocorreu erro ao instalar a CAPICOM em "%s": %s', [PathSystem, E.Message]));
+          lstMsgInstalacao.ItemIndex := lstMsgInstalacao.Count - 1;
+        end;
+      end;
+    end;
+
+    // instalar OpenSSL
+    if ckbInstalarOpenSSL.Checked then
+    begin
+      try
+        InstalarOpenSSL;
+        lstMsgInstalacao.Items.Add(Format('OPENSSL instalado com sucesso em "%s".', [PathSystem]));
+        lstMsgInstalacao.ItemIndex := lstMsgInstalacao.Count - 1;
+      except
+        on E: Exception do
+        begin
+          lstMsgInstalacao.Items.Add(Format('Ocorreu erro ao instalar a OPENSSL em "%s": %s', [PathSystem, E.Message]));
+          lstMsgInstalacao.ItemIndex := lstMsgInstalacao.Count - 1;
+        end;
+      end;
     end;
   finally
     btnInstalarACBr.Enabled := True;

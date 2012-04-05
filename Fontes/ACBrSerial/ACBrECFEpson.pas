@@ -135,6 +135,7 @@ TACBrECFEpson = class( TACBrECFClass )
     fsRet0906 : AnsiString ;
     fsRet0907 : AnsiString ;
     fsBytesIn : Integer ;
+    fsByteACK : Byte ;
     fsEpsonComando: TACBrECFEpsonComando;
     fsEpsonResposta: TACBrECFEpsonResposta;
     fsImprimeCheque: Boolean;
@@ -1068,19 +1069,19 @@ end;
 Function TACBrECFEpson.EnviaComando_ECF( cmd : AnsiString = '' ) : AnsiString ;
 Var ErroMsg    : String ;
     OldTimeOut : Integer ;
-    ByteACK    : Byte ;
 begin
   if cmd <> '' then
      PreparaCmd(cmd) ;  // Ajusta e move para Epsoncomando
 
   cmd := EpsonComando.FrameEnvio ;
 
-  ByteACK := 0 ;
-  Result  := '' ;
-  ErroMsg := '' ;
-  fpComandoEnviado   := '' ;
-  fpRespostaComando  := '' ;
-  fsBytesIn          := 0 ;
+  Result            := '' ;
+  ErroMsg           := '' ;
+  fpComandoEnviado  := '' ;
+  fpRespostaComando := '' ;
+  fsBytesIn         := 0 ;
+  fsByteACK         := 0 ;
+
   EpsonResposta.Resposta := '' ;  // Zera resposta
   OldTimeOut := TimeOut ;
   TimeOut    := max(EpsonComando.TimeOut, TimeOut) ;
@@ -1088,9 +1089,11 @@ begin
   try
      fpDevice.Serial.DeadlockTimeout := 2000 ; { Timeout p/ Envio }
 
-     while (chr(ByteACK) <> ACK) do     { Se ACK = 6 Comando foi reconhecido }
+     { Segundo suporte da Epson, em alguns casos ECF não envia o ACK,
+       enviando diretamente o STX (que é o inicio do Frame de Resposta) }
+     while not (chr(fsByteACK) in [STX,ACK]) do     { Se ACK = 6 Comando foi reconhecido }
      begin
-        ByteACK := 0 ;
+        fsByteACK := 0 ;
         fpDevice.Serial.Purge ;                   { Limpa a Porta }
 
         if not TransmiteComando( cmd ) then
@@ -1107,21 +1110,21 @@ begin
         try
            { espera ACK chegar na Porta por 1,5s  }
            try
-              ByteACK := fpDevice.Serial.RecvByte( 1500 ) ;
+              fsByteACK := fpDevice.Serial.RecvByte( 1500 ) ;
            except
            end ;
 
-           if ByteACK = 0 then
+           if fsByteACK = 0 then
               raise EACBrECFSemResposta.create( ACBrStr(
                     'Impressora '+fpModeloStr+' não responde (ACK = 0)' ))
-           else if chr(ByteACK) = NAK then    { retorno em caracter 21d=15h=NACK }
+           else if chr(fsByteACK) = NAK then    { retorno em caracter 21d=15h=NACK }
               raise EACBrECFSemResposta.create( ACBrStr(
                     'Impressora '+fpModeloStr+' não reconheceu o Comando'+
                     sLineBreak+' (NACK)') )
-           else if chr(ByteACK) <> ACK then
+           else if not (chr(fsByteACK) in [STX,ACK]) then
               raise EACBrECFSemResposta.create( ACBrStr(
                     'Erro. Resposta da Impressora '+fpModeloStr+' inválida'+
-                    sLineBreak+' (ACK = '+IntToStr(ByteACK)+')')) ;
+                    sLineBreak+' (ACK = '+IntToStr(fsByteACK)+')')) ;
         except
            on E : EACBrECFSemResposta do
             begin
@@ -1174,7 +1177,7 @@ begin
         if EpsonResposta.Retorno = '0304' then
            DoOnErrorSemPapel
         else
-           raise EACBrECFSemResposta.create( ErroMsg ) ;
+           raise EACBrECFSemResposta.create( ACBrStr(ErroMsg) ) ;
       end
      else
         Sleep( IntervaloAposComando ) ;  { Pequena pausa entre comandos }
@@ -1236,6 +1239,12 @@ var
   end ;
 
 begin
+  if chr(fsByteACK) = STX then  // Não houve ACK, ECF mandou STX direto, e STX já foi lido
+  begin
+    Retorno   := STX + Retorno ;
+    fsByteACK := 0;
+  end ;
+
   LenRet := Length(Retorno) ;
   Result := BlocoEValido;
 
@@ -1255,13 +1264,13 @@ begin
   if (LeftStr(Retorno,7) = #2 + #128 + #3 + '0085') then
   begin
      // DEBUG //
-     GravaLog( 'Resposta Intermediaria detectada: ' +Retorno, True );
+     //GravaLog( 'Resposta Intermediaria detectada: ' +Retorno, True );
      Retorno     := Copy(Retorno, 8, LenRet );
      LenRet      := Length(Retorno) ;
      fsBytesIn   := LenRet;
      Result      := BlocoEValido ; // Re-avalia o Retorno restante
-     if not Result then
-        GravaLog( '     Ignorada', True );
+     //if not Result then
+        //GravaLog( '     Ignorada', True );
   end ;
 
   if Result then

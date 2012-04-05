@@ -1270,12 +1270,11 @@ begin
   try
     AForm.Panel1.Caption  := Titulo;
     AForm.BitBtn3.Visible := False ;
-
-    AForm.Edit1.Text     := Resposta; { Para usar Valores Previamente informados }
+    AForm.Edit1.Text      := Resposta; { Para usar Valores Previamente informados }
 
     MR := AForm.ShowModal ;
 
-    Digitado   := (MR = mrOK) ;
+    Digitado := (MR = mrOK) ;
 
     if Digitado then
        Resposta := AForm.Edit1.Text;

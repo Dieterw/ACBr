@@ -719,14 +719,17 @@ end;
 
 {-----------------------------------------------------------------------------}
 Procedure TForm1.TrataErros(Sender: TObject; E: Exception);
+var
+  Erro : String ;
 begin
-  mResp.Lines.Add( E.Message );
+  Erro := Trim(E.Message) ;
+  mResp.Lines.Add( Erro );
 
   StatusBar1.Panels[0].Text := 'Exception' ;
   AtualizaMemos( False ) ;
-  StatusBar1.Panels[1].Text := E.Message ;
+  StatusBar1.Panels[1].Text := Erro ;
 //  PageControl1.ActivePageIndex := 1 ;
-  MessageDlg( E.Message,mtError,[mbOk],0) ;
+  MessageDlg( Erro,mtError,[mbOk],0) ;
 end ;
 
 procedure TForm1.AtualizaMemos(VerificaEstado : Boolean = true) ;

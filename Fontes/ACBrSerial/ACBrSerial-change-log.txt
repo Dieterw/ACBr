@@ -97,6 +97,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 05/04/2012
+-- ACBrECFEpson --
+[-] Importante correção no Protocolo de comunicação, após conversa com o suporte
+    técnico da Epson. Eliminando mensagens de Erro como ACK = 2, o que geralmente
+    causavam a falta de resposta de ECF.   (DSA)
+
 Data: 04/04/2012
 -- ACBrECF --
 [+] Incluido novo Exception, EACBrECFSemPapel que é disparado apenas na situação
@@ -113,6 +119,7 @@ Data: 04/04/2012
     para True, o ACBrECF ignorará as Tags: <e>,</e>,<n>,</n>,<s>,</s>,<c>,</c>,
     <i>,</i>. Util quando o ECF apresentar problemas em relatórios com Tags de
     Formatação   (DSA)
+[*] Modificação de todos Exceptions para EACBrECFErro  (por: Elton)
 
 -- ACBrECFBematech --
 [*] Leitura e detecção de Erro aprimorada para modelos com MFD, evitando

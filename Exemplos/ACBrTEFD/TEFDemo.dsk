@@ -11,9 +11,15 @@ File_8=SourceModule,'C:\TEMP\unit1.pas',0,1,4,18,12,1,0
 File_9=SourceModule,'C:\Pascal\Comp\ACBr\branches\ACBrNovo\Fontes\ACBrTEFD\ACBrTEFD.pas',0,1,1,1,1,0,0
 
 [Modules]
-Module0=C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit1.pas
-Count=1
+Module0=C:\Pascal\Comp\ACBr\trunk\Fontes\ACBrSerial\ACBrECFFiscNET.pas
+Module1=C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit1.pas
+Count=2
 EditWindowCount=1
+
+[C:\Pascal\Comp\ACBr\trunk\Fontes\ACBrSerial\ACBrECFFiscNET.pas]
+ModuleType=SourceModule
+FormState=0
+FormOnTop=0
 
 [C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit1.pas]
 ModuleType=SourceModule
@@ -29,9 +35,10 @@ FormState=0
 FormOnTop=0
 
 [EditWindow0]
-ViewCount=1
-CurrentView=0
+ViewCount=2
+CurrentView=1
 View0=0
+View1=1
 CodeExplorer=CodeExplorer@EditWindow0
 MessageView=MessageView@EditWindow0
 Create=1
@@ -51,13 +58,20 @@ LeftPanelData=00000400010000000C000000436F64654578706C6F726572000000000000000000
 RightPanelSize=0
 BottomPanelSize=0
 BottomPanelClients=MessageView@EditWindow0
-BottomPanelData=00000400010000000B0000004D657373616765566965770000000000000000000000000000000000FFFFFFFF
+BottomPanelData=00000400010000000B0000004D6573736167655669657700000000000000000000000000000000000100000000000000000B0000004D65737361676556696577FFFFFFFF
 
 [View0]
 Module=C:\Pascal\Comp\ACBr\trunk\Exemplos\ACBrTEFD\Unit1.pas
-CursorX=44
-CursorY=59
-TopLine=49
+CursorX=1
+CursorY=1269
+TopLine=1263
+LeftCol=1
+
+[View1]
+Module=C:\Pascal\Comp\ACBr\trunk\Fontes\ACBrSerial\ACBrECFFiscNET.pas
+CursorX=77
+CursorY=349
+TopLine=340
 LeftCol=1
 
 [Watches]
@@ -95,8 +109,8 @@ Left=0
 Top=0
 Width=1680
 Height=122
-MaxLeft=-1
-MaxTop=-1
+MaxLeft=-8
+MaxTop=-8
 MaxWidth=1696
 MaxHeight=122
 ClientWidth=1680
@@ -181,7 +195,7 @@ LRDockWidth=190
 Dockable=1
 SplitPos=126
 ArrangeBy=Name
-SelectedItem=Caption
+SelectedItem=OnAguardaResp
 ExpandedItems=TEFCliSiTef,TEFDial,TEFDisc,TEFGPU,TEFHiper
 HiddenCategories=
 
@@ -387,13 +401,13 @@ Dockable=1
 Create=1
 Visible=0
 State=0
-Left=-89
-Top=-620
-Width=443
+Left=12
+Top=0
+Width=1111
 Height=85
 MaxLeft=-1
 MaxTop=-1
-ClientWidth=443
+ClientWidth=1111
 ClientHeight=85
 TBDockHeight=85
 LRDockWidth=443

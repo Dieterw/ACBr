@@ -2672,8 +2672,8 @@ end;
 
 procedure TACBrECFClass.ErroAbstract(NomeProcedure: String);
 begin
-  raise EACBrECFCMDInvalido.create(Format(ACBrStr(cACBrECFCMDInvalidoException),
-                                          [NomeProcedure, ModeloStr] )) ;
+  raise EACBrECFCMDInvalido.create(ACBrStr(Format(cACBrECFCMDInvalidoException,
+                                          [NomeProcedure, ModeloStr] ))) ;
 end;
 
 function TACBrECFClass.GetModeloStr: String;

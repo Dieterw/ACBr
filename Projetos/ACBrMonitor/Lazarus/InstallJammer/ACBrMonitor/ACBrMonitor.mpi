@@ -165,7 +165,7 @@ ProjectID
 {5DC39174-DAA6-A2DC-35A7-ACD13761AEC4}
 
 ProjectVersion
-{1.2.15.1}
+{1.2.15.2}
 
 SaveOnlyToplevelDirs
 {No}
@@ -192,7 +192,7 @@ UpgradeApplicationID
 {}
 
 Version
-{0.9.2}
+{0.9.13}
 
 ViewReadme
 {Yes}
@@ -294,6 +294,7 @@ File ::4EA794E9-522B-4692-7878-6A15973B867E -name 745.bmp -parent F26D2079-31D4-
 File ::85A7CF78-8FCB-24BB-07BE-252A75BFD6E4 -name 748.bmp -parent F26D2079-31D4-5099-50B2-94E21F9936E9
 File ::6937F8CF-C870-9448-1208-CF654C94BABB -name 749.bmp -parent F26D2079-31D4-5099-50B2-94E21F9936E9
 File ::ACF1B73C-55DB-224A-780C-A39FFA61BB93 -name 756.bmp -parent F26D2079-31D4-5099-50B2-94E21F9936E9
+File ::472F8213-0157-F7E3-E98F-F6735B076476 -name /home/user/lazarus/Comp/ACBr/Projetos/ACBrMonitor/Lazarus/banner_acbrmonitor.gif -location ../../ -parent 15133E1A-7B55-8242-7D70-0B8ACE8BF3C2
 FileGroup ::A7445EB0-8070-6A51-67CA-70F86582B322 -setup Install -active Yes -platforms {AIX-ppc FreeBSD-4-x86 FreeBSD-5-x86 FreeBSD-6-x86 FreeBSD-7-x86 HPUX-hppa Linux-x86 Linux-x86_64 Solaris-sparc Solaris-x86 Windows TarArchive ZipArchive} -name ACBrMonitorConsole -parent FileGroups
 File ::B93A23F0-4828-6CDC-5C80-3FBC8A7E0B87 -name ACBrMonitorConsole -location ../../ -parent A7445EB0-8070-6A51-67CA-70F86582B322
 FileGroup ::A0AAD91A-0EEE-FEE2-D547-23427A537F3A -setup Install -active Yes -platforms {AIX-ppc FreeBSD-4-x86 FreeBSD-5-x86 FreeBSD-6-x86 FreeBSD-7-x86 HPUX-hppa Linux-x86 Linux-x86_64 Solaris-sparc Solaris-x86 Windows TarArchive ZipArchive} -name Documentacao -parent FileGroups
@@ -610,6 +611,7 @@ File ::EC32CE8F-0788-D6A0-E183-3035DAA05FCF -name treeview-gray.gif -parent F110
 File ::6B1C6BD8-1CEC-17CE-B6A9-A6FA07704091 -name treeview-red-line.gif -parent F110C3E0-E5F1-30A6-0973-D3AFB16418BE
 File ::2273ECB0-86A1-D166-BDBA-A6DB6E8952C8 -name treeview-red.gif -parent F110C3E0-E5F1-30A6-0973-D3AFB16418BE
 File ::FEA002FD-EF5E-2334-DC62-1F0F0BE96BD0 -name VantagensdoACBrMonitor.html -parent F110C3E0-E5F1-30A6-0973-D3AFB16418BE
+File ::60C35A4A-BBC5-12B6-CC4A-CDB8AE489FE5 -name ComoimprimirumBoleto.html -parent F110C3E0-E5F1-30A6-0973-D3AFB16418BE
 FileGroup ::273C89D4-5D0E-4060-1ED2-A90A3AE647DF -setup Install -active Yes -platforms {AIX-ppc FreeBSD-4-x86 FreeBSD-5-x86 FreeBSD-6-x86 FreeBSD-7-x86 HPUX-hppa Linux-x86 Linux-x86_64 Solaris-sparc Solaris-x86 Windows TarArchive ZipArchive} -name Exemplos -parent FileGroups
 File ::D1C8EE7E-32CB-24BB-440A-D19D3367C2F2 -name Exemplos/Clipper_TXT_xHarbour_Socket.zip -location ../../../Exemplos -parent 273C89D4-5D0E-4060-1ED2-A90A3AE647DF
 File ::5DFAE295-2334-7488-3733-06B4292DEEFE -name Exemplos/Cobol_TXT_Socket.zip -location ../../../Exemplos -parent 273C89D4-5D0E-4060-1ED2-A90A3AE647DF
@@ -957,7 +959,7 @@ array set Properties {
 {<%InstallDir%>/Exemplos}
 
 273C89D4-5D0E-4060-1ED2-A90A3AE647DF,FileSize
-{67758}
+{67710}
 
 273C89D4-5D0E-4060-1ED2-A90A3AE647DF,Name
 {Exemplos}
@@ -1407,7 +1409,7 @@ A0AAD91A-0EEE-FEE2-D547-23427A537F3A,Destination
 {<%InstallDir%>}
 
 A0AAD91A-0EEE-FEE2-D547-23427A537F3A,FileSize
-{2086703}
+{2101306}
 
 A0AAD91A-0EEE-FEE2-D547-23427A537F3A,Name
 {Documentacao}
@@ -1476,7 +1478,7 @@ A7445EB0-8070-6A51-67CA-70F86582B322,Destination
 {<%InstallDir%>}
 
 A7445EB0-8070-6A51-67CA-70F86582B322,FileSize
-{2491856}
+{3133392}
 
 A7445EB0-8070-6A51-67CA-70F86582B322,Name
 {ACBrMonitorConsole}

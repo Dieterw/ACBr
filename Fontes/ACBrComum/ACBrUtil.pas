@@ -88,10 +88,9 @@
 {$IFDEF FPC}
  {$IFNDEF CONSOLE}
   {$DEFINE USE_LCLIntf}
-
-  {$IFDEF LINUX}
-   {$DEFINE USE_LConvEncoding}
-  {$ENDIF}
+ {$ENDIF}
+ {$IFDEF LINUX}
+  {$DEFINE USE_LConvEncoding}
  {$ENDIF}
 {$ENDIF}
 
@@ -2279,4 +2278,4 @@ initialization
 {$ENDIF}
 
   Randomized := False ;
-end.
+end.

@@ -368,7 +368,6 @@ begin
      with frACBrBoletoQuick do
      begin
         case LayOut of
-           lPadrao : RLLayout:= LayoutBoleto;
            lCarne  : RLLayout:= BoletoCarne;
         else
            RLLayout := LayoutBoleto;

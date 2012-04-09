@@ -48,7 +48,7 @@
             <Width Value="752"/>
             <Height Value="404"/>
           </Size>
-          <Flags Value="49"/>
+          <Flags Value="48"/>
           <Data>
             <Script Value=""/>
           </Data>
@@ -109,7 +109,7 @@
             <Left Value="138"/>
             <Top Value="45"/>
             <Width Value="131"/>
-            <Height Value="11"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -152,7 +152,7 @@
             <Left Value="137"/>
             <Top Value="57"/>
             <Width Value="489"/>
-            <Height Value="14"/>
+            <Height Value="15"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -195,7 +195,7 @@
             <Left Value="634"/>
             <Top Value="45"/>
             <Width Value="96"/>
-            <Height Value="10"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -281,7 +281,7 @@
             <Left Value="139"/>
             <Top Value="74"/>
             <Width Value="55"/>
-            <Height Value="10"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -324,7 +324,7 @@
             <Left Value="139"/>
             <Top Value="99"/>
             <Width Value="487"/>
-            <Height Value="13"/>
+            <Height Value="15"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -367,7 +367,7 @@
             <Left Value="138"/>
             <Top Value="84"/>
             <Width Value="488"/>
-            <Height Value="13"/>
+            <Height Value="15"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -536,7 +536,7 @@
             <Left Value="159"/>
             <Top Value="115"/>
             <Width Value="97"/>
-            <Height Value="10"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -622,7 +622,7 @@
             <Left Value="266"/>
             <Top Value="115"/>
             <Width Value="106"/>
-            <Height Value="11"/>
+            <Height Value="13"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -708,7 +708,7 @@
             <Left Value="380"/>
             <Top Value="115"/>
             <Width Value="67"/>
-            <Height Value="10"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -880,7 +880,7 @@
             <Left Value="506"/>
             <Top Value="115"/>
             <Width Value="117"/>
-            <Height Value="11"/>
+            <Height Value="13"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -1353,7 +1353,7 @@
             <Left Value="632"/>
             <Top Value="145"/>
             <Width Value="94"/>
-            <Height Value="11"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -1482,7 +1482,7 @@
             <Left Value="632"/>
             <Top Value="175"/>
             <Width Value="94"/>
-            <Height Value="11"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -1525,7 +1525,7 @@
             <Left Value="633"/>
             <Top Value="202"/>
             <Width Value="67"/>
-            <Height Value="11"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -1568,7 +1568,7 @@
             <Left Value="632"/>
             <Top Value="230"/>
             <Width Value="73"/>
-            <Height Value="11"/>
+            <Height Value="13"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -1651,10 +1651,10 @@
           <Typ Value="gtMemo"/>
           <StreamMode Value="0"/>
           <Size>
-            <Left Value="177"/>
+            <Left Value="180"/>
             <Top Value="286"/>
             <Width Value="561"/>
-            <Height Value="14"/>
+            <Height Value="18"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -1672,10 +1672,10 @@
           </Data>
           <Font>
             <Name Value="Arial"/>
-            <Size Value="8"/>
+            <Size Value="10"/>
             <Color Value="clBlack"/>
             <Charset Value="0"/>
-            <Style Value=""/>
+            <Style Value="fsBold"/>
           </Font>
           <Highlight>
             <FontStyle Value="2"/>
@@ -1694,10 +1694,10 @@
           <Typ Value="gtMemo"/>
           <StreamMode Value="0"/>
           <Size>
-            <Left Value="178"/>
+            <Left Value="181"/>
             <Top Value="302"/>
             <Width Value="560"/>
-            <Height Value="14"/>
+            <Height Value="23"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -1731,49 +1731,6 @@
           <Angle Value="0"/>
         </Object41>
         <Object42>
-          <Name Value="Memo40"/>
-          <ClassName Value="TfrMemoView"/>
-          <Visible Value="1"/>
-          <Typ Value="gtMemo"/>
-          <StreamMode Value="0"/>
-          <Size>
-            <Left Value="631"/>
-            <Top Value="318"/>
-            <Width Value="106"/>
-            <Height Value="10"/>
-          </Size>
-          <Flags Value="3"/>
-          <FillColor Value="clNone"/>
-          <Frames>
-            <FrameColor Value="clBlack"/>
-            <FrameStyle Value="frsDot"/>
-            <FrameWidth Value="1"/>
-            <FrameBorders Value=""/>
-          </Frames>
-          <Data>
-            <Format Value="556"/>
-            <FormatStr Value=""/>
-            <Memo Value="CPF\CNPJ&#xD;&#xA;"/>
-            <Script Value=""/>
-          </Data>
-          <Font>
-            <Name Value="Arial"/>
-            <Size Value="6"/>
-            <Color Value="clBlack"/>
-            <Charset Value="0"/>
-            <Style Value=""/>
-          </Font>
-          <Highlight>
-            <FontStyle Value="2"/>
-            <FontColor Value="clBlack"/>
-            <FillColor Value="clWhite"/>
-            <HighlightStr Value=""/>
-          </Highlight>
-          <Alignment Value="taCenter"/>
-          <Layout Value="tlTop"/>
-          <Angle Value="0"/>
-        </Object42>
-        <Object43>
           <Name Value="Memo41"/>
           <ClassName Value="TfrMemoView"/>
           <Visible Value="1"/>
@@ -1815,8 +1772,8 @@
           <Alignment Value="taRightJustify"/>
           <Layout Value="tlBottom"/>
           <Angle Value="0"/>
-        </Object43>
-        <Object44>
+        </Object42>
+        <Object43>
           <Name Value="Memo42"/>
           <ClassName Value="TfrMemoView"/>
           <Visible Value="1"/>
@@ -1826,7 +1783,7 @@
             <Left Value="518"/>
             <Top Value="328"/>
             <Width Value="106"/>
-            <Height Value="11"/>
+            <Height Value="13"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -1858,8 +1815,8 @@
           <Alignment Value="taLeftJustify"/>
           <Layout Value="tlTop"/>
           <Angle Value="0"/>
-        </Object44>
-        <Object45>
+        </Object43>
+        <Object44>
           <Name Value="Memo43"/>
           <ClassName Value="TfrMemoView"/>
           <Visible Value="1"/>
@@ -1869,7 +1826,7 @@
             <Left Value="144"/>
             <Top Value="328"/>
             <Width Value="90"/>
-            <Height Value="9"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -1901,8 +1858,8 @@
           <Alignment Value="taLeftJustify"/>
           <Layout Value="tlTop"/>
           <Angle Value="0"/>
-        </Object45>
-        <Object46>
+        </Object44>
+        <Object45>
           <Name Value="Bar1"/>
           <ClassName Value="TfrBarCodeView"/>
           <Visible Value="1"/>
@@ -1925,8 +1882,8 @@
             <Memo Value="[Barras]&#xD;&#xA;"/>
           </Data>
           <BarCode Zoom="1" BarType="bcCode_2_5_interleaved" CheckSum="0" ShowText="0"/>
-        </Object46>
-        <Object47>
+        </Object45>
+        <Object46>
           <Name Value="Memo47"/>
           <ClassName Value="TfrMemoView"/>
           <Visible Value="1"/>
@@ -1968,8 +1925,8 @@
           <Alignment Value="taLeftJustify"/>
           <Layout Value="tlTop"/>
           <Angle Value="0"/>
-        </Object47>
-        <Object48>
+        </Object46>
+        <Object47>
           <Name Value="Memo88"/>
           <ClassName Value="TfrMemoView"/>
           <Visible Value="1"/>
@@ -2011,8 +1968,8 @@
           <Alignment Value="taLeftJustify"/>
           <Layout Value="tlTop"/>
           <Angle Value="0"/>
-        </Object48>
-        <Object49>
+        </Object47>
+        <Object48>
           <Name Value="Memo89"/>
           <ClassName Value="TfrMemoView"/>
           <Visible Value="1"/>
@@ -2054,8 +2011,8 @@
           <Alignment Value="taLeftJustify"/>
           <Layout Value="tlTop"/>
           <Angle Value="0"/>
-        </Object49>
-        <Object50>
+        </Object48>
+        <Object49>
           <Name Value="Picture1"/>
           <ClassName Value="TfrPictureView"/>
           <Visible Value="1"/>
@@ -2082,8 +2039,8 @@
             <SharedName Value=""/>
             <Type Value="0"/>
           </Picture>
-        </Object50>
-        <Object51>
+        </Object49>
+        <Object50>
           <Name Value="Picture2"/>
           <ClassName Value="TfrPictureView"/>
           <Visible Value="1"/>
@@ -2110,8 +2067,8 @@
             <SharedName Value=""/>
             <Type Value="0"/>
           </Picture>
-        </Object51>
-        <Object52>
+        </Object50>
+        <Object51>
           <Name Value="Picture3"/>
           <ClassName Value="TfrPictureView"/>
           <Visible Value="1"/>
@@ -2140,8 +2097,8 @@
             <Size Value="611"/>
             <Data Value="89504E470D0A1A0A0000000D49484452000000100000001008060000001FF3FF61000000017352474200AECE1CE90000000467414D410000B18F0BFC6105000000097048597300000EC300000EC301C76FA864000001F849444154384F63601868C00875008886B14142FFA198A0FB609AD8812A99840B2ED7303032FE676062FEF7B657B30128F60FCD0426A845307DFF600C3EC1D4BD6DCC820AD97FDF3F9CC22C289FF3FFCFCF96B77D5AF5509780D48134B38070454545153B3B7B25C870980106226577CFBFE952D6038A8901F15320FF3AD49026209F19A4B1ACACAC869393B31CA4F1F9F3E7F366CD9A950533205828FB842513B76831D01049A0BC2ED490AB40BE005063254CE393274F16CF9D3BB71D28FF18887FC30C300672C485B28E3B33F18815FDFDFCA29F9957A21044E789ED2A04D9F8F8F1E325F3E6CDEB04190CD208C57F40FE0281472057FDFDF05802C4F9F7F109847EFF501A2ACF202828F812C87E02C43FA01864C85F980B4405927634B388A8A6039D6C0A940019F006180EC781FCE08C8C0C4F7171F1149061BF7FFF6E6D6B6B6B00990FC2702F00159F012A06D908761590FF18E485F7D3AD1781BC07C4FFB3B3B3034444443241F27FFEFC69696D6D6DC008C47F5F5FF78202F3EFBBFBD3DECF71A981DA0432540A8AFFE7E4E404080B0B67830C824723C81681E4DDFEFF7F7DE666E2E0FFFC7EB67305C8C55003C0D108C4AC400C8A25505483E4CEC013129003723E88FF178891431A94AC51121292BA3FC84919640B880F0A1C90217FA06C904B61003D29FF871900930029846524104D1000003C9CBA9BA6B3EA4C0000000049454E44AE426082"/>
           </Picture>
-        </Object52>
-        <Object53>
+        </Object51>
+        <Object52>
           <Name Value="Line1"/>
           <ClassName Value="TfrLineView"/>
           <Visible Value="1"/>
@@ -2159,8 +2116,8 @@
             <FrameStyle Value="frsSolid"/>
             <FrameWidth Value="2"/>
           </Frames>
-        </Object53>
-        <Object54>
+        </Object52>
+        <Object53>
           <Name Value="Line2"/>
           <ClassName Value="TfrLineView"/>
           <Visible Value="1"/>
@@ -2178,8 +2135,8 @@
             <FrameStyle Value="frsSolid"/>
             <FrameWidth Value="1"/>
           </Frames>
-        </Object54>
-        <Object55>
+        </Object53>
+        <Object54>
           <Name Value="Line3"/>
           <ClassName Value="TfrLineView"/>
           <Visible Value="1"/>
@@ -2197,8 +2154,8 @@
             <FrameStyle Value="frsDot"/>
             <FrameWidth Value="2"/>
           </Frames>
-        </Object55>
-        <Object56>
+        </Object54>
+        <Object55>
           <Name Value="Line6"/>
           <ClassName Value="TfrLineView"/>
           <Visible Value="1"/>
@@ -2216,8 +2173,8 @@
             <FrameStyle Value="frsSolid"/>
             <FrameWidth Value="1"/>
           </Frames>
-        </Object56>
-        <Object57>
+        </Object55>
+        <Object56>
           <Name Value="Line4"/>
           <ClassName Value="TfrLineView"/>
           <Visible Value="1"/>
@@ -2235,8 +2192,8 @@
             <FrameStyle Value="frsSolid"/>
             <FrameWidth Value="1"/>
           </Frames>
-        </Object57>
-        <Object58>
+        </Object56>
+        <Object57>
           <Name Value="Line24"/>
           <ClassName Value="TfrLineView"/>
           <Visible Value="1"/>
@@ -2254,8 +2211,8 @@
             <FrameStyle Value="frsSolid"/>
             <FrameWidth Value="1"/>
           </Frames>
-        </Object58>
-        <Object59>
+        </Object57>
+        <Object58>
           <Name Value="Line25"/>
           <ClassName Value="TfrLineView"/>
           <Visible Value="1"/>
@@ -2273,8 +2230,8 @@
             <FrameStyle Value="frsSolid"/>
             <FrameWidth Value="1"/>
           </Frames>
-        </Object59>
-        <Object60>
+        </Object58>
+        <Object59>
           <Name Value="Line26"/>
           <ClassName Value="TfrLineView"/>
           <Visible Value="1"/>
@@ -2292,8 +2249,8 @@
             <FrameStyle Value="frsSolid"/>
             <FrameWidth Value="1"/>
           </Frames>
-        </Object60>
-        <Object61>
+        </Object59>
+        <Object60>
           <Name Value="Line27"/>
           <ClassName Value="TfrLineView"/>
           <Visible Value="1"/>
@@ -2311,8 +2268,8 @@
             <FrameStyle Value="frsSolid"/>
             <FrameWidth Value="1"/>
           </Frames>
-        </Object61>
-        <Object62>
+        </Object60>
+        <Object61>
           <Name Value="Line28"/>
           <ClassName Value="TfrLineView"/>
           <Visible Value="1"/>
@@ -2330,8 +2287,8 @@
             <FrameStyle Value="frsSolid"/>
             <FrameWidth Value="1"/>
           </Frames>
-        </Object62>
-        <Object63>
+        </Object61>
+        <Object62>
           <Name Value="Line29"/>
           <ClassName Value="TfrLineView"/>
           <Visible Value="1"/>
@@ -2349,8 +2306,8 @@
             <FrameStyle Value="frsSolid"/>
             <FrameWidth Value="1"/>
           </Frames>
-        </Object63>
-        <Object64>
+        </Object62>
+        <Object63>
           <Name Value="Line30"/>
           <ClassName Value="TfrLineView"/>
           <Visible Value="1"/>
@@ -2368,8 +2325,8 @@
             <FrameStyle Value="frsSolid"/>
             <FrameWidth Value="1"/>
           </Frames>
-        </Object64>
-        <Object65>
+        </Object63>
+        <Object64>
           <Name Value="Line31"/>
           <ClassName Value="TfrLineView"/>
           <Visible Value="1"/>
@@ -2387,8 +2344,8 @@
             <FrameStyle Value="frsSolid"/>
             <FrameWidth Value="1"/>
           </Frames>
-        </Object65>
-        <Object66>
+        </Object64>
+        <Object65>
           <Name Value="Line32"/>
           <ClassName Value="TfrLineView"/>
           <Visible Value="1"/>
@@ -2406,8 +2363,8 @@
             <FrameStyle Value="frsSolid"/>
             <FrameWidth Value="1"/>
           </Frames>
-        </Object66>
-        <Object67>
+        </Object65>
+        <Object66>
           <Name Value="Line33"/>
           <ClassName Value="TfrLineView"/>
           <Visible Value="1"/>
@@ -2425,8 +2382,8 @@
             <FrameStyle Value="frsSolid"/>
             <FrameWidth Value="1"/>
           </Frames>
-        </Object67>
-        <Object68>
+        </Object66>
+        <Object67>
           <Name Value="Line34"/>
           <ClassName Value="TfrLineView"/>
           <Visible Value="1"/>
@@ -2444,8 +2401,8 @@
             <FrameStyle Value="frsSolid"/>
             <FrameWidth Value="1"/>
           </Frames>
-        </Object68>
-        <Object69>
+        </Object67>
+        <Object68>
           <Name Value="Line35"/>
           <ClassName Value="TfrLineView"/>
           <Visible Value="1"/>
@@ -2463,8 +2420,8 @@
             <FrameStyle Value="frsSolid"/>
             <FrameWidth Value="1"/>
           </Frames>
-        </Object69>
-        <Object70>
+        </Object68>
+        <Object69>
           <Name Value="Line36"/>
           <ClassName Value="TfrLineView"/>
           <Visible Value="1"/>
@@ -2482,8 +2439,8 @@
             <FrameStyle Value="frsSolid"/>
             <FrameWidth Value="1"/>
           </Frames>
-        </Object70>
-        <Object71>
+        </Object69>
+        <Object70>
           <Name Value="Line38"/>
           <ClassName Value="TfrLineView"/>
           <Visible Value="1"/>
@@ -2501,8 +2458,8 @@
             <FrameStyle Value="frsSolid"/>
             <FrameWidth Value="1"/>
           </Frames>
-        </Object71>
-        <Object72>
+        </Object70>
+        <Object71>
           <Name Value="Line39"/>
           <ClassName Value="TfrLineView"/>
           <Visible Value="1"/>
@@ -2520,8 +2477,8 @@
             <FrameStyle Value="frsSolid"/>
             <FrameWidth Value="1"/>
           </Frames>
-        </Object72>
-        <Object73>
+        </Object71>
+        <Object72>
           <Name Value="Line40"/>
           <ClassName Value="TfrLineView"/>
           <Visible Value="1"/>
@@ -2539,8 +2496,8 @@
             <FrameStyle Value="frsSolid"/>
             <FrameWidth Value="1"/>
           </Frames>
-        </Object73>
-        <Object74>
+        </Object72>
+        <Object73>
           <Name Value="Memo91"/>
           <ClassName Value="TfrMemoView"/>
           <Visible Value="1"/>
@@ -2582,8 +2539,8 @@
           <Alignment Value="taLeftJustify"/>
           <Layout Value="tlTop"/>
           <Angle Value="0"/>
-        </Object74>
-        <Object75>
+        </Object73>
+        <Object74>
           <Name Value="Memo122"/>
           <ClassName Value="TfrMemoView"/>
           <Visible Value="1"/>
@@ -2625,8 +2582,8 @@
           <Alignment Value="taLeftJustify"/>
           <Layout Value="tlBottom"/>
           <Angle Value="0"/>
-        </Object75>
-        <Object76>
+        </Object74>
+        <Object75>
           <Name Value="Line37"/>
           <ClassName Value="TfrLineView"/>
           <Visible Value="1"/>
@@ -2644,8 +2601,8 @@
             <FrameStyle Value="frsSolid"/>
             <FrameWidth Value="2"/>
           </Frames>
-        </Object76>
-        <Object77>
+        </Object75>
+        <Object76>
           <Name Value="Line41"/>
           <ClassName Value="TfrLineView"/>
           <Visible Value="1"/>
@@ -2663,8 +2620,8 @@
             <FrameStyle Value="frsDot"/>
             <FrameWidth Value="2"/>
           </Frames>
-        </Object77>
-        <Object78>
+        </Object76>
+        <Object77>
           <Name Value="Memo2"/>
           <ClassName Value="TfrMemoView"/>
           <Visible Value="1"/>
@@ -2706,8 +2663,8 @@
           <Alignment Value="taLeftJustify"/>
           <Layout Value="tlTop"/>
           <Angle Value="0"/>
-        </Object78>
-        <Object79>
+        </Object77>
+        <Object78>
           <Name Value="Memo44"/>
           <ClassName Value="TfrMemoView"/>
           <Visible Value="1"/>
@@ -2749,8 +2706,8 @@
           <Alignment Value="taLeftJustify"/>
           <Layout Value="tlTop"/>
           <Angle Value="0"/>
-        </Object79>
-        <Object80>
+        </Object78>
+        <Object79>
           <Name Value="Memo45"/>
           <ClassName Value="TfrMemoView"/>
           <Visible Value="1"/>
@@ -2792,8 +2749,8 @@
           <Alignment Value="taRightJustify"/>
           <Layout Value="tlBottom"/>
           <Angle Value="0"/>
-        </Object80>
-        <Object81>
+        </Object79>
+        <Object80>
           <Name Value="Memo46"/>
           <ClassName Value="TfrMemoView"/>
           <Visible Value="1"/>
@@ -2835,8 +2792,8 @@
           <Alignment Value="taRightJustify"/>
           <Layout Value="tlBottom"/>
           <Angle Value="0"/>
-        </Object81>
-        <Object82>
+        </Object80>
+        <Object81>
           <Name Value="Line5"/>
           <ClassName Value="TfrLineView"/>
           <Visible Value="1"/>
@@ -2854,8 +2811,8 @@
             <FrameStyle Value="frsSolid"/>
             <FrameWidth Value="1"/>
           </Frames>
-        </Object82>
-        <Object83>
+        </Object81>
+        <Object82>
           <Name Value="Memo48"/>
           <ClassName Value="TfrMemoView"/>
           <Visible Value="1"/>
@@ -2897,8 +2854,8 @@
           <Alignment Value="taLeftJustify"/>
           <Layout Value="tlTop"/>
           <Angle Value="0"/>
-        </Object83>
-        <Object84>
+        </Object82>
+        <Object83>
           <Name Value="Memo49"/>
           <ClassName Value="TfrMemoView"/>
           <Visible Value="1"/>
@@ -2940,8 +2897,8 @@
           <Alignment Value="taRightJustify"/>
           <Layout Value="tlTop"/>
           <Angle Value="0"/>
-        </Object84>
-        <Object85>
+        </Object83>
+        <Object84>
           <Name Value="Memo50"/>
           <ClassName Value="TfrMemoView"/>
           <Visible Value="1"/>
@@ -2951,7 +2908,7 @@
             <Left Value="10"/>
             <Top Value="115"/>
             <Width Value="52"/>
-            <Height Value="11"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -2983,8 +2940,8 @@
           <Alignment Value="taCenter"/>
           <Layout Value="tlTop"/>
           <Angle Value="0"/>
-        </Object85>
-        <Object86>
+        </Object84>
+        <Object85>
           <Name Value="Memo51"/>
           <ClassName Value="TfrMemoView"/>
           <Visible Value="1"/>
@@ -3026,8 +2983,8 @@
           <Alignment Value="taLeftJustify"/>
           <Layout Value="tlTop"/>
           <Angle Value="0"/>
-        </Object86>
-        <Object87>
+        </Object85>
+        <Object86>
           <Name Value="Memo52"/>
           <ClassName Value="TfrMemoView"/>
           <Visible Value="1"/>
@@ -3037,7 +2994,7 @@
             <Left Value="10"/>
             <Top Value="128"/>
             <Width Value="52"/>
-            <Height Value="14"/>
+            <Height Value="15"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -3069,8 +3026,8 @@
           <Alignment Value="taCenter"/>
           <Layout Value="tlTop"/>
           <Angle Value="0"/>
-        </Object87>
-        <Object88>
+        </Object86>
+        <Object87>
           <Name Value="Line8"/>
           <ClassName Value="TfrLineView"/>
           <Visible Value="1"/>
@@ -3088,8 +3045,8 @@
             <FrameStyle Value="frsSolid"/>
             <FrameWidth Value="1"/>
           </Frames>
-        </Object88>
-        <Object89>
+        </Object87>
+        <Object88>
           <Name Value="Memo53"/>
           <ClassName Value="TfrMemoView"/>
           <Visible Value="1"/>
@@ -3099,7 +3056,7 @@
             <Left Value="11"/>
             <Top Value="145"/>
             <Width Value="94"/>
-            <Height Value="10"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -3131,8 +3088,8 @@
           <Alignment Value="taLeftJustify"/>
           <Layout Value="tlTop"/>
           <Angle Value="0"/>
-        </Object89>
-        <Object90>
+        </Object88>
+        <Object89>
           <Name Value="Memo54"/>
           <ClassName Value="TfrMemoView"/>
           <Visible Value="1"/>
@@ -3174,8 +3131,8 @@
           <Alignment Value="taRightJustify"/>
           <Layout Value="tlBottom"/>
           <Angle Value="0"/>
-        </Object90>
-        <Object91>
+        </Object89>
+        <Object90>
           <Name Value="Memo55"/>
           <ClassName Value="TfrMemoView"/>
           <Visible Value="1"/>
@@ -3185,7 +3142,7 @@
             <Left Value="11"/>
             <Top Value="175"/>
             <Width Value="94"/>
-            <Height Value="11"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -3217,8 +3174,8 @@
           <Alignment Value="taLeftJustify"/>
           <Layout Value="tlTop"/>
           <Angle Value="0"/>
-        </Object91>
-        <Object92>
+        </Object90>
+        <Object91>
           <Name Value="Line9"/>
           <ClassName Value="TfrLineView"/>
           <Visible Value="1"/>
@@ -3236,8 +3193,8 @@
             <FrameStyle Value="frsSolid"/>
             <FrameWidth Value="1"/>
           </Frames>
-        </Object92>
-        <Object93>
+        </Object91>
+        <Object92>
           <Name Value="Memo56"/>
           <ClassName Value="TfrMemoView"/>
           <Visible Value="1"/>
@@ -3247,7 +3204,7 @@
             <Left Value="11"/>
             <Top Value="201"/>
             <Width Value="67"/>
-            <Height Value="11"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -3279,8 +3236,8 @@
           <Alignment Value="taLeftJustify"/>
           <Layout Value="tlTop"/>
           <Angle Value="0"/>
-        </Object93>
-        <Object94>
+        </Object92>
+        <Object93>
           <Name Value="Memo57"/>
           <ClassName Value="TfrMemoView"/>
           <Visible Value="1"/>
@@ -3290,7 +3247,7 @@
             <Left Value="12"/>
             <Top Value="227"/>
             <Width Value="73"/>
-            <Height Value="10"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -3322,8 +3279,8 @@
           <Alignment Value="taLeftJustify"/>
           <Layout Value="tlTop"/>
           <Angle Value="0"/>
-        </Object94>
-        <Object95>
+        </Object93>
+        <Object94>
           <Name Value="Line10"/>
           <ClassName Value="TfrLineView"/>
           <Visible Value="1"/>
@@ -3341,8 +3298,8 @@
             <FrameStyle Value="frsSolid"/>
             <FrameWidth Value="1"/>
           </Frames>
-        </Object95>
-        <Object96>
+        </Object94>
+        <Object95>
           <Name Value="Memo58"/>
           <ClassName Value="TfrMemoView"/>
           <Visible Value="1"/>
@@ -3352,7 +3309,7 @@
             <Left Value="11"/>
             <Top Value="255"/>
             <Width Value="90"/>
-            <Height Value="9"/>
+            <Height Value="12"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -3384,8 +3341,8 @@
           <Alignment Value="taLeftJustify"/>
           <Layout Value="tlTop"/>
           <Angle Value="0"/>
-        </Object96>
-        <Object97>
+        </Object95>
+        <Object96>
           <Name Value="Memo59"/>
           <ClassName Value="TfrMemoView"/>
           <Visible Value="1"/>
@@ -3427,8 +3384,8 @@
           <Alignment Value="taRightJustify"/>
           <Layout Value="tlBottom"/>
           <Angle Value="0"/>
-        </Object97>
-        <Object98>
+        </Object96>
+        <Object97>
           <Name Value="Memo61"/>
           <ClassName Value="TfrMemoView"/>
           <Visible Value="1"/>
@@ -3470,8 +3427,8 @@
           <Alignment Value="taLeftJustify"/>
           <Layout Value="tlTop"/>
           <Angle Value="0"/>
-        </Object98>
-        <Object99>
+        </Object97>
+        <Object98>
           <Name Value="Memo62"/>
           <ClassName Value="TfrMemoView"/>
           <Visible Value="1"/>
@@ -3513,8 +3470,8 @@
           <Alignment Value="taRightJustify"/>
           <Layout Value="tlBottom"/>
           <Angle Value="0"/>
-        </Object99>
-        <Object100>
+        </Object98>
+        <Object99>
           <Name Value="Memo63"/>
           <ClassName Value="TfrMemoView"/>
           <Visible Value="1"/>
@@ -3556,8 +3513,8 @@
           <Alignment Value="taLeftJustify"/>
           <Layout Value="tlBottom"/>
           <Angle Value="0"/>
-        </Object100>
-        <Object101>
+        </Object99>
+        <Object100>
           <Name Value="Line11"/>
           <ClassName Value="TfrLineView"/>
           <Visible Value="1"/>
@@ -3575,6 +3532,49 @@
             <FrameStyle Value="frsSolid"/>
             <FrameWidth Value="1"/>
           </Frames>
+        </Object100>
+        <Object101>
+          <Name Value="Memo40"/>
+          <ClassName Value="TfrMemoView"/>
+          <Visible Value="1"/>
+          <Typ Value="gtMemo"/>
+          <StreamMode Value="0"/>
+          <Size>
+            <Left Value="631"/>
+            <Top Value="318"/>
+            <Width Value="106"/>
+            <Height Value="10"/>
+          </Size>
+          <Flags Value="3"/>
+          <FillColor Value="clNone"/>
+          <Frames>
+            <FrameColor Value="clBlack"/>
+            <FrameStyle Value="frsDot"/>
+            <FrameWidth Value="1"/>
+            <FrameBorders Value=""/>
+          </Frames>
+          <Data>
+            <Format Value="556"/>
+            <FormatStr Value=""/>
+            <Memo Value="CPF\CNPJ&#xD;&#xA;"/>
+            <Script Value=""/>
+          </Data>
+          <Font>
+            <Name Value="Arial"/>
+            <Size Value="6"/>
+            <Color Value="clBlack"/>
+            <Charset Value="0"/>
+            <Style Value=""/>
+          </Font>
+          <Highlight>
+            <FontStyle Value="2"/>
+            <FontColor Value="clBlack"/>
+            <FillColor Value="clWhite"/>
+            <HighlightStr Value=""/>
+          </Highlight>
+          <Alignment Value="taCenter"/>
+          <Layout Value="tlTop"/>
+          <Angle Value="0"/>
         </Object101>
       </Page1>
       <FVal>

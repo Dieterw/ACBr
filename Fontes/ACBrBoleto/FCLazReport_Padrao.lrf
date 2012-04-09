@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <CONFIG>
   <LazReport>
     <Version Value="25"/>
@@ -48,7 +48,7 @@
             <Width Value="752"/>
             <Height Value="825"/>
           </Size>
-          <Flags Value="49"/>
+          <Flags Value="48"/>
           <Data>
             <Script Value=""/>
           </Data>
@@ -1697,7 +1697,7 @@
             <Left Value="145"/>
             <Top Value="321"/>
             <Width Value="449"/>
-            <Height Value="15"/>
+            <Height Value="19"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -1715,10 +1715,10 @@
           </Data>
           <Font>
             <Name Value="Arial"/>
-            <Size Value="8"/>
+            <Size Value="10"/>
             <Color Value="clBlack"/>
             <Charset Value="0"/>
-            <Style Value=""/>
+            <Style Value="fsBold"/>
           </Font>
           <Highlight>
             <FontStyle Value="2"/>
@@ -1727,7 +1727,7 @@
             <HighlightStr Value=""/>
           </Highlight>
           <Alignment Value="taLeftJustify"/>
-          <Layout Value="tlTop"/>
+          <Layout Value="tlCenter"/>
           <Angle Value="0"/>
         </Object41>
         <Object42>
@@ -1737,10 +1737,10 @@
           <Typ Value="gtMemo"/>
           <StreamMode Value="0"/>
           <Size>
-            <Left Value="142"/>
-            <Top Value="339"/>
-            <Width Value="452"/>
-            <Height Value="16"/>
+            <Left Value="145"/>
+            <Top Value="343"/>
+            <Width Value="450"/>
+            <Height Value="28"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -3613,7 +3613,7 @@
             <Left Value="185"/>
             <Top Value="716"/>
             <Width Value="394"/>
-            <Height Value="14"/>
+            <Height Value="18"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -3631,10 +3631,10 @@
           </Data>
           <Font>
             <Name Value="Arial"/>
-            <Size Value="8"/>
+            <Size Value="10"/>
             <Color Value="clBlack"/>
             <Charset Value="0"/>
-            <Style Value=""/>
+            <Style Value="fsBold"/>
           </Font>
           <Highlight>
             <FontStyle Value="2"/>
@@ -3643,7 +3643,7 @@
             <HighlightStr Value=""/>
           </Highlight>
           <Alignment Value="taLeftJustify"/>
-          <Layout Value="tlBottom"/>
+          <Layout Value="tlCenter"/>
           <Angle Value="0"/>
         </Object86>
         <Object87>
@@ -3654,9 +3654,9 @@
           <StreamMode Value="0"/>
           <Size>
             <Left Value="185"/>
-            <Top Value="733"/>
+            <Top Value="737"/>
             <Width Value="394"/>
-            <Height Value="15"/>
+            <Height Value="26"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -4821,7 +4821,7 @@
           <Data>
             <Format Value="44"/>
             <FormatStr Value=""/>
-            <Memo Value="SoftwareHouse: [Site]&#xD;&#xA;"/>
+            <Memo Value="[Site]&#xD;&#xA;"/>
             <Script Value=""/>
           </Data>
           <Font>

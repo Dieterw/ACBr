@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <CONFIG>
   <LazReport>
     <Version Value="25"/>
@@ -48,7 +48,7 @@
             <Width Value="752"/>
             <Height Value="1024"/>
           </Size>
-          <Flags Value="49"/>
+          <Flags Value="48"/>
           <Data>
             <Script Value=""/>
           </Data>
@@ -1697,7 +1697,7 @@
             <Left Value="126"/>
             <Top Value="505"/>
             <Width Value="460"/>
-            <Height Value="15"/>
+            <Height Value="19"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -1715,10 +1715,10 @@
           </Data>
           <Font>
             <Name Value="Arial"/>
-            <Size Value="8"/>
+            <Size Value="10"/>
             <Color Value="clBlack"/>
             <Charset Value="0"/>
-            <Style Value=""/>
+            <Style Value="fsBold"/>
           </Font>
           <Highlight>
             <FontStyle Value="2"/>
@@ -1737,10 +1737,10 @@
           <Typ Value="gtMemo"/>
           <StreamMode Value="0"/>
           <Size>
-            <Left Value="124"/>
+            <Left Value="126"/>
             <Top Value="523"/>
             <Width Value="463"/>
-            <Height Value="15"/>
+            <Height Value="27"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -3613,7 +3613,7 @@
             <Left Value="157"/>
             <Top Value="908"/>
             <Width Value="433"/>
-            <Height Value="14"/>
+            <Height Value="18"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -3631,10 +3631,10 @@
           </Data>
           <Font>
             <Name Value="Arial"/>
-            <Size Value="8"/>
+            <Size Value="10"/>
             <Color Value="clBlack"/>
             <Charset Value="0"/>
-            <Style Value=""/>
+            <Style Value="fsBold"/>
           </Font>
           <Highlight>
             <FontStyle Value="2"/>
@@ -3653,10 +3653,10 @@
           <Typ Value="gtMemo"/>
           <StreamMode Value="0"/>
           <Size>
-            <Left Value="156"/>
-            <Top Value="925"/>
+            <Left Value="157"/>
+            <Top Value="929"/>
             <Width Value="435"/>
-            <Height Value="15"/>
+            <Height Value="27"/>
           </Size>
           <Flags Value="3"/>
           <FillColor Value="clNone"/>
@@ -4821,7 +4821,7 @@
           <Data>
             <Format Value="44"/>
             <FormatStr Value=""/>
-            <Memo Value="SoftwareHouse: [Site]&#xD;&#xA;"/>
+            <Memo Value="[Site]&#xD;&#xA;"/>
             <Script Value=""/>
           </Data>
           <Font>

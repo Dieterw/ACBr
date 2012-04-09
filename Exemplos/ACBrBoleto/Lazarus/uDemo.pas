@@ -26,6 +26,7 @@ type
      Button1: TButton;
      Button2: TButton;
      cbxAceite: TComboBox;
+     cbxLayOut : TComboBox ;
      edtInstrucoes1: TEdit;
      edtInstrucoes2: TEdit;
      edtMulta: TEdit;
@@ -66,6 +67,7 @@ type
      Label12: TLabel;
      Label13: TLabel;
      Label14: TLabel;
+     Label15 : TLabel ;
      Label16: TLabel;
      Label17: TLabel;
      Label18: TLabel;
@@ -100,6 +102,7 @@ type
      procedure btnZerarClick ( Sender: TObject ) ;
      procedure Button1Click ( Sender: TObject ) ;
      procedure Button2Click ( Sender: TObject ) ;
+     procedure cbxLayOutChange(Sender : TObject) ;
      procedure FormCreate ( Sender: TObject ) ;
   private
      AString: Array[0..5] of AnsiString;
@@ -112,6 +115,8 @@ var
   frmDemo: TfrmDemo;
 
 implementation
+
+Uses typinfo;
 
 {$R *.lfm}
 
@@ -152,7 +157,7 @@ begin
         Aceite            := atSim;
         DataProcessamento := Now;
         NossoNumero       := IntToStrZero(I,ACBrBoleto1.Banco.TamanhoMaximoNossoNum);
-        Carteira          := '09';
+        Carteira          := 'RG';
         ValorDocumento    := 100.10 * (I+0.5);
         Sacado.NomeSacado := 'Jose Luiz Pedroso';
         Sacado.CNPJCPF    := '12345678901';
@@ -183,6 +188,8 @@ begin
 end;
 
 procedure TfrmDemo.FormCreate ( Sender: TObject ) ;
+var
+  I : TACBrBolLayOut ;
 begin
    edtDataDoc.Date    := Now;
    edtVencimento.Date := IncMonth(edtDataDoc.Date,1);
@@ -194,6 +201,12 @@ begin
    AString[3] := '(';
    AString[4] := ')';
    AString[5] := ' ';
+
+   cbxLayOut.Items.Clear ;
+   For I := Low(TACBrBolLayOut) to High(TACBrBolLayOut) do
+      cbxLayOut.Items.Add( GetEnumName(TypeInfo(TACBrBolLayOut), integer(I) ) ) ;
+
+   cbxLayOut.ItemIndex := 0;
 end;
 
 procedure TfrmDemo.btnIncluiBoletoClick ( Sender: TObject ) ;
@@ -266,6 +279,11 @@ procedure TfrmDemo.Button2Click ( Sender: TObject ) ;
 begin
    ACBrBoletoFCLazReport1.NomeArquivo := './teste.html' ;
    ACBrBoleto1.GerarHTML;
+end;
+
+procedure TfrmDemo.cbxLayOutChange(Sender : TObject) ;
+begin
+  ACBrBoleto1.ACBrBoletoFC.LayOut := TACBrBolLayOut( cbxLayOut.ItemIndex );
 end;
 
 end.

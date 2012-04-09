@@ -475,8 +475,7 @@ begin
      with frACBrBoletoFortes do
      begin
         case LayOut of
-           lPadrao : RLLayout:= LayoutBoleto;
-           lCarne  : RLLayout:= BoletoCarne;
+           lCarne : RLLayout:= BoletoCarne;
         else
            RLLayout:= LayoutBoleto;
         end;
@@ -527,14 +526,30 @@ end;
 { TACBrBoletoFCFortesFr }
 
 procedure TACBrBoletoFCFortesFr.FormCreate(Sender: TObject);
+var
+  I : Integer ;
 begin
    fIndice   := 0 ;
    fBoletoFC := TACBrBoletoFCFortes(Owner) ;  // Link para o Pai
-   MensagemPadrao := TStringList.Create;
-   if (fBoletoFC.ACBrBoleto.ComprovanteEntrega = true)then
-      RLBand4.Visible := true
-   else
-      RLBand4.Visible := false;
+   MensagemPadrao  := TStringList.Create;
+   RLBand4.Visible := (fBoletoFC.LayOut = lPadraoEntrega) ;
+
+   {$IFDEF UNICODE}
+    // Fontes do ACBr estão em CP1252, convertendo textos para UTF-8 //
+    For I := 0 to ComponentCount-1 do
+    begin
+       if Components[I] is TRLMemo then
+        begin
+          with TRLMemo( Components[I] ) do
+             Lines.Text := AnsiToUtf8( Lines.Text )
+        end
+       else if Components[I] is TRLLabel then
+        begin
+          with TRLLabel( Components[I] ) do
+             Caption := AnsiToUtf8( Caption )
+        end
+    end ;
+   {$ENDIF}
 end;
 
 procedure TACBrBoletoFCFortesFr.FormDestroy ( Sender: TObject ) ;

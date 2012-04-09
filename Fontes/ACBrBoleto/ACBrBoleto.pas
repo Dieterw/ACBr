@@ -600,7 +600,7 @@ type
       read GetObject write SetObject; default;
   end;
 
-TACBrBolLayOut = (lPadrao, lCarne, lFatura) ;
+TACBrBolLayOut = (lPadrao, lCarne, lFatura, lPadraoEntrega) ;
 
 { TACBrBoleto }
 TACBrBoleto = class( TACBrComponent )
@@ -610,7 +610,6 @@ TACBrBoleto = class( TACBrComponent )
     fDirArqRemessa: String;
     fDirArqRetorno: String;
     fLayoutRemessa: TACBrLayoutRemessa;
-    fComprovanteEntrega: boolean;
     fImprimirMensagemPadrao: boolean;
     fListadeBoletos : TListadeBoletos;
     fCedente        : TACBrCedente;
@@ -679,7 +678,6 @@ TACBrBoleto = class( TACBrComponent )
     property DataCreditoLanc: TDateTime          read fDataCreditoLanc        write fDataCreditoLanc;
     property LeCedenteRetorno :boolean           read fLeCedenteRetorno       write fLeCedenteRetorno default false;
     property LayoutRemessa  : TACBrLayoutRemessa read fLayoutRemessa          write fLayoutRemessa default c400;
-    property ComprovanteEntrega : Boolean        read fComprovanteEntrega     write fComprovanteEntrega default False;
     property ImprimirMensagemPadrao : Boolean    read fImprimirMensagemPadrao write fImprimirMensagemPadrao default True;
     property ACBrBoletoFC : TACBrBoletoFCClass   read fACBrBoletoFC           write SetACBrBoletoFC;
     procedure ChecarDadosObrigatorios;
@@ -1101,7 +1099,6 @@ begin
   inherited Create(AOwner);
 
   fACBrBoletoFC           := nil;
-  fComprovanteEntrega     := False;
   fImprimirMensagemPadrao := True;
 
   fListadeBoletos := TListadeBoletos.Create(true);

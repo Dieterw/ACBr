@@ -131,20 +131,19 @@ begin
      with frACBrBoletoLazReport do
      begin
         case LayOut of
-           lCarne : RelBoleto := 'FCLazReport_Carne';
+           lCarne         : RelBoleto := 'FCLazReport_Carne';
+           lPadraoEntrega : RelBoleto := 'FCLazReport_CompEntrega';
         else
-           if ACBrBoleto.ComprovanteEntrega then
-              RelBoleto := 'FCLazReport_CompEntrega'
-           else
-              RelBoleto := 'FCLazReport_Padrao';
+           RelBoleto := 'FCLazReport_Padrao';
         end;
 
+        // Verificando se o Relatório existe no disco //
         Dir := ExtractFilePath(Application.ExeName) ;
         if FileExists( Dir + RelBoleto + '.lrf' ) then
            frReport1.LoadFromFile( Dir + RelBoleto + '.lrf' )
         else
          begin
-
+           // Lendo Relatório de Resource Interno //
            Res := LazarusResources.Find(RelBoleto,'LRF');  // Le de ACBrBoletoFCLazReport.lrs
            if Res = nil then
               raise Exception.Create('Resource: '+RelBoleto+' não encontrado');

@@ -1,6 +1,6 @@
 object frmDemo: TfrmDemo
-  Left = 207
-  Top = 178
+  Left = 273
+  Top = 175
   Width = 817
   Height = 560
   Caption = 'Demo ACBrBoleto '
@@ -461,6 +461,15 @@ object frmDemo: TfrmDemo
       Height = 13
       Caption = 'UF'
     end
+    object Label31: TLabel
+      Left = 424
+      Top = 98
+      Width = 34
+      Height = 13
+      Caption = 'LayOut'
+      Color = clBtnFace
+      ParentColor = False
+    end
     object edtNome: TEdit
       Left = 8
       Top = 32
@@ -540,10 +549,20 @@ object frmDemo: TfrmDemo
       TabOrder = 9
       Text = 'SP'
     end
+    object cbxLayOut: TComboBox
+      Left = 424
+      Top = 114
+      Width = 138
+      Height = 21
+      Style = csDropDownList
+      ItemHeight = 13
+      TabOrder = 10
+      OnChange = cbxLayOutChange
+    end
   end
   object Panel1: TPanel
     Left = 0
-    Top = 474
+    Top = 472
     Width = 801
     Height = 50
     Align = alBottom
@@ -625,7 +644,6 @@ object frmDemo: TfrmDemo
     NomeArqRemessa = '.'
     NumeroArquivo = 0
     LayoutRemessa = c240
-    ComprovanteEntrega = True
     ACBrBoletoFC = ACBrBoletoFCFortes1
     Left = 64
     Top = 231

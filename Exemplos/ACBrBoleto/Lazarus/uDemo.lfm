@@ -1,14 +1,14 @@
 object frmDemo: TfrmDemo
-  Left = 299
+  Left = 345
   Height = 601
-  Top = 72
+  Top = 124
   Width = 811
   Caption = 'Demo ACBrBoleto'
   ClientHeight = 601
   ClientWidth = 811
   OnCreate = FormCreate
   Position = poScreenCenter
-  LCLVersion = '0.9.31'
+  LCLVersion = '1.1'
   object GroupBox2: TGroupBox
     Left = 6
     Height = 72
@@ -584,6 +584,24 @@ object frmDemo: TfrmDemo
       TabOrder = 1
       Text = '87.854.233-78'
     end
+    object cbxLayOut: TComboBox
+      Left = 424
+      Height = 23
+      Top = 114
+      Width = 138
+      ItemHeight = 15
+      OnChange = cbxLayOutChange
+      Style = csDropDownList
+      TabOrder = 10
+    end
+    object Label15: TLabel
+      Left = 424
+      Height = 16
+      Top = 98
+      Width = 39
+      Caption = 'LayOut'
+      ParentColor = False
+    end
   end
   object GroupBox5: TGroupBox
     Left = 6
@@ -916,7 +934,6 @@ object frmDemo: TfrmDemo
     NumeroArquivo = 0
     DataArquivo = 0
     DataCreditoLanc = 0
-    ComprovanteEntrega = True
     ACBrBoletoFC = ACBrBoletoFCLazReport1
     left = 200
     top = 264

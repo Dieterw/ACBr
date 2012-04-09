@@ -52,6 +52,19 @@ Símbolo : Significado
     cobrança não registrada.
     (por: Regys Silveira) 
 
+09/04/2012
+-- ACBrBoleto --
+[*] Removida a propriedade ComprovanteEntrega : Boolean, pois a mesma não tem
+    sentido quando o Layout é Carne ou Fatura  (DSA)
+
+-- ACBrBoletoFC --
+[+] Adicionado novo tipo de Layout: lPadraoEntrega, para substituir a
+    propriedade: ComprovanteEntrega   (DSA)
+
+-- ACBrBoletoFCLazReport --
+[*] Layouts de relatório corrigidos para suportar a versão do Trunk do LazReport
+    (DSA)
+
 04/04/2012
 -- ACBrBoletoFCLazReport --
 [*] Modificado para permitir ler os relatórios (FCLazReport_Carne.lrf,

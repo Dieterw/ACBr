@@ -87,6 +87,8 @@ type
     ACBrBoleto1: TACBrBoleto;
     ACBrBoletoFCQuick1: TACBrBoletoFCQuick;
     ACBrBoletoFCFortes1: TACBrBoletoFCFortes;
+    Label31: TLabel;
+    cbxLayOut: TComboBox;
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button4Click(Sender: TObject);
@@ -95,6 +97,7 @@ type
     procedure Button7Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure Button3Click(Sender: TObject);
+    procedure cbxLayOutChange(Sender: TObject);
   private
     { Private declarations }
      AString: Array[0..5] of AnsiString;  
@@ -106,6 +109,8 @@ var
   frmDemo: TfrmDemo;
 
 implementation
+
+Uses TypInfo;
 
 {$R *.dfm}
 
@@ -234,6 +239,8 @@ begin
 end;
 
 procedure TfrmDemo.FormCreate(Sender: TObject);
+var
+  I : TACBrBolLayOut ;
 begin
    edtDataDoc.Text    := DateToStr(Now);
    edtVencimento.Text := DateToStr(IncMonth(StrToDate(edtDataDoc.Text),1));
@@ -246,11 +253,20 @@ begin
    AString[4] := ')';
    AString[5] := ' ';
 
+   cbxLayOut.Items.Clear ;
+   For I := Low(TACBrBolLayOut) to High(TACBrBolLayOut) do
+      cbxLayOut.Items.Add( GetEnumName(TypeInfo(TACBrBolLayOut), integer(I) ) ) ;
+   cbxLayOut.ItemIndex := 0 ;
 end;
 
 procedure TfrmDemo.Button3Click(Sender: TObject);
 begin
    ACBrBoleto1.ListadeBoletos.Clear;
+end;
+
+procedure TfrmDemo.cbxLayOutChange(Sender: TObject);
+begin
+  ACBrBoleto1.ACBrBoletoFC.LayOut := TACBrBolLayOut( cbxLayOut.ItemIndex );
 end;
 
 end.

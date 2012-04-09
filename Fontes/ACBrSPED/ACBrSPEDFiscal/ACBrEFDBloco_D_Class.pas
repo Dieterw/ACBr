@@ -1087,7 +1087,7 @@ begin
                LFill( VL_SEG,0,2 ) +
                LFill( VL_OUT_DESP,0,2 ) +
                LFill( VL_BC_ICMS,0,2 ) +
-               LFill( VL_BC_ICMS,0,2 ) +
+               LFill( VL_ICMS,0,2 ) +
                LFill( VL_RED_BC,0,2 ) +
                LFill( COD_OBS ) +
                LFill( COD_CTA ) ) ;

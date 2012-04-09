@@ -97,6 +97,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 09/04/2012
+-- ACBrECFDaruma --
+[-] Correção na detecção de Aliquota. Estava assumindo 'F2,N2,I2' quando
+    informava apenas 'F,N,I'
+
 Data: 05/04/2012
 -- ACBrECFEpson --
 [-] Importante correção no Protocolo de comunicação, após conversa com o suporte

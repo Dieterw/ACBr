@@ -2485,24 +2485,24 @@ begin
    case AliquotaICMS[1] of
      'F' :
        begin
-          if (copy(AliquotaICMS,2,1)='1') or (copy(AliquotaICMS,2,1)='F') then
-             AliquotaStr := IfThen(fpMFD,'17', 'F ')  {indice F1 }
+          if (copy(AliquotaICMS,2,1)='2') then
+             AliquotaStr := IfThen(fpMFD,'18', 'F ')  {indice F2 }
           else
-             AliquotaStr := IfThen(fpMFD,'18', 'F ') ;{indice F2 }
+             AliquotaStr := IfThen(fpMFD,'17', 'F ') ;{indice F1 }
        end;
      'I' :
        begin
-          if (copy(AliquotaICMS,2,1)='1') or (copy(AliquotaICMS,2,1)='I') then
-             AliquotaStr := IfThen(fpMFD,'19', 'I ')  {indice I1 }
+          if (copy(AliquotaICMS,2,1)='2') then
+             AliquotaStr := IfThen(fpMFD,'20', 'I ')  {indice I2 }
           else
-             AliquotaStr := IfThen(fpMFD,'20', 'I ') ;{indice I2 }
+             AliquotaStr := IfThen(fpMFD,'19', 'I ') ;{indice I1 }
        end;
      'N' :
        begin
-          if (copy(AliquotaICMS,2,1)='1') or (copy(AliquotaICMS,2,1)='N') then
-             AliquotaStr := IfThen(fpMFD,'21', 'N ')  {indice N1 }
+          if (copy(AliquotaICMS,2,1)='2') then
+             AliquotaStr := IfThen(fpMFD,'22', 'N ')  {indice N2 }
           else
-             AliquotaStr := IfThen(fpMFD,'22', 'N ') ;{indice N2 }
+             AliquotaStr := IfThen(fpMFD,'21', 'N ') ;{indice N1 }
        end;
      'T' :
        begin

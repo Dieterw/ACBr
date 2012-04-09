@@ -105,7 +105,6 @@ type
      procedure cbxLayOutChange(Sender : TObject) ;
      procedure FormCreate ( Sender: TObject ) ;
   private
-     AString: Array[0..5] of AnsiString;
     { private declarations }
   public
     { public declarations }
@@ -195,13 +194,6 @@ begin
    edtVencimento.Date := IncMonth(edtDataDoc.Date,1);
    edtDataMora.Date   := edtVencimento.Date+1;
 
-   AString[0] := '.';
-   AString[1] := '-';
-   AString[2] := '/';
-   AString[3] := '(';
-   AString[4] := ')';
-   AString[5] := ' ';
-
    cbxLayOut.Items.Clear ;
    For I := Low(TACBrBolLayOut) to High(TACBrBolLayOut) do
       cbxLayOut.Items.Add( GetEnumName(TypeInfo(TACBrBolLayOut), integer(I) ) ) ;
@@ -233,13 +225,13 @@ begin
         Carteira          :=  teste2; //edtCarteira.Text;
         ValorDocumento    := StrToCurr(edtValorDoc.Text);
         Sacado.NomeSacado := edtNome.Text;
-        Sacado.CNPJCPF    := RemoveStrings(edtCPFCNPJ.Text,AString);
+        Sacado.CNPJCPF    := OnlyNumber(edtCPFCNPJ.Text);
         Sacado.Logradouro := edtEndereco.Text;
         Sacado.Numero     := edtNumero.Text;
         Sacado.Bairro     := edtBairro.Text;
         Sacado.Cidade     := edtCidade.Text;
         Sacado.UF         := edtUF.Text;
-        Sacado.CEP        := RemoveStrings(edtCEP.Text,AString);
+        Sacado.CEP        := OnlyNumber(edtCEP.Text);
         ValorAbatimento   := StrToCurrDef(edtValorAbatimento.Text,0);
         LocalPagamento    := edtLocalPag.Text+ ' '+ ACBrBoleto1.Banco.Nome;
         ValorMoraJuros    := StrToCurrDef(edtMoraJuros.Text,0);

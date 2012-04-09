@@ -100,7 +100,6 @@ type
     procedure cbxLayOutChange(Sender: TObject);
   private
     { Private declarations }
-     AString: Array[0..5] of AnsiString;  
   public
     { Public declarations }
   end;
@@ -147,13 +146,13 @@ begin
         Carteira          := edtCarteira.Text;
         ValorDocumento    := StrToCurr(edtValorDoc.Text);
         Sacado.NomeSacado := edtNome.Text;
-        Sacado.CNPJCPF    := RemoveStrings(edtCPFCNPJ.Text,AString);
+        Sacado.CNPJCPF    := OnlyNumber(edtCPFCNPJ.Text);
         Sacado.Logradouro := edtEndereco.Text;
         Sacado.Numero     := edtNumero.Text;
         Sacado.Bairro     := edtBairro.Text;
         Sacado.Cidade     := edtCidade.Text;
         Sacado.UF         := edtUF.Text;
-        Sacado.CEP        := RemoveStrings(edtCEP.Text,AString);
+        Sacado.CEP        := OnlyNumber(edtCEP.Text);
         ValorAbatimento   := StrToCurrDef(edtValorAbatimento.Text,0);
         LocalPagamento    := edtLocalPag.Text;
         ValorMoraJuros    := StrToCurrDef(edtMoraJuros.Text,0);
@@ -245,13 +244,6 @@ begin
    edtDataDoc.Text    := DateToStr(Now);
    edtVencimento.Text := DateToStr(IncMonth(StrToDate(edtDataDoc.Text),1));
    edtDataMora.Text   := DateToStr(StrToDate(edtVencimento.Text)+1);
-
-   AString[0] := '.';
-   AString[1] := '-';
-   AString[2] := '/';
-   AString[3] := '(';
-   AString[4] := ')';
-   AString[5] := ' ';
 
    cbxLayOut.Items.Clear ;
    For I := Low(TACBrBolLayOut) to High(TACBrBolLayOut) do

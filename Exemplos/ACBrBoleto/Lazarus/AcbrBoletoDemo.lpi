@@ -71,8 +71,8 @@
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="190"/>
-        <CursorPos X="4" Y="208"/>
+        <TopLine Value="215"/>
+        <CursorPos X="40" Y="234"/>
         <UsageCount Value="176"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -95,12 +95,10 @@
       <Unit3>
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
         <UnitName Value="ACBrBoleto"/>
-        <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="592"/>
-        <CursorPos X="43" Y="599"/>
+        <TopLine Value="583"/>
+        <CursorPos X="9" Y="596"/>
         <UsageCount Value="62"/>
-        <Loaded Value="True"/>
       </Unit3>
       <Unit4>
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBancoBradesco.pas"/>
@@ -716,13 +714,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
         <UnitName Value="ACBrBoletoFCLazReportDm"/>
-        <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
-        <CursorPos X="43" Y="10"/>
+        <CursorPos X="48" Y="20"/>
         <UsageCount Value="22"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
       </Unit78>
       <Unit79>
         <Filename Value="..\..\..\Pacotes\Lazarus\ACBr_PAF.pas"/>
@@ -960,54 +955,54 @@
         <UsageCount Value="10"/>
       </Unit107>
     </Units>
-    <JumpHistory Count="19" HistoryIndex="18">
+    <JumpHistory Count="23" HistoryIndex="22">
       <Position1>
-        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoletoFCLazReportDm.pas"/>
-        <Caret Line="133" Column="20" TopLine="127"/>
+        <Filename Value="uDemo.pas"/>
+        <Caret Line="189" Column="14" TopLine="187"/>
       </Position1>
       <Position2>
-        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoletoFCLazReportDm.pas"/>
-        <Caret Line="142" Column="18" TopLine="130"/>
+        <Filename Value="uDemo.pas"/>
+        <Caret Line="118" Column="15" TopLine="112"/>
       </Position2>
       <Position3>
-        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoletoFCLazReportDm.pas"/>
-        <Caret Line="232" Column="25" TopLine="196"/>
+        <Filename Value="uDemo.pas"/>
+        <Caret Line="208" Column="88" TopLine="188"/>
       </Position3>
       <Position4>
         <Filename Value="uDemo.pas"/>
-        <Caret Line="189" Column="14" TopLine="187"/>
+        <Caret Line="198" Column="31" TopLine="189"/>
       </Position4>
       <Position5>
         <Filename Value="uDemo.pas"/>
-        <Caret Line="118" Column="15" TopLine="112"/>
+        <Caret Line="285" Column="31" TopLine="268"/>
       </Position5>
       <Position6>
         <Filename Value="uDemo.pas"/>
-        <Caret Line="208" Column="88" TopLine="188"/>
+        <Caret Line="149" Column="60" TopLine="140"/>
       </Position6>
       <Position7>
         <Filename Value="uDemo.pas"/>
-        <Caret Line="198" Column="31" TopLine="189"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position7>
       <Position8>
         <Filename Value="uDemo.pas"/>
-        <Caret Line="285" Column="31" TopLine="268"/>
+        <Caret Line="17" Column="73" TopLine="1"/>
       </Position8>
       <Position9>
-        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoletoFCLazReportDm.pas"/>
-        <Caret Line="140" Column="18" TopLine="130"/>
+        <Filename Value="uDemo.pas"/>
+        <Caret Line="29" Column="10" TopLine="10"/>
       </Position9>
       <Position10>
-        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoletoFCLazReportDm.pas"/>
-        <Caret Line="141" Column="1" TopLine="130"/>
+        <Filename Value="uDemo.pas"/>
+        <Caret Line="105" Column="20" TopLine="86"/>
       </Position10>
       <Position11>
-        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoletoFCLazReportDm.pas"/>
-        <Caret Line="142" Column="1" TopLine="130"/>
+        <Filename Value="uDemo.pas"/>
+        <Caret Line="204" Column="33" TopLine="186"/>
       </Position11>
       <Position12>
         <Filename Value="uDemo.pas"/>
-        <Caret Line="149" Column="60" TopLine="140"/>
+        <Caret Line="278" Column="16" TopLine="268"/>
       </Position12>
       <Position13>
         <Filename Value="uDemo.pas"/>
@@ -1015,28 +1010,44 @@
       </Position13>
       <Position14>
         <Filename Value="uDemo.pas"/>
-        <Caret Line="17" Column="73" TopLine="1"/>
+        <Caret Line="198" Column="10" TopLine="184"/>
       </Position14>
       <Position15>
         <Filename Value="uDemo.pas"/>
-        <Caret Line="29" Column="10" TopLine="10"/>
+        <Caret Line="204" Column="28" TopLine="184"/>
       </Position15>
       <Position16>
         <Filename Value="uDemo.pas"/>
-        <Caret Line="105" Column="20" TopLine="86"/>
+        <Caret Line="112" Column="32" TopLine="97"/>
       </Position16>
       <Position17>
         <Filename Value="uDemo.pas"/>
-        <Caret Line="204" Column="33" TopLine="186"/>
+        <Caret Line="198" Column="11" TopLine="179"/>
       </Position17>
       <Position18>
         <Filename Value="uDemo.pas"/>
-        <Caret Line="278" Column="16" TopLine="268"/>
+        <Caret Line="204" Column="24" TopLine="189"/>
       </Position18>
       <Position19>
         <Filename Value="uDemo.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Caret Line="236" Column="67" TopLine="220"/>
       </Position19>
+      <Position20>
+        <Filename Value="uDemo.pas"/>
+        <Caret Line="239" Column="48" TopLine="223"/>
+      </Position20>
+      <Position21>
+        <Filename Value="uDemo.pas"/>
+        <Caret Line="108" Column="1" TopLine="97"/>
+      </Position21>
+      <Position22>
+        <Filename Value="uDemo.pas"/>
+        <Caret Line="197" Column="1" TopLine="178"/>
+      </Position22>
+      <Position23>
+        <Filename Value="uDemo.pas"/>
+        <Caret Line="228" Column="56" TopLine="209"/>
+      </Position23>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

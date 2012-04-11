@@ -1621,20 +1621,24 @@ begin
 {$ENDIF}
       Gerador.wCampo(tcStr, '#36', 'xNome ', 01, 60, 1, CTe.Rodo.veic[i].Prop.xNome, DSC_XNOME);
 
-      // Alterado por Italo em 15/06/2011
-//      if CTe.Rodo.veic[i].Prop.IE <> ''
-//       then begin
-//        if CTe.Rodo.veic[i].Prop.IE = 'ISENTO'
-//         then Gerador.wCampo(tcStr, '#37', 'IE ', 00, 14, 1, CTe.Rodo.veic[i].Prop.IE, DSC_IE)
-//         else
-
-      // Alterado por Italo em 14/10/2011
-        Gerador.wCampo(tcStr, '#37', 'IE ', 02, 14, 1, SomenteNumeros(CTe.Rodo.veic[i].Prop.IE), DSC_IE);
-
+      // Alterado por Italo em 11/04/2012
+{$IFDEF PL_103}
+      Gerador.wCampo(tcStr, '#37', 'IE ', 02, 14, 1, SomenteNumeros(CTe.Rodo.veic[i].Prop.IE), DSC_IE);
+      if (FOpcoes.ValidarInscricoes)
+       then if not ValidarIE(CTe.Rodo.veic[i].Prop.IE, CTe.Rodo.veic[i].Prop.UF) then
+        Gerador.wAlerta('#37', 'IE', DSC_IE, ERR_MSG_INVALIDO);
+{$ENDIF}
+{$IFDEF PL_104}
+      if CTe.Rodo.veic[i].Prop.IE <> ''
+       then begin
+        if CTe.Rodo.veic[i].Prop.IE = 'ISENTO'
+         then Gerador.wCampo(tcStr, '#37', 'IE ', 00, 14, 1, CTe.Rodo.veic[i].Prop.IE, DSC_IE)
+         else Gerador.wCampo(tcStr, '#37', 'IE ', 02, 14, 1, SomenteNumeros(CTe.Rodo.veic[i].Prop.IE), DSC_IE);
         if (FOpcoes.ValidarInscricoes)
          then if not ValidarIE(CTe.Rodo.veic[i].Prop.IE, CTe.Rodo.veic[i].Prop.UF) then
           Gerador.wAlerta('#37', 'IE', DSC_IE, ERR_MSG_INVALIDO);
-//       end;
+       end;
+{$ENDIF}
 
       Gerador.wCampo(tcStr, '#38', 'UF     ', 02, 02, 1, CTe.Rodo.veic[i].Prop.UF, DSC_CUF);
       if not ValidarUF(CTe.Rodo.veic[i].Prop.UF) then

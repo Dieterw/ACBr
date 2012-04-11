@@ -1302,12 +1302,12 @@ type
     FCodigoBarras: string;
     FUnidade: string;
     FDescricao: string;
-    FCodigo: Integer;
+    FCodigo: Int64;
     FVersaoEan: TVersaoEan;
 
   public
     property VersaoEan: TVersaoEan read FVersaoEan write FVersaoEan;
-    property Codigo: Integer read FCodigo write FCodigo;
+    property Codigo: Int64 read FCodigo write FCodigo;
     property Descricao: string read FDescricao write FDescricao;
     property Unidade: string read FUnidade write FUnidade;
     property CodigoBarras: string read FCodigoBarras write FCodigoBarras;
@@ -3759,7 +3759,7 @@ end;
 constructor TRegistro88Ean.Create;
 begin
   inherited;
-VersaoEan:=eanIndefinido;
+  VersaoEan := eanIndefinido;
 end;
 
 { TRegistros88C }

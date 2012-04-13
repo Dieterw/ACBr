@@ -285,7 +285,7 @@ object Form1: TForm1
     Left = 0
     Top = 205
     Width = 529
-    Height = 78
+    Height = 76
     Align = alClient
     Caption = ' Gerar registros '
     TabOrder = 2
@@ -293,7 +293,7 @@ object Form1: TForm1
       Left = 2
       Top = 15
       Width = 525
-      Height = 61
+      Height = 59
       Align = alClient
       Columns = 3
       ItemHeight = 13
@@ -311,7 +311,7 @@ object Form1: TForm1
   end
   object Panel1: TPanel
     Left = 0
-    Top = 283
+    Top = 281
     Width = 529
     Height = 81
     Align = alBottom
@@ -399,6 +399,11 @@ object Form1: TForm1
   end
   object ACBrSintegra: TACBrSintegra
     VersaoValidador = vv523
+    Informa88SME = False
+    Informa88SMS = False
+    Informa88EAN = False
+    Informa88C = False
+    InformaSapiMG = False
     Left = 448
     Top = 236
   end

@@ -63,7 +63,6 @@ type
     procedure GerarRegistro54Dll;
     procedure GerarRegistro60MDll;
     procedure GerarRegistro60ADll;
-    procedure GerarRegistro60DDll;
     procedure GerarRegistro70Dll;
 
 
@@ -530,11 +529,6 @@ wregistro75.DataFinal:=ACBrSintegra.Registro10.DataFinal;
 wregistro75.Descricao:='PRODUTO DE TESTE II';
 wregistro75.Unidade:='UN';
 ACBrSintegra.Registros75.Add(wregistro75);
-
-end;
-
-procedure TForm1.GerarRegistro60DDll;
-begin
 
 end;
 

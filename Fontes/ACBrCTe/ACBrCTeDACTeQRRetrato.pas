@@ -614,7 +614,9 @@ uses
 {$R *.dfm}
 
 const
-  _NUM_ITEMS_PAGE1      = 26; //esse valor eh dobrado por ter 2 NF por linha
+  // Alterado por Italo em 13/04/2012
+  _NUM_ITEMS_PAGE1      = 6; //esse valor eh dobrado por ter 2 NF por linha
+//  _NUM_ITEMS_PAGE1      = 26; //esse valor eh dobrado por ter 2 NF por linha
   _NUM_ITEMS_OTHERPAGES = 88;
 
 var

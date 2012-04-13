@@ -40,6 +40,13 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+13/04/2012
+----------
+  [-] Corrigido bug, quando tem versões anteriores a do Delphi 7 instalada na 
+      maquina o ACBrInstall, estava selecionando a versão errada por não mostrar
+      todas versões do delphi no combo.
+      por: Isaque Pinheiro
+
 04/04/2012
 ----------
   [+] Adicionado a opção de instalar a CAPICOM ao final da instalação.

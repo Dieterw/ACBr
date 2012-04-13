@@ -538,7 +538,15 @@ begin
   // popular o combobox de versões do delphi instaladas na máquina
   for iFor := 0 to oACBr.Count - 1 do
   begin
-    if oACBr.Installations[iFor].VersionNumberStr = 'd7' then
+    if oACBr.Installations[iFor].VersionNumberStr = 'd3' then
+      edtDelphiVersion.Items.Add('Delphi 3')
+    else if oACBr.Installations[iFor].VersionNumberStr = 'd4' then
+      edtDelphiVersion.Items.Add('Delphi 4')
+    else if oACBr.Installations[iFor].VersionNumberStr = 'd5' then
+      edtDelphiVersion.Items.Add('Delphi 5')
+    else if oACBr.Installations[iFor].VersionNumberStr = 'd6' then
+      edtDelphiVersion.Items.Add('Delphi 6')
+    else if oACBr.Installations[iFor].VersionNumberStr = 'd7' then
       edtDelphiVersion.Items.Add('Delphi 7')
     else if oACBr.Installations[iFor].VersionNumberStr = 'd9' then
       edtDelphiVersion.Items.Add('Delphi 2005')
@@ -916,6 +924,17 @@ end;
 procedure TfrmPrincipal.wizPgConfiguracaoNextButtonClick(Sender: TObject;
   var Stop: Boolean);
 begin
+  if Pos(oACBr.Installations[iVersion].VersionNumberStr, 'd3, d4, d5, d6') > 0 then
+  begin
+    Stop := True;
+    edtDelphiVersion.SetFocus;
+    Application.MessageBox(
+      'Versão do delphi não suportada pelo ACBr.',
+      'Erro.',
+      MB_OK + MB_ICONERROR
+    );
+  end;
+
   // verificar se foi informado o diretório
   if Trim(edtDirDestino.Text) = EmptyStr then
   begin

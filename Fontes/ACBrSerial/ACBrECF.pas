@@ -5319,13 +5319,19 @@ begin
 end;
 
 procedure TACBrECF.IdentificaPAF(NomeVersao, MD5: String);
+var
+  MD5Texto: String;
 begin
   ComandoLOG := 'IdentificaPAF('+NomeVersao+' , '+MD5+')';
+
+  // acertar para que saia o texto "MD-5" antes do numero
+  MD5Texto := 'MD-5: ' + MD5;
 
   try
      fsECF.IdentificaPAF(NomeVersao, MD5);
   except
-     // Se não conseguiu programar os dados PAF-ECF, usa o InfoRodapeCupom para imprimir o MD5 //
+     // Se não conseguiu programar os dados PAF-ECF,
+     // usa o InfoRodapeCupom para imprimir o MD5
      InfoRodapeCupom.MD5 := MD5;
   end ;
 end;

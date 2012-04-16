@@ -48,7 +48,7 @@ interface
 
 uses
   SysUtils, Classes, ACBrCTeDACTEClass, pcteCTe, frxClass, frxExportPDF, DB,
-  DBClient, frxDBSet, pcnConversao, frxBarcode, MaskUtils;
+  DBClient, frxDBSet, pcnConversao, frxBarcode, MaskUtils, pcnCadEmiDFe;
 
 type
   TdmACBrCTeFR = class(TDataModule)
@@ -252,24 +252,82 @@ begin
     FieldDefs.Add('VICMS', ftFloat);
     FieldDefs.Add('pRedBC', ftFloat);
     FieldDefs.Add('VICMSST', ftFloat);
+    FieldDefs.Add('VCREDITO', ftFloat);
+    FieldDefs.Add('vIndSN', ftInteger);
 
 
     CreateDataSet;
     Append;
 
-    case FCTe.Imp.ICMS.SituTrib of
-     cst00 : begin
-               FieldByName('TXTSITTRIB').AsString :=   CSTICMSToStr(cst00)+'-'+ CSTICMSToStrTagPosText(cst00);
-               FieldByName('vBC').AsFloat   := FCTe.Imp.ICMS.CST00.vBC;
-               FieldByName('pICMS').AsFloat := FCTe.Imp.ICMS.CST00.pICMS;
-               FieldByName('vICMS').AsFloat := FCTe.Imp.ICMS.CST00.VICMS;
-             end;
-      cst45: begin
-               FieldByName('TXTSITTRIB').AsString :=   CSTICMSToStr(cst00)+'-'+ CSTICMSToStrTagPosText(cst00);
-             end;
-
-
-    end;
+    {$IFDEF PL_103}
+        case FCTe.Imp.ICMS.SituTrib of
+         cst00:
+           begin
+             FieldByName('TXTSITTRIB').AsString := CSTICMSToStr(cst00)+'-'+ CSTICMSToStrTagPosText(cst00);
+             FieldByName('vBC').AsFloat         := FCTe.Imp.ICMS.CST00.vBC;
+             FieldByName('pICMS').AsFloat       := FCTe.Imp.ICMS.CST00.pICMS;
+             FieldByName('vICMS').AsFloat       := FCTe.Imp.ICMS.CST00.VICMS;
+           end;
+          cst45:
+           begin
+             FieldByName('TXTSITTRIB').AsString :=   CSTICMSToStr(cst45)+'-'+ CSTICMSToStrTagPosText(cst45);
+           end;
+        end;
+     {$ENDIF}
+      {$IFDEF PL_104}
+        case FCTe.Imp.ICMS.SituTrib of
+          cst00:
+            begin
+               FieldByName('TXTSITTRIB').AsString := CSTICMSToStr(cst00)+'-'+ CSTICMSToStrTagPosText(cst00);
+               FieldByName('vBC').AsFloat         := FCTe.Imp.ICMS.ICMS00.vBC;
+               FieldByName('pICMS').AsFloat       := FCTe.Imp.ICMS.ICMS00.pICMS;
+               FieldByName('vICMS').AsFloat       := FCTe.Imp.ICMS.ICMS00.VICMS;
+            end;
+          cst20:
+            begin
+               FieldByName('TXTSITTRIB').AsString := CSTICMSToStr(cst20)+'-'+ CSTICMSToStrTagPosText(cst20);
+               FieldByName('pRedBC').AsFloat      := FCTe.Imp.ICMS.ICMS20.pRedBC;
+               FieldByName('vBC').AsFloat         := FCTe.Imp.ICMS.ICMS20.vBC;
+               FieldByName('pICMS').AsFloat       := FCTe.Imp.ICMS.ICMS20.pICMS;
+               FieldByName('vICMS').AsFloat       := FCTe.Imp.ICMS.ICMS20.VICMS;
+            end;
+          cst45:
+            begin
+               FieldByName('TXTSITTRIB').AsString := CSTICMSToStr(cst45)+'-'+ CSTICMSToStrTagPosText(cst45);
+            end;
+          cst60:
+            begin
+               FieldByName('TXTSITTRIB').AsString := CSTICMSToStr(cst60)+'-'+ CSTICMSToStrTagPosText(cst60);
+               FieldByName('vBC').AsFloat         := FCTe.Imp.ICMS.ICMS60.vBCSTRet;
+               FieldByName('pICMS').AsFloat       := FCTe.Imp.ICMS.ICMS60.pICMSSTRet;
+               FieldByName('vICMS').AsFloat       := FCTe.Imp.ICMS.ICMS60.vICMSSTRet;
+               FieldByName('vCredito').AsFloat    := FCTe.Imp.ICMS.ICMS60.vCred;
+            end;
+          cst90:
+            begin
+               FieldByName('TXTSITTRIB').AsString := CSTICMSToStr(cst90)+'-'+ CSTICMSToStrTagPosText(cst90);
+               FieldByName('pRedBC').AsFloat      := FCTe.Imp.ICMS.ICMS90.pRedBC;
+               FieldByName('vBC').AsFloat         := FCTe.Imp.ICMS.ICMS90.vBC;
+               FieldByName('pICMS').AsFloat       := FCTe.Imp.ICMS.ICMS90.pRedBC;
+               FieldByName('vICMS').AsFloat       := FCTe.Imp.ICMS.ICMS90.vICMS;
+               FieldByName('vCredito').AsFloat    := FCTe.Imp.ICMS.ICMS90.vCred;
+            end;
+          // Incluido por Italo em 05/12/2011 (contribuição de Doni Dephi)
+          cstICMSOutraUF:
+            begin
+               FieldByName('TXTSITTRIB').AsString := CSTICMSToStr(cstICMSOutraUF)+'-'+ CSTICMSToStrTagPosText(cstICMSOutraUF);
+               FieldByName('pRedBC').AsFloat      := FCTe.Imp.ICMS.ICMSOutraUF.pRedBCOutraUF;
+               FieldByName('vBC').AsFloat         := FCTe.Imp.ICMS.ICMSOutraUF.vBCOutraUF;
+               FieldByName('pICMS').AsFloat       := FCTe.Imp.ICMS.ICMSOutraUF.pRedBCOutraUF;
+               FieldByName('vICMS').AsFloat       := FCTe.Imp.ICMS.ICMSOutraUF.vICMSOutraUF;
+            end;
+          cstICMSSN:
+            begin
+               FieldByName('TXTSITTRIB').AsString := CSTICMSToStr(cstICMSSN)+'-'+ CSTICMSToStrTagPosText(cstICMSSN);
+               FieldByName('vIndSN').AsFloat      := FCTe.Imp.ICMS.ICMSSN.indSN;
+            end;
+        end;
+     {$ENDIF}
    Post;
   end;
 end;
@@ -501,8 +559,8 @@ begin
         FieldByName('XMun').AsString := CollateBr(XMun);
         FieldByName('UF').AsString := UF;
         FieldByName('CEP').AsString := CTeUtil.FormatarCEP(CTeUtil.Poem_Zeros(CEP, 8));
-        FieldByName('CPais').AsString := IntToStr(CPais);
-        FieldByName('XPais').AsString := XPais;
+//        FieldByName('CPais').AsString := IntToStr(CPais);
+//        FieldByName('XPais').AsString := XPais;
         FieldByName('Fone').AsString := CTeUtil.FormatarFone(Fone);
       end;
       FieldByName('IE').AsString := IE;
@@ -623,31 +681,37 @@ begin
       FieldByName('CCT').AsString := IntToStr(CCT);
       FieldByName('CFOP').AsString := IntToStr(CFOP);
       FieldByName('NatOp').AsString := NatOp;
+
       case forPag of
         fpPago: FieldByName('forPag').AsString := 'Pago';
         fpAPagar: FieldByName('forPag').AsString := 'A Pagar';
         fpOutros: FieldByName('forPag').AsString := 'Outros';
       end;
+
       FieldByName('Mod_').AsString := modelo;
       FieldByName('Serie').AsString := IntToStr(Serie);
       FieldByName('NCT').AsString := CTeUtil.FormatarNumCTe(nCT);
       FieldByName('dhEmi').AsDateTime := dhEmi;
+
       case tpCTe of
         tcNormal: FieldByName('TpCT').AsString := 'Normal';
         tcComplemento: FieldByName('TpCT').AsString := 'Complemento';
         tcAnulacao: FieldByName('TpCT').AsString := 'Anulação';
         tcSubstituto: FieldByName('TpCT').AsString := 'Substituto';
       end;
-      FieldByName('cMunEmi').AsString := IntToStr(cMunEmi);
-      FieldByName('xMunEmi').AsString := xMunEmi;
-      FieldByName('UFEmi').AsString   := UFEmi;
+
+      FieldByName('cMunEmi').AsString := IntToStr(cMunEnv);
+      FieldByName('xMunEmi').AsString := xMunEnv;
+      FieldByName('UFEmi').AsString   := UFEnv;
       FieldByName('modal').AsString := CTeUtil.SeSenao(modal = mdRodoviario, '0', '0');
+
       case tpServ of
         tsNormal: FieldByName('tpServ').AsString := 'Normal';
         tsSubcontratacao: FieldByName('tpServ').AsString := 'Subcontratação';
         tsRedespacho: FieldByName('tpServ').AsString := 'Redespacho';
         tsIntermediario: FieldByName('tpServ').AsString := 'Intermediário';
       end;
+
       FieldByName('cMunIni').AsString := IntToStr(cMunIni);
       FieldByName('xMunIni').AsString := xMunIni;
       FieldByName('UFIni').AsString   := UFIni;
@@ -671,11 +735,7 @@ begin
       case Toma4.Toma of
        tmOutros       : FieldByName('Toma').AsString := 'Outros';
       end;
-
-
-
     end;
-
     Post;
   end;
 end;
@@ -1218,7 +1278,12 @@ begin
     begin
       FieldByName('Produto').AsString :=             CTe.InfCarga.proPred;
       FieldByName('CaracteristicaCarga').AsString := CTe.InfCarga.xOutCat;
-      FieldByName('ValorServico').AsFloat :=  CTe.InfCarga.vMerc;
+      {$IFDEF PL_103}
+        FieldByName('ValorServico').AsFloat :=  CTe.InfCarga.vMerc;
+      {$ENDIF}
+      {$IFDEF PL_104}
+        FieldByName('ValorServico').AsFloat :=  CTe.InfCarga.vCarga;
+      {$ENDIF}
 
        case CTe.InfCarga.InfQ.Items[I].cUnid of
           uM3   : begin

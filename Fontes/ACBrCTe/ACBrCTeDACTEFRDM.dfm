@@ -6,6 +6,7 @@ object dmACBrCTeFR: TdmACBrCTeFR
     UseFileCache = True
     ShowProgress = True
     OverwritePrompt = False
+    DataOnly = False
     PrintOptimized = True
     Outline = False
     Background = True
@@ -132,7 +133,7 @@ object dmACBrCTeFR: TdmACBrCTeFR
     Top = 148
   end
   object frxReport: TfrxReport
-    Version = '4.9.64'
+    Version = '4.12'
     DotMatrixReport = False
     IniFile = '\Software\Fast Reports'
     PreviewOptions.AllowEdit = False

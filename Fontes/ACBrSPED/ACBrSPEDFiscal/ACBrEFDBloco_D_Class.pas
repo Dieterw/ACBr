@@ -49,6 +49,18 @@ type
   /// TBLOCO_D -
   TBloco_D = class(TACBrSPED)
   private
+    FOnBeforeWriteRegistroD100: TWriteRegistroEvent;
+    FOnBeforeWriteRegistroD110: TWriteRegistroEvent;
+    FOnBeforeWriteRegistroD510: TWriteRegistroEvent;
+
+    FOnWriteRegistroD100: TWriteRegistroEvent;
+    FOnWriteRegistroD110: TWriteRegistroEvent;
+    FOnWriteRegistroD510: TWriteRegistroEvent;
+
+    FOnAfterWriteRegistroD100: TWriteRegistroEvent;
+    FOnAfterWriteRegistroD110: TWriteRegistroEvent;
+    FOnAfterWriteRegistroD510: TWriteRegistroEvent;
+
     FBloco_0: TBloco_0;
 
     FRegistroD001: TRegistroD001;      /// BLOCO D - RegistroD001
@@ -220,6 +232,18 @@ type
     property RegistroD695Count: integer read FRegistroD695Count write FRegistroD695Count;
     property RegistroD696Count: integer read FRegistroD696Count write FRegistroD696Count;
     property RegistroD697Count: integer read FRegistroD697Count write FRegistroD697Count;
+
+    property OnBeforeWriteRegistroD100: TWriteRegistroEvent read FOnBeforeWriteRegistroD100 write FOnBeforeWriteRegistroD100;
+    property OnBeforeWriteRegistroD110: TWriteRegistroEvent read FOnBeforeWriteRegistroD110 write FOnBeforeWriteRegistroD110;
+    property OnBeforeWriteRegistroD510: TWriteRegistroEvent read FOnBeforeWriteRegistroD510 write FOnBeforeWriteRegistroD510;
+
+    property OnWriteRegistroD100: TWriteRegistroEvent read FOnWriteRegistroD100 write FOnWriteRegistroD100;
+    property OnWriteRegistroD110: TWriteRegistroEvent read FOnWriteRegistroD110 write FOnWriteRegistroD110;
+    property OnWriteRegistroD510: TWriteRegistroEvent read FOnWriteRegistroD510 write FOnWriteRegistroD510;
+
+    property OnAfterWriteRegistroD100: TWriteRegistroEvent read FOnAfterWriteRegistroD100 write FOnAfterWriteRegistroD100;
+    property OnAfterWriteRegistroD110: TWriteRegistroEvent read FOnAfterWriteRegistroD110 write FOnAfterWriteRegistroD110;
+    property OnAfterWriteRegistroD510: TWriteRegistroEvent read FOnAfterWriteRegistroD510 write FOnAfterWriteRegistroD510;
   end;
 
 implementation
@@ -593,9 +617,18 @@ var
   strIND_FRT: AnsiString;
   strCOD_SIT: AnsiString;
   booCTRCCancelado: Boolean;
+  strLinha: AnsiString;
 begin
   if Assigned( RegD001.RegistroD100 ) then
   begin
+     //-- Before
+     strLinha := '';
+     if Assigned(FOnBeforeWriteRegistroD100) then
+     begin
+        FOnBeforeWriteRegistroD100(strLinha);
+        if strLinha <> EmptyStr then
+           Add(strLinha);
+     end;
      for intFor := 0 to RegD001.RegistroD100.Count - 1 do
      begin
         with RegD001.RegistroD100.Items[intFor] do
@@ -619,29 +652,35 @@ begin
             sdRegimeEspecNEsp:       strCOD_SIT := '08';
           end;
           booCTRCCancelado := (strCOD_SIT = '02');
-          Add( LFill('D100') +
-               LFill( Integer(IND_OPER), 0 ) +
-               LFill( Integer(IND_EMIT), 0 ) +
-               LFill( COD_PART ) +
-               LFill( COD_MOD ) +
-               LFill( strCOD_SIT ) +
-               LFill( SER ) +
-               LFill( SUB ) +
-               LFill( NUM_DOC ) +
-               LFill( CHV_CTE ) +
-               LFill( DT_DOC ) +
-               LFill( DT_A_P ) +
-               LFill( TP_CT_e ) +
-               LFill( CHV_CTE_REF ) +
-               LFill( VL_DOC,0,2, booCTRCCancelado ) +
-               LFill( VL_DESC,0,2, booCTRCCancelado ) +
-               LFill( strIND_FRT ) +
-               LFill( VL_SERV,0,2, booCTRCCancelado ) +
-               LFill( VL_BC_ICMS,0,2, booCTRCCancelado ) +
-               LFill( VL_ICMS,0,2, booCTRCCancelado ) +
-               LFill( VL_NT,0,2, booCTRCCancelado ) +
-               LFill( COD_INF ) +
-               LFill( COD_CTA ) ) ;
+
+          strLinha := LFill('D100') +
+                      LFill( Integer(IND_OPER), 0 ) +
+                      LFill( Integer(IND_EMIT), 0 ) +
+                      LFill( COD_PART ) +
+                      LFill( COD_MOD ) +
+                      LFill( strCOD_SIT ) +
+                      LFill( SER ) +
+                      LFill( SUB ) +
+                      LFill( NUM_DOC ) +
+                      LFill( CHV_CTE ) +
+                      LFill( DT_DOC ) +
+                      LFill( DT_A_P ) +
+                      LFill( TP_CT_e ) +
+                      LFill( CHV_CTE_REF ) +
+                      LFill( VL_DOC,0,2, booCTRCCancelado ) +
+                      LFill( VL_DESC,0,2, booCTRCCancelado ) +
+                      LFill( strIND_FRT ) +
+                      LFill( VL_SERV,0,2, booCTRCCancelado ) +
+                      LFill( VL_BC_ICMS,0,2, booCTRCCancelado ) +
+                      LFill( VL_ICMS,0,2, booCTRCCancelado ) +
+                      LFill( VL_NT,0,2, booCTRCCancelado ) +
+                      LFill( COD_INF ) +
+                      LFill( COD_CTA );
+          //-- Write
+          if Assigned(FOnWriteRegistroD100) then
+             FOnWriteRegistroD100(strLinha);
+
+          Add(strLinha);
         end;
         /// Registros FILHOS
         WriteRegistroD110( RegD001.RegistroD100.Items[intFor] ) ;
@@ -656,6 +695,14 @@ begin
 
        RegistroD990.QTD_LIN_D := RegistroD990.QTD_LIN_D + 1;
      end;
+     //-- After
+     strLinha := '';
+     if Assigned(FOnAfterWriteRegistroD100) then
+     begin
+        FOnAfterWriteRegistroD100(strLinha);
+        if strLinha <> EmptyStr then
+           Add(strLinha);
+     end;
      /// Variavél para armazenar a quantidade de registro do tipo.
      FRegistroD100Count := FRegistroD100Count + RegD001.RegistroD100.Count;
   end;
@@ -664,23 +711,45 @@ end;
 procedure TBloco_D.WriteRegistroD110(RegD100: TRegistroD100) ;
 var
   intFor: integer;
+  strLinha: AnsiString;
 begin
   if Assigned( RegD100.RegistroD110 ) then
   begin
+     //-- Before
+     strLinha := '';
+     if Assigned(FOnBeforeWriteRegistroD110) then
+     begin
+        FOnBeforeWriteRegistroD110(strLinha);
+        if strLinha <> EmptyStr then
+           Add(strLinha);
+     end;
      for intFor := 0 to RegD100.RegistroD110.Count - 1 do
      begin
         with RegD100.RegistroD110.Items[intFor] do
         begin
-          Add( LFill('D110')        +
-               LFill(NUN_ITEM, 3)   +
-               LFill(COD_ITEM )     +
-               LFill(VL_SERV, 0, 2) +
-               LFill(VL_OUT, 0, 2));
+          strLinha := LFill('D110')        +
+                      LFill(NUN_ITEM, 3)   +
+                      LFill(COD_ITEM )     +
+                      LFill(VL_SERV, 0, 2) +
+                      LFill(VL_OUT, 0, 2);
+          //-- Write
+          if Assigned(FOnWriteRegistroD110) then
+             FOnWriteRegistroD110(strLinha);
+
+          Add(strLinha);
         end;
         /// Registros FILHOS
         WriteRegistroD120( RegD100.RegistroD110.Items[intFor] );
 
         RegistroD990.QTD_LIN_D := RegistroD990.QTD_LIN_D + 1;
+     end;
+     //-- After
+     strLinha := '';
+     if Assigned(FOnAfterWriteRegistroD110) then
+     begin
+        FOnAfterWriteRegistroD110(strLinha);
+        if strLinha <> EmptyStr then
+           Add(strLinha);
      end;
      /// Variavél para armazenar a quantidade de registro do tipo.
      FRegistroD110Count := FRegistroD110Count + RegD100.RegistroD110.Count;
@@ -1506,9 +1575,18 @@ procedure TBloco_D.WriteRegistroD510(RegD500: TRegistroD500) ;
 var
   intFor: integer;
   intIND_REC: integer;
+  strLinha: AnsiString;
 begin
   if Assigned( RegD500.RegistroD510 ) then
   begin
+     //-- Before
+     strLinha := '';
+     if Assigned(FOnBeforeWriteRegistroD510) then
+     begin
+        FOnBeforeWriteRegistroD510(strLinha);
+        if strLinha <> EmptyStr then
+           Add(strLinha);
+     end;
      for intFor := 0 to RegD500.RegistroD510.Count - 1 do
      begin
         with RegD500.RegistroD510.Items[intFor] do
@@ -1524,10 +1602,23 @@ begin
             else                      intIND_REC := 0;
           end;
 
-          Add( LFill('D510') +
-               LFill( intIND_REC, 0 ) ) ;
+          strLinha := LFill('D510') +
+                      LFill( intIND_REC, 0 );
+          //-- Write
+          if Assigned(FOnWriteRegistroD510) then
+             FOnWriteRegistroD510(strLinha);
+
+          Add(strLinha);
         end;
         RegistroD990.QTD_LIN_D := RegistroD990.QTD_LIN_D + 1;
+     end;
+     //-- After
+     strLinha := '';
+     if Assigned(FOnAfterWriteRegistroD510) then
+     begin
+        FOnAfterWriteRegistroD510(strLinha);
+        if strLinha <> EmptyStr then
+           Add(strLinha);
      end;
      /// Variavél para armazenar a quantidade de registro do tipo.
      FRegistroD510Count := FRegistroD510Count + RegD500.RegistroD510.Count;

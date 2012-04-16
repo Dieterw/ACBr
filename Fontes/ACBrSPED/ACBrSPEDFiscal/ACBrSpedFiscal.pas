@@ -54,10 +54,12 @@ uses
   DateUtils, ACBrSped, ACBrTXTClass, ACBrEFDBlocos,
   ACBrEFDBloco_0_Class, ACBrEFDBloco_1_Class, ACBrEFDBloco_9_Class,
   ACBrEFDBloco_C_Class, ACBrEFDBloco_D_Class, ACBrEFDBloco_E_Class,
-  ACBrEFDBloco_G_Class, ACBrEFDBloco_H_Class;
+  ACBrEFDBloco_G_Class, ACBrEFDBloco_H_Class,
+  ACBrEFDBloco_0_Events, ACBrEFDBloco_C_Events, ACBrEFDBloco_D_Events,
+  ACBrEFDBloco_E_Events;
 
 const
-  CACBrSpedFiscal_Versao = '1.00b';
+  CACBrSpedFiscal_Versao = '1.01';
 
 type
   /// ACBrSpedFiscal - Sitema Publico de Escrituração Digital Fiscal
@@ -71,21 +73,10 @@ type
     FInicializado : boolean;
     FOnError: TErrorEvent;
 
-    FOnBeforeWriteRegistro0200: TWriteRegistroEvent;
-    FOnWriteRegistro0200      : TWriteRegistroEvent;
-    FOnAfterWriteRegistro0200 : TWriteRegistroEvent;
-
-    FOnBeforeWriteRegistro0206: TWriteRegistroEvent;
-    FOnWriteRegistro0206      : TWriteRegistroEvent;
-    FOnAfterWriteRegistro0206 : TWriteRegistroEvent;
-
-    FOnBeforeWriteRegistro0500: TWriteRegistroEvent;
-    FOnWriteRegistro0500      : TWriteRegistroEvent;
-    FOnAfterWriteRegistro0500 : TWriteRegistroEvent;
-
-    FOnBeforeWriteRegistro0600: TWriteRegistroEvent;
-    FOnWriteRegistro0600      : TWriteRegistroEvent;
-    FOnAfterWriteRegistro0600 : TWriteRegistroEvent;
+    FEventsBloco_0: TEventsBloco_0;
+    FEventsBloco_C: TEventsBloco_C;
+    FEventsBloco_D: TEventsBloco_D;
+    FEventsBloco_E: TEventsBloco_E;
 
     FDT_INI: TDateTime;           /// Data inicial das informações contidas no arquivo
     FDT_FIN: TDateTime;           /// Data final das informações contidas no arquivo
@@ -127,30 +118,6 @@ type
     procedure SetOnError(const Value: TErrorEvent); /// Método SetError
 
     procedure LimpaRegistros;
-    function GetOnAfterWriteRegistro0200: TWriteRegistroEvent;
-    function GetOnAfterWriteRegistro0206: TWriteRegistroEvent;
-    function GetOnAfterWriteRegistro0500: TWriteRegistroEvent;
-    function GetOnAfterWriteRegistro0600: TWriteRegistroEvent;
-    function GetOnBeforeWriteRegistro0200: TWriteRegistroEvent;
-    function GetOnBeforeWriteRegistro0206: TWriteRegistroEvent;
-    function GetOnBeforeWriteRegistro0500: TWriteRegistroEvent;
-    function GetOnBeforeWriteRegistro0600: TWriteRegistroEvent;
-    procedure SetOnAfterWriteRegistro0200(const Value: TWriteRegistroEvent);
-    procedure SetOnAfterWriteRegistro0206(const Value: TWriteRegistroEvent);
-    procedure SetOnAfterWriteRegistro0500(const Value: TWriteRegistroEvent);
-    procedure SetOnAfterWriteRegistro0600(const Value: TWriteRegistroEvent);
-    procedure SetOnBeforeWriteRegistro0200(const Value: TWriteRegistroEvent);
-    procedure SetOnBeforeWriteRegistro0206(const Value: TWriteRegistroEvent);
-    procedure SetOnBeforeWriteRegistro0500(const Value: TWriteRegistroEvent);
-    procedure SetOnBeforeWriteRegistro0600(const Value: TWriteRegistroEvent);
-    function GetOnWriteRegistro0200: TWriteRegistroEvent;
-    function GetOnWriteRegistro0206: TWriteRegistroEvent;
-    function GetOnWriteRegistro0500: TWriteRegistroEvent;
-    function GetOnWriteRegistro0600: TWriteRegistroEvent;
-    procedure SetOnWriteRegistro0200(const Value: TWriteRegistroEvent);
-    procedure SetOnWriteRegistro0206(const Value: TWriteRegistroEvent);
-    procedure SetOnWriteRegistro0500(const Value: TWriteRegistroEvent);
-    procedure SetOnWriteRegistro0600(const Value: TWriteRegistroEvent);
   protected
     /// BLOCO 0
     procedure WriteRegistro0000;
@@ -222,21 +189,10 @@ type
 
     property OnError: TErrorEvent read GetOnError write SetOnError;
 
-    property OnBeforeWriteRegistro0200: TWriteRegistroEvent read GetOnBeforeWriteRegistro0200 write SetOnBeforeWriteRegistro0200;
-    property OnWriteRegistro0200      : TWriteRegistroEvent read GetOnWriteRegistro0200       write SetOnWriteRegistro0200;
-    property OnAfterWriteRegistro0200 : TWriteRegistroEvent read GetOnAfterWriteRegistro0200  write SetOnAfterWriteRegistro0200;
-
-    property OnBeforeWriteRegistro0206: TWriteRegistroEvent read GetOnBeforeWriteRegistro0206 write SetOnBeforeWriteRegistro0206;
-    property OnWriteRegistro0206      : TWriteRegistroEvent read GetOnWriteRegistro0206       write SetOnWriteRegistro0206;
-    property OnAfterWriteRegistro0206 : TWriteRegistroEvent read GetOnAfterWriteRegistro0206  write SetOnAfterWriteRegistro0206;
-
-    property OnBeforeWriteRegistro0500: TWriteRegistroEvent read GetOnBeforeWriteRegistro0500 write SetOnBeforeWriteRegistro0500;
-    property OnWriteRegistro0500      : TWriteRegistroEvent read GetOnWriteRegistro0500       write SetOnWriteRegistro0500;
-    property OnAfterWriteRegistro0500 : TWriteRegistroEvent read GetOnAfterWriteRegistro0500  write SetOnAfterWriteRegistro0500;
-
-    property OnBeforeWriteRegistro0600: TWriteRegistroEvent read GetOnBeforeWriteRegistro0600 write SetOnBeforeWriteRegistro0600;
-    property OnWriteRegistro0600      : TWriteRegistroEvent read GetOnWriteRegistro0600       write SetOnWriteRegistro0600;
-    property OnAfterWriteRegistro0600 : TWriteRegistroEvent read GetOnAfterWriteRegistro0600  write SetOnAfterWriteRegistro0600;
+    property EventsBloco_0: TEventsBloco_0 read FEventsBloco_0; // write FOnEventsBloco_0;
+    property EventsBloco_C: TEventsBloco_C read FEventsBloco_C; // write FOnEventsBloco_C;
+    property EventsBloco_D: TEventsBloco_D read FEventsBloco_D; // write FOnEventsBloco_D;
+    property EventsBloco_E: TEventsBloco_E read FEventsBloco_E; // write FOnEventsBloco_E;
   end;
 
 procedure Register;
@@ -292,11 +248,32 @@ begin
   SetDelimitador(FDelimitador);
   SetCurMascara(FCurMascara);
   SetTrimString(FTrimString);
+
+  FEventsBloco_0 := TEventsBloco_0.Create(Self);
+  FEventsBloco_0.Name := 'EventsBloco_0';
+  FEventsBloco_0.SetSubComponent(True);
+
+  FEventsBloco_C := TEventsBloco_C.Create(Self);
+  FEventsBloco_C.Name := 'EventsBloco_C';
+  FEventsBloco_C.SetSubComponent(True);
+
+  FEventsBloco_D := TEventsBloco_D.Create(Self);
+  FEventsBloco_D.Name := 'EventsBloco_D';
+  FEventsBloco_D.SetSubComponent(True);
+
+  FEventsBloco_E := TEventsBloco_E.Create(Self);
+  FEventsBloco_E.Name := 'EventsBloco_E';
+  FEventsBloco_E.SetSubComponent(True);
 end;
 
 destructor TACBrSPEDFiscal.Destroy;
 begin
   FACBrTXT.Free;
+
+  FEventsBloco_0.Free;
+  FEventsBloco_C.Free;
+  FEventsBloco_D.Free;
+  FEventsBloco_E.Free;
 
   FBloco_0.Free;
   FBloco_1.Free;
@@ -527,125 +504,9 @@ begin
   end;
 end;
 
-function TACBrSPEDFiscal.GetOnAfterWriteRegistro0200: TWriteRegistroEvent;
-begin
-   Result := FOnAfterWriteRegistro0200;
-end;
-
-function TACBrSPEDFiscal.GetOnAfterWriteRegistro0206: TWriteRegistroEvent;
-begin
-   Result := FOnAfterWriteRegistro0206;
-end;
-
-function TACBrSPEDFiscal.GetOnAfterWriteRegistro0500: TWriteRegistroEvent;
-begin
-   Result := FOnAfterWriteRegistro0500;
-end;
-
-function TACBrSPEDFiscal.GetOnAfterWriteRegistro0600: TWriteRegistroEvent;
-begin
-   Result := FOnAfterWriteRegistro0600;
-end;
-
-function TACBrSPEDFiscal.GetOnBeforeWriteRegistro0200: TWriteRegistroEvent;
-begin
-   Result := FOnBeforeWriteRegistro0200;
-end;
-
-function TACBrSPEDFiscal.GetOnBeforeWriteRegistro0206: TWriteRegistroEvent;
-begin
-   Result := FOnBeforeWriteRegistro0206;
-end;
-
-function TACBrSPEDFiscal.GetOnBeforeWriteRegistro0500: TWriteRegistroEvent;
-begin
-   Result := FOnBeforeWriteRegistro0500;
-end;
-
-function TACBrSPEDFiscal.GetOnBeforeWriteRegistro0600: TWriteRegistroEvent;
-begin
-   Result := FOnBeforeWriteRegistro0600;
-end;
-
 function TACBrSPEDFiscal.GetOnError: TErrorEvent;
 begin
   Result := FOnError;
-end;
-
-function TACBrSPEDFiscal.GetOnWriteRegistro0200: TWriteRegistroEvent;
-begin
-    Result := FOnWriteRegistro0200;
-end;
-
-function TACBrSPEDFiscal.GetOnWriteRegistro0206: TWriteRegistroEvent;
-begin
-   Result := FOnWriteRegistro0206;
-end;
-
-function TACBrSPEDFiscal.GetOnWriteRegistro0500: TWriteRegistroEvent;
-begin
-   Result := FOnWriteRegistro0500;
-end;
-
-function TACBrSPEDFiscal.GetOnWriteRegistro0600: TWriteRegistroEvent;
-begin
-   Result := FOnWriteRegistro0600;
-end;
-
-procedure TACBrSPEDFiscal.SetOnAfterWriteRegistro0200(const Value: TWriteRegistroEvent);
-begin
-  FOnAfterWriteRegistro0200 := Value;
-
-  FBloco_0.OnAfterWriteRegistro0200 := Value;
-end;
-
-procedure TACBrSPEDFiscal.SetOnAfterWriteRegistro0206(const Value: TWriteRegistroEvent);
-begin
-  FOnAfterWriteRegistro0206 := Value;
-
-  FBloco_0.OnAfterWriteRegistro0206 := Value;
-end;
-
-procedure TACBrSPEDFiscal.SetOnAfterWriteRegistro0500(const Value: TWriteRegistroEvent);
-begin
-  FOnAfterWriteRegistro0500 := Value;
-
-  FBloco_0.OnAfterWriteRegistro0500 := Value;
-end;
-
-procedure TACBrSPEDFiscal.SetOnAfterWriteRegistro0600(const Value: TWriteRegistroEvent);
-begin
-  FOnAfterWriteRegistro0600 := Value;
-
-  FBloco_0.OnAfterWriteRegistro0600 := Value;
-end;
-
-procedure TACBrSPEDFiscal.SetOnBeforeWriteRegistro0200(const Value: TWriteRegistroEvent);
-begin
-  FOnBeforeWriteRegistro0200 := Value;
-
-  FBloco_0.OnBeforeWriteRegistro0200 := Value;
-end;
-
-procedure TACBrSPEDFiscal.SetOnBeforeWriteRegistro0206(const Value: TWriteRegistroEvent);
-begin
-  FOnBeforeWriteRegistro0206 := Value;
-
-  FBloco_0.OnBeforeWriteRegistro0206 := Value;
-end;
-
-procedure TACBrSPEDFiscal.SetOnBeforeWriteRegistro0500(const Value: TWriteRegistroEvent);
-begin
-  FOnBeforeWriteRegistro0500 := Value;
-
-  FBloco_0.OnBeforeWriteRegistro0500 := Value;
-end;
-
-procedure TACBrSPEDFiscal.SetOnBeforeWriteRegistro0600(const Value: TWriteRegistroEvent);
-begin
-  FOnBeforeWriteRegistro0600 := Value;
-
-  FBloco_0.OnBeforeWriteRegistro0600 := Value;
 end;
 
 procedure TACBrSPEDFiscal.SetOnError(const Value: TErrorEvent);
@@ -660,34 +521,6 @@ begin
   FBloco_G.OnError := Value;
   FBloco_H.OnError := Value;
   FBloco_9.OnError := Value;
-end;
-
-procedure TACBrSPEDFiscal.SetOnWriteRegistro0200(const Value: TWriteRegistroEvent);
-begin
-  FOnWriteRegistro0200 := Value;
-
-  FBloco_0.OnWriteRegistro0200 := Value;
-end;
-
-procedure TACBrSPEDFiscal.SetOnWriteRegistro0206(const Value: TWriteRegistroEvent);
-begin
-  FOnWriteRegistro0206 := Value;
-
-  FBloco_0.OnAfterWriteRegistro0206 := Value;
-end;
-
-procedure TACBrSPEDFiscal.SetOnWriteRegistro0500(const Value: TWriteRegistroEvent);
-begin
-  FOnWriteRegistro0500 := Value;
-
-  FBloco_0.OnAfterWriteRegistro0500 := Value;
-end;
-
-procedure TACBrSPEDFiscal.SetOnWriteRegistro0600(const Value: TWriteRegistroEvent);
-begin
-  FOnWriteRegistro0600 := Value;
-
-  FBloco_0.OnAfterWriteRegistro0600 := Value;
 end;
 
 procedure TACBrSPEDFiscal.SaveFileTXT;

@@ -51,6 +51,12 @@ type
   private
     FBloco_0: TBloco_0;
 
+    FOnBeforeWriteRegistroE990: TWriteRegistroEvent;
+
+    FOnWriteRegistroE990: TWriteRegistroEvent;
+
+    FOnAfterWriteRegistroE990: TWriteRegistroEvent;
+
     FRegistroE001: TRegistroE001;      /// BLOCO E - RegistroE001
     FRegistroE990: TRegistroE990;      /// BLOCO E - RegistroE990
 
@@ -140,6 +146,12 @@ type
     property RegistroE510Count: Integer read FRegistroE510Count write FRegistroE510Count;
     property RegistroE520Count: Integer read FRegistroE520Count write FRegistroE520Count;
     property RegistroE530Count: Integer read FRegistroE530Count write FRegistroE530Count;
+
+    property OnBeforeWriteRegistroE990: TWriteRegistroEvent read FOnBeforeWriteRegistroE990 write FOnBeforeWriteRegistroE990;
+
+    property OnWriteRegistroE990      : TWriteRegistroEvent read FOnWriteRegistroE990       write FOnWriteRegistroE990;
+
+    property OnAfterWriteRegistroE990 : TWriteRegistroEvent read FOnAfterWriteRegistroE990  write FOnAfterWriteRegistroE990;
   end;
 
 implementation
@@ -1021,16 +1033,39 @@ begin
 end;
 
 procedure TBloco_E.WriteRegistroE990 ;
+  var strLinha: AnsiString;
 begin
   if Assigned(RegistroE990) then
   begin
-     with RegistroE990 do
-     begin
-       QTD_LIN_E := QTD_LIN_E + 1;
-       ///
-       Add( LFill('E990') +
-            LFill(QTD_LIN_E,0) ) ;
-     end;
+    //--Before
+    strLinha := '';
+    if Assigned(FOnBeforeWriteRegistroe990) then
+    begin
+      FOnBeforeWriteRegistroE990(strLinha);
+      if strLinha <> EmptyStr then
+         Add(strLinha);
+    end;
+
+    with RegistroE990 do
+    begin
+      QTD_LIN_E := QTD_LIN_E + 1;
+      ///
+      strLinha := LFill('E990') +
+                  LFill(QTD_LIN_E,0) ;
+
+      if Assigned(FOnWriteRegistroE990) then FOnWriteRegistroE990(strLinha);
+
+      Add(strLinha);
+    end;
+
+    //--Before
+    strLinha := '';
+    if Assigned(FOnAfterWriteRegistroE990) then
+    begin
+      FOnAfterWriteRegistroE990(strLinha);
+      if strLinha <> EmptyStr then
+         Add(strLinha);
+    end;
   end;
 end;
 

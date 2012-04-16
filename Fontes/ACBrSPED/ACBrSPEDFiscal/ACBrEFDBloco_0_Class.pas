@@ -49,8 +49,6 @@ uses SysUtils, Classes, DateUtils, ACBrSped, ACBrEFDBloco_0, ACBrEFDBlocos,
 
 
 type
-  TWriteRegistroEvent = procedure(var ALinha: AnsiString) of object;
-
   /// TBLOCO_0 - Abertura, Identificação e Referências
 
   { TBloco_0 }
@@ -58,20 +56,22 @@ type
   TBloco_0 = class(TACBrSPED)
   private
     FOnBeforeWriteRegistro0200: TWriteRegistroEvent;
-    FOnWriteRegistro0200      : TWriteRegistroEvent;
-    FOnAfterWriteRegistro0200 : TWriteRegistroEvent;
-
     FOnBeforeWriteRegistro0206: TWriteRegistroEvent;
-    FOnWriteRegistro0206      : TWriteRegistroEvent;
-    FOnAfterWriteRegistro0206 : TWriteRegistroEvent;
-
     FOnBeforeWriteRegistro0500: TWriteRegistroEvent;
-    FOnWriteRegistro0500      : TWriteRegistroEvent;
-    FOnAfterWriteRegistro0500 : TWriteRegistroEvent;
-
     FOnBeforeWriteRegistro0600: TWriteRegistroEvent;
-    FOnWriteRegistro0600      : TWriteRegistroEvent;
-    FOnAfterWriteRegistro0600 : TWriteRegistroEvent;
+    FOnBeforeWriteRegistro0990: TWriteRegistroEvent;
+
+    FOnWriteRegistro0200: TWriteRegistroEvent;
+    FOnWriteRegistro0206: TWriteRegistroEvent;
+    FOnWriteRegistro0500: TWriteRegistroEvent;
+    FOnWriteRegistro0600: TWriteRegistroEvent;
+    FOnWriteRegistro0990: TWriteRegistroEvent;
+
+    FOnAfterWriteRegistro0200: TWriteRegistroEvent;
+    FOnAfterWriteRegistro0206: TWriteRegistroEvent;
+    FOnAfterWriteRegistro0500: TWriteRegistroEvent;
+    FOnAfterWriteRegistro0600: TWriteRegistroEvent;
+    FOnAfterWriteRegistro0990: TWriteRegistroEvent;
 
     FRegistro0000: TRegistro0000;      /// BLOCO 0 - Registro0000
     FRegistro0001: TRegistro0001;      /// BLOCO 0 - Registro0001
@@ -114,30 +114,6 @@ type
 
     procedure CriaRegistros;
     procedure LiberaRegistros;
-    function GetOnAfterWriteRegistro0200: TWriteRegistroEvent;
-    function GetOnWriteRegistro0200: TWriteRegistroEvent;
-    function GetOnAfterWriteRegistro0206: TWriteRegistroEvent;
-    function GetOnAfterWriteRegistro0500: TWriteRegistroEvent;
-    function GetOnAfterWriteRegistro0600: TWriteRegistroEvent;
-    function GetOnBeforeWriteRegistro0200: TWriteRegistroEvent;
-    function GetOnBeforeWriteRegistro0206: TWriteRegistroEvent;
-    function GetOnBeforeWriteRegistro0500: TWriteRegistroEvent;
-    function GetOnBeforeWriteRegistro0600: TWriteRegistroEvent;
-    function GetOnWriteRegistro0206: TWriteRegistroEvent;
-    function GetOnWriteRegistro0500: TWriteRegistroEvent;
-    function GetOnWriteRegistro0600: TWriteRegistroEvent;
-    procedure SetOnAfterWriteRegistro0200(const Value: TWriteRegistroEvent);
-    procedure SetOnAfterWriteRegistro0206(const Value: TWriteRegistroEvent);
-    procedure SetOnAfterWriteRegistro0500(const Value: TWriteRegistroEvent);
-    procedure SetOnAfterWriteRegistro0600(const Value: TWriteRegistroEvent);
-    procedure SetOnBeforeWriteRegistro0200(const Value: TWriteRegistroEvent);
-    procedure SetOnBeforeWriteRegistro0206(const Value: TWriteRegistroEvent);
-    procedure SetOnBeforeWriteRegistro0500(const Value: TWriteRegistroEvent);
-    procedure SetOnBeforeWriteRegistro0600(const Value: TWriteRegistroEvent);
-    procedure SetOnWriteRegistro0200(const Value: TWriteRegistroEvent);
-    procedure SetOnWriteRegistro0206(const Value: TWriteRegistroEvent);
-    procedure SetOnWriteRegistro0500(const Value: TWriteRegistroEvent);
-    procedure SetOnWriteRegistro0600(const Value: TWriteRegistroEvent);
   public
     constructor Create;           /// Create
     destructor Destroy; override; /// Destroy
@@ -188,21 +164,23 @@ type
     property Registro0500Count: Integer read FRegistro0500Count write FRegistro0500Count;
     property Registro0600Count: Integer read FRegistro0600Count write FRegistro0600Count;
 
-    property OnBeforeWriteRegistro0200: TWriteRegistroEvent read GetOnBeforeWriteRegistro0200 write SetOnBeforeWriteRegistro0200;
-    property OnWriteRegistro0200      : TWriteRegistroEvent read GetOnWriteRegistro0200       write SetOnWriteRegistro0200;
-    property OnAfterWriteRegistro0200 : TWriteRegistroEvent read GetOnAfterWriteRegistro0200  write SetOnAfterWriteRegistro0200;
+    property OnBeforeWriteRegistro0200: TWriteRegistroEvent read FOnBeforeWriteRegistro0200 write FOnBeforeWriteRegistro0200;
+    property OnBeforeWriteRegistro0206: TWriteRegistroEvent read FOnBeforeWriteRegistro0206 write FOnBeforeWriteRegistro0206;
+    property OnBeforeWriteRegistro0500: TWriteRegistroEvent read FOnBeforeWriteRegistro0500 write FOnBeforeWriteRegistro0500;
+    property OnBeforeWriteRegistro0600: TWriteRegistroEvent read FOnBeforeWriteRegistro0600 write FOnBeforeWriteRegistro0600;
+    property OnBeforeWriteRegistro0990: TWriteRegistroEvent read FOnBeforeWriteRegistro0990 write FOnBeforeWriteRegistro0990;
 
-    property OnBeforeWriteRegistro0206: TWriteRegistroEvent read GetOnBeforeWriteRegistro0206 write SetOnBeforeWriteRegistro0206;
-    property OnWriteRegistro0206      : TWriteRegistroEvent read GetOnWriteRegistro0206       write SetOnWriteRegistro0206;
-    property OnAfterWriteRegistro0206 : TWriteRegistroEvent read GetOnAfterWriteRegistro0206  write SetOnAfterWriteRegistro0206;
+    property OnWriteRegistro0200      : TWriteRegistroEvent read FOnWriteRegistro0200       write FOnWriteRegistro0200;
+    property OnWriteRegistro0206      : TWriteRegistroEvent read FOnWriteRegistro0206       write FOnWriteRegistro0206;
+    property OnWriteRegistro0500      : TWriteRegistroEvent read FOnWriteRegistro0500       write FOnWriteRegistro0500;
+    property OnWriteRegistro0600      : TWriteRegistroEvent read FOnWriteRegistro0600       write FOnWriteRegistro0600;
+    property OnWriteRegistro0990      : TWriteRegistroEvent read FOnWriteRegistro0990       write FOnWriteRegistro0990;
 
-    property OnBeforeWriteRegistro0500: TWriteRegistroEvent read GetOnBeforeWriteRegistro0500 write SetOnBeforeWriteRegistro0500;
-    property OnWriteRegistro0500      : TWriteRegistroEvent read GetOnWriteRegistro0500       write SetOnWriteRegistro0500;
-    property OnAfterWriteRegistro0500 : TWriteRegistroEvent read GetOnAfterWriteRegistro0500  write SetOnAfterWriteRegistro0500;
-
-    property OnBeforeWriteRegistro0600: TWriteRegistroEvent read GetOnBeforeWriteRegistro0600 write SetOnBeforeWriteRegistro0600;
-    property OnWriteRegistro0600      : TWriteRegistroEvent read GetOnWriteRegistro0600       write SetOnWriteRegistro0600;
-    property OnAfterWriteRegistro0600 : TWriteRegistroEvent read GetOnAfterWriteRegistro0600  write SetOnAfterWriteRegistro0600;
+    property OnAfterWriteRegistro0200 : TWriteRegistroEvent read FOnAfterWriteRegistro0200  write FOnAfterWriteRegistro0200;
+    property OnAfterWriteRegistro0206 : TWriteRegistroEvent read FOnAfterWriteRegistro0206  write FOnAfterWriteRegistro0206;
+    property OnAfterWriteRegistro0500 : TWriteRegistroEvent read FOnAfterWriteRegistro0500  write FOnAfterWriteRegistro0500;
+    property OnAfterWriteRegistro0600 : TWriteRegistroEvent read FOnAfterWriteRegistro0600  write FOnAfterWriteRegistro0600;
+    property OnAfterWriteRegistro0990 : TWriteRegistroEvent read FOnAfterWriteRegistro0990  write FOnAfterWriteRegistro0990;
   end;
 
 implementation
@@ -655,8 +633,11 @@ begin
      //-- Before
      strLinha := '';
      if Assigned(FOnBeforeWriteRegistro0200) then
+     begin
         FOnBeforeWriteRegistro0200(strLinha);
-
+        if strLinha <> EmptyStr then
+           Add(strLinha);
+     end;
      for intFor := 0 to Reg0001.Registro0200.Count - 1 do
      begin
         strLinha := '';
@@ -683,8 +664,7 @@ begin
               'Produto %s %s', [COD_GEN, COD_BARRA, DESCR_ITEM]);
           end;
 
-          strLinha := strLinha +
-                      LFill('0200') +
+          strLinha := LFill('0200') +
                       LFill( COD_ITEM ) +
                       LFill( DESCR_ITEM ) +
                       LFill( COD_BARRA ) +
@@ -712,8 +692,11 @@ begin
      //-- After
      strLinha := '';
      if Assigned(FOnAfterWriteRegistro0200) then
+     begin
         FOnAfterWriteRegistro0200(strLinha);
-
+        if strLinha <> EmptyStr then
+           Add(strLinha);
+     end;
      /// Variável para armazenar a quantidade de registro do tipo.
      FRegistro0200Count := FRegistro0200Count + Reg0001.Registro0200.Count;
   end;
@@ -752,15 +735,18 @@ begin
      //-- Before
      strLinha := '';
      if Assigned(FOnBeforeWriteRegistro0206) then
+     begin
         FOnBeforeWriteRegistro0206(strLinha);
+        if strLinha <> EmptyStr then
+           Add(strLinha);
+     end;
 
      for intFor := 0 to Reg0200.Registro0206.Count - 1 do
      begin
         strLinha := '';
         with Reg0200.Registro0206.Items[intFor] do
         begin
-          strLinha := strLinha +
-                      LFill('0206') +
+          strLinha := LFill('0206') +
                       LFill( COD_COMB );
           //-- After
           if Assigned(FOnWriteRegistro0206) then
@@ -773,8 +759,11 @@ begin
      //-- After
      strLinha := '';
      if Assigned(FOnAfterWriteRegistro0206) then
+     begin
         FOnAfterWriteRegistro0206(strLinha);
-
+        if strLinha <> EmptyStr then
+           Add(strLinha);
+     end;
      /// Variavél para armazenar a quantidade de registro do tipo.
      FRegistro0206Count := FRegistro0206Count + Reg0200.Registro0206.Count;
   end;
@@ -936,7 +925,11 @@ begin
         //-- Before
         strLinha := '';
         if Assigned(FOnBeforeWriteRegistro0500) then
+        begin
            FOnBeforeWriteRegistro0500(strLinha);
+           if strLinha <> EmptyStr then
+              Add(strLinha);
+        end;
 
         for intFor := 0 to Reg0001.Registro0500.Count - 1 do
         begin
@@ -946,8 +939,7 @@ begin
               Check(Pos(COD_NAT_CC, '01,02,03,04,05,09,10,99') > 0, '(0-0500) O código da natureza da conta/grupo de contas "%s" digitado é inválido!', [COD_NAT_CC]);
               Check(((IND_CTA = 'S') or (IND_CTA = 'A')), '(0-0500) O indicador "%s" do tipo de conta, deve ser informado  S ou A!', [IND_CTA]);
 
-              strLinha := strLinha +
-                          LFill('0500') +
+              strLinha := LFill('0500') +
                           LFill( DT_ALT ) +
                           LFill( COD_NAT_CC, 2) +
                           LFill( IND_CTA, 1) +
@@ -966,8 +958,11 @@ begin
         //-- After
         strLinha := '';
         if Assigned(FOnAfterWriteRegistro0500) then
+        begin
            FOnAfterWriteRegistro0500(strLinha);
-
+           if strLinha <> EmptyStr then
+              Add(strLinha);
+        end;
         /// Variavél para armazenar a quantidade de registro do tipo.
         FRegistro0500Count := FRegistro0500Count + Reg0001.Registro0500.Count;
      end;
@@ -984,15 +979,18 @@ begin
      //-- Before
      strLinha := '';
      if Assigned(FOnBeforeWriteRegistro0600) then
+     begin
         FOnBeforeWriteRegistro0600(strLinha);
+        if strLinha <> EmptyStr then
+           Add(strLinha);
+     end;
 
      for intFor := 0 to Reg0001.Registro0600.Count - 1 do
      begin
         strLinha := '';
         with Reg0001.Registro0600.Items[intFor] do
         begin
-          strLinha := strLinha +
-                      LFill( '0600'   ) +
+          strLinha := LFill( '0600'   ) +
                       LFill( DT_ALT   ) +
                       LFill( COD_CCUS ) +
                       LFill( CCUS     );
@@ -1008,145 +1006,51 @@ begin
      //-- After
      strLinha := '';
      if Assigned(FOnAfterWriteRegistro0600) then
+     begin
         FOnAfterWriteRegistro0600(strLinha);
-
+        if strLinha <> EmptyStr then
+           Add(strLinha);
+     end;
      /// Variavél para armazenar a quantidade de registro do tipo.
      FRegistro0600Count := FRegistro0600Count + Reg0001.Registro0600.Count;
   end;
 end;
 
 procedure TBloco_0.WriteRegistro0990 ;
+  var strLinha : AnsiString;
 begin
+  //--Before
+  strLinha := '';
+  if Assigned(FOnBeforeWriteRegistro0990) then
+  begin
+    FOnBeforeWriteRegistro0990(strLinha);
+    if strLinha <> EmptyStr then
+       Add(strLinha);
+  end;
+
   if Assigned(Registro0990) then
   begin
      with Registro0990 do
      begin
        QTD_LIN_0 := QTD_LIN_0 + 1;
        ///
-       Add( LFill('0990') +
-            LFill(QTD_LIN_0,0) );
+       strLinha := LFill('0990') +
+                   LFill(QTD_LIN_0,0);
+
+       if Assigned(FOnWriteRegistro0990) then FOnWriteRegistro0990(strLinha);
+
+       Add(strLinha);
      end;
   end;
-end;
 
-function TBloco_0.GetOnAfterWriteRegistro0200: TWriteRegistroEvent;
-begin
-   Result := FOnAfterWriteRegistro0200;
-end;
-
-function TBloco_0.GetOnAfterWriteRegistro0206: TWriteRegistroEvent;
-begin
-   Result := FOnAfterWriteRegistro0206;
-end;
-
-function TBloco_0.GetOnAfterWriteRegistro0500: TWriteRegistroEvent;
-begin
-   Result := FOnAfterWriteRegistro0500;
-end;
-
-function TBloco_0.GetOnAfterWriteRegistro0600: TWriteRegistroEvent;
-begin
-   Result := FOnAfterWriteRegistro0600;
-end;
-
-function TBloco_0.GetOnBeforeWriteRegistro0200: TWriteRegistroEvent;
-begin
-   Result := FOnBeforeWriteRegistro0200;
-end;
-
-function TBloco_0.GetOnBeforeWriteRegistro0206: TWriteRegistroEvent;
-begin
-   Result := FOnBeforeWriteRegistro0206;
-end;
-
-function TBloco_0.GetOnBeforeWriteRegistro0500: TWriteRegistroEvent;
-begin
-   Result := FOnBeforeWriteRegistro0500;
-end;
-
-function TBloco_0.GetOnBeforeWriteRegistro0600: TWriteRegistroEvent;
-begin
-   Result := FOnBeforeWriteRegistro0600;
-end;
-
-function TBloco_0.GetOnWriteRegistro0200: TWriteRegistroEvent;
-begin
-   Result := FOnWriteRegistro0200;
-end;
-
-function TBloco_0.GetOnWriteRegistro0206: TWriteRegistroEvent;
-begin
-   Result := FOnWriteRegistro0206;
-end;
-
-function TBloco_0.GetOnWriteRegistro0500: TWriteRegistroEvent;
-begin
-   Result := FOnWriteRegistro0500;
-end;
-
-function TBloco_0.GetOnWriteRegistro0600: TWriteRegistroEvent;
-begin
-   Result := FOnWriteRegistro0600;
-end;
-
-procedure TBloco_0.SetOnAfterWriteRegistro0200(const Value: TWriteRegistroEvent);
-begin
-   FOnAfterWriteRegistro0200 := Value;
-end;
-
-procedure TBloco_0.SetOnAfterWriteRegistro0206(const Value: TWriteRegistroEvent);
-begin
-   FOnAfterWriteRegistro0206 := Value;
-end;
-
-procedure TBloco_0.SetOnAfterWriteRegistro0500(const Value: TWriteRegistroEvent);
-begin
-   FOnAfterWriteRegistro0500 := Value;
-end;
-
-procedure TBloco_0.SetOnAfterWriteRegistro0600(const Value: TWriteRegistroEvent);
-begin
-   FOnAfterWriteRegistro0600 := Value;
-end;
-
-procedure TBloco_0.SetOnBeforeWriteRegistro0200(const Value: TWriteRegistroEvent);
-begin
-   FOnBeforeWriteRegistro0200 := Value;
-end;
-
-procedure TBloco_0.SetOnBeforeWriteRegistro0206(const Value: TWriteRegistroEvent);
-begin
-   FOnBeforeWriteRegistro0206 := Value;
-end;
-
-procedure TBloco_0.SetOnBeforeWriteRegistro0500(const Value: TWriteRegistroEvent);
-begin
-   FOnBeforeWriteRegistro0500 := Value;
-end;
-
-procedure TBloco_0.SetOnBeforeWriteRegistro0600(const Value: TWriteRegistroEvent);
-begin
-   FOnBeforeWriteRegistro0600 := Value;
-end;
-
-procedure TBloco_0.SetOnWriteRegistro0200(const Value: TWriteRegistroEvent);
-begin
-   FOnWriteRegistro0200 := Value;
-end;
-
-procedure TBloco_0.SetOnWriteRegistro0206(const Value: TWriteRegistroEvent);
-begin
-   FOnWriteRegistro0206 := Value;
-end;
-
-procedure TBloco_0.SetOnWriteRegistro0500(const Value: TWriteRegistroEvent);
-begin
-   FOnWriteRegistro0500 := Value;
-end;
-
-procedure TBloco_0.SetOnWriteRegistro0600(const Value: TWriteRegistroEvent);
-begin
-   FOnWriteRegistro0600 := Value;
+  //-- After
+  strLinha := '';
+  if Assigned(FOnAfterWriteRegistro0990) then
+  begin
+    FOnAfterWriteRegistro0990(strLinha);
+    if strLinha <> EmptyStr then
+       Add(strLinha);
+  end;
 end;
 
 end.

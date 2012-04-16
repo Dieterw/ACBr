@@ -1935,49 +1935,54 @@ var
   NomeArq  : String;
 begin
    SlRetorno:= TStringList.Create;
-   Self.ListadeBoletos.Clear;
+   try
+     Self.ListadeBoletos.Clear;
 
-   if NomeArqRetorno = '' then
-      raise Exception.Create(ACBrStr('NomeArqRetorno deve ser informado.'));
+     if NomeArqRetorno = '' then
+        raise Exception.Create(ACBrStr('NomeArqRetorno deve ser informado.'));
 
-   NomeArq := fDirArqRetorno + PathDelim + NomeArqRetorno;
+     NomeArq := fDirArqRetorno + PathDelim + NomeArqRetorno;
 
-   if not FilesExists( NomeArq ) then
-      raise Exception.Create(ACBrStr('Arquivo não encontrado:'+sLineBreak+NomeArq));
+     if not FilesExists( NomeArq ) then
+        raise Exception.Create(ACBrStr('Arquivo não encontrado:'+sLineBreak+NomeArq));
 
-   SlRetorno.LoadFromFile( NomeArq );
+     SlRetorno.LoadFromFile( NomeArq );
 
-   if SlRetorno.Count < 1 then
-      raise exception.Create(ACBrStr('O Arquivo de Retorno:'+sLineBreak+
-                                     NomeArq + sLineBreak+
-                                     'está vazio.'+sLineBreak+
-                                     ' Não há dados para processar'));
+     if SlRetorno.Count < 1 then
+        raise exception.Create(ACBrStr('O Arquivo de Retorno:'+sLineBreak+
+                                       NomeArq + sLineBreak+
+                                       'está vazio.'+sLineBreak+
+                                       ' Não há dados para processar'));
 
-   case Length(SlRetorno.Strings[0]) of
-      240 :
-        begin
-          if Copy(SlRetorno.Strings[0],143,1) <> '2' then
-             Raise Exception.Create( ACBrStr( NomeArq + sLineBreak +
-                'Não é um arquivo de Retorno de cobrança com layout CNAB240') );
-          LayoutRemessa := c240 ;
-        end;
+     case Length(SlRetorno.Strings[0]) of
+        240 :
+          begin
+            if Copy(SlRetorno.Strings[0],143,1) <> '2' then
+               Raise Exception.Create( ACBrStr( NomeArq + sLineBreak +
+                  'Não é um arquivo de Retorno de cobrança com layout CNAB240') );
+            LayoutRemessa := c240 ;
+          end;
 
-      400 :
-        begin
-           if (Copy(SlRetorno.Strings[0],1,9) <> '02RETORNO')   then
-             Raise Exception.Create( ACBrStr( NomeArq + sLineBreak +
-                'Não é um arquivo de Retorno de cobrança com layout CNAB400'));
-          LayoutRemessa := c400 ;
-        end;
-      else
-          raise Exception.Create( ACBrStr( NomeArq + sLineBreak+
-             'Não é um arquivo de  Retorno de cobrança CNAB240 ou CNAB400'));
+        400 :
+          begin
+             if (Copy(SlRetorno.Strings[0],1,9) <> '02RETORNO')   then
+               Raise Exception.Create( ACBrStr( NomeArq + sLineBreak +
+                  'Não é um arquivo de Retorno de cobrança com layout CNAB400'));
+            LayoutRemessa := c400 ;
+          end;
+        else
+            raise Exception.Create( ACBrStr( NomeArq + sLineBreak+
+               'Não é um arquivo de  Retorno de cobrança CNAB240 ou CNAB400'));
+     end;
+
+     if LayoutRemessa = c240 then
+        Banco.LerRetorno240(SlRetorno)
+     else
+        Banco.LerRetorno400(SlRetorno);
+
+   finally
+     SlRetorno.Free;
    end;
-
-   if LayoutRemessa = c240 then
-      Banco.LerRetorno240(SlRetorno)
-   else
-      Banco.LerRetorno400(SlRetorno);
 end;
 
 procedure TACBrBoleto.ChecarDadosObrigatorios;

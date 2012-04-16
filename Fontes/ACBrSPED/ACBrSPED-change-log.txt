@@ -48,11 +48,19 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Versão 1.01   16/04/2012
+-- ACBrSPEDFiscal --
+[*] Modificado a maneira de como foi implementado os eventos no componente, 
+    agrupando por bloco para ficar mais organizado e facil de usa-los, esses
+    eventos permite que possa ser modificado o leiaute do TXT do sped além de
+    permitir adicionar outros registros que não exitam, essa necessidade hoje
+    esta sendo usada para G5 da Contmatic.
+
 Versão 1.00b   25/03/2012
 -- ACBrSPEDFiscal --
 [+] Adicionado evento Before e After em alguns registros para a necessidade de
     se gerar registros adicionais ou diferentes no arquivo TXT do SPED para que
-    atenda casos como o para gerar registros no formato do sistema G5 da Contmatic.
+    atenda casos como o para gerar registros no formato do sistema .
 
 
 Versão 1.00b   17/02/2012

@@ -45,6 +45,7 @@ interface
 uses SysUtils, Classes, DateUtils, ACBrTXTClass;
 
 type
+  TWriteRegistroEvent = procedure(var ALinha: AnsiString) of object;
 
   { TACBrSPED }
 

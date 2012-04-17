@@ -689,28 +689,52 @@ begin
       if (Item mod 2) = 0 then
       begin
         cdsDocumentos.Append;
-        // Alterado por Italo em 16/04/2012
+        // Alterado por Italo em 17/04/2012
         // TpcteTipoDocumento = (tdDeclaracao, tdDutoviario, tdOutros);
         case tpDoc of
-         tdDeclaracao: cdsDocumentosTIPO_1.AsString := 'Declaração';
-         tdDutoviario: cdsDocumentosTIPO_1.AsString := 'Dutoviário';
-         tdOutros:     cdsDocumentosTIPO_1.AsString := descOutros;
+         tdDeclaracao: begin
+                        cdsDocumentosTIPO_1.AsString := 'DECLAR';
+                        cdsDocumentosCNPJCPF_1.AsString := 'Declaração / ' +
+                                         CTeUtil.FormatarCNPJ(FCTe.Rem.CNPJCPF);
+                       end;
+         tdDutoviario: begin
+                        cdsDocumentosTIPO_1.AsString := 'DUTO';
+                        cdsDocumentosCNPJCPF_1.AsString := 'Dutoviário / ' +
+                                         CTeUtil.FormatarCNPJ(FCTe.Rem.CNPJCPF);
+                       end;
+         tdOutros:     begin
+                        cdsDocumentosTIPO_1.AsString := 'Outros';
+                        cdsDocumentosCNPJCPF_1.AsString := copy( trim(descOutros), 1, 39 ) + ' / '+
+                                         CTeUtil.FormatarCNPJ(FCTe.Rem.CNPJCPF);
+                       end;
         end;
 //        cdsDocumentosTIPO_1.AsString := descOutros;
-        cdsDocumentosCNPJCPF_1.AsString := CTeUtil.FormatarCNPJ(FCTe.Rem.CNPJCPF);
+//        cdsDocumentosCNPJCPF_1.AsString := CTeUtil.FormatarCNPJ(FCTe.Rem.CNPJCPF);
         cdsDocumentosDOCUMENTO_1.AsString := nDoc;
       end
       else
       begin
-        // Alterado por Italo em 16/04/2012
+        // Alterado por Italo em 17/04/2012
         // TpcteTipoDocumento = (tdDeclaracao, tdDutoviario, tdOutros);
         case tpDoc of
-         tdDeclaracao: cdsDocumentosTIPO_2.AsString := 'Declaração';
-         tdDutoviario: cdsDocumentosTIPO_2.AsString := 'Dutoviário';
-         tdOutros:     cdsDocumentosTIPO_2.AsString := descOutros;
+         tdDeclaracao: begin
+                        cdsDocumentosTIPO_2.AsString := 'DECLAR';
+                        cdsDocumentosCNPJCPF_2.AsString := 'Declaração / ' +
+                                         CTeUtil.FormatarCNPJ(FCTe.Rem.CNPJCPF);
+                       end;
+         tdDutoviario: begin
+                        cdsDocumentosTIPO_2.AsString := 'DUTO';
+                        cdsDocumentosCNPJCPF_2.AsString := 'Dutoviário / ' +
+                                         CTeUtil.FormatarCNPJ(FCTe.Rem.CNPJCPF);
+                       end;
+         tdOutros:     begin
+                        cdsDocumentosTIPO_2.AsString := 'Outros';
+                        cdsDocumentosCNPJCPF_2.AsString := copy( trim(descOutros), 1, 39 ) + ' / '+
+                                         CTeUtil.FormatarCNPJ(FCTe.Rem.CNPJCPF);
+                       end;
         end;
 //        cdsDocumentosTIPO_2.AsString := descOutros;
-        cdsDocumentosCNPJCPF_2.AsString := CTeUtil.FormatarCNPJ(FCTe.Rem.CNPJCPF);
+//        cdsDocumentosCNPJCPF_2.AsString := CTeUtil.FormatarCNPJ(FCTe.Rem.CNPJCPF);
         cdsDocumentosDOCUMENTO_2.AsString := nDoc;
         cdsDocumentos.Post;
       end;

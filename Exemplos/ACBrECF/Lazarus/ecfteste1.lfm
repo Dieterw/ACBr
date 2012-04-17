@@ -4,7 +4,7 @@ object Form1: TForm1
   Top = 308
   Width = 547
   Caption = 'Teste de Impressora Fiscal'
-  ClientHeight = 380
+  ClientHeight = 383
   ClientWidth = 547
   Constraints.MinHeight = 400
   Constraints.MinWidth = 440
@@ -156,8 +156,8 @@ object Form1: TForm1
   LCLVersion = '1.1'
   object StatusBar1: TStatusBar
     Left = 0
-    Height = 17
-    Top = 363
+    Height = 23
+    Top = 360
     Width = 547
     Panels = <    
       item
@@ -170,7 +170,7 @@ object Form1: TForm1
   end
   object PageControl1: TPageControl
     Left = 0
-    Height = 323
+    Height = 320
     Top = 0
     Width = 547
     ActivePage = TabSheet4
@@ -179,8 +179,8 @@ object Form1: TForm1
     TabOrder = 0
     object TabSheet4: TTabSheet
       Caption = 'ECF'
-      ClientHeight = 299
-      ClientWidth = 545
+      ClientHeight = 294
+      ClientWidth = 539
       ImageIndex = 3
       object SbArqLog: TSpeedButton
         Left = 277
@@ -193,59 +193,59 @@ object Form1: TForm1
       end
       object Label1: TLabel
         Left = 20
-        Height = 15
+        Height = 14
         Top = 8
-        Width = 41
+        Width = 36
         Caption = 'Modelo'
         ParentColor = False
       end
       object Label4: TLabel
         Left = 140
-        Height = 15
+        Height = 14
         Top = 8
-        Width = 31
+        Width = 26
         Caption = 'Porta'
         ParentColor = False
       end
       object Label5: TLabel
         Left = 260
-        Height = 15
+        Height = 14
         Top = 8
-        Width = 49
+        Width = 41
         Caption = 'TimeOut'
         ParentColor = False
       end
       object Label7: TLabel
         Left = 327
-        Height = 15
+        Height = 14
         Top = 8
-        Width = 51
+        Width = 42
         Caption = 'Intervalo'
         ParentColor = False
       end
       object Label6: TLabel
         Left = 11
-        Height = 15
+        Height = 14
         Top = 141
-        Width = 126
+        Width = 105
         Caption = 'Mensagem Aguarde...'
         ParentColor = False
       end
       object Label9: TLabel
         Left = 10
-        Height = 15
+        Height = 14
         Top = 224
-        Width = 49
+        Width = 41
         Alignment = taRightJustify
         Caption = 'Arq.Log:'
         ParentColor = False
       end
       object cbxModelo: TComboBox
         Left = 20
-        Height = 25
+        Height = 21
         Top = 24
         Width = 105
-        ItemHeight = 0
+        ItemHeight = 13
         Items.Strings = (
           'Procurar'
           'ecfNaoFiscal'
@@ -266,28 +266,28 @@ object Form1: TForm1
       end
       object cbxPorta: TComboBox
         Left = 140
-        Height = 27
+        Height = 21
         Top = 24
         Width = 105
-        ItemHeight = 0
+        ItemHeight = 13
         OnChange = cbxPortaChange
         TabOrder = 1
         Text = 'Procurar'
       end
       object chTentar: TCheckBox
         Left = 20
-        Height = 21
+        Height = 19
         Top = 66
-        Width = 127
+        Width = 109
         Caption = 'Tentar Novamente'
         OnChange = chTentarChange
         TabOrder = 4
       end
       object chBloqueia: TCheckBox
         Left = 20
-        Height = 21
+        Height = 19
         Top = 88
-        Width = 158
+        Width = 138
         Caption = 'Bloqueia Mouse Teclado'
         Checked = True
         OnChange = chBloqueiaChange
@@ -296,9 +296,9 @@ object Form1: TForm1
       end
       object chExibeMsg: TCheckBox
         Left = 20
-        Height = 21
+        Height = 19
         Top = 111
-        Width = 144
+        Width = 121
         Caption = 'Exibe Msg Aguarde...'
         Checked = True
         OnChange = chExibeMsgChange
@@ -307,18 +307,18 @@ object Form1: TForm1
       end
       object chArredondaPorQtd: TCheckBox
         Left = 188
-        Height = 21
+        Height = 19
         Top = 66
-        Width = 211
+        Width = 174
         Caption = 'Arredondamento por Quantidade'
         OnChange = chArredondaPorQtdChange
         TabOrder = 5
       end
       object chGavetaSinalInvertido: TCheckBox
         Left = 188
-        Height = 21
+        Height = 19
         Top = 88
-        Width = 149
+        Width = 125
         Caption = 'Gaveta Sinal Invertido'
         OnChange = chGavetaSinalInvertidoChange
         TabOrder = 7
@@ -327,7 +327,7 @@ object Form1: TForm1
         Left = 11
         Height = 41
         Top = 160
-        Width = 519
+        Width = 513
         Anchors = [akTop, akLeft, akRight]
         Lines.Strings = (
           'Aguardando a resposta da Impressora: %d segundos'
@@ -339,7 +339,7 @@ object Form1: TForm1
       object edLog: TEdit
         Cursor = crIBeam
         Left = 56
-        Height = 24
+        Height = 21
         Top = 216
         Width = 220
         TabOrder = 13
@@ -347,7 +347,7 @@ object Form1: TForm1
       end
       object seTimeOut: TSpinEdit
         Left = 260
-        Height = 24
+        Height = 21
         Top = 24
         Width = 46
         MinValue = 1
@@ -357,7 +357,7 @@ object Form1: TForm1
       end
       object seIntervaloAposComando: TSpinEdit
         Left = 324
-        Height = 24
+        Height = 21
         Top = 24
         Width = 54
         Increment = 10
@@ -407,9 +407,9 @@ object Form1: TForm1
       end
       object Label20: TLabel
         Left = 332
-        Height = 15
+        Height = 14
         Top = 223
-        Width = 59
+        Width = 48
         Alignment = taRightJustify
         Caption = 'Operador:'
         ParentColor = False
@@ -417,23 +417,23 @@ object Form1: TForm1
       object edOperador: TEdit
         Cursor = crIBeam
         Left = 385
-        Height = 24
+        Height = 21
         Top = 216
-        Width = 143
+        Width = 137
         Anchors = [akTop, akLeft, akRight]
         TabOrder = 14
       end
       object Label22: TLabel
         Left = 476
-        Height = 15
+        Height = 14
         Top = 8
-        Width = 62
+        Width = 54
         Caption = 'BandWidth'
         ParentColor = False
       end
       object seBandWidth: TSpinEdit
         Left = 476
-        Height = 24
+        Height = 21
         Top = 24
         Width = 54
         Increment = 10
@@ -443,9 +443,9 @@ object Form1: TForm1
       end
       object chDescricaoGrande: TCheckBox
         Left = 188
-        Height = 21
+        Height = 19
         Top = 134
-        Width = 124
+        Width = 106
         Caption = 'Descrição Grande'
         Checked = True
         OnChange = chDescricaoGrandeChange
@@ -454,24 +454,24 @@ object Form1: TForm1
       end
       object chArredondamentoItemMFD: TCheckBox
         Left = 188
-        Height = 21
+        Height = 19
         Top = 111
-        Width = 175
+        Width = 147
         Caption = 'Arredondamento Item MFD'
         OnChange = chArredondamentoItemMFDChange
         TabOrder = 9
       end
       object Label23: TLabel
         Left = 14
-        Height = 15
+        Height = 14
         Top = 265
-        Width = 99
+        Width = 83
         Caption = 'MaxLinhasBuffer:'
         ParentColor = False
       end
       object seMaxLinhasBuffer: TSpinEdit
         Left = 112
-        Height = 24
+        Height = 21
         Hint = 'Para homologação TEF utilize 3'#13#10'(Impressão de 3 em 3 linhas)'
         Top = 258
         Width = 54
@@ -483,9 +483,9 @@ object Form1: TForm1
       end
       object chAACUsar: TCheckBox
         Left = 196
-        Height = 21
+        Height = 19
         Top = 258
-        Width = 219
+        Width = 194
         Caption = 'Usar Arq.Auxiliar Criptografado'
         Font.CharSet = ANSI_CHARSET
         Font.Color = clBlack
@@ -499,9 +499,9 @@ object Form1: TForm1
       end
       object chAACFlush: TCheckBox
         Left = 415
-        Height = 21
+        Height = 19
         Top = 250
-        Width = 58
+        Width = 50
         Caption = 'Flush'
         Checked = True
         Font.CharSet = ANSI_CHARSET
@@ -517,9 +517,9 @@ object Form1: TForm1
       end
       object chProcessMessages: TCheckBox
         Left = 415
-        Height = 21
+        Height = 19
         Top = 274
-        Width = 133
+        Width = 121
         Caption = 'ProcessMessages'
         Checked = True
         Font.CharSet = ANSI_CHARSET
@@ -539,12 +539,12 @@ object Form1: TForm1
         Top = 75
         Width = 130
         Caption = 'Decimais'
-        ClientHeight = 47
+        ClientHeight = 45
         ClientWidth = 126
         TabOrder = 20
         object seDecimaisQTD: TSpinEdit
           Left = 9
-          Height = 24
+          Height = 21
           Top = 13
           Width = 46
           MaxValue = 4
@@ -554,23 +554,23 @@ object Form1: TForm1
         end
         object Label29: TLabel
           Left = 17
-          Height = 15
+          Height = 14
           Top = -1
-          Width = 21
+          Width = 18
           Caption = 'Qtd'
           ParentColor = False
         end
         object Label45: TLabel
           Left = 65
-          Height = 15
+          Height = 14
           Top = -1
-          Width = 33
+          Width = 29
           Caption = 'Preço'
           ParentColor = False
         end
         object seDecimaisPreco: TSpinEdit
           Left = 65
-          Height = 24
+          Height = 21
           Top = 13
           Width = 46
           MaxValue = 3
@@ -925,8 +925,8 @@ object Form1: TForm1
             Width = 531
             Align = alBottom
             BevelOuter = bvNone
-            ClientHeight = 30
-            ClientWidth = 527
+            ClientHeight = 34
+            ClientWidth = 531
             TabOrder = 0
             object bRFDLer: TButton
               Left = 131
@@ -1429,7 +1429,7 @@ object Form1: TForm1
         Width = 539
         Align = alClient
         Caption = 'Opções do Menu fiscal'
-        ClientHeight = 210
+        ClientHeight = 208
         ClientWidth = 535
         TabOrder = 1
         object Label32: TLabel
@@ -1650,7 +1650,7 @@ object Form1: TForm1
             Width = 531
             Align = alTop
             Caption = 'Dados da Software House'
-            ClientHeight = 80
+            ClientHeight = 81
             ClientWidth = 527
             TabOrder = 0
             object Label21: TLabel
@@ -1729,7 +1729,7 @@ object Form1: TForm1
             Width = 531
             Align = alTop
             Caption = 'Dados do PAF-ECF'
-            ClientHeight = 86
+            ClientHeight = 87
             ClientWidth = 527
             TabOrder = 1
             object Label38: TLabel
@@ -1932,7 +1932,7 @@ object Form1: TForm1
     Left = 0
     Height = 40
     Hint = 'Sobre o ACBrMonitor ?'
-    Top = 323
+    Top = 320
     Width = 547
     Align = alBottom
     ClientHeight = 40
@@ -3433,4 +3433,4 @@ object Form1: TForm1
     left = 133
     top = 329
   end
-end
+end

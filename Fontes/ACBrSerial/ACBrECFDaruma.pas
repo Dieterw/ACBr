@@ -4739,7 +4739,11 @@ begin
     -99:  Result := 'Parâmetro inválido ou ponteiro nulo de parâmetro.';
     -101: Result := 'Erro ao LER ou ESCREVER arquivo.';
     -102: Result := 'Erro ao LER ou ESCREVER arquivo.';
-    -103: Result := 'Não foram encontradas as DLLs auxiliares (lebin.dll e LeituraMFDBin.dll)';
+    {$IFDEF LINUX}
+     -103: Result := 'Não foram encontradas as bibliotecas auxiliares (liblebin.so e libLeituraMFDBin.so)';
+    {$ELSE}
+     -103: Result := 'Não foram encontradas as DLLs auxiliares (lebin.dll e LeituraMFDBin.dll)';
+    {$ENDIF}
     -104: Result := 'Data informada é inferior ao primeiro documento emitido';
     -105: Result := 'Data informada é maior que a ultima redução Z impressa';
     -106: Result := 'Nao possui movimento fiscal';

@@ -2019,22 +2019,33 @@ end;
 
 procedure TForm1.mIdentificaPAFClick(Sender : TObject) ;
 Var
-  Linha1, Linha2 : String ;
+  PAFStr, MD5, ProgramaVersao : String ;
+  P : Integer ;
 begin
-  Linha1 := ACBrECF1.PAF ;
-  Linha2 := copy(Linha1, pos('|',Linha1)+1, Length(Linha1) ) ;
-  Linha1 := copy(Linha1, 1, pos('|',Linha1)-1) ;
+  PAFStr := ACBrECF1.PAF ;
+  P := pos('|',PAFStr);
+  if P > 0 then
+   begin
+     MD5            := copy(PAFStr, 1, P-1) ;
+     ProgramaVersao := copy(PAFStr, P+1, Length(PAFStr) ) ;
+   end
+  else
+   begin
+     MD5            := copy(PAFStr, 1, 42) ;
+     ProgramaVersao := copy(PAFStr,43, 42) ;
+   end ;
+
   if not InputQuery('Identifica PAF (Programa Aplicativo Fiscal)',
-                    'Linhas 1:', Linha1 ) then
+                    'Programa e Versao:', ProgramaVersao ) then
      exit ;
 
   if not InputQuery('Identifica PAF (Programa Aplicativo Fiscal)',
-                    'Linhas 2:', Linha2 ) then
+                    'MD5:', MD5 ) then
      exit ;
 
-  if Linha1 + Linha2 <> '' then
+  if MD5 + ProgramaVersao <> '' then
   begin
-     ACBrECF1.IdentificaPAF(Linha1, Linha2);
+     ACBrECF1.IdentificaPAF(ProgramaVersao, MD5);
   end ;
 end;
 

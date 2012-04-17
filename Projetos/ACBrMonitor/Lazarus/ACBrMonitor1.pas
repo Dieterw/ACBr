@@ -1684,17 +1684,8 @@ begin
 
   with ACBrBoletoFCFortes1 do
   begin
-    case cbxBOLFiltro.ItemIndex of
-      0: Filtro := fiNenhum;
-      1: Filtro := fiPDF;
-      2: Filtro := fiHTML;
-    end;
-
-    case cbxBOLLayout.ItemIndex of
-      0: LayOut := lPadrao;
-      1: LayOut := lCarne;
-      2: LayOut := lFatura;
-    end;
+    Filtro := TACBrBoletoFCFiltro( cbxBOLFiltro.ItemIndex ) ;
+    LayOut := TACBrBolLayOut( cbxBOLLayout.ItemIndex ) ;
 
     NumCopias      := spBOLCopias.Value;
     SoftwareHouse  := edtBOLSH.Text;

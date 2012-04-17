@@ -3044,10 +3044,10 @@ begin
         if FileExists( NomeArquivo ) then
            DeleteFile( NomeArquivo ) ;
 
-        DiaIni := FormatDateTime('yyyymmdd', DataInicial);
-        DiaFim := FormatDateTime('yyyymmdd', DataFinal);
+        DiaIni := FormatDateTime('ddmmyy', DataInicial);
+        DiaFim := FormatDateTime('ddmmyy', DataFinal);
 
-        iRet := xDLLReadLeMemorias( PortaSerial, ArqTmp, NumFab, '1');
+        iRet := xDLLReadLeMemorias( PortaSerial, ArqTmp, NumFab, #1);
 
         if iRet <> 0 then
            raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar DLLReadLeMemorias.' + sLineBreak +

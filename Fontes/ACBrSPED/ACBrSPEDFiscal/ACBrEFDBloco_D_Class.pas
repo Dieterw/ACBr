@@ -617,6 +617,7 @@ var
   strIND_FRT: AnsiString;
   strCOD_SIT: AnsiString;
   booCTRCCancelado: Boolean;
+  booCTRCInutilizado: Boolean;
   strLinha: AnsiString;
 begin
   if Assigned( RegD001.RegistroD100 ) then
@@ -652,6 +653,7 @@ begin
             sdRegimeEspecNEsp:       strCOD_SIT := '08';
           end;
           booCTRCCancelado := (strCOD_SIT = '02');
+          booCTRCInutilizado := (strCOD_SIT = '05');
 
           strLinha := LFill('D100') +
                       LFill( Integer(IND_OPER), 0 ) +
@@ -667,13 +669,13 @@ begin
                       LFill( DT_A_P ) +
                       LFill( TP_CT_e ) +
                       LFill( CHV_CTE_REF ) +
-                      LFill( VL_DOC,0,2, booCTRCCancelado ) +
-                      LFill( VL_DESC,0,2, booCTRCCancelado ) +
+                      LFill( VL_DOC,0,2, booCTRCCancelado or booCTRCInutilizado ) +
+                      LFill( VL_DESC,0,2, booCTRCCancelado or booCTRCInutilizado ) +
                       LFill( strIND_FRT ) +
-                      LFill( VL_SERV,0,2, booCTRCCancelado ) +
-                      LFill( VL_BC_ICMS,0,2, booCTRCCancelado ) +
-                      LFill( VL_ICMS,0,2, booCTRCCancelado ) +
-                      LFill( VL_NT,0,2, booCTRCCancelado ) +
+                      LFill( VL_SERV,0,2, booCTRCCancelado or booCTRCInutilizado ) +
+                      LFill( VL_BC_ICMS,0,2, booCTRCCancelado or booCTRCInutilizado ) +
+                      LFill( VL_ICMS,0,2, booCTRCCancelado or booCTRCInutilizado ) +
+                      LFill( VL_NT,0,2, booCTRCCancelado or booCTRCInutilizado ) +
                       LFill( COD_INF ) +
                       LFill( COD_CTA );
           //-- Write

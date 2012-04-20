@@ -616,8 +616,7 @@ var
   intFor: integer;
   strIND_FRT: AnsiString;
   strCOD_SIT: AnsiString;
-  booCTRCCancelado: Boolean;
-  booCTRCInutilizado: Boolean;
+  booConsiderarComoValorNulo: Boolean;
   strLinha: AnsiString;
 begin
   if Assigned( RegD001.RegistroD100 ) then
@@ -651,9 +650,11 @@ begin
             sdFiscalCompl:           strCOD_SIT := '06';
             sdExtempCompl:           strCOD_SIT := '07';
             sdRegimeEspecNEsp:       strCOD_SIT := '08';
-          end;
-          booCTRCCancelado := (strCOD_SIT = '02');
-          booCTRCInutilizado := (strCOD_SIT = '05');
+          end;             
+          booConsiderarComoValorNulo := (strCOD_SIT = '02') or {Cancelado}
+                                        (strCOD_SIT = '03') or {Cancelado extemporâneo}
+                                        (strCOD_SIT = '04') or {Denegado}
+                                        (strCOD_SIT = '05');   {Inutilizado}
 
           strLinha := LFill('D100') +
                       LFill( Integer(IND_OPER), 0 ) +
@@ -669,13 +670,13 @@ begin
                       LFill( DT_A_P ) +
                       LFill( TP_CT_e ) +
                       LFill( CHV_CTE_REF ) +
-                      LFill( VL_DOC,0,2, booCTRCCancelado or booCTRCInutilizado ) +
-                      LFill( VL_DESC,0,2, booCTRCCancelado or booCTRCInutilizado ) +
+                      LFill( VL_DOC,0,2, booConsiderarComoValorNulo ) +
+                      LFill( VL_DESC,0,2, booConsiderarComoValorNulo ) +
                       LFill( strIND_FRT ) +
-                      LFill( VL_SERV,0,2, booCTRCCancelado or booCTRCInutilizado ) +
-                      LFill( VL_BC_ICMS,0,2, booCTRCCancelado or booCTRCInutilizado ) +
-                      LFill( VL_ICMS,0,2, booCTRCCancelado or booCTRCInutilizado ) +
-                      LFill( VL_NT,0,2, booCTRCCancelado or booCTRCInutilizado ) +
+                      LFill( VL_SERV,0,2, booConsiderarComoValorNulo ) +
+                      LFill( VL_BC_ICMS,0,2, booConsiderarComoValorNulo ) +
+                      LFill( VL_ICMS,0,2, booConsiderarComoValorNulo ) +
+                      LFill( VL_NT,0,2, booConsiderarComoValorNulo ) +
                       LFill( COD_INF ) +
                       LFill( COD_CTA );
           //-- Write

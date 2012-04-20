@@ -512,8 +512,16 @@ JNIEXPORT void JNICALL Java_jACBr_ACBrECF_vendeItem(JNIEnv *env, jobject obj, js
 	const char* nUnidade = env->GetStringUTFChars(unidade, &isCopy);
 	const char* nTipoDescontoAcrescimo = env->GetStringUTFChars(tipoDescontoAcrescimo, &isCopy);
 	const char* nDescontoAcrescimo = env->GetStringUTFChars(descontoAcrescimo, &isCopy);
-		
-	int ret = ECF_VendeItem(handle, (PCHAR)nCodigo, (PCHAR)nDescricao, (PCHAR)nAliquotaICMS, (double)qtd, (double)valorUnitario, (double)descontoPorc, (PCHAR)nUnidade, (PCHAR)tipoDescontoAcrescimo, (PCHAR)descontoAcrescimo);
+
+	char __TipoDescontoAcrescimo[2];
+	__TipoDescontoAcrescimo[0] = nTipoDescontoAcrescimo[0];
+	__TipoDescontoAcrescimo[1] = 0;
+
+	char __DescontoAcrescimo[2];
+	__DescontoAcrescimo[0] = nDescontoAcrescimo[0];
+	__DescontoAcrescimo[1] = 0;
+
+	int ret = ECF_VendeItem(handle, (PCHAR)nCodigo, (PCHAR)nDescricao, (PCHAR)nAliquotaICMS, (double)qtd, (double)valorUnitario, (double)descontoPorc, (PCHAR)nUnidade, (PCHAR)__TipoDescontoAcrescimo, (PCHAR)__DescontoAcrescimo);
 
 	env->ReleaseStringUTFChars(codigo, nCodigo);
 	env->ReleaseStringUTFChars(descricao, nDescricao);

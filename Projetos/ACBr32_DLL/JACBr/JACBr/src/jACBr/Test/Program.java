@@ -14,6 +14,8 @@ public class Program {
 	public static void main(String[] args) throws Throwable
 	{
 
+		ACBrECF ecf = null;
+		
 		try
 		{
 			BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -45,7 +47,7 @@ public class Program {
 			String porta = reader.readLine();
 			
 			System.out.println("\nCriando componente ...\n");
-			ACBrECF ecf = new ACBrECF();
+			ecf = new ACBrECF();
 			
 			System.out.println("SetModelo\n");
 			ecf.setModelo(modelo);
@@ -69,6 +71,8 @@ public class Program {
 			System.out.print("GetAtivo");
 			System.out.println(": " + ecf.getAtivo());
 
+			
+			/*
 			System.out.println("\nLeituraX\n");
 			ecf.leituraX();
 
@@ -82,16 +86,16 @@ public class Program {
 				FormaPagamento formaPagto = ecf.getFormasPagamento()[i];
 				System.out.println(" - " + formaPagto.getIndice() + " " + formaPagto.getDescricao());
 			}
-
-			
+			*/
 
 			System.out.println("\nTesta cupom fiscal\n");
-			ecf.abreCupom();
+			//ecf.abreCupom();
+			
 
 			for (int i=0; i<10; i++)
 			{
 				System.out.println("Vende item " + i + "\n");
-				ecf.vendeItem("0001", "PRODUTO", "I", 1, 0.01, 0, "UN", "D", "$");
+				ecf.vendeItem("0001", "PRODUTO", "I", 3, 8, 10, "UN", "%", "D");
 			}
 
 			System.out.println("Subtotaliza\n");
@@ -115,6 +119,11 @@ public class Program {
 		{
 			System.out.println(t.getMessage());
 		}
+		finally
+		{
+			if (ecf != null) ecf.desativar();	
+		}
+		
 
 		System.in.read();
 	}

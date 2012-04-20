@@ -794,7 +794,7 @@ public final class ACBrECF
 	
 	/**
 	 * Emite uma redução Z.
-	 * @throws ACBrException
+	 * @throws ACBrExceptionf
 	 */
 	public native void reducaoZ() throws ACBrException;
 	

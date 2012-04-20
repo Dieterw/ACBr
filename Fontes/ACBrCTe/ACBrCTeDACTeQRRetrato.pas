@@ -689,53 +689,51 @@ begin
       if (Item mod 2) = 0 then
       begin
         cdsDocumentos.Append;
-        // Alterado por Italo em 17/04/2012
+        // Alterado por Italo em 18/04/2012
         // TpcteTipoDocumento = (tdDeclaracao, tdDutoviario, tdOutros);
         case tpDoc of
          tdDeclaracao: begin
-                        cdsDocumentosTIPO_1.AsString := 'DECLAR';
-                        cdsDocumentosCNPJCPF_1.AsString := 'Declaração / ' +
-                                         CTeUtil.FormatarCNPJ(FCTe.Rem.CNPJCPF);
+                        cdsDocumentosTIPO_1.AsString      := 'DECLAR';
+                        cdsDocumentosCNPJCPF_1.AsString   := CTeUtil.FormatarCNPJ(FCTe.Rem.CNPJCPF);
+                        cdsDocumentosDOCUMENTO_1.AsString := 'Declaração Doc.: ' + nDoc;
                        end;
          tdDutoviario: begin
-                        cdsDocumentosTIPO_1.AsString := 'DUTO';
-                        cdsDocumentosCNPJCPF_1.AsString := 'Dutoviário / ' +
-                                         CTeUtil.FormatarCNPJ(FCTe.Rem.CNPJCPF);
+                        cdsDocumentosTIPO_1.AsString      := 'DUTO';
+                        cdsDocumentosCNPJCPF_1.AsString   := CTeUtil.FormatarCNPJ(FCTe.Rem.CNPJCPF);
+                        cdsDocumentosDOCUMENTO_1.AsString := 'Dutoviário Doc.: ' + nDoc;
                        end;
          tdOutros:     begin
-                        cdsDocumentosTIPO_1.AsString := 'Outros';
-                        cdsDocumentosCNPJCPF_1.AsString := copy( trim(descOutros), 1, 39 ) + ' / '+
-                                         CTeUtil.FormatarCNPJ(FCTe.Rem.CNPJCPF);
+                        cdsDocumentosTIPO_1.AsString      := 'Outros';
+                        cdsDocumentosCNPJCPF_1.AsString   := CTeUtil.FormatarCNPJ(FCTe.Rem.CNPJCPF);
+                        cdsDocumentosDOCUMENTO_1.AsString := copy( trim(descOutros), 1, 20 ) + ' Doc.: '+ nDoc;
                        end;
         end;
 //        cdsDocumentosTIPO_1.AsString := descOutros;
 //        cdsDocumentosCNPJCPF_1.AsString := CTeUtil.FormatarCNPJ(FCTe.Rem.CNPJCPF);
-        cdsDocumentosDOCUMENTO_1.AsString := nDoc;
       end
       else
       begin
-        // Alterado por Italo em 17/04/2012
+        // Alterado por Italo em 18/04/2012
         // TpcteTipoDocumento = (tdDeclaracao, tdDutoviario, tdOutros);
         case tpDoc of
          tdDeclaracao: begin
-                        cdsDocumentosTIPO_2.AsString := 'DECLAR';
-                        cdsDocumentosCNPJCPF_2.AsString := 'Declaração / ' +
-                                         CTeUtil.FormatarCNPJ(FCTe.Rem.CNPJCPF);
+                        cdsDocumentosTIPO_2.AsString      := 'DECLAR';
+                        cdsDocumentosCNPJCPF_2.AsString   := CTeUtil.FormatarCNPJ(FCTe.Rem.CNPJCPF);
+                        cdsDocumentosDOCUMENTO_2.AsString := 'Declaração Doc.: ' + nDoc;
                        end;
          tdDutoviario: begin
-                        cdsDocumentosTIPO_2.AsString := 'DUTO';
-                        cdsDocumentosCNPJCPF_2.AsString := 'Dutoviário / ' +
-                                         CTeUtil.FormatarCNPJ(FCTe.Rem.CNPJCPF);
+                        cdsDocumentosTIPO_2.AsString      := 'DUTO';
+                        cdsDocumentosCNPJCPF_2.AsString   := CTeUtil.FormatarCNPJ(FCTe.Rem.CNPJCPF);
+                        cdsDocumentosDOCUMENTO_2.AsString := 'Dutoviário Doc.: ' + nDoc;
                        end;
          tdOutros:     begin
-                        cdsDocumentosTIPO_2.AsString := 'Outros';
-                        cdsDocumentosCNPJCPF_2.AsString := copy( trim(descOutros), 1, 39 ) + ' / '+
-                                         CTeUtil.FormatarCNPJ(FCTe.Rem.CNPJCPF);
+                        cdsDocumentosTIPO_2.AsString      := 'Outros';
+                        cdsDocumentosCNPJCPF_2.AsString   := CTeUtil.FormatarCNPJ(FCTe.Rem.CNPJCPF);
+                        cdsDocumentosDOCUMENTO_2.AsString := copy( trim(descOutros), 1, 20 ) + ' Doc.: '+ nDoc;
                        end;
         end;
 //        cdsDocumentosTIPO_2.AsString := descOutros;
 //        cdsDocumentosCNPJCPF_2.AsString := CTeUtil.FormatarCNPJ(FCTe.Rem.CNPJCPF);
-        cdsDocumentosDOCUMENTO_2.AsString := nDoc;
         cdsDocumentos.Post;
       end;
       inc(Item);
@@ -1032,26 +1030,20 @@ begin
     // Incluidas por Italo em 01/01/2012
     qrlVariavel1.Enabled := True;
     qriBarCode2.Enabled  := False;
-    if FCTe.procCTe.cStat = 100 then
-     begin
-      qrlDescricao.Caption := 'PROTOCOLO DE AUTORIZAÇÃO DE USO';
-     end;
+    if FCTe.procCTe.cStat = 100
+     then qrlDescricao.Caption := 'PROTOCOLO DE AUTORIZAÇÃO DE USO';
 
-    if FCTe.procCTe.cStat = 101 then
-     begin
-      qrlDescricao.Caption:= 'PROTOCOLO DE HOMOLOGAÇÃO DE CANCELAMENTO';
-     end;
+    if FCTe.procCTe.cStat = 101
+     then qrlDescricao.Caption := 'PROTOCOLO DE HOMOLOGAÇÃO DE CANCELAMENTO';
 
     // Alterado de 102 para 110 por Italo em 27/01/2012
-    if FCTe.procCTe.cStat = 110 then
-     begin
-      qrlDescricao.Caption:= 'PROTOCOLO DE DENEGAÇÃO DE USO';
-     end;
+    if FCTe.procCTe.cStat = 110
+     then qrlDescricao.Caption := 'PROTOCOLO DE DENEGAÇÃO DE USO';
 
     if FProtocoloCTE <> ''
      then qrlProtocolo.Caption := FProtocoloCTE
-     else qrlProtocolo.Caption :=  FCTe.procCTe.nProt + ' ' +
-                                 CTeUtil.SeSenao(FCTe.procCTe.dhRecbto <> 0,
+     else qrlProtocolo.Caption := FCTe.procCTe.nProt + '   ' +
+                                     CTeUtil.SeSenao(FCTe.procCTe.dhRecbto <> 0,
                                       DateTimeToStr(FCTe.procCTe.dhRecbto), '');
    end;
 
@@ -1060,14 +1052,36 @@ begin
 
   if FCTe.Ide.tpEmis in [teContingencia, teFSDA] then
    begin
-    // Incluidas por Italo em 01/01/2012
-    qrlVariavel1.Enabled := False;
-    qriBarCode2.Enabled  := True;
+    // Incluido por Italo em 20/04/2012
+    if FCTe.procCTe.cStat in [100, 101, 110] 
+     then begin
+      qrlVariavel1.Enabled := True;
+      qriBarCode2.Enabled  := False;
+      if FCTe.procCTe.cStat = 100
+       then qrlDescricao.Caption := 'PROTOCOLO DE AUTORIZAÇÃO DE USO';
 
-    strChaveContingencia := CTeUtil.GerarChaveContingencia(FCTe);
-    SetBarCodeImage(strChaveContingencia, qriBarCode2);
-    qrlDescricao.Caption := 'DADOS DO CT-E';
-    qrlProtocolo.Caption := CTeUtil.FormatarChaveContingencia(strChaveContingencia);
+      if FCTe.procCTe.cStat = 101
+       then qrlDescricao.Caption := 'PROTOCOLO DE HOMOLOGAÇÃO DE CANCELAMENTO';
+
+      if FCTe.procCTe.cStat = 110
+       then qrlDescricao.Caption := 'PROTOCOLO DE DENEGAÇÃO DE USO';
+
+      if FProtocoloCTE <> ''
+       then qrlProtocolo.Caption := FProtocoloCTE
+       else qrlProtocolo.Caption := FCTe.procCTe.nProt + '   ' +
+                                    CTeUtil.SeSenao(FCTe.procCTe.dhRecbto <> 0,
+                                        DateTimeToStr(FCTe.procCTe.dhRecbto), '');
+     end
+     else begin
+      // Incluidas por Italo em 01/01/2012
+      qrlVariavel1.Enabled := False;
+      qriBarCode2.Enabled  := True;
+
+      strChaveContingencia := CTeUtil.GerarChaveContingencia(FCTe);
+      SetBarCodeImage(strChaveContingencia, qriBarCode2);
+      qrlDescricao.Caption := 'DADOS DO CT-E';
+      qrlProtocolo.Caption := CTeUtil.FormatarChaveContingencia(strChaveContingencia);
+     end;
    end;
    
   // DPEC ****************************************************************
@@ -1611,7 +1625,12 @@ begin
 
   // Linhas inseridas por Italo em 28/01/2011
   if FCTe.Ide.tpEmis in [teContingencia, teFSDA]
-   then qrmObs.Lines.Add('DACTE em Contingência - Impresso em decorrência de problemas técnicos.');
+   then begin
+    // Incluido por Italo em 20/04/2012
+    if not (FCTe.procCTe.cStat in [100, 101, 110])
+     then qrmObs.Lines.Add('DACTE em Contingência - Impresso em decorrência de problemas técnicos.');
+   end;
+
   if FCTe.Ide.tpEmis = teDPEC
    then qrmObs.Lines.Add('DACTE em Contingência - DPEC regularmente recebida pela Receita Federal do Brasil');
 

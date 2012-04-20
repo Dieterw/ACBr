@@ -63,7 +63,7 @@ Uses IniFiles, StrUtils, DateUtils,
   pcnInutNFe, pcnRetInutNFe,
   pcnRetEnvNFe, pcnConsReciNFe, pcnAuxiliar,
   pcnNFeRTXT, ACBrNFeNotasFiscais, pcnRetConsCad, StdCtrls, pcnProcNFe,
-  pcnRetCCeNFe;
+  pcnRetCCeNFe, pcnNFeR;
 
 Procedure DoACBrNFe( Cmd : TACBrNFeCmd ) ;
 var
@@ -1772,6 +1772,7 @@ var
   INIRec : TMemIniFile ;
   OK     : boolean;
   IniNFe : TStringList;
+  LocNFeR : TNFeR;
 begin
  INIRec := TMemIniFile.create( 'nfe.ini' ) ;
  frmAcbrNfeMonitor.ACBrNFe1.NotasFiscais.Clear;
@@ -1779,8 +1780,15 @@ begin
     frmAcbrNfeMonitor.ACBrNFe1.NotasFiscais.LoadFromFile(XML)
  else
   begin
-    frmAcbrNfeMonitor.ACBrNFe1.NotasFiscais.Add.XML := ConvertStrRecived( XML );
-    frmAcbrNfeMonitor.ACBrNFe1.NotasFiscais.GerarNFe;
+    LocNFeR := TNFeR.Create(frmAcbrNfeMonitor.ACBrNFe1.NotasFiscais.Add.NFe);
+    try
+       LocNFeR.Leitor.Arquivo := ConvertStrRecived( XML );
+       LocNFeR.LerXml;
+       frmAcbrNfeMonitor.ACBrNFe1.NotasFiscais.Items[0].XML := LocNFeR.Leitor.Arquivo;
+       frmAcbrNfeMonitor.ACBrNFe1.NotasFiscais.GerarNFe;
+    finally
+       LocNFeR.Free;
+    end;
   end;
 
  with frmAcbrNfeMonitor do

@@ -92,9 +92,13 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
     fsApplicationPath: String ;
 
     xECF_AbreConnectC : Function(Meio: Integer; PathW: AnsiString): Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
+
+    xECF_DownloadMF : Function (Arquivo: AnsiString): Integer {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
+
     xECF_DownloadMFD : Function (Arquivo: AnsiString; TipoDownload: AnsiString;
       ParametroInicial: AnsiString; ParametroFinal: AnsiString; UsuarioECF: AnsiString ):
       Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
+
     xECF_ReproduzirMemoriaFiscalMFD : Function (tipo: AnsiString; fxai: AnsiString;
       fxaf:  AnsiString; asc: AnsiString; bin: AnsiString): Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
     xECF_FechaPortaSerial : Function: Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
@@ -1071,7 +1075,19 @@ begin
     DiaIni := FormatDateTime('dd"/"mm"/"yy', DataInicial) ;
     DiaFim := FormatDateTime('dd"/"mm"/"yy', DataFinal) ;
 
-    Resp := xECF_ReproduzirMemoriaFiscalMFD(Tipo, DiaIni, DiaFim, NomeArquivo, '');
+    if Tipo='3' then
+    begin
+      Resp := xECF_DownloadMF('TMP.MF');
+      if (Resp <> 1) then
+        raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar ECF_DownloadMF.'+sLineBreak+
+                                       DescricaoErroDLL(Resp) ));
+       Resp := xECF_ReproduzirMemoriaFiscalMFD(Tipo, DiaIni, DiaFim, NomeArquivo, 'TMP.MF');
+    end
+    else
+    begin
+       Resp := xECF_ReproduzirMemoriaFiscalMFD(Tipo, DiaIni, DiaFim, NomeArquivo, '');
+    end;
+
     if (Resp <> 1) then
       raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar ECF_DownloadMFD.'+sLineBreak+
                                        DescricaoErroDLL(Resp) ))
@@ -2196,6 +2212,7 @@ begin
 
   SwedaFunctionDetect('ECF_AbreConnectC', @xECF_AbreConnectC);
   SwedaFunctionDetect('ECF_DownloadMFD', @xECF_DownloadMFD);
+  SwedaFunctionDetect('ECF_DownloadMF', @xECF_DownloadMF);
   SwedaFunctionDetect('ECF_ReproduzirMemoriaFiscalMFD', @xECF_ReproduzirMemoriaFiscalMFD);
   SwedaFunctionDetect('ECF_FechaPortaSerial', @xECF_FechaPortaSerial);
 end ;

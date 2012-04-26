@@ -48,6 +48,13 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   26/04/2012 (Italo Jurisato Junior)
+---------------
+[*] Alteração na geração do XML, quanto as tags: dhCont e xJust, ficando condicioda
+    ao tpEmis = teFSDA.
+    Alteração na function GetURL, foi acrescentado as URLs de Produção e Homologação
+    para as Forma de Emissao: 7 = SVC-RS e 8 = SVC-SP.
+
 Alterações   16/03/2012 (Italo Jurisato Junior)
 ---------------
 [+] Foi criado a função ValidaModalMSXML no fonte ACBrCTeUtil.pas 

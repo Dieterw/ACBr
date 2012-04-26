@@ -414,8 +414,11 @@ begin
   (**)GerarToma4;
 
   {$IFDEF PL_104}
-    Gerador.wCampo(tcDatHor, '#057', 'dhCont ', 19, 019, 0, CTe.ide.dhCont, '');
-    Gerador.wCampo(tcStr,    '#058', 'xJust  ', 15, 256, 0, CTe.ide.xJust, '');
+    if CTe.Ide.tpEmis = teFSDA
+     then begin
+      Gerador.wCampo(tcDatHor, '#057', 'dhCont ', 19, 019, 0, CTe.ide.dhCont, '');
+      Gerador.wCampo(tcStr,    '#058', 'xJust  ', 15, 256, 0, CTe.ide.xJust, '');
+     end;
   {$ENDIF}
   Gerador.wGrupo('/ide');
 end;

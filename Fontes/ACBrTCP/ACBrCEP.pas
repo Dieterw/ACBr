@@ -48,11 +48,11 @@ unit ACBrCEP ;
 interface
 
 uses
-  Classes, SysUtils, contnrs, ACBrSocket ;
+  Classes, SysUtils, contnrs, ACBrSocket , dialogs;
 
 type
 
-  TACBrCEPWebService = ( wsNenhum, wsBuscarCep, wsCepLivre, wsRepublicaVirtual, wsBases4you ) ;
+  TACBrCEPWebService = ( wsNenhum, wsBuscarCep, wsCepLivre, wsRepublicaVirtual, wsBases4you, wsRNSolucoes ) ;
 
   EACBrCEPException = class ( Exception );
 
@@ -205,6 +205,16 @@ type
          AUF, ABairro : String ) ; override ;
   end ;
 
+  TACBrWSRNSolucoes = class(TACBrCEPWSClass)
+  private
+    procedure ProcessaResposta;
+  public
+    constructor Create( AOwner : TACBrCEP ) ; override ;
+    Procedure BuscarPorCEP( ACEP : String ) ; override ;
+    Procedure BuscarPorLogradouro( AMunicipio, ATipo_Logradouro, ALogradouro,
+       AUF, ABairro : String ) ; override ;
+  end;
+
 implementation
 
 uses ACBrUtil ;
@@ -289,6 +299,7 @@ begin
     wsCepLivre  : fACBrCEPWS := TACBrWSCEPLivre.Create( Self );
     wsRepublicaVirtual : fACBrCEPWS := TACBrWSRepublicaVirtual.Create(Self);
     wsBases4you : fACBrCEPWS := TACBrWSBases4you.Create(Self);
+    wsRNSolucoes: fACBrCEPWS := TACBrWSRNSolucoes.Create(Self);
   else
      fACBrCEPWS := TACBrCEPWSClass.Create( Self ) ;
   end ;
@@ -528,18 +539,16 @@ begin
   SL1 := TStringList.Create;
   SL2 := TStringList.Create;
   try
-    Buffer := fOwner.RespHTTP.Text ;
+    Buffer := String( fOwner.RespHTTP.Text ) ;
     // CEP livre retorna vários endereços na mesma linha... tratando...
     SL1.Text := StringReplace( Buffer, '""', '"'+sLineBreak+'"', [rfReplaceAll] );
 
     For I := 0 to SL1.Count-1 do
     begin
       Buffer := SL1[I] ;
-      Buffer := StringReplace( Buffer, ',', sLineBreak, [rfReplaceAll] );
-      Buffer := StringReplace( Buffer, '"', EmptyStr,   [rfReplaceAll] );
 
       SL2.Clear;
-      SL2.Text := Buffer;
+      SL2.Text := StringReplace( Buffer, ',', sLineBreak, [rfReplaceAll] );
 
       if (SL2.Count >= 9) and (Length( OnlyNumber( AnsiString(SL2[8]) ) ) = 8) then
       begin
@@ -688,5 +697,109 @@ begin
 
 end;
 
-end.
+{ TACBrWSRNSolucoes }
+constructor TACBrWSRNSolucoes.Create(AOwner: TACBrCEP);
+begin
+  inherited Create(AOwner);
 
+  fOwner.ParseText := False;
+  fpURL := 'http://www.rnsolucoes.com/wsRN.php?type=xml';
+end;
+
+procedure TACBrWSRNSolucoes.BuscarPorCEP(ACEP: String);
+begin
+  try
+    fOwner.HTTPSend.Clear;
+    fOwner.HTTPPost(fpURL +
+                    '&userkey=' + Trim(fOwner.ChaveAcesso) +
+                    '&method=RetornaInfoCEP' +
+                    '&orig=ACBR' +
+                    '&cep=' + OnlyNumber(AnsiString(ACEP)));
+
+    ProcessaResposta;
+  except
+    on E: Exception do
+    begin
+      raise EACBrCEPException.Create(
+        'Ocorreu o seguinte erro ao consumir o webService RNSolucoes:' + sLineBreak +
+        '  - ' + E.Message
+      );
+    end;
+  end;
+end;
+
+procedure TACBrWSRNSolucoes.BuscarPorLogradouro(AMunicipio,
+  ATipo_Logradouro, ALogradouro, AUF, ABairro: String);
+begin
+  try
+    fOwner.HTTPSend.Clear;
+
+    //fOwner.AjustaParam(AMunicipio)
+    //fOwner.AjustaParam(ALogradouro)
+
+    fOwner.HTTPPost(fpURL +
+                    '&userkey=' + Trim(fOwner.ChaveAcesso) +
+                    '&method=RetornaInfoEndereco' +
+                    '&orig=ACBR' +
+                    '&uf=' + AnsiString(AUF) +
+                    '&cidade=' + AnsiString(AMunicipio) +
+                    '&endereco=' + AnsiString(ALogradouro));
+
+    ProcessaResposta;
+  except
+    on E: Exception do
+    begin
+      raise EACBrCEPException.Create(
+        'Ocorreu o seguinte erro ao consumir o webService RNSolucoes:' + sLineBreak +
+        '  - ' + E.Message
+      );
+    end;
+  end;
+end;
+
+procedure TACBrWSRNSolucoes.ProcessaResposta;
+var
+  Buffer: string;
+  s: string;
+  i: Integer;
+  SL1: TStringList;
+begin
+  SL1 := TStringList.Create;
+
+  try
+    Buffer := String(fOwner.RespHTTP.Text);
+    Buffer := StringReplace(Buffer, sLineBreak, '', [rfReplaceAll]);
+    Buffer := StringReplace(Buffer, '<dados>', '', [rfReplaceAll]);
+    Buffer := StringReplace(Buffer, '</dados>', '', [rfReplaceAll]);
+    Buffer := StringReplace(Buffer, '</dado>', '</dado>' + sLineBreak, [rfReplaceAll]);
+
+    SL1.Text := Buffer;
+
+    for i := 0 to SL1.Count-1 do
+    begin
+      s := SL1.Strings[i];
+
+      if LerTagXML(s, 'cep') <> '' then
+      begin
+        with fOwner.Enderecos.New do
+        begin
+          CEP             := LerTagXML(Buffer, 'cep');
+          Tipo_Logradouro := '';
+          Logradouro      := LerTagXML(Buffer, 'endereco');
+          Complemento     := LerTagXML(Buffer, 'complemento');
+          Bairro          := LerTagXML(Buffer, 'bairro');
+          Municipio       := LerTagXML(Buffer, 'cidade');
+          UF              := LerTagXML(Buffer, 'uf');
+          IBGE_Municipio  := '';
+        end;
+      end;
+    end;
+  finally
+    SL1.Free;
+  end;
+
+  if Assigned(fOwner.OnBuscaEfetuada) then
+    fOwner.OnBuscaEfetuada(Self);
+end;
+
+end.

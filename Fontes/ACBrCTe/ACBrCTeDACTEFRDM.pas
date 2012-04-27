@@ -85,6 +85,12 @@ type
     frxSeguro: TfrxDBDataset;
     cdsModalRodoviario: TClientDataSet;
     frxModalRodoviario: TfrxDBDataset;
+    cdsRodoVeiculos: TClientDataSet;
+    frxRodoVeiculos: TfrxDBDataset;
+    frxRodoValePedagio: TfrxDBDataset;
+    cdsRodoValePedagio: TClientDataSet;
+    cdsRodoMotorista: TClientDataSet;
+    frxRodoMotorista: TfrxDBDataset;
     constructor Create(AOwner: TComponent); override;
   private
     { Private declarations }
@@ -388,6 +394,7 @@ begin
   CarregaInformacoesAdicionais;
   CarregaSeguro;
   CarregaModalRodoviario;
+
 end;
 
 procedure TdmACBrCTeFR.CarregaDadosNotasFiscais;
@@ -699,10 +706,17 @@ begin
         tcAnulacao: FieldByName('TpCT').AsString := 'Anulação';
         tcSubstituto: FieldByName('TpCT').AsString := 'Substituto';
       end;
-
+      {$IFDEF PL_103}
+       FieldByName('cMunEmi').AsString := IntToStr(cMunEmi);
+       FieldByName('xMunEmi').AsString := xMunEmi;
+       FieldByName('UFEmi').AsString   := UFEmi;
+      {$ENDIF}
+      {$IFDEF PL_104}
       FieldByName('cMunEmi').AsString := IntToStr(cMunEnv);
       FieldByName('xMunEmi').AsString := xMunEnv;
       FieldByName('UFEmi').AsString   := UFEnv;
+      {$ENDIF}
+
       FieldByName('modal').AsString := CTeUtil.SeSenao(modal = mdRodoviario, '0', '0');
 
       case tpServ of
@@ -812,6 +826,7 @@ end;
 
 
 procedure TdmACBrCTeFR.CarregaModalRodoviario;
+var i: integer;
 begin
    with cdsModalRodoviario do
    begin
@@ -820,6 +835,8 @@ begin
       FieldDefs.Add('RNTRC',       ftString, 60);
       FieldDefs.Add('DATAPREVISTA',ftString, 60);
       FieldDefs.Add('LOTACAO',     ftString, 60);
+      FieldDefs.Add('CIOT',        ftString, 12);
+      FieldDefs.Add('LACRES',      ftString, 255);
       CreateDataSet;
       Append;
       //
@@ -829,8 +846,79 @@ begin
       end;
       FieldByName('RNTRC').AsString   := CTe.Rodo.RNTRC;
       FieldByName('DATAPREVISTA').AsString    := DateToStr(CTe.Rodo.dPrev);
+      {$IFDEF PL_104}
+      FieldByName('CIOT').AsString := cte.Rodo.CIOT;
+      {$ENDIF}
 
-   Post;
+      for I := 0 to CTe.Rodo.Lacres.Count - 1 do
+      begin
+         if Trim(FieldByName('LACRES').AsString) <> '' then
+            FieldByName('LACRES').AsString := FieldByName('LACRES').AsString + '/';
+         FieldByName('LACRES').AsString := FieldByName('LACRES').AsString + CTe.Rodo.Lacres.Items[i].nLacre;
+      end;
+         
+      Post;
+   end;
+
+   with cdsRodoVeiculos do
+   begin
+     Close;
+     FieldDefs.Clear;
+     FieldDefs.Add('tpVeic', ftString, 10);
+     FieldDefs.Add('placa', ftString, 7);
+     FieldDefs.Add('UF', ftString, 2);
+     FieldDefs.Add('RNTRC', ftString, 8);
+     CreateDataSet;
+     for i := 0 to CTe.Rodo.veic.Count - 1 do
+     begin
+       Append;
+       case CTe.Rodo.veic.Items[i].tpVeic of
+         tvTracao  : FieldByName('tpVeic').AsString := 'Tração';
+         tvReboque : FieldByName('tpVeic').AsString := 'Reboque';
+       end;
+       FieldByName('placa').AsString :=  CTe.Rodo.veic.Items[i].placa;
+       FieldByName('UF').AsString :=  CTe.Rodo.veic.Items[i].UF;
+       FieldByName('RNTRC').AsString :=  CTe.Rodo.veic.Items[i].Prop.RNTRC;
+       Post;
+     end;
+   end;
+
+   with cdsRodoValePedagio do
+   begin
+     Close;
+     FieldDefs.Clear;
+     FieldDefs.Add('CNPJPg', ftString, 18);
+     FieldDefs.Add('CNPJForn', ftString, 18);
+     FieldDefs.Add('nCompra', ftString, 14);
+     CreateDataSet;
+
+    {$IFDEF PL_104}
+     for i := 0 to CTe.Rodo.valePed.Count - 1 do
+     begin
+       Append;
+       FieldByName('CNPJForn').AsString  :=  CTeUtil.FormatarCNPJ(CTe.Rodo.valePed.Items[i].CNPJForn);
+       FieldByName('CNPJPg').AsString  :=  CTeUtil.FormatarCNPJ(CTe.Rodo.valePed.Items[i].CNPJPg);
+       FieldByName('nCompra').AsString :=  CTe.Rodo.valePed.Items[i].nCompra;
+       Post;
+     end;
+    {$ENDIF}
+   end;
+
+   with cdsRodoMotorista do
+   begin
+     Close;
+     FieldDefs.Clear;
+     FieldDefs.Add('xNome', ftString, 60);
+     FieldDefs.Add('CPF', ftString, 11);
+     CreateDataSet;
+     
+     for i := 0 to CTe.Rodo.moto.Count - 1 do
+     begin
+       Append;
+       FieldByName('xNome').AsString  :=  CTe.Rodo.moto.Items[i].xNome;
+       FieldByName('CPF').AsString  :=  CTe.Rodo.moto.Items[i].CPF;
+       Post;
+     end;
    end;
 end;
 
@@ -846,6 +934,7 @@ begin
     FieldDefs.Clear;
     FieldDefs.Add('ResumoCanhoto', ftString, 200);
     FieldDefs.Add('Mensagem0', ftString, 60);
+    FieldDefs.Add('Versao', ftString, 5);
     FieldDefs.Add('Imagem', ftString, 256);
     FieldDefs.Add('Sistema', ftString, 60);
     FieldDefs.Add('Usuario', ftString, 60);
@@ -871,7 +960,12 @@ begin
 //          vResumo := DANFEClassOwner.ExibirResumoCanhoto_Texto;
 //    end;
     FieldByName('ResumoCanhoto').AsString := vResumo;
-
+    {$IFDEF PL_103}
+    FieldByName('Versao').AsString := '1.03';
+    {$ENDIF}
+    {$IFDEF PL_104}
+    FieldByName('Versao').AsString := '1.04';
+    {$ENDIF}
     if (FCTe.Ide.TpAmb = taHomologacao) then
       FieldByName('Mensagem0').AsString := 'CTe sem Valor Fiscal - HOMOLOGAÇÃO'
     else
@@ -1141,6 +1235,7 @@ begin
     FieldDefs.Add('XFant', ftString, 60);
     FieldDefs.Add('Fone', ftString, 12);
     FieldDefs.Add('XLgr', ftString, 255);
+    FieldDefs.Add('Nro', ftString, 60);
     FieldDefs.Add('XCpl', ftString, 60);
     FieldDefs.Add('XBairro', ftString, 60);
     FieldDefs.Add('CMun', ftString, 7);
@@ -1161,6 +1256,7 @@ begin
         FieldByName('IE').AsString := FCTe.Rem.IE;
         //
         FieldByName('Xlgr').AsString := FCTe.Rem.EnderReme.xLgr;
+        FieldByName('Nro').AsString := FCTe.Rem.EnderReme.nro;
         FieldByName('XCpl').AsString := FCTe.Rem.EnderReme.xCpl;
         FieldByName('XBairro').AsString := FCTe.Rem.EnderReme.xBairro;
         FieldByName('CMun').AsString := IntToStr(FCTe.Rem.EnderReme.cMun);
@@ -1300,12 +1396,12 @@ begin
                      FieldByName('PesoB').AsFloat := CTe.InfCarga.InfQ.Items[I].qCarga
                   end;
           uTON  : begin
-                     FieldByName('Esp').AsString := 'TON';
-                     FieldByName('ValorEsp').AsFloat  := CTe.InfCarga.InfQ.Items[I].qCarga;
+                     FieldByName('Esp').AsString := '';
+                     FieldByName('ValorEsp').AsFloat  := 0;
                      //
                      FieldByName('QVol').AsFloat  := 0;
-                     FieldByName('PesoA').AsFloat := 0;
-                     FieldByName('PesoB').AsFloat := 0;
+                     FieldByName('PesoA').AsFloat := CTe.InfCarga.InfQ.Items[I].qCarga * 1000;
+                     FieldByName('PesoB').AsFloat := CTe.InfCarga.InfQ.Items[I].qCarga * 1000;
                   end;
           uUNIDADE : begin
                         FieldByName('Esp').AsString := '';

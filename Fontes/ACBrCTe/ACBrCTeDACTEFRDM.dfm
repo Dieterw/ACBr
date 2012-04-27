@@ -1,12 +1,12 @@
 object dmACBrCTeFR: TdmACBrCTeFR
   OldCreateOrder = False
+  Left = 296
   Height = 525
   Width = 848
   object frxPDFExport: TfrxPDFExport
     UseFileCache = True
     ShowProgress = True
     OverwritePrompt = False
-    DataOnly = False
     PrintOptimized = True
     Outline = False
     Background = True
@@ -133,7 +133,7 @@ object dmACBrCTeFR: TdmACBrCTeFR
     Top = 148
   end
   object frxReport: TfrxReport
-    Version = '4.12'
+    Version = '4.10.1'
     DotMatrixReport = False
     IniFile = '\Software\Fast Reports'
     PreviewOptions.AllowEdit = False
@@ -142,7 +142,7 @@ object dmACBrCTeFR: TdmACBrCTeFR
     PrintOptions.Printer = 'Default'
     PrintOptions.PrintOnSheet = 0
     ReportOptions.CreateDate = 40401.475989294000000000
-    ReportOptions.LastChange = 40415.404595682900000000
+    ReportOptions.LastChange = 41026.466223692130000000
     ScriptLanguage = 'PascalScript'
     StoreInDFM = False
     Left = 48
@@ -267,5 +267,50 @@ object dmACBrCTeFR: TdmACBrCTeFR
     BCDToCurrency = False
     Left = 328
     Top = 420
+  end
+  object cdsRodoVeiculos: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    Left = 448
+    Top = 12
+  end
+  object frxRodoVeiculos: TfrxDBDataset
+    UserName = 'Veiculos'
+    CloseDataSource = False
+    OpenDataSource = False
+    DataSet = cdsRodoVeiculos
+    BCDToCurrency = False
+    Left = 480
+    Top = 12
+  end
+  object frxRodoValePedagio: TfrxDBDataset
+    UserName = 'ValePedagio'
+    CloseDataSource = False
+    OpenDataSource = False
+    DataSet = cdsRodoValePedagio
+    BCDToCurrency = False
+    Left = 480
+    Top = 68
+  end
+  object cdsRodoValePedagio: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    Left = 448
+    Top = 68
+  end
+  object cdsRodoMotorista: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    Left = 448
+    Top = 124
+  end
+  object frxRodoMotorista: TfrxDBDataset
+    UserName = 'Motorista'
+    CloseDataSource = False
+    OpenDataSource = False
+    DataSet = cdsRodoMotorista
+    BCDToCurrency = False
+    Left = 480
+    Top = 124
   end
 end

@@ -5647,6 +5647,7 @@ begin
       Relatorio.Add(Format('TOTAL              R$%12.2n R$%12.2n', [SubTTFiscal, SubTTNFiscal]));
       Relatorio.Add('');
     finally
+      FreeAndNil(FPAcumuladas);
       FPTotalizado.Free;
     end;
 

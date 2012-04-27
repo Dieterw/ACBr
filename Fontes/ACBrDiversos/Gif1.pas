@@ -86,7 +86,7 @@ type
 type
     PGifSignature           = ^TgifSignature;
     TGifSignature           = record            // GIF87A or GIF89A
-        rSignature:         packed array[1..6] of char;
+        rSignature:         packed array[1..6] of Ansichar;
         end;
 
 type
@@ -125,8 +125,8 @@ type
     PGifExtensionApplication    = ^TgifExtensionApplication;
     TGifExtensionApplication    = record        // application extension
         rBlockSize:         integer;            // must always be 11
-        rIdentifier:        packed array[1..8] of char;
-        rAuthentication:    packed array[1..3] of char;
+        rIdentifier:        packed array[1..8] of Ansichar;
+        rAuthentication:    packed array[1..3] of Ansichar;
         rDataBlockList:     TList;              // data blocks
         end;
 
@@ -177,7 +177,7 @@ type
         rLocalColorTable:   integer;            // index into master list
         rLZWSize:           integer;            // LZW minimum code size
         rExtensionList:     TList;              // extensions read before this image
-        rPixelList:         PChar;              // decoded pixel indices
+        rPixelList:         PAnsiChar;              // decoded pixel indices
         rPixelCount:        longint;            // number of pixels
         rBitmap:            TBitmap;            // the actual image
         end;
@@ -268,7 +268,7 @@ type
 
 // procedures used to implement the PROPERTIES
 
-        function  GetSignature: string;
+        function  GetSignature: AnsiString;
         function  GetScreenDescriptor: PGifScreenDescriptor;
         function  GetImageCount: integer;
         function  GetImageDescriptor(image: integer): PGifImageDescriptor;
@@ -303,7 +303,7 @@ type
         procedure LoadFromStream(Source: TStream);
 
 
-        property Signature:                         string                  read GetSignature;
+        property Signature:                         AnsiString                  read GetSignature;
         property ScreenDescriptor:                  PGifScreenDescriptor    read GetScreenDescriptor;
         property ImageCount:                        integer                 read GetImageCount;
         property ImageDescriptor[Image: integer]:   PGifImageDescriptor     read GetImageDescriptor;
@@ -348,7 +348,7 @@ const
 // define a set of error messages
 
 const
-    kGifErrorMessages:      array[0..24] of string = (
+    kGifErrorMessages:      array[0..24] of Ansistring = (
         'no error',                                                 // 0
         'Invalid GIF Signature Code',                               // 1
         'No Local or Global Color Table for Image',                 // 2
@@ -378,10 +378,10 @@ const
 
 var
     GIF_ErrorCode:      integer;                    // last error
-    GIF_ErrorString:    string;                     // last error
+    GIF_ErrorString:    AnsiString;                     // last error
 
 procedure GIF_Error(n: integer);  forward;
-procedure GIF_ErrorMessage(m: string);  forward;
+procedure GIF_ErrorMessage(m: AnsiString);  forward;
 
 
 constructor TGif.Create;
@@ -409,7 +409,7 @@ fSignature^.rSignature := '------';
 
 new(fScreenDescriptor);
 if (fScreenDescriptor = nil) then OutOfMemoryError;
-fillchar(fScreenDescriptor^, sizeof(TGifScreenDescriptor), 0);
+fillChar(fScreenDescriptor^, sizeof(TGifScreenDescriptor), 0);
 
 fImageDescriptorList := TList.Create;
 fColorTableList      := TList.Create;
@@ -472,7 +472,7 @@ fSignature^.rSignature := '------';
 // ditto the screen descriptor
 
 if (fScreenDescriptor = nil) then new(fScreenDescriptor);
-fillchar(fScreenDescriptor^, sizeof(TGifScreenDescriptor), 0);
+fillChar(fScreenDescriptor^, sizeof(TGifScreenDescriptor), 0);
 
 // delete all items from image list, but leave the list
 
@@ -588,7 +588,7 @@ while (not done) do
 
 // must have an image
 
-if (fImageDescriptorList.Count = 0) then GIF_Error(18);  
+if (fImageDescriptorList.Count = 0) then GIF_Error(18);
 
 // no longer need the source data in memory
 
@@ -640,7 +640,7 @@ end;
 
 procedure TGif.ReadSignature;
 var
-    s:      string;
+    s:      AnsiString;
 begin
 with fSignature^ do
     begin
@@ -710,30 +710,33 @@ var
     r,g,b:      byte;
     ct:         PGifColorTable;
 begin
-Table := -1;                            // assume no table
-if (Size > 0) then                      // OK, a table does exist
-    begin
+  Table := -1;                          // assume no table
+  if (Size > 0) then                    // OK, a table does exist
+  begin
     new(ct);                            // make a anew color table
-    if (ct = nil) then OutOfMemoryError;
+    if (ct = nil) then
+      OutOfMemoryError;
+
     n := fColorTableList.Add(ct);       // save it in master list
     Table := n;                         // save index for a valid table
 
     ct^.rSize := Size;
 
     for i := 0 to (ct^.rSize-1) do      // read a triplet for each TColor
-        begin
-        fIOStream.Read(r, 1);             // red
-        fIOStream.Read(g, 1);             // green
-        fIOStream.Read(b, 1);             // blue
+    begin
+      fIOStream.Read(r, 1);             // red
+      fIOStream.Read(g, 1);             // green
+      fIOStream.Read(b, 1);             // blue
 
-        ct^.rColors[i] := r or (g shl 8) or (b shl 16);  
-        end;
-
-// make sure we store palette handle in same index slot as the color table
-
-    while (fPaletteList.Count < fColorTableList.Count) do fPaletteList.Add(nil);
-    fPaletteList.Items[Table] := Nil;
+      ct^.rColors[i] := r or (g shl 8) or (b shl 16);
     end;
+
+    // make sure we store palette handle in same index slot as the color table
+    while (fPaletteList.Count < fColorTableList.Count) do
+      fPaletteList.Add(nil);
+
+    fPaletteList.Items[Table] := Nil;
+  end;
 end;
 
 { ---------------------------------------------------------------------------- }
@@ -764,7 +767,7 @@ id^.rIndex := ix;
 
 // initialize data
 
-fillchar(id^, sizeof(TGifImageDescriptor), 0);
+fillChar(id^, sizeof(TGifImageDescriptor), 0);
 
 // init the sotrage for compressed data
 
@@ -897,7 +900,7 @@ if (fExtension = nil) then fExtension := TList.Create;
 
 new(eb);
 if (eb = nil) then OutOfMemoryError;
-fillchar(eb^, sizeof(TGifExtension), 0);
+fillChar(eb^, sizeof(TGifExtension), 0);
 fExtension.Add(eb);
 
 // get the type of extension
@@ -1109,7 +1112,7 @@ if (fZipData = nil) then OutOfMemoryError;
 
 // init data block
 
-fillchar(fZipData^, sizeof(TGifZip), 0);
+fillChar(fZipData^, sizeof(TGifZip), 0);
 fZipData^.rID := pID;
 fZipData^.rCT := fColorTableList.Items[pID^.rLocalColorTable];
 
@@ -1361,7 +1364,7 @@ procedure TGif.LZWWriteBitmap;
 var
     i,n:    integer;
     j:      longint;
-    p:      PChar;
+    p:      PAnsiChar;
 begin
 with fZipData^ do
     begin
@@ -1379,7 +1382,7 @@ with fZipData^ do
 // store the pixel index into PixelList
 
             p := rID^.rPixelList + j;
-            p^ := chr(i);
+            p^ := AnsiChar(chr(i));
             end;
 
         LZWIncrPosition;
@@ -1397,7 +1400,7 @@ function TGif.LZWReadBitmap: integer;
 var
     n:    integer;
     j:      longint;
-    p:      PChar;
+    p:      PAnsiChar;
 begin
 with fZipData^ do
     begin
@@ -1434,9 +1437,9 @@ end;
 
 { ---------------------------------------------------------------------------- }
 
-function TGif.GetSignature: string;
+function TGif.GetSignature: AnsiString;
 var
-    s:      string;
+    s:      AnsiString;
 begin
 s := fSignature^.rSignature;
 GetSignature := s;
@@ -1525,7 +1528,7 @@ function TGif.GetColorIndex(image, x, y: integer): integer;
 var
     i,n:    integer;
     id:     PGifImageDescriptor;
-    p:      PChar;
+    p:      PAnsiChar;
 begin
 if ((image < 0) or (image >= fImageDescriptorList.Count)) then GIF_Error(15);
 id := fImageDescriptorList.Items[image];
@@ -1702,7 +1705,7 @@ var
   PL: PLayoutType;
   Color: TColor;
   Index: integer;
-  Pix, P: PChar;
+  Pix, P: PAnsiChar;
   I, X, Y, N: integer;
   TrIndex: integer;
 begin
@@ -1721,7 +1724,7 @@ for i := 0 to (fImageDescriptorList.Count - 1) do
         try
           Stream.Size := FileSize;
           PL := Stream.Memory;
-          FillChar(PL^, FileSize, 0);
+          fillChar(PL^, FileSize, 0);
 
           with PL^.BFH do
             begin
@@ -1753,7 +1756,7 @@ for i := 0 to (fImageDescriptorList.Count - 1) do
             ct^.rColors[TrIndex] := TransColor;
 
           N := 0;
-          Pix := PChar(PL) + Sizeof(LayoutType);
+          Pix := PAnsiChar(PL) + Sizeof(LayoutType);
           for Y := rHeight-1 downto 0 do
             begin
             P := Pix + (Y * FullWidth);
@@ -1761,11 +1764,11 @@ for i := 0 to (fImageDescriptorList.Count - 1) do
               begin
               Index := Integer((rPixelList + N)^);
               Color := ct^.rColors[Index];
-              P^ := Char((Color shr 16) and $FF);
+              P^ := AnsiChar((Color shr 16) and $FF);
               Inc(P);
-              P^ := Char((Color shr 8) and $FF);
+              P^ := AnsiChar((Color shr 8) and $FF);
               Inc(P);
-              P^ := Char(Color and $FF);
+              P^ := AnsiChar(Color and $FF);
               Inc(P);
               Inc(N);
               end;
@@ -1808,7 +1811,7 @@ var
   PL: PLayoutType;
   Color: TColor;
   Index: integer;
-  Pix, P: PChar;
+  Pix, P: PAnsiChar;
   I, X, Y, N: integer;
   TrIndex: integer;
 begin
@@ -1822,7 +1825,7 @@ Stream := TMemoryStream.Create;
 try
   Stream.Size := FileSize;
   PL := Stream.Memory;
-  FillChar(PL^, FileSize, 0);
+  fillChar(PL^, FileSize, 0);
 
   with PL^.BFH do
     begin
@@ -1860,7 +1863,7 @@ try
           ct^.rColors[TrIndex] := TransColor;    
 
         N := 0;
-        Pix := PChar(PL) + Sizeof(LayoutType);
+        Pix := PAnsiChar(PL) + Sizeof(LayoutType);
         for Y := Height-1 downto Height-rHeight do
           begin
           P := Pix + (Y * FullWidth) + i*Width*3;
@@ -1868,11 +1871,11 @@ try
             begin
             Index := Integer((rPixelList + N)^);
             Color := ct^.rColors[Index];
-            P^ := Char((Color shr 16) and $FF);
+            P^ := AnsiChar((Color shr 16) and $FF);
             Inc(P);
-            P^ := Char((Color shr 8) and $FF);
+            P^ := AnsiChar((Color shr 8) and $FF);
             Inc(P);
-            P^ := Char(Color and $FF);
+            P^ := AnsiChar(Color and $FF);
             Inc(P);
             Inc(N);
             end;
@@ -1953,7 +1956,7 @@ raise EInvalidGraphicOperation.CreateFmt('TGif: %s', [GIF_ErrorString]);
 end;
 
 
-procedure GIF_ErrorMessage(m: string);
+procedure GIF_ErrorMessage(m: AnsiString);
 begin
 GIF_ErrorCode := 6;
 GIF_ErrorString := m;

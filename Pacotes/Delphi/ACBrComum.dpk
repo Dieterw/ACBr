@@ -1,7 +1,5 @@
 package ACBrComum;
 
-{$I ACBr.inc}
-
 {$R *.res}
 {$ALIGN 8}
 {$ASSERTIONS ON}
@@ -29,11 +27,7 @@ package ACBrComum;
 
 requires
   rtl,
-  {$IFDEF VisualCLX}
-   visualclx,
-  {$ELSE}
-   vcl,
-  {$ENDIF} 
+  vcl,
   designide;
 
 contains

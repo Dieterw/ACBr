@@ -48,7 +48,7 @@ unit ACBrCEP ;
 interface
 
 uses
-  Classes, SysUtils, contnrs, ACBrSocket , dialogs;
+  Classes, SysUtils, contnrs, ACBrSocket;
 
 type
 

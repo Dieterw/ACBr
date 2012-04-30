@@ -2252,7 +2252,7 @@ begin
     Texto := AnsiString(StringReplace(String(Texto), '&ccedil;', 'ç', [rfReplaceAll]));
     Texto := AnsiString(StringReplace(String(Texto), '&Ccedil;', 'Ç', [rfReplaceAll]));
     Texto := AnsiString(StringReplace(String(Texto), '&apos;', '''', [rfReplaceAll]));
-    Texto := AnsiString(UTF8ToString(Texto));
+    Texto := AnsiString(Utf8ToUnicode(Texto));
    end
   else
    begin
@@ -2261,7 +2261,7 @@ begin
     Texto := AnsiString(StringReplace(String(Texto), '>', '&gt;', [rfReplaceAll]));
     Texto := AnsiString(StringReplace(String(Texto), '"', '&quot;', [rfReplaceAll]));
     Texto := AnsiString(StringReplace(String(Texto), #39, '&#39;', [rfReplaceAll]));
-    Texto := AnsiString(UTF8ToString(Texto));
+    Texto := AnsiString(Utf8ToUnicode(Texto));
    end;
 
   Result := Texto;

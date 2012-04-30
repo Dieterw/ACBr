@@ -162,12 +162,12 @@ implementation
 
 function TACBrEAD.MD5FromFile(const APathArquivo: String): String;
 begin
-  Result := CalcularHashArquivo(APathArquivo, dgstMD5);
+  Result := String(CalcularHashArquivo(APathArquivo, dgstMD5));
 end;
 
 function TACBrEAD.MD5FromString(const AString: String): String;
 begin
-  Result := CalcularHash(AString, dgstMD5);
+  Result := String(CalcularHash(AnsiString(AString), dgstMD5));
 end;
 
 { ------------------------------ TACBrEAD ------------------------------ }
@@ -209,7 +209,7 @@ end;
 
 function TACBrEAD.GetOpenSSL_Version: String;
 begin
-   Result := SSLeay_version( 0 );
+   Result := String(SSLeay_version( 0 ));
 end;
 
 procedure TACBrEAD.FreeOpenSSL;
@@ -238,7 +238,7 @@ begin
    begin
      BIO_gets( ABio, Buf, 1024 );
      Lin := StrPas( Buf );
-     Result := Result + Lin;
+     Result := Result + String(Lin);
    end ;
   {$ELSE}
    repeat
@@ -256,6 +256,7 @@ end ;
 procedure TACBrEAD.GerarChaves(var AChavePublica : AnsiString ;
   var AChavePrivada : AnsiString) ;
 
+  {$WARN SYMBOL_PLATFORM OFF}
   function FindFileSeed : String ;
   var
     TmpFile : TSearchRec ;
@@ -271,6 +272,7 @@ procedure TACBrEAD.GerarChaves(var AChavePublica : AnsiString ;
 
     FindClose(TmpFile);
   end ;
+  {$WARN SYMBOL_PLATFORM ON}
 
 Var
   FileSeed : String ;
@@ -284,7 +286,7 @@ begin
 
   // Load a pseudo random file
   FileSeed := FindFileSeed;
-  RAND_load_file(PAnsiChar(FileSeed), -1);
+  RAND_load_file(PAnsiChar(AnsiString(FileSeed)), -1);
 
   // Gera a Chave RSA
   LiberarChave;
@@ -300,13 +302,13 @@ begin
   BioKey := CriarMemBIO;
   try
      PEM_write_bio_RSAPrivateKey(BioKey, RSAKey, nil, nil, 0, nil, nil);
-     AChavePrivada := BioToStr( BioKey );
+     AChavePrivada := AnsiString(BioToStr( BioKey ));
 
      LerChave( AChavePrivada, True );
 
      BIO_reset( BioKey );
      PEM_write_bio_PUBKEY( BioKey, fsKey);
-     AChavePublica := BioToStr( BioKey );
+     AChavePublica := AnsiString(BioToStr( BioKey ));
   finally
      LiberarBIO( BioKey );
   end ;
@@ -349,11 +351,11 @@ begin
    InitOpenSSL ;
 
  if (sLineBreak <> #10) then
-     Chave := StringReplace(Chave, sLineBreak, #10, [rfReplaceAll] );
+     Chave := AnsiString(StringReplace(String(Chave), sLineBreak, #10, [rfReplaceAll] ));
 
    LiberarChave ;
 
-   BioKey := BIO_new_mem_buf( PChar(Chave), Length(Chave) + 1 ) ;
+   BioKey := BIO_new_mem_buf( PAnsiChar(Chave), Length(Chave) + 1 ) ;
    try
       A := nil ;
       if Privada then
@@ -411,8 +413,8 @@ begin
     SL.Add( '<empresa_desenvolvedora>' ) ;
     SL.Add( '  <nome>'+NomeSwHouse+'</nome>' ) ;
     SL.Add( '  <chave>' ) ;
-    SL.Add( '    <modulo>'+Modulo+'</modulo>' ) ;
-    SL.Add( '    <expoente_publico>'+Expoente+'</expoente_publico>' ) ;
+    SL.Add( '    <modulo>'+String(Modulo)+'</modulo>' ) ;
+    SL.Add( '    <expoente_publico>'+String(Expoente)+'</expoente_publico>' ) ;
     SL.Add( '  </chave>' );
     SL.Add( '</empresa_desenvolvedora>' ) ;
 
@@ -444,11 +446,11 @@ begin
   Bio := CriarMemBIO;
   try
     BN_print( Bio , fsKey.pkey.rsa.e);
-    Modulo := BioToStr( Bio );
+    Modulo := AnsiString(BioToStr( Bio ));
 
     BIO_reset( Bio );
     BN_print( Bio , fsKey.pkey.rsa.d);
-    Expoente := BioToStr( Bio );
+    Expoente := AnsiString(BioToStr( Bio ));
   finally
     LiberarBIO( Bio ) ;
     LiberarChave;
@@ -465,7 +467,7 @@ begin
   Bio    := CriarMemBIO;
   try
     if PEM_write_bio_PUBKEY( Bio, fsKey) = 1 then
-       Result := BioToStr( Bio );
+       Result := AnsiString(BioToStr( Bio ));
   finally
     LiberarBIO( Bio );
     LiberarChave;
@@ -547,7 +549,7 @@ begin
 
   BinToHex( md_value_bin, md_value_hex, md_len);
   md_value_hex[2 * md_len] := #0;
-  Result := StrPas(md_value_hex);
+  Result := AnsiString(StrPas(md_value_hex));
 end ;
 
 function TACBrEAD.CalcularEADArquivo(const NomeArquivo : String) : AnsiString ;
@@ -616,7 +618,7 @@ begin
 
     BinToHex( md_value_bin, md_value_hex, md_len);
     md_value_hex[2 * md_len] := #0;
-    Result := StrPas(md_value_hex);
+    Result := AnsiString(StrPas(md_value_hex));
 
   finally
      LiberarChave;
@@ -629,7 +631,7 @@ begin
      raise Exception.Create( ACBrStr('Nome do arquivo não informado!') );
 
   if not FileExists( NomeArquivo ) then
-     raise Exception.Create( ACBrStr('Arquivo: ' + NomeArquivo + ' não encontrado!') );
+     raise Exception.Create( ACBrStr(AnsiString('Arquivo: ' + NomeArquivo + ' não encontrado!')) );
 end ;
 
 
@@ -641,7 +643,7 @@ begin
 
   Result := CalcularEADArquivo( NomeArquivo );
   if Result <> '' then
-     WriteToTXT( NomeArquivo, 'EAD' + Result, True, False );  // Compatiblidade Linux
+     WriteToTXT( AnsiString(NomeArquivo), 'EAD' + Result, True, False );  // Compatiblidade Linux
 end;
 
 procedure TACBrEAD.RemoveEADArquivo(const NomeArquivo : String) ;
@@ -689,7 +691,7 @@ Var
 begin
   SL := TStringList.Create;
   try
-    SL.Text := AString;
+    SL.Text := String(AString);
     Result := VerificarEAD( SL );
   finally
     SL.Free ;
@@ -706,7 +708,7 @@ begin
      raise Exception.Create( ACBrStr('Conteudo Informado é vazio' ) );
 
   SLBottom := AStringList.Count-1;   // Pega a última linha do arquivo,
-  EAD := AStringList[ SLBottom ] ;   // pois ela contem o EAD, e depois,
+  EAD := AnsiString( AStringList[ SLBottom ] ) ;   // pois ela contem o EAD, e depois,
   AStringList.Delete( SLBottom );    // remove a linha do EAD
 
   MS := TMemoryStream.Create;
@@ -736,11 +738,11 @@ Var
   md_value_bin : array [0..128] of char;
   Ret : LongInt ;
 begin
-  Result := False;
+  //Result := False;
 
   LerChavePublica;
 
-  if UpperCase(copy(EAD,1,3)) = 'EAD' then
+  if UpperCase(String(copy(EAD,1,3))) = 'EAD' then
      EAD := copy(EAD,4,Length(EAD));
 
   if EAD = '' then

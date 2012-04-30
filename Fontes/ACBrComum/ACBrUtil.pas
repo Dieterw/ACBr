@@ -277,7 +277,7 @@ begin
  {$IFDEF USE_LConvEncoding}
    Result := CP1252ToUTF8( AString ) ;
  {$ELSE}
-   Result := AnsiToUtf8( AString ) ;
+   Result := String( AnsiToUtf8( String( AString ) ) ) ;
  {$ENDIF}
 {$ELSE}
   Result := AString
@@ -378,11 +378,11 @@ begin
   for A := 1 to Length( StrBCD ) do
   begin
      BCD_CHAR := ord( StrBCD[A] ) ;
-     BH := IntToStr( Trunc(BCD_CHAR / 16) ) ;
+     BH := AnsiString( IntToStr( Trunc(BCD_CHAR / 16) ) ) ;
      If ( BCD_CHAR mod 16 ) > 9 Then        // Corrigido por Rodrigo Fruhwirth
         BL := AnsiChar( chr( 48 + BCD_CHAR mod 16 ) )
      Else
-        BL := IntToStr( BCD_CHAR mod 16 ) ;
+        BL := AnsiString( IntToStr( BCD_CHAR mod 16 ) ) ;
 
      ASC_CHAR := BH + BL ;
      Result := Result + ASC_CHAR
@@ -407,7 +407,7 @@ begin
 
   StrBCD := PadR( ANumStr, TamanhoBCD*2, '0' );
   For I := 1 to TamanhoBCD do
-     Result := Result + AnsiChar( chr( StrToInt( copy(StrBCD, (I*2)-1, 2) ) ) ) ;
+     Result := Result + AnsiChar( chr( StrToInt( copy(String(StrBCD), (I*2)-1, 2) ) ) ) ;
 end ;
 
 
@@ -424,13 +424,13 @@ Var
   I, L: Integer ;
 begin
   Result := '' ;
-  Cmd    := Trim(HexStr) ;
+  Cmd    := AnsiString(Trim(String(HexStr)));
   I      := 1 ;
   L      := Length( HexStr ) ;
 
   while I < L do
   begin
-     B := StrToIntDef('$'+copy(Cmd,I,2),32) ;
+     B := StrToIntDef('$' + copy(String(Cmd), I, 2), 32) ;
      Result := Result + AnsiChar( chr(B) ) ;
      Inc( I, 2) ;
   end ;
@@ -514,13 +514,13 @@ var StuffStr : AnsiString ;
     D : Double ;
 begin
   Result := copy(AString,1,nLen) ;
-  if Separador = Caracter then  { Troca Separador, senao fica em loop infinito }
+  if Separador = String(Caracter) then  { Troca Separador, senao fica em loop infinito }
   begin
-     Result   := StringReplace( Result,Separador,#255,[rfReplaceAll]) ;
-     Separador:= #255 ;
+     Result    := AnsiString(StringReplace( String(Result), Separador, #255,[rfReplaceAll]));
+     Separador := #255 ;
   end ;
 
-  nSep   := CountStr( Result, Separador ) ;
+  nSep   := CountStr( Result, AnsiString(Separador) ) ;
 
   if nSep < 1 then
   begin
@@ -528,21 +528,27 @@ begin
      exit ;
   end ;
 
-  Result   := Trim( Result ) ;
+  Result   := AnsiString( Trim( String( Result ) ) ) ;
   D        := (nLen - (Length(Result)-nSep)) / nSep ;
   nCharSep := Trunc( D ) ;
   nResto   := nLen - ( (Length(Result)-nSep) + (nCharSep*nSep) ) ;
   nFeito   := nSep ;
   StuffStr := StringOfChar( Caracter, nCharSep ) ;
 
-  Ini := Pos( Separador, Result ) ;
+  Ini := Pos( Separador, String( Result ) ) ;
   while Ini > 0 do
   begin
-     Result := StuffString(Result, Ini, length(Separador),
-                 StuffStr + ifthen(nFeito <= nResto, Caracter, '' ) );
+    Result := AnsiString(
+      StuffString(
+        String(Result),
+        Ini,
+        length(Separador),
+        String(StuffStr) + ifthen(nFeito <= nResto, String(Caracter), '' )
+      )
+    );
 
-     nFeito := nFeito - 1 ;
-     Ini := Pos( Separador, Result ) ;
+    nFeito := nFeito - 1 ;
+    Ini    := Pos( String(Separador), String(Result) ) ;
   end ;
 end ;
 
@@ -580,7 +586,7 @@ begin
      while J > 0 do
      begin
         Delete( Result, J, Length( StrToFind ) ) ;
-        J := PosEx( StrToFind, Result, J) ;
+        J := PosEx( String(StrToFind), String(Result), J) ;
      end ;
   end ;
 end ;
@@ -596,16 +602,16 @@ begin
    HTMLSize := Length( AHTMLString ) ;
 
    PosFimTag := 0 ;
-   PosIniTag := Pos('<', AHTMLString) ;
+   PosIniTag := Pos('<', String(AHTMLString)) ;
    while PosIniTag > 0 do
    begin
       Result := Result + copy(AHTMLString, PosFimTag+1, (PosIniTag - PosFimTag-1 ) ) ;
 
-      PosFimTag := PosEx( '>', AHTMLString, PosIniTag ) ;
+      PosFimTag := PosEx( '>', String(AHTMLString), PosIniTag ) ;
       if PosFimTag = 0 then
          PosFimTag := PosIniTag-1
       else
-         PosIniTag := PosEx( '<', AHTMLString, PosFimTag )
+         PosIniTag := PosEx( '<', String(AHTMLString), PosFimTag )
    end ;
    Result := Result + copy(AHTMLString, PosFimTag+1, HTMLSize ) ;
 
@@ -615,7 +621,7 @@ end;
  ---------------------------------------------------------------------------- }
 function RemoveString(const sSubstr, sString: AnsiString): AnsiString;
 begin
-   Result := StringReplace( sString, sSubStr, '', [rfReplaceAll]) ;
+   Result := AnsiString(StringReplace( String(sString), String(sSubStr), '', [rfReplaceAll]));
 end;
 
 {-----------------------------------------------------------------------------
@@ -638,7 +644,7 @@ begin
       N := Random( 25 ) ;
       C := AnsiChar( 65 + N ) ;
 
-      Result := Result + C ;
+      Result := Result + String(C) ;
    end ;
 end ;
 
@@ -655,7 +661,7 @@ begin
   while ini > 0 do
   begin
      Result := Result + 1 ;
-     ini    := PosEx( SubStr, AString, ini + 1 ) ;
+     ini    := PosEx( String(SubStr), String(AString), ini + 1 ) ;
   end ;
 end ;
 
@@ -758,7 +764,7 @@ begin
   Count  := 1 ;
   while (Count < Ocorrencia) and (Result > 0) do
   begin
-     Result := PosEx( SubStr, S, Result+1) ;
+     Result := PosEx( String(SubStr), String(S), Result+1) ;
      Count  := Count + 1 ;
   end ;
 end ;
@@ -774,7 +780,7 @@ begin
   while P <> 0 do
   begin
      Result := P ;
-     P := PosEx( SubStr, S, P+1) ;
+     P := PosEx( String(SubStr), String(S), P+1) ;
   end ;
 end ;
 
@@ -783,7 +789,7 @@ end ;
  ---------------------------------------------------------------------------- }
 Function Poem_Zeros(const Texto : AnsiString; const Tamanho : Integer) : AnsiString;
 begin
-  Result := PadR(Trim(Texto),Tamanho,'0') ;
+  Result := PadR(AnsiString(Trim(String(Texto))),Tamanho,'0') ;
 end ;
 
 {-----------------------------------------------------------------------------
@@ -794,7 +800,7 @@ Function IntToStrZero(const NumInteiro : Int64; Tamanho : Integer) : AnsiString;
 begin
   Result := '' ;
   try
-     Result := IntToStr( NumInteiro ) ;
+     Result := AnsiString(IntToStr( NumInteiro )) ;
      Result := Poem_Zeros( Result, Tamanho) ;
   except
   end ;
@@ -1006,7 +1012,7 @@ begin
   For I := 1 to LenValue  do
   begin
      if CharIsNum( AValue[I] ) then
-        Result := Result + AValue[I] ;
+        Result := Result + String(AValue[I]);
   end;
 end ;
 
@@ -1023,7 +1029,7 @@ begin
   For I := 1 to LenValue do
   begin
      if CharIsAlpha( AValue[I] ) then
-        Result := Result + AValue[I] ;
+        Result := Result + String(AValue[I]);
   end;
 end ;
 {-----------------------------------------------------------------------------
@@ -1039,7 +1045,7 @@ begin
   For I := 1 to LenValue do
   begin
      if CharIsAlphaNum( AValue[I] ) then
-        Result := Result + AValue[I] ;
+        Result := Result + String(AValue[I]);
   end;
 end ;
 
@@ -1059,7 +1065,7 @@ var
     // X may be in correct range, but value still may not be correct value!
     // i.e. "$80"
     if Result then
-       Result := StrIsNumber( AValue ) ;
+       Result := StrIsNumber( AnsiString(AValue) ) ;
   end;
 
   function Fetch(var AValue: string; const Delimiter: string): string;
@@ -1143,10 +1149,10 @@ begin
   { Trocando todos os #13+#10 por #10 }
   CRLF := sLineBreak ;
   if (CRLF <> #13+#10) then
-     Texto := StringReplace(Texto, #13+#10, #10, [rfReplaceAll]) ;
+     Texto := AnsiString(StringReplace(String(Texto), #13+#10, #10, [rfReplaceAll])) ;
 
   if (CRLF <> #10) then
-     Texto := StringReplace(Texto, CRLF, #10, [rfReplaceAll]) ;
+     Texto := AnsiString(StringReplace(String(Texto), String(CRLF), #10, [rfReplaceAll])) ;
 
   { Ajustando a largura das Linhas para o máximo permitido em  "Colunas"
     e limitando em "NumMaxLinhas" o total de Linhas}
@@ -1155,7 +1161,7 @@ begin
   while ((Count < NumMaxLinhas) or (NumMaxLinhas = 0)) and
         (Length(Texto) > 0) do
   begin
-     P := pos(#10, Texto) ;
+     P := pos(#10, String( Texto ) ) ;
      if P > (Colunas + 1) then
         P := Colunas + 1 ;
 
@@ -1225,7 +1231,7 @@ end;
 function TraduzComando( AString : AnsiString ) : AnsiString ;
 Var A : Integer ;
 begin
-  A := pos(' | ',AString) ;
+  A := pos(' | ', String( AString ) ) ;
   if A > 0 then
      AString := copy(AString,1,A-1) ;   { removendo texto apos ' | ' }
 
@@ -1241,7 +1247,7 @@ Var A : Integer ;
 begin
   Result := '' ;
   For A := 1 to Length( AString ) do
-     Result := Result + '#'+IntToStr( Ord( AString[A] ) )+',' ;
+     Result := Result + AnsiString('#'+IntToStr( Ord( AString[A] ) )+',') ;
 
   Result := copy(Result,1, Length( Result )-1 ) ;
 end;
@@ -1256,7 +1262,7 @@ Var A : Integer ;
     Token : AnsiString ;
     C : AnsiChar ;
 begin
-  AString := Trim( AString ) ;
+  AString := AnsiString( Trim( String( AString ) ) );
   Result  := '' ;
   A       := 1  ;
   Token   := '' ;
@@ -1272,7 +1278,7 @@ begin
       begin
         if Token[1] = '#' then
         try
-           Token := AnsiChar( chr( StrToInt( copy(Token,2,length(Token)) ) ) );
+           Token := AnsiChar( chr( StrToInt( copy(String(Token),2,length(String(Token))) ) ) );
         except
         end ;
 
@@ -1302,7 +1308,7 @@ begin
   begin
      ASC := Ord(AString[I]) ;
      if (ASC < 32) or (ASC > 127) then
-        Result := Result + '\x'+Trim(IntToHex(ASC,2))
+        Result := Result + AnsiString('\x'+Trim(IntToHex(ASC,2)))
      else
         Result := Result + AString[I] ;
   end ;
@@ -1321,10 +1327,10 @@ var
 begin
   Result := AString ;
 
-  P := pos('\x',Result) ;
+  P := pos('\x',String(Result)) ;
   while P > 0 do
   begin
-     Hex := copy(Result,P+2,2) ;
+     Hex := copy(String(Result),P+2,2) ;
 
      try
         CharHex := AnsiChar( Chr(StrToInt('$'+Hex)) ) ;
@@ -1332,8 +1338,8 @@ begin
         CharHex := ' ' ;
      end ;
 
-     Result := StringReplace(Result,'\x'+Hex,CharHex,[rfReplaceAll]) ;
-     P      := pos('\x',Result) ;
+     Result := AnsiString( StringReplace(String(Result),'\x'+Hex,String(CharHex),[rfReplaceAll]) );
+     P      := pos('\x',String(Result)) ;
   end ;
 end ;
 
@@ -1665,7 +1671,7 @@ begin
   Result := Trim(APath) ;
 
   Delimiters := PathDelim+'/\' ;
-  while (Result <> '') and (pos(RightStr(Result,1), Delimiters ) > 0) do   { Tem delimitador no final ? }
+  while (Result <> '') and (pos(String(RightStr(Result,1)), String(Delimiters) ) > 0) do   { Tem delimitador no final ? }
      Result := copy(Result,1,Length(Result)-1)
 end;
 
@@ -1931,7 +1937,7 @@ var
   FS : TFileStream ;
   LineBreak : AnsiString ;
 begin
-  FS := TFileStream.Create( ArqTXT, IfThen( AppendIfExists and FileExists(ArqTXT),
+  FS := TFileStream.Create( String( ArqTXT ), IfThen( AppendIfExists and FileExists(String(ArqTXT)),
      fmOpenReadWrite, fmCreate) or fmShareDenyWrite );
   try
      FS.Seek(0, soFromEnd);  // vai para EOF
@@ -1995,7 +2001,7 @@ begin
     Result := dynlibs.FreeLibrary(LibHandle) ;
 {$ELSE}
 {$IFDEF DELPHI12_UP}
- LibHandle := GetModuleHandle( PWideChar( LibName ) );
+ LibHandle := GetModuleHandle( PWideChar( String( LibName ) ) );
  {$ELSE}
  LibHandle := GetModuleHandle( PChar( LibName ) );
  {$ENDIF}
@@ -2011,15 +2017,15 @@ function TBStrZero(const i: string; const Casas: byte): string;
 var
   Ch: AnsiChar;
 begin
-Result := I;
-if length(i)>Casas then begin
-   Exit;
-   end
- else begin          
-  Ch := '0';
-end;
-while Length(Result)<Casas do
-      Result:=Ch+Result;
+  Result := I;
+
+  if length(i)>Casas then
+    Exit
+  else
+    Ch := '0';
+
+  while Length(Result) < Casas do
+    Result := String(Ch) + Result;
 end;
 
 function TiraPontos(Str: string): string;
@@ -2059,8 +2065,8 @@ function EAN13_DV(CodEAN13: String): String;
 Var A,DV : Integer ;
 begin
    Result   := '' ;
-   CodEAN13 := PadR(Trim(CodEAN13),12,'0') ;
-   if not StrIsNumber( CodEAN13 ) then
+   CodEAN13 := String( PadR(AnsiString(Trim(String(CodEAN13))),12,'0') ) ;
+   if not StrIsNumber( AnsiString( CodEAN13 ) ) then
       exit ;
 
    DV := 0;
@@ -2187,75 +2193,75 @@ var
 begin
   if MantemChave then
    begin
-     PosIni := Pos(Chave,Texto)-1;
-     PosFim := Pos('/'+Chave,Texto)+length(Chave)+3;
+     PosIni := Pos(String(Chave),String(Texto))-1;
+     PosFim := Pos('/'+String(Chave),String(Texto))+length(String(Chave))+3;
 
      if (PosIni = 0) or (PosFim = 0) then
       begin
-        PosIni := Pos('ns2:'+Chave,Texto)-1;
-        PosFim := Pos('/ns2:'+Chave,Texto)+length(Chave)+3;
+        PosIni := Pos('ns2:'+String(Chave),String(Texto))-1;
+        PosFim := Pos('/ns2:'+String(Chave),String(Texto))+length(String(Chave))+3;
       end;
    end
   else
    begin
-     PosIni := Pos(Chave,Texto)+Pos('>',copy(Texto,Pos(Chave,Texto),length(Texto)));
-     PosFim := Pos('/'+Chave,Texto);
+     PosIni := Pos(String(Chave),String(Texto))+Pos('>',copy(String(Texto),Pos(String(Chave),String(Texto)),length(String(Texto))));
+     PosFim := Pos('/'+String(Chave),String(Texto));
 
      if (PosIni = 0) or (PosFim = 0) then
       begin
-        PosIni := Pos('ns2:'+Chave,Texto)+Pos('>',copy(Texto,Pos('ns2:'+Chave,Texto),length(Texto)));
-        PosFim := Pos('/ns2:'+Chave,Texto);
+        PosIni := Pos('ns2:'+String(Chave),String(Texto))+Pos('>',copy(String(Texto),Pos('ns2:'+String(Chave),String(Texto)),length(String(Texto))));
+        PosFim := Pos('/ns2:'+String(Chave),String(Texto));
       end;
    end;
-  Result := copy(Texto,PosIni,PosFim-(PosIni+1));
+  Result := AnsiString(copy(String(Texto),PosIni,PosFim-(PosIni+1)));
 end;
 
 function ParseText( Texto : AnsiString; Decode : Boolean = True) : AnsiString;
 begin
   if Decode then
    begin
-    Texto := StringReplace(Texto, '&amp;', '&', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&lt;', '<', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&gt;', '>', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&quot;', '"', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&#39;', #39, [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&aacute;', 'á', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&Aacute;', 'Á', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&acirc;' , 'â', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&Acirc;' , 'Â', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&atilde;', 'ã', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&Atilde;', 'Ã', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&agrave;', 'à', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&Agrave;', 'À', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&eacute;', 'é', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&Eacute;', 'É', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&ecirc;' , 'ê', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&Ecirc;' , 'Ê', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&iacute;', 'í', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&Iacute;', 'Í', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&oacute;', 'ó', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&Oacute;', 'Ó', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&otilde;', 'õ', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&Otilde;', 'Õ', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&ocirc;' , 'ô', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&Ocirc;' , 'Ô', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&uacute;', 'ú', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&Uacute;', 'Ú', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&uuml;'  , 'ü', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&Uuml;'  , 'Ü', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&ccedil;', 'ç', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&Ccedil;', 'Ç', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '&apos;', '''', [rfReplaceAll]);
-    Texto := UTF8Decode(Texto);
+    Texto := AnsiString(StringReplace(String(Texto), '&amp;', '&', [rfReplaceAll]));
+    Texto := AnsiString(StringReplace(String(Texto), '&lt;', '<', [rfReplaceAll]));
+    Texto := AnsiString(StringReplace(String(Texto), '&gt;', '>', [rfReplaceAll]));
+    Texto := AnsiString(StringReplace(String(Texto), '&quot;', '"', [rfReplaceAll]));
+    Texto := AnsiString(StringReplace(String(Texto), '&#39;', #39, [rfReplaceAll]));
+    Texto := AnsiString(StringReplace(String(Texto), '&aacute;', 'á', [rfReplaceAll]));
+    Texto := AnsiString(StringReplace(String(Texto), '&Aacute;', 'Á', [rfReplaceAll]));
+    Texto := AnsiString(StringReplace(String(Texto), '&acirc;' , 'â', [rfReplaceAll]));
+    Texto := AnsiString(StringReplace(String(Texto), '&Acirc;' , 'Â', [rfReplaceAll]));
+    Texto := AnsiString(StringReplace(String(Texto), '&atilde;', 'ã', [rfReplaceAll]));
+    Texto := AnsiString(StringReplace(String(Texto), '&Atilde;', 'Ã', [rfReplaceAll]));
+    Texto := AnsiString(StringReplace(String(Texto), '&agrave;', 'à', [rfReplaceAll]));
+    Texto := AnsiString(StringReplace(String(Texto), '&Agrave;', 'À', [rfReplaceAll]));
+    Texto := AnsiString(StringReplace(String(Texto), '&eacute;', 'é', [rfReplaceAll]));
+    Texto := AnsiString(StringReplace(String(Texto), '&Eacute;', 'É', [rfReplaceAll]));
+    Texto := AnsiString(StringReplace(String(Texto), '&ecirc;' , 'ê', [rfReplaceAll]));
+    Texto := AnsiString(StringReplace(String(Texto), '&Ecirc;' , 'Ê', [rfReplaceAll]));
+    Texto := AnsiString(StringReplace(String(Texto), '&iacute;', 'í', [rfReplaceAll]));
+    Texto := AnsiString(StringReplace(String(Texto), '&Iacute;', 'Í', [rfReplaceAll]));
+    Texto := AnsiString(StringReplace(String(Texto), '&oacute;', 'ó', [rfReplaceAll]));
+    Texto := AnsiString(StringReplace(String(Texto), '&Oacute;', 'Ó', [rfReplaceAll]));
+    Texto := AnsiString(StringReplace(String(Texto), '&otilde;', 'õ', [rfReplaceAll]));
+    Texto := AnsiString(StringReplace(String(Texto), '&Otilde;', 'Õ', [rfReplaceAll]));
+    Texto := AnsiString(StringReplace(String(Texto), '&ocirc;' , 'ô', [rfReplaceAll]));
+    Texto := AnsiString(StringReplace(String(Texto), '&Ocirc;' , 'Ô', [rfReplaceAll]));
+    Texto := AnsiString(StringReplace(String(Texto), '&uacute;', 'ú', [rfReplaceAll]));
+    Texto := AnsiString(StringReplace(String(Texto), '&Uacute;', 'Ú', [rfReplaceAll]));
+    Texto := AnsiString(StringReplace(String(Texto), '&uuml;'  , 'ü', [rfReplaceAll]));
+    Texto := AnsiString(StringReplace(String(Texto), '&Uuml;'  , 'Ü', [rfReplaceAll]));
+    Texto := AnsiString(StringReplace(String(Texto), '&ccedil;', 'ç', [rfReplaceAll]));
+    Texto := AnsiString(StringReplace(String(Texto), '&Ccedil;', 'Ç', [rfReplaceAll]));
+    Texto := AnsiString(StringReplace(String(Texto), '&apos;', '''', [rfReplaceAll]));
+    Texto := AnsiString(UTF8ToString(Texto));
    end
   else
    begin
-    Texto := StringReplace(Texto, '&', '&amp;', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '<', '&lt;', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '>', '&gt;', [rfReplaceAll]);
-    Texto := StringReplace(Texto, '"', '&quot;', [rfReplaceAll]);
-    Texto := StringReplace(Texto, #39, '&#39;', [rfReplaceAll]);
-    Texto := UTF8Encode(Texto);
+    Texto := AnsiString(StringReplace(String(Texto), '&', '&amp;', [rfReplaceAll]));
+    Texto := AnsiString(StringReplace(String(Texto), '<', '&lt;', [rfReplaceAll]));
+    Texto := AnsiString(StringReplace(String(Texto), '>', '&gt;', [rfReplaceAll]));
+    Texto := AnsiString(StringReplace(String(Texto), '"', '&quot;', [rfReplaceAll]));
+    Texto := AnsiString(StringReplace(String(Texto), #39, '&#39;', [rfReplaceAll]));
+    Texto := AnsiString(UTF8ToString(Texto));
    end;
 
   Result := Texto;

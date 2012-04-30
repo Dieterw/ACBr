@@ -646,7 +646,7 @@ with fSignature^ do
     begin
     fIOStream.Read(rSignature, 6);
     s := rSignature;
-    s := UpperCase(s);
+    s := AnsiString(UpperCase(String(s)));
     if ((s <> 'GIF87A') and (s <> 'GIF89A')) then GIF_Error(1);
     end;
 end;
@@ -975,7 +975,7 @@ with eb^ do
 
     else
         begin
-        GIF_ErrorMessage('unknown extension: ' + IntToHex(rLabel, 4));
+        GIF_ErrorMessage(AnsiString('unknown extension: ' + IntToHex(rLabel, 4)));
         end;
     end; // with eb^
 end;

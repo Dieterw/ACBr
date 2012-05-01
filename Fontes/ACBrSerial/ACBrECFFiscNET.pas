@@ -3274,7 +3274,7 @@ begin
    try
       Result := Result + sLineBreak + '[OutrasICMS]' + sLineBreak ;
 
-      nVal := RoundTo( StrToFloatDef( copy( RetCmd, 365, 14 ),0 ) / 100, -2 ) ;
+      nVal := RoundTo( StrToFloatDef( copy( RetCmd, 337, 14 ),0 ) / 100, -2 ) ;
       Result := Result + 'TotalSubstituicaoTributaria = ' + FloatToStr( nVal ) + sLineBreak ;
       VBruta := VBruta + nVal ;
 
@@ -3282,7 +3282,7 @@ begin
       Result := Result + 'TotalNaoTributado = ' + FloatToStr( nVal ) + sLineBreak ;
       VBruta := VBruta + nVal ;
 
-      nVal := RoundTo( StrToFloatDef( copy( RetCmd, 337, 14 ), 0 ) / 100, -2 ) ;
+      nVal := RoundTo( StrToFloatDef( copy( RetCmd, 365, 14 ), 0 ) / 100, -2 ) ;
       Result := Result + 'TotalIsencao = ' + FloatToStr( nVal ) + sLineBreak ;
       VBruta := VBruta + nVal ;
    except

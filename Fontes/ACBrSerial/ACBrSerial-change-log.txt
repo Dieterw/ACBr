@@ -98,6 +98,11 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 Data: 09/04/2012
+-- ACBrECFFiscNET --
+[-] Correção na leitura dos dados da última redução Z
+    http://djsystem.com.br/acbr/forum/viewtopic.php?f=10&t=5570
+
+Data: 09/04/2012
 -- ACBrECFDaruma --
 [-] Correção na detecção de Aliquota. Estava assumindo 'F2,N2,I2' quando
     informava apenas 'F,N,I'

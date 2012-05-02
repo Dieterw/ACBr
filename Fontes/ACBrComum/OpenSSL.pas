@@ -878,6 +878,8 @@ var
   
   // Big number function
   function BN_print(fp: pBIO; const a: PBIGNUM): cint;
+  function BN_new(): PBIGNUM;
+  function BN_hex2bn(var n: PBIGNUM; const str: PChar): cint;
 
 
 function IsSSLloaded: Boolean;
@@ -1113,6 +1115,9 @@ type
 
   // Big number function
   TBN_print = function(fp: pBIO; const a: PBIGNUM): cint; cdecl;
+  TBN_new =  function(): PBIGNUM; cdecl;
+  TBN_hex2bn = function(var n: PBIGNUM; const str: PChar): cint; cdecl;
+
 
 var
 // libssl.dll
@@ -1316,6 +1321,10 @@ var
 
   // Big number function
   _BN_print: TBN_print = nil;
+  _BN_new: TBN_new = nil;
+  _BN_hex2bn: TBN_hex2bn = nil ;
+
+
 
 
 var
@@ -2619,6 +2628,22 @@ begin
     Result := -1;
 end;
 
+function BN_new() : PBIGNUM ;
+begin
+  if InitlibeaInterface and Assigned(_BN_new) then
+    Result := _BN_new()
+  else
+    Result := nil;
+end;
+
+
+function BN_hex2bn(var n: PBIGNUM; const str: PChar):  cint ;
+begin
+  if InitlibeaInterface and Assigned(_BN_hex2bn) then
+    Result := _BN_hex2bn(n, str)
+  else
+    Result := -1;
+end;
 
 {$IFNDEF WINDOWS}
 { Try to load all library versions until you find or run out }
@@ -2920,6 +2945,8 @@ begin
 
        // Big number function
        _BN_print := GetProcAddr(SSLUtilHandle, 'BN_print', AVerboseLoading);
+       _BN_new := GetProcAddr(SSLUtilHandle, 'BN_new', AVerboseLoading);
+       _BN_hex2bn := GetProcAddr(SSLUtilHandle, 'BN_hex2bn', AVerboseLoading);
 
        // Crypto Functions
 

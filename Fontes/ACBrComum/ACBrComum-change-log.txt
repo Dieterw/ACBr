@@ -38,6 +38,18 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+01/05/2012
+-- ACBrEAD --
+[+] Adicionada Function CalcularChavePublica_eECFc( ArquivoXML: String) : AnsiString;
+    que permite converter um arquivo no formado XML do padrão eECFc para uma
+    chave Pública no formado OpenSSL  (por: DSA)
+[*] Evento OnGetChavePublica modificado para aceitar Chaves no formato do
+    arquivo XML usado pelo programa eECFc. Basta ler o Conteudo deste arquivo
+    e informar o mesmo para a variável "Chave" passada por referência no evento.
+    O ACBrEAD usará as Tags <modulo> e <expoente_publico> para computar a chave
+    Publica e proceder com a verificação das assinaturas EAD  (por: DSA)
+
+
 30/04/2012
 -- ACBrEAD, ACBrUtil --
 [*] Remoção das warnings por conversão de string.

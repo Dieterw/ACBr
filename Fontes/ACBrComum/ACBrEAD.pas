@@ -50,7 +50,7 @@ interface
 {$ENDIF}
 
 uses
-   Classes, SysUtils,
+   Classes, SysUtils, strutils,
    ACBrUtil, {$IFDEF USE_libeay32}libeay32{$ELSE} OpenSSL{$ENDIF};
 
 const
@@ -98,13 +98,16 @@ type
 
     procedure LerChavePrivada ;
     procedure LerChavePublica ;
-    procedure LerChave(Chave : AnsiString; Privada: Boolean) ;
+    Procedure LerChavePublica_eECFc( ConteudoXML: AnsiString) ;
+    Procedure LerChavePublicaModuloExpoente( Modulo, Expoente: AnsiString ) ;
+    procedure LerChave(const Chave : AnsiString; Privada: Boolean) ;
     procedure LiberarChave ;
 
     function CriarMemBIO: pBIO ;
     procedure LiberarBIO( Bio : pBIO);
 
     function BioToStr( ABio : pBIO) : String ;
+    function TagValue(AXML, ATag : AnsiString) : AnsiString ;
 
     function GetAbout: String;
 
@@ -129,6 +132,7 @@ type
     Function GerarXMLeECFc( const NomeSwHouse, Diretorio : String ) : Boolean ;
     Procedure CalcularModuloeExpoente( var Modulo, Expoente : AnsiString );
     Function CalcularChavePublica : AnsiString ;
+    Function CalcularChavePublica_eECFc( ArquivoXML: String) : AnsiString;
 
     function CalcularHashArquivo( const NomeArquivo: String;
        const Digest: TACBrEADDgst ): AnsiString ; overload ;
@@ -221,6 +225,22 @@ begin
    EVPcleanup();
   {$ENDIF}
 end;
+
+function TACBrEAD.TagValue( AXML, ATag: AnsiString) : AnsiString;
+Var
+  PI, PF : Integer ;
+begin
+  Result := '';
+  ATag   := UpperCase(ATag);
+  PI := pos('<'+ATag+'>', UpperCase(AXML) ) ;
+  if PI = 0 then exit ;
+  PI := PI + Length(ATag) + 2;
+  PF := PosEx('<'+ATag+'/>', UpperCase(AXML) , PI) ;
+  if PF = 0 then
+     PF := Length(AXML);
+
+  Result := copy(AXML, PI, PF-PI)
+end ;
 
 function TACBrEAD.BioToStr(ABio : pBIO) : String ;
 Var
@@ -340,34 +360,117 @@ begin
   if Chave = '' then
     raise Exception.Create( ACBrStr('Chave RSA Publica não especificada no evento: "OnGetChavePublica"') ) ;
 
-  LerChave(Chave, False) ;
+  if pos('<modulo>', Chave) > 0 then
+     LerChavePublica_eECFc( Chave )
+  else
+     LerChave(Chave, False) ;
 end ;
 
-procedure TACBrEAD.LerChave(Chave : AnsiString; Privada: Boolean) ;
+function TACBrEAD.CalcularChavePublica_eECFc(ArquivoXML : String) : AnsiString ;
+Var
+  SL : TStringList ;
+  Bio : PBIO ;
+begin
+  Result := '';
+
+  if not FileExists( ArquivoXML ) then
+     raise Exception.Create( ACBrStr(AnsiString('Arquivo: ' + ArquivoXML + ' não encontrado!')) );
+
+  SL := TStringList.Create;
+  try
+     SL.LoadFromFile( ArquivoXML );
+     LerChavePublica_eECFc( SL.Text )
+  finally
+     SL.Free ;
+  end ;
+
+  Bio := CriarMemBIO;
+  try
+     if PEM_write_bio_PUBKEY(Bio, fsKey) = 1 then
+        Result := AnsiString( BioToStr( Bio ) );
+  finally
+    LiberarBIO( Bio ) ;
+  end ;
+end ;
+
+procedure TACBrEAD.LerChavePublica_eECFc(ConteudoXML : AnsiString) ;
+Var
+  Modulo, Expoente : AnsiString ;
+begin
+  Modulo   := TagValue( ConteudoXML, 'modulo');
+  Expoente := TagValue( ConteudoXML, 'expoente_publico');
+
+  LerChavePublicaModuloExpoente( Modulo, Expoente );
+end ;
+
+procedure TACBrEAD.LerChavePublicaModuloExpoente(Modulo, Expoente : AnsiString
+  ) ;
+var
+  bnMod, bnExp : PBIGNUM;
+  PubRSA : pRSA ;
+begin
+  Modulo := Trim(Modulo);
+  if Modulo = '' then
+     raise Exception.Create( ACBrStr('Erro: Modulo não informada') ) ;
+  Expoente := Trim(Expoente);
+  if Expoente = '' then
+     raise Exception.Create( ACBrStr('Erro: Expoente não informado') ) ;
+
+  InitOpenSSL ;
+
+  LiberarChave ;
+
+  {$IFDEF USE_libeay32}
+   fsKey := EVP_PKEY_new;
+  {$ELSE}
+   fsKey := EvpPkeyNew;
+  {$ENDIF}
+  bnExp := BN_new();
+  BN_hex2bn( bnExp,  PAnsiChar(Expoente) );
+  bnMod := BN_new();
+  BN_hex2bn( bnMod, PAnsiChar(Modulo) );
+
+  PubRSA := RSA_new ;
+  PubRSA.e := bnMod;
+  PubRSA.d := bnExp;
+
+  {$IFDEF USE_libeay32}
+   EVP_PKEY_set1_RSA( fsKey, PubRSA );
+  {$ELSE}
+   EvpPkeyAssign( fsKey, EVP_PKEY_RSA, PubRSA );
+  {$ENDIF}
+
+  if fsKey = nil then
+     raise Exception.Create('Erro ao ler a Chave');
+end ;
+
+procedure TACBrEAD.LerChave(const Chave : AnsiString; Privada: Boolean) ;
 var
    A : pEVP_PKEY ;
    BioKey : pBIO ;
+   Buffer : AnsiString;
 begin
-   InitOpenSSL ;
+  InitOpenSSL ;
 
- if (sLineBreak <> #10) then
-     Chave := AnsiString(StringReplace(String(Chave), sLineBreak, #10, [rfReplaceAll] ));
+  Buffer := Trim(Chave);
+  if (sLineBreak <> #10) then
+     Buffer := StringReplace(Buffer, sLineBreak, #10, [rfReplaceAll] ) ;
 
-   LiberarChave ;
+  LiberarChave ;
 
-   BioKey := BIO_new_mem_buf( PAnsiChar(Chave), Length(Chave) + 1 ) ;
-   try
-      A := nil ;
-      if Privada then
-         fsKey := PEM_read_bio_PrivateKey( BioKey, {$IFDEF USE_libeay32}A{$ELSE}nil{$ENDIF}, nil, nil)
-      else
-         fsKey := PEM_read_bio_PUBKEY( BioKey, A, nil, nil) ;
-   finally
-      LiberarBIO( BioKey );
-   end ;
+  BioKey := BIO_new_mem_buf( PAnsiChar(Buffer), Length(Buffer) + 1 ) ;
+  try
+     A := nil ;
+     if Privada then
+        fsKey := PEM_read_bio_PrivateKey( BioKey, {$IFDEF USE_libeay32}A{$ELSE}nil{$ENDIF}, nil, nil)
+     else
+        fsKey := PEM_read_bio_PUBKEY( BioKey, A, nil, nil) ;
+  finally
+     LiberarBIO( BioKey );
+  end ;
 
-   if fsKey = nil then
-      raise Exception.Create('Erro ao ler a Chave');
+  if fsKey = nil then
+     raise Exception.Create('Erro ao ler a Chave');
 end ;
 
 procedure TACBrEAD.LiberarChave ;

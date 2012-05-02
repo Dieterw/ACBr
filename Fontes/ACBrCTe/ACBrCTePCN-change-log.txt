@@ -48,6 +48,14 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   02/05/2012 (Italo Jurisato Junior)
+---------------
+[*] Foi criado a pasta ...\Fontes\ACBrCTe\DACTE_QR3 e dentro dela encontra-se
+    os fontes ACBrCTeDACTeQR e ACBrCTeDACTeQRRetrato.
+    Trata-se de uma versão para quem utiliza o Quick Report versão 3.0
+    Já os mesmos fontes que encontram-se dentro da pasta ...\Fontes\ACBrCTe são
+    destinados a quem utiliza a versão 5.02 do Quick Report.
+
 Alterações   26/04/2012 (Italo Jurisato Junior)
 ---------------
 [*] Alteração na geração do XML, quanto as tags: dhCont e xJust, ficando condicioda

@@ -230,17 +230,20 @@ begin
     begin
       if Leitor.rExtrai(3, 'semData') <> '' then
       begin
+        CTe.Compl.Entrega.TipoData      := tdSemData; // 02/05/2012 13:51:33 - Roberto Godinho
         CTe.Compl.Entrega.semData.tpPer := StrToTpDataPeriodo(ok, Leitor.rCampo(tcStr, 'tpPer'));
       end;
 
       if Leitor.rExtrai(3, 'comData') <> '' then
       begin
+        CTe.Compl.Entrega.TipoData      := tdNaData; // 02/05/2012 13:51:33 - Roberto Godinho
         CTe.Compl.Entrega.comData.tpPer := StrToTpDataPeriodo(ok, Leitor.rCampo(tcStr, 'tpPer'));
         CTe.Compl.Entrega.comData.dProg := Leitor.rCampo(tcDat, 'dProg');
       end;
 
       if Leitor.rExtrai(3, 'noPeriodo') <> '' then
       begin
+        CTe.Compl.Entrega.TipoData        := tdNoPeriodo; // 02/05/2012 13:51:33 - Roberto Godinho
         CTe.Compl.Entrega.noPeriodo.tpPer := StrToTpDataPeriodo(ok, Leitor.rCampo(tcStr, 'tpPer'));
         CTe.Compl.Entrega.noPeriodo.dIni  := Leitor.rCampo(tcDat, 'dIni');
         CTe.Compl.Entrega.noPeriodo.dFim  := Leitor.rCampo(tcDat, 'dFim');
@@ -248,17 +251,20 @@ begin
 
       if Leitor.rExtrai(3, 'semHora') <> '' then
       begin
+        CTe.Compl.Entrega.TipoHora      := thSemHorario; // 02/05/2012 13:51:33 - Roberto Godinho
         CTe.Compl.Entrega.semHora.tpHor := StrToTpHorarioIntervalo(ok, Leitor.rCampo(tcStr, 'tpHor'));
       end;
 
       if Leitor.rExtrai(3, 'comHora') <> '' then
       begin
+        CTe.Compl.Entrega.TipoHora      := thNoHorario; // 02/05/2012 13:51:33 - Roberto Godinho
         CTe.Compl.Entrega.comHora.tpHor := StrToTpHorarioIntervalo(ok, Leitor.rCampo(tcStr, 'tpHor'));
         CTe.Compl.Entrega.comHora.hProg := StrToTime(Leitor.rCampo(tcStr, 'hProg'));
       end;
 
       if Leitor.rExtrai(3, 'noInter') <> '' then
       begin
+        CTe.Compl.Entrega.TipoHora      := thNoIntervalo; // 02/05/2012 13:51:33 - Roberto Godinho
         CTe.Compl.Entrega.noInter.tpHor := StrToTpHorarioIntervalo(ok, Leitor.rCampo(tcStr, 'tpHor'));
         CTe.Compl.Entrega.noInter.hIni  := StrToTime(Leitor.rCampo(tcStr, 'hIni'));
         CTe.Compl.Entrega.noInter.hFim  := StrToTime(Leitor.rCampo(tcStr, 'hFim'));

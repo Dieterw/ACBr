@@ -248,7 +248,7 @@ type
 
 implementation
 
-Uses ACBrUtil ;
+Uses ACBrUtil, StrUtils ;
 
 { TBloco_D }
 
@@ -617,6 +617,8 @@ var
   strIND_FRT: AnsiString;
   strCOD_SIT: AnsiString;
   booConsiderarComoValorNulo: Boolean;
+  booConsiderarComoValorNuloParaInutilizado: Boolean;
+  ChaveEletronicaCTe: string;
   strLinha: AnsiString;
 begin
   if Assigned( RegD001.RegistroD100 ) then
@@ -650,11 +652,14 @@ begin
             sdFiscalCompl:           strCOD_SIT := '06';
             sdExtempCompl:           strCOD_SIT := '07';
             sdRegimeEspecNEsp:       strCOD_SIT := '08';
-          end;             
+          end;
           booConsiderarComoValorNulo := (strCOD_SIT = '02') or {Cancelado}
                                         (strCOD_SIT = '03') or {Cancelado extemporâneo}
                                         (strCOD_SIT = '04') or {Denegado}
                                         (strCOD_SIT = '05');   {Inutilizado}
+
+          booConsiderarComoValorNuloParaInutilizado := (strCOD_SIT = '05');
+          ChaveEletronicaCTe := IfThen(booConsiderarComoValorNuloParaInutilizado, '', CHV_CTE);
 
           strLinha := LFill('D100') +
                       LFill( Integer(IND_OPER), 0 ) +
@@ -665,7 +670,7 @@ begin
                       LFill( SER ) +
                       LFill( SUB ) +
                       LFill( NUM_DOC ) +
-                      LFill( CHV_CTE ) +
+                      LFill( ChaveEletronicaCTe ) +
                       LFill( DT_DOC ) +
                       LFill( DT_A_P ) +
                       LFill( TP_CT_e ) +

@@ -19,8 +19,37 @@
     <VersionInfo>
       <StringTable ProductVersion=""/>
     </VersionInfo>
-    <BuildModes Count="1" Active="Default">
-      <Item1 Name="Default" Default="True"/>
+    <BuildModes Count="2" Active="Release">
+      <Item1 Name="Debug" Default="True"/>
+      <Item2 Name="Release">
+        <CompilerOptions>
+          <Version Value="11"/>
+          <PathDelim Value="\"/>
+          <Target>
+            <Filename Value="EADTeste"/>
+          </Target>
+          <SearchPaths>
+            <IncludeFiles Value="$(ProjOutDir)"/>
+            <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
+          </SearchPaths>
+          <Linking>
+            <Debugging>
+              <GenerateDebugInfo Value="False"/>
+            </Debugging>
+            <Options>
+              <Win32>
+                <GraphicApplication Value="True"/>
+              </Win32>
+            </Options>
+          </Linking>
+          <Other>
+            <CompilerMessages>
+              <UseMsgFile Value="True"/>
+            </CompilerMessages>
+            <CompilerPath Value="$(CompPath)"/>
+          </Other>
+        </CompilerOptions>
+      </Item2>
     </BuildModes>
     <PublishOptions>
       <Version Value="2"/>
@@ -87,7 +116,7 @@
         <UsageCount Value="28"/>
       </Unit3>
       <Unit4>
-        <Filename Value="..\..\..\..\..\Lazarus\TESTE\libeay32\libeay32.pas"/>
+        <Filename Value="D:\Lazarus\TESTE\libeay32\libeay32.pas"/>
         <UnitName Value="libeay32"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1002"/>
@@ -95,7 +124,7 @@
         <UsageCount Value="3"/>
       </Unit4>
       <Unit5>
-        <Filename Value="..\..\..\..\..\Lazarus\TESTE\libeay32\openssl.pas"/>
+        <Filename Value="D:\Lazarus\TESTE\libeay32\openssl.pas"/>
         <UnitName Value="OpenSSL"/>
         <WindowIndex Value="0"/>
         <TopLine Value="2998"/>
@@ -103,7 +132,7 @@
         <UsageCount Value="13"/>
       </Unit5>
       <Unit6>
-        <Filename Value="..\..\..\..\..\Lazarus\TESTE\libeay32\unit1.pas"/>
+        <Filename Value="D:\Lazarus\TESTE\libeay32\unit1.pas"/>
         <ComponentName Value="Form1"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
@@ -122,7 +151,7 @@
         <UsageCount Value="38"/>
       </Unit7>
       <Unit8>
-        <Filename Value="..\..\..\..\..\Lazarus\TESTE\libeay32\TesteEAD\OpenSSLUtils.pas"/>
+        <Filename Value="D:\Lazarus\TESTE\libeay32\TesteEAD\OpenSSLUtils.pas"/>
         <UnitName Value="OpenSSLUtils"/>
         <WindowIndex Value="0"/>
         <TopLine Value="241"/>
@@ -130,7 +159,7 @@
         <UsageCount Value="3"/>
       </Unit8>
       <Unit9>
-        <Filename Value="..\..\..\..\..\Lazarus\TESTE\libeay32\TesteEAD\libeay32.pas"/>
+        <Filename Value="D:\Lazarus\TESTE\libeay32\TesteEAD\libeay32.pas"/>
         <UnitName Value="libeay32"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1811"/>
@@ -257,7 +286,7 @@
         <UsageCount Value="7"/>
       </Unit25>
       <Unit26>
-        <Filename Value="..\..\..\..\..\Lazarus\TOOLS\DJ_Registro.pas"/>
+        <Filename Value="D:\Lazarus\TOOLS\DJ_Registro.pas"/>
         <UnitName Value="DJ_Registro"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1485"/>
@@ -378,7 +407,7 @@
       <Unit39>
         <Filename Value="..\..\..\Fontes\ACBrComum\libeay32.pas"/>
         <UnitName Value="libeay32"/>
-        <EditorIndex Value="6"/>
+        <EditorIndex Value="4"/>
         <WindowIndex Value="0"/>
         <TopLine Value="125"/>
         <CursorPos X="3" Y="136"/>
@@ -388,7 +417,7 @@
       <Unit40>
         <Filename Value="..\..\..\Fontes\ACBrComum\OpenSSL.pas"/>
         <UnitName Value="OpenSSL"/>
-        <EditorIndex Value="7"/>
+        <EditorIndex Value="5"/>
         <WindowIndex Value="0"/>
         <TopLine Value="330"/>
         <CursorPos X="3" Y="341"/>
@@ -426,18 +455,16 @@
       </Unit43>
       <Unit44>
         <Filename Value="C:\eECFc\SHouse\DJSYSTEM.xml"/>
-        <EditorIndex Value="3"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="12" Y="5"/>
         <UsageCount Value="14"/>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="XML"/>
       </Unit44>
       <Unit45>
         <Filename Value="..\..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
         <UnitName Value="ACBrUtil"/>
-        <EditorIndex Value="4"/>
+        <EditorIndex Value="3"/>
         <WindowIndex Value="0"/>
         <TopLine Value="572"/>
         <CursorPos X="18" Y="589"/>
@@ -447,12 +474,10 @@
       <Unit46>
         <Filename Value="C:\lazarus\fpc\2.6.0\source\rtl\objpas\strutils.pp"/>
         <UnitName Value="strutils"/>
-        <EditorIndex Value="5"/>
         <WindowIndex Value="0"/>
         <TopLine Value="84"/>
         <CursorPos X="10" Y="94"/>
         <UsageCount Value="14"/>
-        <Loaded Value="True"/>
       </Unit46>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">

@@ -74,7 +74,7 @@ var
 implementation
 
 uses
-  IniFiles;
+  IniFiles, TypInfo;
 
 {$R *.dfm}
 
@@ -101,7 +101,13 @@ end ;
 procedure TForm1.FormCreate(Sender: TObject);
 var
   Ini: TIniFile;
+  I : TACBrCEPWebService ;
 begin
+
+  cbxWS.Items.Clear ;
+  For I := Low(TACBrCEPWebService) to High(TACBrCEPWebService) do
+     cbxWS.Items.Add( GetEnumName(TypeInfo(TACBrCEPWebService), integer(I) ) ) ;
+
   Ini := TIniFile.Create(ExtractFilePath(ParamStr(0)) + 'config.ini');
   try
     cbxWS.ItemIndex       := Ini.ReadInteger('GERAL', 'Modelo', 0);

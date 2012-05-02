@@ -17,6 +17,7 @@ type
      btCalcEAD : TBitBtn ;
      btCalcMD5 : TBitBtn ;
      btAssinarArqEAD : TBitBtn ;
+     btGerarXMLeECFc1 : TBitBtn ;
      btVerifArqAssinado : TBitBtn ;
      btGravarPubKey : TBitBtn ;
      btProcurarArqEntrada : TBitBtn ;
@@ -48,6 +49,7 @@ type
      procedure ACBrEAD1GetChavePublica(var Chave : AnsiString) ;
      procedure btAssinarArqEADClick(Sender : TObject) ;
      procedure btCalcPubKeyClick(Sender : TObject) ;
+     procedure btGerarXMLeECFc1Click(Sender : TObject) ;
      procedure btGravarPrivKeyClick(Sender : TObject) ;
      procedure btGravarPubKeyClick(Sender : TObject) ;
      procedure btLerPubKeyClick(Sender : TObject) ;
@@ -239,6 +241,23 @@ begin
    mResp.Lines.Add('------------------------------');
 
    mPubKey.Lines.Text := Chave;
+end;
+
+procedure TForm1.btGerarXMLeECFc1Click(Sender : TObject) ;
+var
+   ArqXML, ChavePub : String ;
+begin
+  OpenDialog1.Filter := 'xml|*.xml';
+  if OpenDialog1.Execute then
+  begin
+     ChavePub := ACBrEAD1.CalcularChavePublica_eECFc( OpenDialog1.FileName ) ;
+     ChavePub := StringReplace( ChavePub, #10, sLineBreak, [rfReplaceAll] );;
+
+     mResp.Lines.Add('Convertento a Chave Publica do arquivo: '+OpenDialog1.FileName );
+     mResp.Lines.Add( ChavePub );
+     mResp.Lines.Add('------------------------------');
+  end ;
+  OpenDialog1.Filter := '';
 end;
 
 procedure TForm1.btGravarPrivKeyClick(Sender : TObject) ;

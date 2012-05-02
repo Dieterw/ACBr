@@ -1,4 +1,4 @@
-unit EADTeste1 ; 
+unit EADTeste1 ;
 
 
 interface
@@ -42,6 +42,7 @@ type
      mResp : TMemo ;
      OpenDialog1 : TOpenDialog ;
     cbxDgst: TComboBox;
+    btGerarXMLeECFc1: TBitBtn;
      procedure btAssinarArqEADClick(Sender : TObject) ;
      procedure btCalcPubKeyClick(Sender : TObject) ;
      procedure btGravarPrivKeyClick(Sender : TObject) ;
@@ -57,8 +58,9 @@ type
      procedure btVerifArqAssinadoClick(Sender : TObject) ;
      procedure Button1Click(Sender : TObject) ;
      procedure FormCreate(Sender : TObject) ;
-    procedure ACBrEAD1GetChavePrivada(var Chave: String);
-    procedure ACBrEAD1GetChavePublica(var Chave: String);
+    procedure btGerarXMLeECFc1Click(Sender: TObject);
+    procedure ACBrEAD1GetChavePrivada(var Chave: AnsiString);
+    procedure ACBrEAD1GetChavePublica(var Chave: AnsiString);
   private
     { private declarations }
   public
@@ -204,6 +206,12 @@ begin
       mPubKey.Lines.LoadFromFile( edArqPubKey.Text );
 end;
 
+procedure TForm1.ACBrEAD1GetChavePublica(var Chave: AnsiString);
+begin
+  mResp.Lines.Add('  Lendo Chave Pública');
+  Chave := mPubKey.Lines.Text;
+end;
+
 procedure TForm1.btAssinarArqEADClick(Sender : TObject) ;
 var
    EAD : String ;
@@ -269,16 +277,27 @@ begin
    end ;
 end;
 
-procedure TForm1.ACBrEAD1GetChavePrivada(var Chave: String);
+procedure TForm1.ACBrEAD1GetChavePrivada(var Chave: AnsiString);
 begin
   mResp.Lines.Add('  Lendo Chave Privada');
   Chave := mPrivKey.Lines.Text;
 end;
 
-procedure TForm1.ACBrEAD1GetChavePublica(var Chave: String);
+procedure TForm1.btGerarXMLeECFc1Click(Sender: TObject);
+var
+  ChavePub : String ;
 begin
-  mResp.Lines.Add('  Lendo Chave Pública');
-  Chave := mPubKey.Lines.Text;
+  OpenDialog1.Filter := 'xml|*.xml';
+  if OpenDialog1.Execute then
+  begin
+     ChavePub := ACBrEAD1.CalcularChavePublica_eECFc( OpenDialog1.FileName ) ;
+     ChavePub := StringReplace( ChavePub, #10, sLineBreak, [rfReplaceAll] );;
+
+     mResp.Lines.Add('Convertento a Chave Publica do arquivo: '+OpenDialog1.FileName );
+     mResp.Lines.Add( ChavePub );
+     mResp.Lines.Add('------------------------------');
+  end ;
+  OpenDialog1.Filter := '';
 end;
 
 end.

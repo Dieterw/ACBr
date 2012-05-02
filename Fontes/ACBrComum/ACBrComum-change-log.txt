@@ -49,6 +49,10 @@ Símbolo : Significado
     O ACBrEAD usará as Tags <modulo> e <expoente_publico> para computar a chave
     Publica e proceder com a verificação das assinaturas EAD  (por: DSA)
 
+02/02/2012
+-- ACBrEAD --
+[*] Remoção das warnings por conversão de string.
+    (Régys Silveira)
 
 30/04/2012
 -- ACBrEAD, ACBrUtil --

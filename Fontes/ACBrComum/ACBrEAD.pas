@@ -231,11 +231,11 @@ Var
   PI, PF : Integer ;
 begin
   Result := '';
-  ATag   := UpperCase(ATag);
-  PI := pos('<'+ATag+'>', UpperCase(AXML) ) ;
+  ATag   := AnsiString(UpperCase(String(ATag)));
+  PI := pos('<'+String(ATag)+'>', UpperCase(String(AXML)) ) ;
   if PI = 0 then exit ;
   PI := PI + Length(ATag) + 2;
-  PF := PosEx('<'+ATag+'/>', UpperCase(AXML) , PI) ;
+  PF := PosEx('<'+String(ATag)+'/>', UpperCase(String(AXML)) , PI) ;
   if PF = 0 then
      PF := Length(AXML);
 
@@ -360,7 +360,7 @@ begin
   if Chave = '' then
     raise Exception.Create( ACBrStr('Chave RSA Publica não especificada no evento: "OnGetChavePublica"') ) ;
 
-  if pos('<modulo>', Chave) > 0 then
+  if pos('<modulo>', String(Chave)) > 0 then
      LerChavePublica_eECFc( Chave )
   else
      LerChave(Chave, False) ;
@@ -379,7 +379,7 @@ begin
   SL := TStringList.Create;
   try
      SL.LoadFromFile( ArquivoXML );
-     LerChavePublica_eECFc( SL.Text )
+     LerChavePublica_eECFc( AnsiString( SL.Text ) )
   finally
      SL.Free ;
   end ;
@@ -409,10 +409,10 @@ var
   bnMod, bnExp : PBIGNUM;
   PubRSA : pRSA ;
 begin
-  Modulo := Trim(Modulo);
+  Modulo := AnsiString(Trim(String(Modulo)));
   if Modulo = '' then
      raise Exception.Create( ACBrStr('Erro: Modulo não informada') ) ;
-  Expoente := Trim(Expoente);
+  Expoente := AnsiString(Trim(String(Expoente)));
   if Expoente = '' then
      raise Exception.Create( ACBrStr('Erro: Expoente não informado') ) ;
 
@@ -452,9 +452,9 @@ var
 begin
   InitOpenSSL ;
 
-  Buffer := Trim(Chave);
+  Buffer := AnsiString(Trim(String(Chave)));
   if (sLineBreak <> #10) then
-     Buffer := StringReplace(Buffer, sLineBreak, #10, [rfReplaceAll] ) ;
+     Buffer := AnsiString(StringReplace(String(Buffer), sLineBreak, #10, [rfReplaceAll] ) ) ;
 
   LiberarChave ;
 

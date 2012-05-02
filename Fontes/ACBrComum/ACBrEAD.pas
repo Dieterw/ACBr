@@ -129,7 +129,8 @@ type
     function VerificarEAD( const MS : TMemoryStream; EAD: AnsiString):
        Boolean ; overload ;
 
-    Function GerarXMLeECFc( const NomeSwHouse, Diretorio : String ) : Boolean ;
+    Function GerarXMLeECFc(const NomeSwHouse, Diretorio: String): Boolean; overload;
+    Function GerarXMLeECFc(const NomeSwHouse: String): String; overload;
     Procedure CalcularModuloeExpoente( var Modulo, Expoente : AnsiString );
     Function CalcularChavePublica : AnsiString ;
     Function CalcularChavePublica_eECFc( ArquivoXML: String) : AnsiString;
@@ -500,8 +501,7 @@ begin
   {$ENDIF}
 end ;
 
-function TACBrEAD.GerarXMLeECFc(const NomeSwHouse, Diretorio : String
-  ) : Boolean ;
+function TACBrEAD.GerarXMLeECFc(const NomeSwHouse, Diretorio: String): Boolean;
 Var
   Modulo, Expoente : AnsiString ;
   SL : TStringList ;
@@ -529,6 +529,32 @@ begin
     end ;
   finally
      SL.Free;
+  end ;
+end ;
+
+function TACBrEAD.GerarXMLeECFc(const NomeSwHouse: String): String;
+Var
+  Modulo, Expoente : AnsiString ;
+  SL : TStringList ;
+begin
+  Modulo   := '';
+  Expoente := '';
+  CalcularModuloeExpoente( Modulo, Expoente );
+
+  SL := TStringList.Create;
+  try
+    SL.Add( '<?xml version="1.0"?>' ) ;
+    SL.Add( '<empresa_desenvolvedora>' ) ;
+    SL.Add( '  <nome>'+NomeSwHouse+'</nome>' ) ;
+    SL.Add( '  <chave>' ) ;
+    SL.Add( '    <modulo>'+String(Modulo)+'</modulo>' ) ;
+    SL.Add( '    <expoente_publico>'+String(Expoente)+'</expoente_publico>' ) ;
+    SL.Add( '  </chave>' );
+    SL.Add( '</empresa_desenvolvedora>' ) ;
+
+    Result := SL.Text;
+  finally
+    SL.Free;
   end ;
 end ;
 

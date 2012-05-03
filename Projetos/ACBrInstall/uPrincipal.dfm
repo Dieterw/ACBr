@@ -1,7 +1,7 @@
 object frmPrincipal: TfrmPrincipal
   Left = 0
   Top = 0
-  ActiveControl = edtDirDestino
+  ActiveControl = wizPgInicio
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'Instalador ACBr'
@@ -24,7 +24,7 @@ object frmPrincipal: TfrmPrincipal
     Top = 0
     Width = 720
     Height = 500
-    ActivePage = wizPgConfiguracao
+    ActivePage = wizPgInicio
     ButtonBarHeight = 42
     ButtonStart.Caption = 'Para o in'#237'cio'
     ButtonStart.NumGlyphs = 1
@@ -2334,22 +2334,14 @@ object frmPrincipal: TfrmPrincipal
           ParentBackground = False
           ParentColor = False
           TabOrder = 0
-          ExplicitLeft = 5
-          ExplicitTop = 18
-          ExplicitWidth = 509
-          ExplicitHeight = 218
           inherited pnlBotoesPacotes: TPanel
             Top = 186
             Width = 509
-            ExplicitTop = 186
-            ExplicitWidth = 509
             inherited btnPacotesDesmarcarTodos: TSpeedButton
               Left = 477
-              ExplicitLeft = 477
             end
             inherited btnPacotesMarcarTodos: TSpeedButton
               Left = 445
-              ExplicitLeft = 445
             end
           end
         end
@@ -2522,11 +2514,10 @@ object frmPrincipal: TfrmPrincipal
           Left = 4
           Top = 4
           Width = 508
-          Height = 43
+          Height = 46
           Align = alClient
           AutoSize = False
           Caption = 'Linha 1'#13#10'Linha 2'#13#10'Linha 3'
-          ExplicitHeight = 46
         end
       end
     end
@@ -2685,7 +2676,7 @@ object frmPrincipal: TfrmPrincipal
       object Label9: TLabel
         Left = 14
         Top = 19
-        Width = 312
+        Width = 313
         Height = 19
         Caption = 'Assistente de instala'#231#227'o do Projeto ACBr'
         Color = clWhite
@@ -2696,6 +2687,7 @@ object frmPrincipal: TfrmPrincipal
         Font.Style = [fsBold]
         ParentColor = False
         ParentFont = False
+        Transparent = True
       end
       object imgGifPropagandaACBrSAC: TJvGIFAnimator
         AlignWithMargins = True
@@ -2706,6 +2698,7 @@ object frmPrincipal: TfrmPrincipal
         Cursor = crHandPoint
         Animate = True
         Center = True
+        FrameIndex = 2
         Image.Data = {
           688B00004749463839613F012800F70000FFFFFFFFFFE5FFFFCCF7FAFDFFFF99
           FFF7B9FFF9A9FFFA84EAFA9EFFF573FFF74AFFFF00FFF268F2F478FFF456E9F5

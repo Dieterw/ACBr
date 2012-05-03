@@ -236,7 +236,7 @@ begin
   PI := pos('<'+String(ATag)+'>', UpperCase(String(AXML)) ) ;
   if PI = 0 then exit ;
   PI := PI + Length(ATag) + 2;
-  PF := PosEx('<'+String(ATag)+'/>', UpperCase(String(AXML)) , PI) ;
+  PF := PosEx('</'+String(ATag)+'>', UpperCase(String(AXML)) , PI) ;
   if PF = 0 then
      PF := Length(AXML);
 
@@ -398,14 +398,13 @@ procedure TACBrEAD.LerChavePublica_eECFc(ConteudoXML : AnsiString) ;
 Var
   Modulo, Expoente : AnsiString ;
 begin
-  Modulo   := TagValue( ConteudoXML, 'modulo');
-  Expoente := TagValue( ConteudoXML, 'expoente_publico');
+  Modulo   := TagValue( ConteudoXML, 'modulo' );
+  Expoente := TagValue( ConteudoXML, 'expoente_publico' );
 
   LerChavePublicaModuloExpoente( Modulo, Expoente );
 end ;
 
-procedure TACBrEAD.LerChavePublicaModuloExpoente(Modulo, Expoente : AnsiString
-  ) ;
+procedure TACBrEAD.LerChavePublicaModuloExpoente(Modulo, Expoente: AnsiString);
 var
   bnMod, bnExp : PBIGNUM;
   PubRSA : pRSA ;
@@ -413,6 +412,7 @@ begin
   Modulo := AnsiString(Trim(String(Modulo)));
   if Modulo = '' then
      raise Exception.Create( ACBrStr('Erro: Modulo não informada') ) ;
+
   Expoente := AnsiString(Trim(String(Expoente)));
   if Expoente = '' then
      raise Exception.Create( ACBrStr('Erro: Expoente não informado') ) ;
@@ -422,27 +422,29 @@ begin
   LiberarChave ;
 
   {$IFDEF USE_libeay32}
-   fsKey := EVP_PKEY_new;
+    fsKey := EVP_PKEY_new;
   {$ELSE}
-   fsKey := EvpPkeyNew;
+    fsKey := EvpPkeyNew;
   {$ENDIF}
+
   bnExp := BN_new();
-  BN_hex2bn( bnExp,  PAnsiChar(Expoente) );
+  BN_hex2bn( bnExp, PAnsiChar(Expoente) );
+
   bnMod := BN_new();
   BN_hex2bn( bnMod, PAnsiChar(Modulo) );
 
-  PubRSA := RSA_new ;
+  PubRSA := RSA_new;
   PubRSA.e := bnMod;
   PubRSA.d := bnExp;
 
   {$IFDEF USE_libeay32}
-   EVP_PKEY_set1_RSA( fsKey, PubRSA );
+    EVP_PKEY_set1_RSA( fsKey, PubRSA );
   {$ELSE}
-   EvpPkeyAssign( fsKey, EVP_PKEY_RSA, PubRSA );
+    EvpPkeyAssign( fsKey, EVP_PKEY_RSA, PubRSA );
   {$ENDIF}
 
   if fsKey = nil then
-     raise Exception.Create('Erro ao ler a Chave');
+    raise Exception.Create('Erro ao ler a Chave');
 end ;
 
 procedure TACBrEAD.LerChave(const Chave : AnsiString; Privada: Boolean) ;

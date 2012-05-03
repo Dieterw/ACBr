@@ -1157,15 +1157,16 @@ begin
          HTTP.HTTPMethod('POST', FURL);
          StrStream := TStringStream.Create('');
          StrStream.CopyFrom(HTTP.Document, 0);
-
-         FRetornoWS := ParseText(StrStream.DataString, True);
+         // Alterado por Italo em 03/05/2012
+         FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
          FRetWS := SeparaDados( FRetornoWS,'nfeStatusServicoNF2Result');
          StrStream.Free;
       {$ELSE}
          ReqResp.Execute(Acao.Text, Stream);
          StrStream := TStringStream.Create('');
          StrStream.CopyFrom(Stream, 0);
-         FRetornoWS := ParseText(StrStream.DataString, True);
+         // Alterado por Italo em 03/05/2012
+         FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
          FRetWS := SeparaDados( FRetornoWS,'nfeStatusServicoNF2Result');
          StrStream.Free;
       {$ENDIF}
@@ -1310,14 +1311,16 @@ begin
 
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(HTTP.Document, 0);
-       FRetornoWS := ParseText(StrStream.DataString, True);
+       // Alterado por Italo em 03/05/2012
+       FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
        FRetWS := SeparaDados( FRetornoWS,'nfeRecepcaoLote2Result');
        StrStream.Free;
     {$ELSE}
        ReqResp.Execute(Acao.Text, Stream);
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(Stream, 0);
-       FRetornoWS := ParseText(StrStream.DataString, True);
+       // Alterado por Italo em 03/05/2012
+       FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
        FRetWS := SeparaDados( FRetornoWS,'nfeRecepcaoLote2Result');
        StrStream.Free;
     {$ENDIF}
@@ -1538,14 +1541,16 @@ function TNFeRetRecepcao.Executar: Boolean;
 
          StrStream := TStringStream.Create('');
          StrStream.CopyFrom(HTTP.Document, 0);
-         FRetornoWS := ParseText(StrStream.DataString, True);
+         // Alterado por Italo em 03/05/2012
+         FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
          FRetWS := SeparaDados( FRetornoWS,'nfeRetRecepcao2Result');
          StrStream.Free;
       {$ELSE}
          ReqResp.Execute(Acao.Text, Stream);
          StrStream := TStringStream.Create('');
          StrStream.CopyFrom(Stream, 0);
-         FRetornoWS := ParseText(StrStream.DataString, True);
+         // Alterado por Italo em 03/05/2012
+         FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
          FRetWS := SeparaDados( FRetornoWS,'nfeRetRecepcao2Result');
          StrStream.Free;
       {$ENDIF}
@@ -1712,14 +1717,16 @@ begin
 
       StrStream := TStringStream.Create('');
       StrStream.CopyFrom(HTTP.Document, 0);
-      FRetornoWS := ParseText(StrStream.DataString, True);
+      // Alterado por Italo em 03/05/2012
+      FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
       FRetWS := SeparaDados( FRetornoWS,'nfeRetRecepcao2Result');
       StrStream.Free;
    {$ELSE}
       ReqResp.Execute(Acao.Text, Stream);
       StrStream := TStringStream.Create('');
       StrStream.CopyFrom(Stream, 0);
-      FRetornoWS := ParseText(StrStream.DataString, True);
+      // Alterado por Italo em 03/05/2012
+      FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
       FRetWS := SeparaDados( FRetornoWS,'nfeRetRecepcao2Result');
       StrStream.Free;
    {$ENDIF}
@@ -1851,14 +1858,16 @@ begin
 
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(HTTP.Document, 0);
-       FRetornoWS := ParseText(StrStream.DataString, True);
+       // Alterado por Italo em 03/05/2012
+       FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
        FRetWS := SeparaDados( FRetornoWS,'nfeConsultaNF2Result');
        StrStream.Free;
     {$ELSE}
        ReqResp.Execute(Acao.Text, Stream);
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(Stream, 0);
-       FRetornoWS := ParseText(StrStream.DataString, True);
+       // Alterado por Italo em 03/05/2012
+       FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
        FRetWS := SeparaDados( FRetornoWS,'nfeConsultaNF2Result');
        StrStream.Free;
     {$ENDIF}
@@ -2077,14 +2086,16 @@ begin
 
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(HTTP.Document, 0);
-       FRetornoWS := ParseText(StrStream.DataString, True);
+       // Alterado por Italo em 03/05/2012
+       FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
        FRetWS := SeparaDados( FRetornoWS,'nfeCancelamentoNF2Result');
        StrStream.Free;
     {$ELSE}
        ReqResp.Execute(Acao.Text, Stream);
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(Stream, 0);
-       FRetornoWS := ParseText(StrStream.DataString, True);
+       // Alterado por Italo em 03/05/2012
+       FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
        FRetWS := SeparaDados( FRetornoWS,'nfeCancelamentoNF2Result');
        StrStream.Free;
     {$ENDIF}
@@ -2287,14 +2298,16 @@ begin
 
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(HTTP.Document, 0);
-       FRetornoWS := ParseText(StrStream.DataString, True);
+       // Alterado por Italo em 03/05/2012
+       FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
        FRetWS := SeparaDados( FRetornoWS,'nfeInutilizacaoNF2Result');
        StrStream.Free;
     {$ELSE}
        ReqResp.Execute(Acao.Text, Stream);
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(Stream, 0);
-       FRetornoWS := ParseText(StrStream.DataString, True);
+       // Alterado por Italo em 03/05/2012
+       FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
        FRetWS := SeparaDados( FRetornoWS,'nfeInutilizacaoNF2Result');
        StrStream.Free;
     {$ENDIF}
@@ -2471,14 +2484,16 @@ begin
 
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(HTTP.Document, 0);
-       FRetornoWS := ParseText(StrStream.DataString, True);
+       // Alterado por Italo em 03/05/2012
+       FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
        FRetWS := SeparaDados( FRetornoWS,'consultaCadastro2Result');
        StrStream.Free;
     {$ELSE}
        ReqResp.Execute(Acao.Text, Stream);
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(Stream, 0);
-       FRetornoWS := ParseText(StrStream.DataString, True);
+       // Alterado por Italo em 03/05/2012
+       FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
        FRetWS := SeparaDados( FRetornoWS,'consultaCadastro2Result');
        StrStream.Free;
     {$ENDIF}
@@ -2623,12 +2638,14 @@ begin
        HTTP.HTTPMethod('POST', FURL);
 
        StrStream.CopyFrom(HTTP.Document, 0);
-       FRetornoWS := ParseText(StrStream.DataString, True);
+       // Alterado por Italo em 03/05/2012
+       FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
        FRetWS := SeparaDados( FRetornoWS,'sceRecepcaoDPECResult',True);
     {$ELSE}
        ReqResp.Execute(Acao.Text, Stream);
        StrStream.CopyFrom(Stream, 0);
-       FRetornoWS := ParseText(StrStream.DataString, True);
+       // Alterado por Italo em 03/05/2012
+       FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
        FRetWS := SeparaDados( FRetornoWS,'sceRecepcaoDPECResult',True);
     {$ENDIF}
     StrStream.Free;
@@ -2769,14 +2786,16 @@ begin
 
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(HTTP.Document, 0);
-       FRetornoWS := ParseText(StrStream.DataString, True);
+       // Alterado por Italo em 03/05/2012
+       FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
        FRetWS := SeparaDados( FRetornoWS,'sceConsultaDPECResult',True);
        StrStream.Free;
     {$ELSE}
        ReqResp.Execute(Acao.Text, Stream);
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(Stream, 0);
-       FRetornoWS := ParseText(StrStream.DataString, True);
+       // Alterado por Italo em 03/05/2012
+       FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
        FRetWS := SeparaDados( FRetornoWS,'sceConsultaDPECResult',True);
        StrStream.Free;
     {$ENDIF}
@@ -2922,14 +2941,16 @@ begin
 
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(HTTP.Document, 0);
-       FRetornoWS := ParseText(StrStream.DataString, True);
+       // Alterado por Italo em 03/05/2012
+       FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
        FRetWS := SeparaDados( FRetornoWS,'nfeRecepcaoEventoResult');
        StrStream.Free;
     {$ELSE}
        ReqResp.Execute(Acao.Text, Stream);
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(Stream, 0);
-       FRetornoWS := ParseText(StrStream.DataString, True);
+       // Alterado por Italo em 03/05/2012
+       FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
        FRetWS := SeparaDados( FRetornoWS,'nfeRecepcaoEventoResult');
        StrStream.Free;
     {$ENDIF}

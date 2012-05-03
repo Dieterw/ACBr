@@ -208,6 +208,15 @@ begin
   FRegistroI510.Clear;
   FRegistroI550.Clear;
 
+  FRegistroI051Count := 0;
+  FRegistroI052Count := 0;
+  FRegistroI151Count := 0;
+  FRegistroI155Count := 0;
+  FRegistroI250Count := 0;
+  FRegistroI310Count := 0;
+  FRegistroI355Count := 0;
+  FRegistroI555Count := 0;
+
   FRegistroI990.QTD_LIN_I := 0;
 end;
 

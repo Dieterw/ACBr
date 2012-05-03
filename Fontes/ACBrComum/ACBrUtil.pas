@@ -2252,7 +2252,11 @@ begin
     Texto := AnsiString(StringReplace(String(Texto), '&ccedil;', 'ç', [rfReplaceAll]));
     Texto := AnsiString(StringReplace(String(Texto), '&Ccedil;', 'Ç', [rfReplaceAll]));
     Texto := AnsiString(StringReplace(String(Texto), '&apos;', '''', [rfReplaceAll]));
+    {$IFDEF DELPHI11_UP}  // delphi 2009 em diante
+    Texto := AnsiString(UTF8ToString(Texto));
+    {$ELSE}
     Texto := AnsiString(UTF8Decode(Texto));
+    {$ENDIF}
    end
   else
    begin
@@ -2261,7 +2265,11 @@ begin
     Texto := AnsiString(StringReplace(String(Texto), '>', '&gt;', [rfReplaceAll]));
     Texto := AnsiString(StringReplace(String(Texto), '"', '&quot;', [rfReplaceAll]));
     Texto := AnsiString(StringReplace(String(Texto), #39, '&#39;', [rfReplaceAll]));
+    {$IFDEF DELPHI11_UP}  // delphi 2009 em diante
+    Texto := AnsiString(UTF8ToString(Texto));
+    {$ELSE}
     Texto := AnsiString(UTF8Decode(Texto));
+    {$ENDIF}
    end;
 
   Result := Texto;

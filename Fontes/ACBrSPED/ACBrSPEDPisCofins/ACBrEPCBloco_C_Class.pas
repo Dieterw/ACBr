@@ -2306,7 +2306,7 @@ begin
                 LFill( COD_MOD,2 )          +
                 LFill( strCOD_SIT )         +
                 LFill( SER )                +
-                LFill( SUB )                +
+                LFill( SUB, 3 )                +
                 LFill( NUM_DOC,9 )          +
                 LFill( DT_DOC, 'ddmmyyyy' ) +
                 LFill( DT_ENT, 'ddmmyyyy' ) +

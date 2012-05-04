@@ -2037,15 +2037,15 @@ begin
           stcofinsOutrasOperacoes                               : strCST_COFINS := '99';
         end;
 
-        Add( LFill('C485')               +
-             LFill(strCST_COFINS)        +
-             LFill(VL_ITEM,0,2)          +
-             LFill(VL_BC_COFINS,0,2)     +
-             DFill(ALIQ_COFINS, 4)       +
+        Add( LFill('C485')                     +
+             LFill(strCST_COFINS)              +
+             LFill(VL_ITEM,0,2)                +
+             DFill(VL_BC_COFINS,      2, True) +
+             DFill(ALIQ_COFINS,       4, True) +
              DFill(QUANT_BC_COFINS,   3, True) +
              DFill(ALIQ_COFINS_QUANT, 4, True) +
-             LFill(VL_COFINS,0,2)        +
-             LFill(COD_ITEM)             +
+             LFill(VL_COFINS,0,2)              +
+             LFill(COD_ITEM)                   +
              LFill(COD_CTA) ) ;
         //
         RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;

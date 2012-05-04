@@ -136,7 +136,7 @@ de campos quando necessário}
     function GetAsTime : TDateTime;
     function GetAsTimeStamp : TDateTime;
     function GetAsTimeStampSQL : TDateTime;
-    procedure SetAsAnsiString(const AValue: AnsiString);
+    //procedure SetAsAnsiString(const AValue: AnsiString);
     procedure SetAsDate(const AValue : TDateTime);
     procedure SetAsFloat(const AValue : Double);
     procedure SetAsInteger(const AValue : Integer);
@@ -195,7 +195,7 @@ begin
       Msg := 'Componentes ACBr '+{$IFDEF FPC}'Lazarus/FPC'{$ELSE}'VCL'{$ENDIF}+#10+
              'Automação Comercial Brasil'+#10+#10+
              'http://acbr.sourceforge.net' ;
-      Msg := ACBrStr(Msg) ;
+      Msg := ACBrStr( AnsiString( Msg ) ) ;
     {$ENDIF}
 
      MessageDlg(Msg ,mtInformation ,[mbOk],0) ;
@@ -263,7 +263,7 @@ function TACBrInformacao.GetAsDate : TDateTime;
 var
    DataStr : String;
 begin
-  DataStr := OnlyNumber(Trim(fInformacao)) ;
+  DataStr := String( OnlyNumber(AnsiString( Trim(String(fInformacao)) )) );
 
   try
      Result := EncodeDate( StrToInt(copy(DataStr,5,4)),
@@ -278,7 +278,7 @@ function TACBrInformacao.GetAsFloat : Double;
 Var
   Info : String ;
 begin
-  Info := StringReplace( Trim(fInformacao), ',','',[rfReplaceAll] );
+  Info := StringReplace( Trim(String(fInformacao)), ',','',[rfReplaceAll] );
   Info := StringReplace( Info             , '.','',[rfReplaceAll] );
 
   Result := StrToIntDef( Info ,0) / 100 ;
@@ -286,7 +286,7 @@ end;
 
 function TACBrInformacao.GetAsInteger : Integer;
 begin
-  Result := StrToIntDef(Trim(fInformacao),0);
+  Result := StrToIntDef(Trim(String(fInformacao)),0);
 end;
 
 function TACBrInformacao.GetAsString: AnsiString;
@@ -298,7 +298,7 @@ function TACBrInformacao.GetAsTime : TDateTime;
 var
    TimeStr : String;
 begin
-  TimeStr := OnlyNumber(Trim(fInformacao)) ;
+  TimeStr := OnlyNumber(AnsiString( Trim(String(fInformacao))) );
 
   try
      Result := EncodeTime( StrToInt(copy(TimeStr,1,2)),
@@ -313,7 +313,7 @@ function TACBrInformacao.GetAsTimeStamp : TDateTime;
 var
    DateTimeStr : String;
 begin
-  DateTimeStr := OnlyNumber(Trim(fInformacao)) ;
+  DateTimeStr := OnlyNumber(AnsiString( Trim(String(fInformacao))) );
 
   try
      Result := EncodeDateTime( YearOf(now),
@@ -331,7 +331,7 @@ function TACBrInformacao.GetAsTimeStampSQL : TDateTime;
 var
    DateTimeStr : String;
 begin
-  DateTimeStr := OnlyNumber(Trim(fInformacao)) ;
+  DateTimeStr := OnlyNumber(AnsiString( Trim(String(fInformacao))) );
 
   try
      Result := EncodeDateTime( StrToInt(copy(DateTimeStr,1,4)),
@@ -344,18 +344,18 @@ begin
      Result := 0 ;
   end;
 end;
-
+{
 procedure TACBrInformacao.SetAsAnsiString(const AValue: AnsiString);
 begin
    fInformacao := AValue;
 end;
-
+}
 procedure TACBrInformacao.SetAsDate(const AValue : TDateTime);
 begin
   if AValue = 0 then
      fInformacao := ''
   else
-     fInformacao := FormatDateTime('DDMMYYYY',AValue)
+     fInformacao := AnsiString( FormatDateTime('DDMMYYYY',AValue) );
 end;
 
 procedure TACBrInformacao.SetAsFloat(const AValue : Double);
@@ -364,7 +364,7 @@ begin
      fInformacao := ''
   else
    begin
-     fInformacao := IntToStr(Trunc(SimpleRoundTo( AValue * 100 ,0)));
+     fInformacao := AnsiString( IntToStr(Trunc(SimpleRoundTo( AValue * 100 ,0))) );
      if Length(fInformacao) < 3 then
         fInformacao := PadR(fInformacao,3,'0') ;
    end ;
@@ -375,7 +375,7 @@ begin
   if AValue = 0 then
      fInformacao := ''
   else
-     fInformacao := IntToStr( AValue );
+     fInformacao := AnsiString( IntToStr( AValue ) );
 end;
 
 procedure TACBrInformacao.SetAsString(const AValue: AnsiString);
@@ -415,7 +415,7 @@ begin
   Result := Self.Add;
   with Result do
   begin
-    Nome     := ANome;
+    Nome     := AnsiString(ANome);
     AsString := AnsiString(AValor);
   end;
 end;
@@ -427,7 +427,7 @@ begin
   Result := nil;
   for I := 0 to Self.Count - 1 do
   begin
-    if AnsiSameText(Self.Items[I].Nome, AName) then
+    if AnsiSameText(String(Self.Items[I].Nome), String(AName)) then
     begin
       Result := Self.Items[I];
       Exit;

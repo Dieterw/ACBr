@@ -1004,11 +1004,23 @@ begin
              tfNenhum:               strIND_FRT := '';
             end;
 
-          case IND_PGTO of
-           tpVista:        strIND_PGTO := '0';
-           tpPrazo:        strIND_PGTO := '1';
-           tpSemPagamento: strIND_PGTO := '9';
-           tpNenhum:       strIND_PGTO := '';
+          if DT_INI >= EncodeDate(2012,07,01) then
+          begin
+            case IND_PGTO of
+             tpVista:        strIND_PGTO := '0';
+             tpPrazo:        strIND_PGTO := '1';
+             tpSemPagamento: strIND_PGTO := '2';
+             tpNenhum:       strIND_PGTO := '';
+            end
+          end
+          else
+          begin
+            case IND_PGTO of
+             tpVista:        strIND_PGTO := '0';
+             tpPrazo:        strIND_PGTO := '1';
+             tpSemPagamento: strIND_PGTO := '9';
+             tpNenhum:       strIND_PGTO := '';
+            end;
           end;
 
 

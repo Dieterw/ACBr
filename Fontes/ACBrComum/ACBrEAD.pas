@@ -50,7 +50,7 @@ interface
 {$ENDIF}
 
 uses
-   Classes, SysUtils, strutils,
+   Classes, SysUtils, strutils, ACBrConsts,
    ACBrUtil, {$IFDEF USE_libeay32}libeay32{$ELSE} OpenSSL{$ENDIF};
 
 const
@@ -122,15 +122,16 @@ type
     function AssinarArquivoComEAD( const NomeArquivo: String;
        RemoveEADSeExistir : Boolean = False ) : AnsiString ;
     Procedure RemoveEADArquivo( const NomeArquivo: String) ;
+    Function RemoveEAD( MS : TMemoryStream ) : AnsiString;
 
     function VerificarEADArquivo( const NomeArquivo: String): Boolean ; overload ;
     function VerificarEAD( const AString : AnsiString): Boolean ; overload ;
     function VerificarEAD( const AStringList : TStringList): Boolean ; overload ;
-    function VerificarEAD( const MS : TMemoryStream; EAD: AnsiString):
+    function VerificarEAD( const MS : TMemoryStream; EAD: AnsiString = ''):
        Boolean ; overload ;
 
     Function GerarXMLeECFc(const NomeSwHouse, Diretorio: String): Boolean; overload;
-    Function GerarXMLeECFc(const NomeSwHouse: String): String; overload;
+    Function GerarXMLeECFc(const NomeSwHouse: String): AnsiString; overload;
     Procedure CalcularModuloeExpoente( var Modulo, Expoente : AnsiString );
     Function CalcularChavePublica : AnsiString ;
     Function CalcularChavePublica_eECFc( ArquivoXML: String) : AnsiString;
@@ -408,6 +409,7 @@ procedure TACBrEAD.LerChavePublicaModuloExpoente(Modulo, Expoente: AnsiString);
 var
   bnMod, bnExp : PBIGNUM;
   PubRSA : pRSA ;
+  Erro   : longint ;
 begin
   Modulo := AnsiString(Trim(String(Modulo)));
   if Modulo = '' then
@@ -428,10 +430,14 @@ begin
   {$ENDIF}
 
   bnExp := BN_new();
-  BN_hex2bn( bnExp, PAnsiChar(Expoente) );
+  Erro := BN_hex2bn( bnExp, PAnsiChar(Expoente) );
+  if Erro < 1 then
+     raise Exception.Create( ACBrStr('Erro: Expoente inválido') ) ;
 
   bnMod := BN_new();
-  BN_hex2bn( bnMod, PAnsiChar(Modulo) );
+  Erro := BN_hex2bn( bnMod, PAnsiChar(Modulo) );
+  if Erro < 1 then
+     raise Exception.Create( ACBrStr('Erro: Modulo inválido') ) ;
 
   PubRSA := RSA_new;
   PubRSA.e := bnMod;
@@ -515,6 +521,7 @@ begin
   SL := TStringList.Create;
   try
     SL.Add( '<?xml version="1.0"?>' ) ;
+    SL.Add( '' );
     SL.Add( '<empresa_desenvolvedora>' ) ;
     SL.Add( '  <nome>'+NomeSwHouse+'</nome>' ) ;
     SL.Add( '  <chave>' ) ;
@@ -534,7 +541,7 @@ begin
   end ;
 end ;
 
-function TACBrEAD.GerarXMLeECFc(const NomeSwHouse: String): String;
+function TACBrEAD.GerarXMLeECFc(const NomeSwHouse: String): AnsiString;
 Var
   Modulo, Expoente : AnsiString ;
   SL : TStringList ;
@@ -546,6 +553,7 @@ begin
   SL := TStringList.Create;
   try
     SL.Add( '<?xml version="1.0"?>' ) ;
+    SL.Add( '' );
     SL.Add( '<empresa_desenvolvedora>' ) ;
     SL.Add( '  <nome>'+NomeSwHouse+'</nome>' ) ;
     SL.Add( '  <chave>' ) ;
@@ -570,7 +578,7 @@ begin
      raise Exception.Create( ACBrStr('Método CalcularModuloeExpoente ainda não é '+
                                      'compatível com OpenSSL 1.0.0 ou superior'));
 
-  LerChavePrivada();
+  LerChavePublica;
 
   Modulo   := '';
   Expoente := '';
@@ -743,10 +751,6 @@ begin
     EVP_DigestUpdate( @md_ctx, MS.Memory, MS.Size ) ;
     EVP_SignFinal( @md_ctx, @md_value_bin, md_len, fsKey);
 
-    //MS.Clear;
-    //MS.Write( md_value_bin, md_len );
-    //MS.SaveToFile( 'sign.rsa' );
-
     BinToHex( md_value_bin, md_value_hex, md_len);
     md_value_hex[2 * md_len] := #0;
     Result := AnsiString(StrPas(md_value_hex));
@@ -768,65 +772,102 @@ end ;
 
 function TACBrEAD.AssinarArquivoComEAD(const NomeArquivo : String ;
   RemoveEADSeExistir : Boolean) : AnsiString ;
+Var
+  MS : TMemoryStream ;
+  Buffer: AnsiChar;
+  LineBreak : AnsiString ;
 begin
-  if RemoveEADSeExistir then
-     RemoveEADArquivo( NomeArquivo );
+  // Abrindo o arquivo com FileStream //
+  MS := TMemoryStream.Create;
+  try
+     MS.LoadFromFile( NomeArquivo );
 
-  Result := CalcularEADArquivo( NomeArquivo );
-  if Result <> '' then
-     WriteToTXT( AnsiString(NomeArquivo), 'EAD' + Result, True, False );  // Compatiblidade Linux
+     if RemoveEADSeExistir then
+        RemoveEAD( MS );
+
+     // Verificando se já existe LF no final do arquivo //
+     MS.Seek(-1, soFromEnd);  // vai para EOF - 1
+     MS.Read(Buffer, 1);
+
+     if Buffer <> LF then
+     begin
+        LineBreak := sLineBreak;
+        MS.Write(Pointer(LineBreak)^,Length(LineBreak));
+     end ;
+
+     Result := CalcularEAD( MS );
+
+     if Result <> '' then
+     begin
+        MS.Seek(0,soFromEnd);
+        MS.Write(Pointer('EAD'+Result)^,Length(Result)+3);
+        MS.SaveToFile( NomeArquivo );
+     end ;
+  finally
+     MS.Free ;
+  end;
 end;
 
 procedure TACBrEAD.RemoveEADArquivo(const NomeArquivo : String) ;
 Var
-  SL : TStringList ;
-  SLBottom : Integer ;
+  MS : TMemoryStream ;
+  EAD : AnsiString;
 begin
   VerificaNomeArquivo( NomeArquivo );
 
-  SL := TStringList.Create;
+  MS := TMemoryStream.Create;
   try
-     SL.LoadFromFile( NomeArquivo );
-     if SL.Count < 1 then
-        exit ;
-
-     SLBottom := SL.Count-1 ;  // Pega a última linha do arquivo,
-     if UpperCase( copy( SL[ SLBottom ],1,3) ) = 'EAD' then
-     begin
-        SL.Delete( SLBottom );    // remove a linha do EAD
-        SL.SaveToFile( NomeArquivo );
-     end ;
+    MS.LoadFromFile( NomeArquivo );
+    EAD := RemoveEAD( MS );
+    if EAD <> '' then
+       MS.SaveToFile( NomeArquivo );
   finally
-     SL.Free;
-  end ;
+    MS.Free;
+  end;
+end ;
+
+function TACBrEAD.RemoveEAD(MS : TMemoryStream) : AnsiString ;
+Var
+  Buffer: array[0..259] of AnsiChar;
+begin
+  // Procurando por ultimo EAD //
+  MS.Seek(-259,soFromEnd);    // 259 = Tamanho da Linha EAD
+  MS.Read(Buffer, 259 );
+  Result := UpperCase( Trim(Buffer) );
+
+  // Removendo o EAD do MemoryStream //
+  if copy(Result,1,3) = 'EAD' then
+     MS.Size := MS.Position-259
+  else
+     Result := '';
 end ;
 
 function TACBrEAD.VerificarEADArquivo(const NomeArquivo : String) : Boolean ;
 Var
-  SL : TStringList ;
+  MS : TMemoryStream ;
 begin
   VerificaNomeArquivo( NomeArquivo );
 
-  SL := TStringList.Create;
+  MS := TMemoryStream.Create;
   try
-     SL.LoadFromFile( NomeArquivo );
-     Result := VerificarEAD( SL );
+    MS.LoadFromFile( NomeArquivo );
+    Result := VerificarEAD( MS );
   finally
-     SL.Free;
-  end ;
+    MS.Free;
+  end;
 end ;
 
 function TACBrEAD.VerificarEAD(const AString : AnsiString) : Boolean ;
 Var
-  SL : TStringList ;
+  MS : TMemoryStream ;
 begin
-  SL := TStringList.Create;
+  MS := TMemoryStream.Create;
   try
-    SL.Text := String(AString);
-    Result := VerificarEAD( SL );
+    MS.Write( Pointer(AString)^, Length(AString) );
+    Result := VerificarEAD( MS );
   finally
-    SL.Free ;
-  end ;
+    MS.Free;
+  end;
 end ;
 
 function TACBrEAD.VerificarEAD(const AStringList : TStringList) : Boolean ;
@@ -861,17 +902,20 @@ begin
 end ;
 
 function TACBrEAD.VerificarEAD(const MS : TMemoryStream ; EAD : AnsiString
-   ) : Boolean ;
+  ) : Boolean ;
 Var
   md : PEVP_MD ;
   md_len: cardinal;
   md_ctx: EVP_MD_CTX;
-  md_value_bin : array [0..128] of char;
+  md_value_bin : array [0..128] of AnsiChar;
   Ret : LongInt ;
 begin
   //Result := False;
 
   LerChavePublica;
+
+  if EAD = '' then  // Não enviou EAD ?, tente acha-lo no MemoryStream
+     EAD := RemoveEAD( MS );
 
   if UpperCase(String(copy(EAD,1,3))) = 'EAD' then
      EAD := copy(EAD,4,Length(EAD));
@@ -887,6 +931,10 @@ begin
   HexToBin( PAnsiChar(EAD), md_value_bin, md_len );
 
   try
+    // DEBUG
+    //MS.Position := 0;
+    //MS.SaveToFile('C:\TEMP\DUMP.TXT');
+
     MS.Position := 0;
     md := EVP_get_digestbyname('md5');
     EVP_DigestInit( @md_ctx, md ) ;

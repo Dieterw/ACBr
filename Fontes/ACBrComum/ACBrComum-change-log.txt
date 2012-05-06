@@ -38,6 +38,17 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+06/05/2012
+-- ACBrEAD --
+[+] Adicionado método: Function RemoveEAD( MS : TMemoryStream ) : AnsiString;
+    (por: DSA)
+[*] Método: AssinarArquivoComEAD modificado para ser compatível com arquivos que
+    não usam a mesma quebra de Linha do Sistema Operacional.
+    - Adicionada detecção da presença de quebra de linha no final do arquivo
+      antes de adicionar a linha do EAD         (por: DSA)
+[*] Método: RemoveEADArquivo modificado para ser compatível com arquivos que
+    não usam a mesma quebra de Linha do Sistema Operacional.    (por: DSA)
+
 01/05/2012
 -- ACBrEAD --
 [+] Adicionada Function CalcularChavePublica_eECFc( ArquivoXML: String) : AnsiString;

@@ -880,7 +880,7 @@ var
   function BN_print(fp: pBIO; const a: PBIGNUM): cint;
   function BN_new(): PBIGNUM;
   function BN_hex2bn(var n: PBIGNUM; const str: PChar): cint;
-
+  function BN_dec2bn(var n: pBIGNUM; const str: PChar): cint;
 
 function IsSSLloaded: Boolean;
 function Islibealoaded: Boolean;
@@ -1117,6 +1117,7 @@ type
   TBN_print = function(fp: pBIO; const a: PBIGNUM): cint; cdecl;
   TBN_new =  function(): PBIGNUM; cdecl;
   TBN_hex2bn = function(var n: PBIGNUM; const str: PChar): cint; cdecl;
+  TBN_dec2bn = function(var n: pBIGNUM; const str: PChar): cint; cdecl;
 
 
 var
@@ -1323,6 +1324,7 @@ var
   _BN_print: TBN_print = nil;
   _BN_new: TBN_new = nil;
   _BN_hex2bn: TBN_hex2bn = nil ;
+  _BN_dec2bn: TBN_dec2bn = nil ;
 
 
 
@@ -2645,6 +2647,14 @@ begin
     Result := -1;
 end;
 
+function BN_dec2bn(var n: PBIGNUM; const str: PChar):  cint ;
+begin
+  if InitlibeaInterface and Assigned(_BN_dec2bn) then
+    Result := _BN_dec2bn(n, str)
+  else
+    Result := -1;
+end;
+
 {$IFNDEF WINDOWS}
 { Try to load all library versions until you find or run out }
 function LoadLibHack(const Value: String): HModule;
@@ -2947,6 +2957,7 @@ begin
        _BN_print := GetProcAddr(SSLUtilHandle, 'BN_print', AVerboseLoading);
        _BN_new := GetProcAddr(SSLUtilHandle, 'BN_new', AVerboseLoading);
        _BN_hex2bn := GetProcAddr(SSLUtilHandle, 'BN_hex2bn', AVerboseLoading);
+       _BN_dec2bn := GetProcAddr(SSLUtilHandle, 'BN_dec2bn', AVerboseLoading);
 
        // Crypto Functions
 

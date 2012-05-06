@@ -60,9 +60,9 @@ type
     fFTPSend: TFTPSend;
     fFTP: TACBrFTP;
 
+  protected
     procedure DoHookStatus(Sender: TObject; Reason: THookSocketReason;
       const Value: String); override;
-  protected
   public
     constructor Create(AOwner: TComponent);
     destructor Destroy; override;
@@ -105,9 +105,6 @@ end;
 
 procedure TACBrFTPDownload.DoHookStatus(Sender: TObject; Reason: THookSocketReason;
   const Value: String);
-Var
-  sFileName, sLineHeader, sLocation: String;
-  iCount, iResultCode: Integer;
 begin
   fResultCode := fFTPSend.ResultCode;
   case Reason of

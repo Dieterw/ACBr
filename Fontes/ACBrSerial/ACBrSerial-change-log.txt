@@ -97,6 +97,30 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 06/05/2012
+-- ACBrECF --
+[*] Método ACBrECF.VendeItem modificado inserindo um novo parâmetro:
+    (CodDepartamento: Integer = -1).    (Por: EasyTef)
+[+] Adicionado suporte a Comunicação pela DLL do Fabricante. Isso permitirá ao
+    ACBr usar o acesso nativo a USB disponibilizado pelo Fabricante.  (por: DSA)
+    - A DLL do fabricante precisa estar corretamente instalada e configurada
+    - O usuário pode informar para ACBrECF.Porta, valores como: "USB" ou
+      "DLL.COM1", feito isso o ACBrECF usará a DLL do Fabricante para se
+      comunicar com o ECF
+    - Para que seja possível a implementação dessa funcionalidade a DLL do
+      Fabricante deve disponibilizar método na DLL que permita transmitir um
+      pacote de dados já montado, e responder usando a sintaxe do protocolo.
+      Exemplo:
+      DWORD ECF_Serial_Enviar_Dados( LPSTR Comando, WORD TimeOut, LPSTR Retorno)
+
+-- ACBrECFEpson --
+[+] Adicionado suporte a Comunicação pela DLL do Fabricante, permitindo o uso de
+    portas USB, e um considerável aumento da velocidade.    (por: DSA)
+
+-- ACBrECFFiscNet --
+[*] Método VendeItem modificado para fazer uso do novo parâmetro:
+    (CodDepartamento: Integer = -1).    (Por: EasyTef)
+
 Data: 09/04/2012
 -- ACBrECFFiscNET --
 [-] Correção na leitura dos dados da última redução Z

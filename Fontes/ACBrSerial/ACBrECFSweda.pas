@@ -287,7 +287,7 @@ TACBrECFSweda = class( TACBrECFClass )
     Procedure VendeItem( Codigo, Descricao : String; AliquotaECF : String;
        Qtd : Double ; ValorUnitario : Double; ValorDescontoAcrescimo : Double = 0;
        Unidade : String = ''; TipoDescontoAcrescimo : String = '%';
-       DescontoAcrescimo : String = 'D' ) ; override ;
+       DescontoAcrescimo : String = 'D'; CodDepartamento: Integer = -1 ) ; override ;
     Procedure SubtotalizaCupom( DescontoAcrescimo : Double = 0;
        MensagemRodape : AnsiString  = '' ) ; override ;
 
@@ -1584,7 +1584,8 @@ end;
 Procedure TACBrECFSweda.VendeItem( Codigo, Descricao : String;
   AliquotaECF : String; Qtd : Double ; ValorUnitario : Double;
   ValorDescontoAcrescimo : Double; Unidade : String;
-  TipoDescontoAcrescimo : String; DescontoAcrescimo : String) ;
+  TipoDescontoAcrescimo : String; DescontoAcrescimo : String ;
+  CodDepartamento: Integer) ;
 Var QtdStr, ValorStr, TotalStr, Descr2 : String ;
     ValDesc, ValTotal : Double ;
     wIntervaloAposComando : Integer ;

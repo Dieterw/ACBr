@@ -59,9 +59,9 @@ type
   private
     fHTTPSend: THTTPSend;
 
+  protected
     procedure DoHookStatus(Sender: TObject; Reason: THookSocketReason;
       const Value: String); override;
-  protected
   public
     constructor Create(AOwner: TComponent);
     destructor Destroy; override;

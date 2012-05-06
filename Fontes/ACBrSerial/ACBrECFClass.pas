@@ -877,7 +877,7 @@ TACBrECFClass = class
     Procedure VendeItem( Codigo, Descricao : String; AliquotaECF : String;
        Qtd : Double ; ValorUnitario : Double; ValorDescontoAcrescimo : Double = 0;
        Unidade : String = ''; TipoDescontoAcrescimo : String = '%';
-       DescontoAcrescimo : String = 'D' ) ; virtual ;
+       DescontoAcrescimo : String = 'D'; CodDepartamento: Integer = -1) ; virtual ;
     Procedure DescontoAcrescimoItemAnterior( ValorDescontoAcrescimo : Double = 0;
        DescontoAcrescimo : String = 'D'; TipoDescontoAcrescimo : String = '%';
        NumItem : Integer = 0 ) ;  virtual ;
@@ -1479,15 +1479,15 @@ end;
 
 procedure TACBrECFClass.Desativar;
 begin
-  if not fpAtivo then exit ;
-
   AguardandoResposta := False;
   AguardaImpressao   := False;
 
-  fpDevice.Desativar ;
-
   fpEstado := estNaoInicializada ;
-  fpAtivo  := false ;
+
+  if not fpAtivo then exit ;
+
+  fpDevice.Desativar ;
+  fpAtivo := false ;
 end;
 
 
@@ -2647,7 +2647,8 @@ end;
 Procedure TACBrECFClass.VendeItem( Codigo, Descricao : String;
   AliquotaECF : String; Qtd : Double ; ValorUnitario : Double;
   ValorDescontoAcrescimo : Double; Unidade : String;
-  TipoDescontoAcrescimo : String; DescontoAcrescimo : String) ;
+  TipoDescontoAcrescimo : String; DescontoAcrescimo : String;
+  CodDepartamento: Integer) ;
 begin
   ErroAbstract('VendeItem');
 end;

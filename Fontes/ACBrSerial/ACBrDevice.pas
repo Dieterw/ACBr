@@ -209,6 +209,7 @@ TACBrDevice = class( TComponent )
     Procedure SetDefaultValues ;
     Function IsSerialPort : Boolean ;
     Function IsTXTFilePort: Boolean ;
+    Function IsDLLPort: Boolean ;
 
     procedure AcharPortasSeriais( const AStringList : TStrings;
        UltimaPorta : Integer = 64 ) ;
@@ -337,7 +338,7 @@ begin
         raise ;
      end ;
    end
-  else
+  else if IsTXTFilePort then
    begin
       { Tenta Abrir Arquivo/Porta para ver se xiste e está disponivel}
       if IsTXTFilePort and FileExists(Porta) then
@@ -529,7 +530,10 @@ end;
 function TACBrDevice.EmLinha( lTimeOut : Integer) : Boolean;
 var TempoLimite : TDateTime ;
 begin
-  if not IsSerialPort then
+  Result := True;
+  if IsDLLPort then exit;
+
+  if IsTXTFilePort then
   begin
      try
         {$IFDEF ThreadEnviaLPT}
@@ -543,7 +547,7 @@ begin
      exit ;
   end ;
 
-  result := false ;
+  Result := false ;
   if lTimeout < 1 then
      lTimeOut := 1 ;
 
@@ -588,6 +592,14 @@ function TACBrDevice.IsTXTFilePort: Boolean;
 begin
   Result := UpperCase(RightStr(fsPorta,4)) = '.TXT' ;
 end;
+
+function TACBrDevice.IsDLLPort : Boolean ;
+Var
+  AStr : String;
+begin
+  AStr   := UpperCase(copy(Porta,1,3));
+  Result := (pos(AStr,'USB|DLL') > 0) ;
+end ;
 
 procedure TACBrDevice.AcharPortasSeriais(const AStringList : TStrings ;
    UltimaPorta : Integer) ;
@@ -732,12 +744,14 @@ procedure TACBrDevice.EnviaString( const AString: AnsiString);
 begin
   if IsSerialPort then
      EnviaStringSerial( AString )
-  else
+  else if IsTXTFilePort then
+   begin
      {$IFNDEF ThreadEnviaLPT}
        EnviaStringArquivo( AString )
      {$ELSE}
        EnviaStrThread( AString )
      {$ENDIF} ;
+   end ;
 end;
 
 procedure TACBrDevice.EnviaStringSerial(const AString : AnsiString) ;

@@ -61,19 +61,20 @@ TACBrECFEpsonComando = class
     fsTimeOut : Integer;
 
     function GetFrameEnvio: AnsiString;
+    function GetFrameEnvioDLL : AnsiString ;
     procedure SetComando(const Value: AnsiString);
     procedure SetExtensao(const Value: AnsiString);
-    Function InsertEsc(const Campo: AnsiString): AnsiString ;
  public
     constructor create ;
     destructor destroy ; override ;
 
-    property Comando     : AnsiString  write SetComando  ;
-    property Extensao    : AnsiString  write SetExtensao ;
-    property TimeOut     : Integer     read fsTimeOut write fsTimeOut ;
-    property FrameEnvio  : AnsiString  read GetFrameEnvio ;
-    property Params      : TStringList read fsParams ;
-    property Seq         : Byte read fsSeq  ;
+    property Comando      : AnsiString  write SetComando  ;
+    property Extensao     : AnsiString  write SetExtensao ;
+    property TimeOut      : Integer     read fsTimeOut write fsTimeOut ;
+    property FrameEnvio   : AnsiString  read GetFrameEnvio ;
+    property FrameEnvioDLL: AnsiString  read GetFrameEnvioDLL ;
+    property Params       : TStringList read fsParams ;
+    property Seq          : Byte read fsSeq  ;
 
     Procedure AddParamString(AString: AnsiString) ;
     Procedure AddParamInteger(AInteger: Integer) ;
@@ -81,6 +82,8 @@ TACBrECFEpsonComando = class
     Procedure AddParamBool(ABool: Boolean) ;
     Procedure AddParamDateTime(ADateTime: TDateTime;Tipo : Char = 'D'  ) ;
  end ;
+
+{ TACBrECFEpsonResposta }
 
 TACBrECFEpsonResposta = class
   private
@@ -94,9 +97,9 @@ TACBrECFEpsonResposta = class
     fsParams       : TStringList ;
     fsChkSum       : AnsiString ;
 
-    procedure SetResposta(const Value: AnsiString);
-    Function RemoveEsc(const Campo: AnsiString): AnsiString ;
+    procedure SetResposta(const AValue: AnsiString);
     function GetDescRetorno: String;
+    procedure SetRespostaDLL(AValue : AnsiString) ;
  public
     constructor create( AOwner : TACBrECFEpson ) ;
     destructor destroy ; override ;
@@ -117,6 +120,7 @@ TACBrECFEpsonResposta = class
 
 TACBrECFEpson = class( TACBrECFClass )
  private
+    fsUsarDLL: Boolean;
     fsTentaDetectarVelocidade: Boolean;
     fsNumVersao : String ;
     fsIsFBIII   : Boolean;
@@ -144,18 +148,25 @@ TACBrECFEpson = class( TACBrECFClass )
     fsPAF1, fsPAF2 : String ;
     fsEmPagamento : Boolean ;
 
-    xEPSON_Serial_Abrir_Porta : function (dwVelocidade:Integer; wPorta:Integer):Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
-    xEPSON_Serial_Fechar_Porta : function : Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
-    xEPSON_Serial_Obter_Estado_Com : function : Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
-    xEPSON_Obter_Dados_MF_MFD : function (pszInicio:AnsiString; pszFinal:AnsiString;
-       dwTipoEntrada:Integer; dwEspelhos:Integer; dwAtoCotepe:Integer;
-       dwSintegra:Integer; pszArquivoSaida:AnsiString) : Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
+    xEPSON_Serial_Abrir_Porta : function (dwVelocidade:Integer;
+       wPorta:Integer):Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
+    xEPSON_Serial_Fechar_Porta : function : Integer;
+       {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
+    xEPSON_Serial_Obter_Estado_Com : function : Integer;
+       {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
+    xEPSON_Obter_Dados_MF_MFD : function (pszInicio:AnsiString;
+       pszFinal:AnsiString; dwTipoEntrada:Integer; dwEspelhos:Integer;
+       dwAtoCotepe:Integer; dwSintegra:Integer; pszArquivoSaida:AnsiString) :
+       Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
+    xEPSON_Send_From_FileEXX : function (pszLineIn:AnsiString;
+       pszStatus:PAnsiChar; pszLineOut:PAnsiChar ) : Integer;
+       {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
 
     procedure Ativar_Epson ;
-    procedure FechaPortaSerialDLL(const OldAtivo : Boolean) ;
 
     procedure LoadDLLFunctions;
     procedure AbrePortaSerialDLL;
+    procedure FechaPortaSerialDLL(const OldAtivo : Boolean) ;
 
     procedure ZeraCache( ZeraRespostaComando: Boolean = True ) ;
 
@@ -242,6 +253,7 @@ TACBrECFEpson = class( TACBrECFClass )
     Destructor Destroy  ; override ;
 
     procedure Ativar ; override ;
+    procedure Desativar ; override ;
 
     property VerificaChecksum : Boolean read fsVerificaChecksum
        write fsVerificaChecksum ;
@@ -254,7 +266,7 @@ TACBrECFEpson = class( TACBrECFClass )
     Procedure VendeItem( Codigo, Descricao : String; AliquotaECF : String;
        Qtd : Double ; ValorUnitario : Double; ValorDescontoAcrescimo : Double = 0;
        Unidade : String = ''; TipoDescontoAcrescimo : String = '%';
-       DescontoAcrescimo : String = 'D' ) ; override ;
+       DescontoAcrescimo : String = 'D'; CodDepartamento: Integer = -1 ) ; override ;
     Procedure DescontoAcrescimoItemAnterior( ValorDescontoAcrescimo : Double = 0;
        DescontoAcrescimo : String = 'D'; TipoDescontoAcrescimo : String = '%';
        NumItem : Integer = 0 ) ;  override ;
@@ -362,6 +374,8 @@ TACBrECFEpson = class( TACBrECFClass )
  end ;
 
 function EpsonCheckSum(Dados: AnsiString): AnsiString;
+function RemoveEsc(const Campo : AnsiString) : AnsiString ;
+Function InsertEsc(const Campo: AnsiString): AnsiString ;
 
 implementation
 Uses ACBrECF, ACBrConsts,
@@ -376,6 +390,40 @@ function EpsonCheckSum(Dados: AnsiString): AnsiString;
 begin
   Result := IntToHex( SomaAscII(Dados), 4);
 end;
+
+
+function InsertEsc(const Campo: AnsiString): AnsiString;
+Var
+  I : Integer ;
+begin
+  Result := '' ;
+
+  For I := 1 to Length(Campo) do
+  begin
+    if Campo[I] in [#2, #3, #26 .. #31] then
+       Result := Result + ESC ;
+
+    Result := Result + Campo[I];
+  end ;
+end;
+
+function RemoveEsc(const Campo : AnsiString) : AnsiString ;
+Var
+  I, L : Integer ;
+begin
+  Result := '' ;
+  L := Length(Campo);
+  I := 1 ;
+
+  while I <= L do
+  begin
+    if (Campo[I] = ESC) and (I < L) and  (Campo[I+1] in [#2, #3, #26 .. #31]) then
+       Inc(I);
+
+    Result := Result + Campo[I];
+    Inc(I);
+  end ;
+end ;
 
 { -------------------------  TACBrECFEpsonComando -------------------------- }
 constructor TACBrECFEpsonComando.create;
@@ -426,22 +474,9 @@ begin
   AddParamString( Texto ) ;
 end ;
 
-function TACBrECFEpsonComando.InsertEsc(const Campo: AnsiString): AnsiString;
- Var I : Integer ;
-begin
-  Result := '' ;
-
-  For I := 1 to Length(Campo) do
-  begin
-    if Campo[I] in [#2, #3, #26 .. #31] then
-       Result := Result + ESC ;
-
-    Result := Result + Campo[I];
-  end ;
-end;
-
 procedure TACBrECFEpsonComando.SetComando(const Value: AnsiString);
- Var Tamanho : Integer ;
+Var
+  Tamanho : Integer ;
 begin
   if fsSeq >= 255 then
      fsSeq := 129
@@ -477,8 +512,9 @@ begin
 end;
 
 function TACBrECFEpsonComando.GetFrameEnvio: AnsiString;
- Var I : Integer ;
-     ParamsStr : AnsiString ;
+Var
+  I : Integer ;
+  ParamsStr : AnsiString ;
 begin
   { Montando pacote com Parametros }
   ParamsStr := '' ;
@@ -492,13 +528,22 @@ begin
   Result := Result + EpsonCheckSum( Result ) ;
 end;
 
+function TACBrECFEpsonComando.GetFrameEnvioDLL : AnsiString ;
+Var
+  I : Integer ;
+begin
+  Result := AsciiToHex( RemoveEsc(fsComando) )+'|'+AsciiToHex( RemoveEsc(fsExtensao) );
+
+  { Montando pacote com Parametros }
+  For I := 0 to fsParams.Count-1 do
+    Result := Result + '|'+ StringReplace( fsParams[I], '|','/',[rfReplaceAll] ) ;
+end;
+
 
 { ------------------------- TACBrECFEpsonResposta -------------------------- }
 
 constructor TACBrECFEpsonResposta.create( AOwner : TACBrECFEpson );
 begin
-  inherited create ;
-
   fsOwner         := AOwner ;
   fsParams        := TStringList.create ;
   fsSeq           := 0 ;
@@ -516,30 +561,10 @@ begin
   inherited destroy ;
 end;
 
-function TACBrECFEpsonResposta.RemoveEsc(const Campo: AnsiString): AnsiString;
-  Var I : Integer ;
-  Var Pula : Boolean ;
-begin
-  Result := '' ;
-  I      := 1 ;
-  Pula   := True ;
-  while I <= Length(Campo) do
-  begin
-     if (Campo[I] = #27) and Pula then
-        Pula := False
-     else
-      begin
-         Result := Result + Campo[I] ;
-         Pula   := True ;
-      end ;
-
-     Inc( I ) ;
-  end ;
-end;
-
-procedure TACBrECFEpsonResposta.SetResposta(const Value: AnsiString);
-Var Buf : AnsiString ;
-    P   : Integer ;
+procedure TACBrECFEpsonResposta.SetResposta(const AValue: AnsiString);
+Var
+  Buf : AnsiString ;
+  P   : Integer ;
 begin
   fsParams.Clear ;
   fsSeq           := 0 ;
@@ -549,9 +574,15 @@ begin
   fsChkSum        := '' ;
   fsResposta      := '' ;
 
-  if Value = '' then exit ;
+  if AValue = '' then exit ;
 
-  fsResposta := Value ;
+  fsResposta := AValue ;
+
+  if pos('|:|',AValue) = 21 then
+  begin
+     SetRespostaDLL( AValue );
+     exit;
+  end ;
 
   if LeftStr(fsResposta,1) <> STX then
      raise EACBrECFERRO.Create(ACBrStr('Resposta inválida. Não inicia com STX (02)')) ;
@@ -634,6 +665,28 @@ begin
      if fsParams[0] = '' then
         fsParams.Delete(0);   // Remove da pilha Reservado 2, pois não é parametro
 end;
+
+procedure TACBrECFEpsonResposta.SetRespostaDLL(AValue : AnsiString) ;
+Var
+  Status, LineOut : AnsiString ;
+  P : Integer ;
+begin
+  Status  := copy( AValue, 1, 20);
+  LineOut := copy( AValue,24, Length(AValue));
+
+  fsStatusPrinter := StrToInt( '$'+copy(Status, 9,3) );
+  fsStatusFiscal  := StrToInt( '$'+copy(Status,13,4) );
+  fsRetorno       := UpperCase( copy(Status, 17,4) );
+
+  { Quebrando Parametros Separados por | e inserindo-os em fsParams }
+  while LineOut <> '' do
+  begin
+     P := pos('|',LineOut+'|') ;
+
+     fsParams.Add( LeftStr(LineOut,P-1) ) ;
+     LineOut := copy(LineOut,P+1,Length(LineOut)) ;  // Pega próximo bloco
+  end ;
+end ;
 
 
 function TACBrECFEpsonResposta.GetDescRetorno: String;
@@ -913,7 +966,6 @@ begin
 end;
 
 
-
 { ----------------------------- TACBrECFEpson ----------------------------- }
 
 constructor TACBrECFEpson.create( AOwner : TComponent ) ;
@@ -964,6 +1016,7 @@ begin
   xEPSON_Serial_Abrir_Porta := NIL ;
   xEPSON_Serial_Fechar_Porta := NIL ;
   xEPSON_Serial_Obter_Estado_Com := NIL ;
+  xEPSON_Send_From_FileEXX := NIL;
 end;
 
 destructor TACBrECFEpson.Destroy;
@@ -1009,11 +1062,23 @@ end ;
 
 procedure TACBrECFEpson.Ativar;
 begin
-  if not fpDevice.IsSerialPort  then
-     raise EACBrECFERRO.Create(ACBrStr('A impressora: '+fpModeloStr+' requer'+sLineBreak+
-                            'Porta Serial:  (COM1, COM2, COM3, ...)'));
-
   GravaLog( 'ACBrDevice.Ativar' );
+
+  fsUsarDLL := False;
+
+  if fpDevice.IsDLLPort then
+   begin
+     LoadDLLFunctions ;
+     AbrePortaSerialDLL;
+     fsUsarDLL := True;
+   end
+  else
+   begin
+     if not fpDevice.IsSerialPort  then
+        raise EACBrECFERRO.Create(ACBrStr('A impressora: '+fpModeloStr+' requer'+sLineBreak+
+                                'Porta Serial:  (COM1, COM2, COM3, ...)'));
+   end ;
+
   inherited Ativar ; { Abre porta serial }
 
   fsNumVersao := '' ;
@@ -1065,126 +1130,138 @@ begin
 
 end;
 
+procedure TACBrECFEpson.Desativar ;
+begin
+  if fsUsarDLL then
+     try
+        FechaPortaSerialDLL(False);
+     except
+        {Exceção muda pois Porta pode já estar fechada}
+     end ;
+
+  inherited Desativar ;
+end ;
+
 
 Function TACBrECFEpson.EnviaComando_ECF( cmd : AnsiString = '' ) : AnsiString ;
-Var ErroMsg    : String ;
-    OldTimeOut : Integer ;
+Var
+  ErroMsg    : String ;
+  OldTimeOut, Resp : Integer ;
+  aStatus  : array [0..20] of AnsiChar;
+  aLineOut : array [0..4096] of AnsiChar;
 begin
   if cmd <> '' then
      PreparaCmd(cmd) ;  // Ajusta e move para Epsoncomando
 
-  cmd := EpsonComando.FrameEnvio ;
-
-  Result            := '' ;
-  ErroMsg           := '' ;
-  fpComandoEnviado  := '' ;
-  fpRespostaComando := '' ;
-  fsBytesIn         := 0 ;
-  fsByteACK         := 0 ;
-
   EpsonResposta.Resposta := '' ;  // Zera resposta
-  OldTimeOut := TimeOut ;
-  TimeOut    := max(EpsonComando.TimeOut, TimeOut) ;
+  fpComandoEnviado       := '' ;
+  fpRespostaComando      := '' ;
+  Result                 := '' ;
+  ErroMsg                := '' ;
 
-  try
-     fpDevice.Serial.DeadlockTimeout := 2000 ; { Timeout p/ Envio }
+  if fsUsarDLL then
+   begin
+     cmd := EpsonComando.FrameEnvioDLL ;
 
-     { Segundo suporte da Epson, em alguns casos ECF não envia o ACK,
-       enviando diretamente o STX (que é o inicio do Frame de Resposta) }
-     while not (chr(fsByteACK) in [STX,ACK]) do     { Se ACK = 6 Comando foi reconhecido }
-     begin
-        fsByteACK := 0 ;
-        fpDevice.Serial.Purge ;                   { Limpa a Porta }
+     aStatus[0]  := #0; // Zera Buffer de Saida
+     aLineOut[0] := #0;
+     Resp := xEPSON_Send_From_FileEXX( cmd, aStatus, aLineOut ) ;
+     {if Resp <> 0 then
+        raise EACBrECFERRO.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao executar:'+
+           'EPSON_Send_From_FileEXX('+cmd+')' ));}
 
-        if not TransmiteComando( cmd ) then
-           continue ;
+     fpComandoEnviado  := cmd ;
+     fpRespostaComando := TrimRight( aStatus )+'|:|'+TrimRight( aLineOut );
 
-        fpComandoEnviado := cmd ;
+     EpsonResposta.Resposta := fpRespostaComando ;
+   end
+  else
+   begin
+     cmd := EpsonComando.FrameEnvio ;
 
-        if fpDevice.HandShake = hsDTR_DSR then
-           fpDevice.Serial.DTR := True ;  { Liga o DTR para ler a Resposta }
+     fsBytesIn := 0 ;
+     fsByteACK := 0 ;
 
-        if not fpDevice.Serial.CTS then
-           fpDevice.Serial.RTS := false ;
+     OldTimeOut := TimeOut ;
+     TimeOut    := max(EpsonComando.TimeOut, TimeOut) ;
 
-        try
-           { espera ACK chegar na Porta por 1,5s  }
-           try
-              fsByteACK := fpDevice.Serial.RecvByte( 1500 ) ;
-           except
-           end ;
+     try
+        fpDevice.Serial.DeadlockTimeout := 2000 ; { Timeout p/ Envio }
 
-           if fsByteACK = 0 then
-              raise EACBrECFSemResposta.create( ACBrStr(
-                    'Impressora '+fpModeloStr+' não responde (ACK = 0)' ))
-           else if chr(fsByteACK) = NAK then    { retorno em caracter 21d=15h=NACK }
-              raise EACBrECFSemResposta.create( ACBrStr(
-                    'Impressora '+fpModeloStr+' não reconheceu o Comando'+
-                    sLineBreak+' (NACK)') )
-           else if not (chr(fsByteACK) in [STX,ACK]) then
-              raise EACBrECFSemResposta.create( ACBrStr(
-                    'Erro. Resposta da Impressora '+fpModeloStr+' inválida'+
-                    sLineBreak+' (ACK = '+IntToStr(fsByteACK)+')')) ;
-        except
-           on E : EACBrECFSemResposta do
-            begin
-              fpDevice.Serial.Purge ;
-
-              if not DoOnMsgRetentar( E.Message +sLineBreak+sLineBreak+
-                 'Se o problema persistir, verifique os cabos, ou'+sLineBreak+
-                 'experimente desligar a impressora durante 5 seg,'+sLineBreak+
-                 'liga-la novamente, e repetir a operação...'
-                 , 'LerACK') then
-                 raise ;
-            end ;
-           else
-              raise ;
-        end ;
-
-     end ;
-
-     { Chama Rotina da Classe mãe TACBrClass para ler Resposta. Se houver
-       falha na leitura LeResposta dispara Exceçao.
-       Resposta fica gravada na váriavel "fpRespostaComando" }
-     LeResposta ;
-
-{
-     Try
-        EpsonResposta.Resposta := fpRespostaComando ;
-        if EpsonResposta.Seq <> EpsonComando.Seq then
-           raise EACBrECFERRO.Create(ACBrStr('Sequencia de Resposta diferente da enviada')) ;
-
-        fpDevice.Serial.SendByte(ACK);
-
-        ErroMsg := EpsonResposta.DescRetorno ;
-        if ErroMsg <> '' then
-           ErroMsg := 'Erro: '+ EpsonResposta.Retorno+ ' - '+ErroMsg  ;
-     except
-        on E : Exception do
+        { Segundo suporte da Epson, em alguns casos ECF não envia o ACK,
+          enviando diretamente o STX (que é o inicio do Frame de Resposta) }
+        while not (chr(fsByteACK) in [STX,ACK]) do     { Se ACK = 6 Comando foi reconhecido }
         begin
-           fpDevice.Serial.SendByte(NACK);
-           ErroMsg := E.Message ;
+           fsByteACK := 0 ;
+           fpDevice.Serial.Purge ;                   { Limpa a Porta }
+
+           if not TransmiteComando( cmd ) then
+              continue ;
+
+           fpComandoEnviado := cmd ;
+
+           if fpDevice.HandShake = hsDTR_DSR then
+              fpDevice.Serial.DTR := True ;  { Liga o DTR para ler a Resposta }
+
+           if not fpDevice.Serial.CTS then
+              fpDevice.Serial.RTS := false ;
+
+           try
+              { espera ACK chegar na Porta por 1,5s  }
+              try
+                 fsByteACK := fpDevice.Serial.RecvByte( 1500 ) ;
+              except
+              end ;
+
+              if fsByteACK = 0 then
+                 raise EACBrECFSemResposta.create( ACBrStr(
+                       'Impressora '+fpModeloStr+' não responde (ACK = 0)' ))
+              else if chr(fsByteACK) = NAK then    { retorno em caracter 21d=15h=NACK }
+                 raise EACBrECFSemResposta.create( ACBrStr(
+                       'Impressora '+fpModeloStr+' não reconheceu o Comando'+
+                       sLineBreak+' (NACK)') )
+              else if not (chr(fsByteACK) in [STX,ACK]) then
+                 raise EACBrECFSemResposta.create( ACBrStr(
+                       'Erro. Resposta da Impressora '+fpModeloStr+' inválida'+
+                       sLineBreak+' (ACK = '+IntToStr(fsByteACK)+')')) ;
+           except
+              on E : EACBrECFSemResposta do
+               begin
+                 fpDevice.Serial.Purge ;
+
+                 if not DoOnMsgRetentar( E.Message +sLineBreak+sLineBreak+
+                    'Se o problema persistir, verifique os cabos, ou'+sLineBreak+
+                    'experimente desligar a impressora durante 5 seg,'+sLineBreak+
+                    'liga-la novamente, e repetir a operação...'
+                    , 'LerACK') then
+                    raise ;
+               end ;
+              else
+                 raise ;
+           end ;
         end ;
-     end ;
-}
 
-     ErroMsg := EpsonResposta.DescRetorno ;
-     if ErroMsg <> '' then
-      begin
-        ErroMsg := 'Erro retornado pela Impressora: ' + fpModeloStr + sLineBreak+sLineBreak+
-                   'Erro: '+ EpsonResposta.Retorno+ ' - '+ErroMsg  ;
-
-        if EpsonResposta.Retorno = '0304' then
-           DoOnErrorSemPapel
-        else
-           raise EACBrECFSemResposta.create( ACBrStr(ErroMsg) ) ;
-      end
-     else
+        { Chama Rotina da Classe mãe TACBrClass para ler Resposta. Se houver
+          falha na leitura LeResposta dispara Exceçao.
+          Resposta fica gravada na váriavel "fpRespostaComando" }
+        LeResposta ;
+     finally
+        TimeOut := OldTimeOut ;
         Sleep( IntervaloAposComando ) ;  { Pequena pausa entre comandos }
+     end ;
+   end ;
 
-  finally
-     TimeOut := OldTimeOut ;
-  end ;
+  ErroMsg := EpsonResposta.DescRetorno ;
+  if ErroMsg <> '' then
+  begin
+     ErroMsg := 'Erro retornado pela Impressora: ' + fpModeloStr + sLineBreak+sLineBreak+
+                'Erro: '+ EpsonResposta.Retorno+ ' - '+ErroMsg  ;
+
+     if EpsonResposta.Retorno = '0304' then
+        DoOnErrorSemPapel
+     else
+        raise EACBrECFSemResposta.create( ACBrStr(ErroMsg) ) ;
+  end
 end;
 
 Procedure TACBrECFEpson.PreparaCmd(cmd: AnsiString) ;
@@ -1239,6 +1316,12 @@ var
   end ;
 
 begin
+  if fsUsarDLL then
+  begin
+    Result := True;
+    exit;
+  end ;
+
   if chr(fsByteACK) = STX then  // Não houve ACK, ECF mandou STX direto, e STX já foi lido
   begin
     Retorno   := STX + Retorno ;
@@ -1493,7 +1576,7 @@ begin
     except
        on E : Exception do
        begin
-          if (pos('0102',E.Message) <> 0) then
+          if (pos(EpsonResposta.Retorno, '0102|0A13') <> 0)  then
              Result := 0
           else
              raise ;
@@ -1800,7 +1883,7 @@ begin
         Erro := E.Message ;
 
         // Verificando se motivo do Erro foi falta do cancelamento do CDC (Erro 0A15)
-        if (pos('0A15',E.Message) > 0) then
+        if (pos('0A15',Erro) > 0) then
          begin
            TACBrECF(fpOwner).EstornaCCD( True ) ;
 
@@ -1934,7 +2017,8 @@ end;
 Procedure TACBrECFEpson.VendeItem( Codigo, Descricao : String;
   AliquotaECF : String; Qtd : Double ; ValorUnitario : Double;
   ValorDescontoAcrescimo : Double; Unidade : String;
-  TipoDescontoAcrescimo : String; DescontoAcrescimo : String) ;
+  TipoDescontoAcrescimo : String; DescontoAcrescimo : String ;
+  CodDepartamento: Integer) ;
 begin
   with EpsonComando do
   begin
@@ -1962,7 +2046,7 @@ begin
         AddParamInteger( fpDecimaisQtd );
         AddParamInteger( fpDecimaisPreco );
         AddParamBool( ArredondaItemMFD );
-        AddParamString( 'S' );
+        AddParamString( 'N' );
      end ;
   end ;
 
@@ -3253,16 +3337,20 @@ begin
    EpsonFunctionDetect('EPSON_Serial_Abrir_Porta', @xEPSON_Serial_Abrir_Porta);
    EpsonFunctionDetect('EPSON_Serial_Fechar_Porta', @xEPSON_Serial_Fechar_Porta);
    EpsonFunctionDetect('EPSON_Serial_Obter_Estado_Com', @xEPSON_Serial_Obter_Estado_Com);
+   EpsonFunctionDetect('EPSON_Send_From_FileEXX', @xEPSON_Send_From_FileEXX);
 end ;
 
 procedure TACBrECFEpson.AbrePortaSerialDLL ;
 Var
   Porta, Resp : Integer ;
 begin
+  if fsUsarDLL and Ativo then exit;
+
   Porta := StrToIntDef( OnlyNumber( fpDevice.Porta ), 0) ;
 
   GravaLog( 'Desativando ACBrECF' );
-  Ativo := False ;
+  if not fsUsarDLL then
+     Ativo := False ;
 
   GravaLog( 'xEPSON_Serial_Abrir_Porta' );
   Resp := xEPSON_Serial_Abrir_Porta( fpDevice.Baud, Porta ) ;
@@ -3275,6 +3363,8 @@ procedure TACBrECFEpson.FechaPortaSerialDLL(const OldAtivo : Boolean) ;
 var
   Resp : Integer ;
 begin
+  if fsUsarDLL and OldAtivo then exit;
+
   GravaLog( 'xEPSON_Serial_Fechar_Porta' ) ;
   Resp := xEPSON_Serial_Fechar_Porta ;
   if Resp <> 0 then

@@ -558,7 +558,7 @@ TACBrECF = class( TACBrComponent )
     Procedure VendeItem( Codigo, Descricao : String; AliquotaICMS : String;
        Qtd : Double ; ValorUnitario : Double; ValorDescontoAcrescimo : Double = 0;
        Unidade : String = ''; TipoDescontoAcrescimo : String = '%';
-       DescontoAcrescimo : String = 'D' ) ;
+       DescontoAcrescimo : String = 'D'; CodDepartamento: Integer = -1 ) ;
     Procedure DescontoAcrescimoItemAnterior( ValorDescontoAcrescimo : Double = 0;
        DescontoAcrescimo : String = 'D'; TipoDescontoAcrescimo : String = '%';
        NumItem : Integer = 0 ) ;
@@ -2443,7 +2443,8 @@ end;
 { Vende o Item }
 procedure TACBrECF.VendeItem(Codigo, Descricao: String; AliquotaICMS : String ;
   Qtd: Double; ValorUnitario: Double; ValorDescontoAcrescimo: Double;
-  Unidade: String; TipoDescontoAcrescimo : String; DescontoAcrescimo : String);
+  Unidade: String; TipoDescontoAcrescimo : String; DescontoAcrescimo : String ;
+  CodDepartamento: Integer);
 Var
   AliquotaECF : String ;
   Aliquota    : TACBrECFAliquota ;
@@ -2508,7 +2509,8 @@ begin
                      AliquotaICMS+' , '+FloatToStr(Qtd)+' , '+
                      FloatToStr(ValorUnitario)+' , '+
                      FloatToStr(ValorDescontoAcrescimo)+' , '+Unidade+' , '+
-                     TipoDescontoAcrescimo+' , '+DescontoAcrescimo+' )';
+                     TipoDescontoAcrescimo+' , '+DescontoAcrescimo+
+                     ' , '+IntToStr(CodDepartamento)+' )';
 
   if Assigned( fOnAntesVendeItem ) then
      fOnAntesVendeItem( Codigo, Descricao, AliquotaECF, Qtd, ValorUnitario,
@@ -2520,7 +2522,7 @@ begin
      fsECF.VendeItem( Codigo, CodificarPaginaDeCodigoECF( Descricao ),
                       AliquotaECF, Qtd, ValorUnitario,
                       ValorDescontoAcrescimo, Unidade, TipoDescontoAcrescimo,
-                      DescontoAcrescimo );
+                      DescontoAcrescimo, CodDepartamento );
   except
      if Assigned( FOnErrorVendeItem ) then
         FOnErrorVendeItem(Tratado);

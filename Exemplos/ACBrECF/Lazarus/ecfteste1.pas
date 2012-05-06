@@ -734,6 +734,9 @@ end ;
 
 procedure TForm1.AtualizaMemos(VerificaEstado : Boolean = true) ;
 begin
+  if not ACBrECF1.Ativo then
+     exit ;
+
   mEnviado.Text := Converte( ACBrECF1.ComandoEnviado );
   mResp.Lines.Add( Converte( ACBrECF1.RespostaComando) );
   mResp.Lines.Add('- + - + - + - + - + - + - + - + - + - + - + -') ;

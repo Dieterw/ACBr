@@ -245,7 +245,7 @@ end;
 
 procedure TForm1.btGerarXMLeECFc1Click(Sender : TObject) ;
 var
-   ArqXML, ChavePub : String ;
+  ChavePub : String ;
 begin
   OpenDialog1.Filter := 'xml|*.xml';
   if OpenDialog1.Execute then

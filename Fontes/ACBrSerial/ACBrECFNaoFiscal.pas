@@ -349,7 +349,7 @@ TACBrECFNaoFiscal = class( TACBrECFClass )
     Procedure VendeItem( Codigo, Descricao : String; AliquotaECF : String;
        Qtd : Double ; ValorUnitario : Double; ValorDescontoAcrescimo : Double = 0;
        Unidade : String = ''; TipoDescontoAcrescimo : String = '%';
-       DescontoAcrescimo : String = 'D' ) ; override ;
+       DescontoAcrescimo : String = 'D'; CodDepartamento: Integer = -1 ) ; override ;
     Procedure SubtotalizaCupom( DescontoAcrescimo : Double = 0;
        MensagemRodape : AnsiString  = '' ) ; override ;
     Procedure EfetuaPagamento( CodFormaPagto : String; Valor : Double;
@@ -1301,7 +1301,8 @@ end;
 Procedure TACBrECFNaoFiscal.VendeItem( Codigo, Descricao : String;
   AliquotaECF : String; Qtd : Double ; ValorUnitario : Double;
   ValorDescontoAcrescimo : Double; Unidade : String;
-  TipoDescontoAcrescimo : String; DescontoAcrescimo : String) ;
+  TipoDescontoAcrescimo : String; DescontoAcrescimo : String ;
+  CodDepartamento: Integer) ;
 Var PosAliq : Integer ;
     Aliq : TACBrECFNaoFiscalAliquota ;
     ItemCupom : TACBrECFNaoFiscalItemCupom ;

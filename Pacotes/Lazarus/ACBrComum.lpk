@@ -29,7 +29,7 @@
     <License Value="LGPL
 "/>
     <Version Minor="9"/>
-    <Files Count="8">
+    <Files Count="9">
       <Item1>
         <Filename Value="..\..\Fontes\ACBrComum\ACBrBase.pas"/>
         <UnitName Value="ACBrBase"/>
@@ -63,6 +63,10 @@
         <Filename Value="..\..\Fontes\ACBrComum\ACBrPAFClass.pas"/>
         <UnitName Value="ACBrPAFClass"/>
       </Item8>
+      <Item9>
+        <Filename Value="..\..\Fontes\ACBrComum\OpenSSL.pas"/>
+        <UnitName Value="OpenSSL"/>
+      </Item9>
     </Files>
     <Type Value="RunAndDesignTime"/>
     <RequiredPkgs Count="2">
@@ -82,5 +86,8 @@
       <Version Value="2"/>
       <IgnoreBinaries Value="False"/>
     </PublishOptions>
+    <CustomOptions Items="ExternHelp" Version="2">
+      <_ExternHelp Items="Count"/>
+    </CustomOptions>
   </Package>
 </CONFIG>

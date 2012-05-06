@@ -187,7 +187,7 @@ TACBrECFDaruma = class( TACBrECFClass )
     Procedure VendeItem( Codigo, Descricao : String; AliquotaECF : String;
        Qtd : Double ; ValorUnitario : Double; ValorDescontoAcrescimo : Double = 0;
        Unidade : String = ''; TipoDescontoAcrescimo : String = '%';
-       DescontoAcrescimo : String = 'D' ) ; override ;
+       DescontoAcrescimo : String = 'D'; CodDepartamento: Integer = -1 ) ; override ;
     Procedure DescontoAcrescimoItemAnterior( ValorDescontoAcrescimo : Double = 0;
        DescontoAcrescimo : String = 'D'; TipoDescontoAcrescimo : String = '%';
        NumItem : Integer = 0 ) ;  override ;
@@ -2112,7 +2112,8 @@ end;
 Procedure TACBrECFDaruma.VendeItem( Codigo, Descricao : String;
   AliquotaECF : String; Qtd : Double ; ValorUnitario : Double;
   ValorDescontoAcrescimo : Double; Unidade : String;
-  TipoDescontoAcrescimo : String; DescontoAcrescimo : String) ;
+  TipoDescontoAcrescimo : String; DescontoAcrescimo : String ;
+  CodDepartamento: Integer) ;
 Var
   QtdStr, ValorStr, DescontoStr, SepDec, FlagDesc, ModoCalculo : String;
   LenQtd : Integer ;

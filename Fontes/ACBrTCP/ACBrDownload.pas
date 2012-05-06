@@ -51,26 +51,13 @@ interface
 
 uses
   SysUtils, Classes,
-  ACBrBase, ACBrDownloadClass, ACBrHTTPDownload, ACBrFTPDownload,
-  blcksock;
+  ACBrBase, ACBrDownloadClass ;
 
 const
    CACBrDownload_Versao = '1.0.0';
 
 type
   TACBrProtocolo = (protNenhum, protHTTP, protFTP);
-
-  TACBrHookMonitor = procedure(Sender: TObject; const BytesToDownload: Integer;
-     const BytesDownloaded: Integer; const AverageSpeed: Double;
-     const Hour: Word; const Min: Word; const Sec: Word) of object;
-
-  TACBrHookStatus = procedure(Sender: TObject; Reason: THookSocketReason;
-     const BytesToDownload: Integer; const BytesDownloaded: Integer) of object;
-  TACBrDownloadStatus = procedure(Sender: TObject;
-     const DownloadStatus: TDownloadStatus) of object;
-
-  TACBrBeforeDownload = procedure(Sender: TObject) of object;
-  TACBrAfterDownload = procedure(Sender: TObject) of object;
 
   TACBrDownload = class(TACBrComponent)
   private
@@ -128,6 +115,8 @@ type
   end;
 
 implementation
+
+Uses ACBrHTTPDownload, ACBrFTPDownload ;
 
 {$IFNDEF FPC}
  {$R ACBrDownload.dcr}

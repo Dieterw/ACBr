@@ -562,7 +562,7 @@ begin
     SL.Add( '  </chave>' );
     SL.Add( '</empresa_desenvolvedora>' ) ;
 
-    Result := SL.Text;
+    Result := AnsiString(SL.Text);
   finally
     SL.Free;
   end ;
@@ -833,7 +833,7 @@ begin
   // Procurando por ultimo EAD //
   MS.Seek(-259,soFromEnd);    // 259 = Tamanho da Linha EAD
   MS.Read(Buffer, 259 );
-  Result := UpperCase( Trim(Buffer) );
+  Result := AnsiString( UpperCase( Trim( String( Buffer ) ) ) );
 
   // Removendo o EAD do MemoryStream //
   if copy(Result,1,3) = 'EAD' then

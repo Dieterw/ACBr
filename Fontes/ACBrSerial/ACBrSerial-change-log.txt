@@ -97,6 +97,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 08/05/2012
+-- ACBrECFDaruma --
+[-] Corrigido bug de detecção de Tipo de ECF durante processo de Ativação, no
+    caso de falha de comunicação seguido de nova tenativa (Retentar Ativado)
+    (por: DSA)
+
 Data: 06/05/2012
 -- ACBrECF --
 [*] Método ACBrECF.VendeItem modificado inserindo um novo parâmetro:

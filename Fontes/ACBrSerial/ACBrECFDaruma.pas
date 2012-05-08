@@ -751,7 +751,10 @@ begin
   fsSubModeloECF := '';
 
   try
-     { Testando a comunicaçao com a porta e se é MFD }
+     { Testando a comunicaçao com a porta }
+     Estado;
+
+     { Testando se é MFD }
      if NumVersao = '' then
         raise EACBrECFNaoInicializado.Create( ACBrStr(
                  'Erro inicializando a impressora '+fpModeloStr ));

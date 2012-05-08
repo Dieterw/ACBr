@@ -48,6 +48,12 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Versão 1.01   08/05/2012
+-- ACBrSPEDFiscal --
+  [+] Implementação do método TRegistro0450List.LocalizaRegistro; (por rubenshs)
+  [*] Não se pode gerar o registro E116 na vlVersao101; (por rubenshs)
+veja: http://www.djsystem.com.br/acbr/forum/viewtopic.php?p=29573
+
 Versão 1.01   16/04/2012
 -- ACBrSPEDFiscal --
 [*] Modificado a maneira de como foi implementado os eventos no componente, 

@@ -189,7 +189,7 @@ begin
     begin
       FTimer.Enabled := False;
       Application.MessageBox(
-        PAnsiChar('Ocorreu o seguinte erro: '#13 + E.Message),
+        PWideChar('Ocorreu o seguinte erro: '#13 + E.Message),
         'Erro',
         MB_ICONERROR + MB_OK
       );

@@ -38,6 +38,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+08/05/2012
+-- ACBrBase --
+[+] Remoção de warning do ACBrBase para métodos deprecated.
+    (por: Regys Silveira)
+
 06/05/2012
 -- ACBrEAD --
 [+] Adicionado método: Function RemoveEAD( MS : TMemoryStream ) : AnsiString;

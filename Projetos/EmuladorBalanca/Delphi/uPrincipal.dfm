@@ -49,7 +49,6 @@ object frmPrincipal: TfrmPrincipal
       Width = 135
       Height = 21
       Style = csDropDownList
-      ItemHeight = 13
       TabOrder = 0
       Items.Strings = (
         'COM1'

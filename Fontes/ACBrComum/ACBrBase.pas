@@ -242,13 +242,23 @@ begin
   fsEnabled := Value;
 
   if Value then
-   begin
-     if Suspended then Resume ;
-   end
-  else
-    {$IFNDEF CONSOLE}
-     if not Suspended then Suspend ;
+  begin
+    {$IFDEF DELPHI12_UP}
+      if Suspended then Start ;
+    {$ELSE}
+      if Suspended then Resume ;
     {$ENDIF}
+  end
+  else
+  begin
+    {$IFNDEF CONSOLE}
+      {$IFDEF DELPHI12_UP}
+        if not Suspended then Terminate ;
+      {$ELSE}
+        if not Suspended then Suspend ;
+      {$ENDIF}
+    {$ENDIF}
+  end;
 end;
 
 procedure TACBrThreadTimer.SetInterval(const Value: Integer);

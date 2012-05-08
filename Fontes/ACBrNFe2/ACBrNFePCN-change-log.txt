@@ -47,6 +47,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Alterações   08/05/12 (juaumkiko)
+---------------
+[-] Correção de memory leak. 
+    Incluído destructor da classe TNFeCartaCorrecao.
 
 Alterações   15/03/12 (Regys Silveira)
 ---------------

@@ -400,6 +400,7 @@ type
     FCCeRetorno: TRetCCeNFe;
   public
     constructor Create(AOwner : TComponent; ACCe : TCCeNFe);reintroduce;
+    destructor Destroy; override;
     function Executar: Boolean; override;
 
     property idLote: Integer               read FidLote      write FidLote;
@@ -2872,6 +2873,13 @@ begin
   FCCe := ACCe;
 end;
 
+destructor TNFeCartaCorrecao.Destroy;
+begin
+  if Assigned(FCCeRetorno) then
+     FCCeRetorno.Free;
+  inherited;
+end;
+
 function TNFeCartaCorrecao.Executar: Boolean;
 var
   aMsg: string;
@@ -2924,6 +2932,7 @@ begin
      ReqResp.UseUTF8InHeader := True;
      ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/nfe/wsdl/RecepcaoEvento';
   {$ENDIF}
+
   try
     TACBrNFe( FACBrNFe ).SetStatus( stNFeCCe );
     FPathArqEnv := IntToStr(FCCe.idLote)+ '-ped-cce.xml';
@@ -3039,7 +3048,7 @@ begin
                  FConfiguracoes.Geral.Save(FCCe.Evento.Items[i].InfEvento.chNFe + '-ProcEventoNFe.xml', wProc.Text);
               if FConfiguracoes.Arquivos.Salvar then
                  FConfiguracoes.Geral.Save(FCCe.Evento.Items[i].InfEvento.chNFe + '-ProcEventoNFe.xml', wProc.Text, FConfiguracoes.Arquivos.GetPathCCe);
-              wProc.Free;                 
+              wProc.Free;
               break;
             end;
          end;

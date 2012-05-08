@@ -631,6 +631,12 @@ var
   intFor: integer;
   strIND_PROC: AnsiString;
 begin
+
+  if FBloco_0.Registro0000.COD_VER = vlVersao101 then
+  begin
+    Exit;
+  end;
+
   if Assigned( RegE110.RegistroE116 ) then
   begin
      for intFor := 0 to RegE110.RegistroE116.Count - 1 do
@@ -645,6 +651,7 @@ begin
            opOutros:          strIND_PROC := '9';
            opNenhum:          strIND_PROC := '';
           end;
+
           if FBloco_0.Registro0000.COD_VER = vlVersao102 then
           begin
              Add( LFill('E116') +

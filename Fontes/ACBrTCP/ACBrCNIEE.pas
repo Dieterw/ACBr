@@ -294,6 +294,7 @@ function TACBrCNIEE.BuscarECF(const AMarca,
   AModelo, AVersaoSB: String): TACBrCNIEERegistro;
 var
   I: Integer;
+  Marca, Modelo, VersaoSB: String;
   MarcaAtual, ModeloAtual, VersaoAtual: String;
 begin
   if Trim(AMarca) = '' then
@@ -302,16 +303,25 @@ begin
   if Trim(AModelo) = '' then
     raise EACBrCNIEE.Create( ACBrStr('Modelo não foi informado.') );
 
+  // abrir a tabela se estiver fechada
+  if Cadastros.Count <= 0 then
+  begin
+    if not Self.AbrirTabela then
+      raise EACBrCNIEE.Create('Não foi possível abrir a tabela de CNIEE.');
+  end;
+
+  Marca    := AnsiUpperCase(AMarca);
+  Modelo   := AnsiUpperCase(AModelo);
+  VersaoSB := AnsiUpperCase(ACBrUtil.OnlyNumber(AVersaoSB));
+
   Result := nil;
   for I := 0 to Cadastros.Count - 1 do
   begin
     MarcaAtual  := AnsiUpperCase(Cadastros[I].DescrMarca);
     ModeloAtual := AnsiUpperCase(Cadastros[I].DescrModelo);
-    VersaoAtual := AnsiUpperCase(Cadastros[I].Versao);
+    VersaoAtual := AnsiUpperCase(ACBrUtil.OnlyNumber(Cadastros[I].Versao));
 
-    if (MarcaAtual = AnsiUpperCase(AMarca)) and
-       (ModeloAtual = AnsiUpperCase(AModelo)) and
-       (VersaoAtual = AnsiUpperCase(AVersaoSB)) then
+    if (MarcaAtual = Marca) and (ModeloAtual = Modelo) and (VersaoAtual = VersaoSB) then
     begin
       Result := Cadastros[I];
       Exit;

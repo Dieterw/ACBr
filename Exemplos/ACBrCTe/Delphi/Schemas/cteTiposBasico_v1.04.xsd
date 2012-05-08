@@ -1883,7 +1883,7 @@ Onde v9.99 é a a designação genérica para a versão do arquivo. Por exemplo,
 													<xs:simpleType>
 														<xs:restriction base="xs:string">
 															<xs:whiteSpace value="preserve"/>
-															<xs:pattern value="1\.04"/>
+															<xs:pattern value="1\.(0[4-9]|[1-9][0-9])"/>
 														</xs:restriction>
 													</xs:simpleType>
 												</xs:attribute>

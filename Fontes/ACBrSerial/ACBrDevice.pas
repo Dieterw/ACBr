@@ -338,7 +338,7 @@ begin
         raise ;
      end ;
    end
-  else if IsTXTFilePort then
+  else if not IsDLLPort then
    begin
       { Tenta Abrir Arquivo/Porta para ver se xiste e está disponivel}
       if IsTXTFilePort and FileExists(Porta) then
@@ -744,7 +744,8 @@ procedure TACBrDevice.EnviaString( const AString: AnsiString);
 begin
   if IsSerialPort then
      EnviaStringSerial( AString )
-  else if IsTXTFilePort then
+
+  else if not IsDLLPort then
    begin
      {$IFNDEF ThreadEnviaLPT}
        EnviaStringArquivo( AString )

@@ -97,6 +97,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 09/05/2012
+-- ACBrDevice --
+[-] Correção de Bug introduzido na rev.3516, impedindo o uso de portas Paralelas
+    ou Arquivos TXT    (por: DSA)
+
 Data: 08/05/2012
 -- ACBrECFDaruma --
 [-] Corrigido bug de detecção de Tipo de ECF durante processo de Ativação, no

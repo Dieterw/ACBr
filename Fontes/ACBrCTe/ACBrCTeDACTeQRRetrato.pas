@@ -2032,11 +2032,11 @@ begin
   qrlSerie3.Caption  := FormatFloat( '000', FCTe.Ide.serie);
   qrlNumCte3.Caption := FormatFloat( '000,000,000', FCTe.Ide.nCT );
 
-  // Incluido por Italo em 27/04/2011 / 04/07/2011
+  // Incluido/Aterado por Italo em 27/04/2011 / 04/07/2011 / 10/05/2012
   // TpcteTipoCTe = (tcNormal, tcComplemento, tcAnulacao, tcSubstituto);
-  if (FCTe.Ide.tpCTe = tcNormal) and PrintBand
+  if PrintBand
    then begin
-    qrb_18_Recibo.Enabled := (FCTe.Ide.modal <> mdAereo) and (FPosRecibo = prRodape);
+    qrb_18_Recibo.Enabled := (FCTe.Ide.tpCTe = tcNormal) and (FCTe.Ide.modal <> mdAereo) and (FPosRecibo = prRodape);
     if qrb_18_Recibo.Enabled
      then qrb_18_Recibo.Height  := 68
      else qrb_18_Recibo.Height  := 0;

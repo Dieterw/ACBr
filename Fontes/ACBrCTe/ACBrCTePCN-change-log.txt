@@ -48,6 +48,15 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   10/05/2012 (Italo Jurisato Junior)
+---------------
+[-] Ao gerar um CTe com destinatário do exterior estava fixo o código do Páis = 1058
+    problema corrigido.
+    Ao emitir um DACTE de um CTe de Complemento estava aparecendo o Recibo na parte
+    inferior da folha.
+    No caso de CTe de Complemento o Recibo não é impresso em nenhum lugar.
+    Problema tambem resolvido.
+
 Alterações   02/05/2012 (Italo Jurisato Junior)
 ---------------
 [*] Foi criado a pasta ...\Fontes\ACBrCTe\DACTE_QR3 e dentro dela encontra-se

@@ -490,7 +490,7 @@ begin
   Gerador.wCampo(tcStr, '#053', 'UF     ', 02, 02, 1, xUF, DSC_UF);
   if not ValidarUF(xUF) then
     Gerador.wAlerta('#053', 'UF', DSC_UF, ERR_MSG_INVALIDO);
-  Gerador.wCampo(tcInt, '#054', 'cPais  ', 04, 04, 0, CODIGO_BRASIL, DSC_CPAIS); // Conforme NT-2009/01
+  Gerador.wCampo(tcInt, '#054', 'cPais  ', 04, 04, 0, CTe.Ide.Toma4.EnderToma.cPais, DSC_CPAIS); // Conforme NT-2009/01
   Gerador.wCampo(tcStr, '#055', 'xPais  ', 01, 60, 0, CTe.Ide.Toma4.EnderToma.xPais, DSC_XPAIS);
   Gerador.wGrupo('/enderToma');
 end;
@@ -725,7 +725,7 @@ begin
   Gerador.wCampo(tcStr, '#127', 'UF      ', 02, 02, 1, xUF, DSC_UF);
   if not ValidarUF(xUF) then
     Gerador.wAlerta('#127', 'UF', DSC_UF, ERR_MSG_INVALIDO);
-  Gerador.wCampo(tcInt, '#128', 'cPais   ', 04, 04, 0, CODIGO_BRASIL, DSC_CPAIS); // Conforme NT-2009/01
+  Gerador.wCampo(tcInt, '#128', 'cPais   ', 04, 04, 0, CTe.Rem.EnderReme.cPais, DSC_CPAIS); // Conforme NT-2009/01
   Gerador.wCampo(tcStr, '#129', 'xPais   ', 01, 60, 0, CTe.Rem.EnderReme.xPais, DSC_XPAIS);
   Gerador.wGrupo('/enderReme');
 end;
@@ -878,7 +878,7 @@ begin
   Gerador.wCampo(tcStr, '#181', 'UF      ', 02, 02, 1, xUF, DSC_UF);
   if not ValidarUF(xUF) then
     Gerador.wAlerta('#181', 'UF', DSC_UF, ERR_MSG_INVALIDO);
-  Gerador.wCampo(tcInt, '#182', 'cPais   ', 04, 04, 0, CODIGO_BRASIL, DSC_CPAIS); // Conforme NT-2009/01
+  Gerador.wCampo(tcInt, '#182', 'cPais   ', 04, 04, 0, CTe.Exped.EnderExped.cPais, DSC_CPAIS); // Conforme NT-2009/01
   Gerador.wCampo(tcStr, '#183', 'xPais   ', 01, 60, 0, CTe.Exped.EnderExped.xPais, DSC_XPAIS);
   Gerador.wGrupo('/enderExped');
 end;
@@ -937,7 +937,7 @@ begin
   Gerador.wCampo(tcStr, '#199', 'UF      ', 02, 02, 1, xUF, DSC_UF);
   if not ValidarUF(xUF) then
     Gerador.wAlerta('#199', 'UF', DSC_UF, ERR_MSG_INVALIDO);
-  Gerador.wCampo(tcInt, '#200', 'cPais   ', 04, 04, 0, CODIGO_BRASIL, DSC_CPAIS); // Conforme NT-2009/01
+  Gerador.wCampo(tcInt, '#200', 'cPais   ', 04, 04, 0, CTe.Receb.EnderReceb.cPais, DSC_CPAIS); // Conforme NT-2009/01
   Gerador.wCampo(tcStr, '#201', 'xPais   ', 01, 60, 0, CTe.Receb.EnderReceb.xPais, DSC_XPAIS);
   Gerador.wGrupo('/enderReceb');
 end;
@@ -1001,7 +1001,7 @@ begin
   Gerador.wCampo(tcStr, '#218', 'UF     ', 02, 02, 1, xUF, DSC_UF);
   if not ValidarUF(xUF) then
     Gerador.wAlerta('#218', 'UF', DSC_UF, ERR_MSG_INVALIDO);
-  Gerador.wCampo(tcInt, '#219', 'cPais  ', 04, 04, 0, CODIGO_BRASIL, DSC_CPAIS); // Conforme NT-2009/01
+  Gerador.wCampo(tcInt, '#219', 'cPais  ', 04, 04, 0, CTe.Dest.EnderDest.cPais, DSC_CPAIS); // Conforme NT-2009/01
   Gerador.wCampo(tcStr, '#220', 'xPais  ', 01, 60, 0, CTe.Dest.EnderDest.xPais, DSC_XPAIS);
   Gerador.wGrupo('/enderDest');
 end;

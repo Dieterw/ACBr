@@ -61,8 +61,10 @@ type
     function GerarRegistroHeader240(NumeroRemessa : Integer): String; override;
     function GerarRegistroTransacao240(ACBrTitulo : TACBrTitulo): String; override;
     function GerarRegistroTrailler240(ARemessa : TStringList): String;  override;
+    procedure LerRetorno240(ARetorno: TStringList); override;
+    function CodMotivoRejeicaoToDescricao(const TipoOcorrencia: TACBrTipoOcorrencia; CodMotivo: Integer): string; override;
 
-    procedure LerRetorno240(ARetorno:TStringList); override;
+    function CodOcorrenciaToTipo(const CodOcorrencia: Integer): TACBrTipoOcorrencia; override;
    end;
 
 implementation
@@ -219,7 +221,6 @@ begin
       case TipoInscricao of
          pFisica  : ATipoInscricao := '1';
          pJuridica: ATipoInscricao := '2';
-         pOutras  : ATipoInscricao := '3';
       end;
 
           { GERAR REGISTRO-HEADER DO ARQUIVO }
@@ -237,8 +238,8 @@ begin
                padL(CodigoCedente, 6, ' ')             + //59 a 64 - Código Cedente (Código do Convênio no Banco)
                padL('', 7, '0')                        + //65 a 71 - Uso Exclusivo CAIXA
                '0'                                     + //72 - Uso Exclusivo CAIXA
-               padR(Nome, 30, ' ')                     + //73 a 102 - Nome do cedente
-               padR('CAIXA ECONOMICA FEDERAL', 30, ' ') + //103 a 132 - Nome do banco
+               padL(Nome, 30, ' ')                     + //73 a 102 - Nome do cedente
+               padL('CAIXA ECONOMICA FEDERAL', 30, ' ') + //103 a 132 - Nome do banco
                padL('', 10, ' ')                       + //133 a 142 - Uso exclusivo FEBRABAN/CNAB
                '1'                                     + //143 - Código de Remessa (1) / Retorno (2)
                FormatDateTime('ddmmyyyy', Now)         + //144 a 151 - Data do de geração do arquivo
@@ -301,7 +302,6 @@ begin
       case ACBrBoleto.Cedente.TipoInscricao of
          pFisica  : ATipoInscricao := '1';
          pJuridica: ATipoInscricao := '2';
-         pOutras  : ATipoInscricao := '9';
       end;
 
       {Pegando o Tipo de Ocorrencia}
@@ -394,7 +394,7 @@ begin
                padL(SeuNumero, 25, ' ')                                   + //196 a 220 - Identificação do título na empresa
                IfThen((DataProtesto <> null) and (DataProtesto > Vencimento), '1', '3') + //221 - Código de protesto: Protestar em XX dias corridos
                IfThen((DataProtesto <> null) and (DataProtesto > Vencimento),
-                    padL(IntToStr(DaysBetween(DataProtesto, Vencimento)), 2, '0'), '00') + //222 a 223 - Prazo para protesto (em dias corridos)
+                    padR(IntToStr(DaysBetween(DataProtesto, Vencimento)), 2, '0'), '00') + //222 a 223 - Prazo para protesto (em dias corridos)
                '2'                                                        + //224 - Código para baixa/devolução: Não baixar/não devolver
                padL('',3,'0')                                             + //225 a 227 - Prazo para baixa/devolução (em dias corridos)
                '09'                                                       + //228 a 229 - Código da moeda: Real
@@ -468,7 +468,7 @@ var
 begin
    ContLinha := 0;
 
-   if (copy(ARetorno.Strings[0],143,1) <> '2') then
+   if (copy(ARetorno.Strings[0],1,3) <> '104') then
       raise Exception.Create(ACBrStr(ACBrBanco.ACBrBoleto.NomeArqRetorno +
                              'não é um arquivo de retorno do '+ Nome));
 
@@ -476,7 +476,7 @@ begin
    rAgencia := trim(Copy(ARetorno[0],53,5));
    rConta   := trim(Copy(ARetorno[0],59,5));
    rDigitoConta := Copy(ARetorno[0],64,1);
-
+   ACBrBanco.ACBrBoleto.NumeroArquivo := StrToIntDef(Copy(ARetorno[0], 158, 6), 0);
 
    ACBrBanco.ACBrBoleto.DataArquivo   := StringToDateTimeDef(Copy(ARetorno[1],192,2)+'/'+
                                                              Copy(ARetorno[1],194,2)+'/'+
@@ -516,7 +516,7 @@ begin
          1: Cedente.TipoInscricao:= pFisica;
          2: Cedente.TipoInscricao:= pJuridica;
          else
-            Cedente.TipoInscricao := pOutras;
+            Cedente.TipoInscricao:= pJuridica;
       end;
 
       ACBrBanco.ACBrBoleto.ListadeBoletos.Clear;
@@ -572,7 +572,18 @@ begin
          ValorDespesaCobranca := StrToFloatDef(Copy(Linha,108,15),0)/100;
          ValorOutrasDespesas  := StrToFloatDef(Copy(Linha,108,15),0)/100;
 
-        end;//if Copy(Linha,14,1)= 'U' then //segmento U
+        end
+        else
+          if Copy(Linha, 14, 1) = 'W' then //segmento W
+          begin
+            //verifica o motivo de rejeição
+            MotivoRejeicaoComando.Add(copy(Linha,29,2));
+            DescricaoMotivoRejeicaoComando.Add(CodMotivoRejeicaoToDescricao(
+                                               CodOcorrenciaToTipo(
+                                                StrToIntDef(copy(Linha, 16, 2), 0)),
+              StrToInt(Copy(Linha, 29, 2))));
+          end;
+
 
 
       end; //with
@@ -580,6 +591,143 @@ begin
 
    end; //for
 
+end;
+function TACBrCaixaEconomica.CodOcorrenciaToTipo(
+  const CodOcorrencia: Integer): TACBrTipoOcorrencia;
+begin
+  case CodOcorrencia of
+    02: Result := toRetornoRegistroConfirmado;
+    03: Result := toRetornoRegistroRecusado;
+    06: Result := toRetornoLiquidado;
+    12: Result := toRetornoAbatimentoConcedido;
+    13: Result := toRetornoAbatimentoCancelado;
+    14: Result := toRetornoVencimentoAlterado;
+    19: Result := toRetornoRecebimentoInstrucaoProtestar;
+    20: Result := toRetornoRecebimentoInstrucaoSustarProtesto;
+    26: Result := toRetornoInstrucaoRejeitada;
+    28: Result := toRetornoDebitoTarifas;
+    30: Result := toRetornoALteracaoOutrosDadosRejeitada;
+    45: Result := toRetornoRecebimentoInstrucaoAlterarDados;
+  else
+    Result := toRetornoOutrasOcorrencias;
+  end;
+end;
+
+function TACBrCaixaEconomica.CodMotivoRejeicaoToDescricao(const TipoOcorrencia: TACBrTipoOcorrencia; CodMotivo: Integer): string;
+begin
+  case TipoOcorrencia of
+    toRetornoRegistroConfirmado,
+      toRetornoRegistroRecusado,
+      toRetornoInstrucaoRejeitada,
+      toRetornoALteracaoOutrosDadosRejeitada:
+      case CodMotivo of
+        01: Result := '01-Código do banco inválido';
+        02: Result := '02-Código do registro inválido';
+        03: Result := '03-Código do segmento inválido';
+        05: Result := '05-Código de movimento inválido';
+        06: Result := '06-Tipo/número de inscrição do cedente inválido';
+        07: Result := '07-Agência/Conta/DV inválido';
+        08: Result := '08-Nosso número inválido';
+        09: Result := '09-Nosso número duplicado';
+        10: Result := '10-Carteira inválida';
+        11: Result := '11-Forma de cadastramento do título inválido';
+        12: Result := '12-Tipo de documento inválido';
+        13: Result := '13-Identificação da emissão do bloqueto inválida';
+        14: Result := '14-Identificação da distribuição do bloqueto inválida';
+        15: Result := '15-Características da cobrança incompatíveis';
+        16: Result := '16-Data de vencimento inválida';
+        20: Result := '20-Valor do título inválido';
+        21: Result := '21-Espécie do título inválida';
+        23: Result := '23-Aceite inválido';
+        24: Result := '24-Data da emissão inválida';
+        26: Result := '26-Código de juros de mora inválido';
+        27: Result := '27-Valor/Taxa de juros de mora inválido';
+        28: Result := '28-Código do desconto inválido';
+        29: Result := '29-Valor do desconto maior ou igual ao valor do título';
+        30: Result := '30-Desconto a conceder não confere';
+        32: Result := '32-Valor do IOF inválido';
+        33: Result := '33-Valor do abatimento inválido';
+        37: Result := '37-Código para protesto inválido';
+        38: Result := '38-Prazo para protesto inválido';
+        40: Result := '40-Título com ordem de protesto emitida';
+        42: Result := '42-Código para baixa/devolução inválido';
+        43: Result := '43-Prazo para baixa/devolução inválido';
+        44: Result := '44-Código da moeda inválido';
+        45: Result := '45-Nome do sacado não informado';
+        46: Result := '46-Tipo/número de inscrição do sacado inválido';
+        47: Result := '47-Endereço do sacado não informado';
+        48: Result := '48-CEP inválido';
+        49: Result := '49-CEP sem praça de cobrança (não localizado)';
+        52: Result := '52-Unidade da federação inválida';
+        53: Result := '53-Tipo/número de inscrição do sacador/avalista inválido';
+        57: Result := '57-Código da multa inválido';
+        58: Result := '58-Data da multa inválida';
+        59: Result := '59-Valor/Percentual da multa inválido';
+        60: Result := '60-Movimento para título não cadastrado. Erro genérico para as situações:' + #13#10 +
+          '“Cedente não cadastrado” ou' + #13#10 +
+            '“Agência Cedente não cadastrada ou desativada”';
+        61: Result := '61-Agência cobradora inválida';
+        62: Result := '62-Tipo de impressão inválido';
+        63: Result := '63-Entrada para título já cadastrado';
+        68: Result := '68-Movimentação inválida para o título';
+        69: Result := '69-Alteração de dados inválida';
+        70: Result := '70-Apelido do cliente não cadastrado';
+        71: Result := '71-Erro na composição do arquivo';
+        72: Result := '72-Lote de serviço inválido';
+        73: Result := '73-Código do cedente inválido';
+        74: Result := '74-Cedente não pertence a cobrança eletrônica/apelido não confere com cedente';
+        75: Result := '75-Nome da empresa inválido';
+        76: Result := '76-Nome do banco inválido';
+        77: Result := '77-Código da remessa inválido';
+        78: Result := '78-Data/Hora de geração do arquivo inválida';
+        79: Result := '79-Número seqüencial do arquivo inválido';
+        80: Result := '80-Número da versão do Layout do arquivo/lote inválido';
+        81: Result := '81-Literal ‘REMESSA-TESTE’ válida somente para fase de testes';
+        82: Result := '82-Literal ‘REMESSA-TESTE’ obrigatório para fase de testes';
+        83: Result := '83-Tipo/número de inscrição da empresa inválido';
+        84: Result := '84-Tipo de operação inválido';
+        85: Result := '85-Tipo de serviço inválido';
+        86: Result := '86-Forma de lançamento inválido';
+        87: Result := '87-Número da remessa inválido';
+        88: Result := '88-Número da remessa menor/igual que da remessa anterior';
+        89: Result := '89-Lote de serviço divergente';
+        90: Result := '90-Número seqüencial do registro inválido';
+        91: Result := '91-Erro na seqüência de segmento do registro detalhe';
+        92: Result := '92-Código de movimento divergente entre grupo de segmentos';
+        93: Result := '93-Quantidade de registros no lote inválido';
+        94: Result := '94-Quantidade de registros no lote divergente';
+        95: Result := '95-Quantidade de lotes do arquivo inválido';
+        96: Result := '96-Quantidade de lotes no arquivo divergente';
+        97: Result := '97-Quantidade de registros no arquivo inválido';
+        98: Result := '98-Quantidade de registros no arquivo divergente';
+        99: Result := '99-Código de DDD inválido';
+      else
+        Result := IntToStrZero(CodMotivo, 2) + ' - Outros Motivos';
+      end;
+    toRetornoDebitoTarifas:
+      case CodMotivo of
+        01: Result := '01-Tarifa de Extrato de Posição';
+        02: Result := '02-Tarifa de Manutenção de Título Vencido';
+        03: Result := '03-Tarifa de Sustação';
+        04: Result := '04-Tarifa de Protesto';
+        05: Result := '05-Tarifa de Outras Instruções';
+        06: Result := '06-Tarifa de Outras Ocorrências';
+        07: Result := '07-Tarifa de Envio de Duplicata ao Sacado';
+        08: Result := '08-Custas de Protesto';
+        09: Result := '09-Custas de Sustação de Protesto';
+        10: Result := '10-Custas de Cartório Distribuidor';
+        11: Result := '11-Custas de Edital';
+        12: Result := '12-Redisponibilização de Arquivo Retorno Eletrônico';
+        13: Result := 'Tarifa Sobre Registro Cobrada na Baixa/Liquidação';
+        14: Result := 'Tarifa Sobre Reapresentação Automática';
+        15: Result := 'Banco de Sacados';
+        16: Result := 'Tarifa Sobre Informações Via Fax';
+        17: Result := 'Entrega Aviso Disp Bloqueto via e-amail ao sacado (s/ emissão Bloqueto)';
+        18: Result := 'Emissão de Bloqueto Pré-impresso CAIXA matricial';
+        19: Result := 'Emissão de Bloqueto Pré-impresso CAIXA A4';
+        20: Result := 'Emissão de Bloqueto Padrão CAIXA';
+      end;
+  end;
 end;
 
 end.

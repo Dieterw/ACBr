@@ -80,7 +80,7 @@ end;
 function TACBrBancoSicredi.CalcularDigitoVerificador(const ACBrTitulo: TACBrTitulo ): String;
 begin
    Modulo.CalculoPadrao;
-   Modulo.MultiplicadorFinal := 7;
+   Modulo.MultiplicadorFinal := 9;
    Modulo.Documento := ACBrTitulo.ACBrBoleto.Cedente.Agencia +
                        ACBrTitulo.ACBrBoleto.Cedente.AgenciaDigito +
                        ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente +
@@ -144,11 +144,13 @@ end;
 
 function TACBrBancoSicredi.MontarCampoNossoNumero (const ACBrTitulo: TACBrTitulo ) : String;
 begin
+   ACBrTitulo.NossoNumero:=FormatDateTime('yy',date)+'2'+copy(ACBrTitulo.NossoNumero,4,6);
    Result:= copy(ACBrTitulo.NossoNumero,1,2)+'/'+copy(ACBrTitulo.NossoNumero,3,6)+'-'+CalcularDigitoVerificador(ACBrTitulo);
 end;
 
 function TACBrBancoSicredi.MontarCampoCodigoCedente (const ACBrTitulo: TACBrTitulo ) : String;
 begin
+   ACBrTitulo.ACBrBoleto.Cedente.Conta:= IntToStrZero(StrToInt64(ACBrTitulo.ACBrBoleto.Cedente.Conta), fpTamanhoConta );
    Result := ACBrTitulo.ACBrBoleto.Cedente.Agencia+'.'+
              ACBrTitulo.ACBrBoleto.Cedente.AgenciaDigito+'.'+
              ACBrTitulo.ACBrBoleto.Cedente.Conta;

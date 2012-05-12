@@ -244,6 +244,7 @@ begin
          tbCliEmite : TipoBoleto := '2';
       else
          TipoBoleto := '1';
+         DigitoNossoNumero := '0';
       end;
 
       {Pegando Especie}
@@ -385,7 +386,7 @@ begin
          raise Exception.Create(ACBrStr('CNPJ\CPF do arquivo inválido'));
 
       if (not LeCedenteRetorno) and ((rAgencia <> OnlyNumber(Cedente.Agencia)) or
-          (rConta <> OnlyNumber(Cedente.Conta))) then
+          (rConta <> RightStr(OnlyNumber(Cedente.Conta),Length(rConta)))) then
          raise Exception.Create(ACBrStr('Agencia\Conta do arquivo inválido'));
 
       Cedente.Nome    := rCedente;
@@ -399,7 +400,7 @@ begin
          11: Cedente.TipoInscricao:= pFisica;
          14: Cedente.TipoInscricao:= pJuridica;
          else
-            Cedente.TipoInscricao := pOutras;
+            Cedente.TipoInscricao := pJuridica;
       end;
 
       ACBrBanco.ACBrBoleto.ListadeBoletos.Clear;

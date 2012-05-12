@@ -439,7 +439,6 @@ begin
     case TipoInscricao of
       pFisica  : ATipoInscricao := '1';
       pJuridica: ATipoInscricao := '2';
-      pOutras  : ATipoInscricao := '3';
     end;
 
     ACodCedenteDVAg := CalcularDVCedente(ACBrBanco.ACBrBoleto.ListadeBoletos[0],True);
@@ -781,6 +780,7 @@ begin
                                                                Copy(ARetorno[1],202,2)+'/'+
                                                                Copy(ARetorno[1],204,4),0, 'DD/MM/YYYY' );
    rCNPJCPF := trim( Copy(ARetorno[1],19,15)) ;
+   rCNPJCPF := RightStr(rCNPJCPF,14) ;
 
    with ACBrBanco.ACBrBoleto do
    begin
@@ -800,9 +800,8 @@ begin
 
      case StrToIntDef(Copy(ARetorno[1],18,1),0) of
        1: Cedente.TipoInscricao:= pFisica;
-       2: Cedente.TipoInscricao:= pJuridica;
        else
-          Cedente.TipoInscricao := pOutras;
+          Cedente.TipoInscricao:= pJuridica;
      end;
      ListadeBoletos.Clear;
    end;

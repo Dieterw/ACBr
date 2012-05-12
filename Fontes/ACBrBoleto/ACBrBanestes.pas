@@ -59,6 +59,10 @@ type
     function MontarCodigoBarras(const ACBrTitulo : TACBrTitulo): String; override;
     function MontarCampoNossoNumero(const ACBrTitulo :TACBrTitulo): String; override;
     function MontarCampoCodigoCedente(const ACBrTitulo: TACBrTitulo): String; override;
+    function GerarRegistroHeader400(NumeroRemessa : Integer): String; override;
+    function GerarRegistroTransacao400(ACBrTitulo : TACBrTitulo): String; override;
+    function GerarRegistroTrailler400(ARemessa:TStringList): String;  override;
+
 
     function TipoOCorrenciaToCod(const TipoOcorrencia: TACBrTipoOcorrencia):String; override;
   end;
@@ -77,7 +81,7 @@ begin
    fpNumero := 021;
    fpTamanhoMaximoNossoNum := 9;
    fpTamanhoAgencia := 3;
-   fpTamanhoConta   := 6;
+   fpTamanhoConta   := 11;
    fpTamanhoCarteira:= 2;
 end;
 
@@ -88,12 +92,11 @@ var
   nContAsbace: Word;
   nResult, nResultTemp, nDigAsbace01, nDigAsbace02: Integer;
 begin
-
-  cLivreAsbace := LeftStr(ACBrTitulo.NossoNumero,8); //nosso numero
-  cLivreAsbace := cLivreAsbace + '0000';
-  cLivreAsbace := cLivreAsbace + ACBrTitulo.ACBrBoleto.Cedente.Conta + ACBrTitulo.ACBrBoleto.Cedente.ContaDigito; //Conta Corrente
-  cLivreAsbace := cLivreAsbace + '4'; //tipo de cobrança
-  cLivreAsbace := cLivreAsbace + IntToStrZero(Numero,3);//'0' +IntToStr(fpNumero); //Banco
+   cLivreAsbace := copy(ACBrTitulo.NossoNumero,2,8)+
+                   copy(ACBrTitulo.ACBrBoleto.Cedente.Conta,2,10)+
+                   ACBrTitulo.ACBrBoleto.Cedente.ContaDigito+
+                   '4'+
+                   IntToStrZero(fpNumero,3);
   cIndice      := '21212121212121212121212';
   nResult      := 0;
   for nContAsbace := 23 downto 1 do
@@ -101,18 +104,15 @@ begin
     nResultTemp := (StrToInt(cIndice[nContAsbace]) * StrToInt(cLivreAsbace[nContAsbace]));
     If nResultTemp > 9 then
        nResult := nResult + (nResultTemp - 9)
-    else if nResultTemp < 10 then
+      else
        nResult := nResult + nResultTemp;
   end;
 
   nResult := nResult Mod 10;
-  If nResult = 0 then
-    nResult := 0
-  else
-  if nResult > 0 then
-    nResult := 10 - nResult;
-
-  nDigAsbace01 := nResult; //guardo o primeiro dig da asbace
+  if nResult > 0 then 
+     nResult := 10 - nResult 
+  else nResult:=0;
+     nDigAsbace01 := nResult; //guardo o primeiro dig da asbace
 
   cLivreAsbace := cLivreAsbace + IntToStr(nResult);
   cIndice      := '765432765432765432765432';
@@ -142,8 +142,10 @@ begin
        end;
 
        nResult := nResult Mod 11;
-       If nResult = 0 then nResult := 0
-       else if nResult > 1 then nResult := 11 - nResult;
+       If nResult = 0 then 
+          nResult := 0
+       else if nResult > 1 then 
+          nResult := 11 - nResult;
      end;
   end
   else
@@ -155,16 +157,17 @@ begin
 end;
 
 function TACBrBanestes.CalcularDigitoVerificador(const ACBrTitulo: TACBrTitulo ): String;
+var
+   ADigitoNossoNumero : string;
 begin
    Modulo.CalculoPadrao;
    Modulo.MultiplicadorFinal := 13;
    Modulo.Documento := ACBrTitulo.NossoNumero;
    Modulo.Calcular;
-
-   if Modulo.ModuloFinal > 9 then
-      Result:= 'P'
-   else
-      Result:= IntToStr(Modulo.DigitoFinal);
+   AdigitoNossoNumero:=IntToStr(Modulo.DigitoFinal);
+   Modulo.Documento := ACBrTitulo.NossoNumero+AdigitoNossoNumero;
+   Modulo.Calcular;
+   Result:= AdigitoNossoNumero+inttostr(Modulo.DigitoFinal);
 end;
 
 function TACBrBanestes.MontarCodigoBarras ( const ACBrTitulo: TACBrTitulo) : String;
@@ -204,6 +207,172 @@ begin
              ACBrTitulo.ACBrBoleto.Cedente.AgenciaDigito+'/'+
              ACBrTitulo.ACBrBoleto.Cedente.Conta+
              ACBrTitulo.ACBrBoleto.Cedente.ContaDigito;
+end;
+
+function TACBrBanestes.GerarRegistroHeader400(NumeroRemessa: Integer): String;
+begin
+   with ACBrBanco.ACBrBoleto.Cedente do begin
+      Result:= '0'                                        + // ID do Registro
+               '1'                                        + // ID do Arquivo( 1 - Remessa)
+               'REMESSA'                                  + // Literal de Remessa
+               '01'                                       + // Código do Tipo de Serviço
+               padL('COBRANCA', 15 )+
+               padR(Conta, 10, '0')+                      // Codigo da Empresa no Banco
+               padR(ContaDigito, 1, '0')+
+               space(9) +                                               // COMPLEMENTO DO REGISTRO
+               padL(Nome, 30)                                 + // Nome da Empresa
+               IntToStrzero(Numero,3)+
+               padL('BANESTES', 8)        +                  // Código e Nome do Banco(237 - Bradesco)
+               space(7) +                                    // COMPLEMENTO DO REGISTRO
+               FormatDateTime('ddmmyy',Now)+
+               Space(294)+                                  // Data de geração do arquivo + brancos
+               IntToStrZero(1,6);                           // Nr. Sequencial de Remessa + brancos + Contador
+
+      Result:= UpperCase(Result);
+   end;
+
+end;
+
+function TACBrBanestes.GerarRegistroTrailler400(ARemessa: TStringList): String;
+begin
+   Result:= '9' + Space(393)                     + // ID Registro
+            IntToStrZero( ARemessa.Count + 1, 6);  // Contador de Registros
+   Result:= UpperCase(Result);
+end;
+
+function TACBrBanestes.GerarRegistroTransacao400(
+  ACBrTitulo: TACBrTitulo): String;
+var
+   ATipoInscricao,TipoBoleto,ATipoAceite,DigitoNossoNumero, Ocorrencia, aEspecie, aAgencia :String;
+   PracaPostagem,acarteira,Protesto, TipoSacado, MensagemCedente, aConta     :String;
+begin
+   case ACBrBanco.ACBrBoleto.Cedente.TipoInscricao of
+      pFisica  : ATipoInscricao := '01';
+      pJuridica: ATipoInscricao := '02';
+   end;
+
+   with ACBrTitulo do BEGIN
+      DigitoNossoNumero := CalcularDigitoVerificador(ACBrTitulo);
+      aAgencia := IntToStrZero(StrToIntDef(trim(ACBrBoleto.Cedente.Agencia),0),5);
+      aConta   := IntToStrZero(StrToIntDef(trim(ACBrBoleto.Cedente.Conta),0),7);
+      aCarteira:= IntToStrZero(StrToIntDef(trim(Carteira),0), 1);
+      {Pegando Código da Ocorrencia}
+      case OcorrenciaOriginal.Tipo of
+         toRemessaBaixar                         : Ocorrencia := '02'; {Pedido de Baixa}
+         toRemessaConcederAbatimento             : Ocorrencia := '04'; {Concessão de Abatimento}
+         toRemessaCancelarAbatimento             : Ocorrencia := '05'; {Cancelamento de Abatimento concedido}
+         toRemessaAlterarVencimento              : Ocorrencia := '06'; {Alteração de vencimento}
+         toRemessaAlterarNumeroControle          : Ocorrencia := '08'; {Alteração de seu número}
+         toRemessaProtestar                      : Ocorrencia := '09'; {Pedido de protesto}
+         toRemessaCancelarInstrucaoProtestoBaixa : Ocorrencia := '20'; {Sustar protesto e baixar}
+         toRemessaCancelarInstrucaoProtesto      : Ocorrencia := '18'; {Sustar protesto e manter na carteira}
+         toRemessaOutrasOcorrencias              : Ocorrencia := '31'; {Alteração de Outros Dados}
+      else
+         Ocorrencia := '01';                                          {Remessa}
+      end;
+
+      {Pegando Tipo de Boleto}
+      case ACBrBoleto.Cedente.ResponEmissao of
+         tbCliEmite        : TipoBoleto  := '01';
+         tbBancoNaoReemite : TipoBoleto  := '01';
+         tbBancoEmite      : TipoBoleto  := '21';
+         tbBancoReemite    : TipoBoleto  := '21';
+      end;
+      case ACBrBoleto.Cedente.ResponEmissao of
+         tbCliEmite        : PracaPostagem  := '00501';
+         tbBancoNaoReemite : PracaPostagem  := '00501';
+         tbBancoEmite      : PracaPostagem  := '00000';
+         tbBancoReemite    : PracaPostagem  := '00000';
+      end;
+
+      {Pegando Especie}
+      if trim(EspecieDoc) = 'DM' then
+         aEspecie:= '01'
+      else if trim(EspecieDoc) = 'NP' then
+         aEspecie:= '02'
+      else if trim(EspecieDoc) = 'NS' then
+         aEspecie:= '03'
+      else if trim(EspecieDoc) = 'CS' then
+         aEspecie:= '04'
+      else if trim(EspecieDoc) = 'DS' then
+         aEspecie:= '11'
+      else
+         aEspecie := EspecieDoc;
+
+      {Pegando campo Intruções}
+      if (DataProtesto > 0) and (DataProtesto > Vencimento) then
+          Protesto := '06' + IntToStrZero(DaysBetween(DataProtesto,Vencimento),2)
+      else if Ocorrencia = '31' then
+         Protesto := '9999'
+      else
+         Protesto := padR(trim(Instrucao1),2,'0') + padR(trim(Instrucao2),2,'0');
+
+      {Pegando Tipo de Sacado}
+      case Sacado.Pessoa of
+         pFisica   : TipoSacado := '01';
+         pJuridica : TipoSacado := '02';
+      else
+         TipoSacado := '99';
+      end;
+      case Aceite of
+         atSim :  ATipoAceite := 'A';
+         atNao :  ATipoAceite := 'N';
+      end;
+
+      with ACBrBoleto do BEGIN
+         if Mensagem.Text<>'' then MensagemCedente:= Mensagem[0];
+
+
+         Result:= '1'                                                     +  // ID Registro
+                  atipoinscricao                                   + // TIPO INSCRICAO EMPRESA(CNPJ, CPF);
+                  padL(Cedente.CNPJCPF,14,'0')+
+                  padL(cedente.Conta,10,'0')+
+                  cedente.ContaDigito+
+                  space(9)+
+                  padL( SeuNumero,25,' ')+
+                  padl( nossonumero+digitonossonumero,10,'0')+
+                  IfThen( PercentualMulta > 0, '1', '0')                  +  // Indica se exite Multa ou não
+                  IntToStrZero( round( PercentualMulta * 100 ), 9)        +  // Percentual de Multa formatado com 2 casas decimais
+                  space(06)+
+                  '00'+
+                  '00'+
+                  copy(TipoSacado,2,1)+
+                  padR(OnlyNumber(Sacado.CNPJCPF),14,'0') +
+                  aCarteira+
+                  Ocorrencia+
+                  padL( SeuNumero,10,' ')+
+                  FormatDateTime( 'ddmmyy', Vencimento)                   +
+                  '000'+
+                  IntToStrZero( Round( ValorDocumento * 100 ), 10)        +
+                  IntToStrzero(Numero,3)+
+                  PracaPostagem+
+                  Tipoboleto+
+                  Atipoaceite+
+                  FormatDateTime( 'ddmmyy', DataDocumento )               +  // Data de Emissão
+                  protesto+
+                  IfThen( ValorMoraJuros > 0, '0', '9')                  +  // Indica se exite Multa ou não
+                  IntToStrZero( round(ValorMoraJuros * 100 ), 12)         +
+                  IfThen(DataDesconto < EncodeDate(2000,01,01),'000000',FormatDateTime( 'ddmmyy', DataDesconto)) +
+                  IntToStrZero( round( ValorDesconto * 100 ), 13)         +
+                  IntToStrZero( round( ValorIOF * 100 ), 13)              +
+                  IntToStrZero( round( ValorAbatimento * 100 ), 13)       +
+                  TipoSacado +
+                  padR(OnlyNumber(Sacado.CNPJCPF),14,'0')                +
+                  padL(Sacado.NomeSacado, 40, ' ')                       +
+                  padL(Sacado.Logradouro + Sacado.Numero,40)+
+                  padL(Sacado.Bairro,12) +
+                  padL(Sacado.cep,8) +
+                  padl(Sacado.Cidade,15)+
+                  padl(Sacado.UF, 2) +
+                  padl( MensagemCedente, 40 )+
+                  '00'+
+                  '0';
+           Result := Result + IntToStrZero(ListadeBoletos.IndexOf(ACBrTitulo) +
+                               ListadeBoletos.IndexOf(ACBrTitulo) + 2, 6);
+           Result:= UpperCase(Result);
+      end;
+   end;
+
 end;
 
 function TACBrBanestes.GetASBACE: string;

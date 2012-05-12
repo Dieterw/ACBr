@@ -52,7 +52,7 @@ uses
   ACBrBoleto ;
 
 const
-  CACBrBoletoFCFortes_Versao = '0.0.12a' ;
+  CACBrBoletoFCFortes_Versao = '0.0.13a' ;
 
 type
 
@@ -653,8 +653,8 @@ begin
       txtNomeSacado2.Caption          := Titulo.Sacado.NomeSacado;
       txtEnderecoSacado2.Caption      := Titulo.Sacado.Logradouro + ' '+
                                          Titulo.Sacado.Numero + Titulo.Sacado.Complemento;
-      txtCidadeSacado2.Caption        := Titulo.Sacado.CEP + ' '+Titulo.Sacado.Cidade +
-                                         ' '+Titulo.Sacado.UF;
+      txtCidadeSacado2.Caption        := Titulo.Sacado.CEP + ' '+Titulo.Sacado.Bairro +
+                                         ' '+Titulo.Sacado.Cidade + ' '+Titulo.Sacado.UF;
       txtCpfCnpjSacado2.Caption       := Titulo.Sacado.CNPJCPF;
       txtInstrucoes2.Lines.Text       := MensagemPadrao.Text;  //Titulo.Mensagem.Text;
       with Titulo.ACBrBoleto.Cedente do

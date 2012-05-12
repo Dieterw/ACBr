@@ -357,9 +357,8 @@ begin
 
       case StrToIntDef(Copy(ARetorno[1],2,2),0) of
          01: Cedente.TipoInscricao:= pFisica;
-         02: Cedente.TipoInscricao:= pJuridica;
          else
-            Cedente.TipoInscricao := pOutras;
+            Cedente.TipoInscricao:= pJuridica;
       end;
 
       ACBrBanco.ACBrBoleto.ListadeBoletos.Clear;

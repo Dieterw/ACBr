@@ -7612,7 +7612,7 @@ LazarusResources.Add('FCLazReport_Carne','LRF',[
   +'alue="0"/>'#13#10'          <Size>'#13#10'            <Left Value="260"/>'
   +#13#10'            <Top Value="114"/>'#13#10'            <Width Value="0"/>'
   +#13#10'            <Height Value="59"/>'#13#10'          </Size>'#13#10'    '
-  +'      <Flags Value="1"/>'#13#10'          <Frames>'#13#10'            <Fram'
+  +'      <Flags Value="0"/>'#13#10'          <Frames>'#13#10'            <Fram'
   +'eColor Value="clBlack"/>'#13#10'            <FrameStyle Value="frsSolid"/>'
   +#13#10'            <FrameWidth Value="1"/>'#13#10'          </Frames>'#13#10
   +'        </Object68>'#13#10'        <Object69>'#13#10'          <Name Value='
@@ -7621,7 +7621,7 @@ LazarusResources.Add('FCLazReport_Carne','LRF',[
   +'     <StreamMode Value="0"/>'#13#10'          <Size>'#13#10'            <Le'
   +'ft Value="376"/>'#13#10'            <Top Value="114"/>'#13#10'            <'
   +'Width Value="0"/>'#13#10'            <Height Value="29"/>'#13#10'          '
-  +'</Size>'#13#10'          <Flags Value="1"/>'#13#10'          <Frames>'#13#10
+  +'</Size>'#13#10'          <Flags Value="0"/>'#13#10'          <Frames>'#13#10
   +'            <FrameColor Value="clBlack"/>'#13#10'            <FrameStyle Va'
   +'lue="frsSolid"/>'#13#10'            <FrameWidth Value="1"/>'#13#10'        '
   +'  </Frames>'#13#10'        </Object69>'#13#10'        <Object70>'#13#10'   '
@@ -7630,7 +7630,7 @@ LazarusResources.Add('FCLazReport_Carne','LRF',[
   +'ine"/>'#13#10'          <StreamMode Value="0"/>'#13#10'          <Size>'#13
   +#10'            <Left Value="450"/>'#13#10'            <Top Value="114"/>'#13
   +#10'            <Width Value="0"/>'#13#10'            <Height Value="59"/>'
-  +#13#10'          </Size>'#13#10'          <Flags Value="1"/>'#13#10'        '
+  +#13#10'          </Size>'#13#10'          <Flags Value="0"/>'#13#10'        '
   +'  <Frames>'#13#10'            <FrameColor Value="clBlack"/>'#13#10'        '
   +'    <FrameStyle Value="frsSolid"/>'#13#10'            <FrameWidth Value="1"'
   +'/>'#13#10'          </Frames>'#13#10'        </Object70>'#13#10'        <Ob'
@@ -7807,7 +7807,7 @@ LazarusResources.Add('FCLazReport_Carne','LRF',[
   +'alue="0"/>'#13#10'          <Size>'#13#10'            <Left Value="59"/>'#13
   +#10'            <Top Value="43"/>'#13#10'            <Width Value="0"/>'#13
   +#10'            <Height Value="28"/>'#13#10'          </Size>'#13#10'       '
-  +'   <Flags Value="1"/>'#13#10'          <Frames>'#13#10'            <FrameCo'
+  +'   <Flags Value="0"/>'#13#10'          <Frames>'#13#10'            <FrameCo'
   +'lor Value="clBlack"/>'#13#10'            <FrameStyle Value="frsSolid"/>'#13
   +#10'            <FrameWidth Value="1"/>'#13#10'          </Frames>'#13#10'  '
   +'      </Object81>'#13#10'        <Object82>'#13#10'          <Name Value="M'

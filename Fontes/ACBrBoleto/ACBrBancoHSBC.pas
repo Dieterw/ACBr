@@ -47,7 +47,7 @@ type
 
   TACBrBancoHSBC = class(TACBrBancoClass)
   private
-
+    function DataToJuliano(const AData: TDateTime): String;
   protected
 
   public
@@ -72,6 +72,22 @@ implementation
 uses ACBrUtil, StrUtils;
 
 { TACBrBancoHSBC }
+
+function TACBrBancoHSBC.DataToJuliano(const AData: TDateTime): String;
+var
+  DiaDoAno: String;
+  UltDigAno: String;
+begin
+  if AData = 0 then
+    Result := '0000'
+  else
+  begin
+    UltDigAno := FormatDateTime('yyyy', AData)[4];
+    DiaDoAno  := Format('%3.3d', [DayOfTheYear(AData)]);
+
+    Result    := DiaDoAno + UltDigAno;
+  end;
+end;
 
 constructor TACBrBancoHSBC.create(AOwner: TACBrBanco);
 begin
@@ -388,9 +404,8 @@ begin
 
       case StrToIntDef(Copy(ARetorno[1],2,2),0) of
          11: Cedente.TipoInscricao:= pFisica;
-         14: Cedente.TipoInscricao:= pJuridica;
          else
-            Cedente.TipoInscricao := pOutras;
+            Cedente.TipoInscricao:= pJuridica;
       end;
 
       ACBrBanco.ACBrBoleto.ListadeBoletos.Clear;

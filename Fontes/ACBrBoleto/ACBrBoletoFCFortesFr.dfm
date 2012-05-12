@@ -2737,6 +2737,27 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Height = 5
         DrawKind = dkLine
       end
+      object RLDraw1: TRLDraw
+        Left = 5
+        Top = 408
+        Width = 763
+        Height = 16
+        DrawKind = dkLine
+        Pen.Style = psDot
+      end
+      object RLLabel12: TRLLabel
+        Left = 0
+        Top = 408
+        Width = 26
+        Height = 14
+        Caption = '"'
+        Font.Charset = SYMBOL_CHARSET
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Wingdings'
+        Font.Style = []
+        ParentFont = False
+      end
     end
   end
   object BoletoCarne: TRLReport

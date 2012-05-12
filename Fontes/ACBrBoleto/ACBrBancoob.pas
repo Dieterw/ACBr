@@ -72,9 +72,9 @@ constructor TACBrBancoob.create(AOwner: TACBrBanco);
 begin
    inherited create(AOwner);
    fpDigito := 0;
-   fpNome   := 'BANCO COOPERATIVO DO BRASIL S.A.';
+   fpNome   := 'SICCOB';
    fpNumero:= 756;
-   fpTamanhoMaximoNossoNum := 7;
+   fpTamanhoMaximoNossoNum := 8;
    fpTamanhoCarteira := 1;
 end;
 
@@ -414,9 +414,8 @@ begin
 
       case StrToIntDef(Copy(ARetorno[1],2,2),0) of
          11: Cedente.TipoInscricao:= pFisica;
-         14: Cedente.TipoInscricao:= pJuridica;
          else
-            Cedente.TipoInscricao := pOutras;
+            Cedente.TipoInscricao:= pJuridica;
       end;
 
       ACBrBanco.ACBrBoleto.ListadeBoletos.Clear;

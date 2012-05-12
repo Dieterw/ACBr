@@ -82,6 +82,7 @@ Versao 0.0.9a do QuickReport 07/07/11
 Versao 0.1.1a do LazReport 02/08/11
 [+] Adicionado campos Outras Deduções e Outros Acréscimos ao boleto, conforme
     solicitação da Caixa Econômica Federal(Juliana Tamizou)
+	
 
 Versao 0.0.12a do FortesReport 06/02/12
 [+] Corrigido problema com o tipo de Código de Barras impresso, alterado
@@ -99,7 +100,50 @@ Versao 0.0.10a do FortesReport 06/07/11
 [-] Corrigido problema com componentes não encontrados no dfm do Fortes.
     (Juliana Tamizou)
 
+Versao 0.0.34a 12/05/2012
+[*] Alterado tipo de inscrição do Cedente para evitar problemas na geração da remessa,
+    agora apenas são permitidas as opções pFisica e pJuridica.(Juliana Tamizou)
+	
+[-]	Corrigido bug ao gerar o arquivo remessa em pasta diferente da pasta do projeto ou
+    de algum diretório raiz. (Juliana Tamizou)
+    
+[*]	Unit do Banestes, adicionado geração do arquivo remessa CNAB400.(Francisco)
 
+[*] Unit CaixaEconômica, adicionado tratamento para os retornos com titulos 
+    rejeitados.(Gislaine)
+	
+[*]	Adicionado a propriedade CaracTitulo ao Cedente, para identificar o tipo
+    de cobrança (Vendor, Caucionada,etc). (Leandro)
+	
+[-]	Unit Banco do Brasil, efetuado correções na geração do arquivo remessa
+    CNAB240. (Leandro)
+	
+[-] Unit Banco do Brasil, corrigido geração do arquivo remessa e impressão
+    de boletos para a carteira 11 e convênio 7 digitos. (Rafael Cruz)	
+
+[-] Unit CaixaEconômica, corrigido geração do arquivo remessa CNAB240.(Gislaine)
+
+[-] Corrigido problema coma  rotina de envio de email.(Carlos)
+
+[-]	Corrigido unit do Bradesco, a informação do campo DigitoNossoNumero quando 
+    o boleto é impresso pelo banco. (Adauri Jr.)
+
+[-]	Corrigido unit do Itaú, leitura do arquivo retorno CNAB400 estava lendo de   
+    incorreta o CNPJ/CPF.(Endrigo)
+
+[-]	Corrigido unit do Itaú, leitura do arquivo retorno CNAB400 estava ocorrendo   
+    um erro na validação da conta.(Endrigo)	
+	
+[-]	Corrigido unit do Bradesco, leitura do arquivo retorno CNAB400 estava ocorrendo   
+    um erro na validação da conta.(Endrigo)		
+
+[-] Alterado unit do Sicred, corrigido geração da linha digitável.(Carlos)	
+
+[-] Alterado unit do Bancoob, alterado nome do banco impresso no boleto, 
+    conforme instruções do banco. (Dytbel)
+	
+	
+	
 Versao 0.0.33a 06/02/2012
 [+] Adicionado unit para o Banco Banestes(Banco do Espirito Santo), com
     impressão dos boletos.(MarKapollo)

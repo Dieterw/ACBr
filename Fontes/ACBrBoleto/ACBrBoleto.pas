@@ -58,7 +58,7 @@ uses ACBrBase,  {Units da ACBr}
      Graphics, Contnrs, Classes;
 
 const
-  CACBrBoleto_Versao = '0.0.33a' ;
+  CACBrBoleto_Versao = '0.0.34a' ;
 
 type
   TACBrTipoCobranca =
@@ -276,7 +276,6 @@ type
     fpTamanhoConta: Integer;
     fpAOwner: TACBrBanco;
     fpTamanhoMaximoNossoNum: Integer;
-    function DataToJuliano(const AData: TDateTime): String;
     function CalcularFatorVencimento(const DataVencimento: TDateTime): String; virtual;
     function CalcularDigitoCodigoBarras(const CodigoBarras: String): String; virtual;
   public
@@ -382,7 +381,9 @@ type
   end;
 
   TACBrResponEmissao = (tbCliEmite,tbBancoEmite,tbBancoReemite,tbBancoNaoReemite);
+  TACBrCaracTitulo = (tcSimples,tcVinculada,tcCaucionada,tcDescontada,tcVendor);
   TACBrPessoa = (pFisica,pJuridica,pOutras);
+  TACBrPessoaCedente = pFisica..pJuridica;
 //  TACBrTipoInscricao = (tiPessoaFisica, tiPessoaJuridica, tiOutro);
 
   {Aceite do titulo}
@@ -408,14 +409,15 @@ type
     fModalidade    : String;
     fConvenio      : String;
     fResponEmissao : TACBrResponEmissao;
+    fCaracTitulo:TACBrCaracTitulo;
     fCNPJCPF       : String;
-    fTipoInscricao : TACBrPessoa;
+    fTipoInscricao : TACBrPessoaCedente;
     fUF            : String;
     fAcbrBoleto    : TACBrBoleto;
     procedure SetAgencia(const AValue: String);
     procedure SetCNPJCPF ( const AValue: String ) ;
     procedure SetConta(const AValue: String);
-    procedure SetTipoInscricao ( const AValue: TACBrPessoa ) ;
+    procedure SetTipoInscricao ( const AValue: TACBrPessoaCedente ) ;
   public
     constructor Create( AOwner : TComponent ) ; override ;
     destructor Destroy; override;
@@ -430,8 +432,9 @@ type
     property Modalidade   : String read fModalidade    write fModalidade;
     property Convenio     : String read fConvenio      write fConvenio;
     property ResponEmissao: TACBrResponEmissao read fResponEmissao  write fResponEmissao default tbCliEmite ;
+    property CaracTitulo: TACBrCaracTitulo read fCaracTitulo  write fCaracTitulo default tcSimples;
     property CNPJCPF      : String  read fCNPJCPF  write SetCNPJCPF;
-    property TipoInscricao: TACBrPessoa  read fTipoInscricao write  SetTipoInscricao;
+    property TipoInscricao: TACBrPessoaCedente  read fTipoInscricao write  SetTipoInscricao;
     property Logradouro  : String  read fLogradouro  write fLogradouro;
     property NumeroRes   : String  read fNumeroRes      write fNumeroRes;
     property Complemento : String  read fComplemento write fComplemento;
@@ -669,10 +672,10 @@ TACBrBoleto = class( TACBrComponent )
 
     property Cedente        : TACBrCedente       read fCedente                write fCedente ;
     property Banco          : TACBrBanco         read fBanco                  write fBanco;
-    property NomeArqRemessa : String             read fNomeArqRemessa         write SetNomeArqRemessa;
-    property DirArqRemessa  : String             read GetDirArqRemessa        write SetNomeArqRemessa;
-    property NomeArqRetorno : String             read fNomeArqRetorno         write SetNomeArqRetorno;
-    property DirArqRetorno  : String             read GetDirArqRetorno        write SetNomeArqRetorno;
+    property NomeArqRemessa : String             read fNomeArqRemessa         write fNomeArqRemessa;  //SetNomeArqRemessa;
+    property DirArqRemessa  : String             read fDirArqRemessa {GetDirArqRemessa} write fDirArqRemessa; //SetNomeArqRemessa;
+    property NomeArqRetorno : String             read fNomeArqRetorno         write fNomeArqRetorno; //SetNomeArqRetorno;
+    property DirArqRetorno  : String             read fDirArqRetorno {GetDirArqRetorno} write fDirArqRetorno; //SetNomeArqRetorno;
     property NumeroArquivo  : integer            read fNumeroArquivo          write fNumeroArquivo;
     property DataArquivo    : TDateTime          read fDataArquivo            write fDataArquivo;
     property DataCreditoLanc: TDateTime          read fDataCreditoLanc        write fDataCreditoLanc;
@@ -769,7 +772,7 @@ implementation
 Uses ACBrUtil, ACBrBancoBradesco, ACBrBancoBrasil, ACBrBanestes, ACBrBancoItau, ACBrBancoSicredi,
      ACBrBancoMercantil, ACBrCaixaEconomica, ACBrBancoBanrisul, ACBrBancoSantander,
      ACBrBancoob, ACBrCaixaEconomicaSICOB ,ACBrBancoHSBC,Forms,
-     {$IFDEF COMPILER6_UP} StrUtils {$ELSE} ACBrD5 {$ENDIF}, Math, DateUtils;
+     {$IFDEF COMPILER6_UP} StrUtils {$ELSE} ACBrD5 {$ENDIF}, Math;
 
 {$IFNDEF FPC}
    {$R ACBrBoleto.dcr}
@@ -785,14 +788,14 @@ procedure TACBrCedente.SetCNPJCPF ( const AValue: String ) ;
 var
    ACbrValidador: TACBrValidador;
 begin
-   if fCNPJCPF = AValue then
-      exit;
-
-   if TipoInscricao = pOutras then
+   if trim(AValue) = '' then
    begin
-      fCNPJCPF := AValue;
+      fCNPJCPF:= AValue;
       exit;
    end;
+
+   if fCNPJCPF = AValue then
+      exit;
 
    ACbrValidador := TACBrValidador.Create(Self);
    try
@@ -851,7 +854,7 @@ begin
 
 end;
 
-procedure TACBrCedente.SetTipoInscricao ( const AValue: TACBrPessoa ) ;
+procedure TACBrCedente.SetTipoInscricao ( const AValue: TACBrPessoaCedente ) ;
 begin
    if fTipoInscricao = AValue then
       exit;
@@ -872,7 +875,8 @@ begin
   fConvenio      := '';
   fCNPJCPF       := '';
   fResponEmissao := tbCliEmite;
-  fTipoInscricao := pOutras;
+  fCaracTitulo   := tcSimples;
+  fTipoInscricao := pJuridica;
   fAcbrBoleto    := TACBrBoleto(AOwner);
 end;
 
@@ -1244,6 +1248,8 @@ begin
     ThreadSMTP.smtp.Password := sSmtpPasswd;
 
     ThreadSMTP.smtp.TargetHost := sSmtpHost;
+    if trim(sSmtpPort)<>'' then     // Usa default
+       ThreadSMTP.smtp.TargetPort := sSmtpPort;
 
     ThreadSMTP.smtp.FullSSL := SSL;
     ThreadSMTP.smtp.AutoTLS := TLS;
@@ -1772,22 +1778,6 @@ begin
    Result := IntToStr( Trunc(DataVencimento - EncodeDate(1997,10,07)) );
 end;
 
-function TACBrBancoClass.DataToJuliano(const AData: TDateTime): String;
-var
-  DiaDoAno: String;
-  UltDigAno: String;
-begin
-  if AData = 0 then
-    Result := '0000'
-  else
-  begin
-    UltDigAno := FormatDateTime('yyyy', AData)[4];
-    DiaDoAno  := Format('%3.3d', [DayOfTheYear(AData)]);
-
-    Result    := DiaDoAno + UltDigAno;
-  end;
-end;
-
 function TACBrBancoClass.CalcularDigitoCodigoBarras (
    const CodigoBarras: String ) : String;
 begin
@@ -1935,7 +1925,6 @@ var
   NomeArq  : String;
 begin
    SlRetorno:= TStringList.Create;
-   try
      Self.ListadeBoletos.Clear;
 
      if NomeArqRetorno = '' then
@@ -1979,10 +1968,6 @@ begin
         Banco.LerRetorno240(SlRetorno)
      else
         Banco.LerRetorno400(SlRetorno);
-
-   finally
-     SlRetorno.Free;
-   end;
 end;
 
 procedure TACBrBoleto.ChecarDadosObrigatorios;

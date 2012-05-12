@@ -652,10 +652,8 @@ begin
       case StrToIntDef(Copy(ARetorno.Strings[0], 18, 1),0) of
         1:
          Cedente.TipoInscricao := pFisica;
-        2:
-         Cedente.TipoInscricao := pJuridica;
         else
-         Cedente.TipoInscricao := pOutras;
+         Cedente.TipoInscricao := pJuridica;
       end;
 
       Cedente.Convenio      := rConvenio;

@@ -101,12 +101,11 @@ Versao 0.0.10a do FortesReport 06/07/11
     (Juliana Tamizou)
 
 Versao 0.0.34a 12/05/2012
+[+] Unit Banco do Brasil, implementada leitura do arquivo retorno CNAB400.(Lazarin)
+
 [*] Alterado tipo de inscrição do Cedente para evitar problemas na geração da remessa,
     agora apenas são permitidas as opções pFisica e pJuridica.(Juliana Tamizou)
-	
-[-]	Corrigido bug ao gerar o arquivo remessa em pasta diferente da pasta do projeto ou
-    de algum diretório raiz. (Juliana Tamizou)
-    
+	  
 [*]	Unit do Banestes, adicionado geração do arquivo remessa CNAB400.(Francisco)
 
 [*] Unit CaixaEconômica, adicionado tratamento para os retornos com titulos 
@@ -114,6 +113,9 @@ Versao 0.0.34a 12/05/2012
 	
 [*]	Adicionado a propriedade CaracTitulo ao Cedente, para identificar o tipo
     de cobrança (Vendor, Caucionada,etc). (Leandro)
+	
+[-]	Corrigido bug ao gerar o arquivo remessa em pasta diferente da pasta do projeto ou
+    de algum diretório raiz. (Juliana Tamizou)	
 	
 [-]	Unit Banco do Brasil, efetuado correções na geração do arquivo remessa
     CNAB240. (Leandro)

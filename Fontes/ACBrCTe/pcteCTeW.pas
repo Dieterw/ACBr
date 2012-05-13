@@ -792,7 +792,9 @@ begin
   begin
     Gerador.wGrupo('infNFe', '#158');
     Gerador.wCampo(tcEsp, '#159', 'chave', 44, 44, 1, SomenteNumeros(CTe.Rem.InfNFE[i].chave), DSC_REFNFE);
-    if not ValidarChave('NFe' + SomenteNumeros(CTe.Rem.InfNFE[i].chave)) then
+    // Incluido por Italo em 13/05/2012
+    if SomenteNumeros(CTe.Rem.InfNFE[i].chave) <> '' then
+     if not ValidarChave('NFe' + SomenteNumeros(CTe.Rem.InfNFE[i].chave)) then
       Gerador.wAlerta('#159', 'chave', DSC_REFNFE, ERR_MSG_INVALIDO);
 
     Gerador.wCampo(tcStr, '#160', 'PIN   ', 02, 09, 0, CTe.Rem.InfNFE[i].PIN, DSC_ISUF);
@@ -1397,9 +1399,12 @@ begin
       for i02 := 0 to CTe.infCTeNorm.emiDocAnt[i].idDocAnt[i01].idDocAntEle.Count - 1 do
       begin
         Gerador.wGrupo('idDocAntEle', '#304');
-        Gerador.wCampo(tcStr, '#305', 'chave ', 44, 44, 1, CTe.infCTeNorm.emiDocAnt[i].idDocAnt[i01].idDocAntEle[i02].chave, '');
-        if not ValidarChave('NFe' + SomenteNumeros(CTe.infCTeNorm.emiDocAnt[i].idDocAnt[i01].idDocAntEle[i02].chave)) then
-         Gerador.wAlerta('#305', 'chave', DSC_REFCTE, ERR_MSG_INVALIDO);
+        // Alterado por Italo em 13/05/2012
+        Gerador.wCampo(tcStr, '#305', 'chave ', 44, 44, 1, SomenteNumeros(CTe.infCTeNorm.emiDocAnt[i].idDocAnt[i01].idDocAntEle[i02].chave), '');
+        // Incluido por Italo em 13/05/2012
+        if SomenteNumeros(CTe.infCTeNorm.emiDocAnt[i].idDocAnt[i01].idDocAntEle[i02].chave) <> '' then
+         if not ValidarChave('NFe' + SomenteNumeros(CTe.infCTeNorm.emiDocAnt[i].idDocAnt[i01].idDocAntEle[i02].chave)) then
+          Gerador.wAlerta('#305', 'chave', DSC_REFCTE, ERR_MSG_INVALIDO);
         Gerador.wGrupo('/idDocAntEle');
       end;
       if CTe.infCTeNorm.emiDocAnt[i].idDocAnt[i01].idDocAntEle.Count > 990 then
@@ -1799,8 +1804,10 @@ begin
        begin
         Gerador.wGrupo('infNFe', '#25');
         Gerador.wCampo(tcStr, '#26', 'chave  ', 44, 44, 1, SomenteNumeros(CTe.Aquav.detCont.Items[i].infNFeCont.Items[i01].chave), DSC_REFNFE);
-        if not ValidarChave('NFe' + SomenteNumeros(CTe.Aquav.detCont.Items[i].infNFeCont.Items[i01].chave)) then
-         Gerador.wAlerta('#26', 'chave', DSC_REFNFE, ERR_MSG_INVALIDO);
+        // Incluido por Italo em 13/05/2012
+        if SomenteNumeros(CTe.Aquav.detCont.Items[i].infNFeCont.Items[i01].chave) <> '' then
+         if not ValidarChave('NFe' + SomenteNumeros(CTe.Aquav.detCont.Items[i].infNFeCont.Items[i01].chave)) then
+          Gerador.wAlerta('#26', 'chave', DSC_REFNFE, ERR_MSG_INVALIDO);
         Gerador.wCampo(tcDe2, '#27', 'unidRat', 01, 05, 1, CTe.Aquav.detCont.Items[i].infNFeCont.Items[i01].unidRat, '');
         Gerador.wGrupo('/infNFe');
        end;
@@ -2060,8 +2067,10 @@ begin
        begin
         Gerador.wGrupo('ratNFe', '#39');
         Gerador.wCampo(tcStr, '#40', 'chave  ', 44, 44, 1, SomenteNumeros(CTe.Ferrov.detVag.Items[i].ratNFe.Items[i01].chave), DSC_REFNFE);
-        if not ValidarChave('NFe' + SomenteNumeros(CTe.Ferrov.detVag.Items[i].ratNFe.Items[i01].chave)) then
-         Gerador.wAlerta('#40', 'chave', DSC_REFNFE, ERR_MSG_INVALIDO);
+        // Incluido por Italo em 13/05/2012
+        if SomenteNumeros(CTe.Ferrov.detVag.Items[i].ratNFe.Items[i01].chave) <> '' then
+         if not ValidarChave('NFe' + SomenteNumeros(CTe.Ferrov.detVag.Items[i].ratNFe.Items[i01].chave)) then
+          Gerador.wAlerta('#40', 'chave', DSC_REFNFE, ERR_MSG_INVALIDO);
         Gerador.wCampo(tcDe2, '#41', 'pesoRat', 01, 05, 1, CTe.Ferrov.detVag.Items[i].ratNFe.Items[i01].pesoRat, '');
         Gerador.wGrupo('/ratNFe');
        end;
@@ -2175,12 +2184,21 @@ begin
   then begin
    Gerador.wGrupo('infCteSub', '#340');
    Gerador.wCampo(tcEsp, '#341', 'chCte ', 44, 44, 1, SomenteNumeros(CTe.infCTeSub.chCte), DSC_CHCTE);
+   // Incluido por Italo em 13/05/2012
+   if SomenteNumeros(CTe.infCTeSub.chCte) <> '' then
+    if not ValidarChave('NFe' + SomenteNumeros(CTe.infCTeSub.chCte)) then
+     Gerador.wAlerta('#341', 'chCte', DSC_REFNFE, ERR_MSG_INVALIDO);
+
    if (CTe.infCTeSub.tomaNaoICMS.refCteAnu='')
     then begin
      Gerador.wGrupo('tomaICMS', '#342');
      if (CTe.infCTeSub.tomaICMS.refNFe<>'')
       then begin
        Gerador.wCampo(tcEsp, '#343', 'refNFe ', 44, 44, 1, SomenteNumeros(CTe.infCTeSub.tomaICMS.refNFe), DSC_CHCTE);
+       // Incluido por Italo em 13/05/2012
+       if SomenteNumeros(CTe.infCTeSub.tomaICMS.refNFe) <> '' then
+        if not ValidarChave('NFe' + SomenteNumeros(CTe.infCTeSub.tomaICMS.refNFe)) then
+         Gerador.wAlerta('#343', 'refNFe', DSC_REFNFE, ERR_MSG_INVALIDO);
       end
       else begin
        if (CTe.infCTeSub.tomaICMS.refNF.CNPJ<>'')
@@ -2197,6 +2215,10 @@ begin
         end
         else begin
          Gerador.wCampo(tcEsp, '#352', 'refCte   ', 44, 44, 1, SomenteNumeros(CTe.infCTeSub.tomaICMS.refCte), DSC_CHCTE);
+         // Incluido por Italo em 13/05/2012
+         if SomenteNumeros(CTe.infCTeSub.tomaICMS.refCte) <> '' then
+          if not ValidarChave('NFe' + SomenteNumeros(CTe.infCTeSub.tomaICMS.refCte)) then
+           Gerador.wAlerta('#352', 'refCte', DSC_REFNFE, ERR_MSG_INVALIDO);
         end;
       end;
      Gerador.wGrupo('/tomaICMS');
@@ -2204,6 +2226,10 @@ begin
     else begin
      Gerador.wGrupo('tomaNaoICMS', '#353');
      Gerador.wCampo(tcEsp, '#354', 'refCteAnu ', 44, 44, 1, SomenteNumeros(CTe.infCTeSub.tomaNaoICMS.refCteAnu), DSC_CHCTE);
+     // Incluido por Italo em 13/05/2012
+     if SomenteNumeros(CTe.infCTeSub.tomaNaoICMS.refCteAnu) <> '' then
+      if not ValidarChave('NFe' + SomenteNumeros(CTe.infCTeSub.tomaNaoICMS.refCteAnu)) then
+       Gerador.wAlerta('#354', 'refCteAnu', DSC_REFNFE, ERR_MSG_INVALIDO);
      Gerador.wGrupo('/tomaNaoICMS');
     end;
    Gerador.wGrupo('/infCteSub');
@@ -2220,6 +2246,10 @@ begin
     begin
       Gerador.wGrupo('infCteComp', '#355');
       Gerador.wCampo(tcEsp, '#356', 'chave   ', 44, 44, 1, SomenteNumeros(CTe.infCTeComp[i].Chave), DSC_CHCTE);
+      // Incluido por Italo em 13/05/2012
+      if SomenteNumeros(CTe.infCTeComp[i].Chave) <> '' then
+       if not ValidarChave('NFe' + SomenteNumeros(CTe.infCTeComp[i].Chave)) then
+        Gerador.wAlerta('#356', 'chave', DSC_REFNFE, ERR_MSG_INVALIDO);
       Gerador.wGrupo('vPresComp', '#357');
       Gerador.wCampo(tcDe2, '#358', 'vTPrest ', 01, 15, 1, CTe.infCTeComp[i].vPresComp.vTPrest, DSC_VTPREST);
 
@@ -2438,6 +2468,10 @@ begin
   begin
     Gerador.wGrupo('infCteAnu', '#399');
     Gerador.wCampo(tcEsp, '#400', 'chCte ', 44, 44, 1, SomenteNumeros(CTe.InfCTeAnuEnt.chCTe), DSC_CHCTE);
+    // Incluido por Italo em 13/05/2012
+    if SomenteNumeros(CTe.InfCTeAnuEnt.chCTe) <> '' then
+     if not ValidarChave('NFe' + SomenteNumeros(CTe.InfCTeAnuEnt.chCTe)) then
+      Gerador.wAlerta('#400', 'chCte', DSC_REFNFE, ERR_MSG_INVALIDO);
     Gerador.wCampo(tcDat, '#401', 'dEmi  ', 10, 10, 1, CTe.InfCTeAnuEnt.dEmi, DSC_DEMI);
     Gerador.wGrupo('/infCteAnu');
   end;

@@ -48,6 +48,11 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   13/05/2012 (Italo Jurisato Junior)
+---------------
+[*] Agora todas as tags que contem uma chave de CTe ou NFe será validada a não ser
+    que o seu conteudo seja vazio.
+
 Alterações   10/05/2012 (Italo Jurisato Junior)
 ---------------
 [-] Ao gerar um CTe com destinatário do exterior estava fixo o código do Páis = 1058

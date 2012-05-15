@@ -668,7 +668,7 @@ begin
      // Ajuste de Colunas para modelos Específicos //
      if (fsModeloECF = 'TPF2001') then
         fpColunas := 40
-     else if (pos(fsModeloECF, 'X5|3202DT') > 0) then
+     else if (pos(fsModeloECF, 'X5|3202DT|ELGIN FIT') > 0) then
         fpColunas := 48;
 
   except

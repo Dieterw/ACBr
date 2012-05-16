@@ -101,8 +101,8 @@ type
     procedure SetOnWriteRegistroC510(const Value: TWriteRegistroEvent);
 
   public
-    constructor Create(AOwner: TComponent);
-    destructor Destroy;
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
   published
     property OnBeforeWriteRegistroC111: TWriteRegistroEvent read GetOnBeforeWriteRegistroC111 write SetOnBeforeWriteRegistroC111;
     property OnBeforeWriteRegistroC120: TWriteRegistroEvent read GetOnBeforeWriteRegistroC120 write SetOnBeforeWriteRegistroC120;

@@ -391,6 +391,7 @@ begin
          vlVersao102: strCOD_VER := '003';
          vlVersao103: strCOD_VER := '004';
          vlVersao104: strCOD_VER := '005';
+         vlVersao105: strCOD_VER := '006';
        end;
        Check(funChecaCNPJ(CNPJ), '(0-0000) ENTIDADE: O CNPJ "%s" digitado é inválido!', [CNPJ]);
        Check(funChecaCPF(CPF), '(0-0000) ENTIDADE: O CPF "%s" digitado é inválido!', [CPF]);

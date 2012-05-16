@@ -954,6 +954,13 @@ begin
      begin
         with RegC001.RegistroC100.Items[intFor] do
         begin
+		
+          Check(not((COD_MOD = '55') and (Trim(CHV_NFE) = '')), '(C-C100) Nota: %s' +sLineBreak+
+                                                                '         Série: %s'+sLineBreak+
+                                                                '         Emitida no dia: %s'+sLineBreak+
+                                                                '         Modelo: %s'        +sLineBreak+
+                                                                '         ChaveNF: %s'+sLineBreak, [NUM_DOC, SER, FormatDateTime('dd/mm/yyyy', DT_DOC), COD_MOD, CHV_NFE]);		
+		
           case COD_SIT of
            sdRegular:               strCOD_SIT := '00';
            sdExtempRegular:         strCOD_SIT := '01';

@@ -509,7 +509,7 @@ var
  FMsg : AnsiString;
 begin
   for i:= 0 to Self.Count-1 do
-   begin
+  begin
      if not(NotaUtil.ValidaAssinatura(('<NFe xmlns' + RetornarConteudoEntre(Self.Items[i].XML, '<NFe xmlns', '</NFe>')+ '</NFe>'), FMsg)) then
       begin
         Result := False;

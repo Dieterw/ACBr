@@ -48,6 +48,20 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   17/05/2012 (Italo Jurisato Junior)
+---------------
+[*] Foi alterado o Lay-out do DACTE para ficar em conformidade com o manual versão 1.00a.
+    Agora se código da unidade de informação da carga for uM3 o valor de qCarga será
+    impresso na coluna Cubabem;
+    Se o código da unidade de informação da carga for uUnidade, uLitros ou UMMBTU o valor de qCarga será
+    impresso na coluna Qtde Volumes;
+    Para o valor de qCarga ser impresso na coluna Peso Bruto o código da unidade de informação da carga 
+    tem que ser uKg ou uTon e tpMed ser igual a "PESO BRUTO";
+    Para o valor de qCarga ser impresso na coluna Peso Base Cálulo o código da unidade de informação da carga 
+    tem que ser uKg ou uTon e tpMed ser igual a "PESO BASE DE CALCULO" OU "PESO BC";
+    Caso o código da unidade de informação da carga for uKg ou uTon e tpMed for diferente dos textos
+    acima o valor de qCarga será impresso na coluna Peso Aferido;
+
 Alterações   13/05/2012 (Italo Jurisato Junior)
 ---------------
 [*] Agora todas as tags que contem uma chave de CTe ou NFe será validada a não ser

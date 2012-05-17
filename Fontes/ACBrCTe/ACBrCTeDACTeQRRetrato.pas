@@ -1239,6 +1239,49 @@ begin
 
   for i := 0 to FCTe.InfCarga.InfQ.Count - 1 do
    begin
+    // Alterado por Italo em 17/05/2012
+    //UnidMed = (uM3,uKG, uTON, uUNIDADE, uLITROS, uMMBTU);
+    case FCTe.InfCarga.InfQ.Items[i].cUnid of
+          uM3: qrmQtdUnidMedida4.Lines.Add(CteUtil.FormatarValor(msk6x3,
+                 FCTe.InfCarga.InfQ.Items[i].qCarga));
+          uKg: begin
+                if uppercase(trim(FCTe.InfCarga.InfQ.Items[i].tpMed))='PESO BRUTO'
+                then qrmQtdUnidMedida1.Lines.Add(CteUtil.FormatarValor(msk6x3,
+                        FCTe.InfCarga.InfQ.Items[i].qCarga))
+                else
+                if uppercase(trim(FCTe.InfCarga.InfQ.Items[i].tpMed))='PESO BASE DE CALCULO'
+                then qrmQtdUnidMedida2.Lines.Add(CteUtil.FormatarValor(msk6x3,
+                        FCTe.InfCarga.InfQ.Items[i].qCarga))
+                else
+                if uppercase(trim(FCTe.InfCarga.InfQ.Items[i].tpMed))='PESO BC'
+                then qrmQtdUnidMedida2.Lines.Add(CteUtil.FormatarValor(msk6x3,
+                        FCTe.InfCarga.InfQ.Items[i].qCarga))
+                else qrmQtdUnidMedida3.Lines.Add(CteUtil.FormatarValor(msk6x3,
+                        FCTe.InfCarga.InfQ.Items[i].qCarga));
+               end;
+         uTON: begin
+                if uppercase(trim(FCTe.InfCarga.InfQ.Items[i].tpMed))='PESO BRUTO'
+                then qrmQtdUnidMedida1.Lines.Add(CteUtil.FormatarValor(msk6x3,
+                        FCTe.InfCarga.InfQ.Items[i].qCarga))
+                else
+                if uppercase(trim(FCTe.InfCarga.InfQ.Items[i].tpMed))='PESO BASE DE CALCULO'
+                then qrmQtdUnidMedida2.Lines.Add(CteUtil.FormatarValor(msk6x3,
+                        FCTe.InfCarga.InfQ.Items[i].qCarga))
+                else
+                if uppercase(trim(FCTe.InfCarga.InfQ.Items[i].tpMed))='PESO BC'
+                then qrmQtdUnidMedida2.Lines.Add(CteUtil.FormatarValor(msk6x3,
+                        FCTe.InfCarga.InfQ.Items[i].qCarga))
+                else qrmQtdUnidMedida3.Lines.Add(CteUtil.FormatarValor(msk6x3,
+                        FCTe.InfCarga.InfQ.Items[i].qCarga));
+               end;
+     uUNIDADE: qrmQtdUnidMedida5.Lines.Add(CteUtil.FormatarValor(msk6x3,
+                 FCTe.InfCarga.InfQ.Items[i].qCarga) + '/' + FCTe.InfCarga.InfQ.Items[i].tpMed);
+     uLITROS:  qrmQtdUnidMedida5.Lines.Add(CteUtil.FormatarValor(msk6x3,
+                 FCTe.InfCarga.InfQ.Items[i].qCarga) + '/' + FCTe.InfCarga.InfQ.Items[i].tpMed);
+     uMMBTU:   qrmQtdUnidMedida5.Lines.Add(CteUtil.FormatarValor(msk6x3,
+                 FCTe.InfCarga.InfQ.Items[i].qCarga) + '/' + FCTe.InfCarga.InfQ.Items[i].tpMed);
+    end;
+    (*
     case i of
      0,4,8: qrmQtdUnidMedida1.Lines.Add(CteUtil.FormatarValor(msk6x3,
             FCTe.InfCarga.InfQ.Items[i].qCarga) + '/' + FCTe.InfCarga.InfQ.Items[i].tpMed);
@@ -1249,6 +1292,7 @@ begin
      3,7,11: qrmQtdUnidMedida4.Lines.Add(CteUtil.FormatarValor(msk6x3,
             FCTe.InfCarga.InfQ.Items[i].qCarga) + '/' + FCTe.InfCarga.InfQ.Items[i].tpMed);
     end;
+    *)
    end;
 
   qrlNomeSeguradora.Caption := '';

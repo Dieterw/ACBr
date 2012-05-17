@@ -7887,7 +7887,7 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
         AlignToBand = False
         AutoSize = False
         AutoStretch = False
-        Caption = 'QNT. / UN. MEDIDA'
+        Caption = 'PESO AFERIDO (Kg)'
         Color = clWhite
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -8042,7 +8042,7 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
         AlignToBand = False
         AutoSize = False
         AutoStretch = False
-        Caption = 'QNT. / UN. MEDIDA'
+        Caption = 'PESO BASE C'#193'LC. (Kg)'
         Color = clWhite
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -8073,7 +8073,7 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
         AlignToBand = False
         AutoSize = False
         AutoStretch = False
-        Caption = 'QNT. / UN. MEDIDA'
+        Caption = 'PESO BRUTO (Kg)'
         Color = clWhite
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -13882,8 +13882,9 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
       Size = 60
     end
     object cdsDocumentosDOCUMENTO_1: TStringField
+      DisplayWidth = 33
       FieldName = 'DOCUMENTO_1'
-      Size = 30
+      Size = 33
     end
     object cdsDocumentosTIPO_2: TStringField
       DisplayWidth = 6
@@ -13896,8 +13897,9 @@ inherited frmDACTeQRRetrato: TfrmDACTeQRRetrato
       Size = 60
     end
     object cdsDocumentosDOCUMENTO_2: TStringField
+      DisplayWidth = 33
       FieldName = 'DOCUMENTO_2'
-      Size = 30
+      Size = 33
     end
   end
 end

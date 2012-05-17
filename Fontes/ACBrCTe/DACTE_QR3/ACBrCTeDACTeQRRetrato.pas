@@ -38,7 +38,7 @@
 {******************************************************************************
 |* Historico
 |*
-|* 02/05/2012: Italo Jurisato Junior
+|* 17/05/2012: Italo Jurisato Junior
 ******************************************************************************}
 
 {$I ACBr.inc}
@@ -971,14 +971,17 @@ begin
   if Trim(FLogo) <> '' then
    begin
    qriLogo.Picture.LoadFromFile(FLogo);
-    if FExpandirLogoMarca then
-     begin
-      qriLogo.top:=2;
-      qriLogo.Left:=2;
-      qriLogo.Height:=145;
-      qriLogo.Width:=433;
-      qriLogo.Stretch:=true;
-     end;
+   end;
+  // Alterado por Italo em 17/05/2012
+  if FExpandirLogoMarca then
+   begin
+    qriLogo.top:=2;
+    qriLogo.Left:=2;
+    qriLogo.Height:=142;
+    qriLogo.Width:=330;
+    qriLogo.Stretch:=true;
+    qrmEmitente.Enabled:=False;
+    qrmDadosEmitente.Enabled:=False;
    end;
 
   qrlModal.Caption := TpModalToStrText(FCTe.Ide.modal);
@@ -990,30 +993,36 @@ begin
   SetBarCodeImage(Copy(FCTe.InfCTe.Id, 4, 44), qriBarCode);
   qrlChave.Caption := CTeUtil.FormatarChaveAcesso(Copy(FCTe.InfCTe.Id, 4, 44));
 
-  // Emitente
-  with FCTe.Emit do
-  begin
-    qrmEmitente.Lines.Text := XNome;
-
-    qrmDadosEmitente.Lines.Clear;
-    with EnderEmit do
+  // Incluido por Italo em 17/05/2012
+  if not FExpandirLogoMarca then
+   begin
+    qrmEmitente.Enabled:=True;
+    qrmDadosEmitente.Enabled:=True;
+    // Emitente
+    with FCTe.Emit do
     begin
-//      qrmDadosEmitente.Lines.Add(XLgr + IfThen(Nro = '0', '', ', ' + Nro) + ' ' + XCpl + ' ' + XBairro);
-      // Alterado por Italo em 10/03/2011
-      qrmDadosEmitente.Lines.Add(XLgr + IfThen(Nro = '0', '', ', ' + Nro));
-      if XCpl<>'' then qrmDadosEmitente.Lines.Add(XCpl);
-      if XBairro<>'' then qrmDadosEmitente.Lines.Add(XBairro);
-      qrmDadosEmitente.Lines.Add('CEP: ' + CTeUtil.FormatarCEP(FormatFloat( '00000000', CEP )) + ' - ' + XMun + ' - ' + UF);
-    end;
-//    qrmDadosEmitente.Lines.Add('CNPJ: ' + CTeUtil.FormatarCNPJ(CNPJ) + ' INSCRI플O ESTADUAL: ' + IE);
-    // Alterado por Italo em 10/03/2011
-    qrmDadosEmitente.Lines.Add('CNPJ: ' + CTeUtil.FormatarCNPJ(CNPJ));
-    qrmDadosEmitente.Lines.Add('INSCRI플O ESTADUAL: ' + IE);
-    qrmDadosEmitente.Lines.Add('TELEFONE: ' + CTeUtil.FormatarFone(EnderEmit.Fone));
+      qrmEmitente.Lines.Text := XNome;
 
-    if Trim(FUrl) <> '' then
-      qrmDadosEmitente.Lines.Add(FUrl);
-  end;
+      qrmDadosEmitente.Lines.Clear;
+      with EnderEmit do
+      begin
+//      qrmDadosEmitente.Lines.Add(XLgr + IfThen(Nro = '0', '', ', ' + Nro) + ' ' + XCpl + ' ' + XBairro);
+        // Alterado por Italo em 10/03/2011
+        qrmDadosEmitente.Lines.Add(XLgr + IfThen(Nro = '0', '', ', ' + Nro));
+        if XCpl<>'' then qrmDadosEmitente.Lines.Add(XCpl);
+        if XBairro<>'' then qrmDadosEmitente.Lines.Add(XBairro);
+        qrmDadosEmitente.Lines.Add('CEP: ' + CTeUtil.FormatarCEP(FormatFloat( '00000000', CEP )) + ' - ' + XMun + ' - ' + UF);
+      end;
+//    qrmDadosEmitente.Lines.Add('CNPJ: ' + CTeUtil.FormatarCNPJ(CNPJ) + ' INSCRI플O ESTADUAL: ' + IE);
+      // Alterado por Italo em 10/03/2011
+      qrmDadosEmitente.Lines.Add('CNPJ: ' + CTeUtil.FormatarCNPJ(CNPJ));
+      qrmDadosEmitente.Lines.Add('INSCRI플O ESTADUAL: ' + IE);
+      qrmDadosEmitente.Lines.Add('TELEFONE: ' + CTeUtil.FormatarFone(EnderEmit.Fone));
+
+      if Trim(FUrl) <> '' then
+        qrmDadosEmitente.Lines.Add(FUrl);
+    end;
+   end;
 
   qrlTipoCte.Caption := tpCTToStrText(FCTe.Ide.tpCTe);
   qrlTipoServico.Caption := TpServToStrText(FCTe.Ide.tpServ);
@@ -1239,6 +1248,49 @@ begin
 
   for i := 0 to FCTe.InfCarga.InfQ.Count - 1 do
    begin
+    // Alterado por Italo em 17/05/2012
+    //UnidMed = (uM3,uKG, uTON, uUNIDADE, uLITROS, uMMBTU);
+    case FCTe.InfCarga.InfQ.Items[i].cUnid of
+          uM3: qrmQtdUnidMedida4.Lines.Add(CteUtil.FormatarValor(msk6x3,
+                 FCTe.InfCarga.InfQ.Items[i].qCarga));
+          uKg: begin
+                if uppercase(trim(FCTe.InfCarga.InfQ.Items[i].tpMed))='PESO BRUTO'
+                then qrmQtdUnidMedida1.Lines.Add(CteUtil.FormatarValor(msk6x3,
+                        FCTe.InfCarga.InfQ.Items[i].qCarga))
+                else
+                if uppercase(trim(FCTe.InfCarga.InfQ.Items[i].tpMed))='PESO BASE DE CALCULO'
+                then qrmQtdUnidMedida2.Lines.Add(CteUtil.FormatarValor(msk6x3,
+                        FCTe.InfCarga.InfQ.Items[i].qCarga))
+                else
+                if uppercase(trim(FCTe.InfCarga.InfQ.Items[i].tpMed))='PESO BC'
+                then qrmQtdUnidMedida2.Lines.Add(CteUtil.FormatarValor(msk6x3,
+                        FCTe.InfCarga.InfQ.Items[i].qCarga))
+                else qrmQtdUnidMedida3.Lines.Add(CteUtil.FormatarValor(msk6x3,
+                        FCTe.InfCarga.InfQ.Items[i].qCarga));
+               end;
+         uTON: begin
+                if uppercase(trim(FCTe.InfCarga.InfQ.Items[i].tpMed))='PESO BRUTO'
+                then qrmQtdUnidMedida1.Lines.Add(CteUtil.FormatarValor(msk6x3,
+                        FCTe.InfCarga.InfQ.Items[i].qCarga))
+                else
+                if uppercase(trim(FCTe.InfCarga.InfQ.Items[i].tpMed))='PESO BASE DE CALCULO'
+                then qrmQtdUnidMedida2.Lines.Add(CteUtil.FormatarValor(msk6x3,
+                        FCTe.InfCarga.InfQ.Items[i].qCarga))
+                else
+                if uppercase(trim(FCTe.InfCarga.InfQ.Items[i].tpMed))='PESO BC'
+                then qrmQtdUnidMedida2.Lines.Add(CteUtil.FormatarValor(msk6x3,
+                        FCTe.InfCarga.InfQ.Items[i].qCarga))
+                else qrmQtdUnidMedida3.Lines.Add(CteUtil.FormatarValor(msk6x3,
+                        FCTe.InfCarga.InfQ.Items[i].qCarga));
+               end;
+     uUNIDADE: qrmQtdUnidMedida5.Lines.Add(CteUtil.FormatarValor(msk6x3,
+                 FCTe.InfCarga.InfQ.Items[i].qCarga) + '/' + FCTe.InfCarga.InfQ.Items[i].tpMed);
+     uLITROS:  qrmQtdUnidMedida5.Lines.Add(CteUtil.FormatarValor(msk6x3,
+                 FCTe.InfCarga.InfQ.Items[i].qCarga) + '/' + FCTe.InfCarga.InfQ.Items[i].tpMed);
+     uMMBTU:   qrmQtdUnidMedida5.Lines.Add(CteUtil.FormatarValor(msk6x3,
+                 FCTe.InfCarga.InfQ.Items[i].qCarga) + '/' + FCTe.InfCarga.InfQ.Items[i].tpMed);
+    end;
+    (*
     case i of
      0,4,8: qrmQtdUnidMedida1.Lines.Add(CteUtil.FormatarValor(msk6x3,
             FCTe.InfCarga.InfQ.Items[i].qCarga) + '/' + FCTe.InfCarga.InfQ.Items[i].tpMed);
@@ -1249,6 +1301,7 @@ begin
      3,7,11: qrmQtdUnidMedida4.Lines.Add(CteUtil.FormatarValor(msk6x3,
             FCTe.InfCarga.InfQ.Items[i].qCarga) + '/' + FCTe.InfCarga.InfQ.Items[i].tpMed);
     end;
+    *)
    end;
 
   qrlNomeSeguradora.Caption := '';
@@ -2032,7 +2085,7 @@ begin
   qrlSerie3.Caption  := FormatFloat( '000', FCTe.Ide.serie);
   qrlNumCte3.Caption := FormatFloat( '000,000,000', FCTe.Ide.nCT );
 
-  // Incluido/Alterado por Italo em 27/04/2011 / 04/07/2011 / 10/05/2012
+  // Incluido/Aterado por Italo em 27/04/2011 / 04/07/2011 / 10/05/2012
   // TpcteTipoCTe = (tcNormal, tcComplemento, tcAnulacao, tcSubstituto);
   if PrintBand
    then begin

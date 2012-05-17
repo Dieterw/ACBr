@@ -971,14 +971,17 @@ begin
   if Trim(FLogo) <> '' then
    begin
    qriLogo.Picture.LoadFromFile(FLogo);
-    if FExpandirLogoMarca then
-     begin
-      qriLogo.top:=2;
-      qriLogo.Left:=2;
-      qriLogo.Height:=145;
-      qriLogo.Width:=433;
-      qriLogo.Stretch:=true;
-     end;
+   end;
+  // Alterado por Italo em 17/05/2012
+  if FExpandirLogoMarca then
+   begin
+    qriLogo.top:=2;
+    qriLogo.Left:=2;
+    qriLogo.Height:=142;
+    qriLogo.Width:=330;
+    qriLogo.Stretch:=true;
+    qrmEmitente.Enabled:=False;
+    qrmDadosEmitente.Enabled:=False;
    end;
 
   qrlModal.Caption := TpModalToStrText(FCTe.Ide.modal);
@@ -993,6 +996,8 @@ begin
   // Incluido por Italo em 17/05/2012
   if not FExpandirLogoMarca then
    begin
+    qrmEmitente.Enabled:=True;
+    qrmDadosEmitente.Enabled:=True;
     // Emitente
     with FCTe.Emit do
     begin

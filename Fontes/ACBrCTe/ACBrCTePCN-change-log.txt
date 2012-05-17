@@ -50,6 +50,11 @@ Símbolo : Significado
 
 Alterações   17/05/2012 (Italo Jurisato Junior)
 ---------------
+[*] Se a propriedade ExpandirLogoMarca for TRUE não imprime os dados do emitente
+    somente o logo.
+
+Alterações   17/05/2012 (Italo Jurisato Junior)
+---------------
 [*] Foi alterado o Lay-out do DACTE para ficar em conformidade com o manual versão 1.00a.
     Agora se código da unidade de informação da carga for uM3 o valor de qCarga será
     impresso na coluna Cubabem;

@@ -990,30 +990,34 @@ begin
   SetBarCodeImage(Copy(FCTe.InfCTe.Id, 4, 44), qriBarCode);
   qrlChave.Caption := CTeUtil.FormatarChaveAcesso(Copy(FCTe.InfCTe.Id, 4, 44));
 
-  // Emitente
-  with FCTe.Emit do
-  begin
-    qrmEmitente.Lines.Text := XNome;
-
-    qrmDadosEmitente.Lines.Clear;
-    with EnderEmit do
+  // Incluido por Italo em 17/05/2012
+  if not FExpandirLogoMarca then
+   begin
+    // Emitente
+    with FCTe.Emit do
     begin
-//      qrmDadosEmitente.Lines.Add(XLgr + IfThen(Nro = '0', '', ', ' + Nro) + ' ' + XCpl + ' ' + XBairro);
-      // Alterado por Italo em 10/03/2011
-      qrmDadosEmitente.Lines.Add(XLgr + IfThen(Nro = '0', '', ', ' + Nro));
-      if XCpl<>'' then qrmDadosEmitente.Lines.Add(XCpl);
-      if XBairro<>'' then qrmDadosEmitente.Lines.Add(XBairro);
-      qrmDadosEmitente.Lines.Add('CEP: ' + CTeUtil.FormatarCEP(FormatFloat( '00000000', CEP )) + ' - ' + XMun + ' - ' + UF);
-    end;
-//    qrmDadosEmitente.Lines.Add('CNPJ: ' + CTeUtil.FormatarCNPJ(CNPJ) + ' INSCRI플O ESTADUAL: ' + IE);
-    // Alterado por Italo em 10/03/2011
-    qrmDadosEmitente.Lines.Add('CNPJ: ' + CTeUtil.FormatarCNPJ(CNPJ));
-    qrmDadosEmitente.Lines.Add('INSCRI플O ESTADUAL: ' + IE);
-    qrmDadosEmitente.Lines.Add('TELEFONE: ' + CTeUtil.FormatarFone(EnderEmit.Fone));
+      qrmEmitente.Lines.Text := XNome;
 
-    if Trim(FUrl) <> '' then
-      qrmDadosEmitente.Lines.Add(FUrl);
-  end;
+      qrmDadosEmitente.Lines.Clear;
+      with EnderEmit do
+      begin
+//      qrmDadosEmitente.Lines.Add(XLgr + IfThen(Nro = '0', '', ', ' + Nro) + ' ' + XCpl + ' ' + XBairro);
+        // Alterado por Italo em 10/03/2011
+        qrmDadosEmitente.Lines.Add(XLgr + IfThen(Nro = '0', '', ', ' + Nro));
+        if XCpl<>'' then qrmDadosEmitente.Lines.Add(XCpl);
+        if XBairro<>'' then qrmDadosEmitente.Lines.Add(XBairro);
+        qrmDadosEmitente.Lines.Add('CEP: ' + CTeUtil.FormatarCEP(FormatFloat( '00000000', CEP )) + ' - ' + XMun + ' - ' + UF);
+      end;
+//    qrmDadosEmitente.Lines.Add('CNPJ: ' + CTeUtil.FormatarCNPJ(CNPJ) + ' INSCRI플O ESTADUAL: ' + IE);
+      // Alterado por Italo em 10/03/2011
+      qrmDadosEmitente.Lines.Add('CNPJ: ' + CTeUtil.FormatarCNPJ(CNPJ));
+      qrmDadosEmitente.Lines.Add('INSCRI플O ESTADUAL: ' + IE);
+      qrmDadosEmitente.Lines.Add('TELEFONE: ' + CTeUtil.FormatarFone(EnderEmit.Fone));
+
+      if Trim(FUrl) <> '' then
+        qrmDadosEmitente.Lines.Add(FUrl);
+    end;
+   end;
 
   qrlTipoCte.Caption := tpCTToStrText(FCTe.Ide.tpCTe);
   qrlTipoServico.Caption := TpServToStrText(FCTe.Ide.tpServ);

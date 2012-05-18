@@ -533,7 +533,7 @@ begin
   Result := True;
   if IsDLLPort then exit;
 
-  if IsTXTFilePort then
+  if not IsSerialPort then
   begin
      try
         {$IFDEF ThreadEnviaLPT}

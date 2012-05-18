@@ -280,6 +280,7 @@ TACBrECFDadosRZ = class
     fsValorVendaBruta: double;
     fsTotalizadoresNaoFiscais: TACBrECFComprovantesNaoFiscais;
     fsICMS: TACBrECFAliquotas;
+    fsTodasAliquotas: TACBrECFAliquotas;
     fsAcrescimoICMS: double;
     fsDescontoICMS: double;
     fsNaoTributadoICMS: double;
@@ -359,6 +360,9 @@ TACBrECFDadosRZ = class
     property AcrescimoICMS: double read fsAcrescimoICMS write fsAcrescimoICMS;
     property AcrescimoISSQN: double read fsAcrescimoISSQN write fsAcrescimoISSQN;
     property AcrescimoOPNF: double read fsAcrescimoOPNF write fsAcrescimoOPNF;
+
+    // Todas as Aliquotas, de ICMS e ISSQN na ordem original de programação no ECF
+    property TodasAliquotas: TACBrECFAliquotas read fsTodasAliquotas;
     // ICMS
     property ICMS: TACBrECFAliquotas read fsICMS;
     property SubstituicaoTributariaICMS: double read fsSubstituicaoTributariaICMS write fsSubstituicaoTributariaICMS;
@@ -2560,13 +2564,13 @@ begin
 
      Result := Result + sLineBreak + '[Aliquotas]' + sLineBreak ;
 
-     For I := 0 to ICMS.Count-1 do
+     For I := 0 to TodasAliquotas.Count-1 do
      begin
         Result := Result +
                   FormatFloat('00', I+1 ) +
-                  ICMS[I].Tipo +
-                  IntToStrZero(Round(ICMS[I].Aliquota*100),4) + ' = ' +
-                  FloatToStr(ICMS[I].Total) + sLineBreak ;
+                  TodasAliquotas[I].Tipo +
+                  IntToStrZero(Round(TodasAliquotas[I].Aliquota*100),4) + ' = ' +
+                  FloatToStr(TodasAliquotas[I].Total) + sLineBreak ;
      end ;
 
      Result := Result + sLineBreak + '[OutrasICMS]' + sLineBreak ;
@@ -3928,8 +3932,9 @@ begin
    fsTotalizadoresNaoFiscais := TACBrECFComprovantesNaoFiscais.Create;
    fsRelatorioGerencial      := TACBrECFRelatoriosGerenciais.Create;
    fsMeiosDePagamento        := TACBrECFFormasPagamento.Create;
-   fsICMS                    := TACBrECFAliquotas.Create;
-   fsISSQN                   := TACBrECFAliquotas.Create;
+   fsTodasAliquotas          := TACBrECFAliquotas.Create;
+   fsICMS                    := TACBrECFAliquotas.Create(False);
+   fsISSQN                   := TACBrECFAliquotas.Create(False);
    
    Clear ;
 end;
@@ -3941,6 +3946,7 @@ begin
    fsMeiosDePagamento.Clear ;
    fsICMS.Clear ;
    fsISSQN.Clear ;
+   fsTodasAliquotas.Clear;
 
    fsCOO                         := 0 ;
    fsCFD                         := 0 ;
@@ -3987,6 +3993,7 @@ begin
    fsMeiosDePagamento.Free;
    fsICMS.Free;
    fsISSQN.Free;
+   fsTodasAliquotas.Free;
 
    inherited Destroy ;
 end;

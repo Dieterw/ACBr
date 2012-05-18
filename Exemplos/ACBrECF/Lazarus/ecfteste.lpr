@@ -6,13 +6,15 @@ uses
   {$IFDEF UNIX}{$IFDEF UseCThreads}
   cthreads,
   {$ENDIF}{$ENDIF}
-  Interfaces, // this includes the LCL widgetset
+  Interfaces, sysutils, // this includes the LCL widgetset
   Forms, ECFTeste1, ConfiguraSerial, EfetuaPagamento, Relatorio, Sobre,
   VendeItem, uDAV, uDAVOS, TurboPowerIPro, memdslaz, ACBrSerial, ACBrComum;
 
 {$R *.res}
 
 begin
+  //DeleteFile( 'c:\temp\heaptrclog.trc');
+  //SetHeapTraceOutput( 'c:\temp\heaptrclog.trc');
   Application.Initialize;
   Application.CreateForm(TForm1, Form1);
   Application.CreateForm(TfrConfiguraSerial, frConfiguraSerial);

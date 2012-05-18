@@ -3256,7 +3256,7 @@ begin
       sIcms := copy( RetCmd,  49,  64 ) ;
       sAux  := copy( RetCmd, 113, 224 ) ;
 
-      for nAux := 0 to 7 do
+      for nAux := 0 to 15 do
       begin
          nIcms := RoundTo( StrToFloatDef( Copy( sIcms, ( nAux *  4 ) + 1,  4 ), 0 ) / 100, -2 ) ;
          nVal  := RoundTo( StrToFloatDef( Copy( sAux , ( nAux * 14 ) + 1, 14 ), 0 ) / 100, -2 ) ;

@@ -1,7 +1,7 @@
 object Form1: TForm1
   Left = 386
   Height = 403
-  Top = 308
+  Top = 252
   Width = 547
   Caption = 'Teste de Impressora Fiscal'
   ClientHeight = 383
@@ -2586,6 +2586,13 @@ object Form1: TForm1
         object mDataHoraSwBasico: TMenuItem
           Caption = 'Data Hora Sw.Basico'
           OnClick = mDataHoraSwBasicoClick
+        end
+        object MenuItem28: TMenuItem
+          Caption = '-'
+        end
+        object MenuItem29: TMenuItem
+          Caption = 'Decimais'
+          OnClick = MenuItem29Click
         end
       end
       object N19: TMenuItem

@@ -10,10 +10,10 @@ uses
   {$IFDEF MSWINDOWS}
    Windows, Dialogs,
   {$ENDIF}
-  Forms, ACBrTCP, UtilUnit, ACBrMonitor1, CmdUnit, ConfiguraSerial, DoACBrUnit,
-  DoBALUnit, DoCHQUnit, DoDISUnit, DoECFBemafi32, DoECFObserver, DoECFUnit,
-  DoETQUnit, DoGAVUnit, DoLCBUnit, Sobre, DoBoletoUnit, ACBrSerial, ACBr_Boleto,
-  ACBrDiversos, DoCEPUnit, DoIBGEUnit;
+  Forms, ACBrTCP, UtilUnit, ACBrMonitor1, CmdUnit,
+  ConfiguraSerial, DoACBrUnit, DoBALUnit, DoCHQUnit, DoDISUnit, DoECFBemafi32,
+  DoECFObserver, DoECFUnit, DoETQUnit, DoGAVUnit, DoLCBUnit, Sobre,
+  DoBoletoUnit, ACBrSerial, ACBr_Boleto, ACBrDiversos, DoCEPUnit, DoIBGEUnit;
 
 {$R *.res}
 

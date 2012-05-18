@@ -2172,15 +2172,17 @@ begin
            Aliq := TACBrECFAliquota.Create ;
            Aliq.Assign( Self.Aliquotas[I] );
 
+           TodasAliquotas.Add( Aliq );
+
            if Self.Aliquotas[I].Tipo = 'S' then
            begin
               ISSQN.Add(Aliq);
-              try TotalISSQN := TotalISSQN + Self.Aliquotas[I].Total; except end;
+              try TotalISSQN := TotalISSQN + Aliq.Total; except end;
            end
            else
            begin
               ICMS.Add(Aliq);
-              try TotalICMS  := TotalICMS + Self.Aliquotas[I].Total; except end;
+              try TotalICMS  := TotalICMS + Aliq.Total; except end;
            end;
         end;
      except

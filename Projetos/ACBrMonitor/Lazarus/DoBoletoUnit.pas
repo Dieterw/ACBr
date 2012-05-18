@@ -136,7 +136,7 @@ begin
               try
                  TipoInscricao := TACBrPessoa( FrmACBrMonitor.cbxBOLF_J.ItemIndex ) ;
               except
-                 TipoInscricao := pOutras ;
+                 TipoInscricao := pJuridica ;
               end ;
 
               Nome          := IniBoletos.ReadString('CEDENTE','Nome',Nome);

@@ -97,6 +97,25 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 17/05/2012
+-- ACBrECF --
+[-] Correção de Bug em DadosReducaoZ, String resultante não contemplava
+    as Aliquotas de ISS.  (por: DSA)
+    http://www.djsystem.com.br/acbr/forum/viewtopic.php?f=10&t=5790&p=30444
+[+] DadosReducaoZClass modificado inserindo nova lista de Objetos,
+    "TodasAliquotas", que permite visualizar todas as aliquotas existentes, e na
+    ordem correta de programação no ECF, independente de Tipo ser ICMS ou ISSQ
+    (por: DSA)
+
+-- ACBrECFFiscNet --
+[-] Correção do método DadosUltimaReducaoZ, que retornava apenas as 8 primeiras
+    aliquotas.       (por: wpereira)
+    http://www.djsystem.com.br/acbr/forum/viewtopic.php?f=10&t=5859&p=30508
+
+-- ACBrECFSwedaSTX --
+[-] Corrigido Bug na detecção de Arredondamento para Modelos com protocolo
+    superior a "D" (ST200)      (por: DSA)
+
 Data: 09/05/2012
 -- ACBrDevice --
 [-] Correção de Bug introduzido na rev.3516, impedindo o uso de portas Paralelas

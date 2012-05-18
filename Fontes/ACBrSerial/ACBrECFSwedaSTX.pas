@@ -1284,7 +1284,7 @@ end;
 
 function TACBrECFSwedaSTX.GetArredonda: Boolean;
 begin
-  Result := (fsVerProtocolo > 'D') ;
+  Result := fpArredondaItemMFD and (fsVerProtocolo > 'D') ;
 end;
 
 Procedure TACBrECFSwedaSTX.LeituraX ;

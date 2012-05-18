@@ -213,6 +213,8 @@ type
     mDAVOS: TMenuItem;
     MenuItem26 : TMenuItem ;
     MenuItem27 : TMenuItem ;
+    MenuItem28: TMenuItem;
+    MenuItem29: TMenuItem;
     miEstornoCCD : TMenuItem ;
     miTipoUltimoDoc : TMenuItem ;
     mValorTotalNaoFiscal : TMenuItem ;
@@ -461,6 +463,7 @@ type
     procedure MenuItem20Click(Sender : TObject) ;
     procedure MenuItem21Click(Sender : TObject) ;
     procedure MenuItem23Click(Sender : TObject) ;
+    procedure MenuItem29Click(Sender: TObject);
     procedure miEstornoCCDClick(Sender : TObject) ;
     procedure miTipoUltimoDocClick(Sender : TObject) ;
     procedure mLerTotaisRelatoriosGerenciaisClick(Sender : TObject) ;
@@ -1751,6 +1754,14 @@ end;
 procedure TForm1.MenuItem23Click(Sender : TObject) ;
 begin
    ACBrECF1.DescontoAcrescimoItemAnterior( 1,'D','%', 3);
+end;
+
+procedure TForm1.MenuItem29Click(Sender: TObject);
+begin
+  mResp.Lines.Add( 'Decimais QTD: ( '+ IntToStr(ACBrECF1.DecimaisQtd)+' )' );
+  mResp.Lines.Add( 'Decimais Preço Unit: ( '+ IntToStr(ACBrECF1.DecimaisPreco)+' )' );
+  AtualizaMemos ;
+
 end;
 
 procedure TForm1.miEstornoCCDClick(Sender : TObject) ;

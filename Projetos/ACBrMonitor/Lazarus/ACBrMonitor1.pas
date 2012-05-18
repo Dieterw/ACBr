@@ -1646,10 +1646,8 @@ begin
 
     if cbxBOLF_J.ItemIndex = 0 then
       Cedente.TipoInscricao := pFisica
-    else if cbxBOLF_J.ItemIndex = 1 then
-      Cedente.TipoInscricao := pJuridica
     else
-      Cedente.TipoInscricao := pOutras;
+      Cedente.TipoInscricao := pJuridica ;
 
     Cedente.Logradouro    := edtBOLLogradouro.Text;
     Cedente.NumeroRes     := edtBOLNumero.Text;

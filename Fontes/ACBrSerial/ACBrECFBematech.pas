@@ -2643,6 +2643,8 @@ begin
         { Comando disponivel epenas a partir da MP2100 }
         RetCmd := RetornaInfoECF( '72' ) ;
         fsNumCOOInicial := copy( RetCmd ,1,6) ;
+        if StrToIntDef( fsNumCOOInicial, 0 ) = 0 then
+           fsNumCOOInicial := '';
      except
         Erro := True ;
      end ;

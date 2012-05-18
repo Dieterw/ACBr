@@ -47,6 +47,9 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 1.00a 18/05/2012
+-- ACBrSPEDPisCofins --
+[+] Add bloco "P" (por carlessoflu)
 
 Versão 1.01   08/05/2012
 -- ACBrSPEDFiscal --

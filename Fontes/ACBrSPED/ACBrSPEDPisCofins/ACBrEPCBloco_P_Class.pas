@@ -119,6 +119,11 @@ begin
 
   fRegistroP010Count      := 0;
   fRegistroP100Count      := 0;
+  fRegistroP110Count      := 0;
+  fRegistroP199Count      := 0;
+  fRegistroP200Count      := 0;
+  fRegistroP210Count      := 0;
+  
   fRegistroP990.QTD_LIN_P := 0;
 end;
 

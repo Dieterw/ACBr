@@ -4510,6 +4510,8 @@ begin
             Aliq.Assign( Aliquotas[I] );
             Aliq.Total := RoundTo(StrToFloatDef( copy(S,(I*14)+1,14),0) / 100, -2) ;
 
+            TodasAliquotas.Add( Aliq );
+
             if Aliq.Tipo = 'S' then
             begin
                ISSQN.Add(Aliq);

@@ -317,7 +317,6 @@ TACBrECFBematech = class( TACBrECFClass )
       usa um Sufixo padrão no fim da resposta da Impressora. }
     fs25MFD     : Boolean ;  // True se for MP25 ou Superior (MFD)
     fsPAF       : String ;
-    fsVendeItemExtendido : Boolean ;
     fsBytesResp : Integer ;
     fsFalhasFimImpressao : Integer ;
     fsNumVersao : String ;
@@ -632,7 +631,6 @@ begin
   fsNFCodFPG := '' ;
   fsNFValor  := 0 ;
   fs25MFD    := false ;
-  fsVendeItemExtendido := fpArredondaItemMFD;
 
   try
      { Testando a comunicaçao com a porta }
@@ -1466,7 +1464,7 @@ begin
   Descricao := trim(Descricao) ;
   Unidade   := padL(Unidade,2) ;
 
-  if fpMFD and fsVendeItemExtendido then
+  if fpMFD and fpArredondaItemMFD then
    begin
      BytesResp   := 0 ;
      Codigo      := padL(Codigo,14) ;
@@ -1494,7 +1492,9 @@ begin
        begin
           if TestBit(ST1,2) then  // Comando inexistente ?
            begin
-             fsVendeItemExtendido := False;
+             fpArredondaItemMFD := False; // Desative o ArredondaItemMFD;
+
+             // Chamada recursiva do método para usar comando tradicional //
              VendeItem( Codigo, Descricao, AliquotaECF, Qtd, ValorUnitario,
                         ValorDescontoAcrescimo, Unidade, TipoDescontoAcrescimo,
                         DescontoAcrescimo );
@@ -1508,6 +1508,7 @@ begin
   else if fs25MFD or
      ((DescontoAcrescimo <> 'D') and (ValorDescontoAcrescimo > 0)) then   // Tem acrescimo ?
    begin
+     fpArredondaItemMFD := False;
      BytesResp   := 0 ;
      Codigo      := Trim(Codigo) ;
      ValorStr    := IntToStrZero( Round( ValorUnitario * 1000), 9) ;
@@ -1539,7 +1540,8 @@ begin
    end
   else
    begin
-     Codigo := padL(Codigo,13) ;  
+     fpArredondaItemMFD := False;
+     Codigo := padL(Codigo,13) ;
      if Round( Qtd ) = Qtd then
         QtdStr := IntToStrZero( Round( Qtd ), 4)
      else

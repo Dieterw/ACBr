@@ -1319,7 +1319,7 @@ begin
   end ;
 
   try
-    if (CodDepartamento = -1) and ArredondaItemMFD and (not Arredonda) then
+    if (CodDepartamento = -1) and fpArredondaItemMFD and (not Arredonda) then
        CodDepartamento := 1;  // Arredondamento por CodDepartamento
 
     with FiscNETComando do

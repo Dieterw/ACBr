@@ -1680,17 +1680,8 @@ Var RetCmd : AnsiString ;
 begin
   if fsArredonda = ' ' then
   begin
-     if fpMFD then
-      begin
-        if fpArredondaItemMFD then
-           fsArredonda := 'S'
-        else
-           fsArredonda := 'N' ;
-      end
-
-     else if (fsNumVersao = '2000') then
+     if fpMFD or (fsNumVersao = '2000') then
         fsArredonda := 'N'
-
      else
       begin
         RetCmd := EnviaComando( ESC + #229 ) ;
@@ -2150,13 +2141,13 @@ begin
     end
     else
     begin
-      if fpArredondaItemMFD and (fsArredonda <> 'N') then
+      if fpArredondaItemMFD then
       begin
         try
-          // Tenta enviar o comando, se o ECF não reconhecer (except), desativa o Arredondamento
+          // Tenta enviar o comando, se o ECF não reconhecer (except), desativa o ArredondaItemMFD;
           EnviaComando(FS + 'C' + #219 + 'A'); // A = Arredondamento / T = Truncamento
         except
-          fsArredonda := 'N' ;
+          fpArredondaItemMFD := False ;
         end ;
       end ;
 
@@ -2171,14 +2162,13 @@ begin
     fsNumUltimoItem := RespostasComando['NumeroItem'].AsInteger;
 
     if ValorDescontoAcrescimo > 0 then
-      DescontoAcrescimoItemAnterior(
-        ValorDescontoAcrescimo, DescontoAcrescimo,
-        TipoDescontoAcrescimo, StrToIntDef(copy(RetCmd,10,3),0)
-      ) ;
+      DescontoAcrescimoItemAnterior( ValorDescontoAcrescimo, DescontoAcrescimo,
+        TipoDescontoAcrescimo, StrToIntDef(copy(RetCmd,10,3),0) ) ;
   end
   else
   if fsNumVersao = '2000' then
   begin
+    fpArredondaItemMFD := False;
     Codigo      := padL(Codigo,18) ;    { Ajustando Tamanhos }
     Descricao   := TrimRight(LeftStr(Descricao,200)) + cDELIMITADOR ;
     ValorStr    := IntToStrZero( Round(ValorUnitario * 1000), 10) ;
@@ -2215,6 +2205,7 @@ begin
   end
   else
   begin
+    fpArredondaItemMFD := False;
     Codigo  := padL(Codigo,13) ;    // Ajustando Tamanhos
     Unidade := padL(Unidade,2) ;
 

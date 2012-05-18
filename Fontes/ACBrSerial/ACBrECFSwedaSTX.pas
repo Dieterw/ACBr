@@ -131,7 +131,6 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
     function GetGavetaAberta: Boolean; override ;
     function GetPoucoPapel : Boolean; override ;
     function GetHorarioVerao: Boolean; override ;
-    function GetArredonda: Boolean; override ;
     function GetChequePronto: Boolean; override ;
     function GetParamDescontoISSQN: Boolean; override ;
 
@@ -1282,11 +1281,6 @@ begin
   Result := (UpperCase( copy(RetCmd,20,1) ) = 'V') ;
 end;
 
-function TACBrECFSwedaSTX.GetArredonda: Boolean;
-begin
-  Result := fpArredondaItemMFD and (fsVerProtocolo > 'D') ;
-end;
-
 Procedure TACBrECFSwedaSTX.LeituraX ;
 begin
   AguardaImpressao := True ;
@@ -1458,13 +1452,15 @@ begin
   IAT := '';
   if fsVerProtocolo > 'D' then
   begin
-    if ArredondaItemMFD then
+    if fpArredondaItemMFD then
        IAT := 'A'
     else
        IAT := 'T';
 
     IAT := '|'+IAT;
-  end ;
+  end
+  else
+     fpArredondaItemMFD := False;
 
  {Vai vir o indice, tem que transformar em aliquota no formato Tipo + Aliquota}
   if (AliquotaECF[1] <> 'I') and

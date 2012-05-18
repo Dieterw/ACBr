@@ -101,9 +101,8 @@ type
     procedure LerChavePrivada ;
     Function GetChavePublica : AnsiString;
     procedure LerChavePublica ;
-    procedure LerChavePublicaComoPrivada ;
-    Procedure LerChave_eECFc( ConteudoXML: AnsiString; Privada: Boolean) ;
-    Procedure LerChaveModuloExpoente( Modulo, Expoente: AnsiString; Privada: Boolean) ;
+    Procedure LerChave_eECFc( ConteudoXML: AnsiString) ;
+    Procedure LerChaveModuloExpoente( Modulo, Expoente: AnsiString) ;
     procedure LerChave(const Chave : AnsiString; Privada: Boolean) ;
     procedure LiberarChave ;
 
@@ -138,7 +137,7 @@ type
     Function GerarXMLeECFc(const NomeSwHouse: String): AnsiString; overload;
     Procedure CalcularModuloeExpoente( var Modulo, Expoente : AnsiString );
     Function CalcularChavePublica : AnsiString ;
-    Function ConverteXMLeECFcParaOpenSSL( ArquivoXML: String; Privada: Boolean) : AnsiString;
+    Function ConverteXMLeECFcParaOpenSSL( ArquivoXML: String) : AnsiString;
 
     function CalcularHashArquivo( const NomeArquivo: String;
        const Digest: TACBrEADDgst ): AnsiString ; overload ;
@@ -359,7 +358,7 @@ begin
   Chave := GetChavePrivada;
 
   if pos('<modulo>', Chave ) > 0 then
-     LerChave_eECFc( Chave, True )
+     LerChave_eECFc( Chave )
   else
      LerChave(Chave, True) ;
 end ;
@@ -381,25 +380,12 @@ begin
   Chave := GetChavePublica;
 
   if pos('<modulo>', Chave ) > 0 then
-     LerChave_eECFc( Chave, False )
+     LerChave_eECFc( Chave )
   else
      LerChave( Chave, False ) ;
 end ;
 
-procedure TACBrEAD.LerChavePublicaComoPrivada ;
-var
-  Chave : AnsiString ;
-begin
-  Chave := GetChavePublica;
-
-  if pos('<modulo>', Chave ) > 0 then
-     LerChave_eECFc( Chave, True )
-  else
-     LerChave( Chave, True ) ;
-end ;
-
-function TACBrEAD.ConverteXMLeECFcParaOpenSSL(ArquivoXML : String ;
-  Privada : Boolean) : AnsiString ;
+function TACBrEAD.ConverteXMLeECFcParaOpenSSL(ArquivoXML: String): AnsiString;
 Var
   SL : TStringList ;
   Bio : PBIO ;
@@ -412,30 +398,21 @@ begin
   SL := TStringList.Create;
   try
      SL.LoadFromFile( ArquivoXML );
-     LerChave_eECFc( SL.Text, Privada )
+     LerChave_eECFc( SL.Text )
   finally
      SL.Free ;
   end ;
 
   Bio := CriarMemBIO;
   try
-     if Privada then
-      begin
-        if PEM_write_bio_RSAPrivateKey(Bio, fsKey.pkey.rsa, nil, nil, 0, nil, nil) = 1 then
-           Result := AnsiString( BioToStr( Bio ) );
-      end
-     else
-      begin
-        if PEM_write_bio_PUBKEY(Bio, fsKey) = 1 then
-           Result := AnsiString( BioToStr( Bio ) );
-      end ;
+     if PEM_write_bio_PUBKEY(Bio, fsKey) = 1 then
+        Result := AnsiString( BioToStr( Bio ) );
   finally
     LiberarBIO( Bio ) ;
   end ;
 end ;
 
-procedure TACBrEAD.LerChave_eECFc(ConteudoXML : AnsiString ; Privada : Boolean
-  ) ;
+procedure TACBrEAD.LerChave_eECFc(ConteudoXML : AnsiString ) ;
 Var
   Modulo, Expoente : AnsiString ;
 begin
@@ -443,11 +420,10 @@ begin
   Expoente := TagValue( ConteudoXML, 'expoente_publico' );
   fsIsXMLeECFc := True;
 
-  LerChaveModuloExpoente( Modulo, Expoente, Privada );
+  LerChaveModuloExpoente( Modulo, Expoente );
 end ;
 
-procedure TACBrEAD.LerChaveModuloExpoente(Modulo, Expoente : AnsiString ;
-  Privada : Boolean) ;
+procedure TACBrEAD.LerChaveModuloExpoente(Modulo, Expoente: AnsiString);
 var
   bnMod, bnExp : PBIGNUM;
   RSAKey : pRSA ;
@@ -481,27 +457,9 @@ begin
    fsKey := EvpPkeyNew;
   {$ENDIF}
 
-  if Privada then
-   begin
-     {$IFDEF USE_libeay32}
-      RSAKey := RSA_generate_key( 1024, StrToIntDef( '$'+Expoente, RSA_F4 ), nil, nil);
-     {$ELSE}
-      RSAKey := RsaGenerateKey( 1024, StrToIntDef( '$'+Expoente, RSA_F4 ), nil, nil);
-     {$ENDIF}
-     if RSAKey = nil then
-        raise Exception.Create( 'Erro ao gerar par de Chaves RSA');
-
-     //RSAKey := RSA_new;
-     RSAKey.n := bnMod;
-     RSAKey.e := bnExp;
-     RSAKey.d := bnExp;
-   end
-  else
-   begin
-     RSAKey := RSA_new;
-     RSAKey.e := bnMod;
-     RSAKey.d := bnExp;
-   end ;
+  RSAKey := RSA_new;
+  RSAKey.e := bnMod;
+  RSAKey.d := bnExp;
 
   {$IFDEF USE_libeay32}
     Erro := EVP_PKEY_set1_RSA( fsKey, RSAKey );
@@ -797,17 +755,15 @@ Var
   md : PEVP_MD ;
   md_len: cardinal;
   md_ctx: EVP_MD_CTX;
-  md5_bin : array [0..15] of AnsiChar;
+  //md5_bin : array [0..15] of AnsiChar;
   md_value_hex : array [0..1023] of AnsiChar;
-  EAD,EADCrypt : array [0..127] of AnsiChar;
+  EADCrypt : array [0..127] of AnsiChar;
   LB : AnsiString ;
   Buffer: AnsiChar;
 begin
   Result := '';
-  { Nota: Originalmente eECFc usa um processo invertido de Assinatura,
-    assinando o arquivo com a chave Publica e verificando com a chave Privada }
-
   // Verificando se já existe LF no final do arquivo //
+  Buffer := #0;
   MS.Seek(-1, soFromEnd);  // vai para EOF - 1
   MS.Read(Buffer, 1);
   if Buffer <> LF then
@@ -828,10 +784,12 @@ begin
 
     (*
     // Calculando o Bloco EAD e criptografando-o semelhante ao EVP_SignFinal //
+
     EVP_DigestFinal( @md_ctx, @md5_bin, {$IFNDEF USE_libeay32}@{$ENDIF}md_len);
     EAD := padL( #16 + copy(StrPas(md5_bin),0,md_len), 128, #0) ;
     EADCrypt := StringOfChar(#0,128);
     md_len := RSA_private_encrypt( 128, @EAD, @EADCrypt, fsKey.pkey.rsa, RSA_NO_PADDING );
+
     *)
     if md_len <> 128 then
        raise Exception.Create( 'Erro ao criptografar EAD');
@@ -905,6 +863,7 @@ Var
   Buffer: array[0..259] of AnsiChar;
 begin
   // Procurando por ultimo EAD //
+  Buffer[0] := #0;
   MS.Seek(-259,soFromEnd);     // 259 = Tamanho da Linha EAD
   MS.Read(Buffer, 259 );
   Result := UpperCase( Trim( String( Buffer ) ) );
@@ -972,9 +931,8 @@ Var
   md : PEVP_MD ;
   md_len: cardinal;
   md_ctx: EVP_MD_CTX;
-  EAD_arq, EAD_crypt, EAD_decrypt : array [0..127] of AnsiChar;
+  EAD_crypt, EAD_decrypt : array [0..127] of AnsiChar;
   md5_bin : array [0..15] of AnsiChar;
-  md_value_hex : array [0..1023] of AnsiChar;
   Ret : LongInt ;
 begin
   //Result := False;
@@ -1027,38 +985,13 @@ begin
        Result := (pos( md5_bin, EAD_decrypt ) > 0) ;
     end ;
 
-    if (not Result) and fsIsXMLeECFc then
+    if (not Result)  then
     begin
-       { Se for XML de eECFc de terceiros (Bematech/Daruma), então ele pode
-         conter a Chave Privada }
-       LerChavePublicaComoPrivada;
-
-       // Descriptografando o EAD //
-       md_len := RSA_private_decrypt( 128, @EAD_crypt, @EAD_decrypt,
-                                      fsKey.pkey.rsa, RSA_NO_PADDING);
-       if md_len <> 128 then
-          raise Exception.Create('Erro ao descriptografar EAD');
-
-       Result := (pos( md5_bin, EAD_decrypt ) > 0) ;
+       { Se o aqruivo foi assinado pelos fabricantes como: Bematech, Itautec,
+         etc, então o MD5 é criptografado antes de rodar a criptografia do RSA
+         (sic)... nesse caso não temos como conferir o MD5 a não ser usando a
+         DLL do eECFc (que será desenvolvida) }
     end ;
-
-    //BinToHex( EAD_decrypt, md_value_hex, md_len);
-    //md_value_hex[2 * md_len] := #0;
-    //EADArq := AnsiString(StrPas(md_value_hex));
-
-
-  (*
-    Ret := EVP_VerifyFinal( @md_ctx, @EAD_crypt, md_len, fsKey) ;
-
-    if (Ret = 0) and fsIsXMLeECFc then
-    begin
-      // Se for XML de eECFc de terceiros, então ele pode conter a Chave Privada
-      LerChavePublicaComoPrivada;
-      Ret := EVP_VerifyFinal( @md_ctx, @EAD_crypt, md_len, fsKey) ;
-    end ;
-
-    Result := (Ret = 1);
-  *)
 
   finally
      LiberarChave;

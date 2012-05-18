@@ -94,6 +94,8 @@ begin
                             ' Un:'+edUN.Text +
                             ' Tipo:'+Tipo +
                             ' Desc:'+Desc);
+     // Pode desligar ACBrECF1.ArredondaItemMFD caso o comando não exista //
+     Form1.chArredondamentoItemMFD.Checked := Form1.ACBrECF1.ArredondaItemMFD;
      Form1.AtualizaMemos ;
   finally
      Button1.Enabled := True ;

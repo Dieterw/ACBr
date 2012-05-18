@@ -205,7 +205,6 @@ TACBrECFEpson = class( TACBrECFClass )
     function GetGavetaAberta: Boolean; override ;
     function GetPoucoPapel : Boolean; override ;
     function GetHorarioVerao: Boolean; override ;
-    function GetArredonda : Boolean; override ;
     function GetParamDescontoISSQN: Boolean; override ;
 
     function GetTipoUltimoDocumento : TACBrECFTipoDocumento ; override ;
@@ -1684,11 +1683,6 @@ begin
   Result := (EpsonResposta.Params[0] = 'S') ;
 end;
 
-function TACBrECFEpson.GetArredonda : Boolean ;
-begin
-  Result := fsIsFBIII and ArredondaItemMFD;
-end ;
-
 function TACBrECFEpson.GetParamDescontoISSQN : Boolean ;
 begin
   EpsonComando.Comando := '0513' ;
@@ -2024,7 +2018,7 @@ begin
   begin
     if not fsIsFBIII then
      begin
-       ArredondaItemMFD := False;  // Não suportado na BFII
+       ArredondaItemMFD := False;  // Não suportado na FBII
 
        Comando := '0A02' ;
        AddParamString( LeftStr(Codigo,14) );

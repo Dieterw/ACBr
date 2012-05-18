@@ -97,6 +97,24 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 18/05/2012
+-- ACBrECF --
+[*] Modificado comportamento da propriedade "ArredondaItemMFD". Se a mesma for
+    True, o ACBrECF, irá re-avaliar o estado desta propriedade logo após a
+    primeira chamada a VendeItem. Caso o ECF não possua essa característica, o
+    ArredondaItemMFD será modificado para False   (por: DSA)
+[*] Modificada funcionamento da propriedade "Arredonda", para que a mesma leve
+    em consideração as propriedades (MFD e ArredondaItemMFD) além de verificar
+    se o ECF possue o flag de Arredondamento Interno ajustado.
+    É importante frisar que o valor das propriedades "ArredondaItemMFD" e
+    portanto agora de "Arredonda" só é confiável após a primiera Venda de Item
+    (por: DSA)
+
+-- ACBrDevice --
+[-] Correção de Bug introduzido na rev.3516, que impede o funcionamento de
+    portas Paralelas causando o erro: "Impressora NaoFiscal não está pronta."
+    (por: DSA)
+
 Data: 17/05/2012
 -- ACBrECF --
 [+] DadosReducaoZClass modificado inserindo nova lista de Objetos,

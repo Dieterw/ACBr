@@ -62,7 +62,6 @@ TACBrECFModelo = (ecfNenhum, ecfNaoFiscal, ecfBematech, ecfSweda, ecfDaruma,
                   ecfICash, ecfQuattro, ecfFiscNET, ecfEpson, ecfNCR,
                   ecfSwedaSTX );
 
-// fhaut - Assinatura de métodos
 TACBrECFEventoOnError = procedure( var Tratado : Boolean) of object ;
 TACBrECFOnAbreCupom = procedure(const CPF_CNPJ, Nome, Endereco : String ) of object ;
 TACBrECFOnVendeItem = procedure(const Codigo, Descricao, AliquotaICMS : String ;
@@ -111,7 +110,7 @@ TACBrECF = class( TACBrComponent )
     fsModelo : TACBrECFModelo;
     fsMensagemRodape : String ;
     fsRegistrouRFDCNF : Boolean ;
-    fsSubTotalPagto :Double; //lampada
+    fsSubTotalPagto :Double;
     fsIndiceGerencial : Integer ;
     {$IFNDEF CONSOLE}
       fsFormMsgColor : TColor ;
@@ -1877,7 +1876,7 @@ end;
 function TACBrECF.GetArredondaClass: Boolean;
 begin
   ComandoLOG := 'Arredonda' ;
-  Result := fsECF.Arredonda ;
+  Result := fsECF.Arredonda or (fsECF.MFD and fsECF.ArredondaItemMFD) ;
 end;
 
 function TACBrECF.GetHorarioVeraoClass: Boolean;

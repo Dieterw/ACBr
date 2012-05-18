@@ -498,6 +498,7 @@ procedure TBloco_D.WriteRegistroD100(RegD010: TRegistroD010) ;
     strIND_EMIT : AnsiString;
     strCOD_SIT  : AnsiString;
     strIND_FRT  : AnsiString;
+    booCanceladaDenegadaInutilizada : Boolean;
 begin
   if Assigned(RegD010.RegistroD100) then
   begin
@@ -519,6 +520,7 @@ begin
             iedfProprio  : strIND_EMIT := '0';
             iedfTerceiro : strIND_EMIT := '1';
           end;
+
           case COD_SIT of
             sdfRegular         : strCOD_SIT := '00';
             sdfExtRegular      : strCOD_SIT := '01';
@@ -537,6 +539,15 @@ begin
             tfNenhum : strIND_FRT      := '';
           end;
 
+          // Tratamento COD_SIT canceladas (02, 03), denegadas (04), inutilizadas (05) 17/05/2012 //DigiSat
+          booCanceladaDenegadaInutilizada := False;
+          case COD_SIT of
+            sdfCancelado       : booCanceladaDenegadaInutilizada := True;
+            sdfExtCancelado    : booCanceladaDenegadaInutilizada := True;
+            sdfDenegado        : booCanceladaDenegadaInutilizada := True;
+            sdfInutilizado     : booCanceladaDenegadaInutilizada := True;
+          end;
+
           Add( LFill('D100')           +
                LFill( IND_OPER )       +
                LFill( strIND_EMIT )    +
@@ -551,13 +562,13 @@ begin
                LFill( DT_A_P )         +
                LFill( TP_CT_e )        +
                LFill( CHV_CTE_REF )    +
-               LFill( VL_DOC,0,2 )     +
-               LFill( VL_DESC,0,2 )    +
+               LFill( VL_DOC,0,2,booCanceladaDenegadaInutilizada )    +
+               LFill( VL_DESC,0,2,booCanceladaDenegadaInutilizada )   +
                LFill( strIND_FRT )     +
-               LFill( VL_SERV,0,2 )    +
-               LFill( VL_BC_ICMS,0,2 ) +
-               LFill( VL_ICMS,0,2 )    +
-               LFill( VL_NT,0,2 )      +
+               LFill( VL_SERV,0,2,booCanceladaDenegadaInutilizada )   +
+               LFill( VL_BC_ICMS,0,2,booCanceladaDenegadaInutilizada )+
+               LFill( VL_ICMS,0,2,booCanceladaDenegadaInutilizada )   +
+               LFill( VL_NT,0,2,booCanceladaDenegadaInutilizada )     +
                LFill( COD_INF )        +
                LFill( COD_CTA ) ) ;
         end;

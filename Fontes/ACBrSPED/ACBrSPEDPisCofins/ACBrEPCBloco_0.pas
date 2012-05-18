@@ -50,6 +50,7 @@ type
   TRegistro0110     = class;
   TRegistro0111     = class;
   TRegistro0140List = class;
+  TRegistro0145     = class;
   TRegistro0150List = class;
   TRegistro0190List = class;
   TRegistro0200List = class;
@@ -202,6 +203,7 @@ type
     FIM      : string;  // Inscrição Municipal do estabelecimento, se contribuinte do ISS
     FSUFRAMA : string;  // Inscrição do estabelecimento na Suframa
 
+    FRegistro0145 : TRegistro0145;
     FRegistro0150 : TRegistro0150List;
     FRegistro0190 : TRegistro0190List;
     FRegistro0200 : TRegistro0200List;
@@ -220,6 +222,7 @@ type
     property IM           : string            read FIM           write FIM;
     property SUFRAMA      : string            read FSUFRAMA      write FSUFRAMA;
 
+    property Registro0145 : TRegistro0145     read FRegistro0145 write FRegistro0145;
     property Registro0150 : TRegistro0150List read FRegistro0150 write FRegistro0150;
     property Registro0190 : TRegistro0190List read FRegistro0190 write FRegistro0190;
     property Registro0200 : TRegistro0200List read FRegistro0200 write FRegistro0200;
@@ -235,6 +238,22 @@ type
   public
     function New: TRegistro0140;
     property Items[Index: Integer]: TRegistro0140 read GetItem write SetItem;
+  end;
+
+  //REGISTRO 0145: REGIME DE APURAÇÃO DA CONTRIBUIÇÃO PREVIDENCIÁRIA SOBRE A RECEITA BRUTA
+  TRegistro0145 = class
+  private
+    FCOD_INC_TRIB       : string;   //Código indicador da incidência tributária no período:
+    FVL_REC_TOT         : currency; //Valor da Receita Bruta Total da Pessoa Jurídica no Período
+    FVL_REC_ATIV        : currency; //Valor da Receita Bruta da(s) Atividade(s) Sujeita(s) à Contribuição Previdenciária sobre a Receita Bruta
+    FVL_REC_DEMAIS_ATIV : currency; //Valor da Receita Bruta da(s) Atividade(s) Sujeita(s) à Contribuição Previdenciária sobre a Remuneração
+    FINFO_COMPL         : string  ; //Informação complementar
+  public
+    property COD_INC_TRIB       : string   read FCOD_INC_TRIB        write FCOD_INC_TRIB;
+    property VL_REC_TOT         : currency read FVL_REC_TOT          write FVL_REC_TOT;
+    property VL_REC_ATIV        : currency read FVL_REC_ATIV         write FVL_REC_ATIV;
+    property VL_REC_DEMAIS_ATIV : currency read FVL_REC_DEMAIS_ATIV  write FVL_REC_DEMAIS_ATIV;
+    property INFO_COMPL         : string   read FINFO_COMPL          write FINFO_COMPL;
   end;
 
   //REGISTRO 0150: TABELA DE CADASTRO DO PARTICIPANTE
@@ -560,6 +579,7 @@ end;
 
 constructor TRegistro0140.Create;
 begin
+  FRegistro0145 := TRegistro0145.Create;
   FRegistro0150 := TRegistro0150List.Create;
   FRegistro0190 := TRegistro0190List.Create;
   FRegistro0200 := TRegistro0200List.Create;
@@ -569,6 +589,7 @@ end;
 
 destructor TRegistro0140.Destroy;
 begin
+  FRegistro0145.Free;
   FRegistro0150.Free;
   FRegistro0190.Free;
   FRegistro0200.Free;

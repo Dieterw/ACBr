@@ -60,6 +60,7 @@ type
     FRegistro0110Count: Integer;
     FRegistro0111Count: Integer;
     FRegistro0140Count: Integer;
+    FRegistro0145Count: Integer;
     FRegistro0150Count: Integer;
     FRegistro0190Count: Integer;
     FRegistro0200Count: Integer;
@@ -75,6 +76,7 @@ type
     procedure WriteRegistro0110(Reg0001: TRegistro0001);
     procedure WriteRegistro0111(Reg0110: TRegistro0110);
     procedure WriteRegistro0140(Reg0001: TRegistro0001);
+    procedure WriteRegistro0145(Reg0140: TRegistro0140);
     procedure WriteRegistro0150(Reg0140: TRegistro0140);
     procedure WriteRegistro0190(Reg0140: TRegistro0140);
     procedure WriteRegistro0200(Reg0140: TRegistro0140);
@@ -99,6 +101,7 @@ type
     function Registro0110New: TRegistro0110;
     function Registro0111New: TRegistro0111;
     function Registro0140New: TRegistro0140;
+    function Registro0145New: TRegistro0145;
     function Registro0150New: TRegistro0150;
     function Registro0190New: TRegistro0190;
     function Registro0200New: TRegistro0200;
@@ -122,6 +125,7 @@ type
     property Registro0110Count: Integer read FRegistro0110Count write FRegistro0110Count;
     property Registro0111Count: Integer read FRegistro0111Count write FRegistro0111Count;
     property Registro0140Count: Integer read FRegistro0140Count write FRegistro0140Count;
+    property Registro0145Count: Integer read FRegistro0145Count write FRegistro0145Count;
     property Registro0150Count: Integer read FRegistro0150Count write FRegistro0150Count;
     property Registro0190Count: Integer read FRegistro0190Count write FRegistro0190Count;
     property Registro0200Count: Integer read FRegistro0200Count write FRegistro0200Count;
@@ -162,6 +166,7 @@ begin
   FRegistro0110Count := 0;
   FRegistro0111Count := 0;
   FRegistro0140Count := 0;
+  FRegistro0145Count := 0;
   FRegistro0150Count := 0;
   FRegistro0190Count := 0;
   FRegistro0200Count := 0;
@@ -555,6 +560,7 @@ begin
                 LFill( SUFRAMA ) ) ;
         end;
         /// Registros FILHOS
+        WriteRegistro0145( Reg0001.Registro0140.Items[intFor] ) ;
         WriteRegistro0150( Reg0001.Registro0140.Items[intFor] ) ;
         WriteRegistro0190( Reg0001.Registro0140.Items[intFor] ) ;
         WriteRegistro0200( Reg0001.Registro0140.Items[intFor] ) ;
@@ -881,6 +887,35 @@ begin
        Add( LFill('0990') +
             LFill(QTD_LIN_0,0) );
      end;
+  end;
+end;
+
+function TBloco_0.Registro0145New: TRegistro0145;
+var
+U0140Count: Integer;
+begin
+   U0140Count := FRegistro0001.Registro0140.Count -1;
+   //
+   Result := FRegistro0001.Registro0140.Items[U0140Count].Registro0145;
+end;
+
+procedure TBloco_0.WriteRegistro0145(Reg0140: TRegistro0140);
+begin
+  if Assigned(Reg0140.Registro0145) and (Reg0140.Registro0145.COD_INC_TRIB <> '') then
+  begin
+    with Reg0140.Registro0145 do
+    begin
+      Add( LFill('0145')                 +
+           LFill(COD_INC_TRIB)           +
+           LFill(VL_REC_TOT,0,2)         +
+           LFill(VL_REC_ATIV,0,2)        +
+           LFill(VL_REC_DEMAIS_ATIV,0,2) +
+           LFill(INFO_COMPL));
+    end;
+    Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
+
+    /// Variavél para armazenar a quantidade de registro do tipo.
+    FRegistro0145Count := FRegistro0145Count + 1;
   end;
 end;
 

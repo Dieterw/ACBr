@@ -53,6 +53,7 @@ type
   public
   end;
 
+  TRegistroI015List = class;
   TRegistroI051List = class;
   TRegistroI052List = class;
   TRegistroI151List = class;
@@ -81,11 +82,18 @@ type
     fNAT_LIVR: String;       /// Natureza do livro associado; finalidade a que se destina o instrumento.
     fTIPO: String;           /// Tipo de escrituração do livro associado: 0 – digital (incluídos no Sped) 1 – outros.
     fCOD_HASH_AUX: String;   /// Código Hash do arquivo correspondente ao livro auxiliar utilizado na assinatura digital.
+    FRegistroI015: TRegistroI015List;  /// BLOCO I - Lista de RegistroI051 (FILHO)
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
     property NUM_ORD: String read fNUM_ORD write fNUM_ORD;
     property NAT_LIVR: String read fNAT_LIVR write fNAT_LIVR;
     property TIPO: String read fTIPO write fTIPO;
     property COD_HASH_AUX: String read fCOD_HASH_AUX write fCOD_HASH_AUX;
+
+    /// Registros FILHOS
+    property RegistroI015: TRegistroI015List read FRegistroI015 write FRegistroI015;
   end;
 
   /// Registro I012 - Lista
@@ -1122,6 +1130,19 @@ end;
 procedure TRegistroI555List.SetItem(Index: Integer; Value: TRegistroI555);
 begin
    Put(Index, Value);
+end;
+
+{ TRegistroI012 }
+
+constructor TRegistroI012.Create;
+begin
+  FRegistroI015 := TRegistroI015List.Create;
+end;
+
+destructor TRegistroI012.Destroy;
+begin
+  FRegistroI015.Free;
+  inherited;
 end;
 
 end.

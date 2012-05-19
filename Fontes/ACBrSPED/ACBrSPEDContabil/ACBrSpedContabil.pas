@@ -110,7 +110,6 @@ type
     function WriteRegistroI001: AnsiString;
     function WriteRegistroI010: AnsiString;
     function WriteRegistroI012: AnsiString;
-    function WriteRegistroI015: AnsiString;
     function WriteRegistroI020: AnsiString;
     function WriteRegistroI030: AnsiString;
     function WriteRegistroI050: AnsiString;
@@ -371,7 +370,7 @@ begin
     AStringList.Add(Trim(WriteRegistroI001));
     AStringList.Add(Trim(WriteRegistroI010));
     if Bloco_I.RegistroI012.Count > 0 then AStringList.Add(Trim(WriteRegistroI012));
-    if Bloco_I.RegistroI015.Count > 0 then AStringList.Add(Trim(WriteRegistroI015));
+    //if Bloco_I.RegistroI015.Count > 0 then AStringList.Add(Trim(WriteRegistroI015));
     if Bloco_I.RegistroI020.Count > 0 then AStringList.Add(Trim(WriteRegistroI020));
     AStringList.Add(Trim(WriteRegistroI030));
     if Bloco_I.RegistroI050.Count > 0 then AStringList.Add(Trim(WriteRegistroI050));
@@ -524,30 +523,24 @@ end;
 
 function TACBrSPEDContabil.WriteRegistroI012: AnsiString;
 begin
-   Result := Bloco_I.WriteRegistroI012;
+  Result := Bloco_I.WriteRegistroI012;
 
-   if Bloco_I.RegistroI012.Count > 0 then
-   begin
-      with Bloco_9.Registro9900.New do
-      begin
-         REG_BLC := 'I012';
-         QTD_REG_BLC := Bloco_I.RegistroI012.Count;
-      end;
-   end;
-end;
-
-function TACBrSPEDContabil.WriteRegistroI015: AnsiString;
-begin
-   Result := Bloco_I.WriteRegistroI015;
-
-   if Bloco_I.RegistroI015.Count > 0 then
-   begin
-      with Bloco_9.Registro9900.New do
-      begin
-         REG_BLC := 'I015';
-         QTD_REG_BLC := Bloco_I.RegistroI015.Count;
-      end;
-   end;
+  if Bloco_I.RegistroI012.Count > 0 then
+  begin
+    with Bloco_9.Registro9900.New do
+    begin
+       REG_BLC := 'I012';
+       QTD_REG_BLC := Bloco_I.RegistroI012.Count;
+    end;
+  end;
+  if Bloco_I.RegistroI015Count > 0 then
+  begin
+    with Bloco_9.Registro9900.New do
+    begin
+       REG_BLC := 'I015';
+       QTD_REG_BLC := Bloco_I.RegistroI015Count;
+    end;
+  end;
 end;
 
 function TACBrSPEDContabil.WriteRegistroI020: AnsiString;

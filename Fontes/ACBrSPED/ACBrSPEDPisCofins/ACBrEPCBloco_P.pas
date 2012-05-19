@@ -259,6 +259,7 @@ end;
 destructor TRegistroP001.Destroy;
 begin
   fRegistroP010.Free;
+  fRegistroP200.Free;
   inherited;
 end;
 

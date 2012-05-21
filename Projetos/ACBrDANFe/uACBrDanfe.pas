@@ -286,6 +286,6 @@ Adcionar na uses do form principal na parte interface a unit RLConsts
 e colocar o código abaixo no final da unit antes do end.(end final) }
 
 
-  RLConsts.SetVersion(3,70,'B');
+  RLConsts.SetVersion(3,71,'B');
 
 end.

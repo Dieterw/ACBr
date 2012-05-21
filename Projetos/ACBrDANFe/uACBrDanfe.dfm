@@ -1092,7 +1092,7 @@ object frm_danfe: Tfrm_danfe
     Width = 282
     Height = 34
     Align = alBottom
-    Caption = 'REVIS'#195'O: 2272'
+    Caption = 'REVIS'#195'O: 3556'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
@@ -1103,6 +1103,7 @@ object frm_danfe: Tfrm_danfe
   end
   object ACBrNFe1: TACBrNFe
     Configuracoes.Geral.PathSalvar = 'C:\Arquivos de programas\CodeGear\RAD Studio\5.0\bin\'
+    Configuracoes.Geral.IniFinXMLSECAutomatico = True
     Configuracoes.WebServices.UF = 'SP'
     Configuracoes.WebServices.AguardarConsultaRet = 0
     Configuracoes.WebServices.IntervaloTentativas = 0

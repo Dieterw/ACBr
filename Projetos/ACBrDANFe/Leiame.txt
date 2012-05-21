@@ -1,8 +1,13 @@
 ACBrDANFe 
 ----------------------------------
 Programa para impressão de DANFE
-Compilado com Delphi 2010 
-ACBrNFe2 - Revisao 2272
+Compilado com Delphi XE2 
+ACBrNFe2 - Revisao 3556
+
+NOTA: Para compilar você mesmo o projeto, é necessário que estejam instalados os seguintes pacotes de DANFE:
+- ACBrNFeDanfeRV.dpk
+- ACBrNFeDanfeRVCodeBase.dpk
+- ACBrNFeDanfeRLpkg.dpk
 
 
 1- INSTALAÇÃO

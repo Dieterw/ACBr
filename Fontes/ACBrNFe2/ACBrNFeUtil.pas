@@ -913,7 +913,8 @@ begin
     LayNfeConsulta      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.ba.gov.br/webservices/nfenw/NfeConsulta2.asmx', 'https://hnfe.sefaz.ba.gov.br/webservices/nfenw/NfeConsulta2.asmx');
     LayNfeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.ba.gov.br/webservices/nfenw/NfeStatusServico2.asmx', 'https://hnfe.sefaz.ba.gov.br/webservices/nfenw/NfeStatusServico2.asmx');
     LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.ba.gov.br/webservices/nfenw/CadConsultaCadastro2.asmx', 'https://hnfe.sefaz.ba.gov.br/webservices/nfenw/CadConsultaCadastro2.asmx');
-    LayNFeCCe           : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://hnfe.sefaz.ba.gov.br/webservices/sre/RecepcaoEvento.asmx', 'https://nfe.sefaz.ba.gov.br/webservices/sre/RecepcaoEvento.asmx');
+    // Alterado por Italo em 22/05/2012
+    LayNFeCCe           : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.ba.gov.br/webservices/sre/RecepcaoEvento.asmx', 'https://hnfe.sefaz.ba.gov.br/webservices/sre/RecepcaoEvento.asmx');
   end;
 end;
 

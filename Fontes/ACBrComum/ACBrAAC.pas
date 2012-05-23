@@ -89,6 +89,7 @@ type
      function GetChave : AnsiString ;
      procedure SetNomeArquivoAux(const AValue : String) ;
      procedure SetParams(const AValue : TStringList) ;
+     function GetArquivoInvalido: Boolean;
   protected
 
      function Criptografar( const Dados: AnsiString ) : AnsiString ;
@@ -114,7 +115,7 @@ type
     procedure VerificaReCarregarArquivo;
 
     property DtHrArquivo : TDateTime read fsDtHrArquivo ;
-
+    property ArquivoInvalido: Boolean read GetArquivoInvalido;
   published
     property NomeArquivoAux : String  read fsNomeArquivoAux
        write SetNomeArquivoAux ;
@@ -277,25 +278,22 @@ begin
           SL.Delete( I );
 
           if StringCrc16( SL.Text ) <> CRC then
-          begin
              fsDtHrArquivo := 0;
-             raise EACBrAAC_CRC.Create(
-                ACBrStr('Arquivo: '+NomeArquivoAux+' inválido') );
-          end;
        end
-
      end;
-
      // Atribuindo para o .INI //
      Ini.SetStrings( SL );
 
      // Seçao 'PAF' deve existir //
      if not Ini.SectionExists('PAF') then
+        fsDtHrArquivo := 0;
+
+     if fsDtHrArquivo = 0 then
      begin
        fsDtHrArquivo := 0;
        raise EACBrAAC_ArquivoInvalido.Create(
           ACBrStr('Arquivo: '+NomeArquivoAux+' inválido') );
-     end ;
+     end;
 
      if GravarDadosSH then
      begin
@@ -750,6 +748,11 @@ begin
   except
   end ;
 end ;
+
+function TACBrAAC.GetArquivoInvalido: Boolean;
+begin
+   Result := fsDtHrArquivo > 0;
+end;
 
 function TACBrAAC.GetChave : AnsiString ;
 Var

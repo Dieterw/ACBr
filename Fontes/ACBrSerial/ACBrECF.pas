@@ -2272,9 +2272,6 @@ procedure TACBrECF.AbreCupom(CPF_CNPJ: String = ''; Nome : String = '';
 var
   Tratado   : Boolean;
 begin
-  if Assigned( fsAAC ) then
-     fsAAC.VerificaReCarregarArquivo;
-
   if RFDAtivo then
      fsRFD.VerificaParametros ;
 
@@ -3161,9 +3158,6 @@ end ;
 procedure TACBrECF.NaoFiscalCompleto(CodCNF: String; Valor: Double;
   CodFormaPagto: String; Obs: AnsiString; IndiceBMP : Integer);
 begin
-  if Assigned( fsAAC ) then
-     fsAAC.VerificaReCarregarArquivo;
-
   if RFDAtivo then
      fsRFD.VerificaParametros ;
 
@@ -3188,9 +3182,6 @@ procedure TACBrECF.AbreNaoFiscal(CPF_CNPJ : String ; Nome : String ;
 Var
   Tratado : Boolean;
 begin
-  if Assigned( fsAAC ) then
-     fsAAC.VerificaReCarregarArquivo;
-
   if RFDAtivo then
      fsRFD.VerificaParametros ;
 
@@ -4268,9 +4259,6 @@ procedure TACBrECF.AbreRelatorioGerencial(Indice: Integer);
 Var 
   Tratado : Boolean;
 begin
-  if Assigned( fsAAC ) then
-     fsAAC.VerificaReCarregarArquivo;
-
   if RFDAtivo then
      fsRFD.VerificaParametros ;
 

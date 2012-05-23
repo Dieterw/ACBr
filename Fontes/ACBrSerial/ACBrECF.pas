@@ -480,7 +480,7 @@ TACBrECF = class( TACBrComponent )
     procedure CarregaAliquotas ;
     procedure LerTotaisAliquota ;
     function AchaICMSAliquota( Aliquota : Double; Tipo : Char = ' ' ) :
-       TACBrECFAliquota ;  overload ; 
+       TACBrECFAliquota ;  overload ;
     function AchaICMSAliquota( var AliquotaICMS : String ) :
        TACBrECFAliquota ;  overload ;
     function AchaICMSIndice( Indice : String ) : TACBrECFAliquota ;
@@ -553,7 +553,7 @@ TACBrECF = class( TACBrComponent )
        Endereco : String = '') ;
     Procedure AbreCupom( CPF_CNPJ : String = ''; Nome : String = '';
        Endereco : String = ''; ModoPreVenda: Boolean = False) ;
-    procedure LegendaInmetroProximoItem; 
+    procedure LegendaInmetroProximoItem;
     Procedure VendeItem( Codigo, Descricao : String; AliquotaICMS : String;
        Qtd : Double ; ValorUnitario : Double; ValorDescontoAcrescimo : Double = 0;
        Unidade : String = ''; TipoDescontoAcrescimo : String = '%';
@@ -639,7 +639,7 @@ TACBrECF = class( TACBrComponent )
     Procedure ImprimeCheque(Banco : String; Valor : Double ; Favorecido,
        Cidade : String; Data : TDateTime ;Observacao : String = '') ;
     Procedure CancelaImpressaoCheque ;
-    Function LeituraCMC7 : AnsiString ; 
+    Function LeituraCMC7 : AnsiString ;
     Property ChequePronto : Boolean read GetChequeProntoClass ;
 
     { Utilitarios e Diversos }
@@ -692,7 +692,7 @@ TACBrECF = class( TACBrComponent )
 
     procedure ArredondarPorQtd( var Qtd: Double; const ValorUnitario: Double;
        const Precisao : Integer = -2 ) ;
-       
+
     Function EnviaComando( cmd : AnsiString): AnsiString; overload;
     { Permitindo mudar o TimeOut padrao }
     Function EnviaComando( cmd : AnsiString; lTimeOut : Integer): AnsiString;
@@ -2272,6 +2272,9 @@ procedure TACBrECF.AbreCupom(CPF_CNPJ: String = ''; Nome : String = '';
 var
   Tratado   : Boolean;
 begin
+  if Assigned( fsAAC ) then
+     fsAAC.VerificaReCarregarArquivo;
+
   if RFDAtivo then
      fsRFD.VerificaParametros ;
 
@@ -2351,9 +2354,12 @@ procedure TACBrECF.CancelaCupom;
       SubTot    : Double ;
       Tratado   : Boolean;
 begin
+  if Assigned( fsAAC ) then
+     fsAAC.VerificaReCarregarArquivo;
+
   if RFDAtivo then
      fsRFD.VerificaParametros ;
-     
+
   OldEstado := estDesconhecido ;
   SubTot    := 0 ;
   Docto     := '' ;
@@ -2455,6 +2461,9 @@ Var
   Total, PorcDesc, ValDesc : Double ;
 {$ENDIF}
 begin
+  if Assigned( fsAAC ) then
+     fsAAC.VerificaReCarregarArquivo;
+
   Qtd           := RoundTo( Qtd, -DecimaisQtd) ;
   ValorUnitario := RoundTo( ValorUnitario, -DecimaisPreco) ;
 
@@ -2505,7 +2514,7 @@ begin
   { Usando unidade Default "UN" para evitar problemas em RFD e alguns ECFs que exigem Unidade }
   if Trim( Unidade ) = '' then
      Unidade := 'UN' ;
-     
+
   ComandoLOG := 'VendeItem( '+Codigo+' , '+Descricao+' , '+
                      AliquotaICMS+' , '+FloatToStr(Qtd)+' , '+
                      FloatToStr(ValorUnitario)+' , '+
@@ -2654,6 +2663,9 @@ Var
   StrDescAcre : String ;
 {$ENDIF}
 begin
+  if Assigned( fsAAC ) then
+     fsAAC.VerificaReCarregarArquivo;
+
   if ValorDescontoAcrescimo <= 0 then
      raise EACBrECFCMDInvalido.Create( ACBrStr(cACBrECFVendeItemValDescAcreException) );
 
@@ -2704,6 +2716,9 @@ end;
 { Cancela o Acrescimo ou o Desconto do Item informado }
 procedure TACBrECF.CancelaDescontoAcrescimoItem(NumItem: Integer);
 begin
+  if Assigned( fsAAC ) then
+     fsAAC.VerificaReCarregarArquivo;
+
   ComandoLOG := 'CancelaDescontoAcrescimoItem' ;
   fsECF.CancelaDescontoAcrescimoItem(NumItem) ;
 end;
@@ -2718,6 +2733,9 @@ procedure TACBrECF.CancelaItemVendido(NumItem: Integer);
 var
   Tratado : Boolean;
 begin
+  if Assigned( fsAAC ) then
+     fsAAC.VerificaReCarregarArquivo;
+
   ComandoLOG := 'CancelaItemVendido( '+IntToStr(NumItem)+' )' ;
 
   if Assigned( fOnAntesCancelaItemVendido ) then
@@ -2755,6 +2773,9 @@ procedure TACBrECF.SubtotalizaCupom(DescontoAcrescimo: Double;
 var
   Tratado : Boolean;
 begin
+  if Assigned( fsAAC ) then
+     fsAAC.VerificaReCarregarArquivo;
+
   fsECF.ModoPreVenda := False;
 
   { Ajustando valores acima de 2 Decimais }
@@ -2806,6 +2827,9 @@ end;
 procedure TACBrECF.CancelaDescontoAcrescimoSubTotal(
   TipoAcrescimoDesconto: Char);
 begin
+  if Assigned( fsAAC ) then
+     fsAAC.VerificaReCarregarArquivo;
+
   ComandoLOG := 'CancelaDescontoAcrescimoSubTotal' ;
   fsECF.CancelaDescontoAcrescimoSubTotal(TipoAcrescimoDesconto) ;
 end;
@@ -2814,6 +2838,9 @@ end;
 procedure TACBrECF.CancelaItemVendidoParcial(NumItem: Integer;
   Quantidade: Double);
 begin
+  if Assigned( fsAAC ) then
+     fsAAC.VerificaReCarregarArquivo;
+
   ComandoLOG := 'CancelaItemVendidoParcial' ;
   fsECF.CancelaItemVendidoParcial(NumItem,Quantidade);
 
@@ -2832,6 +2859,9 @@ Var
   FPG     : TACBrECFFormaPagamento ;
   Tratado : Boolean;
 begin
+  if Assigned( fsAAC ) then
+     fsAAC.VerificaReCarregarArquivo;
+
   FPG := AchaFPGIndice( CodFormaPagto ) ;
   if FPG = nil then
      raise EACBrECFErro.Create( Format(ACBrStr(cACBrECFAchaFPGIndiceException), [ CodFormaPagto ])) ;
@@ -2882,6 +2912,9 @@ procedure TACBrECF.EstornaPagamento(const CodFormaPagtoEstornar,
    CodFormaPagtoEfetivar : String; const Valor: Double;
    Observacao : AnsiString = '') ;
 begin
+  if Assigned( fsAAC ) then
+     fsAAC.VerificaReCarregarArquivo;
+
   ComandoLOG := 'EstornaPagamento( '+CodFormaPagtoEstornar+', '+
            CodFormaPagtoEfetivar+', '+ FloatToStr(Valor)+' , '+Observacao +' )';
   fsECF.EstornaPagamento( CodFormaPagtoEstornar,CodFormaPagtoEfetivar,
@@ -2893,6 +2926,9 @@ var
   Tratado : Boolean;
   RodapePafECF: String;
 begin
+  if Assigned( fsAAC ) then
+     fsAAC.VerificaReCarregarArquivo;
+
   if (Observacao = '') then
      Observacao := fsMensagemRodape ;
 
@@ -3004,6 +3040,9 @@ procedure TACBrECF.Sangria(const Valor: Double; Obs: AnsiString;
 Var
   Tratado : Boolean;
 begin
+  if Assigned( fsAAC ) then
+     fsAAC.VerificaReCarregarArquivo;
+
   if DescricaoCNF = '' then
      DescricaoCNF := 'SANGRIA' ;
 
@@ -3035,6 +3074,9 @@ procedure TACBrECF.Suprimento(const Valor: Double; Obs: AnsiString;
 Var
   Tratado : Boolean;
 begin
+  if Assigned( fsAAC ) then
+     fsAAC.VerificaReCarregarArquivo;
+
   if DescricaoCNF = '' then
      DescricaoCNF := 'SUPRIMENTO' ;
 
@@ -3065,6 +3107,9 @@ Var
   Tratado : Boolean;
   Docto, I : Integer ;
 begin
+  if Assigned( fsAAC ) then
+     fsAAC.VerificaReCarregarArquivo;
+
   Docto  := -1 ;
   Result := 0;
 
@@ -3116,6 +3161,9 @@ end ;
 procedure TACBrECF.NaoFiscalCompleto(CodCNF: String; Valor: Double;
   CodFormaPagto: String; Obs: AnsiString; IndiceBMP : Integer);
 begin
+  if Assigned( fsAAC ) then
+     fsAAC.VerificaReCarregarArquivo;
+
   if RFDAtivo then
      fsRFD.VerificaParametros ;
 
@@ -3140,6 +3188,9 @@ procedure TACBrECF.AbreNaoFiscal(CPF_CNPJ : String ; Nome : String ;
 Var
   Tratado : Boolean;
 begin
+  if Assigned( fsAAC ) then
+     fsAAC.VerificaReCarregarArquivo;
+
   if RFDAtivo then
      fsRFD.VerificaParametros ;
 
@@ -3409,6 +3460,7 @@ begin
 
   ComandoLOG := 'SubtotalizaNaoFiscal( '+FloatToStr(DescontoAcrescimo)+' , '+
                     fsMensagemRodape+' )';
+
 
   if Assigned( fOnAntesSubtotalizaNaoFiscal ) then
      fOnAntesSubtotalizaNaoFiscal( DescontoAcrescimo, MensagemRodape);
@@ -4216,6 +4268,9 @@ procedure TACBrECF.AbreRelatorioGerencial(Indice: Integer);
 Var 
   Tratado : Boolean;
 begin
+  if Assigned( fsAAC ) then
+     fsAAC.VerificaReCarregarArquivo;
+
   if RFDAtivo then
      fsRFD.VerificaParametros ;
 
@@ -5187,6 +5242,8 @@ begin
      ValorGT := GrandeTotal;
      fsAAC.AtualizarValorGT( fsNumSerieCache, ValorGT );
   except
+     On E: EACBrAAC do
+        raise ;
   end ;
 end ;
 

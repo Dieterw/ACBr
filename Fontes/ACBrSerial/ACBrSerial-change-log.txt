@@ -97,6 +97,14 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 23/05/2012
+-- ACBrECF --
+[+] Implementado recurso para checar se no meio da venda o arquivo auxiliar
+    permanece integro, caso não esteja, dispara uma exceção informando que 
+    o arquivo esta inválido.
+    Recurso implementado para atdner umteste feito por um homologador.
+    (por: Isaque Pinheiro)
+
 Data: 18/05/2012
 -- ACBrECF --
 [*] Modificado comportamento da propriedade "ArredondaItemMFD". Se a mesma for

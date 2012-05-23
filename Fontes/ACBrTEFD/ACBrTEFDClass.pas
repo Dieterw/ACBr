@@ -1505,7 +1505,8 @@ begin
   Req.DocumentoVinculado := DocumentoVinculado;
   Req.ValorTotal         := Valor;
   Req.CMC7               := CMC7;
-  Req.TipoPessoa         := TipoPessoa;
+  if TipoPessoa <> ' ' then
+     Req.TipoPessoa      := TipoPessoa;
   Req.DocumentoPessoa    := DocumentoPessoa;
   Req.DataCheque         := DataCheque;
   Req.Banco              := Banco;
@@ -1542,7 +1543,8 @@ begin
      Req.DocumentoVinculado           := OldResp.DocumentoVinculado;
      Req.ValorTotal                   := OldResp.ValorTotal;
      Req.CMC7                         := OldResp.CMC7;
-     Req.TipoPessoa                   := OldResp.TipoPessoa;
+     if OldResp.TipoPessoa <> ' ' then
+        Req.TipoPessoa                := OldResp.TipoPessoa;
      Req.DocumentoPessoa              := OldResp.DocumentoPessoa;
      Req.DataCheque                   := OldResp.DataCheque;
      Req.Rede                         := OldResp.Rede;

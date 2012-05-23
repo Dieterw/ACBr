@@ -47,6 +47,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data:  23/05/2012
+-- ACBrTEFDClass -
+[*] Transação CNC modificada para informar TipoPessoa apenas se o mesmo existir
+    (por: MarcioDC)
+
 Data:  04/04/2012
 -- ACBrTEFDAuttar --
 [-] TEF Auttar deve emitir msg de Desfazimento apenas no Final de todas

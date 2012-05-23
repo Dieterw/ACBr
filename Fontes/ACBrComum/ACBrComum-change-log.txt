@@ -42,7 +42,7 @@ Símbolo : Significado
 -- ACBrAAC --
 [+] Implementado recurso para identificar se o arquivo auxiliar foi modificado
     ou editado por programas de terceiros, disparando mensagem de arquivo 
-    inválido (por: Isaque Pinheiro)
+    inválido (por: Isaque Pinheiro e DSA)
 
 
 08/05/2012

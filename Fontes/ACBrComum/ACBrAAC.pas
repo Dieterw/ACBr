@@ -290,7 +290,6 @@ begin
 
      if fsDtHrArquivo = 0 then
      begin
-       fsDtHrArquivo := 0;
        raise EACBrAAC_ArquivoInvalido.Create(
           ACBrStr('Arquivo: '+NomeArquivoAux+' inválido') );
      end;
@@ -751,7 +750,7 @@ end ;
 
 function TACBrAAC.GetArquivoInvalido: Boolean;
 begin
-   Result := fsDtHrArquivo > 0;
+   Result := fsDtHrArquivo = 0;
 end;
 
 function TACBrAAC.GetChave : AnsiString ;

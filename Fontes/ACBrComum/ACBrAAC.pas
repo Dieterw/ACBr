@@ -85,7 +85,7 @@ type
      fsOnVerificarRecomporValorGT : TACBrAACOnVerificarRecomporValorGT ;
      fsParams : TStringList ;
      fsIdentPAF: TACBrECFIdentificacaoPAF;
-    fsGravarConfigApp: Boolean;
+     fsGravarConfigApp: Boolean;
      function GetChave : AnsiString ;
      procedure SetNomeArquivoAux(const AValue : String) ;
      procedure SetParams(const AValue : TStringList) ;
@@ -94,7 +94,6 @@ type
      function Criptografar( const Dados: AnsiString ) : AnsiString ;
      function DesCriptografar( const Dados: AnsiString ) : AnsiString ;
      Procedure GravaLog( const AString: AnsiString );
-     procedure VerificaReCarregarArquivo;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -112,6 +111,7 @@ type
     procedure AtualizarMD5(const AMD5: String);
     procedure AtualizarValorGT(const NumeroSerie: String;
       const ValorGT: Double);
+    procedure VerificaReCarregarArquivo;
 
     property DtHrArquivo : TDateTime read fsDtHrArquivo ;
 
@@ -277,25 +277,25 @@ begin
           SL.Delete( I );
 
           if StringCrc16( SL.Text ) <> CRC then
+          begin
+             fsDtHrArquivo := 0;
              raise EACBrAAC_CRC.Create(
                 ACBrStr('Arquivo: '+NomeArquivoAux+' inválido') );
-       end ;
+          end;
+       end
+
      end;
 
      // Atribuindo para o .INI //
      Ini.SetStrings( SL );
 
-     {
-        Como as configurações de gravar ou não podem estar desabilitadas,
-        fazer este teste vai causar um erro quando não
-
      // Seçao 'PAF' deve existir //
      if not Ini.SectionExists('PAF') then
      begin
+       fsDtHrArquivo := 0;
        raise EACBrAAC_ArquivoInvalido.Create(
           ACBrStr('Arquivo: '+NomeArquivoAux+' inválido') );
      end ;
-     }
 
      if GravarDadosSH then
      begin

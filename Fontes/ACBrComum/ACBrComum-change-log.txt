@@ -38,6 +38,13 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+23/05/2012
+-- ACBrAAC --
+[+] Implementado recurso para identificar se o arquivo auxiliar foi modificado
+    ou editado por programas de terceiros, disparando mensagem de arquivo 
+    inválido (por: Isaque Pinheiro)
+
+
 08/05/2012
 -- ACBrBase --
 [+] Remoção de warning do ACBrBase para métodos deprecated.

@@ -103,7 +103,7 @@ Data: 23/05/2012
     permanece integro, caso não esteja, dispara uma exceção informando que 
     o arquivo esta inválido.
     Recurso implementado para atdner umteste feito por um homologador.
-    (por: Isaque Pinheiro)
+    (por: Isaque Pinheiro e DSA)
 
 Data: 18/05/2012
 -- ACBrECF --

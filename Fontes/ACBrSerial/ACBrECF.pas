@@ -5230,7 +5230,7 @@ begin
      ValorGT := GrandeTotal;
      fsAAC.AtualizarValorGT( fsNumSerieCache, ValorGT );
   except
-     On E: EACBrECFErro do
+     On E: EACBrECFSemPapel do
      begin
         exit;
      end

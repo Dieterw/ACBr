@@ -284,18 +284,11 @@ begin
      // Atribuindo para o .INI //
      Ini.SetStrings( SL );
 
-     // Seçao 'PAF' deve existir //
-     if not Ini.SectionExists('PAF') then
-        fsDtHrArquivo := 0;
-
-     if fsDtHrArquivo = 0 then
-     begin
-       raise EACBrAAC_ArquivoInvalido.Create(
-          ACBrStr('Arquivo: '+NomeArquivoAux+' inválido') );
-     end;
-
      if GravarDadosSH then
      begin
+        if not Ini.SectionExists('SH') then
+           fsDtHrArquivo := 0;
+
         fsIdentPAF.Empresa.Cep         := Ini.ReadString('SH','Cep','');
         fsIdentPAF.Empresa.Cidade      := Ini.ReadString('SH','Cidade','');
         fsIdentPAF.Empresa.CNPJ        := Ini.ReadString('SH','CNPJ','');
@@ -309,8 +302,11 @@ begin
         fsIdentPAF.Empresa.Uf          := Ini.ReadString('SH','Uf','');
      end ;
 
-     if GravarDadosPAF then
+     if (not ArquivoInvalido) and GravarDadosPAF then
      begin
+        if not Ini.SectionExists('PAF') then
+           fsDtHrArquivo := 0;
+
         fsIdentPAF.NumeroLaudo             := Ini.ReadString('PAF','NumeroLaudo','');        // Número do Laudo
         fsIdentPAF.VersaoER                := Ini.ReadString('PAF','VersaoER','');           // Versão do Roteiro Executado na Homologação
         fsIdentPAF.Paf.Nome                := Ini.ReadString('PAF','Nome','');               // Nome do Sistema PAF
@@ -326,8 +322,11 @@ begin
         fsIdentPAF.Paf.IntegracaoPAFECF    := TACBrPAFTipoIntegracao(Ini.ReadInteger('PAF', 'IntegracaoPAFECF', 0));
      end ;
 
-     if GravarConfigApp then
+     if (not ArquivoInvalido) and GravarConfigApp then
      begin
+        if not Ini.SectionExists('PAF') then
+           fsDtHrArquivo := 0;
+
         fsIdentPAF.Paf.RealizaPreVenda              := Ini.ReadBool('PAF', 'RealizaPreVenda', False);
         fsIdentPAF.Paf.RealizaDAVECF                := Ini.ReadBool('PAF', 'RealizaDAVECF', False);
         fsIdentPAF.Paf.RealizaDAVNaoFiscal          := Ini.ReadBool('PAF', 'RealizaDAVNaoFiscal', False);
@@ -357,6 +356,10 @@ begin
         fsIdentPAF.Paf.CupomMania                   := Ini.ReadBool('PAF', 'CupomMania', False);
         fsIdentPAF.Paf.MinasLegal                   := Ini.ReadBool('PAF', 'MinasLegal', False);
      end;
+
+     if ArquivoInvalido then
+       raise EACBrAAC_ArquivoInvalido.Create(
+          ACBrStr('Arquivo: '+NomeArquivoAux+' inválido') );
 
      fsIdentPAF.ArquivoListaAutenticados.MD5 := Ini.ReadString('PAF','MD5','');     // MD5 do arquivo que contem a lista de arquivos autenticados
 
@@ -574,11 +577,19 @@ end ;
 procedure TACBrAAC.VerificaReCarregarArquivo ;
 var
    NewDtHrArquivo : TDateTime;
+   Recarregar : Boolean ;
 begin
-  // Data/Hora do arquivo é diferente ?
-  NewDtHrArquivo := FileDateToDateTime( FileAge( fsNomeCompleto ) ) ;
+  Recarregar := ArquivoInvalido;
 
-  if fsDtHrArquivo <> NewDtHrArquivo then
+  if not Recarregar then
+  begin
+     // Data/Hora do arquivo é diferente ?
+     NewDtHrArquivo := FileDateToDateTime( FileAge( fsNomeCompleto ) ) ;
+
+     Recarregar := (fsDtHrArquivo <> NewDtHrArquivo)
+  end ;
+
+  if Recarregar then
      AbrirArquivo ;
 end ;
 
@@ -668,8 +679,7 @@ var
 begin
   GravaLog( 'AtualizarMD5 - De: '+fsIdentPAF.ArquivoListaAutenticados.MD5+' Para: '+AMD5 );
 
-  if fsDtHrArquivo = 0 then
-     AbrirArquivo;
+  VerificaReCarregarArquivo;
 
   if AMD5 = fsIdentPAF.ArquivoListaAutenticados.MD5 then exit ;
 
@@ -699,10 +709,7 @@ var
 begin
   LogTXT := 'AtualizarGTECF - NumSerie: '+NumeroSerie ;
 
-  if fsDtHrArquivo = 0 then
-     AbrirArquivo;
-
-  AECF := AchaECF( NumeroSerie );
+  AECF := AchaECF( NumeroSerie );    // AchaECF chama VerificaReCarregarArquivo;
   if not Assigned( AECF ) then
   begin
      LogTXT := LogTXT +' - nao encontrado';
@@ -750,7 +757,7 @@ end ;
 
 function TACBrAAC.GetArquivoInvalido: Boolean;
 begin
-   Result := fsDtHrArquivo = 0;
+   Result := (fsDtHrArquivo <= 0);
 end;
 
 function TACBrAAC.GetChave : AnsiString ;

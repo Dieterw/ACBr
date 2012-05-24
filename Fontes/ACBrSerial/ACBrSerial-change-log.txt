@@ -102,7 +102,7 @@ Data: 23/05/2012
 [+] Implementado recurso para checar se no meio da venda o arquivo auxiliar
     permanece integro, caso não esteja, dispara uma exceção informando que 
     o arquivo esta inválido.
-    Recurso implementado para atdner umteste feito por um homologador.
+    Recurso implementado para atender um teste feito por um homologador.
     (por: Isaque Pinheiro e DSA)
 
 Data: 18/05/2012

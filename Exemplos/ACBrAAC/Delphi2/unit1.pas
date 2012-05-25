@@ -225,7 +225,7 @@ var
   ct: integer;
 begin
   try
-    if not FileExists(GetPathArquivoAuxiliar) then
+    if FileExists(GetPathArquivoAuxiliar) then
       DeleteFile(GetPathArquivoAuxiliar);
 
     AssignFile(F, GetPathArquivoAuxiliar);
@@ -233,7 +233,7 @@ begin
     closefile(F);
 
     ACBrAAC1.NomeArquivoAux := GetPathArquivoAuxiliar;
-    ACBrAAC1.AbrirArquivo;
+//    ACBrAAC1.AbrirArquivo;
     ACBrAAC1.IdentPAF.Empresa.RazaoSocial    := edRazaoSocial.Text;
     ACBrAAC1.IdentPAF.Empresa.CNPJ           := edCNPJ.Text;
     ACBrAAC1.IdentPAF.Empresa.IE             := edInscEstadual.Text;

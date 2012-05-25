@@ -1063,7 +1063,7 @@ begin
                         QTD         x UNITARIO       Aliq     VALOR (R$) }
     fsMemoMascItens := 'III CCCCCCCCCCCCCC DDDDDDDDDDDDDDDDDDDDDDDDDDDDD'+
                        'QQQQQQQQ UU x VVVVVVVVVVVVV AAAAAA TTTTTTTTTTTTT' ;
-                 
+
     fsMemoParams := TStringList.Create ;
     fsMemoParams.Add( '[Cabecalho]' ) ;
     fsMemoParams.Add( 'LIN000=<center><b>Nome da Empresa</b></center>' ) ;
@@ -2321,7 +2321,7 @@ begin
          MemoTitulo('CUPOM NAO FISCAL')
       else
          MemoTitulo('CUPOM FISCAL');
-         
+
       MemoAdicionaLinha( fsMemoCabItens );
    end ;
   {$ENDIF}
@@ -2500,7 +2500,7 @@ begin
   else if copy(AliquotaICMS,1,2) = 'NS' then
      AliquotaECF := 'SN' + copy(AliquotaICMS,3,1)
   else if copy(AliquotaICMS,1,2) = 'IS' then
-     AliquotaECF := 'SI' + copy(AliquotaICMS,3,1) ;
+     AliquotaECF := 'SI' + copy(AliquotaICMS,3,1);
 
   Aliquota := AchaICMSAliquota( AliquotaECF ) ;
 
@@ -2627,7 +2627,7 @@ begin
      else
         if Aliquota <> nil then
            AliquotaICMS := IntToStrZero(Aliquota.Sequencia,2) + Aliquota.Tipo +
-                           IntToStrZero(Round(Aliquota.Aliquota*100),4) 
+                           IntToStrZero(Round(Aliquota.Aliquota*100),4)
         else
            AliquotaICMS := '' ;
      end ;
@@ -3652,7 +3652,7 @@ procedure TACBrECF.LeituraMemoriaFiscal(ReducaoInicial, ReducaoFinal: Integer;
 begin
   if RFDAtivo then
      fsRFD.VerificaParametros ;
-     
+
   ComandoLOG := 'LeituraMemoriaFiscal( '+IntToStr(ReducaoInicial)+' , '+
                     IntToStr(ReducaoFinal)+' ,'+BoolToStr(Simplificada)+' )';
   fsECF.LeituraMemoriaFiscal(ReducaoInicial, ReducaoFinal, Simplificada);
@@ -3666,7 +3666,7 @@ procedure TACBrECF.LeituraMemoriaFiscal(DataInicial, DataFinal: TDateTime;
 begin
   if RFDAtivo then
      fsRFD.VerificaParametros ;
-     
+
   ComandoLOG := 'LeituraMemoriaFiscal( '+DateToStr(DataInicial)+' , '+
                     DateToStr(DataFinal)+' ,'+BoolToStr(Simplificada)+' )';
   fsECF.LeituraMemoriaFiscal(DataInicial, DataFinal, Simplificada);
@@ -4256,7 +4256,7 @@ begin
 end;
 
 procedure TACBrECF.AbreRelatorioGerencial(Indice: Integer);
-Var 
+Var
   Tratado : Boolean;
 begin
   if RFDAtivo then
@@ -4626,7 +4626,7 @@ begin
   ComandoLOG := 'AbreCupomVinculado( '+COO+' , '+CodFormaPagto+' , '+
                     CodComprovanteNaoFiscal+' , '+FloatToStr(Valor)+' )';
   fsECF.AbreCupomVinculado( COO, CodFormaPagto, CodComprovanteNaoFiscal, Valor);
-  
+
   {$IFNDEF CONSOLE}
    if MemoAssigned then
    begin
@@ -4635,7 +4635,7 @@ begin
       MemoTitulo('CUPOM VINCULADO');
    end ;
   {$ENDIF}
-  
+
   if RFDAtivo then
      fsRFD.Documento('CC') ;
 end;
@@ -4825,7 +4825,7 @@ Var I : Integer ;
     SL : TStringList ;
 begin
   Achou := false ;
-  
+
   if (Porta = '') or (LowerCase(Porta) = 'procurar') then
    begin
      SL := TStringList.Create;

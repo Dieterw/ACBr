@@ -31,15 +31,15 @@ object frlDANFeRL: TfrlDANFeRL
     PreviewOptions.Caption = 'DANFe'
     ShowProgress = False
   end
-  object DataSource1: TDataSource
-    Left = 403
-    Top = 154
-  end
   object RLPDFFilter1: TRLPDFFilter
     DocumentInfo.Author = 'FortesReport 3.23 - Copyright '#169' 1999-2009 Fortes Inform'#225'tica'
     DocumentInfo.Creator = 'Projeto ACBr (Componente NF-e)'
     DisplayName = 'Documento PDF'
     Left = 368
+    Top = 152
+  end
+  object DataSource1: TDataSource
+    Left = 400
     Top = 152
   end
 end

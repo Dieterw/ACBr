@@ -3,11 +3,13 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
   Top = 108
   Width = 820
   Height = 655
+  VertScrollBar.Position = 167
   Caption = 'frlDANFeRLRetrato'
   OldCreateOrder = True
   PixelsPerInch = 96
   TextHeight = 13
   inherited RLNFe: TRLReport
+    Top = -167
     Background.Arrange = baDistributed
     Background.Height = 96
     Background.Width = 175
@@ -4483,7 +4485,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Font.Style = []
         ParentFont = False
       end
-      object RLLabel1: TRLLabel
+      object rllCabFatura4: TRLLabel
         Tag = 10
         Left = 191
         Top = 14
@@ -4498,7 +4500,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Font.Style = []
         ParentFont = False
       end
-      object RLLabel2: TRLLabel
+      object rllCabFatura5: TRLLabel
         Tag = 10
         Left = 268
         Top = 14
@@ -4513,7 +4515,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Font.Style = []
         ParentFont = False
       end
-      object RLLabel3: TRLLabel
+      object rllCabFatura6: TRLLabel
         Tag = 10
         Left = 331
         Top = 14
@@ -4528,7 +4530,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Font.Style = []
         ParentFont = False
       end
-      object RLLabel4: TRLLabel
+      object rllCabFatura7: TRLLabel
         Tag = 10
         Left = 375
         Top = 14
@@ -4543,7 +4545,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Font.Style = []
         ParentFont = False
       end
-      object RLLabel5: TRLLabel
+      object rllCabFatura8: TRLLabel
         Tag = 10
         Left = 452
         Top = 14
@@ -4558,7 +4560,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Font.Style = []
         ParentFont = False
       end
-      object RLLabel6: TRLLabel
+      object rllCabFatura9: TRLLabel
         Tag = 10
         Left = 515
         Top = 14
@@ -4573,7 +4575,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Font.Style = []
         ParentFont = False
       end
-      object RLLabel7: TRLLabel
+      object rllCabFatura10: TRLLabel
         Tag = 10
         Left = 559
         Top = 14
@@ -4588,7 +4590,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Font.Style = []
         ParentFont = False
       end
-      object RLLabel8: TRLLabel
+      object rllCabFatura11: TRLLabel
         Tag = 10
         Left = 636
         Top = 14
@@ -4603,7 +4605,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Font.Style = []
         ParentFont = False
       end
-      object RLLabel9: TRLLabel
+      object rllCabFatura12: TRLLabel
         Tag = 10
         Left = 699
         Top = 14

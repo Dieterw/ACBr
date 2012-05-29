@@ -114,8 +114,8 @@ type
 type
   TfrlDANFeRL = class(TForm)
     RLNFe: TRLReport;
-    DataSource1: TDataSource;
     RLPDFFilter1: TRLPDFFilter;
+    DataSource1: TDataSource;
     procedure FormDestroy(Sender: TObject);
     procedure FormCreate(Sender: TObject);
   private

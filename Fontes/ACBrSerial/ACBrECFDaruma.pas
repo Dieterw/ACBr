@@ -1852,29 +1852,37 @@ end;
 procedure TACBrECFDaruma.CancelaCupom;
 var
   RetCmd : String ;
-  NumCupCCD : String ;
-  NumCupom: String;
+  NumUltimoCupom : String ;
+  NumCupomCancelavel: String;
+  iNumUltimoCupom, iNumCupomCancelavel: integer;
 begin
   fsNumCupom := '';
   AguardaImpressao := True ;
 
   if fpMFD then
   begin
-    RetCmd := EnviaComando( FS + 'R' + #200 + '046');  // Verifica se precisa cancelar CCD; Autor: Andre Bohn
+    RetCmd := EnviaComando( FS + 'R' + #200 + '046');  // Verifica se precisa cancelar CCD;
     if copy(RetCmd, 6, 1) <> '0' then
     begin
       try
-        RetCmd := EnviaComando( FS + 'R' + #200 + '050');
-        NumCupCCD := GetNumCupom;
-        NumCupom  := copy(RetCmd, 6, 6);
-        if NumCupom <> NumCupCCD then
+        RetCmd := EnviaComando( FS + 'R' + #200 + '050'); // retorna numero do cupom cancelavel
+        NumCupomCancelavel  := copy(RetCmd, 6, 6);
+        NumUltimoCupom := GetNumCupom;
+        iNumUltimoCupom := StrToInt(NumUltimoCupom);
+        iNumCupomCancelavel := StrToInt(NumCupomCancelavel);
+
+        while iNumCupomCancelavel < iNumUltimoCupom do
         begin
+          NumUltimoCupom := FormatFloat('000000',iNumUltimoCupom);
           EnviaComando(FS + 'F' + #214 , 15); // Fecho o CCD caso ainda não esteja fechado
-          EnviaComando(FS + 'F' + #218 + NumCupCCD +#255+#255+#255, 15); // Cancela Conprovante Não Fiscal
+          EnviaComando(FS + 'F' + #218 + NumUltimoCupom +#255+#255+#255, 15); // Cancela Conprovante Não Fiscal
           EnviaComando(FS + 'F' + #214 , 15); // Fecha Comprovante de estorno Cancela Conprovante Não Fiscal
+          dec(iNumUltimoCupom);
         end;
+
       except
       end;
+
 
       EnviaComando(FS + 'F' + #211, 15) ;  // Cancela Cupom
 

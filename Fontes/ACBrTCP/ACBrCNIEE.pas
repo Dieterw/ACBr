@@ -297,12 +297,6 @@ var
   Marca, Modelo, VersaoSB: String;
   MarcaAtual, ModeloAtual, VersaoAtual: String;
 begin
-  if Trim(AMarca) = '' then
-    raise EACBrCNIEE.Create( ACBrStr('Marca não foi informada.') );
-
-  if Trim(AModelo) = '' then
-    raise EACBrCNIEE.Create( ACBrStr('Modelo não foi informado.') );
-
   // abrir a tabela se estiver fechada
   if Cadastros.Count <= 0 then
   begin

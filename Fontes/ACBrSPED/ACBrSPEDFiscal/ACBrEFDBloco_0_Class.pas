@@ -185,7 +185,7 @@ type
 
 implementation
 
-uses ACBrSpedUtils;
+uses ACBrSpedUtils, StrUtils;
 
 { TBloco_0 }
 
@@ -393,6 +393,7 @@ begin
          vlVersao104: strCOD_VER := '005';
          vlVersao105: strCOD_VER := '006';
        end;
+
        Check(funChecaCNPJ(CNPJ), '(0-0000) ENTIDADE: O CNPJ "%s" digitado é inválido!', [CNPJ]);
        Check(funChecaCPF(CPF), '(0-0000) ENTIDADE: O CPF "%s" digitado é inválido!', [CPF]);
        Check(funChecaUF(UF), '(0-0000) ENTIDADE: A UF "%s" digitada é inválido!', [UF]);
@@ -535,6 +536,7 @@ end;
 procedure TBloco_0.WriteRegistro0150(Reg0001: TRegistro0001) ;
 var
   intFor: integer;
+  booExterior: Boolean;
 begin
   if Assigned(Reg0001.Registro0150) then
   begin
@@ -542,15 +544,17 @@ begin
      begin
         with Reg0001.Registro0150.Items[intFor] do
         begin
+          booExterior := ((COD_PAIS <> '01058') and (COD_PAIS <> '1058'));
+
 //          Check(funChecaPAISIBGE(COD_PAIS), '(0-0150) %s-%s, o código do país "%s" digitado é inválido!', [COD_PART, NOME, COD_PAIS]);
           if Length(CNPJ) > 0 then
              Check(funChecaCNPJ(CNPJ), '(0-0150) %s-%s, o CNPJ "%s" digitado é inválido!', [COD_PART, NOME, CNPJ]);
           if Length(CPF)  > 0 then
-             Check(funChecaCPF(CPF), '(0-0150) %s-%s, o CPF "%s" digitado é inválido!', [COD_PART, NOME, CPF]);
+             Check(funChecaCPF(CPF),   '(0-0150) %s-%s, o CPF "%s" digitado é inválido!', [COD_PART, NOME, CPF]);
 //          Check(funChecaIE(IE, UF),         '(0-0150) %s-%s, a Inscrição Estadual "%s" digitada é inválida!', [COD_PART, NOME, IE]);
 //          Check(funChecaMUN(COD_MUN),       '(0-0150) %s-%s, o código do município "%s" digitado é inválido!', [COD_PART, NOME, IntToStr(COD_MUN)]);
-          Check(NOME <> '',                 '(0-0150) O nome do participante com CPF/CNPJ %s é obrigatório!', [CNPJ + CPF]);
-          Check(ENDERECO <> EmptyStr, '(0-150) O Endereço do participante "%s - %s - CPF/CNPJ %s" é obrigatório!', [COD_PART, NOME, CNPJ + CPF]);
+          Check(NOME <> '',            '(0-0150) O nome do participante com CPF/CNPJ %s é obrigatório!', [CNPJ + CPF]);
+          Check(ENDERECO <> EmptyStr,  '(0-150) O Endereço do participante "%s - %s - CPF/CNPJ %s" é obrigatório!', [COD_PART, NOME, CNPJ + CPF]);
           ///
           Add( LFill('0150') +
                LFill(COD_PART) +
@@ -559,7 +563,7 @@ begin
                LFill(CNPJ) +
                LFill(CPF) +
                LFill(IE) +
-               LFill(COD_MUN, 7) +
+               IfThen(booExterior, LFill(''), LFill(COD_MUN, 7)) +
                LFill(SUFRAMA) +
                LFill(ENDERECO) +
                LFill(NUM) +

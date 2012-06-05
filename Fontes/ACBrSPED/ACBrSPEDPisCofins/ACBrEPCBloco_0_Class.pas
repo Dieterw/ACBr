@@ -324,6 +324,8 @@ begin
        case COD_VER of
          vlVersao100: strCOD_VER := '001'; // Código 001 - Versão 100 ADE Cofis nº 31/2010 de 01/01/2011
          vlVersao101: strCOD_VER := '002'; // Código 002 - Versão 101 ADE Cofis nº 34/2010 de 01/01/2011
+         vlVersao200: strCOD_VER := '002'; // Código 002 - Versão 200 ADE Cofis nº 20/2012
+         vlVersao201: strCOD_VER := '003'; // Código 003 - Versão 201 ADE Cofis nº 20/2012 de 14/03/2012
        end;
        case TIPO_ESCRIT of
          tpEscrOriginal: strTIPO_ESCRIT := '0';
@@ -482,25 +484,28 @@ begin
        end;
 
        ///
-       if FRegistro0000.COD_VER >= vlVersao101 then
+       if FRegistro0000.COD_VER >= vlVersao201 then
+       begin
+
+         strIND_APRO_CRED := '';// Conforme Guia prático 1.0.5 Deve ser vazio caso COD_INC_TRIB = 2
+
+         //Nota: Só a versão 2.01 ou superior do PVA vai estar pronta para validar esse arquivo.
+         Add( LFill('0110') +
+              LFill( strCOD_INC_TRIB  ) +
+              LFill( strIND_APRO_CRED ) +
+              LFill( strCOD_TIPO_CONT ) +
+              LFill( strIND_REG_CUM ) );
+       end
+       else if FRegistro0000.COD_VER >= vlVersao101 then
        begin
 
          //Verificar a necessidade desse if abaixo quando sair a versão 2.0 do PVA PisCofins
          if (COD_INC_TRIB = codEscrOpIncCumulativo) then
-         begin
            strIND_APRO_CRED := '';// Conforme Guia prático 1.0.5 Deve ser vazio caso COD_INC_TRIB = 2
-  	       //Nota: Só a versão 2.0 ou superior do PVA vai estar pronta para validar esse arquivo.
-           Add( LFill('0110') +
-                LFill( strCOD_INC_TRIB ) +
-                LFill( strIND_APRO_CRED ) +
-                LFill( strCOD_TIPO_CONT )  +
-                lFill( strIND_REG_CUM ) )
-         end
-         else
-           Add( LFill('0110') +
-                LFill( strCOD_INC_TRIB ) +
-                LFill( strIND_APRO_CRED ) +
-                LFill( strCOD_TIPO_CONT ) ) ;
+         Add( LFill('0110') +
+              LFill( strCOD_INC_TRIB  ) +
+              LFill( strIND_APRO_CRED ) +
+              LFill( strCOD_TIPO_CONT ) );
        end
        else //Modelos de registro anteriores à versao 1.0.3 do guia prático
          Add( LFill('0110') +

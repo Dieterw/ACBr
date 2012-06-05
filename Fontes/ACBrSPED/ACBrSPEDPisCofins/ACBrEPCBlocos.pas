@@ -75,7 +75,9 @@ type
   /// Versão do Leiaute do arquivo - TRegistro0000
   TACBrVersaoLeiaute = (
                          vlVersao100,  // Código 001 - Versão 100 ADE Cofis nº 31/2010 de 01/01/2011
-                         vlVersao101   // Código 002 - Versão 101 ADE Cofis nº 34/2010 de 01/01/2011
+                         vlVersao101,  // Código 002 - Versão 101 ADE Cofis nº 34/2010, atualizado pelo ADE Cofis nº 37/2010 de 01/01/2011
+                         vlVersao200,  // Código 002 - Versão 200 ADE Cofis nº 20/2012
+                         vlVersao201   // Código 003 - Versão 201 ADE Cofis nº 20/2012 de 14/03/2012
                         );
   /// Código da finalidade do arquivo - TRegistro0000
   TACBrCodFinalidade = (

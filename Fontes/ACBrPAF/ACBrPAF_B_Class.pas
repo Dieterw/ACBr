@@ -124,7 +124,7 @@ begin
         Check(funChecaCNPJ(CNPJ), '(B1) ESTABELECIMENTO: O CNPJ "%s" digitado é inválido!', [CNPJ]);
         Check(funChecaIE(IE, UF), '(B1) ESTABELECIMENTO: A Inscrição Estadual "%s" digitada é inválida!', [IE]);
         ///
-        Result := LFill('C1') +
+        Result := LFill('B1') +
                   LFill(CNPJ, 14) +
                   RFill(IE, 14) +
                   RFill(IM, 14) +

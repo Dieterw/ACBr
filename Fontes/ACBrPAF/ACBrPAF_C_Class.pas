@@ -173,7 +173,7 @@ begin
                                            RFill(TANQUE, 3) +
                                            RFill(BOMBA, 3) +
                                            RFill(BICO, 3) +
-                                           RFill(COMBUSTIVEL, 20) +
+                                           RFill(COMBUSTIVEL, 20, ifThen(RegistroValido, ' ', '?')) +
                                            LFill(DATA_ABASTECIMENTO, 'yyyymmdd') +
                                            LFill(HORA_ABASTECIMENTO, 'hhmmss') +
                                            LFill(ENCERRANTE_INICIAL, 15, 2) +

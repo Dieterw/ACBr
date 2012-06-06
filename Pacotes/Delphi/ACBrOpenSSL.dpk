@@ -23,8 +23,8 @@ package ACBrOpenSSL;
 {$MINENUMSIZE 1}
 {$IMAGEBASE $400000}
 {$DESCRIPTION 'ACBr Automação Comercial Brasil  ACBrComum   (http://acbr.sf.ne)'}
-{$RUNONLY}
 {$IMPLICITBUILD ON}
+{$DEFINE DEBUG}
 
 requires
   rtl;
@@ -32,6 +32,6 @@ requires
 contains
   libxmlsec in '..\..\Fontes\ACBrNFe2\libxmlsec.pas',
   libxslt in '..\..\Fontes\ACBrNFe2\libxslt.pas',
-  libxml2 in '..\..\Fontes\ACBrNFe2\libxml2.pas';  
+  libxml2 in '..\..\Fontes\ACBrNFe2\libxml2.pas';
 
 end.

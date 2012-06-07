@@ -562,6 +562,7 @@ type
     QRLabel73: TQRLabel;
     QRShape100: TQRShape;
     qrsQuadro03: TQRShape;
+    QRShape101: TQRShape;
     procedure QRCTeBeforePrint(Sender: TCustomQuickRep; var PrintReport: Boolean);
     procedure qrb_01_ReciboBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
     procedure qrb_02_CabecalhoBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);

@@ -156,7 +156,7 @@ type
     qriBarCode: TQRImage;
     QRLabel2: TQRLabel;
     qrlChave: TQRLabel;
-    QRLabel9: TQRLabel;
+    qrlMsgAutorizado: TQRLabel;
     qrlDescricao: TQRLabel;
     qrlProtocolo: TQRLabel;
     qrlSERIE1: TQRLabel;
@@ -261,7 +261,7 @@ type
     qrlFatNum1: TQRLabel;
     qrlFatNum2: TQRLabel;
     qrlFatNum3: TQRLabel;
-    QRShape106: TQRShape;
+    QRShape106: TQRShape;   
     QRShape107: TQRShape;
     QRShape108: TQRShape;
     QRShape109: TQRShape;
@@ -1396,6 +1396,7 @@ begin
                 qrlProtocolo.Caption        :=  FNFe.procNFe.nProt + ' ' +
                                                 NotaUtil.SeSenao(FNFe.procNFe.dhRecbto <> 0, DateTimeToStr(FNFe.procNFe.dhRecbto),'');
             qriBarCodeContingencia.Visible  := False;
+            qrlMsgAutorizado.Enabled        := True;
         end;
         // Contingencia ********************************************************
         if FNFe.Ide.tpEmis in [teContingencia, teFSDA] then
@@ -1403,6 +1404,7 @@ begin
             strChaveContingencia:= NotaUtil.GerarChaveContingencia(FNFe);
             SetBarCodeImage(strChaveContingencia,qriBarCodeContingencia);
             qriBarCodeContingencia.Visible  := True;
+            qrlMsgAutorizado.Enabled        := False;
             qrlDescricao.Caption            := 'DADOS DA NF-E';
             qrlProtocolo.Caption            := NotaUtil.FormatarChaveContigencia(strChaveContingencia);
         end;

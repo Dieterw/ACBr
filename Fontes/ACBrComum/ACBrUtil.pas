@@ -238,6 +238,7 @@ function FunctionDetect (LibName, FuncName: String; var LibPointer: Pointer;
 function UnLoadLibrary(LibName: AnsiString ): Boolean ;
 
 function FlushToDisk( sFile: string): boolean;
+function FlushFileToDisk( sFile: string): boolean;
 
 Procedure DesligarMaquina(Reboot: Boolean = False; Forcar: Boolean = False) ;
 Procedure WriteToTXT( const ArqTXT, AString : AnsiString;
@@ -1846,6 +1847,77 @@ end ;
  end;
 {$ELSE}
  function FlushToDisk(sFile: string): boolean;
+ var
+   hDrive: THandle;
+ begin
+   hDrive := fpOpen(sFile, O_Creat or O_RDWR or O_SYNC);
+   Result := (fpfsync(hDrive) = 0);
+   fpClose(hDrive);
+ end ;
+{$ENDIF}
+
+{$IFDEF MSWINDOWS}
+ { Discussão em: http://www.djsystem.com.br/acbr/forum/viewtopic.php?f=5&t=5811 }
+ function FlushFileToDisk( sFile: string): boolean;
+ var
+   hFile: THandle;
+   bResult: boolean;
+   lastErr: Cardinal;
+   filenome: string;
+ begin
+   bResult := False;
+
+   filenome := '\\.\' + sFile; //Para usar a versão Wide da função CreateFile e aceitar o caminho completo do arquivo
+
+   hFile := Windows.CreateFileW( PWideChar(filenome),
+               GENERIC_READ or GENERIC_WRITE,
+               FILE_SHARE_READ or FILE_SHARE_WRITE, nil, OPEN_EXISTING,
+               FILE_ATTRIBUTE_NORMAL  or FILE_FLAG_WRITE_THROUGH or FILE_FLAG_NO_BUFFERING, 0);
+
+//   GetLasError Verifica se houve algum erro na execução de CreateFile
+//   lastErr := GetLastError();
+//
+//   if (lastErr <> ERROR_SUCCESS) then
+//   begin
+//     Beep( 750, 100);
+////     try
+//       RaiseLastOSError(lastErr);
+////     except
+////       on Ex : EOSError do
+////       begin
+////          MessageDlg('Caught an OS error with code: ' +
+////             IntToStr(Ex.ErrorCode), mtError, [mbOK], 0);
+////          SetLastError(ERROR_SUCCESS);
+////       end
+////     end;
+//   end;
+
+    bResult := FlushFileBuffers(hFile);
+
+//   GetLasError Verifica se houve algum erro na execução de FlushFileBuffers
+//    lastErr := GetLastError();
+//
+//    if (lastErr <> ERROR_SUCCESS) then
+//    begin
+//   if (lastErr <> ERROR_SUCCESS) then
+//   begin
+//     Beep( 750, 100);
+////     try
+//       RaiseLastOSError(lastErr);
+////     except
+////       on Ex : EOSError do
+////       begin
+////          MessageDlg('Caught an OS error with code: ' +
+////             IntToStr(Ex.ErrorCode), mtError, [mbOK], 0);
+////          SetLastError(ERROR_SUCCESS);
+////       end
+////     end;
+//   end;
+
+    CloseHandle(hFile);
+ end;
+{$ELSE}
+ function FlushFileToDisk(sFile: string): boolean;
  var
    hDrive: THandle;
  begin

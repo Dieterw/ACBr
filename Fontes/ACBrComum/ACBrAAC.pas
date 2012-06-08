@@ -562,7 +562,7 @@ begin
      WriteToTXT( fsNomeCompleto, R, False, False );
 
      if fsEfetuarFlush then
-        FlushToDisk( fsNomeCompleto );
+        FlushFileToDisk( fsNomeCompleto );
 
      fsDtHrArquivo := FileDateToDateTime( FileAge( fsNomeCompleto ) );
 

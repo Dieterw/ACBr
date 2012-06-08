@@ -2865,8 +2865,8 @@ begin
     end ;
 
     try
-       Result := Result + 'NumLoja = ' + NumLoja + sLineBreak ;
        Result := Result + 'NumECF = ' + NumECF + sLineBreak ;
+       Result := Result + 'NumLoja = ' + NumLoja + sLineBreak ;
     except
     end ;
 
@@ -2904,12 +2904,17 @@ begin
     end ;
 
     try
-       Result := Result + 'NumGRG = ' + copy(RetCmd,29,6) + sLineBreak ;
+       Result := Result + 'NumCFD = ' + copy(RetCmd,35,6) + sLineBreak ;
     except
     end ;
 
     try
-       Result := Result + 'NumCFD = ' + copy(RetCmd,35,6) + sLineBreak ;
+       Result := Result + 'NumCDC = ' + copy(RetCmd,289,4) + sLineBreak ;
+    except
+    end ;
+
+    try
+       Result := Result + 'NumGRG = ' + copy(RetCmd,29,6) + sLineBreak ;
     except
     end ;
 
@@ -2920,11 +2925,6 @@ begin
 
     try
        Result := Result + 'NumCFC = ' + copy(RetCmd,45,4) + sLineBreak ;
-    except
-    end ;
-
-    try
-       Result := Result + 'NumCDC = ' + copy(RetCmd,289,4) + sLineBreak ;
     except
     end ;
 
@@ -3073,9 +3073,7 @@ begin
     end ;
 
     try
-       V := RoundTo( StrToFloatDef( copy(RetCmd,1145,14),0) / 100, -2)  ;
-       Result := Result + 'TotalAcrescimosOPNF = ' + FloatToStr( V ) + sLineBreak ;
-       VBruta := VBruta + V ;
+       Result := Result + 'TotalNaoFiscal = ' + FloatToStr(TOPNF) + sLineBreak ;
     except
     end ;
 
@@ -3092,9 +3090,10 @@ begin
     except
     end ;
 
-
     try
-       Result := Result + 'TotalNaoFiscal = ' + FloatToStr(TOPNF) + sLineBreak ;
+       V := RoundTo( StrToFloatDef( copy(RetCmd,1145,14),0) / 100, -2)  ;
+       Result := Result + 'TotalAcrescimosOPNF = ' + FloatToStr( V ) + sLineBreak ;
+       VBruta := VBruta + V ;
     except
     end ;
 
@@ -3176,8 +3175,8 @@ begin
     end ;
 
     try
-       Result := Result + 'NumLoja = ' + NumLoja + sLineBreak ;
        Result := Result + 'NumECF = ' + NumECF + sLineBreak ;
+       Result := Result + 'NumLoja = ' + NumLoja + sLineBreak ;
     except
     end ;
 

@@ -829,7 +829,7 @@ begin
             sdfExtRegular      : strCOD_SIT := '01';
             sdfComplementar    : strCOD_SIT := '06';
             sdfExtComplementar : strCOD_SIT := '07';
-            sdfInutilizado     : strCOD_SIT := '08';
+            sdfEspecial        : strCOD_SIT := '08';
           end;
 
           Add( LFill('D200')        +

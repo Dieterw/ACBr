@@ -2,7 +2,7 @@ PARA TIRAR DÚVIDAS SOBRE O COMPONENTE UTILIZE - http://www.djsystem.com.br/acbr/
 
 +---------------------------------------------------------+
 |                                                         |
-|   Projeto: Componentes ACBr   Versao 0.9.0b             |
+|   Projeto: Componentes ACBr   Versão 0.9.0b             |
 |                                                         |
 |  Biblioteca multiplataforma de componentes Delphi para  |
 |  interação com equipamentos de Automação Comercial      |
@@ -34,7 +34,7 @@ INDICE
    O mercado de automação comercial Brasileiro está em franca expansão.
 Vários fabricantes vem disponibilizando vários equipamentos para permitir a
 criação de Programas de Ponto de Venda. Entre esses equipamentos podemos citar:
-Impressoras Fiscais, Gavetas de Dinheiro, Impressoras de Cheque, Transferencia
+Impressoras Fiscais, Gavetas de Dinheiro, Impressoras de Cheque, Transferência
 Eletrônica de Fundos (TEF), Monitor de Bombas de Combustível, Display de
 Mensagens, etc.
 
@@ -65,11 +65,11 @@ Kylix, acesso direto a esses equipamentos em Linux.
  ADEQUAÇÃO A UMA FINALIDADE ESPECÍFICA. Consulte a Licença Pública Geral Menor
  do GNU para mais detalhes. (Arquivo LICENÇA.TXT ou LICENSE.TXT)
 
-  Por favor leia pelo menos a Introdução do arquivo LICENÇA.TXT, se você deseja
+  Por favor, leia pelo menos a Introdução do arquivo LICENÇA.TXT, se você deseja
 usar essa biblioteca em algum Programa Comercial, ou ainda criar uma modificação
 dessa Biblioteca.
 
-  Porque o projeto é OpenSource ? É realmente muito difícil fazer um projeto
+  Porque o projeto é Open Source ? É realmente muito difícil fazer um projeto
 desse tamanho sozinho. Conseguir acesso a diversos equipamentos para testes, em
 diferentes sistemas operacionais e configurações de máquinas. Por isso acho que
 compartilhando minhas informações com a comunidade, também serei beneficiado...
@@ -110,7 +110,7 @@ o código dos Programas de demonstração...
   Veja o exemplo de uso dos componentes na pasta Exemplos\
 
   Os Demos Linux precisam da biblioteca QT/Borland (libborqt-6.9-qt2.3.so)
-disponivel no Kylix (/usr/local/kylix/bin). Para rodar os demos em uma máquina
+disponível no Kylix (/usr/local/kylix/bin). Para rodar os demos em uma máquina
 que não possua o Kylix instalado, copie a biblioteca acima para o diretório
 /usr/lib.
   Se você não possui o Kylix instalado, as bibliotecas de run-time podem ser
@@ -124,14 +124,14 @@ achadas em: http://kylixlibs.sourceforge.net
 ATENÇAO - Caso tenha o pacote ACBr_CLX ou ACBr_VCL já instalado no Delphi, REMOVA TODOS 
 os componentes do ACBr e TODAS as pastas do ACBr do Library Path, pois a partir de Maio 
 de 2010 a estrutura de pastas do componente mudou e os pacotes ACBr_CLX e ACBr_VCL deixaram 
-de existir sendo dividos em pacotes com os nomes ACBrDiversos, ACBrSerial, ACBrTCP, etc.
+de existir sendo divididos em pacotes com os nomes ACBrDiversos, ACBrSerial, ACBrTCP, etc.
 
   1. Descompacte o arquivo .ZIP na pasta de sua preferência ou faça o checkout
      via SVN - http://acbr.sourceforge.net/drupal/?q=node/37
 
   2. Adicionando os diretórios no LibPath  (não é necessário no Lazarus)
        Adicione os diretórios " Fontes\ACBrComum ", " Fontes\ACBrSerial " e os
-     demais subdiretorios da pasta Fontes dos componentes que deseja utilizar no
+     demais subdiretórios da pasta Fontes dos componentes que deseja utilizar no
      "Library Path".
        Na IDE do Delphi acione  "Tools, Enviroment Options" selecione a guia
      "Library", clique no botão elíptico (...) de "Library Path", clique no botão
@@ -160,7 +160,7 @@ de existir sendo dividos em pacotes com os nomes ACBrDiversos, ACBrSerial, ACBrT
 
 ***** Nota IMPORTANTE sobre a Versão CLX *****
 
-- Ao iniciar um NOVO projeto em CLX adcione a clausula "VisualCLX" ou "CLX" em
+- Ao iniciar um NOVO projeto em CLX adicione a clausula "VisualCLX" ou "CLX" em
   "Conditional Defines".
   - Clique em "Project", "Options"   ou   SHIFT-CTRL-F11
   - Clique na aba "Directories/Conditionals"
@@ -206,7 +206,7 @@ Com isso, a instalação dos componentes da ACBr estará concluída.
 * IMPORTANTE *  Durante a fase Beta do Projeto, alguns relases ocorrerão sem os
 devidos testes em alguns modelos de equipamentos.  Isso por causa da dificuldade
 de conseguir Hardware disponível para testes.  Antes de cada release, fazemos o
-maior esforço possível para testar o maior número de modelos, contactando Cola-
+maior esforço possível para testar o maior número de modelos, contatando Cola-
 boradores ou Fabricantes. Muitos fabricantes gentilmente nos ajudaram nos testes,
 outros nem tanto...  Se você possui acesso a algum equipamento que é do escopo
 do projeto ACBr,  SEJA VOCÊ TAMBÉM UM COLABORADOR..... Ficaremos muito gratos
@@ -239,7 +239,7 @@ ACBrOpenSSL.dpk - ??? Descrição ???. Esse pacote não é instalado, apenas Compila
 ACBrDiversos.dpk - Contém os mais variados componentes ACBr que em geral não se encaixaram
   em outros pacotes. 
    Componentes e Units: 
-      * ACBrBarCode -  Compomenente Visual (TImage) Gerador de códigos de Barra
+      * ACBrBarCode -  Componente Visual (TImage) Gerador de códigos de Barra
                        criado usando os fontes do AJBarcode
       * ACBrCalculadora - Mais uma calculadora... mas com algumas frescuras a
                           mais, como por exemplo, um Memo simulando a fita
@@ -269,7 +269,7 @@ ACBrSerial.dpk - Contém os componentes ACBr que fazem comunicação Serial.
                    método "LePeso : Double" é possível obter o peso aferido pela
                    Balança. Também há a possibilidade de monitorar o envio automático
                    de peso em balanças que possuem essa característica, ligando
-                   a propriedade boleana "MonitorarBalanca". A cada peso lido o
+                   a propriedade booleana "MonitorarBalanca". A cada peso lido o
                    evento "OnLePeso" será disparado.
 	  
       * ACBrECF - Para se comunicar com Impressoras Fiscais (ECF). A idéia é substituir
@@ -302,11 +302,11 @@ ACBrSerial.dpk - Contém os componentes ACBr que fazem comunicação Serial.
 ACBr_TEFD.dpk - Contém o componente ACBrTEFD e as Units necessárias para seu uso. 
    Componente:
       * ACBrTEFD - Componente para facilitar a comunicação de TEF Discado e Dedicado (SITEF),
-		  suportando o pagamento com múltiplos cartões. Este compoentes faz a criação dos 
+		  suportando o pagamento com múltiplos cartões. Este componente faz a criação dos 
  		  arquivos de troca entre a Aplicação Comercial e os programas das Operadoras.
 
 
-ACBr_SPED.dpk - Contém os compoentes para geração do arquivo SPED (fiscal e contábil)
+ACBr_SPED.dpk - Contém os componentes para geração do arquivo SPED (fiscal e contábil)
   conforme Lei vigente. 
    Componentes:
       * ACBrSPEDContabil - ???Descrição ???
@@ -319,7 +319,7 @@ ACBr_PAF.dpk - Contém componentes para facilitar o cumprimento de requisitos par
     Componente: 
       * ACBrPAF - Componente que gera arquivos necessários para homologação
 	  
-ACBr_Sintegra.dpk -  Contém os compoentes para geração do arquivo SINTEGRA conforme 
+ACBr_Sintegra.dpk -  Contém os componentes para geração do arquivo SINTEGRA conforme 
   lei vigente. Componentes: ACBrSINTEGRA
       * ACBrSintegra - Componente para formatar informações no LayOut do Sintegra
 		  conforme leis vigentes. Suporta os registros 50, 60, 70, 90 etc...
@@ -342,7 +342,7 @@ ACBr_BoletoFC_Fortes.dpk - ??? Descrição ???.
 Na pasta \pacotes\ :
 ACBr_D5.dpk - Esse pacote é utilizado para instalar os componentes no Delphi 5. Se você 
 ainda utiliza o Delphi 5, esse é o pacote que deve instalar. No entanto, entenda que
-a maior parte dos testes estão sendo feitos em versões mais novas do Delhpi e/ou do Lazarous.
+a maior parte dos testes está sendo feitos em versões mais novas do Delphi e/ou do Lazarus.
 
 
 Também existem os componentes para NFe. Para a NFe2 estão localizados na pasta 
@@ -352,7 +352,7 @@ Também existem os componentes para NFe. Para a NFe2 estão localizados na pasta
 Os mesmos são:
 ACBr_CTe.dpk - Conhecimento de Transporte de Carga Eletrônico.
       * ACBrCTe - Componente que gera, assina, valida e envia para o SEFAZ o
-                  arquivo xml contendo dados pertinentes ao conhecimento de
+                  arquivo XML contendo dados pertinentes ao conhecimento de
                   transporte de carga eletrônico.
 
 ACBrCTeDacteQRpkg.dpk - DACTe em Quick Report
@@ -361,7 +361,7 @@ ACBrCTeDacteQRpkg.dpk - DACTe em Quick Report
 
 ACBr_NFe.dpk - Nota Fiscal Eletrônica.
       * ACBrNFe - Componente que gera, assina, valida e envia para o SEFAZ o
-                  arquivo xml contendo dados pertinentes a nota fiscal eletrônica.
+                  arquivo XML contendo dados pertinentes a nota fiscal eletrônica.
 
 ACBrNFeDanfeQRpkg.dpk - DANFe em Quick Report
       * ACBrNFeDANFeQR - Componente para emissão do DANFe, Documento Auxiliar da
@@ -388,8 +388,8 @@ e precisam ser testados. Talvez você queira ajudar no desenvolvimento e a testar
 
 ACBrBombas - Para trabalhar como monitor de bombas de Combustível, se comunicando com 
   concentradores, lendo os abastecimentos gerados, alterando os preços das Bombas, etc...
-  A comunicação pode ser feita por meio de porta Serial, TCP ou Dll dependendo do modelo.
-  Modelos suportados: CompanyTec (dll).
+  A comunicação pode ser feita por meio de porta Serial, TCP ou DLL dependendo do modelo.
+  Modelos suportados: CompanyTec (DLL).
   **ATENÇÃO*** Este componente está em fase de Construção e Testes e assim NÃO está 
   em nenhum pacote atualmente.
 
@@ -416,8 +416,8 @@ nós... ficaremos muito contentes com a sua ajuda.
 
   * Testando os Componentes:
   Fizemos o possível para eliminar os bugs mais óbvios... mas em ambientes
-diferente bugs novos podem aparecer. Ao encontrar um bug, oor favor envie-nos um e-mail 
-com os seus testes. Mesmo que tudo dê certo ainda assim gostaríamos da sua opnião...
+diferente bugs novos podem aparecer. Ao encontrar um bug, por favor envie-nos um e-mail 
+com os seus testes. Mesmo que tudo dê certo ainda assim gostaríamos da sua opinião...
 
   * Divulgando o ACBr:
   Quanto maior o uso da biblioteca mais usuários podem ajudar. Se a biblioteca
@@ -432,10 +432,10 @@ uma nova Classe para o seu Equipamento (Por favor, entre em contato antes)
 
   * Emprestando Equipamentos:
   Nem sempre temos acesso aos Equipamentos para testes e melhorias. Se você é um
-fabricante ou possui um equipamento disponível para emprestimo, entre em contato
+fabricante ou possui um equipamento disponível para empréstimo, entre em contato
 Em breve estarei relacionando os equipamentos que necessitam de testes...
 
-  * Efetuando Doaçoes:
+  * Efetuando Doações:
   Atualmente a Biblioteca é desenvolvida no tempo livre disponível dos
 Desenvolvedores.... Doações podem motivar os desenvolvedores a destinar mais
 tempo para o andamento do projeto.... pois é... até mesmo os programadores
@@ -450,7 +450,7 @@ precisam comer.... ;-)
   Vantagens:
 - Multiplataforma: Linux / Windows
 - Programação Limpa e Clara: Basta inserir um componente ACBrECF no seu projeto
-  e configurar o Modelo. O Codigo fonte sempre irá se referir a esse componente,
+  e configurar o Modelo. O Código fonte sempre irá se referir a esse componente,
   sem se preocupar com implementações específicas de cada Modelo.
 - Total controle da Aplicação: Já vi DLL's que simplesmente param o proces-
   samento do programa (Quem já homologou TEF discado, sabe o que eu quero
@@ -464,15 +464,15 @@ precisam comer.... ;-)
 - Se o hardware mudar, ficamos dependendo de novas informações do fabricante, ou
   até mesmo de um modelo do equipamento para testes...
 - Geralmente as DLL's incorporam novos Hardwares do mesmo fabricante.... Aqui
-  teremos que implementar um novo filho das classes Basicas para cada Hardware
-  novo (somente se o novo hardware nao for compativel com o antigo)
+  teremos que implementar um novo filho das classes Básicas para cada Hardware
+  novo (somente se o novo hardware não for compatível com o antigo)
 
 --------------------------------------------------------------------------------
 
 10. TAREFAS QUE AINDA PRECISAM SER INICIADAS, MELHORADAS OU COMPLETADAS
 =======================================================================
 
-- Manual dos componetes existentes
+- Manual dos componentes existentes
 - ACBr.DLL / ACBr.SO (com todos os componentes, permitindo o uso do ACBr em
   outras linguagens)
 - Demos mais bem elaborados
@@ -484,4 +484,4 @@ precisam comer.... ;-)
 11. HISTÓRICO DO DESENVOLVIMENTO
 ================================
 
-  Por favor leia o arquivo:  " ACBr-change-log.TXT "
+  Por favor, leia o arquivo: "ACBr-change-log.TXT"

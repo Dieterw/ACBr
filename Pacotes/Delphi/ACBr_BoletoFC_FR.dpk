@@ -33,11 +33,31 @@ requires
   designide,
   dbrtl,
   dsnap,
-  ACBr_Boleto,
-  frx14,
-  frxDB14,
-  frxe14,
-  fs14;
+{$IFDEF VER150} // D7
+  fs7, frx7, frxe7, frxDB7,
+{$ENDIF}
+{$IFDEF VER170} // D2005
+  fs9, frx9, frxe9, frxDB9,
+{$ENDIF}
+{$IFDEF VER180} // D2006
+  fs10, frx10, frxe10, frxDB10,
+{$ENDIF}
+{$IFDEF VER190} // D2007
+  fs11, frx11, frxe11, frxDB11,
+{$ENDIF}
+{$IFDEF VER200} // D2009
+  fs12, frx12, frxe12, frxDB12,
+{$ENDIF}
+{$IFDEF VER210} // D2010
+  fs14, frx14, frxe14, frxDB14,
+{$ENDIF}
+{$IFDEF VER220} // XE
+  fs15, frx15, frxe15, frxDB15,
+{$ENDIF}
+{$IFDEF VER230} // XE2
+  fs16, frx16, frxe16, frxDB16,
+{$ENDIF}
+  ACBr_Boleto;
 
 contains
   ACBrBoletoFCFR in '..\..\Fontes\ACBrBoleto\ACBrBoletoFCFR.pas' {dmACBrBoletoFCFR: TDataModule},

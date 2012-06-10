@@ -24,7 +24,7 @@ package synapse;
 {$IMAGEBASE $400000}
 {$DESCRIPTION 'Synapse TCP/IP / Serial library (http://www.synapse.ararat.cz)'}
 {$RUNONLY}
-{$IMPLICITBUILD ON}
+{$IMPLICITBUILD OFF}
 
 requires
   rtl;

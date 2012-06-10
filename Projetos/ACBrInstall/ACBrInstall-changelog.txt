@@ -39,6 +39,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+09/06/2012
+----------
+[+] Implementado recurso para instalar os pacotes de Danfe, Dactes e Boletos do
+    FastReport pelo próprio instalador.
+    por: Isaque Pinheiro
 
 13/04/2012
 ----------

@@ -1,7 +1,7 @@
 object frmPrincipal: TfrmPrincipal
   Left = 0
   Top = 0
-  ActiveControl = wizPgInicio
+  ActiveControl = frameDpk.ACBrSerial_dpk
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'Instalador ACBr'
@@ -24,7 +24,7 @@ object frmPrincipal: TfrmPrincipal
     Top = 0
     Width = 720
     Height = 500
-    ActivePage = wizPgInicio
+    ActivePage = wizPgPacotes
     ButtonBarHeight = 42
     ButtonStart.Caption = 'Para o in'#237'cio'
     ButtonStart.NumGlyphs = 1
@@ -2217,7 +2217,7 @@ object frmPrincipal: TfrmPrincipal
       OnNextButtonClick = wizPgConfiguracaoNextButtonClick
       object Label4: TLabel
         Left = 17
-        Top = 56
+        Top = 68
         Width = 79
         Height = 13
         Caption = 'Vers'#227'o do delphi'
@@ -2230,7 +2230,7 @@ object frmPrincipal: TfrmPrincipal
       end
       object Label5: TLabel
         Left = 195
-        Top = 56
+        Top = 68
         Width = 52
         Height = 13
         Caption = 'Plataforma'
@@ -2269,7 +2269,7 @@ object frmPrincipal: TfrmPrincipal
       end
       object edtDelphiVersion: TComboBox
         Left = 17
-        Top = 72
+        Top = 84
         Width = 172
         Height = 21
         Style = csDropDownList
@@ -2284,7 +2284,7 @@ object frmPrincipal: TfrmPrincipal
       end
       object edtPlatform: TComboBox
         Left = 195
-        Top = 72
+        Top = 84
         Width = 172
         Height = 21
         Style = csDropDownList
@@ -2316,51 +2316,86 @@ object frmPrincipal: TfrmPrincipal
         TabOrder = 0
         Text = 'C:\ACBr'
       end
-      object gbxFramePacotes: TGroupBox
+      object ckbInstalarCapicom: TCheckBox
         Left = 17
-        Top = 130
-        Width = 519
-        Height = 241
-        Caption = 'Marque os pacotes que deseja instalar'
+        Top = 122
+        Width = 97
+        Height = 17
+        Caption = 'Instalar Capicom'
         TabOrder = 3
+      end
+      object ckbInstalarOpenSSL: TCheckBox
+        Left = 17
+        Top = 145
+        Width = 97
+        Height = 17
+        Caption = 'Instalar OpenSSL'
+        TabOrder = 4
+      end
+    end
+    object wizPgPacotes: TJvWizardInteriorPage
+      Header.Visible = False
+      Header.ParentFont = False
+      Header.Title.Color = clNone
+      Header.Title.Text = 'Title'
+      Header.Title.Anchors = [akLeft, akTop, akRight]
+      Header.Title.Font.Charset = DEFAULT_CHARSET
+      Header.Title.Font.Color = clWindowText
+      Header.Title.Font.Height = -16
+      Header.Title.Font.Name = 'Tahoma'
+      Header.Title.Font.Style = [fsBold]
+      Header.Subtitle.Color = clNone
+      Header.Subtitle.Text = 'Subtitle'
+      Header.Subtitle.Anchors = [akLeft, akTop, akRight, akBottom]
+      Header.Subtitle.Font.Charset = DEFAULT_CHARSET
+      Header.Subtitle.Font.Color = clWindowText
+      Header.Subtitle.Font.Height = -11
+      Header.Subtitle.Font.Name = 'Tahoma'
+      Header.Subtitle.Font.Style = []
+      Caption = 'Pacotes'
+      object gbxFramePacotes: TGroupBox
+        AlignWithMargins = True
+        Left = 3
+        Top = 3
+        Width = 548
+        Height = 381
+        Align = alClient
+        Caption = 'Marque os pacotes que deseja instalar'
+        TabOrder = 0
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 554
+        ExplicitHeight = 387
         inline frameDpk: TframePacotes
           AlignWithMargins = True
           Left = 5
           Top = 18
-          Width = 509
-          Height = 218
+          Width = 538
+          Height = 358
           Align = alClient
           Color = clBtnFace
           ParentBackground = False
           ParentColor = False
           TabOrder = 0
+          ExplicitLeft = 5
+          ExplicitTop = 18
+          ExplicitWidth = 544
+          ExplicitHeight = 364
           inherited pnlBotoesPacotes: TPanel
-            Top = 186
-            Width = 509
+            Top = 326
+            Width = 538
+            ExplicitTop = 332
+            ExplicitWidth = 544
             inherited btnPacotesDesmarcarTodos: TSpeedButton
-              Left = 477
+              Left = 506
+              ExplicitLeft = 512
             end
             inherited btnPacotesMarcarTodos: TSpeedButton
-              Left = 445
+              Left = 474
+              ExplicitLeft = 480
             end
           end
         end
-      end
-      object ckbInstalarCapicom: TCheckBox
-        Left = 17
-        Top = 99
-        Width = 97
-        Height = 17
-        Caption = 'Instalar Capicom'
-        TabOrder = 4
-      end
-      object ckbInstalarOpenSSL: TCheckBox
-        Left = 150
-        Top = 99
-        Width = 97
-        Height = 17
-        Caption = 'Instalar OpenSSL'
-        TabOrder = 5
       end
     end
     object wizPgObterFontes: TJvWizardInteriorPage
@@ -2514,10 +2549,11 @@ object frmPrincipal: TfrmPrincipal
           Left = 4
           Top = 4
           Width = 508
-          Height = 46
+          Height = 43
           Align = alClient
           AutoSize = False
           Caption = 'Linha 1'#13#10'Linha 2'#13#10'Linha 3'
+          ExplicitHeight = 46
         end
       end
     end
@@ -2676,7 +2712,7 @@ object frmPrincipal: TfrmPrincipal
       object Label9: TLabel
         Left = 14
         Top = 19
-        Width = 313
+        Width = 312
         Height = 19
         Caption = 'Assistente de instala'#231#227'o do Projeto ACBr'
         Color = clWhite
@@ -2698,7 +2734,7 @@ object frmPrincipal: TfrmPrincipal
         Cursor = crHandPoint
         Animate = True
         Center = True
-        FrameIndex = 2
+        FrameIndex = 5
         Image.Data = {
           688B00004749463839613F012800F70000FFFFFFFFFFE5FFFFCCF7FAFDFFFF99
           FFF7B9FFF9A9FFFA84EAFA9EFFF573FFF74AFFFF00FFF268F2F478FFF456E9F5

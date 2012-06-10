@@ -1,15 +1,15 @@
 object framePacotes: TframePacotes
   Left = 0
   Top = 0
-  Width = 495
-  Height = 240
+  Width = 545
+  Height = 367
   Color = clBtnFace
   ParentBackground = False
   ParentColor = False
   TabOrder = 0
   object Label1: TLabel
     AlignWithMargins = True
-    Left = 16
+    Left = 4
     Top = 4
     Width = 85
     Height = 13
@@ -24,7 +24,7 @@ object framePacotes: TframePacotes
   end
   object Label2: TLabel
     AlignWithMargins = True
-    Left = 256
+    Left = 184
     Top = 4
     Width = 99
     Height = 13
@@ -39,8 +39,8 @@ object framePacotes: TframePacotes
   end
   object Label3: TLabel
     AlignWithMargins = True
-    Left = 16
-    Top = 84
+    Left = 4
+    Top = 96
     Width = 99
     Height = 13
     Margins.Left = 5
@@ -54,8 +54,8 @@ object framePacotes: TframePacotes
   end
   object Label4: TLabel
     AlignWithMargins = True
-    Left = 256
-    Top = 84
+    Left = 184
+    Top = 96
     Width = 100
     Height = 13
     Margins.Left = 5
@@ -67,10 +67,55 @@ object framePacotes: TframePacotes
     Font.Style = []
     ParentFont = False
   end
+  object Label5: TLabel
+    AlignWithMargins = True
+    Left = 4
+    Top = 220
+    Width = 63
+    Height = 13
+    Margins.Left = 5
+    Caption = 'NFe - Danfes'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clMaroon
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object Label6: TLabel
+    AlignWithMargins = True
+    Left = 367
+    Top = 220
+    Width = 35
+    Height = 13
+    Margins.Left = 5
+    Caption = 'Boletos'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clMaroon
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object Label7: TLabel
+    AlignWithMargins = True
+    Left = 184
+    Top = 220
+    Width = 62
+    Height = 13
+    Margins.Left = 5
+    Caption = 'CTe - Dactes'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clMaroon
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
   object pnlBotoesPacotes: TPanel
     Left = 0
-    Top = 208
-    Width = 495
+    Top = 335
+    Width = 545
     Height = 32
     Align = alBottom
     BevelOuter = bvNone
@@ -78,7 +123,7 @@ object framePacotes: TframePacotes
     TabOrder = 0
     object btnPacotesDesmarcarTodos: TSpeedButton
       AlignWithMargins = True
-      Left = 463
+      Left = 513
       Top = 3
       Width = 29
       Height = 26
@@ -115,10 +160,11 @@ object framePacotes: TframePacotes
       ParentShowHint = False
       ShowHint = True
       OnClick = btnPacotesDesmarcarTodosClick
+      ExplicitLeft = 463
     end
     object btnPacotesMarcarTodos: TSpeedButton
       AlignWithMargins = True
-      Left = 431
+      Left = 481
       Top = 3
       Width = 29
       Height = 26
@@ -154,11 +200,12 @@ object framePacotes: TframePacotes
       ParentShowHint = False
       ShowHint = True
       OnClick = btnPacotesMarcarTodosClick
+      ExplicitLeft = 431
     end
   end
   object synapse_dpk: TCheckBox
     AlignWithMargins = True
-    Left = 46
+    Left = 34
     Top = 25
     Width = 116
     Height = 17
@@ -181,7 +228,7 @@ object framePacotes: TframePacotes
   end
   object ACBrComum_dpk: TCheckBox
     AlignWithMargins = True
-    Left = 46
+    Left = 34
     Top = 42
     Width = 116
     Height = 17
@@ -204,7 +251,7 @@ object framePacotes: TframePacotes
   end
   object ACBrDiversos_dpk: TCheckBox
     AlignWithMargins = True
-    Left = 46
+    Left = 34
     Top = 59
     Width = 116
     Height = 17
@@ -227,7 +274,7 @@ object framePacotes: TframePacotes
   end
   object ACBrSerial_dpk: TCheckBox
     AlignWithMargins = True
-    Left = 286
+    Left = 214
     Top = 25
     Width = 116
     Height = 17
@@ -247,7 +294,7 @@ object framePacotes: TframePacotes
   end
   object ACBrTCP_dpk: TCheckBox
     AlignWithMargins = True
-    Left = 286
+    Left = 214
     Top = 42
     Width = 116
     Height = 17
@@ -267,7 +314,7 @@ object framePacotes: TframePacotes
   end
   object ACBr_TEFD_dpk: TCheckBox
     AlignWithMargins = True
-    Left = 286
+    Left = 214
     Top = 59
     Width = 116
     Height = 17
@@ -287,8 +334,8 @@ object framePacotes: TframePacotes
   end
   object ACBr_Boleto_dpk: TCheckBox
     AlignWithMargins = True
-    Left = 46
-    Top = 105
+    Left = 34
+    Top = 117
     Width = 116
     Height = 17
     Margins.Left = 25
@@ -307,8 +354,8 @@ object framePacotes: TframePacotes
   end
   object ACBr_Sintegra_dpk: TCheckBox
     AlignWithMargins = True
-    Left = 46
-    Top = 122
+    Left = 34
+    Top = 134
     Width = 116
     Height = 17
     Margins.Left = 25
@@ -327,8 +374,8 @@ object framePacotes: TframePacotes
   end
   object ACBr_SPED_dpk: TCheckBox
     AlignWithMargins = True
-    Left = 46
-    Top = 139
+    Left = 34
+    Top = 151
     Width = 116
     Height = 17
     Margins.Left = 25
@@ -347,8 +394,8 @@ object framePacotes: TframePacotes
   end
   object ACBr_PAF_dpk: TCheckBox
     AlignWithMargins = True
-    Left = 46
-    Top = 156
+    Left = 34
+    Top = 168
     Width = 116
     Height = 17
     Margins.Left = 25
@@ -367,8 +414,8 @@ object framePacotes: TframePacotes
   end
   object ACBrOpenSSL_dpk: TCheckBox
     AlignWithMargins = True
-    Left = 286
-    Top = 105
+    Left = 214
+    Top = 117
     Width = 116
     Height = 17
     Margins.Left = 25
@@ -387,8 +434,8 @@ object framePacotes: TframePacotes
   end
   object ACBrCapicom_dpk: TCheckBox
     AlignWithMargins = True
-    Left = 286
-    Top = 122
+    Left = 214
+    Top = 134
     Width = 116
     Height = 17
     Margins.Left = 25
@@ -407,8 +454,8 @@ object framePacotes: TframePacotes
   end
   object PCN2_dpk: TCheckBox
     AlignWithMargins = True
-    Left = 286
-    Top = 139
+    Left = 214
+    Top = 151
     Width = 116
     Height = 17
     Margins.Left = 25
@@ -427,8 +474,8 @@ object framePacotes: TframePacotes
   end
   object ACBr_NFe2_dpk: TCheckBox
     AlignWithMargins = True
-    Left = 286
-    Top = 156
+    Left = 214
+    Top = 168
     Width = 116
     Height = 17
     Margins.Left = 25
@@ -447,8 +494,8 @@ object framePacotes: TframePacotes
   end
   object ACBr_CTe_dpk: TCheckBox
     AlignWithMargins = True
-    Left = 286
-    Top = 173
+    Left = 214
+    Top = 185
     Width = 116
     Height = 17
     Margins.Left = 25
@@ -463,6 +510,198 @@ object framePacotes: TframePacotes
     Font.Style = []
     ParentFont = False
     TabOrder = 15
+    OnClick = VerificarCheckboxes
+  end
+  object ACBrNFeDanfeFR_dpk: TCheckBox
+    AlignWithMargins = True
+    Left = 34
+    Top = 241
+    Width = 140
+    Height = 17
+    Margins.Left = 25
+    Margins.Top = 0
+    Margins.Right = 0
+    Margins.Bottom = 0
+    Caption = 'ACBrNFeDanfeFRpkg.dpk'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 16
+    OnClick = VerificarCheckboxes
+  end
+  object ACBr_BoletoFC_FR_dpk: TCheckBox
+    AlignWithMargins = True
+    Left = 387
+    Top = 241
+    Width = 150
+    Height = 17
+    Margins.Left = 25
+    Margins.Top = 0
+    Margins.Right = 0
+    Margins.Bottom = 0
+    Caption = 'ACBr_BoletoFC_FR.dpk'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 22
+    OnClick = VerificarCheckboxes
+  end
+  object ACBrCTeDacteFR_dpk: TCheckBox
+    AlignWithMargins = True
+    Left = 214
+    Top = 241
+    Width = 140
+    Height = 17
+    Margins.Left = 25
+    Margins.Top = 0
+    Margins.Right = 0
+    Margins.Bottom = 0
+    Caption = 'ACBrCTeDacteFRpkg.dpk'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 20
+    OnClick = VerificarCheckboxes
+  end
+  object ACBrNFeDanfeQR_dpk: TCheckBox
+    Tag = 1
+    AlignWithMargins = True
+    Left = 34
+    Top = 258
+    Width = 140
+    Height = 17
+    Margins.Left = 25
+    Margins.Top = 0
+    Margins.Right = 0
+    Margins.Bottom = 0
+    Caption = 'ACBrNFeDanfeQRpkg.dpk'
+    Enabled = False
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 17
+    OnClick = VerificarCheckboxes
+  end
+  object ACBrNFeDanfeRL_dpk: TCheckBox
+    Tag = 1
+    AlignWithMargins = True
+    Left = 34
+    Top = 275
+    Width = 140
+    Height = 17
+    Margins.Left = 25
+    Margins.Top = 0
+    Margins.Right = 0
+    Margins.Bottom = 0
+    Caption = 'ACBrNFeDanfeRLpkg.dpk'
+    Enabled = False
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 18
+    OnClick = VerificarCheckboxes
+  end
+  object ACBrNFeDanfeRV_dpk: TCheckBox
+    Tag = 1
+    AlignWithMargins = True
+    Left = 34
+    Top = 292
+    Width = 140
+    Height = 17
+    Margins.Left = 25
+    Margins.Top = 0
+    Margins.Right = 0
+    Margins.Bottom = 0
+    Caption = 'ACBrNFeDanfeRV.dpk'
+    Enabled = False
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 19
+    OnClick = VerificarCheckboxes
+  end
+  object ACBrCTeDacteQR_dpk: TCheckBox
+    Tag = 1
+    AlignWithMargins = True
+    Left = 214
+    Top = 258
+    Width = 140
+    Height = 17
+    Margins.Left = 25
+    Margins.Top = 0
+    Margins.Right = 0
+    Margins.Bottom = 0
+    Caption = 'ACBrCTeDacteQRpkg.dpk'
+    Enabled = False
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 21
+    OnClick = VerificarCheckboxes
+  end
+  object ACBr_BoletoFC_Fortes_dpk: TCheckBox
+    Tag = 1
+    AlignWithMargins = True
+    Left = 387
+    Top = 275
+    Width = 150
+    Height = 17
+    Margins.Left = 25
+    Margins.Top = 0
+    Margins.Right = 0
+    Margins.Bottom = 0
+    Caption = 'ACBr_BoletoFC_Fortes.dpk'
+    Enabled = False
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 24
+    OnClick = VerificarCheckboxes
+  end
+  object ACBr_BoletoFC_Quick_dpk: TCheckBox
+    Tag = 1
+    AlignWithMargins = True
+    Left = 387
+    Top = 258
+    Width = 150
+    Height = 17
+    Margins.Left = 25
+    Margins.Top = 0
+    Margins.Right = 0
+    Margins.Bottom = 0
+    Caption = 'ACBr_BoletoFC_Quick.dpk'
+    Enabled = False
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 23
     OnClick = VerificarCheckboxes
   end
 end

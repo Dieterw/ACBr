@@ -9,6 +9,9 @@ uses
 {$R *.res}
 
 begin
+  {$IFDEF VER230}
+  ReportMemoryLeaksOnShutdown := DebugHook <> 0;
+  {$ENDIF}
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.Title := 'Instalação do Projeto ACBr';

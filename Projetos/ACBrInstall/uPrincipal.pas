@@ -82,8 +82,6 @@ type
     Label19: TLabel;
     Label20: TLabel;
     Label21: TLabel;
-    gbxFramePacotes: TGroupBox;
-    frameDpk: TframePacotes;
     Label10: TLabel;
     Label11: TLabel;
     Label12: TLabel;
@@ -102,6 +100,9 @@ type
     lblInfoCompilacao: TLabel;
     ckbInstalarCapicom: TCheckBox;
     ckbInstalarOpenSSL: TCheckBox;
+    wizPgPacotes: TJvWizardInteriorPage;
+    gbxFramePacotes: TGroupBox;
+    frameDpk: TframePacotes;
     procedure imgPropaganda1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);

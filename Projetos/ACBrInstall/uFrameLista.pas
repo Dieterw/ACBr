@@ -73,6 +73,18 @@ type
     PCN2_dpk: TCheckBox;
     ACBr_NFe2_dpk: TCheckBox;
     ACBr_CTe_dpk: TCheckBox;
+    Label5: TLabel;
+    ACBrNFeDanfeFR_dpk: TCheckBox;
+    ACBr_BoletoFC_FR_dpk: TCheckBox;
+    Label6: TLabel;
+    ACBrCTeDacteFR_dpk: TCheckBox;
+    Label7: TLabel;
+    ACBrNFeDanfeQR_dpk: TCheckBox;
+    ACBrNFeDanfeRL_dpk: TCheckBox;
+    ACBrNFeDanfeRV_dpk: TCheckBox;
+    ACBrCTeDacteQR_dpk: TCheckBox;
+    ACBr_BoletoFC_Fortes_dpk: TCheckBox;
+    ACBr_BoletoFC_Quick_dpk: TCheckBox;
     procedure btnPacotesMarcarTodosClick(Sender: TObject);
     procedure btnPacotesDesmarcarTodosClick(Sender: TObject);
     procedure VerificarCheckboxes(Sender: TObject);
@@ -115,7 +127,10 @@ begin
   for I := 0 to Self.ComponentCount - 1 do
   begin
     if Self.Components[I] is TCheckBox then
-      FPacotes.Add(TCheckBox(Self.Components[I]));
+    begin
+      if TCheckBox(Self.Components[I]).Tag = 0 then
+        FPacotes.Add(TCheckBox(Self.Components[I]));
+    end;
   end;
 end;
 
@@ -128,8 +143,8 @@ end;
 
 function TframePacotes.IsPacoteNF2(const ANomePacote: String): Boolean;
 const
-  PACOTES_NF2: array [0..2] of String =
-    ('PCN2.dpk', 'ACBr_NFe2.dpk', 'ACBr_CTe.dpk');
+  PACOTES_NF2: array [0..4] of String =
+    ('PCN2.dpk', 'ACBr_NFe2.dpk', 'ACBr_CTe.dpk', 'ACBrNFeDanfeFRpkg.dpk', 'ACBrCTeDacteFRpkg.dpk');
 begin
   Result := MatchText(ANomePacote, PACOTES_NF2);
 end;
@@ -144,7 +159,10 @@ begin
     for I := 0 to Self.ComponentCount -1 do
     begin
       if Self.Components[I] is TCheckBox then
-        TCheckBox(Self.Components[I]).Checked := True;
+      begin
+        if TCheckBox(Self.Components[I]).Enabled then
+          TCheckBox(Self.Components[I]).Checked := True;
+      end;
     end;
   finally
     FUtilizarBotoesMarcar := False;

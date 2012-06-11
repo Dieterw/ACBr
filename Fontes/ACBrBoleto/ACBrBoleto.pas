@@ -670,8 +670,8 @@ TACBrBoleto = class( TACBrComponent )
   published
     property About : String read GetAbout write SetAbout stored False ;
 
-    property Cedente        : TACBrCedente       read fCedente                write fCedente ;
     property Banco          : TACBrBanco         read fBanco                  write fBanco;
+    property Cedente        : TACBrCedente       read fCedente                write fCedente ;
     property NomeArqRemessa : String             read fNomeArqRemessa         write fNomeArqRemessa;  //SetNomeArqRemessa;
     property DirArqRemessa  : String             read fDirArqRemessa {GetDirArqRemessa} write fDirArqRemessa; //SetNomeArqRemessa;
     property NomeArqRetorno : String             read fNomeArqRetorno         write fNomeArqRetorno; //SetNomeArqRetorno;
@@ -1925,12 +1925,12 @@ var
   NomeArq  : String;
 begin
    SlRetorno:= TStringList.Create;
-     Self.ListadeBoletos.Clear;
+   Self.ListadeBoletos.Clear;
 
-     if NomeArqRetorno = '' then
-        raise Exception.Create(ACBrStr('NomeArqRetorno deve ser informado.'));
+   if NomeArqRetorno = '' then
+      raise Exception.Create(ACBrStr('NomeArqRetorno deve ser informado.'));
 
-     NomeArq := fDirArqRetorno + PathDelim + NomeArqRetorno;
+   NomeArq := fDirArqRetorno + PathDelim + NomeArqRetorno;
 
      if not FilesExists( NomeArq ) then
         raise Exception.Create(ACBrStr('Arquivo não encontrado:'+sLineBreak+NomeArq));

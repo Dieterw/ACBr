@@ -87,6 +87,7 @@ type
     fpSimCard: TACBrSMSSimCard;
     fpQuebraMensagens: Boolean;
     fpATTimeOut: Integer;
+    fpIntervaloEntreMensagens: Integer;
     procedure SetAtivo(const Value: Boolean);
   protected
     fpDevice: TACBrDevice;
@@ -124,6 +125,7 @@ type
     property SimCard: TACBrSMSSimCard read fpSimCard write fpSimCard;
     property ATTimeOut: Integer read fpATTimeOut write fpATTimeOut;
     property ATResult: Boolean read fpATResult write fpATResult;
+    property IntervaloEntreMensagens: Integer read fpIntervaloEntreMensagens write fpIntervaloEntreMensagens;
     property RecebeConfirmacao: Boolean read fpRecebeConfirmacao write fpRecebeConfirmacao;
     property QuebraMensagens: Boolean read fpQuebraMensagens write fpQuebraMensagens;
     property BandejasSimCard: Integer read fpBandejasSimCard;
@@ -212,6 +214,7 @@ begin
   fpQuebraMensagens := False;
   fpATResult := False;
   fpATTimeout := 10000;
+  fpIntervaloEntreMensagens := 0;
   fpBandejasSimCard := 1;
   fpUltimaResposta := EmptyStr;
   fpUltimoComando := String(EmptyStr);
@@ -442,6 +445,10 @@ var
   Cmd: String;
   Ret: String;
 begin
+  // aguardar o tempo setado antes de enviar a mensagem
+  if Self.IntervaloEntreMensagens > 0 then
+    Sleep(Self.IntervaloEntreMensagens);
+
   // definir o modo de envio ***************************************************
   Cmd := 'AT+CMGF=1';
   Self.EnviarComando(Cmd);

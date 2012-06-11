@@ -68,6 +68,8 @@ type
     procedure SetATResult(const Value: Boolean);
     function GetBandejasSimCard: Integer;
     function GetUltimoComando: String;
+    function GetIntervaloEntreMensagens: Integer;
+    procedure SetIntervaloEntreMensagens(const Value: Integer);
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -102,6 +104,7 @@ type
     property SimCard: TACBrSMSSimCard read GetSimCard;
     property ATTimeOut: Integer read GetATTimeOut write SetATTimeOut;
     property ATResult: Boolean read GetATResult write SetATResult;
+    property IntervaloEntreMensagens: Integer read GetIntervaloEntreMensagens write SetIntervaloEntreMensagens;
     property RecebeConfirmacao: Boolean read GetRecebeConfirmacao write SetRecebeConfirmacao;
     property BandejasSimCard: Integer read GetBandejasSimCard;
     property QuebraMensagens: Boolean read GetQuebraMensagens write SetQuebraMensagens;
@@ -263,6 +266,11 @@ begin
   Result := fsSMS.BandejasSimCard;
 end;
 
+function TACBrSMS.GetIntervaloEntreMensagens: Integer;
+begin
+  Result := fsSMS.IntervaloEntreMensagens;
+end;
+
 function TACBrSMS.GetQuebraMensagens: Boolean;
 begin
   Result := fsSMS.QuebraMensagens;
@@ -376,6 +384,11 @@ end;
 procedure TACBrSMS.SetATTimeOut(const Value: Integer);
 begin
   fsSMS.ATTimeOut := Value;
+end;
+
+procedure TACBrSMS.SetIntervaloEntreMensagens(const Value: Integer);
+begin
+  fsSMS.IntervaloEntreMensagens := Value;
 end;
 
 procedure TACBrSMS.Ativar;

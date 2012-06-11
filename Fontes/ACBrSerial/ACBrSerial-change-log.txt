@@ -97,6 +97,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 10/06/2012
+-- ACBrSMS --
+[+] Adicionada propriedade IntervalorEntreMensagens para que o usuário possa
+    setar o tempo de espera entre o envio de várias mensagens.
+    (por: Régys Silveira)
+
 Data: 23/05/2012
 -- ACBrECF --
 [+] Implementado recurso para checar se no meio da venda o arquivo auxiliar

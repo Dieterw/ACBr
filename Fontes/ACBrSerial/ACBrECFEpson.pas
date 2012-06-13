@@ -2014,6 +2014,10 @@ Procedure TACBrECFEpson.VendeItem( Codigo, Descricao : String;
   TipoDescontoAcrescimo : String; DescontoAcrescimo : String ;
   CodDepartamento: Integer) ;
 begin
+  Codigo    := LeftStr(Codigo,14);
+  Unidade   := Trim(LeftStr( OnlyAlphaNum(Unidade),3)) ;
+  Descricao := LeftStr(Descricao,233);
+
   with EpsonComando do
   begin
     if not fsIsFBIII then
@@ -2021,20 +2025,20 @@ begin
        ArredondaItemMFD := False;  // Não suportado na FBII
 
        Comando := '0A02' ;
-       AddParamString( LeftStr(Codigo,14) );
-       AddParamString( LeftStr(Descricao,233) );
+       AddParamString( Codigo );
+       AddParamString( Descricao );
        AddParamDouble( Qtd, fpDecimaisQtd );
-       AddParamString( Trim(LeftStr(Unidade,3)) );
+       AddParamString( Unidade );
        AddParamDouble( ValorUnitario, fpDecimaisPreco );
        AddParamString( AliquotaECF );
      end
     else
      begin
         Comando := '0A12' ;
-        AddParamString( LeftStr(Codigo,14) );
-        AddParamString( LeftStr(Descricao,233) );
+        AddParamString( Codigo );
+        AddParamString( Descricao );
         AddParamDouble( Qtd, fpDecimaisQtd );
-        AddParamString( Trim(LeftStr(Unidade,3)) );
+        AddParamString( Unidade );
         AddParamDouble( ValorUnitario, fpDecimaisPreco );
         AddParamString( AliquotaECF );
         AddParamInteger( fpDecimaisQtd );

@@ -97,6 +97,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 13/06/2012
+-- ACBrECFEpson --
+[*] Método VendeItem modificado para tratar o campo Unidade com apenas caracteres
+    alfa-numéricos, a fim de evitar Erro: 0206 - Campo alfanumérico inválido.(DSA)
+
 Data: 10/06/2012
 -- ACBrSMS --
 [+] Adicionada propriedade IntervalorEntreMensagens para que o usuário possa

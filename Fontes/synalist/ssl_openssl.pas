@@ -3,7 +3,7 @@
 |==============================================================================|
 | Content: SSL support by OpenSSL                                              |
 |==============================================================================|
-| Copyright (c)1999-2008, Lukas Gebauer                                        |
+| Copyright (c)1999-2012, Lukas Gebauer                                        |
 | All rights reserved.                                                         |
 |                                                                              |
 | Redistribution and use in source and binary forms, with or without           |
@@ -337,10 +337,10 @@ begin
       pkey := nil;
       ca := nil;
       try {pf}
-      if PKCS12parse(p12, FKeyPassword, pkey, cert, ca) > 0 then
-        if SSLCTXusecertificate(Fctx, cert) > 0 then
-          if SSLCTXusePrivateKey(Fctx, pkey) > 0 then
-            Result := True;
+        if PKCS12parse(p12, FKeyPassword, pkey, cert, ca) > 0 then
+          if SSLCTXusecertificate(Fctx, cert) > 0 then
+            if SSLCTXusePrivateKey(Fctx, pkey) > 0 then
+              Result := True;
       {pf}
       finally
         EvpPkeyFree(pkey);
@@ -824,28 +824,28 @@ begin
     Exit;
   end;
   try {pf}
-  b := BioNew(BioSMem);
-  try
-    X509Print(b, cert);
-    x := bioctrlpending(b);
+    b := BioNew(BioSMem);
+    try
+      X509Print(b, cert);
+      x := bioctrlpending(b);
   {$IFDEF CIL}
-    sb := StringBuilder.Create(x);
-    y := bioread(b, sb, x);
-    if y > 0 then
-    begin
-      sb.Length := y;
-      s := sb.ToString;
-    end;
+      sb := StringBuilder.Create(x);
+      y := bioread(b, sb, x);
+      if y > 0 then
+      begin
+        sb.Length := y;
+        s := sb.ToString;
+      end;
   {$ELSE}
-    setlength(s,x);
-    y := bioread(b,s,x);
-    if y > 0 then
-      setlength(s, y);
+      setlength(s,x);
+      y := bioread(b,s,x);
+      if y > 0 then
+        setlength(s, y);
   {$ENDIF}
-    Result := ReplaceString(s, LF, CRLF);
-  finally
-    BioFreeAll(b);
-  end;
+      Result := ReplaceString(s, LF, CRLF);
+    finally
+      BioFreeAll(b);
+    end;
   {pf}
   finally
     X509Free(cert);

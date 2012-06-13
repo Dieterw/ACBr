@@ -47,7 +47,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ACBrPAF, ACBrPAF_D, ACBrPAF_E, ACBrPAF_P,
-  ACBrPAF_R, ACBrPAF_T, ACBrPAFRegistros, Math, ACBrEAD, jpeg, ExtCtrls;
+  ACBrPAF_R, ACBrPAF_T, ACBrPaf_H, ACBrPAFRegistros, Math, ACBrEAD, jpeg, ExtCtrls;
 
 type
   TForm6 = class(TForm)
@@ -74,6 +74,7 @@ type
     btnN: TButton;
     ACBrEAD: TACBrEAD;
     Image1: TImage;
+    btnH: TButton;
     procedure btnDClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure PreencherHeader(Header: TRegistroX1);
@@ -86,6 +87,7 @@ type
     procedure ACBrPAFPAFCalcEAD(Arquivo: String);
     procedure btnCClick(Sender: TObject);
     procedure btnNClick(Sender: TObject);
+    procedure btnHClick(Sender: TObject);
   private
     { Private declarations }
     function QualquerNumero: Integer;
@@ -509,6 +511,45 @@ end;
 procedure TForm6.ACBrPAFPAFCalcEAD(Arquivo: String);
 begin
 //
+end;
+
+procedure TForm6.btnHClick(Sender: TObject);
+var
+  H2: TRegistroH2;
+  i: integer;
+begin
+  // registro E1
+  PreencherHeader(ACBrPAF.PAF_H.RegistroH1); // preencher header do arquivo
+  with ACBrPAF.PAF_H do
+  begin
+    RegistroH1.NUM_FAB      := NUM_FAB;
+    RegistroH1.MF_ADICIONAL := MF_ADICIONAL;
+    RegistroH1.TIPO_ECF     := TIPO_ECF;
+    RegistroH1.MARCA_ECF    := MARCA_ECF;
+    RegistroH1.MODELO_ECF   := MODELO_ECF;
+    RegistroH1.DT_EST       := Now;
+
+    RegistroH1.InclusaoExclusao := False;
+    RegistroH1.RegistroValido   := False;
+
+    // registro E2
+    RegistroH2.Clear;
+    for I := 1 to 15 do
+    begin
+      H2 := ACBrPAF.PAF_H.RegistroH2.New;
+      H2.CNPJ_CRED_CARTAO := '99.999.999/9999-11';
+      H2.COO              := GerarDados('I', 6);
+      H2.CCF              := GerarDados('I', 6);
+      H2.VLR_TROCO        := GerarDados('I', 2);
+      H2.DT_TROCO         := DATE;
+      H2.CPF              := '111.111.111-99';
+      H2.Titulo           := GerarDados('S', 7);
+
+      H2.RegistroValido := True;
+    end;
+  end;
+
+  ACBrPAF.SaveFileTXT_H('PAF_H.txt');
 end;
 
 end.

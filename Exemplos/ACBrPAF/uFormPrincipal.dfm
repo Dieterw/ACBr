@@ -389,6 +389,15 @@ object Form6: TForm6
     TabOrder = 8
     OnClick = btnNClick
   end
+  object btnH: TButton
+    Left = 250
+    Top = 158
+    Width = 75
+    Height = 25
+    Caption = 'Tipo H'
+    TabOrder = 9
+    OnClick = btnHClick
+  end
   object ACBrPAF: TACBrPAF
     Path = '.\'
     OnPAFCalcEAD = ACBrPAFPAFCalcEAD

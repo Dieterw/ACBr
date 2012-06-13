@@ -56,6 +56,7 @@ uses
    ACBrPAF_B, ACBrPAF_B_Class,
    ACBrPAF_D, ACBrPAF_D_Class,
    ACBrPAF_E, ACBrPAF_E_Class,
+   ACBrPAF_H, ACBrPAF_H_Class,
    ACBrPAF_P, ACBrPAF_P_Class,
    ACBrPAF_R, ACBrPAF_R_Class,
    ACBrPAF_T, ACBrPAF_T_Class,
@@ -88,6 +89,7 @@ type
     FPAF_B: TPAF_B;
     FPAF_D: TPAF_D;
     FPAF_E: TPAF_E;
+    FPAF_H: TPAF_H;
     FPAF_P: TPAF_P;
     FPAF_R: TPAF_R;
     FPAF_T: TPAF_T;
@@ -119,6 +121,7 @@ type
     function SaveFileTXT_C(Arquivo: String): Boolean; // Método que escreve o arquivo texto no caminho passado como parâmetro
     function SaveFileTXT_D(Arquivo: String): Boolean; // Método que escreve o arquivo texto no caminho passado como parâmetro
     function SaveFileTXT_E(Arquivo: String): Boolean; // Método que escreve o arquivo texto no caminho passado como parâmetro
+    function SaveFileTXT_H(Arquivo: String): Boolean;
     function SaveFileTXT_N(Arquivo: String): Boolean; // Método que escreve o arquivo texto no caminho passado como parâmetro
     function SaveFileTXT_P(Arquivo: String): Boolean; // Método que escreve o arquivo texto no caminho passado como parâmetro
     function SaveFileTXT_R(Arquivo: String): Boolean; // Método que escreve o arquivo texto no caminho passado como parâmetro
@@ -128,6 +131,7 @@ type
     property PAF_C: TPAF_C read FPAF_C write FPAF_C;
     property PAF_D: TPAF_D read FPAF_D write FPAF_D;
     property PAF_E: TPAF_E read FPAF_E write FPAF_E;
+    property PAF_H: TPAF_H read FPAF_H write FPAF_H;
     property PAF_N: TPAF_N read FPAF_N write FPAF_N;
     property PAF_P: TPAF_P read FPAF_P write FPAF_P;
     property PAF_R: TPAF_R read FPAF_R write FPAF_R;
@@ -178,6 +182,7 @@ begin
   FPAF_B := TPAF_B.Create;
   FPAF_D := TPAF_D.Create;
   FPAF_E := TPAF_E.Create;
+  FPAF_H := TPAF_H.Create;
   FPAF_P := TPAF_P.Create;
   FPAF_R := TPAF_R.Create;
   FPAF_T := TPAF_T.Create;
@@ -205,6 +210,7 @@ begin
   FPAF_B.Free;
   FPAF_D.Free;
   FPAF_E.Free;
+  FPAF_H.Free;
   FPAF_P.Free;
   FPAF_R.Free;
   FPAF_T.Free;
@@ -234,6 +240,7 @@ begin
   FPAF_B.Delimitador := Value;
   FPAF_D.Delimitador := Value;
   FPAF_E.Delimitador := Value;
+  FPAF_H.Delimitador := Value;
   FPAF_P.Delimitador := Value;
   FPAF_R.Delimitador := Value;
   FPAF_T.Delimitador := Value;
@@ -254,6 +261,7 @@ begin
   FPAF_C.CurMascara := Value;
   FPAF_D.CurMascara := Value;
   FPAF_E.CurMascara := Value;
+  FPAF_H.CurMascara := Value;
   FPAF_N.CurMascara := Value;
   FPAF_P.CurMascara := Value;
   FPAF_R.CurMascara := Value;
@@ -273,6 +281,7 @@ begin
   FPAF_C.TrimString := Value;
   FPAF_D.TrimString := Value;
   FPAF_E.TrimString := Value;
+  FPAF_H.TrimString := Value;
   FPAF_N.TrimString := Value;
   FPAF_P.TrimString := Value;
   FPAF_R.TrimString := Value;
@@ -292,6 +301,7 @@ begin
   FPAF_C.OnError := Value;
   FPAF_D.OnError := Value;
   FPAF_E.OnError := Value;
+  FPAF_H.OnError := Value;
   FPAF_N.OnError := Value;
   FPAF_P.OnError := Value;
   FPAF_R.OnError := Value;
@@ -397,6 +407,44 @@ begin
 
     // Limpa de todos os Blocos as listas de todos os registros.
     FPAF_E.LimpaRegistros;
+  except
+    on E: Exception do
+    begin
+      raise Exception.Create(E.Message);
+    end;
+  end;
+end;
+
+
+function TACBrPAF.SaveFileTXT_H(Arquivo: String): Boolean;
+var
+  txtFile: TextFile;
+begin
+  Result := True;
+
+  if (Trim(Arquivo) = '') or (Trim(fPath) = '') then
+    raise Exception.Create('Caminho ou nome do arquivo não informado!');
+
+  try
+    AssignFile(txtFile, fPath + Arquivo);
+    try
+      Rewrite(txtFile);
+      Write(txtFile, FPAF_H.WriteRegistroH1);
+
+      if FPAF_H.RegistroH2.Count > 0 then
+        Write(txtFile, FPAF_H.WriteRegistroH2);
+
+      Write(txtFile, FPAF_H.WriteRegistroH9);
+    finally
+      CloseFile(txtFile);
+    end;
+
+    // Assinatura EAD
+    if FAssinar then
+      AssinaArquivoComEAD(fPath + Arquivo);
+
+    // Limpa de todos os Blocos as listas de todos os registros.
+    FPAF_H.LimpaRegistros;
   except
     on E: Exception do
     begin

@@ -48,6 +48,11 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+13/06/2012
+[+] http://djsystem.com.br/acbr/forum/viewtopic.php?f=8&t=6155&p=32501#p32501
+    Implementação do bloco H, revisado e acertado alguns bugs e informações
+    por: Regys Silveira
+
 15/03/2012
 [*] Correção para gravar D3.NUM_DAV como alfa-numerico, (no caso de DAV com 10
     dígitos)   (por: DSA)

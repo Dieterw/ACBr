@@ -425,7 +425,7 @@ begin
                       Trim(Cmd.Params(2)),                          { Aliquota }
                       StringToFloat( Cmd.Params(3)),                     { Qtd }
                       StringToFloat( Cmd.Params(4)),                  { P.Unit }
-                      StringToFloatDef( Cmd.Params(5), 0),          { Descondo }
+                      StringToFloatDef( Cmd.Params(5), 0),{ Val.Desconto/Acres }
                       Cmd.Params(6),                                      { Un }
                       PadL(Cmd.Params(7),1,'%'),               { Tipo Desconto }
                       PadL(Cmd.Params(8),1,'D') );             { Desc / Acresc }

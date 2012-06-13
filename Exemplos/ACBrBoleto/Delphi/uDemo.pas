@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, Mask, ACBrBase, ACBrBoleto, ACBrUtil,
-  ACBrBoletoFCQuickFr, ACBrBoletoFCFortesFr;
+  ACBrBoletoFCFortesFr;
 
 type
   TfrmDemo = class(TForm)
@@ -85,7 +85,6 @@ type
     Label30: TLabel;
     edtUF: TEdit;
     ACBrBoleto1: TACBrBoleto;
-    ACBrBoletoFCQuick1: TACBrBoletoFCQuick;
     ACBrBoletoFCFortes1: TACBrBoletoFCFortes;
     Label31: TLabel;
     cbxLayOut: TComboBox;
@@ -121,7 +120,7 @@ end;
 
 procedure TfrmDemo.Button2Click(Sender: TObject);
 begin
-   ACBrBoleto1.ACBrBoletoFC.NomeArquivo := ExtractFilePath(Application.ExeName)+'teste.pdf';
+   ACBrBoleto1.ACBrBoletoFC.NomeArquivo := 'teste.pdf';
    ACBrBoleto1.GerarPDF;
 end;
 

@@ -1,8 +1,8 @@
 object frmDemo: TfrmDemo
-  Left = 273
-  Top = 175
-  Width = 817
-  Height = 560
+  Left = 288
+  Top = 133
+  Width = 793
+  Height = 577
   Caption = 'Demo ACBrBoleto '
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -563,7 +563,7 @@ object frmDemo: TfrmDemo
   object Panel1: TPanel
     Left = 0
     Top = 472
-    Width = 801
+    Width = 794
     Height = 50
     Align = alBottom
     TabOrder = 5
@@ -646,13 +646,6 @@ object frmDemo: TfrmDemo
     LayoutRemessa = c240
     ACBrBoletoFC = ACBrBoletoFCFortes1
     Left = 64
-    Top = 231
-  end
-  object ACBrBoletoFCQuick1: TACBrBoletoFCQuick
-    DirLogo = '..\..\..\Fontes\ACBrBoleto\Logos\Colorido'
-    NomeArquivo = 'boleto'
-    SoftwareHouse = 'Projeto ACBr - http://acbr.sf.net'
-    Left = 112
     Top = 231
   end
   object ACBrBoletoFCFortes1: TACBrBoletoFCFortes

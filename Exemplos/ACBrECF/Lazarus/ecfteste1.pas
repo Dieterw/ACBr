@@ -1352,7 +1352,7 @@ var
    Msg : String ;
    ValorGT : Double ;
 begin
-  ValorGT := mdsAACECF.FieldByName('ValorGT').AsFloat ;
+  ValorGT := ACBrECF1.GrandeTotal; //mdsAACECF.FieldByName('ValorGT').AsFloat ;
   Erro    := ACBrAAC1.VerificarGTECF( mdsAACECF.FieldByName('NumSerie').AsString, ValorGT ) ;
 
   case Erro of

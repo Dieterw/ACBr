@@ -23,7 +23,7 @@
       <CharSet Value="04B0"/>
       <StringTable ProductVersion=""/>
     </VersionInfo>
-    <BuildModes Count="2" Active="Release">
+    <BuildModes Count="2" Active="Debug">
       <Item1 Name="Debug" Default="True"/>
       <Item2 Name="Release">
         <CompilerOptions>
@@ -120,11 +120,15 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ECFTeste1"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="260"/>
-        <CursorPos X="21" Y="276"/>
+        <TopLine Value="1199"/>
+        <CursorPos X="7" Y="1203"/>
         <UsageCount Value="201"/>
+        <Bookmarks Count="1">
+          <Item0 X="1" Y="1207" ID="1"/>
+        </Bookmarks>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit1>
@@ -179,14 +183,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="VendeItem"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
         <TopLine Value="75"/>
-        <CursorPos X="77" Y="97"/>
+        <CursorPos X="40" Y="82"/>
         <UsageCount Value="201"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
       </Unit6>
       <Unit7>
         <Filename Value="uDAV.pas"/>
@@ -244,9 +244,33 @@
     </Other>
   </CompilerOptions>
   <Debugging>
+    <BreakPoints Count="3">
+      <Item1>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="..\..\..\Fontes\ACBrSerial\ACBrECFEpson.pas"/>
+        <Line Value="1105"/>
+      </Item1>
+      <Item2>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="..\..\..\Fontes\ACBrComum\ACBrAAC.pas"/>
+        <Line Value="360"/>
+      </Item2>
+      <Item3>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="..\..\..\Fontes\ACBrComum\ACBrAAC.pas"/>
+        <Line Value="715"/>
+      </Item3>
+    </BreakPoints>
     <Watches Count="1">
       <Item1>
-        <Expression Value="Result"/>
+        <Expression Value="R"/>
+        <DisplayStyle Value="wdfString"/>
       </Item1>
     </Watches>
     <Exceptions Count="8" IgnoreAll="True">

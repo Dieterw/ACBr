@@ -290,7 +290,7 @@ begin
   OpenDialog1.Filter := 'xml|*.xml';
   if OpenDialog1.Execute then
   begin
-     ChavePub := ACBrEAD1.CalcularChavePublica_eECFc( OpenDialog1.FileName ) ;
+     ChavePub := ACBrEAD1.ConverteXMLeECFcParaOpenSSL( OpenDialog1.FileName, False ) ;
      ChavePub := StringReplace( ChavePub, #10, sLineBreak, [rfReplaceAll] );;
 
      mResp.Lines.Add('Convertento a Chave Publica do arquivo: '+OpenDialog1.FileName );

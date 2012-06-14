@@ -1925,12 +1925,13 @@ var
   NomeArq  : String;
 begin
    SlRetorno:= TStringList.Create;
-   Self.ListadeBoletos.Clear;
+   try
+     Self.ListadeBoletos.Clear;
 
-   if NomeArqRetorno = '' then
-      raise Exception.Create(ACBrStr('NomeArqRetorno deve ser informado.'));
+     if NomeArqRetorno = '' then
+        raise Exception.Create(ACBrStr('NomeArqRetorno deve ser informado.'));
 
-   NomeArq := fDirArqRetorno + PathDelim + NomeArqRetorno;
+     NomeArq := fDirArqRetorno + PathDelim + NomeArqRetorno;
 
      if not FilesExists( NomeArq ) then
         raise Exception.Create(ACBrStr('Arquivo não encontrado:'+sLineBreak+NomeArq));
@@ -1968,6 +1969,9 @@ begin
         Banco.LerRetorno240(SlRetorno)
      else
         Banco.LerRetorno400(SlRetorno);
+   finally
+     SlRetorno.Free;
+   end;
 end;
 
 procedure TACBrBoleto.ChecarDadosObrigatorios;

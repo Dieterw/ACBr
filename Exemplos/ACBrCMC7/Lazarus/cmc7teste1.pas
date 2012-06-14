@@ -13,6 +13,7 @@ type
   { TForm1 }
 
   TForm1 = class(TForm)
+     ACBrCMC7_1: TACBrCMC7;
     ACBrLCB1: TACBrLCB;
     edtcmc7: TEdit;
     btnAtivar: TButton;

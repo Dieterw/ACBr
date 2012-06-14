@@ -67,6 +67,9 @@ type
     FTipificacao : AnsiChar;
     FDvBcoAg     : AnsiChar;
     FDvCMC7      : AnsiChar;
+    FC1          : Integer;
+    FC2          : Integer;
+    FC3          : Integer;
     function DigitosaIgnorarConta(Banco: String) : integer;
     procedure SetCMC7(Banda: AnsiString);
     procedure ZeraCampos ;
@@ -94,11 +97,75 @@ type
     property Tipificacao : AnsiChar read FTipificacao stored false ; { Tipificação(5-Comum 6-Bancário 7-Salário 8-Administr. 9-CPMF) }
     property DvBcoAg     : AnsiChar read FDvBcoAg   stored false ; { Dígito verificador do Banco+Agência: }
     property DvCMC7      : AnsiChar read FDvCMC7    stored false ;
+    property C1          : Integer  read FC1        stored false ;
+    property C2          : Integer  read FC2        stored false ;
+    property C3          : Integer  read FC3        stored false ;
   end;
 
 function ValidaCMC7(CMC7: String) : Boolean;
+function CalculaC1(Chave: String): Integer;
+function CalculaC2(Chave: String): Integer;
+function CalculaC3(Chave: String): Integer;
 
 implementation
+
+function CalculaC1(Chave: String): Integer;
+var
+  I, Soma, Mult: integer;
+begin
+  if Length(Chave) <> 10 then
+    raise Exception.Create('Parâmetros inválidos para o cálculo do C1.');
+  Mult := 8;
+  Soma := 0;
+  for I := 1 to Length(Chave) do
+  begin
+    Soma := Soma + (StrToInt(Chave[I]) * Mult);
+    Inc(Mult);
+    if Mult = 10 then
+      Mult := 2;
+  end;
+  Result := Soma mod 11;
+end;
+
+function CalculaC2(Chave: String): Integer;
+var
+  I, Soma, Mult: integer;
+begin
+  if Length(Chave) <> 10 then
+    raise Exception.Create('Parâmetros inválidos para o cálculo do C2.');
+  Mult := 11;
+  Soma := 0;
+  for I := 1 to Length(Chave) do
+  begin
+    Soma := Soma + (StrToInt(Chave[I]) * Mult);
+    Dec(Mult);
+  end;
+  Soma := Soma mod 11;
+  if (Soma = 0) or (Soma = 1) then
+    Result := 0
+  else
+    Result := 11 - Soma;
+end;
+
+function CalculaC3(Chave: String): Integer;
+var
+  I, Soma, Mult: integer;
+begin
+  if Length(Chave) <> 6 then
+    raise Exception.Create('Parâmetros inválidos para o cálculo do C3.');
+  Mult := 7;
+  Soma := 0;
+  for I := 1 to Length(Chave) do
+  begin
+    Soma := Soma + (StrToInt(Chave[I]) * Mult);
+    Dec(Mult);
+  end;
+  Soma := Soma mod 11;
+  if (Soma = 0) or (Soma = 1) then
+    Result := 0
+  else
+    Result := 11 - Soma;
+end;
 
 function CalcDigitoCMC7(Documento : String; Inicial, Final : integer) : String;
 var
@@ -194,6 +261,9 @@ begin
   FTipificacao:= ' ';
   FDvBcoAg    := ' ';
   FDvCMC7     := ' ';
+  FC1         := 0;
+  FC2         := 0;
+  FC3         := 0;
 end;
 
 destructor TACBrCMC7.Destroy;
@@ -241,7 +311,7 @@ begin
 // 1234567890123456789012345678901234
 // <00100049<0030000061>900000000109:
 
-  for I := 1 to 34 do
+  for I := 1 to 33 do // Desprezando último caracter
   begin
     if vDigitos[I] = '9' then
      begin
@@ -279,7 +349,9 @@ begin
      FConta      := Copy(Banda,23+Ignorar,10-Ignorar);
 
      FDvCMC7     := Copy(Banda,33,1)[1];
-
+     FC1         := CalculaC1(FComp + FBanco + FAgencia);
+     FC2         := CalculaC2(padR(FConta, 10, '0'));
+     FC3         := CalculaC3(padR(FNumero, 6, '0'));
      FCMC7       := Banda
   except
      ZeraCampos ;

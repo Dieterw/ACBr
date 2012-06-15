@@ -169,8 +169,9 @@ var
   Protesto, aAgencia,
   TipoSacado: String;
   TipoBoleto: Char;
-  aCarteira: Integer;
+  aCarteira, I, iSomaMensagem: Integer;
 begin
+
    aCarteira := StrToIntDef(ACBrTitulo.Carteira, 0 );
 
    if aCarteira = 101  then
@@ -251,6 +252,13 @@ begin
 
       with ACBrBoleto do
       begin
+
+         iSomaMensagem := ListadeBoletos.IndexOf(ACBrTitulo);
+        if ListadeBoletos.IndexOf(ACBrTitulo) > 0 then Begin //percorre a lista ate o boleto anterior para pegar a qtde de mensagem e somar..
+           for I := 0 to (ListadeBoletos.IndexOf(ACBrTitulo) - 1) do
+             iSomaMensagem := iSomaMensagem + ListadeBoletos[I].Mensagem.Count;
+        end;
+
          Result:= '1'                                                     +  // ID Registro
                   IfThen(Length(Cedente.CNPJCPF) > 12,'02','01')          +
                   padR(trim(OnlyNumber(Cedente.CNPJCPF)),14,'0')          +
@@ -288,21 +296,23 @@ begin
                   Copy(Cedente.Conta,Length(Cedente.Conta),1)             +
                   Cedente.ContaDigito + Space(6)                          +
                   Protesto + ' ' +
-                  IntToStrZero( ListadeBoletos.IndexOf(ACBrTitulo)+2, 6 );
+                  IntToStrZero( {ListadeBoletos.IndexOf(ACBrTitulo)+}2 + iSomaMensagem, 6 ); //acrescentado/modifiquei
 
 
          Result:= UpperCase(Result);
 
-       {  for I:= 0 to Mensagem.count-1 do
+         for I := 0 to Mensagem.count-1 do   //estava comentado 
              Result:= Result + #13#10                         +
                       '2' + space(16)                         +
-                      padL(Cedente.CodigoCedente,20,'0')      +
+                      padL(Cedente.CodigoTransmissao,20,'0')      +  //modifiquei não é o codigoCedente e sim Código de Transmissão
                       Space(10) + IntToStrZero(I+1,2)         +
                       padL(Mensagem[I],50)                    +
-                      Space(283) + 'I' + '00'                 +
+                      Space(283) + 'I'                        +     //modifiquei Passa '00'
+                      Copy(Cedente.Conta,Length(Cedente.Conta),1) +
+                      Cedente.ContaDigito                     +
                       Space(9)                                +
-                      IntToStrZero( ListadeBoletos.IndexOf(ACBrTitulo)+ 2 +
-                      I+1 , 6 );}
+                      IntToStrZero( {ListadeBoletos.IndexOf(ACBrTitulo)+ }2+ iSomaMensagem + //acrescentado/modifiquei
+                      I+1 , 6 );
 
 
       end;
@@ -310,11 +320,14 @@ begin
 end;
 
 function TACBrBancoSantander.GerarRegistroTrailler400( ARemessa:TStringList ): String;
+var vQtdeLinha : Integer;
 begin
+   vQtdeLinha := StrToInt(copy(ARemessa.Text,Length(ARemessa.Text)-7,6));//lê a ultima linha gravada para pergar o codigo seq.
+
    Result:= '9' +                                           // ID Registro
             IntToStrZero( ARemessa.Count + 1, 6)+           // Contador de Registros
             IntToStrZero( round( vTotalTitulos* 100), 13) + // Valor Total dos Titulos
-            StringOfChar( '0', 374) + IntToStrZero( ARemessa.Count + 1, 6);
+            StringOfChar( '0', 374) + IntToStrZero( {ARemessa.Count}vQtdeLinha + 1, 6);//modifiquei
 
    Result:= UpperCase(Result);
 end;
@@ -382,9 +395,9 @@ begin
          OcorrenciaOriginal.Tipo := CodOcorrenciaToTipo(StrToIntDef(
                                                         copy(Linha,109,2),0));
 
-         DataOcorrencia:= StringToDateTimeDef(Copy(Linha,296,2)+'/'+
-                                              Copy(Linha,298,2)+'/'+
-                                              Copy(Linha,300,2),0, 'DD/MM/YY' );
+         DataOcorrencia:= StringToDateTimeDef(Copy(Linha,111,2)+'/'+
+                                              Copy(Linha,113,2)+'/'+
+                                              Copy(Linha,115,2),0, 'DD/MM/YY' );
 
          NumeroDocumento:= Copy(Linha,117,10);
 

@@ -80,7 +80,7 @@ uses ACBrUtil, StrUtils, Variants;
 constructor TACBrCaixaEconomicaSICOB.create(AOwner: TACBrBanco);
 begin
    inherited create(AOwner);
-   fpDigito := 9;
+   fpDigito := 0;
    fpNome   := 'Caixa Economica Federal';
    fpNumero:= 104;
    fpTamanhoMaximoNossoNum := 15;
@@ -779,8 +779,17 @@ begin
    ACBrBanco.ACBrBoleto.DataCreditoLanc := StringToDateTimeDef(Copy(ARetorno[1],200,2)+'/'+
                                                                Copy(ARetorno[1],202,2)+'/'+
                                                                Copy(ARetorno[1],204,4),0, 'DD/MM/YYYY' );
-   rCNPJCPF := trim( Copy(ARetorno[1],19,15)) ;
-   rCNPJCPF := RightStr(rCNPJCPF,14) ;
+
+   if ACBrBanco.ACBrBoleto.Cedente.TipoInscricao = pJuridica then
+    begin
+      rCNPJCPF := trim( Copy(ARetorno[1],19,15)) ;
+      rCNPJCPF := RightStr(rCNPJCPF,14) ;
+    end
+   else
+    begin
+      rCNPJCPF := trim( Copy(ARetorno[1],23,11));
+      rCNPJCPF := RightStr(rCNPJCPF,11) ;
+    end;
 
    with ACBrBanco.ACBrBoleto do
    begin

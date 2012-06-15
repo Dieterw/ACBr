@@ -47,19 +47,6 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
-14/06/2012
-[*] Remoção de memoryleak.
-    (contribuição: Itamar Bermond) 
-
-14/03/2012
-[*] Acertos na classe do HSBC, testado e funcionando para 
-    cobrança não registrada.
-    (por: Regys Silveira) 
-
-09/04/2012
--- ACBrBoleto --
-[*] Removida a propriedade ComprovanteEntrega : Boolean, pois a mesma não tem
-    sentido quando o Layout é Carne ou Fatura  (DSA)
 
 -- ACBrBoletoFC --
 [+] Adicionado novo tipo de Layout: lPadraoEntrega, para substituir a
@@ -88,6 +75,9 @@ Versao 0.1.1a do LazReport 02/08/11
     solicitação da Caixa Econômica Federal(Juliana Tamizou)
 	
 
+Versao 0.0.13a do FortesReport 15/06/12
+[-] Corrigido bug ao gerar boletos em PDF.(Juliana Tamizou)
+	
 Versao 0.0.12a do FortesReport 06/02/12
 [+] Corrigido problema com o tipo de Código de Barras impresso, alterado
     propriedade Ratio do componente para 3, corrigindo o problema da não
@@ -103,6 +93,40 @@ Versao 0.0.11a do FortesReport 02/08/11
 Versao 0.0.10a do FortesReport 06/07/11
 [-] Corrigido problema com componentes não encontrados no dfm do Fortes.
     (Juliana Tamizou)
+	
+	
+[*] Acertos na classe do HSBC, testado e funcionando para 
+    cobrança não registrada.
+    (por: Regys Silveira) 
+
+Versao 0.0.35a 15/08/2012	
+[*] Unit Santander - Adicionado registro das Mensagens ao Sacado para a Remessa
+    CNAB400.(Tuim01)
+	
+[-]	Unit Banco do Brasil - Corrigido falha na detecção do tamanho do Convênio na
+    geração dos registros de transação da Remessa CNAB400.(Tuim01)
+	
+[-]	Unit Banco do Brasil - Corrigido falha ao gerar  o campo Nosso Número para a carteira 17 
+    na Remessa CNAB400 quando a responsabilidade de emissão do boleto é do banco.(Juliana Tamizou)
+	
+[-]	Unit Banco do Brasil - Correção na leitura do arquivo retorno CNAB400.(Rafael Cruz)
+
+[-] Unit Caixa Econômica - Correção na leitura do arquivo retorno CNAB240.(Pedro Manoel)
+
+[-] Unit Caixa Econômica - Correção na geração do arquivo Remessa CNAB240.(Eduardo)
+
+[-] Unit Caixa EconômicaSicob - Correção na leitura do arquivo retorno CNAB240.(Pedro Manoel)
+
+[-] Unit Itaú - Corrigido bug na montagem do código de barras e da linha digital
+    que faziam com que ao efetuar o pagamento retornava a mensagem Código de Barras
+	inválido.(Juliana Tamizou) 
+	
+	
+	
+09/04/2012
+-- ACBrBoleto --
+[*] Removida a propriedade ComprovanteEntrega : Boolean, pois a mesma não tem
+    sentido quando o Layout é Carne ou Fatura  (DSA)
 
 Versao 0.0.34a 12/05/2012
 [+] Unit Banco do Brasil, implementada leitura do arquivo retorno CNAB400.(Lazarin)

@@ -63,7 +63,7 @@ type
     function CodOcorrenciaToTipo(const CodOcorrencia:Integer): TACBrTipoOcorrencia; override;
     function TipoOCorrenciaToCod(const TipoOcorrencia: TACBrTipoOcorrencia):String; override;
     Procedure LerRetorno240(ARetorno:TStringList); override;
-    procedure LerRetorno400(ARetorno: TStringList);
+    procedure LerRetorno400(ARetorno: TStringList); override;
     function CodMotivoRejeicaoToDescricao(
       const TipoOcorrencia: TACBrTipoOcorrencia; CodMotivo: Integer): String;
    end;
@@ -421,7 +421,7 @@ begin
                FormatDateTime('ddmmyyyy', Vencimento)                     + //78 a 85 - Data de vencimento do título
                IntToStrZero( round( ValorDocumento * 100), 15)            + //86 a 100 - Valor nominal do título
                '000000'                                                   + //101 a 105 - Agência cobradora + Digito. Se ficar em branco, a caixa determina automaticamente pelo CEP do sacado
-               padL(EspecieMod,2)                                         + //107 a 108 - Espécie do documento
+               padL(EspecieDoc,2)                                         + //107 a 108 - Espécie do documento
                ATipoAceite                             + //109 - Identificação de título Aceito / Não aceito
                FormatDateTime('ddmmyyyy', DataDocumento)                  + //110 a 117 - Data da emissão do documento
                IfThen(ValorMoraJuros > 0, '1', '3')                       + //118 - Código de juros de mora: Valor por dia
@@ -442,7 +442,7 @@ begin
                padL(SeuNumero, 25, ' ')                                   + //196 a 220 - Identificação do título na empresa
                IfThen((DataProtesto <> null) and (DataProtesto > Vencimento), '1', '3') + //221 - Código de protesto: Protestar em XX dias corridos
                IfThen((DataProtesto <> null) and (DataProtesto > Vencimento),
-                    padL(IntToStr(DaysBetween(DataProtesto, Vencimento)), 2, '0'), '00') + //222 a 223 - Prazo para protesto (em dias corridos)
+                    padR(IntToStr(DaysBetween(DataProtesto, Vencimento)), 2, '0'), '00') + //222 a 223 - Prazo para protesto (em dias corridos)
                '0'                                                        + //224 - Campo não tratado pelo BB [ Alterado conforme instruções da CSO Brasília ] {27-07-09}
                '000'                                                      + //225 a 227 - Campo não tratado pelo BB [ Alterado conforme instruções da CSO Brasília ] {27-07-09}
                '09'                                                       + //228 a 229 - Código da moeda: Real 
@@ -490,7 +490,9 @@ begin
                   FormatDateTime('ddmmyyyy', DataMoraJuros), '00000000')              + // 67 - 74 Se cobrar informe a data para iniciar a cobrança ou informe zeros se não cobrar
                IfThen(PercentualMulta > 0, IntToStrZero(round(PercentualMulta * 100), 15),
                     padL('', 15, '0'))                                    + // 75 - 89 Percentual de multa. Informar zeros se não cobrar
-               padR('', 151, ' ');                                          // 90 - 240 Brancos (Não definido pelo FEBRAN)
+                    padL('',110,' ')                                      + // 90 - 199
+                    padL('',8,'0')                                        + // 200 - 207
+               padR('', 33, ' ');                                          // 208 - 240 Brancos (Não definido pelo FEBRAN)
 
 
       end; 
@@ -594,7 +596,9 @@ begin
 
    with ACBrTitulo do
    begin
-       if (strtoint(Carteira)= 11) or (strtoint(Carteira)= 31) or (strtoint(Carteira)= 51) then
+       if ((strtoint(Carteira)= 11) or (strtoint(Carteira)= 31) or (strtoint(Carteira)= 51)) or
+          (((strtoint(Carteira)= 12) or (strtoint(Carteira)= 15) or (strtoint(Carteira)= 17))
+           and (ACBrBoleto.Cedente.ResponEmissao <> tbCliEmite)) then
         begin
            ANossoNumero       := '00000000000000000000';
            ADigitoNossoNumero := '';
@@ -606,7 +610,7 @@ begin
         end;
       
     
-
+      TamConvenioMaior6:= Length(trim(ACBrBoleto.Cedente.Convenio)) > 6;
       aAgencia:= IntToStrZero(StrToIntDef(trim(ACBrBoleto.Cedente.Agencia),0),4);
       aConta  := IntToStrZero(StrToIntDef(trim(ACBrBoleto.Cedente.Conta),0),8);
       aModalidade := IntToStrZero(StrToIntDef(trim(ACBrBoleto.Cedente.Modalidade),0),3);
@@ -1115,7 +1119,7 @@ procedure TACBrBancoBrasil.LerRetorno400(ARetorno: TStringList);
 var
   Titulo : TACBrTitulo;
   ContLinha, CodOcorrencia, CodMotivo, i, MotivoLinha : Integer;
-  CodMotivo_19, rAgencia, rDigitoAgencia, rConta, rDigitoConta,
+  CodMotivo_19, rAgencia, rDigitoAgencia, rConta, rDigitoConta, rCodigoCedente,
   Linha, rCedente, rCNPJCPF:String;
 begin
    fpTamanhoMaximoNossoNum := 20;
@@ -1130,6 +1134,9 @@ begin
    rDigitoAgencia:= Copy(ARetorno[0],31,1);
    rConta        := trim(Copy(ARetorno[1],32,8));
    rDigitoConta  := Copy(ARetorno[0],40,1);
+   
+   rCodigoCedente:= Copy(ARetorno[0],150,7);
+
 
    ACBrBanco.ACBrBoleto.NumeroArquivo := StrToIntDef(Copy(ARetorno[0],101,7),0);
 
@@ -1158,6 +1165,7 @@ begin
       Cedente.AgenciaDigito:= rDigitoAgencia;
       Cedente.Conta        := rConta;
       Cedente.ContaDigito  := rDigitoConta;
+      Cedente.CodigoCedente:= rCodigoCedente;
 
       case StrToIntDef(Copy(ARetorno[1],2,2),0) of
          11: Cedente.TipoInscricao:= pFisica;
@@ -1173,7 +1181,7 @@ begin
    begin
       Linha := ARetorno[ContLinha] ;
 
-      if (Copy(Linha,1,1) = '7') or (Copy(Linha,1,1) = '1') then
+      if (Copy(Linha,1,1) <> '7') or (Copy(Linha,1,1) <> '1') then
          Continue;
 
       Titulo := ACBrBanco.ACBrBoleto.CriarTituloNaLista;

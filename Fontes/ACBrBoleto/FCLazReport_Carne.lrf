@@ -2414,7 +2414,7 @@
             <Width Value="0"/>
             <Height Value="59"/>
           </Size>
-          <Flags Value="1"/>
+          <Flags Value="0"/>
           <Frames>
             <FrameColor Value="clBlack"/>
             <FrameStyle Value="frsSolid"/>
@@ -2433,7 +2433,7 @@
             <Width Value="0"/>
             <Height Value="29"/>
           </Size>
-          <Flags Value="1"/>
+          <Flags Value="0"/>
           <Frames>
             <FrameColor Value="clBlack"/>
             <FrameStyle Value="frsSolid"/>
@@ -2452,7 +2452,7 @@
             <Width Value="0"/>
             <Height Value="59"/>
           </Size>
-          <Flags Value="1"/>
+          <Flags Value="0"/>
           <Frames>
             <FrameColor Value="clBlack"/>
             <FrameStyle Value="frsSolid"/>
@@ -2805,7 +2805,7 @@
             <Width Value="0"/>
             <Height Value="28"/>
           </Size>
-          <Flags Value="1"/>
+          <Flags Value="0"/>
           <Frames>
             <FrameColor Value="clBlack"/>
             <FrameStyle Value="frsSolid"/>
@@ -2862,8 +2862,8 @@
           <Typ Value="gtMemo"/>
           <StreamMode Value="0"/>
           <Size>
-            <Left Value="19"/>
-            <Top Value="88"/>
+            <Left Value="59"/>
+            <Top Value="148"/>
             <Width Value="110"/>
             <Height Value="15"/>
           </Size>

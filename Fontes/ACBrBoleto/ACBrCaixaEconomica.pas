@@ -50,6 +50,7 @@ type
   TACBrCaixaEconomica = class(TACBrBancoClass)
    protected
    private
+    fValorTotalDocs:Double;
     function FormataNossoNumero(const ACBrTitulo :TACBrTitulo): String;
    public
     Constructor create(AOwner: TACBrBanco);
@@ -74,11 +75,13 @@ uses ACBrUtil, StrUtils, Variants;
 constructor TACBrCaixaEconomica.create(AOwner: TACBrBanco);
 begin
    inherited create(AOwner);
-   fpDigito := 9;
+   fpDigito := 0;
    fpNome   := 'Caixa Economica Federal';
    fpNumero:= 104;
    fpTamanhoAgencia :=  5;
    fpTamanhoMaximoNossoNum := 15;
+
+   fValorTotalDocs:= 0;
 end;
 
 function TACBrCaixaEconomica.CalcularDigitoVerificador(const ACBrTitulo: TACBrTitulo ): String;
@@ -164,7 +167,7 @@ begin
     ANossoNumero := FormataNossoNumero(ACBrTitulo);
 
     {Montando Campo Livre}
-    CampoLivre   := ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente + CalcularDVCedente(ACBrTitulo) +
+    CampoLivre   := padR(ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente,6,'0') + CalcularDVCedente(ACBrTitulo) +
                 	Copy(ANossoNumero,3,3) + Copy(ANossoNumero,1,1) +	Copy(ANossoNumero,6,3) +
                     '4' + Copy(ANossoNumero,9,9);
     Modulo.CalculoPadrao;
@@ -356,6 +359,7 @@ begin
       else
          ADataDesconto := padL('', 8, '0');
 
+      fValorTotalDocs:= fValorTotalDocs  + ValorDocumento;
       Result:= IntToStrZero(ACBrBanco.Numero, 3)                          + //1 a 3 - Código do banco
                '0001'                                                     + //4 a 7 - Lote de serviço
                '3'                                                        + //8 - Tipo do registro: Registro detalhe
@@ -412,7 +416,7 @@ begin
                ATipoOcorrencia                                            + //16 a 17 - Código de movimento
                    {Dados do sacado}
                ATipoInscricao                                             + //18 - Tipo inscricao
-               padL(OnlyNumber(Sacado.CNPJCPF), 15, '0')                  + //19 a 33 - Número de Inscrição
+               padR(OnlyNumber(Sacado.CNPJCPF), 15, '0')                  + //19 a 33 - Número de Inscrição
                padL(Sacado.NomeSacado, 40, ' ')                           + //34 a 73 - Nome sacado
                padL(Sacado.Logradouro +' '+ Sacado.Numero +' '+ Sacado.Complemento , 40, ' ') + //74 a 113 - Endereço
                padL(Sacado.Bairro, 15, ' ')                               + // 114 a 128 - bairro sacado
@@ -433,12 +437,12 @@ function TACBrCaixaEconomica.GerarRegistroTrailler240( ARemessa : TStringList ):
 begin
    {REGISTRO TRAILER DO LOTE}
    Result:= IntToStrZero(ACBrBanco.Numero, 3)                          + //Código do banco
-            '9999'                                                     + //Lote de Serviço
+            '0001'                                                     + //Lote de Serviço
             '5'                                                        + //Tipo do registro: Registro trailer do lote
             Space(9)                                                   + //Uso exclusivo FEBRABAN/CNAB
-            IntToStrZero((2*ARemessa.Count), 6)                      + //Quantidade de Registro no Lote
-            padL('', 6, '0')                                           + //Quantidade títulos em cobrança
-            padL('',17, '0')                                           + //Valor dos títulos em carteiras}
+            IntToStrZero((2*ARemessa.Count), 6)                        + //Quantidade de Registro no Lote
+            IntToStrZero((2*ARemessa.Count), 6)+ // padL('', 6, '0')                                           + //Quantidade títulos em cobrança
+            IntToStrZero( round( fValorTotalDocs * 100), 17)+ // padL('',17, '0')                                           + //Valor dos títulos em carteiras}
             padL('', 6, '0')                                           + //Quantidade títulos em cobrança
             padL('',17, '0')                                           + //Valor dos títulos em carteiras}
             padL('',6,  '0')                                           + //Quantidade títulos em cobrança
@@ -487,12 +491,16 @@ begin
                                                                Copy(ARetorno[1],204,2),0, 'DD/MM/YY' );
    rCNPJCPF := trim( Copy(ARetorno[0],19,14)) ;
 
-   case StrToIntDef(Copy(ARetorno[1],18,1),0) of
-      1 : rCNPJCPF:= trim( Copy(ARetorno[1],19,14));
-      2 : rCNPJCPF:= trim( Copy(ARetorno[0],19,14));
+   if ACBrBanco.ACBrBoleto.Cedente.TipoInscricao = pJuridica then
+    begin
+      rCNPJCPF := trim( Copy(ARetorno[1],19,15));
+      rCNPJCPF := RightStr(rCNPJCPF,14) ;
+    end
    else
-      rCNPJCPF:= trim( Copy(ARetorno[0],19,14));
-   end;
+    begin
+      rCNPJCPF := trim( Copy(ARetorno[1],23,11));
+      rCNPJCPF := RightStr(rCNPJCPF,11) ;
+    end;
 
 
    with ACBrBanco.ACBrBoleto do
@@ -502,7 +510,7 @@ begin
          raise Exception.Create(ACBrStr('CNPJ\CPF do arquivo inválido'));
 
       if (not LeCedenteRetorno) and ((rAgencia <> OnlyNumber(Cedente.Agencia)) or
-          (rConta+rDigitoConta <> OnlyNumber(Cedente.CodigoCedente))) then
+          (rConta <> OnlyNumber(Cedente.CodigoCedente))) then
          raise Exception.Create(ACBrStr('Agencia\Conta do arquivo inválido'));
 
       Cedente.Nome    := rCedente;
@@ -527,15 +535,15 @@ begin
       Linha := ARetorno[ContLinha] ;
 
       if Copy(Linha,14,1)= 'T' then //segmento T - Só cria após passar pelo seguimento T depois U
-      Titulo := ACBrBanco.ACBrBoleto.CriarTituloNaLista;
+         Titulo := ACBrBanco.ACBrBoleto.CriarTituloNaLista;
 
       with Titulo do
       begin
 
-      if Copy(Linha,14,1)= 'T' then //segmento T
+        if Copy(Linha,14,1)= 'T' then //segmento T
         begin
          SeuNumero                   := copy(Linha,59,11);
-         NumeroDocumento             := copy(Linha,48,9);
+         NumeroDocumento             := copy(Linha,40,TamanhoMaximoNossoNum);
          OcorrenciaOriginal.Tipo     := CodOcorrenciaToTipo(StrToIntDef(
                                         copy(Linha,16,2),0));
          //05 = Liquidação Sem Registro
@@ -544,8 +552,8 @@ begin
                                             Copy(Linha,78,2),0, 'DD/MM/YY' );
 
          ValorDocumento       := StrToFloatDef(Copy(Linha,82,15),0)/100;
-         ValorRecebido        := StrToFloatDef(Copy(Linha,82,15),0)/100;
-         NossoNumero          := copy( Copy(Linha,48,9),Length( Copy(Linha,48,9) )-TamanhoMaximoNossoNum  ,TamanhoMaximoNossoNum);
+         ValorDespesaCobranca := StrToFloatDef(Copy(Linha,199,15),0)/100;
+         NossoNumero          := Copy(Linha,40,TamanhoMaximoNossoNum);
          Carteira             := Copy(Linha,40,2);
 
          end //if segmento
@@ -563,14 +571,13 @@ begin
                                                Copy(Linha,148,2)+'/'+
                                                Copy(Linha,150,4),0, 'DD/MM/YYYY' );
 
-
-         ValorIOF             := StrToFloatDef(Copy(Linha,63,15),0)/100;
-         ValorAbatimento      := StrToFloatDef(Copy(Linha,48,15),0)/100;
-         ValorDesconto        := StrToFloatDef(Copy(Linha,33,15),0)/100;
          ValorMoraJuros       := StrToFloatDef(Copy(Linha,18,15),0)/100;
-         ValorOutrosCreditos  := StrToFloatDef(Copy(Linha,123,15),0)/100;
-         ValorDespesaCobranca := StrToFloatDef(Copy(Linha,108,15),0)/100;
+         ValorDesconto        := StrToFloatDef(Copy(Linha,33,15),0)/100;
+         ValorAbatimento      := StrToFloatDef(Copy(Linha,48,15),0)/100;
+         ValorIOF             := StrToFloatDef(Copy(Linha,63,15),0)/100;
+         ValorRecebido        := StrToFloatDef(Copy(Linha,93,15),0)/100;
          ValorOutrasDespesas  := StrToFloatDef(Copy(Linha,108,15),0)/100;
+         ValorOutrosCreditos  := StrToFloatDef(Copy(Linha,123,15),0)/100;
 
         end
         else

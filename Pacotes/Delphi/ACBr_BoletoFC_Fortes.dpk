@@ -28,7 +28,11 @@ package ACBr_BoletoFC_Fortes;
 requires
   rtl,
   vcl,
-  ACBr_Boleto;
+  ACBr_Boleto,
+  vcljpg,
+  dbrtl,
+  vcldb,
+  RLibWinD7vcl;
 
 contains
   ACBRBoletoFCFortesFr in '..\..\Fontes\ACBrBoleto\ACBrBoletoFCFortesFr.pas';

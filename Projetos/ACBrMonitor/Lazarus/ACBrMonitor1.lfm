@@ -1,7 +1,7 @@
 object FrmACBrMonitor: TFrmACBrMonitor
-  Left = 422
+  Left = 178
   Height = 610
-  Top = 58
+  Top = 142
   Width = 600
   ActiveControl = PageControl1
   Align = alClient
@@ -920,7 +920,6 @@ object FrmACBrMonitor: TFrmACBrMonitor
         FF00FF00FF00FF00FF00E5C2ACFFC88158FEB35420FFB9561AFFB55118FFA644
         19FFB76D50FED9B4A6FFFF00FF00FF00FF00FF00FF00FF00FF00
       }
-      NumGlyphs = 0
       OnClick = sbSobreClick
     end
   end
@@ -1044,10 +1043,10 @@ object FrmACBrMonitor: TFrmACBrMonitor
       Height = 244
       Top = 1
       Width = 598
-      ActivePage = tsRFD
+      ActivePage = tsACBrBoleto
       Align = alClient
       Images = ImageList1
-      TabIndex = 6
+      TabIndex = 10
       TabOrder = 0
       object tsMonitor: TTabSheet
         Caption = '&Monitor'
@@ -1339,7 +1338,6 @@ object FrmACBrMonitor: TFrmACBrMonitor
             Width = 23
             Anchors = [akTop, akRight]
             Caption = '...'
-            NumGlyphs = 0
             OnClick = sbLogClick
           end
           object edLogArq: TEdit
@@ -1443,7 +1441,6 @@ object FrmACBrMonitor: TFrmACBrMonitor
           Width = 23
           Anchors = [akTop, akRight]
           Caption = '...'
-          NumGlyphs = 0
           OnClick = sbECFLogClick
         end
         object sbECFSerial: TSpeedButton
@@ -1487,7 +1484,6 @@ object FrmACBrMonitor: TFrmACBrMonitor
             00FFFFFF6B8FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
             FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
           }
-          NumGlyphs = 0
           OnClick = sbECFSerialClick
         end
         object Label8: TLabel
@@ -1835,7 +1831,6 @@ object FrmACBrMonitor: TFrmACBrMonitor
             00FFFFFF6B8FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
             FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
           }
-          NumGlyphs = 0
           OnClick = sbCHQSerialClick
         end
         object Label12: TLabel
@@ -2821,7 +2816,6 @@ object FrmACBrMonitor: TFrmACBrMonitor
               Width = 23
               BorderSpacing.Left = 2
               Caption = '...'
-              NumGlyphs = 0
               OnClick = sbDirRFDClick
             end
             object chRFD: TCheckBox
@@ -3022,43 +3016,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
                 ButtonWidth = 23
                 Anchors = [akTop, akRight]
                 CharCase = ecNormal
-                Glyph.Data = {
-                  36040000424D3604000000000000360000002800000010000000100000000100
-                  2000000000000004000064000000640000000000000000000000FFFFFF00FFFF
-                  FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-                  FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00D69E
-                  72C4D3996EF4D19668FFCE9263FFCB8E5EFFC98A5BFFC78756FFC38452FFC384
-                  52FFC38452FFC38452FFC38452FFC38452FFBB7742B0FFFFFF00FFFFFF00D7A1
-                  75FFF8F2EDFFF7F0EAFFF6EDE6FFF4EAE2FFF3E7DEFFF1E4DBFFF0E2D8FFEAD6
-                  C8FFF2E5DCFFFAF4F1FFF9F3F0FFFAF5F2FFC58A5DFDFFFFFF00FFFFFF00D9A4
-                  7AFFF9F3EEFFEBD2BEFFFFFFFFFFEBD3BFFFFFFFFFFFEBD3C0FFFFFFFFFFEAC7
-                  ADFFECD9CDFFF1E4DBFFF9F3F0FFF9F2EFFFC68C5FFFFFFFFF00FFFFFF00DDA8
-                  7EFFF9F3EFFFEBD0BAFFEBD0BBFF75B57AFF75B57AFF75B57AFFEBD1BDFFEACD
-                  B5FFFAF4F0FFEBD9CCFFF1E4DBFFFAF4F1FFC68A5CFFFFFFFF00FFFFFF00DFAA
-                  82FFF9F3EFFFEACEB7FFFFFFFFFF75B57AFF94D49BFF74B579FFFFFFFFFFEACF
-                  BAFFFBF6F2FFFAF3F0FFEBD8CBFFF2E6DDFFC88D5FFFFFFFFF00FFFFFF00E1AE
-                  87FFFAF4F0FFEACBB2FFEACCB3FF75B57AFF74B579FF73B478FFEACEB7FF70B3
-                  75FF6FB274FF6EB172FFE8C8AEFFEAD7C9FFC48654FFFFFFFF00FFFFFF00E3B1
-                  8CFFFAF6F1FFEAC9AEFFFFFFFFFFEAC9B0FFFFFFFFFFE9CBB3FFFFFFFFFF6FB1
-                  73FF8ED295FF6BAF6FFFFFFFFFFFF1E5DBFFC68655FFFFFFFF00FFFFFF00E5B4
-                  8FFFFAF6F2FFE9C6AAFFE9C6ACFFEAC7ACFFE9C7ADFFE9C9AEFFE9C9B0FF6CB0
-                  71FF6AAF6EFF68AD6DFFE8CCB5FFF2E7DEFFC88A59FFFFFFFF00FFFFFF00E7B7
-                  94FFFBF7F4FFE9C3A6FFFFFFFFFFE8C4A9FFFFFFFFFFE9C6AAFFFFFFFFFFE8C7
-                  ACFFFFFFFFFFE8C8B0FFFFFFFFFFF7F1EBFFCB8F5FFFFFFFFF00FFFFFF00E9BA
-                  98FFFBF7F4FF65A4FFFF64A3FFFF62A2FFFF61A1FFFF5F9FFFFF5C9DFFFF5A9A
-                  FFFF5798FFFF5495FFFF5294FFFFFBF7F4FFCE9364FFFFFFFF00FFFFFF00EBBD
-                  9BFFFBF7F4FF64A4FFFF79BDFFFF75BBFFFF71B9FFFF6DB8FFFF68B3FFFF61B0
-                  FFFF5AABFFFF54A7FFFF3B7DFFFFFBF7F4FFD1976AFFFFFFFF00FFFFFF00ECBF
-                  9EFFFBF7F4FF65A4FFFF64A3FFFF60A0FFFF5D9EFFFF5899FFFF5496FFFF4D90
-                  FFFF478BFFFF4284FFFF3D7FFFFFFBF7F4FFD49B6FFFFFFFFF00FFFFFF00EEC1
-                  A1EBFBF7F4FFFBF7F4FFFBF7F4FFFBF7F4FFFBF7F4FFFBF7F4FFFBF7F4FFFBF7
-                  F4FFFBF7F4FFFBF7F4FFFBF7F4FFFBF7F4FFD7A074F8FFFFFF00FFFFFF00EFC2
-                  A37EEFC1A2E3EDC09FFFEBBE9DFFEBBC9AFFE9BA96FFE7B793FFE6B590FFE4B2
-                  8CFFE2AF88FFE0AC84FFDDA980FFDCA57DFFDAA37ACAFFFFFF00FFFFFF00FFFF
-                  FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-                  FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
-                }
-                NumGlyphs = 0
+                NumGlyphs = 1
                 MaxLength = 10
                 OnExit = deRFDDataSwBasicoExit
                 TabOrder = 1
@@ -3274,43 +3232,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
                 DateOrder = doDMY
                 ButtonWidth = 23
                 CharCase = ecNormal
-                Glyph.Data = {
-                  36040000424D3604000000000000360000002800000010000000100000000100
-                  2000000000000004000064000000640000000000000000000000FFFFFF00FFFF
-                  FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-                  FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00D69E
-                  72C4D3996EF4D19668FFCE9263FFCB8E5EFFC98A5BFFC78756FFC38452FFC384
-                  52FFC38452FFC38452FFC38452FFC38452FFBB7742B0FFFFFF00FFFFFF00D7A1
-                  75FFF8F2EDFFF7F0EAFFF6EDE6FFF4EAE2FFF3E7DEFFF1E4DBFFF0E2D8FFEAD6
-                  C8FFF2E5DCFFFAF4F1FFF9F3F0FFFAF5F2FFC58A5DFDFFFFFF00FFFFFF00D9A4
-                  7AFFF9F3EEFFEBD2BEFFFFFFFFFFEBD3BFFFFFFFFFFFEBD3C0FFFFFFFFFFEAC7
-                  ADFFECD9CDFFF1E4DBFFF9F3F0FFF9F2EFFFC68C5FFFFFFFFF00FFFFFF00DDA8
-                  7EFFF9F3EFFFEBD0BAFFEBD0BBFF75B57AFF75B57AFF75B57AFFEBD1BDFFEACD
-                  B5FFFAF4F0FFEBD9CCFFF1E4DBFFFAF4F1FFC68A5CFFFFFFFF00FFFFFF00DFAA
-                  82FFF9F3EFFFEACEB7FFFFFFFFFF75B57AFF94D49BFF74B579FFFFFFFFFFEACF
-                  BAFFFBF6F2FFFAF3F0FFEBD8CBFFF2E6DDFFC88D5FFFFFFFFF00FFFFFF00E1AE
-                  87FFFAF4F0FFEACBB2FFEACCB3FF75B57AFF74B579FF73B478FFEACEB7FF70B3
-                  75FF6FB274FF6EB172FFE8C8AEFFEAD7C9FFC48654FFFFFFFF00FFFFFF00E3B1
-                  8CFFFAF6F1FFEAC9AEFFFFFFFFFFEAC9B0FFFFFFFFFFE9CBB3FFFFFFFFFF6FB1
-                  73FF8ED295FF6BAF6FFFFFFFFFFFF1E5DBFFC68655FFFFFFFF00FFFFFF00E5B4
-                  8FFFFAF6F2FFE9C6AAFFE9C6ACFFEAC7ACFFE9C7ADFFE9C9AEFFE9C9B0FF6CB0
-                  71FF6AAF6EFF68AD6DFFE8CCB5FFF2E7DEFFC88A59FFFFFFFF00FFFFFF00E7B7
-                  94FFFBF7F4FFE9C3A6FFFFFFFFFFE8C4A9FFFFFFFFFFE9C6AAFFFFFFFFFFE8C7
-                  ACFFFFFFFFFFE8C8B0FFFFFFFFFFF7F1EBFFCB8F5FFFFFFFFF00FFFFFF00E9BA
-                  98FFFBF7F4FF65A4FFFF64A3FFFF62A2FFFF61A1FFFF5F9FFFFF5C9DFFFF5A9A
-                  FFFF5798FFFF5495FFFF5294FFFFFBF7F4FFCE9364FFFFFFFF00FFFFFF00EBBD
-                  9BFFFBF7F4FF64A4FFFF79BDFFFF75BBFFFF71B9FFFF6DB8FFFF68B3FFFF61B0
-                  FFFF5AABFFFF54A7FFFF3B7DFFFFFBF7F4FFD1976AFFFFFFFF00FFFFFF00ECBF
-                  9EFFFBF7F4FF65A4FFFF64A3FFFF60A0FFFF5D9EFFFF5899FFFF5496FFFF4D90
-                  FFFF478BFFFF4284FFFF3D7FFFFFFBF7F4FFD49B6FFFFFFFFF00FFFFFF00EEC1
-                  A1EBFBF7F4FFFBF7F4FFFBF7F4FFFBF7F4FFFBF7F4FFFBF7F4FFFBF7F4FFFBF7
-                  F4FFFBF7F4FFFBF7F4FFFBF7F4FFFBF7F4FFD7A074F8FFFFFF00FFFFFF00EFC2
-                  A37EEFC1A2E3EDC09FFFEBBE9DFFEBBC9AFFE9BA96FFE7B793FFE6B590FFE4B2
-                  8CFFE2AF88FFE0AC84FFDDA980FFDCA57DFFDAA37ACAFFFFFF00FFFFFF00FFFF
-                  FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-                  FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
-                }
-                NumGlyphs = 0
+                NumGlyphs = 1
                 MaxLength = 10
                 OnExit = deRFDDataCadastroExit
                 TabOrder = 1
@@ -4042,21 +3964,21 @@ object FrmACBrMonitor: TFrmACBrMonitor
           Height = 214
           Top = 0
           Width = 590
-          ActivePage = tsBoleto
+          ActivePage = tsCedente
           Align = alClient
-          TabIndex = 2
+          TabIndex = 0
           TabOrder = 0
           object tsCedente: TTabSheet
             Caption = 'Cedente'
-            ClientHeight = 190
-            ClientWidth = 594
+            ClientHeight = 184
+            ClientWidth = 582
             object lblBOLNomeRazao: TLabel
               AnchorSideLeft.Control = edtBOLRazaoSocial
               AnchorSideBottom.Control = edtBOLRazaoSocial
               Left = 118
               Height = 18
-              Top = 5
-              Width = 115
+              Top = 4
+              Width = 116
               Anchors = [akLeft, akBottom]
               Caption = 'Nome\Razão Social'
               ParentColor = False
@@ -4068,9 +3990,9 @@ object FrmACBrMonitor: TFrmACBrMonitor
               AnchorSideTop.Side = asrCenter
               AnchorSideRight.Control = edtBOLCNPJ
               Left = 118
-              Height = 27
-              Top = 23
-              Width = 328
+              Height = 25
+              Top = 22
+              Width = 316
               Anchors = [akTop, akLeft, akRight]
               BorderSpacing.Left = 15
               BorderSpacing.Right = 15
@@ -4079,10 +4001,10 @@ object FrmACBrMonitor: TFrmACBrMonitor
             object lblBOLCPFCNPJ: TLabel
               AnchorSideLeft.Control = edtBOLCNPJ
               AnchorSideBottom.Control = edtBOLCNPJ
-              Left = 461
+              Left = 449
               Height = 18
-              Top = 5
-              Width = 68
+              Top = 4
+              Width = 72
               Anchors = [akLeft, akBottom]
               Caption = 'C.P.F\C.N.P.J'
               ParentColor = False
@@ -4091,9 +4013,9 @@ object FrmACBrMonitor: TFrmACBrMonitor
               AnchorSideTop.Control = edtBOLRazaoSocial
               AnchorSideRight.Control = tsCedente
               AnchorSideRight.Side = asrBottom
-              Left = 461
-              Height = 27
-              Top = 23
+              Left = 449
+              Height = 25
+              Top = 22
               Width = 128
               Anchors = [akTop, akRight]
               BorderSpacing.Right = 5
@@ -4108,7 +4030,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
               AnchorSideTop.Side = asrBottom
               Left = 7
               Height = 18
-              Top = 54
+              Top = 50
               Width = 71
               BorderSpacing.Top = 3
               Caption = 'Logradouro'
@@ -4120,9 +4042,9 @@ object FrmACBrMonitor: TFrmACBrMonitor
               AnchorSideTop.Side = asrBottom
               AnchorSideRight.Control = edtBOLNumero
               Left = 7
-              Height = 27
-              Top = 72
-              Width = 301
+              Height = 25
+              Top = 68
+              Width = 289
               Anchors = [akTop, akLeft, akRight]
               BorderSpacing.Right = 10
               TabOrder = 3
@@ -4130,10 +4052,10 @@ object FrmACBrMonitor: TFrmACBrMonitor
             object lblBOLNumero: TLabel
               AnchorSideLeft.Control = edtBOLNumero
               AnchorSideTop.Control = lblBOLLogradouro
-              Left = 318
+              Left = 306
               Height = 18
-              Top = 54
-              Width = 50
+              Top = 50
+              Width = 49
               Caption = 'Número'
               ParentColor = False
             end
@@ -4141,9 +4063,9 @@ object FrmACBrMonitor: TFrmACBrMonitor
               AnchorSideTop.Control = lblBOLNumero
               AnchorSideTop.Side = asrBottom
               AnchorSideRight.Control = edtBOLBairro
-              Left = 318
-              Height = 27
-              Top = 72
+              Left = 306
+              Height = 25
+              Top = 68
               Width = 64
               Anchors = [akTop, akRight]
               BorderSpacing.Right = 10
@@ -4152,10 +4074,10 @@ object FrmACBrMonitor: TFrmACBrMonitor
             object lblBOLBairro: TLabel
               AnchorSideLeft.Control = edtBOLBairro
               AnchorSideTop.Control = lblBOLNumero
-              Left = 392
+              Left = 380
               Height = 18
-              Top = 54
-              Width = 37
+              Top = 50
+              Width = 36
               Caption = 'Bairro'
               ParentColor = False
             end
@@ -4164,9 +4086,9 @@ object FrmACBrMonitor: TFrmACBrMonitor
               AnchorSideTop.Side = asrBottom
               AnchorSideRight.Control = edtBOLCNPJ
               AnchorSideRight.Side = asrBottom
-              Left = 392
-              Height = 27
-              Top = 72
+              Left = 380
+              Height = 25
+              Top = 68
               Width = 197
               Anchors = [akTop, akRight]
               TabOrder = 5
@@ -4174,9 +4096,9 @@ object FrmACBrMonitor: TFrmACBrMonitor
             object lblBOLCep: TLabel
               AnchorSideLeft.Control = edtBOLCEP
               AnchorSideTop.Control = lblBOLCidade
-              Left = 517
+              Left = 505
               Height = 18
-              Top = 102
+              Top = 96
               Width = 23
               Caption = 'CEP'
               ParentColor = False
@@ -4186,9 +4108,9 @@ object FrmACBrMonitor: TFrmACBrMonitor
               AnchorSideTop.Side = asrBottom
               AnchorSideRight.Control = edtBOLBairro
               AnchorSideRight.Side = asrBottom
-              Left = 517
-              Height = 27
-              Top = 120
+              Left = 505
+              Height = 25
+              Top = 114
               Width = 72
               Anchors = [akTop, akRight]
               CharCase = ecNormal
@@ -4201,9 +4123,9 @@ object FrmACBrMonitor: TFrmACBrMonitor
               AnchorSideTop.Control = edtBOLCidade
               AnchorSideTop.Side = asrCenter
               AnchorSideRight.Control = edtBOLCEP
-              Left = 455
+              Left = 443
               Height = 25
-              Top = 119
+              Top = 114
               Width = 52
               Anchors = [akTop, akRight]
               BorderSpacing.Right = 10
@@ -4247,7 +4169,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
               AnchorSideTop.Control = lblBOLComplemento
               Left = 215
               Height = 18
-              Top = 102
+              Top = 96
               Width = 42
               Caption = 'Cidade'
               ParentColor = False
@@ -4259,9 +4181,9 @@ object FrmACBrMonitor: TFrmACBrMonitor
               AnchorSideTop.Side = asrBottom
               AnchorSideRight.Control = cbxBOLUF
               Left = 215
-              Height = 27
-              Top = 120
-              Width = 230
+              Height = 25
+              Top = 114
+              Width = 218
               Anchors = [akTop, akLeft, akRight]
               BorderSpacing.Left = 10
               BorderSpacing.Right = 10
@@ -4272,8 +4194,8 @@ object FrmACBrMonitor: TFrmACBrMonitor
               AnchorSideTop.Control = lblBOLComplemento
               AnchorSideTop.Side = asrBottom
               Left = 7
-              Height = 27
-              Top = 120
+              Height = 25
+              Top = 114
               Width = 198
               TabOrder = 6
             end
@@ -4283,8 +4205,8 @@ object FrmACBrMonitor: TFrmACBrMonitor
               AnchorSideTop.Side = asrBottom
               Left = 7
               Height = 18
-              Top = 102
-              Width = 86
+              Top = 96
+              Width = 83
               BorderSpacing.Top = 3
               Caption = 'Complemento'
               ParentColor = False
@@ -4317,8 +4239,8 @@ object FrmACBrMonitor: TFrmACBrMonitor
           end
           object TabSheet2: TTabSheet
             Caption = 'Conta Bancária'
-            ClientHeight = 190
-            ClientWidth = 594
+            ClientHeight = 184
+            ClientWidth = 582
             object cbxBOLBanco: TComboBox
               AnchorSideLeft.Control = lblBOLBanco
               AnchorSideTop.Control = lblBOLBanco
@@ -4337,7 +4259,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
               Left = 31
               Height = 18
               Top = 23
-              Width = 38
+              Width = 36
               Caption = 'Banco'
               ParentColor = False
             end
@@ -4347,8 +4269,8 @@ object FrmACBrMonitor: TFrmACBrMonitor
               AnchorSideTop.Control = cbxBOLBanco
               AnchorSideTop.Side = asrCenter
               Left = 245
-              Height = 27
-              Top = 43
+              Height = 25
+              Top = 41
               Width = 80
               BorderSpacing.Left = 30
               TabOrder = 1
@@ -4359,9 +4281,9 @@ object FrmACBrMonitor: TFrmACBrMonitor
               AnchorSideTop.Control = cbxBOLBanco
               AnchorSideTop.Side = asrCenter
               Left = 326
-              Height = 20
-              Top = 46
-              Width = 8
+              Height = 19
+              Top = 44
+              Width = 9
               BorderSpacing.Left = 1
               Caption = '-'
               Font.CharSet = ANSI_CHARSET
@@ -4379,7 +4301,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
               AnchorSideBottom.Control = edtBOLAgencia
               Left = 245
               Height = 18
-              Top = 25
+              Top = 23
               Width = 47
               Anchors = [akLeft, akBottom]
               Caption = 'Agência'
@@ -4390,9 +4312,9 @@ object FrmACBrMonitor: TFrmACBrMonitor
               AnchorSideLeft.Side = asrBottom
               AnchorSideTop.Control = cbxBOLBanco
               AnchorSideTop.Side = asrCenter
-              Left = 335
-              Height = 27
-              Top = 43
+              Left = 336
+              Height = 25
+              Top = 41
               Width = 48
               BorderSpacing.Left = 1
               TabOrder = 2
@@ -4400,10 +4322,10 @@ object FrmACBrMonitor: TFrmACBrMonitor
             object lblBOLDigAgencia: TLabel
               AnchorSideLeft.Control = edtBOLDigitoAgencia
               AnchorSideTop.Control = lblBOLAgencia
-              Left = 335
+              Left = 336
               Height = 18
-              Top = 25
-              Width = 35
+              Top = 23
+              Width = 36
               Caption = 'Digito'
               ParentColor = False
             end
@@ -4412,9 +4334,9 @@ object FrmACBrMonitor: TFrmACBrMonitor
               AnchorSideLeft.Side = asrBottom
               AnchorSideTop.Control = cbxBOLBanco
               AnchorSideTop.Side = asrCenter
-              Left = 403
-              Height = 27
-              Top = 43
+              Left = 404
+              Height = 25
+              Top = 41
               Width = 80
               BorderSpacing.Left = 20
               TabOrder = 3
@@ -4424,10 +4346,10 @@ object FrmACBrMonitor: TFrmACBrMonitor
               AnchorSideLeft.Side = asrBottom
               AnchorSideTop.Control = cbxBOLBanco
               AnchorSideTop.Side = asrCenter
-              Left = 484
-              Height = 20
-              Top = 46
-              Width = 8
+              Left = 485
+              Height = 19
+              Top = 44
+              Width = 9
               BorderSpacing.Left = 1
               Caption = '-'
               Font.CharSet = ANSI_CHARSET
@@ -4443,10 +4365,10 @@ object FrmACBrMonitor: TFrmACBrMonitor
             object lblBOLConta: TLabel
               AnchorSideLeft.Control = edtBOLConta
               AnchorSideTop.Control = lblBOLDigAgencia
-              Left = 403
+              Left = 404
               Height = 18
-              Top = 25
-              Width = 36
+              Top = 23
+              Width = 35
               Caption = 'Conta'
               ParentColor = False
             end
@@ -4455,9 +4377,9 @@ object FrmACBrMonitor: TFrmACBrMonitor
               AnchorSideLeft.Side = asrBottom
               AnchorSideTop.Control = cbxBOLBanco
               AnchorSideTop.Side = asrCenter
-              Left = 493
-              Height = 27
-              Top = 43
+              Left = 495
+              Height = 25
+              Top = 41
               Width = 59
               BorderSpacing.Left = 1
               TabOrder = 4
@@ -4465,10 +4387,10 @@ object FrmACBrMonitor: TFrmACBrMonitor
             object lblBOLDigConta: TLabel
               AnchorSideLeft.Control = edtBOLDigitoConta
               AnchorSideTop.Control = lblBOLConta
-              Left = 493
+              Left = 495
               Height = 18
-              Top = 25
-              Width = 35
+              Top = 23
+              Width = 36
               Caption = 'Digito'
               ParentColor = False
             end
@@ -4491,13 +4413,13 @@ object FrmACBrMonitor: TFrmACBrMonitor
               Left = 34
               Height = 18
               Top = 79
-              Width = 168
+              Width = 167
               Caption = 'Responsável Emissão Boleto'
               ParentColor = False
             end
             object edtCodCliente: TEdit
               Left = 223
-              Height = 27
+              Height = 25
               Top = 95
               Width = 165
               TabOrder = 6
@@ -4506,13 +4428,13 @@ object FrmACBrMonitor: TFrmACBrMonitor
               Left = 223
               Height = 18
               Top = 79
-              Width = 164
+              Width = 165
               Caption = 'Código do Cliente no Banco'
               ParentColor = False
             end
             object edtModalidade: TEdit
               Left = 393
-              Height = 27
+              Height = 25
               Top = 94
               Width = 72
               TabOrder = 7
@@ -4521,13 +4443,13 @@ object FrmACBrMonitor: TFrmACBrMonitor
               Left = 393
               Height = 18
               Top = 79
-              Width = 71
+              Width = 72
               Caption = 'Modalidade'
               ParentColor = False
             end
             object edtConvenio: TEdit
               Left = 472
-              Height = 27
+              Height = 25
               Top = 94
               Width = 81
               TabOrder = 8
@@ -4554,7 +4476,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
               Width = 200
               ShowHidden = False
               ButtonWidth = 23
-              NumGlyphs = 0
+              NumGlyphs = 1
               MaxLength = 0
               TabOrder = 0
               OnExit = deBOLDirLogoExit
@@ -4650,6 +4572,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
                 'Carnê'
                 'Fatura'
               )
+              Style = csDropDownList
               TabOrder = 4
               Text = 'Padrão'
             end
@@ -4702,7 +4625,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
               Width = 269
               ShowHidden = False
               ButtonWidth = 23
-              NumGlyphs = 0
+              NumGlyphs = 1
               Anchors = [akTop, akLeft, akRight]
               MaxLength = 0
               TabOrder = 6
@@ -4732,7 +4655,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
               Width = 314
               ShowHidden = False
               ButtonWidth = 23
-              NumGlyphs = 0
+              NumGlyphs = 1
               MaxLength = 0
               TabOrder = 0
               OnExit = deBolDirRemessaExit
@@ -4744,7 +4667,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
               Width = 314
               ShowHidden = False
               ButtonWidth = 23
-              NumGlyphs = 0
+              NumGlyphs = 1
               MaxLength = 0
               TabOrder = 1
               OnExit = deBolDirRetornoExit
@@ -6028,9 +5951,9 @@ object FrmACBrMonitor: TFrmACBrMonitor
     top = 136
   end
   object ACBrBoleto1: TACBrBoleto
-    Cedente.TipoInscricao = pJuridica
     Banco.TamanhoMaximoNossoNum = 10
     Banco.TipoCobranca = cobNenhum
+    Cedente.TipoInscricao = pJuridica
     NumeroArquivo = 0
     DataArquivo = 0
     DataCreditoLanc = 0

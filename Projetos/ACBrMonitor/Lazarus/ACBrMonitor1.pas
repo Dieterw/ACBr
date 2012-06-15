@@ -631,6 +631,7 @@ var
   iCEP: TACBrCEPWebService;
   IBanco: TACBrTipoCobranca;
   AppDir : String ;
+  ILayout: TACBrBolLayOut;
 begin
   {$IFDEF LINUX}
    FpUmask(0);
@@ -680,6 +681,15 @@ begin
   begin
     cbxBOLBanco.Items.Add(GetEnumName(TypeInfo(TACBrTipoCobranca), Integer(IBanco)));
     Inc(IBanco);
+  end;
+
+  { Criando lista de Layouts de Boleto disponiveis }
+  cbxBOLLayout.Items.Clear;
+  ILayout:= Low(TACBrBolLayOut);
+  while ILayout <= High(TACBrBolLayOut) do
+  begin
+    cbxBOLLayout.Items.Add(GetEnumName(TypeInfo(TACBrBolLayOut), Integer(ILayout)));
+    Inc(ILayout);
   end;
 
   { Criando lista modelos de ECFs disponiveis }
@@ -1642,12 +1652,13 @@ begin
   with ACBrBoleto1 do
   begin
     Cedente.Nome := edtBOLRazaoSocial.Text;
-    Cedente.CNPJCPF := edtBOLCNPJ.Text;
 
     if cbxBOLF_J.ItemIndex = 0 then
       Cedente.TipoInscricao := pFisica
     else
       Cedente.TipoInscricao := pJuridica ;
+
+    Cedente.CNPJCPF := edtBOLCNPJ.Text;
 
     Cedente.Logradouro    := edtBOLLogradouro.Text;
     Cedente.NumeroRes     := edtBOLNumero.Text;

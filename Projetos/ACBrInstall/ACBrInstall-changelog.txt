@@ -39,6 +39,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+16/06/2012
+----------
+[-] Correções para instação dos pacotes do Fast-Report, nas versões do Delphi
+    versões testadas: D7, D2005, D2006, D2007, D2009, D2010, XE e XE2
+    por: Isaque Pinheiro
+
 09/06/2012
 ----------
 [+] Implementado recurso para instalar os pacotes de Danfe, Dactes e Boletos do

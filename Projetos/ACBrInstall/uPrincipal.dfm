@@ -1,7 +1,7 @@
 object frmPrincipal: TfrmPrincipal
   Left = 0
   Top = 0
-  ActiveControl = frameDpk.ACBrSerial_dpk
+  ActiveControl = lstMsgInstalacao
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'Instalador ACBr'
@@ -24,7 +24,7 @@ object frmPrincipal: TfrmPrincipal
     Top = 0
     Width = 720
     Height = 500
-    ActivePage = wizPgPacotes
+    ActivePage = wizPgInstalacao
     ButtonBarHeight = 42
     ButtonStart.Caption = 'Para o in'#237'cio'
     ButtonStart.NumGlyphs = 1
@@ -2362,10 +2362,6 @@ object frmPrincipal: TfrmPrincipal
         Align = alClient
         Caption = 'Marque os pacotes que deseja instalar'
         TabOrder = 0
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 554
-        ExplicitHeight = 387
         inline frameDpk: TframePacotes
           AlignWithMargins = True
           Left = 5
@@ -2379,13 +2375,13 @@ object frmPrincipal: TfrmPrincipal
           TabOrder = 0
           ExplicitLeft = 5
           ExplicitTop = 18
-          ExplicitWidth = 544
-          ExplicitHeight = 364
+          ExplicitWidth = 538
+          ExplicitHeight = 358
           inherited pnlBotoesPacotes: TPanel
             Top = 326
             Width = 538
-            ExplicitTop = 332
-            ExplicitWidth = 544
+            ExplicitTop = 326
+            ExplicitWidth = 538
             inherited btnPacotesDesmarcarTodos: TSpeedButton
               Left = 506
               ExplicitLeft = 512
@@ -2734,7 +2730,7 @@ object frmPrincipal: TfrmPrincipal
         Cursor = crHandPoint
         Animate = True
         Center = True
-        FrameIndex = 5
+        FrameIndex = 3
         Image.Data = {
           688B00004749463839613F012800F70000FFFFFFFFFFE5FFFFCCF7FAFDFFFF99
           FFF7B9FFF9A9FFFA84EAFA9EFFF573FFF74AFFFF00FFF268F2F478FFF456E9F5

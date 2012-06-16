@@ -45,9 +45,9 @@ uses
   JclIDEUtils, JclCompilerUtils,
 
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ComCtrls, StdCtrls, ExtCtrls, Buttons, pngimage, JvExControls,
-  JvAnimatedImage, JvGIFCtrl, JvWizard, JvWizardRouteMapNodes, JvExComCtrls,
-  JvComCtrls, JvCheckTreeView, uFrameLista;
+  Dialogs, ComCtrls, StdCtrls, ExtCtrls, Buttons, pngimage,
+  JvExControls, JvAnimatedImage, JvGIFCtrl, JvWizard, JvWizardRouteMapNodes,
+  JvExComCtrls, JvComCtrls, JvCheckTreeView, uFrameLista;
 
 type
   TfrmPrincipal = class(TForm)
@@ -504,9 +504,9 @@ begin
   // -D<syms> = Define conditionals
   Sender.Options.Add('-DRELEASE');
   // -U<paths> = Unit directories
-  Sender.AddPathOption('U', sDirLibrary);
-  // -U<paths> = Unit directories
+  Sender.AddPathOption('U', oACBr.Installations[iVersion].LibFolderName[tPlatform]);
   Sender.AddPathOption('U', oACBr.Installations[iVersion].LibrarySearchPath[tPlatform]);
+  Sender.AddPathOption('U', sDirLibrary);
   // -I<paths> = Include directories
   Sender.AddPathOption('I', oACBr.Installations[iVersion].LibrarySearchPath[tPlatform]);
   // -R<paths> = Resource directories
@@ -519,8 +519,11 @@ begin
 
   // -- Na versão XE2 por motivo da nova tecnologia FireMonkey, deve-se adicionar
   // -- os prefixos dos nomes, para identificar se será compilado para VCL ou FMX
-  if oACBr.Installations[iVersion].VersionNumberStr = 'd16' then
-    Sender.Options.Add('-NSData.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;Xml;Data;Datasnap;Web;Soap;Winapi;System.Win');
+  with oACBr.Installations[iVersion] do
+  begin
+     if VersionNumberStr = 'd16' then
+       Sender.Options.Add('-NSData.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;Xml;Data;Datasnap;Web;Soap;Winapi;System.Win');
+  end;
 end;
 
 procedure TfrmPrincipal.FormCreate(Sender: TObject);

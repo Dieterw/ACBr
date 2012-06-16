@@ -29,7 +29,6 @@ requires
   rtl,
   vclx,
   vcl,
-  vclimg,
   designide,
   dbrtl,
   dsnap,

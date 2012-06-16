@@ -377,7 +377,7 @@
     {$I ACBr_kylix.inc} // FPC incompatible stuff
   {$ELSE ~KYLIX}
 
-    {$IFDEF VER230} // XE2 ???
+    {$IFDEF VER230} // XE2
       {$DEFINE BDS}
       {$DEFINE BDS7}
       {$DEFINE COMPILER16}
@@ -392,7 +392,7 @@
       {$UNDEF UNKNOWN_COMPILER_VERSION}
     {$ENDIF VER230}
 
-    {$IFDEF VER220} // Fulcrum
+    {$IFDEF VER220} // XE
       {$DEFINE BDS}
       {$DEFINE BDS7}
       {$DEFINE COMPILER15}
@@ -422,7 +422,7 @@
       {$UNDEF UNKNOWN_COMPILER_VERSION}
     {$ENDIF VER210}
 
-    {$IFDEF VER200}
+    {$IFDEF VER200} // RAD Studio 2009
       {H+}
       {$DEFINE COMPILER12}
       {$DEFINE DELPHI12}
@@ -430,7 +430,7 @@
       {$DEFINE RTL200_UP}
     {$ENDIF}
 
-    {$IFDEF VER190}
+    {$IFDEF VER190} // RAD Studio 2007
       {$DEFINE COMPILER11}
       {$DEFINE DELPHI11}
       {$DEFINE DELPHICOMPILER11}
@@ -444,14 +444,14 @@
       {$DEFINE RTL185_UP}
     {$ENDIF}
 
-    {$IFDEF VER180}
+    {$IFDEF VER180} // RAD Studio 2006
       {$DEFINE COMPILER10}
       {$DEFINE DELPHI10}
       {$DEFINE DELPHICOMPILER10}
       {$DEFINE RTL180_UP}
     {$ENDIF}
 
-    {$IFDEF VER170}
+    {$IFDEF VER170} // RAD Studio 2005
       {$DEFINE COMPILER9}
       {$DEFINE DELPHI9}
       {$DEFINE DELPHICOMPILER9}
@@ -465,7 +465,7 @@
       {$DEFINE RTL160_UP}
     {$ENDIF}
 
-    {$IFDEF VER150}
+    {$IFDEF VER150} // D7
       {$DEFINE COMPILER7}
       {$IFDEF BCB}
         {$DEFINE BCB7}
@@ -617,7 +617,7 @@
 {$ENDIF}
 
 {$IFDEF DELPHI12}
-  {$DEFINE DELPHI12_UP}
+//  {$DEFINE DELPHI12_UP} // Essa linha dispara um erro na compilação no D2009 - "ACBrBase.pas(247) Error: E2003 Undeclared identifier: 'Start'"
   {$DEFINE DELPHI11_UP}
   {$DEFINE DELPHI10_UP}
   {$DEFINE DELPHI9_UP}
@@ -660,7 +660,7 @@
 
 {$IFDEF DELPHI9}
   {$DEFINE DELPHI9_UP}
-  {$DEFINE DELPHI8_UP}
+//  {$DEFINE DELPHI8_UP} // Essa linha dispara um erro na compilação no D2005 - "ACBrRFD.pas(1861) Error: E2034 Too many actual parameters"
   {$DEFINE DELPHI7_UP}
   {$DEFINE DELPHI6_UP}
   {$DEFINE DELPHI5_UP}

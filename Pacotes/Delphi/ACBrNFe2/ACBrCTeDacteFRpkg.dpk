@@ -70,7 +70,6 @@ package ACBrCTeDacteFRpkg;
 
 requires
   rtl,
-  vclimg,
   designide,
 {$IFDEF VER150} // D7
   fs7, frx7, frxe7, frxDB7,

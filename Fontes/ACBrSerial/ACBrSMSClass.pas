@@ -60,6 +60,8 @@ type
   TACBrSMSSimCard = (simCard1, simCard2);
   TACBrSMSFiltro = (fltTudo, fltLidas, fltNaoLidas);
 
+  TACBrSMSProgresso = procedure(const AAtual, ATotal: Integer) of object;
+
   TACBrSMSMensagem = class
   private
     FMensagem: String;

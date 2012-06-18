@@ -42,7 +42,7 @@ interface
 
 uses
   ACBrBase, ACBrConsts, ACBrDevice, ACBrSMSClass,
-  SysUtils , Classes;
+  SysUtils , Classes, Forms;
 
 type
   TACBrSMS = class(TACBrComponent)
@@ -51,6 +51,7 @@ type
     fsDevice: TACBrDevice;
     fsSMS: TACBrSMSClass;
     fsModelo: TACBrSMSModelo;
+    fsOnProgresso: TACBrSMSProgresso;
 
     procedure SetAtivo(const Value: Boolean);
     procedure SetModelo(const Value: TACBrSMSModelo);
@@ -110,6 +111,7 @@ type
     property QuebraMensagens: Boolean read GetQuebraMensagens write SetQuebraMensagens;
     property UltimaResposta: String read GetUltimaReposta;
     property UltimoComando: String read GetUltimoComando;
+    property OnProgresso: TACBrSMSProgresso read fsOnProgresso write fsOnProgresso;
   end;
 
 implementation
@@ -225,13 +227,22 @@ procedure TACBrSMS.EnviarSMSLote(const ALote: TACBrSMSMensagens;
 var
   I: Integer;
   IndMsgAtual: String;
+  TotalMensagensLote: Integer;
 begin
   AIndice := EmptyStr;
-  for I := 0 to ALote.Count - 1 do
+  TotalMensagensLote := ALote.Count;
+
+  for I := 0 to TotalMensagensLote - 1 do
   begin
     IndMsgAtual := '' ;
     fsSMS.EnviarSMS(ALote[I].Telefone, ALote[I].Mensagem, IndMsgAtual);
     AIndice := AIndice + ',' + IndMsgAtual;
+
+    Application.ProcessMessages;
+
+    // chamar o evento para a aplicação
+    if Assigned(fsOnProgresso) then
+      fsOnProgresso(I+1, TotalMensagensLote);
   end;
 
   // limpar a virgula inicial

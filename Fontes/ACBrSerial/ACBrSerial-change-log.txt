@@ -97,6 +97,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+
+Data: 18/06/2012
+-- ACBrSMS --
+[+] Adicionado evento para informar o andamento do envio de mensagens em lote.
+    (por: Régys Silveira)
+
 Data: 13/06/2012
 -- ACBrECFEpson --
 [*] Método VendeItem modificado para tratar o campo Unidade com apenas caracteres

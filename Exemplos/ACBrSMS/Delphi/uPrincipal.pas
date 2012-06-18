@@ -6,7 +6,7 @@ uses
   ACBrBase, ACBrSMS, ACBrSMSClass,
 
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, Menus, jpeg, ExtCtrls, ACBrSMSDaruma;
+  Dialogs, StdCtrls, Menus, jpeg, ExtCtrls, ACBrSMSDaruma, ComCtrls;
 
 type
   TfrmPrincipal = class(TForm)
@@ -42,6 +42,8 @@ type
     N4: TMenuItem;
     ACBrSMS1: TACBrSMS;
     menIMSI: TMenuItem;
+    StatusBar1: TStatusBar;
+    ProgressBar1: TProgressBar;
     procedure FormDestroy(Sender: TObject);
     procedure btnAtivarClick(Sender: TObject);
     procedure menEmLinhaClick(Sender: TObject);
@@ -59,6 +61,7 @@ type
     procedure menSincronismoClick(Sender: TObject);
     procedure menEnviarLoteClick(Sender: TObject);
     procedure menIMSIClick(Sender: TObject);
+    procedure ACBrSMS1Progresso(const AAtual, ATotal: Integer);
   private
     procedure AtivarMenus(const AAtivar: Boolean);
     function PathIni: String;
@@ -82,6 +85,16 @@ begin
   Result :=
     IncludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0))) +
     ChangeFileExt(ExtractFileName(ParamStr(0)), '.ini');
+end;
+
+procedure TfrmPrincipal.ACBrSMS1Progresso(const AAtual, ATotal: Integer);
+begin
+  StatusBar1.Panels[0].Text := Format('%d de %d', [AAtual, ATotal]);
+
+  ProgressBar1.Position := AAtual;
+  ProgressBar1.Max      := ATotal;
+
+  Application.ProcessMessages;
 end;
 
 procedure TfrmPrincipal.AtivarMenus(const AAtivar: Boolean);

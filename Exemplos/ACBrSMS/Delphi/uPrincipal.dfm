@@ -107,7 +107,7 @@ object frmPrincipal: TfrmPrincipal
   end
   object pBotoes: TPanel
     Left = 0
-    Top = 360
+    Top = 341
     Width = 700
     Height = 40
     Cursor = crHelp
@@ -324,6 +324,26 @@ object frmPrincipal: TfrmPrincipal
         66C7FBCFFAD145001BAC7D5FF5A3758FABFEB451401FFFD9}
     end
   end
+  object StatusBar1: TStatusBar
+    Left = 0
+    Top = 381
+    Width = 700
+    Height = 19
+    Panels = <
+      item
+        Width = 250
+      end
+      item
+        Width = 50
+      end>
+  end
+  object ProgressBar1: TProgressBar
+    Left = 14
+    Top = 85
+    Width = 257
+    Height = 16
+    TabOrder = 3
+  end
   object MainMenu1: TMainMenu
     Left = 270
     Top = 215
@@ -407,8 +427,10 @@ object frmPrincipal: TfrmPrincipal
     Modelo = modDaruma
     ATTimeOut = 10000
     ATResult = False
+    IntervaloEntreMensagens = 0
     RecebeConfirmacao = False
     QuebraMensagens = False
+    OnProgresso = ACBrSMS1Progresso
     Left = 185
     Top = 215
   end

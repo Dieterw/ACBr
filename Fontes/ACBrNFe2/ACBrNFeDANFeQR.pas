@@ -84,9 +84,10 @@ type
     FSistema            : String;
     FSite               : String;
     FUsuario            : String;
-    AfterPreview        : Boolean ;
-    ChangedPos          : Boolean ;
-    FSemValorFiscal     : Boolean ;
+    AfterPreview        : Boolean;
+    FExpandirLogoMarca  : Boolean; // Incluido por Italo em 18/06/2012
+    ChangedPos          : Boolean;
+    FSemValorFiscal     : Boolean;
     FMargemSuperior     : double;
     FMargemInferior     : double;
     FMargemEsquerda     : double;
@@ -115,10 +116,11 @@ type
                              AMargemInferior     : Double    = 0.8;
                              AMargemEsquerda     : Double    = 0.6;
                              AMargemDireita      : Double    = 0.51;
-                             ACasasDecimaisqCom  : Integer = 4;
-                             ACasasDecimaisvUncCom: Integer = 4;
+                             ACasasDecimaisqCom  : Integer   = 4;
+                             ACasasDecimaisvUncCom: Integer  = 4;
                              AImpressora         : String    = '';
-                             AResumoCanhoto_Texto: String    = '');
+                             AResumoCanhoto_Texto: String    = '';
+                             AExpandirLogoMarca  : Boolean   = False); // Incluido por Italo em 18/06/2012
 
     class procedure SavePDF(AFile: String;
                             ANFe                : TNFe;
@@ -134,9 +136,10 @@ type
                             AMargemInferior     : Double    = 0.8;
                             AMargemEsquerda     : Double    = 0.6;
                             AMargemDireita      : Double    = 0.51;
-                            ACasasDecimaisqCom  : Integer = 4;
-                            ACasasDecimaisvUncCom: Integer = 4;
-                            AResumoCanhoto_Texto: String   = '');
+                            ACasasDecimaisqCom  : Integer   = 4;
+                            ACasasDecimaisvUncCom: Integer  = 4;
+                            AResumoCanhoto_Texto: String    = '';
+                            AExpandirLogoMarca  : Boolean   = False); // Incluido por Italo em 18/06/2012
 
   end;
 
@@ -164,7 +167,8 @@ class procedure TfqrDANFeQR.Imprimir(ANFe               : TNFe;
                                     ACasasDecimaisqCom  : Integer   = 4;
                                     ACasasDecimaisvUncCom: Integer  = 4;
                                     AImpressora         : String    = '';
-                                    AResumoCanhoto_Texto: String    = '');
+                                    AResumoCanhoto_Texto: String    = '';
+                                    AExpandirLogoMarca  : Boolean   = False); // Incluido por Italo em 18/06/2012
 begin
   with Create ( nil ) do
      try
@@ -185,6 +189,7 @@ begin
         FCasasDecimaisvUnCom := ACasasDecimaisvUncCom;
         FImpressora         := AImpressora;
         FResumoCanhoto_Texto:= AResumoCanhoto_Texto;
+        FExpandirLogoMarca  := AExpandirLogoMarca;  // Incluido por Italo em 18/06/2012
 
         Printer := TPrinter.Create;
 
@@ -236,7 +241,8 @@ class procedure TfqrDANFeQR.SavePDF(AFile               : String;
                                     AMargemDireita      : Double    = 0.51;
                                     ACasasDecimaisqCom  : Integer   = 4;
                                     ACasasDecimaisvUncCom: Integer  = 4;
-                                    AResumoCanhoto_Texto: String = '');
+                                    AResumoCanhoto_Texto: String    = '';
+                                    AExpandirLogoMarca  : Boolean   = False); // Incluido por Italo em 18/06/2012
 {$IFDEF QReport_PDF}
 var
   qf : TQRPDFDocumentFilter;
@@ -262,6 +268,7 @@ begin
         FCasasDecimaisqCom  := ACasasDecimaisqCom;
         FCasasDecimaisvUnCom := ACasasDecimaisvUncCom;
         FResumoCanhoto_Texto:= AResumoCanhoto_Texto;
+        FExpandirLogoMarca  := AExpandirLogoMarca; // Incluido por Italo em 18/06/2012
 
         for i := 0 to ComponentCount -1 do
           begin

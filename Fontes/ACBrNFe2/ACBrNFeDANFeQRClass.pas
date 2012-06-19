@@ -113,7 +113,8 @@ begin
                                     , CasasDecimais._qCom
                                     , CasasDecimais._vUnCom
                                     , Impressora
-                                    , ExibirResumoCanhoto_Texto);
+                                    , ExibirResumoCanhoto_Texto
+                                    , ExpandirLogoMarca);
       end;
    end
   else
@@ -134,7 +135,8 @@ begin
                                 , CasasDecimais._qCom
                                 , CasasDecimais._vUnCom
                                 , Impressora
-                                , ExibirResumoCanhoto_Texto);
+                                , ExibirResumoCanhoto_Texto
+                                , ExpandirLogoMarca);
 
   fqrDANFeQRRetrato.Free;
 end;
@@ -173,7 +175,8 @@ begin
                                     , MargemDireita
                                     , CasasDecimais._qCom
                                     , CasasDecimais._vUnCom
-                                    , ExibirResumoCanhoto_Texto);
+                                    , ExibirResumoCanhoto_Texto
+                                    , ExpandirLogoMarca);
       end;
    end
   else
@@ -196,7 +199,8 @@ begin
                                 , MargemDireita
                                 , CasasDecimais._qCom
                                 , CasasDecimais._vUnCom
-                                , ExibirResumoCanhoto_Texto);
+                                , ExibirResumoCanhoto_Texto
+                                , ExpandirLogoMarca);
   end;
 
   fqrDANFeQRRetrato.Free;

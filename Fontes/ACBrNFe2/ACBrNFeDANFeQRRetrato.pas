@@ -1303,10 +1303,33 @@ begin
 
    if QRNFe.PageNumber = 1 then
    begin
-      // Emitente
+      if (FLogo <> '') and FilesExists(FLogo) then
+       begin
+        qriLogo.Picture.LoadFromFile(FLogo);
+       end;
 
-      with FNFe.Emit do
-      begin
+      // Inclido por Italo em 18/06/2012
+      if FExpandirLogoMarca then
+       begin
+        qriLogo.top:=13;
+        qriLogo.Left:=2;
+        qriLogo.Height:=108;
+        qriLogo.Width:=284;
+        qriLogo.Stretch:=true;
+        qrmEmitente.Enabled:=False;
+        qrmEndereco.Enabled:=False;
+        qrlFone.Enabled:=False;
+       end;
+
+      // Incluido por Italo em 18/06/2012
+      if not FExpandirLogoMarca then
+       begin
+        qrmEmitente.Enabled:=True;
+        qrmEndereco.Enabled:=True;
+        qrlFone.Enabled:=True;
+        // Emitente
+        with FNFe.Emit do
+        begin
          qrlCNPJ.Caption              := NotaUtil.FormatarCNPJ( CNPJCPF  );
          qrlInscrEstSubst.caption     := IEST;
          qrlInscricaoEstadual.Caption := IE;
@@ -1323,53 +1346,30 @@ begin
             if XBairro <> '' then qrmEndereco.Lines.Add(XBairro);
             qrmEndereco.Lines.Add(XMun + ' - ' + UF);
             qrmEndereco.Lines.Add('CEP: ' + NotaUtil.FormatarCEP(FormatFloat( '00000000', CEP )));
-
             // Alterado por Italo em 23/03/2011
-            if Trim(FSite) <> '' then
-            begin
-               qrmEndereco.Lines.Add ('SITE: ' + FSite);
-            end;
-
-            if Trim(FEmail) <> '' then
-            begin
-               qrmEndereco.Lines.Add ('E-MAIL: ' + FEmail);
-            end;
-
+            if Trim(FSite) <> '' then qrmEndereco.Lines.Add ('SITE: ' + FSite);
+            // Alterado por Italo em 18/06/2012
+            if Trim(FEmail) <> '' then qrmEndereco.Lines.Add ('E-MAIL: ' + FEmail);
             // telefone
-
             qrlFone.Caption:= '';
-
-            if (fone <> '') and (FFax = '') then
-            begin
-                 qrlFone.Caption := 'FONE: ' + NotaUtil.FormatarFone( Fone );
-            end;
-
-            if (FFax <> '') and (fone = '') then
-            begin
-                qrlFone.Caption:= 'FAX: ' + FFax;
-            end;
-
-            if (FFax <> '') and (fone <> '') then
-            begin
-                qrlFone.Caption:= 'FONE: ' + NotaUtil.FormatarFone( Fone ) + #13 +'FAX: ' + FFax;
-            end;
-
+            // Alterado por Italo em 18/06/2012
+            if (fone <> '') and (FFax = '') then qrlFone.Caption := 'FONE: ' + NotaUtil.FormatarFone( Fone );
+            // Alterado por Italo em 18/06/2012
+            if (FFax <> '') and (fone = '') then qrlFone.Caption:= 'FAX: ' + FFax;
+            // Alterado por Italo em 18/06/2012
+            if (FFax <> '') and (fone <> '') then qrlFone.Caption:= 'FONE: ' +
+                            NotaUtil.FormatarFone( Fone ) + #13 +'FAX: ' + FFax;
          end;
-
-         if (FLogo <> '') and FilesExists(FLogo) then
-         begin
-             qriLogo.Picture.LoadFromFile(FLogo);
-         end;
-
+       end;
       end;
-      // Danfe
 
+      // Danfe
       qrlEntradaSaida.Caption := tpNFToStr( FNFe.Ide.tpNF );
       qrlNumNF1.Caption       := FormatFloat( '000,000,000', FNFe.Ide.nNF );
       qrlSERIE1.Caption       := IntToStr( FNFe.Ide.serie );
       qrlChave.Caption        := NotaUtil.FormatarChaveAcesso( Copy ( FNFe.InfNFe.Id, 4, 44 ) );
       qrlNatOperacao.Caption  := FNFe.Ide.natOp;
-       SetBarCodeImage( Copy ( FNFe.InfNFe.Id, 4, 44 ), qriBarCode );
+      SetBarCodeImage( Copy ( FNFe.InfNFe.Id, 4, 44 ), qriBarCode );
 
         // Normal **************************************************************
         if FNFe.Ide.tpEmis in [teNormal, teSCAN] then

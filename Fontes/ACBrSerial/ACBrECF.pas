@@ -2985,7 +2985,7 @@ begin
     RodapePafECF := RodapePafECF + #10 + Format(
       'MINAS LEGAL: %s %s %s', [
       OnlyNumber(CNPJ),
-      FormatDateTime('ddmmyyyy', Date),
+      FormatDateTime('ddmmyyyy', DataHora),
       IntToStr(TruncFix(Self.Subtotal * 100))
     ]);
   end;

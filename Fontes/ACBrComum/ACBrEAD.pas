@@ -357,7 +357,7 @@ var
 begin
   Chave := GetChavePrivada;
 
-  if pos('<modulo>', Chave ) > 0 then
+  if pos('<modulo>', String( Chave ) ) > 0 then
      LerChave_eECFc( Chave )
   else
      LerChave(Chave, True) ;
@@ -379,7 +379,7 @@ var
 begin
   Chave := GetChavePublica;
 
-  if pos('<modulo>', Chave ) > 0 then
+  if pos('<modulo>', String( Chave ) ) > 0 then
      LerChave_eECFc( Chave )
   else
      LerChave( Chave, False ) ;
@@ -398,7 +398,7 @@ begin
   SL := TStringList.Create;
   try
      SL.LoadFromFile( ArquivoXML );
-     LerChave_eECFc( SL.Text )
+     LerChave_eECFc( AnsiString( SL.Text ) )
   finally
      SL.Free ;
   end ;
@@ -850,7 +850,7 @@ begin
   MS := TMemoryStream.Create;
   try
     MS.LoadFromFile( NomeArquivo );
-    EAD := RemoveEAD( MS );
+    EAD := AnsiString( RemoveEAD( MS ) );
     if EAD <> '' then
        MS.SaveToFile( NomeArquivo );
   finally
@@ -919,7 +919,7 @@ begin
   MS := TMemoryStream.Create;
   try
     AStringList.SaveToStream( MS );
-    Result := VerificarEAD( MS, EAD );
+    Result := VerificarEAD( MS, String( EAD ) );
   finally
     MS.Free ;
   end ;
@@ -954,7 +954,7 @@ begin
   md_len := trunc(Length(EAD) / 2);
   if md_len <> 128 then
      raise Exception.Create('EAD deve conter 256 caracteres');
-  HexToBin( PAnsiChar(EAD), EAD_crypt, md_len );
+  HexToBin( PAnsiChar(AnsiString(EAD)), EAD_crypt, md_len );
 
   LerChavePublica;
 

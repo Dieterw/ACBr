@@ -38,6 +38,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+20/06/2012
+-- ACBrEAD --
+[-] Acertos gerais que estavam impedindo a validação da assinatura, algo a ver
+    com a conversão de strings e ansistrings
+    (por: Regys Silveira)
+
 23/05/2012
 -- ACBrAAC --
 [+] Adicionado a propriedade virtual "ArquivoInvalido". Após executar um comando

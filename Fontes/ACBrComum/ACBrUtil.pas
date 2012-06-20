@@ -1861,11 +1861,11 @@ end ;
  function FlushFileToDisk( sFile: string): boolean;
  var
    hFile: THandle;
-   bResult: boolean;
-   lastErr: Cardinal;
+   //bResult: boolean;
+   //lastErr: Cardinal;
    filenome: string;
  begin
-   bResult := False;
+   //Result := False;
 
    filenome := '\\.\' + sFile; //Para usar a versão Wide da função CreateFile e aceitar o caminho completo do arquivo
 
@@ -1892,7 +1892,7 @@ end ;
 ////     end;
 //   end;
 
-    bResult := FlushFileBuffers(hFile);
+    Result := FlushFileBuffers(hFile);
 
 //   GetLasError Verifica se houve algum erro na execução de FlushFileBuffers
 //    lastErr := GetLastError();

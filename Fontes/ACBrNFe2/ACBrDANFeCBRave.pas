@@ -261,9 +261,13 @@ begin
   rvPDF.OnDecodeImage:=DANFeRave.RaveDecodeImage;
   rvTXT:=TRvRenderText.Create(DANFeRave);
   rvHTML:=TRvRenderHTML.Create(DANFeRave);
+  {$IFNDEF VER150} 
   rvHTML.OnDecodeImage:=DANFeRave.RaveDecodeImage;
+  {$ENDIF}
   rvRTF:=TRvRenderRTF.Create(DANFeRave);
+  {$IFNDEF VER150}
   rvRTF.OnDecodeImage:=DANFeRave.RaveDecodeImage;
+  {$ENDIF}
   try
     rvPDF.EmbedFonts:=False;
     rvPDF.ImageQuality:=90;

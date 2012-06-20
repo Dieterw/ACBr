@@ -72,9 +72,19 @@ package ACBrNFeDanfeRVCodeBase;
 requires
   rtl,
   designide,
+{$IFDEF VER150} Rave50VCL, {$ENDIF} // D7
+{$IFDEF VER170} Rave60VCL, {$ENDIF} // D2005
+{$IFDEF VER180} 
+   {$IFNDEF VER185} Rave65VCL, {$ENDIF} // D2006
+{$ENDIF}
+{$IFDEF VER185} Rave75VCL, {$ENDIF} // D2007
+{$IFDEF VER190} Rave75VCL, {$ENDIF} // D2007
+{$IFDEF VER200} Rave76VCL, {$ENDIF} // D2009
+{$IFDEF VER210} Rave77VCL, {$ENDIF} // D2010
+{$IFDEF VER220} Rave90VCL, {$ENDIF} // XE
+{$IFDEF VER230} Rave95VCL, {$ENDIF} // XE2
   ACBrComum,
-  ACBr_NFe2,
-  rave90vcl;
+  ACBr_NFe2;
 
 contains
   ACBrDANFeCBRave in '..\..\..\Fontes\ACBrNFe2\ACBrDANFeCBRave.pas',

@@ -81,6 +81,8 @@ type
   TACBrEADCalc = procedure(Arquivo: String) of object ;
   TACBrEADGetChave = procedure(var Chave: AnsiString) of object ;
 
+  EACBrEADException = class(Exception);
+
   { TACBrEAD }
 
   TACBrEAD = class(TComponent)
@@ -322,7 +324,7 @@ begin
    RSAKey := RsaGenerateKey( 1024, RSA_F4, nil, nil);
   {$ENDIF}
   if RSAKey = nil then
-     raise Exception.Create( 'Erro ao gerar par de Chaves RSA');
+     raise EACBrEADException.Create( 'Erro ao gerar par de Chaves RSA');
 
   // Lendo Conteudo da Chave
   BioKey := CriarMemBIO;
@@ -348,7 +350,7 @@ begin
 
   if Result = '' then
      Result := cRFDRSAKey;
-     //raise Exception.Create( ACBrStr('Chave RSA Privada não especificada no evento: "OnGetChavePrivada"') ) ;
+     //raise EACBrEADException.Create( ACBrStr('Chave RSA Privada não especificada no evento: "OnGetChavePrivada"') ) ;
 end ;
 
 procedure TACBrEAD.LerChavePrivada ;
@@ -370,7 +372,7 @@ begin
     fsOnGetChavePublica( Result ) ;
 
   if Result = '' then
-    raise Exception.Create( ACBrStr('Chave RSA Publica não especificada no evento: "OnGetChavePublica"') ) ;
+    raise EACBrEADException.Create( ACBrStr('Chave RSA Publica não especificada no evento: "OnGetChavePublica"') ) ;
 end ;
 
 procedure TACBrEAD.LerChavePublica ;
@@ -393,7 +395,7 @@ begin
   Result := '';
 
   if not FileExists( ArquivoXML ) then
-     raise Exception.Create( ACBrStr(AnsiString('Arquivo: ' + ArquivoXML + ' não encontrado!')) );
+     raise EACBrEADException.Create( ACBrStr(AnsiString('Arquivo: ' + ArquivoXML + ' não encontrado!')) );
 
   SL := TStringList.Create;
   try
@@ -431,11 +433,11 @@ var
 begin
   Modulo := AnsiString(Trim(String(Modulo)));
   if Modulo = '' then
-     raise Exception.Create( ACBrStr('Erro: Modulo não informada') ) ;
+     raise EACBrEADException.Create( ACBrStr('Erro: Modulo não informada') ) ;
 
   Expoente := AnsiString(Trim(String(Expoente)));
   if Expoente = '' then
-     raise Exception.Create( ACBrStr('Erro: Expoente não informado') ) ;
+     raise EACBrEADException.Create( ACBrStr('Erro: Expoente não informado') ) ;
 
   InitOpenSSL ;
 
@@ -444,12 +446,12 @@ begin
   bnExp := BN_new();
   Erro := BN_hex2bn( bnExp, PAnsiChar(Expoente) );
   if Erro < 1 then
-     raise Exception.Create( ACBrStr('Erro: Expoente inválido') ) ;
+     raise EACBrEADException.Create( ACBrStr('Erro: Expoente inválido') ) ;
 
   bnMod := BN_new();
   Erro := BN_hex2bn( bnMod, PAnsiChar(Modulo) );
   if Erro < 1 then
-     raise Exception.Create( ACBrStr('Erro: Modulo inválido') ) ;
+     raise EACBrEADException.Create( ACBrStr('Erro: Modulo inválido') ) ;
 
   {$IFDEF USE_libeay32}
    fsKey := EVP_PKEY_new;
@@ -467,7 +469,7 @@ begin
     Erro := EvpPkeyAssign( fsKey, EVP_PKEY_RSA, RSAKey );
   {$ENDIF}
   if Erro < 1 then
-     raise Exception.Create('Erro ao atribuir Chave lida');
+     raise EACBrEADException.Create('Erro ao atribuir Chave lida');
 end ;
 
 procedure TACBrEAD.LerChave(const Chave : AnsiString; Privada: Boolean) ;
@@ -497,7 +499,7 @@ begin
   end ;
 
   if fsKey = nil then
-     raise Exception.Create('Erro ao ler a Chave');
+     raise EACBrEADException.Create('Erro ao ler a Chave');
 end ;
 
 procedure TACBrEAD.LiberarChave ;
@@ -593,7 +595,7 @@ Var
 begin
   Ver := OpenSSL_Version;
   if pos('1.0',Ver) > 0 then
-     raise Exception.Create( ACBrStr('Método CalcularModuloeExpoente ainda não é '+
+     raise EACBrEADException.Create( ACBrStr('Método CalcularModuloeExpoente ainda não é '+
                                      'compatível com OpenSSL 1.0.0 ou superior'));
 
   LerChavePublica;
@@ -792,7 +794,7 @@ begin
 
     *)
     if md_len <> 128 then
-       raise Exception.Create( 'Erro ao criptografar EAD');
+       raise EACBrEADException.Create( 'Erro ao criptografar EAD');
 
     BinToHex( EADCrypt, md_value_hex, md_len);
     md_value_hex[2 * md_len] := #0;
@@ -806,10 +808,10 @@ end ;
 procedure TACBrEAD.VerificaNomeArquivo( NomeArquivo : String ) ;
 begin
   if ( Trim(NomeArquivo) = '' ) then
-     raise Exception.Create( ACBrStr('Nome do arquivo não informado!') );
+     raise EACBrEADException.Create( ACBrStr('Nome do arquivo não informado!') );
 
   if not FileExists( NomeArquivo ) then
-     raise Exception.Create( ACBrStr(AnsiString('Arquivo: ' + NomeArquivo + ' não encontrado!')) );
+     raise EACBrEADException.Create( ACBrStr(AnsiString('Arquivo: ' + NomeArquivo + ' não encontrado!')) );
 end ;
 
 
@@ -910,7 +912,7 @@ Var
   SLBottom : Integer ;
 begin
   if AStringList.Count < 1 then
-     raise Exception.Create( ACBrStr('Conteudo Informado é vazio' ) );
+     raise EACBrEADException.Create( ACBrStr('Conteudo Informado é vazio' ) );
 
   SLBottom := AStringList.Count-1;                 // Pega a última linha do arquivo,
   EAD := AnsiString( AStringList[ SLBottom ] ) ;   // pois ela contem o EAD, e depois,
@@ -948,12 +950,12 @@ begin
      EAD := copy(EAD,4,Length(EAD));
 
   if EAD = '' then
-     raise Exception.Create( ACBrStr('Registro EAD não informado') );
+     raise EACBrEADException.Create( ACBrStr('Registro EAD não informado') );
 
   // Convertendo o EAD para binário //
   md_len := trunc(Length(EAD) / 2);
   if md_len <> 128 then
-     raise Exception.Create('EAD deve conter 256 caracteres');
+     raise EACBrEADException.Create('EAD deve conter 256 caracteres');
   HexToBin( PAnsiChar(AnsiString(EAD)), EAD_crypt, md_len );
 
   LerChavePublica;
@@ -974,13 +976,13 @@ begin
        // Calculando o MD5 do arquivo sem a linha do EAD salva em "md5_bin" //
        EVP_DigestFinal( @md_ctx, @md5_bin, {$IFNDEF USE_libeay32}@{$ENDIF}md_len);
        if md_len <> 16 then
-          raise Exception.Create('Erro ao calcular MD5 do arquivo sem EAD');
+          raise EACBrEADException.Create('Erro ao calcular MD5 do arquivo sem EAD');
 
        // Descriptografando o EAD //
        md_len := RSA_public_decrypt( 128, @EAD_crypt, @EAD_decrypt,
                                      fsKey.pkey.rsa, RSA_NO_PADDING);
        if md_len <> 128 then
-          raise Exception.Create('Erro ao descriptografar EAD');
+          raise EACBrEADException.Create('Erro ao descriptografar EAD');
 
        Result := (pos( md5_bin, EAD_decrypt ) > 0) ;
     end ;
@@ -991,6 +993,17 @@ begin
          etc, então o MD5 é criptografado antes de rodar a criptografia do RSA
          (sic)... nesse caso não temos como conferir o MD5 a não ser usando a
          DLL do eECFc (que será desenvolvida) }
+       raise EACBrEADException.Create(
+        'Não foi possível verificar a assinatura do arquivo:' + sLineBreak +
+        sLineBreak +
+        'Verifique se a chave informada é mesmo a chave correta antes de continuar.' + sLineBreak +
+        sLineBreak +
+        'Verifique também se o arquivo foi assinado com a DLL de algum fabricante de ' +
+        'impressoras fiscais, os fabricantes de impressoras fiscais criptografam o MD5 ' +
+        'do arquivo antes de efetuar a criptografia para a assinatura EAD o que torna ' +
+        'possível a verificação da assinatura somente utilizando o aplicativo eECFc, ' +
+        'somente este aplicativo possui as rotinas de descriptografia para cada fabricante.'
+       );
     end ;
 
   finally

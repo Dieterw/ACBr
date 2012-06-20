@@ -41,7 +41,9 @@ Símbolo : Significado
 20/06/2012
 -- ACBrEAD --
 [-] Acertos gerais que estavam impedindo a validação da assinatura, algo a ver
-    com a conversão de strings e ansistrings
+    com a conversão de strings e ansistrings.
+[*] Acerto nas exception do EAD e mensagem quando quando não conseguir 
+    validar o EAD
     (por: Regys Silveira)
 
 23/05/2012

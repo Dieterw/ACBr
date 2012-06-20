@@ -85,6 +85,7 @@ type
     ACBrCTeDacteQR_dpk: TCheckBox;
     ACBr_BoletoFC_Fortes_dpk: TCheckBox;
     ACBr_BoletoFC_Quick_dpk: TCheckBox;
+    ACBrNFeDanfeRVCodeBase_dpk: TCheckBox;
     procedure btnPacotesMarcarTodosClick(Sender: TObject);
     procedure btnPacotesDesmarcarTodosClick(Sender: TObject);
     procedure VerificarCheckboxes(Sender: TObject);
@@ -143,8 +144,9 @@ end;
 
 function TframePacotes.IsPacoteNF2(const ANomePacote: String): Boolean;
 const
-  PACOTES_NF2: array [0..4] of String =
-    ('PCN2.dpk', 'ACBr_NFe2.dpk', 'ACBr_CTe.dpk', 'ACBrNFeDanfeFRpkg.dpk', 'ACBrCTeDacteFRpkg.dpk');
+  PACOTES_NF2: array [0..6] of String =
+    ('PCN2.dpk', 'ACBr_NFe2.dpk', 'ACBr_CTe.dpk', 'ACBrNFeDanfeFRpkg.dpk',
+     'ACBrCTeDacteFRpkg.dpk', 'ACBrNFeDanfeRV.dpk', 'ACBrNFeDanfeRVCodeBase.dpk');
 begin
   Result := MatchText(ANomePacote, PACOTES_NF2);
 end;
@@ -166,6 +168,7 @@ begin
     end;
   finally
     FUtilizarBotoesMarcar := False;
+    VerificarCheckboxes(Sender);
   end;
 end;
 
@@ -186,6 +189,7 @@ begin
     end;
   finally
     FUtilizarBotoesMarcar := False;
+    VerificarCheckboxes(Sender);
   end;
 end;
 
@@ -215,6 +219,9 @@ begin
     // Dependencias do ACBrPaf
     if not(ACBr_SPED_dpk.Checked) and ACBr_PAF_dpk.Checked then
       ACBr_SPED_dpk.Checked := True;
+
+    // Dependencia
+    ACBrNFeDanfeRVCodeBase_dpk.Checked := ACBrNFeDanfeRV_dpk.Checked;
   end;
 end;
 

@@ -617,7 +617,6 @@ object framePacotes: TframePacotes
     OnClick = VerificarCheckboxes
   end
   object ACBrNFeDanfeRV_dpk: TCheckBox
-    Tag = 1
     AlignWithMargins = True
     Left = 34
     Top = 292
@@ -628,7 +627,6 @@ object framePacotes: TframePacotes
     Margins.Right = 0
     Margins.Bottom = 0
     Caption = 'ACBrNFeDanfeRV.dpk'
-    Enabled = False
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
@@ -702,6 +700,27 @@ object framePacotes: TframePacotes
     Font.Style = []
     ParentFont = False
     TabOrder = 23
+    OnClick = VerificarCheckboxes
+  end
+  object ACBrNFeDanfeRVCodeBase_dpk: TCheckBox
+    AlignWithMargins = True
+    Left = 34
+    Top = 309
+    Width = 171
+    Height = 17
+    Margins.Left = 25
+    Margins.Top = 0
+    Margins.Right = 0
+    Margins.Bottom = 0
+    Caption = 'ACBrNFeDanfeRVCodeBase.dpk'
+    Enabled = False
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 25
     OnClick = VerificarCheckboxes
   end
 end

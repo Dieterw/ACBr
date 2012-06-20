@@ -517,12 +517,17 @@ begin
   Sender.AddPathOption('LE', sDirBPLPath);
   Sender.AddPathOption('LN', sDirDCPPath);
 
-  // -- Na versão XE2 por motivo da nova tecnologia FireMonkey, deve-se adicionar
-  // -- os prefixos dos nomes, para identificar se será compilado para VCL ou FMX
   with oACBr.Installations[iVersion] do
   begin
+     // -- Path para instalar os pacotes do Rave no D7, nas demais versões
+     // -- o path existe.
+     if VersionNumberStr = 'd7' then
+        Sender.AddPathOption('U', oACBr.Installations[iVersion].RootDir + '\Rave5\Lib');
+
+     // -- Na versão XE2 por motivo da nova tecnologia FireMonkey, deve-se adicionar
+     // -- os prefixos dos nomes, para identificar se será compilado para VCL ou FMX
      if VersionNumberStr = 'd16' then
-       Sender.Options.Add('-NSData.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;Xml;Data;Datasnap;Web;Soap;Winapi;System.Win');
+        Sender.Options.Add('-NSData.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;Xml;Data;Datasnap;Web;Soap;Winapi;System.Win');
   end;
 end;
 

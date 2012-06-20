@@ -9,7 +9,7 @@ uses
 {$R *.res}
 
 begin
-  {$IFDEF VER230}
+  {$IFDEF VER230} // XE2
   ReportMemoryLeaksOnShutdown := DebugHook <> 0;
   {$ENDIF}
   Application.Initialize;

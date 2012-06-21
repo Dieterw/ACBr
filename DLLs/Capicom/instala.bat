@@ -1,6 +1,6 @@
 
 
-if EXIST %windir%\SysWOW64\x64 goto Win64
+if EXIST %windir%\SysWOW64 goto Win64
 
 :Win32
 ECHO *** Copiando as DLLs ***

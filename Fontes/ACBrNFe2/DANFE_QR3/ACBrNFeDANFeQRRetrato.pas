@@ -1308,6 +1308,12 @@ begin
         qriLogo.Picture.LoadFromFile(FLogo);
        end;
 
+      // Alterado a posição por Italo em 22/06/2012
+      // conforme problema detectado por Wilson
+      qrlCNPJ.Caption              := NotaUtil.FormatarCNPJ( FNFe.Emit.CNPJCPF  );
+      qrlInscrEstSubst.caption     := FNFe.Emit.IEST;
+      qrlInscricaoEstadual.Caption := FNFe.Emit.IE;
+
       // Inclido por Italo em 18/06/2012
       if FExpandirLogoMarca then
        begin
@@ -1330,10 +1336,7 @@ begin
         // Emitente
         with FNFe.Emit do
         begin
-         qrlCNPJ.Caption              := NotaUtil.FormatarCNPJ( CNPJCPF  );
-         qrlInscrEstSubst.caption     := IEST;
-         qrlInscricaoEstadual.Caption := IE;
-         qrmEmitente.Lines.Text       := XNome;
+         qrmEmitente.Lines.Text := XNome;
          with EnderEmit do
          begin
             qrmEndereco.Lines.Clear;

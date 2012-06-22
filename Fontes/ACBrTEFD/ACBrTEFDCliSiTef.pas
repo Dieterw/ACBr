@@ -798,6 +798,13 @@ var
   Interromper, Digitado, GerencialAberto, FechaGerencialAberto, ImpressaoOk,
      HouveImpressao, Voltar : Boolean ;
   Est : AnsiChar;
+
+  function ProcessaMensagemTela( AMensagem : String ) : String ;
+  begin
+    Result := StringReplace( AMensagem, '@', sLineBreak, [rfReplaceAll] );
+    Result := StringReplace( Result, '/n', sLineBreak, [rfReplaceAll] );
+  end;
+
 begin
    Result           := 0;
    ProximoComando   := 0;
@@ -955,20 +962,20 @@ begin
 
                  1 :
                    begin
-                     MensagemOperador := Mensagem;
+                     MensagemOperador := ProcessaMensagemTela( Mensagem );
                      DoExibeMsg( opmExibirMsgOperador, MensagemOperador ) ;
                    end ;
 
                  2 :
                    begin
-                     MensagemCliente := Mensagem;
+                     MensagemCliente := ProcessaMensagemTela( Mensagem );
                      DoExibeMsg( opmExibirMsgCliente, MensagemCliente ) ;
                    end;
 
                  3 :
                    begin
-                     MensagemOperador := Mensagem;
-                     MensagemCliente  := Mensagem;
+                     MensagemOperador := ProcessaMensagemTela( Mensagem );
+                     MensagemCliente  := MensagemOperador;
                      DoExibeMsg( opmExibirMsgOperador, MensagemOperador ) ;
                      DoExibeMsg( opmExibirMsgCliente, MensagemCliente ) ;
                    end ;

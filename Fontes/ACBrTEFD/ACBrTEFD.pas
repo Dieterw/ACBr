@@ -585,6 +585,7 @@ begin
         raise EACBrTEFDECF.Create(E.Message);
   end;
   Result := upcase( padL(Retorno,1)[1] );
+  fTefClass.GravaLog( 'EstadoECF: '+Result ) ;
 
   if not (Result in ['L','V','P','C','G','R','N','O']) then
      raise EACBrTEFDECF.Create(

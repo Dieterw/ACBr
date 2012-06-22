@@ -1346,13 +1346,17 @@ begin
   if (LeftStr(Retorno,7) = #2 + #128 + #3 + '0085') then
   begin
      // DEBUG //
-     //GravaLog( 'Resposta Intermediaria detectada: ' +Retorno, True );
+     GravaLog( 'Resposta Intermediaria detectada: ' +Retorno, True );
      Retorno     := Copy(Retorno, 8, LenRet );
      LenRet      := Length(Retorno) ;
      fsBytesIn   := LenRet;
      Result      := BlocoEValido ; // Re-avalia o Retorno restante
-     //if not Result then
-        //GravaLog( '     Ignorada', True );
+     if not Result then
+        GravaLog( '     Ignorada', True );
+
+     // NOTA: No caso de FIM DE PAPEL, o ECF Epson pode ficar retornando
+     // resposta intermediária indefinidamente, o que causa um Loop Infinito
+     // ...verificando com o suporte da Epson a melhor solução
   end ;
 
   if Result then

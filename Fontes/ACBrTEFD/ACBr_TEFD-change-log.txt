@@ -47,6 +47,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data:  22/06/2012
+-- ACBrTEFDCliSiTef -
+[*] Ajuste na exibição da Mensagem do Operador e Usuário (campos 1,2 e 3) para
+    suportar a quebra de linha com '@' ou '/n' introduzida no teste 58  (por:DSA)
+
 Data:  23/05/2012
 -- ACBrTEFDClass -
 [*] Transação CNC modificada para informar TipoPessoa apenas se o mesmo existir

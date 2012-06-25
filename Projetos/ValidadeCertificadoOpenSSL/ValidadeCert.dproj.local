@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2010/03/02 08:35:25.314.pas,C:\Documents and Settings\KIKO\Meus documentos\RAD Studio\Projects\Unit1.pas=C:\Documents and Settings\KIKO\Desktop\ValidadeCertificado\uValidadeCert.pas</Transaction>
+    <Transaction>2010/03/02 08:35:25.314.dfm,C:\Documents and Settings\KIKO\Meus documentos\RAD Studio\Projects\Unit1.dfm=C:\Documents and Settings\KIKO\Desktop\ValidadeCertificado\uValidadeCert.dfm</Transaction>
+    <Transaction>2010/03/02 08:35:35.088.dproj,C:\Documents and Settings\KIKO\Meus documentos\RAD Studio\Projects\Project1.dproj=C:\Documents and Settings\KIKO\Desktop\ValidadeCertificado\ValidadeCert.dproj</Transaction>
+  </Transactions>
+</BorlandProject>

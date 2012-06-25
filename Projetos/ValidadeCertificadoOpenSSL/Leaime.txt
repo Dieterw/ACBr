@@ -1,0 +1,20 @@
+EXEMPLO DE COMO PEGAR VALIDADE DE CERTIFICADO DIGITAL COM OPENSSL
+Criado com Delphi 2007
+-----------------------------------------------------------------
+
+São 4 arquivos essenciais para identificar a validade:
+openssl.exe
+openssl.cfg
+SSLEAY32.DLL
+LIBEAY32.DLL
+
+Estes dois últimos são versões diferentes dos que acompanham o componente.
+
+Todos os arquivos estão na pasta do projeto.
+
+IMPORTANTE:
+Se der erro para identificar a validade, tente copiar a pasta do projeto para o C:
+e realizar o teste novamente.
+
+
+João Henrique de Souza

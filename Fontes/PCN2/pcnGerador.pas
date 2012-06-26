@@ -149,6 +149,7 @@ const
   V1_07 = 'versao="1.07"';
   V1_10 = 'versao="1.10"';
   V2_00 = 'versao="2.00"';
+  V2_01 = 'versao="2.01"';
 
  // Incluido por Italo em 03/08/2011
   VM_Rodo_1_04  = 'versaoModal="1.04"';

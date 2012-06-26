@@ -118,7 +118,19 @@ begin
      Gerador.wGrupo('/consSitNFe');
      Result := (Gerador.ListaDeAlertas.Count = 0);
    end
-end;
+  else if retornarVersaoLayout(Fschema, tlConsSitNFe) = '2.01' then
+   begin
+     Gerador.ArquivoFormatoXML := '';
+     Gerador.wGrupo('consSitNFe ' + NAME_SPACE + ' ' + V2_01);
+     Gerador.wCampo(tcStr, 'EP03', 'tpAmb', 001, 001, 1, tpAmbToStr(FtpAmb), DSC_TPAMB);
+     Gerador.wCampo(tcStr, 'EP04', 'xServ', 009, 009, 1, 'CONSULTAR', DSC_XSERV);
+     Gerador.wCampo(tcEsp, 'EP05', 'chNFe', 044, 044, 1, FchNFe, DSC_CHNFe);
+     Gerador.wGrupo('/consSitNFe');
+     Result := (Gerador.ListaDeAlertas.Count = 0);
+   end
+
+
+   end;
 
 
 end.

@@ -160,7 +160,7 @@ const
   NFeconsStatServ = '2.00';
   NFenviNFe       = '2.00';
   NFeconsReciNFe  = '2.00';
-  NFeconsSitNFe   = '2.00';
+  NFeconsSitNFe   = '2.01';
   NFecancNFe      = '2.00';
   NFeinutNFe      = '2.00';
   NFeconsCad      = '2.00';

@@ -409,7 +409,7 @@ begin
     if Layout = tlConsReciNFe then
       Result := '2.00';
     if Layout = tlConsSitNFe then
-      Result := '2.00';
+      Result := '2.01';
     if Layout = tlConsStatServ then
       Result := '2.00';
     if Layout = tlInutNFe then
@@ -431,7 +431,7 @@ begin
     if Layout = tlRetConsStatServ then
       Result := '2.00';
     if Layout = tlRetConsSitNFe then
-      Result := '2.00';
+      Result := '2.01';
     if Layout = tlRetEnvNFe then
       Result := '2.00';
     if Layout = tlRetInutNFe then

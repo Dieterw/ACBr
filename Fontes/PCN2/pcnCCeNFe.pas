@@ -175,8 +175,8 @@ begin
      for i:= 0 to Evento.Count - 1 do
       begin
         Evento.Items[i].InfEvento.id := 'ID110110' + SomenteNumeros(Evento.Items[i].InfEvento.chNFe) + Format('%.2d', [Evento.Items[i].InfEvento.nSeqEvento]);
-
-        Gerador.wGrupo('evento ' + V1_00);
+		
+        Gerador.wGrupo('evento ' + NAME_SPACE + ' ' + V1_00);
         Gerador.wGrupo('infEvento Id="' + Evento.Items[i].InfEvento.id + '"');
         if Length(Evento.Items[i].InfEvento.id) < 54 then
           Gerador.wAlerta('HP07', 'ID', '', 'ID de carta de correção inválido');

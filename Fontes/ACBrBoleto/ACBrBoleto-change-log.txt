@@ -98,6 +98,12 @@ Versao 0.0.10a do FortesReport 06/07/11
 [*] Acertos na classe do HSBC, testado e funcionando para 
     cobrança não registrada.
     (por: Regys Silveira) 
+	
+Versao 0.0.36a 28/06/2012	
+[*] Unit Sicred - Correção do Calculo do Digito Verificador do Nosso Número.(André Luiz)
+
+[*] Unit HSBC - Correção da montagem do Código do Cedente.(Ronaldo Eiz)	
+	
 
 Versao 0.0.35a 15/08/2012	
 [*] Unit Santander - Adicionado registro das Mensagens ao Sacado para a Remessa

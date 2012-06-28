@@ -87,10 +87,7 @@ begin
                        ACBrTitulo.NossoNumero;
    Modulo.Calcular;
 
-   if Modulo.ModuloFinal = 1 then
-      Result := '1'
-   else
-      if Modulo.DigitoFinal > 9 then
+   if (Modulo.DigitoFinal > 9) then
          result := '0'
       else
          Result := IntToStr(Modulo.DigitoFinal);

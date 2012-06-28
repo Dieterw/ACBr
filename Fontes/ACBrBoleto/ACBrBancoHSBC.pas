@@ -158,7 +158,6 @@ function TACBrBancoHSBC.MontarCampoCodigoCedente (
 begin
    Result :=
      ACBrTitulo.ACBrBoleto.Cedente.Agencia + ' ' +
-     ACBrTitulo.ACBrBoleto.Cedente.Conta +
      ACBrTitulo.ACBrBoleto.Cedente.ContaDigito;
 end;
 

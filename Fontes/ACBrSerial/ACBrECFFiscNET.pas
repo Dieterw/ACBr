@@ -893,7 +893,7 @@ begin
      EnviaComando ;
 
      fsNumECF := IntToStrZero(  StrToIntDef(
-                     FiscNETResposta.Params.Values['ValorInteiro'],0 ), 4) ;
+                     FiscNETResposta.Params.Values['ValorInteiro'],0 ), 5) ;
   end ;
 
   Result := fsNumECF ;

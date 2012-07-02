@@ -326,6 +326,7 @@ type
     N43: TMenuItem;
     DAV1: TMenuItem;
     DAVOS1: TMenuItem;
+    NumerodeReduesZrestantes1: TMenuItem;
     procedure cbxModeloChange(Sender: TObject);
     procedure Sair1Click(Sender: TObject);
     procedure bAtivarClick(Sender: TObject);
@@ -520,6 +521,7 @@ type
     procedure SubModelo1Click(Sender: TObject);
     procedure DAV1Click(Sender: TObject);
     procedure DAVOS1Click(Sender: TObject);
+    procedure NumerodeReduesZrestantes1Click(Sender: TObject);
   private
     { Private declarations }
     Function Converte( cmd : String) : String;
@@ -3759,6 +3761,11 @@ begin
   finally
     FormasPagamento.Free;
   end;
+end;
+
+procedure TForm1.NumerodeReduesZrestantes1Click(Sender: TObject);
+begin
+  ShowMessage(ACBrECF1.NumReducoesZRestantes);  
 end;
 
 end.

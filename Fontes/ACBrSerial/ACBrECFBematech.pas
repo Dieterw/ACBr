@@ -402,6 +402,7 @@ TACBrECFBematech = class( TACBrECFClass )
     function GetNumNCN: String; override ;
     function GetNumCCDC: String; override ;
     function GetVendaBruta: Double; override ;
+    function GetNumReducoesZRestantes: String; override ;
 
     function GetTotalAcrescimos: Double; override ;
     function GetTotalCancelamentos: Double; override ;
@@ -2631,6 +2632,18 @@ begin
   end ;
 
   Result :=  RoundTo( GrandeTotal - Result, -2) ;
+end;
+
+function TACBrECFBematech.GetNumReducoesZRestantes: String;
+var
+  RetCmd: AnsiString ;
+begin
+  Result := '';
+
+  if fpMFD then
+    RetCmd := RetornaInfoECF( '59' ) ;
+
+  Result := RetCmd;
 end;
 
 function TACBrECFBematech.GetNumCOOInicial: String;

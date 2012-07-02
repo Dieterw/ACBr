@@ -564,6 +564,7 @@ TACBrECFClass = class
     function GetNumVersao: String ; virtual ;
     function GetSubTotal: Double; virtual ;
     function GetTotalPago: Double; virtual ;
+    function GetNumReducoesZRestantes: String; virtual;
 
     function GetCNPJ: String; virtual ;
     function GetIE: String; virtual ;
@@ -747,6 +748,7 @@ TACBrECFClass = class
     Property NumSerie  : String    read GetNumSerie  ;
     Property NumSerieMFD  : String read GetNumSerieMFD  ;
     Property NumVersao : String    read GetNumVersao ;
+    Property NumReducoesZRestantes: String read GetNumReducoesZRestantes ;
 
     { Dados da Reducao Z - Registro 60M }
     Property DataMovimento      : TDateTime  read GetDataMovimento ;
@@ -2312,6 +2314,10 @@ begin
   Result := ''
 end;
 
+function TACBrECFClass.GetNumReducoesZRestantes: String;
+begin
+    Result := ''
+end;
 function TACBrECFClass.GetSubTotal: Double;
 begin
   Result := 0 ;

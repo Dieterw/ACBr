@@ -126,6 +126,7 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
     function GetSubModeloECF: String; override ;    
     function GetSubTotal: Double; override ;
     function GetTotalPago: Double; override ;
+    function GetNumReducoesZRestantes: String; override;
 
     function GetEstado: TACBrECFEstado; override ;
     function GetGavetaAberta: Boolean; override ;
@@ -1130,6 +1131,11 @@ end;
 function TACBrECFSwedaSTX.GetNumCCF: String;
 begin
   Result := Trim(copy( RetornaInfoECF( 'A4' ), 21, 6)) ;
+end;
+
+function TACBrECFSwedaSTX.GetNumReducoesZRestantes: String;
+begin
+  Result := '';
 end;
 
 function TACBrECFSwedaSTX.GetNumLoja: String;

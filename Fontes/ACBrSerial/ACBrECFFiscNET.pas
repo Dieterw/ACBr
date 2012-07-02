@@ -232,6 +232,7 @@ TACBrECFFiscNET = class( TACBrECFClass )
 
     Function VerificaFimLeitura(var Retorno: AnsiString;
        var TempoLimite: TDateTime) : Boolean ; override ;
+    function GetNumReducoesZRestantes: String; override;
 
  public
     Constructor create( AOwner : TComponent  )  ;
@@ -817,6 +818,17 @@ begin
 
   Result := IntToStrZero(  StrToIntDef(
                   FiscNETResposta.Params.Values['ValorInteiro'],0 ), 6) ;
+end;
+
+function TACBrECFFiscNET.GetNumReducoesZRestantes: String;
+begin
+  FiscNETComando.NomeComando := 'LeInteiro' ;
+  FiscNETComando.AddParamString('NomeInteiro','CRZRestantes') ;
+  EnviaComando ;
+
+  Result := IntToStrZero(  StrToIntDef(
+                  FiscNETResposta.Params.Values['ValorInteiro'],0 ), 6) ;
+
 end;
 
 function TACBrECFFiscNET.GetNumCRO: String;

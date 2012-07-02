@@ -215,6 +215,7 @@ type
     MenuItem27 : TMenuItem ;
     MenuItem28: TMenuItem;
     MenuItem29: TMenuItem;
+    MenuItem30: TMenuItem;
     miEstornoCCD : TMenuItem ;
     miTipoUltimoDoc : TMenuItem ;
     mValorTotalNaoFiscal : TMenuItem ;
@@ -464,6 +465,7 @@ type
     procedure MenuItem21Click(Sender : TObject) ;
     procedure MenuItem23Click(Sender : TObject) ;
     procedure MenuItem29Click(Sender: TObject);
+    procedure MenuItem30Click(Sender: TObject);
     procedure miEstornoCCDClick(Sender : TObject) ;
     procedure miTipoUltimoDocClick(Sender : TObject) ;
     procedure mLerTotaisRelatoriosGerenciaisClick(Sender : TObject) ;
@@ -1762,6 +1764,12 @@ begin
   mResp.Lines.Add( 'Decimais Preço Unit: ( '+ IntToStr(ACBrECF1.DecimaisPreco)+' )' );
   AtualizaMemos ;
 
+end;
+
+procedure TForm1.MenuItem30Click(Sender: TObject);
+begin
+  // número de reduções Z restantes
+  ShowMessage(ACBrECF1.NumReducoesZRestantes);
 end;
 
 procedure TForm1.miEstornoCCDClick(Sender : TObject) ;

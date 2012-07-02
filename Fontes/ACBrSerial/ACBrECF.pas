@@ -261,6 +261,7 @@ TACBrECF = class( TACBrComponent )
     function GetNumSerieClass: String;
     function GetNumSerieMFDClass: String;
     function GetNumVersaoClass: String;
+    function GetNumReducoesZRestantesClass: String;
     function GetEstadoClass: TACBrECFEstado;
     function GetPoucoPapelClass: Boolean;
     function GetChequeProntoClass: Boolean;
@@ -421,6 +422,7 @@ TACBrECF = class( TACBrComponent )
     Property NumSerie  : String    read GetNumSerieClass ;
     Property NumSerieMFD  : String read GetNumSerieMFDClass ;
     Property NumVersao : String    read GetNumVersaoClass;
+    Property NumReducoesZRestantes: String read GetNumReducoesZRestantesClass;
 
     { Dados da Reducao Z - Registro 60M }
     Property DadosReducaoZ : AnsiString  read GetDadosReducaoZ ;
@@ -1843,6 +1845,12 @@ function TACBrECF.GetNumVersaoClass: String;
 begin
   ComandoLOG := 'NumVersao' ;
   Result := fsECF.NumVersao ;
+end;
+
+function TACBrECF.GetNumReducoesZRestantesClass: String;
+begin
+  ComandoLOG := 'NumReducoesZRestantes' ;
+  Result := fsECF.NumReducoesZRestantes ;
 end;
 
 function TACBrECF.EmLinha(lTimeOut: Integer): Boolean;

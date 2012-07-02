@@ -124,6 +124,7 @@ TACBrECFDaruma = class( TACBrECFClass )
     function GetNumVersao: String; override ;
     function GetSubTotal: Double; override ;
     function GetTotalPago: Double; override ;
+    function GetNumReducoesZRestantes: String; override ;
 
     function GetEstado: TACBrECFEstado; override ;
     function GetGavetaAberta: Boolean; override ;
@@ -1215,6 +1216,12 @@ begin
     Result := GetNumCupom;
 end;
 
+function TACBrECFDaruma.GetNumReducoesZRestantes: String;
+begin
+  Result := '' ;
+  if fpMFD then
+    Result :=  RetornaInfoECF('25');
+end;
 
 function TACBrECFDaruma.GetNumGNF: String;
  Var RetCmd : AnsiString ;
@@ -4360,7 +4367,7 @@ function TACBrECFDaruma.DecodificaTexto(Operacao: Char; Texto: String;
 Var
   RetCmd : AnsiString ;
 begin
-   Result := False;
+   //Result := False;
    if (fpMFD) then
    begin
       if ( (fsModeloDaruma in [fs600, fs600USB]) and (StrToInt(fsNumVersao) > 10400) ) or

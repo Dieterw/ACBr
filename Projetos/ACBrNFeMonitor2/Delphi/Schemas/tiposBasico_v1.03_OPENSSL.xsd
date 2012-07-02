@@ -1,4 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- PL_006h - 13/05/11 - correções da NT 2011/004  // v2.0-->
 <!-- PL_006f - 29/05/10 - correcao do tipo TDec_1504 para limitar a quantidade de decimais para 4  // v2.0-->
 <!-- PL_006f - 09/05/10 - eliminação da possibilidade informar a Inscrição produtor rural na IEDest  // v2.0-->
 <!-- PL_006d - 04/10/09 - alterada a ordem do pattern do TIE - adequacao libxml  // v2.0-->
@@ -227,7 +228,7 @@
 		</xs:annotation>
 		<xs:restriction base="xs:string">
 			<xs:whiteSpace value="preserve"/>
-			<xs:pattern value="0|0\.[0-9]{4}|[1-9]{1}[0-9]{0,11}(\.[0-9]{4})?"/>
+			<xs:pattern value="0|0\.[0-9]{1,4}|[1-9]{1}[0-9]{0,11}|[1-9]{1}[0-9]{0,11}(\.[0-9]{1,4})?"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="TDec_1204Opc">
@@ -266,13 +267,13 @@
 			<xs:pattern value="0|0\.[0-9]{1,10}|[1-9]{1}[0-9]{0,10}|[1-9]{1}[0-9]{0,10}(\.[0-9]{1,10})?"/>
 		</xs:restriction>
 	</xs:simpleType>
-	<xs:simpleType name="TDec_1504">
+	<xs:simpleType name="TDec_1104v">
 		<xs:annotation>
-			<xs:documentation>Tipo Decimal com até 19 dígitos, sendo 15 de corpo e até 4 decimais  // aperfeiçoamento v2.0</xs:documentation>
+			<xs:documentation>Tipo Decimal com até 15 dígitos, sendo 11 de corpo e até 4 decimais  // aperfeiçoamento v2.0</xs:documentation>
 		</xs:annotation>
 		<xs:restriction base="xs:string">
 			<xs:whiteSpace value="preserve"/>
-			<xs:pattern value="0|0\.[0-9]{1,4}|[1-9]{1}[0-9]{0,14}|[1-9]{1}[0-9]{0,14}(\.[0-9]{1,4})?"/>
+			<xs:pattern value="0|0\.[0-9]{1,4}|[1-9]{1}[0-9]{0,10}|[1-9]{1}[0-9]{0,10}(\.[0-9]{1,4})?"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="TIeDest">
@@ -281,7 +282,7 @@
 		</xs:annotation>
 		<xs:restriction base="xs:string">
 			<xs:whiteSpace value="preserve"/>
-			<xs:pattern value="[0-9]{0,14}|ISENTO"/>
+			<xs:pattern value="ISENTO|[0-9]{0,14}"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="TIeST">
@@ -342,8 +343,11 @@ acrescentado:
 9946 A DESIGNAR                            
 9950 BANCOS CENTRAIS                       
 9970 ORGANIZACOES INTERNACIONAIS
-
  // PL_005b - 24/10/08
+ // Acrescentado:
+ 4235 - LEBUAN,ILHAS
+ 4885 - MAYOTTE (ILHAS FRANCESAS)  
+// NT2011/004
  acrescentado a tabela de paises</xs:documentation>
 		</xs:annotation>
 		<xs:restriction base="xs:string">
@@ -490,6 +494,7 @@ acrescentado:
 			<xs:enumeration value="4030"/>
 			<xs:enumeration value="4111"/>
 			<xs:enumeration value="4200"/>
+			<xs:enumeration value="4235"/>
 			<xs:enumeration value="4260"/>
 			<xs:enumeration value="4278"/>
 			<xs:enumeration value="4316"/>
@@ -513,6 +518,7 @@ acrescentado:
 			<xs:enumeration value="4774"/>
 			<xs:enumeration value="4855"/>
 			<xs:enumeration value="4880"/>
+			<xs:enumeration value="4885"/>
 			<xs:enumeration value="4901"/>
 			<xs:enumeration value="4936"/>
 			<xs:enumeration value="4944"/>

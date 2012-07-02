@@ -52,7 +52,7 @@ uses
   frxClass, frxDBSet, frxBarcode, frxExportHTML, frxExportPDF;
 
 const
-  CACBrBoletoFCFR_Versao = '0.0.9a';
+  CACBrBoletoFCFR_Versao = '0.0.10a';
 
 type
   EACBrBoletoFCFR = class(Exception);
@@ -273,7 +273,10 @@ begin
       begin
          Append;
          FieldByName('Numero').AsString  := FormatFloat('000', Banco.Numero);
-         FieldByName('Digito').AsInteger := Banco.Digito;
+         if (Banco.Digito >= 10) then
+            FieldByName('Digito').AsString := 'X'
+         else
+            FieldByName('Digito').AsString := IntToStrZero(Banco.Digito, 1);
          FieldByName('Nome').AsString    := Banco.Nome;
          FieldByName('DirLogo').AsString := DirLogo;
          Post;

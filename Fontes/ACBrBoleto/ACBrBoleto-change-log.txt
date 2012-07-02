@@ -65,10 +65,13 @@ Símbolo : Significado
 Versao 0.0.1 do FastReport 05/08/11
 [-] Lançado a 1a versão para impressão dos boletos em FastReport.
     (por: Isaque Pinheiro)
+	
+Versao 0.0.10a do FastReport 02/07/12
+[-] Lançado a 1a versão para impressão dos boletos em FastReport.
+    (por: Isaque Pinheiro)	
 
 Versao 0.0.9a do QuickReport 07/07/11
-[-] Corrigido problema ao imprimir apartir da tela do preview.
-    (Rick Nelson)
+[-] Corrigido impressão do digito verificador do Numero do Banco para bancos com digito maior que 9.(André Luiz)
 
 Versao 0.1.1a do LazReport 02/08/11
 [+] Adicionado campos Outras Deduções e Outros Acréscimos ao boleto, conforme

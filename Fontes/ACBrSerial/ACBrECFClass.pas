@@ -2315,9 +2315,38 @@ begin
 end;
 
 function TACBrECFClass.GetNumReducoesZRestantes: String;
+var
+  CRZR: String;
+  I: Integer;
+  LeituraX: TStringList;
+  Linha: String;
 begin
-    Result := ''
+  // implementada a leitura do contador pela leitura X para suprir
+  // as impressoras que não possuem retorno do contador
+  // nas impressoras que possuem, sobrescrever o método e utilizar o
+  // comando apropriado
+  CRZR := '';
+  LeituraX := TStringList.Create;
+  try
+    LeituraXSerial(LeituraX);
+
+    for I := LeituraX.Count - 1 downto 0 do
+    begin
+      Linha := AnsiUpperCase(LeituraX[I]);
+      if pos('REDUÇÕES RESTANTES:', Linha) > 0 then
+      begin
+        CRZR := Trim(Copy(Linha, 30, 40));
+        CRZR := ACBrUtil.OnlyNumber(CRZR);
+        Break;
+      end;
+    end;
+  finally
+    LeituraX.Free;
+  end;
+
+  Result := Trim( CRZR ) ;
 end;
+
 function TACBrECFClass.GetSubTotal: Double;
 begin
   Result := 0 ;

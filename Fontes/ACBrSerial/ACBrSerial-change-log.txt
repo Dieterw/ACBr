@@ -97,6 +97,14 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 03/07/2012
+-- ACBrECF --
+[+] Implementado o contador de reduções Z restantes baseado na leitura X, 
+    implementei no ACBrECF assim vai valer para todas as impressoras que
+    não possuem esse registrador, nas impressoras que possuem sobrescrever o 
+    método e utilizar o registrador próprio.
+    (por: Régys Silveira)
+
 Data: 02/07/2012
 -- ACBrECF --
 [+] Adicionado contador que retorna o numero de reduções z restantes na 

@@ -233,7 +233,7 @@ begin
                '0'                                     + //8 - Tipo de registro - Registro header de arquivo
                padL('', 9, ' ')                        + //9 a 17 Uso exclusivo FEBRABAN/CNAB
                ATipoInscricao                          + //18 - Tipo de inscrição do cedente
-               padL(CNPJCPF, 14, '0')                  + //19 a 32 -Número de inscrição do cedente
+               padL(OnlyNumber(CNPJCPF), 14, '0')                  + //19 a 32 -Número de inscrição do cedente
                //padL(CodigoCedente, 18, '0') + '  '     + //33 a 52 - Código do convênio no banco [ Alterado conforme instruções da CSO Brasília ] 27-07-09
                padL('',20, '0')                        +  //33 a 52 - Código do convênio no banco
                padR(Agencia, 5, '0')                   + //53 a 57 - Código da agência do cedente

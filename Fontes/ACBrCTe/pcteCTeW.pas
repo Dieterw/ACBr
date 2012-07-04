@@ -805,7 +805,7 @@ begin
     Gerador.wGrupo('/infNFe');
   end;
   if CTe.Rem.InfNFE.Count > 990 then
-    Gerador.wAlerta('#158', 'nfNFe', DSC_INFNFE, ERR_MSG_MAIOR_MAXIMO + '990');
+    Gerador.wAlerta('#158', 'infNFe', DSC_INFNFE, ERR_MSG_MAIOR_MAXIMO + '990');
 end;
 
 procedure TCTeW.GerarInfOutros;

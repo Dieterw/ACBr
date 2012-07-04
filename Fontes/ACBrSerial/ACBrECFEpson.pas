@@ -200,6 +200,7 @@ TACBrECFEpson = class( TACBrECFClass )
     function GetNumVersao: String; override ;
     function GetSubTotal: Double; override ;
     function GetTotalPago: Double; override ;
+    function GetNumReducoesZRestantes: String; override ;
 
     function GetEstado: TACBrECFEstado; override ;
     function GetGavetaAberta: Boolean; override ;
@@ -1554,6 +1555,14 @@ begin
            raise ;
      end ;
   end ;
+end;
+
+function TACBrECFEpson.GetNumReducoesZRestantes: String;
+begin
+  EpsonComando.Comando := '080A' ;
+  EnviaComando ;
+
+  Result := EpsonResposta.Params[7] ;
 end;
 
 function TACBrECFEpson.GetSubTotal: Double;

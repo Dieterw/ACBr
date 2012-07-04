@@ -1768,8 +1768,9 @@ end;
 
 procedure TForm1.MenuItem30Click(Sender: TObject);
 begin
-  // número de reduções Z restantes
-  ShowMessage(ACBrECF1.NumReducoesZRestantes);
+  mResp.Lines.Add( 'NumReducoesZRestantes: '+ACBrECF1.NumReducoesZRestantes );
+
+  AtualizaMemos;
 end;
 
 procedure TForm1.miEstornoCCDClick(Sender : TObject) ;

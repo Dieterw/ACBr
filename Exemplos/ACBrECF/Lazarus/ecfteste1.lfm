@@ -4,7 +4,7 @@ object Form1: TForm1
   Top = 252
   Width = 547
   Caption = 'Teste de Impressora Fiscal'
-  ClientHeight = 384
+  ClientHeight = 383
   ClientWidth = 547
   Constraints.MinHeight = 400
   Constraints.MinWidth = 440
@@ -153,11 +153,11 @@ object Form1: TForm1
   Menu = MainMenu1
   OnCreate = FormCreate
   Position = poScreenCenter
-  LCLVersion = '0.9.31'
+  LCLVersion = '1.1'
   object StatusBar1: TStatusBar
     Left = 0
-    Height = 20
-    Top = 364
+    Height = 23
+    Top = 360
     Width = 547
     Panels = <    
       item
@@ -170,7 +170,7 @@ object Form1: TForm1
   end
   object PageControl1: TPageControl
     Left = 0
-    Height = 324
+    Height = 320
     Top = 0
     Width = 547
     ActivePage = TabSheet4
@@ -179,7 +179,7 @@ object Form1: TForm1
     TabOrder = 0
     object TabSheet4: TTabSheet
       Caption = 'ECF'
-      ClientHeight = 298
+      ClientHeight = 294
       ClientWidth = 539
       ImageIndex = 3
       object SbArqLog: TSpeedButton
@@ -188,7 +188,6 @@ object Form1: TForm1
         Top = 216
         Width = 24
         Caption = '...'
-        NumGlyphs = 0
         OnClick = SbArqLogClick
       end
       object Label1: TLabel
@@ -276,7 +275,7 @@ object Form1: TForm1
       end
       object chTentar: TCheckBox
         Left = 20
-        Height = 17
+        Height = 19
         Top = 66
         Width = 109
         Caption = 'Tentar Novamente'
@@ -285,7 +284,7 @@ object Form1: TForm1
       end
       object chBloqueia: TCheckBox
         Left = 20
-        Height = 17
+        Height = 19
         Top = 88
         Width = 138
         Caption = 'Bloqueia Mouse Teclado'
@@ -296,7 +295,7 @@ object Form1: TForm1
       end
       object chExibeMsg: TCheckBox
         Left = 20
-        Height = 17
+        Height = 19
         Top = 111
         Width = 121
         Caption = 'Exibe Msg Aguarde...'
@@ -307,7 +306,7 @@ object Form1: TForm1
       end
       object chArredondaPorQtd: TCheckBox
         Left = 188
-        Height = 17
+        Height = 19
         Top = 66
         Width = 174
         Caption = 'Arredondamento por Quantidade'
@@ -316,7 +315,7 @@ object Form1: TForm1
       end
       object chGavetaSinalInvertido: TCheckBox
         Left = 188
-        Height = 17
+        Height = 19
         Top = 88
         Width = 125
         Caption = 'Gaveta Sinal Invertido'
@@ -401,7 +400,6 @@ object Form1: TForm1
           FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
         }
         ModalResult = 1
-        NumGlyphs = 0
         OnClick = btSerialClick
         TabOrder = 11
       end
@@ -443,7 +441,7 @@ object Form1: TForm1
       end
       object chDescricaoGrande: TCheckBox
         Left = 188
-        Height = 17
+        Height = 19
         Top = 134
         Width = 106
         Caption = 'Descrição Grande'
@@ -454,7 +452,7 @@ object Form1: TForm1
       end
       object chArredondamentoItemMFD: TCheckBox
         Left = 188
-        Height = 17
+        Height = 19
         Top = 111
         Width = 147
         Caption = 'Arredondamento Item MFD'
@@ -483,7 +481,7 @@ object Form1: TForm1
       end
       object chAACUsar: TCheckBox
         Left = 196
-        Height = 17
+        Height = 19
         Top = 258
         Width = 194
         Caption = 'Usar Arq.Auxiliar Criptografado'
@@ -499,7 +497,7 @@ object Form1: TForm1
       end
       object chAACFlush: TCheckBox
         Left = 415
-        Height = 17
+        Height = 19
         Top = 250
         Width = 50
         Caption = 'Flush'
@@ -517,7 +515,7 @@ object Form1: TForm1
       end
       object chProcessMessages: TCheckBox
         Left = 415
-        Height = 17
+        Height = 19
         Top = 274
         Width = 121
         Caption = 'ProcessMessages'
@@ -984,7 +982,6 @@ object Form1: TForm1
           Font.Name = 'Arial'
           Font.Pitch = fpVariable
           Font.Style = [fsBold]
-          NumGlyphs = 0
           OnClick = sbDirRFDClick
           ParentFont = False
         end
@@ -1289,43 +1286,7 @@ object Form1: TForm1
             DateOrder = doNone
             ButtonWidth = 23
             CharCase = ecNormal
-            Glyph.Data = {
-              36040000424D3604000000000000360000002800000010000000100000000100
-              2000000000000004000064000000640000000000000000000000FFFFFF00FFFF
-              FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-              FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00D69E
-              72C4D3996EF4D19668FFCE9263FFCB8E5EFFC98A5BFFC78756FFC38452FFC384
-              52FFC38452FFC38452FFC38452FFC38452FFBB7742B0FFFFFF00FFFFFF00D7A1
-              75FFF8F2EDFFF7F0EAFFF6EDE6FFF4EAE2FFF3E7DEFFF1E4DBFFF0E2D8FFEAD6
-              C8FFF2E5DCFFFAF4F1FFF9F3F0FFFAF5F2FFC58A5DFDFFFFFF00FFFFFF00D9A4
-              7AFFF9F3EEFFEBD2BEFFFFFFFFFFEBD3BFFFFFFFFFFFEBD3C0FFFFFFFFFFEAC7
-              ADFFECD9CDFFF1E4DBFFF9F3F0FFF9F2EFFFC68C5FFFFFFFFF00FFFFFF00DDA8
-              7EFFF9F3EFFFEBD0BAFFEBD0BBFF75B57AFF75B57AFF75B57AFFEBD1BDFFEACD
-              B5FFFAF4F0FFEBD9CCFFF1E4DBFFFAF4F1FFC68A5CFFFFFFFF00FFFFFF00DFAA
-              82FFF9F3EFFFEACEB7FFFFFFFFFF75B57AFF94D49BFF74B579FFFFFFFFFFEACF
-              BAFFFBF6F2FFFAF3F0FFEBD8CBFFF2E6DDFFC88D5FFFFFFFFF00FFFFFF00E1AE
-              87FFFAF4F0FFEACBB2FFEACCB3FF75B57AFF74B579FF73B478FFEACEB7FF70B3
-              75FF6FB274FF6EB172FFE8C8AEFFEAD7C9FFC48654FFFFFFFF00FFFFFF00E3B1
-              8CFFFAF6F1FFEAC9AEFFFFFFFFFFEAC9B0FFFFFFFFFFE9CBB3FFFFFFFFFF6FB1
-              73FF8ED295FF6BAF6FFFFFFFFFFFF1E5DBFFC68655FFFFFFFF00FFFFFF00E5B4
-              8FFFFAF6F2FFE9C6AAFFE9C6ACFFEAC7ACFFE9C7ADFFE9C9AEFFE9C9B0FF6CB0
-              71FF6AAF6EFF68AD6DFFE8CCB5FFF2E7DEFFC88A59FFFFFFFF00FFFFFF00E7B7
-              94FFFBF7F4FFE9C3A6FFFFFFFFFFE8C4A9FFFFFFFFFFE9C6AAFFFFFFFFFFE8C7
-              ACFFFFFFFFFFE8C8B0FFFFFFFFFFF7F1EBFFCB8F5FFFFFFFFF00FFFFFF00E9BA
-              98FFFBF7F4FF65A4FFFF64A3FFFF62A2FFFF61A1FFFF5F9FFFFF5C9DFFFF5A9A
-              FFFF5798FFFF5495FFFF5294FFFFFBF7F4FFCE9364FFFFFFFF00FFFFFF00EBBD
-              9BFFFBF7F4FF64A4FFFF79BDFFFF75BBFFFF71B9FFFF6DB8FFFF68B3FFFF61B0
-              FFFF5AABFFFF54A7FFFF3B7DFFFFFBF7F4FFD1976AFFFFFFFF00FFFFFF00ECBF
-              9EFFFBF7F4FF65A4FFFF64A3FFFF60A0FFFF5D9EFFFF5899FFFF5496FFFF4D90
-              FFFF478BFFFF4284FFFF3D7FFFFFFBF7F4FFD49B6FFFFFFFFF00FFFFFF00EEC1
-              A1EBFBF7F4FFFBF7F4FFFBF7F4FFFBF7F4FFFBF7F4FFFBF7F4FFFBF7F4FFFBF7
-              F4FFFBF7F4FFFBF7F4FFFBF7F4FFFBF7F4FFD7A074F8FFFFFF00FFFFFF00EFC2
-              A37EEFC1A2E3EDC09FFFEBBE9DFFEBBC9AFFE9BA96FFE7B793FFE6B590FFE4B2
-              8CFFE2AF88FFE0AC84FFDDA980FFDCA57DFFDAA37ACAFFFFFF00FFFFFF00FFFF
-              FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-              FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
-            }
-            NumGlyphs = 0
+            NumGlyphs = 1
             MaxLength = 0
             TabOrder = 0
           end
@@ -1341,43 +1302,7 @@ object Form1: TForm1
             DateOrder = doNone
             ButtonWidth = 23
             CharCase = ecNormal
-            Glyph.Data = {
-              36040000424D3604000000000000360000002800000010000000100000000100
-              2000000000000004000064000000640000000000000000000000FFFFFF00FFFF
-              FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-              FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00D69E
-              72C4D3996EF4D19668FFCE9263FFCB8E5EFFC98A5BFFC78756FFC38452FFC384
-              52FFC38452FFC38452FFC38452FFC38452FFBB7742B0FFFFFF00FFFFFF00D7A1
-              75FFF8F2EDFFF7F0EAFFF6EDE6FFF4EAE2FFF3E7DEFFF1E4DBFFF0E2D8FFEAD6
-              C8FFF2E5DCFFFAF4F1FFF9F3F0FFFAF5F2FFC58A5DFDFFFFFF00FFFFFF00D9A4
-              7AFFF9F3EEFFEBD2BEFFFFFFFFFFEBD3BFFFFFFFFFFFEBD3C0FFFFFFFFFFEAC7
-              ADFFECD9CDFFF1E4DBFFF9F3F0FFF9F2EFFFC68C5FFFFFFFFF00FFFFFF00DDA8
-              7EFFF9F3EFFFEBD0BAFFEBD0BBFF75B57AFF75B57AFF75B57AFFEBD1BDFFEACD
-              B5FFFAF4F0FFEBD9CCFFF1E4DBFFFAF4F1FFC68A5CFFFFFFFF00FFFFFF00DFAA
-              82FFF9F3EFFFEACEB7FFFFFFFFFF75B57AFF94D49BFF74B579FFFFFFFFFFEACF
-              BAFFFBF6F2FFFAF3F0FFEBD8CBFFF2E6DDFFC88D5FFFFFFFFF00FFFFFF00E1AE
-              87FFFAF4F0FFEACBB2FFEACCB3FF75B57AFF74B579FF73B478FFEACEB7FF70B3
-              75FF6FB274FF6EB172FFE8C8AEFFEAD7C9FFC48654FFFFFFFF00FFFFFF00E3B1
-              8CFFFAF6F1FFEAC9AEFFFFFFFFFFEAC9B0FFFFFFFFFFE9CBB3FFFFFFFFFF6FB1
-              73FF8ED295FF6BAF6FFFFFFFFFFFF1E5DBFFC68655FFFFFFFF00FFFFFF00E5B4
-              8FFFFAF6F2FFE9C6AAFFE9C6ACFFEAC7ACFFE9C7ADFFE9C9AEFFE9C9B0FF6CB0
-              71FF6AAF6EFF68AD6DFFE8CCB5FFF2E7DEFFC88A59FFFFFFFF00FFFFFF00E7B7
-              94FFFBF7F4FFE9C3A6FFFFFFFFFFE8C4A9FFFFFFFFFFE9C6AAFFFFFFFFFFE8C7
-              ACFFFFFFFFFFE8C8B0FFFFFFFFFFF7F1EBFFCB8F5FFFFFFFFF00FFFFFF00E9BA
-              98FFFBF7F4FF65A4FFFF64A3FFFF62A2FFFF61A1FFFF5F9FFFFF5C9DFFFF5A9A
-              FFFF5798FFFF5495FFFF5294FFFFFBF7F4FFCE9364FFFFFFFF00FFFFFF00EBBD
-              9BFFFBF7F4FF64A4FFFF79BDFFFF75BBFFFF71B9FFFF6DB8FFFF68B3FFFF61B0
-              FFFF5AABFFFF54A7FFFF3B7DFFFFFBF7F4FFD1976AFFFFFFFF00FFFFFF00ECBF
-              9EFFFBF7F4FF65A4FFFF64A3FFFF60A0FFFF5D9EFFFF5899FFFF5496FFFF4D90
-              FFFF478BFFFF4284FFFF3D7FFFFFFBF7F4FFD49B6FFFFFFFFF00FFFFFF00EEC1
-              A1EBFBF7F4FFFBF7F4FFFBF7F4FFFBF7F4FFFBF7F4FFFBF7F4FFFBF7F4FFFBF7
-              F4FFFBF7F4FFFBF7F4FFFBF7F4FFFBF7F4FFD7A074F8FFFFFF00FFFFFF00EFC2
-              A37EEFC1A2E3EDC09FFFEBBE9DFFEBBC9AFFE9BA96FFE7B793FFE6B590FFE4B2
-              8CFFE2AF88FFE0AC84FFDDA980FFDCA57DFFDAA37ACAFFFFFF00FFFFFF00FFFF
-              FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-              FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
-            }
-            NumGlyphs = 0
+            NumGlyphs = 1
             MaxLength = 0
             TabOrder = 1
           end
@@ -1596,7 +1521,6 @@ object Form1: TForm1
         Width = 24
         Anchors = [akRight, akBottom]
         Caption = '...'
-        NumGlyphs = 0
         OnClick = SbAACNomeArqClick
       end
       object Label41: TLabel
@@ -1626,7 +1550,6 @@ object Form1: TForm1
         Width = 24
         Anchors = [akRight, akBottom]
         Caption = '...'
-        NumGlyphs = 0
         OnClick = SbAACArqLogClick
       end
       object pgAAC: TPageControl
@@ -1790,7 +1713,6 @@ object Form1: TForm1
               Width = 24
               Anchors = [akLeft, akBottom]
               Caption = '...'
-              NumGlyphs = 0
               OnClick = SbAACMD5AtualizarClick
             end
           end
@@ -1932,7 +1854,7 @@ object Form1: TForm1
     Left = 0
     Height = 40
     Hint = 'Sobre o ACBrMonitor ?'
-    Top = 324
+    Top = 320
     Width = 547
     Align = alBottom
     ClientHeight = 40
@@ -2461,7 +2383,6 @@ object Form1: TForm1
         FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
       }
       ModalResult = 1
-      NumGlyphs = 0
       OnClick = bAtivarClick
       ParentFont = False
       TabOrder = 0
@@ -2594,10 +2515,6 @@ object Form1: TForm1
           Caption = 'Decimais'
           OnClick = MenuItem29Click
         end
-        object MenuItem30: TMenuItem
-          Caption = 'Número Reduções Z restantes'
-          OnClick = MenuItem30Click
-        end
       end
       object N19: TMenuItem
         Caption = '-'
@@ -2656,6 +2573,10 @@ object Form1: TForm1
         object DadosUltimaReduoZ1: TMenuItem
           Caption = 'Dados Ultima Redução Z'
           OnClick = DadosUltimaReduoZ1Click
+        end
+        object MenuItem30: TMenuItem
+          Caption = 'Número Reduções Z restantes'
+          OnClick = MenuItem30Click
         end
         object N20: TMenuItem
           Caption = '-'

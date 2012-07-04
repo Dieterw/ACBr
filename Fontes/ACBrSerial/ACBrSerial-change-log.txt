@@ -97,6 +97,14 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 04/07/2012
+-- ACBrECFBematech --
+[-] Corrigido retorno da propriedade NumCOOInicial, que retornava o COOInicial
+    da Redução Z do dia anterior, e não do dia atual  (por: DSA)
+
+-- ACBrECFEpson --
+[+] Implementado NumReducoesZRestantes  (por DSA)
+
 Data: 03/07/2012
 -- ACBrECF --
 [+] Implementado o contador de reduções Z restantes baseado na leitura X, 

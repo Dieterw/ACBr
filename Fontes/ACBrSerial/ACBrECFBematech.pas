@@ -2622,6 +2622,7 @@ function TACBrECFBematech.GetVendaBruta: Double;
 Var RetCmd : AnsiString ;
 begin
   try
+     // Lendo Grande Total da última Redução Z //
      BytesResp := 308 ;
      RetCmd    := BcdToAsc(EnviaComando( #62 + #55, 5 )) ;
      Result    := StrToFloatDef(copy(RetCmd,3,18),0) / 100;
@@ -2647,8 +2648,10 @@ begin
 end;
 
 function TACBrECFBematech.GetNumCOOInicial: String;
-Var Erro : Boolean ;
-    RetCmd : AnsiString ;
+Var
+  Erro : Boolean ;
+  RetCmd : AnsiString ;
+  NumUltCOORzAnt: Integer;
 begin
   Erro := False ;
   
@@ -2657,9 +2660,13 @@ begin
      try
         { Comando disponivel epenas a partir da MP2100 }
         RetCmd := RetornaInfoECF( '72' ) ;
-        fsNumCOOInicial := copy( RetCmd ,1,6) ;
-        if StrToIntDef( fsNumCOOInicial, 0 ) = 0 then
-           fsNumCOOInicial := '';
+        NumUltCOORzAnt := StrToIntDef( copy( RetCmd ,7,6), 0 ) ;
+
+        if NumUltCOORzAnt > 0 then
+           NumUltCOORzAnt := min( NumUltCOORzAnt + 2, StrToIntDef(GetNumCupom,0) );
+
+        if NumUltCOORzAnt > 0 then
+           fsNumCOOInicial := IntToStrZero( NumUltCOORzAnt, 6 );
      except
         Erro := True ;
      end ;

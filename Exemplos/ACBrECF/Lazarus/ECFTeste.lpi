@@ -18,7 +18,7 @@
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
       <MinorVersionNr Value="9"/>
-      <BuildNr Value="29"/>
+      <BuildNr Value="30"/>
       <Language Value="0416"/>
       <CharSet Value="04B0"/>
       <StringTable ProductVersion=""/>
@@ -124,7 +124,7 @@
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1769"/>
-        <CursorPos X="3" Y="1772"/>
+        <CursorPos X="76" Y="1771"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -241,13 +241,13 @@
     </Other>
   </CompilerOptions>
   <Debugging>
-    <BreakPoints Count="6">
+    <BreakPoints Count="3">
       <Item1>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="..\..\..\Fontes\ACBrSerial\ACBrECFEpson.pas"/>
-        <Line Value="1105"/>
+        <Line Value="1106"/>
       </Item1>
       <Item2>
         <Kind Value="bpkSource"/>
@@ -263,27 +263,6 @@
         <Source Value="..\..\..\Fontes\ACBrComum\ACBrAAC.pas"/>
         <Line Value="715"/>
       </Item3>
-      <Item4>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="..\..\..\Fontes\ACBrSerial\ACBrECFBematech.pas"/>
-        <Line Value="2642"/>
-      </Item4>
-      <Item5>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="..\..\..\Fontes\ACBrSerial\ACBrECFBematech.pas"/>
-        <Line Value="2644"/>
-      </Item5>
-      <Item6>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="..\..\..\Fontes\ACBrSerial\ACBrECFClass.pas"/>
-        <Line Value="1510"/>
-      </Item6>
     </BreakPoints>
     <Watches Count="1">
       <Item1>
@@ -318,4 +297,5 @@
       </Item8>
     </Exceptions>
   </Debugging>
+  <EditorMacros Count="0"/>
 </CONFIG>

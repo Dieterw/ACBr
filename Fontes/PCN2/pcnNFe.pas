@@ -45,9 +45,15 @@
 
 unit pcnNFe;
 
-interface uses
+interface
 
-  SysUtils, Classes, Dialogs,
+uses
+  SysUtils, Classes,
+{$IFDEF VER230}
+  Vcl.Dialogs,
+{$ELSE}
+  Dialogs,
+{$ENDIF}
 {$IFNDEF VER130}
   Variants,
 {$ENDIF}

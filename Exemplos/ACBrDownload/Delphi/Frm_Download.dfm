@@ -46,7 +46,6 @@ object Form1: TForm1
     Caption = 'BufferSize'
     Color = clBtnFace
     ParentColor = False
-    ExplicitTop = 305
   end
   object Label2: TLabel
     Left = 24

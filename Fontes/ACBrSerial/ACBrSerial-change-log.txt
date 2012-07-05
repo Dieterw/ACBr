@@ -97,6 +97,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data: 05/07/2012
+-- ACBrECFSweda --
+[+] Implementado NumReducoesZRestantes  (por Régys Silveira)
+
 Data: 04/07/2012
 -- ACBrECFBematech --
 [-] Corrigido retorno da propriedade NumCOOInicial, que retornava o COOInicial

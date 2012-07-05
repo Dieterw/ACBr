@@ -269,6 +269,7 @@ TACBrECFSweda = class( TACBrECFClass )
        override ;
     Procedure ListaCupomVinculado( Relatorio : TStrings; Vias : Integer = 1) ;
       override ;
+    function GetNumReducoesZRestantes: String; override;
 
  public
     Constructor create( AOwner : TComponent  )  ;
@@ -382,6 +383,7 @@ TACBrECFSweda = class( TACBrECFClass )
        NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos];
        Finalidade: TACBrECFFinalizaArqMFD = finMFD;
        TipoContador: TACBrECFTipoContador = tpcCOO ) ; override ;
+
 
 
  end ;
@@ -3626,6 +3628,18 @@ begin
   if not FileExists( NomeArquivo ) then
      raise EACBrECFERRO.Create( ACBrStr( 'Erro na execução de ECF_DownloadMFD.'+sLineBreak+
                             'Arquivo: "'+NomeArquivo + '" não gerado' ))
+end;
+
+function TACBrECFSweda.GetNumReducoesZRestantes: String;
+var
+  NumRedAtual: Integer;
+const
+  // o numero 3693 e número de reduções possiveis para as impressoras sweda
+  // conforme informado pelo atendimento sweda
+  NumMaximoReducoes = 3693;
+begin
+  NumRedAtual := StrToIntDef(Self.NumCRZ, 0);
+  Result := Format('%4.4d', [NumMaximoReducoes - NumRedAtual]);
 end;
 
 end.

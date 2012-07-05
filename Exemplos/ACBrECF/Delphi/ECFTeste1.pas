@@ -3765,7 +3765,8 @@ end;
 
 procedure TForm1.NumerodeReduesZrestantes1Click(Sender: TObject);
 begin
-  ShowMessage(ACBrECF1.NumReducoesZRestantes);  
+  mResp.Lines.Add( 'Número de Reduções Z restantes: ('+ ACBrECF1.NumReducoesZRestantes +')' );
+  AtualizaMemos ;
 end;
 
 end.

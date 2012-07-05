@@ -165,6 +165,7 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
        var TempoLimite: TDateTime) : Boolean ; override ;
     function VerificaFimImpressao(var TempoLimite: TDateTime) : Boolean ; override ;
 
+    function GetNumReducoesZRestantes: String; override;
   public
     Constructor create( AOwner : TComponent  )  ;
     Destructor Destroy  ; override ;
@@ -2709,6 +2710,18 @@ begin
   end;
 
 end ;
+
+function TACBrECFSwedaSTX.GetNumReducoesZRestantes: String;
+var
+  NumRedAtual: Integer;
+const
+  // o numero 3693 e número de reduções possiveis para as impressoras sweda
+  // conforme informado pelo atendimento sweda
+  NumMaximoReducoes = 3693;
+begin
+  NumRedAtual := StrToIntDef(Self.NumCRZ, 0);
+  Result := Format('%4.4d', [NumMaximoReducoes - NumRedAtual]);
+end;
 
 end.
 

@@ -278,6 +278,9 @@ begin
          (*HR26 *)FretEvento.Items[i].FRetInfEvento.FnProt       := Leitor.rCampo(tcStr, 'nProt');
          inc(i);
        end;
+      // Incluido por Italo em 06/07/2012
+      if i = 0 then
+         FretEvento.Add;
       Result := True;
     end;
   except

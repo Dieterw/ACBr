@@ -1779,7 +1779,16 @@ begin
      begin
         with RegD001.RegistroD695.Items[intFor] do
         begin
-          Add( LFill('D695') ) ;
+          Add( LFill('D695')+
+               LFill( COD_MOD ) +
+               LFill( SER ) +
+               LFill( NRO_ORD_INI,9 ) +
+               LFill( NRO_ORD_FIN,9 ) +
+               LFill( DT_DOC_INI ) +
+               LFill( DT_DOC_FIN ) +
+               LFill( NOM_MEST ) +
+               LFill( CHV_COD_DIG )
+              );
         end;
         /// Registros FILHOS
         WriteRegistroD696( RegD001.RegistroD695.Items[intFor] );
@@ -1801,7 +1810,17 @@ begin
      begin
         with RegD695.RegistroD696.Items[intFor] do
         begin
-          Add( LFill('D696') ) ;
+          Add( LFill('D696') +
+               LFill( CST_ICMS,3 ) +
+               LFill( CFOP,4 ) +
+               LFill( ALIQ_ICMS,6,2 ) +
+               LFill( VL_OPR,0,2 ) +
+               LFill( VL_BC_ICMS,0,2 ) +
+               LFill( VL_ICMS,0,2 ) +
+               LFill( VL_BC_ICMS_UF,0,2 ) +
+               LFill( VL_ICMS_UF,0,2 ) +
+               LFill( VL_RED_BC,0,2 ) +
+               LFill( COD_OBS  ) ) ;
         end;
         /// Registros FILHOS
         WriteRegistroD697( RegD695.RegistroD696.Items[intFor] );
@@ -1823,7 +1842,10 @@ begin
      begin
         with RegD696.RegistroD697.Items[intFor] do
         begin
-          Add( LFill('D697') ) ;
+          Add( LFill('D697') +
+               LFill( UF,2 ) +
+               LFill( VL_BC_ICMS,0,2 ) +
+               LFill( VL_ICMS,0,2 )) ;
         end;
         RegistroD990.QTD_LIN_D := RegistroD990.QTD_LIN_D + 1;
      end;

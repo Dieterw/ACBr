@@ -1346,10 +1346,27 @@ type
 
   TRegistroD695 = class
   private
+    fCOD_MOD: String; // Código do modelo do documento fiscal, conforme a Tabela 4.1.1
+    fSER: String;    // Série do documento fiscal
+    fNRO_ORD_INI: integer;  // Número de ordem inicial
+    fNRO_ORD_FIN: integer;  // Número de ordem final
+    fDT_DOC_INI: Tdatetime; // Data de emissão inicial dos documentos
+    fDT_DOC_FIN: Tdatetime; // Data de emissão final dos documentos
+    fNOM_MEST:string;      // Nome do arquivo Mestre de Documento Fiscal
+    fCHV_COD_DIG:string;   // Chave de codificação digital do arquivo Mestre de Documento Fiscal
     FRegistroD696: TRegistroD696List;
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
+
+    property COD_MOD: String read fCOD_MOD write fCOD_MOD;
+    property SER: String read fSER write fSER;
+    property NRO_ORD_INI: integer read fNRO_ORD_INI write fNRO_ORD_INI;
+    property NRO_ORD_FIN: integer read fNRO_ORD_FIN write fNRO_ORD_FIN;
+    property DT_DOC_INI: Tdatetime read fDT_DOC_INI write fDT_DOC_INI;
+    property DT_DOC_FIN: Tdatetime read fDT_DOC_FIN write fDT_DOC_FIN;
+    property NOM_MEST: String read fNOM_MEST write fNOM_MEST;
+    property CHV_COD_DIG: String read fCHV_COD_DIG write fCHV_COD_DIG;
 
     property RegistroD696: TRegistroD696List read FRegistroD696 write FRegistroD696;
   end;
@@ -1367,10 +1384,31 @@ type
 
   TRegistroD696 = class
   private
+    fCST_ICMS: String;        /// Código da Situação Tributária, conforme a Tabela indicada no item 4.3.1.
+    fCFOP: String;            /// Código Fiscal de Operação e Prestação do agrupamento de itens
+    fALIQ_ICMS: Currency;     /// Alíquota do ICMS
+    fVL_OPR: currency;        /// Valor da operação correspondente à combinação de CST_ICMS, CFOP, e alíquota do ICMS.
+    fVL_BC_ICMS: currency;    /// Parcela correspondente ao "Valor da base de cálculo do ICMS" referente à combinação de CST_ICMS, CFOP e alíquota do ICMS.
+    fVL_ICMS: currency;       /// Parcela correspondente ao "Valor do ICMS" referente à combinação de CST_ICMS, CFOP e alíquota do ICMS.
+    fVL_BC_ICMS_UF: currency; /// Parcela correspondente ao "Valor da base de cálculo do ICMS" da substituição tributária referente à combinação de CST_ICMS, CFOP e alíquota do ICMS.
+    fVL_ICMS_UF: currency;    /// Parcela correspondente ao valor creditado/debitado do ICMS da substituição tributária, referente à combinação de CST_ICMS,  CFOP, e alíquota do ICMS.
+    fVL_RED_BC: currency;     /// Valor não tributado em função da redução da base de cálculo do ICMS, referente à combinação de CST_ICMS, CFOP e alíquota do ICMS.
+    fCOD_OBS: String;         /// Código da observação do lançamento fiscal (campo 02 do Registro 0460)
     FRegistroD697: TRegistroD697List;
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
+
+    property CST_ICMS: String read fCST_ICMS write fCST_ICMS;
+    property CFOP: String read fCFOP write fCFOP;
+    property ALIQ_ICMS: Currency read fALIQ_ICMS write fALIQ_ICMS;
+    property VL_OPR: currency read fVL_OPR write fVL_OPR;
+    property VL_BC_ICMS: currency read fVL_BC_ICMS write fVL_BC_ICMS;
+    property VL_ICMS: currency read fVL_ICMS write fVL_ICMS;
+    property VL_BC_ICMS_UF: currency read fVL_BC_ICMS_UF write fVL_BC_ICMS_UF;
+    property VL_ICMS_UF: currency read fVL_ICMS_UF write fVL_ICMS_UF;
+    property VL_RED_BC: currency read fVL_RED_BC write fVL_RED_BC;
+    property COD_OBS: String read fCOD_OBS write fCOD_OBS;
 
     property RegistroD697: TRegistroD697List read FRegistroD697 write FRegistroD697;
   end;
@@ -1388,7 +1426,13 @@ type
 
   TRegistroD697 = class
   private
+    fUF: String;              /// Sigla da unidade da federação
+    fVL_BC_ICMS: currency;    /// Valor da base de cálculo do ICMS
+    fVL_ICMS: currency;       /// Valor do ICMS
   public
+    property UF: String read fUF write fUF;
+    property VL_BC_ICMS: currency read fVL_BC_ICMS write fVL_BC_ICMS;
+    property VL_ICMS: currency read fVL_ICMS write fVL_ICMS;
   end;
 
   TRegistroD697List = class(TObjectList)

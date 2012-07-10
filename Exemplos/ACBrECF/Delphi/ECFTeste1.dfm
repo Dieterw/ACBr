@@ -44,7 +44,7 @@ object Form1: TForm1
     Top = 0
     Width = 602
     Height = 342
-    ActivePage = TabSheet4
+    ActivePage = tbsMenuFiscal
     Align = alClient
     TabOrder = 1
     object TabSheet4: TTabSheet
@@ -156,7 +156,7 @@ object Form1: TForm1
         Top = 25
         Width = 105
         Height = 21
-        ItemHeight = 13
+        ItemHeight = 0
         TabOrder = 1
         Text = 'Procurar'
         OnChange = cbxPortaChange

@@ -132,8 +132,7 @@ TACBrECFFormaPagamento = class
     fsPermiteVinculado: Boolean;
     fsTotal: Double;
     fsData: TDateTime;
-    fsValorFiscal: Currency;
-    fsValorNaoFiscal: Currency;
+    fsTipoDoc: String;
  public
     constructor create ;
     procedure Assign( AFormaPagamento : TACBrECFFormaPagamento ) ;
@@ -144,8 +143,7 @@ TACBrECFFormaPagamento = class
                                        write fsPermiteVinculado ;
     property Total : Double read fsTotal write fsTotal ;
     property Data: TDateTime read fsData write fsData;
-    property ValorFiscal: Currency read fsValorFiscal write fsValorFiscal;
-    property ValorNaoFiscal: Currency read fsValorNaoFiscal write fsValorNaoFiscal;
+    property TipoDoc: String read fsTipoDoc write fsTipoDoc;
 end;
 
 { Lista de Objetos do tipo TACBrECFFormaPagamento }
@@ -1118,11 +1116,8 @@ begin
   fsIndice           := '' ;
   fsDescricao        := '' ;
   fsPermiteVinculado := true ;
-  fsTotal            := 0 ;
-
+  fsTotal            := 0.00 ;
   fsData             := 0.00;
-  fsValorFiscal      := 0.00;
-  fsValorNaoFiscal   := 0.0;
 end;
 
 procedure TACBrECFFormaPagamento.Assign(
@@ -1133,8 +1128,6 @@ begin
   fsPermiteVinculado := AFormaPagamento.PermiteVinculado ;
   fsTotal            := AFormaPagamento.Total ;
   fsData             := AFormaPagamento.Data ;
-  fsValorFiscal      := AFormaPagamento.ValorFiscal ;
-  fsValorNaoFiscal   := AFormaPagamento.ValorNaoFiscal ;
 end;
 
 function TACBrECFFormasPagamento.Add(Obj: TACBrECFFormaPagamento): Integer;

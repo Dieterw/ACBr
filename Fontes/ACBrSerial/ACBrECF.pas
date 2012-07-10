@@ -61,7 +61,7 @@ TACBrECFModelo = (ecfNenhum, ecfNaoFiscal, ecfBematech, ecfSweda, ecfDaruma,
                   ecfSchalter, ecfMecaf, ecfYanco, ecfDataRegis, ecfUrano,
                   ecfICash, ecfQuattro, ecfFiscNET, ecfEpson, ecfNCR,
                   ecfSwedaSTX );
-
+                  
 TACBrECFEventoOnError = procedure( var Tratado : Boolean) of object ;
 TACBrECFOnAbreCupom = procedure(const CPF_CNPJ, Nome, Endereco : String ) of object ;
 TACBrECFOnVendeItem = procedure(const Codigo, Descricao, AliquotaICMS : String ;
@@ -5539,47 +5539,58 @@ var
   Relatorio: TStringList;
   I: Integer;
   TamLin: Integer;
-  SubTTFiscal: Double;
-  SubTTNFiscal: Double;
+  SubTotal: Double;
   FPAcumuladas: TACBrECFFormasPagamento;
   FPTotalizado: TACBrECFFormasPagamento;
 
-  function ProcurarDataDescricao(const AFormaPagto: TACBrECFFormaPagamento;
-    const AFormasPagamento: TACBrECFFormasPagamento) :TACBrECFFormaPagamento;
+  function ProcurarFormaPagamento(const AFormaPagto: TACBrECFFormaPagamento;
+    const AFormasPagamento: TACBrECFFormasPagamento;
+    const AConsideraTipoDoc: Boolean = True) :TACBrECFFormaPagamento;
   var
     I: Integer;
   begin
     Result := nil;
     for I := 0 to AFormasPagamento.Count - 1 do
     begin
-      if (AFormaPagto.Data = AFormasPagamento[I].Data) and
-        (AnsiUpperCase(AFormasPagamento[I].Descricao) = AnsiUpperCase(AFormaPagto.Descricao)) then
+      if AConsideraTipoDoc then
       begin
-        Result := AFormasPagamento[I];
-        Exit;
+        if (AFormaPagto.Data = AFormasPagamento[I].Data) and
+          (AnsiUpperCase(AFormasPagamento[I].Descricao) = AnsiUpperCase(AFormaPagto.Descricao)) and
+          (AnsiUpperCase(AFormasPagamento[I].TipoDoc) = AnsiUpperCase(AFormaPagto.TipoDoc)) then
+        begin
+          Result := AFormasPagamento[I];
+          Exit;
+        end;
+      end
+      else
+      begin
+        if (AFormaPagto.Data = AFormasPagamento[I].Data) and
+          (AnsiUpperCase(AFormasPagamento[I].Descricao) = AnsiUpperCase(AFormaPagto.Descricao)) then
+        begin
+          Result := AFormasPagamento[I];
+          Exit;
+        end;
       end;
     end;
   end;
 
   procedure AcumularValorFP(const AFormaPagto: TACBrECFFormaPagamento;
-    var ALista: TACBrECFFormasPagamento);
+    const AConsideraTipoDoc: Boolean; var ALista: TACBrECFFormasPagamento);
   var
     FP: TACBrECFFormaPagamento;
   begin
-    FP := ProcurarDataDescricao(AFormaPagto, ALista);
+    FP := ProcurarFormaPagamento(AFormaPagto, ALista, AConsideraTipoDoc);
+
     if FP <> nil then
-    begin
-      FP.ValorFiscal    := FP.ValorFiscal    + AFormaPagto.ValorFiscal;
-      FP.ValorNaoFiscal := FP.ValorNaoFiscal + AFormaPagto.ValorNaoFiscal;
-    end
+      FP.Total := FP.Total + AFormaPagto.Total
     else
     begin
       with ALista.New do
       begin
-        Data           := AFormaPagto.Data;
-        Descricao      := AFormaPagto.Descricao;
-        ValorFiscal    := AFormaPagto.ValorFiscal;
-        ValorNaoFiscal := AFormaPagto.ValorNaoFiscal;
+        Data      := AFormaPagto.Data;
+        Descricao := AFormaPagto.Descricao;
+        Total     := AFormaPagto.Total;
+        TipoDoc   := AFormaPagto.TipoDoc;
       end;
     end;
   end;
@@ -5589,22 +5600,25 @@ var
     if AData > 0 then
     begin
       Relatorio.Add('');
-      Relatorio.Add('<n>DATA DE ACUMULACAO: ' + FormatDateTime('dd/mm/yyyy', AData) + '</n>');
+      Relatorio.Add('<n>DATA DE ACUMULAÇÃO: ' + FormatDateTime('dd/mm/yyyy', AData) + '</n>');
     end;
 
-    Relatorio.Add('Identificacao      Vl. Fiscal     Vl. Nao Fiscal');
-    Relatorio.Add('</linha_simples>');
+    Relatorio.Add('Identificacao   Tipo                    Valor R$');
+    Relatorio.Add(
+      padL('', 15, '-') + ' ' +
+      padL('', 19, '-') + ' ' +
+      padL('', 12, '-')  
+    );
   end;
 
   procedure AddSubTotal;
   begin
     Relatorio.Add('</linha_simples>');
-    Relatorio.Add(Format('Sub-Total          R$%12.2n R$%12.2n', [SubTTFiscal, SubTTNFiscal]));
+    Relatorio.Add(Format('Sub-Total                           %12.2n', [SubTotal]));
     Relatorio.Add('');
     Relatorio.Add('');
 
-    SubTTFiscal  := 0.00;
-    SubTTNFiscal := 0.00;
+    SubTotal  := 0.00;
   end;
 
 begin
@@ -5627,15 +5641,17 @@ begin
     if Trim(ATituloRelatorio) <> '' then
       Relatorio.Add(PadC(ATituloRelatorio, TamLin));
 
-    // ********* impressão do relatório acumulando por data e descricao ********
+    // *************************************************************************      
+    // impressão do relatório acumulando por data, descricao e tipo de documento
+    // *************************************************************************    
     FPAcumuladas := TACBrECFFormasPagamento.Create;
     FPTotalizado := TACBrECFFormasPagamento.Create;
     try
-      // acumular as formas por data e descricao
+      // acumular as formas por data, descricao e tipo de documento
       FPAcumuladas.Clear;
       AFormasPagamento.Ordenar;
       for I := 0 to AFormasPagamento.Count - 1 do
-        AcumularValorFP(AFormasPagamento[I], FPAcumuladas);
+        AcumularValorFP(AFormasPagamento[I], True, FPAcumuladas);
 
       // gerar o relatório
       DataAtual := 0.0;
@@ -5655,29 +5671,33 @@ begin
 
         // dados dos pagamentos
         Relatorio.Add(Format('%s %s %s', [
-          padL(FPAcumuladas[I].Descricao, 18),
-          Format('R$%12.2n', [FPAcumuladas[I].ValorFiscal]),
-          Format('R$%12.2n', [FPAcumuladas[I].ValorNaoFiscal])
+          padL(FPAcumuladas[I].Descricao, 15),
+          padL(FPAcumuladas[I].TipoDoc, 19),
+          Format('%12.2n', [FPAcumuladas[I].Total])
         ]));
 
         // acumuladores
-        AcumularValorFP(FPAcumuladas[I], FPTotalizado);
-        SubTTFiscal  := SubTTFiscal  + FPAcumuladas[I].ValorFiscal;
-        SubTTNFiscal := SubTTNFiscal + FPAcumuladas[I].ValorNaoFiscal;
+        AcumularValorFP(FPAcumuladas[I], True, FPTotalizado);
+        SubTotal := SubTotal + FPAcumuladas[I].Total;
       end;
 
       // sub-total do ultimo dia
       AddSubTotal;
 
-      // ************ impressão do total geral ************
+      // ***********************************************************************      
+      // impressão do total geral
+      // ***********************************************************************
       Relatorio.Add('');
       Relatorio.Add(padC('TOTAL GERAL', TamLin));
       if Trim(ATituloRelatorio) <> '' then
         Relatorio.Add(padC(ATituloRelatorio, TamLin));
 
       Relatorio.Add('');
-      Relatorio.Add('Identificacao           Valor');
-      Relatorio.Add('</linha_simples>');
+      Relatorio.Add('Identificacao                           Valor R$');
+      Relatorio.Add(
+        PadR('', 27, '-') + ' ' +
+        PadR('', 20, '-')  
+      );
 
       // acumular os valores totais das formas
       FPAcumuladas.Clear;
@@ -5685,26 +5705,24 @@ begin
       for I := 0 to FPTotalizado.Count - 1 do
       begin
         FPTotalizado[I].Data := 0;
-        AcumularValorFP(FPTotalizado[I], FPAcumuladas);
+        AcumularValorFP(FPTotalizado[I], False, FPAcumuladas);
       end;
 
-      SubTTFiscal  := 0.00;
-      SubTTNFiscal := 0.00;
+      // impressão das linhas de totalização
+      SubTotal  := 0.00;
       FPAcumuladas.Ordenar;
       for I := 0 to FPAcumuladas.Count - 1 do
       begin
         Relatorio.Add(Format('%s %s', [
-          padL(FPAcumuladas[I].Descricao, 18),
-          Format('R$%12.2n', [FPAcumuladas[I].ValorFiscal +
-                              FPAcumuladas[I].ValorNaoFiscal]) ]));
+          padL(FPAcumuladas[I].Descricao, 27),
+          Format('%20.2n', [FPAcumuladas[I].Total]) ]));
 
-        SubTTFiscal  := SubTTFiscal  + FPAcumuladas[I].ValorFiscal;
-        SubTTNFiscal := SubTTNFiscal + FPAcumuladas[I].ValorNaoFiscal;
+        SubTotal := SubTotal + FPAcumuladas[I].Total;
       end;
 
       // somatorio total
       Relatorio.Add('</linha_simples>');
-      Relatorio.Add(Format('TOTAL              R$%12.2n R$%12.2n', [SubTTFiscal, SubTTNFiscal]));
+      Relatorio.Add(Format('TOTAL                %27.2n', [SubTotal]));
       Relatorio.Add('');
     finally
       FreeAndNil(FPAcumuladas);

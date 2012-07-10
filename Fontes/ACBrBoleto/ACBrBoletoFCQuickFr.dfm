@@ -15,21 +15,6 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
-  object ACBrBarCode1: TACBrBarCode
-    Left = 64
-    Top = 960
-    Width = 401
-    Height = 58
-    Text = '12345678901234567890'
-    Modul = 2
-    Ratio = 2.000000000000000000
-    Typ = bcCodeEAN13
-    ShowTextFont.Charset = DEFAULT_CHARSET
-    ShowTextFont.Color = clWindowText
-    ShowTextFont.Height = -11
-    ShowTextFont.Name = 'MS Sans Serif'
-    ShowTextFont.Style = []
-  end
   object LayoutBoleto: TQuickRep
     Left = 8
     Top = 0

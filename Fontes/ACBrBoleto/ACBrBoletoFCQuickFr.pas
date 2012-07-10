@@ -50,7 +50,7 @@ uses
   //QRWebFilt ;
 
 const
-  CACBrBoletoFCQuick_Versao = '0.0.9a' ;
+  CACBrBoletoFCQuick_Versao = '0.0.10a' ;
 
 type
 
@@ -432,6 +432,8 @@ begin
    txtSwHouse.Caption := BoletoFC.SoftwareHouse ;
    ACBrBarCode1.Width := imgBarra.Width ;
    ACBrBarCode1.Height:= imgBarra.Height ;
+   ACBrBarCode1.Ratio:=3;
+   ACBrBarCode1.Modul:=1;
 end;
 
 function TACBrBoletoFCQuickFr.GetACBrTitulo: TACBrTitulo;

@@ -56,6 +56,7 @@ type
     function GerarRegistroHeader400(NumeroRemessa : Integer): String; override;
     function GerarRegistroTransacao400(ACBrTitulo : TACBrTitulo): String; override;
     function GerarRegistroTrailler400(ARemessa:TStringList): String;  override;
+    procedure LerRetorno400(ARetorno: TStringList); override;
   end;
 
 implementation
@@ -278,6 +279,98 @@ begin
    Result:= '9' + Space(393)                     + // ID Registro
             IntToStrZero( ARemessa.Count + 1, 6);  // Contador de Registros
    Result:= UpperCase(Result);
+end;
+
+procedure TACBrBancoSicredi.LerRetorno400(ARetorno: TStringList);
+var
+  Titulo : TACBrTitulo;
+  ContLinha, CodOcorrencia, i: Integer;
+  rAgencia, rDigitoAgencia, rConta, rDigitoConta,
+  Linha, rCedente, rCNPJCPF:String;
+begin
+   fpTamanhoMaximoNossoNum := 20;
+   ContLinha := 0;
+
+   if StrToIntDef(copy(ARetorno.Strings[0],77,3),-1) <> Numero then
+      raise Exception.Create(ACBrStr(ACBrBanco.ACBrBoleto.NomeArqRetorno +
+                             'não é um arquivo de retorno do '+ Nome));
+
+   rCedente      := ''; // não existe essa info no arquivo de retorno do Sicredi;
+   rAgencia      := trim(Copy(ARetorno[1],127,4));
+   rDigitoAgencia:= Copy(ARetorno[1],131,2);
+   rConta        := trim(Copy(ARetorno[0],27,5));
+   rDigitoConta  := ''; // não existe essa info no arquivo de retorno do Sicredi;
+
+   ACBrBanco.ACBrBoleto.NumeroArquivo := StrToIntDef(Copy(ARetorno[0],111,7),0);
+
+   ACBrBanco.ACBrBoleto.DataArquivo   := StringToDateTimeDef(Copy(ARetorno[0],101,2)+'/'+
+                                                             Copy(ARetorno[0],99,2)+'/'+
+                                                             Copy(ARetorno[0],95,4),0, 'DD/MM/YYYY' );
+
+   rCNPJCPF := Copy(ARetorno[0],32,14);
+
+
+   with ACBrBanco.ACBrBoleto do
+   begin
+      if (not LeCedenteRetorno) and ((rAgencia <> OnlyNumber(Cedente.Agencia)) or
+          (rConta <> OnlyNumber(Cedente.Conta))) then
+         raise Exception.Create(ACBrStr('Agencia\Conta do arquivo inválido'));
+
+      Cedente.Nome := rCedente;
+
+      if Copy(rCNPJCPF,1,10) <> '0000000000' then 
+         Cedente.CNPJCPF      := rCNPJCPF;
+
+      Cedente.Agencia      := rAgencia;
+      Cedente.AgenciaDigito:= rDigitoAgencia;
+      Cedente.Conta        := rConta;
+      Cedente.ContaDigito  := rDigitoConta;
+
+      Cedente.TipoInscricao:= pJuridica;
+      ACBrBanco.ACBrBoleto.ListadeBoletos.Clear;
+   end;
+
+   ACBrBanco.TamanhoMaximoNossoNum := 9;
+
+   for ContLinha := 1 to ARetorno.Count - 2 do
+   begin
+      Linha := ARetorno[ContLinha] ;
+
+      if (Copy(Linha,109,2) = '28') then // se a ocorrência do campo 109~110 for = 28
+         Continue;
+
+      Titulo := ACBrBanco.ACBrBoleto.CriarTituloNaLista;
+
+      with Titulo do
+      begin
+         SeuNumero                   := copy(Linha,117,10);
+         NumeroDocumento             := copy(Linha,117,10);
+         OcorrenciaOriginal.Tipo     := CodOcorrenciaToTipo(StrToIntDef(
+                                        copy(Linha,319,2),0));
+
+         CodOcorrencia := StrToInt(IfThen(copy(Linha,319,2) = '00','00',copy(Linha,319,2)));
+
+       
+         DataOcorrencia := StringToDateTimeDef( Copy(Linha,111,2)+'/'+
+                                                Copy(Linha,113,2)+'/'+
+                                                Copy(Linha,115,2),0, 'DD/MM/YY' );
+
+         
+         ValorDocumento       := StrToFloatDef(Copy(Linha,153,13),0)/100;
+         ValorAbatimento      := StrToFloatDef(Copy(Linha,228,13),0)/100;
+         ValorDesconto        := StrToFloatDef(Copy(Linha,241,13),0)/100;
+         ValorRecebido        := StrToFloatDef(Copy(Linha,254,13),0)/100;
+         ValorMoraJuros       := StrToFloatDef(Copy(Linha,267,13),0)/100;
+         ValorOutrosCreditos  := StrToFloatDef(Copy(Linha,280,13),0)/100;
+         NossoNumero          := Copy(Linha,48,9);
+         Carteira             := Copy(Linha,14,1);
+         DataCredito:= StringToDateTimeDef( Copy(Linha,335,2)+'/'+
+                                            Copy(Linha,333,2)+'/'+
+                                            Copy(Linha,329,4),0, 'DD/MM/YYYY' );
+      end;
+   end;
+
+   fpTamanhoMaximoNossoNum := 9;
 end;
 
 

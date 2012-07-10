@@ -3964,9 +3964,9 @@ object FrmACBrMonitor: TFrmACBrMonitor
           Height = 214
           Top = 0
           Width = 590
-          ActivePage = tsCedente
+          ActivePage = TabSheet2
           Align = alClient
-          TabIndex = 0
+          TabIndex = 1
           TabOrder = 0
           object tsCedente: TTabSheet
             Caption = 'Cedente'

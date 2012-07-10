@@ -1490,7 +1490,7 @@ begin
     cbxBOLEmissao.ItemIndex := ini.ReadInteger('BOLETO', 'Cedente.RespEmis', -1);
     cbxBOLF_J.ItemIndex     := ini.ReadInteger('BOLETO','Cedente.Pessoa',-1);
     edtCodTransmissao.Text  := ini.ReadString('BOLETO', 'Cedente.CodTransmissao','');
-    edtModalidade.Text      := ini.ReadString('BOLETO','Cedende.Modalidade','');
+    edtModalidade.Text      := ini.ReadString('BOLETO','Cedente.Modalidade','');
     edtConvenio.Text        := ini.ReadString('BOLETO','Cedente.Convenio','');
 
     {Parametros do Boleto - Banco}
@@ -1499,7 +1499,7 @@ begin
     edtBOLDigitoConta.Text   := ini.ReadString('BOLETO', 'DigitoConta', '');
     edtBOLAgencia.Text       := ini.ReadString('BOLETO', 'Agencia', '');
     edtBOLDigitoAgencia.Text := ini.ReadString('BOLETO', 'DigitoAgencia', '');
-    edtCodCliente.Text       := ini.ReadString('BOLETO', 'CodigoCedente', '');
+    edtCodCliente.Text       := ini.ReadString('BOLETO', 'CodCedente', '');
 
     {Parametros do Boleto - Boleto}
     deBOLDirLogo.Text        := ini.ReadString('BOLETO', 'DirLogos',
@@ -2005,6 +2005,7 @@ begin
      ini.WriteInteger('BOLETO','Cedente.Pessoa',cbxBOLF_J.ItemIndex);
      ini.WriteString('BOLETO', 'Cedente.CodTransmissao', edtCodTransmissao.Text) ;
      ini.WriteString('BOLETO', 'Cedente.Modalidade', edtModalidade.Text);
+     ini.WriteString('BOLETO', 'Cedente.Convenio', edtConvenio.Text);
 
      {Parametros do Boleto - Banco}
      Ini.WriteInteger('BOLETO','Banco', max(cbxBOLBanco.ItemIndex, 0));

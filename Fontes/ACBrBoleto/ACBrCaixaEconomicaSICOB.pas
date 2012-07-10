@@ -780,6 +780,12 @@ begin
                                                                Copy(ARetorno[1],202,2)+'/'+
                                                                Copy(ARetorno[1],204,4),0, 'DD/MM/YYYY' );
 
+   case StrToIntDef(Copy(ARetorno[1],18,1),0) of
+     1: ACBrBanco.ACBrBoleto.Cedente.TipoInscricao:= pFisica;
+     else
+        ACBrBanco.ACBrBoleto.Cedente.TipoInscricao:= pJuridica;
+   end;
+
    if ACBrBanco.ACBrBoleto.Cedente.TipoInscricao = pJuridica then
     begin
       rCNPJCPF := trim( Copy(ARetorno[1],19,15)) ;

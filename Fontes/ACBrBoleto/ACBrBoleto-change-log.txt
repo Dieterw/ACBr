@@ -70,7 +70,10 @@ Versao 0.0.10a do FastReport 02/07/12
 [-] Lançado a 1a versão para impressão dos boletos em FastReport.
     (por: Isaque Pinheiro)	
 
-Versao 0.0.9a do QuickReport 07/07/11
+Versao 0.0.10a do QuickReport 10/07/12
+[-] Corrigido impressão do código de barras.(Rogerio Pett)
+	
+Versao 0.0.9a do QuickReport 07/07/12
 [-] Corrigido impressão do digito verificador do Numero do Banco para bancos com digito maior que 9.(André Luiz)
 
 Versao 0.1.1a do LazReport 02/08/11
@@ -101,6 +104,11 @@ Versao 0.0.10a do FortesReport 06/07/11
 [*] Acertos na classe do HSBC, testado e funcionando para 
     cobrança não registrada.
     (por: Regys Silveira) 
+	
+
+Versao 0.0.37a 10/07/2012	
+[+] Unit Sicred - Adicionado leitura do arquivo retorno CNAB400.(André Luiz)
+	
 	
 Versao 0.0.36a 28/06/2012	
 [*] Unit Sicred - Correção do Calculo do Digito Verificador do Nosso Número.(André Luiz)

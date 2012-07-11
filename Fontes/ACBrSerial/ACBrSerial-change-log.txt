@@ -97,6 +97,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+
+Data: 11/07/2012
+-- ACBrECFSwedaSTX --
+[-] Totalizador I3 estava equivocadamente sendo chamado de N3 na função 
+    GetDadosUltimaReducaoZ. (por EMBarbosa)
+  
 Data: 10/07/2012
 -- ACBrECF --
 [*] Acerto no relatório de meios de pagamento do menu fiscal para o novo 

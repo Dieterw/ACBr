@@ -2423,21 +2423,21 @@ begin
     PosI := Pos('I1   ',RetCMD);
     if PosI > 0 then
     begin
-       PosI := PosI + 5 ; {N1     }
+       PosI := PosI + 5 ; {I1     }
        V  := StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
     end;
 
     PosI := Pos('I2   ',RetCMD);
     if PosI > 0 then
     begin
-       PosI := PosI + 5 ; {N1     }
+       PosI := PosI + 5 ; {I2     }
        V  := V + StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
     end;
 
-    PosI := Pos('N3   ',RetCMD);
+    PosI := Pos('I3   ',RetCMD);
     if PosI > 0 then
     begin
-       PosI := PosI + 5 ; {N1     }
+       PosI := PosI + 5 ; {I3     }
        V  := V + StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
     end;
     Result := Result + 'TotalIsencao = '+FormatFloat('#0.00',V)+ sLineBreak;

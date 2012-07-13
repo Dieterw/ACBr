@@ -1152,17 +1152,6 @@ var wRetentar : Boolean ;   { Variaveis de Trabalho, usadas para transportar }
     wOnAguardandoRespostaChange : TNotifyEvent ;
     wDescricaoGrande : Boolean ;
     wIntervaloAposComando : Integer ;
-    //-- Device
-    wDeviceBaud : Integer;
-    wDeviceData : Integer;
-    wDeviceParity : TACBrSerialParity;
-    wDeviceStop : TACBrSerialStop;
-    wDeviceMaxBandwidth : Integer;
-    wDeviceSendBytesCount : Integer;
-    wDeviceSendBytesInterval : Integer;
-    wDeviceHandShake : TACBrHandShake;
-    wDeviceSoftFlow : Boolean;
-    wDeviceHardFlow : Boolean;
 begin
   if fsModelo = AValue then exit ;
 
@@ -1193,17 +1182,6 @@ begin
   wOnMsgRetentar        := OnMsgRetentar ;
   wDescricaoGrande      := DescricaoGrande ;
   wOnAguardandoRespostaChange := OnAguardandoRespostaChange ;
-  //-- Device
-  wDeviceBaud              := Device.Baud;
-  wDeviceData              := Device.Data;
-  wDeviceParity            := Device.Parity;
-  wDeviceStop              := Device.Stop;
-  wDeviceMaxBandwidth      := Device.MaxBandwidth;
-  wDeviceSendBytesCount    := Device.SendBytesCount;
-  wDeviceSendBytesInterval := Device.SendBytesInterval;
-  wDeviceHandShake         := Device.HandShake;
-  wDeviceSoftFlow          := Device.SoftFlow;
-  wDeviceHardFlow          := Device.HardFlow;
 
   FreeAndNil( fsECF ) ;
 
@@ -1253,17 +1231,6 @@ begin
   OnMsgRetentar        := wOnMsgRetentar ;
   OnAguardandoRespostaChange := wOnAguardandoRespostaChange ;
   DescricaoGrande      := wDescricaoGrande ;
-  //-- Device
-  Device.Baud              := wDeviceBaud;
-  Device.Data              := wDeviceData;
-  Device.Parity            := wDeviceParity;
-  Device.Stop              := wDeviceStop;
-  Device.MaxBandwidth      := wDeviceMaxBandwidth;
-  Device.SendBytesCount    := wDeviceSendBytesCount;
-  Device.SendBytesInterval := wDeviceSendBytesInterval;
-  Device.HandShake         := wDeviceHandShake;
-  Device.SoftFlow          := wDeviceSoftFlow;
-  Device.HardFlow          := wDeviceHardFlow;
 
   fsModelo := AValue;
 end;

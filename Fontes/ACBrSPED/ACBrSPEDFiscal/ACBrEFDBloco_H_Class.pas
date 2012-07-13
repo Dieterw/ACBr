@@ -109,7 +109,8 @@ begin
 
   FRegistroH005Count := 0;
   FRegistroH010Count := 0;
-
+  FRegistroH020Count := 0;
+  
   FRegistroH990.QTD_LIN_H := 0;
 end;
 

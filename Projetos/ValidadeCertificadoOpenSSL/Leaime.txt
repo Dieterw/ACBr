@@ -18,3 +18,11 @@ e realizar o teste novamente.
 
 
 João Henrique de Souza
+
+-----------------------------------------------------------------
+
+Atualizados arquivos para resolver os seguintes problemas:
+- Compilar com Delphi 2010 e XE
+- Rodar em pastas com espaços no nome Ex.: C:\Abrir OpenSSL
+
+Alvaro Vieira (csoft)

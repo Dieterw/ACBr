@@ -25,8 +25,7 @@ object Form1: TForm1
     Height = 49
     Anchors = [akLeft, akTop, akRight]
     Caption = 'Carregar Certificado'
-    TabOrder = 0
-    OnClick = BitBtn5Click
+    DoubleBuffered = True
     Glyph.Data = {
       36030000424D3603000000000000360000002800000010000000100000000100
       18000000000000030000120B0000120B00000000000000000000FF00FFFF00FF
@@ -54,7 +53,9 @@ object Form1: TForm1
       FF00FFFF00FFFF00FFFF00FFFF00FF015603035E06046F0A037308025F05FF00
       FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
       00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF}
-    ExplicitWidth = 180
+    ParentDoubleBuffered = False
+    TabOrder = 0
+    OnClick = BitBtn5Click
   end
   object StatusBar1: TStatusBar
     Left = 0
@@ -65,9 +66,6 @@ object Form1: TForm1
       item
         Width = 50
       end>
-    ExplicitLeft = 96
-    ExplicitTop = 80
-    ExplicitWidth = 0
   end
   object OpenDialog_Certificado: TOpenDialog
     DefaultExt = '*.pfx'

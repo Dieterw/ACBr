@@ -23,7 +23,7 @@ var
   Form1: TForm1;
 
 implementation
-
+uses ShellAPI;
 {$R *.dfm}
 
 function TForm1.ValidadeCertificado(wCertificado, wSenha: string): string;
@@ -70,29 +70,45 @@ var
    strLine: String;
    wPos: integer;
    wDiretorio_Padrao: string;
-   wcomando: string;
+   wComando: string;
+   cExe, cArq1, cArq2: string;
 begin
    Result:='';
    Screen.Cursor:=crHourGlass;
 
    try
       //diretorio padrao
-      wDiretorio_Padrao:=ExtractFilePath(Application.ExeName);
+      wDiretorio_Padrao := ExtractFilePath(Application.ExeName);
+      cExe := '"'+wdiretorio_padrao+'openssl.exe"';
 
       //cópia arquivo PFX
-      CopyFile(PAnsiChar(wcertificado),PAnsiChar(wdiretorio_padrao+'certificado.pfx'),true);
+      CopyFile(PWideChar(wcertificado),PWideChar(wdiretorio_padrao+'certificado.pfx'),true);
 
       //converte pfx para pem
-      wcomando:=wdiretorio_padrao+'openssl pkcs12 -in '+wdiretorio_padrao+'certificado.pfx -out '+wdiretorio_padrao+'certificado.pem -nokeys -passin pass:'+wSenha;
-      WinExec(PChar(wcomando),0);
+      //wComando := wdiretorio_padrao+'openssl pkcs12 -in '+wdiretorio_padrao+'certificado.pfx -out '+wdiretorio_padrao+'certificado.pem -nokeys -passin pass:'+wSenha;
+      //WinExec(PAnsiChar(AnsiString(wComando)),0);
+      //Delay(5000); //para dar tempo do arquivo ficar disponivel para uso
+
+      cArq1 := '"'+wdiretorio_padrao+'certificado.pfx "';
+      cArq2 := '"'+wdiretorio_padrao+'certificado.pem "';
+
+      wComando := ' pkcs12 -in '+cArq1+' -out '+cArq2+' -nokeys -passin pass:'+wSenha;
+      ShellExecute(Handle,NIL,PChar(cExe), PChar(wComando),nil,0);
       Delay(5000); //para dar tempo do arquivo ficar disponivel para uso
 
       //extrai informacoes do certificado
-      wcomando:=wdiretorio_padrao+'openssl x509 -enddate -in '+wdiretorio_padrao+'certificado.pem -text -out '+wdiretorio_padrao+'validade.txt';
-      WinExec(PChar(wcomando),0);
+      //wComando:=wdiretorio_padrao+'openssl x509 -enddate -in '+wdiretorio_padrao+'certificado.pem -text -out '+wdiretorio_padrao+'validade.txt';
+      //WinExec(PAnsiChar(AnsiString(wComando)),0);
+      //Delay(5000); //para dar tempo do arquivo ficar disponivel para uso
+
+      cArq1 := '"'+wdiretorio_padrao+'certificado.pem "';
+      cArq2 := '"'+wdiretorio_padrao+'validade.txt "';
+
+      wComando := ' x509 -enddate -in '+cArq1+' -text -out '+cArq2;
+      ShellExecute(Handle,NIL,PChar(cExe), PChar(wComando),nil,0);
       Delay(5000); //para dar tempo do arquivo ficar disponivel para uso
 
-      //le arquivo
+      //Lê arquivo
       if FileExists(wdiretorio_padrao+'validade.txt') then
       begin
          AssignFile(strFile, wdiretorio_padrao+'validade.txt');

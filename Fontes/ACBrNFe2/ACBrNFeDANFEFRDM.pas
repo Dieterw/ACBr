@@ -516,11 +516,11 @@ begin
                 FieldByName('PICMS').AsFloat := 0;
                 FieldByName('VICMS').AsFloat := 0;
               end
-              else if (CST = cst40) or (CST = cst41) or (CST = cst50) then
+              else if (CST = cst40) or (CST = cst41) or (CST = cst50) or (CST = cstRep41) then
               begin
                 if (CST = cst40) then
                    FieldByName('CST').AsString := CSTICMSToStr(cst40)
-                else if (CST = cst41) then
+                else if (CST = cst41) or (CST = cstRep41) then
                    FieldByName('CST').AsString := CSTICMSToStr(cst41)
                 else if (CST = cst50) then
                    FieldByName('CST').AsString := CSTICMSToStr(cst50);

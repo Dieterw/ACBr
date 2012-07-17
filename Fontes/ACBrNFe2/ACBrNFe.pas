@@ -114,6 +114,11 @@ type
     function Consultar: Boolean;
     function EnviarCartaCorrecao(idLote : Integer): Boolean;
     function EnviarEventoNFe(idLote : Integer): Boolean;  // Incluido por Italo em 09/04/2012
+    // Incluido por Italo em 17/07/2012
+    function ConsultaNFeDest(CNPJ: String;
+                             IndNFe: TpcnIndicadorNFe;
+                             IndEmi: TpcnIndicadorEmissor;
+                             ultNSU: String): Boolean;
     property WebServices: TWebServices read FWebServices write FWebServices;
     property NotasFiscais: TNotasFiscais read FNotasFiscais write FNotasFiscais;
     property CartaCorrecao: TCartaCorrecao read FCartaCorrecao write FCartaCorrecao;
@@ -391,6 +396,24 @@ begin
     if Assigned(Self.OnGerarLog) then
       Self.OnGerarLog(WebServices.EnvEvento.Msg);
     raise EACBrNFeException.Create(WebServices.EnvEvento.Msg);
+  end;
+end;
+
+// Incluido por Italo em 17/07/2012
+function TACBrNFe.ConsultaNFeDest(CNPJ: String; IndNFe: TpcnIndicadorNFe;
+  IndEmi: TpcnIndicadorEmissor; ultNSU: String): Boolean;
+begin
+  WebServices.ConsNFeDest.CNPJ   := CNPJ;
+  WebServices.ConsNFeDest.indNFe := IndNFe;
+  WebServices.ConsNFeDest.indEmi := IndEmi;
+  WebServices.ConsNFeDest.ultNSU := ultNSU;
+
+  Result := WebServices.ConsNFeDest.Executar;
+  if not Result then
+  begin
+    if Assigned(Self.OnGerarLog) then
+      Self.OnGerarLog(WebServices.ConsNFeDest.Msg);
+    raise EACBrNFeException.Create(WebServices.ConsNFeDest.Msg);
   end;
 end;
 

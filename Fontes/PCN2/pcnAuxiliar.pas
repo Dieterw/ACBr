@@ -362,6 +362,7 @@ begin
 
                 // Tipos de LayOut para CT-e
                 // Será removido após os demais fontes estiverem atualizados, por Italo em 03/08/2011
+                {
                 tlConsStatServCTe : Result := '1.03';
                 tlCTe             : Result := '1.03';
                 tlEnvCTe          : Result := '1.03';
@@ -377,6 +378,7 @@ begin
                 tlInutCTe         : Result := '1.03';
                 tlProcInutCTe     : Result := '1.03';
                 tlRetInutCTe      : Result := '1.03';
+                }
               end;
     TsPL006 : case Layout of
                 tlCancNFe         : Result := '2.00';
@@ -403,6 +405,8 @@ begin
                 tlCCeNFe          : Result := '2.00';
                 // Incluido por Italo em 09/04/2012
                 tlEnvEventoNFe    : Result := '2.00';
+                // Incluido por Italo em 17/07/2012
+                tlConsNFeDest     : Result := '2.00';
               end;
     // Incluido/Alterado por Italo em 03/08/2011
     // Tipos de LayOut para CT-e

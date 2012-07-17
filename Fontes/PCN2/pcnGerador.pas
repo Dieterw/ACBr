@@ -410,6 +410,10 @@ const
   DSC_VFOR = 'Valor dos Fornecimentos';
   DSC_VTOTDED = 'Valor Total da Dedução';
   DSC_VLIQFOR = 'Valor Líquido dos Fornecimentos';
+  // Incluido por Italo em 17/07/2012
+  DSC_INDNFE = 'Indicador de NF-e consultada';
+  DSC_INDEMI = 'Indicador do Emissor da NF-e';
+  DSC_ULTNSU = 'Último NSU recebido pela Empresa';
 
   // CTE //
 

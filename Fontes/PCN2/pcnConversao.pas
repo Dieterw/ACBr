@@ -68,15 +68,17 @@ type
                      stCTeConsulta, stCTeCancelamento, stCTeInutilizacao, stCTeRecibo,
                      stCTeCadastro, stCTeEmail, stCTeCCe );
   (* IMPORTANTE - Sempre que alterar um Tipo efetuar a atualização das funções de conversão correspondentes *)
+  // Alterado por Italo em 17/07/2012
   TLayOut = (LayNfeRecepcao,LayNfeRetRecepcao,LayNfeCancelamento,LayNfeInutilizacao,
              LayNfeConsulta,LayNfeStatusServico,LayNfeCadastro, LayNfeEnvDPEC,
              LayNfeConsultaDPEC, LayCTeRecepcao,LayCTeRetRecepcao,LayCTeCancelamento,
              LayCTeInutilizacao,LayCTeConsultaCT,LayCTeStatusServico,LayCTeCadastro,
-             LayNFeCCe,LayNFeEvento);
+             LayNFeCCe,LayNFeEvento, LayNFeConsNFeDest);
 
   // Incluido o TsPL_CTe_103 e TsPL_CTe_104 para CTe por Italo em 03/08/2011
   TpcnSchema = (TsPL005c, TsPL006, TsPL_CTe_103, TsPL_CTe_104);
   // Incluido o tlConsStatServCTe para CTe por possuir uma versão diferente da NFe
+  // Alterado por Italo em 17/07/2012
   TpcnTipoLayout = (tlAtuCadEmiDFe, tlCadEmiDFe, tlCancNFe, tlConsCad, tlConsReciNFe,
                     tlConsSitNFe, tlConsStatServ, tlInutNFe, tlNFe, tlProcNFe,
                     tlProcInutNFe, tlRetAtuCadEmiDFe, tlRetCancNFe, tlRetConsCad,
@@ -85,7 +87,8 @@ type
                     tlConsSitCTe, tlInutCTe, tlCTe, tlProcCTe, tlProcInutCTe, tlRetCancCTe,
                     tlRetConsReciCTe, tlRetConsSitCTe, tlRetEnvCTe, tlRetInutCTe,
                     tlEnvCTe, tlProcCancCTe, tlEnvDPEC, tlConsDPEC, tlConsStatServCTe,
-                    tlCCeNFe, tlEnvCCeNFe, tlRetEnvCCeNFe, tlEnvEventoNFe, tlRetEnvEventoNFe);
+                    tlCCeNFe, tlEnvCCeNFe, tlRetEnvCCeNFe, tlEnvEventoNFe, tlRetEnvEventoNFe,
+                    tlConsNFeDest);
 
   // Tipo tcDe6 incluido por Italo em 30/09/2010 (usado no CTe campo 435: vTar = valor da tarifa do modal Dutoviário)
   TpcnTipoCampo = (tcStr, tcInt, tcDat, tcDatHor, tcEsp, tcDe2, tcDe3, tcDe4, tcDe10,
@@ -162,6 +165,11 @@ type
 
   TpcnTpEvento = (teCCe, teCancelamento, teManifDestConfirmacao, teManifDestCiencia,
                   teManifDestDesconhecimento, teManifDestOperNaoRealizada);
+
+  // Incluido por Italo em 17/07/2012
+  TpcnIndicadorNFe = (inTodas, inSemManifestacaoComCiencia, inSemManifestacaoSemCiencia);
+  TpcnIndicadorEmissor = (ieTodos, ieRaizCNPJDiferente);
+
 const
   TpcnTpEventoString : array[0..5] of String =( '110110',
                                                 '110111',
@@ -189,6 +197,7 @@ const
   NFeConsDPEC     = '1.01';
   NFeCCeNFe       = '1.00';
   NFeEventoNFe    = '1.00'; // Incluido por Italo em 09/04/2012
+  NFeConsNFeDest  = '1.00'; // Incluido por Italo em 17/07/2012
 
 // Alterado por Italo em 03/08/2011
 {$IFDEF PL_103}
@@ -369,6 +378,12 @@ function StrToTrafegoMutuo(var ok: boolean; const s: string): TpcteTrafegoMutuo;
 function StrToTpEvento(var ok: boolean; const s: string): TpcnTpEvento;
 function TpEventoToStr(const t: TpcnTpEvento): string;
 
+ // Incluido por Italo em 17/07/2012
+function IndicadorNFeToStr(const t: TpcnIndicadorNFe): string;
+function StrToIndicadorNFe(var ok: boolean; const s: string): TpcnIndicadorNFe;
+function IndicadorEmissorToStr(const t: TpcnIndicadorEmissor): string;
+function StrToIndicadorEmissor(var ok: boolean; const s: string): TpcnIndicadorEmissor;
+
 implementation
 
 function StrToEnumerado(var ok: boolean; const s: string; const AString:
@@ -411,6 +426,7 @@ end;
 
 // Tipo do Layout **************************************************************
 
+// Alterado por Italo em 17/07/2012
 function TipoLayoutToStr(const t: TpcnTipoLayout): string;
 begin
   result := EnumeradoToStr(t, ['AtuCadEmiDFe', 'CadEmiDFe', 'CancNFe', 'ConsCad',
@@ -418,14 +434,16 @@ begin
                                'NFe', 'ProcNFe', 'ProcInutNFe', 'RetAtuCadEmiDFe',
                                'RetCancNFe', 'RetConsCad', 'RetConsReciNFe', 'RetConsStatServ',
                                'RetConsSitNFe', 'RetEnvNFe', 'RetInutNFe', 'EnvNFe',
-                               'ProcCancNFe', 'ConsStatServ', 'EnvCCeNFe', 'EnvEventoNFe'],
+                               'ProcCancNFe', 'ConsStatServ', 'EnvCCeNFe', 'EnvEventoNFe',
+                               'ConsNFeDest'],
       [tlAtuCadEmiDFe, tlCadEmiDFe, tlCancCTe, tlConsCad, tlConsReciCTe, tlConsSitCTe,
        tlConsStatServ, tlInutCTe, tlCTe, tlProcCTe, tlProcInutCTe, tlRetAtuCadEmiDFe,
        tlRetCancCTe, tlRetConsCad, tlRetConsReciCTe, tlRetConsStatServ, tlRetConsSitCTe,
        tlRetEnvCTe, tlRetInutCTe, tlEnvCTe, tlProcCancCTe, tlConsStatServCTe, tlEnvCCeNFe,
-       tlEnvEventoNFe]);
+       tlEnvEventoNFe, tlConsNFeDest]);
 end;
 
+// Alterado por Italo em 17/07/2012
 function StrToTipoLayout(var ok: boolean; const s: string): TpcnTipoLayout;
 begin
   result := StrToEnumerado(ok, s, ['AtuCadEmiDFe', 'CadEmiDFe', 'CancNFe', 'ConsCad',
@@ -433,11 +451,13 @@ begin
                                    'NFe', 'ProcNFe', 'ProcInutNFe', 'RetAtuCadEmiDFe',
                                    'RetCancNFe', 'RetConsCad', 'RetConsReciNFe', 'RetConsStatServ',
                                    'RetConsSitNFe', 'RetEnvNFe', 'RetInutNFe', 'EnvNFe',
-                                   'ConsStatServ', 'EnvCCeNFe', 'EnvEventoNFe'],
+                                   'ConsStatServ', 'EnvCCeNFe', 'EnvEventoNFe',
+                                   'ConsNFeDest'],
       [tlAtuCadEmiDFe, tlCadEmiDFe, tlCancCTe, tlConsCad, tlConsReciCTe, tlConsSitCTe,
        tlConsStatServ, tlInutCTe, tlCTe, tlProcCTe, tlProcInutCTe, tlRetAtuCadEmiDFe,
        tlRetCancCTe, tlRetConsCad, tlRetConsReciCTe, tlRetConsStatServ, tlRetConsSitCTe,
-       tlRetEnvCTe, tlRetInutCTe, tlEnvCTe, tlConsStatServCTe, tlEnvCCeNFe, tlEnvEventoNFe]);
+       tlRetEnvCTe, tlRetInutCTe, tlEnvCTe, tlConsStatServCTe, tlEnvCCeNFe, tlEnvEventoNFe,
+       tlConsNFeDest]);
 end;
 
 // Indicador do Tipo de pagamento **********************************************
@@ -1232,6 +1252,33 @@ function EnumeradoToStr2(const t: variant; const AString: array of string ): var
 // Atencao NÃo Funciona em Alguns Enumerados ja existentes
 begin
   result := AString[ integer( t ) ];
+end;
+
+ // Incluido por Italo em 17/07/2012
+function IndicadorNFeToStr(const t: TpcnIndicadorNFe): string;
+begin
+  result := EnumeradoToStr(t, ['0', '1', '2'],
+                              [inTodas, inSemManifestacaoComCiencia,
+                               inSemManifestacaoSemCiencia]);
+end;
+
+function StrToIndicadorNFe(var ok: boolean; const s: string): TpcnIndicadorNFe;
+begin
+  result := StrToEnumerado(ok, s, ['0', '1', '2'],
+                                  [inTodas, inSemManifestacaoComCiencia,
+                                   inSemManifestacaoSemCiencia]);
+end;
+
+function IndicadorEmissorToStr(const t: TpcnIndicadorEmissor): string;
+begin
+  result := EnumeradoToStr(t, ['0', '1'],
+                              [ieTodos, ieRaizCNPJDiferente]);
+end;
+
+function StrToIndicadorEmissor(var ok: boolean; const s: string): TpcnIndicadorEmissor;
+begin
+  result := StrToEnumerado(ok, s, ['0', '1'],
+                                  [ieTodos, ieRaizCNPJDiferente]);
 end;
 
 end.

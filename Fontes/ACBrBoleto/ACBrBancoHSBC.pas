@@ -156,30 +156,58 @@ end;
 function TACBrBancoHSBC.MontarCampoCodigoCedente (
    const ACBrTitulo: TACBrTitulo ) : String;
 begin
-   Result :=
-     ACBrTitulo.ACBrBoleto.Cedente.Agencia + ' ' +
-     ACBrTitulo.ACBrBoleto.Cedente.ContaDigito;
+   if (ACBrTitulo.Carteira = 'CSB') or (ACBrTitulo.Carteira = '1') then
+      Result := ACBrTitulo.ACBrBoleto.Cedente.Agencia + ' ' +
+                ACBrTitulo.ACBrBoleto.Cedente.Conta
+   else 
+      Result := ACBRTitulo.ACBrBoleto.Cedente.CodigoCedente;
+
+     {ACBrTitulo.ACBrBoleto.Cedente.Agencia + ' ' +
+     ACBRTitulo.ACBrBoleto.Cedente.CodigoCedente + '-' +
+     ACBrTitulo.ACBrBoleto.Cedente.ContaDigito;}
 end;
 
 function TACBrBancoHSBC.MontarCodigoBarras ( const ACBrTitulo: TACBrTitulo) : String;
 var
   Parte1, Parte2,
   CodigoBarras,
+  ACarteira,
   DigitoCodBarras: String;
 begin
+  if (ACBrTitulo.Carteira = 'CSB') then
+     ACarteira := '1'
+  else if (ACBrTitulo.Carteira = 'CNR')then
+     ACarteira := '2'
+  else if (ACBrTitulo.Carteira <> '1') and  (ACBrTitulo.Carteira <> '2') then 
+     raise Exception.Create( ACBrStr('Carteira Inválida.'+sLineBreak+'Utilize "CSB","1", "CNR" ou "2"') ) ;
+
   with ACBrTitulo do
   begin
     Parte1 :=
       IntToStr( ACBrBoleto.Banco.Numero ) +
       '9';
 
+    if aCarteira = '1' then // Cobranca Registrada
+    begin
+      Parte2 :=
+        CalcularFatorVencimento(Vencimento) +
+        IntToStrZero(Round(ValorDocumento * 100), 10) +
+        copy(padR(NossoNumero, 13, '0'),3,11) +
+        padR(ACBrBoleto.Cedente.Agencia, 4, '0') +
+        padR(ACBrBoleto.Cedente.Conta, 7, '0') +
+        '00';
+     end
+    else // 'CNR' Cobranca Nao Registrada
+    begin
     Parte2 :=
       CalcularFatorVencimento(Vencimento) +
       IntToStrZero(Round(ValorDocumento * 100), 10) +
       padR(ACBrBoleto.Cedente.CodigoCedente, 7, '0') +
       padR(NossoNumero, 13, '0') +
-      DataToJuliano(Vencimento) +
-      '2';
+        DataToJuliano(Vencimento);
+    end;
+
+    Parte2 := Parte2 + ACarteira;
 
     CodigoBarras    := Parte1 + Parte2;
     DigitoCodBarras := CalcularDigitoCodigoBarras(CodigoBarras);

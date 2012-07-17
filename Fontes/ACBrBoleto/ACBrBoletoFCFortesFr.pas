@@ -52,7 +52,7 @@ uses
   ACBrBoleto ;
 
 const
-  CACBrBoletoFCFortes_Versao = '0.0.13a' ;
+  CACBrBoletoFCFortes_Versao = '0.0.14a' ;
 
 type
 
@@ -384,7 +384,6 @@ type
     RLLabel241: TRLLabel;
     RLLabel242: TRLLabel;
     RLLabel244: TRLLabel;
-    txtSacadorAvalista3: TRLLabel;
     txtReferencia3: TRLLabel;
     RLLabel248: TRLLabel;
     RLDraw136: TRLDraw;

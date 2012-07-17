@@ -311,7 +311,12 @@ begin
    begin
       ANossoNumero := OnlyNumber(NossoNumero);
       if Carteira = 'SR' then
-           ANossoNumero:= '82'+ padr(Copy(ANossoNumero,Length(ANossoNumero)-7,8),8)
+       begin
+         if TamanhoMaximoNossoNum = 14 then
+            ANossoNumero:= '8'+ padr(Copy(ANossoNumero,Length(ANossoNumero)-13,14),14)    
+         else
+            ANossoNumero:= '82'+ padr(Copy(ANossoNumero,Length(ANossoNumero)-7,8),8);
+       end
       else
         ANossoNumero:= '9' + padR(Copy(ANossoNumero,Length(ANossoNumero)-8,9),9);
    end;

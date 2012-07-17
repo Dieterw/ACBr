@@ -70,6 +70,9 @@ Versao 0.0.10a do FastReport 02/07/12
 [-] Lançado a 1a versão para impressão dos boletos em FastReport.
     (por: Isaque Pinheiro)	
 
+Versao 0.0.11a do QuickReport 17/07/12
+[+] Implementado layout Padrão com Comprovante de Entrega.(Ivomar)	
+	
 Versao 0.0.10a do QuickReport 10/07/12
 [-] Corrigido impressão do código de barras.(Rogerio Pett)
 	
@@ -79,7 +82,9 @@ Versao 0.0.9a do QuickReport 07/07/12
 Versao 0.1.1a do LazReport 02/08/11
 [+] Adicionado campos Outras Deduções e Outros Acréscimos ao boleto, conforme
     solicitação da Caixa Econômica Federal(Juliana Tamizou)
-	
+
+Versao 0.0.14a do FortesReport 17/07/12
+[-] Removido label Sacador/Avalista duplicado.(Juliana Tamizou)	
 
 Versao 0.0.13a do FortesReport 15/06/12
 [-] Corrigido bug ao gerar boletos em PDF.(Juliana Tamizou)
@@ -106,14 +111,23 @@ Versao 0.0.10a do FortesReport 06/07/11
     (por: Regys Silveira) 
 	
 
+Versao 0.0.38a 17/07/2012		
+[*] Unit HSBC está fazendo a impressão de Boletos na Cobrança Simples e Registrada.
+    (Jair Carlos Muller)
+[*]	Unit CaixaEconômica, adicionado formatação correta do Nosso Número para Cobrança 
+    Registrada e Nosso Número de 14 Dígitos(Mais o prefixo e o Digito Verificador)
+	Juliana Tamizou)
+[-]	Unit HSBC, efetuado correção da geração do arquivo remessa para Cobrança
+    Registrada.(Jair Carlos Muller)
+
+
 Versao 0.0.37a 10/07/2012	
 [+] Unit Sicred - Adicionado leitura do arquivo retorno CNAB400.(André Luiz)
 	
-	
 Versao 0.0.36a 28/06/2012	
-[*] Unit Sicred - Correção do Calculo do Digito Verificador do Nosso Número.(André Luiz)
+[-] Unit Sicred - Correção do Calculo do Digito Verificador do Nosso Número.(André Luiz)
 
-[*] Unit HSBC - Correção da montagem do Código do Cedente.(Ronaldo Eiz)	
+[-] Unit HSBC - Correção da montagem do Código do Cedente.(Ronaldo Eiz)	
 	
 
 Versao 0.0.35a 15/08/2012	

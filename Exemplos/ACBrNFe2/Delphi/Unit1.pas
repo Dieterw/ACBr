@@ -2207,6 +2207,7 @@ begin
   MemoResp.Lines.Text :=  UTF8Encode(ACBrNFe1.WebServices.Consulta.RetWS);
   memoRespWS.Lines.Text :=  UTF8Encode(ACBrNFe1.WebServices.Consulta.RetornoWS);
   LoadXML(MemoResp, WBResposta);
+  LoadConsulta201(ACBrNFe1.WebServices.Consulta.RetWS);
 end;
 
 procedure TForm1.btnCancelarChaveClick(Sender: TObject);

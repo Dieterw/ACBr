@@ -8,7 +8,8 @@ uses IniFiles, ShellAPI, pcnRetConsReciNFe,
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, Buttons, ComCtrls, OleCtrls, SHDocVw,
   ACBrNFe, pcnConversao, ACBrNFeDANFEClass, ACBrNFeDANFERave, ACBrUtil,
-  pcnNFeW, pcnNFeRTXT, pcnAuxiliar;
+  pcnNFeW, pcnNFeRTXT, pcnAuxiliar,
+  XMLIntf, XMLDoc, StrUtils;
 
 type
   TForm1 = class(TForm)
@@ -137,6 +138,9 @@ type
     btnCarregarXMLEnviar: TButton;
     btnCartadeCorrecao: TButton;
     btnValidarAssinatura: TButton;
+    TabSheet11: TTabSheet;
+    TreeViewRetornoConsulta: TTreeView;
+    btnManifDestConfirmacao: TButton;
     procedure sbtnCaminhoCertClick(Sender: TObject);
     procedure sbtnLogoMarcaClick(Sender: TObject);
     procedure sbtnPathSalvarClick(Sender: TObject);
@@ -172,6 +176,7 @@ type
     procedure btnCarregarXMLEnviarClick(Sender: TObject);
     procedure btnCartadeCorrecaoClick(Sender: TObject);
     procedure btnValidarAssinaturaClick(Sender: TObject);
+    procedure btnManifDestConfirmacaoClick(Sender: TObject);
     
   private
     { Private declarations }
@@ -180,6 +185,7 @@ type
     procedure GerarNFe(NumNFe : String);
     procedure LoadXML(MyMemo: TMemo; MyWebBrowser: TWebBrowser);
 
+    procedure LoadConsulta201(XML: string);
   public
     { Public declarations }
   end;
@@ -349,6 +355,51 @@ begin
 
 end;
 
+procedure TForm1.LoadConsulta201(XML: String);
+var
+  DOM: IXMLDocument;
+  lXML: String;
+
+  procedure AddNodes(XMLNode: IXMLNode; TreeNode: TTreeNode);
+  var
+    Index: Integer;
+    NewNode: TTreeNode;
+    Value: string;
+  begin
+    if XMLNode.nodeType in [ntTEXT, ntCDATA, ntCOMMENT] then
+      Value := XMLNode.text
+    else
+      Value := XMLNode.nodeName;
+    NewNode := TreeViewRetornoConsulta.Items.AddChild(TreeNode, {XMLNode.NodeName +} ' ' + Value);
+    for Index := 0 to XMLNode.childNodes.Count - 1 do
+      AddNodes(XMLNode.childNodes[Index], NewNode);
+  end;
+  function LimpaXML(XML: String; TagRemover:String): String;
+  begin
+    Result := XML;
+    while pos('<'+TagRemover,Result) <> 0 do
+    begin
+      Result := ReplaceStr(Result,
+                           '<'+TagRemover+
+                              RetornarConteudoEntre(Result,'<'+TagRemover,'</'+TagRemover+'>')+
+                           '</'+TagRemover+'>','');
+    end;
+  end;
+begin
+  DOM := TXMLDocument.Create(nil);
+  try
+    lXML := LimpaXML(XML,'Signature');
+    DOM.LoadFromXML(lXML);
+    DOM.Active := True;
+    TreeViewRetornoConsulta.Items.BeginUpdate;
+    TreeViewRetornoConsulta.Items.Clear;
+    AddNodes(dom.DocumentElement, nil);
+    TreeViewRetornoConsulta.TopItem := TreeViewRetornoConsulta.Items[0];
+  finally
+    TreeViewRetornoConsulta.Items.EndUpdate;
+  end;
+end;
+
 procedure TForm1.LoadXML(MyMemo: TMemo; MyWebBrowser: TWebBrowser);
 begin
   MyMemo.Lines.SaveToFile(PathWithDelim(ExtractFileDir(application.ExeName))+'temp.xml');
@@ -441,12 +492,13 @@ begin
     MemoResp.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.Consulta.RetWS);
     memoRespWS.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.Consulta.RetornoWS);
     LoadXML(MemoResp, WBResposta);
+    LoadConsulta201(ACBrNFe1.WebServices.Consulta.RetWS);
   end;
 end;
 
 procedure TForm1.btnCancNFClick(Sender: TObject);
 var
-  vAux : String;
+  idLote,vAux : String;
 begin
   OpenDialog1.Title := 'Selecione a NFE';
   OpenDialog1.DefaultExt := '*-nfe.XML';
@@ -456,14 +508,27 @@ begin
   begin
     ACBrNFe1.NotasFiscais.Clear;
     ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
-    if not(InputQuery('WebServices Cancelamento', 'Justificativa', vAux)) then
+
+    idLote := '1';
+    if not(InputQuery('WebServices Eventos: Cancelamento', 'Identificador de controle do Lote de envio do Evento', idLote)) then
        exit;
-     ACBrNFe1.Cancelamento(vAux);
-     MemoResp.Lines.Text :=  UTF8Encode(ACBrNFe1.WebServices.Cancelamento.RetWS);
-     memoRespWS.Lines.Text :=  UTF8Encode(ACBrNFe1.WebServices.Cancelamento.RetornoWS);     
-     LoadXML(MemoResp, WBResposta);
-     ShowMessage(IntToStr(ACBrNFe1.WebServices.Cancelamento.cStat));
-     ShowMessage(ACBrNFe1.WebServices.Cancelamento.Protocolo);
+    if not(InputQuery('WebServices Eventos: Cancelamento', 'Justificativa', vAux)) then
+       exit;
+    ACBrNFe1.EnvEvento.EnvEventoNFe.Evento.Clear;
+    ACBrNFe1.EnvEvento.EnvEventoNFe.idLote := StrToInt(idLote) ;
+    with ACBrNFe1.EnvEvento.EnvEventoNFe.Evento.Add do
+    begin
+     infEvento.dhEvento := now;
+     infEvento.tpEvento := teCancelamento;
+     infEvento.detEvento.xJust := vAux;
+    end;
+    ACBrNFe1.EnviarEventoNFe(StrToInt(idLote));
+
+    MemoResp.Lines.Text :=  UTF8Encode(ACBrNFe1.WebServices.EnvEvento.RetWS);
+    memoRespWS.Lines.Text :=  UTF8Encode(ACBrNFe1.WebServices.EnvEvento.RetornoWS);
+    LoadXML(MemoResp, WBResposta);
+    ShowMessage(IntToStr(ACBrNFe1.WebServices.EnvEvento.cStat));
+    ShowMessage(ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.nProt);
   end;
 end;
 
@@ -482,6 +547,59 @@ begin
       MemoDados.Lines.Add('Alertas: '+ACBrNFe1.NotasFiscais.Items[0].Alertas);
     showmessage('Nota Fiscal Eletrônica Valida');
   end;
+end;
+
+procedure TForm1.btnManifDestConfirmacaoClick(Sender: TObject);
+var
+ Chave, idLote, CNPJ: string;
+ lMsg: string;
+begin
+  Chave:='';
+  if not(InputQuery('WebServices Eventos: Manif. Destinatario - Conf. Operacao', 'Chave da NF-e', Chave)) then
+     exit;
+  Chave := Trim(OnlyNumber(Chave));
+  idLote := '1';
+  if not(InputQuery('WebServices Eventos: Manif. Destinatario - Conf. Operacao', 'Identificador de controle do Lote de envio do Evento', idLote)) then
+     exit;
+  CNPJ := '';
+  if not(InputQuery('WebServices Eventos: Manif. Destinatario - Conf. Operacao', 'CNPJ ou o CPF do autor do Evento', CNPJ)) then
+     exit;
+
+  ACBrNFe1.EnvEvento.EnvEventoNFe.Evento.Clear;
+  ACBrNFe1.EnvEvento.EnvEventoNFe.idLote := StrToInt(IDLote) ;
+  with ACBrNFe1.EnvEvento.EnvEventoNFe.Evento.Add do
+   begin
+     infEvento.chNFe := Chave;
+     infEvento.CNPJ   := CNPJ;
+     infEvento.dhEvento := now;
+     infEvento.tpEvento := teManifDestConfirmacao;
+   end;
+  ACBrNFe1.EnviarEventoNFe(StrToInt(IDLote));
+
+  with AcbrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento do
+  begin
+    lMsg:=
+    'Id: '+Id+#13+
+    'tpAmb: '+TpAmbToStr(tpAmb)+#13+
+    'verAplic: '+verAplic+#13+
+    'cOrgao: '+IntToStr(cOrgao)+#13+
+    'cStat: '+IntToStr(cStat)+#13+
+    'xMotivo: '+xMotivo+#13+
+    'chNFe: '+chNFe+#13+
+    'tpEvento: '+TpEventoToStr(tpEvento)+#13+
+    'xEvento: '+xEvento+#13+
+    'nSeqEvento: '+IntToStr(nSeqEvento)+#13+
+    'CNPJDest: '+CNPJDest+#13+
+    'emailDest: '+emailDest+#13+
+    'dhRegEvento: '+DateTimeToStr(dhRegEvento)+#13+
+    'nProt: '+nProt;
+  end;
+  ShowMessage(lMsg);
+
+  MemoResp.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.EnvEvento.RetWS);
+  memoRespWS.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.EnvEvento.RetornoWS);
+//  ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].XXXX
+  LoadXML(MemoResp, WBResposta);
 end;
 
 procedure TForm1.btnImprimirClick(Sender: TObject);
@@ -688,6 +806,14 @@ begin
       frmStatus.Show;
       frmStatus.BringToFront;
     end;
+    stNFeEvento :
+    begin
+      if ( frmStatus = nil ) then
+        frmStatus := TfrmStatus.Create(Application);
+      frmStatus.lblStatus.Caption := 'Enviando Evento...';
+      frmStatus.Show;
+      frmStatus.BringToFront;
+    end;
   end;
   Application.ProcessMessages;
 end;
@@ -738,7 +864,7 @@ begin
   ACBrNFe1.WebServices.ConsultaCadastro.Executar;
 
   MemoResp.Lines.Text :=  UTF8Encode(ACBrNFe1.WebServices.ConsultaCadastro.RetWS);
-  memoRespWS.Lines.Text :=  UTF8Encode(ACBrNFe1.WebServices.ConsultaCadastro.RetornoWS);  
+  memoRespWS.Lines.Text :=  UTF8Encode(ACBrNFe1.WebServices.ConsultaCadastro.RetornoWS);
   LoadXML(MemoResp, WBResposta);
 
   ShowMessage(ACBrNFe1.WebServices.ConsultaCadastro.xMotivo);
@@ -2085,31 +2211,48 @@ end;
 
 procedure TForm1.btnCancelarChaveClick(Sender: TObject);
 var
- Chave, Protocolo, Justificativa : string;
+ Chave, idLote, CNPJ, Protocolo, Justificativa : string;
 begin
-  if not(InputQuery('WebServices Cancelamento', 'Chave da NF-e', Chave)) then
+  if not(InputQuery('WebServices Eventos: Cancelamento', 'Chave da NF-e', Chave)) then
      exit;
-  if not(InputQuery('WebServices Cancelamento', 'Protocolo de Autorização', Protocolo)) then
+  Chave := Trim(OnlyNumber(Chave));
+  idLote := '1';
+  if not(InputQuery('WebServices Eventos: Cancelamento', 'Identificador de controle do Lote de envio do Evento', idLote)) then
      exit;
-  if not(InputQuery('WebServices Cancelamento', 'Justificativa', Justificativa)) then
+  CNPJ := copy(Chave,7,14);
+  if not(InputQuery('WebServices Eventos: Cancelamento', 'CNPJ ou o CPF do autor do Evento', CNPJ)) then
      exit;
-  ACBrNFe1.WebServices.Cancelamento.NFeChave      := Chave;
-  ACBrNFe1.WebServices.Cancelamento.Protocolo     := Protocolo;
-  ACBrNFe1.WebServices.Cancelamento.Justificativa := Justificativa;
-  ACBrNFe1.WebServices.Cancelamento.Executar;
+  Protocolo:='';
+  if not(InputQuery('WebServices Eventos: Cancelamento', 'Protocolo de Autorização', Protocolo)) then
+     exit;
+  Justificativa := 'Justificativa do Cancelamento';
+  if not(InputQuery('WebServices Eventos: Cancelamento', 'Justificativa do Cancelamento', Justificativa)) then
+     exit;
 
-  MemoResp.Lines.Text :=  UTF8Encode(ACBrNFe1.WebServices.Cancelamento.RetWS);
-  memoRespWS.Lines.Text :=  UTF8Encode(ACBrNFe1.WebServices.Cancelamento.RetornoWS);
+  ACBrNFe1.EnvEvento.EnvEventoNFe.Evento.Clear;
+  ACBrNFe1.EnvEvento.EnvEventoNFe.idLote := StrToInt(idLote) ;
+  with ACBrNFe1.EnvEvento.EnvEventoNFe.Evento.Add do
+   begin
+     infEvento.chNFe := Chave;
+     infEvento.CNPJ   := CNPJ;
+     infEvento.dhEvento := now;
+     infEvento.tpEvento := teCancelamento;
+     infEvento.detEvento.xJust := Justificativa;
+     infEvento.detEvento.nProt := Protocolo;
+   end;
+  ACBrNFe1.EnviarEventoNFe(StrToInt(idLote));
+
+  MemoResp.Lines.Text :=  UTF8Encode(ACBrNFe1.WebServices.EnvEvento.RetWS);
+  memoRespWS.Lines.Text :=  UTF8Encode(ACBrNFe1.WebServices.EnvEvento.RetornoWS);
   LoadXML(MemoResp, WBResposta);
 
-{  ACBrNFe1.WebServices.Cancelamento.TpAmb
-  ACBrNFe1.WebServices.Cancelamento.verAplic
-  ACBrNFe1.WebServices.Cancelamento.cStat
-  ACBrNFe1.WebServices.Cancelamento.xMotivo
-  ACBrNFe1.WebServices.Cancelamento.cUF
-  ACBrNFe1.WebServices.Cancelamento.NFeChave
-  ACBrNFe1.WebServices.Cancelamento.DhRecbto
-  ACBrNFe1.WebServices.Cancelamento.Protocolo }
+  {ACBrNFe1.WebServices.EnvEvento.EventoRetorno.TpAmb
+  ACBrNFe1.WebServices.EnvEvento.EventoRetorno.verAplic
+  ACBrNFe1.WebServices.EnvEvento.EventoRetorno.cStat
+  ACBrNFe1.WebServices.EnvEvento.EventoRetorno.xMotivo
+  ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.chNFe
+  ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.dhRegEvento
+  ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].RetInfEvento.nProt}
 end;
 
 procedure TForm1.btnAdicionarProtNFeClick(Sender: TObject);
@@ -2197,51 +2340,39 @@ end;
 
 procedure TForm1.btnCartadeCorrecaoClick(Sender: TObject);
 var
- Chave, idLote, codOrgao, CNPJ, nSeqEvento, Correcao : string;
+ Chave, idLote, CNPJ, nSeqEvento, Correcao : string;
 begin
-  if not(InputQuery('WebServices Carta de Correção', 'Chave da NF-e', Chave)) then
+  if not(InputQuery('WebServices Eventos: Carta de Correção', 'Chave da NF-e', Chave)) then
      exit;
   Chave := Trim(OnlyNumber(Chave));
-{  if not ValidarChave(Chave) then
-   begin
-     MessageDlg('Chave Inválida.',mtError,[mbok],0);
-     exit;
-   end;   }
   idLote := '1';
-  if not(InputQuery('WebServices Carta de Correção', 'Identificador de controle do Lote de envio do Evento', idLote)) then
-     exit;
-  codOrgao := copy(Chave,1,2);
-  if not(InputQuery('WebServices Carta de Correção', 'Código do órgão de recepção do Evento', codOrgao)) then
+  if not(InputQuery('WebServices Eventos: Carta de Correção', 'Identificador de controle do Lote de envio do Evento', idLote)) then
      exit;
   CNPJ := copy(Chave,7,14);
-  if not(InputQuery('WebServices Carta de Correção', 'CNPJ ou o CPF do autor do Evento', CNPJ)) then
+  if not(InputQuery('WebServices Eventos: Carta de Correção', 'CNPJ ou o CPF do autor do Evento', CNPJ)) then
      exit;
   nSeqEvento := '1';
-  if not(InputQuery('WebServices Carta de Correção', 'Sequencial do evento para o mesmo tipo de evento', nSeqEvento)) then
+  if not(InputQuery('WebServices Eventos: Carta de Correção', 'Sequencial do evento para o mesmo tipo de evento', nSeqEvento)) then
      exit;
   Correcao := 'Correção a ser considerada, texto livre. A correção mais recente substitui as anteriores.';
-  if not(InputQuery('WebServices Carta de Correção', 'Correção a ser considerada', Correcao)) then
+  if not(InputQuery('WebServices Eventos: Carta de Correção', 'Correção a ser considerada', Correcao)) then
      exit;
-  ACBrNFe1.CartaCorrecao.CCe.Evento.Clear;
-   ACBrNFe1.CartaCorrecao.CCe.idLote := StrToInt(idLote) ;
-  with ACBrNFe1.CartaCorrecao.CCe.Evento.Add do
+  ACBrNFe1.EnvEvento.EnvEventoNFe.Evento.Clear;
+   ACBrNFe1.EnvEvento.EnvEventoNFe.idLote := StrToInt(idLote) ;
+  with ACBrNFe1.EnvEvento.EnvEventoNFe.Evento.Add do
    begin
      infEvento.chNFe := Chave;
-     infEvento.cOrgao := StrToInt(codOrgao);
      infEvento.CNPJ   := CNPJ;
      infEvento.dhEvento := now;
-     infEvento.tpEvento := 110110;
+     infEvento.tpEvento := teCCe;
      infEvento.nSeqEvento := StrToInt(nSeqEvento);
-     infEvento.versaoEvento := '1.00';
-     infEvento.detEvento.descEvento := 'Carta de Correção';
      infEvento.detEvento.xCorrecao := Correcao;
-     infEvento.detEvento.xCondUso := ''; //Texto fixo conforme NT 2011.003 -  http://www.nfe.fazenda.gov.br/portal/exibirArquivo.aspx?conteudo=tsiloeZ6vBw=
    end;
-  ACBrNFe1.EnviarCartaCorrecao(StrToInt(idLote));
+  ACBrNFe1.EnviarEventoNFe(StrToInt(idLote));
 
-  MemoResp.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.CartaCorrecao.RetWS);
-  memoRespWS.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.CartaCorrecao.RetornoWS);
-//  ACBrNFe1.WebServices.CartaCorrecao.CCeRetorno.retEvento.Items[0].XXXX
+  MemoResp.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.EnvEvento.RetWS);
+  memoRespWS.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.EnvEvento.RetornoWS);
+//  ACBrNFe1.WebServices.EnvEvento.EventoRetorno.retEvento.Items[0].XXXX
   LoadXML(MemoResp, WBResposta);
 end;
 

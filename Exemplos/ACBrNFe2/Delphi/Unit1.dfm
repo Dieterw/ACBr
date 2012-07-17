@@ -849,7 +849,7 @@ object Form1: TForm1
       end
       object btnCancNF: TButton
         Left = 9
-        Top = 126
+        Top = 125
         Width = 177
         Height = 25
         Caption = 'Cancelamento NFe com XML'
@@ -1009,13 +1009,22 @@ object Form1: TForm1
         TabOrder = 21
         OnClick = btnValidarAssinaturaClick
       end
+      object btnManifDestConfirmacao: TButton
+        Left = 192
+        Top = 212
+        Width = 178
+        Height = 25
+        Caption = 'Manif. Dest. - Conf. Opera'#231#227'o'
+        TabOrder = 22
+        OnClick = btnManifDestConfirmacaoClick
+      end
     end
     object PageControl2: TPageControl
       Left = 1
       Top = 243
       Width = 579
       Height = 349
-      ActivePage = TabSheet8
+      ActivePage = TabSheet11
       Align = alClient
       TabOrder = 1
       object TabSheet5: TTabSheet
@@ -1100,6 +1109,19 @@ object Form1: TForm1
           TabOrder = 0
         end
       end
+      object TabSheet11: TTabSheet
+        Caption = 'RetornoConsulta NFe 2.01'
+        ImageIndex = 6
+        object TreeViewRetornoConsulta: TTreeView
+          Left = 0
+          Top = 0
+          Width = 571
+          Height = 321
+          Align = alClient
+          Indent = 19
+          TabOrder = 0
+        end
+      end
     end
   end
   object OpenDialog1: TOpenDialog
@@ -1114,6 +1136,7 @@ object Form1: TForm1
   object ACBrNFe1: TACBrNFe
     Configuracoes.Geral.FormaEmissao = teContingencia
     Configuracoes.Geral.PathSalvar = 'C:\Program Files\Borland\Delphi7\Bin\'
+    Configuracoes.Geral.IniFinXMLSECAutomatico = True
     Configuracoes.WebServices.UF = 'SP'
     Configuracoes.WebServices.AguardarConsultaRet = 15000
     Configuracoes.WebServices.IntervaloTentativas = 1000

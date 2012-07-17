@@ -54,7 +54,9 @@ uses Classes, SysUtils,
      SoapHTTPClient, SOAPHTTPTrans, SOAPConst, JwaWinCrypt, WinInet, ACBrCAPICOM_TLB,
   {$ENDIF}
   pcnNFe, pcnNFeW,
-  pcnRetConsReciNFe, pcnRetConsCad, pcnAuxiliar, pcnConversao, pcnRetDPEC, pcnProcNFe, pcnRetCancNFe, pcnCCeNFe, pcnRetCCeNFe,
+  pcnRetConsReciNFe, pcnRetConsCad, pcnAuxiliar, pcnConversao, pcnRetDPEC,
+  pcnProcNFe, pcnRetCancNFe, pcnCCeNFe, pcnRetCCeNFe,
+  pcnEnvEventoNFe, pcnRetEnvEventoNFe, pcnRetConsSitNFe,// Incluido por Italo em 09/04/2012
   ACBrNFeNotasFiscais,
   ACBrNFeConfiguracoes ;
 
@@ -73,6 +75,7 @@ type
     procedure DoNFeEnvDPEC;
     procedure DoNFeConsultaDPEC;
     procedure DoNFeCartaCorrecao;
+    procedure DoNFeEnvEvento; // Incluido por Italo em 09/04/2012
     {$IFDEF ACBrNFeOpenSSL}
        procedure ConfiguraHTTP( HTTP : THTTPSend; Action : AnsiString);
     {$ELSE}
@@ -159,7 +162,7 @@ type
   private
     FRecibo: String;
     FProtocolo: String;
-    FChaveNFe: String; 
+    FChaveNFe: String;
     FNotasFiscais: TNotasFiscais;
     FNFeRetorno: TRetConsReciNFe;
     FTpAmb: TpcnTipoAmbiente;
@@ -225,6 +228,7 @@ type
     FcUF : Integer;
     FprotNFe: TProcNFe;
     FretCancNFe: TRetCancNFe;
+    FprocEventoNFe: TRetEventoNFeCollection; {eventos_juaumkiko}
   public
     constructor Create(AOwner : TComponent); reintroduce;
     destructor Destroy; override;
@@ -240,6 +244,7 @@ type
     property cUF: Integer read FcUF;
     property protNFe: TProcNFe read FprotNFe write FprotNFe;
     property retCancNFe: TRetCancNFe read FretCancNFe write FretCancNFe;
+    property procEventoNFe: TRetEventoNFeCollection read FprocEventoNFe write FprocEventoNFe;
   end;
 
   TNFeCancelamento = Class(TWebServicesBase)
@@ -411,6 +416,30 @@ type
     property CCeRetorno: TRetCCeNFe        read FCCeRetorno;
   end;
 
+  {Enviar Evento}
+  // Incluido por Italo em 09/04/2012
+  TNFeEnvEvento = Class(TWebServicesBase)
+  private
+    FidLote: Integer;
+    Fversao: String;
+    FEvento: TEventoNFe;
+    FcStat: Integer;
+    FxMotivo: String;
+    FTpAmb: TpcnTipoAmbiente;
+    FEventoRetorno: TRetEventoNFe;
+  public
+    constructor Create(AOwner : TComponent; AEvento : TEventoNFe);reintroduce;
+    destructor Destroy; override;
+    function Executar: Boolean; override;
+
+    property idLote: Integer               read FidLote      write FidLote;
+    property versao: String                read Fversao      write Fversao;
+    property cStat: Integer                read FcStat;
+    property xMotivo: String               read FxMotivo;
+    property TpAmb: TpcnTipoAmbiente       read FTpAmb;
+    property EventoRetorno: TRetEventoNFe        read FEventoRetorno;
+  end;
+
   TWebServices = Class(TWebServicesBase)
   private
     FACBrNFe : TComponent;
@@ -425,6 +454,7 @@ type
     FEnviaDPEC: TNFeEnvDPEC;
     FConsultaDPEC: TNFeConsultaDPEC;
     FCartaCorrecao: TNFeCartaCorrecao;
+    FEnvEvento: TNFeEnvEvento; // Incluido por Italo em 09/04/2012
   public
     constructor Create(AFNotaFiscalEletronica: TComponent);reintroduce;
     destructor Destroy; override;
@@ -445,6 +475,8 @@ type
     property EnviarDPEC: TNFeEnvDPEC read FEnviaDPEC write FEnviaDPEC;
     property ConsultaDPEC: TNFeConsultaDPEC read FConsultaDPEC write FConsultaDPEC;
     property CartaCorrecao: TNFeCartaCorrecao read FCartaCorrecao write FCartaCorrecao;
+    // Incluido por Italo em 09/04/2012
+    property EnvEvento: TNFeEnvEvento read FEnvEvento write FEnvEvento;
   end;
 
 implementation
@@ -455,7 +487,7 @@ uses {$IFDEF ACBrNFeOpenSSL}
      ACBrUtil, ACBrNFeUtil, ACBrNFe,
      pcnGerador, pcnCabecalho,
      pcnConsStatServ, pcnRetConsStatServ,
-     pcnCancNFe, pcnConsSitNFe, pcnRetConsSitNFe,
+     pcnCancNFe, pcnConsSitNFe,
      pcnInutNFe, pcnRetInutNFe,
      pcnRetEnvNFe, pcnConsReciNFe ,
      pcnConsCad,
@@ -654,7 +686,7 @@ begin
   for i := 0 to TNFeCartaCorrecao(Self).FCCe.Evento.Count-1 do
    begin
       TNFeCartaCorrecao(Self).FCCe.Evento[i].InfEvento.id := CCeNFe.Evento[i].InfEvento.id;
-   end;                                 
+   end;
   CCeNFe.Free;
 
   FDadosMsg := StringReplace( FDadosMsg, '<'+ENCODING_UTF8_STD+'>', '', [rfReplaceAll] ) ;
@@ -900,6 +932,80 @@ begin
   FDadosMsg := StringReplace( FDadosMsg, '<?xml version="1.0"?>', '', [rfReplaceAll] ) ;
 end;
 
+// Incluido por Italo em 09/04/2012
+procedure TWebServicesBase.DoNFeEnvEvento;
+var
+  EventoNFe : TEventoNFe;
+  i : integer;
+begin
+  EventoNFe        := TEventoNFe.Create;
+  EventoNFe.schema := TsPL006;
+  EventoNFe.idLote := TNFeEnvEvento(Self).idLote;
+  for i := 0 to TNFeEnvEvento(Self).FEvento.Evento.Count-1 do
+   begin
+     with EventoNFe.Evento.Add do
+      begin
+        infEvento.tpAmb                := TpcnTipoAmbiente(FConfiguracoes.WebServices.AmbienteCodigo-1);
+        infEvento.CNPJ                 := TNFeEnvEvento(Self).FEvento.Evento[i].InfEvento.CNPJ;
+        infEvento.chNFe                := TNFeEnvEvento(Self).FEvento.Evento[i].InfEvento.chNFe;
+        infEvento.dhEvento             := TNFeEnvEvento(Self).FEvento.Evento[i].InfEvento.dhEvento;
+        infEvento.tpEvento             := TNFeEnvEvento(Self).FEvento.Evento[i].InfEvento.tpEvento;
+        infEvento.nSeqEvento           := TNFeEnvEvento(Self).FEvento.Evento[i].InfEvento.nSeqEvento;
+        case InfEvento.tpEvento of
+          teCCe:
+          begin
+            infEvento.detEvento.xCorrecao  := TNFeEnvEvento(Self).FEvento.Evento[i].InfEvento.detEvento.xCorrecao;
+            infEvento.detEvento.xCondUso   := TNFeEnvEvento(Self).FEvento.Evento[i].InfEvento.detEvento.xCondUso;
+          end;
+          teCancelamento:
+          begin
+            infEvento.detEvento.nProt  := TNFeEnvEvento(Self).FEvento.Evento[i].InfEvento.detEvento.nProt;
+            infEvento.detEvento.xJust  := TNFeEnvEvento(Self).FEvento.Evento[i].InfEvento.detEvento.xJust;
+          end;
+          teManifDestOperNaoRealizada:
+          begin
+            infEvento.detEvento.xJust  := TNFeEnvEvento(Self).FEvento.Evento[i].InfEvento.detEvento.xJust;
+          end;
+        end;
+      end;
+   end;
+
+  EventoNFe.GerarXML;
+
+  {$IFDEF ACBrNFeOpenSSL}
+  if not(NotaUtil.Assinar(EventoNFe.Gerador.ArquivoFormatoXML, TConfiguracoes(FConfiguracoes).Certificados.Certificado , TConfiguracoes(FConfiguracoes).Certificados.Senha, FDadosMsg, FMsg)) then
+     begin
+       if Assigned(TACBrNFe( FACBrNFe ).OnGerarLog) then
+          TACBrNFe( FACBrNFe ).OnGerarLog('Falha ao assinar o Envio de Evento '+LineBreak+FMsg);
+       raise EACBrNFeException.Create('Falha ao assinar o Envio de Evento '+LineBreak+FMsg);
+     end;
+  {$ELSE}
+  if not(NotaUtil.Assinar(EventoNFe.Gerador.ArquivoFormatoXML, TConfiguracoes(FConfiguracoes).Certificados.GetCertificado , FDadosMsg, FMsg)) then
+     begin
+       if Assigned(TACBrNFe( FACBrNFe ).OnGerarLog) then
+          TACBrNFe( FACBrNFe ).OnGerarLog('Falha ao assinar o Envio de Evento '+LineBreak+FMsg);
+       raise EACBrNFeException.Create('Falha ao assinar o Envio de Evento '+LineBreak+FMsg);
+     end;
+  {$ENDIF}
+
+  if not(NotaUtil.Valida(FDadosMsg, FMsg, TACBrNFe( FACBrNFe ).Configuracoes.Geral.PathSchemas)) then
+     begin
+       if Assigned(TACBrNFe( FACBrNFe ).OnGerarLog) then
+          TACBrNFe( FACBrNFe ).OnGerarLog('Falha na validação dos dados do Envio de Evento '+LineBreak+FMsg);
+       raise EACBrNFeException.Create('Falha na validação dos dados do Envio de Evento '+LineBreak+FMsg);
+     end;
+
+  for i := 0 to TNFeEnvEvento(Self).FEvento.Evento.Count-1 do
+   begin
+      TNFeEnvEvento(Self).FEvento.Evento[i].InfEvento.id := EventoNFe.Evento[i].InfEvento.id;
+   end;
+  EventoNFe.Free;
+
+  FDadosMsg := StringReplace( FDadosMsg, '<'+ENCODING_UTF8_STD+'>', '', [rfReplaceAll] ) ;
+  FDadosMsg := StringReplace( FDadosMsg, '<'+ENCODING_UTF8+'>', '', [rfReplaceAll] ) ;
+  FDadosMsg := StringReplace( FDadosMsg, '<?xml version="1.0"?>', '', [rfReplaceAll] ) ;
+end;
+
 function TWebServicesBase.Executar: Boolean;
 begin
   Result := False;
@@ -930,7 +1036,9 @@ begin
   else if self is TNFeConsultaDPEC then
     DoNFeConsultaDPEC
   else if Self is TNFeCartaCorrecao then
-    DoNFeCartaCorrecao;
+    DoNFeCartaCorrecao
+  else if Self is TNFeEnvEvento then // Incluido por Italo em 09/04/2012
+    DoNFeEnvEvento;
 end;
 
 procedure TWebServicesBase.LoadURL;
@@ -955,6 +1063,8 @@ begin
     FURL  := NotaUtil.GetURL(FConfiguracoes.WebServices.UFCodigo, FConfiguracoes.WebServices.AmbienteCodigo, FConfiguracoes.Geral.FormaEmissaoCodigo, LayNfeConsultaDPEC)
   else if self is TNFeCartaCorrecao then
     FURL  := NotaUtil.GetURL(FConfiguracoes.WebServices.UFCodigo, FConfiguracoes.WebServices.AmbienteCodigo, FConfiguracoes.Geral.FormaEmissaoCodigo, LayNFeCCe)
+  else if self is TNFeEnvEvento then
+    FURL  := NotaUtil.GetURL(FConfiguracoes.WebServices.UFCodigo, FConfiguracoes.WebServices.AmbienteCodigo, FConfiguracoes.Geral.FormaEmissaoCodigo, LayNFeEvento)
 end;
 
 { TWebServices }
@@ -1037,6 +1147,8 @@ begin
   FEnviaDPEC        := TNFeEnvDPEC.Create(AFNotaFiscalEletronica);
   FConsultaDPEC     := TNFeConsultaDPEC.Create(AFNotaFiscalEletronica);
   FCartaCorrecao    := TNFeCartaCorrecao.Create(AFNotaFiscalEletronica,TACBrNFe(AFNotaFiscalEletronica).CartaCorrecao.CCe);
+  // Incluido por Italo em 09/04/2012
+  FEnvEvento        := TNFeEnvEvento.Create(AFNotaFiscalEletronica,TACBrNFe(AFNotaFiscalEletronica).EnvEvento.EnvEventoNFe);
 end;
 
 destructor TWebServices.Destroy;
@@ -1052,6 +1164,8 @@ begin
   FEnviaDPEC.Free;
   FConsultaDPEC.Free;
   FCartaCorrecao.Free;
+  // Incluido por Italo em 09/04/2012
+  FEnvEvento.Free;
   inherited;
 end;
 
@@ -1516,7 +1630,7 @@ function TNFeRetRecepcao.Executar: Boolean;
     Acao.Text := Texto;
 
     {$IFDEF ACBrNFeOpenSSL}
-       Acao.SaveToStream(Stream);    
+       Acao.SaveToStream(Stream);
        HTTP := THTTPSend.Create;
     {$ELSE}
        ReqResp := THTTPReqResp.Create(nil);
@@ -1785,12 +1899,15 @@ begin
 
   FprotNFe:= TProcNFe.Create;
   FretCancNFe:= TRetCancNFe.Create;
+  FprocEventoNFe := TRetEventoNFeCollection.Create(AOwner);
 end;
 
 destructor TNFeConsulta.Destroy;
 begin
   FprotNFe.Free;
   FretCancNFe.Free;
+  if Assigned(FprocEventoNFe) then
+    FprocEventoNFe.Free;
 end;
 
 function TNFeConsulta.Executar: Boolean;
@@ -1798,7 +1915,7 @@ var
   NFeRetorno: TRetConsSitNFe;
   aMsg: string;
   AProcNFe: TProcNFe;
-  i : Integer;
+  i,j : Integer;
   Texto : String;
   Acao  : TStringList ;
   Stream: TMemoryStream;
@@ -1910,6 +2027,51 @@ begin
     FretCancNFe.chNFE := NFeRetorno.retCancNFe.chNFE;
     FretCancNFe.dhRecbto := NFeRetorno.retCancNFe.dhRecbto;
     FretCancNFe.nProt := NFeRetorno.retCancNFe.nProt;
+
+    //{eventos_juaumkiko}
+    FprocEventoNFe.Clear;
+    for I := 0 to NFeRetorno.procEventoNFe.Count -1 do
+    begin
+      FprocEventoNFe.Add;
+      FprocEventoNFe.Items[I].RetEventoNFe.idLote := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.idLote;
+      FprocEventoNFe.Items[I].RetEventoNFe.tpAmb := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.tpAmb;
+      FprocEventoNFe.Items[I].RetEventoNFe.verAplic := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.verAplic;
+      FprocEventoNFe.Items[I].RetEventoNFe.cOrgao := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.cOrgao;
+      FprocEventoNFe.Items[I].RetEventoNFe.cStat := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.cStat;
+      FprocEventoNFe.Items[I].RetEventoNFe.xMotivo := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.xMotivo;
+      FprocEventoNFe.Items[I].RetEventoNFe.InfEvento.FID := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.InfEvento.FID;
+      FprocEventoNFe.Items[I].RetEventoNFe.InfEvento.FtpAmbiente := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.InfEvento.FtpAmbiente;
+      FprocEventoNFe.Items[I].RetEventoNFe.InfEvento.FCNPJ := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.InfEvento.FCNPJ;
+      FprocEventoNFe.Items[I].RetEventoNFe.InfEvento.FChave := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.InfEvento.FChave;
+      FprocEventoNFe.Items[I].RetEventoNFe.InfEvento.FDataEvento := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.InfEvento.FDataEvento;
+      FprocEventoNFe.Items[I].RetEventoNFe.InfEvento.FTpEvento := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.InfEvento.FTpEvento;
+      FprocEventoNFe.Items[I].RetEventoNFe.InfEvento.FnSeqEvento := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.InfEvento.FnSeqEvento;
+      FprocEventoNFe.Items[I].RetEventoNFe.InfEvento.FVersaoEvento := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.InfEvento.FVersaoEvento;
+      FprocEventoNFe.Items[I].RetEventoNFe.InfEvento.FDetEvento.xCorrecao := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.InfEvento.FDetEvento.xCorrecao;
+      FprocEventoNFe.Items[I].RetEventoNFe.InfEvento.FDetEvento.xCondUso := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.InfEvento.FDetEvento.xCondUso;
+      FprocEventoNFe.Items[I].RetEventoNFe.InfEvento.FDetEvento.nProt := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.InfEvento.FDetEvento.nProt;
+      FprocEventoNFe.Items[I].RetEventoNFe.InfEvento.FDetEvento.xJust := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.InfEvento.FDetEvento.xJust;
+      FprocEventoNFe.Items[I].RetEventoNFe.retEvento.Clear;
+      for j := 0 to NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.retEvento.Count-1 do
+      begin
+        FprocEventoNFe.Items[I].RetEventoNFe.retEvento.Add;
+        FprocEventoNFe.Items[I].RetEventoNFe.retEvento.Items[j].RetInfEvento.Id := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.retEvento.Items[j].RetInfEvento.Id;
+        FprocEventoNFe.Items[I].RetEventoNFe.retEvento.Items[j].RetInfEvento.tpAmb := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.retEvento.Items[j].RetInfEvento.tpAmb;
+        FprocEventoNFe.Items[I].RetEventoNFe.retEvento.Items[j].RetInfEvento.verAplic := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.retEvento.Items[j].RetInfEvento.verAplic;
+        FprocEventoNFe.Items[I].RetEventoNFe.retEvento.Items[j].RetInfEvento.cOrgao := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.retEvento.Items[j].RetInfEvento.cOrgao;
+        FprocEventoNFe.Items[I].RetEventoNFe.retEvento.Items[j].RetInfEvento.cStat := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.retEvento.Items[j].RetInfEvento.cStat;
+        FprocEventoNFe.Items[I].RetEventoNFe.retEvento.Items[j].RetInfEvento.xMotivo := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.retEvento.Items[j].RetInfEvento.xMotivo;
+        FprocEventoNFe.Items[I].RetEventoNFe.retEvento.Items[j].RetInfEvento.chNFe := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.retEvento.Items[j].RetInfEvento.chNFe;
+        FprocEventoNFe.Items[I].RetEventoNFe.retEvento.Items[j].RetInfEvento.tpEvento := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.retEvento.Items[j].RetInfEvento.tpEvento;
+        FprocEventoNFe.Items[I].RetEventoNFe.retEvento.Items[j].RetInfEvento.xEvento := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.retEvento.Items[j].RetInfEvento.xEvento;
+        FprocEventoNFe.Items[I].RetEventoNFe.retEvento.Items[j].RetInfEvento.nSeqEvento := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.retEvento.Items[j].RetInfEvento.nSeqEvento;
+        FprocEventoNFe.Items[I].RetEventoNFe.retEvento.Items[j].RetInfEvento.CNPJDest := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.retEvento.Items[j].RetInfEvento.CNPJDest;
+        FprocEventoNFe.Items[I].RetEventoNFe.retEvento.Items[j].RetInfEvento.emailDest := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.retEvento.Items[j].RetInfEvento.emailDest;
+        FprocEventoNFe.Items[I].RetEventoNFe.retEvento.Items[j].RetInfEvento.dhRegEvento := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.retEvento.Items[j].RetInfEvento.dhRegEvento;
+        FprocEventoNFe.Items[I].RetEventoNFe.retEvento.Items[j].RetInfEvento.nProt := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.retEvento.Items[j].RetInfEvento.nProt;
+        FprocEventoNFe.Items[I].RetEventoNFe.retEvento.Items[j].RetInfEvento.XML := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.retEvento.Items[j].RetInfEvento.XML;
+      end;
+    end;
 
     FProtocolo  := NotaUtil.SeSenao(NotaUtil.NaoEstaVazio(NFeRetorno.retCancNFe.nProt),NFeRetorno.retCancNFe.nProt,NFeRetorno.protNFe.nProt);
     FDhRecbto   := NotaUtil.SeSenao(NFeRetorno.retCancNFe.dhRecbto <> 0,NFeRetorno.retCancNFe.dhRecbto,NFeRetorno.protNFe.dhRecbto);
@@ -3048,6 +3210,199 @@ begin
                  FConfiguracoes.Geral.Save(FCCe.Evento.Items[i].InfEvento.chNFe + '-ProcEventoNFe.xml', wProc.Text);
               if FConfiguracoes.Arquivos.Salvar then
                  FConfiguracoes.Geral.Save(FCCe.Evento.Items[i].InfEvento.chNFe + '-ProcEventoNFe.xml', wProc.Text, FConfiguracoes.Arquivos.GetPathCCe);
+              wProc.Free;
+              break;
+            end;
+         end;
+       end;
+      Leitor.Free;
+    end;
+  finally
+    {$IFDEF ACBrNFeOpenSSL}
+       HTTP.Free;
+    {$ELSE}
+       ReqResp.Free;
+    {$ENDIF}
+    Acao.Free;
+    Stream.Free;
+    NotaUtil.ConfAmbiente;
+    TACBrNFe( FACBrNFe ).SetStatus( stIdle );
+  end;
+end;
+
+{ TNFeEnvEvento }
+// Incluido por Italo em 09/04/2012
+constructor TNFeEnvEvento.Create(AOwner: TComponent; AEvento: TEventoNFe);
+begin
+  inherited Create(AOwner);
+
+  FEvento := AEvento;
+end;
+
+destructor TNFeEnvEvento.Destroy;
+begin
+  if Assigned(FEventoRetorno) then
+     FEventoRetorno.Free;
+  inherited;
+end;
+
+function TNFeEnvEvento.Executar: Boolean;
+var
+  aMsg: string;
+  Texto : String;
+  Acao  : TStringList ;
+  Stream: TMemoryStream;
+  StrStream: TStringStream;
+  wProc  : TStringList ;
+  i,j : integer;
+  Leitor : TLeitor;
+  {$IFDEF ACBrNFeOpenSSL}
+     HTTP: THTTPSend;
+  {$ELSE}
+     ReqResp: THTTPReqResp;
+  {$ENDIF}
+begin
+  FEvento.idLote := idLote;
+  if Assigned(FEventoRetorno) then
+     FEventoRetorno.Free;
+
+  inherited Executar;
+
+  Acao := TStringList.Create;
+  Stream := TMemoryStream.Create;
+
+  Texto := '<?xml version="1.0" encoding="utf-8"?>';
+  Texto := Texto + '<soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">';
+  Texto := Texto +   '<soap12:Header>';
+  Texto := Texto +     '<nfeCabecMsg xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/RecepcaoEvento">';
+  Texto := Texto +       '<cUF>'+IntToStr(FConfiguracoes.WebServices.UFCodigo)+'</cUF>';
+  Texto := Texto +       '<versaoDados>'+NFeEventoNFe+'</versaoDados>';
+  Texto := Texto +     '</nfeCabecMsg>';
+  Texto := Texto +   '</soap12:Header>';
+  Texto := Texto +   '<soap12:Body>';
+  Texto := Texto +     '<nfeDadosMsg xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/RecepcaoEvento">';
+  Texto := Texto +       FDadosMsg;
+  Texto := Texto +     '</nfeDadosMsg>';
+  Texto := Texto +   '</soap12:Body>';
+  Texto := Texto +'</soap12:Envelope>';
+
+  Acao.Text := Texto;
+
+   {$IFDEF ACBrNFeOpenSSL}
+     Acao.SaveToStream(Stream);
+     HTTP := THTTPSend.Create;
+  {$ELSE}
+     ReqResp := THTTPReqResp.Create(nil);
+     ConfiguraReqResp( ReqResp );
+     ReqResp.URL := FURL;
+     ReqResp.UseUTF8InHeader := True;
+     ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/nfe/wsdl/RecepcaoEvento';
+  {$ENDIF}
+
+  try
+    TACBrNFe( FACBrNFe ).SetStatus( stNFeEvento );
+    FPathArqEnv := IntToStr(FEvento.idLote)+ '-ped-evento.xml';
+
+    if FConfiguracoes.Geral.Salvar then
+      FConfiguracoes.Geral.Save(FPathArqEnv, FDadosMsg);
+
+    if FConfiguracoes.Arquivos.Salvar then
+      FConfiguracoes.Geral.Save(FPathArqEnv, FDadosMsg, FConfiguracoes.Arquivos.GetPathMDe);
+
+    {$IFDEF ACBrNFeOpenSSL}
+       HTTP.Document.LoadFromStream(Stream);
+       ConfiguraHTTP(HTTP,'SOAPAction: "http://www.portalfiscal.inf.br/nfe/wsdl/RecepcaoEvento"');
+       HTTP.HTTPMethod('POST', FURL);
+
+       StrStream := TStringStream.Create('');
+       StrStream.CopyFrom(HTTP.Document, 0);
+       // Alterado por Italo em 03/05/2012
+       FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
+       FRetWS := SeparaDados( FRetornoWS,'nfeRecepcaoEventoResult');
+       StrStream.Free;
+    {$ELSE}
+       ReqResp.Execute(Acao.Text, Stream);
+       StrStream := TStringStream.Create('');
+       StrStream.CopyFrom(Stream, 0);
+       // Alterado por Italo em 03/05/2012
+       FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
+       FRetWS := SeparaDados( FRetornoWS,'nfeRecepcaoEventoResult');
+       StrStream.Free;
+    {$ENDIF}
+
+    FEventoRetorno                := TRetEventoNFe.Create;
+    FEventoRetorno.Leitor.Arquivo := FRetWS;
+    FEventoRetorno.LerXml;
+
+    TACBrNFe( FACBrNFe ).SetStatus( stIdle );
+    aMsg := 'Ambiente : '+TpAmbToStr(EventoRetorno.tpAmb)+LineBreak+
+            'Versão Aplicativo : '+EventoRetorno.verAplic+LineBreak+
+            'Status Código : '+IntToStr(EventoRetorno.cStat)+LineBreak+
+            'Status Descrição : '+EventoRetorno.xMotivo+LineBreak+
+            'Recebimento : '+NotaUtil.SeSenao(EventoRetorno.retEvento.Items[0].RetInfEvento.dhRegEvento = 0, '', DateTimeToStr(EventoRetorno.retEvento.Items[0].RetInfEvento.dhRegEvento));
+    if FConfiguracoes.WebServices.Visualizar then
+      ShowMessage(aMsg);
+
+    if Assigned(TACBrNFe( FACBrNFe ).OnGerarLog) then
+       TACBrNFe( FACBrNFe ).OnGerarLog(aMsg);
+
+    FcStat   := EventoRetorno.cStat;
+    FxMotivo := EventoRetorno.xMotivo;
+    FMsg     := EventoRetorno.xMotivo;
+    FTpAmb   := EventoRetorno.tpAmb;
+    Result   := (EventoRetorno.cStat = 128) or (EventoRetorno.cStat = 135) or (EventoRetorno.cStat = 136);
+
+    FPathArqResp := IntToStr(FEvento.idLote) + '-env.xml';
+    if FConfiguracoes.Geral.Salvar then
+      FConfiguracoes.Geral.Save(FPathArqResp, FRetWS);
+
+    if FConfiguracoes.Arquivos.Salvar then
+      FConfiguracoes.Geral.Save(FPathArqResp, FRetWS, FConfiguracoes.Arquivos.GetPathMDe);
+
+    //gerar arquivo proc de evento
+    if Result then
+    begin
+      Leitor := TLeitor.Create;
+      for i:= 0 to FEvento.Evento.Count-1 do
+       begin
+        for j:= 0 to EventoRetorno.retEvento.Count-1 do
+         begin
+           if FEvento.Evento.Items[i].InfEvento.chNFe = EventoRetorno.retEvento.Items[j].RetInfEvento.chNFe then
+            begin
+              wProc := TStringList.Create;
+              wProc.Add('<?xml version="1.0" encoding="UTF-8" ?>');
+              wProc.Add('<ProcEventoNFe versao="1.00" xmlns="http://www.portalfiscal.inf.br/nfe">');
+              wProc.Add('<evento version="1.00">');
+              Leitor.Arquivo := FDadosMSG;
+              wProc.Add(UTF8Encode(Leitor.rExtrai(1, 'infEvento', '', i + 1)));
+              wProc.Add('</infEvento>');
+
+              wProc.Add('<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">');
+              Leitor.Arquivo := FDadosMSG;
+              wProc.Add(UTF8Encode(Leitor.rExtrai(1, 'SignedInfo', '', i + 1)));
+              wProc.Add('</SignedInfo>');
+              Leitor.Arquivo := FDadosMSG;
+              wProc.Add(UTF8Encode(Leitor.rExtrai(1, 'SignatureValue', '', i + 1)));
+              wProc.Add('</SignatureValue>');
+              Leitor.Arquivo := FDadosMSG;
+              wProc.Add(UTF8Encode(Leitor.rExtrai(1, 'KeyInfo', '', i + 1)));
+              wProc.Add('</KeyInfo>');
+              wProc.Add('</Signature>');
+
+              wProc.Add('</evento>');
+              wProc.Add('<retEvento version="1.00">');
+              Leitor.Arquivo := FRetWS;
+              wProc.Add(UTF8Encode(Leitor.rExtrai(1, 'infEvento', '', j + 1)));
+              wProc.Add('</infEvento>');
+              wProc.Add('</retEvento>');
+              wProc.Add('</ProcEventoNFe>');
+
+              EventoRetorno.retEvento.Items[j].RetInfEvento.XML:=wProc.Text;
+
+              if FConfiguracoes.Geral.Salvar then
+                 FConfiguracoes.Geral.Save(FEvento.Evento.Items[i].InfEvento.chNFe + '-ProcEventoNFe.xml', wProc.Text);
+              if FConfiguracoes.Arquivos.Salvar then
+                 FConfiguracoes.Geral.Save(FEvento.Evento.Items[i].InfEvento.chNFe + '-ProcEventoNFe.xml', wProc.Text, FConfiguracoes.Arquivos.GetPathMDe);
               wProc.Free;
               break;
             end;

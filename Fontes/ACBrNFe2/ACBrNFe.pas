@@ -49,6 +49,7 @@ interface
 uses
   Classes, Sysutils,
   pcnNFe, pcnConversao, pcnCCeNFe, pcnRetCCeNFe,
+  pcnEnvEventoNFe, pcnRetEnvEventoNFe, // Incluido por Italo em 09/04/2012
   {$IFDEF CLX} QDialogs,{$ELSE} Dialogs,{$ENDIF}
   ACBrNFeNotasFiscais,
   ACBrNFeConfiguracoes,
@@ -57,7 +58,7 @@ uses
 
 const
   ACBRNFE_VERSAO = '0.4.0a';
-  
+
 type
   TACBrNFeAboutInfo = (ACBrNFeAbout);
 
@@ -77,6 +78,17 @@ type
     property CCe   : TCCeNFe  read FCCe      write FCCe;
   end;
 
+  // Incluido por Italo em 09/04/2012
+  {EnvEventoNFe}
+  TEnvEventoNFe = Class(TComponent)
+  private
+    FEnvEventoNFe : TEventoNFe;
+  public
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
+
+    property EnvEventoNFe : TEventoNFe read FEnvEventoNFe write FEnvEventoNFe;
+  end;
 
   TACBrNFe = class(TComponent)
   private
@@ -84,6 +96,7 @@ type
     FDANFE : TACBrNFeDANFEClass;
     FNotasFiscais: TNotasFiscais;
     FCartaCorrecao: TCartaCorrecao;
+    FEnvEvento: TEnvEventoNFe; // Incluido por Italo em 09/04/2012
     FWebServices: TWebServices;
     FConfiguracoes: TConfiguracoes;
     FStatus : TStatusACBrNFe;
@@ -100,9 +113,11 @@ type
     function Cancelamento(AJustificativa:WideString): Boolean;
     function Consultar: Boolean;
     function EnviarCartaCorrecao(idLote : Integer): Boolean;
+    function EnviarEventoNFe(idLote : Integer): Boolean;  // Incluido por Italo em 09/04/2012
     property WebServices: TWebServices read FWebServices write FWebServices;
     property NotasFiscais: TNotasFiscais read FNotasFiscais write FNotasFiscais;
     property CartaCorrecao: TCartaCorrecao read FCartaCorrecao write FCartaCorrecao;
+    property EnvEvento: TEnvEventoNFe read FEnvEvento write FEnvEvento; // Incluido por Italo em 09/04/2012
     property Status: TStatusACBrNFe read FStatus;
     procedure SetStatus( const stNewStatus : TStatusACBrNFe );
   published
@@ -145,6 +160,7 @@ begin
   FNotasFiscais      := TNotasFiscais.Create(Self,NotaFiscal);
   FNotasFiscais.Configuracoes := FConfiguracoes;
   FCartaCorrecao     := TCartaCorrecao.Create(Self);
+  FEnvEvento         := TEnvEventoNFe.Create(Self); // Incluido por Italo em 09/04/2012
   FWebServices       := TWebServices.Create(Self);
 
   if FConfiguracoes.WebServices.Tentativas <= 0 then
@@ -161,6 +177,7 @@ begin
   FConfiguracoes.Free;
   FNotasFiscais.Free;
   FCartaCorrecao.Free;
+  FEnvEvento.Free; // Incluido por Italo em 09/04/2012
   FWebServices.Free;
   {$IFDEF ACBrNFeOpenSSL}
     if FConfiguracoes.Geral.IniFinXMLSECAutomatico then
@@ -325,6 +342,58 @@ begin
   end;
 end;
 
+// Incluido por Italo em 09/04/2012
+function TACBrNFe.EnviarEventoNFe(idLote: Integer): Boolean;
+var
+  i: integer;
+begin
+  if EnvEvento.EnvEventoNFe.Evento.Count <= 0 then
+   begin
+      if Assigned(Self.OnGerarLog) then
+         Self.OnGerarLog('ERRO: Nenhum Evento adicionado ao Lote');
+      raise EACBrNFeException.Create('ERRO: Nenhum Evento adicionado ao Lote');
+     exit;
+   end;
+
+  if EnvEvento.EnvEventoNFe.Evento.Count > 20 then
+   begin
+      if Assigned(Self.OnGerarLog) then
+         Self.OnGerarLog('ERRO: Conjunto de Eventos transmitidos (máximo de 20) excedido. Quantidade atual: '+IntToStr(EnvEvento.EnvEventoNFe.Evento.Count));
+      raise EACBrNFeException.Create('ERRO: Conjunto de Eventos transmitidos (máximo de 20) excedido. Quantidade atual: '+IntToStr(EnvEvento.EnvEventoNFe.Evento.Count));
+     exit;
+   end;
+
+  WebServices.EnvEvento.idLote := idLote;
+
+  {Atribuir nSeqEvento, CNPJ, Chave e/ou Protocolo quando não especificar}
+  for i:= 0 to EnvEvento.EnvEventoNFe.Evento.Count -1 do
+  begin
+    try
+      if EnvEvento.EnvEventoNFe.Evento.Items[i].InfEvento.nSeqEvento = 0 then
+        EnvEvento.EnvEventoNFe.Evento.Items[i].infEvento.nSeqEvento := 1;
+      if trim(EnvEvento.EnvEventoNFe.Evento.Items[i].InfEvento.CNPJ) = '' then
+        EnvEvento.EnvEventoNFe.Evento.Items[i].InfEvento.CNPJ := self.NotasFiscais.Items[i].NFe.Emit.CNPJCPF;
+      if trim(EnvEvento.EnvEventoNFe.Evento.Items[i].InfEvento.chNfe) = '' then
+        EnvEvento.EnvEventoNFe.Evento.Items[i].InfEvento.chNfe := copy(self.NotasFiscais.Items[i].NFe.infNFe.ID, (length(self.NotasFiscais.Items[i].NFe.infNFe.ID)-44)+1, 44);
+      if trim(EnvEvento.EnvEventoNFe.Evento.Items[i].infEvento.detEvento.nProt) = '' then
+      begin
+        if EnvEvento.EnvEventoNFe.Evento.Items[i].infEvento.tpEvento = teCancelamento then
+          EnvEvento.EnvEventoNFe.Evento.Items[i].infEvento.detEvento.nProt := self.NotasFiscais.Items[i].NFe.procNFe.nProt;
+      end;
+    except
+    end;
+  end;
+  {**}
+
+  Result := WebServices.EnvEvento.Executar;
+  if not Result then
+  begin
+    if Assigned(Self.OnGerarLog) then
+      Self.OnGerarLog(WebServices.EnvEvento.Msg);
+    raise EACBrNFeException.Create(WebServices.EnvEvento.Msg);
+  end;
+end;
+
 { TCartaCorrecao }
 constructor TCartaCorrecao.Create(AOwner: TComponent);
 begin
@@ -335,6 +404,20 @@ end;
 destructor TCartaCorrecao.Destroy;
 begin
   FCCe.Free;
+  inherited;
+end;
+
+{ TEnvEventoNFe }
+// Incluido por Italo em 09/04/2012
+constructor TEnvEventoNFe.Create(AOwner: TComponent);
+begin
+  inherited;
+  FEnvEventoNFe := TEventoNFe.Create;
+end;
+
+destructor TEnvEventoNFe.Destroy;
+begin
+  FEnvEventoNFe.Free;
   inherited;
 end;
 

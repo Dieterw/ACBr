@@ -60,24 +60,36 @@ interface uses
 
 type
 
-  TStatusACBrNFe = ( stIdle, stNFeStatusServico, stNFeRecepcao, stNFeRetRecepcao, stNFeConsulta, stNFeCancelamento, stNFeInutilizacao, stNFeRecibo, stNFeCadastro, stNFeEmail, stNFeEnvDPEC, stNFeConsultaDPEC, stNFeCCe );
-  TStatusACBrCTe = ( stCTeIdle, stCTeStatusServico, stCTeRecepcao, stCTeRetRecepcao, stCTeConsulta, stCTeCancelamento, stCTeInutilizacao, stCTeRecibo, stCTeCadastro, stCTeEmail, stCTeCCe );
+  TStatusACBrNFe = ( stIdle, stNFeStatusServico, stNFeRecepcao, stNFeRetRecepcao,
+                     stNFeConsulta, stNFeCancelamento, stNFeInutilizacao, stNFeRecibo,
+                     stNFeCadastro, stNFeEmail, stNFeEnvDPEC, stNFeConsultaDPEC,
+                     stNFeCCe, stNFeEvento);
+  TStatusACBrCTe = ( stCTeIdle, stCTeStatusServico, stCTeRecepcao, stCTeRetRecepcao,
+                     stCTeConsulta, stCTeCancelamento, stCTeInutilizacao, stCTeRecibo,
+                     stCTeCadastro, stCTeEmail, stCTeCCe );
   (* IMPORTANTE - Sempre que alterar um Tipo efetuar a atualização das funções de conversão correspondentes *)
-  TLayOut = (LayNfeRecepcao,LayNfeRetRecepcao,LayNfeCancelamento,LayNfeInutilizacao,LayNfeConsulta,LayNfeStatusServico,LayNfeCadastro, LayNfeEnvDPEC, LayNfeConsultaDPEC,
-             LayCTeRecepcao,LayCTeRetRecepcao,LayCTeCancelamento,LayCTeInutilizacao,LayCTeConsultaCT,LayCTeStatusServico,LayCTeCadastro,LayNFeCCe);
+  TLayOut = (LayNfeRecepcao,LayNfeRetRecepcao,LayNfeCancelamento,LayNfeInutilizacao,
+             LayNfeConsulta,LayNfeStatusServico,LayNfeCadastro, LayNfeEnvDPEC,
+             LayNfeConsultaDPEC, LayCTeRecepcao,LayCTeRetRecepcao,LayCTeCancelamento,
+             LayCTeInutilizacao,LayCTeConsultaCT,LayCTeStatusServico,LayCTeCadastro,
+             LayNFeCCe,LayNFeEvento);
 
   // Incluido o TsPL_CTe_103 e TsPL_CTe_104 para CTe por Italo em 03/08/2011
   TpcnSchema = (TsPL005c, TsPL006, TsPL_CTe_103, TsPL_CTe_104);
   // Incluido o tlConsStatServCTe para CTe por possuir uma versão diferente da NFe
-  TpcnTipoLayout = (tlAtuCadEmiDFe, tlCadEmiDFe, tlCancNFe, tlConsCad, tlConsReciNFe, tlConsSitNFe, tlConsStatServ,
-    tlInutNFe, tlNFe, tlProcNFe, tlProcInutNFe, tlRetAtuCadEmiDFe, tlRetCancNFe, tlRetConsCad, tlRetConsReciNFe,
-    tlRetConsStatServ, tlRetConsSitNFe, tlRetEnvNFe, tlRetInutNFe, tlEnvNFe, tlProcCancNFe,
-                    tlCancCTe, tlConsReciCTe, tlConsSitCTe,
-    tlInutCTe, tlCTe, tlProcCTe, tlProcInutCTe, tlRetCancCTe, tlRetConsReciCTe,
-    tlRetConsSitCTe, tlRetEnvCTe, tlRetInutCTe, tlEnvCTe, tlProcCancCTe, tlEnvDPEC, tlConsDPEC, tlConsStatServCTe, tlCCeNFe, tlEnvCCeNFe, tlRetEnvCCeNFe);
+  TpcnTipoLayout = (tlAtuCadEmiDFe, tlCadEmiDFe, tlCancNFe, tlConsCad, tlConsReciNFe,
+                    tlConsSitNFe, tlConsStatServ, tlInutNFe, tlNFe, tlProcNFe,
+                    tlProcInutNFe, tlRetAtuCadEmiDFe, tlRetCancNFe, tlRetConsCad,
+                    tlRetConsReciNFe, tlRetConsStatServ, tlRetConsSitNFe, tlRetEnvNFe,
+                    tlRetInutNFe, tlEnvNFe, tlProcCancNFe, tlCancCTe, tlConsReciCTe,
+                    tlConsSitCTe, tlInutCTe, tlCTe, tlProcCTe, tlProcInutCTe, tlRetCancCTe,
+                    tlRetConsReciCTe, tlRetConsSitCTe, tlRetEnvCTe, tlRetInutCTe,
+                    tlEnvCTe, tlProcCancCTe, tlEnvDPEC, tlConsDPEC, tlConsStatServCTe,
+                    tlCCeNFe, tlEnvCCeNFe, tlRetEnvCCeNFe, tlEnvEventoNFe, tlRetEnvEventoNFe);
 
   // Tipo tcDe6 incluido por Italo em 30/09/2010 (usado no CTe campo 435: vTar = valor da tarifa do modal Dutoviário)
-  TpcnTipoCampo = (tcStr, tcInt, tcDat, tcDatHor, tcEsp, tcDe2, tcDe3, tcDe4, tcDe10, tcHor, tcDe6 ); // tcEsp = String: somente numeros;
+  TpcnTipoCampo = (tcStr, tcInt, tcDat, tcDatHor, tcEsp, tcDe2, tcDe3, tcDe4, tcDe10,
+                   tcHor, tcDe6 ); // tcEsp = String: somente numeros;
   TpcnFormatoGravacao = (fgXML, fgTXT);
   TpcnTagAssinatura = (taSempre, taNunca, taSomenteSeAssinada, taSomenteParaNaoAssinada);
 
@@ -148,7 +160,16 @@ type
   TpcteModeloNF = (moNF011AAvulsa, moNFProdutor);
   TpcteTrafegoMutuo = (tmOrigem, tmDestino);
 
+  TpcnTpEvento = (teCCe, teCancelamento, teManifDestConfirmacao, teManifDestCiencia,
+                  teManifDestDesconhecimento, teManifDestOperNaoRealizada);
 const
+  TpcnTpEventoString : array[0..5] of String =( '110110',
+                                                '110111',
+                                                '210200',
+                                                '210210',
+                                                '210220',
+                                                '210240' );
+
   NFeUF: array[0..26] of String =
   ('AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA',
    'PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO');
@@ -167,6 +188,7 @@ const
   NFeEnvDPEC      = '1.01';
   NFeConsDPEC     = '1.01';
   NFeCCeNFe       = '1.00';
+  NFeEventoNFe    = '1.00'; // Incluido por Italo em 09/04/2012
 
 // Alterado por Italo em 03/08/2011
 {$IFDEF PL_103}
@@ -202,6 +224,13 @@ function StrToEnumerado(var ok: boolean; const s: string; const AString: array o
   const AEnumerados: array of variant): variant;
 function EnumeradoToStr(const t: variant; const AString:
   array of string; const AEnumerados: array of variant): variant;
+
+// Um nova Implementacao para StrToEnumerado
+// Henrique leonardo
+function StrToEnumerado2(var ok: boolean;  const s: string; Const AString: array of string ): variant;
+// Um nova Implementacao para EnumeradoToStr
+// Henrique leonardo
+function EnumeradoToStr2(const t: variant; const AString: array of string ): variant;
 
 function SchemaToStr(const t: TpcnSchema): string;
 function StrToSchema(var ok: boolean; const s: string): TpcnSchema;
@@ -337,6 +366,9 @@ function StrToModeloNF(var ok: boolean; const s: string): TpcteModeloNF;
 function TrafegoMutuoToStr(const t: TpcteTrafegoMutuo): string;
 function StrToTrafegoMutuo(var ok: boolean; const s: string): TpcteTrafegoMutuo;
 
+function StrToTpEvento(var ok: boolean; const s: string): TpcnTpEvento;
+function TpEventoToStr(const t: TpcnTpEvento): string;
+
 implementation
 
 function StrToEnumerado(var ok: boolean; const s: string; const AString:
@@ -381,22 +413,31 @@ end;
 
 function TipoLayoutToStr(const t: TpcnTipoLayout): string;
 begin
-  result := EnumeradoToStr(t, ['AtuCadEmiDFe', 'CadEmiDFe', 'CancNFe', 'ConsCad', 'ConsReciNFe', 'ConsSitNFe', 'ConsStatServ',
-    'InutNFe', 'NFe', 'ProcNFe', 'ProcInutNFe', 'RetAtuCadEmiDFe', 'RetCancNFe', 'RetConsCad', 'RetConsReciNFe',
-      'RetConsStatServ', 'RetConsSitNFe', 'RetEnvNFe', 'RetInutNFe', 'EnvNFe', 'ProcCancNFe', 'ConsStatServ', 'EnvCCeNFe'],
-      [tlAtuCadEmiDFe, tlCadEmiDFe, tlCancCTe, tlConsCad, tlConsReciCTe, tlConsSitCTe, tlConsStatServ,
-    tlInutCTe, tlCTe, tlProcCTe, tlProcInutCTe, tlRetAtuCadEmiDFe, tlRetCancCTe, tlRetConsCad, tlRetConsReciCTe,
-      tlRetConsStatServ, tlRetConsSitCTe, tlRetEnvCTe, tlRetInutCTe, tlEnvCTe, tlProcCancCTe, tlConsStatServCTe, tlEnvCCeNFe]);
+  result := EnumeradoToStr(t, ['AtuCadEmiDFe', 'CadEmiDFe', 'CancNFe', 'ConsCad',
+                               'ConsReciNFe', 'ConsSitNFe', 'ConsStatServ', 'InutNFe',
+                               'NFe', 'ProcNFe', 'ProcInutNFe', 'RetAtuCadEmiDFe',
+                               'RetCancNFe', 'RetConsCad', 'RetConsReciNFe', 'RetConsStatServ',
+                               'RetConsSitNFe', 'RetEnvNFe', 'RetInutNFe', 'EnvNFe',
+                               'ProcCancNFe', 'ConsStatServ', 'EnvCCeNFe', 'EnvEventoNFe'],
+      [tlAtuCadEmiDFe, tlCadEmiDFe, tlCancCTe, tlConsCad, tlConsReciCTe, tlConsSitCTe,
+       tlConsStatServ, tlInutCTe, tlCTe, tlProcCTe, tlProcInutCTe, tlRetAtuCadEmiDFe,
+       tlRetCancCTe, tlRetConsCad, tlRetConsReciCTe, tlRetConsStatServ, tlRetConsSitCTe,
+       tlRetEnvCTe, tlRetInutCTe, tlEnvCTe, tlProcCancCTe, tlConsStatServCTe, tlEnvCCeNFe,
+       tlEnvEventoNFe]);
 end;
 
 function StrToTipoLayout(var ok: boolean; const s: string): TpcnTipoLayout;
 begin
-  result := StrToEnumerado(ok, s, ['AtuCadEmiDFe', 'CadEmiDFe', 'CancNFe', 'ConsCad', 'ConsReciNFe', 'ConsSitNFe', 'ConsStatServ',
-    'InutNFe', 'NFe', 'ProcNFe', 'ProcInutNFe', 'RetAtuCadEmiDFe', 'RetCancNFe', 'RetConsCad', 'RetConsReciNFe',
-      'RetConsStatServ', 'RetConsSitNFe', 'RetEnvNFe', 'RetInutNFe', 'EnvNFe', 'ConsStatServ'],
-      [tlAtuCadEmiDFe, tlCadEmiDFe, tlCancCTe, tlConsCad, tlConsReciCTe, tlConsSitCTe, tlConsStatServ,
-    tlInutCTe, tlCTe, tlProcCTe, tlProcInutCTe, tlRetAtuCadEmiDFe, tlRetCancCTe, tlRetConsCad, tlRetConsReciCTe,
-      tlRetConsStatServ, tlRetConsSitCTe, tlRetEnvCTe, tlRetInutCTe, tlEnvCTe, tlConsStatServCTe]);
+  result := StrToEnumerado(ok, s, ['AtuCadEmiDFe', 'CadEmiDFe', 'CancNFe', 'ConsCad',
+                                   'ConsReciNFe', 'ConsSitNFe', 'ConsStatServ', 'InutNFe',
+                                   'NFe', 'ProcNFe', 'ProcInutNFe', 'RetAtuCadEmiDFe',
+                                   'RetCancNFe', 'RetConsCad', 'RetConsReciNFe', 'RetConsStatServ',
+                                   'RetConsSitNFe', 'RetEnvNFe', 'RetInutNFe', 'EnvNFe',
+                                   'ConsStatServ', 'EnvCCeNFe', 'EnvEventoNFe'],
+      [tlAtuCadEmiDFe, tlCadEmiDFe, tlCancCTe, tlConsCad, tlConsReciCTe, tlConsSitCTe,
+       tlConsStatServ, tlInutCTe, tlCTe, tlProcCTe, tlProcInutCTe, tlRetAtuCadEmiDFe,
+       tlRetCancCTe, tlRetConsCad, tlRetConsReciCTe, tlRetConsStatServ, tlRetConsSitCTe,
+       tlRetEnvCTe, tlRetInutCTe, tlEnvCTe, tlConsStatServCTe, tlEnvCCeNFe, tlEnvEventoNFe]);
 end;
 
 // Indicador do Tipo de pagamento **********************************************
@@ -1155,5 +1196,42 @@ begin
    [tmOrigem, tmDestino]);
 end;
 
-end.
+function StrToTpEvento(var ok: boolean;const s: string): TpcnTpEvento;
+begin
+  result  := TpcnTpEvento( StrToEnumerado2(ok , s, TpcnTpEventoString ) );
+end;
 
+function TpEventoToStr(const t: TpcnTpEvento): String;
+begin
+  result := EnumeradoToStr2( t , TpcnTpEventoString );
+end;
+
+function StrToEnumerado2(var ok: boolean;  const s: string; Const AString: array of string ): variant;
+// Henrique Leonardo - hleonardopa@yahoo.com.br - Desenvolvida em 14/09/2011
+// Atencao  NÃo Funciona em Alguns Enumerados ja existentes
+var
+  i: integer;
+begin
+  Result  := 0;
+  ok      := False;
+  try
+    for i := Low(AString) to High(AString) do
+      if AnsiSameText(s, AString[i]) then
+      begin
+        result  := i;
+        ok      := True;
+        exit;
+      end;
+  Except
+    ok := False;
+  End;
+end;
+
+function EnumeradoToStr2(const t: variant; const AString: array of string ): variant;
+// Henrique Leonardo - hleonardopa@yahoo.com.br - Desenvolvida em 14/09/2011
+// Atencao NÃo Funciona em Alguns Enumerados ja existentes
+begin
+  result := AString[ integer( t ) ];
+end;
+
+end.

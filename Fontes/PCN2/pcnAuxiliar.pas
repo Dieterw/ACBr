@@ -114,7 +114,12 @@ var
 begin
   DecodeDate(DataHora, wAno, wMes, wDia);
   DecodeTime(DataHora, wHor, wMin, wSeg, wMil);
-  Result := IntToStrZero(wAno, 4) + '-' + IntToStrZero(wMes, 2) + '-' + IntToStrZero(wDia, 2) + 'T' + IntToStrZero(wHor, 2) + ':' + IntToStrZero(wMin, 2) + ':' + IntToStrZero(wSeg, 2);
+  Result := IntToStrZero(wAno, 4) + '-' +
+            IntToStrZero(wMes, 2) + '-' +
+            IntToStrZero(wDia, 2) + 'T' +
+            IntToStrZero(wHor, 2) + ':' +
+            IntToStrZero(wMin, 2) + ':' +
+            IntToStrZero(wSeg, 2);
 end;
 
 function ExecutarAjusteTagNro(Corrigir: boolean; Nro: string): string;
@@ -328,166 +333,114 @@ end;
 function RetornarVersaoLayout(const schema: TpcnSchema; const Layout: TpcnTipoLayout): string;
 begin
   Result := '0.00';
-  if schema = TsPL005c then
-  begin
-    if Layout = tlAtuCadEmiDFe then
-      Result := '1.01';
-    if Layout = tlCadEmiDFe then
-      Result := '1.01';
-    if Layout = tlCancNFe then
-      Result := '1.07';
-    if Layout = tlConsCad then
-      Result := '1.01';
-    if Layout = tlConsReciNFe then
-      Result := '1.10';
-    if Layout = tlConsSitNFe then
-      Result := '1.07';
-    if Layout = tlConsStatServ then
-      Result := '1.07';
-    if Layout = tlInutNFe then
-      Result := '1.07';
-    if Layout = tlNFe then
-      Result := '1.10';
-    if Layout = tlProcNFe then
-      Result := '1.10';
-    if Layout = tlProcInutNFe then
-      Result := '1.07';
-    if Layout = tlRetAtuCadEmiDFe then
-      Result := '1.01';
-    if Layout = tlRetCancNFe then
-      Result := '1.07';
-    if Layout = tlRetConsCad then
-      Result := '1.01';
-    if Layout = tlRetConsReciNFe then
-      Result := '1.10';
-    if Layout = tlRetConsStatServ then
-      Result := '1.07';
-    if Layout = tlRetConsSitNFe then
-      Result := '1.07';
-    if Layout = tlRetEnvNFe then
-      Result := '1.10';
-    if Layout = tlRetInutNFe then
-      Result := '1.07';
-    if Layout = tlEnvNFe then
-      Result := '1.10';
-    if Layout = tlProcCancNFe then
-      Result := '1.07';
-    if Layout = tlEnvDPEC then
-      Result := '1.01';
-    if Layout = tlConsDPEC then
-      Result := '1.01';
-    if Layout = tlCCeNFe then
-      Result := '2.00';
+  case schema of
+    TsPL005c : case Layout of
+                tlAtuCadEmiDFe    : Result := '1.01';
+                tlCadEmiDFe       : Result := '1.01';
+                tlCancNFe         : Result := '1.07';
+                tlConsCad         : Result := '1.01';
+                tlConsReciNFe     : Result := '1.10';
+                tlConsSitNFe      : Result := '1.07';
+                tlConsStatServ    : Result := '1.07';
+                tlInutNFe         : Result := '1.07';
+                tlNFe             : Result := '1.10';
+                tlProcNFe         : Result := '1.10';
+                tlProcInutNFe     : Result := '1.07';
+                tlRetAtuCadEmiDFe : Result := '1.01';
+                tlRetCancNFe      : Result := '1.07';
+                tlRetConsCad      : Result := '1.01';
+                tlRetConsReciNFe  : Result := '1.10';
+                tlRetConsStatServ : Result := '1.07';
+                tlRetConsSitNFe   : Result := '1.07';
+                tlRetEnvNFe       : Result := '1.10';
+                tlRetInutNFe      : Result := '1.07';
+                tlEnvNFe          : Result := '1.10';
+                tlProcCancNFe     : Result := '1.07';
+                tlEnvDPEC         : Result := '1.01';
+                tlConsDPEC        : Result := '1.01';
+                tlCCeNFe          : Result := '2.00';
 
+                // Tipos de LayOut para CT-e
+                // Será removido após os demais fontes estiverem atualizados, por Italo em 03/08/2011
+                tlConsStatServCTe : Result := '1.03';
+                tlCTe             : Result := '1.03';
+                tlEnvCTe          : Result := '1.03';
+                tlRetEnvCTe       : Result := '1.03';
+                tlProcCTe         : Result := '1.03';
+                tlConsReciCTe     : Result := '1.03';
+                tlRetConsReciCTe  : Result := '1.03';
+                tlConsSitCTe      : Result := '1.03';
+                tlRetConsSitCTe   : Result := '1.03';
+                tlCancCTe         : Result := '1.03';
+                tlProcCancCTe     : Result := '1.03';
+                tlRetCancCTe      : Result := '1.03';
+                tlInutCTe         : Result := '1.03';
+                tlProcInutCTe     : Result := '1.03';
+                tlRetInutCTe      : Result := '1.03';
+              end;
+    TsPL006 : case Layout of
+                tlCancNFe         : Result := '2.00';
+                tlConsCad         : Result := '2.00';
+                tlConsReciNFe     : Result := '2.00';
+                tlConsSitNFe      : Result := '2.01';
+                tlConsStatServ    : Result := '2.00';
+                tlInutNFe         : Result := '2.00';
+                tlNFe             : Result := '2.00';
+                tlProcNFe         : Result := '2.00';
+                tlProcInutNFe     : Result := '2.00';
+                tlRetAtuCadEmiDFe : Result := '2.00';
+                tlRetCancNFe      : Result := '2.00';
+                tlRetConsCad      : Result := '2.00';
+                tlRetConsReciNFe  : Result := '2.00';
+                tlRetConsStatServ : Result := '2.00';
+                tlRetConsSitNFe   : Result := '2.01';
+                tlRetEnvNFe       : Result := '2.00';
+                tlRetInutNFe      : Result := '2.00';
+                tlEnvNFe          : Result := '2.00';
+                tlProcCancNFe     : Result := '2.00';
+                tlEnvDPEC         : Result := '2.00';
+                tlConsDPEC        : Result := '2.00';
+                tlCCeNFe          : Result := '2.00';
+                // Incluido por Italo em 09/04/2012
+                tlEnvEventoNFe    : Result := '2.00';
+              end;
+    // Incluido/Alterado por Italo em 03/08/2011
     // Tipos de LayOut para CT-e
-    // Será removido após os demais fontes estiverem atualizados, por Italo em 03/08/2011
-    if Layout = tlConsStatServCTe then Result := '1.03';
-    if Layout = tlCTe             then Result := '1.03';
-    if Layout = tlEnvCTe          then Result := '1.03';
-    if Layout = tlRetEnvCTe       then Result := '1.03';
-    if Layout = tlProcCTe         then Result := '1.03';
-    if Layout = tlConsReciCTe     then Result := '1.03';
-    if Layout = tlRetConsReciCTe  then Result := '1.03';
-    if Layout = tlConsSitCTe      then Result := '1.03';
-    if Layout = tlRetConsSitCTe   then Result := '1.03';
-    if Layout = tlCancCTe         then Result := '1.03';
-    if Layout = tlProcCancCTe     then Result := '1.03';
-    if Layout = tlRetCancCTe      then Result := '1.03';
-    if Layout = tlInutCTe         then Result := '1.03';
-    if Layout = tlProcInutCTe     then Result := '1.03';
-    if Layout = tlRetInutCTe      then Result := '1.03';
-
-  end
- else if schema = TsPL006 then
-  begin
-    if Layout = tlConsStatServ then
-      Result := '2.00';
-    if Layout = tlCancNFe then
-      Result := '2.00';
-    if Layout = tlConsCad then
-      Result := '2.00';
-    if Layout = tlConsReciNFe then
-      Result := '2.00';
-    if Layout = tlConsSitNFe then
-      Result := '2.01';
-    if Layout = tlConsStatServ then
-      Result := '2.00';
-    if Layout = tlInutNFe then
-      Result := '2.00';
-    if Layout = tlNFe then
-      Result := '2.00';
-    if Layout = tlProcNFe then
-      Result := '2.00';
-    if Layout = tlProcInutNFe then
-      Result := '2.00';
-    if Layout = tlRetAtuCadEmiDFe then
-      Result := '2.00';
-    if Layout = tlRetCancNFe then
-      Result := '2.00';
-    if Layout = tlRetConsCad then
-      Result := '2.00';
-    if Layout = tlRetConsReciNFe then
-      Result := '2.00';
-    if Layout = tlRetConsStatServ then
-      Result := '2.00';
-    if Layout = tlRetConsSitNFe then
-      Result := '2.01';
-    if Layout = tlRetEnvNFe then
-      Result := '2.00';
-    if Layout = tlRetInutNFe then
-      Result := '2.00';
-    if Layout = tlEnvNFe then
-      Result := '2.00';
-    if Layout = tlProcCancNFe then
-      Result := '2.00';
-    if Layout = tlEnvDPEC then
-      Result := '2.00';
-    if Layout = tlConsDPEC then
-      Result := '2.00';
-    if Layout = tlCCeNFe then
-      Result := '2.00';
+    TsPL_CTe_103 :  case Layout of
+                      tlConsStatServCTe : Result := '1.03';
+                      tlCTe             : Result := '1.03';
+                      tlEnvCTe          : Result := '1.03';
+                      tlRetEnvCTe       : Result := '1.03';
+                      tlProcCTe         : Result := '1.03';
+                      tlConsReciCTe     : Result := '1.03';
+                      tlRetConsReciCTe  : Result := '1.03';
+                      tlConsSitCTe      : Result := '1.03';
+                      tlRetConsSitCTe   : Result := '1.03';
+                      tlCancCTe         : Result := '1.03';
+                      tlProcCancCTe     : Result := '1.03';
+                      tlRetCancCTe      : Result := '1.03';
+                      tlInutCTe         : Result := '1.03';
+                      tlProcInutCTe     : Result := '1.03';
+                      tlRetInutCTe      : Result := '1.03';
+                    end;
+    TsPL_CTe_104 :  case Layout of
+                      tlConsStatServCTe : Result := '1.04';
+                      tlCTe             : Result := '1.04';
+                      tlEnvCTe          : Result := '1.04';
+                      tlRetEnvCTe       : Result := '1.04';
+                      tlProcCTe         : Result := '1.04';
+                      tlConsReciCTe     : Result := '1.04';
+                      tlRetConsReciCTe  : Result := '1.04';
+                      tlConsSitCTe      : Result := '1.04';
+                      tlRetConsSitCTe   : Result := '1.04';
+                      tlCancCTe         : Result := '1.04';
+                      tlProcCancCTe     : Result := '1.04';
+                      tlRetCancCTe      : Result := '1.04';
+                      tlInutCTe         : Result := '1.04';
+                      tlProcInutCTe     : Result := '1.04';
+                      tlRetInutCTe      : Result := '1.04';
+                  end;
   end;
-
-  // Incluido/Alterado por Italo em 03/08/2011
-  // Tipos de LayOut para CT-e
-
-  if schema = TsPL_CTe_103 then
-  begin
-    if Layout = tlConsStatServCTe then Result := '1.03';
-    if Layout = tlCTe             then Result := '1.03';
-    if Layout = tlEnvCTe          then Result := '1.03';
-    if Layout = tlRetEnvCTe       then Result := '1.03';
-    if Layout = tlProcCTe         then Result := '1.03';
-    if Layout = tlConsReciCTe     then Result := '1.03';
-    if Layout = tlRetConsReciCTe  then Result := '1.03';
-    if Layout = tlConsSitCTe      then Result := '1.03';
-    if Layout = tlRetConsSitCTe   then Result := '1.03';
-    if Layout = tlCancCTe         then Result := '1.03';
-    if Layout = tlProcCancCTe     then Result := '1.03';
-    if Layout = tlRetCancCTe      then Result := '1.03';
-    if Layout = tlInutCTe         then Result := '1.03';
-    if Layout = tlProcInutCTe     then Result := '1.03';
-    if Layout = tlRetInutCTe      then Result := '1.03';
-  end;
-  if schema = TsPL_CTe_104 then
-  begin
-    if Layout = tlConsStatServCTe then Result := '1.04';
-    if Layout = tlCTe             then Result := '1.04';
-    if Layout = tlEnvCTe          then Result := '1.04';
-    if Layout = tlRetEnvCTe       then Result := '1.04';
-    if Layout = tlProcCTe         then Result := '1.04';
-    if Layout = tlConsReciCTe     then Result := '1.04';
-    if Layout = tlRetConsReciCTe  then Result := '1.04';
-    if Layout = tlConsSitCTe      then Result := '1.04';
-    if Layout = tlRetConsSitCTe   then Result := '1.04';
-    if Layout = tlCancCTe         then Result := '1.04';
-    if Layout = tlProcCancCTe     then Result := '1.04';
-    if Layout = tlRetCancCTe      then Result := '1.04';
-    if Layout = tlInutCTe         then Result := '1.04';
-    if Layout = tlProcInutCTe     then Result := '1.04';
-    if Layout = tlRetInutCTe      then Result := '1.04';
-  end;
-
 end;
 
 function HexToAscii(Texto: string): String;
@@ -982,4 +935,3 @@ begin
 end;
 
 end.
-

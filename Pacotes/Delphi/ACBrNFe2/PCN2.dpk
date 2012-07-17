@@ -1,6 +1,7 @@
 package PCN2;
 
 {$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
 {$ALIGN 8}
 {$ASSERTIONS ON}
 {$BOOLEVAL OFF}
@@ -11,20 +12,23 @@ package PCN2;
 {$LOCALSYMBOLS ON}
 {$LONGSTRINGS ON}
 {$OPENSTRINGS ON}
-{$OPTIMIZATION ON}
+{$OPTIMIZATION OFF}
 {$OVERFLOWCHECKS OFF}
 {$RANGECHECKS OFF}
 {$REFERENCEINFO ON}
 {$SAFEDIVIDE OFF}
-{$STACKFRAMES OFF}
+{$STACKFRAMES ON}
 {$TYPEDADDRESS OFF}
 {$VARSTRINGCHECKS ON}
 {$WRITEABLECONST OFF}
 {$MINENUMSIZE 1}
 {$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
 {$DESCRIPTION 'Projeto Cooperar (http://br.groups.yahoo.com/group/projeto_cooperar_nfe/)'}
 {$RUNONLY}
 {$IMPLICITBUILD OFF}
+
 requires
   rtl,
   ACBrComum;
@@ -61,6 +65,8 @@ contains
   pcnRetEnvNFe in '..\..\..\Fontes\PCN2\pcnRetEnvNFe.pas',
   pcnRetInutNFe in '..\..\..\Fontes\PCN2\pcnRetInutNFe.pas',
   pcnSignature in '..\..\..\Fontes\PCN2\pcnSignature.pas',
-  pcnValidador in '..\..\..\Fontes\PCN2\pcnValidador.pas';
+  pcnValidador in '..\..\..\Fontes\PCN2\pcnValidador.pas',
+  pcnEnvEventoNFe in '..\..\..\Fontes\PCN2\pcnEnvEventoNFe.pas',
+  pcnRetEnvEventoNFe in '..\..\..\Fontes\PCN2\pcnRetEnvEventoNFe.pas';
 
 end.

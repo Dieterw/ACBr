@@ -9,7 +9,7 @@ uses IniFiles, ShellAPI, pcnRetConsReciNFe,
   Dialogs, StdCtrls, ExtCtrls, Buttons, ComCtrls, OleCtrls, SHDocVw,
   ACBrNFe, pcnConversao, ACBrNFeDANFEClass, ACBrNFeDANFERave, ACBrUtil,
   pcnNFeW, pcnNFeRTXT, pcnAuxiliar,
-  XMLIntf, XMLDoc, StrUtils;
+  XMLIntf, XMLDoc;
 
 type
   TForm1 = class(TForm)
@@ -374,6 +374,14 @@ var
     for Index := 0 to XMLNode.childNodes.Count - 1 do
       AddNodes(XMLNode.childNodes[Index], NewNode);
   end;
+
+  function ReplaceStr( Fonte, De, Para:string ):string;
+  begin
+    result:=fonte;
+    while pos(de,result) <> 0 do
+      result:=copy(result, 1, pos(de,result)-1 )+Para+copy(result,pos(de,result)+length(de),length(result) );
+  end;
+
   function LimpaXML(XML: String; TagRemover:String): String;
   begin
     Result := XML;

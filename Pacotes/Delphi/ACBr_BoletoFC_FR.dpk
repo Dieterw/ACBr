@@ -1,6 +1,7 @@
 package ACBr_BoletoFC_FR;
 
 {$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
 {$ALIGN 8}
 {$ASSERTIONS ON}
 {$BOOLEVAL OFF}
@@ -11,17 +12,19 @@ package ACBr_BoletoFC_FR;
 {$LOCALSYMBOLS ON}
 {$LONGSTRINGS ON}
 {$OPENSTRINGS ON}
-{$OPTIMIZATION ON}
+{$OPTIMIZATION OFF}
 {$OVERFLOWCHECKS OFF}
 {$RANGECHECKS OFF}
 {$REFERENCEINFO ON}
 {$SAFEDIVIDE OFF}
-{$STACKFRAMES OFF}
+{$STACKFRAMES ON}
 {$TYPEDADDRESS OFF}
 {$VARSTRINGCHECKS ON}
 {$WRITEABLECONST OFF}
 {$MINENUMSIZE 1}
 {$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
 {$DESCRIPTION 'ACBrBoletoFC FastReport - (http://acbr.sourceforge.net/)'}
 {$IMPLICITBUILD ON}
 
@@ -32,17 +35,6 @@ requires
   designide,
   dbrtl,
   dsnap,
-{$IFDEF VER150} fs7, frx7, frxe7, frxDB7, {$ENDIF} // D7
-{$IFDEF VER170} fs9, frx9, frxe9, frxDB9, {$ENDIF} // D2005
-{$IFDEF VER180} 
-   {$IFNDEF VER185} fs10, frx10, frxe10, frxDB10, {$ENDIF} // D2006
-{$ENDIF}
-{$IFDEF VER185} fs11, frx11, frxe11, frxDB11, {$ENDIF} // D2007
-{$IFDEF VER190} fs11, frx11, frxe11, frxDB11, {$ENDIF} // D2007
-{$IFDEF VER200} fs12, frx12, frxe12, frxDB12, {$ENDIF} // D2009
-{$IFDEF VER210} fs14, frx14, frxe14, frxDB14, {$ENDIF} // D2010
-{$IFDEF VER220} fs15, frx15, frxe15, frxDB15, {$ENDIF} // XE
-{$IFDEF VER230} fs16, frx16, frxe16, frxDB16, {$ENDIF} // XE2
   ACBr_Boleto;
 
 contains

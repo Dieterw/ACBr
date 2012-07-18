@@ -169,6 +169,7 @@ type
   // Incluido por Italo em 17/07/2012
   TpcnIndicadorNFe = (inTodas, inSemManifestacaoComCiencia, inSemManifestacaoSemCiencia);
   TpcnIndicadorEmissor = (ieTodos, ieRaizCNPJDiferente);
+  TpcnTamanhoPapel = (tpA4, tpA5);
 
 const
   TpcnTpEventoString : array[0..5] of String =( '110110',

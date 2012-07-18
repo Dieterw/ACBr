@@ -1136,7 +1136,6 @@ object Form1: TForm1
   object ACBrNFe1: TACBrNFe
     Configuracoes.Geral.FormaEmissao = teContingencia
     Configuracoes.Geral.PathSalvar = 'C:\Program Files\Borland\Delphi7\Bin\'
-    Configuracoes.Geral.IniFinXMLSECAutomatico = True
     Configuracoes.WebServices.UF = 'SP'
     Configuracoes.WebServices.AguardarConsultaRet = 15000
     Configuracoes.WebServices.IntervaloTentativas = 1000

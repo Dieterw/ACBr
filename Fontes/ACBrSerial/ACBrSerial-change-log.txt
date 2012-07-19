@@ -100,6 +100,11 @@ Símbolo : Significado
 
 Data: 11/07/2012
 -- ACBrECF --
+[*] Geração do arquivo da nota fiscal paulista (CAT52)
+    (por Regys Silveira)
+
+Data: 11/07/2012
+-- ACBrECF --
 [*] Capturado dados da propriedade Device antes da mudança do modelo, para
     devolver ao novo modelo selecionado.
     (por Isaque Pinheiro)

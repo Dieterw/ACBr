@@ -344,6 +344,8 @@ TACBrECFBematech = class( TACBrECFClass )
        cTipoDownload: AnsiString; cUsuario: AnsiString;
        iTipoGeracao: integer; cChavePublica: AnsiString;
        cChavePrivada: AnsiString; iUnicoArquivo: integer ):Integer;StdCall;
+    xBematech_FI_GeraRegistrosCAT52MFD: function(cNomeArquivoMFD: AnsiString;
+       cData: AnsiString): Integer; stdcall;
 
     {$IFDEF MSWINDOWS}
     procedure LoadDLLFunctions;
@@ -353,7 +355,6 @@ TACBrECFBematech = class( TACBrECFClass )
     function GetTotalizadoresParciais : String ;
     procedure CRZToCOO(const ACRZIni, ACRZFim: Integer; var ACOOIni,
       ACOOFim: Integer);
-
 
  protected
     property TotalizadoresParciais : String read GetTotalizadoresParciais ;
@@ -437,6 +438,8 @@ TACBrECFBematech = class( TACBrECFClass )
     Destructor Destroy  ; override ;
 
     procedure Ativar ; override ;
+    procedure PafMF_GerarNotaPaulista(const DataInicial: TDateTime;
+      const DataFinal: TDateTime; const PathArquivo: string); override;
 
     Property ACK   : Integer read fsACK ;
     Property ST1   : Integer read fsST1 ;
@@ -556,6 +559,7 @@ TACBrECFBematech = class( TACBrECFClass )
        TipoContador: TACBrECFTipoContador = tpcCOO ) ; override ;
     function TraduzirTag(const ATag: AnsiString): AnsiString; override;
     function TraduzirTagBloco(const ATag, Conteudo: AnsiString): AnsiString; override;
+
  end ;
 
 implementation
@@ -933,7 +937,7 @@ begin
 
 end;
 
-Function TACBrECFBematech.PreparaCmd( cmd : AnsiString ) : AnsiString ;  // Adaptada do manual da Bematech //
+function TACBrECFBematech.PreparaCmd( cmd : AnsiString ) : AnsiString ;  // Adaptada do manual da Bematech //
 Var A, iSoma, LenCmd : Integer ;
     NBL, NBH, CSL, CSH : AnsiChar ;
 begin
@@ -3492,6 +3496,7 @@ begin
    BematechFunctionDetect('Bematech_FI_FechaPortaSerial',@xBematech_FI_FechaPortaSerial );
    BematechFunctionDetect('Bematech_FI_ArquivoMFD',@xBematech_FI_ArquivoMFD );
    BematechFunctionDetect('Bematech_FI_EspelhoMFD',@xBematech_FI_EspelhoMFD );
+   BematechFunctionDetect('Bematech_FI_GeraRegistrosCAT52MFD',@xBematech_FI_GeraRegistrosCAT52MFD );
 end;
 
 procedure TACBrECFBematech.AbrePortaSerialDLL(const Porta, Path : String ) ;
@@ -3702,6 +3707,42 @@ begin
      Ativo := OldAtivo ;
   end;
  {$ENDIF}
+end;
+
+procedure TACBrECFBematech.PafMF_GerarNotaPaulista(const DataInicial,
+  DataFinal: TDateTime; const PathArquivo: string);
+var
+  Resp: Integer;
+  FilePAth, DiaIni, DiaFim: AnsiString;
+  OldAtivo: Boolean;
+begin
+  LoadDLLFunctions;
+
+  DiaIni   := FormatDateTime('dd"/"mm"/"yyyy', DataInicial) ;
+  DiaFim   := FormatDateTime('dd"/"mm"/"yyyy', DataFinal) ;
+
+  OldAtivo := Ativo ;
+  try
+    FilePath := ExtractFilePath( PathArquivo );
+    AbrePortaSerialDLL( fpDevice.Porta, FilePath ) ;
+
+    Resp := xBematech_FI_GeraRegistrosCAT52MFD( '', DiaIni ) ;
+
+    if (Resp <> 1) then
+      raise EACBrECFErro.Create( ACBrStr( 'Erro ao executar xBematech_FI_ArquivoMFD.'+sLineBreak+
+                                         AnalisarRetornoDll(Resp) )) ;
+
+//     FindFiles( FileMask, Arquivos );
+//
+//     if Arquivos.Count < 1 then
+//        raise EACBrECFErro.Create( ACBrStr( 'Erro na execução de xBematech_FI_ArquivoMFD.'+sLineBreak+
+//                                'Arquivo: "'+NomeArquivo + '" não gerado' )) ;
+//
+//     RenameFile( Arquivos[0], NomeArquivo );
+  finally
+    xBematech_FI_FechaPortaSerial();
+    Ativo := OldAtivo ;
+  end;
 end;
 
 procedure TACBrECFBematech.ArquivoMFD_DLL(DataInicial, DataFinal: TDateTime;

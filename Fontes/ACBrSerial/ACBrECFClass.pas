@@ -999,6 +999,9 @@ TACBrECFClass = class
        Finalidade: TACBrECFFinalizaArqMFD = finMFD;
        TipoContador: TACBrECFTipoContador = tpcCOO ) ; overload ; virtual ;
 
+    procedure PafMF_GerarNotaPaulista(const DataInicial, DataFinal: TDateTime;
+      const PathArquivo: String); virtual;
+
     Procedure IdentificaOperador(Nome : String); virtual;
     Procedure IdentificaPAF( NomeVersao, MD5 : String) ; virtual ;
     Function RetornaInfoECF( Registrador: String) : AnsiString; Virtual ;
@@ -3519,6 +3522,7 @@ begin
 end;
 
 { ------------------------------ Pausar Relatorios -------------------------}
+
 procedure TACBrECFClass.PausarRelatorio( Via : Integer );
 Var Texto : String ;
     SecRest, SecAnt : Integer ;
@@ -3952,6 +3956,13 @@ begin
   else
      Result := ACBrStr( ATexto ) ;
 end ;
+
+procedure TACBrECFClass.PafMF_GerarNotaPaulista(const DataInicial,
+  DataFinal: TDateTime; const PathArquivo: String);
+begin
+  ErroAbstract('PafMF_GerarNotaPaulista');
+end;
+
 
 { TACBrECFDadosRZ }
 

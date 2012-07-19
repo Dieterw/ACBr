@@ -760,6 +760,9 @@ TACBrECF = class( TACBrComponent )
     procedure PafMF_RelParametrosConfiguracao(
       AInfoPafECF: TACBrECFInfoPaf; const AIndiceRelatorio: Integer = 1);
 
+    procedure PafMF_GerarNotaPaulista(const DataInicial, DataFinal: TDateTime;
+      const PathArquivo: String);
+
     procedure DoVerificaValorGT ;
     procedure DoAtualizarValorGT ;
     function AssinaArquivoComEAD(Arquivo: String): Boolean;
@@ -5470,6 +5473,12 @@ begin
   Self.AssinaArquivoComEAD(PathArquivo);
 end;
 
+procedure TACBrECF.PafMF_GerarNotaPaulista(const DataInicial, DataFinal: TDateTime;
+  const PathArquivo: String);
+begin
+  fsECF.PafMF_GerarNotaPaulista(DataInicial, DataFinal, PathArquivo);
+end;
+
 procedure TACBrECF.PafMF_LMFC_Cotepe1704(const DataInicial, DataFinal: TDateTime;
   const PathArquivo: String);
 begin
@@ -5841,7 +5850,7 @@ begin
     Relatorio.Add('</linha_simples>');
     Relatorio.Add('Nome Comerc.: ' + IdentificacaoPaf.Paf.Nome);
     Relatorio.Add('Versao......: ' + IdentificacaoPaf.Paf.Versao);
-    Relatorio.Add('Laudo.......: ' + IdentificacaoPaf.NumeroLaudo);
+//    Relatorio.Add('Laudo.......: ' + IdentificacaoPaf.NumeroLaudo);
     Relatorio.Add('ER-PAF-ECF..: ' + IdentificacaoPaf.VersaoER);
     Relatorio.Add('Princ. Exec.: ' + IdentificacaoPaf.Paf.PrincipalExe.Nome);
     Relatorio.Add('MD5.........: ' + IdentificacaoPaf.Paf.PrincipalExe.MD5);
@@ -5936,19 +5945,6 @@ begin
     Relatorio.Add('</linha_dupla>');
     Relatorio.Add('');
 
-    Relatorio.Add(QuebraLinhas(
-      'Todas as parametrizações relacionadas neste relatório são de ' +
-      'configuração inacessível ao usuário do PAF-ECF.',
-      Colunas)
-    );
-    Relatorio.Add(QuebraLinhas(
-      'A ativação ou não destes parâmetros é determinada pela unidade ' +
-      'federada e somente pode ser feita pela intervenção da empresa ' +
-      'desenvolvedora do PAF-ECF.',
-      Colunas)
-    );
-
-    Relatorio.Add('');
     Relatorio.Add('<n>IDENTIFICAÇÃO E CARACTERISTICAS DO</n>');
     Relatorio.Add('<n>PROGRAMA APLICATIVO FISCAL</n>');
     Relatorio.Add('</linha_simples>');
@@ -5969,6 +5965,19 @@ begin
     Relatorio.Add('<n>PARÂMETROS PARA NÃO CONCOMITÂNCIA</n>');
     Relatorio.Add('</linha_simples>');
 
+    Relatorio.Add(QuebraLinhas(
+      'Todas as parametrizações relacionadas neste relatório são de ' +
+      'configuração inacessível ao usuário do PAF-ECF.',
+      Colunas)
+    );
+    Relatorio.Add(QuebraLinhas(
+      'A ativação ou não destes parâmetros é determinada pela unidade ' +
+      'federada e somente pode ser feita pela intervenção da empresa ' +
+      'desenvolvedora do PAF-ECF.',
+      Colunas)
+    );
+
+    Relatorio.Add('');
     Relatorio.Add('<n>Req IV</n>');
     Relatorio.Add('ITEM 2: Realiza registros de pré-venda');
     Relatorio.Add(padL('conforme definido no inciso II do art. 1º', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.RealizaPreVenda));

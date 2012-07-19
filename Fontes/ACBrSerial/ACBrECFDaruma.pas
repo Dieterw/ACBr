@@ -301,6 +301,8 @@ TACBrECFDaruma = class( TACBrECFClass )
     procedure LerTotaisComprovanteNaoFiscal; override ;
     Procedure ProgramaComprovanteNaoFiscal( var Descricao: String;
        Tipo : String = ''; Posicao : String = '') ; override ;
+    procedure PafMF_GerarNotaPaulista(const DataInicial: TDateTime;
+      const DataFinal: TDateTime; const PathArquivo: string); override;
 
     Property ComprovantesNaoFiscaisVinculado : TACBrECFComprovantesNaoFiscais
        read GetComprovantesNaoFiscaisVinculado ;
@@ -957,6 +959,12 @@ begin
   Result := 'Erro não documentado';
   if (AErro > 0) and (AErro < 302) then
     Result := ErrosEstendidos[AErro];
+end;
+
+procedure TACBrECFDaruma.PafMF_GerarNotaPaulista(const DataInicial,
+  DataFinal: TDateTime; const PathArquivo: string);
+begin
+  Self.ArquivoMFD_DLL(DataInicial, DataFinal, PathArquivo, [docTodos], finNFPTDM);
 end;
 
 Function TACBrECFDaruma.PreparaCmd( cmd : AnsiString ) : AnsiString ;

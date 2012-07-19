@@ -771,7 +771,7 @@ begin
   fStringList.SaveToFile(NomeArquivo);
 
   if DoFlushToDisk then
-     FlushToDisk( NomeArquivo );
+     FlushFileToDisk( NomeArquivo );
 end;
 
 procedure TACBrTEFDArquivo.LeArquivo(const NomeArquivo : String);

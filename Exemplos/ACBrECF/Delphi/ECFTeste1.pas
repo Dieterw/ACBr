@@ -327,6 +327,7 @@ type
     DAV1: TMenuItem;
     DAVOS1: TMenuItem;
     NumerodeReduesZrestantes1: TMenuItem;
+    btnMenuFiscalNotaPaulista: TButton;
     procedure cbxModeloChange(Sender: TObject);
     procedure Sair1Click(Sender: TObject);
     procedure bAtivarClick(Sender: TObject);
@@ -522,6 +523,7 @@ type
     procedure DAV1Click(Sender: TObject);
     procedure DAVOS1Click(Sender: TObject);
     procedure NumerodeReduesZrestantes1Click(Sender: TObject);
+    procedure btnMenuFiscalNotaPaulistaClick(Sender: TObject);
   private
     { Private declarations }
     Function Converte( cmd : String) : String;
@@ -3768,6 +3770,19 @@ procedure TForm1.NumerodeReduesZrestantes1Click(Sender: TObject);
 begin
   mResp.Lines.Add( 'Número de Reduções Z restantes: ('+ ACBrECF1.NumReducoesZRestantes +')' );
   AtualizaMemos ;
+end;
+
+procedure TForm1.btnMenuFiscalNotaPaulistaClick(Sender: TObject);
+var
+  DirArquivos: string;
+begin
+  DirArquivos := ExtractFilePath(ParamStr(0)) + 'CAT52';
+  if not DirectoryExists(DirArquivos) then
+    ForceDirectories(DirArquivos);
+
+  ACBrECF1.PafMF_GerarNotaPaulista(edtDtInicial.Date, edtDtFinal.Date, DirArquivos);
+
+  ShowMessage(Format('Arquivos gerados com sucesso em:'#13#10' "%s"', [DirArquivos]));
 end;
 
 end.

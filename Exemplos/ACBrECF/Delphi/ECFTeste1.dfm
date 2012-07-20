@@ -925,6 +925,15 @@ object Form1: TForm1
           TabOrder = 8
           OnClick = btnMenuFiscalConfigPAFECFClick
         end
+        object btnMenuFiscalNotaPaulista: TButton
+          Left = 187
+          Top = 82
+          Width = 171
+          Height = 25
+          Caption = 'Nota Paulista (CAT52)'
+          TabOrder = 9
+          OnClick = btnMenuFiscalNotaPaulistaClick
+        end
       end
       object pgcMenuFiscalTipo: TPageControl
         Left = 0

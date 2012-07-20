@@ -302,7 +302,7 @@ TACBrECFDaruma = class( TACBrECFClass )
     Procedure ProgramaComprovanteNaoFiscal( var Descricao: String;
        Tipo : String = ''; Posicao : String = '') ; override ;
     procedure PafMF_GerarNotaPaulista(const DataInicial: TDateTime;
-      const DataFinal: TDateTime; const PathArquivo: string); override;
+      const DataFinal: TDateTime; const DirArquivos: string); override;
 
     Property ComprovantesNaoFiscaisVinculado : TACBrECFComprovantesNaoFiscais
        read GetComprovantesNaoFiscaisVinculado ;
@@ -962,9 +962,9 @@ begin
 end;
 
 procedure TACBrECFDaruma.PafMF_GerarNotaPaulista(const DataInicial,
-  DataFinal: TDateTime; const PathArquivo: string);
+  DataFinal: TDateTime; const DirArquivos: string);
 begin
-  Self.ArquivoMFD_DLL(DataInicial, DataFinal, PathArquivo, [docTodos], finNFPTDM);
+  Self.ArquivoMFD_DLL(DataInicial, DataFinal, DirArquivos, [docTodos], finNFPTDM);
 end;
 
 Function TACBrECFDaruma.PreparaCmd( cmd : AnsiString ) : AnsiString ;

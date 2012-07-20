@@ -761,7 +761,7 @@ TACBrECF = class( TACBrComponent )
       AInfoPafECF: TACBrECFInfoPaf; const AIndiceRelatorio: Integer = 1);
 
     procedure PafMF_GerarNotaPaulista(const DataInicial, DataFinal: TDateTime;
-      const PathArquivo: String);
+      const DirArquivos: String);
 
     procedure DoVerificaValorGT ;
     procedure DoAtualizarValorGT ;
@@ -5474,9 +5474,9 @@ begin
 end;
 
 procedure TACBrECF.PafMF_GerarNotaPaulista(const DataInicial, DataFinal: TDateTime;
-  const PathArquivo: String);
+  const DirArquivos: String);
 begin
-  fsECF.PafMF_GerarNotaPaulista(DataInicial, DataFinal, PathArquivo);
+  fsECF.PafMF_GerarNotaPaulista(DataInicial, DataFinal, DirArquivos);
 end;
 
 procedure TACBrECF.PafMF_LMFC_Cotepe1704(const DataInicial, DataFinal: TDateTime;

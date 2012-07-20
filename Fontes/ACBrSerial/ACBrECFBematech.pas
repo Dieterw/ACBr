@@ -346,6 +346,8 @@ TACBrECFBematech = class( TACBrECFClass )
        cChavePrivada: AnsiString; iUnicoArquivo: integer ):Integer;StdCall;
     xBematech_FI_GeraRegistrosCAT52MFD: function(cNomeArquivoMFD: AnsiString;
        cData: AnsiString): Integer; stdcall;
+    xBematech_FI_DownloadMFD: function(cNomeArquivoMFD, cTipoDownload,
+      cDadoInicial, cDadoFinal, cUsuario: AnsiString): Integer; stdcall;
 
     {$IFDEF MSWINDOWS}
     procedure LoadDLLFunctions;
@@ -439,7 +441,7 @@ TACBrECFBematech = class( TACBrECFClass )
 
     procedure Ativar ; override ;
     procedure PafMF_GerarNotaPaulista(const DataInicial: TDateTime;
-      const DataFinal: TDateTime; const PathArquivo: string); override;
+      const DataFinal: TDateTime; const DirArquivos: string); override;
 
     Property ACK   : Integer read fsACK ;
     Property ST1   : Integer read fsST1 ;
@@ -3492,11 +3494,12 @@ procedure TACBrECFBematech.LoadDLLFunctions;
    end ;
  end ;
 begin
-   BematechFunctionDetect('Bematech_FI_AbrePortaSerial',@xBematech_FI_AbrePortaSerial );
-   BematechFunctionDetect('Bematech_FI_FechaPortaSerial',@xBematech_FI_FechaPortaSerial );
-   BematechFunctionDetect('Bematech_FI_ArquivoMFD',@xBematech_FI_ArquivoMFD );
-   BematechFunctionDetect('Bematech_FI_EspelhoMFD',@xBematech_FI_EspelhoMFD );
-   BematechFunctionDetect('Bematech_FI_GeraRegistrosCAT52MFD',@xBematech_FI_GeraRegistrosCAT52MFD );
+   BematechFunctionDetect( 'Bematech_FI_AbrePortaSerial',@xBematech_FI_AbrePortaSerial );
+   BematechFunctionDetect( 'Bematech_FI_FechaPortaSerial',@xBematech_FI_FechaPortaSerial );
+   BematechFunctionDetect( 'Bematech_FI_ArquivoMFD',@xBematech_FI_ArquivoMFD );
+   BematechFunctionDetect( 'Bematech_FI_EspelhoMFD',@xBematech_FI_EspelhoMFD );
+   BematechFunctionDetect( 'Bematech_FI_GeraRegistrosCAT52MFD',@xBematech_FI_GeraRegistrosCAT52MFD );
+   BematechFunctionDetect( 'Bematech_FI_DownloadMFD',@xBematech_FI_DownloadMFD );
 end;
 
 procedure TACBrECFBematech.AbrePortaSerialDLL(const Porta, Path : String ) ;
@@ -3710,35 +3713,63 @@ begin
 end;
 
 procedure TACBrECFBematech.PafMF_GerarNotaPaulista(const DataInicial,
-  DataFinal: TDateTime; const PathArquivo: string);
+  DataFinal: TDateTime; const DirArquivos: string);
 var
   Resp: Integer;
-  FilePAth, DiaIni, DiaFim: AnsiString;
+  FilePath, DiaIni, DiaFim, NumUsu: AnsiString;
   OldAtivo: Boolean;
+  FileMFD: AnsiString;
+  DataArquivo: TDateTime;
 begin
   LoadDLLFunctions;
 
-  DiaIni   := FormatDateTime('dd"/"mm"/"yyyy', DataInicial) ;
-  DiaFim   := FormatDateTime('dd"/"mm"/"yyyy', DataFinal) ;
+  NumUsu   := AnsiString(UsuarioAtual);
+
+  DiaIni   := FormatDateTime('dd/mm/yyyy', DataInicial);
+  DiaFim   := FormatDateTime('dd/mm/yyyy', DataFinal);
+
+  FilePath := IncludeTrailingPathDelimiter(DirArquivos);
+  FileMFD  := AnsiString(FilePath + 'download.mfd');
 
   OldAtivo := Ativo ;
   try
-    FilePath := ExtractFilePath( PathArquivo );
+    // a bematech não possui a geração do CAT52 por período, mas pode-se
+    // gerar arquivos de um arquivo MFD, então baixamos a MFD para o periodo
+    // e rodamos um loop com a data gerando o arquivo para cada dia dentro
+    // do período
     AbrePortaSerialDLL( fpDevice.Porta, FilePath ) ;
 
-    Resp := xBematech_FI_GeraRegistrosCAT52MFD( '', DiaIni ) ;
-
+    // fazer primeiro o download da MFD para o período
+    Resp := xBematech_FI_DownloadMFD( FileMFD, '1', DiaIni, DiaFim, NumUsu );
     if (Resp <> 1) then
-      raise EACBrECFErro.Create( ACBrStr( 'Erro ao executar xBematech_FI_ArquivoMFD.'+sLineBreak+
-                                         AnalisarRetornoDll(Resp) )) ;
+    begin
+      raise EACBrECFErro.Create(ACBrStr(
+        'Erro ao executar xBematech_FI_DownloadMFD.' + sLineBreak +
+        AnalisarRetornoDll(Resp)
+      ));
+    end;
 
-//     FindFiles( FileMask, Arquivos );
-//
-//     if Arquivos.Count < 1 then
-//        raise EACBrECFErro.Create( ACBrStr( 'Erro na execução de xBematech_FI_ArquivoMFD.'+sLineBreak+
-//                                'Arquivo: "'+NomeArquivo + '" não gerado' )) ;
-//
-//     RenameFile( Arquivos[0], NomeArquivo );
+    // gerar o arquivo para cada dia dentro do período a partir da
+    // MFD baixada da impressora fiscal
+    DataArquivo := DataInicial;
+    repeat
+      DiaIni := FormatDateTime('dd/mm/yyyy', DataArquivo);
+
+      Resp := xBematech_FI_GeraRegistrosCAT52MFD( FileMFD, DiaIni ) ;
+      if (Resp <> 1) then
+      begin
+        raise EACBrECFErro.Create(ACBrStr(
+          'Erro ao executar xBematech_FI_GeraRegistrosCAT52MFD.' + sLineBreak +
+          AnalisarRetornoDll(Resp) + sLineBreak +
+          'Para a data de: "' + DiaIni + '"'
+        ));
+      end;
+
+      // próximo dia
+      IncDay( DataArquivo, 1 );
+
+    until DataArquivo > DataFinal;
+
   finally
     xBematech_FI_FechaPortaSerial();
     Ativo := OldAtivo ;

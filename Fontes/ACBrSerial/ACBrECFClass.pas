@@ -1000,7 +1000,7 @@ TACBrECFClass = class
        TipoContador: TACBrECFTipoContador = tpcCOO ) ; overload ; virtual ;
 
     procedure PafMF_GerarNotaPaulista(const DataInicial, DataFinal: TDateTime;
-      const PathArquivo: String); virtual;
+      const DirArquivos: String); virtual;
 
     Procedure IdentificaOperador(Nome : String); virtual;
     Procedure IdentificaPAF( NomeVersao, MD5 : String) ; virtual ;
@@ -3958,7 +3958,7 @@ begin
 end ;
 
 procedure TACBrECFClass.PafMF_GerarNotaPaulista(const DataInicial,
-  DataFinal: TDateTime; const PathArquivo: String);
+  DataFinal: TDateTime; const DirArquivos: String);
 begin
   ErroAbstract('PafMF_GerarNotaPaulista');
 end;

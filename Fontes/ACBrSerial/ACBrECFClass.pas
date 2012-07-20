@@ -999,7 +999,7 @@ TACBrECFClass = class
        Finalidade: TACBrECFFinalizaArqMFD = finMFD;
        TipoContador: TACBrECFTipoContador = tpcCOO ) ; overload ; virtual ;
 
-    procedure PafMF_GerarNotaPaulista(const DataInicial, DataFinal: TDateTime;
+    procedure PafMF_GerarCAT52(const DataInicial, DataFinal: TDateTime;
       const DirArquivos: String); virtual;
 
     Procedure IdentificaOperador(Nome : String); virtual;
@@ -3957,10 +3957,10 @@ begin
      Result := ACBrStr( ATexto ) ;
 end ;
 
-procedure TACBrECFClass.PafMF_GerarNotaPaulista(const DataInicial,
+procedure TACBrECFClass.PafMF_GerarCAT52(const DataInicial,
   DataFinal: TDateTime; const DirArquivos: String);
 begin
-  ErroAbstract('PafMF_GerarNotaPaulista');
+  Self.ArquivoMFD_DLL(DataInicial, DataFinal, DirArquivos, [docTodos], finNFPTDM);
 end;
 
 

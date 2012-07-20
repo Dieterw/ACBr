@@ -440,7 +440,7 @@ TACBrECFBematech = class( TACBrECFClass )
     Destructor Destroy  ; override ;
 
     procedure Ativar ; override ;
-    procedure PafMF_GerarNotaPaulista(const DataInicial: TDateTime;
+    procedure PafMF_GerarCAT52(const DataInicial: TDateTime;
       const DataFinal: TDateTime; const DirArquivos: string); override;
 
     Property ACK   : Integer read fsACK ;
@@ -3712,7 +3712,7 @@ begin
  {$ENDIF}
 end;
 
-procedure TACBrECFBematech.PafMF_GerarNotaPaulista(const DataInicial,
+procedure TACBrECFBematech.PafMF_GerarCAT52(const DataInicial,
   DataFinal: TDateTime; const DirArquivos: string);
 var
   Resp: Integer;

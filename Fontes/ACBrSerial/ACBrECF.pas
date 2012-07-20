@@ -760,7 +760,7 @@ TACBrECF = class( TACBrComponent )
     procedure PafMF_RelParametrosConfiguracao(
       AInfoPafECF: TACBrECFInfoPaf; const AIndiceRelatorio: Integer = 1);
 
-    procedure PafMF_GerarNotaPaulista(const DataInicial, DataFinal: TDateTime;
+    procedure PafMF_GerarCAT52(const DataInicial, DataFinal: TDateTime;
       const DirArquivos: String);
 
     procedure DoVerificaValorGT ;
@@ -5473,10 +5473,10 @@ begin
   Self.AssinaArquivoComEAD(PathArquivo);
 end;
 
-procedure TACBrECF.PafMF_GerarNotaPaulista(const DataInicial, DataFinal: TDateTime;
+procedure TACBrECF.PafMF_GerarCAT52(const DataInicial, DataFinal: TDateTime;
   const DirArquivos: String);
 begin
-  fsECF.PafMF_GerarNotaPaulista(DataInicial, DataFinal, DirArquivos);
+  fsECF.PafMF_GerarCAT52(DataInicial, DataFinal, DirArquivos);
 end;
 
 procedure TACBrECF.PafMF_LMFC_Cotepe1704(const DataInicial, DataFinal: TDateTime;

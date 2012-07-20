@@ -3780,7 +3780,7 @@ begin
   if not DirectoryExists(DirArquivos) then
     ForceDirectories(DirArquivos);
 
-  ACBrECF1.PafMF_GerarNotaPaulista(edtDtInicial.Date, edtDtFinal.Date, DirArquivos);
+  ACBrECF1.PafMF_GerarCAT52(edtDtInicial.Date, edtDtFinal.Date, DirArquivos);
 
   ShowMessage(Format('Arquivos gerados com sucesso em:'#13#10' "%s"', [DirArquivos]));
 end;

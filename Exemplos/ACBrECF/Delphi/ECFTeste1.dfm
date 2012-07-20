@@ -156,7 +156,7 @@ object Form1: TForm1
         Top = 25
         Width = 105
         Height = 21
-        ItemHeight = 0
+        ItemHeight = 13
         TabOrder = 1
         Text = 'Procurar'
         OnChange = cbxPortaChange
@@ -930,7 +930,7 @@ object Form1: TForm1
           Top = 82
           Width = 171
           Height = 25
-          Caption = 'Nota Paulista (CAT52)'
+          Caption = 'CAT52'
           TabOrder = 9
           OnClick = btnMenuFiscalNotaPaulistaClick
         end

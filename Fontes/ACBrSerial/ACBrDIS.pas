@@ -62,7 +62,7 @@ uses ACBrBase, ACBrDevice, ACBrDISClass,  {Units da ACBr}
 type
 
 TACBrDISModelo = ( disNenhum, disGertecSerial, disGertecTeclado,
-                   disKeytecTeclado ) ;
+                   disKeytecTeclado, disSmakTeclado ) ;
 TACBrDISAlinhamento = (alEsquerda, alDireita, alCentro, alJustificado) ;
 
 TACBrDISEfeitoExibir = (efeEsquerda_Direita, efeDireita_Esquerda) ;
@@ -125,6 +125,9 @@ TACBrDISLinhas = class(TObjectList)
 
 
 { Componente ACBrDIS }
+
+{ TACBrDIS }
+
 TACBrDIS = class( TACBrComponent )
   private
     fsDevice  : TACBrDevice ;   { SubComponente ACBrDevice }
@@ -147,6 +150,7 @@ TACBrDIS = class( TACBrComponent )
     fsLinhasCount : Integer;
     fsOnAtualiza: TACBrDISAtualiza ;
     fsRemoveAcentos: Boolean;
+    fsSuportaLimparLinha: Boolean;
 
     procedure AtualizaLinhas(Sender: TObject);
     procedure DoOnAtualizar(Linha : Integer );
@@ -187,6 +191,8 @@ TACBrDIS = class( TACBrComponent )
     Property ModeloStr : String read GetModeloStrClass;
 
     procedure LimparDisplay ;
+    procedure LimparLinha( Linha: Integer ) ;
+
     procedure PosicionarCursor( Linha, Coluna: Integer ) ;
     procedure Escrever( AText : String ) ;
     procedure ExibirLinha( Linha : Integer ; AText : String ) ; overload ;
@@ -221,13 +227,14 @@ TACBrDIS = class( TACBrComponent )
      property RemoveAcentos : Boolean read fsRemoveAcentos write fsRemoveAcentos
         default True ;
      property IntervaloEnvioBytes : Integer read GetIntervaloEnvioBytes
-        write SetIntervaloEnvioBytes ;
+        write SetIntervaloEnvioBytes default 0;
 
      property OnAtualiza : TACBrDISAtualiza read fsOnAtualiza write fsOnAtualiza ;
 end ;
 
 implementation
-Uses ACBrUtil, ACBrDISGertecSerial, ACBrDISGertecTeclado, ACBrDISKeytecTeclado ,
+Uses ACBrUtil, ACBrDISGertecSerial, ACBrDISGertecTeclado, ACBrDISKeytecTeclado,
+     ACBrDISSmakTeclado,
      {$IFDEF COMPILER6_UP} StrUtils {$ELSE} ACBrD5{$ENDIF},
      Math;
 
@@ -321,6 +328,7 @@ begin
   fsPassos      := 1 ;
   fsOnAtualiza  := nil ;
   fsRemoveAcentos:= True ;
+  fsSuportaLimparLinha := True;
 
   { Instanciando SubComponente TACBrDevice }
   fsDevice := TACBrDevice.Create( self ) ;  { O dono é o proprio componente }
@@ -368,7 +376,8 @@ begin
 end;
 
 procedure TACBrDIS.SetModelo(const Value: TACBrDISModelo);
-Var wIntervaloEnvioBytes : Integer ;
+Var
+  wIntervaloEnvioBytes : Integer ;
 begin
   wIntervaloEnvioBytes := IntervaloEnvioBytes ;
 
@@ -384,14 +393,15 @@ begin
      disGertecSerial    : fsDIS := TACBrDISGertecSerial.create( Self ) ;
      disGertecTeclado   : fsDIS := TACBrDISGertecTeclado.create( Self ) ;
      disKeytecTeclado   : fsDIS := TACBrDISKeytecTeclado.Create( Self );
+     disSmakTeclado     : fsDIS := TACBrDISSmakTeclado.Create( Self );
   else
      fsDIS := TACBrDISClass.create( Self ) ;
   end;
 
   IntervaloEnvioBytes := wIntervaloEnvioBytes ;
-  LinhasCount := fsDIS.LinhasCount ;
-  Colunas     := fsDIS.Colunas ;
-  fsModelo := Value;
+  LinhasCount         := fsDIS.LinhasCount ;
+  Colunas             := fsDIS.Colunas ;
+  fsModelo            := Value;
 end;
 
 procedure TACBrDIS.SetAtivo(const Value: Boolean);
@@ -408,6 +418,7 @@ begin
 
   fsDIS.Ativar ;
   fsAtivo := true ;
+  fsSuportaLimparLinha := True;
 end;
 
 procedure TACBrDIS.Desativar;
@@ -525,6 +536,9 @@ begin
      Rolando  := false ;
      Exibindo := false ;
 
+     //DEBUG
+     //WriteToTXT('C:\temp\debug.txt','Lin: '+IntToStr(Linha)+' Col: '+IntToStr(ACol)+
+     //           ' AText: "'+AText+'"');
      if (ACol = 1) and (Length(AText) >= Colunas) then
       begin
         Texto := AText ;
@@ -623,8 +637,9 @@ end;
 
 
 procedure TACBrDIS.LimparDisplay;
-Var wAtivo : Boolean ;
-    A : Integer ;
+Var
+  wAtivo : Boolean ;
+  A : Integer ;
 begin
   wAtivo := Ativo ;
   try
@@ -650,6 +665,32 @@ begin
   end ;
 end;
 
+procedure TACBrDIS.LimparLinha(Linha: Integer);
+Var
+  wAtivo : Boolean ;
+  A : Integer ;
+begin
+  if (Linha < 1) or (Linha > LinhasCount) then exit;
+
+  wAtivo := Ativo ;
+  try
+     Ativo := true ;
+     fsDIS.LimparLinha( Linha ) ;
+
+     with Linhas[Linha-1] do
+     begin
+        Texto    := '' ;
+        Rolando  := false ;
+        Exibindo := false ;
+
+        if Assigned( fsOnAtualiza ) then
+          fsOnAtualiza( Linha, TextoVisivel ) ;
+     end ;
+  finally
+     Ativo := wAtivo ;
+  end ;
+end;
+
 procedure TACBrDIS.PosicionarCursor(Linha, Coluna: Integer);
 begin
   VerificaLinhaExiste( Linha ) ;
@@ -661,11 +702,37 @@ begin
 end;
 
 procedure TACBrDIS.Escrever(AText: String);
+Var
+  TextoComp : String;
 begin
   Ativo := true ;
   if fsRemoveAcentos then
      AText := TiraAcentos( AText );
-     
+
+  { Verificando se é mais rápido apagar toda linha. Isso ocorrerá quando "Texto"
+    possuir muitos caracteres em branco e for do tamanho de "Colunas" }
+  if fsSuportaLimparLinha and (Cursor.Y = 1) and (Length( AText ) = Colunas) then
+  begin
+     TextoComp := Trim( AText ) ;
+     if Length(TextoComp)  < (Colunas - 4) then
+     begin
+        try
+           if Trim(Linhas[ Cursor.X-1 ].Texto) <> '' then ;
+              LimparLinha( Cursor.X );
+
+           PosicionarCursor( Cursor.X, (Colunas - Length(TrimLeft(AText)) + 1));
+           AText := Trim( AText ) ;
+        except
+           On E : EACBrDISNaoSuportaLimparLinha do
+            begin
+              fsSuportaLimparLinha := False;
+            end
+           else
+              raise ;
+        end;
+     end ;
+  end ;
+
   fsDIS.Escrever( AText );
 
   with Linhas[Cursor.X-1] do
@@ -790,7 +857,7 @@ Var Texto : String ;
 begin
   Texto := Linhas[Linha-1].TextoVisivel ;
   PosicionarCursor(Linha, 1);
-  fsDIS.Escrever( Texto );
+  Escrever( Texto );
 
   if Assigned( fsOnAtualiza ) then
      fsOnAtualiza( Linha, Texto ) ;

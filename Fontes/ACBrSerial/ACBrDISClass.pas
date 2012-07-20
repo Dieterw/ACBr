@@ -44,14 +44,24 @@ unit ACBrDISClass;
 
 interface
 uses ACBrDevice,      {Units da ACBr}
+     SysUtils,
      Classes,
      {$IFDEF COMPILER6_UP} Types {$ELSE} Windows {$ENDIF} ;
 
+const
+   PortAtOut = 96 ;       // Hexadecimal = 60
+   PortAtIn  = 100 ;      //  Hexadecimal = 64
+
 type
+
+EACBrDISErro            = class(Exception) ;
+  EACBrDISNaoSuportaLimparLinha = class(EACBrDISErro) ;
 
 { Classe generica de DISPLAY, nao implementa nenhum modelo especifico, apenas
   declara a Classe. NAO DEVE SER INSTANCIADA. Usada apenas como base para
   as demais Classes de DISPLAY como por exemplo a classe TACBrDISGertecSerial }
+
+{ TACBrDISClass }
 
 TACBrDISClass = class
   private
@@ -68,6 +78,9 @@ TACBrDISClass = class
     fpModeloStr: String;
     fpPassos: Integer;
     fpIntervaloEnvioBytes: Integer;
+
+    procedure WaitForKeyBoard ;
+    procedure TxKeyboard(B: Byte); overload;
 
   public
     Cursor : TPoint ;
@@ -87,13 +100,14 @@ TACBrDISClass = class
         write fpIntervaloEnvioBytes ;
 
     procedure LimparDisplay ; virtual ;
+    procedure LimparLinha( Linha: Integer ) ; virtual ;
+
     procedure PosicionarCursor( Linha, Coluna: Integer ) ; virtual ;
     procedure Escrever( Texto : String ) ; virtual ;
 end ;
 
 implementation
-Uses ACBrDIS, ACBrUtil, 
-     SysUtils ;
+Uses ACBrDIS, ACBrUtil;
 
 { TACBrDISClass }
 
@@ -114,7 +128,7 @@ begin
   fpAtivo     := false ;
   fpModeloStr := 'Não Definida' ;
   fpPassos    := 1 ;
-  fpIntervaloEnvioBytes := 3 ;
+  fpIntervaloEnvioBytes := 0 ;
 end;
 
 destructor TACBrDISClass.Destroy;
@@ -162,6 +176,12 @@ begin
   { Deve ser implementada na ClassFilha }
 end;
 
+procedure TACBrDISClass.LimparLinha(Linha: Integer);
+begin
+  { Deve ser implementada na ClassFilha }
+  raise EACBrDISNaoSuportaLimparLinha.Create( 'Este modelo não possui comando para limpar linha' ) ;
+end;
+
 procedure TACBrDISClass.PosicionarCursor(Linha, Coluna: Integer);
 begin
   { Deve ser implementada na ClassFilha }
@@ -170,6 +190,34 @@ end;
 procedure TACBrDISClass.Escrever(Texto: String);
 begin
   { Deve ser implementada na ClassFilha }
+end;
+
+procedure TACBrDISClass.WaitForKeyBoard;
+var
+   I, MaxLoops: Integer;
+begin
+  { Aguarda se a porta AT nao está livre }
+
+  I := 0 ;
+  MaxLoops := 1000;
+  if fpIntervaloEnvioBytes > 0 then
+     MaxLoops := trunc( 1000 / fpIntervaloEnvioBytes );  // Até 1 seg
+
+  while ((InPort( PortAtIn ) and 2) <> 0) and (I < MaxLoops) do
+  begin
+     if fpIntervaloEnvioBytes > 0 then
+        sleep( fpIntervaloEnvioBytes ) ;
+     Inc(I) ;
+  end ;
+end;
+
+procedure TACBrDISClass.TxKeyboard(B: Byte);
+Var
+  I : Integer ;
+begin
+  WaitForKeyBoard;
+
+  OutPort( PortAtOut, B);
 end;
 
 end.

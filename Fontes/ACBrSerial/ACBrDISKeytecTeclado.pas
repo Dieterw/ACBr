@@ -46,10 +46,6 @@ interface
 uses ACBrDISClass,
      Classes;
 
-const
-   PortAtOut = 96 ;       // Hexadecimal = 60
-   PortAtIn  = 100 ;      //  Hexadecimal = 64
-
 { Nota: - A comunicação com a Porta AT não é tão rápida quando a Porta Serial,
           por isso, evite o uso excessivo de textos "animados"
         - A funçao TxKeyboard() funciona normalmente em Win9x,
@@ -59,13 +55,9 @@ const
           (use: su  ou  chmod u+s SeuPrograma ) }
 type
 TACBrDISKeytecTeclado = class( TACBrDISClass )
-  private
-    procedure TxKeyboard( B: Byte ) ;
   public
     constructor Create(AOwner: TComponent);
 
-   { Aumente esse intervalo se não estiver exibindo corretamente.
-     Use valores de 0 a 10. Default = 1 }
     procedure Ativar ; override ;
 
     procedure LimparDisplay ; override ;
@@ -119,21 +111,6 @@ begin
   for A := 1 to Length( Texto ) do
      TxKeyboard( ord(Texto[A]) ) ;      // Envia um Byte por vez...
   TxKeyboard( 9 );
-end;
-
-procedure TACBrDISKeytecTeclado.TxKeyboard(B: Byte);
-Var I : Integer ;
-begin
-  { Aguarda se a porta AT nao está livre }
-  I := 0 ;
-  while ((InPort( PortAtIn ) and 02) <> 0) and (I < 10) do
-  begin
-     sleep(2) ;
-     inc(I) ;
-  end ;
-
-  OutPort( PortAtOut, B);
-  sleep( fpIntervaloEnvioBytes ) ;
 end;
 
 procedure TACBrDISKeytecTeclado.Ativar;

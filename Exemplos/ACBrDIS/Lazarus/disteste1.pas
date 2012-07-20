@@ -6,26 +6,35 @@ interface
 
 uses
   Classes, SysUtils, LResources, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  ACBrDIS, Buttons;
+  ACBrDIS, Buttons, Spin;
 
 type
 
   { TForm1 }
 
   TForm1 = class(TForm)
+     Button1: TButton;
+     Button2: TButton;
+     Button3: TButton;
+     edIntervalo: TSpinEdit;
+     edIntervaloEnvioBytes: TSpinEdit;
     edLinha1: TEdit;
     edLinha2: TEdit;
     ACBrDIS1: TACBrDIS;
     cbxPorta: TComboBox;
+    edPassos: TSpinEdit;
+    edLin: TSpinEdit;
+    edCol: TSpinEdit;
+    Label12: TLabel;
+    Label13: TLabel;
     Label2: TLabel;
     Label1: TLabel;
     cbxModelo: TComboBox;
     Label3: TLabel;
-    edIntervalo: TEdit;
     Label4: TLabel;
-    edPassos: TEdit;
     Label5: TLabel;
     Label6: TLabel;
+    Label8: TLabel;
     lLinhas: TLabel;
     lColunas: TLabel;
     lLinha1: TLabel;
@@ -46,6 +55,10 @@ type
     bExibirEfeito: TButton;
     bRolar: TButton;
     Label7: TLabel;
+    procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
+    procedure edIntervaloEnvioBytesChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure cbLinha1Click(Sender: TObject);
     procedure cbxPortaChange(Sender: TObject);
@@ -83,16 +96,37 @@ begin
   cbxModelo.ItemIndex       := 0 ;
 
   cbxPorta.Text    := ACBrDIS1.Porta ;
-  edIntervalo.Text := IntToStr(ACBrDIS1.Intervalo) ;
-  edPassos.Text    := IntToStr(ACBrDIS1.Passos) ;
+  edIntervalo.Value := ACBrDIS1.Intervalo ;
+  edPassos.Value    := ACBrDIS1.Passos ;
+  edIntervaloEnvioBytes.Value := ACBrDIS1.IntervaloEnvioBytes;
   cbxPortaChange( Sender );
   cbxAlinhamentoChange( Sender ) ;
   cbxModeloChange( Sender );
 end;
 
+procedure TForm1.edIntervaloEnvioBytesChange(Sender: TObject);
+begin
+   ACBrDIS1.IntervaloEnvioBytes:= edIntervaloEnvioBytes.Value;
+end;
+
+procedure TForm1.Button1Click(Sender: TObject);
+begin
+   ACBrDIS1.LimparLinha( 1 );
+end;
+
+procedure TForm1.Button2Click(Sender: TObject);
+begin
+  ACBrDIS1.LimparLinha( 2 );
+end;
+
+procedure TForm1.Button3Click(Sender: TObject);
+begin
+   ACBrDIS1.PosicionarCursor( edLin.Value, edCol.Value );
+end;
+
 procedure TForm1.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
-  if ACBrDIS1.Ativo then
+(*  if ACBrDIS1.Ativo then
   begin
      ACBrDIS1.Alinhamento := alCentro ;
      ACBrDIS1.Intervalo   := 100 ;
@@ -108,7 +142,7 @@ begin
 
      sleep(500) ;
   end ;
-
+*)
   CanClose := true ;
 end;
 
@@ -147,12 +181,12 @@ end;
 
 procedure TForm1.edIntervaloChange(Sender: TObject);
 begin
-  ACBrDIS1.Intervalo := StrToIntDef( edIntervalo.Text, 0) ;
+  ACBrDIS1.Intervalo := edIntervalo.Value ;
 end;
 
 procedure TForm1.edPassosChange(Sender: TObject);
 begin
-  ACBrDIS1.Passos := StrToIntDef( edPassos.Text, 0) ;
+  ACBrDIS1.Passos := edPassos.Value ;
 end;
 
 procedure TForm1.bDemoClick(Sender: TObject);
@@ -192,6 +226,9 @@ begin
 
   if Linha = 2 then
      lLinha2.Caption := TextoVisivel ;
+
+  edLin.Value := ACBrDIS1.Cursor.X;
+  edCol.Value := ACBrDIS1.Cursor.Y;
 end;
 
 procedure TForm1.bExibirClick(Sender: TObject);

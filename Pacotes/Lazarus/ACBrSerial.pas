@@ -2,7 +2,7 @@
   This source is only used to compile and install the package.
  }
 
-unit ACBrSerial ; 
+unit ACBrSerial;
 
 interface
 
@@ -19,15 +19,15 @@ uses
    ACBrETQ, ACBrETQClass, ACBrETQPpla, ACBrGAV, ACBrGAVClass, 
    ACBrGAVImpressoraComum, ACBrGAVImpressoraECF, ACBrGAVSerialGerbo, 
    ACBrGAVSerialMenno, ACBrLCB, ACBrRFD, ACBrTER, ACBrTERClass, ACBrSerialReg, 
-   ACBrETQZplII, LazarusPackageIntf;
+   ACBrETQZplII, ACBrDISSmakTeclado, LazarusPackageIntf;
 
 implementation
 
-procedure Register ; 
+procedure Register;
 begin
-  RegisterUnit('ACBrSerialReg', @ACBrSerialReg.Register) ; 
-end ; 
+  RegisterUnit('ACBrSerialReg', @ACBrSerialReg.Register);
+end;
 
 initialization
-  RegisterPackage('ACBrSerial', @Register) ; 
+  RegisterPackage('ACBrSerial', @Register);
 end.

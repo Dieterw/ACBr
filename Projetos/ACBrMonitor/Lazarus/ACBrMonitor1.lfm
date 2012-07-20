@@ -1043,10 +1043,10 @@ object FrmACBrMonitor: TFrmACBrMonitor
       Height = 244
       Top = 1
       Width = 598
-      ActivePage = tsACBrBoleto
+      ActivePage = tsLCB
       Align = alClient
       Images = ImageList1
-      TabIndex = 10
+      TabIndex = 5
       TabOrder = 0
       object tsMonitor: TTabSheet
         Caption = '&Monitor'
@@ -2512,8 +2512,8 @@ object FrmACBrMonitor: TFrmACBrMonitor
         end
         object Bevel3: TBevel
           Left = 134
-          Height = 137
-          Top = 15
+          Height = 139
+          Top = 13
           Width = 182
           Shape = bsFrame
         end
@@ -2553,7 +2553,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
           AnchorSideTop.Side = asrBottom
           Left = 347
           Height = 21
-          Top = 63
+          Top = 61
           Width = 96
           Caption = 'Excluir Sufixo'
           OnClick = chLCBExcluirSufixoClick
@@ -2572,7 +2572,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
           AnchorSideTop.Control = Bevel3
           Left = 347
           Height = 18
-          Top = 20
+          Top = 18
           Width = 156
           Alignment = taRightJustify
           BorderSpacing.Top = 5
@@ -2580,9 +2580,9 @@ object FrmACBrMonitor: TFrmACBrMonitor
           ParentColor = False
         end
         object Label22: TLabel
-          Left = 12
+          Left = 16
           Height = 18
-          Top = 112
+          Top = 99
           Width = 94
           Caption = 'Intervalo Leitura'
           ParentColor = False
@@ -2602,7 +2602,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
           AnchorSideTop.Side = asrBottom
           Left = 347
           Height = 18
-          Top = 87
+          Top = 85
           Width = 153
           Alignment = taRightJustify
           BorderSpacing.Top = 3
@@ -2615,7 +2615,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
           Cursor = crIBeam
           Left = 347
           Height = 25
-          Top = 105
+          Top = 103
           Width = 207
           Anchors = [akTop, akLeft, akRight]
           OnChange = edLCBPreExcluirChange
@@ -2628,7 +2628,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
           Left = 347
           Height = 25
           Hint = 'IMPORTANTE: Informar o sufixo correto é importante '#13#10'para ler corretamente um código de cada vez.'#13#10#13#10'Passe um produto pelo leitor e verifique o código '#13#10'do Sufixo no Final do campo "Ultima Leitura"'
-          Top = 38
+          Top = 36
           Width = 207
           Anchors = [akTop, akLeft, akRight]
           ItemHeight = 17
@@ -2704,7 +2704,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
           Left = 142
           Height = 19
           Top = 73
-          Width = 121
+          Width = 169
           AutoSize = False
           Caption = 'Adicionar Sufixo'
           ParentColor = False
@@ -2733,7 +2733,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
           Left = 142
           Height = 21
           Hint = 'Envia Código lidos para o Buffer de Teclado'
-          Top = 15
+          Top = 18
           Width = 66
           Caption = 'Teclado'
           Checked = True
@@ -2745,7 +2745,7 @@ object FrmACBrMonitor: TFrmACBrMonitor
           Left = 238
           Height = 21
           Hint = 'Acumula códigos lidos em Fila Interna.'#13#10'Use "LCB.LerFila" para ler os códigos'
-          Top = 15
+          Top = 18
           Width = 39
           Caption = 'Fila'
           OnClick = rbLCBTecladoClick

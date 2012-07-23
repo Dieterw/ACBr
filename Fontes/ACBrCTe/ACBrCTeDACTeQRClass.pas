@@ -51,8 +51,9 @@ unit ACBrCTeDACTeQRClass;
 interface
 
 uses
- Forms, SysUtils, Classes,
- pcteCTe, ACBrCTeDACTeQR, ACBrCTeDACTeClass, ACBrCTeDACTeQRRetrato, pcnConversao;
+ Forms, SysUtils, Classes, QRPrntr,
+ pcnConversao, pcteCTe, ACBrCTeDACTeQR, ACBrCTeDACTeClass,
+ ACBrCTeDACTeQRRetrato, ACBrCTeDACTeQRRetratoA5;
 
 type
   TACBrCTeDACTeQR = class(TACBrCTeDACTeClass)
@@ -63,8 +64,10 @@ type
     destructor Destroy; override;
     procedure ImprimirDACTe(CTe: TCTe = nil); override;
     procedure ImprimirDACTePDF(CTe: TCTe = nil); override;
+//    procedure SetTamanhoPapel(Value: TpcnTamanhoPapel); virtual;
   published
     property PosRecibo: TPosRecibo read FPosRecibo write FPosRecibo default prCabecalho;
+//    property TamanhoPapel: TpcnTamanhoPapel read FTamanhoPapel write SetTamanhoPapel;
   end;
 
 implementation
@@ -86,12 +89,26 @@ var
   i     : Integer;
   sProt : string;
 
-  frmDACTeQRRetrato : TfrmDACTeQRRetrato;
+  frmDACTeQRRetrato : TfrmDACTeQR; //TfrmDACTeQRRetrato;
 begin
+  case TamanhoPapel of
+    tpA4: begin
+           frmDACTeQRRetrato := TfrmDACTeQRRetrato.Create(Self);
+           frmDACTeQRRetrato.QRCTe.Page.PaperSize := A4;
+           frmDACTeQRRetrato.QRCTe.Page.Length    := 297.0;
+           frmDACTeQRRetrato.QRCTe.Page.Width     := 210.0;
+          end;
+    tpA5: begin
+           frmDACTeQRRetrato := TfrmDACTeQRRetratoA5.Create(Self);
+           frmDACTeQRRetrato.QRCTe.Page.PaperSize := A5Trans;
+           frmDACTeQRRetrato.QRCTe.Page.Length    := 148.0;
+           frmDACTeQRRetrato.QRCTe.Page.Width     := 210.0;
+          end;
+  end;
 
-  frmDACTeQRRetrato := TfrmDACTeQRRetrato.Create(Self);
+//  frmDACTeQRRetrato := TfrmDACTeQRRetrato.Create(Self);
   sProt := TACBrCTe(ACBrCTe).DACTe.ProtocoloCTe;
-  frmDACTeQRRetrato.ProtocoloCTe(sProt);
+//  frmDACTeQRRetrato.ProtocoloCTe(sProt);
 
   if CTe = nil then
   begin
@@ -146,12 +163,26 @@ var
   sProt   : String;
   NomeArq : string;
 
-  frmDACTeQRRetrato : TfrmDACTeQRRetrato;
+  frmDACTeQRRetrato : TfrmDACTeQR; //TfrmDACTeQRRetrato;
 begin
+  case TamanhoPapel of
+    tpA4: begin
+           frmDACTeQRRetrato := TfrmDACTeQRRetrato.Create(Self);
+           frmDACTeQRRetrato.QRCTe.Page.PaperSize := A4;
+           frmDACTeQRRetrato.QRCTe.Page.Length    := 297.0;
+           frmDACTeQRRetrato.QRCTe.Page.Width     := 210.0;
+          end;
+    tpA5: begin
+           frmDACTeQRRetrato := TfrmDACTeQRRetratoA5.Create(Self);
+           frmDACTeQRRetrato.QRCTe.Page.PaperSize := A5Trans;
+           frmDACTeQRRetrato.QRCTe.Page.Length    := 148.0;
+           frmDACTeQRRetrato.QRCTe.Page.Width     := 210.0;
+          end;
+  end;
 
-  frmDACTeQRRetrato := TfrmDACTeQRRetrato.Create(Self);
+//  frmDACTeQRRetrato := TfrmDACTeQRRetrato.Create(Self);
   sProt := TACBrCTe(ACBrCTe).DACTe.ProtocoloCTe ;
-  frmDACTeQRRetrato.ProtocoloCTe( sProt ) ;
+//  frmDACTeQRRetrato.ProtocoloCTe( sProt ) ;
 
   if CTe = nil then
    begin
@@ -207,6 +238,11 @@ begin
   frmDACTeQRRetrato.Free;
 
 end;
-
+(*
+procedure TACBrCTeDACTeQR.SetTamanhoPapel(Value: TpcnTamanhoPapel);
+begin
+  FTamanhoPapel := Value;
+end;
+*)
 end.
 

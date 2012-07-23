@@ -43,7 +43,7 @@
 
 {$I ACBr.inc}
 
-unit ACBrCTeDACTeQRRetrato;
+unit ACBrCTeDACTeQRRetratoA5;
 
 interface
 
@@ -54,7 +54,7 @@ uses
   DBClient, ACBrCTeDACTeQR {, qrRRect};
 
 type
-  TfrmDACTeQRRetrato = class(TfrmDACTeQR)
+  TfrmDACTeQRRetratoA5 = class(TfrmDACTeQR)
     qrb_08_Itens: TQRBand;
     qrdbtTpDoc1: TQRDBText;
     cdsDocumentos: TClientDataSet;
@@ -105,8 +105,6 @@ type
     qrlFormaPagamento: TQRLabel;
     qrlInscSuframa: TQRLabel;
     qrb_07_HeaderItens: TQRBand;
-    QRLabel20: TQRLabel;
-    QRShape32: TQRShape;
     QRLabel91: TQRLabel;
     QRLabel92: TQRLabel;
     QRLabel96: TQRLabel;
@@ -159,77 +157,8 @@ type
     qrlFoneDest: TQRLabel;
     qrlCEPDest: TQRLabel;
     QRLabel119: TQRLabel;
-    QRLabel86: TQRLabel;
-    QRLabel87: TQRLabel;
-    QRLabel88: TQRLabel;
-    QRLabel89: TQRLabel;
-    QRLabel90: TQRLabel;
-    qrlRazaoExped: TQRLabel;
-    qrlEnderecoExped1: TQRLabel;
-    qrlEnderecoExped2: TQRLabel;
-    QRLabel99: TQRLabel;
-    QRLabel101: TQRLabel;
-    QRLabel102: TQRLabel;
-    QRLabel103: TQRLabel;
-    QRLabel104: TQRLabel;
-    qrlRazaoReceb: TQRLabel;
-    qrlEnderecoReceb1: TQRLabel;
-    qrlEnderecoReceb2: TQRLabel;
-    qrlMunExped: TQRLabel;
-    qrlPaisExped: TQRLabel;
-    qrlCnpjExped: TQRLabel;
-    QRLabel105: TQRLabel;
-    qrlInscEstExped: TQRLabel;
-    QRLabel107: TQRLabel;
-    qrlFoneExped: TQRLabel;
-    qrlCEPExped: TQRLabel;
-    QRLabel110: TQRLabel;
-    qrlMunReceb: TQRLabel;
-    qrlPaisReceb: TQRLabel;
-    qrlCnpjReceb: TQRLabel;
-    QRLabel123: TQRLabel;
-    qrlInscEstReceb: TQRLabel;
-    QRLabel125: TQRLabel;
-    qrlFoneReceb: TQRLabel;
-    qrlCEPReceb: TQRLabel;
-    QRLabel128: TQRLabel;
-    QRLabel80: TQRLabel;
-    QRLabel81: TQRLabel;
-    QRLabel94: TQRLabel;
-    qrlCEPToma: TQRLabel;
-    QRLabel97: TQRLabel;
-    qrlEnderecoToma: TQRLabel;
-    QRLabel82: TQRLabel;
-    qrlCnpjToma: TQRLabel;
-    QRLabel108: TQRLabel;
-    qrlInscEstToma: TQRLabel;
-    QRLabel111: TQRLabel;
-    qrlFoneToma: TQRLabel;
-    qrlRazaoToma: TQRLabel;
-    QRLabel113: TQRLabel;
-    qrlPaisToma: TQRLabel;
-    qrlMunToma: TQRLabel;
-    qrb_10_ModRodFracionado: TQRChildBand;
-    qrb_11_ModRodLot103: TQRChildBand;
-    QRLabel10: TQRLabel;
-    QRShape1: TQRShape;
     qrmObs: TQRMemo;
-    qrlTituloLotacao: TQRLabel;
-    QRShape24: TQRShape;
-    QRLabel11: TQRLabel;
-    QRShape36: TQRShape;
-    QRShape37: TQRShape;
-    QRShape38: TQRShape;
-    QRLabel83: TQRLabel;
-    QRLabel84: TQRLabel;
-    QRLabel85: TQRLabel;
-    qrlRntrcEmpresa: TQRLabel;
-    qrlLotacao: TQRLabel;
-    qrlDtPrevEntrega: TQRLabel;
-    qrmObsExcEmitente: TQRMemo;
     qrlMsgTeste: TQRLabel;
-    QRLabel7: TQRLabel;
-    QRShape27: TQRShape;
     qrb_03_DadosDACTe: TQRChildBand;
     QRLabel1: TQRLabel;
     qrlProdPredominante: TQRLabel;
@@ -253,7 +182,6 @@ type
     QRShape7: TQRShape;
     qrb_04_DadosNotaFiscal: TQRChildBand;
     qrb_05_Complemento: TQRChildBand;
-    QRLabel38: TQRLabel;
     QRLabel44: TQRLabel;
     qrmCompNome1: TQRMemo;
     QRLabel46: TQRLabel;
@@ -271,31 +199,9 @@ type
     QRLabel50: TQRLabel;
     qrlVlrTotReceber: TQRLabel;
     QRShape18: TQRShape;
-    QRShape17: TQRShape;
     QRShape16: TQRShape;
     QRShape15: TQRShape;
     QRShape19: TQRShape;
-    QRLabel51: TQRLabel;
-    QRLabel52: TQRLabel;
-    qrlSitTrib: TQRLabel;
-    QRLabel55: TQRLabel;
-    qrlBaseCalc: TQRLabel;
-    QRLabel56: TQRLabel;
-    qrlAliqICMS: TQRLabel;
-    QRLabel54: TQRLabel;
-    qrlVlrICMS: TQRLabel;
-    QRLabel53: TQRLabel;
-    qrlRedBaseCalc: TQRLabel;
-    QRLabel58: TQRLabel;
-    qrlICMS_ST: TQRLabel;
-    QRShape26: TQRShape;
-    QRShape25: TQRShape;
-    QRShape23: TQRShape;
-    QRShape22: TQRShape;
-    QRShape21: TQRShape;
-    QRShape20: TQRShape;
-    QRLabel59: TQRLabel;
-    QRShape5: TQRShape;
     QRShape6: TQRShape;
     QRLabel61: TQRLabel;
     QRLabel62: TQRLabel;
@@ -306,12 +212,10 @@ type
     qrmComplChave2: TQRMemo;
     qrmComplValor2: TQRMemo;
     qrsQuadro01: TQRShape;
-    qrsQuadro02: TQRShape;
     qrsQuadro04: TQRShape;
     qrsQuadro05: TQRShape;
     qrsQuadro07: TQRShape;
     qrsQuadro08: TQRShape;
-    qrsQuadro09: TQRShape;
     qrsLinhaV10: TQRShape;
     qrsLinhaV04: TQRShape;
     qrsLinhaH01: TQRShape;
@@ -324,10 +228,7 @@ type
     qrsLinhaV07: TQRShape;
     qrsLinhaV01: TQRShape;
     qrsLinhaV11: TQRShape;
-    qrsLinhaH06: TQRShape;
-    qrsLinhaH07: TQRShape;
     qrsLinhaH05: TQRShape;
-    qrsLinhaH08: TQRShape;
     QRShape55: TQRShape;
     QRShape9: TQRShape;
     QRShape56: TQRShape;
@@ -343,53 +244,9 @@ type
     QRLabel66: TQRLabel;
     QRLabel70: TQRLabel;
     QRShape53: TQRShape;
-    QRShape11: TQRShape;
-    QRLabel71: TQRLabel;
-    QRShape12: TQRShape;
-    QRLabel75: TQRLabel;
-    QRShape13: TQRShape;
-    QRLabel76: TQRLabel;
-    QRLabel112: TQRLabel;
-    QRLabel115: TQRLabel;
-    QRLabel117: TQRLabel;
-    QRShape14: TQRShape;
-    QRShape31: TQRShape;
-    QRShape33: TQRShape;
-    QRLabel118: TQRLabel;
-    QRLabel120: TQRLabel;
-    QRLabel121: TQRLabel;
-    QRShape39: TQRShape;
-    QRLabel122: TQRLabel;
-    QRLabel124: TQRLabel;
-    QRLabel126: TQRLabel;
-    QRLabel127: TQRLabel;
-    QRShape40: TQRShape;
-    QRShape41: TQRShape;
-    QRLabel129: TQRLabel;
-    QRLabel130: TQRLabel;
-    QRLabel131: TQRLabel;
-    QRShape42: TQRShape;
-    QRShape43: TQRShape;
-    QRShape44: TQRShape;
-    qrb_16_DadosExcEmitente: TQRChildBand;
     QRLabel15: TQRLabel;
     QRSysData1: TQRSysData;
     qrlblSistema: TQRLabel;
-    qrlNomeMotorista: TQRLabel;
-    qrlCPFMotorista: TQRLabel;
-    qrlNumRegEsp: TQRLabel;
-    qrlResponsavel: TQRLabel;
-    qrlValorTotal: TQRLabel;
-    qrlLacres: TQRLabel;
-    qrmTipo: TQRMemo;
-    qrmPlaca: TQRMemo;
-    qrmUF: TQRMemo;
-    qrmRNTRC: TQRMemo;
-    qrmEmpresas: TQRMemo;
-    qrmVigencias: TQRMemo;
-    qrmNumDispositivo: TQRMemo;
-    qrmCodTransacao: TQRMemo;
-    QRShape45: TQRShape;
     qrmQtdUnidMedida1: TQRMemo;
     qrmQtdUnidMedida2: TQRMemo;
     qrmQtdUnidMedida3: TQRMemo;
@@ -456,7 +313,6 @@ type
     qrlLojaAgenteEmissor: TQRLabel;
     qrlRetira: TQRLabel;
     QRShape70: TQRShape;
-    QRShape71: TQRShape;
     QRShape73: TQRShape;
     QRLabel151: TQRLabel;
     QRShape74: TQRShape;
@@ -494,12 +350,6 @@ type
     QRLabel68: TQRLabel;
     QRLabel72: TQRLabel;
     QRLabel163: TQRLabel;
-    QRShape3: TQRShape;
-    QRLabel165: TQRLabel;
-    lblCIOT: TQRLabel;
-    qrlCIOT: TQRLabel;
-    qrsCIOT: TQRShape;
-    qrmObsFisco: TQRMemo;
     qrb_11_ModRodLot104: TQRChildBand;
     QRShape4: TQRShape;
     QRShape30: TQRShape;
@@ -563,6 +413,46 @@ type
     QRShape100: TQRShape;
     qrsQuadro03: TQRShape;
     QRShape101: TQRShape;
+    QRShape102: TQRShape;
+    QRShape103: TQRShape;
+    qrsQuadro02: TQRShape;
+    QRLabel52: TQRLabel;
+    qrlSitTrib: TQRLabel;
+    QRShape22: TQRShape;
+    QRLabel55: TQRLabel;
+    QRLabel56: TQRLabel;
+    QRLabel54: TQRLabel;
+    QRLabel53: TQRLabel;
+    QRLabel58: TQRLabel;
+    QRShape20: TQRShape;
+    QRShape23: TQRShape;
+    QRShape25: TQRShape;
+    QRShape26: TQRShape;
+    qrlBaseCalc: TQRLabel;
+    qrlAliqICMS: TQRLabel;
+    qrlVlrICMS: TQRLabel;
+    qrlRedBaseCalc: TQRLabel;
+    qrlICMS_ST: TQRLabel;
+    QRLabel10: TQRLabel;
+    QRLabel11: TQRLabel;
+    lblCIOT: TQRLabel;
+    QRLabel83: TQRLabel;
+    QRLabel84: TQRLabel;
+    qrlRntrcEmpresa: TQRLabel;
+    qrlCIOT: TQRLabel;
+    qrlLotacao: TQRLabel;
+    qrlDtPrevEntrega: TQRLabel;
+    qrsCIOT: TQRShape;
+    QRShape36: TQRShape;
+    QRShape37: TQRShape;
+    QRShape38: TQRShape;
+    QRShape24: TQRShape;
+    QRLabel85: TQRLabel;
+    QRShape1: TQRShape;
+    QRLabel20: TQRLabel;
+    QRShape5: TQRShape;
+    qrmObsFisco: TQRMemo;
+    QRShape3: TQRShape;
     procedure QRCTeBeforePrint(Sender: TCustomQuickRep; var PrintReport: Boolean);
     procedure qrb_01_ReciboBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
     procedure qrb_02_CabecalhoBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
@@ -577,14 +467,8 @@ type
     procedure qrb_07_HeaderItensBeforePrint(Sender: TQRCustomBand;
       var PrintBand: Boolean);
     procedure qrb_08_ItensBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
-    procedure qrb_09_ObsAfterPrint(Sender: TQRCustomBand;
-      BandPrinted: Boolean);
     procedure qrb_09_ObsBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
-    procedure qrb_10_ModRodFracionadoBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
-    procedure qrb_11_ModRodLot103BeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
     procedure qrb_17_SistemaBeforePrint(Sender: TQRCustomBand;
-      var PrintBand: Boolean);
-    procedure qrb_16_DadosExcEmitenteBeforePrint(Sender: TQRCustomBand;
       var PrintBand: Boolean);
     procedure qrb_12_ModAereoBeforePrint(Sender: TQRCustomBand;
       var PrintBand: Boolean);
@@ -626,7 +510,7 @@ var
   Fracionado    : Integer;
   Versao        : Integer;
 
-procedure TfrmDACTeQRRetrato.Itens;
+procedure TfrmDACTeQRRetratoA5.Itens;
 var
   I, J, K, Item : Integer;
 begin
@@ -668,15 +552,13 @@ begin
       if (Item mod 2) = 0 then
       begin
         cdsDocumentos.Append;
-        // Alterado por Italo em 13/07/2012
-        cdsDocumentosTIPO_1.AsString := 'NF-E ' + copy(chave, 26, 9);
+        cdsDocumentosTIPO_1.AsString := 'NF-E';
         // Alterado por Italo em 17/05/2011
         cdsDocumentosCNPJCPF_1.AsString := CTeUtil.FormatarChaveAcesso(chave, True);
       end
       else
       begin
-        // Alterado por Italo em 13/07/2012
-        cdsDocumentosTIPO_2.AsString := 'NF-E ' + copy(chave, 26, 9);
+        cdsDocumentosTIPO_2.AsString := 'NF-E';
         // Alterado por Italo em 17/05/2011
         cdsDocumentosCNPJCPF_2.AsString := CTeUtil.FormatarChaveAcesso(chave, True);
         cdsDocumentos.Post;
@@ -839,12 +721,12 @@ begin
   cdsDocumentos.First;
 end;
 
-procedure TfrmDACTeQRRetrato.ProtocoloCTe(const sProtocolo: string);
+procedure TfrmDACTeQRRetratoA5.ProtocoloCTe(const sProtocolo: string);
 begin
   FProtocoloCTe := sProtocolo;
 end;
 
-procedure TfrmDACTeQRRetrato.QRCTeBeforePrint(Sender: TCustomQuickRep; var PrintReport: Boolean);
+procedure TfrmDACTeQRRetratoA5.QRCTeBeforePrint(Sender: TCustomQuickRep; var PrintReport: Boolean);
 var
   nRestItens, nTotalItens : Integer;
 begin
@@ -875,8 +757,6 @@ begin
    end;
 
   // Incluido por Italo em 06/05/2011
-  qrb_10_ModRodFracionado.Height := 0;
-  qrb_11_ModRodLot103.Height     := 0;
   qrb_11_ModRodLot104.Height     := 0;
   qrb_12_ModAereo.Height         := 0;
   qrb_13_ModAquaviario.Height    := 0;
@@ -888,15 +768,11 @@ begin
                   // Incluido por Italo em 26/04/2011
                   if FCTe.Rodo.Lota = ltNao
                    then begin
-                    qrb_10_ModRodFracionado.Height := 44;
-                    Fracionado                     := 10
+                    Fracionado                 := 10
                    end
                    else begin
-                    qrb_10_ModRodFracionado.Height := 44;
-                    Fracionado                     := 0;
-                    if Versao = 103
-                     then qrb_11_ModRodLot103.Height := 108
-                     else qrb_11_ModRodLot104.Height := 108;
+                    Fracionado                 := 0;
+                    qrb_11_ModRodLot104.Height := 108;
                    end;
                  end;
    mdAereo: begin
@@ -941,7 +817,7 @@ begin
 //  qrbDadosExcEmitente.Height := 40;
 end;
 
-procedure TfrmDACTeQRRetrato.qrb_01_ReciboBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
+procedure TfrmDACTeQRRetratoA5.qrb_01_ReciboBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
 begin
   inherited;
   // Incluido/Alterado por Italo em 20/04/2011 / 27/04/2011
@@ -954,7 +830,7 @@ begin
   qrb_01_Recibo.Enabled := (FCTe.Ide.tpCTe = tcNormal);
 end;
 
-procedure TfrmDACTeQRRetrato.qrb_01_Recibo_AereoBeforePrint(
+procedure TfrmDACTeQRRetratoA5.qrb_01_Recibo_AereoBeforePrint(
   Sender: TQRCustomBand; var PrintBand: Boolean);
 begin
   inherited;
@@ -963,7 +839,7 @@ begin
   qrb_01_Recibo_Aereo.Enabled := (FCTe.Ide.tpCTe = tcNormal);
 end;
 
-procedure TfrmDACTeQRRetrato.qrb_02_CabecalhoBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
+procedure TfrmDACTeQRRetratoA5.qrb_02_CabecalhoBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
 var
  strChaveContingencia: string;
 begin
@@ -1106,7 +982,7 @@ begin
   qrlInscSuframa.Caption := FCTe.Dest.ISUF;
 end;
 
-procedure TfrmDACTeQRRetrato.qrb_03_DadosDACTeBeforePrint(
+procedure TfrmDACTeQRRetratoA5.qrb_03_DadosDACTeBeforePrint(
   Sender: TQRCustomBand; var PrintBand: Boolean);
 var
  i: Integer;
@@ -1141,6 +1017,7 @@ begin
   qrlInscEstDest.Caption := FCTe.Dest.IE;
   qrlFoneDest.Caption := CTeUtil.FormatarFone(FCTe.Dest.fone);
 
+  (*
   //DADOS EXPEDIDOR
   qrlRazaoExped.Caption := FCTe.Exped.xNome;
   qrlEnderecoExped1.Caption := FCTe.Exped.EnderExped.xLgr + ', ' + FCTe.Exped.EnderExped.nro;
@@ -1222,7 +1099,7 @@ begin
     qrlInscEstToma.Caption := FCTe.Ide.Toma4.IE;
     qrlFoneToma.Caption := CTeUtil.FormatarFone(FCTe.Ide.Toma4.fone);
    end;
-
+  *)
   qrlProdPredominante.Caption := FCTe.InfCarga.proPred;
   qrlOutrasCaracCarga.Caption := FCTe.InfCarga.xOutCat;
 {$IFDEF PL_103}
@@ -1524,7 +1401,7 @@ begin
 {$ENDIF}
 end;
 
-procedure TfrmDACTeQRRetrato.qrb_04_DadosNotaFiscalBeforePrint(
+procedure TfrmDACTeQRRetratoA5.qrb_04_DadosNotaFiscalBeforePrint(
   Sender: TQRCustomBand; var PrintBand: Boolean);
 begin
   inherited;
@@ -1536,7 +1413,7 @@ begin
   qrb_04_DadosNotaFiscal.Enabled:=(FCTe.Ide.tpCTe = tcNormal);
 end;
 
-procedure TfrmDACTeQRRetrato.qrb_05_ComplementoBeforePrint(
+procedure TfrmDACTeQRRetratoA5.qrb_05_ComplementoBeforePrint(
   Sender: TQRCustomBand; var PrintBand: Boolean);
 var
  i: Integer;
@@ -1570,7 +1447,7 @@ begin
   end;
 end;
 
-procedure TfrmDACTeQRRetrato.qrb_06_ValorPrestacaoBeforePrint(
+procedure TfrmDACTeQRRetratoA5.qrb_06_ValorPrestacaoBeforePrint(
   Sender: TQRCustomBand; var PrintBand: Boolean);
 begin
   inherited;
@@ -1578,7 +1455,7 @@ begin
   PrintBand := QRCTe.PageNumber = 1;
 end;
 
-procedure TfrmDACTeQRRetrato.qrb_07_HeaderItensBeforePrint(
+procedure TfrmDACTeQRRetratoA5.qrb_07_HeaderItensBeforePrint(
   Sender: TQRCustomBand; var PrintBand: Boolean);
 begin
   inherited;
@@ -1587,7 +1464,7 @@ begin
   // qrbHeaderItens.Enabled:=(FCTe.Ide.tpCTe = tcNormal);
 end;
 
-procedure TfrmDACTeQRRetrato.qrb_08_ItensBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
+procedure TfrmDACTeQRRetratoA5.qrb_08_ItensBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
 var
   i : integer;
 begin
@@ -1622,67 +1499,59 @@ begin
     nItemControle := 0;
 end;
 
-procedure TfrmDACTeQRRetrato.qrb_09_ObsAfterPrint(Sender: TQRCustomBand;
-  BandPrinted: Boolean);
-begin
-  inherited;
-
-//  if QRCTe.PageNumber > 1
-//   then begin
-//    qrbObs.Enabled := False;
-//    QRCTe.ResetPageFooterSize;
-//   end;
-{
-    qrbObs.Height              := 72;
-//    qrbRecibo.Height           := 68;
-//    qrbSistema.Height          := 16;
-//    qrbDadosExcEmitente.Height := 40;
-   end
-   else begin
-    qrbObs.Height              := 0;
-//    qrbRecibo.Height           := 0;
-//    qrbSistema.Height          := 0;
-//    qrbDadosExcEmitente.Height := 0;
-//    qrbModRodFracionado.Height := 0;
-//    qrbLotacaoSim.Height       := 0;
-   end;
-}
-end;
-
-procedure TfrmDACTeQRRetrato.qrb_09_ObsBeforePrint(
+procedure TfrmDACTeQRRetratoA5.qrb_09_ObsBeforePrint(
   Sender: TQRCustomBand; var PrintBand: Boolean);
+var
+ i: integer;
 begin
   inherited;
-  // Incluido por Italo em 20/04/2011
   PrintBand := QRCTe.PageNumber = 1;
+
+  qrb_11_ModRodLot104.Enabled := False;
+
+  with FCTe.Rodo do
+  begin
+    qrlRntrcEmpresa.Caption := RNTRC;
+
+{$IFDEF PL_103}
+    qrsCIOT.Enabled := False;
+    lblCIOT.Enabled := False;
+    qrlCIOT.Enabled := False;
+{$ENDIF}
+{$IFDEF PL_104}
+    qrsCIOT.Enabled := True;
+    lblCIOT.Enabled := True;
+    qrlCIOT.Enabled := True;
+    qrlCIOT.Caption := CIOT;
+{$ENDIF}
+
+    case Lota of
+      ltNao: begin
+              qrlLotacao.Caption          := 'NÃO';
+             end;
+      ltsim: begin
+              qrlLotacao.Caption          := 'SIM';
+              qrb_11_ModRodLot104.Enabled := True;
+             end;
+    end;
+
+    qrlDtPrevEntrega.Caption := FormatDateTime('DD/MM/YYYY', dPrev);
+  end;
 
   qrmObs.Lines.BeginUpdate; // Linha inserida por Italo em 31/08/2010
   qrmObs.Lines.Clear;
-  //qrmObs.Lines.Text := FCTe.Compl.xObs;
-  //qrmObs.Lines.Add(FCTe.Compl.xObs);
 
-  // Linha abaixo alterada por Italo em 27/08/2010
-  // para substituir os ponto e virgula por quebra de linha no quadro Observações
   qrmObs.Lines.Add(StringReplace( FCTe.Compl.xObs, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
-//  for i := 0 to FCTe.Compl.ObsCont.Count-1 do
-//   with FCTe.Compl.ObsCont.Items[i] do
-//    begin
-//     qrmObs.Lines.Add( StringReplace( xCampo, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] )+': '+
-//                       StringReplace( xTexto, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
-//    end;
-//  if FCTe.Compl.ObsFisco.Count>0
-//   then qrmObs.Lines.Add('INFORMAÇÕES ADICIONAIS DE INTERESSE DO FISCO:');
-//  for i := 0 to FCTe.Compl.ObsFisco.Count-1 do
-//   with FCTe.Compl.ObsFisco.Items[i] do
-//    begin
-//     qrmObs.Lines.Add( StringReplace( xCampo, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] )+': '+
-//                       StringReplace( xTexto, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
-//    end;
 
-  // Linhas inseridas por Italo em 28/01/2011
+  for i := 0 to FCTe.Compl.ObsCont.Count-1 do
+   with FCTe.Compl.ObsCont.Items[i] do
+    begin
+     qrmObs.Lines.Add( StringReplace( xCampo, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] )+': '+
+                       StringReplace( xTexto, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
+    end;
+
   if FCTe.Ide.tpEmis in [teContingencia, teFSDA]
    then begin
-    // Incluido por Italo em 20/04/2012
     if not (FCTe.procCTe.cStat in [100, 101, 110])
      then qrmObs.Lines.Add('DACTE em Contingência - Impresso em decorrência de problemas técnicos.');
    end;
@@ -1690,12 +1559,22 @@ begin
   if FCTe.Ide.tpEmis = teDPEC
    then qrmObs.Lines.Add('DACTE em Contingência - DPEC regularmente recebida pela Receita Federal do Brasil');
 
-  // Linhas inseridas por Italo em 31/08/2010
   qrmObs.Lines.Text:=StringReplace(qrmObs.Lines.Text,';',#13,[rfReplaceAll]);
   qrmObs.Lines.EndUpdate;
 
-  // As Linhas abaixo foram inseridas por Italo em 31/08/2010
-  // Mensagem para modo Homologacao.
+  qrmObsFisco.Lines.BeginUpdate;
+  qrmObsFisco.Lines.Clear;
+
+  for i := 0 to FCTe.Compl.ObsFisco.Count-1 do
+   with FCTe.Compl.ObsFisco.Items[i] do
+    begin
+     qrmObsFisco.Lines.Add( StringReplace( xCampo, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] )+': '+
+                            StringReplace( xTexto, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
+    end;
+
+  qrmObsFisco.Lines.Text := StringReplace( qrmObsFisco.Lines.Text, ';', #13, [rfReplaceAll] );
+  qrmObsFisco.Lines.EndUpdate;
+
   qrlMsgTeste.Visible := False;
   qrlMsgTeste.Enabled := False;
 
@@ -1715,7 +1594,6 @@ begin
         qrlMsgTeste.Enabled := True;
        end;
 
-      // Alterado de 102 para 110 por Italo em 27/01/2012
       if FCTe.procCTe.cStat = 110 then
        begin
         qrlMsgTeste.Caption := 'CT-e DENEGADO';
@@ -1723,7 +1601,6 @@ begin
         qrlMsgTeste.Enabled := True;
        end;
 
-      // Alterado de 102 para 110 por Italo em 27/01/2012
       if not FCTe.procCTe.cStat in [101, 110, 100] then
        begin
         qrlMsgTeste.Caption := FCTe.procCTe.xMotivo;
@@ -1739,136 +1616,9 @@ begin
    end;
 
   qrlMsgTeste.Repaint;
-
-//  qrlMsgTeste.Enabled := FCTe.Ide.tpAmb = taHomologacao;
 end;
 
-procedure TfrmDACTeQRRetrato.qrb_10_ModRodFracionadoBeforePrint(Sender: TQRCustomBand;
-  var PrintBand: Boolean);
-begin
-  inherited;
-  // Incluido por Italo em 20/04/2011
-  PrintBand := QRCTe.PageNumber = 1;
-
-  // Imprime as Informações Especificas do Modal se o Tipo de CTe for Normal
-  // Incluido / Alterado por Italo e Doni em 24/09/2010
-  {*
-  ** Alterado por: Brian Collo Gonçalves e Eric Helfenstens
-  ** Data: 17/03/2011
-  ** Descrição: Incluida banda para os dados especificos do Modal Aéreo
-  ** e carregamento de suas respectivas informações.
-  *}
-  qrb_10_ModRodFracionado.Enabled := (FCTe.Ide.tpCTe = tcNormal) and (FCTe.Ide.modal = mdRodoviario);
-
-  // Incluido / Alterado por Italo em 29/12/2010
-  qrb_11_ModRodLot103.Enabled := False;
-  qrb_11_ModRodLot104.Enabled := False;
-
-  with FCTe.Rodo do
-  begin
-    qrlRntrcEmpresa.Caption := RNTRC;
-
-{$IFDEF PL_103}
-    qrsCIOT.Enabled := False;
-    lblCIOT.Enabled := False;
-    qrlCIOT.Enabled := False;
-{$ENDIF}
-{$IFDEF PL_104}
-    qrsCIOT.Enabled := True;
-    lblCIOT.Enabled := True;
-    qrlCIOT.Enabled := True;
-    qrlCIOT.Caption := CIOT;
-{$ENDIF}
-
-  // Incluido / Alterado por Italo em 29/12/2010
-    case Lota of
-      ltNao: begin
-              qrlTituloLotacao.Caption     := 'DADOS ESPECÍFICOS DO MODAL RODOVIÁRIO - CARGA FRACIONADA';
-              qrlLotacao.Caption           := 'NÃO';
-//              qrb_11_ModRodLot103.Enabled := False;
-             end;
-      ltsim: begin
-              qrlTituloLotacao.Caption     := 'DADOS ESPECÍFICOS DO MODAL RODOVIÁRIO - LOTAÇÃO';
-              qrlLotacao.Caption           := 'SIM';
-              if Versao = 103
-               then qrb_11_ModRodLot103.Enabled := True
-               else qrb_11_ModRodLot104.Enabled := True;
-             end;
-    end;
-
-    qrlDtPrevEntrega.Caption := FormatDateTime('DD/MM/YYYY', dPrev);
-  end;
-end;
-
-procedure TfrmDACTeQRRetrato.qrb_11_ModRodLot103BeforePrint(
-  Sender: TQRCustomBand; var PrintBand: Boolean);
-var
-  i: integer;
-begin
-  inherited;
-  // Incluido por Italo em 20/04/2011
-  PrintBand := QRCTe.PageNumber = 1;
-
-  // Incluido / Alterado por Italo em 29/12/2010 e 30/12/2010
-{$IFDEF PL_103}
-  qrlNumRegEsp.Caption := FCTe.Rodo.valePed.nroRE;
-  case FCTe.Rodo.valePed.respPg of
-   rpEmitente:       qrlResponsavel.Caption := 'EMITENTE';
-   rpRemetente:      qrlResponsavel.Caption := 'REMETENTE';
-   rpExpedidor:      qrlResponsavel.Caption := 'EXPEDIDOR';
-   rpRecebedor:      qrlResponsavel.Caption := 'RECEBEDOR';
-   rpDestinatario:   qrlResponsavel.Caption := 'DESTINATÁRIO';
-   rpTomadorServico: qrlResponsavel.Caption := 'TOMADOR DO SERVIÇO';
-  end;
-  qrlValorTotal.Caption := CteUtil.FormatarValor(msk13x2, FCTe.Rodo.valePed.vTValePed);
-{$ENDIF}
-
-  qrmTipo.Lines.Clear;
-  qrmPlaca.Lines.Clear;
-  qrmUF.Lines.Clear;
-  qrmRNTRC.Lines.Clear;
-
-  for i:= 0 to FCTe.Rodo.veic.Count - 1 do
-  begin
-   if TpPropriedadeToStr(FCTe.Rodo.veic.Items[i].tpProp) = 'P'
-    then qrmTipo.Lines.Add('Próprio')
-    else qrmTipo.Lines.Add('Terceiro');
-   qrmPlaca.Lines.Add(FCTe.Rodo.veic.Items[i].placa);
-   qrmUF.Lines.Add(FCTe.Rodo.veic.Items[i].UF);
-   qrmRNTRC.Lines.Add(FCTe.Rodo.veic.Items[i].Prop.RNTRC);
-  end;
-
-  qrmEmpresas.Lines.Clear;
-  qrmVigencias.Lines.Clear;
-  qrmNumDispositivo.Lines.Clear;
-  qrmCodTransacao.Lines.Clear;
-
-{$IFDEF PL_103}
-  for i := 0 to FCTe.Rodo.valePed.disp.Count - 1 do
-  begin
-   qrmEmpresas.Lines.Add(FCTe.Rodo.valePed.disp.Items[i].xEmp);
-   qrmVigencias.Lines.Add(FormatDateTime('DD/MM/YYYY', FCTe.Rodo.valePed.disp.Items[i].dVig));
-   qrmNumDispositivo.Lines.Add(FCTe.Rodo.valePed.disp.Items[i].nDisp);
-   qrmCodTransacao.Lines.Add(FCTe.Rodo.valePed.disp.Items[i].nCompC);
-  end;
-{$ENDIF}
-
-  qrlNomeMotorista.Caption := '';
-  qrlCPFMotorista.Caption  := '';
-  qrlLacres.Caption        := '';
-  if FCTe.Rodo.moto.Count>0
-   then begin
-    qrlNomeMotorista.Caption := FCTe.Rodo.moto.Items[0].xNome;
-    qrlCPFMotorista.Caption  := CTeUtil.FormatarCNPJ(FCTe.Rodo.moto.Items[0].CPF);
-   end;
-
-  for i := 0 to FCTe.Rodo.Lacres.Count - 1 do
-  begin
-   qrlLacres.Caption := qrlLacres.Caption + FCTe.Rodo.Lacres.Items[i].nLacre + '/';
-  end;
-end;
-
-procedure TfrmDACTeQRRetrato.qrb_11_ModRodLot104BeforePrint(
+procedure TfrmDACTeQRRetratoA5.qrb_11_ModRodLot104BeforePrint(
   Sender: TQRCustomBand; var PrintBand: Boolean);
 var
  i: Integer;
@@ -1917,11 +1667,11 @@ begin
 
   for i := 0 to FCTe.Rodo.Lacres.Count - 1 do
   begin
-   qrlLacres2.Caption := qrlLacres.Caption + FCTe.Rodo.Lacres.Items[i].nLacre + '/';
+   qrlLacres2.Caption := qrlLacres2.Caption + FCTe.Rodo.Lacres.Items[i].nLacre + '/';
   end;
 end;
 
-procedure TfrmDACTeQRRetrato.qrb_12_ModAereoBeforePrint(
+procedure TfrmDACTeQRRetratoA5.qrb_12_ModAereoBeforePrint(
   Sender: TQRCustomBand; var PrintBand: Boolean);
 begin
   inherited;
@@ -1962,7 +1712,7 @@ begin
   qrlDadosRetira.Caption  := FCte.Ide.xdetretira;
 end;
 
-procedure TfrmDACTeQRRetrato.qrb_13_ModAquaviarioBeforePrint(
+procedure TfrmDACTeQRRetratoA5.qrb_13_ModAquaviarioBeforePrint(
   Sender: TQRCustomBand; var PrintBand: Boolean);
 begin
   inherited;
@@ -1971,7 +1721,7 @@ begin
   qrb_13_ModAquaviario.Enabled := (FCTe.Ide.tpCTe = tcNormal) and (FCTe.Ide.modal = mdAquaviario);
 end;
 
-procedure TfrmDACTeQRRetrato.qrb_14_ModFerroviarioBeforePrint(
+procedure TfrmDACTeQRRetratoA5.qrb_14_ModFerroviarioBeforePrint(
   Sender: TQRCustomBand; var PrintBand: Boolean);
 var
  i: Integer;
@@ -2009,7 +1759,7 @@ begin
    end;
 end;
 
-procedure TfrmDACTeQRRetrato.qrb_15_ModDutoviarioBeforePrint(
+procedure TfrmDACTeQRRetratoA5.qrb_15_ModDutoviarioBeforePrint(
   Sender: TQRCustomBand; var PrintBand: Boolean);
 begin
   inherited;
@@ -2018,56 +1768,7 @@ begin
   qrb_15_ModDutoviario.Enabled := (FCTe.Ide.tpCTe = tcNormal) and (FCTe.Ide.modal = mdDutoviario);
 end;
 
-procedure TfrmDACTeQRRetrato.qrb_16_DadosExcEmitenteBeforePrint(Sender: TQRCustomBand;
-  var PrintBand: Boolean);
-var
- i: Integer;
-begin
-  inherited;
-  // Incluido por Italo em 20/04/2011
-  PrintBand := QRCTe.PageNumber = 1;
-
-  qrmObsExcEmitente.Lines.BeginUpdate; // Linha inserida por Italo em 28/06/2011
-  qrmObsExcEmitente.Lines.Clear;
-  qrmObsFisco.Lines.Clear;
-  (*
-  // Linhas Alteradas por Italo em 06/05/2011
-  if FCTe.Ide.modal = mdAereo
-   then begin
-    qrmObsExcEmitente.Lines.Add( 'O transporte coberto por este conhecimento se rege pelo código brasileiro de aeronáutica. '+
-                  'O expedidor/remetente aceita como corretas todas as especificações impressas neste conhecimento,' );
-    qrmObsExcEmitente.Lines.Add( 'certificando que os artigos perigosos descritos pela regulamentação da ICAO foram devidamente '+
-                  'informados e acondicionados para transporte aéreo.' );
-   end;
-*)
-  // Incluido por Italo em 28/06/2011
-  if FCTe.Ide.modal <> mdAereo
-   then begin
-    for i := 0 to FCTe.Compl.ObsCont.Count-1 do
-     with FCTe.Compl.ObsCont.Items[i] do
-      begin
-       qrmObsExcEmitente.Lines.Add( StringReplace( xCampo, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] )+': '+
-                                    StringReplace( xTexto, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
-      end;
-   end;
-
-  // Linhas inseridas por Italo em 28/06/2011
-  qrmObsExcEmitente.Lines.Text := StringReplace( qrmObsExcEmitente.Lines.Text, ';', #13, [rfReplaceAll] );
-  qrmObsExcEmitente.Lines.EndUpdate;
-
-  // Linhas inseridas por Italo em 11/10/2011
-  for i := 0 to FCTe.Compl.ObsFisco.Count-1 do
-   with FCTe.Compl.ObsFisco.Items[i] do
-    begin
-     qrmObsFisco.Lines.Add( StringReplace( xCampo, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] )+': '+
-                            StringReplace( xTexto, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
-    end;
-
-  qrmObsFisco.Lines.Text := StringReplace( qrmObsFisco.Lines.Text, ';', #13, [rfReplaceAll] );
-  qrmObsFisco.Lines.EndUpdate;
-end;
-
-procedure TfrmDACTeQRRetrato.qrb_17_SistemaBeforePrint(Sender: TQRCustomBand;
+procedure TfrmDACTeQRRetratoA5.qrb_17_SistemaBeforePrint(Sender: TQRCustomBand;
   var PrintBand: Boolean);
 begin
   inherited;
@@ -2077,7 +1778,7 @@ begin
   qrlblSistema.Caption := FSistema + ' - ' + FUsuario;
 end;
 
-procedure TfrmDACTeQRRetrato.qrb_18_ReciboBeforePrint(
+procedure TfrmDACTeQRRetratoA5.qrb_18_ReciboBeforePrint(
   Sender: TQRCustomBand; var PrintBand: Boolean);
 begin
   inherited;

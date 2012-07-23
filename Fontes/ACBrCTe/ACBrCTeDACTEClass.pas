@@ -70,6 +70,7 @@ type
     FMostrarPreview : Boolean;
     FMostrarStatus: Boolean;
     FTipoDACTE : TpcnTipoImpressao;
+    FTamanhoPapel: TpcnTamanhoPapel;
     FNumCopias : Integer;
     FExpandirLogoMarca:Boolean;
     FFax  : String;
@@ -100,6 +101,7 @@ type
     property MostrarPreview: Boolean read FMostrarPreview write FMostrarPreview ;
     property MostrarStatus: Boolean read FMostrarStatus write FMostrarStatus ;
     property TipoDACTE: TpcnTipoImpressao read FTipoDACTE write FTipoDACTE ;
+    property TamanhoPapel: TpcnTamanhoPapel read FTamanhoPapel write FTamanhoPapel ;
     property NumCopias: Integer read FNumCopias write FNumCopias ;
     property Fax  : String read FFax   write FFax ;
     property Site : String read FSite  write FSite ;

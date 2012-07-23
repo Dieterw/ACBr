@@ -1529,7 +1529,7 @@ function TACBrECFClass.EnviaComando(cmd: AnsiString = ''): AnsiString;
 begin
   try
     try
-       GravaLog('-- '+FormatDateTime('hh:nn:ss',now)+' '+fpComandoLOG,True );
+       GravaLog('-- '+FormatDateTime('hh:nn:ss:zzz',now)+' '+fpComandoLOG,True );
 
        if (not fpDevice.Ativo) then
           raise EACBrECFNaoInicializado.create( ACBrStr(cACBrECFNaoInicializadoException) );
@@ -1546,8 +1546,8 @@ begin
        finally
           AguardandoResposta  := False ;
           IgnorarErroSemPapel := False;
-          GravaLog('            TX -> '+fpComandoEnviado, True);
-          GravaLog('   '+FormatDateTime('hh:nn:ss',now)+' RX <- '+fpRespostaComando, True);
+          GravaLog('                TX -> '+fpComandoEnviado, True);
+          GravaLog('   '+FormatDateTime('hh:nn:ss:zzz',now)+' RX <- '+fpRespostaComando, True);
        end ;
     except
        On E: Exception do

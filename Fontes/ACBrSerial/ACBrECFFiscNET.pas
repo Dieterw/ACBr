@@ -3222,13 +3222,10 @@ begin
 
 
    Result := '[ECF]'+sLineBreak ;
-   try
-      Result := Result + 'DataMovimento = ' +
-                copy( RetCmd, 583, 2 ) + DateSeparator +
-                copy( RetCmd, 585, 2 ) + DateSeparator +
-                copy( RetCmd, 587, 2 ) + sLineBreak ;
-   except
-   end ;
+   if Length(RetCmd) > 587 then
+      Result := Result + 'DataMovimento = ' + copy( RetCmd, 583, 2 ) + DateSeparator +
+                                              copy( RetCmd, 585, 2 ) + DateSeparator +
+                                              copy( RetCmd, 587, 2 ) + sLineBreak;
 
    try
       Result := Result + 'NumSerie = ' + NumSerie + sLineBreak ;
@@ -3241,10 +3238,8 @@ begin
    except
    end ;
 
-   try
+   if Length(RetCmd) > 569 then
       Result := Result + 'NumCOO = ' + copy( RetCmd, 569, 6 ) + sLineBreak ;
-   except
-   end ;
 
    try
       Result := Result + 'NumCRZ = ' + NumCRZ + sLineBreak ;
@@ -3343,8 +3338,9 @@ begin
    end ;
 
    try
-      Result := Result + 'TotalAcrescimos = ' + FloatToStr(
-          RoundTo( StrToFloatDef( copy( RetCmd, 589, 14 ), 0 ) / 100, -2 ) )  + sLineBreak ;
+      if Length(RetCmd) > 589 then
+         Result := Result + 'TotalAcrescimos = ' + FloatToStr(
+             RoundTo( StrToFloatDef( copy( RetCmd, 589, 14 ), 0 ) / 100, -2 ) )  + sLineBreak ;
    except
    end ;
 

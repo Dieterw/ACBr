@@ -97,6 +97,15 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+
+Data: 23/07/2012
+-- ACBrECF --
+[*] Adicionado Milisegundos na gravação do Log  (por: DSA)
+
+-- ACBrECFFiscNet --
+[*] Ajuste para leitura de Dados da Ultima Redução Z em modelos antigos, que em
+    algumas ocasiões não enviam todos os dados  (por: DSA)
+
 Data: 20/07/2012
 -- ACBrDIS --
 [*] Melhorada significativamente a performance da exibição de Display de

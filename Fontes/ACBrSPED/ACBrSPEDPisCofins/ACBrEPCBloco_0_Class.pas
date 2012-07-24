@@ -486,8 +486,11 @@ begin
        ///
        if FRegistro0000.COD_VER >= vlVersao201 then
        begin
+         if (COD_INC_TRIB = codEscrOpIncCumulativo) then
+           strIND_APRO_CRED := '';// Conforme Guia prático 1.0.5 Deve ser vazio caso COD_INC_TRIB = 2
 
-         strIND_APRO_CRED := '';// Conforme Guia prático 1.0.5 Deve ser vazio caso COD_INC_TRIB = 2
+         if (COD_INC_TRIB <> codEscrOpIncCumulativo) then // Mário Mesquita -- Conforme guia prático, Deve ser vazio caso COD_INC_TRIB <> 2
+           strIND_REG_CUM := '';
 
          //Nota: Só a versão 2.01 ou superior do PVA vai estar pronta para validar esse arquivo.
          Add( LFill('0110') +

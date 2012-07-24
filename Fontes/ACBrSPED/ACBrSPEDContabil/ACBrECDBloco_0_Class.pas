@@ -61,13 +61,13 @@ type
     destructor Destroy; override; /// Destroy
     procedure LimpaRegistros;
 
-    function WriteRegistro0000: AnsiString;
-    function WriteRegistro0001: AnsiString;
-    function WriteRegistro0007: AnsiString;
-    function WriteRegistro0020: AnsiString;
-    function WriteRegistro0150: AnsiString;
-    function WriteRegistro0180: AnsiString;
-    function WriteRegistro0990: AnsiString;
+    function WriteRegistro0000: String;
+    function WriteRegistro0001: String;
+    function WriteRegistro0007: String;
+    function WriteRegistro0020: String;
+    function WriteRegistro0150: String;
+    function WriteRegistro0180: String;
+    function WriteRegistro0990: String;
 
     property Registro0000: TRegistro0000     read FRegistro0000 write FRegistro0000;
     property Registro0001: TRegistro0001     read FRegistro0001 write FRegistro0001;
@@ -119,7 +119,7 @@ begin
   FRegistro0990.QTD_LIN_0 := 0;
 end;
 
-function TBloco_0.WriteRegistro0000: AnsiString;
+function TBloco_0.WriteRegistro0000: String;
 begin
   Result := '';
 
@@ -153,7 +153,7 @@ begin
   end;
 end;
 
-function TBloco_0.WriteRegistro0001: AnsiString;
+function TBloco_0.WriteRegistro0001: String;
 begin
   Result := '';
 
@@ -173,10 +173,10 @@ begin
   end;
 end;
 
-function TBloco_0.WriteRegistro0007: AnsiString;
+function TBloco_0.WriteRegistro0007: String;
 var
 intFor: integer;
-strRegistro0007: AnsiString;
+strRegistro0007: String;
 begin
   strRegistro0007 := '';
 
@@ -199,10 +199,10 @@ begin
   Result := strRegistro0007;
 end;
 
-function TBloco_0.WriteRegistro0020: AnsiString;
+function TBloco_0.WriteRegistro0020: String;
 var
 intFor: integer;
-strRegistro0020: AnsiString;
+strRegistro0020: String;
 begin
   strRegistro0020 := '';
 
@@ -235,10 +235,10 @@ begin
   Result := strRegistro0020;
 end;
 
-function TBloco_0.WriteRegistro0150: AnsiString;
+function TBloco_0.WriteRegistro0150: String;
 var
 intFor: integer;
-strRegistro0150: AnsiString;
+strRegistro0150: String;
 begin
   strRegistro0150 := '';
 
@@ -280,10 +280,10 @@ begin
   Result := strRegistro0150;
 end;
 
-function TBloco_0.WriteRegistro0180: AnsiString;
+function TBloco_0.WriteRegistro0180: String;
 var
 intFor: integer;
-strRegistro0180: AnsiString;
+strRegistro0180: String;
 begin
   strRegistro0180 := '';
 
@@ -309,7 +309,7 @@ begin
   Result := strRegistro0180;
 end;
 
-function TBloco_0.WriteRegistro0990: AnsiString;
+function TBloco_0.WriteRegistro0990: String;
 begin
   Result := '';
 

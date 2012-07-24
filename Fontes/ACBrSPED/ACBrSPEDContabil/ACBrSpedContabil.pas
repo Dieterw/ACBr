@@ -70,25 +70,25 @@ type
     FDT_FIN: TDateTime;           /// Data final das informações contidas no arquivo
 
     FPath: AnsiString;            /// Path do arquivo a ser gerado
-    FDelimitador: AnsiString;     /// Caracter delimitador de campos
+    FDelimitador: String;     /// Caracter delimitador de campos
     FTrimString: boolean;         /// Retorna a string sem espaços em branco iniciais e finais
-    FCurMascara: AnsiString;      /// Mascara para valores tipo currency
+    FCurMascara: String;      /// Mascara para valores tipo currency
 
     FBloco_0: TBloco_0;
     FBloco_9: TBloco_9;
     FBloco_I: TBloco_I;
     FBloco_J: TBloco_J;
 
-    function GetAbout: AnsiString;
-    function GetDelimitador: AnsiString;
+    function GetAbout: String;
+    function GetDelimitador: String;
     function GetTrimString: boolean;
-    function GetCurMascara: AnsiString;
+    function GetCurMascara: String;
     function GetDT_FIN: TDateTime;
     function GetDT_INI: TDateTime;
-    procedure SetAbout(const Value: AnsiString);
-    procedure SetDelimitador(const Value: AnsiString);
+    procedure SetAbout(const Value: String);
+    procedure SetDelimitador(const Value: String);
     procedure SetTrimString(const Value: boolean);
-    procedure SetCurMascara(const Value: AnsiString);
+    procedure SetCurMascara(const Value: String);
     procedure SetDT_FIN(const Value: TDateTime);
     procedure SetDT_INI(const Value: TDateTime);
 
@@ -99,49 +99,49 @@ type
     procedure TotalizaTermos(AStringList : TStringList);
   protected
     /// BLOCO 0
-    function WriteRegistro0000: AnsiString;
-    function WriteRegistro0001: AnsiString;
-    function WriteRegistro0007: AnsiString;
-    function WriteRegistro0020: AnsiString;
-    function WriteRegistro0150: AnsiString;
-    function WriteRegistro0180: AnsiString;
-    function WriteRegistro0990: AnsiString;
+    function WriteRegistro0000: String;
+    function WriteRegistro0001: String;
+    function WriteRegistro0007: String;
+    function WriteRegistro0020: String;
+    function WriteRegistro0150: String;
+    function WriteRegistro0180: String;
+    function WriteRegistro0990: String;
     /// BLOCO I
-    function WriteRegistroI001: AnsiString;
-    function WriteRegistroI010: AnsiString;
-    function WriteRegistroI012: AnsiString;
-    function WriteRegistroI020: AnsiString;
-    function WriteRegistroI030: AnsiString;
-    function WriteRegistroI050: AnsiString;
-    function WriteRegistroI075: AnsiString;
-    function WriteRegistroI100: AnsiString;
-    function WriteRegistroI150: AnsiString;
-    function WriteRegistroI200: AnsiString;
-    function WriteRegistroI300: AnsiString;
-    function WriteRegistroI350: AnsiString;
-    function WriteRegistroI500: AnsiString;
-    function WriteRegistroI510: AnsiString;
-    function WriteRegistroI550: AnsiString;
+    function WriteRegistroI001: String;
+    function WriteRegistroI010: String;
+    function WriteRegistroI012: String;
+    function WriteRegistroI020: String;
+    function WriteRegistroI030: String;
+    function WriteRegistroI050: String;
+    function WriteRegistroI075: String;
+    function WriteRegistroI100: String;
+    function WriteRegistroI150: String;
+    function WriteRegistroI200: String;
+    function WriteRegistroI300: String;
+    function WriteRegistroI350: String;
+    function WriteRegistroI500: String;
+    function WriteRegistroI510: String;
+    function WriteRegistroI550: String;
 
-    function WriteRegistroI990: AnsiString;
+    function WriteRegistroI990: String;
     /// BLOCO J
-    function WriteRegistroJ001: AnsiString;
-    function WriteRegistroJ005: AnsiString;
-    function WriteRegistroJ800: AnsiString;
-    function WriteRegistroJ900: AnsiString;
-    function WriteRegistroJ930: AnsiString;
-    function WriteRegistroJ990: AnsiString;
+    function WriteRegistroJ001: String;
+    function WriteRegistroJ005: String;
+    function WriteRegistroJ800: String;
+    function WriteRegistroJ900: String;
+    function WriteRegistroJ930: String;
+    function WriteRegistroJ990: String;
     /// BLOCO 9
-    function WriteRegistro9001: AnsiString;
-    function WriteRegistro9900: AnsiString;
-    function WriteRegistro9990: AnsiString;
-    function WriteRegistro9999: AnsiString;
+    function WriteRegistro9001: String;
+    function WriteRegistro9900: String;
+    function WriteRegistro9990: String;
+    function WriteRegistro9999: String;
   public
     constructor Create(AOwner: TComponent); override; /// Create
     destructor Destroy; override; /// Destroy
 
-    function SaveFileTXT(Arquivo: AnsiString): Boolean; /// Método que escreve o arquivo texto no caminho passado como parâmetro
-    function SaveStringList(AStringList: TStringList): Boolean; /// Método que escreve o arquivo texto em um AnsiStringList
+    function SaveFileTXT(Arquivo: String): Boolean; /// Método que escreve o arquivo texto no caminho passado como parâmetro
+    function SaveStringList(AStringList: TStringList): Boolean; /// Método que escreve o arquivo texto em um StringList
 
     property DT_INI: TDateTime read GetDT_INI write SetDT_INI;
     property DT_FIN: TDateTime read GetDT_FIN write SetDT_FIN;
@@ -151,12 +151,12 @@ type
     property Bloco_I: TBloco_I read FBloco_I write FBloco_I;
     property Bloco_J: TBloco_J read FBloco_J write FBloco_J;
   published
-    property About: AnsiString read GetAbout write SetAbout stored False ;
+    property About: String read GetAbout write SetAbout stored False ;
     property Path: AnsiString read FPath write FPath;
     ///
-    property Delimitador: AnsiString read GetDelimitador write SetDelimitador;
+    property Delimitador: String read GetDelimitador write SetDelimitador;
     property TrimString: boolean read GetTrimString write SetTrimString;
-    property CurMascara: AnsiString read GetCurMascara write SetCurMascara;
+    property CurMascara: String read GetCurMascara write SetCurMascara;
 
     property OnError: TErrorEvent  read GetOnError write SetOnError;
   end;
@@ -213,12 +213,12 @@ begin
   FBloco_9.LimpaRegistros;
 end;
 
-function TACBrSPEDContabil.GetDelimitador: AnsiString;
+function TACBrSPEDContabil.GetDelimitador: String;
 begin
    Result := FDelimitador;
 end;
 
-procedure TACBrSPEDContabil.SetDelimitador(const Value: AnsiString);
+procedure TACBrSPEDContabil.SetDelimitador(const Value: String);
 begin
   FDelimitador := Value;
   //
@@ -228,12 +228,12 @@ begin
   FBloco_9.Delimitador := Value;
 end;
 
-function TACBrSPEDContabil.GetCurMascara: AnsiString;
+function TACBrSPEDContabil.GetCurMascara: String;
 begin
    Result := FCurMascara;
 end;
 
-procedure TACBrSPEDContabil.SetCurMascara(const Value: AnsiString);
+procedure TACBrSPEDContabil.SetCurMascara(const Value: String);
 begin
   FCurMascara := Value;
   //
@@ -313,7 +313,7 @@ begin
   FBloco_9.OnError := Value;
 end;
 
-function TACBrSPEDContabil.SaveFileTXT(Arquivo: AnsiString): Boolean;
+function TACBrSPEDContabil.SaveFileTXT(Arquivo: String): Boolean;
 var
    SL : TStringList ;
 begin
@@ -410,7 +410,7 @@ begin
   end;
 end;
 
-function TACBrSPEDContabil.WriteRegistro0000: AnsiString;
+function TACBrSPEDContabil.WriteRegistro0000: String;
 begin
    Result := Bloco_0.WriteRegistro0000;
 
@@ -421,7 +421,7 @@ begin
    end;
 end;
 
-function TACBrSPEDContabil.WriteRegistro0001: AnsiString;
+function TACBrSPEDContabil.WriteRegistro0001: String;
 begin
    Result := Bloco_0.WriteRegistro0001;
 
@@ -432,7 +432,7 @@ begin
    end;
 end;
 
-function TACBrSPEDContabil.WriteRegistro0007: AnsiString;
+function TACBrSPEDContabil.WriteRegistro0007: String;
 begin
    Result := Bloco_0.WriteRegistro0007;
 
@@ -446,7 +446,7 @@ begin
    end;
 end;
 
-function TACBrSPEDContabil.WriteRegistro0020: AnsiString;
+function TACBrSPEDContabil.WriteRegistro0020: String;
 begin
    Result := Bloco_0.WriteRegistro0020;
 
@@ -460,7 +460,7 @@ begin
    end;
 end;
 
-function TACBrSPEDContabil.WriteRegistro0150: AnsiString;
+function TACBrSPEDContabil.WriteRegistro0150: String;
 begin
    Result := Bloco_0.WriteRegistro0150;
 
@@ -474,7 +474,7 @@ begin
    end;
 end;
 
-function TACBrSPEDContabil.WriteRegistro0180: AnsiString;
+function TACBrSPEDContabil.WriteRegistro0180: String;
 begin
    Result := Bloco_0.WriteRegistro0180;
 
@@ -488,7 +488,7 @@ begin
    end;
 end;
 
-function TACBrSPEDContabil.WriteRegistro0990: AnsiString;
+function TACBrSPEDContabil.WriteRegistro0990: String;
 begin
    Result := Bloco_0.WriteRegistro0990;
 
@@ -499,7 +499,7 @@ begin
    end;
 end;
 
-function TACBrSPEDContabil.WriteRegistroI001: AnsiString;
+function TACBrSPEDContabil.WriteRegistroI001: String;
 begin
    Result := Bloco_I.WriteRegistroI001;
 
@@ -510,7 +510,7 @@ begin
    end;
 end;
 
-function TACBrSPEDContabil.WriteRegistroI010: AnsiString;
+function TACBrSPEDContabil.WriteRegistroI010: String;
 begin
    Result := Bloco_I.WriteRegistroI010;
 
@@ -521,7 +521,7 @@ begin
    end;
 end;
 
-function TACBrSPEDContabil.WriteRegistroI012: AnsiString;
+function TACBrSPEDContabil.WriteRegistroI012: String;
 begin
   Result := Bloco_I.WriteRegistroI012;
 
@@ -543,7 +543,7 @@ begin
   end;
 end;
 
-function TACBrSPEDContabil.WriteRegistroI020: AnsiString;
+function TACBrSPEDContabil.WriteRegistroI020: String;
 begin
    Result := Bloco_I.WriteRegistroI020;
 
@@ -557,7 +557,7 @@ begin
    end;
 end;
 
-function TACBrSPEDContabil.WriteRegistroI030: AnsiString;
+function TACBrSPEDContabil.WriteRegistroI030: String;
 begin
    // Total de linhas do arquivo
    Bloco_I.RegistroI030.QTD_LIN := Bloco_0.Registro0990.QTD_LIN_0 +
@@ -573,7 +573,7 @@ begin
    end;
 end;
 
-function TACBrSPEDContabil.WriteRegistroI050: AnsiString;
+function TACBrSPEDContabil.WriteRegistroI050: String;
 begin
    Result := Bloco_I.WriteRegistroI050;
 
@@ -603,7 +603,7 @@ begin
    end;
 end;
 
-function TACBrSPEDContabil.WriteRegistroI075: AnsiString;
+function TACBrSPEDContabil.WriteRegistroI075: String;
 begin
    Result := Bloco_I.WriteRegistroI075;
 
@@ -617,7 +617,7 @@ begin
    end;
 end;
 
-function TACBrSPEDContabil.WriteRegistroI100: AnsiString;
+function TACBrSPEDContabil.WriteRegistroI100: String;
 begin
    Result := Bloco_I.WriteRegistroI100;
 
@@ -631,7 +631,7 @@ begin
    end;
 end;
 
-function TACBrSPEDContabil.WriteRegistroI150: AnsiString;
+function TACBrSPEDContabil.WriteRegistroI150: String;
 begin
    Result := Bloco_I.WriteRegistroI150;
 
@@ -661,7 +661,7 @@ begin
    end;
 end;
 
-function TACBrSPEDContabil.WriteRegistroI200: AnsiString;
+function TACBrSPEDContabil.WriteRegistroI200: String;
 begin
    Result := Bloco_I.WriteRegistroI200;
 
@@ -683,7 +683,7 @@ begin
    end;
 end;
 
-function TACBrSPEDContabil.WriteRegistroI300: AnsiString;
+function TACBrSPEDContabil.WriteRegistroI300: String;
 begin
    Result := Bloco_I.WriteRegistroI300;
 
@@ -705,7 +705,7 @@ begin
    end;
 end;
 
-function TACBrSPEDContabil.WriteRegistroI350: AnsiString;
+function TACBrSPEDContabil.WriteRegistroI350: String;
 begin
    Result := Bloco_I.WriteRegistroI350;
 
@@ -727,7 +727,7 @@ begin
    end;
 end;
 
-function TACBrSPEDContabil.WriteRegistroI500: AnsiString;
+function TACBrSPEDContabil.WriteRegistroI500: String;
 begin
    Result := Bloco_I.WriteRegistroI500;
 
@@ -742,7 +742,7 @@ begin
 end;
 
 
-function TACBrSPEDContabil.WriteRegistroI510: AnsiString;
+function TACBrSPEDContabil.WriteRegistroI510: String;
 begin
    Result := Bloco_I.WriteRegistroI510;
 
@@ -756,7 +756,7 @@ begin
    end;
 end;
 
-function TACBrSPEDContabil.WriteRegistroI550: AnsiString;
+function TACBrSPEDContabil.WriteRegistroI550: String;
 begin
    Result := Bloco_I.WriteRegistroI550;
 
@@ -778,7 +778,7 @@ begin
    end;
 end;
 
-function TACBrSPEDContabil.WriteRegistroI990: AnsiString;
+function TACBrSPEDContabil.WriteRegistroI990: String;
 begin
    Result := Bloco_I.WriteRegistroI990;
 
@@ -789,7 +789,7 @@ begin
    end;
 end;
 
-function TACBrSPEDContabil.WriteRegistroJ001: AnsiString;
+function TACBrSPEDContabil.WriteRegistroJ001: String;
 begin
    Result := Bloco_J.WriteRegistroJ001;
 
@@ -800,7 +800,7 @@ begin
    end;
 end;
 
-function TACBrSPEDContabil.WriteRegistroJ005: AnsiString;
+function TACBrSPEDContabil.WriteRegistroJ005: String;
 begin
    Result := Bloco_J.WriteRegistroJ005;
 
@@ -830,7 +830,7 @@ begin
    end;
 end;
 
-function TACBrSPEDContabil.WriteRegistroJ800: AnsiString;
+function TACBrSPEDContabil.WriteRegistroJ800: String;
 begin
    Result := Bloco_J.WriteRegistroJ800;
 
@@ -844,7 +844,7 @@ begin
    end;
 end;
 
-function TACBrSPEDContabil.WriteRegistroJ900: AnsiString;
+function TACBrSPEDContabil.WriteRegistroJ900: String;
 begin
    Result := Bloco_J.WriteRegistroJ900;
 
@@ -855,7 +855,7 @@ begin
    end;
 end;
 
-function TACBrSPEDContabil.WriteRegistroJ930: AnsiString;
+function TACBrSPEDContabil.WriteRegistroJ930: String;
 begin
    Result := Bloco_J.WriteRegistroJ930;
 
@@ -869,7 +869,7 @@ begin
    end;
 end;
 
-function TACBrSPEDContabil.WriteRegistroJ990: AnsiString;
+function TACBrSPEDContabil.WriteRegistroJ990: String;
 begin
    Result := Bloco_J.WriteRegistroJ990;
 
@@ -880,7 +880,7 @@ begin
    end;
 end;
 
-function TACBrSPEDContabil.WriteRegistro9001: AnsiString;
+function TACBrSPEDContabil.WriteRegistro9001: String;
 begin
    Result := Bloco_9.WriteRegistro9001;
 
@@ -891,7 +891,7 @@ begin
    end;
 end;
 
-function TACBrSPEDContabil.WriteRegistro9900: AnsiString;
+function TACBrSPEDContabil.WriteRegistro9900: String;
 begin
    with Bloco_9.Registro9900 do
    begin
@@ -914,12 +914,12 @@ begin
    Result := Bloco_9.WriteRegistro9900;
 end;
 
-function TACBrSPEDContabil.WriteRegistro9990: AnsiString;
+function TACBrSPEDContabil.WriteRegistro9990: String;
 begin
    Result := Bloco_9.WriteRegistro9990;
 end;
 
-function TACBrSPEDContabil.WriteRegistro9999: AnsiString;
+function TACBrSPEDContabil.WriteRegistro9999: String;
 begin
    Bloco_9.Registro9999.QTD_LIN := Bloco_9.Registro9999.QTD_LIN + Bloco_0.Registro0990.QTD_LIN_0 +
                                                                   Bloco_I.RegistroI990.QTD_LIN_I +
@@ -928,12 +928,12 @@ begin
    Result := Bloco_9.WriteRegistro9999;
 end;
 
-function TACBrSPEDContabil.GetAbout: AnsiString;
+function TACBrSPEDContabil.GetAbout: String;
 begin
    Result := 'ACBrSpedContabil Ver: ' + CACBrSpedContabil_Versao;
 end;
 
-procedure TACBrSPEDContabil.SetAbout(const Value: AnsiString);
+procedure TACBrSPEDContabil.SetAbout(const Value: String);
 begin
  {}
 end;

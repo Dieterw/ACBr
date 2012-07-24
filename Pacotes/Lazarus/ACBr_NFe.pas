@@ -2,22 +2,22 @@
   This source is only used to compile and install the package.
  }
 
-unit ACBr_NFe; 
+unit ACBr_NFe;
 
 interface
 
 uses
-      libxml2, libxmlsec, libxslt, ACBrNFe, ACBrNFeConfiguracoes, 
-   ACBrNFeNotasFiscais, ACBrNFeReg, ACBrNFeUtil, ACBrNFeWebServices, 
-   ACBrNFeDANFEClass, LazarusPackageIntf;
+  libxml2, libxmlsec, libxslt, ACBrNFe, ACBrNFeConfiguracoes, 
+  ACBrNFeNotasFiscais, ACBrNFeReg, ACBrNFeUtil, ACBrNFeWebServices, 
+  ACBrNFeDANFEClass, pcnCCeNFe, pcnRetCCeNFe, LazarusPackageIntf;
 
 implementation
 
-procedure Register; 
+procedure Register;
 begin
-  RegisterUnit('ACBrNFeReg', @ACBrNFeReg.Register); 
-end; 
+  RegisterUnit('ACBrNFeReg', @ACBrNFeReg.Register);
+end;
 
 initialization
-  RegisterPackage('ACBr_NFe', @Register); 
+  RegisterPackage('ACBr_NFe', @Register);
 end.

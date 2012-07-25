@@ -3485,7 +3485,9 @@ end;
 
 constructor TNFeConsNFeDest.Create(AOwner: TComponent);
 begin
-  FretConsNFeDest := TretConsNFeDest.Create;
+  inherited Create(AOwner);
+  if not Assigned(FretConsNFeDest) then
+    FretConsNFeDest := TretConsNFeDest.Create;
 end;
 
 destructor TNFeConsNFeDest.Destroy;

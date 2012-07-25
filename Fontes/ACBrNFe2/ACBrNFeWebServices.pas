@@ -3605,10 +3605,10 @@ begin
     except on E: Exception do
       begin
        if Assigned(TACBrNFe( FACBrNFe ).OnGerarLog) then
-          TACBrNFe( FACBrNFe ).OnGerarLog('WebService Consulta NF-e Destinatário:'+LineBreak+
+          TACBrNFe( FACBrNFe ).OnGerarLog('WebService Consulta NF-e Destinadas:'+LineBreak+
                                           '- Inativo ou Inoperante tente novamente.'+LineBreak+
                                           '- '+E.Message);
-       raise EACBrNFeException.Create('WebService Consulta NF-e Destinatário:'+LineBreak+
+       raise EACBrNFeException.Create('WebService Consulta NF-e Destinadas:'+LineBreak+
                               '- Inativo ou Inoperante tente novamente.'+LineBreak+
                               '- '+E.Message);
       end;

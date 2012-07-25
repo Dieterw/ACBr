@@ -50,6 +50,7 @@ uses
   Classes, Sysutils,
   pcnNFe, pcnConversao, pcnCCeNFe, pcnRetCCeNFe,
   pcnEnvEventoNFe, pcnRetEnvEventoNFe, // Incluido por Italo em 09/04/2012
+  pcnDownloadNFe,                      // Incluido por Italo em 18/07/2012
   {$IFDEF CLX} QDialogs,{$ELSE} Dialogs,{$ENDIF}
   ACBrNFeNotasFiscais,
   ACBrNFeConfiguracoes,
@@ -90,6 +91,18 @@ type
     property EnvEventoNFe : TEventoNFe read FEnvEventoNFe write FEnvEventoNFe;
   end;
 
+  // Incluido por Italo em 18/07/2012
+  {Download}
+  TDownload = Class(TComponent)
+  private
+    FDownload : TDownloadNFe;
+  public
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
+
+    property Download : TDownloadNFe read FDownload write FDownload;
+  end;
+
   TACBrNFe = class(TComponent)
   private
     fsAbout: TACBrNFeAboutInfo;
@@ -97,6 +110,7 @@ type
     FNotasFiscais: TNotasFiscais;
     FCartaCorrecao: TCartaCorrecao;
     FEnvEvento: TEnvEventoNFe; // Incluido por Italo em 09/04/2012
+    FDownloadNFe: TDownload;  // Incluido por Italo em 18/07/2012
     FWebServices: TWebServices;
     FConfiguracoes: TConfiguracoes;
     FStatus : TStatusACBrNFe;
@@ -119,10 +133,13 @@ type
                              IndNFe: TpcnIndicadorNFe;
                              IndEmi: TpcnIndicadorEmissor;
                              ultNSU: String): Boolean;
+    // Incluido por Italo em 18/07/2012
+    function Download: Boolean;
     property WebServices: TWebServices read FWebServices write FWebServices;
     property NotasFiscais: TNotasFiscais read FNotasFiscais write FNotasFiscais;
     property CartaCorrecao: TCartaCorrecao read FCartaCorrecao write FCartaCorrecao;
     property EnvEvento: TEnvEventoNFe read FEnvEvento write FEnvEvento; // Incluido por Italo em 09/04/2012
+    property DownloadNFe: TDownload read FDownloadNFe write FDownloadNFe; // Incluido por Italo em 18/07/2012
     property Status: TStatusACBrNFe read FStatus;
     procedure SetStatus( const stNewStatus : TStatusACBrNFe );
   published
@@ -166,6 +183,7 @@ begin
   FNotasFiscais.Configuracoes := FConfiguracoes;
   FCartaCorrecao     := TCartaCorrecao.Create(Self);
   FEnvEvento         := TEnvEventoNFe.Create(Self); // Incluido por Italo em 09/04/2012
+  FDownloadNFe       := TDownload.Create(Self);  // Incluido por Italo em 18/07/2012
   FWebServices       := TWebServices.Create(Self);
 
   if FConfiguracoes.WebServices.Tentativas <= 0 then
@@ -183,6 +201,7 @@ begin
   FNotasFiscais.Free;
   FCartaCorrecao.Free;
   FEnvEvento.Free; // Incluido por Italo em 09/04/2012
+  FDownloadNFe.Free; // Incluido por Italo em 18/07/2012
   FWebServices.Free;
   {$IFDEF ACBrNFeOpenSSL}
     if FConfiguracoes.Geral.IniFinXMLSECAutomatico then
@@ -417,6 +436,18 @@ begin
   end;
 end;
 
+// Incluido por Italo em 18/07/2012
+function TACBrNFe.Download: Boolean;
+begin
+  Result := WebServices.DownloadNFe.Executar;
+  if not Result then
+  begin
+    if Assigned(Self.OnGerarLog) then
+      Self.OnGerarLog(WebServices.DownloadNFe.Msg);
+    raise EACBrNFeException.Create(WebServices.DownloadNFe.Msg);
+  end;
+end;
+
 { TCartaCorrecao }
 constructor TCartaCorrecao.Create(AOwner: TComponent);
 begin
@@ -441,6 +472,21 @@ end;
 destructor TEnvEventoNFe.Destroy;
 begin
   FEnvEventoNFe.Free;
+  inherited;
+end;
+
+{ TDownload }
+// Incluido por Italo em 18/07/2012
+
+constructor TDownload.Create(AOwner: TComponent);
+begin
+  inherited;
+  FDownload := TDownloadNFe.Create;
+end;
+
+destructor TDownload.Destroy;
+begin
+  FDownload.Free;
   inherited;
 end;
 

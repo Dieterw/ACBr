@@ -73,7 +73,7 @@ type
              LayNfeConsulta,LayNfeStatusServico,LayNfeCadastro, LayNfeEnvDPEC,
              LayNfeConsultaDPEC, LayCTeRecepcao,LayCTeRetRecepcao,LayCTeCancelamento,
              LayCTeInutilizacao,LayCTeConsultaCT,LayCTeStatusServico,LayCTeCadastro,
-             LayNFeCCe,LayNFeEvento, LayNFeConsNFeDest);
+             LayNFeCCe,LayNFeEvento, LayNFeConsNFeDest, LayNFeDownloadNFe);
 
   // Incluido o TsPL_CTe_103 e TsPL_CTe_104 para CTe por Italo em 03/08/2011
   TpcnSchema = (TsPL005c, TsPL006, TsPL_CTe_103, TsPL_CTe_104);
@@ -88,7 +88,7 @@ type
                     tlRetConsReciCTe, tlRetConsSitCTe, tlRetEnvCTe, tlRetInutCTe,
                     tlEnvCTe, tlProcCancCTe, tlEnvDPEC, tlConsDPEC, tlConsStatServCTe,
                     tlCCeNFe, tlEnvCCeNFe, tlRetEnvCCeNFe, tlEnvEventoNFe, tlRetEnvEventoNFe,
-                    tlConsNFeDest);
+                    tlConsNFeDest, tlDownloadNFe);
 
   // Tipo tcDe6 incluido por Italo em 30/09/2010 (usado no CTe campo 435: vTar = valor da tarifa do modal Dutoviário)
   TpcnTipoCampo = (tcStr, tcInt, tcDat, tcDatHor, tcEsp, tcDe2, tcDe3, tcDe4, tcDe10,
@@ -202,6 +202,7 @@ const
   NFeCCeNFe       = '1.00';
   NFeEventoNFe    = '1.00'; // Incluido por Italo em 09/04/2012
   NFeConsNFeDest  = '1.00'; // Incluido por Italo em 17/07/2012
+  NFeDownloadNFe  = '1.00'; // Incluido por Italo em 18/07/2012
 
 // Alterado por Italo em 03/08/2011
 {$IFDEF PL_103}
@@ -445,12 +446,12 @@ begin
                                'RetCancNFe', 'RetConsCad', 'RetConsReciNFe', 'RetConsStatServ',
                                'RetConsSitNFe', 'RetEnvNFe', 'RetInutNFe', 'EnvNFe',
                                'ProcCancNFe', 'ConsStatServ', 'EnvCCeNFe', 'EnvEventoNFe',
-                               'ConsNFeDest'],
+                               'ConsNFeDest', 'DownloadNFe'],
       [tlAtuCadEmiDFe, tlCadEmiDFe, tlCancCTe, tlConsCad, tlConsReciCTe, tlConsSitCTe,
        tlConsStatServ, tlInutCTe, tlCTe, tlProcCTe, tlProcInutCTe, tlRetAtuCadEmiDFe,
        tlRetCancCTe, tlRetConsCad, tlRetConsReciCTe, tlRetConsStatServ, tlRetConsSitCTe,
        tlRetEnvCTe, tlRetInutCTe, tlEnvCTe, tlProcCancCTe, tlConsStatServCTe, tlEnvCCeNFe,
-       tlEnvEventoNFe, tlConsNFeDest]);
+       tlEnvEventoNFe, tlConsNFeDest, tlDownloadNFe]);
 end;
 
 // Alterado por Italo em 17/07/2012
@@ -462,12 +463,12 @@ begin
                                    'RetCancNFe', 'RetConsCad', 'RetConsReciNFe', 'RetConsStatServ',
                                    'RetConsSitNFe', 'RetEnvNFe', 'RetInutNFe', 'EnvNFe',
                                    'ConsStatServ', 'EnvCCeNFe', 'EnvEventoNFe',
-                                   'ConsNFeDest'],
+                                   'ConsNFeDest', 'DownloadNFe'],
       [tlAtuCadEmiDFe, tlCadEmiDFe, tlCancCTe, tlConsCad, tlConsReciCTe, tlConsSitCTe,
        tlConsStatServ, tlInutCTe, tlCTe, tlProcCTe, tlProcInutCTe, tlRetAtuCadEmiDFe,
        tlRetCancCTe, tlRetConsCad, tlRetConsReciCTe, tlRetConsStatServ, tlRetConsSitCTe,
        tlRetEnvCTe, tlRetInutCTe, tlEnvCTe, tlConsStatServCTe, tlEnvCCeNFe, tlEnvEventoNFe,
-       tlConsNFeDest]);
+       tlConsNFeDest, tlDownloadNFe]);
 end;
 
 // Indicador do Tipo de pagamento **********************************************

@@ -64,7 +64,7 @@ type
   TresNFe = class
   private
     FdhRecbto: TDateTime;
-    FdEmi: TDate;
+    FdEmi: TDateTime;
     FtpNF: TpcnTipoNFe;
     FdigVal: string;
     FchNFe: string;
@@ -81,7 +81,7 @@ type
     property CNPJCPF: string read FCNPJCPF write FCNPJCPF;
     property xNome: string read FxNome write FxNome;
     property IE: string read FIE write FIE;
-    property dEmi: TDate read FdEmi write FdEmi;
+    property dEmi: TDateTime read FdEmi write FdEmi;
     property tpNF: TpcnTipoNFe read FtpNF write FtpNF;
     property vNF: double read FvNF write FvNF;
     property digVal: string read FdigVal write FdigVal;
@@ -93,7 +93,7 @@ type
   TresCanc = class
   private
     FdhRecbto: TDateTime;
-    FdEmi: TDate;
+    FdEmi: TDateTime;
     FtpNF: TpcnTipoNFe;
     FdigVal: string;
     FchNFe: string;
@@ -110,7 +110,7 @@ type
     property CNPJCPF: string read FCNPJCPF write FCNPJCPF;
     property xNome: string read FxNome write FxNome;
     property IE: string read FIE write FIE;
-    property dEmi: TDate read FdEmi write FdEmi;
+    property dEmi: TDateTime read FdEmi write FdEmi;
     property tpNF: TpcnTipoNFe read FtpNF write FtpNF;
     property vNF: double read FvNF write FvNF;
     property digVal: string read FdigVal write FdigVal;

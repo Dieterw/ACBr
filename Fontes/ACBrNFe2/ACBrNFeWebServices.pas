@@ -1,7 +1,7 @@
 {******************************************************************************}
 { Projeto: Componente ACBrNFe                                                  }
 {  Biblioteca multiplataforma de componentes Delphi para emissão de Nota Fiscal}
-{ eletrônica - NFe - http://www.nfe.fazenda.gov.br                          }
+{ eletrônica - NFe - http://www.nfe.fazenda.gov.br                             }
 {                                                                              }
 { Direitos Autorais Reservados (c) 2008 Wemerson Souto                         }
 {                                       Daniel Simoes de Almeida               }
@@ -58,6 +58,7 @@ uses Classes, SysUtils,
   pcnProcNFe, pcnRetCancNFe, pcnCCeNFe, pcnRetCCeNFe,
   pcnEnvEventoNFe, pcnRetEnvEventoNFe, pcnRetConsSitNFe, // Incluido por Italo em 09/04/2012
   pcnConsNFeDest, pcnRetConsNFeDest, // Incluido por Italo em 17/07/2012
+  pcnDownloadNFe, // Incluido por Italo em 18/07/2012
   ACBrNFeNotasFiscais,
   ACBrNFeConfiguracoes;
 
@@ -78,6 +79,7 @@ type
     procedure DoNFeCartaCorrecao;
     procedure DoNFeEnvEvento; // Incluido por Italo em 09/04/2012
     procedure DoNFeConsNFeDest; // Incluido por Italo em 17/07/2012
+    procedure DoNFeDownloadNFe; // Incluido por Italo em 18/07/2012
     {$IFDEF ACBrNFeOpenSSL}
        procedure ConfiguraHTTP( HTTP : THTTPSend; Action : AnsiString);
     {$ELSE}
@@ -439,13 +441,13 @@ type
     property cStat: Integer                read FcStat;
     property xMotivo: String               read FxMotivo;
     property TpAmb: TpcnTipoAmbiente       read FTpAmb;
-    property EventoRetorno: TRetEventoNFe        read FEventoRetorno;
+    property EventoRetorno: TRetEventoNFe  read FEventoRetorno;
   end;
 
   // Incluido por Italo em 17/07/2012
   TNFeConsNFeDest = Class(TWebServicesBase)
   private
-    FtpAmb : TpcnTipoAmbiente;
+    FtpAmb: TpcnTipoAmbiente;
     FCNPJ: String;
     FindEmi: TpcnIndicadorEmissor;
     FindNFe: TpcnIndicadorNFe;
@@ -456,12 +458,29 @@ type
     destructor Destroy; override;
 
     function Executar: Boolean; override;
-    property tpAmb : TpcnTipoAmbiente read FtpAmb;
-    property CNPJ: String read FCNPJ write FCNPJ;
-    property indNFe: TpcnIndicadorNFe read FindNFe write FindNFe;
-    property indEmi: TpcnIndicadorEmissor read FindEmi write FindEmi;
-    property ultNSU: String read FultNSU write FultNSU;
+    property tpAmb: TpcnTipoAmbiente         read FtpAmb;
+    property CNPJ: String                    read FCNPJ           write FCNPJ;
+    property indNFe: TpcnIndicadorNFe        read FindNFe         write FindNFe;
+    property indEmi: TpcnIndicadorEmissor    read FindEmi         write FindEmi;
+    property ultNSU: String                  read FultNSU         write FultNSU;
     property retConsNFeDest: TretConsNFeDest read FretConsNFeDest write FretConsNFeDest;
+  end;
+
+  // Incluido por Italo em 18/07/2012
+  TNFeDownloadNFe = Class(TWebServicesBase)
+  private
+    FtpAmb: TpcnTipoAmbiente;
+//    FCNPJ: String;
+//    FindEmi: TpcnIndicadorEmissor;
+//    FindNFe: TpcnIndicadorNFe;
+//    FultNSU: String;
+  public
+    function Executar: Boolean; override;
+    property tpAmb: TpcnTipoAmbiente      read FtpAmb;
+//    property CNPJ: String                 read FCNPJ   write FCNPJ;
+//    property indNFe: TpcnIndicadorNFe     read FindNFe write FindNFe;
+//    property indEmi: TpcnIndicadorEmissor read FindEmi write FindEmi;
+//    property ultNSU: String               read FultNSU write FultNSU;
   end;
 
   TWebServices = Class(TWebServicesBase)
@@ -480,6 +499,7 @@ type
     FCartaCorrecao: TNFeCartaCorrecao;
     FEnvEvento: TNFeEnvEvento; // Incluido por Italo em 09/04/2012
     FConsNFeDest: TNFeConsNFeDest; // Incluido por Italo em 17/07/2012
+    FDownloadNFe: TNFeDownloadNFe; // Incluido por Italo em 18/07/2012
   public
     constructor Create(AFNotaFiscalEletronica: TComponent);reintroduce;
     destructor Destroy; override;
@@ -504,6 +524,8 @@ type
     property EnvEvento: TNFeEnvEvento read FEnvEvento write FEnvEvento;
     // Incluido por Italo em 17/07/2012
     property ConsNFeDest: TNFeConsNFeDest read FConsNFeDest write FConsNFeDest;
+    // Incluido por Italo em 18/07/2012
+    property DownloadNFe: TNFeDownloadNFe read FDownloadNFe write FDownloadNFe;
   end;
 
 implementation
@@ -1067,7 +1089,9 @@ begin
   else if Self is TNFeEnvEvento then // Incluido por Italo em 09/04/2012
     DoNFeEnvEvento
   else if Self is TNFeConsNFeDest then // Incluido por Italo em 17/07/2012
-    DoNFeConsNFeDest;
+    DoNFeConsNFeDest
+  else if Self is TNFeDownloadNFe then // Incluido por Italo em 18/07/2012
+    DoNFeDownloadNFe;
 end;
 
 procedure TWebServicesBase.LoadURL;
@@ -1096,6 +1120,8 @@ begin
     FURL  := NotaUtil.GetURL(FConfiguracoes.WebServices.UFCodigo, FConfiguracoes.WebServices.AmbienteCodigo, FConfiguracoes.Geral.FormaEmissaoCodigo, LayNFeEvento)
   else if self is TNFeConsNFeDest then // Incluido por Italo em 17/07/2012
     FURL  := NotaUtil.GetURL(FConfiguracoes.WebServices.UFCodigo, FConfiguracoes.WebServices.AmbienteCodigo, FConfiguracoes.Geral.FormaEmissaoCodigo, LayNFeConsNFeDest)
+  else if self is TNFeDownloadNFe then // Incluido por Italo em 18/07/2012
+    FURL  := NotaUtil.GetURL(FConfiguracoes.WebServices.UFCodigo, FConfiguracoes.WebServices.AmbienteCodigo, FConfiguracoes.Geral.FormaEmissaoCodigo, LayNFeDownloadNFe)
 end;
 
 procedure TWebServicesBase.DoNFeConsNFeDest;
@@ -1114,6 +1140,35 @@ begin
 
   FDadosMsg := ConsNFeDest.Gerador.ArquivoFormatoXML;
   ConsNFeDest.Free;
+
+  FDadosMsg := StringReplace( FDadosMsg, '<'+ENCODING_UTF8_STD+'>', '', [rfReplaceAll] ) ;
+  FDadosMsg := StringReplace( FDadosMsg, '<'+ENCODING_UTF8+'>', '', [rfReplaceAll] ) ;
+  FDadosMsg := StringReplace( FDadosMsg, '<?xml version="1.0"?>', '', [rfReplaceAll] ) ;
+end;
+
+// Incluido por Italo em 18/07/2012
+procedure TWebServicesBase.DoNFeDownloadNFe;
+var
+  DownloadNFe: TDownloadNFe;
+  i: integer;
+begin
+  DownloadNFe := TDownloadNFe.create;
+  DownloadNFe.schema := TsPL006;
+  DownloadNFe.TpAmb  := TpcnTipoAmbiente(FConfiguracoes.WebServices.AmbienteCodigo-1);
+  DownloadNFe.CNPJ   := TDownloadNFe(Self).CNPJ;
+
+  for i := 0 to TDownloadNFe(Self).Chaves.Count - 1 do
+   begin
+     with DownloadNFe.Chaves.Add do
+      begin
+        chNFe := TDownloadNFe(Self).Chaves.Items[i].chNFe;
+      end;
+   end;
+
+  DownloadNFe.GerarXML;
+
+  FDadosMsg := DownloadNFe.Gerador.ArquivoFormatoXML;
+  DownloadNFe.Free;
 
   FDadosMsg := StringReplace( FDadosMsg, '<'+ENCODING_UTF8_STD+'>', '', [rfReplaceAll] ) ;
   FDadosMsg := StringReplace( FDadosMsg, '<'+ENCODING_UTF8+'>', '', [rfReplaceAll] ) ;
@@ -1204,6 +1259,8 @@ begin
   FEnvEvento        := TNFeEnvEvento.Create(AFNotaFiscalEletronica,TACBrNFe(AFNotaFiscalEletronica).EnvEvento.EnvEventoNFe);
   // Incluido por Italo em 17/07/2012
   FConsNFeDest      := TNFeConsNFeDest.Create(AFNotaFiscalEletronica);
+  // Incluido por Italo em 18/07/2012
+  FDownloadNFe      := TNFeDownloadNFe.Create(AFNotaFiscalEletronica);
 end;
 
 destructor TWebServices.Destroy;
@@ -1223,6 +1280,8 @@ begin
   FEnvEvento.Free;
   // Incluido por Italo em 17/07/2012
   FConsNFeDest.Free;
+  // Incluido por Italo em 18/07/2012
+  FDownloadNFe.Free;
   inherited;
 end;
 
@@ -3609,6 +3668,151 @@ begin
                                           '- Inativo ou Inoperante tente novamente.'+LineBreak+
                                           '- '+E.Message);
        raise EACBrNFeException.Create('WebService Consulta NF-e Destinadas:'+LineBreak+
+                              '- Inativo ou Inoperante tente novamente.'+LineBreak+
+                              '- '+E.Message);
+      end;
+    end;
+  finally
+    {$IFDEF ACBrNFeOpenSSL}
+      HTTP.Free;
+    {$ELSE}
+      ReqResp.Free;
+    {$ENDIF}
+    Acao.Free;
+    Stream.Free;
+    NotaUtil.ConfAmbiente;
+    TACBrNFe( FACBrNFe ).SetStatus( stIdle );
+  end;
+end;
+
+{ TNFeDownloadNFe }
+// Incluido por Italo em 18/07/2012
+
+function TNFeDownloadNFe.Executar: Boolean;
+var
+  aMsg: string;
+  Texto : String;
+  Acao  : TStringList ;
+  Stream: TMemoryStream;
+  StrStream: TStringStream;
+
+  {$IFDEF ACBrNFeOpenSSL}
+     HTTP: THTTPSend;
+  {$ELSE}
+     ReqResp: THTTPReqResp;
+  {$ENDIF}
+begin
+  inherited Executar;
+
+  Result := False;
+
+  Acao := TStringList.Create;
+  Stream := TMemoryStream.Create;
+
+  Texto := '<?xml version="1.0" encoding="utf-8"?>';
+  Texto := Texto + '<soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">';
+  Texto := Texto +   '<soap12:Header>';
+  Texto := Texto +     '<nfeCabecMsg xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/nfeDownloadNF">';
+  Texto := Texto +       '<cUF>'+IntToStr(FConfiguracoes.WebServices.UFCodigo)+'</cUF>';
+  Texto := Texto +       '<versaoDados>'+NFeDownloadNFe+'</versaoDados>';
+  Texto := Texto +     '</nfeCabecMsg>';
+  Texto := Texto +   '</soap12:Header>';
+  Texto := Texto +   '<soap12:Body>';
+  Texto := Texto +     '<nfeDadosMsg xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/nfeDownloadNF">';
+  Texto := Texto + FDadosMsg;
+  Texto := Texto +     '</nfeDadosMsg>';
+  Texto := Texto +   '</soap12:Body>';
+  Texto := Texto +'</soap12:Envelope>';
+
+  Acao.Text := Texto;
+
+  {$IFDEF ACBrNFeOpenSSL}
+     Acao.SaveToStream(Stream);
+     HTTP := THTTPSend.Create;
+  {$ELSE}
+     ReqResp := THTTPReqResp.Create(nil);
+     ConfiguraReqResp( ReqResp );
+     ReqResp.URL := FURL;
+     ReqResp.UseUTF8InHeader := True;
+     ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/nfe/wsdl/nfeDownloadNF';
+  {$ENDIF}
+
+  try
+    TACBrNFe( FACBrNFe ).SetStatus( stNFeStatusServico );
+    if FConfiguracoes.Geral.Salvar then
+     begin
+       FPathArqEnv := FormatDateTime('yyyymmddhhnnss',Now)+'-ped-down-nfe.xml';
+       FConfiguracoes.Geral.Save(FPathArqEnv, FDadosMsg);
+     end;
+
+    try
+      {$IFDEF ACBrNFeOpenSSL}
+         HTTP.Document.LoadFromStream(Stream);
+         ConfiguraHTTP(HTTP,'SOAPAction: "http://www.portalfiscal.inf.br/nfe/wsdl/nfeDownloadNF"');
+         HTTP.HTTPMethod('POST', FURL);
+         StrStream := TStringStream.Create('');
+         StrStream.CopyFrom(HTTP.Document, 0);
+         FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
+         FRetWS := SeparaDados( FRetornoWS,'nfeDownloadNFResult');
+         StrStream.Free;
+      {$ELSE}
+         ReqResp.Execute(Acao.Text, Stream);
+         StrStream := TStringStream.Create('');
+         StrStream.CopyFrom(Stream, 0);
+         FRetornoWS := TiraAcentos(ParseText(StrStream.DataString, True));
+         FRetWS := SeparaDados( FRetornoWS,'nfeDownloadNFResult');
+         StrStream.Free;
+      {$ENDIF}
+      {
+      NFeRetorno := TRetConsStatServ.Create;
+      NFeRetorno.Leitor.Arquivo := FRetWS;
+      NFeRetorno.LerXml;
+
+      TACBrNFe( FACBrNFe ).SetStatus( stIdle );
+      aMsg := 'Ambiente : '+TpAmbToStr(NFeRetorno.tpAmb)+LineBreak+
+              'Versão Aplicativo : '+NFeRetorno.verAplic+LineBreak+
+              'Status Código : '+IntToStr(NFeRetorno.cStat)+LineBreak+
+              'Status Descrição : '+NFeRetorno.xMotivo+LineBreak+
+              'UF : '+CodigoParaUF(NFeRetorno.cUF)+LineBreak+
+              'Recebimento : '+NotaUtil.SeSenao(NFeRetorno.DhRecbto = 0, '', DateTimeToStr(NFeRetorno.dhRecbto))+LineBreak+
+              'Tempo Médio : '+IntToStr(NFeRetorno.TMed)+LineBreak+
+              'Retorno : '+ NotaUtil.SeSenao(NFeRetorno.dhRetorno = 0, '', DateTimeToStr(NFeRetorno.dhRetorno))+LineBreak+
+              'Observação : '+NFeRetorno.xObs+LineBreak;
+      if FConfiguracoes.WebServices.Visualizar then
+        ShowMessage(aMsg);
+
+      if Assigned(TACBrNFe( FACBrNFe ).OnGerarLog) then
+         TACBrNFe( FACBrNFe ).OnGerarLog(aMsg);
+
+      FtpAmb    := NFeRetorno.tpAmb;
+      FverAplic := NFeRetorno.verAplic;
+      FcStat    := NFeRetorno.cStat;
+      FxMotivo  := NFeRetorno.xMotivo;
+      FcUF      := NFeRetorno.cUF;
+      FdhRecbto := NFeRetorno.dhRecbto;
+      FTMed     := NFeRetorno.TMed;
+      FdhRetorno:= NFeRetorno.dhRetorno;
+      FxObs     := NFeRetorno.xObs;
+
+      FMsg   := NFeRetorno.XMotivo+ LineBreak+NFeRetorno.XObs;
+
+      Result := (NFeRetorno.CStat = 138);
+
+      NFeRetorno.Free;
+      }
+      if FConfiguracoes.Geral.Salvar then
+       begin
+         FPathArqResp := FormatDateTime('yyyymmddhhnnss',Now)+'-down-nfe.xml';
+         FConfiguracoes.Geral.Save(FPathArqResp, FRetWS);
+       end;
+
+    except on E: Exception do
+      begin
+       if Assigned(TACBrNFe( FACBrNFe ).OnGerarLog) then
+          TACBrNFe( FACBrNFe ).OnGerarLog('WebService Download de NF-e:'+LineBreak+
+                                          '- Inativo ou Inoperante tente novamente.'+LineBreak+
+                                          '- '+E.Message);
+       raise EACBrNFeException.Create('WebService Download de NF-e:'+LineBreak+
                               '- Inativo ou Inoperante tente novamente.'+LineBreak+
                               '- '+E.Message);
       end;

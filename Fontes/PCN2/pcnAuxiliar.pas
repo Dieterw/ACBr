@@ -407,6 +407,7 @@ begin
                 tlEnvEventoNFe    : Result := '2.00';
                 // Incluido por Italo em 17/07/2012
                 tlConsNFeDest     : Result := '2.00';
+                tlDownloadNFe     : Result := '2.00';
               end;
     // Incluido/Alterado por Italo em 03/08/2011
     // Tipos de LayOut para CT-e

@@ -133,6 +133,8 @@ const
   ERR_MSG_FINAL_MENOR_INICIAL = 'O numero final não pode ser menor que o inicial';
   ERR_MSG_ARQUIVO_NAO_ENCONTRADO = 'Arquivo não encontrado';
   ERR_MSG_SOMENTE_UM = 'Somente um campo deve ser preenchido';
+ // Incluido por Italo em 18/07/2012
+  ERR_MSG_MENOR_MINIMO = 'Número de ocorrências menor que o mínimo permitido - Mínimo ';
 
   CODIGO_BRASIL = 1058;
 

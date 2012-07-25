@@ -57,7 +57,7 @@ uses Classes, SysUtils,
   pcnRetConsReciNFe, pcnRetConsCad, pcnAuxiliar, pcnConversao, pcnRetDPEC,
   pcnProcNFe, pcnRetCancNFe, pcnCCeNFe, pcnRetCCeNFe,
   pcnEnvEventoNFe, pcnRetEnvEventoNFe, pcnRetConsSitNFe, // Incluido por Italo em 09/04/2012
-  pcnConsNFeDest, // Incluido por Italo em 17/07/2012
+  pcnConsNFeDest, pcnRetConsNFeDest, // Incluido por Italo em 17/07/2012
   ACBrNFeNotasFiscais,
   ACBrNFeConfiguracoes;
 
@@ -450,13 +450,18 @@ type
     FindEmi: TpcnIndicadorEmissor;
     FindNFe: TpcnIndicadorNFe;
     FultNSU: String;
+    FretConsNFeDest: TretConsNFeDest;
   public
+    constructor Create(AOwner : TComponent);reintroduce;
+    destructor Destroy; override;
+
     function Executar: Boolean; override;
     property tpAmb : TpcnTipoAmbiente read FtpAmb;
     property CNPJ: String read FCNPJ write FCNPJ;
     property indNFe: TpcnIndicadorNFe read FindNFe write FindNFe;
     property indEmi: TpcnIndicadorEmissor read FindEmi write FindEmi;
     property ultNSU: String read FultNSU write FultNSU;
+    property retConsNFeDest: TretConsNFeDest read FretConsNFeDest write FretConsNFeDest;
   end;
 
   TWebServices = Class(TWebServicesBase)
@@ -2783,7 +2788,7 @@ begin
    begin
      FCNPJ := '';
      FCPF  := '';
-   end;  
+   end;
   FIE   := Value;
 end;
 
@@ -2824,7 +2829,7 @@ begin
   Acao.Text := Texto;
 
   {$IFDEF ACBrNFeOpenSSL}
-     Acao.SaveToStream(Stream);  
+     Acao.SaveToStream(Stream);
      HTTP := THTTPSend.Create;
   {$ELSE}
      ReqResp := THTTPReqResp.Create(nil);
@@ -2864,7 +2869,7 @@ begin
        FRetWS := SeparaDados( FRetornoWS,'sceRecepcaoDPECResult',True);
     {$ENDIF}
     StrStream.Free;
-    
+
     RetDPEC := TRetDPEC.Create;
     RetDPEC.Leitor.Arquivo := FRetWS;
     RetDPEC.LerXml;
@@ -3478,9 +3483,20 @@ end;
 { TNFeConsNFeDest }
 // Incluido por Italo em 17/07/2012
 
+constructor TNFeConsNFeDest.Create(AOwner: TComponent);
+begin
+  FretConsNFeDest := TretConsNFeDest.Create;
+end;
+
+destructor TNFeConsNFeDest.Destroy;
+begin
+  if Assigned(FretConsNFeDest) then
+    FretConsNFeDest.Destroy;
+  inherited;
+end;
+
 function TNFeConsNFeDest.Executar: Boolean;
 var
-  NFeRetorno: TRetConsStatServ;
   aMsg: string;
   Texto : String;
   Acao  : TStringList ;
@@ -3529,7 +3545,7 @@ begin
   {$ENDIF}
 
   try
-    TACBrNFe( FACBrNFe ).SetStatus( stNFeStatusServico );
+    TACBrNFe( FACBrNFe ).SetStatus( stConsNFeDest );
     if FConfiguracoes.Geral.Salvar then
      begin
        FPathArqEnv := FormatDateTime('yyyymmddhhnnss',Now)+'-con-nfe-dest.xml';
@@ -3554,43 +3570,30 @@ begin
          FRetWS := SeparaDados( FRetornoWS,'nfeConsultaNFDestResult');
          StrStream.Free;
       {$ENDIF}
-      {
-      NFeRetorno := TRetConsStatServ.Create;
-      NFeRetorno.Leitor.Arquivo := FRetWS;
-      NFeRetorno.LerXml;
+
+      if Assigned(FretConsNFeDest) then
+        FretConsNFeDest.Free;
+      FretConsNFeDest.Create;
+      FretConsNFeDest.Leitor.Arquivo := FRetWS;
+      FretConsNFeDest.LerXml;
 
       TACBrNFe( FACBrNFe ).SetStatus( stIdle );
-      aMsg := 'Ambiente : '+TpAmbToStr(NFeRetorno.tpAmb)+LineBreak+
-              'Versão Aplicativo : '+NFeRetorno.verAplic+LineBreak+
-              'Status Código : '+IntToStr(NFeRetorno.cStat)+LineBreak+
-              'Status Descrição : '+NFeRetorno.xMotivo+LineBreak+
-              'UF : '+CodigoParaUF(NFeRetorno.cUF)+LineBreak+
-              'Recebimento : '+NotaUtil.SeSenao(NFeRetorno.DhRecbto = 0, '', DateTimeToStr(NFeRetorno.dhRecbto))+LineBreak+
-              'Tempo Médio : '+IntToStr(NFeRetorno.TMed)+LineBreak+
-              'Retorno : '+ NotaUtil.SeSenao(NFeRetorno.dhRetorno = 0, '', DateTimeToStr(NFeRetorno.dhRetorno))+LineBreak+
-              'Observação : '+NFeRetorno.xObs+LineBreak;
+      aMsg := 'Versão : '+FretConsNFeDest.versao+LineBreak+
+              'Ambiente : '+TpAmbToStr(FretConsNFeDest.tpAmb)+LineBreak+
+              'Versão Aplicativo : '+FretConsNFeDest.verAplic+LineBreak+
+              'Status Código : '+IntToStr(FretConsNFeDest.cStat)+LineBreak+
+              'Status Descrição : '+FretConsNFeDest.xMotivo+LineBreak+
+              'Recebimento : '+NotaUtil.SeSenao(FretConsNFeDest.dhResp = 0, '', DateTimeToStr(RetConsNFeDest.dhResp))+LineBreak+
+              'Ind. Continuação : '+IndicadorContinuacaoToStr(FretConsNFeDest.indCont)+LineBreak+
+              'Último NSU : '+FretConsNFeDest.ultNSU+LineBreak;
       if FConfiguracoes.WebServices.Visualizar then
         ShowMessage(aMsg);
 
       if Assigned(TACBrNFe( FACBrNFe ).OnGerarLog) then
          TACBrNFe( FACBrNFe ).OnGerarLog(aMsg);
 
-      FtpAmb    := NFeRetorno.tpAmb;
-      FverAplic := NFeRetorno.verAplic;
-      FcStat    := NFeRetorno.cStat;
-      FxMotivo  := NFeRetorno.xMotivo;
-      FcUF      := NFeRetorno.cUF;
-      FdhRecbto := NFeRetorno.dhRecbto;
-      FTMed     := NFeRetorno.TMed;
-      FdhRetorno:= NFeRetorno.dhRetorno;
-      FxObs     := NFeRetorno.xObs;
+      Result := (FretConsNFeDest.CStat =138);
 
-      FMsg   := NFeRetorno.XMotivo+ LineBreak+NFeRetorno.XObs;
-
-      Result := (NFeRetorno.CStat = 138);
-
-      NFeRetorno.Free;
-      }
       if FConfiguracoes.Geral.Salvar then
        begin
          FPathArqResp := FormatDateTime('yyyymmddhhnnss',Now)+'-nfe-dest.xml';

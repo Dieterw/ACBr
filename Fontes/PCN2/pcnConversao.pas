@@ -63,7 +63,7 @@ type
   TStatusACBrNFe = ( stIdle, stNFeStatusServico, stNFeRecepcao, stNFeRetRecepcao,
                      stNFeConsulta, stNFeCancelamento, stNFeInutilizacao, stNFeRecibo,
                      stNFeCadastro, stNFeEmail, stNFeEnvDPEC, stNFeConsultaDPEC,
-                     stNFeCCe, stNFeEvento);
+                     stNFeCCe, stNFeEvento, stConsNFeDest);
   TStatusACBrCTe = ( stCTeIdle, stCTeStatusServico, stCTeRecepcao, stCTeRetRecepcao,
                      stCTeConsulta, stCTeCancelamento, stCTeInutilizacao, stCTeRecibo,
                      stCTeCadastro, stCTeEmail, stCTeCCe );
@@ -169,6 +169,9 @@ type
   // Incluido por Italo em 17/07/2012
   TpcnIndicadorNFe = (inTodas, inSemManifestacaoComCiencia, inSemManifestacaoSemCiencia);
   TpcnIndicadorEmissor = (ieTodos, ieRaizCNPJDiferente);
+  TpcnIndicadorContinuacao = (icNaoPossuiMaisDocumentos, icPossuiMaisDocumentos);
+  TpcnSituacaoNFe = (snAutorizado,snDenegado,snCancelada);
+  TpcnSituacaoManifDest = (smdSemManifestacao, smdConfirmada, smdDesconhecida, smdOperacaoNaoRealizada, smdCiencia);
   TpcnTamanhoPapel = (tpA4, tpA5);
 
 const
@@ -384,6 +387,12 @@ function IndicadorNFeToStr(const t: TpcnIndicadorNFe): string;
 function StrToIndicadorNFe(var ok: boolean; const s: string): TpcnIndicadorNFe;
 function IndicadorEmissorToStr(const t: TpcnIndicadorEmissor): string;
 function StrToIndicadorEmissor(var ok: boolean; const s: string): TpcnIndicadorEmissor;
+function IndicadorContinuacaoToStr(const t: TpcnIndicadorContinuacao): string;
+function StrToIndicadorContinuacao(var ok: boolean; const s: string): TpcnIndicadorContinuacao;
+function SituacaoNFeToStr(const t: TpcnSituacaoNFe): string;
+function StrToSituacaoNFe(var ok: boolean; const s: string): TpcnSituacaoNFe;
+function SituacaoManifDestToStr(const t: TpcnSituacaoManifDest): string;
+function StrToSituacaoManifDest(var ok: boolean; const s: string): TpcnSituacaoManifDest;
 
 implementation
 
@@ -1280,6 +1289,42 @@ function StrToIndicadorEmissor(var ok: boolean; const s: string): TpcnIndicadorE
 begin
   result := StrToEnumerado(ok, s, ['0', '1'],
                                   [ieTodos, ieRaizCNPJDiferente]);
+end;
+
+function IndicadorContinuacaoToStr(const t: TpcnIndicadorContinuacao): string;
+begin
+  result := EnumeradoToStr(t, ['0', '1'],
+                              [icNaoPossuiMaisDocumentos, icPossuiMaisDocumentos]);
+end;
+
+function StrToIndicadorContinuacao(var ok: boolean; const s: string): TpcnIndicadorContinuacao;
+begin
+  result := StrToEnumerado(ok, s, ['0', '1'],
+                                  [icNaoPossuiMaisDocumentos, icPossuiMaisDocumentos]);
+end;
+
+function SituacaoNFeToStr(const t: TpcnSituacaoNFe): string;
+begin
+  result := EnumeradoToStr(t, ['1', '2', '3'],
+                              [snAutorizado,snDenegado,snCancelada]);
+end;
+
+function StrToSituacaoNFe(var ok: boolean; const s: string): TpcnSituacaoNFe;
+begin
+  result := StrToEnumerado(ok, s, ['1', '2', '3'],
+                                  [snAutorizado,snDenegado,snCancelada]);
+end;
+
+function SituacaoManifDestToStr(const t: TpcnSituacaoManifDest): string;
+begin
+  result := EnumeradoToStr(t, ['0','1','2','3','4'],
+                              [smdSemManifestacao, smdConfirmada, smdDesconhecida, smdOperacaoNaoRealizada, smdCiencia]);
+end;
+
+function StrToSituacaoManifDest(var ok: boolean; const s: string): TpcnSituacaoManifDest;
+begin
+  result := StrToEnumerado(ok, s, ['0','1','2','3','4'],
+                                  [smdSemManifestacao, smdConfirmada, smdDesconhecida, smdOperacaoNaoRealizada, smdCiencia]);
 end;
 
 end.

@@ -1006,6 +1006,10 @@ begin
   P1     := Pos(':',Retorno) ;
   if P1 > 0 then
   begin
+     // Tratando retorno com vários sinais de ":" no inicio
+     while (P1 < Length(Retorno)) and ( Retorno[P1+1] = ':') do
+       Inc( P1 ) ;
+
      P2 := LastDelimiter(CR,Retorno) ;
      if P2 > P1 then
         Result := copy( Retorno, P1, Length( Retorno ) ) ;

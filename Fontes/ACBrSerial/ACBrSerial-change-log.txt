@@ -99,8 +99,13 @@ Símbolo : Significado
 
 
 Data: 23/07/2012
+-- ACBrECFDaruma --
+[*] Adicionada verificação para respostas do ECF iniciando com dois sinais ":",
+   (por: DSA)
+
+Data: 23/07/2012
 -- ACBrECF --
-[*] Adicionado Milisegundos na gravação do Log  (por: DSA)
+[*] Adicionada informação de Milisegundos na gravação do Log  (por: DSA)
 
 -- ACBrECFFiscNet --
 [*] Ajuste para leitura de Dados da Ultima Redução Z em modelos antigos, que em

@@ -1067,8 +1067,9 @@ var
      ReqResp: THTTPReqResp;
   {$ENDIF}
 begin
-  {Result :=} inherited Executar;
+  inherited Executar;
 
+  Result := False;
   Acao   := TStringList.Create;
   Stream := TMemoryStream.Create;
 

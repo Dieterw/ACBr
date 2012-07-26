@@ -92,16 +92,16 @@ var
   frmDACTeQRRetrato : TfrmDACTeQR; //TfrmDACTeQRRetrato;
 begin
   case TamanhoPapel of
-    tpA4: begin
-           frmDACTeQRRetrato := TfrmDACTeQRRetrato.Create(Self);
-           frmDACTeQRRetrato.QRCTe.Page.PaperSize := A4;
-           frmDACTeQRRetrato.QRCTe.Page.Length    := 297.0;
-           frmDACTeQRRetrato.QRCTe.Page.Width     := 210.0;
-          end;
     tpA5: begin
            frmDACTeQRRetrato := TfrmDACTeQRRetratoA5.Create(Self);
            frmDACTeQRRetrato.QRCTe.Page.PaperSize := A5Trans;
            frmDACTeQRRetrato.QRCTe.Page.Length    := 148.0;
+           frmDACTeQRRetrato.QRCTe.Page.Width     := 210.0;
+          end;
+     else begin // tpA4
+           frmDACTeQRRetrato := TfrmDACTeQRRetrato.Create(Self);
+           frmDACTeQRRetrato.QRCTe.Page.PaperSize := A4;
+           frmDACTeQRRetrato.QRCTe.Page.Length    := 297.0;
            frmDACTeQRRetrato.QRCTe.Page.Width     := 210.0;
           end;
   end;
@@ -166,16 +166,16 @@ var
   frmDACTeQRRetrato : TfrmDACTeQR; //TfrmDACTeQRRetrato;
 begin
   case TamanhoPapel of
-    tpA4: begin
-           frmDACTeQRRetrato := TfrmDACTeQRRetrato.Create(Self);
-           frmDACTeQRRetrato.QRCTe.Page.PaperSize := A4;
-           frmDACTeQRRetrato.QRCTe.Page.Length    := 297.0;
-           frmDACTeQRRetrato.QRCTe.Page.Width     := 210.0;
-          end;
     tpA5: begin
            frmDACTeQRRetrato := TfrmDACTeQRRetratoA5.Create(Self);
            frmDACTeQRRetrato.QRCTe.Page.PaperSize := A5Trans;
            frmDACTeQRRetrato.QRCTe.Page.Length    := 148.0;
+           frmDACTeQRRetrato.QRCTe.Page.Width     := 210.0;
+          end;
+     else begin // tpA4
+           frmDACTeQRRetrato := TfrmDACTeQRRetrato.Create(Self);
+           frmDACTeQRRetrato.QRCTe.Page.PaperSize := A4;
+           frmDACTeQRRetrato.QRCTe.Page.Length    := 297.0;
            frmDACTeQRRetrato.QRCTe.Page.Width     := 210.0;
           end;
   end;

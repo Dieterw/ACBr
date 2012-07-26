@@ -262,7 +262,6 @@ var
   i : integer;
 begin
   Result := False;
-  i:=0;
   try
     FXML := Self.Leitor.Arquivo;
     if (Leitor.rExtrai(1, 'retConsNFeDest') <> '') then

@@ -955,7 +955,6 @@ var
 begin
   inherited;
    PrintBand := QRNFe.PageNumber = 1;
-   iQuantDup := 0;
 
    // Destinatario
 

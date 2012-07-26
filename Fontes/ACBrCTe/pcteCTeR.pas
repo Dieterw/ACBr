@@ -181,6 +181,7 @@ begin
       (*B33*)CTe.Ide.Toma4.IE      := Leitor.rCampo(tcStr, 'IE');
       (*B34*)CTe.Ide.Toma4.xNome   := Leitor.rCampo(tcStr, 'xNome');
       (*B35*)CTe.Ide.Toma4.xFant   := Leitor.rCampo(tcStr, 'xFant');
+      (*#44*)CTe.Ide.Toma4.fone    := Leitor.rCampo(tcStr, 'fone');
   {$IFDEF PL_104}
       (*#56*)CTe.Ide.Toma4.email   := Leitor.rCampo(tcStr, 'email');
   {$ENDIF}
@@ -474,6 +475,7 @@ begin
     CTe.Dest.IE      := Leitor.rCampo(tcStr, 'IE');
     CTe.Dest.xNome   := Leitor.rCampo(tcStr, 'xNome');
     CTe.Dest.fone    := Leitor.rCampo(tcStr, 'fone');
+    CTe.Dest.ISUF    := Leitor.rCampo(tcStr, 'ISUF');
   {$IFDEF PL_104}
     CTe.Dest.email   := Leitor.rCampo(tcStr, 'email');
   {$ENDIF}

@@ -44,6 +44,7 @@ type
     btnMenuFiscalLX : TButton ;
     btnMenuFiscalMFDArq : TButton ;
     btnMenuFiscalMFDEspelho : TButton ;
+    btnMenuFiscalNotaPaulista: TButton;
     btnMenuFiscalRelDAVEmitidos : TButton ;
     btnMenuFiscalRelIdentPAFECF : TButton ;
     btnMenuFiscalRelMeiosPagto : TButton ;
@@ -429,6 +430,7 @@ type
     procedure btnMenuFiscalLXClick(Sender : TObject) ;
     procedure btnMenuFiscalMFDArqClick(Sender : TObject) ;
     procedure btnMenuFiscalMFDEspelhoClick(Sender : TObject) ;
+    procedure btnMenuFiscalNotaPaulistaClick(Sender: TObject);
     procedure btnMenuFiscalRelDAVEmitidosClick(Sender : TObject) ;
     procedure btnMenuFiscalRelIdentPAFECFClick(Sender : TObject) ;
     procedure btnMenuFiscalRelMeiosPagtoClick(Sender : TObject) ;
@@ -1052,6 +1054,19 @@ begin
 
     ShowMessage(Format('Arquivo gerado com sucesso em:'#13#10' "%s"', [PathArquivo]));
   end;
+end;
+
+procedure TForm1.btnMenuFiscalNotaPaulistaClick(Sender: TObject);
+var
+  DirArquivos: string;
+begin
+  DirArquivos := ExtractFilePath(ParamStr(0)) + 'CAT52';
+  if not DirectoryExists(DirArquivos) then
+    ForceDirectories(DirArquivos);
+
+  ACBrECF1.PafMF_GerarCAT52(edtDtInicial.Date, edtDtFinal.Date, DirArquivos);
+
+  ShowMessage(Format('Arquivos gerados com sucesso em:'#13#10' "%s"', [DirArquivos]));
 end;
 
 procedure TForm1.btnMenuFiscalRelDAVEmitidosClick(Sender : TObject) ;

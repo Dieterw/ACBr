@@ -98,6 +98,12 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Data: 28/07/2012
+-- ACBrECFSwedaSTX --
+[*] Método CorrigeEstadoErro modificado para suportar problemas de ECF a muito
+    tempo sem uso, onde é necessário informar a Data e Hora atual   (por: DSA)
+[+] Implementado o método: PafMF_GerarCAT52  (por: DSA)
+
 Data: 23/07/2012
 -- ACBrECFDaruma --
 [*] Adicionada verificação para respostas do ECF iniciando com dois sinais ":",

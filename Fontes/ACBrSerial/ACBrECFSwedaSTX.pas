@@ -99,6 +99,9 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
       ParametroInicial: AnsiString; ParametroFinal: AnsiString; UsuarioECF: AnsiString ):
       Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
 
+    xECF_GeraRegistrosCAT52MFD : Function (Arquivo : AnsiString ; Data: AnsiString):
+      Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
+
     xECF_ReproduzirMemoriaFiscalMFD : Function (tipo: AnsiString; fxai: AnsiString;
       fxaf:  AnsiString; asc: AnsiString; bin: AnsiString): Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
     xECF_FechaPortaSerial : Function: Integer; {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
@@ -217,6 +220,8 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
 
     Procedure MudaHorarioVerao  ; overload ; override ;
     Procedure MudaHorarioVerao( EHorarioVerao : Boolean ) ; overload ; override ;
+    Procedure CorrigeEstadoErro( Reducao: Boolean = True ) ; override ;
+
     Procedure LeituraMemoriaFiscal( DataInicial, DataFinal : TDateTime;
        Simplificada : Boolean = False ) ; override ;
     Procedure LeituraMemoriaFiscal( ReducaoInicial, ReducaoFinal : Integer;
@@ -272,6 +277,9 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
        NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos];
        Finalidade: TACBrECFFinalizaArqMFD = finMFD;
        TipoContador: TACBrECFTipoContador = tpcCOO  ) ; override ;
+
+    procedure PafMF_GerarCAT52(const DataInicial: TDateTime;
+      const DataFinal: TDateTime; const DirArquivos: string); override;
 
     function TraduzirTag(const ATag: AnsiString): AnsiString; override;
     function TraduzirTagBloco(const ATag, Conteudo : AnsiString) : AnsiString ; override;
@@ -1050,6 +1058,58 @@ begin
                             'Arquivo: "'+NomeArquivo + '" não gerado' ))
 end;
 
+procedure TACBrECFSwedaSTX.PafMF_GerarCAT52(const DataInicial: TDateTime;
+   const DataFinal: TDateTime; const DirArquivos: string);
+var
+  Resp: Integer;
+  FilePath, Dia, FileMF : AnsiString;
+  OldAtivo: Boolean;
+  DataArquivo: TDateTime;
+begin
+  LoadDLLFunctions;
+
+  FilePath := IncludeTrailingPathDelimiter(DirArquivos);
+  OldAtivo := Ativo ;
+  try
+    // a sweda não possui a geração do CAT52 por período, mas pode-se
+    // gerar arquivos de um arquivo MF, então baixamos a MF do ECF
+    // e rodamos um loop com a data gerando o arquivo para cada dia dentro
+    // do período
+    AbrePortaSerialDLL;
+    FileMF := 'ACBr.MF';
+
+    // fazer primeiro o download da MF
+    Resp := xECF_DownloadMF(FileMF);
+    if (Resp <> 1) then
+       raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar ECF_DownloadMF.'+sLineBreak+
+                                  DescricaoErroDLL(Resp) ));
+
+    // gerar o arquivo para cada dia dentro do período a partir da
+    // MFD baixada da impressora fiscal
+    DataArquivo := DataInicial;
+    repeat
+      Dia := FormatDateTime('dd/mm/yyyy', DataInicial);
+
+      Resp := xECF_GeraRegistrosCAT52MFD( FileMF, Dia ) ;
+      if (Resp <> 1) then
+      raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar ECF_DownloadMF.'+sLineBreak+
+                                 DescricaoErroDLL(Resp) + sLineBreak +
+                                 'Para a data de: "' + Dia + '"' ));
+
+      // próximo dia
+      IncDay( DataArquivo, 1 );
+
+    until DataArquivo > DataFinal;
+
+  finally
+     xECF_FechaPortaSerial ;
+     try
+        Ativo := OldAtivo ;
+     except
+     end;
+  end;
+end;
+
 procedure TACBrECFSwedaSTX.ArquivoMFD_DLL(DataInicial, DataFinal: TDateTime;
   NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet;
   Finalidade: TACBrECFFinalizaArqMFD);
@@ -1077,7 +1137,7 @@ begin
 
     if Tipo='3' then
     begin
-      Resp := xECF_DownloadMF('TMP.MF');
+      Resp := xECF_DownloadMF('ACBr.MF');
       if (Resp <> 1) then
         raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar ECF_DownloadMF.'+sLineBreak+
                                        DescricaoErroDLL(Resp) ));
@@ -1089,7 +1149,7 @@ begin
     end;
 
     if (Resp <> 1) then
-      raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar ECF_DownloadMFD.'+sLineBreak+
+      raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar ECF_ReproduzirMemoriaFiscalMFD.'+sLineBreak+
                                        DescricaoErroDLL(Resp) ))
   finally
     xECF_FechaPortaSerial ;
@@ -1326,6 +1386,27 @@ begin
       cmd := 'S'
    else cmd := 'N';
    EnviaComando('35|'+cmd);
+end;
+
+procedure TACBrECFSwedaSTX.CorrigeEstadoErro(Reducao: Boolean);
+begin
+   inherited CorrigeEstadoErro(Reducao);
+
+   if Estado = estDesconhecido then
+   begin
+     try
+       LeituraX;
+     except
+       On E: EACBrECFErro do
+       begin
+         if (pos('216', E.Message) > 0) then
+         begin
+            EnviaComando('23|'+FormatDateTime('dd/mm/yyyy|hh:nn:ss',Now));
+            inherited CorrigeEstadoErro(Reducao);
+         end;
+       end;
+     end;
+   end;
 end;
 
 
@@ -2210,6 +2291,7 @@ begin
 
   SwedaFunctionDetect('ECF_AbreConnectC', @xECF_AbreConnectC);
   SwedaFunctionDetect('ECF_DownloadMFD', @xECF_DownloadMFD);
+  SwedaFunctionDetect('ECF_GeraRegistrosCAT52MFD', @xECF_GeraRegistrosCAT52MFD);
   SwedaFunctionDetect('ECF_DownloadMF', @xECF_DownloadMF);
   SwedaFunctionDetect('ECF_ReproduzirMemoriaFiscalMFD', @xECF_ReproduzirMemoriaFiscalMFD);
   SwedaFunctionDetect('ECF_FechaPortaSerial', @xECF_FechaPortaSerial);

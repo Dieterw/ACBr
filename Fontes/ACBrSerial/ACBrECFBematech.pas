@@ -440,8 +440,6 @@ TACBrECFBematech = class( TACBrECFClass )
     Destructor Destroy  ; override ;
 
     procedure Ativar ; override ;
-    procedure PafMF_GerarCAT52(const DataInicial: TDateTime;
-      const DataFinal: TDateTime; const DirArquivos: string); override;
 
     Property ACK   : Integer read fsACK ;
     Property ST1   : Integer read fsST1 ;
@@ -561,6 +559,9 @@ TACBrECFBematech = class( TACBrECFClass )
        TipoContador: TACBrECFTipoContador = tpcCOO ) ; override ;
     function TraduzirTag(const ATag: AnsiString): AnsiString; override;
     function TraduzirTagBloco(const ATag, Conteudo: AnsiString): AnsiString; override;
+
+    procedure PafMF_GerarCAT52(const DataInicial: TDateTime;
+      const DataFinal: TDateTime; const DirArquivos: string); override;
 
  end ;
 

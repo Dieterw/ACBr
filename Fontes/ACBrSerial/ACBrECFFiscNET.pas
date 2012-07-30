@@ -3273,7 +3273,9 @@ begin
          begin
             if ( Aliquotas[ nAux2 ].Aliquota = nIcms ) then
             begin
-               Result := Result + padL( Aliquotas[ nAux2 ].Indice, 2 ) +
+               Result := Result +
+                                  FormatFloat('00', nAux+1 ) +
+                                  padL( Aliquotas[ nAux2 ].Indice, 2, '0' ) +
                                   Aliquotas[ nAux2 ].Tipo +
                                   IntToStrZero( Trunc( Aliquotas[ nAux2 ].Aliquota * 100 ), 4 ) + ' = '+
                                   FloatToStr( nVal ) + sLineBreak ;

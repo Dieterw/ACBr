@@ -168,7 +168,8 @@ function TEventoNFe.ObterNomeArquivo(tpEvento: TpcnTpEvento): string;
 begin
  case tpEvento of
     teCCe                       : Result := IntToStr(Self.idLote) + '-cce.xml';     // Carta de Correção Eletrônica
-    teCancelamento              : Result := IntToStr(Self.idLote) + '-can-env.xml'; // Cancelamento da NFe como Evento
+                                  // Alterado por Italo em 31/07/2012 -can-env.xml para -can-eve.xml
+    teCancelamento              : Result := IntToStr(Self.idLote) + '-can-eve.xml'; // Cancelamento da NFe como Evento
     teManifDestCiencia,
     teManifDestConfirmacao,
     teManifDestDesconhecimento,

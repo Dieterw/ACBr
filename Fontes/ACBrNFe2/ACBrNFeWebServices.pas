@@ -3292,8 +3292,9 @@ begin
             begin
               wProc := TStringList.Create;
               wProc.Add('<?xml version="1.0" encoding="UTF-8" ?>');
-              wProc.Add('<ProcEventoNFe versao="1.00" xmlns="http://www.portalfiscal.inf.br/nfe">');
-              wProc.Add('<evento version="1.00">');
+              wProc.Add('<ProcEventoNFe versao="' + NFeCCeNFe + '" xmlns="http://www.portalfiscal.inf.br/nfe">');
+              // Alterado por Italo em 31/07/2012 a palavra versao esta escrita: version
+              wProc.Add('<evento versao="' + NFeCCeNFe + '">');
               Leitor.Arquivo := FDadosMSG;
               // Alterado por Allan Wolski em 28/09/2011
               wProc.Add(UTF8Encode(Leitor.rExtrai(1, 'infEvento', '', i + 1)));
@@ -3312,7 +3313,8 @@ begin
               wProc.Add('</Signature>');
 
               wProc.Add('</evento>');
-              wProc.Add('<retEvento version="1.00">');
+              // Alterado por Italo em 31/07/2012 a palavra versao esta escrita: version
+              wProc.Add('<retEvento versao="' + NFeCCeNFe + '">');
               Leitor.Arquivo := FRetWS;
               // Alterado por Allan Wolski em 28/09/2011
               wProc.Add(UTF8Encode(Leitor.rExtrai(1, 'infEvento', '', j + 1)));
@@ -3468,7 +3470,8 @@ begin
     FTpAmb   := EventoRetorno.tpAmb;
     Result   := (EventoRetorno.cStat = 128) or (EventoRetorno.cStat = 135) or (EventoRetorno.cStat = 136);
 
-    FPathArqResp := IntToStr(FEvento.idLote) + '-env.xml';
+   // Alterado por Italo em 31/07/2012 -env.xml para -eve.xml
+   FPathArqResp := IntToStr(FEvento.idLote) + '-eve.xml';
     if FConfiguracoes.Geral.Salvar then
       FConfiguracoes.Geral.Save(FPathArqResp, FRetWS);
 
@@ -3487,8 +3490,9 @@ begin
             begin
               wProc := TStringList.Create;
               wProc.Add('<?xml version="1.0" encoding="UTF-8" ?>');
-              wProc.Add('<ProcEventoNFe versao="1.00" xmlns="http://www.portalfiscal.inf.br/nfe">');
-              wProc.Add('<evento version="1.00">');
+              wProc.Add('<ProcEventoNFe versao="' + NFeEventoNFe + '" xmlns="http://www.portalfiscal.inf.br/nfe">');
+              // Alterado por Italo em 31/07/2012 a palavra versao esta escrita: version
+              wProc.Add('<evento versao="' + NFeEventoNFe + '">');
               Leitor.Arquivo := FDadosMSG;
               wProc.Add(UTF8Encode(Leitor.rExtrai(1, 'infEvento', '', i + 1)));
               wProc.Add('</infEvento>');
@@ -3506,7 +3510,8 @@ begin
               wProc.Add('</Signature>');
 
               wProc.Add('</evento>');
-              wProc.Add('<retEvento version="1.00">');
+              // Alterado por Italo em 31/07/2012 a palavra versao esta escrita: version
+              wProc.Add('<retEvento versao="' + NFeEventoNFe + '">');
               Leitor.Arquivo := FRetWS;
               wProc.Add(UTF8Encode(Leitor.rExtrai(1, 'infEvento', '', j + 1)));
               wProc.Add('</infEvento>');

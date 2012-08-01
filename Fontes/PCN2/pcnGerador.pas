@@ -141,7 +141,10 @@ const
   ENCODING_UTF8 = '?xml version="1.0" encoding="UTF-8"?';
   ENCODING_UTF8_STD = '?xml version="1.0" encoding="UTF-8" standalone="no"?';
   NAME_SPACE = 'xmlns="http://www.portalfiscal.inf.br/nfe"';
-  NAME_SPACE_CTE = 'xmlns="http://www.portalfiscal.inf.br/cte"';  
+  NAME_SPACE_CTE = 'xmlns="http://www.portalfiscal.inf.br/cte"';
+
+ // Incluido por Italo em 01/08/2012
+  NAME_SPACE_MDFE = 'xmlns="http://www.portalfiscal.inf.br/mdfe"';
 
   V1_00 = 'versao="1.00"';
   V1_01 = 'versao="1.01"';
@@ -159,6 +162,12 @@ const
   VM_Aqua_1_04  = 'versaoModal="1.04"';
   VM_Ferro_1_04 = 'versaoModal="1.04"';
   VM_Duto_1_04  = 'versaoModal="1.04"';
+
+ // Incluido por Italo em 01/08/2012
+  VM_Rodo_1_00  = 'versaoModal="1.00"';
+  VM_Aereo_1_00 = 'versaoModal="1.00"';
+  VM_Aqua_1_00  = 'versaoModal="1.00"';
+  VM_Ferro_1_00 = 'versaoModal="1.00"';
 
   // NFE //
 

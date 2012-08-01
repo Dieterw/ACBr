@@ -359,26 +359,6 @@ begin
                 tlEnvDPEC         : Result := '1.01';
                 tlConsDPEC        : Result := '1.01';
                 tlCCeNFe          : Result := '2.00';
-
-                // Tipos de LayOut para CT-e
-                // Será removido após os demais fontes estiverem atualizados, por Italo em 03/08/2011
-                {
-                tlConsStatServCTe : Result := '1.03';
-                tlCTe             : Result := '1.03';
-                tlEnvCTe          : Result := '1.03';
-                tlRetEnvCTe       : Result := '1.03';
-                tlProcCTe         : Result := '1.03';
-                tlConsReciCTe     : Result := '1.03';
-                tlRetConsReciCTe  : Result := '1.03';
-                tlConsSitCTe      : Result := '1.03';
-                tlRetConsSitCTe   : Result := '1.03';
-                tlCancCTe         : Result := '1.03';
-                tlProcCancCTe     : Result := '1.03';
-                tlRetCancCTe      : Result := '1.03';
-                tlInutCTe         : Result := '1.03';
-                tlProcInutCTe     : Result := '1.03';
-                tlRetInutCTe      : Result := '1.03';
-                }
               end;
     TsPL006 : case Layout of
                 tlCancNFe         : Result := '2.00';
@@ -444,7 +424,7 @@ begin
                       tlInutCTe         : Result := '1.04';
                       tlProcInutCTe     : Result := '1.04';
                       tlRetInutCTe      : Result := '1.04';
-                  end;
+                    end;
   end;
 end;
 

@@ -113,7 +113,7 @@ begin
     Gerador.wCampo(tcStr, 'EP03', 'tpAmb', 001, 001, 1, tpAmbToStr(FtpAmb), DSC_TPAMB);
     Gerador.wCampo(tcStr, 'EP04', 'xServ', 009, 009, 1, 'CONSULTAR', DSC_XSERV);
     Gerador.wCampo(tcEsp, 'EP05', 'chCTe', 044, 044, 1, SomenteNumeros(FchCTe), DSC_CHCTe);
-    if not ValidarChave('CTe' + SomenteNumeros(FchCTe)) then
+    if not ValidarChave('NFe' + SomenteNumeros(FchCTe)) then
       Gerador.wAlerta('EP05', 'chCTe', '', 'Chave do CTe inválida');
     Gerador.wGrupo('/consSitCTe');
 

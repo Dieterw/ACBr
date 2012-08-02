@@ -88,7 +88,8 @@ type
                     tlRetConsReciCTe, tlRetConsSitCTe, tlRetEnvCTe, tlRetInutCTe,
                     tlEnvCTe, tlProcCancCTe, tlEnvDPEC, tlConsDPEC, tlConsStatServCTe,
                     tlCCeNFe, tlEnvCCeNFe, tlRetEnvCCeNFe, tlEnvEventoNFe, tlRetEnvEventoNFe,
-                    tlConsNFeDest, tlDownloadNFe);
+                    tlConsNFeDest, tlDownloadNFe,
+                    tlProcMDFe);
 
   // Tipo tcDe6 incluido por Italo em 30/09/2010 (usado no CTe campo 435: vTar = valor da tarifa do modal Dutoviário)
   TpcnTipoCampo = (tcStr, tcInt, tcDat, tcDatHor, tcEsp, tcDe2, tcDe3, tcDe4, tcDe10,
@@ -446,12 +447,12 @@ begin
                                'RetCancNFe', 'RetConsCad', 'RetConsReciNFe', 'RetConsStatServ',
                                'RetConsSitNFe', 'RetEnvNFe', 'RetInutNFe', 'EnvNFe',
                                'ProcCancNFe', 'ConsStatServ', 'EnvCCeNFe', 'EnvEventoNFe',
-                               'ConsNFeDest', 'DownloadNFe'],
+                               'ConsNFeDest', 'DownloadNFe', 'ProcMDFe'],
       [tlAtuCadEmiDFe, tlCadEmiDFe, tlCancCTe, tlConsCad, tlConsReciCTe, tlConsSitCTe,
        tlConsStatServ, tlInutCTe, tlCTe, tlProcCTe, tlProcInutCTe, tlRetAtuCadEmiDFe,
        tlRetCancCTe, tlRetConsCad, tlRetConsReciCTe, tlRetConsStatServ, tlRetConsSitCTe,
        tlRetEnvCTe, tlRetInutCTe, tlEnvCTe, tlProcCancCTe, tlConsStatServCTe, tlEnvCCeNFe,
-       tlEnvEventoNFe, tlConsNFeDest, tlDownloadNFe]);
+       tlEnvEventoNFe, tlConsNFeDest, tlDownloadNFe, tlProcMDFe]);
 end;
 
 // Alterado por Italo em 17/07/2012
@@ -463,12 +464,12 @@ begin
                                    'RetCancNFe', 'RetConsCad', 'RetConsReciNFe', 'RetConsStatServ',
                                    'RetConsSitNFe', 'RetEnvNFe', 'RetInutNFe', 'EnvNFe',
                                    'ConsStatServ', 'EnvCCeNFe', 'EnvEventoNFe',
-                                   'ConsNFeDest', 'DownloadNFe'],
+                                   'ConsNFeDest', 'DownloadNFe', 'ProcMDFe'],
       [tlAtuCadEmiDFe, tlCadEmiDFe, tlCancCTe, tlConsCad, tlConsReciCTe, tlConsSitCTe,
        tlConsStatServ, tlInutCTe, tlCTe, tlProcCTe, tlProcInutCTe, tlRetAtuCadEmiDFe,
        tlRetCancCTe, tlRetConsCad, tlRetConsReciCTe, tlRetConsStatServ, tlRetConsSitCTe,
        tlRetEnvCTe, tlRetInutCTe, tlEnvCTe, tlConsStatServCTe, tlEnvCCeNFe, tlEnvEventoNFe,
-       tlConsNFeDest, tlDownloadNFe]);
+       tlConsNFeDest, tlDownloadNFe, tlProcMDFe]);
 end;
 
 // Indicador do Tipo de pagamento **********************************************

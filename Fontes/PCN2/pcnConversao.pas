@@ -64,9 +64,15 @@ type
                      stNFeConsulta, stNFeCancelamento, stNFeInutilizacao, stNFeRecibo,
                      stNFeCadastro, stNFeEmail, stNFeEnvDPEC, stNFeConsultaDPEC,
                      stNFeCCe, stNFeEvento, stConsNFeDest);
+
   TStatusACBrCTe = ( stCTeIdle, stCTeStatusServico, stCTeRecepcao, stCTeRetRecepcao,
                      stCTeConsulta, stCTeCancelamento, stCTeInutilizacao, stCTeRecibo,
                      stCTeCadastro, stCTeEmail, stCTeCCe );
+
+  // Incluido por Italo em 02/08/2012
+  TStatusACBrMDFe = ( stMDFeIdle, stMDFeStatusServico, stMDFeRecepcao, stMDFeRetRecepcao,
+                      stMDFeConsulta, stMDFeRecibo, stMDFeEvento );
+
   (* IMPORTANTE - Sempre que alterar um Tipo efetuar a atualização das funções de conversão correspondentes *)
   // Alterado por Italo em 17/07/2012
   TLayOut = (LayNfeRecepcao,LayNfeRetRecepcao,LayNfeCancelamento,LayNfeInutilizacao,
@@ -76,7 +82,11 @@ type
              LayNFeCCe,LayNFeEvento, LayNFeConsNFeDest, LayNFeDownloadNFe);
 
   // Incluido o TsPL_CTe_103 e TsPL_CTe_104 para CTe por Italo em 03/08/2011
-  TpcnSchema = (TsPL005c, TsPL006, TsPL_CTe_103, TsPL_CTe_104);
+  // Incluido o TsPL_MDFe_100 para MDFe por Italo em 02/08/2012
+  TpcnSchema = (TsPL005c, TsPL006,
+                TsPL_CTe_103, TsPL_CTe_104,
+                TsPL_MDFe_100);
+
   // Incluido o tlConsStatServCTe para CTe por possuir uma versão diferente da NFe
   // Alterado por Italo em 17/07/2012
   TpcnTipoLayout = (tlAtuCadEmiDFe, tlCadEmiDFe, tlCancNFe, tlConsCad, tlConsReciNFe,
@@ -164,8 +174,10 @@ type
   TpcteModeloNF = (moNF011AAvulsa, moNFProdutor);
   TpcteTrafegoMutuo = (tmOrigem, tmDestino);
 
+  // Incluido por Italo em 17/07/2012
   TpcnTpEvento = (teCCe, teCancelamento, teManifDestConfirmacao, teManifDestCiencia,
-                  teManifDestDesconhecimento, teManifDestOperNaoRealizada);
+                  teManifDestDesconhecimento, teManifDestOperNaoRealizada,
+                  teEncerramento);
 
   // Incluido por Italo em 17/07/2012
   TpcnIndicadorNFe = (inTodas, inSemManifestacaoComCiencia, inSemManifestacaoSemCiencia);
@@ -176,12 +188,13 @@ type
   TpcnTamanhoPapel = (tpA4, tpA5);
 
 const
-  TpcnTpEventoString : array[0..5] of String =( '110110',
+  TpcnTpEventoString : array[0..6] of String =( '110110',
                                                 '110111',
                                                 '210200',
                                                 '210210',
                                                 '210220',
-                                                '210240' );
+                                                '210240',
+                                                '110112' );
 
   NFeUF: array[0..26] of String =
   ('AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA',

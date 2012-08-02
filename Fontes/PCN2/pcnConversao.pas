@@ -79,7 +79,9 @@ type
              LayNfeConsulta,LayNfeStatusServico,LayNfeCadastro, LayNfeEnvDPEC,
              LayNfeConsultaDPEC, LayCTeRecepcao,LayCTeRetRecepcao,LayCTeCancelamento,
              LayCTeInutilizacao,LayCTeConsultaCT,LayCTeStatusServico,LayCTeCadastro,
-             LayNFeCCe,LayNFeEvento, LayNFeConsNFeDest, LayNFeDownloadNFe);
+             LayNFeCCe,LayNFeEvento, LayNFeConsNFeDest, LayNFeDownloadNFe,
+             LayMDFeRecepcao, LayMDFeRetRecepcao, LayMDFeConsulta,
+             LayMDFeStatusServico, LayMDFeEvento);
 
   // Incluido o TsPL_CTe_103 e TsPL_CTe_104 para CTe por Italo em 03/08/2011
   // Incluido o TsPL_MDFe_100 para MDFe por Italo em 02/08/2012
@@ -218,6 +220,13 @@ const
   NFeConsNFeDest  = '1.00'; // Incluido por Italo em 17/07/2012
   NFeDownloadNFe  = '1.00'; // Incluido por Italo em 18/07/2012
 
+  MDFecabMsg       = '1.00';
+  MDFeconsStatServ = '1.00';
+  MDFeenviMDFe     = '1.00';
+  MDFeconsReciMDFe = '1.00';
+  MDFeconsSitMDFe  = '1.00';
+  MDFeEventoMDFe   = '1.00';
+  
 // Alterado por Italo em 03/08/2011
 {$IFDEF PL_103}
   CTecabMsg       = '1.02';

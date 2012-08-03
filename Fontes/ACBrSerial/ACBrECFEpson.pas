@@ -3426,10 +3426,10 @@ begin
 
     GravaLog( 'xEPSON_Obter_Dados_MF_MFD' );
     Resp := xEPSON_Obter_Dados_MF_MFD(  DiaIni, DiaFim,
-                                        0,                // Faixa em Datas
+                                        0,                // 0 = Faixa em Datas
                                         DocumentosToNum(Documentos),
-                                        0,                // Não Gera Ato Cotepe
-                                        0,                // Nao Gera Sintegra
+                                        0,                // 0 = Não Gera Ato Cotepe
+                                        0,                // 0 = Nao Gera Sintegra
                                         ArqTmp );
     if (Resp <> 0) then
       raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar EPSON_Obter_Dados_MF_MFD.'+sLineBreak+
@@ -3471,10 +3471,10 @@ begin
 
     GravaLog( 'xEPSON_Obter_Dados_MF_MFD' );
     Resp := xEPSON_Obter_Dados_MF_MFD(  COOIni, CooFim,
-                                        2,                // Faixa em COO
+                                        2,                // 2 = Faixa em COO
                                         DocumentosToNum(Documentos),
-                                        0,                // Não Gera Ato Cotepe
-                                        0,                // Nao Gera Sintegra
+                                        0,                // 0 = Não Gera Ato Cotepe
+                                        0,                // 0 = Nao Gera Sintegra
                                         ArqTmp );
     if (Resp <> 0) then
       raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar EPSON_Obter_Dados_MF_MFD.'+sLineBreak+
@@ -3524,10 +3524,10 @@ begin
 
     GravaLog( 'xEPSON_Obter_Dados_MF_MFD' );
     Resp := xEPSON_Obter_Dados_MF_MFD(  DiaIni, DiaFim,
-                                        0,                // Faixa em Datas
-                                        0,                // Sem Espelhos
+                                        0,                // 0 = Faixa em Datas
+                                        0,                // 0 = Sem Espelhos
                                         Tipo,
-                                        0,                // Nao Gera Sintegra
+                                        0,                // 0 = Nao Gera Sintegra
                                         ArqTmp );
     if (Resp <> 0) then
       raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar EPSON_Obter_Dados_MF_MFD.'+sLineBreak+
@@ -3585,9 +3585,9 @@ begin
     GravaLog( 'xEPSON_Obter_Dados_MF_MFD' );
     Resp := xEPSON_Obter_Dados_MF_MFD(  COOIni, CooFim,
                                         IfThen( TipoContador = tpcCOO, 2, 1),
-                                        0,                // Sem Espelhos
+                                        0,                // 0 = Sem Espelhos
                                         Tipo,
-                                        0,                // Nao Gera Sintegra
+                                        0,                // 0 = Nao Gera Sintegra
                                         ArqTmp );
     if (Resp <> 0) then
       raise EACBrECFERRO.Create( ACBrStr( 'Erro ao executar EPSON_Obter_Dados_MF_MFD.'+sLineBreak+

@@ -199,7 +199,7 @@ begin
   { Aguarda se a porta AT nao está livre }
 
   I := 0 ;
-  MaxLoops := 1000;
+  MaxLoops := 10000;
   if fpIntervaloEnvioBytes > 0 then
      MaxLoops := trunc( 1000 / fpIntervaloEnvioBytes );  // Até 1 seg
 

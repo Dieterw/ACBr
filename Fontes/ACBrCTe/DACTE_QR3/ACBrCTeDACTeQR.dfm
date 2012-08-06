@@ -1,6 +1,6 @@
 object frmDACTeQR: TfrmDACTeQR
-  Left = 199
-  Top = 118
+  Left = 194
+  Top = 125
   Width = 880
   Height = 708
   Caption = 'frmDACTeQR'
@@ -15,8 +15,8 @@ object frmDACTeQR: TfrmDACTeQR
   PixelsPerInch = 96
   TextHeight = 13
   object QRCTe: TQuickRep
-    Left = 6
-    Top = 6
+    Left = 4
+    Top = 4
     Width = 794
     Height = 1123
     Frame.Color = clBlack
@@ -55,7 +55,7 @@ object frmDACTeQR: TfrmDACTeQR
     PrinterSettings.LastPage = 0
     PrinterSettings.OutputBin = Auto
     PrintIfEmpty = True
-    ReportTitle = 'DACTe 02/05/2012'
+    ReportTitle = 'DACTe 06/08/2012'
     ShowProgress = False
     SnapToGrid = True
     Units = MM

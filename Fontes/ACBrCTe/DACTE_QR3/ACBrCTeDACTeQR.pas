@@ -47,7 +47,7 @@
 |*    "FMargemSuperior", "FMargemInferior", "FMargemEsquerda", "FMargemDireita",
 |*    nas Class procedures "Imprimir" e "SavePDF"
 |*  - Habilitada a funcionalidade da procedure "SavePDF";
-|* 02/05/2012: Italo Jurisato Junior
+|* 15/08/2012: Italo Jurisato Junior
 ******************************************************************************}
 
 {$I ACBr.inc}

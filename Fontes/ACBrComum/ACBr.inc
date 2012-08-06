@@ -1533,7 +1533,7 @@
 //------------------------------------------------------------------------------
 // Descomente a linha abaixo caso o Quick Report tenha suporte a PDF
 
-{$DEFINE QReport_PDF}
+//{$DEFINE QReport_PDF}
 
 
 //------------------------------------------------------------------------------

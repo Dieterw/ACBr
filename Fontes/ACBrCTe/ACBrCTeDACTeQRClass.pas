@@ -94,7 +94,11 @@ begin
   case TamanhoPapel of
     tpA5: begin
            frmDACTeQRRetrato := TfrmDACTeQRRetratoA5.Create(Self);
+          {$IFDEF QReport_PDF}
            frmDACTeQRRetrato.QRCTe.Page.PaperSize := A5Trans;
+          {$ELSE}
+           frmDACTeQRRetrato.QRCTe.Page.PaperSize := A5;
+          {$ENDIF}
            frmDACTeQRRetrato.QRCTe.Page.Length    := 148.0;
            frmDACTeQRRetrato.QRCTe.Page.Width     := 210.0;
           end;
@@ -168,7 +172,11 @@ begin
   case TamanhoPapel of
     tpA5: begin
            frmDACTeQRRetrato := TfrmDACTeQRRetratoA5.Create(Self);
+          {$IFDEF QReport_PDF}
            frmDACTeQRRetrato.QRCTe.Page.PaperSize := A5Trans;
+          {$ELSE}
+           frmDACTeQRRetrato.QRCTe.Page.PaperSize := A5;
+          {$ENDIF}
            frmDACTeQRRetrato.QRCTe.Page.Length    := 148.0;
            frmDACTeQRRetrato.QRCTe.Page.Width     := 210.0;
           end;

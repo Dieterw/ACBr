@@ -1,7 +1,6 @@
 package ACBr_Boleto;
 
 {$R *.res}
-{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
 {$ALIGN 8}
 {$ASSERTIONS ON}
 {$BOOLEVAL OFF}
@@ -23,10 +22,9 @@ package ACBr_Boleto;
 {$WRITEABLECONST OFF}
 {$MINENUMSIZE 1}
 {$IMAGEBASE $400000}
-{$DEFINE DEBUG}
-{$ENDIF IMPLICITBUILDING}
 {$DESCRIPTION 'ACBr Automação Comercial Brasil - ACBrBoleto - (http://acbr.sourceforge.net/)'}
 {$IMPLICITBUILD ON}
+{$DEFINE DEBUG}
 
 requires
   rtl,
@@ -34,7 +32,9 @@ requires
   designide,
   synapse,
   ACBrDiversos,
-  ACBrComum;
+  ACBrComum,
+  vclactnband,
+  vclx;
 
 contains
   ACBrBancoBradesco in '..\..\Fontes\ACBrBoleto\ACBrBancoBradesco.pas',
@@ -49,6 +49,7 @@ contains
   ACBrBancoSantander in '..\..\Fontes\ACBrBoleto\ACBrBancoSantander.pas',
   ACBrCaixaEconomicaSICOB in '..\..\Fontes\ACBrBoleto\ACBrCaixaEconomicaSICOB.pas',
   ACBrBancoHSBC in '..\..\Fontes\ACBrBoleto\ACBrBancoHSBC.pas',
-  ACBrBanestes in '..\..\Fontes\ACBrBoleto\ACBrBanestes.pas';
+  ACBrBanestes in '..\..\Fontes\ACBrBoleto\ACBrBanestes.pas',
+  ACBrBancoNordeste in '..\..\Fontes\ACBrBoleto\ACBrBancoNordeste.pas';
 
 end.

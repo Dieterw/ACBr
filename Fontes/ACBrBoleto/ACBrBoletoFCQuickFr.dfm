@@ -1,8 +1,9 @@
 object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
   Left = 197
   Top = 152
-  Width = 918
+  Width = 1309
   Height = 812
+  VertScrollBar.Position = 332
   Caption = 'ACBRBoletoFCQuickFr'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -17,7 +18,7 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
   TextHeight = 13
   object ACBrBarCode1: TACBrBarCode
     Left = 480
-    Top = 344
+    Top = 12
     Width = 200
     Height = 50
     Modul = 2
@@ -31,7 +32,7 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
   end
   object BoletoCarne: TQuickRep
     Left = 3
-    Top = 3
+    Top = -329
     Width = 794
     Height = 1123
     Frame.Color = clBlack
@@ -2800,8 +2801,8 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
     end
   end
   object LayoutBoleto: TQuickRep
-    Left = 3
-    Top = 3
+    Left = 11
+    Top = -177
     Width = 794
     Height = 1123
     Frame.Color = clBlack
@@ -4632,7 +4633,7 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
       object RLMemo2: TQRMemo
         Left = 2
         Top = 334
-        Width = 398
+        Width = 260
         Height = 48
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -4642,8 +4643,8 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         Size.Values = (
           127.000000000000000000
           5.291666666666667000
-          883.708333333333200000
-          1053.041666666667000000)
+          883.708333333333300000
+          687.916666666666700000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = False
@@ -4658,15 +4659,15 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           
             'Recebimento atrav'#233's do cheque n'#250'mero                         do ' +
             'banco'
-          'Esta quita'#231#227'o s'#243' ter'#225' validade ap'#243's o pagamento do cheque pelo'
-          'banco sacado.')
+          'Esta quita'#231#227'o s'#243' ter'#225' validade ap'#243's o pagamento do cheque'
+          'pelo banco sacado.')
         ParentFont = False
         Transparent = False
         WordWrap = True
         FontSize = 7
       end
       object RLLabel91: TQRLabel
-        Left = 499
+        Left = 668
         Top = 334
         Width = 79
         Height = 11
@@ -4677,7 +4678,7 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         Frame.DrawRight = False
         Size.Values = (
           29.104166666666670000
-          1320.270833333333000000
+          1767.416666666667000000
           883.708333333333300000
           209.020833333333300000)
         Alignment = taLeftJustify
@@ -6305,7 +6306,7 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
       object RLLabel168: TQRLabel
         Left = 583
         Top = 775
-        Width = 165
+        Width = 130
         Height = 11
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -6316,12 +6317,12 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           29.104166666666670000
           1542.520833333333000000
           2050.520833333333000000
-          436.562500000000000000)
+          343.958333333333300000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
         AutoStretch = False
-        Caption = 'Autentica'#231#227'o Mec'#226'nica - Ficha de Compensa'#231#227'o'
+        Caption = 'Autentica'#231#227'o - Ficha de Compensa'#231#227'o'
         Color = clWhite
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -6550,11 +6551,41 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         WordWrap = True
         FontSize = 8
       end
+      object mPadraoOrientbanco: TQRMemo
+        Left = 272
+        Top = 333
+        Width = 72
+        Height = 55
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          145.520833333333300000
+          719.666666666666700000
+          881.062500000000000000
+          190.500000000000000000)
+        Alignment = taCenter
+        AlignToBand = False
+        AutoSize = True
+        AutoStretch = False
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -8
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        FontSize = 6
+      end
     end
   end
   object LayOutPadraoEntrega: TQuickRep
-    Left = 3
-    Top = 3
+    Left = 771
+    Top = 23
     Width = 794
     Height = 1123
     Frame.Color = clBlack
@@ -8388,7 +8419,7 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
       object QRMemo2: TQRMemo
         Left = 2
         Top = 593
-        Width = 398
+        Width = 263
         Height = 48
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -8399,7 +8430,7 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           127.000000000000000000
           5.291666666666667000
           1568.979166666667000000
-          1053.041666666667000000)
+          695.854166666666700000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = False
@@ -8414,8 +8445,8 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
           
             'Recebimento atrav'#233's do cheque n'#250'mero                         do ' +
             'banco'
-          'Esta quita'#231#227'o s'#243' ter'#225' validade ap'#243's o pagamento do cheque pelo'
-          'banco sacado.')
+          'Esta quita'#231#227'o s'#243' ter'#225' validade ap'#243's o pagamento do cheque'
+          'pelo banco sacado.')
         ParentFont = False
         Transparent = False
         WordWrap = True
@@ -11480,6 +11511,36 @@ object ACBRBoletoFCQuickFr: TACBRBoletoFCQuickFr
         Transparent = False
         WordWrap = True
         FontSize = 8
+      end
+      object mOrientacoesBanco: TQRMemo
+        Left = 264
+        Top = 592
+        Width = 69
+        Height = 48
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          127.000000000000000000
+          698.500000000000000000
+          1566.333333333333000000
+          182.562500000000000000)
+        Alignment = taCenter
+        AlignToBand = False
+        AutoSize = True
+        AutoStretch = False
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -8
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        FontSize = 6
       end
     end
   end

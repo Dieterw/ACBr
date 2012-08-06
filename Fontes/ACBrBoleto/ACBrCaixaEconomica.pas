@@ -82,6 +82,12 @@ begin
    fpTamanhoMaximoNossoNum := 15;
 
    fValorTotalDocs:= 0;
+
+   fpOrientacoesBanco.Clear;
+   fpOrientacoesBanco.Add(ACBrStr('SAC CAIXA: 0800 726 0101 (informações,reclamações e elogios) ' + sLineBreak+
+                          'Para pessoas com deficiência auditiva ou de fala: 0800 726 2492 ' + sLineBreak +
+                          'Ouvidoria: 0800 725 7474 (reclamações não solucionadas e denúncias)') + sLineBreak+
+                          '     caixa.gov.br      ');
 end;
 
 function TACBrCaixaEconomica.CalcularDigitoVerificador(const ACBrTitulo: TACBrTitulo ): String;
@@ -486,9 +492,10 @@ begin
                                                              Copy(ARetorno[1],194,2)+'/'+
                                                              Copy(ARetorno[1],198,2),0, 'DD/MM/YY' );
 
-   ACBrBanco.ACBrBoleto.DataCreditoLanc := StringToDateTimeDef(Copy(ARetorno[1],200,2)+'/'+
-                                                               Copy(ARetorno[1],202,2)+'/'+
-                                                               Copy(ARetorno[1],204,2),0, 'DD/MM/YY' );
+   if StrToIntDef(Copy(Linha,200,6),0) <> 0 then
+      ACBrBanco.ACBrBoleto.DataCreditoLanc := StringToDateTimeDef(Copy(ARetorno[1],200,2)+'/'+
+                                                                  Copy(ARetorno[1],202,2)+'/'+
+                                                                  Copy(ARetorno[1],204,2),0, 'DD/MM/YY' );
    rCNPJCPF := trim( Copy(ARetorno[0],19,14)) ;
 
    if ACBrBanco.ACBrBoleto.Cedente.TipoInscricao = pJuridica then
@@ -543,7 +550,7 @@ begin
         if Copy(Linha,14,1)= 'T' then //segmento T
         begin
          SeuNumero                   := copy(Linha,59,11);
-         NumeroDocumento             := copy(Linha,40,TamanhoMaximoNossoNum);
+         NumeroDocumento             := copy(Linha,59,11);
          OcorrenciaOriginal.Tipo     := CodOcorrenciaToTipo(StrToIntDef(
                                         copy(Linha,16,2),0));
          //05 = Liquidação Sem Registro
@@ -553,7 +560,7 @@ begin
 
          ValorDocumento       := StrToFloatDef(Copy(Linha,82,15),0)/100;
          ValorDespesaCobranca := StrToFloatDef(Copy(Linha,199,15),0)/100;
-         NossoNumero          := Copy(Linha,40,TamanhoMaximoNossoNum);
+         NossoNumero          := Copy(Linha,40,11);
          Carteira             := Copy(Linha,40,2);
 
          end //if segmento

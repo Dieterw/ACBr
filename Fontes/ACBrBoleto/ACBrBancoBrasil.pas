@@ -810,7 +810,7 @@ begin
 
    with ACBrBanco.ACBrBoleto do
    begin
-      if (not LeCedenteRetorno) and (rCNPJCPF <> Cedente.CNPJCPF) then
+      if (not LeCedenteRetorno) and (rCNPJCPF <> OnlyNumber(Cedente.CNPJCPF)) then
         raise Exception.create(ACBrStr('CNPJ\CPF do arquivo inválido'));
 
       Cedente.Nome := rCedente;

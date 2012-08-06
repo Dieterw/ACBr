@@ -58,7 +58,7 @@ uses ACBrBase,  {Units da ACBr}
      Graphics, Contnrs, Classes;
 
 const
-  CACBrBoleto_Versao = '0.0.38a' ;
+  CACBrBoleto_Versao = '0.0.39a' ;
 
 type
   TACBrTipoCobranca =
@@ -74,7 +74,8 @@ type
     cobBancoob,
     cobBanrisul,
     cobBanestes,
-    cobHSBC
+    cobHSBC,
+    cobBancoDoNordeste
     );
 
   TACBrTitulo = class;
@@ -276,6 +277,7 @@ type
     fpTamanhoConta: Integer;
     fpAOwner: TACBrBanco;
     fpTamanhoMaximoNossoNum: Integer;
+    fpOrientacoesBanco: TStringList;
     function CalcularFatorVencimento(const DataVencimento: TDateTime): String; virtual;
     function CalcularDigitoCodigoBarras(const CodigoBarras: String): String; virtual;
   public
@@ -291,6 +293,7 @@ type
     property TamanhoAgencia  :Integer read fpTamanhoAgencia;
     property TamanhoConta    :Integer read fpTamanhoConta;
     property TamanhoCarteira :Integer read fpTamanhoCarteira;
+    property OrientacoesBanco: TStringList read fpOrientacoesBanco;
 
     function CalcularDigitoVerificador(const ACBrTitulo : TACBrTitulo): String; virtual;
 
@@ -323,12 +326,14 @@ type
   private
     fACBrBoleto        : TACBrBoleto;
     fNumeroBanco       : Integer;
+    fOrientacoesBanco  : TStringList;
     FTamanhoMaximoNossoNum: Integer;
     fTipoCobranca      : TACBrTipoCobranca;
     fBancoClass        : TACBrBancoClass;
     function GetNome   : String;
     function GetDigito : Integer;
     function GetNumero : Integer;
+    function GetOrientacoesBanco: TStringList;
     function GetTamanhoAgencia: Integer;
     function GetTamanhoCarteira: Integer;
     function GetTamanhoConta: Integer;
@@ -338,13 +343,13 @@ type
     procedure SetTipoCobranca(const AValue: TACBrTipoCobranca);
     procedure SetNumero(const AValue: Integer);
     procedure SetTamMaximoNossoNumero(Const Avalue:Integer);
+    procedure SetOrientacoesBanco(Const Avalue: TStringList);
   public
     constructor Create( AOwner : TComponent); override;
     destructor Destroy ; override ;
 
     property ACBrBoleto : TACBrBoleto     read fACBrBoleto;
     property BancoClass : TACBrBancoClass read fBancoClass ;
-    //property TamanhoMaximoNossoNum :Integer read GetTamanhoMaximoNossoNum;
     property TamanhoAgencia        :Integer read GetTamanhoAgencia;
     property TamanhoConta          :Integer read GetTamanhoConta;
     property TamanhoCarteira       :Integer read GetTamanhoCarteira;
@@ -378,6 +383,7 @@ type
     property Nome      : String         read GetNome    write SetNome   stored false;
     property TamanhoMaximoNossoNum :Integer read GetTamanhoMaximoNossoNum  write SetTamMaximoNossoNumero;
     property TipoCobranca : TACBrTipoCobranca read fTipoCobranca   write SetTipoCobranca;
+    property OrientacoesBanco : TStringList read GetOrientacoesBanco write SetOrientacoesBanco;
   end;
 
   TACBrResponEmissao = (tbCliEmite,tbBancoEmite,tbBancoReemite,tbBancoNaoReemite);
@@ -771,7 +777,7 @@ implementation
 
 Uses ACBrUtil, ACBrBancoBradesco, ACBrBancoBrasil, ACBrBanestes, ACBrBancoItau, ACBrBancoSicredi,
      ACBrBancoMercantil, ACBrCaixaEconomica, ACBrBancoBanrisul, ACBrBancoSantander,
-     ACBrBancoob, ACBrCaixaEconomicaSICOB ,ACBrBancoHSBC,Forms,
+     ACBrBancoob, ACBrCaixaEconomicaSICOB ,ACBrBancoHSBC,ACBrBancoNordeste ,Forms,
      {$IFDEF COMPILER6_UP} StrUtils {$ELSE} ACBrD5 {$ENDIF}, Math;
 
 {$IFNDEF FPC}
@@ -1486,6 +1492,11 @@ begin
   Result:=  BancoClass.Numero ;
 end;
 
+function TACBrBanco.GetOrientacoesBanco: TStringList;
+begin
+  Result:= BancoClass.OrientacoesBanco;
+end;
+
 function TACBrBanco.GetTamanhoAgencia: Integer;
 begin
   Result:= BancoClass.TamanhoAgencia;
@@ -1527,6 +1538,11 @@ begin
   BancoClass.fpTamanhoMaximoNossoNum := AValue;
 end;
 
+procedure TACBrBanco.SetOrientacoesBanco(const Avalue: TStringList);
+begin
+  BancoClass.fpOrientacoesBanco.Text := AValue.Text;
+end;
+
 procedure TACBrBanco.SetTipoCobranca(const AValue: TACBrTipoCobranca);
 begin
   if fTipoCobranca = AValue then
@@ -1535,18 +1551,19 @@ begin
   fBancoClass.Free;
 
   case AValue of
-    cobBancoDoBrasil : fBancoClass := TACBrBancoBrasil.create(Self);         {001}
-    cobBanestes      : fBancoClass := TACBrBanestes.create(self);            {021}
-    cobSantander     : fBancoClass := TACBrBancoSantander.create(Self);      {033,353,008}
-    cobBanrisul      : fBancoClass := TACBrBanrisul.create(Self);            {041}
-    cobCaixaEconomica: fBancoClass := TACBrCaixaEconomica.create(Self);      {104}
-    cobCaixaSicob    : fBancoClass := TACBrCaixaEconomicaSICOB.create(Self); {104}
-    cobBradesco      : fBancoClass := TACBrBancoBradesco.create(Self);       {237}
-    cobItau          : fBancoClass := TACBrBancoItau.Create(self);           {341}
-    cobBancoMercantil: fBancoClass := TACBrBancoMercantil.create(Self);      {389}
-    cobSicred        : fBancoClass := TACBrBancoSicredi.Create(self);        {748}
-    cobBancoob       : fBancoClass := TACBrBancoob.create(self);              {756}
-    cobHSBC          : fBancoClass := TACBrBancoHSBC.create(self);            {399}
+    cobBancoDoBrasil  : fBancoClass := TACBrBancoBrasil.create(Self);         {001}
+    cobBancoDoNordeste:fBancoClass  := TACBrBancoNordeste.create(Self);       {004}
+    cobBanestes       : fBancoClass := TACBrBanestes.create(self);            {021}
+    cobSantander      : fBancoClass := TACBrBancoSantander.create(Self);      {033,353,008}
+    cobBanrisul       : fBancoClass := TACBrBanrisul.create(Self);            {041}
+    cobCaixaEconomica : fBancoClass := TACBrCaixaEconomica.create(Self);      {104}
+    cobCaixaSicob     : fBancoClass := TACBrCaixaEconomicaSICOB.create(Self); {104}
+    cobBradesco       : fBancoClass := TACBrBancoBradesco.create(Self);       {237}
+    cobItau           : fBancoClass := TACBrBancoItau.Create(self);           {341}
+    cobBancoMercantil : fBancoClass := TACBrBancoMercantil.create(Self);      {389}
+    cobSicred         : fBancoClass := TACBrBancoSicredi.Create(self);        {748}
+    cobBancoob        : fBancoClass := TACBrBancoob.create(self);              {756}
+    cobHSBC           : fBancoClass := TACBrBancoHSBC.create(self);            {399}
   else
     fBancoClass := TACBrBancoClass.create(Self);
   end;
@@ -1665,11 +1682,13 @@ begin
    fpTamanhoAgencia        := 4;
    fpTamanhoConta          := 10;
    fpModulo := TACBrCalcDigito.Create;
+   fpOrientacoesBanco := TStringList.Create;
 end;
 
 destructor TACBrBancoClass.Destroy;
 begin
    fpModulo.Free;
+   fpOrientacoesBanco.Free;
    Inherited Destroy;
 end;
 

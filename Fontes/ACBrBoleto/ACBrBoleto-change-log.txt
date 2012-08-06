@@ -70,6 +70,10 @@ Versao 0.0.10a do FastReport 02/07/12
 [-] Lançado a 1a versão para impressão dos boletos em FastReport.
     (por: Isaque Pinheiro)	
 
+
+Versao 0.0.12a do QuickReport 05/08/12
+[*] Efetuado pequenos ajustes para atender a Caixa Econômica Federal(Juliana Tamizou)
+
 Versao 0.0.11a do QuickReport 17/07/12
 [+] Implementado layout Padrão com Comprovante de Entrega.(Ivomar)	
 	
@@ -79,9 +83,16 @@ Versao 0.0.10a do QuickReport 10/07/12
 Versao 0.0.9a do QuickReport 07/07/12
 [-] Corrigido impressão do digito verificador do Numero do Banco para bancos com digito maior que 9.(André Luiz)
 
-Versao 0.1.1a do LazReport 02/08/11
+Versao 0.1.15a do LazReport 05/08/12
+[*] Efetuado pequenos ajustes para atender a Caixa Econômica Federal(Juliana Tamizou)
+
+Versao 0.1.15a do LazReport 02/08/11
 [+] Adicionado campos Outras Deduções e Outros Acréscimos ao boleto, conforme
     solicitação da Caixa Econômica Federal(Juliana Tamizou)
+
+
+Versao 0.0.15a do FortesReport 05/08/12
+[*] Efetuado pequenos ajustes para atender a Caixa Econômica Federal(Juliana Tamizou)
 
 Versao 0.0.14a do FortesReport 17/07/12
 [-] Removido label Sacador/Avalista duplicado.(Juliana Tamizou)	
@@ -109,6 +120,29 @@ Versao 0.0.10a do FortesReport 06/07/11
 [*] Acertos na classe do HSBC, testado e funcionando para 
     cobrança não registrada.
     (por: Regys Silveira) 
+
+
+Versao 0.0.39a 05/08/2012		
+[+] Adicionado impressão de boletos do Banco do Nordeste ao ACBrBoleto.(Araujo Junior)
+
+[*] Unit CaixaEconomicaSicob, adicinado verificação se o campo Data Lançamento foi informado
+    no arquivo retorno e só então tratá-lo.(Juliana Tamizou)
+
+[-] Unit Santander, efetuado correção do registro trailler no arquivo remessa CNAB400
+    quando for informado o registo de intruções.(Rodrigo Rodrigues)
+
+[-] Unit CaixaEconomicaSicob, efetuada correção na geração do arquivo remessa CNAB240, 
+    para que o arquivo seja gerado corretamente em modo de produção.(Juliana Tamizou)
+
+[-] Unit HSBC, correção na geração do arquivo remessa CNAB400.(Jair Carlos Muller)
+
+
+[-] Unit CaixaEconomica, correção na leitura do arquivo retorno CNAB240, onde os 
+    campos Nosso Número e Numero do Documento não estavam sendo lidos corretamente.
+    (Juliana Tamizou)
+
+[-] Unit BAnco do Brasil, efetuada correção na leitura do arquivo retorno CNAB240.
+    (Juliano Pompilio)
 	
 
 Versao 0.0.38a 17/07/2012		

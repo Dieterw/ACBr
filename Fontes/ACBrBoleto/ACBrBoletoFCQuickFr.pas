@@ -484,6 +484,8 @@ type
     txtDataDocumento6_0: TQRLabel;
     QRLabel166: TQRLabel;
     QRLabel185: TQRLabel;
+    mOrientacoesBanco: TQRMemo;
+    mPadraoOrientbanco: TQRMemo;
     procedure FormCreate(Sender: TObject);
     procedure LayoutBoletoNeedData(Sender: TObject; var MoreData: Boolean);
     procedure RLBandDatailBeforePrint(Sender: TQRCustomBand;
@@ -696,6 +698,9 @@ begin
      txtCpfCnpjSacado3.Caption       := txtCpfCnpjSacado2.Caption;
      txtLinhaDigitavel.Caption       := LinhaDigitavel;
      txtInstrucoes3.Lines.Text       := txtInstrucoes2.Lines.Text;
+
+     mOrientacoesBanco.Lines.Text  := Banco.OrientacoesBanco.Text;
+     mPadraoOrientbanco.Lines.Text := Banco.OrientacoesBanco.Text;
 
      ACBrBarCode1.Typ  := bcCode_2_5_interleaved ;
      ACBrBarCode1.Text := CodBarras;

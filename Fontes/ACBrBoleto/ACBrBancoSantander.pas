@@ -324,10 +324,10 @@ var vQtdeLinha : Integer;
 begin
    vQtdeLinha := StrToInt(copy(ARemessa.Text,Length(ARemessa.Text)-7,6));//lê a ultima linha gravada para pergar o codigo seq.
 
-   Result:= '9' +                                           // ID Registro
-            IntToStrZero( ARemessa.Count + 1, 6)+           // Contador de Registros
-            IntToStrZero( round( vTotalTitulos* 100), 13) + // Valor Total dos Titulos
-            StringOfChar( '0', 374) + IntToStrZero( {ARemessa.Count}vQtdeLinha + 1, 6);//modifiquei
+   Result:= '9' +                                                      // ID Registro
+            IntToStrZero( vQtdeLinha + 1, 6               )+           // Contador de Registros
+            IntToStrZero( round( vTotalTitulos* 100), 13)  +           // Valor Total dos Titulos
+            StringOfChar( '0', 374) + IntToStrZero( vQtdeLinha + 1, 6);//modifiquei
 
    Result:= UpperCase(Result);
 end;

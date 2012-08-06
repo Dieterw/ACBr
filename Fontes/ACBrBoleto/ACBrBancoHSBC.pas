@@ -84,7 +84,6 @@ begin
   begin
     UltDigAno := FormatDateTime('yyyy', AData)[4];
     DiaDoAno  := Format('%3.3d', [DayOfTheYear(AData)]);
-
     Result    := DiaDoAno + UltDigAno;
   end;
 end;
@@ -108,7 +107,6 @@ var
   ADigito1: AnsiString;
   ADigito2: AnsiString;
   ADigito: AnsiString;
-
   Numero: Extended;
   Cedente: Extended;
   Vencimento: Extended;
@@ -148,9 +146,19 @@ end;
 function TACBrBancoHSBC.MontarCampoNossoNumero (
    const ACBrTitulo: TACBrTitulo ) : String;
 begin
-  Result :=
-   ACBrTitulo.NossoNumero + '-' +
-   CalcularDigitoVerificador(ACBrTitulo);
+  if (ACBrTitulo.Carteira = 'CSB') or (ACBrTitulo.Carteira = '1') then
+   begin
+     Modulo.CalculoPadrao;
+     Modulo.MultiplicadorFinal := 7;
+     Modulo.Documento := ACBrTitulo.NossoNumero;
+     Modulo.Calcular;
+
+     Result := RightStr(ACBrTitulo.NossoNumero,11) + AnsiString(IntToStr(Modulo.DigitoFinal));
+   end
+  else
+     Result := ACBrTitulo.NossoNumero + '-' +
+              CalcularDigitoVerificador(ACBrTitulo);
+   
 end;
 
 function TACBrBancoHSBC.MontarCampoCodigoCedente (
@@ -162,9 +170,6 @@ begin
    else 
       Result := ACBRTitulo.ACBrBoleto.Cedente.CodigoCedente;
 
-     {ACBrTitulo.ACBrBoleto.Cedente.Agencia + ' ' +
-     ACBRTitulo.ACBrBoleto.Cedente.CodigoCedente + '-' +
-     ACBrTitulo.ACBrBoleto.Cedente.ContaDigito;}
 end;
 
 function TACBrBancoHSBC.MontarCodigoBarras ( const ACBrTitulo: TACBrTitulo) : String;
@@ -183,6 +188,7 @@ begin
 
   with ACBrTitulo do
   begin
+
     Parte1 :=
       IntToStr( ACBrBoleto.Banco.Numero ) +
       '9';
@@ -192,19 +198,19 @@ begin
       Parte2 :=
         CalcularFatorVencimento(Vencimento) +
         IntToStrZero(Round(ValorDocumento * 100), 10) +
-        copy(padR(NossoNumero, 13, '0'),3,11) +
+        RightStr(padR(NossoNumero, 13, '0'),11) +
         padR(ACBrBoleto.Cedente.Agencia, 4, '0') +
         padR(ACBrBoleto.Cedente.Conta, 7, '0') +
         '00';
      end
     else // 'CNR' Cobranca Nao Registrada
     begin
-    Parte2 :=
+      Parte2 :=
       CalcularFatorVencimento(Vencimento) +
       IntToStrZero(Round(ValorDocumento * 100), 10) +
       padR(ACBrBoleto.Cedente.CodigoCedente, 7, '0') +
       padR(NossoNumero, 13, '0') +
-        DataToJuliano(Vencimento);
+      DataToJuliano(Vencimento);
     end;
 
     Parte2 := Parte2 + ACarteira;
@@ -246,7 +252,7 @@ end;
 
 function TACBrBancoHSBC.GerarRegistroTransacao400(ACBrTitulo :TACBrTitulo): String;
 var
-  DigitoNossoNumero, Ocorrencia, aEspecie,Protesto:String;
+  DigitoNossoNumero, Ocorrencia, aEspecie, Protesto:String;
   TipoSacado, MensagemCedente,  TipoBoleto :String;
   I :Integer;
 begin
@@ -256,17 +262,17 @@ begin
       DigitoNossoNumero := CalcularDigitoVerificador(ACBrTitulo);
       {Pegando Código da Ocorrencia}
       case OcorrenciaOriginal.Tipo of
-         toRemessaBaixar                        : Ocorrencia := '02'; {Pedido de Baixa}
-         toRemessaConcederAbatimento            : Ocorrencia := '04'; {Concessão de Abatimento}
-         toRemessaCancelarAbatimento            : Ocorrencia := '05'; {Cancelamento de Abatimento concedido}
-         toRemessaAlterarVencimento             : Ocorrencia := '06'; {Alteração de vencimento}
-         toRemessaAlterarNumeroControle         : Ocorrencia := '08'; {Alteração de seu número}
-         toRemessaProtestar                     : Ocorrencia := '09'; {Pedido de protesto}
+         toRemessaBaixar                         : Ocorrencia := '02'; {Pedido de Baixa}
+         toRemessaConcederAbatimento             : Ocorrencia := '04'; {Concessão de Abatimento}
+         toRemessaCancelarAbatimento             : Ocorrencia := '05'; {Cancelamento de Abatimento concedido}
+         toRemessaAlterarVencimento              : Ocorrencia := '06'; {Alteração de vencimento}
+         toRemessaAlterarNumeroControle          : Ocorrencia := '08'; {Alteração de seu número}
+         toRemessaProtestar                      : Ocorrencia := '09'; {Pedido de protesto}
          toRemessaCancelarInstrucaoProtestoBaixa : Ocorrencia := '18'; {Sustar protesto e baixar}
-         toRemessaCancelarInstrucaoProtesto     : Ocorrencia := '19'; {Sustar protesto e manter na carteira}
-         toRemessaOutrasOcorrencias             : Ocorrencia := '31'; {Alteração de Outros Dados}
+         toRemessaCancelarInstrucaoProtesto      : Ocorrencia := '19'; {Sustar protesto e manter na carteira}
+         toRemessaOutrasOcorrencias              : Ocorrencia := '31'; {Alteração de Outros Dados}
       else
-         Ocorrencia := '01';                                          {Remessa}
+         Ocorrencia := '01';                                           {Remessa}
       end;
 
       {Pegando Tipo de Boleto}
@@ -320,20 +326,19 @@ begin
          if length(MensagemCedente) > 60 then
             MensagemCedente:= copy(MensagemCedente,1,60);
 
-
          Result:= '1'                                                                                            + // ID Registro
                   '02'                                                                                           + //Código de Inscrição
                   padR(OnlyNumber(Cedente.CNPJCPF),14,'0')                                                       + //Número de inscrição do Cliente (CPF/CNPJ)
                   '0'                                                                                            + // Zero
                   padR( Cedente.Agencia, 4, '0')                                                                 + // Agencia cedente
                  '55'                                                                                            + // Sub-Conta
-                  padR( Cedente.Agencia+Cedente.Conta+Cedente.ContaDigito, 11, '0')                              + // Conta Corrente                                                     + // Sub-Conta
+                  padR( Cedente.Agencia+Cedente.Conta+Cedente.ContaDigito, 11, '0')                              + // Conta Corrente
                   padL('',2,' ')                                                                                 + // uso banco
-                  padL( SeuNumero,25,' ')                                                                        +  // Numero de Controle do Participante
-                  NossoNumero+DigitoNossoNumero                                                                  + // Nosso Numero
-                  IfThen(DataDesconto < EncodeDate(2000,01,01),'000000',FormatDateTime( 'ddmmyy', DataDesconto)) + // data limite para desconto                                                                                   + // data limite para desconto (2)
+                  padL( SeuNumero,25,' ')                                                                        + // Numero de Controle do Participante
+                  MontarCampoNossoNumero(ACBrTitulo)                                                             + // Nosso Numero tam 10 + digito tam 1
+                  IfThen(DataDesconto < EncodeDate(2000,01,01),'000000',FormatDateTime( 'ddmmyy', DataDesconto)) + // data limite para desconto (2)
                   IntToStrZero( round( ValorDesconto * 100 ), 11)                                                + // valor desconto (2)
-                  IfThen(DataDesconto < EncodeDate(2000,01,01),'000000',FormatDateTime( 'ddmmyy', DataDesconto)) + // data limite para desconto                                                         + // data limite para desconto (3)
+                  IfThen(DataDesconto < EncodeDate(2000,01,01),'000000',FormatDateTime( 'ddmmyy', DataDesconto)) + // data limite para desconto (3)
                   IntToStrZero( round( ValorDesconto * 100 ), 11)                                                + // valor desconto (3)
                   '1'                                                                                            + // 1 - Cobrança Simples
                   padR(Ocorrencia,2,'0')                                                                         + // ocorrencia
@@ -347,12 +352,12 @@ begin
                   padR(Instrucao1,2,'0')                                                                         + // instrução 1
                   padR(Instrucao2,2,'0')                                                                         + // instrução 2
                   IntToStrZero( round(ValorMoraJuros * 100 ), 13)                                                + // Juros de Mora
-                  IfThen(DataDesconto < EncodeDate(2000,01,01),'000000',FormatDateTime( 'ddmmyy', DataDesconto)) + // data limite para desconto
+                  IfThen(DataDesconto < EncodeDate(2000,01,01),'      ',FormatDateTime( 'ddmmyy', DataDesconto)) + // data limite para desconto
                   IntToStrZero( round( ValorDesconto * 100), 13)                                                 + // valor do desconto
                   IntToStrZero( round( ValorIOF * 100 ), 13)                                                     + // Valor do  IOF
                   IntToStrZero( round( ValorAbatimento * 100 ), 13)                                              + // valor do abatimento
                   TipoSacado                                                                                     + // codigo de inscrição do sacado
-                  padR(OnlyNumber(Sacado.CNPJCPF),14,'0')                                                                    + // numero de inscrição do sacado
+                  padR(OnlyNumber(Sacado.CNPJCPF),14,'0')                                                        + // numero de inscrição do sacado
                   padL(Sacado.NomeSacado, 40, ' ')                                                               + // nome sacado
                   padL(Sacado.Logradouro + Sacado.Numero + Sacado.Complemento,38)                                + // endereço sacado
                   padL('', 2, ' ')                                                                               + // Instrução de  não recebimento do bloqueto
@@ -560,7 +565,7 @@ begin
     13: Result:='13-Abatimento Cancelado' ;
     14: Result:='14-Vencimento Alterado' ;
     15: Result:='15-Liquidação em Cartório' ;
-    16: Result:= '16-Titulo Pago em Cheque - Vinculado';
+    16: Result:='16-Titulo Pago em Cheque - Vinculado';
     17: Result:='17-Liquidação após baixa ou Título não registrado' ;
     18: Result:='18-Acerto de Depositária' ;
     19: Result:='19-Confirmação Recebimento Instrução de Protesto' ;
@@ -571,7 +576,7 @@ begin
     24: Result:='24-Entrada rejeitada por CEP Irregular' ;
     27: Result:='27-Baixa Rejeitada' ;
     28: Result:='28-Débito de tarifas/custas' ;
-    29: Result:= '29-Ocorrências do Sacado';
+    29: Result:='29-Ocorrências do Sacado';
     30: Result:='30-Alteração de Outros Dados Rejeitados' ;
     32: Result:='32-Instrução Rejeitada' ;
     33: Result:='33-Confirmação Pedido Alteração Outros Dados' ;
@@ -625,19 +630,19 @@ function TACBrBancoHSBC.TipoOCorrenciaToCod (
    const TipoOcorrencia: TACBrTipoOcorrencia ) : String;
 begin
    case TipoOcorrencia of
-      toRetornoRegistroConfirmado : Result:='02';
-      toRetornoRegistroRecusado   : Result:='03';
-      toRetornoLiquidado          : Result:='06';
-      toRetornoBaixadoViaArquivo  : Result:='09';
-      toRetornoBaixadoInstAgencia : Result:='10';
-      toRetornoTituloEmSer        : Result:='11';
-      toRetornoAbatimentoConcedido: Result:='12';
-      toRetornoAbatimentoCancelado: Result:='13';
-      toRetornoVencimentoAlterado : Result:='14';
-      toRetornoLiquidadoEmCartorio: Result:='15';
-      toRetornoTituloPagoemCheque : Result:='16';
-      toRetornoLiquidadoAposBaixaouNaoRegistro : Result:= '17';
-      toRetornoAcertoDepositaria  : Result:='18';
+      toRetornoRegistroConfirmado                 : Result := '02';
+      toRetornoRegistroRecusado                   : Result := '03';
+      toRetornoLiquidado                          : Result := '06';
+      toRetornoBaixadoViaArquivo                  : Result := '09';
+      toRetornoBaixadoInstAgencia                 : Result := '10';
+      toRetornoTituloEmSer                        : Result := '11';
+      toRetornoAbatimentoConcedido                : Result := '12';
+      toRetornoAbatimentoCancelado                : Result := '13';
+      toRetornoVencimentoAlterado                 : Result := '14';
+      toRetornoLiquidadoEmCartorio                : Result := '15';
+      toRetornoTituloPagoemCheque                 : Result := '16';
+      toRetornoLiquidadoAposBaixaouNaoRegistro    : Result := '17';
+      toRetornoAcertoDepositaria                  : Result := '18';
       toRetornoRecebimentoInstrucaoProtestar      : Result := '19';
       toRetornoRecebimentoInstrucaoSustarProtesto : Result := '20';
       toRetornoAcertoControleParticipante         : Result := '21';
@@ -645,7 +650,7 @@ begin
       toRetornoEncaminhadoACartorio               : Result := '23';
       toRetornoEntradaRejeitaCEPIrregular         : Result := '24';
       toRetornoBaixaRejeitada                     : Result := '27';
-      toRetornoDebitoTarifas      : Result:='28';
+      toRetornoDebitoTarifas                      : Result := '28';
       toRetornoOcorrenciasdoSacado                : Result := '29';
       toRetornoALteracaoOutrosDadosRejeitada      : Result := '30';
       toRetornoComandoRecusado                    : Result := '32';
@@ -1008,7 +1013,6 @@ begin
       Result:= IntToStrZero(CodMotivo,2) + ' - Outros Motivos';
    end;
 end;
-
 
 end.
 

@@ -475,7 +475,7 @@ begin
              '030'                                        + // 164 a 166 - Número da versão do layout do arquivo
              padL('',  5, '0')                            + // 167 a 171 - Densidade de gravação do arquivo (BPI)
              space(20)                                    + // 172 a 191 - Uso reservado do banco
-             padL('REMESSA-TESTE', 20, ' ')               + // 192 a 211 - Uso reservado da empresa
+             padL('REMESSA-PRODUCAO', 20, ' ')            + // 192 a 211 - Uso reservado da empresa
 //             padL('REMESSA-PRODUÇÃO', 20, ' ')          + // 192 a 211 - Uso reservado da empresa Quando for produção, desmarar essa linha e bloquear a linha anterior
              space(29);                                 // 212 a 240 - Uso Exclusivo FEBRABAN / CNAB
 
@@ -781,9 +781,10 @@ begin
                                                              Copy(ARetorno[0],146,2)+'/'+
                                                              Copy(ARetorno[0],148,4),0, 'DD/MM/YYYY' );
 
-   ACBrBanco.ACBrBoleto.DataCreditoLanc := StringToDateTimeDef(Copy(ARetorno[1],200,2)+'/'+
-                                                               Copy(ARetorno[1],202,2)+'/'+
-                                                               Copy(ARetorno[1],204,4),0, 'DD/MM/YYYY' );
+   if StrToIntDef(Copy(Linha,200,8),0) <> 0 then
+      ACBrBanco.ACBrBoleto.DataCreditoLanc := StringToDateTimeDef(Copy(ARetorno[1],200,2)+'/'+
+                                                                  Copy(ARetorno[1],202,2)+'/'+
+                                                                  Copy(ARetorno[1],204,4),0, 'DD/MM/YYYY' );
 
    case StrToIntDef(Copy(ARetorno[1],18,1),0) of
      1: ACBrBanco.ACBrBoleto.Cedente.TipoInscricao:= pFisica;

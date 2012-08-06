@@ -49,7 +49,7 @@ uses
   lr_e_pdf, PrintersDlgs, Printers, strutils, LResources, PReport ;
 
 const
-  CACBrBoletoFCLazReport_Versao = '0.1.1a';
+  CACBrBoletoFCLazReport_Versao = '0.1.15a';
 
 type
 
@@ -305,6 +305,8 @@ begin
 
     else if ParName = 'Conta' then                              {Codigo Cedente}
        ParValue := CodCedente
+    else if ParName = 'OrientacoesBanco' then {Orientações do Banco}
+       ParValue:= Banco.OrientacoesBanco.Text
 
     else if ParName = 'DataDocto' then                       {Data do Documento}
        ParValue := FormatDateTime('dd/mm/yyyy', Titulo.DataDocumento)

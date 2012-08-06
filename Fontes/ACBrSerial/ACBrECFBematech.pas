@@ -2946,7 +2946,8 @@ begin
     end ;
 
     try
-       Result := Result + 'NumNFC = ' + copy(RetCmd,41,4) + sLineBreak ;
+       Result := Result + 'NumNFC = ' + copy(RetCmd,41,4) + sLineBreak ;  //NumNFC é nomeado conforme o Manual da Bematech
+       Result := Result + 'NumGNFC = ' + copy(RetCmd,41,4) + sLineBreak ; //NumGNFC foi adicionado para manter padrão com o método MontaDadosReducaoZ usado para Carregar os dados para DadosReducaoZ
     except
     end ;
 

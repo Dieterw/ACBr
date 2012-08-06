@@ -796,7 +796,7 @@ begin
       lblLocalPagto4.Caption           := Titulo.LocalPagamento;
       txtDataVencimento4.Caption      := FormatDateTime('dd/mm/yyyy', Titulo.Vencimento);
       txtNomeCedente4.Caption         := Cedente.Nome+ ' - '+TipoDoc + Cedente.CNPJCPF;
-      txtCodigoCedente4.Caption       := Cedente.Agencia+'-'+Cedente.AgenciaDigito+'/'+ Cedente.Conta+'-'+Cedente.ContaDigito;
+      txtCodigoCedente4.Caption       := CodCedente;
 
       txtNumeroDocumento4.Caption     := Titulo.NumeroDocumento;
       txtDataProcessamento4.Caption   := FormatDateTime('dd/mm/yyyy',Now);

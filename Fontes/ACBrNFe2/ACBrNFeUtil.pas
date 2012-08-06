@@ -873,9 +873,11 @@ begin
 //    LayNfeCadastro         : Result := NotaUtil.SeSenao(AAmbiente=1, '', '');
     LayNFeCCe,LayNFeEvento : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefazvirtual.rs.gov.br/ws/recepcaoevento/recepcaoevento.asmx', 'https://homologacao.nfe.sefazvirtual.rs.gov.br/ws/recepcaoevento/recepcaoevento.asmx');
     // Incluido por Italo em 17/07/2012
-    LayNfeConsNFeDest      : Result := NotaUtil.SeSenao(AAmbiente=1, '', 'https://hom.nfe.fazenda.gov.br/NFeConsultaDest/NFeConsultaDest.asmx');
+    // Alterado por Italo em 06/08/2012
+    LayNfeConsNFeDest      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.nfe.fazenda.gov.br/NFeConsultaDest/NFeConsultaDest.asmx', 'https://hom.nfe.fazenda.gov.br/NFeConsultaDest/NFeConsultaDest.asmx');
     // Incluido por Italo em 18/07/2012
-    LayNfeDownloadNFe      : Result := NotaUtil.SeSenao(AAmbiente=1, '', 'https://hom.nfe.fazenda.gov.br/nfedownloadnf/nfedownloadnf.asmx');
+    // Alterado por Italo em 06/08/2012
+    LayNfeDownloadNFe      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.sefazvirtual.fazenda.gov.br/NfeDownloadNF/NfeDownloadNF.asmx', 'https://hom.sefazvirtual.fazenda.gov.br/NfeDownloadNF/NfeDownloadNF.asmx');
   end;
 end;
 
@@ -892,9 +894,11 @@ begin
 //    LayNfeCadastro        : Result := NotaUtil.SeSenao(AAmbiente=1, '', '');
     LayNFeCCe,LayNFeEvento : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.sefazvirtual.fazenda.gov.br/RecepcaoEvento/RecepcaoEvento.asmx', 'https://hom.sefazvirtual.fazenda.gov.br/RecepcaoEvento/RecepcaoEvento.asmx');
     // Incluido por Italo em 17/07/2012
-    LayNfeConsNFeDest      : Result := NotaUtil.SeSenao(AAmbiente=1, '', 'https://hom.nfe.fazenda.gov.br/NFeConsultaDest/NFeConsultaDest.asmx');
+    // Alterado por Italo em 06/08/2012
+    LayNfeConsNFeDest      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.nfe.fazenda.gov.br/NFeConsultaDest/NFeConsultaDest.asmx', 'https://hom.nfe.fazenda.gov.br/NFeConsultaDest/NFeConsultaDest.asmx');
     // Incluido por Italo em 18/07/2012
-    LayNfeDownloadNFe      : Result := NotaUtil.SeSenao(AAmbiente=1, '', 'https://hom.nfe.fazenda.gov.br/nfedownloadnf/nfedownloadnf.asmx');
+    // Alterado por Italo em 06/08/2012
+    LayNfeDownloadNFe      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.sefazvirtual.fazenda.gov.br/NfeDownloadNF/NfeDownloadNF.asmx', 'https://hom.sefazvirtual.fazenda.gov.br/NfeDownloadNF/NfeDownloadNF.asmx');
   end;
 end;
 
@@ -911,9 +915,11 @@ begin
     LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.am.gov.br/services2/services/cadconsultacadastro2', 'https://homnfe.sefaz.am.gov.br/services2/services/cadconsultacadastro2');
     LayNFeCCe,LayNFeEvento: Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.am.gov.br/services2/services/RecepcaoEvento', 'https://homnfe.sefaz.am.gov.br/services2/services/RecepcaoEvento');
     // Incluido por Italo em 17/07/2012
-    LayNfeConsNFeDest   : Result := NotaUtil.SeSenao(AAmbiente=1, '', 'https://hom.nfe.fazenda.gov.br/NFeConsultaDest/NFeConsultaDest.asmx');
+    // Alterado por Italo em 06/08/2012
+    LayNfeConsNFeDest   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.nfe.fazenda.gov.br/NFeConsultaDest/NFeConsultaDest.asmx', 'https://hom.nfe.fazenda.gov.br/NFeConsultaDest/NFeConsultaDest.asmx');
     // Incluido por Italo em 18/07/2012
-    LayNfeDownloadNFe   : Result := NotaUtil.SeSenao(AAmbiente=1, '', 'https://hom.nfe.fazenda.gov.br/nfedownloadnf/nfedownloadnf.asmx');
+    // Alterado por Italo em 06/08/2012
+    LayNfeDownloadNFe   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.sefazvirtual.fazenda.gov.br/NfeDownloadNF/NfeDownloadNF.asmx', 'https://hom.sefazvirtual.fazenda.gov.br/NfeDownloadNF/NfeDownloadNF.asmx');
   end;
 end;
 
@@ -930,9 +936,11 @@ begin
     LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.ba.gov.br/webservices/nfenw/CadConsultaCadastro2.asmx', 'https://hnfe.sefaz.ba.gov.br/webservices/nfenw/CadConsultaCadastro2.asmx');
     LayNFeCCe,LayNFeEvento: Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.ba.gov.br/webservices/sre/RecepcaoEvento.asmx', 'https://hnfe.sefaz.ba.gov.br/webservices/sre/RecepcaoEvento.asmx');
     // Incluido por Italo em 17/07/2012
-    LayNfeConsNFeDest   : Result := NotaUtil.SeSenao(AAmbiente=1, '', 'https://hom.nfe.fazenda.gov.br/NFeConsultaDest/NFeConsultaDest.asmx');
+    // Alterado por Italo em 06/08/2012
+    LayNfeConsNFeDest   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.nfe.fazenda.gov.br/NFeConsultaDest/NFeConsultaDest.asmx', 'https://hom.nfe.fazenda.gov.br/NFeConsultaDest/NFeConsultaDest.asmx');
     // Incluido por Italo em 18/07/2012
-    LayNfeDownloadNFe   : Result := NotaUtil.SeSenao(AAmbiente=1, '', 'https://hom.nfe.fazenda.gov.br/nfedownloadnf/nfedownloadnf.asmx');
+    LayNfeDownloadNFe   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.sefazvirtual.fazenda.gov.br/NfeDownloadNF/NfeDownloadNF.asmx', 'https://hom.sefazvirtual.fazenda.gov.br/NfeDownloadNF/NfeDownloadNF.asmx');
+    // Alterado por Italo em 06/08/2012
   end;
 end;
 
@@ -949,9 +957,11 @@ begin
     LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.ce.gov.br/nfe2/services/CadConsultaCadastro2', 'https://nfeh.sefaz.ce.gov.br/nfe2/services/CadConsultaCadastro2');
     LayNFeCCe,LayNFeEvento: Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.ce.gov.br/nfe2/services/RecepcaoEvento',       'https://nfeh.sefaz.ce.gov.br/nfe2/services/RecepcaoEvento');
     // Incluido por Italo em 17/07/2012
-    LayNfeConsNFeDest   : Result := NotaUtil.SeSenao(AAmbiente=1, '', 'https://hom.nfe.fazenda.gov.br/NFeConsultaDest/NFeConsultaDest.asmx');
+    // Alterado por Italo em 06/08/2012
+    LayNfeConsNFeDest   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.nfe.fazenda.gov.br/NFeConsultaDest/NFeConsultaDest.asmx', 'https://hom.nfe.fazenda.gov.br/NFeConsultaDest/NFeConsultaDest.asmx');
     // Incluido por Italo em 18/07/2012
-    LayNfeDownloadNFe   : Result := NotaUtil.SeSenao(AAmbiente=1, '', 'https://hom.nfe.fazenda.gov.br/nfedownloadnf/nfedownloadnf.asmx');
+    // Alterado por Italo em 06/08/2012
+    LayNfeDownloadNFe   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.sefazvirtual.fazenda.gov.br/NfeDownloadNF/NfeDownloadNF.asmx', 'https://hom.sefazvirtual.fazenda.gov.br/NfeDownloadNF/NfeDownloadNF.asmx');
   end;
 end;
 
@@ -968,9 +978,11 @@ begin
     LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.go.gov.br/nfe/services/v2/CadConsultaCadastro2', 'https://homolog.sefaz.go.gov.br/nfe/services/v2/CadConsultaCadastro2');
     LayNFeCCe,LayNFeEvento: Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeRecepcaoEvento', 'https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeRecepcaoEvento');
     // Incluido por Italo em 17/07/2012
-    LayNfeConsNFeDest   : Result := NotaUtil.SeSenao(AAmbiente=1, '', 'https://hom.nfe.fazenda.gov.br/NFeConsultaDest/NFeConsultaDest.asmx');
+    // Alterado por Italo em 06/08/2012
+    LayNfeConsNFeDest   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.nfe.fazenda.gov.br/NFeConsultaDest/NFeConsultaDest.asmx', 'https://hom.nfe.fazenda.gov.br/NFeConsultaDest/NFeConsultaDest.asmx');
     // Incluido por Italo em 18/07/2012
-    LayNfeDownloadNFe   : Result := NotaUtil.SeSenao(AAmbiente=1, '', 'https://hom.nfe.fazenda.gov.br/nfedownloadnf/nfedownloadnf.asmx');
+    // Alterado por Italo em 06/08/2012
+    LayNfeDownloadNFe   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.sefazvirtual.fazenda.gov.br/NfeDownloadNF/NfeDownloadNF.asmx', 'https://hom.sefazvirtual.fazenda.gov.br/NfeDownloadNF/NfeDownloadNF.asmx');
   end;
 end;
 
@@ -987,9 +999,11 @@ begin
     LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.mt.gov.br/nfews/v2/services/CadConsultaCadastro2', 'https://homologacao.sefaz.mt.gov.br/nfews/v2/services/CadConsultaCadastro2');
     LayNFeCCe,LayNFeEvento: Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.mt.gov.br/nfews/v2/services/RecepcaoEvento', 'https://homologacao.sefaz.mt.gov.br/nfews/v2/services/RecepcaoEvento');
     // Incluido por Italo em 17/07/2012
-    LayNfeConsNFeDest   : Result := NotaUtil.SeSenao(AAmbiente=1, '', 'https://hom.nfe.fazenda.gov.br/NFeConsultaDest/NFeConsultaDest.asmx');
+    // Alterado por Italo em 06/08/2012
+    LayNfeConsNFeDest   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.nfe.fazenda.gov.br/NFeConsultaDest/NFeConsultaDest.asmx', 'https://hom.nfe.fazenda.gov.br/NFeConsultaDest/NFeConsultaDest.asmx');
     // Incluido por Italo em 18/07/2012
-    LayNfeDownloadNFe   : Result := NotaUtil.SeSenao(AAmbiente=1, '', 'https://hom.nfe.fazenda.gov.br/nfedownloadnf/nfedownloadnf.asmx');
+    // Alterado por Italo em 06/08/2012
+    LayNfeDownloadNFe   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.sefazvirtual.fazenda.gov.br/NfeDownloadNF/NfeDownloadNF.asmx', 'https://hom.sefazvirtual.fazenda.gov.br/NfeDownloadNF/NfeDownloadNF.asmx');
   end;
 end;
 
@@ -1006,9 +1020,11 @@ begin
     LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.ms.gov.br/producao/services2/CadConsultaCadastro2', 'https://homologacao.nfe.ms.gov.br/homologacao/services2/CadConsultaCadastro2');
     LayNFeCCe,LayNFeEvento: Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.ms.gov.br/producao/services2/RecepcaoEvento', 'https://homologacao.nfe.ms.gov.br/homologacao/services2/RecepcaoEvento');
     // Incluido por Italo em 17/07/2012
-    LayNfeConsNFeDest   : Result := NotaUtil.SeSenao(AAmbiente=1, '', 'https://hom.nfe.fazenda.gov.br/NFeConsultaDest/NFeConsultaDest.asmx');
+    // Alterado por Italo em 06/08/2012
+    LayNfeConsNFeDest   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.nfe.fazenda.gov.br/NFeConsultaDest/NFeConsultaDest.asmx', 'https://hom.nfe.fazenda.gov.br/NFeConsultaDest/NFeConsultaDest.asmx');
     // Incluido por Italo em 18/07/2012
-    LayNfeDownloadNFe   : Result := NotaUtil.SeSenao(AAmbiente=1, '', 'https://hom.nfe.fazenda.gov.br/nfedownloadnf/nfedownloadnf.asmx');
+    // Alterado por Italo em 06/08/2012
+    LayNfeDownloadNFe   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.sefazvirtual.fazenda.gov.br/NfeDownloadNF/NfeDownloadNF.asmx', 'https://hom.sefazvirtual.fazenda.gov.br/NfeDownloadNF/NfeDownloadNF.asmx');
   end;
 end;
 
@@ -1025,9 +1041,11 @@ begin
     LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.mg.gov.br/nfe2/services/cadconsultacadastro2', 'https://hnfe.fazenda.mg.gov.br/nfe2/services/cadconsultacadastro2');
     LayNFeCCe,LayNFeEvento: Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.mg.gov.br/nfe2/services/RecepcaoEvento', 'https://hnfe.fazenda.mg.gov.br/nfe2/services/RecepcaoEvento');
     // Incluido por Italo em 17/07/2012
-    LayNfeConsNFeDest   : Result := NotaUtil.SeSenao(AAmbiente=1, '', 'https://hom.nfe.fazenda.gov.br/NFeConsultaDest/NFeConsultaDest.asmx');
+    // Alterado por Italo em 06/08/2012
+    LayNfeConsNFeDest   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.nfe.fazenda.gov.br/NFeConsultaDest/NFeConsultaDest.asmx', 'https://hom.nfe.fazenda.gov.br/NFeConsultaDest/NFeConsultaDest.asmx');
     // Incluido por Italo em 18/07/2012
-    LayNfeDownloadNFe   : Result := NotaUtil.SeSenao(AAmbiente=1, '', 'https://hom.nfe.fazenda.gov.br/nfedownloadnf/nfedownloadnf.asmx');
+    // Alterado por Italo em 06/08/2012
+    LayNfeDownloadNFe   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.sefazvirtual.fazenda.gov.br/NfeDownloadNF/NfeDownloadNF.asmx', 'https://hom.sefazvirtual.fazenda.gov.br/NfeDownloadNF/NfeDownloadNF.asmx');
   end;
 end;
 
@@ -1044,9 +1062,11 @@ begin
     LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe2.fazenda.pr.gov.br/nfe/CadConsultaCadastro2', 'https://homologacao.nfe2.fazenda.pr.gov.br/nfe/CadConsultaCadastro2');
     LayNFeCCe,LayNFeEvento: Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe2.fazenda.pr.gov.br/nfe-evento/NFeRecepcaoEvento', 'https://homologacao.nfe2.fazenda.pr.gov.br/nfe-evento/NFeRecepcaoEvento');
     // Incluido por Italo em 17/07/2012
-    LayNfeConsNFeDest   : Result := NotaUtil.SeSenao(AAmbiente=1, '', 'https://hom.nfe.fazenda.gov.br/NFeConsultaDest/NFeConsultaDest.asmx');
+    // Alterado por Italo em 06/08/2012
+    LayNfeConsNFeDest   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.nfe.fazenda.gov.br/NFeConsultaDest/NFeConsultaDest.asmx', 'https://hom.nfe.fazenda.gov.br/NFeConsultaDest/NFeConsultaDest.asmx');
     // Incluido por Italo em 18/07/2012
-    LayNfeDownloadNFe   : Result := NotaUtil.SeSenao(AAmbiente=1, '', 'https://hom.nfe.fazenda.gov.br/nfedownloadnf/nfedownloadnf.asmx');
+    // Alterado por Italo em 06/08/2012
+    LayNfeDownloadNFe   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.sefazvirtual.fazenda.gov.br/NfeDownloadNF/NfeDownloadNF.asmx', 'https://hom.sefazvirtual.fazenda.gov.br/NfeDownloadNF/NfeDownloadNF.asmx');
   end;
 end;
 
@@ -1063,9 +1083,11 @@ begin
     LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.pe.gov.br/nfe-service/services/CadConsultaCadastro2', 'https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/CadConsultaCadastro2');
     LayNFeCCe,LayNFeEvento: Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.pe.gov.br/nfe-service/services/RecepcaoEvento?wsdl', 'https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/RecepcaoEvento?wsdl');
     // Incluido por Italo em 17/07/2012
-    LayNfeConsNFeDest   : Result := NotaUtil.SeSenao(AAmbiente=1, '', 'https://hom.nfe.fazenda.gov.br/NFeConsultaDest/NFeConsultaDest.asmx');
+    // Alterado por Italo em 06/08/2012
+    LayNfeConsNFeDest   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.nfe.fazenda.gov.br/NFeConsultaDest/NFeConsultaDest.asmx', 'https://hom.nfe.fazenda.gov.br/NFeConsultaDest/NFeConsultaDest.asmx');
     // Incluido por Italo em 18/07/2012
-    LayNfeDownloadNFe   : Result := NotaUtil.SeSenao(AAmbiente=1, '', 'https://hom.nfe.fazenda.gov.br/nfedownloadnf/nfedownloadnf.asmx');
+    // Alterado por Italo em 06/08/2012
+    LayNfeDownloadNFe   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.sefazvirtual.fazenda.gov.br/NfeDownloadNF/NfeDownloadNF.asmx', 'https://hom.sefazvirtual.fazenda.gov.br/NfeDownloadNF/NfeDownloadNF.asmx');
   end;
 end;
 
@@ -1082,9 +1104,11 @@ begin
     LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://sef.sefaz.rs.gov.br/ws/cadconsultacadastro/cadconsultacadastro2.asmx', 'https://sef.sefaz.rs.gov.br/ws/cadconsultacadastro/cadconsultacadastro2.asmx');
     LayNFeCCe,LayNFeEvento: Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.rs.gov.br/ws/recepcaoevento/recepcaoevento.asmx', 'https://homologacao.nfe.sefaz.rs.gov.br/ws/recepcaoevento/recepcaoevento.asmx');
     // Incluido por Italo em 17/07/2012
-    LayNfeConsNFeDest   : Result := NotaUtil.SeSenao(AAmbiente=1, '', 'https://hom.nfe.fazenda.gov.br/NFeConsultaDest/NFeConsultaDest.asmx');
+    // Alterado por Italo em 06/08/2012
+    LayNfeConsNFeDest   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.nfe.fazenda.gov.br/NFeConsultaDest/NFeConsultaDest.asmx', 'https://hom.nfe.fazenda.gov.br/NFeConsultaDest/NFeConsultaDest.asmx');
     // Incluido por Italo em 18/07/2012
-    LayNfeDownloadNFe   : Result := NotaUtil.SeSenao(AAmbiente=1, '', 'https://hom.nfe.fazenda.gov.br/nfedownloadnf/nfedownloadnf.asmx');
+    // Alterado por Italo em 06/08/2012
+    LayNfeDownloadNFe   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.sefazvirtual.fazenda.gov.br/NfeDownloadNF/NfeDownloadNF.asmx', 'https://hom.sefazvirtual.fazenda.gov.br/NfeDownloadNF/NfeDownloadNF.asmx');
   end;
 end;
 
@@ -1101,9 +1125,11 @@ begin
     LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.sp.gov.br/nfeweb/services/cadconsultacadastro2.asmx', 'https://homologacao.nfe.fazenda.sp.gov.br/nfeWEB/services/cadconsultacadastro2.asmx');
     LayNFeCCe,LayNFeEvento: Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.sp.gov.br/eventosWEB/services/RecepcaoEvento.asmx', 'https://homologacao.nfe.fazenda.sp.gov.br/eventosWEB/services/RecepcaoEvento.asmx');
     // Incluido por Italo em 17/07/2012
-    LayNfeConsNFeDest   : Result := NotaUtil.SeSenao(AAmbiente=1, '', 'https://hom.nfe.fazenda.gov.br/NFeConsultaDest/NFeConsultaDest.asmx');
+    // Alterado por Italo em 06/08/2012
+    LayNfeConsNFeDest   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.nfe.fazenda.gov.br/NFeConsultaDest/NFeConsultaDest.asmx', 'https://hom.nfe.fazenda.gov.br/NFeConsultaDest/NFeConsultaDest.asmx');
     // Incluido por Italo em 18/07/2012
-    LayNfeDownloadNFe   : Result := NotaUtil.SeSenao(AAmbiente=1, '', 'https://hom.nfe.fazenda.gov.br/nfedownloadnf/nfedownloadnf.asmx');
+    // Alterado por Italo em 06/08/2012
+    LayNfeDownloadNFe   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.sefazvirtual.fazenda.gov.br/NfeDownloadNF/NfeDownloadNF.asmx', 'https://hom.sefazvirtual.fazenda.gov.br/NfeDownloadNF/NfeDownloadNF.asmx');
   end;
 end;
 

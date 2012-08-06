@@ -584,9 +584,12 @@ begin
   if not Recarregar then
   begin
      // Data/Hora do arquivo é diferente ?
-     NewDtHrArquivo := FileDateToDateTime( FileAge( fsNomeCompleto ) ) ;
-
-     Recarregar := (fsDtHrArquivo <> NewDtHrArquivo)
+     try
+       NewDtHrArquivo := FileDateToDateTime( FileAge( fsNomeCompleto ) ) ;
+       Recarregar := (fsDtHrArquivo <> NewDtHrArquivo)
+     except
+       Recarregar := true;
+     end;
   end ;
 
   if Recarregar then

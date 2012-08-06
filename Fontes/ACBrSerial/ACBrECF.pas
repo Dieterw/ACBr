@@ -5438,23 +5438,35 @@ end;
 
 procedure TACBrECF.PafMF_LX_Impressao;
 begin
+  fsNumSerieCache := '' ;  // Isso força a Leitura do Numero de Série
+  DoVerificaValorGT ;
+
   Self.LeituraX;
 end;
 
 procedure TACBrECF.PafMF_LMFC_Impressao(const CRZInicial, CRZFinal: Integer);
 begin
+  fsNumSerieCache := '' ;  // Isso força a Leitura do Numero de Série
+  DoVerificaValorGT ;
+
   Self.LeituraMemoriaFiscal(CRZInicial, CRZFinal, False);
 end;
 
 procedure TACBrECF.PafMF_LMFC_Impressao(const DataInicial,
   DataFinal: TDateTime);
 begin
+  fsNumSerieCache := '' ;  // Isso força a Leitura do Numero de Série
+  DoVerificaValorGT ;
+
   Self.LeituraMemoriaFiscal(DataInicial, DataFinal, False);
 end;
 
 procedure TACBrECF.PafMF_LMFC_Espelho(const CRZInicial, CRZFinal: Integer;
   const PathArquivo: String);
 begin
+  fsNumSerieCache := '' ;  // Isso força a Leitura do Numero de Série
+  DoVerificaValorGT ;
+
   Self.LeituraMemoriaFiscalSerial(CRZInicial, CRZFinal, PathArquivo, False);
   Self.AssinaArquivoComEAD(PathArquivo);
 end;
@@ -5462,6 +5474,9 @@ end;
 procedure TACBrECF.PafMF_LMFC_Espelho(const DataInicial, DataFinal: TDateTime;
   const PathArquivo: String);
 begin
+  fsNumSerieCache := '' ;  // Isso força a Leitura do Numero de Série
+  DoVerificaValorGT ;
+
   Self.LeituraMemoriaFiscalSerial(DataInicial, DataFinal, PathArquivo, False);
   Self.AssinaArquivoComEAD(PathArquivo);
 end;
@@ -5469,6 +5484,9 @@ end;
 procedure TACBrECF.PafMF_LMFC_Cotepe1704(const CRZInicial, CRZFinal: Integer;
   const PathArquivo: String);
 begin
+  fsNumSerieCache := '' ;  // Isso força a Leitura do Numero de Série
+  DoVerificaValorGT ;
+
   Self.ArquivoMFD_DLL(CRZInicial, CRZFinal, PathArquivo, [docTodos], finMF, tpcCRZ);
   Self.AssinaArquivoComEAD(PathArquivo);
 end;
@@ -5482,24 +5500,36 @@ end;
 procedure TACBrECF.PafMF_LMFC_Cotepe1704(const DataInicial, DataFinal: TDateTime;
   const PathArquivo: String);
 begin
+  fsNumSerieCache := '' ;  // Isso força a Leitura do Numero de Série
+  DoVerificaValorGT ;
+
   Self.ArquivoMFD_DLL(DataInicial, DataFinal, PathArquivo, [docTodos], finMF);
   Self.AssinaArquivoComEAD(PathArquivo);
 end;
 
 procedure TACBrECF.PafMF_LMFS_Impressao(const CRZInicial, CRZFinal: Integer);
 begin
+  fsNumSerieCache := '' ;  // Isso força a Leitura do Numero de Série
+  DoVerificaValorGT ;
+
   Self.LeituraMemoriaFiscal(CRZInicial, CRZFinal, True);
 end;
 
 procedure TACBrECF.PafMF_LMFS_Impressao(const DataInicial,
   DataFinal: TDateTime);
 begin
+  fsNumSerieCache := '' ;  // Isso força a Leitura do Numero de Série
+  DoVerificaValorGT ;
+
   Self.LeituraMemoriaFiscal(DataInicial, DataFinal, True);
 end;
 
 procedure TACBrECF.PafMF_LMFS_Espelho(const CRZInicial, CRZFinal: Integer;
   const PathArquivo: String);
 begin
+  fsNumSerieCache := '' ;  // Isso força a Leitura do Numero de Série
+  DoVerificaValorGT ;
+
   Self.LeituraMemoriaFiscalSerial(CRZInicial, CRZFinal, PathArquivo, True);
   Self.AssinaArquivoComEAD(PathArquivo);
 end;
@@ -5507,6 +5537,9 @@ end;
 procedure TACBrECF.PafMF_LMFS_Espelho(const DataInicial, DataFinal: TDateTime;
   const PathArquivo: String);
 begin
+  fsNumSerieCache := '' ;  // Isso força a Leitura do Numero de Série
+  DoVerificaValorGT ;
+
   Self.LeituraMemoriaFiscalSerial(DataInicial, DataFinal, PathArquivo, True);
   Self.AssinaArquivoComEAD(PathArquivo);
 end;
@@ -5514,6 +5547,9 @@ end;
 procedure TACBrECF.PafMF_MFD_Espelho(const COOInicial, COOFinal: Integer;
   const PathArquivo: String);
 begin
+  fsNumSerieCache := '' ;  // Isso força a Leitura do Numero de Série
+  DoVerificaValorGT ;
+
   Self.EspelhoMFD_DLL(CooInicial, CooFinal, PathArquivo, [docTodos]);
   Self.AssinaArquivoComEAD(PathArquivo);
 end;
@@ -5521,6 +5557,9 @@ end;
 procedure TACBrECF.PafMF_MFD_Espelho(const DataInicial, DataFinal: TDateTime;
   const PathArquivo: String);
 begin
+  fsNumSerieCache := '' ;  // Isso força a Leitura do Numero de Série
+  DoVerificaValorGT ;
+
   Self.EspelhoMFD_DLL(DataInicial, DataFinal, PathArquivo, [docTodos]);
   Self.AssinaArquivoComEAD(PathArquivo);
 end;
@@ -5528,6 +5567,9 @@ end;
 procedure TACBrECF.PafMF_MFD_Cotepe1704(const COOInicial, COOFinal: Integer;
   const PathArquivo: String);
 begin
+  fsNumSerieCache := '' ;  // Isso força a Leitura do Numero de Série
+  DoVerificaValorGT ;
+
   Self.ArquivoMFD_DLL(CooInicial, CooFinal, PathArquivo, [docTodos], finMFD, tpcCOO);
   Self.AssinaArquivoComEAD(PathArquivo);
 end;
@@ -5535,6 +5577,9 @@ end;
 procedure TACBrECF.PafMF_MFD_Cotepe1704(const DataInicial, DataFinal: TDateTime;
   const PathArquivo: String);
 begin
+  fsNumSerieCache := '' ;  // Isso força a Leitura do Numero de Série
+  DoVerificaValorGT ;
+
   Self.ArquivoMFD_DLL(DataInicial, DataFinal, PathArquivo, [docTodos], finMFD);
   Self.AssinaArquivoComEAD(PathArquivo);
 end;
@@ -5631,6 +5676,9 @@ var
   end;
 
 begin
+  fsNumSerieCache := '' ;  // Isso força a Leitura do Numero de Série
+  DoVerificaValorGT ;
+
   TamLin := ECF.Colunas;
 
   // montagem do relatorio
@@ -5808,6 +5856,9 @@ var
   Relatorio: TStringList;
   I: Integer;
 begin
+  fsNumSerieCache := '' ;  // Isso força a Leitura do Numero de Série
+  DoVerificaValorGT ;
+
   if (not Assigned(IdentificacaoPaf)) then
   begin
      if Assigned(fsAAC) then
@@ -5925,6 +5976,9 @@ var
   end;
 
 begin
+  fsNumSerieCache := '' ;  // Isso força a Leitura do Numero de Série
+  DoVerificaValorGT ;
+
   if (not Assigned(AInfoPafECF)) then
   begin
     if Assigned(fsAAC) then
@@ -5945,6 +5999,19 @@ begin
     Relatorio.Add('</linha_dupla>');
     Relatorio.Add('');
 
+    Relatorio.Add(QuebraLinhas(
+      'Todas as parametrizações relacionadas neste relatório são de ' +
+      'configuração inacessível ao usuário do PAF-ECF.',
+      Colunas)
+    );
+    Relatorio.Add(QuebraLinhas(
+      'A ativação ou não destes parâmetros é determinada pela unidade ' +
+      'federada e somente pode ser feita pela intervenção da empresa ' +
+      'desenvolvedora do PAF-ECF.',
+      Colunas)
+    );
+
+    Relatorio.Add('');
     Relatorio.Add('<n>IDENTIFICAÇÃO E CARACTERISTICAS DO</n>');
     Relatorio.Add('<n>PROGRAMA APLICATIVO FISCAL</n>');
     Relatorio.Add('</linha_simples>');
@@ -5965,19 +6032,6 @@ begin
     Relatorio.Add('<n>PARÂMETROS PARA NÃO CONCOMITÂNCIA</n>');
     Relatorio.Add('</linha_simples>');
 
-    Relatorio.Add(QuebraLinhas(
-      'Todas as parametrizações relacionadas neste relatório são de ' +
-      'configuração inacessível ao usuário do PAF-ECF.',
-      Colunas)
-    );
-    Relatorio.Add(QuebraLinhas(
-      'A ativação ou não destes parâmetros é determinada pela unidade ' +
-      'federada e somente pode ser feita pela intervenção da empresa ' +
-      'desenvolvedora do PAF-ECF.',
-      Colunas)
-    );
-
-    Relatorio.Add('');
     Relatorio.Add('<n>Req IV</n>');
     Relatorio.Add('ITEM 2: Realiza registros de pré-venda');
     Relatorio.Add(padL('conforme definido no inciso II do art. 1º', TamColSimNao, '.') + GetDescrFlag( AInfoPafECF.RealizaPreVenda));

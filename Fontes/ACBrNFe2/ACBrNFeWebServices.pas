@@ -996,6 +996,7 @@ begin
       begin
         infEvento.tpAmb                := TpcnTipoAmbiente(FConfiguracoes.WebServices.AmbienteCodigo-1);
         infEvento.CNPJ                 := TNFeEnvEvento(Self).FEvento.Evento[i].InfEvento.CNPJ;
+        infEvento.cOrgao               := TNFeEnvEvento(Self).FEvento.Evento[i].InfEvento.cOrgao;
         infEvento.chNFe                := TNFeEnvEvento(Self).FEvento.Evento[i].InfEvento.chNFe;
         infEvento.dhEvento             := TNFeEnvEvento(Self).FEvento.Evento[i].InfEvento.dhEvento;
         infEvento.tpEvento             := TNFeEnvEvento(Self).FEvento.Evento[i].InfEvento.tpEvento;
@@ -1117,7 +1118,15 @@ begin
   else if self is TNFeCartaCorrecao then
     FURL  := NotaUtil.GetURL(FConfiguracoes.WebServices.UFCodigo, FConfiguracoes.WebServices.AmbienteCodigo, FConfiguracoes.Geral.FormaEmissaoCodigo, LayNFeCCe)
   else if self is TNFeEnvEvento then
-    FURL  := NotaUtil.GetURL(FConfiguracoes.WebServices.UFCodigo, FConfiguracoes.WebServices.AmbienteCodigo, FConfiguracoes.Geral.FormaEmissaoCodigo, LayNFeEvento)
+  begin
+    //Verificação necessária pois somente os eventos de Cancelamento e CCe serão tratados pela SEFAZ do estado
+    //os outros eventos como manifestacao de destinatários serão tratados diretamente pela RFB
+    if not ((self as TNFeEnvEvento).FEvento.Evento.Items[0].InfEvento.tpEvento
+            in [teCCe,teCancelamento]) then
+      FURL  := NotaUtil.GetURL(FConfiguracoes.WebServices.UFCodigo, FConfiguracoes.WebServices.AmbienteCodigo, FConfiguracoes.Geral.FormaEmissaoCodigo, LayNFeEventoAN)
+    else
+      FURL  := NotaUtil.GetURL(FConfiguracoes.WebServices.UFCodigo, FConfiguracoes.WebServices.AmbienteCodigo, FConfiguracoes.Geral.FormaEmissaoCodigo, LayNFeEvento)
+  end
   else if self is TNFeConsNFeDest then // Incluido por Italo em 17/07/2012
     FURL  := NotaUtil.GetURL(FConfiguracoes.WebServices.UFCodigo, FConfiguracoes.WebServices.AmbienteCodigo, FConfiguracoes.Geral.FormaEmissaoCodigo, LayNFeConsNFeDest)
   else if self is TNFeDownloadNFe then // Incluido por Italo em 18/07/2012
@@ -2155,18 +2164,18 @@ begin
       FprocEventoNFe.Items[I].RetEventoNFe.cOrgao := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.cOrgao;
       FprocEventoNFe.Items[I].RetEventoNFe.cStat := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.cStat;
       FprocEventoNFe.Items[I].RetEventoNFe.xMotivo := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.xMotivo;
-      FprocEventoNFe.Items[I].RetEventoNFe.InfEvento.FID := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.InfEvento.FID;
-      FprocEventoNFe.Items[I].RetEventoNFe.InfEvento.FtpAmbiente := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.InfEvento.FtpAmbiente;
-      FprocEventoNFe.Items[I].RetEventoNFe.InfEvento.FCNPJ := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.InfEvento.FCNPJ;
-      FprocEventoNFe.Items[I].RetEventoNFe.InfEvento.FChave := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.InfEvento.FChave;
-      FprocEventoNFe.Items[I].RetEventoNFe.InfEvento.FDataEvento := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.InfEvento.FDataEvento;
-      FprocEventoNFe.Items[I].RetEventoNFe.InfEvento.FTpEvento := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.InfEvento.FTpEvento;
-      FprocEventoNFe.Items[I].RetEventoNFe.InfEvento.FnSeqEvento := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.InfEvento.FnSeqEvento;
-      FprocEventoNFe.Items[I].RetEventoNFe.InfEvento.FVersaoEvento := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.InfEvento.FVersaoEvento;
-      FprocEventoNFe.Items[I].RetEventoNFe.InfEvento.FDetEvento.xCorrecao := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.InfEvento.FDetEvento.xCorrecao;
-      FprocEventoNFe.Items[I].RetEventoNFe.InfEvento.FDetEvento.xCondUso := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.InfEvento.FDetEvento.xCondUso;
-      FprocEventoNFe.Items[I].RetEventoNFe.InfEvento.FDetEvento.nProt := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.InfEvento.FDetEvento.nProt;
-      FprocEventoNFe.Items[I].RetEventoNFe.InfEvento.FDetEvento.xJust := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.InfEvento.FDetEvento.xJust;
+      FprocEventoNFe.Items[I].RetEventoNFe.InfEvento.ID := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.InfEvento.ID;
+      FprocEventoNFe.Items[I].RetEventoNFe.InfEvento.tpAmb := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.InfEvento.tpAmb;
+      FprocEventoNFe.Items[I].RetEventoNFe.InfEvento.CNPJ := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.InfEvento.CNPJ;
+      FprocEventoNFe.Items[I].RetEventoNFe.InfEvento.chNFe := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.InfEvento.chNFe;
+      FprocEventoNFe.Items[I].RetEventoNFe.InfEvento.dhEvento := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.InfEvento.dhEvento;
+      FprocEventoNFe.Items[I].RetEventoNFe.InfEvento.TpEvento := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.InfEvento.TpEvento;
+      FprocEventoNFe.Items[I].RetEventoNFe.InfEvento.nSeqEvento := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.InfEvento.nSeqEvento;
+      FprocEventoNFe.Items[I].RetEventoNFe.InfEvento.VersaoEvento := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.InfEvento.VersaoEvento;
+      FprocEventoNFe.Items[I].RetEventoNFe.InfEvento.DetEvento.xCorrecao := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.InfEvento.DetEvento.xCorrecao;
+      FprocEventoNFe.Items[I].RetEventoNFe.InfEvento.DetEvento.xCondUso := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.InfEvento.DetEvento.xCondUso;
+      FprocEventoNFe.Items[I].RetEventoNFe.InfEvento.DetEvento.nProt := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.InfEvento.DetEvento.nProt;
+      FprocEventoNFe.Items[I].RetEventoNFe.InfEvento.DetEvento.xJust := NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.InfEvento.DetEvento.xJust;
       FprocEventoNFe.Items[I].RetEventoNFe.retEvento.Clear;
       for j := 0 to NFeRetorno.procEventoNFe.Items[I].RetEventoNFe.retEvento.Count-1 do
       begin

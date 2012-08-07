@@ -249,20 +249,20 @@ begin
     begin
       if Leitor.rExtrai(2, 'infEvento', '', i + 1) <> '' then
        begin
-         FinfEvento.FID            := Leitor.rCampo(tcStr, 'Id');
-         FinfEvento.FtpAmbiente    := StrToTpAmb(ok, Leitor.rCampo(tcStr, 'tpAmb'));
-         FinfEvento.FCNPJ          := Leitor.rCampo(tcStr, 'CNPJ');
-         FinfEvento.FChave         := Leitor.rCampo(tcStr, 'chNFe');
-         FinfEvento.dhEvento       := Leitor.rCampo(tcDatHor, 'dhEvento');
-         FinfEvento.tpEvento       := StrToTpEvento(ok,Leitor.rCampo(tcStr, 'tpEvento'));
-         FinfEvento.FnSeqEvento    := Leitor.rCampo(tcInt, 'nSeqEvento');
-         FinfEvento.FVersaoEvento  := Leitor.rCampo(tcDe2, 'verEvento');
+         infEvento.ID            := Leitor.rCampo(tcStr, 'Id');
+         infEvento.tpAmb         := StrToTpAmb(ok, Leitor.rCampo(tcStr, 'tpAmb'));
+         infEvento.CNPJ          := Leitor.rCampo(tcStr, 'CNPJ');
+         infEvento.chNFe         := Leitor.rCampo(tcStr, 'chNFe');
+         infEvento.dhEvento      := Leitor.rCampo(tcDatHor, 'dhEvento');
+         infEvento.tpEvento      := StrToTpEvento(ok,Leitor.rCampo(tcStr, 'tpEvento'));
+         infEvento.nSeqEvento    := Leitor.rCampo(tcInt, 'nSeqEvento');
+         infEvento.VersaoEvento  := Leitor.rCampo(tcDe2, 'verEvento');
          if Leitor.rExtrai(3, 'detEvento', '', i + 1) <> '' then
          begin
-           FinfEvento.FDetEvento.xCorrecao := Leitor.rCampo(tcStr, 'xCorrecao');
-           FinfEvento.FDetEvento.xCondUso  := Leitor.rCampo(tcStr, 'xCondUso');
-           FinfEvento.FDetEvento.nProt     := Leitor.rCampo(tcStr, 'nProt');
-           FinfEvento.FDetEvento.xJust     := Leitor.rCampo(tcStr, 'xJust');
+           infEvento.DetEvento.xCorrecao := Leitor.rCampo(tcStr, 'xCorrecao');
+           infEvento.DetEvento.xCondUso  := Leitor.rCampo(tcStr, 'xCondUso');
+           infEvento.DetEvento.nProt     := Leitor.rCampo(tcStr, 'nProt');
+           infEvento.DetEvento.xJust     := Leitor.rCampo(tcStr, 'xJust');
          end;
       end;
     end;

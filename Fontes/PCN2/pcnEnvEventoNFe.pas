@@ -76,18 +76,19 @@ type
   end;
 
   TInfEvento = class
+  private
     FID: String;
     FtpAmbiente: TpcnTipoAmbiente;
     FCNPJ: String;
+    FcOrgao: integer;
     FChave: String;
     FDataEvento: TDateTime;
     FTpEvento: TpcnTpEvento;
     FnSeqEvento: Integer;
     FVersaoEvento: String;
     FDetEvento: TDetEvento;
-    FcOrgao: integer;
-  private
-    function getcOrgao: Integer;
+
+    function getcOrgao: integer;
     function getVersaoEvento: String;
     function getDescEvento: string;
     function getTipoEvento: string;
@@ -96,15 +97,15 @@ type
     destructor Destroy; override;
 
     property id: String              read FID         write FID;
-    property cOrgao: Integer         read getcOrgao   write FcOrgao;
+    property cOrgao: integer         read getcOrgao   write FcOrgao;
     property tpAmb: TpcnTipoAmbiente read FtpAmbiente write FtpAmbiente;
     property CNPJ: String            read FCNPJ       write FCNPJ;
     property chNFe: String           read FChave      write FChave;
     property dhEvento: TDateTime     read FDataEvento write FDataEvento;
-    property tpEvento: TpcnTpEvento  read FTpEvento  write FTpEvento;
+    property tpEvento: TpcnTpEvento  read FTpEvento   write FTpEvento;
     property nSeqEvento: Integer     read FnSeqEvento write FnSeqEvento;
-    property versaoEvento: String    read getVersaoEvento;
-    property detEvento: TDetEvento   read FDetEvento write FDetEvento;
+    property versaoEvento: String    read getVersaoEvento write FversaoEvento;
+    property detEvento: TDetEvento   read FDetEvento  write FDetEvento;
     property DescEvento: string      read getDescEvento;
     property TipoEvento: string      read getTipoEvento;
   end;
@@ -202,7 +203,7 @@ begin
       Gerador.wGrupo('infEvento Id="' + Evento.Items[i].InfEvento.id + '"');
       if Length(Evento.Items[i].InfEvento.id) < 54 then
           Gerador.wAlerta('HP07', 'ID', '', 'ID de Evento inválido');
-      Gerador.wCampo(tcInt, 'HP08', 'cOrgao', 001, 002, 1, Evento.Items[i].InfEvento.cOrgao);
+      Gerador.wCampo(tcInt, 'HP08', 'cOrgao', 001, 002, 1, FEvento.Items[i].FInfEvento.cOrgao);
       Gerador.wCampo(tcStr, 'HP09', 'tpAmb', 001, 001,  1, TpAmbToStr(Evento.Items[i].InfEvento.tpAmb), DSC_TPAMB);
 
       // SomenteNumeros ..estava executando 5 vezes na versao anterior
@@ -272,7 +273,7 @@ begin
   inherited;
 end;
 
-function TInfEvento.getcOrgao: Integer;
+function TInfEvento.getcOrgao: integer;
 //  (AC,AL,AP,AM,BA,CE,DF,ES,GO,MA,MT,MS,MG,PA,PB,PR,PE,PI,RJ,RN,RS,RO,RR,SC,SP,SE,TO);
 //  (12,27,16,13,29,23,53,32,52,21,51,50,31,15,25,41,26,22,33,24,43,11,14,42,35,28,17);
 begin
@@ -280,11 +281,17 @@ begin
     Result := FcOrgao
   else
   begin
-    Result := StrToInt(copy(FChave,1,2));
-    {Estados que utilizam a SVAN: ES, MA, PA, PI, RN}
-    {Devem utilizar 90}
-    if Result in [32,21,15,22,24] then
-      Result := 90;
+    case fTpEvento of
+      teCCe,teCancelamento:
+      begin
+        Result := StrToInt(copy(FChave,1,2));
+        {Estados que utilizam a SVAN: ES, MA, PA, PI, RN => Devem utilizar 90}
+        if Result in [32,21,15,22,24] then
+          Result := 90;
+      end
+      else
+        Result := 91;
+    end;
   end;
 end;
 

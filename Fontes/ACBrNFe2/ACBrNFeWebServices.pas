@@ -3465,12 +3465,11 @@ begin
     aMsg := 'Ambiente : '+TpAmbToStr(EventoRetorno.tpAmb)+LineBreak+
             'Versão Aplicativo : '+EventoRetorno.verAplic+LineBreak+
             'Status Código : '+IntToStr(EventoRetorno.cStat)+LineBreak+
-            'Status Descrição : '+EventoRetorno.xMotivo+LineBreak+
-            'Recebimento : '+NotaUtil.SeSenao(EventoRetorno.retEvento.Count > 0,
-                                              NotaUtil.SeSenao(EventoRetorno.retEvento.Items[0].RetInfEvento.dhRegEvento = 0,
-                                                               '',
-                                                               DateTimeToStr(EventoRetorno.retEvento.Items[0].RetInfEvento.dhRegEvento)),
-                                              '');
+            'Status Descrição : '+EventoRetorno.xMotivo+LineBreak;
+    if (EventoRetorno.retEvento.Count > 0) then
+      aMsg := aMsg + 'Recebimento : '+NotaUtil.SeSenao(EventoRetorno.retEvento.Items[0].RetInfEvento.dhRegEvento = 0,
+                                                       '',
+                                                       DateTimeToStr(EventoRetorno.retEvento.Items[0].RetInfEvento.dhRegEvento));
     if FConfiguracoes.WebServices.Visualizar then
       ShowMessage(aMsg);
 

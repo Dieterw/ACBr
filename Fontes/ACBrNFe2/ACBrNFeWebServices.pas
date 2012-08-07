@@ -3466,7 +3466,11 @@ begin
             'Versão Aplicativo : '+EventoRetorno.verAplic+LineBreak+
             'Status Código : '+IntToStr(EventoRetorno.cStat)+LineBreak+
             'Status Descrição : '+EventoRetorno.xMotivo+LineBreak+
-            'Recebimento : '+NotaUtil.SeSenao(EventoRetorno.retEvento.Items[0].RetInfEvento.dhRegEvento = 0, '', DateTimeToStr(EventoRetorno.retEvento.Items[0].RetInfEvento.dhRegEvento));
+            'Recebimento : '+NotaUtil.SeSenao(EventoRetorno.retEvento.Count > 0,
+                                              NotaUtil.SeSenao(EventoRetorno.retEvento.Items[0].RetInfEvento.dhRegEvento = 0,
+                                                               '',
+                                                               DateTimeToStr(EventoRetorno.retEvento.Items[0].RetInfEvento.dhRegEvento)),
+                                              '');
     if FConfiguracoes.WebServices.Visualizar then
       ShowMessage(aMsg);
 

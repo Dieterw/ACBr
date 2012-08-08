@@ -370,7 +370,9 @@ type
      fpTipoTransacao : Integer;
      fpTrailer : String;
      fpValorTotal : Double;
+     fpValorOriginal: Double;
      fpSaque: Double;
+     fpDesconto: Double;
      fpDocumentoVinculado : String;
      fpTipoParcelamento : Integer;
      fpParcelas : TACBrTEFDRespParcelas ;
@@ -389,7 +391,6 @@ type
      procedure SetIndiceFPG_ECF(const AValue : String);
      procedure SetArqBackup(const AValue : String);
      procedure SetOrdemPagamento(const AValue : Integer);
-   private
    protected
      function GetTransacaoAprovada : Boolean; virtual;
    published
@@ -412,7 +413,9 @@ type
      property ID                          : Integer   read fpID ;
      property DocumentoVinculado          : String    read fpDocumentoVinculado ;
      property ValorTotal                  : Double    read fpValorTotal ;
+     property ValorOriginal               : Double    read fpValorOriginal ;
      property Saque                       : Double    read fpSaque ;
+     property Desconto                    : Double    read fpDesconto ;
      property Moeda                       : Integer   read fpMoeda ;
      property CMC7                        : String    read fpCMC7 ;
      property TipoPessoa                  : AnsiChar  read fpTipoPessoa ;
@@ -459,6 +462,7 @@ type
      property IndiceFPG_ECF  : String  read fpIndiceFPG_ECF   write SetIndiceFPG_ECF ;
      property CNFEnviado     : Boolean read fpCNFEnviado      write SetCNFEnviado ;
      property OrdemPagamento : Integer read fpOrdemPagamento  write SetOrdemPagamento ;
+
      property DataVencimento : TDateTime read fpDataVencimento;
      property Instituicao    : String read fpInstituicao;
      property ModalidadePagto :String read fpModalidadePagto;
@@ -1061,6 +1065,7 @@ begin
   fpImagemComprovante1aVia := TStringList.Create;
   fpImagemComprovante2aVia := TStringList.Create;
 
+  // Inicializa as variáveis internas //
   Clear ;
 end;
 
@@ -1132,7 +1137,9 @@ begin
    fpTipoTransacao                := 0 ;
    fpTrailer                      := '' ;
    fpValorTotal                   := 0 ;
+   fpValorOriginal                := 0 ;
    fpSaque                        := 0 ;
+   fpDesconto                     := 0 ;
    fpDocumentoVinculado           := '' ;
    fpTipoParcelamento             := 0 ;
 
@@ -1193,6 +1200,17 @@ var
    I     : Integer;
    Parc  : TACBrTEFDRespParcela;
    LinStr: AnsiString ;
+
+   function AjustaLinhaImagemComprovante( Linha: AnsiString ) : AnsiString;
+   begin
+      Result := Linha;
+
+      if LeftStr(Result,1) = '"' then
+         Delete(Result,1,1);
+      if RightStr(Result,1) = '"' then
+         Delete(Result,Length(Result),1);
+   end;
+
 begin
    fpDataHoraTransacaoComprovante := 0 ;
    fpImagemComprovante1aVia.Clear;
@@ -1230,28 +1248,37 @@ begin
        25  : fpNSUTransacaoCancelada      := Linha.Informacao.AsString;
        26  : fpDataHoraTransacaoCancelada := Linha.Informacao.AsTimeStamp;
        27  : fpFinalizacao                := Linha.Informacao.AsString;
-       28  : fpQtdLinhasComprovante       := Linha.Informacao.AsInteger;
-       29  :
+       28  :
          begin
-           LinStr := Linha.Informacao.AsString ;
-           if LeftStr(LinStr,1) = '"' then
-              Delete(LinStr,1,1);
-           if RightStr(LinStr,1) = '"' then
-              Delete(LinStr,Length(LinStr),1);
+           fpImagemComprovante1aVia.Clear;
+           fpQtdLinhasComprovante := Linha.Informacao.AsInteger;
+         end;
+       29  : fpImagemComprovante1aVia.Add( AjustaLinhaImagemComprovante( Linha.Informacao.AsString ) );
+       30  : fpTextoEspecialOperador := Linha.Informacao.AsString;
+       31  : fpTextoEspecialCliente  := Linha.Informacao.AsString;
+       32  : fpAutenticacao          := Linha.Informacao.AsString;
+       33  : fpBanco                 := Linha.Informacao.AsString;
+       34  : fpAgencia               := Linha.Informacao.AsString;
+       35  : fpAgenciaDC             := Linha.Informacao.AsString;
+       36  : fpConta                 := Linha.Informacao.AsString;
+       37  : fpContaDC               := Linha.Informacao.AsString;
+       38  : fpCheque                := Linha.Informacao.AsString;
+       39  : fpChequeDC              := Linha.Informacao.AsString;
+       40  : fpNomeAdministradora    := Linha.Informacao.AsString;
+       707 : fpValorOriginal         := Linha.Informacao.AsFloat;
+       708 : fpSaque                 := Linha.Informacao.AsFloat;
+       709 : fpDesconto              := Linha.Informacao.AsFloat;
 
-           fpImagemComprovante1aVia.Add( LinStr );
-         end ;
-       30  : fpTextoEspecialOperador      := Linha.Informacao.AsString;
-       31  : fpTextoEspecialCliente       := Linha.Informacao.AsString;
-       32  : fpAutenticacao               := Linha.Informacao.AsString;
-       33  : fpBanco                      := Linha.Informacao.AsString;
-       34  : fpAgencia                    := Linha.Informacao.AsString;
-       35  : fpAgenciaDC                  := Linha.Informacao.AsString;
-       36  : fpConta                      := Linha.Informacao.AsString;
-       37  : fpContaDC                    := Linha.Informacao.AsString;
-       38  : fpCheque                     := Linha.Informacao.AsString;
-       39  : fpChequeDC                   := Linha.Informacao.AsString;
-       40  : fpNomeAdministradora         := Linha.Informacao.AsString;
+       712 :
+         begin
+           fpImagemComprovante1aVia.Clear;
+           fpQtdLinhasComprovante := Linha.Informacao.AsInteger;
+         end;
+       713 : fpImagemComprovante1aVia.Add( AjustaLinhaImagemComprovante( Linha.Informacao.AsString ) );
+
+       714 : fpImagemComprovante2aVia.Clear;
+       715 : fpImagemComprovante2aVia.Add( AjustaLinhaImagemComprovante( Linha.Informacao.AsString ) );
+
        899 :  // Tipos de Uso Interno do ACBrTEFD
         begin
           case Linha.Sequencia of
@@ -1264,8 +1291,9 @@ begin
      end;
    end ;
 
-   // TEF Discado, 1 a 2 via são iguais //
-   fpImagemComprovante2aVia.AddStrings( fpImagemComprovante1aVia );
+   // TEF Discado, nem sempre a 2a via é enviada //
+   if fpImagemComprovante2aVia.Count = 0 then
+      fpImagemComprovante2aVia.AddStrings( fpImagemComprovante1aVia );
 
    fpParcelas.Clear;
    for I := 1 to fpQtdParcelas do

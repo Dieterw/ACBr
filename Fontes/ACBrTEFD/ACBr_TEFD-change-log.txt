@@ -59,7 +59,16 @@ Data:  08/08/2012
 
 [+] Adicionada a propriedade: Identificacao : TACBrTEFDIdentificacao que contém:
     NomeAplicacao, VersaoAplicacao, SoftwareHouse, RazaoSocial (todas String)
-    Serão utilizadas para o suporte a nova exigência do Cielo Premia. (por: DSA)
+    Serão utilizadas para o suporte a nova exigência do Cielo Premia.
+    É necessário o preenchimento dessas informações para que ocorra o retorno dos
+    novos campos, conforme descrito abaixo.      (por: DSA)
+
+-- ACBrTEFDClass --
+[*] Adicionado suporte aos novos campos retornados pela no G.P.
+    707-000=Valor Original, 708-000=Valor Saque, 709-000=Valor Desconto (por: DSA)
+
+[*] Adicionado suporte para os novas Vias de comprovante do Cliente (712 e 713) e
+    Estabelecimento (714 e 715).  (por: DSA)
 
 [.] (Suporte a "Cielo Premia" em desenvolvimento)
     http://www.djsystem.com.br/acbr/forum/viewtopic.php?f=16&t=6677

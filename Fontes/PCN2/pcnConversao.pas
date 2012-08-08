@@ -217,7 +217,7 @@ const
   NFeConsDPEC     = '1.01';
   NFeCCeNFe       = '1.00';
   NFeEventoNFe    = '1.00'; // Incluido por Italo em 09/04/2012
-  NFeConsNFeDest  = '1.00'; // Incluido por Italo em 17/07/2012
+  NFeConsNFeDest  = '1.01'; // Incluido por Italo em 17/07/2012
   NFeDownloadNFe  = '1.00'; // Incluido por Italo em 18/07/2012
 
   MDFecabMsg       = '1.00';

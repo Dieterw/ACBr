@@ -58,7 +58,7 @@ uses ACBrBase,  {Units da ACBr}
      Graphics, Contnrs, Classes;
 
 const
-  CACBrBoleto_Versao = '0.0.39a' ;
+  CACBrBoleto_Versao = '0.0.40a' ;
 
 type
   TACBrTipoCobranca =
@@ -75,7 +75,8 @@ type
     cobBanrisul,
     cobBanestes,
     cobHSBC,
-    cobBancoDoNordeste
+    cobBancoDoNordeste,
+    cobBRB
     );
 
   TACBrTitulo = class;
@@ -777,7 +778,7 @@ implementation
 
 Uses ACBrUtil, ACBrBancoBradesco, ACBrBancoBrasil, ACBrBanestes, ACBrBancoItau, ACBrBancoSicredi,
      ACBrBancoMercantil, ACBrCaixaEconomica, ACBrBancoBanrisul, ACBrBancoSantander,
-     ACBrBancoob, ACBrCaixaEconomicaSICOB ,ACBrBancoHSBC,ACBrBancoNordeste ,Forms,
+     ACBrBancoob, ACBrCaixaEconomicaSICOB ,ACBrBancoHSBC,ACBrBancoNordeste , ACBrBancoBRB,Forms,
      {$IFDEF COMPILER6_UP} StrUtils {$ELSE} ACBrD5 {$ENDIF}, Math;
 
 {$IFNDEF FPC}
@@ -1556,6 +1557,7 @@ begin
     cobBanestes       : fBancoClass := TACBrBanestes.create(self);            {021}
     cobSantander      : fBancoClass := TACBrBancoSantander.create(Self);      {033,353,008}
     cobBanrisul       : fBancoClass := TACBrBanrisul.create(Self);            {041}
+    cobBRB            : fBancoClass := TACBrBancoBRB.create(self);             {070}
     cobCaixaEconomica : fBancoClass := TACBrCaixaEconomica.create(Self);      {104}
     cobCaixaSicob     : fBancoClass := TACBrCaixaEconomicaSICOB.create(Self); {104}
     cobBradesco       : fBancoClass := TACBrBancoBradesco.create(Self);       {237}

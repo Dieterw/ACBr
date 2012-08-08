@@ -120,7 +120,10 @@ Versao 0.0.10a do FortesReport 06/07/11
 [*] Acertos na classe do HSBC, testado e funcionando para 
     cobrança não registrada.
     (por: Regys Silveira) 
-
+	
+	
+Versao 0.0.40a 08/08/2012
+[+] Adicionado classe para o Banco BRB.(Renato Pavan)
 
 Versao 0.0.39a 05/08/2012		
 [+] Adicionado impressão de boletos do Banco do Nordeste ao ACBrBoleto.(Araujo Junior)

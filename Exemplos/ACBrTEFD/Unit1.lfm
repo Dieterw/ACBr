@@ -28,9 +28,9 @@ object Form1: TForm1
     Height = 208
     Top = 0
     Width = 769
-    ActivePage = tsOperacao
+    ActivePage = tsConfig
     Align = alTop
-    TabIndex = 1
+    TabIndex = 0
     TabOrder = 2
     object tsConfig: TTabSheet
       Caption = 'Configuração'
@@ -48,9 +48,9 @@ object Form1: TForm1
         TabOrder = 0
         object Label2: TLabel
           Left = 10
-          Height = 16
+          Height = 15
           Top = 1
-          Width = 45
+          Width = 44
           Caption = 'Modelo:'
           ParentColor = False
         end
@@ -69,9 +69,9 @@ object Form1: TForm1
         end
         object Label4: TLabel
           Left = 10
-          Height = 16
+          Height = 15
           Top = 44
-          Width = 29
+          Width = 28
           Caption = 'Porta'
           ParentColor = False
         end
@@ -142,7 +142,6 @@ object Form1: TForm1
             00FFFFFF6B8FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
             FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
           }
-          NumGlyphs = 0
           OnClick = btSerialClick
         end
         object bAtivar: TButton
@@ -157,9 +156,9 @@ object Form1: TForm1
         end
         object Label6: TLabel
           Left = 186
-          Height = 16
+          Height = 15
           Top = 1
-          Width = 93
+          Width = 92
           Caption = 'Indice "CARTAO"'
           ParentColor = False
         end
@@ -174,9 +173,9 @@ object Form1: TForm1
         end
         object Label7: TLabel
           Left = 186
-          Height = 16
+          Height = 15
           Top = 44
-          Width = 92
+          Width = 91
           Caption = 'Indice "CHEQUE"'
           ParentColor = False
         end
@@ -251,9 +250,9 @@ object Form1: TForm1
           end
           object Label1: TLabel
             Left = 26
-            Height = 16
+            Height = 15
             Top = 0
-            Width = 89
+            Width = 88
             Caption = 'Selecionar o G.P.'
             ParentColor = False
           end
@@ -307,17 +306,17 @@ object Form1: TForm1
           end
           object Label8: TLabel
             Left = 301
-            Height = 16
+            Height = 15
             Top = -1
-            Width = 63
+            Width = 62
             Caption = 'EsperaSleep'
             ParentColor = False
           end
           object Label9: TLabel
             Left = 301
-            Height = 16
+            Height = 15
             Top = 55
-            Width = 54
+            Width = 53
             Caption = 'EsperaSTS'
             ParentColor = False
           end
@@ -330,6 +329,17 @@ object Form1: TForm1
             OnChange = edEsperaSTSChange
             TabOrder = 8
             Text = '7'
+          end
+          object ckCHQemGerencial: TCheckBox
+            Left = 153
+            Height = 19
+            Top = 115
+            Width = 118
+            Caption = 'CHQ em Gerencial'
+            Checked = True
+            OnChange = ckCHQemGerencialChange
+            State = cbChecked
+            TabOrder = 9
           end
         end
       end
@@ -424,9 +434,9 @@ object Form1: TForm1
         end
         object Label5: TLabel
           Left = 254
-          Height = 16
+          Height = 15
           Top = 37
-          Width = 28
+          Width = 27
           Alignment = taRightJustify
           Caption = 'Valor'
           ParentColor = False
@@ -546,9 +556,9 @@ object Form1: TForm1
         end
         object Label3: TLabel
           Left = 6
-          Height = 16
+          Height = 15
           Top = 108
-          Width = 28
+          Width = 27
           Alignment = taRightJustify
           Caption = 'Valor'
           ParentColor = False
@@ -687,9 +697,9 @@ object Form1: TForm1
     end
     object lECFName: TLabel
       Left = 40
-      Height = 16
+      Height = 15
       Top = 6
-      Width = 56
+      Width = 55
       Caption = 'lECFName'
       ParentColor = False
     end
@@ -839,9 +849,9 @@ object Form1: TForm1
       OnClick = pMensagemOperadorClick
       object Label10: TLabel
         Left = 0
-        Height = 14
+        Height = 13
         Top = 0
-        Width = 110
+        Width = 109
         Caption = 'Mensagem Operador'
         Font.Height = -11
         ParentColor = False
@@ -874,9 +884,9 @@ object Form1: TForm1
       OnClick = pMensagemOperadorClick
       object Label11: TLabel
         Left = 0
-        Height = 14
+        Height = 13
         Top = 0
-        Width = 96
+        Width = 95
         Caption = 'Mensagem Cliente'
         Font.Height = -11
         ParentColor = False
@@ -951,7 +961,12 @@ object Form1: TForm1
     top = 296
   end
   object ACBrTEFD1: TACBrTEFD
+    Identificacao.NomeAplicacao = 'TEFDDemo'
+    Identificacao.VersaoAplicacao = '3.0'
+    Identificacao.SoftwareHouse = 'ACBr'
+    Identificacao.RazaoSocial = 'Projeto ACBr'
     EsperaSTS = 7
+    CHQEmGerencial = True
     TEFDial.ArqLOG = 'TEF_DIAL.log'
     TEFDial.Habilitado = True
     TEFDial.ArqTemp = 'C:\TEF_DIAL\req\intpos.tmp'

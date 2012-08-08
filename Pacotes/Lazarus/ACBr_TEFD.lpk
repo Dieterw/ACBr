@@ -26,7 +26,7 @@
     </CompilerOptions>
     <Description Value="Componente para TEF Discado e Dedicado com suporte a Multiplos Cartões"/>
     <License Value="LGPL"/>
-    <Version Major="2"/>
+    <Version Major="3"/>
     <Files Count="8">
       <Item1>
         <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFDClass.pas"/>

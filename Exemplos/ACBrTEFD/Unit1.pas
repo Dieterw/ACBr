@@ -10,7 +10,7 @@ uses
   Classes, SysUtils,
   Forms, Controls, Graphics, Dialogs,
   StdCtrls, ExtCtrls, Buttons, ComCtrls, ACBrECF, ACBrDevice, ACBrTEFD,
-  ACBrTEFDClass, ACBrUtil , ACBrTEFDCliSiTef, ACBrTEFDCliDTEF, ACBrBase;
+  ACBrTEFDClass, ACBrUtil , ACBrTEFDCliSiTef, ACBrBase;
 
 type
 
@@ -54,6 +54,7 @@ type
      ckAutoAtivar : TCheckBox;
      ckAutoEfetuarPagamento : TCheckBox;
      ckAutoFinalizarCupom : TCheckBox;
+     ckCHQemGerencial: TCheckBox;
      ckVSPague : TCheckBox ;
      ckHIPERTEF : TCheckBox;
      ckMultiplosCartoes : TCheckBox;
@@ -137,6 +138,7 @@ type
      procedure BaneseObtemInformacao(var ItemSelecionado : Integer);
      procedure bCancelarRespClick(Sender : TObject);
      procedure cbxGPChange(Sender : TObject);
+     procedure ckCHQemGerencialChange(Sender: TObject);
      procedure ckAuttarChange(Sender : TObject) ;
      procedure ckCliSiTefChange(Sender : TObject);
      procedure ckVSPagueChange(Sender : TObject) ;
@@ -772,6 +774,11 @@ begin
   finally
     AvaliaTEFs;
   end;
+end;
+
+procedure TForm1.ckCHQemGerencialChange(Sender: TObject);
+begin
+  ACBrTEFD1.CHQEmGerencial := ckCHQemGerencial.Checked;
 end;
 
 procedure TForm1.ckAuttarChange(Sender : TObject) ;

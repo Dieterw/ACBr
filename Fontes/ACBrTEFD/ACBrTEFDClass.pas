@@ -55,7 +55,7 @@ uses
   {$ENDIF} ;
 
 const
-   CACBrTEFD_Versao      = '2.00' ;
+   CACBrTEFD_Versao      = '3.00' ;
    CACBrTEFD_EsperaSTS   = 7 ;
    CACBrTEFD_EsperaSleep = 250 ;
    CACBrTEFD_NumVias     = 2 ;
@@ -543,6 +543,7 @@ type
 
      procedure IniciarRequisicao( AHeader : String; AID : Integer = 0 ); virtual;
      procedure FinalizarRequisicao ; virtual;
+     procedure AdicionarIdentificacao ; virtual;
      Function VerificarRespostaRequisicao : Boolean ; virtual;
      Procedure LerRespostaRequisicao ; virtual;
      procedure FinalizarResposta( ApagarArqResp : Boolean ) ; virtual;
@@ -1460,7 +1461,7 @@ begin
   VerificaAtivo;              { VisaNET exige um ATV antes de cada transação }
 
   IniciarRequisicao('ADM');
-  { Não há campos extras a adcionar na Requisicao ADM }
+  AdicionarIdentificacao;
   FinalizarRequisicao;
 
   LerRespostaRequisicao;
@@ -1482,6 +1483,7 @@ begin
   Req.DocumentoVinculado  := DocumentoVinculado;
   Req.ValorTotal          := Valor;
   Req.Moeda               := Moeda;
+  AdicionarIdentificacao;
   FinalizarRequisicao;
 
   Result := ProcessarRespostaPagamento( IndiceFPG_ECF, Valor);
@@ -1516,6 +1518,7 @@ begin
   Req.ContaDC            := ContaDC;
   Req.Cheque             := Cheque;
   Req.ChequeDC           := ChequeDC;
+  AdicionarIdentificacao;
   FinalizarRequisicao;
 
   LerRespostaRequisicao;
@@ -1557,6 +1560,7 @@ begin
      Req.ContaDC                      := OldResp.ContaDC;
      Req.Cheque                       := OldResp.Cheque;
      Req.ChequeDC                     := OldResp.ChequeDC;
+     AdicionarIdentificacao;
      FinalizarRequisicao;
 
      LerRespostaRequisicao;
@@ -1583,6 +1587,7 @@ begin
   Req.Rede                         := Rede;
   Req.NSU                          := NSU;
   Req.DataHoraTransacaoComprovante := DataHoraTransacao;
+  AdicionarIdentificacao;
   FinalizarRequisicao;
 
   LerRespostaRequisicao;
@@ -1770,6 +1775,30 @@ begin
   end;
 
   TACBrTEFD(Owner).EstadoReq := reqFinalizada;
+end;
+
+procedure TACBrTEFDClass.AdicionarIdentificacao;
+var
+  TemIdentificacao : Boolean ;
+begin
+  with TACBrTEFD(Owner) do
+  begin
+     if (Identificacao.NomeAplicacao + Identificacao.VersaoAplicacao <> '') then
+     begin
+        Req.Conteudo.GravaInformacao(701,000, Trim( Identificacao.NomeAplicacao + ' ' +
+                                                    Identificacao.VersaoAplicacao ) ) ;
+        TemIdentificacao := True;
+     end;
+
+     if (Identificacao.RazaoSocial <> '') then
+     begin
+        Req.Conteudo.GravaInformacao(716,000, Identificacao.RazaoSocial ) ;
+        TemIdentificacao := True;
+     end;
+
+     if TemIdentificacao then
+        Req.Conteudo.GravaInformacao(706,000, '3' ) ;  // 3 = Suporta Saque e Desconto
+  end;
 end;
 
 Function TACBrTEFDClass.VerificarRespostaRequisicao : Boolean ;
@@ -2257,7 +2286,7 @@ begin
 
      Self.Resp.IndiceFPG_ECF := IndiceFPG_ECF;
 
-     { Cria Arquivo de Backup, contendo inclusive informacoess internas como :
+     { Cria Arquivo de Backup, contendo inclusive informações internas como :
        899 - 001 : CNFEnviado (S, N)
        899 - 002 : IndiceFPG_ECF : String
        899 - 003 : OrdemPagamento : Integer
@@ -2286,7 +2315,10 @@ begin
                     BloquearMouseTeclado( True );
                     ECFPagamento( IndiceFPG_ECF, Valor );
                     RespostasPendentes.SaldoAPagar  := RoundTo( RespostasPendentes.SaldoAPagar - Valor, -2 ) ;
-                    RespostaPendente.OrdemPagamento := RespostasPendentes.Count + 1 ;
+                    if (RespostaPendente.Header = 'CHQ') and CHQEmGerencial then
+                       RespostaPendente.OrdemPagamento := 999
+                    else
+                       RespostaPendente.OrdemPagamento := RespostasPendentes.Count + 1 ;
                     ImpressaoOk := True ;
                  finally
                     if TecladoEstavaLivre then

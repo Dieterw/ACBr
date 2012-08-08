@@ -65,17 +65,39 @@ uses
 
 type
 
-   { TACBrTEFDClass }
+   { TACBrTEFDIdentificacao }
+
+   TACBrTEFDIdentificacao = class( TPersistent )
+   private
+      FNomeAplicacao: String;
+      FRazaoSocial: String;
+      FSoftwareHouse: String;
+      FVersaoAplicacao: String;
+      procedure SetNomeAplicacao(AValue: String);
+      procedure SetRazaoSocial(AValue: String);
+      procedure SetSoftwareHouse(AValue: String);
+      procedure SetVersaoAplicacao(AValue: String);
+   published
+     property NomeAplicacao   : String read FNomeAplicacao   write SetNomeAplicacao ;
+     property VersaoAplicacao : String read FVersaoAplicacao write SetVersaoAplicacao ;
+     property SoftwareHouse   : String read FSoftwareHouse   write SetSoftwareHouse ;
+     property RazaoSocial     : String read FRazaoSocial     write SetRazaoSocial ;
+   end ;
+
+
+   { TACBrTEFD }
 
    TACBrTEFD = class( TComponent )
    private
      fAutoAtivarGP : Boolean;
      fAutoFinalizarCupom : Boolean;
      fAutoEfetuarPagamento : Boolean;
+     fCHQEmGerencial: Boolean;
      fEsperaSleep : Integer;
      fEstadoReq : TACBrTEFDReqEstado;
      fEstadoResp : TACBrTEFDRespEstado;
      fExibirMsgAutenticacao: Boolean;
+     fIdentificacao: TACBrTEFDIdentificacao;
      fMultiplosCartoes : Boolean;
      fNumeroMaximoCartoes: Integer;
      fNumVias : Integer;
@@ -218,6 +240,10 @@ type
    published
 
      property About : String read GetAbout write SetAbout stored False ;
+
+     property Identificacao : TACBrTEFDIdentificacao read fIdentificacao
+        write fIdentificacao ;
+
      property MultiplosCartoes : Boolean read fMultiplosCartoes
        write SetMultiplosCartoes default False ;
      property NumeroMaximoCartoes : Integer read fNumeroMaximoCartoes
@@ -238,6 +264,8 @@ type
         default CACBrTEFD_EsperaSleep ;
      property PathBackup : String read GetPathBackup write SetPathBackup ;
      property ArqLOG : String read fArqLOG write SetArqLOG ;
+     property CHQEmGerencial : Boolean read fCHQEmGerencial
+        write fCHQEmGerencial default False ;
 
      property TEFDial    : TACBrTEFDDial     read fTefDial ;
      property TEFDisc    : TACBrTEFDDisc     read fTefDisc ;
@@ -314,6 +342,32 @@ begin
      raise EACBrTEFDArquivo.Create( ACBrStr( 'Erro ao apagar o arquivo:' + sLineBreak + Arquivo ) );
 end;
 
+{ TACBrTEFDIdentificacao }
+
+procedure TACBrTEFDIdentificacao.SetSoftwareHouse(AValue: String);
+begin
+   if FSoftwareHouse=AValue then Exit;
+   FSoftwareHouse := LeftStr(Trim(AValue),8);
+end;
+
+procedure TACBrTEFDIdentificacao.SetNomeAplicacao(AValue: String);
+begin
+   if FNomeAplicacao=AValue then Exit;
+   FNomeAplicacao := Trim(AValue);
+end;
+
+procedure TACBrTEFDIdentificacao.SetRazaoSocial(AValue: String);
+begin
+   if FRazaoSocial=AValue then Exit;
+   FRazaoSocial := Trim(AValue);
+end;
+
+procedure TACBrTEFDIdentificacao.SetVersaoAplicacao(AValue: String);
+begin
+   if FVersaoAplicacao=AValue then Exit;
+   FVersaoAplicacao := Trim(AValue);
+end;
+
 { TACBrTEFDClass }
 
 constructor TACBrTEFD.Create(AOwner : TComponent);
@@ -333,6 +387,7 @@ begin
   fEsperaSleep          := CACBrTEFD_EsperaSleep ;
   fTecladoBloqueado     := False ;
   fArqLOG               := '' ;
+  fCHQEmGerencial       := False;
 
   fOnAguardaResp              := nil ;
   fOnAntesFinalizarRequisicao := nil ;
@@ -350,6 +405,7 @@ begin
   fOnBloqueiaMouseTeclado     := nil ;
   fOnLimpaTeclado             := nil ;
   fOnRestauraFocoAplicacao    := nil ;
+  fIdentificacao              := TACBrTEFDIdentificacao.Create;
 
   { Lista de Objetos com todas as Classes de TEF }
   fTEFList := TACBrTEFDClassList.create(True);
@@ -459,6 +515,7 @@ end;
 
 destructor TACBrTEFD.Destroy;
 begin
+  fIdentificacao.Free ;
   fTEFList.Free;  // Destroi Lista de Classes TEF e Objetos internos
   fpRespostasPendentes.Free ;  // Destroi Lista de Respostas pendentes e Objetos internos
 
@@ -916,6 +973,9 @@ begin
 
                  For K := 0 to Length( GrupoVinc )-1 do
                  begin
+                    if GrupoVinc[K].OrdemPagamento >= 999 then
+                       Gerencial := True;
+
                     For J := 0 to RespostasPendentes.Count-1 do
                     begin
                        with RespostasPendentes[J] do
@@ -963,18 +1023,34 @@ begin
                           if (NVias > 0) and (Ordem <> OrdemPagamento) then
                           begin
                              Ordem := OrdemPagamento ;
-                             ECFAbreVinculado( DocumentoVinculado,
-                                               GrupoVinc[K].IndiceFPG_ECF,
-                                               GrupoVinc[K].Total ) ;
+                             if Gerencial then
+                              begin
+                                ComandarECF( opeAbreGerencial );
+                                GerencialAberto := True;
+                              end
+                             else
+                                ECFAbreVinculado( DocumentoVinculado,
+                                                  GrupoVinc[K].IndiceFPG_ECF,
+                                                  GrupoVinc[K].Total ) ;
                           end ;
 
                           I := 1 ;
                           while I <= NVias do
                           begin
-                             if I = 1 then
-                                ECFImprimeVia( trVinculado, I, ImagemComprovante1aVia )
+                             if Gerencial then
+                              begin
+                                if I = 1 then
+                                   ECFImprimeVia( trGerencial, I, ImagemComprovante1aVia )
+                                else
+                                   ECFImprimeVia( trGerencial, I, ImagemComprovante2aVia ) ;
+                              end
                              else
-                                ECFImprimeVia( trVinculado, I, ImagemComprovante2aVia ) ;
+                              begin
+                                if I = 1 then
+                                   ECFImprimeVia( trVinculado, I, ImagemComprovante1aVia )
+                                else
+                                   ECFImprimeVia( trVinculado, I, ImagemComprovante2aVia ) ;
+                              end ;
 
                              if (I < NVias) or (J < RespostasPendentes.Count-1) then
                              begin
@@ -1014,7 +1090,15 @@ begin
                     end ;
 
                     if Ordem > -1 then
-                       ComandarECF( opeFechaVinculado ) ;
+                    begin
+                       if GerencialAberto then
+                        begin
+                          ComandarECF( opeFechaGerencial );
+                          GerencialAberto := False;
+                        end
+                       else
+                          ComandarECF( opeFechaVinculado ) ;
+                    end;
                  end;
                end;
 
@@ -1237,7 +1321,15 @@ begin
 
                                    For J := 0 to RespostasPendentes.Count-1 do
                                       if RespostasPendentes[J].IndiceFPG_ECF = GrupoFPG[I].IndiceFPG_ECF then
-                                         RespostasPendentes[J].OrdemPagamento := Ordem;
+                                      begin
+                                        if (RespostasPendentes[J].Header = 'CHQ') and CHQEmGerencial then
+                                         begin
+                                           RespostasPendentes[J].OrdemPagamento := 999;
+                                           Dec( Ordem ) ;
+                                         end
+                                        else
+                                           RespostasPendentes[J].OrdemPagamento := Ordem;
+                                      end;
                                  end
                                 else
                                    Ordem := GrupoFPG[I].OrdemPagamento ;
@@ -1312,6 +1404,9 @@ var
    LenArr    : Integer;
    IndiceFPG : String;
    Ordem     : Integer;
+   wTotal: Double;
+   wIndiceFPG_ECF: String;
+   wOrdemPagamento: Integer;
 begin
   SetLength( Grupo, 0) ;
 
@@ -1339,6 +1434,29 @@ begin
      end;
 
      Grupo[J].Total := Grupo[J].Total + RespostasPendentes[I].ValorTotal ;
+  end;
+
+  // Ordenando por OrdemPagamento //
+  J := 1 ;
+  LenArr := Length( Grupo ) ;
+  while J < LenArr do
+  begin
+     if Grupo[J].OrdemPagamento < Grupo[J-1].OrdemPagamento then
+     begin
+       wOrdemPagamento := Grupo[J].OrdemPagamento ;
+       wIndiceFPG_ECF  := Grupo[J].IndiceFPG_ECF ;
+       wTotal          := Grupo[J].Total ;
+
+       Grupo[J].OrdemPagamento := Grupo[J-1].OrdemPagamento ;
+       Grupo[J].IndiceFPG_ECF  := Grupo[J-1].IndiceFPG_ECF ;
+       Grupo[J].Total          := Grupo[J-1].Total ;
+
+       Grupo[J-1].OrdemPagamento := wOrdemPagamento ;
+       Grupo[J-1].IndiceFPG_ECF  := wIndiceFPG_ECF ;
+       Grupo[J-1].Total          := wTotal ;
+     end;
+
+     Inc( J ) ;
   end;
 end;
 

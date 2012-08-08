@@ -47,13 +47,30 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data:  08/08/2012
+-- ACBrTEFD 3.0 --
+[+] Adicionada nova propriedade: CHQEmGerencial : Boolean, default False.
+    Quando a mesma for True, todos os comprovantes de Consulta de Cheque serão
+    impressos em Relatório Gerencial. No caso de multiplas transações no mesmo
+    Cupom, as consultas de CHQ serão Impressas após a impressão de todos os CDCs
+    (Vinculados). Atualmente os homologadores de PAF-ECF não permitem a impressão
+    de Consulta de Cheques em CDC (Viinculado)      (por: DSA)
+    www.djsystem.com.br/acbr/forum/viewtopic.php?f=16&t=6043
+
+[+] Adicionada a propriedade: Identificacao : TACBrTEFDIdentificacao que contém:
+    NomeAplicacao, VersaoAplicacao, SoftwareHouse, RazaoSocial (todas String)
+    Serão utilizadas para o suporte a nova exigência do Cielo Premia. (por: DSA)
+
+[.] (Suporte a "Cielo Premia" em desenvolvimento)
+    http://www.djsystem.com.br/acbr/forum/viewtopic.php?f=16&t=6677
+
 Data:  22/06/2012
--- ACBrTEFDCliSiTef -
+-- ACBrTEFDCliSiTef --
 [*] Ajuste na exibição da Mensagem do Operador e Usuário (campos 1,2 e 3) para
     suportar a quebra de linha com '@' ou '/n' introduzida no teste 58  (por:DSA)
 
 Data:  23/05/2012
--- ACBrTEFDClass -
+-- ACBrTEFDClass --
 [*] Transação CNC modificada para informar TipoPessoa apenas se o mesmo existir
     (por: MarcioDC)
 

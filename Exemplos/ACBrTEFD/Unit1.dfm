@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 373
-  Top = 244
+  Left = 366
+  Top = 216
   Width = 766
   Height = 488
   Caption = 'TEFDDemo'
@@ -35,7 +35,7 @@ object Form1: TForm1
     Top = 0
     Width = 750
     Height = 208
-    ActivePage = tsOperacao
+    ActivePage = tsConfig
     Align = alTop
     TabOrder = 2
     object tsConfig: TTabSheet
@@ -269,13 +269,24 @@ object Form1: TForm1
             TabOrder = 3
             OnClick = ckAutoAtivarChange
           end
+          object ckCHQemGerencial: TCheckBox
+            Left = 161
+            Top = 136
+            Width = 136
+            Height = 19
+            Caption = 'CHQ em Gerencial'
+            Checked = True
+            State = cbChecked
+            TabOrder = 7
+            OnClick = ckCHQemGerencialChange
+          end
           object cbxGP: TComboBox
             Left = 13
             Top = 44
             Width = 133
             Height = 21
             Style = csDropDownList
-            ItemHeight = 0
+            ItemHeight = 13
             TabOrder = 0
             OnChange = cbxGPChange
           end
@@ -322,7 +333,7 @@ object Form1: TForm1
             Top = 39
             Width = 56
             Height = 21
-            TabOrder = 7
+            TabOrder = 8
             Text = '250'
             OnChange = edEsperaSleepChange
           end
@@ -331,7 +342,7 @@ object Form1: TForm1
             Top = 95
             Width = 56
             Height = 21
-            TabOrder = 8
+            TabOrder = 9
             Text = '7'
             OnChange = edEsperaSTSChange
           end
@@ -963,6 +974,7 @@ object Form1: TForm1
   end
   object ACBrTEFD1: TACBrTEFD
     EsperaSTS = 7
+    CHQEmGerencial = True
     TEFDial.ArqLOG = 'TEF_DIAL.log'
     TEFDial.Habilitado = True
     TEFDial.ArqTemp = 'C:\TEF_DIAL\req\intpos.tmp'

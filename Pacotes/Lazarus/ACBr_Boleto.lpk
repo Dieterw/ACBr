@@ -18,7 +18,7 @@
     <Description Value="ACBrBoleto"/>
     <License Value="LGPL"/>
     <Version Minor="1"/>
-    <Files Count="14">
+    <Files Count="15">
       <Item1>
         <Filename Value="..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
         <HasRegisterProc Value="True"/>
@@ -76,6 +76,10 @@
         <Filename Value="..\..\Fontes\ACBrBoleto\ACBrBancoNordeste.pas"/>
         <UnitName Value="ACBrBancoNordeste"/>
       </Item14>
+      <Item15>
+        <Filename Value="..\..\Fontes\ACBrBoleto\ACBrBancoBRB.pas"/>
+        <UnitName Value="ACBrBancoBRB"/>
+      </Item15>
     </Files>
     <Type Value="RunAndDesignTime"/>
     <RequiredPkgs Count="3">

@@ -1,6 +1,8 @@
 inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
-  Width = 838
-  Height = 755
+  Left = 215
+  Top = 121
+  Width = 828
+  Height = 693
   Caption = 'DANFe - Retrato'
   Font.Height = -8
   Font.Name = 'Arial'
@@ -10,8 +12,8 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
   TextHeight = 10
   inherited QRNFe: TQuickRep
     Tag = 1
-    Left = 8
-    Top = 8
+    Left = 2
+    Top = 2
     BeforePrint = QRNFeBeforePrint
     DataSet = cdsItens
     Font.Height = -8
@@ -73,7 +75,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         VertAdjust = 0
       end
       object QRLabel10: TQRLabel
-        Left = 2
+        Left = 1
         Top = 30
         Width = 96
         Height = 11
@@ -84,7 +86,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           29.104166666666670000
-          5.291666666666667000
+          2.645833333333333000
           79.375000000000000000
           254.000000000000000000)
         XLColumn = 0
@@ -231,7 +233,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         FontSize = 10
       end
       object qrlSERIE0: TQRLabel
-        Left = 692
+        Left = 691
         Top = 34
         Width = 8
         Height = 20
@@ -242,8 +244,8 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           52.916666666666670000
-          1830.916666666667000000
-          89.958333333333330000
+          1828.270833333333000000
+          89.958333333333340000
           21.166666666666670000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -276,7 +278,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Size.Values = (
           52.916666666666670000
           1709.208333333333000000
-          89.958333333333330000
+          89.958333333333340000
           95.250000000000000000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -331,18 +333,18 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       end
       object QRLabel12: TQRLabel
         Left = 666
-        Top = 2
+        Top = 1
         Width = 27
-        Height = 18
+        Height = 19
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          47.625000000000000000
+          50.270833333333330000
           1762.125000000000000000
-          5.291666666666667000
+          2.645833333333333000
           71.437500000000000000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -374,9 +376,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           29.104166666666670000
-          328.083333333333300000
+          328.083333333333400000
           79.375000000000000000
-          494.770833333333300000)
+          494.770833333333400000)
         XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
@@ -399,14 +401,14 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Left = 39
         Top = 14
         Width = 529
-        Height = 13
+        Height = 14
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          34.395833333333330000
+          37.041666666666670000
           103.187500000000000000
           37.041666666666670000
           1399.645833333333000000)
@@ -435,7 +437,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       Left = 23
       Top = 91
       Width = 752
-      Height = 187
+      Height = 186
       Frame.Color = clBlack
       Frame.DrawTop = False
       Frame.DrawBottom = False
@@ -448,7 +450,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       ForceNewColumn = False
       ForceNewPage = False
       Size.Values = (
-        494.770833333333300000
+        492.124999999999900000
         1989.666666666667000000)
       PreCaluculateBandHeight = False
       KeepOnOnePage = False
@@ -526,7 +528,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           63.500000000000000000
-          846.666666666666700000
+          846.666666666666800000
           29.104166666666670000
           177.270833333333300000)
         XLColumn = 0
@@ -605,8 +607,8 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         VertAdjust = 0
       end
       object QRLabel29: TQRLabel
-        Left = 7
-        Top = 128
+        Left = 6
+        Top = 129
         Width = 90
         Height = 10
         Frame.Color = clBlack
@@ -616,8 +618,8 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           26.458333333333330000
-          18.520833333333330000
-          338.666666666666700000
+          15.875000000000000000
+          341.312500000000000000
           238.125000000000000000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -639,7 +641,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       end
       object QRLabel30: TQRLabel
         Left = 6
-        Top = 158
+        Top = 159
         Width = 77
         Height = 10
         Frame.Color = clBlack
@@ -650,7 +652,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Size.Values = (
           26.458333333333330000
           15.875000000000000000
-          418.041666666666700000
+          420.687500000000000000
           203.729166666666700000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -672,7 +674,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       end
       object QRLabel31: TQRLabel
         Left = 225
-        Top = 158
+        Top = 159
         Width = 139
         Height = 10
         Frame.Color = clBlack
@@ -683,8 +685,8 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Size.Values = (
           26.458333333333330000
           595.312500000000000000
-          418.041666666666700000
-          367.770833333333300000)
+          420.687500000000000000
+          367.770833333333400000)
         XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
@@ -705,7 +707,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       end
       object QRLabel32: TQRLabel
         Left = 431
-        Top = 158
+        Top = 159
         Width = 18
         Height = 10
         Frame.Color = clBlack
@@ -716,7 +718,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Size.Values = (
           26.458333333333330000
           1140.354166666667000000
-          418.041666666666700000
+          420.687500000000000000
           47.625000000000000000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -749,7 +751,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Size.Values = (
           39.687500000000000000
           15.875000000000000000
-          359.833333333333300000
+          359.833333333333400000
           195.791666666666700000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -782,7 +784,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Size.Values = (
           39.687500000000000000
           15.875000000000000000
-          439.208333333333300000
+          439.208333333333400000
           246.062500000000000000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -814,8 +816,8 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           39.687500000000000000
-          597.958333333333300000
-          439.208333333333300000
+          597.958333333333400000
+          439.208333333333400000
           195.791666666666700000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -848,7 +850,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Size.Values = (
           39.687500000000000000
           1148.291666666667000000
-          439.208333333333300000
+          439.208333333333400000
           103.187500000000000000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -1353,7 +1355,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Center = True
       end
       object QRLabel2: TQRLabel
-        Left = 427
+        Left = 426
         Top = 56
         Width = 65
         Height = 10
@@ -1364,7 +1366,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           26.458333333333330000
-          1129.770833333333000000
+          1127.125000000000000000
           148.166666666666700000
           171.979166666666700000)
         XLColumn = 0
@@ -1455,7 +1457,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       end
       object qrlDescricao: TQRLabel
         Left = 430
-        Top = 128
+        Top = 129
         Width = 133
         Height = 10
         Frame.Color = clBlack
@@ -1466,8 +1468,8 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Size.Values = (
           26.458333333333330000
           1137.708333333333000000
-          338.666666666666700000
-          351.895833333333300000)
+          341.312500000000000000
+          351.895833333333400000)
         XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
@@ -1521,18 +1523,18 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       end
       object qrlSERIE1: TQRLabel
         Left = 350
-        Top = 93
+        Top = 94
         Width = 19
-        Height = 17
+        Height = 16
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          44.979166666666670000
-          926.041666666666700000
-          246.062500000000000000
+          42.333333333333340000
+          926.041666666666800000
+          248.708333333333300000
           50.270833333333330000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -1554,19 +1556,19 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       end
       object QRLabel22: TQRLabel
         Left = 300
-        Top = 93
+        Top = 94
         Width = 35
-        Height = 17
+        Height = 16
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          44.979166666666670000
+          42.333333333333340000
           793.750000000000000000
-          246.062500000000000000
-          92.604166666666670000)
+          248.708333333333300000
+          92.604166666666680000)
         XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
@@ -1586,8 +1588,8 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         FontSize = 9
       end
       object QRLabel18: TQRLabel
-        Left = 292
-        Top = 28
+        Left = 291
+        Top = 29
         Width = 122
         Height = 14
         Frame.Color = clBlack
@@ -1597,8 +1599,8 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           37.041666666666670000
-          772.583333333333300000
-          74.083333333333330000
+          769.937500000000000000
+          76.729166666666680000
           322.791666666666700000)
         XLColumn = 0
         Alignment = taCenter
@@ -1630,7 +1632,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           37.041666666666670000
-          791.104166666666700000
+          791.104166666666800000
           103.187500000000000000
           301.625000000000000000)
         XLColumn = 0
@@ -1653,18 +1655,18 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       end
       object QRLabel20: TQRLabel
         Left = 300
-        Top = 77
+        Top = 76
         Width = 14
-        Height = 17
+        Height = 16
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          44.979166666666670000
+          42.333333333333340000
           793.750000000000000000
-          203.729166666666700000
+          201.083333333333300000
           37.041666666666670000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -1721,16 +1723,16 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Left = 300
         Top = 109
         Width = 42
-        Height = 17
+        Height = 16
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          44.979166666666670000
+          42.333333333333340000
           793.750000000000000000
-          288.395833333333300000
+          288.395833333333400000
           111.125000000000000000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -1754,17 +1756,17 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Left = 350
         Top = 109
         Width = 28
-        Height = 17
+        Height = 16
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          44.979166666666670000
-          926.041666666666700000
-          288.395833333333300000
-          74.083333333333330000)
+          42.333333333333340000
+          926.041666666666800000
+          288.395833333333400000
+          74.083333333333340000)
         XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
@@ -1787,15 +1789,15 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Left = 296
         Top = 65
         Width = 42
-        Height = 13
+        Height = 14
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          34.395833333333330000
-          783.166666666666700000
+          37.041666666666670000
+          783.166666666666800000
           171.979166666666700000
           111.125000000000000000)
         XLColumn = 0
@@ -1818,18 +1820,18 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       end
       object QRLabel27: TQRLabel
         Left = 296
-        Top = 53
+        Top = 54
         Width = 58
-        Height = 13
+        Height = 14
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          34.395833333333330000
-          783.166666666666700000
-          140.229166666666700000
+          37.041666666666670000
+          783.166666666666800000
+          142.875000000000000000
           153.458333333333300000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -1981,7 +1983,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
     end
     object qrbEmitenteDestinatario: TQRChildBand
       Left = 23
-      Top = 278
+      Top = 277
       Width = 752
       Height = 335
       Frame.Color = clBlack
@@ -1996,7 +1998,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       ForceNewColumn = False
       ForceNewPage = False
       Size.Values = (
-        886.354166666666700000
+        886.354166666666800000
         1989.666666666667000000)
       PreCaluculateBandHeight = False
       KeepOnOnePage = False
@@ -2036,7 +2038,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           37.041666666666670000
           0.000000000000000000
           0.000000000000000000
-          312.208333333333300000)
+          312.208333333333400000)
         XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
@@ -2057,7 +2059,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       end
       object qrlblFatura: TQRLabel
         Left = 0
-        Top = 103
+        Top = 104
         Width = 93
         Height = 14
         Frame.Color = clBlack
@@ -2068,7 +2070,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Size.Values = (
           37.041666666666670000
           0.000000000000000000
-          272.520833333333300000
+          275.166666666666700000
           246.062500000000000000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -2908,7 +2910,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           26.458333333333330000
           1201.208333333333000000
           39.687500000000000000
-          97.895833333333330000)
+          97.895833333333340000)
         XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
@@ -2994,7 +2996,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         FontSize = 5
       end
       object QRLabel38: TQRLabel
-        Left = 372
+        Left = 371
         Top = 45
         Width = 65
         Height = 10
@@ -3005,7 +3007,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           26.458333333333330000
-          984.250000000000000000
+          981.604166666666800000
           119.062500000000000000
           171.979166666666700000)
         XLColumn = 0
@@ -3106,7 +3108,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           26.458333333333330000
           10.583333333333330000
           198.437500000000000000
-          97.895833333333330000)
+          97.895833333333340000)
         XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
@@ -3126,7 +3128,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         FontSize = 5
       end
       object QRLabel42: TQRLabel
-        Left = 187
+        Left = 186
         Top = 75
         Width = 39
         Height = 10
@@ -3137,7 +3139,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           26.458333333333330000
-          494.770833333333300000
+          492.124999999999900000
           198.437500000000000000
           103.187500000000000000)
         XLColumn = 0
@@ -3159,7 +3161,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         FontSize = 5
       end
       object QRLabel43: TQRLabel
-        Left = 333
+        Left = 334
         Top = 75
         Width = 10
         Height = 10
@@ -3170,7 +3172,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           26.458333333333330000
-          881.062500000000000000
+          883.708333333333400000
           198.437500000000000000
           26.458333333333330000)
         XLColumn = 0
@@ -3325,7 +3327,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       end
       object QRLabel48: TQRLabel
         Left = 274
-        Top = 173
+        Top = 174
         Width = 147
         Height = 9
         Frame.Color = clBlack
@@ -3335,8 +3337,8 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           23.812500000000000000
-          724.958333333333300000
-          457.729166666666700000
+          724.958333333333400000
+          460.375000000000000000
           388.937500000000000000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -3357,7 +3359,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         FontSize = 5
       end
       object QRLabel49: TQRLabel
-        Left = 432
+        Left = 431
         Top = 171
         Width = 108
         Height = 10
@@ -3368,7 +3370,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           26.458333333333330000
-          1143.000000000000000000
+          1140.354166666667000000
           452.437500000000000000
           285.750000000000000000)
         XLColumn = 0
@@ -3390,7 +3392,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         FontSize = 5
       end
       object QRLabel50: TQRLabel
-        Left = 578
+        Left = 579
         Top = 171
         Width = 104
         Height = 10
@@ -3401,7 +3403,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           26.458333333333330000
-          1529.291666666667000000
+          1531.937500000000000000
           452.437500000000000000
           275.166666666666700000)
         XLColumn = 0
@@ -3424,7 +3426,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       end
       object QRLabel51: TQRLabel
         Left = 6
-        Top = 202
+        Top = 201
         Width = 60
         Height = 10
         Frame.Color = clBlack
@@ -3435,7 +3437,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Size.Values = (
           26.458333333333330000
           15.875000000000000000
-          534.458333333333300000
+          531.812500000000000000
           158.750000000000000000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -3456,8 +3458,8 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         FontSize = 5
       end
       object QRLabel52: TQRLabel
-        Left = 112
-        Top = 202
+        Left = 111
+        Top = 201
         Width = 67
         Height = 10
         Frame.Color = clBlack
@@ -3467,8 +3469,8 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           26.458333333333330000
-          296.333333333333300000
-          534.458333333333300000
+          293.687500000000000000
+          531.812500000000000000
           177.270833333333300000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -3490,7 +3492,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       end
       object QRLabel53: TQRLabel
         Left = 220
-        Top = 202
+        Top = 201
         Width = 38
         Height = 10
         Frame.Color = clBlack
@@ -3500,8 +3502,8 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           26.458333333333330000
-          582.083333333333300000
-          534.458333333333300000
+          582.083333333333400000
+          531.812500000000000000
           100.541666666666700000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -3523,7 +3525,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       end
       object QRLabel54: TQRLabel
         Left = 310
-        Top = 202
+        Top = 201
         Width = 110
         Height = 9
         Frame.Color = clBlack
@@ -3533,8 +3535,8 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           23.812500000000000000
-          820.208333333333300000
-          534.458333333333300000
+          820.208333333333500000
+          531.812500000000000000
           291.041666666666700000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -3555,8 +3557,8 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         FontSize = 5
       end
       object QRLabel55: TQRLabel
-        Left = 432
-        Top = 202
+        Left = 431
+        Top = 201
         Width = 47
         Height = 10
         Frame.Color = clBlack
@@ -3566,8 +3568,8 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           26.458333333333330000
-          1143.000000000000000000
-          534.458333333333300000
+          1140.354166666667000000
+          531.812500000000000000
           124.354166666666700000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -3588,8 +3590,8 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         FontSize = 5
       end
       object QRLabel56: TQRLabel
-        Left = 578
-        Top = 202
+        Left = 579
+        Top = 201
         Width = 82
         Height = 10
         Frame.Color = clBlack
@@ -3599,9 +3601,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           26.458333333333330000
-          1529.291666666667000000
-          534.458333333333300000
-          216.958333333333300000)
+          1531.937500000000000000
+          531.812500000000000000
+          216.958333333333400000)
         XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
@@ -3633,7 +3635,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Size.Values = (
           26.458333333333330000
           10.583333333333330000
-          648.229166666666700000
+          648.229166666666800000
           206.375000000000000000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -3699,7 +3701,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Size.Values = (
           26.458333333333330000
           1074.208333333333000000
-          648.229166666666700000
+          648.229166666666800000
           127.000000000000000000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -3732,7 +3734,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Size.Values = (
           26.458333333333330000
           1259.416666666667000000
-          648.229166666666700000
+          648.229166666666800000
           179.916666666666700000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -3765,7 +3767,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Size.Values = (
           26.458333333333330000
           1524.000000000000000000
-          648.229166666666700000
+          648.229166666666800000
           26.458333333333330000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -3798,8 +3800,8 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Size.Values = (
           26.458333333333330000
           1624.541666666667000000
-          648.229166666666700000
-          97.895833333333330000)
+          648.229166666666800000
+          97.895833333333340000)
         XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
@@ -3831,7 +3833,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Size.Values = (
           26.458333333333330000
           10.583333333333330000
-          727.604166666666700000
+          727.604166666666800000
           100.541666666666700000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -3863,9 +3865,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           26.458333333333330000
-          830.791666666666700000
-          727.604166666666700000
-          97.895833333333330000)
+          830.791666666666800000
+          727.604166666666800000
+          97.895833333333340000)
         XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
@@ -3897,7 +3899,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Size.Values = (
           26.458333333333330000
           1428.750000000000000000
-          727.604166666666700000
+          727.604166666666800000
           26.458333333333330000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -3930,7 +3932,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Size.Values = (
           26.458333333333330000
           1534.583333333333000000
-          727.604166666666700000
+          727.604166666666800000
           203.729166666666700000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -3963,7 +3965,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Size.Values = (
           26.458333333333330000
           10.583333333333330000
-          806.979166666666700000
+          806.979166666666800000
           121.708333333333300000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -3996,8 +3998,8 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Size.Values = (
           26.458333333333330000
           251.354166666666700000
-          806.979166666666700000
-          74.083333333333330000)
+          806.979166666666800000
+          74.083333333333340000)
         XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
@@ -4028,8 +4030,8 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           26.458333333333330000
-          568.854166666666700000
-          806.979166666666700000
+          568.854166666666800000
+          806.979166666666800000
           71.437500000000000000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -4062,7 +4064,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Size.Values = (
           26.458333333333330000
           833.437500000000000000
-          806.979166666666700000
+          806.979166666666800000
           121.708333333333300000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -4095,7 +4097,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Size.Values = (
           26.458333333333330000
           1124.479166666667000000
-          806.979166666666700000
+          806.979166666666800000
           116.416666666666700000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -4128,7 +4130,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Size.Values = (
           26.458333333333330000
           1531.937500000000000000
-          806.979166666666700000
+          806.979166666666800000
           127.000000000000000000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -4150,19 +4152,19 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       end
       object qrlFatData1: TQRLabel
         Left = 60
-        Top = 117
+        Top = 116
         Width = 37
-        Height = 12
+        Height = 11
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          31.750000000000000000
+          29.104166666666670000
           158.750000000000000000
-          309.562500000000000000
-          97.895833333333330000)
+          306.916666666666700000
+          97.895833333333340000)
         XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
@@ -4185,17 +4187,17 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Left = 60
         Top = 130
         Width = 37
-        Height = 12
+        Height = 11
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          31.750000000000000000
+          29.104166666666670000
           158.750000000000000000
-          343.958333333333300000
-          97.895833333333330000)
+          343.958333333333400000
+          97.895833333333340000)
         XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
@@ -4216,19 +4218,19 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       end
       object qrlFatData3: TQRLabel
         Left = 60
-        Top = 143
+        Top = 144
         Width = 37
-        Height = 12
+        Height = 11
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          31.750000000000000000
+          29.104166666666670000
           158.750000000000000000
-          378.354166666666700000
-          97.895833333333330000)
+          381.000000000000000000
+          97.895833333333340000)
         XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
@@ -4348,18 +4350,18 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       end
       object qrlFatNum1: TQRLabel
         Left = 4
-        Top = 117
+        Top = 116
         Width = 9
-        Height = 12
+        Height = 11
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          31.750000000000000000
+          29.104166666666670000
           10.583333333333330000
-          309.562500000000000000
+          306.916666666666700000
           23.812500000000000000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -4383,16 +4385,16 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Left = 4
         Top = 130
         Width = 9
-        Height = 12
+        Height = 11
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          31.750000000000000000
+          29.104166666666670000
           10.583333333333330000
-          343.958333333333300000
+          343.958333333333400000
           23.812500000000000000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -4414,18 +4416,18 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       end
       object qrlFatNum3: TQRLabel
         Left = 4
-        Top = 143
+        Top = 144
         Width = 9
-        Height = 12
+        Height = 11
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          31.750000000000000000
+          29.104166666666670000
           10.583333333333330000
-          378.354166666666700000
+          381.000000000000000000
           23.812500000000000000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -4522,19 +4524,19 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         VertAdjust = 0
       end
       object qrlFatNum6: TQRLabel
-        Left = 153
-        Top = 143
+        Left = 154
+        Top = 144
         Width = 9
-        Height = 12
+        Height = 11
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          31.750000000000000000
-          404.812500000000000000
-          378.354166666666700000
+          29.104166666666670000
+          407.458333333333400000
+          381.000000000000000000
           23.812500000000000000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -4555,19 +4557,19 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         FontSize = 6
       end
       object qrlFatNum5: TQRLabel
-        Left = 153
+        Left = 154
         Top = 130
         Width = 9
-        Height = 12
+        Height = 11
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          31.750000000000000000
-          404.812500000000000000
-          343.958333333333300000
+          29.104166666666670000
+          407.458333333333400000
+          343.958333333333400000
           23.812500000000000000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -4588,19 +4590,19 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         FontSize = 6
       end
       object qrlFatNum4: TQRLabel
-        Left = 153
-        Top = 117
+        Left = 154
+        Top = 116
         Width = 9
-        Height = 12
+        Height = 11
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          31.750000000000000000
-          404.812500000000000000
-          309.562500000000000000
+          29.104166666666670000
+          407.458333333333400000
+          306.916666666666700000
           23.812500000000000000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -4622,19 +4624,19 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       end
       object qrlFatData4: TQRLabel
         Left = 210
-        Top = 117
+        Top = 116
         Width = 37
-        Height = 12
+        Height = 11
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          31.750000000000000000
+          29.104166666666670000
           555.625000000000000000
-          309.562500000000000000
-          97.895833333333330000)
+          306.916666666666700000
+          97.895833333333340000)
         XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
@@ -4657,17 +4659,17 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Left = 210
         Top = 130
         Width = 37
-        Height = 12
+        Height = 11
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          31.750000000000000000
+          29.104166666666670000
           555.625000000000000000
-          343.958333333333300000
-          97.895833333333330000)
+          343.958333333333400000
+          97.895833333333340000)
         XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
@@ -4688,19 +4690,19 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       end
       object qrlFatData6: TQRLabel
         Left = 210
-        Top = 143
+        Top = 144
         Width = 37
-        Height = 12
+        Height = 11
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          31.750000000000000000
+          29.104166666666670000
           555.625000000000000000
-          378.354166666666700000
-          97.895833333333330000)
+          381.000000000000000000
+          97.895833333333340000)
         XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
@@ -4819,19 +4821,19 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         FontSize = 6
       end
       object qrlFatNum9: TQRLabel
-        Left = 303
-        Top = 142
+        Left = 304
+        Top = 141
         Width = 9
-        Height = 13
+        Height = 14
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          34.395833333333330000
-          801.687500000000000000
-          375.708333333333300000
+          37.041666666666670000
+          804.333333333333200000
+          373.062500000000000000
           23.812500000000000000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -4852,18 +4854,18 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         FontSize = 6
       end
       object qrlFatNum8: TQRLabel
-        Left = 303
+        Left = 304
         Top = 129
         Width = 9
-        Height = 13
+        Height = 14
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          34.395833333333330000
-          801.687500000000000000
+          37.041666666666670000
+          804.333333333333200000
           341.312500000000000000
           23.812500000000000000)
         XLColumn = 0
@@ -4885,18 +4887,18 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         FontSize = 6
       end
       object qrlFatNum7: TQRLabel
-        Left = 303
+        Left = 304
         Top = 116
         Width = 9
-        Height = 13
+        Height = 14
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          34.395833333333330000
-          801.687500000000000000
+          37.041666666666670000
+          804.333333333333200000
           306.916666666666700000
           23.812500000000000000)
         XLColumn = 0
@@ -4919,19 +4921,19 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       end
       object qrlFatData7: TQRLabel
         Left = 360
-        Top = 117
+        Top = 116
         Width = 37
-        Height = 12
+        Height = 11
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          31.750000000000000000
+          29.104166666666670000
           952.500000000000000000
-          309.562500000000000000
-          97.895833333333330000)
+          306.916666666666700000
+          97.895833333333340000)
         XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
@@ -4954,17 +4956,17 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Left = 360
         Top = 130
         Width = 37
-        Height = 12
+        Height = 11
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          31.750000000000000000
+          29.104166666666670000
           952.500000000000000000
-          343.958333333333300000
-          97.895833333333330000)
+          343.958333333333400000
+          97.895833333333340000)
         XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
@@ -4985,19 +4987,19 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       end
       object qrlFatData9: TQRLabel
         Left = 360
-        Top = 143
+        Top = 144
         Width = 37
-        Height = 12
+        Height = 11
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          31.750000000000000000
+          29.104166666666670000
           952.500000000000000000
-          378.354166666666700000
-          97.895833333333330000)
+          381.000000000000000000
+          97.895833333333340000)
         XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
@@ -5116,19 +5118,19 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         FontSize = 6
       end
       object qrlFatNum12: TQRLabel
-        Left = 453
-        Top = 143
+        Left = 454
+        Top = 144
         Width = 9
-        Height = 12
+        Height = 11
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          31.750000000000000000
-          1198.562500000000000000
-          378.354166666666700000
+          29.104166666666670000
+          1201.208333333333000000
+          381.000000000000000000
           23.812500000000000000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -5149,19 +5151,19 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         FontSize = 6
       end
       object qrlFatNum11: TQRLabel
-        Left = 453
+        Left = 454
         Top = 130
         Width = 9
-        Height = 12
+        Height = 11
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          31.750000000000000000
-          1198.562500000000000000
-          343.958333333333300000
+          29.104166666666670000
+          1201.208333333333000000
+          343.958333333333400000
           23.812500000000000000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -5182,19 +5184,19 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         FontSize = 6
       end
       object qrlFatNum10: TQRLabel
-        Left = 453
-        Top = 117
+        Left = 454
+        Top = 116
         Width = 9
-        Height = 12
+        Height = 11
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          31.750000000000000000
-          1198.562500000000000000
-          309.562500000000000000
+          29.104166666666670000
+          1201.208333333333000000
+          306.916666666666700000
           23.812500000000000000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -5216,19 +5218,19 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       end
       object qrlFatData10: TQRLabel
         Left = 510
-        Top = 117
+        Top = 116
         Width = 37
-        Height = 12
+        Height = 11
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          31.750000000000000000
+          29.104166666666670000
           1349.375000000000000000
-          309.562500000000000000
-          97.895833333333330000)
+          306.916666666666700000
+          97.895833333333340000)
         XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
@@ -5251,17 +5253,17 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Left = 510
         Top = 130
         Width = 37
-        Height = 12
+        Height = 11
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          31.750000000000000000
+          29.104166666666670000
           1349.375000000000000000
-          343.958333333333300000
-          97.895833333333330000)
+          343.958333333333400000
+          97.895833333333340000)
         XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
@@ -5282,19 +5284,19 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       end
       object qrlFatData12: TQRLabel
         Left = 510
-        Top = 143
+        Top = 144
         Width = 37
-        Height = 12
+        Height = 11
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          31.750000000000000000
+          29.104166666666670000
           1349.375000000000000000
-          378.354166666666700000
-          97.895833333333330000)
+          381.000000000000000000
+          97.895833333333340000)
         XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
@@ -5413,19 +5415,19 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         FontSize = 6
       end
       object qrlFatNum15: TQRLabel
-        Left = 603
-        Top = 143
+        Left = 604
+        Top = 144
         Width = 9
-        Height = 12
+        Height = 11
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          31.750000000000000000
-          1595.437500000000000000
-          378.354166666666700000
+          29.104166666666670000
+          1598.083333333333000000
+          381.000000000000000000
           23.812500000000000000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -5446,19 +5448,19 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         FontSize = 6
       end
       object qrlFatNum14: TQRLabel
-        Left = 603
+        Left = 604
         Top = 130
         Width = 9
-        Height = 12
+        Height = 11
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          31.750000000000000000
-          1595.437500000000000000
-          343.958333333333300000
+          29.104166666666670000
+          1598.083333333333000000
+          343.958333333333400000
           23.812500000000000000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -5479,19 +5481,19 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         FontSize = 6
       end
       object qrlFatNum13: TQRLabel
-        Left = 603
-        Top = 117
+        Left = 604
+        Top = 116
         Width = 9
-        Height = 12
+        Height = 11
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          31.750000000000000000
-          1595.437500000000000000
-          309.562500000000000000
+          29.104166666666670000
+          1598.083333333333000000
+          306.916666666666700000
           23.812500000000000000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -5512,20 +5514,20 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         FontSize = 6
       end
       object qrlFatData13: TQRLabel
-        Left = 658
-        Top = 117
+        Left = 659
+        Top = 116
         Width = 37
-        Height = 12
+        Height = 11
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          31.750000000000000000
-          1740.958333333333000000
-          309.562500000000000000
-          97.895833333333330000)
+          29.104166666666670000
+          1743.604166666667000000
+          306.916666666666700000
+          97.895833333333340000)
         XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
@@ -5545,20 +5547,20 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         FontSize = 6
       end
       object qrlFatData14: TQRLabel
-        Left = 658
+        Left = 659
         Top = 130
         Width = 37
-        Height = 12
+        Height = 11
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          31.750000000000000000
-          1740.958333333333000000
-          343.958333333333300000
-          97.895833333333330000)
+          29.104166666666670000
+          1743.604166666667000000
+          343.958333333333400000
+          97.895833333333340000)
         XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
@@ -5578,20 +5580,20 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         FontSize = 6
       end
       object qrlFatData15: TQRLabel
-        Left = 658
-        Top = 143
+        Left = 659
+        Top = 144
         Width = 37
-        Height = 12
+        Height = 11
         Frame.Color = clBlack
         Frame.DrawTop = False
         Frame.DrawBottom = False
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          31.750000000000000000
-          1740.958333333333000000
-          378.354166666666700000
-          97.895833333333330000)
+          29.104166666666670000
+          1743.604166666667000000
+          381.000000000000000000
+          97.895833333333340000)
         XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
@@ -5820,7 +5822,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           39.687500000000000000
-          989.541666666666700000
+          989.541666666666800000
           142.875000000000000000
           166.687500000000000000)
         XLColumn = 0
@@ -5885,7 +5887,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          42.333333333333330000
+          42.333333333333340000
           15.875000000000000000
           224.895833333333300000
           169.333333333333300000)
@@ -5908,7 +5910,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         FontSize = 8
       end
       object qrlDestFone: TQRLabel
-        Left = 187
+        Left = 186
         Top = 85
         Width = 57
         Height = 15
@@ -5919,7 +5921,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           39.687500000000000000
-          494.770833333333300000
+          492.124999999999900000
           224.895833333333300000
           150.812500000000000000)
         XLColumn = 0
@@ -5941,7 +5943,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         FontSize = 8
       end
       object qrlDestUF: TQRLabel
-        Left = 338
+        Left = 339
         Top = 85
         Width = 48
         Height = 15
@@ -5952,7 +5954,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           39.687500000000000000
-          894.291666666666700000
+          896.937500000000000000
           224.895833333333300000
           127.000000000000000000)
         XLColumn = 0
@@ -6437,7 +6439,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       end
       object qrlTransNome: TQRLabel
         Left = 6
-        Top = 257
+        Top = 256
         Width = 50
         Height = 15
         Frame.Color = clBlack
@@ -6448,7 +6450,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Size.Values = (
           39.687500000000000000
           15.875000000000000000
-          679.979166666666700000
+          677.333333333333400000
           132.291666666666700000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -6547,7 +6549,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Size.Values = (
           39.687500000000000000
           1259.416666666667000000
-          677.333333333333300000
+          677.333333333333400000
           171.979166666666700000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -6613,7 +6615,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Size.Values = (
           39.687500000000000000
           1624.541666666667000000
-          677.333333333333300000
+          677.333333333333400000
           174.625000000000000000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -6635,7 +6637,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       end
       object qrlTransEndereco: TQRLabel
         Left = 6
-        Top = 287
+        Top = 286
         Width = 61
         Height = 15
         Frame.Color = clBlack
@@ -6646,7 +6648,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Size.Values = (
           39.687500000000000000
           15.875000000000000000
-          759.354166666666700000
+          756.708333333333400000
           161.395833333333300000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -6678,8 +6680,8 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           39.687500000000000000
-          830.791666666666700000
-          756.708333333333300000
+          830.791666666666800000
+          756.708333333333400000
           185.208333333333300000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -6745,7 +6747,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Size.Values = (
           39.687500000000000000
           1534.583333333333000000
-          756.708333333333300000
+          756.708333333333400000
           134.937500000000000000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -6910,8 +6912,8 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Size.Values = (
           39.687500000000000000
           1124.479166666667000000
-          836.083333333333300000
-          232.833333333333300000)
+          836.083333333333400000
+          232.833333333333400000)
         XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
@@ -6943,7 +6945,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Size.Values = (
           39.687500000000000000
           1531.937500000000000000
-          836.083333333333300000
+          836.083333333333400000
           203.729166666666700000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -6999,7 +7001,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
     end
     object qrbHeaderItens: TQRBand
       Left = 23
-      Top = 613
+      Top = 612
       Width = 752
       Height = 35
       Frame.Color = clBlack
@@ -7013,7 +7015,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       ForceNewColumn = False
       ForceNewPage = False
       Size.Values = (
-        92.604166666666670000
+        92.604166666666680000
         1989.666666666667000000)
       PreCaluculateBandHeight = False
       KeepOnOnePage = False
@@ -7084,7 +7086,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Size.Values = (
           26.458333333333330000
           15.875000000000000000
-          52.916666666666670000
+          52.916666666666660000
           108.479166666666700000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -7117,7 +7119,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Size.Values = (
           26.458333333333330000
           174.625000000000000000
-          52.916666666666670000
+          52.916666666666660000
           338.666666666666700000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -7149,9 +7151,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           26.458333333333330000
-          645.583333333333300000
-          52.916666666666670000
-          84.666666666666670000)
+          645.583333333333400000
+          52.916666666666660000
+          84.666666666666680000)
         XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
@@ -7215,8 +7217,8 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           26.458333333333330000
-          851.958333333333300000
-          52.916666666666670000
+          851.958333333333400000
+          52.916666666666660000
           50.270833333333330000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -7248,9 +7250,9 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           26.458333333333330000
-          926.041666666666700000
-          52.916666666666670000
-          52.916666666666670000)
+          926.041666666666800000
+          52.916666666666660000
+          52.916666666666660000)
         XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
@@ -7282,7 +7284,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Size.Values = (
           26.458333333333330000
           1005.416666666667000000
-          52.916666666666670000
+          52.916666666666660000
           121.708333333333300000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -7315,7 +7317,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Size.Values = (
           26.458333333333330000
           1137.708333333333000000
-          52.916666666666670000
+          52.916666666666660000
           113.770833333333300000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -7348,8 +7350,8 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Size.Values = (
           26.458333333333330000
           1338.791666666667000000
-          52.916666666666670000
-          84.666666666666670000)
+          52.916666666666660000
+          84.666666666666680000)
         XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
@@ -7381,7 +7383,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Size.Values = (
           26.458333333333330000
           1513.416666666667000000
-          52.916666666666670000
+          52.916666666666660000
           79.375000000000000000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -7414,7 +7416,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Size.Values = (
           26.458333333333330000
           1629.833333333333000000
-          52.916666666666670000
+          52.916666666666660000
           71.437500000000000000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -7447,7 +7449,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Size.Values = (
           26.458333333333330000
           1738.312500000000000000
-          52.916666666666670000
+          52.916666666666660000
           47.625000000000000000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -7835,7 +7837,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
     end
     object qrbISSQN: TQRBand
       Left = 23
-      Top = 660
+      Top = 659
       Width = 752
       Height = 46
       Frame.Color = clBlack
@@ -7866,10 +7868,10 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          34.395833333333330000
+          34.395833333333340000
           0.000000000000000000
           10.583333333333330000
-          216.958333333333300000)
+          216.958333333333400000)
         XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
@@ -7977,7 +7979,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Size.Values = (
           26.458333333333330000
           10.583333333333330000
-          42.333333333333330000
+          42.333333333333340000
           209.020833333333300000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -8009,8 +8011,8 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           26.458333333333330000
-          465.666666666666700000
-          42.333333333333330000
+          465.666666666666800000
+          42.333333333333340000
           267.229166666666700000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -8042,8 +8044,8 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawRight = False
         Size.Values = (
           26.458333333333330000
-          973.666666666666700000
-          42.333333333333330000
+          973.666666666666900000
+          42.333333333333340000
           261.937500000000000000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -8076,7 +8078,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Size.Values = (
           26.458333333333330000
           1489.604166666667000000
-          42.333333333333330000
+          42.333333333333340000
           156.104166666666700000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -8109,7 +8111,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Size.Values = (
           39.687500000000000000
           10.583333333333330000
-          68.791666666666670000
+          68.791666666666680000
           206.375000000000000000)
         XLColumn = 0
         Alignment = taLeftJustify
@@ -8231,7 +8233,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
     end
     object qrbDadosAdicionais: TQRChildBand
       Left = 23
-      Top = 706
+      Top = 705
       Width = 752
       Height = 135
       Frame.Color = clBlack
@@ -8275,7 +8277,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       object QRLabel100: TQRLabel
         Left = 418
         Top = 15
-        Width = 80
+        Width = 79
         Height = 10
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -8286,7 +8288,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           26.458333333333330000
           1105.958333333333000000
           39.687500000000000000
-          211.666666666666700000)
+          209.020833333333300000)
         XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
@@ -8316,7 +8318,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Frame.DrawLeft = False
         Frame.DrawRight = False
         Size.Values = (
-          34.395833333333330000
+          34.395833333333340000
           0.000000000000000000
           0.000000000000000000
           211.666666666666700000)
@@ -8428,7 +8430,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
       object QRLabel6: TQRLabel
         Left = 2
         Top = 14
-        Width = 128
+        Width = 123
         Height = 10
         Frame.Color = clBlack
         Frame.DrawTop = False
@@ -8439,7 +8441,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
           26.458333333333330000
           5.291666666666667000
           37.041666666666670000
-          338.666666666666700000)
+          325.437500000000000000)
         XLColumn = 0
         Alignment = taLeftJustify
         AlignToBand = False
@@ -8527,7 +8529,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
     end
     object qrbItens: TQRBand
       Left = 23
-      Top = 648
+      Top = 647
       Width = 752
       Height = 11
       Frame.Color = clBlack
@@ -8617,6 +8619,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
         Font.Height = -8
         Font.Name = 'Times New Roman'
         Font.Style = []
+        OnPrint = qrmProdutoDescricaoPrint
         ParentFont = False
         Transparent = True
         WordWrap = True
@@ -9332,7 +9335,7 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
     end
     object qrbItensLine: TQRChildBand
       Left = 23
-      Top = 659
+      Top = 658
       Width = 752
       Height = 1
       Frame.Color = clBlack
@@ -9376,7 +9379,6 @@ inherited fqrDANFeQRRetrato: TfqrDANFeQRRetrato
   object cdsItens: TClientDataSet
     Aggregates = <>
     Params = <>
-    AfterScroll = cdsItensAfterScroll
     Left = 488
     Top = 114
     object cdsItensCODIGO: TStringField

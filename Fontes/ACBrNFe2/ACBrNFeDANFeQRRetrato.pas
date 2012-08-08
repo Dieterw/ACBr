@@ -447,7 +447,7 @@ type
       var PrintBand: Boolean);
     procedure qrbItensBeforePrint(Sender: TQRCustomBand;
       var PrintBand: Boolean);
-    procedure cdsItensAfterScroll(DataSet: TDataSet);
+    procedure qrmProdutoDescricaoPrint(sender: TObject; var Value: string);
   private
     { Private declarations }
     FTotalPages : integer;
@@ -471,89 +471,6 @@ const
 var
    FProtocoloNFE : String;
    nItemControle : Integer;
-
-procedure TfqrDANFeQRRetrato.cdsItensAfterScroll(DataSet: TDataSet);
-var
-    intTamanhoDescricao,
-    intTamanhoLinha,
-    intDivisao,
-    intResto   :Integer;
-begin
-  inherited;
-    intTamanhoDescricao:= Length(cdsItens.FieldByName( 'DESCRICAO' ).AsString);
-//    intTamanhoDescricao:= qrmProdutoDescricao.Lines.Count;
-    intDivisao := intTamanhoDescricao DIV 35;
-    intResto   := intTamanhoDescricao MOD 35;
-
-    if intResto > 0 then
-    begin
-        intTamanhoLinha:= (11 * (intDivisao + 1));
-    end else
-    begin
-        intTamanhoLinha:= (11 * intDivisao);
-    end;
-
-
-    if (intTamanhoDescricao <= 35) AND (cdsItens.FieldByName('INFADIPROD').AsString = '') then
-    begin
-        intTamanhoLinha := 12;
-    end;
-    if (intTamanhoDescricao <= 35) AND (cdsItens.FieldByName('INFADIPROD').AsString <> '') then
-    begin
-        intTamanhoLinha := 22;
-    end;
-
-    qrs1.Height:= intTamanhoLinha;
-    qrs2.Height:= intTamanhoLinha;
-    qrs3.Height:= intTamanhoLinha;
-    qrs4.Height:= intTamanhoLinha;
-    qrs5.Height:= intTamanhoLinha;
-    qrs6.Height:= intTamanhoLinha;
-    qrs7.Height:= intTamanhoLinha;
-    qrs8.Height:= intTamanhoLinha;
-    qrs9.Height:= intTamanhoLinha;
-    qrs10.Height:= intTamanhoLinha;
-    qrs11.Height:= intTamanhoLinha;
-    qrs12.Height:= intTamanhoLinha;
-    qrs13.Height:= intTamanhoLinha;
-    qrs14.Height:= intTamanhoLinha;
-    qrs15.Height:= intTamanhoLinha;
-
-    if intTamanhoDescricao = 0 then
-    begin
-        qrs1.Visible:= False;
-        qrs2.Visible:= False;
-        qrs3.Visible:= False;
-        qrs4.Visible:= False;
-        qrs5.Visible:= False;
-        qrs6.Visible:= False;
-        qrs7.Visible:= False;
-        qrs8.Visible:= False;
-        qrs9.Visible:= False;
-        qrs10.Visible:= False;
-        qrs11.Visible:= False;
-        qrs12.Visible:= False;
-        qrs13.Visible:= False;
-        qrs14.Visible:= False;
-        qrs15.Visible:= False;
-    end;
-
-    qrs1.Repaint;
-    qrs2.Repaint;
-    qrs3.Repaint;
-    qrs4.Repaint;
-    qrs5.Repaint;
-    qrs6.Repaint;
-    qrs7.Repaint;
-    qrs8.Repaint;
-    qrs9.Repaint;
-    qrs10.Repaint;
-    qrs11.Repaint;
-    qrs12.Repaint;
-    qrs13.Repaint;
-    qrs14.Repaint;
-    qrs15.Repaint;
-end;
 
 procedure TfqrDANFeQRRetrato.Itens;
 {var
@@ -708,6 +625,7 @@ begin
                   cdsItens.Append ;
                   cdsItens.FieldByName('CODIGO').AsString := CProd;
                   cdsItens.FieldByName('DESCRICAO').AsString := XProd;
+                  cdsItens.FieldByName('INFADIPROD').AsString := infAdProd;
                   cdsItens.FieldByName('NCM').AsString := NCM;
                   cdsItens.FieldByName('CFOP').AsString := CFOP;
 
@@ -947,6 +865,96 @@ begin
    qrlRecebemosDe1.Caption      := StringReplace(qrlRecebemosDe1.Caption,'%s',FNFe.Emit.xNome,[rfReplaceAll]);
 end;
 
+procedure TfqrDANFeQRRetrato.qrmProdutoDescricaoPrint(sender: TObject;
+  var Value: string);
+var
+    intTamanhoDescricao,
+    intTamanhoAdicional,
+    intTamanhoLinha,
+    intDivisaoDescricao, intDivisaoAdicional,
+    intResto   :Integer;
+begin
+  inherited;
+    intTamanhoDescricao:= Length(cdsItens.FieldByName( 'DESCRICAO' ).AsString);
+    intDivisaoAdicional:=0;
+    if Length(cdsItens.FieldByName( 'INFADIPROD' ).AsString)>0 then begin
+       intTamanhoAdicional:=Length('InfAdic: '+cdsItens.FieldByName( 'INFADIPROD' ).AsString);
+
+       intDivisaoAdicional := intTamanhoAdicional DIV 35;
+
+       intResto:=intTamanhoAdicional - (intTamanhoAdicional DIV 35)*35;
+       if intResto>0 then begin
+          intDivisaoAdicional := intDivisaoAdicional + 1;
+       end;
+    end;
+
+    intDivisaoDescricao := intTamanhoDescricao DIV 35;
+
+    intResto:=intTamanhoDescricao - (intTamanhoDescricao DIV 35)*35;
+    if intResto>0 then begin
+       intDivisaoDescricao := intDivisaoDescricao + 1;
+    end;
+
+
+    intTamanhoLinha:= 15 * (intDivisaoDescricao+intDivisaoAdicional);
+
+    qrs1.Height:= intTamanhoLinha;
+    qrs2.Height:= intTamanhoLinha;
+    qrs3.Height:= intTamanhoLinha;
+    qrs4.Height:= intTamanhoLinha;
+    qrs5.Height:= intTamanhoLinha;
+    qrs6.Height:= intTamanhoLinha;
+    qrs7.Height:= intTamanhoLinha;
+    qrs8.Height:= intTamanhoLinha;
+    qrs9.Height:= intTamanhoLinha;
+    qrs10.Height:= intTamanhoLinha;
+    qrs11.Height:= intTamanhoLinha;
+    qrs12.Height:= intTamanhoLinha;
+    qrs13.Height:= intTamanhoLinha;
+    qrs14.Height:= intTamanhoLinha;
+    qrs15.Height:= intTamanhoLinha;
+
+    if intTamanhoDescricao = 0 then
+    begin
+        qrs1.Visible:= False;
+        qrs2.Visible:= False;
+        qrs3.Visible:= False;
+        qrs4.Visible:= False;
+        qrs5.Visible:= False;
+        qrs6.Visible:= False;
+        qrs7.Visible:= False;
+        qrs8.Visible:= False;
+        qrs9.Visible:= False;
+        qrs10.Visible:= False;
+        qrs11.Visible:= False;
+        qrs12.Visible:= False;
+        qrs13.Visible:= False;
+        qrs14.Visible:= False;
+        qrs15.Visible:= False;
+    end;
+
+    qrs1.Repaint;
+    qrs2.Repaint;
+    qrs3.Repaint;
+    qrs4.Repaint;
+    qrs5.Repaint;
+    qrs6.Repaint;
+    qrs7.Repaint;
+    qrs8.Repaint;
+    qrs9.Repaint;
+    qrs10.Repaint;
+    qrs11.Repaint;
+    qrs12.Repaint;
+    qrs13.Repaint;
+    qrs14.Repaint;
+    qrs15.Repaint;
+
+
+   if cdsItensINFADIPROD.AsString<>'' then begin
+      Value:=Value+#13+'InfAd: '+cdsItensINFADIPROD.AsString;
+   end;
+end;
+
 procedure TfqrDANFeQRRetrato.qrbEmitenteDestinatarioBeforePrint(Sender: TQRCustomBand;
   var PrintBand: Boolean);
 var
@@ -955,6 +963,7 @@ var
 begin
   inherited;
    PrintBand := QRNFe.PageNumber = 1;
+   iQuantDup := 0;
 
    // Destinatario
 

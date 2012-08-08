@@ -15,8 +15,8 @@ object fqrDANFeQR: TfqrDANFeQR
   PixelsPerInch = 96
   TextHeight = 13
   object QRNFe: TQuickRep
-    Left = 0
-    Top = 0
+    Left = 2
+    Top = 2
     Width = 794
     Height = 1123
     Frame.Color = clBlack

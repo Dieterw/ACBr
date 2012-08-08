@@ -3597,13 +3597,13 @@ begin
   Texto := '<?xml version="1.0" encoding="utf-8"?>';
   Texto := Texto + '<soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">';
   Texto := Texto +   '<soap12:Header>';
-  Texto := Texto +     '<nfeCabecMsg xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/nfeConsultaNFDest">';
+  Texto := Texto +     '<nfeCabecMsg xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsultaDest">';
   Texto := Texto +       '<cUF>'+IntToStr(FConfiguracoes.WebServices.UFCodigo)+'</cUF>';
   Texto := Texto +       '<versaoDados>'+NFeConsNFeDest+'</versaoDados>';
   Texto := Texto +     '</nfeCabecMsg>';
   Texto := Texto +   '</soap12:Header>';
   Texto := Texto +   '<soap12:Body>';
-  Texto := Texto +     '<nfeDadosMsg xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/nfeConsultaNFDest">';
+  Texto := Texto +     '<nfeDadosMsg xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsultaDest">';
   Texto := Texto + FDadosMsg;
   Texto := Texto +     '</nfeDadosMsg>';
   Texto := Texto +   '</soap12:Body>';
@@ -3619,7 +3619,7 @@ begin
      ConfiguraReqResp( ReqResp );
      ReqResp.URL := FURL;
      ReqResp.UseUTF8InHeader := True;
-     ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/nfe/wsdl/nfeConsultaNFDest';
+     ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsultaDest/nfeConsultaNFDest';
   {$ENDIF}
 
   try
@@ -3633,7 +3633,7 @@ begin
     try
       {$IFDEF ACBrNFeOpenSSL}
          HTTP.Document.LoadFromStream(Stream);
-         ConfiguraHTTP(HTTP,'SOAPAction: "http://www.portalfiscal.inf.br/nfe/wsdl/nfeConsultaNFDest"');
+         ConfiguraHTTP(HTTP,'SOAPAction: "http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsultaDest/nfeConsultaNFDest"');
          HTTP.HTTPMethod('POST', FURL);
          StrStream := TStringStream.Create('');
          StrStream.CopyFrom(HTTP.Document, 0);
@@ -3729,13 +3729,13 @@ begin
   Texto := '<?xml version="1.0" encoding="utf-8"?>';
   Texto := Texto + '<soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">';
   Texto := Texto +   '<soap12:Header>';
-  Texto := Texto +     '<nfeCabecMsg xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/nfeDownloadNF">';
+  Texto := Texto +     '<nfeCabecMsg xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/NfeDownloadNF">';
   Texto := Texto +       '<cUF>'+IntToStr(FConfiguracoes.WebServices.UFCodigo)+'</cUF>';
   Texto := Texto +       '<versaoDados>'+NFeDownloadNFe+'</versaoDados>';
   Texto := Texto +     '</nfeCabecMsg>';
   Texto := Texto +   '</soap12:Header>';
   Texto := Texto +   '<soap12:Body>';
-  Texto := Texto +     '<nfeDadosMsg xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/nfeDownloadNF">';
+  Texto := Texto +     '<nfeDadosMsg xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/NfeDownloadNF">';
   Texto := Texto + FDadosMsg;
   Texto := Texto +     '</nfeDadosMsg>';
   Texto := Texto +   '</soap12:Body>';
@@ -3751,7 +3751,7 @@ begin
      ConfiguraReqResp( ReqResp );
      ReqResp.URL := FURL;
      ReqResp.UseUTF8InHeader := True;
-     ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/nfe/wsdl/nfeDownloadNF';
+     ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/nfe/wsdl/NfeDownloadNF/nfeDownloadNF';
   {$ENDIF}
 
   try
@@ -3765,7 +3765,7 @@ begin
     try
       {$IFDEF ACBrNFeOpenSSL}
          HTTP.Document.LoadFromStream(Stream);
-         ConfiguraHTTP(HTTP,'SOAPAction: "http://www.portalfiscal.inf.br/nfe/wsdl/nfeDownloadNF"');
+         ConfiguraHTTP(HTTP,'SOAPAction: "http://www.portalfiscal.inf.br/nfe/wsdl/NfeDownloadNF/nfeDownloadNF"');
          HTTP.HTTPMethod('POST', FURL);
          StrStream := TStringStream.Create('');
          StrStream.CopyFrom(HTTP.Document, 0);

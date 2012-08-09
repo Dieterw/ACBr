@@ -1058,6 +1058,7 @@ object Form1: TForm1
     OnBloqueiaMouseTeclado = ACBrTEFD1BloqueiaMouseTeclado
     OnRestauraFocoAplicacao = ACBrTEFD1RestauraFocoAplicacao
     OnComandaECF = ACBrTEFD1ComandaECF
+    OnComandaECFSubtotaliza = ACBrTEFD1ComandaECFSubtotaliza
     OnComandaECFPagamento = ACBrTEFD1ComandaECFPagamento
     OnComandaECFAbreVinculado = ACBrTEFD1ComandaECFAbreVinculado
     OnComandaECFImprimeVia = ACBrTEFD1ComandaECFImprimeVia

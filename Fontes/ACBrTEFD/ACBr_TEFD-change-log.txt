@@ -54,7 +54,7 @@ Data:  08/08/2012
     impressos em Relatório Gerencial. No caso de multiplas transações no mesmo
     Cupom, as consultas de CHQ serão Impressas após a impressão de todos os CDCs
     (Vinculados). Atualmente os homologadores de PAF-ECF não permitem a impressão
-    de Consulta de Cheques em CDC (Viinculado)      (por: DSA)
+    de Consulta de Cheques em CDC (Vinculado)      (por: DSA)
     www.djsystem.com.br/acbr/forum/viewtopic.php?f=16&t=6043
 
 [+] Adicionada a propriedade: Identificacao : TACBrTEFDIdentificacao que contém:
@@ -64,13 +64,18 @@ Data:  08/08/2012
     novos campos, conforme descrito abaixo.      (por: DSA)
 
 -- ACBrTEFDClass --
-[*] Adicionado suporte aos novos campos retornados pela no G.P.
+[*] Adicionado suporte aos novos campos retornados pelo novo G.P.
     707-000=Valor Original, 708-000=Valor Saque, 709-000=Valor Desconto (por: DSA)
 
-[*] Adicionado suporte para os novas Vias de comprovante do Cliente (712 e 713) e
-    Estabelecimento (714 e 715).  (por: DSA)
+[*] Adicionado suporte para os novas Vias de comprovante do Cliente (712 e 713)
+    e Estabelecimento (714 e 715).  (por: DSA)
 
-[.] (Suporte a "Cielo Premia" em desenvolvimento)
+[*] Suporte a Descontos para suportar programa "Cielo Premia".
+    Para a ativar essa funcionalidade é necessário:              (por: DSA)
+    - Preencher as sub-propriedades de ACBrTEFD.Identificação
+    - Não usar ACBrTEFD.AutoEfetuarPagamento
+    - Programar o evento: ACBrTEFD.OnComandaECFSubtotaliza
+    - Não subtotalizar o Cupom Fiscal antes de chamar operações TEF
     http://www.djsystem.com.br/acbr/forum/viewtopic.php?f=16&t=6677
 
 Data:  22/06/2012

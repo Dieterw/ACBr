@@ -124,6 +124,9 @@ type
   TACBrTEFDComandaECF = procedure( Operacao : TACBrTEFDOperacaoECF; Resp : TACBrTEFDResp;
      var RetornoECF : Integer ) of object ; { -1 - Não tratado, 0 - Erro na Execucao, 1 - Sucesso }
 
+  TACBrTEFDComandaECFSubtotaliza = procedure( DescAcre : Double;
+     var RetornoECF : Integer ) of object ; { -1 - Não tratado, 0 - Erro na Execucao, 1 - Sucesso }
+
   TACBrTEFDComandaECFPagamento = procedure( IndiceECF : String; Valor : Double;
      var RetornoECF : Integer ) of object ; { -1 - Não tratado, 0 - Erro na Execucao, 1 - Sucesso }
 
@@ -492,6 +495,7 @@ type
       fSaldoAPagar : Double;
       function GetSaldoRestante : Double;
       function GetTotalPago : Double;
+      function GetTotalDesconto : Double;
    protected
       procedure SetObject (Index: Integer; Item: TACBrTEFDResp);
       function GetObject (Index: Integer): TACBrTEFDResp;
@@ -500,8 +504,10 @@ type
       procedure Insert (Index: Integer; Obj: TACBrTEFDResp);
       property Objects [Index: Integer]: TACBrTEFDResp
         read GetObject write SetObject; default;
+
       property SaldoAPagar   : Double read fSaldoAPagar write fSaldoAPagar ;
       property TotalPago     : Double read GetTotalPago ;
+      property TotalDesconto : Double read GetTotalDesconto ;
       property SaldoRestante : Double read GetSaldoRestante ;
    end;
 
@@ -952,7 +958,7 @@ end;
 
 procedure TACBrTEFDReq.SetMoeda(const AValue : Integer);
 begin
-  fInformacao.AsInteger := AValue;
+  fInformacao.AsString := IntToStr(AValue);
   fConteudo.GravaInformacao(4,0,fInformacao);
   fMoeda := AValue;
 end;
@@ -1000,6 +1006,10 @@ begin
   fConteudo.GravaInformacao(22,0,fInformacao);
   fInformacao.AsTime := AValue;
   fConteudo.GravaInformacao(23,0,fInformacao);
+
+  //fInformacao.AsString := FormatDateTime('YYMMDDHHNNSS', AValue);
+  //fConteudo.GravaInformacao(717,0,fInformacao);
+
   fDataHoraTransacaoComprovante := AValue;
 end;
 
@@ -1746,6 +1756,9 @@ begin
   Req.Conteudo.GravaInformacao(999,999,'0');
   Req.Conteudo.GravarArquivo( ArqTemp, True ); { True = DoFlushToDisk }
 
+  // DEBUG, ATIVE o Log abaixo para gravar no Log uma copia do Arq.de Requisicao //
+  //GravaLog( Req.Conteudo.Conteudo.Text );
+
   GravaLog( Name +' FinalizarRequisicao: '+Req.Header+', Renomeando: '+ArqTemp+' para: '+ArqReq);
   if not RenameFile( ArqTemp, ArqReq ) then
      raise EACBrTEFDArquivo.Create( ACBrStr( 'Erro ao Renomear:' + sLineBreak +
@@ -1808,6 +1821,7 @@ end;
 procedure TACBrTEFDClass.AdicionarIdentificacao;
 var
   TemIdentificacao : Boolean ;
+  Operacoes : String ;
 begin
   with TACBrTEFD(Owner) do
   begin
@@ -1824,8 +1838,12 @@ begin
         TemIdentificacao := True;
      end;
 
+     Operacoes := '1';      // 1 = Suporta Saque, 2 = Suporta Desconto
+     if Assigned( OnComandaECFSubtotaliza ) and (not AutoEfetuarPagamento) then
+        Operacoes := '3';   // 1 + 2 = Suporta Saque e Desconto
+
      if TemIdentificacao then
-        Req.Conteudo.GravaInformacao(706,000, '3' ) ;  // 3 = Suporta Saque e Desconto
+        Req.Conteudo.GravaInformacao(706,000, Operacoes ) ;
   end;
 end;
 
@@ -1900,8 +1918,8 @@ begin
            DeleteFile( ArqResp );
         end ;
 
-        // Debug, ATIVE o Log abaixo para gravar no Log uma copia do Arq.Recebido //
-        // GravaLog( Resp.Conteudo.Conteudo.Text );
+        // DEBUG, ATIVE o Log abaixo para gravar no Log uma copia do Arq.Recebido //
+        //GravaLog( Resp.Conteudo.Conteudo.Text );
 
      end ;
   finally
@@ -2554,6 +2572,22 @@ begin
   end;
 
   Result := RoundTo( Result, -2);
+end;
+
+function TACBrTEFDRespostasPendentes.GetTotalDesconto: Double;
+var
+   I : Integer;
+begin
+  Result := 0 ;
+  For I := 0 to Count-1 do
+  begin
+     with TACBrTEFDResp(Items[I]) do
+     begin
+        Result := Result + Desconto;
+     end;
+  end;
+
+  Result := RoundTo( Result, -2) * -1 ;
 end;
 
 procedure TACBrTEFDRespostasPendentes.SetObject(Index : Integer; Item : TACBrTEFDResp);

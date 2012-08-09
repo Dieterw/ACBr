@@ -584,7 +584,7 @@ object Form1: TForm1
           Width = 142
           Height = 21
           Style = csDropDownList
-          ItemHeight = 13
+          ItemHeight = 0
           TabOrder = 0
           OnChange = cbxGPChange
         end
@@ -1062,6 +1062,7 @@ object Form1: TForm1
     OnBloqueiaMouseTeclado = ACBrTEFD1BloqueiaMouseTeclado
     OnRestauraFocoAplicacao = ACBrTEFD1RestauraFocoAplicacao
     OnComandaECF = ACBrTEFD1ComandaECF
+    OnComandaECFSubtotaliza = ACBrTEFD1ComandaECFSubtotaliza
     OnComandaECFPagamento = ACBrTEFD1ComandaECFPagamento
     OnComandaECFAbreVinculado = ACBrTEFD1ComandaECFAbreVinculado
     OnComandaECFImprimeVia = ACBrTEFD1ComandaECFImprimeVia

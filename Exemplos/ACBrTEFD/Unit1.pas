@@ -122,6 +122,8 @@ type
         ImagemComprovante : TStringList; var RetornoECF : Integer);
      procedure ACBrTEFD1ComandaECFPagamento(IndiceECF : String; Valor : Double;
         var RetornoECF : Integer);
+     procedure ACBrTEFD1ComandaECFSubtotaliza(DescAcre: Double;
+        var RetornoECF: Integer);
      procedure ACBrTEFD1DepoisConfirmarTransacoes(
         RespostasPendentes: TACBrTEFDRespostasPendentes);
      procedure ACBrTEFD1ExibeMsg(Operacao : TACBrTEFDOperacaoMensagem;
@@ -1156,7 +1158,7 @@ var
    Est : TACBrECFEstado ;
 begin
   try
-     Memo1.Lines.Add( 'ACBrTEFD1ComandaECFPagamento, IndiceECF: '+IndiceECF+
+     Memo1.Lines.Add( 'ComandaECFPagamento, IndiceECF: '+IndiceECF+
         ' Valor: '+FormatFloat('0.00',Valor) );
      Est := ACBrECF1.Estado;
 
@@ -1168,6 +1170,27 @@ begin
      RetornoECF := 1 ;
   except
      RetornoECF := 0 ;
+  end;
+end;
+
+procedure TForm1.ACBrTEFD1ComandaECFSubtotaliza(DescAcre: Double;
+   var RetornoECF: Integer);
+Var
+   Est : TACBrECFEstado ;
+begin
+  Memo1.Lines.Add('ComandaECFSubtotaliza: DescAcre: ' + FormatFloat('0.00',DescAcre) );
+
+  try
+    Est := ACBrECF1.Estado;
+
+    if Est = estNaoFiscal then
+       ACBrECF1.SubtotalizaNaoFiscal( DescAcre, 'Projeto ACBr|http://acbr.sf.net' )
+    else
+       ACBrECF1.SubtotalizaCupom( DescAcre, 'Projeto ACBr|http://acbr.sf.net' );
+
+    RetornoECF := 1 ;
+  except
+    RetornoECF := 0 ;
   end;
 end;
 

@@ -109,6 +109,7 @@ type
      fOnComandaECFAbreVinculado : TACBrTEFDComandaECFAbreVinculado;
      fOnComandaECFImprimeVia : TACBrTEFDComandaECFImprimeVia;
      fOnComandaECFPagamento : TACBrTEFDComandaECFPagamento;
+     fOnComandaECFSubtotaliza: TACBrTEFDComandaECFSubtotaliza;
      fOnDepoisCancelarTransacoes : TACBrTEFDProcessarTransacoesPendentes ;
      fOnDepoisConfirmarTransacoes : TACBrTEFDProcessarTransacoesPendentes;
      fOnExibeMsg : TACBrTEFDExibeMsg;
@@ -171,6 +172,7 @@ type
      function DoExibeMsg( Operacao : TACBrTEFDOperacaoMensagem;
         Mensagem : String ) : TModalResult;
      function ComandarECF(Operacao : TACBrTEFDOperacaoECF) : Integer;
+     function ECFSubtotaliza(DescAcres: Double) : Integer;
      function ECFPagamento(Indice : String; Valor : Double) : Integer;
      function ECFAbreVinculado(COO, Indice : String; Valor : Double) : Integer;
      function ECFImprimeVia( TipoRelatorio : TACBrTEFDTipoRelatorio;
@@ -294,6 +296,8 @@ type
         write fOnLimpaTeclado ;
      property OnComandaECF  : TACBrTEFDComandaECF read fOnComandaECF
         write fOnComandaECF ;
+     property OnComandaECFSubtotaliza  : TACBrTEFDComandaECFSubtotaliza
+        read fOnComandaECFSubtotaliza write fOnComandaECFSubtotaliza ;
      property OnComandaECFPagamento  : TACBrTEFDComandaECFPagamento
         read fOnComandaECFPagamento write fOnComandaECFPagamento ;
      property OnComandaECFAbreVinculado : TACBrTEFDComandaECFAbreVinculado
@@ -395,6 +399,7 @@ begin
   fOnDepoisCancelarTransacoes := nil ;
   fOnAguardaResp              := nil ;
   fOnComandaECF               := nil ;
+  fOnComandaECFSubtotaliza    := nil ;
   fOnComandaECFPagamento      := nil ;
   fOnComandaECFAbreVinculado  := nil ;
   fOnComandaECFImprimeVia     := nil ;
@@ -1193,6 +1198,35 @@ begin
   end;
 end;
 
+function TACBrTEFD.ECFSubtotaliza(DescAcres: Double): Integer;
+Var
+   Erro : String ;
+begin
+  fTefClass.GravaLog( fTefClass.Name +' ECFSubtotaliza: DescAcres: '+
+    FormatFloat('0.00',DescAcres) ) ;
+
+  if not Assigned( OnComandaECFSubtotaliza ) then
+  begin
+     ComandarECF( opeSubTotalizaCupom );
+     exit;
+  end;
+
+  Result := -1 ;  // -1 = Não tratado
+  OnComandaECFSubtotaliza( DescAcres, Result ) ;
+
+  if Result < 1 then
+  begin
+     if Result = 0 then
+        Erro := 'Erro ao executar "OnComandaECFSubtotaliza"'
+     else
+        Erro := '"OnComandaECFSubtotaliza" não tratada' ;
+
+     fTefClass.GravaLog(Erro);
+
+     raise EACBrTEFDECF.Create( ACBrStr( Erro ) )
+  end;
+end;
+
 Function TACBrTEFD.ECFPagamento( Indice: String; Valor: Double ) : Integer ;
 Var
    Erro : String ;
@@ -1300,7 +1334,7 @@ begin
 
                  try
                     Case Est of
-                      'V' : ComandarECF( opeSubTotalizaCupom );
+                      'V' : ECFSubtotaliza( RespostasPendentes.TotalDesconto );
 
                       'P' :
                         begin

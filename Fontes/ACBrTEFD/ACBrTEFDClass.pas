@@ -185,8 +185,6 @@ type
          const Sequencia : Integer = 0 ) : Integer;
       function GetCount : Integer;
       function GetLinha(Index : Integer) : TACBrTEFDLinha;
-      function NomeCampo(const Identificacao: Integer; const Sequencia: Integer
-         ): String;
    public
      constructor Create ;
      destructor Destroy ; override;
@@ -672,11 +670,21 @@ type
      property GPExeName;
    end;
 
+function NomeCampo(const Identificacao: Integer; const Sequencia: Integer ): String;
 
 implementation
 
 Uses ACBrUtil, ACBrTEFD, dateutils, StrUtils, Math, ACBrTEFDCliSiTef,
      ACBrTEFDVeSPague ;
+
+function NomeCampo(const Identificacao: Integer; const Sequencia: Integer): String;
+var
+   Casas: Integer;
+begin
+   Casas  := max(Length(IntToStr(Identificacao)),3) ;
+   Result := IntToStrZero(Identificacao, Casas)+'-'+IntToStrZero(Sequencia, 3);
+end;
+
 
 { TACBrTEFDLinha }
 
@@ -711,7 +719,7 @@ begin
       Result := copy(fLinha, 1, P-1 ) ;
     end
    else if fIdentificacao <> 0 then
-      Result := IntToStrZero(fIdentificacao,3)+'-'+IntToStrZero(fSequencia,3) ;
+      Result :=  NomeCampo( fIdentificacao, fSequencia ) ;
 end;
 
 function TACBrTEFDLinha.GetLinha : AnsiString;
@@ -721,8 +729,7 @@ begin
    if fLinha <> '' then
       Result := fLinha
    else if fIdentificacao <> 0 then
-      Result := IntToStrZero(fIdentificacao,3)+'-'+IntToStrZero(fSequencia,3)+
-                ' = '+Informacao.AsString ;
+      Result := NomeCampo( fIdentificacao, fSequencia ) + ' = ' + Informacao.AsString ;
 end;
 
 procedure TACBrTEFDLinha.SetLinha(const AValue : AnsiString);
@@ -746,9 +753,10 @@ begin
    Chave := copy( fLinha, 1, P - 1 ) ;
    Valor := copy( fLinha, P + 3, Length(fLinha) ) ;
 
+   P := max(pos('-',Chave),4) ;
    Informacao.AsString := Valor ;
-   fIdentificacao := StrToIntDef( copy(Chave,1,3), 0);
-   fSequencia     := StrToIntDef( copy(Chave,5,3), 0);
+   fIdentificacao := StrToIntDef( copy(Chave,1,P-1), 0);
+   fSequencia     := StrToIntDef( copy(Chave,P+1,3), 0);
 end;
 
 
@@ -867,12 +875,6 @@ function TACBrTEFDArquivo.GetLinha(Index : Integer) : TACBrTEFDLinha;
 begin
   fACBrTEFDLinha.Linha := Conteudo[Index];
   Result := fACBrTEFDLinha;
-end;
-
-function TACBrTEFDArquivo.NomeCampo(const Identificacao: Integer;
-  const Sequencia: Integer): String;
-begin
-   Result := IntToStrZero(Identificacao, 3)+'-'+IntToStrZero(Sequencia, 3);
 end;
 
 function TACBrTEFDArquivo.LeLinha(const Identificacao : Integer;
@@ -1209,7 +1211,6 @@ var
    Linha : TACBrTEFDLinha ;
    I     : Integer;
    Parc  : TACBrTEFDRespParcela;
-   LinStr: AnsiString ;
 
    function AjustaLinhaImagemComprovante( Linha: AnsiString ) : AnsiString;
    begin
@@ -2549,7 +2550,8 @@ begin
      with TACBrTEFDResp(Items[I]) do
      begin
         if OrdemPagamento = 0 then  // Ainda nao imprimiu no ECF ?
-           TotalPagoENaoImpresso := TotalPagoENaoImpresso + (ValorTotal - Saque) ;
+           TotalPagoENaoImpresso := TotalPagoENaoImpresso +
+                                    (ValorTotal - Saque + Desconto) ;
      end ;
   end;
 

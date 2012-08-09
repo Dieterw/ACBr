@@ -169,6 +169,8 @@ type
      Function ProcessarRespostaPagamento( const IndiceFPG_ECF : String;
         const Valor : Double) : Boolean; override;
 
+     Function SuportaDesconto : Boolean ;
+
    public
      property Respostas : TStringList read fRespostas ;
      property PathDLL: string read fPathDLL write fPathDLL;
@@ -249,8 +251,6 @@ var
    Parc  : TACBrTEFDRespParcela;
    LinStr: AnsiString ;
 begin
-// Conteudo.Conteudo.SaveToFile('c:\temp\conteudo.txt') ;
-
    fpValorTotal := 0 ;
    fpImagemComprovante1aVia.Clear;
    fpImagemComprovante2aVia.Clear;
@@ -316,6 +316,13 @@ begin
             103 : fpValorTotal         := fpValorTotal + Linha.Informacao.AsFloat;
           end;
         end;
+
+       4029 :
+        begin
+          fpDesconto   := Linha.Informacao.AsFloat;
+          fpValorTotal := fpValorTotal - fpDesconto;
+        end;
+
      end;
    end ;
 
@@ -479,6 +486,24 @@ begin
 
   ParamAdic := StringReplace( ParametrosAdicionais.Text, sLineBreak, ';',
                               [rfReplaceAll] ) ;
+
+  if (pos('VersaoAutomacaoCielo',ParamAdic) = 0) then
+  begin
+     if SuportaDesconto then
+     begin
+        if ParamAdic <> '' then
+           ParamAdic := ParamAdic + ';' ;
+
+        ParamAdic := ParamAdic + '[VersaoAutomacaoCielo='+
+                     TACBrTEFD(Owner).Identificacao.SoftwareHouse+'10]';
+     end ;
+  end;
+
+  GravaLog( '*** ConfiguraIntSiTefInterativoEx. EnderecoIP: '   +fEnderecoIP+
+                                            ' CodigoLoja: '     +fCodigoLoja+
+                                            ' NumeroTerminal: ' +fNumeroTerminal+
+                                            ' Resultado: 0'     +
+                                            ' ParametrosAdicionais: '+ParamAdic ) ;
 
   Sts := xConfiguraIntSiTefInterativoEx( PAnsiChar(fEnderecoIP),
                                          PAnsiChar(fCodigoLoja),
@@ -742,6 +767,13 @@ Var
 begin
    if fpAguardandoResposta then
       raise Exception.Create( ACBrStr( 'Requisição anterior não concluida' ) ) ;
+
+   if (pos('{TipoTratamento=4}',ListaRestricoes) = 0) and
+      (pos(AHeader,'CRT,CHQ') > 0 ) and
+      SuportaDesconto then
+   begin
+      ListaRestricoes := ListaRestricoes + '{TipoTratamento=4}';
+   end;
 
    fReimpressao := False;
    ANow     := Now ;
@@ -1123,6 +1155,8 @@ begin
         BloquearMouseTeclado( False );
 
         { Transfere valore de "Conteudo" para as propriedades }
+        // DEBUG
+        GravaLog( Self.Resp.Conteudo.Conteudo.Text );
         TACBrTEFDRespCliSiTef( Self.Resp ).ConteudoToProperty ;
 
         fpAguardandoResposta := False ;
@@ -1249,6 +1283,16 @@ begin
            ImprimirTransacoesPendentes;
         end;
      end ;
+  end;
+end;
+
+function TACBrTEFDCliSiTef.SuportaDesconto: Boolean;
+begin
+  with TACBrTEFD(Owner) do
+  begin
+     Result := (Identificacao.SoftwareHouse <> '') and
+               Assigned( OnComandaECFSubtotaliza ) and
+               (not AutoEfetuarPagamento) ;
   end;
 end;
 

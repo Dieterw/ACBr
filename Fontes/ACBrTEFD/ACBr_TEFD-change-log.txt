@@ -70,13 +70,21 @@ Data:  08/08/2012
 [*] Adicionado suporte para os novas Vias de comprovante do Cliente (712 e 713)
     e Estabelecimento (714 e 715).  (por: DSA)
 
-[*] Suporte a Descontos para suportar programa "Cielo Premia".
-    Para a ativar essa funcionalidade é necessário:              (por: DSA)
+[*] Suporte a Descontos para suportar programa "Cielo Premia".       (por: DSA)
+    Para a ativar essa funcionalidade é necessário:
     - Preencher as sub-propriedades de ACBrTEFD.Identificação
     - Não usar ACBrTEFD.AutoEfetuarPagamento
     - Programar o evento: ACBrTEFD.OnComandaECFSubtotaliza
     - Não subtotalizar o Cupom Fiscal antes de chamar operações TEF
     http://www.djsystem.com.br/acbr/forum/viewtopic.php?f=16&t=6677
+
+-- ACBrTEFDCliSiTef --
+[*] Suporte a Descontos para suportar programa "Cielo Premia"
+    Inicialização e transações CRT e CHQ modificadas para enviar informações
+    de suporte ao programa Cielo Premia    (por: DSA)
+[*] Adicionado tratamento para novo campo de Desconto (4029)   (por: DSA)
+[-] Corrigido Bug na gravação de Informações retornadas pelo SiTEF, com índice
+    maior do que 999 (o indice era truncado em 3 dígitos iniciais)  (por: DSA)
 
 Data:  22/06/2012
 -- ACBrTEFDCliSiTef --

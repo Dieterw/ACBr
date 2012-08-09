@@ -59,7 +59,7 @@ const
    cMilharSin  : array[0..2] of string = ('Bilhão','Milhão','Mil') ;
    cMilharPlu  : array[0..2] of string = ('Bilhões','Milhões','Mil') ;
    cUnidade    : array[0..8] of string =
-      ('Um','Dois','Tres','Quatro','Cinco','Seis','Sete','Oito','Nove') ;
+      ('Um','Dois','Três','Quatro','Cinco','Seis','Sete','Oito','Nove') ;
    cDez        : array[0..9] of string =
       ('Dez','Onze','Doze','Treze','Quatorze','Quinze','Dezesseis','Dezessete',
        'Dezoito','Dezenove') ;

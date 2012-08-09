@@ -3562,14 +3562,14 @@ end;
 constructor TNFeConsNFeDest.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
-  if not Assigned(FretConsNFeDest) then
-    FretConsNFeDest := TretConsNFeDest.Create;
+//  if not Assigned(FretConsNFeDest) then
+//    FretConsNFeDest := TretConsNFeDest.Create;
 end;
 
 destructor TNFeConsNFeDest.Destroy;
 begin
   if Assigned(FretConsNFeDest) then
-    FretConsNFeDest.Destroy;
+    FretConsNFeDest.Free;
   inherited;
 end;
 

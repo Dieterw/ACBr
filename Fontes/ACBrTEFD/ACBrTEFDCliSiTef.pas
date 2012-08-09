@@ -1156,7 +1156,7 @@ begin
 
         { Transfere valore de "Conteudo" para as propriedades }
         // DEBUG
-        GravaLog( Self.Resp.Conteudo.Conteudo.Text );
+        //GravaLog( Self.Resp.Conteudo.Conteudo.Text );
         TACBrTEFDRespCliSiTef( Self.Resp ).ConteudoToProperty ;
 
         fpAguardandoResposta := False ;

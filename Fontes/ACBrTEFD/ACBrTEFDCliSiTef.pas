@@ -495,7 +495,7 @@ begin
            ParamAdic := ParamAdic + ';' ;
 
         ParamAdic := ParamAdic + '[VersaoAutomacaoCielo='+
-                     TACBrTEFD(Owner).Identificacao.SoftwareHouse+'10]';
+                     PadL( TACBrTEFD(Owner).Identificacao.SoftwareHouse, 8 ) + '10]';
      end ;
   end;
 

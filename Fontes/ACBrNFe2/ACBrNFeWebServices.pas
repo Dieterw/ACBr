@@ -1170,7 +1170,8 @@ begin
    begin
      with DownloadNFe.Chaves.Add do
       begin
-        chNFe := TDownloadNFe(Self).Chaves.Items[i].chNFe;
+        chNFe := TDownloadNFe(Self).Chaves[i].chNFe;
+//        chNFe := TDownloadNFe(Self).Chaves.Items[i].chNFe;
       end;
    end;
 

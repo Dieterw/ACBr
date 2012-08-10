@@ -1164,7 +1164,7 @@ begin
   DownloadNFe := TDownloadNFe.create;
   DownloadNFe.schema := TsPL006;
   DownloadNFe.TpAmb  := TpcnTipoAmbiente(FConfiguracoes.WebServices.AmbienteCodigo-1);
-  DownloadNFe.CNPJ   := TNFeDownloadNFe(Self).CNPJ;
+  DownloadNFe.CNPJ   := TNFeDownloadNFe(Self).FDownload.CNPJ;
 
   for i := 0 to TNFeDownloadNFe(Self).FDownload.Chaves.Count - 1 do
    begin
@@ -1270,7 +1270,7 @@ begin
   // Incluido por Italo em 17/07/2012
   FConsNFeDest      := TNFeConsNFeDest.Create(AFNotaFiscalEletronica);
   // Incluido por Italo em 18/07/2012
-  FDownloadNFe      := TNFeDownloadNFe.Create(AFNotaFiscalEletronica);
+  FDownloadNFe      := TNFeDownloadNFe.Create(AFNotaFiscalEletronica, TACBrNFe(AFNotaFiscalEletronica).DownloadNFe.Download);
 end;
 
 destructor TWebServices.Destroy;

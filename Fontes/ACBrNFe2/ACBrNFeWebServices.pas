@@ -470,17 +470,17 @@ type
   TNFeDownloadNFe = Class(TWebServicesBase)
   private
     FtpAmb: TpcnTipoAmbiente;
-//    FCNPJ: String;
-//    FindEmi: TpcnIndicadorEmissor;
-//    FindNFe: TpcnIndicadorNFe;
-//    FultNSU: String;
+    FCNPJ: String;
+    FDownload: TDownLoadNFe;
+//    FretDownloadNFe: TretDownloadNFe;
   public
+    constructor Create(AOwner : TComponent; ADownload : TDownloadNFe); reintroduce;
+    destructor Destroy; override;
     function Executar: Boolean; override;
+
     property tpAmb: TpcnTipoAmbiente      read FtpAmb;
-//    property CNPJ: String                 read FCNPJ   write FCNPJ;
-//    property indNFe: TpcnIndicadorNFe     read FindNFe write FindNFe;
-//    property indEmi: TpcnIndicadorEmissor read FindEmi write FindEmi;
-//    property ultNSU: String               read FultNSU write FultNSU;
+    property CNPJ: String                 read FCNPJ   write FCNPJ;
+//    property retDownloadNFe: TretDownloadNFe     read FretDownloadNFe write FretDownloadNFe;
   end;
 
   TWebServices = Class(TWebServicesBase)
@@ -1164,13 +1164,13 @@ begin
   DownloadNFe := TDownloadNFe.create;
   DownloadNFe.schema := TsPL006;
   DownloadNFe.TpAmb  := TpcnTipoAmbiente(FConfiguracoes.WebServices.AmbienteCodigo-1);
-  DownloadNFe.CNPJ   := TDownloadNFe(Self).CNPJ;
+  DownloadNFe.CNPJ   := TNFeDownloadNFe(Self).CNPJ;
 
-  for i := 0 to TDownloadNFe(Self).Chaves.Count - 1 do
+  for i := 0 to TNFeDownloadNFe(Self).FDownload.Chaves.Count - 1 do
    begin
      with DownloadNFe.Chaves.Add do
       begin
-        chNFe := TDownloadNFe(Self).Chaves[i].chNFe;
+        chNFe := TNFeDownloadNFe(Self).FDownload.Chaves[i].chNFe;
 //        chNFe := TDownloadNFe(Self).Chaves.Items[i].chNFe;
       end;
    end;
@@ -3704,8 +3704,24 @@ begin
 end;
 
 { TNFeDownloadNFe }
-// Incluido por Italo em 18/07/2012
+// Incluido por Italo em 10/08/2012
+constructor TNFeDownloadNFe.Create(AOwner: TComponent;
+  ADownload: TDownloadNFe);
+begin
+  inherited Create(AOwner);
 
+ FDownload := ADownload;
+end;
+
+destructor TNFeDownloadNFe.Destroy;
+begin
+//  if Assigned(FCCeRetorno) then
+//     FCCeRetorno.Free;
+
+  inherited;
+end;
+
+// Incluido por Italo em 18/07/2012
 function TNFeDownloadNFe.Executar: Boolean;
 var
   aMsg: string;

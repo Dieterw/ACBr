@@ -384,7 +384,7 @@ begin
                '2'                                                        + //60 - Tipo de documento: Tradicional
                ATipoBoleto                                                + //61 e 62(juntos)- Quem emite e quem distribui o boleto?
                //padL(NumeroDocumento, 10, '0')                             + //63 a 73 - Número que identifica o título na empresa [ Alterado conforme instruções da CSO Brasília ] {27-07-09}
-               padL(NumeroDocumento, 11, '0')                             + //63 a 73 - Número que identifica o título na empresa
+               padR(NumeroDocumento, 11, '0')                             + //63 a 73 - Número que identifica o título na empresa
                padL('', 4, ' ')                                           + //74 a 77 - Uso Exclusivo Caixa
                FormatDateTime('ddmmyyyy', Vencimento)                     + //78 a 85 - Data de vencimento do título
                IntToStrZero( round( ValorDocumento * 100), 15)            + //86 a 100 - Valor nominal do título
@@ -421,13 +421,13 @@ begin
                ' '                                                        + //15 - Uso exclusivo FEBRABAN/CNAB: Branco
                ATipoOcorrencia                                            + //16 a 17 - Código de movimento
                    {Dados do sacado}
-               ATipoInscricao                                             + //18 - Tipo inscricao
+               IfThen(Sacado.Pessoa = pJuridica,'2','1')                  + //18 - Tipo inscricao
                padR(OnlyNumber(Sacado.CNPJCPF), 15, '0')                  + //19 a 33 - Número de Inscrição
                padL(Sacado.NomeSacado, 40, ' ')                           + //34 a 73 - Nome sacado
                padL(Sacado.Logradouro +' '+ Sacado.Numero +' '+ Sacado.Complemento , 40, ' ') + //74 a 113 - Endereço
                padL(Sacado.Bairro, 15, ' ')                               + // 114 a 128 - bairro sacado
                padR(Sacado.CEP, 8, '0')                                   + // 129 a 133 e 134 a 136- cep sacado prefixo e sufixo sem o traço"-" somente numeros
-               padR(Sacado.Cidade, 15, ' ')                               + // 137 a 151 - cidade sacado
+               padL(Sacado.Cidade, 15, ' ')                               + // 137 a 151 - cidade sacado
                padL(Sacado.UF, 2, ' ')                                    + // 152 a 153 - UF sacado
                         {Dados do sacador/avalista}
                '0'                                                        + //154 - Tipo de inscrição: Não informado

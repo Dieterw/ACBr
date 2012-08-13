@@ -153,20 +153,19 @@ begin
      Modulo.Documento := ACBrTitulo.NossoNumero;
      Modulo.Calcular;
 
-     Result := RightStr(ACBrTitulo.NossoNumero,11) + AnsiString(IntToStr(Modulo.DigitoFinal));
+     Result := RightStr(ACBrTitulo.NossoNumero,10) + AnsiString(IntToStr(Modulo.DigitoFinal));
    end
   else
      Result := ACBrTitulo.NossoNumero + '-' +
               CalcularDigitoVerificador(ACBrTitulo);
-   
 end;
 
 function TACBrBancoHSBC.MontarCampoCodigoCedente (
    const ACBrTitulo: TACBrTitulo ) : String;
 begin
    if (ACBrTitulo.Carteira = 'CSB') or (ACBrTitulo.Carteira = '1') then
-      Result := ACBrTitulo.ACBrBoleto.Cedente.Agencia + ' ' +
-                ACBrTitulo.ACBrBoleto.Cedente.Conta
+      Result := ACBrTitulo.ACBrBoleto.Cedente.Agencia + '-' +
+                ACBrTitulo.ACBrBoleto.Cedente.CodigoCedente
    else 
       Result := ACBRTitulo.ACBrBoleto.Cedente.CodigoCedente;
 
@@ -177,14 +176,17 @@ var
   Parte1, Parte2,
   CodigoBarras,
   ACarteira,
+  ANossoNumero,
   DigitoCodBarras: String;
 begin
   if (ACBrTitulo.Carteira = 'CSB') then
      ACarteira := '1'
   else if (ACBrTitulo.Carteira = 'CNR')then
      ACarteira := '2'
-  else if (ACBrTitulo.Carteira <> '1') and  (ACBrTitulo.Carteira <> '2') then 
+  else if (ACBrTitulo.Carteira <> '1') and  (ACBrTitulo.Carteira <> '2') then
      raise Exception.Create( ACBrStr('Carteira Inválida.'+sLineBreak+'Utilize "CSB","1", "CNR" ou "2"') ) ;
+
+  ANossoNumero := MontarCampoNossoNumero(ACBrTitulo);   // precisa passar nosso numero + digito
 
   with ACBrTitulo do
   begin
@@ -193,16 +195,16 @@ begin
       IntToStr( ACBrBoleto.Banco.Numero ) +
       '9';
 
-    if aCarteira = '1' then // Cobranca Registrada
+    if aCarteira = '1' then // 'CSB' Cobranca Registrada
     begin
       Parte2 :=
-        CalcularFatorVencimento(Vencimento) +
-        IntToStrZero(Round(ValorDocumento * 100), 10) +
-        RightStr(padR(NossoNumero, 13, '0'),11) +
-        padR(ACBrBoleto.Cedente.Agencia, 4, '0') +
-        padR(ACBrBoleto.Cedente.Conta, 7, '0') +
-        '00';
-     end
+      CalcularFatorVencimento(Vencimento) +
+      IntToStrZero(Round(ValorDocumento * 100), 10) +
+      RightStr(padR(ANossoNumero, 13, '0'),11) +       // precisa passar nosso numero + digito
+      padR(ACBrBoleto.Cedente.Agencia, 4, '0') +
+      padR(ACBrBoleto.Cedente.Conta, 7, '0') +
+      '00';
+    end
     else // 'CNR' Cobranca Nao Registrada
     begin
       Parte2 :=

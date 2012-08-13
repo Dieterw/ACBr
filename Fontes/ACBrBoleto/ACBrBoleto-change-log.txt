@@ -121,7 +121,16 @@ Versao 0.0.10a do FortesReport 06/07/11
     cobrança não registrada.
     (por: Regys Silveira) 
 	
-	
+
+Versao 0.0.41a 13/08/2012	
+[-] Unit Itaú - Corrigido  calculo do Digito Verificador para a carteira 112.
+    (Daniel Fantastsoft)
+
+[-] Unit CaixaEconomica - Efetuado ajustes na geração da Remessa CNAB240(Gislaine Machado)
+
+[-] Unit HSBC - Ajuste na geração da remessa CNAB400. (Jair Muller)
+
+
 Versao 0.0.40a 08/08/2012
 [+] Adicionado classe para o Banco BRB.(Renato Pavan)
 

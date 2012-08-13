@@ -65,9 +65,16 @@ Símbolo : Significado
 Versao 0.0.1 do FastReport 05/08/11
 [-] Lançado a 1a versão para impressão dos boletos em FastReport.
     (por: Isaque Pinheiro)
+
+Versao 0.0.10a do FastReport 13/08/12
+[+] Adicionado suporte a impressão de boletos em carnê.(Rodrigo Rodrigues)
+[*] Efetuado ajuste para que todas as versões do Delphi consigam ler corretamente
+    a propriedade displayformat dos componentes utilizados para data.(Fábio)
+
+
 	
-Versao 0.0.10a do FastReport 02/07/12
-[-] Lançado a 1a versão para impressão dos boletos em FastReport.
+Versao 0.0.09a do FastReport 02/07/12
+[+] Lançado a 1a versão para impressão dos boletos em FastReport.
     (por: Isaque Pinheiro)	
 
 

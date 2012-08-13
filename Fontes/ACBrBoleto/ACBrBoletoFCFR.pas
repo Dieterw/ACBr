@@ -52,7 +52,7 @@ uses
   frxClass, frxDBSet, frxBarcode, frxExportHTML, frxExportPDF;
 
 const
-  CACBrBoletoFCFR_Versao = '0.0.10a';
+  CACBrBoletoFCFR_Versao = '0.0.9a';
 
 type
   EACBrBoletoFCFR = class(Exception);
@@ -177,13 +177,14 @@ begin
      FieldDefs.Add('TextoLivre', ftMemo, 2000);
      // Sacado
      FieldDefs.Add('Sacado_NomeSacado', ftString, 100);
-     FieldDefs.Add('Sacado_CNPJCPF', ftString, 14);
+     FieldDefs.Add('Sacado_CNPJCPF', ftString, 18);
      FieldDefs.Add('Sacado_Logradouro', ftString, 100);
      FieldDefs.Add('Sacado_Numero', ftString, 10);
      FieldDefs.Add('Sacado_Bairro', ftString, 100);
      FieldDefs.Add('Sacado_Cidade', ftString, 100);
      FieldDefs.Add('Sacado_UF', ftString, 2);
      FieldDefs.Add('Sacado_CEP', ftString, 8);
+     FieldDefs.Add('Sacado_Avalista', ftString, 100);
      CreateDataSet;
    end;
 end;
@@ -273,10 +274,7 @@ begin
       begin
          Append;
          FieldByName('Numero').AsString  := FormatFloat('000', Banco.Numero);
-         if (Banco.Digito >= 10) then
-            FieldByName('Digito').AsString := 'X'
-         else
-            FieldByName('Digito').AsString := IntToStrZero(Banco.Digito, 1);
+         FieldByName('Digito').AsInteger := Banco.Digito;
          FieldByName('Nome').AsString    := Banco.Nome;
          FieldByName('DirLogo').AsString := DirLogo;
          Post;
@@ -359,6 +357,7 @@ begin
             FieldByName('Sacado_Cidade').AsString       := ListadeBoletos[iFor].Sacado.Cidade;
             FieldByName('Sacado_UF').AsString           := ListadeBoletos[iFor].Sacado.UF;
             FieldByName('Sacado_CEP').AsString          := ListadeBoletos[iFor].Sacado.CEP;
+            FieldByName('Sacado_Avalista').AsString     := ListadeBoletos[iFor].Sacado.Avalista;
             Post;
          end;
       end;

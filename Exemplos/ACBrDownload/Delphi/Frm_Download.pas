@@ -56,6 +56,8 @@ type
     edtProxyPass: TEdit;
     fACBrDownload: TACBrDownload;
     CheckBox1: TCheckBox;
+    Label11: TLabel;
+    edArq: TEdit;
     procedure bStopClick(Sender: TObject);
     procedure bDownloadClick(Sender: TObject);
     procedure bPauseClick(Sender: TObject);
@@ -115,6 +117,7 @@ begin
    fACBrDownload.FTP.FtpPass     := edtPass.Text;
 
    fACBrDownload.DownloadDest    := edFile.Text;
+   fACBrDownload.DownloadNomeArq := edArq.Text;
    fACBrDownload.DownloadUrl     := edURL.Text;
 
    fACBrDownload.StartDownload;

@@ -67,6 +67,7 @@ type
     fDownloadDest: string;
     fDownloadStatus: TDownloadStatus;
     fDownloadUrl: string;
+    fDownloadNomeArq : string;
     fProxy: TACBrProxy;
     fSizeRecvBuffer: Integer;
     fFTP: TACBrFTP;
@@ -80,6 +81,7 @@ type
     procedure SetDownloadDest(const Value: string);
     procedure SetDownloadStatus(const Value: TDownloadStatus);
     procedure SetDownloadUrl(const Value: string);
+    procedure SetDownloadNomeArq(const Value:string); 
     procedure SetFTP(const Value: TACBrFTP);
     procedure SetProxy(const Value: TACBrProxy);
     procedure SetSizeRecvBuffer(const Value: Integer);
@@ -102,6 +104,7 @@ type
     { Published declarations }
     property DownloadDest: string read fDownloadDest write SetDownloadDest;
     property DownloadUrl: string read fDownloadUrl write SetDownloadUrl;
+    property DownloadNomeArq : string read fDownloadNomeArq write SetDownloadNomeArq;
     property SizeRecvBuffer: Integer read fSizeRecvBuffer write SetSizeRecvBuffer;
     property Proxy: TACBrProxy read fProxy write SetProxy;
     property FTP: TACBrFTP read fFTP write SetFTP;
@@ -133,6 +136,7 @@ begin
 
   fDownloadDest   := '';
   fDownloadUrl    := '';
+  fDownloadNomeArq := '';
   fDownloadStatus := stNone;
   fProtocolo      := protNenhum;
 end;
@@ -164,6 +168,13 @@ begin
   fDownloadUrl := Value;
   fDown.DownloadUrl := Value;
 end;
+
+procedure TACBrDownload.SetDownloadNomeArq(const Value: string);
+begin
+  fDownloadNomeArq := Value;
+  fDown.DownloadNomeArq := Value;
+end;
+
 
 procedure TACBrDownload.SetFTP(const Value: TACBrFTP);
 begin

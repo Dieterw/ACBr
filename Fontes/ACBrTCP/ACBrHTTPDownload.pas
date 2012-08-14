@@ -140,6 +140,7 @@ var
   sHeaderLine: string;
   Prot, User, Pass, Host, Port, Path, Para : String;
 begin
+  fFilePart:=fDownloadNomeArq;
   if (fFilePart = '') and (fDownloadStatus <> stRedirect) then
   begin
      Prot := '';
@@ -183,6 +184,9 @@ begin
      if fFilePart <> '' then
         fFilePart := fFilePart + '.part';
   end;
+  if  (pos('.part',fFilePart)<=0) and (fDownloadStatus <> stRedirect) and (fFilePart<>'') then
+       fFilePart := fFilePart + '.part';
+
 
   if fFilePart = '' then
      raise Exception.Create('Favor informar o nome do arquivo para download!');

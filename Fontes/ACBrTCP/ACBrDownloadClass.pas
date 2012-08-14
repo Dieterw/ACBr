@@ -131,6 +131,7 @@ type
     fDownloadSize: Integer;
     fResultCode: Integer;
     fDownloadUrl: string;
+    fDownloadNomeArq :string;
     fBytesResumed: Integer;
 
     fOnBeforeDownload: TACBrBeforeDownload;
@@ -149,6 +150,7 @@ type
   published
     property DownloadDest: string read fDownloadDest write fDownloadDest;
     property DownloadUrl: string read fDownloadUrl write fDownloadUrl;
+    property DownloadNomeArq : string read fDownloadNomeArq write fDownloadNomeArq;
     property DownloadStatus: TDownloadStatus read fDownloadStatus write SetDownloadStatus;
     property SizeRecvBuffer: Integer read fSizeRecvBuffer write SetSizeRecvBuffer;
     property Proxy: TACBrProxy read fProxy write fProxy;
@@ -187,6 +189,7 @@ begin
    fProxy           := TACBrDownload(fOwner).Proxy;
    fDownloadDest    := TACBrDownload(fOwner).DownloadDest;
    fDownloadUrl     := TACBrDownload(fOwner).DownloadUrl;
+   fDownloadNomeArq := TACBrDownload(fOwner).DownloadNomeArq;
    fDownloadStatus  := TACBrDownload(fOwner).DownloadStatus;
    if Assigned(fSock) then
       SizeRecvBuffer := TACBrDownload(fOwner).SizeRecvBuffer;
@@ -323,7 +326,7 @@ begin
          begin
 
          end;
-         stDownload:
+         stDownload, stNone:
          begin
             // Só renomeia o arquivo se finalizou o download, senão deixa
             // o arquivo com o nome.ext.part para tentar continuar de onde parou

@@ -275,7 +275,13 @@ begin
 
       ACBrECF1.IdentificaOperador(NOME_OPERADOR);
 
-      lblModeloImpressora.Caption := ACBrECF1.ModeloStr + sLineBreak + ACBrECF1.SubModeloECF;
+      lblModeloImpressora.Caption :=
+        ACBrECF1.ModeloStr + sLineBreak +
+        ACBrECF1.SubModeloECF + sLineBreak + sLineBreak +
+        'COO: ' + ACBrECF1.NumCOO + sLineBreak +
+        'NumCupom: ' + ACBrECF1.NumCupom + sLineBreak +
+        'NumCCF: ' + ACBrECF1.NumCCF;
+
     end
     else
     begin

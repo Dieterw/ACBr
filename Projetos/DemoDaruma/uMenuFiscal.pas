@@ -262,6 +262,7 @@ var
   FormasPagamento: TACBrECFFormasPagamento;
   I: Integer;
 const
+  arrayDescrTipo: array[0..3] of string = ('Nota Consumidor', 'Nota Fiscal', 'Cupom Não Fiscal', 'Cupom Fiscal');
   arrayDescrFormaPagto: array[0..3] of string = ('Dinheiro', 'Cheque', 'Cartão', 'Ticket');
   arrayDataLancamento: array[0..4] of String = ('01/01/2010', '31/12/2010', '04/05/2011', '02/01/2010', '03/05/2011');
   arrayValores: array[0..4] of Double = (10.56, 14.23, 0.00, 12.00, 1.20);
@@ -272,10 +273,10 @@ begin
     begin
       with FormasPagamento.New do
       begin
-        Descricao      := RandomFrom(arrayDescrFormaPagto);
-        Data           := StrToDate(RandomFrom(arrayDataLancamento));
-        ValorFiscal    := RandomFrom(arrayValores);
-        ValorNaoFiscal := RandomFrom(arrayValores);
+        Descricao := RandomFrom(arrayDescrFormaPagto);
+        TipoDoc   := RandomFrom(arrayDescrTipo);
+        Data      := StrToDate(RandomFrom(arrayDataLancamento));
+        Total     := RandomFrom(arrayValores);
       end;
     end;
 

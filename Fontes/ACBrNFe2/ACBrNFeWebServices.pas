@@ -3623,6 +3623,11 @@ begin
      ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/nfe/wsdl/NfeConsultaDest/nfeConsultaNFDest';
   {$ENDIF}
 
+  // Movido para fora do try por Italo em 16/08/2012
+  if Assigned(FretConsNFeDest)
+   then FretConsNFeDest.Free;
+  FretConsNFeDest.Create;
+
   try
     TACBrNFe( FACBrNFe ).SetStatus( stConsNFeDest );
     if FConfiguracoes.Geral.Salvar then
@@ -3650,9 +3655,6 @@ begin
          StrStream.Free;
       {$ENDIF}
 
-      if Assigned(FretConsNFeDest) then
-        FretConsNFeDest.Free;
-      FretConsNFeDest.Create;
       FretConsNFeDest.Leitor.Arquivo := FRetWS;
       FretConsNFeDest.LerXml;
 

@@ -51,7 +51,7 @@ interface uses
 {$IFNDEF VER130}
   Variants,
 {$ENDIF}
-  pcnAuxiliar, pcnConversao, pcnLeitor, pcnEnvEventoNFe;
+  pcnAuxiliar, pcnConversao, pcnLeitor{, pcnEnvEventoNFe};
 
 type
   TresNFe = class ;
@@ -179,6 +179,7 @@ type
     FultNSU: string;
     Fret: TRetCollection;
     FXML: AnsiString;
+    procedure Setret(const Value: TRetCollection);
   public
     constructor Create;
     destructor Destroy; override;
@@ -193,7 +194,7 @@ type
     property dhResp: TDateTime read FdhResp write FdhResp;
     property indCont: TpcnIndicadorContinuacao read FindCont write FindCont;
     property ultNSU: string read FultNSU write FultNSU;
-    property ret: TRetCollection read Fret write Fret;
+    property ret: TRetCollection read Fret write Setret;
     property XML: AnsiString read FXML write FXML;
   end;
 
@@ -243,6 +244,11 @@ begin
 end;
 
 { TRetConsNFeDest }
+procedure TRetConsNFeDest.Setret(const Value: TRetCollection);
+begin
+  Fret.Assign(Value);
+end;
+
 constructor TRetConsNFeDest.Create;
 begin
   FLeitor := TLeitor.Create;

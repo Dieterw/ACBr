@@ -47,6 +47,13 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Data:  20/08/2012
+-- ACBrTEFD 3.1 --
+[*] Adicionado tratamento para Impressão de via reduzida em CCD (campos 710 e
+    711). A opção por imprimir em CCD ao invez das linhas de Observação foi
+    utilizada, pois em aplicações PAF-ECF não há linhas restantes suficiente
+    para a impressão do comprovante...   (por: DSA)
+
 Data:  08/08/2012
 -- ACBrTEFD 3.0 --
 [+] Adicionada nova propriedade: CHQEmGerencial : Boolean, default False.

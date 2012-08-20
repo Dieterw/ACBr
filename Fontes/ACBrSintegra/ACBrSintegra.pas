@@ -1976,7 +1976,7 @@ begin
     wregistro:=wregistro+Padl(TiraPontos(Registros54[i].CFOP),4);
     wregistro:=wregistro+Padl(Registros54[i].CST,3);
     wregistro:=wregistro+IntToStrZero(Registros54[i].NumeroItem,3);
-    if Registros54[i].NumeroItem<=900 then
+    if Registros54[i].NumeroItem<=990 then
        wregistro:=wregistro+Padl(Registros54[i].Codigo,14) //codigo do produto
     else
        wregistro:=wregistro+space(14);

@@ -217,7 +217,7 @@ var
    EAD : String ;
 begin
    mResp.Lines.Add('Assinando o arquivo: '+edArqEntrada.Text+' com o registro EAD' );
-   EAD :=  ACBrEAD1.AssinarArquivoComEAD( edArqEntrada.Text ) ;
+   EAD :=  ACBrEAD1.AssinarArquivoComEAD( edArqEntrada.Text , True ) ;
    mResp.Lines.Add('Arquivo alterado. Adicionado no final do arquivo a linha: ' );
    mResp.Lines.Add('EAD'+EAD);
    mResp.Lines.Add('------------------------------');
@@ -290,7 +290,7 @@ begin
   OpenDialog1.Filter := 'xml|*.xml';
   if OpenDialog1.Execute then
   begin
-     ChavePub := ACBrEAD1.ConverteXMLeECFcParaOpenSSL( OpenDialog1.FileName, False ) ;
+     ChavePub := ACBrEAD1.ConverteXMLeECFcParaOpenSSL( OpenDialog1.FileName ) ;
      ChavePub := StringReplace( ChavePub, #10, sLineBreak, [rfReplaceAll] );;
 
      mResp.Lines.Add('Convertento a Chave Publica do arquivo: '+OpenDialog1.FileName );

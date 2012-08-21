@@ -55,7 +55,7 @@ uses
   {$ENDIF} ;
 
 const
-   CACBrTEFD_Versao      = '3.00' ;
+   CACBrTEFD_Versao      = '3.01' ;
    CACBrTEFD_EsperaSTS   = 7 ;
    CACBrTEFD_EsperaSleep = 250 ;
    CACBrTEFD_NumVias     = 2 ;
@@ -1211,6 +1211,7 @@ var
    Linha : TACBrTEFDLinha ;
    I     : Integer;
    Parc  : TACBrTEFDRespParcela;
+   TemReduzido : Boolean ;
 
    function AjustaLinhaImagemComprovante( Linha: AnsiString ) : AnsiString;
    begin
@@ -1226,6 +1227,7 @@ begin
    fpDataHoraTransacaoComprovante := 0 ;
    fpImagemComprovante1aVia.Clear;
    fpImagemComprovante2aVia.Clear;
+   TemReduzido := False;
 
    for I := 0 to Conteudo.Count - 1 do
    begin
@@ -1280,12 +1282,28 @@ begin
        708 : fpSaque                 := Linha.Informacao.AsFloat;
        709 : fpDesconto              := Linha.Informacao.AsFloat;
 
-       712 :
+       710 :
          begin
+           TemReduzido := True;
            fpImagemComprovante1aVia.Clear;
            fpQtdLinhasComprovante := Linha.Informacao.AsInteger;
          end;
-       713 : fpImagemComprovante1aVia.Add( AjustaLinhaImagemComprovante( Linha.Informacao.AsString ) );
+       711 : fpImagemComprovante1aVia.Add( AjustaLinhaImagemComprovante( Linha.Informacao.AsString ) );
+
+       712 :
+         begin
+           if not TemReduzido then
+           begin
+              fpImagemComprovante1aVia.Clear;
+              fpQtdLinhasComprovante := Linha.Informacao.AsInteger;
+           end;
+         end;
+
+       713 :
+         begin
+           if not TemReduzido then
+              fpImagemComprovante1aVia.Add( AjustaLinhaImagemComprovante( Linha.Informacao.AsString ) );
+         end ;
 
        714 : fpImagemComprovante2aVia.Clear;
        715 : fpImagemComprovante2aVia.Add( AjustaLinhaImagemComprovante( Linha.Informacao.AsString ) );

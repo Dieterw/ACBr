@@ -223,7 +223,7 @@ var
    EAD : String ;
 begin
    mResp.Lines.Add('Assinando o arquivo: '+edArqEntrada.Text+' com o registro EAD' );
-   EAD :=  ACBrEAD1.AssinarArquivoComEAD( edArqEntrada.Text ) ;
+   EAD :=  ACBrEAD1.AssinarArquivoComEAD( edArqEntrada.Text, True ) ;
    mResp.Lines.Add('Arquivo alterado. Adicionado no final do arquivo a linha: ' );
    mResp.Lines.Add('EAD'+EAD);
    mResp.Lines.Add('------------------------------');

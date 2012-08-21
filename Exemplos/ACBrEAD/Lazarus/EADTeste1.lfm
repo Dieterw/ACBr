@@ -135,9 +135,9 @@ object Form1: TForm1
     end
     object Label1: TLabel
       Left = 9
-      Height = 14
+      Height = 13
       Top = 11
-      Width = 44
+      Width = 43
       Caption = 'Arquivo:'
       ParentColor = False
     end
@@ -399,9 +399,9 @@ object Form1: TForm1
     end
     object Label4: TLabel
       Left = 9
-      Height = 14
+      Height = 13
       Top = 8
-      Width = 44
+      Width = 43
       Caption = 'Arquivo:'
       ParentColor = False
     end
@@ -556,9 +556,9 @@ object Form1: TForm1
     end
     object Label5: TLabel
       Left = 9
-      Height = 14
+      Height = 13
       Top = 8
-      Width = 44
+      Width = 43
       Caption = 'Arquivo:'
       ParentColor = False
     end

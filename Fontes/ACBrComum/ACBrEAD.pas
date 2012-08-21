@@ -864,9 +864,20 @@ function TACBrEAD.RemoveEAD(MS : TMemoryStream) : String ;
 Var
   Buffer: array[0..259] of AnsiChar;
 begin
+  // Verificando se tem CRLF no final da linha do EAD //
+  Buffer := #0;
+  MS.Seek(-1, soFromEnd);  // vai para EOF - 1
+  MS.Read(Buffer, 1);
+  while (Buffer[0] in [CR, LF]) do
+  begin
+     Buffer := #0;
+     MS.Seek(-2, soFromCurrent);  // Volta 2
+     MS.Read(Buffer, 1);
+  end ;
+
   // Procurando por ultimo EAD //
   Buffer[0] := #0;
-  MS.Seek(-259,soFromEnd);     // 259 = Tamanho da Linha EAD
+  MS.Seek(-259,soFromCurrent);     // 259 = Tamanho da Linha EAD
   MS.Read(Buffer, 259 );
   Result := UpperCase( Trim( String( Buffer ) ) );
 

@@ -38,6 +38,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+20/08/2012
+-- ACBrEAD --
+[-] Ajuste no método RemoverEAD, para suportar arquivos assinados com linha de
+    EAD que terminam com LineBreak    (por: DSA)
+
 20/06/2012
 -- ACBrEAD --
 [-] Acertos gerais que estavam impedindo a validação da assinatura, algo a ver

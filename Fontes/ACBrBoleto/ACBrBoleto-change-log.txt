@@ -128,6 +128,10 @@ Versao 0.0.10a do FortesReport 06/07/11
     cobrança não registrada.
     (por: Regys Silveira) 
 	
+Versao 0.0.42a 22/08/2012	
+[-] Unit Banco Brasil - Corrigido formatação da conta na montagem do Código de Barras e alterado
+    impressão do boleto para apenas 8 digitos (12 digitos são necessários apenas na remessa CNAB240).
+    (Juliana Tamizou)	
 
 Versao 0.0.41a 13/08/2012	
 [-] Unit Itaú - Corrigido  calculo do Digito Verificador para a carteira 112.

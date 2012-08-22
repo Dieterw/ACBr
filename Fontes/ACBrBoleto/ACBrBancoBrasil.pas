@@ -162,7 +162,7 @@ begin
                          IfThen((Length(AConvenio) = 7), '000000', '') +
                          ANossoNumero +
                          IfThen((Length(AConvenio) < 7), padR(Cedente.Agencia, 4, '0'), '') +
-                         IfThen((Length(AConvenio) < 7), padR(Cedente.Conta, 8, '0'), '') +
+                         IfThen((Length(AConvenio) < 7), IntToStrZero(StrToIntDef(Cedente.Conta,0),8), '') +
                          ACBrTitulo.Carteira;
       end;
 
@@ -178,7 +178,7 @@ function TACBrBancoBrasil.MontarCampoCodigoCedente (
 begin
    Result := ACBrTitulo.ACBrBoleto.Cedente.Agencia+'-'+
              ACBrTitulo.ACBrBoleto.Cedente.AgenciaDigito+'/'+
-             ACBrTitulo.ACBrBoleto.Cedente.Conta+'-'+
+             IntToStrZero(StrToIntDef(ACBrTitulo.ACBrBoleto.Cedente.Conta,0),8)+'-'+
              ACBrTitulo.ACBrBoleto.Cedente.ContaDigito;
 end;
 

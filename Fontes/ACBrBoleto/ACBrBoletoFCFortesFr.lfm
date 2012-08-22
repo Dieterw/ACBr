@@ -3417,9 +3417,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
     end
   end
   object BoletoCarne: TRLReport
-    Left = 920
+    Left = 424
     Height = 1123
-    Top = 8
+    Top = 88
     Width = 794
     Font.Color = clBlack
     Font.Height = -13
@@ -4697,21 +4697,6 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         RealBounds.Width = 0
         RealBounds.Height = 0
       end
-      object txtNomeSacado: TRLLabel
-        Left = 180
-        Height = 13
-        Top = 229
-        Width = 386
-        AutoSize = False
-        Font.Color = clBlack
-        Font.Height = -11
-        Font.Name = 'Arial'
-        ParentFont = False
-        RealBounds.Left = 0
-        RealBounds.Top = 0
-        RealBounds.Width = 0
-        RealBounds.Height = 0
-      end
       object txtEndSacado: TRLLabel
         Left = 180
         Height = 13
@@ -4885,6 +4870,21 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Font.Height = -24
         Font.Name = 'Arial'
         Font.Style = [fsBold]
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtNomeSacado: TRLMemo
+        Left = 180
+        Height = 13
+        Top = 229
+        Width = 386
+        AutoSize = False
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Arial'
         ParentFont = False
         RealBounds.Left = 0
         RealBounds.Top = 0

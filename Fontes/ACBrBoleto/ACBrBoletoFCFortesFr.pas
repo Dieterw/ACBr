@@ -216,6 +216,7 @@ type
     RLLabel93: TRLLabel;
     RLLabel96: TRLLabel;
     RLLabel98: TRLLabel;
+    txtNomeSacado: TRLMemo;
     txtOrientacoesBanco: TRLMemo;
     RLMemo2: TRLMemo;
     txtDesconto5: TRLLabel;
@@ -246,7 +247,6 @@ type
     RLDBText18: TRLDBText;
     txtLocal: TRLLabel;
     txtNomeCedente: TRLLabel;
-    txtNomeSacado: TRLLabel;
     txtNossoNumeroCarne: TRLLabel;
     txtNumeroDocto: TRLLabel;
     txtValorCarne: TRLLabel;

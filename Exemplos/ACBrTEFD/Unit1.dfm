@@ -1,9 +1,9 @@
 object Form1: TForm1
   Left = 366
   Top = 216
-  Width = 766
-  Height = 488
   Caption = 'TEFDDemo'
+  ClientHeight = 454
+  ClientWidth = 758
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -15,15 +15,15 @@ object Form1: TForm1
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   DesignSize = (
-    750
-    450)
+    758
+    454)
   PixelsPerInch = 96
   TextHeight = 13
   object Memo1: TMemo
     Left = 0
     Top = 208
-    Width = 750
-    Height = 192
+    Width = 758
+    Height = 196
     Align = alClient
     Lines.Strings = (
       'Memo1')
@@ -33,9 +33,9 @@ object Form1: TForm1
   object PageControl1: TPageControl
     Left = 0
     Top = 0
-    Width = 750
+    Width = 758
     Height = 208
-    ActivePage = tsConfig
+    ActivePage = tsOperacao
     Align = alTop
     TabOrder = 2
     object tsConfig: TTabSheet
@@ -125,7 +125,6 @@ object Form1: TForm1
           Width = 161
           Height = 21
           Style = csDropDownList
-          ItemHeight = 13
           ItemIndex = 0
           TabOrder = 0
           Text = 'Procurar'
@@ -149,7 +148,6 @@ object Form1: TForm1
           Top = 84
           Width = 131
           Height = 21
-          ItemHeight = 13
           ItemIndex = 0
           TabOrder = 1
           Text = 'Procurar'
@@ -210,14 +208,14 @@ object Form1: TForm1
       object Panel2: TPanel
         Left = 308
         Top = 0
-        Width = 434
+        Width = 442
         Height = 180
         Align = alClient
         TabOrder = 1
         object gbConfigTEF: TGroupBox
           Left = 1
           Top = 1
-          Width = 432
+          Width = 440
           Height = 178
           Align = alClient
           Caption = 'TEF'
@@ -286,7 +284,6 @@ object Form1: TForm1
             Width = 133
             Height = 21
             Style = csDropDownList
-            ItemHeight = 13
             TabOrder = 0
             OnChange = cbxGPChange
           end
@@ -482,7 +479,7 @@ object Form1: TForm1
       object gbComandosTEF: TGroupBox
         Left = 292
         Top = 0
-        Width = 450
+        Width = 458
         Height = 180
         Align = alClient
         Caption = 'TEF'
@@ -584,7 +581,6 @@ object Form1: TForm1
           Width = 142
           Height = 21
           Style = csDropDownList
-          ItemHeight = 0
           TabOrder = 0
           OnChange = cbxGPChange
         end
@@ -636,7 +632,6 @@ object Form1: TForm1
             Top = 17
             Width = 166
             Height = 21
-            ItemHeight = 13
             ItemIndex = 0
             TabOrder = 0
             Text = 'Nenhuma Transa'#231#227'o'
@@ -655,8 +650,8 @@ object Form1: TForm1
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 427
-    Width = 750
+    Top = 431
+    Width = 758
     Height = 23
     Panels = <
       item
@@ -671,8 +666,8 @@ object Form1: TForm1
   end
   object Panel1: TPanel
     Left = 0
-    Top = 400
-    Width = 750
+    Top = 404
+    Width = 758
     Height = 27
     Align = alBottom
     BevelInner = bvLowered
@@ -928,6 +923,7 @@ object Form1: TForm1
     FormMsgFonte.Pitch = fpVariable
     FormMsgFonte.Style = []
     FormMsgColor = clHighlight
+    OnMsgPoucoPapel = ACBrECF1MsgPoucoPapel
     MemoParams.Strings = (
       '[Cabecalho]'
       'LIN000=<center><b>Nome da Empresa</b></center>'

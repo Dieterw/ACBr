@@ -187,19 +187,19 @@ type
      procedure FormCreate(Sender : TObject);
      procedure ckTEFDIALChange(Sender : TObject);
      procedure Memo1Change(Sender : TObject);
-    procedure ACBrTEFD1CliSiTefObtemCampo(Titulo: String; TamanhoMinimo,
+
+     procedure ACBrTEFD1BaneseObtemOpcaoAdm(var opcao: Integer);
+     procedure ACBrTEFD1BaneseObtemInformacao(var ItemSelecionado: Integer);
+    procedure ACBrTEFD1VeSPagueExibeMenu(Titulo: string; Opcoes,
+      Memo: TStringList; var ItemSelecionado: Integer);
+    procedure ACBrTEFD1VeSPagueObtemCampo(Titulo, Mascara: string;
+      Tipo: AnsiChar; var Resposta: string; var Digitado: Boolean);
+    procedure ACBrTEFD1CliSiTefExibeMenu(Titulo: string; Opcoes: TStringList;
+      var ItemSelecionado: Integer; var VoltarMenu: Boolean);
+    procedure ACBrTEFD1CliSiTefObtemCampo(Titulo: string; TamanhoMinimo,
       TamanhoMaximo, TipoCampo: Integer;
-      Operacao: TACBrTEFDCliSiTefOperacaoCampo; var Resposta: String;
+      Operacao: TACBrTEFDCliSiTefOperacaoCampo; var Resposta: AnsiString;
       var Digitado, VoltarMenu: Boolean);
-    procedure ACBrTEFD1CliSiTefExibeMenu(Titulo: String;
-      Opcoes: TStringList; var ItemSelecionado: Integer;
-      var VoltarMenu: Boolean);
-    procedure ACBrTEFD1VeSPagueExibeMenu(Titulo: String;
-      Opcoes: TStringList; Memo: TStringList; var ItemSelecionado: Integer);
-    procedure ACBrTEFD1VeSPagueObtemCampo(Titulo, Mascara: String;
-      Tipo: Char; var Resposta: String; var Digitado: Boolean);
-    procedure ACBrTEFD1BaneseObtemOpcaoAdm(var opcao: Integer);
-    procedure ACBrTEFD1BaneseObtemInformacao(var ItemSelecionado: Integer);
   private
      fCancelado : Boolean ;
 
@@ -996,6 +996,7 @@ Var
   OldTecladoBloqueado : Boolean ;
 begin
   OldTecladoBloqueado := ACBrTEFD1.TecladoBloqueado;
+  ACBrTEFD1.BloquearMouseTeclado(False);
   try
      ShowMessage('ATENÇÃO. Detectada proximadade do fim da Bobina');
   finally
@@ -1213,10 +1214,32 @@ begin
   end;
 end;
 
-procedure TForm1.ACBrTEFD1CliSiTefObtemCampo(Titulo: String; TamanhoMinimo,
-  TamanhoMaximo, TipoCampo: Integer;
-  Operacao: TACBrTEFDCliSiTefOperacaoCampo; var Resposta: String;
-  var Digitado, VoltarMenu: Boolean);
+procedure TForm1.ACBrTEFD1CliSiTefExibeMenu(Titulo: String;
+  Opcoes: TStringList; var ItemSelecionado: Integer;
+  var VoltarMenu: Boolean);
+Var
+  AForm : TForm4 ;
+  MR    : TModalResult ;
+begin
+  AForm := TForm4.Create(self);
+  try
+    AForm.Panel1.Caption := Titulo;
+    AForm.ListBox1.Items.AddStrings(Opcoes);
+
+    MR := AForm.ShowModal ;
+
+    VoltarMenu := (MR = mrRetry) ;
+
+    if (MR = mrOK) then
+      ItemSelecionado := AForm.ListBox1.ItemIndex;
+  finally
+    AForm.Free;
+  end;
+end;
+
+procedure TForm1.ACBrTEFD1CliSiTefObtemCampo(Titulo: string; TamanhoMinimo,
+  TamanhoMaximo, TipoCampo: Integer; Operacao: TACBrTEFDCliSiTefOperacaoCampo;
+  var Resposta: AnsiString; var Digitado, VoltarMenu: Boolean);
 Var
   AForm : TForm5 ;
   MR    : TModalResult ;
@@ -1237,29 +1260,6 @@ begin
 
     if Digitado then
        Resposta := AForm.Edit1.Text;
-  finally
-    AForm.Free;
-  end;
-end;
-
-procedure TForm1.ACBrTEFD1CliSiTefExibeMenu(Titulo: String;
-  Opcoes: TStringList; var ItemSelecionado: Integer;
-  var VoltarMenu: Boolean);
-Var
-  AForm : TForm4 ;
-  MR    : TModalResult ;
-begin
-  AForm := TForm4.Create(self);
-  try
-    AForm.Panel1.Caption := Titulo;
-    AForm.ListBox1.Items.AddStrings(Opcoes);
-
-    MR := AForm.ShowModal ;
-
-    VoltarMenu := (MR = mrRetry) ;
-
-    if (MR = mrOK) then
-      ItemSelecionado := AForm.ListBox1.ItemIndex;
   finally
     AForm.Free;
   end;
@@ -1290,8 +1290,8 @@ begin
   end;
 end;
 
-procedure TForm1.ACBrTEFD1VeSPagueObtemCampo(Titulo, Mascara: String;
-  Tipo: Char; var Resposta: String; var Digitado: Boolean);
+procedure TForm1.ACBrTEFD1VeSPagueObtemCampo(Titulo, Mascara: string;
+  Tipo: AnsiChar; var Resposta: string; var Digitado: Boolean);
 Var
   AForm : TForm5 ;
   MR    : TModalResult ;

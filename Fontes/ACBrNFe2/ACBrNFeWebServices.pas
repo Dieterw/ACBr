@@ -3624,9 +3624,12 @@ begin
   {$ENDIF}
 
   // Movido para fora do try por Italo em 16/08/2012
+//  if Assigned(FretConsNFeDest)
+//   then FretConsNFeDest.Free;
   if Assigned(FretConsNFeDest)
-   then FretConsNFeDest.Free;
-  FretConsNFeDest.Create;
+   then FreeAndNil(FretConsNFeDest);
+
+  FretConsNFeDest := TRetConsNFeDest.Create;
 
   try
     TACBrNFe( FACBrNFe ).SetStatus( stConsNFeDest );

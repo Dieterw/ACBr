@@ -798,8 +798,8 @@ begin
           CNFEnviado := True ;
         end;
 
-        ApagaEVerifica( ArqResp );
-        ApagaEVerifica( RespostasPendentes[I].ArqBackup );
+        ApagaEVerifica( ArqRespPendente );
+        ApagaEVerifica( ArqBackup );
 
         Inc( I ) ;
       end;
@@ -841,7 +841,7 @@ begin
      end;
 
      if EstadoECF <> 'L' then
-        raise EACBrTEFDECF.Create( ACBrStr('ECF não está LIVRE') ) ;
+        raise EACBrTEFDECF.Create( ACBrStr(CACBrTEFD_Erro_ECFNaoLivre) ) ;
   end;
 
   ImpressaoOk := False ;
@@ -872,7 +872,7 @@ begin
                     end;
 
                     if EstadoECF <> 'L' then
-                       raise EACBrTEFDECF.Create( ACBrStr('ECF não está LIVRE') ) ;
+                       raise EACBrTEFDECF.Create( ACBrStr(CACBrTEFD_Erro_ECFNaoLivre) ) ;
                  end;
 
                  GerencialAberto := False ;
@@ -935,7 +935,8 @@ begin
                           if (I < NVias) or (J < RespostasPendentes.Count-1) then
                           begin
                              ComandarECF( opePulaLinhas ) ;
-                             DoExibeMsg( opmDestaqueVia, 'Destaque a '+IntToStr(I)+'ª Via') ;
+                             DoExibeMsg( opmDestaqueVia,
+                                         Format( CACBrTEFD_DestaqueVia, [I]) ) ;
                           end;
 
                           Inc( I ) ;
@@ -1060,7 +1061,8 @@ begin
                              if (I < NVias) or (J < RespostasPendentes.Count-1) then
                              begin
                                 ComandarECF( opePulaLinhas ) ;
-                                DoExibeMsg( opmDestaqueVia, 'Destaque a '+IntToStr(I)+'ª Via') ;
+                                DoExibeMsg( opmDestaqueVia,
+                                            Format( CACBrTEFD_DestaqueVia, [I]) ) ;
                              end;
 
                              Inc( I ) ;
@@ -1124,8 +1126,7 @@ begin
 
         if not ImpressaoOk then
         begin
-          if DoExibeMsg( opmYesNo, 'Impressora não responde'+sLineBreak+
-                                   'Tentar novamente ?') <> mrYes then
+          if DoExibeMsg( opmYesNo, CACBrTEFD_Erro_ECFNaoResponde ) <> mrYes then
              break ;
         end;
 
@@ -1417,8 +1418,7 @@ begin
 
         if not ImpressaoOk then
         begin
-          if DoExibeMsg( opmYesNo, 'Impressora não responde'+sLineBreak+
-                                   'Tentar novamente ?') <> mrYes then
+          if DoExibeMsg( opmYesNo, CACBrTEFD_Erro_ECFNaoResponde ) <> mrYes then
           begin
              try ComandarECF(opeCancelaCupom); except {Exceção Muda} end ;
              break ;

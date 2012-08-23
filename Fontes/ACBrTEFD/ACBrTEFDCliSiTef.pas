@@ -55,6 +55,22 @@ uses
 
 Const
    CACBrTEFD_CliSiTef_Backup = 'ACBr_CliSiTef_Backup.tef' ;
+   CACBrTEFD_CliSiTef_TransacaoNaoEfetuada =
+      'Transação não efetuada.'+sLineBreak+'Favor reter o Cupom' ;
+   CACBrTEFD_CliSiTef_TransacaoEfetuadaReImprimir =
+      'Transação TEF efetuada.'        + sLineBreak+
+      'Favor reimprimir último Cupom.' + sLineBreak +
+      'NSU: %s'                        + sLineBreak +
+      '(Para Cielo utilizar os 6 últimos dígitos.)';
+   CACBrTEFD_CliSiTef_NaoInicializado = 'CliSiTEF não inicializado' ;
+   CACBrTEFD_CliSiTef_NaoConcluido = 'Requisição anterior não concluida' ;
+   CACBrTEFD_CliSiTef_Erro1  = 'Endereço IP inválido ou não resolvido' ;
+   CACBrTEFD_CliSiTef_Erro2  = 'Código da loja inválido' ;
+   CACBrTEFD_CliSiTef_Erro3  = 'Código de terminal inválido' ;
+   CACBrTEFD_CliSiTef_Erro6  = 'Erro na inicialização do TCP/IP' ;
+   CACBrTEFD_CliSiTef_Erro7  = 'Falta de memória' ;
+   CACBrTEFD_CliSiTef_Erro8  = 'Não encontrou a CliSiTef ou ela está com problemas' ;
+   CACBrTEFD_CliSiTef_Erro10 = 'O PinPad não está devidamente configurado no arquivo CliSiTef.ini' ;
 
 {$IFDEF LINUX}
   CACBrTEFD_CliSiTef_Lib = 'libclisitef.so' ;
@@ -89,7 +105,8 @@ type
 
    TACBrTEFDCliSiTef = class( TACBrTEFDClass )
    private
-      fReimpressao: Boolean; {Indica se foi selecionado uma reimpressão}
+      fReimpressao: Boolean; {Indica se foi selecionado uma reimpressão no ADM}
+      fCancelamento: Boolean; {Indica se foi selecionado Cancelamento no ADM}
       fCodigoLoja : AnsiString;
       fEnderecoIP : AnsiString;
       fNumeroTerminal : AnsiString;
@@ -363,6 +380,7 @@ begin
   inherited Create(AOwner);
 
   fReimpressao := False;
+  fCancelamento:= False;
   ArqReq    := '' ;
   ArqResp   := '' ;
   ArqSTS    := '' ;
@@ -414,7 +432,7 @@ begin
    if Assigned(xEscreveMensagemPermanentePinPad) then  
       Result := xEscreveMensagemPermanentePinPad(PAnsiChar(Mensagem))
    else
-      raise Exception.Create( ACBrStr('CliSiTEF não inicializado' ) ) ;   
+      raise Exception.Create( ACBrStr( CACBrTEFD_CliSiTef_NaoInicializado ) ) ;
 end;
 
 destructor TACBrTEFDCliSiTef.Destroy;
@@ -512,13 +530,13 @@ begin
                                          PAnsiChar(ParamAdic) );
   Erro := '' ;
   Case Sts of
-    1 :	Erro := 'Endereço IP inválido ou não resolvido' ;
-    2 : Erro := 'Código da loja inválido' ;
-    3 : Erro := 'Código de terminal invalido' ;
-    6 : Erro := 'Erro na inicialização do Tcp/Ip' ;
-    7 : Erro := 'Falta de memória' ;
-    8 : Erro := 'Não encontrou a CliSiTef ou ela está com problemas' ;
-   10 : Erro := 'O PinPad não está devidamente configurado no arquivo CliSiTef.ini' ;
+    1 :	Erro := CACBrTEFD_CliSiTef_Erro1;
+    2 : Erro := CACBrTEFD_CliSiTef_Erro2;
+    3 : Erro := CACBrTEFD_CliSiTef_Erro3;
+    6 : Erro := CACBrTEFD_CliSiTef_Erro6;
+    7 : Erro := CACBrTEFD_CliSiTef_Erro7;
+    8 : Erro := CACBrTEFD_CliSiTef_Erro8;
+   10 : Erro := CACBrTEFD_CliSiTef_Erro10;
   end;
 
   if Erro <> '' then
@@ -593,10 +611,7 @@ begin
 
      if ExibeMsg then
         TACBrTEFD(Owner).DoExibeMsg( opmOK,
-                               'Transação TEF efetuada.'+sLineBreak+
-                               'Favor Re-Imprimir Ultimo Cupom ' + NSUs + sLineBreak +
-                               '(Para Cielo utilizar os 6 últimos dígitos.)') ;
-
+           Format( CACBrTEFD_CliSiTef_TransacaoEfetuadaReImprimir, [NSUs] ) ) ;
   finally
      ArquivosVerficar.Free;
   end;
@@ -755,7 +770,7 @@ begin
    if Assigned(xObtemQuantidadeTransacoesPendentes) then  
       Result := xObtemQuantidadeTransacoesPendentes(sDate,CupomFiscal)
    else
-      raise Exception.Create( ACBrStr('CliSiTEF não inicializado' ) ) ;   
+      raise Exception.Create( ACBrStr( CACBrTEFD_CliSiTef_NaoInicializado ) ) ;
 end;
 
 Function TACBrTEFDCliSiTef.FazerRequisicao( Funcao : Integer;
@@ -766,7 +781,7 @@ Var
   ANow : TDateTime ;
 begin
    if fpAguardandoResposta then
-      raise Exception.Create( ACBrStr( 'Requisição anterior não concluida' ) ) ;
+      raise Exception.Create( ACBrStr( CACBrTEFD_CliSiTef_NaoConcluido ) ) ;
 
    if (pos('{TipoTratamento=4}',ListaRestricoes) = 0) and
       (pos(AHeader,'CRT,CHQ') > 0 ) and
@@ -776,6 +791,7 @@ begin
    end;
 
    fReimpressao := False;
+   fCancelamento:= False;
    ANow     := Now ;
    DataStr  := FormatDateTime('YYYYMMDD', ANow );
    HoraStr  := FormatDateTime('HHNNSS', ANow );
@@ -851,6 +867,7 @@ begin
    GerencialAberto  := False ;
    ImpressaoOk      := True ;
    HouveImpressao   := False ;
+   fCancelamento    := False ;
    ArqBackUp        := '' ;
    Resposta         := '' ;
 
@@ -899,6 +916,7 @@ begin
                         25 : TACBrTEFDRespCliSiTef( Self.Resp ).GravaInformacao( TipoCampo, 'True') ;//Selecionou Credito;
                         {Indica que foi escolhido menu de reimpressão}
                         56,57,58 : fReimpressao := True;
+                        110      : fCancelamento:= True;
                         121, 122 :
                           if ImprimirComprovantes then
                           begin
@@ -933,7 +951,7 @@ begin
                                          FechaGerencialAberto := False ;
 
                                          if EstadoECF <> 'L' then
-                                           raise EACBrTEFDECF.Create( ACBrStr('ECF não está LIVRE') ) ;
+                                           raise EACBrTEFDECF.Create( ACBrStr(CACBrTEFD_Erro_ECFNaoLivre) ) ;
                                        end;
 
                                        Mensagem := Self.Resp.LeInformacao(I).AsString ;
@@ -950,7 +968,8 @@ begin
                                           else
                                            begin
                                              ComandarECF( opePulaLinhas ) ;
-                                             DoExibeMsg( opmDestaqueVia, 'Destaque a 1ª Via') ;
+                                             DoExibeMsg( opmDestaqueVia,
+                                                         Format(CACBrTEFD_DestaqueVia, [1]) ) ;
                                            end;
 
                                           ECFImprimeVia( trGerencial, I-120, SL );
@@ -974,8 +993,7 @@ begin
 
                                   if not ImpressaoOk then
                                   begin
-                                    if DoExibeMsg( opmYesNo, 'Impressora não responde'+sLineBreak+
-                                                             'Deseja imprimir novamente ?') <> mrYes then
+                                    if DoExibeMsg( opmYesNo, CACBrTEFD_Erro_ECFNaoResponde ) <> mrYes then
                                       break ;
 
                                     I := 121 ;
@@ -1150,7 +1168,8 @@ begin
            SysUtils.DeleteFile( ArqBackUp );
 
         if HouveImpressao then
-           FinalizarTransacao( ImpressaoOk, Resp.DocumentoVinculado );
+           FinalizarTransacao( (ImpressaoOk or fCancelamento),
+                               Resp.DocumentoVinculado );
 
         BloquearMouseTeclado( False );
 
@@ -1158,6 +1177,11 @@ begin
         // DEBUG
         //GravaLog( Self.Resp.Conteudo.Conteudo.Text );
         TACBrTEFDRespCliSiTef( Self.Resp ).ConteudoToProperty ;
+
+        if (HouveImpressao and fCancelamento) then
+           DoExibeMsg( opmOK,
+                       Format( CACBrTEFD_CliSiTef_TransacaoEfetuadaReImprimir,
+                               [Resp.NSU]) ) ;
 
         fpAguardandoResposta := False ;
       end;
@@ -1190,8 +1214,7 @@ begin
                                      PAnsiChar( HoraStr ) ) ;
 
   if not Confirma then
-     TACBrTEFD(Owner).DoExibeMsg( opmOK, 'Transação não efetuada.'+sLineBreak+
-                                         'Favor reter o Cupom');
+     TACBrTEFD(Owner).DoExibeMsg( opmOK, CACBrTEFD_CliSiTef_TransacaoNaoEfetuada );
 
 end;
 
@@ -1261,8 +1284,7 @@ begin
 
               if not ImpressaoOk then
               begin
-                 if DoExibeMsg( opmYesNo, 'Impressora não responde'+sLineBreak+
-                                          'Deseja imprimir novamente ?') <> mrYes then
+                 if DoExibeMsg( opmYesNo, CACBrTEFD_Erro_ECFNaoResponde ) <> mrYes then
                  begin
                     try ComandarECF(opeCancelaCupom); except {Exceção Muda} end ;
                     break ;

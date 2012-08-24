@@ -102,6 +102,7 @@ type
     class function GetURLSP(AAmbiente: Integer; ALayOut: TLayOut): WideString;
     class function GetURLMT(AAmbiente: Integer; ALayOut: TLayOut): WideString;
     class function GetURLMS(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+    class function GetURLPR(AAmbiente: Integer; ALayOut: TLayOut): WideString;
 
   protected
 
@@ -269,7 +270,8 @@ begin
 
               15: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //PA - Pará
               25: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //PB - Paraibá
-              41: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //PR - Paraná
+              41: Result := CTeUtil.GetURLPR(AAmbiente, ALayOut);             //PR - Paraná
+//              41: Result := CTeUtil.GetURLSVRS(AAmbiente, ALayOut);             //PR - Paraná
 
               // Alterado por Italo em 07/03/2012
               // conforme informações postadas no fórum por
@@ -413,6 +415,21 @@ begin
     LayCTeInutilizacao:  Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.mt.gov.br/ctews/services/CteInutilizacao' , 'https://homologacao.sefaz.mt.gov.br/ctews/services/CteInutilizacao');
     LayCTeConsultaCT:    Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.mt.gov.br/ctews/services/CteConsulta'     , 'https://homologacao.sefaz.mt.gov.br/ctews/services/CteConsulta');
     LayCTeStatusServico: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.mt.gov.br/ctews/services/CteStatusServico', 'https://homologacao.sefaz.mt.gov.br/ctews/services/CteStatusServico'); //?WSDL
+//    LayCTeCadastro: Result      := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.mt.gov.br/ctews/services/cadConsultaCadastro', 'https://homologacao.sefaz.mt.gov.br/ctews/services/cadConsultaCadastro');
+  end;
+end;
+
+// Adicionado por NCC - http://www.sped.fazenda.pr.gov.br/modules/conteudo/conteudo.php?conteudo=10
+class function CTeUtil.GetURLPR(AAmbiente: Integer;
+  ALayOut: TLayOut): WideString;
+begin
+  case ALayOut of
+    LayCTeRecepcao:      Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.pr.gov.br/cte/CteRecepcao'     , 'https://homologacao.cte.fazenda.pr.gov.br/cte/CteRecepcao'); //?WSDL
+    LayCTeRetRecepcao:   Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.pr.gov.br/cte/CteRetRecepcao'  , 'https://homologacao.cte.fazenda.pr.gov.br/cte/CteRetRecepcao'); //?WSDL
+    LayCTeCancelamento:  Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.pr.gov.br/cte/CteCancelamento' , 'https://homologacao.cte.fazenda.pr.gov.br/cte/CteCancelamento');
+    LayCTeInutilizacao:  Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.pr.gov.br/cte/CteInutilizacao' , 'https://homologacao.cte.fazenda.pr.gov.br/cte/CteInutilizacao');
+    LayCTeConsultaCT:    Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.pr.gov.br/cte/CteConsulta'     , 'https://homologacao.cte.fazenda.pr.gov.br/cte/CteConsulta');
+    LayCTeStatusServico: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.fazenda.pr.gov.br/cte/CteStatusServico', 'https://homologacao.cte.fazenda.pr.gov.br/cte/CteStatusServico'); //?WSDL
 //    LayCTeCadastro: Result      := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.mt.gov.br/ctews/services/cadConsultaCadastro', 'https://homologacao.sefaz.mt.gov.br/ctews/services/cadConsultaCadastro');
   end;
 end;
